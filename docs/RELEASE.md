@@ -10,8 +10,8 @@
 | Package version | 0.2.0 candidate; development test only |
 | Confirmed mod ID | OneMoreHorde_TurretsAndTraps |
 | Build evidence | B42.20.4 b0bbce05d5 with PZ Optimizer: dedicated startup/save/restart passed; player acceptance pending |
-| Runtime source / installable package | 0.2.0 validated; local install pending completion of release preparation |
-| Git repository / remote | Local source repository; 0.2.0 rollback tag pending; no remote configured |
+| Runtime source / installable package | 0.2.0 installed locally; all 55 package hashes verified; previous 0.1.6 backup verified (44 files) |
+| Git repository / remote | Local source commit 64e8f27, annotated test/v0.2.0 tag; no remote configured |
 | Workshop item / successful upload | None |
 | Public changelog baseline | No upload exists |
 | Official score support | Proposed; not implemented |
@@ -19,7 +19,7 @@
 
 ## Current native construction candidate
 
-Version `0.2.0` implements [Phase 2 checkpoint 1a](PHASE_2_CHECKPOINT_1.md): native Building-menu Spike Barriers, preview/rotation, a native material recipe, Sandbox toggles and construction diagnostics. [Release notes](PR_v0.2.0.md) distinguish implemented behavior from scheduled individual items and five-item packs. No remote push or Workshop upload occurred; the first-release cumulative draft is retained.
+Version `0.2.0` implements [Phase 2 checkpoint 1a](PHASE_2_CHECKPOINT_1.md): native Building-menu Spike Barriers, preview/rotation, a native material recipe, Sandbox toggles and construction diagnostics. [Release notes](PR_v0.2.0.md) distinguish implemented behavior from scheduled individual items and five-item packs. [Install evidence](../diagnostics/v0.2.0/local-release.json) records exact hashes, source tag and the full previous-version backup. The [archive](../artifacts/OMHTT-0.2.0.zip) contains the same 55 package files. The running client has not yet been confirmed to load 0.2.0; restart and owner testing remain required. No remote push or Workshop upload occurred; the first-release cumulative draft is retained.
 
 ## Previous directional footprint candidate
 

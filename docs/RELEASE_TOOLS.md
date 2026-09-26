@@ -6,7 +6,7 @@ Reviewed the current Horde Night [working agreement](../../pz-mod-onemorehorde_p
 
 - Player-facing name: **OMH: Turrets & Traps**. Keep the confirmed internal ID `OneMoreHorde_TurretsAndTraps` and existing persistence keys; renaming them would break save/package continuity.
 - New versions use `major.minor.patch`, with a fourth numeric field for a small corrective build. Checkpoint labels belong in documentation, not `modversion`. The footprint change is `0.1.6`; a subsequent small correction would be `0.1.6.1`.
-- Use `docs/PHASE_1_CHECKPOINT_2.md` for the current checkpoint, `docs/PR_v<version>.md` for release notes, and annotated local tag `test/v<version>` for exact source rollback. Historical suffixed versions and their evidence retain their original names.
+- Use `docs/PHASE_2_CHECKPOINT_1.md` for the current construction checkpoint, `docs/PR_v<version>.md` for release notes, and annotated local tag `test/v<version>` for exact source rollback. Historical checkpoint files, suffixed versions and their evidence retain their original names.
 - One root [OMH.cmd](../OMH.cmd), stable helpers in `tools/`, and version read from packaged `mod.info`. No new per-version launchers. The two older launchers are retained in [an archive](../artifacts/legacy-launchers.zip).
 
 ## Process
