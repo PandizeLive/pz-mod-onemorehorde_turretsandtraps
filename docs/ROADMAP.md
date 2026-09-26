@@ -14,7 +14,7 @@ The [completed 0.1.4 player review](checkpoints/P1_COMBAT_OWNER_REVIEW.md) confi
 
 ## Phase 1: prove the engine paths
 
-Current candidate: [0.1.6 / Phase 1 checkpoint 2](PHASE_1_CHECKPOINT_2.md). The completed 0.1.5 SP test records working damage and animated falls. Current work adds the owner-requested safe rear and 1x2 footprint. Paired collision, rotation, cleanup and MP remain acceptance gates; no checkpoint is marked complete from harness results alone.
+Current candidate: [0.1.6 / Phase 1 checkpoint 2](PHASE_1_CHECKPOINT_2.md). The [completed 0.1.6 SP review](TEST_v0.1.6.md) verifies front/rear filtering, paired condition, observed rotations and potato behavior. Side-end hits, reload, cleanup, traversal, legacy expansion and MP still require their acceptance evidence. No Phase 1 checkpoint is marked fully complete.
 
 Keep assets and recipes minimal. Do not construct the full content library before proving combat and synchronization.
 

@@ -2,6 +2,8 @@
 
 Version: `0.1.6`. Date: 2026-09-26. Owner requested a safe rear face and a 1x2 footprint after the completed `0.1.5-p1retaliation` test. The side ends are included under the owner's gameplay allowance. This remains an SP combat prototype; final construction is a later checkpoint.
 
+The owner has now completed the 0.1.6 test. [Log review](TEST_v0.1.6.md): front/rear filtering, shared condition, observed rotations and potato regression have live SP evidence. Side-end hits, post-placement save/reload and paired removal/destruction are absent from this capture and remain open. No new gameplay patch was required.
+
 ## Completed player test review
 
 Captured [console.txt](../diagnostics/captures/20260926-024551-7245/console.txt) before changing the installed package. [Metrics](../diagnostics/captures/20260926-024551-7245/review-metrics.json) preserve the 663 structured events. Exact loaded version: `0.1.5-p1retaliation`; game header: B42.20.4 b0bbce05d5. One SP session, 14 translation probes with zero missing strings, zero suppressed diagnostics and no OMHTT exceptions.

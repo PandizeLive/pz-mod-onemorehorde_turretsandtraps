@@ -15,13 +15,13 @@
 | Workshop item / successful upload | None |
 | Public changelog baseline | No upload exists |
 | Official score support | Proposed; not implemented |
-| Player tests | 0.1.5 SP damage/reaction test completed; 0.1.6 footprint/face acceptance and connected MP pending |
+| Player tests | 0.1.6 partial SP pass: front/rear, paired condition, observed rotation and potato regression; side hits, reload/cleanup and connected MP pending |
 
 ## Current directional footprint candidate
 
 Version `0.1.6`: [checkpoint and prior-test review](PHASE_1_CHECKPOINT_2.md), [release notes](PR_v0.1.6.md), [manifest](../diagnostics/v0.1.6/manifest.json), [archive](../artifacts/OMHTT-0.1.6.zip). Uses numeric versioning and the stable [OMH.cmd](../OMH.cmd) menu. Source is preserved in a local annotated release tag before installation; no remote or Workshop item exists. The initial cumulative Workshop draft covers all unuploaded content, not just this patch. [Process and current tooling limits](RELEASE_TOOLS.md).
 
-Local installation completed and all 44 installed files match both the manifest and exact Git-tag bytes. The prior 0.1.5 package backup also passes all 43 hashes. [Local release evidence](../diagnostics/v0.1.6/local-release.json) records source commits, archive hash and backup location. A tooling-only commit follows the gameplay tag; Contents are unchanged. The running owner client still needs a restart and version confirmation.
+Local installation completed and all 44 installed files match both the manifest and exact Git-tag bytes. The prior 0.1.5 package backup also passes all 43 hashes. [Local release evidence](../diagnostics/v0.1.6/local-release.json) records source commits, archive hash and backup location. Tooling/documentation-only commits follow the gameplay tag; Contents are unchanged. The [completed owner test](TEST_v0.1.6.md) now verifies the client loaded 0.1.6 and records the remaining acceptance limits.
 
 ## Previous shove and retaliation candidate
 

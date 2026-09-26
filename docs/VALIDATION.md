@@ -1,6 +1,6 @@
 # Validation and evidence
 
-Current state: `0.1.6`. Native checks compile eleven Lua modules, load 56 translations and validate animation markers, save tables and command packets. The current [checkpoint](PHASE_1_CHECKPOINT_2.md) records directional paired-barrier fixtures and the completed 0.1.5 SP log review. Live 1x2 collision/rotation/destruction and MP remain acceptance work. See the versioned [validation log](../diagnostics/v0.1.6/validation.log) for exact counts.
+Current state: `0.1.6`. Native checks compile eleven Lua modules, load 56 translations and validate animation markers, save tables and command packets. The current [checkpoint](PHASE_1_CHECKPOINT_2.md) records directional paired-barrier fixtures and the completed 0.1.5 SP log review. The [completed 0.1.6 owner review](TEST_v0.1.6.md) supplies front/rear filtering, paired-condition and observed-rotation evidence. Side hits, save/reload, cleanup, traversal and MP remain acceptance work. See the versioned [validation log](../diagnostics/v0.1.6/validation.log) for exact counts.
 
 ## Smallest reliable checks
 
