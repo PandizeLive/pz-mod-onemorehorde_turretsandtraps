@@ -1,0 +1,8 @@
+v0.1.6
+Single-player development test content
+- Added persistent test defenses with readable white developer markers and direction arrows.
+- Added 1x2 Spike Barriers with shared durability, rotation and removal; front and side attacks cause 20 damage, while the rear is safe.
+- Added manually fired potato turrets with a one-second cadence, calibrated damage, animated knockdowns and tiny impact splash.
+- Added optional Pixel Indicator damage feedback and developer diagnostics.
+Local tools
+- Added the OMH release menu with verified local installation and debug-log capture.

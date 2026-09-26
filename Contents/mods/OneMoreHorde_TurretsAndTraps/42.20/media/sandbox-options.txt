@@ -1,0 +1,15 @@
+VERSION = 1,
+
+option OMHTurretsTraps.FoundationTestControls {
+    type = boolean,
+    default = false,
+    page = OMHTurretsTraps,
+    translation = OMHTurretsTraps_FoundationTestControls,
+}
+
+option OMHTurretsTraps.DiagnosticLogging {
+    type = boolean,
+    default = true,
+    page = OMHTurretsTraps,
+    translation = OMHTurretsTraps_DiagnosticLogging,
+}

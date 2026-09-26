@@ -1,0 +1,16 @@
+{
+    "ContextMenu_OMHTT_Foundation": "OMH Foundation Test %1",
+    "ContextMenu_OMHTT_Inspect": "Inspect this tile",
+    "ContextMenu_OMHTT_Place": "Place test cube",
+    "ContextMenu_OMHTT_Condition": "Set test condition to 37",
+    "ContextMenu_OMHTT_Remove": "Remove this test device",
+    "ContextMenu_OMHTT_Replay": "Repeat last change request (test)",
+    "ContextMenu_OMHTT_PlaceBarrier": "Place blocking barrier prototype",
+    "ContextMenu_OMHTT_PlacePotato": "Place potato prototype (4 test rounds)",
+    "ContextMenu_OMHTT_Fire": "Fire once at nearest visible zombie (SP test)",
+    "ContextMenu_OMHTT_Refill": "Refill to 4 test rounds (debug supply)",
+    "ContextMenu_OMHTT_Aim": "Turn head one step (visual test)",
+    "ContextMenu_OMHTT_SelectedTile": "Selected tile: %1, %2, %3",
+    "ContextMenu_OMHTT_Dump": "Log nearby defense diagnostics",
+    "ContextMenu_OMHTT_RotateBarrier": "Rotate barrier arrow 90 degrees (visual test)"
+}

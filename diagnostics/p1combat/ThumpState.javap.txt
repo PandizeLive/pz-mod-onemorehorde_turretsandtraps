@@ -1,0 +1,1201 @@
+Compiled from "ThumpState.java"
+public final class zombie.ai.states.ThumpState extends zombie.ai.State {
+  private static final zombie.ai.states.ThumpState INSTANCE;
+
+  public static zombie.ai.states.ThumpState instance();
+    Code:
+       0: getstatic     #1                  // Field INSTANCE:Lzombie/ai/states/ThumpState;
+       3: areturn
+
+  private zombie.ai.states.ThumpState();
+    Code:
+       0: aload_0
+       1: iconst_0
+       2: iconst_0
+       3: iconst_0
+       4: iconst_0
+       5: invokespecial #7                  // Method zombie/ai/State."<init>":(ZZZZ)V
+       8: return
+
+  public void enter(zombie.characters.IsoGameCharacter);
+    Code:
+       0: getstatic     #13                 // Field zombie/network/GameClient.client:Z
+       3: ifeq          13
+       6: aload_1
+       7: invokevirtual #19                 // Method zombie/characters/IsoGameCharacter.isLocal:()Z
+      10: ifeq          77
+      13: iconst_3
+      14: invokestatic  #25                 // Method zombie/core/random/Rand.Next:(I)I
+      17: tableswitch   { // 0 to 2
+                     0: 44
+                     1: 56
+                     2: 68
+               default: 77
+          }
+      44: aload_1
+      45: ldc           #31                 // String ThumpType
+      47: ldc           #33                 // String DoorClaw
+      49: invokevirtual #35                 // Method zombie/characters/IsoGameCharacter.setVariable:(Ljava/lang/String;Ljava/lang/String;)Lzombie/core/skinnedmodel/advancedanimation/IAnimationVariableSlot;
+      52: pop
+      53: goto          77
+      56: aload_1
+      57: ldc           #31                 // String ThumpType
+      59: ldc           #39                 // String Door
+      61: invokevirtual #35                 // Method zombie/characters/IsoGameCharacter.setVariable:(Ljava/lang/String;Ljava/lang/String;)Lzombie/core/skinnedmodel/advancedanimation/IAnimationVariableSlot;
+      64: pop
+      65: goto          77
+      68: aload_1
+      69: ldc           #31                 // String ThumpType
+      71: ldc           #41                 // String DoorBang
+      73: invokevirtual #35                 // Method zombie/characters/IsoGameCharacter.setVariable:(Ljava/lang/String;Ljava/lang/String;)Lzombie/core/skinnedmodel/advancedanimation/IAnimationVariableSlot;
+      76: pop
+      77: getstatic     #13                 // Field zombie/network/GameClient.client:Z
+      80: ifeq          104
+      83: aload_1
+      84: invokevirtual #19                 // Method zombie/characters/IsoGameCharacter.isLocal:()Z
+      87: ifeq          104
+      90: getstatic     #43                 // Field zombie/network/PacketTypes$PacketType.Thump:Lzombie/network/PacketTypes$PacketType;
+      93: iconst_1
+      94: anewarray     #49                 // class java/lang/Object
+      97: dup
+      98: iconst_0
+      99: aload_1
+     100: aastore
+     101: invokestatic  #51                 // InterfaceMethod zombie/network/packets/INetworkPacket.send:(Lzombie/network/PacketTypes$PacketType;[Ljava/lang/Object;)V
+     104: return
+
+  public void execute(zombie.characters.IsoGameCharacter);
+    Code:
+       0: aload_1
+       1: checkcast     #57                 // class zombie/characters/IsoZombie
+       4: astore_2
+       5: aload_1
+       6: invokevirtual #59                 // Method zombie/characters/IsoGameCharacter.getThumpTarget:()Lzombie/iso/objects/interfaces/Thumpable;
+       9: astore_3
+      10: aload_3
+      11: ifnonnull     20
+      14: aload_0
+      15: aload_1
+      16: invokevirtual #63                 // Method exit:(Lzombie/characters/IsoGameCharacter;)V
+      19: return
+      20: aload_3
+      21: instanceof    #67                 // class zombie/iso/IsoObject
+      24: ifeq          53
+      27: aload_3
+      28: checkcast     #67                 // class zombie/iso/IsoObject
+      31: astore        4
+      33: aload         4
+      35: invokevirtual #69                 // Method zombie/iso/IsoObject.getSquare:()Lzombie/iso/IsoGridSquare;
+      38: ifnonnull     47
+      41: aload_0
+      42: aload_1
+      43: invokevirtual #63                 // Method exit:(Lzombie/characters/IsoGameCharacter;)V
+      46: return
+      47: aload_1
+      48: aload         4
+      50: invokevirtual #73                 // Method zombie/characters/IsoGameCharacter.faceThisObject:(Lzombie/iso/IsoObject;)V
+      53: aload_0
+      54: aload_1
+      55: aload_3
+      56: invokevirtual #77                 // Method slideAwayFromEdge:(Lzombie/characters/IsoGameCharacter;Lzombie/iso/objects/interfaces/Thumpable;)V
+      59: iconst_0
+      60: istore        4
+      62: aload_1
+      63: invokevirtual #81                 // Method zombie/characters/IsoGameCharacter.isAnimationUpdatingThisFrame:()Z
+      66: ifeq          116
+      69: aload_1
+      70: invokestatic  #84                 // Method zombie/characters/ThumpAnimations.getAnimationTrack:(Lzombie/characters/IsoGameCharacter;)Lzombie/core/skinnedmodel/animation/AnimationTrack;
+      73: astore        5
+      75: aload         5
+      77: ifnull        116
+      80: aload         5
+      82: invokevirtual #90                 // Method zombie/core/skinnedmodel/animation/AnimationTrack.getSpeedDelta:()F
+      85: fstore        6
+      87: aload         5
+      89: invokevirtual #96                 // Method zombie/core/skinnedmodel/animation/AnimationTrack.getAccumulatedTimeValue:()F
+      92: fstore        7
+      94: fload         7
+      96: aload_1
+      97: invokevirtual #99                 // Method zombie/characters/IsoGameCharacter.getAnimationTimeDelta:()F
+     100: fload         6
+     102: fmul
+     103: fadd
+     104: fstore        8
+     106: aload_1
+     107: fload         7
+     109: fload         8
+     111: invokestatic  #102                // Method zombie/characters/ThumpAnimations.countThumpEventsBetween:(Lzombie/characters/IsoGameCharacter;FF)I
+     114: istore        4
+     116: iconst_0
+     117: istore        5
+     119: iload         5
+     121: iload         4
+     123: if_icmpge     797
+     126: aload_1
+     127: invokevirtual #106                // Method zombie/characters/IsoGameCharacter.getActionContext:()Lzombie/characters/action/ActionContext;
+     130: ldc           #110                // String ThumpFrame
+     132: invokevirtual #112                // Method zombie/characters/action/ActionContext.clearEvent:(Ljava/lang/String;)V
+     135: aload_1
+     136: aload_1
+     137: invokevirtual #118                // Method zombie/characters/IsoGameCharacter.getTimeThumping:()I
+     140: iconst_1
+     141: iadd
+     142: invokevirtual #122                // Method zombie/characters/IsoGameCharacter.setTimeThumping:(I)V
+     145: aload_2
+     146: getfield      #126                // Field zombie/characters/IsoZombie.timeSinceSeenFlesh:F
+     149: ldc           #130                // float 5.0f
+     151: fcmpg
+     152: ifge          160
+     155: aload_1
+     156: iconst_0
+     157: invokevirtual #122                // Method zombie/characters/IsoGameCharacter.setTimeThumping:(I)V
+     160: aload_1
+     161: invokevirtual #59                 // Method zombie/characters/IsoGameCharacter.getThumpTarget:()Lzombie/iso/objects/interfaces/Thumpable;
+     164: aload_1
+     165: invokeinterface #131,  2          // InterfaceMethod zombie/iso/objects/interfaces/Thumpable.Thump:(Lzombie/iso/IsoMovingObject;)V
+     170: aload_1
+     171: invokevirtual #59                 // Method zombie/characters/IsoGameCharacter.getThumpTarget:()Lzombie/iso/objects/interfaces/Thumpable;
+     174: ifnonnull     181
+     177: aconst_null
+     178: goto          191
+     181: aload_1
+     182: invokevirtual #59                 // Method zombie/characters/IsoGameCharacter.getThumpTarget:()Lzombie/iso/objects/interfaces/Thumpable;
+     185: aload_1
+     186: invokeinterface #136,  2          // InterfaceMethod zombie/iso/objects/interfaces/Thumpable.getThumpableFor:(Lzombie/characters/IsoGameCharacter;)Lzombie/iso/objects/interfaces/Thumpable;
+     191: astore        6
+     193: getstatic     #140                // Field zombie/network/GameServer.server:Z
+     196: ifne          218
+     199: getstatic     #145                // Field zombie/SoundManager.instance:Lzombie/BaseSoundManager;
+     202: aload_1
+     203: invokevirtual #151                // Method zombie/characters/IsoGameCharacter.getX:()F
+     206: aload_1
+     207: invokevirtual #154                // Method zombie/characters/IsoGameCharacter.getY:()F
+     210: ldc           #159                // float 70.0f
+     212: invokevirtual #160                // Method zombie/BaseSoundManager.isListenerInRange:(FFF)Z
+     215: ifeq          222
+     218: iconst_1
+     219: goto          223
+     222: iconst_0
+     223: istore        7
+     225: iload         7
+     227: ifeq          791
+     230: invokestatic  #166                // Method zombie/characters/IsoPlayer.allPlayersAsleep:()Z
+     233: ifeq          239
+     236: goto          791
+     239: aload         6
+     241: instanceof    #171                // class zombie/iso/objects/IsoWindow
+     244: ifeq          290
+     247: aload_2
+     248: iconst_3
+     249: invokestatic  #25                 // Method zombie/core/random/Rand.Next:(I)I
+     252: ifne          259
+     255: iconst_2
+     256: goto          260
+     259: iconst_3
+     260: invokevirtual #173                // Method zombie/characters/IsoZombie.setThumpFlag:(I)V
+     263: aload_2
+     264: aload         6
+     266: invokeinterface #176,  1          // InterfaceMethod zombie/iso/objects/interfaces/Thumpable.getThumpCondition:()F
+     271: invokevirtual #179                // Method zombie/characters/IsoZombie.setThumpCondition:(F)V
+     274: getstatic     #140                // Field zombie/network/GameServer.server:Z
+     277: ifne          791
+     280: getstatic     #183                // Field zombie/characters/ZombieThumpManager.instance:Lzombie/characters/ZombieThumpManager;
+     283: aload_2
+     284: invokevirtual #186                // Method zombie/characters/ZombieThumpManager.addCharacter:(Lzombie/characters/IsoZombie;)V
+     287: goto          791
+     290: aload         6
+     292: ifnull        791
+     295: getstatic     #190                // Field zombie/scripting/objects/SoundKey.ZOMBIE_THUMP_GENERIC:Lzombie/scripting/objects/SoundKey;
+     298: invokevirtual #196                // Method zombie/scripting/objects/SoundKey.getSoundName:()Ljava/lang/String;
+     301: astore        8
+     303: aload         6
+     305: ldc           #200                // class zombie/iso/objects/IsoBarricade
+     307: invokestatic  #202                // Method zombie/util/Type.tryCastTo:(Ljava/lang/Object;Ljava/lang/Class;)Ljava/lang/Object;
+     310: checkcast     #200                // class zombie/iso/objects/IsoBarricade
+     313: astore        9
+     315: aload         9
+     317: ifnull        347
+     320: aload         9
+     322: invokevirtual #208                // Method zombie/iso/objects/IsoBarricade.isMetal:()Z
+     325: ifne          336
+     328: aload         9
+     330: invokevirtual #211                // Method zombie/iso/objects/IsoBarricade.isMetalBar:()Z
+     333: ifeq          347
+     336: getstatic     #214                // Field zombie/scripting/objects/SoundKey.ZOMBIE_THUMP_METAL:Lzombie/scripting/objects/SoundKey;
+     339: invokevirtual #196                // Method zombie/scripting/objects/SoundKey.getSoundName:()Ljava/lang/String;
+     342: astore        8
+     344: goto          572
+     347: aload         9
+     349: ifnull        382
+     352: aload         9
+     354: invokevirtual #217                // Method zombie/iso/objects/IsoBarricade.getNumPlanks:()I
+     357: ifle          382
+     360: aload_1
+     361: ldc           #31                 // String ThumpType
+     363: ldc           #33                 // String DoorClaw
+     365: invokevirtual #220                // Method zombie/characters/IsoGameCharacter.isVariable:(Ljava/lang/String;Ljava/lang/String;)Z
+     368: ifeq          572
+     371: getstatic     #224                // Field zombie/scripting/objects/SoundKey.ZOMBIE_THUMP_WOOD:Lzombie/scripting/objects/SoundKey;
+     374: invokevirtual #196                // Method zombie/scripting/objects/SoundKey.getSoundName:()Ljava/lang/String;
+     377: astore        8
+     379: goto          572
+     382: aload         6
+     384: instanceof    #227                // class zombie/iso/objects/IsoDoor
+     387: ifeq          439
+     390: aload         6
+     392: checkcast     #227                // class zombie/iso/objects/IsoDoor
+     395: astore        10
+     397: aload         10
+     399: invokevirtual #229                // Method zombie/iso/objects/IsoDoor.getThumpSound:()Ljava/lang/String;
+     402: astore        8
+     404: ldc           #232                // String WoodDoor
+     406: aload         10
+     408: invokevirtual #234                // Method zombie/iso/objects/IsoDoor.getSoundPrefix:()Ljava/lang/String;
+     411: invokevirtual #237                // Method java/lang/String.equalsIgnoreCase:(Ljava/lang/String;)Z
+     414: ifeq          572
+     417: aload_1
+     418: ldc           #31                 // String ThumpType
+     420: ldc           #33                 // String DoorClaw
+     422: invokevirtual #220                // Method zombie/characters/IsoGameCharacter.isVariable:(Ljava/lang/String;Ljava/lang/String;)Z
+     425: ifeq          572
+     428: getstatic     #224                // Field zombie/scripting/objects/SoundKey.ZOMBIE_THUMP_WOOD:Lzombie/scripting/objects/SoundKey;
+     431: invokevirtual #196                // Method zombie/scripting/objects/SoundKey.getSoundName:()Ljava/lang/String;
+     434: astore        8
+     436: goto          572
+     439: aload         6
+     441: instanceof    #243                // class zombie/iso/objects/IsoThumpable
+     444: ifeq          504
+     447: aload         6
+     449: checkcast     #243                // class zombie/iso/objects/IsoThumpable
+     452: astore        11
+     454: aload         11
+     456: invokevirtual #245                // Method zombie/iso/objects/IsoThumpable.getThumpSound:()Ljava/lang/String;
+     459: astore        8
+     461: aload         11
+     463: invokevirtual #246                // Method zombie/iso/objects/IsoThumpable.isDoor:()Z
+     466: ifeq          572
+     469: ldc           #232                // String WoodDoor
+     471: aload         11
+     473: invokevirtual #249                // Method zombie/iso/objects/IsoThumpable.getSoundPrefix:()Ljava/lang/String;
+     476: invokevirtual #237                // Method java/lang/String.equalsIgnoreCase:(Ljava/lang/String;)Z
+     479: ifeq          572
+     482: aload_1
+     483: ldc           #31                 // String ThumpType
+     485: ldc           #33                 // String DoorClaw
+     487: invokevirtual #220                // Method zombie/characters/IsoGameCharacter.isVariable:(Ljava/lang/String;Ljava/lang/String;)Z
+     490: ifeq          572
+     493: getstatic     #224                // Field zombie/scripting/objects/SoundKey.ZOMBIE_THUMP_WOOD:Lzombie/scripting/objects/SoundKey;
+     496: invokevirtual #196                // Method zombie/scripting/objects/SoundKey.getSoundName:()Ljava/lang/String;
+     499: astore        8
+     501: goto          572
+     504: aload         6
+     506: instanceof    #67                 // class zombie/iso/IsoObject
+     509: ifeq          572
+     512: aload         6
+     514: checkcast     #67                 // class zombie/iso/IsoObject
+     517: astore        12
+     519: aload         12
+     521: getfield      #250                // Field zombie/iso/IsoObject.sprite:Lzombie/iso/sprite/IsoSprite;
+     524: ifnull        572
+     527: aload         12
+     529: getfield      #250                // Field zombie/iso/IsoObject.sprite:Lzombie/iso/sprite/IsoSprite;
+     532: invokevirtual #254                // Method zombie/iso/sprite/IsoSprite.getProperties:()Lzombie/core/properties/PropertyContainer;
+     535: ldc_w         #260                // String ThumpSound
+     538: invokevirtual #262                // Method zombie/core/properties/PropertyContainer.has:(Ljava/lang/String;)Z
+     541: ifeq          572
+     544: aload         12
+     546: getfield      #250                // Field zombie/iso/IsoObject.sprite:Lzombie/iso/sprite/IsoSprite;
+     549: invokevirtual #254                // Method zombie/iso/sprite/IsoSprite.getProperties:()Lzombie/core/properties/PropertyContainer;
+     552: ldc_w         #260                // String ThumpSound
+     555: invokevirtual #267                // Method zombie/core/properties/PropertyContainer.get:(Ljava/lang/String;)Ljava/lang/String;
+     558: astore        13
+     560: aload         13
+     562: invokestatic  #271                // Method zombie/util/StringUtils.isNullOrWhitespace:(Ljava/lang/String;)Z
+     565: ifne          572
+     568: aload         13
+     570: astore        8
+     572: getstatic     #190                // Field zombie/scripting/objects/SoundKey.ZOMBIE_THUMP_GENERIC:Lzombie/scripting/objects/SoundKey;
+     575: invokevirtual #196                // Method zombie/scripting/objects/SoundKey.getSoundName:()Ljava/lang/String;
+     578: aload         8
+     580: invokevirtual #276                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+     583: ifeq          594
+     586: aload_2
+     587: iconst_1
+     588: invokevirtual #173                // Method zombie/characters/IsoZombie.setThumpFlag:(I)V
+     591: goto          767
+     594: getstatic     #280                // Field zombie/scripting/objects/SoundKey.ZOMBIE_THUMP_WINDOW:Lzombie/scripting/objects/SoundKey;
+     597: invokevirtual #196                // Method zombie/scripting/objects/SoundKey.getSoundName:()Ljava/lang/String;
+     600: aload         8
+     602: invokevirtual #276                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+     605: ifeq          616
+     608: aload_2
+     609: iconst_3
+     610: invokevirtual #173                // Method zombie/characters/IsoZombie.setThumpFlag:(I)V
+     613: goto          767
+     616: getstatic     #283                // Field zombie/scripting/objects/SoundKey.ZOMBIE_THUMP_WINDOW_EXTRA:Lzombie/scripting/objects/SoundKey;
+     619: invokevirtual #196                // Method zombie/scripting/objects/SoundKey.getSoundName:()Ljava/lang/String;
+     622: aload         8
+     624: invokevirtual #276                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+     627: ifeq          638
+     630: aload_2
+     631: iconst_2
+     632: invokevirtual #173                // Method zombie/characters/IsoZombie.setThumpFlag:(I)V
+     635: goto          767
+     638: getstatic     #214                // Field zombie/scripting/objects/SoundKey.ZOMBIE_THUMP_METAL:Lzombie/scripting/objects/SoundKey;
+     641: invokevirtual #196                // Method zombie/scripting/objects/SoundKey.getSoundName:()Ljava/lang/String;
+     644: aload         8
+     646: invokevirtual #276                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+     649: ifeq          660
+     652: aload_2
+     653: iconst_4
+     654: invokevirtual #173                // Method zombie/characters/IsoZombie.setThumpFlag:(I)V
+     657: goto          767
+     660: getstatic     #286                // Field zombie/scripting/objects/SoundKey.ZOMBIE_THUMP_GARAGE_DOOR:Lzombie/scripting/objects/SoundKey;
+     663: invokevirtual #196                // Method zombie/scripting/objects/SoundKey.getSoundName:()Ljava/lang/String;
+     666: aload         8
+     668: invokevirtual #276                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+     671: ifeq          682
+     674: aload_2
+     675: iconst_5
+     676: invokevirtual #173                // Method zombie/characters/IsoZombie.setThumpFlag:(I)V
+     679: goto          767
+     682: getstatic     #289                // Field zombie/scripting/objects/SoundKey.ZOMBIE_THUMP_CHAINLINK_FENCE:Lzombie/scripting/objects/SoundKey;
+     685: invokevirtual #196                // Method zombie/scripting/objects/SoundKey.getSoundName:()Ljava/lang/String;
+     688: aload         8
+     690: invokevirtual #276                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+     693: ifeq          705
+     696: aload_2
+     697: bipush        6
+     699: invokevirtual #173                // Method zombie/characters/IsoZombie.setThumpFlag:(I)V
+     702: goto          767
+     705: getstatic     #292                // Field zombie/scripting/objects/SoundKey.ZOMBIE_THUMP_METAL_POLE_FENCE:Lzombie/scripting/objects/SoundKey;
+     708: invokevirtual #196                // Method zombie/scripting/objects/SoundKey.getSoundName:()Ljava/lang/String;
+     711: aload         8
+     713: invokevirtual #276                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+     716: ifne          730
+     719: ldc_w         #295                // String ZombieThumpMetalPoleGate
+     722: aload         8
+     724: invokevirtual #276                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+     727: ifeq          739
+     730: aload_2
+     731: bipush        7
+     733: invokevirtual #173                // Method zombie/characters/IsoZombie.setThumpFlag:(I)V
+     736: goto          767
+     739: getstatic     #224                // Field zombie/scripting/objects/SoundKey.ZOMBIE_THUMP_WOOD:Lzombie/scripting/objects/SoundKey;
+     742: invokevirtual #196                // Method zombie/scripting/objects/SoundKey.getSoundName:()Ljava/lang/String;
+     745: aload         8
+     747: invokevirtual #276                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+     750: ifeq          762
+     753: aload_2
+     754: bipush        8
+     756: invokevirtual #173                // Method zombie/characters/IsoZombie.setThumpFlag:(I)V
+     759: goto          767
+     762: aload_2
+     763: iconst_1
+     764: invokevirtual #173                // Method zombie/characters/IsoZombie.setThumpFlag:(I)V
+     767: aload_2
+     768: aload         6
+     770: invokeinterface #176,  1          // InterfaceMethod zombie/iso/objects/interfaces/Thumpable.getThumpCondition:()F
+     775: invokevirtual #179                // Method zombie/characters/IsoZombie.setThumpCondition:(F)V
+     778: getstatic     #140                // Field zombie/network/GameServer.server:Z
+     781: ifne          791
+     784: getstatic     #183                // Field zombie/characters/ZombieThumpManager.instance:Lzombie/characters/ZombieThumpManager;
+     787: aload_2
+     788: invokevirtual #186                // Method zombie/characters/ZombieThumpManager.addCharacter:(Lzombie/characters/IsoZombie;)V
+     791: iinc          5, 1
+     794: goto          119
+     797: aload_0
+     798: aload_1
+     799: aload_1
+     800: invokevirtual #59                 // Method zombie/characters/IsoGameCharacter.getThumpTarget:()Lzombie/iso/objects/interfaces/Thumpable;
+     803: invokevirtual #297                // Method isThumpTargetValid:(Lzombie/characters/IsoGameCharacter;Lzombie/iso/objects/interfaces/Thumpable;)Z
+     806: ifeq          810
+     809: return
+     810: aload_1
+     811: aconst_null
+     812: invokevirtual #301                // Method zombie/characters/IsoGameCharacter.setThumpTarget:(Lzombie/iso/objects/interfaces/Thumpable;)V
+     815: aload_1
+     816: iconst_0
+     817: invokevirtual #122                // Method zombie/characters/IsoGameCharacter.setTimeThumping:(I)V
+     820: aload_3
+     821: instanceof    #171                // class zombie/iso/objects/IsoWindow
+     824: ifeq          849
+     827: aload_3
+     828: checkcast     #171                // class zombie/iso/objects/IsoWindow
+     831: astore        5
+     833: aload         5
+     835: aload_1
+     836: invokevirtual #305                // Method zombie/iso/objects/IsoWindow.canClimbThrough:(Lzombie/characters/IsoGameCharacter;)Z
+     839: ifeq          849
+     842: aload_1
+     843: aload         5
+     845: invokevirtual #309                // Method zombie/characters/IsoGameCharacter.climbThroughWindow:(Lzombie/iso/objects/IsoWindow;)V
+     848: return
+     849: aload_3
+     850: instanceof    #227                // class zombie/iso/objects/IsoDoor
+     853: ifeq          906
+     856: aload_3
+     857: checkcast     #227                // class zombie/iso/objects/IsoDoor
+     860: astore        5
+     862: aload         5
+     864: invokevirtual #313                // Method zombie/iso/objects/IsoDoor.isOpen:()Z
+     867: ifne          879
+     870: aload_3
+     871: invokeinterface #316,  1          // InterfaceMethod zombie/iso/objects/interfaces/Thumpable.isDestroyed:()Z
+     876: ifeq          906
+     879: aload         5
+     881: invokevirtual #319                // Method zombie/iso/objects/IsoDoor.getSquare:()Lzombie/iso/IsoGridSquare;
+     884: astore        6
+     886: aload         5
+     888: invokevirtual #320                // Method zombie/iso/objects/IsoDoor.getOppositeSquare:()Lzombie/iso/IsoGridSquare;
+     891: astore        7
+     893: aload_0
+     894: aload_2
+     895: aload         6
+     897: aload         7
+     899: invokevirtual #323                // Method lungeThroughDoor:(Lzombie/characters/IsoZombie;Lzombie/iso/IsoGridSquare;Lzombie/iso/IsoGridSquare;)Z
+     902: ifeq          906
+     905: return
+     906: aload_3
+     907: instanceof    #243                // class zombie/iso/objects/IsoThumpable
+     910: ifeq          971
+     913: aload_3
+     914: checkcast     #243                // class zombie/iso/objects/IsoThumpable
+     917: astore        5
+     919: aload         5
+     921: invokevirtual #246                // Method zombie/iso/objects/IsoThumpable.isDoor:()Z
+     924: ifeq          971
+     927: aload         5
+     929: getfield      #327                // Field zombie/iso/objects/IsoThumpable.open:Z
+     932: ifne          944
+     935: aload_3
+     936: invokeinterface #316,  1          // InterfaceMethod zombie/iso/objects/interfaces/Thumpable.isDestroyed:()Z
+     941: ifeq          971
+     944: aload         5
+     946: invokevirtual #330                // Method zombie/iso/objects/IsoThumpable.getSquare:()Lzombie/iso/IsoGridSquare;
+     949: astore        6
+     951: aload         5
+     953: invokevirtual #331                // Method zombie/iso/objects/IsoThumpable.getInsideSquare:()Lzombie/iso/IsoGridSquare;
+     956: astore        7
+     958: aload_0
+     959: aload_2
+     960: aload         6
+     962: aload         7
+     964: invokevirtual #323                // Method lungeThroughDoor:(Lzombie/characters/IsoZombie;Lzombie/iso/IsoGridSquare;Lzombie/iso/IsoGridSquare;)Z
+     967: ifeq          971
+     970: return
+     971: aload_2
+     972: getfield      #334                // Field zombie/characters/IsoZombie.lastTargetSeenX:I
+     975: iconst_m1
+     976: if_icmpeq     995
+     979: aload_1
+     980: aload_2
+     981: getfield      #334                // Field zombie/characters/IsoZombie.lastTargetSeenX:I
+     984: aload_2
+     985: getfield      #338                // Field zombie/characters/IsoZombie.lastTargetSeenY:I
+     988: aload_2
+     989: getfield      #341                // Field zombie/characters/IsoZombie.lastTargetSeenZ:I
+     992: invokevirtual #344                // Method zombie/characters/IsoGameCharacter.pathToLocation:(III)V
+     995: return
+
+  public void exit(zombie.characters.IsoGameCharacter);
+    Code:
+       0: aload_1
+       1: aconst_null
+       2: invokevirtual #301                // Method zombie/characters/IsoGameCharacter.setThumpTarget:(Lzombie/iso/objects/interfaces/Thumpable;)V
+       5: aload_1
+       6: checkcast     #57                 // class zombie/characters/IsoZombie
+       9: sipush        200
+      12: invokevirtual #348                // Method zombie/characters/IsoZombie.setThumpTimer:(I)V
+      15: getstatic     #13                 // Field zombie/network/GameClient.client:Z
+      18: ifeq          42
+      21: aload_1
+      22: invokevirtual #19                 // Method zombie/characters/IsoGameCharacter.isLocal:()Z
+      25: ifeq          42
+      28: getstatic     #43                 // Field zombie/network/PacketTypes$PacketType.Thump:Lzombie/network/PacketTypes$PacketType;
+      31: iconst_1
+      32: anewarray     #49                 // class java/lang/Object
+      35: dup
+      36: iconst_0
+      37: aload_1
+      38: aastore
+      39: invokestatic  #51                 // InterfaceMethod zombie/network/packets/INetworkPacket.send:(Lzombie/network/PacketTypes$PacketType;[Ljava/lang/Object;)V
+      42: return
+
+  public void animEvent(zombie.characters.IsoGameCharacter, zombie.core.skinnedmodel.advancedanimation.AnimLayer, zombie.core.skinnedmodel.animation.AnimationTrack, zombie.core.skinnedmodel.advancedanimation.AnimEvent);
+    Code:
+       0: aload         4
+       2: getfield      #351                // Field zombie/core/skinnedmodel/advancedanimation/AnimEvent.eventName:Ljava/lang/String;
+       5: ldc           #110                // String ThumpFrame
+       7: invokevirtual #237                // Method java/lang/String.equalsIgnoreCase:(Ljava/lang/String;)Z
+      10: ifeq          13
+      13: return
+
+  private void slideAwayFromEdge(zombie.characters.IsoGameCharacter, zombie.iso.objects.interfaces.Thumpable);
+    Code:
+       0: aload_2
+       1: ifnonnull     10
+       4: aload_0
+       5: aload_1
+       6: invokevirtual #63                 // Method exit:(Lzombie/characters/IsoGameCharacter;)V
+       9: return
+      10: iconst_0
+      11: istore_3
+      12: iconst_0
+      13: istore        4
+      15: aload_2
+      16: instanceof    #357                // class zombie/vehicles/BaseVehicle
+      19: ifeq          23
+      22: return
+      23: aload_2
+      24: instanceof    #67                 // class zombie/iso/IsoObject
+      27: ifeq          467
+      30: aload_2
+      31: checkcast     #67                 // class zombie/iso/IsoObject
+      34: astore        5
+      36: aload         5
+      38: invokevirtual #69                 // Method zombie/iso/IsoObject.getSquare:()Lzombie/iso/IsoGridSquare;
+      41: astore        6
+      43: aload_2
+      44: instanceof    #200                // class zombie/iso/objects/IsoBarricade
+      47: ifeq          88
+      50: aload_2
+      51: checkcast     #200                // class zombie/iso/objects/IsoBarricade
+      54: astore        7
+      56: aload         7
+      58: invokevirtual #359                // Method zombie/iso/objects/IsoBarricade.getDir:()Lzombie/iso/IsoDirections;
+      61: getstatic     #363                // Field zombie/iso/IsoDirections.N:Lzombie/iso/IsoDirections;
+      64: if_acmpeq     78
+      67: aload         7
+      69: invokevirtual #359                // Method zombie/iso/objects/IsoBarricade.getDir:()Lzombie/iso/IsoDirections;
+      72: getstatic     #369                // Field zombie/iso/IsoDirections.S:Lzombie/iso/IsoDirections;
+      75: if_acmpne     82
+      78: iconst_1
+      79: goto          83
+      82: iconst_0
+      83: istore        4
+      85: goto          183
+      88: aload_2
+      89: instanceof    #227                // class zombie/iso/objects/IsoDoor
+      92: ifeq          111
+      95: aload_2
+      96: checkcast     #227                // class zombie/iso/objects/IsoDoor
+      99: astore        8
+     101: aload         8
+     103: invokevirtual #372                // Method zombie/iso/objects/IsoDoor.getNorth:()Z
+     106: istore        4
+     108: goto          183
+     111: aload_2
+     112: instanceof    #243                // class zombie/iso/objects/IsoThumpable
+     115: ifeq          140
+     118: aload_2
+     119: checkcast     #243                // class zombie/iso/objects/IsoThumpable
+     122: astore        9
+     124: aload         9
+     126: invokevirtual #375                // Method zombie/iso/objects/IsoThumpable.isBlockAllTheSquare:()Z
+     129: istore_3
+     130: aload         9
+     132: invokevirtual #378                // Method zombie/iso/objects/IsoThumpable.getNorth:()Z
+     135: istore        4
+     137: goto          183
+     140: aload_2
+     141: instanceof    #171                // class zombie/iso/objects/IsoWindow
+     144: ifeq          163
+     147: aload_2
+     148: checkcast     #171                // class zombie/iso/objects/IsoWindow
+     151: astore        10
+     153: aload         10
+     155: invokevirtual #379                // Method zombie/iso/objects/IsoWindow.getNorth:()Z
+     158: istore        4
+     160: goto          183
+     163: aload_2
+     164: instanceof    #380                // class zombie/iso/objects/IsoWindowFrame
+     167: ifeq          183
+     170: aload_2
+     171: checkcast     #380                // class zombie/iso/objects/IsoWindowFrame
+     174: astore        11
+     176: aload         11
+     178: invokevirtual #382                // Method zombie/iso/objects/IsoWindowFrame.getNorth:()Z
+     181: istore        4
+     183: ldc_w         #383                // float 0.4f
+     186: fstore        7
+     188: aload_2
+     189: aload_1
+     190: invokeinterface #136,  2          // InterfaceMethod zombie/iso/objects/interfaces/Thumpable.getThumpableFor:(Lzombie/characters/IsoGameCharacter;)Lzombie/iso/objects/interfaces/Thumpable;
+     195: astore        8
+     197: aload         8
+     199: instanceof    #200                // class zombie/iso/objects/IsoBarricade
+     202: ifeq          241
+     205: aload         8
+     207: checkcast     #200                // class zombie/iso/objects/IsoBarricade
+     210: astore        9
+     212: aload_2
+     213: instanceof    #384                // class zombie/iso/objects/interfaces/BarricadeAble
+     216: ifeq          241
+     219: aload_2
+     220: checkcast     #384                // class zombie/iso/objects/interfaces/BarricadeAble
+     223: astore        10
+     225: aload         10
+     227: aload_1
+     228: invokestatic  #386                // Method zombie/iso/objects/IsoBarricade.GetBarricadeForCharacter:(Lzombie/iso/objects/interfaces/BarricadeAble;Lzombie/characters/IsoGameCharacter;)Lzombie/iso/objects/IsoBarricade;
+     231: aload         8
+     233: if_acmpne     241
+     236: ldc_w         #390                // float 0.47f
+     239: fstore        7
+     241: aload         6
+     243: ifnonnull     252
+     246: aload_0
+     247: aload_1
+     248: invokevirtual #63                 // Method exit:(Lzombie/characters/IsoGameCharacter;)V
+     251: return
+     252: iload_3
+     253: ifeq          377
+     256: aload_1
+     257: invokevirtual #154                // Method zombie/characters/IsoGameCharacter.getY:()F
+     260: aload         6
+     262: getfield      #391                // Field zombie/iso/IsoGridSquare.y:I
+     265: i2f
+     266: fcmpg
+     267: ifge          285
+     270: aload_0
+     271: aload_1
+     272: aload         6
+     274: getfield      #391                // Field zombie/iso/IsoGridSquare.y:I
+     277: fload         7
+     279: invokevirtual #396                // Method slideAwayFromEdgeN:(Lzombie/characters/IsoGameCharacter;IF)V
+     282: goto          315
+     285: aload_1
+     286: invokevirtual #154                // Method zombie/characters/IsoGameCharacter.getY:()F
+     289: aload         6
+     291: getfield      #391                // Field zombie/iso/IsoGridSquare.y:I
+     294: iconst_1
+     295: iadd
+     296: i2f
+     297: fcmpl
+     298: ifle          315
+     301: aload_0
+     302: aload_1
+     303: aload         6
+     305: getfield      #391                // Field zombie/iso/IsoGridSquare.y:I
+     308: iconst_1
+     309: iadd
+     310: fload         7
+     312: invokevirtual #400                // Method slideAwayFromEdgeS:(Lzombie/characters/IsoGameCharacter;IF)V
+     315: aload_1
+     316: invokevirtual #151                // Method zombie/characters/IsoGameCharacter.getX:()F
+     319: aload         6
+     321: getfield      #403                // Field zombie/iso/IsoGridSquare.x:I
+     324: i2f
+     325: fcmpg
+     326: ifge          344
+     329: aload_0
+     330: aload_1
+     331: aload         6
+     333: getfield      #403                // Field zombie/iso/IsoGridSquare.x:I
+     336: fload         7
+     338: invokevirtual #406                // Method slideAwayFromEdgeW:(Lzombie/characters/IsoGameCharacter;IF)V
+     341: goto          467
+     344: aload_1
+     345: invokevirtual #151                // Method zombie/characters/IsoGameCharacter.getX:()F
+     348: aload         6
+     350: getfield      #403                // Field zombie/iso/IsoGridSquare.x:I
+     353: iconst_1
+     354: iadd
+     355: i2f
+     356: fcmpl
+     357: ifle          467
+     360: aload_0
+     361: aload_1
+     362: aload         6
+     364: getfield      #403                // Field zombie/iso/IsoGridSquare.x:I
+     367: iconst_1
+     368: iadd
+     369: fload         7
+     371: invokevirtual #409                // Method slideAwayFromEdgeE:(Lzombie/characters/IsoGameCharacter;IF)V
+     374: goto          467
+     377: iload         4
+     379: ifeq          426
+     382: aload_1
+     383: invokevirtual #154                // Method zombie/characters/IsoGameCharacter.getY:()F
+     386: aload         6
+     388: getfield      #391                // Field zombie/iso/IsoGridSquare.y:I
+     391: i2f
+     392: fcmpg
+     393: ifge          411
+     396: aload_0
+     397: aload_1
+     398: aload         6
+     400: getfield      #391                // Field zombie/iso/IsoGridSquare.y:I
+     403: fload         7
+     405: invokevirtual #396                // Method slideAwayFromEdgeN:(Lzombie/characters/IsoGameCharacter;IF)V
+     408: goto          467
+     411: aload_0
+     412: aload_1
+     413: aload         6
+     415: getfield      #391                // Field zombie/iso/IsoGridSquare.y:I
+     418: fload         7
+     420: invokevirtual #400                // Method slideAwayFromEdgeS:(Lzombie/characters/IsoGameCharacter;IF)V
+     423: goto          467
+     426: aload_1
+     427: invokevirtual #151                // Method zombie/characters/IsoGameCharacter.getX:()F
+     430: aload         6
+     432: getfield      #403                // Field zombie/iso/IsoGridSquare.x:I
+     435: i2f
+     436: fcmpg
+     437: ifge          455
+     440: aload_0
+     441: aload_1
+     442: aload         6
+     444: getfield      #403                // Field zombie/iso/IsoGridSquare.x:I
+     447: fload         7
+     449: invokevirtual #406                // Method slideAwayFromEdgeW:(Lzombie/characters/IsoGameCharacter;IF)V
+     452: goto          467
+     455: aload_0
+     456: aload_1
+     457: aload         6
+     459: getfield      #403                // Field zombie/iso/IsoGridSquare.x:I
+     462: fload         7
+     464: invokevirtual #409                // Method slideAwayFromEdgeE:(Lzombie/characters/IsoGameCharacter;IF)V
+     467: return
+
+  private void slideAwayFromEdgeN(zombie.characters.IsoGameCharacter, int, float);
+    Code:
+       0: aload_1
+       1: invokevirtual #154                // Method zombie/characters/IsoGameCharacter.getY:()F
+       4: iload_2
+       5: i2f
+       6: fload_3
+       7: fsub
+       8: fcmpl
+       9: ifle          21
+      12: aload_1
+      13: iload_2
+      14: i2f
+      15: fload_3
+      16: fsub
+      17: invokevirtual #412                // Method zombie/characters/IsoGameCharacter.setNextY:(F)F
+      20: pop
+      21: return
+
+  private void slideAwayFromEdgeS(zombie.characters.IsoGameCharacter, int, float);
+    Code:
+       0: aload_1
+       1: invokevirtual #154                // Method zombie/characters/IsoGameCharacter.getY:()F
+       4: iload_2
+       5: i2f
+       6: fload_3
+       7: fadd
+       8: fcmpg
+       9: ifge          21
+      12: aload_1
+      13: iload_2
+      14: i2f
+      15: fload_3
+      16: fadd
+      17: invokevirtual #412                // Method zombie/characters/IsoGameCharacter.setNextY:(F)F
+      20: pop
+      21: return
+
+  private void slideAwayFromEdgeW(zombie.characters.IsoGameCharacter, int, float);
+    Code:
+       0: aload_1
+       1: invokevirtual #151                // Method zombie/characters/IsoGameCharacter.getX:()F
+       4: iload_2
+       5: i2f
+       6: fload_3
+       7: fsub
+       8: fcmpl
+       9: ifle          21
+      12: aload_1
+      13: iload_2
+      14: i2f
+      15: fload_3
+      16: fsub
+      17: invokevirtual #416                // Method zombie/characters/IsoGameCharacter.setNextX:(F)F
+      20: pop
+      21: return
+
+  private void slideAwayFromEdgeE(zombie.characters.IsoGameCharacter, int, float);
+    Code:
+       0: aload_1
+       1: invokevirtual #151                // Method zombie/characters/IsoGameCharacter.getX:()F
+       4: iload_2
+       5: i2f
+       6: fload_3
+       7: fadd
+       8: fcmpg
+       9: ifge          21
+      12: aload_1
+      13: iload_2
+      14: i2f
+      15: fload_3
+      16: fadd
+      17: invokevirtual #416                // Method zombie/characters/IsoGameCharacter.setNextX:(F)F
+      20: pop
+      21: return
+
+  private zombie.characters.IsoPlayer findPlayer(int, int, int, int, int);
+    Code:
+       0: iload_3
+       1: istore        6
+       3: iload         6
+       5: iload         4
+       7: if_icmpgt     119
+      10: iload_1
+      11: istore        7
+      13: iload         7
+      15: iload_2
+      16: if_icmpgt     113
+      19: getstatic     #419                // Field zombie/iso/IsoWorld.instance:Lzombie/iso/IsoWorld;
+      22: getfield      #424                // Field zombie/iso/IsoWorld.currentCell:Lzombie/iso/IsoCell;
+      25: iload         7
+      27: iload         6
+      29: iload         5
+      31: invokevirtual #428                // Method zombie/iso/IsoCell.getGridSquare:(III)Lzombie/iso/IsoGridSquare;
+      34: astore        8
+      36: aload         8
+      38: ifnonnull     44
+      41: goto          107
+      44: iconst_0
+      45: istore        9
+      47: iload         9
+      49: aload         8
+      51: invokevirtual #434                // Method zombie/iso/IsoGridSquare.getMovingObjects:()Ljava/util/ArrayList;
+      54: invokevirtual #438                // Method java/util/ArrayList.size:()I
+      57: if_icmpge     107
+      60: aload         8
+      62: invokevirtual #434                // Method zombie/iso/IsoGridSquare.getMovingObjects:()Ljava/util/ArrayList;
+      65: iload         9
+      67: invokevirtual #443                // Method java/util/ArrayList.get:(I)Ljava/lang/Object;
+      70: checkcast     #446                // class zombie/iso/IsoMovingObject
+      73: astore        10
+      75: aload         10
+      77: instanceof    #167                // class zombie/characters/IsoPlayer
+      80: ifeq          101
+      83: aload         10
+      85: checkcast     #167                // class zombie/characters/IsoPlayer
+      88: astore        11
+      90: aload         11
+      92: invokevirtual #448                // Method zombie/characters/IsoPlayer.isGhostMode:()Z
+      95: ifne          101
+      98: aload         11
+     100: areturn
+     101: iinc          9, 1
+     104: goto          47
+     107: iinc          7, 1
+     110: goto          13
+     113: iinc          6, 1
+     116: goto          3
+     119: aconst_null
+     120: areturn
+
+  private boolean lungeThroughDoor(zombie.characters.IsoZombie, zombie.iso.IsoGridSquare, zombie.iso.IsoGridSquare);
+    Code:
+       0: aload_2
+       1: ifnull        8
+       4: aload_3
+       5: ifnonnull     10
+       8: iconst_0
+       9: ireturn
+      10: aload_2
+      11: invokevirtual #451                // Method zombie/iso/IsoGridSquare.getY:()I
+      14: aload_3
+      15: invokevirtual #451                // Method zombie/iso/IsoGridSquare.getY:()I
+      18: if_icmple     25
+      21: iconst_1
+      22: goto          26
+      25: iconst_0
+      26: istore        4
+      28: aconst_null
+      29: astore        5
+      31: aconst_null
+      32: astore        6
+      34: aload_1
+      35: invokevirtual #453                // Method zombie/characters/IsoZombie.getCurrentSquare:()Lzombie/iso/IsoGridSquare;
+      38: aload_2
+      39: if_acmpne     120
+      42: aload_3
+      43: astore        5
+      45: iload         4
+      47: ifeq          85
+      50: aload_0
+      51: aload_3
+      52: invokevirtual #456                // Method zombie/iso/IsoGridSquare.getX:()I
+      55: iconst_1
+      56: isub
+      57: aload_3
+      58: invokevirtual #456                // Method zombie/iso/IsoGridSquare.getX:()I
+      61: iconst_1
+      62: iadd
+      63: aload_3
+      64: invokevirtual #451                // Method zombie/iso/IsoGridSquare.getY:()I
+      67: iconst_1
+      68: isub
+      69: aload_3
+      70: invokevirtual #451                // Method zombie/iso/IsoGridSquare.getY:()I
+      73: aload_3
+      74: invokevirtual #458                // Method zombie/iso/IsoGridSquare.getZ:()I
+      77: invokevirtual #461                // Method findPlayer:(IIIII)Lzombie/characters/IsoPlayer;
+      80: astore        6
+      82: goto          203
+      85: aload_0
+      86: aload_3
+      87: invokevirtual #456                // Method zombie/iso/IsoGridSquare.getX:()I
+      90: iconst_1
+      91: isub
+      92: aload_3
+      93: invokevirtual #456                // Method zombie/iso/IsoGridSquare.getX:()I
+      96: aload_3
+      97: invokevirtual #451                // Method zombie/iso/IsoGridSquare.getY:()I
+     100: iconst_1
+     101: isub
+     102: aload_3
+     103: invokevirtual #451                // Method zombie/iso/IsoGridSquare.getY:()I
+     106: iconst_1
+     107: iadd
+     108: aload_3
+     109: invokevirtual #458                // Method zombie/iso/IsoGridSquare.getZ:()I
+     112: invokevirtual #461                // Method findPlayer:(IIIII)Lzombie/characters/IsoPlayer;
+     115: astore        6
+     117: goto          203
+     120: aload_1
+     121: invokevirtual #453                // Method zombie/characters/IsoZombie.getCurrentSquare:()Lzombie/iso/IsoGridSquare;
+     124: aload_3
+     125: if_acmpne     203
+     128: aload_2
+     129: astore        5
+     131: iload         4
+     133: ifeq          171
+     136: aload_0
+     137: aload_2
+     138: invokevirtual #456                // Method zombie/iso/IsoGridSquare.getX:()I
+     141: iconst_1
+     142: isub
+     143: aload_2
+     144: invokevirtual #456                // Method zombie/iso/IsoGridSquare.getX:()I
+     147: iconst_1
+     148: iadd
+     149: aload_2
+     150: invokevirtual #451                // Method zombie/iso/IsoGridSquare.getY:()I
+     153: aload_2
+     154: invokevirtual #451                // Method zombie/iso/IsoGridSquare.getY:()I
+     157: iconst_1
+     158: iadd
+     159: aload_2
+     160: invokevirtual #458                // Method zombie/iso/IsoGridSquare.getZ:()I
+     163: invokevirtual #461                // Method findPlayer:(IIIII)Lzombie/characters/IsoPlayer;
+     166: astore        6
+     168: goto          203
+     171: aload_0
+     172: aload_2
+     173: invokevirtual #456                // Method zombie/iso/IsoGridSquare.getX:()I
+     176: aload_2
+     177: invokevirtual #456                // Method zombie/iso/IsoGridSquare.getX:()I
+     180: iconst_1
+     181: iadd
+     182: aload_2
+     183: invokevirtual #451                // Method zombie/iso/IsoGridSquare.getY:()I
+     186: iconst_1
+     187: isub
+     188: aload_2
+     189: invokevirtual #451                // Method zombie/iso/IsoGridSquare.getY:()I
+     192: iconst_1
+     193: iadd
+     194: aload_2
+     195: invokevirtual #458                // Method zombie/iso/IsoGridSquare.getZ:()I
+     198: invokevirtual #461                // Method findPlayer:(IIIII)Lzombie/characters/IsoPlayer;
+     201: astore        6
+     203: aload         6
+     205: ifnull        328
+     208: aload         5
+     210: invokevirtual #456                // Method zombie/iso/IsoGridSquare.getX:()I
+     213: aload         5
+     215: invokevirtual #451                // Method zombie/iso/IsoGridSquare.getY:()I
+     218: aload         5
+     220: invokevirtual #458                // Method zombie/iso/IsoGridSquare.getZ:()I
+     223: aload         6
+     225: invokevirtual #465                // Method zombie/characters/IsoPlayer.getX:()F
+     228: invokestatic  #466                // Method zombie/core/math/PZMath.fastfloor:(F)I
+     231: aload         6
+     233: invokevirtual #472                // Method zombie/characters/IsoPlayer.getY:()F
+     236: invokestatic  #466                // Method zombie/core/math/PZMath.fastfloor:(F)I
+     239: aload         6
+     241: invokevirtual #473                // Method zombie/characters/IsoPlayer.getZ:()F
+     244: invokestatic  #466                // Method zombie/core/math/PZMath.fastfloor:(F)I
+     247: iconst_0
+     248: invokestatic  #475                // Method zombie/iso/LosUtil.lineClearCollide:(IIIIIIZ)Z
+     251: ifne          328
+     254: aload_1
+     255: aload         6
+     257: invokevirtual #481                // Method zombie/characters/IsoZombie.setTarget:(Lzombie/iso/IsoMovingObject;)V
+     260: aload_1
+     261: getfield      #484                // Field zombie/characters/IsoZombie.vectorToTarget:Lzombie/iso/Vector2;
+     264: aload         6
+     266: invokevirtual #465                // Method zombie/characters/IsoPlayer.getX:()F
+     269: putfield      #488                // Field zombie/iso/Vector2.x:F
+     272: aload_1
+     273: getfield      #484                // Field zombie/characters/IsoZombie.vectorToTarget:Lzombie/iso/Vector2;
+     276: aload         6
+     278: invokevirtual #472                // Method zombie/characters/IsoPlayer.getY:()F
+     281: putfield      #492                // Field zombie/iso/Vector2.y:F
+     284: aload_1
+     285: getfield      #484                // Field zombie/characters/IsoZombie.vectorToTarget:Lzombie/iso/Vector2;
+     288: dup
+     289: getfield      #488                // Field zombie/iso/Vector2.x:F
+     292: aload_1
+     293: invokevirtual #494                // Method zombie/characters/IsoZombie.getX:()F
+     296: fsub
+     297: putfield      #488                // Field zombie/iso/Vector2.x:F
+     300: aload_1
+     301: getfield      #484                // Field zombie/characters/IsoZombie.vectorToTarget:Lzombie/iso/Vector2;
+     304: dup
+     305: getfield      #492                // Field zombie/iso/Vector2.y:F
+     308: aload_1
+     309: invokevirtual #495                // Method zombie/characters/IsoZombie.getY:()F
+     312: fsub
+     313: putfield      #492                // Field zombie/iso/Vector2.y:F
+     316: aload_1
+     317: fconst_0
+     318: putfield      #126                // Field zombie/characters/IsoZombie.timeSinceSeenFlesh:F
+     321: aload_1
+     322: aconst_null
+     323: invokevirtual #496                // Method zombie/characters/IsoZombie.setThumpTarget:(Lzombie/iso/objects/interfaces/Thumpable;)V
+     326: iconst_1
+     327: ireturn
+     328: iconst_0
+     329: ireturn
+
+  public static int getFastForwardDamageMultiplier();
+    Code:
+       0: invokestatic  #497                // Method zombie/GameTime.getInstance:()Lzombie/GameTime;
+       3: astore_0
+       4: getstatic     #140                // Field zombie/network/GameServer.server:Z
+       7: ifeq          37
+      10: getstatic     #503                // Field zombie/network/GameServer.fastForward:Z
+      13: ifeq          34
+      16: getstatic     #506                // Field zombie/network/ServerOptions.instance:Lzombie/network/ServerOptions;
+      19: getfield      #511                // Field zombie/network/ServerOptions.fastForwardMultiplier:Lzombie/network/ServerOptions$DoubleServerOption;
+      22: invokevirtual #515                // Method zombie/network/ServerOptions$DoubleServerOption.getValue:()D
+      25: aload_0
+      26: invokevirtual #521                // Method zombie/GameTime.getDeltaMinutesPerDay:()F
+      29: f2d
+      30: ddiv
+      31: goto          35
+      34: dconst_1
+      35: d2i
+      36: ireturn
+      37: getstatic     #13                 // Field zombie/network/GameClient.client:Z
+      40: ifeq          70
+      43: getstatic     #524                // Field zombie/network/GameClient.fastForward:Z
+      46: ifeq          67
+      49: getstatic     #506                // Field zombie/network/ServerOptions.instance:Lzombie/network/ServerOptions;
+      52: getfield      #511                // Field zombie/network/ServerOptions.fastForwardMultiplier:Lzombie/network/ServerOptions$DoubleServerOption;
+      55: invokevirtual #515                // Method zombie/network/ServerOptions$DoubleServerOption.getValue:()D
+      58: aload_0
+      59: invokevirtual #521                // Method zombie/GameTime.getDeltaMinutesPerDay:()F
+      62: f2d
+      63: ddiv
+      64: goto          68
+      67: dconst_1
+      68: d2i
+      69: ireturn
+      70: invokestatic  #166                // Method zombie/characters/IsoPlayer.allPlayersAsleep:()Z
+      73: ifeq          94
+      76: ldc_w         #525                // float 200.0f
+      79: ldc_w         #526                // float 30.0f
+      82: invokestatic  #527                // Method zombie/core/PerformanceSettings.getLockFPS:()I
+      85: i2f
+      86: fdiv
+      87: fmul
+      88: ldc_w         #532                // float 1.6f
+      91: fdiv
+      92: f2i
+      93: ireturn
+      94: aload_0
+      95: invokevirtual #533                // Method zombie/GameTime.getTrueMultiplier:()F
+      98: f2i
+      99: ireturn
+
+  private boolean isThumpTargetValid(zombie.characters.IsoGameCharacter, zombie.iso.objects.interfaces.Thumpable);
+    Code:
+       0: aload_2
+       1: ifnonnull     6
+       4: iconst_0
+       5: ireturn
+       6: aload_2
+       7: invokeinterface #316,  1          // InterfaceMethod zombie/iso/objects/interfaces/Thumpable.isDestroyed:()Z
+      12: ifeq          17
+      15: iconst_0
+      16: ireturn
+      17: aload_2
+      18: instanceof    #67                 // class zombie/iso/IsoObject
+      21: ifeq          32
+      24: aload_2
+      25: checkcast     #67                 // class zombie/iso/IsoObject
+      28: astore_3
+      29: goto          34
+      32: iconst_0
+      33: ireturn
+      34: aload_2
+      35: instanceof    #357                // class zombie/vehicles/BaseVehicle
+      38: ifeq          55
+      41: aload_3
+      42: invokevirtual #536                // Method zombie/iso/IsoObject.getMovingObjectIndex:()I
+      45: iconst_m1
+      46: if_icmpeq     53
+      49: iconst_1
+      50: goto          54
+      53: iconst_0
+      54: ireturn
+      55: aload_3
+      56: invokevirtual #539                // Method zombie/iso/IsoObject.getObjectIndex:()I
+      59: iconst_m1
+      60: if_icmpne     65
+      63: iconst_0
+      64: ireturn
+      65: aload_3
+      66: invokevirtual #69                 // Method zombie/iso/IsoObject.getSquare:()Lzombie/iso/IsoGridSquare;
+      69: invokevirtual #456                // Method zombie/iso/IsoGridSquare.getX:()I
+      72: bipush        8
+      74: idiv
+      75: istore        4
+      77: aload_3
+      78: invokevirtual #69                 // Method zombie/iso/IsoObject.getSquare:()Lzombie/iso/IsoGridSquare;
+      81: invokevirtual #451                // Method zombie/iso/IsoGridSquare.getY:()I
+      84: bipush        8
+      86: idiv
+      87: istore        5
+      89: getstatic     #140                // Field zombie/network/GameServer.server:Z
+      92: ifeq          108
+      95: getstatic     #544                // Field zombie/network/ServerMap.instance:Lzombie/network/ServerMap;
+      98: iload         4
+     100: iload         5
+     102: invokevirtual #549                // Method zombie/network/ServerMap.getChunk:(II)Lzombie/iso/IsoChunk;
+     105: goto          121
+     108: getstatic     #419                // Field zombie/iso/IsoWorld.instance:Lzombie/iso/IsoWorld;
+     111: getfield      #424                // Field zombie/iso/IsoWorld.currentCell:Lzombie/iso/IsoCell;
+     114: iload         4
+     116: iload         5
+     118: invokevirtual #553                // Method zombie/iso/IsoCell.getChunk:(II)Lzombie/iso/IsoChunk;
+     121: astore        6
+     123: aload         6
+     125: ifnonnull     130
+     128: iconst_0
+     129: ireturn
+     130: aload_2
+     131: aload_1
+     132: invokeinterface #136,  2          // InterfaceMethod zombie/iso/objects/interfaces/Thumpable.getThumpableFor:(Lzombie/characters/IsoGameCharacter;)Lzombie/iso/objects/interfaces/Thumpable;
+     137: ifnull        144
+     140: iconst_1
+     141: goto          145
+     144: iconst_0
+     145: ireturn
+
+  static {};
+    Code:
+       0: new           #2                  // class zombie/ai/states/ThumpState
+       3: dup
+       4: invokespecial #554                // Method "<init>":()V
+       7: putstatic     #1                  // Field INSTANCE:Lzombie/ai/states/ThumpState;
+      10: return
+}

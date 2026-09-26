@@ -1,0 +1,1068 @@
+LOG  : General      f:0> 25-09-2026 20:38:54
+LOG  : General      f:0> SLF4J(I): Attempting to load provider "zombie.core.logger.Slf4jBridge" specified via "slf4j.provider" system property
+LOG  : General      f:0> ===== System specs =====
+LOG  : General      f:0> CPU: 13th Gen Intel(R) Core(TM) i9-13980HX, vendor: GenuineIntel, cores: 24, threads: 32
+LOG  : General      f:0> RAM: 130772 Mb
+LOG  : General      f:0> Base board: MS-17Q2, vendor: Micro-Star International Co., Ltd.
+LOG  : General      f:0> GPU: NVIDIA GeForce RTX 4090 Laptop GPU, vendor: NVIDIA, video memory: 16376 Mb, driver: 32.0.16.1692
+LOG  : General      f:0> GPU: Intel(R) UHD Graphics, vendor: Intel Corporation, video memory: 1024 Mb, driver: 31.0.101.4314
+LOG  : General      f:0> Disk info: 3789.81 Gb, free space: 108.64 Gb, usable space: 108.64 Gb
+LOG  : General      f:0> OS: Windows 11, version: 10.0, arch: amd64, build: 26200
+LOG  : General      f:0> JVM (free: 1922 Mb, max: 16384 Mb, total available: 2044 Mb)
+LOG  : General      f:0> ========================
+LOG  : General      f:0> java.specification.version=25
+LOG  : General      f:0> sun.cpu.isalist=amd64
+LOG  : General      f:0> sun.jnu.encoding=Cp1252
+LOG  : General      f:0> java.vm.vendor=Azul Systems, Inc.
+LOG  : General      f:0> sun.arch.data.model=64
+LOG  : General      f:0> java.vendor.url=http://www.azul.com/
+LOG  : General      f:0> zomboid.steam=1
+LOG  : General      f:0> java.vm.specification.version=25
+LOG  : General      f:0> os.name=Windows 11
+LOG  : General      f:0> zomboid.znetlog=1
+LOG  : General      f:0> slf4j.provider=zombie.core.logger.Slf4jBridge
+LOG  : General      f:0> jdk.debug=release
+LOG  : General      f:0> sun.cpu.endian=little
+LOG  : General      f:0> java.specification.vendor=Oracle Corporation
+LOG  : General      f:0> java.version.date=2025-10-21
+LOG  : General      f:0> java.home=C:\Program Files (x86)\Steam\steamapp...
+LOG  : General      f:0> file.separator=\
+LOG  : General      f:0> line.separator=
+
+LOG  : General      f:0> java.vm.specification.vendor=Oracle Corporation
+LOG  : General      f:0> java.specification.name=Java Platform API Specification
+LOG  : General      f:0> java.awt.headless=true
+LOG  : General      f:0> sun.management.compiler=HotSpot 64-Bit Tiered Compilers
+LOG  : General      f:0> java.runtime.version=25.0.1+8-LTS
+LOG  : General      f:0> stdout.encoding=Cp1252
+LOG  : General      f:0> os.version=10.0
+LOG  : General      f:0> jna.nosys=false
+LOG  : General      f:0> java.runtime.name=OpenJDK Runtime Environment
+LOG  : General      f:0> file.encoding=UTF-8
+LOG  : General      f:0> java.vm.name=OpenJDK 64-Bit Server VM
+LOG  : General      f:0> java.vendor.version=Zulu25.30+17-CA
+LOG  : General      f:0> jna.loaded=true
+LOG  : General      f:0> java.vendor.url.bug=http://www.azul.com/support/
+LOG  : General      f:0> java.version=25.0.1
+LOG  : General      f:0> os.arch=amd64
+LOG  : General      f:0> java.vm.specification.name=Java Virtual Machine Specification
+LOG  : General      f:0> sun.os.patch.level=
+LOG  : General      f:0> native.encoding=Cp1252
+LOG  : General      f:0> java.vm.info=mixed mode, sharing
+LOG  : General      f:0> stderr.encoding=Cp1252
+LOG  : General      f:0> java.vendor=Azul Systems, Inc.
+LOG  : General      f:0> java.vm.version=25.0.1+8-LTS
+LOG  : General      f:0> stdin.encoding=Cp1252
+LOG  : General      f:0> sun.io.unicode.encoding=UnicodeLittle
+LOG  : General      f:0> java.class.version=69.0
+LOG  : General      f:0> -----
+LOG  : General      f:0> version=42.20.4 b0bbce05d5 demo=false
+LOG  : General      f:0> revision=b0bbce05d5 pzbullet=1.0.0.28
+LOG  : General      f:0> Logs configuration:
+LOG  : General      f:0>      General: General
+LOG  : General      f:0>      Network: General
+LOG  : General      f:0>          Lua: General
+LOG  : General      f:0>          Mod: General
+LOG  : General      f:0>  Multiplayer: General
+LOG  : General      f:0>      Default: Off
+LOG  : General      f:0> [pzopt] loaded override zombie.iso.IsoWorld (target revision b0bbce05d5, active, logged late)
+LOG  : General      f:0> [pzopt] loaded override zombie.iso.IsoMetaGrid (target revision b0bbce05d5, active, logged late)
+LOG  : General      f:0> [pzopt] loaded override zombie.fileSystem.FileSystemImpl (target revision b0bbce05d5, active)
+LOG  : General      f:0> [pzopt] file system: 26 worker threads, 128 tasks in flight
+LOG  : General      f:0> LightingFPS set to 15
+LOG  : General      f:0> [pzopt] loaded override zombie.MovingObjectUpdateScheduler (target revision b0bbce05d5, active)
+LOG  : General      f:0> GraphicsCard: NVIDIA Corporation NVIDIA GeForce RTX 4090 Laptop GPU/PCIe/SSE2
+LOG  : General      f:0> OpenGL version: 4.6.0 NVIDIA 616.92
+LOG  : General      f:0> Desktop resolution 2560x1440
+LOG  : General      f:0> Initial resolution 2560x1369 fullScreen=false
+LOG  : General      f:0> [pzopt] loaded override zombie.core.VBO.GLVertexBufferObject (target revision b0bbce05d5, active)
+LOG  : General      f:0> OpenGL 1.5 buffer objects supported
+LOG  : General      f:0> VSync: OFF
+LOG  : General      f:0> [pzopt] frame cap: game 60 fps (uncappedFps=auto), menu same as game
+LOG  : General      f:0> [pzopt] loaded override zombie.core.skinnedmodel.model.AnimationAssetManager (target revision b0bbce05d5, active)
+LOG  : General      f:0> [pzopt] loaded override zombie.core.skinnedmodel.model.Model (target revision b0bbce05d5, active)
+LOG  : General      f:0> [pzopt] loaded override zombie.core.textures.TextureIDAssetManager (target revision b0bbce05d5, active)
+LOG  : General      f:0> 1790383137657 fmod: Java loging: OK
+LOG  : General      f:0> 1790383137663 fmod: FMOD::Studio::System::create() result: No errors.
+LOG  : General      f:0> 1790383137664 fmod: FMOD::Studio::System::getCoreSystem() result: No errors.
+LOG  : General      f:0> 1790383137664 fmod: FMOD_System_GetVersion() result: No errors.
+LOG  : General      f:0> 1790383137664 fmod: fmodintegration built with version 20309, fmod shared library version 20309
+LOG  : General      f:0> 1790383137665 fmod: System Create: OK
+LOG  : General      f:0> 1790383137665 fmod: FMOD_System_SetSoftwareFormat() result: No errors.
+LOG  : General      f:0> 1790383137995 fmod: FMOD::Studio::System::Initialize() result: No errors.
+LOG  : General      f:0> 1790383137996 fmod: Creating DSP for capture sound
+LOG  : General      f:0> 1790383137997 fmod: FMOD_System_CreateDSP() result: No errors.
+LOG  : General      f:0> 1790383137997 fmod: FMOD_DSP_SetBypass() result: No errors.
+LOG  : General      f:0> 1790383137997 fmod: FMOD_System_GetMasterChannelGroup() result: No errors.
+LOG  : General      f:0> 1790383137998 fmod: FMOD_ChannelGroup_AddDSP() result: No errors.
+LOG  : General      f:0> 1790383137998 fmod: FMOD_System_Set3DSettings() result: No errors.
+LOG  : General      f:0> [pzopt] boot pump started (file pool 26 wide until the load starts)
+LOG  : General      f:0> [pzopt] loaded override zombie.scripting.ScriptParser (target revision b0bbce05d5, active)
+LOG  : Mod          f:0> refusing to list examplemod
+LOG  : General      f:0> [pzopt] loaded override zombie.core.textures.ImageData (target revision b0bbce05d5, active)
+LOG  : General      f:0> Loading networking libraries...
+LOG  : General      f:0> Loading steam_api64...
+LOG  : General      f:0> Loading RakNet64...
+LOG  : General      f:0> Loading ZNetJNI64...
+LOG  : General      f:0> SteamUtils initialised successfully
+LOG  : General      f:0> [pzopt] loaded override zombie.iso.LightingJNI (target revision b0bbce05d5, active)
+LOG  : General      f:0> [pzopt] loaded override zombie.popman.ZombiePopulationManager (target revision b0bbce05d5, active)
+LOG  : General      f:0> Loading Mods
+LOG  : Mod          f:0> refusing to list examplemod
+LOG  : Mod          f:0> loading INVENTORY_TETRIS
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/ch/sandbox.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/ch/ui.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/cn/sandbox.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/cn/ui.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/cs/sandbox.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/cs/ui.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/de/sandbox.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/de/ui.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/en/sandbox.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/en/ui.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/es/sandbox.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/es/ui.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/fr/sandbox.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/fr/ui.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/hu/sandbox.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/hu/ui.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/it/sandbox.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/it/ui.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/pl/sandbox.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/pl/ui.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/ptbr/sandbox.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/ptbr/ui.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/ru/sandbox.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/ru/ui.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/th/sandbox.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/th/ui.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/tr/sandbox.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/tr/ui.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/ua/sandbox.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/ua/ui.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/en/sandbox.json
+LOG  : Mod          f:0> mod "INVENTORY_TETRIS" overrides media/lua/shared/translate/ptbr/sandbox.json
+LOG  : Mod          f:0> loading PixelStrikeIndicator
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ar/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ar/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ca/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ca/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ch/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ch/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/cn/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/cn/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/cs/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/cs/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/da/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/da/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/de/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/de/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/en/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/en/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/es/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/es/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/es_cl/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/es_cl/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/es_mx/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/es_mx/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/fi/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/fi/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/fr/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/fr/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/hu/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/hu/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/id/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/id/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/it/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/it/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/jp/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/jp/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ko/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ko/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/nl/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/nl/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/no/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/no/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/pl/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/pl/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/pt/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/pt/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ptbr/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ptbr/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ro/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ro/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ru/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ru/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/th/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/th/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/tr/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/tr/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ua/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ua/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/sandbox-options.txt
+LOG  : Mod          f:0> loading NewMusic
+LOG  : Mod          f:0> mod "NewMusic" overrides icon.png
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/cn/ig_ui.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/cn/itemname.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/cn/sandbox.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/cn/tooltip.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/cn/ui.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/de/ig_ui.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/de/itemname.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/de/sandbox.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/de/tooltip.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/de/ui.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/en/ig_ui.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/en/itemname.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/en/sandbox.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/en/tooltip.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/en/ui.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/es/ig_ui.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/es/itemname.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/es/sandbox.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/es/tooltip.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/es/ui.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/fr/ig_ui.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/fr/itemname.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/fr/sandbox.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/fr/tooltip.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/fr/ui.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/jp/ig_ui.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/jp/itemname.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/jp/sandbox.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/jp/tooltip.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/jp/ui.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/ko/ig_ui.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/ko/itemname.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/ko/sandbox.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/ko/sandbox_ko.txt
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/ko/tooltip.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/ko/ui.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/ko/ui_ko.txt
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/pl/ig_ui.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/pl/itemname.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/pl/sandbox.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/pl/tooltip.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/pl/ui.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/ptbr/ig_ui.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/ptbr/itemname.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/ptbr/sandbox.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/ptbr/tooltip.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/ptbr/ui.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/ru/ig_ui.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/ru/itemname.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/ru/sandbox.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/ru/tooltip.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/lua/shared/translate/ru/ui.json
+LOG  : Mod          f:0> mod "NewMusic" overrides media/textures/clothes/hat/earmuff_white.png
+LOG  : Mod          f:0> mod "NewMusic" overrides icon.png
+LOG  : Mod          f:0> mod "NewMusic" overrides media/sandbox-options.txt
+LOG  : Mod          f:0> loading TrueSleep
+LOG  : Mod          f:0> mod "TrueSleep" overrides icon.png
+LOG  : Mod          f:0> mod "TrueSleep" overrides media/lua/shared/translate/en/sandbox.json
+LOG  : Mod          f:0> mod "TrueSleep" overrides media/lua/shared/translate/en/ui.json
+LOG  : Mod          f:0> mod "TrueSleep" overrides media/lua/shared/translate/ptbr/sandbox.json
+LOG  : Mod          f:0> mod "TrueSleep" overrides media/lua/shared/translate/ptbr/ui.json
+LOG  : Mod          f:0> mod "TrueSleep" overrides media/lua/shared/translate/ru/sandbox.json
+LOG  : Mod          f:0> mod "TrueSleep" overrides media/lua/shared/translate/ru/ui.json
+LOG  : Mod          f:0> mod "TrueSleep" overrides media/sandbox-options.txt
+LOG  : Mod          f:0> loading BarricadesHurtZombiesB42
+LOG  : Mod          f:0> mod "BarricadesHurtZombiesB42" overrides media/animsets/zombie/attackvehicle/thump.xml
+LOG  : Mod          f:0> mod "BarricadesHurtZombiesB42" overrides media/animsets/zombie/attackvehicle/thumpsmallcar.xml
+LOG  : Mod          f:0> mod "BarricadesHurtZombiesB42" overrides media/lua/shared/translate/ch/sandbox.json
+LOG  : Mod          f:0> mod "BarricadesHurtZombiesB42" overrides media/lua/shared/translate/de/sandbox.json
+LOG  : Mod          f:0> mod "BarricadesHurtZombiesB42" overrides media/lua/shared/translate/de/sandbox_de.txt
+LOG  : Mod          f:0> mod "BarricadesHurtZombiesB42" overrides media/lua/shared/translate/en/sandbox.json
+LOG  : Mod          f:0> mod "BarricadesHurtZombiesB42" overrides media/lua/shared/translate/en/sandbox_en.txt
+LOG  : Mod          f:0> mod "BarricadesHurtZombiesB42" overrides media/lua/shared/translate/es/sandbox.json
+LOG  : Mod          f:0> mod "BarricadesHurtZombiesB42" overrides media/lua/shared/translate/es/sandbox_es.txt
+LOG  : Mod          f:0> mod "BarricadesHurtZombiesB42" overrides media/lua/shared/translate/fr/sandbox.json
+LOG  : Mod          f:0> mod "BarricadesHurtZombiesB42" overrides media/lua/shared/translate/fr/sandbox_fr.txt
+LOG  : Mod          f:0> mod "BarricadesHurtZombiesB42" overrides media/lua/shared/translate/jp/sandbox.json
+LOG  : Mod          f:0> mod "BarricadesHurtZombiesB42" overrides media/lua/shared/translate/jp/sandbox_jp.txt
+LOG  : Mod          f:0> mod "BarricadesHurtZombiesB42" overrides media/lua/shared/translate/ru/sandbox.json
+LOG  : Mod          f:0> mod "BarricadesHurtZombiesB42" overrides media/lua/shared/translate/ru/sandbox_ru.txt
+LOG  : Mod          f:0> mod "BarricadesHurtZombiesB42" overrides media/sandbox-options.txt
+LOG  : General      f:0> [pzopt] lua precompile: 1945 files queued on 30 threads (2901 ms to list)
+LOG  : General      f:0> Loading Translations
+LOG  : General      f:0> [pzopt] loaded override se.krka.kahlua.luaj.compiler.LuaCompiler (target revision b0bbce05d5, active)
+LOG  : General      f:0> [pzopt] loaded override zombie.buildingRooms.BuildingRoomsEditor (target revision b0bbce05d5, active)
+LOG  : General      f:0> [pzopt] loaded override zombie.scripting.objects.Item (target revision b0bbce05d5, active)
+LOG  : General      f:0> [pzopt] loaded override zombie.characters.ecs.ECSEntity (target revision b0bbce05d5, active)
+LOG  : General      f:0> [pzopt] loaded override zombie.characters.IsoGameCharacter (target revision b0bbce05d5, active)
+LOG  : General      f:0> [pzopt] loaded override zombie.characters.IsoPlayer (target revision b0bbce05d5, active)
+LOG  : General      f:0> [pzopt] loaded override zombie.core.properties.PropertyContainer (target revision b0bbce05d5, active)
+LOG  : General      f:0> [pzopt] loaded override zombie.iso.IsoChunk (target revision b0bbce05d5, active)
+LOG  : General      f:0> [pzopt] loaded override zombie.iso.IsoChunkMap (target revision b0bbce05d5, active)
+LOG  : General      f:0> [pzopt] loaded override zombie.characters.IsoZombie (target revision b0bbce05d5, active)
+LOG  : General      f:0> [pzopt] loaded override zombie.ai.State (target revision b0bbce05d5, active, logged late)
+LOG  : General      f:0> [pzopt] loaded override zombie.gameStates.GameLoadingState (target revision b0bbce05d5, active)
+LOG  : General      f:0> [pzopt] loaded override zombie.iso.IsoPuddles (target revision b0bbce05d5, active)
+LOG  : General      f:0> texturepack: loading UI
+LOG  : General      f:0> Loading UI texture pack
+LOG  : General      f:0> [pzopt] loaded override zombie.iso.IsoCamera (target revision b0bbce05d5, active, logged late)
+LOG  : General      f:0> [pzopt] loaded override zombie.fileSystem.TexturePackDevice (target revision b0bbce05d5, active)
+LOG  : General      f:0> texturepack: loading UI2
+LOG  : General      f:0> Loading UI2 texture pack
+LOG  : General      f:0> texturepack: loading IconsMoveables
+LOG  : General      f:0> Loading IconsMoveables texture pack
+LOG  : General      f:0> texturepack: loading RadioIcons
+LOG  : General      f:0> Loading RadioIcons texture pack
+LOG  : General      f:0> texturepack: loading ApComUI
+LOG  : General      f:0> Loading ApComUI texture pack
+LOG  : General      f:0> texturepack: loading Mechanics
+LOG  : General      f:0> Loading Mechanics texture pack
+LOG  : General      f:0> texturepack: loading WeatherFx
+LOG  : General      f:0> Loading WeatherFx texture pack
+LOG  : General      f:0> Loading Scripts
+LOG  : General      f:0> [pzopt] fmod init on its own thread: 28.94 s total, main thread waited 0.00 s for it
+LOG  : General      f:0> [pzopt] loaded override zombie.audio.parameters.ParameterZone (target revision b0bbce05d5, active)
+LOG  : General      f:0> [pzopt] fmod global parameters registered after the join (MusicState found)
+ERROR: General      f:0 at FluidContainerScript.load           > Sanitizing container name 'Large Bucket', name may not contain whitespaces.
+ERROR: General      f:0 at FluidContainerScript.load           > Sanitizing container name 'Fuel Pump', name may not contain whitespaces.
+WARN : General      f:0 at XuiSkin$EntityUiStyle.Load          > Could not find icon: Build_AnvilStone, script = Stone Anvil
+WARN : General      f:0 at XuiSkin$EntityUiStyle.LoadComponentInfo> Could not find icon: Build_AnvilStone
+WARN : General      f:0 at XuiSkin$EntityUiStyle.Load          > Could not find icon: Build_AnvilStone, script = Stone Anvil
+WARN : General      f:0 at XuiSkin$EntityUiStyle.LoadComponentInfo> Could not find icon: Build_AnvilStone
+WARN : General      f:0 at XuiSkin$EntityUiStyle.Load          > Could not find icon: Build_AnvilStone, script = Stone Anvil
+WARN : General      f:0 at XuiSkin$EntityUiStyle.LoadComponentInfo> Could not find icon: Build_AnvilStone
+WARN : General      f:0 at XuiSkin$EntityUiStyle.Load          > Could not find icon: Build_AnvilStone, script = Stone Anvil
+WARN : General      f:0 at XuiSkin$EntityUiStyle.LoadComponentInfo> Could not find icon: Build_AnvilStone
+WARN : General      f:0 at TaggedObjectManager.createTagBits   > manager-> new tag discovered that was not preprocessed, tag: keyduplicator
+WARN : General      f:0 at TaggedObjectManager.createTagBits   > manager-> new tag discovered that was not preprocessed, tag: choppingblock
+LOG  : General      f:0> [pzopt] loaded override zombie.core.skinnedmodel.ModelManager (target revision b0bbce05d5, active, logged late)
+LOG  : General      f:0> [pzopt] loaded override zombie.core.textures.TextureDraw (target revision b0bbce05d5, active)
+LOG  : General      f:0> [pzopt] persistent VBO mapping active (GL_ARB_buffer_storage), 1 slot(s) per buffer
+LOG  : General      f:0> Loading Clothing
+LOG  : General      f:0> [pzopt] loaded override zombie.core.skinnedmodel.advancedanimation.AnimationSet (target revision b0bbce05d5, active)
+LOG  : General      f:0> 
+LOG  : General      f:0> texturepack: loading Tiles2x
+LOG  : General      f:0> Loading Tiles2x texture pack
+LOG  : General      f:0> texturepack: loading Overlays2x
+LOG  : General      f:0> Loading Overlays2x texture pack
+LOG  : General      f:0> texturepack: loading JumboTrees2x
+LOG  : General      f:0> Loading JumboTrees2x texture pack
+LOG  : General      f:0> texturepack: loading JumboTreesBigs2x
+LOG  : General      f:0> Loading JumboTreesBigs2x texture pack
+LOG  : General      f:0> texturepack: loading Tiles2x.floor
+LOG  : General      f:0> Loading Tiles2x.floor texture pack
+LOG  : General      f:0> texturepack: loading B42ChunkCaching2x
+LOG  : General      f:0> Loading B42ChunkCaching2x texture pack
+LOG  : General      f:0> texturepack: loading B42ChunkCaching2x.floor
+LOG  : General      f:0> Loading B42ChunkCaching2x.floor texture pack
+LOG  : General      f:0> texturepack: loading Clock2x
+LOG  : General      f:0> Loading Clock2x texture pack
+LOG  : General      f:0> [pzopt] loaded override zombie.tileDepth.TileDepthTextures (target revision b0bbce05d5, active)
+LOG  : General      f:0> Loading Lua
+WARN : Lua          f:0 at Lua(Vanilla).corpseStorageCheck     > require("ISUI/ISInventoryPaneContextMenu") failed
+WARN : Lua          f:0 at Lua(Vanilla).corpseStorageCheck     > require("ISUI/ISVehicleMenu") failed
+WARN : Lua          f:0 at Lua(Vanilla).corpseStorageCheck     > require("ISUI/ISContextMenu") failed
+WARN : Lua          f:0 at Lua(Vanilla).ISCampingMenu          > require("Camping/CCampfireSystem") failed
+WARN : Lua          f:0 at Lua(Vanilla).ISInventoryTransferUtil> require("TimedActions/ISInventoryTransferAction") failed
+WARN : Lua          f:0 at Lua(Vanilla).ISInventoryTransferUtil> require("ISUI/PlayerData/ISPlayerData") failed
+LOG  : Lua          f:0> [BHZMigration] client prompt handler loaded revision=6
+WARN : Lua          f:0 at 2])).pcall                          > require("ISUI/AdminPanel/ISServerSandboxOptionsUI") failed
+WARN : Lua          f:0 at 2])).pcall                          > require("ISUI/ISButton") failed
+LOG  : Lua          f:0> [BHZMigration] server sandbox defaults button unavailable error=nil
+WARN : Lua          f:0 at 2])).pcall                          > require("OptionScreens/SandboxOptions") failed
+WARN : Lua          f:0 at 2])).pcall                          > require("ISUI/ISButton") failed
+LOG  : Lua          f:0> [BHZMigration] single-player sandbox defaults button unavailable error=nil
+WARN : Lua          f:0 at Lua(Vanilla).ISAnimalContextMenu    > require("BuildingObjects/ISAnimalPickMateCursor") failed
+WARN : Lua          f:0 at Lua(Vanilla).TakeSameType           > require("ISUI/InventoryWindow/ISLootWindowControlHandler") failed
+WARN : Lua          f:0 at Lua(Vanilla).FloorTakeSameType      > require("ISUI/InventoryWindow/ISLootWindowControlHandler") failed
+WARN : General      f:0> Translator.reportMissingArgumentsFromPastAbuse> Exception thrown java.util.UnknownFormatConversionException: Conversion = ')' at Formatter.parse(null:-1). Message: ERROR: Formatting "Sandbox_TrueSleep_NapFloorPercent"
+WARN : Lua          f:0 at Lua(Vanilla).testUI                 > require("pzapi/ui/ui") failed
+LOG  : Lua          f:0> InventoryTetris version: 6.11.5 beta
+LOG  : Lua          f:0> [InventoryTetris] Client persistence hooks installed.
+LOG  : Lua          f:0> OnLoadSoundbanks
+LOG  : General      f:0> Loading models and animations
+LOG  : General      f:0> 1790383188390 fmod: globalSystem = 0xB0F19D48
+LOG  : General      f:0> 1790383188391 fmod: FMOD_System_GetRecordDriverInfo: nativeRate = 44100, nativeChannels = 2
+LOG  : General      f:0> 1790383188391 fmod: System create record sound: OK
+LOG  : General      f:0> 1790383188391 fmod: Create resampler: OK
+LOG  : General      f:0> 1790383188392 fmod: Create acoustic echo canceller: OK
+LOG  : General      f:0> 1790383188413 fmod: GetRecordNumDrivers id = 0, sound = 0x906ff0f8 loop=1
+LOG  : General      f:0> Game booting
+LOG  : General      f:0> [pzopt] boot pump stopped after 40.11 s; file system idle
+LOG  : General      f:0> [pzopt] file tasks so far: CachedAnimationTask=2161/56.8s FileTask_LoadPackImage=173/44.5s waitFileTask(sleep)=139/33.1s FileTask_ParseXML=1708/32.0s LoadTask=216/9.0s FileTask_LoadImageData=417/5.4s FileTask_LoadMesh=79/3.7s
+LOG  : General      f:0> [pzopt] model shaders: 1 cached, 1 render-thread round trips (0.113 s waited), 3 served from the cache
+LOG  : General      f:0> [pzopt] anim clip cache: hits=2161 misses=0 written=0 bad=0 pendingWrites=0
+LOG  : General      f:0> [pzopt] loaded override zombie.characters.ecs.ECSComponent (target revision b0bbce05d5, active)
+LOG  : General      f:0> [pzopt] loaded override zombie.MapCollisionData (target revision b0bbce05d5, active)
+LOG  : General      f:0> STATE: exit zombie.gameStates.TISLogoState
+LOG  : General      f:0> STATE: exit zombie.gameStates.TermsOfServiceState
+LOG  : Lua          f:0> [BHZMigration] server sandbox defaults button installed
+LOG  : Lua          f:0> [BHZMigration] single-player sandbox defaults button installed
+LOG  : Lua          f:0> [pzopt] options tab: 152 controls, 0 pinned by pzopt.properties or -D, 153 preview rows, preview 1168 px at x=595
+LOG  : General      f:0> [pzopt] loaded override zombie.core.skinnedmodel.advancedanimation.AnimatedModel (target revision b0bbce05d5, active)
+LOG  : General      f:0> [pzopt] loaded override zombie.characters.action.ActionContext (target revision b0bbce05d5, active)
+WARN : General      f:0 at Log.warn                            > [pzopt] aot: java.nio.file.AccessDeniedException: C:\Program Files (x86)\Steam\steamapps\common\ProjectZomboid\ProjectZomboid64.json.pzopt-tmp -> C:\Program Files (x86)\Steam\steamapps\common\ProjectZomboid\ProjectZomboid64.json
+LOG  : General      f:0> [pzopt] anim sets preloaded in 28.34 s
+LOG  : General      f:0> [pzopt] loaded override zombie.core.skinnedmodel.animation.AnimationPlayer (target revision b0bbce05d5, active)
+LOG  : General      f:0> [pzopt] loaded override zombie.core.skinnedmodel.model.ModelInstance (target revision b0bbce05d5, active)
+LOG  : General      f:0> binkId: 1
+WARN : Lua          f:0 at Lua(Vanilla).namedColorToTable      > env.lua-> namedColorToTable color not found: ProgressYellow
+LOG  : Lua          f:0> [pzopt] update: main menu item added
+LOG  : General      f:0> binkId: 2
+LOG  : General      f:0> [pzopt] update available: win-b0bbce05d5-e924835 (published 2026-09-26T00:12:36Z), this build is 2c0ca9d
+LOG  : Lua          f:0> [pzopt] update: main menu item enabled (available, win-b0bbce05d5-e924835)
+LOG  : Mod          f:0> refusing to list examplemod
+LOG  : General      f:0> binkId: 3
+LOG  : General      f:0> [pzopt] loaded override zombie.core.opengl.VBORenderer (target revision b0bbce05d5, active)
+LOG  : General      f:0> binkId: 4
+LOG  : General      f:0> [pzopt] loaded override zombie.iso.weather.fx.WeatherFxMask (target revision b0bbce05d5, active)
+LOG  : Mod          f:0> refusing to list examplemod
+LOG  : Mod          f:0> loading PixelStrikeIndicator
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ar/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ar/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ca/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ca/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ch/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ch/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/cn/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/cn/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/cs/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/cs/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/da/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/da/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/de/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/de/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/en/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/en/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/es/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/es/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/es_cl/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/es_cl/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/es_mx/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/es_mx/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/fi/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/fi/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/fr/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/fr/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/hu/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/hu/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/id/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/id/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/it/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/it/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/jp/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/jp/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ko/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ko/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/nl/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/nl/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/no/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/no/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/pl/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/pl/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/pt/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/pt/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ptbr/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ptbr/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ro/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ro/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ru/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ru/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/th/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/th/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/tr/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/tr/ui.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ua/sandbox.json
+LOG  : Mod          f:0> mod "PixelStrikeIndicator" overrides media/lua/shared/translate/ua/ui.json
+LOG  : Mod          f:0> loading OneMoreHorde_TurretsAndTraps
+LOG  : Mod          f:0> mod "OneMoreHorde_TurretsAndTraps" overrides media/actiongroups/.keep
+LOG  : Mod          f:0> mod "OneMoreHorde_TurretsAndTraps" overrides media/animsets/.keep
+LOG  : Mod          f:0> mod "OneMoreHorde_TurretsAndTraps" overrides media/sandbox-options.txt
+ERROR: General      f:0 at FluidContainerScript.load           > Sanitizing container name 'Large Bucket', name may not contain whitespaces.
+ERROR: General      f:0 at FluidContainerScript.load           > Sanitizing container name 'Fuel Pump', name may not contain whitespaces.
+WARN : General      f:0 at XuiSkin$EntityUiStyle.Load          > Could not find icon: Build_AnvilStone, script = Stone Anvil
+WARN : General      f:0 at XuiSkin$EntityUiStyle.LoadComponentInfo> Could not find icon: Build_AnvilStone
+WARN : General      f:0 at XuiSkin$EntityUiStyle.Load          > Could not find icon: Build_AnvilStone, script = Stone Anvil
+WARN : General      f:0 at XuiSkin$EntityUiStyle.LoadComponentInfo> Could not find icon: Build_AnvilStone
+WARN : General      f:0 at XuiSkin$EntityUiStyle.Load          > Could not find icon: Build_AnvilStone, script = Stone Anvil
+WARN : General      f:0 at XuiSkin$EntityUiStyle.LoadComponentInfo> Could not find icon: Build_AnvilStone
+WARN : General      f:0 at XuiSkin$EntityUiStyle.Load          > Could not find icon: Build_AnvilStone, script = Stone Anvil
+WARN : General      f:0 at XuiSkin$EntityUiStyle.LoadComponentInfo> Could not find icon: Build_AnvilStone
+WARN : General      f:0 at TaggedObjectManager.createTagBits   > manager-> new tag discovered that was not preprocessed, tag: keyduplicator
+WARN : General      f:0 at TaggedObjectManager.createTagBits   > manager-> new tag discovered that was not preprocessed, tag: choppingblock
+WARN : Lua          f:0 at Lua(Vanilla).corpseStorageCheck     > require("ISUI/ISInventoryPaneContextMenu") failed
+WARN : Lua          f:0 at Lua(Vanilla).corpseStorageCheck     > require("ISUI/ISVehicleMenu") failed
+WARN : Lua          f:0 at Lua(Vanilla).corpseStorageCheck     > require("ISUI/ISContextMenu") failed
+WARN : Lua          f:0 at Lua(Vanilla).ISCampingMenu          > require("Camping/CCampfireSystem") failed
+WARN : Lua          f:0 at Lua(Vanilla).ISInventoryTransferUtil> require("TimedActions/ISInventoryTransferAction") failed
+WARN : Lua          f:0 at Lua(Vanilla).ISInventoryTransferUtil> require("ISUI/PlayerData/ISPlayerData") failed
+WARN : Lua          f:0 at Lua(Vanilla).ISAnimalContextMenu    > require("BuildingObjects/ISAnimalPickMateCursor") failed
+WARN : Lua          f:0 at Lua(Vanilla).TakeSameType           > require("ISUI/InventoryWindow/ISLootWindowControlHandler") failed
+WARN : Lua          f:0 at Lua(Vanilla).FloorTakeSameType      > require("ISUI/InventoryWindow/ISLootWindowControlHandler") failed
+WARN : Lua          f:0 at Lua(Vanilla).testUI                 > require("pzapi/ui/ui") failed
+LOG  : Lua          f:0> [pzopt] options tab: 152 controls, 0 pinned by pzopt.properties or -D, 153 preview rows, preview 1168 px at x=595
+WARN : Lua          f:0 at Lua(Vanilla).namedColorToTable      > env.lua-> namedColorToTable color not found: ProgressYellow
+LOG  : Lua          f:0> [pzopt] update: main menu item added
+LOG  : Lua          f:0> [pzopt] update: main menu item enabled (available, win-b0bbce05d5-e924835)
+LOG  : General      f:0> binkId: 5
+LOG  : General      f:0> STATE: exit zombie.gameStates.MainScreenState
+LOG  : General      f:0> LOADED UP A TOTAL OF 6830 TEXTURES
+LOG  : General      f:0> STATE: exit zombie.gameStates.LoadingQueueState
+LOG  : General      f:0> [pzopt] file pool 26 -> 16 threads for the load; work remains
+LOG  : General      f:0> [pzopt] file tasks so far: FileTask_LoadPackImage=560/127.3s waitFileTask(sleep)=475/101.3s CachedAnimationTask=2161/56.8s FileTask_ParseXML=1708/32.0s LoadTask=216/9.0s FileTask_LoadImageData=861/6.7s FileTask_LoadImagePyramidTexture=119/5.1s FileTask_LoadMesh=83/3.7s
+LOG  : General      f:0> [pzopt] model shaders: 1 cached, 1 render-thread round trips (0.113 s waited), 6 served from the cache
+LOG  : General      f:0> [pzopt] anim clip cache: hits=2161 misses=0 written=0 bad=0 pendingWrites=0
+LOG  : General      f:0> [pzopt] anim set preload joined, waited 0.00 s
+LOG  : General      f:0> [pzopt] lua precompile: compiled=1945 failed=0 hits=448 misses=2269
+LOG  : Lua          f:0> Initializing Randomized World Tabletop Clutter Tables
+WARN : Lua          f:0 at Lua(Vanilla).Features               > recursive require(): C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid/media/lua/server/WorldGen/WorldGen.lua
+WARN : Lua          f:0 at Lua(Vanilla).Biomes                 > recursive require(): C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid/media/lua/server/WorldGen/WorldGen.lua
+WARN : Lua          f:0 at Lua(Vanilla).Selection              > recursive require(): C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid/media/lua/server/WorldGen/WorldGen.lua
+WARN : Lua          f:0 at Lua(Vanilla).Veins                  > recursive require(): C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid/media/lua/server/WorldGen/WorldGen.lua
+WARN : Lua          f:0 at Lua(Vanilla).Roads                  > recursive require(): C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid/media/lua/server/WorldGen/WorldGen.lua
+WARN : Lua          f:0 at Lua(Vanilla).WorldGen               > recursive require(): C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid/media/lua/server/WorldGen/attachments/Priorities.lua
+ERROR: General      f:0 at CraftRecipeComponentScript.getIconTexture> CraftRecipeComponentScript: Recipe Piano missing UiConfigScript - falling back to SpriteConfigScript first world object face for recipe icon.
+LOG  : General      f:0> [pzopt] fog pass: offscreen buffer 4096x2048 (fbo 3) depth+stencil is texture 6368
+LOG  : General      f:0> SafeMode is off
+LOG  : General      f:0> [pzopt] puddles: shader pzopt_puddles_hq id=81 compiled=true
+LOG  : General      f:0> [pzopt] frame cap: menu phase 2893.0 s, 167828 frames, 58.0 fps (cap same as game)
+LOG  : General      f:0> Loading worldgen params
+LOG  : General      f:0> IsoMetaGrid.Create: begin scanning directories
+LOG  : General      f:0> Looking in these map folders:
+LOG  : General      f:0> <End of map-folders list>
+LOG  : General      f:0> IsoMetaGrid.Create: X: [ -250 250 ], Y: [ -250 250 ]
+LOG  : General      f:0> World seed: xSMsCKaMVmSNTytp -1145134808
+LOG  : General      f:0> IsoMetaGrid.Create: finished scanning directories in 0.1 seconds
+LOG  : General      f:0> IsoMetaGrid.Create: begin loading
+LOG  : General      f:0> VehiclesDB2.init() start
+LOG  : General      f:0> [pzopt] loaded override zombie.iso.weather.WeatherShader (target revision b0bbce05d5, active, logged late)
+LOG  : General      f:0> [pzopt] loaded override zombie.iso.PuddlesShader (target revision b0bbce05d5, active, logged late)
+LOG  : General      f:0> [pzopt] loaded override zombie.iso.WaterShader (target revision b0bbce05d5, active, logged late)
+LOG  : General      f:0> [pzopt] loaded override zombie.iso.IsoMetaCell (target revision b0bbce05d5, active)
+LOG  : General      f:0> VehiclesDB2.init() end
+LOG  : General      f:0> triggerEvent OnInitWorld
+LOG  : General      f:0> SandboxOptions.load() start
+LOG  : General      f:0> SandboxOptions.load() end
+LOG  : General      f:0> ItemPickerJava.Parse() start
+LOG  : General      f:0> ItemPickerJava.Parse() end
+LOG  : General      f:0> LoadTileDefinitions start
+LOG  : General      f:0> [pzopt] tile definitions preload not used (mod list changed); loading them as stock
+LOG  : General      f:0> LoadTileDefinitions end
+LOG  : General      f:0> triggerEvent OnLoadedTileDefinitions
+LOG  : General      f:0> loadAnimalDefinitions start
+LOG  : General      f:0> loadAnimalDefinitions end
+LOG  : General      f:0> GameTime.init() and load() start
+LOG  : General      f:0> GameTime.init() and load() end
+LOG  : General      f:0> ZomboidRadio.Init() start
+LOG  : Lua          f:0> scriptmanager = zombie.radio.scripting.RadioScriptManager@40f572e7, isNewGame = true
+LOG  : Lua          f:0> name = Automated Emergency Broadcast System, freq = 96800, cat = Emergency, uuid = EMRG-711984
+LOG  : General      f:0> ZomboidRadio.Init() end
+LOG  : General      f:0> GlobalModData.init() start
+LOG  : Lua          f:0> [OMHTT] server-ready version=0.1.1-p1batch game=42.20
+LOG  : General      f:0> GlobalModData.init() end
+LOG  : General      f:0> InstanceTracker.load() start
+LOG  : General      f:0> InstanceTracker.load() end
+LOG  : General      f:0> ErosionGlobals.Boot() start
+LOG  : General      f:0> ErosionGlobals.Boot() end
+LOG  : General      f:0> WorldDictionary.init() start
+LOG  : General      f:0> WorldDictionary: Checking dictionary...
+LOG  : General      f:0> WorldDictionary.init() end
+LOG  : General      f:0> GameEntityManager.Init() start
+LOG  : General      f:0> GameEntityManager.Init() end
+LOG  : General      f:0> PersistentOutfits.init() start
+LOG  : General      f:0> PersistentOutfits.init() end
+LOG  : General      f:0> IsoMetaGrid.Create: finished loading in 2.85 seconds
+LOG  : General      f:0> [pzopt] loaded override zombie.characters.action.conditions.CharacterVariableCondition (target revision b0bbce05d5, active)
+ERROR: Lua          f:0 at Lua(Vanilla).handleMannequinZone    > ERROR: Mannequin zone missing properties in media/maps/Muldraugh, KY/objects.lua coords: 13583, 1299, 0
+LOG  : General      f:0> [pzopt] checkVehiclesZones: 9690 vehicle zones, 3 duplicates removed
+WARN : Lua          f:0 at Lua(Vanilla).doMapZones             > can't find map objects file: media/maps/West Point, KY/objects.lua
+LOG  : General      f:0> [pzopt] checkVehiclesZones: 9690 vehicle zones, 0 duplicates removed
+WARN : Lua          f:0 at Lua(Vanilla).doMapZones             > can't find map objects file: media/maps/Valley Station, KY/objects.lua
+LOG  : General      f:0> [pzopt] checkVehiclesZones: 9690 vehicle zones, 0 duplicates removed
+WARN : Lua          f:0 at Lua(Vanilla).doMapZones             > can't find map objects file: media/maps/Rosewood, KY/objects.lua
+LOG  : General      f:0> [pzopt] checkVehiclesZones: 9690 vehicle zones, 0 duplicates removed
+WARN : Lua          f:0 at Lua(Vanilla).doMapZones             > can't find map objects file: media/maps/Riverside, KY/objects.lua
+LOG  : General      f:0> [pzopt] checkVehiclesZones: 9690 vehicle zones, 0 duplicates removed
+WARN : Lua          f:0 at Lua(Vanilla).doMapZones             > can't find map objects file: media/maps/March Ridge, KY/objects.lua
+LOG  : General      f:0> [pzopt] checkVehiclesZones: 9690 vehicle zones, 0 duplicates removed
+WARN : Lua          f:0 at Lua(Vanilla).doMapZones             > can't find map objects file: media/maps/Irvington, KY/objects.lua
+LOG  : General      f:0> [pzopt] checkVehiclesZones: 9690 vehicle zones, 0 duplicates removed
+WARN : Lua          f:0 at Lua(Vanilla).doMapZones             > can't find map objects file: media/maps/Fallas Lake, KY/objects.lua
+LOG  : General      f:0> [pzopt] checkVehiclesZones: 9690 vehicle zones, 0 duplicates removed
+WARN : Lua          f:0 at Lua(Vanilla).doMapZones             > can't find map objects file: media/maps/Ekron, KY/objects.lua
+LOG  : General      f:0> [pzopt] checkVehiclesZones: 9690 vehicle zones, 0 duplicates removed
+WARN : Lua          f:0 at Lua(Vanilla).doMapZones             > can't find map objects file: media/maps/Echo Creek, KY/objects.lua
+LOG  : General      f:0> [pzopt] checkVehiclesZones: 9690 vehicle zones, 0 duplicates removed
+WARN : Lua          f:0 at Lua(Vanilla).doMapZones             > can't find map objects file: media/maps/Brandenburg, KY/objects.lua
+LOG  : General      f:0> [pzopt] checkVehiclesZones: 9690 vehicle zones, 0 duplicates removed
+ERROR: General      f:0 at Basements.mergeRoomsOntoMetaCell    > duplicate RoomDef.metaID for room at 10707,9484,0
+LOG  : General      f:0> Max #ZONES on one chunk is 27
+LOG  : General      f:0> triggerEvent OnLoadedMapZones
+LOG  : General      f:0> ItemConfigurator.Preprocess() start
+LOG  : General      f:0> ItemConfigurator.Preprocess() end
+LOG  : General      f:0> MapCollisionData.init() start
+LOG  : General      f:0> MapCollisionData.init() end
+LOG  : General      f:0> AnimalPopulationManager.init() start
+LOG  : General      f:0> AnimalPopulationManager.init() end
+LOG  : General      f:0> ZombiePopulationManager.init() start
+LOG  : General      f:0> ZombiePopulationManager.init() end
+LOG  : General      f:0> Pathfind init() start
+LOG  : General      f:0> Pathfind init() end
+LOG  : General      f:0> WorldStreamer.create() start
+LOG  : General      f:0> [pzopt] loaded override zombie.iso.WorldStreamer (target revision b0bbce05d5, active)
+LOG  : General      f:0> [pzopt] settings: parallel=true workers=4 (effective 4, cores 32) wake=true (effective true) chunkGridWidth=0 instrument=false dev=false luaChecksumExempt=true translucentCache=false hotsaveIntervalSec=30 persistentVbo=true treesInChunkTexture=true windowsInChunkTexture=true translucentTilesInChunkTexture=true treeBakePass=true curtainDepthNudgePct=5 bakeBudget=8 lightingBudget=8 lightingRebakeMs=250 rebakeBudget=4 rebakeMaxFrames=3 lightingRebakeBudget=8 lightingRebakeMaxFrames=30 zoomRetain=true zoomRebakeBudget=12 zoomFrameMs=10 zoomPlaceholder=true zoomEaseMs=300 zoomEase=0.25,0.1,0.25,1.0 lightingStrongDelta=6 lightingStrongBudget=8 lightingStrongFrameMs=0 lightingGlobalDeltaPct=2 lightingFlush=true lightSwitchCheckFrames=15 cutawayFast=true cutawayRadius=6 gridStackInterval=8 roofHideDebounceFrames=8 weatherMaskIdleSkip=true worldSoundFast=true saveCellAsync=true chunkMapFast=true propertySurfaceNoAlloc=true weatherNoGlGet=true renderChunkPrewarm=-1 lightingVisionParallel=false threadNice= profileHandshake=true jitMode=auto jitC1Cores=4 vehicleCull=true playerLosFast=true zombieSpotFast=true playerLosNative=false animBonesParallel=true frameThreads=8 actionEvalParallel=true actionSnapshotFilter=true emitterParamSkip=true separateFast=true separateParallel=true actionGroupCache=true profilerThreadMemo=true sleepCheckMemo=true stateParamMemo=true zombieSimLodTiles=0 zombieSimLodSteps=1 zombieCheckSpread=0 lightingReadParallel=true zombieCullSortFast=true skinTransformsPrecompute=true skinPalettePrecompute=true shadowPrep=true boneIndexCache=true ecsLookupFast=true actionConditionFast=true charDrawPrep=true zombieAtlasFast=true charDrawThreads=14 fileThreads=16 fileInflight=64 textureBufferMb=50 parallelDepthMaps=true loaderCpuFixes=true loadWorkers=16 scriptParserFast=true fmodAsync=true noLoadFade=true noIntroWait=true noClickToStart=true noLoadingScreen=true centerFirstLoad=true resumeShot=true bootPump=true earlyModels=true luaPrecompile=true preloadAnimSets=true tileDefPreload=true skipIdChecks=true voronoiFast=true earlyTilePacks=true aotCache=true animClipCache=true packIndex=true itemParamSwitch=true bootFileThreads=26 shaderCache=true mipmapArrays=true puddleCache=true puddleCacheFrames=60 puddleVbo=true treeAppend=true puddleEarlyZ=true rainSplashesFast=true rainTiles=true vboBatchKb=1024 vboFastQuads=true fogPass=true fogScalePct=25 fogMaskFrames=20 upscaler=off upscalerQuality=quality upscalerScalePct=0 fsrSharpnessPct=80 dlssSharpen=false upscalerObjectMv=true
+LOG  : General      f:0> WorldStreamer.create() end
+LOG  : General      f:0> CellLoader.LoadCellBinaryChunk start
+LOG  : General      f:0> [pzopt] loaded override zombie.iso.ChunkSaveWorker (target revision b0bbce05d5, active)
+LOG  : General      f:0> CellLoader.LoadCellBinaryChunk start
+LOG  : General      f:0> MapItem.LoadWorldMap() start
+LOG  : General      f:0> MapItem.LoadWorldMap() start
+LOG  : General      f:0> WorldStreamer.isBusy() loop start
+LOG  : General      f:0> [pzopt] loaded override zombie.iso.fboRenderChunk.FBORenderCell (target revision b0bbce05d5, active)
+LOG  : General      f:0> [pzopt] loaded override zombie.iso.objects.IsoLightSwitch (target revision b0bbce05d5, active)
+LOG  : General      f:0> [pzopt] recalc pool started with 16 workers (4 in play, 16 while loading)
+LOG  : General      f:0> [pzopt] loaded override zombie.iso.fboRenderChunk.FBORenderCutaways (target revision b0bbce05d5, active)
+LOG  : General      f:0> WorldStreamer.isBusy() loop end
+LOG  : General      f:0> MetaTracker.load() start
+LOG  : General      f:0> MetaTracker.load() end
+LOG  : General      f:0> [pzopt] loaded override zombie.iso.weather.fx.ParticleRectangle (target revision b0bbce05d5, active)
+LOG  : General      f:0> triggerEvent OnGameTimeLoaded
+LOG  : General      f:0> GlobalObjects.initSystems() start
+LOG  : General      f:0> GlobalObjects.initSystems() end
+LOG  : General      f:0> GameWindow.save() start
+LOG  : General      f:0> Saving worldgen params
+LOG  : General      f:0> Saving GlobalModData
+LOG  : General      f:0> GameWindow.save() end
+LOG  : General      f:0> bWaitForAssetLoadingToFinish2 start
+LOG  : General      f:0> [pzopt] file pool 32 threads while the load waits for file tasks
+LOG  : General      f:0> [pzopt] file pool 16 threads after the wait
+LOG  : General      f:0> [pzopt] file tasks so far: FileTask_LoadPackImage=561/127.4s waitFileTask(sleep)=513/102.1s CachedAnimationTask=2161/56.8s FileTask_ParseXML=1708/32.0s FileTask_LoadImageData=1106/9.1s LoadTask=216/9.0s FileTask_LoadMesh=136/5.2s FileTask_LoadImagePyramidTexture=119/5.1s FileTask_LoadPhysicsShape=30/0.6s
+LOG  : General      f:0> bWaitForAssetLoadingToFinish2 end
+LOG  : General      f:0> FBORenderChunkManager.gameLoaded() start
+LOG  : General      f:0> FBORenderChunkManager.gameLoaded() end
+LOG  : General      f:0> Bullet.initPhysicsMeshes() start
+LOG  : General      f:0> Bullet.initPhysicsMeshes() end
+LOG  : General      f:0> game loading took 17 seconds
+LOG  : General      f:0> STATE: exit zombie.gameStates.GameLoadingState
+LOG  : General      f:0> [pzopt] renderChunkPrewarm: 400 render chunks for zoom 1.0 in 241 ms
+LOG  : General      f:0> [pzopt] file system: 128 -> 64 tasks in flight
+LOG  : Lua          f:0> 1 players found
+LOG  : Lua          f:0> player 0 is mouse
+LOG  : General      f:0> Game Mode: Sandbox
+LOG  : General      f:0> Sandbox Options:
+LOG  : General      f:0> Zombies 4
+LOG  : General      f:0> Distribution 1
+LOG  : General      f:0> ZombieVoronoiNoise true
+LOG  : General      f:0> ZombieRespawn 4
+LOG  : General      f:0> ZombieMigrate true
+LOG  : General      f:0> DayLength 4
+LOG  : General      f:0> StartYear 1
+LOG  : General      f:0> StartMonth 7
+LOG  : General      f:0> StartDay 9
+LOG  : General      f:0> StartTime 2
+LOG  : General      f:0> DayNightCycle 1
+LOG  : General      f:0> ClimateCycle 1
+LOG  : General      f:0> FogCycle 1
+LOG  : General      f:0> WaterShut 2
+LOG  : General      f:0> ElecShut 2
+LOG  : General      f:0> AlarmDecay 2
+LOG  : General      f:0> WaterShutModifier 9
+LOG  : General      f:0> ElecShutModifier 15
+LOG  : General      f:0> AlarmDecayModifier 14
+LOG  : General      f:0> FoodLootNew 0.8
+LOG  : General      f:0> LiteratureLootNew 0.6
+LOG  : General      f:0> SkillBookLoot 0.6
+LOG  : General      f:0> RecipeResourceLoot 0.6
+LOG  : General      f:0> MedicalLootNew 0.6
+LOG  : General      f:0> SurvivalGearsLootNew 0.6
+LOG  : General      f:0> CannedFoodLootNew 0.6
+LOG  : General      f:0> WeaponLootNew 0.6
+LOG  : General      f:0> RangedWeaponLootNew 1.2
+LOG  : General      f:0> AmmoLootNew 0.6
+LOG  : General      f:0> MechanicsLootNew 0.6
+LOG  : General      f:0> OtherLootNew 0.8
+LOG  : General      f:0> ClothingLootNew 0.6
+LOG  : General      f:0> ContainerLootNew 0.6
+LOG  : General      f:0> KeyLootNew 0.4
+LOG  : General      f:0> MediaLootNew 0.6
+LOG  : General      f:0> MementoLootNew 0.6
+LOG  : General      f:0> CookwareLootNew 0.6
+LOG  : General      f:0> MaterialLootNew 0.6
+LOG  : General      f:0> FarmingLootNew 0.6
+LOG  : General      f:0> ToolLootNew 0.6
+LOG  : General      f:0> RollsMultiplier 1.0
+LOG  : General      f:0> LootItemRemovalList 
+LOG  : General      f:0> RemoveStoryLoot false
+LOG  : General      f:0> RemoveZombieLoot false
+LOG  : General      f:0> ZombiePopLootEffect 0
+LOG  : General      f:0> InsaneLootFactor 0.05
+LOG  : General      f:0> ExtremeLootFactor 0.2
+LOG  : General      f:0> RareLootFactor 0.6
+LOG  : General      f:0> NormalLootFactor 1.0
+LOG  : General      f:0> CommonLootFactor 2.0
+LOG  : General      f:0> AbundantLootFactor 3.0
+LOG  : General      f:0> Temperature 3
+LOG  : General      f:0> Rain 3
+LOG  : General      f:0> ErosionSpeed 4
+LOG  : General      f:0> ErosionDays 0
+LOG  : General      f:0> Farming 3
+LOG  : General      f:0> CompostTime 2
+LOG  : General      f:0> StatsDecrease 3
+LOG  : General      f:0> NatureAbundance 3
+LOG  : General      f:0> Alarm 4
+LOG  : General      f:0> LockedHouses 6
+LOG  : General      f:0> StarterKit false
+LOG  : General      f:0> Nutrition true
+LOG  : General      f:0> FoodRotSpeed 3
+LOG  : General      f:0> FridgeFactor 3
+LOG  : General      f:0> SeenHoursPreventLootRespawn 0
+LOG  : General      f:0> HoursForLootRespawn 0
+LOG  : General      f:0> MaxItemsForLootRespawn 5
+LOG  : General      f:0> ConstructionPreventsLootRespawn true
+LOG  : General      f:0> WorldItemRemovalList Base.Hat, Base.Glasses, Base.Maggots, Base.Slug, Base.Slug2, Base.Snail, Base.Worm, Base.Dung_Mouse, Base.Dung_Rat
+LOG  : General      f:0> HoursForWorldItemRemoval 24.0
+LOG  : General      f:0> ItemRemovalListBlacklistToggle false
+LOG  : General      f:0> TimeSinceApo 1
+LOG  : General      f:0> PlantResilience 3
+LOG  : General      f:0> PlantAbundance 3
+LOG  : General      f:0> EndRegen 3
+LOG  : General      f:0> Helicopter 2
+LOG  : General      f:0> MetaEvent 2
+LOG  : General      f:0> SleepingEvent 1
+LOG  : General      f:0> GeneratorFuelConsumption 0.1
+LOG  : General      f:0> GeneratorSpawning 4
+LOG  : General      f:0> AnnotatedMapChance 4
+LOG  : General      f:0> CharacterFreePoints 0
+LOG  : General      f:0> ConstructionBonusPoints 3
+LOG  : General      f:0> NightDarkness 3
+LOG  : General      f:0> NightLength 3
+LOG  : General      f:0> BoneFracture true
+LOG  : General      f:0> InjurySeverity 2
+LOG  : General      f:0> HoursForCorpseRemoval 216.0
+LOG  : General      f:0> DecayingCorpseHealthImpact 3
+LOG  : General      f:0> ZombieHealthImpact false
+LOG  : General      f:0> BloodLevel 3
+LOG  : General      f:0> ClothingDegradation 3
+LOG  : General      f:0> FireSpread true
+LOG  : General      f:0> DaysForRottenFoodRemoval -1
+LOG  : General      f:0> AllowExteriorGenerator true
+LOG  : General      f:0> MaxFogIntensity 1
+LOG  : General      f:0> MaxRainFxIntensity 1
+LOG  : General      f:0> EnableSnowOnGround true
+LOG  : General      f:0> AttackBlockMovements true
+LOG  : General      f:0> SurvivorHouseChance 3
+LOG  : General      f:0> VehicleStoryChance 3
+LOG  : General      f:0> ZoneStoryChance 3
+LOG  : General      f:0> AllClothesUnlocked false
+LOG  : General      f:0> EnableTaintedWaterText true
+LOG  : General      f:0> EnableVehicles true
+LOG  : General      f:0> CarSpawnRate 3
+LOG  : General      f:0> ZombieAttractionMultiplier 1.0
+LOG  : General      f:0> VehicleEasyUse false
+LOG  : General      f:0> InitialGas 2
+LOG  : General      f:0> FuelStationGasInfinite false
+LOG  : General      f:0> FuelStationGasMin 0.0
+LOG  : General      f:0> FuelStationGasMax 0.8
+LOG  : General      f:0> FuelStationGasEmptyChance 20
+LOG  : General      f:0> LockedCar 4
+LOG  : General      f:0> CarGasConsumption 1.0
+LOG  : General      f:0> CarGeneralCondition 3
+LOG  : General      f:0> CarDamageOnImpact 3
+LOG  : General      f:0> DamageToPlayerFromHitByACar 1
+LOG  : General      f:0> TrafficJam true
+LOG  : General      f:0> CarAlarm 3
+LOG  : General      f:0> PlayerDamageFromCrash true
+LOG  : General      f:0> SirenShutoffHours 0.0
+LOG  : General      f:0> ChanceHasGas 2
+LOG  : General      f:0> RecentlySurvivorVehicles 2
+LOG  : General      f:0> MultiHitZombies false
+LOG  : General      f:0> RearVulnerability 3
+LOG  : General      f:0> SirenEffectsZombies true
+LOG  : General      f:0> AnimalStatsModifier 4
+LOG  : General      f:0> AnimalMetaStatsModifier 4
+LOG  : General      f:0> AnimalPregnancyTime 4
+LOG  : General      f:0> AnimalAgeModifier 4
+LOG  : General      f:0> AnimalMilkIncModifier 4
+LOG  : General      f:0> AnimalWoolIncModifier 4
+LOG  : General      f:0> AnimalRanchChance 5
+LOG  : General      f:0> AnimalGrassRegrowTime 240
+LOG  : General      f:0> AnimalMetaPredator false
+LOG  : General      f:0> AnimalMatingSeason true
+LOG  : General      f:0> AnimalEggHatch 4
+LOG  : General      f:0> AnimalSoundAttractZombies true
+LOG  : General      f:0> AnimalTrackChance 4
+LOG  : General      f:0> AnimalPathChance 4
+LOG  : General      f:0> MaximumRatIndex 25
+LOG  : General      f:0> DaysUntilMaximumRatIndex 90
+LOG  : General      f:0> MetaKnowledge 3
+LOG  : General      f:0> SeeNotLearntRecipe true
+LOG  : General      f:0> MaximumLootedBuildingRooms 50
+LOG  : General      f:0> EnablePoisoning 1
+LOG  : General      f:0> MaggotSpawn 1
+LOG  : General      f:0> LightBulbLifespan 2.0
+LOG  : General      f:0> FishAbundance 2
+LOG  : General      f:0> LevelForMediaXPCutoff 3
+LOG  : General      f:0> LevelForDismantleXPCutoff 0
+LOG  : General      f:0> BloodSplatLifespanDays 0
+LOG  : General      f:0> LiteratureCooldown 45
+LOG  : General      f:0> NegativeTraitsPenalty 1
+LOG  : General      f:0> MinutesPerPage 2.0
+LOG  : General      f:0> KillInsideCrops true
+LOG  : General      f:0> PlantGrowingSeasons true
+LOG  : General      f:0> PlaceDirtAboveground false
+LOG  : General      f:0> FarmingSpeedNew 1.0
+LOG  : General      f:0> FarmingAmountNew 1.0
+LOG  : General      f:0> MaximumLooted 25
+LOG  : General      f:0> DaysUntilMaximumLooted 90
+LOG  : General      f:0> RuralLooted 0.5
+LOG  : General      f:0> MaximumDiminishedLoot 20
+LOG  : General      f:0> DaysUntilMaximumDiminishedLoot 3650
+LOG  : General      f:0> MuscleStrainFactor 0.7
+LOG  : General      f:0> DiscomfortFactor 0.8
+LOG  : General      f:0> WoundInfectionFactor 1.0
+LOG  : General      f:0> NoBlackClothes true
+LOG  : General      f:0> EasyClimbing false
+LOG  : General      f:0> MaximumFireFuelHours 8
+LOG  : General      f:0> FirearmUseDamageChance 2
+LOG  : General      f:0> FirearmNoiseMultiplier 1.0
+LOG  : General      f:0> FirearmJamMultiplier 1.0
+LOG  : General      f:0> FirearmMoodleMultiplier 1.0
+LOG  : General      f:0> FirearmWeatherMultiplier 1.0
+LOG  : General      f:0> FirearmHeadGearEffect true
+LOG  : General      f:0> ClayLakeChance 0.05
+LOG  : General      f:0> ClayRiverChance 0.05
+LOG  : General      f:0> GeneratorTileRange 20
+LOG  : General      f:0> GeneratorVerticalPowerRange 3
+LOG  : General      f:0> SpawnFrequency 4
+LOG  : General      f:0> AllowMiniMap false
+LOG  : General      f:0> AllowWorldMap true
+LOG  : General      f:0> MapAllKnown false
+LOG  : General      f:0> MapNeedsLight true
+LOG  : General      f:0> Speed 4
+LOG  : General      f:0> SprinterPercentage 0
+LOG  : General      f:0> Strength 2
+LOG  : General      f:0> Toughness 4
+LOG  : General      f:0> Transmission 1
+LOG  : General      f:0> Mortality 5
+LOG  : General      f:0> Reanimate 3
+LOG  : General      f:0> Cognition 3
+LOG  : General      f:0> DoorOpeningPercentage 0
+LOG  : General      f:0> CrawlUnderVehicle 5
+LOG  : General      f:0> Memory 2
+LOG  : General      f:0> Sight 5
+LOG  : General      f:0> Hearing 5
+LOG  : General      f:0> SpottedLogic true
+LOG  : General      f:0> ThumpNoChasing false
+LOG  : General      f:0> ThumpOnConstruction true
+LOG  : General      f:0> ActiveOnly 1
+LOG  : General      f:0> TriggerHouseAlarm true
+LOG  : General      f:0> ZombiesDragDown true
+LOG  : General      f:0> ZombiesCrawlersDragDown false
+LOG  : General      f:0> ZombiesFenceLunge true
+LOG  : General      f:0> ZombiesArmorFactor 2.0
+LOG  : General      f:0> ZombiesMaxDefense 85
+LOG  : General      f:0> ChanceOfAttachedWeapon 6
+LOG  : General      f:0> ZombiesFallDamage 1.0
+LOG  : General      f:0> DisableFakeDead 1
+LOG  : General      f:0> PlayerSpawnZombieRemoval 1
+LOG  : General      f:0> FenceThumpersRequired 25
+LOG  : General      f:0> FenceDamageMultiplier 1.0
+LOG  : General      f:0> PopulationMultiplier 0.65
+LOG  : General      f:0> PopulationStartMultiplier 1.0
+LOG  : General      f:0> PopulationPeakMultiplier 1.5
+LOG  : General      f:0> PopulationPeakDay 28
+LOG  : General      f:0> RespawnHours 0.0
+LOG  : General      f:0> RespawnUnseenHours 0.0
+LOG  : General      f:0> RespawnMultiplier 0.0
+LOG  : General      f:0> RedistributeHours 12.0
+LOG  : General      f:0> FollowSoundDistance 100
+LOG  : General      f:0> RallyGroupSize 20
+LOG  : General      f:0> RallyGroupSizeVariance 50
+LOG  : General      f:0> RallyTravelDistance 20
+LOG  : General      f:0> RallyGroupSeparation 15
+LOG  : General      f:0> RallyGroupRadius 3
+LOG  : General      f:0> ZombiesCountBeforeDelete 300
+LOG  : General      f:0> Global 1.0
+LOG  : General      f:0> GlobalToggle true
+LOG  : General      f:0> Fitness 1.0
+LOG  : General      f:0> Strength 1.0
+LOG  : General      f:0> Sprinting 1.0
+LOG  : General      f:0> Lightfoot 1.0
+LOG  : General      f:0> Nimble 1.0
+LOG  : General      f:0> Sneak 1.0
+LOG  : General      f:0> Axe 1.0
+LOG  : General      f:0> Blunt 1.0
+LOG  : General      f:0> SmallBlunt 1.0
+LOG  : General      f:0> LongBlade 1.0
+LOG  : General      f:0> SmallBlade 1.0
+LOG  : General      f:0> Spear 1.0
+LOG  : General      f:0> Maintenance 1.0
+LOG  : General      f:0> Woodwork 1.0
+LOG  : General      f:0> Cooking 1.0
+LOG  : General      f:0> Farming 1.0
+LOG  : General      f:0> Doctor 1.0
+LOG  : General      f:0> Electricity 1.0
+LOG  : General      f:0> MetalWelding 1.0
+LOG  : General      f:0> Mechanics 1.0
+LOG  : General      f:0> Tailoring 1.0
+LOG  : General      f:0> Aiming 1.0
+LOG  : General      f:0> Reloading 1.0
+LOG  : General      f:0> Fishing 1.0
+LOG  : General      f:0> Trapping 1.0
+LOG  : General      f:0> PlantScavenging 1.0
+LOG  : General      f:0> FlintKnapping 1.0
+LOG  : General      f:0> Masonry 1.0
+LOG  : General      f:0> Pottery 1.0
+LOG  : General      f:0> Carving 1.0
+LOG  : General      f:0> Husbandry 1.0
+LOG  : General      f:0> Tracking 1.0
+LOG  : General      f:0> Blacksmith 1.0
+LOG  : General      f:0> Butchering 1.0
+LOG  : General      f:0> Glassmaking 1.0
+LOG  : General      f:0> InformationPreset 1
+LOG  : General      f:0> BarsEnabled true
+LOG  : General      f:0> BarRange 60
+LOG  : General      f:0> NumbersEnabled true
+LOG  : General      f:0> DamageScale 1000
+LOG  : General      f:0> SyncZombieHealth true
+LOG  : General      f:0> DefaultNumbers 
+LOG  : General      f:0> DefaultBars 
+LOG  : General      f:0> ForceLook false
+LOG  : General      f:0> DamageDealt true
+LOG  : General      f:0> SelfDamage true
+LOG  : General      f:0> Environment true
+LOG  : General      f:0> WoundEffect true
+LOG  : General      f:0> ObjectDamage true
+LOG  : General      f:0> VehicleDamage true
+LOG  : General      f:0> ZombieFire true
+LOG  : General      f:0> CritEffect true
+LOG  : General      f:0> HeadshotEffect true
+LOG  : General      f:0> InstakillEffect true
+LOG  : General      f:0> ExplosionEffect true
+LOG  : General      f:0> BoomEffect true
+LOG  : General      f:0> MissEffect true
+LOG  : General      f:0> HealEffect true
+LOG  : General      f:0> LevelEffect true
+LOG  : General      f:0> HealthBars 3
+LOG  : General      f:0> AnimalBars 3
+LOG  : General      f:0> VehicleBars 3
+LOG  : General      f:0> PlayerBars 3
+LOG  : General      f:0> ToughnessBar true
+LOG  : General      f:0> NpcRing true
+LOG  : General      f:0> HealthPercent true
+LOG  : General      f:0> InspectMode true
+LOG  : General      f:0> SeeThrough true
+LOG  : General      f:0> SeeInDark true
+LOG  : General      f:0> FoundationTestControls true
+LOG  : General      f:0> Reseeding weather period, new seed: 657039
+LOG  : Lua          f:0> [pzopt] options tab: 152 controls, 0 pinned by pzopt.properties or -D, 153 preview rows, preview 1168 px at x=595
+LOG  : General      f:0> binkId: 6
+LOG  : Lua          f:0> [OMHTT] client-ready version=0.1.1-p1batch game=42.20
+LOG  : General      f:0> [pzopt] resume shot: loading frame to world entry 19543 ms (fill-in paced at 3000 ms, next pace from 19543 ms)
+LOG  : General      f:0> [pzopt] charDrawPrep: 14 threads for the characters draw pre-pass
+LOG  : General      f:0> [pzopt] loaded override zombie.savefile.SavefileThumbnail (target revision b0bbce05d5, active, logged late)
+LOG  : General      f:0> [pzopt] loaded override zombie.iso.weather.fx.WeatherParticleDrawer (target revision b0bbce05d5, active)
+LOG  : General      f:1> [pzopt] frameThreads: 8 worker threads for the per-frame zombie batches
+LOG  : General      f:4> [pzopt] actionSnapshotFilter: 157 callback variables, 33 of them read per frame on the game thread
+LOG  : General      f:257> [pzopt] glState: 255 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:513> [pzopt] glState: 511 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:770> [pzopt] glState: 767 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:1024> [pzopt] glState: 1023 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:1280> [pzopt] glState: 1279 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:1536> [pzopt] glState: 1535 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:1792> [pzopt] glState: 1791 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:2048> [pzopt] glState: 2047 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:2304> [pzopt] glState: 2303 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:2560> [pzopt] glState: 2559 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:2816> [pzopt] glState: 2815 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:3072> [pzopt] glState: 3071 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:3328> [pzopt] glState: 3327 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:3584> [pzopt] glState: 3583 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:3842> [pzopt] glState: 3839 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:4097> [pzopt] glState: 4095 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:4354> [pzopt] glState: 4351 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:4609> [pzopt] glState: 4607 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:4865> [pzopt] glState: 4863 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:5120> [pzopt] glState: 5119 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:5376> [pzopt] glState: 5375 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:5632> [pzopt] glState: 5631 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:5888> [pzopt] glState: 5887 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:6144> [pzopt] glState: 6143 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:6400> [pzopt] glState: 6399 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:6656> [pzopt] glState: 6655 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:6912> [pzopt] glState: 6911 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:7168> [pzopt] glState: 7167 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:7424> [pzopt] glState: 7423 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:7680> [pzopt] glState: 7679 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:7937> [pzopt] glState: 7935 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:8194> [pzopt] glState: 8191 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:8450> [pzopt] glState: 8447 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:8705> [pzopt] glState: 8703 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:8960> [pzopt] glState: 8959 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:9217> [pzopt] glState: 9215 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:9473> [pzopt] glState: 9471 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:9730> [pzopt] glState: 9727 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:9986> [pzopt] glState: 9983 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:10241> [pzopt] glState: 10239 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:10498> [pzopt] glState: 10495 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:10754> [pzopt] glState: 10751 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:11010> [pzopt] glState: 11007 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:11265> [pzopt] glState: 11263 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:11521> [pzopt] glState: 11519 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:11778> [pzopt] glState: 11775 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:12034> [pzopt] glState: 12031 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:12289> [pzopt] glState: 12287 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:12545> [pzopt] glState: 12543 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:12801> [pzopt] glState: 12799 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:13058> [pzopt] glState: 13055 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:13312> [pzopt] glState: 13311 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:13568> [pzopt] glState: 13567 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:13824> [pzopt] glState: 13823 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:13827> [pzopt] recalc pool width 4
+LOG  : General      f:14080> [pzopt] glState: 14079 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:14215> [pzopt] glState: 14335 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : Lua          f:14215> [OMHTT] command=PlaceBarrier status=TooFar id= condition=-1 revision=0 count=0 tile=7825:11279:0
+LOG  : Lua          f:14215> [OMHTT] client-result status=TooFar id= serverCondition=-1 localCondition=-1 serverCount=0 localCount=0 agreement=Agrees
+LOG  : General      f:14215> [pzopt] glState: 14591 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:14215> [pzopt] glState: 14847 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:14215> [pzopt] glState: 15103 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:14215> [pzopt] glState: 15359 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:14215> [pzopt] glState: 15615 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:14215> [pzopt] glState: 15871 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:14215> [pzopt] glState: 16127 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:14268> [pzopt] hot save: running (2 drains skipped since the last one)
+LOG  : General      f:14318> [pzopt] saveCell: 95 requests, 8 cell writes
+LOG  : General      f:14387> [pzopt] glState: 16383 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : Lua          f:14570> [OMHTT] command=PlacePotato status=Placed id=test-1 condition=100 revision=1 count=1 tile=7820:11278:0
+LOG  : Lua          f:14570> [OMHTT] client-result status=Placed id=test-1 serverCondition=100 localCondition=100 serverCount=1 localCount=1 agreement=Agrees
+LOG  : General      f:14643> [pzopt] glState: 16639 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : Lua          f:14836> [OMHTT] command=Inspect status=TooFar id= condition=-1 revision=0 count=0 tile=7818:11277:0
+LOG  : Lua          f:14836> [OMHTT] client-result status=TooFar id= serverCondition=-1 localCondition=-1 serverCount=0 localCount=0 agreement=Agrees
+LOG  : General      f:14899> [pzopt] glState: 16895 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:15002> [pzopt] glState: 17151 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:15002> [pzopt] glState: 17407 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:15002> [pzopt] glState: 17663 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:15002> [pzopt] glState: 17919 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:15002> [pzopt] glState: 18175 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:15002> [pzopt] glState: 18431 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:15002> [pzopt] glState: 18687 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:15002> [pzopt] glState: 18943 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:15002> [pzopt] glState: 19199 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:15002> [pzopt] glState: 19455 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:15002> [pzopt] glState: 19711 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:15002> [pzopt] glState: 19967 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:15002> [pzopt] glState: 20223 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:15002> [pzopt] glState: 20479 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:15140> [pzopt] glState: 20735 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : Lua          f:15143> [OMHTT] command=PlaceBarrier status=Placed id=test-2 condition=100 revision=1 count=1 tile=7818:11276:0
+LOG  : Lua          f:15143> [OMHTT] client-result status=Placed id=test-2 serverCondition=100 localCondition=100 serverCount=1 localCount=1 agreement=Agrees
+LOG  : General      f:15143> [pzopt] glState: 20991 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:15143> [pzopt] glState: 21247 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:15143> [pzopt] glState: 21503 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:15143> [pzopt] glState: 21759 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:15150> [pzopt] hot save: running (2 drains skipped since the last one)
+LOG  : General      f:15164> [pzopt] glState: 22015 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:15420> [pzopt] glState: 22271 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : Lua          f:15445> [OMHTT] command=PlaceBarrier status=Placed id=test-3 condition=100 revision=1 count=1 tile=7821:11275:0
+LOG  : Lua          f:15445> [OMHTT] client-result status=Placed id=test-3 serverCondition=100 localCondition=100 serverCount=1 localCount=1 agreement=Agrees
+LOG  : General      f:15611> [pzopt] glState: 22527 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:15611> [pzopt] glState: 22783 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:15611> [pzopt] glState: 23039 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:15611> [pzopt] glState: 23295 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:15611> [pzopt] glState: 23551 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches
+LOG  : General      f:15611> [pzopt] glState: 23807 recorded, 0 driver fallbacks, 0 dev checks, 0 mismatches

@@ -1,0 +1,29 @@
+{
+  "version": "0.1.0-p1c1",
+  "gameRoot": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\ProjectZomboid",
+  "files": {
+    "42.20/media/actiongroups/.keep": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "42.20/media/AnimSets/.keep": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "42.20/media/lua/client/OMHTT/FoundationClient.lua": "4b6ba19ee12a64ac39f64841828c2c645d2e44396081fdbcacac05f55309d99f",
+    "42.20/media/lua/server/OMHTT/FoundationServer.lua": "339e6ccb73b33e2e7790a30bcbcc06d1d3d889d13725ad701bb67222ffd5e56a",
+    "42.20/media/lua/shared/OMHTT/Foundation.lua": "57b9f83607675df0a624d21c2b8af8ae6e1b1caaeccd8e9520bb1ae9af550b1f",
+    "42.20/media/lua/shared/Translate/EN/ContextMenu_EN.txt": "24a1041af3126bcff0c9858384a4c51a13662f667542b116327e8b8404feb261",
+    "42.20/media/lua/shared/Translate/EN/Sandbox_EN.txt": "6a71bbe63ad8cff9ca6784434c226d9aaf4c8c2fed7f631b50c1d89cc27ade25",
+    "42.20/media/lua/shared/Translate/EN/UI_EN.txt": "2e755f109b15c3c53ca203a0f7f37d94d69e3b8d6744994423d29e76de682214",
+    "42.20/media/sandbox-options.txt": "5cf2f639f6f7189cc5907031b30f968519d06ff2916bed1f1ce056cd3a7a838f",
+    "42.20/media/textures/OMHTT_TestCube.png": "92082e5eaf5c376bcb34520d12d46b74d9f35e304b9491e9577a087b2cbb59a0",
+    "42.20/mod.info": "556bf1292d43948b898becc63b7e22ebdb17a44c2e311c7cf81ef069ab4f03fb",
+    "common/.keep": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "common/media/actiongroups/.keep": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "common/media/AnimSets/.keep": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+  },
+  "gameEvidence": {
+    "projectzomboid.jar": "80e405a4bfc42f6072e75b3735f458a6514143da011d3226007ded305a442f44",
+    "media/lua/server/Map/SGlobalObjectSystem.lua": "0f29131a414c391c60513e4bad4202b0b07295265f1609cb8c8adb7401d16b8b",
+    "media/lua/server/Camping/SCampfireGlobalObject.lua": "033c34cc892e3837ce328650070dbceb9b1a7b6741e39221fb338310c94d3e5f",
+    "media/lua/server/Vehicles/ProfessionVehicles.lua": "dd8f54aff597b75ff3662c74d9cac4f019030c9cf5e37b44982eeb1bdeeb8be6",
+    "media/lua/server/ClientCommands.lua": "d71512a47b8ae148f8b642a1bcfc16c52a9d74950d0e8100f34d0d32d8806745"
+  },
+  "inGameAcceptance": "pending",
+  "nativeTableFormatVersion": 249
+}

@@ -1,0 +1,11 @@
+LOG  [pzopt] loaded override se.krka.kahlua.j2se.KahluaTableImpl (target revision b0bbce05d5, active)
+LOG  [pzopt] loaded override se.krka.kahlua.luaj.compiler.LuaCompiler (target revision b0bbce05d5, active)
+Native animation parser: two strike markers matched, SetVariable bindings resolved
+Native JSON translation loading and substitution: 56 keys passed
+Kahlua compilation: 10 runtime/translation files passed
+LOG  [pzopt] loaded override zombie.fileSystem.FileSystemImpl (target revision b0bbce05d5, active)
+LOG  [pzopt] file system: 26 worker threads, 128 tasks in flight
+Native packet serialization: 23 packets; largest=403 bytes
+Assertions passed: 135.0
+World/player/network/UI objects were test doubles; in-game acceptance remains pending.
+Failed to load file Guid table.

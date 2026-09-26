@@ -1,0 +1,5 @@
+name=OMH: Turrets & Traps
+id=OneMoreHorde_TurretsAndTraps
+modversion=0.1.6
+versionMin=42.20
+description=Phase 1 development test: persistent developer markers, directional 1x2 spike barriers and SP manual potato firing. Enable Foundation Test Controls. Combat is SP-only; construction, final art and integrations remain in development. Use a disposable test world.

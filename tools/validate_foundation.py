@@ -1,0 +1,93 @@
+import hashlib
+import json
+import os
+import re
+import subprocess
+from pathlib import Path
+
+from PIL import Image
+
+
+ROOT = Path(__file__).resolve().parents[1]
+GAME = Path(os.environ.get("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"))
+PACKAGE = ROOT / "Contents/mods/OneMoreHorde_TurretsAndTraps"
+VERSION = re.search(r"^modversion=(.+)$", (PACKAGE / "42.20/mod.info").read_text(), re.MULTILINE).group(1).strip()
+OUTPUT = ROOT / "diagnostics" / ("v" + VERSION)
+
+
+def run(command, cwd=None):
+    result = subprocess.run([str(arg) for arg in command], capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=cwd)
+    text = result.stdout + result.stderr
+    print(text, end="")
+    if result.returncode:
+        raise RuntimeError(f"Command failed with exit code {result.returncode}")
+    return text
+
+
+def main():
+    OUTPUT.mkdir(parents=True, exist_ok=True)
+    classes = OUTPUT / "classes"
+    classes.mkdir(exist_ok=True)
+    texts = list(PACKAGE.rglob("*.lua")) + list(PACKAGE.rglob("*.txt")) + list(PACKAGE.rglob("*.json")) + list(PACKAGE.rglob("mod.info"))
+    for path in texts:
+        data = path.read_bytes()
+        assert not data.startswith(b"\xef\xbb\xbf"), f"BOM: {path}"
+        content = data.decode("utf-8")
+        assert "\t" not in content, f"Tabs: {path}"
+        if path.suffix == ".lua":
+            assert not re.search(r"\b(?:ipairs|pcall|xpcall|next)\s*\(", content), f"Banned construct: {path}"
+    assert re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+(?:\.[0-9]+)?", VERSION), "Numeric release version required"
+    assert f'VERSION = "{VERSION}"' in (PACKAGE / "42.20/media/lua/shared/OMHTT/Foundation.lua").read_text()
+    lua = "\n".join(path.read_text() for path in PACKAGE.rglob("*.lua"))
+    translation_files = list((PACKAGE / "42.20/media/lua/shared/Translate/EN").glob("*.json"))
+    assert {p.name for p in translation_files} == {"ContextMenu.json", "UI.json", "Sandbox.json"}
+    assert not list(PACKAGE.rglob("*_EN.txt")), "Obsolete translation format is not loaded by the target build"
+    translations = {}
+    for path in translation_files:
+        values = json.loads(path.read_text(encoding="utf-8"))
+        assert all(isinstance(v, str) for v in values.values())
+        assert not translations.keys() & values.keys(), "Duplicate translation keys"
+        translations.update(values)
+    keys = set(re.findall(r'getText\("([A-Za-z0-9_]+)"', lua)) - {"UI_OMHTT_"}
+    keys.update("UI_OMHTT_" + status for status in [
+        "Agrees", "Waiting", "Denied", "VersionMismatch", "TooFar", "Unavailable", "Inspected", "Stale",
+        "Occupied", "Blocked", "Limit", "Placed", "Conflict", "Changed", "Removed", "MPCombatDeferred",
+        "WrongDevice", "Empty", "Cooling", "NoTarget", "Fired", "Refilled", "Aimed", "NotCompared", "WrongBarrier", "BarrierRotated",
+    ])
+    for key in keys:
+        assert key in translations, f"Missing translation: {key}"
+    textures = list((PACKAGE / "42.20/media/textures").glob("*.png"))
+    assert len(textures) == 22, "Legacy cube, sixteen potato facings, foundation and four barrier arrows required"
+    barrier_bytes = {(PACKAGE / f"42.20/media/textures/OMHTT_Barrier{i}.png").read_bytes() for i in range(4)}
+    assert len(barrier_bytes) == 4, "Barrier directions must have distinct pixels"
+    for texture in textures:
+        with Image.open(texture) as sprite:
+            assert sprite.size == (128, 256) and sprite.mode == "RGBA"
+            assert sprite.getbbox() is not None
+            assert all(r == g == b for r, g, b, a in sprite.get_flattened_data() if a), "Sprite must remain white/grayscale"
+    javac = Path(os.environ.get("PZ_JAVAC", "C:/Program Files/Java/jdk-17/bin/javac.exe"))
+    run([javac, "-d", classes, ROOT / "tools/KahluaCheck.java"])
+    classpath = os.pathsep.join(str(path) for path in [classes, GAME, GAME / "projectzomboid.jar"])
+    log = run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED", "-Djava.awt.headless=true",
+        "-Duser.home=" + str(OUTPUT / "native-home"), "-cp", classpath, "KahluaCheck", ROOT], cwd=GAME)
+    (OUTPUT / "validation.log").write_text(log, encoding="utf-8")
+    files = {str(path.relative_to(PACKAGE)).replace("\\", "/"): hashlib.sha256(path.read_bytes()).hexdigest()
+        for path in sorted(PACKAGE.rglob("*")) if path.is_file()}
+    sources = [
+        "projectzomboid.jar", "zombie/iso/IsoObject.class", "zombie/core/Core.class",
+        "media/lua/server/Map/SGlobalObjectSystem.lua", "media/lua/server/Camping/SCampfireGlobalObject.lua",
+        "media/lua/server/Vehicles/ProfessionVehicles.lua", "media/lua/server/ClientCommands.lua",
+        "zombie/characters/IsoZombie.class", "zombie/characters/IsoGameCharacter.class",
+        "media/AnimSets/zombie/thump/DoorBang.xml", "media/AnimSets/zombie/thump/DoorClaw.xml",
+        "media/actiongroups/zombie/thump/to_staggerback-knockeddown.xml",
+    ]
+    evidence = {name: hashlib.sha256((GAME / name).read_bytes()).hexdigest() for name in sources if (GAME / name).is_file()}
+    version = re.search(r"^modversion=(.+)$", (PACKAGE / "42.20/mod.info").read_text(), re.MULTILINE).group(1).strip()
+    manifest = {"version": version, "gameRoot": str(GAME), "files": files, "gameEvidence": evidence,
+        "inGameAcceptance": "pending", "nativeTableFormatVersion": 249}
+    (OUTPUT / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    print(f"Package checks passed: {len(files)} files, {len(keys)} translation keys; manifest recorded.")
+
+
+if __name__ == "__main__":
+    main()
