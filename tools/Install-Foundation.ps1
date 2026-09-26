@@ -3,20 +3,21 @@ param([string]$ModsDirectory = (Join-Path $env:USERPROFILE 'Zomboid/mods'), [swi
 $ErrorActionPreference = 'Stop'
 Import-Module (Join-Path $PSHOME 'Modules/Microsoft.PowerShell.Utility/Microsoft.PowerShell.Utility.psd1') -Force
 $projectRoot = Split-Path -Parent $PSScriptRoot
+$gitRoot = $projectRoot.Replace('\', '/')
 $packageId = 'OneMoreHorde_TurretsAndTraps'
 $sourcePath = Join-Path $projectRoot "Contents/mods/$packageId"
 $packageVersion = ((Get-Content -LiteralPath (Join-Path $sourcePath '42.20/mod.info') | Where-Object { $_ -like 'modversion=*' }) -replace '^modversion=', '').Trim()
 $manifestPath = Join-Path $projectRoot ('diagnostics/v' + $packageVersion + '/manifest.json')
 $manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
 if ($manifest.version -ne $packageVersion) { throw 'Manifest version differs from packaged mod.info.' }
-$branch = & git -c "safe.directory=$projectRoot" -C $projectRoot symbolic-ref --short HEAD
+$branch = & git -c "safe.directory=$gitRoot" -C $projectRoot symbolic-ref --short HEAD
 if ($LASTEXITCODE -ne 0 -or $branch -eq "main" -or $branch -eq "master") { throw "Use a non-main working branch for local test builds." }
 $tag = "test/v$packageVersion"
-$tagType = & git -c "safe.directory=$projectRoot" -C $projectRoot cat-file -t "refs/tags/$tag" 2>$null
+$tagType = & git -c "safe.directory=$gitRoot" -C $projectRoot cat-file -t "refs/tags/$tag" 2>$null
 if ($LASTEXITCODE -ne 0 -or $tagType -ne 'tag') { throw "Create the annotated local $tag rollback tag before installing." }
-& git -c "safe.directory=$projectRoot" -C $projectRoot diff --quiet $tag -- Contents
+& git -c "safe.directory=$gitRoot" -C $projectRoot diff --quiet $tag -- Contents
 if ($LASTEXITCODE -ne 0) { throw 'Packaged Contents differ from the local release tag.' }
-$untracked = & git -c "safe.directory=$projectRoot" -C $projectRoot ls-files --others --exclude-standard -- Contents
+$untracked = & git -c "safe.directory=$gitRoot" -C $projectRoot ls-files --others --exclude-standard -- Contents
 if ($LASTEXITCODE -ne 0 -or $untracked) { throw 'Untracked package files are not covered by the release tag.' }
 $destinationRoot = [IO.Path]::GetFullPath($ModsDirectory)
 $destinationPath = [IO.Path]::GetFullPath((Join-Path $destinationRoot $packageId))
