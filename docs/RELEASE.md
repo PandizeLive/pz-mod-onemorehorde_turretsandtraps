@@ -10,8 +10,8 @@
 | Package version | 0.2.0.1 candidate; development test only |
 | Confirmed mod ID | OneMoreHorde_TurretsAndTraps |
 | Build evidence | B42.20.4 b0bbce05d5 with PZ Optimizer: dedicated startup/save/restart passed; player acceptance pending |
-| Runtime source / installable package | 0.2.0.1 native validation passed; 55-file package ready for tagged local installation |
-| Git repository / remote | Non-main local working branch; test/v0.2.0.1 tag to be created before installation; no remote configured |
+| Runtime source / installable package | 0.2.0.1 installed locally; all 55 package files match the manifest and tag; previous 0.2.0 backup verified (55 files) |
+| Git repository / remote | Local source commit 4b31951, annotated test/v0.2.0.1 tag; no remote configured |
 | Workshop item / successful upload | None |
 | Public changelog baseline | No upload exists |
 | Official score support | Proposed; not implemented |
@@ -19,7 +19,7 @@
 
 ## Current native construction candidate
 
-Version `0.2.0.1` replaces the temporary recipe with the owner-approved cutting tool, four interchangeable planks/spears and four binding units, Carpentry 1 and 10 base XP. The [checkpoint](PHASE_2_CHECKPOINT_1.md) contains the complete owner test; [release notes](PR_v0.2.0.1.md) track validation. Reinforcement remains scheduled at P2C2a with the approved 25 damage, not implemented in this package. Installation evidence will be recorded after the local source tag and hash-verified deployment. No Workshop upload or remote push is authorized by this checkpoint.
+Version `0.2.0.1` replaces the temporary recipe with the owner-approved cutting tool, four interchangeable planks/spears and four binding units, Carpentry 1 and 10 base XP. The [checkpoint](PHASE_2_CHECKPOINT_1.md) contains the complete owner test; [release notes](PR_v0.2.0.1.md) track validation. Reinforcement remains scheduled at P2C2a with the approved 25 damage, not implemented in this package. [Installation evidence](../diagnostics/v0.2.0.1/local-release.json) verifies all 55 installed/tagged package files and the complete 55-file 0.2.0 backup. The [archive](../artifacts/OMHTT-0.2.0.1.zip) matches the manifest. Source is preserved at annotated tag `test/v0.2.0.1` (4b31951); documentation/evidence-only commits may follow with unchanged Contents. Running-client version and player acceptance remain pending restart/testing. No remote push or Workshop upload occurred.
 
 ## Previous native construction candidate
 
