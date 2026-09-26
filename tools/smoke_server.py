@@ -34,10 +34,11 @@ def main():
         try:
             while process.poll() is None and time.monotonic() - started < 150:
                 text = transcript.read_text(encoding="utf-8", errors="replace")
-                if "*** SERVER STARTED" in text:
+                if "*** SERVER STARTED" in text and "[OMHTT-Smoke] native-ingredients mixes=75" in text:
                     assert "[OMHTT] server-ready version=" + version in text, "Mod did not initialize"
                     assert "[OMHTT-Smoke] native-translations checked=3 missing=0" in text, "Native translations failed smoke probe"
                     assert "[OMHTT-Smoke] native-construction entity=OMHTTSpikeBarrier faces=4 parts=8 inputs=3 translated=true mpGate=closed" in text, "Native construction registration failed smoke probe"
+                    assert "[OMHTT-Smoke] native-ingredients mixes=75 missingWood=blocked missingBindings=blocked missingTool=blocked dullTool=blocked brokenTool=blocked preview=nonconsuming" in text, "Native ingredient matrix failed smoke probe"
                     process.stdin.write("quit\n")
                     process.stdin.flush()
                     process.wait(timeout=40)

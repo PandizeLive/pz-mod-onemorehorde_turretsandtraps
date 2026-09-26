@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Status as of 2026-09-26: Phase 0 and cube-only asset preparation complete. Phase 1 prototypes have partial SP evidence, with remaining gates in the [batch record](checkpoints/P1_BATCH_RECORD.md) and [0.1.6 review](TEST_v0.1.6.md). The owner approved Phase 2; [P2C1a](PHASE_2_CHECKPOINT_1.md) is implemented in 0.2.0 and awaiting player evidence. Individual barrier items and five-item bundles are scheduled at P2C1b/P2C1c. Full Phase 1 acceptance remains pending; later phases are unstarted.
+Status as of 2026-09-26: Phase 0 and cube-only asset preparation complete. Phase 1 prototypes have partial SP evidence, with remaining gates in the [batch record](checkpoints/P1_BATCH_RECORD.md) and [0.1.6 review](TEST_v0.1.6.md). The owner approved Phase 2; [P2C1a](PHASE_2_CHECKPOINT_1.md) is implemented, with approved recipe follow-up 0.2.0.1 awaiting player evidence. Individual barrier items and five-item bundles are scheduled at P2C1b/P2C1c. Reinforcement is approved for P2C2a. Full Phase 1 acceptance remains pending; later phases are unstarted.
 
 ## Phase 0: project foundation
 
@@ -33,6 +33,8 @@ Exit: enough evidence to implement content without relying on invented API hooks
 
 Owner-authorized on 2026-09-26. P2C1a is implemented and awaiting player evidence; the individual-item and bundle checkpoints below are scheduled. Remaining Phase 1 acceptance stays open.
 
+Recipe follow-up: C24-C27 approve four interchangeable planks/crafted wooden spears, four binding units, a retained sharp knife/cleaver, Carpentry 1 and 10 base XP. Implemented in the 0.2.0.1 P2C1a follow-up before P2C1b inventory-item work; player acceptance remains pending. Reinforcement at P2C2a is approved separately below. Packing/unpacking/redeployment must not grant crafting XP.
+
 The owner selected native construction in the building menu on 2026-09-26 and requested continuing while the remaining Phase 1 tests stay pending. Start with the Spike Barrier's two-tile preview, rotation and material transaction. Individual barrier items can coexist with material construction. A Spike Barrier Pack contains five individual barriers with a confirmed 67% encumbrance reduction (combined loose weight x 0.33); see C22/C23 in [Decisions](DECISIONS.md). Individual item weights, recipe/source details and recovery of deployed devices remain to be specified. This sequencing does not mark Phase 1 acceptance or multiplayer combat complete.
 
 | ID | Deliverable | Dependencies | Acceptance evidence |
@@ -43,6 +45,7 @@ The owner selected native construction in the building menu on 2026-09-26 and re
 | P2C1c | Spike Barrier Pack containing five individual barriers; pack/unpack recipes | P2C1b; C22 | Five in/five out; bundled weight = 5 x individual weight x 0.33 (67% reduction); no condition resets or duplication on cancellation/reload; incompatible/damaged input policy verified |
 | P2C1d | Servicing, recovery and ownership foundation; construction multiplayer gate | P2C1a-P2C1c; resolve Q03 as needed | Recovery preserves device state; access/transfer rules explicit; dedicated-server two-observer material, placement and reconnect evidence before multiplayer construction is enabled |
 | P2C2 | Bed-spike jump prototype, non-vaultable Spike Barrier, punji/cheval and barbed barricade gameplay | P2C1; resolve placement and remaining danger details | Automatic player jump visibly synchronized; blocked landing handled; no barrier entry/manual or automatic vault; passive hazards ignore target filters; current-HP host upgrade, correct faces, wear/destruction |
+| P2C2a | Reinforce an existing Spike Barrier: Carpentry 3, two extra planks, eight nails, retained hammer, 30 base XP, twice maximum durability and 25 damage per thump | P2C1 paired lifecycle and transaction evidence; C25/C26 | Consume once, upgrade both halves as one device, retain existing damage/facing/owner, preserve tier after reload/recovery, reject repeated upgrades, award XP once; no retroactive upgrade of basic barriers |
 | P2C3 | Potato gameplay, recipes, ammo/power choice and impact assets | P2C1; resolve firing mode and tuning | 3-5 direct-hit reference target; one-second base cadence; higher knockdown; tiny splash; servicing and paired-turret balance |
 | P2C3a | Modular inventory feasibility and slot contract, if approved | P2C1/P2C3; review [proposal](MODULAR_TURRETS.md) | Install/remove actual components once; persist exact items; reject incompatible/stacked modules; no cooldown/ammo reset; defaults remain functional without modules |
 | P2C4 | Concertina movement feasibility; initial content balance pass | P2C2-P2C3 | Speed restored on exit/death/unload; mod interaction reviewed; solo/pair/combo and unattended loaded-area comparisons |

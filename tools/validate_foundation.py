@@ -89,6 +89,11 @@ def main():
         "media/scripts/generated/entities/animals/workstations/entity_feedingtrough.txt",
         "zombie/entity/components/spriteconfig/SpriteConfigManager.class",
         "zombie/scripting/entity/components/spriteconfig/SpriteConfigScript.class",
+        "zombie/entity/components/crafting/recipe/CraftRecipeData.class",
+        "zombie/scripting/entity/components/crafting/InputScript.class",
+        "media/scripts/generated/recipes/recipes_spears.txt",
+        "media/scripts/generated/recipes/recipes_carving.txt",
+        "media/scripts/generated/timedactions.txt",
     ]
     evidence = {name: hashlib.sha256((GAME / name).read_bytes()).hexdigest() for name in sources if (GAME / name).is_file()}
     version = re.search(r"^modversion=(.+)$", (PACKAGE / "42.20/mod.info").read_text(), re.MULTILINE).group(1).strip()

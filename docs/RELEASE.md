@@ -7,17 +7,21 @@
 | Project | OMH: Turrets & Traps |
 | Foundation date | 2026-09-25 |
 | Edition | One; feature controls in Sandbox |
-| Package version | 0.2.0 candidate; development test only |
+| Package version | 0.2.0.1 candidate; development test only |
 | Confirmed mod ID | OneMoreHorde_TurretsAndTraps |
 | Build evidence | B42.20.4 b0bbce05d5 with PZ Optimizer: dedicated startup/save/restart passed; player acceptance pending |
-| Runtime source / installable package | 0.2.0 installed locally; all 55 package hashes verified; previous 0.1.6 backup verified (44 files) |
-| Git repository / remote | Local source commit 64e8f27, annotated test/v0.2.0 tag; no remote configured |
+| Runtime source / installable package | 0.2.0.1 native validation passed; 55-file package ready for tagged local installation |
+| Git repository / remote | Non-main local working branch; test/v0.2.0.1 tag to be created before installation; no remote configured |
 | Workshop item / successful upload | None |
 | Public changelog baseline | No upload exists |
 | Official score support | Proposed; not implemented |
-| Player tests | 0.2.0 native construction test pending. 0.1.6 partial SP evidence retained; remaining Phase 1 gates stay open |
+| Player tests | 0.2.0.1 approved-recipe/native construction test pending. 0.1.6 partial SP evidence retained; remaining Phase 1 gates stay open |
 
 ## Current native construction candidate
+
+Version `0.2.0.1` replaces the temporary recipe with the owner-approved cutting tool, four interchangeable planks/spears and four binding units, Carpentry 1 and 10 base XP. The [checkpoint](PHASE_2_CHECKPOINT_1.md) contains the complete owner test; [release notes](PR_v0.2.0.1.md) track validation. Reinforcement remains scheduled at P2C2a with the approved 25 damage, not implemented in this package. Installation evidence will be recorded after the local source tag and hash-verified deployment. No Workshop upload or remote push is authorized by this checkpoint.
+
+## Previous native construction candidate
 
 Version `0.2.0` implements [Phase 2 checkpoint 1a](PHASE_2_CHECKPOINT_1.md): native Building-menu Spike Barriers, preview/rotation, a native material recipe, Sandbox toggles and construction diagnostics. [Release notes](PR_v0.2.0.md) distinguish implemented behavior from scheduled individual items and five-item packs. [Install evidence](../diagnostics/v0.2.0/local-release.json) records exact hashes, source tag and the full previous-version backup. The [archive](../artifacts/OMHTT-0.2.0.zip) contains the same 55 package files. The running client has not yet been confirmed to load 0.2.0; restart and owner testing remain required. No remote push or Workshop upload occurred; the first-release cumulative draft is retained.
 

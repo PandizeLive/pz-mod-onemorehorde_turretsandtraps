@@ -44,15 +44,18 @@ module Base
         }
         component CraftRecipe
         {
-            timedAction = BuildWallHammer,
+            timedAction = SharpenStakeWood,
             time = 200,
             category = Carpentry,
+            needToBeLearn = false,
+            SkillRequired = Woodwork:1,
+            xpAward = Woodwork:10,
             OnAddToMenu = OMHTT_Construction.onAddToMenu,
             inputs
             {
-                item 1 tags[base:hammer] mode:keep flags[Prop1;DontRecordInput],
-                item 4 [Base.Plank],
-                item 8 [Base.Nails],
+                item 1 tags[base:sharpknife;base:meatcleaver] mode:keep flags[Prop1;DontRecordInput;IsNotDull;MayDegradeLight],
+                item 4 [Base.Plank;Base.SpearCrafted],
+                item 4 [Base.RippedSheets;Base.RippedSheetsDirty;Base.Twine],
             }
         }
     }

@@ -38,6 +38,8 @@ Do not bundle automatically triggered noise lures into the first release. The ow
 
 ## Distinct trap behavior
 
+Owner-selected Spike Barrier recipe: four total planks and/or basic crafted wooden spears in any mix, including four spears, plus four binding units and a retained sharp knife/cleaver. Basic Carpentry 1 / 10 base crafting XP is implemented in 0.2.0.1. The approved reinforced upgrade requires Carpentry 3, two extra planks, eight nails and a retained hammer; it awards 30 base crafting XP, doubles maximum durability to 200 while retaining existing damage, and deals 25 damage per thump. Reinforcement is scheduled at P2C2a, not implemented in this candidate. Packing/unpacking/redeployment award zero crafting XP. See [recipe review](RECIPE_COMPARISON.md).
+
 Recommended punji direction: shallow stake bed with replaceable bundles, partial damage, finite catching capacity and servicing. The owner's original grave workflow remains an open alternative. Do not reproduce another mod's assets/code or advertise the recommended design as already approved.
 
 Confirmed player traversal is automatic jumping over the bed spikes, regardless of faction. The footprint must support a proven jump; excavation choice must not silently produce an uncrossable bed or fake teleport. This makes bed spikes an accessible crossing for hostile players too, so do not balance them as an anti-player wall. Zombie crossing/damage behavior is a separate requirement.

@@ -1,6 +1,6 @@
 # Phase 2 checkpoint 1: construction and portable defenses
 
-Authorized by the owner on 2026-09-26. State: P2C1a implemented in 0.2.0, awaiting player evidence. Phase 1's remaining side-end, reload, cleanup, traversal and multiplayer acceptance is not waived.
+Authorized by the owner on 2026-09-26. State: P2C1a native construction implemented in 0.2.0; the approved recipe follow-up is 0.2.0.1, awaiting player evidence. Phase 1's remaining side-end, reload, cleanup, traversal and multiplayer acceptance is not waived.
 
 ## Checkpoints
 
@@ -17,7 +17,7 @@ Medium reasoning is sufficient; estimated 20-35 minutes including native-loader 
 
 Use the installed B42.20.4 entity construction recipe and its SpriteConfig hooks rather than overriding the game's building menu. Reuse the existing white arrow markers. The initial candidate is single-player construction; keep multiplayer construction disabled until material/placement replication is verified. Existing multiplayer combat remains disabled.
 
-Temporary recipe: hammer retained, four planks and eight nails consumed, 200 native action-time units, no skill gate or XP award. This is testing balance. Native build-cheat mode keeps its normal free-material behavior and must be identified in diagnostics. Add master and Spike Barrier toggles with ON as implementation defaults for this test. Disabling preserves placed objects/collision/condition and stops new construction and retaliation.
+Original 0.2.0 recipe: hammer retained, four planks and eight nails consumed, 200 native action-time units, no skill gate or XP award. The owner rejected selecting those requirements without consultation. The approved 0.2.0.1 follow-up replaces them as described below. Native build-cheat mode keeps its normal free-material behavior and must be identified in diagnostics. Master and Spike Barrier toggles default ON for this test. Disabling preserves placed objects/collision/condition and stops new construction and retaliation.
 
 Construction-created parts adopt the same paired ledger as the prototype, with exact owner username and placement source recorded. A single shared 100 condition value, facing, front/side retaliation and rear-safe behavior remain. No inventory pickup/repacking yet. The existing 64 distinct ledger-tile limit still applies and must reject before material consumption.
 
@@ -36,13 +36,21 @@ Required validation: compile Kahlua, native recipe/entity parsing and translatio
 - Diagnostics now include bounded `construction-menu`, `construction-preview` and `construction-part` records. Part logs record ID, primary tile, heading, shared condition, completion of both parts and native build-cheat status. Construction diagnostics work with Foundation Test Controls OFF.
 - No new gameplay art, module system, XP integration, item pickup or packs in this candidate. Native build-cheat deliberately does not consume ingredients. Construction recipe/health are test tuning; player evidence remains required.
 
+## Approved recipe follow-up: 0.2.0.1
+
+Four total planks/basic crafted wooden spears in any mix, four total binding units (ripped sheets, dirty ripped sheets, twine uses), retained sharp knife/cleaver with native light wear, Carpentry 1 and one 10 base Carpentry XP award. The native SharpenStakeWood action replaces hammering; action time remains 200. Materials, tool eligibility, skill checks and XP use native crafting. Base durability remains 100 and thump damage remains 20; existing objects are not upgraded or healed.
+
+Validation: the existing 232 lifecycle assertions, 12-module Kahlua compile and 61 native translation keys pass. Native B42.20.4 verifies recipe registration, Carpentry 1 / one 10 base XP award, and all 75 combinations of five wood mixes and fifteen binding mixes. Knife and cleaver fixtures pass; three wood/binding units and missing/dull/broken tools fail, with no preview consumption. The isolated server saves and shuts down cleanly in 44.8 seconds. The ingredient probe runs at OnServerStarted because native input caches are not ready at the earlier world-data event. Actual player animation, displayed XP after game modifiers, material consumption and UI acceptance remain pending.
+
+The approved reinforced upgrade is scheduled separately at P2C2a: existing barrier + two planks + eight nails, retained hammer, Carpentry 3, 30 base XP, 200 maximum durability preserving existing damage, and 25 damage per thump. It is not in 0.2.0.1. Individual items and five-item bundles remain P2C1b/P2C1c; transport operations award no crafting XP.
+
 ## Owner test
 
-1. Restart PZ, confirm OMH: Turrets & Traps **0.2.0**, and use a disposable SP save. Enable the mod, Spike Barrier and Diagnostic Logging in Sandbox; keep Foundation Test Controls OFF and native Build Cheat OFF.
-2. Carry a hammer, at least eight planks and sixteen nails. Open the native Building menu, search **Spike Barrier**, and select it; the temporary recipe should show a retained hammer, four planks and eight nails.
-3. Move and rotate the preview through all four facings. Both occupied tiles should be visible. Try overlapping an obstacle with either half, then cancel; no structure or material loss should result.
-4. Build in clear space. Exactly four planks and eight nails should be consumed once, with the hammer retained. The two white arrow parts should appear immediately and block walking/vaulting.
-5. Build a second barrier facing another direction. Let zombies thump the front/side ends and rear; only front/side strikes should deal the existing 20 damage, even with debug controls OFF.
-6. Save, exit and reload. Both halves should remain with their facing and damage. Let one barrier break to check paired cleanup, then say **Test Complete** for console review.
+1. Restart PZ and confirm **0.2.0.1** in a disposable SP save. Enable the mod, Spike Barrier and Diagnostic Logging; keep Foundation Test Controls and Build Cheat OFF. Use Carpentry 1+ and a sharp, unbroken knife/cleaver.
+2. Open Building > Spike Barrier. Verify Carpentry 1, four planks/spears and four bindings; no hammer/nails. Remove the cutting tool or leave only three wood units: building must be unavailable with no item/XP change.
+3. Restore materials. Rotate the two-tile preview in all four directions, overlap an obstacle with either half, and cancel a valid placement. None of these should consume materials or grant XP.
+4. Build one barrier using four planks and four sheets, then another using four crafted spears and four twine uses. Select inputs or move alternatives out of reach. Each build consumes once, retains the cutting tool and grants one Carpentry XP award (base 10, displayed gain may be modified).
+5. Build using two planks, two spears, one clean sheet, one dirty sheet and two twine uses. Verify exact consumption and a single XP gain; the native wood-carving animation should play. Front/side thumps still deal 20 damage; rear thumps deal none.
+6. Save/reload to check both halves, facing and condition persist; verify blocked walking/vaulting and paired cleanup when destroyed. Then say **Test Complete** so console.txt can be reviewed. Reinforcement is not available in this build.
 
-Workshop baseline remains never uploaded. The cumulative draft retains all prior unuploaded notes under v0.2.0. Exact install/tag evidence is in [release state](RELEASE.md). P2C1b individual items is next; P2C1c bundles follows it. The broader Phase 2 checkpoint is not accepted yet.
+Workshop baseline remains never uploaded. The cumulative draft retains all prior unuploaded notes under v0.2.0.1. Exact install/tag evidence is in [release state](RELEASE.md). P2C1b individual items is next; P2C1c bundles follows it. The broader Phase 2 checkpoint is not accepted yet.
