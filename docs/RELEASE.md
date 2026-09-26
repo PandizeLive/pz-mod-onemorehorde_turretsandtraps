@@ -21,6 +21,8 @@
 
 Version `0.1.6`: [checkpoint and prior-test review](PHASE_1_CHECKPOINT_2.md), [release notes](PR_v0.1.6.md), [manifest](../diagnostics/v0.1.6/manifest.json), [archive](../artifacts/OMHTT-0.1.6.zip). Uses numeric versioning and the stable [OMH.cmd](../OMH.cmd) menu. Source is preserved in a local annotated release tag before installation; no remote or Workshop item exists. The initial cumulative Workshop draft covers all unuploaded content, not just this patch. [Process and current tooling limits](RELEASE_TOOLS.md).
 
+Local installation completed and all 44 installed files match both the manifest and exact Git-tag bytes. The prior 0.1.5 package backup also passes all 43 hashes. [Local release evidence](../diagnostics/v0.1.6/local-release.json) records source commits, archive hash and backup location. A tooling-only commit follows the gameplay tag; Contents are unchanged. The running owner client still needs a restart and version confirmation.
+
 ## Previous shove and retaliation candidate
 
 Version `0.1.5-p1retaliation` implements animated potato knockdowns, fixed actual damage, SP barrier strike-marker retaliation and optional Pixel Indicator popups. [Record](checkpoints/P1_RETALIATION_RECORD.md), [manifest](../diagnostics/p1retaliation/manifest.json), [archive](../artifacts/OMHTT-0.1.5-p1retaliation.zip). Native parser/Kahlua/behavioral checks and isolated server startup/save/shutdown pass. Player marker timing, movement and corpse/loot acceptance remain pending; skipped-frame and final-breaking-strike limitations are explicit. No Workshop upload occurred.
