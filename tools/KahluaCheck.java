@@ -81,7 +81,7 @@ public final class KahluaCheck {
         };
         Method nativeGetText = translatorType.getMethod("getText", String.class, Object[].class);
         int translated = 0;
-        for (String[] category : new String[][] {{"ContextMenu", "contextMenu"}, {"UI", "ui"}, {"Sandbox", "sandbox"}}) {
+        for (String[] category : new String[][] {{"ContextMenu", "contextMenu"}, {"UI", "ui"}, {"Sandbox", "sandbox"}, {"Recipes", "recipe"}}) {
             var field = translatorType.getDeclaredField(category[1]);
             field.setAccessible(true);
             @SuppressWarnings("unchecked")
@@ -90,7 +90,9 @@ public final class KahluaCheck {
             fill.invoke(null, root.resolve("Contents/mods/OneMoreHorde_TurretsAndTraps/42.20").toString(), category[0], map, english, formatFixer);
             if (map.isEmpty()) throw new IllegalStateException("Native translation category not loaded: " + category[0]);
             for (String key : map.keySet()) {
-                String rendered = (String)nativeGetText.invoke(null, key, new Object[] {"one", "two", "three", "four"});
+                String rendered = category[0].equals("Recipes")
+                    ? (String)translatorType.getMethod("getRecipeName", String.class).invoke(null, key)
+                    : (String)nativeGetText.invoke(null, key, new Object[] {"one", "two", "three", "four"});
                 if (rendered.equals(key) || rendered.matches(".*%[1-4].*")) throw new IllegalStateException("Unresolved translation: " + key);
             }
             translated += map.size();
@@ -142,6 +144,10 @@ public final class KahluaCheck {
             {"_", base + "client/OMHTT/DamagePresentation.lua"},
             {"_", "tools/tests/retaliation.lua"},
             {"_", "tools/tests/footprint.lua"},
+            {"OMHTT/Construction", base + "shared/OMHTT/Construction.lua"},
+            {"_", "tools/tests/native_build_bootstrap.lua"},
+            {"_", Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/server/BuildingObjects/ISBuildIsoEntity.lua").toString()},
+            {"_", "tools/tests/construction.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

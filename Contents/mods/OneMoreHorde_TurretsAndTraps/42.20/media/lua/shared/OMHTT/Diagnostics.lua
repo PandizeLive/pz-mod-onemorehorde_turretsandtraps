@@ -11,7 +11,8 @@ local suppressed = 0
 ---@nodiscard
 function Diagnostics.enabled()
     local options = SandboxVars.OMHTurretsTraps
-    return options ~= nil and options.FoundationTestControls == true and options.DiagnosticLogging ~= false
+    return options ~= nil and (options.FoundationTestControls == true or options.Enabled == true)
+        and options.DiagnosticLogging ~= false
 end
 
 ---@param value any Log value

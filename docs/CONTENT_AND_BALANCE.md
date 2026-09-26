@@ -4,6 +4,8 @@ Status: proposed tuning plan. Confirmed requirements are identified in [Decision
 
 ## Planned roster
 
+Transport: P2C1b introduces individual barrier items; P2C1c introduces five-barrier packs. The owner confirmed a 67% encumbrance reduction: pack weight = 5 x individual barrier weight x 0.33. Individual weight and crafting costs remain test tuning. Packing cannot repair items or refill resources. Items/packs are scheduled and do not ship in the 0.2.0 construction candidate.
+
 | Device | Intended role and behavior | Limiting costs | Earliest checkpoint |
 | --- | --- | --- | --- |
 | Potato turret | Quiet, cheap, farmable ammunition; one shot per second, higher knockdown, potato impact pop and tiny splash | Cadence, hopper capacity, wear; pressure/power design TBD | P1C3 prototype; P2C3 content |

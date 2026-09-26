@@ -1,6 +1,6 @@
 # Sandbox options specification
 
-Status: planned UI/data contract; no options exist in game yet. One edition, one Sandbox toggle menu. Names are draft labels; preserve any later owner-authored tooltip wording.
+Status: mixed implemented/planned contract. In 0.2.0, master Enable Turrets & Traps and Enable Spike Barrier are native Sandbox controls, alongside Foundation Test Controls and Diagnostic Logging. Other controls below remain planned. One edition, one Sandbox page; preserve owner-authored tooltip wording.
 
 ## Groups and defaults
 
@@ -8,10 +8,10 @@ Only Include Offline Members = ON is an explicitly confirmed setting default. Th
 
 | Group | Control | Type / proposed bounds | Default status |
 | --- | --- | --- | --- |
-| General | Enable Turrets & Traps | Boolean master control | ON proposed |
+| General | Enable Turrets & Traps | Boolean master control | ON test implementation default in 0.2.0 |
 | Content | Enable Potato Turret | Boolean | ON proposed when implemented |
 | Content | Enable Punji | Boolean | ON proposed when implemented |
-| Content | Enable Cheval de Frise | Boolean | ON proposed when implemented |
+| Content | Enable Spike Barrier | Boolean; native construction and retaliation | ON test implementation default in 0.2.0 |
 | Content | Enable Barbed Barricades | Boolean | ON proposed when implemented |
 | Content | Enable Concertina | Boolean | TBD after movement prototype |
 | Content | Enable Dart Emitters | Boolean | TBD at P4 |
@@ -41,7 +41,7 @@ Player traversal defaults are confirmed design behavior, not new optional toggle
 
 ## Configuration behavior
 
-Proposed disabling behavior: block construction and active operation for that content, preserve placed objects and stored resources, and allow safe dismantling/unloading. An occupied Poke Floor must stop safely rather than freeze mid-animation. Disabling operation does not necessarily remove native collision from an existing barrier; explain this distinction in the final UI wording.
+Implemented for the 0.2.0 barrier: block native construction and retaliation while preserving objects, collision and condition. Recovery/dismantling remains P2C1d work, so this candidate does not offer a gameplay pickup action. Other-content disabling behavior remains proposed: preserve resources and allow safe recovery. An occupied Poke Floor must stop safely rather than freeze mid-animation.
 
 Master OFF follows the same preservation rule. Re-enabling does not refill magazines, repair structures, reset wear, replay pulses, or create catch-up shots. Server settings prevail over client preferences.
 

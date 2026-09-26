@@ -1,0 +1,59 @@
+module Base
+{
+    entity OMHTTSpikeBarrier
+    {
+        component SpriteConfig
+        {
+            health = 100,
+            skillBaseHealth = 0,
+            bonusHealth = 0,
+            isThumpable = true,
+            breakSound = BreakObject,
+            OnIsValid = OMHTT_Construction.onIsValid,
+            OnCreate = OMHTT_Construction.onCreate,
+            face E
+            {
+                layer
+                {
+                    row = media/textures/OMHTT_BuildBarrierE_A.png,
+                    row = media/textures/OMHTT_BuildBarrierE_B.png,
+                }
+            }
+            face N
+            {
+                layer
+                {
+                    row = media/textures/OMHTT_BuildBarrierN_A.png media/textures/OMHTT_BuildBarrierN_B.png,
+                }
+            }
+            face W
+            {
+                layer
+                {
+                    row = media/textures/OMHTT_BuildBarrierW_B.png,
+                    row = media/textures/OMHTT_BuildBarrierW_A.png,
+                }
+            }
+            face S
+            {
+                layer
+                {
+                    row = media/textures/OMHTT_BuildBarrierS_B.png media/textures/OMHTT_BuildBarrierS_A.png,
+                }
+            }
+        }
+        component CraftRecipe
+        {
+            timedAction = BuildWallHammer,
+            time = 200,
+            category = Carpentry,
+            OnAddToMenu = OMHTT_Construction.onAddToMenu,
+            inputs
+            {
+                item 1 tags[base:hammer] mode:keep flags[Prop1;DontRecordInput],
+                item 4 [Base.Plank],
+                item 8 [Base.Nails],
+            }
+        }
+    }
+}

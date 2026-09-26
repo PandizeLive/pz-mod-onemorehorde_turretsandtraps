@@ -1,7 +1,11 @@
 {
     "Sandbox_OMHTurretsTraps": "OMH: Turrets & Traps",
+    "Sandbox_OMHTurretsTraps_Enabled": "Enable Turrets & Traps",
+    "Sandbox_OMHTurretsTraps_Enabled_tooltip": "Enables implemented defenses. Turning this off prevents construction and operation while preserving placed objects, collision and condition. This development build supports gameplay construction in single-player only.",
+    "Sandbox_OMHTurretsTraps_SpikeBarrier": "Enable Spike Barrier",
+    "Sandbox_OMHTurretsTraps_SpikeBarrier_tooltip": "Enables native Spike Barrier construction and front/side thump damage. Disabling preserves existing barriers and their collision and condition. Single-player construction and damage in this development build.",
     "Sandbox_OMHTurretsTraps_DiagnosticLogging": "Prototype Diagnostic Logging",
-    "Sandbox_OMHTurretsTraps_DiagnosticLogging_tooltip": "Records picked objects, tile/player coordinates, request stages, native object and sprite state, firing decisions and periodic update summaries in console.txt. Active only with Foundation Test Controls. Rate limited; no per-frame object scanning. Enabled by default for this development test.",
+    "Sandbox_OMHTurretsTraps_DiagnosticLogging_tooltip": "Records construction parts, coordinates, shared identity, build-cheat state, native object/sprite state, combat decisions and periodic summaries in console.txt. Active with the mod or Foundation Test Controls enabled. Rate limited. Enabled by default for this development test.",
     "Sandbox_OMHTurretsTraps_FoundationTestControls": "Foundation Test Controls",
     "Sandbox_OMHTurretsTraps_FoundationTestControls_tooltip": "Development test only. Enables test cube placement, inspection, condition changes and removal. Multiplayer requires the debug context menu permission. Maximum 64 distinct test tiles per world, including removed devices. Use a disposable test world. Disabling controls preserves existing devices."
 }

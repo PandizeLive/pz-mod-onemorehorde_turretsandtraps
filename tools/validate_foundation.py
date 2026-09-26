@@ -40,7 +40,7 @@ def main():
     assert f'VERSION = "{VERSION}"' in (PACKAGE / "42.20/media/lua/shared/OMHTT/Foundation.lua").read_text()
     lua = "\n".join(path.read_text() for path in PACKAGE.rglob("*.lua"))
     translation_files = list((PACKAGE / "42.20/media/lua/shared/Translate/EN").glob("*.json"))
-    assert {p.name for p in translation_files} == {"ContextMenu.json", "UI.json", "Sandbox.json"}
+    assert {p.name for p in translation_files} == {"ContextMenu.json", "UI.json", "Sandbox.json", "Recipes.json"}
     assert not list(PACKAGE.rglob("*_EN.txt")), "Obsolete translation format is not loaded by the target build"
     translations = {}
     for path in translation_files:
@@ -57,7 +57,10 @@ def main():
     for key in keys:
         assert key in translations, f"Missing translation: {key}"
     textures = list((PACKAGE / "42.20/media/textures").glob("*.png"))
-    assert len(textures) == 22, "Legacy cube, sixteen potato facings, foundation and four barrier arrows required"
+    assert len(textures) == 30, "Legacy visuals plus eight unique native-construction part sprites required"
+    for heading, index in zip("ENWS", range(4)):
+        for part in "AB":
+            assert (PACKAGE / f"42.20/media/textures/OMHTT_BuildBarrier{heading}_{part}.png").read_bytes() == (PACKAGE / f"42.20/media/textures/OMHTT_Barrier{index}.png").read_bytes(), "Construction sprites reuse authorized technical markers"
     barrier_bytes = {(PACKAGE / f"42.20/media/textures/OMHTT_Barrier{i}.png").read_bytes() for i in range(4)}
     assert len(barrier_bytes) == 4, "Barrier directions must have distinct pixels"
     for texture in textures:
@@ -80,6 +83,12 @@ def main():
         "zombie/characters/IsoZombie.class", "zombie/characters/IsoGameCharacter.class",
         "media/AnimSets/zombie/thump/DoorBang.xml", "media/AnimSets/zombie/thump/DoorClaw.xml",
         "media/actiongroups/zombie/thump/to_staggerback-knockeddown.xml",
+        "media/lua/server/BuildingObjects/ISBuildIsoEntity.lua",
+        "media/lua/client/BuildingObjects/TimedActions/ISBuildAction.lua",
+        "media/lua/client/Entity/ISUI/BuildRecipe/ISBuildPanel.lua",
+        "media/scripts/generated/entities/animals/workstations/entity_feedingtrough.txt",
+        "zombie/entity/components/spriteconfig/SpriteConfigManager.class",
+        "zombie/scripting/entity/components/spriteconfig/SpriteConfigScript.class",
     ]
     evidence = {name: hashlib.sha256((GAME / name).read_bytes()).hexdigest() for name in sources if (GAME / name).is_file()}
     version = re.search(r"^modversion=(.+)$", (PACKAGE / "42.20/mod.info").read_text(), re.MULTILINE).group(1).strip()

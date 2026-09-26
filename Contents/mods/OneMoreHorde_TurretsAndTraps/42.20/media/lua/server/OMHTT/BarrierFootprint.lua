@@ -160,6 +160,84 @@ function Footprint.place(square, player)
     return "Placed", slot
 end
 
+---@param x number Primary tile X
+---@param y number Primary tile Y
+---@param z number Level
+---@param facing number Cardinal facing
+---@return string? failure Placement rejection before native material consumption
+---@nodiscard
+function Footprint.canBuild(x, y, z, facing)
+    if not store then return "Unavailable" end
+    local secondX, secondY = Footprint.second({x = x, y = y}, facing)
+    local first = getCell():getGridSquare(x, y, z)
+    local second = getCell():getGridSquare(secondX, secondY, z)
+    local failure = available(first) or available(second)
+    if failure then return failure end
+    local needed = 0
+    if not store.tiles[F.key(x, y, z)] then
+        needed = needed + 1
+    end
+    if not store.tiles[F.key(secondX, secondY, z)] then
+        needed = needed + 1
+    end
+    if store.tileCount + needed > F.MAX_TILES then return "Limit" end
+    return nil
+end
+
+---@param object IsoThumpable Part created by the native construction recipe
+---@param player IsoPlayer Builder
+---@param x number Primary tile X
+---@param y number Primary tile Y
+---@param facing number Cardinal heading
+---@return table record Persistent shared state
+function Footprint.adoptBuild(object, player, x, y, facing)
+    local square = object:getSquare()
+    local z = square:getZ()
+    local anchor = F.key(x, y, z)
+    local secondX, secondY = Footprint.second({x = x, y = y}, facing)
+    local slot = store.tiles[anchor]
+    if not slot or not slot.device then
+        slot = reserve(x, y, z)
+        local other = reserve(secondX, secondY, z)
+        slot.device = {id = "test-" .. tostring(store.nextId), kind = "barrier", condition = 100, revision = 1,
+            testOwner = player:getUsername(), builderUsername = player:getUsername(), placementSource = "construction",
+            ammo = 0, shots = 0, nextShot = 0, facing = facing, observedLoss = 0,
+            cooldownClock = "realtime-ms-v1", width = 2, x = x, y = y, z = z}
+        slot.epoch = math.max(slot.epoch, other.epoch) + 1
+        other.anchor, other.epoch = anchor, slot.epoch
+        store.nextId = store.nextId + 1
+    end
+    local record = slot.device
+    if record.kind ~= "barrier" or record.placementSource ~= "construction" or record.facing ~= facing
+        or record.builderUsername ~= player:getUsername() then
+        error("[OMHTT] Native construction callback conflicts with existing device at " .. anchor)
+    end
+    local existing, count = F.find(square, record.id)
+    if count > 0 then
+        if count == 1 and existing == object then return record end
+        error("[OMHTT] Native construction callback duplicates device " .. record.id)
+    end
+    object:setName(F.PREFIX .. record.id)
+    object:setSprite(F.spriteFor("barrier", facing))
+    object:setBlockAllTheSquare(true)
+    object:setCanPassThrough(false)
+    object:setIsHoppable(false)
+    object:setIsThumpable(true)
+    object:setMaxHealth(100)
+    object:setHealth(record.condition)
+    object:setBreakSound("BreakObject")
+    object:setIsDismantable(false)
+    object:setOutlineOnMouseover(true)
+    F.writeMarker(object, record)
+    square:RecalcAllWithNeighbours(true)
+    square:setSquareChanged()
+    object:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_OBJECT_ADD)
+    Diagnostics.emit("construction-part", {id = record.id, x = square:getX(), y = square:getY(), z = z,
+        anchorX = x, anchorY = y, facing = facing, complete = Footprint.parts(record) ~= nil,
+        builder = player:getUsername(), buildCheat = player:isBuildCheat(), condition = record.condition})
+    return record
+end
+
 ---@param slot table Canonical slot
 ---@param excluding IsoObject? Native removal already in progress
 ---@return nil

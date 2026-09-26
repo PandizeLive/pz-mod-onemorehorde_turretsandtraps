@@ -1,5 +1,19 @@
 VERSION = 1,
 
+option OMHTurretsTraps.Enabled {
+    type = boolean,
+    default = true,
+    page = OMHTurretsTraps,
+    translation = OMHTurretsTraps_Enabled,
+}
+
+option OMHTurretsTraps.SpikeBarrier {
+    type = boolean,
+    default = true,
+    page = OMHTurretsTraps,
+    translation = OMHTurretsTraps_SpikeBarrier,
+}
+
 option OMHTurretsTraps.FoundationTestControls {
     type = boolean,
     default = false,

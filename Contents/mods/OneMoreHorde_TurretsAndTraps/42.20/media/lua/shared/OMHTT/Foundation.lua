@@ -1,6 +1,6 @@
 ---@class OMHTTFoundation
 local Foundation = {
-    VERSION = "0.1.6",
+    VERSION = "0.2.0",
     MODULE = "OMHTT_Foundation",
     STORE = "OMHTT_Foundation_v1",
     PREFIX = "OMHTT_P1C1_",
@@ -31,7 +31,15 @@ function Foundation.writeMarker(object, record)
         testOwner = record.testOwner, kind = record.kind, ammo = record.ammo, shots = record.shots,
         nextShot = record.nextShot, facing = record.facing, width = record.width,
         anchorX = record.x, anchorY = record.y, anchorZ = record.z,
+        placementSource = record.placementSource, builderUsername = record.builderUsername,
     }
+end
+
+---@return boolean enabled Barrier content configuration
+---@nodiscard
+function Foundation.barrierEnabled()
+    local options = SandboxVars.OMHTurretsTraps
+    return options ~= nil and options.Enabled ~= false and options.SpikeBarrier ~= false
 end
 
 ---@param facing number Signed heading index
@@ -80,6 +88,7 @@ end
 function Foundation.canUse(player)
     if not player or player:isDead() then return false end
     if not SandboxVars.OMHTurretsTraps or SandboxVars.OMHTurretsTraps.FoundationTestControls ~= true then return false end
+    if SandboxVars.OMHTurretsTraps.Enabled == false then return false end
     if isClient() then
         return player:getRole():hasCapability(Capability.UseDebugContextMenu)
     elseif isServer() then

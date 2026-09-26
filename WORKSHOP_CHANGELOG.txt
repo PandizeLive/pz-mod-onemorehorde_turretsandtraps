@@ -1,7 +1,8 @@
-v0.1.6
+v0.2.0
 Single-player development test content
 - Added persistent test defenses with readable white developer markers and direction arrows.
 - Added 1x2 Spike Barriers with shared durability, rotation and removal; front and side attacks cause 20 damage, while the rear is safe.
+- Added single-player Spike Barrier construction in the native Building menu, with a rotating two-tile preview, a material recipe and Sandbox master/barrier switches that preserve placed structures when disabled.
 - Added manually fired potato turrets with a one-second cadence, calibrated damage, animated knockdowns and tiny impact splash.
 - Added optional Pixel Indicator damage feedback and developer diagnostics.
 Local tools

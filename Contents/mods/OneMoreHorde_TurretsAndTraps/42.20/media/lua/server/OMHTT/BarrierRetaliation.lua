@@ -57,7 +57,7 @@ function Barrier.update(zombie)
     end
     local target = zombie:getThumpTarget()
     if zombie:isDead() or not target or zombie:getCurrentStateName() ~= "ThumpState"
-        or SandboxVars.OMHTurretsTraps.FoundationTestControls ~= true then
+        or not Foundation.barrierEnabled() then
         if data and data.OMHTTBarrierStrike then
             Barrier.release(zombie)
         end
@@ -65,7 +65,8 @@ function Barrier.update(zombie)
     end
     local record = Footprint.exact(target)
     local square = zombie:getSquare()
-    if not record or not square or square:getZ() ~= target:getSquare():getZ() then
+    if not record or not square or square:getZ() ~= target:getSquare():getZ()
+        or (record.placementSource ~= "construction" and SandboxVars.OMHTurretsTraps.FoundationTestControls ~= true) then
         if data and data.OMHTTBarrierStrike then
             Barrier.release(zombie)
         end

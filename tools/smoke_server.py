@@ -20,18 +20,7 @@ def main():
     destination = CACHE / "mods/OneMoreHorde_TurretsAndTraps"
     shutil.copytree(source, destination, dirs_exist_ok=True)
     probe = destination / "42.20/media/lua/server/OMHTT_TranslationSmoke.lua"
-    probe.write_text('''local function checkTranslations()
-    Translator.loadFiles()
-    local keys = {"ContextMenu_OMHTT_Foundation", "UI_OMHTT_Header", "Sandbox_OMHTurretsTraps"}
-    local missing = 0
-    for i = 1, #keys do
-        local value = getText(keys[i], "one", "two", "three", "four")
-        if value == keys[i] or value == "!" .. keys[i] then missing = missing + 1 end
-    end
-    print("[OMHTT-Smoke] native-translations checked=3 missing=" .. missing)
-end
-Events.OnInitGlobalModData.Add(checkTranslations)
-''', encoding="utf-8")
+    probe.write_text((ROOT / "tools/tests/native_smoke.lua").read_text(encoding="utf-8"), encoding="utf-8")
     console = CACHE / "server-console.txt"
     transcript = OUTPUT / "server-restart.log"
     command = [str(GAME / "jre64/bin/java.exe"), "--enable-native-access=ALL-UNNAMED",
@@ -48,6 +37,7 @@ Events.OnInitGlobalModData.Add(checkTranslations)
                 if "*** SERVER STARTED" in text:
                     assert "[OMHTT] server-ready version=" + version in text, "Mod did not initialize"
                     assert "[OMHTT-Smoke] native-translations checked=3 missing=0" in text, "Native translations failed smoke probe"
+                    assert "[OMHTT-Smoke] native-construction entity=OMHTTSpikeBarrier faces=4 parts=8 inputs=3 translated=true mpGate=closed" in text, "Native construction registration failed smoke probe"
                     process.stdin.write("quit\n")
                     process.stdin.flush()
                     process.wait(timeout=40)
