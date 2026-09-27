@@ -95,6 +95,8 @@ for index = 1, #headings do
     check(record.facing == (index - 1) * 4 and record.width == 2 and record.builderUsername == testPlayer:getUsername(), "heading and builder persist " .. heading)
     check(cursor.parts[1].data.OMHTT.id == cursor.parts[2].data.OMHTT.id and cursor.parts[1].blockAll
         and not cursor.parts[1].hoppable, "paired solid non-vaultable native parts " .. heading)
+    check(string.find(cursor.parts[1]:getSpriteName(), "OMHTT_BuildBarrier", 1, true)
+        and cursor.parts[1]:getSpriteName() ~= cursor.parts[2]:getSpriteName(), "native parts retain distinct SpriteConfig names " .. heading)
     local nextId = testData.nextId
     C.onCreate({thumpable = cursor.parts[1], character = testPlayer, facing = heading})
     check(testData.nextId == nextId and #first.objects == 1, "duplicate completion does not create another device " .. heading)
@@ -137,4 +139,16 @@ testBuildCheat = true
 local cheat = makeCursor("e", 1)
 ISBuildIsoEntity.create(cheat, 140, 140, 0, false, "unused")
 check(cheat.consumed == 0 and #cheat.parts == 2, "native build-cheat behavior remains explicit")
+ISBuildIsoEntity.create(cheat, 140, 140, 0, false, "unused")
+check(#cheat.parts == 2 and cheat.consumed == 0, "Build Cheat cannot overlap an existing barrier")
+makeSquare(141, 140, 0)
+local overlap = makeCursor("n", 1)
+ISBuildIsoEntity.create(overlap, 140, 140, 0, false, "unused")
+check(#overlap.parts == 0, "Build Cheat rejects a rotated footprint overlapping one occupied half")
+makeSquare(143, 140, 0)
+local wall = makeSquare(143, 141, 0)
+wall.free = false
+local blocked = makeCursor("e", 1)
+ISBuildIsoEntity.create(blocked, 143, 140, 0, false, "unused")
+check(#blocked.parts == 0, "Build Cheat still rejects physical obstruction under the second half")
 testBuildCheat = false

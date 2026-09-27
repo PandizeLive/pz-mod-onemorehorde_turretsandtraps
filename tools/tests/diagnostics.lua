@@ -5,7 +5,7 @@ testMillis = testMillis + 2000
 check(D.auditTranslations() == 0, "runtime audit resolves all probe keys through native translator")
 local originalText = getText
 getText = function(key, ...) return key end
-check(D.auditTranslations() == 14, "missing translations detected without a screenshot")
+check(D.auditTranslations() == 17, "missing translations detected without a screenshot")
 getText = originalText
 SandboxVars.OMHTurretsTraps.DiagnosticLogging = false
 local oldCount = #testLogs

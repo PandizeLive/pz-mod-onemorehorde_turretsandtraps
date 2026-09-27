@@ -1,5 +1,5 @@
 name=OMH: Turrets & Traps
 id=OneMoreHorde_TurretsAndTraps
-modversion=0.2.0.2
+modversion=0.2.0.3
 versionMin=42.20
 description=Development test: build directional 1x2 Spike Barriers with Carpentry 1, four planks or crafted wooden spears in any mix, four binding units and a sharp knife or cleaver. Construction grants Carpentry XP. Construction and combat are single-player only. Individual barrier items, packs, reinforced upgrades, final art and integrations are still in development. Use a disposable test world.

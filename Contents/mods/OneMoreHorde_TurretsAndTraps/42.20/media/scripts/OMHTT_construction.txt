@@ -53,6 +53,7 @@ module Base
             timedAction = SharpenStakeWood,
             time = 200,
             category = Carpentry,
+            Tooltip = UI_OMHTT_BarrierTools,
             Tags = Carpentry,
             needToBeLearn = false,
             SkillRequired = Woodwork:1,

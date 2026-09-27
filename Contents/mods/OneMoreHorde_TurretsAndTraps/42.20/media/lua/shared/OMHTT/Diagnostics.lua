@@ -125,6 +125,7 @@ function Diagnostics.auditTranslations()
         "UI_OMHTT_Header", "UI_OMHTT_Placed", "UI_OMHTT_State", "UI_OMHTT_TooFar", "UI_OMHTT_Supplies",
         "Sandbox_OMHTurretsTraps", "Sandbox_OMHTurretsTraps_FoundationTestControls",
         "Sandbox_OMHTurretsTraps_DiagnosticLogging",
+        "IGUI_CraftingCategories_OMHTurretsTraps", "UI_OMHTT_SpikeBarrier", "UI_OMHTT_BarrierTools",
     }
     local missing = 0
     for i = 1, #keys do

@@ -1,4 +1,7 @@
 ISPanel = {derive = function(self, name) return {} end}
+UIFont = {Small = 1}
+function getTextManager() return {getFontHeight = function() return 19 end} end
+if not string.len then function string.len(value) return #value end end
 Events.SetDragItem = {Add = function() end}
 ArrayList = {new = function()
     local list = {}

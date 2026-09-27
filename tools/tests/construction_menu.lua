@@ -20,7 +20,7 @@ local all = ArrayList.new()
 all:add(barrier)
 all:add(chair)
 all:add(metal)
-local logic = {source = all, filtered = all}
+local logic = {source = ArrayList.new(), filtered = ArrayList.new()}
 function logic:getAllBuildableRecipes() return all end
 function logic:getCategoryList()
     local categories = ArrayList.new()
@@ -53,7 +53,21 @@ function panel:ReselectRecipeOrFirst(previous)
     logic.selected = logic.filtered:contains(previous) and previous or logic.filtered:get(0)
 end
 function panel:onRecipeChanged() end
+local box = {items = {}}
+function box:clear() self.items = {} end
+function box:addItem(label, data)
+    local item = {label = label, data = data, itemindex = #self.items + 1}
+    self.items[#self.items + 1] = item
+    return item
+end
+local categories = setmetatable({callbackTarget = panel, recipeCategoryPanel = box, selectedCategory = ""},
+    {__index = ISWidgetRecipeCategories})
+categories:populateCategoryList()
+check(not categories.isInitialised and #box.items == 2, "empty startup list must not finalize categories before native refresh")
 panel:refreshList()
+categories:populateCategoryList()
+check(categories.isInitialised and #box.items == 5, "native population includes All, Favourites, both native categories and mod")
+check(box.items[5].label == "Turrets & Traps", "category resolves through the native translator")
 check(barrier:getTranslationName() == "Spike Barrier" and chair:getTranslationName() == "untranslated",
     "menu refresh repairs early cached mod title without touching other recipes")
 check(logic.source:size() == 3, "All includes native and mod recipes without duplicates")

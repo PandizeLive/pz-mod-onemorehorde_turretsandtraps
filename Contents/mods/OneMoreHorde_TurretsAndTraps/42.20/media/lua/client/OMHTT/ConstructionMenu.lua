@@ -35,7 +35,7 @@ function ISBuildPanel:getCategoryList()
     end
     local categories = ArrayList.new()
     categories:addAll(self.omhttNativeCategories)
-    if defenseRecipes(self):size() > 0 and not categories:contains(CATEGORY) then
+    if categories:size() > 0 and defenseRecipes(self):size() > 0 and not categories:contains(CATEGORY) then
         categories:add(CATEGORY)
     end
     return categories
@@ -55,7 +55,8 @@ function ISBuildPanel:refreshList()
     end
     Diagnostics.emit("construction-menu-list", {registered = recipes:size(), category = self._categoryString,
         filter = self._filterString, modOnly = self.omhttCategory == true, enabled = F.barrierEnabled(),
-        buildCheat = self.player:isBuildCheat(), multiplayer = isClient() or isServer()})
+        buildCheat = self.player:isBuildCheat(), multiplayer = isClient() or isServer(),
+        categories = self:getCategoryList():size(), categoryName = getText("IGUI_CraftingCategories_OMHTurretsTraps")})
     for i = 0, recipes:size() - 1 do
         local recipe = recipes:get(i)
         local callback = recipe:getOnAddToMenu()

@@ -7,21 +7,25 @@
 | Project | OMH: Turrets & Traps |
 | Foundation date | 2026-09-25 |
 | Edition | One; feature controls in Sandbox |
-| Package version | 0.2.0.2 candidate; development test only |
+| Package version | 0.2.0.3 candidate; development test only |
 | Confirmed mod ID | OneMoreHorde_TurretsAndTraps |
 | Build evidence | B42.20.4 b0bbce05d5 with PZ Optimizer: dedicated startup/save/restart passed; player acceptance pending |
-| Runtime source / installable package | 0.2.0.2 installed locally; all 58 files match manifest/tag; full previous 0.2.0.1 backup verified (55 files) |
-| Git repository / remote | Local source f3f64d2, annotated test/v0.2.0.2; no remote configured |
+| Runtime source / installable package | 0.2.0.3 validated; local installation pending |
+| Git repository / remote | Local source; annotated test/v0.2.0.3 required before installation; no remote configured |
 | Workshop item / successful upload | None |
 | Public changelog baseline | No upload exists |
 | Official score support | Proposed; not implemented |
-| Player tests | 0.2.0.1 loaded but owner could not find Building entry; 0.2.0.2 menu correction awaits player acceptance. Earlier Phase 1 gates remain open |
+| Player tests | 0.2.0.2 failed category/creation checks; 0.2.0.3 repair awaits player acceptance. Persistence and other Phase 1 gates remain open |
 
 ## Current native construction candidate
 
+Version `0.2.0.3` repairs category initialization, the native category translation filename and unnamed construction sprites. [Repair notes](PR_v0.2.0.3.md), [owner evidence](TEST_v0.2.0.2.md), [complete owner test](PHASE_2_CHECKPOINT_1.md#owner-test). No recipe eligibility or custom bypass changes. Validation: 254 Kahlua assertions, 13 modules, 64 native translator keys, real native SpriteConfig validity for eight thumpables, menu callback gates and 75 material combinations; isolated startup/save/shutdown passed (74.4 seconds). Native object persistence/rendering remains unverified; the smoke does not save and reload the eight fixture objects. Installation evidence will follow deployment.
+
+## Previous menu-visibility candidate
+
 Version `0.2.0.2` fixes the exact-global visibility callback, supplies native UI metadata, refreshes cached recipe titles and exposes Spike Barrier under Carpentry and Turrets & Traps. Vanilla Build Cheat covers debug placement; no custom bypass was added. [Release notes](PR_v0.2.0.2.md), [previous owner-log review](TEST_v0.2.0.1.md), and [complete owner test](PHASE_2_CHECKPOINT_1.md#owner-test).
 
-Validation: 244 assertions using native Kahlua and installed ISBuildPanel methods with controlled UI/logic objects; 13 runtime modules; 63 native translation keys. The isolated native B42.20.4 loader verifies one registered recipe, UI style and title refresh, reproduces rejection of the old dotted visibility callback, and accepts the corrected callback with simulated SP flags while rejecting disabled content and multiplayer. All 75 material combinations and insufficient/missing/dull/broken-tool cases pass. Native server startup, save and shutdown pass; no player connected. Native server icon rendering is unavailable, so icon-path/asset checks are static and visual acceptance remains pending. The final native smoke completed in 70.9 seconds. [Local installation evidence](../diagnostics/v0.2.0.2/local-release.json) verifies all 58 installed files against the manifest and exact annotated tag bytes (`test/v0.2.0.2`, f3f64d2), plus all 55 files in the full previous 0.2.0.1 backup. The [archive](../artifacts/OMHTT-0.2.0.2.zip) matches the manifest. Client restart and player acceptance remain pending. Documentation/evidence-only commits may follow without changing Contents; no remote push or Workshop upload occurred.
+Validation: 244 assertions using native Kahlua and installed ISBuildPanel methods with controlled UI/logic objects; 13 runtime modules; 63 native translation keys. The isolated native B42.20.4 loader verifies one registered recipe, UI style and title refresh, reproduces rejection of the old dotted visibility callback, and accepts the corrected callback with simulated SP flags while rejecting disabled content and multiplayer. All 75 material combinations and insufficient/missing/dull/broken-tool cases pass. Native server startup, save and shutdown pass; no player connected. Native server icon rendering is unavailable, so icon-path/asset checks are static and visual acceptance remains pending. The final native smoke completed in 70.9 seconds. [Local installation evidence](../diagnostics/v0.2.0.2/local-release.json) verifies all 58 installed files against the manifest and exact annotated tag bytes (`test/v0.2.0.2`, f3f64d2), plus all 55 files in the full previous 0.2.0.1 backup. The [archive](../artifacts/OMHTT-0.2.0.2.zip) matches the manifest. The [owner test](TEST_v0.2.0.2.md) confirmed 0.2.0.2 loaded but failed category and construction checks. Documentation/evidence-only commits may follow without changing Contents; no remote push or Workshop upload occurred.
 
 ## Previous approved-recipe candidate
 

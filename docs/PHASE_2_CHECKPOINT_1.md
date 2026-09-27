@@ -52,13 +52,19 @@ The same recipe appears under Carpentry and Turrets & Traps. A narrow panel adap
 
 Validation: 244 Kahlua assertions (including category switching, search, refresh, original recipe identity and translation refresh), 13 runtime modules and 63 native translator keys pass. Native loader/dispatcher smoke checks and install evidence are in [release state](RELEASE.md). Actual rendered list/grid, cursor, inventory and XP still require the player test.
 
+## Category/creation correction 0.2.0.3
+
+The [0.2.0.2 owner test](TEST_v0.2.0.2.md) failed category discovery/translation and actual construction. The earlier checks did not exercise native widget startup or real object sprite identity. Version 0.2.0.3 defers the custom category until native recipes load, uses IG_UI.json, initializes named native sprites and preserves distinct part identities. It adds the explicit knife/cleaver tooltip without changing recipe eligibility. [Repair/validation record](PR_v0.2.0.3.md).
+
+Native component save/reload remains an explicit gate: file-backed sprites do not establish stable native tile IDs, and ledger reconciliation alone does not prove native component restoration. Resolve this before accepting persistence or starting portable-item work. Existing Phase 1 reload/traversal limitations remain open.
+
 ## Owner test
 
-1. Restart PZ with **0.2.0.2** enabled in a disposable SP save. Keep the mod, Spike Barrier and Diagnostic Logging ON. Vanilla Build Cheat may be ON for placement testing.
-2. Open Building, clear search and select **Carpentry**. Find **Spike Barrier** with its white arrow icon; then select **Turrets & Traps** and confirm the same entry appears once.
-3. Search for **Spike**, switch list/grid views, then return to **All** and another native category. The barrier should remain searchable and unrelated recipes should return normally.
-4. Select the barrier, rotate its two-tile preview in all four directions, try an obstruction under either half, then build on clear ground. Build Cheat should allow placement without supplies; blocked placement should create nothing.
-5. Turn Build Cheat OFF. With Carpentry 1+, a sharp unbroken knife/cleaver, four mixed planks/crafted wooden spears and four binding units, build once. Verify one material charge, retained tool and one XP award (base 10 before modifiers); insufficient supplies must block building.
-6. Save/reload and confirm both halves remain. Say **Test Complete** for console.txt review. Reinforcement and portable barrier items are still scheduled separately.
+1. Restart with **0.2.0.3** in a fresh disposable SP save. Enable the mod, Spike Barrier and Diagnostic Logging. Build Cheat may be ON; avoid the failed test's leftover objects.
+2. Open Building: native categories should remain, and **Turrets & Traps** should translate. Find Spike Barrier under both it and **Carpentry**; check search and list/grid switching.
+3. With Build Cheat ON, rotate and build one barrier on clear ground. Expect two named arrow parts, no error, and blocked walking/vaulting. Try placing directly over it and overlapping just one half: both must fail.
+4. Try placing with a wall/furniture under either half, then cancel on clear ground. Nothing should be created. The recipe note should explain **sharp knife or cleaver** even when a specific knife icon is shown.
+5. Turn Build Cheat OFF. With Carpentry 1, a sharp knife/cleaver, four planks/spears and four binding units, build once. Expect one material charge, retained tool and one base-10 XP award; missing supplies should block building.
+6. Say **Test Complete** for log review, even if a step fails. Save/reload, reinforcement and portable-item acceptance remain separate gates; do not use this development build for a permanent base.
 
-Workshop baseline remains never uploaded. The cumulative first-release draft retains pending notes under v0.2.0.2. Exact install/tag evidence is in [release state](RELEASE.md). P2C1b individual items is next; P2C1c bundles follows it. Full recipe-mix/animation/traversal acceptance from the previous checkpoint remains tracked and is not implied by this menu test.
+Workshop baseline remains never uploaded. The cumulative first-release draft retains pending notes under v0.2.0.3. Exact install/tag evidence is in [release state](RELEASE.md). Native construction acceptance must pass before P2C1b individual-item work proceeds.

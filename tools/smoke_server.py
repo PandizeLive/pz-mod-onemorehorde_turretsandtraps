@@ -44,6 +44,7 @@ def main():
                     assert "[OMHTT-Smoke] native-translations checked=3 missing=0" in text, "Native translations failed smoke probe"
                     assert "[OMHTT-Smoke] native-build-menu registered=1 title=Spike_Barrier category=Carpentry callback=resolved spGate=open disabledGate=closed dottedCallback=rejected" in text, "Native menu callback or enumeration failed smoke probe"
                     assert "[OMHTT-Smoke] native-construction entity=OMHTTSpikeBarrier faces=4 parts=8 inputs=3 translated=true mpGate=closed" in text, "Native construction registration failed smoke probe"
+                    assert "[OMHTT-Smoke] native-sprites objects=8 valid=8 categoryTranslated=true" in text, "Native object creation or category translation failed"
                     assert "[OMHTT-Smoke] native-ingredients mixes=75 missingWood=blocked missingBindings=blocked missingTool=blocked dullTool=blocked brokenTool=blocked preview=nonconsuming" in text, "Native ingredient matrix failed smoke probe"
                     process.stdin.write("quit\n")
                     process.stdin.flush()

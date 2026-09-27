@@ -81,7 +81,9 @@ public final class KahluaCheck {
         };
         Method nativeGetText = translatorType.getMethod("getText", String.class, Object[].class);
         int translated = 0;
-        for (String[] category : new String[][] {{"ContextMenu", "contextMenu"}, {"UI", "ui"}, {"Sandbox", "sandbox"}, {"Recipes", "recipe"}, {"IGUI", "igui"}}) {
+        for (String[] category : new String[][] {{"ContextMenu", "contextMenu"}, {"UI", "ui"}, {"Sandbox", "sandbox"}, {"Recipes", "recipe"}, {"IG_UI", "igui"}}) {
+            var nativeCategories = (java.util.Map<?, ?>)translatorType.getField("BY_NAME").get(null);
+            if (!nativeCategories.containsKey(category[0])) throw new IllegalStateException("Unrecognized native translation filename: " + category[0]);
             var field = translatorType.getDeclaredField(category[1]);
             field.setAccessible(true);
             @SuppressWarnings("unchecked")
@@ -150,6 +152,7 @@ public final class KahluaCheck {
             {"_", "tools/tests/construction.lua"},
             {"_", "tools/tests/native_menu_bootstrap.lua"},
             {"_", Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/client/Entity/ISUI/BuildRecipe/ISBuildPanel.lua").toString()},
+            {"_", Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/client/Entity/ISUI/CraftRecipe/ISWidgetRecipeCategories.lua").toString()},
             {"_", base + "client/OMHTT/ConstructionMenu.lua"},
             {"_", "tools/tests/construction_menu.lua"},
         };

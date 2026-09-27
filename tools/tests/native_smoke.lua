@@ -94,6 +94,7 @@ local function checkNativeConstruction()
         end
     end
     print("[OMHTT-Smoke] native-translations checked=3 missing=" .. missing)
+    assert(getText("IGUI_CraftingCategories_OMHTurretsTraps") == "Turrets & Traps", "Native category translation file not loaded")
     local infos = SpriteConfigManager.GetObjectInfoList()
     local found = nil
     for i = 0, infos:size() - 1 do
@@ -155,6 +156,14 @@ local function checkNativeConstruction()
                 local tile = face:getTileInfo(x, y, 0)
                 assert(tile:getX() == x and tile:getY() == y, "Native tile coordinate access failed")
                 assert(string.find(tile:getSpriteName(), "OMHTT_BuildBarrier", 1, true), "Unexpected native preview sprite")
+                local spriteName = tile:getSpriteName()
+                assert(getSprite(spriteName):getName() == spriteName, "Construction sprite identity was not initialized")
+                local square = IsoGridSquare.new(getCell(), nil, x, y, 0)
+                local object = IsoThumpable.new(getCell(), square, spriteName, false)
+                assert(object:getSpriteName() == spriteName, "Native thumpable lost its sprite name")
+                GameEntityFactory.CreateIsoObjectEntity(object, found:getScript():getParent(), true)
+                assert(object:getSpriteConfig():isValid(), "Native SpriteConfig rejected constructed object")
+                assert(object:getSpriteConfig():getTileInfo():getSpriteName() == spriteName, "Native part identity changed")
                 parts = parts + 1
             end
         end
@@ -162,6 +171,7 @@ local function checkNativeConstruction()
     assert(type(OMHTT_Construction.onCreate) == "function", "Construction Lua callback missing")
     assert(not OMHTT_Construction.onAddToMenu({shouldShowAll = true}), "MP construction must stay disabled")
     print("[OMHTT-Smoke] native-construction entity=OMHTTSpikeBarrier faces=4 parts=" .. parts .. " inputs=3 translated=true mpGate=closed")
+    print("[OMHTT-Smoke] native-sprites objects=8 valid=8 categoryTranslated=true")
     checkNativeIngredients(recipe)
 end
 

@@ -5,6 +5,16 @@ local Diagnostics = require("OMHTT/Diagnostics")
 local Footprint = {}
 local store, keys = nil, nil
 local migrationWarnings = {}
+local nativeHeadings = {[0] = "E", [4] = "N", [8] = "W", [12] = "S"}
+
+---@param record table Barrier state
+---@param square IsoGridSquare Part location
+---@return string name Sprite identity
+local function partSprite(record, square)
+    if record.placementSource ~= "construction" then return F.spriteFor("barrier", record.facing) end
+    local part = square:getX() == record.x and square:getY() == record.y and "A" or "B"
+    return "media/textures/OMHTT_BuildBarrier" .. nativeHeadings[record.facing] .. "_" .. part .. ".png"
+end
 
 ---@param registry table Persistent authority ledger
 ---@param schedule table Bounded tile schedule
@@ -68,7 +78,7 @@ end
 ---@param record table Canonical record
 ---@return IsoThumpable object Created part
 local function createPart(square, record)
-    local object = IsoThumpable.new(getCell(), square, F.spriteFor("barrier", record.facing), false)
+    local object = IsoThumpable.new(getCell(), square, partSprite(record, square), false)
     object:setName(F.PREFIX .. record.id)
     object:setBlockAllTheSquare(true)
     object:setCanPassThrough(false)
@@ -218,7 +228,7 @@ function Footprint.adoptBuild(object, player, x, y, facing)
         error("[OMHTT] Native construction callback duplicates device " .. record.id)
     end
     object:setName(F.PREFIX .. record.id)
-    object:setSprite(F.spriteFor("barrier", facing))
+    object:setSpriteFromName(partSprite(record, square))
     object:setBlockAllTheSquare(true)
     object:setCanPassThrough(false)
     object:setIsHoppable(false)
@@ -232,9 +242,11 @@ function Footprint.adoptBuild(object, player, x, y, facing)
     square:RecalcAllWithNeighbours(true)
     square:setSquareChanged()
     object:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_OBJECT_ADD)
+    local spriteConfig = object:getSpriteConfig()
     Diagnostics.emit("construction-part", {id = record.id, x = square:getX(), y = square:getY(), z = z,
         anchorX = x, anchorY = y, facing = facing, complete = Footprint.parts(record) ~= nil,
-        builder = player:getUsername(), buildCheat = player:isBuildCheat(), condition = record.condition})
+        builder = player:getUsername(), buildCheat = player:isBuildCheat(), condition = record.condition,
+        sprite = object:getSpriteName(), nativeConfigValid = spriteConfig and spriteConfig:isValid()})
     return record
 end
 
@@ -354,9 +366,13 @@ function Footprint.sync(slot)
     for i = 1, #parts do
         local object = parts[i]
         local marker = object:getModData().OMHTT
-        local desired = F.spriteFor("barrier", record.facing)
+        local desired = partSprite(record, object:getSquare())
         if object:getSpriteName() ~= desired then
-            object:setSprite(desired)
+            if record.placementSource == "construction" then
+                object:setSpriteFromName(desired)
+            else
+                object:setSprite(desired)
+            end
             object:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_OBJECT_MODIFY)
             object:transmitUpdatedSpriteToClients()
         end

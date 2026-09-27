@@ -167,6 +167,8 @@ IsoObject = {new = function(square, sprite, name)
     end
     function object:setName(value) self.name = value end
     function object:setSprite(value) self.sprite = value end
+    function object:setSpriteFromName(value) self.sprite = value end
+    function object:getSpriteConfig() return nil end
     function object:transmitUpdatedSpriteToClients() self.spriteSent = true end
     function object:getSquare() return self.square end
     function object:getModData() return self.data end

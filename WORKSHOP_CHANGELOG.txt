@@ -1,4 +1,4 @@
-v0.2.0.2
+v0.2.0.3
 Single-player development test content
 - Added persistent test defenses with readable white developer markers and direction arrows.
 - Added 1x2 Spike Barriers with shared durability, rotation and removal; front and side attacks cause 20 damage, while the rear is safe.

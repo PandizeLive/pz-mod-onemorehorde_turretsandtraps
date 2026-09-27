@@ -44,7 +44,7 @@ def main():
     assert (PACKAGE / "42.20/media/textures" / (icon + ".png")).is_file(), "Missing construction UI icon"
     lua = "\n".join(path.read_text() for path in PACKAGE.rglob("*.lua"))
     translation_files = list((PACKAGE / "42.20/media/lua/shared/Translate/EN").glob("*.json"))
-    assert {p.name for p in translation_files} == {"ContextMenu.json", "UI.json", "Sandbox.json", "Recipes.json", "IGUI.json"}
+    assert {p.name for p in translation_files} == {"ContextMenu.json", "UI.json", "Sandbox.json", "Recipes.json", "IG_UI.json"}
     assert not list(PACKAGE.rglob("*_EN.txt")), "Obsolete translation format is not loaded by the target build"
     translations = {}
     for path in translation_files:
@@ -95,6 +95,11 @@ def main():
         "media/lua/client/Entity/ISUI/CraftRecipe/ISTiledIconPanel.lua",
         "zombie/Lua/LuaManager$GlobalObject.class",
         "zombie/entity/components/build/BuildLogic.class",
+        "zombie/entity/components/spriteconfig/SpriteConfig.class",
+        "zombie/iso/sprite/IsoSpriteManager.class",
+        "zombie/iso/objects/IsoThumpable.class",
+        "zombie/core/Translator.class",
+        "media/lua/client/Entity/ISUI/CraftRecipe/ISWidgetInput.lua",
         "media/scripts/generated/entities/animals/workstations/entity_feedingtrough.txt",
         "zombie/entity/components/spriteconfig/SpriteConfigManager.class",
         "zombie/scripting/entity/components/spriteconfig/SpriteConfigScript.class",

@@ -21,6 +21,20 @@ end
 
 OMHTT_ConstructionMenuAvailable = Construction.onAddToMenu
 
+---@return nil
+function Construction.initializeSprites()
+    for heading in pairs(facings) do
+        for i = 1, 2 do
+            local part = i == 1 and "A" or "B"
+            local name = "media/textures/OMHTT_BuildBarrier" .. string.upper(heading) .. "_" .. part .. ".png"
+            getSprite(name):setName(name)
+        end
+    end
+    Diagnostics.emit("construction-sprites", {named = 8})
+end
+
+Events.OnInitGlobalModData.Add(Construction.initializeSprites)
+
 ---@param params table Native per-tile placement parameters
 ---@return boolean valid Both squares and authority ledger can accept the footprint
 ---@nodiscard
@@ -68,9 +82,12 @@ function Construction.onCreate(params)
     local marker = object:getModData().OMHTT
     if marker and marker.placementSource == "construction" then
         x, y = marker.anchorX, marker.anchorY
-    elseif string.match(object:getSpriteName(), "_B%.png$") then
+    elseif string.match(object:getSpriteName() or "", "_B%.png$") then
         local nx, ny = F.barrierDirection(facing)
         x, y = x + ny, y - nx
+    end
+    if not marker and not object:getSpriteName() then
+        error("[OMHTT] Native construction sprite has no registered name")
     end
     local Footprint = require("OMHTT/BarrierFootprint")
     Footprint.adoptBuild(object, player, x, y, facing)
