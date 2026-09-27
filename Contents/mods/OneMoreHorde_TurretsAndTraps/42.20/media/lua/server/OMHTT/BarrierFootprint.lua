@@ -2,18 +2,17 @@ if isClient() then return end
 
 local F = require("OMHTT/Foundation")
 local Diagnostics = require("OMHTT/Diagnostics")
+local Sprites = require("OMHTT/BarrierSprites")
 local Footprint = {}
 local store, keys = nil, nil
 local migrationWarnings = {}
-local nativeHeadings = {[0] = "E", [4] = "N", [8] = "W", [12] = "S"}
 
 ---@param record table Barrier state
 ---@param square IsoGridSquare Part location
 ---@return string name Sprite identity
 local function partSprite(record, square)
     if record.placementSource ~= "construction" then return F.spriteFor("barrier", record.facing) end
-    local part = square:getX() == record.x and square:getY() == record.y and "A" or "B"
-    return "media/textures/OMHTT_BuildBarrier" .. nativeHeadings[record.facing] .. "_" .. part .. ".png"
+    return Sprites.name(record, square)
 end
 
 ---@param registry table Persistent authority ledger
@@ -90,6 +89,9 @@ local function createPart(square, record)
     object:setIsDismantable(false)
     object:setOutlineOnMouseover(true)
     F.writeMarker(object, record)
+    if record.placementSource == "construction" then
+        Sprites.ensure(object, record, "create")
+    end
     square:AddSpecialObject(object)
     square:RecalcAllWithNeighbours(true)
     square:setSquareChanged()
@@ -199,8 +201,9 @@ end
 ---@param x number Primary tile X
 ---@param y number Primary tile Y
 ---@param facing number Cardinal heading
+---@param entity string Native construction recipe identity
 ---@return table record Persistent shared state
-function Footprint.adoptBuild(object, player, x, y, facing)
+function Footprint.adoptBuild(object, player, x, y, facing, entity)
     local square = object:getSquare()
     local z = square:getZ()
     local anchor = F.key(x, y, z)
@@ -211,6 +214,7 @@ function Footprint.adoptBuild(object, player, x, y, facing)
         local other = reserve(secondX, secondY, z)
         slot.device = {id = "test-" .. tostring(store.nextId), kind = "barrier", condition = 100, revision = 1,
             testOwner = player:getUsername(), builderUsername = player:getUsername(), placementSource = "construction",
+            constructionEntity = entity,
             ammo = 0, shots = 0, nextShot = 0, facing = facing, observedLoss = 0,
             cooldownClock = "realtime-ms-v1", width = 2, x = x, y = y, z = z}
         slot.epoch = math.max(slot.epoch, other.epoch) + 1
@@ -219,7 +223,7 @@ function Footprint.adoptBuild(object, player, x, y, facing)
     end
     local record = slot.device
     if record.kind ~= "barrier" or record.placementSource ~= "construction" or record.facing ~= facing
-        or record.builderUsername ~= player:getUsername() then
+        or record.builderUsername ~= player:getUsername() or Sprites.entity(record) ~= entity then
         error("[OMHTT] Native construction callback conflicts with existing device at " .. anchor)
     end
     local existing, count = F.find(square, record.id)
@@ -245,7 +249,7 @@ function Footprint.adoptBuild(object, player, x, y, facing)
     local spriteConfig = object:getSpriteConfig()
     Diagnostics.emit("construction-part", {id = record.id, x = square:getX(), y = square:getY(), z = z,
         anchorX = x, anchorY = y, facing = facing, complete = Footprint.parts(record) ~= nil,
-        builder = player:getUsername(), buildCheat = player:isBuildCheat(), condition = record.condition,
+        builder = player:getUsername(), buildCheat = player:isBuildCheat(), condition = record.condition, recipe = entity,
         sprite = object:getSpriteName(), nativeConfigValid = spriteConfig and spriteConfig:isValid()})
     return record
 end
@@ -338,8 +342,9 @@ local function expandLegacy(record, slot)
 end
 
 ---@param slot table Canonical barrier slot
+---@param reason string? Reconciliation origin
 ---@return boolean complete All parts loaded and unambiguous
-function Footprint.sync(slot)
+function Footprint.sync(slot, reason)
     local record = slot.device
     local parts = Footprint.parts(record)
     if not parts then return false end
@@ -367,12 +372,14 @@ function Footprint.sync(slot)
         local object = parts[i]
         local marker = object:getModData().OMHTT
         local desired = partSprite(record, object:getSquare())
-        if object:getSpriteName() ~= desired then
-            if record.placementSource == "construction" then
-                object:setSpriteFromName(desired)
-            else
-                object:setSprite(desired)
-            end
+        local visualChanged = false
+        if record.placementSource == "construction" then
+            visualChanged = Sprites.ensure(object, record, reason)
+        elseif object:getSpriteName() ~= desired then
+            object:setSprite(desired)
+            visualChanged = true
+        end
+        if visualChanged then
             object:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_OBJECT_MODIFY)
             object:transmitUpdatedSpriteToClients()
         end

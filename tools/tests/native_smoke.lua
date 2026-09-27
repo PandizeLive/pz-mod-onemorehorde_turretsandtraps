@@ -147,6 +147,7 @@ local function checkNativeConstruction()
     assert(found:getScript():getOnCreate() == "OMHTT_Construction.onCreate", "Native OnCreate hook missing")
     assert(found:getScript():getOnIsValid() == "OMHTT_Construction.onIsValid", "Native placement hook missing")
     local faces = {"e", "n", "w", "s"}
+    OMHTT_NativeFixtures = ArrayList.new()
     local parts = 0
     for i = 1, #faces do
         local face = found:getFace(faces[i])
@@ -155,15 +156,52 @@ local function checkNativeConstruction()
             for y = 0, face:getHeight() - 1 do
                 local tile = face:getTileInfo(x, y, 0)
                 assert(tile:getX() == x and tile:getY() == y, "Native tile coordinate access failed")
-                assert(string.find(tile:getSpriteName(), "OMHTT_BuildBarrier", 1, true), "Unexpected native preview sprite")
+                assert(string.find(tile:getSpriteName(), "omhtt_barrier_01_", 1, true), "Unexpected native preview sprite")
                 local spriteName = tile:getSpriteName()
                 assert(getSprite(spriteName):getName() == spriteName, "Construction sprite identity was not initialized")
                 local square = IsoGridSquare.new(getCell(), nil, x, y, 0)
                 local object = IsoThumpable.new(getCell(), square, spriteName, false)
                 assert(object:getSpriteName() == spriteName, "Native thumpable lost its sprite name")
+                square:getObjects():add(object)
+                square:getSpecialObjects():add(object)
                 GameEntityFactory.CreateIsoObjectEntity(object, found:getScript():getParent(), true)
                 assert(object:getSpriteConfig():isValid(), "Native SpriteConfig rejected constructed object")
                 assert(object:getSpriteConfig():getTileInfo():getSpriteName() == spriteName, "Native part identity changed")
+                object:setHealth(37)
+                object:setBlockAllTheSquare(true)
+                object:setCanPassThrough(false)
+                object:setIsHoppable(false)
+                object:getModData().OMHTTFixtureOwner = "fixture-owner"
+                OMHTT_NativeFixtures:add(object)
+                parts = parts + 1
+            end
+        end
+    end
+    found = SpriteConfigManager.GetObjectInfo("OMHTTDeploySpikeBarrier")
+    for i = 1, #faces do
+        local face = found:getFace(faces[i])
+        assert(face ~= nil and face:getWidth() * face:getHeight() == 2 and face:getzLayers() == 1, "Invalid two-tile native face")
+        for x = 0, face:getWidth() - 1 do
+            for y = 0, face:getHeight() - 1 do
+                local tile = face:getTileInfo(x, y, 0)
+                assert(tile:getX() == x and tile:getY() == y, "Native tile coordinate access failed")
+                assert(string.find(tile:getSpriteName(), "omhtt_barrier_01_", 1, true), "Unexpected native preview sprite")
+                local spriteName = tile:getSpriteName()
+                assert(getSprite(spriteName):getName() == spriteName, "Construction sprite identity was not initialized")
+                local square = IsoGridSquare.new(getCell(), nil, x, y, 0)
+                local object = IsoThumpable.new(getCell(), square, spriteName, false)
+                assert(object:getSpriteName() == spriteName, "Native thumpable lost its sprite name")
+                square:getObjects():add(object)
+                square:getSpecialObjects():add(object)
+                GameEntityFactory.CreateIsoObjectEntity(object, found:getScript():getParent(), true)
+                assert(object:getSpriteConfig():isValid(), "Native SpriteConfig rejected constructed object")
+                assert(object:getSpriteConfig():getTileInfo():getSpriteName() == spriteName, "Native part identity changed")
+                object:setHealth(37)
+                object:setBlockAllTheSquare(true)
+                object:setCanPassThrough(false)
+                object:setIsHoppable(false)
+                object:getModData().OMHTTFixtureOwner = "fixture-owner"
+                OMHTT_NativeFixtures:add(object)
                 parts = parts + 1
             end
         end
@@ -171,8 +209,76 @@ local function checkNativeConstruction()
     assert(type(OMHTT_Construction.onCreate) == "function", "Construction Lua callback missing")
     assert(not OMHTT_Construction.onAddToMenu({shouldShowAll = true}), "MP construction must stay disabled")
     print("[OMHTT-Smoke] native-construction entity=OMHTTSpikeBarrier faces=4 parts=" .. parts .. " inputs=3 translated=true mpGate=closed")
-    print("[OMHTT-Smoke] native-sprites objects=8 valid=8 categoryTranslated=true")
+    print("[OMHTT-Smoke] native-sprites objects=16 valid=16 categoryTranslated=true")
     checkNativeIngredients(recipe)
+    local Sprites = require("OMHTT/BarrierSprites")
+    local migrated = OMHTT_NativeFixtures:get(0)
+    local record = {id = "legacy-fixture", x = 0, y = 0, facing = 0, condition = 37, testOwner = "fixture-owner"}
+    migrated:setSpriteFromName("media/textures/OMHTT_BuildBarrierE_A.png")
+    assert(Sprites.ensure(migrated, record, "migration-probe"), "Legacy part was not migrated")
+    assert(migrated:getSpriteConfig():isValid() and migrated:getHealth() == 37, "Migration lost native identity or damage")
+    assert(not Sprites.ensure(migrated, record, "repeat-probe"), "Migration repeated unnecessarily")
+    GameEntityFactory.RemoveComponentType(migrated, ComponentType.SpriteConfig)
+    assert(Sprites.ensure(migrated, record, "missing-component-probe"), "Missing component was not restored")
+    print("[OMHTT-Smoke] native-migration staleSprite=repaired missingComponent=repaired health=37 repeat=unchanged")
+
+    local craft = getScriptManager():getCraftRecipe("Base.OMHTTCraftSpikeBarrier")
+    local deploy = SpriteConfigManager.GetObjectInfo("OMHTTDeploySpikeBarrier"):getRecipe():getCraftRecipe()
+    assert(craft and craft:getInputs():size() == 3 and craft:getXPAward(0):getAmount() == 10, "Portable recipe/XP wrong")
+    assert(deploy:getInputs():size() == 1 and deploy:getInputs():get(0):getIntAmount() == 1, "Deploy must consume one item")
+    assert(deploy:getXPAwardCount() == 0 and deploy:getRequiredSkillCount() == 0, "Deployment must not repeat crafting skill/XP")
+    local item = instanceItem("Base.OMHTTSpikeBarrierItem")
+    print("[OMHTT-Smoke] portable-script weight=" .. item:getScriptItem():getActualWeight() .. " file=" .. tostring(item:getScriptItem():getFileName()) .. " icon=" .. tostring(item:getScriptItem():getIcon()) .. " plankWeight=" .. instanceItem("Base.Plank"):getActualWeight())
+    print("[OMHTT-Smoke] portable-item name=" .. item:getDisplayName() .. " weight=" .. item:getActualWeight() .. " translated=" .. getItemNameFromFullType("Base.OMHTTSpikeBarrierItem"))
+    assert(item:getDisplayName() == "Spike Barrier" and item:getActualWeight() == 6, "Portable item name/weight wrong")
+    isServer = function() return false end
+    isClient = function() return false end
+    SandboxVars.OMHTurretsTraps.Enabled, SandboxVars.OMHTurretsTraps.SpikeBarrier = true, true
+    checkNativeIngredients(craft)
+    local crafting = CraftRecipeData.new(CraftMode.Handcraft, false, true, false, true)
+    crafting:setRecipe(craft)
+    local knife = instanceItem("Base.KitchenKnife")
+    knife:applyMaxSharpness()
+    player:getInventory():AddItem(knife)
+    assert(crafting:offerInputItem(craft:getInputs():get(0), knife), "Crafting tool input rejected")
+    for i = 1, 4 do
+        local wood, binding = instanceItem("Base.Plank"), instanceItem("Base.RippedSheets")
+        player:getInventory():AddItem(wood)
+        player:getInventory():AddItem(binding)
+        assert(crafting:offerInputItem(craft:getInputs():get(1), wood), "Crafting wood input rejected")
+        assert(crafting:offerInputItem(craft:getInputs():get(2), binding), "Crafting binding input rejected")
+    end
+    assert(crafting:consumeInputs(ArrayList.new()), "Portable crafting native consumption failed")
+    assert(crafting:createOutputs(ArrayList.new(), player), "Portable crafting native output failed")
+    assert(crafting:getAllCreatedItems():size() == 1 and crafting:getFirstCreatedItem():getFullType() == "Base.OMHTTSpikeBarrierItem",
+        "Portable crafting did not create exactly one finished item")
+    crafting:processDestroyAndUsedItems(player)
+    assert(player:getInventory():contains(knife), "Crafting consumed the retained knife")
+    crafting:luaCallOnCreate(player)
+    local items, resources = ArrayList.new(), ArrayList.new()
+    items:add(item)
+    local spare = instanceItem("Base.OMHTTSpikeBarrierItem")
+    player:getInventory():AddItem(item)
+    player:getInventory():AddItem(spare)
+    local data = CraftRecipeData.new(CraftMode.Handcraft, false, true, false, true)
+    data:setRecipe(deploy)
+    assert(data:canConsumeInputs(resources, items, true, true), "Finished item not accepted without raw materials/tools")
+    assert(player:getInventory():contains(item) and player:getInventory():contains(spare), "Preview consumed a portable item")
+    assert(data:offerInputItem(deploy:getInputs():get(0), item), "Cannot select deploy input")
+    assert(data:consumeInputs(resources), "Native finished-item consumption failed")
+    data:processDestroyAndUsedItems(player)
+    assert(not player:getInventory():contains(item) and player:getInventory():contains(spare), "Wrong deploy charge")
+    local empty = CraftRecipeData.new(CraftMode.Handcraft, false, true, false, true)
+    empty:setRecipe(deploy)
+    assert(not empty:canConsumeInputs(resources, ArrayList.new(), true, true), "Missing finished item accepted")
+    item:setCondition(20)
+    assert(not deploy:OnTestItem(item, player), "Damaged portable input would reset condition")
+    SandboxVars.OMHTurretsTraps.SpikeBarrier = false
+    assert(not craft:OnTestItem(instanceItem("Base.Plank"), player), "Disabled portable crafting allowed")
+    isServer, isClient = serverFunction, clientFunction
+    SandboxVars.OMHTurretsTraps.Enabled, SandboxVars.OMHTurretsTraps.SpikeBarrier = enabled, barrierEnabled
+    assert(not craft:OnTestItem(instanceItem("Base.Plank"), player), "MP portable crafting gate bypassed")
+    print("[OMHTT-Smoke] native-portable recipe=registered mixes=75 crafted=1 tool=retained deployInputs=1 deployXP=0 missing=blocked damaged=blocked toggles=blocked mp=blocked")
 end
 
 Events.OnServerStarted.Add(checkNativeConstruction)

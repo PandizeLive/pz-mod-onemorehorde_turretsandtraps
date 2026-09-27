@@ -1,3 +1,5 @@
 {
-    "OMHTTSpikeBarrier": "Spike Barrier"
+    "OMHTTSpikeBarrier": "Spike Barrier",
+    "OMHTTDeploySpikeBarrier": "Deploy Spike Barrier",
+    "OMHTTCraftSpikeBarrier": "Craft Spike Barrier"
 }

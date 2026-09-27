@@ -81,7 +81,7 @@ public final class KahluaCheck {
         };
         Method nativeGetText = translatorType.getMethod("getText", String.class, Object[].class);
         int translated = 0;
-        for (String[] category : new String[][] {{"ContextMenu", "contextMenu"}, {"UI", "ui"}, {"Sandbox", "sandbox"}, {"Recipes", "recipe"}, {"IG_UI", "igui"}}) {
+        for (String[] category : new String[][] {{"ContextMenu", "contextMenu"}, {"UI", "ui"}, {"Sandbox", "sandbox"}, {"Recipes", "recipe"}, {"IG_UI", "igui"}, {"ItemName", "itemName"}, {"Tooltip", "tooltip"}}) {
             var nativeCategories = (java.util.Map<?, ?>)translatorType.getField("BY_NAME").get(null);
             if (!nativeCategories.containsKey(category[0])) throw new IllegalStateException("Unrecognized native translation filename: " + category[0]);
             var field = translatorType.getDeclaredField(category[1]);
@@ -94,6 +94,7 @@ public final class KahluaCheck {
             for (String key : map.keySet()) {
                 String rendered = category[0].equals("Recipes")
                     ? (String)translatorType.getMethod("getRecipeName", String.class).invoke(null, key)
+                    : category[0].equals("ItemName") ? (String)translatorType.getMethod("getItemNameFromFullType", String.class).invoke(null, key)
                     : (String)nativeGetText.invoke(null, key, new Object[] {"one", "two", "three", "four"});
                 if (rendered.equals(key) || rendered.matches(".*%[1-4].*")) throw new IllegalStateException("Unresolved translation: " + key);
             }
@@ -130,6 +131,7 @@ public final class KahluaCheck {
             {"OMHTT/Diagnostics", base + "shared/OMHTT/Diagnostics.lua"},
             {"OMHTT/Damage", base + "server/OMHTT/Damage.lua"},
             {"OMHTT/PrototypeCombat", base + "server/OMHTT/PrototypeCombat.lua"},
+            {"OMHTT/BarrierSprites", base + "shared/OMHTT/BarrierSprites.lua"},
             {"OMHTT/BarrierFootprint", base + "server/OMHTT/BarrierFootprint.lua"},
             {"OMHTT/FoundationServer", base + "server/OMHTT/FoundationServer.lua"},
             {"_", "tools/tests/server.lua"},

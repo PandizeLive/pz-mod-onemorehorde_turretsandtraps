@@ -37,5 +37,6 @@
     "UI_OMHTT_WrongBarrier": "This command requires a barrier prototype.",
     "UI_OMHTT_MarkerTest": "TEST %1",
     "UI_OMHTT_MarkerBarrier": "BARRIER %1 | %2",
-    "UI_OMHTT_MarkerPotato": "POTATO %1 | rounds %2"
+    "UI_OMHTT_MarkerPotato": "POTATO %1 | rounds %2",
+    "UI_OMHTT_DeploySpikeBarrier": "Deploy Spike Barrier"
 }

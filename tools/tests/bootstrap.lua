@@ -154,7 +154,7 @@ IsoObject = {new = function(square, sprite, name)
     function object:invalidateRenderChunkLevel(reason) self.renderInvalidated = reason end
     function object:getSprite()
         if self.noSprite then return nil end
-        return {getTextureForCurrentFrame = function()
+        return {getID = function() return 1918369792 end, getTextureForCurrentFrame = function()
             if self.noTexture then return nil end
             return {
                 isReady = function() return not self.texturePending end,
@@ -168,7 +168,17 @@ IsoObject = {new = function(square, sprite, name)
     function object:setName(value) self.name = value end
     function object:setSprite(value) self.sprite = value end
     function object:setSpriteFromName(value) self.sprite = value end
-    function object:getSpriteConfig() return nil end
+    function object:getSpriteConfig()
+        if not string.find(self.sprite, "omhtt_barrier_01_", 1, true) then return nil end
+        local object = self
+        return {isValid = function() return true end,
+            getTileInfo = function() return {getSpriteName = function() return object.sprite end} end,
+            getObjectInfo = function() return {getName = function()
+                local index = tonumber(string.match(object.sprite, "_(%d+)$"))
+                if index >= 8 then return "OMHTTDeploySpikeBarrier" end
+                return "OMHTTSpikeBarrier"
+            end} end}
+    end
     function object:transmitUpdatedSpriteToClients() self.spriteSent = true end
     function object:getSquare() return self.square end
     function object:getModData() return self.data end

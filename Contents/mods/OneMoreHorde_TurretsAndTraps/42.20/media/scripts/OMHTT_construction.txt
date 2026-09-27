@@ -1,15 +1,11 @@
-module Base
-{
-    entity OMHTTSpikeBarrier
-    {
-        component UiConfig
-        {
+module Base {
+    entity OMHTTSpikeBarrier {
+        component UiConfig {
             xuiSkin = default,
             entityStyle = ES_OMHTTSpikeBarrier,
             uiEnabled = false,
         }
-        component SpriteConfig
-        {
+        component SpriteConfig {
             health = 100,
             skillBaseHealth = 0,
             bonusHealth = 0,
@@ -17,39 +13,30 @@ module Base
             breakSound = BreakObject,
             OnIsValid = OMHTT_Construction.onIsValid,
             OnCreate = OMHTT_Construction.onCreate,
-            face E
-            {
-                layer
-                {
-                    row = media/textures/OMHTT_BuildBarrierE_A.png,
-                    row = media/textures/OMHTT_BuildBarrierE_B.png,
+            face E {
+                layer {
+                    row = omhtt_barrier_01_0,
+                    row = omhtt_barrier_01_1,
                 }
             }
-            face N
-            {
-                layer
-                {
-                    row = media/textures/OMHTT_BuildBarrierN_A.png media/textures/OMHTT_BuildBarrierN_B.png,
+            face N {
+                layer {
+                    row = omhtt_barrier_01_2 omhtt_barrier_01_3,
                 }
             }
-            face W
-            {
-                layer
-                {
-                    row = media/textures/OMHTT_BuildBarrierW_B.png,
-                    row = media/textures/OMHTT_BuildBarrierW_A.png,
+            face W {
+                layer {
+                    row = omhtt_barrier_01_5,
+                    row = omhtt_barrier_01_4,
                 }
             }
-            face S
-            {
-                layer
-                {
-                    row = media/textures/OMHTT_BuildBarrierS_B.png media/textures/OMHTT_BuildBarrierS_A.png,
+            face S {
+                layer {
+                    row = omhtt_barrier_01_7 omhtt_barrier_01_6,
                 }
             }
         }
-        component CraftRecipe
-        {
+        component CraftRecipe {
             timedAction = SharpenStakeWood,
             time = 200,
             category = Carpentry,
@@ -59,11 +46,61 @@ module Base
             SkillRequired = Woodwork:1,
             xpAward = Woodwork:10,
             OnAddToMenu = OMHTT_ConstructionMenuAvailable,
-            inputs
-            {
+            inputs {
                 item 1 tags[base:sharpknife;base:meatcleaver] mode:keep flags[Prop1;DontRecordInput;IsNotDull;MayDegradeLight],
                 item 4 [Base.Plank;Base.SpearCrafted],
                 item 4 [Base.RippedSheets;Base.RippedSheetsDirty;Base.Twine],
+            }
+        }
+    }
+
+    entity OMHTTDeploySpikeBarrier {
+        component UiConfig {
+            xuiSkin = default,
+            entityStyle = ES_OMHTTDeploySpikeBarrier,
+            uiEnabled = false,
+        }
+        component SpriteConfig {
+            health = 100,
+            skillBaseHealth = 0,
+            bonusHealth = 0,
+            isThumpable = true,
+            breakSound = BreakObject,
+            OnIsValid = OMHTT_Construction.onIsValid,
+            OnCreate = OMHTT_Construction.onCreate,
+            face E {
+                layer {
+                    row = omhtt_barrier_01_8,
+                    row = omhtt_barrier_01_9,
+                }
+            }
+            face N {
+                layer {
+                    row = omhtt_barrier_01_10 omhtt_barrier_01_11,
+                }
+            }
+            face W {
+                layer {
+                    row = omhtt_barrier_01_13,
+                    row = omhtt_barrier_01_12,
+                }
+            }
+            face S {
+                layer {
+                    row = omhtt_barrier_01_15 omhtt_barrier_01_14,
+                }
+            }
+        }
+        component CraftRecipe {
+            timedAction = BuildLowNoTool,
+            time = 200,
+            category = Carpentry,
+            Tags = Carpentry,
+            needToBeLearn = false,
+            OnAddToMenu = OMHTT_ConstructionMenuAvailable,
+            OnTest = OMHTT_Construction.portableInputAllowed,
+            inputs {
+                item 1 [Base.OMHTTSpikeBarrierItem],
             }
         }
     }

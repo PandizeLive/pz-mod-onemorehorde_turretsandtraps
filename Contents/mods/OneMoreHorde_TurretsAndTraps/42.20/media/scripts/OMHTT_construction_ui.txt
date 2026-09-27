@@ -8,5 +8,10 @@ module Base
             DisplayName = UI_OMHTT_SpikeBarrier,
             Icon = OMHTT_Barrier0,
         }
+        entity ES_OMHTTDeploySpikeBarrier {
+            LuaWindowClass = ISEntityWindow,
+            DisplayName = UI_OMHTT_DeploySpikeBarrier,
+            Icon = OMHTT_Barrier0,
+        }
     }
 }

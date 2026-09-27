@@ -144,7 +144,7 @@ function Server.reconcile(square, reason)
     if not slot or not slot.device then return end
     local record = slot.device
     if record.kind == "barrier" then
-        Footprint.sync(slot)
+        Footprint.sync(slot, reason)
         return
     end
     local object, count = Foundation.find(square, record.id)

@@ -16,7 +16,7 @@ for _, mode in pairs({"client", "server"}) do
 end
 testMode = "sp"
 
-local function makeCursor(heading, number)
+local function makeCursor(heading, number, portable)
     local horizontal = heading == "n" or heading == "s"
     local width, height = 1, 2
     if horizontal then width, height = 2, 1 end
@@ -31,7 +31,7 @@ local function makeCursor(heading, number)
             or (heading == "w" and y == 0) or (heading == "s" and x == 0) then part = "B" end
         return {
             getX = function() return x end, getY = function() return y end,
-            getSpriteName = function() return "media/textures/OMHTT_BuildBarrier" .. string.upper(heading) .. "_" .. part .. ".png" end,
+            getSpriteName = function() return "omhtt_barrier_01_" .. ((number - 1) * 2 + (part == "B" and 1 or 0) + (portable and 8 or 0)) end,
         }
     end
     local cursor = {character = testPlayer, consumed = 0, processed = 0, parts = {}, materials = true}
@@ -50,7 +50,7 @@ local function makeCursor(heading, number)
         object:transmitCompleteItemToClients()
         self.parts[#self.parts + 1] = object
     end
-    cursor.craftRecipe = {getName = function() return "OMHTTSpikeBarrier" end}
+    cursor.craftRecipe = {getName = function() return portable and "OMHTTDeploySpikeBarrier" or "OMHTTSpikeBarrier" end}
     local data = {
         luaCallOnCreate = function() end,
         processDestroyAndUsedItems = function() cursor.processed = cursor.processed + 1 end,
@@ -95,7 +95,7 @@ for index = 1, #headings do
     check(record.facing == (index - 1) * 4 and record.width == 2 and record.builderUsername == testPlayer:getUsername(), "heading and builder persist " .. heading)
     check(cursor.parts[1].data.OMHTT.id == cursor.parts[2].data.OMHTT.id and cursor.parts[1].blockAll
         and not cursor.parts[1].hoppable, "paired solid non-vaultable native parts " .. heading)
-    check(string.find(cursor.parts[1]:getSpriteName(), "OMHTT_BuildBarrier", 1, true)
+    check(string.find(cursor.parts[1]:getSpriteName(), "omhtt_barrier_01_", 1, true)
         and cursor.parts[1]:getSpriteName() ~= cursor.parts[2]:getSpriteName(), "native parts retain distinct SpriteConfig names " .. heading)
     local nextId = testData.nextId
     C.onCreate({thumpable = cursor.parts[1], character = testPlayer, facing = heading})
@@ -152,3 +152,29 @@ local blocked = makeCursor("e", 1)
 ISBuildIsoEntity.create(blocked, 143, 140, 0, false, "unused")
 check(#blocked.parts == 0, "Build Cheat still rejects physical obstruction under the second half")
 testBuildCheat = false
+
+for index = 1, #headings do
+    local x, y = 170 + index * 4, 170
+    for dx = 0, 1 do
+        for dy = 0, 1 do makeSquare(x + dx, y + dy, 0) end
+    end
+    local cursor = makeCursor(headings[index], index, true)
+    local square = testSquares[F.key(x, y, 0)]
+    cursor.materials = false
+    ISBuildIsoEntity.create(cursor, x, y, 0, false, "unused")
+    check(#cursor.parts == 0 and cursor.consumed == 0, "missing portable item preserves footprint " .. headings[index])
+    cursor.materials = true
+    ISBuildIsoEntity.create(cursor, x, y, 0, false, "unused")
+    local record = P.slot(square).device
+    check(cursor.consumed == 1 and #cursor.parts == 2 and record.constructionEntity == "OMHTTDeploySpikeBarrier",
+        "one portable transaction creates one paired deployment " .. headings[index])
+    cursor.parts[1]:setHealth(63)
+    P.sync(P.slot(square))
+    testData = nativeRoundTrip(testData)
+    S.initialize()
+    S.reconcile(square, "portable-test-reload")
+    check(P.slot(square).device.constructionEntity == "OMHTTDeploySpikeBarrier" and cursor.parts[2]:getHealth() == 63,
+        "portable identity and damage persist " .. headings[index])
+    ISBuildIsoEntity.create(cursor, x, y, 0, false, "unused")
+    check(cursor.consumed == 1 and #cursor.parts == 2, "repeat portable placement rejected before item charge " .. headings[index])
+end

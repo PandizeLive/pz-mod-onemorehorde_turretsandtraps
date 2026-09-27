@@ -36,6 +36,9 @@ Recorded 2026-09-25 from the current planning conversation. This document is aut
 | C26 | Basic construction uses a retained sharp knife or cleaver. Reinforce an existing barrier using two additional planks, eight nails and a retained hammer; double maximum durability, preserve existing damage and deal 25 damage per thump. | Owner approved the proposed tool/upgrade recipe and corrected reinforced damage to 25 on 2026-09-26. At current basic health, reinforcement is 200 maximum health; preserve missing health rather than repairing for free. |
 | C27 | Packing, unpacking and redeploying award no crafting XP. | Owner approved the proposal alongside the recipe checkpoint; first construction/crafting reward must not repeat through transport. |
 
+| C28 | Combine the outstanding native persistence repair with P2C1b portable-item implementation. | Owner request on 2026-09-27; does not include P2C1c bundles or waive player acceptance. |
+| C29 | Portable crafting uses the existing basic barrier ingredients, retained tool, Carpentry 1 and 10 base XP. Deploying the finished item consumes only that item and grants no XP. | Owner selected "Use the existing recipe and XP" on 2026-09-27. |
+
 ## Owner-proposed content and values
 
 These belong in the design backlog; recording them is not a claim that they have been fully specified or are feasible on the current build.
@@ -125,3 +128,7 @@ The test reports authorize repairing combat/visibility and changing base potato 
 The owner additionally authorized temporary white directional-arrow textures and distinguishing developer markers on 2026-09-25. This is a technical testing exception to the final-art restriction. Version `0.1.3-p1markers` does not establish aesthetic direction.
 
 Documentation and local project organization are completed in Phase 0. The subsequent owner-approved cube-only asset preparation is complete. The owner then approved the concrete P1C1 implementation scope, including the proposed package ID `OneMoreHorde_TurretsAndTraps`. Version `0.1.0-p1c1` implements the persistent test-device shell and local validation/installation tooling; see the [checkpoint record](checkpoints/P1C1_RECORD.md). Player-operated acceptance is pending. The owner subsequently authorized P1C2-P1C4 prototype batching and the `0.1.2-p1debug` repair/diagnostics pass. See their checkpoint records. Acceptance, later gameplay, integrations and publication remain pending.
+
+## 0.2.1 provisional item tuning
+
+One portable barrier weighs 6 encumbrance for testing. The owner was offered 6/8/10 and has not selected a weight; 6 is an implementation assumption, not a confirmed balance decision. If retained, a later five-item bundle weighs 9.9 under C22. Deployment currently accepts pristine items; recovery and condition-carrying inventory conversions remain P2C1d.

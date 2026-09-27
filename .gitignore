@@ -21,3 +21,7 @@ diagnostics/v*/native-home/
 diagnostics/release-tool-tests/
 diagnostics/install-backups/
 diagnostics/captures/
+
+diagnostics/v*/persistence-classes/
+diagnostics/v*/native-objects/
+diagnostics/v*/*.bytecode.txt

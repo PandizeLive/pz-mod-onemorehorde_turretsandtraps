@@ -44,7 +44,7 @@ def main():
     assert (PACKAGE / "42.20/media/textures" / (icon + ".png")).is_file(), "Missing construction UI icon"
     lua = "\n".join(path.read_text() for path in PACKAGE.rglob("*.lua"))
     translation_files = list((PACKAGE / "42.20/media/lua/shared/Translate/EN").glob("*.json"))
-    assert {p.name for p in translation_files} == {"ContextMenu.json", "UI.json", "Sandbox.json", "Recipes.json", "IG_UI.json"}
+    assert {p.name for p in translation_files} == {"ContextMenu.json", "UI.json", "Sandbox.json", "Recipes.json", "IG_UI.json", "ItemName.json", "Tooltip.json"}
     assert not list(PACKAGE.rglob("*_EN.txt")), "Obsolete translation format is not loaded by the target build"
     translations = {}
     for path in translation_files:
@@ -61,10 +61,15 @@ def main():
     for key in keys:
         assert key in translations, f"Missing translation: {key}"
     textures = list((PACKAGE / "42.20/media/textures").glob("*.png"))
-    assert len(textures) == 30, "Legacy visuals plus eight unique native-construction part sprites required"
+    assert len(textures) == 31, "Legacy visuals plus eight unique native-construction part sprites required"
     for heading, index in zip("ENWS", range(4)):
         for part in "AB":
             assert (PACKAGE / f"42.20/media/textures/OMHTT_BuildBarrier{heading}_{part}.png").read_bytes() == (PACKAGE / f"42.20/media/textures/OMHTT_Barrier{index}.png").read_bytes(), "Construction sprites reuse authorized technical markers"
+    assert (PACKAGE / "42.20/media/textures/Item_OMHTT_Barrier0.png").read_bytes() == (PACKAGE / "42.20/media/textures/OMHTT_Barrier0.png").read_bytes()
+    from build_barrier_tiles import build
+    tiles, pack = build()
+    assert (PACKAGE / "42.20/media/OMHTT_Barriers.tiles").read_bytes() == tiles
+    assert (PACKAGE / "42.20/media/texturepacks/OMHTT_Barriers.pack").read_bytes() == pack
     barrier_bytes = {(PACKAGE / f"42.20/media/textures/OMHTT_Barrier{i}.png").read_bytes() for i in range(4)}
     assert len(barrier_bytes) == 4, "Barrier directions must have distinct pixels"
     for texture in textures:
@@ -99,6 +104,10 @@ def main():
         "zombie/iso/sprite/IsoSpriteManager.class",
         "zombie/iso/objects/IsoThumpable.class",
         "zombie/core/Translator.class",
+        "zombie/iso/IsoWorld.class", "zombie/fileSystem/TexturePackDevice.class",
+        "zombie/gameStates/ChooseGameInfo.class", "zombie/entity/GameEntityFactory.class",
+        "zombie/entity/ComponentType.class", "zombie/inventory/InventoryItem.class",
+        "zombie/scripting/objects/Item.class",
         "media/lua/client/Entity/ISUI/CraftRecipe/ISWidgetInput.lua",
         "media/scripts/generated/entities/animals/workstations/entity_feedingtrough.txt",
         "zombie/entity/components/spriteconfig/SpriteConfigManager.class",

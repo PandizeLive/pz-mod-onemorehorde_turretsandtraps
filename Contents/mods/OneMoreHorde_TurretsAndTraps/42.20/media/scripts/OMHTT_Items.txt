@@ -1,0 +1,12 @@
+module Base {
+    item OMHTTSpikeBarrierItem {
+        DisplayName = Spike Barrier,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 6,
+        Icon = OMHTT_Barrier0,
+        ConditionMax = 100,
+        Tooltip = Tooltip_OMHTT_PortableBarrier,
+    }
+
+}

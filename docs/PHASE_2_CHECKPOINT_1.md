@@ -2,12 +2,14 @@
 
 Authorized by the owner on 2026-09-26. State: P2C1a native construction implemented in 0.2.0; the approved recipe follow-up is 0.2.0.1, followed by the 0.2.0.2 Building-menu visibility/category correction. Player acceptance remains pending. Phase 1's remaining side-end, reload, cleanup, traversal and multiplayer acceptance is not waived.
 
+Current follow-up: [0.2.1 persistence repair plus P2C1b](PHASE_2_CHECKPOINT_1B.md), authorized together on 2026-09-27. Native object persistence now has serialization evidence; combined owner acceptance is pending. The historical test below is not the current handoff.
+
 ## Checkpoints
 
 | ID | Outcome | State |
 | --- | --- | --- |
 | P2C1a | Build a Spike Barrier from the native building menu, preview and rotate its 1x2 footprint, consume materials through the native recipe, preserve existing paired identity/damage/persistence | Implemented; player acceptance pending |
-| P2C1b | Craft/store an individual barrier item and deploy it through native construction | Scheduled |
+| P2C1b | Craft/store an individual barrier item and deploy it through native construction | Implemented in 0.2.1; combined owner test pending |
 | P2C1c | Bundle five individual barriers; pack weight = combined loose weight x 0.33; unpack returns five | Scheduled; 67% reduction confirmed |
 | P2C1d | Servicing/recovery, ownership policy and multiplayer construction evidence | Scheduled |
 

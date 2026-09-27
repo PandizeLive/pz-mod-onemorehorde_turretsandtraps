@@ -1,5 +1,6 @@
 local F = require("OMHTT/Foundation")
 local Diagnostics = require("OMHTT/Diagnostics")
+local Sprites = require("OMHTT/BarrierSprites")
 OMHTT_Construction = {}
 local Construction = OMHTT_Construction
 local facings = {e = 0, n = 4, w = 8, s = 12}
@@ -21,16 +22,38 @@ end
 
 OMHTT_ConstructionMenuAvailable = Construction.onAddToMenu
 
+---@param item InventoryItem Recipe input
+---@param player IsoGameCharacter Crafter
+---@return boolean allowed
+---@nodiscard
+function Construction.portableInputAllowed(item, player)
+    if isClient() or isServer() or not F.barrierEnabled() then return false end
+    if item:getFullType() == "Base.OMHTTSpikeBarrierItem" then
+        return item:getCondition() == item:getConditionMax()
+    end
+    return true
+end
+
+---@param data CraftRecipeData Completed recipe
+---@param player IsoGameCharacter Crafter
+---@return nil
+function Construction.onCrafted(data, player)
+    local item = data:getFirstCreatedItem()
+    Diagnostics.emit("portable-crafted", {recipe = data:getRecipe():getName(), type = item:getFullType(),
+        itemId = item:getID(), weight = item:getActualWeight(), count = data:getAllCreatedItems():size(),
+        crafter = player:getUsername()})
+end
+
 ---@return nil
 function Construction.initializeSprites()
-    for heading in pairs(facings) do
-        for i = 1, 2 do
-            local part = i == 1 and "A" or "B"
-            local name = "media/textures/OMHTT_BuildBarrier" .. string.upper(heading) .. "_" .. part .. ".png"
-            getSprite(name):setName(name)
+    for i = 0, 15 do
+        local name = Sprites.SHEET .. i
+        local sprite = getSprite(name)
+        if sprite:getName() ~= name or sprite:getID() ~= 1918369792 + i then
+            error("[OMHTT] Persistent barrier tile missing or conflicting: " .. name)
         end
     end
-    Diagnostics.emit("construction-sprites", {named = 8})
+    Diagnostics.emit("construction-sprites", {persistent = 16, tiledef = 7316})
 end
 
 Events.OnInitGlobalModData.Add(Construction.initializeSprites)
@@ -82,15 +105,20 @@ function Construction.onCreate(params)
     local marker = object:getModData().OMHTT
     if marker and marker.placementSource == "construction" then
         x, y = marker.anchorX, marker.anchorY
-    elseif string.match(object:getSpriteName() or "", "_B%.png$") then
-        local nx, ny = F.barrierDirection(facing)
-        x, y = x + ny, y - nx
+    else
+        local index = tonumber(string.match(object:getSpriteName() or "", "^omhtt_barrier_01_(%d+)$"))
+        if index == nil then error("[OMHTT] Invalid barrier construction sprite") end
+        if index % 2 == 1 then
+            local nx, ny = F.barrierDirection(facing)
+            x, y = x + ny, y - nx
+        end
     end
     if not marker and not object:getSpriteName() then
         error("[OMHTT] Native construction sprite has no registered name")
     end
     local Footprint = require("OMHTT/BarrierFootprint")
-    Footprint.adoptBuild(object, player, x, y, facing)
+    local entity = object:getSpriteConfig():getObjectInfo():getName()
+    Footprint.adoptBuild(object, player, x, y, facing, entity)
     Diagnostics.object(object, "native-construction")
 end
 

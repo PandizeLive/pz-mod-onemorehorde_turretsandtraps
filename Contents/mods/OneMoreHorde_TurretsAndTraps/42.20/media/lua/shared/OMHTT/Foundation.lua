@@ -1,6 +1,6 @@
 ---@class OMHTTFoundation
 local Foundation = {
-    VERSION = "0.2.0.3",
+    VERSION = "0.2.1",
     MODULE = "OMHTT_Foundation",
     STORE = "OMHTT_Foundation_v1",
     PREFIX = "OMHTT_P1C1_",
@@ -32,6 +32,7 @@ function Foundation.writeMarker(object, record)
         nextShot = record.nextShot, facing = record.facing, width = record.width,
         anchorX = record.x, anchorY = record.y, anchorZ = record.z,
         placementSource = record.placementSource, builderUsername = record.builderUsername,
+        constructionEntity = record.constructionEntity,
     }
 end
 
