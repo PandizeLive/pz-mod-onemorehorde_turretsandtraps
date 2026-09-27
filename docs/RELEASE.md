@@ -10,8 +10,8 @@
 | Package version | 0.2.0.3 candidate; development test only |
 | Confirmed mod ID | OneMoreHorde_TurretsAndTraps |
 | Build evidence | B42.20.4 b0bbce05d5 with PZ Optimizer: dedicated startup/save/restart passed; player acceptance pending |
-| Runtime source / installable package | 0.2.0.3 validated; local installation pending |
-| Git repository / remote | Local source; annotated test/v0.2.0.3 required before installation; no remote configured |
+| Runtime source / installable package | 0.2.0.3 installed; all 58 files match manifest/tag; full previous 0.2.0.2 backup verified (58 files) |
+| Git repository / remote | Local source 7d53740, annotated test/v0.2.0.3; no remote configured |
 | Workshop item / successful upload | None |
 | Public changelog baseline | No upload exists |
 | Official score support | Proposed; not implemented |
@@ -19,7 +19,7 @@
 
 ## Current native construction candidate
 
-Version `0.2.0.3` repairs category initialization, the native category translation filename and unnamed construction sprites. [Repair notes](PR_v0.2.0.3.md), [owner evidence](TEST_v0.2.0.2.md), [complete owner test](PHASE_2_CHECKPOINT_1.md#owner-test). No recipe eligibility or custom bypass changes. Validation: 254 Kahlua assertions, 13 modules, 64 native translator keys, real native SpriteConfig validity for eight thumpables, menu callback gates and 75 material combinations; isolated startup/save/shutdown passed (74.4 seconds). Native object persistence/rendering remains unverified; the smoke does not save and reload the eight fixture objects. Installation evidence will follow deployment.
+Version `0.2.0.3` repairs category initialization, the native category translation filename and unnamed construction sprites. [Repair notes](PR_v0.2.0.3.md), [owner evidence](TEST_v0.2.0.2.md), [complete owner test](PHASE_2_CHECKPOINT_1.md#owner-test). No recipe eligibility or custom bypass changes. Validation: 254 Kahlua assertions, 13 modules, 64 native translator keys, real native SpriteConfig validity for eight thumpables, menu callback gates and 75 material combinations; isolated startup/save/shutdown passed (74.4 seconds). Native object persistence/rendering remains unverified; the smoke does not save and reload the eight fixture objects. [Installation evidence](../diagnostics/v0.2.0.3/local-release.json) verifies all 58 installed/tagged files, all 58 previous-version backup files and the matching [archive](../artifacts/OMHTT-0.2.0.3.zip). The retired IGUI.json was removed by the managed installer. Source tag: `test/v0.2.0.3` (7d53740); documentation/evidence-only commits may follow with unchanged Contents. Client restart and player acceptance remain pending. No remote push or Workshop upload.
 
 ## Previous menu-visibility candidate
 
