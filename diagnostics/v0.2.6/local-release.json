@@ -12,6 +12,6 @@
   "previousVersion": "0.2.5",
   "previousManifestFiles": 75,
   "backupManifestMismatches": [],
-  "playerAcceptance": "pending; restart required",
+  "playerAcceptance": "partial; loaded 0.2.6 confirmed; visibility defect and remaining acceptance gaps recorded in docs/TEST_v0.2.6.md",
   "workshopUpload": "none"
 }

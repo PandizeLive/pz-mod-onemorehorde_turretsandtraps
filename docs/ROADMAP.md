@@ -1,6 +1,8 @@
 # Phases and checkpoints
 
-**Current: P2C2 outline correction, version 0.2.6.** C40 approves shared native front edges plus exposed outer end caps and an open rear, replacing the C39 full-block/separate-player proposal. Connected runs and perpendicular corners omit internal caps; removal restores newly exposed ends. [Scope, evidence and owner test](PHASE_2_CHECKPOINT_2_OUTLINE.md). 1,433 Kahlua assertions and native write/read checks pass; rendered SP acceptance remains pending. Reinforcement and multiplayer remain pending.
+**Next: [P2C2a — visibility correction and reinforcement](PHASE_2_CHECKPOINT_2A.md).** The [completed 0.2.6 test](TEST_v0.2.6.md) provides partial vault/retaliation/pickup evidence but exposes sight-blocking barriers. Fix visibility first, review four unsettled vault results, then implement the already-approved reinforced upgrade. No new runtime patch is installed.
+
+**Previous candidate: P2C2 outline correction, version 0.2.6.** C40 approves shared native front edges plus exposed outer end caps and an open rear, replacing the C39 full-block/separate-player proposal. Connected runs and perpendicular corners omit internal caps; removal restores newly exposed ends. [Scope, evidence and owner test](PHASE_2_CHECKPOINT_2_OUTLINE.md). 1,433 Kahlua assertions and native write/read checks pass; rendered SP acceptance remains pending. Reinforcement and multiplayer remain pending.
 
 ## Previous checkpoint status
 

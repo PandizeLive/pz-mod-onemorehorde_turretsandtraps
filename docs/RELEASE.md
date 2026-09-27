@@ -1,6 +1,10 @@
 # Release state and publication policy
 
-## Current candidate: 0.2.6
+## Current installation: 0.2.6; next correction queued
+
+The [completed owner test](TEST_v0.2.6.md) confirms the loaded version and partial vault/retaliation/pickup behavior, but vision through barriers is blocked. [P2C2a](PHASE_2_CHECKPOINT_2A.md) queues visibility correction and the previously approved reinforcement. No runtime change or new installation is claimed in this follow-up.
+
+## 0.2.6 installation evidence
 
 [Checkpoint and complete owner test](PHASE_2_CHECKPOINT_2_OUTLINE.md), [release notes](PR_v0.2.6.md). The owner approved C40's shared native outline: front edges, outermost exposed end caps and an open rear. This closes the separate centered-player/full-block-zombie proposal without adding a Java dependency. The uninstalled 0.2.5.1 input/contact/overlay fixes are included here; that draft was not a release.
 
@@ -31,7 +35,7 @@ Validation: 1,433 Kahlua assertions, 24 runtime modules, 103 translation keys, 2
 | Workshop item / successful upload | None |
 | Public changelog baseline | No upload exists |
 | Official score support | Proposed; not implemented |
-| Player tests | 0.2.5 failed; C40 scope approved; 0.2.6 rendered SP acceptance pending |
+| Player tests | 0.2.6 partial evidence; sight-blocking defect, completed repair/reload and four unsettled vault results remain open |
 
 ## Current correction and Sandbox candidate
 

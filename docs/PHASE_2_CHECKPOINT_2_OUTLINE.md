@@ -1,6 +1,6 @@
 # P2C2 outline correction — 0.2.6
 
-Status: implemented and validated; rendered single-player acceptance pending. Owner approval: C40 in [Decisions](DECISIONS.md). This replaces C39's separate actor collision proposal and includes the uninstalled 0.2.5.1 corrections.
+Status: owner test completed with partial gameplay evidence and a visibility defect; see [test review](TEST_v0.2.6.md) and [next checkpoint](PHASE_2_CHECKPOINT_2A.md). Owner approval: C40 in [Decisions](DECISIONS.md). This replaces C39's separate actor collision proposal and includes the uninstalled 0.2.5.1 corrections.
 
 ## Behavior
 
