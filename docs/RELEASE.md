@@ -2,7 +2,7 @@
 
 ## 0.2.5 native-control correction candidate
 
-[Scope and owner test](PHASE_2_CHECKPOINT_2_VAULT_REPAIR.md), [release notes](PR_v0.2.5.md). The 0.2.4 owner test failed collision/approach acceptance; its successful synthetic checks remain historical evidence only. 0.2.5 implements the approved correction, including the pre-existing owner-supplied icon. Local installation evidence will be recorded after tag/manifest verification. No Workshop content has ever been uploaded; the cumulative draft retains all pending net changes.
+[Scope and owner test](PHASE_2_CHECKPOINT_2_VAULT_REPAIR.md), [release notes](PR_v0.2.5.md). The 0.2.4 owner test failed collision/approach acceptance; its successful synthetic checks remain historical evidence only. 0.2.5 implements the approved correction, including the pre-existing owner-supplied icon. [Local installation evidence](../diagnostics/v0.2.5/local-release.json) verifies all 75 installed files against the validated manifest and [tagged archive](../artifacts/OMHTT-0.2.5.zip). Annotated `test/v0.2.5` points to `90f7fe7`. The full previous installation is backed up; see the evidence record for baseline comparison. Restart before the owner test. No Workshop content has ever been uploaded; the cumulative draft retains all pending net changes.
 
 ## 0.2.4 fence-collision candidate
 
@@ -17,11 +17,11 @@
 | Project | OMH: Turrets & Traps |
 | Foundation date | 2026-09-25 |
 | Edition | One; feature controls in Sandbox |
-| Package version | 0.2.5 prepared; local install pending verification |
+| Package version | 0.2.5 installed; SP development test |
 | Confirmed mod ID | OneMoreHorde_TurretsAndTraps |
 | Build evidence | B42.20.4 b0bbce05d5 with PZ Optimizer: dedicated startup/save/restart passed; player acceptance pending |
-| Runtime source / installable package | 0.2.5 candidate; 75 validated package files |
-| Git repository / remote | Local working branch; annotated test/v0.2.4 (0ca7095); no remote configured |
+| Runtime source / installable package | 0.2.5 installed; 75 tagged files verified |
+| Git repository / remote | Local working branch; annotated test/v0.2.5 (90f7fe7); no remote configured |
 | Workshop item / successful upload | None |
 | Public changelog baseline | No upload exists |
 | Official score support | Proposed; not implemented |

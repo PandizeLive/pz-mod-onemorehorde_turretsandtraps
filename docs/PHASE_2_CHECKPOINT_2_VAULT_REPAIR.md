@@ -23,6 +23,8 @@ The installed default bindings distinguish Shift (Run), Left Alt (Sprint on Wind
 
 Automated evidence lives in `diagnostics/v0.2.5/`: 585 Kahlua assertions, 22 runtime modules, 103 native translation keys and 23 native packet serializations pass. Native write/read smoke processes completed in 77.0 / 75.2 seconds, including 16 objects, both pathfinder classifiers, four crossing directions and 12 run/sprint parameter cases. Kahlua tests cover input routing, corner ownership/health/removal and round-trip persistence, scratch settings/contact timing, and service routing/stalls/cancellation. Native fixtures verify edge collision, both pathfinder classifiers, public low-fence entry, run/sprint parameter preservation, and native serialization across processes. Animation variables in headless traversal fixtures are supplied by the test. These do not prove rendered client transitions, visual alignment or zombie behavior during an actual vault.
 
+Local package installed and all 75 files verified against the manifest/archive; source is annotated `test/v0.2.5` (`90f7fe7`). [Install evidence](../diagnostics/v0.2.5/local-release.json). A restart is required; no rendered acceptance is claimed.
+
 No installed game files, saves, keybindings, sibling mods, remote repositories or Workshop listings are changed by the package.
 
 ## Owner test
