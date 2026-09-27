@@ -34,9 +34,15 @@ def main():
         try:
             while process.poll() is None and time.monotonic() - started < 150:
                 text = transcript.read_text(encoding="utf-8", errors="replace")
+                if "OMHTT_TranslationSmoke.lua:" in text:
+                    process.stdin.write("quit\n")
+                    process.stdin.flush()
+                    process.wait(timeout=40)
+                    raise RuntimeError("Native probe failed; inspect server-restart.log")
                 if "*** SERVER STARTED" in text and "[OMHTT-Smoke] native-ingredients mixes=75" in text:
                     assert "[OMHTT] server-ready version=" + version in text, "Mod did not initialize"
                     assert "[OMHTT-Smoke] native-translations checked=3 missing=0" in text, "Native translations failed smoke probe"
+                    assert "[OMHTT-Smoke] native-build-menu registered=1 title=Spike_Barrier category=Carpentry callback=resolved spGate=open disabledGate=closed dottedCallback=rejected" in text, "Native menu callback or enumeration failed smoke probe"
                     assert "[OMHTT-Smoke] native-construction entity=OMHTTSpikeBarrier faces=4 parts=8 inputs=3 translated=true mpGate=closed" in text, "Native construction registration failed smoke probe"
                     assert "[OMHTT-Smoke] native-ingredients mixes=75 missingWood=blocked missingBindings=blocked missingTool=blocked dullTool=blocked brokenTool=blocked preview=nonconsuming" in text, "Native ingredient matrix failed smoke probe"
                     process.stdin.write("quit\n")
@@ -55,6 +61,7 @@ def main():
     assert "Shutdown handling finished" in text, "No clean shutdown evidence"
     assert "Saving GlobalModData" in text, "No native global state save"
     assert "NoSuchFileException" not in text, "Missing package directories"
+    assert "Recipe OMHTTSpikeBarrier missing UiConfigScript" not in text, "Missing native menu UI configuration"
     shutil.copy2(console, OUTPUT / "server-restart-console.log")
     for line in text.splitlines():
         if any(token in line for token in ["version=42", "loading OneMoreHorde_TurretsAndTraps", "[OMHTT]", "[OMHTT-Smoke]", "SERVER STARTED", "Saving GlobalModData", "Shutdown handling finished"]):

@@ -19,6 +19,8 @@ function Construction.onAddToMenu(params)
     return available
 end
 
+OMHTT_ConstructionMenuAvailable = Construction.onAddToMenu
+
 ---@param params table Native per-tile placement parameters
 ---@return boolean valid Both squares and authority ledger can accept the footprint
 ---@nodiscard

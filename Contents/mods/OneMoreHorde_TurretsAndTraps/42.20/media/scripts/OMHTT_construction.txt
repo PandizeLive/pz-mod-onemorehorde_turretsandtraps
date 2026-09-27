@@ -2,6 +2,12 @@ module Base
 {
     entity OMHTTSpikeBarrier
     {
+        component UiConfig
+        {
+            xuiSkin = default,
+            entityStyle = ES_OMHTTSpikeBarrier,
+            uiEnabled = false,
+        }
         component SpriteConfig
         {
             health = 100,
@@ -47,10 +53,11 @@ module Base
             timedAction = SharpenStakeWood,
             time = 200,
             category = Carpentry,
+            Tags = Carpentry,
             needToBeLearn = false,
             SkillRequired = Woodwork:1,
             xpAward = Woodwork:10,
-            OnAddToMenu = OMHTT_Construction.onAddToMenu,
+            OnAddToMenu = OMHTT_ConstructionMenuAvailable,
             inputs
             {
                 item 1 tags[base:sharpknife;base:meatcleaver] mode:keep flags[Prop1;DontRecordInput;IsNotDull;MayDegradeLight],

@@ -38,9 +38,13 @@ def main():
             assert not re.search(r"\b(?:ipairs|pcall|xpcall|next)\s*\(", content), f"Banned construct: {path}"
     assert re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+(?:\.[0-9]+)?", VERSION), "Numeric release version required"
     assert f'VERSION = "{VERSION}"' in (PACKAGE / "42.20/media/lua/shared/OMHTT/Foundation.lua").read_text()
+    ui_script = (PACKAGE / "42.20/media/scripts/OMHTT_construction_ui.txt").read_text()
+    icon = re.search(r"Icon\s*=\s*([^,\s]+)", ui_script).group(1)
+    assert "/" not in icon and "." not in icon, "Native trygetTexture adds media/textures/ and .png"
+    assert (PACKAGE / "42.20/media/textures" / (icon + ".png")).is_file(), "Missing construction UI icon"
     lua = "\n".join(path.read_text() for path in PACKAGE.rglob("*.lua"))
     translation_files = list((PACKAGE / "42.20/media/lua/shared/Translate/EN").glob("*.json"))
-    assert {p.name for p in translation_files} == {"ContextMenu.json", "UI.json", "Sandbox.json", "Recipes.json"}
+    assert {p.name for p in translation_files} == {"ContextMenu.json", "UI.json", "Sandbox.json", "Recipes.json", "IGUI.json"}
     assert not list(PACKAGE.rglob("*_EN.txt")), "Obsolete translation format is not loaded by the target build"
     translations = {}
     for path in translation_files:
@@ -86,6 +90,11 @@ def main():
         "media/lua/server/BuildingObjects/ISBuildIsoEntity.lua",
         "media/lua/client/BuildingObjects/TimedActions/ISBuildAction.lua",
         "media/lua/client/Entity/ISUI/BuildRecipe/ISBuildPanel.lua",
+        "media/lua/client/Entity/ISUI/CraftRecipe/ISWidgetRecipeCategories.lua",
+        "media/lua/client/Entity/ISUI/CraftRecipe/ISRecipeScrollingListBox.lua",
+        "media/lua/client/Entity/ISUI/CraftRecipe/ISTiledIconPanel.lua",
+        "zombie/Lua/LuaManager$GlobalObject.class",
+        "zombie/entity/components/build/BuildLogic.class",
         "media/scripts/generated/entities/animals/workstations/entity_feedingtrough.txt",
         "zombie/entity/components/spriteconfig/SpriteConfigManager.class",
         "zombie/scripting/entity/components/spriteconfig/SpriteConfigScript.class",

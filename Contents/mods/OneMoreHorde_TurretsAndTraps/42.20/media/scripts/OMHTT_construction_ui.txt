@@ -1,0 +1,12 @@
+module Base
+{
+    xuiSkin default
+    {
+        entity ES_OMHTTSpikeBarrier
+        {
+            LuaWindowClass = ISEntityWindow,
+            DisplayName = UI_OMHTT_SpikeBarrier,
+            Icon = OMHTT_Barrier0,
+        }
+    }
+}

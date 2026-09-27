@@ -1,4 +1,5 @@
 {
+    "UI_OMHTT_SpikeBarrier": "Spike Barrier",
     "UI_OMHTT_Header": "OMH Foundation | Client %1 | Authority %2 | Game %3",
     "UI_OMHTT_Tile": "Tile: %1, %2, %3",
     "UI_OMHTT_State": "Authority: ID %1 | Condition %2 | Revision %3 | Objects %4",

@@ -115,6 +115,34 @@ local function checkNativeConstruction()
     assert(not recipe:needToBeLearn(), "Basic recipe must not need a magazine")
     assert(found:getScript():getHealth() == 100, "Incorrect construction health")
     assert(getRecipeDisplayName(recipe:getName()) == "Spike Barrier", "Recipe name did not translate")
+    assert(XuiManager.GetSkin("default"):getEntityUiStyle("ES_OMHTTSpikeBarrier"):getDisplayName() == "Spike Barrier", "Native UI style did not resolve")
+    recipe:overrideTranslationName(getRecipeDisplayName(recipe:getName()))
+    assert(recipe:getTranslationName() == "Spike Barrier", "Menu title refresh failed")
+    assert(recipe:getCategory() == "Carpentry", "Native category changed")
+    local player = IsoPlayer.new(getCell())
+    local logic = BuildLogic.new(player, nil, nil)
+    local recipes = logic:getAllBuildableRecipes()
+    local matches = 0
+    for i = 0, recipes:size() - 1 do
+        if recipes:get(i) == recipe then matches = matches + 1 end
+    end
+    assert(matches == 1, "Recipe must appear exactly once in native BuildLogic")
+    local params = {player = player, recipe = recipe, shouldShowAll = true}
+    assert(not callLuaBool(recipe:getOnAddToMenu(), params), "Native callback bridge bypassed MP gate")
+    local serverFunction, clientFunction = isServer, isClient
+    local enabled, barrierEnabled = SandboxVars.OMHTurretsTraps.Enabled, SandboxVars.OMHTurretsTraps.SpikeBarrier
+    isServer = function() return false end
+    isClient = function() return false end
+    SandboxVars.OMHTurretsTraps.Enabled, SandboxVars.OMHTurretsTraps.SpikeBarrier = true, true
+    local visible = callLuaBool(recipe:getOnAddToMenu(), params)
+    local dottedVisible = callLuaBool("OMHTT_Construction.onAddToMenu", params)
+    SandboxVars.OMHTurretsTraps.SpikeBarrier = false
+    local disabledVisible = callLuaBool(recipe:getOnAddToMenu(), params)
+    isServer, isClient = serverFunction, clientFunction
+    SandboxVars.OMHTurretsTraps.Enabled, SandboxVars.OMHTurretsTraps.SpikeBarrier = enabled, barrierEnabled
+    assert(visible == true and not disabledVisible, "Native callback must show enabled SP recipe and hide disabled content")
+    assert(not dottedVisible, "Reproduction changed: native global callback now accepts dotted paths")
+    print("[OMHTT-Smoke] native-build-menu registered=1 title=Spike_Barrier category=Carpentry callback=resolved spGate=open disabledGate=closed dottedCallback=rejected")
     assert(found:getScript():getOnCreate() == "OMHTT_Construction.onCreate", "Native OnCreate hook missing")
     assert(found:getScript():getOnIsValid() == "OMHTT_Construction.onIsValid", "Native placement hook missing")
     local faces = {"e", "n", "w", "s"}

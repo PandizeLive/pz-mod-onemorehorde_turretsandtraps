@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Status as of 2026-09-26: Phase 0 and cube-only asset preparation complete. Phase 1 prototypes have partial SP evidence, with remaining gates in the [batch record](checkpoints/P1_BATCH_RECORD.md) and [0.1.6 review](TEST_v0.1.6.md). The owner approved Phase 2; [P2C1a](PHASE_2_CHECKPOINT_1.md) is implemented, with approved recipe follow-up 0.2.0.1 awaiting player evidence. Individual barrier items and five-item bundles are scheduled at P2C1b/P2C1c. Reinforcement is approved for P2C2a. Full Phase 1 acceptance remains pending; later phases are unstarted.
+Status as of 2026-09-26: Phase 0 and cube-only asset preparation complete. Phase 1 prototypes have partial SP evidence, with remaining gates in the [batch record](checkpoints/P1_BATCH_RECORD.md) and [0.1.6 review](TEST_v0.1.6.md). The owner approved Phase 2; [P2C1a](PHASE_2_CHECKPOINT_1.md) is implemented, with the approved recipe in 0.2.0.1 and menu visibility/category correction 0.2.0.2 awaiting player evidence. Individual barrier items and five-item bundles are scheduled at P2C1b/P2C1c. Reinforcement is approved for P2C2a. Full Phase 1 acceptance remains pending; later phases are unstarted.
 
 ## Phase 0: project foundation
 

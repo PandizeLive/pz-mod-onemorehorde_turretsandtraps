@@ -81,7 +81,7 @@ public final class KahluaCheck {
         };
         Method nativeGetText = translatorType.getMethod("getText", String.class, Object[].class);
         int translated = 0;
-        for (String[] category : new String[][] {{"ContextMenu", "contextMenu"}, {"UI", "ui"}, {"Sandbox", "sandbox"}, {"Recipes", "recipe"}}) {
+        for (String[] category : new String[][] {{"ContextMenu", "contextMenu"}, {"UI", "ui"}, {"Sandbox", "sandbox"}, {"Recipes", "recipe"}, {"IGUI", "igui"}}) {
             var field = translatorType.getDeclaredField(category[1]);
             field.setAccessible(true);
             @SuppressWarnings("unchecked")
@@ -148,6 +148,10 @@ public final class KahluaCheck {
             {"_", "tools/tests/native_build_bootstrap.lua"},
             {"_", Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/server/BuildingObjects/ISBuildIsoEntity.lua").toString()},
             {"_", "tools/tests/construction.lua"},
+            {"_", "tools/tests/native_menu_bootstrap.lua"},
+            {"_", Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/client/Entity/ISUI/BuildRecipe/ISBuildPanel.lua").toString()},
+            {"_", base + "client/OMHTT/ConstructionMenu.lua"},
+            {"_", "tools/tests/construction_menu.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {
