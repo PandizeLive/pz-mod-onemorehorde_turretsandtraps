@@ -1,5 +1,9 @@
 # P2C2 vault correction / 0.2.5
 
+Status: 0.2.5 failed rendered acceptance; see [test review](TEST_v0.2.5.md). Current authorized correction is [0.2.6 / connected outline](PHASE_2_CHECKPOINT_2_OUTLINE.md). Evidence below describes the historical candidate.
+
+**Owner test failed:** see [0.2.5 review](TEST_v0.2.5.md) and [reopened geometry feasibility](PHASE_2_COLLISION_FEASIBILITY.md). The following is the historical implementation/test brief.
+
 Approved 2026-09-27 after the failed rendered 0.2.4 test. This is an SP development candidate, not player acceptance or multiplayer certification.
 
 ## Changes

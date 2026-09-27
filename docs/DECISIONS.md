@@ -162,3 +162,18 @@ The owner authorized proceeding to the next checkpoint and testing it together w
 - Implementation: perpendicular native fence edges can share a corner tile with independent identity/HP. Parallel duplicate edges remain rejected. Existing spaced layouts are not automatically bridged with invisible extra collision. This corrects the overbroad former full-footprint overlap ban while preserving the 1x2 barrier.
 
 [0.2.5 scope, source evidence and owner test](PHASE_2_CHECKPOINT_2_VAULT_REPAIR.md). Earlier C34 submenu-only and after-completion scratch implementation notes describe 0.2.4 and are superseded.
+
+## 2026-09-27 failed collision test and clarified actor behavior
+
+- C39: Zombie collision must cover the full occupied blocks. The owner asks whether separate centered player collision and diagonal connections can be implemented. Full-block zombie collision is confirmed intent; feasibility of the separate player shape is not confirmed. C34's shared edge implementation no longer satisfies the final requirement.
+- [0.2.5 failed owner test](TEST_v0.2.5.md): displaced overlay, incomplete diagonal joins and inconsistent native-input traversal. 26 captured crossings include 25 incorrectly tracked as interrupted and only one contact. Independent client corrections are prepared as 0.2.5.1 source, not installed.
+- [Collision feasibility checkpoint](PHASE_2_COLLISION_FEASIBILITY.md) records current engine limits. No custom Java dependency, global passability bypass, or replacement player physics is approved. Keep the independent fixes separate from geometry acceptance.
+
+## 2026-09-27 approved connected outline
+
+- C40: Owner supplied a front-and-end outline, explicitly allowed the rear to remain open, confirmed that connected runs should only cap their outermost ends, and approved implementation. This supersedes C39's full-block zombie / separate centered-player requirement. Both players and zombies use the same native cardinal outline; no custom diagonal physics or Java dependency is introduced.
+- Every 1x2 item keeps its own identity, durability and recovery. Touching straight fronts and perpendicular front joins remove internal caps. Removing or destroying a section exposes and restores caps on surviving ends. Actual gaps are never bridged.
+- Implementation: visible footprint parts are passable and non-thumpable; separately owned native edge objects supply the front and exposed caps. Retaliation applies on the outside of front/end edges, not their inward faces. Front vaults use C37; cap vaults have native trip risk but no additional spike scratch. Open rear permits ordinary entry.
+- Existing edge-v1 construction migrates to the outline with its durability and ledger identity intact. The correct facing boundary changes some old layouts; barriers are not automatically moved. Legacy full-square test fixtures still require pickup/redeployment. Rendered migration/gameplay acceptance remains pending.
+
+[0.2.6 checkpoint, current engine evidence and owner test](PHASE_2_CHECKPOINT_2_OUTLINE.md). The uninstalled 0.2.5.1 draft is folded into this feature version and is not a separate release.

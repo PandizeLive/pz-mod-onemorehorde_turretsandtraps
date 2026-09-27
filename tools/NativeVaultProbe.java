@@ -28,7 +28,7 @@ public final class NativeVaultProbe {
             Object positive = squareConstructor.newInstance(cell, null, 2, 2, 0);
             Object negative = squareConstructor.newInstance(cell, null, north ? 2 : 1, north ? 1 : 2, 0);
             Object object = thumpableType.getConstructor(cellType, squareType, String.class, boolean.class)
-                .newInstance(cell, positive, north ? "omhtt_barrier_01_2" : "omhtt_barrier_01_0", north);
+                .newInstance(cell, positive, north ? "omhtt_barrier_01_16" : "omhtt_barrier_01_17", north);
             call(object, "setBlockAllTheSquare", new Class<?>[]{boolean.class}, false);
             call(object, "setCanPassThrough", new Class<?>[]{boolean.class}, false);
             call(object, "setIsHoppable", new Class<?>[]{boolean.class}, false);
@@ -91,6 +91,42 @@ public final class NativeVaultProbe {
                 System.out.println("[OMHTT-VaultProbe] heading=" + heading + " walking=blocked hoppable=false nativeSlide=" + actualX + "," + actualY);
             }
         }
+        for (int order = 0; order < 2; order++) {
+            Object square = squareConstructor.newInstance(cell, null, 4, 4, 0);
+            Object nSquare = squareConstructor.newInstance(cell, null, 4, 3, 0);
+            Object wSquare = squareConstructor.newInstance(cell, null, 3, 4, 0);
+            Object n = directionsType.getField("N").get(null);
+            Object w = directionsType.getField("W").get(null);
+            call(square, "setAdjacentSquare", new Class<?>[]{directionsType, squareType}, n, nSquare);
+            call(square, "setAdjacentSquare", new Class<?>[]{directionsType, squareType}, w, wSquare);
+            Object[] edges = new Object[2];
+            for (int i = 0; i < 2; i++) {
+                boolean north = (i + order) % 2 == 0;
+                Object object = thumpableType.getConstructor(cellType, squareType, String.class, boolean.class)
+                    .newInstance(cell, square, north ? "omhtt_barrier_01_18" : "omhtt_barrier_01_19", north);
+                call(object, "setBlockAllTheSquare", new Class<?>[]{boolean.class}, false);
+                call(object, "setCanPassThrough", new Class<?>[]{boolean.class}, false);
+                call(object, "setIsHoppable", new Class<?>[]{boolean.class}, false);
+                call(object, "setIsThumpable", new Class<?>[]{boolean.class}, true);
+                ((java.util.List<Object>)call(square, "getObjects", new Class<?>[0])).add(object);
+                ((java.util.List<Object>)call(square, "getSpecialObjects", new Class<?>[0])).add(object);
+                edges[north ? 0 : 1] = object;
+            }
+            for (String engine : new String[]{"zombie.pathfind.SquareUpdateTask", "zombie.pathfind.nativeCode.SquareUpdateTask"}) {
+                for (String method : new String[]{"hasWallThumpableN", "hasWallThumpableW"}) {
+                    Method wall = Class.forName(engine).getDeclaredMethod(method, squareType);
+                    wall.setAccessible(true);
+                    check(Boolean.TRUE.equals(wall.invoke(null, square)), "Corner lost an edge: " + engine + "/" + method);
+                }
+            }
+            check(call(square, "getThumpableWallOrHoppable", new Class<?>[]{boolean.class}, true) == edges[0], "North corner thump target changed owner");
+            check(call(square, "getThumpableWallOrHoppable", new Class<?>[]{boolean.class}, false) == edges[1], "West corner thump target changed owner");
+            check(Boolean.TRUE.equals(collide.invoke(edges[0], null, square, nSquare)), "Corner N collision open");
+            check(Boolean.FALSE.equals(collide.invoke(edges[0], null, square, wSquare)), "Corner N object steals W collision");
+            check(Boolean.TRUE.equals(collide.invoke(edges[1], null, square, wSquare)), "Corner W collision open");
+            check(Boolean.FALSE.equals(collide.invoke(edges[1], null, square, nSquare)), "Corner W object steals N collision");
+        }
+        System.out.println("[OMHTT-VaultProbe] native-corners=2/2 both-pathfinders=true directional-thump-ownership=true");
         System.out.println("[OMHTT-VaultProbe] native-movement-params=12/12 running-and-sprinting-distinct=true");
         System.out.println("[OMHTT-VaultProbe] native-state-execute=4/4 native-edge-collision=4/4 native-path-edge=4/4 native-pathfinder=2/2 public-entry=4/4 bounded-collision=true animation-events=simulated rendered-client=not-tested");
     }

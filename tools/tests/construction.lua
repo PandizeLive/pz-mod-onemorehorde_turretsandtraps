@@ -70,8 +70,8 @@ local headings = {"e", "n", "w", "s"}
 for index = 1, #headings do
     local heading = headings[index]
     local originX, originY = 110 + index * 4, 110
-    for x = originX, originX + 1 do
-        for y = originY, originY + 1 do makeSquare(x, y, 0) end
+    for x = originX, originX + 2 do
+        for y = originY, originY + 2 do makeSquare(x, y, 0) end
     end
     local cursor = makeCursor(heading, index)
     local first = testSquares[F.key(originX, originY, 0)]
@@ -95,12 +95,12 @@ for index = 1, #headings do
     check(record.facing == (index - 1) * 4 and record.width == 2 and record.builderUsername == testPlayer:getUsername(), "heading and builder persist " .. heading)
     check(cursor.parts[1].data.OMHTT.id == cursor.parts[2].data.OMHTT.id and not cursor.parts[1].blockAll
         and not cursor.parts[1].hoppable and cursor.parts[1]:getNorth() == (heading == "n" or heading == "s")
-        and record.collisionModel == "edge-v1", "paired directional edges stay zombie-blocking " .. heading)
+        and record.collisionModel == "outline-v1" and #P.colliders(record) == 4, "separate native outline stays zombie-blocking " .. heading)
     check(string.find(cursor.parts[1]:getSpriteName(), "omhtt_barrier_01_", 1, true)
         and cursor.parts[1]:getSpriteName() ~= cursor.parts[2]:getSpriteName(), "native parts retain distinct SpriteConfig names " .. heading)
     local nextId = testData.nextId
     C.onCreate({thumpable = cursor.parts[1], character = testPlayer, facing = heading})
-    check(testData.nextId == nextId and #first.objects == 1, "duplicate completion does not create another device " .. heading)
+    check(testData.nextId == nextId and select(2, F.find(first, record.id)) == 1, "duplicate completion does not create another device " .. heading)
     ISBuildIsoEntity.create(cursor, originX, originY, 0, false, "unused")
     check(cursor.consumed == 1, "replayed native build rejected without a second charge " .. heading)
     cursor.parts[1]:setHealth(83)
@@ -130,8 +130,9 @@ for index = 1, #headings do
     for i = 1, 16 do S.tick() end
     check(#first.objects == 0 and cursor.parts[2].removed and P.slot(first).device == nil, "native-built pair retires from either half " .. heading)
 end
-makeSquare(140, 140, 0)
-makeSquare(140, 141, 0)
+for x = 140, 142 do
+    for y = 140, 142 do makeSquare(x, y, 0) end
+end
 testData.tileCount = F.MAX_TILES - 1
 local capped = makeCursor("e", 1)
 ISBuildIsoEntity.create(capped, 140, 140, 0, false, "unused")
@@ -143,7 +144,6 @@ ISBuildIsoEntity.create(cheat, 140, 140, 0, false, "unused")
 check(cheat.consumed == 0 and #cheat.parts == 2, "native build-cheat behavior remains explicit")
 ISBuildIsoEntity.create(cheat, 140, 140, 0, false, "unused")
 check(#cheat.parts == 2 and cheat.consumed == 0, "Build Cheat cannot overlap an existing barrier")
-makeSquare(141, 140, 0)
 local overlap = makeCursor("n", 2)
 ISBuildIsoEntity.create(overlap, 140, 140, 0, false, "unused")
 check(#overlap.parts == 2, "perpendicular native edges may share a corner tile without overlapping collision")
@@ -157,8 +157,8 @@ testBuildCheat = false
 
 for index = 1, #headings do
     local x, y = 170 + index * 4, 170
-    for dx = 0, 1 do
-        for dy = 0, 1 do makeSquare(x + dx, y + dy, 0) end
+    for dx = 0, 2 do
+        for dy = 0, 2 do makeSquare(x + dx, y + dy, 0) end
     end
     local cursor = makeCursor(headings[index], index, true)
     local square = testSquares[F.key(x, y, 0)]

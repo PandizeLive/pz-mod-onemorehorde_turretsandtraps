@@ -98,5 +98,5 @@ end
 
 Events.OnServerCommand.Add(onResult)
 Events.OnTick.Add(update)
-Events.OnPostRender.Add(render)
+Events.OnPostUIDraw.Add(render)
 Events.OnGameStart.Add(reset)

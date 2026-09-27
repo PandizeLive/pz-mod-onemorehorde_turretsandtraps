@@ -1,9 +1,11 @@
 if isClient() or isServer() then return end
 require("ISUI/ISUIElement")
 local F = require("OMHTT/Foundation")
+local Diagnostics = require("OMHTT/Diagnostics")
 local Overlay = {}
 local lines, nextScan = {}, 0
 local canvas = nil
+local nextReport = 0
 
 ---@return nil
 function Overlay.update()
@@ -27,8 +29,9 @@ function Overlay.update()
                         local objects = square:getSpecialObjects()
                         for i = 0, objects:size() - 1 do
                             local object = objects:get(i)
-                            local marker = object:hasModData() and object:getModData().OMHTT
-                            if marker and marker.kind == "barrier" then
+                            local data = object:hasModData() and object:getModData()
+                            local marker = data and (data.OMHTTEdge or data.OMHTT)
+                            if marker and (data.OMHTTEdge or (marker.kind == "barrier" and not object:isCanPassThrough())) then
                                 lines[#lines + 1] = {object = object, marker = marker, player = index, x = x, y = y, z = z}
                             end
                         end
@@ -88,6 +91,9 @@ function Overlay.render()
                 end
                 draw(x, y, tx, ty, entry)
                 local nx, ny = F.barrierDirection(entry.marker.facing)
+                if entry.marker.role then
+                    nx, ny = entry.marker.nx, entry.marker.ny
+                end
                 local cx, cy = (x + tx) / 2, (y + ty) / 2
                 draw(cx, cy, cx + nx * 0.35, cy + ny * 0.35, entry)
                 draw(cx + nx * 0.35, cy + ny * 0.35, cx + nx * 0.22 - ny * 0.1, cy + ny * 0.22 + nx * 0.1, entry)
@@ -95,8 +101,18 @@ function Overlay.render()
             end
         end
     end
+    local now = getTimestampMs()
+    if now >= nextReport or nextReport - now > 5000 then
+        nextReport = now + 5000
+        local entry = lines[1]
+        local sx, sy = screen(entry.x, entry.y, entry.z, entry.player)
+        Diagnostics.emit("barrier-overlay", {phase = "ui", parts = #lines, player = entry.player,
+            x = entry.x, y = entry.y, z = entry.z, screenX = sx, screenY = sy,
+            zoom = getCore():getZoom(entry.player), cameraX = IsoCamera.getOffX(entry.player),
+            cameraY = IsoCamera.getOffY(entry.player)})
+    end
 end
 
 Events.OnTick.Add(Overlay.update)
-Events.OnPostRender.Add(Overlay.render)
+Events.OnPostUIDraw.Add(Overlay.render)
 return Overlay

@@ -1,9 +1,9 @@
-v0.2.5
+v0.2.6
 Single-player development test content
 - Added persistent test defenses with readable white developer markers and direction arrows.
-- Added 1x2 Spike Barriers with shared durability, rotation and removal; front and side attacks cause 10 damage by default, while the rear is safe. Damage and maximum durability are configurable in Sandbox.
-- Added player vaulting with native Interact/run/sprint controls and low-fence reactions. Spike-side scratches occur at crossing contact with configurable 1-in-N risk; rear crossings avoid spike scratches. Older full-square barriers can be picked up/redeployed to convert.
-- Added perpendicular corner joins, collision-line placement previews and an optional collision overlay. Sandbox controls are grouped by defense, General and Debug.
+- Added 1x2 Spike Barriers with shared durability and removal; connected runs have front collision and outer end caps, with an open rear. Newly exposed ends are capped after removal; front and side attacks cause 10 damage by default, while the rear is safe. Damage and maximum durability are configurable in Sandbox.
+- Added player vaulting with native Interact/run/sprint controls and low-fence reactions. Spike-side scratches occur at crossing contact with configurable 1-in-N risk; rear and end-cap crossings avoid spike scratches. Older full-square barriers can be picked up/redeployed to convert.
+- Added connected perpendicular corner placement without internal end caps, collision-line previews and an optional collision overlay aligned through the UI render pass. Sandbox controls are grouped by defense, General and Debug.
 - Added single-player Spike Barrier construction under Carpentry and Turrets & Traps, with a rotating two-tile preview: Carpentry 1, four interchangeable planks/wooden spears, four binding units and a retained sharp knife/cleaver; awards Carpentry XP. Sandbox master/barrier switches preserve placed structures when disabled.
 - Added craftable portable Spike Barriers using the same basic recipe; deploy one finished item through Building without a second material charge or XP award. Native tile identities preserve placed barrier parts after saving.
 - Added Turrets & Traps to Crafting, readable barrier statistics and a world condition display. Pick up or repair a basic barrier without materials in ten seconds, using reachable approaches with stall cancellation; pickup restores full durability. Bundle five barriers with 67% reduced encumbrance, with no packing/unpacking XP.

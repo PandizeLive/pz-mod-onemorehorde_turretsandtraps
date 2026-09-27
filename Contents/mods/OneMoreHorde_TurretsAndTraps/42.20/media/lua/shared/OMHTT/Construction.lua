@@ -1,6 +1,7 @@
 local F = require("OMHTT/Foundation")
 local Diagnostics = require("OMHTT/Diagnostics")
 local Sprites = require("OMHTT/BarrierSprites")
+local Geometry = require("OMHTT/BarrierGeometry")
 OMHTT_Construction = {}
 local Construction = OMHTT_Construction
 local facings = {e = 0, n = 4, w = 8, s = 12}
@@ -51,18 +52,26 @@ function Construction.installEdges()
                 local tile = face:getTileInfo(xx, yy, 0)
                 local name = tile and tile:getSpriteName()
                 if name and string.match(name, "^omhtt_barrier_01_%d+$") then
-                    local north = Construction.edgeNorth(name, false)
-                    local tx, ty = x + xx, y + yy + 1
-                    if north then
-                        tx, ty = x + xx + 1, y + yy
+                    local index = tonumber(string.match(name, "_(%d+)$"))
+                    local facing = math.floor(index / 2) % 4 * 4
+                    local ax, ay = x + xx, y + yy
+                    if index % 2 == 1 then
+                        local nx, ny = F.barrierDirection(facing)
+                        ax, ay = ax + ny, ay - nx
                     end
-                    renderIsoLine(x + xx, y + yy, z, tx, ty, z, 4, 1, 1, 1, 1)
+                    local Outline = require("OMHTT/BarrierOutline")
+                    local edges = Geometry.outline({id = "preview", x = ax, y = ay, z = z, facing = facing}, Outline.records())
+                    for i = 1, #edges do
+                        local edge = edges[i]
+                        renderIsoLine(edge.x, edge.y, z, edge.tx, edge.ty, z, 4, 1, 1, 1, 1)
+                    end
+                    return
                 end
             end
         end
     end
     ISBuildIsoEntity.omhttEdgeInstalled = true
-    Diagnostics.emit("construction-edge-hook", {model = "edge-v1"})
+    Diagnostics.emit("construction-edge-hook", {model = "outline-v1"})
 end
 
 Events.OnGameStart.Add(Construction.installEdges)
@@ -105,7 +114,7 @@ end
 
 ---@return nil
 function Construction.initializeSprites()
-    for i = 0, 15 do
+    for i = 0, 19 do
         local name = Sprites.SHEET .. i
         local sprite = getSprite(name)
         if sprite:getName() ~= name or sprite:getID() ~= 1918369792 + i then
@@ -113,9 +122,9 @@ function Construction.initializeSprites()
         end
     end
     -- Direct metadata avoids the tile loader turning these developer markers into generic climbable walls.
-    for i = 0, 15 do
+    for i = 16, 19 do
         local properties = getSprite(Sprites.SHEET .. i):getProperties()
-        local north = Construction.edgeNorth(Sprites.SHEET .. i, false)
+        local north = i % 2 == 0
         if north then
             properties:set(IsoFlagType.WallN)
             properties:set(IsoFlagType.TallHoppableN)
@@ -126,8 +135,12 @@ function Construction.initializeSprites()
             properties:set(IsoFlagType.collideW)
         end
         properties:set(IsoFlagType.CantClimb)
+        if i >= 18 then
+            properties:set(IsoFlagType.WallN)
+            properties:set(IsoFlagType.WallW)
+        end
     end
-    Diagnostics.emit("construction-sprites", {persistent = 16, tiledef = 7316, edgeMetadata = true})
+    Diagnostics.emit("construction-sprites", {persistent = 20, tiledef = 7316, outlineMetadata = true})
 end
 
 Events.OnInitGlobalModData.Add(Construction.initializeSprites)

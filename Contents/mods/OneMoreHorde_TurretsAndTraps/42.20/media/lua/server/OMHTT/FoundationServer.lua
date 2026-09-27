@@ -3,6 +3,7 @@ if isClient() then return end
 local Foundation = require("OMHTT/Foundation")
 local Combat = require("OMHTT/PrototypeCombat")
 local Footprint = require("OMHTT/BarrierFootprint")
+local Outline = require("OMHTT/BarrierOutline")
 local Diagnostics = require("OMHTT/Diagnostics")
 
 ---@class OMHTTFoundationServer
@@ -46,6 +47,11 @@ function Server.initialize()
             record.facing = Foundation.normalizeFacing(record.facing)
             if record.kind == "barrier" then
                 record.x, record.y, record.z = slot.x, slot.y, slot.z
+                if record.collisionModel == "edge-v1" then
+                    record.collisionModel = "outline-v1"
+                    record.revision = record.revision + 1
+                    Diagnostics.emit("barrier-outline-migrate", {id = record.id, facing = record.facing})
+                end
             end
             if record.cooldownClock ~= "realtime-ms-v1" then
                 record.nextShot = 0
@@ -137,6 +143,7 @@ end
 ---@return nil
 function Server.reconcile(square, reason)
     if not store then return end
+    Outline.reconcile(square)
     if reason == nil then
         reason = "load"
     end
@@ -177,6 +184,9 @@ function Server.tick()
         cursor = cursor + 1
         visited = visited + 1
         if slot.retired then
+            if slot.outlineRetired then
+                Outline.refresh(slot.outlineRetired)
+            end
             local square = getCell():getGridSquare(slot.x, slot.y, slot.z)
             if square then
                 Footprint.cleanRetired(square)
@@ -197,6 +207,7 @@ end
 ---@return nil
 function Server.onRemoved(object)
     if not store then return end
+    if Outline.onRemoved(object) then return end
     local square = object:getSquare()
     if not square then return end
     local marker = object:getModData().OMHTT
@@ -347,10 +358,12 @@ function Server.onCommand(module, command, player, args)
                 record.condition = math.min(37, record.maxHealth)
                 record.revision = record.revision + 1
                 slot.epoch = slot.epoch + 1
-                local parts = Footprint.parts(record)
+                local parts = Footprint.healthObjects(record)
                 for i = 1, #parts do
                     parts[i]:setHealth(record.condition)
-                    Foundation.writeMarker(parts[i], record)
+                    if not parts[i]:getModData().OMHTTEdge then
+                        Foundation.writeMarker(parts[i], record)
+                    end
                     parts[i]:transmitModData()
                 end
                 status = "Changed"

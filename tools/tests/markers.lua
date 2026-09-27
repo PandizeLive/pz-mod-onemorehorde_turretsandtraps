@@ -23,7 +23,7 @@ check(object.sprite == F.spriteFor("barrier", 0) and square.changed and object.r
 object.noTexture = true
 object.renderInvalidated = nil
 testDraws = 0
-triggerEvent("OnPostRender")
+triggerEvent("OnPostUIDraw")
 check(testDraws == 3, "placement label and location cross show before texture exists")
 testMillis = testMillis + 150
 triggerEvent("OnTick")
@@ -52,15 +52,15 @@ check(object.sprite == F.spriteFor("barrier", 4) and object.data.OMHTT.facing ==
 testMillis = testMillis + 6100
 triggerEvent("OnTick")
 testDraws = 0
-triggerEvent("OnPostRender")
+triggerEvent("OnPostUIDraw")
 check(testDraws == 0, "temporary labels expire")
 local inspected = command("Inspect")
 testDraws = 0
-triggerEvent("OnPostRender")
+triggerEvent("OnPostUIDraw")
 check(testDraws == 3, "inspect restores one current marker")
 command("Remove", inspected)
 testDraws = 0
-triggerEvent("OnPostRender")
+triggerEvent("OnPostUIDraw")
 check(testDraws == 0, "removed device has no lingering marker")
 check(F.spriteFor("foundation", 0) ~= F.spriteFor("barrier", 0) and F.spriteFor("barrier", 0) ~= F.spriteFor("potato", 0),
     "prototype kinds cannot share an indistinguishable sprite")

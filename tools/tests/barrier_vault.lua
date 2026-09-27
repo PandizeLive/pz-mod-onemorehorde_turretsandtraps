@@ -17,7 +17,11 @@ BodyPartType = {LowerLeg_L = "left", LowerLeg_R = "right"}
 testInjuries, testRolls, testClimbs = 0, 0, 0
 function testPlayer:getCurrentSquare() return testSquares[F.key(math.floor(self.x), math.floor(self.y), self.z)] end
 function testPlayer:getCurrentState() return self.state end
-function testPlayer:getVariableBoolean(name) return self.animationStarted == true end
+function testPlayer:getVariableBoolean(name)
+    if name == "VaultOverRun" then return self.vaultRun == true end
+    if name == "VaultOverSprint" then return self.vaultSprint == true end
+    return self.animationStarted == true
+end
 function testPlayer:getVariableString(name) return self.outcome end
 function testPlayer:isGodMod() return self.god == true end
 function testPlayer:climbOverFence(direction) testClimbs = testClimbs + 1; self.climbDirection = direction end
@@ -86,7 +90,7 @@ for heading = 0, 3 do
     check(P.rotate(P.slot(parts[1]:getSquare())) == "BarrierRedeploy" and record.facing == facing,
         "debug rotation cannot desynchronize native edge")
     for partIndex = 1, 2 do
-        local object = parts[partIndex]
+        local object = P.colliders(record)[partIndex]
         local sq = object:getSquare()
         for reverse = 0, 1 do
             testPlayer.x, testPlayer.y, testPlayer.z = sq.x + 0.5, sq.y + 0.5, 0
@@ -122,10 +126,10 @@ for heading = 0, 3 do
     end
 end
 
-local object = P.parts(P.slot(testSquares[F.key(600, 600, 0)]).device)[1]
+local object = P.colliders(P.slot(testSquares[F.key(600, 600, 0)]).device)[1]
 local id = P.exact(object).id
 local function start()
-    testPlayer.x, testPlayer.y, testPlayer.z, testPlayer.state, testPlayer.dead = 600.5, 600.5, 0, "idle", false
+    testPlayer.x, testPlayer.y, testPlayer.z, testPlayer.state, testPlayer.dead = 601.5, 600.5, 0, "idle", false
     V.queue(object, testPlayer, id)
     local plan = V.plan(testPlayer, object, id)
     testQueuedVault:perform()
@@ -159,7 +163,7 @@ V.update(testPlayer)
 check(testInjuries == before, "death cancels without injury")
 testPlayer.dead = false
 local function resetApproach()
-    testPlayer.x, testPlayer.y, testPlayer.z, testPlayer.state = 600.2, 600.5, 0, "idle"
+    testPlayer.x, testPlayer.y, testPlayer.z, testPlayer.state = 601.2, 600.5, 0, "idle"
     testPlayer.dead, testPlayer.god = false, false
 end
 resetApproach()
@@ -185,10 +189,10 @@ testPlayer.ignoreVault, testPlayer.safe = false, false
 V.autoVault(testPlayer)
 check(testClimbs == automaticBefore, "unsafe running landing rejected")
 testPlayer.safe = true
-testPlayer.x = 600.8
+testPlayer.x = 601.8
 V.autoVault(testPlayer)
 check(testClimbs == automaticBefore, "running farther from edge does not vault early")
-testPlayer.x = 600.2
+testPlayer.x = 601.2
 nativePlan = V.plan(testPlayer, object, id)
 V.autoVault(testPlayer)
 check(testClimbs == automaticBefore + 1 and testPlayer.running, "running approach preserves native run state")
@@ -201,6 +205,38 @@ check(testClimbs == automaticBefore + 2 and testPlayer.sprinting, "sprinting app
 complete(nativePlan)
 testPlayer.sprinting = false
 function testPlayer:isPlayerMoving() return false end
+resetApproach()
+testPlayer.x, testPlayer.sprinting, testPlayer.pressed = 601.49, true, true
+nativePlan = V.plan(testPlayer, object, id)
+nativeBefore = testClimbs
+V.autoVault(testPlayer)
+check(testClimbs == nativeBefore + 1, "native half-tile feeler can vault while collision stops movement")
+testPlayer.state, testPlayer.animationStarted = "ClimbOverFenceState", false
+testPlayer.vaultSprint, testPlayer.outcome = true, "success"
+V.update(testPlayer)
+before = testInjuries
+testRoll = 0
+testPlayer.x, testPlayer.y = nativePlan.toX + 0.5, nativePlan.toY + 0.5
+V.update(testPlayer)
+check(testInjuries == before + 1, "sprint root-motion contact scratches without ClimbFenceStarted")
+testPlayer.state, testPlayer.vaultSprint = "movement", false
+V.update(testPlayer)
+check(string.find(testLogs[#testLogs], "result=crossed", 1, true), "sprint root-motion completion is a crossing")
+resetApproach()
+testPlayer.running, testPlayer.sprinting = true, false
+nativePlan = V.plan(testPlayer, object, id)
+V.autoVault(testPlayer)
+testPlayer.state, testPlayer.animationStarted = "ClimbOverFenceState", false
+testPlayer.vaultRun, testPlayer.outcome = true, "success"
+V.update(testPlayer)
+before = testInjuries
+testPlayer.x, testPlayer.y, testPlayer.state = nativePlan.toX + 0.5, nativePlan.toY + 0.5, "movement"
+testPlayer.vaultRun = false
+V.update(testPlayer)
+check(testInjuries == before + 1, "run exit between samples settles one verified crossing contact")
+V.update(testPlayer)
+check(testInjuries == before + 1, "settled run contact cannot repeat")
+testPlayer.running, testPlayer.pressed = false, false
 for _, denominator in pairs({0, 1, 50}) do
     SandboxVars.OMHTurretsTraps.SpikeBarrierScratchChance = denominator
     local count, rolls = testInjuries, testRolls
@@ -220,6 +256,6 @@ end
 SandboxVars.OMHTurretsTraps.SpikeBarrierScratchChance = nil
 before = testInjuries
 start()
-P.retire(P.slot(object:getSquare()), nil)
+P.retire(P.slot(object:getSquare(), id), nil)
 V.update(testPlayer)
 check(testInjuries == before and not V.plan(testPlayer, object, id), "removed barrier cancels without injury or replay")

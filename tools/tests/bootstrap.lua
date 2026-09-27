@@ -72,7 +72,7 @@ function testPlayer:getRole() return {hasCapability = function() return testAdmi
 function getSpecificPlayer(index) return testPlayer end
 
 Events = {}
-for _, name in pairs({"OnInitGlobalModData", "LoadGridsquare", "OnObjectAboutToBeRemoved", "OnClientCommand", "OnServerCommand", "OnFillWorldObjectContextMenu", "OnGameStart", "OnTick", "OnPostRender", "OnZombieUpdate", "OnZombieDead", "OnContextKey", "OnPlayerUpdate"}) do
+for _, name in pairs({"OnInitGlobalModData", "LoadGridsquare", "OnObjectAboutToBeRemoved", "OnClientCommand", "OnServerCommand", "OnFillWorldObjectContextMenu", "OnGameStart", "OnTick", "OnPostRender", "OnPostUIDraw", "OnZombieUpdate", "OnZombieDead", "OnContextKey", "OnPlayerUpdate"}) do
     local handlers = {}
     Events[name] = {handlers = handlers, Add = function(callback) table.insert(handlers, callback) end}
 end
@@ -305,6 +305,8 @@ function testPlayer:getVehicle() return nil end
 function testPlayer:isIgnoreAutoVault() return false end
 function testPlayer:isGrappling() return false end
 function testPlayer:isPlayerMoving() return false end
+function testPlayer:pressedMovement() return self.pressed == true end
+function testPlayer:getFeelersize() return 0.5 end
 function testPlayer:getDir() return IsoDirections.E end
 function testPlayer:isSafeToClimbOver() return true end
 

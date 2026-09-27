@@ -130,6 +130,8 @@ public final class KahluaCheck {
             {"_", "tools/tests/bootstrap.lua"},
             {"OMHTT/Foundation", base + "shared/OMHTT/Foundation.lua"},
             {"OMHTT/Diagnostics", base + "shared/OMHTT/Diagnostics.lua"},
+            {"OMHTT/BarrierGeometry", base + "shared/OMHTT/BarrierGeometry.lua"},
+            {"OMHTT/BarrierOutline", base + "server/OMHTT/BarrierOutline.lua"},
             {"_", Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/shared/ISBaseObject.lua").toString()},
             {"_", Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/shared/TimedActions/ISBaseTimedAction.lua").toString()},
             {"_", "tools/tests/service_load_order_before.lua"},
@@ -180,6 +182,9 @@ public final class KahluaCheck {
             {"_", "tools/tests/barrier_vault.lua"},
             {"_", "tools/tests/barrier_corners.lua"},
             {"_", "tools/tests/barrier_approach_action.lua"},
+            {"OMHTT/BarrierCollisionOverlay", base + "client/OMHTT/BarrierCollisionOverlay.lua"},
+            {"_", "tools/tests/barrier_overlay.lua"},
+            {"_", "tools/tests/barrier_outline.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

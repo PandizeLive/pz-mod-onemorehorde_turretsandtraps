@@ -44,7 +44,7 @@ function Service.apply(player, object, id, operation)
         player:getInventory():AddItem(item)
     elseif operation == "Repair" then
         if before >= record.maxHealth then return false end
-        local parts = Footprint.parts(record)
+        local parts = Footprint.healthObjects(record)
         for i = 1, #parts do
             parts[i]:setHealth(record.maxHealth)
         end

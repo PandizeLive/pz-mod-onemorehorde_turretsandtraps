@@ -9,7 +9,11 @@ function Approach.targets(record)
     local nx, ny = F.barrierDirection(record.facing)
     for part = 0, 1 do
         local x, y = record.x - ny * part, record.y + nx * part
-        if record.collisionModel == "edge-v1" then
+        if record.collisionModel == "outline-v1" then
+            targets[#targets + 1] = {x = x, y = y}
+            targets[#targets + 1] = {x = x + nx, y = y + ny}
+            targets[#targets + 1] = {x = x - nx, y = y - ny}
+        elseif record.collisionModel == "edge-v1" then
             targets[#targets + 1] = {x = x, y = y}
             if nx == 0 then
                 targets[#targets + 1] = {x = x, y = y - 1}

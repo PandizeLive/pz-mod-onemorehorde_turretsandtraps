@@ -24,20 +24,24 @@ public final class NativePersistenceCheck {
         Class<?> entriesType = Class.forName("zombie.fileSystem.FileSystem$TexturePackTextures");
         Object entries = entriesType.getConstructor().newInstance();
         call(pack, "getSubTextureInfo", new Class<?>[]{entriesType}, entries);
-        check(((java.util.Map<?, ?>)entries).size() == 16, "Native texture pack metadata did not load");
+        check(((java.util.Map<?, ?>)entries).size() == 20, "Native texture pack metadata did not load");
         for (int page = 0; page < 4; page++) {
             try (var stream = (java.io.InputStream)call(pack, "createStream", new Class<?>[]{String.class, java.io.InputStream.class}, "OMHTT_Barrier" + page, null)) {
                 var image = javax.imageio.ImageIO.read(stream);
                 check(image != null && image.getWidth() == 128 && image.getHeight() == 256, "Native texture page unreadable");
             }
         }
-        System.out.println("[OMHTT-Smoke] native-texturepack entries=16 pages=4 png=valid");
+        try (var stream = (java.io.InputStream)call(pack, "createStream", new Class<?>[]{String.class, java.io.InputStream.class}, "OMHTT_Edges", null)) {
+            var image = javax.imageio.ImageIO.read(stream);
+            check(image != null && image.getWidth() == 256 && image.getHeight() == 256, "Native outline texture page unreadable");
+        }
+        System.out.println("[OMHTT-Smoke] native-texturepack entries=20 pages=5 png=valid");
         Class<?> lua = Class.forName("zombie.Lua.LuaManager");
         Object env = lua.getField("env").get(null);
         Object fixtures = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeFixtures");
         check(fixtures instanceof List<?>, "Native fixture list missing");
         List<?> objects = (List<?>) fixtures;
-        check(objects.size() == 16, "Expected 16 native parts");
+        check(objects.size() == 20, "Expected 16 native parts and four outline colliders");
         Class<?> iso = Class.forName("zombie.iso.IsoObject");
         Class<?> squareType = Class.forName("zombie.iso.IsoGridSquare");
         Class<?> cellType = Class.forName("zombie.iso.IsoCell");
@@ -71,14 +75,23 @@ public final class NativePersistenceCheck {
             check(Boolean.FALSE.equals(get(restored, "isCanPassThrough")), "Pass-through changed");
             check(Boolean.FALSE.equals(get(restored, "isHoppable")), "Hopping changed");
             Object config = get(restored, "getSpriteConfig");
-            check(config != null && Boolean.TRUE.equals(get(config, "isValid")), "Native SpriteConfig invalid after load");
-            check(sprite.equals(get(get(config, "getTileInfo"), "getSpriteName")), "Part identity changed");
-            check(get(get(sourceConfig, "getObjectInfo"), "getName").equals(get(get(config, "getObjectInfo"), "getName")), "Entity changed");
+            if (i < 16) {
+                check(config != null && Boolean.TRUE.equals(get(config, "isValid")), "Native SpriteConfig invalid after load");
+                check(sprite.equals(get(get(config, "getTileInfo"), "getSpriteName")), "Part identity changed");
+                check(get(get(sourceConfig, "getObjectInfo"), "getName").equals(get(get(config, "getObjectInfo"), "getName")), "Entity changed");
+            }
             Object data = get(restored, "getModData");
             check("fixture-owner".equals(call(data, "rawget", new Class<?>[]{Object.class}, "OMHTTFixtureOwner")), "Owner marker lost");
-            if (i >= 8) check("edge-v1".equals(call(data, "rawget", new Class<?>[]{Object.class}, "OMHTTCollisionModel")), "Edge marker lost");
+            if (i >= 8 && i < 16) check("edge-v1".equals(call(data, "rawget", new Class<?>[]{Object.class}, "OMHTTCollisionModel")), "Edge marker lost");
+            if (i >= 16) {
+                Object marker = call(data, "rawget", new Class<?>[]{Object.class}, "OMHTTEdge");
+                check("fixture".equals(call(marker, "rawget", new Class<?>[]{Object.class}, "id")), "Collider owner lost");
+                check("1:1:0:N".equals(call(marker, "rawget", new Class<?>[]{Object.class}, "anchor")), "Collider anchor lost");
+                check("cap".equals(call(marker, "rawget", new Class<?>[]{Object.class}, "role")), "Collider role lost");
+                check(Boolean.FALSE.equals(get(restored, "isCanPassThrough")), "Collider passability changed");
+            }
         }
-        System.out.println("[OMHTT-Smoke] native-persistence mode=" + mode + " parts=16 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved legacy=8 edges=8 orientation=preserved");
+        System.out.println("[OMHTT-Smoke] native-persistence mode=" + mode + " parts=20 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved legacy=8 edges=8 outline=4 orientation=preserved");
     }
 
     public static void main(String[] args) throws Exception {

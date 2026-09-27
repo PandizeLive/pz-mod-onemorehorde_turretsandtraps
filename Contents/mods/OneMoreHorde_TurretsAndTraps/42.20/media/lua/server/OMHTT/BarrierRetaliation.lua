@@ -10,9 +10,16 @@ local generation = 0
 ---@param record table Authoritative barrier geometry
 ---@param x number Attacker world X
 ---@param y number Attacker world Y
+---@param edge table? Exact outline segment
 ---@return string face Front, side or rear
 ---@nodiscard
-function Barrier.face(record, x, y)
+function Barrier.face(record, x, y, edge)
+    if edge then
+        local outward = (x - (edge.x + edge.tx) / 2) * edge.nx + (y - (edge.y + edge.ty) / 2) * edge.ny
+        if outward < 0 then return "rear" end
+        if edge.role == "cap" then return "side" end
+        return "front"
+    end
     local nx, ny = Foundation.barrierDirection(record.facing)
     local width = 1
     if record.width == 2 then
@@ -24,6 +31,9 @@ function Barrier.face(record, x, y)
     if record.collisionModel == "edge-v1" then
         dx = dx + math.abs(nx) * 0.5
         dy = dy + math.abs(ny) * 0.5
+        depth = 0
+    elseif record.collisionModel == "outline-v1" then
+        dx, dy = dx - nx * 0.5, dy - ny * 0.5
         depth = 0
     end
     local forward = dx * nx + dy * ny
@@ -122,7 +132,7 @@ function Barrier.update(zombie)
     state.nextWarning = now + 5000
     state.token = token
     state.strikes = state.strikes + 1
-    local face = Barrier.face(record, zombie:getX(), zombie:getY())
+    local face = Barrier.face(record, zombie:getX(), zombie:getY(), target:getModData().OMHTTEdge)
     if face == "rear" then
         Diagnostics.emit("barrier-strike-blocked", {id = record.id, face = face, facing = record.facing,
             token = token, x = zombie:getX(), y = zombie:getY(), barrierHP = target:getHealth()})

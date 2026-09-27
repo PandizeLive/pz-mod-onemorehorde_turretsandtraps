@@ -47,7 +47,7 @@ local function fillMenu(playerIndex, context, worldobjects, test)
     for i = 1, #worldobjects do
         local clicked = worldobjects[i]
         local square = clicked:getSquare()
-        local marker = clicked:hasModData() and clicked:getModData().OMHTT
+        local marker = clicked:hasModData() and (clicked:getModData().OMHTT or clicked:getModData().OMHTTEdge)
         local id = marker and marker.id
         if square and not seen[id or square] then
             seen[id or square] = true
@@ -56,6 +56,9 @@ local function fillMenu(playerIndex, context, worldobjects, test)
                 local record = slot.device
                 seen[record.id] = true
                 local object = F.find(square, record.id)
+                if not object and Footprint.exact(clicked) then
+                    object = clicked
+                end
                 if object and Footprint.parts(record) then
                     if not Footprint.sync(slot, "menu") then return end
                     local headings = {"E", "N", "W", "S"}

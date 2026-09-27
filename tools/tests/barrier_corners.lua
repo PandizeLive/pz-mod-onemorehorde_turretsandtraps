@@ -26,9 +26,9 @@ end
 
 local north, nr = build(700, 700, 4)
 local west, wr = build(700, 701, 8)
-local south, sr = build(701, 702, 12)
-local east, er = build(702, 700, 0)
-check(nr.id ~= wr.id and #testSquares[F.key(700, 700, 0)].objects == 2, "corner has two independent native edges")
+local south, sr = build(701, 701, 12)
+local east, er = build(701, 700, 0)
+check(nr.id ~= wr.id and F.find(testSquares[F.key(700, 700, 0)], nr.id) ~= nil and F.find(testSquares[F.key(700, 700, 0)], wr.id) ~= nil, "corner has two independent native edges")
 check(P.canBuild(700, 700, 0, 4) == "Occupied", "parallel overlap rejected")
 check(P.canBuild(701, 700, 0, 12) == "Occupied", "opposite facing cannot duplicate same collision edge")
 north[1]:setHealth(37)
@@ -50,7 +50,7 @@ for _, square in pairs(testSquares) do
         if dx > 0 or dy > 0 then edgeSquare = other end
         for i = 1, #edgeSquare.objects do
             local object = edgeSquare.objects[i]
-            if (dx ~= 0 and not object:getNorth()) or (dy ~= 0 and object:getNorth()) then return true end
+            if not object:isCanPassThrough() and ((dx ~= 0 and not object:getNorth()) or (dy ~= 0 and object:getNorth())) then return true end
         end
         return false
     end

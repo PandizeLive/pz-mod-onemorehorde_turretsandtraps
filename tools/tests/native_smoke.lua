@@ -227,6 +227,19 @@ local function checkNativeConstruction()
     assert(not OMHTT_Construction.onAddToMenu({shouldShowAll = true}), "MP construction must stay disabled")
     print("[OMHTT-Smoke] native-construction entity=OMHTTSpikeBarrier faces=4 parts=" .. parts .. " inputs=3 translated=true mpGate=closed")
     print("[OMHTT-Smoke] native-sprites objects=16 valid=16 categoryTranslated=true")
+    for i = 16, 19 do
+        local square = IsoGridSquare.new(getCell(), nil, i, 0, 0)
+        local edge = IsoThumpable.new(getCell(), square, "omhtt_barrier_01_" .. i, i % 2 == 0)
+        edge:setBlockAllTheSquare(false)
+        edge:setCanPassThrough(false)
+        edge:setIsHoppable(false)
+        edge:setIsThumpable(true)
+        edge:setMaxHealth(200)
+        edge:setHealth(37)
+        edge:getModData().OMHTTFixtureOwner = "fixture-owner"
+        edge:getModData().OMHTTEdge = {id = "fixture", anchor = "1:1:0:N", key = tostring(i) .. ":0:0:N", role = "cap"}
+        OMHTT_NativeFixtures:add(edge)
+    end
     checkNativeIngredients(recipe)
     local Sprites = require("OMHTT/BarrierSprites")
     local migrated = OMHTT_NativeFixtures:get(0)

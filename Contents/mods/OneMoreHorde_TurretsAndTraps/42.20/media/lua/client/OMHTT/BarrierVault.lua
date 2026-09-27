@@ -5,6 +5,7 @@ local Diagnostics = require("OMHTT/Diagnostics")
 local Vault = {}
 local active = {}
 local sequence = 0
+local lastInputReport = {}
 
 ---@param player IsoPlayer Acting player
 ---@param object IsoThumpable Selected part
@@ -16,14 +17,17 @@ function Vault.plan(player, object, id)
     local Footprint = require("OMHTT/BarrierFootprint")
     local record = Footprint.exact(object)
     if not record or record.id ~= id or not Footprint.parts(record) then return nil, "UI_OMHTT_Unavailable" end
-    if record.collisionModel ~= "edge-v1" then return nil, "ContextMenu_OMHTT_VaultRedeploy" end
+    if record.collisionModel ~= "edge-v1" and record.collisionModel ~= "outline-v1" then return nil, "ContextMenu_OMHTT_VaultRedeploy" end
     if active[player] or player:getCurrentState() == ClimbOverFenceState.instance() then return nil, "ContextMenu_OMHTT_VaultBusy" end
     local from = player:getCurrentSquare()
     if not from or from:getZ() ~= record.z then return nil, "ContextMenu_OMHTT_VaultApproach" end
-    local parts = Footprint.parts(record)
-    local north = record.facing == 4 or record.facing == 12
+    local parts = Footprint.colliders(record)
+    if object:getModData().OMHTTEdge then
+        parts = {object}
+    end
     for i = 1, #parts do
         local part = parts[i]
+        local north = part:getNorth()
         local square = part:getSquare()
         local x, y = square:getX(), square:getY()
         local negativeX, negativeY = x - 1, y
@@ -64,7 +68,10 @@ function Vault.plan(player, object, id)
                 return nil, "ContextMenu_OMHTT_VaultLanding"
             end
             local side = "rear"
-            if positive == (record.facing == 0 or record.facing == 12) then
+            local edge = part:getModData().OMHTTEdge
+            if edge and edge.role == "cap" then
+                side = "side"
+            elseif positive == (record.facing == 0 or record.facing == 12) then
                 side = "front"
             end
             return {object = part, id = id, side = side, direction = direction,
@@ -108,7 +115,8 @@ function Vault.update(player)
             plan.entered = true
             Diagnostics.emit("barrier-vault-enter", {crossing = plan.sequence, id = plan.id, side = plan.side})
         end
-        if player:getVariableBoolean("ClimbFenceStarted") then
+        if player:getVariableBoolean("ClimbFenceStarted") or player:getVariableBoolean("VaultOverRun")
+            or player:getVariableBoolean("VaultOverSprint") then
             plan.animationStarted = true
         end
         plan.outcome = player:getVariableString("ClimbFenceOutcome")
@@ -122,6 +130,9 @@ function Vault.update(player)
             and math.floor(player:getZ()) == plan.z
         local recovered = state == IdleState.instance() or state == PlayerMovementState.instance()
         if landed and recovered and plan.animationStarted and plan.outcome == "success" then
+            if not plan.contact then
+                Vault.contact(player, plan)
+            end
             finish(player, plan, "crossed")
         else
             finish(player, plan, "interrupted")
@@ -216,6 +227,7 @@ end
 ---@param player IsoPlayer Local player
 ---@param direction IsoDirections Cardinal crossing direction
 ---@return table? plan Exact barrier crossing
+---@return table? refusal Nearby barrier rejection
 ---@nodiscard
 function Vault.forDirection(player, direction)
     local from = player:getCurrentSquare()
@@ -231,15 +243,36 @@ function Vault.forDirection(player, direction)
     if not square then return nil end
     local Footprint = require("OMHTT/BarrierFootprint")
     local objects = square:getSpecialObjects()
+    local refusal = nil
     for i = 0, objects:size() - 1 do
         local object = objects:get(i)
         local record = Footprint.exact(object)
-        if record then
-            local plan = Vault.plan(player, object, record.id)
+        if record and not object:isCanPassThrough() then
+            local plan, reason = Vault.plan(player, object, record.id)
             if plan and plan.direction == direction then return plan end
+            if not plan then
+                refusal = {id = record.id, direction = direction, reason = reason}
+            end
         end
     end
-    return nil
+    return nil, refusal
+end
+
+---@param player IsoPlayer Local player
+---@param plan table Nearby barrier crossing
+---@param reason string Input gate
+---@param distance number Distance to collision plane
+---@param reach number Native collision feeler distance
+---@return nil
+local function reportInput(player, plan, reason, distance, reach)
+    local now = getTimestampMs()
+    local previous = lastInputReport[player]
+    local key = plan.id .. ":" .. tostring(plan.direction) .. ":" .. reason
+    if previous and now - previous.ms >= 0 and now - previous.ms < 1500 then return end
+    lastInputReport[player] = {key = key, ms = now}
+    Diagnostics.emit("barrier-vault-input", {id = plan.id, reason = reason, direction = tostring(plan.direction),
+        state = tostring(player:getCurrentState()), x = player:getX(), y = player:getY(),
+        distance = distance, reach = reach, running = player:isRunning(), sprinting = player:isSprinting()})
 end
 
 ---@param player IsoPlayer Local player
@@ -250,8 +283,8 @@ function Vault.tryInput(player, automatic, heldMs)
     if active[player] or not F.barrierEnabled() or player:isDead() or player:getVehicle()
         or player:isIgnoreAutoVault() or player:isGrappling() then return end
     local state = player:getCurrentState()
-    if state ~= IdleState.instance() and state ~= PlayerMovementState.instance() then return end
-    if automatic and (not player:isPlayerMoving() or not (player:isRunning() or player:isSprinting())) then return end
+    if automatic and (not (player:isPlayerMoving() or player:pressedMovement(false))
+        or not (player:isRunning() or player:isSprinting())) then return end
     local facing = player:getDir()
     local directions = {IsoDirections.N, IsoDirections.E, IsoDirections.S, IsoDirections.W}
     local facingGroups = {
@@ -263,22 +296,30 @@ function Vault.tryInput(player, automatic, heldMs)
     for i = 1, #directions do
         local group = facingGroups[i]
         if facing == group[1] or facing == group[2] or facing == group[3] then
-            local plan = Vault.forDirection(player, directions[i])
+            local plan, refusal = Vault.forDirection(player, directions[i])
+            if refusal then
+                reportInput(player, refusal, refusal.reason, -1, player:getFeelersize())
+            end
             if plan then
                 local safe = player:isSafeToClimbOver(plan.direction)
                 local near = true
+                local distance, reach = 0, player:getFeelersize() + 0.02
                 if automatic then
                     local north = i == 1 or i == 3
                     local position, edge = player:getX(), plan.object:getSquare():getX()
                     if north then
                         position, edge = player:getY(), plan.object:getSquare():getY()
                     end
-                    near = math.abs(position - edge) <= 0.45
+                    distance = math.abs(position - edge)
+                    near = distance <= reach
                 end
-                if near and (safe or (not automatic and heldMs >= 500)) then
+                local ready = state == IdleState.instance() or state == PlayerMovementState.instance()
+                if near and ready and (safe or (not automatic and heldMs >= 500)) then
                     Vault.begin(player, plan, automatic and "native-movement" or "native-context")
                     player:climbOverFence(plan.direction)
                     return
+                elseif near then
+                    reportInput(player, plan, ready and "unsafe-landing" or "native-state", distance, reach)
                 end
             end
         end
