@@ -13,4 +13,3 @@ Captured 2026-09-27 from `diagnostics/captures/20260927-021736-2035/console.txt`
 - Barrier combat and shared wear were observed, but that does not compensate for the service/destruction failures. Vaulting was explicitly deferred in 0.2.2 and was not present.
 
 0.2.3 resolves server dependencies at action/menu use time, retires ledger identity immediately but defers remaining native removal to bounded scheduling, fixes the tooltip wording and deduplicates layout logging. Regression tests now load the shared/client service entry points before server modules, use installed ISBaseTimedAction, prohibit nested world removals and validate formatter patterns directly. Rendered UI, timed action movement/progress and actual zombie destruction still require the new player test.
-
