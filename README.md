@@ -1,6 +1,6 @@
 # OMH: Turrets & Traps
 
-Project foundation created 2026-09-25. **0.2.6 implements the approved connected barrier outline**: front edges, exposed outer end caps and an open rear. It includes the overlay and native-input/contact corrections from the uninstalled 0.2.5.1 draft. [Checkpoint and owner test](docs/PHASE_2_CHECKPOINT_2_OUTLINE.md). 1,433 Kahlua assertions and native startup/write/read checks pass; rendered single-player acceptance remains pending. No Workshop release exists.
+Project foundation created 2026-09-25. **0.2.6 is installed with the approved connected barrier outline**: front edges, exposed outer end caps and an open rear. It includes the overlay and native-input/contact corrections from the uninstalled 0.2.5.1 draft. [Checkpoint and owner test](docs/PHASE_2_CHECKPOINT_2_OUTLINE.md). 1,433 Kahlua assertions and native startup/write/read checks pass; rendered single-player acceptance remains pending. No Workshop release exists.
 
 One edition with a Sandbox toggle menu. The planned mod adds maintainable defensive equipment to Project Zomboid Build 42, with optional Horde Night, Trait Shop, and Cure Defense integrations. Recheck the installed game build before implementing any engine-dependent behavior.
 

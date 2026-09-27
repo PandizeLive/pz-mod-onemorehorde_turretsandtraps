@@ -1,0 +1,17 @@
+{
+  "version": "0.2.6",
+  "sourceCommit": "c6231e44612ec1222ca4876d674b5b8e8166197b",
+  "tag": "test/v0.2.6",
+  "installedAtUtc": "2026-09-27T22:30:21.031337+00:00",
+  "destination": "C:\\Users\\bandi\\Zomboid\\mods\\OneMoreHorde_TurretsAndTraps",
+  "verifiedInstalledFiles": 77,
+  "archive": "artifacts\\OMHTT-0.2.6.zip",
+  "archiveSha256": "3ad49853defc38607a747bc3130e52bfe47252b1f2f4cf9440ed90b968e33088",
+  "verifiedArchiveFiles": 77,
+  "backup": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\p1c1\\install-backups\\20260927-182937-4253\\OneMoreHorde_TurretsAndTraps",
+  "previousVersion": "0.2.5",
+  "previousManifestFiles": 75,
+  "backupManifestMismatches": [],
+  "playerAcceptance": "pending; restart required",
+  "workshopUpload": "none"
+}

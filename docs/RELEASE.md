@@ -4,7 +4,7 @@
 
 [Checkpoint and complete owner test](PHASE_2_CHECKPOINT_2_OUTLINE.md), [release notes](PR_v0.2.6.md). The owner approved C40's shared native outline: front edges, outermost exposed end caps and an open rear. This closes the separate centered-player/full-block-zombie proposal without adding a Java dependency. The uninstalled 0.2.5.1 input/contact/overlay fixes are included here; that draft was not a release.
 
-Validation: 1,433 Kahlua assertions, 24 runtime modules, 103 translation keys, 23 packet serializations and 77 package files. Native 42.20.4 write/read smoke passed in 44.4/43.5 seconds with 20 restored objects; both native pathfinders recognize both axes at corners in both object orders. Rendered gameplay acceptance remains pending. Local installation evidence will be recorded after the tagged package is installed. No Workshop upload exists; notes remain cumulative.
+Validation: 1,433 Kahlua assertions, 24 runtime modules, 103 translation keys, 23 packet serializations and 77 package files. Native 42.20.4 write/read smoke passed in 44.4/43.5 seconds with 20 restored objects; both native pathfinders recognize both axes at corners in both object orders. Rendered gameplay acceptance remains pending. [Local installation evidence](../diagnostics/v0.2.6/local-release.json) verifies all 77 installed files and the matching [tagged archive](../artifacts/OMHTT-0.2.6.zip). Annotated `test/v0.2.6` points to `c6231e4`. The complete 0.2.5 backup matches all 75 previous manifest files. Restart PZ to load this version; the running client is not yet verified. No Workshop upload exists; notes remain cumulative.
 
 ## 0.2.5 native-control correction candidate
 
@@ -23,11 +23,11 @@ Validation: 1,433 Kahlua assertions, 24 runtime modules, 103 translation keys, 2
 | Project | OMH: Turrets & Traps |
 | Foundation date | 2026-09-25 |
 | Edition | One; feature controls in Sandbox |
-| Package version | 0.2.6 candidate; SP development test |
+| Package version | 0.2.6 installed; SP development test |
 | Confirmed mod ID | OneMoreHorde_TurretsAndTraps |
 | Build evidence | B42.20.4 b0bbce05d5 with PZ Optimizer: dedicated startup/save/restart passed; player acceptance pending |
-| Runtime source / installable package | 0.2.6 validated source; 77 files |
-| Git repository / remote | Local working branch; 0.2.6 rollback tag/install evidence pending below; no remote configured |
+| Runtime source / installable package | 0.2.6 tagged source, archive and installation; 77 verified files |
+| Git repository / remote | Local working branch; annotated test/v0.2.6 (c6231e4); no remote configured |
 | Workshop item / successful upload | None |
 | Public changelog baseline | No upload exists |
 | Official score support | Proposed; not implemented |
