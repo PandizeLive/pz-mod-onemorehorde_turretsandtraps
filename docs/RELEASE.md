@@ -7,11 +7,11 @@
 | Project | OMH: Turrets & Traps |
 | Foundation date | 2026-09-25 |
 | Edition | One; feature controls in Sandbox |
-| Package version | 0.2.3 candidate; installation pending |
+| Package version | 0.2.3 installed; development test only |
 | Confirmed mod ID | OneMoreHorde_TurretsAndTraps |
 | Build evidence | B42.20.4 b0bbce05d5 with PZ Optimizer: dedicated startup/save/restart passed; player acceptance pending |
-| Runtime source / installable package | 0.2.3 candidate; exact installation verification pending |
-| Git repository / remote | Local working branch; annotated test/v0.2.2 (7dd3004); no remote configured |
+| Runtime source / installable package | 0.2.3 installed; all 70 tagged files verified |
+| Git repository / remote | Local working branch; annotated test/v0.2.3 (f11699f); no remote configured |
 | Workshop item / successful upload | None |
 | Public changelog baseline | No upload exists |
 | Official score support | Proposed; not implemented |
@@ -19,7 +19,7 @@
 
 ## Current correction and Sandbox candidate
 
-Version **0.2.3** repairs the [failed 0.2.2 test](TEST_v0.2.2.md) and adds configurable damage/HP with default basic damage 10. [Changes](PR_v0.2.3.md), [scope/evidence/full test](PHASE_2_CHECKPOINT_1C_REPAIR.md). 337 Kahlua assertions, 18 modules, 85 native translation keys and 23 packet serializations pass. Native option loading, item transactions and 16 object write/read fixtures at 37/200 HP passed across fresh processes in 33.9/33.9 seconds. Real SP acceptance and vaulting remain pending. Install/tag/archive verification pending; no remote or Workshop publication.
+Version **0.2.3** repairs the [failed 0.2.2 test](TEST_v0.2.2.md) and adds configurable damage/HP with default basic damage 10. [Changes](PR_v0.2.3.md), [scope/evidence/full test](PHASE_2_CHECKPOINT_1C_REPAIR.md). 337 Kahlua assertions, 18 modules, 85 native translation keys and 23 packet serializations pass. Native option loading, item transactions and 16 object write/read fixtures at 37/200 HP passed across fresh processes in 33.9/33.9 seconds. Real SP acceptance and vaulting remain pending. [Install evidence](../diagnostics/v0.2.3/local-release.json) verifies all 70 installed files against the tagged source and matching archive, plus all 70 previous-version backup files. The running 0.2.3 client remains unverified until restart/player testing. Documentation-only follow-up commits leave Contents identical to the tag. No remote or Workshop publication.
 
 ## Previous menu, servicing and bundle candidate
 

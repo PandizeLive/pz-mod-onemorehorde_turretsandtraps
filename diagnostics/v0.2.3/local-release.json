@@ -1,0 +1,17 @@
+{
+  "version": "0.2.3",
+  "verifiedAtUTC": "2026-09-27T06:36:35.935148+00:00",
+  "packageFilesVerified": 70,
+  "localTag": "test/v0.2.3",
+  "tagCommit": "f11699f8823f23673c6583b6f1133635b0b2a0ce",
+  "installedFromCommit": "f11699f8823f23673c6583b6f1133635b0b2a0ce",
+  "installedPath": "C:\\Users\\bandi\\Zomboid\\mods\\OneMoreHorde_TurretsAndTraps",
+  "backupPath": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\p1c1\\install-backups\\20260927-023538-9791\\OneMoreHorde_TurretsAndTraps",
+  "backupVersion": "0.2.2",
+  "backupFilesVerified": 70,
+  "archiveSHA256": "facdb1ca97cd60fb82986d2fc0af80faa2dcba4acba3cccee6dd2b04e046f223",
+  "clientLoadedVersion": "pending",
+  "inGameAcceptance": "pending",
+  "workshopUpload": false,
+  "remotePush": false
+}
