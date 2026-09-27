@@ -7,11 +7,11 @@
 | Project | OMH: Turrets & Traps |
 | Foundation date | 2026-09-25 |
 | Edition | One; feature controls in Sandbox |
-| Package version | 0.2.1 candidate; development test only |
+| Package version | 0.2.1 installed; development test only |
 | Confirmed mod ID | OneMoreHorde_TurretsAndTraps |
 | Build evidence | B42.20.4 b0bbce05d5 with PZ Optimizer: dedicated startup/save/restart passed; player acceptance pending |
-| Runtime source / installable package | 0.2.1 validated; local tagged installation pending |
-| Git repository / remote | Local working branch; test/v0.2.1 tag pending; no remote configured |
+| Runtime source / installable package | 0.2.1 validated and installed; all 66 tagged files verified |
+| Git repository / remote | Local working branch; annotated test/v0.2.1 (2ef7aed); no remote configured |
 | Workshop item / successful upload | None |
 | Public changelog baseline | No upload exists |
 | Official score support | Proposed; not implemented |
@@ -19,7 +19,7 @@
 
 ## Current portable construction candidate
 
-Version `0.2.1` combines the native persistence repair and P2C1b by owner request. [Changes](PR_v0.2.1.md), [scope/evidence/complete owner test](PHASE_2_CHECKPOINT_1B.md). Validation passes: 270 assertions, 14 runtime modules, 69 native translator keys, native material/item transactions and migration, 16 object streams restored across fresh processes (45.2/43.7 seconds), and native texture-pack parsing. Actual SP map streaming/rendering and player acceptance remain pending. The existing cumulative changelog has been merged under 0.2.1; there is still no successful Workshop upload baseline.
+Version `0.2.1` combines the native persistence repair and P2C1b by owner request. [Changes](PR_v0.2.1.md), [scope/evidence/complete owner test](PHASE_2_CHECKPOINT_1B.md). Validation passes: 270 assertions, 14 runtime modules, 69 native translator keys, native material/item transactions and migration, 16 object streams restored across fresh processes (45.2/43.7 seconds), and native texture-pack parsing. Actual SP map streaming/rendering and player acceptance remain pending. The existing cumulative changelog has been merged under 0.2.1; there is still no successful Workshop upload baseline. [Installation evidence](../diagnostics/v0.2.1/local-release.json) verifies all 66 installed files against the exact tagged bytes, all 58 files in the 0.2.0.3 backup, and the matching [archive](../artifacts/OMHTT-0.2.1.zip). The running client version remains pending. Documentation/evidence-only commits may follow the gameplay tag with unchanged Contents. No remote push or Workshop upload occurred.
 
 ## Previous native construction candidate
 
