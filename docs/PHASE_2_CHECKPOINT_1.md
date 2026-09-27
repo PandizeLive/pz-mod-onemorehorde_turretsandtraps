@@ -58,7 +58,13 @@ The [0.2.0.2 owner test](TEST_v0.2.0.2.md) failed category discovery/translation
 
 Native component save/reload remains an explicit gate: file-backed sprites do not establish stable native tile IDs, and ledger reconciliation alone does not prove native component restoration. Resolve this before accepting persistence or starting portable-item work. Existing Phase 1 reload/traversal limitations remain open.
 
+## Completed 0.2.0.3 owner review
+
+[2026-09-27 evidence](TEST_v0.2.0.3.md): 13 categories, zero missing translations, four completed paired barriers (three cheat, one normal), valid native part identities at creation, Occupied/Blocked rejection previews and no creation exception. Six later native SpriteConfig warnings remain. Exact inventory/XP deltas and actual traversal are not independently logged. P2C1a remains partial; next repair/proof is native object save/load and cell restoration before portable-item work. No new runtime build was produced by this review.
+
 ## Owner test
+
+The following was the requested scope for the now-completed 0.2.0.3 test round; only the results documented above are verified. It is retained for reference, not a request to repeat it now.
 
 1. Restart with **0.2.0.3** in a fresh disposable SP save. Enable the mod, Spike Barrier and Diagnostic Logging. Build Cheat may be ON; avoid the failed test's leftover objects.
 2. Open Building: native categories should remain, and **Turrets & Traps** should translate. Find Spike Barrier under both it and **Carpentry**; check search and list/grid switching.

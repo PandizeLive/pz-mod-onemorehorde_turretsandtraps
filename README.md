@@ -1,6 +1,6 @@
 # OMH: Turrets & Traps
 
-Project foundation created 2026-09-25. Current candidate: **0.2.0.3**. [Phase 2 checkpoint 1a](docs/PHASE_2_CHECKPOINT_1.md) adds native building-menu Spike Barrier construction and the owner-approved material recipe. The 0.2.0.3 follow-up repairs category startup/translation and native part identity after the failed 0.2.0.2 player test. Phase 1's remaining acceptance stays open; no Workshop release exists.
+Project foundation created 2026-09-25. Current candidate: **0.2.0.3**. [Phase 2 checkpoint 1a](docs/PHASE_2_CHECKPOINT_1.md) adds native building-menu Spike Barrier construction and the owner-approved material recipe. The 0.2.0.3 follow-up repairs category startup/translation and native part identity after the failed 0.2.0.2 player test. The [completed 0.2.0.3 review](docs/TEST_v0.2.0.3.md) confirms initial paired construction and category repairs, with six later native SpriteConfig warnings still blocking persistence. Phase 1's remaining acceptance stays open; no Workshop release exists.
 
 One edition with a Sandbox toggle menu. The planned mod adds maintainable defensive equipment to Project Zomboid Build 42, with optional Horde Night, Trait Shop, and Cure Defense integrations. Recheck the installed game build before implementing any engine-dependent behavior.
 

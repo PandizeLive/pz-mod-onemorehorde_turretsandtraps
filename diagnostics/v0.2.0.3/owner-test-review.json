@@ -1,0 +1,32 @@
+{
+  "version": "0.2.0.3",
+  "capture": "20260927-001605-5599",
+  "consoleSHA256": "a2b13d791955d6226cc6af1c03acaf5772abbabf549216a6f680f86a971a9f22",
+  "partCallbacks": 8,
+  "completedBarriers": 4,
+  "cheatBuilds": 3,
+  "normalBuilds": 1,
+  "validNativeParts": 8,
+  "normalConsumptionSuccesses": 1,
+  "previewOccupied": 5,
+  "previewBlocked": 2,
+  "lateSpriteWarnings": [
+    1348,
+    1349,
+    1350,
+    1351,
+    1352,
+    1353
+  ],
+  "luaExceptionStacks": 0,
+  "partCallbackLines": [
+    1197,
+    1199,
+    1220,
+    1222,
+    1235,
+    1237,
+    1408,
+    1410
+  ]
+}

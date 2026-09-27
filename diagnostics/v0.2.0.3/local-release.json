@@ -10,6 +10,7 @@
   "backupVersion": "0.2.0.2",
   "backupFilesVerified": 58,
   "archiveSHA256": "5fbf4339b5518b6b0092da459351ac3fda3e075b6ff94f011f2a170b8d96c6bb",
-  "clientLoadedVersion": "pending restart and owner SP test",
-  "workshopUpload": false
+  "clientLoadedVersion": "0.2.0.3",
+  "workshopUpload": false,
+  "clientVersionEvidence": "docs/TEST_v0.2.0.3.md; captured console SHA256 A2B13D791955D6226CC6AF1C03ACAF5772ABBABF549216A6F680F86A971A9F22"
 }
