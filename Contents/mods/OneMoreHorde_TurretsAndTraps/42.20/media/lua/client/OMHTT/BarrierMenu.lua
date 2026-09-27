@@ -2,7 +2,6 @@ if isClient() or isServer() then return end
 require("OMHTT/BarrierServiceAction")
 require("TimedActions/ISTimedActionQueue")
 local F = require("OMHTT/Foundation")
-local Footprint = require("OMHTT/BarrierFootprint")
 local Diagnostics = require("OMHTT/Diagnostics")
 
 ---@param object IsoThumpable Selected part
@@ -25,6 +24,8 @@ local function fillMenu(playerIndex, context, worldobjects, test)
     if test or not F.barrierEnabled() then return end
     local player = getSpecificPlayer(playerIndex)
     if not player or player:isDead() then return end
+    -- Server Lua is registered after client Lua in single-player. Resolve at use time.
+    local Footprint = require("OMHTT/BarrierFootprint")
     local seen = {}
     for i = 1, #worldobjects do
         local square = worldobjects[i]:getSquare()
@@ -39,12 +40,12 @@ local function fillMenu(playerIndex, context, worldobjects, test)
                     local option = context:addOption(getText("ContextMenu_OMHTT_Barrier"), nil, nil)
                     local menu = ISContextMenu:getNew(context)
                     context:addSubMenu(option, menu)
-                    local condition = menu:addOption(getText("ContextMenu_OMHTT_BarrierCondition", record.condition, 100), nil, nil)
+                    local condition = menu:addOption(getText("ContextMenu_OMHTT_BarrierCondition", record.condition, record.maxHealth), nil, nil)
                     condition.notAvailable = true
                     menu:addOption(getText("ContextMenu_OMHTT_PickupBarrier"), object, queueService, player, record.id, "Pickup")
                     local repair = menu:addOption(getText("ContextMenu_OMHTT_RepairBarrier"), object, queueService, player, record.id, "Repair")
-                    repair.notAvailable = record.condition >= 100
-                    Diagnostics.emit("barrier-menu", {id = record.id, condition = record.condition, max = 100})
+                    repair.notAvailable = record.condition >= record.maxHealth
+                    Diagnostics.emit("barrier-menu", {id = record.id, condition = record.condition, max = record.maxHealth})
                     return
                 end
             end

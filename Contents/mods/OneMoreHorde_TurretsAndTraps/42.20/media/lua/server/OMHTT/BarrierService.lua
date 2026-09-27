@@ -43,19 +43,19 @@ function Service.apply(player, object, id, operation)
         Footprint.retire(slot)
         player:getInventory():AddItem(item)
     elseif operation == "Repair" then
-        if before >= 100 then return false end
+        if before >= record.maxHealth then return false end
         local parts = Footprint.parts(record)
         for i = 1, #parts do
-            parts[i]:setHealth(100)
+            parts[i]:setHealth(record.maxHealth)
         end
-        record.condition, record.observedLoss = 100, 0
+        record.condition, record.observedLoss = record.maxHealth, 0
         record.revision = record.revision + 1
         slot.epoch = slot.epoch + 1
         Footprint.sync(slot, "repair")
     else
         return false
     end
-    Diagnostics.emit("barrier-service", {id = id, action = operation, before = before, after = 100,
+    Diagnostics.emit("barrier-service", {id = id, action = operation, before = before, after = record.maxHealth,
         player = player:getUsername(), items = operation == "Pickup" and 1 or 0, xp = 0})
     return true
 end

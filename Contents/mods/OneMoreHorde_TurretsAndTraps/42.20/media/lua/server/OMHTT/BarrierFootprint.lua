@@ -83,7 +83,7 @@ local function createPart(square, record)
     object:setCanPassThrough(false)
     object:setIsHoppable(false)
     object:setIsThumpable(true)
-    object:setMaxHealth(100)
+    object:setMaxHealth(record.maxHealth or 100)
     object:setHealth(record.condition)
     object:setBreakSound("BreakObject")
     object:setIsDismantable(false)
@@ -144,7 +144,7 @@ end
 ---@return string status
 ---@return table? slot Canonical slot
 function Footprint.place(square, player)
-    local record = {id = "test-" .. tostring(store.nextId), kind = "barrier", condition = 100, revision = 1,
+    local record = {id = "test-" .. tostring(store.nextId), kind = "barrier", condition = F.barrierHealth(), maxHealth = F.barrierHealth(), revision = 1,
         testOwner = player:getUsername(), ammo = 0, shots = 0, nextShot = 0, facing = 0, observedLoss = 0,
         cooldownClock = "realtime-ms-v1", width = 2, x = square:getX(), y = square:getY(), z = square:getZ()}
     local x, y = Footprint.second(record, record.facing)
@@ -212,7 +212,7 @@ function Footprint.adoptBuild(object, player, x, y, facing, entity)
     if not slot or not slot.device then
         slot = reserve(x, y, z)
         local other = reserve(secondX, secondY, z)
-        slot.device = {id = "test-" .. tostring(store.nextId), kind = "barrier", condition = 100, revision = 1,
+        slot.device = {id = "test-" .. tostring(store.nextId), kind = "barrier", condition = F.barrierHealth(), maxHealth = F.barrierHealth(), revision = 1,
             testOwner = player:getUsername(), builderUsername = player:getUsername(), placementSource = "construction",
             constructionEntity = entity,
             ammo = 0, shots = 0, nextShot = 0, facing = facing, observedLoss = 0,
@@ -237,7 +237,7 @@ function Footprint.adoptBuild(object, player, x, y, facing, entity)
     object:setCanPassThrough(false)
     object:setIsHoppable(false)
     object:setIsThumpable(true)
-    object:setMaxHealth(100)
+    object:setMaxHealth(record.maxHealth or 100)
     object:setHealth(record.condition)
     object:setBreakSound("BreakObject")
     object:setIsDismantable(false)
@@ -276,6 +276,11 @@ function Footprint.retire(slot, excluding)
         partSlot.epoch = math.max(partSlot.epoch + 1, retiredEpoch)
         partSlot.retired = record.id
         pending[#pending + 1] = partSlot
+    end
+    -- Native multi-tile removal can include the sibling. Never nest world removal in its callback.
+    if excluding then
+        Diagnostics.emit("barrier-footprint", {id = record.id, action = "retire-deferred", width = width})
+        return
     end
     for i = 1, #pending do
         local partSlot = pending[i]
@@ -363,6 +368,17 @@ function Footprint.sync(slot, reason)
         Footprint.retire(slot, nil)
         return false
     end
+    local oldMaximum = record.maxHealth or 100
+    local maximum = F.barrierHealth()
+    if oldMaximum ~= maximum or record.maxHealth == nil then
+        record.condition = math.max(1, math.floor(record.condition * maximum / oldMaximum + 0.5))
+        record.condition = math.min(maximum, record.condition)
+        record.maxHealth = maximum
+        record.revision = record.revision + 1
+        slot.epoch = slot.epoch + 1
+        Diagnostics.emit("barrier-settings", {id = record.id, previousMax = oldMaximum,
+            max = maximum, hp = record.condition, damage = F.barrierDamage()})
+    end
     local width = record.width
     expandLegacy(record, slot)
     if width ~= record.width then
@@ -382,6 +398,9 @@ function Footprint.sync(slot, reason)
         if visualChanged then
             object:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_OBJECT_MODIFY)
             object:transmitUpdatedSpriteToClients()
+        end
+        if object:getMaxHealth() ~= record.maxHealth then
+            object:setMaxHealth(record.maxHealth)
         end
         if object:getHealth() ~= record.condition then
             object:setHealth(record.condition)

@@ -109,6 +109,8 @@ def main():
         "zombie/entity/ComponentType.class", "zombie/inventory/InventoryItem.class",
         "zombie/scripting/objects/Item.class",
         "zombie/GameTime.class", "zombie/inventory/ItemContainer.class",
+        "zombie/iso/IsoGridSquare.class", "zombie/iso/IsoObjectUtils.class",
+        "media/lua/shared/ISBaseObject.lua",
         "media/lua/client/Entity/ISUI/CraftRecipe/ISHandCraftPanel.lua",
         "media/lua/client/Entity/ISUI/Controls/ISWidgetTitleHeader.lua",
         "media/lua/shared/TimedActions/ISBaseTimedAction.lua",

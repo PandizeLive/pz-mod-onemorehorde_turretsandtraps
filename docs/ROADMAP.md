@@ -2,6 +2,8 @@
 
 Status as of 2026-09-27: Phase 0 and cube-only asset preparation complete. Phase 1 remains partially accepted. The owner approved combining the persistence repair with P2C1b. [Version 0.2.1](PHASE_2_CHECKPOINT_1B.md) implements stable native tile identities, existing-part migration, portable crafting and one-item native deployment. The 0.2.1 log proves undamaged restoration without the former warnings. [0.2.2](PHASE_2_CHECKPOINT_1C.md) implements the Crafting category/description repair, P2C1c bundles and SP pickup/free repair from P2C1d. Player acceptance and the new directional vault prototype remain pending; reinforcement remains scheduled. No later phase or multiplayer acceptance is implied.
 
+**0.2.3 correction:** the 0.2.2 player test failed servicing/destruction acceptance. [Current repair and full test](PHASE_2_CHECKPOINT_1C_REPAIR.md) also adds configurable basic damage/HP and default damage 10. Accept this correction before advancing to the native vault/scratch-roll prototype. Reinforcement remains pending.
+
 ## Phase 0: project foundation
 
 Historical repair: [0.1.4 combat record](checkpoints/P1_COMBAT_RECORD.md). The owner confirms rotation works but reports missing retaliation, inconsistent knockdown and firing-related disappearance. The current repair addresses cadence, heading and knockdown requests; per-thump retaliation remains unresolved.

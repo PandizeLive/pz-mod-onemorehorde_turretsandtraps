@@ -77,7 +77,7 @@ B.update(rear)
 check(rear.health == 2, "moving from rear to front cannot reuse the suppressed marker")
 rear.variables[B.TOKEN] = "right"
 B.update(rear)
-check(math.abs(rear.health - 1.8) < 0.00001, "fresh front strike deals 20 after moving around barrier")
+check(math.abs(rear.health - 1.9) < 0.00001, "fresh front strike deals 10 after moving around barrier")
 testData = nativeRoundTrip(testData)
 S.initialize()
 local restored = request("Inspect", 101, 100)
@@ -123,4 +123,6 @@ check(legacy.width == 2 and #b.objects == 1 and b.objects[1].health == 67 and ol
 local legacySecond = b.objects[1]
 local legacyPrimary = a.objects[1]
 b:transmitRemoveItemFromSquare(legacySecond)
+check(not legacyPrimary.removed, "native removal callback does not recursively remove the sibling")
+S.tick()
 check(legacyPrimary.removed and #a.objects == 0 and #b.objects == 0, "native destruction of secondary also removes primary")

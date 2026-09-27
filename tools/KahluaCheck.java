@@ -92,6 +92,7 @@ public final class KahluaCheck {
             fill.invoke(null, root.resolve("Contents/mods/OneMoreHorde_TurretsAndTraps/42.20").toString(), category[0], map, english, formatFixer);
             if (map.isEmpty()) throw new IllegalStateException("Native translation category not loaded: " + category[0]);
             for (String key : map.keySet()) {
+                String.format(java.util.Locale.ROOT, map.get(key), "one", "two", "three", "four");
                 String rendered = category[0].equals("Recipes")
                     ? (String)translatorType.getMethod("getRecipeName", String.class).invoke(null, key)
                     : category[0].equals("ItemName") ? (String)translatorType.getMethod("getItemNameFromFullType", String.class).invoke(null, key)
@@ -129,6 +130,12 @@ public final class KahluaCheck {
             {"_", "tools/tests/bootstrap.lua"},
             {"OMHTT/Foundation", base + "shared/OMHTT/Foundation.lua"},
             {"OMHTT/Diagnostics", base + "shared/OMHTT/Diagnostics.lua"},
+            {"_", Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/shared/ISBaseObject.lua").toString()},
+            {"_", Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/shared/TimedActions/ISBaseTimedAction.lua").toString()},
+            {"_", "tools/tests/service_load_order_before.lua"},
+            {"OMHTT/BarrierServiceAction", base + "shared/OMHTT/BarrierServiceAction.lua"},
+            {"_", base + "client/OMHTT/BarrierMenu.lua"},
+            {"_", "tools/tests/service_load_order_after.lua"},
             {"OMHTT/Damage", base + "server/OMHTT/Damage.lua"},
             {"OMHTT/PrototypeCombat", base + "server/OMHTT/PrototypeCombat.lua"},
             {"OMHTT/BarrierSprites", base + "shared/OMHTT/BarrierSprites.lua"},
@@ -163,9 +170,8 @@ public final class KahluaCheck {
             {"_", "tools/tests/crafting_menu.lua"},
             {"_", "tools/tests/service_bootstrap.lua"},
             {"OMHTT/BarrierService", base + "server/OMHTT/BarrierService.lua"},
-            {"OMHTT/BarrierServiceAction", base + "shared/OMHTT/BarrierServiceAction.lua"},
-            {"_", base + "client/OMHTT/BarrierMenu.lua"},
             {"_", "tools/tests/barrier_service.lua"},
+            {"_", "tools/tests/barrier_settings.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

@@ -1,3 +1,5 @@
+> 0.2.2 player acceptance failed: [review](TEST_v0.2.2.md). Use the [0.2.3 correction and test](PHASE_2_CHECKPOINT_1C_REPAIR.md); historical evidence below is retained.
+
 # P2C1c plus SP servicing and menu repair: 0.2.2
 
 Owner approval on 2026-09-27 combines five-item bundles, pickup and free repair with the requested Crafting-category/description correction. High reasoning was recommended; expanded scope estimated 35-50 minutes with Fast recommended. [Previous owner evidence](TEST_v0.2.1.md).

@@ -140,3 +140,8 @@ One portable barrier weighs 6 encumbrance for testing. The owner was offered 6/8
 - C32: Combine basic-barrier pickup, repair and bundles. Pickup returns one full-condition item; preserving damage is explicitly not required. Owner approved **free repair; 10 seconds for both pickup and repair**, interrupted by movement. This intentionally permits full restoration for time alone. Zero XP remains C27. This exception applies to the basic barrier, not future turret ammunition/power or reinforced tier conversion.
 
 Version 0.2.2 implements the menu correction, nearby condition display and C32 as a single SP test checkpoint. Bundles use five pristine loose items, weighing 9.9 with the current provisional individual weight 6. Existing recipe, cutting tool, skill and initial crafting XP remain unchanged. Final damaged visual stages remain an owner-sourced art proposal.
+
+## 2026-09-27 barrier tuning and repair
+
+- C33: Owner requests configurable basic Spike Barrier damage and HP, reducing default damage to **10**. 0.2.3 adds Damage (0-1000, default 10) and Maximum Durability (1-10000, default 100). Bounds and preserving remaining durability percentage on maximum changes are implementation choices. Free ten-second repair/pickup remain unchanged. Reinforced 25-damage design stays pending and is not silently retuned.
+- 0.2.2 acceptance failed service load order, tooltip formatting and native destruction re-entry: [review](TEST_v0.2.2.md). Earlier basic 20-damage tuning/statistics are superseded by C33; historical evidence is retained. C31 vaulting remains unimplemented pending native proof.

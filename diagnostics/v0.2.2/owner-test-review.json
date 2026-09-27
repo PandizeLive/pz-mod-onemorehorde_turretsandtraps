@@ -1,0 +1,18 @@
+{
+  "version": "0.2.2",
+  "capture": "diagnostics\\captures\\20260927-021736-2035",
+  "consoleSHA256": "dad05ba66a8081d2086c4b69bbfeb4eb24720ee84854c981e63d0040444ed255",
+  "clientLoadedVersion": "0.2.2",
+  "inGameAcceptance": "failed",
+  "bundleFormattingWarnings": 8529,
+  "serviceMenuExceptions": 9,
+  "nativeDestructionExceptions": 6,
+  "recipeDescriptionEvents": 6724,
+  "serviceCompletions": 0,
+  "errors": [
+    "server-only modules required at shared/client load captured nil",
+    "literal percent in bundle tooltip failed native formatter",
+    "paired removal re-entered native multi-tile destruction callback"
+  ],
+  "vaulting": "not implemented in tested build"
+}

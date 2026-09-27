@@ -1,10 +1,10 @@
 # Sandbox options specification
 
-Status: mixed implemented/planned contract. In 0.2.0, master Enable Turrets & Traps and Enable Spike Barrier are native Sandbox controls, alongside Foundation Test Controls and Diagnostic Logging. Other controls below remain planned. One edition, one Sandbox page; preserve owner-authored tooltip wording.
+Status: mixed implemented/planned contract. In 0.2.0, master Enable Turrets & Traps and Enable Spike Barrier are native Sandbox controls, alongside Foundation Test Controls and Diagnostic Logging. 0.2.3 additionally implements Spike Barrier Damage and Maximum Durability. Other controls below remain planned. One edition, one Sandbox page; preserve owner-authored tooltip wording.
 
 ## Groups and defaults
 
-Only Include Offline Members = ON is an explicitly confirmed setting default. The one-edition/toggle-menu structure is confirmed. Other defaults below remain recommendations or TBD, even when a preferred value is shown.
+Include Offline Members = ON and basic Spike Barrier Damage = 10 are explicitly confirmed defaults. The one-edition/toggle-menu structure is confirmed. Other defaults below remain recommendations or TBD, even when a preferred value is shown.
 
 | Group | Control | Type / proposed bounds | Default status |
 | --- | --- | --- | --- |
@@ -12,6 +12,8 @@ Only Include Offline Members = ON is an explicitly confirmed setting default. Th
 | Content | Enable Potato Turret | Boolean | ON proposed when implemented |
 | Content | Enable Punji | Boolean | ON proposed when implemented |
 | Content | Enable Spike Barrier | Boolean; native construction and retaliation | ON test implementation default in 0.2.0 |
+| Balance | Spike Barrier Damage | Integer 0-1000; implemented 0.2.3 | 10 confirmed; zero disables retaliation |
+| Balance | Spike Barrier Maximum Durability | Integer 1-10000; shared across both tiles | 100 retained test default |
 | Content | Enable Barbed Barricades | Boolean | ON proposed when implemented |
 | Content | Enable Concertina | Boolean | TBD after movement prototype |
 | Content | Enable Dart Emitters | Boolean | TBD at P4 |
@@ -37,11 +39,11 @@ Expose only implemented controls. Do not display functional-looking toggles for 
 
 The control unit provides the owner-confirmed in-world individual/all-compatible-linked targeting selector, including players, other factions and no one. Only devices with smarts follow these filters; passive objects remain unaffected. Sandbox controls govern available capabilities and server rules; they do not replace this per-device/group interface. Zombie targeting, combinations, smart-device capability and collateral behavior must be specified before the relevant content ships.
 
-Player traversal defaults are confirmed design behavior, not new optional toggles: automatic jumping over passive bed spikes and no walking into or vaulting over the Spike Barrier. Do not add a faction-dependent exception or controller override. A proposed separate global player-damage setting does not alter these traversal requirements or give passive devices target recognition.
+Player traversal defaults are confirmed design behavior, not new optional toggles: automatic jumping over passive bed spikes and no walking into the Spike Barrier. Player vaulting with 20% front scratch risk and safe rear supersedes the earlier vault ban but remains pending a native prototype. Do not add a faction-dependent exception or controller override. A proposed separate global player-damage setting does not alter these traversal requirements or give passive devices target recognition.
 
 ## Configuration behavior
 
-Implemented for the 0.2.0 barrier: block native construction and retaliation while preserving objects, collision and condition. Recovery/dismantling remains P2C1d work, so this candidate does not offer a gameplay pickup action. Other-content disabling behavior remains proposed: preserve resources and allow safe recovery. An occupied Poke Floor must stop safely rather than freeze mid-animation.
+Implemented for the 0.2.0 barrier: block native construction and retaliation while preserving objects, collision and condition. 0.2.3 repairs the 0.2.2 service menu: free repair/full-condition pickup take ten active seconds while enabled. Other-content disabling behavior remains proposed: preserve resources and allow safe recovery. An occupied Poke Floor must stop safely rather than freeze mid-animation.
 
 Master OFF follows the same preservation rule. Re-enabling does not refill magazines, repair structures, reset wear, replay pulses, or create catch-up shots. Server settings prevail over client preferences.
 
@@ -59,4 +61,8 @@ Do not expose an arbitrary official score slider. If a custom modifier is later 
 
 ## Timing
 
-Use In-Game Time for autonomous operation, power/decay and reset intervals. Use Action Time for player-performed construction and servicing. No Real Time defaults are selected in this document.
+Use In-Game Time for autonomous operation, power/decay and reset intervals. Use Action Time for player-performed construction and servicing. The basic-barrier service exception uses ten active real seconds for pickup/free Repair in the current SP implementation; movement cancels either action.
+
+## Implemented value changes (0.2.3)
+
+Damage applies to subsequent strikes. Maximum HP reconciliation records outstanding wear on both loaded halves, then preserves remaining percentage with integer rounding (minimum 1 for a living barrier). Legacy records without a maximum assume 100. Incomplete/unloaded pairs wait for both parts. Repair/new deployment use the configured maximum. No settings XP; menus and startup/migration logs expose current values.

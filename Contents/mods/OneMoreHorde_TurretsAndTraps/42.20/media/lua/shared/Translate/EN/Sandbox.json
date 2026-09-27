@@ -7,5 +7,9 @@
     "Sandbox_OMHTurretsTraps_DiagnosticLogging": "Prototype Diagnostic Logging",
     "Sandbox_OMHTurretsTraps_DiagnosticLogging_tooltip": "Records construction parts, coordinates, shared identity, build-cheat state, native object/sprite state, combat decisions and periodic summaries in console.txt. Active with the mod or Foundation Test Controls enabled. Rate limited. Enabled by default for this development test.",
     "Sandbox_OMHTurretsTraps_FoundationTestControls": "Foundation Test Controls",
-    "Sandbox_OMHTurretsTraps_FoundationTestControls_tooltip": "Development test only. Enables test cube placement, inspection, condition changes and removal. Multiplayer requires the debug context menu permission. Maximum 64 distinct test tiles per world, including removed devices. Use a disposable test world. Disabling controls preserves existing devices."
+    "Sandbox_OMHTurretsTraps_FoundationTestControls_tooltip": "Development test only. Enables test cube placement, inspection, condition changes and removal. Multiplayer requires the debug context menu permission. Maximum 64 distinct test tiles per world, including removed devices. Use a disposable test world. Disabling controls preserves existing devices.",
+    "Sandbox_OMHTurretsTraps_SpikeBarrierDamage": "Spike Barrier Damage",
+    "Sandbox_OMHTurretsTraps_SpikeBarrierDamage_tooltip": "Damage per thump from the front or side ends. Default 10. Set 0 to disable retaliation. Uses the same readable damage units as the barrier statistics.",
+    "Sandbox_OMHTurretsTraps_SpikeBarrierHealth": "Spike Barrier Maximum Durability",
+    "Sandbox_OMHTurretsTraps_SpikeBarrierHealth_tooltip": "Shared maximum HP for the complete 1x2 barrier. Default 100. Existing barriers retain their remaining durability percentage when this changes. Free Repair restores this maximum."
 }

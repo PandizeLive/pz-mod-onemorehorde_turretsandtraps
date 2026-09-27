@@ -2,6 +2,8 @@
 
 Status: proposed tuning plan. Confirmed requirements are identified in [Decisions](DECISIONS.md); unapproved numbers here are experiments, not shipped defaults.
 
+Current basic tuning (0.2.3 / C33): **10 damage per front/side thump, 100 shared maximum HP**, both configurable in native Sandbox. Zero damage disables retaliation. Existing barriers preserve remaining percentage when maximum HP changes; free ten-second repair restores the configured maximum. Earlier basic 20-damage references below are superseded. Reinforced 25 damage remains a future approved design.
+
 ## Planned roster
 
 Transport: P2C1b introduces individual barrier items; P2C1c introduces five-barrier packs. The owner confirmed a 67% encumbrance reduction: pack weight = 5 x individual barrier weight x 0.33. Individual weight and crafting costs remain test tuning. Packing cannot repair items or refill resources. Items/packs are scheduled and do not ship in the 0.2.0 construction candidate.

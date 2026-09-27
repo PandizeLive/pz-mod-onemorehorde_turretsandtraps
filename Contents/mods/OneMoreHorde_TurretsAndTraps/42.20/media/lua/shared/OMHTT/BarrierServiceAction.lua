@@ -1,14 +1,14 @@
 if isClient() or isServer() then return end
 require("TimedActions/ISBaseTimedAction")
-local Service = require("OMHTT/BarrierService")
 local Diagnostics = require("OMHTT/Diagnostics")
 OMHTTBarrierServiceAction = ISBaseTimedAction:derive("OMHTTBarrierServiceAction")
 
 ---@return boolean valid
 ---@nodiscard
 function OMHTTBarrierServiceAction:isValid()
+    local Service = require("OMHTT/BarrierService")
     local record = Service.resolve(self.character, self.object, self.id)
-    return record ~= nil and (self.operation == "Pickup" or (self.operation == "Repair" and record.condition < 100))
+    return record ~= nil and (self.operation == "Pickup" or (self.operation == "Repair" and record.condition < record.maxHealth))
 end
 
 ---@return boolean turning
@@ -52,6 +52,7 @@ end
 function OMHTTBarrierServiceAction:complete()
     if self.done or self.elapsed < 10 then return false end
     self.done = true
+    local Service = require("OMHTT/BarrierService")
     return Service.apply(self.character, self.object, self.id, self.operation)
 end
 

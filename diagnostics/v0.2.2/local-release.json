@@ -10,8 +10,8 @@
   "backupVersion": "0.2.1",
   "backupFilesVerified": 66,
   "archiveSHA256": "e2487ddd2b7ee46cbedfccbe998ba4109808a6e2c14d770229532ff70d192780",
-  "clientLoadedVersion": "pending",
-  "inGameAcceptance": "pending",
+  "clientLoadedVersion": "0.2.2",
+  "inGameAcceptance": "failed; see owner-test-review.json",
   "workshopUpload": false,
   "remotePush": false
 }

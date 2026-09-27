@@ -7,19 +7,23 @@
 | Project | OMH: Turrets & Traps |
 | Foundation date | 2026-09-25 |
 | Edition | One; feature controls in Sandbox |
-| Package version | 0.2.2 installed; development test only |
+| Package version | 0.2.3 candidate; installation pending |
 | Confirmed mod ID | OneMoreHorde_TurretsAndTraps |
 | Build evidence | B42.20.4 b0bbce05d5 with PZ Optimizer: dedicated startup/save/restart passed; player acceptance pending |
-| Runtime source / installable package | 0.2.2 installed; all 70 tagged files verified |
+| Runtime source / installable package | 0.2.3 candidate; exact installation verification pending |
 | Git repository / remote | Local working branch; annotated test/v0.2.2 (7dd3004); no remote configured |
 | Workshop item / successful upload | None |
 | Public changelog baseline | No upload exists |
 | Official score support | Proposed; not implemented |
-| Player tests | 0.2.1 partial SP pass with native restoration; 0.2.2 menu/service/bundle owner test pending |
+| Player tests | 0.2.1 partial SP pass with native restoration; 0.2.2 failed; 0.2.3 repair acceptance pending |
 
-## Current menu, servicing and bundle candidate
+## Current correction and Sandbox candidate
 
-Version `0.2.2` combines the owner-requested Crafting category and readable descriptions with basic-barrier pickup/free repair and five-item bundles. [Changes](PR_v0.2.2.md), [scope/evidence/complete owner test](PHASE_2_CHECKPOINT_1C.md). Pickup/free repair take ten active seconds; recovery intentionally resets basic durability under the owner's explicit direction. Native pack/unpack transactions pass, and 299 Kahlua assertions cover menu/layout and guarded service behavior. Fresh write/read server processes passed in 38.0/36.6 seconds, restoring the same 16 native objects at 37 condition. Requested directional vaulting remains pending its native collision/animation prototype; 0.2.2 retains non-vaultable blocking. [Install evidence](../diagnostics/v0.2.2/local-release.json) verifies all 70 installed/tagged files, the matching [archive](../artifacts/OMHTT-0.2.2.zip), and all 66 previous-version backup files. The running 0.2.2 client and player acceptance remain pending. Later documentation-only commits leave tagged Contents unchanged. The cumulative Workshop draft includes all unuploaded content; no upload baseline exists.
+Version **0.2.3** repairs the [failed 0.2.2 test](TEST_v0.2.2.md) and adds configurable damage/HP with default basic damage 10. [Changes](PR_v0.2.3.md), [scope/evidence/full test](PHASE_2_CHECKPOINT_1C_REPAIR.md). 337 Kahlua assertions, 18 modules, 85 native translation keys and 23 packet serializations pass. Native option loading, item transactions and 16 object write/read fixtures at 37/200 HP passed across fresh processes in 33.9/33.9 seconds. Real SP acceptance and vaulting remain pending. Install/tag/archive verification pending; no remote or Workshop publication.
+
+## Previous menu, servicing and bundle candidate
+
+Version `0.2.2` combines the owner-requested Crafting category and readable descriptions with basic-barrier pickup/free repair and five-item bundles. [Changes](PR_v0.2.2.md), [scope/evidence/complete owner test](PHASE_2_CHECKPOINT_1C.md). Pickup/free repair take ten active seconds; recovery intentionally resets basic durability under the owner's explicit direction. Native pack/unpack transactions pass, and 299 Kahlua assertions cover menu/layout and guarded service behavior. Fresh write/read server processes passed in 38.0/36.6 seconds, restoring the same 16 native objects at 37 condition. Requested directional vaulting remains pending its native collision/animation prototype; 0.2.2 retains non-vaultable blocking. [Install evidence](../diagnostics/v0.2.2/local-release.json) verifies all 70 installed/tagged files, the matching [archive](../artifacts/OMHTT-0.2.2.zip), and all 66 previous-version backup files. The running 0.2.2 client is confirmed; acceptance failed as recorded in TEST_v0.2.2.md. Later documentation-only commits leave tagged Contents unchanged. The cumulative Workshop draft includes all unuploaded content; no upload baseline exists.
 
 ## Previous portable construction candidate
 

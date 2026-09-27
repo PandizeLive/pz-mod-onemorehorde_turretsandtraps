@@ -15,7 +15,7 @@ local parts = P.parts(record)
 parts[1]:setHealth(57)
 P.sync(slot)
 local id = record.id
-local menuHandler = Events.OnFillWorldObjectContextMenu.handlers[#Events.OnFillWorldObjectContextMenu.handlers]
+local menuHandler = testBarrierMenuHandler
 testMenu.options = {}
 menuHandler(0, testMenu, {parts[1]}, false)
 check(testMenu.options["Condition: 57/100"] ~= nil and not testMenu.options["Repair (free, 10 seconds)"].notAvailable,
@@ -29,7 +29,7 @@ testPlayer.x = 300.5
 testMode = "server"
 check(not Service.apply(testPlayer, parts[1], id, "Pickup"), "multiplayer service remains closed")
 testMode = "sp"
-local action = OMHTTBarrierServiceAction:new(testPlayer, parts[1], id, "Repair")
+local action = testServiceAction(testPlayer, parts[1], id, "Repair")
 action:start()
 for i = 1, 99 do action:update() end
 check(not action.forced and not action:complete() and record.condition == 57, "repair cannot apply before ten active seconds")
@@ -46,14 +46,14 @@ check(testMenu.options["Condition: 100/100"] ~= nil and testMenu.options["Repair
 parts[2]:setHealth(42)
 P.sync(slot)
 testPlayer.y = 302.5
-local cancelled = OMHTTBarrierServiceAction:new(testPlayer, parts[2], id, "Pickup")
+local cancelled = testServiceAction(testPlayer, parts[2], id, "Pickup")
 cancelled:start(); cancelled:update(); cancelled:stop()
 check(not cancelled:complete() and slot.device == record and #testInventory.items == 0,
     "interrupted pickup retains barrier and awards nothing")
 testInventory.room = false
 check(not Service.apply(testPlayer, parts[2], id, "Pickup") and slot.device ~= nil, "full inventory preserves both parts")
 testInventory.room = true
-local pickup = OMHTTBarrierServiceAction:new(testPlayer, parts[2], id, "Pickup")
+local pickup = testServiceAction(testPlayer, parts[2], id, "Pickup")
 pickup:start()
 for i = 1, 101 do pickup:update() end
 check(pickup:complete() and #testInventory.items == 1 and testInventory.items[1].condition == 100,

@@ -1,6 +1,6 @@
 ---@class OMHTTFoundation
 local Foundation = {
-    VERSION = "0.2.2",
+    VERSION = "0.2.3",
     MODULE = "OMHTT_Foundation",
     STORE = "OMHTT_Foundation_v1",
     PREFIX = "OMHTT_P1C1_",
@@ -32,7 +32,7 @@ function Foundation.writeMarker(object, record)
         nextShot = record.nextShot, facing = record.facing, width = record.width,
         anchorX = record.x, anchorY = record.y, anchorZ = record.z,
         placementSource = record.placementSource, builderUsername = record.builderUsername,
-        constructionEntity = record.constructionEntity,
+        constructionEntity = record.constructionEntity, maxHealth = record.maxHealth,
     }
 end
 
@@ -41,6 +41,30 @@ end
 function Foundation.barrierEnabled()
     local options = SandboxVars.OMHTurretsTraps
     return options ~= nil and options.Enabled ~= false and options.SpikeBarrier ~= false
+end
+
+---@param key string Sandbox option key
+---@param fallback number Default integer
+---@param minimum number Inclusive minimum
+---@param maximum number Inclusive maximum
+---@return number value Bounded integer; invalid values use the default
+local function barrierOption(key, fallback, minimum, maximum)
+    local options = SandboxVars.OMHTurretsTraps
+    local value = options and options[key]
+    if type(value) ~= "number" or value ~= value then return fallback end
+    return math.floor(math.max(minimum, math.min(maximum, value)))
+end
+
+---@return number damage Readable health points per thump
+---@nodiscard
+function Foundation.barrierDamage()
+    return barrierOption("SpikeBarrierDamage", 10, 0, 1000)
+end
+
+---@return number health Shared maximum across both tiles
+---@nodiscard
+function Foundation.barrierHealth()
+    return barrierOption("SpikeBarrierHealth", 100, 1, 10000)
 end
 
 ---@param facing number Signed heading index

@@ -25,34 +25,44 @@ check(a.health == 2 and a.variables.ThumpType == B.TYPE and b.variables.ThumpTyp
     "exact barrier attackers attach without contact damage")
 a.variables[B.TOKEN] = "left"
 B.update(a)
-check(math.abs(a.health - 1.8) < 0.00001 and b.health == 2 and bystander.health == 2,
-    "one native strike marker damages only its attacker by 0.20")
+check(math.abs(a.health - 1.9) < 0.00001 and b.health == 2 and bystander.health == 2,
+    "one native strike marker damages only its attacker by 0.10")
 for i = 1, 20 do B.update(a) end
 barrier.health = 80
 testMillis = testMillis + 10000
 B.update(a)
-check(math.abs(a.health - 1.8) < 0.00001, "time passage, HP loss and repeated polling cannot invent another strike")
+check(math.abs(a.health - 1.9) < 0.00001, "time passage, HP loss and repeated polling cannot invent another strike")
 b.variables[B.TOKEN] = "left"
 B.update(b)
 a.variables[B.TOKEN] = "right"
 B.update(a)
-check(math.abs(a.health - 1.6) < 0.00001 and math.abs(b.health - 1.8) < 0.00001,
+check(math.abs(a.health - 1.8) < 0.00001 and math.abs(b.health - 1.9) < 0.00001,
     "alternating strikes and separate attackers have independent deduplication")
+SandboxVars.OMHTurretsTraps.SpikeBarrierDamage = 25
+a.variables[B.TOKEN] = "left"
+B.update(a)
+check(math.abs(a.health - 1.55) < 0.00001, "configured 25-damage strike uses native 0.25 health")
+SandboxVars.OMHTurretsTraps.SpikeBarrierDamage = 0
+a.variables[B.TOKEN] = "right"
+B.update(a)
+check(math.abs(a.health - 1.55) < 0.00001, "zero retaliation still consumes its strike")
+SandboxVars.OMHTurretsTraps.SpikeBarrierDamage = nil
+
 a.thumpTarget = IsoThumpable.new(getCell(), otherSquare, F.SPRITE, false)
 a.thumpTarget:setHealth(100)
 a.variables[B.TOKEN] = "left"
 B.update(a)
-check(a.variables.ThumpType == "Door" and a.data.OMHTTBarrierStrike == nil and a.health > 1.59,
+check(a.variables.ThumpType == "Door" and a.data.OMHTTBarrierStrike == nil and a.health > 1.54,
     "switching to unrelated object restores vanilla animation and discards stale strike")
 a.thumpTarget = barrier
 B.update(a)
 a.variables[B.TOKEN] = "left"
 testMode = "server"
 B.update(a)
-check(a.health > 1.59 and D.apply(a, 1, "test", "barrier", nil, nil) == 0, "dedicated combat path fails closed")
+check(a.health > 1.54 and D.apply(a, 1, "test", "barrier", nil, nil) == 0, "dedicated combat path fails closed")
 testMode = "client"
 B.update(a)
-check(a.health > 1.59, "MP client cannot retaliate independently")
+check(a.health > 1.54, "MP client cannot retaliate independently")
 testMode = "sp"
 a.state = "WalkTowardState"
 B.update(a)
@@ -63,11 +73,11 @@ a.variables[B.TOKEN] = "left"
 testMillis = testMillis + 1000
 B.reset()
 B.update(a)
-check(a.health > 1.59 and a.variables[B.TOKEN] == nil, "new session consumes no saved stale marker")
+check(a.health > 1.54 and a.variables[B.TOKEN] == nil, "new session consumes no saved stale marker")
 a.variables[B.TOKEN] = "right"
 square:transmitRemoveItemFromSquare(barrier)
 B.update(a)
-check(a.health > 1.59 and a.data.OMHTTBarrierStrike == nil, "removed barrier cannot deal delayed damage")
+check(a.health > 1.54 and a.data.OMHTTBarrierStrike == nil, "removed barrier cannot deal delayed damage")
 
 for _, sample in pairs({{1.8, 4}, {2.1, 5}, {3.5, 7}}) do
     local victim = makeZombie(origin, sample[1])

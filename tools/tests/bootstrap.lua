@@ -128,7 +128,10 @@ function makeSquare(x, y, z)
     function square:RecalcAllWithNeighbours(value) self.recalculated = true end
     function square:setSquareChanged() self.changed = true end
     function square:transmitRemoveItemFromSquare(object)
+        check(not testRemoving, "nested world removal inside native callback")
+        testRemoving = true
         triggerEvent("OnObjectAboutToBeRemoved", object)
+        testRemoving = false
         for i = #self.objects, 1, -1 do
             if self.objects[i] == object then table.remove(self.objects, i) end
         end

@@ -57,6 +57,7 @@ function Server.initialize()
     end
     print("[OMHTT] server-ready version=" .. Foundation.VERSION .. " game=" .. getCore():getVersionNumber())
     Diagnostics.emit("authority-ready", {game = getCore():getVersionNumber(), schema = store.schema,
+        barrierDamage = Foundation.barrierDamage(), barrierMaxHealth = Foundation.barrierHealth(),
         slots = #keys, nextId = store.nextId, controls = SandboxVars.OMHTurretsTraps.FoundationTestControls})
 end
 
@@ -173,7 +174,12 @@ function Server.tick()
         local slot = store.tiles[keys[cursor]]
         cursor = cursor + 1
         visited = visited + 1
-        if slot.device and slot.device.kind == "barrier" then
+        if slot.retired then
+            local square = getCell():getGridSquare(slot.x, slot.y, slot.z)
+            if square then
+                Footprint.cleanRetired(square)
+            end
+        elseif slot.device and slot.device.kind == "barrier" then
             Footprint.sync(slot)
         end
     end
@@ -334,12 +340,12 @@ function Server.onCommand(module, command, player, args)
             elseif not Footprint.sync(slot) then
                 status = "Unavailable"
             else
-                record.condition = 37
+                record.condition = math.min(37, record.maxHealth)
                 record.revision = record.revision + 1
                 slot.epoch = slot.epoch + 1
                 local parts = Footprint.parts(record)
                 for i = 1, #parts do
-                    parts[i]:setHealth(37)
+                    parts[i]:setHealth(record.condition)
                     Foundation.writeMarker(parts[i], record)
                     parts[i]:transmitModData()
                 end

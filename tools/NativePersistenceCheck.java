@@ -64,6 +64,7 @@ public final class NativePersistenceCheck {
             check(sprite.equals(get(restored, "getSpriteName")), "Sprite identity lost: " + sprite);
             check(get(get(source, "getSprite"), "getID").equals(get(get(restored, "getSprite"), "getID")), "Tile ID changed");
             check(get(restored, "getHealth").equals(37), "Damaged health reset");
+            check(get(restored, "getMaxHealth").equals(200), "Configured maximum health reset");
             check(Boolean.TRUE.equals(get(restored, "isBlockAllTheSquare")), "Blocking lost");
             check(Boolean.FALSE.equals(get(restored, "isCanPassThrough")), "Pass-through changed");
             check(Boolean.FALSE.equals(get(restored, "isHoppable")), "Hopping changed");
@@ -74,7 +75,7 @@ public final class NativePersistenceCheck {
             Object data = get(restored, "getModData");
             check("fixture-owner".equals(call(data, "rawget", new Class<?>[]{Object.class}, "OMHTTFixtureOwner")), "Owner marker lost");
         }
-        System.out.println("[OMHTT-Smoke] native-persistence mode=" + mode + " parts=16 health=37 identity=valid collision=preserved owner=preserved");
+        System.out.println("[OMHTT-Smoke] native-persistence mode=" + mode + " parts=16 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved");
     }
 
     public static void main(String[] args) throws Exception {

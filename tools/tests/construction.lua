@@ -119,13 +119,14 @@ for index = 1, #headings do
     B.update(zombie)
     zombie.variables[B.TOKEN] = "left"
     B.update(zombie)
-    check(zombie:getHealth() == 1.8, "built barrier retaliates without debug controls " .. heading)
+    check(zombie:getHealth() == 1.9, "built barrier retaliates without debug controls " .. heading)
     SandboxVars.OMHTurretsTraps.Enabled = false
     zombie.variables[B.TOKEN] = "right"
     B.update(zombie)
-    check(zombie:getHealth() == 1.8 and record.condition == 83 and not C.onAddToMenu({}), "master off preserves barrier but stops damage/building")
+    check(zombie:getHealth() == 1.9 and record.condition == 83 and not C.onAddToMenu({}), "master off preserves barrier but stops damage/building")
     SandboxVars.OMHTurretsTraps.Enabled = true
     first:transmitRemoveItemFromSquare(cursor.parts[1])
+    for i = 1, 16 do S.tick() end
     check(#first.objects == 0 and cursor.parts[2].removed and P.slot(first).device == nil, "native-built pair retires from either half " .. heading)
 end
 makeSquare(140, 140, 0)
