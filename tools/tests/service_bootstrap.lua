@@ -19,3 +19,5 @@ function testServiceAction(player, object, id, operation)
     }
     return action
 end
+
+ISWorldObjectContextMenu = {addToolTip = function() return {} end}

@@ -155,7 +155,13 @@ local function checkNativeConstruction()
     assert(SandboxVars.OMHTurretsTraps.SpikeBarrierDamage == 10, "Native Sandbox damage default was not registered")
     assert(SandboxVars.OMHTurretsTraps.SpikeBarrierHealth == 100, "Native Sandbox HP default was not registered")
     assert(getText("Tooltip_OMHTT_BarrierPack") == "Contains five Spike Barriers. Unpack in the Crafting menu. Bundled encumbrance is reduced by 67 percent.", "Native no-argument bundle tooltip failed")
+    assert(SandboxVars.OMHTurretsTraps.SpikeBarrierScratchChance == 5 and SandboxVars.OMHTurretsTraps.ShowCollision == false, "New Sandbox defaults missing")
+    assert(getText("Sandbox_OMHTurretsTraps_General") == "Turrets & Traps: General", "General category untranslated")
+    assert(getText("Sandbox_OMHTurretsTraps_BarrierPage") == "Turrets & Traps: Spike Barrier", "Barrier category untranslated")
+    assert(getText("Sandbox_OMHTurretsTraps_Debug") == "Turrets & Traps: Debug", "Debug category untranslated")
+    assert(type(renderIsoLine) == "function", "Native collision-preview renderer is not exposed")
     print("[OMHTT-Smoke] native-sandbox damage=10 maxHealth=100 tooltip=formatted")
+    print("[OMHTT-Smoke] native-sandbox scratch=5 collision=false categories=3 renderer=exposed")
     local parts = 0
     for i = 1, #faces do
         local face = found:getFace(faces[i])

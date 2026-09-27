@@ -133,9 +133,12 @@ public final class KahluaCheck {
             {"_", Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/shared/ISBaseObject.lua").toString()},
             {"_", Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/shared/TimedActions/ISBaseTimedAction.lua").toString()},
             {"_", "tools/tests/service_load_order_before.lua"},
+            {"OMHTT/BarrierApproach", base + "shared/OMHTT/BarrierApproach.lua"},
             {"OMHTT/BarrierServiceAction", base + "shared/OMHTT/BarrierServiceAction.lua"},
             {"_", Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/client/TimedActions/ISClimbOverFence.lua").toString()},
             {"OMHTT/BarrierVault", base + "client/OMHTT/BarrierVault.lua"},
+            {"_", Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/client/TimedActions/WalkToTimedAction.lua").toString()},
+            {"OMHTT/BarrierApproachAction", base + "client/OMHTT/BarrierApproachAction.lua"},
             {"_", base + "client/OMHTT/BarrierMenu.lua"},
             {"_", "tools/tests/service_load_order_after.lua"},
             {"OMHTT/Damage", base + "server/OMHTT/Damage.lua"},
@@ -175,6 +178,8 @@ public final class KahluaCheck {
             {"_", "tools/tests/barrier_service.lua"},
             {"_", "tools/tests/barrier_settings.lua"},
             {"_", "tools/tests/barrier_vault.lua"},
+            {"_", "tools/tests/barrier_corners.lua"},
+            {"_", "tools/tests/barrier_approach_action.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {
@@ -182,6 +187,8 @@ public final class KahluaCheck {
                 Object result = call.invoke(thread, chunk, new Object[0]);
                 if (!stage[0].equals("_")) set.invoke(get.invoke(env, "__modules"), stage[0], result);
             } catch (InvocationTargetException error) {
+                Object coroutine = threadType.getMethod("getCurrentCoroutine").invoke(thread);
+                System.err.println(coroutine.getClass().getField("stackTrace").get(coroutine));
                 throw new IllegalStateException("Failed stage: " + stage[1], error.getCause());
             }
         }

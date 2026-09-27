@@ -61,6 +61,16 @@ public final class NativeVaultProbe {
                 call(player, "setCurrent", new Class<?>[]{squareType}, from);
                 call(player, "setX", new Class<?>[]{float.class}, x + 0.5f);
                 call(player, "setY", new Class<?>[]{float.class}, y + 0.5f);
+                Class<?> paramType = Class.forName("zombie.ai.State$Param");
+                for (int movement = 0; movement < 3; movement++) {
+                    call(player, "setRunning", new Class<?>[]{boolean.class}, movement == 1);
+                    call(player, "setSprinting", new Class<?>[]{boolean.class}, movement == 2);
+                    stateType.getMethod("setParams", characterType, directionsType).invoke(state, player, direction);
+                    check(Boolean.valueOf(movement == 1).equals(call(player, "get", new Class<?>[]{paramType}, stateType.getField("RUN").get(null))), "Native run state lost");
+                    check(Boolean.valueOf(movement == 2).equals(call(player, "get", new Class<?>[]{paramType}, stateType.getField("SPRINT").get(null))), "Native sprint state lost");
+                }
+                call(player, "setRunning", new Class<?>[]{boolean.class}, false);
+                call(player, "setSprinting", new Class<?>[]{boolean.class}, false);
                 Object context = call(player, "getActionContext", new Class<?>[0]);
                 call(context, "clearActionContextEvents", new Class<?>[0]);
                 check(Boolean.FALSE.equals(call(player, "canClimbOverWall", new Class<?>[]{directionsType}, direction)), "Ungated wall climb route opened");
@@ -81,6 +91,7 @@ public final class NativeVaultProbe {
                 System.out.println("[OMHTT-VaultProbe] heading=" + heading + " walking=blocked hoppable=false nativeSlide=" + actualX + "," + actualY);
             }
         }
+        System.out.println("[OMHTT-VaultProbe] native-movement-params=12/12 running-and-sprinting-distinct=true");
         System.out.println("[OMHTT-VaultProbe] native-state-execute=4/4 native-edge-collision=4/4 native-path-edge=4/4 native-pathfinder=2/2 public-entry=4/4 bounded-collision=true animation-events=simulated rendered-client=not-tested");
     }
 }

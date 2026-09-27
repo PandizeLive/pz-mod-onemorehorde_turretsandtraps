@@ -144,9 +144,9 @@ check(cheat.consumed == 0 and #cheat.parts == 2, "native build-cheat behavior re
 ISBuildIsoEntity.create(cheat, 140, 140, 0, false, "unused")
 check(#cheat.parts == 2 and cheat.consumed == 0, "Build Cheat cannot overlap an existing barrier")
 makeSquare(141, 140, 0)
-local overlap = makeCursor("n", 1)
+local overlap = makeCursor("n", 2)
 ISBuildIsoEntity.create(overlap, 140, 140, 0, false, "unused")
-check(#overlap.parts == 0, "Build Cheat rejects a rotated footprint overlapping one occupied half")
+check(#overlap.parts == 2, "perpendicular native edges may share a corner tile without overlapping collision")
 makeSquare(143, 140, 0)
 local wall = makeSquare(143, 141, 0)
 wall.free = false

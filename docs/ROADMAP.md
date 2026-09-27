@@ -1,5 +1,9 @@
 # Phases and checkpoints
 
+**Current: 0.2.5 / P2C2-vault correction.** Owner approved native controls, low-fence reactions, connected corners, collision debugging, safe service approaches and grouped Sandbox settings. [Scope and acceptance test](PHASE_2_CHECKPOINT_2_VAULT_REPAIR.md). The [0.2.4 rendered test failed](TEST_v0.2.4.md); earlier automated checks do not override that result. Reinforcement and multiplayer remain pending.
+
+## Previous checkpoint status
+
 Status as of 2026-09-27: **0.2.4 implements P2C2-vault with C34 fence-style collision; its combined owner test includes the unaccepted 0.2.3 repair.** Phase 0 and cube-only asset preparation complete. Phase 1 remains partially accepted. The owner approved combining the persistence repair with P2C1b. [Version 0.2.1](PHASE_2_CHECKPOINT_1B.md) implements stable native tile identities, existing-part migration, portable crafting and one-item native deployment. The 0.2.1 log proves undamaged restoration without the former warnings. [0.2.2](PHASE_2_CHECKPOINT_1C.md) implements the Crafting category/description repair, P2C1c bundles and SP pickup/free repair from P2C1d. Player acceptance and the new directional vault prototype remain pending; reinforcement remains scheduled. No later phase or multiplayer acceptance is implied.
 
 **0.2.3 correction:** the 0.2.2 player test failed servicing/destruction acceptance. [Current repair and full test](PHASE_2_CHECKPOINT_1C_REPAIR.md) also adds configurable basic damage/HP and default damage 10. The owner subsequently authorized advancing to the next checkpoint and testing it together with this correction; 0.2.3 player acceptance remains pending. Reinforcement remains pending.

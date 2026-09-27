@@ -72,7 +72,7 @@ function testPlayer:getRole() return {hasCapability = function() return testAdmi
 function getSpecificPlayer(index) return testPlayer end
 
 Events = {}
-for _, name in pairs({"OnInitGlobalModData", "LoadGridsquare", "OnObjectAboutToBeRemoved", "OnClientCommand", "OnServerCommand", "OnFillWorldObjectContextMenu", "OnGameStart", "OnTick", "OnPostRender", "OnZombieUpdate", "OnZombieDead", "OnPlayerUpdate"}) do
+for _, name in pairs({"OnInitGlobalModData", "LoadGridsquare", "OnObjectAboutToBeRemoved", "OnClientCommand", "OnServerCommand", "OnFillWorldObjectContextMenu", "OnGameStart", "OnTick", "OnPostRender", "OnZombieUpdate", "OnZombieDead", "OnContextKey", "OnPlayerUpdate"}) do
     local handlers = {}
     Events[name] = {handlers = handlers, Add = function(callback) table.insert(handlers, callback) end}
 end
@@ -113,6 +113,15 @@ function makeSquare(x, y, z)
     function square:getZ() return self.z end
     function square:getFloor() return self.floor end
     function square:isFree(ignore) return self.free end
+    function square:HasStairs() return false end
+    function square:HasStairsBelow() return false end
+    function square:isVehicleIntersecting() return false end
+    function square:has() return false end
+    function square:testCollideAdjacent(player, dx, dy, dz)
+        local other = testSquares[tostring(self.x + dx) .. ":" .. tostring(self.y + dy) .. ":" .. tostring(self.z + dz)]
+        return not other or self.blocked or other.blocked
+    end
+    function square:getSpecialObjects() return self:getObjects() end
     function square:isBlockedTo(other) return self.blocked or other.blocked end
     function square:isWindowTo(other) return self.window or other.window end
     function square:getMovingObjects()
@@ -185,6 +194,7 @@ IsoObject = {new = function(square, sprite, name)
     function object:transmitUpdatedSpriteToClients() self.spriteSent = true end
     function object:getSquare() return self.square end
     function object:getModData() return self.data end
+    function object:getProperties() return nil end
     function object:hasModData() return true end
     function object:setOutlineOnMouseover(value) self.outline = value end
     function object:transmitCompleteItemToClients() self.sent = true end
@@ -288,3 +298,14 @@ function testMenu:addOption(name, target, callback, command)
     return option
 end
 function testMenu:addSubMenu(option, menu) end
+
+function testPlayer:isRunning() return self.running == true end
+function testPlayer:isSprinting() return self.sprinting == true end
+function testPlayer:getVehicle() return nil end
+function testPlayer:isIgnoreAutoVault() return false end
+function testPlayer:isGrappling() return false end
+function testPlayer:isPlayerMoving() return false end
+function testPlayer:getDir() return IsoDirections.E end
+function testPlayer:isSafeToClimbOver() return true end
+
+IsoFlagType = {water="water", solid="solid", solidtrans="solidtrans", collideN="collideN", collideW="collideW", WallN="WallN", WallW="WallW"}

@@ -2,6 +2,7 @@ if isClient() then return end
 local F = require("OMHTT/Foundation")
 local Footprint = require("OMHTT/BarrierFootprint")
 local Diagnostics = require("OMHTT/Diagnostics")
+local Approach = require("OMHTT/BarrierApproach")
 local Service = {}
 
 ---@param player IsoPlayer Acting player
@@ -14,9 +15,8 @@ function Service.resolve(player, object, id)
     local record = Footprint.exact(object)
     if not record or record.id ~= id or record.placementSource ~= "construction" or not Footprint.parts(record) then return nil end
     local square = object:getSquare()
-    local dx, dy = player:getX() - square:getX() - 0.5, player:getY() - square:getY() - 0.5
-    if math.floor(player:getZ()) ~= square:getZ() or dx * dx + dy * dy > 4 then return nil end
-    Footprint.sync(Footprint.slot(square), "service-check")
+    if not Approach.ready(player, record) then return nil end
+    Footprint.sync(Footprint.slot(square, id), "service-check")
     return Footprint.exact(object)
 end
 
@@ -31,7 +31,7 @@ function Service.apply(player, object, id, operation)
         Diagnostics.emit("barrier-service-rejected", {id = id, action = operation, reason = "Unavailable"})
         return false
     end
-    local slot = Footprint.slot(object:getSquare())
+    local slot = Footprint.slot(object:getSquare(), id)
     local before = record.condition
     if operation == "Pickup" then
         local item = instanceItem("Base.OMHTTSpikeBarrierItem")

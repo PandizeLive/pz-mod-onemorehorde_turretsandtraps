@@ -15,12 +15,13 @@
     "ContextMenu_OMHTT_RotateBarrier": "Rotate barrier arrow 90 degrees (visual test)",
     "ContextMenu_OMHTT_Barrier": "Spike Barrier",
     "ContextMenu_OMHTT_BarrierCondition": "Condition: %1/%2",
-    "ContextMenu_OMHTT_PickupBarrier": "Pick up (10 seconds)",
-    "ContextMenu_OMHTT_RepairBarrier": "Repair (free, 10 seconds)",
-    "ContextMenu_OMHTT_VaultFront": "Vault (front: 20 percent scratch risk)",
-    "ContextMenu_OMHTT_VaultRear": "Vault (safe rear)",
+    "ContextMenu_OMHTT_PickupBarrier": "Pick up",
+    "ContextMenu_OMHTT_RepairBarrier": "Repair",
+    "ContextMenu_OMHTT_VaultFront": "Vault (spike side)",
+    "ContextMenu_OMHTT_VaultRear": "Vault (rear)",
     "ContextMenu_OMHTT_VaultRedeploy": "Pick up and redeploy to enable vaulting",
     "ContextMenu_OMHTT_VaultBusy": "Vault unavailable while already climbing",
     "ContextMenu_OMHTT_VaultApproach": "Stand directly in front of or behind the barrier to vault",
-    "ContextMenu_OMHTT_VaultLanding": "Vault unavailable: landing is obstructed or unsafe"
+    "ContextMenu_OMHTT_VaultLanding": "Vault unavailable: landing is obstructed or unsafe",
+    "ContextMenu_OMHTT_BarrierFacing": "Spike Barrier (%1)"
 }

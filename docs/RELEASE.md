@@ -1,5 +1,9 @@
 # Release state and publication policy
 
+## 0.2.5 native-control correction candidate
+
+[Scope and owner test](PHASE_2_CHECKPOINT_2_VAULT_REPAIR.md), [release notes](PR_v0.2.5.md). The 0.2.4 owner test failed collision/approach acceptance; its successful synthetic checks remain historical evidence only. 0.2.5 implements the approved correction, including the pre-existing owner-supplied icon. Local installation evidence will be recorded after tag/manifest verification. No Workshop content has ever been uploaded; the cumulative draft retains all pending net changes.
+
 ## 0.2.4 fence-collision candidate
 
 [C34 / P2C2-vault](PHASE_2_CHECKPOINT_2_VAULT.md) implements the approved edge-collision choice and native player Vault action, combined with the still-unaccepted 0.2.3 repair. Automated/native checks pass; owner SP acceptance is pending. [Release notes](PR_v0.2.4.md) and [complete combined test](PHASE_2_CHECKPOINT_2_VAULT.md#owner-test) distinguish headless evidence from rendered gameplay. Recipes/art remain unchanged. No remote push or Workshop upload is authorized or claimed.
@@ -13,15 +17,15 @@
 | Project | OMH: Turrets & Traps |
 | Foundation date | 2026-09-25 |
 | Edition | One; feature controls in Sandbox |
-| Package version | 0.2.4 installed; development test only |
+| Package version | 0.2.5 prepared; local install pending verification |
 | Confirmed mod ID | OneMoreHorde_TurretsAndTraps |
 | Build evidence | B42.20.4 b0bbce05d5 with PZ Optimizer: dedicated startup/save/restart passed; player acceptance pending |
-| Runtime source / installable package | 0.2.4 installed; all 71 tagged package files verified |
+| Runtime source / installable package | 0.2.5 candidate; 75 validated package files |
 | Git repository / remote | Local working branch; annotated test/v0.2.4 (0ca7095); no remote configured |
 | Workshop item / successful upload | None |
 | Public changelog baseline | No upload exists |
 | Official score support | Proposed; not implemented |
-| Player tests | 0.2.1 partial SP pass with native restoration; 0.2.2 failed; 0.2.3 repair acceptance pending |
+| Player tests | 0.2.4 failed rendered collision/approach acceptance; 0.2.5 owner test pending |
 
 ## Current correction and Sandbox candidate
 

@@ -1,6 +1,6 @@
 ---@class OMHTTFoundation
 local Foundation = {
-    VERSION = "0.2.4",
+    VERSION = "0.2.5",
     MODULE = "OMHTT_Foundation",
     STORE = "OMHTT_Foundation_v1",
     PREFIX = "OMHTT_P1C1_",
@@ -65,6 +65,12 @@ end
 ---@nodiscard
 function Foundation.barrierHealth()
     return barrierOption("SpikeBarrierHealth", 100, 1, 10000)
+end
+
+---@return number denominator Zero disables spike scratches
+---@nodiscard
+function Foundation.barrierScratchChance()
+    return barrierOption("SpikeBarrierScratchChance", 5, 0, 50)
 end
 
 ---@param facing number Signed heading index

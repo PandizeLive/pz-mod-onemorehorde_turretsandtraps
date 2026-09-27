@@ -3,28 +3,28 @@ VERSION = 1,
 option OMHTurretsTraps.Enabled {
     type = boolean,
     default = true,
-    page = OMHTurretsTraps,
+    page = OMHTurretsTraps_General,
     translation = OMHTurretsTraps_Enabled,
 }
 
 option OMHTurretsTraps.SpikeBarrier {
     type = boolean,
     default = true,
-    page = OMHTurretsTraps,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_SpikeBarrier,
 }
 
 option OMHTurretsTraps.FoundationTestControls {
     type = boolean,
     default = false,
-    page = OMHTurretsTraps,
+    page = OMHTurretsTraps_Debug,
     translation = OMHTurretsTraps_FoundationTestControls,
 }
 
 option OMHTurretsTraps.DiagnosticLogging {
     type = boolean,
     default = true,
-    page = OMHTurretsTraps,
+    page = OMHTurretsTraps_Debug,
     translation = OMHTurretsTraps_DiagnosticLogging,
 }
 
@@ -33,7 +33,7 @@ option OMHTurretsTraps.SpikeBarrierDamage {
     min = 0,
     max = 1000,
     default = 10,
-    page = OMHTurretsTraps,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_SpikeBarrierDamage,
 }
 
@@ -42,6 +42,22 @@ option OMHTurretsTraps.SpikeBarrierHealth {
     min = 1,
     max = 10000,
     default = 100,
-    page = OMHTurretsTraps,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_SpikeBarrierHealth,
+}
+
+option OMHTurretsTraps.SpikeBarrierScratchChance {
+    type = integer,
+    min = 0,
+    max = 50,
+    default = 5,
+    page = OMHTurretsTraps_BarrierPage,
+    translation = OMHTurretsTraps_SpikeBarrierScratchChance,
+}
+
+option OMHTurretsTraps.ShowCollision {
+    type = boolean,
+    default = false,
+    page = OMHTurretsTraps_Debug,
+    translation = OMHTurretsTraps_ShowCollision,
 }

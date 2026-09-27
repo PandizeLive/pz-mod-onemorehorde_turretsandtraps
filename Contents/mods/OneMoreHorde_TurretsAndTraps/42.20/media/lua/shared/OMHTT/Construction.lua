@@ -35,6 +35,32 @@ function Construction.installEdges()
     function ISBuildIsoEntity:setInfo(square, north, sprite, openSprite)
         return original(self, square, Construction.edgeNorth(sprite, north), sprite, openSprite)
     end
+    local originalRender = ISBuildIsoEntity.render
+    ---@param self ISBuildIsoEntity Native placement cursor
+    ---@param x number Cursor X
+    ---@param y number Cursor Y
+    ---@param z number Floor
+    ---@param square IsoGridSquare Cursor square
+    ---@return nil
+    function ISBuildIsoEntity:render(x, y, z, square)
+        originalRender(self, x, y, z, square)
+        local face = self:getFace()
+        if not face then return end
+        for xx = 0, face:getWidth() - 1 do
+            for yy = 0, face:getHeight() - 1 do
+                local tile = face:getTileInfo(xx, yy, 0)
+                local name = tile and tile:getSpriteName()
+                if name and string.match(name, "^omhtt_barrier_01_%d+$") then
+                    local north = Construction.edgeNorth(name, false)
+                    local tx, ty = x + xx, y + yy + 1
+                    if north then
+                        tx, ty = x + xx + 1, y + yy
+                    end
+                    renderIsoLine(x + xx, y + yy, z, tx, ty, z, 4, 1, 1, 1, 1)
+                end
+            end
+        end
+    end
     ISBuildIsoEntity.omhttEdgeInstalled = true
     Diagnostics.emit("construction-edge-hook", {model = "edge-v1"})
 end
@@ -93,9 +119,11 @@ function Construction.initializeSprites()
         if north then
             properties:set(IsoFlagType.WallN)
             properties:set(IsoFlagType.TallHoppableN)
+            properties:set(IsoFlagType.collideN)
         else
             properties:set(IsoFlagType.WallW)
             properties:set(IsoFlagType.TallHoppableW)
+            properties:set(IsoFlagType.collideW)
         end
         properties:set(IsoFlagType.CantClimb)
     end
@@ -120,6 +148,9 @@ function Construction.onIsValid(params)
     end
     local Footprint = require("OMHTT/BarrierFootprint")
     local failure = Footprint.canBuild(x, y, params.square:getZ(), facing)
+    if failure == nil then
+        params.testCollisions = false
+    end
     if Diagnostics.enabled() then
         local status = failure
         if status == nil then

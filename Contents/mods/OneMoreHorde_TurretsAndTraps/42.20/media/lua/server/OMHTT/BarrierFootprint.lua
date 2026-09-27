@@ -24,14 +24,76 @@ function Footprint.initialize(registry, schedule)
 end
 
 ---@param square IsoGridSquare Selected tile
+---@param id string? Exact barrier identity at a shared corner
 ---@return table? slot Canonical device slot, or this empty tile
 ---@nodiscard
-function Footprint.slot(square)
-    local slot = store.tiles[F.key(square:getX(), square:getY(), square:getZ())]
-    if slot and slot.anchor then
-        return store.tiles[slot.anchor]
+function Footprint.slot(square, id)
+    if not store then return nil end
+    local base = F.key(square:getX(), square:getY(), square:getZ())
+    local candidates = {base, base .. ":N", base .. ":W"}
+    local empty = nil
+    for i = 1, #candidates do
+        local slot = store.tiles[candidates[i]]
+        if slot and slot.anchor then
+            slot = store.tiles[slot.anchor]
+        end
+        if slot and slot.device and (id == nil or slot.device.id == id) then return slot end
+        if slot and not slot.device then
+            empty = slot
+        end
     end
-    return slot
+    return empty
+end
+
+---@param square IsoGridSquare Candidate tile
+---@param facing number New edge orientation
+---@return string? failure Placement rejection
+---@nodiscard
+function Footprint.canBuildPart(square, facing)
+    if not square or not square:getFloor() then return "Blocked" end
+    local reserved = store.tiles[Footprint.edgeKey(square:getX(), square:getY(), square:getZ(), facing)]
+    if reserved and (reserved.device or reserved.anchor) then return "Occupied" end
+    if square:HasStairs() or square:HasStairsBelow() or square:isVehicleIntersecting()
+        or square:has(IsoFlagType.water) or square:getMovingObjects():size() > 0 then return "Blocked" end
+    local north = facing == 4 or facing == 12
+    local special = square:getSpecialObjects()
+    for i = 0, special:size() - 1 do
+        local object = special:get(i)
+        local record = Footprint.exact(object)
+        if not record or record.collisionModel ~= "edge-v1" then return "Blocked" end
+        if object:getNorth() == north then return "Occupied" end
+    end
+    local objects = square:getObjects()
+    for i = 0, objects:size() - 1 do
+        local object = objects:get(i)
+        if not Footprint.exact(object) then
+            local properties = object:getProperties()
+            if properties and (properties:has(IsoFlagType.solid) or properties:has(IsoFlagType.solidtrans)
+                or properties:has(IsoFlagType.collideN) or properties:has(IsoFlagType.collideW)
+                or properties:has(IsoFlagType.WallN) or properties:has(IsoFlagType.WallW)) then return "Blocked" end
+        end
+    end
+    if special:size() == 0 and not square:isFree(false) then return "Blocked" end
+    local slot = Footprint.slot(square)
+    if slot and slot.device then
+        local record = slot.device
+        if record.collisionModel ~= "edge-v1" or (record.facing == 4 or record.facing == 12) == north then return "Occupied" end
+    end
+    return nil
+end
+
+---@param x number Tile X
+---@param y number Tile Y
+---@param z number Floor
+---@param facing number Cardinal facing
+---@return string key Edge ledger key
+---@nodiscard
+function Footprint.edgeKey(x, y, z, facing)
+    local suffix = ":W"
+    if facing == 4 or facing == 12 then
+        suffix = ":N"
+    end
+    return F.key(x, y, z) .. suffix
 end
 
 ---@param record table Barrier record
@@ -47,9 +109,10 @@ end
 ---@param x number Tile X
 ---@param y number Tile Y
 ---@param z number Tile Z
+---@param edgeKey string? Separate edge reservation
 ---@return table slot Existing or newly reserved ledger slot
-local function reserve(x, y, z)
-    local key = F.key(x, y, z)
+local function reserve(x, y, z, edgeKey)
+    local key = edgeKey or F.key(x, y, z)
     local slot = store.tiles[key]
     if not slot then
         slot = {epoch = 0, x = x, y = y, z = z}
@@ -66,7 +129,7 @@ end
 local function available(square)
     if not square or not square:getFloor() then return "Unavailable" end
     if not F.isInteger(square:getX(), 0, 1000000) or not F.isInteger(square:getY(), 0, 1000000) then return "Unavailable" end
-    local slot = store.tiles[F.key(square:getX(), square:getY(), square:getZ())]
+    local slot = Footprint.slot(square)
     if (slot and (slot.device or slot.anchor or slot.retired)) or F.countPrototypes(square) > 0 then return "Occupied" end
     if not square:isFree(false) then return "Blocked" end
     if square:getMovingObjects():size() > 0 then return "Blocked" end
@@ -132,7 +195,10 @@ function Footprint.exact(object)
     if not store or not instanceof(object, "IsoThumpable") then return nil end
     local square = object:getSquare()
     if not square or object:getObjectIndex() < 0 or object:getHealth() <= 0 then return nil end
-    local slot = Footprint.slot(square)
+    if not object:hasModData() then return nil end
+    local marker = object:getModData().OMHTT
+    if not marker then return nil end
+    local slot = Footprint.slot(square, marker.id)
     if not slot or not slot.device or slot.device.kind ~= "barrier" then return nil end
     local record = slot.device
     local exact, count = F.find(square, record.id)
@@ -184,13 +250,13 @@ function Footprint.canBuild(x, y, z, facing)
     local secondX, secondY = Footprint.second({x = x, y = y}, facing)
     local first = getCell():getGridSquare(x, y, z)
     local second = getCell():getGridSquare(secondX, secondY, z)
-    local failure = available(first) or available(second)
+    local failure = Footprint.canBuildPart(first, facing) or Footprint.canBuildPart(second, facing)
     if failure then return failure end
     local needed = 0
-    if not store.tiles[F.key(x, y, z)] then
+    if not store.tiles[Footprint.edgeKey(x, y, z, facing)] then
         needed = needed + 1
     end
-    if not store.tiles[F.key(secondX, secondY, z)] then
+    if not store.tiles[Footprint.edgeKey(secondX, secondY, z, facing)] then
         needed = needed + 1
     end
     if store.tileCount + needed > F.MAX_TILES then return "Limit" end
@@ -207,15 +273,15 @@ end
 function Footprint.adoptBuild(object, player, x, y, facing, entity)
     local square = object:getSquare()
     local z = square:getZ()
-    local anchor = F.key(x, y, z)
+    local anchor = Footprint.edgeKey(x, y, z, facing)
     local secondX, secondY = Footprint.second({x = x, y = y}, facing)
     local slot = store.tiles[anchor]
     if not slot or not slot.device then
-        slot = reserve(x, y, z)
-        local other = reserve(secondX, secondY, z)
+        slot = reserve(x, y, z, anchor)
+        local other = reserve(secondX, secondY, z, Footprint.edgeKey(secondX, secondY, z, facing))
         slot.device = {id = "test-" .. tostring(store.nextId), kind = "barrier", condition = F.barrierHealth(), maxHealth = F.barrierHealth(), revision = 1,
             testOwner = player:getUsername(), builderUsername = player:getUsername(), placementSource = "construction",
-            constructionEntity = entity, collisionModel = "edge-v1",
+            constructionEntity = entity, collisionModel = "edge-v1", slotKey = anchor,
             ammo = 0, shots = 0, nextShot = 0, facing = facing, observedLoss = 0,
             cooldownClock = "realtime-ms-v1", width = 2, x = x, y = y, z = z}
         slot.epoch = math.max(slot.epoch, other.epoch) + 1
@@ -273,7 +339,11 @@ function Footprint.retire(slot, excluding)
         if i == 2 then
             x, y = Footprint.second(record, record.facing)
         end
-        local partSlot = store.tiles[F.key(x, y, record.z)]
+        local key = F.key(x, y, record.z)
+        if record.slotKey then
+            key = Footprint.edgeKey(x, y, record.z, record.facing)
+        end
+        local partSlot = store.tiles[key]
         partSlot.device, partSlot.anchor = nil, nil
         partSlot.epoch = math.max(partSlot.epoch + 1, retiredEpoch)
         partSlot.retired = record.id
@@ -306,18 +376,23 @@ end
 ---@param square IsoGridSquare Newly loaded tile
 ---@return boolean handled Retired part cleanup handled
 function Footprint.cleanRetired(square)
-    local slot = store.tiles[F.key(square:getX(), square:getY(), square:getZ())]
-    if not slot or not slot.retired then return false end
-    local object, count = F.find(square, slot.retired)
-    if count == 1 then
-        square:transmitRemoveItemFromSquare(object)
-        square:RecalcAllWithNeighbours(true)
-        Diagnostics.emit("barrier-retired-part", {id = slot.retired, x = slot.x, y = slot.y})
-        slot.retired = nil
-    elseif count == 0 then
-        slot.retired = nil
+    local base = F.key(square:getX(), square:getY(), square:getZ())
+    local candidates = {base, base .. ":N", base .. ":W"}
+    for i = 1, #candidates do
+        local slot = store.tiles[candidates[i]]
+        if slot and slot.retired then
+            local object, count = F.find(square, slot.retired)
+            if count == 1 then
+                square:transmitRemoveItemFromSquare(object)
+                square:RecalcAllWithNeighbours(true)
+                Diagnostics.emit("barrier-retired-part", {id = slot.retired, x = slot.x, y = slot.y})
+                slot.retired = nil
+            elseif count == 0 then
+                slot.retired = nil
+            end
+        end
     end
-    return true
+    return false
 end
 
 ---@param record table Legacy barrier

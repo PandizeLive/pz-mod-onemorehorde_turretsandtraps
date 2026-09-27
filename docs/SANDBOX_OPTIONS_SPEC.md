@@ -1,5 +1,22 @@
 # Sandbox options specification
 
+## Implemented in 0.2.5
+
+| Page | Option | Default / range |
+| --- | --- | --- |
+| General | Enable Turrets & Traps | On |
+| Spike Barrier | Enable Spike Barrier | On |
+| Spike Barrier | Damage | 10 / 0-1000 |
+| Spike Barrier | Maximum Durability | 100 / 1-10000 |
+| Spike Barrier | Vault Scratch Chance | 5 / 0-50, interpreted as 1 in N; 0 disables spike scratches |
+| Debug | Diagnostic Logging | On for development |
+| Debug | Foundation Test Controls | Off |
+| Debug | Show Collision | Off |
+
+Existing option IDs remain unchanged. Categories are native Sandbox pages. Each future implemented defense gets its own page; expose useful tuning settings proactively and keep tooltips short. Native trip chance is not replaced by the spike-scratch setting.
+
+The sections below also contain future proposals; they do not claim implementation.
+
 Status: mixed implemented/planned contract. In 0.2.0, master Enable Turrets & Traps and Enable Spike Barrier are native Sandbox controls, alongside Foundation Test Controls and Diagnostic Logging. 0.2.3 additionally implements Spike Barrier Damage and Maximum Durability. Other controls below remain planned. One edition, one Sandbox page; preserve owner-authored tooltip wording.
 
 ## Groups and defaults

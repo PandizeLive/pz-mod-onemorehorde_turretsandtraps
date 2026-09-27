@@ -158,6 +158,67 @@ testPlayer.dead = true
 V.update(testPlayer)
 check(testInjuries == before, "death cancels without injury")
 testPlayer.dead = false
+local function resetApproach()
+    testPlayer.x, testPlayer.y, testPlayer.z, testPlayer.state = 600.2, 600.5, 0, "idle"
+    testPlayer.dead, testPlayer.god = false, false
+end
+resetApproach()
+function testPlayer:getDir() return IsoDirections.W end
+local nativePlan = V.plan(testPlayer, object, id)
+local nativeBefore = testClimbs
+V.onContext(testPlayer, 0)
+check(testClimbs == nativeBefore + 1 and testPlayer.climbDirection == IsoDirections.W, "native context event uses facing and enters low-fence state")
+complete(nativePlan)
+resetApproach()
+function testPlayer:getDir() return IsoDirections.W end
+function testPlayer:isPlayerMoving() return true end
+function testPlayer:isIgnoreAutoVault() return self.ignoreVault == true end
+function testPlayer:isSafeToClimbOver() return self.safe ~= false end
+local automaticBefore = testClimbs
+testPlayer.running = false
+V.autoVault(testPlayer)
+check(testClimbs == automaticBefore, "walking never auto-vaults")
+testPlayer.running, testPlayer.ignoreVault = true, true
+V.autoVault(testPlayer)
+check(testClimbs == automaticBefore, "vanilla ignore-auto-vault is respected")
+testPlayer.ignoreVault, testPlayer.safe = false, false
+V.autoVault(testPlayer)
+check(testClimbs == automaticBefore, "unsafe running landing rejected")
+testPlayer.safe = true
+testPlayer.x = 600.8
+V.autoVault(testPlayer)
+check(testClimbs == automaticBefore, "running farther from edge does not vault early")
+testPlayer.x = 600.2
+nativePlan = V.plan(testPlayer, object, id)
+V.autoVault(testPlayer)
+check(testClimbs == automaticBefore + 1 and testPlayer.running, "running approach preserves native run state")
+complete(nativePlan)
+resetApproach()
+testPlayer.running, testPlayer.sprinting = false, true
+nativePlan = V.plan(testPlayer, object, id)
+V.autoVault(testPlayer)
+check(testClimbs == automaticBefore + 2 and testPlayer.sprinting, "sprinting approach preserves native sprint state")
+complete(nativePlan)
+testPlayer.sprinting = false
+function testPlayer:isPlayerMoving() return false end
+for _, denominator in pairs({0, 1, 50}) do
+    SandboxVars.OMHTurretsTraps.SpikeBarrierScratchChance = denominator
+    local count, rolls = testInjuries, testRolls
+    testRoll = 0
+    local plan = start()
+    testPlayer.state, testPlayer.animationStarted, testPlayer.outcome = "ClimbOverFenceState", true, "success"
+    V.update(testPlayer)
+    check(testInjuries == count, "no injury before actual edge contact")
+    testPlayer.x, testPlayer.y = plan.toX + 0.5, plan.toY + 0.5
+    V.update(testPlayer)
+    check(testInjuries == count + (denominator > 0 and 1 or 0), "scratch applies at contact with configured denominator")
+    V.update(testPlayer)
+    testPlayer.state = "idle"
+    V.update(testPlayer)
+    check(testRolls == rolls + (denominator > 0 and 2 or 0), "one contact roll only; zero disables injury without disabling crossing")
+end
+SandboxVars.OMHTurretsTraps.SpikeBarrierScratchChance = nil
+before = testInjuries
 start()
 P.retire(P.slot(object:getSquare()), nil)
 V.update(testPlayer)

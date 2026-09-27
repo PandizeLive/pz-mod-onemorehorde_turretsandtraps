@@ -80,21 +80,8 @@ end
 ---@return nil
 local function finish(player, plan, result)
     active[player] = nil
-    local roll, injured, leg = -1, false, "none"
-    if result == "crossed" and plan.side == "front" then
-        roll = ZombRand(5)
-        if roll == 0 and not player:isGodMod() then
-            local bodyPart = BodyPartType.LowerLeg_L
-            leg = "left"
-            if ZombRand(2) == 1 then
-                bodyPart, leg = BodyPartType.LowerLeg_R, "right"
-            end
-            player:getBodyDamage():getBodyPart(bodyPart):setScratched(true, true)
-            injured = true
-        end
-    end
     Diagnostics.emit("barrier-vault-result", {crossing = plan.sequence, id = plan.id, side = plan.side,
-        result = result, roll = roll, injured = injured, leg = leg, godMode = player:isGodMod(),
+        result = result, roll = plan.roll, injured = plan.injured, contact = plan.contact, godMode = player:isGodMod(),
         x = player:getX(), y = player:getY(), z = player:getZ(), outcome = plan.outcome,
         elapsedMs = getTimestampMs() - plan.startedAt})
 end
@@ -103,7 +90,10 @@ end
 ---@return nil
 function Vault.update(player)
     local plan = active[player]
-    if not plan then return end
+    if not plan then
+        Vault.autoVault(player)
+        return
+    end
     local Footprint = require("OMHTT/BarrierFootprint")
     local record = Footprint.exact(plan.object)
     if player:isDead() or not record or record.id ~= plan.id or not Footprint.parts(record)
@@ -122,6 +112,11 @@ function Vault.update(player)
             plan.animationStarted = true
         end
         plan.outcome = player:getVariableString("ClimbFenceOutcome")
+        local crossedPlane = math.floor(player:getX()) == plan.toX and math.floor(player:getY()) == plan.toY
+        if plan.animationStarted and crossedPlane and not plan.contact
+            and (plan.outcome == "success" or plan.outcome == "fall") then
+            Vault.contact(player, plan)
+        end
     elseif plan.entered then
         local landed = math.floor(player:getX()) == plan.toX and math.floor(player:getY()) == plan.toY
             and math.floor(player:getZ()) == plan.z
@@ -150,12 +145,8 @@ end
 function OMHTTBarrierVaultAction:perform()
     local plan, reason = Vault.plan(self.character, self.item, self.omhttId)
     if plan and plan.fromX == self.omhttFromX and plan.fromY == self.omhttFromY then
-        sequence = sequence + 1
-        plan.sequence, plan.startedAt = sequence, getTimestampMs()
-        active[self.character] = plan
+        Vault.begin(self.character, plan, "menu")
         self.direction = plan.direction
-        Diagnostics.emit("barrier-vault-start", {crossing = sequence, id = plan.id, side = plan.side,
-            fromX = plan.fromX, fromY = plan.fromY, toX = plan.toX, toY = plan.toY, z = plan.z})
         ISClimbOverFence.perform(self)
     else
         Diagnostics.emit("barrier-vault-refused", {id = self.omhttId, reason = reason or "approach-changed"})
@@ -187,5 +178,126 @@ function Vault.queue(object, player, id)
     ISTimedActionQueue.add(OMHTTBarrierVaultAction:new(player, plan.object, plan))
 end
 
+---@param player IsoPlayer Crossing player
+---@param plan table Validated crossing
+---@param source string Input route
+---@return nil
+function Vault.begin(player, plan, source)
+    sequence = sequence + 1
+    plan.sequence, plan.startedAt = sequence, getTimestampMs()
+    plan.roll, plan.injured, plan.contact = -1, false, false
+    active[player] = plan
+    Diagnostics.emit("barrier-vault-start", {crossing = sequence, id = plan.id, side = plan.side,
+        fromX = plan.fromX, fromY = plan.fromY, toX = plan.toX, toY = plan.toY, z = plan.z,
+        input = source, running = player:isRunning(), sprinting = player:isSprinting()})
+end
+
+---@param player IsoPlayer Crossing player
+---@param plan table Active crossing
+---@return nil
+function Vault.contact(player, plan)
+    plan.contact = true
+    local denominator = F.barrierScratchChance()
+    if plan.side == "front" and denominator > 0 then
+        plan.roll = ZombRand(denominator)
+        if plan.roll == 0 and not player:isGodMod() then
+            local bodyPart = BodyPartType.LowerLeg_L
+            if ZombRand(2) == 1 then
+                bodyPart = BodyPartType.LowerLeg_R
+            end
+            player:getBodyDamage():getBodyPart(bodyPart):setScratched(true, true)
+            plan.injured = true
+        end
+    end
+    Diagnostics.emit("barrier-vault-contact", {crossing = plan.sequence, id = plan.id, side = plan.side,
+        denominator = denominator, roll = plan.roll, injured = plan.injured, outcome = plan.outcome})
+end
+
+---@param player IsoPlayer Local player
+---@param direction IsoDirections Cardinal crossing direction
+---@return table? plan Exact barrier crossing
+---@nodiscard
+function Vault.forDirection(player, direction)
+    local from = player:getCurrentSquare()
+    if not from then return nil end
+    local x, y = from:getX(), from:getY()
+    if direction == IsoDirections.S then
+        y = y + 1
+    end
+    if direction == IsoDirections.E then
+        x = x + 1
+    end
+    local square = getCell():getGridSquare(x, y, from:getZ())
+    if not square then return nil end
+    local Footprint = require("OMHTT/BarrierFootprint")
+    local objects = square:getSpecialObjects()
+    for i = 0, objects:size() - 1 do
+        local object = objects:get(i)
+        local record = Footprint.exact(object)
+        if record then
+            local plan = Vault.plan(player, object, record.id)
+            if plan and plan.direction == direction then return plan end
+        end
+    end
+    return nil
+end
+
+---@param player IsoPlayer Local player
+---@param automatic boolean Running approach rather than Interact
+---@param heldMs number Native context hold duration
+---@return nil
+function Vault.tryInput(player, automatic, heldMs)
+    if active[player] or not F.barrierEnabled() or player:isDead() or player:getVehicle()
+        or player:isIgnoreAutoVault() or player:isGrappling() then return end
+    local state = player:getCurrentState()
+    if state ~= IdleState.instance() and state ~= PlayerMovementState.instance() then return end
+    if automatic and (not player:isPlayerMoving() or not (player:isRunning() or player:isSprinting())) then return end
+    local facing = player:getDir()
+    local directions = {IsoDirections.N, IsoDirections.E, IsoDirections.S, IsoDirections.W}
+    local facingGroups = {
+        {IsoDirections.N, IsoDirections.NE, IsoDirections.NW},
+        {IsoDirections.E, IsoDirections.NE, IsoDirections.SE},
+        {IsoDirections.S, IsoDirections.SE, IsoDirections.SW},
+        {IsoDirections.W, IsoDirections.NW, IsoDirections.SW},
+    }
+    for i = 1, #directions do
+        local group = facingGroups[i]
+        if facing == group[1] or facing == group[2] or facing == group[3] then
+            local plan = Vault.forDirection(player, directions[i])
+            if plan then
+                local safe = player:isSafeToClimbOver(plan.direction)
+                local near = true
+                if automatic then
+                    local north = i == 1 or i == 3
+                    local position, edge = player:getX(), plan.object:getSquare():getX()
+                    if north then
+                        position, edge = player:getY(), plan.object:getSquare():getY()
+                    end
+                    near = math.abs(position - edge) <= 0.45
+                end
+                if near and (safe or (not automatic and heldMs >= 500)) then
+                    Vault.begin(player, plan, automatic and "native-movement" or "native-context")
+                    player:climbOverFence(plan.direction)
+                    return
+                end
+            end
+        end
+    end
+end
+
+---@param player IsoPlayer Local player
+---@return nil
+function Vault.autoVault(player)
+    Vault.tryInput(player, true, 0)
+end
+
+---@param player IsoPlayer Native context event player
+---@param heldMs number Native Interact hold duration
+---@return nil
+function Vault.onContext(player, heldMs)
+    Vault.tryInput(player, false, heldMs)
+end
+
+Events.OnContextKey.Add(Vault.onContext)
 Events.OnPlayerUpdate.Add(Vault.update)
 return Vault

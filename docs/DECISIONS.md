@@ -152,3 +152,13 @@ The owner authorized proceeding to the next checkpoint and testing it together w
 
 - C34: Owner selected **fence-style collision** for [P2C2-vault](PHASE_2_CHECKPOINT_2_VAULT.md), keeping the two-tile construction footprint and one shared durability pool. Version 0.2.4 implements native fence climbing through the Spike Barrier submenu, front 20 percent scratch / safe rear. Older built barriers retain full-square collision until pickup/redeployment. Debug-only placed prototypes remain legacy fixtures. No recipes, art or reinforcement changes are included.
 - Implementation detail: one lower-leg environmental scratch after a completed front crossing. This is a flat roll without a clothing protection reroll; native wound severity/traits apply, and the scratch does not roll Knox infection. God Mode prevents injury. Interrupted/failed/removed/dead-player attempts do not roll. Normal fence-key integration is deferred; no generic zombie hopping flags are enabled.
+
+## 2026-09-27 approved native-control correction
+
+- C35: Use native Interact and Run/Sprint controls and player movement settings for Spike Barrier low-fence vaults. Preserve the native trip calculation; no high-wall animation or struggle mechanic. Player traversal must not enable zombie climbing. Scratch and trip are separate outcomes.
+- C36: Repair remains tool-free, ten seconds, with label Repair and a short duration tooltip. Pickup remains ten seconds/full-condition. Use reachable approaches and cancel stalls.
+- C37: Sandbox scratch denominator is integer 0-50, default 5. Zero disables spike scratches, one always scratches, N gives 1 in N; rear avoids spike scratches. Apply once at edge contact during traversal. Native fall risks still apply.
+- C38: Separate General, per-defense and Debug Sandbox categories. Add a visible collision debug option. Use judgment to expose useful future balance controls (ammo, cadence, damage, radius, speed) as features are implemented. Prefer the shortest useful tooltip.
+- Implementation: perpendicular native fence edges can share a corner tile with independent identity/HP. Parallel duplicate edges remain rejected. Existing spaced layouts are not automatically bridged with invisible extra collision. This corrects the overbroad former full-footprint overlap ban while preserving the 1x2 barrier.
+
+[0.2.5 scope, source evidence and owner test](PHASE_2_CHECKPOINT_2_VAULT_REPAIR.md). Earlier C34 submenu-only and after-completion scratch implementation notes describe 0.2.4 and are superseded.

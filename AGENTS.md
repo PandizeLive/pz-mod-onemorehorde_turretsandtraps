@@ -32,3 +32,6 @@ Read README.md, docs/DECISIONS.md, and docs/ROADMAP.md before project changes. T
 - [2026-09-27] Owner approved combining barrier pickup, repair and five-item bundles. Pickup returns a full-condition item; free Repair and pickup each take ten seconds and interrupt on movement. This supersedes condition-preserving basic-barrier recovery. No service/packing/redeployment XP. Keep vaulting pending native proof, and final damaged artwork owner-sourced.
 
 - [2026-09-27] Owner selected fence-style collision for P2C2-vault, preserving the 1x2 build footprint. New construction/deployment uses edge collision; older full-square barriers are recovered/redeployed for conversion. Combine its owner test with the still-unaccepted 0.2.3 repair. Native proof does not replace rendered SP acceptance.
+
+- [2026-09-27] C35-C38 approve native Interact/run/sprint inputs, low-fence animation/native trips, zombie blocking, contact-time scratch denominator 0-50 (default 5; 0 off), corner joins, collision debugging, safe service approaches and short Repair wording. Repair remains tool-free. Always ground engine behavior in current installed vanilla code and the PZ skills.
+- [2026-09-27] Proactively expose useful Sandbox controls as defenses/features are implemented. Separate General, each defense and Debug categories. Favor the shortest useful tooltip. No inert speculative settings.

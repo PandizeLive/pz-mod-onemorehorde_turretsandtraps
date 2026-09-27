@@ -18,7 +18,7 @@ local id = record.id
 local menuHandler = testBarrierMenuHandler
 testMenu.options = {}
 menuHandler(0, testMenu, {parts[1]}, false)
-check(testMenu.options["Condition: 57/100"] ~= nil and not testMenu.options["Repair (free, 10 seconds)"].notAvailable,
+check(testMenu.options["Condition: 57/100"] ~= nil and not testMenu.options["Repair"].notAvailable,
     "world menu shows exact shared durability and repair without developer controls")
 
 check(Service.resolve(testPlayer, parts[1], id) == record and record.condition == 57, "service resolves paired construction condition")
@@ -40,7 +40,7 @@ check(not action:complete() and #testInventory.items == 0, "repair completion is
 check(not Service.apply(testPlayer, parts[1], id, "Repair"), "undamaged barrier cannot be repaired")
 testMenu.options = {}
 menuHandler(0, testMenu, {parts[2]}, false)
-check(testMenu.options["Condition: 100/100"] ~= nil and testMenu.options["Repair (free, 10 seconds)"].notAvailable,
+check(testMenu.options["Condition: 100/100"] ~= nil and testMenu.options["Repair"].notAvailable,
     "second-half world menu shows same condition and disables needless repair")
 
 parts[2]:setHealth(42)

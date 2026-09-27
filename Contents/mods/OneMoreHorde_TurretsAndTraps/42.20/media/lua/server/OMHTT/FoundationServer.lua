@@ -30,7 +30,7 @@ function Server.initialize()
     Footprint.initialize(store, keys)
     for key, slot in pairs(store.tiles) do
         keys[#keys + 1] = key
-        local x, y, z = string.match(key, "^([^:]+):([^:]+):([^:]+)$")
+        local x, y, z = string.match(key, "^([%-0-9]+):([%-0-9]+):([%-0-9]+)")
         slot.x, slot.y, slot.z = tonumber(x), tonumber(y), tonumber(z)
         if slot.device and slot.device.kind == nil then
             local record = slot.device
@@ -170,7 +170,9 @@ function Server.tick()
     if not store or #keys == 0 then return end
     local visited = 0
     for i = 1, math.min(4, #keys) do
-        if cursor > #keys then cursor = 1 end
+        if cursor > #keys then
+            cursor = 1
+        end
         local slot = store.tiles[keys[cursor]]
         cursor = cursor + 1
         visited = visited + 1
@@ -197,7 +199,9 @@ function Server.onRemoved(object)
     if not store then return end
     local square = object:getSquare()
     if not square then return end
-    local slot = Footprint.slot(square)
+    local marker = object:getModData().OMHTT
+    if not marker then return end
+    local slot = Footprint.slot(square, marker.id)
     if not slot or not slot.device or not Foundation.matches(object, slot.device.id) then return end
     if slot.device.kind == "barrier" then
         Footprint.retire(slot, object)
