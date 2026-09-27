@@ -1,3 +1,4 @@
 {
-    "Tooltip_OMHTT_PortableBarrier": "Place using Deploy Spike Barrier in the Building menu. Placement consumes one finished barrier and grants no XP."
+    "Tooltip_OMHTT_PortableBarrier": "Place using Deploy Spike Barrier in the Building menu. Placement consumes one finished barrier and grants no XP.",
+    "Tooltip_OMHTT_BarrierPack": "Contains five Spike Barriers. Unpack in the Crafting menu. Bundled encumbrance is reduced by 67%."
 }

@@ -38,5 +38,7 @@
     "UI_OMHTT_MarkerTest": "TEST %1",
     "UI_OMHTT_MarkerBarrier": "BARRIER %1 | %2",
     "UI_OMHTT_MarkerPotato": "POTATO %1 | rounds %2",
-    "UI_OMHTT_DeploySpikeBarrier": "Deploy Spike Barrier"
+    "UI_OMHTT_DeploySpikeBarrier": "Deploy Spike Barrier",
+    "UI_OMHTT_SpikeBarrierDescription": "A wall of spikes, used to keep the undead out.\n\nStatistics:\nDamage: 20 per thump (front and sides)\nDurability: 100\nSize: 1x2",
+    "UI_OMHTT_PickupNoRoom": "Not enough inventory capacity to pick up the Spike Barrier."
 }

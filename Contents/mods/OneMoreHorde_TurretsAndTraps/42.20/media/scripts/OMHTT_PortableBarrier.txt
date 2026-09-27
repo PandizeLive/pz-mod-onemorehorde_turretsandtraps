@@ -3,7 +3,7 @@ module Base {
         timedAction = SharpenStakeWood,
         time = 200,
         category = Carpentry,
-        Tooltip = UI_OMHTT_BarrierTools,
+        Tooltip = UI_OMHTT_SpikeBarrierDescription,
         Tags = InHandCraft;Carpentry,
         needToBeLearn = false,
         SkillRequired = Woodwork:1,
@@ -18,6 +18,40 @@ module Base {
         }
         outputs {
             item 1 Base.OMHTTSpikeBarrierItem,
+        }
+    }
+    craftRecipe OMHTTPackSpikeBarriers {
+        timedAction = Making,
+        time = 100,
+        category = Carpentry,
+        Tooltip = Tooltip_OMHTT_BarrierPack,
+        Tags = InHandCraft;Carpentry,
+        needToBeLearn = false,
+        OnAddToMenu = OMHTT_ConstructionMenuAvailable,
+        OnTest = OMHTT_Construction.portableInputAllowed,
+        OnCreate = OMHTT_Construction.onCrafted,
+        inputs {
+            item 5 [Base.OMHTTSpikeBarrierItem],
+        }
+        outputs {
+            item 1 Base.OMHTTSpikeBarrierPack,
+        }
+    }
+    craftRecipe OMHTTUnpackSpikeBarriers {
+        timedAction = Making,
+        time = 100,
+        category = Carpentry,
+        Tooltip = Tooltip_OMHTT_BarrierPack,
+        Tags = InHandCraft;Carpentry,
+        needToBeLearn = false,
+        OnAddToMenu = OMHTT_ConstructionMenuAvailable,
+        OnTest = OMHTT_Construction.portableInputAllowed,
+        OnCreate = OMHTT_Construction.onCrafted,
+        inputs {
+            item 1 [Base.OMHTTSpikeBarrierPack],
+        }
+        outputs {
+            item 5 Base.OMHTTSpikeBarrierItem,
         }
     }
 }

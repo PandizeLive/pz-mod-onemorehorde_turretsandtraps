@@ -9,4 +9,13 @@ module Base {
         Tooltip = Tooltip_OMHTT_PortableBarrier,
     }
 
+    item OMHTTSpikeBarrierPack {
+        DisplayName = Spike Barrier Pack,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 9.9,
+        Icon = OMHTT_Barrier0,
+        ConditionMax = 100,
+        Tooltip = Tooltip_OMHTT_BarrierPack,
+    }
 }

@@ -1,0 +1,22 @@
+{
+  "version": "0.2.1",
+  "capture": "diagnostics/captures/20260927-013500-6405",
+  "consoleSHA256": "D5682C624FC3BE2F9C15974E31A9C1BE5D1A952FEBBB02CA2D04592084C7D456",
+  "loadedVersion": "0.2.1",
+  "mode": "single-player",
+  "portableCrafts": 2,
+  "completeBarriers": 3,
+  "nativeParts": 6,
+  "restorationRecords": 12,
+  "invalidSpriteConfigWarnings": 0,
+  "barrierConditionsOnReload": [
+    100,
+    100,
+    100
+  ],
+  "ownerReportedIssues": [
+    "Crafting has no Turrets & Traps category",
+    "Selected description does not wrap and explains tools rather than defense behavior"
+  ],
+  "acceptance": "partial; damage preservation, legacy migration and full visual/menu acceptance remain unproven"
+}

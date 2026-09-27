@@ -68,6 +68,7 @@ def main():
     assert "Invalid SpriteConfig object! scripted object = OMHTT" not in text, "Invalid native barrier identity"
     assert "[OMHTT-Smoke] native-texturepack entries=16 pages=4 png=valid" in text, "Native texture pack invalid"
     assert "[OMHTT-Smoke] native-migration staleSprite=repaired" in text, "Native migration failed"
+    assert "[OMHTT-Smoke] native-bundles packed=5to1 unpacked=1to5 weight=9.9 xp=0 insufficient=blocked" in text, "Native bundle transactions failed"
     assert "NoSuchFileException" not in text, "Missing package directories"
     assert "Recipe OMHTTSpikeBarrier missing UiConfigScript" not in text, "Missing native menu UI configuration"
     shutil.copy2(console, OUTPUT / ("server-" + os.environ.get("OMHTT_PROBE_MODE", "write") + "-console.log"))

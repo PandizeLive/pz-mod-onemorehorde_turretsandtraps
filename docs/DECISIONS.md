@@ -22,7 +22,7 @@ Recorded 2026-09-25 from the current planning conversation. This document is aut
 | C12 | A control unit lets the player change targeting for an individual compatible defense or all compatible linked defenses, including players, other factions, or no one. Devices without smarts do not follow these filters. | Owner's control-unit clarification, narrowed by C13 |
 | C13 | Objects without smarts ignore control-unit target filters. Passive hazards do not acquire faction recognition, immunity rules or remote disarming from a targeting selection. | Owner's passive-object clarification |
 | C14 | Players automatically jump over bed spikes. Applies to players generally, not only the owning faction. | Owner's traversal instruction |
-| C15 | Players cannot walk into or vault over the Spike Barrier. | Owner's barrier instruction |
+| C15 | Players cannot walk into the Spike Barrier. The earlier vault ban is superseded by C31; existing runtime remains non-vaultable until the prototype passes. | Owner's original barrier instruction and 2026-09-27 revision |
 | C16 | The owner will source final art without AI. Do not create or influence aesthetic design through AI concept art, textures, styling or final assets. | Owner's art-sourcing instruction |
 | C17 | Use a temporary white model made only of cubes for the technical turret work. | Explicit placeholder authorization |
 | C18 | All gameplay defenses use native construction in the building menu, with a movable placement preview and rotation before confirming placement. The current context menu is developer testing only. | Owner's construction-flow clarification and explicit native-building-menu selection on 2026-09-26; runtime implementation remains pending |
@@ -131,4 +131,12 @@ Documentation and local project organization are completed in Phase 0. The subse
 
 ## 0.2.1 provisional item tuning
 
-One portable barrier weighs 6 encumbrance for testing. The owner was offered 6/8/10 and has not selected a weight; 6 is an implementation assumption, not a confirmed balance decision. If retained, a later five-item bundle weighs 9.9 under C22. Deployment currently accepts pristine items; recovery and condition-carrying inventory conversions remain P2C1d.
+One portable barrier weighs 6 encumbrance for testing. The owner was offered 6/8/10 and has not selected a weight; 6 is an implementation assumption, not a confirmed balance decision. If retained, a later five-item bundle weighs 9.9 under C22. Deployment accepts pristine items. C32 now explicitly returns full-condition items on pickup; the former condition-preservation proposal is superseded for basic barriers.
+
+## 2026-09-27 menu and servicing approval
+
+- C30: Add Turrets & Traps to Crafting as well as Building, keeping native categories. Use a wrapped purpose description and readable Damage 20 / Durability 100 / Size 1x2 statistics.
+- C31: Owner requests player vaulting with a 1-in-5 scratch chance from the spike-facing front. Safe rear was included in the accepted follow-up. This replaces the earlier vault ban as design intent, but it is not implemented in 0.2.2. Whole-square collision versus native edge vaulting needs a bounded prototype; do not teleport players or silently enable zombie vaulting.
+- C32: Combine basic-barrier pickup, repair and bundles. Pickup returns one full-condition item; preserving damage is explicitly not required. Owner approved **free repair; 10 seconds for both pickup and repair**, interrupted by movement. This intentionally permits full restoration for time alone. Zero XP remains C27. This exception applies to the basic barrier, not future turret ammunition/power or reinforced tier conversion.
+
+Version 0.2.2 implements the menu correction, nearby condition display and C32 as a single SP test checkpoint. Bundles use five pristine loose items, weighing 9.9 with the current provisional individual weight 6. Existing recipe, cutting tool, skill and initial crafting XP remain unchanged. Final damaged visual stages remain an owner-sourced art proposal.

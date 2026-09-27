@@ -10,7 +10,7 @@ Read README.md, docs/DECISIONS.md, and docs/ROADMAP.md before project changes. T
 - Before major implementation, recommend the lowest sufficient reasoning effort and estimate the work. Follow the owner's workspace timing preferences. Keep checkpoints small and independently verifiable.
 - Preserve one shared defense XP pool. Include Offline Members is toggleable and defaults ON. Do not silently substitute connected-only rewards or a full pool per member.
 - Preserve potato impact pop and tiny damaging splash. Direct-hit knockdown and splash crowd-control restrictions remain separately tracked balance decisions.
-- Passive objects without smarts ignore controller target filters. Players automatically jump over bed spikes; the Spike Barrier blocks walking into it and vaulting over it. Prove traversal in the installed game before claiming it works.
+- Passive objects without smarts ignore controller target filters. Players automatically jump over bed spikes; the Spike Barrier blocks walking into it. The owner now requests player vaulting with a 20% front-side scratch chance and a safe rear; runtime vaulting remains blocked until its native collision prototype passes. Prove traversal in the installed game before claiming it works.
 - Cure defense simulation is last. Offline reward eligibility does not imply simulated combat in unloaded areas or while the server is stopped.
 - Keep Horde Night's event/score authority and Trait Shop's progression authority in their respective projects. New integration contracts must be explicit and verified; do not invent API capabilities.
 - Local tests must establish the exact loaded package version. Supply complete owner tests in 4-8 short numbered steps and inspect logs after the test.
@@ -28,3 +28,5 @@ Read README.md, docs/DECISIONS.md, and docs/ROADMAP.md before project changes. T
 - Use numeric three-field feature versions and fourth-field corrective versions; no checkpoint suffix in modversion. Keep historical build identifiers unchanged in evidence.
 - Use only the root OMH.cmd release menu and stable tools. Commit complete source on a non-main local branch and create an annotated test/v<version> rollback tag before installing. Do not invent a remote, Workshop ID or uploader.
 - Spike Barriers are 1x2, two tiles across and one deep. Front and side ends retaliate; the rear is safe. Preserve both-tile identity, condition, rotation and retirement.
+
+- [2026-09-27] Owner approved combining barrier pickup, repair and five-item bundles. Pickup returns a full-condition item; free Repair and pickup each take ten seconds and interrupt on movement. This supersedes condition-preserving basic-barrier recovery. No service/packing/redeployment XP. Keep vaulting pending native proof, and final damaged artwork owner-sourced.

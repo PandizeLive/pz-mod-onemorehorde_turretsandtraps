@@ -157,6 +157,15 @@ public final class KahluaCheck {
             {"_", Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/client/Entity/ISUI/CraftRecipe/ISWidgetRecipeCategories.lua").toString()},
             {"_", base + "client/OMHTT/ConstructionMenu.lua"},
             {"_", "tools/tests/construction_menu.lua"},
+            {"_", Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/client/Entity/ISUI/CraftRecipe/ISHandCraftPanel.lua").toString()},
+            {"_", Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/client/Entity/ISUI/Controls/ISWidgetTitleHeader.lua").toString()},
+            {"_", base + "client/OMHTT/CraftingMenu.lua"},
+            {"_", "tools/tests/crafting_menu.lua"},
+            {"_", "tools/tests/service_bootstrap.lua"},
+            {"OMHTT/BarrierService", base + "server/OMHTT/BarrierService.lua"},
+            {"OMHTT/BarrierServiceAction", base + "shared/OMHTT/BarrierServiceAction.lua"},
+            {"_", base + "client/OMHTT/BarrierMenu.lua"},
+            {"_", "tools/tests/barrier_service.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

@@ -12,5 +12,9 @@
     "ContextMenu_OMHTT_Aim": "Turn head one step (visual test)",
     "ContextMenu_OMHTT_SelectedTile": "Selected tile: %1, %2, %3",
     "ContextMenu_OMHTT_Dump": "Log nearby defense diagnostics",
-    "ContextMenu_OMHTT_RotateBarrier": "Rotate barrier arrow 90 degrees (visual test)"
+    "ContextMenu_OMHTT_RotateBarrier": "Rotate barrier arrow 90 degrees (visual test)",
+    "ContextMenu_OMHTT_Barrier": "Spike Barrier",
+    "ContextMenu_OMHTT_BarrierCondition": "Condition: %1/%2",
+    "ContextMenu_OMHTT_PickupBarrier": "Pick up (10 seconds)",
+    "ContextMenu_OMHTT_RepairBarrier": "Repair (free, 10 seconds)"
 }

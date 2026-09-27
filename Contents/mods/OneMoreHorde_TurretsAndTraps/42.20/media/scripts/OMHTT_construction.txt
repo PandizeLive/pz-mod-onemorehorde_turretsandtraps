@@ -40,7 +40,7 @@ module Base {
             timedAction = SharpenStakeWood,
             time = 200,
             category = Carpentry,
-            Tooltip = UI_OMHTT_BarrierTools,
+            Tooltip = UI_OMHTT_SpikeBarrierDescription,
             Tags = Carpentry,
             needToBeLearn = false,
             SkillRequired = Woodwork:1,
@@ -93,6 +93,7 @@ module Base {
         }
         component CraftRecipe {
             timedAction = BuildLowNoTool,
+            Tooltip = UI_OMHTT_SpikeBarrierDescription,
             time = 200,
             category = Carpentry,
             Tags = Carpentry,

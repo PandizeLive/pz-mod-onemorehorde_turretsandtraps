@@ -40,7 +40,7 @@ Broadcast compact state changes and effect facts. A shot/impact identity prevent
 
 Input occupancy and line obstruction are authoritative. Held-state changes trigger recomputation; devices still follow their own cadence. Revalidate state before each legal activation, including power/ammo and disabled settings.
 
-Explicit device capabilities determine whether controller targeting applies. Passive hazards ignore it even if owned by the same faction or near a controller. Implement bed-spike jumping through a verified movement/animation path, not coordinate teleportation or damage immunity disguised as traversal. Spike Barrier collision must reject player entry and both automatic/manual vault attempts. This behavior needs dedicated observer checks, not only server-side object persistence.
+Explicit device capabilities determine whether controller targeting applies. Passive hazards ignore it even if owned by the same faction or near a controller. Implement bed-spike jumping through a verified movement/animation path, not coordinate teleportation or damage immunity disguised as traversal. Spike Barrier collision must reject walking entry. Player vaulting with directional scratch risk now requires a native prototype; current runtime keeps vaulting blocked. This behavior needs dedicated observer checks, not only server-side object persistence.
 
 ## Scheduling and performance
 
@@ -57,7 +57,7 @@ Sleep, fast-forward, pause and large time deltas must preserve resources and sto
 | Per-thump retaliation | Historical Java thump paths are not a verified universal Lua event | Current build hook/observation, exact attacker/side, single hit under MP batching |
 | Autonomous damage/death | Zombie simulation ownership and death transport differ by mode | One-player dedicated then two-observer death/corpse/reward consistency |
 | Movement slowing | Other mods may own movement settings; network simulation may overwrite local state | Enter/exit, owner change, sprinters, unload and restoration |
-| Player traversal | Automatic bed-spike jumping and solid non-vaultable barriers are design requirements, not yet proven APIs | Current movement/animation evidence, facings/corners/footprints, blocked landing and interrupted jumps, multiple-player synchronization |
+| Player traversal | Automatic bed-spike jumping and directional-risk barrier vaulting are design requirements awaiting native proof | Current movement/animation evidence, facings/corners/footprints, blocked landing and interrupted jumps, multiple-player synchronization |
 | Beam linkage | Native proximity/remote traps are not an existing general wiring system | Occlusion, occupancy, disconnect, persistence and bounded checks |
 | Offline faction XP | Existing reward API describes credited participants, not all-member banked shares | Stable membership/life snapshots and exactly-once delivery |
 | Official score modifier | Addon registration alone cannot set an approved multiplier | Coordinated core classification, export, UI and leaderboard validation |

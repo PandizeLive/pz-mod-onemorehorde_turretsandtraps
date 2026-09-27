@@ -1,3 +1,4 @@
+ipairs = table.ipairs
 ISPanel = {derive = function(self, name) return {} end}
 UIFont = {Small = 1}
 function getTextManager() return {getFontHeight = function() return 19 end} end

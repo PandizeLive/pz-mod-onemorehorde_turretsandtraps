@@ -10,8 +10,9 @@
   "backupVersion": "0.2.0.3",
   "backupFilesVerified": 58,
   "archiveSHA256": "ee7d3be70241281553e961fb2fba0ec727e2a34451757e4365bae5fa8dea3690",
-  "clientLoadedVersion": "pending",
-  "inGameAcceptance": "pending",
+  "clientLoadedVersion": "0.2.1",
+  "inGameAcceptance": "partial",
   "workshopUpload": false,
-  "remotePush": false
+  "remotePush": false,
+  "clientVersionEvidence": "docs/TEST_v0.2.1.md"
 }

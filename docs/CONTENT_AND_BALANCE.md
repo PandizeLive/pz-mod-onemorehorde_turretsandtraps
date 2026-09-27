@@ -10,7 +10,7 @@ Transport: P2C1b introduces individual barrier items; P2C1c introduces five-barr
 | --- | --- | --- | --- |
 | Potato turret | Quiet, cheap, farmable ammunition; one shot per second, higher knockdown, potato impact pop and tiny splash | Cadence, hopper capacity, wear; pressure/power design TBD | P1C3 prototype; P2C3 content |
 | Bed spikes / Punji | Cheap excavated ground stakes; players automatically jump over them; distinct identity from Spear Traps | Digging/rearming effort; wear/catching capacity proposed | P2C2, beginning with traversal prototype |
-| Spike Barrier / Cheval de frise | Cheap freestanding path blocker; damages attackers on thumps; players cannot walk into or vault over it | Direction, footprint, structural health and servicing | P1C2 prototype; P2C2 content |
+| Spike Barrier / Cheval de frise | Cheap freestanding path blocker; damages attackers on thumps; blocks walking; player vaulting with front-side scratch risk is pending native proof | Direction, footprint, structural health and servicing | P1C2 prototype; P2C2 content |
 | Barbed barricade | Attach to an existing barricade; share its remaining HP; damage on thumps | Host health; independent wire wear proposed | P2C2 |
 | Concertina | Slow and damage while in contact | Wire cost, traffic wear, maximum slow proposed | P2C4 feasibility; P4C3 content |
 | Button / pressure plate | Pulse / maintained ON signal respectively | Placement, access, linkage limits TBD | P4C1 |
@@ -44,7 +44,7 @@ Recommended punji direction: shallow stake bed with replaceable bundles, partial
 
 Confirmed player traversal is automatic jumping over the bed spikes, regardless of faction. The footprint must support a proven jump; excavation choice must not silently produce an uncrossable bed or fake teleport. This makes bed spikes an accessible crossing for hostile players too, so do not balance them as an anti-player wall. Zombie crossing/damage behavior is a separate requirement.
 
-Spike Barrier/cheval needs a clear attacked face and native obstruction behavior, with player entry and all player vaulting blocked. Passive hazards do not gain friendly immunity or remote disarming from controller modes. Barbed barricades must not hurt zombies through the protected side, repair the host on upgrade, survive as an invisible attacker after host destruction, or process one thump repeatedly.
+Spike Barrier/cheval needs a clear attacked face and native obstruction behavior, with walking blocked. Player vaulting is now requested with 20% front-entry scratch risk and a safe rear; runtime remains non-vaultable until native proof. Passive hazards do not gain friendly immunity or remote disarming from controller modes. Barbed barricades must not hurt zombies through the protected side, repair the host on upgrade, survive as an invisible attacker after host destruction, or process one thump repeatedly.
 
 Concertina's damage is contact-only unless the owner later requests lingering damage. Recommend strongest-slow-only composition and a minimum movement floor. Exit, death, despawn, unload, and mod interference must restore appropriate movement. Do not overwrite another mod's entire speed state or permanently change a zombie's configured movement type.
 
@@ -77,3 +77,5 @@ The current repair keeps a provisional 70% direct-hit knockdown chance and a thr
 ## Deliberately deferred
 
 Live CCTV/remote aim, deep physical pits and climbing animations, general circuit logic, unlimited weapon-mod compatibility, incendiary systems, automatic distraction networks, and combat simulation outside the scoped Cure integration are not promised features. Reconsider only through a specific content decision and a bounded prototype.
+
+Basic barrier servicing (owner-approved 2026-09-27): pickup and free repair each take ten active seconds, stop on movement and award no XP. Pickup returns one full-condition item; repair restores 100 durability. Evaluate sustained-pressure balance because this intentionally makes repair a time-only cost. Five loose barriers currently weigh 30; the 67% reduction makes their pack 9.9.

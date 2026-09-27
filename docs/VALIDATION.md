@@ -39,12 +39,12 @@ Start with SP where sufficient. Add one-player dedicated only for networking, an
 - Pool allocations sum to the original pool, with bounded precision and retained fractional remainder; faction size does not create XP.
 - Offline ON includes the absent member in the divisor and preserves that entitlement. Offline OFF affects future allocations only.
 - Delivery and its receipt remain consistent across interruption; old-life entitlements cannot drift to a new life under the recommended policy.
-- Construction, pickup, dismantle, repair and settings toggles do not refill or duplicate resources.
+- Construction, pickup, dismantle, repair and settings toggles do not duplicate items or refill turret resources. Basic-barrier pickup/free repair intentionally restore full durability under C32; verify the ten-second delay and one-item return.
 - A lost/removed host object leaves no damaging barbs behind. Obstructions agree with sprites and attacked faces.
 - Held input is not a backlog of pulses. Reload restores current occupancy rather than replaying past triggers.
 - Control-unit changes affect only authorized individual/all-compatible-linked smart devices. Passive hazards remain unaffected, including under No one. Current smart-device target eligibility is revalidated before effects; changing factions/targets does not change reward ownership or bypass the chosen PvP/collateral policy.
 - Players of any faction automatically jump over bed spikes using visible synchronized traversal. Test walk/run/sprint input, supported directions/footprint, blocked landings and interruptions; no teleport or silent walk-through substitutes for the jump.
-- The Spike Barrier blocks walking into its footprint and automatic/manual player vaulting, including corner/diagonal approaches and movement commands; zombies can still interact through the intended obstruction/thump rules.
+- The Spike Barrier blocks walking into its footprint; existing runtime remains non-vaultable. The requested player vault prototype must cross the actual obstruction safely, roll once per completed front crossing (20% ordinary scratch), keep the rear safe, reject blocked landings and retain zombie obstruction/thumping.
 - Potato crowd effects are bounded, blocked appropriately and cannot create permanent knockdown chains.
 - Score reductions apply once, multiply correctly and retain earning-time history. Disabling/uninstalling cannot erase prior benefit.
 - Before P6, no kills, damage or rewards are synthesized for unloaded areas or stopped servers.
