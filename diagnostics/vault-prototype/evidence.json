@@ -1,0 +1,44 @@
+{
+  "checkpoint": "P2C2-vault",
+  "verifiedAtUTC": "2026-09-27T06:50:55.367169+00:00",
+  "installedPackageVersion": "0.2.3",
+  "runtimeChanges": false,
+  "headlessProof": "passed",
+  "nativeStateMovementDirections": 4,
+  "nativeWalkingCollisionDirections": 4,
+  "nativePathCollisionDirections": 4,
+  "animationEvents": "simulated",
+  "publicClimbEntryAndLanding": "not exercised",
+  "renderedPlayerTest": "pending",
+  "collisionChoice": "pending owner answer; no implied approval",
+  "nativeLogSHA256": "7f5e8e27982f553e1e70715c63daafd51c800e6cb96e213d1ccfae04304e2f24",
+  "results": [
+    "LOG  : General      f:0 st:50,891,427> [OMHTT-VaultProbe] heading=E walking=blocked hoppable=false nativeSlide=2.1,2.5",
+    "LOG  : General      f:0 st:50,891,428> [OMHTT-VaultProbe] heading=W walking=blocked hoppable=false nativeSlide=1.9,2.5",
+    "LOG  : General      f:0 st:50,891,429> [OMHTT-VaultProbe] heading=S walking=blocked hoppable=false nativeSlide=2.5,2.1",
+    "LOG  : General      f:0 st:50,891,429> [OMHTT-VaultProbe] heading=N walking=blocked hoppable=false nativeSlide=2.5,1.9",
+    "LOG  : General      f:0 st:50,891,429> [OMHTT-VaultProbe] native-state-execute=4/4 native-edge-collision=4/4 native-path-edge=4/4 bounded-collision=true animation-events=simulated rendered-client=not-tested"
+  ],
+  "gameEvidence": {
+    "zombie/ai/states/ClimbOverFenceState.class": {
+      "source": "projectzomboid.jar",
+      "sha256": "8ef648205edce35288d578d79f9eb9b7e3e24c60fd6d23194ab0b3ed94721b80"
+    },
+    "zombie/characters/IsoGameCharacter.class": {
+      "source": "loose class/file",
+      "sha256": "0863af67eb2e9794c2cfa9dfef73d2f506e77d6d5bcbddb5c88afa07983a7868"
+    },
+    "zombie/iso/objects/IsoThumpable.class": {
+      "source": "projectzomboid.jar",
+      "sha256": "8430264dcfb837ec1d9241dbba99b0e4ff7ddd7c11adec33bc6fd7ec49a2867a"
+    },
+    "zombie/iso/IsoGridSquare.class": {
+      "source": "projectzomboid.jar",
+      "sha256": "cf5ef9005829d258f6ef28394a9f514350fa8fa1ea5f6209cc7836a656f0b0eb"
+    },
+    "media/lua/client/TimedActions/ISClimbOverFence.lua": {
+      "source": "loose class/file",
+      "sha256": "356c6db79a8d686841aaecb548a83234e97bfbc29fb981cac4f3b9acf9b3f828"
+    }
+  }
+}
