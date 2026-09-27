@@ -9,3 +9,5 @@ Validation: 535 Kahlua assertions, 19 modules, 92 native translation keys and 71
 The first expanded native probe exposed missing C++ pathfinder metadata; direct tile-property initialization resolves it while keeping zombie hopping disabled. Each vault logs identity, approach, entry, completion/rejection, roll and injury. Native fence-key integration remains future work.
 
 Local test release only. Annotated rollback tag: `test/v0.2.4`. No successful Workshop content upload exists, so WORKSHOP_CHANGELOG.txt remains one cumulative draft containing all unuploaded changes.
+
+Installed locally: all 71 files match annotated tag `test/v0.2.4` (`0ca7095`), package manifest and archive. The complete previous 0.2.3 backup contains 70 verified files. See [installation evidence](../diagnostics/v0.2.4/local-release.json). Client-loaded version and owner acceptance remain pending.

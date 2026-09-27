@@ -4,6 +4,8 @@
 
 [C34 / P2C2-vault](PHASE_2_CHECKPOINT_2_VAULT.md) implements the approved edge-collision choice and native player Vault action, combined with the still-unaccepted 0.2.3 repair. Automated/native checks pass; owner SP acceptance is pending. [Release notes](PR_v0.2.4.md) and [complete combined test](PHASE_2_CHECKPOINT_2_VAULT.md#owner-test) distinguish headless evidence from rendered gameplay. Recipes/art remain unchanged. No remote push or Workshop upload is authorized or claimed.
 
+[Local installation evidence](../diagnostics/v0.2.4/local-release.json) verifies all 71 installed files against the manifest, archive and annotated `test/v0.2.4` source (`0ca7095`). All 70 files in the complete previous 0.2.3 backup also match its manifest. The archive is [OMHTT-0.2.4.zip](../artifacts/OMHTT-0.2.4.zip). The running client's loaded version and gameplay acceptance remain pending; restart before testing. Documentation/evidence-only commits can follow the gameplay tag without changing Contents.
+
 ## Current state
 
 | Field | State |
@@ -11,11 +13,11 @@
 | Project | OMH: Turrets & Traps |
 | Foundation date | 2026-09-25 |
 | Edition | One; feature controls in Sandbox |
-| Package version | 0.2.4 candidate; local installation being verified |
+| Package version | 0.2.4 installed; development test only |
 | Confirmed mod ID | OneMoreHorde_TurretsAndTraps |
 | Build evidence | B42.20.4 b0bbce05d5 with PZ Optimizer: dedicated startup/save/restart passed; player acceptance pending |
-| Runtime source / installable package | 0.2.4 source; 71 validated package files |
-| Git repository / remote | Local working branch; 0.2.4 tag/install pending; no remote configured |
+| Runtime source / installable package | 0.2.4 installed; all 71 tagged package files verified |
+| Git repository / remote | Local working branch; annotated test/v0.2.4 (0ca7095); no remote configured |
 | Workshop item / successful upload | None |
 | Public changelog baseline | No upload exists |
 | Official score support | Proposed; not implemented |
