@@ -7,11 +7,11 @@
 | Project | OMH: Turrets & Traps |
 | Foundation date | 2026-09-25 |
 | Edition | One; feature controls in Sandbox |
-| Package version | 0.2.2 candidate; development test only |
+| Package version | 0.2.2 installed; development test only |
 | Confirmed mod ID | OneMoreHorde_TurretsAndTraps |
 | Build evidence | B42.20.4 b0bbce05d5 with PZ Optimizer: dedicated startup/save/restart passed; player acceptance pending |
-| Runtime source / installable package | 0.2.2 validated; local tagged install pending |
-| Git repository / remote | Local working branch; test/v0.2.2 pending; no remote configured |
+| Runtime source / installable package | 0.2.2 installed; all 70 tagged files verified |
+| Git repository / remote | Local working branch; annotated test/v0.2.2 (7dd3004); no remote configured |
 | Workshop item / successful upload | None |
 | Public changelog baseline | No upload exists |
 | Official score support | Proposed; not implemented |
@@ -19,7 +19,7 @@
 
 ## Current menu, servicing and bundle candidate
 
-Version `0.2.2` combines the owner-requested Crafting category and readable descriptions with basic-barrier pickup/free repair and five-item bundles. [Changes](PR_v0.2.2.md), [scope/evidence/complete owner test](PHASE_2_CHECKPOINT_1C.md). Pickup/free repair take ten active seconds; recovery intentionally resets basic durability under the owner's explicit direction. Native pack/unpack transactions pass, and 299 Kahlua assertions cover menu/layout and guarded service behavior. Fresh write/read server processes passed in 38.0/36.6 seconds, restoring the same 16 native objects at 37 condition. Requested directional vaulting remains pending its native collision/animation prototype; 0.2.2 retains non-vaultable blocking. Local install evidence is pending. The cumulative Workshop draft includes all unuploaded content; no upload baseline exists.
+Version `0.2.2` combines the owner-requested Crafting category and readable descriptions with basic-barrier pickup/free repair and five-item bundles. [Changes](PR_v0.2.2.md), [scope/evidence/complete owner test](PHASE_2_CHECKPOINT_1C.md). Pickup/free repair take ten active seconds; recovery intentionally resets basic durability under the owner's explicit direction. Native pack/unpack transactions pass, and 299 Kahlua assertions cover menu/layout and guarded service behavior. Fresh write/read server processes passed in 38.0/36.6 seconds, restoring the same 16 native objects at 37 condition. Requested directional vaulting remains pending its native collision/animation prototype; 0.2.2 retains non-vaultable blocking. [Install evidence](../diagnostics/v0.2.2/local-release.json) verifies all 70 installed/tagged files, the matching [archive](../artifacts/OMHTT-0.2.2.zip), and all 66 previous-version backup files. The running 0.2.2 client and player acceptance remain pending. Later documentation-only commits leave tagged Contents unchanged. The cumulative Workshop draft includes all unuploaded content; no upload baseline exists.
 
 ## Previous portable construction candidate
 
