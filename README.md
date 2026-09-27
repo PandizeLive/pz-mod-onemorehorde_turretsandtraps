@@ -1,6 +1,6 @@
 # OMH: Turrets & Traps
 
-Project foundation created 2026-09-25. Current candidate: **0.2.3**. The [service/destruction repair and Sandbox checkpoint](docs/PHASE_2_CHECKPOINT_1C_REPAIR.md) fixes the [failed 0.2.2 test](docs/TEST_v0.2.2.md), adds configurable barrier damage/HP and defaults basic damage to 10. Recipes, ten-second free repair/pickup and five-item bundles remain unchanged. Automated/native checks pass; new SP acceptance remains pending. Vaulting is the next prototype. No Workshop release exists.
+Project foundation created 2026-09-25. Current candidate: **0.2.3**. The [service/destruction repair and Sandbox checkpoint](docs/PHASE_2_CHECKPOINT_1C_REPAIR.md) fixes the [failed 0.2.2 test](docs/TEST_v0.2.2.md), adds configurable barrier damage/HP and defaults basic damage to 10. Recipes, ten-second free repair/pickup and five-item bundles remain unchanged. Automated/native checks pass; new SP acceptance remains pending. [Vaulting feasibility](docs/PHASE_2_CHECKPOINT_2_VAULT.md) is underway for the owner-requested combined test; collision-shape selection is pending. No Workshop release exists.
 
 One edition with a Sandbox toggle menu. The planned mod adds maintainable defensive equipment to Project Zomboid Build 42, with optional Horde Night, Trait Shop, and Cure Defense integrations. Recheck the installed game build before implementing any engine-dependent behavior.
 

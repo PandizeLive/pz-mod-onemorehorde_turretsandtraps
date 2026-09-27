@@ -145,3 +145,7 @@ Version 0.2.2 implements the menu correction, nearby condition display and C32 a
 
 - C33: Owner requests configurable basic Spike Barrier damage and HP, reducing default damage to **10**. 0.2.3 adds Damage (0-1000, default 10) and Maximum Durability (1-10000, default 100). Bounds and preserving remaining durability percentage on maximum changes are implementation choices. Free ten-second repair/pickup remain unchanged. Reinforced 25-damage design stays pending and is not silently retuned.
 - 0.2.2 acceptance failed service load order, tooltip formatting and native destruction re-entry: [review](TEST_v0.2.2.md). Earlier basic 20-damage tuning/statistics are superseded by C33; historical evidence is retained. C31 vaulting remains unimplemented pending native proof.
+
+## 2026-09-27 combined checkpoint testing
+
+The owner authorized proceeding to the next checkpoint and testing it together with 0.2.3. [P2C2-vault](PHASE_2_CHECKPOINT_2_VAULT.md) begins with a native collision/movement probe. Its fence-style edge-collision proposal retains two build tiles but changes which ground positions are blocked; owner selection is pending. This is not approval to alter collision or claim the vault/scratch roll is implemented. Installed 0.2.3 remains the tagged repair candidate with player acceptance pending.

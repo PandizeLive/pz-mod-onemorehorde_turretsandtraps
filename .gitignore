@@ -25,3 +25,8 @@ diagnostics/captures/
 diagnostics/v*/persistence-classes/
 diagnostics/v*/native-objects/
 diagnostics/v*/*.bytecode.txt
+
+diagnostics/vault-prototype/persistence-classes/
+diagnostics/vault-prototype/native-objects/
+diagnostics/vault-prototype/*.bytecode.txt
+diagnostics/vault-prototype/api.txt

@@ -19,6 +19,7 @@ public final class NativePersistenceCheck {
     }
 
     private static void verify(Path directory, String mode) throws Exception {
+        if ("1".equals(System.getenv("OMHTT_VAULT_PROBE"))) NativeVaultProbe.verify();
         Object pack = Class.forName("zombie.fileSystem.TexturePackDevice").getConstructor(String.class, int.class).newInstance("OMHTT_Barriers", 0);
         Class<?> entriesType = Class.forName("zombie.fileSystem.FileSystem$TexturePackTextures");
         Object entries = entriesType.getConstructor().newInstance();

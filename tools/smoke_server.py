@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 GAME = Path(os.environ.get("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"))
 VERSION = re.search(r"^modversion=(.+)$", (ROOT / "Contents/mods/OneMoreHorde_TurretsAndTraps/42.20/mod.info").read_text(), re.MULTILINE).group(1).strip()
-OUTPUT = ROOT / "diagnostics" / ("v" + VERSION)
+OUTPUT = ROOT / "diagnostics" / ("vault-prototype" if os.environ.get("OMHTT_VAULT_PROBE") == "1" else "v" + VERSION)
 CACHE = ROOT / "diagnostics/p1c1/server-cache"
 
 
@@ -25,7 +25,7 @@ def main():
     transcript = OUTPUT / ("server-" + os.environ.get("OMHTT_PROBE_MODE", "write") + ".log")
     classes = OUTPUT / "persistence-classes"
     classes.mkdir(exist_ok=True)
-    subprocess.run(["C:/Program Files/Java/jdk-17/bin/javac.exe", "-d", str(classes), str(ROOT / "tools/NativePersistenceCheck.java")], check=True)
+    subprocess.run(["C:/Program Files/Java/jdk-17/bin/javac.exe", "-d", str(classes), str(ROOT / "tools/NativePersistenceCheck.java"), str(ROOT / "tools/NativeVaultProbe.java")], check=True)
     command = [str(GAME / "jre64/bin/java.exe"), "--enable-native-access=ALL-UNNAMED",
         "--add-exports=java.base/jdk.internal.misc=ALL-UNNAMED", "-XX:-CreateCoredumpOnCrash", "-Xmx1536m",
         "-Djava.library.path=./natives/;./natives/win64/;./", "-cp", str(classes) + ";.;projectzomboid.jar", "NativePersistenceCheck", str(OUTPUT / "native-objects"), os.environ.get("OMHTT_PROBE_MODE", "write"),
@@ -62,6 +62,8 @@ def main():
                 process.wait(timeout=15)
             probe.unlink(missing_ok=True)
     text = transcript.read_text(encoding="utf-8", errors="replace")
+    if os.environ.get("OMHTT_VAULT_PROBE") == "1":
+        assert "[OMHTT-VaultProbe] native-state-execute=4/4 native-edge-collision=4/4" in text, "Native vault proof failed"
     assert "[OMHTT-Smoke] native-persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") + " parts=16" in text, "Native object persistence failed"
     assert "Shutdown handling finished" in text, "No clean shutdown evidence"
     assert "Saving GlobalModData" in text, "No native global state save"

@@ -1,0 +1,21 @@
+LOG  : General      f:0 st:50,869,481> version=42.20.4 b0bbce05d5 demo=false
+LOG  : Mod          f:0 st:50,879,686> loading OneMoreHorde_TurretsAndTraps
+LOG  : Lua          f:0 st:50,886,384> [OMHTT] server-ready version=0.2.3 game=42.20
+LOG  : Network      f:0 st:50,887,515> *** SERVER STARTED ****
+LOG  : Lua          f:0 st:50,887,612> [OMHTT-Smoke] native-translations checked=3 missing=0
+LOG  : Lua          f:0 st:50,889,565> [OMHTT-Smoke] native-build-menu registered=1 title=Spike_Barrier category=Carpentry callback=resolved spGate=open disabledGate=closed dottedCallback=rejected
+LOG  : Lua          f:0 st:50,889,565> [OMHTT-Smoke] native-sandbox damage=10 maxHealth=100 tooltip=formatted
+LOG  : Lua          f:0 st:50,889,570> [OMHTT-Smoke] native-construction entity=OMHTTSpikeBarrier faces=4 parts=16 inputs=3 translated=true mpGate=closed
+LOG  : Lua          f:0 st:50,889,571> [OMHTT-Smoke] native-sprites objects=16 valid=16 categoryTranslated=true
+LOG  : Lua          f:0 st:50,889,594> [OMHTT-Smoke] native-ingredients mixes=75 missingWood=blocked missingBindings=blocked missingTool=blocked dullTool=blocked brokenTool=blocked preview=nonconsuming
+LOG  : Lua          f:0 st:50,889,597> [OMHTT-Smoke] native-migration staleSprite=repaired missingComponent=repaired health=37 repeat=unchanged
+LOG  : Lua          f:0 st:50,889,597> [OMHTT-Smoke] portable-script weight=6 file=media/scripts/omhtt_items.txt icon=OMHTT_Barrier0 plankWeight=3
+LOG  : Lua          f:0 st:50,889,598> [OMHTT-Smoke] portable-item name=Spike Barrier weight=6 translated=Spike Barrier
+LOG  : Lua          f:0 st:50,889,614> [OMHTT-Smoke] native-ingredients mixes=75 missingWood=blocked missingBindings=blocked missingTool=blocked dullTool=blocked brokenTool=blocked preview=nonconsuming
+LOG  : Lua          f:0 st:50,889,690> [OMHTT-Smoke] native-bundles packed=5to1 unpacked=1to5 weight=9.9 xp=0 insufficient=blocked
+LOG  : Lua          f:0 st:50,889,691> [OMHTT-Smoke] native-portable recipe=registered mixes=75 crafted=1 tool=retained deployInputs=1 deployXP=0 missing=blocked damaged=blocked toggles=blocked mp=blocked
+LOG  : General      f:0 st:50,891,445> Saving GlobalModData
+LOG  : General      f:0 st:50,891,453> [OMHTT-Smoke] native-texturepack entries=16 pages=4 png=valid
+LOG  : General      f:0 st:50,891,475> [OMHTT-Smoke] native-persistence mode=write parts=16 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved
+LOG  : General      f:0 st:50,901,050> Shutdown handling finished
+Dedicated startup/restart/save/shutdown smoke passed in 34.3s; no player connected.
