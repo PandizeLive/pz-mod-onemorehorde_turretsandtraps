@@ -77,9 +77,10 @@ end
 ---@param record table Canonical record
 ---@return IsoThumpable object Created part
 local function createPart(square, record)
-    local object = IsoThumpable.new(getCell(), square, partSprite(record, square), false)
+    local north = record.collisionModel == "edge-v1" and (record.facing == 4 or record.facing == 12)
+    local object = IsoThumpable.new(getCell(), square, partSprite(record, square), north)
     object:setName(F.PREFIX .. record.id)
-    object:setBlockAllTheSquare(true)
+    object:setBlockAllTheSquare(record.collisionModel ~= "edge-v1")
     object:setCanPassThrough(false)
     object:setIsHoppable(false)
     object:setIsThumpable(true)
@@ -214,7 +215,7 @@ function Footprint.adoptBuild(object, player, x, y, facing, entity)
         local other = reserve(secondX, secondY, z)
         slot.device = {id = "test-" .. tostring(store.nextId), kind = "barrier", condition = F.barrierHealth(), maxHealth = F.barrierHealth(), revision = 1,
             testOwner = player:getUsername(), builderUsername = player:getUsername(), placementSource = "construction",
-            constructionEntity = entity,
+            constructionEntity = entity, collisionModel = "edge-v1",
             ammo = 0, shots = 0, nextShot = 0, facing = facing, observedLoss = 0,
             cooldownClock = "realtime-ms-v1", width = 2, x = x, y = y, z = z}
         slot.epoch = math.max(slot.epoch, other.epoch) + 1
@@ -233,7 +234,7 @@ function Footprint.adoptBuild(object, player, x, y, facing, entity)
     end
     object:setName(F.PREFIX .. record.id)
     object:setSpriteFromName(partSprite(record, square))
-    object:setBlockAllTheSquare(true)
+    object:setBlockAllTheSquare(record.collisionModel ~= "edge-v1")
     object:setCanPassThrough(false)
     object:setIsHoppable(false)
     object:setIsThumpable(true)
@@ -250,7 +251,8 @@ function Footprint.adoptBuild(object, player, x, y, facing, entity)
     Diagnostics.emit("construction-part", {id = record.id, x = square:getX(), y = square:getY(), z = z,
         anchorX = x, anchorY = y, facing = facing, complete = Footprint.parts(record) ~= nil,
         builder = player:getUsername(), buildCheat = player:isBuildCheat(), condition = record.condition, recipe = entity,
-        sprite = object:getSpriteName(), nativeConfigValid = spriteConfig and spriteConfig:isValid()})
+        sprite = object:getSpriteName(), nativeConfigValid = spriteConfig and spriteConfig:isValid(),
+        collisionModel = record.collisionModel, north = object:getNorth()})
     return record
 end
 
@@ -419,6 +421,7 @@ end
 function Footprint.rotate(slot)
     if not Footprint.sync(slot) then return "Unavailable" end
     local record = slot.device
+    if record.collisionModel == "edge-v1" then return "BarrierRedeploy" end
     local facing = (record.facing + 4) % 16
     local x, y = Footprint.second(record, facing)
     local square = getCell():getGridSquare(x, y, record.z)

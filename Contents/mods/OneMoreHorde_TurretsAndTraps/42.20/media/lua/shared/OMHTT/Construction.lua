@@ -8,6 +8,39 @@ local previewState = nil
 local previewTime = -1000
 local menuAvailable = nil
 
+---@param sprite string Native part sprite
+---@param north boolean Native cursor orientation
+---@return boolean north Correct blocking edge for this part
+---@nodiscard
+function Construction.edgeNorth(sprite, north)
+    local index = tonumber(string.match(sprite, "^omhtt_barrier_01_(%d+)$"))
+    if index == nil or index > 15 then return north end
+    local heading = math.floor(index / 2) % 4
+    return heading == 1 or heading == 3
+end
+
+---@return nil
+function Construction.installEdges()
+    if isClient() or isServer() then return end
+    require("BuildingObjects/ISBuildingObject")
+    require("BuildingObjects/ISBuildIsoEntity")
+    if ISBuildIsoEntity.omhttEdgeInstalled then return end
+    local original = ISBuildIsoEntity.setInfo
+    ---@param self ISBuildIsoEntity Native cursor
+    ---@param square IsoGridSquare Part tile
+    ---@param north boolean Cursor orientation
+    ---@param sprite string Part sprite
+    ---@param openSprite string? Open sprite
+    ---@return nil
+    function ISBuildIsoEntity:setInfo(square, north, sprite, openSprite)
+        return original(self, square, Construction.edgeNorth(sprite, north), sprite, openSprite)
+    end
+    ISBuildIsoEntity.omhttEdgeInstalled = true
+    Diagnostics.emit("construction-edge-hook", {model = "edge-v1"})
+end
+
+Events.OnGameStart.Add(Construction.installEdges)
+
 ---@param params table Native recipe menu parameters
 ---@return boolean available Initial SP construction gate
 ---@nodiscard
@@ -53,7 +86,20 @@ function Construction.initializeSprites()
             error("[OMHTT] Persistent barrier tile missing or conflicting: " .. name)
         end
     end
-    Diagnostics.emit("construction-sprites", {persistent = 16, tiledef = 7316})
+    -- Direct metadata avoids the tile loader turning these developer markers into generic climbable walls.
+    for i = 0, 15 do
+        local properties = getSprite(Sprites.SHEET .. i):getProperties()
+        local north = Construction.edgeNorth(Sprites.SHEET .. i, false)
+        if north then
+            properties:set(IsoFlagType.WallN)
+            properties:set(IsoFlagType.TallHoppableN)
+        else
+            properties:set(IsoFlagType.WallW)
+            properties:set(IsoFlagType.TallHoppableW)
+        end
+        properties:set(IsoFlagType.CantClimb)
+    end
+    Diagnostics.emit("construction-sprites", {persistent = 16, tiledef = 7316, edgeMetadata = true})
 end
 
 Events.OnInitGlobalModData.Add(Construction.initializeSprites)

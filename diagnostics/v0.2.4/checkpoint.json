@@ -1,0 +1,27 @@
+{
+  "version": "0.2.4",
+  "assertions": 535,
+  "luaModules": 19,
+  "nativeTranslationKeys": 92,
+  "packageFiles": 71,
+  "nativePublicEntryDirections": 4,
+  "nativePathfinderImplementations": 2,
+  "nativePersistence": {
+    "legacyParts": 8,
+    "edgeParts": 8,
+    "health": 37,
+    "maximum": 200,
+    "freshProcessRead": "passed"
+  },
+  "nativeScratch": "environmental lower-leg; no Knox infection",
+  "animationEvents": "simulated in headless fixtures",
+  "renderedSPAcceptance": "pending",
+  "archiveSHA256": "f433cc25a6f4fa342698909fbf6a7b71bc062d2ccc70117dc033c2b0cfce1d77",
+  "evidenceSHA256": {
+    "server-read-console.log": "24fb92957a11a2cd56fcbe5fd416d96153cb0eb3aea0df62546e4302f319bea2",
+    "server-read.log": "3734b0a17e131a44fd502cc86028981c1261d4f86bf70989ead490101827a0c4",
+    "server-write-console.log": "0cf739d9cf3254795319a5341c5cd27450c0a37eea0c5575f21935e5273b37d9",
+    "server-write.log": "7436994a591ae36af8b9558ddf22fc595756dc8d351f82543a10922d0d104a19",
+    "validation.log": "47073c44b43943d5963589b67875b92eb1fcf6c6f6eec0df8d64db7753d10656"
+  }
+}

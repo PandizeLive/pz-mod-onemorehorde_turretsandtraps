@@ -19,7 +19,7 @@ public final class NativePersistenceCheck {
     }
 
     private static void verify(Path directory, String mode) throws Exception {
-        if ("1".equals(System.getenv("OMHTT_VAULT_PROBE"))) NativeVaultProbe.verify();
+        NativeVaultProbe.verify();
         Object pack = Class.forName("zombie.fileSystem.TexturePackDevice").getConstructor(String.class, int.class).newInstance("OMHTT_Barriers", 0);
         Class<?> entriesType = Class.forName("zombie.fileSystem.FileSystem$TexturePackTextures");
         Object entries = entriesType.getConstructor().newInstance();
@@ -66,7 +66,8 @@ public final class NativePersistenceCheck {
             check(get(get(source, "getSprite"), "getID").equals(get(get(restored, "getSprite"), "getID")), "Tile ID changed");
             check(get(restored, "getHealth").equals(37), "Damaged health reset");
             check(get(restored, "getMaxHealth").equals(200), "Configured maximum health reset");
-            check(Boolean.TRUE.equals(get(restored, "isBlockAllTheSquare")), "Blocking lost");
+            check(get(source, "isBlockAllTheSquare").equals(get(restored, "isBlockAllTheSquare")), "Collision model lost");
+            check(get(source, "getNorth").equals(get(restored, "getNorth")), "Native edge orientation lost");
             check(Boolean.FALSE.equals(get(restored, "isCanPassThrough")), "Pass-through changed");
             check(Boolean.FALSE.equals(get(restored, "isHoppable")), "Hopping changed");
             Object config = get(restored, "getSpriteConfig");
@@ -75,8 +76,9 @@ public final class NativePersistenceCheck {
             check(get(get(sourceConfig, "getObjectInfo"), "getName").equals(get(get(config, "getObjectInfo"), "getName")), "Entity changed");
             Object data = get(restored, "getModData");
             check("fixture-owner".equals(call(data, "rawget", new Class<?>[]{Object.class}, "OMHTTFixtureOwner")), "Owner marker lost");
+            if (i >= 8) check("edge-v1".equals(call(data, "rawget", new Class<?>[]{Object.class}, "OMHTTCollisionModel")), "Edge marker lost");
         }
-        System.out.println("[OMHTT-Smoke] native-persistence mode=" + mode + " parts=16 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved");
+        System.out.println("[OMHTT-Smoke] native-persistence mode=" + mode + " parts=16 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved legacy=8 edges=8 orientation=preserved");
     }
 
     public static void main(String[] args) throws Exception {

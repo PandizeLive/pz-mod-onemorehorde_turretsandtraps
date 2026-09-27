@@ -3,6 +3,7 @@ import json
 import os
 import re
 import subprocess
+import zipfile
 from pathlib import Path
 
 from PIL import Image
@@ -108,6 +109,10 @@ def main():
         "zombie/gameStates/ChooseGameInfo.class", "zombie/entity/GameEntityFactory.class",
         "zombie/entity/ComponentType.class", "zombie/inventory/InventoryItem.class",
         "zombie/scripting/objects/Item.class",
+        "media/lua/client/TimedActions/ISClimbOverFence.lua",
+        "zombie/characters/BodyDamage/BodyPart.class", "zombie/iso/objects/IsoWindow.class",
+        "zombie/ai/states/ClimbOverFenceState.class", "zombie/pathfind/SquareUpdateTask.class",
+        "zombie/pathfind/nativeCode/SquareUpdateTask.class", "zombie/characters/IsoPlayer.class",
         "zombie/GameTime.class", "zombie/inventory/ItemContainer.class",
         "zombie/iso/IsoGridSquare.class", "zombie/iso/IsoObjectUtils.class",
         "media/lua/shared/ISBaseObject.lua",
@@ -125,6 +130,10 @@ def main():
         "media/scripts/generated/timedactions.txt",
     ]
     evidence = {name: hashlib.sha256((GAME / name).read_bytes()).hexdigest() for name in sources if (GAME / name).is_file()}
+    with zipfile.ZipFile(GAME / "projectzomboid.jar") as native:
+        for name in sources:
+            if name not in evidence and name in native.namelist():
+                evidence[name + " (jar)"] = hashlib.sha256(native.read(name)).hexdigest()
     version = re.search(r"^modversion=(.+)$", (PACKAGE / "42.20/mod.info").read_text(), re.MULTILINE).group(1).strip()
     manifest = {"version": version, "gameRoot": str(GAME), "files": files, "gameEvidence": evidence,
         "inGameAcceptance": "pending", "nativeTableFormatVersion": 249}

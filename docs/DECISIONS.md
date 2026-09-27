@@ -148,4 +148,7 @@ Version 0.2.2 implements the menu correction, nearby condition display and C32 a
 
 ## 2026-09-27 combined checkpoint testing
 
-The owner authorized proceeding to the next checkpoint and testing it together with 0.2.3. [P2C2-vault](PHASE_2_CHECKPOINT_2_VAULT.md) begins with a native collision/movement probe. Its fence-style edge-collision proposal retains two build tiles but changes which ground positions are blocked; owner selection is pending. This is not approval to alter collision or claim the vault/scratch roll is implemented. Installed 0.2.3 remains the tagged repair candidate with player acceptance pending.
+The owner authorized proceeding to the next checkpoint and testing it together with 0.2.3. C34 closes the collision choice; 0.2.3 remains unaccepted rather than retrospectively passed.
+
+- C34: Owner selected **fence-style collision** for [P2C2-vault](PHASE_2_CHECKPOINT_2_VAULT.md), keeping the two-tile construction footprint and one shared durability pool. Version 0.2.4 implements native fence climbing through the Spike Barrier submenu, front 20 percent scratch / safe rear. Older built barriers retain full-square collision until pickup/redeployment. Debug-only placed prototypes remain legacy fixtures. No recipes, art or reinforcement changes are included.
+- Implementation detail: one lower-leg environmental scratch after a completed front crossing. This is a flat roll without a clothing protection reroll; native wound severity/traits apply, and the scratch does not roll Knox infection. God Mode prevents injury. Interrupted/failed/removed/dead-player attempts do not roll. Normal fence-key integration is deferred; no generic zombie hopping flags are enabled.

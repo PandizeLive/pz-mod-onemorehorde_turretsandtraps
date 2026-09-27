@@ -30,3 +30,5 @@ Read README.md, docs/DECISIONS.md, and docs/ROADMAP.md before project changes. T
 - Spike Barriers are 1x2, two tiles across and one deep. Front and side ends retaliate; the rear is safe. Preserve both-tile identity, condition, rotation and retirement.
 
 - [2026-09-27] Owner approved combining barrier pickup, repair and five-item bundles. Pickup returns a full-condition item; free Repair and pickup each take ten seconds and interrupt on movement. This supersedes condition-preserving basic-barrier recovery. No service/packing/redeployment XP. Keep vaulting pending native proof, and final damaged artwork owner-sourced.
+
+- [2026-09-27] Owner selected fence-style collision for P2C2-vault, preserving the 1x2 build footprint. New construction/deployment uses edge collision; older full-square barriers are recovered/redeployed for conversion. Combine its owner test with the still-unaccepted 0.2.3 repair. Native proof does not replace rendered SP acceptance.

@@ -1,6 +1,6 @@
 name=OMH: Turrets & Traps
 id=OneMoreHorde_TurretsAndTraps
-modversion=0.2.3
+modversion=0.2.4
 versionMin=42.20
 description=Single-player development test: build or craft directional 1x2 Spike Barriers with Carpentry 1. Inspect condition, pick up or freely repair a barrier in ten seconds. Bundle five barriers with 67% reduced encumbrance. Native placement, persistent parts and readable Crafting/Building statistics. Player vaulting, reinforcement, final art and integrations remain in development. Use a disposable test world.
 tiledef=OMHTT_Barriers 7316

@@ -44,7 +44,7 @@ local function makeCursor(heading, number, portable)
     cursor.isValid = ISBuildIsoEntity.isValid
     function cursor:updateModData() end
     function cursor:setInfo(square, north, sprite)
-        local object = IsoThumpable.new(getCell(), square, sprite, north)
+        local object = IsoThumpable.new(getCell(), square, sprite, C.edgeNorth(sprite, north))
         square:AddSpecialObject(object)
         C.onCreate({thumpable = object, character = testPlayer, facing = heading})
         object:transmitCompleteItemToClients()
@@ -93,8 +93,9 @@ for index = 1, #headings do
     check(cursor.consumed == 1 and cursor.processed == 1 and #cursor.parts == 2, "native two-tile creation consumes one recipe " .. heading)
     local record = P.slot(first).device
     check(record.facing == (index - 1) * 4 and record.width == 2 and record.builderUsername == testPlayer:getUsername(), "heading and builder persist " .. heading)
-    check(cursor.parts[1].data.OMHTT.id == cursor.parts[2].data.OMHTT.id and cursor.parts[1].blockAll
-        and not cursor.parts[1].hoppable, "paired solid non-vaultable native parts " .. heading)
+    check(cursor.parts[1].data.OMHTT.id == cursor.parts[2].data.OMHTT.id and not cursor.parts[1].blockAll
+        and not cursor.parts[1].hoppable and cursor.parts[1]:getNorth() == (heading == "n" or heading == "s")
+        and record.collisionModel == "edge-v1", "paired directional edges stay zombie-blocking " .. heading)
     check(string.find(cursor.parts[1]:getSpriteName(), "omhtt_barrier_01_", 1, true)
         and cursor.parts[1]:getSpriteName() ~= cursor.parts[2]:getSpriteName(), "native parts retain distinct SpriteConfig names " .. heading)
     local nextId = testData.nextId

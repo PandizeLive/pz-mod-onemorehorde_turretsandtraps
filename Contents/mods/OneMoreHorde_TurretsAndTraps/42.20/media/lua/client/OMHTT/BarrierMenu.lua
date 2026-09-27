@@ -3,6 +3,7 @@ require("OMHTT/BarrierServiceAction")
 require("TimedActions/ISTimedActionQueue")
 local F = require("OMHTT/Foundation")
 local Diagnostics = require("OMHTT/Diagnostics")
+local Vault = require("OMHTT/BarrierVault")
 
 ---@param object IsoThumpable Selected part
 ---@param player IsoPlayer Acting player
@@ -45,7 +46,19 @@ local function fillMenu(playerIndex, context, worldobjects, test)
                     menu:addOption(getText("ContextMenu_OMHTT_PickupBarrier"), object, queueService, player, record.id, "Pickup")
                     local repair = menu:addOption(getText("ContextMenu_OMHTT_RepairBarrier"), object, queueService, player, record.id, "Repair")
                     repair.notAvailable = record.condition >= record.maxHealth
-                    Diagnostics.emit("barrier-menu", {id = record.id, condition = record.condition, max = record.maxHealth})
+                    local plan, reason = Vault.plan(player, object, record.id)
+                    local label = reason
+                    if plan then
+                        label = "ContextMenu_OMHTT_VaultRear"
+                        if plan.side == "front" then
+                            label = "ContextMenu_OMHTT_VaultFront"
+                        end
+                    end
+                    local vault = menu:addOption(getText(label), object, Vault.queue, player, record.id)
+                    vault.notAvailable = plan == nil
+                    Diagnostics.emit("barrier-menu", {id = record.id, condition = record.condition, max = record.maxHealth,
+                        collisionModel = record.collisionModel, vault = plan and plan.side or reason,
+                        playerX = player:getX(), playerY = player:getY(), playerZ = player:getZ()})
                     return
                 end
             end

@@ -28,10 +28,22 @@ public final class NativeVaultProbe {
             Object positive = squareConstructor.newInstance(cell, null, 2, 2, 0);
             Object negative = squareConstructor.newInstance(cell, null, north ? 2 : 1, north ? 1 : 2, 0);
             Object object = thumpableType.getConstructor(cellType, squareType, String.class, boolean.class)
-                .newInstance(cell, positive, "omhtt_barrier_01_0", north);
+                .newInstance(cell, positive, north ? "omhtt_barrier_01_2" : "omhtt_barrier_01_0", north);
             call(object, "setBlockAllTheSquare", new Class<?>[]{boolean.class}, false);
             call(object, "setCanPassThrough", new Class<?>[]{boolean.class}, false);
             call(object, "setIsHoppable", new Class<?>[]{boolean.class}, false);
+            call(object, "setIsThumpable", new Class<?>[]{boolean.class}, true);
+            ((java.util.List<Object>)call(positive, "getObjects", new Class<?>[0])).add(object);
+            ((java.util.List<Object>)call(positive, "getSpecialObjects", new Class<?>[0])).add(object);
+            Object n = directionsType.getField(north ? "N" : "W").get(null);
+            Object s = directionsType.getField(north ? "S" : "E").get(null);
+            call(positive, "setAdjacentSquare", new Class<?>[]{directionsType, squareType}, n, negative);
+            call(negative, "setAdjacentSquare", new Class<?>[]{directionsType, squareType}, s, positive);
+            for (String engine : new String[]{"zombie.pathfind.SquareUpdateTask", "zombie.pathfind.nativeCode.SquareUpdateTask"}) {
+                Method wall = Class.forName(engine).getDeclaredMethod(north ? "hasWallThumpableN" : "hasWallThumpableW", squareType);
+                wall.setAccessible(true);
+                check(Boolean.TRUE.equals(wall.invoke(null, positive)), "Pathfinder did not recognize thumpable edge: " + engine);
+            }
             check(Boolean.TRUE.equals(collide.invoke(object, null, positive, negative)), "Leaving edge did not block walking");
             check(Boolean.TRUE.equals(collide.invoke(object, null, negative, positive)), "Entering edge did not block walking");
             check(Boolean.FALSE.equals(call(object, "isHoppable", new Class<?>[0])), "Barrier became zombie-hoppable");
@@ -49,7 +61,11 @@ public final class NativeVaultProbe {
                 call(player, "setCurrent", new Class<?>[]{squareType}, from);
                 call(player, "setX", new Class<?>[]{float.class}, x + 0.5f);
                 call(player, "setY", new Class<?>[]{float.class}, y + 0.5f);
-                stateType.getMethod("setParams", characterType, directionsType).invoke(state, player, direction);
+                Object context = call(player, "getActionContext", new Class<?>[0]);
+                call(context, "clearActionContextEvents", new Class<?>[0]);
+                check(Boolean.FALSE.equals(call(player, "canClimbOverWall", new Class<?>[]{directionsType}, direction)), "Ungated wall climb route opened");
+                call(player, "climbOverFence", new Class<?>[]{directionsType}, direction);
+                check(Boolean.TRUE.equals(call(context, "hasEventOccurred", new Class<?>[]{String.class}, "EventClimbFence")), "Public native entry rejected " + heading);
                 call(player, "setVariable", new Class<?>[]{String.class, boolean.class}, "ClimbFenceStarted", true);
                 call(player, "setVariable", new Class<?>[]{String.class, String.class}, "ClimbFenceOutcome", "success");
                 for (int tick = 0; tick < 200; tick++) stateType.getMethod("execute", characterType).invoke(state, player);
@@ -65,6 +81,6 @@ public final class NativeVaultProbe {
                 System.out.println("[OMHTT-VaultProbe] heading=" + heading + " walking=blocked hoppable=false nativeSlide=" + actualX + "," + actualY);
             }
         }
-        System.out.println("[OMHTT-VaultProbe] native-state-execute=4/4 native-edge-collision=4/4 native-path-edge=4/4 bounded-collision=true animation-events=simulated rendered-client=not-tested");
+        System.out.println("[OMHTT-VaultProbe] native-state-execute=4/4 native-edge-collision=4/4 native-path-edge=4/4 native-pathfinder=2/2 public-entry=4/4 bounded-collision=true animation-events=simulated rendered-client=not-tested");
     }
 }

@@ -62,8 +62,8 @@ def main():
                 process.wait(timeout=15)
             probe.unlink(missing_ok=True)
     text = transcript.read_text(encoding="utf-8", errors="replace")
-    if os.environ.get("OMHTT_VAULT_PROBE") == "1":
-        assert "[OMHTT-VaultProbe] native-state-execute=4/4 native-edge-collision=4/4" in text, "Native vault proof failed"
+    assert "[OMHTT-Smoke] native-scratch lowerLeg=true knox=false" in text, "Native scratch failed"
+    assert "[OMHTT-VaultProbe] native-state-execute=4/4 native-edge-collision=4/4" in text, "Native vault proof failed"
     assert "[OMHTT-Smoke] native-persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") + " parts=16" in text, "Native object persistence failed"
     assert "Shutdown handling finished" in text, "No clean shutdown evidence"
     assert "Saving GlobalModData" in text, "No native global state save"

@@ -20,11 +20,17 @@ function Barrier.face(record, x, y)
     end
     local dx = x - record.x - 0.5 + ny * (width - 1) * 0.5
     local dy = y - record.y - 0.5 - nx * (width - 1) * 0.5
+    local depth = 0.5
+    if record.collisionModel == "edge-v1" then
+        dx = dx + math.abs(nx) * 0.5
+        dy = dy + math.abs(ny) * 0.5
+        depth = 0
+    end
     local forward = dx * nx + dy * ny
     local lateral = -dx * ny + dy * nx
     local sideDistance = math.abs(lateral) - width * 0.5
-    if forward < 0 and -forward - 0.5 >= sideDistance then return "rear" end
-    if forward - 0.5 >= sideDistance then return "front" end
+    if forward < 0 and -forward - depth >= sideDistance then return "rear" end
+    if forward - depth >= sideDistance then return "front" end
     return "side"
 end
 

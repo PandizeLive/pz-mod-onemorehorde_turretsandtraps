@@ -32,7 +32,7 @@ function print(value) testLogs[#testLogs + 1] = tostring(value) end
 function getTimestampMs() return testMillis end
 function getMouseXScaled() return 400 end
 function getMouseYScaled() return 300 end
-IsoDirections = {N = "N"}
+IsoDirections = {N = "N", S = "S", E = "E", W = "W"}
 FBORenderChunk = {DIRTY_REDRAW = 1, DIRTY_OBJECT_MODIFY = 256, DIRTY_OBJECT_ADD = 64}
 IsoUtils = {XToScreen = function(x, y, z, ignored) return x end, YToScreen = function(x, y, z, ignored) return y end}
 IsoCamera = {getOffX = function() return 0 end, getOffY = function() return 0 end}
@@ -72,7 +72,7 @@ function testPlayer:getRole() return {hasCapability = function() return testAdmi
 function getSpecificPlayer(index) return testPlayer end
 
 Events = {}
-for _, name in pairs({"OnInitGlobalModData", "LoadGridsquare", "OnObjectAboutToBeRemoved", "OnClientCommand", "OnServerCommand", "OnFillWorldObjectContextMenu", "OnGameStart", "OnTick", "OnPostRender", "OnZombieUpdate", "OnZombieDead"}) do
+for _, name in pairs({"OnInitGlobalModData", "LoadGridsquare", "OnObjectAboutToBeRemoved", "OnClientCommand", "OnServerCommand", "OnFillWorldObjectContextMenu", "OnGameStart", "OnTick", "OnPostRender", "OnZombieUpdate", "OnZombieDead", "OnPlayerUpdate"}) do
     local handlers = {}
     Events[name] = {handlers = handlers, Add = function(callback) table.insert(handlers, callback) end}
 end
@@ -199,6 +199,8 @@ end}
 IsoThumpable = {new = function(cell, square, sprite, north)
     local object = IsoObject.new(square, sprite, "")
     object.kind = "IsoThumpable"
+    function object:getNorth() return north end
+    function object:isTallHoppable() return false end
     function object:setBlockAllTheSquare(value) self.blockAll = value end
     function object:setCanPassThrough(value) self.passThrough = value end
     function object:setIsHoppable(value) self.hoppable = value end

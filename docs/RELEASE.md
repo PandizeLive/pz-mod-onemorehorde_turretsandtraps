@@ -1,5 +1,9 @@
 # Release state and publication policy
 
+## 0.2.4 fence-collision candidate
+
+[C34 / P2C2-vault](PHASE_2_CHECKPOINT_2_VAULT.md) implements the approved edge-collision choice and native player Vault action, combined with the still-unaccepted 0.2.3 repair. Automated/native checks pass; owner SP acceptance is pending. [Release notes](PR_v0.2.4.md) and [complete combined test](PHASE_2_CHECKPOINT_2_VAULT.md#owner-test) distinguish headless evidence from rendered gameplay. Recipes/art remain unchanged. No remote push or Workshop upload is authorized or claimed.
+
 ## Current state
 
 | Field | State |
@@ -7,11 +11,11 @@
 | Project | OMH: Turrets & Traps |
 | Foundation date | 2026-09-25 |
 | Edition | One; feature controls in Sandbox |
-| Package version | 0.2.3 installed; development test only |
+| Package version | 0.2.4 candidate; local installation being verified |
 | Confirmed mod ID | OneMoreHorde_TurretsAndTraps |
 | Build evidence | B42.20.4 b0bbce05d5 with PZ Optimizer: dedicated startup/save/restart passed; player acceptance pending |
-| Runtime source / installable package | 0.2.3 installed; all 70 tagged files verified |
-| Git repository / remote | Local working branch; annotated test/v0.2.3 (f11699f); no remote configured |
+| Runtime source / installable package | 0.2.4 source; 71 validated package files |
+| Git repository / remote | Local working branch; 0.2.4 tag/install pending; no remote configured |
 | Workshop item / successful upload | None |
 | Public changelog baseline | No upload exists |
 | Official score support | Proposed; not implemented |

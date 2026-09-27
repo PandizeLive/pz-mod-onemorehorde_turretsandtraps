@@ -42,5 +42,6 @@
     "UI_OMHTT_SpikeBarrierDescription": "A wall of spikes, used to keep the undead out.\n\nSize: 1x2. Damage and durability use your Sandbox settings.",
     "UI_OMHTT_PickupNoRoom": "Not enough inventory capacity to pick up the Spike Barrier.",
     "UI_OMHTT_BarrierStatistics": "Statistics:\nDamage: %1 per thump (front and sides)\nDurability: %2\nSize: 1x2",
-    "UI_OMHTT_BarrierPurpose": "A wall of spikes, used to keep the undead out."
+    "UI_OMHTT_BarrierPurpose": "A wall of spikes, used to keep the undead out.",
+    "UI_OMHTT_BarrierRedeploy": "Pick up and redeploy this barrier to change its facing."
 }
