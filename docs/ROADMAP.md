@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-**Current: [P2C3a-c — modular potato turret foundation, 0.2.9](PHASE_2_CHECKPOINT_3.md).** C48-C50 approve inventory/persistence, revised metal recipes, native deployment and powered manual firing. Combine player acceptance with the held P2C2b test. Module storage is implemented; P2C3d adds module effects and P2C3e proves multiplayer/performance. The previous barrier package remains the installed baseline until release evidence records replacement. Native furniture Install/Pickup stays deferred.
+**Current: [P2C3a-c — modular potato turret foundation, 0.2.9](PHASE_2_CHECKPOINT_3.md).** C48-C50 approve inventory/persistence, revised metal recipes, native deployment and powered manual firing. Combine player acceptance with the held P2C2b test. Module storage is implemented; P2C3d adds module effects and P2C3e proves multiplayer/performance. Version 0.2.9 is installed and archived, with exact tagged hashes and a verified 0.2.8 backup recorded in RELEASE.md. Native furniture Install/Pickup stays deferred.
 
 **Previous candidate: P2C2 outline correction, version 0.2.6.** C40 approves shared native front edges plus exposed outer end caps and an open rear, replacing the C39 full-block/separate-player proposal. Connected runs and perpendicular corners omit internal caps; removal restores newly exposed ends. [Scope, evidence and owner test](PHASE_2_CHECKPOINT_2_OUTLINE.md). 1,433 Kahlua assertions and native write/read checks pass; rendered SP acceptance remains pending. Reinforcement and multiplayer remain pending.
 

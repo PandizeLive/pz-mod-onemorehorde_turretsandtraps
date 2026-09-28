@@ -1,10 +1,12 @@
 # Release state and publication policy
 
-## Current candidate: 0.2.9
+## Current installation: 0.2.9
 
 [P2C3a-c scope and combined owner test](PHASE_2_CHECKPOINT_3.md), [release notes](PR_v0.2.9.md). Universal base and potato head, five approved recipes, native loaded-item deployment, actual ammo/module/battery containers, full contents weight, ten-second pickup and powered manual firing. Held P2C2b barrier selection/highlight and separate reinforced sprites remain included. Module effects and multiplayer gameplay are deferred.
 
 Validation targets stock B42.21.0 / 4a0e9546ec. The old installed PZOptimizer LuaCompiler override fails normal startup before mod Lua; stock-first isolated probes leave that installation untouched. Rendered player acceptance remains pending. No Workshop upload exists; the changelog remains cumulative.
+
+Passed: 1,545 Kahlua assertions, 29 runtime Lua files, 184 native translation keys, 23 packet checks and 91 packaged files. Fresh native write/read probes passed in 41.2/41.7 seconds. [Installation evidence](../diagnostics/v0.2.9/local-release.json) verifies all 91 installed/archive files against annotated `test/v0.2.9` (`3bba4c5`) and all 83 files in the complete previous-version backup. [Archive](../artifacts/OMHTT-0.2.9.zip). Restart after resolving the optimizer mismatch before the combined player test. Later evidence/documentation commits do not alter tagged Contents.
 
 ## Previous installation: 0.2.8
 
@@ -47,15 +49,15 @@ Validation: 1,433 Kahlua assertions, 24 runtime modules, 103 translation keys, 2
 | Project | OMH: Turrets & Traps |
 | Foundation date | 2026-09-25 |
 | Edition | One; feature controls in Sandbox |
-| Package version | 0.2.8 installed; SP development test |
+| Package version | 0.2.9 installed; SP development test |
 | Confirmed mod ID | OneMoreHorde_TurretsAndTraps |
-| Build evidence | B42.20.4 b0bbce05d5 with PZ Optimizer: dedicated startup/save/restart passed; player acceptance pending |
-| Runtime source / installable package | 0.2.8 tagged source, archive and installation; 83 verified files |
-| Git repository / remote | Local working branch; annotated test/v0.2.8 (f2acb5c); no remote configured |
+| Build evidence | Stock B42.21.0 4a0e9546ec: isolated startup/save/restart passed; normal startup blocked by old optimizer override |
+| Runtime source / installable package | 0.2.9 tagged source, archive and installation; 91 verified files |
+| Git repository / remote | Local working branch; annotated test/v0.2.9 (3bba4c5); no remote configured |
 | Workshop item / successful upload | None |
 | Public changelog baseline | No upload exists |
 | Official score support | Proposed; not implemented |
-| Player tests | Owner reports reinforcement worked well; separate 0.2.7.1 test waived. P2C2b selection/highlight rendered acceptance pending |
+| Player tests | Held P2C2b barrier test combined with P2C3a-c; complete sequence in PHASE_2_CHECKPOINT_3.md; rendered acceptance pending |
 
 ## Current correction and Sandbox candidate
 
