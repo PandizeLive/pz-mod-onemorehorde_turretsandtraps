@@ -30,7 +30,8 @@ function OMHTTBarrierApproachAction:update()
     end
     local dx, dy = self.location:getX() - from:getX(), self.location:getY() - from:getY()
     if not record or record.id ~= self.id or now - self.startedAt > 20000 or now - self.progressAt > 3000
-        or math.abs(dx) + math.abs(dy) > 1 or from:testCollideAdjacent(self.character, dx, dy, 0) then
+        or math.abs(dx) + math.abs(dy) > 1
+        or ((dx ~= 0 or dy ~= 0) and from:testCollideAdjacent(self.character, dx, dy, 0)) then
         self.failure = "blocked-or-stalled"
         self:forceStop()
         return
@@ -75,7 +76,10 @@ end
 ---@return nil
 function OMHTTBarrierApproachAction:stop()
     Diagnostics.emit("barrier-approach-stop", {id = self.id, reason = self.failure or "cancelled",
-        x = self.character:getX(), y = self.character:getY(), step = self.step})
+        x = self.character:getX(), y = self.character:getY(), step = self.step,
+        targetX = self.location:getX(), targetY = self.location:getY(),
+        elapsed = self.startedAt and getTimestampMs() - self.startedAt or 0,
+        stalled = self.progressAt and getTimestampMs() - self.progressAt or 0})
     if self.failure then
         self.character:setHaloNote(getText("UI_OMHTT_ServiceBlocked"), 255, 170, 80, 180)
     end

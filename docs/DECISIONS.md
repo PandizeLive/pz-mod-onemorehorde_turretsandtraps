@@ -188,3 +188,9 @@ The owner authorized proceeding to the next checkpoint and testing it together w
 - C42: Owner approves the P2C2a patch and explicitly selects the same free ten-second pickup/Repair and full-condition recovery for reinforced barriers, preserving their tier. Reinforced bundles contain five items of one tier only and use the same 67 percent weight reduction. This extends C32 to the reinforced tier; mixed-tier bundles are excluded.
 - 0.2.7 implements C25/C26/C41/C42. Upgrade duration is ten seconds; inventory/carried-bag materials and usable retained hammer are required outside native Building Cheat. Cheat upgrades do not award XP. Reinforced item weight remains provisionally 6, pack 9.9, pending balance acceptance.
 - See [checkpoint, current engine evidence and full test](PHASE_2_CHECKPOINT_2A.md). Native-entry timeout diagnosis remains open; no player test is retroactively marked complete.
+
+## 2026-09-27 upgrade repair and item weights
+
+- C43: Every upgrade also repairs the object. This supersedes C26's missing-health rule: a basic 70/100 barrier becomes reinforced 200/200 with default settings. Later Sandbox maximum changes still preserve remaining percentage.
+- C44: Basic barrier weight is 4; reinforced weight is 5. Five-item same-tier packs retain the approved 67 percent reduction, weighing 6.6 and 8.25 respectively.
+- The owner reports intermittent service reach warnings and asks whether native Install/Pickup is possible. 0.2.7.1 corrects the zero-distance collision check on arrival. A dedicated Moveables adapter is feasible in principle but remains proposed, not implemented or approved by this question.

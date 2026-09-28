@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-**Current: [P2C2a — visibility and reinforcement, 0.2.7](PHASE_2_CHECKPOINT_2A.md).** Implements sight-permitting collision, the approved upgrade, tier-preserving pickup/deployment, separate reinforced bundles and Sandbox tuning. The [0.2.6 test](TEST_v0.2.6.md) remains partial; native-entry timeout diagnosis and rendered acceptance stay open. Multiplayer and potato gameplay are later checkpoints.
+**Current: [P2C2a correction, 0.2.7.1](PHASE_2_CHECKPOINT_2A_REPAIR.md).** Adds full repair on upgrade, weights 4/5 and packs 6.6/8.25, plus service-arrival correction. Native Moveables pickup/place integration is a proposed separate checkpoint. The underlying [0.2.7 checkpoint](PHASE_2_CHECKPOINT_2A.md) Implements sight-permitting collision, the approved upgrade, tier-preserving pickup/deployment, separate reinforced bundles and Sandbox tuning. The [0.2.6 test](TEST_v0.2.6.md) remains partial; native-entry timeout diagnosis and rendered acceptance stay open. Multiplayer and potato gameplay are later checkpoints.
 
 **Previous candidate: P2C2 outline correction, version 0.2.6.** C40 approves shared native front edges plus exposed outer end caps and an open rear, replacing the C39 full-block/separate-player proposal. Connected runs and perpendicular corners omit internal caps; removal restores newly exposed ends. [Scope, evidence and owner test](PHASE_2_CHECKPOINT_2_OUTLINE.md). 1,433 Kahlua assertions and native write/read checks pass; rendered SP acceptance remains pending. Reinforcement and multiplayer remain pending.
 

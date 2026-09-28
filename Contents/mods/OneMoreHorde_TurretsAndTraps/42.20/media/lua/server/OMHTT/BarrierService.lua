@@ -90,7 +90,6 @@ function Service.apply(player, object, id, operation)
             Diagnostics.emit("barrier-service-rejected", {id = id, action = operation, reason = "Requirements"})
             return false
         end
-        local missing = record.maxHealth - record.condition
         for i = 1, #materials.items do
             local item = materials.items[i]
             player:removeFromHands(item)
@@ -98,7 +97,7 @@ function Service.apply(player, object, id, operation)
         end
         record.tier = "reinforced"
         record.maxHealth = F.barrierHealth(record)
-        record.condition = math.max(1, record.maxHealth - missing)
+        record.condition, record.observedLoss = record.maxHealth, 0
         record.revision, slot.epoch = record.revision + 1, slot.epoch + 1
         local objects = Footprint.healthObjects(record)
         for i = 1, #objects do

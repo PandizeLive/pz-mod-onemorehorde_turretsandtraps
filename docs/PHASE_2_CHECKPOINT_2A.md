@@ -1,5 +1,7 @@
 # P2C2a — visibility and reinforced Spike Barrier (0.2.7)
 
+**Superseded tuning:** [0.2.7.1 correction](PHASE_2_CHECKPOINT_2A_REPAIR.md) makes upgrades fully repair and changes weights to 4/5 (packs 6.6/8.25). The behavior and evidence below describe the historical 0.2.7 package.
+
 Status: implemented and validated; local install evidence is recorded in Release state. Rendered SP acceptance remains pending. C25/C26 approve the upgrade recipe; C41 requires visibility; C42 approves reinforced recovery and same-tier bundles.
 
 ## Resulting behavior

@@ -1,6 +1,12 @@
 # Release state and publication policy
 
-## Current installation: 0.2.7
+## Current candidate: 0.2.7.1
+
+[Correction and owner test](PHASE_2_CHECKPOINT_2A_REPAIR.md), [release notes](PR_v0.2.7.1.md). Upgrades fully repair; loose weights are 4/5, packs 6.6/8.25. Service arrival no longer queries adjacent collision against the current tile. Native Moveables controls remain proposed.
+
+Validation passed: 1,474 Kahlua assertions, 24 runtime modules, 121 native translation keys, 23 packets and 77 package files. The native 42.20.4 smoke completed in 77.3 seconds, verifying actual item weights, both same-tier pack/unpack recipes, visibility/collision probes and serialization of 28 world objects. This correction changes no persistence format; the smoke writes and restores each object in-process. Rendered SP acceptance is pending. No Workshop upload exists.
+
+## Previous installation: 0.2.7
 
 [Checkpoint and owner test](PHASE_2_CHECKPOINT_2A.md), [release notes](PR_v0.2.7.md). C41/C42 restore sight through collision and add the approved reinforced upgrade with tier-preserving recovery, deployment and same-tier bundles. No rendered acceptance or resolution of the unexplained native-entry timeout is claimed.
 

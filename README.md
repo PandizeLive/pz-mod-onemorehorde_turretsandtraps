@@ -1,6 +1,6 @@
 # OMH: Turrets & Traps
 
-Project foundation created 2026-09-25. **0.2.7 is installed: see-through collision and reinforced Spike Barriers (P2C2a).** It includes same-tier recovery/deployment/bundles, reinforced Sandbox tuning and continued-running vault tracking. [Checkpoint and full owner test](docs/PHASE_2_CHECKPOINT_2A.md). Automated/native evidence and local installation status are recorded in [Release state](docs/RELEASE.md); rendered SP acceptance remains pending. The [0.2.6 test](docs/TEST_v0.2.6.md) remains partial historical evidence. No Workshop release exists.
+Project foundation created 2026-09-25. **0.2.7.1 is prepared: upgrades fully repair, lighter barriers/packs, and service-arrival correction.** See the [correction and owner test](docs/PHASE_2_CHECKPOINT_2A_REPAIR.md). The underlying P2C2a adds see-through collision and reinforced barriers. It includes same-tier recovery/deployment/bundles, reinforced Sandbox tuning and continued-running vault tracking. [Checkpoint and full owner test](docs/PHASE_2_CHECKPOINT_2A.md). Automated/native evidence and local installation status are recorded in [Release state](docs/RELEASE.md); rendered SP acceptance remains pending. The [0.2.6 test](docs/TEST_v0.2.6.md) remains partial historical evidence. No Workshop release exists.
 
 One edition with a Sandbox toggle menu. The planned mod adds maintainable defensive equipment to Project Zomboid Build 42, with optional Horde Night, Trait Shop, and Cure Defense integrations. Recheck the installed game build before implementing any engine-dependent behavior.
 

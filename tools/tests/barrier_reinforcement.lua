@@ -69,14 +69,16 @@ local action = testServiceAction(testPlayer, object, record.id, "Reinforce")
 action:start()
 check(not action:complete(), "reinforcement cannot finish early")
 for i = 1, 101 do action:update() end
-check(action:complete() and record.tier == "reinforced" and record.maxHealth == 200 and record.condition == 170,
-    "upgrade preserves 30 missing health while doubling maximum")
+check(action:complete() and record.tier == "reinforced" and record.maxHealth == 200 and record.condition == 200,
+    "upgrade repairs all missing health while doubling maximum")
 check(#testInventory.items == 1 and testInventory.items[1] == hammer and testUpgradeXP == 30,
     "upgrade consumes exactly two planks and eight nails, retains hammer, grants 30 base XP")
 check(not action:complete() and not Service.apply(testPlayer, object, record.id, "Reinforce") and testUpgradeXP == 30,
     "repeat/stale completion cannot duplicate upgrade XP")
 check(F.barrierDamage(record) == 25 and F.barrierDamage() == 10, "reinforced damage is independent of basic damage")
-for _, part in pairs(P.healthObjects(record)) do check(part:getHealth() == 170 and part:getMaxHealth() == 200, "all visual/edge parts share reinforced condition") end
+for _, part in pairs(P.healthObjects(record)) do check(part:getHealth() == 200 and part:getMaxHealth() == 200, "all visual/edge parts share reinforced condition") end
+P.colliders(record)[1]:setHealth(170)
+P.sync(slot)
 local owner, id, anchor = record.testOwner, record.id, record.slotKey
 testData = nativeRoundTrip(testData); S.initialize()
 record = testData.tiles[anchor].device

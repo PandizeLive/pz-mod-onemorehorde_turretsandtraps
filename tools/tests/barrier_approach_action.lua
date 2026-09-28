@@ -52,3 +52,23 @@ testPlayer.pressed = true
 cancelled:update()
 check(cancelled.stopped and not cancelled.completed, "manual movement cancels approach without a service award")
 testPlayer.pressed = false
+
+-- Native same-square collision can be true while walking toward the tile center.
+testPlayer.x, testPlayer.y = 705.5, 700.5
+local arrivalRoute = A.route(testPlayer, record)
+local arrival = actionFor(arrivalRoute)
+arrival:start()
+local waypoint = arrivalRoute[1]
+local originalCollision = waypoint.testCollideAdjacent
+function waypoint:testCollideAdjacent(player, dx, dy, dz)
+    if dx == 0 and dy == 0 then return true end
+    return originalCollision(self, player, dx, dy, dz)
+end
+testPlayer.x, testPlayer.y = waypoint.x + 0.99, waypoint.y + 0.5
+path.result = BehaviorResult.Working
+arrival:update()
+check(not arrival.stopped and not arrival.completed, "entering waypoint tile must not test collision against itself or finish early")
+path.result = BehaviorResult.Succeeded
+arrival:update()
+check(not arrival.stopped and arrival.step == 2, "native path success advances waypoint after tile entry")
+waypoint.testCollideAdjacent = originalCollision
