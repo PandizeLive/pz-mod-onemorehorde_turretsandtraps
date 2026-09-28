@@ -1,10 +1,10 @@
 # Release state and publication policy
 
-## Current candidate: 0.2.7.1
+## Current installation: 0.2.7.1
 
 [Correction and owner test](PHASE_2_CHECKPOINT_2A_REPAIR.md), [release notes](PR_v0.2.7.1.md). Upgrades fully repair; loose weights are 4/5, packs 6.6/8.25. Service arrival no longer queries adjacent collision against the current tile. Native Moveables controls remain proposed.
 
-Validation passed: 1,474 Kahlua assertions, 24 runtime modules, 121 native translation keys, 23 packets and 77 package files. The native 42.20.4 smoke completed in 77.3 seconds, verifying actual item weights, both same-tier pack/unpack recipes, visibility/collision probes and serialization of 28 world objects. This correction changes no persistence format; the smoke writes and restores each object in-process. Rendered SP acceptance is pending. No Workshop upload exists.
+Validation passed: 1,474 Kahlua assertions, 24 runtime modules, 121 native translation keys, 23 packets and 77 package files. The native 42.20.4 smoke completed in 77.3 seconds, verifying actual item weights, both same-tier pack/unpack recipes, visibility/collision probes and serialization of 28 world objects. This correction changes no persistence format; the smoke writes and restores each object in-process. Rendered SP acceptance is pending. No Workshop upload exists. [Installation evidence](../diagnostics/v0.2.7.1/local-release.json) verifies 77 installed files and the [archive](../artifacts/OMHTT-0.2.7.1.zip) against annotated `test/v0.2.7.1` (`8a333d6`). All 77 previous 0.2.7 backup files also match. Restart PZ before testing.
 
 ## Previous installation: 0.2.7
 
@@ -35,15 +35,15 @@ Validation: 1,433 Kahlua assertions, 24 runtime modules, 103 translation keys, 2
 | Project | OMH: Turrets & Traps |
 | Foundation date | 2026-09-25 |
 | Edition | One; feature controls in Sandbox |
-| Package version | 0.2.7 installed; SP development test |
+| Package version | 0.2.7.1 installed; SP development test |
 | Confirmed mod ID | OneMoreHorde_TurretsAndTraps |
 | Build evidence | B42.20.4 b0bbce05d5 with PZ Optimizer: dedicated startup/save/restart passed; player acceptance pending |
-| Runtime source / installable package | 0.2.7 tagged source, archive and installation; 77 verified files |
-| Git repository / remote | Local working branch; annotated test/v0.2.7 (b71d753); no remote configured |
+| Runtime source / installable package | 0.2.7.1 tagged source, archive and installation; 77 verified files |
+| Git repository / remote | Local working branch; annotated test/v0.2.7.1 (8a333d6); no remote configured |
 | Workshop item / successful upload | None |
 | Public changelog baseline | No upload exists |
 | Official score support | Proposed; not implemented |
-| Player tests | 0.2.6 partial evidence; sight-blocking defect, completed repair/reload and four unsettled vault results remain open |
+| Player tests | 0.2.7 partial capture verifies two upgrades and reinforced pickup; arrival defect patched in 0.2.7.1, rendered correction acceptance pending |
 
 ## Current correction and Sandbox candidate
 

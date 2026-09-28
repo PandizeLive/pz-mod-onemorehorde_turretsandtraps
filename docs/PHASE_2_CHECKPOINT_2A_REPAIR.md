@@ -1,6 +1,6 @@
 # P2C2a correction — 0.2.7.1
 
-C43/C44 authorize full repair on upgrade and lighter portable barriers. Prepared for local installation; rendered acceptance remains pending.
+C43/C44 authorize full repair on upgrade and lighter portable barriers. Installed locally with all 77 files verified against the tag/archive; rendered acceptance remains pending.
 
 ## Changes
 
@@ -24,7 +24,7 @@ This means the user-facing native controls are feasible in principle, not imposs
 
 ## Verification
 
-1,474 Kahlua assertions pass, including damaged upgrade to full HP, all-part synchronization, subsequent damage persistence, 10-second service and zero-offset arrival regression. 24 runtime modules, 121 native translation keys, 23 packet serializations and 77 package files pass. Native item/pack transactions and serialization are checked by the installed-engine smoke; final results appear in Release state. World/player/UI doubles and headless probes do not prove rendered acceptance.
+1,474 Kahlua assertions pass, including damaged upgrade to full HP, all-part synchronization, subsequent damage persistence, 10-second service and zero-offset arrival regression. 24 runtime modules, 121 native translation keys, 23 packet serializations and 77 package files pass. Native item/pack transactions and serialization passed the installed-engine smoke in 77.3 seconds; results appear in Release state. World/player/UI doubles and headless probes do not prove rendered acceptance.
 
 ## Owner test
 
