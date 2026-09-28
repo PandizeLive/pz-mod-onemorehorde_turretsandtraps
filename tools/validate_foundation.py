@@ -62,7 +62,7 @@ def main():
     for key in keys:
         assert key in translations, f"Missing translation: {key}"
     textures = list((PACKAGE / "42.20/media/textures").glob("*.png"))
-    assert len(textures) == 31, "Legacy visuals plus eight unique native-construction part sprites required"
+    assert len(textures) == 36, "Legacy visuals plus eight unique native-construction part sprites required"
     for heading, index in zip("ENWS", range(4)):
         for part in "AB":
             assert (PACKAGE / f"42.20/media/textures/OMHTT_BuildBarrier{heading}_{part}.png").read_bytes() == (PACKAGE / f"42.20/media/textures/OMHTT_Barrier{index}.png").read_bytes(), "Construction sprites reuse authorized technical markers"

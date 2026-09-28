@@ -141,6 +141,7 @@ public final class KahluaCheck {
             {"OMHTT/BarrierVault", base + "client/OMHTT/BarrierVault.lua"},
             {"_", Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/client/TimedActions/WalkToTimedAction.lua").toString()},
             {"OMHTT/BarrierApproachAction", base + "client/OMHTT/BarrierApproachAction.lua"},
+            {"OMHTT/BarrierSelection", base + "client/OMHTT/BarrierSelection.lua"},
             {"_", base + "client/OMHTT/BarrierMenu.lua"},
             {"_", "tools/tests/service_load_order_after.lua"},
             {"OMHTT/Damage", base + "server/OMHTT/Damage.lua"},
@@ -186,6 +187,7 @@ public final class KahluaCheck {
             {"_", "tools/tests/barrier_overlay.lua"},
             {"_", "tools/tests/barrier_outline.lua"},
             {"_", "tools/tests/barrier_reinforcement.lua"},
+            {"_", "tools/tests/barrier_selection.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

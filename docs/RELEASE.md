@@ -1,6 +1,12 @@
 # Release state and publication policy
 
-## Current installation: 0.2.7.1
+## Current candidate: 0.2.8
+
+[P2C2b scope and owner test](PHASE_2_CHECKPOINT_2B.md), [release notes](PR_v0.2.8.md). Reliable footprint-based barrier selection, separate shared-corner choices, paired hover highlighting, independent reinforced texture pages/icons and picker diagnostics. C45 approves implementation; C47 approves Range/Velocity/Rapid-Fire stacking in the future module plan. No module runtime, balance or recipe change is included.
+
+Validation passed: 1,502 Kahlua assertions, 25 runtime modules, 122 native translation keys, 23 packets and 83 packaged files. Native B42.20.4 write/read probes passed in 34.5/37.7 seconds; the read probe verifies 28 exact sprite-to-page mappings, nine PNG pages, native per-player highlight/outline toggling and serialized object identities. The owner reports reinforcement worked well and waived the separate 0.2.7.1 test; new rendered selection/highlight acceptance remains pending. Native furniture Install/Pickup is deferred. No Workshop content upload exists; changelog remains cumulative.
+
+## Previous installation: 0.2.7.1
 
 [Correction and owner test](PHASE_2_CHECKPOINT_2A_REPAIR.md), [release notes](PR_v0.2.7.1.md). Upgrades fully repair; loose weights are 4/5, packs 6.6/8.25. Service arrival no longer queries adjacent collision against the current tile. Native Moveables controls remain proposed.
 

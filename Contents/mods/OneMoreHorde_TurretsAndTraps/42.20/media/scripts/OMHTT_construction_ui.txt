@@ -16,7 +16,7 @@ module Base
         entity ES_OMHTTDeployReinforcedBarrier {
             LuaWindowClass = ISEntityWindow,
             DisplayName = UI_OMHTT_DeployReinforcedBarrier,
-            Icon = OMHTT_Barrier0,
+            Icon = OMHTT_ReinforcedBarrier0,
         }
     }
 }

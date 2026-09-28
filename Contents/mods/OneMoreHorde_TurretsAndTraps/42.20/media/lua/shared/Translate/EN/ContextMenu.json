@@ -25,5 +25,6 @@
     "ContextMenu_OMHTT_VaultLanding": "Vault unavailable: landing is obstructed or unsafe",
     "ContextMenu_OMHTT_BarrierFacing": "Spike Barrier (%1)",
     "ContextMenu_OMHTT_Reinforce": "Reinforce",
-    "ContextMenu_OMHTT_ReinforcedFacing": "Reinforced Spike Barrier (%1)"
+    "ContextMenu_OMHTT_ReinforcedFacing": "Reinforced Spike Barrier (%1)",
+    "ContextMenu_OMHTT_BarrierChoice": "%1 (%2)"
 }

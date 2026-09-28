@@ -34,7 +34,7 @@ function getMouseXScaled() return 400 end
 function getMouseYScaled() return 300 end
 IsoDirections = {N = "N", S = "S", E = "E", W = "W"}
 FBORenderChunk = {DIRTY_REDRAW = 1, DIRTY_OBJECT_MODIFY = 256, DIRTY_OBJECT_ADD = 64}
-IsoUtils = {XToScreen = function(x, y, z, ignored) return x end, YToScreen = function(x, y, z, ignored) return y end}
+IsoUtils = {XToIso = function() return 400 end, YToIso = function() return 300 end, XToScreen = function(x, y, z, ignored) return x end, YToScreen = function(x, y, z, ignored) return y end}
 IsoCamera = {getOffX = function() return 0 end, getOffY = function() return 0 end}
 testAdmin = true
 testPlayer = {x = 100.5, y = 100.5, z = 0, dead = false}

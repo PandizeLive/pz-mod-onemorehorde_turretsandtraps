@@ -1,20 +1,46 @@
-# Modular turret proposal
+# Turret inventory and module plan
 
-Owner ideas: a turret inventory holding motion detection, smart-fire, rapid-fire and velocity modules. This document records a proposal, not implemented content or approval of the numerical defaults below. Keep the single edition and Sandbox toggles. No art direction is introduced.
+Owner-confirmed direction, updated 2026-09-27. No module runtime is implemented in P2C2b/0.2.8. Numerical bonuses, recipes, slot counts and power costs remain proposals until approved.
 
-Recommended interaction: open the turret's service inventory and place actual component items into dedicated compatible slots. General storage can hold ammunition, but an item sitting loose in storage does not activate a module. Start with one sensor, one control, one rate and one velocity slot; final slot count remains a design decision. Limit complexity before introducing tiers or arbitrary stacking.
+## Inventory interaction
 
-| Module | Proposed behavior | Tradeoff / unresolved detail |
+Each turret has an ammunition area and module slots. Dragging actual components into/out of slots is the intended installation/removal flow; right-click installation menus are superseded. A timed transaction behind those transfers is recommended but its duration is unsettled. Generic storage alone does not activate a component. Native inventory/UI feasibility is P2C3a; do not promise arbitrary native slot widgets before proving them.
+
+Installed component items, ammunition, wear and committed cooldowns must survive saving and pickup/redeployment. Transactions must not duplicate components, discard ammo, reset cooldowns or provide repeated module-swap repair. Tier upgrades restore full condition under C43; module-swap repair policy still needs an explicit decision if presented as an upgrade.
+
+## Eight module roles
+
+| Module | Confirmed role | Stacking / unsettled details |
 | --- | --- | --- |
-| Motion detection | Detect movement within a bounded arc/range and unobstructed lane | Detection alone does not identify factions or authorize firing at players; power/cost TBD |
-| Smart-fire | Enables automatic firing and recognized target filters when compatible detection is present | Recognition requires a suitable sensor/camera; obey server PvP rules and control-unit settings |
-| Rapid-fire | Proposed 1.5 shots/sec from the confirmed base of 1 shot/sec | One module, no stacking; faster ammo consumption is inherent, additional wear/power TBD |
-| Velocity | Increase direct damage; optionally shorten travel time if simulated projectiles are implemented | Current prototype applies immediate hits, so there is no projectile travel-speed value to upgrade; extra pressure/wear/power TBD |
+| Firing | Accept FIRE requests and operate the firing mechanism, enforcing ammunition, cooldown and the eventual power requirement | One recommended; power source/consumption TBD |
+| Motion Detection | Follow eligible zombies within range and a forward cone, aim, and supply FIRE requests | Stationary zombies remain detectable; no movement/breathing simulation. One recommended; arc/range/turning TBD |
+| Filter | Choose Closest, Furthest, Weakest or Toughest target priority | One recommended; Closest default and current-health ranking proposed. Priority is distinct from player/faction eligibility |
+| Rapid-Fire | Increase firing rate | Multiple modules explicitly allowed; each consumes module space. Formula, per-copy gain and minimum cooldown TBD |
+| Velocity | Increase direct-hit damage; increased direct-target knockdown chance supported as a proposal | Multiple modules explicitly allowed. Damage/chance gains and caps TBD; tiny splash and recovery protection must not be multiplied implicitly |
+| Capacity | Increase ammo storage and module space | Single dedicated expansion slot recommended, not owner-final. Reject removal until contents fit the reduced capacity; no deletion/automatic dumping |
+| Range | Increase firing and detection reach | Multiple modules explicitly allowed; increments/maximum TBD. Preserve obstruction checks and loaded-area bounds |
+| 360 Degree Detection | Expand detection from forward cone to all directions | One recommended; requires detection, does not extend range or eliminate aiming/turning |
 
-The current implementation is an instant hit plus impact presentation. It does not establish that vanilla weapons have no ballistics. A travel-time implementation would need moving-target collision, door/wall changes during flight, bounded projectile lifetime, and server/observer synchronization. A visual tracer alone must not be advertised as gameplay projectile speed.
+Firing, Motion Detection and Filter are separate. Earlier Smart-Fire/Powered-Firing merger proposals are superseded. Automatic fire needs Firing plus Detection. External button/plate/laser signals can request fixed-direction firing without onboard Detection. Filter alone neither detects nor fires.
 
-Rapid-fire and velocity multiply effective damage output: balance the combined loadout, not only each module in isolation. Modules must not increase the tiny splash or knockdown chance implicitly. Shared target recovery remains independent of the turret fire rate. Do not make faction filters apply to passive barriers or spikes.
+Buttons emit pulses; pressure plates remain ON while occupied and lasers while blocked. Device cadence bounds held signals. Multiple signal sources must not multiply firing rate or bypass cooldown. Target retention/hysteresis is recommended to prevent oscillating aim.
 
-P2C3a acceptance: use B42-native inventory and authoritative timed actions; validate access, exact turret identity, component compatibility and current inventory at completion. Save actual installed components and their condition. Removal, pickup, reload and upgrade swaps preserve ammo, wear and any committed shot deadline. Concurrent install/remove attempts cannot duplicate or destroy items. Disable operation while required parts are removed; restore the base capability when optional rate/damage upgrades are removed. Test SP, then connected dedicated clients before claiming MP support.
+## Stack balance and Sandbox controls
 
-Delivery order: repair the current prototype; implement the approved crafting/building preview flow; establish the module inventory contract; add detector/control integration with P4 and firearm compatibility with P5. No component system is included in `0.1.4-p1combat`.
+Range, Velocity and Rapid-Fire stacking is owner-approved. Recommend additive per-copy bonuses with explicit caps rather than exponential multiplication. A positive minimum shot interval, bounded scan range and knockdown probability capped at 100 percent are implementation safety requirements, not excuses to silently disable stacking. Shared fallen-target recovery protection remains independent of rate and module count. Balance the combined rapid/velocity loadout.
+
+Expose useful controls when each feature actually exists: base ammo/module capacity, capacity bonuses, detection cone/range, rate/damage/knockdown bonuses, range increment and maximum, and any power consumption. Keep categories under the relevant turret/defense and concise tooltips. Do not add inactive settings for planned modules.
+
+## Crafting routes under discussion
+
+Potato turret proposal: Mechanics 1 with one Tire Pump versus Mechanics 3 with four extra scrap metal (six total), alongside the earlier proposed pipe/planks/screws/tape inputs. These exact recipes, levels and XP are not yet approved for implementation.
+
+Motion-detection module direction: low-skill assembly using vanilla Base.MotionSensor, plus higher-skill fabrication from raw materials. Electrical is the recommended primary skill; exact ingredients/skill/XP are unsettled. Installed B42 provides MotionSensor and yields it through HomeAlarm dismantling.
+
+## Evidence and delivery
+
+The current potato prototype uses immediate hits, range 6, base interval 1000 ms, direct knockdown chance 70 percent and a shared 3000 ms recovery guard. Those are implementation facts, not approved module bonuses. Velocity cannot affect gameplay projectile speed until real travel-time collision exists; a tracer alone would be cosmetic.
+
+P2C2b finishes barrier selection and distinct reinforced texture inputs. P2C3/P2C3a then establish approved turret recipes, native construction, ammo inventory and module transactions; phased behavior follows. Pressure plates, lasers and control-unit linking remain P4, firearm integration P5. No module art is AI-generated.
+
+Acceptance: exact device/item checks at completion, persisted components/resources/deadlines, incompatible-item rejection, no duplicate grants on cancellation/concurrent requests, stack totals reflected accurately, capacity-removal refusal, and dedicated multiplayer proof before enabling that runtime. Current SP prototypes do not establish multiplayer support.

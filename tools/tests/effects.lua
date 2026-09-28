@@ -1,7 +1,7 @@
 testMillis = 1000
 testDraws = 0
 function getTimestampMs() return testMillis end
-IsoUtils = {XToScreen = function(x, y, z, ignored) return x end, YToScreen = function(x, y, z, ignored) return y end}
+IsoUtils = {XToIso = function() return 400 end, YToIso = function() return 300 end, XToScreen = function(x, y, z, ignored) return x end, YToScreen = function(x, y, z, ignored) return y end}
 IsoCamera = {getOffX = function() return 0 end, getOffY = function() return 0 end}
 UIFont = {Small = "small"}
 function getTextManager() return {DrawStringCentre = function() testDraws = testDraws + 1 end} end

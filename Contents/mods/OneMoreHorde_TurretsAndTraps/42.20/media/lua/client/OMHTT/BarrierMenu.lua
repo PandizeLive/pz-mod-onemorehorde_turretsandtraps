@@ -6,6 +6,7 @@ local F = require("OMHTT/Foundation")
 local Diagnostics = require("OMHTT/Diagnostics")
 local Vault = require("OMHTT/BarrierVault")
 local Approach = require("OMHTT/BarrierApproach")
+local Selection = require("OMHTT/BarrierSelection")
 
 ---@param object IsoThumpable Selected part
 ---@param player IsoPlayer Acting player
@@ -43,62 +44,63 @@ local function fillMenu(playerIndex, context, worldobjects, test)
     if not player or player:isDead() then return end
     -- Server Lua is registered after client Lua in single-player. Resolve at use time.
     local Footprint = require("OMHTT/BarrierFootprint")
-    local seen = {}
-    for i = 1, #worldobjects do
-        local clicked = worldobjects[i]
-        local square = clicked:getSquare()
-        local marker = clicked:hasModData() and (clicked:getModData().OMHTT or clicked:getModData().OMHTTEdge)
-        local id = marker and marker.id
-        if square and not seen[id or square] then
-            seen[id or square] = true
-            local slot = Footprint.slot(square, id)
-            if slot and slot.device and slot.device.placementSource == "construction" then
-                local record = slot.device
-                seen[record.id] = true
-                local object = F.find(square, record.id)
-                if not object and Footprint.exact(clicked) then
-                    object = clicked
-                end
-                if object and Footprint.parts(record) then
-                    if not Footprint.sync(slot, "menu") then return end
-                    local headings = {"E", "N", "W", "S"}
-                    local title = "ContextMenu_OMHTT_BarrierFacing"
-                    if record.tier == "reinforced" then
-                        title = "ContextMenu_OMHTT_ReinforcedFacing"
-                    end
-                    local option = context:addOption(getText(title, headings[record.facing / 4 + 1]), nil, nil)
-                    local menu = ISContextMenu:getNew(context)
-                    context:addSubMenu(option, menu)
-                    local condition = menu:addOption(getText("ContextMenu_OMHTT_BarrierCondition", record.condition, record.maxHealth), nil, nil)
-                    condition.notAvailable = true
-                    local pickup = menu:addOption(getText("ContextMenu_OMHTT_PickupBarrier"), object, queueService, player, record.id, "Pickup")
-                    local repair = menu:addOption(getText("ContextMenu_OMHTT_RepairBarrier"), object, queueService, player, record.id, "Repair")
-                    local tooltip = ISWorldObjectContextMenu.addToolTip()
-                    tooltip.description = getText("UI_OMHTT_ServiceDuration")
-                    pickup.toolTip, repair.toolTip = tooltip, tooltip
-                    repair.notAvailable = record.condition >= record.maxHealth
-                    if record.tier ~= "reinforced" then
-                        local Service = require("OMHTT/BarrierService")
-                        local upgrade = menu:addOption(getText("ContextMenu_OMHTT_Reinforce"), object, queueService, player, record.id, "Reinforce")
-                        upgrade.notAvailable = Service.reinforcementMaterials(player, record) == nil
-                        upgrade.toolTip = ISWorldObjectContextMenu.addToolTip()
-                        upgrade.toolTip.description = getText("UI_OMHTT_ReinforceRequirements")
-                    end
-                    local plan, reason = Vault.plan(player, object, record.id)
-                    local label = reason
-                    if plan then
-                        label = "ContextMenu_OMHTT_VaultRear"
-                        if plan.side == "front" then
-                            label = "ContextMenu_OMHTT_VaultFront"
-                        end
-                    end
-                    local vault = menu:addOption(getText(label), object, Vault.queue, player, record.id)
-                    vault.notAvailable = plan == nil
-                    Diagnostics.emit("barrier-menu", {id = record.id, condition = record.condition, max = record.maxHealth,
-                        collisionModel = record.collisionModel, vault = plan and plan.side or reason,
-                        playerX = player:getX(), playerY = player:getY(), playerZ = player:getZ()})
+    local z = math.floor(player:getZ())
+    local x = IsoUtils.XToIso(getMouseXScaled(), getMouseYScaled(), z)
+    local y = IsoUtils.YToIso(getMouseXScaled(), getMouseYScaled(), z)
+    local entries = Selection.collect(player, worldobjects, x, y)
+    Diagnostics.emit("barrier-selection", {x = x, y = y, z = z, picked = #worldobjects, candidates = #entries,
+        result = #entries == 0 and "miss" or "found"})
+    for i = 1, #entries do
+        local entry = entries[i]
+        local record, object, parts = entry.record, entry.object, entry.parts
+        local slot = Footprint.slot(object:getSquare(), record.id)
+        if slot and Footprint.sync(slot, "menu") then
+            local headings = {"E", "N", "W", "S"}
+            local title = "ContextMenu_OMHTT_BarrierFacing"
+            if record.tier == "reinforced" then
+                title = "ContextMenu_OMHTT_ReinforcedFacing"
+            end
+            local name = getText(title, headings[record.facing / 4 + 1])
+            if #entries > 1 then
+                name = getText("ContextMenu_OMHTT_BarrierChoice", name, i)
+            end
+            local option = context:addOption(name, nil, nil)
+            Selection.bindHighlight(option, parts)
+            local menu = ISContextMenu:getNew(context)
+            context:addSubMenu(option, menu)
+            local condition = menu:addOption(getText("ContextMenu_OMHTT_BarrierCondition", record.condition, record.maxHealth), nil, nil)
+            condition.notAvailable = true
+            Selection.bindHighlight(condition, parts)
+            local pickup = menu:addOption(getText("ContextMenu_OMHTT_PickupBarrier"), object, queueService, player, record.id, "Pickup")
+            local repair = menu:addOption(getText("ContextMenu_OMHTT_RepairBarrier"), object, queueService, player, record.id, "Repair")
+            local tooltip = ISWorldObjectContextMenu.addToolTip()
+            tooltip.description = getText("UI_OMHTT_ServiceDuration")
+            pickup.toolTip, repair.toolTip = tooltip, tooltip
+            Selection.bindHighlight(pickup, parts)
+            Selection.bindHighlight(repair, parts)
+            repair.notAvailable = record.condition >= record.maxHealth
+            if record.tier ~= "reinforced" then
+                local Service = require("OMHTT/BarrierService")
+                local upgrade = menu:addOption(getText("ContextMenu_OMHTT_Reinforce"), object, queueService, player, record.id, "Reinforce")
+                Selection.bindHighlight(upgrade, parts)
+                upgrade.notAvailable = Service.reinforcementMaterials(player, record) == nil
+                upgrade.toolTip = ISWorldObjectContextMenu.addToolTip()
+                upgrade.toolTip.description = getText("UI_OMHTT_ReinforceRequirements")
+            end
+            local plan, reason = Vault.plan(player, object, record.id)
+            local label = reason
+            if plan then
+                label = "ContextMenu_OMHTT_VaultRear"
+                if plan.side == "front" then
+                    label = "ContextMenu_OMHTT_VaultFront"
                 end
             end
+            local vault = menu:addOption(getText(label), object, Vault.queue, player, record.id)
+            vault.notAvailable = plan == nil
+            Selection.bindHighlight(vault, parts)
+            Diagnostics.emit("barrier-menu", {id = record.id, condition = record.condition, max = record.maxHealth,
+                source = entry.source, choice = i, collisionModel = record.collisionModel, vault = plan and plan.side or reason,
+                playerX = player:getX(), playerY = player:getY(), playerZ = player:getZ()})
         end
     end
 end

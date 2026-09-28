@@ -25,8 +25,15 @@ public final class NativePersistenceCheck {
         Object entries = entriesType.getConstructor().newInstance();
         call(pack, "getSubTextureInfo", new Class<?>[]{entriesType}, entries);
         check(((java.util.Map<?, ?>)entries).size() == 28, "Native texture pack metadata did not load");
-        for (int page = 0; page < 4; page++) {
-            try (var stream = (java.io.InputStream)call(pack, "createStream", new Class<?>[]{String.class, java.io.InputStream.class}, "OMHTT_Barrier" + page, null)) {
+        for (int index = 0; index < 28; index++) {
+            Object entry = ((java.util.Map<?, ?>)entries).get("omhtt_barrier_01_" + index);
+            String expected = index >= 20 ? "OMHTT_ReinforcedBarrier" + ((index - 20) / 2)
+                : index >= 16 ? "OMHTT_Edges" : "OMHTT_Barrier" + ((index % 8) / 2);
+            check(entry != null && expected.equals(entry.getClass().getField("pageName").get(entry)), "Sprite mapped to wrong tier page: " + index);
+        }
+
+        for (int page = 0; page < 8; page++) {
+            try (var stream = (java.io.InputStream)call(pack, "createStream", new Class<?>[]{String.class, java.io.InputStream.class}, (page < 4 ? "OMHTT_Barrier" + page : "OMHTT_ReinforcedBarrier" + (page - 4)), null)) {
                 var image = javax.imageio.ImageIO.read(stream);
                 check(image != null && image.getWidth() == 128 && image.getHeight() == 256, "Native texture page unreadable");
             }
@@ -35,7 +42,7 @@ public final class NativePersistenceCheck {
             var image = javax.imageio.ImageIO.read(stream);
             check(image != null && image.getWidth() == 256 && image.getHeight() == 256, "Native outline texture page unreadable");
         }
-        System.out.println("[OMHTT-Smoke] native-texturepack entries=28 pages=5 png=valid");
+        System.out.println("[OMHTT-Smoke] native-texturepack entries=28 pages=9 png=valid");
         Class<?> lua = Class.forName("zombie.Lua.LuaManager");
         Object env = lua.getField("env").get(null);
         Object fixtures = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeFixtures");
@@ -51,6 +58,18 @@ public final class NativePersistenceCheck {
         Files.createDirectories(directory);
         for (int i = 0; i < objects.size(); i++) {
             Object source = objects.get(i);
+            Class<?> colorType = Class.forName("zombie.core.textures.ColorInfo");
+            Object color = Class.forName("zombie.core.Core").getMethod("getWorldItemHighlightColor")
+                .invoke(Class.forName("zombie.core.Core").getMethod("getInstance").invoke(null));
+            call(source, "setHighlightColor", new Class<?>[]{int.class, colorType}, 0, color);
+            call(source, "setOutlineHighlightCol", new Class<?>[]{int.class, colorType}, 0, color);
+            for (boolean active : new boolean[]{true, false}) {
+                call(source, "setHighlighted", new Class<?>[]{int.class, boolean.class, boolean.class}, 0, active, false);
+                call(source, "setOutlineHighlight", new Class<?>[]{int.class, boolean.class}, 0, active);
+                check(Boolean.valueOf(active).equals(call(source, "isHighlighted", new Class<?>[]{int.class}, 0)), "Native highlight state mismatch");
+                check(Boolean.valueOf(active).equals(call(source, "isOutlineHighlight", new Class<?>[]{int.class}, 0)), "Native outline highlight state mismatch");
+            }
+
             String sprite = (String)get(source, "getSpriteName");
             Object sourceConfig = get(source, "getSpriteConfig");
             Object square = get(source, "getSquare");

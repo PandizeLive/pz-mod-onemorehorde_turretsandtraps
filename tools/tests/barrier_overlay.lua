@@ -18,7 +18,7 @@ function getNumActivePlayers() return 1 end
 function getSpecificPlayer() return testPlayer end
 function getPlayerScreenLeft() return 100 end
 function getPlayerScreenTop() return 50 end
-IsoUtils = {XToScreen = function(x, y) return (x - y) * 64 end,
+IsoUtils = {XToIso = function() return 400 end, YToIso = function() return 300 end, XToScreen = function(x, y) return (x - y) * 64 end,
     YToScreen = function(x, y, z) return (x + y) * 32 - z * 192 end}
 IsoCamera = {getOffX = function() return -700 end, getOffY = function() return 1000 end}
 local O = require("OMHTT/BarrierCollisionOverlay")

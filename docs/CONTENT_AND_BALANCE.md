@@ -40,7 +40,7 @@ Do not bundle automatically triggered noise lures into the first release. The ow
 
 ## Distinct trap behavior
 
-Owner-selected Spike Barrier recipe: four total planks and/or basic crafted wooden spears in any mix, including four spears, plus four binding units and a retained sharp knife/cleaver. Basic Carpentry 1 / 10 base crafting XP is implemented in 0.2.0.1. The approved reinforced upgrade requires Carpentry 3, two extra planks, eight nails and a retained hammer; it awards 30 base crafting XP, doubles maximum durability to 200 while retaining existing damage, and deals 25 damage per thump. Reinforcement is scheduled at P2C2a, not implemented in this candidate. Packing/unpacking/redeployment award zero crafting XP. See [recipe review](RECIPE_COMPARISON.md).
+Owner-selected Spike Barrier recipe: four total planks and/or basic crafted wooden spears in any mix, including four spears, plus four binding units and a retained sharp knife/cleaver. Basic Carpentry 1 / 10 base crafting XP is implemented in 0.2.0.1. The approved reinforced upgrade requires Carpentry 3, two extra planks, eight nails and a retained hammer; it awards 30 base crafting XP, doubles maximum durability to 200 and fully repairs under C43, and deals 25 damage per thump. Reinforcement is implemented in P2C2a, with positive owner feedback; the separate 0.2.7.1 test was waived. Packing/unpacking/redeployment award zero crafting XP. See [recipe review](RECIPE_COMPARISON.md).
 
 Recommended punji direction: shallow stake bed with replaceable bundles, partial damage, finite catching capacity and servicing. The owner's original grave workflow remains an open alternative. Do not reproduce another mod's assets/code or advertise the recommended design as already approved.
 

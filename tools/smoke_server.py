@@ -72,7 +72,7 @@ def main():
     assert "Saving GlobalModData" in text, "No native global state save"
     assert "Invalid SpriteConfig object! scripted object = OMHTT" not in text, "Invalid native barrier identity"
     assert "[OMHTT-Smoke] native-sandbox damage=10 maxHealth=100 tooltip=formatted" in text, "Native Sandbox options/tooltip invalid"
-    assert "[OMHTT-Smoke] native-texturepack entries=28 pages=5 png=valid" in text, "Native texture pack invalid"
+    assert "[OMHTT-Smoke] native-texturepack entries=28 pages=9 png=valid" in text, "Native texture pack invalid"
     assert "[OMHTT-Smoke] native-migration staleSprite=repaired" in text, "Native migration failed"
     assert "[OMHTT-Smoke] native-bundles packed=5to1 unpacked=1to5 weight=6.6 xp=0 insufficient=blocked" in text, "Native bundle transactions failed"
     assert "NoSuchFileException" not in text, "Missing package directories"
