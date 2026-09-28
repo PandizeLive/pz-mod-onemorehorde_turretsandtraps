@@ -2,5 +2,17 @@
     "Base.OMHTTSpikeBarrierItem": "Spike Barrier",
     "Base.OMHTTSpikeBarrierPack": "Spike Barrier Pack",
     "Base.OMHTTReinforcedBarrierItem": "Reinforced Spike Barrier",
-    "Base.OMHTTReinforcedBarrierPack": "Reinforced Spike Barrier Pack"
+    "Base.OMHTTReinforcedBarrierPack": "Reinforced Spike Barrier Pack",
+    "Base.OMHTTTurretBase": "Turret Base",
+    "Base.OMHTTPotatoHead": "Potato Launcher Head",
+    "Base.OMHTTModuleFiring": "Firing Module",
+    "Base.OMHTTModuleMotionDetection": "Motion Detection Module",
+    "Base.OMHTTModuleFilter": "Filter Module",
+    "Base.OMHTTModuleRapidFire": "Rapid-Fire Module",
+    "Base.OMHTTModuleVelocity": "Velocity Module",
+    "Base.OMHTTModuleRange": "Range Module",
+    "Base.OMHTTModuleCapacity": "Capacity Module",
+    "Base.OMHTTModuleDetection360": "360 Detection Module",
+    "Base.OMHTTModuleReload": "Reload Module",
+    "Base.OMHTTModuleAutoloader": "Autoloader Module"
 }

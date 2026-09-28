@@ -51,16 +51,18 @@ end
 
 ---@param origin IsoGridSquare Device square
 ---@param destination IsoGridSquare Target square
+---@param range number? Maximum tile distance
 ---@return boolean clear
 ---@return string? reason Blocked path category
 ---@nodiscard
-function Combat.clearLane(origin, destination)
+function Combat.clearLane(origin, destination, range)
+    range = range or Combat.RANGE
     if not origin or not destination then return false, "missing-square" end
     if origin:getZ() ~= destination:getZ() then return false, "different-floor" end
     local dx = destination:getX() - origin:getX()
     local dy = destination:getY() - origin:getY()
     local steps = math.max(math.abs(dx), math.abs(dy))
-    if steps > Combat.RANGE then return false, "range" end
+    if steps > range then return false, "range" end
     local previous = origin
     for i = 1, steps do
         local x = origin:getX() + math.floor(dx * i / steps + 0.5)
@@ -83,13 +85,15 @@ function Combat.clearLane(origin, destination)
 end
 
 ---@param origin IsoGridSquare Device square
+---@param range number? Maximum tile distance
 ---@return table candidates Bounded zombie list
 ---@return number visits Number of moving objects examined
-function Combat.candidates(origin)
+function Combat.candidates(origin, range)
+    range = range or Combat.RANGE
     local found = {}
     local seen = {}
     local visits = 0
-    for radius = 0, Combat.RANGE do
+    for radius = 0, range do
         for dx = -radius, radius do
             for dy = -radius, radius do
                 if math.max(math.abs(dx), math.abs(dy)) == radius then
@@ -108,7 +112,7 @@ function Combat.candidates(origin)
                                 local zx = zombie:getX() - origin:getX() - 0.5
                                 local zy = zombie:getY() - origin:getY() - 0.5
                                 local distance = zx * zx + zy * zy
-                                if distance <= Combat.RANGE * Combat.RANGE then
+                                if distance <= range * range then
                                     found[#found + 1] = {zombie = zombie, distance = distance}
                                 end
                             end
@@ -125,26 +129,29 @@ end
 ---@param record table Persisted device state
 ---@param object IsoObject Exact device
 ---@param player IsoPlayer Test operator, SP only
+---@param options table? Managed device tuning and resource commit
 ---@return string status
 ---@return table? impact Numeric effect facts
-function Combat.fire(record, object, player)
+function Combat.fire(record, object, player, options)
+    options = options or {range = Combat.RANGE, interval = Combat.SHOT_INTERVAL_MS, damage = Combat.DIRECT_DAMAGE,
+        knockdown = Combat.KNOCKDOWN_CHANCE, splash = Combat.SPLASH_DAMAGE, radius = 1.1}
     Diagnostics.emit("shot-attempt", {id = record.id, ammo = record.ammo, shots = record.shots,
         nowMs = getTimestampMs(), nextShotMs = record.nextShot, kind = record.kind})
     if isClient() or isServer() then return "MPCombatDeferred" end
     if record.kind ~= "potato" then return "WrongDevice" end
     if record.ammo <= 0 then return "Empty" end
     local now = getTimestampMs()
-    if record.nextShot > now + Combat.SHOT_INTERVAL_MS then
+    if not options.managed and record.nextShot > now + options.interval then
         Diagnostics.emit("shot-clock-rebased", {id = record.id, previous = record.nextShot, nowMs = now})
-        record.nextShot = now + Combat.SHOT_INTERVAL_MS
+        record.nextShot = now + options.interval
     end
     if now < record.nextShot then return "Cooling" end
     local origin = object:getSquare()
-    local candidates, visits = Combat.candidates(origin)
+    local candidates, visits = Combat.candidates(origin, options.range)
     local target = nil
     for i = 1, #candidates do
         local zombie = candidates[i].zombie
-        local clear, reason = Combat.clearLane(origin, zombie:getSquare())
+        local clear, reason = Combat.clearLane(origin, zombie:getSquare(), options.range)
         if i <= 6 then
             Diagnostics.emit("shot-candidate", {id = record.id, order = i, x = zombie:getX(), y = zombie:getY(),
                 health = zombie:getHealth(), distanceSquared = candidates[i].distance, clear = clear, reason = tostring(reason)})
@@ -158,6 +165,7 @@ function Combat.fire(record, object, player)
     Diagnostics.emit("shot-search", {id = record.id, visits = visits, candidates = #candidates,
         selected = target ~= nil, capped = visits >= Combat.CANDIDATE_LIMIT})
     if not target then return "NoTarget" end
+    if options.commit and not options.commit() then return "Unavailable" end
     if not weapon then
         weapon = instanceItem("Base.Hammer")
         weapon:setRanged(true)
@@ -166,19 +174,23 @@ function Combat.fire(record, object, player)
     end
     record.ammo = record.ammo - 1
     record.shots = record.shots + 1
-    record.nextShot = now + Combat.SHOT_INTERVAL_MS
+    record.nextShot = now + options.interval
     record.cooldownClock = "realtime-ms-v1"
     local tx = target:getX()
     local ty = target:getY()
     local angle = math.atan2(-(ty - origin:getY() - 0.5), tx - origin:getX() - 0.5)
     record.facing = Foundation.normalizeFacing(math.floor(angle / (math.pi * 2) * 16 + 0.5))
-    object:setSprite(Foundation.spriteFor(record.kind, record.facing))
+    if options.managed then
+        object:setSprite(require("OMHTT/Turret").sprite(record.facing, true))
+    else
+        object:setSprite(Foundation.spriteFor(record.kind, record.facing))
+    end
     object:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_OBJECT_MODIFY)
     local before = target:getHealth()
     local impactSquare = target:getSquare()
     Diagnostics.emit("shot-hit-begin", {id = record.id, shot = record.shots, x = tx, y = ty, health = before,
-        ammo = record.ammo, damageInput = Combat.DIRECT_DAMAGE, facing = record.facing})
-    Damage.apply(target, Combat.DIRECT_DAMAGE, record.id, "potato", player, weapon)
+        ammo = record.ammo, damageInput = options.damage, facing = record.facing})
+    Damage.apply(target, options.damage, record.id, "potato", player, weapon)
     local knocked = false
     local knockReason = "dead"
     local roll = -1
@@ -198,7 +210,7 @@ function Combat.fire(record, object, player)
             else
                 roll = ZombRand(100)
                 knockReason = "chance-miss"
-                if roll < Combat.KNOCKDOWN_CHANCE then
+                if roll < options.knockdown then
                     target:knockDown(false)
                     target:setPlayerAttackPosition("FRONT")
                     target:setUsePhysicHitReaction(false)
@@ -217,7 +229,7 @@ function Combat.fire(record, object, player)
         end
     end
     Diagnostics.emit("shot-knockdown", {id = record.id, shot = record.shots, reason = knockReason,
-        roll = roll, chance = Combat.KNOCKDOWN_CHANCE, guardRemainingMs = remaining,
+        roll = roll, chance = options.knockdown, guardRemainingMs = remaining,
         state = target:getCurrentStateName(), ragdollAllowed = target:canRagdoll(),
         physicsRequested = target:usePhysicHitReaction()})
     if #observations >= 12 then table.remove(observations, 1) end
@@ -230,8 +242,9 @@ function Combat.fire(record, object, player)
         if zombie ~= target and not zombie:isDead() then
             local dx = zombie:getX() - tx
             local dy = zombie:getY() - ty
-            if dx * dx + dy * dy <= 1.21 and Combat.clearLane(impactSquare, zombie:getSquare()) then
-                Damage.apply(zombie, Combat.SPLASH_DAMAGE, record.id, "splash", player, weapon)
+            if options.splash > 0 and dx * dx + dy * dy <= options.radius * options.radius
+                and Combat.clearLane(impactSquare, zombie:getSquare(), options.range) then
+                Damage.apply(zombie, options.splash, record.id, "splash", player, weapon)
                 splash = splash + 1
             end
         end

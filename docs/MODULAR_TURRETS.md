@@ -1,6 +1,6 @@
 # Turret inventory and module plan
 
-Owner-confirmed direction, updated 2026-09-27. No module runtime is implemented in P2C2b/0.2.8. Numerical bonuses, recipes, slot counts and power costs remain proposals until approved.
+Owner-confirmed direction, updated 2026-09-28. P2C3a-c/0.2.9 implements actual component storage, exact-item persistence and powered manual potato firing. Module effects remain future work; ten module item types are available only for debug storage checks. Approved turret recipes and current tuning defaults are in [P2C3](PHASE_2_CHECKPOINT_3.md). Module crafting recipes and bonuses remain unresolved.
 
 ## Inventory interaction
 
@@ -8,7 +8,7 @@ Each turret has an ammunition area and module slots. Dragging actual components 
 
 Installed component items, ammunition, wear and committed cooldowns must survive saving and pickup/redeployment. Transactions must not duplicate components, discard ammo, reset cooldowns or provide repeated module-swap repair. Tier upgrades restore full condition under C43; module-swap repair policy still needs an explicit decision if presented as an upgrade.
 
-## Eight module roles
+## Ten module roles
 
 | Module | Confirmed role | Stacking / unsettled details |
 | --- | --- | --- |
@@ -20,6 +20,8 @@ Installed component items, ammunition, wear and committed cooldowns must survive
 | Capacity | Increase ammo storage and module space | Single dedicated expansion slot recommended, not owner-final. Reject removal until contents fit the reduced capacity; no deletion/automatic dumping |
 | Range | Increase firing and detection reach | Multiple modules explicitly allowed; increments/maximum TBD. Preserve obstruction checks and loaded-area bounds |
 | 360 Degree Detection | Expand detection from forward cone to all directions | One recommended; requires detection, does not extend range or eliminate aiming/turning |
+| Reload | Reduce reload duration | Proposed for the firearm/reload checkpoint; stacking not yet decided |
+| Autoloader | Expensive module removing reload delay | Still consumes ammunition; retaining pump/bolt cycling and firing cadence is the recommended boundary, pending firearm feasibility |
 
 Firing, Motion Detection and Filter are separate. Earlier Smart-Fire/Powered-Firing merger proposals are superseded. Automatic fire needs Firing plus Detection. External button/plate/laser signals can request fixed-direction firing without onboard Detection. Filter alone neither detects nor fires.
 
@@ -33,7 +35,7 @@ Expose useful controls when each feature actually exists: base ammo/module capac
 
 ## Crafting routes under discussion
 
-Potato turret proposal: Mechanics 1 with one Tire Pump versus Mechanics 3 with four extra scrap metal (six total), alongside the earlier proposed pipe/planks/screws/tape inputs. These exact recipes, levels and XP are not yet approved for implementation.
+The earlier wood/Mechanics-1 turret proposal is superseded by C49: metal universal base at Mechanics 2, powered potato head at Mechanics 2/Electrical 1, improvised head at Mechanics 4/Electrical 1. Complete and separate routes have identical material and XP totals. Exact recipes and retained tools are in [P2C3](PHASE_2_CHECKPOINT_3.md#approved-recipes).
 
 Motion-detection module direction: low-skill assembly using vanilla Base.MotionSensor, plus higher-skill fabrication from raw materials. Electrical is the recommended primary skill; exact ingredients/skill/XP are unsettled. Installed B42 provides MotionSensor and yields it through HomeAlarm dismantling.
 
@@ -41,6 +43,6 @@ Motion-detection module direction: low-skill assembly using vanilla Base.MotionS
 
 The current potato prototype uses immediate hits, range 6, base interval 1000 ms, direct knockdown chance 70 percent and a shared 3000 ms recovery guard. Those are implementation facts, not approved module bonuses. Velocity cannot affect gameplay projectile speed until real travel-time collision exists; a tracer alone would be cosmetic.
 
-P2C2b finishes barrier selection and distinct reinforced texture inputs. P2C3/P2C3a then establish approved turret recipes, native construction, ammo inventory and module transactions; phased behavior follows. Pressure plates, lasers and control-unit linking remain P4, firearm integration P5. No module art is AI-generated.
+P2C2b finishes barrier selection and distinct reinforced texture inputs. P2C3a-c establishes approved turret recipes, native construction, real ammo/power inventory and exact-item transfers; P2C3d adds module effects, and P2C3e proves multiplayer/performance. Pressure plates, lasers and control-unit linking remain P4; firearm integration and Reload/Autoloader behavior remain P5. No module art is AI-generated.
 
 Acceptance: exact device/item checks at completion, persisted components/resources/deadlines, incompatible-item rejection, no duplicate grants on cancellation/concurrent requests, stack totals reflected accurately, capacity-removal refusal, and dedicated multiplayer proof before enabling that runtime. Current SP prototypes do not establish multiplayer support.

@@ -22,9 +22,9 @@ def pack_string(value):
 def build():
     tiles = b"tdef" + integer(1) + integer(1)
     tiles += (SHEET + "\nOMHTT_Barrier.png\n").encode("ascii")
-    tiles += integer(4) + integer(7) + integer(1) + integer(28)
-    tiles += integer(0) * 28
-    pack = b"PZPK" + integer(1) + integer(9)
+    tiles += integer(4) + integer(12) + integer(1) + integer(48)
+    tiles += integer(0) * 48
+    pack = b"PZPK" + integer(1) + integer(26)
     for heading in range(4):
         pack += pack_string("OMHTT_Barrier" + str(heading)) + integer(4) + integer(1)
         for index in [heading * 2, heading * 2 + 1, heading * 2 + 8, heading * 2 + 9]:
@@ -51,6 +51,19 @@ def build():
         pack += struct.pack("<8i", index % 2 * 128, 0, 128, 256, 0, 0, 128, 256)
     png = png_stream.getvalue()
     pack += integer(len(png)) + png
+    for facing in range(16):
+        page = "OMHTT_Aim" + str(facing)
+        pack += pack_string(page) + integer(1) + integer(1)
+        pack += pack_string(SHEET + "_" + str(28 + facing))
+        pack += struct.pack("<8i", 0, 0, 128, 256, 0, 0, 128, 256)
+        png = (MEDIA / "textures" / (page + ".png")).read_bytes()
+        pack += integer(len(png)) + png
+    pack += pack_string("OMHTT_TestCube") + integer(4) + integer(1)
+    for facing in range(4):
+        pack += pack_string(SHEET + "_" + str(44 + facing))
+        pack += struct.pack("<8i", 0, 0, 128, 256, 0, 0, 128, 256)
+    png = (MEDIA / "textures/OMHTT_TestCube.png").read_bytes()
+    pack += integer(len(png)) + png
     return tiles, pack
 
 
@@ -59,4 +72,4 @@ if __name__ == "__main__":
     (MEDIA / "texturepacks").mkdir(exist_ok=True)
     (MEDIA / "OMHTT_Barriers.tiles").write_bytes(tiles)
     (MEDIA / "texturepacks/OMHTT_Barriers.pack").write_bytes(pack)
-    print("Packed separate basic/reinforced pages with 28 stable sprite identities; tiledef=" + str(TILEDEF_NUMBER))
+    print("Packed 48 stable barrier/turret identities; tiledef=" + str(TILEDEF_NUMBER))

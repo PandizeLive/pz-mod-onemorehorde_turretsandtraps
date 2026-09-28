@@ -52,6 +52,7 @@ local function makeCursor(heading, number, portable)
     end
     cursor.craftRecipe = {getName = function() return portable and "OMHTTDeploySpikeBarrier" or "OMHTTSpikeBarrier" end}
     local data = {
+        getRecipe = function() return cursor.craftRecipe end,
         luaCallOnCreate = function() end,
         processDestroyAndUsedItems = function() cursor.processed = cursor.processed + 1 end,
     }

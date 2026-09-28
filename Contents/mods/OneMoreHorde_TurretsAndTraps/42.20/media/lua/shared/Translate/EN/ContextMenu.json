@@ -26,5 +26,7 @@
     "ContextMenu_OMHTT_BarrierFacing": "Spike Barrier (%1)",
     "ContextMenu_OMHTT_Reinforce": "Reinforce",
     "ContextMenu_OMHTT_ReinforcedFacing": "Reinforced Spike Barrier (%1)",
-    "ContextMenu_OMHTT_BarrierChoice": "%1 (%2)"
+    "ContextMenu_OMHTT_BarrierChoice": "%1 (%2)",
+    "ContextMenu_OMHTT_TurretFire": "Fire",
+    "ContextMenu_OMHTT_PickupTurret": "Pick up turret"
 }

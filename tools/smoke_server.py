@@ -21,6 +21,8 @@ def main():
     shutil.copytree(source, destination, dirs_exist_ok=True)
     probe = destination / "42.20/media/lua/server/OMHTT_TranslationSmoke.lua"
     probe.write_text((ROOT / "tools/tests/native_smoke.lua").read_text(encoding="utf-8"), encoding="utf-8")
+    turret_probe = destination / "42.20/media/lua/server/OMHTT_TurretSmoke.lua"
+    turret_probe.write_text((ROOT / "tools/tests/native_turret_smoke.lua").read_text(encoding="utf-8"), encoding="utf-8")
     console = CACHE / "server-console.txt"
     transcript = OUTPUT / ("server-" + os.environ.get("OMHTT_PROBE_MODE", "write") + ".log")
     classes = OUTPUT / "persistence-classes"
@@ -28,7 +30,7 @@ def main():
     subprocess.run(["C:/Program Files/Java/jdk-17/bin/javac.exe", "-d", str(classes), str(ROOT / "tools/NativePersistenceCheck.java"), str(ROOT / "tools/NativeVaultProbe.java")], check=True)
     command = [str(GAME / "jre64/bin/java.exe"), "--enable-native-access=ALL-UNNAMED",
         "--add-exports=java.base/jdk.internal.misc=ALL-UNNAMED", "-XX:-CreateCoredumpOnCrash", "-Xmx1536m",
-        "-Djava.library.path=./natives/;./natives/win64/;./", "-cp", str(classes) + ";.;projectzomboid.jar", "NativePersistenceCheck", str(OUTPUT / "native-objects"), os.environ.get("OMHTT_PROBE_MODE", "write"),
+        "-Djava.library.path=./natives/;./natives/win64/;./", "-cp", str(classes) + (";projectzomboid.jar;." if os.environ.get("OMHTT_STOCK_CLASSES") == "1" else ";.;projectzomboid.jar"), "NativePersistenceCheck", str(OUTPUT / "native-objects"), os.environ.get("OMHTT_PROBE_MODE", "write"),
         "-cachedir=" + str(CACHE), "-servername", "OMHTT_P1C1", "-nosteam", "-ip", "127.0.0.1", "-port", "29161"]
     with transcript.open("w", encoding="utf-8") as output:
         process = subprocess.Popen(command, cwd=GAME, stdin=subprocess.PIPE, stdout=output,
@@ -37,12 +39,14 @@ def main():
         try:
             while process.poll() is None and time.monotonic() - started < 150:
                 text = transcript.read_text(encoding="utf-8", errors="replace")
-                if "OMHTT_TranslationSmoke.lua:" in text:
+                if 'Exception in thread "main"' in text:
+                    raise RuntimeError(f"Game startup failed before probes; inspect {transcript.name}")
+                if "OMHTT_TranslationSmoke.lua:" in text or "OMHTT_TurretSmoke.lua:" in text:
                     process.stdin.write("quit\n")
                     process.stdin.flush()
                     process.wait(timeout=40)
                     raise RuntimeError(f"Native probe failed; inspect {transcript.name}")
-                if "*** SERVER STARTED" in text and "[OMHTT-Smoke] native-portable recipe=registered" in text:
+                if "*** SERVER STARTED" in text and "[OMHTT-Smoke] native-portable recipe=registered" in text and "[OMHTT-Smoke] native-turret recipes=5" in text:
                     assert "[OMHTT] server-ready version=" + version in text, "Mod did not initialize"
                     assert "[OMHTT-Smoke] native-translations checked=3 missing=0" in text, "Native translations failed smoke probe"
                     assert "[OMHTT-Smoke] native-build-menu registered=1 title=Spike_Barrier category=Carpentry callback=resolved spGate=open disabledGate=closed dottedCallback=rejected" in text, "Native menu callback or enumeration failed smoke probe"
@@ -61,6 +65,7 @@ def main():
                 process.terminate()
                 process.wait(timeout=15)
             probe.unlink(missing_ok=True)
+            turret_probe.unlink(missing_ok=True)
     text = transcript.read_text(encoding="utf-8", errors="replace")
     assert "[OMHTT-Smoke] native-scratch lowerLeg=true knox=false" in text, "Native scratch failed"
     assert "[OMHTT-VaultProbe] native-vision=12/12 object-and-grid=true collision-preserved=true" in text, "Native transparency failed"
@@ -72,7 +77,9 @@ def main():
     assert "Saving GlobalModData" in text, "No native global state save"
     assert "Invalid SpriteConfig object! scripted object = OMHTT" not in text, "Invalid native barrier identity"
     assert "[OMHTT-Smoke] native-sandbox damage=10 maxHealth=100 tooltip=formatted" in text, "Native Sandbox options/tooltip invalid"
-    assert "[OMHTT-Smoke] native-texturepack entries=28 pages=9 png=valid" in text, "Native texture pack invalid"
+    assert "[OMHTT-Smoke] native-texturepack entries=48 pages=26 png=valid" in text, "Native texture pack invalid"
+    assert "[OMHTT-Smoke] native-turret-persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Turret world persistence failed"
+    assert "[OMHTT-Smoke] native-packed-turret mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Turret portable persistence failed"
     assert "[OMHTT-Smoke] native-migration staleSprite=repaired" in text, "Native migration failed"
     assert "[OMHTT-Smoke] native-bundles packed=5to1 unpacked=1to5 weight=6.6 xp=0 insufficient=blocked" in text, "Native bundle transactions failed"
     assert "NoSuchFileException" not in text, "Missing package directories"

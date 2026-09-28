@@ -15,7 +15,16 @@ public final class NativeVaultProbe {
             check("Unblocked".equals(call(object, "TestVision", new Class<?>[]{square, square}, pair).toString()), "Object vision blocked");
             call(pair[0], "RecalcProperties", new Class<?>[0]);
             call(pair[1], "RecalcProperties", new Class<?>[0]);
-            check(Boolean.FALSE.equals(call(pair[0], "CalculateVisionBlocked", new Class<?>[]{square}, pair[1])), "Grid vision blocked");
+            Class<?> lookup = Class.forName("zombie.iso.IsoGridSquare$GetSquare");
+            Object provider = java.lang.reflect.Proxy.newProxyInstance(lookup.getClassLoader(), new Class<?>[]{lookup}, (proxy, method, values) -> {
+                for (Object candidate : pair) {
+                    if (call(candidate, "getX", new Class<?>[0]).equals(values[0])
+                        && call(candidate, "getY", new Class<?>[0]).equals(values[1])
+                        && call(candidate, "getZ", new Class<?>[0]).equals(values[2])) return candidate;
+                }
+                return null;
+            });
+            check(Boolean.FALSE.equals(call(pair[0], "CalculateVisionBlocked", new Class<?>[]{square, lookup}, pair[1], provider)), "Grid vision blocked");
         }
     }
 

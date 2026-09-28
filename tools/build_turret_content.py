@@ -1,0 +1,195 @@
+import json
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+MEDIA = ROOT / "Contents/mods/OneMoreHorde_TurretsAndTraps/42.20/media"
+
+
+def write(relative, content):
+    (MEDIA / relative).write_bytes(content.replace("\r\n", "\n").encode("utf-8"))
+
+
+def translations(category, values):
+    path = MEDIA / f"lua/shared/Translate/EN/{category}.json"
+    existing = json.loads(path.read_text(encoding="utf-8"))
+    existing.update(values)
+    path.write_bytes((json.dumps(existing, indent=4, ensure_ascii=False) + "\n").encode("utf-8"))
+
+
+def main():
+    modules = {"Firing": "Firing", "MotionDetection": "Motion Detection", "Filter": "Filter",
+               "RapidFire": "Rapid-Fire", "Velocity": "Velocity", "Range": "Range", "Capacity": "Capacity",
+               "Detection360": "360 Detection", "Reload": "Reload", "Autoloader": "Autoloader"}
+    items = """module Base {
+    item OMHTTTurretBase {
+        DisplayName = Turret Base,
+        ItemType = base:container,
+        DisplayCategory = Material,
+        Weight = 6,
+        WeightReduction = 0,
+        Capacity = 17,
+        Icon = OMHTT_TestCube,
+        ConditionMax = 100,
+        AcceptItemFunction = OMHTT_Turret.accept,
+        Tooltip = Tooltip_OMHTT_TurretBase,
+    }
+    item OMHTTPotatoHead {
+        DisplayName = Potato Launcher Head,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 4,
+        Icon = OMHTT_TestCube,
+        ConditionMax = 100,
+        Tooltip = Tooltip_OMHTT_PotatoHead,
+    }
+"""
+    for key, name in modules.items():
+        items += f"""    item OMHTTModule{key} {{
+        DisplayName = {name} Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        Tooltip = Tooltip_OMHTT_ModuleStorage,
+    }}
+"""
+    write("scripts/OMHTT_TurretItems.txt", items + "}\n")
+    tools = ["item 1 tags[base:screwdriver] mode:keep flags[NoBrokenItems;DontRecordInput],",
+             "item 1 [Base.Wrench;Base.PipeWrench] mode:keep flags[NoBrokenItems;DontRecordInput],",
+             "item 1 tags[base:sheetmetalsnips] mode:keep flags[NoBrokenItems;DontRecordInput],"]
+    pliers = "item 1 tags[base:pliers] mode:keep flags[NoBrokenItems;DontRecordInput],"
+    base = {"MetalPipe": 2, "SmallSheetMetal": 2, "ScrapMetal": 1, "Screws": 8}
+    head = {"MetalPipe": 1, "SmallSheetMetal": 1, "ScrapMetal": 2, "ElectronicsScrap": 2,
+            "ElectricWire": 1, "TirePump": 1, "DuctTape": 2}
+    recipes = "module Base {\n"
+    names = {}
+    for kind, label, materials, skills, xp, output, duration in [
+        ("Base", "Craft Turret Base", base, "Mechanics:2", "Mechanics:15", "OMHTTTurretBase", 150),
+        ("Head", "Craft Potato Launcher Head", head, "Mechanics:2;Electricity:1", "Mechanics:15;Electricity:5", "OMHTTPotatoHead", 200),
+        ("HeadImprovised", "Craft Potato Launcher Head (Improvised)", {**head, "TirePump": 0, "ScrapMetal": 6}, "Mechanics:4;Electricity:1", "Mechanics:15;Electricity:5", "OMHTTPotatoHead", 250),
+        ("Complete", "Craft Potato Turret", {k: base.get(k, 0) + head.get(k, 0) for k in base.keys() | head.keys()}, "Mechanics:2;Electricity:1", "Mechanics:30;Electricity:5", "OMHTTTurretBase", 350),
+        ("CompleteImprovised", "Craft Potato Turret (Improvised)", {**{k: base.get(k, 0) + head.get(k, 0) for k in base.keys() | head.keys()}, "TirePump": 0, "ScrapMetal": 7}, "Mechanics:4;Electricity:1", "Mechanics:30;Electricity:5", "OMHTTTurretBase", 400),
+    ]:
+        name = "OMHTTCraftTurret" + kind
+        names[name] = label
+        inputs = tools + ([pliers] if kind != "Base" else [])
+        inputs += [f"item {amount} [Base.{material}]," for material, amount in sorted(materials.items()) if amount]
+        recipes += f"""    craftRecipe {name} {{
+        timedAction = Making,
+        time = {duration},
+        category = Mechanics,
+        Tags = InHandCraft,
+        needToBeLearn = false,
+        SkillRequired = {skills},
+        xpAward = {xp},
+        Tooltip = UI_OMHTT_TurretDescription,
+        OnAddToMenu = OMHTT_TurretMenuAvailable,
+        OnTest = OMHTT_Turret.recipeInput,
+        OnCreate = OMHTT_Turret.onCrafted,
+        inputs {{
+""" + "".join("            " + value + "\n" for value in inputs) + f"""        }}
+        outputs {{
+            item 1 Base.{output},
+        }}
+    }}
+"""
+    write("scripts/OMHTT_TurretRecipes.txt", recipes + "}\n")
+    entity = """module Base {
+    entity OMHTTDeployTurret {
+        component UiConfig {
+            xuiSkin = default,
+            entityStyle = ES_OMHTTDeployTurret,
+            uiEnabled = false,
+        }
+        component SpriteConfig {
+            health = 100,
+            skillBaseHealth = 0,
+            bonusHealth = 0,
+            isThumpable = true,
+            breakSound = BreakObject,
+            OnIsValid = OMHTT_TurretWorld.onIsValid,
+            OnCreate = OMHTT_TurretWorld.onCreate,
+"""
+    for heading, index in zip("ENWS", range(44, 48)):
+        entity += f"            face {heading} {{\n                layer {{\n                    row = omhtt_barrier_01_{index},\n                }}\n            }}\n"
+    entity += """        }
+        component CraftRecipe {
+            timedAction = BuildLowNoTool,
+            time = 200,
+            category = Mechanics,
+            Tooltip = UI_OMHTT_DeployTurretDescription,
+            needToBeLearn = false,
+            OnAddToMenu = OMHTT_TurretMenuAvailable,
+            OnTest = OMHTT_Turret.recipeInput,
+            inputs {
+                item 1 [Base.OMHTTTurretBase] flags[ItemCount],
+            }
+        }
+    }
+    xuiSkin default {
+        entity ES_OMHTTDeployTurret {
+            LuaWindowClass = ISEntityWindow,
+            DisplayName = UI_OMHTT_DeployTurret,
+            Icon = OMHTT_TestCube,
+        }
+    }
+}
+"""
+    entity = entity.rstrip()[:-1]
+    for group in range(4):
+        entity += f"    entity OMHTTPotatoVisual{group} {{\n        component SpriteConfig {{\n"
+        for facing, heading in enumerate("ENWS"):
+            entity += f"            face {heading} {{\n                layer {{\n                    row = omhtt_barrier_01_{28 + group * 4 + facing},\n                }}\n            }}\n"
+        entity += "        }\n    }\n"
+    write("scripts/OMHTT_TurretConstruction.txt", entity + "}\n")
+    texture = MEDIA / "textures/Item_OMHTT_TestCube.png"
+    texture.write_bytes((MEDIA / "textures/OMHTT_TestCube.png").read_bytes())
+    translations("Recipes", {**names, "OMHTTDeployTurret": "Deploy Turret"})
+    translations("ItemName", {"Base.OMHTTTurretBase": "Turret Base", "Base.OMHTTPotatoHead": "Potato Launcher Head",
+                              **{"Base.OMHTTModule" + k: v + " Module" for k, v in modules.items()}})
+    translations("Tooltip", {
+        "Tooltip_OMHTT_TurretBase": "Holds a head, ammo, modules and a battery.",
+        "Tooltip_OMHTT_PotatoHead": "Install in a turret base. Uses potatoes and power.",
+        "Tooltip_OMHTT_ModuleStorage": "Storage prototype. Module effects are not enabled yet.",
+    })
+    translations("UI", {
+        "UI_OMHTT_TurretBase": "Turret Base", "UI_OMHTT_PotatoTurret": "Potato Turret",
+        "UI_OMHTT_DeployTurret": "Deploy Turret", "UI_OMHTT_NoHead": "None", "UI_OMHTT_None": "None",
+        "UI_OMHTT_NoBattery": "None", "UI_OMHTT_NoPower": "No power.", "UI_OMHTT_NoHead": "No working head.",
+        "UI_OMHTT_TurretContents": "Head: %1\nPotatoes: %2\nBattery: %3\nModules: %4",
+        "UI_OMHTT_TotalWeight": "Total weight: %1",
+        "UI_OMHTT_TurretDescription": "A modular defense. The potato head includes feeding and cycling. Needs potatoes and power.",
+        "UI_OMHTT_DeployTurretDescription": "Place the selected turret with its contents. Pickup preserves supplies. Unload potatoes before removing the head.",
+    })
+    translations("ContextMenu", {"ContextMenu_OMHTT_TurretFire": "Fire", "ContextMenu_OMHTT_PickupTurret": "Pick up turret"})
+    translations("IG_UI", {"IGUI_ContainerTitle_OMHTTTurret": "Turret"})
+    options = [
+        ("PotatoTurret", "boolean", "true", None, None, "Potato Turret", "Enable potato turrets."),
+        ("PotatoRequirePower", "boolean", "true", None, None, "Require power", "Require electricity to fire."),
+        ("PotatoAmmoCapacity", "integer", 30, 1, 500, "Ammo capacity", "Maximum potatoes."),
+        ("PotatoModuleCapacity", "integer", 4, 0, 20, "Module storage", "Maximum stored modules. Effects come later."),
+        ("PotatoHealth", "integer", 100, 1, 10000, "Durability", "Maximum durability of newly crafted bases."),
+        ("PotatoDamage", "double", 50, 0, 1000, "Damage", "Direct-hit damage. 100 points = 1 health."),
+        ("PotatoCooldown", "double", 1, 0.1, 60, "Shot cooldown", "Seconds between shots."),
+        ("PotatoRange", "integer", 6, 1, 20, "Range", "Maximum firing distance in tiles."),
+        ("PotatoKnockdownChance", "integer", 70, 0, 100, "Knockdown chance", "Percent chance on a standing target."),
+        ("PotatoSplashDamage", "double", 0.1, 0, 100, "Splash damage", "Damage to nearby zombies."),
+        ("PotatoSplashRadius", "double", 1.1, 0, 3, "Splash radius", "Splash distance in tiles."),
+        ("PotatoBatteryPercentPerShot", "double", 0.1, 0, 100, "Battery use", "Battery charge percent per shot."),
+        ("PotatoGeneratorFuelPerShot", "double", 0.001, 0, 1, "Generator use", "Extra generator fuel per shot."),
+    ]
+    sandbox = (MEDIA / "sandbox-options.txt").read_text(encoding="utf-8").split("\noption OMHTurretsTraps.PotatoTurret")[0].rstrip() + "\n\n"
+    strings = {"Sandbox_OMHTurretsTraps_PotatoPage": "Turrets & Traps: Potato Turret"}
+    for key, kind, default, minimum, maximum, label, tip in options:
+        sandbox += f"option OMHTurretsTraps.{key} {{\n    type = {kind},\n    default = {default},\n"
+        if minimum is not None:
+            sandbox += f"    min = {minimum},\n    max = {maximum},\n"
+        sandbox += f"    page = OMHTurretsTraps_PotatoPage,\n    translation = OMHTurretsTraps_{key},\n}}\n\n"
+        strings["Sandbox_OMHTurretsTraps_" + key] = label
+        strings["Sandbox_OMHTurretsTraps_" + key + "_tooltip"] = tip
+    write("sandbox-options.txt", sandbox.rstrip() + "\n")
+    translations("Sandbox", strings)
+
+
+if __name__ == "__main__":
+    main()

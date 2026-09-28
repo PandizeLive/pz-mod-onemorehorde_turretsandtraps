@@ -1,6 +1,12 @@
 # Release state and publication policy
 
-## Current installation: 0.2.8
+## Current candidate: 0.2.9
+
+[P2C3a-c scope and combined owner test](PHASE_2_CHECKPOINT_3.md), [release notes](PR_v0.2.9.md). Universal base and potato head, five approved recipes, native loaded-item deployment, actual ammo/module/battery containers, full contents weight, ten-second pickup and powered manual firing. Held P2C2b barrier selection/highlight and separate reinforced sprites remain included. Module effects and multiplayer gameplay are deferred.
+
+Validation targets stock B42.21.0 / 4a0e9546ec. The old installed PZOptimizer LuaCompiler override fails normal startup before mod Lua; stock-first isolated probes leave that installation untouched. Rendered player acceptance remains pending. No Workshop upload exists; the changelog remains cumulative.
+
+## Previous installation: 0.2.8
 
 [P2C2b scope and owner test](PHASE_2_CHECKPOINT_2B.md), [release notes](PR_v0.2.8.md). Reliable footprint-based barrier selection, separate shared-corner choices, paired hover highlighting, independent reinforced texture pages/icons and picker diagnostics. C45 approves implementation; C47 approves Range/Velocity/Rapid-Fire stacking in the future module plan. No module runtime, balance or recipe change is included.
 

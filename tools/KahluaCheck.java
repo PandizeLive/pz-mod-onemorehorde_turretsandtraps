@@ -188,6 +188,10 @@ public final class KahluaCheck {
             {"_", "tools/tests/barrier_outline.lua"},
             {"_", "tools/tests/barrier_reinforcement.lua"},
             {"_", "tools/tests/barrier_selection.lua"},
+            {"OMHTT/Turret", base + "shared/OMHTT/Turret.lua"},
+            {"OMHTT/TurretWorld", base + "server/OMHTT/TurretWorld.lua"},
+            {"OMHTT/TurretPickupAction", base + "shared/OMHTT/TurretPickupAction.lua"},
+            {"_", "tools/tests/turret.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

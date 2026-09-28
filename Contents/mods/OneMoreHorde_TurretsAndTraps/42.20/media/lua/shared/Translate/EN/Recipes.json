@@ -6,5 +6,11 @@
     "OMHTTUnpackSpikeBarriers": "Unpack Five Spike Barriers",
     "OMHTTDeployReinforcedBarrier": "Deploy Reinforced Spike Barrier",
     "OMHTTPackReinforcedBarriers": "Bundle Reinforced Spike Barriers",
-    "OMHTTUnpackReinforcedBarriers": "Unpack Reinforced Spike Barriers"
+    "OMHTTUnpackReinforcedBarriers": "Unpack Reinforced Spike Barriers",
+    "OMHTTCraftTurretBase": "Craft Turret Base",
+    "OMHTTCraftTurretHead": "Craft Potato Launcher Head",
+    "OMHTTCraftTurretHeadImprovised": "Craft Potato Launcher Head (Improvised)",
+    "OMHTTCraftTurretComplete": "Craft Potato Turret",
+    "OMHTTCraftTurretCompleteImprovised": "Craft Potato Turret (Improvised)",
+    "OMHTTDeployTurret": "Deploy Turret"
 }

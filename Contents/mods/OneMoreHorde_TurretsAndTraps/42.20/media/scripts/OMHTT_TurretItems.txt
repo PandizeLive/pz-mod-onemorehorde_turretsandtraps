@@ -1,0 +1,103 @@
+module Base {
+    item OMHTTTurretBase {
+        DisplayName = Turret Base,
+        ItemType = base:container,
+        DisplayCategory = Material,
+        Weight = 6,
+        WeightReduction = 0,
+        Capacity = 17,
+        Icon = OMHTT_TestCube,
+        ConditionMax = 100,
+        AcceptItemFunction = OMHTT_Turret.accept,
+        Tooltip = Tooltip_OMHTT_TurretBase,
+    }
+    item OMHTTPotatoHead {
+        DisplayName = Potato Launcher Head,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 4,
+        Icon = OMHTT_TestCube,
+        ConditionMax = 100,
+        Tooltip = Tooltip_OMHTT_PotatoHead,
+    }
+    item OMHTTModuleFiring {
+        DisplayName = Firing Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        Tooltip = Tooltip_OMHTT_ModuleStorage,
+    }
+    item OMHTTModuleMotionDetection {
+        DisplayName = Motion Detection Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        Tooltip = Tooltip_OMHTT_ModuleStorage,
+    }
+    item OMHTTModuleFilter {
+        DisplayName = Filter Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        Tooltip = Tooltip_OMHTT_ModuleStorage,
+    }
+    item OMHTTModuleRapidFire {
+        DisplayName = Rapid-Fire Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        Tooltip = Tooltip_OMHTT_ModuleStorage,
+    }
+    item OMHTTModuleVelocity {
+        DisplayName = Velocity Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        Tooltip = Tooltip_OMHTT_ModuleStorage,
+    }
+    item OMHTTModuleRange {
+        DisplayName = Range Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        Tooltip = Tooltip_OMHTT_ModuleStorage,
+    }
+    item OMHTTModuleCapacity {
+        DisplayName = Capacity Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        Tooltip = Tooltip_OMHTT_ModuleStorage,
+    }
+    item OMHTTModuleDetection360 {
+        DisplayName = 360 Detection Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        Tooltip = Tooltip_OMHTT_ModuleStorage,
+    }
+    item OMHTTModuleReload {
+        DisplayName = Reload Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        Tooltip = Tooltip_OMHTT_ModuleStorage,
+    }
+    item OMHTTModuleAutoloader {
+        DisplayName = Autoloader Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        Tooltip = Tooltip_OMHTT_ModuleStorage,
+    }
+}

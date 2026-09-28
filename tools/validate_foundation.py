@@ -62,7 +62,7 @@ def main():
     for key in keys:
         assert key in translations, f"Missing translation: {key}"
     textures = list((PACKAGE / "42.20/media/textures").glob("*.png"))
-    assert len(textures) == 36, "Legacy visuals plus eight unique native-construction part sprites required"
+    assert len(textures) == 37, "Existing technical markers plus turret inventory icon required"
     for heading, index in zip("ENWS", range(4)):
         for part in "AB":
             assert (PACKAGE / f"42.20/media/textures/OMHTT_BuildBarrier{heading}_{part}.png").read_bytes() == (PACKAGE / f"42.20/media/textures/OMHTT_Barrier{index}.png").read_bytes(), "Construction sprites reuse authorized technical markers"
@@ -80,7 +80,8 @@ def main():
             assert all(r == g == b for r, g, b, a in sprite.get_flattened_data() if a), "Sprite must remain white/grayscale"
     javac = Path(os.environ.get("PZ_JAVAC", "C:/Program Files/Java/jdk-17/bin/javac.exe"))
     run([javac, "-d", classes, ROOT / "tools/KahluaCheck.java"])
-    classpath = os.pathsep.join(str(path) for path in [classes, GAME, GAME / "projectzomboid.jar"])
+    stock = os.environ.get("OMHTT_STOCK_CLASSES") == "1"
+    classpath = os.pathsep.join(str(path) for path in ([classes, GAME / "projectzomboid.jar", GAME] if stock else [classes, GAME, GAME / "projectzomboid.jar"]))
     log = run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED", "-Djava.awt.headless=true",
         "-Duser.home=" + str(OUTPUT / "native-home"), "-cp", classpath, "KahluaCheck", ROOT], cwd=GAME)
     (OUTPUT / "validation.log").write_text(log, encoding="utf-8")
@@ -114,6 +115,9 @@ def main():
         "zombie/ai/states/ClimbOverFenceState.class", "zombie/pathfind/SquareUpdateTask.class",
         "zombie/pathfind/nativeCode/SquareUpdateTask.class", "zombie/characters/IsoPlayer.class",
         "zombie/GameTime.class", "zombie/inventory/ItemContainer.class",
+        "zombie/inventory/types/InventoryContainer.class", "zombie/iso/objects/IsoGenerator.class",
+        "media/lua/client/TimedActions/ISInventoryTransferAction.lua",
+        "media/lua/client/ISUI/ISWorldObjectContextMenu.lua",
         "zombie/iso/IsoGridSquare.class", "zombie/iso/IsoObjectUtils.class",
         "media/lua/shared/ISBaseObject.lua",
         "media/lua/client/Entity/ISUI/CraftRecipe/ISHandCraftPanel.lua",
@@ -129,13 +133,14 @@ def main():
         "media/scripts/generated/recipes/recipes_carving.txt",
         "media/scripts/generated/timedactions.txt",
     ]
-    evidence = {name: hashlib.sha256((GAME / name).read_bytes()).hexdigest() for name in sources if (GAME / name).is_file()}
+    evidence = {name: hashlib.sha256((GAME / name).read_bytes()).hexdigest() for name in sources
+                if (GAME / name).is_file() and not (stock and name.endswith(".class"))}
     with zipfile.ZipFile(GAME / "projectzomboid.jar") as native:
         for name in sources:
             if name not in evidence and name in native.namelist():
                 evidence[name + " (jar)"] = hashlib.sha256(native.read(name)).hexdigest()
     version = re.search(r"^modversion=(.+)$", (PACKAGE / "42.20/mod.info").read_text(), re.MULTILINE).group(1).strip()
-    manifest = {"version": version, "gameRoot": str(GAME), "files": files, "gameEvidence": evidence,
+    manifest = {"version": version, "gameRoot": str(GAME), "nativeClassOrder": "stock-jar-first" if stock else "installed-loose-first", "files": files, "gameEvidence": evidence,
         "inGameAcceptance": "pending", "nativeTableFormatVersion": 249}
     (OUTPUT / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     print(f"Package checks passed: {len(files)} files, {len(keys)} translation keys; manifest recorded.")
