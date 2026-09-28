@@ -54,4 +54,38 @@ module Base {
             item 5 Base.OMHTTSpikeBarrierItem,
         }
     }
+    craftRecipe OMHTTPackReinforcedBarriers {
+        timedAction = Making,
+        time = 100,
+        category = Carpentry,
+        Tooltip = Tooltip_OMHTT_ReinforcedPack,
+        Tags = InHandCraft;Carpentry,
+        needToBeLearn = false,
+        OnAddToMenu = OMHTT_ConstructionMenuAvailable,
+        OnTest = OMHTT_Construction.portableInputAllowed,
+        OnCreate = OMHTT_Construction.onCrafted,
+        inputs {
+            item 5 [Base.OMHTTReinforcedBarrierItem],
+        }
+        outputs {
+            item 1 Base.OMHTTReinforcedBarrierPack,
+        }
+    }
+    craftRecipe OMHTTUnpackReinforcedBarriers {
+        timedAction = Making,
+        time = 100,
+        category = Carpentry,
+        Tooltip = Tooltip_OMHTT_ReinforcedPack,
+        Tags = InHandCraft;Carpentry,
+        needToBeLearn = false,
+        OnAddToMenu = OMHTT_ConstructionMenuAvailable,
+        OnTest = OMHTT_Construction.portableInputAllowed,
+        OnCreate = OMHTT_Construction.onCrafted,
+        inputs {
+            item 1 [Base.OMHTTReinforcedBarrierPack],
+        }
+        outputs {
+            item 5 Base.OMHTTReinforcedBarrierItem,
+        }
+    }
 }

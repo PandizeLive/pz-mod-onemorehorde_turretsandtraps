@@ -110,7 +110,7 @@ function Barrier.update(zombie)
         zombie:clearVariable(Barrier.TOKEN)
         zombie:setVariable("ThumpType", Barrier.TYPE)
         Diagnostics.emit("barrier-attacker-attached", {id = record.id, x = zombie:getX(), y = zombie:getY(),
-            animation = Barrier.TYPE, damage100 = Foundation.barrierDamage()})
+            animation = Barrier.TYPE, damage100 = Foundation.barrierDamage(record)})
         return
     end
     if zombie:getVariableString("ThumpType") ~= Barrier.TYPE then
@@ -138,7 +138,7 @@ function Barrier.update(zombie)
             token = token, x = zombie:getX(), y = zombie:getY(), barrierHP = target:getHealth()})
         return
     end
-    local lost = Damage.apply(zombie, Foundation.barrierDamage() / 100, record.id, "barrier", nil, nil)
+    local lost = Damage.apply(zombie, Foundation.barrierDamage(record) / 100, record.id, "barrier", nil, nil)
     Diagnostics.emit("barrier-strike", {id = record.id, token = token, strikes = state.strikes,
         face = face, facing = record.facing, width = record.width,
         x = zombie:getX(), y = zombie:getY(), nativeDamage = lost, damage100 = lost * 100,

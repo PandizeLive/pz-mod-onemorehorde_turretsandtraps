@@ -185,6 +185,7 @@ public final class KahluaCheck {
             {"OMHTT/BarrierCollisionOverlay", base + "client/OMHTT/BarrierCollisionOverlay.lua"},
             {"_", "tools/tests/barrier_overlay.lua"},
             {"_", "tools/tests/barrier_outline.lua"},
+            {"_", "tools/tests/barrier_reinforcement.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

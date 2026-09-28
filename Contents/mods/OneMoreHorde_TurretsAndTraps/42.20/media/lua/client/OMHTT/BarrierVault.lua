@@ -90,6 +90,8 @@ local function finish(player, plan, result)
     Diagnostics.emit("barrier-vault-result", {crossing = plan.sequence, id = plan.id, side = plan.side,
         result = result, roll = plan.roll, injured = plan.injured, contact = plan.contact, godMode = player:isGodMod(),
         x = player:getX(), y = player:getY(), z = player:getZ(), outcome = plan.outcome,
+        state = tostring(player:getCurrentState()), fromX = plan.fromX, fromY = plan.fromY, toX = plan.toX, toY = plan.toY,
+        animationStarted = plan.animationStarted == true, entered = plan.entered == true,
         elapsedMs = getTimestampMs() - plan.startedAt})
 end
 
@@ -128,6 +130,11 @@ function Vault.update(player)
     elseif plan.entered then
         local landed = math.floor(player:getX()) == plan.toX and math.floor(player:getY()) == plan.toY
             and math.floor(player:getZ()) == plan.z
+        if plan.contact and math.floor(player:getZ()) == plan.z then
+            local dx, dy = plan.toX - plan.fromX, plan.toY - plan.fromY
+            local progress = (player:getX() - plan.fromX - 0.5) * dx + (player:getY() - plan.fromY - 0.5) * dy
+            landed = progress >= 0.5
+        end
         local recovered = state == IdleState.instance() or state == PlayerMovementState.instance()
         if landed and recovered and plan.animationStarted and plan.outcome == "success" then
             if not plan.contact then

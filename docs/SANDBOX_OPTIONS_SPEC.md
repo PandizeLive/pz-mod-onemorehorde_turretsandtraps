@@ -1,6 +1,6 @@
 # Sandbox options specification
 
-## Implemented in 0.2.5
+## Implemented through 0.2.7
 
 | Page | Option | Default / range |
 | --- | --- | --- |
@@ -8,6 +8,8 @@
 | Spike Barrier | Enable Spike Barrier | On |
 | Spike Barrier | Damage | 10 / 0-1000 |
 | Spike Barrier | Maximum Durability | 100 / 1-10000 |
+| Spike Barrier | Reinforced Damage | 25 / 0-1000 |
+| Spike Barrier | Reinforced Durability Multiplier | 2 / 1-10; multiplies basic maximum |
 | Spike Barrier | Vault Scratch Chance | 5 / 0-50, interpreted as 1 in N; 0 disables spike scratches |
 | Debug | Diagnostic Logging | On for development |
 | Debug | Foundation Test Controls | Off |
@@ -17,7 +19,7 @@ Existing option IDs remain unchanged. Categories are native Sandbox pages. Each 
 
 The sections below also contain future proposals; they do not claim implementation.
 
-Status: mixed implemented/planned contract. In 0.2.0, master Enable Turrets & Traps and Enable Spike Barrier are native Sandbox controls, alongside Foundation Test Controls and Diagnostic Logging. 0.2.3 additionally implements Spike Barrier Damage and Maximum Durability. Other controls below remain planned. One edition, one Sandbox page; preserve owner-authored tooltip wording.
+Status: mixed implemented/planned contract. In 0.2.0, master Enable Turrets & Traps and Enable Spike Barrier are native Sandbox controls, alongside Foundation Test Controls and Diagnostic Logging. 0.2.3 additionally implements Spike Barrier Damage and Maximum Durability. Other controls below remain planned. One edition, grouped native Sandbox pages; preserve owner-authored tooltip wording.
 
 ## Groups and defaults
 
@@ -83,3 +85,5 @@ Use In-Game Time for autonomous operation, power/decay and reset intervals. Use 
 ## Implemented value changes (0.2.3)
 
 Damage applies to subsequent strikes. Maximum HP reconciliation records outstanding wear on both loaded halves, then preserves remaining percentage with integer rounding (minimum 1 for a living barrier). Legacy records without a maximum assume 100. Incomplete/unloaded pairs wait for both parts. Repair/new deployment use the configured maximum. No settings XP; menus and startup/migration logs expose current values.
+
+Reinforced damage and durability settings affect only reinforced records. Basic maximum changes also affect the reinforced maximum through its multiplier. Reconciliation preserves remaining percentage; upgrading between tiers instead preserves missing HP under C26.

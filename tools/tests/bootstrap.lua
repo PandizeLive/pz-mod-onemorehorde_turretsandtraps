@@ -187,6 +187,7 @@ IsoObject = {new = function(square, sprite, name)
             getTileInfo = function() return {getSpriteName = function() return object.sprite end} end,
             getObjectInfo = function() return {getName = function()
                 local index = tonumber(string.match(object.sprite, "_(%d+)$"))
+                if index >= 20 then return "OMHTTDeployReinforcedBarrier" end
                 if index >= 8 then return "OMHTTDeploySpikeBarrier" end
                 return "OMHTTSpikeBarrier"
             end} end}

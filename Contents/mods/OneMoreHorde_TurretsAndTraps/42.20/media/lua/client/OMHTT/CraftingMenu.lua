@@ -89,10 +89,14 @@ function ISWidgetTitleHeader:calculateLayout(preferredWidth, preferredHeight)
     if not self.recipe or string.sub(self.recipe:getName(), 1, 5) ~= "OMHTT" or not self.tooltipLabel then return end
     local width = math.max(1, self:getWidth() - self.tooltipLabel:getX() - self.paddingRight - self.marginRight)
     local text = getText(self.recipe:getTooltip())
-    if self.recipe:getTooltip() == "UI_OMHTT_SpikeBarrierDescription" then
-        text = getText("UI_OMHTT_SpikeBarrier") .. "\n\n"
+    local tier = nil
+    if self.recipe:getTooltip() == "UI_OMHTT_ReinforcedBarrierDescription" then
+        tier = {tier = "reinforced"}
+    end
+    if self.recipe:getTooltip() == "UI_OMHTT_SpikeBarrierDescription" or tier then
+        text = getText(tier and "UI_OMHTT_ReinforcedBarrier" or "UI_OMHTT_SpikeBarrier") .. "\n\n"
             .. getText("UI_OMHTT_BarrierPurpose") .. "\n\n"
-            .. getText("UI_OMHTT_BarrierStatistics", F.barrierDamage(), F.barrierHealth())
+            .. getText("UI_OMHTT_BarrierStatistics", F.barrierDamage(tier), F.barrierHealth(tier))
     end
     if self.omhttDescriptionWidth == width and self.omhttDescriptionText == text then return end
     self.omhttDescriptionWidth, self.omhttDescriptionText = width, text

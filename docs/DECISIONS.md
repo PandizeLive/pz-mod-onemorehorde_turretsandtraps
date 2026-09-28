@@ -182,3 +182,9 @@ The owner authorized proceeding to the next checkpoint and testing it together w
 
 - C41: After the 0.2.6 test, the owner requires normal visibility through the barrier and requests the correction in the next checkpoint. Preserve collision, vaulting and zombie blocking; seeing through an open spike barrier is baseline behavior rather than an optional balance toggle.
 - [Test evidence](TEST_v0.2.6.md) is partial, with four unsettled vault results and no completed repair/reload proof. [P2C2a](PHASE_2_CHECKPOINT_2A.md) queues the correction ahead of the already-approved reinforced upgrade. This update records scope; no gameplay patch was installed.
+
+## 2026-09-27 P2C2a approval and reinforced servicing
+
+- C42: Owner approves the P2C2a patch and explicitly selects the same free ten-second pickup/Repair and full-condition recovery for reinforced barriers, preserving their tier. Reinforced bundles contain five items of one tier only and use the same 67 percent weight reduction. This extends C32 to the reinforced tier; mixed-tier bundles are excluded.
+- 0.2.7 implements C25/C26/C41/C42. Upgrade duration is ten seconds; inventory/carried-bag materials and usable retained hammer are required outside native Building Cheat. Cheat upgrades do not award XP. Reinforced item weight remains provisionally 6, pack 9.9, pending balance acceptance.
+- See [checkpoint, current engine evidence and full test](PHASE_2_CHECKPOINT_2A.md). Native-entry timeout diagnosis remains open; no player test is retroactively marked complete.

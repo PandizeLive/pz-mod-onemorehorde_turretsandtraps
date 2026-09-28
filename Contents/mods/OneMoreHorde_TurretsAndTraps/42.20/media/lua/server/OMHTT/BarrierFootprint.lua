@@ -306,6 +306,11 @@ function Footprint.adoptBuild(object, player, x, y, facing, entity)
         store.nextId = store.nextId + 1
     end
     local record = slot.device
+    if entity == "OMHTTDeployReinforcedBarrier" and not record.tier then
+        record.tier = "reinforced"
+        record.maxHealth = F.barrierHealth(record)
+        record.condition = record.maxHealth
+    end
     if record.kind ~= "barrier" or record.placementSource ~= "construction" or record.facing ~= facing
         or record.builderUsername ~= player:getUsername() or Sprites.entity(record) ~= entity then
         error("[OMHTT] Native construction callback conflicts with existing device at " .. anchor)
@@ -486,7 +491,7 @@ function Footprint.sync(slot, reason)
         return false
     end
     local oldMaximum = record.maxHealth or 100
-    local maximum = F.barrierHealth()
+    local maximum = F.barrierHealth(record)
     if oldMaximum ~= maximum or record.maxHealth == nil then
         record.condition = math.max(1, math.floor(record.condition * maximum / oldMaximum + 0.5))
         record.condition = math.min(maximum, record.condition)
@@ -494,7 +499,7 @@ function Footprint.sync(slot, reason)
         record.revision = record.revision + 1
         slot.epoch = slot.epoch + 1
         Diagnostics.emit("barrier-settings", {id = record.id, previousMax = oldMaximum,
-            max = maximum, hp = record.condition, damage = F.barrierDamage()})
+            max = maximum, hp = record.condition, damage = F.barrierDamage(record)})
     end
     local width = record.width
     expandLegacy(record, slot)

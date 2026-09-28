@@ -21,3 +21,7 @@ function testServiceAction(player, object, id, operation)
 end
 
 ISWorldObjectContextMenu = {addToolTip = function() return {} end}
+
+Perks = {Woodwork = "Woodwork"}
+ItemTag = {HAMMER = "hammer"}
+function testPlayer:getPerkLevel() return self.woodwork or 0 end

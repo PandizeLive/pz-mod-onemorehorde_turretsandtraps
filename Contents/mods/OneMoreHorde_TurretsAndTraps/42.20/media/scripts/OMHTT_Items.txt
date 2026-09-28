@@ -18,4 +18,23 @@ module Base {
         ConditionMax = 100,
         Tooltip = Tooltip_OMHTT_BarrierPack,
     }
+    item OMHTTReinforcedBarrierItem {
+        DisplayName = Reinforced Spike Barrier,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 6,
+        Icon = OMHTT_Barrier0,
+        ConditionMax = 100,
+        Tooltip = Tooltip_OMHTT_ReinforcedBarrier,
+    }
+
+    item OMHTTReinforcedBarrierPack {
+        DisplayName = Reinforced Spike Barrier Pack,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 9.9,
+        Icon = OMHTT_Barrier0,
+        ConditionMax = 100,
+        Tooltip = Tooltip_OMHTT_ReinforcedPack,
+    }
 }

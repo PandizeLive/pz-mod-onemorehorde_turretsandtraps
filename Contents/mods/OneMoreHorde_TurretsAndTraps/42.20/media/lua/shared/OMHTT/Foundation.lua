@@ -1,6 +1,6 @@
 ---@class OMHTTFoundation
 local Foundation = {
-    VERSION = "0.2.6",
+    VERSION = "0.2.7",
     MODULE = "OMHTT_Foundation",
     STORE = "OMHTT_Foundation_v1",
     PREFIX = "OMHTT_P1C1_",
@@ -27,7 +27,7 @@ end
 ---@return nil
 function Foundation.writeMarker(object, record)
     object:getModData().OMHTT = {
-        schema = 1, id = record.id, condition = record.condition, revision = record.revision,
+        schema = 1, tier = record.tier, id = record.id, condition = record.condition, revision = record.revision,
         testOwner = record.testOwner, kind = record.kind, ammo = record.ammo, shots = record.shots,
         nextShot = record.nextShot, facing = record.facing, width = record.width,
         anchorX = record.x, anchorY = record.y, anchorZ = record.z,
@@ -55,15 +55,21 @@ local function barrierOption(key, fallback, minimum, maximum)
     return math.floor(math.max(minimum, math.min(maximum, value)))
 end
 
+---@param record table? Defense tier; nil means basic
 ---@return number damage Readable health points per thump
 ---@nodiscard
-function Foundation.barrierDamage()
+function Foundation.barrierDamage(record)
+    if record and record.tier == "reinforced" then return barrierOption("ReinforcedBarrierDamage", 25, 0, 1000) end
     return barrierOption("SpikeBarrierDamage", 10, 0, 1000)
 end
 
+---@param record table? Defense tier; nil means basic
 ---@return number health Shared maximum across both tiles
 ---@nodiscard
-function Foundation.barrierHealth()
+function Foundation.barrierHealth(record)
+    if record and record.tier == "reinforced" then
+        return barrierOption("SpikeBarrierHealth", 100, 1, 10000) * barrierOption("ReinforcedBarrierHealthMultiplier", 2, 1, 10)
+    end
     return barrierOption("SpikeBarrierHealth", 100, 1, 10000)
 end
 

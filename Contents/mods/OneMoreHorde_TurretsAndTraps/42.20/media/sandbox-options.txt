@@ -61,3 +61,21 @@ option OMHTurretsTraps.ShowCollision {
     page = OMHTurretsTraps_Debug,
     translation = OMHTurretsTraps_ShowCollision,
 }
+
+option OMHTurretsTraps.ReinforcedBarrierDamage {
+    type = integer,
+    min = 0,
+    max = 1000,
+    default = 25,
+    page = OMHTurretsTraps_BarrierPage,
+    translation = OMHTurretsTraps_ReinforcedBarrierDamage,
+}
+
+option OMHTurretsTraps.ReinforcedBarrierHealthMultiplier {
+    type = integer,
+    min = 1,
+    max = 10,
+    default = 2,
+    page = OMHTurretsTraps_BarrierPage,
+    translation = OMHTurretsTraps_ReinforcedBarrierHealthMultiplier,
+}

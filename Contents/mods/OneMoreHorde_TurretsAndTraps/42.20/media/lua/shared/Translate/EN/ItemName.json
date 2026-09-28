@@ -1,4 +1,6 @@
 {
     "Base.OMHTTSpikeBarrierItem": "Spike Barrier",
-    "Base.OMHTTSpikeBarrierPack": "Spike Barrier Pack"
+    "Base.OMHTTSpikeBarrierPack": "Spike Barrier Pack",
+    "Base.OMHTTReinforcedBarrierItem": "Reinforced Spike Barrier",
+    "Base.OMHTTReinforcedBarrierPack": "Reinforced Spike Barrier Pack"
 }

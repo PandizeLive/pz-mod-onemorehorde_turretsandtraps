@@ -15,7 +15,10 @@ local menuAvailable = nil
 ---@nodiscard
 function Construction.edgeNorth(sprite, north)
     local index = tonumber(string.match(sprite, "^omhtt_barrier_01_(%d+)$"))
-    if index == nil or index > 15 then return north end
+    if index == nil or (index >= 16 and index <= 19) or index > 27 then return north end
+    if index >= 20 then
+        index = index - 20
+    end
     local heading = math.floor(index / 2) % 4
     return heading == 1 or heading == 3
 end
@@ -53,7 +56,11 @@ function Construction.installEdges()
                 local name = tile and tile:getSpriteName()
                 if name and string.match(name, "^omhtt_barrier_01_%d+$") then
                     local index = tonumber(string.match(name, "_(%d+)$"))
-                    local facing = math.floor(index / 2) % 4 * 4
+                    local visualIndex = index
+                    if index >= 20 then
+                        visualIndex = index - 20
+                    end
+                    local facing = math.floor(visualIndex / 2) % 4 * 4
                     local ax, ay = x + xx, y + yy
                     if index % 2 == 1 then
                         local nx, ny = F.barrierDirection(facing)
@@ -96,7 +103,7 @@ OMHTT_ConstructionMenuAvailable = Construction.onAddToMenu
 ---@nodiscard
 function Construction.portableInputAllowed(item, player)
     if isClient() or isServer() or not F.barrierEnabled() then return false end
-    if item:getFullType() == "Base.OMHTTSpikeBarrierItem" then
+    if item:getFullType() == "Base.OMHTTSpikeBarrierItem" or item:getFullType() == "Base.OMHTTReinforcedBarrierItem" then
         return item:getCondition() == item:getConditionMax()
     end
     return true
@@ -114,7 +121,7 @@ end
 
 ---@return nil
 function Construction.initializeSprites()
-    for i = 0, 19 do
+    for i = 0, 27 do
         local name = Sprites.SHEET .. i
         local sprite = getSprite(name)
         if sprite:getName() ~= name or sprite:getID() ~= 1918369792 + i then
@@ -129,18 +136,21 @@ function Construction.initializeSprites()
             properties:set(IsoFlagType.WallN)
             properties:set(IsoFlagType.TallHoppableN)
             properties:set(IsoFlagType.collideN)
+            properties:set(IsoFlagType.transparentN)
         else
             properties:set(IsoFlagType.WallW)
             properties:set(IsoFlagType.TallHoppableW)
             properties:set(IsoFlagType.collideW)
+            properties:set(IsoFlagType.transparentW)
         end
         properties:set(IsoFlagType.CantClimb)
+        properties:set("doorTrans", "true")
         if i >= 18 then
             properties:set(IsoFlagType.WallN)
             properties:set(IsoFlagType.WallW)
         end
     end
-    Diagnostics.emit("construction-sprites", {persistent = 20, tiledef = 7316, outlineMetadata = true})
+    Diagnostics.emit("construction-sprites", {persistent = 28, tiledef = 7316, outlineMetadata = true})
 end
 
 Events.OnInitGlobalModData.Add(Construction.initializeSprites)

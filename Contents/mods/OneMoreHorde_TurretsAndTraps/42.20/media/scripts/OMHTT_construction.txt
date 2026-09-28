@@ -105,4 +105,55 @@ module Base {
             }
         }
     }
+    entity OMHTTDeployReinforcedBarrier {
+        component UiConfig {
+            xuiSkin = default,
+            entityStyle = ES_OMHTTDeployReinforcedBarrier,
+            uiEnabled = false,
+        }
+        component SpriteConfig {
+            health = 100,
+            skillBaseHealth = 0,
+            bonusHealth = 0,
+            isThumpable = true,
+            breakSound = BreakObject,
+            OnIsValid = OMHTT_Construction.onIsValid,
+            OnCreate = OMHTT_Construction.onCreate,
+            face E {
+                layer {
+                    row = omhtt_barrier_01_20,
+                    row = omhtt_barrier_01_21,
+                }
+            }
+            face N {
+                layer {
+                    row = omhtt_barrier_01_22 omhtt_barrier_01_23,
+                }
+            }
+            face W {
+                layer {
+                    row = omhtt_barrier_01_25,
+                    row = omhtt_barrier_01_24,
+                }
+            }
+            face S {
+                layer {
+                    row = omhtt_barrier_01_27 omhtt_barrier_01_26,
+                }
+            }
+        }
+        component CraftRecipe {
+            timedAction = BuildLowNoTool,
+            Tooltip = UI_OMHTT_ReinforcedBarrierDescription,
+            time = 200,
+            category = Carpentry,
+            Tags = Carpentry,
+            needToBeLearn = false,
+            OnAddToMenu = OMHTT_ConstructionMenuAvailable,
+            OnTest = OMHTT_Construction.portableInputAllowed,
+            inputs {
+                item 1 [Base.OMHTTReinforcedBarrierItem],
+            }
+        }
+    }
 }

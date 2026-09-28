@@ -240,6 +240,37 @@ local function checkNativeConstruction()
         edge:getModData().OMHTTEdge = {id = "fixture", anchor = "1:1:0:N", key = tostring(i) .. ":0:0:N", role = "cap"}
         OMHTT_NativeFixtures:add(edge)
     end
+    found = SpriteConfigManager.GetObjectInfo("OMHTTDeployReinforcedBarrier")
+    for i = 1, #faces do
+        local face = found:getFace(faces[i])
+        assert(face ~= nil and face:getWidth() * face:getHeight() == 2 and face:getzLayers() == 1, "Invalid two-tile native face")
+        for x = 0, face:getWidth() - 1 do
+            for y = 0, face:getHeight() - 1 do
+                local tile = face:getTileInfo(x, y, 0)
+                assert(tile:getX() == x and tile:getY() == y, "Native tile coordinate access failed")
+                assert(string.find(tile:getSpriteName(), "omhtt_barrier_01_", 1, true), "Unexpected native preview sprite")
+                local spriteName = tile:getSpriteName()
+                assert(getSprite(spriteName):getName() == spriteName, "Construction sprite identity was not initialized")
+                local square = IsoGridSquare.new(getCell(), nil, x, y, 0)
+                local object = IsoThumpable.new(getCell(), square, spriteName, OMHTT_Construction.edgeNorth(spriteName, false))
+                assert(object:getSpriteName() == spriteName, "Native thumpable lost its sprite name")
+                square:getObjects():add(object)
+                square:getSpecialObjects():add(object)
+                GameEntityFactory.CreateIsoObjectEntity(object, found:getScript():getParent(), true)
+                assert(object:getSpriteConfig():isValid(), "Native SpriteConfig rejected constructed object")
+                assert(object:getSpriteConfig():getTileInfo():getSpriteName() == spriteName, "Native part identity changed")
+                object:setMaxHealth(200)
+                object:setHealth(37)
+                object:setBlockAllTheSquare(false)
+                object:setCanPassThrough(false)
+                object:setIsHoppable(false)
+                object:getModData().OMHTTFixtureOwner = "fixture-owner"
+                object:getModData().OMHTTTier = "reinforced"
+                OMHTT_NativeFixtures:add(object)
+                parts = parts + 1
+            end
+        end
+    end
     checkNativeIngredients(recipe)
     local Sprites = require("OMHTT/BarrierSprites")
     local migrated = OMHTT_NativeFixtures:get(0)
@@ -336,6 +367,62 @@ local function checkNativeConstruction()
     packData:luaCallOnCreate(player)
     unpackData:luaCallOnCreate(player)
     print("[OMHTT-Smoke] native-bundles packed=5to1 unpacked=1to5 weight=9.9 xp=0 insufficient=blocked")
+    local reinforcedDeploy = SpriteConfigManager.GetObjectInfo("OMHTTDeployReinforcedBarrier"):getRecipe():getCraftRecipe()
+    local reinforcedPack = getScriptManager():getCraftRecipe("Base.OMHTTPackReinforcedBarriers")
+    local reinforcedUnpack = getScriptManager():getCraftRecipe("Base.OMHTTUnpackReinforcedBarriers")
+    assert(reinforcedDeploy:getInputs():size() == 1 and reinforcedDeploy:getXPAwardCount() == 0, "Reinforced deployment repeats costs or XP")
+    assert(getRecipeDisplayName(reinforcedDeploy:getName()) == "Deploy Reinforced Spike Barrier", "Reinforced deployment name missing")
+    assert(getItemNameFromFullType("Base.OMHTTReinforcedBarrierItem") == "Reinforced Spike Barrier", "Reinforced item name missing")
+    local reinforcedInputs = ArrayList.new()
+    for i = 1, 5 do reinforcedInputs:add(instanceItem("Base.OMHTTReinforcedBarrierItem")) end
+    local reinforcedData = CraftRecipeData.new(CraftMode.Handcraft, false, true, false, true)
+    reinforcedData:setRecipe(reinforcedPack)
+    assert(reinforcedData:canConsumeInputs(resources, reinforcedInputs, true, true), "Five reinforced items rejected")
+    reinforcedInputs:remove(reinforcedInputs:get(0))
+    reinforcedInputs:add(instanceItem("Base.OMHTTSpikeBarrierItem"))
+    assert(not reinforcedData:canConsumeInputs(resources, reinforcedInputs, true, true), "Mixed tiers incorrectly pack")
+    reinforcedInputs:remove(reinforcedInputs:get(4))
+    reinforcedInputs:add(instanceItem("Base.OMHTTReinforcedBarrierItem"))
+    for i = 0, 4 do
+        local input = reinforcedInputs:get(i)
+        player:getInventory():AddItem(input)
+        assert(reinforcedData:offerInputItem(reinforcedPack:getInputs():get(0), input), "Reinforced pack input rejected")
+    end
+    assert(reinforcedData:consumeInputs(resources) and reinforcedData:createOutputs(resources, player), "Reinforced pack transaction failed")
+    reinforcedData:processDestroyAndUsedItems(player)
+    local reinforcedBundle = reinforcedData:getFirstCreatedItem()
+    assert(reinforcedBundle:getFullType() == "Base.OMHTTReinforcedBarrierPack" and math.abs(reinforcedBundle:getActualWeight() - 9.9) < 0.0001, "Reinforced bundle wrong tier or weight")
+    player:getInventory():AddItem(reinforcedBundle)
+    local restoredData = CraftRecipeData.new(CraftMode.Handcraft, false, true, false, true)
+    restoredData:setRecipe(reinforcedUnpack)
+    assert(restoredData:offerInputItem(reinforcedUnpack:getInputs():get(0), reinforcedBundle), "Reinforced bundle rejected")
+    assert(restoredData:consumeInputs(resources) and restoredData:createOutputs(resources, player), "Reinforced unpack failed")
+    restoredData:processDestroyAndUsedItems(player)
+    assert(restoredData:getAllCreatedItems():size() == 5, "Reinforced unpack count wrong")
+    for i = 0, 4 do assert(restoredData:getAllCreatedItems():get(i):getFullType() == "Base.OMHTTReinforcedBarrierItem", "Unpack lost tier") end
+    assert(reinforcedPack:getXPAwardCount() == 0 and reinforcedUnpack:getXPAwardCount() == 0, "Packing repeats XP")
+    local deploymentData = CraftRecipeData.new(CraftMode.Handcraft, false, true, false, true)
+    deploymentData:setRecipe(reinforcedDeploy)
+    local oneReinforced = ArrayList.new()
+    oneReinforced:add(instanceItem("Base.OMHTTReinforcedBarrierItem"))
+    assert(deploymentData:canConsumeInputs(resources, oneReinforced, true, true), "Reinforced deployment rejects item")
+    oneReinforced:get(0):setCondition(20)
+    assert(not reinforcedDeploy:OnTestItem(oneReinforced:get(0), player), "Damaged reinforced input incorrectly accepted")
+    local inventory = player:getInventory()
+    local hammer = inventory:AddItem("Base.Hammer")
+    for i = 1, 2 do inventory:AddItem("Base.Plank") end
+    for i = 1, 8 do inventory:AddItem("Base.Nails") end
+    local builder = {isDead = function() return false end, isBuildCheat = function() return false end,
+        getPerkLevel = function() return 3 end, getInventory = function() return inventory end}
+    local materials = require("OMHTT/BarrierService").reinforcementMaterials(builder, {})
+    assert(materials and #materials.items == 10 and materials.hammer == hammer, "Native hammer/material lookup failed")
+    local upgraded = OMHTT_NativeFixtures:get(0)
+    local upgradeRecord = {id = "native-upgrade", x = 0, y = 0, facing = 0, tier = "reinforced", condition = 37, testOwner = "fixture-owner"}
+    assert(Sprites.ensure(upgraded, upgradeRecord, "native-upgrade"), "Existing basic component did not upgrade")
+    assert(upgraded:getHealth() == 37 and upgraded:getSpriteConfig():isValid()
+        and upgraded:getSpriteConfig():getObjectInfo():getName() == "OMHTTDeployReinforcedBarrier", "Native upgrade reset damage or lost tier identity")
+    assert(Sprites.ensure(upgraded, record, "restore-fixture"), "Could not restore basic fixture")
+    print("[OMHTT-Smoke] native-reinforced deploy=1 pack=5to1 unpack=1to5 mixed=blocked materials=10 hammer=retained")
     item:setCondition(20)
     assert(not deploy:OnTestItem(item, player), "Damaged portable input would reset condition")
     SandboxVars.OMHTurretsTraps.SpikeBarrier = false

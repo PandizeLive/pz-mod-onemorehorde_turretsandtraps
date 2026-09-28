@@ -46,5 +46,10 @@
     "UI_OMHTT_BarrierRedeploy": "Pick up and redeploy this barrier to change its facing.",
     "UI_OMHTT_ServiceDuration": "10 seconds.",
     "UI_OMHTT_ServiceBlocked": "Cannot reach this barrier.",
-    "UI_OMHTT_CollisionLegend": "Solid line: collision | Arrow: spike side"
+    "UI_OMHTT_CollisionLegend": "Solid line: collision | Arrow: spike side",
+    "UI_OMHTT_ReinforcedBarrier": "Reinforced Spike Barrier",
+    "UI_OMHTT_DeployReinforcedBarrier": "Deploy Reinforced Spike Barrier",
+    "UI_OMHTT_ReinforcedBarrierDescription": "A reinforced wall of spikes, used to keep the undead out.",
+    "UI_OMHTT_ReinforceRequirements": "Carpentry 3, 2 planks, 8 nails, hammer. 10 seconds.",
+    "UI_OMHTT_ReinforceUnavailable": "Reinforcement requirements not met."
 }

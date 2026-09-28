@@ -1,8 +1,10 @@
 # Release state and publication policy
 
-## Current installation: 0.2.6; next correction queued
+## Current candidate: 0.2.7
 
-The [completed owner test](TEST_v0.2.6.md) confirms the loaded version and partial vault/retaliation/pickup behavior, but vision through barriers is blocked. [P2C2a](PHASE_2_CHECKPOINT_2A.md) queues visibility correction and the previously approved reinforcement. No runtime change or new installation is claimed in this follow-up.
+[Checkpoint and owner test](PHASE_2_CHECKPOINT_2A.md), [release notes](PR_v0.2.7.md). C41/C42 restore sight through collision and add the approved reinforced upgrade with tier-preserving recovery, deployment and same-tier bundles. No rendered acceptance or resolution of the unexplained native-entry timeout is claimed.
+
+Validation: 1,472 Kahlua assertions, 24 runtime modules, 121 native JSON translation keys, 23 packets and 77 package files. Native write/read probes cover 28 object identities, upgrade component migration, real material/tag lookup and reinforced packing/unpacking. Directional native object/grid transparency passes in twelve cases with collision preserved, including both corner object orders; helpers do not make the perpendicular direction transparent. Tagged installation evidence is recorded after deployment. Existing pending Workshop notes remain one cumulative draft; no upload exists.
 
 ## 0.2.6 installation evidence
 
@@ -27,11 +29,11 @@ Validation: 1,433 Kahlua assertions, 24 runtime modules, 103 translation keys, 2
 | Project | OMH: Turrets & Traps |
 | Foundation date | 2026-09-25 |
 | Edition | One; feature controls in Sandbox |
-| Package version | 0.2.6 installed; SP development test |
+| Package version | 0.2.7 candidate; SP development test |
 | Confirmed mod ID | OneMoreHorde_TurretsAndTraps |
 | Build evidence | B42.20.4 b0bbce05d5 with PZ Optimizer: dedicated startup/save/restart passed; player acceptance pending |
-| Runtime source / installable package | 0.2.6 tagged source, archive and installation; 77 verified files |
-| Git repository / remote | Local working branch; annotated test/v0.2.6 (c6231e4); no remote configured |
+| Runtime source / installable package | 0.2.7 validated source; installation evidence pending |
+| Git repository / remote | Local working branch; 0.2.7 rollback tag/install pending; no remote configured |
 | Workshop item / successful upload | None |
 | Public changelog baseline | No upload exists |
 | Official score support | Proposed; not implemented |

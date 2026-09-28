@@ -9,6 +9,16 @@ public final class NativeVaultProbe {
         if (!value) throw new IllegalStateException(message);
     }
 
+    private static void verifyVision(Object object, Object a, Object b) throws Exception {
+        Class<?> square = Class.forName("zombie.iso.IsoGridSquare");
+        for (Object[] pair : new Object[][]{{a, b}, {b, a}}) {
+            check("Unblocked".equals(call(object, "TestVision", new Class<?>[]{square, square}, pair).toString()), "Object vision blocked");
+            call(pair[0], "RecalcProperties", new Class<?>[0]);
+            call(pair[1], "RecalcProperties", new Class<?>[0]);
+            check(Boolean.FALSE.equals(call(pair[0], "CalculateVisionBlocked", new Class<?>[]{square}, pair[1])), "Grid vision blocked");
+        }
+    }
+
     public static void verify() throws Exception {
         Class<?> worldType = Class.forName("zombie.iso.IsoWorld");
         Class<?> cellType = Class.forName("zombie.iso.IsoCell");
@@ -47,6 +57,11 @@ public final class NativeVaultProbe {
             check(Boolean.TRUE.equals(collide.invoke(object, null, positive, negative)), "Leaving edge did not block walking");
             check(Boolean.TRUE.equals(collide.invoke(object, null, negative, positive)), "Entering edge did not block walking");
             check(Boolean.FALSE.equals(call(object, "isHoppable", new Class<?>[0])), "Barrier became zombie-hoppable");
+            verifyVision(object, positive, negative);
+            Class<?> flagType = Class.forName("zombie.iso.SpriteDetails.IsoFlagType");
+            Object properties = call(call(object, "getSprite", new Class<?>[0]), "getProperties", new Class<?>[0]);
+            Object otherTransparency = flagType.getField(north ? "transparentW" : "transparentN").get(null);
+            check(Boolean.FALSE.equals(call(properties, "has", new Class<?>[]{flagType}, otherTransparency)), "Helper opens vision through unrelated perpendicular walls");
             check(Boolean.TRUE.equals(call(object, "TestPathfindCollide", new Class<?>[]{movingType, squareType, squareType}, null, positive, negative)), "Reverse path edge opened");
             check(Boolean.TRUE.equals(call(object, "TestPathfindCollide", new Class<?>[]{movingType, squareType, squareType}, null, negative, positive)), "Forward path edge opened");
             for (int reverse = 0; reverse < 2; reverse++) {
@@ -121,11 +136,14 @@ public final class NativeVaultProbe {
             }
             check(call(square, "getThumpableWallOrHoppable", new Class<?>[]{boolean.class}, true) == edges[0], "North corner thump target changed owner");
             check(call(square, "getThumpableWallOrHoppable", new Class<?>[]{boolean.class}, false) == edges[1], "West corner thump target changed owner");
+            verifyVision(edges[0], square, nSquare);
+            verifyVision(edges[1], square, wSquare);
             check(Boolean.TRUE.equals(collide.invoke(edges[0], null, square, nSquare)), "Corner N collision open");
             check(Boolean.FALSE.equals(collide.invoke(edges[0], null, square, wSquare)), "Corner N object steals W collision");
             check(Boolean.TRUE.equals(collide.invoke(edges[1], null, square, wSquare)), "Corner W collision open");
             check(Boolean.FALSE.equals(collide.invoke(edges[1], null, square, nSquare)), "Corner W object steals N collision");
         }
+        System.out.println("[OMHTT-VaultProbe] native-vision=12/12 object-and-grid=true collision-preserved=true");
         System.out.println("[OMHTT-VaultProbe] native-corners=2/2 both-pathfinders=true directional-thump-ownership=true");
         System.out.println("[OMHTT-VaultProbe] native-movement-params=12/12 running-and-sprinting-distinct=true");
         System.out.println("[OMHTT-VaultProbe] native-state-execute=4/4 native-edge-collision=4/4 native-path-edge=4/4 native-pathfinder=2/2 public-entry=4/4 bounded-collision=true animation-events=simulated rendered-client=not-tested");

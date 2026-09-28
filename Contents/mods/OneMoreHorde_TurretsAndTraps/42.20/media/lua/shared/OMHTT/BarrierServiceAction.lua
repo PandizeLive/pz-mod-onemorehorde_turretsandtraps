@@ -8,7 +8,9 @@ OMHTTBarrierServiceAction = ISBaseTimedAction:derive("OMHTTBarrierServiceAction"
 function OMHTTBarrierServiceAction:isValid()
     local Service = require("OMHTT/BarrierService")
     local record = Service.resolve(self.character, self.object, self.id)
-    return record ~= nil and (self.operation == "Pickup" or (self.operation == "Repair" and record.condition < record.maxHealth))
+    return record ~= nil and (self.operation == "Pickup"
+        or (self.operation == "Repair" and record.condition < record.maxHealth)
+        or (self.operation == "Reinforce" and Service.reinforcementMaterials(self.character, record) ~= nil))
 end
 
 ---@return boolean turning
@@ -23,6 +25,20 @@ function OMHTTBarrierServiceAction:start()
     self:setActionAnim("Loot")
     self:setAnimVariable("LootPosition", "Low")
     self:setOverrideHandModels(nil, nil)
+    if self.operation == "Reinforce" then
+        local Service = require("OMHTT/BarrierService")
+        local record = Service.resolve(self.character, self.object, self.id)
+        local materials = record and Service.reinforcementMaterials(self.character, record)
+        if not materials then
+            self:forceStop()
+            return
+        end
+        self:setActionAnim("Build")
+        if materials.hammer then
+            self:setOverrideHandModels(materials.hammer:getStaticModel(), getItemStaticModel("Base.Plank"))
+        end
+        addSound(self.character, self.character:getX(), self.character:getY(), self.character:getZ(), 20, 1)
+    end
     Diagnostics.emit("barrier-service-start", {id = self.id, action = self.operation, seconds = 10})
 end
 
@@ -65,7 +81,7 @@ end
 ---@param character IsoPlayer Acting player
 ---@param object IsoThumpable Selected barrier part
 ---@param id string Device identity
----@param operation string Pickup or Repair
+---@param operation string Pickup, Repair or Reinforce
 ---@return OMHTTBarrierServiceAction action
 function OMHTTBarrierServiceAction:new(character, object, id, operation)
     local o = ISBaseTimedAction.new(self, character)

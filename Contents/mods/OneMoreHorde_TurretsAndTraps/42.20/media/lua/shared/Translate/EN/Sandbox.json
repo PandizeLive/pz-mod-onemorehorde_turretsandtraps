@@ -18,5 +18,9 @@
     "Sandbox_OMHTurretsTraps_SpikeBarrierScratchChance_tooltip": "1 in N chance. 0 disables scratches.",
     "Sandbox_OMHTurretsTraps_ShowCollision": "Show Collision",
     "Sandbox_OMHTurretsTraps_ShowCollision_tooltip": "Shows nearby blocking edges and facing.",
-    "Sandbox_OMHTurretsTraps_BarrierPage": "Turrets & Traps: Spike Barrier"
+    "Sandbox_OMHTurretsTraps_BarrierPage": "Turrets & Traps: Spike Barrier",
+    "Sandbox_OMHTurretsTraps_ReinforcedBarrierDamage": "Reinforced Damage",
+    "Sandbox_OMHTurretsTraps_ReinforcedBarrierDamage_tooltip": "Damage per thump.",
+    "Sandbox_OMHTurretsTraps_ReinforcedBarrierHealthMultiplier": "Reinforced Durability Multiplier",
+    "Sandbox_OMHTurretsTraps_ReinforcedBarrierHealthMultiplier_tooltip": "Multiplies basic durability."
 }

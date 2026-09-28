@@ -22,12 +22,12 @@ def pack_string(value):
 def build():
     tiles = b"tdef" + integer(1) + integer(1)
     tiles += (SHEET + "\nOMHTT_Barrier.png\n").encode("ascii")
-    tiles += integer(4) + integer(5) + integer(1) + integer(20)
-    tiles += integer(0) * 20
+    tiles += integer(4) + integer(7) + integer(1) + integer(28)
+    tiles += integer(0) * 28
     pack = b"PZPK" + integer(1) + integer(5)
     for heading in range(4):
-        pack += pack_string("OMHTT_Barrier" + str(heading)) + integer(4) + integer(1)
-        for index in [heading * 2, heading * 2 + 1, heading * 2 + 8, heading * 2 + 9]:
+        pack += pack_string("OMHTT_Barrier" + str(heading)) + integer(6) + integer(1)
+        for index in [heading * 2, heading * 2 + 1, heading * 2 + 8, heading * 2 + 9, heading * 2 + 20, heading * 2 + 21]:
             pack += pack_string(SHEET + "_" + str(index))
             pack += struct.pack("<8i", 0, 0, 128, 256, 0, 0, 128, 256)
         png = (MEDIA / "textures" / ("OMHTT_Barrier" + str(heading) + ".png")).read_bytes()
@@ -52,4 +52,4 @@ if __name__ == "__main__":
     (MEDIA / "texturepacks").mkdir(exist_ok=True)
     (MEDIA / "OMHTT_Barriers.tiles").write_bytes(tiles)
     (MEDIA / "texturepacks/OMHTT_Barriers.pack").write_bytes(pack)
-    print("Packed 16 unchanged developer arrows and four white collision-edge identities; tiledef=" + str(TILEDEF_NUMBER))
+    print("Packed 24 unchanged developer arrows and four white collision-edge identities; tiledef=" + str(TILEDEF_NUMBER))

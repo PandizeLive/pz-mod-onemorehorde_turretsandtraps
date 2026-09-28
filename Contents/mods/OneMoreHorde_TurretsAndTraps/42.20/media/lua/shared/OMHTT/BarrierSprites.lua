@@ -6,6 +6,7 @@ Sprites.SHEET = "omhtt_barrier_01_"
 ---@return string entity
 ---@nodiscard
 function Sprites.entity(record)
+    if record.tier == "reinforced" or record.constructionEntity == "OMHTTDeployReinforcedBarrier" then return "OMHTTDeployReinforcedBarrier" end
     if record.constructionEntity == "OMHTTDeploySpikeBarrier" then return record.constructionEntity end
     return "OMHTTSpikeBarrier"
 end
@@ -19,7 +20,9 @@ function Sprites.name(record, square)
     if square:getX() ~= record.x or square:getY() ~= record.y then
         index = index + 1
     end
-    if Sprites.entity(record) == "OMHTTDeploySpikeBarrier" then
+    if Sprites.entity(record) == "OMHTTDeployReinforcedBarrier" then
+        index = index + 20
+    elseif Sprites.entity(record) == "OMHTTDeploySpikeBarrier" then
         index = index + 8
     end
     return Sprites.SHEET .. index

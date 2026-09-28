@@ -3,5 +3,8 @@
     "OMHTTDeploySpikeBarrier": "Deploy Spike Barrier",
     "OMHTTCraftSpikeBarrier": "Craft Spike Barrier",
     "OMHTTPackSpikeBarriers": "Pack Five Spike Barriers",
-    "OMHTTUnpackSpikeBarriers": "Unpack Five Spike Barriers"
+    "OMHTTUnpackSpikeBarriers": "Unpack Five Spike Barriers",
+    "OMHTTDeployReinforcedBarrier": "Deploy Reinforced Spike Barrier",
+    "OMHTTPackReinforcedBarriers": "Bundle Reinforced Spike Barriers",
+    "OMHTTUnpackReinforcedBarriers": "Unpack Reinforced Spike Barriers"
 }

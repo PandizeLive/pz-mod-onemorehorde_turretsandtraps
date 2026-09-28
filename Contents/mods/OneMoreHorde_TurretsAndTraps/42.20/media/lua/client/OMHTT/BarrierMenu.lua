@@ -62,7 +62,11 @@ local function fillMenu(playerIndex, context, worldobjects, test)
                 if object and Footprint.parts(record) then
                     if not Footprint.sync(slot, "menu") then return end
                     local headings = {"E", "N", "W", "S"}
-                    local option = context:addOption(getText("ContextMenu_OMHTT_BarrierFacing", headings[record.facing / 4 + 1]), nil, nil)
+                    local title = "ContextMenu_OMHTT_BarrierFacing"
+                    if record.tier == "reinforced" then
+                        title = "ContextMenu_OMHTT_ReinforcedFacing"
+                    end
+                    local option = context:addOption(getText(title, headings[record.facing / 4 + 1]), nil, nil)
                     local menu = ISContextMenu:getNew(context)
                     context:addSubMenu(option, menu)
                     local condition = menu:addOption(getText("ContextMenu_OMHTT_BarrierCondition", record.condition, record.maxHealth), nil, nil)
@@ -73,6 +77,13 @@ local function fillMenu(playerIndex, context, worldobjects, test)
                     tooltip.description = getText("UI_OMHTT_ServiceDuration")
                     pickup.toolTip, repair.toolTip = tooltip, tooltip
                     repair.notAvailable = record.condition >= record.maxHealth
+                    if record.tier ~= "reinforced" then
+                        local Service = require("OMHTT/BarrierService")
+                        local upgrade = menu:addOption(getText("ContextMenu_OMHTT_Reinforce"), object, queueService, player, record.id, "Reinforce")
+                        upgrade.notAvailable = Service.reinforcementMaterials(player, record) == nil
+                        upgrade.toolTip = ISWorldObjectContextMenu.addToolTip()
+                        upgrade.toolTip.description = getText("UI_OMHTT_ReinforceRequirements")
+                    end
                     local plan, reason = Vault.plan(player, object, record.id)
                     local label = reason
                     if plan then

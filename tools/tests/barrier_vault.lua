@@ -236,6 +236,20 @@ V.update(testPlayer)
 check(testInjuries == before + 1, "run exit between samples settles one verified crossing contact")
 V.update(testPlayer)
 check(testInjuries == before + 1, "settled run contact cannot repeat")
+resetApproach()
+testPlayer.running = true
+nativePlan = V.plan(testPlayer, object, id)
+V.autoVault(testPlayer)
+testPlayer.state, testPlayer.animationStarted, testPlayer.outcome = "ClimbOverFenceState", true, "success"
+V.update(testPlayer)
+testPlayer.x, testPlayer.y = nativePlan.toX + 0.5, nativePlan.toY + 0.5
+V.update(testPlayer)
+before = testInjuries
+testPlayer.x = nativePlan.toX - 0.1
+testPlayer.state = "movement"
+V.update(testPlayer)
+check(string.find(testLogs[#testLogs], "result=crossed", 1, true), "continued running beyond landing tile remains a completed crossing")
+check(testInjuries == before, "overshoot completion does not duplicate contact damage")
 testPlayer.running, testPlayer.pressed = false, false
 for _, denominator in pairs({0, 1, 50}) do
     SandboxVars.OMHTurretsTraps.SpikeBarrierScratchChance = denominator

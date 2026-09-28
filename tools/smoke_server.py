@@ -63,14 +63,16 @@ def main():
             probe.unlink(missing_ok=True)
     text = transcript.read_text(encoding="utf-8", errors="replace")
     assert "[OMHTT-Smoke] native-scratch lowerLeg=true knox=false" in text, "Native scratch failed"
+    assert "[OMHTT-VaultProbe] native-vision=12/12 object-and-grid=true collision-preserved=true" in text, "Native transparency failed"
+    assert "[OMHTT-Smoke] native-reinforced deploy=1 pack=5to1 unpack=1to5 mixed=blocked materials=10 hammer=retained" in text, "Native reinforcement transactions failed"
     assert "[OMHTT-VaultProbe] native-corners=2/2 both-pathfinders=true directional-thump-ownership=true" in text, "Native shared corner recognition failed"
     assert "[OMHTT-VaultProbe] native-state-execute=4/4 native-edge-collision=4/4" in text, "Native vault proof failed"
-    assert "[OMHTT-Smoke] native-persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") + " parts=20" in text, "Native object persistence failed"
+    assert "[OMHTT-Smoke] native-persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") + " parts=28" in text, "Native object persistence failed"
     assert "Shutdown handling finished" in text, "No clean shutdown evidence"
     assert "Saving GlobalModData" in text, "No native global state save"
     assert "Invalid SpriteConfig object! scripted object = OMHTT" not in text, "Invalid native barrier identity"
     assert "[OMHTT-Smoke] native-sandbox damage=10 maxHealth=100 tooltip=formatted" in text, "Native Sandbox options/tooltip invalid"
-    assert "[OMHTT-Smoke] native-texturepack entries=20 pages=5 png=valid" in text, "Native texture pack invalid"
+    assert "[OMHTT-Smoke] native-texturepack entries=28 pages=5 png=valid" in text, "Native texture pack invalid"
     assert "[OMHTT-Smoke] native-migration staleSprite=repaired" in text, "Native migration failed"
     assert "[OMHTT-Smoke] native-bundles packed=5to1 unpacked=1to5 weight=9.9 xp=0 insufficient=blocked" in text, "Native bundle transactions failed"
     assert "NoSuchFileException" not in text, "Missing package directories"
