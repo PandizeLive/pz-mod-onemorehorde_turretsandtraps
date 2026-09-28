@@ -1,10 +1,10 @@
 # Release state and publication policy
 
-## Current candidate: 0.2.8
+## Current installation: 0.2.8
 
 [P2C2b scope and owner test](PHASE_2_CHECKPOINT_2B.md), [release notes](PR_v0.2.8.md). Reliable footprint-based barrier selection, separate shared-corner choices, paired hover highlighting, independent reinforced texture pages/icons and picker diagnostics. C45 approves implementation; C47 approves Range/Velocity/Rapid-Fire stacking in the future module plan. No module runtime, balance or recipe change is included.
 
-Validation passed: 1,502 Kahlua assertions, 25 runtime modules, 122 native translation keys, 23 packets and 83 packaged files. Native B42.20.4 write/read probes passed in 34.5/37.7 seconds; the read probe verifies 28 exact sprite-to-page mappings, nine PNG pages, native per-player highlight/outline toggling and serialized object identities. The owner reports reinforcement worked well and waived the separate 0.2.7.1 test; new rendered selection/highlight acceptance remains pending. Native furniture Install/Pickup is deferred. No Workshop content upload exists; changelog remains cumulative.
+Validation passed: 1,502 Kahlua assertions, 25 runtime modules, 122 native translation keys, 23 packets and 83 packaged files. Native B42.20.4 write/read probes passed in 34.5/37.7 seconds; the read probe verifies 28 exact sprite-to-page mappings, nine PNG pages, native per-player highlight/outline toggling and serialized object identities. The owner reports reinforcement worked well and waived the separate 0.2.7.1 test; new rendered selection/highlight acceptance remains pending. Native furniture Install/Pickup is deferred. No Workshop content upload exists; changelog remains cumulative. [Installation evidence](../diagnostics/v0.2.8/local-release.json) verifies all 83 installed files and the [archive](../artifacts/OMHTT-0.2.8.zip) against annotated `test/v0.2.8` (`f2acb5c`). The complete 0.2.7.1 backup matches its 77-file manifest. Restart before any gameplay check.
 
 ## Previous installation: 0.2.7.1
 
@@ -41,15 +41,15 @@ Validation: 1,433 Kahlua assertions, 24 runtime modules, 103 translation keys, 2
 | Project | OMH: Turrets & Traps |
 | Foundation date | 2026-09-25 |
 | Edition | One; feature controls in Sandbox |
-| Package version | 0.2.7.1 installed; SP development test |
+| Package version | 0.2.8 installed; SP development test |
 | Confirmed mod ID | OneMoreHorde_TurretsAndTraps |
 | Build evidence | B42.20.4 b0bbce05d5 with PZ Optimizer: dedicated startup/save/restart passed; player acceptance pending |
-| Runtime source / installable package | 0.2.7.1 tagged source, archive and installation; 77 verified files |
-| Git repository / remote | Local working branch; annotated test/v0.2.7.1 (8a333d6); no remote configured |
+| Runtime source / installable package | 0.2.8 tagged source, archive and installation; 83 verified files |
+| Git repository / remote | Local working branch; annotated test/v0.2.8 (f2acb5c); no remote configured |
 | Workshop item / successful upload | None |
 | Public changelog baseline | No upload exists |
 | Official score support | Proposed; not implemented |
-| Player tests | 0.2.7 partial capture verifies two upgrades and reinforced pickup; arrival defect patched in 0.2.7.1, rendered correction acceptance pending |
+| Player tests | Owner reports reinforcement worked well; separate 0.2.7.1 test waived. P2C2b selection/highlight rendered acceptance pending |
 
 ## Current correction and Sandbox candidate
 

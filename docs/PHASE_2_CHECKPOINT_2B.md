@@ -1,6 +1,6 @@
 # P2C2b — barrier selection and reinforced texture inputs (0.2.8)
 
-Approved by C45. Implementation prepared; final local installation evidence is in Release state. The owner waived the separate 0.2.7.1 test round and reports reinforcement worked well. No module runtime, recipe change or native furniture pickup integration is included.
+Approved by C45. Installed locally; all 83 package files match the tagged archive and manifest. Local installation evidence is in Release state. The owner waived the separate 0.2.7.1 test round and reports reinforcement worked well. No module runtime, recipe change or native furniture pickup integration is included.
 
 ## Changes
 

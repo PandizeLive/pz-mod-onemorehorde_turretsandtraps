@@ -1,6 +1,6 @@
 # OMH: Turrets & Traps
 
-Project foundation created 2026-09-25. **0.2.8 is prepared: reliable barrier selection, paired hover highlighting and independent reinforced texture inputs (P2C2b).** [Checkpoint and owner test](docs/PHASE_2_CHECKPOINT_2B.md). The owner reports reinforcement worked well and waived the separate 0.2.7.1 test. [Release state](docs/RELEASE.md) distinguishes automated, installed and rendered evidence. The [module plan](docs/MODULAR_TURRETS.md) records eight planned modules including stackable Range, Velocity and Rapid-Fire; no module runtime ships yet. No Workshop release exists.
+Project foundation created 2026-09-25. **0.2.8 is installed: reliable barrier selection, paired hover highlighting and independent reinforced texture inputs (P2C2b).** [Checkpoint and owner test](docs/PHASE_2_CHECKPOINT_2B.md). The owner reports reinforcement worked well and waived the separate 0.2.7.1 test. [Release state](docs/RELEASE.md) distinguishes automated, installed and rendered evidence. The [module plan](docs/MODULAR_TURRETS.md) records eight planned modules including stackable Range, Velocity and Rapid-Fire; no module runtime ships yet. No Workshop release exists.
 
 One edition with a Sandbox toggle menu. The planned mod adds maintainable defensive equipment to Project Zomboid Build 42, with optional Horde Night, Trait Shop, and Cure Defense integrations. Recheck the installed game build before implementing any engine-dependent behavior.
 
