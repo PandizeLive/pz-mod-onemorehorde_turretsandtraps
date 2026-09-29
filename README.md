@@ -1,6 +1,6 @@
 # OMH: Turrets & Traps
 
-Project foundation created 2026-09-25. **0.2.11 is the integrated turret gameplay candidate:** [scope and combined test](docs/PHASE_2_CHECKPOINT_3_USABILITY.md). It adds tile-base/model-head rendering, see-through base collision, Manage/native inventory, category/preview fixes and a persistent magazine/reload/cooldown cycle. Native checks pass; rendered acceptance remains pending after the prior probe flicker. Module storage is implemented; automatic targeting and module effects remain the next checkpoint. No Workshop release exists.
+Project foundation created 2026-09-25. **0.2.11 is installed for the integrated turret gameplay test:** [scope and combined test](docs/PHASE_2_CHECKPOINT_3_USABILITY.md). It adds tile-base/model-head rendering, see-through base collision, Manage/native inventory, category/preview fixes and a persistent magazine/reload/cooldown cycle. Native checks pass; rendered acceptance remains pending after the prior probe flicker. Module storage is implemented; automatic targeting and module effects remain the next checkpoint. No Workshop release exists.
 
 One edition with a Sandbox toggle menu. The planned mod adds maintainable defensive equipment to Project Zomboid Build 42, with optional Horde Night, Trait Shop, and Cure Defense integrations. Recheck the installed game build before implementing any engine-dependent behavior.
 
