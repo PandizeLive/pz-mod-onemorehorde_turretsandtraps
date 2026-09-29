@@ -1,10 +1,10 @@
 # Release state and publication policy
 
-## Current candidate: 0.2.11.1
+## Current installation: 0.2.11.1
 
 [Failed owner test](TEST_v0.2.11.md), [repair and focused test](PR_v0.2.11.1.md). Corrects Manage's early server-module require and grounds the base-only texture at native tile center. Existing world identities, collision, recipe/balance and head calibration stay intact.
 
-1,589 Kahlua assertions pass, including the newly reproduced client-before-server failure; 34 runtime files compile, 206 translations and 23 packet checks pass. Native importer/texture checks and the corrected pixel-projection comparison pass. Native smoke/install evidence follows below after verification. Visible acceptance remains pending; no remote or Workshop publication.
+1,589 Kahlua assertions pass, including the newly reproduced client-before-server failure; 34 runtime files compile, 206 translations and 23 packet checks pass. Native importer/texture checks and the corrected pixel-projection comparison pass. Native startup, collision/recipe/pack validation and in-process object save/restore passed in 40.1 seconds. [Install evidence](../diagnostics/v0.2.11.1/local-release.json) verifies 100 installed/archive files against `test/v0.2.11.1` (`9c214dd`) and all 100 files in the full 0.2.11 backup. [Archive](../artifacts/OMHTT-0.2.11.1.zip). Visible acceptance remains pending; no remote or Workshop publication.
 
 
 ## Previous installation: 0.2.11

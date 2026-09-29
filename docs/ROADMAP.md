@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-**Corrective candidate: [0.2.11.1](PR_v0.2.11.1.md).** The [0.2.11 owner test](TEST_v0.2.11.md) failed Manage startup and base grounding. Fix client/server load-order capture and the 16-pixel base projection mismatch before continuing module effects. The combined checkpoint remains unaccepted.
+**Installed correction: [0.2.11.1](PR_v0.2.11.1.md).** The [0.2.11 owner test](TEST_v0.2.11.md) failed Manage startup and base grounding. Fix client/server load-order capture and the 16-pixel base projection mismatch before continuing module effects. The combined checkpoint remains unaccepted.
 
 
 **Current delivery: [integrated turret usability, 0.2.11](PHASE_2_CHECKPOINT_3_USABILITY.md).** C53 combines actual head rendering, base collision, native inventory access, category/preview fixes and shared magazine/reload/cooldown. Native/automated checks are internal; one combined gameplay acceptance test remains. The [0.2.10 test](TEST_v0.2.10.md) failed for flicker and is not marked accepted.
