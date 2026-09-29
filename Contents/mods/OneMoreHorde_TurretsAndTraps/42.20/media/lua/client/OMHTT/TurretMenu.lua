@@ -8,8 +8,6 @@ local D = require("OMHTT/Diagnostics")
 local Selection = require("OMHTT/BarrierSelection")
 local manage = require("OMHTT/TurretManage")
 local tooltipRender = ISToolTipInv.render
-local transferValid = ISInventoryTransferAction.isValid
-local transferItem = ISInventoryTransferAction.transferItem
 
 ---@return nil
 function ISToolTipInv:render()
@@ -22,31 +20,6 @@ function ISToolTipInv:render()
         return
     end
     tooltipRender(self)
-end
-
----@return boolean valid
----@nodiscard
-function ISInventoryTransferAction:isValid()
-    if self.item and self.srcContainer and not T.canRemove(self.srcContainer, self.item) then return false end
-    if T.isContainer(self.destContainer) then T.configure(self.destContainer) end
-    return transferValid(self)
-end
-
----@param item InventoryItem Transferred item
----@return nil
-function ISInventoryTransferAction:transferItem(item)
-    local source, destination = self.srcContainer, self.destContainer
-    if T.isContainer(destination) then T.configure(destination) end
-    transferItem(self, item)
-    if T.isContainer(source) or T.isContainer(destination) then
-        if T.isContainer(source) then T.cycle(T.contents(source), getTimestampMs()) end
-        if T.isContainer(destination) then T.cycle(T.contents(destination), getTimestampMs()) end
-        local W = require("OMHTT/TurretWorld")
-        if source:getParent() and T.state(source:getParent()) then W.refresh(source:getParent()) end
-        if destination:getParent() and T.state(destination:getParent()) then W.refresh(destination:getParent()) end
-        D.emit("turret-transfer", {item = item:getFullType(), itemId = item:getID(),
-            source = source:getType(), destination = destination:getType(), moved = destination:contains(item)})
-    end
 end
 
 ---@param object IsoThumpable Selected turret

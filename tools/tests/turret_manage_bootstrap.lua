@@ -9,11 +9,28 @@ function ISPanel:addToUIManager() testTurretPanel = self end
 function ISPanel:removeFromUIManager() self.removed = true end
 function ISPanel:addChild(child) self.children[#self.children + 1] = child end
 function ISPanel:prerender() end
+function ISPanel:isMouseOver() return false end
+function ISPanel:setStencilRect() end
+function ISPanel:clearStencilRect() end
+function ISPanel:drawRectBorder() end
 function ISPanel:drawText(text) check(type(text) == "string", "Manage draws resolved status text") end
 ISButton = {new = function(self, x, y, w, h, title, target, callback)
     return {initialise = function() end, setEnable = function(self, enabled) self.enabled = enabled end,
         target = target, callback = callback}
 end}
+ISMouseDrag = {}
+ISInventoryItem = {renderItemIcon = function() end}
+ISInventoryPane = {}
+ISInventoryTransferAction = {
+    isValid = function(self) return self.srcContainer:contains(self.item) end,
+    transferItem = function(self, item)
+        self.srcContainer:Remove(item)
+        self.destContainer:AddItem(item)
+    end,
+    new = function(self, player, item, source, destination)
+        return setmetatable({character = player, item = item, srcContainer = source, destContainer = destination}, {__index = self})
+    end
+}
 testTurretOldPanel = oldPanel
 
 testTurretRequire = require

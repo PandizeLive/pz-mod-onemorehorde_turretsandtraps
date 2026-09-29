@@ -207,3 +207,9 @@ The owner authorized proceeding to the next checkpoint and testing it together w
 - C52: Owner approves a cube-only hybrid rendering checkpoint before final artist export requirements. Evaluate a stationary base tile and separate rotating model head, using current native APIs, independent-instance tests and visual acceptance. This does not approve final art, a Java injection dependency, or replacing gameplay turrets before the renderer is proven. See PHASE_2_HYBRID_RENDER_PROBE.md.
 
 - C53 (2026-09-29): Owner approves the combined gameplay patch after reporting probe flicker and requesting base collision. Implement integrated tile-base/model-head rendering using recorded 0.4 height / 0.512 scale as starting calibration; see-through 1x1 base collision, native adjacent servicing, Manage/native inventory, category/preview fixes and shared firing cycle. Approval adopts the proposed 85 total ammo, overlapping 1s reload / 0.5s cooldown and screwdriver plus wrench/pipe-wrench tools. Supersedes C51's pending values and C49's snips/pliers. Keep one combined visible test; module effects/automation remain P2C3d and final artist export settings remain unaccepted. See PHASE_2_CHECKPOINT_3_USABILITY.md.
+
+
+## 2026-09-29 dedicated turret window approval
+
+- C54: Owner approves replacing Manage's loot-page shortcut with a dedicated turret window: head, ammo, module and battery slots, real drag/drop timed transfers, charge and capacity display, live status/stats and manual Fire. Keep one actual native container and exact items; no inventory duplication or instant transfer. Include the reported base-grounding correction. Module effects and multiplayer remain later checkpoints.
+- 0.2.11.1 log confirms Manage opened without its previous exception, but the owner rejects opening the standard loot pane as the intended interface. This confirms the load-order repair, not full visual or gameplay acceptance.

@@ -1,6 +1,10 @@
 # Release state and publication policy
 
-## Current installation: 0.2.11.1
+## Candidate: 0.2.12
+
+[Dedicated turret window and full test](PHASE_2_CHECKPOINT_3_TURRET_WINDOW.md), [release notes](PR_v0.2.12.md). C54 replaces the generic loot shortcut and aligns the full sprite fallback. Player acceptance remains pending. Package validation: 1,641 assertions, 36 runtime Lua files, 243 native translations, 23 packets and 102 files. Native drag handler snippets run against UI/world doubles; rendered acceptance remains separate. Native stock 42.21.0 startup, collision and in-process save/restore passed in 88.2 seconds. Installation evidence is recorded after tagging/installing. No Workshop upload or remote push.
+
+## Previous installation: 0.2.11.1
 
 [Failed owner test](TEST_v0.2.11.md), [repair and focused test](PR_v0.2.11.1.md). Corrects Manage's early server-module require and grounds the base-only texture at native tile center. Existing world identities, collision, recipe/balance and head calibration stay intact.
 

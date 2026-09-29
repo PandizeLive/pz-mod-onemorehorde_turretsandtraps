@@ -192,6 +192,8 @@ public final class KahluaCheck {
             {"_", "tools/tests/turret_cycle.lua"},
             {"OMHTT/Turret", base + "shared/OMHTT/Turret.lua"},
             {"_", "tools/tests/turret_manage_bootstrap.lua"},
+            {"OMHTT/TurretTransfers", base + "client/OMHTT/TurretTransfers.lua"},
+            {"OMHTT/TurretSlot", base + "client/OMHTT/TurretSlot.lua"},
             {"OMHTT/TurretManage", base + "client/OMHTT/TurretManage.lua"},
             {"_", "tools/tests/turret_manage_load_order.lua"},
             {"OMHTT/TurretWorld", base + "server/OMHTT/TurretWorld.lua"},
@@ -204,6 +206,15 @@ public final class KahluaCheck {
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {
+                if (stage[1].equals("tools/tests/turret_manage.lua")) {
+                    Path pane = Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/client/ISUI/ISInventoryPane.lua");
+                    String nativeLua = Files.readString(pane);
+                    String source = "ipairs = table.ipairs\n";
+                    source += nativeLua.substring(nativeLua.indexOf("function ISInventoryPane.getActualItems(items)"), nativeLua.indexOf("function ISInventoryPane.getActualUniqueItems(items)"));
+                    source += nativeLua.substring(nativeLua.indexOf("function ISInventoryPane:onMouseUp(x, y)"), nativeLua.indexOf("function ISInventoryPane:canPutIn()"));
+                    Object nativeChunk = compile.invoke(null, new java.io.StringReader(source), pane.toString(), env);
+                    call.invoke(thread, nativeChunk, new Object[0]);
+                }
                 Object chunk = compile.invoke(null, reader, stage[1], env);
                 Object result = call.invoke(thread, chunk, new Object[0]);
                 if (!stage[0].equals("_")) set.invoke(get.invoke(env, "__modules"), stage[0], result);

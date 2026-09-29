@@ -60,6 +60,7 @@ def main():
         "Occupied", "Blocked", "Limit", "Placed", "Conflict", "Changed", "Removed", "MPCombatDeferred",
         "WrongDevice", "Empty", "Cooling", "NoTarget", "Fired", "Refilled", "Aimed", "NotCompared", "WrongBarrier", "BarrierRotated",
     ])
+    keys.update("UI_OMHTT_Manage" + status for status in ['Drop', 'Hint', 'Head', 'Battery', 'Ammo', 'Modules', 'Module', 'Locked', 'ModulesHint', 'PowerNone', 'PowerExternal', 'PowerBattery', 'PowerDisabled', 'Stats', 'Timing', 'Fire', 'Unload', 'Queued', 'TransferMissing', 'TransferReach', 'UnloadFirst', 'TransferFavorite', 'TransferWrongItem', 'TransferFull', 'TransferCarried', 'TransferPending', 'NoHead', 'NoPower', 'Empty', 'Ready', 'Cooling', 'Reloading', 'NoTarget', 'Fired', 'Unavailable', 'MPCombatDeferred', 'WrongDevice'])
     for key in keys:
         assert key in translations, f"Missing translation: {key}"
     textures = list((PACKAGE / "42.20/media/textures").glob("*.png"))
@@ -73,7 +74,7 @@ def main():
     assert (PACKAGE / "42.20/media/OMHTT_Barriers.tiles").read_bytes() == tiles
     assert (PACKAGE / "42.20/media/texturepacks/OMHTT_Barriers.pack").read_bytes() == pack
     from build_cube_placeholder import read_export
-    from build_foundation_sprite import render
+    from build_foundation_sprite import render, marker
     import copy
     document, binary = read_export()
     base = copy.deepcopy(document)
@@ -82,6 +83,11 @@ def main():
     with Image.open(PACKAGE / "42.20/media/textures/OMHTT_ProbeBase.png") as sprite:
         assert sprite.tobytes() == expected_base.tobytes(), "Base ground center must match native tile center (64,224)"
         assert sprite.getbbox()[3] < 256, "Grounded base must fit the tile texture"
+    for facing in range(16):
+        expected = render(document, binary, facing / 4, ground_y=224)
+        expected.alpha_composite(marker("POTATO", facing, label_y=70))
+        with Image.open(PACKAGE / f"42.20/media/textures/OMHTT_Aim{facing}.png") as sprite:
+            assert sprite.tobytes() == expected.tobytes(), "Fallback turret must share the grounded tile anchor"
     barrier_bytes = {(PACKAGE / f"42.20/media/textures/OMHTT_Barrier{i}.png").read_bytes() for i in range(4)}
     assert len(barrier_bytes) == 4, "Barrier directions must have distinct pixels"
     for texture in textures:
@@ -141,6 +147,8 @@ def main():
         "zombie/iso/IsoGridSquare.class", "zombie/iso/IsoObjectUtils.class",
         "media/lua/shared/ISBaseObject.lua",
         "media/lua/shared/Fishing/Bobber.lua", "media/lua/shared/luautils.lua",
+        "media/lua/client/ISUI/ISInventoryPane.lua", "media/lua/client/ISUI/ISToolTipInv.lua",
+        "media/lua/client/Entity/ISUI/Controls/ISItemSlot.lua",
         "media/lua/client/ISUI/ISInventoryPage.lua", "zombie/iso/fboRenderChunk/FBORenderCell.class",
         "media/lua/client/Entity/ISUI/CraftRecipe/ISHandCraftPanel.lua",
         "media/lua/client/Entity/ISUI/Controls/ISWidgetTitleHeader.lua",
