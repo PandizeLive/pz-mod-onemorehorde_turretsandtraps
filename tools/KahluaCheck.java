@@ -194,14 +194,15 @@ public final class KahluaCheck {
             {"_", "tools/tests/turret_manage_bootstrap.lua"},
             {"OMHTT/TurretTransfers", base + "client/OMHTT/TurretTransfers.lua"},
             {"OMHTT/TurretSlot", base + "client/OMHTT/TurretSlot.lua"},
+            {"OMHTT/TurretRenderer", base + "client/OMHTT/TurretRenderer.lua"},
+            {"OMHTT/TurretRange", base + "client/OMHTT/TurretRange.lua"},
             {"OMHTT/TurretManage", base + "client/OMHTT/TurretManage.lua"},
             {"_", "tools/tests/turret_manage_load_order.lua"},
             {"OMHTT/TurretWorld", base + "server/OMHTT/TurretWorld.lua"},
             {"OMHTT/TurretPickupAction", base + "shared/OMHTT/TurretPickupAction.lua"},
             {"_", "tools/tests/turret.lua"},
-            {"_", "tools/tests/turret_render_bootstrap.lua"},
-            {"OMHTT/TurretRenderer", base + "client/OMHTT/TurretRenderer.lua"},
             {"_", "tools/tests/turret_renderer.lua"},
+            {"_", "tools/tests/turret_range.lua"},
             {"_", "tools/tests/turret_manage.lua"},
         };
         for (String[] stage : stages) {

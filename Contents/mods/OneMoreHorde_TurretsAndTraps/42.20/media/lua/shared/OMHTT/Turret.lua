@@ -39,8 +39,8 @@ end
 ---@nodiscard
 function T.cycleConfig()
     return {magazine = T.option("MagazineCapacity", 1, 1, 500),
-        reload = T.option("ReloadTime", 1, 0, 60) * 1000,
-        cooldown = T.option("Cooldown", 0.5, 0.1, 60) * 1000}
+        reload = T.option("ReloadTime", 2, 0, 60) * 1000,
+        cooldown = T.option("Cooldown", 2, 0.1, 60) * 1000}
 end
 
 ---@param contents table Native inventory summary

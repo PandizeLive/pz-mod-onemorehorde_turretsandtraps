@@ -213,3 +213,9 @@ The owner authorized proceeding to the next checkpoint and testing it together w
 
 - C54: Owner approves replacing Manage's loot-page shortcut with a dedicated turret window: head, ammo, module and battery slots, real drag/drop timed transfers, charge and capacity display, live status/stats and manual Fire. Keep one actual native container and exact items; no inventory duplication or instant transfer. Include the reported base-grounding correction. Module effects and multiplayer remain later checkpoints.
 - 0.2.11.1 log confirms Manage opened without its previous exception, but the owner rejects opening the standard loot pane as the intended interface. This confirms the load-order repair, not full visual or gameplay acceptance.
+
+## 2026-09-29 turret aiming and balance
+
+- C55: Owner reports the head did not follow the lowered base, model rotation disagrees with firing direction, and requests selection range/FOV and Magazine wording. Requests 35 damage and 2s reload/cooldown; this patch interprets both as two-second overlapping timers, retaining magazine 1 and ammo 85. Saved Sandbox custom values remain authoritative. This supersedes C53's firing defaults and fixed 0.4 head height, while retaining scale 0.512.
+- Current manual combat targets radially, with loaded-square and obstruction checks. Selection shows that actual 360-degree radius plus head aim. The owner was offered a separate 90-degree forward restriction or current radial behavior; absent that answer this patch does not change targeting eligibility. Motion Detection/360 module behavior remains P2C3d.
+- The 0.2.12 console capture `diagnostics/captures/20260929-183350-0950` records successful exact-item transfers and seventeen shots at damage input 0.5. The owner's screenshot/report establishes failed visual head alignment; it does not imply all prior acceptance gates passed.

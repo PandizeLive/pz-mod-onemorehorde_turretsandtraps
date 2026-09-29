@@ -1,4 +1,7 @@
 luautils = {}
+LuaEventManager.AddEvent("OnPreUIDraw")
+LuaEventManager.AddEvent("OnObjectLeftMouseButtonDown")
+LuaEventManager.AddEvent("RenderOpaqueObjectsInWorld")
 local oldPanel = ISPanel
 ISPanel = ISBaseObject:derive("TestPanel")
 function ISPanel:new(x, y, width, height)

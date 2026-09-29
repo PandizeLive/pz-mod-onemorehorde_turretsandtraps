@@ -1,14 +1,14 @@
 if isClient() or isServer() then return end
 local T = require("OMHTT/Turret")
 local D = require("OMHTT/Diagnostics")
-local R = {entries = {}, mode = nil, lastCheck = 0}
+local R = {entries = {}, mode = nil, lastCheck = 0, headHeight = 0.4 - 16 / 192, headScale = 0.512}
 
 ---@param object IsoObject Managed base
 ---@param head InventoryItem? Actual installed head
 ---@return nil
 function R.changed(object, head)
     if not T.state(object) then R.entries[object] = nil; return end
-    if head then head:setWorldScale(0.512) end
+    if head then head:setWorldScale(R.headScale) end
     R.entries[object] = {head = head}
 end
 
@@ -38,8 +38,9 @@ function R.render(playerIndex)
         elseif entry.head and square:getZ() == math.floor(player:getZ()) and square:isCanSee(playerIndex) then
             local dx, dy = square:getX() - player:getX(), square:getY() - player:getY()
             if dx * dx + dy * dy <= 80 * 80 then
-                local yaw = state.aimDegrees or (state.facing or 0) * 22.5
-                Render3DItem(entry.head, square, square:getX() + 0.5, square:getY() + 0.5, square:getZ() + 0.4, yaw)
+                local heading = state.aimDegrees or (state.facing or 0) * 22.5
+                local yaw = (360 - heading) % 360
+                Render3DItem(entry.head, square, square:getX() + 0.5, square:getY() + 0.5, square:getZ() + R.headHeight, yaw)
             end
         end
     end
@@ -64,7 +65,7 @@ function R.tick()
     for object in pairs(R.entries) do
         if object:getObjectIndex() >= 0 and object:getSquare() then W.refresh(object) end
     end
-    D.emit("turret-render-mode", {hybrid = mode, height = 0.4, scale = 0.512, pass = "opaque", looseHead = false})
+    D.emit("turret-render-mode", {hybrid = mode, height = R.headHeight, scale = R.headScale, yawConvention = "negative-heading", pass = "opaque", looseHead = false})
 end
 
 Events.OnOMHTTTurretChanged.Add(R.changed)

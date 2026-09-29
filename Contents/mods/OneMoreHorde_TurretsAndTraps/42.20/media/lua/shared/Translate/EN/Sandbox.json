@@ -53,5 +53,7 @@
     "Sandbox_OMHTurretsTraps_PotatoMagazineCapacity": "Magazine size",
     "Sandbox_OMHTurretsTraps_PotatoMagazineCapacity_tooltip": "Loaded potatoes. Included in ammo capacity.",
     "Sandbox_OMHTurretsTraps_PotatoReloadTime": "Reload time",
-    "Sandbox_OMHTurretsTraps_PotatoReloadTime_tooltip": "Seconds to refill the magazine."
+    "Sandbox_OMHTurretsTraps_PotatoReloadTime_tooltip": "Seconds to refill the magazine.",
+    "Sandbox_OMHTurretsTraps_ShowTurretRange": "Show turret range",
+    "Sandbox_OMHTurretsTraps_ShowTurretRange_tooltip": "Show range when selected."
 }

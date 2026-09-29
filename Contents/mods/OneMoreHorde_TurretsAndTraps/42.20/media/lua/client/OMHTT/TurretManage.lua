@@ -6,6 +6,7 @@ local T = require("OMHTT/Turret")
 local D = require("OMHTT/Diagnostics")
 local X = require("OMHTT/TurretTransfers")
 local Slot = require("OMHTT/TurretSlot")
+local Range = require("OMHTT/TurretRange")
 local Panel = ISPanel:derive("OMHTTTurretPanel")
 local OpenAction = ISBaseTimedAction:derive("OMHTTTurretOpenAction")
 local active = {}
@@ -13,6 +14,7 @@ local active = {}
 ---@return nil
 function Panel:close()
     for i = 1, #self.slots do self.slots[i]:hideTooltip(); self.slots[i]:clearDrag() end
+    Range.focus(self.player:getPlayerNum(), "manage", self.object, false)
     active[self.player:getPlayerNum()] = nil
     self:removeFromUIManager()
     D.emit("turret-manage-close", {id = self.deviceId})
@@ -141,7 +143,7 @@ function Panel:prerender()
     self:drawText(self.moduleLabel, 12, self.modulesY, 1, 1, 1, 1, UIFont.Small)
     self:drawText(getText("UI_OMHTT_ManageModulesHint"), 12, y, 0.8, 0.8, 0.8, 1, UIFont.Small)
     self:drawText(getText("UI_OMHTT_Manage" .. self.status) .. " | " .. self.powerLabel, 12, y + h, 1, 1, 1, 1, UIFont.Small)
-    self:drawText(getText("UI_OMHTT_ManageStats", T.option("Damage", 50, 0, 1000), T.option("Range", 6, 1, 20),
+    self:drawText(getText("UI_OMHTT_ManageStats", T.option("Damage", 35, 0, 1000), T.option("Range", 6, 1, 20),
         self.object:getHealth(), self.object:getMaxHealth()), 12, y + h * 2, 1, 1, 1, 1, UIFont.Small)
     local config = T.cycleConfig()
     self:drawText(getText("UI_OMHTT_ManageTiming", config.reload / 1000, config.cooldown / 1000),
@@ -204,6 +206,7 @@ function OpenAction:perform()
         panel:refresh()
         panel:addToUIManager()
         active[index] = panel
+        Range.focus(index, "manage", self.object, true)
         D.emit("turret-manage-open", {id = panel.deviceId, interface = "dedicated", width = width, height = height})
     end
     ISBaseTimedAction.perform(self)

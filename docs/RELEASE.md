@@ -1,6 +1,10 @@
 # Release state and publication policy
 
-## Current installation: 0.2.12
+## Current candidate: 0.2.13
+
+[Aiming/range scope and complete test](PHASE_2_CHECKPOINT_3_AIM_RANGE.md), [release notes](PR_v0.2.13.md). C55 corrects head height/yaw, adds selection range and changes balance/Magazine wording. Native projection checks pass for eight headings and the 16-pixel lowering. Kahlua/package validation and native startup/save pass; rendered acceptance remains pending. Local installation evidence follows packaging. No Workshop upload or remote push.
+
+## Previous installation: 0.2.12
 
 [Dedicated turret window and full test](PHASE_2_CHECKPOINT_3_TURRET_WINDOW.md), [release notes](PR_v0.2.12.md). C54 replaces the generic loot shortcut and aligns the full sprite fallback. Player acceptance remains pending. Package validation: 1,641 assertions, 36 runtime Lua files, 243 native translations, 23 packets and 102 files. Native drag handler snippets run against UI/world doubles; rendered acceptance remains separate. Native stock 42.21.0 startup, collision and in-process save/restore passed in 88.2 seconds. [Installation evidence](../diagnostics/v0.2.12/local-release.json) verifies all 102 installed/archive files against annotated `test/v0.2.12` (`c720b99`), plus the full 100-file 0.2.11.1 backup. [Archive](../artifacts/OMHTT-0.2.12.zip). No Workshop upload or remote push.
 

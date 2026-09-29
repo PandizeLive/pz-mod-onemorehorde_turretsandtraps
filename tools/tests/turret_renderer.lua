@@ -28,8 +28,8 @@ local second, headB = turret(611, 270)
 R.render(1)
 check(#draws == 2 and headA.scale == 0.512 and headB.scale == 0.512, "Actual installed heads use recorded calibration")
 for i = 1, #draws do
-    check(draws[i].z == 0.4 and draws[i].y == 610.5, "Head draws at base center and calibrated height")
-    check(draws[i].yaw == (draws[i].head == headA and 45 or 270), "Per-instance aiming never leaks across shared models")
+    check(math.abs(draws[i].z - (0.4 - 16 / 192)) < 0.000001 and draws[i].y == 610.5, "Head draws at base center and height lowered with base")
+    check(draws[i].yaw == (draws[i].head == headA and 315 or 90), "Per-instance aiming never leaks across shared models")
 end
 R.changed(first, nil)
 draws = {}

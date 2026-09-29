@@ -1,8 +1,8 @@
 # Phases and checkpoints
 
-**Current: [P2C3 dedicated turret window, 0.2.12](PHASE_2_CHECKPOINT_3_TURRET_WINDOW.md).** C54 replaces Manage's generic loot shortcut with actual-item slots, timed drag/drop, supply/status/stats and concise rejection feedback. Ground the sprite fallback using the corrected base anchor. The 0.2.11.1 log confirms Manage's load-order exception is fixed; the owner rejects the loot UI. Visual/gameplay acceptance stays pending.
+**Current: [P2C3 aiming, range and balance, 0.2.13](PHASE_2_CHECKPOINT_3_AIM_RANGE.md).** C55 follows the 0.2.12 test: correct model height/yaw, expose selection range, rename Magazine, reduce damage/cadence. The owner reports working ammo/UI/combat; logs confirm real transfers and shots, while visual alignment failed. The new ring reflects existing 360-degree manual targeting; a forward-only restriction remains a separate decision. Rendered acceptance remains pending.
 
-**Next: P2C3d module effects and automation.** Complete the dedicated-window combined test, then implement effective module tuning and Firing/Motion Detection/Filter roles. Recipes and bonus quantities need their concrete checkpoint review. Multiplayer/performance remain P2C3e; firearm heads and artist model validation remain separate gates.
+**Next: P2C3d module effects and automation.** Complete the focused aiming/range test, then implement effective module tuning and Firing/Motion Detection/Filter roles. Recipes and bonus quantities need their concrete checkpoint review. Multiplayer/performance remain P2C3e; firearm heads and artist model validation remain separate gates.
 
 **Current: [P2C3a-c — modular potato turret foundation, 0.2.9](PHASE_2_CHECKPOINT_3.md).** C48-C50 approve inventory/persistence, revised metal recipes, native deployment and powered manual firing. Combine player acceptance with the held P2C2b test. Module storage is implemented; P2C3d adds module effects and P2C3e proves multiplayer/performance. Version 0.2.9 is installed and archived, with exact tagged hashes and a verified 0.2.8 backup recorded in RELEASE.md. Native furniture Install/Pickup stays deferred.
 

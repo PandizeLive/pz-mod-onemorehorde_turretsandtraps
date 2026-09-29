@@ -139,6 +139,8 @@ def main():
         "zombie/GameTime.class", "zombie/inventory/ItemContainer.class",
         "zombie/inventory/types/InventoryContainer.class", "zombie/iso/objects/IsoGenerator.class",
         "zombie/iso/objects/IsoWorldInventoryObject.class", "zombie/core/skinnedmodel/model/ItemModelRenderer.class",
+        "zombie/iso/IsoUtils.class", "zombie/iso/IsoCamera.class", "zombie/ui/UIManager.class", "zombie/core/Core.class",
+        "zombie/core/skinnedmodel/model/ItemModelRenderer$WorldModelCamera.class",
         "zombie/core/skinnedmodel/model/WorldItemModelDrawer.class", "zombie/core/skinnedmodel/model/FileTask_LoadMesh.class",
         "zombie/core/skinnedmodel/model/jassimp/ProcessedAiScene.class", "jassimp64.dll",
         "media/lua/server/BuildingObjects/ISPlace3DItemCursor.lua", "media/lua/client/ISUI/ISExtendedPlacementUI.lua",

@@ -1,0 +1,2 @@
+Native IsoUtils / JOML projection: 8 heading vectors match; head follows 16-pixel base shift.
+Native Jassimp import and PZ StaticMesh conversion passed: one mesh, 48 vertices, 24 triangles; GPU rendering remains untested.

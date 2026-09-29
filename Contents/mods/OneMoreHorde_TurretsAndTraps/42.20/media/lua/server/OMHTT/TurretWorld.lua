@@ -246,8 +246,8 @@ function W.fire(player, object)
     if not power then return "NoPower" end
     local state = T.state(object)
     state.ammo = contents.ammo
-    local options = {range = T.option("Range", 6, 1, 20), interval = T.option("Cooldown", 0.5, 0.1, 60) * 1000,
-        damage = T.option("Damage", 50, 0, 1000) / 100, knockdown = T.option("KnockdownChance", 70, 0, 100),
+    local options = {range = T.option("Range", 6, 1, 20), interval = T.option("Cooldown", 2, 0.1, 60) * 1000,
+        damage = T.option("Damage", 35, 0, 1000) / 100, knockdown = T.option("KnockdownChance", 70, 0, 100),
         splash = T.option("SplashDamage", 0.1, 0, 100) / 100, radius = T.option("SplashRadius", 1.1, 0, 3), managed = true}
     ---@return boolean committed
     function options.commit()
