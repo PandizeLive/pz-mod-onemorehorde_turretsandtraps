@@ -77,7 +77,7 @@
     "UI_OMHTT_ManageModules": "Modules: %1 / %2",
     "UI_OMHTT_ManageModule": "Slot %1",
     "UI_OMHTT_ManageLocked": "Unavailable",
-    "UI_OMHTT_ManageModulesHint": "Module storage only; effects are not active yet.",
+    "UI_OMHTT_ManageModulesHint": "Core modules active; stat modules are pending.",
     "UI_OMHTT_ManagePowerNone": "No supply",
     "UI_OMHTT_ManagePowerExternal": "External power",
     "UI_OMHTT_ManagePowerBattery": "Battery power",
@@ -105,5 +105,18 @@
     "UI_OMHTT_ManageFired": "Fired.",
     "UI_OMHTT_ManageUnavailable": "Turret is unavailable.",
     "UI_OMHTT_ManageMPCombatDeferred": "Multiplayer is not available yet.",
-    "UI_OMHTT_ManageWrongDevice": "Incompatible head."
+    "UI_OMHTT_ManageWrongDevice": "Incompatible head.",
+    "UI_OMHTT_AutoOn": "Automatic: On",
+    "UI_OMHTT_AutoOff": "Automatic: Off",
+    "UI_OMHTT_Priority": "Priority: %1",
+    "UI_OMHTT_PriorityClosest": "Closest",
+    "UI_OMHTT_PriorityFurthest": "Furthest",
+    "UI_OMHTT_PriorityWeakest": "Weakest",
+    "UI_OMHTT_PriorityToughest": "Toughest",
+    "UI_OMHTT_ActiveModules": "Active: %1 | Cone: %2°",
+    "UI_OMHTT_ModuleFiring": "Firing",
+    "UI_OMHTT_ModuleMotionDetection": "Detection",
+    "UI_OMHTT_ModuleFilter": "Filter",
+    "UI_OMHTT_ModuleDetection360": "360",
+    "UI_OMHTT_AutoDisabled": "Automation disabled"
 }

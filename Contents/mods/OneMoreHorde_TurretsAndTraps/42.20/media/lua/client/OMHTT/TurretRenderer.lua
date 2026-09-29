@@ -1,6 +1,7 @@
 if isClient() or isServer() then return end
 local T = require("OMHTT/Turret")
 local D = require("OMHTT/Diagnostics")
+local M = require("OMHTT/TurretModules")
 local R = {entries = {}, mode = nil, lastCheck = 0, headHeight = 0.4 - 16 / 192, headScale = 0.512}
 
 ---@param object IsoObject Managed base
@@ -9,7 +10,7 @@ local R = {entries = {}, mode = nil, lastCheck = 0, headHeight = 0.4 - 16 / 192,
 function R.changed(object, head)
     if not T.state(object) then R.entries[object] = nil; return end
     if head then head:setWorldScale(R.headScale) end
-    R.entries[object] = {head = head}
+    R.entries[object] = {head = head, profile = M.profile(T.state(object), T.contents(object:getContainer()))}
 end
 
 ---@param square IsoGridSquare Loaded square

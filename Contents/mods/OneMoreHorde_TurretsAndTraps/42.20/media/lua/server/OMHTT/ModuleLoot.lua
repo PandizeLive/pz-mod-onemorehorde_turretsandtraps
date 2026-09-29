@@ -1,0 +1,49 @@
+if isClient() then return end
+require("Items/ProceduralDistributions")
+local M = require("OMHTT/TurretModules")
+local D = require("OMHTT/Diagnostics")
+local L = {}
+L.POOLS = {"ElectronicStoreMisc", "CrateElectronics", "MechanicShelfElectric", "ArmyStorageElectronics"}
+L.WEIGHTS = {Firing = 2, MotionDetection = 2, Filter = 0.5, Detection360 = 0.25}
+
+---@return nil
+function L.apply()
+    local multiplier = M.option("ModuleLootMultiplier", 1, 0, 20)
+    if isServer() or SandboxVars.OMHTurretsTraps.Enabled == false or SandboxVars.OMHTurretsTraps.PotatoTurret == false then
+        multiplier = 0
+    end
+    for i = 1, #L.POOLS do
+        local name = L.POOLS[i]
+        local pool = ProceduralDistributions.list[name]
+        if pool and pool.items then
+            local items = pool.items
+            for index = #items - 1, 1, -2 do
+                local module = string.match(items[index], "^Base%.OMHTTModule(.+)$")
+                if module and L.WEIGHTS[module] then
+                    table.remove(items, index + 1)
+                    table.remove(items, index)
+                end
+            end
+            for module, weight in pairs(L.WEIGHTS) do
+                local effective = weight * multiplier * M.option("Loot" .. module, 1, 0, 20)
+                if effective > 0 then
+                    items[#items + 1] = "Base.OMHTTModule" .. module
+                    items[#items + 1] = effective
+                end
+                D.emit("module-loot-weight", {pool = name, module = module, weight = effective})
+            end
+        else
+            D.emit("module-loot-missing-pool", {pool = name})
+        end
+    end
+end
+
+---@return nil
+function L.loaded()
+    if isServer() then return end
+    L.apply()
+    ItemPickerJava.Parse()
+end
+
+Events.OnLoadedTileDefinitions.Add(L.loaded)
+return L

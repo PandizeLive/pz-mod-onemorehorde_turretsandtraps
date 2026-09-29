@@ -72,7 +72,7 @@ end
 ---@return table summary Actual inventory contents
 ---@nodiscard
 function T.contents(container)
-    local result = {ammo = 0, modules = 0, heads = 0, batteries = 0, invalid = 0, moduleNames = {}, weight = 0}
+    local result = {ammo = 0, modules = 0, heads = 0, batteries = 0, invalid = 0, moduleNames = {}, active = {}, weight = 0}
     local items = container:getItems()
     for i = 0, items:size() - 1 do
         local item = items:get(i)
@@ -90,6 +90,10 @@ function T.contents(container)
         elseif kind == "module" then
             result.modules = result.modules + 1
             result.moduleNames[#result.moduleNames + 1] = item:getDisplayName()
+            if item:getCondition() > 0 then
+                local name = string.match(item:getFullType(), "^Base%.OMHTTModule(.+)$")
+                result.active[name] = (result.active[name] or 0) + 1
+            end
         else
             result.invalid = result.invalid + 1
         end

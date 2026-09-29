@@ -2,6 +2,7 @@ if isClient() or isServer() then return end
 require("ISUI/ISUIElement")
 local T = require("OMHTT/Turret")
 local R = require("OMHTT/TurretRenderer")
+local M = require("OMHTT/TurretModules")
 local Selection = require("OMHTT/BarrierSelection")
 local D = require("OMHTT/Diagnostics")
 local O = {selected = {}}
@@ -67,8 +68,9 @@ end
 ---@param range number Tile radius
 ---@param heading number World heading in degrees
 ---@param cone number Full angle in degrees
+---@param aim number? Independent head heading
 ---@return table lines Ground-plane segment endpoints
-function O.lines(x, y, range, heading, cone)
+function O.lines(x, y, range, heading, cone, aim)
     local lines = {}
     local start = math.rad(heading - cone / 2)
     local px, py = x + math.cos(start) * range, y - math.sin(start) * range
@@ -80,7 +82,7 @@ function O.lines(x, y, range, heading, cone)
         px, py = tx, ty
     end
     if cone < 360 then lines[#lines + 1] = {px, py, x, y} end
-    local angle = math.rad(heading)
+    local angle = math.rad(aim or heading)
     local dx, dy = math.cos(angle), -math.sin(angle)
     local tx, ty = x + dx * range, y + dy * range
     lines[#lines + 1] = {x, y, tx, ty}
@@ -109,7 +111,13 @@ function O.render()
                     canvas:instantiate()
                 end
                 local heading = state.aimDegrees or (state.facing or 0) * 22.5
-                local lines = O.lines(square:getX() + 0.5, square:getY() + 0.5, T.option("Range", 6, 1, 20), heading, 360)
+                local profile = render.profile
+                local cone = M.option("ForwardCone", 90, 10, 360)
+                if profile.omni then
+                    cone = 360
+                end
+                local lines = O.lines(square:getX() + 0.5, square:getY() + 0.5,
+                    T.option("Range", 6, 1, 20), profile.heading, cone, heading)
                 local left, top = getPlayerScreenLeft(index), getPlayerScreenTop(index)
                 canvas:setStencilRect(left, top, getPlayerScreenWidth(index), getPlayerScreenHeight(index))
                 for i = 1, #lines do

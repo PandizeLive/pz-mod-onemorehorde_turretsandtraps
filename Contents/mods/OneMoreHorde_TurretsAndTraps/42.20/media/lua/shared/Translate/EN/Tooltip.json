@@ -5,5 +5,9 @@
     "Tooltip_OMHTT_ReinforcedPack": "Five reinforced barriers. 67 percent less weight.",
     "Tooltip_OMHTT_TurretBase": "Holds a head, ammo, modules and a battery.",
     "Tooltip_OMHTT_PotatoHead": "Install in a turret base. Uses potatoes and power.",
-    "Tooltip_OMHTT_ModuleStorage": "Storage prototype. Module effects are not enabled yet."
+    "Tooltip_OMHTT_ModuleStorage": "Storage prototype. Module effects are not enabled yet.",
+    "Tooltip_OMHTT_ModuleFiring": "Fires on signal. Add Detection for automatic fire.",
+    "Tooltip_OMHTT_ModuleMotionDetection": "Tracks zombies. Add Firing to shoot automatically.",
+    "Tooltip_OMHTT_ModuleFilter": "Choose target priority in Manage.",
+    "Tooltip_OMHTT_ModuleDetection360": "Unlocks all directions. No extra range."
 }

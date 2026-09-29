@@ -8,6 +8,24 @@ public final class NativeTurretProbe {
         if (!value) throw new IllegalStateException(message);
     }
     public static void verify() throws Exception {
+        Class<?> picker = Class.forName("zombie.inventory.ItemPickerJava");
+        picker.getMethod("Parse").invoke(null);
+        Object pools = picker.getField("ProceduralDistributions").get(null);
+        int modules = 0;
+        for (String name : new String[]{"ElectronicStoreMisc", "CrateElectronics", "MechanicShelfElectric", "ArmyStorageElectronics"}) {
+            Object pool = call(pools, "get", new Class<?>[]{Object.class}, name);
+            check(pool != null, "Missing native loot pool: " + name);
+            Object[] items = (Object[])pool.getClass().getField("items").get(pool);
+            for (Object item : items) {
+                String type = (String)item.getClass().getField("itemName").get(item);
+                if (type.startsWith("Base.OMHTTModule")) {
+                    modules++;
+                    check(item.getClass().getField("chance").getFloat(item) > 0, "Zero native module loot weight");
+                }
+            }
+        }
+        check(modules == 16, "Native loot parser did not retain all module entries");
+        System.out.println("[OMHTT-Smoke] native-module-loot-parser pools=4 items=16 weights=positive");
         Class<?> squareType = Class.forName("zombie.iso.IsoGridSquare");
         Class<?> cellType = Class.forName("zombie.iso.IsoCell");
         Class<?> movingType = Class.forName("zombie.iso.IsoMovingObject");

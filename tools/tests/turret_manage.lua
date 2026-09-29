@@ -67,9 +67,10 @@ local function container(carried)
 end
 local carried, storage = container(true), container(false)
 local player = {getPlayerNum = function() return 0 end, getInventory = function() return carried end}
+local controlState = {OMHTTTurret = {schema = 1, id = "manage-test"}}
 local object = {getContainer = function() return storage end, hasModData = function() return true end,
     getHealth = function() return 100 end, getMaxHealth = function() return 100 end,
-    getModData = function() return {OMHTTTurret = {schema = 1, id = "manage-test"}} end}
+    getModData = function() return controlState end}
 storage.parent = object
 open(object, player)
 check(queued and queued:isValid(), "Manage queues a reach-validated action")
@@ -157,6 +158,20 @@ ISInventoryPane.onMouseUp(nativePane, 1, 1)
 check(handedOff and #handedOff == 1 and handedOff[1] == battery and ISMouseDrag.dragging == nil,
     "Installed vanilla drop handler accepts exact battery and calls slot cleanup")
 getSpecificPlayer, getCore, isShiftKeyDown, isCtrlKeyDown = oldSpecific, oldCore, oldShift, oldControl
+panel:toggleAuto(); panel:refresh()
+check(controlState.OMHTTTurret.automatic == false and panel.autoButton.title == getText("UI_OMHTT_AutoOff"), "Manage switch persists automatic off")
+panel:toggleAuto(); panel:refresh()
+check(controlState.OMHTTTurret.automatic == true, "Manage can reenable automation")
+check(not panel.priorityButton.enabled, "Priority control requires Filter")
+local filter = item("Base.OMHTTModuleFilter")
+storage:AddItem(filter); panel:refresh()
+check(panel.priorityButton.enabled, "Installing Filter enables priority control")
+panel:changePriority()
+check(controlState.OMHTTTurret.priority == "Furthest", "Filter cycles to Furthest")
+panel:changePriority(); panel:changePriority()
+check(controlState.OMHTTTurret.priority == "Toughest", "Filter exposes all four target priorities")
+storage:Remove(filter); panel:refresh()
+check(not panel.priorityButton.enabled and panel.priorityButton.title == getText("UI_OMHTT_Priority", getText("UI_OMHTT_PriorityClosest")), "Removing Filter uses Closest while retaining chosen preference")
 local oldModules = SandboxVars.OMHTurretsTraps.PotatoModuleCapacity
 SandboxVars.OMHTurretsTraps.PotatoModuleCapacity = 20
 for i = 1, 20 do storage:AddItem(item("Base.OMHTTModuleRange")) end

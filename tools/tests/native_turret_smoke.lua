@@ -8,6 +8,30 @@ local function verifyTurrets()
     SandboxVars.OMHTurretsTraps.Enabled = true
     SandboxVars.OMHTurretsTraps.PotatoTurret = true
     local player = IsoPlayer.new(getCell())
+    local Modules = require("OMHTT/TurretModules")
+    local Loot = require("OMHTT/ModuleLoot")
+    Loot.loaded()
+    local count = 0
+    for i = 1, #Loot.POOLS do
+        local items = ProceduralDistributions.list[Loot.POOLS[i]].items
+        for n = 1, #items, 2 do
+            if string.find(items[n], "Base.OMHTTModule", 1, true) then
+                assert(instanceItem(items[n]), "Loot module script missing")
+                count = count + 1
+            end
+        end
+    end
+    assert(count == 16, "Expected four active modules in four native loot pools")
+    local nativeContents = {active = {Detection360 = 1, Filter = 1}}
+    local profile = Modules.profile({baseFacing = 4, facing = 12, priority = "Toughest"}, nativeContents)
+    assert(profile.cone == 360 and profile.heading == 90 and profile.priority == "Toughest", "Module profile failed")
+    local live = instanceItem("Base.OMHTTTurretBase"):getInventory()
+    local detector = instanceItem("Base.OMHTTModuleMotionDetection")
+    live:AddItem(detector)
+    assert(T.contents(live).active.MotionDetection == 1, "Native module condition defaults are not active")
+    detector:setCondition(0)
+    assert(T.contents(live).active.MotionDetection == nil, "Broken native module remains active")
+    print("[OMHTT-Smoke] native-modules loot=16 profiles=valid condition=checked")
     local resources = ArrayList.new()
     local tools = {"Base.Screwdriver", "Base.Wrench"}
     local routes = {
@@ -80,6 +104,7 @@ local function verifyTurrets()
     data:setRecipe(recipe)
     player:getInventory():AddItem(packed)
     assert(data:offerInputItem(recipe:getInputs():get(0), packed), "Loaded portable turret rejected by build recipe")
+    assert(data:getFirstManualInputFor(recipe:getInputs():get(0)) == packed, "Placement preview cannot resolve exact packed input")
     assert(data:consumeInputs(resources), "Loaded portable turret could not be deployed")
     data:processDestroyAndUsedItems(player)
     assert(not player:getInventory():contains(packed) and inventory:contains(battery), "Native build must consume the base but retain its contents for adoption")
@@ -112,6 +137,9 @@ local function verifyTurrets()
     W.refresh(object)
     T.hybrid = hybrid
     object:setHealth(37)
+    T.state(object).automatic = false
+    T.state(object).priority = "Toughest"
+    T.state(object).baseFacing = 4
     T.state(object).condition = 37
     T.state(object).fixtureBatteryId = battery:getID()
     T.state(object).fixtureAmmoId = potato:getID()

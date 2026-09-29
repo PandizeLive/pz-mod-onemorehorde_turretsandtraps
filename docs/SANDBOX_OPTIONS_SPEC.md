@@ -105,3 +105,7 @@ Use native weighted distributions; a multiplier is not a guaranteed per-containe
 Reuse Potato Turret damage/range/ammo/module capacity/power and magazine/reload/cooldown controls for automatic shots. Range display must use the same effective range/cone as targeting. Individual turret on/off and target priority belong in Manage, not duplicated global overrides. Debug retains diagnostics and visual controls.
 
 In P2C3d2 expose useful per-copy bonuses and limits for Rapid-Fire, Velocity, Range and Capacity, plus Reload/Autoloader behavior and their loot controls as each effect becomes active. Preserve short tooltips and grouped pages; no speculative inactive options.
+
+## Implemented P2C3d1 / 0.2.14
+
+The previously planned automation/module loot controls now ship: AutomationEnabled=true, ForwardCone=90 (10–360), DetectionInterval=0.25 seconds (0.1–5), ModuleLootMultiplier=1 and each core module multiplier=1 (0–20). Native pages: Turret Automation and Module Loot. Reload after loot changes; no retroactive refill/removal. Potato combat/storage/power settings also govern automatic shots. See PHASE_2_CHECKPOINT_3D1.md for the complete implemented contract; stat-module controls remain deferred.

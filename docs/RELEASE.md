@@ -1,6 +1,10 @@
 # Release state and publication policy
 
-## Current installation: 0.2.13
+## Current candidate: 0.2.14
+
+[Core automation, module loot and combined test](PHASE_2_CHECKPOINT_3D1.md), [release notes](PR_v0.2.14.md). 1,935 assertions, 40 runtime Lua files, 280 native translations, 23 packets and 106 manifested files pass. Native write/read passed in 53.4/51.9 seconds, including control/orientation persistence and current-game module loot parsing. Rendered/gameplay acceptance remains pending; 0.2.13's held test joins this checkpoint. Installation evidence follows packaging. No Workshop upload or remote push.
+
+## Previous installation: 0.2.13
 
 [Aiming/range scope and complete test](PHASE_2_CHECKPOINT_3_AIM_RANGE.md), [release notes](PR_v0.2.13.md). C55 corrects head height/yaw, adds selection range and changes balance/Magazine wording. Native projection checks pass for eight headings and the 16-pixel lowering. Validation passes 1,728 assertions, 37 runtime Lua files, 245 native translations, 23 packets and 103 package files; native startup/save passed in 40.5 seconds. Owner skipped the standalone 0.2.13 test; rendered acceptance is held for the next combined checkpoint, not passed. [Installation evidence](../diagnostics/v0.2.13/local-release.json) verifies all 103 installed/archive files against annotated `test/v0.2.13` (`5e62e85`), plus all 102 files in the full 0.2.12 backup. [Archive](../artifacts/OMHTT-0.2.13.zip). No Workshop upload or remote push.
 

@@ -3,6 +3,7 @@ local T = require("OMHTT/Turret")
 local F = require("OMHTT/Foundation")
 local D = require("OMHTT/Diagnostics")
 local Cycle = require("OMHTT/TurretCycle")
+local M = require("OMHTT/TurretModules")
 OMHTT_TurretWorld = {}
 local W = OMHTT_TurretWorld
 local facings = {e = 0, n = 4, w = 8, s = 12}
@@ -115,6 +116,7 @@ function W.onCreate(params)
     object:setMaxHealth(state.maxHealth)
     object:setHealth(state.condition)
     state.baseFacing = state.facing
+    state.aimDegrees = state.baseFacing * 22.5
     object:setBlockAllTheSquare(true)
     object:setCanPassThrough(true)
     object:setIsThumpable(true)
@@ -234,10 +236,16 @@ end
 
 ---@param player IsoPlayer Operator
 ---@param object IsoThumpable Exact turret
+---@param target IsoZombie? Detected target for autonomous shot
 ---@return string result
-function W.fire(player, object)
-    if not W.near(player, object) then return "Unavailable" end
+function W.fire(player, object, target)
+    if player then
+        if not W.near(player, object) then return "Unavailable" end
+    elseif not target or not W.valid(object) then
+        return "Unavailable"
+    end
     local contents = T.contents(object:getContainer())
+    if not player and (not M.detects(T.state(object), contents) or not contents.active.Firing) then return "Unavailable" end
     if contents.heads ~= 1 or contents.head:getCondition() <= 0 then return "NoHead" end
     if contents.ammo == 0 then return "Empty" end
     local cycle, status = T.cycle(contents, getTimestampMs())
@@ -248,10 +256,13 @@ function W.fire(player, object)
     state.ammo = contents.ammo
     local options = {range = T.option("Range", 6, 1, 20), interval = T.option("Cooldown", 2, 0.1, 60) * 1000,
         damage = T.option("Damage", 35, 0, 1000) / 100, knockdown = T.option("KnockdownChance", 70, 0, 100),
-        splash = T.option("SplashDamage", 0.1, 0, 100) / 100, radius = T.option("SplashRadius", 1.1, 0, 3), managed = true}
+        splash = T.option("SplashDamage", 0.1, 0, 100) / 100, radius = T.option("SplashRadius", 1.1, 0, 3), managed = true,
+        profile = M.profile(state, contents), target = target}
     ---@return boolean committed
     function options.commit()
-        if not W.near(player, object) or not object:getContainer():contains(contents.round) then return false end
+        if not W.valid(object) or not object:getContainer():contains(contents.round) then return false end
+        if player and not W.near(player, object) then return false end
+        if not player and (not M.detects(state, contents) or not contents.active.Firing) then return false end
         if power.kind == "battery" then
             power.battery:setCurrentUsesFloat(math.max(0, power.battery:getCurrentUsesFloat() - power.cost))
         elseif power.kind == "generator" then
@@ -266,7 +277,7 @@ function W.fire(player, object)
     local result, impact = Combat.fire(state, object, player, options)
     W.refresh(object)
     if impact then triggerEvent("OnServerCommand", F.MODULE, "Impact", impact) end
-    D.emit("turret-fire-result", {id = state.id, result = result, ammo = T.contents(object:getContainer()).ammo, power = power.kind,
+    D.emit("turret-fire-result", {id = state.id, result = result, ammo = T.contents(object:getContainer()).ammo, power = power.kind, automatic = player == nil,
         loaded = cycle.loaded, reloadReady = cycle.reloadReady, nextShot = cycle.nextShot})
     return result
 end

@@ -3,6 +3,7 @@ if isClient() then return end
 local Foundation = require("OMHTT/Foundation")
 local Diagnostics = require("OMHTT/Diagnostics")
 local Damage = require("OMHTT/Damage")
+local Modules = require("OMHTT/TurretModules")
 
 ---@class OMHTTPrototypeCombat
 local Combat = {
@@ -95,7 +96,11 @@ function Combat.candidates(origin, range)
     local visits = 0
     for radius = 0, range do
         for dx = -radius, radius do
-            for dy = -radius, radius do
+            local stride = 1
+            if math.abs(dx) < radius then
+                stride = radius * 2
+            end
+            for dy = -radius, radius, stride do
                 if math.max(math.abs(dx), math.abs(dy)) == radius then
                     local square = getCell():getGridSquare(origin:getX() + dx, origin:getY() + dy, origin:getZ())
                     if square then
@@ -148,17 +153,31 @@ function Combat.fire(record, object, player, options)
     if now < record.nextShot then return "Cooling" end
     local origin = object:getSquare()
     local candidates, visits = Combat.candidates(origin, options.range)
-    local target = nil
+    local target, bestDistance = nil, 0
     for i = 1, #candidates do
         local zombie = candidates[i].zombie
-        local clear, reason = Combat.clearLane(origin, zombie:getSquare(), options.range)
-        if i <= 6 then
-            Diagnostics.emit("shot-candidate", {id = record.id, order = i, x = zombie:getX(), y = zombie:getY(),
-                health = zombie:getHealth(), distanceSquared = candidates[i].distance, clear = clear, reason = tostring(reason)})
+        local inside = not options.profile or Modules.inside(origin, zombie, options.profile)
+        local clear, reason = false, "cone"
+        if inside then
+            clear, reason = Combat.clearLane(origin, zombie:getSquare(), options.range)
         end
-        if clear then
-            target = zombie
-            break
+        if i <= 6 and not options.target then
+            Diagnostics.emit("shot-candidate", {id = record.id, order = i, x = zombie:getX(), y = zombie:getY(),
+                health = zombie:getHealth(), distanceSquared = candidates[i].distance, inside = inside, clear = clear,
+                reason = tostring(reason), cone = options.profile and options.profile.cone or 360})
+        end
+        if clear and (not options.target or zombie == options.target)
+            and Modules.better(zombie, candidates[i].distance, target, bestDistance,
+                options.profile and options.profile.priority or "Closest") then
+            target, bestDistance = zombie, candidates[i].distance
+        end
+    end
+    if options.target then
+        local inside = Modules.inside(origin, options.target, options.profile)
+        if inside and Combat.clearLane(origin, options.target:getSquare(), options.range) then
+            target = options.target
+        else
+            target = nil
         end
     end
     record.lastCandidates = visits

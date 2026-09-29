@@ -55,3 +55,5 @@ Read README.md, docs/DECISIONS.md, and docs/ROADMAP.md before project changes. T
 - [2026-09-29] C57 confirms default 90-degree placement-locked coverage and loot-only module acquisition for now. Defer module crafting/skills/XP; do not keep asking for recipes as a gate to core automation. Review current native loot distributions before implementing module drops.
 
 - [2026-09-29] C58 explicitly requires owner-tunable Sandbox automation/cone/scan timing and global/per-module loot controls with the module checkpoint. Use short tooltips, grouped pages, honest loot-multiplier semantics and bounded intervals. Reuse existing combat settings; introduce stat-module bonus/cap controls only with active effects.
+
+- [2026-09-29] C59: Owner approves implementing P2C3d1 and resuming through validation/install. Version 0.2.14 activates Firing/Detection/Filter/360, placement-locked coverage, Manage controls and loot/Sandbox tuning. The held 0.2.13 visual test joins its combined test. Stat-module effects, crafting and multiplayer remain deferred; see docs/PHASE_2_CHECKPOINT_3D1.md.

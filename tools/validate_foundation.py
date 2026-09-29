@@ -53,7 +53,7 @@ def main():
         assert all(isinstance(v, str) for v in values.values())
         assert not translations.keys() & values.keys(), "Duplicate translation keys"
         translations.update(values)
-    keys = set(re.findall(r'getText\("([A-Za-z0-9_]+)"', lua)) - {"UI_OMHTT_", "ContextMenu_OMHTT_Hybrid"}
+    keys = set(re.findall(r'getText\("([A-Za-z0-9_]+)"', lua)) - {"UI_OMHTT_", "ContextMenu_OMHTT_Hybrid", "UI_OMHTT_Module"}
     keys.update("ContextMenu_OMHTT_Hybrid" + action for action in ["Create", "Remove", "Rotate", "Spin", "Raise", "Lower", "Larger", "Smaller"])
     keys.update("UI_OMHTT_" + status for status in [
         "Agrees", "Waiting", "Denied", "VersionMismatch", "TooFar", "Unavailable", "Inspected", "Stale",
@@ -61,6 +61,9 @@ def main():
         "WrongDevice", "Empty", "Cooling", "NoTarget", "Fired", "Refilled", "Aimed", "NotCompared", "WrongBarrier", "BarrierRotated",
     ])
     keys.update("UI_OMHTT_Manage" + status for status in ['Drop', 'Hint', 'Head', 'Battery', 'Ammo', 'Modules', 'Module', 'Locked', 'ModulesHint', 'PowerNone', 'PowerExternal', 'PowerBattery', 'PowerDisabled', 'Stats', 'Timing', 'Fire', 'Unload', 'Queued', 'TransferMissing', 'TransferReach', 'UnloadFirst', 'TransferFavorite', 'TransferWrongItem', 'TransferFull', 'TransferCarried', 'TransferPending', 'NoHead', 'NoPower', 'Empty', 'Ready', 'Cooling', 'Reloading', 'NoTarget', 'Fired', 'Unavailable', 'MPCombatDeferred', 'WrongDevice'])
+    keys.update("UI_OMHTT_Module" + name for name in ["Firing", "MotionDetection", "Filter", "Detection360"])
+    keys.update("UI_OMHTT_Priority" + name for name in ["Closest", "Furthest", "Weakest", "Toughest"])
+    keys.update(["UI_OMHTT_AutoOn", "UI_OMHTT_AutoOff"])
     for key in keys:
         assert key in translations, f"Missing translation: {key}"
     textures = list((PACKAGE / "42.20/media/textures").glob("*.png"))
@@ -150,6 +153,9 @@ def main():
         "media/lua/shared/ISBaseObject.lua",
         "media/lua/shared/Fishing/Bobber.lua", "media/lua/shared/luautils.lua",
         "media/lua/client/ISUI/ISInventoryPane.lua", "media/lua/client/ISUI/ISToolTipInv.lua",
+        "media/lua/server/Items/ProceduralDistributions.lua", "media/lua/server/Items/SuburbsDistributions.lua",
+        "zombie/inventory/ItemPickerJava.class", "zombie/Lua/LuaEventManager.class", "zombie/SandboxOptions.class",
+        "media/lua/client/ISUI/ISButton.lua", "media/lua/shared/Entity/TimedActions/ISHandcraftAction.lua",
         "media/lua/client/Entity/ISUI/Controls/ISItemSlot.lua",
         "media/lua/client/ISUI/ISInventoryPage.lua", "zombie/iso/fboRenderChunk/FBORenderCell.class",
         "media/lua/client/Entity/ISUI/CraftRecipe/ISHandCraftPanel.lua",

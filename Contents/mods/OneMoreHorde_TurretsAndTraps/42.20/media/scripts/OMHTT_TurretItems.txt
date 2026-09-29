@@ -27,7 +27,7 @@ module Base {
         DisplayCategory = Material,
         Weight = 0.3,
         Icon = OMHTT_TestCube,
-        Tooltip = Tooltip_OMHTT_ModuleStorage,
+        Tooltip = Tooltip_OMHTT_ModuleFiring,
     }
     item OMHTTModuleMotionDetection {
         DisplayName = Motion Detection Module,
@@ -35,7 +35,7 @@ module Base {
         DisplayCategory = Material,
         Weight = 0.3,
         Icon = OMHTT_TestCube,
-        Tooltip = Tooltip_OMHTT_ModuleStorage,
+        Tooltip = Tooltip_OMHTT_ModuleMotionDetection,
     }
     item OMHTTModuleFilter {
         DisplayName = Filter Module,
@@ -43,7 +43,7 @@ module Base {
         DisplayCategory = Material,
         Weight = 0.3,
         Icon = OMHTT_TestCube,
-        Tooltip = Tooltip_OMHTT_ModuleStorage,
+        Tooltip = Tooltip_OMHTT_ModuleFilter,
     }
     item OMHTTModuleRapidFire {
         DisplayName = Rapid-Fire Module,
@@ -83,7 +83,7 @@ module Base {
         DisplayCategory = Material,
         Weight = 0.3,
         Icon = OMHTT_TestCube,
-        Tooltip = Tooltip_OMHTT_ModuleStorage,
+        Tooltip = Tooltip_OMHTT_ModuleDetection360,
     }
     item OMHTTModuleReload {
         DisplayName = Reload Module,

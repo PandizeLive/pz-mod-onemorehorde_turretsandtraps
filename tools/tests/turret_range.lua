@@ -31,7 +31,7 @@ function player:getX() return 20.5 end
 function player:getY() return 30.5 end
 function player:getZ() return self.z end
 function getSpecificPlayer() return player end
-R.entries[object] = {head = {}}
+R.entries[object] = {head = {}, profile = {heading = 0, cone = 90, omni = false}}
 O.selected = {}
 O.clicked(object)
 check(O.selected[0].click == object, "Native left mouse pick selects exact turret")
@@ -51,10 +51,10 @@ for _, zoom in pairs({0.5, 1, 2}) do
     end
     strokes = {}
     O.render()
-    check(#strokes == 67, "Selected turret renders bounded range geometry")
+    check(#strokes == 69, "Selected turret renders locked cone plus independent aim")
     check(stencil[1] == 100 and stencil[2] == 50 and stencil[3] == 640 and stencil[4] == 480, "Range clips to its player viewport")
-    check(math.abs(strokes[65][1] - (60 / zoom + 100)) < 0.00001
-        and math.abs(strokes[65][2] - (248 / zoom + 50)) < 0.00001, "Origin projects floor, camera, zoom and viewport once")
+    check(math.abs(strokes[67][1] - (60 / zoom + 100)) < 0.00001
+        and math.abs(strokes[67][2] - (248 / zoom + 50)) < 0.00001, "Origin projects floor, camera, zoom and viewport once")
 end
 strokes = {}; square.visible = false; O.render()
 check(#strokes == 0, "Unseen turret does not reveal range")

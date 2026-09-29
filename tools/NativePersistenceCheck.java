@@ -146,6 +146,9 @@ public final class NativePersistenceCheck {
         check(get(restored, "getHealth").equals(37), "Turret health lost");
         check("omhtt_barrier_01_28".equals(get(restored, "getSpriteName")), "Turret sprite lost");
         Object state = call(get(restored, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTTurret");
+        check(Boolean.FALSE.equals(call(state, "rawget", new Class<?>[]{Object.class}, "automatic")), "Automatic switch lost");
+        check("Toughest".equals(call(state, "rawget", new Class<?>[]{Object.class}, "priority")), "Target priority lost");
+        check(((Number)call(state, "rawget", new Class<?>[]{Object.class}, "baseFacing")).intValue() == 4, "Placement cone orientation lost");
         check(Double.valueOf(123456789).equals(call(state, "rawget", new Class<?>[]{Object.class}, "nextShot")), "Turret cooldown lost");
         List<?> items = (List<?>)get(get(restored, "getContainer"), "getItems");
         check(items.size() == 5, "Turret contents lost or duplicated");
@@ -192,6 +195,9 @@ public final class NativePersistenceCheck {
         List<?> packedItems = (List<?>)get(get(packedRestored, "getInventory"), "getItems");
         check(packedItems.size() == 5, "Portable turret lost contents");
         Object packedState = call(get(packedRestored, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTTurret");
+        check(Boolean.FALSE.equals(call(packedState, "rawget", new Class<?>[]{Object.class}, "automatic")), "Packed automatic switch lost");
+        check("Toughest".equals(call(packedState, "rawget", new Class<?>[]{Object.class}, "priority")), "Packed priority lost");
+        check(((Number)call(packedState, "rawget", new Class<?>[]{Object.class}, "baseFacing")).intValue() == 4, "Packed orientation lost");
         check(Double.valueOf(123456789).equals(call(packedState, "rawget", new Class<?>[]{Object.class}, "nextShot")), "Portable turret lost cooldown");
         for (Object item : packedItems) {
             if ("Base.CarBattery1".equals(get(item, "getFullType"))) {

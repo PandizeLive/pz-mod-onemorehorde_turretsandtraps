@@ -79,6 +79,8 @@ def main():
     assert "Invalid SpriteConfig object! scripted object = OMHTT" not in text, "Invalid native barrier identity"
     assert "[OMHTT-Smoke] native-sandbox damage=10 maxHealth=100 tooltip=formatted" in text, "Native Sandbox options/tooltip invalid"
     assert "[OMHTT-Smoke] native-texturepack entries=49 pages=27 png=valid" in text, "Native texture pack invalid"
+    assert "[OMHTT-Smoke] native-module-loot-parser pools=4 items=16 weights=positive" in text, "Native module loot parse failed"
+    assert "[OMHTT-Smoke] native-modules loot=16 profiles=valid condition=checked" in text, "Native module rules failed"
     assert "[OMHTT-Smoke] native-turret-persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Turret world persistence failed"
     assert "[OMHTT-Smoke] native-packed-turret mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Turret portable persistence failed"
     assert "[OMHTT-Smoke] native-hybrid-persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Hybrid probe persistence failed"

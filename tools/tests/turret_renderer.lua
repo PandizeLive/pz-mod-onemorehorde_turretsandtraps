@@ -20,6 +20,7 @@ local function turret(x, yaw)
     function object:getModData() return self.data end
     function object:getSquare() return self.square end
     function object:getObjectIndex() return self.index end
+    function object:getContainer() return {getItems = function() return {size = function() return 0 end} end} end
     R.changed(object, head)
     return object, head
 end

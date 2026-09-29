@@ -3,6 +3,7 @@ require("ISUI/ISPanel")
 require("ISUI/ISButton")
 require("TimedActions/ISBaseTimedAction")
 local T = require("OMHTT/Turret")
+local M = require("OMHTT/TurretModules")
 local D = require("OMHTT/Diagnostics")
 local X = require("OMHTT/TurretTransfers")
 local Slot = require("OMHTT/TurretSlot")
@@ -50,6 +51,36 @@ function Panel:fire()
     self.nextRefresh = 0
 end
 
+---@return nil
+function Panel:toggleAuto()
+    local W = require("OMHTT/TurretWorld")
+    if not W.near(self.player, self.object) then return end
+    local state = T.state(self.object)
+    state.automatic = state.automatic == false
+    W.refresh(self.object)
+    self.nextRefresh = 0
+    D.emit("turret-auto-toggle", {id = state.id, enabled = state.automatic})
+end
+
+---@return nil
+function Panel:changePriority()
+    local W = require("OMHTT/TurretWorld")
+    if not W.near(self.player, self.object) then return end
+    local contents = T.contents(self.object:getContainer())
+    if not contents.active.Filter then return end
+    local state = T.state(self.object)
+    local priority = M.profile(state, contents).priority
+    for i = 1, #M.PRIORITIES do
+        if priority == M.PRIORITIES[i] then
+            state.priority = M.PRIORITIES[i % #M.PRIORITIES + 1]
+            break
+        end
+    end
+    W.refresh(self.object)
+    self.nextRefresh = 0
+    D.emit("turret-priority", {id = state.id, priority = state.priority})
+end
+
 ---@param button ISButton Page control
 ---@return nil
 function Panel:page(button)
@@ -81,6 +112,24 @@ function Panel:refresh()
     if not power and contents.head then status = "NoPower" end
     if contents.head and contents.head:getCondition() <= 0 then status = "NoHead" end
     self.status = status
+    local state = T.state(self.object)
+    local profile = M.profile(state, contents)
+    self.autoButton:setTitle(getText(state.automatic == false and "UI_OMHTT_AutoOff" or "UI_OMHTT_AutoOn"))
+    local automationAllowed = SandboxVars.OMHTurretsTraps.AutomationEnabled ~= false
+    self.autoButton:setEnable(automationAllowed)
+    if not automationAllowed then
+        self.autoButton:setTitle(getText("UI_OMHTT_AutoDisabled"))
+    end
+    self.priorityButton:setTitle(getText("UI_OMHTT_Priority", getText("UI_OMHTT_Priority" .. profile.priority)))
+    self.priorityButton:setEnable(contents.active.Filter ~= nil)
+    local active = {}
+    for name in pairs(M.CORE) do
+        if contents.active[name] then
+            active[#active + 1] = getText("UI_OMHTT_Module" .. name)
+        end
+    end
+    table.sort(active)
+    self.moduleEffects = getText("UI_OMHTT_ActiveModules", #active > 0 and table.concat(active, ", ") or getText("UI_OMHTT_None"), profile.cone)
     self.fireButton:setEnable(status == "Ready")
     self.unloadButton:setEnable(contents.ammo > 0)
     local capacity = T.option("ModuleCapacity", 4, 0, 20)
@@ -141,7 +190,7 @@ function Panel:prerender()
     self:drawText(getText("UI_OMHTT_Turret"), 12, 8, 1, 1, 1, 1, UIFont.Medium)
     self:drawText(getText("UI_OMHTT_ManageHint"), 12, self.titleHeight, 0.8, 0.8, 0.8, 1, UIFont.Small)
     self:drawText(self.moduleLabel, 12, self.modulesY, 1, 1, 1, 1, UIFont.Small)
-    self:drawText(getText("UI_OMHTT_ManageModulesHint"), 12, y, 0.8, 0.8, 0.8, 1, UIFont.Small)
+    self:drawText(self.moduleEffects, 12, y, 0.8, 0.8, 0.8, 1, UIFont.Small)
     self:drawText(getText("UI_OMHTT_Manage" .. self.status) .. " | " .. self.powerLabel, 12, y + h, 1, 1, 1, 1, UIFont.Small)
     self:drawText(getText("UI_OMHTT_ManageStats", T.option("Damage", 35, 0, 1000), T.option("Range", 6, 1, 20),
         self.object:getHealth(), self.object:getMaxHealth()), 12, y + h * 2, 1, 1, 1, 1, UIFont.Small)
@@ -176,7 +225,7 @@ function OpenAction:perform()
         local top = titleHeight + lineHeight + 12
         local modulesY = top + (slotHeight + 8) * 2
         local detailsY = modulesY + lineHeight + slotHeight + 12
-        local height = detailsY + lineHeight * 6 + 48
+        local height = detailsY + lineHeight * 6 + 82
         local x = getPlayerScreenLeft(index) + getPlayerScreenWidth(index) - width - 12
         local y = getPlayerScreenTop(index) + math.max(12, (getPlayerScreenHeight(index) - height) / 2)
         local panel = Panel:new(x, y, width, height)
@@ -195,13 +244,15 @@ function OpenAction:perform()
         for i = 1, 4 do
             panel.moduleSlots[i] = panel:addSlot("module", "", 12 + (i - 1) * (moduleWidth + 8), modulesY + lineHeight, moduleWidth)
         end
+        panel.autoButton = ISButton:new(12, height - 72, 150, 28, "", panel, Panel.toggleAuto)
+        panel.priorityButton = ISButton:new(170, height - 72, width - 182, 28, "", panel, Panel.changePriority)
         panel.fireButton = ISButton:new(12, height - 38, 110, 28, getText("UI_OMHTT_ManageFire"), panel, Panel.fire)
         panel.unloadButton = ISButton:new(130, height - 38, 150, 28, getText("UI_OMHTT_ManageUnload"), panel, Panel.unload)
         panel.previousButton = ISButton:new(width - 80, modulesY - 3, 28, lineHeight, "<", panel, Panel.page)
         panel.nextButton = ISButton:new(width - 44, modulesY - 3, 28, lineHeight, ">", panel, Panel.page)
         panel.previousButton.delta, panel.nextButton.delta = -1, 1
         local close = ISButton:new(width - 34, 6, 26, 24, "X", panel, Panel.close)
-        local buttons = {panel.fireButton, panel.unloadButton, panel.previousButton, panel.nextButton, close}
+        local buttons = {panel.fireButton, panel.unloadButton, panel.previousButton, panel.nextButton, panel.autoButton, panel.priorityButton, close}
         for i = 1, #buttons do buttons[i]:initialise(); panel:addChild(buttons[i]) end
         panel:refresh()
         panel:addToUIManager()

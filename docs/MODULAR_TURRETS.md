@@ -1,10 +1,10 @@
 # Turret inventory and module plan
 
-Owner-confirmed direction, updated 2026-09-29. P2C3a-c/0.2.9 implements actual component storage, exact-item persistence and powered manual potato firing. Module effects remain future work; ten module item types are available only for debug storage checks. Approved turret recipes and current tuning defaults are in [P2C3](PHASE_2_CHECKPOINT_3.md). C57 makes modules loot-only for now; crafting is deferred and stat bonuses remain unresolved.
+Current implementation: **P2C3d1 / 0.2.14** activates Firing, Motion Detection, Filter and 360 with loot-only acquisition and grouped Sandbox tuning. [Exact implemented scope and test](PHASE_2_CHECKPOINT_3D1.md). The six stat-module items remain debug-only storage; effects/gains/caps are d2. Crafting is deferred. Later proposals below remain unimplemented unless explicitly covered by d1.
 
 ## Inventory interaction
 
-Each turret has an ammunition area and module slots. Dragging actual components into/out of slots is the intended installation/removal flow; right-click installation menus are superseded. The dedicated window and native timed inventory transfers are implemented in 0.2.12. Generic storage alone does not activate a component; module effects remain pending.
+Each turret has an ammunition area and module slots. Dragging actual components into/out of slots is the intended installation/removal flow; right-click installation menus are superseded. The dedicated window and native timed inventory transfers are implemented in 0.2.12. Working core modules activate from actual container contents; stat modules remain inactive.
 
 Installed component items, ammunition, wear and committed cooldowns must survive saving and pickup/redeployment. Transactions must not duplicate components, discard ammo, reset cooldowns or provide repeated module-swap repair. Tier upgrades restore full condition under C43; module-swap repair policy still needs an explicit decision if presented as an upgrade.
 
@@ -51,11 +51,11 @@ Acceptance: exact device/item checks at completion, persisted components/resourc
 
 P2C3d1: lock the cone to stored placement orientation, independent of head aim. Apply the same range/angle/obstruction eligibility to manual and automatic shots and display the same effective geometry during placement/selection. C57 confirms a 90-degree default (45 degrees each side), with a short Sandbox control. Firing plus Motion Detection enables autonomous fire; Detection alone can track but cannot fire autonomously; Filter chooses Closest/Furthest/Weakest/Toughest. 360 changes angular coverage only and can expand manual targeting without granting autonomous fire. Removing 360 immediately restores the placement cone and invalidates out-of-cone targets. Existing loaded turrets use their saved base orientation, not last target heading.
 
-Recommend Enable/Disable in Manage to stop autonomous shots while preserving servicing; manual Fire remains a separate deliberate action. Target acquisition must be bounded and staggered across turrets, with a final shot-time range/angle/obstruction/resource check. No wall penetration, unloaded combat or burst catch-up. These details are proposals for checkpoint approval.
+Recommend Enable/Disable in Manage to stop autonomous shots while preserving servicing; manual Fire remains a separate deliberate action. Target acquisition must be bounded and staggered across turrets, with a final shot-time range/angle/obstruction/resource check. No wall penetration, unloaded combat or burst catch-up. These d1 details are implemented in 0.2.14 under C59.
 
 P2C3d2: review concrete stack gains/caps, Capacity expansion/removal, Reload/Autoloader effects on the shared potato cycle, and their loot balance. Keep firearm-specific adapters for P5. C57 defers all module crafting, tools, skills and XP; no recipe review blocks core module effects.
 
-The owner holds 0.2.13 visual/balance acceptance for the next combined gameplay test. No new runtime code or local install is part of this discussion update.
+The owner holds 0.2.13 visual/balance acceptance for the next combined gameplay test. The held test is combined with the 0.2.14 core automation build.
 
 ## Loot-only acquisition — C57
 
