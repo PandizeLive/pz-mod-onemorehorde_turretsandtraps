@@ -5,7 +5,7 @@ module Base {
         DisplayCategory = Material,
         Weight = 6,
         WeightReduction = 0,
-        Capacity = 17,
+        Capacity = 28,
         Icon = OMHTT_TestCube,
         ConditionMax = 100,
         AcceptItemFunction = OMHTT_Turret.accept,
@@ -13,6 +13,7 @@ module Base {
     }
     item OMHTTPotatoHead {
         DisplayName = Potato Launcher Head,
+        WorldStaticModel = OMHTTProbeHead,
         ItemType = base:normal,
         DisplayCategory = Material,
         Weight = 4,

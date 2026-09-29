@@ -49,5 +49,9 @@
     "Sandbox_OMHTurretsTraps_PotatoGeneratorFuelPerShot": "Generator use",
     "Sandbox_OMHTurretsTraps_PotatoGeneratorFuelPerShot_tooltip": "Extra generator fuel per shot.",
     "Sandbox_OMHTurretsTraps_PotatoHealth": "Durability",
-    "Sandbox_OMHTurretsTraps_PotatoHealth_tooltip": "Maximum durability of newly crafted bases."
+    "Sandbox_OMHTurretsTraps_PotatoHealth_tooltip": "Maximum durability of newly crafted bases.",
+    "Sandbox_OMHTurretsTraps_PotatoMagazineCapacity": "Magazine size",
+    "Sandbox_OMHTurretsTraps_PotatoMagazineCapacity_tooltip": "Loaded potatoes. Included in ammo capacity.",
+    "Sandbox_OMHTurretsTraps_PotatoReloadTime": "Reload time",
+    "Sandbox_OMHTurretsTraps_PotatoReloadTime_tooltip": "Seconds to refill the magazine."
 }

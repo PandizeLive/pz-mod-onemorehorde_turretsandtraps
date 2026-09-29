@@ -54,8 +54,8 @@ function Construction.installEdges()
             for yy = 0, face:getHeight() - 1 do
                 local tile = face:getTileInfo(xx, yy, 0)
                 local name = tile and tile:getSpriteName()
-                if name and string.match(name, "^omhtt_barrier_01_%d+$") then
-                    local index = tonumber(string.match(name, "_(%d+)$"))
+                local index = name and tonumber(string.match(name, "^omhtt_barrier_01_(%d+)$"))
+                if index and (index < 16 or (index >= 20 and index <= 27)) then
                     local visualIndex = index
                     if index >= 20 then
                         visualIndex = index - 20

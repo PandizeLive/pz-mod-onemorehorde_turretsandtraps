@@ -27,7 +27,7 @@ def main():
         DisplayCategory = Material,
         Weight = 6,
         WeightReduction = 0,
-        Capacity = 17,
+        Capacity = 28,
         Icon = OMHTT_TestCube,
         ConditionMax = 100,
         AcceptItemFunction = OMHTT_Turret.accept,
@@ -35,6 +35,7 @@ def main():
     }
     item OMHTTPotatoHead {
         DisplayName = Potato Launcher Head,
+        WorldStaticModel = OMHTTProbeHead,
         ItemType = base:normal,
         DisplayCategory = Material,
         Weight = 4,
@@ -55,9 +56,7 @@ def main():
 """
     write("scripts/OMHTT_TurretItems.txt", items + "}\n")
     tools = ["item 1 tags[base:screwdriver] mode:keep flags[NoBrokenItems;DontRecordInput],",
-             "item 1 [Base.Wrench;Base.PipeWrench] mode:keep flags[NoBrokenItems;DontRecordInput],",
-             "item 1 tags[base:sheetmetalsnips] mode:keep flags[NoBrokenItems;DontRecordInput],"]
-    pliers = "item 1 tags[base:pliers] mode:keep flags[NoBrokenItems;DontRecordInput],"
+             "item 1 [Base.Wrench;Base.PipeWrench] mode:keep flags[NoBrokenItems;DontRecordInput],"]
     base = {"MetalPipe": 2, "SmallSheetMetal": 2, "ScrapMetal": 1, "Screws": 8}
     head = {"MetalPipe": 1, "SmallSheetMetal": 1, "ScrapMetal": 2, "ElectronicsScrap": 2,
             "ElectricWire": 1, "TirePump": 1, "DuctTape": 2}
@@ -72,12 +71,12 @@ def main():
     ]:
         name = "OMHTTCraftTurret" + kind
         names[name] = label
-        inputs = tools + ([pliers] if kind != "Base" else [])
+        inputs = list(tools)
         inputs += [f"item {amount} [Base.{material}]," for material, amount in sorted(materials.items()) if amount]
         recipes += f"""    craftRecipe {name} {{
         timedAction = Making,
         time = {duration},
-        category = Mechanics,
+        category = OMHTurrets,
         Tags = InHandCraft,
         needToBeLearn = false,
         SkillRequired = {skills},
@@ -116,7 +115,7 @@ def main():
         component CraftRecipe {
             timedAction = BuildLowNoTool,
             time = 200,
-            category = Mechanics,
+            category = OMHTurrets,
             Tooltip = UI_OMHTT_DeployTurretDescription,
             needToBeLearn = false,
             OnAddToMenu = OMHTT_TurretMenuAvailable,
@@ -153,6 +152,10 @@ def main():
         "Tooltip_OMHTT_ModuleStorage": "Storage prototype. Module effects are not enabled yet.",
     })
     translations("UI", {
+        "UI_OMHTT_Turret": "Turret", "UI_OMHTT_Manage": "Manage",
+        "UI_OMHTT_Ready": "Ready", "UI_OMHTT_Reloading": "Reloading",
+        "UI_OMHTT_TurretCycle": "Ammo: %1/%2 | Loaded: %3/%4",
+        "UI_OMHTT_TurretLoadHint": "Drag supplies into the Turret loot container.",
         "UI_OMHTT_TurretBase": "Turret Base", "UI_OMHTT_PotatoTurret": "Potato Turret",
         "UI_OMHTT_DeployTurret": "Deploy Turret", "UI_OMHTT_NoHead": "None", "UI_OMHTT_None": "None",
         "UI_OMHTT_NoBattery": "None", "UI_OMHTT_NoPower": "No power.", "UI_OMHTT_NoHead": "No working head.",
@@ -162,15 +165,17 @@ def main():
         "UI_OMHTT_DeployTurretDescription": "Place the selected turret with its contents. Pickup preserves supplies. Unload potatoes before removing the head.",
     })
     translations("ContextMenu", {"ContextMenu_OMHTT_TurretFire": "Fire", "ContextMenu_OMHTT_PickupTurret": "Pick up turret"})
-    translations("IG_UI", {"IGUI_ContainerTitle_OMHTTTurret": "Turret"})
+    translations("IG_UI", {"IGUI_ContainerTitle_OMHTTTurret": "Turret", "IGUI_CraftingCategories_OMHTurrets": "OMH: Turrets", "IGUI_CraftingCategories_OMHTraps": "OMH: Traps"})
     options = [
         ("PotatoTurret", "boolean", "true", None, None, "Potato Turret", "Enable potato turrets."),
         ("PotatoRequirePower", "boolean", "true", None, None, "Require power", "Require electricity to fire."),
-        ("PotatoAmmoCapacity", "integer", 30, 1, 500, "Ammo capacity", "Maximum potatoes."),
+        ("PotatoAmmoCapacity", "integer", 85, 1, 500, "Ammo capacity", "Maximum potatoes."),
         ("PotatoModuleCapacity", "integer", 4, 0, 20, "Module storage", "Maximum stored modules. Effects come later."),
         ("PotatoHealth", "integer", 100, 1, 10000, "Durability", "Maximum durability of newly crafted bases."),
         ("PotatoDamage", "double", 50, 0, 1000, "Damage", "Direct-hit damage. 100 points = 1 health."),
-        ("PotatoCooldown", "double", 1, 0.1, 60, "Shot cooldown", "Seconds between shots."),
+        ("PotatoCooldown", "double", 0.5, 0.1, 60, "Shot cooldown", "Seconds between shots."),
+        ("PotatoMagazineCapacity", "integer", 1, 1, 500, "Magazine size", "Loaded potatoes. Included in ammo capacity."),
+        ("PotatoReloadTime", "double", 1, 0, 60, "Reload time", "Seconds to refill the magazine."),
         ("PotatoRange", "integer", 6, 1, 20, "Range", "Maximum firing distance in tiles."),
         ("PotatoKnockdownChance", "integer", 70, 0, 100, "Knockdown chance", "Percent chance on a standing target."),
         ("PotatoSplashDamage", "double", 0.1, 0, 100, "Splash damage", "Damage to nearby zombies."),

@@ -55,6 +55,7 @@ function isServer() return testMode == "server" end
 function getCore()
     return {
         getVersionNumber = function() return "42.20-test-double" end,
+        isOption3DGroundItem = function() return false end,
         getScreenWidth = function() return 1280 end,
         getScreenHeight = function() return 720 end,
         getZoom = function() return 1 end,

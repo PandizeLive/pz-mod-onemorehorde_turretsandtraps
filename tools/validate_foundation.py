@@ -130,6 +130,8 @@ def main():
         "media/lua/client/ISUI/ISWorldObjectContextMenu.lua",
         "zombie/iso/IsoGridSquare.class", "zombie/iso/IsoObjectUtils.class",
         "media/lua/shared/ISBaseObject.lua",
+        "media/lua/shared/Fishing/Bobber.lua", "media/lua/shared/luautils.lua",
+        "media/lua/client/ISUI/ISInventoryPage.lua", "zombie/iso/fboRenderChunk/FBORenderCell.class",
         "media/lua/client/Entity/ISUI/CraftRecipe/ISHandCraftPanel.lua",
         "media/lua/client/Entity/ISUI/Controls/ISWidgetTitleHeader.lua",
         "media/lua/shared/TimedActions/ISBaseTimedAction.lua",

@@ -9,7 +9,7 @@ local function verifyTurrets()
     SandboxVars.OMHTurretsTraps.PotatoTurret = true
     local player = IsoPlayer.new(getCell())
     local resources = ArrayList.new()
-    local tools = {"Base.Screwdriver", "Base.Wrench", "Base.SheetMetalSnips", "Base.Pliers"}
+    local tools = {"Base.Screwdriver", "Base.Wrench"}
     local routes = {
         {"Base", {MetalPipe = 2, SmallSheetMetal = 2, ScrapMetal = 1, Screws = 8}},
         {"Head", {MetalPipe = 1, SmallSheetMetal = 1, ScrapMetal = 2, ElectronicsScrap = 2, ElectricWire = 1, TirePump = 1, DuctTape = 2}},
@@ -48,7 +48,7 @@ local function verifyTurrets()
         assert(data:consumeInputs(resources) and data:createOutputs(resources, player), "Turret recipe transaction failed")
         data:luaCallOnCreate(player)
         data:processDestroyAndUsedItems(player)
-        for i = 0, 3 do assert(player:getInventory():contains(inputs:get(i)), "Turret recipe consumed retained tool") end
+        for i = 0, #tools - 1 do assert(player:getInventory():contains(inputs:get(i)), "Turret recipe consumed retained tool") end
         local item = data:getFirstCreatedItem()
         assert(item and data:getAllCreatedItems():size() == 1, "Recipe must produce exactly one item")
         if route[1] == "Complete" then packed = item end
@@ -94,17 +94,29 @@ local function verifyTurrets()
     assert(object:getContainer():contains(battery) and object:getContainer():contains(potato), "Deployment recreated or lost contents")
     assert(T.state(object).nextShot == 123456789, "Deployment reset cooldown")
     assert(object:getContainer():getAcceptItemFunction() == "OMHTT_Turret.accept", "World container lost acceptance rules")
+    local hybrid = T.hybrid
+    T.hybrid = function() return false end
     for facing = 0, 15 do
         T.state(object).facing = facing
         W.refresh(object)
         assert(object:getSpriteConfig():isValid() and object:getSpriteConfig():getTileInfo():getSpriteName() == T.sprite(facing, true), "Aiming invalidates native sprite metadata")
     end
+    T.hybrid = function() return true end
+    for facing = 0, 15 do
+        T.state(object).facing = facing
+        W.refresh(object)
+        assert(object:getSpriteName() == "omhtt_barrier_01_44" and object:getSpriteConfig():isValid(), "Hybrid aiming moved or invalidated stationary base")
+    end
+    T.hybrid = function() return false end
     T.state(object).facing = 0
     W.refresh(object)
+    T.hybrid = hybrid
     object:setHealth(37)
     T.state(object).condition = 37
     T.state(object).fixtureBatteryId = battery:getID()
     T.state(object).fixtureAmmoId = potato:getID()
+    contents.head:getModData().OMHTTCycle = {schema = 1, loaded = 1, nextShot = 123456789}
+    assert(contents.head:getWorldStaticItem() == "Base.OMHTTProbeHead", "Actual turret head has no native model")
     OMHTT_NativeTurret = object
     local H = require("OMHTT/HybridProbe")
     local model = ScriptManager.instance:getModelScript("Base.OMHTTProbeHead")

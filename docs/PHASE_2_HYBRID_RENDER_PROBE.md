@@ -1,5 +1,7 @@
 # Hybrid rendering checkpoint — 0.2.10
 
+**Owner test failed visual acceptance:** flickering reported on 2026-09-29. See [test review and scope correction](TEST_v0.2.10.md). Return to integrated turret work; do not request another isolated probe test as the next delivery.
+
 The owner approved the cube-only rendering feasibility checkpoint on 2026-09-29. This package adds an isolated single-player debug scene, not a replacement turret renderer. Existing gameplay recipes, capacities, timing and categories remain unchanged. The requested OMH: Traps / OMH: Turrets categories and the proposed 85-potato magazine/reload/menu correction remain queued separately.
 
 ## Implementation

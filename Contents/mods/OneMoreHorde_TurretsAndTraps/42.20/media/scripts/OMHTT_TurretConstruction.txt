@@ -37,7 +37,7 @@ module Base {
         component CraftRecipe {
             timedAction = BuildLowNoTool,
             time = 200,
-            category = Mechanics,
+            category = OMHTurrets,
             Tooltip = UI_OMHTT_DeployTurretDescription,
             needToBeLearn = false,
             OnAddToMenu = OMHTT_TurretMenuAvailable,

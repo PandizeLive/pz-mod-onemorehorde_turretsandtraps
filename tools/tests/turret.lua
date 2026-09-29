@@ -15,6 +15,8 @@ local function item(kind, weight)
     function result:getCurrentUsesFloat() return self.charge end
     function result:setCurrentUsesFloat(value) self.charge = value end
     function result:getContainer() return self.container end
+    result.data = {}
+    function result:getModData() return self.data end
     return result
 end
 local function container()
@@ -110,7 +112,8 @@ check(Combat.fire(record, object, testPlayer, options) == "Cooling" and commits 
 record.nextShot = 0
 options.commit = function() return false end
 check(Combat.fire(record, object, testPlayer, options) == "Unavailable" and zombie.health == 1.5, "Failed resource transaction applies no damage")
-check(string.match(object.sprite, "^omhtt_barrier_01_%d+$") ~= nil, "Managed firing retains persistent sprite identity")
+check(object.sprite == nil, "Managed aiming does not invalidate or replace the base sprite")
+object.sprite = "omhtt_barrier_01_28"
 function object:hasModData() return true end
 object.data = {OMHTTTurret = record}
 function object:getModData() return self.data end
@@ -129,6 +132,8 @@ testPlayer.x, testPlayer.y, testPlayer.z = 500.5, 500.5, 0
 local oldSquare = testPlayer.getSquare
 function testPlayer:getSquare() return square end
 record.nextShot = 0
+check(W.fire(testPlayer, object) == "Reloading", "First load starts one-second reload")
+testMillis = testMillis + 1000
 local ownedResult = W.fire(testPlayer, object)
 check(ownedResult == "Fired", "Inventory-backed shot succeeds: " .. ownedResult)
 check(not other:contains(potato) and math.abs(battery.charge - 0.369) < 0.000001, "Shot spends one exact potato and battery charge once")
@@ -153,6 +158,8 @@ check(W.power(object, T.contents(other)).kind == "battery", "Insufficient genera
 generator.fuel = 1
 other:AddItem(item("Base.Potato", 0.2))
 record.nextShot = 0
+check(W.fire(testPlayer, object) == "Reloading", "Replenishing empty turret reloads")
+testMillis = testMillis + 1000
 check(W.fire(testPlayer, object) == "Fired" and math.abs(generator.fuel - 0.999) < 0.000001, "Generator shot charges fuel exactly once")
 check(math.abs(battery.charge - 0.369) < 0.000001, "Generator operation preserves battery charge")
 testPlayer.x, testPlayer.y, testPlayer.z, testPlayer.getSquare = oldX, oldY, oldZ, oldSquare

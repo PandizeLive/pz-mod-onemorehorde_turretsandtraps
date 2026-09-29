@@ -22,6 +22,7 @@ public final class NativePersistenceCheck {
         verifyTurret(directory, mode);
         verifyHybrid(directory, mode);
         NativeVaultProbe.verify();
+        NativeTurretProbe.verify();
         Object pack = Class.forName("zombie.fileSystem.TexturePackDevice").getConstructor(String.class, int.class).newInstance("OMHTT_Barriers", 0);
         Class<?> entriesType = Class.forName("zombie.fileSystem.FileSystem$TexturePackTextures");
         Object entries = entriesType.getConstructor().newInstance();
@@ -148,7 +149,7 @@ public final class NativePersistenceCheck {
         check(Double.valueOf(123456789).equals(call(state, "rawget", new Class<?>[]{Object.class}, "nextShot")), "Turret cooldown lost");
         List<?> items = (List<?>)get(get(restored, "getContainer"), "getItems");
         check(items.size() == 5, "Turret contents lost or duplicated");
-        boolean battery = false, ammo = false;
+        boolean battery = false, ammo = false, head = false;
         for (Object item : items) {
             if ("Base.CarBattery1".equals(get(item, "getFullType"))) {
                 battery = true;
@@ -160,7 +161,15 @@ public final class NativePersistenceCheck {
                 check(((Number)get(item, "getID")).intValue() == ((Number)call(state, "rawget", new Class<?>[]{Object.class}, "fixtureAmmoId")).intValue(), "Ammo identity changed");
             }
         }
-        check(battery && ammo, "Missing ammunition or battery");
+        for (Object item : items) {
+            if ("Base.OMHTTPotatoHead".equals(get(item, "getFullType"))) {
+                Object cycle = call(get(item, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTCycle");
+                check(cycle != null && Double.valueOf(1).equals(call(cycle, "rawget", new Class<?>[]{Object.class}, "loaded")), "Head magazine lost");
+                check(Double.valueOf(123456789).equals(call(cycle, "rawget", new Class<?>[]{Object.class}, "nextShot")), "Head cooldown lost");
+                head = true;
+            }
+        }
+        check(battery && ammo && head, "Missing ammunition, battery or head cycle");
         Object packed = Class.forName("zombie.inventory.InventoryItemFactory").getMethod("CreateItem", String.class).invoke(null, "Base.OMHTTTurretBase");
         Object packedInventory = get(packed, "getInventory");
         Object worldInventory = get(restored, "getContainer");

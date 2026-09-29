@@ -2,10 +2,7 @@ local F = require("OMHTT/Foundation")
 require("Entity/ISUI/CraftRecipe/ISHandCraftPanel")
 require("Entity/ISUI/Controls/ISWidgetTitleHeader")
 local Diagnostics = require("OMHTT/Diagnostics")
-local CATEGORY = "OMHTurretsTraps"
-local originalCategories = ISHandCraftPanel.getCategoryList
 local originalRefresh = ISHandCraftPanel.refreshRecipeList
-local originalCategoryChanged = ISHandCraftPanel.onCategoryChanged
 local originalLayout = ISWidgetTitleHeader.calculateLayout
 
 ---@param panel ISHandCraftPanel Native panel
@@ -32,19 +29,6 @@ local function defenseRecipes(panel)
     return recipes
 end
 
----@return ArrayList categories
-function ISHandCraftPanel:getCategoryList()
-    if not self.omhttCategory then
-        self.omhttNativeCategories = originalCategories(self)
-    end
-    local categories = ArrayList.new()
-    categories:addAll(self.omhttNativeCategories)
-    if categories:size() > 0 and defenseRecipes(self):size() > 0 and not categories:contains(CATEGORY) then
-        categories:add(CATEGORY)
-    end
-    return categories
-end
-
 ---@param force boolean? Refresh inventories
 ---@return nil
 function ISHandCraftPanel:refreshRecipeList(force)
@@ -54,31 +38,7 @@ function ISHandCraftPanel:refreshRecipeList(force)
         recipe:overrideTranslationName(getRecipeDisplayName(recipe:getName()))
     end
     originalRefresh(self, force)
-    if self.omhttCategory then
-        self.logic:setRecipes(recipes)
-        self.logic:checkValidRecipeSelected()
-    end
-end
 
----@param category string Selected UI category
----@return nil
-function ISHandCraftPanel:onCategoryChanged(category)
-    local wasModCategory = self.omhttCategory
-    if not wasModCategory then
-        self.omhttNativeCategories = originalCategories(self)
-    end
-    self.omhttCategory = category == CATEGORY
-    if self.omhttCategory then
-        self.logic:setRecipes(defenseRecipes(self))
-        originalCategoryChanged(self, "")
-    else
-        if wasModCategory then
-            self:refreshRecipeList(true)
-        end
-        originalCategoryChanged(self, category)
-    end
-    Diagnostics.emit("crafting-menu-category", {category = category, modOnly = self.omhttCategory,
-        registered = defenseRecipes(self):size()})
 end
 
 ---@param preferredWidth number? Available panel width

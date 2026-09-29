@@ -1,6 +1,15 @@
 # Release state and publication policy
 
-## Current installation: 0.2.10
+## Current candidate: 0.2.11
+
+[Integrated turret scope and complete test](PHASE_2_CHECKPOINT_3_USABILITY.md), [release notes](PR_v0.2.11.md). C53 combines the real tile-base/model-head route, see-through 1x1 collision, adjacent Manage/pickup, native menu categories, two-tool recipes and persistent overlapping magazine/reload/cooldown. The failed 0.2.10 visual test remains recorded separately.
+
+Validated on installed stock B42.21.0 / 4a0e9546ec: 1,588 Kahlua assertions, 34 runtime Lua files, 206 native translations, 23 packet checks and 100 package files; native head import, five recipe transactions, four-sided actor collision/sight/reach/pathfinding, 16-direction hybrid/fallback metadata and fresh-process save/read. Rendered flicker/lighting/alignment acceptance remains pending. Module effects and multiplayer are deferred.
+
+Local tag, installed hashes, full prior-version backup and archive evidence will be recorded after installation. Nothing pushed or published.
+
+
+## Previous installation: 0.2.10
 
 [Hybrid renderer checkpoint and complete test](PHASE_2_HYBRID_RENDER_PROBE.md), [release notes](PR_v0.2.10.md). Adds a separate single-player debug fixture using the original cube geometry: fixed base tile, static 3D head, per-instance yaw/height/scale and removal controls. Ordinary turret rendering and gameplay remain unchanged; the category/usability/balance update is queued separately.
 

@@ -96,7 +96,7 @@ option OMHTurretsTraps.PotatoRequirePower {
 
 option OMHTurretsTraps.PotatoAmmoCapacity {
     type = integer,
-    default = 30,
+    default = 85,
     min = 1,
     max = 500,
     page = OMHTurretsTraps_PotatoPage,
@@ -132,11 +132,29 @@ option OMHTurretsTraps.PotatoDamage {
 
 option OMHTurretsTraps.PotatoCooldown {
     type = double,
-    default = 1,
+    default = 0.5,
     min = 0.1,
     max = 60,
     page = OMHTurretsTraps_PotatoPage,
     translation = OMHTurretsTraps_PotatoCooldown,
+}
+
+option OMHTurretsTraps.PotatoMagazineCapacity {
+    type = integer,
+    default = 1,
+    min = 1,
+    max = 500,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_PotatoMagazineCapacity,
+}
+
+option OMHTurretsTraps.PotatoReloadTime {
+    type = double,
+    default = 1,
+    min = 0,
+    max = 60,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_PotatoReloadTime,
 }
 
 option OMHTurretsTraps.PotatoRange {

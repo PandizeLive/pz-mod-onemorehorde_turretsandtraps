@@ -2,7 +2,7 @@ local function recipe(name, category)
     return {getName = function() return name end, getCategory = function() return category end,
         overrideTranslationName = function() end}
 end
-local portable, chair, metal = recipe("OMHTTCraftSpikeBarrier", "Carpentry"), recipe("Chair", "Carpentry"), recipe("Metal", "Welding")
+local portable, chair, metal = recipe("OMHTTCraftSpikeBarrier", "OMHTraps"), recipe("Chair", "Carpentry"), recipe("Metal", "Welding")
 local source = ArrayList.new()
 source:add(portable); source:add(chair); source:add(metal)
 CraftRecipeManager = {queryRecipes = function() return source end}
@@ -34,10 +34,10 @@ function panel:updateContainers(force) return force end
 function panel:onRecipeChanged() end
 check(panel:getCategoryList():size() == 0, "craft categories wait for native population")
 panel:refreshRecipeList(true)
-check(panel:getCategoryList():contains("OMHTurretsTraps") and panel:getCategoryList():contains("Welding"), "craft native and mod categories coexist")
+check(panel:getCategoryList():contains("OMHTraps") and panel:getCategoryList():contains("Welding"), "craft native and mod categories coexist")
 panel:onCategoryChanged("Carpentry")
-check(logic.filtered:size() == 2, "portable remains in Carpentry")
-panel:onCategoryChanged("OMHTurretsTraps")
+check(logic.filtered:size() == 1, "native Carpentry excludes mod recipes")
+panel:onCategoryChanged("OMHTraps")
 check(logic.filtered:size() == 1 and logic.selected == portable, "craft custom category selects same portable recipe")
 panel:setRecipeFilter("Chair", nil)
 panel:refreshRecipeList(true)
@@ -47,11 +47,11 @@ check(logic.filtered:size() == 1, "craft custom-category search finds portable")
 check(panel:getCategoryList():contains("Welding"), "custom craft category retains native navigation")
 panel:onCategoryChanged("")
 panel:setRecipeFilter("", nil)
-check(logic.filtered:size() == 3 and portable:getCategory() == "Carpentry", "All restores complete craft source without metadata mutation")
+check(logic.filtered:size() == 3 and portable:getCategory() == "OMHTraps", "All restores complete craft source without metadata mutation")
 panel.recipeQuery = nil
 panel.craftBench = {getRecipes = function() local list = ArrayList.new(); list:add(chair); return list end}
 panel:refreshRecipeList(true)
-check(not panel:getCategoryList():contains("OMHTurretsTraps"), "unrelated workbench gains no empty mod category")
+check(not panel:getCategoryList():contains("OMHTraps"), "unrelated workbench gains no empty mod category")
 
 local manager = getTextManager()
 function manager:WrapText(font, text, width)

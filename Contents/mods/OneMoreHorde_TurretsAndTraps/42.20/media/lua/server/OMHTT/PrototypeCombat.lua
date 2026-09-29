@@ -180,12 +180,11 @@ function Combat.fire(record, object, player, options)
     local ty = target:getY()
     local angle = math.atan2(-(ty - origin:getY() - 0.5), tx - origin:getX() - 0.5)
     record.facing = Foundation.normalizeFacing(math.floor(angle / (math.pi * 2) * 16 + 0.5))
-    if options.managed then
-        object:setSprite(require("OMHTT/Turret").sprite(record.facing, true))
-    else
+    record.aimDegrees = (angle * 180 / math.pi + 360) % 360
+    if not options.managed then
         object:setSprite(Foundation.spriteFor(record.kind, record.facing))
+        object:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_OBJECT_MODIFY)
     end
-    object:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_OBJECT_MODIFY)
     local before = target:getHealth()
     local impactSquare = target:getSquare()
     Diagnostics.emit("shot-hit-begin", {id = record.id, shot = record.shots, x = tx, y = ty, health = before,

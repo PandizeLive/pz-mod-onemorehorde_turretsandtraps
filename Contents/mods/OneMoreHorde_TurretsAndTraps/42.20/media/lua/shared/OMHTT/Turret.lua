@@ -1,5 +1,6 @@
 local F = require("OMHTT/Foundation")
 local D = require("OMHTT/Diagnostics")
+local Cycle = require("OMHTT/TurretCycle")
 OMHTT_Turret = {}
 local T = OMHTT_Turret
 T.BASE = "Base.OMHTTTurretBase"
@@ -26,6 +27,32 @@ end
 function T.enabled()
     local options = SandboxVars.OMHTurretsTraps
     return options ~= nil and options.Enabled ~= false and options.PotatoTurret ~= false
+end
+
+---@return boolean enabled Native opaque world pass, no loose head object
+---@nodiscard
+function T.hybrid()
+    return not isClient() and not isServer() and getCore():isOption3DGroundItem()
+end
+
+---@return table config Shared cycle tuning
+---@nodiscard
+function T.cycleConfig()
+    return {magazine = T.option("MagazineCapacity", 1, 1, 500),
+        reload = T.option("ReloadTime", 1, 0, 60) * 1000,
+        cooldown = T.option("Cooldown", 0.5, 0.1, 60) * 1000}
+end
+
+---@param contents table Native inventory summary
+---@param now number Real-time milliseconds
+---@return table? state Persisted on the exact head item
+---@return string status
+function T.cycle(contents, now)
+    if not contents.head then return nil, "NoHead" end
+    local data = contents.head:getModData()
+    if not data.OMHTTCycle then data.OMHTTCycle = {schema = 1, loaded = 0, nextShot = 0} end
+    local state = data.OMHTTCycle
+    return state, Cycle.update(state, contents.ammo, T.cycleConfig(), now)
 end
 
 ---@param item InventoryItem Candidate
@@ -79,6 +106,32 @@ function T.isContainer(container)
 end
 
 ---@param container ItemContainer Destination
+---@return boolean enabled Native opaque world pass, no loose head object
+---@nodiscard
+function T.hybrid()
+    return not isClient() and not isServer() and getCore():isOption3DGroundItem()
+end
+
+---@return table config Shared cycle tuning
+---@nodiscard
+function T.cycleConfig()
+    return {magazine = T.option("MagazineCapacity", 1, 1, 500),
+        reload = T.option("ReloadTime", 1, 0, 60) * 1000,
+        cooldown = T.option("Cooldown", 0.5, 0.1, 60) * 1000}
+end
+
+---@param contents table Native inventory summary
+---@param now number Real-time milliseconds
+---@return table? state Persisted on the exact head item
+---@return string status
+function T.cycle(contents, now)
+    if not contents.head then return nil, "NoHead" end
+    local data = contents.head:getModData()
+    if not data.OMHTTCycle then data.OMHTTCycle = {schema = 1, loaded = 0, nextShot = 0} end
+    local state = data.OMHTTCycle
+    return state, Cycle.update(state, contents.ammo, T.cycleConfig(), now)
+end
+
 ---@param item InventoryItem Candidate
 ---@return boolean allowed
 ---@nodiscard
@@ -90,7 +143,7 @@ function T.accept(container, item)
     local contents = T.contents(container)
     if kind == "head" then return contents.heads == 0 end
     if kind == "battery" then return contents.batteries == 0 end
-    if kind == "ammo" then return contents.heads == 1 and contents.ammo < T.option("AmmoCapacity", 30, 1, 500) end
+    if kind == "ammo" then return contents.heads == 1 and contents.ammo < T.option("AmmoCapacity", 85, 1, 500) end
     return contents.modules < T.option("ModuleCapacity", 4, 0, 20)
 end
 
@@ -106,7 +159,7 @@ end
 ---@return nil
 function T.configure(container)
     container:setType(T.CONTAINER)
-    local capacity = math.ceil(9 + T.option("AmmoCapacity", 30, 1, 500) * 0.2 + T.option("ModuleCapacity", 4, 0, 20) * 0.3)
+    local capacity = math.ceil(9 + T.option("AmmoCapacity", 85, 1, 500) * 0.2 + T.option("ModuleCapacity", 4, 0, 20) * 0.3)
     container:setCapacity(capacity)
     if container:getContainingItem() then container:getContainingItem():setCapacity(capacity) end
     container:setAcceptItemFunction("OMHTT_Turret.accept")

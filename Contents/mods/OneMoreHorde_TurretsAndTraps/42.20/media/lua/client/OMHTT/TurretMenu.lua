@@ -6,6 +6,7 @@ require("OMHTT/TurretPickupAction")
 local T = require("OMHTT/Turret")
 local D = require("OMHTT/Diagnostics")
 local Selection = require("OMHTT/BarrierSelection")
+local manage = require("OMHTT/TurretManage")
 local tooltipRender = ISToolTipInv.render
 local transferValid = ISInventoryTransferAction.isValid
 local transferItem = ISInventoryTransferAction.transferItem
@@ -38,6 +39,8 @@ function ISInventoryTransferAction:transferItem(item)
     if T.isContainer(destination) then T.configure(destination) end
     transferItem(self, item)
     if T.isContainer(source) or T.isContainer(destination) then
+        if T.isContainer(source) then T.cycle(T.contents(source), getTimestampMs()) end
+        if T.isContainer(destination) then T.cycle(T.contents(destination), getTimestampMs()) end
         local W = require("OMHTT/TurretWorld")
         if source:getParent() and T.state(source:getParent()) then W.refresh(source:getParent()) end
         if destination:getParent() and T.state(destination:getParent()) then W.refresh(destination:getParent()) end
@@ -50,7 +53,7 @@ end
 ---@param player IsoPlayer Operator
 ---@return nil
 local function pickup(object, player)
-    if luautils.walkAdj(player, object:getSquare()) then
+    if luautils.walkAdjObject(player, object, false) then
         ISTimedActionQueue.add(OMHTTTurretPickupAction:new(player, object))
     end
 end
@@ -96,14 +99,15 @@ local function fillMenu(playerIndex, context, worldobjects, test)
         if W.valid(object) then
             W.refresh(object)
             local contents = T.contents(object:getContainer())
-            local title = getText("UI_OMHTT_TurretBase")
-            if contents.head then title = getText("UI_OMHTT_PotatoTurret") end
+            local title = getText("UI_OMHTT_Turret")
             local option = context:addOption(title, nil, nil)
             Selection.bindHighlight(option, {object})
             option.toolTip = ISWorldObjectContextMenu.addToolTip()
             option.toolTip.description = string.gsub(T.description(object:getContainer(), 6), "\n", " <LINE> ")
             local menu = ISContextMenu:getNew(context)
             context:addSubMenu(option, menu)
+            local manageOption = menu:addOption(getText("UI_OMHTT_Manage"), object, manage, player)
+            Selection.bindHighlight(manageOption, {object})
             local shot = menu:addOption(getText("ContextMenu_OMHTT_TurretFire"), object, fire, player)
             shot.notAvailable = not W.near(player, object) or not contents.head or contents.ammo == 0 or W.power(object, contents) == nil
             local recovery = menu:addOption(getText("ContextMenu_OMHTT_PickupTurret"), object, pickup, player)

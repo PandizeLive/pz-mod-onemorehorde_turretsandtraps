@@ -2,7 +2,7 @@ module Base {
     craftRecipe OMHTTCraftTurretBase {
         timedAction = Making,
         time = 150,
-        category = Mechanics,
+        category = OMHTurrets,
         Tags = InHandCraft,
         needToBeLearn = false,
         SkillRequired = Mechanics:2,
@@ -14,7 +14,6 @@ module Base {
         inputs {
             item 1 tags[base:screwdriver] mode:keep flags[NoBrokenItems;DontRecordInput],
             item 1 [Base.Wrench;Base.PipeWrench] mode:keep flags[NoBrokenItems;DontRecordInput],
-            item 1 tags[base:sheetmetalsnips] mode:keep flags[NoBrokenItems;DontRecordInput],
             item 2 [Base.MetalPipe],
             item 1 [Base.ScrapMetal],
             item 8 [Base.Screws],
@@ -27,7 +26,7 @@ module Base {
     craftRecipe OMHTTCraftTurretHead {
         timedAction = Making,
         time = 200,
-        category = Mechanics,
+        category = OMHTurrets,
         Tags = InHandCraft,
         needToBeLearn = false,
         SkillRequired = Mechanics:2;Electricity:1,
@@ -39,8 +38,6 @@ module Base {
         inputs {
             item 1 tags[base:screwdriver] mode:keep flags[NoBrokenItems;DontRecordInput],
             item 1 [Base.Wrench;Base.PipeWrench] mode:keep flags[NoBrokenItems;DontRecordInput],
-            item 1 tags[base:sheetmetalsnips] mode:keep flags[NoBrokenItems;DontRecordInput],
-            item 1 tags[base:pliers] mode:keep flags[NoBrokenItems;DontRecordInput],
             item 2 [Base.DuctTape],
             item 1 [Base.ElectricWire],
             item 2 [Base.ElectronicsScrap],
@@ -56,7 +53,7 @@ module Base {
     craftRecipe OMHTTCraftTurretHeadImprovised {
         timedAction = Making,
         time = 250,
-        category = Mechanics,
+        category = OMHTurrets,
         Tags = InHandCraft,
         needToBeLearn = false,
         SkillRequired = Mechanics:4;Electricity:1,
@@ -68,8 +65,6 @@ module Base {
         inputs {
             item 1 tags[base:screwdriver] mode:keep flags[NoBrokenItems;DontRecordInput],
             item 1 [Base.Wrench;Base.PipeWrench] mode:keep flags[NoBrokenItems;DontRecordInput],
-            item 1 tags[base:sheetmetalsnips] mode:keep flags[NoBrokenItems;DontRecordInput],
-            item 1 tags[base:pliers] mode:keep flags[NoBrokenItems;DontRecordInput],
             item 2 [Base.DuctTape],
             item 1 [Base.ElectricWire],
             item 2 [Base.ElectronicsScrap],
@@ -84,7 +79,7 @@ module Base {
     craftRecipe OMHTTCraftTurretComplete {
         timedAction = Making,
         time = 350,
-        category = Mechanics,
+        category = OMHTurrets,
         Tags = InHandCraft,
         needToBeLearn = false,
         SkillRequired = Mechanics:2;Electricity:1,
@@ -96,8 +91,6 @@ module Base {
         inputs {
             item 1 tags[base:screwdriver] mode:keep flags[NoBrokenItems;DontRecordInput],
             item 1 [Base.Wrench;Base.PipeWrench] mode:keep flags[NoBrokenItems;DontRecordInput],
-            item 1 tags[base:sheetmetalsnips] mode:keep flags[NoBrokenItems;DontRecordInput],
-            item 1 tags[base:pliers] mode:keep flags[NoBrokenItems;DontRecordInput],
             item 2 [Base.DuctTape],
             item 1 [Base.ElectricWire],
             item 2 [Base.ElectronicsScrap],
@@ -114,7 +107,7 @@ module Base {
     craftRecipe OMHTTCraftTurretCompleteImprovised {
         timedAction = Making,
         time = 400,
-        category = Mechanics,
+        category = OMHTurrets,
         Tags = InHandCraft,
         needToBeLearn = false,
         SkillRequired = Mechanics:4;Electricity:1,
@@ -126,8 +119,6 @@ module Base {
         inputs {
             item 1 tags[base:screwdriver] mode:keep flags[NoBrokenItems;DontRecordInput],
             item 1 [Base.Wrench;Base.PipeWrench] mode:keep flags[NoBrokenItems;DontRecordInput],
-            item 1 tags[base:sheetmetalsnips] mode:keep flags[NoBrokenItems;DontRecordInput],
-            item 1 tags[base:pliers] mode:keep flags[NoBrokenItems;DontRecordInput],
             item 2 [Base.DuctTape],
             item 1 [Base.ElectricWire],
             item 2 [Base.ElectronicsScrap],

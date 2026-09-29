@@ -188,10 +188,18 @@ public final class KahluaCheck {
             {"_", "tools/tests/barrier_outline.lua"},
             {"_", "tools/tests/barrier_reinforcement.lua"},
             {"_", "tools/tests/barrier_selection.lua"},
+            {"OMHTT/TurretCycle", base + "shared/OMHTT/TurretCycle.lua"},
+            {"_", "tools/tests/turret_cycle.lua"},
             {"OMHTT/Turret", base + "shared/OMHTT/Turret.lua"},
             {"OMHTT/TurretWorld", base + "server/OMHTT/TurretWorld.lua"},
             {"OMHTT/TurretPickupAction", base + "shared/OMHTT/TurretPickupAction.lua"},
             {"_", "tools/tests/turret.lua"},
+            {"_", "tools/tests/turret_render_bootstrap.lua"},
+            {"OMHTT/TurretRenderer", base + "client/OMHTT/TurretRenderer.lua"},
+            {"_", "tools/tests/turret_renderer.lua"},
+            {"_", "tools/tests/turret_manage_bootstrap.lua"},
+            {"OMHTT/TurretManage", base + "client/OMHTT/TurretManage.lua"},
+            {"_", "tools/tests/turret_manage.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

@@ -30,8 +30,8 @@ function Overlay.update()
                         for i = 0, objects:size() - 1 do
                             local object = objects:get(i)
                             local data = object:hasModData() and object:getModData()
-                            local marker = data and (data.OMHTTEdge or data.OMHTT)
-                            if marker and (data.OMHTTEdge or (marker.kind == "barrier" and not object:isCanPassThrough())) then
+                            local marker = data and (data.OMHTTTurret or data.OMHTTEdge or data.OMHTT)
+                            if marker and (data.OMHTTTurret or data.OMHTTEdge or (marker.kind == "barrier" and not object:isCanPassThrough())) then
                                 lines[#lines + 1] = {object = object, marker = marker, player = index, x = x, y = y, z = z}
                             end
                         end

@@ -62,7 +62,7 @@ def build():
     for facing in range(4):
         pack += pack_string(SHEET + "_" + str(44 + facing))
         pack += struct.pack("<8i", 0, 0, 128, 256, 0, 0, 128, 256)
-    png = (MEDIA / "textures/OMHTT_TestCube.png").read_bytes()
+    png = (MEDIA / "textures/OMHTT_ProbeBase.png").read_bytes()
     pack += integer(len(png)) + png
     pack += pack_string("OMHTT_ProbeBase") + integer(1) + integer(1)
     pack += pack_string(SHEET + "_48") + struct.pack("<8i", 0, 0, 128, 256, 0, 0, 128, 256)

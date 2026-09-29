@@ -62,5 +62,11 @@
     "UI_OMHTT_TurretContents": "Head: %1\nPotatoes: %2\nBattery: %3\nModules: %4",
     "UI_OMHTT_TotalWeight": "Total weight: %1",
     "UI_OMHTT_TurretDescription": "A modular defense. The potato head includes feeding and cycling. Needs potatoes and power.",
-    "UI_OMHTT_DeployTurretDescription": "Place the selected turret with its contents. Pickup preserves supplies. Unload potatoes before removing the head."
+    "UI_OMHTT_DeployTurretDescription": "Place the selected turret with its contents. Pickup preserves supplies. Unload potatoes before removing the head.",
+    "UI_OMHTT_Turret": "Turret",
+    "UI_OMHTT_Manage": "Manage",
+    "UI_OMHTT_Ready": "Ready",
+    "UI_OMHTT_Reloading": "Reloading",
+    "UI_OMHTT_TurretCycle": "Ammo: %1/%2 | Loaded: %3/%4",
+    "UI_OMHTT_TurretLoadHint": "Drag supplies into the Turret loot container."
 }

@@ -2,6 +2,7 @@ if isClient() then return end
 local T = require("OMHTT/Turret")
 local F = require("OMHTT/Foundation")
 local D = require("OMHTT/Diagnostics")
+local Cycle = require("OMHTT/TurretCycle")
 OMHTT_TurretWorld = {}
 local W = OMHTT_TurretWorld
 local facings = {e = 0, n = 4, w = 8, s = 12}
@@ -28,7 +29,7 @@ function W.near(player, object)
     if origin == square then return true end
     if math.abs(origin:getX() - square:getX()) > 1 or math.abs(origin:getY() - square:getY()) > 1 then return false end
     local dx, dy = player:getX() - square:getX() - 0.5, player:getY() - square:getY() - 0.5
-    return dx * dx + dy * dy <= 4 and require("OMHTT/PrototypeCombat").clearLane(origin, square, 2)
+    return dx * dx + dy * dy <= 4 and origin:canReachTo(square)
 end
 
 ---@param params table Native placement test
@@ -52,7 +53,10 @@ function W.refresh(object)
     local state = T.state(object)
     if not state or not object:getContainer() then return end
     local contents = T.contents(object:getContainer())
-    local sprite = T.sprite(state.facing, contents.head ~= nil)
+    state.baseFacing = state.baseFacing or state.facing
+    local hybrid = T.hybrid()
+    local sprite = T.sprite(state.baseFacing or state.facing, false)
+    if contents.head and not hybrid then sprite = T.sprite(state.facing, true) end
     if object:getSpriteName() ~= sprite then
         object:setSprite(sprite)
         object:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_OBJECT_MODIFY)
@@ -60,7 +64,7 @@ function W.refresh(object)
     local config = object:getSpriteConfig()
     if not config or not config:isValid() or config:getTileInfo():getSpriteName() ~= sprite then
         local entity = "OMHTTDeployTurret"
-        if contents.head then entity = "OMHTTPotatoVisual" .. math.floor(F.normalizeFacing(state.facing) / 4) end
+        if contents.head and not hybrid then entity = "OMHTTPotatoVisual" .. math.floor(F.normalizeFacing(state.facing) / 4) end
         local info = SpriteConfigManager.GetObjectInfo(entity)
         if not info then error("[OMHTT] Missing turret visual entity " .. entity) end
         if config then GameEntityFactory.RemoveComponentType(object, ComponentType.SpriteConfig) end
@@ -68,6 +72,8 @@ function W.refresh(object)
         if not object:getSpriteConfig():isValid() then error("[OMHTT] Invalid turret sprite " .. sprite) end
     end
     state.condition = object:getHealth()
+    T.cycle(contents, getTimestampMs())
+    triggerEvent("OnOMHTTTurretChanged", object, contents.head)
 end
 
 ---@param params table Native construction callback
@@ -108,7 +114,8 @@ function W.onCreate(params)
     object:setName(getText("UI_OMHTT_TurretBase"))
     object:setMaxHealth(state.maxHealth)
     object:setHealth(state.condition)
-    object:setBlockAllTheSquare(false)
+    state.baseFacing = state.facing
+    object:setBlockAllTheSquare(true)
     object:setCanPassThrough(true)
     object:setIsThumpable(true)
     local container = ItemContainer.new(T.CONTAINER, object:getSquare(), object)
@@ -162,6 +169,10 @@ end
 function W.loaded(object)
     if instanceof(object, "IsoGenerator") then generators[object] = true end
     if T.state(object) and object:getContainer() then
+        object:setBlockAllTheSquare(true)
+        object:setCanPassThrough(true)
+        object:setIsThumpable(true)
+        object:getSquare():RecalcAllWithNeighbours(true)
         T.configure(object:getContainer())
         W.refresh(object)
         D.emit("turret-restored", {id = T.state(object).id, health = object:getHealth(), items = object:getContainer():getItems():size()})
@@ -229,11 +240,13 @@ function W.fire(player, object)
     local contents = T.contents(object:getContainer())
     if contents.heads ~= 1 or contents.head:getCondition() <= 0 then return "NoHead" end
     if contents.ammo == 0 then return "Empty" end
+    local cycle, status = T.cycle(contents, getTimestampMs())
+    if status ~= "Ready" then return status end
     local power = W.power(object, contents)
     if not power then return "NoPower" end
     local state = T.state(object)
     state.ammo = contents.ammo
-    local options = {range = T.option("Range", 6, 1, 20), interval = T.option("Cooldown", 1, 0.1, 60) * 1000,
+    local options = {range = T.option("Range", 6, 1, 20), interval = T.option("Cooldown", 0.5, 0.1, 60) * 1000,
         damage = T.option("Damage", 50, 0, 1000) / 100, knockdown = T.option("KnockdownChance", 70, 0, 100),
         splash = T.option("SplashDamage", 0.1, 0, 100) / 100, radius = T.option("SplashRadius", 1.1, 0, 3), managed = true}
     ---@return boolean committed
@@ -245,6 +258,7 @@ function W.fire(player, object)
             power.generator:setFuel(math.max(0, power.generator:getFuel() - power.cost))
         end
         object:getContainer():Remove(contents.round)
+        Cycle.consume(cycle, contents.ammo - 1, T.cycleConfig(), getTimestampMs())
         D.emit("turret-resource-spent", {id = state.id, ammoItem = contents.round:getID(), power = power.kind, cost = power.cost})
         return true
     end
@@ -252,7 +266,8 @@ function W.fire(player, object)
     local result, impact = Combat.fire(state, object, player, options)
     W.refresh(object)
     if impact then triggerEvent("OnServerCommand", F.MODULE, "Impact", impact) end
-    D.emit("turret-fire-result", {id = state.id, result = result, ammo = T.contents(object:getContainer()).ammo, power = power.kind})
+    D.emit("turret-fire-result", {id = state.id, result = result, ammo = T.contents(object:getContainer()).ammo, power = power.kind,
+        loaded = cycle.loaded, reloadReady = cycle.reloadReady, nextShot = cycle.nextShot})
     return result
 end
 

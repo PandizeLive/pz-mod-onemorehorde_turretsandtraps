@@ -1,0 +1,46 @@
+import java.lang.reflect.Method;
+
+public final class NativeTurretProbe {
+    private static Object call(Object target, String name, Class<?>[] types, Object... values) throws Exception {
+        return target.getClass().getMethod(name, types).invoke(target, values);
+    }
+    private static void check(boolean value, String message) {
+        if (!value) throw new IllegalStateException(message);
+    }
+    public static void verify() throws Exception {
+        Class<?> squareType = Class.forName("zombie.iso.IsoGridSquare");
+        Class<?> cellType = Class.forName("zombie.iso.IsoCell");
+        Class<?> movingType = Class.forName("zombie.iso.IsoMovingObject");
+        Class<?> worldType = Class.forName("zombie.iso.IsoWorld");
+        Object cell = worldType.getField("currentCell").get(worldType.getField("instance").get(null));
+        var squares = squareType.getConstructor(cellType, Class.forName("zombie.iso.SliceY"), int.class, int.class, int.class);
+        Object square = squares.newInstance(cell, null, 6, 6, 0);
+        Object object = Class.forName("zombie.iso.objects.IsoThumpable").getConstructor(cellType, squareType, String.class, boolean.class)
+            .newInstance(cell, square, "omhtt_barrier_01_44", false);
+        call(object, "setBlockAllTheSquare", new Class<?>[]{boolean.class}, true);
+        call(object, "setCanPassThrough", new Class<?>[]{boolean.class}, true);
+        call(object, "setIsThumpable", new Class<?>[]{boolean.class}, true);
+        ((java.util.List<Object>)call(square, "getObjects", new Class<?>[0])).add(object);
+        ((java.util.List<Object>)call(square, "getSpecialObjects", new Class<?>[0])).add(object);
+        Object player = Class.forName("zombie.characters.IsoPlayer").getConstructor(cellType).newInstance(cell);
+        Object zombie = Class.forName("zombie.characters.IsoZombie").getConstructor(cellType).newInstance(cell);
+        for (int[] offset : new int[][]{{0,-1},{1,0},{0,1},{-1,0}}) {
+            Object adjacent = squares.newInstance(cell, null, 6 + offset[0], 6 + offset[1], 0);
+            for (Object actor : new Object[]{player, zombie}) {
+                check(Boolean.TRUE.equals(call(object, "TestCollide", new Class<?>[]{movingType,squareType,squareType}, actor, adjacent, square)), "Turret entry did not block actor");
+                check(Boolean.FALSE.equals(call(object, "TestCollide", new Class<?>[]{movingType,squareType,squareType}, actor, square, adjacent)), "Migration trapped actor inside turret");
+            }
+            for (Object[] pair : new Object[][]{{square,adjacent},{adjacent,square}}) {
+                check("NoEffect".equals(call(object, "TestVision", new Class<?>[]{squareType,squareType}, pair).toString()), "Turret blocked sight");
+                check(Boolean.FALSE.equals(call(pair[0], "isBlockedTo", new Class<?>[]{squareType}, pair[1])), "Turret blocks its own firing ray");
+                check(Boolean.TRUE.equals(call(pair[0], "canReachTo", new Class<?>[]{squareType}, pair[1])), "Native adjacent container reach failed");
+            }
+        }
+        for (String engine : new String[]{"zombie.pathfind.SquareUpdateTask", "zombie.pathfind.nativeCode.SquareUpdateTask"}) {
+            Method method = Class.forName(engine).getDeclaredMethod("hasSquareThumpable", squareType);
+            method.setAccessible(true);
+            check(Boolean.TRUE.equals(method.invoke(null, square)), "Pathfinder does not recognize solid turret");
+        }
+        System.out.println("[OMHTT-Smoke] native-turret-collision sides=4 player-and-zombie=blocked vision=clear reach=clear firing=clear pathfinders=2");
+    }
+}
