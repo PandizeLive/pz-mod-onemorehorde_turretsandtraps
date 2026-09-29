@@ -28,5 +28,14 @@
     "ContextMenu_OMHTT_ReinforcedFacing": "Reinforced Spike Barrier (%1)",
     "ContextMenu_OMHTT_BarrierChoice": "%1 (%2)",
     "ContextMenu_OMHTT_TurretFire": "Fire",
-    "ContextMenu_OMHTT_PickupTurret": "Pick up turret"
+    "ContextMenu_OMHTT_PickupTurret": "Pick up turret",
+    "ContextMenu_OMHTT_HybridProbe": "OMH: Hybrid render probe",
+    "ContextMenu_OMHTT_HybridCreate": "Place cube probe",
+    "ContextMenu_OMHTT_HybridRemove": "Remove probe",
+    "ContextMenu_OMHTT_HybridRotate": "Rotate head 45 degrees",
+    "ContextMenu_OMHTT_HybridSpin": "Toggle head rotation",
+    "ContextMenu_OMHTT_HybridRaise": "Raise head",
+    "ContextMenu_OMHTT_HybridLower": "Lower head",
+    "ContextMenu_OMHTT_HybridLarger": "Enlarge head",
+    "ContextMenu_OMHTT_HybridSmaller": "Shrink head"
 }

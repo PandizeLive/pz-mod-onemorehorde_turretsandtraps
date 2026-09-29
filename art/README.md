@@ -2,6 +2,8 @@
 
 Status: technical asset plan plus one owner-authorized [white cube placeholder](placeholders/cube_turret/README.md). No final art, concept art, production textures or sounds have been created.
 
+2026-09-29: [Hybrid rendering probe and provisional artist handoff](../docs/PHASE_2_HYBRID_RENDER_PROBE.md) evaluates a separate tile base and native 3D head. Cube-only native import/StaticMesh processing pass; in-game alignment, lighting, occlusion and graphics-setting fallback still need owner acceptance. Keep editable head sources separate from the base; do not finalize axes, scale or export presets yet.
+
 ## Owner art policy and technical requirements
 
 The owner will source final art without AI. Do not generate concept art, stylistic designs, textures, icons or final visual assets, or choose aesthetic direction. The explicitly requested unstyled white cube-only mechanical placeholder is the exception. Its proportions and appearance must not become requirements for the final artist.

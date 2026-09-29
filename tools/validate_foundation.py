@@ -53,7 +53,8 @@ def main():
         assert all(isinstance(v, str) for v in values.values())
         assert not translations.keys() & values.keys(), "Duplicate translation keys"
         translations.update(values)
-    keys = set(re.findall(r'getText\("([A-Za-z0-9_]+)"', lua)) - {"UI_OMHTT_"}
+    keys = set(re.findall(r'getText\("([A-Za-z0-9_]+)"', lua)) - {"UI_OMHTT_", "ContextMenu_OMHTT_Hybrid"}
+    keys.update("ContextMenu_OMHTT_Hybrid" + action for action in ["Create", "Remove", "Rotate", "Spin", "Raise", "Lower", "Larger", "Smaller"])
     keys.update("UI_OMHTT_" + status for status in [
         "Agrees", "Waiting", "Denied", "VersionMismatch", "TooFar", "Unavailable", "Inspected", "Stale",
         "Occupied", "Blocked", "Limit", "Placed", "Conflict", "Changed", "Removed", "MPCombatDeferred",
@@ -62,7 +63,7 @@ def main():
     for key in keys:
         assert key in translations, f"Missing translation: {key}"
     textures = list((PACKAGE / "42.20/media/textures").glob("*.png"))
-    assert len(textures) == 37, "Existing technical markers plus turret inventory icon required"
+    assert len(textures) == 38, "Existing technical markers plus turret inventory icon required"
     for heading, index in zip("ENWS", range(4)):
         for part in "AB":
             assert (PACKAGE / f"42.20/media/textures/OMHTT_BuildBarrier{heading}_{part}.png").read_bytes() == (PACKAGE / f"42.20/media/textures/OMHTT_Barrier{index}.png").read_bytes(), "Construction sprites reuse authorized technical markers"
@@ -80,6 +81,11 @@ def main():
             assert all(r == g == b for r, g, b, a in sprite.get_flattened_data() if a), "Sprite must remain white/grayscale"
     javac = Path(os.environ.get("PZ_JAVAC", "C:/Program Files/Java/jdk-17/bin/javac.exe"))
     run([javac, "-d", classes, ROOT / "tools/KahluaCheck.java"])
+    run([javac, "-cp", GAME / "projectzomboid.jar", "-d", classes, ROOT / "tools/HybridAssetCheck.java"])
+    model_log = run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED",
+        "-Djava.library.path=" + str(GAME), "-cp", os.pathsep.join([str(classes), str(GAME / "projectzomboid.jar")]),
+        "HybridAssetCheck", PACKAGE / "42.20/media/models_X/OMHTT_ProbeHead.x"], cwd=GAME)
+    (OUTPUT / "model-import.log").write_text(model_log, encoding="utf-8")
     stock = os.environ.get("OMHTT_STOCK_CLASSES") == "1"
     classpath = os.pathsep.join(str(path) for path in ([classes, GAME / "projectzomboid.jar", GAME] if stock else [classes, GAME, GAME / "projectzomboid.jar"]))
     log = run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED", "-Djava.awt.headless=true",
@@ -116,6 +122,10 @@ def main():
         "zombie/pathfind/nativeCode/SquareUpdateTask.class", "zombie/characters/IsoPlayer.class",
         "zombie/GameTime.class", "zombie/inventory/ItemContainer.class",
         "zombie/inventory/types/InventoryContainer.class", "zombie/iso/objects/IsoGenerator.class",
+        "zombie/iso/objects/IsoWorldInventoryObject.class", "zombie/core/skinnedmodel/model/ItemModelRenderer.class",
+        "zombie/core/skinnedmodel/model/WorldItemModelDrawer.class", "zombie/core/skinnedmodel/model/FileTask_LoadMesh.class",
+        "zombie/core/skinnedmodel/model/jassimp/ProcessedAiScene.class", "jassimp64.dll",
+        "media/lua/server/BuildingObjects/ISPlace3DItemCursor.lua", "media/lua/client/ISUI/ISExtendedPlacementUI.lua",
         "media/lua/client/TimedActions/ISInventoryTransferAction.lua",
         "media/lua/client/ISUI/ISWorldObjectContextMenu.lua",
         "zombie/iso/IsoGridSquare.class", "zombie/iso/IsoObjectUtils.class",

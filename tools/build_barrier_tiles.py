@@ -22,9 +22,9 @@ def pack_string(value):
 def build():
     tiles = b"tdef" + integer(1) + integer(1)
     tiles += (SHEET + "\nOMHTT_Barrier.png\n").encode("ascii")
-    tiles += integer(4) + integer(12) + integer(1) + integer(48)
-    tiles += integer(0) * 48
-    pack = b"PZPK" + integer(1) + integer(26)
+    tiles += integer(4) + integer(13) + integer(1) + integer(49)
+    tiles += integer(0) * 49
+    pack = b"PZPK" + integer(1) + integer(27)
     for heading in range(4):
         pack += pack_string("OMHTT_Barrier" + str(heading)) + integer(4) + integer(1)
         for index in [heading * 2, heading * 2 + 1, heading * 2 + 8, heading * 2 + 9]:
@@ -64,6 +64,10 @@ def build():
         pack += struct.pack("<8i", 0, 0, 128, 256, 0, 0, 128, 256)
     png = (MEDIA / "textures/OMHTT_TestCube.png").read_bytes()
     pack += integer(len(png)) + png
+    pack += pack_string("OMHTT_ProbeBase") + integer(1) + integer(1)
+    pack += pack_string(SHEET + "_48") + struct.pack("<8i", 0, 0, 128, 256, 0, 0, 128, 256)
+    png = (MEDIA / "textures/OMHTT_ProbeBase.png").read_bytes()
+    pack += integer(len(png)) + png
     return tiles, pack
 
 
@@ -72,4 +76,4 @@ if __name__ == "__main__":
     (MEDIA / "texturepacks").mkdir(exist_ok=True)
     (MEDIA / "OMHTT_Barriers.tiles").write_bytes(tiles)
     (MEDIA / "texturepacks/OMHTT_Barriers.pack").write_bytes(pack)
-    print("Packed 48 stable barrier/turret identities; tiledef=" + str(TILEDEF_NUMBER))
+    print("Packed 49 stable barrier/turret/probe identities; tiledef=" + str(TILEDEF_NUMBER))

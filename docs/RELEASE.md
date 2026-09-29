@@ -1,6 +1,12 @@
 # Release state and publication policy
 
-## Current installation: 0.2.9
+## Current candidate: 0.2.10
+
+[Hybrid renderer checkpoint and complete test](PHASE_2_HYBRID_RENDER_PROBE.md), [release notes](PR_v0.2.10.md). Adds a separate single-player debug fixture using the original cube geometry: fixed base tile, static 3D head, per-instance yaw/height/scale and removal controls. Ordinary turret rendering and gameplay remain unchanged; the category/usability/balance update is queued separately.
+
+Passed: native Jassimp import and PZ StaticMesh conversion, 1,545 regression assertions, 31 runtime Lua files, 194 native translation keys, 23 packet checks, 97 package files and fresh-process native write/read probes (98.6/82.4 seconds). Head yaw, scale, height and model/link identity persist. GPU rendering, lighting, occlusion and production integration are unverified. The owner has already demonstrated normal 0.2.9 client startup on 42.21; the previous isolated optimizer mismatch is not a current confirmed player blocker. No Workshop upload or remote push.
+
+## Previous installation: 0.2.9
 
 [P2C3a-c scope and combined owner test](PHASE_2_CHECKPOINT_3.md), [release notes](PR_v0.2.9.md). Universal base and potato head, five approved recipes, native loaded-item deployment, actual ammo/module/battery containers, full contents weight, ten-second pickup and powered manual firing. Held P2C2b barrier selection/highlight and separate reinforced sprites remain included. Module effects and multiplayer gameplay are deferred.
 

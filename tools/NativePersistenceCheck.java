@@ -20,23 +20,24 @@ public final class NativePersistenceCheck {
 
     private static void verify(Path directory, String mode) throws Exception {
         verifyTurret(directory, mode);
+        verifyHybrid(directory, mode);
         NativeVaultProbe.verify();
         Object pack = Class.forName("zombie.fileSystem.TexturePackDevice").getConstructor(String.class, int.class).newInstance("OMHTT_Barriers", 0);
         Class<?> entriesType = Class.forName("zombie.fileSystem.FileSystem$TexturePackTextures");
         Object entries = entriesType.getConstructor().newInstance();
         call(pack, "getSubTextureInfo", new Class<?>[]{entriesType}, entries);
-        check(((java.util.Map<?, ?>)entries).size() == 48, "Native texture pack metadata did not load");
-        for (int index = 0; index < 48; index++) {
+        check(((java.util.Map<?, ?>)entries).size() == 49, "Native texture pack metadata did not load");
+        for (int index = 0; index < 49; index++) {
             Object entry = ((java.util.Map<?, ?>)entries).get("omhtt_barrier_01_" + index);
-            String expected = index >= 44 ? "OMHTT_TestCube" : index >= 28 ? "OMHTT_Aim" + (index - 28)
+            String expected = index == 48 ? "OMHTT_ProbeBase" : index >= 44 ? "OMHTT_TestCube" : index >= 28 ? "OMHTT_Aim" + (index - 28)
                 : index >= 20 ? "OMHTT_ReinforcedBarrier" + ((index - 20) / 2)
                 : index >= 16 ? "OMHTT_Edges" : "OMHTT_Barrier" + ((index % 8) / 2);
             check(entry != null && expected.equals(entry.getClass().getField("pageName").get(entry)), "Sprite mapped to wrong tier page: " + index);
         }
 
-        for (int page = 0; page < 25; page++) {
+        for (int page = 0; page < 26; page++) {
             String name = page < 4 ? "OMHTT_Barrier" + page : page < 8 ? "OMHTT_ReinforcedBarrier" + (page - 4)
-                : page < 24 ? "OMHTT_Aim" + (page - 8) : "OMHTT_TestCube";
+                : page < 24 ? "OMHTT_Aim" + (page - 8) : page == 24 ? "OMHTT_TestCube" : "OMHTT_ProbeBase";
             try (var stream = (java.io.InputStream)call(pack, "createStream", new Class<?>[]{String.class, java.io.InputStream.class}, name, null)) {
                 var image = javax.imageio.ImageIO.read(stream);
                 check(image != null && image.getWidth() == 128 && image.getHeight() == 256, "Native texture page unreadable");
@@ -46,7 +47,7 @@ public final class NativePersistenceCheck {
             var image = javax.imageio.ImageIO.read(stream);
             check(image != null && image.getWidth() == 256 && image.getHeight() == 256, "Native outline texture page unreadable");
         }
-        System.out.println("[OMHTT-Smoke] native-texturepack entries=48 pages=26 png=valid");
+        System.out.println("[OMHTT-Smoke] native-texturepack entries=49 pages=27 png=valid");
         Class<?> lua = Class.forName("zombie.Lua.LuaManager");
         Object env = lua.getField("env").get(null);
         Object fixtures = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeFixtures");
@@ -195,6 +196,36 @@ public final class NativePersistenceCheck {
         check(Math.abs(total - expectedWeight) < 0.001, "Portable weight double counted");
         System.out.println("[OMHTT-Smoke] native-packed-turret mode=" + mode + " items=5 charge=preserved condition=37 cooldown=preserved weight=exact");
         System.out.println("[OMHTT-Smoke] native-turret-persistence mode=" + mode + " items=5 charge=0.37 health=37 cooldown=preserved identity=exact sprite=valid");
+    }
+
+    private static void verifyHybrid(Path directory, String mode) throws Exception {
+        Object env = Class.forName("zombie.Lua.LuaManager").getField("env").get(null);
+        Object source = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeHybridHead");
+        check(source != null, "Hybrid fixture missing");
+        Class<?> iso = Class.forName("zombie.iso.IsoObject");
+        Class<?> cellType = Class.forName("zombie.iso.IsoCell");
+        Class<?> squareType = Class.forName("zombie.iso.IsoGridSquare");
+        Class<?> world = Class.forName("zombie.iso.IsoWorld");
+        Object cell = world.getField("currentCell").get(world.getField("instance").get(null));
+        int version = ((Number)world.getMethod("getWorldVersion").invoke(null)).intValue();
+        Path file = directory.resolve("hybrid-head.bin");
+        if (mode.equals("write")) {
+            ByteBuffer output = ByteBuffer.allocate(65536);
+            iso.getMethod("save", ByteBuffer.class).invoke(source, output);
+            Files.write(file, Arrays.copyOf(output.array(), output.position()));
+        }
+        ByteBuffer input = ByteBuffer.wrap(Files.readAllBytes(file));
+        Object restored = iso.getMethod("factoryFromFileInput", cellType, ByteBuffer.class).invoke(null, cell, input);
+        iso.getMethod("setSquare", squareType).invoke(restored, get(source, "getSquare"));
+        iso.getMethod("load", ByteBuffer.class, int.class).invoke(restored, input, version);
+        Object item = get(restored, "getItem");
+        check(!input.hasRemaining(), "Unread hybrid stream bytes");
+        check(((Number)get(item, "getWorldZRotation")).intValue() == 135, "Hybrid yaw not saved");
+        check(Math.abs(item.getClass().getField("worldScale").getFloat(item) - 1.25f) < 0.00001, "Hybrid scale not saved");
+        check(Math.abs(((Number)get(restored, "getWorldPosZ")).doubleValue() - 0.3) < 0.00001, "Hybrid height not saved");
+        check(get(get(source, "getItem"), "getWorldStaticItem").equals(get(item, "getWorldStaticItem")), "Hybrid model identity not saved");
+        check("native-probe".equals(call(get(item, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTHybridProbe")), "Hybrid link not saved");
+        System.out.println("[OMHTT-Smoke] native-hybrid-persistence mode=" + mode + " yaw=135 scale=1.25 height=0.3 model=preserved link=preserved");
     }
 
     public static void main(String[] args) throws Exception {

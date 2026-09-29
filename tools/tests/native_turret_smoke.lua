@@ -106,6 +106,30 @@ local function verifyTurrets()
     T.state(object).fixtureBatteryId = battery:getID()
     T.state(object).fixtureAmmoId = potato:getID()
     OMHTT_NativeTurret = object
+    local H = require("OMHTT/HybridProbe")
+    local model = ScriptManager.instance:getModelScript("Base.OMHTTProbeHead")
+    assert(model and model:getMeshName() == "OMHTT_ProbeHead", "Native hybrid model script missing")
+    local first = instanceItem(H.ITEM)
+    local second = instanceItem(H.ITEM)
+    assert(ScriptManager.instance:getModelScript(first:getWorldStaticItem()) == model,
+        "Probe item model not bound: " .. tostring(first:getWorldStaticItem()))
+    first:getModData().OMHTTHybridProbe = "native-probe"
+    first:setWorldScale(1.25)
+    first:getModData().OMHTTProbeScale = 1.25
+    local world = IsoWorldInventoryObject.new(first, square, 0.5, 0.5, 0.3)
+    first:setWorldItem(world)
+    H.rotate(world, 135)
+    second:setWorldZRotation(270)
+    assert(first:getWorldZRotation() == 135 and second:getWorldZRotation() == 270, "Shared model rotation leaked between items")
+    local base = IsoObject.new(square, H.SPRITE, "OMHTT Hybrid Probe")
+    base:getModData().OMHTTHybridProbe = "native-probe"
+    square:getObjects():add(base)
+    square:getWorldObjects():add(world)
+    local foundBase, foundHead = H.find(square)
+    assert(foundBase == base and foundHead == world, "Native probe identity lookup failed")
+    assert(base:getSpriteName() == H.SPRITE, "Rotating head changed base sprite")
+    OMHTT_NativeHybridHead = world
+    print("[OMHTT-Smoke] native-hybrid model=bound yaw=independent base=fixed lookup=exact")
     print("[OMHTT-Smoke] native-turret recipes=5 loadedDeploy=exact contents=preserved weight=exact filters=valid cooldown=preserved")
     isServer, isClient = serverFunction, clientFunction
 end
