@@ -1,4 +1,4 @@
-v0.2.11
+v0.2.11.1
 Single-player development test content
 - Added persistent test defenses with readable white developer markers and direction arrows.
 - Added 1x2 Spike Barriers with shared durability and removal; see-through connected runs have front collision and outer end caps, with an open rear. Newly exposed ends are capped after removal; front and side attacks cause 10 damage by default, while the rear is safe. Damage and maximum durability are configurable in Sandbox.
@@ -11,7 +11,7 @@ Single-player development test content
 - Added craftable modular turret bases and potato heads, with pump/improvised recipes and native deployment. Loaded pickup preserves actual ammunition, components, battery charge, condition and cooldowns; carried weight includes contents and a tooltip lists supplies. Reinforced barriers use independent texture inputs.
 - Added manually fired potato turrets consuming real potatoes and battery/grid/generator power, with 85-potato storage, a one-round magazine, overlapping one-second reload / half-second cooldown and a one-second sustained default cadence, calibrated damage, animated knockdowns and tiny impact splash. A dedicated Sandbox page controls durability, ammo/module storage, combat and power costs. Module storage is available for development testing; automatic targeting and module bonuses remain in development.
 - Added optional Pixel Indicator damage feedback and developer diagnostics.
-- Added stationary base tiles and independent cube-placeholder turret heads with a sprite fallback, see-through 1x1 base collision, adjacent pickup, and a Manage panel opening native drag/drop inventory. Turret previews no longer show barrier outlines; turret recipes retain screwdriver plus wrench/pipe wrench.
+- Added stationary base tiles and independent cube-placeholder turret heads with a sprite fallback, see-through 1x1 base collision, adjacent pickup, and a Manage panel opening native drag/drop inventory after adjacent approach. Turret previews no longer show barrier outlines; turret recipes retain screwdriver plus wrench/pipe wrench.
 - Added the owner-supplied Turrets & Traps mod-list icon.
 Local tools
 - Added the OMH release menu with verified local installation and debug-log capture.

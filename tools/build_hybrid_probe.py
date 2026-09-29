@@ -15,7 +15,7 @@ def build():
     document, binary = read_export()
     base = copy.deepcopy(document)
     base["nodes"][0]["children"] = [1]
-    render(base, binary, 0).save(MEDIA / "textures/OMHTT_ProbeBase.png")
+    render(base, binary, 0, ground_y=224).save(MEDIA / "textures/OMHTT_ProbeBase.png")
     head = copy.deepcopy(document)
     head["nodes"][0]["children"] = [2]
     head["nodes"][2]["translation"] = [0, 0, 0]

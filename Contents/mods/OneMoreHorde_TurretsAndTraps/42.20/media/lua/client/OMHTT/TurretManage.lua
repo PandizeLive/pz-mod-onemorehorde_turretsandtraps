@@ -3,7 +3,6 @@ require("ISUI/ISPanel")
 require("ISUI/ISButton")
 require("TimedActions/ISBaseTimedAction")
 local T = require("OMHTT/Turret")
-local W = require("OMHTT/TurretWorld")
 local D = require("OMHTT/Diagnostics")
 local Panel = ISPanel:derive("OMHTTTurretPanel")
 local OpenAction = ISBaseTimedAction:derive("OMHTTTurretOpenAction")
@@ -17,12 +16,14 @@ end
 
 ---@return nil
 function Panel:fire()
+    local W = require("OMHTT/TurretWorld")
     self.result = W.fire(self.player, self.object)
     self.nextRefresh = 0
 end
 
 ---@return nil
 function Panel:prerender()
+    local W = require("OMHTT/TurretWorld")
     if not W.near(self.player, self.object) then self:close(); return end
     ISPanel.prerender(self)
     local now = getTimestampMs()
@@ -45,6 +46,7 @@ end
 
 ---@return nil
 function OpenAction:perform()
+    local W = require("OMHTT/TurretWorld")
     if W.near(self.character, self.object) then
         local index = self.character:getPlayerNum()
         local inventory, loot = getPlayerInventory(index), getPlayerLoot(index)
@@ -76,6 +78,7 @@ end
 
 ---@return boolean valid
 function OpenAction:isValid()
+    local W = require("OMHTT/TurretWorld")
     return W.near(self.character, self.object)
 end
 

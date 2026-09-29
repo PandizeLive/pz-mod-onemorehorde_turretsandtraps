@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "Contents/mods/OneMoreHorde_TurretsAndTraps/42.20/media/textures/OMHTT_TestCube.png"
 
 
-def render(document, binary, seconds):
+def render(document, binary, seconds, ground_y=208):
     image = Image.new("RGBA", (128, 256), (0, 0, 0, 0))
     draw = ImageDraw.Draw(image)
     view = np.array([1., 1., 1.])
@@ -23,7 +23,7 @@ def render(document, binary, seconds):
         if np.dot(normal, view) <= 0:
             continue
         shade = round(255 * (.76 + .24 * max(0, normal[1])))
-        points = [(64 + 50 * (p[0] - p[2]), 208 + 25 * (p[0] + p[2]) - 60 * p[1]) for p in face]
+        points = [(64 + 50 * (p[0] - p[2]), ground_y + 25 * (p[0] + p[2]) - 60 * p[1]) for p in face]
         draw.polygon(points, fill=(shade, shade, shade, 255))
     return image
 

@@ -72,6 +72,16 @@ def main():
     tiles, pack = build()
     assert (PACKAGE / "42.20/media/OMHTT_Barriers.tiles").read_bytes() == tiles
     assert (PACKAGE / "42.20/media/texturepacks/OMHTT_Barriers.pack").read_bytes() == pack
+    from build_cube_placeholder import read_export
+    from build_foundation_sprite import render
+    import copy
+    document, binary = read_export()
+    base = copy.deepcopy(document)
+    base["nodes"][0]["children"] = [1]
+    expected_base = render(base, binary, 0, ground_y=192 + 32)
+    with Image.open(PACKAGE / "42.20/media/textures/OMHTT_ProbeBase.png") as sprite:
+        assert sprite.tobytes() == expected_base.tobytes(), "Base ground center must match native tile center (64,224)"
+        assert sprite.getbbox()[3] < 256, "Grounded base must fit the tile texture"
     barrier_bytes = {(PACKAGE / f"42.20/media/textures/OMHTT_Barrier{i}.png").read_bytes() for i in range(4)}
     assert len(barrier_bytes) == 4, "Barrier directions must have distinct pixels"
     for texture in textures:

@@ -15,3 +15,13 @@ ISButton = {new = function(self, x, y, w, h, title, target, callback)
         target = target, callback = callback}
 end}
 testTurretOldPanel = oldPanel
+
+testTurretRequire = require
+testTurretEarlyRequires = 0
+function require(name)
+    if name == "OMHTT/TurretWorld" then
+        testTurretEarlyRequires = testTurretEarlyRequires + 1
+        return nil
+    end
+    return testTurretRequire(name)
+end

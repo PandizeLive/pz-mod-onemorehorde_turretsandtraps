@@ -1,6 +1,13 @@
 # Release state and publication policy
 
-## Current installation: 0.2.11
+## Current candidate: 0.2.11.1
+
+[Failed owner test](TEST_v0.2.11.md), [repair and focused test](PR_v0.2.11.1.md). Corrects Manage's early server-module require and grounds the base-only texture at native tile center. Existing world identities, collision, recipe/balance and head calibration stay intact.
+
+1,589 Kahlua assertions pass, including the newly reproduced client-before-server failure; 34 runtime files compile, 206 translations and 23 packet checks pass. Native importer/texture checks and the corrected pixel-projection comparison pass. Native smoke/install evidence follows below after verification. Visible acceptance remains pending; no remote or Workshop publication.
+
+
+## Previous installation: 0.2.11
 
 [Integrated turret scope and complete test](PHASE_2_CHECKPOINT_3_USABILITY.md), [release notes](PR_v0.2.11.md). C53 combines the real tile-base/model-head route, see-through 1x1 collision, adjacent Manage/pickup, native menu categories, two-tool recipes and persistent overlapping magazine/reload/cooldown. The failed 0.2.10 visual test remains recorded separately.
 

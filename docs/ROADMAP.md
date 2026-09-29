@@ -1,5 +1,8 @@
 # Phases and checkpoints
 
+**Corrective candidate: [0.2.11.1](PR_v0.2.11.1.md).** The [0.2.11 owner test](TEST_v0.2.11.md) failed Manage startup and base grounding. Fix client/server load-order capture and the 16-pixel base projection mismatch before continuing module effects. The combined checkpoint remains unaccepted.
+
+
 **Current delivery: [integrated turret usability, 0.2.11](PHASE_2_CHECKPOINT_3_USABILITY.md).** C53 combines actual head rendering, base collision, native inventory access, category/preview fixes and shared magazine/reload/cooldown. Native/automated checks are internal; one combined gameplay acceptance test remains. The [0.2.10 test](TEST_v0.2.10.md) failed for flicker and is not marked accepted.
 
 **Next: P2C3d module effects and automation.** Finish the combined visual/gameplay gate, then implement effective module tuning and the Firing/Motion Detection/Filter roles. Recipes and bonus quantities still need their concrete checkpoint review. MP/performance remain P2C3e; firearm heads and external artist model validation remain separate gates.
