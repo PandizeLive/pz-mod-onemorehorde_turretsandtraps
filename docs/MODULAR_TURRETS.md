@@ -1,6 +1,6 @@
 # Turret inventory and module plan
 
-Owner-confirmed direction, updated 2026-09-29. P2C3a-c/0.2.9 implements actual component storage, exact-item persistence and powered manual potato firing. Module effects remain future work; ten module item types are available only for debug storage checks. Approved turret recipes and current tuning defaults are in [P2C3](PHASE_2_CHECKPOINT_3.md). Module crafting recipes and bonuses remain unresolved.
+Owner-confirmed direction, updated 2026-09-29. P2C3a-c/0.2.9 implements actual component storage, exact-item persistence and powered manual potato firing. Module effects remain future work; ten module item types are available only for debug storage checks. Approved turret recipes and current tuning defaults are in [P2C3](PHASE_2_CHECKPOINT_3.md). C57 makes modules loot-only for now; crafting is deferred and stat bonuses remain unresolved.
 
 ## Inventory interaction
 
@@ -33,11 +33,11 @@ Range, Velocity and Rapid-Fire stacking is owner-approved. Recommend additive pe
 
 Expose useful controls when each feature actually exists: base ammo/module capacity, capacity bonuses, detection cone/range, rate/damage/knockdown bonuses, range increment and maximum, and any power consumption. Keep categories under the relevant turret/defense and concise tooltips. Do not add inactive settings for planned modules.
 
-## Crafting routes under discussion
+## Crafting routes deferred for modules
 
 The earlier wood/Mechanics-1 turret proposal is superseded by C49: metal universal base at Mechanics 2, powered potato head at Mechanics 2/Electrical 1, improvised head at Mechanics 4/Electrical 1. Complete and separate routes have identical material and XP totals. Exact recipes and retained tools are in [P2C3](PHASE_2_CHECKPOINT_3.md#approved-recipes).
 
-Motion-detection module direction: low-skill assembly using vanilla Base.MotionSensor, plus higher-skill fabrication from raw materials. Electrical is the recommended primary skill; exact ingredients/skill/XP are unsettled. Installed B42 provides MotionSensor and yields it through HomeAlarm dismantling.
+Future motion-detection crafting idea (deferred by C57): low-skill assembly using vanilla Base.MotionSensor, plus higher-skill fabrication from raw materials. Electrical is the recommended primary skill; exact ingredients/skill/XP are unsettled. Installed B42 provides MotionSensor and yields it through HomeAlarm dismantling.
 
 ## Evidence and delivery
 
@@ -49,10 +49,14 @@ Acceptance: exact device/item checks at completion, persisted components/resourc
 
 ## Next checkpoint proposal after C56
 
-P2C3d1: lock the cone to stored placement orientation, independent of head aim. Apply the same range/angle/obstruction eligibility to manual and automatic shots and display the same effective geometry during placement/selection. Recommend 90 degrees with a short Sandbox control; exact width is not confirmed. Firing plus Motion Detection enables autonomous fire; Detection alone can track but cannot fire autonomously; Filter chooses Closest/Furthest/Weakest/Toughest. 360 changes angular coverage only and can expand manual targeting without granting autonomous fire. Removing 360 immediately restores the placement cone and invalidates out-of-cone targets. Existing loaded turrets use their saved base orientation, not last target heading.
+P2C3d1: lock the cone to stored placement orientation, independent of head aim. Apply the same range/angle/obstruction eligibility to manual and automatic shots and display the same effective geometry during placement/selection. C57 confirms a 90-degree default (45 degrees each side), with a short Sandbox control. Firing plus Motion Detection enables autonomous fire; Detection alone can track but cannot fire autonomously; Filter chooses Closest/Furthest/Weakest/Toughest. 360 changes angular coverage only and can expand manual targeting without granting autonomous fire. Removing 360 immediately restores the placement cone and invalidates out-of-cone targets. Existing loaded turrets use their saved base orientation, not last target heading.
 
 Recommend Enable/Disable in Manage to stop autonomous shots while preserving servicing; manual Fire remains a separate deliberate action. Target acquisition must be bounded and staggered across turrets, with a final shot-time range/angle/obstruction/resource check. No wall penetration, unloaded combat or burst catch-up. These details are proposals for checkpoint approval.
 
-P2C3d2: review concrete stack gains/caps, Capacity expansion/removal, Reload/Autoloader effects on the shared potato cycle, and their recipes. Keep firearm-specific adapters for P5. Module recipes, retained tools, skills and XP require owner review before coding; do not invent them under broad phase approval.
+P2C3d2: review concrete stack gains/caps, Capacity expansion/removal, Reload/Autoloader effects on the shared potato cycle, and their loot balance. Keep firearm-specific adapters for P5. C57 defers all module crafting, tools, skills and XP; no recipe review blocks core module effects.
 
 The owner holds 0.2.13 visual/balance acceptance for the next combined gameplay test. No new runtime code or local install is part of this discussion update.
+
+## Loot-only acquisition — C57
+
+Modules will be found as loot for now. For d1 introduce Firing, Motion Detection, Filter and 360 into suitable current-game distributions; do not distribute inert future-effect modules as normal gameplay loot. Recommend electronics/industrial pools, with the two modules required for automation more available than optional Filter/360. Verify exact native pools and decide conservative weights during implementation. Recommend a useful module loot abundance Sandbox setting with a short tooltip. These are proposed distribution choices, not existing or owner-specified exact spawn weights.
