@@ -1,10 +1,10 @@
 # Turret inventory and module plan
 
-Owner-confirmed direction, updated 2026-09-28. P2C3a-c/0.2.9 implements actual component storage, exact-item persistence and powered manual potato firing. Module effects remain future work; ten module item types are available only for debug storage checks. Approved turret recipes and current tuning defaults are in [P2C3](PHASE_2_CHECKPOINT_3.md). Module crafting recipes and bonuses remain unresolved.
+Owner-confirmed direction, updated 2026-09-29. P2C3a-c/0.2.9 implements actual component storage, exact-item persistence and powered manual potato firing. Module effects remain future work; ten module item types are available only for debug storage checks. Approved turret recipes and current tuning defaults are in [P2C3](PHASE_2_CHECKPOINT_3.md). Module crafting recipes and bonuses remain unresolved.
 
 ## Inventory interaction
 
-Each turret has an ammunition area and module slots. Dragging actual components into/out of slots is the intended installation/removal flow; right-click installation menus are superseded. A timed transaction behind those transfers is recommended but its duration is unsettled. Generic storage alone does not activate a component. Native inventory/UI feasibility is P2C3a; do not promise arbitrary native slot widgets before proving them.
+Each turret has an ammunition area and module slots. Dragging actual components into/out of slots is the intended installation/removal flow; right-click installation menus are superseded. The dedicated window and native timed inventory transfers are implemented in 0.2.12. Generic storage alone does not activate a component; module effects remain pending.
 
 Installed component items, ammunition, wear and committed cooldowns must survive saving and pickup/redeployment. Transactions must not duplicate components, discard ammo, reset cooldowns or provide repeated module-swap repair. Tier upgrades restore full condition under C43; module-swap repair policy still needs an explicit decision if presented as an upgrade.
 
@@ -19,7 +19,7 @@ Installed component items, ammunition, wear and committed cooldowns must survive
 | Velocity | Increase direct-hit damage; increased direct-target knockdown chance supported as a proposal | Multiple modules explicitly allowed. Damage/chance gains and caps TBD; tiny splash and recovery protection must not be multiplied implicitly |
 | Capacity | Increase ammo storage and module space | Single dedicated expansion slot recommended, not owner-final. Reject removal until contents fit the reduced capacity; no deletion/automatic dumping |
 | Range | Increase firing and detection reach | Multiple modules explicitly allowed; increments/maximum TBD. Preserve obstruction checks and loaded-area bounds |
-| 360 Degree Detection | Expand detection from forward cone to all directions | One recommended; requires detection, does not extend range or eliminate aiming/turning |
+| 360 | Expand placement-locked firing/detection coverage to all directions | C56 applies coverage to manual and automatic targeting. One recommended; no extra distance or standalone automation |
 | Reload | Reduce reload duration | Proposed for the firearm/reload checkpoint; stacking not yet decided |
 | Autoloader | Expensive module removing reload delay | Still consumes ammunition; retaining pump/bolt cycling and firing cadence is the recommended boundary, pending firearm feasibility |
 
@@ -41,8 +41,18 @@ Motion-detection module direction: low-skill assembly using vanilla Base.MotionS
 
 ## Evidence and delivery
 
-The current potato prototype uses immediate hits, range 6, base interval 1000 ms, direct knockdown chance 70 percent and a shared 3000 ms recovery guard. Those are implementation facts, not approved module bonuses. Velocity cannot affect gameplay projectile speed until real travel-time collision exists; a tracer alone would be cosmetic.
+The current potato prototype uses immediate hits, range 6, overlapping two-second reload/cooldown in 0.2.13, direct knockdown chance 70 percent and a shared 3000 ms recovery guard. Those are implementation facts, not approved module bonuses. Velocity cannot affect gameplay projectile speed until real travel-time collision exists; a tracer alone would be cosmetic.
 
 P2C2b finishes barrier selection and distinct reinforced texture inputs. P2C3a-c establishes approved turret recipes, native construction, real ammo/power inventory and exact-item transfers; P2C3d adds module effects, and P2C3e proves multiplayer/performance. Pressure plates, lasers and control-unit linking remain P4; firearm integration and Reload/Autoloader behavior remain P5. No module art is AI-generated.
 
 Acceptance: exact device/item checks at completion, persisted components/resources/deadlines, incompatible-item rejection, no duplicate grants on cancellation/concurrent requests, stack totals reflected accurately, capacity-removal refusal, and dedicated multiplayer proof before enabling that runtime. Current SP prototypes do not establish multiplayer support.
+
+## Next checkpoint proposal after C56
+
+P2C3d1: lock the cone to stored placement orientation, independent of head aim. Apply the same range/angle/obstruction eligibility to manual and automatic shots and display the same effective geometry during placement/selection. Recommend 90 degrees with a short Sandbox control; exact width is not confirmed. Firing plus Motion Detection enables autonomous fire; Detection alone can track but cannot fire autonomously; Filter chooses Closest/Furthest/Weakest/Toughest. 360 changes angular coverage only and can expand manual targeting without granting autonomous fire. Removing 360 immediately restores the placement cone and invalidates out-of-cone targets. Existing loaded turrets use their saved base orientation, not last target heading.
+
+Recommend Enable/Disable in Manage to stop autonomous shots while preserving servicing; manual Fire remains a separate deliberate action. Target acquisition must be bounded and staggered across turrets, with a final shot-time range/angle/obstruction/resource check. No wall penetration, unloaded combat or burst catch-up. These details are proposals for checkpoint approval.
+
+P2C3d2: review concrete stack gains/caps, Capacity expansion/removal, Reload/Autoloader effects on the shared potato cycle, and their recipes. Keep firearm-specific adapters for P5. Module recipes, retained tools, skills and XP require owner review before coding; do not invent them under broad phase approval.
+
+The owner holds 0.2.13 visual/balance acceptance for the next combined gameplay test. No new runtime code or local install is part of this discussion update.
