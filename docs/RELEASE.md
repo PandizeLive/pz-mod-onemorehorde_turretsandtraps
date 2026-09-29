@@ -1,10 +1,12 @@
 # Release state and publication policy
 
-## Current candidate: 0.2.10
+## Current installation: 0.2.10
 
 [Hybrid renderer checkpoint and complete test](PHASE_2_HYBRID_RENDER_PROBE.md), [release notes](PR_v0.2.10.md). Adds a separate single-player debug fixture using the original cube geometry: fixed base tile, static 3D head, per-instance yaw/height/scale and removal controls. Ordinary turret rendering and gameplay remain unchanged; the category/usability/balance update is queued separately.
 
 Passed: native Jassimp import and PZ StaticMesh conversion, 1,545 regression assertions, 31 runtime Lua files, 194 native translation keys, 23 packet checks, 97 package files and fresh-process native write/read probes (98.6/82.4 seconds). Head yaw, scale, height and model/link identity persist. GPU rendering, lighting, occlusion and production integration are unverified. The owner has already demonstrated normal 0.2.9 client startup on 42.21; the previous isolated optimizer mismatch is not a current confirmed player blocker. No Workshop upload or remote push.
+
+[Installation evidence](../diagnostics/v0.2.10/local-release.json) verifies all 97 installed/archive files against annotated `test/v0.2.10` (`efa39c1`), plus all 91 files in the full 0.2.9 backup. [Archive](../artifacts/OMHTT-0.2.10.zip). Restart for the rendered owner test.
 
 ## Previous installation: 0.2.9
 
@@ -55,11 +57,11 @@ Validation: 1,433 Kahlua assertions, 24 runtime modules, 103 translation keys, 2
 | Project | OMH: Turrets & Traps |
 | Foundation date | 2026-09-25 |
 | Edition | One; feature controls in Sandbox |
-| Package version | 0.2.9 installed; SP development test |
+| Package version | 0.2.10 installed; isolated SP hybrid render probe |
 | Confirmed mod ID | OneMoreHorde_TurretsAndTraps |
-| Build evidence | Stock B42.21.0 4a0e9546ec: isolated startup/save/restart passed; normal startup blocked by old optimizer override |
-| Runtime source / installable package | 0.2.9 tagged source, archive and installation; 91 verified files |
-| Git repository / remote | Local working branch; annotated test/v0.2.9 (3bba4c5); no remote configured |
+| Build evidence | Stock B42.21.0 4a0e9546ec: isolated import/startup/save/restart passed; rendered hybrid acceptance pending |
+| Runtime source / installable package | 0.2.10 tagged source, archive and installation; 97 verified files |
+| Git repository / remote | Local working branch; annotated test/v0.2.10 (efa39c1); no remote configured |
 | Workshop item / successful upload | None |
 | Public changelog baseline | No upload exists |
 | Official score support | Proposed; not implemented |
