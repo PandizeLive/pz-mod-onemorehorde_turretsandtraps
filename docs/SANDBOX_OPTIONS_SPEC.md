@@ -87,3 +87,21 @@ Use In-Game Time for autonomous operation, power/decay and reset intervals. Use 
 Damage applies to subsequent strikes. Maximum HP reconciliation records outstanding wear on both loaded halves, then preserves remaining percentage with integer rounding (minimum 1 for a living barrier). Legacy records without a maximum assume 100. Incomplete/unloaded pairs wait for both parts. Repair/new deployment use the configured maximum. No settings XP; menus and startup/migration logs expose current values.
 
 Reinforced damage and durability settings affect only reinforced records. Basic maximum changes also affect the reinforced maximum through its multiplier. Reconciliation preserves remaining percentage; upgrading between tiers instead preserves missing HP under C26.
+
+## P2C3d1 automation and module loot — C57/C58 planned
+
+These controls accompany working d1 effects and native loot integration; they are not in installed 0.2.13. Owner confirms 90-degree default coverage and requests direct control over balance. Keep the following labels/tooltips as implementation proposals, not locked owner-authored wording.
+
+| Page | Control | Behavior / short tooltip |
+| --- | --- | --- |
+| Turret Automation | Enable automation | “Allow automatic firing.” Disabling preserves items and deliberate manual fire. |
+| Turret Automation | Forward cone | Default 90 degrees; “Coverage without a 360 module.” Center stays locked to placement. |
+| Turret Automation | Detection interval | Bounded positive seconds; “Seconds between target scans.” Does not bypass shot cooldown. |
+| Module Loot | Module loot multiplier | “Overall module abundance. 0 disables drops.” |
+| Module Loot | Firing / Motion Detection / Filter / 360 multipliers | Separate per-module controls; “Loot multiplier. 0 disables drops.” Combine with global multiplier. |
+
+Use native weighted distributions; a multiplier is not a guaranteed per-container spawn percentage. Verify actual current-game pool integration before choosing numeric weights. Only functioning modules enter normal loot. Settings affect subsequent loot generation; never refill existing containers, remove owned modules or reset resource state. No hardcoded cheat abundance independent of settings.
+
+Reuse Potato Turret damage/range/ammo/module capacity/power and magazine/reload/cooldown controls for automatic shots. Range display must use the same effective range/cone as targeting. Individual turret on/off and target priority belong in Manage, not duplicated global overrides. Debug retains diagnostics and visual controls.
+
+In P2C3d2 expose useful per-copy bonuses and limits for Rapid-Fire, Velocity, Range and Capacity, plus Reload/Autoloader behavior and their loot controls as each effect becomes active. Preserve short tooltips and grouped pages; no speculative inactive options.

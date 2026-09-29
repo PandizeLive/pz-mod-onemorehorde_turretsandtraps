@@ -60,3 +60,7 @@ The owner holds 0.2.13 visual/balance acceptance for the next combined gameplay 
 ## Loot-only acquisition — C57
 
 Modules will be found as loot for now. For d1 introduce Firing, Motion Detection, Filter and 360 into suitable current-game distributions; do not distribute inert future-effect modules as normal gameplay loot. Recommend electronics/industrial pools, with the two modules required for automation more available than optional Filter/360. Verify exact native pools and decide conservative weights during implementation. Recommend a useful module loot abundance Sandbox setting with a short tooltip. These are proposed distribution choices, not existing or owner-specified exact spawn weights.
+
+## Owner tuning — C58
+
+Include grouped Sandbox controls with d1: automation toggle, placement cone (90-degree default), bounded detection interval, global module loot multiplier and individual Firing/Detection/Filter/360 loot multipliers. Zero disables new drops; existing items remain. Reuse per-turret combat/storage/power controls. Current-game weighted loot requires honest multiplier labels rather than exact probability promises. Keep individual on/off and Filter priority in Manage. See SANDBOX_OPTIONS_SPEC.md for the planned table. Add stat-module bonuses/caps/loot controls with their functioning d2 effects.

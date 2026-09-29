@@ -53,3 +53,5 @@ Read README.md, docs/DECISIONS.md, and docs/ROADMAP.md before project changes. T
 - [2026-09-29] C56 locks the forward cone to placement orientation, shared by manual/automatic targeting; head tracking cannot move it. A 360 module enables full angular coverage, not extra distance. Width 90 degrees remains a recommendation. Owner holds the 0.2.13 test for the next checkpoint; do not claim it passed or require a separate test before discussing progress.
 
 - [2026-09-29] C57 confirms default 90-degree placement-locked coverage and loot-only module acquisition for now. Defer module crafting/skills/XP; do not keep asking for recipes as a gate to core automation. Review current native loot distributions before implementing module drops.
+
+- [2026-09-29] C58 explicitly requires owner-tunable Sandbox automation/cone/scan timing and global/per-module loot controls with the module checkpoint. Use short tooltips, grouped pages, honest loot-multiplier semantics and bounded intervals. Reuse existing combat settings; introduce stat-module bonus/cap controls only with active effects.
