@@ -1,11 +1,11 @@
 # Release state and publication policy
 
-## Prepared build: 0.2.16.1
+## Current local installation: 0.2.16.1
 
-C61: [turning and presentation checkpoint](PHASE_2_CHECKPOINT_3D1_TURNING.md). 2,058 assertions pass, with 42 runtime files, 290 native translations and 109 packaged files. Original native write/read passed in 41.3/43.5 seconds. The tooltip-corrected build write/read also passed, including native packed-tooltip translation. Installation pending. Owner-visible depth, smooth turning and sound remain unaccepted. No external publication or push.
+C61: [turning and presentation checkpoint](PHASE_2_CHECKPOINT_3D1_TURNING.md). 2,058 assertions pass, with 42 runtime files, 290 native translations and 109 packaged files. Original native write/read passed in 41.3/43.5 seconds. The tooltip-corrected build write/read also passed, including native packed-tooltip translation. Installed from annotated `test/v0.2.16.1` (`ce5a9fc`). [Evidence](../diagnostics/v0.2.16.1/local-release.json) verifies all 109 installed/archive files and the full 106-file 0.2.15 backup. [Archive](../artifacts/OMHTT-0.2.16.1.zip). Owner-visible depth, smooth turning and sound remain unaccepted. No external publication or push.
 
 
-## Current local installation: 0.2.15
+## Previous local installation: 0.2.15
 
 C60 approves [automation polish](PHASE_2_CHECKPOINT_3D1_POLISH.md). Owner reported 0.2.14 working and later confirmed native turret thumping; no collision workaround is included. Sound production is with the owner, with a separate audio brief. Existing saved tuning is preserved except the retired absolute splash setting is replaced by a distinct percentage key.
 
