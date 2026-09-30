@@ -1,10 +1,10 @@
 # Release state and publication policy
 
-## Prepared local build: 0.2.15
+## Current local installation: 0.2.15
 
 C60 approves [automation polish](PHASE_2_CHECKPOINT_3D1_POLISH.md). Owner reported 0.2.14 working and later confirmed native turret thumping; no collision workaround is included. Sound production is with the owner, with a separate audio brief. Existing saved tuning is preserved except the retired absolute splash setting is replaced by a distinct percentage key.
 
-Validation currently passes 2,048 Kahlua assertions, 40 Lua compilations, 282 native translations, 23 packet round trips and 106 packaged files. Native write/read passed in 79.3/88.6 seconds, including actual item/charge/condition/cooldown restoration, loot parsing and collision. Installation is pending. No Workshop release or remote push. Rendered 0.2.15 acceptance remains pending.
+Validation currently passes 2,048 Kahlua assertions, 40 Lua compilations, 282 native translations, 23 packet round trips and 106 packaged files. Native write/read passed in 79.3/88.6 seconds, including actual item/charge/condition/cooldown restoration, loot parsing and collision. Installed from annotated `test/v0.2.15` (`6fbd51e`). [Evidence](../diagnostics/v0.2.15/local-release.json) verifies all 106 installed/archive files and the complete 106-file 0.2.14 backup. [Archive](../artifacts/OMHTT-0.2.15.zip). No Workshop release or remote push. Rendered 0.2.15 acceptance remains pending.
 
 
 ## Current installation: 0.2.14
