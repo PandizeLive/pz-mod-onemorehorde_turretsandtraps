@@ -8,7 +8,7 @@ T.BASE = "Base.OMHTTTurretBase"
 T.HEAD = "Base.OMHTTPotatoHead"
 T.CONTAINER = "OMHTTTurret"
 T.MODULES = {Firing = true, MotionDetection = true, Filter = true, RapidFire = true, Velocity = true,
-    Range = true, Capacity = true, Detection360 = true, Reload = true, Autoloader = true}
+    Range = true, Capacity = true, CapacitySmall = true, CapacityLarge = true, Detection360 = true, Reload = true, Autoloader = true}
 
 ---@param key string Setting suffix
 ---@param fallback number Default value
@@ -64,7 +64,7 @@ function T.kind(item)
     if fullType == "Base.Potato" then return "ammo" end
     if fullType == "Base.CarBattery1" or fullType == "Base.CarBattery2" or fullType == "Base.CarBattery3" then return "battery" end
     local module = string.match(fullType, "^Base%.OMHTTModule(.+)$")
-    if module == "Capacity" then return "capacity" end
+    if module == "Capacity" or module == "CapacitySmall" or module == "CapacityLarge" then return "capacity" end
     if module and T.MODULES[module] then return "module" end
     return nil
 end
@@ -141,13 +141,14 @@ function T.canRemove(container, item)
     local contents = T.contents(container)
     if T.kind(item) == "head" then return contents.ammo == 0 end
     if T.kind(item) == "capacity" and item:getCondition() > 0 then
-        contents.active.Capacity = nil
+        contents.active.Capacity, contents.active.CapacitySmall, contents.active.CapacityLarge = nil, nil, nil
         if contents.capacities > 1 then
             local items = container:getItems()
             for i = 0, items:size() - 1 do
                 local other = items:get(i)
                 if other ~= item and T.kind(other) == "capacity" and other:getCondition() > 0 then
-                    contents.active.Capacity = 1
+                    local name = string.match(other:getFullType(), "^Base%.OMHTTModule(.+)$")
+                    contents.active[name] = 1
                 end
             end
         end
@@ -161,7 +162,7 @@ end
 ---@return nil
 function T.configure(container)
     container:setType(T.CONTAINER)
-    local stats = Stats.resolve({active = {Capacity = 1}})
+    local stats = Stats.resolve({active = {Capacity = 1, CapacitySmall = 1, CapacityLarge = 1}})
     local capacity = math.ceil(10 + stats.ammo * 0.2 + (stats.modules + 1) * 0.3)
     container:setCapacity(capacity)
     if container:getContainingItem() then container:getContainingItem():setCapacity(capacity) end

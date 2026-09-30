@@ -113,6 +113,15 @@ def main():
         "-Djava.library.path=" + str(GAME), "-cp", os.pathsep.join([str(classes), str(GAME / "projectzomboid.jar")]),
         "HybridAssetCheck", PACKAGE / "42.20/media/models_X/OMHTT_ProbeHead.x"], cwd=GAME)
     (OUTPUT / "model-import.log").write_text(model_log, encoding="utf-8")
+    run([javac, "-d", classes, ROOT / "tools/BuildBaseDepth.java"])
+    depth_log = run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED",
+        "-Djava.library.path=" + str(GAME), "-cp", os.pathsep.join([str(classes), str(GAME / "projectzomboid.jar")]),
+        "BuildBaseDepth", PACKAGE / "42.20/media/textures/OMHTT_ProbeBase.png", OUTPUT / "base-depth.png", PACKAGE / "common/media"], cwd=GAME)
+    assert (OUTPUT / "base-depth.png").read_bytes() == (PACKAGE / "common/media/depthmaps/DEPTH_omhtt_barrier_01.png").read_bytes()
+    (OUTPUT / "base-depth.log").write_text(depth_log, encoding="utf-8")
+    pages = list(dict.fromkeys(re.findall(r"page\s*=\s*(\w+)", sandbox)))
+    assert pages == ["OMHTurretsTraps_General", "OMHTurretsTraps_BarrierPage", "OMHTurretsTraps_PotatoPage",
+                     "OMHTurretsTraps_AutomationPage", "OMHTurretsTraps_StatModulesPage", "OMHTurretsTraps_ModuleLootPage", "OMHTurretsTraps_Debug"]
     stock = os.environ.get("OMHTT_STOCK_CLASSES") == "1"
     classpath = os.pathsep.join(str(path) for path in ([classes, GAME / "projectzomboid.jar", GAME] if stock else [classes, GAME, GAME / "projectzomboid.jar"]))
     log = run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED", "-Djava.awt.headless=true",

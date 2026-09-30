@@ -81,3 +81,7 @@ The current repair keeps a provisional 70% direct-hit knockdown chance and a thr
 Live CCTV/remote aim, deep physical pits and climbing animations, general circuit logic, unlimited weapon-mod compatibility, incendiary systems, automatic distraction networks, and combat simulation outside the scoped Cure integration are not promised features. Reconsider only through a specific content decision and a bounded prototype.
 
 Basic barrier servicing (owner-approved 2026-09-27): pickup and free repair each take ten active seconds, stop on movement and award no XP. Pickup returns one full-condition item; repair restores 100 durability. Evaluate sustained-pressure balance because this intentionally makes repair a time-only cost. Basic/reinforced loose items weigh 4/5; their five-item packs weigh 6.6/8.25 (67% reduction). Upgrading also restores full durability (C43/C44).
+
+## 0.2.18 storage update (C65)
+
+Capacity is now one dedicated Expansion Kit socket. Small, Standard and Large tiers add 50/100/200 ammo and 2/4/6 regular slots, respectively, with decreasing loot weights. Existing Capacity items/settings become Standard without an ID change. Tier bonuses/loot are Sandbox-tunable; safe removal and native contents/weight remain. See PHASE_2_CHECKPOINT_3D3.md. The deferred defense roster above remains planned.

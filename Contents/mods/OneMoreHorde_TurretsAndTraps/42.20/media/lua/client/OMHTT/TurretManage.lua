@@ -8,6 +8,7 @@ local D = require("OMHTT/Diagnostics")
 local X = require("OMHTT/TurretTransfers")
 local Slot = require("OMHTT/TurretSlot")
 local Range = require("OMHTT/TurretRange")
+local Search = require("OMHTT/TurretSearch")
 local Panel = ISPanel:derive("OMHTTTurretPanel")
 local OpenAction = ISBaseTimedAction:derive("OMHTTTurretOpenAction")
 local active = {}
@@ -81,11 +82,12 @@ function Panel:changePriority()
     D.emit("turret-priority", {id = state.id, priority = state.priority})
 end
 
----@param button ISButton Page control
----@return nil
-function Panel:page(button)
-    self.modulePage = math.max(0, math.min(self.pages - 1, self.modulePage + button.delta))
+---@param delta number Wheel direction
+---@return boolean handled
+function Panel:scrollModules(delta)
+    self.moduleRow = math.max(0, math.min(self.rows - 2, self.moduleRow + (delta > 0 and 1 or -1)))
     self.nextRefresh = 0
+    return true
 end
 
 ---@param kind string Item kind
@@ -112,6 +114,11 @@ function Panel:refresh()
     if not power and contents.head then status = "NoPower" end
     if contents.head and contents.head:getCondition() <= 0 then status = "NoHead" end
     self.status = status
+    local response = Search.results[self.object]
+    if response and self.searchResponse ~= response then
+        self.searchResponse = response
+        self.result, self.reason = getText("UI_OMHTT_Manage" .. response.status), ""
+    end
     local state = T.state(self.object)
     local profile = M.profile(state, contents)
     local stats = T.cycleConfig(contents)
@@ -134,13 +141,11 @@ function Panel:refresh()
     self.fireButton:setEnable(status == "Ready")
     self.unloadButton:setEnable(contents.ammo > 0)
     local capacity = stats.modules
-    self.pages = math.max(1, math.ceil(math.max(contents.modules, capacity) / 4))
-    self.modulePage = math.min(self.modulePage, self.pages - 1)
-    self.previousButton:setEnable(self.modulePage > 0)
-    self.nextButton:setEnable(self.modulePage < self.pages - 1)
+    self.rows = math.max(2, math.ceil(math.max(contents.modules, capacity) / 5))
+    self.moduleRow = math.min(self.moduleRow, self.rows - 2)
     for i = 1, #self.slots do self.slots[i].items = {} end
-    for i = 1, 4 do
-        local number = self.modulePage * 4 + i
+    for i = 1, 10 do
+        local number = self.moduleRow * 5 + i
         local slot = self.moduleSlots[i]
         slot.disabled = number > capacity
         slot.label = getText("UI_OMHTT_ManageModule", number)
@@ -156,7 +161,7 @@ function Panel:refresh()
         if kind == "capacity" then slot = self.capacitySlot end
         if kind == "module" then
             modules = modules + 1
-            slot = self.moduleSlots[modules - self.modulePage * 4]
+            slot = self.moduleSlots[modules - self.moduleRow * 5]
         end
         if kind and slot then slot.items[#slot.items + 1] = item end
     end
@@ -199,7 +204,9 @@ function Panel:prerender()
     local h, y = self.lineHeight, self.detailsY
     self:drawText(getText("UI_OMHTT_Turret"), 12, 8, 1, 1, 1, 1, UIFont.Medium)
     self:drawText(getText("UI_OMHTT_ManageHint"), 12, self.titleHeight, 0.8, 0.8, 0.8, 1, UIFont.Small)
-    self:drawText(self.moduleLabel, 12, self.modulesY, 1, 1, 1, 1, UIFont.Small)
+    local label = self.moduleLabel
+    if self.rows > 2 then label = label .. " — " .. getText("UI_OMHTT_ManageScroll") end
+    self:drawText(label, 12, self.modulesY, 1, 1, 1, 1, UIFont.Small)
     self:drawText(self.moduleEffects, 12, y, 0.8, 0.8, 0.8, 1, UIFont.Small)
     self:drawText(getText("UI_OMHTT_Manage" .. self.status) .. " | " .. self.powerLabel, 12, y + h, 1, 1, 1, 1, UIFont.Small)
     local stats = self.stats
@@ -207,8 +214,15 @@ function Panel:prerender()
         self.object:getHealth(), self.object:getMaxHealth()), 12, y + h * 2, 1, 1, 1, 1, UIFont.Small)
     self:drawText(getText("UI_OMHTT_ManageTiming", string.format("%.2f", stats.reload / 1000), string.format("%.2f", 1000 / stats.cooldown)),
         12, y + h * 3, 1, 1, 1, 1, UIFont.Small)
-    self:drawText(self.result, 12, y + h * 4, 0.9, 0.85, 0.65, 1, UIFont.Small)
-    self:drawText(self.reason, 12, y + h * 5, 0.9, 0.85, 0.65, 1, UIFont.Small)
+    local message = self.result .. ":" .. self.reason
+    if self.lastMessage ~= message then
+        self.lastMessage, self.messageAt = message, now
+    end
+    local elapsed = now - self.messageAt
+    local glow = 0
+    if elapsed < 1500 then glow = (1 - elapsed / 1500) * (0.5 + 0.5 * math.cos(elapsed / 120)) end
+    self:drawText(self.result, 12, y + h * 4, 0.9 + glow * 0.1, 0.85 + glow * 0.15, 0.65 + glow * 0.35, 1, UIFont.Small)
+    self:drawText(self.reason, 12, y + h * 5, 0.9 + glow * 0.1, 0.85 + glow * 0.15, 0.65 + glow * 0.35, 1, UIFont.Small)
 end
 
 ---@param x number Local X
@@ -231,14 +245,15 @@ function OpenAction:perform()
         local slotHeight = lineHeight + 48
         local top = titleHeight + lineHeight + 12
         local modulesY = top + (slotHeight + 8) * 2
-        local detailsY = modulesY + lineHeight + slotHeight + 12
+        local moduleHeight = lineHeight * 2 + 24
+        local detailsY = modulesY + lineHeight + (moduleHeight + 6) * 2 + 6
         local height = detailsY + lineHeight * 6 + 82
         local x = getPlayerScreenLeft(index) + getPlayerScreenWidth(index) - width - 12
         local y = getPlayerScreenTop(index) + math.max(12, (getPlayerScreenHeight(index) - height) / 2)
         local panel = Panel:new(x, y, width, height)
         panel.player, panel.object, panel.nextRefresh = self.character, self.object, 0
         panel.deviceId, panel.slots, panel.moduleSlots = T.state(self.object).id, {}, {}
-        panel.modulePage, panel.pages = 0, 1
+        panel.moduleRow, panel.rows = 0, 2
         panel.lineHeight, panel.titleHeight, panel.slotHeight = lineHeight, titleHeight, slotHeight
         panel.modulesY, panel.detailsY, panel.result, panel.reason = modulesY, detailsY, "", ""
         panel.moveWithMouse = true
@@ -248,19 +263,18 @@ function OpenAction:perform()
         panel.batterySlot = panel:addSlot("battery", "", width / 2 + 4, top, (width - 32) / 2)
         panel.ammoSlot = panel:addSlot("ammo", "", 12, top + slotHeight + 8, (width - 32) * 0.65)
         panel.capacitySlot = panel:addSlot("capacity", getText("UI_OMHTT_ManageCapacity"), 20 + (width - 32) * 0.65, top + slotHeight + 8, (width - 32) * 0.35)
-        local moduleWidth = (width - 48) / 4
-        for i = 1, 4 do
-            panel.moduleSlots[i] = panel:addSlot("module", "", 12 + (i - 1) * (moduleWidth + 8), modulesY + lineHeight, moduleWidth)
+        local moduleWidth = (width - 48) / 5
+        for i = 1, 10 do
+            panel.moduleSlots[i] = panel:addSlot("module", "", 12 + ((i - 1) % 5) * (moduleWidth + 6),
+                modulesY + lineHeight + math.floor((i - 1) / 5) * (moduleHeight + 6), moduleWidth)
+            panel.moduleSlots[i]:setHeight(moduleHeight)
         end
         panel.autoButton = ISButton:new(12, height - 72, 150, 28, "", panel, Panel.toggleAuto)
         panel.priorityButton = ISButton:new(170, height - 72, width - 182, 28, "", panel, Panel.changePriority)
         panel.fireButton = ISButton:new(12, height - 38, 110, 28, getText("UI_OMHTT_ManageFire"), panel, Panel.fire)
         panel.unloadButton = ISButton:new(130, height - 38, 150, 28, getText("UI_OMHTT_ManageUnload"), panel, Panel.unload)
-        panel.previousButton = ISButton:new(width - 80, modulesY - 3, 28, lineHeight, "<", panel, Panel.page)
-        panel.nextButton = ISButton:new(width - 44, modulesY - 3, 28, lineHeight, ">", panel, Panel.page)
-        panel.previousButton.delta, panel.nextButton.delta = -1, 1
         local close = ISButton:new(width - 34, 6, 26, 24, "X", panel, Panel.close)
-        local buttons = {panel.fireButton, panel.unloadButton, panel.previousButton, panel.nextButton, panel.autoButton, panel.priorityButton, close}
+        local buttons = {panel.fireButton, panel.unloadButton, panel.autoButton, panel.priorityButton, close}
         for i = 1, #buttons do buttons[i]:initialise(); panel:addChild(buttons[i]) end
         panel:refresh()
         panel:addToUIManager()

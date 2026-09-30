@@ -5,7 +5,7 @@ local D = require("OMHTT/Diagnostics")
 local L = {}
 L.POOLS = {"ElectronicStoreMisc", "CrateElectronics", "MechanicShelfElectric", "ArmyStorageElectronics"}
 L.WEIGHTS = {Firing = 2, MotionDetection = 2, Filter = 0.5, Detection360 = 0.25,
-    RapidFire = 0.5, Reload = 0.5, Velocity = 0.5, Range = 0.5, Capacity = 0.25, Autoloader = 0.1}
+    RapidFire = 0.5, Reload = 0.5, Velocity = 0.5, Range = 0.5, CapacitySmall = 0.5, Capacity = 0.25, CapacityLarge = 0.1, Autoloader = 0.1}
 
 ---@return nil
 function L.apply()

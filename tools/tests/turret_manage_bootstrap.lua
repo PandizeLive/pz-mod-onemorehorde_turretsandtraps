@@ -16,6 +16,8 @@ function ISPanel:isMouseOver() return false end
 function ISPanel:setStencilRect() end
 function ISPanel:clearStencilRect() end
 function ISPanel:drawRectBorder() end
+function ISPanel:drawRect() end
+function ISPanel:setHeight(height) self.height = height end
 function ISPanel:drawText(text) check(type(text) == "string", "Manage draws resolved status text") end
 ISButton = {new = function(self, x, y, w, h, title, target, callback)
     return {initialise = function() end, setEnable = function(self, enabled) self.enabled = enabled end,

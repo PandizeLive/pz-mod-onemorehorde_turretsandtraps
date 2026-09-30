@@ -88,16 +88,34 @@ function Slot:prerender()
     local item = self.items[1]
     local name = getText("UI_OMHTT_ManageDrop")
     if item then
-        ISInventoryItem.renderItemIcon(self, item, 8, h + 8, 1, 32, 32)
+        if self.kind == "module" then
+            ISInventoryItem.renderItemIcon(self, item, self.width / 2 - 8, h + 2, 1, 16, 16)
+        else
+            ISInventoryItem.renderItemIcon(self, item, 8, h + 8, 1, 32, 32)
+        end
         name = item:getDisplayName()
+        if self.kind == "module" or self.kind == "capacity" then
+            local key = string.match(item:getFullType(), "^Base%.OMHTTModule(.+)$")
+            if key then name = getText("UI_OMHTT_Module" .. key) end
+        end
         if #self.items > 1 then name = tostring(#self.items) .. " x " .. name end
     end
-    self:setStencilRect(44, h + 7, self.width - 48, h + 4)
-    self:drawText(name, 44, h + 8, 1, 1, 1, 1, UIFont.Small)
+    local textX, textY = 44, h + 8
+    if self.kind == "module" then textX, textY = 4, h + 20 end
+    self:setStencilRect(textX, textY, self.width - textX - 4, h + 4)
+    self:drawText(name, textX, textY, 1, 1, 1, 1, UIFont.Small)
     self:clearStencilRect()
+    if self.disabled then self:drawRect(0, 0, self.width, self.height, 0.4, 0, 0, 0) end
     if self:isMouseOver() and ISMouseDrag.dragging and ISMouseDrag.draggingFocus ~= self then
         self:drawRectBorder(0, 0, self.width, self.height, 1, 0.8, 0.8, 0.8)
     end
+end
+
+---@param delta number Wheel direction
+---@return boolean handled
+function Slot:onMouseWheel(delta)
+    if self.kind == "module" then return self.owner:scrollModules(delta) end
+    return false
 end
 
 ---@return nil

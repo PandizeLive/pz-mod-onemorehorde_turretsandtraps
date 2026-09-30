@@ -17,6 +17,12 @@ stats = S.resolve({active = active})
 check(stats.damage == 70 and stats.knockdown == 90 and stats.range == 16 and stats.modules == 8 and stats.ammo == 200,
     "Stack caps apply and legacy duplicate Capacity never compounds")
 check(math.abs(stats.cooldown - 2000 / 3) < 0.001 and math.abs(stats.reload - 2000 / 3) < 0.001, "Speed bonuses stop at configured cap")
+for _, tier in pairs({{"CapacitySmall", 50, 2}, {"Capacity", 100, 4}, {"CapacityLarge", 200, 6}}) do
+    local expanded = S.resolve({active = {[tier[1]] = 1}})
+    check(expanded.ammo == base.ammo + tier[2] and expanded.modules == base.modules + tier[3], "Expansion tier grants its own bonuses")
+end
+local mixed = S.resolve({active = {CapacitySmall = 1, Capacity = 1, CapacityLarge = 1}})
+check(mixed.ammo == base.ammo + 200 and mixed.modules == base.modules + 6, "Legacy mixed kits never add bonuses together")
 local original = settings.PotatoKnockdownChance
 settings.PotatoKnockdownChance = 100
 check(S.resolve({active = active}).knockdown == 100, "Module cap cannot nerf higher base knockdown")

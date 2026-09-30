@@ -172,6 +172,24 @@ local manualShots = record.shots
 check(W.fire({}, object, front) == "Aiming" and T.contents(storage).ammo == manualAmmo, "Manual command queues turning without spending resources")
 for i = 1, 30 do testMillis = testMillis + 100; Aim.tick() end
 check(record.shots == manualShots + 1 and T.contents(storage).ammo == manualAmmo - 1, "Manual queued shot fires exactly once after alignment")
+local Search = require("OMHTT/TurretSearch")
+add("Base.Potato")
+head.data.OMHTTCycle = {schema = 1, loaded = 1, nextShot = 0}
+record.aimDegrees = 0
+local searchShots, searchAmmo = record.shots, T.contents(storage).ammo
+check(W.fire({}, object) == "Searching" and record.shots == searchShots, "Manual click queues without scanning or firing")
+check(W.fire({}, object) == "Searching" and #Search.order == 1, "Repeated clicks do not enqueue duplicate shots")
+Search.tick()
+check(Search.pending[object] and record.shots == searchShots, "Dense search yields after first bounded slice")
+for i = 1, 50 do testMillis = testMillis + 16; Search.tick(); Aim.tick() end
+check(not Search.pending[object] and record.shots == searchShots + 1 and T.contents(storage).ammo == searchAmmo - 1,
+    "Queued search and aim commit exactly once")
+add("Base.Potato")
+head.data.OMHTTCycle = {schema = 1, loaded = 1, nextShot = 0}
+check(W.fire({}, object) == "Searching", "Second command can queue after completion")
+W.near = function() return false end
+Search.tick()
+check(Search.results[object].status == "Unavailable" and record.shots == searchShots + 1, "Walking away cancels search without consuming ammunition")
 W.near = originalNear
 object.index = -1
 A.tick()

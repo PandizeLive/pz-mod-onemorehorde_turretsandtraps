@@ -84,6 +84,8 @@ function A.step(entry, deadline)
         or getCell():getGridSquare(square:getX(), square:getY(), square:getZ()) ~= square then return false end
     local now = getTimestampMs()
     if now < entry.due then return true end
+    local aim = require("OMHTT/TurretAim").entries[object]
+    if require("OMHTT/TurretSearch").pending[object] or (aim and aim.player) then return true end
     local interval = M.option("DetectionInterval", 0.25, 0.1, 5) * 1000
     local contents = T.contents(object:getContainer())
     if not W.valid(object) or not M.detects(state, contents) or not W.power(object, contents) then

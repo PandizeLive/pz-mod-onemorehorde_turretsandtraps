@@ -67,6 +67,9 @@ function Aim.tick()
         end
         if not valid then
             Aim.entries[object] = nil
+            if entry.player then
+                require("OMHTT/TurretSearch").results[object] = {status = "Unavailable", at = now}
+            end
         else
             local desired = Aim.angle(object, entry.target)
             local elapsed = math.min(100, math.max(0, now - entry.last)) / 1000
@@ -74,7 +77,8 @@ function Aim.tick()
             state.aimDegrees = Aim.move(state.aimDegrees or (state.facing or 0) * 22.5, desired, elapsed * speed)
             if math.abs((desired - state.aimDegrees + 540) % 360 - 180) <= 1 and entry.player then
                 Aim.entries[object] = nil
-                W.fire(entry.player, object, entry.target)
+                local result = W.fire(entry.player, object, entry.target)
+                require("OMHTT/TurretSearch").results[object] = {status = result, at = now}
             end
         end
     end

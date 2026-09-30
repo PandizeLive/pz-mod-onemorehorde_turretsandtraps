@@ -21,7 +21,7 @@ local function verifyTurrets()
             end
         end
     end
-    assert(count == 40, "Expected ten active modules in four native loot pools")
+    assert(count == 48, "Expected twelve active components in four native loot pools")
     local nativeContents = {active = {Detection360 = 1, Filter = 1}}
     local profile = Modules.profile({baseFacing = 4, facing = 12, priority = "Toughest"}, nativeContents)
     assert(profile.cone == 360 and profile.heading == 90 and profile.priority == "Toughest", "Module profile failed")
@@ -39,7 +39,7 @@ local function verifyTurrets()
     assert(T.contents(live).active.MotionDetection == 1, "Native module condition defaults are not active")
     detector:setCondition(0)
     assert(T.contents(live).active.MotionDetection == nil, "Broken native module remains active")
-    print("[OMHTT-Smoke] native-modules loot=40 profiles=valid condition=checked")
+    print("[OMHTT-Smoke] native-modules loot=48 profiles=valid condition=checked")
     local resources = ArrayList.new()
     local tools = {"Base.Screwdriver", "Base.Wrench"}
     local routes = {
@@ -124,13 +124,23 @@ local function verifyTurrets()
     local info = SpriteConfigManager.GetObjectInfo("OMHTTDeployTurret")
     assert(info and info:getRecipe():getCraftRecipe():getXPAwardCount() == 0, "Deployment repeats XP")
     local recipe = info:getRecipe():getCraftRecipe()
-    local data = CraftRecipeData.new(CraftMode.Handcraft, false, true, false, true)
-    data:setRecipe(recipe)
+    local decoy = player:getInventory():AddItem("Base.OMHTTTurretBase")
+    decoy:getInventory():AddItem("Base.OMHTTPotatoHead")
     player:getInventory():AddItem(packed)
-    assert(data:offerInputItem(recipe:getInputs():get(0), packed), "Loaded portable turret rejected by build recipe")
+    local containers = ArrayList.new()
+    containers:add(player:getInventory())
+    local installLogic = BuildLogic.new(player, nil, nil)
+    installLogic:setContainers(containers)
+    installLogic:setRecipe(recipe)
+    installLogic:setManualSelectInputs(true)
+    assert(installLogic:offerInputItem(packed), "BuildLogic rejects exact selected packed base")
+    local data = installLogic:getRecipeData()
+    assert(data:getFirstManualInputFor(recipe:getInputs():get(0)) == packed, "BuildLogic changes selected packed item")
     assert(data:getFirstManualInputFor(recipe:getInputs():get(0)) == packed, "Placement preview cannot resolve exact packed input")
     assert(data:consumeInputs(resources), "Loaded portable turret could not be deployed")
     data:processDestroyAndUsedItems(player)
+    assert(player:getInventory():contains(decoy) and decoy:getInventory():getItems():size() == 1, "Install consumed the other packed turret")
+    print("[OMHTT-Smoke] native-install exact=selected decoy=preserved preview=nonconsuming")
     assert(not player:getInventory():contains(packed) and inventory:contains(battery), "Native build must consume the base but retain its contents for adoption")
     local square = IsoGridSquare.new(getCell(), nil, 6, 6, 0)
     local object = IsoThumpable.new(getCell(), square, "omhtt_barrier_01_44", false)
@@ -154,7 +164,7 @@ local function verifyTurrets()
     for facing = 0, 15 do
         T.state(object).facing = facing
         W.refresh(object)
-        assert(object:getSprite():getProperties():has(IsoFlagType.FloorOverlay), "Base must use floor depth instead of default object depth")
+        assert(not object:getSprite():getProperties():has(IsoFlagType.FloorOverlay), "Upright base must not use floor depth")
         assert(object:getSpriteName() == "omhtt_barrier_01_44" and object:getSpriteConfig():isValid(), "Hybrid aiming moved or invalidated stationary base")
     end
     T.hybrid = function() return false end

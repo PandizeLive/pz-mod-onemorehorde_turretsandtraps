@@ -57,7 +57,7 @@ function W.refresh(object)
     state.baseFacing = state.baseFacing or state.facing
     local hybrid = T.hybrid()
     local sprite = T.sprite(state.baseFacing or state.facing, false)
-    getSprite(sprite):getProperties():set(IsoFlagType.FloorOverlay)
+    getSprite(sprite):getProperties():unset(IsoFlagType.FloorOverlay)
     if contents.head and not hybrid then sprite = T.sprite(state.facing, true) end
     if object:getSpriteName() ~= sprite then
         object:setSprite(sprite)
@@ -73,9 +73,9 @@ function W.refresh(object)
         GameEntityFactory.AddComponent(object, ComponentType.SpriteConfig:CreateComponentFromScript(info:getScript()))
         if not object:getSpriteConfig():isValid() then error("[OMHTT] Invalid turret sprite " .. sprite) end
     end
-    if state.depthPolicy ~= "floor-base-v1" then
+    if state.depthPolicy ~= "cube-depth-v2" then
         object:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_OBJECT_MODIFY)
-        state.depthPolicy = "floor-base-v1"
+        state.depthPolicy = "cube-depth-v2"
     end
     state.condition = object:getHealth()
     T.cycle(contents, getTimestampMs())
@@ -88,6 +88,8 @@ function W.onCreate(params)
     if isClient() or isServer() then return end
     local object, player, data = params.thumpable, params.character, params.craftRecipeData
     if T.state(object) then return end
+    D.emit("turret-placement", {cheat = player:isBuildCheat(), x = object:getX(), y = object:getY(),
+        playerX = player:getX(), playerY = player:getY(), distance = math.sqrt((object:getX() - player:getX()) ^ 2 + (object:getY() - player:getY()) ^ 2)})
     local source = nil
     if data then
         local items = data:getAllConsumedItems()
@@ -147,9 +149,9 @@ function W.pickup(player, object, id)
     if not W.near(player, object) or T.state(object).id ~= id then return false end
     local item = instanceItem(T.BASE)
     local state = T.state(object)
-    if state.depthPolicy ~= "floor-base-v1" then
+    if state.depthPolicy ~= "cube-depth-v2" then
         object:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_OBJECT_MODIFY)
-        state.depthPolicy = "floor-base-v1"
+        state.depthPolicy = "cube-depth-v2"
     end
     state.condition = object:getHealth()
     local copied = {}
@@ -264,6 +266,8 @@ function W.fire(player, object, target)
     local state = T.state(object)
     state.ammo = contents.ammo
     local stats = T.cycleConfig(contents)
+    if player and not target then return require("OMHTT/TurretSearch").request(player, object) end
+    local fireStarted = getTimestampMs()
     local options = {range = stats.range, interval = stats.cooldown,
         damage = stats.damage / 100, knockdown = stats.knockdown,
         splash = stats.damage * T.option("SplashPercent", 25, 0, 100) / 10000, radius = T.option("SplashRadius", 1.5, 0, 3), managed = true,
@@ -293,7 +297,7 @@ function W.fire(player, object, target)
     W.refresh(object)
     if impact then triggerEvent("OnServerCommand", F.MODULE, "Impact", impact) end
     D.emit("turret-fire-result", {id = state.id, result = result, ammo = T.contents(object:getContainer()).ammo, power = power.kind, automatic = player == nil,
-        loaded = cycle.loaded, reloadReady = cycle.reloadReady, nextShot = cycle.nextShot})
+        loaded = cycle.loaded, reloadReady = cycle.reloadReady, nextShot = cycle.nextShot, fireMs = getTimestampMs() - fireStarted})
     return result
 end
 

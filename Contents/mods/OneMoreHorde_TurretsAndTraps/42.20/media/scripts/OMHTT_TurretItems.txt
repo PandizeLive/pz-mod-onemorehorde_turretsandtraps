@@ -70,7 +70,7 @@ module Base {
         Tooltip = Tooltip_OMHTT_ModuleRange,
     }
     item OMHTTModuleCapacity {
-        DisplayName = Capacity Module,
+        DisplayName = Standard Expansion Kit,
         ItemType = base:normal,
         DisplayCategory = Material,
         Weight = 0.3,
@@ -100,5 +100,21 @@ module Base {
         Weight = 0.3,
         Icon = OMHTT_TestCube,
         Tooltip = Tooltip_OMHTT_ModuleAutoloader,
+    }
+    item OMHTTModuleCapacitySmall {
+        DisplayName = Small Expansion Kit,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        Tooltip = Tooltip_OMHTT_ModuleCapacity,
+    }
+    item OMHTTModuleCapacityLarge {
+        DisplayName = Large Expansion Kit,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        Tooltip = Tooltip_OMHTT_ModuleCapacity,
     }
 }

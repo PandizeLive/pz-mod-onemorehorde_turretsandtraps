@@ -1,3 +1,4 @@
+local kits = {{"CapacitySmall", "Small", 50, 2}, {"Capacity", "", 100, 4}, {"CapacityLarge", "Large", 200, 6}}
 local S = {}
 
 ---@param key string Setting
@@ -34,7 +35,14 @@ function S.resolve(contents)
     local damage = S.option("PotatoDamage", 35, 0, 1000)
     local knockdown = S.option("PotatoKnockdownChance", 70, 0, 100)
     local range = S.option("PotatoRange", 6, 1, 20)
-    local capacity = active.Capacity and 1 or 0
+    local extraAmmo, extraModules = 0, 0
+    for i = 1, #kits do
+        local kit = kits[i]
+        if active[kit[1]] then
+            extraAmmo = math.max(extraAmmo, S.option("Capacity" .. kit[2] .. "AmmoBonus", kit[3], 0, 500))
+            extraModules = math.max(extraModules, S.option("Capacity" .. kit[2] .. "ModuleBonus", kit[4], 0, 20))
+        end
+    end
     local rapid = S.bonus(active, "RapidFire", 25, 200)
     local loading = S.bonus(active, "Reload", 25, 200)
     cooldown = math.min(cooldown, math.max(S.option("RapidFireMinimum", 0.25, 0.1, 10), cooldown / (1 + rapid / 100)))
@@ -45,8 +53,8 @@ function S.resolve(contents)
     return {damage = damage * (1 + S.bonus(active, "Velocity", 20, 100) / 100),
         knockdown = math.min(100, knockdown + knockBonus),
         range = math.min(30, range + S.bonus(active, "Range", 2, 10)),
-        ammo = math.floor(S.option("PotatoAmmoCapacity", 100, 1, 500) + capacity * S.option("CapacityAmmoBonus", 100, 0, 500)),
-        modules = math.floor(S.option("PotatoModuleCapacity", 4, 0, 20) + capacity * S.option("CapacityModuleBonus", 4, 0, 20)),
+        ammo = math.floor(S.option("PotatoAmmoCapacity", 100, 1, 500) + extraAmmo),
+        modules = math.floor(S.option("PotatoModuleCapacity", 4, 0, 20) + extraModules),
         magazine = math.floor(S.option("PotatoMagazineCapacity", 1, 1, 500)),
         reload = reload * 1000, cooldown = cooldown * 1000, autoloader = active.Autoloader ~= nil}
 end

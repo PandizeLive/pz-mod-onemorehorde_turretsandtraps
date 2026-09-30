@@ -121,6 +121,19 @@
     "UI_OMHTT_AutoDisabled": "Automation disabled",
     "UI_OMHTT_ManageAiming": "Turning to target",
     "UI_OMHTT_ChargePercent": "%1 percent",
-    "UI_OMHTT_ManageCapacity": "Capacity socket",
-    "UI_OMHTT_ManageCapacityFull": "Remove excess ammo or modules first."
+    "UI_OMHTT_ManageCapacity": "Expansion",
+    "UI_OMHTT_ManageCapacityFull": "Remove excess ammo or modules first.",
+    "UI_OMHTT_ManageSearching": "Searching…",
+    "UI_OMHTT_ManageInstall": "Install",
+    "UI_OMHTT_InstallMissing": "Selected turret is no longer available.",
+    "UI_OMHTT_ModuleRapidFire": "Rapid-Fire",
+    "UI_OMHTT_ModuleReload": "Reload",
+    "UI_OMHTT_ModuleVelocity": "Velocity",
+    "UI_OMHTT_ModuleRange": "Range",
+    "UI_OMHTT_ModuleAutoloader": "Autoloader",
+    "UI_OMHTT_ModuleCapacity": "Standard",
+    "UI_OMHTT_ModuleCapacitySmall": "Small",
+    "UI_OMHTT_ModuleCapacityLarge": "Large",
+    "UI_OMHTT_Searching": "Searching…",
+    "UI_OMHTT_ManageScroll": "Scroll for more slots"
 }

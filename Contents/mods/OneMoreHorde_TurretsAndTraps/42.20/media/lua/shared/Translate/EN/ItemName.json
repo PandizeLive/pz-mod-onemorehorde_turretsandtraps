@@ -11,9 +11,11 @@
     "Base.OMHTTModuleRapidFire": "Rapid-Fire Module",
     "Base.OMHTTModuleVelocity": "Velocity Module",
     "Base.OMHTTModuleRange": "Range Module",
-    "Base.OMHTTModuleCapacity": "Capacity Module",
+    "Base.OMHTTModuleCapacity": "Standard Expansion Kit",
     "Base.OMHTTModuleDetection360": "360 Module",
     "Base.OMHTTModuleReload": "Reload Module",
     "Base.OMHTTModuleAutoloader": "Autoloader Module",
-    "Base.OMHTTProbeHead": "OMH Render Probe Head"
+    "Base.OMHTTProbeHead": "OMH Render Probe Head",
+    "Base.OMHTTModuleCapacitySmall": "Small Expansion Kit",
+    "Base.OMHTTModuleCapacityLarge": "Large Expansion Kit"
 }

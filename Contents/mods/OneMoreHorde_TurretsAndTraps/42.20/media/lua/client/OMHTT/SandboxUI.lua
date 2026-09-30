@@ -16,7 +16,7 @@ local moduleGroups = {
     {"Sandbox_Title_OMHTurretsTraps_Reload", {"ReloadBonus", "ReloadBonusCap", "ReloadMinimum"}},
     {"Sandbox_Title_OMHTurretsTraps_Velocity", {"VelocityBonus", "VelocityBonusCap", "VelocityKnockdownBonus", "VelocityKnockdownCap"}},
     {"Sandbox_Title_OMHTurretsTraps_Range", {"RangeBonus", "RangeBonusCap"}},
-    {"Sandbox_Title_OMHTurretsTraps_Capacity", {"CapacityAmmoBonus", "CapacityModuleBonus"}},
+    {"Sandbox_Title_OMHTurretsTraps_Capacity", {"CapacitySmallAmmoBonus", "CapacitySmallModuleBonus", "CapacityAmmoBonus", "CapacityModuleBonus", "CapacityLargeAmmoBonus", "CapacityLargeModuleBonus"}},
 }
 
 ---@param panel ISPanel Sandbox panel
@@ -52,6 +52,8 @@ function UI.attach(panel)
     local sections = groups
     if panel.controls["OMHTurretsTraps.RapidFireBonus"] then
         sections = moduleGroups
+    elseif panel.controls["OMHTurretsTraps.SpikeBarrier"] then
+        sections = {{"Sandbox_Title_OMHTurretsTraps_Barrier", {"SpikeBarrier", "SpikeBarrierDamage", "SpikeBarrierHealth", "SpikeBarrierScratchChance", "ReinforcedBarrierDamage", "ReinforcedBarrierHealthMultiplier"}}}
     elseif not panel.controls["OMHTurretsTraps.PotatoTurret"] then
         return panel
     end

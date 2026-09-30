@@ -79,7 +79,7 @@ check(completed and not inventory.visible and not inventory.pinned, "Manage leav
 local panel = testTurretPanel
 panel:prerender()
 check(not panel.fireButton.enabled and panel.status == "NoHead", "Empty base cannot fire")
-check(#panel.slots == 8 and panel.height <= 720 and panel.x >= 0, "Dedicated slots and controls fit 1280x720")
+check(#panel.slots == 14 and panel.height <= 720 and panel.x >= 0, "Dedicated slots and controls fit 1280x720")
 for i = 1, #panel.slots do panel.slots[i]:prerender() end
 panel:fire()
 check(fired == 1 and panel.result == getText("UI_OMHTT_ManageNoTarget"), "Manual fire uses existing validation")
@@ -176,12 +176,12 @@ local oldModules = SandboxVars.OMHTurretsTraps.PotatoModuleCapacity
 SandboxVars.OMHTurretsTraps.PotatoModuleCapacity = 20
 for i = 1, 20 do storage:AddItem(item("Base.OMHTTModuleRange")) end
 panel:refresh()
-check(panel.pages == 5 and panel.nextButton.enabled, "High capacity uses pages instead of offscreen slots")
-panel.modulePage = 4; panel:refresh()
-check(#panel.moduleSlots[4].items == 1 and not panel.nextButton.enabled, "Twentieth module stays accessible")
+check(panel.rows == 4, "High capacity uses additional scrollable rows")
+panel:scrollModules(1); panel:scrollModules(1); panel:refresh()
+check(#panel.moduleSlots[10].items == 1 and panel.moduleRow == 2, "Twentieth module stays accessible")
 SandboxVars.OMHTurretsTraps.PotatoModuleCapacity = 4
 panel:refresh()
-check(panel.pages == 5, "Lowered capacity preserves access to stored modules")
+check(panel.rows == 4, "Lowered capacity preserves access to stored modules")
 check(panel.moduleSlots[4].disabled, "Over-capacity slots still allow recovery but not deposits")
 ISMouseDrag.dragging, ISMouseDrag.draggingFocus = {invalid}, {onMouseUp = function() end}
 panel.moduleSlots[4]:onMouseUp(1, 1)

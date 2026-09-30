@@ -1,8 +1,10 @@
 # Phases and checkpoints
 
-**Current installed: [P2C3d2 active stat modules, 0.2.17](PHASE_2_CHECKPOINT_3D2.md).** C63 approves implementation and Reload stacking. Rapid-Fire, Reload, Velocity and Range stack; Capacity has one dedicated socket; Autoloader removes reload delay. Shared effective stats, safe storage, grouped tuning and loot are implemented. Verification/install status is in RELEASE.md. Carry the entire held 0.2.16.1 test into the eight-step combined owner test; no rendered acceptance is implied.
+**Current patch: [P2C3d3 — Expansion Kits and usability, 0.2.18](PHASE_2_CHECKPOINT_3D3.md).** C65 approved implementation; source/native verification and installation status are in RELEASE.md. One combined client test covers the held rendering/management findings.
 
-**Next: P2C3e multiplayer/performance gate.** Prove transfer/shot authority, synchronization, persistence and bounded workload before enabling multiplayer. Firearm adapters remain P5; module crafting remains deferred. Review combined SP results before expanding authority.
+**Previous: [P2C3d2 active stat modules, 0.2.17](PHASE_2_CHECKPOINT_3D2.md).** C63 approves implementation and Reload stacking. Rapid-Fire, Reload, Velocity and Range stack; Capacity has one dedicated socket; Autoloader removes reload delay. Shared effective stats, safe storage, grouped tuning and loot are implemented. Verification/install status is in RELEASE.md. Carry the entire held 0.2.16.1 test into the eight-step combined owner test; no rendered acceptance is implied.
+
+**Next: supported-firearm mount prototype after the combined 0.2.18 check.** Owner approved moving the firearm prototype ahead of P2C3e multiplayer: prove a vanilla pistol, pump shotgun and bolt-action rifle on the universal base. First resolve current head/base, settings, management and firing-hitch findings. P2C3e multiplayer/performance certification remains required before enabling multiplayer; broad firearm compatibility and crafting stay later work.
 
 **Current: [P2C3a-c — modular potato turret foundation, 0.2.9](PHASE_2_CHECKPOINT_3.md).** C48-C50 approve inventory/persistence, revised metal recipes, native deployment and powered manual firing. Combine player acceptance with the held P2C2b test. Module storage is implemented; P2C3d adds module effects and P2C3e proves multiplayer/performance. Version 0.2.9 is installed and archived, with exact tagged hashes and a verified 0.2.8 backup recorded in RELEASE.md. Native furniture Install/Pickup stays deferred.
 

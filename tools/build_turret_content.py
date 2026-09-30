@@ -18,7 +18,7 @@ def translations(category, values):
 
 def main():
     modules = {"Firing": "Firing", "MotionDetection": "Detection", "Filter": "Filter",
-               "RapidFire": "Rapid-Fire", "Velocity": "Velocity", "Range": "Range", "Capacity": "Capacity",
+               "RapidFire": "Rapid-Fire", "Velocity": "Velocity", "Range": "Range", "Capacity": "Standard Expansion Kit", "CapacitySmall": "Small Expansion Kit", "CapacityLarge": "Large Expansion Kit",
                "Detection360": "360", "Reload": "Reload", "Autoloader": "Autoloader"}
     items = """module Base {
     item OMHTTTurretBase {
@@ -45,13 +45,15 @@ def main():
     }
 """
     for key, name in modules.items():
+        label = name if key.startswith("Capacity") else name + " Module"
+        tooltip = "Capacity" if key.startswith("Capacity") else key
         items += f"""    item OMHTTModule{key} {{
-        DisplayName = {name} Module,
+        DisplayName = {label},
         ItemType = base:normal,
         DisplayCategory = Material,
         Weight = 0.3,
         Icon = OMHTT_TestCube,
-        Tooltip = Tooltip_OMHTT_Module{key},
+        Tooltip = Tooltip_OMHTT_Module{tooltip},
     }}
 """
     write("scripts/OMHTT_TurretItems.txt", items + "}\n")
@@ -145,7 +147,7 @@ def main():
     texture.write_bytes((MEDIA / "textures/OMHTT_TestCube.png").read_bytes())
     translations("Recipes", {**names, "OMHTTDeployTurret": "Deploy Turret"})
     translations("ItemName", {"Base.OMHTTTurretBase": "Turret Base", "Base.OMHTTPotatoHead": "Potato Launcher Head",
-                              **{"Base.OMHTTModule" + k: v + " Module" for k, v in modules.items()}})
+                              **{"Base.OMHTTModule" + k: (v if k.startswith("Capacity") else v + " Module") for k, v in modules.items()}})
     translations("Tooltip", {
         "Tooltip_OMHTT_TurretBase": "Holds a head, ammo, modules and a battery.",
         "Tooltip_OMHTT_PotatoHead": "Install in a turret base. Uses potatoes and power.",

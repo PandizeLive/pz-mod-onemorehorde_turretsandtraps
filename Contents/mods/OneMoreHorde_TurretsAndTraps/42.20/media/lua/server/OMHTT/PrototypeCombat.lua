@@ -152,24 +152,18 @@ function Combat.fire(record, object, player, options)
     end
     if not options.managed and now < record.nextShot then return "Cooling" end
     local origin = object:getSquare()
-    local candidates, visits = Combat.candidates(origin, options.range)
+    local candidates, visits = {}, 0
     local target, bestDistance = nil, 0
-    for i = 1, #candidates do
-        local zombie = candidates[i].zombie
-        local inside = not options.profile or Modules.inside(origin, zombie, options.profile)
-        local clear, reason = false, "cone"
-        if inside then
-            clear, reason = Combat.clearLane(origin, zombie:getSquare(), options.range)
-        end
-        if i <= 6 and not options.target then
-            Diagnostics.emit("shot-candidate", {id = record.id, order = i, x = zombie:getX(), y = zombie:getY(),
-                health = zombie:getHealth(), distanceSquared = candidates[i].distance, inside = inside, clear = clear,
-                reason = tostring(reason), cone = options.profile and options.profile.cone or 360})
-        end
-        if clear and (not options.target or zombie == options.target)
-            and Modules.better(zombie, candidates[i].distance, target, bestDistance,
-                options.profile and options.profile.priority or "Closest") then
-            target, bestDistance = zombie, candidates[i].distance
+    if not options.target then
+        candidates, visits = Combat.candidates(origin, options.range)
+        for i = 1, #candidates do
+            local zombie = candidates[i].zombie
+            local inside = not options.profile or Modules.inside(origin, zombie, options.profile)
+            if inside and Combat.clearLane(origin, zombie:getSquare(), options.range)
+                and Modules.better(zombie, candidates[i].distance, target, bestDistance,
+                    options.profile and options.profile.priority or "Closest") then
+                target, bestDistance = zombie, candidates[i].distance
+            end
         end
     end
     if options.target then

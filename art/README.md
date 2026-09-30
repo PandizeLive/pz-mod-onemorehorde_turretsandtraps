@@ -40,3 +40,7 @@ OMH branding templates may be reused only after checking the actual current work
 ## Authorized development markers
 
 The owner authorized temporary white directional-arrow textures and distinct test-object markers on 2026-09-25. [Preview](placeholders/dev-markers-preview.png) shows TEST, POTATO and BARRIER technical identifiers. These code-drawn arrows/labels are for debugging and do not establish final art direction.
+
+## 0.2.18 raised-base depth
+
+The placeholder base remains a 128x256 tile texture and the head remains a separate model. Raised base pixels now use common/media/tileGeometry.txt and depthmaps/DEPTH_omhtt_barrier_01.png (base sprites 44–47), generated using current native cube projection by tools/BuildBaseDepth.java. FloorOverlay is removed. A replacement artist base needs matching depth geometry/map and an aligned head pivot; changing only the visible image is insufficient for correct occlusion. Preserve the ground anchor (64,224). Final rendered acceptance is pending.

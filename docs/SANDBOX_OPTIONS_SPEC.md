@@ -121,3 +121,7 @@ All six pages use OMH: T&T - General / Spike Barrier / Potato Turret / Automatio
 ## Implemented stat tuning — C63, 0.2.17
 
 OMH: T&T - Modules groups Rapid-Fire, Reload, Velocity, Range and Capacity controls. Per-copy gains, maximum bonuses, minimum times, knockdown ceiling and Capacity expansion are configurable; the six new working modules also have Loot multipliers. The existing PotatoCooldown save key still stores seconds per shot, labeled Fire rate (seconds/shot). All defaults, bounds and the hard 30-tile range ceiling are documented in PHASE_2_CHECKPOINT_3D2.md. Reload after settings changes; never delete owned items when limits shrink.
+
+## Implemented 0.2.18 organization
+
+Native registration order: OMH: T&T - General, Traps, Turrets, Automation, Modules, Loot, Debug. Defense names are internal headings; existing option keys remain stable. Modules includes Small/Standard/Large Expansion Kit ammo and slot bonuses; Loot includes separate tier multipliers. Existing CapacityAmmoBonus/CapacityModuleBonus/LootCapacity are the Standard tier for save compatibility. See PHASE_2_CHECKPOINT_3D3.md for defaults and acceptance.

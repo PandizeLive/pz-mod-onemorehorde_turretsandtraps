@@ -30,3 +30,5 @@ diagnostics/vault-prototype/persistence-classes/
 diagnostics/vault-prototype/native-objects/
 diagnostics/vault-prototype/*.bytecode.txt
 diagnostics/vault-prototype/api.txt
+
+tools/.classes/

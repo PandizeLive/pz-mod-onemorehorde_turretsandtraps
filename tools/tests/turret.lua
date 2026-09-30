@@ -136,15 +136,15 @@ testPlayer.x, testPlayer.y, testPlayer.z = 500.5, 500.5, 0
 local oldSquare = testPlayer.getSquare
 function testPlayer:getSquare() return square end
 record.nextShot = 0
-check(W.fire(testPlayer, object) == "Reloading", "First load starts two-second reload")
+check(W.fire(testPlayer, object, zombie) == "Reloading", "First load starts two-second reload")
 testMillis = testMillis + 1999
-check(W.fire(testPlayer, object) == "Reloading" and other:contains(potato), "No early shot before two-second reload")
+check(W.fire(testPlayer, object, zombie) == "Reloading" and other:contains(potato), "No early shot before two-second reload")
 testMillis = testMillis + 1
-local ownedResult = W.fire(testPlayer, object)
+local ownedResult = W.fire(testPlayer, object, zombie)
 check(ownedResult == "Fired", "Inventory-backed shot succeeds: " .. ownedResult)
 check(math.abs(zombie.health - 1.15) < 0.000001, "Default shot deals exactly 35 points or 0.35 native HP")
 check(not other:contains(potato) and math.abs(battery.charge - 0.369) < 0.000001, "Shot spends one exact potato and battery charge once")
-check(W.fire(testPlayer, object) == "Empty" and math.abs(battery.charge - 0.369) < 0.000001, "Empty turret spends no additional charge")
+check(W.fire(testPlayer, object, zombie) == "Empty" and math.abs(battery.charge - 0.369) < 0.000001, "Empty turret spends no additional charge")
 local generator = {kind = "IsoGenerator", fuel = 1, active = true, connected = true, index = 0}
 function generator:hasModData() return false end
 function generator:getSquare() return square end
@@ -165,9 +165,9 @@ check(W.power(object, T.contents(other)).kind == "battery", "Insufficient genera
 generator.fuel = 1
 other:AddItem(item("Base.Potato", 0.2))
 record.nextShot = 0
-check(W.fire(testPlayer, object) == "Reloading", "Replenishing empty turret reloads")
+check(W.fire(testPlayer, object, zombie) == "Reloading", "Replenishing empty turret reloads")
 testMillis = testMillis + 2000
-check(W.fire(testPlayer, object) == "Fired" and math.abs(generator.fuel - 0.999) < 0.000001, "Generator shot charges fuel exactly once")
+check(W.fire(testPlayer, object, zombie) == "Fired" and math.abs(generator.fuel - 0.999) < 0.000001, "Generator shot charges fuel exactly once")
 check(math.abs(battery.charge - 0.369) < 0.000001, "Generator operation preserves battery charge")
 testPlayer.x, testPlayer.y, testPlayer.z, testPlayer.getSquare = oldX, oldY, oldZ, oldSquare
 local playerStorage = container()

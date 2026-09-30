@@ -315,6 +315,6 @@ function testPlayer:isSafeToClimbOver() return true end
 
 IsoFlagType = {water="water", solid="solid", solidtrans="solidtrans", collideN="collideN", collideW="collideW", WallN="WallN", WallW="WallW"}
 
-function getSprite(name) return {getProperties = function() return {set = function() end} end} end
+function getSprite(name) return {getProperties = function() return {set = function() end, unset = function() end} end} end
 IsoFlagType.FloorOverlay = "FloorOverlay"
 function getSoundManager() return {PlayWorldSound = function() end} end

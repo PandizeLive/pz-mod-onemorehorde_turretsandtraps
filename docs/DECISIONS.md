@@ -276,3 +276,13 @@ Owner requests recording the pending test and moving forward to discuss the next
 ## C63: approved P2C3d2 and stackable Reload
 
 Owner approves proceeding with active stat modules and explicitly adds Reload stacking. Use Reload and Fire rate as concise distinct labels. Implement the proposed dedicated Capacity socket, safe removal, configurable gains/caps and loot-only acquisition. Defaults in PHASE_2_CHECKPOINT_3D2.md are implementation tuning; retained Sandbox settings still apply. Combine held 0.2.16.1 acceptance into one complete owner test. No crafting, firearm adapters, multiplayer certification or external publication is authorized by this checkpoint.
+
+## C64: 0.2.17 review and page organization
+
+Owner completes the test and requests Traps / Turrets parent Sandbox pages, logical ordering with Debug last, eight visible slots with inactive extras greyed, attention feedback on changing Manage messages, and investigation of firing hitches. Reports a visible head/base gap and distant building placement; asks about inventory Install. See TEST_v0.2.17.md for observed evidence, native cheat behavior and proposed follow-up. These parent-page labels supersede individual-defense page names; preserve saved option keys.
+
+Owner also approved planning a supported-firearm mount prototype before multiplayer. Keep universal base, swappable actual gun, shared modules and native-mechanism evidence; no blanket modded-gun support claim. Address the current usability/performance findings first.
+
+## C65: approved Expansion Kits and combined usability patch
+
+Owner approves recap and implementation: Capacity becomes one dedicated Expansion Kit socket with Small/Standard/Large variants, increasing capacity and rarity, not multiple installed kits. Preserve existing Capacity as Standard; tier defaults and safeguards are documented in PHASE_2_CHECKPOINT_3D3.md. Ten compact regular slots cover the Large default, unavailable slots dim; omit Module only from installed slot labels. Include ordered parent Sandbox pages, changed-message brightness, head/base depth repair, bounded manual-fire searches and exact-item inventory Install. Building-cheat bypass remains native. Keep one combined test and firearm prototype next.

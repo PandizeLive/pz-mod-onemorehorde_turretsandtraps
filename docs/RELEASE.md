@@ -1,8 +1,12 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.17
+## Current candidate: 0.2.18
 
-C63: [active stat modules and complete combined test](PHASE_2_CHECKPOINT_3D2.md). 2,121 regression assertions, 43 Lua files, 344 native translations, 23 packet round trips and 110 packaged files pass. Native write passed in 42.3 seconds with actual stacked modules, dedicated expansion, saved Sandbox tuning, exact contents and cycle metadata. Native read passed in 39.1 seconds. Installed from annotated `test/v0.2.17` (`4698a8c`). [Evidence](../diagnostics/v0.2.17/local-release.json) verifies all 110 installed/archive files and the complete 109-file 0.2.16.1 backup. [Archive](../artifacts/OMHTT-0.2.17.zip). Held 0.2.16.1 rendered/audio acceptance joins the next test. No Workshop upload or remote push.
+C65: [Expansion Kits and usability checkpoint](PHASE_2_CHECKPOINT_3D3.md). 2,161 regression assertions, 45 Lua files, 372 native translations and 114 packaged files pass. Native write/read pass in 96.3/95.2 seconds: exact selected packed-base input leaves a matching decoy untouched, contents/charge/condition/cycle survive fresh-process restoration, 48 module/kit loot entries parse in four pools, and turret/barrier collision remains valid. Native geometry parser and all 5,529 visible base pixels have generated depth; GPU appearance remains a client acceptance check. Local tagged installation is pending. No Workshop upload or remote push.
+
+## Previous local installation: 0.2.17
+
+C63: [active stat modules and complete combined test](PHASE_2_CHECKPOINT_3D2.md). 2,121 regression assertions, 43 Lua files, 344 native translations, 23 packet round trips and 110 packaged files pass. Native write passed in 42.3 seconds with actual stacked modules, dedicated expansion, saved Sandbox tuning, exact contents and cycle metadata. Native read passed in 39.1 seconds. Installed from annotated `test/v0.2.17` (`4698a8c`). [Evidence](../diagnostics/v0.2.17/local-release.json) verifies all 110 installed/archive files and the complete 109-file 0.2.16.1 backup. [Archive](../artifacts/OMHTT-0.2.17.zip). Owner completed the combined test with [follow-up findings](TEST_v0.2.17.md); visual alignment and firing-hitch issues remain, and unobserved checks are not marked passed. No Workshop upload or remote push.
 
 ## Previous local installation: 0.2.16.1
 

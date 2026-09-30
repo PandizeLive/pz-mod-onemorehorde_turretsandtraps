@@ -7,25 +7,18 @@ option OMHTurretsTraps.Enabled {
     translation = OMHTurretsTraps_Enabled,
 }
 
+option OMHTurretsTraps.ShowTurretRange {
+    type = boolean,
+    default = true,
+    page = OMHTurretsTraps_General,
+    translation = OMHTurretsTraps_ShowTurretRange,
+}
+
 option OMHTurretsTraps.SpikeBarrier {
     type = boolean,
     default = true,
     page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_SpikeBarrier,
-}
-
-option OMHTurretsTraps.FoundationTestControls {
-    type = boolean,
-    default = false,
-    page = OMHTurretsTraps_Debug,
-    translation = OMHTurretsTraps_FoundationTestControls,
-}
-
-option OMHTurretsTraps.DiagnosticLogging {
-    type = boolean,
-    default = true,
-    page = OMHTurretsTraps_Debug,
-    translation = OMHTurretsTraps_DiagnosticLogging,
 }
 
 option OMHTurretsTraps.SpikeBarrierDamage {
@@ -53,13 +46,6 @@ option OMHTurretsTraps.SpikeBarrierScratchChance {
     default = 5,
     page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_SpikeBarrierScratchChance,
-}
-
-option OMHTurretsTraps.ShowCollision {
-    type = boolean,
-    default = false,
-    page = OMHTurretsTraps_Debug,
-    translation = OMHTurretsTraps_ShowCollision,
 }
 
 option OMHTurretsTraps.ReinforcedBarrierDamage {
@@ -211,11 +197,22 @@ option OMHTurretsTraps.PotatoGeneratorFuelPerShot {
     translation = OMHTurretsTraps_PotatoGeneratorFuelPerShot,
 }
 
-option OMHTurretsTraps.ShowTurretRange {
-    type = boolean,
-    default = true,
-    page = OMHTurretsTraps_General,
-    translation = OMHTurretsTraps_ShowTurretRange,
+option OMHTurretsTraps.IdleSweepSpeed {
+    type = double,
+    default = 30,
+    min = 0,
+    max = 180,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_IdleSweepSpeed,
+}
+
+option OMHTurretsTraps.PotatoTurnSpeed {
+    type = double,
+    default = 90,
+    min = 1,
+    max = 360,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_PotatoTurnSpeed,
 }
 
 option OMHTurretsTraps.AutomationEnabled {
@@ -241,69 +238,6 @@ option OMHTurretsTraps.DetectionInterval {
     default = 0.25,
     page = OMHTurretsTraps_AutomationPage,
     translation = OMHTurretsTraps_DetectionInterval,
-}
-
-option OMHTurretsTraps.ModuleLootMultiplier {
-    type = double,
-    min = 0,
-    max = 20,
-    default = 1,
-    page = OMHTurretsTraps_ModuleLootPage,
-    translation = OMHTurretsTraps_ModuleLootMultiplier,
-}
-
-option OMHTurretsTraps.LootFiring {
-    type = double,
-    min = 0,
-    max = 20,
-    default = 1,
-    page = OMHTurretsTraps_ModuleLootPage,
-    translation = OMHTurretsTraps_LootFiring,
-}
-
-option OMHTurretsTraps.LootMotionDetection {
-    type = double,
-    min = 0,
-    max = 20,
-    default = 1,
-    page = OMHTurretsTraps_ModuleLootPage,
-    translation = OMHTurretsTraps_LootMotionDetection,
-}
-
-option OMHTurretsTraps.LootFilter {
-    type = double,
-    min = 0,
-    max = 20,
-    default = 1,
-    page = OMHTurretsTraps_ModuleLootPage,
-    translation = OMHTurretsTraps_LootFilter,
-}
-
-option OMHTurretsTraps.LootDetection360 {
-    type = double,
-    min = 0,
-    max = 20,
-    default = 1,
-    page = OMHTurretsTraps_ModuleLootPage,
-    translation = OMHTurretsTraps_LootDetection360,
-}
-
-option OMHTurretsTraps.IdleSweepSpeed {
-    type = double,
-    default = 30,
-    min = 0,
-    max = 180,
-    page = OMHTurretsTraps_PotatoPage,
-    translation = OMHTurretsTraps_IdleSweepSpeed,
-}
-
-option OMHTurretsTraps.PotatoTurnSpeed {
-    type = double,
-    default = 90,
-    min = 1,
-    max = 360,
-    page = OMHTurretsTraps_PotatoPage,
-    translation = OMHTurretsTraps_PotatoTurnSpeed,
 }
 
 option OMHTurretsTraps.RapidFireBonus {
@@ -432,6 +366,87 @@ option OMHTurretsTraps.CapacityModuleBonus {
     translation = OMHTurretsTraps_CapacityModuleBonus,
 }
 
+option OMHTurretsTraps.CapacitySmallAmmoBonus {
+    type = integer,
+    default = 50,
+    min = 0,
+    max = 500,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_CapacitySmallAmmoBonus,
+}
+
+option OMHTurretsTraps.CapacitySmallModuleBonus {
+    type = integer,
+    default = 2,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_CapacitySmallModuleBonus,
+}
+
+option OMHTurretsTraps.CapacityLargeAmmoBonus {
+    type = integer,
+    default = 200,
+    min = 0,
+    max = 500,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_CapacityLargeAmmoBonus,
+}
+
+option OMHTurretsTraps.CapacityLargeModuleBonus {
+    type = integer,
+    default = 6,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_CapacityLargeModuleBonus,
+}
+
+option OMHTurretsTraps.ModuleLootMultiplier {
+    type = double,
+    min = 0,
+    max = 20,
+    default = 1,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_ModuleLootMultiplier,
+}
+
+option OMHTurretsTraps.LootFiring {
+    type = double,
+    min = 0,
+    max = 20,
+    default = 1,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootFiring,
+}
+
+option OMHTurretsTraps.LootMotionDetection {
+    type = double,
+    min = 0,
+    max = 20,
+    default = 1,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootMotionDetection,
+}
+
+option OMHTurretsTraps.LootFilter {
+    type = double,
+    min = 0,
+    max = 20,
+    default = 1,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootFilter,
+}
+
+option OMHTurretsTraps.LootDetection360 {
+    type = double,
+    min = 0,
+    max = 20,
+    default = 1,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootDetection360,
+}
+
 option OMHTurretsTraps.LootRapidFire {
     type = double,
     default = 1,
@@ -484,4 +499,43 @@ option OMHTurretsTraps.LootCapacity {
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootCapacity,
+}
+
+option OMHTurretsTraps.LootCapacitySmall {
+    type = double,
+    default = 1,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootCapacitySmall,
+}
+
+option OMHTurretsTraps.LootCapacityLarge {
+    type = double,
+    default = 1,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootCapacityLarge,
+}
+
+option OMHTurretsTraps.FoundationTestControls {
+    type = boolean,
+    default = false,
+    page = OMHTurretsTraps_Debug,
+    translation = OMHTurretsTraps_FoundationTestControls,
+}
+
+option OMHTurretsTraps.DiagnosticLogging {
+    type = boolean,
+    default = true,
+    page = OMHTurretsTraps_Debug,
+    translation = OMHTurretsTraps_DiagnosticLogging,
+}
+
+option OMHTurretsTraps.ShowCollision {
+    type = boolean,
+    default = false,
+    page = OMHTurretsTraps_Debug,
+    translation = OMHTurretsTraps_ShowCollision,
 }
