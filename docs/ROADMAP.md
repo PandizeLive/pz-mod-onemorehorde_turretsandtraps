@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-**Current patch: [P2C3d3 — Expansion Kits and usability, 0.2.18](PHASE_2_CHECKPOINT_3D3.md).** C65 approved implementation; source/native verification and installation status are in RELEASE.md. One combined client test covers the held rendering/management findings.
+**Current installed: [P2C3d3 — Expansion Kits and usability, 0.2.18](PHASE_2_CHECKPOINT_3D3.md).** C65 approved implementation; source/native verification and installation status are in RELEASE.md. One combined client test covers the held rendering/management findings.
 
 **Previous: [P2C3d2 active stat modules, 0.2.17](PHASE_2_CHECKPOINT_3D2.md).** C63 approves implementation and Reload stacking. Rapid-Fire, Reload, Velocity and Range stack; Capacity has one dedicated socket; Autoloader removes reload delay. Shared effective stats, safe storage, grouped tuning and loot are implemented. Verification/install status is in RELEASE.md. Carry the entire held 0.2.16.1 test into the eight-step combined owner test; no rendered acceptance is implied.
 

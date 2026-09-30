@@ -1,8 +1,8 @@
 # Release state and publication policy
 
-## Current candidate: 0.2.18
+## Current local installation: 0.2.18
 
-C65: [Expansion Kits and usability checkpoint](PHASE_2_CHECKPOINT_3D3.md). 2,161 regression assertions, 45 Lua files, 372 native translations and 114 packaged files pass. Native write/read pass in 96.3/95.2 seconds: exact selected packed-base input leaves a matching decoy untouched, contents/charge/condition/cycle survive fresh-process restoration, 48 module/kit loot entries parse in four pools, and turret/barrier collision remains valid. Native geometry parser and all 5,529 visible base pixels have generated depth; GPU appearance remains a client acceptance check. Local tagged installation is pending. No Workshop upload or remote push.
+C65: [Expansion Kits and usability checkpoint](PHASE_2_CHECKPOINT_3D3.md). 2,161 regression assertions, 45 Lua files, 372 native translations and 114 packaged files pass. Native write/read pass in 96.3/95.2 seconds: exact selected packed-base input leaves a matching decoy untouched, contents/charge/condition/cycle survive fresh-process restoration, 48 module/kit loot entries parse in four pools, and turret/barrier collision remains valid. Native geometry parser and all 5,529 visible base pixels have generated depth; GPU appearance remains a client acceptance check. Installed from annotated `test/v0.2.18` (`c440ae2`). [Evidence](../diagnostics/v0.2.18/local-release.json) verifies all 114 source/installed/archive files and the complete 110-file 0.2.17 backup. [Archive](../artifacts/OMHTT-0.2.18.zip). No Workshop upload or remote push.
 
 ## Previous local installation: 0.2.17
 
