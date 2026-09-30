@@ -170,7 +170,7 @@ def main():
         ("PotatoTurret", "boolean", "true", None, None, "Potato Turret", "Enable potato turrets."),
         ("PotatoRequirePower", "boolean", "true", None, None, "Require power", "Require electricity to fire."),
         ("PotatoAmmoCapacity", "integer", 100, 1, 500, "Ammo capacity", "Maximum potatoes."),
-        ("PotatoModuleCapacity", "integer", 4, 0, 20, "Module storage", "Maximum stored modules. Effects come later."),
+        ("PotatoModuleCapacity", "integer", 4, 0, 20, "Module storage", "Maximum stored modules."),
         ("PotatoHealth", "integer", 100, 1, 10000, "Durability", "Maximum durability of newly crafted bases."),
         ("PotatoDamage", "double", 50, 0, 1000, "Damage", "Direct-hit damage. 100 points = 1 health."),
         ("PotatoCooldown", "double", 0.5, 0.1, 60, "Shot cooldown", "Seconds between shots."),

@@ -119,5 +119,6 @@
     "UI_OMHTT_ModuleFilter": "Filter",
     "UI_OMHTT_ModuleDetection360": "360",
     "UI_OMHTT_AutoDisabled": "Automation disabled",
-    "UI_OMHTT_ManageAiming": "Turning to target"
+    "UI_OMHTT_ManageAiming": "Turning to target",
+    "UI_OMHTT_ChargePercent": "%1 percent"
 }

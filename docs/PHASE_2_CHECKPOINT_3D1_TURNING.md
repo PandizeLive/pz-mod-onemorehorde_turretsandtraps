@@ -1,4 +1,4 @@
-# P2C3d1 follow-up: turning and presentation, 0.2.16
+# P2C3d1 follow-up: turning and presentation, 0.2.16.1
 
 C61 approved. Includes fixed-prefix Sandbox pages, four potato-page headings, Detection Module wording, concise 360 tooltip, mechanically limited aiming, higher brown shot marker/larger splat, installed-native splat2 audio and placeholder base-depth correction. Collision/thumping and saved capacity/damage settings are unchanged. Stat modules and multiplayer remain deferred.
 
@@ -12,11 +12,11 @@ OMHTTPotatoImpact references media/sound/splat2.wav using the native sound-scrip
 
 ## Verification
 
-2,058 Kahlua assertions, 42 runtime Lua files, 289 native translations, 23 packet round trips and 109 package files. Tests cover shortest turn across 0/360 (positive-normalized Kahlua remainder), angular speed, overshoot, no ammo spent before alignment, exactly one delayed manual shot, unchanged coverage, brown effects, grouped Sandbox resize/navigation/idempotence and unrelated-page isolation. Native write/read passed in 41.3/43.5s. Installation evidence is recorded in RELEASE.md when complete. GPU appearance and audible playback remain owner tests.
+2,058 Kahlua assertions, 42 runtime Lua files, 290 native translations, 23 packet round trips and 109 package files. Tests cover shortest turn across 0/360 (positive-normalized Kahlua remainder), angular speed, overshoot, no ammo spent before alignment, exactly one delayed manual shot, unchanged coverage, brown effects, grouped Sandbox resize/navigation/idempotence and unrelated-page isolation. Original 0.2.16 native write/read passed in 41.3/43.5s. The tooltip-corrected 0.2.16.1 write/read also passed, including a real battery and native re-translation of its packed tooltip. Installation evidence is recorded in RELEASE.md when complete. GPU appearance and audible playback remain owner tests.
 
 ## Complete owner test
 
-1. Restart on 0.2.16. Check every Sandbox page starts OMH: T&T - and Potato Turret has four readable headings. Set Turn speed to 30 for an obvious test; default is 90 degrees/second.
+1. Restart on 0.2.16.1. Check every Sandbox page starts OMH: T&T - and Potato Turret has four readable headings. Set Turn speed to 30 for an obvious test; default is 90 degrees/second.
 2. Inspect an existing turret from several positions/zoom levels. Its head should draw above its base without moving upward; walls and nearby characters should still occlude appropriately.
 3. With power, Detection and Firing installed, introduce a target away from the current head direction. The head turns smoothly and fires only when aligned. Detection coverage remains placement-locked; verify the Detection Module name and short 360 tooltip.
 4. Disable automatic mode and click Fire once with a target off-axis. Expect one shot after turning. Try again and walk away during the turn: the pending manual shot should cancel without spending ammo.

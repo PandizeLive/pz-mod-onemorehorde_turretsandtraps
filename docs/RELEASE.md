@@ -1,8 +1,8 @@
 # Release state and publication policy
 
-## Prepared build: 0.2.16
+## Prepared build: 0.2.16.1
 
-C61: [turning and presentation checkpoint](PHASE_2_CHECKPOINT_3D1_TURNING.md). 2,058 assertions pass, with 42 runtime files, 289 native translations and 109 packaged files. Native write/read passed in 41.3/43.5 seconds; installation pending. Owner-visible depth, smooth turning and sound remain unaccepted. No external publication or push.
+C61: [turning and presentation checkpoint](PHASE_2_CHECKPOINT_3D1_TURNING.md). 2,058 assertions pass, with 42 runtime files, 290 native translations and 109 packaged files. Original native write/read passed in 41.3/43.5 seconds. The tooltip-corrected build write/read also passed, including native packed-tooltip translation. Installation pending. Owner-visible depth, smooth turning and sound remain unaccepted. No external publication or push.
 
 
 ## Current local installation: 0.2.15
@@ -212,3 +212,5 @@ Use the publisher's established category/bullet format when publication tooling 
 Record compatible Horde Night, Trait Shop, Cure Defense and website validator versions separately, backed by implementation/test evidence. An extension descriptor does not establish official leaderboard support. Unpublished sibling changes cannot be advertised as existing user-facing functionality.
 
 External publishing, pushing and public listing changes require owner authorization. P1C1 authorizes local implementation and validation, not publication.
+
+0.2.16 was tagged but never installed. The 0.2.15 captured test (20260929-223859-0986) revealed a repeated native inventory tooltip error caused by a literal percent in the dynamic packed-item tooltip. 0.2.16.1 replaces that with translated percent wording; the local test/v0.2.16 rollback remains intact.

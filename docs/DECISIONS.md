@@ -266,3 +266,5 @@ Turret heads rotate at a maximum rate (default 90 degrees/second; Sandbox 1-360)
 The temporary base sprite uses native FloorOverlay depth instead of the generic tall-object depth; calibrated model height stays unchanged. This is a placeholder floor-depth approximation, not a final per-pixel model-matched depth map. Native flags/collision are verified; rendered head occlusion still needs owner acceptance. Projectile starts higher, travels as a brown marker and pops into larger brown particles. Selected splat2.wav is referenced from the installed game through OMHTTPotatoImpact. No native audio is redistributed.
 
 The listening page now contains 34 exact-copy candidates, including 16 reload candidates. Always supply an HTML audition page for future audio decisions. Source metadata stays beside the local page. No sibling mod is edited.
+
+C61 pre-install correction: the captured 0.2.15 packed-item tooltip failed in native Translator on a literal percent sign. 0.2.16.1 fixes charge wording before the first installation of this patch; 0.2.16 remains an uninstalled source tag.

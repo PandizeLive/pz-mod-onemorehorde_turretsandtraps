@@ -31,7 +31,7 @@
     "Sandbox_OMHTurretsTraps_PotatoAmmoCapacity": "Ammo capacity",
     "Sandbox_OMHTurretsTraps_PotatoAmmoCapacity_tooltip": "Maximum potatoes.",
     "Sandbox_OMHTurretsTraps_PotatoModuleCapacity": "Module storage",
-    "Sandbox_OMHTurretsTraps_PotatoModuleCapacity_tooltip": "Maximum stored modules. Effects come later.",
+    "Sandbox_OMHTurretsTraps_PotatoModuleCapacity_tooltip": "Maximum stored modules.",
     "Sandbox_OMHTurretsTraps_PotatoDamage": "Damage",
     "Sandbox_OMHTurretsTraps_PotatoDamage_tooltip": "Direct-hit damage. 100 points = 1 health.",
     "Sandbox_OMHTurretsTraps_PotatoCooldown": "Shot cooldown",
