@@ -1,8 +1,8 @@
 # Phases and checkpoints
 
-**Current: [P2C3d1 core automation and module loot, 0.2.14](PHASE_2_CHECKPOINT_3D1.md).** Placement-locked 90-degree cone, Firing/Detection/Filter/360 effects, bounded automatic scans, Manage controls, native loot and grouped Sandbox tuning. Includes held 0.2.13 alignment/balance acceptance in one combined test. Automated checks and native write/read pass; rendered/gameplay acceptance remains pending.
+**Current candidate: [P2C3d2 active stat modules, 0.2.17](PHASE_2_CHECKPOINT_3D2.md).** C63 approves implementation and Reload stacking. Rapid-Fire, Reload, Velocity and Range stack; Capacity has one dedicated socket; Autoloader removes reload delay. Shared effective stats, safe storage, grouped tuning and loot are implemented. Verification/install status is in RELEASE.md. Carry the entire held 0.2.16.1 test into the eight-step combined owner test; no rendered acceptance is implied.
 
-**Next: P2C3d2 stat modules.** Review per-copy gains/caps for stackable Rapid-Fire/Velocity/Range, Capacity expansion/removal and shared Reload/Autoloader modifiers, then implement their active effects, loot and Sandbox controls. Crafting remains deferred. Multiplayer/performance certification stays P2C3e; firearm adapters are P5.
+**Next: P2C3e multiplayer/performance gate.** Prove transfer/shot authority, synchronization, persistence and bounded workload before enabling multiplayer. Firearm adapters remain P5; module crafting remains deferred. Review combined SP results before expanding authority.
 
 **Current: [P2C3a-c — modular potato turret foundation, 0.2.9](PHASE_2_CHECKPOINT_3.md).** C48-C50 approve inventory/persistence, revised metal recipes, native deployment and powered manual firing. Combine player acceptance with the held P2C2b test. Module storage is implemented; P2C3d adds module effects and P2C3e proves multiplayer/performance. Version 0.2.9 is installed and archived, with exact tagged hashes and a verified 0.2.8 backup recorded in RELEASE.md. Native furniture Install/Pickup stays deferred.
 

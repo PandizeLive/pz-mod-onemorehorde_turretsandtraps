@@ -79,7 +79,7 @@ check(completed and not inventory.visible and not inventory.pinned, "Manage leav
 local panel = testTurretPanel
 panel:prerender()
 check(not panel.fireButton.enabled and panel.status == "NoHead", "Empty base cannot fire")
-check(#panel.slots == 7 and panel.height <= 720 and panel.x >= 0, "Dedicated slots and controls fit 1280x720")
+check(#panel.slots == 8 and panel.height <= 720 and panel.x >= 0, "Dedicated slots and controls fit 1280x720")
 for i = 1, #panel.slots do panel.slots[i]:prerender() end
 panel:fire()
 check(fired == 1 and panel.result == getText("UI_OMHTT_ManageNoTarget"), "Manual fire uses existing validation")
@@ -186,6 +186,31 @@ check(panel.moduleSlots[4].disabled, "Over-capacity slots still allow recovery b
 ISMouseDrag.dragging, ISMouseDrag.draggingFocus = {invalid}, {onMouseUp = function() end}
 panel.moduleSlots[4]:onMouseUp(1, 1)
 check(panel.reason == getText("UI_OMHTT_ManageTransferFull"), "Locked slot explains rejected deposit")
+local expansion = item("Base.OMHTTModuleCapacity")
+carried:AddItem(expansion)
+actions = {}
+count = X.queue(player, object, {expansion}, true, "capacity")
+check(count == 1, "Dedicated capacity slot works when ordinary module slots are full")
+actions[1]:transferItem(expansion)
+panel:refresh()
+check(panel.capacitySlot.items[1] == expansion and panel.stats.modules == 8 and panel.stats.ammo == 102,
+    "Capacity slot displays exact component and expanded limits")
+check(X.rejection(player, expansion, storage, carried) == "CapacityFull", "Expanded modules block capacity removal with useful reason")
+local secondExpansion = item("Base.OMHTTModuleCapacity")
+carried:AddItem(secondExpansion)
+check(X.rejection(player, secondExpansion, carried, storage) == "TransferFull", "Second capacity cannot recursively expand storage")
+for i = #storage.items, 1, -1 do
+    if T.kind(storage.items[i]) == "module" then storage:Remove(storage.items[i]) end
+end
+check(X.rejection(player, expansion, storage, carried) == nil, "Capacity can be removed after excess modules are withdrawn")
+for i = 1, 3 do storage:AddItem(item("Base.Potato")) end
+check(not T.canRemove(storage, expansion), "Expanded ammunition blocks capacity removal")
+expansion.condition = 0
+check(T.canRemove(storage, expansion) and not T.accept(storage, potato3), "Broken capacity preserves excess contents and allows recovery, never further loading")
+expansion.condition = 100
+local removal = ISInventoryTransferAction:new(player, expansion, storage, carried)
+removal:transferItem(expansion)
+check(storage:contains(expansion), "Commit rechecks over-capacity removal")
 reachable = false
 local action = ISInventoryTransferAction:new(player, battery, storage, carried)
 check(not action:isValid(), "Native outgoing drag revalidates turret reach")

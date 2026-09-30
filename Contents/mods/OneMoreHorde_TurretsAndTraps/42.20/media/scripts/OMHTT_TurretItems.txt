@@ -51,7 +51,7 @@ module Base {
         DisplayCategory = Material,
         Weight = 0.3,
         Icon = OMHTT_TestCube,
-        Tooltip = Tooltip_OMHTT_ModuleStorage,
+        Tooltip = Tooltip_OMHTT_ModuleRapidFire,
     }
     item OMHTTModuleVelocity {
         DisplayName = Velocity Module,
@@ -59,7 +59,7 @@ module Base {
         DisplayCategory = Material,
         Weight = 0.3,
         Icon = OMHTT_TestCube,
-        Tooltip = Tooltip_OMHTT_ModuleStorage,
+        Tooltip = Tooltip_OMHTT_ModuleVelocity,
     }
     item OMHTTModuleRange {
         DisplayName = Range Module,
@@ -67,7 +67,7 @@ module Base {
         DisplayCategory = Material,
         Weight = 0.3,
         Icon = OMHTT_TestCube,
-        Tooltip = Tooltip_OMHTT_ModuleStorage,
+        Tooltip = Tooltip_OMHTT_ModuleRange,
     }
     item OMHTTModuleCapacity {
         DisplayName = Capacity Module,
@@ -75,7 +75,7 @@ module Base {
         DisplayCategory = Material,
         Weight = 0.3,
         Icon = OMHTT_TestCube,
-        Tooltip = Tooltip_OMHTT_ModuleStorage,
+        Tooltip = Tooltip_OMHTT_ModuleCapacity,
     }
     item OMHTTModuleDetection360 {
         DisplayName = 360 Module,
@@ -91,7 +91,7 @@ module Base {
         DisplayCategory = Material,
         Weight = 0.3,
         Icon = OMHTT_TestCube,
-        Tooltip = Tooltip_OMHTT_ModuleStorage,
+        Tooltip = Tooltip_OMHTT_ModuleReload,
     }
     item OMHTTModuleAutoloader {
         DisplayName = Autoloader Module,
@@ -99,6 +99,6 @@ module Base {
         DisplayCategory = Material,
         Weight = 0.3,
         Icon = OMHTT_TestCube,
-        Tooltip = Tooltip_OMHTT_ModuleStorage,
+        Tooltip = Tooltip_OMHTT_ModuleAutoloader,
     }
 }

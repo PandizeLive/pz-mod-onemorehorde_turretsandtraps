@@ -60,12 +60,20 @@ def main():
         "Occupied", "Blocked", "Limit", "Placed", "Conflict", "Changed", "Removed", "MPCombatDeferred",
         "WrongDevice", "Empty", "Cooling", "NoTarget", "Fired", "Refilled", "Aimed", "NotCompared", "WrongBarrier", "BarrierRotated",
     ])
-    keys.update("UI_OMHTT_Manage" + status for status in ['Drop', 'Hint', 'Head', 'Battery', 'Ammo', 'Modules', 'Module', 'Locked', 'ModulesHint', 'PowerNone', 'PowerExternal', 'PowerBattery', 'PowerDisabled', 'Stats', 'Timing', 'Fire', 'Unload', 'Queued', 'TransferMissing', 'TransferReach', 'UnloadFirst', 'TransferFavorite', 'TransferWrongItem', 'TransferFull', 'TransferCarried', 'TransferPending', 'NoHead', 'NoPower', 'Empty', 'Ready', 'Cooling', 'Reloading', 'NoTarget', 'Fired', 'Unavailable', 'MPCombatDeferred', 'WrongDevice'])
+    keys.update("UI_OMHTT_Manage" + status for status in ['Drop', 'Hint', 'Head', 'Battery', 'Ammo', 'Modules', 'Module', 'Locked', 'ModulesHint', 'PowerNone', 'PowerExternal', 'PowerBattery', 'PowerDisabled', 'Stats', 'Timing', 'Fire', 'Unload', 'Queued', 'TransferMissing', 'TransferReach', 'CapacityFull', 'UnloadFirst', 'TransferFavorite', 'TransferWrongItem', 'TransferFull', 'TransferCarried', 'TransferPending', 'NoHead', 'NoPower', 'Empty', 'Ready', 'Cooling', 'Reloading', 'NoTarget', 'Fired', 'Unavailable', 'MPCombatDeferred', 'WrongDevice'])
     keys.update("UI_OMHTT_Module" + name for name in ["Firing", "MotionDetection", "Filter", "Detection360"])
     keys.update("UI_OMHTT_Priority" + name for name in ["Closest", "Furthest", "Weakest", "Toughest"])
     keys.update(["UI_OMHTT_AutoOn", "UI_OMHTT_AutoOff"])
     for key in keys:
         assert key in translations, f"Missing translation: {key}"
+    sandbox = (PACKAGE / "42.20/media/sandbox-options.txt").read_text()
+    for key in re.findall(r"translation\s*=\s*(\w+)", sandbox):
+        assert "Sandbox_" + key in translations and "Sandbox_" + key + "_tooltip" in translations, key
+    for page in re.findall(r"page\s*=\s*(\w+)", sandbox):
+        assert translations["Sandbox_" + page].startswith("OMH: T&T - "), page
+    item_script = (PACKAGE / "42.20/media/scripts/OMHTT_TurretItems.txt").read_text()
+    for key in re.findall(r"Tooltip\s*=\s*(\w+)", item_script):
+        assert key in translations and "prototype" not in translations[key].lower(), key
     textures = list((PACKAGE / "42.20/media/textures").glob("*.png"))
     assert len(textures) == 38, "Existing technical markers plus turret inventory icon required"
     for heading, index in zip("ENWS", range(4)):

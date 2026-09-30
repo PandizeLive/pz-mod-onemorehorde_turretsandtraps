@@ -117,3 +117,7 @@ Potato defaults: 100 total rounds; direct damage 35; splash percentage 25; radiu
 ## 0.2.16 organization and turning
 
 All six pages use OMH: T&T - General / Spike Barrier / Potato Turret / Automation / Loot / Debug. Potato settings are grouped under Operation, Storage, Combat and Power without changing saved option keys. PotatoTurnSpeed defaults 90 degrees/second, range 1-360; both automatic and manual shots wait for one-degree alignment. IdleSweepSpeed remains separate and cannot expand detection coverage.
+
+## Implemented stat tuning — C63, 0.2.17
+
+OMH: T&T - Modules groups Rapid-Fire, Reload, Velocity, Range and Capacity controls. Per-copy gains, maximum bonuses, minimum times, knockdown ceiling and Capacity expansion are configurable; the six new working modules also have Loot multipliers. The existing PotatoCooldown save key still stores seconds per shot, labeled Fire rate (seconds/shot). All defaults, bounds and the hard 30-tile range ceiling are documented in PHASE_2_CHECKPOINT_3D2.md. Reload after settings changes; never delete owned items when limits shrink.

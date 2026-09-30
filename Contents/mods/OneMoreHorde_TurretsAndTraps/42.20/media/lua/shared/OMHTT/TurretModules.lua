@@ -1,6 +1,6 @@
 local T = require("OMHTT/Turret")
 local M = {}
-M.CORE = {Firing = true, MotionDetection = true, Filter = true, Detection360 = true}
+M.CORE = T.MODULES
 M.PRIORITIES = {"Closest", "Furthest", "Weakest", "Toughest"}
 
 ---@param key string Full setting suffix
@@ -35,7 +35,7 @@ function M.profile(state, contents)
         end
     end
     return {heading = (state.baseFacing or state.facing or 0) * 22.5, cone = cone, omni = active.Detection360 ~= nil,
-        range = T.option("Range", 6, 1, 20), priority = priority}
+        range = T.cycleConfig(contents).range, priority = priority}
 end
 
 ---@param origin IsoGridSquare Turret tile

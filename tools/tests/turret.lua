@@ -111,8 +111,9 @@ check(Combat.fire(record, object, testPlayer, options) == "NoTarget" and commits
 local zombie = makeZombie(testSquares["502:500:0"], 2)
 check(Combat.fire(record, object, testPlayer, options) == "Fired" and commits == 1 and zombie.health == 1.5, "Managed hit commits once and applies configured damage")
 record.ammo = 1
+options.managed = false
 check(Combat.fire(record, object, testPlayer, options) == "Cooling" and commits == 1, "Cooldown blocks resource commit")
-record.nextShot = 0
+options.managed = true
 options.commit = function() return false end
 check(Combat.fire(record, object, testPlayer, options) == "Unavailable" and zombie.health == 1.5, "Failed resource transaction applies no damage")
 check(object.sprite == nil, "Managed aiming does not invalidate or replace the base sprite")

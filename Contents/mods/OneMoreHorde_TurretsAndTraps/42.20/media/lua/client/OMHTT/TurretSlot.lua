@@ -23,7 +23,7 @@ end
 function Slot:onMouseDown(x, y)
     if #self.items == 0 then return true end
     if not T.canRemove(self.owner.object:getContainer(), self.items[1]) then
-        self.owner:feedback(0, "UnloadFirst")
+        self.owner:feedback(0, self.kind == "capacity" and "CapacityFull" or "UnloadFirst")
         return true
     end
     self:hideTooltip()

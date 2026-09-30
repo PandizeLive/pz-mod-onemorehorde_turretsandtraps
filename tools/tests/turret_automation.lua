@@ -139,6 +139,22 @@ testMillis = testMillis + 10000000
 record.automatic = true
 run()
 check(record.shots <= shots + 1, "Long time jump never drains historical automatic shots")
+add("Base.Potato")
+add("Base.OMHTTModuleVelocity")
+add("Base.OMHTTModuleRapidFire")
+add("Base.OMHTTModuleReload")
+add("Base.OMHTTModuleAutoloader")
+head.data.OMHTTCycle = {schema = 1, loaded = 1, nextShot = 0}
+record.nextShot = testMillis + 100000
+record.aimDegrees = 0
+local hp, ammoBefore = front.health, T.contents(storage).ammo
+check(W.fire(nil, object, front) == "Fired", "Automatic modified shot uses shared cycle, not stale prototype timer")
+check(math.abs(front.health - (hp - 0.42)) < 0.000001 and T.contents(storage).ammo == ammoBefore - 1,
+    "Velocity changes automatic direct damage while consuming one potato")
+local changedCycle = head.data.OMHTTCycle
+check(changedCycle.nextShot == testMillis + 1600 and changedCycle.reloadReady == nil,
+    "Rapid-Fire and Autoloader reach the actual automatic firing cycle")
+check(W.fire(nil, object, front) ~= "Fired", "Autoloader cannot bypass shot cooldown")
 local previousPower = W.power
 W.power = function() return nil end
 run()

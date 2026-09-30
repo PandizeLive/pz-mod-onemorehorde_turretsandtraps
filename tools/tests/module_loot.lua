@@ -18,7 +18,7 @@ for i = 1, #L.POOLS do
         local found, actual = count(pool, module)
         check(found == 1 and actual == weight, "Repeated loot merge is idempotent for each active module")
     end
-    check(count(pool, "RapidFire") == 0, "Inert modules excluded from gameplay loot")
+    check(count(pool, "RapidFire") == 1 and count(pool, "Autoloader") == 1, "Active stat modules enter gameplay loot")
 end
 settings.ModuleLootMultiplier, settings.LootFilter = 3, 2
 L.apply()

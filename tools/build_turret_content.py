@@ -51,7 +51,7 @@ def main():
         DisplayCategory = Material,
         Weight = 0.3,
         Icon = OMHTT_TestCube,
-        Tooltip = Tooltip_OMHTT_ModuleStorage,
+        Tooltip = Tooltip_OMHTT_Module{key},
     }}
 """
     write("scripts/OMHTT_TurretItems.txt", items + "}\n")
@@ -149,7 +149,16 @@ def main():
     translations("Tooltip", {
         "Tooltip_OMHTT_TurretBase": "Holds a head, ammo, modules and a battery.",
         "Tooltip_OMHTT_PotatoHead": "Install in a turret base. Uses potatoes and power.",
-        "Tooltip_OMHTT_ModuleStorage": "Storage prototype. Module effects are not enabled yet.",
+        "Tooltip_OMHTT_ModuleFiring": "Fires on signal. Add Detection for automatic fire.",
+        "Tooltip_OMHTT_ModuleMotionDetection": "Tracks zombies. Add Firing to shoot automatically.",
+        "Tooltip_OMHTT_ModuleFilter": "Choose target priority in Manage.",
+        "Tooltip_OMHTT_ModuleDetection360": "Unlocks all directions.",
+        "Tooltip_OMHTT_ModuleRapidFire": "Increases fire rate. Stackable.",
+        "Tooltip_OMHTT_ModuleReload": "Speeds up reloading. Stackable.",
+        "Tooltip_OMHTT_ModuleAutoloader": "Eliminates reload time.",
+        "Tooltip_OMHTT_ModuleVelocity": "Increases damage and knockdown chance. Stackable.",
+        "Tooltip_OMHTT_ModuleRange": "Extends range. Stackable.",
+        "Tooltip_OMHTT_ModuleCapacity": "Expands ammo and module storage.",
     })
     translations("UI", {
         "UI_OMHTT_Turret": "Turret", "UI_OMHTT_Manage": "Manage",

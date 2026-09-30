@@ -305,3 +305,183 @@ option OMHTurretsTraps.PotatoTurnSpeed {
     page = OMHTurretsTraps_PotatoPage,
     translation = OMHTurretsTraps_PotatoTurnSpeed,
 }
+
+option OMHTurretsTraps.RapidFireBonus {
+    type = double,
+    default = 25,
+    min = 0,
+    max = 200,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_RapidFireBonus,
+}
+
+option OMHTurretsTraps.RapidFireBonusCap {
+    type = double,
+    default = 200,
+    min = 0,
+    max = 1000,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_RapidFireBonusCap,
+}
+
+option OMHTurretsTraps.RapidFireMinimum {
+    type = double,
+    default = 0.25,
+    min = 0.1,
+    max = 10,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_RapidFireMinimum,
+}
+
+option OMHTurretsTraps.ReloadBonus {
+    type = double,
+    default = 25,
+    min = 0,
+    max = 200,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_ReloadBonus,
+}
+
+option OMHTurretsTraps.ReloadBonusCap {
+    type = double,
+    default = 200,
+    min = 0,
+    max = 1000,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_ReloadBonusCap,
+}
+
+option OMHTurretsTraps.ReloadMinimum {
+    type = double,
+    default = 0.25,
+    min = 0,
+    max = 10,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_ReloadMinimum,
+}
+
+option OMHTurretsTraps.VelocityBonus {
+    type = double,
+    default = 20,
+    min = 0,
+    max = 200,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_VelocityBonus,
+}
+
+option OMHTurretsTraps.VelocityBonusCap {
+    type = double,
+    default = 100,
+    min = 0,
+    max = 1000,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_VelocityBonusCap,
+}
+
+option OMHTurretsTraps.VelocityKnockdownBonus {
+    type = double,
+    default = 5,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_VelocityKnockdownBonus,
+}
+
+option OMHTurretsTraps.VelocityKnockdownCap {
+    type = double,
+    default = 90,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_VelocityKnockdownCap,
+}
+
+option OMHTurretsTraps.RangeBonus {
+    type = double,
+    default = 2,
+    min = 0,
+    max = 200,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_RangeBonus,
+}
+
+option OMHTurretsTraps.RangeBonusCap {
+    type = double,
+    default = 10,
+    min = 0,
+    max = 1000,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_RangeBonusCap,
+}
+
+option OMHTurretsTraps.CapacityAmmoBonus {
+    type = integer,
+    default = 100,
+    min = 0,
+    max = 500,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_CapacityAmmoBonus,
+}
+
+option OMHTurretsTraps.CapacityModuleBonus {
+    type = integer,
+    default = 4,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_CapacityModuleBonus,
+}
+
+option OMHTurretsTraps.LootRapidFire {
+    type = double,
+    default = 1,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootRapidFire,
+}
+
+option OMHTurretsTraps.LootReload {
+    type = double,
+    default = 1,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootReload,
+}
+
+option OMHTurretsTraps.LootAutoloader {
+    type = double,
+    default = 1,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootAutoloader,
+}
+
+option OMHTurretsTraps.LootVelocity {
+    type = double,
+    default = 1,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootVelocity,
+}
+
+option OMHTurretsTraps.LootRange {
+    type = double,
+    default = 1,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootRange,
+}
+
+option OMHTurretsTraps.LootCapacity {
+    type = double,
+    default = 1,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootCapacity,
+}

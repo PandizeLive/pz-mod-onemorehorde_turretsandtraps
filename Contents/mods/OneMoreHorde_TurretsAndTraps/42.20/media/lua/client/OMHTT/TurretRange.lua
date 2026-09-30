@@ -117,7 +117,7 @@ function O.render()
                     cone = 360
                 end
                 local lines = O.lines(square:getX() + 0.5, square:getY() + 0.5,
-                    T.option("Range", 6, 1, 20), profile.heading, cone, heading)
+                    profile.range, profile.heading, cone, heading)
                 local left, top = getPlayerScreenLeft(index), getPlayerScreenTop(index)
                 canvas:setStencilRect(left, top, getPlayerScreenWidth(index), getPlayerScreenHeight(index))
                 for i = 1, #lines do

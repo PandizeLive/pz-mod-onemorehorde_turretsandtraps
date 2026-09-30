@@ -14,6 +14,10 @@ OMHTTPotatoImpact references media/sound/splat2.wav using the native sound-scrip
 
 2,058 Kahlua assertions, 42 runtime Lua files, 290 native translations, 23 packet round trips and 109 package files. Tests cover shortest turn across 0/360 (positive-normalized Kahlua remainder), angular speed, overshoot, no ammo spent before alignment, exactly one delayed manual shot, unchanged coverage, brown effects, grouped Sandbox resize/navigation/idempotence and unrelated-page isolation. Original 0.2.16 native write/read passed in 41.3/43.5s. The tooltip-corrected 0.2.16.1 write/read also passed, including a real battery and native re-translation of its packed tooltip. Installation evidence is recorded in RELEASE.md when complete. GPU appearance and audible playback remain owner tests.
 
+## Held owner test
+
+Owner deferred this test on 2026-09-29 and requested moving to the next checkpoint. Keep every check below pending and carry it into the next combined owner test; installation and automated checks do not constitute player acceptance. Use the next installed version when testing, not the superseded version number below.
+
 ## Complete owner test
 
 1. Restart on 0.2.16.1. Check every Sandbox page starts OMH: T&T - and Potato Turret has four readable headings. Set Turn speed to 30 for an obvious test; default is 90 degrees/second.
@@ -21,4 +25,4 @@ OMHTTPotatoImpact references media/sound/splat2.wav using the native sound-scrip
 3. With power, Detection and Firing installed, introduce a target away from the current head direction. The head turns smoothly and fires only when aligned. Detection coverage remains placement-locked; verify the Detection Module name and short 360 tooltip.
 4. Disable automatic mode and click Fire once with a target off-axis. Expect one shot after turning. Try again and walk away during the turn: the pending manual shot should cancel without spending ammo.
 5. Fire at a group. Look for the higher brown travel marker and larger brown pop; listen for splat2 at impact. Remove power during a turn and confirm it stops.
-6. Save/reload, confirm actual contents/charge survive, then send Test Complete and any rendering/audio issue. The reload audition page is separate; choose by filename whenever ready.
+6. Pick up a turret with a partially charged battery and hover its packed-item tooltip: no error. Save/reload, confirm actual contents/charge survive, then send Test Complete and any rendering/audio issue. The reload audition page is separate; choose by filename whenever ready.

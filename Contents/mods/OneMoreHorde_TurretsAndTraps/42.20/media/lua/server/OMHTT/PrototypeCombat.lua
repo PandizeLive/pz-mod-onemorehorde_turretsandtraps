@@ -63,7 +63,7 @@ function Combat.clearLane(origin, destination, range)
     local dx = destination:getX() - origin:getX()
     local dy = destination:getY() - origin:getY()
     local steps = math.max(math.abs(dx), math.abs(dy))
-    if steps > range then return false, "range" end
+    if steps > math.ceil(range) then return false, "range" end
     local previous = origin
     for i = 1, steps do
         local x = origin:getX() + math.floor(dx * i / steps + 0.5)
@@ -94,7 +94,7 @@ function Combat.candidates(origin, range)
     local found = {}
     local seen = {}
     local visits = 0
-    for radius = 0, range do
+    for radius = 0, math.ceil(range) do
         for dx = -radius, radius do
             local stride = 1
             if math.abs(dx) < radius then
@@ -150,7 +150,7 @@ function Combat.fire(record, object, player, options)
         Diagnostics.emit("shot-clock-rebased", {id = record.id, previous = record.nextShot, nowMs = now})
         record.nextShot = now + options.interval
     end
-    if now < record.nextShot then return "Cooling" end
+    if not options.managed and now < record.nextShot then return "Cooling" end
     local origin = object:getSquare()
     local candidates, visits = Combat.candidates(origin, options.range)
     local target, bestDistance = nil, 0

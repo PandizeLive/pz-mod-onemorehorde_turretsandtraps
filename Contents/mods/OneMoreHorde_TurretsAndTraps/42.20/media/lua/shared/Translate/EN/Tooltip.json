@@ -9,5 +9,11 @@
     "Tooltip_OMHTT_ModuleFiring": "Fires on signal. Add Detection for automatic fire.",
     "Tooltip_OMHTT_ModuleMotionDetection": "Tracks zombies. Add Firing to shoot automatically.",
     "Tooltip_OMHTT_ModuleFilter": "Choose target priority in Manage.",
-    "Tooltip_OMHTT_ModuleDetection360": "Unlocks all directions."
+    "Tooltip_OMHTT_ModuleDetection360": "Unlocks all directions.",
+    "Tooltip_OMHTT_ModuleRapidFire": "Increases fire rate. Stackable.",
+    "Tooltip_OMHTT_ModuleReload": "Speeds up reloading. Stackable.",
+    "Tooltip_OMHTT_ModuleAutoloader": "Eliminates reload time.",
+    "Tooltip_OMHTT_ModuleVelocity": "Increases damage and knockdown chance. Stackable.",
+    "Tooltip_OMHTT_ModuleRange": "Extends range. Stackable.",
+    "Tooltip_OMHTT_ModuleCapacity": "Expands ammo and module storage."
 }

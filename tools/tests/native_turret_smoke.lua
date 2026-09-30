@@ -21,7 +21,7 @@ local function verifyTurrets()
             end
         end
     end
-    assert(count == 16, "Expected four active modules in four native loot pools")
+    assert(count == 40, "Expected ten active modules in four native loot pools")
     local nativeContents = {active = {Detection360 = 1, Filter = 1}}
     local profile = Modules.profile({baseFacing = 4, facing = 12, priority = "Toughest"}, nativeContents)
     assert(profile.cone == 360 and profile.heading == 90 and profile.priority == "Toughest", "Module profile failed")
@@ -39,7 +39,7 @@ local function verifyTurrets()
     assert(T.contents(live).active.MotionDetection == 1, "Native module condition defaults are not active")
     detector:setCondition(0)
     assert(T.contents(live).active.MotionDetection == nil, "Broken native module remains active")
-    print("[OMHTT-Smoke] native-modules loot=16 profiles=valid condition=checked")
+    print("[OMHTT-Smoke] native-modules loot=40 profiles=valid condition=checked")
     local resources = ArrayList.new()
     local tools = {"Base.Screwdriver", "Base.Wrench"}
     local routes = {
@@ -105,6 +105,22 @@ local function verifyTurrets()
     local contents = T.contents(inventory)
     assert(contents.ammo == 1 and contents.modules == 2 and not T.canRemove(inventory, contents.head), "Inventory classification/removal guard failed")
     assert(math.abs(packed:getUnequippedWeight() - packed:getActualWeight() - inventory:getContentsWeight()) < 0.001, "Packed weight omits or duplicates contents")
+    local baseStats = T.cycleConfig()
+    local expansion = instanceItem("Base.OMHTTModuleCapacity")
+    assert(inventory:isItemAllowed(expansion), "Native capacity socket rejected")
+    inventory:AddItem(expansion)
+    inventory:AddItem("Base.OMHTTModuleReload")
+    inventory:AddItem("Base.OMHTTModuleReload")
+    local velocity = inventory:AddItem("Base.OMHTTModuleVelocity")
+    local stats = T.cycleConfig(T.contents(inventory))
+    assert(stats.modules == baseStats.modules + 4 and stats.ammo == baseStats.ammo + 100 and math.abs(stats.cooldown - baseStats.cooldown / 1.5) < 0.001
+        and math.abs(stats.reload - baseStats.reload / 1.5) < 0.001 and math.abs(stats.damage - baseStats.damage * 1.2) < 0.001, "Native effective module stats failed")
+    assert(not T.canRemove(inventory, expansion), "Native capacity removal lost module limit")
+    assert(not inventory:isItemAllowed(instanceItem("Base.OMHTTModuleCapacity")), "Native duplicate capacity accepted")
+    velocity:setCondition(0)
+    assert(T.cycleConfig(T.contents(inventory)).damage == baseStats.damage, "Broken native velocity remains active")
+    inventory:Remove(velocity)
+    assert(T.canRemove(inventory, expansion), "Native capacity remains stuck after removing excess")
     local info = SpriteConfigManager.GetObjectInfo("OMHTTDeployTurret")
     assert(info and info:getRecipe():getCraftRecipe():getXPAwardCount() == 0, "Deployment repeats XP")
     local recipe = info:getRecipe():getCraftRecipe()
@@ -152,7 +168,7 @@ local function verifyTurrets()
     T.state(object).condition = 37
     T.state(object).fixtureBatteryId = battery:getID()
     T.state(object).fixtureAmmoId = potato:getID()
-    contents.head:getModData().OMHTTCycle = {schema = 1, loaded = 1, nextShot = 123456789}
+    contents.head:getModData().OMHTTCycle = {schema = 1, loaded = 1, nextShot = 123456789, cooldownDuration = 750, reloadDuration = 750}
     assert(contents.head:getWorldStaticItem() == "Base.OMHTTProbeHead", "Actual turret head has no native model")
     OMHTT_NativeTurret = object
     local H = require("OMHTT/HybridProbe")

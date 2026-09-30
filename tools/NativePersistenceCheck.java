@@ -151,7 +151,7 @@ public final class NativePersistenceCheck {
         check(((Number)call(state, "rawget", new Class<?>[]{Object.class}, "baseFacing")).intValue() == 4, "Placement cone orientation lost");
         check(Double.valueOf(123456789).equals(call(state, "rawget", new Class<?>[]{Object.class}, "nextShot")), "Turret cooldown lost");
         List<?> items = (List<?>)get(get(restored, "getContainer"), "getItems");
-        check(items.size() == 5, "Turret contents lost or duplicated");
+        check(items.size() == 8, "Turret contents lost or duplicated");
         boolean battery = false, ammo = false, head = false;
         for (Object item : items) {
             if ("Base.CarBattery1".equals(get(item, "getFullType"))) {
@@ -169,9 +169,19 @@ public final class NativePersistenceCheck {
                 Object cycle = call(get(item, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTCycle");
                 check(cycle != null && Double.valueOf(1).equals(call(cycle, "rawget", new Class<?>[]{Object.class}, "loaded")), "Head magazine lost");
                 check(Double.valueOf(123456789).equals(call(cycle, "rawget", new Class<?>[]{Object.class}, "nextShot")), "Head cooldown lost");
+                check(Double.valueOf(750).equals(call(cycle, "rawget", new Class<?>[]{Object.class}, "cooldownDuration")), "Modified cooldown duration lost");
+                check(Double.valueOf(750).equals(call(cycle, "rawget", new Class<?>[]{Object.class}, "reloadDuration")), "Modified reload duration lost");
                 head = true;
             }
         }
+        int rapid = 0, reload = 0, capacity = 0;
+        for (Object item : items) {
+            String fullType = (String)get(item, "getFullType");
+            if (fullType.equals("Base.OMHTTModuleRapidFire")) rapid++;
+            if (fullType.equals("Base.OMHTTModuleReload")) reload++;
+            if (fullType.equals("Base.OMHTTModuleCapacity")) capacity++;
+        }
+        check(rapid == 2 && reload == 2 && capacity == 1, "Stacked modules or expansion lost");
         check(battery && ammo && head, "Missing ammunition, battery or head cycle");
         Object packed = Class.forName("zombie.inventory.InventoryItemFactory").getMethod("CreateItem", String.class).invoke(null, "Base.OMHTTTurretBase");
         Object packedInventory = get(packed, "getInventory");
@@ -193,7 +203,7 @@ public final class NativePersistenceCheck {
         Object packedRestored = itemType.getMethod("loadItem", ByteBuffer.class, int.class).invoke(null, packedInput, version);
         check(!packedInput.hasRemaining() && get(packedRestored, "getCondition").equals(37), "Portable turret condition/stream mismatch");
         List<?> packedItems = (List<?>)get(get(packedRestored, "getInventory"), "getItems");
-        check(packedItems.size() == 5, "Portable turret lost contents");
+        check(packedItems.size() == 8, "Portable turret lost contents");
         Object packedState = call(get(packedRestored, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTTurret");
         check(Boolean.FALSE.equals(call(packedState, "rawget", new Class<?>[]{Object.class}, "automatic")), "Packed automatic switch lost");
         check("Toughest".equals(call(packedState, "rawget", new Class<?>[]{Object.class}, "priority")), "Packed priority lost");
@@ -209,8 +219,8 @@ public final class NativePersistenceCheck {
         double expectedWeight = ((Number)get(packedRestored, "getActualWeight")).doubleValue()
             + ((Number)get(get(packedRestored, "getInventory"), "getContentsWeight")).doubleValue();
         check(Math.abs(total - expectedWeight) < 0.001, "Portable weight double counted");
-        System.out.println("[OMHTT-Smoke] native-packed-turret mode=" + mode + " items=5 charge=preserved condition=37 cooldown=preserved weight=exact");
-        System.out.println("[OMHTT-Smoke] native-turret-persistence mode=" + mode + " items=5 charge=0.37 health=37 cooldown=preserved identity=exact sprite=valid");
+        System.out.println("[OMHTT-Smoke] native-packed-turret mode=" + mode + " items=8 charge=preserved condition=37 cooldown=preserved weight=exact");
+        System.out.println("[OMHTT-Smoke] native-turret-persistence mode=" + mode + " items=8 charge=0.37 health=37 cooldown=preserved identity=exact sprite=valid");
     }
 
     private static void verifyHybrid(Path directory, String mode) throws Exception {

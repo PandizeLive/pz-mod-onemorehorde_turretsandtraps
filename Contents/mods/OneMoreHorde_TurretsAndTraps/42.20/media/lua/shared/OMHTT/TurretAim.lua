@@ -57,7 +57,7 @@ function Aim.tick()
             local contents = T.contents(object:getContainer())
             valid = contents.head and contents.head:getCondition() > 0 and W.power(object, contents)
                 and M.inside(object:getSquare(), entry.target, M.profile(state, contents))
-                and Combat.clearLane(object:getSquare(), entry.target:getSquare(), T.option("Range", 6, 1, 20))
+                and Combat.clearLane(object:getSquare(), entry.target:getSquare(), T.cycleConfig(contents).range)
             if entry.player then
                 valid = valid and W.near(entry.player, object)
             else

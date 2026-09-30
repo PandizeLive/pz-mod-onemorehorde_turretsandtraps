@@ -1,6 +1,7 @@
 local F = require("OMHTT/Foundation")
 local D = require("OMHTT/Diagnostics")
 local Cycle = require("OMHTT/TurretCycle")
+local Stats = require("OMHTT/TurretStats")
 OMHTT_Turret = {}
 local T = OMHTT_Turret
 T.BASE = "Base.OMHTTTurretBase"
@@ -35,12 +36,11 @@ function T.hybrid()
     return not isClient() and not isServer() and getCore():isOption3DGroundItem()
 end
 
----@return table config Shared cycle tuning
+---@param contents table? Native inventory summary
+---@return table config Effective cycle and stat tuning
 ---@nodiscard
-function T.cycleConfig()
-    return {magazine = T.option("MagazineCapacity", 1, 1, 500),
-        reload = T.option("ReloadTime", 2, 0, 60) * 1000,
-        cooldown = T.option("Cooldown", 2, 0.1, 60) * 1000}
+function T.cycleConfig(contents)
+    return Stats.resolve(contents)
 end
 
 ---@param contents table Native inventory summary
@@ -52,7 +52,7 @@ function T.cycle(contents, now)
     local data = contents.head:getModData()
     if not data.OMHTTCycle then data.OMHTTCycle = {schema = 1, loaded = 0, nextShot = 0} end
     local state = data.OMHTTCycle
-    return state, Cycle.update(state, contents.ammo, T.cycleConfig(), now)
+    return state, Cycle.update(state, contents.ammo, T.cycleConfig(contents), now)
 end
 
 ---@param item InventoryItem Candidate
@@ -64,6 +64,7 @@ function T.kind(item)
     if fullType == "Base.Potato" then return "ammo" end
     if fullType == "Base.CarBattery1" or fullType == "Base.CarBattery2" or fullType == "Base.CarBattery3" then return "battery" end
     local module = string.match(fullType, "^Base%.OMHTTModule(.+)$")
+    if module == "Capacity" then return "capacity" end
     if module and T.MODULES[module] then return "module" end
     return nil
 end
@@ -72,7 +73,7 @@ end
 ---@return table summary Actual inventory contents
 ---@nodiscard
 function T.contents(container)
-    local result = {ammo = 0, modules = 0, heads = 0, batteries = 0, invalid = 0, moduleNames = {}, active = {}, weight = 0}
+    local result = {ammo = 0, modules = 0, capacities = 0, heads = 0, batteries = 0, invalid = 0, moduleNames = {}, active = {}, weight = 0}
     local items = container:getItems()
     for i = 0, items:size() - 1 do
         local item = items:get(i)
@@ -87,8 +88,12 @@ function T.contents(container)
         elseif kind == "battery" then
             result.batteries = result.batteries + 1
             result.battery = item
-        elseif kind == "module" then
-            result.modules = result.modules + 1
+        elseif kind == "module" or kind == "capacity" then
+            if kind == "capacity" then
+                result.capacities = result.capacities + 1
+            else
+                result.modules = result.modules + 1
+            end
             result.moduleNames[#result.moduleNames + 1] = item:getDisplayName()
             if item:getCondition() > 0 then
                 local name = string.match(item:getFullType(), "^Base%.OMHTTModule(.+)$")
@@ -121,8 +126,10 @@ function T.accept(container, item)
     local contents = T.contents(container)
     if kind == "head" then return contents.heads == 0 end
     if kind == "battery" then return contents.batteries == 0 end
-    if kind == "ammo" then return contents.heads == 1 and contents.ammo < T.option("AmmoCapacity", 100, 1, 500) end
-    return contents.modules < T.option("ModuleCapacity", 4, 0, 20)
+    if kind == "capacity" then return contents.capacities == 0 end
+    local stats = Stats.resolve(contents)
+    if kind == "ammo" then return contents.heads == 1 and contents.ammo < stats.ammo end
+    return contents.modules < stats.modules
 end
 
 ---@param container ItemContainer Source
@@ -130,14 +137,32 @@ end
 ---@return boolean allowed
 ---@nodiscard
 function T.canRemove(container, item)
-    return not T.isContainer(container) or T.kind(item) ~= "head" or T.contents(container).ammo == 0
+    if not T.isContainer(container) then return true end
+    local contents = T.contents(container)
+    if T.kind(item) == "head" then return contents.ammo == 0 end
+    if T.kind(item) == "capacity" and item:getCondition() > 0 then
+        contents.active.Capacity = nil
+        if contents.capacities > 1 then
+            local items = container:getItems()
+            for i = 0, items:size() - 1 do
+                local other = items:get(i)
+                if other ~= item and T.kind(other) == "capacity" and other:getCondition() > 0 then
+                    contents.active.Capacity = 1
+                end
+            end
+        end
+        local stats = Stats.resolve(contents)
+        return contents.ammo <= stats.ammo and contents.modules <= stats.modules
+    end
+    return true
 end
 
 ---@param container ItemContainer Owned storage
 ---@return nil
 function T.configure(container)
     container:setType(T.CONTAINER)
-    local capacity = math.ceil(9 + T.option("AmmoCapacity", 100, 1, 500) * 0.2 + T.option("ModuleCapacity", 4, 0, 20) * 0.3)
+    local stats = Stats.resolve({active = {Capacity = 1}})
+    local capacity = math.ceil(10 + stats.ammo * 0.2 + (stats.modules + 1) * 0.3)
     container:setCapacity(capacity)
     if container:getContainingItem() then container:getContainingItem():setCapacity(capacity) end
     container:setAcceptItemFunction("OMHTT_Turret.accept")

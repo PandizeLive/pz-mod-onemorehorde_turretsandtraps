@@ -26,7 +26,10 @@ end
 function X.rejection(player, item, source, destination)
     if not source or not destination or item:getContainer() ~= source then return "TransferMissing" end
     if not X.reachable(player, source) or not X.reachable(player, destination) then return "TransferReach" end
-    if not T.canRemove(source, item) then return "UnloadFirst" end
+    if not T.canRemove(source, item) then
+        if T.kind(item) == "capacity" then return "CapacityFull" end
+        return "UnloadFirst"
+    end
     if T.isContainer(destination) then
         T.configure(destination)
         if item:isFavorite() and not destination:isInCharacterInventory(player) then return "TransferFavorite" end
@@ -69,7 +72,10 @@ function ISInventoryTransferAction:transferItem(item)
     for i = 1, 2 do
         local container = source
         if i == 2 then container = destination end
-        if T.isContainer(container) then T.cycle(T.contents(container), getTimestampMs()) end
+        if T.isContainer(container) then
+            T.configure(container)
+            T.cycle(T.contents(container), getTimestampMs())
+        end
         if T.state(container:getParent()) then W.refresh(container:getParent()) end
     end
     D.emit("turret-transfer", {item = item:getFullType(), itemId = item:getID(),
@@ -94,8 +100,9 @@ function X.queue(player, object, items, incoming, kind)
     local destination = player:getInventory()
     if incoming then destination = storage end
     local contents = T.contents(storage)
-    local counts = {head = contents.heads, battery = contents.batteries, ammo = contents.ammo, module = contents.modules}
-    local limits = {head = 1, battery = 1, ammo = T.option("AmmoCapacity", 100, 1, 500), module = T.option("ModuleCapacity", 4, 0, 20)}
+    local counts = {head = contents.heads, battery = contents.batteries, ammo = contents.ammo, module = contents.modules, capacity = contents.capacities}
+    local stats = T.cycleConfig(contents)
+    local limits = {head = 1, battery = 1, ammo = stats.ammo, module = stats.modules, capacity = 1}
     local pending = {}
     local queue = ISTimedActionQueue.getTimedActionQueue(player).queue
     for i = 1, #queue do

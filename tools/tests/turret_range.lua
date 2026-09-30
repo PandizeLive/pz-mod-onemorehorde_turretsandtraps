@@ -31,7 +31,7 @@ function player:getX() return 20.5 end
 function player:getY() return 30.5 end
 function player:getZ() return self.z end
 function getSpecificPlayer() return player end
-R.entries[object] = {head = {}, profile = {heading = 0, cone = 90, omni = false}}
+R.entries[object] = {head = {}, profile = {heading = 0, cone = 90, omni = false, range = 6}}
 O.selected = {}
 O.clicked(object)
 check(O.selected[0].click == object, "Native left mouse pick selects exact turret")

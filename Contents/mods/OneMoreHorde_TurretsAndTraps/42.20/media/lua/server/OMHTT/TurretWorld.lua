@@ -263,9 +263,10 @@ function W.fire(player, object, target)
     if not power then return "NoPower" end
     local state = T.state(object)
     state.ammo = contents.ammo
-    local options = {range = T.option("Range", 6, 1, 20), interval = T.option("Cooldown", 2, 0.1, 60) * 1000,
-        damage = T.option("Damage", 35, 0, 1000) / 100, knockdown = T.option("KnockdownChance", 70, 0, 100),
-        splash = T.option("Damage", 35, 0, 1000) * T.option("SplashPercent", 25, 0, 100) / 10000, radius = T.option("SplashRadius", 1.5, 0, 3), managed = true,
+    local stats = T.cycleConfig(contents)
+    local options = {range = stats.range, interval = stats.cooldown,
+        damage = stats.damage / 100, knockdown = stats.knockdown,
+        splash = stats.damage * T.option("SplashPercent", 25, 0, 100) / 10000, radius = T.option("SplashRadius", 1.5, 0, 3), managed = true,
         profile = M.profile(state, contents), target = target}
     ---@param selected IsoZombie Chosen target
     ---@return boolean aligned
@@ -283,7 +284,7 @@ function W.fire(player, object, target)
             power.generator:setFuel(math.max(0, power.generator:getFuel() - power.cost))
         end
         object:getContainer():Remove(contents.round)
-        Cycle.consume(cycle, contents.ammo - 1, T.cycleConfig(), getTimestampMs())
+        Cycle.consume(cycle, contents.ammo - 1, stats, getTimestampMs())
         D.emit("turret-resource-spent", {id = state.id, ammoItem = contents.round:getID(), power = power.kind, cost = power.cost})
         return true
     end

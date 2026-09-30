@@ -114,6 +114,8 @@ function Panel:refresh()
     self.status = status
     local state = T.state(self.object)
     local profile = M.profile(state, contents)
+    local stats = T.cycleConfig(contents)
+    self.stats = stats
     self.autoButton:setTitle(getText(state.automatic == false and "UI_OMHTT_AutoOff" or "UI_OMHTT_AutoOn"))
     local automationAllowed = SandboxVars.OMHTurretsTraps.AutomationEnabled ~= false
     self.autoButton:setEnable(automationAllowed)
@@ -125,14 +127,13 @@ function Panel:refresh()
     local active = {}
     for name in pairs(M.CORE) do
         if contents.active[name] then
-            active[#active + 1] = getText("UI_OMHTT_Module" .. name)
+            active[#active + 1] = contents.active[name]
         end
     end
-    table.sort(active)
-    self.moduleEffects = getText("UI_OMHTT_ActiveModules", #active > 0 and table.concat(active, ", ") or getText("UI_OMHTT_None"), profile.cone)
+    self.moduleEffects = getText("UI_OMHTT_ActiveModules", #active, profile.cone)
     self.fireButton:setEnable(status == "Ready")
     self.unloadButton:setEnable(contents.ammo > 0)
-    local capacity = T.option("ModuleCapacity", 4, 0, 20)
+    local capacity = stats.modules
     self.pages = math.max(1, math.ceil(math.max(contents.modules, capacity) / 4))
     self.modulePage = math.min(self.modulePage, self.pages - 1)
     self.previousButton:setEnable(self.modulePage > 0)
@@ -152,23 +153,32 @@ function Panel:refresh()
         local slot = self.headSlot
         if kind == "battery" then slot = self.batterySlot end
         if kind == "ammo" then slot = self.ammoSlot end
+        if kind == "capacity" then slot = self.capacitySlot end
         if kind == "module" then
             modules = modules + 1
             slot = self.moduleSlots[modules - self.modulePage * 4]
         end
         if kind and slot then slot.items[#slot.items + 1] = item end
     end
-    self.ammoSlot.label = getText("UI_OMHTT_ManageAmmo", contents.ammo, T.option("AmmoCapacity", 100, 1, 500),
-        cycle and cycle.loaded or 0, T.option("MagazineCapacity", 1, 1, 500))
+    self.ammoSlot.label = getText("UI_OMHTT_ManageAmmo", contents.ammo, stats.ammo,
+        cycle and cycle.loaded or 0, stats.magazine)
     local charge = getText("UI_OMHTT_None")
     if contents.battery then charge = tostring(math.floor(contents.battery:getCurrentUsesFloat() * 100)) .. "%" end
     self.batterySlot.label = getText("UI_OMHTT_ManageBattery", charge)
+    self.capacitySlot.disabled = contents.capacities > 0
     self.moduleLabel = getText("UI_OMHTT_ManageModules", contents.modules, capacity)
     self.powerLabel = getText("UI_OMHTT_ManagePowerNone")
     if power then
         self.powerLabel = getText("UI_OMHTT_ManagePowerExternal")
         if power.kind == "battery" then self.powerLabel = getText("UI_OMHTT_ManagePowerBattery") end
         if power.kind == "disabled" then self.powerLabel = getText("UI_OMHTT_ManagePowerDisabled") end
+    end
+    local statKey = table.concat({stats.damage, stats.range, stats.reload, stats.cooldown, stats.ammo, stats.modules, stats.knockdown}, ":")
+    if self.lastStatKey ~= statKey then
+        D.emit("turret-effective-stats", {id = self.deviceId, damage = stats.damage, range = stats.range,
+            reload = stats.reload, cooldown = stats.cooldown, ammoCapacity = stats.ammo, moduleCapacity = stats.modules,
+            knockdown = stats.knockdown, autoloader = stats.autoloader})
+        self.lastStatKey = statKey
     end
     if self.lastStatus ~= status then
         D.emit("turret-manage-status", {id = self.deviceId, status = status, ammo = contents.ammo,
@@ -192,10 +202,10 @@ function Panel:prerender()
     self:drawText(self.moduleLabel, 12, self.modulesY, 1, 1, 1, 1, UIFont.Small)
     self:drawText(self.moduleEffects, 12, y, 0.8, 0.8, 0.8, 1, UIFont.Small)
     self:drawText(getText("UI_OMHTT_Manage" .. self.status) .. " | " .. self.powerLabel, 12, y + h, 1, 1, 1, 1, UIFont.Small)
-    self:drawText(getText("UI_OMHTT_ManageStats", T.option("Damage", 35, 0, 1000), T.option("Range", 6, 1, 20),
+    local stats = self.stats
+    self:drawText(getText("UI_OMHTT_ManageStats", string.format("%.1f", stats.damage), string.format("%.1f", stats.range),
         self.object:getHealth(), self.object:getMaxHealth()), 12, y + h * 2, 1, 1, 1, 1, UIFont.Small)
-    local config = T.cycleConfig()
-    self:drawText(getText("UI_OMHTT_ManageTiming", config.reload / 1000, config.cooldown / 1000),
+    self:drawText(getText("UI_OMHTT_ManageTiming", string.format("%.2f", stats.reload / 1000), string.format("%.2f", 1000 / stats.cooldown)),
         12, y + h * 3, 1, 1, 1, 1, UIFont.Small)
     self:drawText(self.result, 12, y + h * 4, 0.9, 0.85, 0.65, 1, UIFont.Small)
     self:drawText(self.reason, 12, y + h * 5, 0.9, 0.85, 0.65, 1, UIFont.Small)
@@ -236,7 +246,8 @@ function OpenAction:perform()
         panel:initialise()
         panel.headSlot = panel:addSlot("head", getText("UI_OMHTT_ManageHead"), 12, top, (width - 32) / 2)
         panel.batterySlot = panel:addSlot("battery", "", width / 2 + 4, top, (width - 32) / 2)
-        panel.ammoSlot = panel:addSlot("ammo", "", 12, top + slotHeight + 8, width - 24)
+        panel.ammoSlot = panel:addSlot("ammo", "", 12, top + slotHeight + 8, (width - 32) * 0.65)
+        panel.capacitySlot = panel:addSlot("capacity", getText("UI_OMHTT_ManageCapacity"), 20 + (width - 32) * 0.65, top + slotHeight + 8, (width - 32) * 0.35)
         local moduleWidth = (width - 48) / 4
         for i = 1, 4 do
             panel.moduleSlots[i] = panel:addSlot("module", "", 12 + (i - 1) * (moduleWidth + 8), modulesY + lineHeight, moduleWidth)

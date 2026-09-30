@@ -22,4 +22,21 @@ UI.attach(panel); panel.width=800; panel:prerender()
 check(#panel.children==4 and panel.scrollHeight==height and #panel.joypadButtonsY==4, "Resize and repeated attachment preserve layout and joypad rows")
 local unrelated={controls={}}
 check(UI.attach(unrelated)==unrelated and unrelated.omhttTitles==nil, "Other mods' Sandbox pages untouched")
+local modules = {controls = {}, labels = {}, settingNames = {}, children = {}, width = 500}
+local names = {"CapacityAmmoBonus", "RangeBonus", "VelocityBonus", "ReloadBonus", "RapidFireBonus"}
+for i = 1, #names do
+    local name = "OMHTurretsTraps." .. names[i]
+    modules.settingNames[i] = name
+    modules.controls[name] = {setY=function(self,y) self.y=y end,getHeight=function() return 20 end}
+    modules.labels[name] = {setY=function(self,y) self.y=y end,getHeight=function() return 20 end}
+end
+modules.addChild, modules.getWidth, modules.insertNewLineOfButtons = panel.addChild, panel.getWidth, panel.insertNewLineOfButtons
+modules.setScrollHeight = panel.setScrollHeight
+modules.prerender = function(self) self.originalCalled = true end
+UI.attach(modules)
+modules:prerender()
+check(#modules.children == 5 and modules.settingNames[1] == "OMHTurretsTraps.RapidFireBonus"
+    and modules.settingNames[5] == "OMHTurretsTraps.CapacityAmmoBonus", "Module tuning has five ordered headings")
+UI.attach(modules); modules.width = 700; modules:prerender()
+check(#modules.children == 5 and #modules.joypadButtonsY == 5, "Module headings survive resize without duplicates")
 getTextManager=oldTextManager

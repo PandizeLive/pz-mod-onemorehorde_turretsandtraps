@@ -268,3 +268,11 @@ The temporary base sprite uses native FloorOverlay depth instead of the generic 
 The listening page now contains 34 exact-copy candidates, including 16 reload candidates. Always supply an HTML audition page for future audio decisions. Source metadata stays beside the local page. No sibling mod is edited.
 
 C61 pre-install correction: the captured 0.2.15 packed-item tooltip failed in native Translator on a literal percent sign. 0.2.16.1 fixes charge wording before the first installation of this patch; 0.2.16 remains an uninstalled source tag.
+
+## C62: held 0.2.16.1 test and next checkpoint discussion
+
+Owner requests recording the pending test and moving forward to discuss the next checkpoint. Hold the full turning/presentation test for combination with P2C3d2; do not count it as passed. P2C3d2 scope is documented as a proposal, with numeric module tuning and implementation approval still pending. This request changes documentation only, not installed gameplay.
+
+## C63: approved P2C3d2 and stackable Reload
+
+Owner approves proceeding with active stat modules and explicitly adds Reload stacking. Use Reload and Fire rate as concise distinct labels. Implement the proposed dedicated Capacity socket, safe removal, configurable gains/caps and loot-only acquisition. Defaults in PHASE_2_CHECKPOINT_3D2.md are implementation tuning; retained Sandbox settings still apply. Combine held 0.2.16.1 acceptance into one complete owner test. No crafting, firearm adapters, multiplayer certification or external publication is authorized by this checkpoint.

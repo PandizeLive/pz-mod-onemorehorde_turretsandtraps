@@ -64,3 +64,7 @@ Modules will be found as loot for now. For d1 introduce Firing, Motion Detection
 ## Owner tuning — C58
 
 Include grouped Sandbox controls with d1: automation toggle, placement cone (90-degree default), bounded detection interval, global module loot multiplier and individual Firing/Detection/Filter/360 loot multipliers. Zero disables new drops; existing items remain. Reuse per-turret combat/storage/power controls. Current-game weighted loot requires honest multiplier labels rather than exact probability promises. Keep individual on/off and Filter priority in Manage. See SANDBOX_OPTIONS_SPEC.md for the planned table. Add stat-module bonuses/caps/loot controls with their functioning d2 effects.
+
+## Implemented stat modules — C63, 0.2.17
+
+Rapid-Fire, Reload, Velocity and Range stack with configurable gains/caps. Capacity has one dedicated socket and blocks unsafe removal; Autoloader removes reload delay. Manage uses Reload / Fire rate labels and effective values. Modules remain loot-only. See [current contract and combined test](PHASE_2_CHECKPOINT_3D2.md); earlier proposal sections are superseded where they differ.

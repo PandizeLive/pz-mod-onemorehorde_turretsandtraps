@@ -11,6 +11,14 @@ local groups = {
     {"Sandbox_Title_OMHTurretsTraps_Power", {"PotatoRequirePower", "PotatoBatteryPercentPerShot", "PotatoGeneratorFuelPerShot"}},
 }
 
+local moduleGroups = {
+    {"Sandbox_Title_OMHTurretsTraps_RapidFire", {"RapidFireBonus", "RapidFireBonusCap", "RapidFireMinimum"}},
+    {"Sandbox_Title_OMHTurretsTraps_Reload", {"ReloadBonus", "ReloadBonusCap", "ReloadMinimum"}},
+    {"Sandbox_Title_OMHTurretsTraps_Velocity", {"VelocityBonus", "VelocityBonusCap", "VelocityKnockdownBonus", "VelocityKnockdownCap"}},
+    {"Sandbox_Title_OMHTurretsTraps_Range", {"RangeBonus", "RangeBonusCap"}},
+    {"Sandbox_Title_OMHTurretsTraps_Capacity", {"CapacityAmmoBonus", "CapacityModuleBonus"}},
+}
+
 ---@param panel ISPanel Sandbox panel
 ---@return nil
 function UI.layout(panel)
@@ -40,12 +48,18 @@ end
 ---@param panel ISPanel Sandbox panel
 ---@return ISPanel panel
 function UI.attach(panel)
-    if not panel or not panel.controls or not panel.controls["OMHTurretsTraps.PotatoTurret"] or panel.omhttTitles then return panel end
+    if not panel or not panel.controls or panel.omhttTitles then return panel end
+    local sections = groups
+    if panel.controls["OMHTurretsTraps.RapidFireBonus"] then
+        sections = moduleGroups
+    elseif not panel.controls["OMHTurretsTraps.PotatoTurret"] then
+        return panel
+    end
     panel.omhttTitles = {}
     panel.titles = panel.titles or {}
     local ordered, used = {}, {}
-    for i = 1, #groups do
-        local group, first = groups[i], true
+    for i = 1, #sections do
+        local group, first = sections[i], true
         for j = 1, #group[2] do
             local name = "OMHTurretsTraps." .. group[2][j]
             if panel.controls[name] then
