@@ -1,10 +1,10 @@
 # Release state and publication policy
 
-## Prepared build: 0.2.17
+## Current local installation: 0.2.17
 
-C63: [active stat modules and complete combined test](PHASE_2_CHECKPOINT_3D2.md). 2,121 regression assertions, 43 Lua files, 344 native translations, 23 packet round trips and 110 packaged files pass. Native write passed in 42.3 seconds with actual stacked modules, dedicated expansion, saved Sandbox tuning, exact contents and cycle metadata. Native read passed in 39.1 seconds. Installation pending. Held 0.2.16.1 rendered/audio acceptance joins the next test. No Workshop upload or remote push.
+C63: [active stat modules and complete combined test](PHASE_2_CHECKPOINT_3D2.md). 2,121 regression assertions, 43 Lua files, 344 native translations, 23 packet round trips and 110 packaged files pass. Native write passed in 42.3 seconds with actual stacked modules, dedicated expansion, saved Sandbox tuning, exact contents and cycle metadata. Native read passed in 39.1 seconds. Installed from annotated `test/v0.2.17` (`4698a8c`). [Evidence](../diagnostics/v0.2.17/local-release.json) verifies all 110 installed/archive files and the complete 109-file 0.2.16.1 backup. [Archive](../artifacts/OMHTT-0.2.17.zip). Held 0.2.16.1 rendered/audio acceptance joins the next test. No Workshop upload or remote push.
 
-## Current local installation: 0.2.16.1
+## Previous local installation: 0.2.16.1
 
 C61: [turning and presentation checkpoint](PHASE_2_CHECKPOINT_3D1_TURNING.md). 2,058 assertions pass, with 42 runtime files, 290 native translations and 109 packaged files. Original native write/read passed in 41.3/43.5 seconds. The tooltip-corrected build write/read also passed, including native packed-tooltip translation. Installed from annotated `test/v0.2.16.1` (`ce5a9fc`). [Evidence](../diagnostics/v0.2.16.1/local-release.json) verifies all 109 installed/archive files and the full 106-file 0.2.15 backup. [Archive](../artifacts/OMHTT-0.2.16.1.zip). Owner-visible depth, smooth turning and sound remain unaccepted. No external publication or push.
 
