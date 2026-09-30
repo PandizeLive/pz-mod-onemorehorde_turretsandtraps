@@ -19,7 +19,7 @@ def translations(category, values):
 def main():
     modules = {"Firing": "Firing", "MotionDetection": "Motion Detection", "Filter": "Filter",
                "RapidFire": "Rapid-Fire", "Velocity": "Velocity", "Range": "Range", "Capacity": "Capacity",
-               "Detection360": "360 Detection", "Reload": "Reload", "Autoloader": "Autoloader"}
+               "Detection360": "360", "Reload": "Reload", "Autoloader": "Autoloader"}
     items = """module Base {
     item OMHTTTurretBase {
         DisplayName = Turret Base,
@@ -169,7 +169,7 @@ def main():
     options = [
         ("PotatoTurret", "boolean", "true", None, None, "Potato Turret", "Enable potato turrets."),
         ("PotatoRequirePower", "boolean", "true", None, None, "Require power", "Require electricity to fire."),
-        ("PotatoAmmoCapacity", "integer", 85, 1, 500, "Ammo capacity", "Maximum potatoes."),
+        ("PotatoAmmoCapacity", "integer", 100, 1, 500, "Ammo capacity", "Maximum potatoes."),
         ("PotatoModuleCapacity", "integer", 4, 0, 20, "Module storage", "Maximum stored modules. Effects come later."),
         ("PotatoHealth", "integer", 100, 1, 10000, "Durability", "Maximum durability of newly crafted bases."),
         ("PotatoDamage", "double", 50, 0, 1000, "Damage", "Direct-hit damage. 100 points = 1 health."),
@@ -178,8 +178,8 @@ def main():
         ("PotatoReloadTime", "double", 1, 0, 60, "Reload time", "Seconds to refill the magazine."),
         ("PotatoRange", "integer", 6, 1, 20, "Range", "Maximum firing distance in tiles."),
         ("PotatoKnockdownChance", "integer", 70, 0, 100, "Knockdown chance", "Percent chance on a standing target."),
-        ("PotatoSplashDamage", "double", 0.1, 0, 100, "Splash damage", "Damage to nearby zombies."),
-        ("PotatoSplashRadius", "double", 1.1, 0, 3, "Splash radius", "Splash distance in tiles."),
+        ("PotatoSplashPercent", "double", 25, 0, 100, "Splash damage percent", "Percent of direct damage. 0 disables."),
+        ("PotatoSplashRadius", "double", 1.5, 0, 3, "Splash radius", "Splash distance in tiles."),
         ("PotatoBatteryPercentPerShot", "double", 0.1, 0, 100, "Battery use", "Battery charge percent per shot."),
         ("PotatoGeneratorFuelPerShot", "double", 0.001, 0, 1, "Generator use", "Extra generator fuel per shot."),
     ]

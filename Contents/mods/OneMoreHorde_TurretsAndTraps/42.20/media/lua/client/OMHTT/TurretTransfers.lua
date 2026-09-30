@@ -95,7 +95,7 @@ function X.queue(player, object, items, incoming, kind)
     if incoming then destination = storage end
     local contents = T.contents(storage)
     local counts = {head = contents.heads, battery = contents.batteries, ammo = contents.ammo, module = contents.modules}
-    local limits = {head = 1, battery = 1, ammo = T.option("AmmoCapacity", 85, 1, 500), module = T.option("ModuleCapacity", 4, 0, 20)}
+    local limits = {head = 1, battery = 1, ammo = T.option("AmmoCapacity", 100, 1, 500), module = T.option("ModuleCapacity", 4, 0, 20)}
     local pending = {}
     local queue = ISTimedActionQueue.getTimedActionQueue(player).queue
     for i = 1, #queue do

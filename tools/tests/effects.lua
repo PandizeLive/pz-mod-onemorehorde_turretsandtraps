@@ -1,3 +1,7 @@
+local oldSpecific, oldCell = getSpecificPlayer, getCell
+local visible, floor = true, 0
+function getSpecificPlayer() return {getZ = function() return floor end} end
+function getCell() return {getGridSquare = function() return {isCanSee = function() return visible end} end} end
 testMillis = 1000
 testDraws = 0
 function getTimestampMs() return testMillis end
@@ -24,3 +28,17 @@ triggerEvent("OnGameStart")
 testDraws = 0
 triggerEvent("OnPostRender")
 check(testDraws == 0, "session reset discards effects")
+
+local flight = {id = "flight", shot = 1, x = 100, y = 100, z = 0, fromX = 98.5, fromY = 100.5}
+triggerEvent("OnServerCommand", F.MODULE, "Impact", flight)
+triggerEvent("OnPostRender")
+check(testDraws == 1, "Shot has one temporary travel marker")
+testMillis = testMillis + 120
+testDraws = 0
+triggerEvent("OnPostRender")
+check(testDraws == 6, "Travel marker becomes impact pop")
+visible = false
+testDraws = 0
+triggerEvent("OnPostRender")
+check(testDraws == 0, "Hidden impact does not reveal zombies")
+getSpecificPlayer, getCell = oldSpecific, oldCell

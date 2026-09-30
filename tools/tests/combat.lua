@@ -79,3 +79,28 @@ for i = 1, 10 do S.tick() end
 check(request("Inspect", 100, 100).peakVisits == 4, "shared scheduler visits at most four slots per tick")
 local removed = request("Remove", 100, 101, request("Inspect", 100, 101))
 check(removed.status == "Removed" and #wall.square.objects == 0, "exact native barrier removal")
+
+local Combat = require("OMHTT/PrototypeCombat")
+local Modules = require("OMHTT/TurretModules")
+for x = 950, 958 do for y = 949, 952 do makeSquare(x, y, 0) end end
+local origin = testSquares[F.key(950, 950, 0)]
+for i = 1, 80 do makeZombie(origin, 5) end
+local victim = makeZombie(testSquares[F.key(955, 950, 0)], 5)
+local nearby = {}
+for i = 1, 4 do nearby[i] = makeZombie(testSquares[F.key(956, 950, 0)], 1) end
+local outside = makeZombie(testSquares[F.key(957, 950, 0)], 1)
+local state = {id = "splash-regression", kind = "potato", baseFacing = 0, ammo = 2, shots = 0, nextShot = 0}
+local options = {managed = true, range = 6, interval = 2000, damage = 0.35, splash = 0.0875, radius = 1.5,
+    knockdown = 0, target = victim, profile = Modules.profile(state, {active = {}})}
+local status, impact = Combat.fire(state, {getSquare = function() return origin end}, nil, options)
+check(status == "Fired" and victim.health == 4.65, "Far selected target takes 35 direct damage despite dense near crowd")
+local damaged = 0
+for i = 1, #nearby do
+    if nearby[i].health < 1 then
+        damaged = damaged + 1
+        check(math.abs(nearby[i].health - 0.9125) < 0.000001 and not nearby[i].nativeKnockdown,
+            "Splash deals 25 percent without crowd-control")
+    end
+end
+check(damaged == 3 and outside.health == 1, "Impact-local splash caps at three and excludes outside radius")
+check(impact.fromX == 950.5 and impact.fromY == 950.5, "Visual travel facts originate at turret")

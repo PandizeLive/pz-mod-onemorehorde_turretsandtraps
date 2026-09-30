@@ -40,8 +40,6 @@
     "Sandbox_OMHTurretsTraps_PotatoRange_tooltip": "Maximum firing distance in tiles.",
     "Sandbox_OMHTurretsTraps_PotatoKnockdownChance": "Knockdown chance",
     "Sandbox_OMHTurretsTraps_PotatoKnockdownChance_tooltip": "Percent chance on a standing target.",
-    "Sandbox_OMHTurretsTraps_PotatoSplashDamage": "Splash damage",
-    "Sandbox_OMHTurretsTraps_PotatoSplashDamage_tooltip": "Damage to nearby zombies.",
     "Sandbox_OMHTurretsTraps_PotatoSplashRadius": "Splash radius",
     "Sandbox_OMHTurretsTraps_PotatoSplashRadius_tooltip": "Splash distance in tiles.",
     "Sandbox_OMHTurretsTraps_PotatoBatteryPercentPerShot": "Battery use",
@@ -73,5 +71,9 @@
     "Sandbox_OMHTurretsTraps_LootFilter": "Filter loot multiplier",
     "Sandbox_OMHTurretsTraps_LootFilter_tooltip": "Loot multiplier. 0 disables. Reload to apply.",
     "Sandbox_OMHTurretsTraps_LootDetection360": "360 loot multiplier",
-    "Sandbox_OMHTurretsTraps_LootDetection360_tooltip": "Loot multiplier. 0 disables. Reload to apply."
+    "Sandbox_OMHTurretsTraps_LootDetection360_tooltip": "Loot multiplier. 0 disables. Reload to apply.",
+    "Sandbox_OMHTurretsTraps_PotatoSplashPercent": "Splash damage percent",
+    "Sandbox_OMHTurretsTraps_PotatoSplashPercent_tooltip": "Percent of direct damage. 0 disables.",
+    "Sandbox_OMHTurretsTraps_IdleSweepSpeed": "Idle sweep speed",
+    "Sandbox_OMHTurretsTraps_IdleSweepSpeed_tooltip": "Degrees per second. 0 disables."
 }

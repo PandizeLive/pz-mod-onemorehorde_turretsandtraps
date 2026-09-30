@@ -22,7 +22,7 @@ function getPlayerScreenTop() return 0 end
 function getPlayerScreenWidth() return 1280 end
 function getPlayerScreenHeight() return 720 end
 function isMouseButtonDown() return true end
-local inventory = {setVisible = function(self, value) self.visible = value end, setPinned = function(self) self.pinned = true end}
+local inventory = {setVisible = function() error("Manage must not change inventory visibility") end, setPinned = function() error("Manage must not pin inventory") end}
 function getPlayerInventory() return inventory end
 function getPlayerLoot() error("Dedicated Manage must never open or select the loot page") end
 local nextId = 3000
@@ -75,7 +75,7 @@ storage.parent = object
 open(object, player)
 check(queued and queued:isValid(), "Manage queues a reach-validated action")
 queued:perform()
-check(completed and inventory.visible and inventory.pinned, "Manage opens player inventory without touching loot page")
+check(completed and not inventory.visible and not inventory.pinned, "Manage leaves both inventory windows untouched")
 local panel = testTurretPanel
 panel:prerender()
 check(not panel.fireButton.enabled and panel.status == "NoHead", "Empty base cannot fire")

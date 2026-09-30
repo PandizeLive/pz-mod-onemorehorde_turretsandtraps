@@ -78,7 +78,7 @@ module Base {
         Tooltip = Tooltip_OMHTT_ModuleStorage,
     }
     item OMHTTModuleDetection360 {
-        DisplayName = 360 Detection Module,
+        DisplayName = 360 Module,
         ItemType = base:normal,
         DisplayCategory = Material,
         Weight = 0.3,

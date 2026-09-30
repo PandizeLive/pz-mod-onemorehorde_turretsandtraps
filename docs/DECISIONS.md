@@ -242,3 +242,17 @@ The owner authorized proceeding to the next checkpoint and testing it together w
 - C59: Owner approves implementing the discussed core automation/loot/Sandbox checkpoint, then approves resuming after an interrupted work turn. Deliver 0.2.14 as one combined test build with held 0.2.13 changes.
 - Implementation tuning (owner-adjustable, not individually owner-selected): scan interval 0.25s bounded 0.1–5, cone bounds 10–360 with confirmed default 90, loot multipliers 1 bounded 0–20, and pool weights Firing/Detection/Filter/360 = 2/2/0.5/0.25. Automatic operation defaults enabled when components/power are present; Manage and Sandbox can disable it. Health priorities compare current health.
 - Native source verification exposed distribution-merge-before-Sandbox-load ordering. Apply module weights at OnLoadedTileDefinitions and reparse once before map population. Reload for loot setting changes; preserve already-generated containers and unrelated loot. Gameplay remains SP-only. Scope/evidence/combined test: PHASE_2_CHECKPOINT_3D1.md.
+
+## 2026-09-29 C60: approved automation polish and owner audio
+
+Owner approves 0.2.15 after reporting 0.2.14 generally passed, then confirms zombies did thump the turret later. Do not change native thumping or add a speculative workaround. Reused-save Sandbox differences are intentional.
+
+- Visible name is 360 Module; preserve internal Detection360 item/save IDs.
+- Manage opens only its own panel, leaving inventory visibility/pinning untouched.
+- Powered automatic Motion Detection sweeps visually while searching, freezes without detection/power, and tracks acquired targets. External power counts. Placement cone remains fixed. Idle sweep speed defaults 30 degrees/second, Sandbox 0-180; zero disables the visual sweep only.
+- New defaults: 100 total potatoes including magazine; splash 25 percent of direct damage (8.75 at 35), radius 1.5 tiles, at most three secondary targets, no splash knockdown. Existing capacity/radius settings remain unchanged. PotatoSplashPercent replaces the former absolute-damage setting under a distinct key; do not reinterpret an old absolute value as a percent.
+- Default solo Hard first night has 17 zombies. Its 10/78/12 toughness mix and 35 direct damage imply about 106 direct-hit potatoes on average before splash/help/misses, not a guaranteed 100-potato clear.
+- A short white travel marker precedes the impact pop; this is a presentation effect, not a persistent potato physics item. Damage remains immediate, matching the native separation of hit resolution and tracer presentation.
+- Owner will create sounds. No native sample or generated audio is shipped. See art/AUDIO_BRIEF.md.
+
+Captured 0.2.14 test: diagnostics/captures/20260929-204206-9890. Version 0.2.14 and automatic fire are in the log; no OMHTT exception identified. Owner acceptance does not certify multiplayer or every unobserved regression.

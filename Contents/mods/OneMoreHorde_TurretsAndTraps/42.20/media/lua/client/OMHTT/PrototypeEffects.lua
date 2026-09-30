@@ -17,9 +17,11 @@ local function onImpact(module, command, impact)
     effects[#effects + 1] = {
         id = impact.id, shot = impact.shot,
         x = impact.x, y = impact.y, z = impact.z,
+        fromX = impact.fromX, fromY = impact.fromY,
         start = getTimestampMs(),
     }
-    Diagnostics.emit("impact-queued", {id = impact.id, shot = impact.shot, x = impact.x, y = impact.y, z = impact.z, active = #effects})
+    Diagnostics.emit("impact-queued", {id = impact.id, shot = impact.shot, x = impact.x, y = impact.y, z = impact.z,
+        fromX = impact.fromX, fromY = impact.fromY, active = #effects})
 end
 
 ---@return nil
@@ -29,8 +31,15 @@ local function render()
     local zoom = getCore():getZoom(0)
     for i = #effects, 1, -1 do
         local effect = effects[i]
-        local age = (now - effect.start) / 650
-        if age >= 1 then
+        local flight = 0
+        if effect.fromX and effect.fromY then
+            flight = 120
+        end
+        local elapsed = now - effect.start
+        local age = (elapsed - flight) / 650
+        local square = getCell():getGridSquare(math.floor(effect.x), math.floor(effect.y), effect.z)
+        local player = getSpecificPlayer(0)
+        if age >= 1 or not square or not player or math.floor(player:getZ()) ~= effect.z or not square:isCanSee(0) then
             table.remove(effects, i)
         else
             local x = (IsoUtils.XToScreen(effect.x, effect.y, effect.z, 0) - IsoCamera.getOffX(0)) / zoom
@@ -40,11 +49,20 @@ local function render()
                 Diagnostics.emit("impact-first-render", {id = effect.id, shot = effect.shot, screenX = x, screenY = y,
                     zoom = zoom, age = age, viewport = 0})
             end
-            for n = 0, 5 do
-                local angle = n * math.pi / 3
-                local radius = (3 + age * 18) / zoom
-                getTextManager():DrawStringCentre(UIFont.Small, x + math.cos(angle) * radius,
-                    y + math.sin(angle) * radius, getText("UI_OMHTT_Particle"), 1, 1, 1, 1 - age)
+            if age < 0 then
+                local fraction = elapsed / flight
+                local fx = effect.fromX + (effect.x - effect.fromX) * fraction
+                local fy = effect.fromY + (effect.y - effect.fromY) * fraction
+                local sx = (IsoUtils.XToScreen(fx, fy, effect.z, 0) - IsoCamera.getOffX(0)) / zoom
+                local sy = (IsoUtils.YToScreen(fx, fy, effect.z, 0) - IsoCamera.getOffY(0) - 48) / zoom
+                getTextManager():DrawStringCentre(UIFont.Large, sx, sy, getText("UI_OMHTT_Particle"), 1, 1, 1, 1)
+            else
+                for n = 0, 5 do
+                    local angle = n * math.pi / 3
+                    local radius = (3 + age * 18) / zoom
+                    getTextManager():DrawStringCentre(UIFont.Small, x + math.cos(angle) * radius,
+                        y + math.sin(angle) * radius, getText("UI_OMHTT_Particle"), 1, 1, 1, 1 - age)
+                end
             end
         end
     end

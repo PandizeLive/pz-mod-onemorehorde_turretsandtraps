@@ -119,3 +119,7 @@ An early release can occur after an earlier phase's accepted release candidate. 
 5. Mark complete only when the acceptance evidence exists. Separate implemented, statically verified, player-tested, and published states. Update cumulative Workshop notes only for actual player-facing changes.
 
 Do not preassign version numbers or dates to unimplemented checkpoints. Phase 0 has no gameplay version or Workshop content upload.
+
+## Current P2C3d1 follow-up
+
+0.2.14 owner test reported working, including native turret thumping. C60 approves [0.2.15 polish](PHASE_2_CHECKPOINT_3D1_POLISH.md): independent management opening, search animation, balance defaults and temporary shot presentation. Sound production is with the owner. No stat-module effects, recipe expansion or multiplayer are folded into this patch. Player acceptance of 0.2.15 remains pending.

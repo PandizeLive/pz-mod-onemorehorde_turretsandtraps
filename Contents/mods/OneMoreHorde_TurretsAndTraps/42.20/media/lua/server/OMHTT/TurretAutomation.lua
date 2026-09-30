@@ -15,7 +15,7 @@ function A.changed(object, head)
         A.entries[object] = entry
         A.order[#A.order + 1] = entry
     end
-    entry.job = nil
+    entry.job, entry.due, entry.status = nil, 0, nil
 end
 
 ---@param origin IsoGridSquare Turret square

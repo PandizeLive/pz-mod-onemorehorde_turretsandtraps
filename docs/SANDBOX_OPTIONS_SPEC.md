@@ -109,3 +109,7 @@ In P2C3d2 expose useful per-copy bonuses and limits for Rapid-Fire, Velocity, Ra
 ## Implemented P2C3d1 / 0.2.14
 
 The previously planned automation/module loot controls now ship: AutomationEnabled=true, ForwardCone=90 (10–360), DetectionInterval=0.25 seconds (0.1–5), ModuleLootMultiplier=1 and each core module multiplier=1 (0–20). Native pages: Turret Automation and Module Loot. Reload after loot changes; no retroactive refill/removal. Potato combat/storage/power settings also govern automatic shots. See PHASE_2_CHECKPOINT_3D1.md for the complete implemented contract; stat-module controls remain deferred.
+
+## 0.2.15 tuning update
+
+Potato defaults: 100 total rounds; direct damage 35; splash percentage 25; radius 1.5; reload/cooldown 2 seconds, overlapping. PotatoSplashPercent is a new setting replacing the former absolute PotatoSplashDamage; old values are not percentages. Existing saved capacity/radius remain intact. IdleSweepSpeed is 0-180 degrees/second, default 30; 0 disables only the animation, not detection. All remain on the potato page. See PHASE_2_CHECKPOINT_3D1_POLISH.md for test overrides on reused saves.

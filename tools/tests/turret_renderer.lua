@@ -32,6 +32,30 @@ for i = 1, #draws do
     check(math.abs(draws[i].z - (0.4 - 16 / 192)) < 0.000001 and draws[i].y == 610.5, "Head draws at base center and height lowered with base")
     check(draws[i].yaw == (draws[i].head == headA and 315 or 90), "Per-instance aiming never leaks across shared models")
 end
+local A = require("OMHTT/TurretAutomation")
+local savedSpeed = SandboxVars.OMHTurretsTraps.IdleSweepSpeed
+SandboxVars.OMHTurretsTraps.IdleSweepSpeed = 30
+A.entries[first] = {status = "no-target"}
+R.animate(testMillis)
+local initial = R.heading(first)
+for i = 1, 100 do
+    testMillis = testMillis + 100
+    R.animate(testMillis)
+    local offset = ((R.heading(first) + 180) % 360) - 180
+    check(math.abs(offset) <= 45.00001, "Idle sweep stays inside locked cone")
+end
+check(R.heading(first) ~= initial and first.data.OMHTTTurret.aimDegrees == 45, "Sweep moves visuals without rewriting aim or detection")
+A.entries[first].status = "inactive"
+local stopped = R.heading(first)
+testMillis = testMillis + 100
+R.animate(testMillis)
+check(R.heading(first) == stopped, "Inactive detector freezes head")
+A.entries[first].status, A.entries[first].target = "tracking-only", {}
+first.data.OMHTTTurret.aimDegrees = 20
+R.animate(testMillis)
+check(R.heading(first) == 20, "Target tracking overrides idle sweep")
+A.entries[first] = nil
+SandboxVars.OMHTurretsTraps.IdleSweepSpeed = savedSpeed
 R.changed(first, nil)
 draws = {}
 R.render(1)

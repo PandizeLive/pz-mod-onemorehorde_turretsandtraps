@@ -12,7 +12,7 @@
     "Base.OMHTTModuleVelocity": "Velocity Module",
     "Base.OMHTTModuleRange": "Range Module",
     "Base.OMHTTModuleCapacity": "Capacity Module",
-    "Base.OMHTTModuleDetection360": "360 Detection Module",
+    "Base.OMHTTModuleDetection360": "360 Module",
     "Base.OMHTTModuleReload": "Reload Module",
     "Base.OMHTTModuleAutoloader": "Autoloader Module",
     "Base.OMHTTProbeHead": "OMH Render Probe Head"

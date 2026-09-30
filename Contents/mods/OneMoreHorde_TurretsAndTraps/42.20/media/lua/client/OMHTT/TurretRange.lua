@@ -110,7 +110,7 @@ function O.render()
                     canvas = ISUIElement:new(0, 0, getCore():getScreenWidth(), getCore():getScreenHeight())
                     canvas:instantiate()
                 end
-                local heading = state.aimDegrees or (state.facing or 0) * 22.5
+                local heading = R.heading(object)
                 local profile = render.profile
                 local cone = M.option("ForwardCone", 90, 10, 360)
                 if profile.omni then

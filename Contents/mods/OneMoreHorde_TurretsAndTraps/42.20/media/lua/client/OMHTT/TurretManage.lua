@@ -158,7 +158,7 @@ function Panel:refresh()
         end
         if kind and slot then slot.items[#slot.items + 1] = item end
     end
-    self.ammoSlot.label = getText("UI_OMHTT_ManageAmmo", contents.ammo, T.option("AmmoCapacity", 85, 1, 500),
+    self.ammoSlot.label = getText("UI_OMHTT_ManageAmmo", contents.ammo, T.option("AmmoCapacity", 100, 1, 500),
         cycle and cycle.loaded or 0, T.option("MagazineCapacity", 1, 1, 500))
     local charge = getText("UI_OMHTT_None")
     if contents.battery then charge = tostring(math.floor(contents.battery:getCurrentUsesFloat() * 100)) .. "%" end
@@ -213,9 +213,6 @@ end
 function OpenAction:perform()
     if require("OMHTT/TurretWorld").near(self.character, self.object) then
         local index = self.character:getPlayerNum()
-        local inventory = getPlayerInventory(index)
-        inventory:setVisible(true)
-        inventory:setPinned()
         if active[index] then active[index]:close() end
         local font = getTextManager()
         local lineHeight = font:getFontHeight(UIFont.Small) + 3

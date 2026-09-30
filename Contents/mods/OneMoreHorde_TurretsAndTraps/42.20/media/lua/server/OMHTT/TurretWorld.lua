@@ -256,7 +256,7 @@ function W.fire(player, object, target)
     state.ammo = contents.ammo
     local options = {range = T.option("Range", 6, 1, 20), interval = T.option("Cooldown", 2, 0.1, 60) * 1000,
         damage = T.option("Damage", 35, 0, 1000) / 100, knockdown = T.option("KnockdownChance", 70, 0, 100),
-        splash = T.option("SplashDamage", 0.1, 0, 100) / 100, radius = T.option("SplashRadius", 1.1, 0, 3), managed = true,
+        splash = T.option("Damage", 35, 0, 1000) * T.option("SplashPercent", 25, 0, 100) / 10000, radius = T.option("SplashRadius", 1.5, 0, 3), managed = true,
         profile = M.profile(state, contents), target = target}
     ---@return boolean committed
     function options.commit()

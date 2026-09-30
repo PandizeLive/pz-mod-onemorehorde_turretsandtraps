@@ -254,8 +254,12 @@ function Combat.fire(record, object, player, options)
     observations[#observations + 1] = {zombie = target, id = record.id, shot = record.shots,
         started = now, checkAt = now + 150, stage = 0, x = tx, y = ty}
     local splash = 0
-    for i = 1, #candidates do
-        local zombie = candidates[i].zombie
+    local nearby = {}
+    if options.splash > 0 and options.radius > 0 then
+        nearby = Combat.candidates(impactSquare, options.radius + 1)
+    end
+    for i = 1, #nearby do
+        local zombie = nearby[i].zombie
         if splash >= Combat.SPLASH_LIMIT then break end
         if zombie ~= target and not zombie:isDead() then
             local dx = zombie:getX() - tx
@@ -272,7 +276,8 @@ function Combat.fire(record, object, player, options)
         .. " splash=" .. splash .. " candidates=" .. visits .. " ammo=" .. record.ammo)
     Diagnostics.emit("shot-hit-end", {id = record.id, shot = record.shots, before = before, after = target:getHealth(),
         dead = target:isDead(), knockdown = knocked, splash = splash, ammo = record.ammo})
-    return "Fired", {x = tx, y = ty, z = origin:getZ(), id = record.id, shot = record.shots}
+    return "Fired", {x = tx, y = ty, z = origin:getZ(), id = record.id, shot = record.shots,
+        fromX = origin:getX() + 0.5, fromY = origin:getY() + 0.5}
 end
 
 Events.OnTick.Add(Combat.observeImpacts)

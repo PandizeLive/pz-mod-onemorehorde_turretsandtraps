@@ -121,7 +121,7 @@ function T.accept(container, item)
     local contents = T.contents(container)
     if kind == "head" then return contents.heads == 0 end
     if kind == "battery" then return contents.batteries == 0 end
-    if kind == "ammo" then return contents.heads == 1 and contents.ammo < T.option("AmmoCapacity", 85, 1, 500) end
+    if kind == "ammo" then return contents.heads == 1 and contents.ammo < T.option("AmmoCapacity", 100, 1, 500) end
     return contents.modules < T.option("ModuleCapacity", 4, 0, 20)
 end
 
@@ -137,7 +137,7 @@ end
 ---@return nil
 function T.configure(container)
     container:setType(T.CONTAINER)
-    local capacity = math.ceil(9 + T.option("AmmoCapacity", 85, 1, 500) * 0.2 + T.option("ModuleCapacity", 4, 0, 20) * 0.3)
+    local capacity = math.ceil(9 + T.option("AmmoCapacity", 100, 1, 500) * 0.2 + T.option("ModuleCapacity", 4, 0, 20) * 0.3)
     container:setCapacity(capacity)
     if container:getContainingItem() then container:getContainingItem():setCapacity(capacity) end
     container:setAcceptItemFunction("OMHTT_Turret.accept")

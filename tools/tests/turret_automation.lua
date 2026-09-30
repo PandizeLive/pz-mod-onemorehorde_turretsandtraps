@@ -127,6 +127,11 @@ testMillis = testMillis + 10000000
 record.automatic = true
 run()
 check(record.shots <= shots + 1, "Long time jump never drains historical automatic shots")
+local previousPower = W.power
+W.power = function() return nil end
+run()
+check(entry.status == "inactive" and entry.target == nil, "Exhausted power stops targeting and idle sweep eligibility")
+W.power = previousPower
 object.index = -1
 A.tick()
 check(A.entries[object] == nil, "Removed turret retires from scheduler")
