@@ -115,16 +115,15 @@ function A.step(entry, deadline)
         A.status(entry, "no-target")
         return true
     end
-    local angle = math.atan2(-(target:getY() - square:getY() - 0.5), target:getX() - square:getX() - 0.5)
-    state.aimDegrees = (angle * 180 / math.pi + 360) % 360
-    state.facing = F.normalizeFacing(math.floor(angle / (math.pi * 2) * 16 + 0.5))
-    W.refresh(object)
+    local aligned = require("OMHTT/TurretAim").request(object, target, nil)
     if entry.target ~= target then
         entry.target = target
         D.emit("turret-auto-target", {id = state.id, x = target:getX(), y = target:getY(), visits = job.visited,
             priority = profile.priority, cone = profile.cone, baseFacing = state.baseFacing, aim = state.aimDegrees})
     end
-    if contents.active.Firing then
+    if not aligned then
+        A.status(entry, "Aiming")
+    elseif contents.active.Firing then
         A.status(entry, W.fire(nil, object, target))
     else
         A.status(entry, "tracking-only")

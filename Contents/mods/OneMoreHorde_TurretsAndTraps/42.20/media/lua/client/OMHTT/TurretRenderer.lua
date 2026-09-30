@@ -2,6 +2,7 @@ if isClient() or isServer() then return end
 local T = require("OMHTT/Turret")
 local D = require("OMHTT/Diagnostics")
 local M = require("OMHTT/TurretModules")
+local Aim = require("OMHTT/TurretAim")
 local R = {entries = {}, mode = nil, lastCheck = 0, headHeight = 0.4 - 16 / 192, headScale = 0.512}
 
 ---@param object IsoObject Managed base
@@ -46,13 +47,13 @@ function R.animate(now)
         if state then
             local elapsed = math.min(100, math.max(0, now - (entry.lastFrame or now))) / 1000
             entry.lastFrame = now
-            if automatic and automatic.status == "no-target" and entry.head and speed > 0 then
+            if automatic and automatic.status == "no-target" and not Aim.entries[object] and entry.head and speed > 0 then
                 local profile = entry.profile
                 local cone = M.option("ForwardCone", 90, 10, 360)
                 if profile.omni then
                     cone = 360
                 end
-                local offset = ((R.heading(object) - profile.heading + 180) % 360) - 180
+                local offset = ((R.heading(object) - profile.heading + 540) % 360) - 180
                 offset = math.max(-cone / 2, math.min(cone / 2, offset))
                 local phase = entry.sweepPhase or (offset + cone / 2) / cone
                 phase = (phase + elapsed * speed / cone) % 2
@@ -62,9 +63,10 @@ function R.animate(now)
                     position = 2 - phase
                 end
                 entry.visualHeading = (profile.heading - cone / 2 + position * cone + 360) % 360
+                state.aimDegrees = entry.visualHeading
             else
                 entry.sweepPhase = nil
-                if automatic and automatic.target then
+                if Aim.entries[object] or (automatic and automatic.target) then
                     entry.visualHeading = state.aimDegrees
                 elseif state.aimDegrees ~= entry.lastAim then
                     entry.visualHeading = state.aimDegrees

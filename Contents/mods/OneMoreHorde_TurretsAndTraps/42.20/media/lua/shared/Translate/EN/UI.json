@@ -113,10 +113,11 @@
     "UI_OMHTT_PriorityFurthest": "Furthest",
     "UI_OMHTT_PriorityWeakest": "Weakest",
     "UI_OMHTT_PriorityToughest": "Toughest",
-    "UI_OMHTT_ActiveModules": "Active: %1 | Cone: %2°",
+    "UI_OMHTT_ActiveModules": "Active: %1 | Cone: %2\u00b0",
     "UI_OMHTT_ModuleFiring": "Firing",
     "UI_OMHTT_ModuleMotionDetection": "Detection",
     "UI_OMHTT_ModuleFilter": "Filter",
     "UI_OMHTT_ModuleDetection360": "360",
-    "UI_OMHTT_AutoDisabled": "Automation disabled"
+    "UI_OMHTT_AutoDisabled": "Automation disabled",
+    "UI_OMHTT_ManageAiming": "Turning to target"
 }

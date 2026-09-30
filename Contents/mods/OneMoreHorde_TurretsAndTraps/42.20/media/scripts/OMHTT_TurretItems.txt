@@ -30,7 +30,7 @@ module Base {
         Tooltip = Tooltip_OMHTT_ModuleFiring,
     }
     item OMHTTModuleMotionDetection {
-        DisplayName = Motion Detection Module,
+        DisplayName = Detection Module,
         ItemType = base:normal,
         DisplayCategory = Material,
         Weight = 0.3,

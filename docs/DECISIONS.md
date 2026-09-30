@@ -256,3 +256,13 @@ Owner approves 0.2.15 after reporting 0.2.14 generally passed, then confirms zom
 - Owner will create sounds. No native sample or generated audio is shipped. See art/AUDIO_BRIEF.md.
 
 Captured 0.2.14 test: diagnostics/captures/20260929-204206-9890. Version 0.2.14 and automatic fire are in the log; no OMHTT exception identified. Owner acceptance does not certify multiplayer or every unobserved regression.
+
+## C61: 0.2.16 presentation and mechanical turn speed
+
+Owner accepts 0.2.15 generally, but reports head/base occlusion and low white projectile. Approves the discussed patch after comparison with Horde Night and Trait Shop. All six page labels use OMH: T&T -; potato page has Operation, Storage, Combat and Power headings. This preserves individual-defense pages and internal saved keys. Detection Module and the shortened 360 tooltip are display-only changes.
+
+Turret heads rotate at a maximum rate (default 90 degrees/second; Sandbox 1-360), using shortest angular distance and a one-degree firing tolerance. Manual fire queues one target-specific shot, revalidates access/resources/geometry and spends nothing while turning. Automatic Detection tracks with the same physical angle. Idle sweep updates the current head angle but cannot rotate coverage. Pending shots/targets are transient and are cancelled by invalid targets, missing power/head, lost manual reach or disabled automatic detection; no pending shot persists across reload.
+
+The temporary base sprite uses native FloorOverlay depth instead of the generic tall-object depth; calibrated model height stays unchanged. This is a placeholder floor-depth approximation, not a final per-pixel model-matched depth map. Native flags/collision are verified; rendered head occlusion still needs owner acceptance. Projectile starts higher, travels as a brown marker and pops into larger brown particles. Selected splat2.wav is referenced from the installed game through OMHTTPotatoImpact. No native audio is redistributed.
+
+The listening page now contains 34 exact-copy candidates, including 16 reload candidates. Always supply an HTML audition page for future audio decisions. Source metadata stays beside the local page. No sibling mod is edited.

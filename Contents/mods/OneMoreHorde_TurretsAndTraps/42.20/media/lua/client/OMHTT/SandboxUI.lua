@@ -1,0 +1,107 @@
+if isServer() then return end
+require("OptionScreens/SandboxOptions")
+require("ISUI/AdminPanel/ISServerSandboxOptionsUI")
+require("OptionScreens/ServerSettingsScreen")
+require("ISUI/ISLabel")
+local UI = {}
+local groups = {
+    {"Sandbox_Title_OMHTurretsTraps_Operation", {"PotatoTurret", "PotatoHealth", "IdleSweepSpeed"}},
+    {"Sandbox_Title_OMHTurretsTraps_Storage", {"PotatoAmmoCapacity", "PotatoModuleCapacity", "PotatoMagazineCapacity"}},
+    {"Sandbox_Title_OMHTurretsTraps_Combat", {"PotatoDamage", "PotatoCooldown", "PotatoReloadTime", "PotatoRange", "PotatoTurnSpeed", "PotatoKnockdownChance", "PotatoSplashPercent", "PotatoSplashRadius"}},
+    {"Sandbox_Title_OMHTurretsTraps_Power", {"PotatoRequirePower", "PotatoBatteryPercentPerShot", "PotatoGeneratorFuelPerShot"}},
+}
+
+---@param panel ISPanel Sandbox panel
+---@return nil
+function UI.layout(panel)
+    if panel.omhttWidth == panel:getWidth() then return end
+    panel.omhttWidth = panel:getWidth()
+    local y = 11
+    panel.joypadButtonsY = {}
+    for i = 1, #panel.settingNames do
+        local name = panel.settingNames[i]
+        local title = panel.omhttTitles[name]
+        if title then
+            title:setX((panel:getWidth() - title:getWidth()) / 2)
+            title:setY(y + 20)
+            y = y + title:getHeight() + 42
+        end
+        local label, control = panel.labels[name], panel.controls[name]
+        label:setY(y)
+        control:setY(y)
+        y = y + math.max(label:getHeight(), control:getHeight()) + 10
+        panel:insertNewLineOfButtons(control)
+    end
+    panel.joypadIndex, panel.joypadIndexY = 1, 1
+    panel.joypadButtons = panel.joypadButtonsY[1]
+    panel:setScrollHeight(y)
+end
+
+---@param panel ISPanel Sandbox panel
+---@return ISPanel panel
+function UI.attach(panel)
+    if not panel or not panel.controls or not panel.controls["OMHTurretsTraps.PotatoTurret"] or panel.omhttTitles then return panel end
+    panel.omhttTitles = {}
+    panel.titles = panel.titles or {}
+    local ordered, used = {}, {}
+    for i = 1, #groups do
+        local group, first = groups[i], true
+        for j = 1, #group[2] do
+            local name = "OMHTurretsTraps." .. group[2][j]
+            if panel.controls[name] then
+                ordered[#ordered + 1], used[name] = name, true
+                if first then
+                    local title = ISLabel:new(0, 0, getTextManager():getFontHeight(UIFont.Large) + 6,
+                        getText(group[1]), 1, 1, 1, 1, UIFont.Large)
+                    panel:addChild(title)
+                    panel.omhttTitles[name] = title
+                    panel.titles[#panel.titles + 1] = title
+                    first = false
+                end
+            end
+        end
+    end
+    for i = 1, #panel.settingNames do
+        local name = panel.settingNames[i]
+        if not used[name] then ordered[#ordered + 1] = name end
+    end
+    panel.settingNames = ordered
+    local original = panel.prerender
+    ---@param self ISPanel Panel
+    ---@return nil
+    panel.prerender = function(self)
+        UI.layout(self)
+        original(self)
+    end
+    return panel
+end
+
+local originalPanel = SandboxOptionsScreen.createPanel
+---@param self SandboxOptionsScreen Screen
+---@param page table Page
+---@return ISPanel panel
+function SandboxOptionsScreen:createPanel(page)
+    return UI.attach(originalPanel(self, page))
+end
+local originalAdmin = ISServerSandboxOptionsUI.createPanel
+---@param self ISServerSandboxOptionsUI Screen
+---@param page table Page
+---@return ISPanel panel
+function ISServerSandboxOptionsUI:createPanel(page)
+    return UI.attach(originalAdmin(self, page))
+end
+local originalCreate = ServerSettingsScreen.create
+---@param self ServerSettingsScreen Screen
+---@return nil
+function ServerSettingsScreen:create()
+    originalCreate(self)
+    local original = self.pageEdit.createPanel
+    ---@param page table Page editor
+    ---@param category table Category
+    ---@param settings table Settings
+    ---@return ISPanel panel
+    self.pageEdit.createPanel = function(page, category, settings)
+        return UI.attach(original(page, category, settings))
+    end
+end
+return UI

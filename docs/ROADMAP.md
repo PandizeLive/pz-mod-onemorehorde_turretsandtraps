@@ -123,3 +123,5 @@ Do not preassign version numbers or dates to unimplemented checkpoints. Phase 0 
 ## Current P2C3d1 follow-up
 
 0.2.14 owner test reported working, including native turret thumping. C60 approves [0.2.15 polish](PHASE_2_CHECKPOINT_3D1_POLISH.md): independent management opening, search animation, balance defaults and temporary shot presentation. Sound production is with the owner. No stat-module effects, recipe expansion or multiplayer are folded into this patch. Player acceptance of 0.2.15 remains pending.
+
+C61 approves [0.2.16 turning/presentation](PHASE_2_CHECKPOINT_3D1_TURNING.md) before stat-module work. Head/base depth and projectile/audio presentation remain a rendered acceptance gate; 0.2.15 was generally accepted with those follow-ups. No extra module recipes or multiplayer scope.

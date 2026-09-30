@@ -8,7 +8,8 @@ function getTimestampMs() return testMillis end
 IsoUtils = {XToIso = function() return 400 end, YToIso = function() return 300 end, XToScreen = function(x, y, z, ignored) return x end, YToScreen = function(x, y, z, ignored) return y end}
 IsoCamera = {getOffX = function() return 0 end, getOffY = function() return 0 end}
 UIFont = {Small = "small"}
-function getTextManager() return {DrawStringCentre = function() testDraws = testDraws + 1 end} end
+local lastDraw
+function getTextManager() return {DrawStringCentre = function(self,font,x,y,text,r,g,b,a) testDraws = testDraws + 1; lastDraw={y=y,r=r,g=g,b=b} end} end
 local F = require("OMHTT/Foundation")
 local impact = {id = "test-effect", shot = 1, x = 100, y = 100, z = 0}
 triggerEvent("OnServerCommand", F.MODULE, "Impact", impact)
@@ -32,7 +33,7 @@ check(testDraws == 0, "session reset discards effects")
 local flight = {id = "flight", shot = 1, x = 100, y = 100, z = 0, fromX = 98.5, fromY = 100.5}
 triggerEvent("OnServerCommand", F.MODULE, "Impact", flight)
 triggerEvent("OnPostRender")
-check(testDraws == 1, "Shot has one temporary travel marker")
+check(testDraws == 1 and lastDraw.r==0.55 and lastDraw.g==0.32 and lastDraw.b==0.13, "Shot marker uses brown")
 testMillis = testMillis + 120
 testDraws = 0
 triggerEvent("OnPostRender")

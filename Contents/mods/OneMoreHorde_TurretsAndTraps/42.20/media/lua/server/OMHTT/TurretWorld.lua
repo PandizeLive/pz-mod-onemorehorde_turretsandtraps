@@ -57,6 +57,7 @@ function W.refresh(object)
     state.baseFacing = state.baseFacing or state.facing
     local hybrid = T.hybrid()
     local sprite = T.sprite(state.baseFacing or state.facing, false)
+    getSprite(sprite):getProperties():set(IsoFlagType.FloorOverlay)
     if contents.head and not hybrid then sprite = T.sprite(state.facing, true) end
     if object:getSpriteName() ~= sprite then
         object:setSprite(sprite)
@@ -71,6 +72,10 @@ function W.refresh(object)
         if config then GameEntityFactory.RemoveComponentType(object, ComponentType.SpriteConfig) end
         GameEntityFactory.AddComponent(object, ComponentType.SpriteConfig:CreateComponentFromScript(info:getScript()))
         if not object:getSpriteConfig():isValid() then error("[OMHTT] Invalid turret sprite " .. sprite) end
+    end
+    if state.depthPolicy ~= "floor-base-v1" then
+        object:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_OBJECT_MODIFY)
+        state.depthPolicy = "floor-base-v1"
     end
     state.condition = object:getHealth()
     T.cycle(contents, getTimestampMs())
@@ -142,6 +147,10 @@ function W.pickup(player, object, id)
     if not W.near(player, object) or T.state(object).id ~= id then return false end
     local item = instanceItem(T.BASE)
     local state = T.state(object)
+    if state.depthPolicy ~= "floor-base-v1" then
+        object:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_OBJECT_MODIFY)
+        state.depthPolicy = "floor-base-v1"
+    end
     state.condition = object:getHealth()
     local copied = {}
     for key, value in pairs(state) do copied[key] = value end
@@ -258,6 +267,11 @@ function W.fire(player, object, target)
         damage = T.option("Damage", 35, 0, 1000) / 100, knockdown = T.option("KnockdownChance", 70, 0, 100),
         splash = T.option("Damage", 35, 0, 1000) * T.option("SplashPercent", 25, 0, 100) / 10000, radius = T.option("SplashRadius", 1.5, 0, 3), managed = true,
         profile = M.profile(state, contents), target = target}
+    ---@param selected IsoZombie Chosen target
+    ---@return boolean aligned
+    function options.align(selected)
+        return require("OMHTT/TurretAim").request(object, selected, player)
+    end
     ---@return boolean committed
     function options.commit()
         if not W.valid(object) or not object:getContainer():contains(contents.round) then return false end

@@ -113,3 +113,7 @@ The previously planned automation/module loot controls now ship: AutomationEnabl
 ## 0.2.15 tuning update
 
 Potato defaults: 100 total rounds; direct damage 35; splash percentage 25; radius 1.5; reload/cooldown 2 seconds, overlapping. PotatoSplashPercent is a new setting replacing the former absolute PotatoSplashDamage; old values are not percentages. Existing saved capacity/radius remain intact. IdleSweepSpeed is 0-180 degrees/second, default 30; 0 disables only the animation, not detection. All remain on the potato page. See PHASE_2_CHECKPOINT_3D1_POLISH.md for test overrides on reused saves.
+
+## 0.2.16 organization and turning
+
+All six pages use OMH: T&T - General / Spike Barrier / Potato Turret / Automation / Loot / Debug. Potato settings are grouped under Operation, Storage, Combat and Power without changing saved option keys. PotatoTurnSpeed defaults 90 degrees/second, range 1-360; both automatic and manual shots wait for one-degree alignment. IdleSweepSpeed remains separate and cannot expand detection coverage.

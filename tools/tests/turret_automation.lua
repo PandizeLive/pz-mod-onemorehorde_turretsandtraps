@@ -19,6 +19,7 @@ local far = makeZombie(testSquares["905:900:0"], 2)
 local side = makeZombie(testSquares["900:897:0"], 9)
 local rear = makeZombie(testSquares["898:900:0"], 0.8)
 local edge = makeZombie(testSquares["902:898:0"], 3)
+local Aim = require("OMHTT/TurretAim")
 local record = {schema = 1, id = "auto-test", kind = "potato", baseFacing = 0, facing = 8, aimDegrees = 180,
     shots = 0, nextShot = 0, priority = "Toughest"}
 local plain = {active = {}}
@@ -85,12 +86,23 @@ function object:getContainer() return storage end
 A.entries, A.order, A.cursor = {}, {}, 1
 A.changed(object)
 local entry = A.entries[object]
+check(Aim.move(350, 10, 5) == 355 and Aim.move(10, 350, 5) == 5, "Aim takes shortest wraparound turn")
+check(Aim.move(0, 4, 9) == 4, "Aim cannot overshoot")
+check(not Aim.request(object, front, nil) and record.aimDegrees == 180, "Acquisition does not snap or fire")
+local roundsBeforeTurn = T.contents(storage).ammo
+testMillis = testMillis + 100
+Aim.tick()
+check(math.abs(record.aimDegrees - 171) < 0.00001 and T.contents(storage).ammo == roundsBeforeTurn,
+    "90-degree turn rate moves nine degrees per 100ms without consuming ammo")
+
 local function run()
     testMillis = testMillis + 2500
     entry.due = 0
     for i = 1, 100 do
         A.step(entry, testMillis + 100)
-        if not entry.job then return end
+        if not entry.job and entry.status ~= "Aiming" then return end
+        testMillis = testMillis + 100
+        Aim.tick()
     end
     error("Automation scan did not complete")
 end
@@ -132,6 +144,19 @@ W.power = function() return nil end
 run()
 check(entry.status == "inactive" and entry.target == nil, "Exhausted power stops targeting and idle sweep eligibility")
 W.power = previousPower
+local originalNear = W.near
+W.near = function() return true end
+record.automatic = false
+record.aimDegrees = 180
+add("Base.Potato")
+head.data.OMHTTCycle = {schema = 1, loaded = 1, nextShot = 0}
+record.nextShot = 0
+local manualAmmo = T.contents(storage).ammo
+local manualShots = record.shots
+check(W.fire({}, object, front) == "Aiming" and T.contents(storage).ammo == manualAmmo, "Manual command queues turning without spending resources")
+for i = 1, 30 do testMillis = testMillis + 100; Aim.tick() end
+check(record.shots == manualShots + 1 and T.contents(storage).ammo == manualAmmo - 1, "Manual queued shot fires exactly once after alignment")
+W.near = originalNear
 object.index = -1
 A.tick()
 check(A.entries[object] == nil, "Removed turret retires from scheduler")

@@ -44,7 +44,7 @@ for i = 1, 100 do
     local offset = ((R.heading(first) + 180) % 360) - 180
     check(math.abs(offset) <= 45.00001, "Idle sweep stays inside locked cone")
 end
-check(R.heading(first) ~= initial and first.data.OMHTTTurret.aimDegrees == 45, "Sweep moves visuals without rewriting aim or detection")
+check(R.heading(first) ~= initial and first.data.OMHTTTurret.facing == 0, "Sweep updates physical head angle without moving detection cone")
 A.entries[first].status = "inactive"
 local stopped = R.heading(first)
 testMillis = testMillis + 100

@@ -6,7 +6,7 @@
     "Base.OMHTTTurretBase": "Turret Base",
     "Base.OMHTTPotatoHead": "Potato Launcher Head",
     "Base.OMHTTModuleFiring": "Firing Module",
-    "Base.OMHTTModuleMotionDetection": "Motion Detection Module",
+    "Base.OMHTTModuleMotionDetection": "Detection Module",
     "Base.OMHTTModuleFilter": "Filter Module",
     "Base.OMHTTModuleRapidFire": "Rapid-Fire Module",
     "Base.OMHTTModuleVelocity": "Velocity Module",

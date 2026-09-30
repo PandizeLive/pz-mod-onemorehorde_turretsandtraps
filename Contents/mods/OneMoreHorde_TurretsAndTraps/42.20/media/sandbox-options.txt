@@ -296,3 +296,12 @@ option OMHTurretsTraps.IdleSweepSpeed {
     page = OMHTurretsTraps_PotatoPage,
     translation = OMHTurretsTraps_IdleSweepSpeed,
 }
+
+option OMHTurretsTraps.PotatoTurnSpeed {
+    type = double,
+    default = 90,
+    min = 1,
+    max = 360,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_PotatoTurnSpeed,
+}

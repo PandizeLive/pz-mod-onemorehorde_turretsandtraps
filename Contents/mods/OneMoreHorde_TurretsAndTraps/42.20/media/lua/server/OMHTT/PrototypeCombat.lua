@@ -184,6 +184,7 @@ function Combat.fire(record, object, player, options)
     Diagnostics.emit("shot-search", {id = record.id, visits = visits, candidates = #candidates,
         selected = target ~= nil, capped = visits >= Combat.CANDIDATE_LIMIT})
     if not target then return "NoTarget" end
+    if options.align and not options.align(target) then return "Aiming" end
     if options.commit and not options.commit() then return "Unavailable" end
     if not weapon then
         weapon = instanceItem("Base.Hammer")

@@ -9,5 +9,5 @@
     "Tooltip_OMHTT_ModuleFiring": "Fires on signal. Add Detection for automatic fire.",
     "Tooltip_OMHTT_ModuleMotionDetection": "Tracks zombies. Add Firing to shoot automatically.",
     "Tooltip_OMHTT_ModuleFilter": "Choose target priority in Manage.",
-    "Tooltip_OMHTT_ModuleDetection360": "Unlocks all directions. No extra range."
+    "Tooltip_OMHTT_ModuleDetection360": "Unlocks all directions."
 }

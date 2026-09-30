@@ -14,6 +14,10 @@ local function onImpact(module, command, impact)
         if effects[i].id == impact.id and effects[i].shot == impact.shot then return end
     end
     if #effects >= 8 then table.remove(effects, 1) end
+    local square = getCell():getGridSquare(math.floor(impact.x), math.floor(impact.y), impact.z)
+    if square then
+        getSoundManager():PlayWorldSound("OMHTTPotatoImpact", square, 0, 12, 1, false)
+    end
     effects[#effects + 1] = {
         id = impact.id, shot = impact.shot,
         x = impact.x, y = impact.y, z = impact.z,
@@ -43,7 +47,7 @@ local function render()
             table.remove(effects, i)
         else
             local x = (IsoUtils.XToScreen(effect.x, effect.y, effect.z, 0) - IsoCamera.getOffX(0)) / zoom
-            local y = (IsoUtils.YToScreen(effect.x, effect.y, effect.z, 0) - IsoCamera.getOffY(0) - 48) / zoom
+            local y = (IsoUtils.YToScreen(effect.x, effect.y, effect.z, 0) - IsoCamera.getOffY(0) - 64) / zoom
             if not effect.logged then
                 effect.logged = true
                 Diagnostics.emit("impact-first-render", {id = effect.id, shot = effect.shot, screenX = x, screenY = y,
@@ -54,14 +58,14 @@ local function render()
                 local fx = effect.fromX + (effect.x - effect.fromX) * fraction
                 local fy = effect.fromY + (effect.y - effect.fromY) * fraction
                 local sx = (IsoUtils.XToScreen(fx, fy, effect.z, 0) - IsoCamera.getOffX(0)) / zoom
-                local sy = (IsoUtils.YToScreen(fx, fy, effect.z, 0) - IsoCamera.getOffY(0) - 48) / zoom
-                getTextManager():DrawStringCentre(UIFont.Large, sx, sy, getText("UI_OMHTT_Particle"), 1, 1, 1, 1)
+                local sy = (IsoUtils.YToScreen(fx, fy, effect.z, 0) - IsoCamera.getOffY(0) - (96 - 32 * fraction)) / zoom
+                getTextManager():DrawStringCentre(UIFont.Large, sx, sy, getText("UI_OMHTT_Particle"), 0.55, 0.32, 0.13, 1)
             else
                 for n = 0, 5 do
                     local angle = n * math.pi / 3
-                    local radius = (3 + age * 18) / zoom
-                    getTextManager():DrawStringCentre(UIFont.Small, x + math.cos(angle) * radius,
-                        y + math.sin(angle) * radius, getText("UI_OMHTT_Particle"), 1, 1, 1, 1 - age)
+                    local radius = (5 + age * 28) / zoom
+                    getTextManager():DrawStringCentre(UIFont.Large, x + math.cos(angle) * radius,
+                        y + math.sin(angle) * radius, getText("UI_OMHTT_Particle"), 0.55, 0.32, 0.13, 1 - age)
                 end
             end
         end

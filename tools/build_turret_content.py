@@ -17,7 +17,7 @@ def translations(category, values):
 
 
 def main():
-    modules = {"Firing": "Firing", "MotionDetection": "Motion Detection", "Filter": "Filter",
+    modules = {"Firing": "Firing", "MotionDetection": "Detection", "Filter": "Filter",
                "RapidFire": "Rapid-Fire", "Velocity": "Velocity", "Range": "Range", "Capacity": "Capacity",
                "Detection360": "360", "Reload": "Reload", "Autoloader": "Autoloader"}
     items = """module Base {

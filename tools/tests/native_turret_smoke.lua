@@ -130,6 +130,7 @@ local function verifyTurrets()
     for facing = 0, 15 do
         T.state(object).facing = facing
         W.refresh(object)
+        assert(object:getSprite():getProperties():has(IsoFlagType.FloorOverlay), "Base must use floor depth instead of default object depth")
         assert(object:getSpriteName() == "omhtt_barrier_01_44" and object:getSpriteConfig():isValid(), "Hybrid aiming moved or invalidated stationary base")
     end
     T.hybrid = function() return false end
