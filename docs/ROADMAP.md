@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-**Current candidate: [0.2.19.1 correction](PATCH_v0.2.19.1.md).** C67 fixes exposed compatibility duplicates, starts the potato visual at the barrel tip and removes redundant firing work with bounded diagnostic output. Owner reports the rest of 0.2.19 worked well. Install status: RELEASE.md.
+**Current installed: [0.2.19.1 correction](PATCH_v0.2.19.1.md).** C67 fixes exposed compatibility duplicates, starts the potato visual at the barrel tip and removes redundant firing work with bounded diagnostic output. Owner reports the rest of 0.2.19 worked well. Install status: RELEASE.md.
 
 **Previous: [P2C3d3 repair - 0.2.19](PHASE_2_CHECKPOINT_3D3_REPAIR.md).** C66 approves Install/input diagnostics, accurate component IDs with legacy aliases, Medium kit naming, synchronized delayed hits and owner-supplied audio. Release status is in RELEASE.md; one focused test covers the reported failures.
 
