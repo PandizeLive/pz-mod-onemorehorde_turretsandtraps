@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-**Current: [P2C3d3 repair - 0.2.19](PHASE_2_CHECKPOINT_3D3_REPAIR.md).** C66 approves Install/input diagnostics, accurate component IDs with legacy aliases, Medium kit naming, synchronized delayed hits and owner-supplied audio. Release status is in RELEASE.md; one focused test covers the reported failures.
+**Current installed: [P2C3d3 repair - 0.2.19](PHASE_2_CHECKPOINT_3D3_REPAIR.md).** C66 approves Install/input diagnostics, accurate component IDs with legacy aliases, Medium kit naming, synchronized delayed hits and owner-supplied audio. Release status is in RELEASE.md; one focused test covers the reported failures.
 
 **Previous: [P2C3d3 — Expansion Kits and usability, 0.2.18](PHASE_2_CHECKPOINT_3D3.md).** C65 approved implementation; source/native verification and installation status are in RELEASE.md. One combined client test covers the held rendering/management findings.
 
