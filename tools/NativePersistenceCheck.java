@@ -179,7 +179,7 @@ public final class NativePersistenceCheck {
             String fullType = (String)get(item, "getFullType");
             if (fullType.equals("Base.OMHTTModuleRapidFire")) rapid++;
             if (fullType.equals("Base.OMHTTModuleReload")) reload++;
-            if (fullType.equals("Base.OMHTTModuleCapacity")) capacity++;
+            if (fullType.equals("Base.OMHTTExpansionKitMedium")) capacity++;
         }
         check(rapid == 2 && reload == 2 && capacity == 1, "Stacked modules or expansion lost");
         check(battery && ammo && head, "Missing ammunition, battery or head cycle");

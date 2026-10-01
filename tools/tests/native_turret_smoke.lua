@@ -22,31 +22,27 @@ local function verifyTurrets()
         end
     end
     assert(count == 48, "Expected twelve active components in four native loot pools")
-    for key, canonical in pairs(T.TYPES) do
-        local current = instanceItem(canonical)
-        local legacy = instanceItem("Base.OMHTTModule" .. key)
-        assert(current and legacy and T.component(current:getFullType()) == T.component(legacy:getFullType()), "Saved component alias lost")
-        assert(T.kind(current) == T.kind(legacy), "Alias socket classification changed")
+    local retired = {"OMHTTModuleCapacitySmall", "OMHTTModuleCapacity", "OMHTTModuleCapacityLarge",
+        "OMHTTModuleMotionDetection", "OMHTTModuleDetection360"}
+    for i = 1, #retired do
+        local fullType = "Base." .. retired[i]
+        assert(ScriptManager.instance:getItem(fullType) == nil and T.component(fullType) == nil, "Retired item remains registered")
     end
-    local visibleComponents, visibleCount, hiddenCount = {}, 0, 0
+    local visibleComponents, visibleCount = {}, 0
     local scripts = getAllItems()
     for i = 0, scripts:size() - 1 do
         local script = scripts:get(i)
         local fullType = script:getFullName()
         local component = T.component(fullType)
         if component then
-            if not script:getObsolete() and not script:isHidden() then
-                assert(not visibleComponents[component], "Duplicate component in native item-spawn list: " .. component)
-                assert(fullType == T.TYPES[component], "Legacy item remains visible")
-                visibleComponents[component], visibleCount = true, visibleCount + 1
-            else
-                assert(script:isHidden() and not script:getObsolete(), "Compatibility item must remain loadable")
-                hiddenCount = hiddenCount + 1
-            end
+            assert(not script:getObsolete() and not script:isHidden(), "Current component is unavailable")
+            assert(not visibleComponents[component] and fullType == T.TYPES[component], "Duplicate component type")
+            assert(instanceItem(fullType), "Current component cannot be instantiated")
+            visibleComponents[component], visibleCount = true, visibleCount + 1
         end
     end
-    assert(visibleCount == 12 and hiddenCount == 5, "Expected twelve visible components and five hidden saved aliases")
-    print("[OMHTT-Smoke] native-component-list visible=12 hidden=5 duplicates=0 aliases=loadable")
+    assert(visibleCount == 12, "Expected twelve canonical components")
+    print("[OMHTT-Smoke] native-component-list visible=12 hidden=0 duplicates=0 legacy=removed")
     local nativeContents = {active = {Detection360 = 1, Filter = 1}}
     local profile = Modules.profile({baseFacing = 4, facing = 12, priority = "Toughest"}, nativeContents)
     assert(profile.cone == 360 and profile.heading == 90 and profile.priority == "Toughest", "Module profile failed")
@@ -59,7 +55,7 @@ local function verifyTurrets()
     assert(getText(chargeTooltip) == chargeTooltip, "Native tooltip translation must not reinterpret charge as format arguments")
     live:Remove(tooltipBattery)
 
-    local detector = instanceItem("Base.OMHTTModuleMotionDetection")
+    local detector = instanceItem("Base.OMHTTModuleDetection")
     live:AddItem(detector)
     assert(T.contents(live).active.MotionDetection == 1, "Native module condition defaults are not active")
     detector:setCondition(0)
@@ -131,7 +127,7 @@ local function verifyTurrets()
     assert(contents.ammo == 1 and contents.modules == 2 and not T.canRemove(inventory, contents.head), "Inventory classification/removal guard failed")
     assert(math.abs(packed:getUnequippedWeight() - packed:getActualWeight() - inventory:getContentsWeight()) < 0.001, "Packed weight omits or duplicates contents")
     local baseStats = T.cycleConfig()
-    local expansion = instanceItem("Base.OMHTTModuleCapacity")
+    local expansion = instanceItem("Base.OMHTTExpansionKitMedium")
     assert(inventory:isItemAllowed(expansion), "Native capacity socket rejected")
     inventory:AddItem(expansion)
     inventory:AddItem("Base.OMHTTModuleReload")
@@ -141,7 +137,7 @@ local function verifyTurrets()
     assert(stats.modules == baseStats.modules + 4 and stats.ammo == baseStats.ammo + 100 and math.abs(stats.cooldown - baseStats.cooldown / 1.5) < 0.001
         and math.abs(stats.reload - baseStats.reload / 1.5) < 0.001 and math.abs(stats.damage - baseStats.damage * 1.2) < 0.001, "Native effective module stats failed")
     assert(not T.canRemove(inventory, expansion), "Native capacity removal lost module limit")
-    assert(not inventory:isItemAllowed(instanceItem("Base.OMHTTModuleCapacity")), "Native duplicate capacity accepted")
+    assert(not inventory:isItemAllowed(instanceItem("Base.OMHTTExpansionKitMedium")), "Native duplicate capacity accepted")
     velocity:setCondition(0)
     assert(T.cycleConfig(T.contents(inventory)).damage == baseStats.damage, "Broken native velocity remains active")
     inventory:Remove(velocity)
@@ -210,6 +206,44 @@ local function verifyTurrets()
     contents.head:getModData().OMHTTCycle = {schema = 1, loaded = 1, nextShot = 123456789, cooldownDuration = 750, reloadDuration = 750}
     assert(contents.head:getWorldStaticItem() == "Base.OMHTTProbeHead", "Actual turret head has no native model")
     OMHTT_NativeTurret = object
+    local wreckSquare = IsoGridSquare.new(getCell(), nil, 7, 7, 0)
+    local wreck = IsoThumpable.new(getCell(), wreckSquare, "omhtt_barrier_01_44", false)
+    wreckSquare:getObjects():add(wreck)
+    wreckSquare:getSpecialObjects():add(wreck)
+    wreck:getModData().OMHTTTurret = {schema = 1, id = "destruction-fixture"}
+    wreck:getBuildMaterials()[T.BASE] = 1
+    W.clearBuildRefund(wreck)
+    assert(wreck:getBuildMaterials()[T.BASE] == nil, "Destruction can refund a working base")
+    local wreckContents = ItemContainer.new(T.CONTAINER, wreckSquare, wreck)
+    wreck:setContainer(wreckContents)
+    local savedItems = {}
+    for i = 1, 100 do savedItems[#savedItems + 1] = wreckContents:AddItem("Base.Potato") end
+    savedItems[#savedItems + 1] = wreckContents:AddItem(T.HEAD)
+    savedItems[#savedItems + 1] = wreckContents:AddItem(T.TYPES.Capacity)
+    savedItems[#savedItems + 1] = wreckContents:AddItem(T.TYPES.Velocity)
+    local savedBattery = wreckContents:AddItem("Base.CarBattery1")
+    savedBattery:setCurrentUsesFloat(0.37)
+    savedBattery:setCondition(42)
+    savedItems[#savedItems + 1] = savedBattery
+    wreck:dumpContentsInSquare()
+    W.removed(wreck)
+    assert(not T.state(wreck), "Removal retained turret state")
+    assert(wreckContents:getItems():isEmpty(), "Destroyed turret retained inventory")
+    local ground, scrap, seen = wreckSquare:getWorldObjects(), 0, {}
+    for i = 0, ground:size() - 1 do
+        local dropped = ground:get(i):getItem()
+        assert(dropped:getFullType() ~= T.BASE, "Destruction refunded a base")
+        if dropped:getFullType() == "Base.ScrapMetal" then scrap = scrap + 1 end
+        assert(not seen[dropped], "Duplicate dropped item")
+        seen[dropped] = true
+    end
+    assert(scrap == 2 and ground:size() == #savedItems + 2, "Incorrect salvage or inventory drop count")
+    for i = 1, #savedItems do assert(seen[savedItems[i]], "Destruction replaced or lost an actual item") end
+    assert(math.abs(savedBattery:getCurrentUsesFloat() - 0.37) < 0.000001 and savedBattery:getCondition() == 42,
+        "Destruction changed battery condition or charge")
+    W.removed(wreck)
+    assert(ground:size() == #savedItems + 2, "Repeated destruction duplicated contents or salvage")
+    print("[OMHTT-Smoke] native-turret-destroy contents=104 exact=true scrap=2 base=0 repeated=stable")
     local H = require("OMHTT/HybridProbe")
     local model = ScriptManager.instance:getModelScript("Base.OMHTTProbeHead")
     assert(model and model:getMeshName() == "OMHTT_ProbeHead", "Native hybrid model script missing")

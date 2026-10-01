@@ -226,3 +226,32 @@ local Action = require("OMHTT/TurretPickupAction")
 local incomplete = {elapsed = 9.9, done = false}
 check(not Action.complete(incomplete), "Pickup cannot complete before ten seconds")
 instanceItem = oldInstanceItem
+
+local dropped = {}
+function square:AddWorldInventoryItem(candidate)
+    dropped[#dropped + 1] = candidate
+end
+W.removed(object)
+check(#dropped == 0, "Pickup retirement must not produce salvage or duplicate contents")
+object.data.OMHTTTurret = {schema = 1, id = "destroy-unit"}
+T.moveContents(carried.inventory, other)
+local beforeDrop = #other.items
+W.removed(object)
+check(#other.items == 0 and #dropped == beforeDrop + 2 and T.state(object) == nil,
+    "Removal fallback empties exact inventory and retires turret with two scrap")
+local foundBattery = false
+for i = 1, #dropped do
+    if dropped[i] == battery then foundBattery = true end
+end
+check(foundBattery and math.abs(battery.charge - 0.369) < 0.000001, "Fallback preserves exact battery charge")
+W.removed(object)
+check(#dropped == beforeDrop + 2, "Repeated removal cannot duplicate salvage")
+object.data.OMHTTTurret = {schema = 1, id = "empty-destroy-unit"}
+W.removed(object)
+check(#dropped == beforeDrop + 4, "Native already-dumped container still yields base salvage once")
+object.materials = {[T.BASE] = 1, ["Base.Plank"] = 2}
+function object:getBuildMaterials() return self.materials end
+W.clearBuildRefund(object)
+local materialCount = 0
+for _ in pairs(object.materials) do materialCount = materialCount + 1 end
+check(materialCount == 0, "Construction refunds cannot return a working base")

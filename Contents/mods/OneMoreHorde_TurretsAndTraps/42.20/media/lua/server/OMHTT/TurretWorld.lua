@@ -9,6 +9,15 @@ local W = OMHTT_TurretWorld
 local facings = {e = 0, n = 4, w = 8, s = 12}
 local generators = {}
 
+---@param object IsoThumpable Managed turret
+---@return nil
+function W.clearBuildRefund(object)
+    local materials = object:getBuildMaterials()
+    for fullType in pairs(materials) do
+        materials[fullType] = nil
+    end
+end
+
 ---@param object IsoObject Candidate device
 ---@return boolean valid
 ---@nodiscard
@@ -118,6 +127,7 @@ function W.onCreate(params)
         state.id = "turret-" .. source:getID()
     end
     object:getModData().OMHTTTurret = state
+    W.clearBuildRefund(object)
     source:getModData().OMHTTDeployed = true
     object:setName(getText("UI_OMHTT_TurretBase"))
     object:setMaxHealth(state.maxHealth)
@@ -182,6 +192,7 @@ end
 function W.loaded(object)
     if instanceof(object, "IsoGenerator") then generators[object] = true end
     if T.state(object) and object:getContainer() then
+        W.clearBuildRefund(object)
         object:setBlockAllTheSquare(true)
         object:setCanPassThrough(true)
         object:setIsThumpable(true)
@@ -203,17 +214,26 @@ end
 ---@return nil
 function W.removed(object)
     generators[object] = nil
-    if not T.state(object) or not object:getContainer() then return end
+    local state = T.state(object)
+    if not state then return end
     local square = object:getSquare()
     if not square then return end
-    local items = object:getContainer():getItems()
-    for i = items:size() - 1, 0, -1 do
-        local item = items:get(i)
-        object:getContainer():Remove(item)
-        square:AddWorldInventoryItem(item, 0.5, 0.5, 0)
+    local container = object:getContainer()
+    local remaining = 0
+    if container then
+        local items = container:getItems()
+        remaining = items:size()
+        for i = items:size() - 1, 0, -1 do
+            local item = items:get(i)
+            container:Remove(item)
+            square:AddWorldInventoryItem(item, 0.5, 0.5, 0)
+        end
     end
-    D.emit("turret-destroyed", {id = T.state(object).id, contentsDropped = true})
     object:getModData().OMHTTTurret = nil
+    for i = 1, 2 do
+        square:AddWorldInventoryItem("Base.ScrapMetal", 0.35 + i * 0.1, 0.5, 0)
+    end
+    D.emit("turret-destroyed", {id = state.id, fallbackItemsDropped = remaining, scrap = 2})
 end
 
 ---@param object IsoObject Turret

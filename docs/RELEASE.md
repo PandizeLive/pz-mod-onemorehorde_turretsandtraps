@@ -1,5 +1,9 @@
 # Release state and publication policy
 
+## Staged source: 0.2.20
+
+C68 destruction/item cleanup passes 2,416 assertions and native write/read checks (43.5/43.9 seconds), but not installed, tagged for release or packaged. Installed version remains 0.2.19.1. Owner waived a separate gameplay test and requests combination with the supported-firearm checkpoint. Scope/evidence: [0.2.20 cleanup](PATCH_v0.2.20.md); next proposed scope: [P5C1a](PHASE_5_CHECKPOINT_1A.md). No external publication or push.
+
 ## Current local installation: 0.2.19.1
 
 [C67 corrective patch](PATCH_v0.2.19.1.md): native hidden compatibility definitions remove duplicate spawn choices; presentation starts at the scaled barrel tip. Firing removes redundant refresh/scans and spreads verbose telemetry across ticks with stage profiling. Kahlua passes 2,410 assertions with 45 Lua files, 380 native translations and 118 packaged files. Native write/read pass in 48.7/54.2 seconds, including exactly twelve visible components, five loadable hidden aliases, no duplicate spawn choices and preserved saved contents. Installed from annotated `test/v0.2.19.1` (`b8af7f7`). [Evidence](../diagnostics/v0.2.19.1/local-release.json) verifies all 118 source/tag/installed/archive files and all 118 previous-version backup files. [Archive](../artifacts/OMHTT-0.2.19.1.zip). Firing smoothness remains a player check. Owner reports the rest of 0.2.19 worked well. No external publication.

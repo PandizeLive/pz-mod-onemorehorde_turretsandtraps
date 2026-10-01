@@ -12,19 +12,15 @@ T.MODULES = {Firing = true, MotionDetection = true, Filter = true, RapidFire = t
     Range = true, Capacity = true, CapacitySmall = true, CapacityLarge = true, Detection360 = true, Reload = true, Autoloader = true}
 T.TYPES = {}
 T.COMPONENTS = {}
-for name in pairs(T.MODULES) do
-    local fullType = "Base.OMHTTModule" .. name
-    T.TYPES[name], T.COMPONENTS[fullType] = fullType, name
-end
-local renamed = {CapacitySmall = "OMHTTExpansionKitSmall", Capacity = "OMHTTExpansionKitMedium",
+local itemTypes = {CapacitySmall = "OMHTTExpansionKitSmall", Capacity = "OMHTTExpansionKitMedium",
     CapacityLarge = "OMHTTExpansionKitLarge", MotionDetection = "OMHTTModuleDetection", Detection360 = "OMHTTModule360"}
-for name, itemType in pairs(renamed) do
-    T.TYPES[name] = "Base." .. itemType
-    T.COMPONENTS[T.TYPES[name]] = name
+for name in pairs(T.MODULES) do
+    local fullType = "Base." .. (itemTypes[name] or "OMHTTModule" .. name)
+    T.TYPES[name], T.COMPONENTS[fullType] = fullType, name
 end
 
 ---@param fullType string Locale-independent item type
----@return string? component Stable behavior key, including legacy aliases
+---@return string? component Stable behavior key
 ---@nodiscard
 function T.component(fullType)
     return T.COMPONENTS[fullType]

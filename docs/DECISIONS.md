@@ -294,3 +294,11 @@ Owner approves the 0.2.19 repair and later asks to resume it. New Expansion Kits
 ## C67: correct visible aliases and projectile muzzle
 
 Owner requests resolving duplicate item-spawn entries and moving the visible projectile start from head center to barrel end; reports the rest of 0.2.19 worked well. Use native Hidden=true for five saved compatibility definitions and retain their data. Offset only presentation from the actual placeholder barrel geometry without changing combat timing. Owner subsequently reports stuttering on every shot; remove redundant shot refresh/scans, spread verbose telemetry across ticks and add stage timings without claiming unmeasured FPS improvement. Version 0.2.19.1; see PATCH_v0.2.19.1.md. No extra feature checkpoint or balance change.
+
+## C68: approved destruction policy, remove pre-release aliases, combine next checkpoint
+
+The owner approves base loss with partial metal salvage and preserved internals. Two scrap metal is the implementation default. Actual head, ammo, modules, expansion kit and battery survive without additional damage or charge reset; normal pickup does not create salvage. Reduce oversized loose placeholder sprites.
+
+The mod has never been uploaded; the owner explicitly authorizes removing the five old item definitions instead of hiding them. C68 supersedes C66/C67 compatibility retention. Remove their identity mappings/translations as well; retain internal behavior and Sandbox keys because these are not duplicate items. Old private-test items using deleted IDs are not migrated.
+
+Owner reports 0.2.19.1 seems to work well; this does not independently certify frame times. No standalone owner test is required for the cleanup. Prepare source but hold installation to combine with the next checkpoint. Next is early P5C1a supported-firearm feasibility per C64, scoped in PHASE_5_CHECKPOINT_1A.md; firearm implementation remains pending concrete approval. No publication, remote push or sibling changes.

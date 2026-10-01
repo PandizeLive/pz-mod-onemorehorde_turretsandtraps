@@ -20,7 +20,7 @@ def main():
     modules = {"Firing": "Firing", "MotionDetection": "Detection", "Filter": "Filter",
                "RapidFire": "Rapid-Fire", "Velocity": "Velocity", "Range": "Range", "Capacity": "Medium Expansion Kit", "CapacitySmall": "Small Expansion Kit", "CapacityLarge": "Large Expansion Kit",
                "Detection360": "360", "Reload": "Reload", "Autoloader": "Autoloader"}
-    aliases = {"CapacitySmall": "OMHTTExpansionKitSmall", "Capacity": "OMHTTExpansionKitMedium",
+    item_types = {"CapacitySmall": "OMHTTExpansionKitSmall", "Capacity": "OMHTTExpansionKitMedium",
                "CapacityLarge": "OMHTTExpansionKitLarge", "MotionDetection": "OMHTTModuleDetection", "Detection360": "OMHTTModule360"}
     items = """module Base {
     item OMHTTTurretBase {
@@ -31,6 +31,7 @@ def main():
         WeightReduction = 0,
         Capacity = 28,
         Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
         ConditionMax = 100,
         AcceptItemFunction = OMHTT_Turret.accept,
         Tooltip = Tooltip_OMHTT_TurretBase,
@@ -42,6 +43,7 @@ def main():
         DisplayCategory = Material,
         Weight = 4,
         Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
         ConditionMax = 100,
         Tooltip = Tooltip_OMHTT_PotatoHead,
     }
@@ -49,20 +51,17 @@ def main():
     for key, name in modules.items():
         label = name if key.startswith("Capacity") else name + " Module"
         tooltip = "Capacity" if key.startswith("Capacity") else key
-        definition = f"""    item OMHTTModule{key} {{
+        definition = f"""    item {item_types.get(key, "OMHTTModule" + key)} {{
         DisplayName = {label},
         ItemType = base:normal,
         DisplayCategory = Material,
         Weight = 0.3,
         Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_Module{tooltip},
     }}
 """
-        if key in aliases:
-            items += definition.replace(" {\n", " {\n        Hidden = true,\n", 1)
-            items += definition.replace("OMHTTModule" + key + " {", aliases[key] + " {")
-        else:
-            items += definition
+        items += definition
     write("scripts/OMHTT_TurretItems.txt", items + "}\n")
     tools = ["item 1 tags[base:screwdriver] mode:keep flags[NoBrokenItems;DontRecordInput],",
              "item 1 [Base.Wrench;Base.PipeWrench] mode:keep flags[NoBrokenItems;DontRecordInput],"]
@@ -154,8 +153,7 @@ def main():
     texture.write_bytes((MEDIA / "textures/OMHTT_TestCube.png").read_bytes())
     translations("Recipes", {**names, "OMHTTDeployTurret": "Deploy Turret"})
     translations("ItemName", {"Base.OMHTTTurretBase": "Turret Base", "Base.OMHTTPotatoHead": "Potato Launcher Head",
-                              **{"Base.OMHTTModule" + k: (v if k.startswith("Capacity") else v + " Module") for k, v in modules.items()},
-                              **{"Base." + value: (modules[key] if key.startswith("Capacity") else modules[key] + " Module") for key, value in aliases.items()}})
+                              **{"Base." + item_types.get(k, "OMHTTModule" + k): (v if k.startswith("Capacity") else v + " Module") for k, v in modules.items()}})
     translations("Tooltip", {
         "Tooltip_OMHTT_TurretBase": "Holds a head, ammo, modules and a battery.",
         "Tooltip_OMHTT_PotatoHead": "Install in a turret base. Uses potatoes and power.",

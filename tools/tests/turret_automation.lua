@@ -73,7 +73,7 @@ local function add(kind)
     return item
 end
 local head = add(T.HEAD)
-local detector = add("Base.OMHTTModuleMotionDetection")
+local detector = add("Base.OMHTTModuleDetection")
 local firing = add("Base.OMHTTModuleFiring")
 add("Base.Potato"); add("Base.Potato"); add("Base.Potato")
 local object = {index = 0}
