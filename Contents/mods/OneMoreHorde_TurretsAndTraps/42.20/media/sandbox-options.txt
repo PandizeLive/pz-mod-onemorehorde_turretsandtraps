@@ -143,6 +143,15 @@ option OMHTurretsTraps.PotatoReloadTime {
     translation = OMHTurretsTraps_PotatoReloadTime,
 }
 
+option OMHTurretsTraps.PotatoProjectileSpeed {
+    type = double,
+    min = 5.0,
+    max = 100.0,
+    default = 20.0,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_PotatoProjectileSpeed,
+}
+
 option OMHTurretsTraps.PotatoRange {
     type = integer,
     default = 6,

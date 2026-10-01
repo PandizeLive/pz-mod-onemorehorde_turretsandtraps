@@ -8,6 +8,21 @@ public final class NativeTurretProbe {
         if (!value) throw new IllegalStateException(message);
     }
     public static void verify() throws Exception {
+        Class<?> sounds = Class.forName("zombie.GameSounds");
+        for (String kind : new String[]{"Fire", "Impact"}) {
+            Object sound = sounds.getMethod("getSound", String.class).invoke(null, "OMHTTPotato" + kind);
+            java.util.List<?> clips = (java.util.List<?>)sound.getClass().getField("clips").get(sound);
+            check(clips.size() == 2, "Expected two custom potato sound variants");
+            for (Object clip : clips) {
+                String file = (String)call(clip, "getFile", new Class<?>[0]);
+                check(file.contains(kind.equals("Fire") ? "potato_thump_" : "potato_splat_"), "Wrong potato sound asset");
+            }
+            check(call(sound, "getRandomClip", new Class<?>[0]) != null, "Native random sound clip unavailable");
+        }
+        Class<?> emitter = Class.forName("zombie.audio.BaseSoundEmitter");
+        emitter.getMethod("playSound", String.class);
+        emitter.getMethod("setPitch", long.class, float.class);
+        System.out.println("[OMHTT-Smoke] native-potato-audio clips=4 randomized=true pitch-method=verified playback=untested");
         Class<?> picker = Class.forName("zombie.inventory.ItemPickerJava");
         picker.getMethod("Parse").invoke(null);
         Object pools = picker.getField("ProceduralDistributions").get(null);
@@ -18,7 +33,7 @@ public final class NativeTurretProbe {
             Object[] items = (Object[])pool.getClass().getField("items").get(pool);
             for (Object item : items) {
                 String type = (String)item.getClass().getField("itemName").get(item);
-                if (type.startsWith("Base.OMHTTModule")) {
+                if ((type.startsWith("Base.OMHTTModule") || type.startsWith("Base.OMHTTExpansionKit"))) {
                     modules++;
                     check(item.getClass().getField("chance").getFloat(item) > 0, "Zero native module loot weight");
                 }

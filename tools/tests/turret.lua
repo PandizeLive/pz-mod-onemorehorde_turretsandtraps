@@ -142,6 +142,9 @@ check(W.fire(testPlayer, object, zombie) == "Reloading" and other:contains(potat
 testMillis = testMillis + 1
 local ownedResult = W.fire(testPlayer, object, zombie)
 check(ownedResult == "Fired", "Inventory-backed shot succeeds: " .. ownedResult)
+check(zombie.health == 1.5, "No direct damage before projectile arrival")
+testMillis = testMillis + 100
+require("OMHTT/PrototypeCombat").tickFlights()
 check(math.abs(zombie.health - 1.15) < 0.000001, "Default shot deals exactly 35 points or 0.35 native HP")
 check(not other:contains(potato) and math.abs(battery.charge - 0.369) < 0.000001, "Shot spends one exact potato and battery charge once")
 check(W.fire(testPlayer, object, zombie) == "Empty" and math.abs(battery.charge - 0.369) < 0.000001, "Empty turret spends no additional charge")
@@ -169,6 +172,8 @@ check(W.fire(testPlayer, object, zombie) == "Reloading", "Replenishing empty tur
 testMillis = testMillis + 2000
 check(W.fire(testPlayer, object, zombie) == "Fired" and math.abs(generator.fuel - 0.999) < 0.000001, "Generator shot charges fuel exactly once")
 check(math.abs(battery.charge - 0.369) < 0.000001, "Generator operation preserves battery charge")
+testMillis = testMillis + 100
+require("OMHTT/PrototypeCombat").tickFlights()
 testPlayer.x, testPlayer.y, testPlayer.z, testPlayer.getSquare = oldX, oldY, oldZ, oldSquare
 local playerStorage = container()
 playerStorage.room = false

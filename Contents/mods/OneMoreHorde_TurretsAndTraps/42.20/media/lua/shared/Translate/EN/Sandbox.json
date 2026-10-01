@@ -107,10 +107,10 @@
     "Sandbox_OMHTurretsTraps_RangeBonus_tooltip": "Added range per copy.",
     "Sandbox_OMHTurretsTraps_RangeBonusCap": "Maximum range bonus (tiles)",
     "Sandbox_OMHTurretsTraps_RangeBonusCap_tooltip": "Total range cannot exceed 30 tiles.",
-    "Sandbox_OMHTurretsTraps_CapacityAmmoBonus": "Standard: extra ammo",
-    "Sandbox_OMHTurretsTraps_CapacityAmmoBonus_tooltip": "Added by the Standard Expansion Kit.",
-    "Sandbox_OMHTurretsTraps_CapacityModuleBonus": "Standard: extra slots",
-    "Sandbox_OMHTurretsTraps_CapacityModuleBonus_tooltip": "Added by the Standard Expansion Kit.",
+    "Sandbox_OMHTurretsTraps_CapacityAmmoBonus": "Medium: extra ammo",
+    "Sandbox_OMHTurretsTraps_CapacityAmmoBonus_tooltip": "Added by the Medium Expansion Kit.",
+    "Sandbox_OMHTurretsTraps_CapacityModuleBonus": "Medium: extra slots",
+    "Sandbox_OMHTurretsTraps_CapacityModuleBonus_tooltip": "Added by the Medium Expansion Kit.",
     "Sandbox_OMHTurretsTraps_LootRapidFire": "Rapid-Fire loot multiplier",
     "Sandbox_OMHTurretsTraps_LootRapidFire_tooltip": "0 disables new drops.",
     "Sandbox_OMHTurretsTraps_LootReload": "Reload loot multiplier",
@@ -121,7 +121,7 @@
     "Sandbox_OMHTurretsTraps_LootVelocity_tooltip": "0 disables new drops.",
     "Sandbox_OMHTurretsTraps_LootRange": "Range loot multiplier",
     "Sandbox_OMHTurretsTraps_LootRange_tooltip": "0 disables new drops.",
-    "Sandbox_OMHTurretsTraps_LootCapacity": "Standard Expansion loot multiplier",
+    "Sandbox_OMHTurretsTraps_LootCapacity": "Medium Expansion loot multiplier",
     "Sandbox_OMHTurretsTraps_LootCapacity_tooltip": "0 disables new drops.",
     "Sandbox_Title_OMHTurretsTraps_RapidFire": "Rapid-Fire",
     "Sandbox_Title_OMHTurretsTraps_Reload": "Reload",
@@ -140,5 +140,7 @@
     "Sandbox_OMHTurretsTraps_CapacityLargeModuleBonus": "Large: extra slots",
     "Sandbox_OMHTurretsTraps_CapacityLargeModuleBonus_tooltip": "Extra module slots.",
     "Sandbox_OMHTurretsTraps_LootCapacityLarge": "Large Expansion loot multiplier",
-    "Sandbox_OMHTurretsTraps_LootCapacityLarge_tooltip": "0 disables new drops."
+    "Sandbox_OMHTurretsTraps_LootCapacityLarge_tooltip": "0 disables new drops.",
+    "Sandbox_OMHTurretsTraps_PotatoProjectileSpeed": "Projectile speed",
+    "Sandbox_OMHTurretsTraps_PotatoProjectileSpeed_tooltip": "Tiles per second."
 }

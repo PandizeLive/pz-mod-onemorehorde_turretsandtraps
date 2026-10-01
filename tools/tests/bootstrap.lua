@@ -74,7 +74,7 @@ function getSpecificPlayer(index) return testPlayer end
 
 Events = {}
 Events.OnObjectAdded = {handlers = {}, Add = function() end}
-for _, name in pairs({"OnInitGlobalModData", "LoadGridsquare", "OnObjectAboutToBeRemoved", "OnClientCommand", "OnServerCommand", "OnFillWorldObjectContextMenu", "OnGameStart", "OnTick", "OnPostRender", "OnPostUIDraw", "OnZombieUpdate", "OnZombieDead", "OnContextKey", "OnPlayerUpdate"}) do
+for _, name in pairs({"OnInitGlobalModData", "LoadGridsquare", "OnObjectAboutToBeRemoved", "OnClientCommand", "OnServerCommand", "OnFillWorldObjectContextMenu", "OnGameStart", "OnTick", "OnPostRender", "OnPreUIDraw", "OnPostUIDraw", "OnZombieUpdate", "OnZombieDead", "OnContextKey", "OnPlayerUpdate"}) do
     local handlers = {}
     Events[name] = {handlers = handlers, Add = function(callback) table.insert(handlers, callback) end}
 end
@@ -317,4 +317,8 @@ IsoFlagType = {water="water", solid="solid", solidtrans="solidtrans", collideN="
 
 function getSprite(name) return {getProperties = function() return {set = function() end, unset = function() end} end} end
 IsoFlagType.FloorOverlay = "FloorOverlay"
+function getWorld() return {getFreeEmitter = function() return {playSound = function() return 1 end, setPitch = function() end} end} end
 function getSoundManager() return {PlayWorldSound = function() end} end
+
+UIFont = {Small="small"}
+function getTextManager() return {DrawStringCentre = function() testDraws = testDraws + 1 end} end

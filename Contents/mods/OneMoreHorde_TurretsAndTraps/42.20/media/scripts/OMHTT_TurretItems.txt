@@ -70,7 +70,7 @@ module Base {
         Tooltip = Tooltip_OMHTT_ModuleRange,
     }
     item OMHTTModuleCapacity {
-        DisplayName = Standard Expansion Kit,
+        DisplayName = Medium Expansion Kit,
         ItemType = base:normal,
         DisplayCategory = Material,
         Weight = 0.3,
@@ -116,5 +116,45 @@ module Base {
         Weight = 0.3,
         Icon = OMHTT_TestCube,
         Tooltip = Tooltip_OMHTT_ModuleCapacity,
+    }
+    item OMHTTExpansionKitSmall {
+        DisplayName = Small Expansion Kit,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        Tooltip = Tooltip_OMHTT_ModuleCapacity,
+    }
+    item OMHTTExpansionKitMedium {
+        DisplayName = Medium Expansion Kit,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        Tooltip = Tooltip_OMHTT_ModuleCapacity,
+    }
+    item OMHTTExpansionKitLarge {
+        DisplayName = Large Expansion Kit,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        Tooltip = Tooltip_OMHTT_ModuleCapacity,
+    }
+    item OMHTTModuleDetection {
+        DisplayName = Detection Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        Tooltip = Tooltip_OMHTT_ModuleMotionDetection,
+    }
+    item OMHTTModule360 {
+        DisplayName = 360 Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        Tooltip = Tooltip_OMHTT_ModuleDetection360,
     }
 }

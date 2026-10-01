@@ -7,7 +7,7 @@ local UI = {}
 local groups = {
     {"Sandbox_Title_OMHTurretsTraps_Operation", {"PotatoTurret", "PotatoHealth", "IdleSweepSpeed"}},
     {"Sandbox_Title_OMHTurretsTraps_Storage", {"PotatoAmmoCapacity", "PotatoModuleCapacity", "PotatoMagazineCapacity"}},
-    {"Sandbox_Title_OMHTurretsTraps_Combat", {"PotatoDamage", "PotatoCooldown", "PotatoReloadTime", "PotatoRange", "PotatoTurnSpeed", "PotatoKnockdownChance", "PotatoSplashPercent", "PotatoSplashRadius"}},
+    {"Sandbox_Title_OMHTurretsTraps_Combat", {"PotatoDamage", "PotatoCooldown", "PotatoReloadTime", "PotatoRange", "PotatoTurnSpeed", "PotatoProjectileSpeed", "PotatoKnockdownChance", "PotatoSplashPercent", "PotatoSplashRadius"}},
     {"Sandbox_Title_OMHTurretsTraps_Power", {"PotatoRequirePower", "PotatoBatteryPercentPerShot", "PotatoGeneratorFuelPerShot"}},
 }
 

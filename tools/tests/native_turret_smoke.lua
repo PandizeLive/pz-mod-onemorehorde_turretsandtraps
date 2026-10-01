@@ -15,13 +15,19 @@ local function verifyTurrets()
     for i = 1, #Loot.POOLS do
         local items = ProceduralDistributions.list[Loot.POOLS[i]].items
         for n = 1, #items, 2 do
-            if string.find(items[n], "Base.OMHTTModule", 1, true) then
+            if require("OMHTT/Turret").component(items[n]) then
                 assert(instanceItem(items[n]), "Loot module script missing")
                 count = count + 1
             end
         end
     end
     assert(count == 48, "Expected twelve active components in four native loot pools")
+    for key, canonical in pairs(T.TYPES) do
+        local current = instanceItem(canonical)
+        local legacy = instanceItem("Base.OMHTTModule" .. key)
+        assert(current and legacy and T.component(current:getFullType()) == T.component(legacy:getFullType()), "Saved component alias lost")
+        assert(T.kind(current) == T.kind(legacy), "Alias socket classification changed")
+    end
     local nativeContents = {active = {Detection360 = 1, Filter = 1}}
     local profile = Modules.profile({baseFacing = 4, facing = 12, priority = "Toughest"}, nativeContents)
     assert(profile.cone == 360 and profile.heading == 90 and profile.priority == "Toughest", "Module profile failed")
@@ -133,7 +139,11 @@ local function verifyTurrets()
     installLogic:setContainers(containers)
     installLogic:setRecipe(recipe)
     installLogic:setManualSelectInputs(true)
-    assert(installLogic:offerInputItem(packed), "BuildLogic rejects exact selected packed base")
+    installLogic:clearManualInputs()
+    assert(installLogic:offerInputItem(decoy), "BuildLogic rejects first matching packed base")
+    installLogic:clearManualInputs()
+    assert(installLogic:offerInputItem(packed), "BuildLogic rejects replacement exact selected packed base")
+    assert(not installLogic:offerInputItem(packed), "Duplicate selected offer must not be mistaken for Install failure")
     local data = installLogic:getRecipeData()
     assert(data:getFirstManualInputFor(recipe:getInputs():get(0)) == packed, "BuildLogic changes selected packed item")
     assert(data:getFirstManualInputFor(recipe:getInputs():get(0)) == packed, "Placement preview cannot resolve exact packed input")

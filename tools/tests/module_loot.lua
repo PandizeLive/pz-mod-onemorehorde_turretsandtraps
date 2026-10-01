@@ -5,7 +5,7 @@ local function count(pool, kind)
     local items = ProceduralDistributions.list[pool].items
     local found, weight = 0, 0
     for i = 1, #items, 2 do
-        if items[i] == "Base.OMHTTModule" .. kind then found = found + 1; weight = items[i + 1] end
+        if items[i] == require("OMHTT/Turret").TYPES[kind] then found = found + 1; weight = items[i + 1] end
     end
     return found, weight
 end

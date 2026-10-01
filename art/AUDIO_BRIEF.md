@@ -29,3 +29,7 @@ Audio integration and volume/noise tuning follow receipt of the files. The game 
 ## Selected impact and auditions
 
 0.2.16 references the installed native splat2.wav; it is not copied into the mod. Firing and reload remain undecided. Reload candidates are first in Listening/Potato Turret Native Sounds/Listen.html (workspace root), now with 16 reload candidates and 34 clips total. Provide an HTML audition page for every future audio-selection request.
+
+## 0.2.19 owner replacements
+
+Owner supplied potato_thump_1.wav / potato_thump_2.wav (0.75s each) and potato_splat_1.wav / potato_splat_2.wav (0.25s each) in OMH/Audio/Turrets & Traps. These replace the undecided firing/native impact selections above. Exact WAVs are packaged, with native random variants and per-playback pitch 0.95-1.05. Launch and impact timing are separate. [Listen to the four selected files](POTATO_AUDIO.html). Hashes/format details: diagnostics/v0.2.19/audio-assets.json. Reload audio is still pending selection; supply HTML candidates when that work resumes.

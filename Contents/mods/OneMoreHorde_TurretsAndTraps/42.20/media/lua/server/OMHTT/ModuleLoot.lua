@@ -2,6 +2,7 @@ if isClient() then return end
 require("Items/ProceduralDistributions")
 local M = require("OMHTT/TurretModules")
 local D = require("OMHTT/Diagnostics")
+local T = require("OMHTT/Turret")
 local L = {}
 L.POOLS = {"ElectronicStoreMisc", "CrateElectronics", "MechanicShelfElectric", "ArmyStorageElectronics"}
 L.WEIGHTS = {Firing = 2, MotionDetection = 2, Filter = 0.5, Detection360 = 0.25,
@@ -19,7 +20,7 @@ function L.apply()
         if pool and pool.items then
             local items = pool.items
             for index = #items - 1, 1, -2 do
-                local module = string.match(items[index], "^Base%.OMHTTModule(.+)$")
+                local module = T.component(items[index])
                 if module and L.WEIGHTS[module] then
                     table.remove(items, index + 1)
                     table.remove(items, index)
@@ -28,7 +29,7 @@ function L.apply()
             for module, weight in pairs(L.WEIGHTS) do
                 local effective = weight * multiplier * M.option("Loot" .. module, 1, 0, 20)
                 if effective > 0 then
-                    items[#items + 1] = "Base.OMHTTModule" .. module
+                    items[#items + 1] = T.TYPES[module]
                     items[#items + 1] = effective
                 end
                 D.emit("module-loot-weight", {pool = name, module = module, weight = effective})

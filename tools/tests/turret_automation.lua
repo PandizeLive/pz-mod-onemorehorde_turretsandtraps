@@ -100,7 +100,9 @@ local function run()
     entry.due = 0
     for i = 1, 100 do
         A.step(entry, testMillis + 100)
-        if not entry.job and entry.status ~= "Aiming" then return end
+        if not entry.job and entry.status ~= "Aiming" then
+            testMillis = testMillis + 500; Combat.tickFlights(); return
+        end
         testMillis = testMillis + 100
         Aim.tick()
     end
@@ -149,10 +151,13 @@ record.nextShot = testMillis + 100000
 record.aimDegrees = 0
 local hp, ammoBefore = front.health, T.contents(storage).ammo
 check(W.fire(nil, object, front) == "Fired", "Automatic modified shot uses shared cycle, not stale prototype timer")
+local launchTime = testMillis
+check(front.health == hp, "Modified shot damage waits for flight")
+testMillis = testMillis + 500; Combat.tickFlights()
 check(math.abs(front.health - (hp - 0.42)) < 0.000001 and T.contents(storage).ammo == ammoBefore - 1,
     "Velocity changes automatic direct damage while consuming one potato")
 local changedCycle = head.data.OMHTTCycle
-check(changedCycle.nextShot == testMillis + 1600 and changedCycle.reloadReady == nil,
+check(changedCycle.nextShot == launchTime + 1600 and changedCycle.reloadReady == nil,
     "Rapid-Fire and Autoloader reach the actual automatic firing cycle")
 check(W.fire(nil, object, front) ~= "Fired", "Autoloader cannot bypass shot cooldown")
 local previousPower = W.power
@@ -170,7 +175,7 @@ record.nextShot = 0
 local manualAmmo = T.contents(storage).ammo
 local manualShots = record.shots
 check(W.fire({}, object, front) == "Aiming" and T.contents(storage).ammo == manualAmmo, "Manual command queues turning without spending resources")
-for i = 1, 30 do testMillis = testMillis + 100; Aim.tick() end
+for i = 1, 30 do testMillis = testMillis + 100; Aim.tick(); Combat.tickFlights() end
 check(record.shots == manualShots + 1 and T.contents(storage).ammo == manualAmmo - 1, "Manual queued shot fires exactly once after alignment")
 local Search = require("OMHTT/TurretSearch")
 add("Base.Potato")
@@ -181,7 +186,7 @@ check(W.fire({}, object) == "Searching" and record.shots == searchShots, "Manual
 check(W.fire({}, object) == "Searching" and #Search.order == 1, "Repeated clicks do not enqueue duplicate shots")
 Search.tick()
 check(Search.pending[object] and record.shots == searchShots, "Dense search yields after first bounded slice")
-for i = 1, 50 do testMillis = testMillis + 16; Search.tick(); Aim.tick() end
+for i = 1, 50 do testMillis = testMillis + 16; Search.tick(); Aim.tick(); Combat.tickFlights() end
 check(not Search.pending[object] and record.shots == searchShots + 1 and T.contents(storage).ammo == searchAmmo - 1,
     "Queued search and aim commit exactly once")
 add("Base.Potato")

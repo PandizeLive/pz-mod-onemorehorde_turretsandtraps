@@ -9,6 +9,25 @@ T.HEAD = "Base.OMHTTPotatoHead"
 T.CONTAINER = "OMHTTTurret"
 T.MODULES = {Firing = true, MotionDetection = true, Filter = true, RapidFire = true, Velocity = true,
     Range = true, Capacity = true, CapacitySmall = true, CapacityLarge = true, Detection360 = true, Reload = true, Autoloader = true}
+T.TYPES = {}
+T.COMPONENTS = {}
+for name in pairs(T.MODULES) do
+    local fullType = "Base.OMHTTModule" .. name
+    T.TYPES[name], T.COMPONENTS[fullType] = fullType, name
+end
+local renamed = {CapacitySmall = "OMHTTExpansionKitSmall", Capacity = "OMHTTExpansionKitMedium",
+    CapacityLarge = "OMHTTExpansionKitLarge", MotionDetection = "OMHTTModuleDetection", Detection360 = "OMHTTModule360"}
+for name, itemType in pairs(renamed) do
+    T.TYPES[name] = "Base." .. itemType
+    T.COMPONENTS[T.TYPES[name]] = name
+end
+
+---@param fullType string Locale-independent item type
+---@return string? component Stable behavior key, including legacy aliases
+---@nodiscard
+function T.component(fullType)
+    return T.COMPONENTS[fullType]
+end
 
 ---@param key string Setting suffix
 ---@param fallback number Default value
@@ -63,7 +82,7 @@ function T.kind(item)
     if fullType == T.HEAD then return "head" end
     if fullType == "Base.Potato" then return "ammo" end
     if fullType == "Base.CarBattery1" or fullType == "Base.CarBattery2" or fullType == "Base.CarBattery3" then return "battery" end
-    local module = string.match(fullType, "^Base%.OMHTTModule(.+)$")
+    local module = T.component(fullType)
     if module == "Capacity" or module == "CapacitySmall" or module == "CapacityLarge" then return "capacity" end
     if module and T.MODULES[module] then return "module" end
     return nil
@@ -96,7 +115,7 @@ function T.contents(container)
             end
             result.moduleNames[#result.moduleNames + 1] = item:getDisplayName()
             if item:getCondition() > 0 then
-                local name = string.match(item:getFullType(), "^Base%.OMHTTModule(.+)$")
+                local name = T.component(item:getFullType())
                 result.active[name] = (result.active[name] or 0) + 1
             end
         else
@@ -147,7 +166,7 @@ function T.canRemove(container, item)
             for i = 0, items:size() - 1 do
                 local other = items:get(i)
                 if other ~= item and T.kind(other) == "capacity" and other:getCondition() > 0 then
-                    local name = string.match(other:getFullType(), "^Base%.OMHTTModule(.+)$")
+                    local name = T.component(other:getFullType())
                     contents.active[name] = 1
                 end
             end

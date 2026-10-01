@@ -1,71 +1,123 @@
 if isServer() then return end
+require("ISUI/ISUIElement")
+local F = require("OMHTT/Foundation")
+local D = require("OMHTT/Diagnostics")
+local E = {effects = {}}
+local canvas = nil
 
-local Foundation = require("OMHTT/Foundation")
-local Diagnostics = require("OMHTT/Diagnostics")
-local effects = {}
-
----@param module string Event namespace
----@param command string Effect command
----@param impact table Numeric shot facts
+---@param name string Sound script
+---@param x number World X
+---@param y number World Y
+---@param z number Floor
 ---@return nil
-local function onImpact(module, command, impact)
-    if module ~= Foundation.MODULE or command ~= "Impact" then return end
-    for i = 1, #effects do
-        if effects[i].id == impact.id and effects[i].shot == impact.shot then return end
+function E.sound(name, x, y, z)
+    local emitter = getWorld():getFreeEmitter(x, y, z)
+    local handle = emitter:playSound(name)
+    local pitch = 0.95 + ZombRand(101) / 1000
+    emitter:setPitch(handle, pitch)
+    D.emit("potato-audio", {sound = name, pitch = pitch, x = x, y = y, z = z})
+end
+
+---@param module string Namespace
+---@param command string Launch or Impact
+---@param facts table Shot facts; target reference is local SP only
+---@return nil
+function E.receive(module, command, facts)
+    if module ~= F.MODULE or (command ~= "Launch" and command ~= "Impact") then return end
+    local effect = nil
+    for i = 1, #E.effects do
+        local entry = E.effects[i]
+        if entry.id == facts.id and entry.shot == facts.shot then effect = entry; break end
     end
-    if #effects >= 8 then table.remove(effects, 1) end
-    local square = getCell():getGridSquare(math.floor(impact.x), math.floor(impact.y), impact.z)
-    if square then
-        getSoundManager():PlayWorldSound("OMHTTPotatoImpact", square, 0, 12, 1, false)
+    if effect and (effect.phase == command or effect.phase == "Impact") then return end
+    if not effect then
+        if #E.effects >= 64 then table.remove(E.effects, 1) end
+        effect = {id = facts.id, shot = facts.shot}
+        E.effects[#E.effects + 1] = effect
     end
-    effects[#effects + 1] = {
-        id = impact.id, shot = impact.shot,
-        x = impact.x, y = impact.y, z = impact.z,
-        fromX = impact.fromX, fromY = impact.fromY,
-        start = getTimestampMs(),
-    }
-    Diagnostics.emit("impact-queued", {id = impact.id, shot = impact.shot, x = impact.x, y = impact.y, z = impact.z,
-        fromX = impact.fromX, fromY = impact.fromY, active = #effects})
+    effect.phase, effect.start, effect.logged = command, getTimestampMs(), false
+    effect.x, effect.y, effect.z = facts.x, facts.y, facts.z
+    effect.fromX, effect.fromY, effect.flight = facts.fromX, facts.fromY, facts.flight or 0
+    effect.target, effect.missed = facts.target, facts.missed
+    if command == "Launch" then
+        effect.start = facts.start or effect.start
+        E.sound("OMHTTPotatoFire", facts.fromX, facts.fromY, facts.z)
+    else
+        E.sound("OMHTTPotatoImpact", facts.x, facts.y, facts.z)
+    end
+    D.emit("projectile-effect", {id = facts.id, shot = facts.shot, phase = command, flightMs = effect.flight,
+        x = facts.x, y = facts.y, z = facts.z})
+end
+
+---@param effect table Presentation state
+---@return number x
+---@return number y
+---@return number height World Z offset
+function E.position(effect)
+    local target = effect.target
+    if target and target:getSquare() and target:getZ() == effect.z then
+        return target:getX(), target:getY(), target:isOnFloor() and 0.06 or 0.30
+    end
+    return effect.x, effect.y, effect.missed and 0.02 or 0.30
+end
+
+---@param x number World X
+---@param y number World Y
+---@param z number World height
+---@param index number Viewport
+---@return number screenX
+---@return number screenY
+function E.screen(x, y, z, index)
+    local zoom = getCore():getZoom(index)
+    return (IsoUtils.XToScreen(x, y, z, 0) - IsoCamera.getOffX(index)) / zoom + getPlayerScreenLeft(index),
+        (IsoUtils.YToScreen(x, y, z, 0) - IsoCamera.getOffY(index)) / zoom + getPlayerScreenTop(index)
 end
 
 ---@return nil
-local function render()
-    if #effects == 0 then return end
+function E.render()
+    if #E.effects == 0 then return end
     local now = getTimestampMs()
-    local zoom = getCore():getZoom(0)
-    for i = #effects, 1, -1 do
-        local effect = effects[i]
-        local flight = 0
-        if effect.fromX and effect.fromY then
-            flight = 120
-        end
+    for i = #E.effects, 1, -1 do
+        local effect = E.effects[i]
         local elapsed = now - effect.start
-        local age = (elapsed - flight) / 650
-        local square = getCell():getGridSquare(math.floor(effect.x), math.floor(effect.y), effect.z)
-        local player = getSpecificPlayer(0)
-        if age >= 1 or not square or not player or math.floor(player:getZ()) ~= effect.z or not square:isCanSee(0) then
-            table.remove(effects, i)
+        if (effect.phase == "Impact" and elapsed >= 450) or elapsed > effect.flight + 10000 then
+            table.remove(E.effects, i)
         else
-            local x = (IsoUtils.XToScreen(effect.x, effect.y, effect.z, 0) - IsoCamera.getOffX(0)) / zoom
-            local y = (IsoUtils.YToScreen(effect.x, effect.y, effect.z, 0) - IsoCamera.getOffY(0) - 64) / zoom
-            if not effect.logged then
-                effect.logged = true
-                Diagnostics.emit("impact-first-render", {id = effect.id, shot = effect.shot, screenX = x, screenY = y,
-                    zoom = zoom, age = age, viewport = 0})
-            end
-            if age < 0 then
-                local fraction = elapsed / flight
-                local fx = effect.fromX + (effect.x - effect.fromX) * fraction
-                local fy = effect.fromY + (effect.y - effect.fromY) * fraction
-                local sx = (IsoUtils.XToScreen(fx, fy, effect.z, 0) - IsoCamera.getOffX(0)) / zoom
-                local sy = (IsoUtils.YToScreen(fx, fy, effect.z, 0) - IsoCamera.getOffY(0) - (96 - 32 * fraction)) / zoom
-                getTextManager():DrawStringCentre(UIFont.Large, sx, sy, getText("UI_OMHTT_Particle"), 0.55, 0.32, 0.13, 1)
-            else
-                for n = 0, 5 do
-                    local angle = n * math.pi / 3
-                    local radius = (5 + age * 28) / zoom
-                    getTextManager():DrawStringCentre(UIFont.Large, x + math.cos(angle) * radius,
-                        y + math.sin(angle) * radius, getText("UI_OMHTT_Particle"), 0.55, 0.32, 0.13, 1 - age)
+            for index = 0, getNumActivePlayers() - 1 do
+                local player = getSpecificPlayer(index)
+                local wx, wy, height = E.position(effect)
+                local square = getCell():getGridSquare(math.floor(wx), math.floor(wy), effect.z)
+                if player and square and math.floor(player:getZ()) == effect.z and square:isCanSee(index) then
+                    if not canvas then
+                        canvas = ISUIElement:new(0, 0, getCore():getScreenWidth(), getCore():getScreenHeight())
+                        canvas:instantiate()
+                    end
+                    canvas:setStencilRect(getPlayerScreenLeft(index), getPlayerScreenTop(index), getPlayerScreenWidth(index), getPlayerScreenHeight(index))
+                    local zoom = getCore():getZoom(index)
+                    if effect.phase == "Launch" then
+                        local fraction = math.min(1, math.max(0, elapsed / effect.flight))
+                        wx = effect.fromX + (wx - effect.fromX) * fraction
+                        wy = effect.fromY + (wy - effect.fromY) * fraction
+                        height = 0.32 + (height - 0.32) * fraction
+                    end
+                    local x, y = E.screen(wx, wy, effect.z + height, index)
+                    if effect.phase == "Launch" then
+                        local size = math.max(4, 6 / zoom)
+                        canvas:drawRect(x - size / 2, y - size / 2, size, size * 0.75, 1, 0.55, 0.32, 0.13)
+                    else
+                        local age = elapsed / 450
+                        for n = 0, 5 do
+                            local angle, radius = n * math.pi / 3, age * 24 / zoom
+                            canvas:drawRect(x + math.cos(angle) * radius - 2 / zoom,
+                                y + math.sin(angle) * radius - 2 / zoom, 4 / zoom, 4 / zoom, 1 - age, 0.55, 0.32, 0.13)
+                        end
+                    end
+                    canvas:clearStencilRect()
+                    if not effect.logged then
+                        effect.logged = true
+                        D.emit("projectile-first-render", {id = effect.id, shot = effect.shot, phase = effect.phase,
+                            screenX = x, screenY = y, zoom = zoom, viewport = index})
+                    end
                 end
             end
         end
@@ -73,10 +125,11 @@ local function render()
 end
 
 ---@return nil
-local function reset()
-    effects = {}
+function E.reset()
+    E.effects, canvas = {}, nil
 end
 
-Events.OnServerCommand.Add(onImpact)
-Events.OnPostRender.Add(render)
-Events.OnGameStart.Add(reset)
+Events.OnServerCommand.Add(E.receive)
+Events.OnPreUIDraw.Add(E.render)
+Events.OnGameStart.Add(E.reset)
+return E

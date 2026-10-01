@@ -286,3 +286,7 @@ Owner also approved planning a supported-firearm mount prototype before multipla
 ## C65: approved Expansion Kits and combined usability patch
 
 Owner approves recap and implementation: Capacity becomes one dedicated Expansion Kit socket with Small/Standard/Large variants, increasing capacity and rarity, not multiple installed kits. Preserve existing Capacity as Standard; tier defaults and safeguards are documented in PHASE_2_CHECKPOINT_3D3.md. Ten compact regular slots cover the Large default, unavailable slots dim; omit Module only from installed slot labels. Include ordered parent Sandbox pages, changed-message brightness, head/base depth repair, bounded manual-fire searches and exact-item inventory Install. Building-cheat bypass remains native. Keep one combined test and firearm prototype next.
+
+## C66: approved Install, item naming and projectile/audio repair
+
+Owner approves the 0.2.19 repair and later asks to resume it. New Expansion Kits use accurate IDs and Small/Medium/Large names; audit Detection/360 IDs too and retain saved aliases. Fix silent Install and log rejection stages. Constructed turret projectiles use real travel delay shared by hit effects and damage, default 20 tiles/second with Sandbox tuning. Use owner-supplied potato_thump_1/2.wav and potato_splat_1/2.wav, native variant selection and subtle 0.95-1.05 pitch. Keep bounded queues, saved settings and existing reload/cooldown semantics. See PHASE_2_CHECKPOINT_3D3_REPAIR.md. No external release or multiplayer enablement.

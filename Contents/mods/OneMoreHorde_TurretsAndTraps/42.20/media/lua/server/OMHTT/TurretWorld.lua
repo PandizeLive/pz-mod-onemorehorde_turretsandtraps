@@ -271,7 +271,7 @@ function W.fire(player, object, target)
     local options = {range = stats.range, interval = stats.cooldown,
         damage = stats.damage / 100, knockdown = stats.knockdown,
         splash = stats.damage * T.option("SplashPercent", 25, 0, 100) / 10000, radius = T.option("SplashRadius", 1.5, 0, 3), managed = true,
-        profile = M.profile(state, contents), target = target}
+        profile = M.profile(state, contents), target = target, projectileSpeed = T.option("ProjectileSpeed", 20, 5, 100)}
     ---@param selected IsoZombie Chosen target
     ---@return boolean aligned
     function options.align(selected)
@@ -295,7 +295,7 @@ function W.fire(player, object, target)
     local Combat = require("OMHTT/PrototypeCombat")
     local result, impact = Combat.fire(state, object, player, options)
     W.refresh(object)
-    if impact then triggerEvent("OnServerCommand", F.MODULE, "Impact", impact) end
+    if impact then triggerEvent("OnServerCommand", F.MODULE, "Launch", impact) end
     D.emit("turret-fire-result", {id = state.id, result = result, ammo = T.contents(object:getContainer()).ammo, power = power.kind, automatic = player == nil,
         loaded = cycle.loaded, reloadReady = cycle.reloadReady, nextShot = cycle.nextShot, fireMs = getTimestampMs() - fireStarted})
     return result

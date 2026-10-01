@@ -6,7 +6,7 @@ local data = {}
 local item = {getFullType = function() return T.BASE end, getContainer = function() return source end,
     getModData = function() return data end, getID = function() return 123 end,
     getInventory = function() return {getItems = function() return {size = function() return 3 end} end} end}
-local player = {containers = {}, getPlayerNum = function() return 0 end, isBuildCheat = function() return false end, isDead = function() return false end}
+local player = {containers = {}, setHaloNote = function() end, getPlayerNum = function() return 0 end, isBuildCheat = function() return false end, isDead = function() return false end}
 getSpecificPlayer = function() return player end
 local drag
 getCell = function() return {setDrag = function(self, cursor, index) drag = cursor; check(index == 0, "Preview assigned to operator") end} end
@@ -17,6 +17,11 @@ check(option and option[1] == item and option[3] == player, "Install menu preser
 local cursor = option[2](option[1], option[3])
 check(cursor == drag and cursor.dragNilAfterPlace and cursor:isValid({}), "Install preview is single-use and cancellable")
 check(data.OMHTTDeployed == nil, "Opening/cancelling preview never deploys or consumes item")
+check(I.install(item, player) ~= nil, "An already-selected native input still opens Install")
+local originalClass = ISBuildIsoEntity
+ISBuildIsoEntity = nil
+check(not I.install(item,player), "Construction initialization failure is reported safely")
+ISBuildIsoEntity = originalClass
 source.carried = false
 check(not cursor:isValid({}) and not I.install(item, player), "Leaving inventory invalidates exact selected item")
 source.carried, data.OMHTTDeployed = true, true

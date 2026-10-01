@@ -1,0 +1,37 @@
+{
+  "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Audio\\Turrets & Traps",
+  "clips": [
+    {
+      "file": "potato_splat_1.wav",
+      "sha256": "ad2d1634c1c69c2090af29a2db003c251327389d7f0fb879dafb334ee044f163",
+      "channels": 2,
+      "sampleRate": 48000,
+      "durationSeconds": 0.25
+    },
+    {
+      "file": "potato_splat_2.wav",
+      "sha256": "2348d87672966a962882cac9e86092c7e5af83be5cfdf64911469c821ed7c30e",
+      "channels": 2,
+      "sampleRate": 48000,
+      "durationSeconds": 0.25
+    },
+    {
+      "file": "potato_thump_1.wav",
+      "sha256": "cbeffc9ce1d5b0545c5d1f5fff99cff81469ce91f3ef889dc9919447e7831dec",
+      "channels": 2,
+      "sampleRate": 48000,
+      "durationSeconds": 0.75
+    },
+    {
+      "file": "potato_thump_2.wav",
+      "sha256": "2f6f7553086a6eb45d999ea4878d8dc945ee8f308e4bee07290411834e7da657",
+      "channels": 2,
+      "sampleRate": 48000,
+      "durationSeconds": 0.75
+    }
+  ],
+  "pitchRange": [
+    0.95,
+    1.05
+  ]
+}

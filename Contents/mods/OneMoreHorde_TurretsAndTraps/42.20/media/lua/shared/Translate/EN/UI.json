@@ -131,9 +131,10 @@
     "UI_OMHTT_ModuleVelocity": "Velocity",
     "UI_OMHTT_ModuleRange": "Range",
     "UI_OMHTT_ModuleAutoloader": "Autoloader",
-    "UI_OMHTT_ModuleCapacity": "Standard",
+    "UI_OMHTT_ModuleCapacity": "Medium",
     "UI_OMHTT_ModuleCapacitySmall": "Small",
     "UI_OMHTT_ModuleCapacityLarge": "Large",
     "UI_OMHTT_Searching": "Searching…",
-    "UI_OMHTT_ManageScroll": "Scroll for more slots"
+    "UI_OMHTT_ManageScroll": "Scroll for more slots",
+    "UI_OMHTT_InstallFailed": "Cannot install. See debug log."
 }

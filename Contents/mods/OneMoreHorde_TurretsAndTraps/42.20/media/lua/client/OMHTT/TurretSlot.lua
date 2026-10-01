@@ -95,7 +95,7 @@ function Slot:prerender()
         end
         name = item:getDisplayName()
         if self.kind == "module" or self.kind == "capacity" then
-            local key = string.match(item:getFullType(), "^Base%.OMHTTModule(.+)$")
+            local key = T.component(item:getFullType())
             if key then name = getText("UI_OMHTT_Module" .. key) end
         end
         if #self.items > 1 then name = tostring(#self.items) .. " x " .. name end

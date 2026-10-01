@@ -18,6 +18,7 @@ local Combat = {
 }
 local weapon = nil
 local observations = {}
+Combat.pending, Combat.cursor = {}, 1
 
 ---@return nil
 function Combat.observeImpacts()
@@ -48,6 +49,7 @@ end
 ---@return nil
 function Combat.resetObservations()
     observations = {}
+    Combat.pending, Combat.cursor = {}, 1
 end
 
 ---@param origin IsoGridSquare Device square
@@ -178,7 +180,9 @@ function Combat.fire(record, object, player, options)
     Diagnostics.emit("shot-search", {id = record.id, visits = visits, candidates = #candidates,
         selected = target ~= nil, capped = visits >= Combat.CANDIDATE_LIMIT})
     if not target then return "NoTarget" end
+    options.visits = visits
     if options.align and not options.align(target) then return "Aiming" end
+    if options.projectileSpeed and #Combat.pending >= 128 then return "Unavailable" end
     if options.commit and not options.commit() then return "Unavailable" end
     if not weapon then
         weapon = instanceItem("Base.Hammer")
@@ -199,6 +203,29 @@ function Combat.fire(record, object, player, options)
         object:setSprite(Foundation.spriteFor(record.kind, record.facing))
         object:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_OBJECT_MODIFY)
     end
+    local facts = {x = tx, y = ty, z = origin:getZ(), id = record.id, shot = record.shots,
+        fromX = origin:getX() + 0.5, fromY = origin:getY() + 0.5, target = target}
+    if options.projectileSpeed then
+        local dx, dy = tx - facts.fromX, ty - facts.fromY
+        facts.start = now
+        facts.flight = math.max(50, math.sqrt(dx * dx + dy * dy) / options.projectileSpeed * 1000)
+        Combat.pending[#Combat.pending + 1] = {record = {id = record.id, shots = record.shots, ammo = record.ammo, facing = record.facing},
+            origin = origin, target = target, player = player, options = options, facts = facts, due = now + facts.flight}
+        Diagnostics.emit("shot-launched", {id = record.id, shot = record.shots, flightMs = facts.flight,
+            pending = #Combat.pending, x = tx, y = ty})
+        return "Fired", facts
+    end
+    return "Fired", Combat.hit(record, origin, target, player, options)
+end
+
+---@param record table Shot snapshot
+---@param origin IsoGridSquare Launch square
+---@param target IsoZombie Revalidated victim
+---@param player IsoPlayer? Operator
+---@param options table Damage snapshot
+---@return table impact Presentation facts
+function Combat.hit(record, origin, target, player, options)
+    local now, tx, ty = getTimestampMs(), target:getX(), target:getY()
     local before = target:getHealth()
     local impactSquare = target:getSquare()
     Diagnostics.emit("shot-hit-begin", {id = record.id, shot = record.shots, x = tx, y = ty, health = before,
@@ -268,12 +295,53 @@ function Combat.fire(record, object, player, options)
     end
     print("[OMHTT] potato-shot id=" .. record.id .. " sequence=" .. record.shots .. " before=" .. before
         .. " after=" .. target:getHealth() .. " dead=" .. tostring(target:isDead()) .. " knockdown=" .. tostring(knocked)
-        .. " splash=" .. splash .. " candidates=" .. visits .. " ammo=" .. record.ammo)
+        .. " splash=" .. splash .. " candidates=" .. (options.visits or 0) .. " ammo=" .. record.ammo)
     Diagnostics.emit("shot-hit-end", {id = record.id, shot = record.shots, before = before, after = target:getHealth(),
         dead = target:isDead(), knockdown = knocked, splash = splash, ammo = record.ammo})
-    return "Fired", {x = tx, y = ty, z = origin:getZ(), id = record.id, shot = record.shots,
+    return {x = tx, y = ty, z = origin:getZ(), id = record.id, shot = record.shots, target = target,
         fromX = origin:getX() + 0.5, fromY = origin:getY() + 0.5}
 end
+
+---@param shot table Committed in-flight shot
+---@return table impact Arrival facts
+function Combat.arrive(shot)
+    local target, origin, options = shot.target, shot.origin, shot.options
+    local square = target:getSquare()
+    local dx, dy = target:getX() - shot.facts.x, target:getY() - shot.facts.y
+    if not target:isDead() and square and target:getZ() == origin:getZ() and dx * dx + dy * dy <= 4
+        and getCell():getGridSquare(square:getX(), square:getY(), square:getZ()) == square
+        and getCell():getGridSquare(origin:getX(), origin:getY(), origin:getZ()) == origin
+        and Combat.clearLane(origin, square, options.range) then
+        return Combat.hit(shot.record, origin, target, shot.player, options)
+    end
+    local facts = shot.facts
+    Diagnostics.emit("shot-missed", {id = facts.id, shot = facts.shot, reason = "target-or-path-changed"})
+    return {id = facts.id, shot = facts.shot, x = facts.x, y = facts.y, z = facts.z, missed = true}
+end
+
+---@return nil
+function Combat.tickFlights()
+    if isClient() or isServer() then return end
+    local now, done = getTimestampMs(), 0
+    local deadline = now + 2
+    for i = 1, math.min(16, #Combat.pending) do
+        if #Combat.pending == 0 or done >= 4 or getTimestampMs() >= deadline then return end
+        if Combat.cursor > #Combat.pending then Combat.cursor = 1 end
+        local shot = Combat.pending[Combat.cursor]
+        if now >= shot.due then
+            table.remove(Combat.pending, Combat.cursor)
+            local facts = Combat.arrive(shot)
+            triggerEvent("OnServerCommand", Foundation.MODULE, "Impact", facts)
+            Diagnostics.emit("shot-arrived", {id = facts.id, shot = facts.shot, delayMs = now - shot.facts.start,
+                lateMs = now - shot.due, missed = facts.missed == true})
+            done = done + 1
+        else
+            Combat.cursor = Combat.cursor + 1
+        end
+    end
+end
+
+Events.OnTick.Add(Combat.tickFlights)
 
 Events.OnTick.Add(Combat.observeImpacts)
 Events.OnGameStart.Add(Combat.resetObservations)

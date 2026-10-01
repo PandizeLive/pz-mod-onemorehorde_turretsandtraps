@@ -1,7 +1,4 @@
 if isClient() or isServer() then return end
-require("BuildingObjects/ISBuildingObject")
-require("BuildingObjects/ISBuildIsoEntity")
-require("ISUI/ISInventoryPaneContextMenu")
 local T = require("OMHTT/Turret")
 local D = require("OMHTT/Diagnostics")
 local I = {}
@@ -15,19 +12,35 @@ function I.carried(item, player)
         and item:getContainer():isInCharacterInventory(player) and not item:getModData().OMHTTDeployed
 end
 
+---@param player IsoPlayer Builder
+---@param reason string Failure category
+---@return nil
+function I.reject(player, reason)
+    D.emit("turret-install-rejected", {reason = reason})
+    player:setHaloNote(getText("UI_OMHTT_InstallFailed"), 255, 190, 90, 180)
+    return nil
+end
+
 ---@param item InventoryItem Selected packed turret
 ---@param player IsoPlayer Builder
 ---@return ISBuildIsoEntity? cursor
 function I.install(item, player)
-    if not T.enabled() or not I.carried(item, player) then return nil end
+    D.emit("turret-install-request", {itemId = item:getID(), cheat = player:isBuildCheat()})
+    if not T.enabled() or not I.carried(item, player) then return I.reject(player, "not-carried") end
+    if not ISBuildIsoEntity then return I.reject(player, "construction-not-ready") end
     local info = SpriteConfigManager.GetObjectInfo("OMHTTDeployTurret")
-    local containers = ISInventoryPaneContextMenu.getContainers(player)
+    if not info then return I.reject(player, "missing-recipe") end
+    local containers = ArrayList.new()
+    containers:add(item:getContainer())
     local cursor = ISBuildIsoEntity:new(player, info, 1, containers)
     local logic = cursor.buildPanelLogic
     logic:setManualSelectInputs(true)
-    if not logic:offerInputItem(item) then return nil end
     local input = info:getRecipe():getCraftRecipe():getInputs():get(0)
-    if logic:getRecipeData():getFirstManualInputFor(input) ~= item then return nil end
+    if logic:getRecipeData():getFirstManualInputFor(input) ~= item then
+        logic:clearManualInputs()
+        logic:offerInputItem(item)
+    end
+    if logic:getRecipeData():getFirstManualInputFor(input) ~= item then return I.reject(player, "input-rejected") end
     local valid = cursor.isValid
     ---@param self ISBuildIsoEntity Cursor
     ---@param square IsoGridSquare Destination
