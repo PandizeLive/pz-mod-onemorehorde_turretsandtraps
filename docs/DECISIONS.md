@@ -312,3 +312,11 @@ Implementation uses a bounded stationary-weapon adapter: native item stats, mode
 ## C70: firearm repair and architecture alignment
 
 The owner reports a partial 0.2.20 test and asks to fix its issues first. Add mounted gun pose/support, dedicated native magazine servicing, persistent red requirements and head removal with reserve retained. Scope/evidence and native magazine identity semantics: PATCH_v0.2.21.md. Autoloader does not add a magazine requirement to potato/internal-magazine heads. Review current engine evidence and Alex's rules; ARCHITECTURE.md records similarities and remaining authority, aggregate-budget and clock gaps versus Horde Night. No sibling modifications or MP enablement.
+
+## C71: suppression audio audition and reload selection
+
+Owner selects stormyShotgunInsertRound.wav for potato reloading. Suppression is stackable without a separate stack cap; ordinary available module slots remain the physical limit. Do not add a Suppression stack-limit option. Per-stack hearing reduction remains tuning to confirm with the gameplay patch. Do not reduce audible playback gain to represent zombie hearing.
+
+Owner supplies OMH/Audio/Turrets & Traps/suppressed_shot.wav as an overlay: layer it unfiltered over the filtered original shot, never use it alone as the replacement. Updated art/POTATO_AUDIO.html links/downloads the reload, overlay and two rendered layered potato-shot previews. Original files remain unchanged. Mixes preserve the previous 250 Hz linear wet envelope; preview slope remains 48 dB/octave pending final choice. Overlay begins at time zero, unity gain, with no normalization. Numerical checks confirm overlay preservation and no clipping. Browser player volume remains a common audition level, not suppression gameplay attenuation.
+
+No gameplay update is authorized by this HTML request. Preprocessed replacement clips make the proposed sound achievable for supported heads without arbitrary runtime DSP. Current installed generated gun/sound definitions have no universal suppressed-shot variants; broader firearm coverage needs explicit replacement clips/profiles or a separately proven runtime FMOD path.

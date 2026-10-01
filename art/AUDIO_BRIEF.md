@@ -37,3 +37,9 @@ Owner supplied potato_thump_1.wav / potato_thump_2.wav (0.75s each) and potato_s
 ## 0.2.21 test follow-up — selection pending
 
 [Updated audition page](POTATO_AUDIO.html) lists sixteen native loose reload candidates and a browser-only suppression preview using the supplied firing clips. Proposed cutoff: 250 Hz; preview slope 48 dB/octave, pending owner choice. Linear wet keyframes: 0s/0%, 0.04s/100%, 0.09s/100%, 0.18s/25%, 0.69s/0%. Exact equal endpoints produce a 0.04–0.09s plateau. No gameplay patch or reload selection is implied. Native firearm reload feedback should follow actual weapon event names and cycle transitions. See docs/TEST_v0.2.21.md for engine limitations and pitch/timing tradeoffs.
+
+## C71 — selected reload and unfiltered overlay
+
+Potato reload: **stormyShotgunInsertRound.wav**. Owner overlay source: ../Audio/Turrets & Traps/suppressed_shot.wav (48 kHz stereo PCM16, 0.375s). Overlay unfiltered at time zero over the processed original shot, preserving gain. It must not replace the original by itself. Audible quietness is not required; gameplay suppression changes zombie hearing separately.
+
+POTATO_AUDIO.html now provides dry/filtered/layered comparisons and download links for each layered WAV, the original overlay and selected reload. art/audio-previews/ contains two filtered and two layered potato-shot auditions (0.75s, 48 kHz stereo PCM16); README.txt records processing and hashes. No clipping or normalization. These are local discussion artifacts, not installed sound replacements.
