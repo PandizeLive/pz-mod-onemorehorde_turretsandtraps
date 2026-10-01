@@ -33,3 +33,7 @@ Audio integration and volume/noise tuning follow receipt of the files. The game 
 ## 0.2.19 owner replacements
 
 Owner supplied potato_thump_1.wav / potato_thump_2.wav (0.75s each) and potato_splat_1.wav / potato_splat_2.wav (0.25s each) in OMH/Audio/Turrets & Traps. These replace the undecided firing/native impact selections above. Exact WAVs are packaged, with native random variants and per-playback pitch 0.95-1.05. Launch and impact timing are separate. [Listen to the four selected files](POTATO_AUDIO.html). Hashes/format details: diagnostics/v0.2.19/audio-assets.json. Reload audio is still pending selection; supply HTML candidates when that work resumes.
+
+## 0.2.21 test follow-up — selection pending
+
+[Updated audition page](POTATO_AUDIO.html) lists sixteen native loose reload candidates and a browser-only suppression preview using the supplied firing clips. Proposed cutoff: 250 Hz; preview slope 48 dB/octave, pending owner choice. Linear wet keyframes: 0s/0%, 0.04s/100%, 0.09s/100%, 0.18s/25%, 0.69s/0%. Exact equal endpoints produce a 0.04–0.09s plateau. No gameplay patch or reload selection is implied. Native firearm reload feedback should follow actual weapon event names and cycle transitions. See docs/TEST_v0.2.21.md for engine limitations and pitch/timing tradeoffs.

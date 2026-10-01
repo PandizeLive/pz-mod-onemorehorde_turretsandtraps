@@ -21,6 +21,7 @@ Read README.md, docs/DECISIONS.md, and docs/ROADMAP.md before project changes. T
 - [2026-09-26] Review crafting ingredients, required tools/skills and crafting XP with the owner before implementing recipe changes. The owner objected to selecting the v0.2.0 temporary recipe without consultation. General Phase 2 approval does not settle those recipe choices.
 - [2026-09-25] For OMH: Turrets & Traps, the owner will source final art without AI. Do not generate concept art, stylistic designs, textures, icons or final visual assets, or otherwise direct the art. The explicitly authorized temporary white cube-only mechanical placeholder is an exception; its proportions and appearance are not design direction.
 - [2026-09-25] The owner additionally authorized temporary developer textures with white direction arrows and distinct object identifiers to make testing readable. These functional markers are not final artwork or aesthetic direction.
+- [2026-10-01] For T&T test findings and proposed features, discuss the diagnosis, proposed fixes, tradeoffs and patch scope with the owner before changing gameplay code. A Test Complete report is not approval to implement the next patch. Read-only investigation and explicitly requested audition HTML may proceed.
 
 ## Release conventions (owner direction, 2026-09-26)
 
