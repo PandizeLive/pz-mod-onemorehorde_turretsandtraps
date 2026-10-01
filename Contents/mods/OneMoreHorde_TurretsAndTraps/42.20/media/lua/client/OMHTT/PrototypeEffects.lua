@@ -2,6 +2,7 @@ if isServer() then return end
 require("ISUI/ISUIElement")
 local F = require("OMHTT/Foundation")
 local D = require("OMHTT/Diagnostics")
+local T = require("OMHTT/Turret")
 local E = {effects = {}}
 local canvas = nil
 
@@ -11,11 +12,12 @@ local canvas = nil
 ---@param z number Floor
 ---@return nil
 function E.sound(name, x, y, z)
+    local started = getTimestampMs()
     local emitter = getWorld():getFreeEmitter(x, y, z)
     local handle = emitter:playSound(name)
     local pitch = 0.95 + ZombRand(101) / 1000
     emitter:setPitch(handle, pitch)
-    D.emit("potato-audio", {sound = name, pitch = pitch, x = x, y = y, z = z})
+    D.defer("potato-audio", {sound = name, pitch = pitch, x = x, y = y, z = z, audioMs = getTimestampMs() - started})
 end
 
 ---@param module string Namespace
@@ -41,12 +43,19 @@ function E.receive(module, command, facts)
     effect.target, effect.missed = facts.target, facts.missed
     if command == "Launch" then
         effect.start = facts.start or effect.start
-        E.sound("OMHTTPotatoFire", facts.fromX, facts.fromY, facts.z)
+        local dx, dy = facts.x - facts.fromX, facts.y - facts.fromY
+        local distance = math.sqrt(dx * dx + dy * dy)
+        if distance > 0 then
+            local forward = math.min(T.HEAD_VISUAL.muzzle * T.HEAD_VISUAL.scale * 1.5, distance / 2)
+            effect.fromX = facts.fromX + dx / distance * forward
+            effect.fromY = facts.fromY + dy / distance * forward
+        end
+        E.sound("OMHTTPotatoFire", effect.fromX, effect.fromY, facts.z)
     else
         E.sound("OMHTTPotatoImpact", facts.x, facts.y, facts.z)
     end
-    D.emit("projectile-effect", {id = facts.id, shot = facts.shot, phase = command, flightMs = effect.flight,
-        x = facts.x, y = facts.y, z = facts.z})
+    D.defer("projectile-effect", {id = facts.id, shot = facts.shot, phase = command, flightMs = effect.flight,
+        x = facts.x, y = facts.y, z = facts.z, fromX = effect.fromX, fromY = effect.fromY})
 end
 
 ---@param effect table Presentation state
@@ -88,6 +97,7 @@ function E.render()
                 local wx, wy, height = E.position(effect)
                 local square = getCell():getGridSquare(math.floor(wx), math.floor(wy), effect.z)
                 if player and square and math.floor(player:getZ()) == effect.z and square:isCanSee(index) then
+                    local renderStarted = getTimestampMs()
                     if not canvas then
                         canvas = ISUIElement:new(0, 0, getCore():getScreenWidth(), getCore():getScreenHeight())
                         canvas:instantiate()
@@ -115,8 +125,8 @@ function E.render()
                     canvas:clearStencilRect()
                     if not effect.logged then
                         effect.logged = true
-                        D.emit("projectile-first-render", {id = effect.id, shot = effect.shot, phase = effect.phase,
-                            screenX = x, screenY = y, zoom = zoom, viewport = index})
+                        D.defer("projectile-first-render", {id = effect.id, shot = effect.shot, phase = effect.phase,
+                            screenX = x, screenY = y, zoom = zoom, viewport = index, renderMs = getTimestampMs() - renderStarted})
                     end
                 end
             end

@@ -250,6 +250,7 @@ end
 ---@param target IsoZombie? Detected target for autonomous shot
 ---@return string result
 function W.fire(player, object, target)
+    local started = getTimestampMs()
     if player then
         if not W.near(player, object) then return "Unavailable" end
     elseif not target or not W.valid(object) then
@@ -289,15 +290,20 @@ function W.fire(player, object, target)
         end
         object:getContainer():Remove(contents.round)
         Cycle.consume(cycle, contents.ammo - 1, stats, getTimestampMs())
-        D.emit("turret-resource-spent", {id = state.id, ammoItem = contents.round:getID(), power = power.kind, cost = power.cost})
+        D.defer("turret-resource-spent", {id = state.id, ammoItem = contents.round:getID(), power = power.kind, cost = power.cost})
         return true
     end
     local Combat = require("OMHTT/PrototypeCombat")
     local result, impact = Combat.fire(state, object, player, options)
-    W.refresh(object)
+    local committedAt = getTimestampMs()
+    if result == "Fired" and not T.hybrid() then W.refresh(object) end
+    local refreshedAt = getTimestampMs()
     if impact then triggerEvent("OnServerCommand", F.MODULE, "Launch", impact) end
-    D.emit("turret-fire-result", {id = state.id, result = result, ammo = T.contents(object:getContainer()).ammo, power = power.kind, automatic = player == nil,
-        loaded = cycle.loaded, reloadReady = cycle.reloadReady, nextShot = cycle.nextShot, fireMs = getTimestampMs() - fireStarted})
+    local effectsAt = getTimestampMs()
+    D.defer("turret-fire-result", {id = state.id, result = result, ammo = state.ammo, power = power.kind, automatic = player == nil,
+        loaded = cycle.loaded, reloadReady = cycle.reloadReady, nextShot = cycle.nextShot, fireMs = effectsAt - started,
+        prepareMs = fireStarted - started, combatMs = committedAt - fireStarted,
+        refreshMs = refreshedAt - committedAt, effectsMs = effectsAt - refreshedAt})
     return result
 end
 

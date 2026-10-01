@@ -1,6 +1,6 @@
 # OMH: Turrets & Traps
 
-Project foundation created 2026-09-25. **0.2.19 repairs Install and potato flight:** [scope and focused owner test](docs/PHASE_2_CHECKPOINT_3D3_REPAIR.md). Corrected Expansion Kit IDs and Medium naming preserve old saves; projectiles delay damage and synchronize owner-supplied audio. Verification/install evidence is in RELEASE.md. Client rendering/audio acceptance remains pending. No Workshop release exists.
+Project foundation created 2026-09-25. **0.2.19.1 corrects duplicate spawn choices and projectile origin:** [patch and focused test](docs/PATCH_v0.2.19.1.md). Saved compatibility components remain usable but hidden from the spawn list; potato visuals begin at the barrel tip. Firing avoids redundant refreshes and logging bursts. The owner reports the rest of 0.2.19 worked well. Installation evidence: docs/RELEASE.md. No Workshop release exists.
 
 One edition with a Sandbox toggle menu. The planned mod adds maintainable defensive equipment to Project Zomboid Build 42, with optional Horde Night, Trait Shop, and Cure Defense integrations. Recheck the installed game build before implementing any engine-dependent behavior.
 

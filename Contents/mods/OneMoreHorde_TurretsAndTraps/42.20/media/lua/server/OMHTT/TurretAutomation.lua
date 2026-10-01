@@ -70,7 +70,7 @@ function A.status(entry, status)
     entry.status = status
     local state = T.state(entry.object)
     if not state then return end
-    D.emit("turret-auto-state", {id = state.id, status = status})
+    D.defer("turret-auto-state", {id = state.id, status = status})
 end
 
 ---@param entry table Scheduled turret
@@ -111,7 +111,7 @@ function A.step(entry, deadline)
         or not Combat.clearLane(square, target:getSquare(), profile.range) then
         entry.target = nil
         if entry.status ~= "no-target" then
-            D.emit("turret-auto-search", {id = state.id, visits = job.visited, range = profile.range,
+            D.defer("turret-auto-search", {id = state.id, visits = job.visited, range = profile.range,
                 cone = profile.cone, baseFacing = state.baseFacing, selected = false})
         end
         A.status(entry, "no-target")
@@ -120,7 +120,7 @@ function A.step(entry, deadline)
     local aligned = require("OMHTT/TurretAim").request(object, target, nil)
     if entry.target ~= target then
         entry.target = target
-        D.emit("turret-auto-target", {id = state.id, x = target:getX(), y = target:getY(), visits = job.visited,
+        D.defer("turret-auto-target", {id = state.id, x = target:getX(), y = target:getY(), visits = job.visited,
             priority = profile.priority, cone = profile.cone, baseFacing = state.baseFacing, aim = state.aimDegrees})
     end
     if not aligned then

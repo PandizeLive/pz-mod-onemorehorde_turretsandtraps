@@ -290,3 +290,7 @@ Owner approves recap and implementation: Capacity becomes one dedicated Expansio
 ## C66: approved Install, item naming and projectile/audio repair
 
 Owner approves the 0.2.19 repair and later asks to resume it. New Expansion Kits use accurate IDs and Small/Medium/Large names; audit Detection/360 IDs too and retain saved aliases. Fix silent Install and log rejection stages. Constructed turret projectiles use real travel delay shared by hit effects and damage, default 20 tiles/second with Sandbox tuning. Use owner-supplied potato_thump_1/2.wav and potato_splat_1/2.wav, native variant selection and subtle 0.95-1.05 pitch. Keep bounded queues, saved settings and existing reload/cooldown semantics. See PHASE_2_CHECKPOINT_3D3_REPAIR.md. No external release or multiplayer enablement.
+
+## C67: correct visible aliases and projectile muzzle
+
+Owner requests resolving duplicate item-spawn entries and moving the visible projectile start from head center to barrel end; reports the rest of 0.2.19 worked well. Use native Hidden=true for five saved compatibility definitions and retain their data. Offset only presentation from the actual placeholder barrel geometry without changing combat timing. Owner subsequently reports stuttering on every shot; remove redundant shot refresh/scans, spread verbose telemetry across ticks and add stage timings without claiming unmeasured FPS improvement. Version 0.2.19.1; see PATCH_v0.2.19.1.md. No extra feature checkpoint or balance change.

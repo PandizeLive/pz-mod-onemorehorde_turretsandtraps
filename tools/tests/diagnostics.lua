@@ -41,3 +41,31 @@ local dump = testMenu.options[getText("ContextMenu_OMHTT_Dump")]
 check(dump ~= nil, "bounded nearby diagnostic dump exposed")
 dump.callback(dump.target)
 check(string.find(testLogs[#testLogs], "event=nearby-summary", 1, true) ~= nil, "nearby dump records completion and scan cap")
+
+D.reset()
+local queuedAt = testMillis
+oldCount = #testLogs
+D.defer("queued-one", {value = 1})
+D.defer("queued-two", {value = 2})
+D.defer("queued-three", {value = 3})
+check(#testLogs == oldCount, "Shot telemetry does not synchronously format or print")
+testMillis = testMillis + 20
+D.flush()
+check(#testLogs == oldCount + 2, "Only two queued records flush per tick")
+check(string.find(testLogs[#testLogs], "ms=" .. tostring(queuedAt), 1, true), "Deferred records retain original event time")
+D.flush()
+check(#testLogs == oldCount + 3, "Remaining diagnostic record drains on next slice")
+D.reset()
+oldCount = #testLogs
+for i = 1, 257 do D.defer("bounded", {index = i}) end
+for i = 1, 128 do testMillis = testMillis + 20; D.flush() end
+check(#testLogs == oldCount + 256, "Pending diagnostic queue caps at 256 records")
+check(string.find(testLogs[oldCount + 1], "suppressed=1", 1, true), "Queue overflow is counted instead of growing memory")
+D.defer("discard", {})
+SandboxVars.OMHTurretsTraps.DiagnosticLogging = false
+D.flush()
+SandboxVars.OMHTurretsTraps.DiagnosticLogging = true
+oldCount = #testLogs
+D.flush()
+check(#testLogs == oldCount, "Disabled logging discards queued diagnostics")
+D.reset()

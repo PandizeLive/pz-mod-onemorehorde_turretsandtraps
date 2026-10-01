@@ -142,14 +142,14 @@ end
 function Combat.fire(record, object, player, options)
     options = options or {range = Combat.RANGE, interval = Combat.SHOT_INTERVAL_MS, damage = Combat.DIRECT_DAMAGE,
         knockdown = Combat.KNOCKDOWN_CHANCE, splash = Combat.SPLASH_DAMAGE, radius = 1.1}
-    Diagnostics.emit("shot-attempt", {id = record.id, ammo = record.ammo, shots = record.shots,
+    Diagnostics.defer("shot-attempt", {id = record.id, ammo = record.ammo, shots = record.shots,
         nowMs = getTimestampMs(), nextShotMs = record.nextShot, kind = record.kind})
     if isClient() or isServer() then return "MPCombatDeferred" end
     if record.kind ~= "potato" then return "WrongDevice" end
     if record.ammo <= 0 then return "Empty" end
     local now = getTimestampMs()
     if not options.managed and record.nextShot > now + options.interval then
-        Diagnostics.emit("shot-clock-rebased", {id = record.id, previous = record.nextShot, nowMs = now})
+        Diagnostics.defer("shot-clock-rebased", {id = record.id, previous = record.nextShot, nowMs = now})
         record.nextShot = now + options.interval
     end
     if not options.managed and now < record.nextShot then return "Cooling" end
@@ -177,7 +177,7 @@ function Combat.fire(record, object, player, options)
         end
     end
     record.lastCandidates = visits
-    Diagnostics.emit("shot-search", {id = record.id, visits = visits, candidates = #candidates,
+    Diagnostics.defer("shot-search", {id = record.id, visits = visits, candidates = #candidates,
         selected = target ~= nil, capped = visits >= Combat.CANDIDATE_LIMIT})
     if not target then return "NoTarget" end
     options.visits = visits
@@ -211,7 +211,7 @@ function Combat.fire(record, object, player, options)
         facts.flight = math.max(50, math.sqrt(dx * dx + dy * dy) / options.projectileSpeed * 1000)
         Combat.pending[#Combat.pending + 1] = {record = {id = record.id, shots = record.shots, ammo = record.ammo, facing = record.facing},
             origin = origin, target = target, player = player, options = options, facts = facts, due = now + facts.flight}
-        Diagnostics.emit("shot-launched", {id = record.id, shot = record.shots, flightMs = facts.flight,
+        Diagnostics.defer("shot-launched", {id = record.id, shot = record.shots, flightMs = facts.flight,
             pending = #Combat.pending, x = tx, y = ty})
         return "Fired", facts
     end
@@ -228,9 +228,10 @@ function Combat.hit(record, origin, target, player, options)
     local now, tx, ty = getTimestampMs(), target:getX(), target:getY()
     local before = target:getHealth()
     local impactSquare = target:getSquare()
-    Diagnostics.emit("shot-hit-begin", {id = record.id, shot = record.shots, x = tx, y = ty, health = before,
+    Diagnostics.defer("shot-hit-begin", {id = record.id, shot = record.shots, x = tx, y = ty, health = before,
         ammo = record.ammo, damageInput = options.damage, facing = record.facing})
     Damage.apply(target, options.damage, record.id, "potato", player, weapon)
+    local damagedAt = getTimestampMs()
     local knocked = false
     local knockReason = "dead"
     local roll = -1
@@ -268,13 +269,14 @@ function Combat.hit(record, origin, target, player, options)
             end
         end
     end
-    Diagnostics.emit("shot-knockdown", {id = record.id, shot = record.shots, reason = knockReason,
+    Diagnostics.defer("shot-knockdown", {id = record.id, shot = record.shots, reason = knockReason,
         roll = roll, chance = options.knockdown, guardRemainingMs = remaining,
         state = target:getCurrentStateName(), ragdollAllowed = target:canRagdoll(),
         physicsRequested = target:usePhysicHitReaction()})
     if #observations >= 12 then table.remove(observations, 1) end
     observations[#observations + 1] = {zombie = target, id = record.id, shot = record.shots,
         started = now, checkAt = now + 150, stage = 0, x = tx, y = ty}
+    local splashStarted = getTimestampMs()
     local splash = 0
     local nearby = {}
     if options.splash > 0 and options.radius > 0 then
@@ -293,11 +295,10 @@ function Combat.hit(record, origin, target, player, options)
             end
         end
     end
-    print("[OMHTT] potato-shot id=" .. record.id .. " sequence=" .. record.shots .. " before=" .. before
-        .. " after=" .. target:getHealth() .. " dead=" .. tostring(target:isDead()) .. " knockdown=" .. tostring(knocked)
-        .. " splash=" .. splash .. " candidates=" .. (options.visits or 0) .. " ammo=" .. record.ammo)
-    Diagnostics.emit("shot-hit-end", {id = record.id, shot = record.shots, before = before, after = target:getHealth(),
-        dead = target:isDead(), knockdown = knocked, splash = splash, ammo = record.ammo})
+    Diagnostics.defer("shot-hit-end", {id = record.id, shot = record.shots, before = before, after = target:getHealth(),
+        dead = target:isDead(), knockdown = knocked, splash = splash, ammo = record.ammo,
+        directMs = damagedAt - now, reactionMs = splashStarted - damagedAt,
+        splashMs = getTimestampMs() - splashStarted, hitMs = getTimestampMs() - now})
     return {x = tx, y = ty, z = origin:getZ(), id = record.id, shot = record.shots, target = target,
         fromX = origin:getX() + 0.5, fromY = origin:getY() + 0.5}
 end
@@ -315,7 +316,7 @@ function Combat.arrive(shot)
         return Combat.hit(shot.record, origin, target, shot.player, options)
     end
     local facts = shot.facts
-    Diagnostics.emit("shot-missed", {id = facts.id, shot = facts.shot, reason = "target-or-path-changed"})
+    Diagnostics.defer("shot-missed", {id = facts.id, shot = facts.shot, reason = "target-or-path-changed"})
     return {id = facts.id, shot = facts.shot, x = facts.x, y = facts.y, z = facts.z, missed = true}
 end
 
@@ -332,7 +333,7 @@ function Combat.tickFlights()
             table.remove(Combat.pending, Combat.cursor)
             local facts = Combat.arrive(shot)
             triggerEvent("OnServerCommand", Foundation.MODULE, "Impact", facts)
-            Diagnostics.emit("shot-arrived", {id = facts.id, shot = facts.shot, delayMs = now - shot.facts.start,
+            Diagnostics.defer("shot-arrived", {id = facts.id, shot = facts.shot, delayMs = now - shot.facts.start,
                 lateMs = now - shot.due, missed = facts.missed == true})
             done = done + 1
         else

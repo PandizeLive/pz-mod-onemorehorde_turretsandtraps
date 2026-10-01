@@ -1,6 +1,10 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.19
+## Current candidate: 0.2.19.1
+
+[C67 corrective patch](PATCH_v0.2.19.1.md): native hidden compatibility definitions remove duplicate spawn choices; presentation starts at the scaled barrel tip. Firing removes redundant refresh/scans and spreads verbose telemetry across ticks with stage profiling. Kahlua passes 2,410 assertions with 45 Lua files, 380 native translations and 118 packaged files. Native write/read pass in 48.7/54.2 seconds, including exactly twelve visible components, five loadable hidden aliases, no duplicate spawn choices and preserved saved contents. Installation evidence follows the tagged local install. Owner reports the rest of 0.2.19 worked well. No external publication.
+
+## Previous local installation: 0.2.19
 
 C66: [Install and projectile/audio repair](PHASE_2_CHECKPOINT_3D3_REPAIR.md). 2,380 Kahlua assertions, 45 Lua files, 380 native translations and 118 packaged files pass. Native write/read passed in 94.5/94.7 seconds: duplicate selected-input behavior, exact packed-base selection, legacy component aliases, four custom sound clips, 48 loot entries and actual contents/charge/cycle restoration are verified. Audio source hashes match all four supplied WAVs. GPU appearance, audible quality and rendered Install remain owner acceptance checks. Installed from annotated `test/v0.2.19` (`fae885f`). [Evidence](../diagnostics/v0.2.19/local-release.json) verifies all 118 source/tag/installed/archive files and the complete 114-file 0.2.18 backup. [Archive](../artifacts/OMHTT-0.2.19.zip). No Workshop upload or remote push.
 

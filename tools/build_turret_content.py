@@ -58,9 +58,11 @@ def main():
         Tooltip = Tooltip_OMHTT_Module{tooltip},
     }}
 """
-        items += definition
         if key in aliases:
+            items += definition.replace(" {\n", " {\n        Hidden = true,\n", 1)
             items += definition.replace("OMHTTModule" + key + " {", aliases[key] + " {")
+        else:
+            items += definition
     write("scripts/OMHTT_TurretItems.txt", items + "}\n")
     tools = ["item 1 tags[base:screwdriver] mode:keep flags[NoBrokenItems;DontRecordInput],",
              "item 1 [Base.Wrench;Base.PipeWrench] mode:keep flags[NoBrokenItems;DontRecordInput],"]

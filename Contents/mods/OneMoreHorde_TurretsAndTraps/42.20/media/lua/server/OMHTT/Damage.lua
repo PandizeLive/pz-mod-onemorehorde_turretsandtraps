@@ -27,7 +27,7 @@ function Damage.apply(zombie, amount, source, kind, operator, weapon)
         end
     end
     local lost = before - zombie:getHealth()
-    Diagnostics.emit("damage-applied", {id = source, kind = kind, before = before,
+    Diagnostics.defer("damage-applied", {id = source, kind = kind, before = before,
         after = zombie:getHealth(), nativeDamage = lost, damage100 = lost * 100, dead = zombie:isDead()})
     triggerEvent("OnOMHTTDamage", zombie, lost, source, kind)
     return lost

@@ -3,7 +3,7 @@ local T = require("OMHTT/Turret")
 local D = require("OMHTT/Diagnostics")
 local M = require("OMHTT/TurretModules")
 local Aim = require("OMHTT/TurretAim")
-local R = {entries = {}, mode = nil, lastCheck = 0, headHeight = 0.4 - 16 / 192, headScale = 0.512}
+local R = {entries = {}, mode = nil, lastCheck = 0, headHeight = T.HEAD_VISUAL.height, headScale = T.HEAD_VISUAL.scale}
 
 ---@param object IsoObject Managed base
 ---@param head InventoryItem? Actual installed head

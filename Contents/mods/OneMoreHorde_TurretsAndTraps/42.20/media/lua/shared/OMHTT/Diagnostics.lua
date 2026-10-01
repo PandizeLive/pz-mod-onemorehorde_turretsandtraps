@@ -6,6 +6,8 @@ local sequence = 0
 local windowStart = 0
 local windowLines = 0
 local suppressed = 0
+local pending = {}
+local pendingFirst, pendingLast = 1, 0
 
 ---@return boolean enabled
 ---@nodiscard
@@ -24,8 +26,9 @@ end
 
 ---@param event string Diagnostic category
 ---@param fields table? Scalar evidence
+---@param occurredAt number? Original event time for deferred output
 ---@return nil
-function Diagnostics.emit(event, fields)
+function Diagnostics.emit(event, fields, occurredAt)
     if not Diagnostics.enabled() then return end
     local now = getTimestampMs()
     if now - windowStart >= 1000 or now < windowStart then
@@ -45,7 +48,7 @@ function Diagnostics.emit(event, fields)
     sequence = sequence + 1
     windowLines = windowLines + 1
     local line = "[OMHTT-Diag] version=" .. Foundation.VERSION .. " side=" .. side
-        .. " seq=" .. sequence .. " ms=" .. tostring(now) .. " event=" .. sanitize(event)
+        .. " seq=" .. sequence .. " ms=" .. tostring(occurredAt or now) .. " event=" .. sanitize(event)
         .. " suppressed=" .. suppressed
     suppressed = 0
     if fields then
@@ -140,4 +143,44 @@ function Diagnostics.auditTranslations()
     return missing
 end
 
+---@param event string Diagnostic category
+---@param fields table Scalar snapshot
+---@return nil
+function Diagnostics.defer(event, fields)
+    if not Diagnostics.enabled() then return end
+    if pendingLast - pendingFirst + 1 >= 256 then
+        suppressed = suppressed + 1
+        return
+    end
+    pendingLast = pendingLast + 1
+    pending[pendingLast] = {event = event, fields = fields, at = getTimestampMs()}
+end
+
+---@return nil
+function Diagnostics.flush()
+    if pendingFirst > pendingLast then return end
+    if not Diagnostics.enabled() then
+        pending, pendingFirst, pendingLast = {}, 1, 0
+        return
+    end
+    local deadline = getTimestampMs() + 1
+    for i = 1, 2 do
+        if pendingFirst > pendingLast or getTimestampMs() >= deadline then break end
+        local entry = pending[pendingFirst]
+        pending[pendingFirst], pendingFirst = nil, pendingFirst + 1
+        Diagnostics.emit(entry.event, entry.fields, entry.at)
+    end
+    if pendingFirst > pendingLast then
+        pending, pendingFirst, pendingLast = {}, 1, 0
+    end
+end
+
+---@return nil
+function Diagnostics.reset()
+    pending, pendingFirst, pendingLast = {}, 1, 0
+    sequence, windowStart, windowLines, suppressed = 0, 0, 0, 0
+end
+
+Events.OnTick.Add(Diagnostics.flush)
+Events.OnGameStart.Add(Diagnostics.reset)
 return Diagnostics

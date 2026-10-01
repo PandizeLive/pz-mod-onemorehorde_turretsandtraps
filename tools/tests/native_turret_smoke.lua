@@ -28,6 +28,25 @@ local function verifyTurrets()
         assert(current and legacy and T.component(current:getFullType()) == T.component(legacy:getFullType()), "Saved component alias lost")
         assert(T.kind(current) == T.kind(legacy), "Alias socket classification changed")
     end
+    local visibleComponents, visibleCount, hiddenCount = {}, 0, 0
+    local scripts = getAllItems()
+    for i = 0, scripts:size() - 1 do
+        local script = scripts:get(i)
+        local fullType = script:getFullName()
+        local component = T.component(fullType)
+        if component then
+            if not script:getObsolete() and not script:isHidden() then
+                assert(not visibleComponents[component], "Duplicate component in native item-spawn list: " .. component)
+                assert(fullType == T.TYPES[component], "Legacy item remains visible")
+                visibleComponents[component], visibleCount = true, visibleCount + 1
+            else
+                assert(script:isHidden() and not script:getObsolete(), "Compatibility item must remain loadable")
+                hiddenCount = hiddenCount + 1
+            end
+        end
+    end
+    assert(visibleCount == 12 and hiddenCount == 5, "Expected twelve visible components and five hidden saved aliases")
+    print("[OMHTT-Smoke] native-component-list visible=12 hidden=5 duplicates=0 aliases=loadable")
     local nativeContents = {active = {Detection360 = 1, Filter = 1}}
     local profile = Modules.profile({baseFacing = 4, facing = 12, priority = "Toughest"}, nativeContents)
     assert(profile.cone == 360 and profile.heading == 90 and profile.priority == "Toughest", "Module profile failed")

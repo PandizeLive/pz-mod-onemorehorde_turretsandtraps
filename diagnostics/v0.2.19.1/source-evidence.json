@@ -1,0 +1,35 @@
+{
+  "sourceVersion": "42.21.0",
+  "nativeItemList": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\ProjectZomboid\\media\\lua\\client\\ISUI\\AdminPanel\\ISItemsListViewer.lua",
+      "sha256": "f316be786db5541e02b50e25032c9ab740ceab3522d04670986ca565d469ba6d"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\ProjectZomboid\\media\\lua\\client\\ISUI\\AdminPanel\\ISItemsListTable.lua",
+      "sha256": "3a6043b46e40f887f64a28a486e8044ffe94177be9ea18146af774d5e93e1dc5"
+    }
+  ],
+  "visibilityPredicate": "not item:getObsolete() and not item:isHidden()",
+  "muzzle": {
+    "modelLocalX": 0.55,
+    "itemWorldScale": 0.512,
+    "nativeNonVehicleScale": 1.5,
+    "forwardWorldTiles": 0.4224
+  },
+  "ownerTestCapture": "diagnostics/captures/20260930-235954-5110",
+  "capturedEvents": {
+    "turret-install-preview": 1,
+    "turret-install-rejected": 0,
+    "shot-launched": 179,
+    "shot-arrived": 179,
+    "shot-missed": 0
+  },
+  "previousShotTiming": {
+    "count": 179,
+    "medianFireMs": 4,
+    "maxFireMs": 7,
+    "scope": "Previous measured W.fire segment; excludes preparation and remainder of game frame",
+    "fpsAcceptance": "pending"
+  }
+}

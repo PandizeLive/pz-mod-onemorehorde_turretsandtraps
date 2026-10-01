@@ -30,6 +30,7 @@ module Base {
         Tooltip = Tooltip_OMHTT_ModuleFiring,
     }
     item OMHTTModuleMotionDetection {
+        Hidden = true,
         DisplayName = Detection Module,
         ItemType = base:normal,
         DisplayCategory = Material,
@@ -70,6 +71,7 @@ module Base {
         Tooltip = Tooltip_OMHTT_ModuleRange,
     }
     item OMHTTModuleCapacity {
+        Hidden = true,
         DisplayName = Medium Expansion Kit,
         ItemType = base:normal,
         DisplayCategory = Material,
@@ -78,6 +80,7 @@ module Base {
         Tooltip = Tooltip_OMHTT_ModuleCapacity,
     }
     item OMHTTModuleDetection360 {
+        Hidden = true,
         DisplayName = 360 Module,
         ItemType = base:normal,
         DisplayCategory = Material,
@@ -102,6 +105,7 @@ module Base {
         Tooltip = Tooltip_OMHTT_ModuleAutoloader,
     }
     item OMHTTModuleCapacitySmall {
+        Hidden = true,
         DisplayName = Small Expansion Kit,
         ItemType = base:normal,
         DisplayCategory = Material,
@@ -110,6 +114,7 @@ module Base {
         Tooltip = Tooltip_OMHTT_ModuleCapacity,
     }
     item OMHTTModuleCapacityLarge {
+        Hidden = true,
         DisplayName = Large Expansion Kit,
         ItemType = base:normal,
         DisplayCategory = Material,

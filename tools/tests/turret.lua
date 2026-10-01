@@ -140,7 +140,14 @@ check(W.fire(testPlayer, object, zombie) == "Reloading", "First load starts two-
 testMillis = testMillis + 1999
 check(W.fire(testPlayer, object, zombie) == "Reloading" and other:contains(potato), "No early shot before two-second reload")
 testMillis = testMillis + 1
+local originalHybrid, originalContents, originalRefresh = T.hybrid, T.contents, W.refresh
+local contentReads, refreshes = 0, 0
+T.hybrid = function() return true end
+T.contents = function(container) contentReads = contentReads + 1; return originalContents(container) end
+W.refresh = function(device) refreshes = refreshes + 1; return originalRefresh(device) end
 local ownedResult = W.fire(testPlayer, object, zombie)
+T.hybrid, T.contents, W.refresh = originalHybrid, originalContents, originalRefresh
+check(contentReads == 1 and refreshes == 0, "Hybrid shot scans inventory once without rebuilding unchanged turret configuration")
 check(ownedResult == "Fired", "Inventory-backed shot succeeds: " .. ownedResult)
 check(zombie.health == 1.5, "No direct damage before projectile arrival")
 testMillis = testMillis + 100

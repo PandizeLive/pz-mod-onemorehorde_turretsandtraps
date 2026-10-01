@@ -19,7 +19,7 @@ local function showDamage(zombie, lost, source, kind)
     local player = getSpecificPlayer(0)
     if not player or not zombie:getSquare() or player:getZ() ~= zombie:getSquare():getZ() then return end
     indicator.spawn(zombie, lost * config.scale, "hit", 0)
-    Diagnostics.emit("damage-presentation", {id = source, kind = kind, integration = "PixelStrikeIndicator",
+    Diagnostics.defer("damage-presentation", {id = source, kind = kind, integration = "PixelStrikeIndicator",
         actualDamage = lost, scale = config.scale, displayValue = lost * config.scale})
 end
 
