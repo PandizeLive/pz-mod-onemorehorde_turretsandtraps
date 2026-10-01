@@ -34,6 +34,13 @@ function X.rejection(player, item, source, destination)
         T.configure(destination)
         if item:isFavorite() and not destination:isInCharacterInventory(player) then return "TransferFavorite" end
         if not T.kind(item) then return "TransferWrongItem" end
+        if T.kind(item) == "ammo" then
+            local head = T.contents(destination).head
+            local gun = require("OMHTT/Firearms")
+            local ammoType = "Base.Potato"
+            if gun.profile(head) then ammoType = gun.ammoType(head) end
+            if head and item:getFullType() ~= ammoType then return "WrongAmmo" end
+        end
         if T.kind(item) == "ammo" and not T.contents(destination).head then return "NoHead" end
         if not T.accept(destination, item) then return "TransferFull" end
     end
@@ -67,6 +74,7 @@ function ISInventoryTransferAction:transferItem(item)
         D.emit("turret-transfer-rejected", {itemId = item:getID(), reason = reason})
         return
     end
+    if require("OMHTT/Firearms").profile(item) then require("OMHTT/Firearms").cancelLoading(item) end
     nativeTransfer(self, item)
     local W = require("OMHTT/TurretWorld")
     for i = 1, 2 do

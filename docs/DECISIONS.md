@@ -302,3 +302,9 @@ The owner approves base loss with partial metal salvage and preserved internals.
 The mod has never been uploaded; the owner explicitly authorizes removing the five old item definitions instead of hiding them. C68 supersedes C66/C67 compatibility retention. Remove their identity mappings/translations as well; retain internal behavior and Sandbox keys because these are not duplicate items. Old private-test items using deleted IDs are not migrated.
 
 Owner reports 0.2.19.1 seems to work well; this does not independently certify frame times. No standalone owner test is required for the cleanup. Prepare source but hold installation to combine with the next checkpoint. Next is early P5C1a supported-firearm feasibility per C64, scoped in PHASE_5_CHECKPOINT_1A.md; firearm implementation remains pending concrete approval. No publication, remote push or sibling changes.
+
+## C69: approved early supported-firearm mount, combined 0.2.20
+
+The owner approves P5C1a and combining it with C68. Scope is three installed vanilla mechanisms: Base.Pistol, Base.Shotgun and Base.HuntingRifle. Use the actual weapon as the head, matching loose ammunition and existing turret modules, power, targeting and Manage. No separate mount item or recipe changes. Preserve actual gun condition, attachments, loaded magazine/chamber and supplies through recovery/save/load.
+
+Implementation uses a bounded stationary-weapon adapter: native item stats, models and sound events; explicit approximate accuracy/damage and mechanical timings, without pretending to execute the character-only firing pipeline. Pistol requires its ordinary magazine inserted before mounting. Autoloader removes loading delay while pump/bolt cycling remains. Existing jams block firing and can be cleared after removing the gun. See PHASE_5_CHECKPOINT_1A.md for measured native references, implementation defaults, limits and the combined owner test. Broad modded-gun support and multiplayer are deferred.

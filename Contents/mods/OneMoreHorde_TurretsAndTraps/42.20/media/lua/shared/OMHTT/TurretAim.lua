@@ -39,7 +39,8 @@ function Aim.request(object, target, player)
         entry = {target = target, player = player, last = now, checkAt = 0}
         Aim.entries[object] = entry
     end
-    entry.expires = now + 2000 + 360000 / T.option("TurnSpeed", 90, 1, 360)
+    entry.speed = T.turnSpeed(T.contents(object:getContainer()).head)
+    entry.expires = now + 2000 + 360000 / entry.speed
     return false
 end
 
@@ -49,12 +50,12 @@ function Aim.tick()
     local W = require("OMHTT/TurretWorld")
     local Combat = require("OMHTT/PrototypeCombat")
     local now = getTimestampMs()
-    local speed = T.option("TurnSpeed", 90, 1, 360)
     for object, entry in pairs(Aim.entries) do
         local state = T.state(object)
         local valid = state and W.valid(object) and now <= entry.expires
         if valid and now >= entry.checkAt then
             local contents = T.contents(object:getContainer())
+            entry.speed = T.turnSpeed(contents.head)
             valid = contents.head and contents.head:getCondition() > 0 and W.power(object, contents)
                 and M.inside(object:getSquare(), entry.target, M.profile(state, contents))
                 and Combat.clearLane(object:getSquare(), entry.target:getSquare(), T.cycleConfig(contents).range)
@@ -74,7 +75,7 @@ function Aim.tick()
             local desired = Aim.angle(object, entry.target)
             local elapsed = math.min(100, math.max(0, now - entry.last)) / 1000
             entry.last = now
-            state.aimDegrees = Aim.move(state.aimDegrees or (state.facing or 0) * 22.5, desired, elapsed * speed)
+            state.aimDegrees = Aim.move(state.aimDegrees or (state.facing or 0) * 22.5, desired, elapsed * entry.speed)
             if math.abs((desired - state.aimDegrees + 540) % 360 - 180) <= 1 and entry.player then
                 Aim.entries[object] = nil
                 local result = W.fire(entry.player, object, entry.target)

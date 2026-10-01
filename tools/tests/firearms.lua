@@ -1,0 +1,159 @@
+local G = require("OMHTT/Firearms")
+local T = require("OMHTT/Turret")
+local W = require("OMHTT/TurretWorld")
+local oldSettings = SandboxVars.OMHTurretsTraps
+SandboxVars.OMHTurretsTraps = {Enabled = true, PotatoTurret = true, PotatoRequirePower = false, FirearmAccuracyMultiplier = 3}
+local definitions = {{"Base.Pistol", "Base.Bullets9mm", 15, false},
+    {"Base.Shotgun", "Base.ShotgunShells", 6, true}, {"Base.HuntingRifle", "Base.308Bullets", 4, true}}
+local function item(fullType)
+    local value = {fullType = fullType, condition = 10, data = {}, ammo = 0, chamber = false, spent = false, clip = true}
+    function value:getID() return 9001 end
+    function value:getFullType() return self.fullType end
+    function value:getDisplayName() return self.fullType end
+    function value:getCondition() return self.condition end
+    function value:setCondition(n) self.condition = n end
+    function value:getActualWeight() return 1 end
+    function value:getModData() return self.data end
+    function value:getContainer() return self.container end
+    function value:getCurrentAmmoCount() return self.ammo end
+    function value:setCurrentAmmoCount(n) self.ammo = n end
+    function value:isRoundChambered() return self.chamber end
+    function value:setRoundChambered(n) self.chamber = n end
+    function value:setSpentRoundChambered(n) self.spent = n end
+    function value:haveChamber() return true end
+    function value:isContainsClip() return self.clip end
+    function value:isJammed() return self.jammed == true end
+    function value:getMinDamage() return 0.6 end
+    function value:getMaxDamage() return 1 end
+    function value:getMaxRange() return 15 end
+    function value:getRecoilDelay() return 12 end
+    function value:getHitChance() return 50 end
+    function value:getAimingPerkHitChanceModifier() return 4 end
+    function value:getConditionLowerChance() return 0 end
+    function value:getSoundRadius() return 100 end
+    function value:getSoundVolume() return 30 end
+    function value:getSwingSound() return "M9Shoot" end
+    function value:getProjectileCount() return 1 end
+    return value
+end
+local function container()
+    local value = {items = {}}
+    function value:getType() return T.CONTAINER end
+    function value:getContainingItem() return nil end
+    function value:getItems()
+        return {size = function() return #value.items end, get = function(self, index) return value.items[index + 1] end}
+    end
+    function value:contains(candidate)
+        for i = 1, #self.items do if self.items[i] == candidate then return true end end
+        return false
+    end
+    function value:AddItem(candidate) self.items[#self.items + 1] = candidate; candidate.container = self end
+    function value:Remove(candidate)
+        for i = #self.items, 1, -1 do if self.items[i] == candidate then table.remove(self.items, i) end end
+        candidate.container = nil
+    end
+    return value
+end
+local specimens = {}
+for n = 1, #definitions do
+    local definition = definitions[n]
+    local gun, storage = item(definition[1]), container()
+    function gun:getAmmoType() return {getItemKey = function() return definition[2] end} end
+    function gun:getMaxAmmo() return definition[3] end
+    function gun:getMagazineType() if definition[1] == "Base.Pistol" then return "Base.9mmClip" end end
+    function gun:isRackAfterShoot() return definition[4] end
+    SandboxVars.OMHTurretsTraps.FirearmAmmoCapacity = 1
+    gun.ammo = 2
+    check(not T.accept(storage, gun), "Loaded gun cannot exceed configured ammo capacity")
+    gun.ammo = 0
+    SandboxVars.OMHTurretsTraps.FirearmAmmoCapacity = nil
+    check(T.accept(storage, gun), "Supported empty gun mounts")
+    storage:AddItem(gun)
+    check(not T.accept(storage, item("Base.Potato")), "Mounted gun rejects potatoes")
+    check(not T.accept(storage, item(T.HEAD)), "Gun occupies the existing head slot")
+    for i = 1, 40 do storage:AddItem(item(definition[2])) end
+    local summary, now = T.contents(storage), testMillis
+    local config = T.cycleConfig(summary)
+    check(summary.ammo == 40 and summary.reserve == 40 and config.magazine == definition[3], "Profile counts exact ammunition")
+    local _, status = G.update(summary, config, now, false)
+    check(status == "Reloading" and gun.ammo == 0, "Read-only Manage does not load ammo")
+    G.update(summary, config, now, true)
+    G.cancelLoading(gun)
+    check(gun.ammo == 0 and T.contents(storage).ammo == 40, "Cancelled loading spends nothing")
+    G.update(T.contents(storage), config, now + 10000, true)
+    local cycle
+    cycle, status = G.update(T.contents(storage), config, now + 30000, true)
+    check(status == "Racking" and T.contents(storage).ammo == 40, "Magazine loading conserves rounds; chamber waits for cycle")
+    cycle, status = G.update(T.contents(storage), config, now + 35000, true)
+    check(status == "Ready" and gun.chamber and gun.ammo == definition[3] - 1, "Racking moves exactly one magazine round into chamber")
+    check(G.consume(T.contents(storage), config, now + 35000), "Ready gun fires")
+    check(T.contents(storage).ammo == 39, "Firing loses exactly one round")
+    check(not G.consume(T.contents(storage), config, now + 35000), "Same tick cannot fire again")
+    storage:AddItem(item(T.TYPES.Autoloader))
+    local boosted = T.cycleConfig(T.contents(storage))
+    check(boosted.reload == 0 and boosted.cooldown > 0 and boosted.rack > 0, "Autoloader preserves shot and pump/bolt cadence")
+    local rapid = item(T.TYPES.RapidFire)
+    local reloadA, reloadB = item(T.TYPES.Reload), item(T.TYPES.Reload)
+    storage:AddItem(rapid); storage:AddItem(reloadA); storage:AddItem(reloadB)
+    check(T.cycleConfig(T.contents(storage)).cooldown < config.cooldown, "Rapid-Fire affects firearm cadence")
+    for i = #storage.items, 1, -1 do
+        local candidate = storage.items[i]
+        if candidate:getFullType() == T.TYPES.Autoloader then storage:Remove(candidate) end
+    end
+    check(T.cycleConfig(T.contents(storage)).reload < config.reload, "Reload stacks on firearm loading")
+    check(not T.canRemove(storage, gun), "Head swap requires reserve removal")
+    local shots = 1
+    for step = 1, 100 do
+        now = now + 40000
+        local current = T.contents(storage)
+        local effective = T.cycleConfig(current)
+        local _, ready = G.update(current, effective, now, true)
+        if ready == "Ready" and G.consume(T.contents(storage), effective, now) then shots = shots + 1 end
+        check(T.contents(storage).ammo + shots == 40, "Reload/fire loop conserves ammo without duplicate chamber rounds")
+    end
+    check(shots == 40 and G.loaded(gun) == 0, "Finite reserve produces exactly forty shots")
+    gun.ammo, gun.chamber = 2, true
+    check(T.canRemove(storage, gun), "Loaded gun can be recovered after unloading reserve")
+    gun.jammed = true
+    local _, jammed = T.cycle(T.contents(storage), now)
+    check(jammed == "Jammed" and G.loaded(gun) == 3, "Existing jam blocks firing without deleting ammunition")
+    gun.jammed = false
+    if gun:getMagazineType() then
+        gun.clip = false
+        local _, missing = T.cycle(T.contents(storage), now)
+        check(missing == "NoMagazine", "Pistol cannot manufacture a magazine")
+        gun.clip = true
+    end
+    gun.data.OMHTTGunCycle = nil
+    storage:AddItem(item(T.TYPES.Firing)); storage:AddItem(item(T.TYPES.MotionDetection))
+    specimens[#specimens + 1] = {gun = gun, storage = storage}
+end
+local pair = specimens[1]
+local origin = makeSquare(700, 700, 0)
+local destination = makeSquare(702, 700, 0)
+makeSquare(701, 700, 0)
+local object = {data = {OMHTTTurret = {schema = 1, kind = "potato", id = "gun-integration", facing = 0,
+    baseFacing = 0, aimDegrees = 0, nextShot = 0, shots = 0}}}
+function object:hasModData() return true end
+function object:getModData() return self.data end
+function object:getSquare() return origin end
+function object:getObjectIndex() return 0 end
+function object:getHealth() return 100 end
+function object:getContainer() return pair.storage end
+local victim = makeZombie(destination, 5)
+local oldHybrid, oldSound = T.hybrid, addSound
+T.hybrid = function() return true end
+local noise = 0
+addSound = function() noise = noise + 1 end
+check(W.fire(nil, object, victim) == "Fired", "Gun integrates with automated W.fire")
+check(victim.health < 5 and G.loaded(pair.gun) == 2 and noise == 1, "Gun spends one round, deals damage and makes world noise")
+check(#require("OMHTT/PrototypeCombat").pending == 0, "Firearm does not launch potato projectiles")
+local prior = G.loaded(pair.gun)
+check(W.fire(nil, object, victim) == "Cooling" and G.loaded(pair.gun) == prior, "Gun integration enforces cooldown before spending")
+SandboxVars.OMHTurretsTraps.FirearmAccuracyMultiplier = 0
+check(T.cycleConfig(T.contents(pair.storage)).accuracy == 0, "Zero accuracy multiplier allows no hits")
+SandboxVars.OMHTurretsTraps.FirearmTurrets = false
+local _, disabled = G.update(T.contents(pair.storage), T.cycleConfig(T.contents(pair.storage)), testMillis + 100000, true)
+check(disabled == "Disabled" and G.loaded(pair.gun) == prior, "Disabled gun cannot feed or fire")
+T.hybrid, addSound = oldHybrid, oldSound
+SandboxVars.OMHTurretsTraps = oldSettings

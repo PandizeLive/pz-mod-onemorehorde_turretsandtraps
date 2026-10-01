@@ -20,6 +20,7 @@ public final class NativePersistenceCheck {
 
     private static void verify(Path directory, String mode) throws Exception {
         verifyTurret(directory, mode);
+        verifyFirearms(directory, mode);
         verifyHybrid(directory, mode);
         NativeVaultProbe.verify();
         NativeTurretProbe.verify();
@@ -118,6 +119,57 @@ public final class NativePersistenceCheck {
             }
         }
         System.out.println("[OMHTT-Smoke] native-persistence mode=" + mode + " parts=28 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved legacy=8 edges=8 outline=4 reinforced=8 orientation=preserved");
+    }
+
+    private static void verifyFirearms(Path directory, String mode) throws Exception {
+        Object env = Class.forName("zombie.Lua.LuaManager").getField("env").get(null);
+        Object fixture = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeFirearms");
+        check(fixture instanceof List<?>, "Firearm fixture missing");
+        Class<?> itemType = Class.forName("zombie.inventory.InventoryItem");
+        int version = ((Number)Class.forName("zombie.iso.IsoWorld").getMethod("getWorldVersion").invoke(null)).intValue();
+        for (Object base : (List<?>)fixture) {
+            Object sample = call(get(base, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTGunFixture");
+            String type = (String)call(sample, "rawget", new Class<?>[]{Object.class}, "fullType");
+            Path path = directory.resolve("firearm-" + type + ".bin");
+            if (mode.equals("write")) {
+                ByteBuffer buffer = ByteBuffer.allocate(262144);
+                call(base, "saveWithSize", new Class<?>[]{ByteBuffer.class, boolean.class}, buffer, false);
+                Files.write(path, Arrays.copyOf(buffer.array(), buffer.position()));
+            }
+            ByteBuffer input = ByteBuffer.wrap(Files.readAllBytes(path));
+            Object restored = itemType.getMethod("loadItem", ByteBuffer.class, int.class).invoke(null, input, version);
+            check(!input.hasRemaining(), "Firearm unread stream");
+            Object expected = call(get(restored, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTGunFixture");
+            List<?> items = (List<?>)get(get(restored, "getInventory"), "getItems");
+            Object gun = null;
+            int total = 0;
+            for (Object item : items) {
+                String fullType = (String)get(item, "getFullType");
+                if (type.equals(fullType)) gun = item;
+                else if (fullType.equals("Base.CarBattery1"))
+                    check(Math.abs(((Number)get(item, "getCurrentUsesFloat")).doubleValue() - 0.43) < 0.00001, "Gun battery changed");
+                else total++;
+            }
+            check(gun != null, "Packed gun lost");
+            for (String[] field : new String[][]{{"rounds", "getCurrentAmmoCount"}, {"gunId", "getID"}, {"condition", "getCondition"}}) {
+                int before = ((Number)call(expected, "rawget", new Class<?>[]{Object.class}, field[0])).intValue();
+                check(((Number)get(gun, field[1])).intValue() == before, "Gun " + field[0] + " changed");
+            }
+            check(get(gun, "isRoundChambered").equals(call(expected, "rawget", new Class<?>[]{Object.class}, "chamber")), "Chamber changed");
+            check(get(gun, "isContainsClip").equals(call(expected, "rawget", new Class<?>[]{Object.class}, "clip")), "Magazine presence changed");
+            total += ((Number)get(gun, "getCurrentAmmoCount")).intValue() + (Boolean.TRUE.equals(get(gun, "isRoundChambered")) ? 1 : 0);
+            check(total == 34, "Firearm ammo duplicated or lost");
+            Object cycle = call(get(gun, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTGunCycle");
+            check(call(cycle, "rawget", new Class<?>[]{Object.class}, "nextShot").equals(call(expected, "rawget", new Class<?>[]{Object.class}, "nextShot")), "Gun cooldown lost");
+            if (type.equals("Base.Pistol")) {
+                boolean laser = false;
+                for (Object part : (List<?>)get(gun, "getAllWeaponParts")) {
+                    if ("Base.Laser".equals(get(part, "getFullType"))) laser = true;
+                }
+                check(laser, "Gun attachment lost");
+            }
+        }
+        System.out.println("[OMHTT-Smoke] native-firearm-persistence mode=" + mode + " guns=3 rounds=34 each identity=exact attachments=preserved");
     }
 
     private static void verifyTurret(Path directory, String mode) throws Exception {

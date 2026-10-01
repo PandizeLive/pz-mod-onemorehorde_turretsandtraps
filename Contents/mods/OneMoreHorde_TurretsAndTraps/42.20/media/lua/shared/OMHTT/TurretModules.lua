@@ -77,7 +77,10 @@ end
 ---@return boolean enabled
 ---@nodiscard
 function M.detects(state, contents)
-    return T.enabled() and SandboxVars.OMHTurretsTraps.AutomationEnabled ~= false and state.automatic ~= false
+    local gun = require("OMHTT/Firearms")
+    local enabled = SandboxVars.OMHTurretsTraps.PotatoTurret ~= false
+    if gun.profile(contents.head) then enabled = gun.enabled() end
+    return enabled and T.enabled() and SandboxVars.OMHTurretsTraps.AutomationEnabled ~= false and state.automatic ~= false
         and contents.heads == 1 and contents.head:getCondition() > 0 and contents.active.MotionDetection ~= nil
 end
 

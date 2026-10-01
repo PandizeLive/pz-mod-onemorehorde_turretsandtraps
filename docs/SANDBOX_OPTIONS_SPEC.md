@@ -125,3 +125,7 @@ OMH: T&T - Modules groups Rapid-Fire, Reload, Velocity, Range and Capacity contr
 ## Implemented 0.2.18 organization
 
 Native registration order: OMH: T&T - General, Traps, Turrets, Automation, Modules, Loot, Debug. Defense names are internal headings; existing option keys remain stable. Modules includes Small/Standard/Large Expansion Kit ammo and slot bonuses; Loot includes separate tier multipliers. Existing CapacityAmmoBonus/CapacityModuleBonus/LootCapacity are the Standard tier for save compatibility. See PHASE_2_CHECKPOINT_3D3.md for defaults and acceptance.
+
+## Implemented P5C1a — 0.2.20
+
+The Turrets page adds a Firearms heading after the existing potato groups; no new top-level page. Controls: FirearmTurrets=true, FirearmAmmoCapacity=100 (1-500), FirearmAimingLevel=3 (0-10), FirearmAccuracyMultiplier=1 (0-3), FirearmDamageMultiplier=1 (0-5), FirearmRangeMultiplier=1 (0.1-3), FirearmReloadMultiplier=1 (0-5), FirearmCooldownMultiplier=1 (0.1-5), FirearmCycleMultiplier=1 (0.1-5), FirearmTurnSpeed=90 degrees/s (1-360). Zero accuracy means no hits. Shared power, base durability, module capacity/bonuses and automation controls still apply; potato ammo/combat controls do not alter gun stats. Maximum effective gun range is 50 tiles and cannot cross obstructions/unloaded space. Parent ordering remains General, Traps, Turrets, Automation, Modules, Loot, Debug. See PHASE_5_CHECKPOINT_1A.md for approximation limits.

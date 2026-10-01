@@ -4,10 +4,12 @@ local F = require("OMHTT/Foundation")
 local D = require("OMHTT/Diagnostics")
 local Cycle = require("OMHTT/TurretCycle")
 local M = require("OMHTT/TurretModules")
+local G = require("OMHTT/Firearms")
 OMHTT_TurretWorld = {}
 local W = OMHTT_TurretWorld
 local facings = {e = 0, n = 4, w = 8, s = 12}
 local generators = {}
+local feeders, feederOrder, feederCursor = {}, {}, 1
 
 ---@param object IsoThumpable Managed turret
 ---@return nil
@@ -63,11 +65,15 @@ function W.refresh(object)
     local state = T.state(object)
     if not state or not object:getContainer() then return end
     local contents = T.contents(object:getContainer())
+    if G.profile(contents.head) and not feeders[object] then
+        feeders[object] = true
+        feederOrder[#feederOrder + 1] = object
+    end
     state.baseFacing = state.baseFacing or state.facing
     local hybrid = T.hybrid()
     local sprite = T.sprite(state.baseFacing or state.facing, false)
     getSprite(sprite):getProperties():unset(IsoFlagType.FloorOverlay)
-    if contents.head and not hybrid then sprite = T.sprite(state.facing, true) end
+    if contents.head and not G.profile(contents.head) and not hybrid then sprite = T.sprite(state.facing, true) end
     if object:getSpriteName() ~= sprite then
         object:setSprite(sprite)
         object:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_OBJECT_MODIFY)
@@ -75,7 +81,7 @@ function W.refresh(object)
     local config = object:getSpriteConfig()
     if not config or not config:isValid() or config:getTileInfo():getSpriteName() ~= sprite then
         local entity = "OMHTTDeployTurret"
-        if contents.head and not hybrid then entity = "OMHTTPotatoVisual" .. math.floor(F.normalizeFacing(state.facing) / 4) end
+        if contents.head and not G.profile(contents.head) and not hybrid then entity = "OMHTTPotatoVisual" .. math.floor(F.normalizeFacing(state.facing) / 4) end
         local info = SpriteConfigManager.GetObjectInfo(entity)
         if not info then error("[OMHTT] Missing turret visual entity " .. entity) end
         if config then GameEntityFactory.RemoveComponentType(object, ComponentType.SpriteConfig) end
@@ -280,10 +286,10 @@ function W.fire(player, object, target)
     if not player and (not M.detects(T.state(object), contents) or not contents.active.Firing) then return "Unavailable" end
     if contents.heads ~= 1 or contents.head:getCondition() <= 0 then return "NoHead" end
     if contents.ammo == 0 then return "Empty" end
-    local cycle, status = T.cycle(contents, getTimestampMs())
-    if status ~= "Ready" then return status end
     local power = W.power(object, contents)
     if not power then return "NoPower" end
+    local cycle, status = T.cycle(contents, getTimestampMs())
+    if status ~= "Ready" then return status end
     local state = T.state(object)
     state.ammo = contents.ammo
     local stats = T.cycleConfig(contents)
@@ -293,6 +299,11 @@ function W.fire(player, object, target)
         damage = stats.damage / 100, knockdown = stats.knockdown,
         splash = stats.damage * T.option("SplashPercent", 25, 0, 100) / 10000, radius = T.option("SplashRadius", 1.5, 0, 3), managed = true,
         profile = M.profile(state, contents), target = target, projectileSpeed = T.option("ProjectileSpeed", 20, 5, 100)}
+    if G.profile(contents.head) then
+        options.projectileSpeed, options.splash, options.radius = nil, 0, 0
+        options.resolve = require("OMHTT/FirearmCombat").hit
+        options.weapon, options.stats, options.object = contents.head, stats, object
+    end
     ---@param selected IsoZombie Chosen target
     ---@return boolean aligned
     function options.align(selected)
@@ -300,17 +311,21 @@ function W.fire(player, object, target)
     end
     ---@return boolean committed
     function options.commit()
-        if not W.valid(object) or not object:getContainer():contains(contents.round) then return false end
+        if not W.valid(object) or not object:getContainer():contains(contents.head) then return false end
+        if not G.profile(contents.head) and not object:getContainer():contains(contents.round) then return false end
         if player and not W.near(player, object) then return false end
         if not player and (not M.detects(state, contents) or not contents.active.Firing) then return false end
+        if G.profile(contents.head) and not G.consume(contents, stats, getTimestampMs()) then return false end
         if power.kind == "battery" then
             power.battery:setCurrentUsesFloat(math.max(0, power.battery:getCurrentUsesFloat() - power.cost))
         elseif power.kind == "generator" then
             power.generator:setFuel(math.max(0, power.generator:getFuel() - power.cost))
         end
-        object:getContainer():Remove(contents.round)
-        Cycle.consume(cycle, contents.ammo - 1, stats, getTimestampMs())
-        D.defer("turret-resource-spent", {id = state.id, ammoItem = contents.round:getID(), power = power.kind, cost = power.cost})
+        if not G.profile(contents.head) then
+            object:getContainer():Remove(contents.round)
+            Cycle.consume(cycle, contents.ammo - 1, stats, getTimestampMs())
+        end
+        D.defer("turret-resource-spent", {id = state.id, head = contents.head:getID(), power = power.kind, cost = power.cost})
         return true
     end
     local Combat = require("OMHTT/PrototypeCombat")
@@ -318,7 +333,11 @@ function W.fire(player, object, target)
     local committedAt = getTimestampMs()
     if result == "Fired" and not T.hybrid() then W.refresh(object) end
     local refreshedAt = getTimestampMs()
-    if impact then triggerEvent("OnServerCommand", F.MODULE, "Launch", impact) end
+    if impact then
+        local command = "Launch"
+        if impact.firearm then command = "GunShot" end
+        triggerEvent("OnServerCommand", F.MODULE, command, impact)
+    end
     local effectsAt = getTimestampMs()
     D.defer("turret-fire-result", {id = state.id, result = result, ammo = state.ammo, power = power.kind, automatic = player == nil,
         loaded = cycle.loaded, reloadReady = cycle.reloadReady, nextShot = cycle.nextShot, fireMs = effectsAt - started,
@@ -327,6 +346,48 @@ function W.fire(player, object, target)
     return result
 end
 
+---@return nil
+function W.feedTick()
+    if isClient() or isServer() then return end
+    local now = getTimestampMs()
+    local deadline = now + 1
+    for i = 1, math.min(4, #feederOrder) do
+        if #feederOrder == 0 or getTimestampMs() >= deadline then return end
+        if feederCursor > #feederOrder then feederCursor = 1 end
+        local object = feederOrder[feederCursor]
+        local square = object:getSquare()
+        if not square or object:getObjectIndex() < 0 or not T.state(object)
+            or getCell():getGridSquare(square:getX(), square:getY(), square:getZ()) ~= square then
+            feeders[object] = nil
+            table.remove(feederOrder, feederCursor)
+        else
+            local state = T.state(object)
+            if not state.feedCheck or now >= state.feedCheck then
+                state.feedCheck = now + 100
+                local contents = T.contents(object:getContainer())
+                if G.profile(contents.head) then
+                    if W.valid(object) and W.power(object, contents) then
+                        local _, status = G.update(contents, T.cycleConfig(contents), now, true)
+                        if state.feedStatus ~= status then
+                            D.defer("firearm-cycle", {id = state.id, gun = contents.head:getFullType(), status = status,
+                                magazine = contents.head:getCurrentAmmoCount(), chamber = contents.head:isRoundChambered()})
+                            state.feedStatus = status
+                        end
+                    else
+                        G.cancelLoading(contents.head)
+                    end
+                else
+                    feeders[object] = nil
+                    table.remove(feederOrder, feederCursor)
+                    feederCursor = feederCursor - 1
+                end
+            end
+            feederCursor = feederCursor + 1
+        end
+    end
+end
+
+Events.OnTick.Add(W.feedTick)
 Events.LoadGridsquare.Add(W.squareLoaded)
 Events.OnObjectAdded.Add(W.loaded)
 Events.OnObjectAboutToBeRemoved.Add(W.removed)

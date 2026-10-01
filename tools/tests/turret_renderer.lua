@@ -14,7 +14,7 @@ end
 local function turret(x, yaw)
     local square = makeSquare(x, 610, 0)
     function square:isCanSee(index) return self.visible ~= false end
-    local head = {setWorldScale = function(self, scale) self.scale = scale end}
+    local head = {getFullType = function() return T.HEAD end, setWorldScale = function(self, scale) self.scale = scale end}
     local object = {data = {OMHTTTurret = {schema = 1, facing = 0, aimDegrees = yaw}}, square = square, index = 0}
     function object:hasModData() return true end
     function object:getModData() return self.data end

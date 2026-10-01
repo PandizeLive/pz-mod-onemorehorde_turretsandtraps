@@ -1,6 +1,7 @@
 if isClient() or isServer() then return end
 local T = require("OMHTT/Turret")
 local D = require("OMHTT/Diagnostics")
+local G = require("OMHTT/Firearms")
 local M = require("OMHTT/TurretModules")
 local Aim = require("OMHTT/TurretAim")
 local R = {entries = {}, mode = nil, lastCheck = 0, headHeight = T.HEAD_VISUAL.height, headScale = T.HEAD_VISUAL.scale}
@@ -10,7 +11,11 @@ local R = {entries = {}, mode = nil, lastCheck = 0, headHeight = T.HEAD_VISUAL.h
 ---@return nil
 function R.changed(object, head)
     if not T.state(object) then R.entries[object] = nil; return end
-    if head then head:setWorldScale(R.headScale) end
+    if head then
+        local scale = R.headScale
+        if G.profile(head) then scale = 1 end
+        head:setWorldScale(scale)
+    end
     local entry = R.entries[object] or {}
     entry.head, entry.profile = head, M.profile(T.state(object), T.contents(object:getContainer()))
     R.entries[object] = entry
@@ -93,6 +98,8 @@ function R.render(playerIndex)
             if dx * dx + dy * dy <= 80 * 80 then
                 local heading = R.heading(object)
                 local yaw = (360 - heading) % 360
+                local profile = G.profile(entry.head)
+                if profile then yaw = (yaw + profile.yaw) % 360 end
                 Render3DItem(entry.head, square, square:getX() + 0.5, square:getY() + 0.5, square:getZ() + R.headHeight, yaw)
             end
         end

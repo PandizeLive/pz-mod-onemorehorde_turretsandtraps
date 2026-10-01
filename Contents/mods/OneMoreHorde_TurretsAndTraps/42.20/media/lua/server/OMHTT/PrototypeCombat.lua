@@ -184,7 +184,7 @@ function Combat.fire(record, object, player, options)
     if options.align and not options.align(target) then return "Aiming" end
     if options.projectileSpeed and #Combat.pending >= 128 then return "Unavailable" end
     if options.commit and not options.commit() then return "Unavailable" end
-    if not weapon then
+    if not options.resolve and not weapon then
         weapon = instanceItem("Base.Hammer")
         weapon:setRanged(true)
         weapon:setKnockBackOnNoDeath(false)
@@ -215,6 +215,7 @@ function Combat.fire(record, object, player, options)
             pending = #Combat.pending, x = tx, y = ty})
         return "Fired", facts
     end
+    if options.resolve then return "Fired", options.resolve(record, origin, target, player, options) end
     return "Fired", Combat.hit(record, origin, target, player, options)
 end
 

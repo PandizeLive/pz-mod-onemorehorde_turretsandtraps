@@ -1,8 +1,8 @@
 # Phases and checkpoints
 
-**Staged: [0.2.20 cleanup](PATCH_v0.2.20.md).** C68 removes legacy component definitions and adds destroyed-base salvage with intact actual contents and smaller loose placeholders. Not installed; separate owner test waived. Next proposed combined checkpoint: [early P5C1a supported-firearm mount](PHASE_5_CHECKPOINT_1A.md).
+**Current candidate: [0.2.20 combined patch](PATCH_v0.2.20.md).** C68/C69 implement removed legacy definitions, destroyed-base salvage and the [early P5C1a supported-firearm mount](PHASE_5_CHECKPOINT_1A.md). Automated/native checks pass; installed status is in RELEASE.md. One combined owner test remains, with no separate cleanup round.
 
-**Current installed: [0.2.19.1 correction](PATCH_v0.2.19.1.md).** C67 fixes exposed compatibility duplicates, starts the potato visual at the barrel tip and removes redundant firing work with bounded diagnostic output. Owner reports the rest of 0.2.19 worked well. Install status: RELEASE.md.
+**Previous: [0.2.19.1 correction](PATCH_v0.2.19.1.md).** C67 fixes exposed compatibility duplicates, starts the potato visual at the barrel tip and removes redundant firing work with bounded diagnostic output. Owner reports the rest of 0.2.19 worked well. Install status: RELEASE.md.
 
 **Previous: [P2C3d3 repair - 0.2.19](PHASE_2_CHECKPOINT_3D3_REPAIR.md).** C66 approves Install/input diagnostics, accurate component IDs with legacy aliases, Medium kit naming, synchronized delayed hits and owner-supplied audio. Release status is in RELEASE.md; one focused test covers the reported failures.
 
@@ -10,7 +10,7 @@
 
 **Previous: [P2C3d2 active stat modules, 0.2.17](PHASE_2_CHECKPOINT_3D2.md).** C63 approves implementation and Reload stacking. Rapid-Fire, Reload, Velocity and Range stack; Capacity has one dedicated socket; Autoloader removes reload delay. Shared effective stats, safe storage, grouped tuning and loot are implemented. Verification/install status is in RELEASE.md. Carry the entire held 0.2.16.1 test into the eight-step combined owner test; no rendered acceptance is implied.
 
-**Next: [P5C1a supported-firearm mount prototype](PHASE_5_CHECKPOINT_1A.md), combined with C68 cleanup.** Owner approved moving the firearm prototype ahead of P2C3e multiplayer: prove a vanilla pistol, pump shotgun and bolt-action rifle on the universal base. Owner now reports the 0.2.19.1 test seems to work well; retain unmeasured performance limits. P2C3e multiplayer/performance certification remains required before enabling multiplayer; broad firearm compatibility and crafting stay later work.
+**Next acceptance gate: [P5C1a combined test](PHASE_5_CHECKPOINT_1A.md), implemented with C68 cleanup in 0.2.20.** Owner approved moving the firearm prototype ahead of P2C3e multiplayer: prove a vanilla pistol, pump shotgun and bolt-action rifle on the universal base. Owner now reports the 0.2.19.1 test seems to work well; retain unmeasured performance limits. P2C3e multiplayer/performance certification remains required before enabling multiplayer; broad firearm compatibility and crafting stay later work.
 
 **Current: [P2C3a-c — modular potato turret foundation, 0.2.9](PHASE_2_CHECKPOINT_3.md).** C48-C50 approve inventory/persistence, revised metal recipes, native deployment and powered manual firing. Combine player acceptance with the held P2C2b test. Module storage is implemented; P2C3d adds module effects and P2C3e proves multiplayer/performance. Version 0.2.9 is installed and archived, with exact tagged hashes and a verified 0.2.8 backup recorded in RELEASE.md. Native furniture Install/Pickup stays deferred.
 

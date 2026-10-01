@@ -244,6 +244,52 @@ local function verifyTurrets()
     W.removed(wreck)
     assert(ground:size() == #savedItems + 2, "Repeated destruction duplicated contents or salvage")
     print("[OMHTT-Smoke] native-turret-destroy contents=104 exact=true scrap=2 base=0 repeated=stable")
+    local Guns = require("OMHTT/Firearms")
+    local savedGuns = ArrayList.new()
+    for fullType in pairs(Guns.PROFILES) do
+        local base = instanceItem(T.BASE)
+        local gun = instanceItem(fullType)
+        local storage = base:getInventory()
+        T.configure(storage)
+        assert(T.accept(storage, gun), "Supported gun rejected")
+        storage:AddItem(gun)
+        if gun:getMagazineType() then gun:setContainsClip(true) end
+        assert(Guns.AMMO[Guns.ammoType(gun)], "Ammo classification mismatch: " .. Guns.ammoType(gun))
+        assert(not T.accept(storage, instanceItem("Base.Potato")), "Gun accepted potatoes")
+        local model = ScriptManager.instance:getModelScript(gun:getStaticModel())
+        assert(model and model:getAttachmentById("muzzle"), "Native gun/muzzle model missing")
+        print("[OMHTT-Smoke] firearm-profile type=" .. fullType .. " ammo=" .. Guns.ammoType(gun)
+            .. " model=" .. gun:getStaticModel() .. " worldRotate=" .. tostring(model:getAttachmentById("world"):getRotate())
+            .. " worldOffset=" .. tostring(model:getAttachmentById("world"):getOffset()))
+        local gunBattery = storage:AddItem("Base.CarBattery1")
+        gunBattery:setCurrentUsesFloat(0.43)
+        local ammo = Guns.ammoType(gun)
+        for i = 1, 35 do storage:AddItem(ammo) end
+        local summary = T.contents(storage)
+        local config = T.cycleConfig(summary)
+        assert(summary.ammo == 35 and config.firearm and config.magazine == gun:getMaxAmmo(), "Native firearm config mismatch")
+        local clock = getTimestampMs()
+        local _, status = Guns.update(summary, config, clock, true)
+        assert(status == "Reloading" and gun:getCurrentAmmoCount() == 0, "Loaded ammo before reload elapsed")
+        for i = 1, 20 do
+            clock = clock + 1000
+            summary = T.contents(storage)
+            _, status = Guns.update(summary, config, clock, true)
+            if status == "Ready" then break end
+        end
+        assert(status == "Ready" and T.contents(storage).ammo == 35, "Native reload invented or lost ammo")
+        assert(Guns.consume(T.contents(storage), config, clock), "Ready gun failed to consume shot")
+        assert(T.contents(storage).ammo == 34, "Native shot must spend exactly one round")
+        assert(not Guns.consume(T.contents(storage), config, clock), "Cooldown or pump can be skipped")
+        gun:setCondition(7)
+        if fullType == "Base.Pistol" then gun:attachWeaponPart(instanceItem("Base.Laser"), false) end
+        base:getModData().OMHTTGunFixture = {fullType = fullType, total = 34,
+            rounds = gun:getCurrentAmmoCount(), chamber = gun:isRoundChambered(), gunId = gun:getID(),
+            condition = 7, nextShot = Guns.state(gun).nextShot, clip = gun:isContainsClip()}
+        savedGuns:add(base)
+    end
+    OMHTT_NativeFirearms = savedGuns
+    print("[OMHTT-Smoke] native-firearms mechanisms=3 rounds=conserved models=bound reload=timed")
     local H = require("OMHTT/HybridProbe")
     local model = ScriptManager.instance:getModelScript("Base.OMHTTProbeHead")
     assert(model and model:getMeshName() == "OMHTT_ProbeHead", "Native hybrid model script missing")

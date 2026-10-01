@@ -84,6 +84,8 @@ def main():
     assert "[OMHTT-Smoke] native-install exact=selected decoy=preserved preview=nonconsuming" in text, "Native Install selection failed"
     assert "[OMHTT-Smoke] native-turret-persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Turret world persistence failed"
     assert "[OMHTT-Smoke] native-packed-turret mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Turret portable persistence failed"
+    assert "[OMHTT-Smoke] native-firearms mechanisms=3 rounds=conserved models=bound reload=timed" in text, "Native firearm adapters failed"
+    assert "[OMHTT-Smoke] native-firearm-persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Native firearm persistence failed"
     assert "[OMHTT-Smoke] native-hybrid-persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Hybrid probe persistence failed"
     assert "[OMHTT-Smoke] native-migration staleSprite=repaired" in text, "Native migration failed"
     assert "[OMHTT-Smoke] native-bundles packed=5to1 unpacked=1to5 weight=6.6 xp=0 insufficient=blocked" in text, "Native bundle transactions failed"

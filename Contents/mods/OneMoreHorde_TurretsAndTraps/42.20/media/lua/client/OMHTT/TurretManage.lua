@@ -139,7 +139,7 @@ function Panel:refresh()
     end
     self.moduleEffects = getText("UI_OMHTT_ActiveModules", #active, profile.cone)
     self.fireButton:setEnable(status == "Ready")
-    self.unloadButton:setEnable(contents.ammo > 0)
+    self.unloadButton:setEnable(contents.reserveAll > 0)
     local capacity = stats.modules
     self.rows = math.max(2, math.ceil(math.max(contents.modules, capacity) / 5))
     self.moduleRow = math.min(self.moduleRow, self.rows - 2)
@@ -167,6 +167,12 @@ function Panel:refresh()
     end
     self.ammoSlot.label = getText("UI_OMHTT_ManageAmmo", contents.ammo, stats.ammo,
         cycle and cycle.loaded or 0, stats.magazine)
+    if stats.firearm then
+        local chamber = 0
+        if contents.head:isRoundChambered() then chamber = 1 end
+        self.ammoSlot.label = getText("UI_OMHTT_ManageGunAmmo", contents.ammo, stats.ammo,
+            contents.head:getCurrentAmmoCount(), tostring(stats.magazine) .. "+" .. tostring(chamber))
+    end
     local charge = getText("UI_OMHTT_None")
     if contents.battery then charge = tostring(math.floor(contents.battery:getCurrentUsesFloat() * 100)) .. "%" end
     self.batterySlot.label = getText("UI_OMHTT_ManageBattery", charge)

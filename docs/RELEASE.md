@@ -1,8 +1,8 @@
 # Release state and publication policy
 
-## Staged source: 0.2.20
+## Validated candidate: 0.2.20
 
-C68 destruction/item cleanup passes 2,416 assertions and native write/read checks (43.5/43.9 seconds), but not installed, tagged for release or packaged. Installed version remains 0.2.19.1. Owner waived a separate gameplay test and requests combination with the supported-firearm checkpoint. Scope/evidence: [0.2.20 cleanup](PATCH_v0.2.20.md); next proposed scope: [P5C1a](PHASE_5_CHECKPOINT_1A.md). No external publication or push.
+C68/C69 combine destruction/item cleanup with three actual firearm heads. 2,780 assertions, 47 runtime Lua files, 402 native translation keys and 120 package files pass. Native write/read checks pass in 97.2/95.4 seconds: all three gun mechanisms conserve ammo; exact item IDs, condition, battery charge, loaded magazine/chamber, cycle deadlines and pistol attachment survive fresh-process restore. Scope and limitations: [0.2.20](PATCH_v0.2.20.md), [P5C1a combined test](PHASE_5_CHECKPOINT_1A.md). Owner waived a standalone cleanup test. Installation pending; no external publication or push.
 
 ## Current local installation: 0.2.19.1
 

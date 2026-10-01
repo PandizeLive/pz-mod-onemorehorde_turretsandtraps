@@ -146,10 +146,12 @@ public final class KahluaCheck {
             {"_", "tools/tests/service_load_order_after.lua"},
             {"OMHTT/Damage", base + "server/OMHTT/Damage.lua"},
             {"OMHTT/TurretCycle", base + "shared/OMHTT/TurretCycle.lua"},
+            {"OMHTT/Firearms", base + "shared/OMHTT/Firearms.lua"},
             {"OMHTT/TurretStats", base + "shared/OMHTT/TurretStats.lua"},
             {"OMHTT/Turret", base + "shared/OMHTT/Turret.lua"},
             {"OMHTT/TurretModules", base + "shared/OMHTT/TurretModules.lua"},
             {"OMHTT/PrototypeCombat", base + "server/OMHTT/PrototypeCombat.lua"},
+            {"OMHTT/FirearmCombat", base + "server/OMHTT/FirearmCombat.lua"},
             {"OMHTT/BarrierSprites", base + "shared/OMHTT/BarrierSprites.lua"},
             {"OMHTT/BarrierFootprint", base + "server/OMHTT/BarrierFootprint.lua"},
             {"OMHTT/FoundationServer", base + "server/OMHTT/FoundationServer.lua"},
@@ -224,6 +226,7 @@ public final class KahluaCheck {
             {"_", "tools/tests/turret_preview_bootstrap.lua"},
             {"_", base + "client/OMHTT/TurretMenu.lua"},
             {"_", "tools/tests/turret_preview.lua"},
+            {"_", "tools/tests/firearms.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

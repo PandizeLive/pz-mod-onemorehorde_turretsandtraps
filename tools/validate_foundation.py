@@ -60,7 +60,7 @@ def main():
         "Occupied", "Blocked", "Limit", "Placed", "Conflict", "Changed", "Removed", "MPCombatDeferred",
         "WrongDevice", "Empty", "Cooling", "NoTarget", "Fired", "Refilled", "Aimed", "NotCompared", "WrongBarrier", "BarrierRotated",
     ])
-    keys.update("UI_OMHTT_Manage" + status for status in ['Drop', 'Hint', 'Head', 'Battery', 'Ammo', 'Modules', 'Module', 'Locked', 'ModulesHint', 'PowerNone', 'PowerExternal', 'PowerBattery', 'PowerDisabled', 'Stats', 'Timing', 'Fire', 'Unload', 'Queued', 'TransferMissing', 'TransferReach', 'CapacityFull', 'UnloadFirst', 'TransferFavorite', 'TransferWrongItem', 'TransferFull', 'TransferCarried', 'TransferPending', 'NoHead', 'NoPower', 'Empty', 'Ready', 'Cooling', 'Reloading', 'NoTarget', 'Fired', 'Unavailable', 'MPCombatDeferred', 'WrongDevice'])
+    keys.update("UI_OMHTT_Manage" + status for status in ['Drop', 'Hint', 'Head', 'Battery', 'Ammo', 'Modules', 'Module', 'Locked', 'ModulesHint', 'PowerNone', 'PowerExternal', 'PowerBattery', 'PowerDisabled', 'Stats', 'Timing', 'Fire', 'Unload', 'Queued', 'TransferMissing', 'TransferReach', 'CapacityFull', 'UnloadFirst', 'TransferFavorite', 'TransferWrongItem', 'TransferFull', 'TransferCarried', 'TransferPending', 'NoHead', 'NoPower', 'Empty', 'Ready', 'Cooling', 'Reloading', 'NoTarget', 'Fired', 'Unavailable', 'MPCombatDeferred', 'WrongDevice', 'Disabled', 'Jammed', 'NoMagazine', 'Racking', 'WrongAmmo'])
     keys.update("UI_OMHTT_Module" + name for name in ["Firing", "MotionDetection", "Filter", "Detection360"])
     keys.update("UI_OMHTT_Priority" + name for name in ["Closest", "Furthest", "Weakest", "Toughest"])
     keys.update(["UI_OMHTT_AutoOn", "UI_OMHTT_AutoOff"])
@@ -130,6 +130,15 @@ def main():
     files = {str(path.relative_to(PACKAGE)).replace("\\", "/"): hashlib.sha256(path.read_bytes()).hexdigest()
         for path in sorted(PACKAGE.rglob("*")) if path.is_file()}
     sources = [
+        "media/scripts/generated/items/weapon.txt",
+        "media/scripts/generated/models_weapons.txt",
+        "media/lua/shared/TimedActions/ISReloadWeaponAction.lua",
+        "media/lua/shared/TimedActions/ISInsertMagazine.lua",
+        "media/lua/shared/TimedActions/ISEjectMagazine.lua",
+        "media/lua/shared/TimedActions/ISRackFirearm.lua",
+        "zombie/inventory/types/HandWeapon.class",
+        "zombie/iso/objects/IsoBulletTracerEffects.class",
+
         "projectzomboid.jar", "zombie/iso/IsoObject.class", "zombie/core/Core.class",
         "media/lua/server/Map/SGlobalObjectSystem.lua", "media/lua/server/Camping/SCampfireGlobalObject.lua",
         "media/lua/server/Vehicles/ProfessionVehicles.lua", "media/lua/server/ClientCommands.lua",

@@ -2,6 +2,7 @@ local F = require("OMHTT/Foundation")
 local D = require("OMHTT/Diagnostics")
 local Cycle = require("OMHTT/TurretCycle")
 local Stats = require("OMHTT/TurretStats")
+local G = require("OMHTT/Firearms")
 OMHTT_Turret = {}
 local T = OMHTT_Turret
 T.BASE = "Base.OMHTTTurretBase"
@@ -43,13 +44,21 @@ end
 ---@nodiscard
 function T.enabled()
     local options = SandboxVars.OMHTurretsTraps
-    return options ~= nil and options.Enabled ~= false and options.PotatoTurret ~= false
+    return options ~= nil and options.Enabled ~= false
 end
 
 ---@return boolean enabled Native opaque world pass, no loose head object
 ---@nodiscard
 function T.hybrid()
     return not isClient() and not isServer() and getCore():isOption3DGroundItem()
+end
+
+---@param head InventoryItem? Installed head
+---@return number degreesPerSecond
+---@nodiscard
+function T.turnSpeed(head)
+    if G.profile(head) then return Stats.option("FirearmTurnSpeed", 90, 1, 360) end
+    return T.option("TurnSpeed", 90, 1, 360)
 end
 
 ---@param contents table? Native inventory summary
@@ -65,6 +74,8 @@ end
 ---@return string status
 function T.cycle(contents, now)
     if not contents.head then return nil, "NoHead" end
+    if G.profile(contents.head) then return G.update(contents, T.cycleConfig(contents), now, false) end
+    if SandboxVars.OMHTurretsTraps.PotatoTurret == false then return nil, "Disabled" end
     local data = contents.head:getModData()
     if not data.OMHTTCycle then data.OMHTTCycle = {schema = 1, loaded = 0, nextShot = 0} end
     local state = data.OMHTTCycle
@@ -76,8 +87,8 @@ end
 ---@nodiscard
 function T.kind(item)
     local fullType = item:getFullType()
-    if fullType == T.HEAD then return "head" end
-    if fullType == "Base.Potato" then return "ammo" end
+    if fullType == T.HEAD or G.profile(item) then return "head" end
+    if fullType == "Base.Potato" or G.AMMO[fullType] then return "ammo" end
     if fullType == "Base.CarBattery1" or fullType == "Base.CarBattery2" or fullType == "Base.CarBattery3" then return "battery" end
     local module = T.component(fullType)
     if module == "Capacity" or module == "CapacitySmall" or module == "CapacityLarge" then return "capacity" end
@@ -89,15 +100,15 @@ end
 ---@return table summary Actual inventory contents
 ---@nodiscard
 function T.contents(container)
-    local result = {ammo = 0, modules = 0, capacities = 0, heads = 0, batteries = 0, invalid = 0, moduleNames = {}, active = {}, weight = 0}
+    local result = {reserve = 0, reserveAll = 0, rounds = {}, ammo = 0, modules = 0, capacities = 0, heads = 0, batteries = 0, invalid = 0, moduleNames = {}, active = {}, weight = 0}
     local items = container:getItems()
     for i = 0, items:size() - 1 do
         local item = items:get(i)
         local kind = T.kind(item)
         result.weight = result.weight + item:getActualWeight()
         if kind == "ammo" then
-            result.ammo = result.ammo + 1
-            if not result.round then result.round = item end
+            result.rounds[#result.rounds + 1] = item
+            result.reserveAll = result.reserveAll + 1
         elseif kind == "head" then
             result.heads = result.heads + 1
             result.head = item
@@ -119,6 +130,19 @@ function T.contents(container)
             result.invalid = result.invalid + 1
         end
     end
+    local ammoType = "Base.Potato"
+    if G.profile(result.head) then ammoType = G.ammoType(result.head) end
+    for i = 1, #result.rounds do
+        local round = result.rounds[i]
+        if round:getFullType() == ammoType then
+            result.reserve = result.reserve + 1
+            if not result.round then result.round = round end
+        else
+            result.invalid = result.invalid + 1
+        end
+    end
+    result.ammo = result.reserve
+    if G.profile(result.head) then result.ammo = result.ammo + G.loaded(result.head) end
     return result
 end
 
@@ -140,11 +164,22 @@ function T.accept(container, item)
     if not kind then return false end
     if container:contains(item) then return true end
     local contents = T.contents(container)
-    if kind == "head" then return contents.heads == 0 end
+    if kind == "head" then
+        if contents.heads > 0 or contents.reserveAll > 0 then return false end
+        if G.profile(item) then
+            contents.head = item
+            return G.loaded(item) <= Stats.resolve(contents).ammo
+        end
+        return true
+    end
     if kind == "battery" then return contents.batteries == 0 end
     if kind == "capacity" then return contents.capacities == 0 end
     local stats = Stats.resolve(contents)
-    if kind == "ammo" then return contents.heads == 1 and contents.ammo < stats.ammo end
+    if kind == "ammo" then
+        local ammoType = "Base.Potato"
+        if G.profile(contents.head) then ammoType = G.ammoType(contents.head) end
+        return contents.heads == 1 and item:getFullType() == ammoType and contents.ammo < stats.ammo
+    end
     return contents.modules < stats.modules
 end
 
@@ -155,7 +190,7 @@ end
 function T.canRemove(container, item)
     if not T.isContainer(container) then return true end
     local contents = T.contents(container)
-    if T.kind(item) == "head" then return contents.ammo == 0 end
+    if T.kind(item) == "head" then return contents.reserveAll == 0 end
     if T.kind(item) == "capacity" and item:getCondition() > 0 then
         contents.active.Capacity, contents.active.CapacitySmall, contents.active.CapacityLarge = nil, nil, nil
         if contents.capacities > 1 then

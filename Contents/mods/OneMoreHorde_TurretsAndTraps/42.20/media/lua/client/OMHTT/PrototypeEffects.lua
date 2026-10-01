@@ -25,7 +25,7 @@ end
 ---@param facts table Shot facts; target reference is local SP only
 ---@return nil
 function E.receive(module, command, facts)
-    if module ~= F.MODULE or (command ~= "Launch" and command ~= "Impact") then return end
+    if module ~= F.MODULE or (command ~= "Launch" and command ~= "Impact" and command ~= "GunShot") then return end
     local effect = nil
     for i = 1, #E.effects do
         local entry = E.effects[i]
@@ -41,16 +41,17 @@ function E.receive(module, command, facts)
     effect.x, effect.y, effect.z = facts.x, facts.y, facts.z
     effect.fromX, effect.fromY, effect.flight = facts.fromX, facts.fromY, facts.flight or 0
     effect.target, effect.missed = facts.target, facts.missed
-    if command == "Launch" then
+    effect.firearm = facts.firearm == true
+    if command == "Launch" or command == "GunShot" then
         effect.start = facts.start or effect.start
         local dx, dy = facts.x - facts.fromX, facts.y - facts.fromY
         local distance = math.sqrt(dx * dx + dy * dy)
         if distance > 0 then
-            local forward = math.min(T.HEAD_VISUAL.muzzle * T.HEAD_VISUAL.scale * 1.5, distance / 2)
+            local forward = math.min(facts.muzzle or T.HEAD_VISUAL.muzzle * T.HEAD_VISUAL.scale * 1.5, distance / 2)
             effect.fromX = facts.fromX + dx / distance * forward
             effect.fromY = facts.fromY + dy / distance * forward
         end
-        E.sound("OMHTTPotatoFire", effect.fromX, effect.fromY, facts.z)
+        E.sound(facts.sound or "OMHTTPotatoFire", effect.fromX, effect.fromY, facts.z)
     else
         E.sound("OMHTTPotatoImpact", facts.x, facts.y, facts.z)
     end
@@ -89,7 +90,7 @@ function E.render()
     for i = #E.effects, 1, -1 do
         local effect = E.effects[i]
         local elapsed = now - effect.start
-        if (effect.phase == "Impact" and elapsed >= 450) or elapsed > effect.flight + 10000 then
+        if (effect.phase == "Impact" and elapsed >= 450) or (effect.firearm and elapsed >= 100) or elapsed > effect.flight + 10000 then
             table.remove(E.effects, i)
         else
             for index = 0, getNumActivePlayers() - 1 do
@@ -111,7 +112,10 @@ function E.render()
                         height = 0.32 + (height - 0.32) * fraction
                     end
                     local x, y = E.screen(wx, wy, effect.z + height, index)
-                    if effect.phase == "Launch" then
+                    if effect.firearm then
+                        local sx, sy = E.screen(effect.fromX, effect.fromY, effect.z + T.HEAD_VISUAL.height, index)
+                        canvas:drawLine(sx, sy, x, y, 1 - elapsed / 100, 0.9, 0.85, 0.65)
+                    elseif effect.phase == "Launch" then
                         local size = math.max(4, 6 / zoom)
                         canvas:drawRect(x - size / 2, y - size / 2, size, size * 0.75, 1, 0.55, 0.32, 0.13)
                     else
