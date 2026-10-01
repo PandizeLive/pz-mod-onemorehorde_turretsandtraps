@@ -1,8 +1,8 @@
 # Release state and publication policy
 
-## Current candidate: 0.2.21
+## Current local installation: 0.2.21
 
-[C70 firearm/Manage repair](PATCH_v0.2.21.md) addresses the [partial 0.2.20 test](TEST_v0.2.20.md). 2,814 assertions, 48 Lua files, 411 native translations and 123 package files pass. Native write/read checks passed in 68.2/70.0 seconds with magazine/chamber conservation and actual gun/supply restoration. Native gun-pose matrices and support import pass; GPU pose, service interaction and frame smoothness remain pending. Architecture review is recorded in ARCHITECTURE.md. Local commit/tag/install verification is the next release step; no publication or push.
+[C70 firearm/Manage repair](PATCH_v0.2.21.md) addresses the [partial 0.2.20 test](TEST_v0.2.20.md). 2,814 assertions, 48 Lua files, 411 native translations and 123 package files pass. Native write/read checks passed in 68.2/70.0 seconds with magazine/chamber conservation and actual gun/supply restoration. Native gun-pose matrices and support import pass; GPU pose, service interaction and frame smoothness remain pending. Architecture review is recorded in ARCHITECTURE.md. Installed from annotated `test/v0.2.21` (`0a995b7`). [Evidence](../diagnostics/v0.2.21/local-release.json) verifies all 123 source/tag/installed/archive files and all 120 previous-version backup files. [Archive](../artifacts/OMHTT-0.2.21.zip). No publication or push.
 
 ## Previous local installation: 0.2.20
 

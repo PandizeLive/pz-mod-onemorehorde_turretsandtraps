@@ -29,3 +29,5 @@ Kahlua/native projection checks: 2,814 assertions, 48 Lua files, 411 translation
 5. Leave a loaded firearm, modules and battery installed; note counts/charge, pick up/redeploy, then save/reload. Confirm contents remain. Check a potato turret still shows its brown delayed projectile/splat. Report test complete for log review.
 
 These steps cover the repair and carry the unfinished 0.2.20 mechanism/persistence checks forward; earlier unperformed checks are not marked passed. Rollback: annotated test/v0.2.20 and the installer's complete previous-folder backup. No Workshop content upload exists; cumulative notes remain pending.
+
+Installed from annotated `test/v0.2.21` (`0a995b7`). The 123-file source/tag/install/archive match and complete 120-file 0.2.20 backup are recorded in [release evidence](../diagnostics/v0.2.21/local-release.json).

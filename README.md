@@ -1,6 +1,6 @@
 # OMH: Turrets & Traps
 
-Project foundation created 2026-09-25. **0.2.21 repair candidate:** [mounted guns and magazine management](docs/PATCH_v0.2.21.md). Fixes the partial 0.2.20 test: upright guns with a white technical mount, timed native magazine servicing, red missing requirements, reserve-preserving head swaps and firearm tracer errors. [Architecture review](docs/ARCHITECTURE.md) records the current SP boundary and remaining Horde Night alignment work. Exact [installation evidence](docs/RELEASE.md) is separate from rendered acceptance. No Workshop release exists.
+Project foundation created 2026-09-25. **Installed 0.2.21:** [mounted guns and magazine management](docs/PATCH_v0.2.21.md). Fixes the partial 0.2.20 test: upright guns with a white technical mount, timed native magazine servicing, red missing requirements, reserve-preserving head swaps and firearm tracer errors. [Architecture review](docs/ARCHITECTURE.md) records the current SP boundary and remaining Horde Night alignment work. Exact [installation evidence](docs/RELEASE.md) is separate from rendered acceptance. No Workshop release exists.
 
 One edition with a Sandbox toggle menu. The planned mod adds maintainable defensive equipment to Project Zomboid Build 42, with optional Horde Night, Trait Shop, and Cure Defense integrations. Recheck the installed game build before implementing any engine-dependent behavior.
 

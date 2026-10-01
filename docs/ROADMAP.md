@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-**Current candidate: [0.2.21 firearm/Manage repair](PATCH_v0.2.21.md).** The owner completed only part of 0.2.20; repair gun pose, magazine servicing, requirements feedback, head swapping and native tracer errors before continuing. See RELEASE.md for exact installation status.
+**Installed: [0.2.21 firearm/Manage repair](PATCH_v0.2.21.md).** The owner completed only part of 0.2.20; repair gun pose, magazine servicing, requirements feedback, head swapping and native tracer errors before continuing. See RELEASE.md for exact installation status.
 
 **Previous: [0.2.19.1 correction](PATCH_v0.2.19.1.md).** C67 fixes exposed compatibility duplicates, starts the potato visual at the barrel tip and removes redundant firing work with bounded diagnostic output. Owner reports the rest of 0.2.19 worked well. Install status: RELEASE.md.
 
