@@ -1,0 +1,7 @@
+Native animation parser: two strike markers matched, SetVariable bindings resolved
+Native JSON translation loading and substitution: 411 keys passed
+Kahlua compilation: 48 runtime/translation files passed
+Native packet serialization: 23 packets; largest=390 bytes
+Assertions passed: 2814.0
+World/player/network/UI objects were test doubles; in-game acceptance remains pending.
+Failed to load file Guid table.

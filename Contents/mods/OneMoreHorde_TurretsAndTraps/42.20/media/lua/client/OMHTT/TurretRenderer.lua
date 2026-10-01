@@ -18,6 +18,9 @@ function R.changed(object, head)
     end
     local entry = R.entries[object] or {}
     entry.head, entry.profile = head, M.profile(T.state(object), T.contents(object:getContainer()))
+    if G.profile(head) and not entry.support then
+        entry.support = instanceItem("Base.OMHTTGunSupportVisual")
+    end
     R.entries[object] = entry
 end
 
@@ -99,8 +102,20 @@ function R.render(playerIndex)
                 local heading = R.heading(object)
                 local yaw = (360 - heading) % 360
                 local profile = G.profile(entry.head)
-                if profile then yaw = (yaw + profile.yaw) % 360 end
-                Render3DItem(entry.head, square, square:getX() + 0.5, square:getY() + 0.5, square:getZ() + R.headHeight, yaw)
+                if profile then
+                    local head = entry.head
+                    local oldX, oldY, oldZ = head:getWorldXRotation(), head:getWorldYRotation(), head:getWorldZRotation()
+                    head:setWorldXRotation(profile.roll)
+                    head:setWorldYRotation(yaw)
+                    head:setWorldZRotation(0)
+                    Render3DItem(entry.support, square, square:getX() + 0.5, square:getY() + 0.5, square:getZ() + R.headHeight, yaw)
+                    Render3DItem(head, square, square:getX() + 0.5, square:getY() + 0.5, square:getZ() + R.headHeight + 0.1, -1)
+                    head:setWorldXRotation(oldX)
+                    head:setWorldYRotation(oldY)
+                    head:setWorldZRotation(oldZ)
+                else
+                    Render3DItem(entry.head, square, square:getX() + 0.5, square:getY() + 0.5, square:getZ() + R.headHeight, yaw)
+                end
             end
         end
     end

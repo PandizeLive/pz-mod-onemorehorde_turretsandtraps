@@ -52,7 +52,7 @@ function C.hit(record, origin, target, player, options)
         magazine = gun:getCurrentAmmoCount(), chamber = gun:isRoundChambered(), ms = getTimestampMs() - started})
     return {id = record.id, shot = record.shots, x = target:getX(), y = target:getY(), z = origin:getZ(),
         fromX = origin:getX() + 0.5, fromY = origin:getY() + 0.5, sound = gun:getSwingSound(),
-        muzzle = G.profile(gun).muzzle * 1.5, firearm = true, missed = hits == 0}
+        muzzle = G.profile(gun).muzzle * 1.5, muzzleHeight = require("OMHTT/Turret").HEAD_VISUAL.height + 0.1, firearm = true, missed = hits == 0}
 end
 
 return C

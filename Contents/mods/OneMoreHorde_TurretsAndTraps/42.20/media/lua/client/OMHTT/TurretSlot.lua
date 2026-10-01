@@ -21,9 +21,13 @@ end
 ---@param y number Local mouse Y
 ---@return boolean handled
 function Slot:onMouseDown(x, y)
+    if self.kind == "magazine" then
+        if #self.items > 0 then self.owner:feedback(0, "EjectMagazine") end
+        return true
+    end
     if #self.items == 0 then return true end
     if not T.canRemove(self.owner.object:getContainer(), self.items[1]) then
-        self.owner:feedback(0, self.kind == "capacity" and "CapacityFull" or "UnloadFirst")
+        self.owner:feedback(0, self.kind == "capacity" and "CapacityFull" or "Servicing")
         return true
     end
     self:hideTooltip()
@@ -40,6 +44,8 @@ function Slot:onMouseUp(x, y)
         local items = ISInventoryPane.getActualItems(ISMouseDrag.dragging)
         if self.disabled then
             self.owner:feedback(0, "TransferFull")
+        elseif self.kind == "magazine" then
+            self.owner:magazine(items[1])
         else
             self.owner:transfer(items, true, self.kind)
         end
@@ -56,7 +62,11 @@ end
 ---@param y number Local mouse Y
 ---@return boolean handled
 function Slot:onRightMouseUp(x, y)
-    self.owner:transfer(self.items, false, self.kind)
+    if self.kind == "magazine" then
+        self.owner:magazine(nil)
+    else
+        self.owner:transfer(self.items, false, self.kind)
+    end
     self:clearDrag()
     return true
 end
@@ -84,9 +94,11 @@ end
 function Slot:prerender()
     ISPanel.prerender(self)
     local h = self.owner.lineHeight
-    self:drawText(self.label, 8, 4, 0.8, 0.8, 0.8, 1, UIFont.Small)
+    local red, green = self.missing and 1 or 0.8, self.missing and 0.3 or 0.8
+    self:drawText(self.label, 8, 4, red, green, green, 1, UIFont.Small)
+    if self.missing then self:drawRectBorder(0, 0, self.width, self.height, 1, 1, 0.3, 0.3) end
     local item = self.items[1]
-    local name = getText("UI_OMHTT_ManageDrop")
+    local name = self.emptyText or getText("UI_OMHTT_ManageDrop")
     if item then
         if self.kind == "module" then
             ISInventoryItem.renderItemIcon(self, item, self.width / 2 - 8, h + 2, 1, 16, 16)

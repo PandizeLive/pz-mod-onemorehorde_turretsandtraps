@@ -42,6 +42,7 @@ function E.receive(module, command, facts)
     effect.fromX, effect.fromY, effect.flight = facts.fromX, facts.fromY, facts.flight or 0
     effect.target, effect.missed = facts.target, facts.missed
     effect.firearm = facts.firearm == true
+    effect.muzzleHeight = facts.muzzleHeight or T.HEAD_VISUAL.height
     if command == "Launch" or command == "GunShot" then
         effect.start = facts.start or effect.start
         local dx, dy = facts.x - facts.fromX, facts.y - facts.fromY
@@ -113,8 +114,8 @@ function E.render()
                     end
                     local x, y = E.screen(wx, wy, effect.z + height, index)
                     if effect.firearm then
-                        local sx, sy = E.screen(effect.fromX, effect.fromY, effect.z + T.HEAD_VISUAL.height, index)
-                        canvas:drawLine(sx, sy, x, y, 1 - elapsed / 100, 0.9, 0.85, 0.65)
+                        local sx, sy = E.screen(effect.fromX, effect.fromY, effect.z + effect.muzzleHeight, index)
+                        canvas:drawLine(nil, sx, sy, x, y, math.max(1, 1 / zoom), 1 - elapsed / 100, 0.9, 0.85, 0.65)
                     elseif effect.phase == "Launch" then
                         local size = math.max(4, 6 / zoom)
                         canvas:drawRect(x - size / 2, y - size / 2, size, size * 0.75, 1, 0.55, 0.32, 0.13)

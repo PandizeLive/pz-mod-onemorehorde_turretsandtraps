@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-**Installed: [0.2.20 combined patch](PATCH_v0.2.20.md).** C68/C69 implement removed legacy definitions, destroyed-base salvage and the [early P5C1a supported-firearm mount](PHASE_5_CHECKPOINT_1A.md). Automated/native checks pass; installed status is in RELEASE.md. One combined owner test remains, with no separate cleanup round.
+**Current candidate: [0.2.21 firearm/Manage repair](PATCH_v0.2.21.md).** The owner completed only part of 0.2.20; repair gun pose, magazine servicing, requirements feedback, head swapping and native tracer errors before continuing. See RELEASE.md for exact installation status.
 
 **Previous: [0.2.19.1 correction](PATCH_v0.2.19.1.md).** C67 fixes exposed compatibility duplicates, starts the potato visual at the barrel tip and removes redundant firing work with bounded diagnostic output. Owner reports the rest of 0.2.19 worked well. Install status: RELEASE.md.
 
@@ -10,7 +10,7 @@
 
 **Previous: [P2C3d2 active stat modules, 0.2.17](PHASE_2_CHECKPOINT_3D2.md).** C63 approves implementation and Reload stacking. Rapid-Fire, Reload, Velocity and Range stack; Capacity has one dedicated socket; Autoloader removes reload delay. Shared effective stats, safe storage, grouped tuning and loot are implemented. Verification/install status is in RELEASE.md. Carry the entire held 0.2.16.1 test into the eight-step combined owner test; no rendered acceptance is implied.
 
-**Next acceptance gate: [P5C1a combined test](PHASE_5_CHECKPOINT_1A.md), implemented with C68 cleanup in 0.2.20.** Owner approved moving the firearm prototype ahead of P2C3e multiplayer: prove a vanilla pistol, pump shotgun and bolt-action rifle on the universal base. Owner now reports the 0.2.19.1 test seems to work well; retain unmeasured performance limits. P2C3e multiplayer/performance certification remains required before enabling multiplayer; broad firearm compatibility and crafting stay later work.
+**Next acceptance gate: [0.2.21 combined repair test](PATCH_v0.2.21.md).** Carry unfinished P5C1a checks forward. P2C3e multiplayer/performance remains required before enabling MP; include the shared aggregate-budget and clock audit in ARCHITECTURE.md. Broad firearm compatibility, recipes and planned trap roster remain later work.
 
 **Current: [P2C3a-c — modular potato turret foundation, 0.2.9](PHASE_2_CHECKPOINT_3.md).** C48-C50 approve inventory/persistence, revised metal recipes, native deployment and powered manual firing. Combine player acceptance with the held P2C2b test. Module storage is implemented; P2C3d adds module effects and P2C3e proves multiplayer/performance. Version 0.2.9 is installed and archived, with exact tagged hashes and a verified 0.2.8 backup recorded in RELEASE.md. Native furniture Install/Pickup stays deferred.
 
@@ -74,7 +74,7 @@ The owner selected native construction in the building menu on 2026-09-26 and re
 | P2C3b | Five recipes, native deployment and ten-second pickup | P2C3a; approved metal recipe/skills/tools/XP | Equal complete/separate costs; no deployment XP; invalid/cancelled placement preserves item; all directions save correctly |
 | P2C3c | Powered manual potato firing and categorized settings/diagnostics | P2C3a-b | Real potatoes, battery or valid external source; fuel/charge spent once; blocked/cooling/no-target shots spend nothing |
 | P2C3d | Firing/Detection/Filter then Rapid-Fire/Velocity/Range/Capacity/360 module effects | P2C3a-c; numerical bonuses and module recipes need review | Inventory-driven changes, approved stacking, capacity removal safeguards, target/obstruction budgets |
-| P2C3e | Multiplayer authority and performance gate | P2C3a-d; existing P1/P2 evidence | Dedicated two-player transactions, save/reconnect, consistent shots/deaths, density measurements |
+| P2C3e | Multiplayer authority and performance gate | P2C3a-d; existing P1/P2 evidence | Dedicated two-player transactions, save/reconnect, consistent shots/deaths, aggregate work budget, pause/fast-forward clocks, density measurements |
 | P2C4 | Concertina movement feasibility; initial content balance pass | P2C2-P2C3 | Speed restored on exit/death/unload; mod interaction reviewed; solo/pair/combo and unattended loaded-area comparisons |
 
 Exit: a candidate standalone playable set, not a public compatibility claim. Concertina may remain deferred if its movement proof fails; do not replace slowing with a different mechanic silently.
@@ -103,7 +103,7 @@ P3 does not implement virtual combat. Real kills can reward offline faction memb
 
 | ID | Deliverable | Dependencies | Acceptance evidence |
 | --- | --- | --- | --- |
-| P5C1a (early slice) | [Supported-firearm mount prototype](PHASE_5_CHECKPOINT_1A.md) | C64 moves feasibility before P2C3e; concrete implementation approval pending | Three vanilla mechanisms, actual gun/ammo identity, shared modules, bounded targeting and persistence |
+| P5C1a (early slice) | [Supported-firearm mount prototype](PHASE_5_CHECKPOINT_1A.md) | C64/C69 approve early prototype; C70 repairs partial test | Three vanilla mechanisms, actual gun/ammo identity, shared modules, bounded targeting and persistence |
 | P5C1 | Swappable firearm head feasibility, native attack/reload reuse, Reload and Autoloader modules | P4; prove native firing feasibility before choosing adapters | Preserve actual gun/chamber/magazine/condition; no blanket modded-gun compatibility; category fallbacks only where needed; Reload shortens reload, Autoloader removes reload delay without removing shot cadence |
 | P5C2 | Explosive device prototype and gameplay decision | P5C1; explosive defaults/collateral confirmed | Range/obstruction/target limits, collateral, resource transaction, large-crowd effect/network budget |
 | P5C3 | Complete loaded-combat tuning and release gate | P5C1-P5C2 plus prior relevant regressions | Content switches and score classification reviewed; packaged assets/recipes/translations verified; release baseline and limitations documented |

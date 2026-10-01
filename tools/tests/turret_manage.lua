@@ -79,7 +79,8 @@ check(completed and not inventory.visible and not inventory.pinned, "Manage leav
 local panel = testTurretPanel
 panel:prerender()
 check(not panel.fireButton.enabled and panel.status == "NoHead", "Empty base cannot fire")
-check(#panel.slots == 14 and panel.height <= 720 and panel.x >= 0, "Dedicated slots and controls fit 1280x720")
+check(#panel.slots == 15 and panel.height <= 720 and panel.x >= 0, "Dedicated slots and controls fit 1280x720")
+check(panel.headSlot.missing and panel.magazineSlot.disabled and not panel.magazineSlot.missing, "Empty base highlights head without inventing a magazine requirement")
 for i = 1, #panel.slots do panel.slots[i]:prerender() end
 panel:fire()
 check(fired == 1 and panel.result == getText("UI_OMHTT_ManageNoTarget"), "Manual fire uses existing validation")
@@ -114,7 +115,8 @@ check(count == 0, "Pending batch reserves remaining capacity")
 for i = 1, #actions do actions[i]:transferItem(actions[i].item) end
 check(T.contents(storage).ammo == 2 and carried:contains(potato3), "Excess ammo stays carried")
 count, reason = X.queue(player, object, {head}, false, "head")
-check(count == 0 and reason == "UnloadFirst", "Loaded head cannot be removed")
+check(count == 1 and reason == nil, "Head can be recovered while reserve remains")
+actions = {}
 local invalid = item("Base.Plank"); carried:AddItem(invalid)
 count, reason = X.queue(player, object, {invalid}, true, "ammo")
 check(count == 0, "Wrong items never enter turret")
@@ -123,13 +125,23 @@ check(X.rejection(player, potato3, carried, storage) == "TransferFavorite", "Fav
 potato3.favorite = false
 panel:refresh()
 check(#panel.ammoSlot.items == 2 and panel.batterySlot.items[1] == battery, "Slots expose actual container items")
+check(not panel.headSlot.missing and not panel.batterySlot.missing and panel.modulesMissing, "Automation highlights missing modules, available power remains normal")
+check(panel.magazineSlot.disabled and not panel.magazineSlot.missing, "Potato uses an internal magazine")
+W.power = function() return nil end
+panel:refresh()
+check(panel.batterySlot.missing, "No usable power highlights the battery")
+W.power = function() return {kind = "external"} end
+panel:refresh()
+check(not panel.batterySlot.missing, "External power clears the battery warning")
+W.power = function() return {kind = "battery"} end
 local flattened = ISInventoryPane.getActualItems({{items = {potato3, potato3, invalid}}, potato3})
 check(#flattened == 2 and flattened[1] == potato3 and flattened[2] == invalid, "Native stack expansion excludes display duplicate and repeated selected child")
 ISMouseDrag.dragging, ISMouseDrag.draggingFocus = {invalid}, {onMouseUp = function() end}
 panel.ammoSlot:onMouseUp(1, 1)
 check(ISMouseDrag.dragging == nil and carried:contains(invalid), "Rejected drag clears without moving item")
 panel.headSlot:onMouseDown(1, 1)
-check(ISMouseDrag.dragging == nil, "Loaded head cannot start drag out")
+check(ISMouseDrag.dragging[1] == head, "Head drag keeps actual identity despite reserve")
+panel.headSlot:clearDrag()
 actions = {}
 panel:unload()
 check(#actions == 2 and T.contents(storage).ammo == 2, "Unload uses timed actions, not direct removal")
@@ -211,6 +223,59 @@ expansion.condition = 100
 local removal = ISInventoryTransferAction:new(player, expansion, storage, carried)
 removal:transferItem(expansion)
 check(storage:contains(expansion), "Commit rechecks over-capacity removal")
+-- Real slot interaction with a detachable-magazine head.
+local pistol = item("Base.Pistol")
+pistol.clip, pistol.ammo = false, 0
+function pistol:getMagazineType() return "Base.9mmClip" end
+function pistol:getAmmoType() return {getItemKey = function() return "Base.Bullets9mm" end} end
+function pistol:getCurrentAmmoCount() return self.ammo end
+function pistol:setCurrentAmmoCount(value) self.ammo = value end
+function pistol:isContainsClip() return self.clip end
+function pistol:setContainsClip(value) self.clip = value end
+function pistol:isRoundChambered() return false end
+function pistol:isJammed() return false end
+function pistol:haveChamber() return true end
+function pistol:isRackAfterShoot() return false end
+function pistol:getMaxAmmo() return 15 end
+function pistol:getMinDamage() return .6 end
+function pistol:getMaxDamage() return 1 end
+function pistol:getMaxRange() return 15 end
+function pistol:getRecoilDelay() return 12 end
+function pistol:getHitChance() return 50 end
+function pistol:getAimingPerkHitChanceModifier() return 4 end
+storage:Remove(head); storage:AddItem(pistol)
+panel:refresh()
+check(panel.magazineSlot.missing and not panel.magazineSlot.disabled and panel.status == "NoMagazine", "Pistol exposes missing detachable magazine")
+local magazine = item("Base.9mmClip")
+function magazine:getCurrentAmmoCount() return 7 end
+function magazine:setCurrentAmmoCount(value) self.rounds = value end
+carried:AddItem(magazine)
+actions = {}
+ISMouseDrag.dragging, ISMouseDrag.draggingFocus = {magazine}, {onMouseUp = function() end}
+panel.magazineSlot:onMouseUp(1, 1)
+check(#actions == 1 and actions[1].magazine == magazine and carried:contains(magazine), "Magazine drop queues service without immediate consumption")
+local count, reason = require("OMHTT/TurretMagazineAction").queue(player, object, magazine)
+check(count == 0 and reason == "TransferPending", "Duplicate queued magazine service is rejected")
+local oldInstance = instanceItem
+instanceItem = function(fullType) check(fullType == "Base.9mmClip", "Only matching magazine icon is requested"); return magazine end
+pistol.clip, pistol.ammo = true, 7
+panel:refresh()
+check(not panel.magazineSlot.missing and panel.magazineSlot.items[1] == magazine, "Installed magazine clears warning and shows native ammo state")
+ISMouseDrag.dragging = nil
+panel.magazineSlot:onMouseDown(1, 1)
+check(ISMouseDrag.dragging == nil, "Presentation-only magazine cannot be dragged as a duplicate")
+actions = {}
+panel.magazineSlot:onRightMouseUp(1, 1)
+check(#actions == 1 and actions[1].magazine == nil, "Right-click queues native magazine ejection")
+instanceItem = oldInstance
+local aim, search = require("OMHTT/TurretAim"), require("OMHTT/TurretSearch")
+aim.entries[object], search.pending[object] = {}, {}
+local reserveBefore = T.contents(storage).reserveAll
+ISInventoryTransferAction:new(player, pistol, storage, carried):transferItem(pistol)
+check(carried:contains(pistol) and pistol.ammo == 7 and T.contents(storage).reserveAll == reserveBefore,
+    "Removing loaded gun preserves both gun ammunition and stored reserve")
+check(aim.entries[object] == nil and search.pending[object].cancelled, "Head removal cancels old aiming and pending manual search")
+search.pending[object] = nil
 reachable = false
 local action = ISInventoryTransferAction:new(player, battery, storage, carried)
 check(not action:isValid(), "Native outgoing drag revalidates turret reach")

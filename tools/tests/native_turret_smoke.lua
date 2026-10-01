@@ -124,7 +124,7 @@ local function verifyTurrets()
     inventory:AddItem("Base.OMHTTModuleRapidFire")
     inventory:AddItem("Base.OMHTTModuleRapidFire")
     local contents = T.contents(inventory)
-    assert(contents.ammo == 1 and contents.modules == 2 and not T.canRemove(inventory, contents.head), "Inventory classification/removal guard failed")
+    assert(contents.ammo == 1 and contents.modules == 2 and T.canRemove(inventory, contents.head), "Inventory classification/removal guard failed")
     assert(math.abs(packed:getUnequippedWeight() - packed:getActualWeight() - inventory:getContentsWeight()) < 0.001, "Packed weight omits or duplicates contents")
     local baseStats = T.cycleConfig()
     local expansion = instanceItem("Base.OMHTTExpansionKitMedium")
@@ -289,6 +289,43 @@ local function verifyTurrets()
         savedGuns:add(base)
     end
     OMHTT_NativeFirearms = savedGuns
+    local magazineStorage = instanceItem(T.BASE):getInventory()
+    local pistol = magazineStorage:AddItem("Base.Pistol")
+    pistol:setContainsClip(false)
+    pistol:setRoundChambered(true)
+    pistol:setCurrentAmmoCount(0)
+    local magazine = player:getInventory():AddItem("Base.9mmClip")
+    magazine:setCurrentAmmoCount(7)
+    local token = {}
+    assert(Guns.transferMagazine(player, magazineStorage, pistol, magazine, token) == magazine, "Native magazine insertion failed")
+    assert(not player:getInventory():contains(magazine) and pistol:isContainsClip() and Guns.loaded(pistol) == 8,
+        "Insertion lost/duplicated ammunition or chamber")
+    assert(not Guns.transferMagazine(player, magazineStorage, pistol, magazine, token), "Repeated insertion accepted")
+    local recovered = Guns.transferMagazine(player, magazineStorage, pistol, nil, token)
+    assert(recovered and player:getInventory():contains(recovered) and recovered:getCurrentAmmoCount() == 7
+        and not pistol:isContainsClip() and Guns.loaded(pistol) == 1, "Ejection lost native magazine/chamber state")
+    assert(not Guns.transferMagazine(player, magazineStorage, pistol, nil, token), "Repeated ejection duplicated a magazine")
+    local wrong = player:getInventory():AddItem("Base.Potato")
+    assert(Guns.magazineRejection(player, magazineStorage, pistol, wrong, token) == "WrongMagazine", "Wrong item reached magazine methods")
+    recovered:setFavorite(true)
+    assert(Guns.magazineRejection(player, magazineStorage, pistol, recovered, token) == "TransferFavorite", "Favorite magazine consumed")
+    recovered:setFavorite(false)
+    local capacity = SandboxVars.OMHTurretsTraps.FirearmAmmoCapacity
+    SandboxVars.OMHTurretsTraps.FirearmAmmoCapacity = 7
+    assert(Guns.magazineRejection(player, magazineStorage, pistol, recovered, token) == "TransferFull", "Magazine bypassed total capacity")
+    SandboxVars.OMHTurretsTraps.FirearmAmmoCapacity = capacity
+    Guns.servicing[pistol] = token
+    local _, servicing = Guns.update(T.contents(magazineStorage), T.cycleConfig(T.contents(magazineStorage)), getTimestampMs(), true)
+    assert(servicing == "Servicing" and not T.canRemove(magazineStorage, pistol), "Active magazine service allowed feeding/head removal")
+    assert(Guns.magazineRejection(player, magazineStorage, pistol, recovered, {}) == "TransferPending", "Competing magazine action accepted")
+    Guns.servicing[pistol] = nil
+    magazineStorage:Remove(pistol)
+    assert(Guns.magazineRejection(player, magazineStorage, pistol, recovered, token) == "TransferMissing", "Stale head service accepted")
+    magazineStorage:AddItem("Base.Bullets9mm")
+    assert(T.accept(magazineStorage, instanceItem(T.HEAD)), "Reserve incorrectly prevents head swapping")
+    local mount = instanceItem("Base.OMHTTGunSupportVisual")
+    assert(mount and mount:getScriptItem():isHidden() and ScriptManager.instance:getModelScript(mount:getWorldStaticItem()), "Technical mount is missing, unbound or visible in spawn list")
+    print("[OMHTT-Smoke] native-magazines insert=eject=conserved chamber=retained replay=blocked capacity=checked mount=bound")
     print("[OMHTT-Smoke] native-firearms mechanisms=3 rounds=conserved models=bound reload=timed")
     local H = require("OMHTT/HybridProbe")
     local model = ScriptManager.instance:getModelScript("Base.OMHTTProbeHead")

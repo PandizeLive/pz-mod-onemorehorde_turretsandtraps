@@ -37,7 +37,7 @@ end
 ---@return nil
 local function fire(object, player)
     local result = require("OMHTT/TurretWorld").fire(player, object)
-    player:setHaloNote(getText("UI_OMHTT_" .. result), 255, 255, 255, 120)
+    player:setHaloNote(getText("UI_OMHTT_Manage" .. result), 255, 255, 255, 120)
 end
 
 ---@param playerIndex number Local player

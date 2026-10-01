@@ -1,8 +1,12 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.20
+## Current candidate: 0.2.21
 
-C68/C69 combine destruction/item cleanup with three actual firearm heads. 2,780 assertions, 47 runtime Lua files, 402 native translation keys and 120 package files pass. Native write/read checks pass in 97.2/95.4 seconds: all three gun mechanisms conserve ammo; exact item IDs, condition, battery charge, loaded magazine/chamber, cycle deadlines and pistol attachment survive fresh-process restore. Scope and limitations: [0.2.20](PATCH_v0.2.20.md), [P5C1a combined test](PHASE_5_CHECKPOINT_1A.md). Owner waived a standalone cleanup test. Installed from annotated `test/v0.2.20` (`0eb9cfb`). [Evidence](../diagnostics/v0.2.20/local-release.json) verifies all 120 source/tag/installed/archive files and all 118 previous-version backup files. [Archive](../artifacts/OMHTT-0.2.20.zip). Rendered SP acceptance is pending; no external publication or push.
+[C70 firearm/Manage repair](PATCH_v0.2.21.md) addresses the [partial 0.2.20 test](TEST_v0.2.20.md). 2,814 assertions, 48 Lua files, 411 native translations and 123 package files pass. Native write/read checks passed in 68.2/70.0 seconds with magazine/chamber conservation and actual gun/supply restoration. Native gun-pose matrices and support import pass; GPU pose, service interaction and frame smoothness remain pending. Architecture review is recorded in ARCHITECTURE.md. Local commit/tag/install verification is the next release step; no publication or push.
+
+## Previous local installation: 0.2.20
+
+C68/C69 combine destruction/item cleanup with three actual firearm heads. 2,780 assertions, 47 runtime Lua files, 402 native translation keys and 120 package files pass. Native write/read checks pass in 97.2/95.4 seconds: all three gun mechanisms conserve ammo; exact item IDs, condition, battery charge, loaded magazine/chamber, cycle deadlines and pistol attachment survive fresh-process restore. Scope and limitations: [0.2.20](PATCH_v0.2.20.md), [P5C1a combined test](PHASE_5_CHECKPOINT_1A.md). Owner waived a standalone cleanup test. Installed from annotated `test/v0.2.20` (`0eb9cfb`). [Evidence](../diagnostics/v0.2.20/local-release.json) verifies all 120 source/tag/installed/archive files and all 118 previous-version backup files. [Archive](../artifacts/OMHTT-0.2.20.zip). Owner later supplied a partial test with findings; see TEST_v0.2.20.md. No external publication or push.
 
 ## Previous local installation: 0.2.19.1
 

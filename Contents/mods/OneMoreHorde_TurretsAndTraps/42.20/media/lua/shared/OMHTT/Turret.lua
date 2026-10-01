@@ -165,12 +165,12 @@ function T.accept(container, item)
     if container:contains(item) then return true end
     local contents = T.contents(container)
     if kind == "head" then
-        if contents.heads > 0 or contents.reserveAll > 0 then return false end
+        if contents.heads > 0 then return false end
         if G.profile(item) then
             contents.head = item
-            return G.loaded(item) <= Stats.resolve(contents).ammo
+            return contents.reserveAll + G.loaded(item) <= Stats.resolve(contents).ammo
         end
-        return true
+        return contents.reserveAll <= Stats.resolve(contents).ammo
     end
     if kind == "battery" then return contents.batteries == 0 end
     if kind == "capacity" then return contents.capacities == 0 end
@@ -178,7 +178,7 @@ function T.accept(container, item)
     if kind == "ammo" then
         local ammoType = "Base.Potato"
         if G.profile(contents.head) then ammoType = G.ammoType(contents.head) end
-        return contents.heads == 1 and item:getFullType() == ammoType and contents.ammo < stats.ammo
+        return contents.heads == 1 and item:getFullType() == ammoType and contents.reserveAll + (G.profile(contents.head) and G.loaded(contents.head) or 0) < stats.ammo
     end
     return contents.modules < stats.modules
 end
@@ -190,7 +190,7 @@ end
 function T.canRemove(container, item)
     if not T.isContainer(container) then return true end
     local contents = T.contents(container)
-    if T.kind(item) == "head" then return contents.reserveAll == 0 end
+    if T.kind(item) == "head" then return not G.servicing[item] end
     if T.kind(item) == "capacity" and item:getCondition() > 0 then
         contents.active.Capacity, contents.active.CapacitySmall, contents.active.CapacityLarge = nil, nil, nil
         if contents.capacities > 1 then
@@ -204,7 +204,7 @@ function T.canRemove(container, item)
             end
         end
         local stats = Stats.resolve(contents)
-        return contents.ammo <= stats.ammo and contents.modules <= stats.modules
+        return contents.reserveAll + (G.profile(contents.head) and G.loaded(contents.head) or 0) <= stats.ammo and contents.modules <= stats.modules
     end
     return true
 end

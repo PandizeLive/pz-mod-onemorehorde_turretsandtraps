@@ -18,7 +18,8 @@ public final class HybridAssetCheck {
             faces += mesh.getNumFaces();
             vertices += mesh.getNumVertices();
         }
-        if (scene.getNumMeshes() != 1 || faces != 24 || vertices != 48) {
+        int expectedFaces = args.length > 1 ? Integer.parseInt(args[1]) : 24;
+        if (scene.getNumMeshes() != 1 || faces != expectedFaces || vertices != expectedFaces * 2) {
             throw new IllegalStateException("Unexpected imported cube geometry: " + vertices + "/" + faces);
         }
         Class<?> paramsType = Class.forName("zombie.core.skinnedmodel.model.jassimp.ProcessedAiSceneParams");
@@ -53,9 +54,36 @@ public final class HybridAssetCheck {
             if (dot < 0.99999) throw new IllegalStateException("Model/world heading mismatch: " + heading + " dot=" + dot);
         }
         float oldY = (Float)screenY.invoke(null, 0f, 0f, 0.4f, 0);
+        // Current ItemModelRenderer: Rx(item.x) Ry(item.z) Rz(item.y), then
+        // the native dropped-weapon transform and inverse world attachment.
+        float[][] attachments = {{0, 0, 0}, {-180, 1, -180}, {180, 0, 180}};
+        for (int gun = 0; gun < attachments.length; gun++) {
+            for (int heading = 0; heading < 360; heading += 45) {
+                float yaw = (float)Math.toRadians(heading);
+                Object pose = matrix.getConstructor().newInstance();
+                matrix.getMethod("rotateX", float.class).invoke(pose, -(float)Math.PI / 2);
+                matrix.getMethod("rotateZ", float.class).invoke(pose, yaw);
+                matrix.getMethod("rotateY", float.class).invoke(pose, (float)Math.PI);
+                matrix.getMethod("rotateZ", float.class).invoke(pose, (float)Math.PI / 2);
+                Object attachment = matrix.getConstructor().newInstance();
+                matrix.getMethod("rotateXYZ", float.class, float.class, float.class).invoke(attachment,
+                    (float)Math.toRadians(attachments[gun][0]), (float)Math.toRadians(attachments[gun][1]),
+                    (float)Math.toRadians(attachments[gun][2]));
+                matrix.getMethod("invert").invoke(attachment);
+                matrix.getMethod("mul", Class.forName("org.joml.Matrix4fc")).invoke(pose, attachment);
+                Object barrel = vector.getConstructor(float.class, float.class, float.class).newInstance(0f, 1f, 0f);
+                Object top = vector.getConstructor(float.class, float.class, float.class).newInstance(0f, 0f, gun == 0 ? -1f : 1f);
+                matrix.getMethod("transformDirection", vector).invoke(pose, barrel);
+                matrix.getMethod("transformDirection", vector).invoke(pose, top);
+                float bx = vector.getField("x").getFloat(barrel), bz = vector.getField("z").getFloat(barrel);
+                if (bx * Math.cos(yaw) - bz * Math.sin(yaw) < .999 || vector.getField("y").getFloat(top) < .999)
+                    throw new IllegalStateException("Mounted gun pose mismatch: " + gun + "/" + heading);
+            }
+        }
+        System.out.println("Native JOML: three gun world attachments remain upright and aimed over eight headings.");
         float newY = (Float)screenY.invoke(null, 0f, 0f, 0.4f - 16f / 192f, 0);
         if (Math.abs(newY - oldY - 16) > 0.001) throw new IllegalStateException("Head lowering differs from base's 16-pixel shift");
         System.out.println("Native IsoUtils / JOML projection: 8 heading vectors match; head follows 16-pixel base shift.");
-        System.out.println("Native Jassimp import and PZ StaticMesh conversion passed: one mesh, 48 vertices, 24 triangles; GPU rendering remains untested.");
+        System.out.println("Native Jassimp import and PZ StaticMesh conversion passed: one mesh, " + vertices + " vertices, " + faces + " triangles; GPU rendering remains untested.");
     }
 }

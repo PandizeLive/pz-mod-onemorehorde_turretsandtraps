@@ -9,7 +9,7 @@ function getSpecificPlayer(index)
     return {getZ = function() return 0 end, getX = function() return 610 end, getY = function() return 610 end}
 end
 function Render3DItem(head, square, x, y, z, yaw)
-    draws[#draws + 1] = {head = head, x = x, y = y, z = z, yaw = yaw}
+    draws[#draws + 1] = {head = head, x = x, y = y, z = z, yaw = yaw, rx = head.rx, ry = head.ry, rz = head.rz}
 end
 local function turret(x, yaw)
     local square = makeSquare(x, 610, 0)
@@ -71,4 +71,28 @@ W.refresh = function() end
 R.tick()
 check(R.entries[second] == nil, "Removed turrets retire while 3D rendering is disabled")
 R.entries[first] = nil
+enabled = true
+local gunObject, gun = turret(610, 45)
+function gun:getFullType() return "Base.Pistol" end
+gun.rx, gun.ry, gun.rz = 13, 27, 39
+function gun:getWorldXRotation() return self.rx end
+function gun:getWorldYRotation() return self.ry end
+function gun:getWorldZRotation() return self.rz end
+function gun:setWorldXRotation(value) self.rx = value end
+function gun:setWorldYRotation(value) self.ry = value end
+function gun:setWorldZRotation(value) self.rz = value end
+local oldInstance = instanceItem
+instanceItem = function(fullType)
+    check(fullType == "Base.OMHTTGunSupportVisual", "Only a technical support is created for gun rendering")
+    return {support = true}
+end
+R.changed(gunObject, gun)
+draws = {}
+R.render(1)
+check(#draws == 2 and draws[1].head.support and draws[2].head == gun, "One support and actual gun render without a ground item")
+check(draws[2].yaw == -1 and draws[2].rx == -90 and draws[2].ry == 315 and draws[2].rz == 0, "Native item XYZ pose is used for mounted firearm")
+check(gun.rx == 13 and gun.ry == 27 and gun.rz == 39, "Rendering restores original gun pose")
+check(math.abs(draws[2].z - draws[1].z - .1) < .000001, "Gun is seated above the support")
+R.entries[gunObject] = nil
+instanceItem = oldInstance
 T.hybrid, getSpecificPlayer, Render3DItem, W.refresh = hybrid, specific, oldRender, oldRefresh

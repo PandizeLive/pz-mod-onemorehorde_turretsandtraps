@@ -1,7 +1,9 @@
 local E = require("OMHTT/PrototypeEffects")
 local F = require("OMHTT/Foundation")
 local oldSpecific, oldCell, oldWorld, oldElement = getSpecificPlayer, getCell, getWorld, ISUIElement
-local visible, sounds, draws, last = true, {}, 0, nil
+local oldTextureGetter = ISUITextureGetter
+ISUITextureGetter = {checkGetTexture = function(texture) check(texture == nil, "Native line resolves nil texture"); return texture end}
+local visible, sounds, draws, last, lines = true, {}, 0, nil, 0
 getSpecificPlayer = function() return {getZ = function() return 0 end} end
 getCell = function() return {getGridSquare = function() return {isCanSee = function() return visible end} end} end
 getNumActivePlayers = function() return 1 end
@@ -15,7 +17,13 @@ getWorld = function() return {getFreeEmitter = function(_, x,y,z)
 end} end
 ISUIElement = {new = function()
     return {instantiate=function() end, setStencilRect=function() end, clearStencilRect=function() end,
-        drawRect=function(_,x,y,w,h,a,r,g,b) draws=draws+1; last={x=x,y=y,w=w,r=r,g=g,b=b} end}
+        drawRect=function(_,x,y,w,h,a,r,g,b) draws=draws+1; last={x=x,y=y,w=w,r=r,g=g,b=b} end,
+        drawLine=testNativeDrawLine,
+        javaObject={DrawLine=function(_,texture,x,y,x2,y2,thickness,r,g,b,a)
+            check(texture == nil and thickness >= 1 and a >= 0 and a <= 1 and b == .65,
+                "Tracer supplies native texture, thickness and all RGBA arguments")
+            lines=lines+1
+        end}}
 end}
 testMillis = 1000
 local target = {x=100,y=100,floor=false}
@@ -59,4 +67,12 @@ check(math.abs(E.effects[#E.effects].fromX-10.05)<0.000001,"Nearby target cannot
 E.receive(F.MODULE,"Launch",{id="zero",shot=1,x=10,y=10,z=0,fromX=10,fromY=10,flight=50})
 check(E.effects[#E.effects].fromX==10 and E.effects[#E.effects].fromY==10,"Zero-length visual shot remains finite")
 E.reset()
+E.receive(F.MODULE,"Launch",{id="gun",shot=1,x=14,y=10,z=0,fromX=10,fromY=10,
+    firearm=true,sound="M9Shoot",muzzleForward=.12345,muzzleHeight=.4166667,flight=100})
+E.render()
+check(lines == 1 and E.effects[1].muzzleHeight == .4166667, "Firearm tracer uses gun muzzle height")
+testMillis=testMillis+100
+E.render()
+check(#E.effects==0 and lines==1,"Firearm tracer expires without potato splash")
 getSpecificPlayer,getCell,getWorld,ISUIElement=oldSpecific,oldCell,oldWorld,oldElement
+ISUITextureGetter = oldTextureGetter

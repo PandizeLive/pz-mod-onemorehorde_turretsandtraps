@@ -1,5 +1,7 @@
 # P5C1a — early supported-firearm mount prototype
 
+Current follow-up: [0.2.21 repair](PATCH_v0.2.21.md) supersedes the pre-insert-only magazine and reserve-unload instructions below. Its combined test replaces the original test sequence.
+
 Status: C69 approved; implemented in 0.2.20 together with C68 cleanup. C64 moved this prototype ahead of P2C3e multiplayer. Local installation evidence lives in RELEASE.md; rendered acceptance remains pending. This does not enable all Phase 5 content or waive multiplayer gates.
 
 ## Player outcome

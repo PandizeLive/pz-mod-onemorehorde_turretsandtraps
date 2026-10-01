@@ -1,8 +1,8 @@
-local G = {}
+local G = {servicing = {}}
 G.PROFILES = {
-    ["Base.Pistol"] = {reload = 2.7, rack = 1.2, muzzle = 0.0823, yaw = 0},
-    ["Base.Shotgun"] = {reload = 0.833, rack = 0.6, muzzle = 0.2801, yaw = 0},
-    ["Base.HuntingRifle"] = {reload = 0.590, rack = 1.2, muzzle = 0.3468, yaw = 0},
+    ["Base.Pistol"] = {reload = 2.7, rack = 1.2, muzzle = 0.0823, yaw = 0, roll = -90},
+    ["Base.Shotgun"] = {reload = 0.833, rack = 0.6, muzzle = 0.2801, yaw = 0, roll = -90},
+    ["Base.HuntingRifle"] = {reload = 0.590, rack = 1.2, muzzle = 0.3468, yaw = 0, roll = -90},
 }
 G.AMMO = {["Base.Bullets9mm"] = true, ["Base.ShotgunShells"] = true, ["Base.308Bullets"] = true}
 
@@ -60,6 +60,7 @@ function G.update(contents, stats, now, operate)
     local gun = contents.head
     local state = G.state(gun)
     state.loaded = G.loaded(gun)
+    if G.servicing[gun] then return state, "Servicing" end
     if not G.enabled() then return state, "Disabled" end
     if gun:getCondition() <= 0 then return state, "NoHead" end
     if gun:isJammed() then return state, "Jammed" end
@@ -132,6 +133,56 @@ function G.consume(contents, stats, now)
     if gun:isRackAfterShoot() then cycle.rackReady = now + stats.rack end
     cycle.loaded = G.loaded(gun)
     return true
+end
+
+---@param player IsoPlayer Operator
+---@param storage ItemContainer Current turret inventory
+---@param gun HandWeapon Expected installed gun
+---@param magazine InventoryItem? Insert item, or eject when nil
+---@param token table Active action identity
+---@return string? reason
+function G.magazineRejection(player, storage, gun, magazine, token)
+    local T = require("OMHTT/Turret")
+    local contents = T.contents(storage)
+    if contents.head ~= gun then return "TransferMissing" end
+    if not G.profile(gun) or not gun:getMagazineType() then return "WrongMagazine" end
+    if G.servicing[gun] and G.servicing[gun] ~= token then return "TransferPending" end
+    if magazine then
+        local source = magazine:getContainer()
+        if not source or not source:isInCharacterInventory(player) or not source:contains(magazine) then return "TransferCarried" end
+        if magazine:getFullType() ~= gun:getMagazineType() then return "WrongMagazine" end
+        if gun:isContainsClip() then return "MagazineFull" end
+        if magazine:isFavorite() then return "TransferFavorite" end
+        if magazine:getCurrentAmmoCount() > gun:getMaxAmmo()
+            or contents.reserveAll + G.loaded(gun) + magazine:getCurrentAmmoCount() > T.cycleConfig(contents).ammo then return "TransferFull" end
+    elseif not gun:isContainsClip() then
+        return "NoMagazine"
+    end
+    return nil
+end
+
+---@param player IsoPlayer Validated operator
+---@param storage ItemContainer Current turret inventory
+---@param gun HandWeapon Expected installed gun
+---@param magazine InventoryItem? Insert item, or eject when nil
+---@param token table Active action identity
+---@return InventoryItem? magazine Transferred native magazine
+function G.transferMagazine(player, storage, gun, magazine, token)
+    if G.magazineRejection(player, storage, gun, magazine, token) then return nil end
+    if magazine then
+        magazine:getContainer():Remove(magazine)
+        player:removeFromHands(magazine)
+        gun:setCurrentAmmoCount(magazine:getCurrentAmmoCount())
+        gun:setContainsClip(true)
+    else
+        magazine = instanceItem(gun:getMagazineType())
+        magazine:setCurrentAmmoCount(gun:getCurrentAmmoCount())
+        player:getInventory():AddItem(magazine)
+        gun:setContainsClip(false)
+        gun:setCurrentAmmoCount(0)
+    end
+    G.cancelLoading(gun)
+    return magazine
 end
 
 return G

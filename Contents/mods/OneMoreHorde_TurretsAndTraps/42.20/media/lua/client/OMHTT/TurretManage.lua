@@ -6,6 +6,8 @@ local T = require("OMHTT/Turret")
 local M = require("OMHTT/TurretModules")
 local D = require("OMHTT/Diagnostics")
 local X = require("OMHTT/TurretTransfers")
+local G = require("OMHTT/Firearms")
+local Magazine = require("OMHTT/TurretMagazineAction")
 local Slot = require("OMHTT/TurretSlot")
 local Range = require("OMHTT/TurretRange")
 local Search = require("OMHTT/TurretSearch")
@@ -37,6 +39,13 @@ end
 ---@return nil
 function Panel:transfer(items, incoming, kind)
     local count, reason = X.queue(self.player, self.object, items, incoming, kind)
+    self:feedback(count, reason)
+end
+
+---@param item InventoryItem? Insert this magazine, or eject when nil
+---@return nil
+function Panel:magazine(item)
+    local count, reason = Magazine.queue(self.player, self.object, item)
     self:feedback(count, reason)
 end
 
@@ -165,14 +174,36 @@ function Panel:refresh()
         end
         if kind and slot then slot.items[#slot.items + 1] = item end
     end
-    self.ammoSlot.label = getText("UI_OMHTT_ManageAmmo", contents.ammo, stats.ammo,
-        cycle and cycle.loaded or 0, stats.magazine)
-    if stats.firearm then
-        local chamber = 0
-        if contents.head:isRoundChambered() then chamber = 1 end
-        self.ammoSlot.label = getText("UI_OMHTT_ManageGunAmmo", contents.ammo, stats.ammo,
-            contents.head:getCurrentAmmoCount(), tostring(stats.magazine) .. "+" .. tostring(chamber))
+    local loaded = stats.firearm and G.loaded(contents.head) or 0
+    self.ammoSlot.label = getText("UI_OMHTT_ManageReserve", contents.reserveAll + loaded, stats.ammo)
+    local gun = stats.firearm and contents.head or nil
+    local magazineType = gun and gun:getMagazineType()
+    self.magazineSlot.disabled = not magazineType
+    self.magazineSlot.emptyText = getText(contents.head and "UI_OMHTT_ManageInternal" or "UI_OMHTT_ManageNotNeeded")
+    self.magazineSlot.label = getText("UI_OMHTT_ManageMagazine", cycle and cycle.loaded or 0, stats.magazine)
+    if magazineType then
+        self.magazineSlot.emptyText = getText("UI_OMHTT_ManageDrop")
+        local chamber = gun:isRoundChambered() and "+1" or ""
+        self.magazineSlot.label = getText("UI_OMHTT_ManageMagazine", tostring(gun:getCurrentAmmoCount()) .. chamber, gun:getMaxAmmo())
+        if gun:isContainsClip() then
+            if not self.magazineIcon or self.magazineIcon:getFullType() ~= magazineType then
+                self.magazineIcon = instanceItem(magazineType)
+            end
+            self.magazineIcon:setCurrentAmmoCount(gun:getCurrentAmmoCount())
+            self.magazineSlot.items[1] = self.magazineIcon
+        end
     end
+    self.headSlot.missing = not contents.head or contents.head:getCondition() <= 0
+    self.batterySlot.missing = contents.head ~= nil and not power
+    self.ammoSlot.missing = contents.head ~= nil and contents.ammo == 0
+    self.magazineSlot.missing = magazineType ~= nil and not gun:isContainsClip()
+    local missing = {}
+    if state.automatic ~= false and automationAllowed and contents.head then
+        if not contents.active.MotionDetection then missing[#missing + 1] = getText("UI_OMHTT_ModuleMotionDetection") end
+        if not contents.active.Firing then missing[#missing + 1] = getText("UI_OMHTT_ModuleFiring") end
+    end
+    self.modulesMissing = #missing > 0
+    if self.modulesMissing then self.moduleEffects = getText("UI_OMHTT_ManageMissing", table.concat(missing, ", ")) end
     local charge = getText("UI_OMHTT_None")
     if contents.battery then charge = tostring(math.floor(contents.battery:getCurrentUsesFloat() * 100)) .. "%" end
     self.batterySlot.label = getText("UI_OMHTT_ManageBattery", charge)
@@ -213,7 +244,7 @@ function Panel:prerender()
     local label = self.moduleLabel
     if self.rows > 2 then label = label .. " — " .. getText("UI_OMHTT_ManageScroll") end
     self:drawText(label, 12, self.modulesY, 1, 1, 1, 1, UIFont.Small)
-    self:drawText(self.moduleEffects, 12, y, 0.8, 0.8, 0.8, 1, UIFont.Small)
+    self:drawText(self.moduleEffects, 12, y, self.modulesMissing and 1 or 0.8, self.modulesMissing and 0.3 or 0.8, self.modulesMissing and 0.3 or 0.8, 1, UIFont.Small)
     self:drawText(getText("UI_OMHTT_Manage" .. self.status) .. " | " .. self.powerLabel, 12, y + h, 1, 1, 1, 1, UIFont.Small)
     local stats = self.stats
     self:drawText(getText("UI_OMHTT_ManageStats", string.format("%.1f", stats.damage), string.format("%.1f", stats.range),
@@ -267,8 +298,10 @@ function OpenAction:perform()
         panel:initialise()
         panel.headSlot = panel:addSlot("head", getText("UI_OMHTT_ManageHead"), 12, top, (width - 32) / 2)
         panel.batterySlot = panel:addSlot("battery", "", width / 2 + 4, top, (width - 32) / 2)
-        panel.ammoSlot = panel:addSlot("ammo", "", 12, top + slotHeight + 8, (width - 32) * 0.65)
-        panel.capacitySlot = panel:addSlot("capacity", getText("UI_OMHTT_ManageCapacity"), 20 + (width - 32) * 0.65, top + slotHeight + 8, (width - 32) * 0.35)
+        local storageWidth = width - 40
+        panel.ammoSlot = panel:addSlot("ammo", "", 12, top + slotHeight + 8, storageWidth * 0.38)
+        panel.magazineSlot = panel:addSlot("magazine", "", 20 + storageWidth * 0.38, top + slotHeight + 8, storageWidth * 0.30)
+        panel.capacitySlot = panel:addSlot("capacity", getText("UI_OMHTT_ManageCapacity"), 28 + storageWidth * 0.68, top + slotHeight + 8, storageWidth * 0.32)
         local moduleWidth = (width - 48) / 5
         for i = 1, 10 do
             panel.moduleSlots[i] = panel:addSlot("module", "", 12 + ((i - 1) % 5) * (moduleWidth + 6),

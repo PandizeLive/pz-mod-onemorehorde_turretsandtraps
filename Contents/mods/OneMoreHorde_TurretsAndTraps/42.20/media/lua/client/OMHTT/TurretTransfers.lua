@@ -3,6 +3,7 @@ require("TimedActions/ISInventoryTransferAction")
 require("TimedActions/ISTimedActionQueue")
 local T = require("OMHTT/Turret")
 local D = require("OMHTT/Diagnostics")
+local G = require("OMHTT/Firearms")
 local X = {}
 local nativeValid = ISInventoryTransferAction.isValid
 local nativeTransfer = ISInventoryTransferAction.transferItem
@@ -28,7 +29,7 @@ function X.rejection(player, item, source, destination)
     if not X.reachable(player, source) or not X.reachable(player, destination) then return "TransferReach" end
     if not T.canRemove(source, item) then
         if T.kind(item) == "capacity" then return "CapacityFull" end
-        return "UnloadFirst"
+        return "Servicing"
     end
     if T.isContainer(destination) then
         T.configure(destination)
@@ -74,8 +75,14 @@ function ISInventoryTransferAction:transferItem(item)
         D.emit("turret-transfer-rejected", {itemId = item:getID(), reason = reason})
         return
     end
-    if require("OMHTT/Firearms").profile(item) then require("OMHTT/Firearms").cancelLoading(item) end
+    if G.profile(item) then G.cancelLoading(item) end
     nativeTransfer(self, item)
+    if T.kind(item) == "head" and destination:contains(item) and T.state(source:getParent()) then
+        local object = source:getParent()
+        require("OMHTT/TurretAim").entries[object] = nil
+        local search = require("OMHTT/TurretSearch")
+        if search.pending[object] then search.pending[object].cancelled = true end
+    end
     local W = require("OMHTT/TurretWorld")
     for i = 1, 2 do
         local container = source
@@ -108,7 +115,7 @@ function X.queue(player, object, items, incoming, kind)
     local destination = player:getInventory()
     if incoming then destination = storage end
     local contents = T.contents(storage)
-    local counts = {head = contents.heads, battery = contents.batteries, ammo = contents.ammo, module = contents.modules, capacity = contents.capacities}
+    local counts = {head = contents.heads, battery = contents.batteries, ammo = contents.reserveAll + (G.profile(contents.head) and G.loaded(contents.head) or 0), module = contents.modules, capacity = contents.capacities}
     local stats = T.cycleConfig(contents)
     local limits = {head = 1, battery = 1, ammo = stats.ammo, module = stats.modules, capacity = 1}
     local pending = {}

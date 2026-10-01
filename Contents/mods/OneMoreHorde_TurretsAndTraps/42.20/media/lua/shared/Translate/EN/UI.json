@@ -62,7 +62,7 @@
     "UI_OMHTT_TurretContents": "Head: %1\nAmmo: %2\nBattery: %3\nModules: %4",
     "UI_OMHTT_TotalWeight": "Total weight: %1",
     "UI_OMHTT_TurretDescription": "A powered base for a potato head or supported firearm.",
-    "UI_OMHTT_DeployTurretDescription": "Place the selected turret with its contents. Pickup preserves supplies. Unload reserve ammo before swapping heads.",
+    "UI_OMHTT_DeployTurretDescription": "Place the selected turret with its contents. Pickup preserves supplies.",
     "UI_OMHTT_Turret": "Turret",
     "UI_OMHTT_Manage": "Manage",
     "UI_OMHTT_Ready": "Ready",
@@ -139,8 +139,17 @@
     "UI_OMHTT_InstallFailed": "Cannot install. See debug log.",
     "UI_OMHTT_ManageDisabled": "Disabled in Sandbox.",
     "UI_OMHTT_ManageJammed": "Remove the gun to clear its jam.",
-    "UI_OMHTT_ManageNoMagazine": "Insert a magazine in the gun.",
+    "UI_OMHTT_ManageNoMagazine": "Insert a magazine.",
     "UI_OMHTT_ManageRacking": "Cycling.",
     "UI_OMHTT_ManageWrongAmmo": "Wrong ammunition.",
-    "UI_OMHTT_ManageGunAmmo": "Ammo: %1/%2 | Magazine: %3/%4"
+    "UI_OMHTT_ManageGunAmmo": "Ammo: %1/%2 | Magazine: %3/%4",
+    "UI_OMHTT_ManageServicing": "Servicing magazine.",
+    "UI_OMHTT_ManageWrongMagazine": "Wrong magazine.",
+    "UI_OMHTT_ManageMagazineFull": "Eject the installed magazine first.",
+    "UI_OMHTT_ManageMagazine": "Magazine: %1/%2",
+    "UI_OMHTT_ManageReserve": "Ammo: %1/%2",
+    "UI_OMHTT_ManageInternal": "Internal",
+    "UI_OMHTT_ManageNotNeeded": "Not needed",
+    "UI_OMHTT_ManageMissing": "Missing: %1",
+    "UI_OMHTT_ManageEjectMagazine": "Right-click to eject."
 }

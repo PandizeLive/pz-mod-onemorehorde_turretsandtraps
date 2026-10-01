@@ -37,7 +37,7 @@ end
 function S.step(entry, deadline)
     local W = require("OMHTT/TurretWorld")
     local object = entry.object
-    if not W.valid(object) or not W.near(entry.player, object) or getTimestampMs() - entry.started > 10000 then
+    if entry.cancelled or not W.valid(object) or not W.near(entry.player, object) or getTimestampMs() - entry.started > 10000 then
         S.finish(entry, "Unavailable")
         return true
     end

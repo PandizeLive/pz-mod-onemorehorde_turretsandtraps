@@ -101,7 +101,7 @@ for n = 1, #definitions do
         if candidate:getFullType() == T.TYPES.Autoloader then storage:Remove(candidate) end
     end
     check(T.cycleConfig(T.contents(storage)).reload < config.reload, "Reload stacks on firearm loading")
-    check(not T.canRemove(storage, gun), "Head swap requires reserve removal")
+    check(T.canRemove(storage, gun), "Head swap leaves reserve stored")
     local shots = 1
     for step = 1, 100 do
         now = now + 40000
@@ -155,5 +155,46 @@ check(T.cycleConfig(T.contents(pair.storage)).accuracy == 0, "Zero accuracy mult
 SandboxVars.OMHTurretsTraps.FirearmTurrets = false
 local _, disabled = G.update(T.contents(pair.storage), T.cycleConfig(T.contents(pair.storage)), testMillis + 100000, true)
 check(disabled == "Disabled" and G.loaded(pair.gun) == prior, "Disabled gun cannot feed or fire")
+-- The timed action owns reach/lifecycle; the shared firearm service owns rounds.
+SandboxVars.OMHTurretsTraps.FirearmTurrets = true
+local Action = require("OMHTT/TurretMagazineAction")
+local gun = pair.gun
+function gun:setContainsClip(value) self.clip = value end
+local carried = container()
+function carried:isInCharacterInventory() return true end
+local operator = {getInventory = function() return carried end, removeFromHands = function() end}
+local oldNear, oldRefresh, oldStop = W.near, W.refresh, ISBaseTimedAction.stop
+local near = true
+W.near = function() return near end
+W.refresh = function() end
+ISBaseTimedAction.stop = function() end
+local magazine = item("Base.9mmClip")
+function magazine:isFavorite() return false end
+magazine.ammo = 7
+carried:AddItem(magazine)
+gun.clip, gun.ammo, gun.chamber = false, 0, true
+local action = Action:new(operator, object, magazine)
+check(action.maxTime == 75 and action.stopOnWalk and action.stopOnRun, "Magazine service uses native action duration and movement interruption")
+check(not action:complete() and carried:contains(magazine), "Unstarted action cannot mutate inventory")
+action = Action:new(operator, object, magazine)
+action.action = {setActionAnim = function() end, setAnimVariable = function() end, setOverrideHandModels = function() end}
+-- Native animation host is absent from headless UI fixtures.
+action.setActionAnim = function() end
+action.setAnimVariable = function() end
+action.setOverrideHandModels = function() end
+action:start()
+check(not T.canRemove(pair.storage, gun), "Started action locks only its gun")
+near = false
+check(not action:complete() and carried:contains(magazine) and G.servicing[gun] == nil, "Leaving reach rejects commit and releases gun")
+near = true
+action = Action:new(operator, object, magazine)
+action.started, G.servicing[gun] = true, action
+action:stop()
+check(not action:complete() and carried:contains(magazine) and G.servicing[gun] == nil, "Interrupted magazine action spends nothing")
+action = Action:new(operator, object, magazine)
+action.started, G.servicing[gun] = true, action
+check(action:complete() and G.loaded(gun) == 8 and not carried:contains(magazine), "Completed insertion conserves rounds and chamber")
+check(not action:complete() and G.loaded(gun) == 8, "Duplicate complete cannot insert twice")
+W.near, W.refresh, ISBaseTimedAction.stop = oldNear, oldRefresh, oldStop
 T.hybrid, addSound = oldHybrid, oldSound
 SandboxVars.OMHTurretsTraps = oldSettings
