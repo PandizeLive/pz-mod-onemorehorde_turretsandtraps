@@ -1,6 +1,6 @@
 # OMH: Turrets & Traps
 
-Project foundation created 2026-09-25. **Current candidate 0.2.20:** [supported firearm heads and destruction cleanup](docs/PATCH_v0.2.20.md). Mount an M9 pistol, JS-2000 shotgun or MSR788 rifle in the shared head slot. Existing gun state, matching ammo, modules and power are retained. Pistol needs an inserted magazine. Legacy duplicate definitions are removed; destroyed bases preserve contents and yield two scrap. See [the complete combined test and limitations](docs/PHASE_5_CHECKPOINT_1A.md) and [installation evidence](docs/RELEASE.md). No Workshop release exists.
+Project foundation created 2026-09-25. **Installed 0.2.20:** [supported firearm heads and destruction cleanup](docs/PATCH_v0.2.20.md). Mount an M9 pistol, JS-2000 shotgun or MSR788 rifle in the shared head slot. Existing gun state, matching ammo, modules and power are retained. Pistol needs an inserted magazine. Legacy duplicate definitions are removed; destroyed bases preserve contents and yield two scrap. See [the complete combined test and limitations](docs/PHASE_5_CHECKPOINT_1A.md) and [installation evidence](docs/RELEASE.md). No Workshop release exists.
 
 One edition with a Sandbox toggle menu. The planned mod adds maintainable defensive equipment to Project Zomboid Build 42, with optional Horde Night, Trait Shop, and Cure Defense integrations. Recheck the installed game build before implementing any engine-dependent behavior.
 

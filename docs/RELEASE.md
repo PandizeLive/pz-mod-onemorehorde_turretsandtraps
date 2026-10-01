@@ -1,10 +1,10 @@
 # Release state and publication policy
 
-## Validated candidate: 0.2.20
+## Current local installation: 0.2.20
 
-C68/C69 combine destruction/item cleanup with three actual firearm heads. 2,780 assertions, 47 runtime Lua files, 402 native translation keys and 120 package files pass. Native write/read checks pass in 97.2/95.4 seconds: all three gun mechanisms conserve ammo; exact item IDs, condition, battery charge, loaded magazine/chamber, cycle deadlines and pistol attachment survive fresh-process restore. Scope and limitations: [0.2.20](PATCH_v0.2.20.md), [P5C1a combined test](PHASE_5_CHECKPOINT_1A.md). Owner waived a standalone cleanup test. Installation pending; no external publication or push.
+C68/C69 combine destruction/item cleanup with three actual firearm heads. 2,780 assertions, 47 runtime Lua files, 402 native translation keys and 120 package files pass. Native write/read checks pass in 97.2/95.4 seconds: all three gun mechanisms conserve ammo; exact item IDs, condition, battery charge, loaded magazine/chamber, cycle deadlines and pistol attachment survive fresh-process restore. Scope and limitations: [0.2.20](PATCH_v0.2.20.md), [P5C1a combined test](PHASE_5_CHECKPOINT_1A.md). Owner waived a standalone cleanup test. Installed from annotated `test/v0.2.20` (`0eb9cfb`). [Evidence](../diagnostics/v0.2.20/local-release.json) verifies all 120 source/tag/installed/archive files and all 118 previous-version backup files. [Archive](../artifacts/OMHTT-0.2.20.zip). Rendered SP acceptance is pending; no external publication or push.
 
-## Current local installation: 0.2.19.1
+## Previous local installation: 0.2.19.1
 
 [C67 corrective patch](PATCH_v0.2.19.1.md): native hidden compatibility definitions remove duplicate spawn choices; presentation starts at the scaled barrel tip. Firing removes redundant refresh/scans and spreads verbose telemetry across ticks with stage profiling. Kahlua passes 2,410 assertions with 45 Lua files, 380 native translations and 118 packaged files. Native write/read pass in 48.7/54.2 seconds, including exactly twelve visible components, five loadable hidden aliases, no duplicate spawn choices and preserved saved contents. Installed from annotated `test/v0.2.19.1` (`b8af7f7`). [Evidence](../diagnostics/v0.2.19.1/local-release.json) verifies all 118 source/tag/installed/archive files and all 118 previous-version backup files. [Archive](../artifacts/OMHTT-0.2.19.1.zip). Firing smoothness remains a player check. Owner reports the rest of 0.2.19 worked well. No external publication.
 

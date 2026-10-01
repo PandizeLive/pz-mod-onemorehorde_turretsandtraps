@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-**Current candidate: [0.2.20 combined patch](PATCH_v0.2.20.md).** C68/C69 implement removed legacy definitions, destroyed-base salvage and the [early P5C1a supported-firearm mount](PHASE_5_CHECKPOINT_1A.md). Automated/native checks pass; installed status is in RELEASE.md. One combined owner test remains, with no separate cleanup round.
+**Installed: [0.2.20 combined patch](PATCH_v0.2.20.md).** C68/C69 implement removed legacy definitions, destroyed-base salvage and the [early P5C1a supported-firearm mount](PHASE_5_CHECKPOINT_1A.md). Automated/native checks pass; installed status is in RELEASE.md. One combined owner test remains, with no separate cleanup round.
 
 **Previous: [0.2.19.1 correction](PATCH_v0.2.19.1.md).** C67 fixes exposed compatibility duplicates, starts the potato visual at the barrel tip and removes redundant firing work with bounded diagnostic output. Owner reports the rest of 0.2.19 worked well. Install status: RELEASE.md.
 
