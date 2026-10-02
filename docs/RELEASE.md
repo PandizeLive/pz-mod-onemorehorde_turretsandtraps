@@ -1,6 +1,12 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.21
+## Validated candidate: 0.2.22
+
+[C73 suppression and turret feedback](PATCH_v0.2.22.md): 2,844 assertions, 50 runtime Lua files, 421 native translation keys and 146 packaged files pass. Native write/read completed in 92.6/92.0 seconds on stock 42.21.0, proving Lua atlas-option bypass/restoration, 18 native suppressed events, two potato variants, selected reload registration, 13 canonical components / 52 loot entries, and actual saved weapon/supply state. This is headless evidence, not client rendering/audio acceptance. All 66 comparison OGGs decode; 20 layered runtime OGGs total 816,268 bytes. HTML relative links and JavaScript syntax pass. The existing isolated stock-game ladder/WorldGen and fencing sound diagnostics remain in the native logs; no OMHTT probe failed. No publication or push.
+
+Installation evidence is pending the local tagged install. One six-step test is in PATCH_v0.2.22.md.
+
+## Previous local installation: 0.2.21
 
 [C70 firearm/Manage repair](PATCH_v0.2.21.md) addresses the [partial 0.2.20 test](TEST_v0.2.20.md). 2,814 assertions, 48 Lua files, 411 native translations and 123 package files pass. Native write/read checks passed in 68.2/70.0 seconds with magazine/chamber conservation and actual gun/supply restoration. Native gun-pose matrices and support import pass; GPU pose, service interaction and frame smoothness remain pending. Architecture review is recorded in ARCHITECTURE.md. Installed from annotated `test/v0.2.21` (`0a995b7`). [Evidence](../diagnostics/v0.2.21/local-release.json) verifies all 123 source/tag/installed/archive files and all 120 previous-version backup files. [Archive](../artifacts/OMHTT-0.2.21.zip). No publication or push.
 

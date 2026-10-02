@@ -1,5 +1,5 @@
 {
-  "status": "Local audition only; not installed or published",
+  "status": "Approved 0.2.22 audio library; player playback acceptance pending",
   "game_build": "42.21.0",
   "source": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\ProjectZomboid",
   "bank_sha256": "958af426b9967f81aecb8aacea4d18cbfb38b36c7d889159a2f2c71f9be40918",
@@ -7,6 +7,11 @@
   "overlay_sha256": "87212d0cc73ec247927f74391e07c4fb647b383cfb4a45a812c95da02294c80f",
   "rate": 48000,
   "channels": 1,
+  "layer_balance": {
+    "reference": "JS14Shoot",
+    "window_seconds": 0.375,
+    "filtered_rms": 0.10229104412101218
+  },
   "filter": {
     "cutoff_hz": 250,
     "slope_db_per_octave": 48,
@@ -255,6 +260,8 @@
       "seconds": 0.9668541666666667,
       "leading_trim_seconds": 0.6060208333333333,
       "common_headroom_gain": 1.0,
+      "layer_gain": 0.11812399564565675,
+      "layer_gain_db": -18.553237421489122,
       "raw_sha256": "e454d0b0f904c80c458336ed212da7796b297d92328e2d54b676b9fdbe286d48",
       "render": {
         "event": "event:/Weapon/Firearm/CapGunRevolver/Shoot",
@@ -318,24 +325,24 @@
         "dry": {
           "file": "CapGunRevolverShoot_dry.ogg",
           "bytes": 11370,
-          "sha256": "d3eed0da072aff9e1f8fba19889f4e36facf12a2d88d21840ef849dac1df2a37",
+          "sha256": "a4d1d34d8dcf2254fc7212ab23f52a47bf50140503469e0b2f3ce983257a9ea4",
           "decoded_peak": 0.2835681438446045
         },
         "filtered": {
           "file": "CapGunRevolverShoot_filtered.ogg",
           "bytes": 11290,
-          "sha256": "cd4b157345df9b643849ff5d7be444c28a74861b0e7ab975713f824797a87841",
+          "sha256": "b60071310184da474e0e8fc0c0ffbbcc48957b372c3f8c3a717b46f64d3d0e03",
           "decoded_peak": 0.22749659419059753
         },
         "layered": {
           "file": "CapGunRevolverShoot_layered.ogg",
-          "bytes": 11312,
-          "sha256": "a811f99c9cbab1ad9c86a1d93d907db2a2eb111b7a1f76105cf885fc51d3bc96",
-          "decoded_peak": 0.2320936918258667
+          "bytes": 11300,
+          "sha256": "3df7c05819a414b75b29ecd83d5856edb8edae6b5617eef1abb5afa50e2eebd0",
+          "decoded_peak": 0.2284105271100998
         }
       },
       "wav": "CapGunRevolverShoot_layered.wav",
-      "wav_sha256": "cb09f435e1d8b20ced357f17b8ea4229e37f68e05e41bf8de1db061c792c0948"
+      "wav_sha256": "52db6e623d27e0bed8d83eebb4767f430247dd1e76f1673d81d7620c9beae46f"
     },
     {
       "sound": "CapGunRifleShoot",
@@ -343,6 +350,8 @@
       "seconds": 1.3954375,
       "leading_trim_seconds": 0.5633541666666667,
       "common_headroom_gain": 1.0,
+      "layer_gain": 0.13002073590776095,
+      "layer_gain_db": -17.719747604297893,
       "raw_sha256": "578623d41bee5eb41978743ddf699d12462ee2680debe65704b14bc3ea87369d",
       "render": {
         "event": "event:/Weapon/Firearm/CapGunRifle/Shoot",
@@ -406,24 +415,24 @@
         "dry": {
           "file": "CapGunRifleShoot_dry.ogg",
           "bytes": 14577,
-          "sha256": "217e210be60ae2a77c0104823f5720d31925745c06838b7216cb0d73dfbc1c4b",
+          "sha256": "554752d2d6318a32fe19aa57efa6c966aa12ac005aeb671ddbd3ad6ed04d61e4",
           "decoded_peak": 0.34018298983573914
         },
         "filtered": {
           "file": "CapGunRifleShoot_filtered.ogg",
           "bytes": 14408,
-          "sha256": "71177b27b8e1cd14bdd59f200be4a04d20de647939fed7479e34cbef9168cf4d",
+          "sha256": "22e3c38e6ee6e2ac250a6cb69683c921d6c756c425f49428ed11ecd1193e0135",
           "decoded_peak": 0.26029831171035767
         },
         "layered": {
           "file": "CapGunRifleShoot_layered.ogg",
-          "bytes": 14422,
-          "sha256": "2500e10482d1fba8ce30281dcffc1373be445de1892b0ae57baa1c4449b8b8cd",
-          "decoded_peak": 0.2670399844646454
+          "bytes": 14410,
+          "sha256": "39d1b831641476a5e5c455cec376abb7609b6bfdb58bd483265a896b3722fddd",
+          "decoded_peak": 0.26034337282180786
         }
       },
       "wav": "CapGunRifleShoot_layered.wav",
-      "wav_sha256": "1bbb1b5a5e39a957db2ddb4eb302119a743ead075a6c0313d0adbfbd038e6863"
+      "wav_sha256": "9eb0d0fe98c3fbe763efc7ca549f45c073aae238bf28b7b498afb221949b411b"
     },
     {
       "sound": "DesertEagleShoot",
@@ -431,6 +440,8 @@
       "seconds": 3.946125,
       "leading_trim_seconds": 0.5526666666666666,
       "common_headroom_gain": 0.8580804984822025,
+      "layer_gain": 1.459122236106212,
+      "layer_gain_db": 3.2818335176871205,
       "raw_sha256": "ae0cff7392db04800db84ac76b8a8afacd628cdb04d185c0f6097a4e24650be1",
       "render": {
         "event": "event:/Weapon/Firearm/DesertEagle/Shoot",
@@ -494,31 +505,33 @@
         "dry": {
           "file": "DesertEagleShoot_dry.ogg",
           "bytes": 35002,
-          "sha256": "456a57537ffe231b434f258ffd089fccb304c069690f4b24c914230b8adfd3db",
+          "sha256": "b8bec4d94f4807d503c67c9a11e16da2b3281cf2377976f17537c685f4ad6de8",
           "decoded_peak": 0.930214524269104
         },
         "filtered": {
           "file": "DesertEagleShoot_filtered.ogg",
           "bytes": 34850,
-          "sha256": "211f0f2bdce477519b5f28413de0e84726b9337729afb1bbfbe8809ff67bf193",
+          "sha256": "118562ee7e31508b81e11d7ed356e8e72db7b07c9bafcbcaaa5df6b3353b663b",
           "decoded_peak": 0.5631878972053528
         },
         "layered": {
           "file": "DesertEagleShoot_layered.ogg",
-          "bytes": 34915,
-          "sha256": "8a23299b1ba265bbb1334c1e187f839ca3ee6ed8f7100612957c633d8d5a3691",
-          "decoded_peak": 0.5711355209350586
+          "bytes": 34943,
+          "sha256": "9b05c6cb99ec5d8b697b180bd41da4db27fe499daf5751c5a3b32a0543a09de7",
+          "decoded_peak": 0.5691853761672974
         }
       },
       "wav": "DesertEagleShoot_layered.wav",
-      "wav_sha256": "ef0d8822f4dc67e193f4d989cb577c1e8799b85938ff96dc2529bdf674bb98b8"
+      "wav_sha256": "e429ae79ebd91a808a85170f1681ca8d2c6c03e041e7b892752572388ca93564"
     },
     {
       "sound": "DoubleBarrelShotgunShoot",
       "event": "event:/Weapon/Firearm/DoubleBarrelShotgun/Shoot",
       "seconds": 6.368104166666667,
       "leading_trim_seconds": 0.6167291666666667,
-      "common_headroom_gain": 0.8196326675003158,
+      "common_headroom_gain": 0.8027330112342089,
+      "layer_gain": 3.638872458725003,
+      "layer_gain_db": 11.21933667950353,
       "raw_sha256": "0d5c96820919294c8fb861ee24760b5accdd86c6d4175e2643b8b7c8ae219dbb",
       "render": {
         "event": "event:/Weapon/Firearm/DoubleBarrelShotgun/Shoot",
@@ -573,25 +586,25 @@
       "files": {
         "dry": {
           "file": "DoubleBarrelShotgunShoot_dry.ogg",
-          "bytes": 56319,
-          "sha256": "c20aa5a0735f7f8a8d48bd832c51be8175e377f17b248c066d74389fdac86cc1",
-          "decoded_peak": 0.929153561592102
+          "bytes": 56187,
+          "sha256": "c8c806aba7a072002b3d6c31a73cbd4c4416cd7a04796909463dd1143348a756",
+          "decoded_peak": 0.9332925081253052
         },
         "filtered": {
           "file": "DoubleBarrelShotgunShoot_filtered.ogg",
-          "bytes": 56118,
-          "sha256": "548f7e3953d6dabc15b6db04033a8e29ac73ec280e53cac52fc995fd86cf5001",
-          "decoded_peak": 0.947133481502533
+          "bytes": 55983,
+          "sha256": "cd5879974f8bf246f60640484453a15bbda3c098939598f34ed5a961a70e6ea7",
+          "decoded_peak": 0.9290158152580261
         },
         "layered": {
           "file": "DoubleBarrelShotgunShoot_layered.ogg",
-          "bytes": 56187,
-          "sha256": "43b2ecf2e3c21cee3027344a8fa8ff6cb3edc9b44e9ccb0fc77c7d456b411fba",
-          "decoded_peak": 0.9434788823127747
+          "bytes": 56086,
+          "sha256": "8039cab524cb589a22d4fbded8d088ccd8c9821aba72fe09d75cfe857bc483d0",
+          "decoded_peak": 0.9516614675521851
         }
       },
       "wav": "DoubleBarrelShotgunShoot_layered.wav",
-      "wav_sha256": "8011f9c5329f2f7f60c427c70a4f98e31c3455c3f58bb22fe9a2ffce1a28ed1b"
+      "wav_sha256": "73f7414a843c60b2c556631820a7befce7ba4bbbac60b1dc7f1d385fa180a725"
     },
     {
       "sound": "JS14Shoot",
@@ -599,6 +612,8 @@
       "seconds": 4.394916666666667,
       "leading_trim_seconds": 0.5635,
       "common_headroom_gain": 1.0,
+      "layer_gain": 1.0,
+      "layer_gain_db": 0.0,
       "raw_sha256": "4970a020355ea8366b7d26922a02bcfbfb76cb94265ab535e9fe44575a123683",
       "render": {
         "event": "event:/Weapon/Firearm/JS14/Shoot",
@@ -662,19 +677,19 @@
         "dry": {
           "file": "JS14Shoot_dry.ogg",
           "bytes": 37201,
-          "sha256": "8a15a06b714fa020383a7b501913fb38f78194af82944749a0744e5ea1021866",
+          "sha256": "d8d328d15197a52281f31c7634e5d0b7fc16ab21f127482163ae646827267bd6",
           "decoded_peak": 0.9309564828872681
         },
         "filtered": {
           "file": "JS14Shoot_filtered.ogg",
           "bytes": 37086,
-          "sha256": "f38c06f98ecd48ccb8d01eb5d9532ffcf8b0b9719abbd8bc7c9d0d2ad7743d62",
+          "sha256": "6a572d1e6c8d3d5b4f844592e0d2523d9d95d4edce9be56db9e122a4981e128b",
           "decoded_peak": 0.4671071767807007
         },
         "layered": {
           "file": "JS14Shoot_layered.ogg",
           "bytes": 37200,
-          "sha256": "a014ac2b93f7ec03d55b7559ed9334a37fdb86a7b7b9437e28979a46fbbf9297",
+          "sha256": "9d44dbc951d049974e7c508dfe6d601b226f0fc9ba75730e8ffab184a6bca744",
           "decoded_peak": 0.4737844467163086
         }
       },
@@ -687,6 +702,8 @@
       "seconds": 5.136916666666667,
       "leading_trim_seconds": 0.5847083333333334,
       "common_headroom_gain": 0.8615265043134824,
+      "layer_gain": 2.2684034790625707,
+      "layer_gain_db": 7.114406093884917,
       "raw_sha256": "bb1f96b59b3c6fae4f4907dee79304af8da67aabd0baca0bd23df0aa10cfb31f",
       "render": {
         "event": "event:/Weapon/Firearm/JS2000Shotgun/Shoot",
@@ -750,24 +767,24 @@
         "dry": {
           "file": "JS2000ShotgunShoot_dry.ogg",
           "bytes": 43290,
-          "sha256": "6c738cd576986153b9f282cbb6a26efb5c7be30bd4379d18be022e6c2fc9c8eb",
+          "sha256": "b00dcf2d5521e71191233941f3f7bb9a3c3f448276daf5ec48740fc1cbcb5d67",
           "decoded_peak": 0.8819634318351746
         },
         "filtered": {
           "file": "JS2000ShotgunShoot_filtered.ogg",
           "bytes": 43009,
-          "sha256": "385bbe37635aa2323cdad5625bd86c76032ddf67f57e170a9775b3ff4e6e37cc",
+          "sha256": "15ae136a51e970227180fcdd32c6940a7540358a2c13f4e852dc96bec6d83e87",
           "decoded_peak": 0.6976776123046875
         },
         "layered": {
           "file": "JS2000ShotgunShoot_layered.ogg",
-          "bytes": 43135,
-          "sha256": "181eb16cc9ee68296da7188593cdbffb9a2bbc22727e3a0b5dcb08047717443e",
-          "decoded_peak": 0.69329434633255
+          "bytes": 43159,
+          "sha256": "6f4a5359df08eb428c433192fcd3251d7157a6847d95bdacce753422e65e9c61",
+          "decoded_peak": 0.6954711675643921
         }
       },
       "wav": "JS2000ShotgunShoot_layered.wav",
-      "wav_sha256": "564ab10ff13f9da847aba91156e5ed5d636d05a39032be5e8ea30662bc81c430"
+      "wav_sha256": "078c57bb505e796217ae18becada346bb5c5ae30212f45b18ad885d0ba0d9b64"
     },
     {
       "sound": "L92Shoot",
@@ -775,6 +792,8 @@
       "seconds": 4.588041666666666,
       "leading_trim_seconds": 0.5534583333333334,
       "common_headroom_gain": 1.0,
+      "layer_gain": 0.7567269361388489,
+      "layer_gain_db": -2.421216135812897,
       "raw_sha256": "4502af6de1d6b30ce2135bc2a4ac7027aeab57c52e0de796fe56047bd6426078",
       "render": {
         "event": "event:/Weapon/Firearm/L92/Shoot",
@@ -838,24 +857,24 @@
         "dry": {
           "file": "L92Shoot_dry.ogg",
           "bytes": 38743,
-          "sha256": "95de600990b607563ac188ab921122ea301554d39b9c9cbb2be3f8588240774e",
+          "sha256": "7b9ce742f82d6db3d982240e3a759b9456175c762dc7e3c7b86ddfd6c790557e",
           "decoded_peak": 0.853973925113678
         },
         "filtered": {
           "file": "L92Shoot_filtered.ogg",
           "bytes": 38474,
-          "sha256": "7b80f47e98b27ea99cbf51deefc782ad4052694235f78ea4c36ecb12b8f19485",
+          "sha256": "26aeae3fce682ff2fd61f09c9d69ded016d8374f17847248fec0ff7e07cf45bb",
           "decoded_peak": 0.5455182194709778
         },
         "layered": {
           "file": "L92Shoot_layered.ogg",
-          "bytes": 38559,
-          "sha256": "2ab2652fcd78fd463a2e7882067f9165e1b358e00d8ea735c600de7f5a0ae080",
-          "decoded_peak": 0.5430894494056702
+          "bytes": 38549,
+          "sha256": "df1aad21c422c7d7048990adecd56b0103ebcc87b45b7bbf1d6ccdbcf7c55a92",
+          "decoded_peak": 0.5424677133560181
         }
       },
       "wav": "L92Shoot_layered.wav",
-      "wav_sha256": "2aab8575c0bbb4a26a574e3916a26a71dc2727e7d0c8782b0699690ee492dd41"
+      "wav_sha256": "976ab30dbfed4316750cb09d973d9cacd72329d11f2fc0cc67d045298cb17679"
     },
     {
       "sound": "L94Shoot",
@@ -863,6 +882,8 @@
       "seconds": 4.668291666666667,
       "leading_trim_seconds": 0.574625,
       "common_headroom_gain": 1.0,
+      "layer_gain": 1.1676005367423858,
+      "layer_gain_db": 1.3458857191972806,
       "raw_sha256": "8b5dac749d2864ef64e5c06db056ed74361c5bd578541902c69c10a88c5142f3",
       "render": {
         "event": "event:/Weapon/Firearm/L94/Shoot",
@@ -926,24 +947,24 @@
         "dry": {
           "file": "L94Shoot_dry.ogg",
           "bytes": 39756,
-          "sha256": "6844313862c2628a91dfa4a56eaadc156deb8557f12fb3a8a868248e1aff720c",
+          "sha256": "3ee9632fb9b07edac9b1fd594e13876a0e590a3cb0476a6c442633b8d74d1fd9",
           "decoded_peak": 0.9438379406929016
         },
         "filtered": {
           "file": "L94Shoot_filtered.ogg",
           "bytes": 39228,
-          "sha256": "43fb11e05cae445de2f8fdb40367d445178fd74b77959699ee8401c8b79e8838",
+          "sha256": "a6298fbd13595c97ec710a985f699986a4f28ff43cb861aa8d7cc17664776d31",
           "decoded_peak": 0.4907086491584778
         },
         "layered": {
           "file": "L94Shoot_layered.ogg",
-          "bytes": 39337,
-          "sha256": "6650fedb82c98e3c7d8bff54ede9bbba8125edb530c2dfecf80328da3e22720e",
-          "decoded_peak": 0.4951901435852051
+          "bytes": 39334,
+          "sha256": "cb9834ead4cc7af30ab88f0c84692a47f056a7a2677e2f3dea685ba5c4a3044a",
+          "decoded_peak": 0.48872727155685425
         }
       },
       "wav": "L94Shoot_layered.wav",
-      "wav_sha256": "ede15fdfee56c0ab21b59f9e5e6992e79d4ceb44a03a861acc41b1c22735a853"
+      "wav_sha256": "2c2026679e7347c420f1b7d31e0daf6b94a122bfd45591cb6d0cbe55c782a617"
     },
     {
       "sound": "M14Shoot",
@@ -951,6 +972,8 @@
       "seconds": 4.5279375,
       "leading_trim_seconds": 0.542,
       "common_headroom_gain": 0.95,
+      "layer_gain": 1.484540550897716,
+      "layer_gain_db": 3.4318413008923363,
       "raw_sha256": "5c2d02cb67d57e27e3c0d13c16f87b9285da13f82ffa719fc305d26132450b18",
       "render": {
         "event": "event:/Weapon/Firearm/M14/Shoot",
@@ -1006,24 +1029,24 @@
         "dry": {
           "file": "M14Shoot_dry.ogg",
           "bytes": 39299,
-          "sha256": "a46ebc1b1a57b2f398f918ba0d010ffa10fac81e495e49a13301b6f5e30d2870",
+          "sha256": "330dc87b185c8a33ea8af77780f617c604fc3f6c7191b8aa19bb498ff666eaca",
           "decoded_peak": 0.9655590653419495
         },
         "filtered": {
           "file": "M14Shoot_filtered.ogg",
           "bytes": 38904,
-          "sha256": "ffa9f69a3c7d2e877e89a6b42b4e7cdeeed50b7b08cd9ddc90941f36ee0a0c55",
+          "sha256": "f8e3a353bff0c91bc8e747768aeeec4927b45e83853ce9d75c8cfa68643bdc04",
           "decoded_peak": 0.659529447555542
         },
         "layered": {
           "file": "M14Shoot_layered.ogg",
-          "bytes": 38908,
-          "sha256": "f15900f2bb6adf17c42b23eff1a89df4a0a6bda2d70d88122655f21240bbf571",
-          "decoded_peak": 0.6589171886444092
+          "bytes": 38874,
+          "sha256": "d9511087e39b9d53dbf5682fb5df10fe690354584467c0583acac929ba08f23f",
+          "decoded_peak": 0.6642663478851318
         }
       },
       "wav": "M14Shoot_layered.wav",
-      "wav_sha256": "dcb2bd2b1748dd90f6b2ff817c12a5159253fd9a156d4248d6525f5f0431484a"
+      "wav_sha256": "124ab3bffe6d069e80dd6e1fc97687fcf29c9bc4fdd26d4504ea0129b6fff8e8"
     },
     {
       "sound": "M16Shoot",
@@ -1031,6 +1054,8 @@
       "seconds": 4.656729166666667,
       "leading_trim_seconds": 0.5526666666666666,
       "common_headroom_gain": 0.8508635489476165,
+      "layer_gain": 1.469006135344045,
+      "layer_gain_db": 3.3404721927350005,
       "raw_sha256": "34d83e46e15a08468a07bd67308ed880fc1ef555b20894910c70de5c5d648688",
       "render": {
         "event": "event:/Weapon/Firearm/M16/Shoot",
@@ -1094,24 +1119,24 @@
         "dry": {
           "file": "M16Shoot_dry.ogg",
           "bytes": 40081,
-          "sha256": "81b07f23f20fd6f1649ab24349359bb4df3743cf97869fdd112f3c4f81c5b2cd",
+          "sha256": "ef4543597f65563d7f9974ec3cc27d179f00ba33bddee2dad67550936f42f839",
           "decoded_peak": 0.8832879066467285
         },
         "filtered": {
           "file": "M16Shoot_filtered.ogg",
           "bytes": 39934,
-          "sha256": "fd43232c18abbb9085b417b5f81479084d272601511186914cb9e6e019fb5e05",
+          "sha256": "d998721c96977a5ba568c98b55dba9b4780430476e0ef2d1ffab1d6cd48be408",
           "decoded_peak": 0.500560462474823
         },
         "layered": {
           "file": "M16Shoot_layered.ogg",
-          "bytes": 40009,
-          "sha256": "e238400254770636752aaaaaa917cbc9954ac9c3483307bba7d02e6de5866bfc",
-          "decoded_peak": 0.4999978840351105
+          "bytes": 40013,
+          "sha256": "a7dc9ff87991c4b663c4e47d74156b8aa882d72c810d9f36c485fdd911f1a48e",
+          "decoded_peak": 0.5115490555763245
         }
       },
       "wav": "M16Shoot_layered.wav",
-      "wav_sha256": "9160c9b383891d177eb5fb11b14e1bece49db6102f0954adba0896a59d6b2625"
+      "wav_sha256": "71401efa539b311309acc93aac694971129f1f722c1c5de5c0d1f6ee7a79ec09"
     },
     {
       "sound": "M1911Shoot",
@@ -1119,6 +1144,8 @@
       "seconds": 6.641395833333333,
       "leading_trim_seconds": 0.5420625,
       "common_headroom_gain": 0.8371025908390306,
+      "layer_gain": 1.6973673700809357,
+      "layer_gain_db": 4.595516982263329,
       "raw_sha256": "c8a84b24d83e3857ce44a83b88ee26422d9c7c64ffff1de107b943c872922be6",
       "render": {
         "event": "event:/Weapon/Firearm/M1911/Shoot",
@@ -1174,24 +1201,24 @@
         "dry": {
           "file": "M1911Shoot_dry.ogg",
           "bytes": 55817,
-          "sha256": "39f23d937f04048bd8990c5a10c24fe7f67790cebc25db6fb859dafa4fb156fc",
+          "sha256": "f5bcc20afa3a29e85ef26329456f4915051a172eb9d928ecb2263b4d099de8f4",
           "decoded_peak": 0.8952414989471436
         },
         "filtered": {
           "file": "M1911Shoot_filtered.ogg",
           "bytes": 55282,
-          "sha256": "54915a9407adce694e19e43f63df42a225848f2e57b5d77094c40cf938243da3",
+          "sha256": "73478fc615c1d96fae77fd3fab34bb9571cf9f3e1ddc7d86fbb68818e5d5f118",
           "decoded_peak": 0.5161629319190979
         },
         "layered": {
           "file": "M1911Shoot_layered.ogg",
-          "bytes": 55380,
-          "sha256": "8070de3fe617246e8f18f192a09e784d761f3f57066123f3c08659d87bdf111b",
-          "decoded_peak": 0.5013684034347534
+          "bytes": 55406,
+          "sha256": "d38bfba05668afa786c04f97481814327f3a4c1976457659a3893f4a4a70713b",
+          "decoded_peak": 0.49791666865348816
         }
       },
       "wav": "M1911Shoot_layered.wav",
-      "wav_sha256": "5005d065f312557b3885449d69820e82f6b6dbcdc350887eafb63a7352f52b96"
+      "wav_sha256": "f0e5edb7c07d838d3b6d15b3846fad8e7981a4b86df5095187519a1e1f50b25f"
     },
     {
       "sound": "M36Shoot",
@@ -1199,6 +1226,8 @@
       "seconds": 6.641395833333333,
       "leading_trim_seconds": 0.5420625,
       "common_headroom_gain": 0.8371025908390306,
+      "layer_gain": 1.6973673700809357,
+      "layer_gain_db": 4.595516982263329,
       "raw_sha256": "c8a84b24d83e3857ce44a83b88ee26422d9c7c64ffff1de107b943c872922be6",
       "render": {
         "event": "event:/Weapon/Firearm/M36/Shoot",
@@ -1254,24 +1283,24 @@
         "dry": {
           "file": "M36Shoot_dry.ogg",
           "bytes": 55817,
-          "sha256": "84f501a68bbccc19fe5b1b4577fc579e709accfc7aabf3c89e419d6c0c4c106f",
+          "sha256": "543c7de7ee2d280b3a3ee472842ece6966923b3a118f6a3da64f76df8ea03f9d",
           "decoded_peak": 0.8952414989471436
         },
         "filtered": {
           "file": "M36Shoot_filtered.ogg",
           "bytes": 55282,
-          "sha256": "3ab2b979e0b39c734f16abe06a2d80b16dfd73548b6b8c038974735cac60af2e",
+          "sha256": "a011b53ada6f74c15c54614d5550b487e953f888df4d13e433b6858f1f0ac811",
           "decoded_peak": 0.5161629319190979
         },
         "layered": {
           "file": "M36Shoot_layered.ogg",
-          "bytes": 55380,
-          "sha256": "80883f1bffcb557cdc2e082e893377d95da7c95c2c6bd1bcfde7e919653047c2",
-          "decoded_peak": 0.5013684034347534
+          "bytes": 55406,
+          "sha256": "16ed9d876c818ee38d1d452e949eeda41d56cef0d8755ba1b8ee2a4d208de466",
+          "decoded_peak": 0.49791666865348816
         }
       },
       "wav": "M36Shoot_layered.wav",
-      "wav_sha256": "5005d065f312557b3885449d69820e82f6b6dbcdc350887eafb63a7352f52b96"
+      "wav_sha256": "f0e5edb7c07d838d3b6d15b3846fad8e7981a4b86df5095187519a1e1f50b25f"
     },
     {
       "sound": "M625Shoot",
@@ -1279,6 +1308,8 @@
       "seconds": 6.641395833333333,
       "leading_trim_seconds": 0.5527291666666667,
       "common_headroom_gain": 0.8371025908390306,
+      "layer_gain": 1.6973673700809357,
+      "layer_gain_db": 4.595516982263329,
       "raw_sha256": "dad6b7157c8eae69b3d81d92fefdafd4b7b6ae0573f85e56691d76a8f9c21448",
       "render": {
         "event": "event:/Weapon/Firearm/M625/Shoot",
@@ -1334,24 +1365,24 @@
         "dry": {
           "file": "M625Shoot_dry.ogg",
           "bytes": 55817,
-          "sha256": "527e7c160a818e94e85ccc3eafcfec1f28b71022908d94d6b2ea9dbbdec6579e",
+          "sha256": "a0081bb11c6929a4833360039ae18a68bcc43a36c0527001787667d337bb3be8",
           "decoded_peak": 0.8952414989471436
         },
         "filtered": {
           "file": "M625Shoot_filtered.ogg",
           "bytes": 55282,
-          "sha256": "249092cd4ea513ecca3152e6c25b50f5aec73b8f491c51acde29f0260fdad720",
+          "sha256": "c195906f92de24ef5260cfe21839b0a87e579bd6e1a5dc8bd93bbfe260a78f4c",
           "decoded_peak": 0.5161629319190979
         },
         "layered": {
           "file": "M625Shoot_layered.ogg",
-          "bytes": 55380,
-          "sha256": "b0577bbd365802cccd08e7df6fe2266e61a97f99180b78c9ee196991c07b8214",
-          "decoded_peak": 0.5013684034347534
+          "bytes": 55406,
+          "sha256": "9ddc5e60a9cd3f37da73726eb620efb91e0686c1bac527c82630925b3bdecb63",
+          "decoded_peak": 0.49791666865348816
         }
       },
       "wav": "M625Shoot_layered.wav",
-      "wav_sha256": "5005d065f312557b3885449d69820e82f6b6dbcdc350887eafb63a7352f52b96"
+      "wav_sha256": "f0e5edb7c07d838d3b6d15b3846fad8e7981a4b86df5095187519a1e1f50b25f"
     },
     {
       "sound": "M9Shoot",
@@ -1359,6 +1390,8 @@
       "seconds": 3.675125,
       "leading_trim_seconds": 0.5978541666666667,
       "common_headroom_gain": 1.0,
+      "layer_gain": 1.3496945694360323,
+      "layer_gain_db": 2.6047100096611757,
       "raw_sha256": "0b61880f169930f521aceb2be14f9b3114036d1af86c5d9247620eb6c4074aaa",
       "render": {
         "event": "event:/Weapon/Firearm/M9/Shoot",
@@ -1422,24 +1455,24 @@
         "dry": {
           "file": "M9Shoot_dry.ogg",
           "bytes": 32260,
-          "sha256": "e470ec41df7e071bd5a5724f8759da37c66167124e49cae5b69ddcae4bcd6312",
+          "sha256": "6f2054a49d66d56f781342b5a49ef8db278ff3ea3b53d4b5bd11e8d6691e720c",
           "decoded_peak": 0.8719659447669983
         },
         "filtered": {
           "file": "M9Shoot_filtered.ogg",
           "bytes": 32171,
-          "sha256": "a5073fa28bf9bb334db4702b03aa7b0f39ff77b44a2f28bfd6e069c2c5171d68",
+          "sha256": "bdcd37fc758f0726f9abd2866f53838b03bba03c3793f6c664e4ee6373d1775e",
           "decoded_peak": 0.5224156379699707
         },
         "layered": {
           "file": "M9Shoot_layered.ogg",
-          "bytes": 32250,
-          "sha256": "a0f485cb20205d58c1d71a0889f595bf59113418ecfd7d631d45e254cd1449d1",
-          "decoded_peak": 0.528698205947876
+          "bytes": 32267,
+          "sha256": "4433ffbb241f6fcfd0e4f650b750346f3f487792306de1eac6b88953569db10f",
+          "decoded_peak": 0.5258625149726868
         }
       },
       "wav": "M9Shoot_layered.wav",
-      "wav_sha256": "3e730984ee8eb9e583db8549ebb44777a7ea94f590946eab1148974c73f92095"
+      "wav_sha256": "40e2c73d7fa53ba6c41a7ef2c969af275d4813eb224fb9211b5449f9075768e1"
     },
     {
       "sound": "MSR700Shoot",
@@ -1447,6 +1480,8 @@
       "seconds": 5.1264375,
       "leading_trim_seconds": 0.574,
       "common_headroom_gain": 0.95,
+      "layer_gain": 2.1793328354817056,
+      "layer_gain_db": 6.766471246270084,
       "raw_sha256": "07bb4958214e970614bf731a6ad47470ee7e2fba5cf341e9b8c114eb8fdc5c0b",
       "render": {
         "event": "event:/Weapon/Firearm/MSR700/Shoot",
@@ -1502,24 +1537,24 @@
         "dry": {
           "file": "MSR700Shoot_dry.ogg",
           "bytes": 43548,
-          "sha256": "aa5da0472790472c61100f66181895de69ed85a84a311368db33a6d483bcae5d",
+          "sha256": "f2aa0e81df9df2605cba2d95032b95160097265f7c9eb3339a4fcb617031f572",
           "decoded_peak": 0.9742068648338318
         },
         "filtered": {
           "file": "MSR700Shoot_filtered.ogg",
           "bytes": 43123,
-          "sha256": "e76de99128785c2afe9253132ff48fff1fb10f5cc50849a95cba2adc4a669cdb",
+          "sha256": "b6070fe742cae202fb218182b0165d194ea7e6384e436a62c804a7cf11711984",
           "decoded_peak": 0.6630706787109375
         },
         "layered": {
           "file": "MSR700Shoot_layered.ogg",
-          "bytes": 43201,
-          "sha256": "0a826ee4b3d89746cb5972c64262f4b890d06a648ff8579c1aac47586ca5a007",
-          "decoded_peak": 0.6607745885848999
+          "bytes": 43224,
+          "sha256": "a191b3316d43bed93bb313dca1b3a743c791f72ed05b7ee9a1a8b026da720b1f",
+          "decoded_peak": 0.6757537722587585
         }
       },
       "wav": "MSR700Shoot_layered.wav",
-      "wav_sha256": "1f1f0a9a19e46a76133c88f5cb9e12a893d1c35f61743dc4b5ca394a2a9c0990"
+      "wav_sha256": "62bb4aa8e37f0253bb74f032075f5b0aa935f44c73db468e7610728a06e75f85"
     },
     {
       "sound": "MSR788Shoot",
@@ -1527,6 +1562,8 @@
       "seconds": 5.381729166666666,
       "leading_trim_seconds": 0.5740208333333333,
       "common_headroom_gain": 0.95,
+      "layer_gain": 1.7587256608622803,
+      "layer_gain_db": 4.903962005002765,
       "raw_sha256": "9e68e5c9e7c64844b6d5c731912877a2990b163a40a85bf49941c27ef9376c50",
       "render": {
         "event": "event:/Weapon/Firearm/MSR788/Shoot",
@@ -1590,24 +1627,24 @@
         "dry": {
           "file": "MSR788Shoot_dry.ogg",
           "bytes": 45318,
-          "sha256": "4752c98125cdd958b31b50d0e7f5f4c633670edafcd3a6269b72089d4eaf7df8",
+          "sha256": "7f9cfeb4e913bb17714774295d0240f9e9fa87c0fa41a03bd586ea0c295c8dc3",
           "decoded_peak": 0.9613115191459656
         },
         "filtered": {
           "file": "MSR788Shoot_filtered.ogg",
           "bytes": 44957,
-          "sha256": "33bc9bf1658e7b7d472e68732286aab6ad7eb553eea1ead43670739e258e903e",
+          "sha256": "2b52bc1ff2d5fe10a08dfc1d83ff27b10dddf5d38da6ad2c50bbd87102c52939",
           "decoded_peak": 0.6770635843276978
         },
         "layered": {
           "file": "MSR788Shoot_layered.ogg",
-          "bytes": 45020,
-          "sha256": "5e4186e7774ffad8595fac285a38dfd10979922bdff00b596fdee4d9745a8be2",
-          "decoded_peak": 0.6822254061698914
+          "bytes": 45035,
+          "sha256": "0d58b8e9c485b08a42e378a18bff9284806fad509244fb474d1ea2212ce0674e",
+          "decoded_peak": 0.6975564360618591
         }
       },
       "wav": "MSR788Shoot_layered.wav",
-      "wav_sha256": "637ab2efe321ba0aec383e6133349bdf9ca6e93241f2c8e8f1574158e587a491"
+      "wav_sha256": "6ad17a827b176ff910cf20c9496be9bc5dbd6a0d2e1a228766468c0fc9bb86e1"
     },
     {
       "sound": "MagnumShoot",
@@ -1615,6 +1652,8 @@
       "seconds": 5.723958333333333,
       "leading_trim_seconds": 0.5633958333333333,
       "common_headroom_gain": 0.8427692780600746,
+      "layer_gain": 1.6705569384859609,
+      "layer_gain_db": 4.457225650352154,
       "raw_sha256": "6d76f20bc42047957fe351b133e97113aefd73631dc4519d53ff45f6ce9fc2ca",
       "render": {
         "event": "event:/Weapon/Firearm/Magnum/Shoot",
@@ -1678,31 +1717,33 @@
         "dry": {
           "file": "MagnumShoot_dry.ogg",
           "bytes": 48829,
-          "sha256": "f4865a8e23ba4b412a4754c21591512adfb77f880714d795d4e318ddfdc51493",
+          "sha256": "02ab7523c20c9e6f841bd2ef64c5fba0ae6f1ae46fbca6c7ccdc959c43442d9c",
           "decoded_peak": 0.9199550151824951
         },
         "filtered": {
           "file": "MagnumShoot_filtered.ogg",
           "bytes": 48296,
-          "sha256": "87f05e093bdd2a071fff790e5da2cca4983eba3d915618564d85838b836576ac",
+          "sha256": "50153b2da2cd9df5aedfcab550b6d644dace39a531af8170857983481c8b5ac3",
           "decoded_peak": 0.5166141390800476
         },
         "layered": {
           "file": "MagnumShoot_layered.ogg",
-          "bytes": 48389,
-          "sha256": "7510b2a1a77c25c6dfc82f7b37e510798c75b810468d6f6e3eb52f2be9762b1f",
-          "decoded_peak": 0.5050128102302551
+          "bytes": 48396,
+          "sha256": "275a228c35e1a64a576c7110ee7175038eae2a95378791c27add96aa7e075d7e",
+          "decoded_peak": 0.5182645916938782
         }
       },
       "wav": "MagnumShoot_layered.wav",
-      "wav_sha256": "7c730b1890883082361688f681b92eec75ffc3c3ba5ff0495b11133bfe17b2eb"
+      "wav_sha256": "c8b1d9536f5269ab080c6caca6c35d0e2db9c7b20af178d1019bf36d63e02ebd"
     },
     {
       "sound": "SawnOffDoubleBarrelShotgunShoot",
       "event": "event:/Weapon/Firearm/SawnOffDoubleBarrelShotgun/Shoot",
       "seconds": 6.368104166666667,
       "leading_trim_seconds": 0.5527291666666667,
-      "common_headroom_gain": 0.8196326675003158,
+      "common_headroom_gain": 0.8027330112342089,
+      "layer_gain": 3.638872458725003,
+      "layer_gain_db": 11.21933667950353,
       "raw_sha256": "7ee38b29a179e615ac450f30253fdb38bf606ba068dcdc38597605444fcaa667",
       "render": {
         "event": "event:/Weapon/Firearm/SawnOffDoubleBarrelShotgun/Shoot",
@@ -1749,25 +1790,25 @@
       "files": {
         "dry": {
           "file": "SawnOffDoubleBarrelShotgunShoot_dry.ogg",
-          "bytes": 56319,
-          "sha256": "46905e90e9a4c9f3cda819b50f3cc5e1e39e778e5fffa6eee40b4966b15b658d",
-          "decoded_peak": 0.929153561592102
+          "bytes": 56187,
+          "sha256": "96dca9a45fc92ae06134afb54006539b1df81ed7271c6f89b4ced23e5f006e22",
+          "decoded_peak": 0.9332925081253052
         },
         "filtered": {
           "file": "SawnOffDoubleBarrelShotgunShoot_filtered.ogg",
-          "bytes": 56118,
-          "sha256": "ac40eb4e6c54d8cb6166ae1c0020514d89e65a572c65c66f4149b6bba5052250",
-          "decoded_peak": 0.947133481502533
+          "bytes": 55983,
+          "sha256": "766dbb7c1dc035c571b30c9b7f79c644a6543471ed1c744ddd1d3b63acc1b362",
+          "decoded_peak": 0.9290158152580261
         },
         "layered": {
           "file": "SawnOffDoubleBarrelShotgunShoot_layered.ogg",
-          "bytes": 56187,
-          "sha256": "60e68fa53fbccc56b013693a7797e4038131935beb9cb96f6db97f9a58cecd12",
-          "decoded_peak": 0.9434788823127747
+          "bytes": 56086,
+          "sha256": "2b82fbfd3eef0ed12cb6eb16bfa500933b9e264a21cc987902bb6e232526a74a",
+          "decoded_peak": 0.9516614675521851
         }
       },
       "wav": "SawnOffDoubleBarrelShotgunShoot_layered.wav",
-      "wav_sha256": "8011f9c5329f2f7f60c427c70a4f98e31c3455c3f58bb22fe9a2ffce1a28ed1b"
+      "wav_sha256": "73f7414a843c60b2c556631820a7befce7ba4bbbac60b1dc7f1d385fa180a725"
     },
     {
       "sound": "SawnOffJS2000ShotgunShoot",
@@ -1775,6 +1816,8 @@
       "seconds": 5.136916666666667,
       "leading_trim_seconds": 0.5527083333333334,
       "common_headroom_gain": 0.8615265043134824,
+      "layer_gain": 2.2684034790625707,
+      "layer_gain_db": 7.114406093884917,
       "raw_sha256": "d646841ac00768d38a7870ac2512639ea85013b7bd1068f973292dfe5b5e5565",
       "render": {
         "event": "event:/Weapon/Firearm/SawnOffJS2000Shotgun/Shoot",
@@ -1830,24 +1873,24 @@
         "dry": {
           "file": "SawnOffJS2000ShotgunShoot_dry.ogg",
           "bytes": 43221,
-          "sha256": "fd8c8a2e90bc0994a4d8f8e573e4f305d52bc411cf19f10d395c7a5f02eeb22d",
+          "sha256": "84dc080b451cf4e0ab0737980f6c1dc35b1baf431808a3047c4a3df05b275905",
           "decoded_peak": 0.8819634318351746
         },
         "filtered": {
           "file": "SawnOffJS2000ShotgunShoot_filtered.ogg",
           "bytes": 42948,
-          "sha256": "6bfe5dfcf12b3704b0162cbe0ebade19a76540632027ab7de3759fad3de25f7a",
+          "sha256": "0313cbf1932d443707e5a5fb8b984af6933992b6fb018d3aa2300af7eedde750",
           "decoded_peak": 0.6976776123046875
         },
         "layered": {
           "file": "SawnOffJS2000ShotgunShoot_layered.ogg",
-          "bytes": 43074,
-          "sha256": "9d7ff95b7848e7738aac14d78d221add6b9f7a0a5bb9886ebf28d850b7b3ae58",
-          "decoded_peak": 0.69329434633255
+          "bytes": 43098,
+          "sha256": "e59fc76c48adf50d3df6eb8b4c5540a85404b4c32ddc0e3e9d0f2f18593ffa1b",
+          "decoded_peak": 0.6954711675643921
         }
       },
       "wav": "SawnOffJS2000ShotgunShoot_layered.wav",
-      "wav_sha256": "1cf3757e4d971cd39f6dca7b858bd282f20f58f0e553d23aa22a7389342a9ce6"
+      "wav_sha256": "707a91d406a3d08281fc17eeffd3bdc9ec158a93acd7a401d46d0b1606721b7f"
     },
     {
       "sound": "TrapperCarbineShoot",
@@ -1855,6 +1898,8 @@
       "seconds": 4.0884583333333335,
       "leading_trim_seconds": 0.5858333333333333,
       "common_headroom_gain": 1.0,
+      "layer_gain": 1.029867027783885,
+      "layer_gain_db": 0.25562307997318323,
       "raw_sha256": "0a6d978c38f139622f3f54777672f7251ef1582a3fa78a25859b4a8680fdede9",
       "render": {
         "event": "event:/Weapon/Firearm/TrapperCarbine/Shoot",
@@ -1918,24 +1963,24 @@
         "dry": {
           "file": "TrapperCarbineShoot_dry.ogg",
           "bytes": 35105,
-          "sha256": "86e051cabab52998f8462b5e7562c3eedfea3d221bf7009fa488c6e7c36e9cfc",
+          "sha256": "9a6b98b022d713073b09d9d8a7a26bbb2ec35fcf57366eb5b4e70be1992930a9",
           "decoded_peak": 0.925110399723053
         },
         "filtered": {
           "file": "TrapperCarbineShoot_filtered.ogg",
           "bytes": 35006,
-          "sha256": "09a608241145483202e3871abcbfaebb9c2babd351c37df94dd3c0f0776544c6",
+          "sha256": "e5ae43642f1c8c796540548702ad4384e1987819ea07a2cf31ac98daf049fc56",
           "decoded_peak": 0.47061002254486084
         },
         "layered": {
           "file": "TrapperCarbineShoot_layered.ogg",
-          "bytes": 35086,
-          "sha256": "703aa2c41c14ed73e5a28093e6d1838c8406cbfff763e50523c42903493b5aac",
+          "bytes": 35092,
+          "sha256": "773e5ec92359ab864942bf59eee6468d80f0ff28d9c7186c0174fd2bbb318f3c",
           "decoded_peak": 0.47306227684020996
         }
       },
       "wav": "TrapperCarbineShoot_layered.wav",
-      "wav_sha256": "d6a0012dbaf5c2b0be4290335e821f6ef0782bef121d10718e5e5fa72d856868"
+      "wav_sha256": "b6ef36da6934f5c92efbc2d82d0579c0a351fd403f2ee969c116de5048469733"
     }
   ],
   "families": [
@@ -1985,5 +2030,5 @@
       "Lever actions and pistol-calibre carbines; L94Shoot is available for a rifle-calibre override."
     ]
   ],
-  "proposed_real_firearm_payload_bytes": 797597
+  "proposed_real_firearm_payload_bytes": 797574
 }

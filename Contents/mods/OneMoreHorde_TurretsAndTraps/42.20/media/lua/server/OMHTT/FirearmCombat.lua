@@ -46,9 +46,10 @@ function C.hit(record, origin, target, player, options)
     end
     local wear = gun:getConditionLowerChance()
     if wear > 0 and ZombRand(wear) == 0 then gun:setCondition(math.max(0, gun:getCondition() - 1)) end
-    addSound(options.object, origin:getX(), origin:getY(), origin:getZ(), gun:getSoundRadius(), gun:getSoundVolume())
+    local hearingRadius = math.floor(gun:getSoundRadius() * stats.hearingMultiplier + 0.5)
+    if hearingRadius > 0 then addSound(options.object, origin:getX(), origin:getY(), origin:getZ(), hearingRadius, gun:getSoundVolume()) end
     D.defer("firearm-shot", {id = record.id, gun = gun:getFullType(), shot = record.shots,
-        pellets = pellets, hits = hits, damage = lost * 100, condition = gun:getCondition(),
+        hearingRadius = hearingRadius, suppressed = stats.suppressed, pellets = pellets, hits = hits, damage = lost * 100, condition = gun:getCondition(),
         magazine = gun:getCurrentAmmoCount(), chamber = gun:isRoundChambered(), ms = getTimestampMs() - started})
     return {id = record.id, shot = record.shots, x = target:getX(), y = target:getY(), z = origin:getZ(),
         fromX = origin:getX() + 0.5, fromY = origin:getY() + 0.5, sound = gun:getSwingSound(),

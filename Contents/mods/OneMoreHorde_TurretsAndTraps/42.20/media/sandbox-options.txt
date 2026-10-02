@@ -152,6 +152,15 @@ option OMHTurretsTraps.PotatoProjectileSpeed {
     translation = OMHTurretsTraps_PotatoProjectileSpeed,
 }
 
+option OMHTurretsTraps.PotatoHearingRadius {
+    type = integer,
+    min = 0,
+    max = 200,
+    default = 12,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_PotatoHearingRadius,
+}
+
 option OMHTurretsTraps.PotatoRange {
     type = integer,
     default = 6,
@@ -364,6 +373,15 @@ option OMHTurretsTraps.RapidFireMinimum {
     translation = OMHTurretsTraps_RapidFireMinimum,
 }
 
+option OMHTurretsTraps.SuppressionReduction {
+    type = double,
+    min = 0,
+    max = 100,
+    default = 25,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_SuppressionReduction,
+}
+
 option OMHTurretsTraps.ReloadBonus {
     type = double,
     default = 25,
@@ -551,6 +569,15 @@ option OMHTurretsTraps.LootRapidFire {
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRapidFire,
+}
+
+option OMHTurretsTraps.LootSuppression {
+    type = double,
+    min = 0,
+    max = 20,
+    default = 1,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootSuppression,
 }
 
 option OMHTurretsTraps.LootReload {

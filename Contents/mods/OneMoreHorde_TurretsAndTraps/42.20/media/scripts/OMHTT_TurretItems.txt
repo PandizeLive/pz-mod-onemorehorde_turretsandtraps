@@ -68,6 +68,15 @@ module Base {
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_ModuleRange,
     }
+    item OMHTTModuleSuppression {
+        DisplayName = Suppression Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleSuppression,
+    }
     item OMHTTModuleReload {
         DisplayName = Reload Module,
         ItemType = base:normal,

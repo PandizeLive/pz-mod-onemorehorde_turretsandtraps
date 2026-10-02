@@ -5,6 +5,7 @@ local D = require("OMHTT/Diagnostics")
 local Cycle = require("OMHTT/TurretCycle")
 local M = require("OMHTT/TurretModules")
 local G = require("OMHTT/Firearms")
+local Audio = require("OMHTT/TurretReloadAudio")
 OMHTT_TurretWorld = {}
 local W = OMHTT_TurretWorld
 local facings = {e = 0, n = 4, w = 8, s = 12}
@@ -65,10 +66,11 @@ function W.refresh(object)
     local state = T.state(object)
     if not state or not object:getContainer() then return end
     local contents = T.contents(object:getContainer())
-    if G.profile(contents.head) and not feeders[object] then
+    if contents.head and not feeders[object] then
         feeders[object] = true
         feederOrder[#feederOrder + 1] = object
     end
+    if Audio.entries[object] and Audio.entries[object].head ~= contents.head then Audio.stop(object) end
     state.baseFacing = state.baseFacing or state.facing
     local hybrid = T.hybrid()
     local sprite = T.sprite(state.baseFacing or state.facing, false)
@@ -219,6 +221,7 @@ end
 ---@param object IsoObject Removed object
 ---@return nil
 function W.removed(object)
+    Audio.stop(object)
     generators[object] = nil
     local state = T.state(object)
     if not state then return end
@@ -334,6 +337,15 @@ function W.fire(player, object, target)
     if result == "Fired" and not T.hybrid() then W.refresh(object) end
     local refreshedAt = getTimestampMs()
     if impact then
+        if stats.suppressed then
+            impact.sound = require("OMHTT/TurretSounds").suppressed(contents.head) or impact.sound
+        end
+        if not stats.firearm then
+            local square = object:getSquare()
+            local radius = math.floor(M.option("PotatoHearingRadius", 12, 0, 200) * stats.hearingMultiplier + 0.5)
+            if radius > 0 then addSound(object, square:getX(), square:getY(), square:getZ(), radius, 10) end
+            D.defer("turret-hearing", {id = state.id, radius = radius, suppressed = stats.suppressed})
+        end
         local command = "Launch"
         if impact.firearm then command = "GunShot" end
         triggerEvent("OnServerCommand", F.MODULE, command, impact)
@@ -358,6 +370,7 @@ function W.feedTick()
         local square = object:getSquare()
         if not square or object:getObjectIndex() < 0 or not T.state(object)
             or getCell():getGridSquare(square:getX(), square:getY(), square:getZ()) ~= square then
+            Audio.stop(object)
             feeders[object] = nil
             table.remove(feederOrder, feederCursor)
         else
@@ -365,18 +378,26 @@ function W.feedTick()
             if not state.feedCheck or now >= state.feedCheck then
                 state.feedCheck = now + 100
                 local contents = T.contents(object:getContainer())
-                if G.profile(contents.head) then
+                if contents.head then
+                    local stats = T.cycleConfig(contents)
                     if W.valid(object) and W.power(object, contents) then
-                        local _, status = G.update(contents, T.cycleConfig(contents), now, true)
+                        local cycle, status
+                        if G.profile(contents.head) then
+                            cycle, status = G.update(contents, stats, now, true)
+                        else
+                            cycle, status = T.cycle(contents, now)
+                        end
+                        Audio.update(object, contents.head, cycle, status, stats, now)
                         if state.feedStatus ~= status then
-                            D.defer("firearm-cycle", {id = state.id, gun = contents.head:getFullType(), status = status,
-                                magazine = contents.head:getCurrentAmmoCount(), chamber = contents.head:isRoundChambered()})
+                            D.defer("turret-cycle", {id = state.id, head = contents.head:getFullType(), status = status})
                             state.feedStatus = status
                         end
                     else
-                        G.cancelLoading(contents.head)
+                        Audio.stop(object)
+                        if G.profile(contents.head) then G.cancelLoading(contents.head) end
                     end
                 else
+                    Audio.stop(object)
                     feeders[object] = nil
                     table.remove(feederOrder, feederCursor)
                     feederCursor = feederCursor - 1

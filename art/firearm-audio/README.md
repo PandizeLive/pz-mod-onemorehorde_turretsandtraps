@@ -1,13 +1,13 @@
 # Native firearm suppression auditions
 
-Local asset preparation requested by the owner, 2026-10-01. Open [FIREARM_AUDIO.html](../FIREARM_AUDIO.html), also linked from the existing potato/reload page. No gameplay package change, installation, publication, firearm adapter expansion or module implementation.
+Local asset preparation requested by the owner, 2026-10-01. Open [FIREARM_AUDIO.html](../FIREARM_AUDIO.html), also linked from the existing potato/reload page. C73 approves packaging the processed audio with Suppression in 0.2.22; firearm adapter coverage remains three heads and nothing is published.
 
 ## Coverage and proposed runtime footprint
 
 - All 20 real IsAimedFirearm items in the installed 42.21.0 generated item scripts, sharing 18 native SwingSound events.
 - Two toy cap guns included separately for inventory completeness, not proposed as combat turret heads.
 - One representative outdoor single-shot render per event. This does not capture every bank randomization, indoor/distant mix, or M16 automatic event. Repeat the single-shot sample according to the actual turret cadence; do not bake a burst into a per-shot fallback.
-- Real firearm layered OGG files: 797,597 bytes (778.9 KiB). Including cap guns: 823,331 bytes (804.0 KiB). These are candidate asset sizes, not a packaged gameplay update.
+- Real firearm layered OGG files: 797,574 bytes (778.9 KiB). Two owner potato variants are also packaged; cap guns remain audition-only. See validation.json for exact current sizes.
 - Mono 48 kHz Vorbis quality 4. Nine proposed family mappings reuse existing files, adding zero audio bytes. No per-stack audio copies: module stack affects zombie hearing independently.
 - Original and filtered-only comparison OGGs, PCM16 WAV editing masters, manifest and ZIP are local audition deliverables, not proposed runtime content. The whole audition folder is larger than the runtime subset.
 
@@ -19,7 +19,7 @@ Source/listener distance is one unit, outdoor FirearmInside=0 and RoomSize=0, Oc
 
 Stereo sources are averaged to mono without equal-power downmix amplification. The original shot receives a 250 Hz eighth-order Butterworth low-pass (48 dB/octave, still the provisional steep slope). Wet points are (0,0), (.04,1), (.09,1), (.18,.25), (.69,0); interpolate linearly and use dry=1-wet. The owner overlay begins at zero, unfiltered. Overlay source is unchanged. A common final headroom gain, when required to prevent PCM/Vorbis overshoot, applies equally to dry/filtered/layered comparisons; each gain is disclosed in the manifest and HTML. It is not a suppression-volume mechanic. Pitch is unchanged in these previews.
 
-Numerical checks verify that layered minus filtered equals the mono overlay times the disclosed common gain before encoding, within 1e-12. All 60 OGGs decode successfully with peaks below 0.99 and durations within codec padding tolerance. Layered WAV masters contain no saturated samples. Final artistic quality requires owner listening; numerical checks are not hearing approval. Browser UI verification was unavailable because the connected browser blocks local file URLs; no alternate serving workaround was used.
+Numerical checks verify that layered minus filtered equals the mono overlay times the per-weapon layer gain and disclosed common gain before encoding, within 1e-12. All 66 OGGs (including two potato sets) decode successfully with peaks below 0.99 and durations within codec padding tolerance. Layered WAV masters contain no saturated samples. Final artistic quality requires owner listening; numerical checks are not hearing approval. Browser UI verification was unavailable because the connected browser blocks local file URLs; no alternate serving workaround was used.
 
 FMOD references: [Studio event descriptions](https://www.fmod.com/docs/2.03/api/studio-api-eventdescription.html), [offline WAV rendering](https://qa.fmod.com/t/fmod-android-error-18-file-not-found/15759), [synchronous Studio updates](https://www.fmod.com/docs/api/content/generated/FMOD_Studio_System_Create.html). Current installed ParameterFirearmInside bytecode confirms zero for outdoors.
 
@@ -33,4 +33,8 @@ Rimfire has no exact native counterpart in this inventory; select an owner-appro
 
 Run `tools/build_firearm_audio.py` using the bundled Python with NumPy. It uses the existing ShareX ffmpeg executable and the game's installed FMOD libraries; no tool is bundled with the gameplay mod. Raw captures are local ignored diagnostics. Existing captures are reused so random bank sample selection does not change unnecessarily. Delete only a specifically chosen capture and its JSON if a new representative take is desired.
 
-The current set is local audition material. Packaging/installation remains part of a later explicitly approved gameplay patch, with native spatialization, simultaneous turret playback and audible acceptance still pending.
+The eighteen real firearm layered OGGs and two potato layered OGGs are packaged for approved 0.2.22. Native spatialization, simultaneous turret playback and audible acceptance remain player checks. Family mappings are prepared assets, not new firearm adapters.
+
+### Accepted layer rebalance
+
+Scale the overlay by each filtered original's RMS divided by JS14Shoot's filtered RMS, measured over the 0.375-second overlay. The owner preferred the JS-14 balance; a fixed unity overlay was masked by the louder Double Barrel. Its new overlay gain is approximately +11.2 dB. Mono averaging, the unfiltered overlay, the wet envelope and common clipping protection remain unchanged. Runtime stacking never repeats this layer or modifies audible gain.

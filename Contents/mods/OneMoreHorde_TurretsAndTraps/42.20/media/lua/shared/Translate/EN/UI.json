@@ -151,5 +151,6 @@
     "UI_OMHTT_ManageInternal": "Internal",
     "UI_OMHTT_ManageNotNeeded": "Not needed",
     "UI_OMHTT_ManageMissing": "Missing: %1",
-    "UI_OMHTT_ManageEjectMagazine": "Right-click to eject."
+    "UI_OMHTT_ManageEjectMagazine": "Right-click to eject.",
+    "UI_OMHTT_ModuleSuppression": "Suppression"
 }

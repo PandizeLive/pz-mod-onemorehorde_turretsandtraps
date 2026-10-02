@@ -21,6 +21,7 @@ LAYER = ROOT.parent / "Audio/Turrets & Traps/suppressed_shot.wav"
 RATE = 48000
 TIMES = [0, 0.04, 0.09, 0.18, 0.69]
 WET = [0, 1, 1, 0.25, 0]
+REFERENCE_RMS = None
 FAMILIES = [
     ("Light handgun / SMG", "M9Shoot", "Pistol-calibre automatics and ordinary semi-auto pistols. One sample per shot; cadence stays weapon-specific."),
     ("Heavy handgun", "DesertEagleShoot", "Heavy semi-auto handguns, especially .44-class weapons."),
@@ -96,14 +97,14 @@ def inventory():
     return rows
 
 
-def build_asset(sound, event, layer):
-    raw = RAW / (sound + ".wav")
+def build_asset(sound, event, layer, source=None):
+    raw = source or RAW / (sound + ".wav")
     meta = raw.with_suffix(".json")
-    if not raw.exists() or not meta.exists():
+    if source is None and (not raw.exists() or not meta.exists()):
         run(sys.executable, "-X", "utf8", ROOT / "tools/render_native_shot.py", event, raw)
     capture = decode(raw)
     active = np.flatnonzero(np.abs(capture) > 10 ** (-80 / 20))
-    if len(active) == 0 or active[-1] > len(capture) - RATE // 4:
+    if len(active) == 0 or (source is None and active[-1] > len(capture) - RATE // 4):
         raise RuntimeError(f"Silent or truncated event: {sound}")
     first = max(0, int(active[0]) - 96)
     last = min(len(capture), int(active[-1]) + 960)
@@ -113,7 +114,9 @@ def build_asset(sound, event, layer):
         dry = np.pad(dry, (0, len(layer) - len(dry)))
     wet = np.interp(np.arange(len(dry)) / RATE, TIMES, WET)
     filtered = dry * (1 - wet) + lowpass(dry) * wet
-    overlay = np.pad(layer, (0, len(dry) - len(layer)))
+    level = float(np.sqrt(np.mean(filtered[:len(layer)] ** 2)))
+    layer_gain = level / REFERENCE_RMS
+    overlay = np.pad(layer * layer_gain, (0, len(dry) - len(layer)))
     combined = filtered + overlay
     originals = {"dry": dry, "filtered": filtered, "layered": combined}
     gain = min(1.0, 0.95 / max(float(np.max(np.abs(v))) for v in originals.values()))
@@ -140,7 +143,8 @@ def build_asset(sound, event, layer):
     if gain < 1:
         print(f"{sound}: common clipping-prevention gain {gain:.4f}", flush=True)
     return {"sound": sound, "event": event, "seconds": len(dry) / RATE, "leading_trim_seconds": first / RATE,
-            "common_headroom_gain": gain, "raw_sha256": sha(raw), "render": json.loads(meta.read_text()), "files": files,
+            "common_headroom_gain": gain, "layer_gain": layer_gain, "layer_gain_db": 20 * math.log10(layer_gain),
+            "raw_sha256": sha(raw), "render": json.loads(meta.read_text()) if source is None else {"owner_source": str(source)}, "files": files,
             "wav": sound + "_layered.wav", "wav_sha256": sha(OUT / (sound + "_layered.wav"))}
 
 
@@ -163,7 +167,9 @@ def build_page(manifest):
         controls = "".join(f'<button data-play="firearm-audio/{sound}_{mode}.ogg">{label}</button>'
                            for mode, label in [("dry", "Original"), ("filtered", "Filtered"), ("layered", "Filtered + layer")])
         gain = asset["common_headroom_gain"]
-        gain_note = f" · common headroom gain {gain:.3f}" if gain < 1 else ""
+        gain_note = f" · layer {asset['layer_gain_db']:+.1f} dB"
+        if gain < 1:
+            gain_note += f" · common headroom gain {gain:.3f}"
         cards.append(f'<article id="{sound}" data-search="{escape((title + ids + sound).lower())}"><span class="tag">{tag}</span>'
                      f'<h3>{escape(title)}</h3><p class="technical">{escape(ids)}<br>{escape(asset["event"])}</p>'
                      f'<p>{asset["seconds"]:.2f}s · {size:.1f} KiB OGG{gain_note}</p><div>{controls}</div>'
@@ -183,7 +189,7 @@ def build_page(manifest):
 def build_download(manifest):
     mapping = {"weapons": manifest["weapons"], "families": manifest["families"],
                "files": {a["sound"]: a["files"]["layered"]["file"] for a in manifest["assets"]},
-               "status": "Audition assets only; no turret adapters or runtime sound definitions"}
+               "status": "Audio library used by 0.2.22; firearm adapters remain limited to the three supported heads"}
     with zipfile.ZipFile(ROOT / "art/firearm-audio-layered.zip", "w", zipfile.ZIP_DEFLATED) as archive:
         for asset in manifest["assets"]:
             path = OUT / asset["files"]["layered"]["file"]
@@ -193,24 +199,38 @@ def build_download(manifest):
 
 
 def main():
+    global REFERENCE_RMS
     OUT.mkdir(exist_ok=True)
     RAW.mkdir(parents=True, exist_ok=True)
     weapons = inventory()
     layer = decode(LAYER)
+    reference_path = RAW / "JS14Shoot.wav"
+    if not reference_path.exists() or not reference_path.with_suffix(".json").exists():
+        reference_event = next(row["event"] for row in weapons if row["sound"] == "JS14Shoot")
+        run(sys.executable, "-X", "utf8", ROOT / "tools/render_native_shot.py", reference_event, reference_path)
+    reference = decode(reference_path)
+    active = np.flatnonzero(np.abs(reference) > 0.0001)
+    reference = reference[max(0, int(active[0]) - 96):]
+    wet = np.interp(np.arange(len(reference)) / RATE, TIMES, WET)
+    reference = reference * (1 - wet) + lowpass(reference) * wet
+    REFERENCE_RMS = float(np.sqrt(np.mean(reference[:len(layer)] ** 2)))
     assets = []
     for sound in sorted({row["sound"] for row in weapons}):
         event = next(row["event"] for row in weapons if row["sound"] == sound)
         assets.append(build_asset(sound, event, layer))
         print(sound + " ready", flush=True)
-    manifest = {"status": "Local audition only; not installed or published", "game_build": "42.21.0",
+    manifest = {"status": "Approved 0.2.22 audio library; player playback acceptance pending", "game_build": "42.21.0",
                 "source": str(GAME), "bank_sha256": sha(GAME / "media/sound/banks/Desktop/ZomboidSound.bank"),
                 "overlay": str(LAYER), "overlay_sha256": sha(LAYER), "rate": RATE, "channels": 1,
+                "layer_balance": {"reference": "JS14Shoot", "window_seconds": len(layer) / RATE, "filtered_rms": REFERENCE_RMS},
                 "filter": {"cutoff_hz": 250, "slope_db_per_octave": 48, "times": TIMES, "wet": WET},
                 "encoding": "OGG Vorbis quality 4; mono 48 kHz; PCM16 WAV masters",
                 "weapons": weapons, "assets": assets, "families": FAMILIES}
     manifest["proposed_real_firearm_payload_bytes"] = build_page(manifest)
     (OUT / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
     build_download(manifest)
+    potatoes = [build_asset("OMHTTPotato" + str(i), "owner", layer, LAYER.parent / ("potato_thump_" + str(i) + ".wav")) for i in (1, 2)]
+    (OUT / "potato-balanced.json").write_text(json.dumps(potatoes, indent=2), encoding="utf-8")
     print(json.dumps({"weapons": len(weapons), "unique_events": len(assets),
                       "proposed_real_firearm_payload_bytes": manifest["proposed_real_firearm_payload_bytes"]}))
 

@@ -163,5 +163,12 @@
     "Sandbox_OMHTurretsTraps_FirearmReloadMultiplier_tooltip": "Scales loading time.",
     "Sandbox_OMHTurretsTraps_FirearmCooldownMultiplier_tooltip": "Scales time between shots.",
     "Sandbox_OMHTurretsTraps_FirearmCycleMultiplier_tooltip": "Scales pump and bolt time.",
-    "Sandbox_OMHTurretsTraps_FirearmTurnSpeed_tooltip": "Degrees per second."
+    "Sandbox_OMHTurretsTraps_FirearmTurnSpeed_tooltip": "Degrees per second.",
+    "Sandbox_Title_OMHTurretsTraps_Suppression": "Suppression",
+    "Sandbox_OMHTurretsTraps_SuppressionReduction": "Hearing reduction per module",
+    "Sandbox_OMHTurretsTraps_SuppressionReduction_tooltip": "Percent of remaining hearing range removed.",
+    "Sandbox_OMHTurretsTraps_LootSuppression": "Suppression Module",
+    "Sandbox_OMHTurretsTraps_LootSuppression_tooltip": "Loot weight multiplier.",
+    "Sandbox_OMHTurretsTraps_PotatoHearingRadius": "Hearing radius",
+    "Sandbox_OMHTurretsTraps_PotatoHearingRadius_tooltip": "Zombie hearing range in tiles."
 }

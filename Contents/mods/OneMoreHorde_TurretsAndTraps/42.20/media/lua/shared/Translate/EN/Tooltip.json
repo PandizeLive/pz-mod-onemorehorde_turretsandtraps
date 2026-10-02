@@ -15,5 +15,6 @@
     "Tooltip_OMHTT_ModuleAutoloader": "Eliminates reload time.",
     "Tooltip_OMHTT_ModuleVelocity": "Increases damage and knockdown chance. Stackable.",
     "Tooltip_OMHTT_ModuleRange": "Extends range. Stackable.",
-    "Tooltip_OMHTT_ModuleCapacity": "Expands ammo and module storage."
+    "Tooltip_OMHTT_ModuleCapacity": "Expands ammo and module storage.",
+    "Tooltip_OMHTT_ModuleSuppression": "Reduces zombie hearing range. Stackable."
 }

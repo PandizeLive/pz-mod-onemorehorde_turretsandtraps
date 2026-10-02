@@ -1,6 +1,6 @@
 # Architecture and feasibility
 
-Reviewed 2026-10-01 against the current T&T source, Alex's PZ modding/Lua skills, the workspace/project agreements, and [Horde Night architecture](../../pz-mod-onemorehorde_protectthecure/docs/ARCHITECTURE.md). This replaces the stale P1C1-only description. Current installed build: **0.2.21**; rendered acceptance remains separate from automated/native checks.
+Reviewed 2026-10-01 against the current T&T source, Alex's PZ modding/Lua skills, the workspace/project agreements, and [Horde Night architecture](../../pz-mod-onemorehorde_protectthecure/docs/ARCHITECTURE.md). This replaces the stale P1C1-only description. Current candidate build: **0.2.22**; rendered acceptance remains separate from automated/native checks.
 
 ## Relationship to Horde Night
 
@@ -26,7 +26,7 @@ Horde Night's sibling-specific remote, Workshop, paired-package and review workf
 | Resource and weapon state | Actual `ItemContainer` items; `Firearms` owns native chamber/magazine transitions and magazine transactions, `TurretWorld` owns power/world activation |
 | Target search and aim | `TurretSearch`, `TurretAutomation`, `TurretAim`; placement orientation fixes coverage, independent head angle follows targets |
 | Combat | `PrototypeCombat` handles potato flight/impact; `FirearmCombat` handles supported gun approximations; barrier runtime validates actual thump side/contact |
-| Feeding | `TurretFeeder` advances supported gun loading/racking while powered; no hidden character or separate ammo inventory |
+| Feeding | `TurretWorld.feedTick` advances powered gun/potato cycles; `TurretReloadAudio` follows actual deadlines with bounded cues; no hidden character or separate ammo inventory |
 | Interaction | `TurretManage`, `TurretSlot`, `TurretTransfers`, `TurretMagazineAction`, selection/menu/Install modules |
 | Presentation | `TurretRenderer`, `TurretRange`, `PrototypeEffects`, damage feedback and collision overlays; visual particles/tracers never deal damage |
 | Diagnostics | `Diagnostics` queues detailed events with bounded draining; capture/version/hash evidence via OMH.cmd |
@@ -75,3 +75,9 @@ Before MP support, validate every mutation on the authoritative side: player ide
 Horde Night retains event ownership, quotas, participants, cleanup, score and simulated populations. Trait Shop retains progression and reward receipts; Cure Defense retains objective-private state through its declared core contract. The proposed defense score penalty and reduced all-member XP pool are not existing API capabilities. Offline reward eligibility is not offline combat. Cure simulation remains last and requires an explicit reviewed core extension; no virtual kill claims or quota writes from T&T.
 
 References: [Integration plan](INTEGRATIONS.md), [Horde Extension API](../../pz-mod-onemorehorde_protectthecure/docs/EXTENSION_API.md), [Trait Shop policy](../../Trait%20Shop/docs/OMH_INTEGRATION.md), [Roadmap](ROADMAP.md). Concertina/slowdown restoration, wiring/beam occupancy, faction receipt delivery and unloaded Cure defense remain future feasibility/authority gates.
+
+### 0.2.22 audio and mounted drawing
+
+TurretStats computes Suppression hearing multipliers from active inventory modules. FirearmCombat/TurretWorld emit the gameplay hearing event; TurretSounds selects one preprocessed native or potato replacement. PrototypeEffects performs spatial playback. TurretReloadAudio keeps transient sound handles and follows the existing feeder budget (four devices / one millisecond per tick, 100ms polling per device); it performs no extra inventory traversal. Audio has no damage authority or persisted emitter IDs. Preprocessing tools are development-only.
+
+Mounted firearm drawing temporarily disables the native static item atlas by preserving/restoring both option value and default, required by the engine's debug-only option semantics. Native item pose is restored too; a reusable recovery record handles an interrupted draw on the next callback. No permanent graphics setting change, Java injection or external loader. Native option/Lua exposure is verified; rendered correctness and dense-turret frame cost still require client evidence.

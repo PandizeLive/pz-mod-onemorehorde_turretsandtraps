@@ -77,6 +77,8 @@ function S.resolve(contents)
         ammo = math.floor(ammoCapacity + extraAmmo),
         modules = math.floor(S.option("PotatoModuleCapacity", 4, 0, 20) + extraModules),
         magazine = magazine, accuracy = accuracy, rack = rack * 1000, firearm = firearm ~= nil,
+        suppressed = (active.Suppression or 0) > 0,
+        hearingMultiplier = (1 - S.option("SuppressionReduction", 25, 0, 100) / 100) ^ (active.Suppression or 0),
         reload = reload * 1000, cooldown = math.max(cooldown, firearm and rack or 0) * 1000, autoloader = active.Autoloader ~= nil}
 end
 

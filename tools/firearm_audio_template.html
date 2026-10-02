@@ -6,12 +6,12 @@
 </style></head><body><main>
 <p class="eyebrow">OMH: Turrets &amp; Traps · Local audio workshop</p>
 <h1>Suppressed firearm sounds</h1>
-<p>Actual firing events rendered from your installed Zomboid 42.21.0 banks, processed with your filter envelope and <strong>unfiltered suppressed_shot.wav</strong>. One representative single shot per event. No gameplay changes.</p>
+<p>Actual firing events rendered from your installed Zomboid 42.21.0 banks, processed with your filter envelope and <strong>unfiltered suppressed_shot.wav</strong>. One representative single shot per event. Balanced for the approved suppression patch.</p>
 <p><a href="POTATO_AUDIO.html">← Potato, reload and impact auditions</a> · <a download href="firearm-audio-layered.zip">Download all layered OGGs</a> · <a href="firearm-audio/manifest.json">Source and processing manifest</a></p>
 <div class="summary"><p><strong>20 firearms</strong>18 distinct shot events</p><p><strong>{{PAYLOAD}}</strong>proposed layered OGG payload</p><p><strong>9 fallback families</strong>reuse existing files · zero extra audio</p></div>
 <p class="notice">This is an audio library, not expanded turret compatibility. The installed mod still supports only its three firearm adapters. Two toy cap guns appear below for completeness and are excluded from the proposed payload.</p>
 <details><summary>Filter, source and file-size details</summary>
-<p>250 Hz low-pass, provisional 48 dB/octave slope. Wet mix ramps linearly: 0% at 0s → 100% at 0.04s → 100% at 0.09s → 25% at 0.18s → 0% at 0.69s. Dry mix is 1 − wet. Your overlay starts at 0s and receives no filter.</p>
+<p>250 Hz low-pass, provisional 48 dB/octave slope. Wet mix ramps linearly: 0% at 0s → 100% at 0.04s → 100% at 0.09s → 25% at 0.18s → 0% at 0.69s. Dry mix is 1 − wet. Your overlay starts at 0s and receives no filter. Its per-weapon level is matched to the JS-14 balance over the first 0.375 seconds; each adjustment is shown below.</p>
 <p>Captured as a nearby outdoor shot (one distance unit), no obstruction, with the current bank's default parameters and effects. Leading capture silence is removed; a 2ms onset margin and audible tail are retained. These are event renders, not isolated raw source stems or every randomized bank variation.</p>
 <p>Mono 48 kHz OGG Vorbis quality 4 is the proposed runtime format. WAV downloads are editing masters; original/filtered comparisons and masters are audition files only. Shared native events and family fallbacks reference the same file. All 20 events including toys total {{TOTAL}} as layered OGG.</p>
 <p>No audible volume reduction represents zombie hearing. Any common clipping-prevention gain is shown on the affected card and applies equally to comparisons. The unfiltered overlay is mixed before final encoding. Native spatialization and randomized pitch still need in-game verification; pitch changes also change the baked envelope duration.</p>

@@ -7,6 +7,16 @@ local function verifyTurrets()
     isClient = function() return false end
     SandboxVars.OMHTurretsTraps.Enabled = true
     SandboxVars.OMHTurretsTraps.PotatoTurret = true
+    local atlas = getDebugOptions():getOptionByName("WorldItemAtlas.Enable")
+    local oldValue, oldDefault = atlas:getValueAsString() == "true", atlas:getDefaultValue()
+    atlas:setValue(false)
+    atlas:setDefaultToCurrentValue()
+    assert(not atlas:getValue(), "Atlas bypass is ineffective outside debug")
+    atlas:setValue(oldDefault)
+    atlas:setDefaultToCurrentValue()
+    atlas:setValue(oldValue)
+    assert(atlas:getDefaultValue() == oldDefault and (atlas:getValueAsString() == "true") == oldValue, "Atlas option restore failed")
+    print("[OMHTT-Smoke] native-atlas-lua bypass=verified restore=verified")
     local player = IsoPlayer.new(getCell())
     local Modules = require("OMHTT/TurretModules")
     local Loot = require("OMHTT/ModuleLoot")
@@ -21,7 +31,7 @@ local function verifyTurrets()
             end
         end
     end
-    assert(count == 48, "Expected twelve active components in four native loot pools")
+    assert(count == 52, "Expected thirteen active components in four native loot pools")
     local retired = {"OMHTTModuleCapacitySmall", "OMHTTModuleCapacity", "OMHTTModuleCapacityLarge",
         "OMHTTModuleMotionDetection", "OMHTTModuleDetection360"}
     for i = 1, #retired do
@@ -41,8 +51,8 @@ local function verifyTurrets()
             visibleComponents[component], visibleCount = true, visibleCount + 1
         end
     end
-    assert(visibleCount == 12, "Expected twelve canonical components")
-    print("[OMHTT-Smoke] native-component-list visible=12 hidden=0 duplicates=0 legacy=removed")
+    assert(visibleCount == 13, "Expected thirteen canonical components")
+    print("[OMHTT-Smoke] native-component-list visible=13 hidden=0 duplicates=0 legacy=removed")
     local nativeContents = {active = {Detection360 = 1, Filter = 1}}
     local profile = Modules.profile({baseFacing = 4, facing = 12, priority = "Toughest"}, nativeContents)
     assert(profile.cone == 360 and profile.heading == 90 and profile.priority == "Toughest", "Module profile failed")
@@ -60,7 +70,7 @@ local function verifyTurrets()
     assert(T.contents(live).active.MotionDetection == 1, "Native module condition defaults are not active")
     detector:setCondition(0)
     assert(T.contents(live).active.MotionDetection == nil, "Broken native module remains active")
-    print("[OMHTT-Smoke] native-modules loot=48 profiles=valid condition=checked")
+    print("[OMHTT-Smoke] native-modules loot=52 profiles=valid condition=checked")
     local resources = ArrayList.new()
     local tools = {"Base.Screwdriver", "Base.Wrench"}
     local routes = {

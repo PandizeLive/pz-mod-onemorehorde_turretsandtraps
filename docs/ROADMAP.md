@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-**Installed: [0.2.21 firearm/Manage repair](PATCH_v0.2.21.md).** The owner completed only part of 0.2.20; repair gun pose, magazine servicing, requirements feedback, head swapping and native tracer errors before continuing. See RELEASE.md for exact installation status.
+**Candidate: [0.2.22 suppression and turret feedback](PATCH_v0.2.22.md).** C73 combines the 0.2.21 turning/reload findings with approved Suppression and balanced audio. One owner test covers these and the unfinished firearm checks. See RELEASE.md for installation evidence. Next: P2C3e authority/performance hardening before broader firearm adapters; the complete trap roster remains planned below.
 
 **Previous: [0.2.19.1 correction](PATCH_v0.2.19.1.md).** C67 fixes exposed compatibility duplicates, starts the potato visual at the barrel tip and removes redundant firing work with bounded diagnostic output. Owner reports the rest of 0.2.19 worked well. Install status: RELEASE.md.
 

@@ -17,5 +17,6 @@
     "Base.OMHTTExpansionKitMedium": "Medium Expansion Kit",
     "Base.OMHTTExpansionKitLarge": "Large Expansion Kit",
     "Base.OMHTTModuleDetection": "Detection Module",
-    "Base.OMHTTModule360": "360 Module"
+    "Base.OMHTTModule360": "360 Module",
+    "Base.OMHTTModuleSuppression": "Suppression Module"
 }

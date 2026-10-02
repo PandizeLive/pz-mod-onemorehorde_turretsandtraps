@@ -1,0 +1,72 @@
+[
+  {
+    "sound": "OMHTTPotato1",
+    "event": "owner",
+    "seconds": 0.6835208333333334,
+    "leading_trim_seconds": 0.0,
+    "common_headroom_gain": 0.8036522195970816,
+    "layer_gain": 0.8748800520226204,
+    "layer_gain_db": -1.1610297124804345,
+    "raw_sha256": "cbeffc9ce1d5b0545c5d1f5fff99cff81469ce91f3ef889dc9919447e7831dec",
+    "render": {
+      "owner_source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Audio\\Turrets & Traps\\potato_thump_1.wav"
+    },
+    "files": {
+      "dry": {
+        "file": "OMHTTPotato1_dry.ogg",
+        "bytes": 8953,
+        "sha256": "21099cea87238abb1b567dbc9ef2ef4bb2edfcd1faddcc16bb189d5bbe672dc0",
+        "decoded_peak": 0.8177144527435303
+      },
+      "filtered": {
+        "file": "OMHTTPotato1_filtered.ogg",
+        "bytes": 8736,
+        "sha256": "10bf090f8ed00329ee3fbe93ba18e8538bb6816f393fbb21afa1bbc358ee2249",
+        "decoded_peak": 0.8001896739006042
+      },
+      "layered": {
+        "file": "OMHTTPotato1_layered.ogg",
+        "bytes": 8800,
+        "sha256": "a73753c095f1e3dff17f4b935b306981729d1053b199485c9fcfaaa898d56ea5",
+        "decoded_peak": 0.8001896739006042
+      }
+    },
+    "wav": "OMHTTPotato1_layered.wav",
+    "wav_sha256": "0907f3a6030bf9171923d9e5976e3b298afdc5fe2272b842fa22ed18636b2330"
+  },
+  {
+    "sound": "OMHTTPotato2",
+    "event": "owner",
+    "seconds": 0.7367083333333333,
+    "leading_trim_seconds": 0.0,
+    "common_headroom_gain": 0.8380574590349512,
+    "layer_gain": 0.6554215031013274,
+    "layer_gain_db": -3.669586287298166,
+    "raw_sha256": "2f6f7553086a6eb45d999ea4878d8dc945ee8f308e4bee07290411834e7da657",
+    "render": {
+      "owner_source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Audio\\Turrets & Traps\\potato_thump_2.wav"
+    },
+    "files": {
+      "dry": {
+        "file": "OMHTTPotato2_dry.ogg",
+        "bytes": 10070,
+        "sha256": "21b642333a4f28cc359a148d89ceba3b486a00620dfa6a5fcf65a64cf9e03a2f",
+        "decoded_peak": 0.8922039866447449
+      },
+      "filtered": {
+        "file": "OMHTTPotato2_filtered.ogg",
+        "bytes": 9852,
+        "sha256": "4349685ff36a832cdb0bf6359863ac7a265920cf97a9cb9589756d0ab1b5ec3d",
+        "decoded_peak": 0.5468034148216248
+      },
+      "layered": {
+        "file": "OMHTTPotato2_layered.ogg",
+        "bytes": 9894,
+        "sha256": "03ff3b36f97ee6f765fe51fe8229d0edc1cc36228ea16180f315101e0c7c0423",
+        "decoded_peak": 0.5438152551651001
+      }
+    },
+    "wav": "OMHTTPotato2_layered.wav",
+    "wav_sha256": "e90c35e035c20f4bedd51fff8d59e83cd6e3a8823f57ed6305ca4656a76498c9"
+  }
+]

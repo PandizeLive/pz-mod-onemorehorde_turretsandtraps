@@ -1,0 +1,20 @@
+Native JOML: three gun world attachments remain upright and aimed over eight headings.
+Native IsoUtils / JOML projection: 8 heading vectors match; head follows 16-pixel base shift.
+Native Jassimp import and PZ StaticMesh conversion passed: one mesh, 48 vertices, 24 triangles; GPU rendering remains untested.
+Native JOML: three gun world attachments remain upright and aimed over eight headings.
+Native IsoUtils / JOML projection: 8 heading vectors match; head follows 16-pixel base shift.
+Native Jassimp import and PZ StaticMesh conversion passed: one mesh, 72 vertices, 36 triangles; GPU rendering remains untested.
+Depth pixels=5529 outside=0
+Native depth geometry parser and generated mask passed; GPU texture loading remains a client check.
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by org.joml.MemUtil$MemUtilUnsafe (file:/C:/Program%20Files%20(x86)/Steam/steamapps/common/ProjectZomboid/projectzomboid.jar)
+WARNING: Please consider reporting this to the maintainers of class org.joml.MemUtil$MemUtilUnsafe
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+Native animation parser: two strike markers matched, SetVariable bindings resolved
+Native JSON translation loading and substitution: 421 keys passed
+Kahlua compilation: 50 runtime/translation files passed
+Native packet serialization: 23 packets; largest=390 bytes
+Assertions passed: 2844.0
+World/player/network/UI objects were test doubles; in-game acceptance remains pending.
+Failed to load file Guid table.
+Package checks passed: 146 files, 143 translation keys; manifest recorded.

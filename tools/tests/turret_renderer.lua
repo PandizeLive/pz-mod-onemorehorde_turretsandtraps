@@ -3,12 +3,23 @@ local T = require("OMHTT/Turret")
 local W = require("OMHTT/TurretWorld")
 local hybrid, specific, oldRender, oldRefresh = T.hybrid, getSpecificPlayer, Render3DItem, W.refresh
 local enabled, draws = true, {}
+local oldDebug = getDebugOptions
+local atlas = {value = true, default = true}
+function atlas:getValueAsString() return tostring(self.value) end
+function atlas:getDefaultValue() return self.default end
+function atlas:setValue(v) self.value = v end
+function atlas:setDefaultToCurrentValue() self.default = self.value end
+function getDebugOptions() return {getOptionByName = function(_, name)
+    check(name == "WorldItemAtlas.Enable", "Native atlas option selected")
+    return atlas
+end} end
 T.hybrid = function() return enabled end
 function getSpecificPlayer(index)
     check(index == 1, "Renderer uses the event's viewport, not a guessed global")
     return {getZ = function() return 0 end, getX = function() return 610 end, getY = function() return 610 end}
 end
 function Render3DItem(head, square, x, y, z, yaw)
+    if yaw == -1 then check(not atlas.value and not atlas.default, "Mounted gun bypasses atlas in debug and non-debug") end
     draws[#draws + 1] = {head = head, x = x, y = y, z = z, yaw = yaw, rx = head.rx, ry = head.ry, rz = head.rz}
 end
 local function turret(x, yaw)
@@ -93,6 +104,20 @@ check(#draws == 2 and draws[1].head.support and draws[2].head == gun, "One suppo
 check(draws[2].yaw == -1 and draws[2].rx == -90 and draws[2].ry == 315 and draws[2].rz == 0, "Native item XYZ pose is used for mounted firearm")
 check(gun.rx == 13 and gun.ry == 27 and gun.rz == 39, "Rendering restores original gun pose")
 check(math.abs(draws[2].z - draws[1].z - .1) < .000001, "Gun is seated above the support")
+check(atlas.value and atlas.default, "Ground item atlas settings restored after mounted draw")
+atlas.value, atlas.default = false, true
+R.render(1)
+check(not atlas.value and atlas.default, "Stored non-default atlas preference survives draw")
+local restore = R.restoreBuffer
+restore.atlas, restore.enabled, restore.default = atlas, false, true
+restore.head, restore.x, restore.y, restore.z = gun, 13, 27, 39
+R.drawRestore = restore
+atlas.value, atlas.default = false, false
+gun.rx, gun.ry, gun.rz = -90, 315, 0
+R.restoreDraw()
+check(not atlas.value and atlas.default and gun.rx == 13 and gun.ry == 27 and gun.rz == 39,
+    "Interrupted draw state can be recovered before the next render/tick")
 R.entries[gunObject] = nil
+getDebugOptions = oldDebug
 instanceItem = oldInstance
 T.hybrid, getSpecificPlayer, Render3DItem, W.refresh = hybrid, specific, oldRender, oldRefresh

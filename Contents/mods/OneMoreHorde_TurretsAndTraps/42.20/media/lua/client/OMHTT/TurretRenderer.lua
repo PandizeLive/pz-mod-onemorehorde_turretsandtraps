@@ -6,6 +6,20 @@ local M = require("OMHTT/TurretModules")
 local Aim = require("OMHTT/TurretAim")
 local R = {entries = {}, mode = nil, lastCheck = 0, headHeight = T.HEAD_VISUAL.height, headScale = T.HEAD_VISUAL.scale}
 
+---@return nil
+function R.restoreDraw()
+    local restore = R.drawRestore
+    if not restore then return end
+    local atlas = restore.atlas
+    atlas:setValue(restore.default)
+    atlas:setDefaultToCurrentValue()
+    atlas:setValue(restore.enabled)
+    restore.head:setWorldXRotation(restore.x)
+    restore.head:setWorldYRotation(restore.y)
+    restore.head:setWorldZRotation(restore.z)
+    R.drawRestore = nil
+end
+
 ---@param object IsoObject Managed base
 ---@param head InventoryItem? Actual installed head
 ---@return nil
@@ -34,6 +48,20 @@ function R.loaded(square)
             R.changed(object, T.contents(object:getContainer()).head)
         end
     end
+end
+
+---@return nil
+function R.restoreDraw()
+    local restore = R.drawRestore
+    if not restore then return end
+    local atlas = restore.atlas
+    atlas:setValue(restore.default)
+    atlas:setDefaultToCurrentValue()
+    atlas:setValue(restore.enabled)
+    restore.head:setWorldXRotation(restore.x)
+    restore.head:setWorldYRotation(restore.y)
+    restore.head:setWorldZRotation(restore.z)
+    R.drawRestore = nil
 end
 
 ---@param object IsoObject Managed base
@@ -88,6 +116,7 @@ end
 ---@param playerIndex number Native render viewport
 ---@return nil
 function R.render(playerIndex)
+    R.restoreDraw()
     if not T.hybrid() then return end
     local player = getSpecificPlayer(playerIndex)
     if not player then return end
@@ -105,14 +134,20 @@ function R.render(playerIndex)
                 if profile then
                     local head = entry.head
                     local oldX, oldY, oldZ = head:getWorldXRotation(), head:getWorldYRotation(), head:getWorldZRotation()
+                    local atlas = getDebugOptions():getOptionByName("WorldItemAtlas.Enable")
+                    local restore = R.restoreBuffer or {}
+                    R.restoreBuffer, R.drawRestore = restore, restore
+                    restore.atlas, restore.enabled, restore.default = atlas, atlas:getValueAsString() == "true", atlas:getDefaultValue()
+                    restore.head, restore.x, restore.y, restore.z = head, oldX, oldY, oldZ
                     head:setWorldXRotation(profile.roll)
                     head:setWorldYRotation(yaw)
                     head:setWorldZRotation(0)
                     Render3DItem(entry.support, square, square:getX() + 0.5, square:getY() + 0.5, square:getZ() + R.headHeight, yaw)
+                    -- The debug-only switch reads its default outside debug mode.
+                    atlas:setValue(false)
+                    atlas:setDefaultToCurrentValue()
                     Render3DItem(head, square, square:getX() + 0.5, square:getY() + 0.5, square:getZ() + R.headHeight + 0.1, -1)
-                    head:setWorldXRotation(oldX)
-                    head:setWorldYRotation(oldY)
-                    head:setWorldZRotation(oldZ)
+                    R.restoreDraw()
                 else
                     Render3DItem(entry.head, square, square:getX() + 0.5, square:getY() + 0.5, square:getZ() + R.headHeight, yaw)
                 end
@@ -123,6 +158,7 @@ end
 
 ---@return nil
 function R.tick()
+    R.restoreDraw()
     local now = getTimestampMs()
     R.animate(now)
     if now - R.lastCheck < 1000 then return end
