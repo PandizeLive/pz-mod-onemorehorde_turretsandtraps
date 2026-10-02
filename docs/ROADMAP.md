@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-**Current candidate: [0.2.23 turret controls, combat and loot](PATCH_v0.2.23.md).** C74 lifts the prior gameplay hold and combines the patch with the expanded LootLab. Installation and native evidence: RELEASE.md. One combined test carries unfinished visual/audio/firearm acceptance forward.
+**Installed: [0.2.23 turret controls, combat and loot](PATCH_v0.2.23.md).** C74 lifts the prior gameplay hold and combines the patch with the expanded LootLab. Installation and native evidence: RELEASE.md. One combined test carries unfinished visual/audio/firearm acceptance forward.
 
 **Next: P2C3e authority/performance hardening** before broader firearm adapters. Keep the shared aggregate-budget/clock audit and multiplayer authority gate from ARCHITECTURE.md. The complete trap roster remains planned below; this update does not displace it.
 

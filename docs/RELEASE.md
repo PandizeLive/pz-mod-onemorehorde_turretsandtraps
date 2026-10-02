@@ -1,10 +1,10 @@
 # Release state and publication policy
 
-## Current candidate: 0.2.23
+## Current local installation: 0.2.23
 
 C74 resumes the held controls/combat patch with the approved native critical policy and expanded themed loot. [Scope and six-step combined test](PATCH_v0.2.23.md). Validation: 3,020 assertions, 52 runtime/translation files, 448 native JSON translation keys and 148 packaged files. Native stock 42.21.0 write/read probes pass; the final read also asserts real M9/JS-2000/MSR788 range, cooldown and critical values. All seven loot pools parse, with 75 component entries. Exact inventory/ammo, native world collision and persistence probes remain green. No connected client: rendering, sound playback and frame smoothness remain owner acceptance.
 
-LootLab model checks pass with 11,713 candidates, 45 eligible routes, component-subset enforcement and 256 worlds. All 68 website API tests pass, including old-account and offline-draft migration. Admin API build and Wrangler dry run pass. Release/install and deployment evidence will be recorded below after the actions complete. No Steam publication or GitHub push; cumulative unuploaded Workshop notes remain intact.
+LootLab model checks pass with 11,713 candidates, 45 eligible routes, component-subset enforcement and 256 worlds. All 68 website API tests pass, including old-account and offline-draft migration. Admin API build and Wrangler dry run pass. Installed from annotated `test/v0.2.23` (`564a217`). [Evidence](../diagnostics/v0.2.23/local-release.json) verifies all 148 source/tag/installed/archive files and the complete 146-file 0.2.22 backup. [Archive](../artifacts/OMHTT-0.2.23.zip). LootLab deployed as Worker `0db992d3-b199-490f-8a4d-ee88175752fb`; verified live bundle, 12 protected admin routes and both public API checks. The [website release record](../../OMH%20Website/RELEASE_LOOTLAB_2026-10-01.md) contains deployment and saved-settings migration evidence. No Steam publication or GitHub push; cumulative unuploaded Workshop notes remain intact.
 
 
 ## Previous local installation: 0.2.22
