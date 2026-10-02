@@ -26,3 +26,5 @@ C73: owner approved the combined rendering, reload and Suppression Module patch 
 6. Leave supplies and Suppression installed, pick up/redeploy, then save/reload. Check contents and effects remain; fire two nearby turrets and report any flicker, overlapping audio or error counter increase. Send **Test complete** for console review.
 
 Unfinished earlier mechanism/persistence checks are carried into this test, not marked passed. No Workshop upload has occurred; cumulative notes remain pending.
+
+Installed from annotated `test/v0.2.22` (`2e8fd8c`). [Release evidence](../diagnostics/v0.2.22/local-release.json) verifies 146 source/tag/installed/archive files and the complete previous 123-file backup.

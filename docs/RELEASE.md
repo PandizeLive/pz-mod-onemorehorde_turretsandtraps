@@ -1,10 +1,10 @@
 # Release state and publication policy
 
-## Validated candidate: 0.2.22
+## Current local installation: 0.2.22
 
 [C73 suppression and turret feedback](PATCH_v0.2.22.md): 2,844 assertions, 50 runtime Lua files, 421 native translation keys and 146 packaged files pass. Native write/read completed in 92.6/92.0 seconds on stock 42.21.0, proving Lua atlas-option bypass/restoration, 18 native suppressed events, two potato variants, selected reload registration, 13 canonical components / 52 loot entries, and actual saved weapon/supply state. This is headless evidence, not client rendering/audio acceptance. All 66 comparison OGGs decode; 20 layered runtime OGGs total 816,268 bytes. HTML relative links and JavaScript syntax pass. The existing isolated stock-game ladder/WorldGen and fencing sound diagnostics remain in the native logs; no OMHTT probe failed. No publication or push.
 
-Installation evidence is pending the local tagged install. One six-step test is in PATCH_v0.2.22.md.
+Installed from annotated `test/v0.2.22` (`2e8fd8c`). [Evidence](../diagnostics/v0.2.22/local-release.json) verifies all 146 source/tag/installed/archive files and the complete 123-file 0.2.21 backup. [Archive](../artifacts/OMHTT-0.2.22.zip). One six-step test is in PATCH_v0.2.22.md.
 
 ## Previous local installation: 0.2.21
 

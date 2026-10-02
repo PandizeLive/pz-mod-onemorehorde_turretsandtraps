@@ -1,6 +1,6 @@
 # OMH: Turrets & Traps
 
-Project foundation created 2026-09-25. **Candidate 0.2.22:** [suppression and turret feedback](docs/PATCH_v0.2.22.md). Adds slot-limited Suppression stacking, balanced firing sounds, potato/native firearm reload cues, and a mounted-gun turning correction. [Architecture review](docs/ARCHITECTURE.md) records the current SP boundary and remaining Horde Night alignment work. Exact [installation evidence](docs/RELEASE.md) is separate from rendered acceptance. No Workshop release exists.
+Project foundation created 2026-09-25. **Installed 0.2.22:** [suppression and turret feedback](docs/PATCH_v0.2.22.md). Adds slot-limited Suppression stacking, balanced firing sounds, potato/native firearm reload cues, and a mounted-gun turning correction. [Architecture review](docs/ARCHITECTURE.md) records the current SP boundary and remaining Horde Night alignment work. Exact [installation evidence](docs/RELEASE.md) is separate from rendered acceptance. No Workshop release exists.
 
 One edition with a Sandbox toggle menu. The planned mod adds maintainable defensive equipment to Project Zomboid Build 42, with optional Horde Night, Trait Shop, and Cure Defense integrations. Recheck the installed game build before implementing any engine-dependent behavior.
 

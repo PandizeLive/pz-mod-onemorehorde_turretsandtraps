@@ -1,6 +1,6 @@
 # Architecture and feasibility
 
-Reviewed 2026-10-01 against the current T&T source, Alex's PZ modding/Lua skills, the workspace/project agreements, and [Horde Night architecture](../../pz-mod-onemorehorde_protectthecure/docs/ARCHITECTURE.md). This replaces the stale P1C1-only description. Current candidate build: **0.2.22**; rendered acceptance remains separate from automated/native checks.
+Reviewed 2026-10-01 against the current T&T source, Alex's PZ modding/Lua skills, the workspace/project agreements, and [Horde Night architecture](../../pz-mod-onemorehorde_protectthecure/docs/ARCHITECTURE.md). This replaces the stale P1C1-only description. Current installed build: **0.2.22**; rendered acceptance remains separate from automated/native checks.
 
 ## Relationship to Horde Night
 
