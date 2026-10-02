@@ -33,3 +33,11 @@ diagnostics/vault-prototype/api.txt
 
 tools/.classes/
 diagnostics/audio-audition/
+
+diagnostics/loot-site/cache/
+diagnostics/loot-site/headers.json
+diagnostics/loot-current-bytecode.txt
+diagnostics/loot-isolot-current.txt
+diagnostics/pending-cadence/
+diagnostics/pending-cadence-console.log
+diagnostics/pending-check.log

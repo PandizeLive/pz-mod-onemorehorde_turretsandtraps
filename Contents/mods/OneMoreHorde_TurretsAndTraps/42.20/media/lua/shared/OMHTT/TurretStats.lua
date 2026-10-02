@@ -41,6 +41,7 @@ function S.resolve(contents)
     local magazine = math.floor(S.option("PotatoMagazineCapacity", 1, 1, 500))
     local ammoCapacity = S.option("PotatoAmmoCapacity", 100, 1, 500)
     local accuracy, rack = 100, 0
+    local critChance, critMultiplier = S.option("PotatoCriticalChance", 0, 0, 100), S.option("PotatoCriticalDamage", 2, 1, 20)
     if firearm then
         damage = (gun:getMinDamage() + gun:getMaxDamage()) * 50 * S.option("FirearmDamageMultiplier", 1, 0, 5)
         range = gun:getMaxRange() * S.option("FirearmRangeMultiplier", 1, 0.1, 3)
@@ -54,6 +55,15 @@ function S.resolve(contents)
         accuracy = math.max(0, math.min(100, (gun:getHitChance() + gun:getAimingPerkHitChanceModifier()
             * S.option("FirearmAimingLevel", 3, 0, 10)) * S.option("FirearmAccuracyMultiplier", 1, 0, 3)))
         knockdown = 0
+        critChance = gun:getCriticalChance()
+        critMultiplier = gun:getCriticalDamageMultiplier() * S.option("CriticalDamageMultiplier", 1, 0, 5)
+    end
+    accuracy = math.min(100, accuracy + (active.Accuracy or 0) * S.option("AccuracyBonus", 5, 0, 100))
+    critChance = math.min(100, critChance + (active.Critical or 0) * S.option("CriticalBonus", 5, 0, 100))
+    local remaining = 1
+    if (active.Suppression or 0) > 0 then
+        remaining = (1 - S.option("SuppressionFirstReduction", 60, 0, 99) / 100)
+            / (1 + S.option("SuppressionDiminishing", .6, 0, 10) * (active.Suppression - 1))
     end
     local extraAmmo, extraModules = 0, 0
     for i = 1, #kits do
@@ -76,10 +86,11 @@ function S.resolve(contents)
         range = math.min(firearm and 50 or 30, range + S.bonus(active, "Range", 2, 10)),
         ammo = math.floor(ammoCapacity + extraAmmo),
         modules = math.floor(S.option("PotatoModuleCapacity", 4, 0, 20) + extraModules),
-        magazine = magazine, accuracy = accuracy, rack = rack * 1000, firearm = firearm ~= nil,
+        magazine = magazine, accuracy = accuracy, critChance = critChance, critMultiplier = critMultiplier, rack = rack * 1000, firearm = firearm ~= nil,
         suppressed = (active.Suppression or 0) > 0,
-        hearingMultiplier = (1 - S.option("SuppressionReduction", 25, 0, 100) / 100) ^ (active.Suppression or 0),
-        reload = reload * 1000, cooldown = math.max(cooldown, firearm and rack or 0) * 1000, autoloader = active.Autoloader ~= nil}
+        hearingMultiplier = remaining,
+        reload = reload * 1000, cooldown = math.max(cooldown, firearm and gun:isRackAfterShoot() and rack or 0) * 1000,
+        autoloader = active.Autoloader ~= nil}
 end
 
 return S

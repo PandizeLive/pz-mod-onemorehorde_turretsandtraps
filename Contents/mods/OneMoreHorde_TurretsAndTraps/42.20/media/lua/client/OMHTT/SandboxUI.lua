@@ -7,13 +7,15 @@ local UI = {}
 local groups = {
     {"Sandbox_Title_OMHTurretsTraps_Operation", {"PotatoTurret", "PotatoHealth", "IdleSweepSpeed"}},
     {"Sandbox_Title_OMHTurretsTraps_Storage", {"PotatoAmmoCapacity", "PotatoModuleCapacity", "PotatoMagazineCapacity"}},
-    {"Sandbox_Title_OMHTurretsTraps_Combat", {"PotatoDamage", "PotatoCooldown", "PotatoReloadTime", "PotatoRange", "PotatoHearingRadius", "PotatoTurnSpeed", "PotatoProjectileSpeed", "PotatoKnockdownChance", "PotatoSplashPercent", "PotatoSplashRadius"}},
+    {"Sandbox_Title_OMHTurretsTraps_Combat", {"PotatoDamage", "PotatoCriticalChance", "PotatoCriticalDamage", "PotatoCooldown", "PotatoReloadTime", "PotatoRange", "PotatoHearingRadius", "PotatoTurnSpeed", "PotatoProjectileSpeed", "PotatoKnockdownChance", "PotatoSplashPercent", "PotatoSplashRadius"}},
     {"Sandbox_Title_OMHTurretsTraps_Power", {"PotatoRequirePower", "PotatoBatteryPercentPerShot", "PotatoGeneratorFuelPerShot"}},
     {"Sandbox_Title_OMHTurretsTraps_Firearms", {"FirearmTurrets", "FirearmAmmoCapacity", "FirearmAimingLevel", "FirearmAccuracyMultiplier", "FirearmDamageMultiplier", "FirearmRangeMultiplier", "FirearmReloadMultiplier", "FirearmCooldownMultiplier", "FirearmCycleMultiplier", "FirearmTurnSpeed"}},
 }
 
 local moduleGroups = {
-    {"Sandbox_Title_OMHTurretsTraps_Suppression", {"SuppressionReduction"}},
+    {"Sandbox_Title_OMHTurretsTraps_Critical", {"CriticalBonus", "CriticalDamageMultiplier"}},
+    {"Sandbox_Title_OMHTurretsTraps_Accuracy", {"AccuracyBonus"}},
+    {"Sandbox_Title_OMHTurretsTraps_Suppression", {"SuppressionFirstReduction", "SuppressionDiminishing", "SuppressionVolumeFloor"}},
     {"Sandbox_Title_OMHTurretsTraps_RapidFire", {"RapidFireBonus", "RapidFireBonusCap", "RapidFireMinimum"}},
     {"Sandbox_Title_OMHTurretsTraps_Reload", {"ReloadBonus", "ReloadBonusCap", "ReloadMinimum"}},
     {"Sandbox_Title_OMHTurretsTraps_Velocity", {"VelocityBonus", "VelocityBonusCap", "VelocityKnockdownBonus", "VelocityKnockdownCap"}},

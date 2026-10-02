@@ -31,7 +31,7 @@ local function verifyTurrets()
             end
         end
     end
-    assert(count == 52, "Expected thirteen active components in four native loot pools")
+    assert(count == 75, "Expected seventy-five component entries across seven native loot pools")
     local retired = {"OMHTTModuleCapacitySmall", "OMHTTModuleCapacity", "OMHTTModuleCapacityLarge",
         "OMHTTModuleMotionDetection", "OMHTTModuleDetection360"}
     for i = 1, #retired do
@@ -51,8 +51,8 @@ local function verifyTurrets()
             visibleComponents[component], visibleCount = true, visibleCount + 1
         end
     end
-    assert(visibleCount == 13, "Expected thirteen canonical components")
-    print("[OMHTT-Smoke] native-component-list visible=13 hidden=0 duplicates=0 legacy=removed")
+    assert(visibleCount == 15, "Expected fifteen canonical components")
+    print("[OMHTT-Smoke] native-component-list visible=15 hidden=0 duplicates=0 legacy=removed")
     local nativeContents = {active = {Detection360 = 1, Filter = 1}}
     local profile = Modules.profile({baseFacing = 4, facing = 12, priority = "Toughest"}, nativeContents)
     assert(profile.cone == 360 and profile.heading == 90 and profile.priority == "Toughest", "Module profile failed")
@@ -70,7 +70,7 @@ local function verifyTurrets()
     assert(T.contents(live).active.MotionDetection == 1, "Native module condition defaults are not active")
     detector:setCondition(0)
     assert(T.contents(live).active.MotionDetection == nil, "Broken native module remains active")
-    print("[OMHTT-Smoke] native-modules loot=52 profiles=valid condition=checked")
+    print("[OMHTT-Smoke] native-modules loot=75 profiles=valid condition=checked")
     local resources = ArrayList.new()
     local tools = {"Base.Screwdriver", "Base.Wrench"}
     local routes = {
@@ -278,6 +278,13 @@ local function verifyTurrets()
         local summary = T.contents(storage)
         local config = T.cycleConfig(summary)
         assert(summary.ammo == 35 and config.firearm and config.magazine == gun:getMaxAmmo(), "Native firearm config mismatch")
+        local expected = { ["Base.Pistol"] = {15, 400, 20, 4}, ["Base.Shotgun"] = {12, 1000, 70, 12}, ["Base.HuntingRifle"] = {40, 1200, 30, 4} }
+        local stats = require("OMHTT/TurretStats").resolve(summary)
+        local values = expected[fullType]
+        assert(stats.range == values[1] and stats.cooldown == values[2] and stats.critChance == values[3]
+            and stats.critMultiplier == values[4], "Native firearm range/cadence/crit drift: " .. fullType)
+        print("[OMHTT-Smoke] native-firearm-stats type=" .. fullType .. " range=" .. stats.range .. " cooldown=" .. stats.cooldown
+            .. " critical=" .. stats.critChance .. " multiplier=" .. stats.critMultiplier)
         local clock = getTimestampMs()
         local _, status = Guns.update(summary, config, clock, true)
         assert(status == "Reloading" and gun:getCurrentAmmoCount() == 0, "Loaded ammo before reload elapsed")

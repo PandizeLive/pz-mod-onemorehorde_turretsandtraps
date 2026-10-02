@@ -27,6 +27,8 @@ local function item(fullType)
     function value:getMaxDamage() return 1 end
     function value:getMaxRange() return 15 end
     function value:getRecoilDelay() return 12 end
+    function value:getCriticalChance() return 20 end
+    function value:getCriticalDamageMultiplier() return 4 end
     function value:getHitChance() return 50 end
     function value:getAimingPerkHitChanceModifier() return 4 end
     function value:getConditionLowerChance() return 0 end
@@ -60,8 +62,15 @@ for n = 1, #definitions do
     local gun, storage = item(definition[1]), container()
     function gun:getAmmoType() return {getItemKey = function() return definition[2] end} end
     function gun:getMaxAmmo() return definition[3] end
+    function gun:getMaxRange() return ({15, 12, 40})[n] end
+    function gun:getCriticalChance() return ({20, 70, 30})[n] end
+    function gun:getCriticalDamageMultiplier() return ({4, 12, 4})[n] end
     function gun:getMagazineType() if definition[1] == "Base.Pistol" then return "Base.9mmClip" end end
     function gun:isRackAfterShoot() return definition[4] end
+    function gun:getRecoilDelay()
+        local recoil = {12, 30, 23}
+        return recoil[n]
+    end
     SandboxVars.OMHTurretsTraps.FirearmAmmoCapacity = 1
     gun.ammo = 2
     check(not T.accept(storage, gun), "Loaded gun cannot exceed configured ammo capacity")
@@ -74,6 +83,16 @@ for n = 1, #definitions do
     for i = 1, 40 do storage:AddItem(item(definition[2])) end
     local summary, now = T.contents(storage), testMillis
     local config = T.cycleConfig(summary)
+    check(config.range == ({15, 12, 40})[n], "Each supported firearm uses its own native range")
+    check(config.critChance == ({20, 70, 30})[n] and config.critMultiplier == ({4, 12, 4})[n], "Native critical chance and multiplier retained")
+    local modded = require("OMHTT/TurretStats").resolve({head = gun, active = {Critical = 2, Accuracy = 2}})
+    check(modded.critChance == config.critChance + 10 and modded.critMultiplier == config.critMultiplier, "Critical stacks add percentage points without multiplying critical damage")
+    check(modded.accuracy <= 100 and modded.accuracy >= config.accuracy, "Accuracy stacks respect 100 percent")
+    local expectedCooldown = {400, 1000, 1200}
+    check(math.abs(config.cooldown - expectedCooldown[n]) < .001, "Native recoil and manual cycling determine per-weapon cadence")
+    if n == 1 then
+        check(config.rack == 1200 and config.cooldown == 400, "Pistol retains initial racking without charging it per shot")
+    end
     check(summary.ammo == 40 and summary.reserve == 40 and config.magazine == definition[3], "Profile counts exact ammunition")
     local _, status = G.update(summary, config, now, false)
     check(status == "Reloading" and gun.ammo == 0, "Read-only Manage does not load ammo")

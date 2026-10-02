@@ -1,6 +1,13 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.22
+## Current candidate: 0.2.23
+
+C74 resumes the held controls/combat patch with the approved native critical policy and expanded themed loot. [Scope and six-step combined test](PATCH_v0.2.23.md). Validation: 3,020 assertions, 52 runtime/translation files, 448 native JSON translation keys and 148 packaged files. Native stock 42.21.0 write/read probes pass; the final read also asserts real M9/JS-2000/MSR788 range, cooldown and critical values. All seven loot pools parse, with 75 component entries. Exact inventory/ammo, native world collision and persistence probes remain green. No connected client: rendering, sound playback and frame smoothness remain owner acceptance.
+
+LootLab model checks pass with 11,713 candidates, 45 eligible routes, component-subset enforcement and 256 worlds. All 68 website API tests pass, including old-account and offline-draft migration. Admin API build and Wrangler dry run pass. Release/install and deployment evidence will be recorded below after the actions complete. No Steam publication or GitHub push; cumulative unuploaded Workshop notes remain intact.
+
+
+## Previous local installation: 0.2.22
 
 [C73 suppression and turret feedback](PATCH_v0.2.22.md): 2,844 assertions, 50 runtime Lua files, 421 native translation keys and 146 packaged files pass. Native write/read completed in 92.6/92.0 seconds on stock 42.21.0, proving Lua atlas-option bypass/restoration, 18 native suppressed events, two potato variants, selected reload registration, 13 canonical components / 52 loot entries, and actual saved weapon/supply state. This is headless evidence, not client rendering/audio acceptance. All 66 comparison OGGs decode; 20 layered runtime OGGs total 816,268 bytes. HTML relative links and JavaScript syntax pass. The existing isolated stock-game ladder/WorldGen and fencing sound diagnostics remain in the native logs; no OMHTT probe failed. No publication or push.
 

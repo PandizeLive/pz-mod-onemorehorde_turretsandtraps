@@ -20,7 +20,7 @@ function O.focus(index, source, object, enabled)
         local state = T.state(object)
         if not state then return end
         entries[source] = object
-        D.emit("turret-range-selected", {id = state.id, source = source, range = T.option("Range", 6, 1, 20)})
+        D.emit("turret-range-selected", {id = state.id, source = source, range = R.entries[object] and R.entries[object].profile and R.entries[object].profile.range})
     elseif entries[source] == object then
         entries[source] = nil
     end

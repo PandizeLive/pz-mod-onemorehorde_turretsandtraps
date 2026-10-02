@@ -60,6 +60,7 @@ function G.update(contents, stats, now, operate)
     local gun = contents.head
     local state = G.state(gun)
     state.loaded = G.loaded(gun)
+    if gun:getModData().OMHTTPowerOff then return state, "Off" end
     if G.servicing[gun] then return state, "Servicing" end
     if not G.enabled() then return state, "Disabled" end
     if gun:getCondition() <= 0 then return state, "NoHead" end

@@ -11,12 +11,14 @@ local canvas = nil
 ---@param y number World Y
 ---@param z number Floor
 ---@return nil
-function E.sound(name, x, y, z)
+---@param gain number? Fallback playback gain
+function E.sound(name, x, y, z, gain)
     local started = getTimestampMs()
     local emitter = getWorld():getFreeEmitter(x, y, z)
     local handle = emitter:playSound(name)
     local pitch = 0.95 + ZombRand(101) / 1000
     emitter:setPitch(handle, pitch)
+    if gain then emitter:setVolume(handle, gain) end
     D.defer("potato-audio", {sound = name, pitch = pitch, x = x, y = y, z = z, audioMs = getTimestampMs() - started})
 end
 
@@ -52,7 +54,7 @@ function E.receive(module, command, facts)
             effect.fromX = facts.fromX + dx / distance * forward
             effect.fromY = facts.fromY + dy / distance * forward
         end
-        E.sound(facts.sound or "OMHTTPotatoFire", effect.fromX, effect.fromY, facts.z)
+        E.sound(facts.sound or "OMHTTPotatoFire", effect.fromX, effect.fromY, facts.z, facts.gain)
     else
         E.sound("OMHTTPotatoImpact", facts.x, facts.y, facts.z)
     end

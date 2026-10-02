@@ -71,6 +71,7 @@ function W.refresh(object)
         feederOrder[#feederOrder + 1] = object
     end
     if Audio.entries[object] and Audio.entries[object].head ~= contents.head then Audio.stop(object) end
+    if contents.head then contents.head:getModData().OMHTTPowerOff = not T.isOn(state) end
     state.baseFacing = state.baseFacing or state.facing
     local hybrid = T.hybrid()
     local sprite = T.sprite(state.baseFacing or state.facing, false)
@@ -97,6 +98,35 @@ function W.refresh(object)
     state.condition = object:getHealth()
     T.cycle(contents, getTimestampMs())
     triggerEvent("OnOMHTTTurretChanged", object, contents.head)
+end
+
+---@param player IsoPlayer Operator
+---@param object IsoObject Turret
+---@param enabled boolean Switch value
+---@return boolean changed
+function W.setPower(player, object, enabled)
+    if not W.near(player, object) then return false end
+    local state = T.state(object)
+    state.powered, state.automatic = enabled, nil
+    require("OMHTT/TurretAim").entries[object] = nil
+    local search = require("OMHTT/TurretSearch").pending[object]
+    if search then search.cancelled = true end
+    local auto = require("OMHTT/TurretAutomation").entries[object]
+    if auto then auto.target, auto.job, auto.status = nil, nil, "inactive" end
+    local head = T.contents(object:getContainer()).head
+    Audio.stop(object)
+    if head then
+        head:getModData().OMHTTPowerOff = not enabled
+        if G.profile(head) then
+            G.cancelLoading(head)
+        else
+            local cycle = head:getModData().OMHTTCycle
+            if cycle then cycle.reloadReady, cycle.pending = nil, nil end
+        end
+    end
+    W.refresh(object)
+    D.emit("turret-power-toggle", {id = state.id, enabled = enabled})
+    return true
 end
 
 ---@param params table Native construction callback
@@ -280,6 +310,7 @@ end
 ---@return string result
 function W.fire(player, object, target)
     local started = getTimestampMs()
+    if not T.isOn(T.state(object)) then return "Off" end
     if player then
         if not W.near(player, object) then return "Unavailable" end
     elseif not target or not W.valid(object) then
@@ -299,7 +330,7 @@ function W.fire(player, object, target)
     if player and not target then return require("OMHTT/TurretSearch").request(player, object) end
     local fireStarted = getTimestampMs()
     local options = {range = stats.range, interval = stats.cooldown,
-        damage = stats.damage / 100, knockdown = stats.knockdown,
+        damage = stats.damage / 100, knockdown = stats.knockdown, critChance = stats.critChance, critMultiplier = stats.critMultiplier,
         splash = stats.damage * T.option("SplashPercent", 25, 0, 100) / 10000, radius = T.option("SplashRadius", 1.5, 0, 3), managed = true,
         profile = M.profile(state, contents), target = target, projectileSpeed = T.option("ProjectileSpeed", 20, 5, 100)}
     if G.profile(contents.head) then
@@ -338,11 +369,16 @@ function W.fire(player, object, target)
     local refreshedAt = getTimestampMs()
     if impact then
         if stats.suppressed then
-            impact.sound = require("OMHTT/TurretSounds").suppressed(contents.head) or impact.sound
+            local replacement = require("OMHTT/TurretSounds").suppressed(contents.head)
+            if replacement then
+                impact.sound = replacement
+            else
+                impact.gain = math.max(M.option("SuppressionVolumeFloor", 10, 1, 100) / 100, stats.hearingMultiplier)
+            end
         end
         if not stats.firearm then
             local square = object:getSquare()
-            local radius = math.floor(M.option("PotatoHearingRadius", 12, 0, 200) * stats.hearingMultiplier + 0.5)
+            local radius = math.ceil(M.option("PotatoHearingRadius", 12, 0, 200) * stats.hearingMultiplier)
             if radius > 0 then addSound(object, square:getX(), square:getY(), square:getZ(), radius, 10) end
             D.defer("turret-hearing", {id = state.id, radius = radius, suppressed = stats.suppressed})
         end
@@ -380,7 +416,7 @@ function W.feedTick()
                 local contents = T.contents(object:getContainer())
                 if contents.head then
                     local stats = T.cycleConfig(contents)
-                    if W.valid(object) and W.power(object, contents) then
+                    if W.valid(object) and T.isOn(state) and W.power(object, contents) then
                         local cycle, status
                         if G.profile(contents.head) then
                             cycle, status = G.update(contents, stats, now, true)

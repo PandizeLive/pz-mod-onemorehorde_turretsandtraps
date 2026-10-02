@@ -24,7 +24,7 @@ local record = {schema = 1, id = "auto-test", kind = "potato", baseFacing = 0, f
     shots = 0, nextShot = 0, priority = "Toughest"}
 local plain = {active = {}}
 local profile = M.profile(record, plain)
-check(profile.heading == 0 and profile.cone == 90 and profile.priority == "Closest", "Placement cone and default priority ignore head aim and missing Filter")
+check(profile.heading == 0 and profile.cone == 90 and profile.priority == "Random", "Placement cone and default priority ignore head aim and missing Filter")
 check(M.inside(square, front, profile) and M.inside(square, edge, profile), "Forward and exact cone boundary eligible")
 check(not M.inside(square, side, profile) and not M.inside(square, rear, profile), "Sides and rear excluded")
 local controls = {active = {Filter = 1, Detection360 = 1}}
@@ -75,6 +75,7 @@ end
 local head = add(T.HEAD)
 local detector = add("Base.OMHTTModuleDetection")
 local firing = add("Base.OMHTTModuleFiring")
+local filter = add(T.TYPES.Filter)
 add("Base.Potato"); add("Base.Potato"); add("Base.Potato")
 local object = {index = 0}
 function object:hasModData() return true end
@@ -142,6 +143,7 @@ record.automatic = true
 run()
 check(record.shots <= shots + 1, "Long time jump never drains historical automatic shots")
 add("Base.Potato")
+storage:Remove(filter)
 add("Base.OMHTTModuleVelocity")
 add("Base.OMHTTModuleRapidFire")
 add("Base.OMHTTModuleReload")
@@ -167,7 +169,8 @@ check(entry.status == "inactive" and entry.target == nil, "Exhausted power stops
 W.power = previousPower
 local originalNear = W.near
 W.near = function() return true end
-record.automatic = false
+record.automatic = true
+SandboxVars.OMHTurretsTraps.AutomationEnabled = false
 record.aimDegrees = 180
 add("Base.Potato")
 head.data.OMHTTCycle = {schema = 1, loaded = 1, nextShot = 0}
@@ -191,11 +194,72 @@ check(not Search.pending[object] and record.shots == searchShots + 1 and T.conte
     "Queued search and aim commit exactly once")
 add("Base.Potato")
 head.data.OMHTTCycle = {schema = 1, loaded = 1, nextShot = 0}
+Search.targets[object] = nil
 check(W.fire({}, object) == "Searching", "Second command can queue after completion")
 W.near = function() return false end
 Search.tick()
 check(Search.results[object].status == "Unavailable" and record.shots == searchShots + 1, "Walking away cancels search without consuming ammunition")
+local Health = require("OMHTT/TargetHealth")
+local stronger = makeZombie(far.square, 20)
+stronger.health = 0.1
+check(Health.maximum(stronger) == 20 and M.better(stronger, 25, front, 4, "Toughest"), "Max Toughness ranks original health even when wounded")
+stronger:getModData().OMHToughnessInitialHealth = 30
+check(Health.maximum(stronger) == 30, "Horde Night recorded toughness takes precedence")
+local unknown = makeZombie(far.square, 7)
+unknown:getModData().OMHTTInitialHealth = nil
+check(Health.maximum(unknown) == 0, "Unknown historical health is never presented as maximum")
+W.near = function() return true end
+record.automatic, record.powered = false, nil
+check(not T.isOn(record), "Legacy Automatic Off migrates to Power Off")
+W.setPower({}, object, true)
+check(T.isOn(record) and record.automatic == nil, "Power On replaces legacy control without two competing switches")
+record.aimDegrees = 180
+add("Base.Potato")
+head.data.OMHTTCycle = {schema = 1, loaded = 1, nextShot = 0}
+local beforePower = T.contents(storage).ammo
+check(W.fire({}, object, front) == "Aiming", "Power cancellation fixture queues a shot")
+W.setPower({}, object, false)
+testMillis = testMillis + 10000; Aim.tick()
+local cycle, off = T.cycle(T.contents(storage), testMillis)
+check(not Aim.entries[object] and off == "Off" and T.contents(storage).ammo == beforePower, "Power Off cancels queued aim and preserves ammo")
+check(W.fire({}, object, front) == "Off", "Manual fire respects Power Off")
+head.data.OMHTTCycle.loaded = 0
+for i = 1, 4 do testMillis = testMillis + 10000; T.cycle(T.contents(storage), testMillis) end
+check(head.data.OMHTTCycle.loaded == 0 and head.data.OMHTTCycle.reloadReady == nil, "Opening Manage cannot reload while switched off")
+check(nativeRoundTrip(record).powered == false, "Native serialization preserves Power Off")
+W.setPower({}, object, true)
+record.aimDegrees = 0
+head.data.OMHTTCycle = {schema = 1, loaded = 1, nextShot = 0}
+local beforeImpact = front.health
+local powerShot = W.fire({}, object, front)
+check(powerShot == "Fired", "Powered shot launches before shutdown: " .. powerShot .. " health=" .. tostring(front.health))
+W.setPower({}, object, false)
+testMillis = testMillis + 1000; Combat.tickFlights()
+check(front.health < beforeImpact, "Already-fired potato still lands after Power Off")
+W.setPower({}, object, true)
 W.near = originalNear
+SandboxVars.OMHTurretsTraps.AutomationEnabled = true
+storage:Remove(firing)
+-- A valid locked target must avoid a fresh crowd scan, even if a better target appears.
+local priorAdvance = A.advance
+for _, priority in pairs({"Random", "Toughest"}) do
+    if priority == "Toughest" then items[#items + 1] = filter else storage:Remove(filter) end
+    record.priority = "Toughest"
+    A.changed(object)
+    local p = M.profile(record, T.contents(storage))
+    entry.key = p.heading .. ":" .. p.cone .. ":" .. p.range .. ":" .. p.priority
+    entry.target, entry.due = front, 0
+    A.advance = function() error("Valid sticky target unexpectedly rescanned") end
+    A.step(entry, testMillis + 100)
+    check(entry.target == front, priority .. " retains its valid target rather than changing to stronger arrivals")
+    A.advance = priorAdvance
+    front.square.blocked = true
+    entry.due = 0
+    A.step(entry, testMillis + 100)
+    check(entry.job ~= nil, priority .. " reacquires after target obstruction")
+    front.square.blocked = false
+end
+storage:Remove(filter)
 object.index = -1
 A.tick()
 check(A.entries[object] == nil, "Removed turret retires from scheduler")

@@ -60,10 +60,10 @@ def main():
         "Occupied", "Blocked", "Limit", "Placed", "Conflict", "Changed", "Removed", "MPCombatDeferred",
         "WrongDevice", "Empty", "Cooling", "NoTarget", "Fired", "Refilled", "Aimed", "NotCompared", "WrongBarrier", "BarrierRotated",
     ])
-    keys.update("UI_OMHTT_Manage" + status for status in ['Drop', 'Hint', 'Head', 'Battery', 'Ammo', 'Modules', 'Module', 'Locked', 'ModulesHint', 'PowerNone', 'PowerExternal', 'PowerBattery', 'PowerDisabled', 'Stats', 'Timing', 'Fire', 'Unload', 'Queued', 'TransferMissing', 'TransferReach', 'CapacityFull', 'UnloadFirst', 'TransferFavorite', 'TransferWrongItem', 'TransferFull', 'TransferCarried', 'TransferPending', 'NoHead', 'NoPower', 'Empty', 'Ready', 'Cooling', 'Reloading', 'NoTarget', 'Fired', 'Unavailable', 'MPCombatDeferred', 'WrongDevice', 'Disabled', 'Jammed', 'NoMagazine', 'Racking', 'WrongAmmo'])
+    keys.update("UI_OMHTT_Manage" + status for status in ['Drop', 'Hint', 'Head', 'Battery', 'Ammo', 'Modules', 'Module', 'Locked', 'ModulesHint', 'PowerNone', 'PowerExternal', 'PowerBattery', 'PowerDisabled', 'Stats', 'Timing', 'Fire', 'Off', 'Queued', 'TransferMissing', 'TransferReach', 'CapacityFull', 'UnloadFirst', 'TransferFavorite', 'TransferWrongItem', 'TransferFull', 'TransferCarried', 'TransferPending', 'NoHead', 'NoPower', 'Empty', 'Ready', 'Cooling', 'Reloading', 'NoTarget', 'Fired', 'Unavailable', 'MPCombatDeferred', 'WrongDevice', 'Disabled', 'Jammed', 'NoMagazine', 'Racking', 'WrongAmmo'])
     keys.update("UI_OMHTT_Module" + name for name in ["Firing", "MotionDetection", "Filter", "Detection360"])
     keys.update("UI_OMHTT_Priority" + name for name in ["Closest", "Furthest", "Weakest", "Toughest"])
-    keys.update(["UI_OMHTT_AutoOn", "UI_OMHTT_AutoOff"])
+    keys.update(["UI_OMHTT_PowerOn", "UI_OMHTT_PowerOff", "UI_OMHTT_PriorityRandom"])
     for key in keys:
         assert key in translations, f"Missing translation: {key}"
     sandbox = (PACKAGE / "42.20/media/sandbox-options.txt").read_text()

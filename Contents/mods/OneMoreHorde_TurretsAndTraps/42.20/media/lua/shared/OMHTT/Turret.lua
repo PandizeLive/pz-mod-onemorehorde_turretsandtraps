@@ -10,7 +10,7 @@ T.HEAD = "Base.OMHTTPotatoHead"
 T.HEAD_VISUAL = {height = 0.4 - 16 / 192, scale = 0.512, muzzle = 0.55}
 T.CONTAINER = "OMHTTTurret"
 T.MODULES = {Firing = true, MotionDetection = true, Filter = true, RapidFire = true, Velocity = true,
-    Range = true, Suppression = true, Capacity = true, CapacitySmall = true, CapacityLarge = true, Detection360 = true, Reload = true, Autoloader = true}
+    Range = true, Critical = true, Accuracy = true, Suppression = true, Capacity = true, CapacitySmall = true, CapacityLarge = true, Detection360 = true, Reload = true, Autoloader = true}
 T.TYPES = {}
 T.COMPONENTS = {}
 local itemTypes = {CapacitySmall = "OMHTTExpansionKitSmall", Capacity = "OMHTTExpansionKitMedium",
@@ -47,6 +47,14 @@ function T.enabled()
     return options ~= nil and options.Enabled ~= false
 end
 
+---@param state table? Persisted controls
+---@return boolean enabled
+function T.isOn(state)
+    if not state then return false end
+    if state.powered ~= nil then return state.powered end
+    return state.automatic ~= false
+end
+
 ---@return boolean enabled Native opaque world pass, no loose head object
 ---@nodiscard
 function T.hybrid()
@@ -79,6 +87,7 @@ function T.cycle(contents, now)
     local data = contents.head:getModData()
     if not data.OMHTTCycle then data.OMHTTCycle = {schema = 1, loaded = 0, nextShot = 0} end
     local state = data.OMHTTCycle
+    if data.OMHTTPowerOff then return state, "Off" end
     return state, Cycle.update(state, contents.ammo, T.cycleConfig(contents), now)
 end
 

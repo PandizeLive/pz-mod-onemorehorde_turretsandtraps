@@ -64,3 +64,18 @@ settings.PotatoCooldown, settings.PotatoReloadTime = 0.1, 0.1
 local short = S.resolve({active = {RapidFire = 10, Reload = 10}})
 check(short.cooldown == 100 and short.reload == 100, "Module time floors never slow an already faster base")
 settings.PotatoCooldown, settings.PotatoReloadTime = nil, nil
+
+local chance = S.resolve({active = {Critical = 3, Accuracy = 3}})
+check(chance.critChance == 15 and chance.critMultiplier == 2 and chance.accuracy == 100, "Critical stacks add chance; potato accuracy stays guaranteed")
+check(S.resolve({active = {Critical = 1000}}).critChance == 100, "Critical chance cannot exceed certainty")
+local previousReduction, previousDiminishing = 0, 0
+for stacks = 1, 30 do
+    local fraction = S.resolve({active = {Suppression = stacks}}).hearingMultiplier
+    local reduction = 1 - fraction
+    local gain = reduction - previousReduction
+    check(fraction > 0 and reduction > previousReduction, "Every suppression stack reduces hearing without silence")
+    if stacks > 1 then check(gain < previousDiminishing, "Suppression has diminishing gains") end
+    check(math.ceil(12 * fraction) >= 1, "Positive potato sound radius never rounds to silence")
+    previousReduction, previousDiminishing = reduction, gain
+end
+check(math.abs(S.resolve({active = {Suppression = 2}}).hearingMultiplier - .25) < .000001, "Second suppression stack reaches 75 percent reduction")

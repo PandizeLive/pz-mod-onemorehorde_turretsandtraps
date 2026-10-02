@@ -16,9 +16,10 @@ for i = 1, #L.POOLS do
     local pool = L.POOLS[i]
     for module, weight in pairs(L.WEIGHTS) do
         local found, actual = count(pool, module)
-        check(found == 1 and actual == weight, "Repeated loot merge is idempotent for each active module")
+        local eligible = not L.SUBSETS[pool] or L.SUBSETS[pool][module]
+        check(eligible and found == 1 and actual == weight or not eligible and found == 0, "Repeated loot merge respects pool-specific subsets")
     end
-    check(count(pool, "RapidFire") == 1 and count(pool, "Autoloader") == 1, "Active stat modules enter gameplay loot")
+
 end
 settings.ModuleLootMultiplier, settings.LootFilter = 3, 2
 L.apply()

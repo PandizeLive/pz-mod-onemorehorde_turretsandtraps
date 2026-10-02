@@ -1,0 +1,163 @@
+{
+  "status": "passed",
+  "scope": "Numerical model, seeded per-container spawning and extracted-data integrity; no in-game spawn certification",
+  "generatedItems": 144,
+  "elapsedMs": 2433,
+  "candidates": 11713,
+  "worldSamples": 256,
+  "baseline": {
+    "version": 1,
+    "baseline": "T&T 0.2.23",
+    "seed": 24601,
+    "global": 1,
+    "material": 0.6,
+    "rolls": 1,
+    "retention": 1,
+    "selected": "all",
+    "overlay": "spawns",
+    "visible": {
+      "Firing": true,
+      "MotionDetection": true,
+      "Filter": true,
+      "Detection360": true,
+      "Suppression": true,
+      "RapidFire": true,
+      "Reload": true,
+      "Velocity": true,
+      "Range": true,
+      "CapacitySmall": true,
+      "Capacity": true,
+      "CapacityLarge": true,
+      "Autoloader": true,
+      "Critical": true,
+      "Accuracy": true
+    },
+    "items": {
+      "Firing": 1,
+      "MotionDetection": 1,
+      "Filter": 1,
+      "Detection360": 1,
+      "Suppression": 1,
+      "RapidFire": 1,
+      "Reload": 1,
+      "Velocity": 1,
+      "Range": 1,
+      "CapacitySmall": 1,
+      "Capacity": 1,
+      "CapacityLarge": 1,
+      "Autoloader": 1,
+      "Critical": 1,
+      "Accuracy": 1
+    }
+  },
+  "selectedEstimate": {
+    "mean": 132.93655781250004,
+    "lo": 111,
+    "hi": 152
+  },
+  "allComponentsMean": 132.93655781250004,
+  "pools": [
+    {
+      "name": "ElectronicStoreMisc",
+      "containers": 53.0625
+    },
+    {
+      "name": "CrateElectronics",
+      "containers": 431.6640625
+    },
+    {
+      "name": "MechanicShelfElectric",
+      "containers": 43.140625
+    },
+    {
+      "name": "ArmyStorageElectronics",
+      "containers": 45.25390625
+    },
+    {
+      "name": "ElectricianTools",
+      "containers": 36
+    },
+    {
+      "name": "GunStoreAccessories",
+      "containers": 5.171875
+    },
+    {
+      "name": "ToolCabinetMechanics",
+      "containers": 212.44921875
+    }
+  ],
+  "regions": [
+    {
+      "name": "WestPoint",
+      "mean": 7.158449999999365,
+      "lo": 3,
+      "hi": 13
+    },
+    {
+      "name": "Riverside",
+      "mean": 11.157018749999523,
+      "lo": 6,
+      "hi": 18
+    },
+    {
+      "name": "Muldraugh",
+      "mean": 6.977418749999616,
+      "lo": 3,
+      "hi": 13
+    },
+    {
+      "name": "Brandenburg",
+      "mean": 7.709831249999465,
+      "lo": 3,
+      "hi": 14
+    },
+    {
+      "name": "Ekron",
+      "mean": 7.008876562499598,
+      "lo": 3,
+      "hi": 12
+    },
+    {
+      "name": "Irvington",
+      "mean": 6.181495312499679,
+      "lo": 2,
+      "hi": 10
+    },
+    {
+      "name": "EchoCreek",
+      "mean": 4.189912499999558,
+      "lo": 1,
+      "hi": 8
+    },
+    {
+      "name": "Louisville",
+      "mean": 58.26136875000101,
+      "lo": 45,
+      "hi": 71
+    },
+    {
+      "name": "MarchRidge",
+      "mean": 3.25611562499986,
+      "lo": 0,
+      "hi": 6
+    },
+    {
+      "name": "FallasLake",
+      "mean": 4.19591718749954,
+      "lo": 1,
+      "hi": 9
+    },
+    {
+      "name": "Rosewood",
+      "mean": 7.37056406249977,
+      "lo": 3,
+      "hi": 12
+    },
+    {
+      "name": "ValleyStation",
+      "mean": 9.469589062499507,
+      "lo": 4,
+      "hi": 16
+    }
+  ]
+}

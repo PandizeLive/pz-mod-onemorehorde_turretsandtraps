@@ -3,10 +3,7 @@ require("Items/ProceduralDistributions")
 local M = require("OMHTT/TurretModules")
 local D = require("OMHTT/Diagnostics")
 local T = require("OMHTT/Turret")
-local L = {}
-L.POOLS = {"ElectronicStoreMisc", "CrateElectronics", "MechanicShelfElectric", "ArmyStorageElectronics"}
-L.WEIGHTS = {Firing = 2, MotionDetection = 2, Filter = 0.5, Detection360 = 0.25,
-    Suppression = 0.5, RapidFire = 0.5, Reload = 0.5, Velocity = 0.5, Range = 0.5, CapacitySmall = 0.5, Capacity = 0.25, CapacityLarge = 0.1, Autoloader = 0.1}
+local L = require("OMHTT/LootDefinitions")
 
 ---@return nil
 function L.apply()
@@ -28,7 +25,8 @@ function L.apply()
             end
             for module, weight in pairs(L.WEIGHTS) do
                 local effective = weight * multiplier * M.option("Loot" .. module, 1, 0, 20)
-                if effective > 0 then
+                local subset = L.SUBSETS[name]
+                if effective > 0 and (not subset or subset[module]) then
                     items[#items + 1] = T.TYPES[module]
                     items[#items + 1] = effective
                 end

@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "htmlIds": 41,
+  "localDependencies": [
+    "style.css",
+    "#mapArea",
+    "#tuning",
+    "README.md",
+    "provenance.json",
+    "data.js",
+    "model.js",
+    "map-controls.js",
+    "settings-sync.js",
+    "app.js"
+  ],
+  "sourceHashes": 6,
+  "browserVisualReview": "not performed",
+  "gameplayInstalled": "0.2.23 approval; installation evidence in docs/RELEASE.md"
+}

@@ -1,6 +1,8 @@
 # Phases and checkpoints
 
-**Installed: [0.2.22 suppression and turret feedback](PATCH_v0.2.22.md).** C73 combines the 0.2.21 turning/reload findings with approved Suppression and balanced audio. One owner test covers these and the unfinished firearm checks. See RELEASE.md for installation evidence. Next: P2C3e authority/performance hardening before broader firearm adapters; the complete trap roster remains planned below.
+**Current candidate: [0.2.23 turret controls, combat and loot](PATCH_v0.2.23.md).** C74 lifts the prior gameplay hold and combines the patch with the expanded LootLab. Installation and native evidence: RELEASE.md. One combined test carries unfinished visual/audio/firearm acceptance forward.
+
+**Next: P2C3e authority/performance hardening** before broader firearm adapters. Keep the shared aggregate-budget/clock audit and multiplayer authority gate from ARCHITECTURE.md. The complete trap roster remains planned below; this update does not displace it.
 
 **Previous: [0.2.19.1 correction](PATCH_v0.2.19.1.md).** C67 fixes exposed compatibility duplicates, starts the potato visual at the barrel tip and removes redundant firing work with bounded diagnostic output. Owner reports the rest of 0.2.19 worked well. Install status: RELEASE.md.
 

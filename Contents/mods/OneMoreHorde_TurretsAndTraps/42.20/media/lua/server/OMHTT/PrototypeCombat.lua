@@ -231,7 +231,9 @@ function Combat.hit(record, origin, target, player, options)
     local impactSquare = target:getSquare()
     Diagnostics.defer("shot-hit-begin", {id = record.id, shot = record.shots, x = tx, y = ty, health = before,
         ammo = record.ammo, damageInput = options.damage, facing = record.facing})
-    Damage.apply(target, options.damage, record.id, "potato", player, weapon)
+    local critical = ZombRand(10000) < (options.critChance or 0) * 100
+    local directDamage = options.damage * (critical and options.critMultiplier or 1)
+    Damage.apply(target, directDamage, record.id, "potato", player, weapon)
     local damagedAt = getTimestampMs()
     local knocked = false
     local knockReason = "dead"
@@ -297,7 +299,7 @@ function Combat.hit(record, origin, target, player, options)
         end
     end
     Diagnostics.defer("shot-hit-end", {id = record.id, shot = record.shots, before = before, after = target:getHealth(),
-        dead = target:isDead(), knockdown = knocked, splash = splash, ammo = record.ammo,
+        dead = target:isDead(), critical = critical, knockdown = knocked, splash = splash, ammo = record.ammo,
         directMs = damagedAt - now, reactionMs = splashStarted - damagedAt,
         splashMs = getTimestampMs() - splashStarted, hitMs = getTimestampMs() - now})
     return {x = tx, y = ty, z = origin:getZ(), id = record.id, shot = record.shots, target = target,

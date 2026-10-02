@@ -1,0 +1,146 @@
+{
+  "gameVersion": "42.21.0",
+  "modBaseline": "T&T 0.2.23",
+  "scope": "New-world SP estimates matching T&T 0.2.23",
+  "sources": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\ProjectZomboid\\media\\maps\\Muldraugh, KY\\worldmap.xml",
+      "sha256": "41f0ff9a52766746abcf76531fa5b1cb48cd09dc26073e3c17cd077f23c6c452",
+      "bytes": 6090117
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\ProjectZomboid\\media\\maps\\Muldraugh, KY\\worldmap-annotations.lua",
+      "sha256": "603cbde8751b64ed89174e10fb7963fa8af2d2d0812a9099473300e9126ef0c9",
+      "bytes": 23191
+    },
+    {
+      "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\Contents\\mods\\OneMoreHorde_TurretsAndTraps\\42.20\\media\\lua\\shared\\OMHTT\\LootDefinitions.lua",
+      "sha256": "4684cd4471e5ae3da7818fde6cc15709e638ea082f2bf3f463baf7543a857633",
+      "bytes": 848
+    },
+    {
+      "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\loot-site\\cache\\Lua\\loot-routes.json",
+      "sha256": "66c89f9c86bc880bcbc2786ac7916a5783e802b4d1a6efc9ddb57136f6ba799b",
+      "bytes": 109270
+    },
+    {
+      "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\loot-site\\cache\\Lua\\loot-tile-properties.txt",
+      "sha256": "37d012698e91332f60836b21893fab1b25ff1769d90d6efb5539624683a101e5",
+      "bytes": 46536
+    },
+    {
+      "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\loot-current-bytecode.txt",
+      "sha256": "e2d431191312b91a87fd01061d8788d96a3bcac3268b5cddd3febf8e9d7a1320",
+      "bytes": 371065
+    }
+  ],
+  "dataset": {
+    "sha256": "36108135ce8eab3308d1acf0f7900c5e679b965ec8a6b158592d18d62ace6b5d",
+    "bytes": 3311115
+  },
+  "extraction": {
+    "game": "42.21.0",
+    "baseline": "T&T 0.2.23",
+    "previousBaselines": [
+      "Installed 0.2.22"
+    ],
+    "headers": 4065,
+    "roomRecords": 90827,
+    "routes": 45,
+    "containerSprites": 1243,
+    "chunksScanned": 30189,
+    "eligibleContainers": 11713,
+    "mapFeatures": 13530,
+    "genericExclusions": [
+      "barbecue",
+      "barbecuepropane",
+      "bin",
+      "brazier",
+      "campfire",
+      "cashregister",
+      "clothingdryer",
+      "clothingdryerbasic",
+      "clothingrack",
+      "clothingwasher",
+      "coffeemaker",
+      "coffin",
+      "composter",
+      "dishwasher",
+      "doghouse",
+      "dumpster",
+      "fireplace",
+      "freezer",
+      "fridge",
+      "icecream",
+      "logs",
+      "mannequin",
+      "medicine",
+      "microwave",
+      "newspaperdispatch",
+      "newspaperherald",
+      "newspaperknews",
+      "newspapertimes",
+      "plankstash",
+      "postbox",
+      "shelter",
+      "stonefurnace",
+      "stove",
+      "survivorcrate",
+      "tent",
+      "toaster",
+      "trough",
+      "vendinggt",
+      "vendingpop",
+      "vendingsnack",
+      "woodstove"
+    ],
+    "byRoom": {
+      "hall": 2347,
+      "closet": 1434,
+      "bedroom": 672,
+      "shed": 95,
+      "garagestorage": 366,
+      "armystorage": 85,
+      "electronicsstore": 186,
+      "livingroom": 2390,
+      "garage": 1335,
+      "attic": 274,
+      "mechanic": 470,
+      "gunstore": 113,
+      "storageunit": 1671,
+      "electronicstore": 34,
+      "carsupply": 33,
+      "pawnshop": 186,
+      "office": 1,
+      "pawnshopoffice": 8,
+      "pawnshopstorage": 13
+    },
+    "byContainer": {
+      "shelves": 1138,
+      "sidetable": 145,
+      "cardboardbox": 2984,
+      "wardrobe": 419,
+      "overhead": 4,
+      "counter": 444,
+      "smallbox": 652,
+      "toolcabinet": 177,
+      "crate": 1043,
+      "militarycrate": 77,
+      "metal_shelves": 1912,
+      "dishescabinet": 1501,
+      "locker": 240,
+      "desk": 344,
+      "dresser": 256,
+      "filingcabinet": 174,
+      "displaycase": 119,
+      "smallcrate": 12,
+      "shelvesmag": 52,
+      "restaurantdisplay": 15,
+      "militarylocker": 1,
+      "fruitbushb": 1,
+      "fruitbushc": 1,
+      "fruitbusha": 1,
+      "fruitbushd": 1
+    }
+  }
+}

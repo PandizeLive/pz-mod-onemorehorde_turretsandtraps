@@ -15,7 +15,7 @@ function A.changed(object, head)
         A.entries[object] = entry
         A.order[#A.order + 1] = entry
     end
-    entry.job, entry.due, entry.status = nil, 0, nil
+    entry.job, entry.due, entry.status, entry.target = nil, 0, nil, nil
 end
 
 ---@param origin IsoGridSquare Turret square
@@ -45,9 +45,14 @@ function A.advance(job, budget, deadline)
             job.visited = job.visited + 1
             if instanceof(zombie, "IsoZombie") then
                 local inside, distance = M.inside(job.origin, zombie, job.profile)
-                if inside and M.better(zombie, distance, job.best, job.bestDistance, job.profile.priority)
-                    and Combat.clearLane(job.origin, zombie:getSquare(), job.profile.range) then
-                    job.best, job.bestDistance = zombie, distance
+                local select = inside and (job.profile.priority == "Random"
+                    or M.better(zombie, distance, job.best, job.bestDistance, job.profile.priority))
+                if select and Combat.clearLane(job.origin, zombie:getSquare(), job.profile.range) then
+                    if job.profile.priority == "Random" then
+                        job.eligible = (job.eligible or 0) + 1
+                        select = ZombRand(job.eligible) == 0
+                    end
+                    if select then job.best, job.bestDistance = zombie, distance end
                 end
             end
         else
@@ -96,17 +101,20 @@ function A.step(entry, deadline)
     end
     local profile = M.profile(state, contents)
     local key = profile.heading .. ":" .. profile.cone .. ":" .. profile.range .. ":" .. profile.priority
-    if entry.key ~= key then
-        entry.job = nil
-    end
+    if entry.key ~= key then entry.job, entry.target = nil, nil end
     entry.key = key
-    if not entry.job then
-        entry.job = A.scan(square, profile)
-    end
-    if not A.advance(entry.job, 64, deadline) then return true end
-    local job, target = entry.job, entry.job.best
-    entry.job, entry.due = nil, now + interval
     local Combat = require("OMHTT/PrototypeCombat")
+    local target = entry.target
+    local sticky = profile.priority == "Random" or profile.priority == "Toughest"
+    local retained = sticky and target and M.inside(square, target, profile)
+        and Combat.clearLane(square, target:getSquare(), profile.range)
+    local job = {visited = 0}
+    if not retained then
+        if not entry.job then entry.job = A.scan(square, profile) end
+        if not A.advance(entry.job, 64, deadline) then return true end
+        job, target = entry.job, entry.job.best
+    end
+    entry.job, entry.due = nil, now + interval
     if not target or not M.inside(square, target, profile)
         or not Combat.clearLane(square, target:getSquare(), profile.range) then
         entry.target = nil

@@ -77,6 +77,26 @@ module Base {
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_ModuleSuppression,
     }
+
+    item OMHTTModuleCritical {
+        DisplayName = Critical Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleCritical,
+    }
+
+    item OMHTTModuleAccuracy {
+        DisplayName = Accuracy Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleAccuracy,
+    }
     item OMHTTModuleReload {
         DisplayName = Reload Module,
         ItemType = base:normal,

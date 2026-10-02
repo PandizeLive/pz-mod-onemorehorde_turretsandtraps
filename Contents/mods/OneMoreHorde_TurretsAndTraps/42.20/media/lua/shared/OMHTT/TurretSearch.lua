@@ -1,7 +1,7 @@
 local T = require("OMHTT/Turret")
 local M = require("OMHTT/TurretModules")
 local D = require("OMHTT/Diagnostics")
-local S = {pending = {}, order = {}, cursor = 1, results = setmetatable({}, {__mode = "k"})}
+local S = {targets = setmetatable({}, {__mode = "k"}), pending = {}, order = {}, cursor = 1, results = setmetatable({}, {__mode = "k"})}
 
 ---@param player IsoPlayer Operator
 ---@param object IsoObject Turret
@@ -12,6 +12,14 @@ function S.request(player, object)
     local aim = require("OMHTT/TurretAim").entries[object]
     if aim and aim.player then return "Aiming" end
     local profile = M.profile(T.state(object), T.contents(object:getContainer()))
+    local held = S.targets[object]
+    local Combat = require("OMHTT/PrototypeCombat")
+    if held and held.priority == profile.priority and (profile.priority == "Random" or profile.priority == "Toughest")
+        and M.inside(object:getSquare(), held.target, profile)
+        and Combat.clearLane(object:getSquare(), held.target:getSquare(), profile.range) then
+        return require("OMHTT/TurretWorld").fire(player, object, held.target)
+    end
+    S.targets[object] = nil
     local job = require("OMHTT/TurretAutomation").scan(object:getSquare(), profile)
     local entry = {object = object, player = player, job = job, started = getTimestampMs(), slices = 0, workMs = 0}
     S.pending[object] = entry
@@ -37,7 +45,7 @@ end
 function S.step(entry, deadline)
     local W = require("OMHTT/TurretWorld")
     local object = entry.object
-    if entry.cancelled or not W.valid(object) or not W.near(entry.player, object) or getTimestampMs() - entry.started > 10000 then
+    if entry.cancelled or not T.isOn(T.state(object)) or not W.valid(object) or not W.near(entry.player, object) or getTimestampMs() - entry.started > 10000 then
         S.finish(entry, "Unavailable")
         return true
     end
@@ -54,7 +62,10 @@ function S.step(entry, deadline)
     entry.workMs, entry.slices = entry.workMs + getTimestampMs() - started, entry.slices + 1
     if not done then return false end
     local result = "NoTarget"
-    if entry.job.best then result = W.fire(entry.player, object, entry.job.best) end
+    if entry.job.best then
+        S.targets[object] = {target = entry.job.best, priority = profile.priority}
+        result = W.fire(entry.player, object, entry.job.best)
+    end
     S.finish(entry, result)
     return true
 end

@@ -125,7 +125,7 @@ check(X.rejection(player, potato3, carried, storage) == "TransferFavorite", "Fav
 potato3.favorite = false
 panel:refresh()
 check(#panel.ammoSlot.items == 2 and panel.batterySlot.items[1] == battery, "Slots expose actual container items")
-check(not panel.headSlot.missing and not panel.batterySlot.missing and panel.modulesMissing, "Automation highlights missing modules, available power remains normal")
+check(not panel.headSlot.missing and not panel.batterySlot.missing and not panel.modulesMissing, "Manual turret without automation modules has no missing-module warning")
 check(panel.magazineSlot.disabled and not panel.magazineSlot.missing, "Potato uses an internal magazine")
 W.power = function() return nil end
 panel:refresh()
@@ -143,7 +143,7 @@ panel.headSlot:onMouseDown(1, 1)
 check(ISMouseDrag.dragging[1] == head, "Head drag keeps actual identity despite reserve")
 panel.headSlot:clearDrag()
 actions = {}
-panel:unload()
+panel:transfer(panel.ammoSlot.items, false, "ammo")
 check(#actions == 2 and T.contents(storage).ammo == 2, "Unload uses timed actions, not direct removal")
 for i = 1, #actions do actions[i]:transferItem(actions[i].item) end
 check(T.contents(storage).ammo == 0 and carried:contains(potato), "Unload retains exact potatoes")
@@ -170,10 +170,10 @@ ISInventoryPane.onMouseUp(nativePane, 1, 1)
 check(handedOff and #handedOff == 1 and handedOff[1] == battery and ISMouseDrag.dragging == nil,
     "Installed vanilla drop handler accepts exact battery and calls slot cleanup")
 getSpecificPlayer, getCore, isShiftKeyDown, isCtrlKeyDown = oldSpecific, oldCore, oldShift, oldControl
-panel:toggleAuto(); panel:refresh()
-check(controlState.OMHTTTurret.automatic == false and panel.autoButton.title == getText("UI_OMHTT_AutoOff"), "Manage switch persists automatic off")
-panel:toggleAuto(); panel:refresh()
-check(controlState.OMHTTTurret.automatic == true, "Manage can reenable automation")
+panel:togglePower(); panel:refresh()
+check(controlState.OMHTTTurret.powered == false and panel.powerButton.title == getText("UI_OMHTT_PowerOff"), "Manage switch persists automatic off")
+panel:togglePower(); panel:refresh()
+check(controlState.OMHTTTurret.powered == true, "Manage can reenable automation")
 check(not panel.priorityButton.enabled, "Priority control requires Filter")
 local filter = item("Base.OMHTTModuleFilter")
 storage:AddItem(filter); panel:refresh()
@@ -183,7 +183,7 @@ check(controlState.OMHTTTurret.priority == "Furthest", "Filter cycles to Furthes
 panel:changePriority(); panel:changePriority()
 check(controlState.OMHTTTurret.priority == "Toughest", "Filter exposes all four target priorities")
 storage:Remove(filter); panel:refresh()
-check(not panel.priorityButton.enabled and panel.priorityButton.title == getText("UI_OMHTT_Priority", getText("UI_OMHTT_PriorityClosest")), "Removing Filter uses Closest while retaining chosen preference")
+check(not panel.priorityButton.enabled and panel.priorityButton.title == getText("UI_OMHTT_Priority", getText("UI_OMHTT_PriorityRandom")), "Removing Filter uses Random while retaining chosen preference")
 local oldModules = SandboxVars.OMHTurretsTraps.PotatoModuleCapacity
 SandboxVars.OMHTurretsTraps.PotatoModuleCapacity = 20
 for i = 1, 20 do storage:AddItem(item("Base.OMHTTModuleRange")) end
@@ -241,6 +241,8 @@ function pistol:getMinDamage() return .6 end
 function pistol:getMaxDamage() return 1 end
 function pistol:getMaxRange() return 15 end
 function pistol:getRecoilDelay() return 12 end
+    function pistol:getCriticalChance() return 20 end
+    function pistol:getCriticalDamageMultiplier() return 4 end
 function pistol:getHitChance() return 50 end
 function pistol:getAimingPerkHitChanceModifier() return 4 end
 storage:Remove(head); storage:AddItem(pistol)

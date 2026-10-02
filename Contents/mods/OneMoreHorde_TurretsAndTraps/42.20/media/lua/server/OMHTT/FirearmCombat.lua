@@ -31,10 +31,12 @@ function C.hit(record, origin, target, player, options)
         end
     end
     local hits, lost = 0, 0
+    local critical = ZombRand(10000) < stats.critChance * 100
+    local multiplier = critical and stats.critMultiplier or 1
     for i = 1, pellets do
         local victim = targets[(i - 1) % #targets + 1]
         if not victim:isDead() and ZombRand(10000) < stats.accuracy * 100 then
-            lost = lost + Damage.apply(victim, stats.damage / 100 / pellets, record.id, "firearm", player, gun)
+            lost = lost + Damage.apply(victim, stats.damage * multiplier / 100 / pellets, record.id, "firearm", player, gun)
             hits = hits + 1
             local guard = victim:getModData().OMHTTKnockdownUntilMs
             if not victim:isDead() and not victim:isOnFloor() and not victim:isKnockedDown()
@@ -46,10 +48,10 @@ function C.hit(record, origin, target, player, options)
     end
     local wear = gun:getConditionLowerChance()
     if wear > 0 and ZombRand(wear) == 0 then gun:setCondition(math.max(0, gun:getCondition() - 1)) end
-    local hearingRadius = math.floor(gun:getSoundRadius() * stats.hearingMultiplier + 0.5)
+    local hearingRadius = math.ceil(gun:getSoundRadius() * stats.hearingMultiplier)
     if hearingRadius > 0 then addSound(options.object, origin:getX(), origin:getY(), origin:getZ(), hearingRadius, gun:getSoundVolume()) end
     D.defer("firearm-shot", {id = record.id, gun = gun:getFullType(), shot = record.shots,
-        hearingRadius = hearingRadius, suppressed = stats.suppressed, pellets = pellets, hits = hits, damage = lost * 100, condition = gun:getCondition(),
+        critical = critical, critChance = stats.critChance, critMultiplier = multiplier, hearingRadius = hearingRadius, suppressed = stats.suppressed, pellets = pellets, hits = hits, damage = lost * 100, condition = gun:getCondition(),
         magazine = gun:getCurrentAmmoCount(), chamber = gun:isRoundChambered(), ms = getTimestampMs() - started})
     return {id = record.id, shot = record.shots, x = target:getX(), y = target:getY(), z = origin:getZ(),
         fromX = origin:getX() + 0.5, fromY = origin:getY() + 0.5, sound = gun:getSwingSound(),

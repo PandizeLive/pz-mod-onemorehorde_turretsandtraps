@@ -52,7 +52,7 @@ function Aim.tick()
     local now = getTimestampMs()
     for object, entry in pairs(Aim.entries) do
         local state = T.state(object)
-        local valid = state and W.valid(object) and now <= entry.expires
+        local valid = state and T.isOn(state) and W.valid(object) and now <= entry.expires
         if valid and now >= entry.checkAt then
             local contents = T.contents(object:getContainer())
             entry.speed = T.turnSpeed(contents.head)
