@@ -43,3 +43,8 @@ Owner supplied potato_thump_1.wav / potato_thump_2.wav (0.75s each) and potato_s
 Potato reload: **stormyShotgunInsertRound.wav**. Owner overlay source: ../Audio/Turrets & Traps/suppressed_shot.wav (48 kHz stereo PCM16, 0.375s). Overlay unfiltered at time zero over the processed original shot, preserving gain. It must not replace the original by itself. Audible quietness is not required; gameplay suppression changes zombie hearing separately.
 
 POTATO_AUDIO.html now provides dry/filtered/layered comparisons and download links for each layered WAV, the original overlay and selected reload. art/audio-previews/ contains two filtered and two layered potato-shot auditions (0.75s, 48 kHz stereo PCM16); README.txt records processing and hashes. No clipping or normalization. These are local discussion artifacts, not installed sound replacements.
+## Native firearm audition library (C72)
+
+Owner requested all native firearm shots with the suppression filter and unfiltered owner overlay, plus compact modded-weapon family fallbacks. [Listen and download](FIREARM_AUDIO.html); [source and validation notes](firearm-audio/README.md). The existing potato HTML links to this library.
+
+Twenty real firearms map to eighteen processed native event recordings (797,597 bytes of layered OGGs). Nine proposed families reuse these files, with two separate toy cap-gun entries for completeness. The set uses actual current installed FMOD events, one representative outdoor single shot each. All original files are unchanged. Processing is offline; no runtime DSP, gameplay audio registration, modded-gun adapter or installation is included. Final family selection and sound quality await owner audition.

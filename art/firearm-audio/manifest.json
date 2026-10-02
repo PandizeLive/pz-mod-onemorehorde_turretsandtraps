@@ -1,0 +1,1989 @@
+{
+  "status": "Local audition only; not installed or published",
+  "game_build": "42.21.0",
+  "source": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\ProjectZomboid",
+  "bank_sha256": "958af426b9967f81aecb8aacea4d18cbfb38b36c7d889159a2f2c71f9be40918",
+  "overlay": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Audio\\Turrets & Traps\\suppressed_shot.wav",
+  "overlay_sha256": "87212d0cc73ec247927f74391e07c4fb647b383cfb4a45a812c95da02294c80f",
+  "rate": 48000,
+  "channels": 1,
+  "filter": {
+    "cutoff_hz": 250,
+    "slope_db_per_octave": 48,
+    "times": [
+      0,
+      0.04,
+      0.09,
+      0.18,
+      0.69
+    ],
+    "wet": [
+      0,
+      1,
+      1,
+      0.25,
+      0
+    ]
+  },
+  "encoding": "OGG Vorbis quality 4; mono 48 kHz; PCM16 WAV masters",
+  "weapons": [
+    {
+      "item": "Base.AssaultRifle",
+      "name": "M16 Assault Rifle",
+      "sound": "M16Shoot",
+      "ammo": "base:bullets_556",
+      "toy": false,
+      "event": "event:/Weapon/Firearm/M16/Shoot",
+      "script": "media\\scripts\\generated\\sounds\\weapons\\sounds_firearm_m16.txt",
+      "item_script": "media\\scripts\\generated\\items\\weapon.txt"
+    },
+    {
+      "item": "Base.AssaultRifle2",
+      "name": "M1A Rifle",
+      "sound": "M14Shoot",
+      "ammo": "base:bullets_308",
+      "toy": false,
+      "event": "event:/Weapon/Firearm/M14/Shoot",
+      "script": "media\\scripts\\generated\\sounds\\weapons\\sounds_firearm_m14.txt",
+      "item_script": "media\\scripts\\generated\\items\\weapon.txt"
+    },
+    {
+      "item": "Base.DoubleBarrelShotgun",
+      "name": "Double Barrel Shotgun",
+      "sound": "DoubleBarrelShotgunShoot",
+      "ammo": "base:shotgun_shells",
+      "toy": false,
+      "event": "event:/Weapon/Firearm/DoubleBarrelShotgun/Shoot",
+      "script": "media\\scripts\\generated\\sounds\\weapons\\sounds_firearm_doublebarrelshotgun.txt",
+      "item_script": "media\\scripts\\generated\\items\\weapon.txt"
+    },
+    {
+      "item": "Base.DoubleBarrelShotgunSawnoff",
+      "name": "Sawed-off Double Barrel Shotgun",
+      "sound": "SawnOffDoubleBarrelShotgunShoot",
+      "ammo": "base:shotgun_shells",
+      "toy": false,
+      "event": "event:/Weapon/Firearm/SawnOffDoubleBarrelShotgun/Shoot",
+      "script": "media\\scripts\\generated\\sounds\\weapons\\sounds_firearm_sawnoffdoublebarrelshotgun.txt",
+      "item_script": "media\\scripts\\generated\\items\\weapon.txt"
+    },
+    {
+      "item": "Base.HuntingRifle",
+      "name": "MSR788 Rifle",
+      "sound": "MSR788Shoot",
+      "ammo": "base:bullets_308",
+      "toy": false,
+      "event": "event:/Weapon/Firearm/MSR788/Shoot",
+      "script": "media\\scripts\\generated\\sounds\\weapons\\sounds_firearm_msr788.txt",
+      "item_script": "media\\scripts\\generated\\items\\weapon.txt"
+    },
+    {
+      "item": "Base.Pistol",
+      "name": "M9 Pistol",
+      "sound": "M9Shoot",
+      "ammo": "base:bullets_9mm",
+      "toy": false,
+      "event": "event:/Weapon/Firearm/M9/Shoot",
+      "script": "media\\scripts\\generated\\sounds\\weapons\\sounds_firearm_m9.txt",
+      "item_script": "media\\scripts\\generated\\items\\weapon.txt"
+    },
+    {
+      "item": "Base.Pistol2",
+      "name": "M1911 Pistol",
+      "sound": "M1911Shoot",
+      "ammo": "base:bullets_45",
+      "toy": false,
+      "event": "event:/Weapon/Firearm/M1911/Shoot",
+      "script": "media\\scripts\\generated\\sounds\\weapons\\sounds_firearm_m1811.txt",
+      "item_script": "media\\scripts\\generated\\items\\weapon.txt"
+    },
+    {
+      "item": "Base.Pistol3",
+      "name": "B-F Pistol",
+      "sound": "DesertEagleShoot",
+      "ammo": "base:bullets_44",
+      "toy": false,
+      "event": "event:/Weapon/Firearm/DesertEagle/Shoot",
+      "script": "media\\scripts\\generated\\sounds\\weapons\\sounds_firearm_deserteagle.txt",
+      "item_script": "media\\scripts\\generated\\items\\weapon.txt"
+    },
+    {
+      "item": "Base.Revolver",
+      "name": "Patrol Revolver",
+      "sound": "M625Shoot",
+      "ammo": "base:bullets_357",
+      "toy": false,
+      "event": "event:/Weapon/Firearm/M625/Shoot",
+      "script": "media\\scripts\\generated\\sounds\\weapons\\sounds_firearm_m625.txt",
+      "item_script": "media\\scripts\\generated\\items\\weapon.txt"
+    },
+    {
+      "item": "Base.Revolver_Long",
+      "name": "Magnum",
+      "sound": "MagnumShoot",
+      "ammo": "base:bullets_44",
+      "toy": false,
+      "event": "event:/Weapon/Firearm/Magnum/Shoot",
+      "script": "media\\scripts\\generated\\sounds\\weapons\\sounds_firearm_magnum.txt",
+      "item_script": "media\\scripts\\generated\\items\\weapon.txt"
+    },
+    {
+      "item": "Base.Revolver_Short",
+      "name": "SN38 Revolver",
+      "sound": "M36Shoot",
+      "ammo": "base:bullets_38",
+      "toy": false,
+      "event": "event:/Weapon/Firearm/M36/Shoot",
+      "script": "media\\scripts\\generated\\sounds\\weapons\\sounds_firearm_m36.txt",
+      "item_script": "media\\scripts\\generated\\items\\weapon.txt"
+    },
+    {
+      "item": "Base.Shotgun",
+      "name": "JS-2000 Shotgun",
+      "sound": "JS2000ShotgunShoot",
+      "ammo": "base:shotgun_shells",
+      "toy": false,
+      "event": "event:/Weapon/Firearm/JS2000Shotgun/Shoot",
+      "script": "media\\scripts\\generated\\sounds\\weapons\\sounds_firearm_js2000shotgun.txt",
+      "item_script": "media\\scripts\\generated\\items\\weapon.txt"
+    },
+    {
+      "item": "Base.ShotgunSawnoff",
+      "name": "Sawed-off JS-2000 Shotgun",
+      "sound": "SawnOffJS2000ShotgunShoot",
+      "ammo": "base:shotgun_shells",
+      "toy": false,
+      "event": "event:/Weapon/Firearm/SawnOffJS2000Shotgun/Shoot",
+      "script": "media\\scripts\\generated\\sounds\\weapons\\sounds_firearm_sawnoffjs2000shotgun.txt",
+      "item_script": "media\\scripts\\generated\\items\\weapon.txt"
+    },
+    {
+      "item": "Base.VarmintRifle",
+      "name": "MSR700 Rifle",
+      "sound": "MSR700Shoot",
+      "ammo": "base:bullets_556",
+      "toy": false,
+      "event": "event:/Weapon/Firearm/MSR700/Shoot",
+      "script": "media\\scripts\\generated\\sounds\\weapons\\sounds_firearm_msr700.txt",
+      "item_script": "media\\scripts\\generated\\items\\weapon.txt"
+    },
+    {
+      "item": "Base.Revolver_CapGun",
+      "name": "Toy Cap Pistol",
+      "sound": "CapGunRevolverShoot",
+      "ammo": "base:cap_gun_cap",
+      "toy": true,
+      "event": "event:/Weapon/Firearm/CapGunRevolver/Shoot",
+      "script": "media\\scripts\\generated\\sounds\\weapons\\sounds_firearm_capgunrevolver.txt",
+      "item_script": "media\\scripts\\generated\\items\\weapon.txt"
+    },
+    {
+      "item": "Base.Rifle_CapGun",
+      "name": "Toy Cap Rifle",
+      "sound": "CapGunRifleShoot",
+      "ammo": "base:cap_gun_cap",
+      "toy": true,
+      "event": "event:/Weapon/Firearm/CapGunRifle/Shoot",
+      "script": "media\\scripts\\generated\\sounds\\weapons\\sounds_firearm_capgunrifle.txt",
+      "item_script": "media\\scripts\\generated\\items\\weapon.txt"
+    },
+    {
+      "item": "Base.JS14_Rifle",
+      "name": "JS-14 Rifle",
+      "sound": "JS14Shoot",
+      "ammo": "base:bullets_556",
+      "toy": false,
+      "event": "event:/Weapon/Firearm/JS14/Shoot",
+      "script": "media\\scripts\\generated\\sounds\\weapons\\sounds_firearm_js14.txt",
+      "item_script": "media\\scripts\\generated\\items\\weapon.txt"
+    },
+    {
+      "item": "Base.JS3T_Shotgun",
+      "name": "JS-3T Tactical Shotgun",
+      "sound": "JS2000ShotgunShoot",
+      "ammo": "base:shotgun_shells",
+      "toy": false,
+      "event": "event:/Weapon/Firearm/JS2000Shotgun/Shoot",
+      "script": "media\\scripts\\generated\\sounds\\weapons\\sounds_firearm_js2000shotgun.txt",
+      "item_script": "media\\scripts\\generated\\items\\weapon.txt"
+    },
+    {
+      "item": "Base.L92_Carbine",
+      "name": "L92 Carbine",
+      "sound": "L92Shoot",
+      "ammo": "base:bullets_357",
+      "toy": false,
+      "event": "event:/Weapon/Firearm/L92/Shoot",
+      "script": "media\\scripts\\generated\\sounds\\weapons\\sounds_firearm_l92.txt",
+      "item_script": "media\\scripts\\generated\\items\\weapon.txt"
+    },
+    {
+      "item": "Base.L94_Rifle",
+      "name": "L94 Rifle",
+      "sound": "L94Shoot",
+      "ammo": "base:bullets_3030",
+      "toy": false,
+      "event": "event:/Weapon/Firearm/L94/Shoot",
+      "script": "media\\scripts\\generated\\sounds\\weapons\\sounds_firearm_l94.txt",
+      "item_script": "media\\scripts\\generated\\items\\weapon.txt"
+    },
+    {
+      "item": "Base.MSR7T_Rifle",
+      "name": "MSR7T Tactical Rifle",
+      "sound": "MSR788Shoot",
+      "ammo": "base:bullets_308",
+      "toy": false,
+      "event": "event:/Weapon/Firearm/MSR788/Shoot",
+      "script": "media\\scripts\\generated\\sounds\\weapons\\sounds_firearm_msr788.txt",
+      "item_script": "media\\scripts\\generated\\items\\weapon.txt"
+    },
+    {
+      "item": "Base.TrapperCarbine",
+      "name": "Trapper Carbine",
+      "sound": "TrapperCarbineShoot",
+      "ammo": "base:bullets_45",
+      "toy": false,
+      "event": "event:/Weapon/Firearm/TrapperCarbine/Shoot",
+      "script": "media\\scripts\\generated\\sounds\\weapons\\sounds_firearm_trappercarbine.txt",
+      "item_script": "media\\scripts\\generated\\items\\weapon.txt"
+    }
+  ],
+  "assets": [
+    {
+      "sound": "CapGunRevolverShoot",
+      "event": "event:/Weapon/Firearm/CapGunRevolver/Shoot",
+      "seconds": 0.9668541666666667,
+      "leading_trim_seconds": 0.6060208333333333,
+      "common_headroom_gain": 1.0,
+      "raw_sha256": "e454d0b0f904c80c458336ed212da7796b297d92328e2d54b676b9fdbe286d48",
+      "render": {
+        "event": "event:/Weapon/Firearm/CapGunRevolver/Shoot",
+        "output": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\CapGunRevolverShoot.wav",
+        "bytes": 1656878,
+        "parameters": [
+          {
+            "name": "LocalPlayer",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 8
+          },
+          {
+            "name": "FirearmDistance",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1000.0,
+            "type": 1,
+            "flags": 3
+          },
+          {
+            "name": "CameraZoom",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 5
+          },
+          {
+            "name": "FirearmInside",
+            "default": 0.0,
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmRoomSize",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 180.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "Occlusion",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          }
+        ],
+        "distance": 1,
+        "fmod_version": "2.03.09",
+        "playback_state": 2
+      },
+      "files": {
+        "dry": {
+          "file": "CapGunRevolverShoot_dry.ogg",
+          "bytes": 11370,
+          "sha256": "d3eed0da072aff9e1f8fba19889f4e36facf12a2d88d21840ef849dac1df2a37",
+          "decoded_peak": 0.2835681438446045
+        },
+        "filtered": {
+          "file": "CapGunRevolverShoot_filtered.ogg",
+          "bytes": 11290,
+          "sha256": "cd4b157345df9b643849ff5d7be444c28a74861b0e7ab975713f824797a87841",
+          "decoded_peak": 0.22749659419059753
+        },
+        "layered": {
+          "file": "CapGunRevolverShoot_layered.ogg",
+          "bytes": 11312,
+          "sha256": "a811f99c9cbab1ad9c86a1d93d907db2a2eb111b7a1f76105cf885fc51d3bc96",
+          "decoded_peak": 0.2320936918258667
+        }
+      },
+      "wav": "CapGunRevolverShoot_layered.wav",
+      "wav_sha256": "cb09f435e1d8b20ced357f17b8ea4229e37f68e05e41bf8de1db061c792c0948"
+    },
+    {
+      "sound": "CapGunRifleShoot",
+      "event": "event:/Weapon/Firearm/CapGunRifle/Shoot",
+      "seconds": 1.3954375,
+      "leading_trim_seconds": 0.5633541666666667,
+      "common_headroom_gain": 1.0,
+      "raw_sha256": "578623d41bee5eb41978743ddf699d12462ee2680debe65704b14bc3ea87369d",
+      "render": {
+        "event": "event:/Weapon/Firearm/CapGunRifle/Shoot",
+        "output": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\CapGunRifleShoot.wav",
+        "bytes": 1648686,
+        "parameters": [
+          {
+            "name": "FirearmInside",
+            "default": 0.0,
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmRoomSize",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 180.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "Occlusion",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "LocalPlayer",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 8
+          },
+          {
+            "name": "FirearmDistance",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1000.0,
+            "type": 1,
+            "flags": 3
+          },
+          {
+            "name": "CameraZoom",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 5
+          }
+        ],
+        "distance": 1,
+        "fmod_version": "2.03.09",
+        "playback_state": 2
+      },
+      "files": {
+        "dry": {
+          "file": "CapGunRifleShoot_dry.ogg",
+          "bytes": 14577,
+          "sha256": "217e210be60ae2a77c0104823f5720d31925745c06838b7216cb0d73dfbc1c4b",
+          "decoded_peak": 0.34018298983573914
+        },
+        "filtered": {
+          "file": "CapGunRifleShoot_filtered.ogg",
+          "bytes": 14408,
+          "sha256": "71177b27b8e1cd14bdd59f200be4a04d20de647939fed7479e34cbef9168cf4d",
+          "decoded_peak": 0.26029831171035767
+        },
+        "layered": {
+          "file": "CapGunRifleShoot_layered.ogg",
+          "bytes": 14422,
+          "sha256": "2500e10482d1fba8ce30281dcffc1373be445de1892b0ae57baa1c4449b8b8cd",
+          "decoded_peak": 0.2670399844646454
+        }
+      },
+      "wav": "CapGunRifleShoot_layered.wav",
+      "wav_sha256": "1bbb1b5a5e39a957db2ddb4eb302119a743ead075a6c0313d0adbfbd038e6863"
+    },
+    {
+      "sound": "DesertEagleShoot",
+      "event": "event:/Weapon/Firearm/DesertEagle/Shoot",
+      "seconds": 3.946125,
+      "leading_trim_seconds": 0.5526666666666666,
+      "common_headroom_gain": 0.8580804984822025,
+      "raw_sha256": "ae0cff7392db04800db84ac76b8a8afacd628cdb04d185c0f6097a4e24650be1",
+      "render": {
+        "event": "event:/Weapon/Firearm/DesertEagle/Shoot",
+        "output": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\DesertEagleShoot.wav",
+        "bytes": 1646638,
+        "parameters": [
+          {
+            "name": "FirearmDistance",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1000.0,
+            "type": 1,
+            "flags": 3
+          },
+          {
+            "name": "CameraZoom",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 5
+          },
+          {
+            "name": "LocalPlayer",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 8
+          },
+          {
+            "name": "FirearmRoomSize",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 180.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "Occlusion",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmInside",
+            "default": 0.0,
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          }
+        ],
+        "distance": 1,
+        "fmod_version": "2.03.09",
+        "playback_state": 2
+      },
+      "files": {
+        "dry": {
+          "file": "DesertEagleShoot_dry.ogg",
+          "bytes": 35002,
+          "sha256": "456a57537ffe231b434f258ffd089fccb304c069690f4b24c914230b8adfd3db",
+          "decoded_peak": 0.930214524269104
+        },
+        "filtered": {
+          "file": "DesertEagleShoot_filtered.ogg",
+          "bytes": 34850,
+          "sha256": "211f0f2bdce477519b5f28413de0e84726b9337729afb1bbfbe8809ff67bf193",
+          "decoded_peak": 0.5631878972053528
+        },
+        "layered": {
+          "file": "DesertEagleShoot_layered.ogg",
+          "bytes": 34915,
+          "sha256": "8a23299b1ba265bbb1334c1e187f839ca3ee6ed8f7100612957c633d8d5a3691",
+          "decoded_peak": 0.5711355209350586
+        }
+      },
+      "wav": "DesertEagleShoot_layered.wav",
+      "wav_sha256": "ef0d8822f4dc67e193f4d989cb577c1e8799b85938ff96dc2529bdf674bb98b8"
+    },
+    {
+      "sound": "DoubleBarrelShotgunShoot",
+      "event": "event:/Weapon/Firearm/DoubleBarrelShotgun/Shoot",
+      "seconds": 6.368104166666667,
+      "leading_trim_seconds": 0.6167291666666667,
+      "common_headroom_gain": 0.8196326675003158,
+      "raw_sha256": "0d5c96820919294c8fb861ee24760b5accdd86c6d4175e2643b8b7c8ae219dbb",
+      "render": {
+        "event": "event:/Weapon/Firearm/DoubleBarrelShotgun/Shoot",
+        "output": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\DoubleBarrelShotgunShoot.wav",
+        "bytes": 1658926,
+        "parameters": [
+          {
+            "name": "FirearmRoomSize",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 180.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "Occlusion",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmInside",
+            "default": 0.0,
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmDistance",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1000.0,
+            "type": 1,
+            "flags": 3
+          },
+          {
+            "name": "CameraZoom",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 5
+          }
+        ],
+        "distance": 1,
+        "fmod_version": "2.03.09",
+        "playback_state": 2
+      },
+      "files": {
+        "dry": {
+          "file": "DoubleBarrelShotgunShoot_dry.ogg",
+          "bytes": 56319,
+          "sha256": "c20aa5a0735f7f8a8d48bd832c51be8175e377f17b248c066d74389fdac86cc1",
+          "decoded_peak": 0.929153561592102
+        },
+        "filtered": {
+          "file": "DoubleBarrelShotgunShoot_filtered.ogg",
+          "bytes": 56118,
+          "sha256": "548f7e3953d6dabc15b6db04033a8e29ac73ec280e53cac52fc995fd86cf5001",
+          "decoded_peak": 0.947133481502533
+        },
+        "layered": {
+          "file": "DoubleBarrelShotgunShoot_layered.ogg",
+          "bytes": 56187,
+          "sha256": "43b2ecf2e3c21cee3027344a8fa8ff6cb3edc9b44e9ccb0fc77c7d456b411fba",
+          "decoded_peak": 0.9434788823127747
+        }
+      },
+      "wav": "DoubleBarrelShotgunShoot_layered.wav",
+      "wav_sha256": "8011f9c5329f2f7f60c427c70a4f98e31c3455c3f58bb22fe9a2ffce1a28ed1b"
+    },
+    {
+      "sound": "JS14Shoot",
+      "event": "event:/Weapon/Firearm/JS14/Shoot",
+      "seconds": 4.394916666666667,
+      "leading_trim_seconds": 0.5635,
+      "common_headroom_gain": 1.0,
+      "raw_sha256": "4970a020355ea8366b7d26922a02bcfbfb76cb94265ab535e9fe44575a123683",
+      "render": {
+        "event": "event:/Weapon/Firearm/JS14/Shoot",
+        "output": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\JS14Shoot.wav",
+        "bytes": 1648686,
+        "parameters": [
+          {
+            "name": "FirearmInside",
+            "default": 0.0,
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmRoomSize",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 180.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "Occlusion",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "LocalPlayer",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 8
+          },
+          {
+            "name": "FirearmDistance",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1000.0,
+            "type": 1,
+            "flags": 3
+          },
+          {
+            "name": "CameraZoom",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 5
+          }
+        ],
+        "distance": 1,
+        "fmod_version": "2.03.09",
+        "playback_state": 2
+      },
+      "files": {
+        "dry": {
+          "file": "JS14Shoot_dry.ogg",
+          "bytes": 37201,
+          "sha256": "8a15a06b714fa020383a7b501913fb38f78194af82944749a0744e5ea1021866",
+          "decoded_peak": 0.9309564828872681
+        },
+        "filtered": {
+          "file": "JS14Shoot_filtered.ogg",
+          "bytes": 37086,
+          "sha256": "f38c06f98ecd48ccb8d01eb5d9532ffcf8b0b9719abbd8bc7c9d0d2ad7743d62",
+          "decoded_peak": 0.4671071767807007
+        },
+        "layered": {
+          "file": "JS14Shoot_layered.ogg",
+          "bytes": 37200,
+          "sha256": "a014ac2b93f7ec03d55b7559ed9334a37fdb86a7b7b9437e28979a46fbbf9297",
+          "decoded_peak": 0.4737844467163086
+        }
+      },
+      "wav": "JS14Shoot_layered.wav",
+      "wav_sha256": "b4772f8ddc1f37e57ecaef1b697bf2bc5d6e498831cdb4c7b0a2a30e75b0881a"
+    },
+    {
+      "sound": "JS2000ShotgunShoot",
+      "event": "event:/Weapon/Firearm/JS2000Shotgun/Shoot",
+      "seconds": 5.136916666666667,
+      "leading_trim_seconds": 0.5847083333333334,
+      "common_headroom_gain": 0.8615265043134824,
+      "raw_sha256": "bb1f96b59b3c6fae4f4907dee79304af8da67aabd0baca0bd23df0aa10cfb31f",
+      "render": {
+        "event": "event:/Weapon/Firearm/JS2000Shotgun/Shoot",
+        "output": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\JS2000ShotgunShoot.wav",
+        "bytes": 1652782,
+        "parameters": [
+          {
+            "name": "FirearmInside",
+            "default": 0.0,
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmRoomSize",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 180.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "Occlusion",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "LocalPlayer",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 8
+          },
+          {
+            "name": "FirearmDistance",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1000.0,
+            "type": 1,
+            "flags": 3
+          },
+          {
+            "name": "CameraZoom",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 5
+          }
+        ],
+        "distance": 1,
+        "fmod_version": "2.03.09",
+        "playback_state": 2
+      },
+      "files": {
+        "dry": {
+          "file": "JS2000ShotgunShoot_dry.ogg",
+          "bytes": 43290,
+          "sha256": "6c738cd576986153b9f282cbb6a26efb5c7be30bd4379d18be022e6c2fc9c8eb",
+          "decoded_peak": 0.8819634318351746
+        },
+        "filtered": {
+          "file": "JS2000ShotgunShoot_filtered.ogg",
+          "bytes": 43009,
+          "sha256": "385bbe37635aa2323cdad5625bd86c76032ddf67f57e170a9775b3ff4e6e37cc",
+          "decoded_peak": 0.6976776123046875
+        },
+        "layered": {
+          "file": "JS2000ShotgunShoot_layered.ogg",
+          "bytes": 43135,
+          "sha256": "181eb16cc9ee68296da7188593cdbffb9a2bbc22727e3a0b5dcb08047717443e",
+          "decoded_peak": 0.69329434633255
+        }
+      },
+      "wav": "JS2000ShotgunShoot_layered.wav",
+      "wav_sha256": "564ab10ff13f9da847aba91156e5ed5d636d05a39032be5e8ea30662bc81c430"
+    },
+    {
+      "sound": "L92Shoot",
+      "event": "event:/Weapon/Firearm/L92/Shoot",
+      "seconds": 4.588041666666666,
+      "leading_trim_seconds": 0.5534583333333334,
+      "common_headroom_gain": 1.0,
+      "raw_sha256": "4502af6de1d6b30ce2135bc2a4ac7027aeab57c52e0de796fe56047bd6426078",
+      "render": {
+        "event": "event:/Weapon/Firearm/L92/Shoot",
+        "output": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\L92Shoot.wav",
+        "bytes": 1646638,
+        "parameters": [
+          {
+            "name": "Occlusion",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmRoomSize",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 180.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmInside",
+            "default": 0.0,
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "CameraZoom",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 5
+          },
+          {
+            "name": "FirearmDistance",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1000.0,
+            "type": 1,
+            "flags": 3
+          },
+          {
+            "name": "LocalPlayer",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 8
+          }
+        ],
+        "distance": 1,
+        "fmod_version": "2.03.09",
+        "playback_state": 2
+      },
+      "files": {
+        "dry": {
+          "file": "L92Shoot_dry.ogg",
+          "bytes": 38743,
+          "sha256": "95de600990b607563ac188ab921122ea301554d39b9c9cbb2be3f8588240774e",
+          "decoded_peak": 0.853973925113678
+        },
+        "filtered": {
+          "file": "L92Shoot_filtered.ogg",
+          "bytes": 38474,
+          "sha256": "7b80f47e98b27ea99cbf51deefc782ad4052694235f78ea4c36ecb12b8f19485",
+          "decoded_peak": 0.5455182194709778
+        },
+        "layered": {
+          "file": "L92Shoot_layered.ogg",
+          "bytes": 38559,
+          "sha256": "2ab2652fcd78fd463a2e7882067f9165e1b358e00d8ea735c600de7f5a0ae080",
+          "decoded_peak": 0.5430894494056702
+        }
+      },
+      "wav": "L92Shoot_layered.wav",
+      "wav_sha256": "2aab8575c0bbb4a26a574e3916a26a71dc2727e7d0c8782b0699690ee492dd41"
+    },
+    {
+      "sound": "L94Shoot",
+      "event": "event:/Weapon/Firearm/L94/Shoot",
+      "seconds": 4.668291666666667,
+      "leading_trim_seconds": 0.574625,
+      "common_headroom_gain": 1.0,
+      "raw_sha256": "8b5dac749d2864ef64e5c06db056ed74361c5bd578541902c69c10a88c5142f3",
+      "render": {
+        "event": "event:/Weapon/Firearm/L94/Shoot",
+        "output": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\L94Shoot.wav",
+        "bytes": 1650734,
+        "parameters": [
+          {
+            "name": "LocalPlayer",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 8
+          },
+          {
+            "name": "FirearmDistance",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1000.0,
+            "type": 1,
+            "flags": 3
+          },
+          {
+            "name": "CameraZoom",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 5
+          },
+          {
+            "name": "FirearmInside",
+            "default": 0.0,
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmRoomSize",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 180.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "Occlusion",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          }
+        ],
+        "distance": 1,
+        "fmod_version": "2.03.09",
+        "playback_state": 2
+      },
+      "files": {
+        "dry": {
+          "file": "L94Shoot_dry.ogg",
+          "bytes": 39756,
+          "sha256": "6844313862c2628a91dfa4a56eaadc156deb8557f12fb3a8a868248e1aff720c",
+          "decoded_peak": 0.9438379406929016
+        },
+        "filtered": {
+          "file": "L94Shoot_filtered.ogg",
+          "bytes": 39228,
+          "sha256": "43fb11e05cae445de2f8fdb40367d445178fd74b77959699ee8401c8b79e8838",
+          "decoded_peak": 0.4907086491584778
+        },
+        "layered": {
+          "file": "L94Shoot_layered.ogg",
+          "bytes": 39337,
+          "sha256": "6650fedb82c98e3c7d8bff54ede9bbba8125edb530c2dfecf80328da3e22720e",
+          "decoded_peak": 0.4951901435852051
+        }
+      },
+      "wav": "L94Shoot_layered.wav",
+      "wav_sha256": "ede15fdfee56c0ab21b59f9e5e6992e79d4ceb44a03a861acc41b1c22735a853"
+    },
+    {
+      "sound": "M14Shoot",
+      "event": "event:/Weapon/Firearm/M14/Shoot",
+      "seconds": 4.5279375,
+      "leading_trim_seconds": 0.542,
+      "common_headroom_gain": 0.95,
+      "raw_sha256": "5c2d02cb67d57e27e3c0d13c16f87b9285da13f82ffa719fc305d26132450b18",
+      "render": {
+        "event": "event:/Weapon/Firearm/M14/Shoot",
+        "output": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\M14Shoot.wav",
+        "bytes": 1648686,
+        "parameters": [
+          {
+            "name": "CameraZoom",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 5
+          },
+          {
+            "name": "LocalPlayer",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 8
+          },
+          {
+            "name": "Occlusion",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmRoomSize",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 180.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmInside",
+            "default": 0.0,
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          }
+        ],
+        "distance": 1,
+        "fmod_version": "2.03.09",
+        "playback_state": 4
+      },
+      "files": {
+        "dry": {
+          "file": "M14Shoot_dry.ogg",
+          "bytes": 39299,
+          "sha256": "a46ebc1b1a57b2f398f918ba0d010ffa10fac81e495e49a13301b6f5e30d2870",
+          "decoded_peak": 0.9655590653419495
+        },
+        "filtered": {
+          "file": "M14Shoot_filtered.ogg",
+          "bytes": 38904,
+          "sha256": "ffa9f69a3c7d2e877e89a6b42b4e7cdeeed50b7b08cd9ddc90941f36ee0a0c55",
+          "decoded_peak": 0.659529447555542
+        },
+        "layered": {
+          "file": "M14Shoot_layered.ogg",
+          "bytes": 38908,
+          "sha256": "f15900f2bb6adf17c42b23eff1a89df4a0a6bda2d70d88122655f21240bbf571",
+          "decoded_peak": 0.6589171886444092
+        }
+      },
+      "wav": "M14Shoot_layered.wav",
+      "wav_sha256": "dcb2bd2b1748dd90f6b2ff817c12a5159253fd9a156d4248d6525f5f0431484a"
+    },
+    {
+      "sound": "M16Shoot",
+      "event": "event:/Weapon/Firearm/M16/Shoot",
+      "seconds": 4.656729166666667,
+      "leading_trim_seconds": 0.5526666666666666,
+      "common_headroom_gain": 0.8508635489476165,
+      "raw_sha256": "34d83e46e15a08468a07bd67308ed880fc1ef555b20894910c70de5c5d648688",
+      "render": {
+        "event": "event:/Weapon/Firearm/M16/Shoot",
+        "output": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\M16Shoot.wav",
+        "bytes": 1646638,
+        "parameters": [
+          {
+            "name": "LocalPlayer",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 8
+          },
+          {
+            "name": "CameraZoom",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 5
+          },
+          {
+            "name": "FirearmDistance",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1000.0,
+            "type": 1,
+            "flags": 3
+          },
+          {
+            "name": "FirearmInside",
+            "default": 0.0,
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "Occlusion",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmRoomSize",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 180.0,
+            "type": 0,
+            "flags": 0
+          }
+        ],
+        "distance": 1,
+        "fmod_version": "2.03.09",
+        "playback_state": 2
+      },
+      "files": {
+        "dry": {
+          "file": "M16Shoot_dry.ogg",
+          "bytes": 40081,
+          "sha256": "81b07f23f20fd6f1649ab24349359bb4df3743cf97869fdd112f3c4f81c5b2cd",
+          "decoded_peak": 0.8832879066467285
+        },
+        "filtered": {
+          "file": "M16Shoot_filtered.ogg",
+          "bytes": 39934,
+          "sha256": "fd43232c18abbb9085b417b5f81479084d272601511186914cb9e6e019fb5e05",
+          "decoded_peak": 0.500560462474823
+        },
+        "layered": {
+          "file": "M16Shoot_layered.ogg",
+          "bytes": 40009,
+          "sha256": "e238400254770636752aaaaaa917cbc9954ac9c3483307bba7d02e6de5866bfc",
+          "decoded_peak": 0.4999978840351105
+        }
+      },
+      "wav": "M16Shoot_layered.wav",
+      "wav_sha256": "9160c9b383891d177eb5fb11b14e1bece49db6102f0954adba0896a59d6b2625"
+    },
+    {
+      "sound": "M1911Shoot",
+      "event": "event:/Weapon/Firearm/M1911/Shoot",
+      "seconds": 6.641395833333333,
+      "leading_trim_seconds": 0.5420625,
+      "common_headroom_gain": 0.8371025908390306,
+      "raw_sha256": "c8a84b24d83e3857ce44a83b88ee26422d9c7c64ffff1de107b943c872922be6",
+      "render": {
+        "event": "event:/Weapon/Firearm/M1911/Shoot",
+        "output": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\M1911Shoot.wav",
+        "bytes": 1648686,
+        "parameters": [
+          {
+            "name": "CameraZoom",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 5
+          },
+          {
+            "name": "LocalPlayer",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 8
+          },
+          {
+            "name": "Occlusion",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmRoomSize",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 180.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmInside",
+            "default": 0.0,
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          }
+        ],
+        "distance": 1,
+        "fmod_version": "2.03.09",
+        "playback_state": 2
+      },
+      "files": {
+        "dry": {
+          "file": "M1911Shoot_dry.ogg",
+          "bytes": 55817,
+          "sha256": "39f23d937f04048bd8990c5a10c24fe7f67790cebc25db6fb859dafa4fb156fc",
+          "decoded_peak": 0.8952414989471436
+        },
+        "filtered": {
+          "file": "M1911Shoot_filtered.ogg",
+          "bytes": 55282,
+          "sha256": "54915a9407adce694e19e43f63df42a225848f2e57b5d77094c40cf938243da3",
+          "decoded_peak": 0.5161629319190979
+        },
+        "layered": {
+          "file": "M1911Shoot_layered.ogg",
+          "bytes": 55380,
+          "sha256": "8070de3fe617246e8f18f192a09e784d761f3f57066123f3c08659d87bdf111b",
+          "decoded_peak": 0.5013684034347534
+        }
+      },
+      "wav": "M1911Shoot_layered.wav",
+      "wav_sha256": "5005d065f312557b3885449d69820e82f6b6dbcdc350887eafb63a7352f52b96"
+    },
+    {
+      "sound": "M36Shoot",
+      "event": "event:/Weapon/Firearm/M36/Shoot",
+      "seconds": 6.641395833333333,
+      "leading_trim_seconds": 0.5420625,
+      "common_headroom_gain": 0.8371025908390306,
+      "raw_sha256": "c8a84b24d83e3857ce44a83b88ee26422d9c7c64ffff1de107b943c872922be6",
+      "render": {
+        "event": "event:/Weapon/Firearm/M36/Shoot",
+        "output": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\M36Shoot.wav",
+        "bytes": 1648686,
+        "parameters": [
+          {
+            "name": "Occlusion",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmRoomSize",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 180.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmInside",
+            "default": 0.0,
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "CameraZoom",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 5
+          },
+          {
+            "name": "LocalPlayer",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 8
+          }
+        ],
+        "distance": 1,
+        "fmod_version": "2.03.09",
+        "playback_state": 2
+      },
+      "files": {
+        "dry": {
+          "file": "M36Shoot_dry.ogg",
+          "bytes": 55817,
+          "sha256": "84f501a68bbccc19fe5b1b4577fc579e709accfc7aabf3c89e419d6c0c4c106f",
+          "decoded_peak": 0.8952414989471436
+        },
+        "filtered": {
+          "file": "M36Shoot_filtered.ogg",
+          "bytes": 55282,
+          "sha256": "3ab2b979e0b39c734f16abe06a2d80b16dfd73548b6b8c038974735cac60af2e",
+          "decoded_peak": 0.5161629319190979
+        },
+        "layered": {
+          "file": "M36Shoot_layered.ogg",
+          "bytes": 55380,
+          "sha256": "80883f1bffcb557cdc2e082e893377d95da7c95c2c6bd1bcfde7e919653047c2",
+          "decoded_peak": 0.5013684034347534
+        }
+      },
+      "wav": "M36Shoot_layered.wav",
+      "wav_sha256": "5005d065f312557b3885449d69820e82f6b6dbcdc350887eafb63a7352f52b96"
+    },
+    {
+      "sound": "M625Shoot",
+      "event": "event:/Weapon/Firearm/M625/Shoot",
+      "seconds": 6.641395833333333,
+      "leading_trim_seconds": 0.5527291666666667,
+      "common_headroom_gain": 0.8371025908390306,
+      "raw_sha256": "dad6b7157c8eae69b3d81d92fefdafd4b7b6ae0573f85e56691d76a8f9c21448",
+      "render": {
+        "event": "event:/Weapon/Firearm/M625/Shoot",
+        "output": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\M625Shoot.wav",
+        "bytes": 1650734,
+        "parameters": [
+          {
+            "name": "FirearmInside",
+            "default": 0.0,
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "Occlusion",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmRoomSize",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 180.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "LocalPlayer",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 8
+          },
+          {
+            "name": "CameraZoom",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 5
+          }
+        ],
+        "distance": 1,
+        "fmod_version": "2.03.09",
+        "playback_state": 2
+      },
+      "files": {
+        "dry": {
+          "file": "M625Shoot_dry.ogg",
+          "bytes": 55817,
+          "sha256": "527e7c160a818e94e85ccc3eafcfec1f28b71022908d94d6b2ea9dbbdec6579e",
+          "decoded_peak": 0.8952414989471436
+        },
+        "filtered": {
+          "file": "M625Shoot_filtered.ogg",
+          "bytes": 55282,
+          "sha256": "249092cd4ea513ecca3152e6c25b50f5aec73b8f491c51acde29f0260fdad720",
+          "decoded_peak": 0.5161629319190979
+        },
+        "layered": {
+          "file": "M625Shoot_layered.ogg",
+          "bytes": 55380,
+          "sha256": "b0577bbd365802cccd08e7df6fe2266e61a97f99180b78c9ee196991c07b8214",
+          "decoded_peak": 0.5013684034347534
+        }
+      },
+      "wav": "M625Shoot_layered.wav",
+      "wav_sha256": "5005d065f312557b3885449d69820e82f6b6dbcdc350887eafb63a7352f52b96"
+    },
+    {
+      "sound": "M9Shoot",
+      "event": "event:/Weapon/Firearm/M9/Shoot",
+      "seconds": 3.675125,
+      "leading_trim_seconds": 0.5978541666666667,
+      "common_headroom_gain": 1.0,
+      "raw_sha256": "0b61880f169930f521aceb2be14f9b3114036d1af86c5d9247620eb6c4074aaa",
+      "render": {
+        "event": "event:/Weapon/Firearm/M9/Shoot",
+        "output": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\M9Shoot.wav",
+        "bytes": 1654830,
+        "parameters": [
+          {
+            "name": "FirearmRoomSize",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 180.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "Occlusion",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmInside",
+            "default": 0.0,
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmDistance",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1000.0,
+            "type": 1,
+            "flags": 3
+          },
+          {
+            "name": "CameraZoom",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 5
+          },
+          {
+            "name": "LocalPlayer",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 8
+          }
+        ],
+        "distance": 1,
+        "fmod_version": "2.03.09",
+        "playback_state": 2
+      },
+      "files": {
+        "dry": {
+          "file": "M9Shoot_dry.ogg",
+          "bytes": 32260,
+          "sha256": "e470ec41df7e071bd5a5724f8759da37c66167124e49cae5b69ddcae4bcd6312",
+          "decoded_peak": 0.8719659447669983
+        },
+        "filtered": {
+          "file": "M9Shoot_filtered.ogg",
+          "bytes": 32171,
+          "sha256": "a5073fa28bf9bb334db4702b03aa7b0f39ff77b44a2f28bfd6e069c2c5171d68",
+          "decoded_peak": 0.5224156379699707
+        },
+        "layered": {
+          "file": "M9Shoot_layered.ogg",
+          "bytes": 32250,
+          "sha256": "a0f485cb20205d58c1d71a0889f595bf59113418ecfd7d631d45e254cd1449d1",
+          "decoded_peak": 0.528698205947876
+        }
+      },
+      "wav": "M9Shoot_layered.wav",
+      "wav_sha256": "3e730984ee8eb9e583db8549ebb44777a7ea94f590946eab1148974c73f92095"
+    },
+    {
+      "sound": "MSR700Shoot",
+      "event": "event:/Weapon/Firearm/MSR700/Shoot",
+      "seconds": 5.1264375,
+      "leading_trim_seconds": 0.574,
+      "common_headroom_gain": 0.95,
+      "raw_sha256": "07bb4958214e970614bf731a6ad47470ee7e2fba5cf341e9b8c114eb8fdc5c0b",
+      "render": {
+        "event": "event:/Weapon/Firearm/MSR700/Shoot",
+        "output": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\MSR700Shoot.wav",
+        "bytes": 1654830,
+        "parameters": [
+          {
+            "name": "LocalPlayer",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 8
+          },
+          {
+            "name": "CameraZoom",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 5
+          },
+          {
+            "name": "FirearmInside",
+            "default": 0.0,
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmRoomSize",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 180.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "Occlusion",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          }
+        ],
+        "distance": 1,
+        "fmod_version": "2.03.09",
+        "playback_state": 2
+      },
+      "files": {
+        "dry": {
+          "file": "MSR700Shoot_dry.ogg",
+          "bytes": 43548,
+          "sha256": "aa5da0472790472c61100f66181895de69ed85a84a311368db33a6d483bcae5d",
+          "decoded_peak": 0.9742068648338318
+        },
+        "filtered": {
+          "file": "MSR700Shoot_filtered.ogg",
+          "bytes": 43123,
+          "sha256": "e76de99128785c2afe9253132ff48fff1fb10f5cc50849a95cba2adc4a669cdb",
+          "decoded_peak": 0.6630706787109375
+        },
+        "layered": {
+          "file": "MSR700Shoot_layered.ogg",
+          "bytes": 43201,
+          "sha256": "0a826ee4b3d89746cb5972c64262f4b890d06a648ff8579c1aac47586ca5a007",
+          "decoded_peak": 0.6607745885848999
+        }
+      },
+      "wav": "MSR700Shoot_layered.wav",
+      "wav_sha256": "1f1f0a9a19e46a76133c88f5cb9e12a893d1c35f61743dc4b5ca394a2a9c0990"
+    },
+    {
+      "sound": "MSR788Shoot",
+      "event": "event:/Weapon/Firearm/MSR788/Shoot",
+      "seconds": 5.381729166666666,
+      "leading_trim_seconds": 0.5740208333333333,
+      "common_headroom_gain": 0.95,
+      "raw_sha256": "9e68e5c9e7c64844b6d5c731912877a2990b163a40a85bf49941c27ef9376c50",
+      "render": {
+        "event": "event:/Weapon/Firearm/MSR788/Shoot",
+        "output": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\MSR788Shoot.wav",
+        "bytes": 1650734,
+        "parameters": [
+          {
+            "name": "Occlusion",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmRoomSize",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 180.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmInside",
+            "default": 0.0,
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "CameraZoom",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 5
+          },
+          {
+            "name": "FirearmDistance",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1000.0,
+            "type": 1,
+            "flags": 3
+          },
+          {
+            "name": "LocalPlayer",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 8
+          }
+        ],
+        "distance": 1,
+        "fmod_version": "2.03.09",
+        "playback_state": 2
+      },
+      "files": {
+        "dry": {
+          "file": "MSR788Shoot_dry.ogg",
+          "bytes": 45318,
+          "sha256": "4752c98125cdd958b31b50d0e7f5f4c633670edafcd3a6269b72089d4eaf7df8",
+          "decoded_peak": 0.9613115191459656
+        },
+        "filtered": {
+          "file": "MSR788Shoot_filtered.ogg",
+          "bytes": 44957,
+          "sha256": "33bc9bf1658e7b7d472e68732286aab6ad7eb553eea1ead43670739e258e903e",
+          "decoded_peak": 0.6770635843276978
+        },
+        "layered": {
+          "file": "MSR788Shoot_layered.ogg",
+          "bytes": 45020,
+          "sha256": "5e4186e7774ffad8595fac285a38dfd10979922bdff00b596fdee4d9745a8be2",
+          "decoded_peak": 0.6822254061698914
+        }
+      },
+      "wav": "MSR788Shoot_layered.wav",
+      "wav_sha256": "637ab2efe321ba0aec383e6133349bdf9ca6e93241f2c8e8f1574158e587a491"
+    },
+    {
+      "sound": "MagnumShoot",
+      "event": "event:/Weapon/Firearm/Magnum/Shoot",
+      "seconds": 5.723958333333333,
+      "leading_trim_seconds": 0.5633958333333333,
+      "common_headroom_gain": 0.8427692780600746,
+      "raw_sha256": "6d76f20bc42047957fe351b133e97113aefd73631dc4519d53ff45f6ce9fc2ca",
+      "render": {
+        "event": "event:/Weapon/Firearm/Magnum/Shoot",
+        "output": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\MagnumShoot.wav",
+        "bytes": 1648686,
+        "parameters": [
+          {
+            "name": "FirearmRoomSize",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 180.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "Occlusion",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmInside",
+            "default": 0.0,
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmDistance",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1000.0,
+            "type": 1,
+            "flags": 3
+          },
+          {
+            "name": "CameraZoom",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 5
+          },
+          {
+            "name": "LocalPlayer",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 8
+          }
+        ],
+        "distance": 1,
+        "fmod_version": "2.03.09",
+        "playback_state": 2
+      },
+      "files": {
+        "dry": {
+          "file": "MagnumShoot_dry.ogg",
+          "bytes": 48829,
+          "sha256": "f4865a8e23ba4b412a4754c21591512adfb77f880714d795d4e318ddfdc51493",
+          "decoded_peak": 0.9199550151824951
+        },
+        "filtered": {
+          "file": "MagnumShoot_filtered.ogg",
+          "bytes": 48296,
+          "sha256": "87f05e093bdd2a071fff790e5da2cca4983eba3d915618564d85838b836576ac",
+          "decoded_peak": 0.5166141390800476
+        },
+        "layered": {
+          "file": "MagnumShoot_layered.ogg",
+          "bytes": 48389,
+          "sha256": "7510b2a1a77c25c6dfc82f7b37e510798c75b810468d6f6e3eb52f2be9762b1f",
+          "decoded_peak": 0.5050128102302551
+        }
+      },
+      "wav": "MagnumShoot_layered.wav",
+      "wav_sha256": "7c730b1890883082361688f681b92eec75ffc3c3ba5ff0495b11133bfe17b2eb"
+    },
+    {
+      "sound": "SawnOffDoubleBarrelShotgunShoot",
+      "event": "event:/Weapon/Firearm/SawnOffDoubleBarrelShotgun/Shoot",
+      "seconds": 6.368104166666667,
+      "leading_trim_seconds": 0.5527291666666667,
+      "common_headroom_gain": 0.8196326675003158,
+      "raw_sha256": "7ee38b29a179e615ac450f30253fdb38bf606ba068dcdc38597605444fcaa667",
+      "render": {
+        "event": "event:/Weapon/Firearm/SawnOffDoubleBarrelShotgun/Shoot",
+        "output": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\SawnOffDoubleBarrelShotgunShoot.wav",
+        "bytes": 1650734,
+        "parameters": [
+          {
+            "name": "FirearmRoomSize",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 180.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "Occlusion",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmInside",
+            "default": 0.0,
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "CameraZoom",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 5
+          }
+        ],
+        "distance": 1,
+        "fmod_version": "2.03.09",
+        "playback_state": 2
+      },
+      "files": {
+        "dry": {
+          "file": "SawnOffDoubleBarrelShotgunShoot_dry.ogg",
+          "bytes": 56319,
+          "sha256": "46905e90e9a4c9f3cda819b50f3cc5e1e39e778e5fffa6eee40b4966b15b658d",
+          "decoded_peak": 0.929153561592102
+        },
+        "filtered": {
+          "file": "SawnOffDoubleBarrelShotgunShoot_filtered.ogg",
+          "bytes": 56118,
+          "sha256": "ac40eb4e6c54d8cb6166ae1c0020514d89e65a572c65c66f4149b6bba5052250",
+          "decoded_peak": 0.947133481502533
+        },
+        "layered": {
+          "file": "SawnOffDoubleBarrelShotgunShoot_layered.ogg",
+          "bytes": 56187,
+          "sha256": "60e68fa53fbccc56b013693a7797e4038131935beb9cb96f6db97f9a58cecd12",
+          "decoded_peak": 0.9434788823127747
+        }
+      },
+      "wav": "SawnOffDoubleBarrelShotgunShoot_layered.wav",
+      "wav_sha256": "8011f9c5329f2f7f60c427c70a4f98e31c3455c3f58bb22fe9a2ffce1a28ed1b"
+    },
+    {
+      "sound": "SawnOffJS2000ShotgunShoot",
+      "event": "event:/Weapon/Firearm/SawnOffJS2000Shotgun/Shoot",
+      "seconds": 5.136916666666667,
+      "leading_trim_seconds": 0.5527083333333334,
+      "common_headroom_gain": 0.8615265043134824,
+      "raw_sha256": "d646841ac00768d38a7870ac2512639ea85013b7bd1068f973292dfe5b5e5565",
+      "render": {
+        "event": "event:/Weapon/Firearm/SawnOffJS2000Shotgun/Shoot",
+        "output": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\SawnOffJS2000ShotgunShoot.wav",
+        "bytes": 1650734,
+        "parameters": [
+          {
+            "name": "FirearmInside",
+            "default": 0.0,
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "Occlusion",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmRoomSize",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 180.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "LocalPlayer",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 8
+          },
+          {
+            "name": "CameraZoom",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 5
+          }
+        ],
+        "distance": 1,
+        "fmod_version": "2.03.09",
+        "playback_state": 2
+      },
+      "files": {
+        "dry": {
+          "file": "SawnOffJS2000ShotgunShoot_dry.ogg",
+          "bytes": 43221,
+          "sha256": "fd8c8a2e90bc0994a4d8f8e573e4f305d52bc411cf19f10d395c7a5f02eeb22d",
+          "decoded_peak": 0.8819634318351746
+        },
+        "filtered": {
+          "file": "SawnOffJS2000ShotgunShoot_filtered.ogg",
+          "bytes": 42948,
+          "sha256": "6bfe5dfcf12b3704b0162cbe0ebade19a76540632027ab7de3759fad3de25f7a",
+          "decoded_peak": 0.6976776123046875
+        },
+        "layered": {
+          "file": "SawnOffJS2000ShotgunShoot_layered.ogg",
+          "bytes": 43074,
+          "sha256": "9d7ff95b7848e7738aac14d78d221add6b9f7a0a5bb9886ebf28d850b7b3ae58",
+          "decoded_peak": 0.69329434633255
+        }
+      },
+      "wav": "SawnOffJS2000ShotgunShoot_layered.wav",
+      "wav_sha256": "1cf3757e4d971cd39f6dca7b858bd282f20f58f0e553d23aa22a7389342a9ce6"
+    },
+    {
+      "sound": "TrapperCarbineShoot",
+      "event": "event:/Weapon/Firearm/TrapperCarbine/Shoot",
+      "seconds": 4.0884583333333335,
+      "leading_trim_seconds": 0.5858333333333333,
+      "common_headroom_gain": 1.0,
+      "raw_sha256": "0a6d978c38f139622f3f54777672f7251ef1582a3fa78a25859b4a8680fdede9",
+      "render": {
+        "event": "event:/Weapon/Firearm/TrapperCarbine/Shoot",
+        "output": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\TrapperCarbineShoot.wav",
+        "bytes": 1652782,
+        "parameters": [
+          {
+            "name": "FirearmDistance",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1000.0,
+            "type": 1,
+            "flags": 3
+          },
+          {
+            "name": "CameraZoom",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 5
+          },
+          {
+            "name": "LocalPlayer",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 8
+          },
+          {
+            "name": "FirearmRoomSize",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 180.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "Occlusion",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          },
+          {
+            "name": "FirearmInside",
+            "default": 0.0,
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "type": 0,
+            "flags": 0
+          }
+        ],
+        "distance": 1,
+        "fmod_version": "2.03.09",
+        "playback_state": 2
+      },
+      "files": {
+        "dry": {
+          "file": "TrapperCarbineShoot_dry.ogg",
+          "bytes": 35105,
+          "sha256": "86e051cabab52998f8462b5e7562c3eedfea3d221bf7009fa488c6e7c36e9cfc",
+          "decoded_peak": 0.925110399723053
+        },
+        "filtered": {
+          "file": "TrapperCarbineShoot_filtered.ogg",
+          "bytes": 35006,
+          "sha256": "09a608241145483202e3871abcbfaebb9c2babd351c37df94dd3c0f0776544c6",
+          "decoded_peak": 0.47061002254486084
+        },
+        "layered": {
+          "file": "TrapperCarbineShoot_layered.ogg",
+          "bytes": 35086,
+          "sha256": "703aa2c41c14ed73e5a28093e6d1838c8406cbfff763e50523c42903493b5aac",
+          "decoded_peak": 0.47306227684020996
+        }
+      },
+      "wav": "TrapperCarbineShoot_layered.wav",
+      "wav_sha256": "d6a0012dbaf5c2b0be4290335e821f6ef0782bef121d10718e5e5fa72d856868"
+    }
+  ],
+  "families": [
+    [
+      "Light handgun / SMG",
+      "M9Shoot",
+      "Pistol-calibre automatics and ordinary semi-auto pistols. One sample per shot; cadence stays weapon-specific."
+    ],
+    [
+      "Heavy handgun",
+      "DesertEagleShoot",
+      "Heavy semi-auto handguns, especially .44-class weapons."
+    ],
+    [
+      "Revolver",
+      "M625Shoot",
+      "Ordinary revolvers; use MagnumShoot as an exact override for heavy magnums."
+    ],
+    [
+      "Shotgun",
+      "JS2000ShotgunShoot",
+      "Full-length pump, semi-auto and double-barrel shotguns."
+    ],
+    [
+      "Short shotgun",
+      "SawnOffJS2000ShotgunShoot",
+      "Sawn-off and compact shotguns."
+    ],
+    [
+      "Assault rifle / light machine gun",
+      "M16Shoot",
+      "Intermediate-cartridge automatics. Looping bursts are not baked into the sample."
+    ],
+    [
+      "Battle rifle / machine gun",
+      "M14Shoot",
+      "Full-power rifle-cartridge automatics and semi-autos."
+    ],
+    [
+      "Bolt-action / precision rifle",
+      "MSR788Shoot",
+      "Full-power bolt-action and precision rifles. Reload/bolt sounds stay separate."
+    ],
+    [
+      "Lever-action / pistol-calibre carbine",
+      "L92Shoot",
+      "Lever actions and pistol-calibre carbines; L94Shoot is available for a rifle-calibre override."
+    ]
+  ],
+  "proposed_real_firearm_payload_bytes": 797597
+}
