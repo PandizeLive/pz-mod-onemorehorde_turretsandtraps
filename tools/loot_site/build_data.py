@@ -1,4 +1,5 @@
 from pathlib import Path
+from sync_defaults import apply_defaults
 import json,struct,collections,xml.etree.ElementTree as ET,re,hashlib
 r=Path.cwd(); game=Path('C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid'); mp=game/'media/maps/Muldraugh, KY'
 headers=json.loads((r/'diagnostics/loot-site/headers.json').read_text()); source=json.loads((r/'diagnostics/loot-site/cache/Lua/loot-routes.json').read_text());props={}
@@ -86,7 +87,8 @@ names={'MotionDetection':'Detection','Detection360':'360','RapidFire':'Rapid-Fir
 order=['Firing','MotionDetection','Filter','Detection360','Suppression','RapidFire','Reload','Velocity','Range','CapacitySmall','Capacity','CapacityLarge','Autoloader','Critical','Accuracy']
 assert set(order)==set(weights)
 modules=[{'id':k,'name':names.get(k,k),'weight':weights[k]} for k in order]
-report={'game':'42.21.0','baseline':'T&T '+version,'previousBaselines':['Installed 0.2.22'],'headers':len(headers),'roomRecords':sum(len(h['rooms']) for h in headers),'routes':len(routes),'containerSprites':len(props),'chunksScanned':scanned,'eligibleContainers':len(containers),'mapFeatures':len(geometry),'genericExclusions':sorted(banned),'byRoom':dict(collections.Counter(routes[c['route']]['room'] for c in containers)),'byContainer':dict(collections.Counter(c['type'] for c in containers))}
+report={'game':'42.21.0','baseline':'T&T '+version,'previousBaselines':['Installed 0.2.22','T&T 0.2.23'],'headers':len(headers),'roomRecords':sum(len(h['rooms']) for h in headers),'routes':len(routes),'containerSprites':len(props),'chunksScanned':scanned,'eligibleContainers':len(containers),'mapFeatures':len(geometry),'genericExclusions':sorted(banned),'byRoom':dict(collections.Counter(routes[c['route']]['room'] for c in containers)),'byContainer':dict(collections.Counter(c['type'] for c in containers))}
 out={'meta':report,'routes':routes,'pools':source['pools'],'containers':containers,'map':geometry,'bounds':bounds,'labels':labels,'modules':modules}
+apply_defaults(out)
 (r/'art/loot-tuner/data.js').write_text('window.LOOT_DATA='+json.dumps(out,separators=(',',':'))+';\n')
 (r/'diagnostics/loot-site/extraction.json').write_text(json.dumps(report,indent=2));print(json.dumps(report))

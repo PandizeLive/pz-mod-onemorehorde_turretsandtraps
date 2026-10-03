@@ -1,5 +1,7 @@
 local L = require("OMHTT/ModuleLoot")
 local settings = SandboxVars.OMHTurretsTraps
+local savedItems = {}
+for kind in pairs(L.WEIGHTS) do savedItems[kind] = settings["Loot" .. kind]; settings["Loot" .. kind] = 1 end
 local originalGlobal, originalFilter = settings.ModuleLootMultiplier, settings.LootFilter
 local function count(pool, kind)
     local items = ProceduralDistributions.list[pool].items
@@ -35,3 +37,13 @@ testMode = "server"; L.apply()
 check(count(L.POOLS[1], "Firing") == 0, "Deferred multiplayer gets no unusable module loot")
 testMode = "sp"
 settings.ModuleLootMultiplier, settings.LootFilter = originalGlobal, originalFilter
+
+settings.ModuleLootMultiplier = nil
+for kind in pairs(L.WEIGHTS) do settings["Loot" .. kind] = nil end
+L.apply()
+for kind, base in pairs(L.WEIGHTS) do
+    local found, actual = count(L.POOLS[1], kind)
+    check(found == 1 and actual == base * L.DEFAULTS.global * L.DEFAULTS.items[kind], "Missing settings use the approved loot defaults")
+    settings["Loot" .. kind] = savedItems[kind]
+end
+settings.ModuleLootMultiplier = originalGlobal

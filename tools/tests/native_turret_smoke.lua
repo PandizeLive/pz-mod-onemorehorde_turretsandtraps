@@ -20,6 +20,12 @@ local function verifyTurrets()
     local player = IsoPlayer.new(getCell())
     local Modules = require("OMHTT/TurretModules")
     local Loot = require("OMHTT/ModuleLoot")
+    assert(getSandboxOptions():getOptionByName("OMHTurretsTraps.ModuleLootMultiplier"):getDefaultValue() == Loot.DEFAULTS.global, "Native global loot default drift")
+    SandboxVars.OMHTurretsTraps.ModuleLootMultiplier = Loot.DEFAULTS.global
+    for kind, value in pairs(Loot.DEFAULTS.items) do
+        assert(getSandboxOptions():getOptionByName("OMHTurretsTraps.Loot" .. kind):getDefaultValue() == value, "Native component loot default drift: " .. kind)
+        SandboxVars.OMHTurretsTraps["Loot" .. kind] = value
+    end
     Loot.loaded()
     local count = 0
     for i = 1, #Loot.POOLS do
@@ -27,6 +33,8 @@ local function verifyTurrets()
         for n = 1, #items, 2 do
             if require("OMHTT/Turret").component(items[n]) then
                 assert(instanceItem(items[n]), "Loot module script missing")
+                local kind = T.component(items[n])
+                assert(items[n + 1] == Loot.WEIGHTS[kind] * Loot.DEFAULTS.global * Loot.DEFAULTS.items[kind], "Native effective loot weight mismatch")
                 count = count + 1
             end
         end

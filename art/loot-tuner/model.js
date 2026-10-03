@@ -37,7 +37,7 @@
     while(true) { position+=1+Math.floor(Math.log(1-random())/log); if(position>=n) return successes; successes++; }
   }
   function quantile(values,q) { const a=values.slice().sort((x,y)=>x-y); return a[Math.floor((a.length-1)*q)]||0; }
-  function defaults(data) { return {version:1,baseline:data.meta.baseline,seed:24601,global:1,material:.6,rolls:1,retention:1,selected:'all',overlay:'spawns',visible:Object.fromEntries(data.modules.map(m=>[m.id,true])),items:Object.fromEntries(data.modules.map(m=>[m.id,1]))}; }
+  function defaults(data) { return {version:1,baseline:data.meta.baseline,seed:24601,global:data.defaults?.global??1,material:.6,rolls:1,retention:1,selected:'all',overlay:'spawns',visible:Object.fromEntries(data.modules.map(m=>[m.id,true])),items:Object.fromEntries(data.modules.map(m=>[m.id,data.defaults?.items?.[m.id]??1]))}; }
   function validate(input,data) {
     if(!input || input.version!==1) throw Error('Unsupported scenario format.');
     const legacy=(data.meta.previousBaselines||[]).includes(input.baseline);

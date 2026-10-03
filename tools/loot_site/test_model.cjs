@@ -27,7 +27,7 @@ async function run(){
   assert(Math.abs(mean-13)<.12,'Binomial mean');
   assert.equal(M.binomial(100,1,random),100);assert.equal(M.binomial(100,0,random),0);
   assert.equal(M.binomial(0,.5,random),0);
-  const s=M.defaults(D);assert.deepEqual(M.validate(s,D),s);
+  const s=M.defaults(D);assert.deepEqual(M.validate(s,D),s);assert.equal(s.global,6);assert.equal(s.items.Firing,3);assert.equal(s.items.Filter,2);
   const generated=M.generate(D,s);
   assert(generated.spawns.length>0);
   assert.deepEqual(M.generate(D,s),generated,'Same seed and settings reproduce exact containers/items');
@@ -38,7 +38,7 @@ async function run(){
   assert.deepEqual(withoutFiring.spawns,generated.spawns.filter(v=>D.modules[v.module].id!=='Firing'),'Changing one rate must not reroll other components');
   assert.equal(generated.totals.reduce((a,b)=>a+b,0),generated.spawns.reduce((n,v)=>n+v.count,0));
   for(const spawn of generated.spawns){assert(D.containers[spawn.container]);assert(D.pools[generated.poolByContainer[spawn.container]]);assert(spawn.count>0&&spawn.count<=4);assert(D.pools[generated.poolByContainer[spawn.container]].modules.includes(D.modules[spawn.module].id));}
-  const high=M.generate(D,{...s,global:2});
+  const high=M.generate(D,{...s,global:s.global*2});
   assert(generated.spawns.every(a=>(high.spawns.find(b=>a.container===b.container&&a.module===b.module)?.count||0)>=a.count),'Increasing probability preserves lower-threshold successes');
   assert.throws(()=>M.validate({...s,visible:{Firing:'false'}},D));
   const legacy={...s};delete legacy.visible;delete legacy.overlay;
@@ -62,7 +62,7 @@ async function run(){
   assert(a.presence.every(v=>v>=0&&v<=1));
   const zero=M.evaluate(D,p,{...s,global:0});assert.equal(zero.mean,0);assert.equal(zero.hi,0);assert.equal(zero.zero,1);
   const noRetention=M.evaluate(D,p,{...s,retention:0});assert.equal(noRetention.mean,0);
-  const double=M.evaluate(D,p,{...s,global:2});assert(Math.abs(double.mean-2*a.mean)<1e-8);
+  const double=M.evaluate(D,p,{...s,global:s.global*2});assert(Math.abs(double.mean-2*a.mean)<1e-8);
   const half=M.evaluate(D,p,{...s,retention:.5});assert(Math.abs(half.mean-.5*a.mean)<1e-8);
   const all=M.evaluate(D,p,{...s,selected:'all'});assert(Math.abs(all.mean-all.itemMeans.reduce((n,v)=>n+v,0))<1e-8);
   const report={status:'passed',scope:'Numerical model, seeded per-container spawning and extracted-data integrity; no in-game spawn certification',generatedItems:generated.totals.reduce((a,b)=>a+b,0),elapsedMs:Date.now()-start,candidates:D.containers.length,worldSamples:p.samples,baseline:s,selectedEstimate:{mean:a.mean,lo:a.lo,hi:a.hi},allComponentsMean:all.mean,pools:a.poolMeans,regions:a.regions};

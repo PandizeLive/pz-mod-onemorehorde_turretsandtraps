@@ -14,7 +14,7 @@
     "settings-sync.js",
     "app.js"
   ],
-  "sourceHashes": 6,
+  "sourceHashes": 7,
   "browserVisualReview": "not performed",
-  "gameplayInstalled": "0.2.23 approval; installation evidence in docs/RELEASE.md"
+  "gameplayInstalled": "0.2.24 approval; installation evidence in docs/RELEASE.md"
 }

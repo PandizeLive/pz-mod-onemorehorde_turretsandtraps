@@ -12,7 +12,7 @@ This is a personal, offline balancing tool for **new-world estimates**. It does 
 4. Toggle individual components, or Show all / Hide all. Visibility never rerolls loot or changes rates. Select a town, zoom and hover dots for coordinates, floor, chances and generated quantities.
 5. Compare countywide and nearest-town estimates. Save/load scenario JSON to compare settings; export the Sandbox excerpt when satisfied. Apply settings yourself only after reviewing the excerpt.
 
-The baseline is **T&T 0.2.23** and **Project Zomboid 42.21.0**, including Critical/Accuracy and the reduced Suppression loot weight. The owner approved this gameplay patch and site update together. Gameplay installation is tracked separately in `docs/RELEASE.md`.
+The baseline is **T&T 0.2.24** and **Project Zomboid 42.21.0**, including Critical/Accuracy and the reduced Suppression loot weight. The owner approved this gameplay patch and site update together. Gameplay installation is tracked separately in `docs/RELEASE.md`.
 
 ## What the numbers mean
 
@@ -59,7 +59,7 @@ Pinch to zoom, drag with one finger, or use the 44px on-map zoom controls. Tap a
 
 ## Saved settings
 
-The hosted admin LootLab autosaves rates, seed, component visibility, estimate selection and overlay to the signed-in admin account. PC and phone must use the same login. Set to Default restores the T&T 0.2.23 scenario baseline (including Material 0.60, rolls 1 and retention 100%) and saves that reset. Map pan/zoom and town jumps are navigation, not saved tuning settings.
+The hosted admin LootLab autosaves rates, seed, component visibility, estimate selection and overlay to the signed-in admin account. PC and phone must use the same login. Set to Default restores the T&T 0.2.24 scenario baseline (including Material 0.60, rolls 1 and retention 100%) and saves that reset. Map pan/zoom and town jumps are navigation, not saved tuning settings.
 
 The account endpoint uses the existing admin host/Access/allowlist gate and a separate D1 table. Writes use revision checks; clients merge only locally changed fields after a conflict. Explicit reset/import replace the whole scenario. Saves debounce for 450 ms and refresh when the page regains focus or every 15 seconds while visible. A browser-local pending draft survives connection failures and reloads; the status distinguishes unsynced changes from successful saves. A failed initial read never uploads defaults. Local file copies use browser storage only.
 
@@ -77,3 +77,7 @@ The native pools have their own roll counts and room quotas. Both generated spaw
 ## Save feedback correction, 2026-10-02
 
 The sticky status bar distinguishes the hosted account-sync page from a browser-only local copy and links local users to the hosted page. Component rates and seeds register valid input while typing; incomplete numbers remain uncommitted and background refresh does not overwrite a focused number field. Model recalculation is briefly debounced after recording the edit. Page close still requests a keepalive flush, with browser drafts as recovery if a save cannot finish. Sync now retries pending edits or fetches the latest account state. Download scenario exports JSON; it is separate from automatic account saving.
+
+## Approved defaults — 0.2.24
+
+The owner approved account scenario revision 84 on 2026-10-02. Overall T&T loot is 6; Firing, Detection, Small/Large Expansion Kits and Autoloader are 3; all other component multipliers are 2. Global and component values multiply. Material 0.60, rolls 1 and retention 1 remain estimate inputs; the mod does not override vanilla Material loot or roll counts. Scenario seed/visibility are not gameplay settings. Existing account tuning and saved game Sandbox values are preserved. New-world Sandbox defaults, missing-value runtime fallbacks and LootLab Set to Default agree.

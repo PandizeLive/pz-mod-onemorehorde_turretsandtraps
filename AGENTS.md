@@ -80,3 +80,5 @@ Read README.md, docs/DECISIONS.md, and docs/ROADMAP.md before project changes. T
 - [2026-10-01] C73 approves 0.2.22: turning visibility, selected potato/native firearm reload cues, and lootable Suppression with uncapped slot-limited stacking, separate AI hearing tuning and balanced preprocessed shots. Owner approval includes the processed native audio library, superseding C60 for these assets only. No Java/runtime DSP dependency, universal gun support, recipes or external publication. See docs/PATCH_v0.2.22.md.
 
 - [2026-10-02] C74 approves resuming the held v0.2.23 controls/combat patch with native firearm critical chance and damage, themed loot subsets, account-preserving LootLab migration and admin-site deployment. Local gameplay install is authorized; Steam/GitHub publication is not. See docs/PATCH_v0.2.23.md.
+
+- [2026-10-02] C75 approves hosted LootLab revision 84 as new-world defaults in 0.2.24: global 6, selected components 3 and others 2. Preserve saved Sandbox/account values and generated loot; keep runtime fallback, Sandbox and site defaults aligned. See docs/PATCH_v0.2.24.md.

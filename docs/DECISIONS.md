@@ -337,3 +337,7 @@ Owner accepts matching the unfiltered overlay's perceptual balance to JS-14 rath
 ## C74: resume the held controls/combat patch and expand themed loot
 
 On 2026-10-02 the owner approved the site update together with the held gameplay patch. Retain native firearm critical chance and damage; implement the reviewed Power control, stackable Critical/Accuracy, diminishing uncapped Suppression and random/max-toughness target locks. The accepted defaults and native findings are recorded in PATCH_v0.2.23.md. Add ElectricianTools, GunStoreAccessories and ToolCabinetMechanics with component subsets while retaining the original four full pools. Publish the updated admin LootLab and preserve cross-device settings. Local gameplay install is authorized; GitHub push and Workshop publication are not. Continue with one combined player test and the existing SP boundary.
+
+## C75: adopt the current hosted LootLab tuning
+
+On 2026-10-02 the owner approved applying the current website settings. Read-only production evidence identified revision 84: global 6; Firing, Detection, Small/Large Expansion Kits and Autoloader 3; all other components 2. Apply these as new-world defaults and LootLab reset defaults; preserve existing game saves, generated loot and account scenarios. Scope and evidence: PATCH_v0.2.24.md. Local install and matching admin-site update are authorized; no Steam publication or GitHub push.

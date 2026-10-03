@@ -7,7 +7,7 @@ local L = require("OMHTT/LootDefinitions")
 
 ---@return nil
 function L.apply()
-    local multiplier = M.option("ModuleLootMultiplier", 1, 0, 20)
+    local multiplier = M.option("ModuleLootMultiplier", L.DEFAULTS.global, 0, 20)
     if isServer() or SandboxVars.OMHTurretsTraps.Enabled == false or SandboxVars.OMHTurretsTraps.PotatoTurret == false then
         multiplier = 0
     end
@@ -24,7 +24,7 @@ function L.apply()
                 end
             end
             for module, weight in pairs(L.WEIGHTS) do
-                local effective = weight * multiplier * M.option("Loot" .. module, 1, 0, 20)
+                local effective = weight * multiplier * M.option("Loot" .. module, L.DEFAULTS.items[module], 0, 20)
                 local subset = L.SUBSETS[name]
                 if effective > 0 and (not subset or subset[module]) then
                     items[#items + 1] = T.TYPES[module]

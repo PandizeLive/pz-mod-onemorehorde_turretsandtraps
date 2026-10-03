@@ -9,9 +9,9 @@ game=Path('C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid')
 package=root/'Contents/mods/OneMoreHorde_TurretsAndTraps/42.20/media'
 sources=[game/'media/maps/Muldraugh, KY/worldmap.xml',game/'media/maps/Muldraugh, KY/worldmap-annotations.lua',
     package/'lua/shared/OMHTT/LootDefinitions.lua',root/'diagnostics/loot-site/cache/Lua/loot-routes.json',
-    root/'diagnostics/loot-site/cache/Lua/loot-tile-properties.txt',root/'diagnostics/loot-current-bytecode.txt']
+    root/'diagnostics/loot-site/cache/Lua/loot-tile-properties.txt',root/'diagnostics/loot-current-bytecode.txt',package/'sandbox-options.txt']
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
-provenance={'gameVersion':'42.21.0','modBaseline':'T&T 0.2.23','scope':'New-world SP estimates matching T&T 0.2.23',
+provenance={'gameVersion':'42.21.0','modBaseline':'T&T 0.2.24','scope':'New-world SP estimates matching T&T 0.2.24',
     'sources':[{'path':str(p),'sha256':sha(p),'bytes':p.stat().st_size} for p in sources],
     'dataset':{'sha256':sha(site/'data.js'),'bytes':(site/'data.js').stat().st_size},
     'extraction':json.loads((root/'diagnostics/loot-site/extraction.json').read_text())}
@@ -35,7 +35,7 @@ for link in p.links:
 app=(site/'app.js').read_text(encoding='utf-8')
 for id in re.findall(r"\$\('([^']+)'\)",app):assert id in p.ids,f'Missing DOM element: {id}'
 assert 'fetch(' not in app and 'XMLHttpRequest' not in app
-assert '0.2.23' in (site/'README.md').read_text(encoding='utf-8')
-report={'status':'passed','htmlIds':len(p.ids),'localDependencies':p.links,'sourceHashes':len(sources),'browserVisualReview':'not performed','gameplayInstalled':'0.2.23 approval; installation evidence in docs/RELEASE.md'}
+assert '0.2.24' in (site/'README.md').read_text(encoding='utf-8')
+report={'status':'passed','htmlIds':len(p.ids),'localDependencies':p.links,'sourceHashes':len(sources),'browserVisualReview':'not performed','gameplayInstalled':'0.2.24 approval; installation evidence in docs/RELEASE.md'}
 (root/'diagnostics/loot-site/site-checks.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
 print(json.dumps(report))

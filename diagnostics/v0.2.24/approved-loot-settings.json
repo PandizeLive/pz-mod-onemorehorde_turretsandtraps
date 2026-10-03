@@ -1,0 +1,5 @@
+{
+  "revision": 84,
+  "updated_at": "2026-10-03 01:03:38",
+  "scenario_json": "{\"version\":1,\"baseline\":\"T&T 0.2.23\",\"seed\":4204468876,\"global\":6,\"material\":0.6,\"rolls\":1,\"retention\":1,\"selected\":\"all\",\"overlay\":\"spawns\",\"items\":{\"Firing\":3,\"MotionDetection\":3,\"Filter\":2,\"Detection360\":2,\"Suppression\":2,\"RapidFire\":2,\"Reload\":2,\"Velocity\":2,\"Range\":2,\"CapacitySmall\":3,\"Capacity\":2,\"CapacityLarge\":3,\"Autoloader\":3,\"Critical\":2,\"Accuracy\":2},\"visible\":{\"Firing\":true,\"MotionDetection\":true,\"Filter\":true,\"Detection360\":true,\"Suppression\":true,\"RapidFire\":true,\"Reload\":true,\"Velocity\":true,\"Range\":true,\"CapacitySmall\":true,\"Capacity\":true,\"CapacityLarge\":true,\"Autoloader\":true,\"Critical\":true,\"Accuracy\":true}}"
+}

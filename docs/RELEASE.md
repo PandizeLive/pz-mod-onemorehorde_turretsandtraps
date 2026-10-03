@@ -1,6 +1,10 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.23
+## Current candidate: 0.2.24
+
+[C75 approved loot defaults](PATCH_v0.2.24.md) applies hosted scenario revision 84 while preserving existing saved settings. Validation passes 3,035 assertions, 52 runtime/translation files, 448 native keys and 148 package files. Native stock 42.21.0 write/read probes pass, including actual Sandbox defaults and all 75 loot entries. Model checks and all 71 website tests pass; build and dry run pass. Installation and production deployment are pending at this source snapshot. Carry the held 0.2.23 player test forward; no new combat acceptance is claimed.
+
+## Previous local installation: 0.2.23
 
 C74 resumes the held controls/combat patch with the approved native critical policy and expanded themed loot. [Scope and six-step combined test](PATCH_v0.2.23.md). Validation: 3,020 assertions, 52 runtime/translation files, 448 native JSON translation keys and 148 packaged files. Native stock 42.21.0 write/read probes pass; the final read also asserts real M9/JS-2000/MSR788 range, cooldown and critical values. All seven loot pools parse, with 75 component entries. Exact inventory/ammo, native world collision and persistence probes remain green. No connected client: rendering, sound playback and frame smoothness remain owner acceptance.
 
