@@ -1,0 +1,19 @@
+[codex/phase2-checkpoint1-v0.2.0 1532611] Apply approved LootLab defaults for v0.2.24
+ 40 files changed, 10175 insertions(+), 1038 deletions(-)
+ create mode 100644 diagnostics/v0.2.24/approved-loot-settings.json
+ create mode 100644 diagnostics/v0.2.24/base-depth.log
+ create mode 100644 diagnostics/v0.2.24/base-depth.png
+ create mode 100644 diagnostics/v0.2.24/check.log
+ create mode 100644 diagnostics/v0.2.24/manifest.json
+ create mode 100644 diagnostics/v0.2.24/model-import.log
+ create mode 100644 diagnostics/v0.2.24/model-tests.log
+ create mode 100644 diagnostics/v0.2.24/server-read-console.log
+ create mode 100644 diagnostics/v0.2.24/server-read.log
+ create mode 100644 diagnostics/v0.2.24/server-write-console.log
+ create mode 100644 diagnostics/v0.2.24/server-write.log
+ create mode 100644 diagnostics/v0.2.24/smoke-read-summary.log
+ create mode 100644 diagnostics/v0.2.24/smoke-write-summary.log
+ create mode 100644 diagnostics/v0.2.24/validation.log
+ create mode 100644 docs/PATCH_v0.2.24.md
+ create mode 100644 docs/PR_v0.2.24.md
+ create mode 100644 tools/loot_site/sync_defaults.py

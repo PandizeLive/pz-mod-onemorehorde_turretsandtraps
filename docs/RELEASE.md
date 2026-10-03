@@ -1,8 +1,8 @@
 # Release state and publication policy
 
-## Current candidate: 0.2.24
+## Current local installation: 0.2.24
 
-[C75 approved loot defaults](PATCH_v0.2.24.md) applies hosted scenario revision 84 while preserving existing saved settings. Validation passes 3,035 assertions, 52 runtime/translation files, 448 native keys and 148 package files. Native stock 42.21.0 write/read probes pass, including actual Sandbox defaults and all 75 loot entries. Model checks and all 71 website tests pass; build and dry run pass. Installation and production deployment are pending at this source snapshot. Carry the held 0.2.23 player test forward; no new combat acceptance is claimed.
+[C75 approved loot defaults](PATCH_v0.2.24.md) applies hosted scenario revision 84 while preserving existing saved settings. Validation passes 3,035 assertions, 52 runtime/translation files, 448 native keys and 148 package files. Native stock 42.21.0 write/read probes pass, including actual Sandbox defaults and all 75 loot entries. Model checks and all 71 website tests pass; build and dry run pass. Installed from annotated `test/v0.2.24` (`1532611`). [Evidence](../diagnostics/v0.2.24/local-release.json) verifies all 148 source/tag/installed/archive files and all 148 previous-version backup files. [Archive](../artifacts/OMHTT-0.2.24.zip). LootLab deployed as Worker `c183aaeb-3dd0-4eb2-88bf-bdd30059b7f7`; live bundle matches the tested build, twelve admin routes retain Access protection, and both public endpoint checks pass. Existing account tuning is preserved without a production settings write. [Website release record](../../OMH%20Website/RELEASE_LOOTLAB_2026-10-01.md). No Steam publication or GitHub push. Carry the held 0.2.23 player test forward; no new combat acceptance is claimed.
 
 ## Previous local installation: 0.2.23
 

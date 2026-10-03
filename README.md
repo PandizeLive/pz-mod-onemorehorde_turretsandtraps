@@ -1,6 +1,6 @@
 # OMH: Turrets & Traps
 
-Project foundation created 2026-09-25. **Candidate 0.2.24:** [approved loot defaults](docs/PATCH_v0.2.24.md), carrying the 0.2.23 controls/combat patch. Persistent Power, native firearm cadence/criticals, Critical/Accuracy modules, diminishing Suppression, sticky targeting and expanded themed loot. [LootLab](https://admin.onemorehorde.com/admin/LootLab/) shares its definitions and preserves account tuning. Exact [installation evidence](docs/RELEASE.md) is separate from player acceptance. No Workshop release exists.
+Project foundation created 2026-09-25. **Installed 0.2.24:** [approved loot defaults](docs/PATCH_v0.2.24.md), carrying the 0.2.23 controls/combat patch. Persistent Power, native firearm cadence/criticals, Critical/Accuracy modules, diminishing Suppression, sticky targeting and expanded themed loot. [LootLab](https://admin.onemorehorde.com/admin/LootLab/) shares its definitions and preserves account tuning. Exact [installation evidence](docs/RELEASE.md) is separate from player acceptance. No Workshop release exists.
 
 One edition with a Sandbox toggle menu. The planned mod adds maintainable defensive equipment to Project Zomboid Build 42, with optional Horde Night, Trait Shop, and Cure Defense integrations. Recheck the installed game build before implementing any engine-dependent behavior.
 
