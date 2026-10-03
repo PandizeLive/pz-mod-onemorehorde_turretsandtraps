@@ -13,6 +13,7 @@ getPlayerScreenWidth = function() return 1280 end
 getPlayerScreenHeight = function() return 720 end
 getWorld = function() return {getFreeEmitter = function(_, x,y,z)
     return {playSound = function(_, name) sounds[#sounds+1] = {name=name,x=x,y=y,z=z}; return #sounds end,
+        setVolume = function(_,handle,gain) sounds[handle].gain=gain end,
         setPitch = function(_, handle,pitch) check(pitch >= 0.95 and pitch <= 1.05, "Pitch stays within approved range"); sounds[handle].pitch=pitch end}
 end} end
 ISUIElement = {new = function()
@@ -36,6 +37,7 @@ local launch={id="flight",shot=1,x=100,y=100,z=0,fromX=98,fromY=100,start=testMi
 E.receive(F.MODULE,"Launch",launch); E.receive(F.MODULE,"Launch",launch)
 E.render()
 check(draws==1 and last.w>=4 and last.r==0.55 and last.g==0.32 and last.b==0.13, "Projectile is a visible brown primitive")
+check(sounds[1].gain==.35, "Potato playback uses its independent default gain")
 check(#sounds==1 and sounds[1].name=="OMHTTPotatoFire" and math.abs(sounds[1].x-98.4224)<0.000001, "Launch sound plays once at muzzle")
 check(math.abs(E.effects[1].fromX - 98.4224)<0.000001 and E.effects[1].fromY==100,
     "Projectile starts at scaled barrel tip rather than head pivot")

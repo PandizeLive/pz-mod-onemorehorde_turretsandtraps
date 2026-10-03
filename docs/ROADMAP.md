@@ -1,8 +1,8 @@
 # Phases and checkpoints
 
-**Installed: [0.2.24 approved loot defaults](PATCH_v0.2.24.md).** C75 adopts hosted revision 84 as new defaults while preserving saved tuning. C74 lifts the prior gameplay hold and combines the patch with the expanded LootLab. Installation and native evidence: RELEASE.md. One combined test carries unfinished visual/audio/firearm acceptance forward.
+**Current: [0.2.25 broader loot and turret servicing](PATCH_v0.2.25.md).** C76 approves ordinary one/two-component finds with uncommon jackpots, matching LootLab markers, base Repair, Power feedback, quieter potatoes and native-data conventional firearm support. Installation and native evidence: RELEASE.md. One combined test carries unfinished visual/audio/firearm acceptance forward.
 
-**Next: P2C3e authority/performance hardening** before broader firearm adapters. Keep the shared aggregate-budget/clock audit and multiplayer authority gate from ARCHITECTURE.md. The complete trap roster remains planned below; this update does not displace it.
+**Next: P2C3e authority/performance hardening.** C76 brings conventional firearm admission forward; all twenty native real guns pass mechanism probes, while custom weapon code is not universally supported. Keep the shared aggregate-budget/clock audit and multiplayer authority gate from ARCHITECTURE.md. The complete trap roster remains planned below; this update does not displace it.
 
 **Previous: [0.2.19.1 correction](PATCH_v0.2.19.1.md).** C67 fixes exposed compatibility duplicates, starts the potato visual at the barrel tip and removes redundant firing work with bounded diagnostic output. Owner reports the rest of 0.2.19 worked well. Install status: RELEASE.md.
 
@@ -12,7 +12,7 @@
 
 **Previous: [P2C3d2 active stat modules, 0.2.17](PHASE_2_CHECKPOINT_3D2.md).** C63 approves implementation and Reload stacking. Rapid-Fire, Reload, Velocity and Range stack; Capacity has one dedicated socket; Autoloader removes reload delay. Shared effective stats, safe storage, grouped tuning and loot are implemented. Verification/install status is in RELEASE.md. Carry the entire held 0.2.16.1 test into the eight-step combined owner test; no rendered acceptance is implied.
 
-**Next acceptance gate: [0.2.21 combined repair test](PATCH_v0.2.21.md).** Carry unfinished P5C1a checks forward. P2C3e multiplayer/performance remains required before enabling MP; include the shared aggregate-budget and clock audit in ARCHITECTURE.md. Broad firearm compatibility, recipes and planned trap roster remain later work.
+**Next acceptance gate: [0.2.25 combined test](PATCH_v0.2.25.md#quick-combined-test).** Carry unfinished P5C1a rendered checks forward. P2C3e multiplayer/performance remains required before enabling MP; include the shared aggregate-budget and clock audit in ARCHITECTURE.md. Custom weapon mechanisms, additional recipes and planned trap roster remain later work.
 
 **Current: [P2C3a-c — modular potato turret foundation, 0.2.9](PHASE_2_CHECKPOINT_3.md).** C48-C50 approve inventory/persistence, revised metal recipes, native deployment and powered manual firing. Combine player acceptance with the held P2C2b test. Module storage is implemented; P2C3d adds module effects and P2C3e proves multiplayer/performance. Version 0.2.9 is installed and archived, with exact tagged hashes and a verified 0.2.8 backup recorded in RELEASE.md. Native furniture Install/Pickup stays deferred.
 

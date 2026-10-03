@@ -89,12 +89,14 @@
         data.modules.forEach((m,module)=>{
           const random=rng(keyedSeed(scenario.seed,`${c.x},${c.y},${c.z},${c.tile}:${m.id}`));
           const eligible=!data.pools[pool].modules||data.pools[pool].modules.includes(m.id);
-          const count=binomial(rolls(data.pools[pool].rolls,scenario.rolls),eligible?probabilities[module]:0,random);
+          const count=binomial(rolls(data.pools[pool].rolls,scenario.rolls),eligible?probability(m.weight*(data.pools[pool].scale??1),scenario.global,scenario.items[m.id],scenario.material)*scenario.retention:0,random);
           if(count){spawns.push({container:index,module,count});totals[module]+=count;}
         });
       }
     }
-    return {seed:scenario.seed,spawns,totals,poolByContainer};
+    const containerTotals=new Array(data.containers.length).fill(0);
+    for(const spawn of spawns)containerTotals[spawn.container]+=spawn.count;
+    return {seed:scenario.seed,spawns,totals,poolByContainer,containerTotals};
   }
   async function prepare(data, seed, progress=()=>{}, samples=256) {
     const random=rng(seed), groups=new Map(), pools=Object.keys(data.pools);
@@ -119,15 +121,36 @@
     }
     return {hits,worlds,pools,region,samples};
   }
+  function haulDistribution(chances,turns) {
+    let bins=[1,0,0,0,0,0];
+    for(const chance of chances)for(let r=0;r<turns;r++){
+      const next=bins.map(v=>v*(1-chance));next[5]+=bins[5]*chance;
+      for(let n=0;n<5;n++)next[n+1]+=bins[n]*chance;
+      bins=next;
+    }
+    return bins;
+  }
+  function markerRadius(overlay,total,jackpotChance) {
+    return overlay==='spawns'?(total>=5?9:4.5):3+9*Math.sqrt(Math.max(0,Math.min(1,jackpotChance)));
+  }
   function evaluate(data, prepared, scenario) {
     const {pools,hits,worlds,samples}=prepared;
     const turns=pools.map(p=>rolls(data.pools[p].rolls,scenario.rolls));
     const probabilities=data.modules.map(m=>probability(m.weight,scenario.global,scenario.items[m.id],scenario.material)*scenario.retention);
     const selected=data.modules.map((m,i)=>scenario.selected==='all'||m.id===scenario.selected?i:-1).filter(i=>i>=0);
-    const poolProbabilities=data.modules.map((m,i)=>pools.map(p=>!data.pools[p].modules||data.pools[p].modules.includes(m.id)?probabilities[i]:0));
+    const poolProbabilities=data.modules.map((m,i)=>pools.map(p=>!data.pools[p].modules||data.pools[p].modules.includes(m.id)?probability(m.weight*(data.pools[p].scale??1),scenario.global,scenario.items[m.id],scenario.material)*scenario.retention:0));
     const trials=worlds.map(world=>world.map(region=>region.map((count,p)=>count*turns[p])));
     const meanTrials=trials.reduce((n,w)=>n+w.reduce((a,r)=>a+r.reduce((b,v)=>b+v,0),0),0)/samples;
     const itemMeans=poolProbabilities.map(probs=>trials.reduce((n,w)=>n+w.reduce((a,r)=>a+r.reduce((b,v,p)=>b+v*probs[p],0),0),0)/samples);
+    const haulByPool=pools.map((p,pi)=>haulDistribution(poolProbabilities.map(v=>v[pi]),turns[pi]));
+    const hauls=hits.map(h=>{
+      const bins=[1,0,0,0,0,0];
+      for(let p=0;p<pools.length;p++){
+        const share=h[p]/samples;bins[0]-=share*(1-haulByPool[p][0]);
+        for(let n=1;n<6;n++)bins[n]+=share*haulByPool[p][n];
+      }
+      return {presence:1-bins[0],oneOrTwo:bins[1]+bins[2],jackpot:bins[5]};
+    });
     const expectations=hits.map(h=>h.reduce((n,count,p)=>n+count/samples*turns[p]*selected.reduce((a,i)=>a+poolProbabilities[i][p],0),0));
     const presence=hits.map(h=>h.reduce((n,count,p)=>n+count/samples*(1-selected.reduce((none,i)=>none*(1-poolProbabilities[i][p])**turns[p],1)),0));
     const random=rng(scenario.seed^0x69eeb351),draws=[],regional=data.labels.map(()=>[]),regionMeans=data.labels.map(()=>0);
@@ -146,8 +169,8 @@
     });
     const regions=data.labels.map((label,r)=>({name:label[0],mean:regionMeans[r],lo:quantile(regional[r],.05),hi:quantile(regional[r],.95)}));
     const poolMeans=pools.map((name,p)=>({name,containers:worlds.reduce((n,w)=>n+w.reduce((a,r)=>a+r[p],0),0)/samples}));
-    return {itemMeans,expectations,presence,regions,poolMeans,mean:selected.reduce((n,i)=>n+itemMeans[i],0),lo:quantile(draws,.05),hi:quantile(draws,.95),zero,probabilities,poolProbabilities,meanTrials};
+    return {itemMeans,expectations,presence,regions,poolMeans,mean:selected.reduce((n,i)=>n+itemMeans[i],0),lo:quantile(draws,.05),hi:quantile(draws,.95),zero,probabilities,poolProbabilities,meanTrials,hauls,haulByPool};
   }
-  root.LootModel={rng,probability,rolls,choose,binomial,quantile,defaults,validate,prepare,evaluate,regionFor,generate};
+  root.LootModel={rng,probability,rolls,choose,binomial,quantile,defaults,validate,prepare,evaluate,regionFor,generate,haulDistribution,markerRadius};
   if(typeof module!=='undefined')module.exports=root.LootModel;
 })(typeof window!=='undefined'?window:globalThis);

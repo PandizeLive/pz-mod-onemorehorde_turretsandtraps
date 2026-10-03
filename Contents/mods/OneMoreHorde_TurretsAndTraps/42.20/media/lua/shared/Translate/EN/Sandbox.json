@@ -190,5 +190,7 @@
     "Sandbox_OMHTurretsTraps_LootAccuracy": "Accuracy loot",
     "Sandbox_OMHTurretsTraps_LootAccuracy_tooltip": "Multiplies Accuracy module loot weight.",
     "Sandbox_Title_OMHTurretsTraps_Critical": "Critical",
-    "Sandbox_Title_OMHTurretsTraps_Accuracy": "Accuracy"
+    "Sandbox_Title_OMHTurretsTraps_Accuracy": "Accuracy",
+    "Sandbox_OMHTurretsTraps_PotatoPlaybackVolume": "Potato sound volume",
+    "Sandbox_OMHTurretsTraps_PotatoPlaybackVolume_tooltip": "Playback volume, in percent."
 }

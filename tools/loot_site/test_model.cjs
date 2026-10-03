@@ -4,10 +4,10 @@ const site=path.resolve(__dirname,'../../art/loot-tuner');
 global.window={};require(path.join(site,'data.js'));
 const D=window.LOOT_DATA,M=require(path.join(site,'model.js'));
 async function run(){
-  assert.equal(D.containers.length,11713);assert.equal(D.routes.length,45);assert.equal(D.modules.length,15);
+  assert.equal(D.containers.length,18514);assert.equal(D.routes.length,75);assert.equal(D.modules.length,15);
   assert.equal(D.modules.find(m=>m.id==='Suppression').weight,.25);
   assert(D.modules.some(m=>m.id==='Critical')&&D.modules.some(m=>m.id==='Accuracy'));
-  assert.equal(Object.keys(D.pools).length,7);
+  assert.equal(Object.keys(D.pools).length,12);
   assert.equal(M.probability(.5,1,1,.6),.003);
   assert.equal(M.probability(.25,1,1,.6),.0015);
   assert.equal(M.probability(.1,1,.05,.6),.0001);
@@ -27,8 +27,14 @@ async function run(){
   assert(Math.abs(mean-13)<.12,'Binomial mean');
   assert.equal(M.binomial(100,1,random),100);assert.equal(M.binomial(100,0,random),0);
   assert.equal(M.binomial(0,.5,random),0);
+  assert.deepEqual(M.haulDistribution([0],4),[1,0,0,0,0,0]);
+  assert.deepEqual(M.haulDistribution([1],5),[0,0,0,0,0,1]);
+  assert.deepEqual(M.haulDistribution([.5],2),[.25,.5,.25,0,0,0]);
+  assert(M.markerRadius('spawns',5,0)>M.markerRadius('spawns',4,0));
+  assert(M.markerRadius('chances',0,.5)>M.markerRadius('chances',0,.01));
   const s=M.defaults(D);assert.deepEqual(M.validate(s,D),s);assert.equal(s.global,6);assert.equal(s.items.Firing,3);assert.equal(s.items.Filter,2);
   const generated=M.generate(D,s);
+  assert.equal(generated.containerTotals.reduce((a,b)=>a+b,0),generated.totals.reduce((a,b)=>a+b,0));
   assert(generated.spawns.length>0);
   assert.deepEqual(M.generate(D,s),generated,'Same seed and settings reproduce exact containers/items');
   assert.deepEqual(M.generate(D,{...s,visible:Object.fromEntries(D.modules.map(m=>[m.id,false]))}),generated,'Hiding components must never change rolls');
@@ -62,10 +68,13 @@ async function run(){
   assert(a.presence.every(v=>v>=0&&v<=1));
   const zero=M.evaluate(D,p,{...s,global:0});assert.equal(zero.mean,0);assert.equal(zero.hi,0);assert.equal(zero.zero,1);
   const noRetention=M.evaluate(D,p,{...s,retention:0});assert.equal(noRetention.mean,0);
-  const double=M.evaluate(D,p,{...s,global:s.global*2});assert(Math.abs(double.mean-2*a.mean)<1e-8);
+  const double=M.evaluate(D,p,{...s,global:s.global*2});assert(double.mean>a.mean);assert(Math.abs(double.mean-2*a.mean)<=a.meanTrials*D.modules.length*.0001,"Integer probability rounding bounds nonlinearity");
   const half=M.evaluate(D,p,{...s,retention:.5});assert(Math.abs(half.mean-.5*a.mean)<1e-8);
   const all=M.evaluate(D,p,{...s,selected:'all'});assert(Math.abs(all.mean-all.itemMeans.reduce((n,v)=>n+v,0))<1e-8);
-  const report={status:'passed',scope:'Numerical model, seeded per-container spawning and extracted-data integrity; no in-game spawn certification',generatedItems:generated.totals.reduce((a,b)=>a+b,0),elapsedMs:Date.now()-start,candidates:D.containers.length,worldSamples:p.samples,baseline:s,selectedEstimate:{mean:a.mean,lo:a.lo,hi:a.hi},allComponentsMean:all.mean,pools:a.poolMeans,regions:a.regions};
+  const finds=a.hauls.reduce((n,h)=>n+h.presence,0);
+  const smallShare=a.hauls.reduce((n,h)=>n+h.oneOrTwo,0)/finds,jackpotShare=a.hauls.reduce((n,h)=>n+h.jackpot,0)/finds;
+  assert(smallShare>.7&&jackpotShare>.01&&jackpotShare<.1,'Ordinary finds dominate while jackpots remain uncommon');
+  const report={haul:{expectedSuccessfulContainers:finds,oneOrTwoShare:smallShare,jackpotShare},status:'passed',scope:'Numerical model, seeded per-container spawning and extracted-data integrity; no in-game spawn certification',generatedItems:generated.totals.reduce((a,b)=>a+b,0),elapsedMs:Date.now()-start,candidates:D.containers.length,worldSamples:p.samples,baseline:s,selectedEstimate:{mean:a.mean,lo:a.lo,hi:a.hi},allComponentsMean:all.mean,pools:a.poolMeans,regions:a.regions};
   fs.writeFileSync(path.resolve(__dirname,'../../diagnostics/loot-site/model-checks.json'),JSON.stringify(report,null,2));
   console.log(JSON.stringify(report,null,2));
 }

@@ -11,6 +11,7 @@ T.HEAD_VISUAL = {height = 0.4 - 16 / 192, scale = 0.512, muzzle = 0.55}
 T.CONTAINER = "OMHTTTurret"
 T.MODULES = {Firing = true, MotionDetection = true, Filter = true, RapidFire = true, Velocity = true,
     Range = true, Critical = true, Accuracy = true, Suppression = true, Capacity = true, CapacitySmall = true, CapacityLarge = true, Detection360 = true, Reload = true, Autoloader = true}
+T.SINGLE = {Firing = true, MotionDetection = true, Filter = true, Detection360 = true, Autoloader = true}
 T.TYPES = {}
 T.COMPONENTS = {}
 local itemTypes = {CapacitySmall = "OMHTTExpansionKitSmall", Capacity = "OMHTTExpansionKitMedium",
@@ -109,7 +110,7 @@ end
 ---@return table summary Actual inventory contents
 ---@nodiscard
 function T.contents(container)
-    local result = {reserve = 0, reserveAll = 0, rounds = {}, ammo = 0, modules = 0, capacities = 0, heads = 0, batteries = 0, invalid = 0, moduleNames = {}, active = {}, weight = 0}
+    local result = {reserve = 0, reserveAll = 0, rounds = {}, ammo = 0, modules = 0, capacities = 0, heads = 0, batteries = 0, invalid = 0, moduleNames = {}, active = {}, moduleCounts = {}, weight = 0}
     local items = container:getItems()
     for i = 0, items:size() - 1 do
         local item = items:get(i)
@@ -130,6 +131,8 @@ function T.contents(container)
             else
                 result.modules = result.modules + 1
             end
+            local component = T.component(item:getFullType())
+            result.moduleCounts[component] = (result.moduleCounts[component] or 0) + 1
             result.moduleNames[#result.moduleNames + 1] = item:getDisplayName()
             if item:getCondition() > 0 then
                 local name = T.component(item:getFullType())
@@ -189,6 +192,8 @@ function T.accept(container, item)
         if G.profile(contents.head) then ammoType = G.ammoType(contents.head) end
         return contents.heads == 1 and item:getFullType() == ammoType and contents.reserveAll + (G.profile(contents.head) and G.loaded(contents.head) or 0) < stats.ammo
     end
+    local component = T.component(item:getFullType())
+    if T.SINGLE[component] and contents.moduleCounts[component] then return false end
     return contents.modules < stats.modules
 end
 

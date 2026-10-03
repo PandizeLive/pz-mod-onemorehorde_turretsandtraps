@@ -57,6 +57,10 @@ function update(){
     const poolChances=prepared.pools.map((p,pi)=>1-(1-result.poolProbabilities[module][pi])**M.rolls(D.pools[p].rolls,scenario.rolls));
     return Float64Array.from(prepared.hits,hits=>hits.reduce((n,count,p)=>n+count/prepared.samples*poolChances[p],0));
   });
+  const positive=result.hauls.reduce((n,h)=>n+h.presence,0),oneTwo=result.hauls.reduce((n,h)=>n+h.oneOrTwo,0),jackpots=result.hauls.reduce((n,h)=>n+h.jackpot,0);
+  $('findChance').textContent=(100*positive/D.containers.length).toFixed(1)+'%';
+  $('smallHaul').textContent=positive?(100*oneTwo/positive).toFixed(1)+'%':'—';
+  $('jackpotChance').textContent=positive?(100*jackpots/positive).toFixed(1)+'%':'—';
   $('mean').textContent=number(result.mean);$('range').textContent=`${number(result.lo)}–${number(result.hi)}`;
   $('zero').textContent=result.zero===0?'0%':result.zero<.0001?'<0.01%':(100*result.zero).toFixed(2)+'%';
   D.modules.forEach((m,i)=>{
@@ -121,7 +125,7 @@ window.addEventListener('blur',()=>gestures.reset());
 function showTooltip(mx,my,radius){
   if(!result || !prepared || view.scale<.4){$('tooltip').hidden=true;return;}
   let nearest=null,dist=radius*radius;
-  for(const marker of markers){const d=(marker.x-mx)**2+(marker.y-my)**2;if(d<dist){dist=d;nearest=marker;}}
+  for(const marker of markers){const d=(marker.x-mx)**2+(marker.y-my)**2;if(d<Math.max(dist,(marker.radius||0)**2)&&(!nearest||d<dist)){dist=d;nearest=marker;}}
   if(!nearest){$('tooltip').hidden=true;return;}
   const index=nearest.container,c=D.containers[index],r=D.routes[c.route];
   const lines=D.modules.flatMap((m,i)=>{
@@ -130,7 +134,7 @@ function showTooltip(mx,my,radius){
     const chance=containerChance(index,i);
     return chance>0||count>0?[`${m.name}: ${count} generated · ${(chance*100).toFixed(2)}% chance`]:[];
   });
-  $('tooltip').textContent=`${pretty(r.room)} · ${c.type}\nTile ${c.x}, ${c.y} · floor ${c.z}\n${lines.join('\n')}\nSample pool: ${sample.poolByContainer[index]||'No component pool'}\nSimulated outcome, not a guaranteed drop.`;
+  $('tooltip').textContent=`${pretty(r.room)} · ${c.type}\n${sample.containerTotals[index]>=5?"JACKPOT · ":""}${sample.containerTotals[index]} total components generated\nAny component: ${(result.hauls[index].presence*100).toFixed(2)}% · 5+ haul: ${(result.hauls[index].jackpot*100).toFixed(2)}%\nTile ${c.x}, ${c.y} · floor ${c.z}\n${lines.join('\n')}\nSample pool: ${sample.poolByContainer[index]||'No component pool'}\nSimulated outcome, not a guaranteed drop.`;
   $('tooltip').hidden=false;$('tooltip').style.left=Math.max(5,Math.min(width-$('tooltip').offsetWidth-8,mx+15))+'px';$('tooltip').style.top=Math.max(5,Math.min(height-$('tooltip').offsetHeight-8,my+15))+'px';
 }
 function containerChance(index,module){return chanceCache[module]?.[index]||0;}
@@ -154,18 +158,18 @@ function draw(){
         // Small screen-space separation makes co-located components visible without inventing tiles.
         const angle=module/D.modules.length*Math.PI*2;x+=Math.cos(angle)*6;y+=Math.sin(angle)*6;
         ctx.globalAlpha=scenario.overlay==='spawns'?.95:Math.min(.85,.16+Math.sqrt(value)*.7);ctx.fillStyle=colors[module];
-        ctx.beginPath();ctx.arc(x,y,scenario.overlay==='spawns'?4.5:3,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
-        markers.push({x,y,container:index,module});
+        ctx.beginPath();ctx.arc(x,y,M.markerRadius(scenario.overlay,sample.containerTotals[index],result.hauls[index].jackpot),0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+        markers.push({x,y,container:index,module,radius:M.markerRadius(scenario.overlay,sample.containerTotals[index],result.hauls[index].jackpot)});
       }else{
         const key=Math.floor(x/18)+','+Math.floor(y/18)+','+module;
-        const bin=bins.get(key)||{x:0,y:0,n:0,value:0,module};bin.x+=x;bin.y+=y;bin.n++;bin.value+=scenario.overlay==='spawns'?count:value;bins.set(key,bin);
+        const bin=bins.get(key)||{x:0,y:0,n:0,value:0,module};bin.x+=x;bin.y+=y;bin.n++;bin.jackpot=bin.jackpot||sample.containerTotals[index]>=5;bin.value+=scenario.overlay==='spawns'?count:value;bins.set(key,bin);
       }
     };
     if(scenario.overlay==='spawns')for(const spawn of sample.spawns)dot(spawn.container,spawn.module,1,spawn.count);
     else D.containers.forEach((c,index)=>{if(c.x<left||c.x>right||c.y<top||c.y>bottom)return;for(let i=0;i<D.modules.length;i++){if(!scenario.visible[D.modules[i].id])continue;const chance=containerChance(index,i);if(chance>0)dot(index,i,chance,0);}});
     for(const b of bins.values()){
       const angle=b.module/D.modules.length*Math.PI*2;
-      ctx.globalAlpha=scenario.overlay==='spawns'?.85:.45;ctx.fillStyle=colors[b.module];ctx.beginPath();ctx.arc(b.x/b.n+Math.cos(angle)*5,b.y/b.n+Math.sin(angle)*5,Math.min(9,2+Math.sqrt(b.value)*1.5),0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+      ctx.globalAlpha=scenario.overlay==='spawns'?.85:.45;ctx.fillStyle=colors[b.module];ctx.beginPath();ctx.arc(b.x/b.n+Math.cos(angle)*5,b.y/b.n+Math.sin(angle)*5,Math.min(b.jackpot&&scenario.overlay==='spawns'?13:9,2+Math.sqrt(b.value)*1.5+(b.jackpot&&scenario.overlay==='spawns'?4:0)),0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
     }
   }
   ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='600 12px system-ui';

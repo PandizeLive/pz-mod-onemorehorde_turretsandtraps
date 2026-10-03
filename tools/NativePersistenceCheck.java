@@ -158,7 +158,7 @@ public final class NativePersistenceCheck {
             check(get(gun, "isRoundChambered").equals(call(expected, "rawget", new Class<?>[]{Object.class}, "chamber")), "Chamber changed");
             check(get(gun, "isContainsClip").equals(call(expected, "rawget", new Class<?>[]{Object.class}, "clip")), "Magazine presence changed");
             total += ((Number)get(gun, "getCurrentAmmoCount")).intValue() + (Boolean.TRUE.equals(get(gun, "isRoundChambered")) ? 1 : 0);
-            check(total == 34, "Firearm ammo duplicated or lost");
+            check(total == ((Number)call(expected, "rawget", new Class<?>[]{Object.class}, "total")).intValue(), "Firearm ammo duplicated or lost");
             Object cycle = call(get(gun, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTGunCycle");
             check(call(cycle, "rawget", new Class<?>[]{Object.class}, "nextShot").equals(call(expected, "rawget", new Class<?>[]{Object.class}, "nextShot")), "Gun cooldown lost");
             if (type.equals("Base.Pistol")) {
@@ -169,7 +169,7 @@ public final class NativePersistenceCheck {
                 check(laser, "Gun attachment lost");
             }
         }
-        System.out.println("[OMHTT-Smoke] native-firearm-persistence mode=" + mode + " guns=3 rounds=34 each identity=exact attachments=preserved");
+        System.out.println("[OMHTT-Smoke] native-firearm-persistence mode=" + mode + " guns=20 rounds=conserved identity=exact attachments=preserved");
     }
 
     private static void verifyTurret(Path directory, String mode) throws Exception {

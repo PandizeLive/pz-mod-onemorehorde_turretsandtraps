@@ -10,8 +10,41 @@ G.AMMO = {["Base.Bullets9mm"] = true, ["Base.ShotgunShells"] = true, ["Base.308B
 ---@return table? profile Supported mechanism
 ---@nodiscard
 function G.profile(head)
-    return head and G.PROFILES[head:getFullType()]
+    if not head then return nil end
+    local fullType = head:getFullType()
+    if G.PROFILES[fullType] then return G.PROFILES[fullType] end
+    if not instanceof(head, "HandWeapon") or not head:isRanged() or not head:getAmmoType()
+        or head:getMaxAmmo() < 1 or head:getAmmoPerShoot() ~= 1 or head:getMaxDamage() <= 0 then return nil end
+    local mechanism = tostring(head:getWeaponReloadType())
+    local reloads = {handgun = 2.7, boltaction = 2.7, shotgun = 0.833, revolver = 0.95,
+        boltactionnomag = 0.590, doublebarrelshotgun = 2.5, doublebarrelshotgunsawn = 2.5, leveraction = 1}
+    local reload = reloads[mechanism]
+    if not reload then return nil end
+    local rack = 1.2
+    if mechanism == "shotgun" then rack = 0.6 end
+    local muzzle = 0.25
+    local modelName = head:getStaticModel()
+    local model = modelName and getScriptManager():getModelScript(modelName)
+    local attachment = model and model:getAttachmentById("muzzle")
+    if attachment then muzzle = math.max(0.02, math.min(1, attachment:getOffset():length())) end
+    local profile = {reload = reload, rack = rack, muzzle = muzzle, yaw = 0, roll = -90, mechanism = mechanism}
+    G.PROFILES[fullType] = profile
+    G.AMMO[head:getAmmoType():getItemKey()] = true
+    return profile
 end
+
+---@return nil
+function G.registerAmmunition()
+    local scripts = getScriptManager():getAllItems()
+    for i = 0, scripts:size() - 1 do
+        local item = scripts:get(i)
+        if item:isRanged() and item:getAmmoType() then
+            G.AMMO[item:getAmmoType():getItemKey()] = true
+        end
+    end
+end
+
+Events.OnGameStart.Add(G.registerAmmunition)
 
 ---@return boolean enabled
 ---@nodiscard
@@ -93,6 +126,7 @@ function G.update(contents, stats, now, operate)
             end
         end
         gun:setCurrentAmmoCount(count)
+        if not gun:haveChamber() then gun:setSpentRoundCount(0) end
         state.reloadReady = nil
         contents.reserve = contents.reserve - count
         state.loaded = G.loaded(gun)
@@ -129,6 +163,7 @@ function G.consume(contents, stats, now)
         end
     else
         gun:setCurrentAmmoCount(gun:getCurrentAmmoCount() - 1)
+        gun:setSpentRoundCount(gun:getSpentRoundCount() + 1)
     end
     cycle.nextShot, cycle.cooldownDuration = now + stats.cooldown, stats.cooldown
     if gun:isRackAfterShoot() then cycle.rackReady = now + stats.rack end

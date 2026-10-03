@@ -190,6 +190,22 @@ function W.onCreate(params)
 end
 
 ---@param player IsoPlayer Operator
+---@param object IsoThumpable Damaged base
+---@param id string Expected identity
+---@return boolean repaired
+function W.repair(player, object, id)
+    if not W.near(player, object) or T.state(object).id ~= id then return false end
+    if object:getHealth() >= object:getMaxHealth() then return false end
+    object:setHealth(object:getMaxHealth())
+    local state = T.state(object)
+    state.condition = object:getHealth()
+    state.revision = state.revision + 1
+    W.refresh(object)
+    D.emit("turret-repaired", {id = id, health = state.condition})
+    return true
+end
+
+---@param player IsoPlayer Operator
 ---@param object IsoThumpable Device
 ---@param id string Expected identity
 ---@return boolean applied
@@ -378,7 +394,7 @@ function W.fire(player, object, target)
         end
         if not stats.firearm then
             local square = object:getSquare()
-            local radius = math.ceil(M.option("PotatoHearingRadius", 12, 0, 200) * stats.hearingMultiplier)
+            local radius = math.ceil(M.option("PotatoHearingRadius", 8, 0, 200) * stats.hearingMultiplier)
             if radius > 0 then addSound(object, square:getX(), square:getY(), square:getZ(), radius, 10) end
             D.defer("turret-hearing", {id = state.id, radius = radius, suppressed = stats.suppressed})
         end

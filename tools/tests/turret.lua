@@ -210,7 +210,17 @@ function instanceItem(kind)
     function base.inventory:setExplored() end
     return base
 end
-function object:getHealth() return 37 end
+record.revision = 1
+object.testHealth = 37
+function object:getHealth() return self.testHealth end
+function object:getMaxHealth() return 100 end
+function object:setHealth(value) self.testHealth = value end
+local savedHeadCondition, savedCharge = head.condition, battery.charge
+check(not W.repair(pickupPlayer, object, "stale"), "Repair rejects wrong identity")
+check(W.repair(pickupPlayer, object, record.id), "Damaged base can be repaired")
+check(object:getHealth() == 100 and head.condition == savedHeadCondition and battery.charge == savedCharge, "Repair changes only base condition")
+check(not W.repair(pickupPlayer, object, record.id), "Full condition repair rejected")
+object.testHealth = 37
 function square:transmitRemoveItemFromSquare(candidate) self.removedTurret = candidate end
 record.maxHealth = 100
 local beforeCount = #other.items

@@ -56,6 +56,21 @@ local function container()
     end
     return value
 end
+local generic = item("ModExample.ServicePistol")
+generic.kind = "HandWeapon"
+function generic:isRanged() return true end
+function generic:getAmmoType() return {getItemKey = function() return "ModExample.Round" end} end
+function generic:getAmmoPerShoot() return 1 end
+function generic:getMaxAmmo() return 8 end
+function generic:getWeaponReloadType() return "handgun" end
+function generic:getStaticModel() return nil end
+check(G.profile(generic) and G.AMMO["ModExample.Round"], "Unlisted conventional modded firearm derives profile and ammunition")
+local multi = item("ModExample.MultiAmmoLauncher")
+multi.kind = "HandWeapon"
+multi.isRanged, multi.getAmmoType, multi.getMaxAmmo = generic.isRanged, generic.getAmmoType, generic.getMaxAmmo
+function multi:getAmmoPerShoot() return 2 end
+check(not G.profile(multi), "Unsupported multiple-round mechanism is rejected instead of losing ammo")
+G.PROFILES[generic.fullType] = nil
 local specimens = {}
 for n = 1, #definitions do
     local definition = definitions[n]

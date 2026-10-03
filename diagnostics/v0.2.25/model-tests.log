@@ -1,0 +1,188 @@
+{
+  "haul": {
+    "expectedSuccessfulContainers": 1836.888445048747,
+    "oneOrTwoShare": 0.7714711308442015,
+    "jackpotShare": 0.05500361825044037
+  },
+  "status": "passed",
+  "scope": "Numerical model, seeded per-container spawning and extracted-data integrity; no in-game spawn certification",
+  "generatedItems": 3406,
+  "elapsedMs": 2949,
+  "candidates": 18514,
+  "worldSamples": 256,
+  "baseline": {
+    "version": 1,
+    "baseline": "T&T 0.2.25",
+    "seed": 24601,
+    "global": 6,
+    "material": 0.6,
+    "rolls": 1,
+    "retention": 1,
+    "selected": "all",
+    "overlay": "spawns",
+    "visible": {
+      "Firing": true,
+      "MotionDetection": true,
+      "Filter": true,
+      "Detection360": true,
+      "Suppression": true,
+      "RapidFire": true,
+      "Reload": true,
+      "Velocity": true,
+      "Range": true,
+      "CapacitySmall": true,
+      "Capacity": true,
+      "CapacityLarge": true,
+      "Autoloader": true,
+      "Critical": true,
+      "Accuracy": true
+    },
+    "items": {
+      "Firing": 3,
+      "MotionDetection": 3,
+      "Filter": 2,
+      "Detection360": 2,
+      "Suppression": 2,
+      "RapidFire": 2,
+      "Reload": 2,
+      "Velocity": 2,
+      "Range": 2,
+      "CapacitySmall": 3,
+      "Capacity": 2,
+      "CapacityLarge": 3,
+      "Autoloader": 3,
+      "Critical": 2,
+      "Accuracy": 2
+    }
+  },
+  "selectedEstimate": {
+    "mean": 3505.227064062499,
+    "lo": 3365,
+    "hi": 3643
+  },
+  "allComponentsMean": 3505.227064062499,
+  "pools": [
+    {
+      "name": "ElectronicStoreMisc",
+      "containers": 53.20703125
+    },
+    {
+      "name": "CrateElectronics",
+      "containers": 432.9765625
+    },
+    {
+      "name": "MechanicShelfElectric",
+      "containers": 45.3671875
+    },
+    {
+      "name": "ArmyStorageElectronics",
+      "containers": 45.0078125
+    },
+    {
+      "name": "ElectricianTools",
+      "containers": 36
+    },
+    {
+      "name": "GunStoreAccessories",
+      "containers": 4.9921875
+    },
+    {
+      "name": "ToolCabinetMechanics",
+      "containers": 211.28125
+    },
+    {
+      "name": "GarageTools",
+      "containers": 458.71484375
+    },
+    {
+      "name": "CrateTools",
+      "containers": 912.9140625
+    },
+    {
+      "name": "ToolStoreTools",
+      "containers": 126.921875
+    },
+    {
+      "name": "ToolStoreMisc",
+      "containers": 171.140625
+    },
+    {
+      "name": "MechanicShelfTools",
+      "containers": 758.625
+    }
+  ],
+  "regions": [
+    {
+      "name": "WestPoint",
+      "mean": 162.27384843750647,
+      "lo": 134,
+      "hi": 190
+    },
+    {
+      "name": "Riverside",
+      "mean": 303.27311093750336,
+      "lo": 262,
+      "hi": 351
+    },
+    {
+      "name": "Muldraugh",
+      "mean": 227.12751875000268,
+      "lo": 192,
+      "hi": 262
+    },
+    {
+      "name": "Brandenburg",
+      "mean": 175.41556406251377,
+      "lo": 141,
+      "hi": 205
+    },
+    {
+      "name": "Ekron",
+      "mean": 208.69195000001008,
+      "lo": 172,
+      "hi": 240
+    },
+    {
+      "name": "Irvington",
+      "mean": 221.07713750000968,
+      "lo": 184,
+      "hi": 255
+    },
+    {
+      "name": "EchoCreek",
+      "mean": 174.40127812502337,
+      "lo": 144,
+      "hi": 207
+    },
+    {
+      "name": "Louisville",
+      "mean": 1380.8894140624222,
+      "lo": 1296,
+      "hi": 1476
+    },
+    {
+      "name": "MarchRidge",
+      "mean": 75.69259218750345,
+      "lo": 54,
+      "hi": 100
+    },
+    {
+      "name": "FallasLake",
+      "mean": 136.4480625000088,
+      "lo": 109,
+      "hi": 162
+    },
+    {
+      "name": "Rosewood",
+      "mean": 211.80708281251097,
+      "lo": 177,
+      "hi": 249
+    },
+    {
+      "name": "ValleyStation",
+      "mean": 228.12950468751637,
+      "lo": 195,
+      "hi": 268
+    }
+  ]
+}

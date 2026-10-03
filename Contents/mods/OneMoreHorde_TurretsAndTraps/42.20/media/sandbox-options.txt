@@ -156,10 +156,20 @@ option OMHTurretsTraps.PotatoHearingRadius {
     type = integer,
     min = 0,
     max = 200,
-    default = 12,
+    default = 8,
     page = OMHTurretsTraps_PotatoPage,
     translation = OMHTurretsTraps_PotatoHearingRadius,
 }
+
+option OMHTurretsTraps.PotatoPlaybackVolume {
+    type = integer,
+    min = 0,
+    max = 100,
+    default = 35,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_PotatoPlaybackVolume,
+}
+
 
 option OMHTurretsTraps.PotatoRange {
     type = integer,

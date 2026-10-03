@@ -1,7 +1,7 @@
 {
   "gameVersion": "42.21.0",
-  "modBaseline": "T&T 0.2.24",
-  "scope": "New-world SP estimates matching T&T 0.2.24",
+  "modBaseline": "T&T 0.2.25",
+  "scope": "New-world SP estimates matching T&T 0.2.25",
   "sources": [
     {
       "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\ProjectZomboid\\media\\maps\\Muldraugh, KY\\worldmap.xml",
@@ -15,13 +15,13 @@
     },
     {
       "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\Contents\\mods\\OneMoreHorde_TurretsAndTraps\\42.20\\media\\lua\\shared\\OMHTT\\LootDefinitions.lua",
-      "sha256": "53d6130afdbdbbbef1143686244166ccdc9f30d3193f96c3615a458a329ee1fe",
-      "bytes": 1133
+      "sha256": "5b491e8b71524d7e66d35a0eb84e9500e24820f03942e0f54a580536ac472016",
+      "bytes": 1954
     },
     {
       "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\loot-site\\cache\\Lua\\loot-routes.json",
-      "sha256": "66c89f9c86bc880bcbc2786ac7916a5783e802b4d1a6efc9ddb57136f6ba799b",
-      "bytes": 109270
+      "sha256": "b0ab0459828c8b5920d5d2a17edb0aab9711aab805ece24121a4c7d98f631476",
+      "bytes": 128661
     },
     {
       "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\loot-site\\cache\\Lua\\loot-tile-properties.txt",
@@ -35,26 +35,28 @@
     },
     {
       "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\Contents\\mods\\OneMoreHorde_TurretsAndTraps\\42.20\\media\\sandbox-options.txt",
-      "sha256": "3e6fcb99986b8ae8d9274ec8e9c1101258062c282ec2d80bbc48680829d58a21",
-      "bytes": 17990
+      "sha256": "5b30f79e8234d10c709984ba62838d60e2fc168299f984b64aeb537d6c9ad668",
+      "bytes": 18210
     }
   ],
   "dataset": {
-    "sha256": "49ea2a99931471d738807fbf5ce534e301473f29a7e5a9f9b278b96eb115cf96",
-    "bytes": 3311407
+    "sha256": "acd08ed8b1556347a9350f8544d5cecd19c98d94f6a436a064bb0df430e0cf7e",
+    "bytes": 4338259
   },
   "extraction": {
     "game": "42.21.0",
-    "baseline": "T&T 0.2.23",
+    "baseline": "T&T 0.2.25",
     "previousBaselines": [
-      "Installed 0.2.22"
+      "Installed 0.2.22",
+      "T&T 0.2.23",
+      "T&T 0.2.24"
     ],
     "headers": 4065,
     "roomRecords": 90827,
-    "routes": 45,
+    "routes": 75,
     "containerSprites": 1243,
-    "chunksScanned": 30189,
-    "eligibleContainers": 11713,
+    "chunksScanned": 32952,
+    "eligibleContainers": 18514,
     "mapFeatures": 13530,
     "genericExclusions": [
       "barbecue",
@@ -100,48 +102,60 @@
       "woodstove"
     ],
     "byRoom": {
+      "garagestorage": 3226,
       "hall": 2347,
+      "farmstorage": 377,
       "closet": 1434,
       "bedroom": 672,
-      "shed": 95,
-      "garagestorage": 366,
+      "shed": 252,
       "armystorage": 85,
       "electronicsstore": 186,
+      "storage": 1020,
       "livingroom": 2390,
-      "garage": 1335,
+      "garage": 1589,
+      "kitchen": 360,
       "attic": 274,
-      "mechanic": 470,
+      "toolstore": 628,
+      "construction": 579,
+      "warehouse": 237,
+      "mechanic": 516,
       "gunstore": 113,
       "storageunit": 1671,
+      "toolstorestorage": 107,
       "electronicstore": 34,
+      "toolstorage": 89,
+      "all": 3,
       "carsupply": 33,
       "pawnshop": 186,
+      "catwalk": 77,
       "office": 1,
       "pawnshopoffice": 8,
-      "pawnshopstorage": 13
+      "pawnshopstorage": 13,
+      "studio": 7
     },
     "byContainer": {
-      "shelves": 1138,
-      "sidetable": 145,
-      "cardboardbox": 2984,
-      "wardrobe": 419,
+      "metal_shelves": 6235,
+      "shelves": 1512,
+      "sidetable": 179,
+      "locker": 319,
+      "cardboardbox": 3232,
+      "wardrobe": 479,
       "overhead": 4,
-      "counter": 444,
-      "smallbox": 652,
-      "toolcabinet": 177,
-      "crate": 1043,
+      "counter": 978,
+      "smallbox": 762,
+      "toolcabinet": 195,
+      "crate": 1864,
       "militarycrate": 77,
-      "metal_shelves": 1912,
-      "dishescabinet": 1501,
-      "locker": 240,
-      "desk": 344,
-      "dresser": 256,
-      "filingcabinet": 174,
+      "dishescabinet": 1614,
+      "desk": 359,
+      "dresser": 285,
+      "filingcabinet": 196,
       "displaycase": 119,
+      "restaurantdisplay": 31,
       "smallcrate": 12,
-      "shelvesmag": 52,
-      "restaurantdisplay": 15,
-      "militarylocker": 1,
+      "militarylocker": 3,
+      "shelvesmag": 54,
+      "fruitbushe": 1,
       "fruitbushb": 1,
       "fruitbushc": 1,
       "fruitbusha": 1,

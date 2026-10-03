@@ -1,6 +1,6 @@
 # Architecture and feasibility
 
-Reviewed 2026-10-01 against the current T&T source, Alex's PZ modding/Lua skills, the workspace/project agreements, and [Horde Night architecture](../../pz-mod-onemorehorde_protectthecure/docs/ARCHITECTURE.md). This replaces the stale P1C1-only description. Current installed build: **0.2.22**; rendered acceptance remains separate from automated/native checks.
+Reviewed against the current T&T source, Alex's PZ modding/Lua skills, the workspace/project agreements, and [Horde Night architecture](../../pz-mod-onemorehorde_protectthecure/docs/ARCHITECTURE.md); updated for **0.2.25**. Exact installation is recorded in RELEASE.md; rendered acceptance remains separate from automated/native checks.
 
 ## Relationship to Horde Night
 
@@ -8,7 +8,7 @@ We follow the same responsibility boundaries, but do **not** yet have equivalent
 
 | Principle | T&T today | Remaining gate |
 | --- | --- | --- |
-| Shared gameplay policy | `Turret`, `TurretStats`, `TurretModules`, `Firearms`, `Barrier` define common rules; potato and three supported guns share the universal base | Do not duplicate these rules in future MP handlers |
+| Shared gameplay policy | `Turret`, `TurretStats`, `TurretModules`, `Firearms`, `Barrier` define common rules; potato and conventional native-data guns share the universal base | Do not duplicate these rules in future MP handlers |
 | Authority separated from presentation | `TurretWorld`, combat and barrier runtimes own world outcomes; Manage/renderer/effects display them | Gameplay is explicitly SP-only. Several client timed actions perform local validated changes; future server transactions must own them |
 | Stable identity and persistence | Namespaced object markers, exact item inventory, scalar saved metadata; separate transient registries | Dedicated reconnect, zombie ownership, observers and transaction replay need proof |
 | Bounded/staggered work | Incremental manual search, automation, feeder, impact queues and diagnostic draining | These have separate budgets, not one shared frame ceiling. Aggregate density and render/aim traversal remain unproven |
@@ -58,7 +58,7 @@ Current installed-game evidence is **42.21.0**. Historical 42.20.2 decompilation
 
 Spike Barriers now use a see-through native edge outline with front edges and exposed outer caps; rear access is open. Native low-fence controls and reactions are integrated, with directional scratch risk. This supersedes the old architecture text claiming vaulting was blocked. Automatic bed-spike traversal is still planned content, not implemented by the barrier path.
 
-Gun heads are actual Base.Pistol, Base.Shotgun or Base.HuntingRifle items. Stationary turrets do not invoke the complete character firing/accuracy/animation pipeline. Shared adapters conserve ammo and approximate combat/mechanism timing using current native data; broader modded-gun compatibility is not promised.
+Gun heads are actual HandWeapon items. Native-data admission recognizes conventional reload mechanisms, single-round ammunition consumption and damaging ranged weapons; twenty real vanilla guns pass the native probe. Exact profiles are cached per item type, with one startup ammunition registry scan and no per-shot script scan. Stationary turrets do not invoke the complete character firing/accuracy/animation pipeline. Shared adapters conserve ammo and approximate combat/mechanism timing; arbitrary custom weapon Lua is not executed. Unsupported custom mechanisms and toys are rejected. Base Repair shares the ten-second adjacent service action, restores only base health and preserves the exact gun, supplies and charge.
 
 Rendering uses a static depth-mapped base tile and the installed head via `RenderOpaqueObjectsInWorld`. Guns use the native negative forced-rotation path to apply item XYZ pose, then restore original item rotations. A hidden three-box white support is transient presentation only. Native import/matrix checks are not a rendered lighting/occlusion acceptance test. Current `ISUIElement:drawLine` requires texture and thickness arguments; the gun tracer uses that signature.
 

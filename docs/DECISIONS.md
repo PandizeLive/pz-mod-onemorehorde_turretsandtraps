@@ -341,3 +341,9 @@ On 2026-10-02 the owner approved the site update together with the held gameplay
 ## C75: adopt the current hosted LootLab tuning
 
 On 2026-10-02 the owner approved applying the current website settings. Read-only production evidence identified revision 84: global 6; Firing, Detection, Small/Large Expansion Kits and Autoloader 3; all other components 2. Apply these as new-world defaults and LootLab reset defaults; preserve existing game saves, generated loot and account scenarios. Scope and evidence: PATCH_v0.2.24.md. Local install and matching admin-site update are authorized; no Steam publication or GitHub push.
+
+## C76: broader loot and turret usability
+
+Owner approves the discussed patch and specifically sets potato hearing to eight tiles. Broaden native themed pools while making ordinary successful finds usually one or two components and retaining uncommon five-plus jackpots. LootLab uses larger circles for generated five-plus totals and chance-scaled circles on the probability overlay. Preserve account tuning and existing generated game loot.
+
+Add the green/red Power symbol, free ten-second base-only Repair, explicit rejection of duplicate utility modules and conventional gun admission based on native data. All twenty native real guns are mechanism-probed; no arbitrary custom weapon-code compatibility claim. Scope, pool weighting and one combined test: PATCH_v0.2.25.md. Local install and admin-site deployment are authorized. This supersedes the three-gun admission restriction, not the single-player gate or required shared-budget/clock work.

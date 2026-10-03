@@ -24,7 +24,7 @@ function L.apply()
                 end
             end
             for module, weight in pairs(L.WEIGHTS) do
-                local effective = weight * multiplier * M.option("Loot" .. module, L.DEFAULTS.items[module], 0, 20)
+                local effective = weight * L.SCALES[name] * multiplier * M.option("Loot" .. module, L.DEFAULTS.items[module], 0, 20)
                 local subset = L.SUBSETS[name]
                 if effective > 0 and (not subset or subset[module]) then
                     items[#items + 1] = T.TYPES[module]

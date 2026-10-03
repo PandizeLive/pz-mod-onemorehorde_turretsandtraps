@@ -35,6 +35,15 @@ end
 ---@param object IsoThumpable Selected turret
 ---@param player IsoPlayer Operator
 ---@return nil
+local function repair(object, player)
+    if luautils.walkAdjObject(player, object, false) then
+        ISTimedActionQueue.add(OMHTTTurretPickupAction:new(player, object, "Repair"))
+    end
+end
+
+---@param object IsoThumpable Selected turret
+---@param player IsoPlayer Operator
+---@return nil
 local function fire(object, player)
     local result = require("OMHTT/TurretWorld").fire(player, object)
     player:setHaloNote(getText("UI_OMHTT_Manage" .. result), 255, 255, 255, 120)
@@ -87,6 +96,11 @@ local function fillMenu(playerIndex, context, worldobjects, test)
             local recovery = menu:addOption(getText("ContextMenu_OMHTT_PickupTurret"), object, pickup, player)
             recovery.toolTip = ISWorldObjectContextMenu.addToolTip()
             recovery.toolTip.description = getText("UI_OMHTT_ServiceDuration")
+            local repairOption = menu:addOption(getText("ContextMenu_OMHTT_RepairTurret"), object, repair, player)
+            repairOption.notAvailable = object:getHealth() >= object:getMaxHealth()
+            repairOption.toolTip = ISWorldObjectContextMenu.addToolTip()
+            repairOption.toolTip.description = getText("UI_OMHTT_ServiceDuration")
+            Range.bind(repairOption, {object})
             local condition = menu:addOption(getText("ContextMenu_OMHTT_BarrierCondition", object:getHealth(), object:getMaxHealth()), nil, nil)
             condition.notAvailable = true
             Range.bind(shot, {object})

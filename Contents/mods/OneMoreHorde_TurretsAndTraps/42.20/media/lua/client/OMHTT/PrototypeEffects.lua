@@ -18,6 +18,9 @@ function E.sound(name, x, y, z, gain)
     local handle = emitter:playSound(name)
     local pitch = 0.95 + ZombRand(101) / 1000
     emitter:setPitch(handle, pitch)
+    if string.find(name, "OMHTTPotato", 1, true) or string.find(name, "OMHTTSuppressedPotato", 1, true) then
+        gain = require("OMHTT/TurretStats").option("PotatoPlaybackVolume", 35, 0, 100) / 100
+    end
     if gain then emitter:setVolume(handle, gain) end
     D.defer("potato-audio", {sound = name, pitch = pitch, x = x, y = y, z = z, audioMs = getTimestampMs() - started})
 end

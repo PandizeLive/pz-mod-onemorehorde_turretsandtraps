@@ -34,12 +34,12 @@ local function verifyTurrets()
             if require("OMHTT/Turret").component(items[n]) then
                 assert(instanceItem(items[n]), "Loot module script missing")
                 local kind = T.component(items[n])
-                assert(items[n + 1] == Loot.WEIGHTS[kind] * Loot.DEFAULTS.global * Loot.DEFAULTS.items[kind], "Native effective loot weight mismatch")
+                assert(math.abs(items[n + 1] - Loot.WEIGHTS[kind] * Loot.SCALES[Loot.POOLS[i]] * Loot.DEFAULTS.global * Loot.DEFAULTS.items[kind]) < 0.000001, "Native effective loot weight mismatch")
                 count = count + 1
             end
         end
     end
-    assert(count == 75, "Expected seventy-five component entries across seven native loot pools")
+    assert(count == 102, "Expected 102 component entries across twelve native loot pools")
     local retired = {"OMHTTModuleCapacitySmall", "OMHTTModuleCapacity", "OMHTTModuleCapacityLarge",
         "OMHTTModuleMotionDetection", "OMHTTModuleDetection360"}
     for i = 1, #retired do
@@ -78,7 +78,7 @@ local function verifyTurrets()
     assert(T.contents(live).active.MotionDetection == 1, "Native module condition defaults are not active")
     detector:setCondition(0)
     assert(T.contents(live).active.MotionDetection == nil, "Broken native module remains active")
-    print("[OMHTT-Smoke] native-modules loot=75 profiles=valid condition=checked")
+    print("[OMHTT-Smoke] native-modules loot=102 profiles=valid condition=checked")
     local resources = ArrayList.new()
     local tools = {"Base.Screwdriver", "Base.Wrench"}
     local routes = {
@@ -213,8 +213,18 @@ local function verifyTurrets()
     T.hybrid = function() return false end
     T.state(object).facing = 0
     W.refresh(object)
+    object:setHealth(37)
+    local nativeNear = W.near
+    W.near = function(candidate, device) return candidate == player and device == object and W.valid(device) end
+    local headCondition, batteryCharge = contents.head:getCondition(), battery:getCurrentUsesFloat()
+    assert(W.repair(player, object, T.state(object).id), "Native base repair failed")
+    assert(object:getHealth() == object:getMaxHealth() and contents.head:getCondition() == headCondition
+        and battery:getCurrentUsesFloat() == batteryCharge, "Repair changed gun or battery")
+    assert(not W.repair(player, object, T.state(object).id), "Undamaged base repair accepted")
+    W.near = nativeNear
     T.hybrid = hybrid
     object:setHealth(37)
+    print("[OMHTT-Smoke] native-turret-repair base=full head=preserved battery=preserved")
     T.state(object).automatic = false
     T.state(object).priority = "Toughest"
     T.state(object).baseFacing = 4
@@ -264,6 +274,23 @@ local function verifyTurrets()
     print("[OMHTT-Smoke] native-turret-destroy contents=104 exact=true scrap=2 base=0 repeated=stable")
     local Guns = require("OMHTT/Firearms")
     local savedGuns = ArrayList.new()
+    Guns.registerAmmunition()
+    local scripts = getScriptManager():getAllItems()
+    local admitted = 0
+    for i = 0, scripts:size() - 1 do
+        local script = scripts:get(i)
+        if script:isRanged() and script:getAmmoType() then
+            local gun = instanceItem(script:getFullName())
+            local profile = Guns.profile(gun)
+            if gun:getMaxDamage() > 0 then
+                assert(profile, "Native firearm not recognized: " .. script:getFullName())
+                admitted = admitted + 1
+            else
+                assert(not profile, "Toy firearm admitted")
+            end
+        end
+    end
+    assert(admitted == 20, "Native real-firearm coverage changed: " .. admitted)
     for fullType in pairs(Guns.PROFILES) do
         local base = instanceItem(T.BASE)
         local gun = instanceItem(fullType)
@@ -282,15 +309,20 @@ local function verifyTurrets()
         local gunBattery = storage:AddItem("Base.CarBattery1")
         gunBattery:setCurrentUsesFloat(0.43)
         local ammo = Guns.ammoType(gun)
-        for i = 1, 35 do storage:AddItem(ammo) end
+        for i = 1, 90 do storage:AddItem(ammo) end
         local summary = T.contents(storage)
         local config = T.cycleConfig(summary)
-        assert(summary.ammo == 35 and config.firearm and config.magazine == gun:getMaxAmmo(), "Native firearm config mismatch")
+        assert(summary.ammo == 90 and config.firearm and config.magazine == gun:getMaxAmmo(), "Native firearm config mismatch")
         local expected = { ["Base.Pistol"] = {15, 400, 20, 4}, ["Base.Shotgun"] = {12, 1000, 70, 12}, ["Base.HuntingRifle"] = {40, 1200, 30, 4} }
         local stats = require("OMHTT/TurretStats").resolve(summary)
         local values = expected[fullType]
-        assert(stats.range == values[1] and stats.cooldown == values[2] and stats.critChance == values[3]
-            and stats.critMultiplier == values[4], "Native firearm range/cadence/crit drift: " .. fullType)
+        if values then
+            assert(stats.range == values[1] and stats.cooldown == values[2] and stats.critChance == values[3]
+                and stats.critMultiplier == values[4], "Native firearm range/cadence/crit drift: " .. fullType)
+        else
+            assert(stats.range == math.min(50, gun:getMaxRange()) and stats.critChance == gun:getCriticalChance()
+                and stats.critMultiplier == gun:getCriticalDamageMultiplier(), "Generic stats drift: " .. fullType)
+        end
         print("[OMHTT-Smoke] native-firearm-stats type=" .. fullType .. " range=" .. stats.range .. " cooldown=" .. stats.cooldown
             .. " critical=" .. stats.critChance .. " multiplier=" .. stats.critMultiplier)
         local clock = getTimestampMs()
@@ -302,13 +334,23 @@ local function verifyTurrets()
             _, status = Guns.update(summary, config, clock, true)
             if status == "Ready" then break end
         end
-        assert(status == "Ready" and T.contents(storage).ammo == 35, "Native reload invented or lost ammo")
+        assert(status == "Ready" and T.contents(storage).ammo == 90, "Native reload invented or lost ammo")
         assert(Guns.consume(T.contents(storage), config, clock), "Ready gun failed to consume shot")
-        assert(T.contents(storage).ammo == 34, "Native shot must spend exactly one round")
+        assert(T.contents(storage).ammo == 89, "Native shot must spend exactly one round")
         assert(not Guns.consume(T.contents(storage), config, clock), "Cooldown or pump can be skipped")
+        for shot = 1, gun:getMaxAmmo() + 2 do
+            for tick = 1, 80 do
+                clock = clock + 1000
+                local _, ready = Guns.update(T.contents(storage), config, clock, true)
+                if ready == "Ready" then break end
+            end
+            local before = T.contents(storage).ammo
+            assert(Guns.consume(T.contents(storage), config, clock), "Repeat cycle failed: " .. fullType)
+            assert(T.contents(storage).ammo == before - 1, "Repeat cycle round loss: " .. fullType)
+        end
         gun:setCondition(7)
         if fullType == "Base.Pistol" then gun:attachWeaponPart(instanceItem("Base.Laser"), false) end
-        base:getModData().OMHTTGunFixture = {fullType = fullType, total = 34,
+        base:getModData().OMHTTGunFixture = {fullType = fullType, total = T.contents(storage).ammo,
             rounds = gun:getCurrentAmmoCount(), chamber = gun:isRoundChambered(), gunId = gun:getID(),
             condition = 7, nextShot = Guns.state(gun).nextShot, clip = gun:isContainsClip()}
         savedGuns:add(base)
@@ -351,7 +393,7 @@ local function verifyTurrets()
     local mount = instanceItem("Base.OMHTTGunSupportVisual")
     assert(mount and mount:getScriptItem():isHidden() and ScriptManager.instance:getModelScript(mount:getWorldStaticItem()), "Technical mount is missing, unbound or visible in spawn list")
     print("[OMHTT-Smoke] native-magazines insert=eject=conserved chamber=retained replay=blocked capacity=checked mount=bound")
-    print("[OMHTT-Smoke] native-firearms mechanisms=3 rounds=conserved models=bound reload=timed")
+    print("[OMHTT-Smoke] native-firearms firearms=20 rounds=conserved models=bound reload=timed")
     local H = require("OMHTT/HybridProbe")
     local model = ScriptManager.instance:getModelScript("Base.OMHTTProbeHead")
     assert(model and model:getMeshName() == "OMHTT_ProbeHead", "Native hybrid model script missing")

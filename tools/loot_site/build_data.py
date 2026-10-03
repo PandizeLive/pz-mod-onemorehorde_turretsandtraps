@@ -82,12 +82,13 @@ version=re.search(r'^modversion=(.+)$',(package/'mod.info').read_text(),re.M)[1]
 weights=source['definitions']['WEIGHTS']
 for pool in source['pools']:
  subset=source['definitions']['SUBSETS'].get(pool)
+ source['pools'][pool]['scale']=source['definitions']['SCALES'][pool]
  source['pools'][pool]['modules']=[k for k in weights if subset is None or subset.get(k)]
 names={'MotionDetection':'Detection','Detection360':'360','RapidFire':'Rapid-Fire','CapacitySmall':'Small Expansion Kit','Capacity':'Medium Expansion Kit','CapacityLarge':'Large Expansion Kit'}
 order=['Firing','MotionDetection','Filter','Detection360','Suppression','RapidFire','Reload','Velocity','Range','CapacitySmall','Capacity','CapacityLarge','Autoloader','Critical','Accuracy']
 assert set(order)==set(weights)
 modules=[{'id':k,'name':names.get(k,k),'weight':weights[k]} for k in order]
-report={'game':'42.21.0','baseline':'T&T '+version,'previousBaselines':['Installed 0.2.22','T&T 0.2.23'],'headers':len(headers),'roomRecords':sum(len(h['rooms']) for h in headers),'routes':len(routes),'containerSprites':len(props),'chunksScanned':scanned,'eligibleContainers':len(containers),'mapFeatures':len(geometry),'genericExclusions':sorted(banned),'byRoom':dict(collections.Counter(routes[c['route']]['room'] for c in containers)),'byContainer':dict(collections.Counter(c['type'] for c in containers))}
+report={'game':'42.21.0','baseline':'T&T '+version,'previousBaselines':['Installed 0.2.22','T&T 0.2.23','T&T 0.2.24'],'headers':len(headers),'roomRecords':sum(len(h['rooms']) for h in headers),'routes':len(routes),'containerSprites':len(props),'chunksScanned':scanned,'eligibleContainers':len(containers),'mapFeatures':len(geometry),'genericExclusions':sorted(banned),'byRoom':dict(collections.Counter(routes[c['route']]['room'] for c in containers)),'byContainer':dict(collections.Counter(c['type'] for c in containers))}
 out={'meta':report,'routes':routes,'pools':source['pools'],'containers':containers,'map':geometry,'bounds':bounds,'labels':labels,'modules':modules}
 apply_defaults(out)
 (r/'art/loot-tuner/data.js').write_text('window.LOOT_DATA='+json.dumps(out,separators=(',',':'))+';\n')

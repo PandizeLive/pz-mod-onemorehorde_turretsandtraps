@@ -32,6 +32,9 @@ function A.play(object, entry, name)
     local emitter = getWorld():getFreeEmitter(square:getX() + 0.5, square:getY() + 0.5, square:getZ())
     local handle = emitter:playSound(name)
     emitter:setPitch(handle, 0.95 + ZombRand(101) / 1000)
+    if name == "OMHTTPotatoReload" then
+        emitter:setVolume(handle, require("OMHTT/TurretStats").option("PotatoPlaybackVolume", 35, 0, 100) / 100)
+    end
     entry.handles[#entry.handles + 1] = {emitter = emitter, handle = handle}
     D.defer("turret-reload-audio", {head = entry.head:getFullType(), phase = entry.phase, sound = name})
 end

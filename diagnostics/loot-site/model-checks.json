@@ -1,13 +1,18 @@
 {
+  "haul": {
+    "expectedSuccessfulContainers": 1836.888445048747,
+    "oneOrTwoShare": 0.7714711308442015,
+    "jackpotShare": 0.05500361825044037
+  },
   "status": "passed",
   "scope": "Numerical model, seeded per-container spawning and extracted-data integrity; no in-game spawn certification",
-  "generatedItems": 2033,
-  "elapsedMs": 2680,
-  "candidates": 11713,
+  "generatedItems": 3406,
+  "elapsedMs": 2949,
+  "candidates": 18514,
   "worldSamples": 256,
   "baseline": {
     "version": 1,
-    "baseline": "T&T 0.2.24",
+    "baseline": "T&T 0.2.25",
     "seed": 24601,
     "global": 6,
     "material": 0.6,
@@ -51,27 +56,27 @@
     }
   },
   "selectedEstimate": {
-    "mean": 2020.0939312499995,
-    "lo": 1886,
-    "hi": 2154
+    "mean": 3505.227064062499,
+    "lo": 3365,
+    "hi": 3643
   },
-  "allComponentsMean": 2020.0939312499995,
+  "allComponentsMean": 3505.227064062499,
   "pools": [
     {
       "name": "ElectronicStoreMisc",
-      "containers": 53.0625
+      "containers": 53.20703125
     },
     {
       "name": "CrateElectronics",
-      "containers": 431.6640625
+      "containers": 432.9765625
     },
     {
       "name": "MechanicShelfElectric",
-      "containers": 43.140625
+      "containers": 45.3671875
     },
     {
       "name": "ArmyStorageElectronics",
-      "containers": 45.25390625
+      "containers": 45.0078125
     },
     {
       "name": "ElectricianTools",
@@ -79,85 +84,105 @@
     },
     {
       "name": "GunStoreAccessories",
-      "containers": 5.171875
+      "containers": 4.9921875
     },
     {
       "name": "ToolCabinetMechanics",
-      "containers": 212.44921875
+      "containers": 211.28125
+    },
+    {
+      "name": "GarageTools",
+      "containers": 458.71484375
+    },
+    {
+      "name": "CrateTools",
+      "containers": 912.9140625
+    },
+    {
+      "name": "ToolStoreTools",
+      "containers": 126.921875
+    },
+    {
+      "name": "ToolStoreMisc",
+      "containers": 171.140625
+    },
+    {
+      "name": "MechanicShelfTools",
+      "containers": 758.625
     }
   ],
   "regions": [
     {
       "name": "WestPoint",
-      "mean": 108.54022500000659,
-      "lo": 79,
-      "hi": 140
+      "mean": 162.27384843750647,
+      "lo": 134,
+      "hi": 190
     },
     {
       "name": "Riverside",
-      "mean": 169.36177500000983,
-      "lo": 126,
-      "hi": 212
+      "mean": 303.27311093750336,
+      "lo": 262,
+      "hi": 351
     },
     {
       "name": "Muldraugh",
-      "mean": 105.99013125000917,
-      "lo": 80,
-      "hi": 134
+      "mean": 227.12751875000268,
+      "lo": 192,
+      "hi": 262
     },
     {
       "name": "Brandenburg",
-      "mean": 117.16233750000622,
-      "lo": 86,
-      "hi": 148
+      "mean": 175.41556406251377,
+      "lo": 141,
+      "hi": 205
     },
     {
       "name": "Ekron",
-      "mean": 107.36932500000857,
-      "lo": 80,
-      "hi": 138
+      "mean": 208.69195000001008,
+      "lo": 172,
+      "hi": 240
     },
     {
       "name": "Irvington",
-      "mean": 94.30852500000479,
-      "lo": 69,
-      "hi": 123
+      "mean": 221.07713750000968,
+      "lo": 184,
+      "hi": 255
     },
     {
       "name": "EchoCreek",
-      "mean": 63.67258125000203,
-      "lo": 43,
-      "hi": 86
+      "mean": 174.40127812502337,
+      "lo": 144,
+      "hi": 207
     },
     {
       "name": "Louisville",
-      "mean": 884.2279499999945,
-      "lo": 792,
-      "hi": 966
+      "mean": 1380.8894140624222,
+      "lo": 1296,
+      "hi": 1476
     },
     {
       "name": "MarchRidge",
-      "mean": 49.72370625000008,
-      "lo": 30,
-      "hi": 68
+      "mean": 75.69259218750345,
+      "lo": 54,
+      "hi": 100
     },
     {
       "name": "FallasLake",
-      "mean": 63.257400000001276,
-      "lo": 41,
-      "hi": 86
+      "mean": 136.4480625000088,
+      "lo": 109,
+      "hi": 162
     },
     {
       "name": "Rosewood",
-      "mean": 111.23651250000205,
-      "lo": 81,
-      "hi": 136
+      "mean": 211.80708281251097,
+      "lo": 177,
+      "hi": 249
     },
     {
       "name": "ValleyStation",
-      "mean": 145.24346250000687,
-      "lo": 114,
-      "hi": 177
+      "mean": 228.12950468751637,
+      "lo": 195,
+      "hi": 268
     }
   ]
 }

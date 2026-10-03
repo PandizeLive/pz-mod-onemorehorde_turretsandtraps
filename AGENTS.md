@@ -82,3 +82,5 @@ Read README.md, docs/DECISIONS.md, and docs/ROADMAP.md before project changes. T
 - [2026-10-02] C74 approves resuming the held v0.2.23 controls/combat patch with native firearm critical chance and damage, themed loot subsets, account-preserving LootLab migration and admin-site deployment. Local gameplay install is authorized; Steam/GitHub publication is not. See docs/PATCH_v0.2.23.md.
 
 - [2026-10-02] C75 approves hosted LootLab revision 84 as new-world defaults in 0.2.24: global 6, selected components 3 and others 2. Preserve saved Sandbox/account values and generated loot; keep runtime fallback, Sandbox and site defaults aligned. See docs/PATCH_v0.2.24.md.
+
+- [2026-10-02] C76 approves broader ordinary component finds with uncommon five-plus jackpots, matching LootLab circles/haul metrics, red/green Power symbol, free ten-second base-only Repair, eight-tile potato hearing with separate playback gain, duplicate non-stack rejection and native-data conventional firearm admission. Exact scope and one combined test: docs/PATCH_v0.2.25.md. Admin deployment and local installation are authorized; Steam/GitHub publication and multiplayer enablement are not.

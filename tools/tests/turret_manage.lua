@@ -171,10 +171,22 @@ check(handedOff and #handedOff == 1 and handedOff[1] == battery and ISMouseDrag.
     "Installed vanilla drop handler accepts exact battery and calls slot cleanup")
 getSpecificPlayer, getCore, isShiftKeyDown, isCtrlKeyDown = oldSpecific, oldCore, oldShift, oldControl
 panel:togglePower(); panel:refresh()
-check(controlState.OMHTTTurret.powered == false and panel.powerButton.title == getText("UI_OMHTT_PowerOff"), "Manage switch persists automatic off")
+check(controlState.OMHTTTurret.powered == false and panel.powerButton.tooltip == getText("UI_OMHTT_PowerOff") and panel.powerButton.backgroundColor.r > panel.powerButton.backgroundColor.g, "Manage switch persists automatic off")
 panel:togglePower(); panel:refresh()
 check(controlState.OMHTTTurret.powered == true, "Manage can reenable automation")
 check(not panel.priorityButton.enabled, "Priority control requires Filter")
+actions = {}
+local firstDetection, secondDetection = item(T.TYPES.MotionDetection), item(T.TYPES.MotionDetection)
+carried:AddItem(firstDetection)
+carried:AddItem(secondDetection)
+local count, duplicateReason = X.queue(player, object, {firstDetection, secondDetection}, true, "module")
+check(count == 1 and duplicateReason == "ModuleDoesNotStack", "Batch rejects duplicate single module before queuing")
+actions = {}
+carried:Remove(firstDetection)
+storage:AddItem(firstDetection)
+check(X.rejection(player, secondDetection, carried, storage) == "ModuleDoesNotStack", "Commit rejects duplicate installed module")
+check(not T.accept(storage, secondDetection), "Native container filter rejects duplicate module")
+storage:Remove(firstDetection)
 local filter = item("Base.OMHTTModuleFilter")
 storage:AddItem(filter); panel:refresh()
 check(panel.priorityButton.enabled, "Installing Filter enables priority control")

@@ -104,6 +104,17 @@ function Panel:addSlot(kind, label, x, y, width)
 end
 
 ---@return nil
+function Panel:drawPower()
+    ISButton.prerender(self)
+    local cx, cy = self.width / 2, self.height / 2
+    for i = 0, 28 do
+        local angle = math.rad(55 + i * 250 / 28)
+        self:drawRect(cx + math.sin(angle) * 12 - 1, cy - math.cos(angle) * 12 - 1, 3, 3, 1, 1, 1, 1)
+    end
+    self:drawRect(cx - 1, cy - 16, 3, 14, 1, 1, 1, 1)
+end
+
+---@return nil
 function Panel:refresh()
     local W = require("OMHTT/TurretWorld")
     local storage = self.object:getContainer()
@@ -123,7 +134,11 @@ function Panel:refresh()
     local profile = M.profile(state, contents)
     local stats = T.cycleConfig(contents)
     self.stats = stats
-    self.powerButton:setTitle(getText(T.isOn(state) and "UI_OMHTT_PowerOn" or "UI_OMHTT_PowerOff"))
+    local powered = T.isOn(state)
+    self.powerButton:setTitle("")
+    self.powerButton.tooltip = getText(powered and "UI_OMHTT_PowerOn" or "UI_OMHTT_PowerOff")
+    self.powerButton.backgroundColor = powered and {r = 0.08, g = 0.42, b = 0.16, a = 0.9} or {r = 0.48, g = 0.08, b = 0.08, a = 0.9}
+    self.powerButton.backgroundColorMouseOver = powered and {r = 0.12, g = 0.58, b = 0.22, a = 1} or {r = 0.65, g = 0.12, b = 0.12, a = 1}
     local automationAllowed = SandboxVars.OMHTurretsTraps.AutomationEnabled ~= false
     self.priorityButton:setTitle(getText("UI_OMHTT_Priority", getText("UI_OMHTT_Priority" .. profile.priority)))
     self.priorityButton:setEnable(contents.active.Filter ~= nil)
@@ -287,6 +302,7 @@ function OpenAction:perform()
         panel.headSlot = panel:addSlot("head", getText("UI_OMHTT_ManageHead"), 12, top, (width - 32) / 2)
         panel.batterySlot = panel:addSlot("battery", "", width / 2 + 4, top, (width - 32) / 2 - 88)
         panel.powerButton = ISButton:new(width - 92, top, 80, panel.slotHeight, "", panel, Panel.togglePower)
+        panel.powerButton.prerender = Panel.drawPower
         local storageWidth = width - 40
         panel.ammoSlot = panel:addSlot("ammo", "", 12, top + slotHeight + 8, storageWidth * 0.38)
         panel.magazineSlot = panel:addSlot("magazine", "", 20 + storageWidth * 0.38, top + slotHeight + 8, storageWidth * 0.30)

@@ -1,0 +1,84 @@
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+LOG  : General      f:0 st:555,863,014> version=42.21.0 4a0e9546ec demo=false
+LOG  : Mod          f:0 st:555,873,233> loading OneMoreHorde_TurretsAndTraps
+LOG  : Lua          f:0 st:555,885,067> [OMHTT] server-ready version=0.2.25 game=42.21
+LOG  : Network      f:0 st:555,887,412> *** SERVER STARTED ****
+LOG  : Lua          f:0 st:555,887,526> [OMHTT-Smoke] native-translations checked=3 missing=0
+LOG  : Lua          f:0 st:555,889,580> [OMHTT-Smoke] native-scratch lowerLeg=true knox=false
+LOG  : Lua          f:0 st:555,889,584> [OMHTT-Smoke] native-build-menu registered=1 title=Spike_Barrier category=OMHTraps callback=resolved spGate=open disabledGate=closed dottedCallback=rejected
+LOG  : Lua          f:0 st:555,889,584> [OMHTT-Smoke] native-sandbox damage=10 maxHealth=100 tooltip=formatted
+LOG  : Lua          f:0 st:555,889,584> [OMHTT-Smoke] native-sandbox scratch=5 collision=false categories=3 renderer=exposed
+LOG  : Lua          f:0 st:555,889,592> [OMHTT-Smoke] native-construction entity=OMHTTSpikeBarrier faces=4 parts=16 inputs=3 translated=true mpGate=closed
+LOG  : Lua          f:0 st:555,889,592> [OMHTT-Smoke] native-sprites objects=16 valid=16 categoryTranslated=true
+LOG  : Lua          f:0 st:555,889,616> [OMHTT-Smoke] native-ingredients mixes=75 missingWood=blocked missingBindings=blocked missingTool=blocked dullTool=blocked brokenTool=blocked preview=nonconsuming
+LOG  : Lua          f:0 st:555,889,618> [OMHTT-Smoke] native-migration staleSprite=repaired missingComponent=repaired health=37 repeat=unchanged
+LOG  : Lua          f:0 st:555,889,618> [OMHTT-Smoke] portable-script weight=4 file=media/scripts/omhtt_items.txt icon=OMHTT_Barrier0 plankWeight=3
+LOG  : Lua          f:0 st:555,889,619> [OMHTT-Smoke] portable-item name=Spike Barrier weight=4 translated=Spike Barrier
+LOG  : Lua          f:0 st:555,889,642> [OMHTT-Smoke] native-ingredients mixes=75 missingWood=blocked missingBindings=blocked missingTool=blocked dullTool=blocked brokenTool=blocked preview=nonconsuming
+LOG  : Lua          f:0 st:555,889,735> [OMHTT-Smoke] native-bundles packed=5to1 unpacked=1to5 weight=6.6 xp=0 insufficient=blocked
+LOG  : Lua          f:0 st:555,889,745> [OMHTT-Smoke] native-reinforced deploy=1 pack=5to1 unpack=1to5 mixed=blocked materials=10 hammer=retained
+LOG  : Lua          f:0 st:555,889,745> [OMHTT-Smoke] native-portable recipe=registered mixes=75 crafted=1 tool=retained deployInputs=1 deployXP=0 missing=blocked damaged=blocked toggles=blocked mp=blocked
+LOG  : Lua          f:0 st:555,889,746> [OMHTT-Smoke] native-atlas-lua bypass=verified restore=verified
+LOG  : Lua          f:0 st:555,889,847> [OMHTT-Smoke] native-component-list visible=15 hidden=0 duplicates=0 legacy=removed
+LOG  : Lua          f:0 st:555,889,849> [OMHTT-Smoke] native-modules loot=102 profiles=valid condition=checked
+LOG  : Lua          f:0 st:555,889,865> [OMHTT-Smoke] native-install exact=selected decoy=preserved preview=nonconsuming
+LOG  : Lua          f:0 st:555,889,877> [OMHTT-Smoke] native-turret-repair base=full head=preserved battery=preserved
+LOG  : Lua          f:0 st:555,889,889> [OMHTT-Smoke] native-turret-destroy contents=104 exact=true scrap=2 base=0 repeated=stable
+LOG  : Lua          f:0 st:555,889,904> [OMHTT-Smoke] firearm-profile type=Base.Pistol ammo=Base.Bullets9mm model=Handgun03 worldRotate=( 0.000E+0  0.000E+0  0.000E+0) worldOffset=(-9.000E-3  6.200E-2  0.000E+0)
+LOG  : Lua          f:0 st:555,889,906> [OMHTT-Smoke] native-firearm-stats type=Base.Pistol range=15 cooldown=400 critical=20 multiplier=4
+LOG  : Lua          f:0 st:555,889,936> [OMHTT-Smoke] firearm-profile type=Base.Shotgun ammo=Base.ShotgunShells model=Shotgun worldRotate=(-1.800E+2  1.000E+0 -1.800E+2) worldOffset=( 1.580E-2  1.660E-1  0.000E+0)
+LOG  : Lua          f:0 st:555,889,938> [OMHTT-Smoke] native-firearm-stats type=Base.Shotgun range=12 cooldown=1000 critical=70 multiplier=12
+LOG  : Lua          f:0 st:555,889,973> [OMHTT-Smoke] firearm-profile type=Base.HuntingRifle ammo=Base.308Bullets model=HuntingRifle worldRotate=( 1.800E+2  0.000E+0  1.800E+2) worldOffset=( 1.200E-2  1.500E-1  0.000E+0)
+LOG  : Lua          f:0 st:555,889,976> [OMHTT-Smoke] native-firearm-stats type=Base.HuntingRifle range=40 cooldown=1200 critical=30 multiplier=4
+LOG  : Lua          f:0 st:555,890,012> [OMHTT-Smoke] firearm-profile type=Base.Revolver_Long ammo=Base.Bullets44 model=Revolver_Long worldRotate=( 0.000E+0  0.000E+0  0.000E+0) worldOffset=(-1.280E-2  8.100E-2  0.000E+0)
+LOG  : Lua          f:0 st:555,890,014> [OMHTT-Smoke] native-firearm-stats type=Base.Revolver_Long range=18 cooldown=566.6666666666666 critical=20 multiplier=4
+LOG  : Lua          f:0 st:555,890,037> [OMHTT-Smoke] firearm-profile type=Base.TrapperCarbine ammo=Base.Bullets45 model=Trapper_Carbine worldRotate=( 1.800E+2  0.000E+0  1.800E+2) worldOffset=( 2.000E-2  1.300E-1  0.000E+0)
+LOG  : Lua          f:0 st:555,890,038> [OMHTT-Smoke] native-firearm-stats type=Base.TrapperCarbine range=20 cooldown=400 critical=22 multiplier=4
+LOG  : Lua          f:0 st:555,890,049> [OMHTT-Smoke] firearm-profile type=Base.L94_Rifle ammo=Base.3030Bullets model=L94_Rifle worldRotate=( 1.800E+2  0.000E+0  1.800E+2) worldOffset=( 2.000E-2  1.300E-1  0.000E+0)
+LOG  : Lua          f:0 st:555,890,050> [OMHTT-Smoke] native-firearm-stats type=Base.L94_Rifle range=30 cooldown=1200 critical=25 multiplier=4
+LOG  : Lua          f:0 st:555,890,065> [OMHTT-Smoke] firearm-profile type=Base.MSR7T_Rifle ammo=Base.308Bullets model=MSR7T_Rifle worldRotate=( 1.800E+2  0.000E+0  1.800E+2) worldOffset=( 1.200E-2  1.500E-1  0.000E+0)
+LOG  : Lua          f:0 st:555,890,066> [OMHTT-Smoke] native-firearm-stats type=Base.MSR7T_Rifle range=40 cooldown=1200 critical=35 multiplier=4
+LOG  : Lua          f:0 st:555,890,075> [OMHTT-Smoke] firearm-profile type=Base.JS3T_Shotgun ammo=Base.ShotgunShells model=JS3T_Shotgun worldRotate=( 1.800E+2  0.000E+0  1.800E+2) worldOffset=( 2.000E-2  1.300E-1  0.000E+0)
+LOG  : Lua          f:0 st:555,890,076> [OMHTT-Smoke] native-firearm-stats type=Base.JS3T_Shotgun range=12 cooldown=933.3333333333334 critical=70 multiplier=12
+LOG  : Lua          f:0 st:555,890,086> [OMHTT-Smoke] firearm-profile type=Base.VarmintRifle ammo=Base.556Bullets model=VarmintRifle worldRotate=( 1.800E+2  0.000E+0  1.800E+2) worldOffset=( 1.100E-2  1.600E-1  0.000E+0)
+LOG  : Lua          f:0 st:555,890,087> [OMHTT-Smoke] native-firearm-stats type=Base.VarmintRifle range=30 cooldown=1200 critical=20 multiplier=4
+LOG  : Lua          f:0 st:555,890,097> [OMHTT-Smoke] firearm-profile type=Base.DoubleBarrelShotgun ammo=Base.ShotgunShells model=DoubleBarrelShotgun worldRotate=( 1.800E+2  0.000E+0  1.800E+2) worldOffset=( 1.430E-2  2.000E-1  0.000E+0)
+LOG  : Lua          f:0 st:555,890,098> [OMHTT-Smoke] native-firearm-stats type=Base.DoubleBarrelShotgun range=15 cooldown=1000 critical=70 multiplier=12
+LOG  : Lua          f:0 st:555,890,106> [OMHTT-Smoke] firearm-profile type=Base.DoubleBarrelShotgunSawnoff ammo=Base.ShotgunShells model=ShotgunDoubleBarrelSawn worldRotate=( 1.800E+2  0.000E+0  1.800E+2) worldOffset=( 1.430E-2  2.000E-1  0.000E+0)
+LOG  : Lua          f:0 st:555,890,106> [OMHTT-Smoke] native-firearm-stats type=Base.DoubleBarrelShotgunSawnoff range=8 cooldown=1133.3333333333333 critical=50 multiplier=8
+LOG  : Lua          f:0 st:555,890,114> [OMHTT-Smoke] firearm-profile type=Base.ShotgunSawnoff ammo=Base.ShotgunShells model=ShotgunSawnOff worldRotate=( 1.800E+2  0.000E+0  1.800E+2) worldOffset=( 1.520E-2  1.000E-1  0.000E+0)
+LOG  : Lua          f:0 st:555,890,115> [OMHTT-Smoke] native-firearm-stats type=Base.ShotgunSawnoff range=10 cooldown=1000 critical=50 multiplier=10
+LOG  : Lua          f:0 st:555,890,125> [OMHTT-Smoke] firearm-profile type=Base.AssaultRifle2 ammo=Base.308Bullets model=M14 worldRotate=( 1.800E+2  0.000E+0  1.800E+2) worldOffset=( 1.430E-2  1.800E-1  0.000E+0)
+LOG  : Lua          f:0 st:555,890,126> [OMHTT-Smoke] native-firearm-stats type=Base.AssaultRifle2 range=40 cooldown=666.6666666666666 critical=30 multiplier=4
+LOG  : Lua          f:0 st:555,890,144> [OMHTT-Smoke] firearm-profile type=Base.Pistol2 ammo=Base.Bullets45 model=Handgun02 worldRotate=( 0.000E+0  0.000E+0  0.000E+0) worldOffset=( 0.000E+0  9.000E-2  8.000E-3)
+LOG  : Lua          f:0 st:555,890,145> [OMHTT-Smoke] native-firearm-stats type=Base.Pistol2 range=12 cooldown=500 critical=20 multiplier=4
+LOG  : Lua          f:0 st:555,890,153> [OMHTT-Smoke] firearm-profile type=Base.Pistol3 ammo=Base.Bullets44 model=Handgun worldRotate=( 0.000E+0  0.000E+0  0.000E+0) worldOffset=(-1.100E-2  6.700E-2  0.000E+0)
+LOG  : Lua          f:0 st:555,890,154> [OMHTT-Smoke] native-firearm-stats type=Base.Pistol3 range=17 cooldown=566.6666666666666 critical=20 multiplier=4
+LOG  : Lua          f:0 st:555,890,163> [OMHTT-Smoke] firearm-profile type=Base.AssaultRifle ammo=Base.556Bullets model=AssaultRifle worldRotate=( 1.800E+2  0.000E+0  1.800E+2) worldOffset=( 2.000E-2  1.300E-1  0.000E+0)
+LOG  : Lua          f:0 st:555,890,164> [OMHTT-Smoke] native-firearm-stats type=Base.AssaultRifle range=30 cooldown=500 critical=20 multiplier=4
+LOG  : Lua          f:0 st:555,890,181> [OMHTT-Smoke] firearm-profile type=Base.L92_Carbine ammo=Base.Bullets357 model=L92_Carbine worldRotate=( 1.800E+2  0.000E+0  1.800E+2) worldOffset=( 2.000E-2  1.300E-1  0.000E+0)
+LOG  : Lua          f:0 st:555,890,182> [OMHTT-Smoke] native-firearm-stats type=Base.L92_Carbine range=24 cooldown=1200 critical=20 multiplier=4
+LOG  : Lua          f:0 st:555,890,196> [OMHTT-Smoke] firearm-profile type=Base.Revolver_Short ammo=Base.Bullets38 model=Revolver_Short worldRotate=( 0.000E+0  0.000E+0  0.000E+0) worldOffset=(-1.190E-2  5.800E-2  0.000E+0)
+LOG  : Lua          f:0 st:555,890,197> [OMHTT-Smoke] native-firearm-stats type=Base.Revolver_Short range=8 cooldown=366.66666666666663 critical=20 multiplier=4
+LOG  : Lua          f:0 st:555,890,205> [OMHTT-Smoke] firearm-profile type=Base.JS14_Rifle ammo=Base.556Bullets model=JS14_Rifle worldRotate=( 1.800E+2  0.000E+0  1.800E+2) worldOffset=( 2.000E-2  1.300E-1  0.000E+0)
+LOG  : Lua          f:0 st:555,890,206> [OMHTT-Smoke] native-firearm-stats type=Base.JS14_Rifle range=30 cooldown=500 critical=20 multiplier=4
+LOG  : Lua          f:0 st:555,890,220> [OMHTT-Smoke] firearm-profile type=Base.Revolver ammo=Base.Bullets357 model=Revolver worldRotate=( 0.000E+0  0.000E+0  0.000E+0) worldOffset=(-1.360E-2  6.900E-2  0.000E+0)
+LOG  : Lua          f:0 st:555,890,221> [OMHTT-Smoke] native-firearm-stats type=Base.Revolver range=12 cooldown=533.3333333333334 critical=20 multiplier=4
+LOG  : Lua          f:0 st:555,890,230> [OMHTT-Smoke] native-magazines insert=eject=conserved chamber=retained replay=blocked capacity=checked mount=bound
+LOG  : Lua          f:0 st:555,890,230> [OMHTT-Smoke] native-firearms firearms=20 rounds=conserved models=bound reload=timed
+LOG  : Lua          f:0 st:555,890,232> [OMHTT-Smoke] native-hybrid model=bound yaw=independent base=fixed lookup=exact
+LOG  : Lua          f:0 st:555,890,232> [OMHTT-Smoke] native-turret recipes=5 loadedDeploy=exact contents=preserved weight=exact filters=valid cooldown=preserved
+LOG  : General      f:0 st:555,892,027> [OMHTT-Smoke] native-packed-turret mode=read items=8 charge=preserved condition=37 cooldown=preserved weight=exact
+LOG  : General      f:0 st:555,892,028> [OMHTT-Smoke] native-turret-persistence mode=read items=8 charge=0.37 health=37 cooldown=preserved identity=exact sprite=valid
+LOG  : General      f:0 st:555,892,047> [OMHTT-Smoke] native-firearm-persistence mode=read guns=20 rounds=conserved identity=exact attachments=preserved
+LOG  : General      f:0 st:555,892,048> [OMHTT-Smoke] native-hybrid-persistence mode=read yaw=135 scale=1.25 height=0.3 model=preserved link=preserved
+LOG  : General      f:0 st:555,892,055> Saving GlobalModData
+LOG  : General      f:0 st:555,892,098> [OMHTT-Smoke] native-suppression sounds=18 potato=2 reload=native
+LOG  : General      f:0 st:555,892,098> [OMHTT-Smoke] native-potato-audio clips=4 randomized=true pitch-method=verified playback=untested
+LOG  : General      f:0 st:555,892,182> [OMHTT-Smoke] native-module-loot-parser pools=12 items=102 weights=positive
+LOG  : General      f:0 st:555,892,260> [OMHTT-Smoke] native-turret-collision sides=4 player-and-zombie=blocked vision=clear reach=clear firing=clear pathfinders=2
+LOG  : General      f:0 st:555,892,296> [OMHTT-Smoke] native-texturepack entries=49 pages=27 png=valid
+LOG  : General      f:0 st:555,892,309> [OMHTT-Smoke] native-persistence mode=read parts=28 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved legacy=8 edges=8 outline=4 reinforced=8 orientation=preserved
+LOG  : General      f:0 st:555,901,301> Shutdown handling finished
+Dedicated startup/restart/save/shutdown smoke passed in 41.0s; no player connected.

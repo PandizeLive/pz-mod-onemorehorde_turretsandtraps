@@ -1,0 +1,5 @@
+# Broader component finds and usable turret servicing
+
+Components were concentrated into a few overloaded shelves, turret servicing lacked Repair, and firearm admission was restricted to three examples. This update broadens themed native loot pools with lower ordinary weights while preserving occasional jackpots; the matching LootLab shows haul probabilities and larger five-plus markers. It adds a red/green Power glyph, free ten-second base repair, clearer non-stack module rejection, eight-tile potato hearing with separate playback tuning, and data-driven conventional firearm support.
+
+Validation: 3,121 Kahlua/native assertions; 52 runtime/translation files; 453 native keys; twenty actual vanilla firearm mechanisms and fresh-process inventory/world persistence probes; scaled loot/haul model checks and 71 website API/page tests. Client rendering/audio acceptance remains pending. Multiplayer stays gated. Release and installation evidence: RELEASE.md; combined owner test: PATCH_v0.2.25.md.
