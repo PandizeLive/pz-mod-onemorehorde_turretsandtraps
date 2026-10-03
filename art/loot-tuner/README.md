@@ -73,3 +73,7 @@ Implementation: `settings-sync.js` owns synchronization; `app.js` connects the c
 - ToolCabinetMechanics: Reload, Rapid-Fire, all three Expansion Kits and Autoloader.
 
 The native pools have their own roll counts and room quotas. Both generated spawns and expected probabilities enforce these component subsets. Old 0.2.22 account settings, JSON exports and unsynced browser drafts retain their tuning; the two new components default to multiplier 1 and visible. Set to Default explicitly resets the whole scenario.
+
+## Save feedback correction, 2026-10-02
+
+The sticky status bar distinguishes the hosted account-sync page from a browser-only local copy and links local users to the hosted page. Component rates and seeds register valid input while typing; incomplete numbers remain uncommitted and background refresh does not overwrite a focused number field. Model recalculation is briefly debounced after recording the edit. Page close still requests a keepalive flush, with browser drafts as recovery if a save cannot finish. Sync now retries pending edits or fetches the latest account state. Download scenario exports JSON; it is separate from automatic account saving.

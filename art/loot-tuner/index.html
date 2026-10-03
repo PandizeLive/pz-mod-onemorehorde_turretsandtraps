@@ -3,6 +3,7 @@
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>OMH · Knox Country Loot Lab</title><link rel="stylesheet" href="style.css"></head>
 <body>
 <header><div><span class="eyebrow">OMH: TURRETS &amp; TRAPS</span><h1>Knox Country Loot Lab</h1><p>Tune a new world. See where your modules could turn up.</p></div><div class="badges"><span>Simulation · no game changes</span><span id="baseline"></span></div></header>
+<div id="syncBanner" class="sync-banner"><span id="syncStatus" role="status" aria-live="polite">Loading saved settings…</span><button id="syncNow" hidden>Sync now</button><a id="hostedLink" href="https://admin.onemorehorde.com/admin/LootLab/" hidden>Open synced LootLab</a></div>
 <main>
 <aside id="tuning" aria-label="Loot settings"><a class="mobile-jump" href="#mapArea">↑ Back to map</a>
 <div class="section-title"><h2>Scenario</h2><button id="reset">Set to Default</button></div>
@@ -12,8 +13,7 @@
 <label class="control">Loot rolls multiplier <output id="rollsOut"></output><input id="rolls" type="range" min="0" max="10" step=".25"></label>
 <details><summary>Estimate assumptions</summary><label class="control">Assumed retention <output id="retentionOut"></output><input id="retention" type="range" min="0" max="1" step=".05"></label><p class="hint">100% shows rolls before losses from full containers or stories. Lower values are a sensitivity check, not measured game behaviour.</p><label class="inline">Model seed <input id="seed" type="number" min="0" max="4294967295" step="1"></label><p class="hint">New world; zombie population loot effect = 0; time multiplier = 1; all floors included. Single-player baseline.</p></details>
 <div class="section-title"><h2>Components</h2><span class="hint">Color · show · rate</span></div><div class="visibility-actions"><button id="showAll">Show all</button><button id="hideAll">Hide all</button></div><p class="hint">Rarity uses final expected loot: left is rarer, right is more common. Fixed scale: 0–1,000+ items countywide.</p><div id="components"></div>
-<div class="actions"><button id="save">Save scenario</button><button id="load">Load scenario</button><button id="lua">Export Sandbox settings</button></div><input type="file" id="file" accept="application/json,.json" hidden>
-<p id="syncStatus" role="status" aria-live="polite">Loading saved settings…</p>
+<div class="actions"><button id="save">Download scenario</button><button id="load">Load scenario</button><button id="lua">Export Sandbox settings</button></div><input type="file" id="file" accept="application/json,.json" hidden>
 <p id="feedback" role="status">Preparing model…</p>
 </aside>
 <section class="workspace" id="mapArea">

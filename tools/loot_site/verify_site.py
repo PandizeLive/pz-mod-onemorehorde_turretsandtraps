@@ -29,6 +29,7 @@ for link in p.links:
     if link.startswith('#'):
         assert link[1:] in p.ids,f'Missing anchor: {link}'
         continue
+    if link == 'https://admin.onemorehorde.com/admin/LootLab/': continue
     assert not re.match(r'https?://',link),'Unexpected network dependency'
     assert (site/link).is_file(),f'Missing local link: {link}'
 app=(site/'app.js').read_text(encoding='utf-8')

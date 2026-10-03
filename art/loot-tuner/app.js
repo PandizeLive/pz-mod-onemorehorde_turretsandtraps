@@ -24,7 +24,9 @@ for(const [i,m] of D.modules.entries()){
   show.type='checkbox';show.id='show-'+m.id;show.setAttribute('aria-label','Show '+m.name+' on map');
   show.addEventListener('change',()=>{scenario.visible[m.id]=show.checked;controls();updateSampleSummary();scheduleDraw();saveSettings();});
   span.textContent=m.name;input.type='number';input.min=0;input.max=20;input.step=.05;input.id='item-'+m.id;input.className='rate';input.setAttribute('aria-label',m.name+' loot multiplier');
-  input.addEventListener('change',()=>{scenario.items[m.id]=bounded(input.value,0,20,1);input.value=scenario.items[m.id];update();saveSettings();});
+  const changeRate=()=>{if(input.value.trim()===''||!Number.isFinite(Number(input.value)))return;scenario.items[m.id]=bounded(input.value,0,20,1);saveSettings();scheduleUpdate();};
+  input.addEventListener('input',changeRate);
+  input.addEventListener('change',()=>{changeRate();input.value=scenario.items[m.id];});
   small.id='estimate-'+m.id;label.append(show,swatch,span);top.append(label,input);
   const rarity=document.createElement('div'),track=document.createElement('div'),marker=document.createElement('span'),ends=document.createElement('div');
   rarity.className='rarity';track.className='rarity-track';track.id='rarity-'+m.id;track.setAttribute('role','meter');track.setAttribute('aria-label',m.name+' estimated abundance');track.setAttribute('aria-valuemin','0');track.setAttribute('aria-valuemax','1000');
@@ -33,11 +35,14 @@ for(const [i,m] of D.modules.entries()){
   div.append(top,rarity,small);$('components').append(div);
 }
 function bounded(value,min,max,fallback){const n=Number(value);return Number.isFinite(n)?Math.min(max,Math.max(min,n)):fallback;}
+let updateTimer=null;
+function scheduleUpdate(){clearTimeout(updateTimer);updateTimer=setTimeout(()=>{updateTimer=null;update();},150);}
+function fieldValue(id,value){const input=$(id);if(document.activeElement!==input)input.value=value;}
 function controls(){
-  for(const key of ['global','material','rolls','retention']){$(key).value=scenario[key];$(key+'Out').textContent=key==='retention'?Math.round(scenario[key]*100)+'%':scenario[key].toFixed(2)+'×';}
-  for(const m of D.modules){$('item-'+m.id).value=scenario.items[m.id];$('show-'+m.id).checked=scenario.visible[m.id];$('component-'+m.id).classList.toggle('is-hidden',!scenario.visible[m.id]);}
+  for(const key of ['global','material','rolls','retention']){fieldValue(key,scenario[key]);$(key+'Out').textContent=key==='retention'?Math.round(scenario[key]*100)+'%':scenario[key].toFixed(2)+'×';}
+  for(const m of D.modules){fieldValue('item-'+m.id,scenario.items[m.id]);$('show-'+m.id).checked=scenario.visible[m.id];$('component-'+m.id).classList.toggle('is-hidden',!scenario.visible[m.id]);}
   $('overlay').value=scenario.overlay;$('seedBadge').textContent='Seed '+scenario.seed;
-  $('seed').value=scenario.seed;$('selected').value=scenario.selected;
+  fieldValue('seed',scenario.seed);$('selected').value=scenario.selected;
 }
 function fillTable(id,rows){
   const fragment=document.createDocumentFragment();
@@ -80,9 +85,11 @@ $('refresh').addEventListener('click',()=>{
 });
 $('overlay').addEventListener('change',()=>{scenario.overlay=$('overlay').value;scheduleDraw();saveSettings();});
 for(const [id,visible] of [['showAll',true],['hideAll',false]])$(id).addEventListener('click',()=>{for(const m of D.modules)scenario.visible[m.id]=visible;controls();updateSampleSummary();scheduleDraw();saveSettings();});
-for(const key of ['global','material','rolls','retention'])$(key).addEventListener('input',()=>{scenario[key]=Number($(key).value);update();saveSettings();});
+for(const key of ['global','material','rolls','retention'])$(key).addEventListener('input',()=>{scenario[key]=Number($(key).value);saveSettings();scheduleUpdate();});
 $('selected').addEventListener('change',()=>{scenario.selected=$('selected').value;update();saveSettings();});
-$('seed').addEventListener('change',()=>{scenario.seed=Math.floor(bounded($('seed').value,0,4294967295,24601));controls();saveSettings();prepare();});
+let seedTimer=null;
+$('seed').addEventListener('input',()=>{const raw=$('seed').value;if(raw.trim()===''||!Number.isFinite(Number(raw)))return;scenario.seed=Math.floor(bounded(raw,0,4294967295,24601));saveSettings();clearTimeout(seedTimer);seedTimer=setTimeout(()=>prepare().catch(modelError),150);});
+$('seed').addEventListener('change',()=>{$('seed').value=scenario.seed;});
 $('reset').addEventListener('click',()=>{const old=scenario.seed;scenario=M.defaults(D);controls();saveSettings(true);old===scenario.seed&&prepared?update():prepare();});
 function download(name,text,type){const a=document.createElement('a'),url=URL.createObjectURL(new Blob([text],{type}));a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);$('feedback').textContent='Exported '+name+'.';}
 $('save').addEventListener('click',()=>download('omh-loot-scenario.json',JSON.stringify(scenario,null,2),'application/json'));
@@ -169,19 +176,21 @@ function draw(){
 let firstResize=true;
 new ResizeObserver(()=>{gestures.reset();const rect=canvas.getBoundingClientRect();width=rect.width;height=rect.height;const dpr=window.devicePixelRatio||1;canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);firstResize?(fit(),firstResize=false):scheduleDraw();}).observe(canvas);
 let settingsSync=null;
+function syncStatus(text){$('syncStatus').textContent=text;$('syncBanner').classList.toggle('sync-error',/Not synced|not loaded|unavailable/i.test(text));$('syncNow').disabled=false;}
+$('syncNow').addEventListener('click',()=>settingsSync?.sync());
 function saveSettings(replace=false){if(settingsSync)settingsSync.edit(scenario,replace);else{try{localStorage.setItem('omh-lootlab-local',JSON.stringify(scenario));$('syncStatus').textContent='Saved in this browser only';}catch{$('syncStatus').textContent='Browser storage unavailable';}}}
 function acceptSettings(next){const changed=JSON.stringify(next)!==JSON.stringify(scenario),seedChanged=next.seed!==scenario.seed;scenario=next;for(const input of document.querySelectorAll('input,select,button'))input.disabled=false;$('refresh').disabled=!prepared&&generation>0;if(seedChanged||!prepared){if(changed||generation===0)prepare().catch(modelError);}else if(changed)update();controls();}
 function modelError(e){$('loading').textContent='Model failed: '+e.message;$('feedback').textContent='The tool could not finish its estimate.';}
 if(location.protocol==='https:'&&location.pathname.startsWith('/admin/LootLab')){
   for(const input of document.querySelectorAll('input,select,button'))input.disabled=true;
   let storage;try{storage=localStorage;}catch{}
-  settingsSync=window.LootSettings.create({defaults:M.defaults(D),previousBaselines:D.meta.previousBaselines,validate:value=>M.validate(value,D),transport:window.LootSettings.transport,storage,onChange:acceptSettings,onStatus:text=>{$('syncStatus').textContent=text;}});
-  settingsSync.sync();
+  settingsSync=window.LootSettings.create({defaults:M.defaults(D),previousBaselines:D.meta.previousBaselines,validate:value=>M.validate(value,D),transport:window.LootSettings.transport,storage,onChange:acceptSettings,onStatus:syncStatus});
+  $('syncNow').hidden=false;settingsSync.sync();
   window.addEventListener('online',()=>settingsSync.sync());window.addEventListener('focus',()=>settingsSync.sync());
   document.addEventListener('visibilitychange',()=>settingsSync.sync());
   window.addEventListener('pagehide',()=>settingsSync.sync());
   setInterval(()=>{if(!document.hidden)settingsSync.sync();},15000);
 }else{
   try{const saved=JSON.parse(localStorage.getItem('omh-lootlab-local'));if(saved)scenario=M.validate(saved,D);}catch{}
-  $('syncStatus').textContent='Local file: settings stay in this browser only';controls();prepare().catch(modelError);
+  $('hostedLink').hidden=false;syncStatus('Browser-only copy — changes do not sync between devices.');controls();prepare().catch(modelError);
 }

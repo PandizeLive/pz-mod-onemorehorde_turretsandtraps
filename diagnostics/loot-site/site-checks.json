@@ -1,8 +1,9 @@
 {
   "status": "passed",
-  "htmlIds": 41,
+  "htmlIds": 44,
   "localDependencies": [
     "style.css",
+    "https://admin.onemorehorde.com/admin/LootLab/",
     "#mapArea",
     "#tuning",
     "README.md",
