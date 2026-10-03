@@ -1,8 +1,10 @@
 # Release state and publication policy
 
-## Approved candidate: 0.2.25
+## Current local installation: 0.2.25
 
-[C76 broader loot and turret servicing](PATCH_v0.2.25.md). Validation passes 3,121 assertions, 52 runtime/translation files, 453 native keys and 148 package files. Native stock 42.21.0 write/read probes cover twenty real firearms, base-only repair and persistence; exact release evidence follows installation. Loot model checks cover twelve pools, 102 entries, 75 routes, 18,514 candidate containers and five-plus marker sizing. All 71 website tests and the deployment dry run pass. Preserve saved Sandbox/account settings and cumulative unuploaded notes. No Steam publication or GitHub push; rendered/audio acceptance is pending.
+[C76 broader loot and turret servicing](PATCH_v0.2.25.md). Validation passes 3,121 assertions, 52 runtime/translation files, 453 native keys and 148 package files. Native stock 42.21.0 write/read probes pass in 40.6/41.0 seconds, covering twenty real firearms, base-only repair and persistence. Loot model checks cover twelve pools, 102 entries, 75 routes, 18,514 candidate containers and five-plus marker sizing. All 71 website tests, build and deployment dry run pass.
+
+Installed from annotated `test/v0.2.25` (`c8765b5`). [Evidence](../diagnostics/v0.2.25/local-release.json) verifies all 148 source/tag/installed/archive files and all 148 previous-version backup files. [Archive](../artifacts/OMHTT-0.2.25.zip). LootLab deployed as Worker `29124154-19ad-40de-91eb-c1893b93d256`; live bundle matches the tested build (SHA-256 `277917cc9502de76f74b813eda974e852ecee6dbc07f522101bfa97cbf00b0f6`). Twelve admin routes retain Access protection and both public endpoints return HTTP 200. [Website release record](../../OMH%20Website/RELEASE_LOOTLAB_2026-10-01.md). Saved Sandbox/account settings and cumulative unuploaded notes are preserved. No Steam publication or GitHub push; rendered/audio acceptance is pending in the seven-step combined test.
 
 ## Previous local installation: 0.2.24
 
