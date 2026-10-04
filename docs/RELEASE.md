@@ -1,8 +1,8 @@
 # Release state and publication policy
 
-## Current candidate: 0.2.28
+## Current local installation: 0.2.28
 
-[C79 broader loot and startup firearm audit](PATCH_v0.2.28.md). Normalized 5x weights, sixteen native pools and bounded debug audit. 3,433 Kahlua assertions and 154 package hashes pass; native read/restart/save verifies 121 loot entries and twenty real guns/two cap-gun rejections. Isolated Firearms B42 audit matches admission for all 51 supported guns and two cap guns; 153 fired rounds conserved. Native write/read probes pass in 89.3/88.6 seconds. Tagged local install is recorded below when complete.
+[C79 broader loot and startup firearm audit](PATCH_v0.2.28.md). Normalized 5x weights, sixteen native pools and bounded debug audit. 3,433 Kahlua assertions and 154 package hashes pass; native read/restart/save verifies 121 loot entries and twenty real guns/two cap-gun rejections. Isolated Firearms B42 audit matches admission for all 51 supported guns and two cap guns; 153 fired rounds conserved. Native write/read probes pass in 89.3/88.6 seconds. Installed from annotated `test/v0.2.28`, source `126ea390f8be960de7c67c882e7d7b16f66ecfff`. All 154 source/installed/archive hashes and the 153-file 0.2.27 backup verify. See [local release evidence](../diagnostics/v0.2.28/local-release.json).
 
 LootLab is deployed as Worker `fdf7a3c1-8c67-4b6e-8a22-ef9297687a00`, verified live bundle SHA-256 `6c8913b6970051894f5a1995004f7461224c47d86c992f363be236202a15ceb9`. All 72 API/page tests pass, twelve protected admin routes and two public HTTP 200 checks pass. Existing account tuning remains unchanged; no D1 write. Source snapshot and production evidence are in the website repository's `.tmp/release-lootlab-028/`. Louisville hang remains unassigned; native warning and Windows hang evidence do not identify a responsible mod. No Workshop upload or GitHub push.
 

@@ -1,0 +1,23 @@
+{
+  "version": "0.2.28",
+  "sourceCommit": "126ea390f8be960de7c67c882e7d7b16f66ecfff",
+  "tag": "test/v0.2.28",
+  "installed": "C:\\Users\\bandi\\Zomboid\\mods\\OneMoreHorde_TurretsAndTraps",
+  "filesVerified": 154,
+  "backup": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\p1c1\\install-backups\\20261004-173146-7054\\OneMoreHorde_TurretsAndTraps",
+  "backupVersion": "0.2.27",
+  "backupFilesVerified": 153,
+  "archive": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\artifacts\\OMHTT-0.2.28.zip",
+  "archiveSHA256": "083bde50f33e4da88559c096b36e603ef144aa5e85df2a3886339de5a4a00787",
+  "kahluaAssertions": 3433,
+  "nativeWrite": "passed",
+  "nativeRead": "passed",
+  "firearmsB42": {
+    "accepted": 51,
+    "excludedCapGuns": 2,
+    "conservedShots": 153
+  },
+  "lootLabWorker": "fdf7a3c1-8c67-4b6e-8a22-ef9297687a00",
+  "clientAcceptance": "pending",
+  "LouisvilleHang": "unassigned; no stack or dump"
+}
