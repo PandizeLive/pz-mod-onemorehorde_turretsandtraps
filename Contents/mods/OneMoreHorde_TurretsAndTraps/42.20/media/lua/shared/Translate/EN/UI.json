@@ -157,5 +157,8 @@
     "UI_OMHTT_ManageOff": "Switched off",
     "UI_OMHTT_ManageChances": "Accuracy: %1 percent | Critical: %2 percent / x%3",
     "UI_OMHTT_ManageModuleDoesNotStack": "This module doesn't stack.",
-    "UI_OMHTT_ManageUnsupportedFirearm": "Unsupported weapon mechanism."
+    "UI_OMHTT_ManageUnsupportedFirearm": "Unsupported weapon mechanism.",
+    "UI_OMHTT_EngagementRange": "Engagement range: %1",
+    "UI_OMHTT_RangeMax": "Max",
+    "UI_OMHTT_RangeTooltip": "Limit targeting distance."
 }

@@ -1,6 +1,7 @@
 if isClient() or isServer() then return end
 require("ISUI/ISPanel")
 require("ISUI/ISButton")
+require("ISUI/ISComboBox")
 require("TimedActions/ISBaseTimedAction")
 local T = require("OMHTT/Turret")
 local M = require("OMHTT/TurretModules")
@@ -81,6 +82,17 @@ function Panel:changePriority()
     D.emit("turret-priority", {id = state.id, priority = state.priority})
 end
 
+---@return nil
+function Panel:changeRange()
+    local W = require("OMHTT/TurretWorld")
+    if not W.near(self.player, self.object) then return end
+    local value = self.rangeCombo.selected - 1
+    local state = T.state(self.object)
+    state.engagementRange = value > 0 and value or nil
+    W.refresh(self.object)
+    self.nextRefresh = 0
+end
+
 ---@param delta number Wheel direction
 ---@return boolean handled
 function Panel:scrollModules(delta)
@@ -134,6 +146,14 @@ function Panel:refresh()
     local profile = M.profile(state, contents)
     local stats = T.cycleConfig(contents)
     self.stats = stats
+    self.engagementRange = profile.range
+    if self.rangeMaximum ~= math.floor(stats.range) then
+        self.rangeMaximum = math.floor(stats.range)
+        self.rangeCombo:clear()
+        self.rangeCombo:addOption(getText("UI_OMHTT_RangeMax"))
+        for tiles = 1, self.rangeMaximum do self.rangeCombo:addOption(tostring(tiles)) end
+    end
+    self.rangeCombo.selected = state.engagementRange and math.min(state.engagementRange, self.rangeMaximum) + 1 or 1
     local powered = T.isOn(state)
     self.powerButton:setTitle("")
     self.powerButton.tooltip = getText(powered and "UI_OMHTT_PowerOn" or "UI_OMHTT_PowerOff")
@@ -263,6 +283,8 @@ function Panel:prerender()
     if elapsed < 1500 then glow = (1 - elapsed / 1500) * (0.5 + 0.5 * math.cos(elapsed / 120)) end
     self:drawText(self.result, 12, y + h * 5, 0.9 + glow * 0.1, 0.85 + glow * 0.15, 0.65 + glow * 0.35, 1, UIFont.Small)
     self:drawText(self.reason, 12, y + h * 6, 0.9 + glow * 0.1, 0.85 + glow * 0.15, 0.65 + glow * 0.35, 1, UIFont.Small)
+    self:drawText(getText("UI_OMHTT_EngagementRange", string.format("%.1f", self.engagementRange)),
+        12, y + h * 7, 1, 1, 1, 1, UIFont.Small)
 end
 
 ---@param x number Local X
@@ -287,7 +309,7 @@ function OpenAction:perform()
         local modulesY = top + (slotHeight + 8) * 2
         local moduleHeight = lineHeight * 2 + 24
         local detailsY = modulesY + lineHeight + (moduleHeight + 6) * 2 + 6
-        local height = detailsY + lineHeight * 7 + 82
+        local height = detailsY + lineHeight * 8 + 82
         local x = getPlayerScreenLeft(index) + getPlayerScreenWidth(index) - width - 12
         local y = getPlayerScreenTop(index) + math.max(12, (getPlayerScreenHeight(index) - height) / 2)
         local panel = Panel:new(x, y, width, height)
@@ -299,6 +321,10 @@ function OpenAction:perform()
         panel.moveWithMouse = true
         panel.backgroundColor = {r = 0.04, g = 0.04, b = 0.04, a = 0.96}
         panel:initialise()
+        panel.rangeCombo = ISComboBox:new(width / 2, detailsY + lineHeight * 7 - 3, width / 2 - 12, 24, panel, Panel.changeRange)
+        panel.rangeCombo:initialise()
+        panel.rangeCombo.tooltip = getText("UI_OMHTT_RangeTooltip")
+        panel:addChild(panel.rangeCombo)
         panel.headSlot = panel:addSlot("head", getText("UI_OMHTT_ManageHead"), 12, top, (width - 32) / 2)
         panel.batterySlot = panel:addSlot("battery", "", width / 2 + 4, top, (width - 32) / 2 - 88)
         panel.powerButton = ISButton:new(width - 92, top, 80, panel.slotHeight, "", panel, Panel.togglePower)

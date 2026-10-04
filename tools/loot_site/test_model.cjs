@@ -5,7 +5,7 @@ global.window={};require(path.join(site,'data.js'));
 const D=window.LOOT_DATA,M=require(path.join(site,'model.js'));
 async function run(){
   assert.equal(D.containers.length,18514);assert.equal(D.routes.length,75);assert.equal(D.modules.length,15);
-  assert.equal(D.modules.find(m=>m.id==='Suppression').weight,.25);
+  assert.equal(D.modules.find(m=>m.id==='Suppression').weight,2.25);
   assert(D.modules.some(m=>m.id==='Critical')&&D.modules.some(m=>m.id==='Accuracy'));
   assert.equal(Object.keys(D.pools).length,12);
   assert.equal(M.probability(.5,1,1,.6),.003);
@@ -32,7 +32,12 @@ async function run(){
   assert.deepEqual(M.haulDistribution([.5],2),[.25,.5,.25,0,0,0]);
   assert(M.markerRadius('spawns',5,0)>M.markerRadius('spawns',4,0));
   assert(M.markerRadius('chances',0,.5)>M.markerRadius('chances',0,.01));
-  const s=M.defaults(D);assert.deepEqual(M.validate(s,D),s);assert.equal(s.global,6);assert.equal(s.items.Firing,3);assert.equal(s.items.Filter,2);
+  const s=M.defaults(D);assert.deepEqual(M.validate(s,D),s);assert.equal(s.global,1);assert.equal(s.items.Firing,1);assert.equal(s.items.Filter,1);
+  const factors=Object.fromEntries(D.modules.map(m=>[m.id,['Firing','MotionDetection','CapacitySmall','CapacityLarge','Autoloader'].includes(m.id)?3:2]));
+  const approved={...s,baseline:'T&T 0.2.25',global:4.5,items:factors};
+  assert.deepEqual(M.validate(approved,D),s,'Approved old multipliers normalize exactly to all ones');
+  const oldData={...D,modules:D.modules.map(m=>({...m,weight:m.weight/4.5/factors[m.id]}))};
+  assert.deepEqual(M.generate(oldData,approved),M.generate(D,s),'Normalization preserves every seeded container and count');
   const generated=M.generate(D,s);
   assert.equal(generated.containerTotals.reduce((a,b)=>a+b,0),generated.totals.reduce((a,b)=>a+b,0));
   assert(generated.spawns.length>0);
@@ -55,7 +60,7 @@ async function run(){
   assert.deepEqual(await M.prepare(fixture,5,()=>{},8),await M.prepare(fixture,5,()=>{},8));
   for(const c of D.containers){assert(D.routes[c.route]);assert.equal(typeof c.capacity,'string');assert(c.x>=0&&c.y>=0);assert(Array.isArray(c.forced));}
   const old={...s,baseline:'Installed 0.2.22',items:{...s.items},visible:{...s.visible},global:2.5};delete old.items.Critical;delete old.items.Accuracy;delete old.visible.Critical;delete old.visible.Accuracy;
-  const upgraded=M.validate(old,D);assert.equal(upgraded.global,2.5);assert.equal(upgraded.items.Critical,1);assert.equal(upgraded.baseline,D.meta.baseline);
+  const upgraded=M.validate(old,D);assert.equal(upgraded.global,2.5/4.5);assert.equal(upgraded.items.Critical,.5);assert.equal(upgraded.baseline,D.meta.baseline);
   assert.deepEqual(D.pools.ElectricianTools.modules.slice().sort(),['Firing','MotionDetection','Filter','Detection360'].sort());
   const small={...D,containers:[{...D.containers[0],route:0,room:'only',forced:['GunStoreAccessories']}],routes:[{rules:[{name:'GunStoreAccessories',min:0,max:99}]}]};
   const certain={...s,global:20,material:10,items:Object.fromEntries(D.modules.map(m=>[m.id,20]))};

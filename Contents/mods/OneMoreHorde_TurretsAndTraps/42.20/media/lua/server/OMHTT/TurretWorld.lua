@@ -11,6 +11,7 @@ local W = OMHTT_TurretWorld
 local facings = {e = 0, n = 4, w = 8, s = 12}
 local generators = {}
 local feeders, feederOrder, feederCursor = {}, {}, 1
+local snapshots, refreshQueue = {}, {}
 
 ---@param object IsoThumpable Managed turret
 ---@return nil
@@ -63,6 +64,7 @@ end
 ---@param object IsoThumpable Device
 ---@return nil
 function W.refresh(object)
+    snapshots[object] = nil
     local state = T.state(object)
     if not state or not object:getContainer() then return end
     local contents = T.contents(object:getContainer())
@@ -98,6 +100,29 @@ function W.refresh(object)
     state.condition = object:getHealth()
     T.cycle(contents, getTimestampMs())
     triggerEvent("OnOMHTTTurretChanged", object, contents.head)
+end
+
+---@param object IsoObject Turret
+---@param configuration boolean Head/module/control change
+---@return nil
+function W.queueRefresh(object, configuration)
+    snapshots[object] = nil
+    refreshQueue[object] = configuration or refreshQueue[object] or false
+end
+
+---@param object IsoObject Turret
+---@return table contents Bounded-lived inventory snapshot
+function W.contents(object)
+    local storage, now = object:getContainer(), getTimestampMs()
+    local count = storage:getItems():size()
+    local entry = snapshots[object]
+    if not entry or entry.count ~= count or now >= entry.expires or now < entry.created then
+        entry = {count = count, created = now, expires = now + 200, contents = T.contents(storage)}
+        snapshots[object] = entry
+    end
+    local contents = entry.contents
+    if G.profile(contents.head) then contents.ammo = contents.reserve + G.loaded(contents.head) end
+    return contents
 end
 
 ---@param player IsoPlayer Operator
@@ -415,6 +440,17 @@ function W.feedTick()
     if isClient() or isServer() then return end
     local now = getTimestampMs()
     local deadline = now + 1
+    local changed = 0
+    for object, configuration in pairs(refreshQueue) do
+        refreshQueue[object] = nil
+        if W.valid(object) then
+            if configuration then W.refresh(object) end
+        else
+            snapshots[object] = nil
+        end
+        changed = changed + 1
+        if changed >= 4 or getTimestampMs() >= deadline then break end
+    end
     for i = 1, math.min(4, #feederOrder) do
         if #feederOrder == 0 or getTimestampMs() >= deadline then return end
         if feederCursor > #feederOrder then feederCursor = 1 end
@@ -423,13 +459,13 @@ function W.feedTick()
         if not square or object:getObjectIndex() < 0 or not T.state(object)
             or getCell():getGridSquare(square:getX(), square:getY(), square:getZ()) ~= square then
             Audio.stop(object)
-            feeders[object] = nil
+            feeders[object], snapshots[object] = nil, nil
             table.remove(feederOrder, feederCursor)
         else
             local state = T.state(object)
             if not state.feedCheck or now >= state.feedCheck then
                 state.feedCheck = now + 100
-                local contents = T.contents(object:getContainer())
+                local contents = W.contents(object)
                 if contents.head then
                     local stats = T.cycleConfig(contents)
                     if W.valid(object) and T.isOn(state) and W.power(object, contents) then
@@ -450,7 +486,7 @@ function W.feedTick()
                     end
                 else
                     Audio.stop(object)
-                    feeders[object] = nil
+                    feeders[object], snapshots[object] = nil, nil
                     table.remove(feederOrder, feederCursor)
                     feederCursor = feederCursor - 1
                 end

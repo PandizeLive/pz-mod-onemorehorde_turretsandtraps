@@ -1,0 +1,14 @@
+{
+  "game": "42.21.0",
+  "scope": "Conservative native-derived automatic clip cycle, not measured player RPM",
+  "autoClipSeconds": 0.3333333333333333,
+  "animationSpeed": 1.5,
+  "firearmRateDefault": 0.75,
+  "nativeProbeM16CooldownMs": 296.2962962962963,
+  "sources": {
+    "media/AnimSets/player/ranged/firearm/FirearmAuto.xml": "c3a959129f1b41ab0d1b49e3989909cacbba34ca83253728123fe6329202a754",
+    "media/AnimSets/player/ranged/firearm/FirearmDefault.xml": "5cf265f709349421af4dfa9daa7894f9db20777c4bdfabb57f2140ae3f8a1ffe",
+    "media/anims_X/Bob/Bob_AttackRifle_Small.x": "b9776655eef6f43810e6439299a8e4f3ff12e68a2ce50be57f72d54063d0c6c8",
+    "projectzomboid.jar": "e1a69eb743ede60b213a0fe7f8b83d4fcab773036d256cc4543a336f3b058a33"
+  }
+}

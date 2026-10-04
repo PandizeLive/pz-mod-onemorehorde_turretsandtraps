@@ -1,20 +1,20 @@
 {
   "haul": {
-    "expectedSuccessfulContainers": 1836.888445048747,
-    "oneOrTwoShare": 0.7714711308442015,
-    "jackpotShare": 0.05500361825044037
+    "expectedSuccessfulContainers": 1564.1657050706963,
+    "oneOrTwoShare": 0.8317014138716361,
+    "jackpotShare": 0.026060852786633035
   },
   "status": "passed",
   "scope": "Numerical model, seeded per-container spawning and extracted-data integrity; no in-game spawn certification",
-  "generatedItems": 3406,
-  "elapsedMs": 2949,
+  "generatedItems": 2566,
+  "elapsedMs": 2852,
   "candidates": 18514,
   "worldSamples": 256,
   "baseline": {
     "version": 1,
-    "baseline": "T&T 0.2.25",
+    "baseline": "T&T 0.2.26",
     "seed": 24601,
-    "global": 6,
+    "global": 1,
     "material": 0.6,
     "rolls": 1,
     "retention": 1,
@@ -38,29 +38,29 @@
       "Accuracy": true
     },
     "items": {
-      "Firing": 3,
-      "MotionDetection": 3,
-      "Filter": 2,
-      "Detection360": 2,
-      "Suppression": 2,
-      "RapidFire": 2,
-      "Reload": 2,
-      "Velocity": 2,
-      "Range": 2,
-      "CapacitySmall": 3,
-      "Capacity": 2,
-      "CapacityLarge": 3,
-      "Autoloader": 3,
-      "Critical": 2,
-      "Accuracy": 2
+      "Firing": 1,
+      "MotionDetection": 1,
+      "Filter": 1,
+      "Detection360": 1,
+      "Suppression": 1,
+      "RapidFire": 1,
+      "Reload": 1,
+      "Velocity": 1,
+      "Range": 1,
+      "CapacitySmall": 1,
+      "Capacity": 1,
+      "CapacityLarge": 1,
+      "Autoloader": 1,
+      "Critical": 1,
+      "Accuracy": 1
     }
   },
   "selectedEstimate": {
-    "mean": 3505.227064062499,
-    "lo": 3365,
-    "hi": 3643
+    "mean": 2630.0336375000015,
+    "lo": 2517,
+    "hi": 2741
   },
-  "allComponentsMean": 3505.227064062499,
+  "allComponentsMean": 2630.0336375000015,
   "pools": [
     {
       "name": "ElectronicStoreMisc",
@@ -114,75 +114,75 @@
   "regions": [
     {
       "name": "WestPoint",
-      "mean": 162.27384843750647,
-      "lo": 134,
-      "hi": 190
+      "mean": 121.74989375000571,
+      "lo": 99,
+      "hi": 145
     },
     {
       "name": "Riverside",
-      "mean": 303.27311093750336,
-      "lo": 262,
-      "hi": 351
+      "mean": 227.5430453125084,
+      "lo": 190,
+      "hi": 261
     },
     {
       "name": "Muldraugh",
-      "mean": 227.12751875000268,
-      "lo": 192,
-      "hi": 262
+      "mean": 170.43611093750795,
+      "lo": 143,
+      "hi": 201
     },
     {
       "name": "Brandenburg",
-      "mean": 175.41556406251377,
-      "lo": 141,
-      "hi": 205
+      "mean": 131.62320781251324,
+      "lo": 109,
+      "hi": 160
     },
     {
       "name": "Ekron",
-      "mean": 208.69195000001008,
-      "lo": 172,
-      "hi": 240
+      "mean": 156.60765000000927,
+      "lo": 132,
+      "hi": 183
     },
     {
       "name": "Irvington",
-      "mean": 221.07713750000968,
-      "lo": 184,
-      "hi": 255
+      "mean": 165.87457031250904,
+      "lo": 138,
+      "hi": 194
     },
     {
       "name": "EchoCreek",
-      "mean": 174.40127812502337,
-      "lo": 144,
-      "hi": 207
+      "mean": 130.88648593751395,
+      "lo": 107,
+      "hi": 154
     },
     {
       "name": "Louisville",
-      "mean": 1380.8894140624222,
-      "lo": 1296,
-      "hi": 1476
+      "mean": 1036.0784125000046,
+      "lo": 961,
+      "hi": 1110
     },
     {
       "name": "MarchRidge",
-      "mean": 75.69259218750345,
-      "lo": 54,
-      "hi": 100
+      "mean": 56.78855781250187,
+      "lo": 40,
+      "hi": 78
     },
     {
       "name": "FallasLake",
-      "mean": 136.4480625000088,
-      "lo": 109,
-      "hi": 162
+      "mean": 102.36704062500819,
+      "lo": 81,
+      "hi": 123
     },
     {
       "name": "Rosewood",
-      "mean": 211.80708281251097,
-      "lo": 177,
-      "hi": 249
+      "mean": 158.9073468750052,
+      "lo": 132,
+      "hi": 184
     },
     {
       "name": "ValleyStation",
-      "mean": 228.12950468751637,
-      "lo": 195,
-      "hi": 268
+      "mean": 171.1713156249995,
+      "lo": 145,
+      "hi": 200
     }
   ]
 }

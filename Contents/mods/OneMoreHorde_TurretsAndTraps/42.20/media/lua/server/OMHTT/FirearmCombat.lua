@@ -1,5 +1,6 @@
 if isClient() or isServer() then return end
 local G = require("OMHTT/Firearms")
+local Accuracy = require("OMHTT/FirearmAccuracy")
 local Damage = require("OMHTT/Damage")
 local D = require("OMHTT/Diagnostics")
 local Modules = require("OMHTT/TurretModules")
@@ -35,7 +36,9 @@ function C.hit(record, origin, target, player, options)
     local multiplier = critical and stats.critMultiplier or 1
     for i = 1, pellets do
         local victim = targets[(i - 1) % #targets + 1]
-        if not victim:isDead() and ZombRand(10000) < stats.accuracy * 100 then
+        local dx, dy = victim:getX() - origin:getX() - 0.5, victim:getY() - origin:getY() - 0.5
+        local chance = Accuracy.chance(gun, stats, math.sqrt(dx * dx + dy * dy), victim:isProne())
+        if not victim:isDead() and ZombRand(10000) < chance * 100 then
             lost = lost + Damage.apply(victim, stats.damage * multiplier / 100 / pellets, record.id, "firearm", player, gun)
             hits = hits + 1
             local guard = victim:getModData().OMHTTKnockdownUntilMs

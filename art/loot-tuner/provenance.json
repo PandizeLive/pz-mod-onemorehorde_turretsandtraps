@@ -1,7 +1,7 @@
 {
   "gameVersion": "42.21.0",
-  "modBaseline": "T&T 0.2.25",
-  "scope": "New-world SP estimates matching T&T 0.2.25",
+  "modBaseline": "T&T 0.2.26",
+  "scope": "New-world SP estimates matching T&T 0.2.26",
   "sources": [
     {
       "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\ProjectZomboid\\media\\maps\\Muldraugh, KY\\worldmap.xml",
@@ -15,13 +15,13 @@
     },
     {
       "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\Contents\\mods\\OneMoreHorde_TurretsAndTraps\\42.20\\media\\lua\\shared\\OMHTT\\LootDefinitions.lua",
-      "sha256": "5b491e8b71524d7e66d35a0eb84e9500e24820f03942e0f54a580536ac472016",
-      "bytes": 1954
+      "sha256": "bdc86c26aa22bd2b91abd5e449288a26a7cf49a98c1704f297fe95db678a8f7e",
+      "bytes": 1959
     },
     {
       "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\loot-site\\cache\\Lua\\loot-routes.json",
-      "sha256": "b0ab0459828c8b5920d5d2a17edb0aab9711aab805ece24121a4c7d98f631476",
-      "bytes": 128661
+      "sha256": "462423310f5bd34923862166d4af35e73de95957d4b54289e8112ce07fd150a8",
+      "bytes": 128666
     },
     {
       "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\loot-site\\cache\\Lua\\loot-tile-properties.txt",
@@ -35,21 +35,22 @@
     },
     {
       "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\Contents\\mods\\OneMoreHorde_TurretsAndTraps\\42.20\\media\\sandbox-options.txt",
-      "sha256": "5b30f79e8234d10c709984ba62838d60e2fc168299f984b64aeb537d6c9ad668",
-      "bytes": 18210
+      "sha256": "a200017bdeb6a178b9cb14b3e631bad46310137d9056f5b4d7c6f853c229e6ca",
+      "bytes": 18436
     }
   ],
   "dataset": {
-    "sha256": "acd08ed8b1556347a9350f8544d5cecd19c98d94f6a436a064bb0df430e0cf7e",
-    "bytes": 4338259
+    "sha256": "bcfafc8f8a1f794baf8a6fa45fd2569d6906c7b643e17a2e1a81de0103a1f207",
+    "bytes": 4338277
   },
   "extraction": {
     "game": "42.21.0",
-    "baseline": "T&T 0.2.25",
+    "baseline": "T&T 0.2.26",
     "previousBaselines": [
       "Installed 0.2.22",
       "T&T 0.2.23",
-      "T&T 0.2.24"
+      "T&T 0.2.24",
+      "T&T 0.2.25"
     ],
     "headers": 4065,
     "roomRecords": 90827,

@@ -15,7 +15,7 @@ function A.changed(object, head)
         A.entries[object] = entry
         A.order[#A.order + 1] = entry
     end
-    entry.job, entry.due, entry.status, entry.target = nil, 0, nil, nil
+    entry.job, entry.due, entry.status, entry.target, entry.fireDue = nil, 0, nil, nil, 0
 end
 
 ---@param origin IsoGridSquare Turret square
@@ -88,11 +88,11 @@ function A.step(entry, deadline)
     if not square or not state or object:getObjectIndex() < 0
         or getCell():getGridSquare(square:getX(), square:getY(), square:getZ()) ~= square then return false end
     local now = getTimestampMs()
-    if now < entry.due then return true end
+    if now < entry.due and (not entry.target or now < (entry.fireDue or 0)) then return true end
     local aim = require("OMHTT/TurretAim").entries[object]
     if require("OMHTT/TurretSearch").pending[object] or (aim and aim.player) then return true end
     local interval = M.option("DetectionInterval", 0.25, 0.1, 5) * 1000
-    local contents = T.contents(object:getContainer())
+    local contents = W.contents(object)
     if not W.valid(object) or not M.detects(state, contents) or not W.power(object, contents) then
         entry.job, entry.due = nil, now + interval
         entry.target = nil
@@ -106,7 +106,7 @@ function A.step(entry, deadline)
     local Combat = require("OMHTT/PrototypeCombat")
     local target = entry.target
     local sticky = profile.priority == "Random" or profile.priority == "Toughest"
-    local retained = sticky and target and M.inside(square, target, profile)
+    local retained = (sticky or now < entry.due) and target and M.inside(square, target, profile)
         and Combat.clearLane(square, target:getSquare(), profile.range)
     local job = {visited = 0}
     if not retained then
@@ -114,7 +114,8 @@ function A.step(entry, deadline)
         if not A.advance(entry.job, 64, deadline) then return true end
         job, target = entry.job, entry.job.best
     end
-    entry.job, entry.due = nil, now + interval
+    entry.job = nil
+    if now >= entry.due then entry.due = now + interval end
     if not target or not M.inside(square, target, profile)
         or not Combat.clearLane(square, target:getSquare(), profile.range) then
         entry.target = nil
@@ -133,9 +134,12 @@ function A.step(entry, deadline)
     end
     if not aligned then
         A.status(entry, "Aiming")
-    elseif contents.active.Firing then
-        A.status(entry, W.fire(nil, object, target))
-    else
+    elseif contents.active.Firing and now >= (entry.fireDue or 0) then
+        local result = W.fire(nil, object, target)
+        entry.fireDue = now + 50
+        if result == "Fired" then entry.fireDue = now + T.cycleConfig(contents).cooldown end
+        A.status(entry, result)
+    elseif not contents.active.Firing then
         A.status(entry, "tracking-only")
     end
     return true

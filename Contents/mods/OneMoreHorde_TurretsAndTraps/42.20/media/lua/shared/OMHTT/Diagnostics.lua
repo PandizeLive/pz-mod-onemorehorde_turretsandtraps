@@ -8,6 +8,7 @@ local windowLines = 0
 local suppressed = 0
 local pending = {}
 local pendingFirst, pendingLast = 1, 0
+local counters, summaryAt = {}, 0
 
 ---@return boolean enabled
 ---@nodiscard
@@ -148,6 +149,16 @@ end
 ---@return nil
 function Diagnostics.defer(event, fields)
     if not Diagnostics.enabled() then return end
+    if SandboxVars.OMHTurretsTraps.DetailedLogging ~= true then
+        Diagnostics.count(event, 1)
+        for key, value in pairs(fields) do
+            if type(value) == "number" and string.sub(key, -2) == "Ms" then
+                local metric = event .. "_" .. key .. "Max"
+                counters[metric] = math.max(counters[metric] or 0, value)
+            end
+        end
+        return
+    end
     if pendingLast - pendingFirst + 1 >= 256 then
         suppressed = suppressed + 1
         return
@@ -156,8 +167,29 @@ function Diagnostics.defer(event, fields)
     pending[pendingLast] = {event = event, fields = fields, at = getTimestampMs()}
 end
 
+---@param event string Category
+---@param fields table Detail fields
+---@return nil
+function Diagnostics.trace(event, fields)
+    if SandboxVars.OMHTurretsTraps.DetailedLogging == true then Diagnostics.emit(event, fields) end
+end
+
+---@param event string Category
+---@param amount number Occurrences
+---@return nil
+function Diagnostics.count(event, amount)
+    if Diagnostics.enabled() then counters[event] = (counters[event] or 0) + amount end
+end
+
 ---@return nil
 function Diagnostics.flush()
+    local now = getTimestampMs()
+    if now - summaryAt >= 5000 or now < summaryAt then
+        summaryAt = now
+        local any = false
+        for _ in pairs(counters) do any = true; break end
+        if any then Diagnostics.emit("summary", counters); counters = {} end
+    end
     if pendingFirst > pendingLast then return end
     if not Diagnostics.enabled() then
         pending, pendingFirst, pendingLast = {}, 1, 0
@@ -178,6 +210,7 @@ end
 ---@return nil
 function Diagnostics.reset()
     pending, pendingFirst, pendingLast = {}, 1, 0
+    counters, summaryAt = {}, 0
     sequence, windowStart, windowLines, suppressed = 0, 0, 0, 0
 end
 

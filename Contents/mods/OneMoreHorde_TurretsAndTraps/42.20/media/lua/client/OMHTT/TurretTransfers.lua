@@ -33,21 +33,22 @@ function X.rejection(player, item, source, destination)
     end
     if T.isContainer(destination) then
         T.configure(destination)
+        local contents = T.contents(destination)
         if item:isFavorite() and not destination:isInCharacterInventory(player) then return "TransferFavorite" end
         if not T.kind(item) then
             if instanceof(item, "HandWeapon") and item:isRanged() then return "UnsupportedFirearm" end
             return "TransferWrongItem"
         end
         local component = T.component(item:getFullType())
-        if T.SINGLE[component] and T.contents(destination).moduleCounts[component] then return "ModuleDoesNotStack" end
+        if T.SINGLE[component] and contents.moduleCounts[component] then return "ModuleDoesNotStack" end
         if T.kind(item) == "ammo" then
-            local head = T.contents(destination).head
+            local head = contents.head
             local gun = require("OMHTT/Firearms")
             local ammoType = "Base.Potato"
             if gun.profile(head) then ammoType = gun.ammoType(head) end
             if head and item:getFullType() ~= ammoType then return "WrongAmmo" end
         end
-        if T.kind(item) == "ammo" and not T.contents(destination).head then return "NoHead" end
+        if T.kind(item) == "ammo" and not contents.head then return "NoHead" end
         if not T.accept(destination, item) then return "TransferFull" end
     end
     if not source:isRemoveItemAllowed(item) or not destination:isItemAllowed(item) then return "TransferWrongItem" end
@@ -92,13 +93,14 @@ function ISInventoryTransferAction:transferItem(item)
     for i = 1, 2 do
         local container = source
         if i == 2 then container = destination end
-        if T.isContainer(container) then
+        if T.isContainer(container) and T.kind(item) ~= "ammo" then
             T.configure(container)
             T.cycle(T.contents(container), getTimestampMs())
         end
-        if T.state(container:getParent()) then W.refresh(container:getParent()) end
+        if T.state(container:getParent()) then W.queueRefresh(container:getParent(), T.kind(item) ~= "ammo") end
     end
-    D.emit("turret-transfer", {item = item:getFullType(), itemId = item:getID(),
+    D.count("turret-transfer", 1)
+    D.trace("turret-transfer", {item = item:getFullType(), itemId = item:getID(),
         source = source:getType(), destination = destination:getType(), moved = destination:contains(item)})
 end
 

@@ -46,10 +46,16 @@ function S.resolve(contents)
         damage = (gun:getMinDamage() + gun:getMaxDamage()) * 50 * S.option("FirearmDamageMultiplier", 1, 0, 5)
         range = gun:getMaxRange() * S.option("FirearmRangeMultiplier", 1, 0.1, 3)
         cooldown = math.max(0.1, gun:getRecoilDelay() / 30)
+        if gun:getFireMode() == "Auto" then
+            local cyclic = gun:getCyclicRateMultiplier()
+            if cyclic <= 0 then cyclic = 1 end
+            cooldown = (1 / 3) / (1.5 * cyclic)
+        end
         if gun:isRackAfterShoot() then cooldown = math.max(cooldown, firearm.rack) end
-        cooldown = cooldown * S.option("FirearmCooldownMultiplier", 1, 0.1, 5)
+        local rate = S.option("FirearmRateMultiplier", 0.75, 0.1, 5)
+        cooldown = cooldown / rate
         reload = firearm.reload * S.option("FirearmReloadMultiplier", 1, 0, 5)
-        rack = firearm.rack * S.option("FirearmCycleMultiplier", 1, 0.1, 5)
+        rack = firearm.rack * S.option("FirearmCycleMultiplier", 1, 0.1, 5) / rate
         magazine = gun:getMaxAmmo()
         ammoCapacity = S.option("FirearmAmmoCapacity", 100, 1, 500)
         accuracy = math.max(0, math.min(100, (gun:getHitChance() + gun:getAimingPerkHitChanceModifier()
@@ -75,7 +81,7 @@ function S.resolve(contents)
     end
     local rapid = S.bonus(active, "RapidFire", 25, 200)
     local loading = S.bonus(active, "Reload", 25, 200)
-    cooldown = math.min(cooldown, math.max(S.option("RapidFireMinimum", 0.25, 0.1, 10), cooldown / (1 + rapid / 100)))
+    cooldown = math.min(cooldown, math.max(math.min(cooldown, S.option("RapidFireMinimum", 0.25, 0.1, 10)), cooldown / (1 + rapid / 100)))
     rack = math.max(0.1, rack / (1 + rapid / 100))
     reload = math.min(reload, math.max(S.option("ReloadMinimum", 0.25, 0, 10), reload / (1 + loading / 100)))
     if active.Autoloader then reload = 0 end

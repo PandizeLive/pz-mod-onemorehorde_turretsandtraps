@@ -201,6 +201,7 @@ public final class NativePersistenceCheck {
         check(Boolean.FALSE.equals(call(state, "rawget", new Class<?>[]{Object.class}, "automatic")), "Automatic switch lost");
         check("Toughest".equals(call(state, "rawget", new Class<?>[]{Object.class}, "priority")), "Target priority lost");
         check(((Number)call(state, "rawget", new Class<?>[]{Object.class}, "baseFacing")).intValue() == 4, "Placement cone orientation lost");
+        check(((Number)call(state, "rawget", new Class<?>[]{Object.class}, "engagementRange")).intValue() == 3, "Engagement range lost");
         check(Double.valueOf(123456789).equals(call(state, "rawget", new Class<?>[]{Object.class}, "nextShot")), "Turret cooldown lost");
         List<?> items = (List<?>)get(get(restored, "getContainer"), "getItems");
         check(items.size() == 8, "Turret contents lost or duplicated");
@@ -259,6 +260,7 @@ public final class NativePersistenceCheck {
         Object packedState = call(get(packedRestored, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTTurret");
         check(Boolean.FALSE.equals(call(packedState, "rawget", new Class<?>[]{Object.class}, "automatic")), "Packed automatic switch lost");
         check("Toughest".equals(call(packedState, "rawget", new Class<?>[]{Object.class}, "priority")), "Packed priority lost");
+        check(((Number)call(packedState, "rawget", new Class<?>[]{Object.class}, "engagementRange")).intValue() == 3, "Packed engagement range lost");
         check(((Number)call(packedState, "rawget", new Class<?>[]{Object.class}, "baseFacing")).intValue() == 4, "Packed orientation lost");
         check(Double.valueOf(123456789).equals(call(packedState, "rawget", new Class<?>[]{Object.class}, "nextShot")), "Portable turret lost cooldown");
         for (Object item : packedItems) {

@@ -304,13 +304,13 @@ option OMHTurretsTraps.FirearmReloadMultiplier {
     translation = OMHTurretsTraps_FirearmReloadMultiplier,
 }
 
-option OMHTurretsTraps.FirearmCooldownMultiplier {
+option OMHTurretsTraps.FirearmRateMultiplier {
     type = double,
     min = 0.1,
     max = 5,
-    default = 1,
+    default = 0.75,
     page = OMHTurretsTraps_PotatoPage,
-    translation = OMHTurretsTraps_FirearmCooldownMultiplier,
+    translation = OMHTurretsTraps_FirearmRateMultiplier,
 }
 
 option OMHTurretsTraps.FirearmCycleMultiplier {
@@ -520,126 +520,126 @@ option OMHTurretsTraps.CapacityLargeModuleBonus {
     translation = OMHTurretsTraps_CapacityLargeModuleBonus,
 }
 
-option OMHTurretsTraps.ModuleLootMultiplier {
+option OMHTurretsTraps.ModuleLootRate {
     type = double,
     min = 0,
     max = 20,
-    default = 6,
+    default = 1,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_ModuleLootMultiplier,
 }
 
-option OMHTurretsTraps.LootFiring {
+option OMHTurretsTraps.LootRateFiring {
     type = double,
     min = 0,
     max = 20,
-    default = 3,
+    default = 1,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootFiring,
 }
 
-option OMHTurretsTraps.LootMotionDetection {
+option OMHTurretsTraps.LootRateMotionDetection {
     type = double,
     min = 0,
     max = 20,
-    default = 3,
+    default = 1,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootMotionDetection,
 }
 
-option OMHTurretsTraps.LootFilter {
+option OMHTurretsTraps.LootRateFilter {
     type = double,
     min = 0,
     max = 20,
-    default = 2,
+    default = 1,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootFilter,
 }
 
-option OMHTurretsTraps.LootDetection360 {
+option OMHTurretsTraps.LootRateDetection360 {
     type = double,
     min = 0,
     max = 20,
-    default = 2,
+    default = 1,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootDetection360,
 }
 
-option OMHTurretsTraps.LootRapidFire {
+option OMHTurretsTraps.LootRateRapidFire {
     type = double,
-    default = 2,
+    default = 1,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRapidFire,
 }
 
-option OMHTurretsTraps.LootSuppression {
+option OMHTurretsTraps.LootRateSuppression {
     type = double,
     min = 0,
     max = 20,
-    default = 2,
+    default = 1,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootSuppression,
 }
 
-option OMHTurretsTraps.LootReload {
+option OMHTurretsTraps.LootRateReload {
     type = double,
-    default = 2,
+    default = 1,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootReload,
 }
 
-option OMHTurretsTraps.LootAutoloader {
+option OMHTurretsTraps.LootRateAutoloader {
     type = double,
-    default = 3,
+    default = 1,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootAutoloader,
 }
 
-option OMHTurretsTraps.LootVelocity {
+option OMHTurretsTraps.LootRateVelocity {
     type = double,
-    default = 2,
+    default = 1,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootVelocity,
 }
 
-option OMHTurretsTraps.LootRange {
+option OMHTurretsTraps.LootRateRange {
     type = double,
-    default = 2,
+    default = 1,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRange,
 }
 
-option OMHTurretsTraps.LootCapacity {
+option OMHTurretsTraps.LootRateCapacity {
     type = double,
-    default = 2,
+    default = 1,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootCapacity,
 }
 
-option OMHTurretsTraps.LootCapacitySmall {
+option OMHTurretsTraps.LootRateCapacitySmall {
     type = double,
-    default = 3,
+    default = 1,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootCapacitySmall,
 }
 
-option OMHTurretsTraps.LootCapacityLarge {
+option OMHTurretsTraps.LootRateCapacityLarge {
     type = double,
-    default = 3,
+    default = 1,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -739,20 +739,27 @@ option OMHTurretsTraps.PotatoCriticalDamage {
     translation = OMHTurretsTraps_PotatoCriticalDamage,
 }
 
-option OMHTurretsTraps.LootCritical {
+option OMHTurretsTraps.LootRateCritical {
     type = double,
     min = 0,
     max = 20,
-    default = 2,
+    default = 1,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootCritical,
 }
 
-option OMHTurretsTraps.LootAccuracy {
+option OMHTurretsTraps.LootRateAccuracy {
     type = double,
     min = 0,
     max = 20,
-    default = 2,
+    default = 1,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootAccuracy,
+}
+
+option OMHTurretsTraps.DetailedLogging {
+    type = boolean,
+    default = false,
+    page = OMHTurretsTraps_Debug,
+    translation = OMHTurretsTraps_DetailedLogging,
 }

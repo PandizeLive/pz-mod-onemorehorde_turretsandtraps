@@ -27,6 +27,10 @@ local function item(fullType)
     function value:getMaxDamage() return 1 end
     function value:getMaxRange() return 15 end
     function value:getRecoilDelay() return 12 end
+    function value:getFireMode() return "Single" end
+    function value:getCyclicRateMultiplier() return 0 end
+    function value:getMinSightRange() return 2 end
+    function value:getMaxSightRange() return 10 end
     function value:getCriticalChance() return 20 end
     function value:getCriticalDamageMultiplier() return 4 end
     function value:getHitChance() return 50 end
@@ -70,6 +74,23 @@ multi.kind = "HandWeapon"
 multi.isRanged, multi.getAmmoType, multi.getMaxAmmo = generic.isRanged, generic.getAmmoType, generic.getMaxAmmo
 function multi:getAmmoPerShoot() return 2 end
 check(not G.profile(multi), "Unsupported multiple-round mechanism is rejected instead of losing ammo")
+local Stats = require("OMHTT/TurretStats")
+function generic:getFireMode() return "Auto" end
+function generic:getCyclicRateMultiplier() return 1 end
+function generic:isRackAfterShoot() return false end
+local auto = Stats.resolve({head = generic, active = {}})
+check(math.abs(auto.cooldown - 1000 / 3 / 1.5 / .75) < .001, "Automatic cadence uses clip/speed rather than recoil delay")
+SandboxVars.OMHTurretsTraps.FirearmRateMultiplier = 1
+local full = Stats.resolve({head = generic, active = {}})
+check(math.abs(auto.cooldown * .75 - full.cooldown) < .001, "Global rate scales proportionally")
+function generic:getCyclicRateMultiplier() return 2 end
+check(math.abs(Stats.resolve({head = generic, active = {}}).cooldown * 2 - full.cooldown) < .001, "Modded cyclic multiplier preserves weapon differentiation")
+function generic:getCyclicRateMultiplier() return 0 end
+check(math.abs(Stats.resolve({head = generic, active = {}}).cooldown - full.cooldown) < .001, "Unset cyclic multiplier has native fallback")
+SandboxVars.OMHTurretsTraps.FirearmRateMultiplier = nil
+local Accuracy = require("OMHTT/FirearmAccuracy")
+check(Accuracy.chance(generic, {accuracy = 0}, .5, false) == 0, "Disabled accuracy stays disabled at point blank")
+check(Accuracy.chance(generic, {accuracy = 50}, 6, false) > Accuracy.chance(generic, {accuracy = 50}, 30, false), "Native sight band beats long-distance penalty")
 G.PROFILES[generic.fullType] = nil
 local specimens = {}
 for n = 1, #definitions do
@@ -103,10 +124,10 @@ for n = 1, #definitions do
     local modded = require("OMHTT/TurretStats").resolve({head = gun, active = {Critical = 2, Accuracy = 2}})
     check(modded.critChance == config.critChance + 10 and modded.critMultiplier == config.critMultiplier, "Critical stacks add percentage points without multiplying critical damage")
     check(modded.accuracy <= 100 and modded.accuracy >= config.accuracy, "Accuracy stacks respect 100 percent")
-    local expectedCooldown = {400, 1000, 1200}
+    local expectedCooldown = {400 / .75, 1000 / .75, 1200 / .75}
     check(math.abs(config.cooldown - expectedCooldown[n]) < .001, "Native recoil and manual cycling determine per-weapon cadence")
     if n == 1 then
-        check(config.rack == 1200 and config.cooldown == 400, "Pistol retains initial racking without charging it per shot")
+        check(math.abs(config.rack - 1600) < .001 and math.abs(config.cooldown - 400 / .75) < .001, "Pistol retains initial racking without charging it per shot")
     end
     check(summary.ammo == 40 and summary.reserve == 40 and config.magazine == definition[3], "Profile counts exact ammunition")
     local _, status = G.update(summary, config, now, false)

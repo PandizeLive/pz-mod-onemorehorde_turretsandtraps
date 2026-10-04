@@ -1,6 +1,10 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.25
+## 0.2.26 validated candidate
+
+[C77 cadence/range/loot patch](PATCH_v0.2.26.md). 3,137 assertions, 53 runtime/translation files, 460 native translation keys and 149 package files pass. Installed 42.21.0 write/read probes pass, including 16 native distance-formula parity cases, twenty firearm mechanisms, exact supplies and persisted Engagement range. M16 resolves to 296.296 ms at 0.75 rate. Seeded loot normalization preserves every sampled container/count; default estimates are 83.17% ordinary one/two finds and 2.61% jackpots. All 71 website tests pass. Installation/deployment verification follows below after completion. No Steam upload or GitHub push; client frame/render acceptance remains pending.
+
+## Previous local installation: 0.2.25
 
 [C76 broader loot and turret servicing](PATCH_v0.2.25.md). Validation passes 3,121 assertions, 52 runtime/translation files, 453 native keys and 148 package files. Native stock 42.21.0 write/read probes pass in 40.6/41.0 seconds, covering twenty real firearms, base-only repair and persistence. Loot model checks cover twelve pools, 102 entries, 75 routes, 18,514 candidate containers and five-plus marker sizing. All 71 website tests, build and deployment dry run pass.
 

@@ -47,3 +47,10 @@ function require(name)
     end
     return testTurretRequire(name)
 end
+
+ISComboBox = {new = function(self, x, y, w, h, target, callback)
+    return {selected = 1, options = {}, initialise = function() end,
+        clear = function(self) self.options = {} end,
+        addOption = function(self, value) self.options[#self.options + 1] = value end,
+        target = target, callback = callback}
+end}

@@ -7,10 +7,11 @@ local L = require("OMHTT/LootDefinitions")
 
 ---@return nil
 function L.apply()
-    local multiplier = M.option("ModuleLootMultiplier", L.DEFAULTS.global, 0, 20)
+    local multiplier = M.option("ModuleLootRate", L.DEFAULTS.global, 0, 20)
     if isServer() or SandboxVars.OMHTurretsTraps.Enabled == false or SandboxVars.OMHTurretsTraps.PotatoTurret == false then
         multiplier = 0
     end
+    D.emit("module-loot-summary", {pools = #L.POOLS, multiplier = multiplier})
     for i = 1, #L.POOLS do
         local name = L.POOLS[i]
         local pool = ProceduralDistributions.list[name]
@@ -24,13 +25,13 @@ function L.apply()
                 end
             end
             for module, weight in pairs(L.WEIGHTS) do
-                local effective = weight * L.SCALES[name] * multiplier * M.option("Loot" .. module, L.DEFAULTS.items[module], 0, 20)
+                local effective = weight * L.SCALES[name] * multiplier * M.option("LootRate" .. module, L.DEFAULTS.items[module], 0, 20)
                 local subset = L.SUBSETS[name]
                 if effective > 0 and (not subset or subset[module]) then
                     items[#items + 1] = T.TYPES[module]
                     items[#items + 1] = effective
                 end
-                D.emit("module-loot-weight", {pool = name, module = module, weight = effective})
+                D.trace("module-loot-weight", {pool = name, module = module, weight = effective})
             end
         else
             D.emit("module-loot-missing-pool", {pool = name})

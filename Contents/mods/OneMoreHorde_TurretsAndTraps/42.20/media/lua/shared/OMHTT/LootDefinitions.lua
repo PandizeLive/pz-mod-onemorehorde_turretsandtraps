@@ -1,9 +1,9 @@
 local L = {}
 L.POOLS = {"ElectronicStoreMisc", "CrateElectronics", "MechanicShelfElectric", "ArmyStorageElectronics",
     "ElectricianTools", "GunStoreAccessories", "ToolCabinetMechanics", "GarageTools", "CrateTools", "ToolStoreTools", "ToolStoreMisc", "MechanicShelfTools"}
-L.WEIGHTS = {Firing = 2, MotionDetection = 2, Filter = 0.5, Detection360 = 0.25,
-    Suppression = 0.25, Critical = 0.25, Accuracy = 0.5, RapidFire = 0.5, Reload = 0.5,
-    Velocity = 0.5, Range = 0.5, CapacitySmall = 0.5, Capacity = 0.25, CapacityLarge = 0.1, Autoloader = 0.1}
+L.WEIGHTS = {Firing = 27, MotionDetection = 27, Filter = 4.5, Detection360 = 2.25,
+    Suppression = 2.25, Critical = 2.25, Accuracy = 4.5, RapidFire = 4.5, Reload = 4.5,
+    Velocity = 4.5, Range = 4.5, CapacitySmall = 6.75, Capacity = 2.25, CapacityLarge = 1.35, Autoloader = 1.35}
 L.SUBSETS = {
     ElectricianTools = {Firing = true, MotionDetection = true, Filter = true, Detection360 = true},
     GunStoreAccessories = {Suppression = true, Range = true, Velocity = true, Accuracy = true, Critical = true},
@@ -17,7 +17,7 @@ L.SUBSETS.CrateTools = {Firing = true, MotionDetection = true, Reload = true, Ra
 L.SUBSETS.ToolStoreTools = L.SUBSETS.CrateTools
 L.SUBSETS.ToolStoreMisc = L.SUBSETS.ElectricianTools
 L.SUBSETS.MechanicShelfTools = L.SUBSETS.ToolCabinetMechanics
-L.DEFAULTS = {global = 6, items = {
-    Firing = 3, MotionDetection = 3, Filter = 2, Detection360 = 2, Suppression = 2, RapidFire = 2, Reload = 2, Velocity = 2, Range = 2, CapacitySmall = 3, Capacity = 2, CapacityLarge = 3, Autoloader = 3, Critical = 2, Accuracy = 2
+L.DEFAULTS = {global = 1, items = {
+    Firing = 1, MotionDetection = 1, Filter = 1, Detection360 = 1, Suppression = 1, RapidFire = 1, Reload = 1, Velocity = 1, Range = 1, CapacitySmall = 1, Capacity = 1, CapacityLarge = 1, Autoloader = 1, Critical = 1, Accuracy = 1
 }}
 return L

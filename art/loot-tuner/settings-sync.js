@@ -3,7 +3,7 @@
   const copy=value=>JSON.parse(JSON.stringify(value));
   function flatten(value){const out={};for(const [key,v] of Object.entries(value)){if(v&&typeof v==='object')for(const [id,n] of Object.entries(v))out[key+'.'+id]=n;else out[key]=v;}return out;}
   function overlay(base,patch){const value=copy(base);for(const [path,entry] of Object.entries(patch)){const [key,id]=path.split('.');if(id)value[key][id]=entry.value;else value[key]=entry.value;}return value;}
-  function create({defaults,previousBaselines=[],validate,transport,storage,onChange,onStatus,schedule=setTimeout,cancel=clearTimeout}){
+  function create({defaults,previousBaselines=[],migrateValue=(path,value)=>value,validate,transport,storage,onChange,onStatus,schedule=setTimeout,cancel=clearTimeout}){
     let base=copy(defaults),value=copy(defaults),pending={},revision=0,sequence=0,account=null,ready=false,busy=false,timer=null;
     const key=()=> 'omh-lootlab-draft:'+account;
     function draft(){if(!account)return;try{if(Object.keys(pending).length)storage?.setItem(key(),JSON.stringify({baseline:defaults.baseline,pending}));else storage?.removeItem(key());}catch{/* Server saves still work when browser storage is unavailable. */}}
@@ -22,7 +22,7 @@
           const remote=await transport('GET');account=remote.account;revision=remote.revision;base=validate(remote.scenario||defaults);
           try{const stored=JSON.parse(storage?.getItem(key())||'null');if(stored&&(stored.baseline===defaults.baseline||previousBaselines.includes(stored.baseline))){
             // Only recover known leaf paths, and validate the entire resulting scenario.
-            const allowed=flatten(defaults),recovered={};for(const [path,entry] of Object.entries(stored.pending||{}))if(path!=='baseline'&&path!=='version'&&Object.hasOwn(allowed,path)&&entry&&Object.hasOwn(entry,'value'))recovered[path]={value:entry.value,sequence:++sequence};
+            const allowed=flatten(defaults),recovered={};for(const [path,entry] of Object.entries(stored.pending||{}))if(path!=='baseline'&&path!=='version'&&Object.hasOwn(allowed,path)&&entry&&Object.hasOwn(entry,'value'))recovered[path]={value:migrateValue(path,entry.value,stored.baseline),sequence:++sequence};
             validate(overlay(base,recovered));pending=recovered;
           }}catch{/* Ignore corrupt or obsolete local drafts. */}
           ready=true;apply();

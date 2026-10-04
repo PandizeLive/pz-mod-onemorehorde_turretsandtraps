@@ -260,6 +260,27 @@ for _, priority in pairs({"Random", "Toughest"}) do
     front.square.blocked = false
 end
 storage:Remove(filter)
+record.engagementRange = 3
+local reduced = M.profile(record, T.contents(storage))
+check(reduced.range == 3 and M.inside(square, front, reduced) and not M.inside(square, far, reduced), "Engagement range restricts both acquired and new targets")
+check(nativeRoundTrip(record).engagementRange == 3, "Engagement range persists in native mod-data serialization")
+record.engagementRange = 999
+check(M.profile(record, T.contents(storage)).range == T.cycleConfig(T.contents(storage)).range, "Saved range cannot exceed current head and modules")
+record.engagementRange = nil
+items[#items + 1] = firing
+testMillis = testMillis + 250
+A.changed(object)
+local p = M.profile(record, T.contents(storage))
+entry.key = p.heading .. ":" .. p.cone .. ":" .. p.range .. ":" .. p.priority
+entry.target, entry.due, entry.fireDue = front, testMillis + 5000, 0
+record.aimDegrees = 0
+local oldFire, oldStats, fired = W.fire, T.cycleConfig, 0
+W.fire = function() fired = fired + 1; return "Fired" end
+T.cycleConfig = function(contents) local stats = oldStats(contents); stats.cooldown = 100; return stats end
+A.advance = function() error("Acquired target caused a new detection scan") end
+for i = 1, 10 do testMillis = testMillis + 100; A.step(entry, testMillis + 100) end
+check(fired == 10, "Fast acquired target fires ten times while detection deadline remains five seconds away")
+A.advance, W.fire, T.cycleConfig = priorAdvance, oldFire, oldStats
 object.index = -1
 A.tick()
 check(A.entries[object] == nil, "Removed turret retires from scheduler")

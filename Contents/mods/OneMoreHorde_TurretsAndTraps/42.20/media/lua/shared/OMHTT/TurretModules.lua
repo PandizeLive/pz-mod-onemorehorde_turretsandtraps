@@ -37,7 +37,7 @@ function M.profile(state, contents)
         end
     end
     return {heading = (state.baseFacing or state.facing or 0) * 22.5, cone = cone, omni = active.Detection360 ~= nil,
-        range = T.cycleConfig(contents).range, priority = priority}
+        range = math.min(T.cycleConfig(contents).range, state.engagementRange or 100000), priority = priority}
 end
 
 ---@param origin IsoGridSquare Turret tile

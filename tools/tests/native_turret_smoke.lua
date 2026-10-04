@@ -17,14 +17,24 @@ local function verifyTurrets()
     atlas:setValue(oldValue)
     assert(atlas:getDefaultValue() == oldDefault and (atlas:getValueAsString() == "true") == oldValue, "Atlas option restore failed")
     print("[OMHTT-Smoke] native-atlas-lua bypass=verified restore=verified")
+    local Accuracy = require("OMHTT/FirearmAccuracy")
+    OMHTT_AccuracyProbe = {}
+    assert(CombatManager == nil, "CombatManager unexpectedly exposed; review direct helper use")
+    for _, distance in pairs({0.5, 2, 3, 6, 10, 15, 30, 40}) do
+        for _, prone in pairs({false, true}) do
+            OMHTT_AccuracyProbe[#OMHTT_AccuracyProbe + 1] = {distance = distance, prone = prone,
+                sightless = Accuracy.sightless(distance, prone), sights = Accuracy.sights(distance, 2, 10)}
+        end
+    end
+    print("[OMHTT-Smoke] distance-accuracy samples=16 config=native")
     local player = IsoPlayer.new(getCell())
     local Modules = require("OMHTT/TurretModules")
     local Loot = require("OMHTT/ModuleLoot")
-    assert(getSandboxOptions():getOptionByName("OMHTurretsTraps.ModuleLootMultiplier"):getDefaultValue() == Loot.DEFAULTS.global, "Native global loot default drift")
-    SandboxVars.OMHTurretsTraps.ModuleLootMultiplier = Loot.DEFAULTS.global
+    assert(getSandboxOptions():getOptionByName("OMHTurretsTraps.ModuleLootRate"):getDefaultValue() == Loot.DEFAULTS.global, "Native global loot default drift")
+    SandboxVars.OMHTurretsTraps.ModuleLootRate = Loot.DEFAULTS.global
     for kind, value in pairs(Loot.DEFAULTS.items) do
-        assert(getSandboxOptions():getOptionByName("OMHTurretsTraps.Loot" .. kind):getDefaultValue() == value, "Native component loot default drift: " .. kind)
-        SandboxVars.OMHTurretsTraps["Loot" .. kind] = value
+        assert(getSandboxOptions():getOptionByName("OMHTurretsTraps.LootRate" .. kind):getDefaultValue() == value, "Native component loot default drift: " .. kind)
+        SandboxVars.OMHTurretsTraps["LootRate" .. kind] = value
     end
     Loot.loaded()
     local count = 0
@@ -191,9 +201,11 @@ local function verifyTurrets()
     square:getSpecialObjects():add(object)
     GameEntityFactory.CreateIsoObjectEntity(object, info:getScript():getParent(), true)
     packed:getModData().OMHTTTurret.nextShot = 123456789
+    packed:getModData().OMHTTTurret.engagementRange = 3
     W.onCreate({thumpable = object, character = player, facing = "e", craftRecipeData = data})
     assert(not player:getInventory():contains(packed) and inventory:getItems():isEmpty(), "Deployment retained packed source")
     assert(object:getContainer():contains(battery) and object:getContainer():contains(potato), "Deployment recreated or lost contents")
+    assert(T.state(object).engagementRange == 3, "Deployment reset engagement range")
     assert(T.state(object).nextShot == 123456789, "Deployment reset cooldown")
     assert(object:getContainer():getAcceptItemFunction() == "OMHTT_Turret.accept", "World container lost acceptance rules")
     local hybrid = T.hybrid
@@ -313,11 +325,11 @@ local function verifyTurrets()
         local summary = T.contents(storage)
         local config = T.cycleConfig(summary)
         assert(summary.ammo == 90 and config.firearm and config.magazine == gun:getMaxAmmo(), "Native firearm config mismatch")
-        local expected = { ["Base.Pistol"] = {15, 400, 20, 4}, ["Base.Shotgun"] = {12, 1000, 70, 12}, ["Base.HuntingRifle"] = {40, 1200, 30, 4} }
+        local expected = { ["Base.Pistol"] = {15, 400 / .75, 20, 4}, ["Base.Shotgun"] = {12, 1000 / .75, 70, 12}, ["Base.HuntingRifle"] = {40, 1200 / .75, 30, 4} }
         local stats = require("OMHTT/TurretStats").resolve(summary)
         local values = expected[fullType]
         if values then
-            assert(stats.range == values[1] and stats.cooldown == values[2] and stats.critChance == values[3]
+            assert(stats.range == values[1] and math.abs(stats.cooldown - values[2]) < .001 and stats.critChance == values[3]
                 and stats.critMultiplier == values[4], "Native firearm range/cadence/crit drift: " .. fullType)
         else
             assert(stats.range == math.min(50, gun:getMaxRange()) and stats.critChance == gun:getCriticalChance()

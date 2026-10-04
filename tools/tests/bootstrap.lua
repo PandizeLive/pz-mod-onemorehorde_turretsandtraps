@@ -254,6 +254,7 @@ function makeZombie(square, health)
     function zombie:setHealth(value) self.health = value end
     function zombie:isDead() return self.health <= 0 end
     function zombie:isOnFloor() return self.floor end
+    function zombie:isProne() return self.floor end
     function zombie:setKnockedDown(value) self.knocked = value end
     function zombie:isKnockedDown() return self.knocked == true end
     function zombie:knockDown(behind) self.knocked = true; self.nativeKnockdown = true end
@@ -326,4 +327,13 @@ function getTextManager() return {DrawStringCentre = function() testDraws = test
 
 function getScriptManager()
     return {getAllItems = function() return {size = function() return 0 end} end}
+end
+
+CombatConfigKey = setmetatable({}, {__index = function(t, key) return key end})
+function getCombatConfig()
+    local values = {POINT_BLANK_DISTANCE = 2, SIGHTLESS_TO_HIT_BASE_DISTANCE = 5, POINT_BLANK_DROP_OFF_TO_HIT_PENALTY = 1,
+        POINT_BLANK_TO_HIT_MAXIMUM_BONUS = 30, SIGHTLESS_TO_HIT_PRONE_MODIFIER = 1,
+        OPTIMAL_RANGE_TO_HIT_MAXIMUM_BONUS = 20, OPTIMAL_RANGE_DROP_OFF_TO_HIT_PENALTY = 5,
+        OPTIMAL_RANGE_DROP_OFF_TO_HIT_PENALTY_INCREMENT = 1, MINIMUM_TO_HIT_CHANCE = 0, MAXIMUM_TO_HIT_CHANCE = 100}
+    return {get = function(self, key) return values[key] end}
 end

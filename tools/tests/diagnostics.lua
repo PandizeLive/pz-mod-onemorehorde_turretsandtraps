@@ -43,6 +43,7 @@ dump.callback(dump.target)
 check(string.find(testLogs[#testLogs], "event=nearby-summary", 1, true) ~= nil, "nearby dump records completion and scan cap")
 
 D.reset()
+SandboxVars.OMHTurretsTraps.DetailedLogging = true
 local queuedAt = testMillis
 oldCount = #testLogs
 D.defer("queued-one", {value = 1})
@@ -68,4 +69,13 @@ SandboxVars.OMHTurretsTraps.DiagnosticLogging = true
 oldCount = #testLogs
 D.flush()
 check(#testLogs == oldCount, "Disabled logging discards queued diagnostics")
+D.reset()
+
+SandboxVars.OMHTurretsTraps.DetailedLogging = false
+oldCount = #testLogs
+for i = 1, 500 do D.defer("combat", {totalMs = i % 3}) end
+check(#testLogs == oldCount, "Normal diagnostics aggregate without per-shot output")
+testMillis = testMillis + 5000
+D.flush()
+check(#testLogs == oldCount + 1 and string.find(testLogs[#testLogs], "combat=500", 1, true), "One summary retains event count")
 D.reset()

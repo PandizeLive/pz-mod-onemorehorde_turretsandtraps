@@ -8,6 +8,19 @@ public final class NativeTurretProbe {
         if (!value) throw new IllegalStateException(message);
     }
     public static void verify() throws Exception {
+        Object env = Class.forName("zombie.Lua.LuaManager").getField("env").get(null);
+        Object samples = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_AccuracyProbe");
+        Object manager = Class.forName("zombie.CombatManager").getMethod("getInstance").invoke(null);
+        for (int i = 1; i <= 16; i++) {
+            Object row = call(samples, "rawget", new Class<?>[]{Object.class}, Double.valueOf(i));
+            float distance = ((Number)call(row, "rawget", new Class<?>[]{Object.class}, "distance")).floatValue();
+            boolean prone = (Boolean)call(row, "rawget", new Class<?>[]{Object.class}, "prone");
+            float sightless = ((Number)call(manager, "getDistanceModifierSightless", new Class<?>[]{float.class, boolean.class}, distance, prone)).floatValue();
+            float sights = ((Number)call(manager, "getDistanceModifier", new Class<?>[]{float.class, float.class, float.class, boolean.class}, distance, 2f, 10f, prone)).floatValue();
+            check(Math.abs(sightless - ((Number)call(row, "rawget", new Class<?>[]{Object.class}, "sightless")).floatValue()) < .001f, "Sightless distance parity failed");
+            check(Math.abs(sights - ((Number)call(row, "rawget", new Class<?>[]{Object.class}, "sights")).floatValue()) < .001f, "Sight distance parity failed");
+        }
+        System.out.println("[OMHTT-Smoke] native-distance-parity samples=16 passed=true");
         Class<?> sounds = Class.forName("zombie.GameSounds");
         for (String kind : new String[]{"Fire", "Impact"}) {
             Object sound = sounds.getMethod("getSound", String.class).invoke(null, "OMHTTPotato" + kind);

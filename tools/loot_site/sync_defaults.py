@@ -15,8 +15,8 @@ def apply_defaults(data):
     baseline = 'T&T ' + version
     data['meta']['previousBaselines'] = list(dict.fromkeys(p for p in previous if p != baseline))
     data['meta']['baseline'] = baseline
-    data['defaults'] = {'global': float(values['ModuleLootMultiplier']),
-                        'items': {m['id']: float(values['Loot' + m['id']]) for m in data['modules']}}
+    data['defaults'] = {'global': float(values['ModuleLootRate']),
+                        'items': {m['id']: float(values['LootRate' + m['id']]) for m in data['modules']}}
     return data
 
 

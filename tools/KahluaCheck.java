@@ -154,6 +154,7 @@ public final class KahluaCheck {
             {"OMHTT/TargetHealth", base + "shared/OMHTT/TargetHealth.lua"},
             {"OMHTT/TurretModules", base + "shared/OMHTT/TurretModules.lua"},
             {"OMHTT/PrototypeCombat", base + "server/OMHTT/PrototypeCombat.lua"},
+            {"OMHTT/FirearmAccuracy", base + "shared/OMHTT/FirearmAccuracy.lua"},
             {"OMHTT/FirearmCombat", base + "server/OMHTT/FirearmCombat.lua"},
             {"OMHTT/BarrierSprites", base + "shared/OMHTT/BarrierSprites.lua"},
             {"OMHTT/BarrierFootprint", base + "server/OMHTT/BarrierFootprint.lua"},

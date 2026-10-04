@@ -9,7 +9,7 @@ local groups = {
     {"Sandbox_Title_OMHTurretsTraps_Storage", {"PotatoAmmoCapacity", "PotatoModuleCapacity", "PotatoMagazineCapacity"}},
     {"Sandbox_Title_OMHTurretsTraps_Combat", {"PotatoDamage", "PotatoCriticalChance", "PotatoCriticalDamage", "PotatoCooldown", "PotatoReloadTime", "PotatoRange", "PotatoHearingRadius", "PotatoPlaybackVolume", "PotatoTurnSpeed", "PotatoProjectileSpeed", "PotatoKnockdownChance", "PotatoSplashPercent", "PotatoSplashRadius"}},
     {"Sandbox_Title_OMHTurretsTraps_Power", {"PotatoRequirePower", "PotatoBatteryPercentPerShot", "PotatoGeneratorFuelPerShot"}},
-    {"Sandbox_Title_OMHTurretsTraps_Firearms", {"FirearmTurrets", "FirearmAmmoCapacity", "FirearmAimingLevel", "FirearmAccuracyMultiplier", "FirearmDamageMultiplier", "FirearmRangeMultiplier", "FirearmReloadMultiplier", "FirearmCooldownMultiplier", "FirearmCycleMultiplier", "FirearmTurnSpeed"}},
+    {"Sandbox_Title_OMHTurretsTraps_Firearms", {"FirearmTurrets", "FirearmAmmoCapacity", "FirearmAimingLevel", "FirearmAccuracyMultiplier", "FirearmDamageMultiplier", "FirearmRangeMultiplier", "FirearmReloadMultiplier", "FirearmRateMultiplier", "FirearmCycleMultiplier", "FirearmTurnSpeed"}},
 }
 
 local moduleGroups = {

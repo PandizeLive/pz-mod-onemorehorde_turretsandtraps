@@ -252,6 +252,7 @@ function pistol:getMaxAmmo() return 15 end
 function pistol:getMinDamage() return .6 end
 function pistol:getMaxDamage() return 1 end
 function pistol:getMaxRange() return 15 end
+function pistol:getFireMode() return "Single" end
 function pistol:getRecoilDelay() return 12 end
     function pistol:getCriticalChance() return 20 end
     function pistol:getCriticalDamageMultiplier() return 4 end
@@ -290,6 +291,12 @@ check(carried:contains(pistol) and pistol.ammo == 7 and T.contents(storage).rese
     "Removing loaded gun preserves both gun ammunition and stored reserve")
 check(aim.entries[object] == nil and search.pending[object].cancelled, "Head removal cancels old aiming and pending manual search")
 search.pending[object] = nil
+panel.rangeCombo.selected = 4
+panel:changeRange(panel.rangeCombo)
+check(T.state(object).engagementRange == 3, "Manage selects explicit three-tile engagement cap")
+panel.rangeCombo.selected = 1
+panel:changeRange(panel.rangeCombo)
+check(T.state(object).engagementRange == nil, "Manage Max restores adaptive weapon range")
 reachable = false
 local action = ISInventoryTransferAction:new(player, battery, storage, carried)
 check(not action:isValid(), "Native outgoing drag revalidates turret reach")

@@ -192,5 +192,9 @@
     "Sandbox_Title_OMHTurretsTraps_Critical": "Critical",
     "Sandbox_Title_OMHTurretsTraps_Accuracy": "Accuracy",
     "Sandbox_OMHTurretsTraps_PotatoPlaybackVolume": "Potato sound volume",
-    "Sandbox_OMHTurretsTraps_PotatoPlaybackVolume_tooltip": "Playback volume, in percent."
+    "Sandbox_OMHTurretsTraps_PotatoPlaybackVolume_tooltip": "Playback volume, in percent.",
+    "Sandbox_OMHTurretsTraps_FirearmRateMultiplier": "Firearm fire rate",
+    "Sandbox_OMHTurretsTraps_FirearmRateMultiplier_tooltip": "Firing rate multiplier.",
+    "Sandbox_OMHTurretsTraps_DetailedLogging": "Detailed logging",
+    "Sandbox_OMHTurretsTraps_DetailedLogging_tooltip": "Log individual combat and transfer events."
 }

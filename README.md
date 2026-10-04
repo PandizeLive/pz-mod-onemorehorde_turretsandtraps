@@ -1,6 +1,6 @@
 # OMH: Turrets & Traps
 
-Project foundation created 2026-09-25. **Installed 0.2.25:** [broader loot and turret servicing](docs/PATCH_v0.2.25.md), with conventional firearm support, base Repair, clearer Power/transfer feedback and quieter potatoes. [LootLab](https://admin.onemorehorde.com/admin/LootLab/) shares its definitions, preserves account tuning and highlights five-plus jackpots. Exact [installation evidence](docs/RELEASE.md) is separate from player acceptance. No Workshop release exists.
+Project foundation created 2026-09-25. **0.2.26 candidate:** [cadence, engagement range and normalized loot](docs/PATCH_v0.2.26.md). Installation/deployment evidence is in [RELEASE.md](docs/RELEASE.md). One combined six-step test covers the patch; native checks do not certify client rendering or frame smoothness.
 
 One edition with a Sandbox toggle menu. The planned mod adds maintainable defensive equipment to Project Zomboid Build 42, with optional Horde Night, Trait Shop, and Cure Defense integrations. Recheck the installed game build before implementing any engine-dependent behavior.
 

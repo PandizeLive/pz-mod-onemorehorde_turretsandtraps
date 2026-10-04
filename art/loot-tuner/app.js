@@ -102,8 +102,8 @@ $('lua').addEventListener('click',()=>{
     '-- Do not replace an entire save configuration with this excerpt.',
     '-- Retention and model seed are estimates only; not game settings.',
     '-- Assumes ZombiePopLootEffect = 0 and a new-world time multiplier of 1.',
-    `MaterialLootNew = ${scenario.material},`,`RollsMultiplier = ${scenario.rolls},`,'OMHTurretsTraps = {',`    ModuleLootMultiplier = ${scenario.global},`,
-    ...D.modules.map(m=>`    Loot${m.id} = ${scenario.items[m.id]},`),'}'];
+    `MaterialLootNew = ${scenario.material},`,`RollsMultiplier = ${scenario.rolls},`,'OMHTurretsTraps = {',`    ModuleLootRate = ${scenario.global},`,
+    ...D.modules.map(m=>`    LootRate${m.id} = ${scenario.items[m.id]},`),'}'];
   download('omh-loot-sandbox-excerpt.lua',lines.join('\n')+'\n','text/plain');
 });
 $('load').addEventListener('click',()=>$('file').click());
@@ -188,7 +188,7 @@ function modelError(e){$('loading').textContent='Model failed: '+e.message;$('fe
 if(location.protocol==='https:'&&location.pathname.startsWith('/admin/LootLab')){
   for(const input of document.querySelectorAll('input,select,button'))input.disabled=true;
   let storage;try{storage=localStorage;}catch{}
-  settingsSync=window.LootSettings.create({defaults:M.defaults(D),previousBaselines:D.meta.previousBaselines,validate:value=>M.validate(value,D),transport:window.LootSettings.transport,storage,onChange:acceptSettings,onStatus:syncStatus});
+  settingsSync=window.LootSettings.create({defaults:M.defaults(D),previousBaselines:D.meta.previousBaselines,migrateValue:M.migrateValue,validate:value=>M.validate(value,D),transport:window.LootSettings.transport,storage,onChange:acceptSettings,onStatus:syncStatus});
   $('syncNow').hidden=false;settingsSync.sync();
   window.addEventListener('online',()=>settingsSync.sync());window.addEventListener('focus',()=>settingsSync.sync());
   document.addEventListener('visibilitychange',()=>settingsSync.sync());

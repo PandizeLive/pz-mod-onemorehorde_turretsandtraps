@@ -67,6 +67,7 @@ def main():
             probe.unlink(missing_ok=True)
             turret_probe.unlink(missing_ok=True)
     text = transcript.read_text(encoding="utf-8", errors="replace")
+    assert "[OMHTT-Smoke] native-distance-parity samples=16 passed=true" in text, "Native accuracy parity failed"
     assert "[OMHTT-Smoke] native-atlas-lua bypass=verified restore=verified" in text, "Native atlas exposure failed"
     assert "[OMHTT-Smoke] native-suppression sounds=18 potato=2 reload=native" in text, "Native audio registration failed"
     assert "[OMHTT-Smoke] native-scratch lowerLeg=true knox=false" in text, "Native scratch failed"
