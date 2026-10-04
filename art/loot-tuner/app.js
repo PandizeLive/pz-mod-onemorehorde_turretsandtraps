@@ -58,6 +58,7 @@ function update(){
     return Float64Array.from(prepared.hits,hits=>hits.reduce((n,count,p)=>n+count/prepared.samples*poolChances[p],0));
   });
   const positive=result.hauls.reduce((n,h)=>n+h.presence,0),oneTwo=result.hauls.reduce((n,h)=>n+h.oneOrTwo,0),jackpots=result.hauls.reduce((n,h)=>n+h.jackpot,0);
+  $('findCount').textContent=number(positive);
   $('findChance').textContent=(100*positive/D.containers.length).toFixed(1)+'%';
   $('smallHaul').textContent=positive?(100*oneTwo/positive).toFixed(1)+'%':'—';
   $('jackpotChance').textContent=positive?(100*jackpots/positive).toFixed(1)+'%':'—';

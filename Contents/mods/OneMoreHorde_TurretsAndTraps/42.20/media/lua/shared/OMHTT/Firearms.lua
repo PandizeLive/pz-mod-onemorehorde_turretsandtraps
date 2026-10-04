@@ -5,6 +5,22 @@ G.PROFILES = {
     ["Base.Shotgun"] = {reload = 0.833, rack = 0.6, muzzle = 0.2801, yaw = 0, roll = -90},
     ["Base.HuntingRifle"] = {reload = 0.590, rack = 1.2, muzzle = 0.3468, yaw = 0, roll = -90},
 }
+G.RELOADS = {handgun = 2.7, boltaction = 2.7, shotgun = 0.833, revolver = 0.95,
+    boltactionnomag = 0.590, doublebarrelshotgun = 2.5, doublebarrelshotgunsawn = 2.5, leveraction = 1}
+
+---@param head InventoryItem? Candidate
+---@return string? reason Unsupported adapter input
+function G.rejection(head)
+    if not head or not instanceof(head, "HandWeapon") then return "not-firearm" end
+    if not head:isRanged() then return "not-ranged" end
+    if not head:getAmmoType() then return "missing-ammo" end
+    if head:getMaxAmmo() < 1 then return "no-capacity" end
+    if head:getAmmoPerShoot() ~= 1 then return "multi-ammo-shot" end
+    if head:getMaxDamage() <= 0 then return "no-damage" end
+    if not G.RELOADS[tostring(head:getWeaponReloadType())] then return "unsupported-reload" end
+    return nil
+end
+
 G.AMMO = {["Base.Bullets9mm"] = true, ["Base.ShotgunShells"] = true, ["Base.308Bullets"] = true}
 
 ---@param head InventoryItem? Candidate
@@ -14,12 +30,9 @@ function G.profile(head)
     if not head then return nil end
     local fullType = head:getFullType()
     if G.PROFILES[fullType] then return G.PROFILES[fullType] end
-    if not instanceof(head, "HandWeapon") or not head:isRanged() or not head:getAmmoType()
-        or head:getMaxAmmo() < 1 or head:getAmmoPerShoot() ~= 1 or head:getMaxDamage() <= 0 then return nil end
+    if G.rejection(head) then return nil end
     local mechanism = tostring(head:getWeaponReloadType())
-    local reloads = {handgun = 2.7, boltaction = 2.7, shotgun = 0.833, revolver = 0.95,
-        boltactionnomag = 0.590, doublebarrelshotgun = 2.5, doublebarrelshotgunsawn = 2.5, leveraction = 1}
-    local reload = reloads[mechanism]
+    local reload = G.RELOADS[mechanism]
     if not reload then return nil end
     local rack = 1.2
     if mechanism == "shotgun" then rack = 0.6 end

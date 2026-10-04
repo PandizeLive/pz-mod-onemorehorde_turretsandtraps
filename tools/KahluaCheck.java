@@ -240,6 +240,8 @@ public final class KahluaCheck {
             {"_", "tools/tests/turret_preview.lua"},
             {"_", "tools/tests/firearms.lua"},
             {"_", "tools/tests/checkpoint_027.lua"},
+            {"OMHTT/FirearmAudit", "Contents/mods/OneMoreHorde_TurretsAndTraps/42.20/media/lua/shared/OMHTT/FirearmAudit.lua"},
+            {"_", "tools/tests/checkpoint_028.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

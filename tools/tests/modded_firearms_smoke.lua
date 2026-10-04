@@ -15,6 +15,8 @@ Events.OnServerStarted.Add(function()
         local script = all:get(i)
         if script:isRanged() and script:getAmmoType() then
             local gun = instanceItem(script:getFullName())
+            local evidence = require("OMHTT/FirearmAudit").inspect(script:getFullName())
+            assert(evidence.accepted == (G.profile(gun) ~= nil), "Audit/admission mismatch")
             if G.profile(gun) then
                 local storage = instanceItem(T.BASE):getInventory()
                 storage:AddItem(gun)

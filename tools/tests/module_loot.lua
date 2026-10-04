@@ -26,7 +26,7 @@ end
 settings.ModuleLootRate, settings.LootRateFilter = 3, 2
 L.apply()
 local found, weight = count(L.POOLS[1], "Filter")
-check(found == 1 and math.abs(weight - 27 * L.SCALES[L.POOLS[1]]) < 0.000001, "Global and per-module loot multipliers combine")
+check(found == 1 and math.abs(weight - 30 * L.SCALES[L.POOLS[1]]) < 0.000001, "Global and per-module loot multipliers combine")
 settings.LootRateFilter = 0; L.apply()
 check(count(L.POOLS[1], "Filter") == 0 and count(L.POOLS[1], "Firing") == 1, "Zero only suppresses selected module")
 settings.ModuleLootRate = 0; L.apply()
@@ -53,5 +53,5 @@ settings.LootFiring = 3
 settings.ModuleLootRate, settings.LootRateFiring = nil, nil
 L.apply()
 local _, normalized = count(L.POOLS[1], "Firing")
-check(math.abs(normalized - 27 * L.SCALES[L.POOLS[1]]) < 0.000001, "Legacy saved multipliers cannot double-apply normalized weights")
+check(math.abs(normalized - 30 * L.SCALES[L.POOLS[1]]) < 0.000001, "Legacy saved multipliers cannot double-apply normalized weights")
 settings.ModuleLootMultiplier, settings.LootFiring = nil, nil

@@ -1,6 +1,12 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.26
+## Current candidate: 0.2.28
+
+[C79 broader loot and startup firearm audit](PATCH_v0.2.28.md). Normalized 5x weights, sixteen native pools and bounded debug audit. 3,433 Kahlua assertions and 154 package hashes pass; native read/restart/save verifies 121 loot entries and twenty real guns/two cap-gun rejections. Isolated Firearms B42 audit matches admission for all 51 supported guns and two cap guns; 153 fired rounds conserved. Native write/read probes pass in 89.3/88.6 seconds. Tagged local install is recorded below when complete.
+
+LootLab is deployed as Worker `fdf7a3c1-8c67-4b6e-8a22-ef9297687a00`, verified live bundle SHA-256 `6c8913b6970051894f5a1995004f7461224c47d86c992f363be236202a15ceb9`. All 72 API/page tests pass, twelve protected admin routes and two public HTTP 200 checks pass. Existing account tuning remains unchanged; no D1 write. Source snapshot and production evidence are in the website repository's `.tmp/release-lootlab-028/`. Louisville hang remains unassigned; native warning and Windows hang evidence do not identify a responsible mod. No Workshop upload or GitHub push.
+
+## Previous local installation: 0.2.26
 
 [C77 cadence/range/loot patch](PATCH_v0.2.26.md). 3,137 assertions, 53 runtime/translation files, 460 native translation keys and 149 package files pass. Installed 42.21.0 write/read probes pass, including 16 native distance-formula parity cases, twenty firearm mechanisms, exact supplies and persisted Engagement range. M16 resolves to 296.296 ms at 0.75 rate. Seeded loot normalization preserves every sampled container/count; default estimates are 83.17% ordinary one/two finds and 2.61% jackpots. All 71 website tests pass. Installed from annotated `test/v0.2.26` (`a5b78ec`). [Release evidence](../diagnostics/v0.2.26/local-release.json) verifies all 149 source/tag/installed/archive files and all 148 files in the 0.2.25 backup. [Archive](../artifacts/OMHTT-0.2.26.zip). LootLab Worker `1db2a42d-2d86-47c2-b3ab-87bf1bd0f1b2` matches the tested bundle (`660ce27d2a5608e0f4b29d0996302e536e64f69c1891450a1d5bd408725579c4`); twelve admin protection checks and both public checks pass. Approved owner scenario revision 90 became 91 through a conditional write: normalized global/components all 1, seed/visibility/model assumptions preserved. [Website record](../../OMH%20Website/RELEASE_LOOTLAB_2026-10-01.md). No Steam upload or GitHub push; client frame/render acceptance remains pending.
 

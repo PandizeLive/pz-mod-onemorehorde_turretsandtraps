@@ -1,6 +1,6 @@
 {
   "status": "passed",
-  "htmlIds": 47,
+  "htmlIds": 48,
   "localDependencies": [
     "style.css",
     "https://admin.onemorehorde.com/admin/LootLab/",
@@ -16,5 +16,5 @@
   ],
   "sourceHashes": 7,
   "browserVisualReview": "not performed",
-  "gameplayInstalled": "0.2.26 approval; installation evidence in docs/RELEASE.md"
+  "gameplayInstalled": "0.2.28 approval; installation evidence in docs/RELEASE.md"
 }

@@ -1,7 +1,7 @@
 {
   "gameVersion": "42.21.0",
-  "modBaseline": "T&T 0.2.26",
-  "scope": "New-world SP estimates matching T&T 0.2.26",
+  "modBaseline": "T&T 0.2.28",
+  "scope": "New-world SP estimates matching T&T 0.2.28",
   "sources": [
     {
       "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\ProjectZomboid\\media\\maps\\Muldraugh, KY\\worldmap.xml",
@@ -15,13 +15,13 @@
     },
     {
       "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\Contents\\mods\\OneMoreHorde_TurretsAndTraps\\42.20\\media\\lua\\shared\\OMHTT\\LootDefinitions.lua",
-      "sha256": "bdc86c26aa22bd2b91abd5e449288a26a7cf49a98c1704f297fe95db678a8f7e",
-      "bytes": 1959
+      "sha256": "5a3fe3a186088f5f67f64ce6b61b63bcc1428fd24601c09265d6c4905961d297",
+      "bytes": 2382
     },
     {
       "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\loot-site\\cache\\Lua\\loot-routes.json",
-      "sha256": "462423310f5bd34923862166d4af35e73de95957d4b54289e8112ce07fd150a8",
-      "bytes": 128666
+      "sha256": "14a0de9d302eb2301d9a20d9b2204c1f77430583143a5f294beb8a25082cfd63",
+      "bytes": 133595
     },
     {
       "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\loot-site\\cache\\Lua\\loot-tile-properties.txt",
@@ -35,29 +35,31 @@
     },
     {
       "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\Contents\\mods\\OneMoreHorde_TurretsAndTraps\\42.20\\media\\sandbox-options.txt",
-      "sha256": "a200017bdeb6a178b9cb14b3e631bad46310137d9056f5b4d7c6f853c229e6ca",
-      "bytes": 18436
+      "sha256": "bd2dafb1f361671c967e70f0d0708519a34bb6ac08b9da39001743ef7c40d0c0",
+      "bytes": 18876
     }
   ],
   "dataset": {
-    "sha256": "bcfafc8f8a1f794baf8a6fa45fd2569d6906c7b643e17a2e1a81de0103a1f207",
-    "bytes": 4338277
+    "sha256": "35e691ca71f0f6f9a7b8d75d48509be9c96d52e11bcd881508184a9eed90cf70",
+    "bytes": 4360546
   },
   "extraction": {
     "game": "42.21.0",
-    "baseline": "T&T 0.2.26",
+    "baseline": "T&T 0.2.28",
     "previousBaselines": [
       "Installed 0.2.22",
       "T&T 0.2.23",
       "T&T 0.2.24",
-      "T&T 0.2.25"
+      "T&T 0.2.25",
+      "T&T 0.2.26",
+      "T&T 0.2.27"
     ],
     "headers": 4065,
     "roomRecords": 90827,
-    "routes": 75,
+    "routes": 79,
     "containerSprites": 1243,
-    "chunksScanned": 32952,
-    "eligibleContainers": 18514,
+    "chunksScanned": 32961,
+    "eligibleContainers": 18630,
     "mapFeatures": 13530,
     "genericExclusions": [
       "barbecue",
@@ -110,7 +112,7 @@
       "bedroom": 672,
       "shed": 252,
       "armystorage": 85,
-      "electronicsstore": 186,
+      "electronicsstore": 199,
       "storage": 1020,
       "livingroom": 2390,
       "garage": 1589,
@@ -122,8 +124,10 @@
       "mechanic": 516,
       "gunstore": 113,
       "storageunit": 1671,
+      "garage_ranger": 11,
       "toolstorestorage": 107,
-      "electronicstore": 34,
+      "electronicsstorage": 89,
+      "electronicstore": 37,
       "toolstorage": 89,
       "all": 3,
       "carsupply": 33,
@@ -135,26 +139,26 @@
       "studio": 7
     },
     "byContainer": {
-      "metal_shelves": 6235,
+      "metal_shelves": 6299,
       "shelves": 1512,
       "sidetable": 179,
-      "locker": 319,
-      "cardboardbox": 3232,
+      "locker": 321,
+      "cardboardbox": 3262,
       "wardrobe": 479,
       "overhead": 4,
-      "counter": 978,
-      "smallbox": 762,
-      "toolcabinet": 195,
-      "crate": 1864,
+      "counter": 980,
+      "smallbox": 765,
+      "toolcabinet": 200,
+      "crate": 1866,
       "militarycrate": 77,
       "dishescabinet": 1614,
-      "desk": 359,
+      "desk": 361,
       "dresser": 285,
-      "filingcabinet": 196,
+      "filingcabinet": 200,
       "displaycase": 119,
       "restaurantdisplay": 31,
+      "militarylocker": 5,
       "smallcrate": 12,
-      "militarylocker": 3,
       "shelvesmag": 54,
       "fruitbushe": 1,
       "fruitbushb": 1,

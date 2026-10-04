@@ -29,7 +29,7 @@ end
 ---@param fields table? Scalar evidence
 ---@param occurredAt number? Original event time for deferred output
 ---@return nil
-function Diagnostics.emit(event, fields, occurredAt)
+function Diagnostics.emit(event, fields, occurredAt, retain)
     if not Diagnostics.enabled() then return end
     local now = getTimestampMs()
     if now - windowStart >= 1000 or now < windowStart then
@@ -37,8 +37,8 @@ function Diagnostics.emit(event, fields, occurredAt)
         windowLines = 0
     end
     if windowLines >= 120 then
-        suppressed = suppressed + 1
-        return
+        if not retain then suppressed = suppressed + 1 end
+        return false
     end
     local side = "sp"
     if isClient() then
@@ -63,6 +63,7 @@ function Diagnostics.emit(event, fields, occurredAt)
         end
     end
     print(line)
+    return true
 end
 
 ---@param object IsoObject Observed world object

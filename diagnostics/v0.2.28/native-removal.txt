@@ -1,0 +1,536 @@
+Compiled from "IsoObjectUtils.java"
+public class zombie.iso.IsoObjectUtils {
+  private static final boolean THROW_ERROR;
+
+  private static final java.lang.ThreadLocal<java.util.ArrayList<zombie.iso.IsoObject>> threadLocalObjects1;
+
+  private static final java.lang.ThreadLocal<java.util.ArrayList<zombie.iso.IsoObject>> threadLocalObjects2;
+
+  private static final java.lang.ThreadLocal<java.util.ArrayList<zombie.iso.IsoObject>> threadLocalObjects3;
+
+  public zombie.iso.IsoObjectUtils();
+    Code:
+       0: aload_0
+       1: invokespecial #3                  // Method java/lang/Object."<init>":()V
+       4: return
+
+  public static boolean isObjectMultiSquare(zombie.iso.IsoObject);
+    Code:
+       0: aload_0
+       1: ifnonnull     6
+       4: iconst_0
+       5: ireturn
+       6: aload_0
+       7: invokestatic  #9                  // Method zombie/iso/objects/IsoDoor.getDoubleDoorIndex:(Lzombie/iso/IsoObject;)I
+      10: iconst_m1
+      11: if_icmpne     22
+      14: aload_0
+      15: invokestatic  #15                 // Method zombie/iso/objects/IsoDoor.getGarageDoorIndex:(Lzombie/iso/IsoObject;)I
+      18: iconst_m1
+      19: if_icmpeq     24
+      22: iconst_1
+      23: ireturn
+      24: aload_0
+      25: invokevirtual #18                 // Method zombie/iso/IsoObject.getSpriteConfig:()Lzombie/entity/components/spriteconfig/SpriteConfig;
+      28: ifnull        43
+      31: aload_0
+      32: invokevirtual #18                 // Method zombie/iso/IsoObject.getSpriteConfig:()Lzombie/entity/components/spriteconfig/SpriteConfig;
+      35: invokevirtual #24                 // Method zombie/entity/components/spriteconfig/SpriteConfig.isValidMultiSquare:()Z
+      38: ifeq          43
+      41: iconst_1
+      42: ireturn
+      43: aload_0
+      44: invokevirtual #30                 // Method zombie/iso/IsoObject.getSprite:()Lzombie/iso/sprite/IsoSprite;
+      47: ifnull        62
+      50: aload_0
+      51: invokevirtual #30                 // Method zombie/iso/IsoObject.getSprite:()Lzombie/iso/sprite/IsoSprite;
+      54: invokevirtual #34                 // Method zombie/iso/sprite/IsoSprite.getSpriteGrid:()Lzombie/iso/sprite/IsoSpriteGrid;
+      57: ifnull        62
+      60: iconst_1
+      61: ireturn
+      62: iconst_0
+      63: ireturn
+
+  public static int safelyRemoveTileObjectFromSquare(zombie.iso.IsoObject);
+    Code:
+       0: aload_0
+       1: invokestatic  #40                 // Method isObjectMultiSquare:(Lzombie/iso/IsoObject;)Z
+       4: ifeq          125
+       7: getstatic     #44                 // Field threadLocalObjects1:Ljava/lang/ThreadLocal;
+      10: invokevirtual #48                 // Method java/lang/ThreadLocal.get:()Ljava/lang/Object;
+      13: checkcast     #54                 // class java/util/ArrayList
+      16: astore_1
+      17: aload_1
+      18: invokevirtual #56                 // Method java/util/ArrayList.clear:()V
+      21: aload_0
+      22: aload_1
+      23: invokestatic  #59                 // Method getAllMultiTileObjects:(Lzombie/iso/IsoObject;Ljava/util/ArrayList;)Z
+      26: ifne          45
+      29: getstatic     #63                 // Field zombie/core/Core.debug:Z
+      32: ifeq          43
+      35: getstatic     #69                 // Field zombie/debug/DebugType.General:Lzombie/debug/DebugType;
+      38: ldc           #75                 // String Failed to find all parts of a multi-tile object!
+      40: invokevirtual #77                 // Method zombie/debug/DebugType.warn:(Ljava/lang/Object;)V
+      43: iconst_m1
+      44: ireturn
+      45: iconst_m1
+      46: istore_2
+      47: aload_1
+      48: invokevirtual #81                 // Method java/util/ArrayList.iterator:()Ljava/util/Iterator;
+      51: astore_3
+      52: aload_3
+      53: invokeinterface #85,  1           // InterfaceMethod java/util/Iterator.hasNext:()Z
+      58: ifeq          123
+      61: aload_3
+      62: invokeinterface #90,  1           // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+      67: checkcast     #19                 // class zombie/iso/IsoObject
+      70: astore        4
+      72: aload         4
+      74: getfield      #93                 // Field zombie/iso/IsoObject.square:Lzombie/iso/IsoGridSquare;
+      77: astore        5
+      79: aload         5
+      81: ifnull        106
+      84: aload         5
+      86: aload         4
+      88: iconst_0
+      89: invokevirtual #97                 // Method zombie/iso/IsoGridSquare.RemoveTileObject:(Lzombie/iso/IsoObject;Z)I
+      92: istore        6
+      94: aload_0
+      95: aload         4
+      97: if_acmpne     103
+     100: iload         6
+     102: istore_2
+     103: goto          120
+     106: getstatic     #63                 // Field zombie/core/Core.debug:Z
+     109: ifeq          120
+     112: getstatic     #69                 // Field zombie/debug/DebugType.General:Lzombie/debug/DebugType;
+     115: ldc           #75                 // String Failed to find all parts of a multi-tile object!
+     117: invokevirtual #77                 // Method zombie/debug/DebugType.warn:(Ljava/lang/Object;)V
+     120: goto          52
+     123: iload_2
+     124: ireturn
+     125: aload_0
+     126: ifnull        146
+     129: aload_0
+     130: getfield      #93                 // Field zombie/iso/IsoObject.square:Lzombie/iso/IsoGridSquare;
+     133: ifnull        146
+     136: aload_0
+     137: getfield      #93                 // Field zombie/iso/IsoObject.square:Lzombie/iso/IsoGridSquare;
+     140: aload_0
+     141: iconst_0
+     142: invokevirtual #97                 // Method zombie/iso/IsoGridSquare.RemoveTileObject:(Lzombie/iso/IsoObject;Z)I
+     145: ireturn
+     146: iconst_m1
+     147: ireturn
+
+  public static void safelyBurnTileObjectFromSquare(zombie.iso.IsoObject);
+    Code:
+       0: aload_0
+       1: invokestatic  #40                 // Method isObjectMultiSquare:(Lzombie/iso/IsoObject;)Z
+       4: ifeq          94
+       7: getstatic     #103                // Field threadLocalObjects2:Ljava/lang/ThreadLocal;
+      10: invokevirtual #48                 // Method java/lang/ThreadLocal.get:()Ljava/lang/Object;
+      13: checkcast     #54                 // class java/util/ArrayList
+      16: astore_1
+      17: aload_1
+      18: invokevirtual #56                 // Method java/util/ArrayList.clear:()V
+      21: aload_0
+      22: aload_1
+      23: invokestatic  #59                 // Method getAllMultiTileObjects:(Lzombie/iso/IsoObject;Ljava/util/ArrayList;)Z
+      26: pop
+      27: aload_1
+      28: invokevirtual #81                 // Method java/util/ArrayList.iterator:()Ljava/util/Iterator;
+      31: astore_2
+      32: aload_2
+      33: invokeinterface #85,  1           // InterfaceMethod java/util/Iterator.hasNext:()Z
+      38: ifeq          94
+      41: aload_2
+      42: invokeinterface #90,  1           // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+      47: checkcast     #19                 // class zombie/iso/IsoObject
+      50: astore_3
+      51: aload_0
+      52: aload_3
+      53: if_acmpeq     91
+      56: aload_3
+      57: getfield      #93                 // Field zombie/iso/IsoObject.square:Lzombie/iso/IsoGridSquare;
+      60: astore        4
+      62: aload         4
+      64: ifnull        77
+      67: aload         4
+      69: iconst_1
+      70: iconst_0
+      71: invokevirtual #106                // Method zombie/iso/IsoGridSquare.BurnWalls:(ZZ)V
+      74: goto          91
+      77: getstatic     #63                 // Field zombie/core/Core.debug:Z
+      80: ifeq          91
+      83: getstatic     #69                 // Field zombie/debug/DebugType.General:Lzombie/debug/DebugType;
+      86: ldc           #75                 // String Failed to find all parts of a multi-tile object!
+      88: invokevirtual #77                 // Method zombie/debug/DebugType.warn:(Ljava/lang/Object;)V
+      91: goto          32
+      94: return
+
+  public static boolean getAllMultiTileObjects(zombie.iso.IsoObject, java.util.ArrayList<zombie.iso.IsoObject>);
+    Code:
+       0: aload_0
+       1: invokestatic  #9                  // Method zombie/iso/objects/IsoDoor.getDoubleDoorIndex:(Lzombie/iso/IsoObject;)I
+       4: istore_2
+       5: iload_2
+       6: iconst_m1
+       7: if_icmpeq     61
+      10: aload_0
+      11: iload_2
+      12: invokestatic  #110                // Method zombie/iso/objects/IsoDoor.getDoubleDoorObject:(Lzombie/iso/IsoObject;I)Lzombie/iso/IsoObject;
+      15: astore_3
+      16: aload_0
+      17: iload_2
+      18: invokestatic  #114                // Method zombie/iso/objects/IsoDoor.getDoubleDoorPartnerIndex:(I)I
+      21: invokestatic  #110                // Method zombie/iso/objects/IsoDoor.getDoubleDoorObject:(Lzombie/iso/IsoObject;I)Lzombie/iso/IsoObject;
+      24: astore        4
+      26: aload_3
+      27: ifnull        36
+      30: aload_1
+      31: aload_3
+      32: invokevirtual #118                // Method java/util/ArrayList.add:(Ljava/lang/Object;)Z
+      35: pop
+      36: aload         4
+      38: ifnull        48
+      41: aload_1
+      42: aload         4
+      44: invokevirtual #118                // Method java/util/ArrayList.add:(Ljava/lang/Object;)Z
+      47: pop
+      48: aload_1
+      49: invokevirtual #122                // Method java/util/ArrayList.isEmpty:()Z
+      52: ifne          59
+      55: iconst_1
+      56: goto          60
+      59: iconst_0
+      60: ireturn
+      61: aload_0
+      62: invokestatic  #15                 // Method zombie/iso/objects/IsoDoor.getGarageDoorIndex:(Lzombie/iso/IsoObject;)I
+      65: istore_3
+      66: iload_3
+      67: iconst_m1
+      68: if_icmpeq     112
+      71: aload_0
+      72: invokestatic  #125                // Method zombie/iso/objects/IsoDoor.getGarageDoorFirst:(Lzombie/iso/IsoObject;)Lzombie/iso/IsoObject;
+      75: astore        4
+      77: aload         4
+      79: ifnull        99
+      82: aload_1
+      83: aload         4
+      85: invokevirtual #118                // Method java/util/ArrayList.add:(Ljava/lang/Object;)Z
+      88: pop
+      89: aload         4
+      91: invokestatic  #129                // Method zombie/iso/objects/IsoDoor.getGarageDoorNext:(Lzombie/iso/IsoObject;)Lzombie/iso/IsoObject;
+      94: astore        4
+      96: goto          77
+      99: aload_1
+     100: invokevirtual #122                // Method java/util/ArrayList.isEmpty:()Z
+     103: ifne          110
+     106: iconst_1
+     107: goto          111
+     110: iconst_0
+     111: ireturn
+     112: aload_0
+     113: invokevirtual #18                 // Method zombie/iso/IsoObject.getSpriteConfig:()Lzombie/entity/components/spriteconfig/SpriteConfig;
+     116: ifnull        138
+     119: aload_0
+     120: invokevirtual #18                 // Method zombie/iso/IsoObject.getSpriteConfig:()Lzombie/entity/components/spriteconfig/SpriteConfig;
+     123: invokevirtual #24                 // Method zombie/entity/components/spriteconfig/SpriteConfig.isValidMultiSquare:()Z
+     126: ifeq          138
+     129: aload_0
+     130: invokevirtual #18                 // Method zombie/iso/IsoObject.getSpriteConfig:()Lzombie/entity/components/spriteconfig/SpriteConfig;
+     133: aload_1
+     134: invokevirtual #132                // Method zombie/entity/components/spriteconfig/SpriteConfig.getAllMultiSquareObjects:(Ljava/util/ArrayList;)Z
+     137: ireturn
+     138: aload_0
+     139: invokevirtual #30                 // Method zombie/iso/IsoObject.getSprite:()Lzombie/iso/sprite/IsoSprite;
+     142: ifnull        161
+     145: aload_0
+     146: invokevirtual #30                 // Method zombie/iso/IsoObject.getSprite:()Lzombie/iso/sprite/IsoSprite;
+     149: invokevirtual #34                 // Method zombie/iso/sprite/IsoSprite.getSpriteGrid:()Lzombie/iso/sprite/IsoSpriteGrid;
+     152: ifnull        161
+     155: aload_0
+     156: aload_1
+     157: invokestatic  #136                // Method getSpriteGridMultiTileObjects:(Lzombie/iso/IsoObject;Ljava/util/ArrayList;)Z
+     160: ireturn
+     161: iconst_0
+     162: ireturn
+
+  private static boolean getSpriteGridMultiTileObjects(zombie.iso.IsoObject, java.util.ArrayList<zombie.iso.IsoObject>);
+    Code:
+       0: aload_0
+       1: invokevirtual #30                 // Method zombie/iso/IsoObject.getSprite:()Lzombie/iso/sprite/IsoSprite;
+       4: ifnull        17
+       7: aload_0
+       8: invokevirtual #30                 // Method zombie/iso/IsoObject.getSprite:()Lzombie/iso/sprite/IsoSprite;
+      11: invokevirtual #34                 // Method zombie/iso/sprite/IsoSprite.getSpriteGrid:()Lzombie/iso/sprite/IsoSpriteGrid;
+      14: ifnonnull     19
+      17: iconst_0
+      18: ireturn
+      19: aload_0
+      20: getfield      #93                 // Field zombie/iso/IsoObject.square:Lzombie/iso/IsoGridSquare;
+      23: astore_2
+      24: aload_0
+      25: invokevirtual #139                // Method zombie/iso/IsoObject.getSpriteGrid:()Lzombie/iso/sprite/IsoSpriteGrid;
+      28: astore_3
+      29: aload_3
+      30: aload_0
+      31: invokevirtual #30                 // Method zombie/iso/IsoObject.getSprite:()Lzombie/iso/sprite/IsoSprite;
+      34: invokevirtual #140                // Method zombie/iso/sprite/IsoSpriteGrid.getSpriteGridPosX:(Lzombie/iso/sprite/IsoSprite;)I
+      37: istore        4
+      39: aload_3
+      40: aload_0
+      41: invokevirtual #30                 // Method zombie/iso/IsoObject.getSprite:()Lzombie/iso/sprite/IsoSprite;
+      44: invokevirtual #146                // Method zombie/iso/sprite/IsoSpriteGrid.getSpriteGridPosY:(Lzombie/iso/sprite/IsoSprite;)I
+      47: istore        5
+      49: aload_3
+      50: aload_0
+      51: invokevirtual #30                 // Method zombie/iso/IsoObject.getSprite:()Lzombie/iso/sprite/IsoSprite;
+      54: invokevirtual #149                // Method zombie/iso/sprite/IsoSpriteGrid.getSpriteGridPosZ:(Lzombie/iso/sprite/IsoSprite;)I
+      57: istore        6
+      59: iconst_0
+      60: istore        7
+      62: iload         7
+      64: aload_3
+      65: invokevirtual #152                // Method zombie/iso/sprite/IsoSpriteGrid.getLevels:()I
+      68: if_icmpge     257
+      71: iconst_0
+      72: istore        8
+      74: iload         8
+      76: aload_3
+      77: invokevirtual #156                // Method zombie/iso/sprite/IsoSpriteGrid.getWidth:()I
+      80: if_icmpge     251
+      83: iconst_0
+      84: istore        9
+      86: iload         9
+      88: aload_3
+      89: invokevirtual #159                // Method zombie/iso/sprite/IsoSpriteGrid.getHeight:()I
+      92: if_icmpge     245
+      95: iload         8
+      97: iload         4
+      99: isub
+     100: istore        10
+     102: iload         9
+     104: iload         5
+     106: isub
+     107: istore        11
+     109: iload         7
+     111: iload         6
+     113: isub
+     114: istore        12
+     116: getstatic     #162                // Field zombie/iso/IsoWorld.instance:Lzombie/iso/IsoWorld;
+     119: getfield      #168                // Field zombie/iso/IsoWorld.currentCell:Lzombie/iso/IsoCell;
+     122: aload_2
+     123: getfield      #172                // Field zombie/iso/IsoGridSquare.x:I
+     126: iload         10
+     128: iadd
+     129: aload_2
+     130: getfield      #176                // Field zombie/iso/IsoGridSquare.y:I
+     133: iload         11
+     135: iadd
+     136: aload_2
+     137: getfield      #179                // Field zombie/iso/IsoGridSquare.z:I
+     140: iload         12
+     142: iadd
+     143: invokevirtual #182                // Method zombie/iso/IsoCell.getGridSquare:(III)Lzombie/iso/IsoGridSquare;
+     146: astore        13
+     148: aload_3
+     149: iload         8
+     151: iload         9
+     153: iload         7
+     155: invokevirtual #188                // Method zombie/iso/sprite/IsoSpriteGrid.getSprite:(III)Lzombie/iso/sprite/IsoSprite;
+     158: astore        14
+     160: iconst_0
+     161: istore        15
+     163: aload         13
+     165: ifnull        228
+     168: iconst_0
+     169: istore        16
+     171: iload         16
+     173: aload         13
+     175: invokevirtual #191                // Method zombie/iso/IsoGridSquare.getObjects:()Lzombie/util/list/PZArrayList;
+     178: invokevirtual #195                // Method zombie/util/list/PZArrayList.size:()I
+     181: if_icmpge     228
+     184: aload         13
+     186: invokevirtual #191                // Method zombie/iso/IsoGridSquare.getObjects:()Lzombie/util/list/PZArrayList;
+     189: iload         16
+     191: invokevirtual #200                // Method zombie/util/list/PZArrayList.get:(I)Ljava/lang/Object;
+     194: checkcast     #19                 // class zombie/iso/IsoObject
+     197: astore        17
+     199: aload         17
+     201: aload         14
+     203: invokestatic  #203                // Method verifyObject:(Lzombie/iso/IsoObject;Lzombie/iso/sprite/IsoSprite;)Z
+     206: ifeq          222
+     209: aload_1
+     210: aload         17
+     212: invokevirtual #118                // Method java/util/ArrayList.add:(Ljava/lang/Object;)Z
+     215: pop
+     216: iconst_1
+     217: istore        15
+     219: goto          228
+     222: iinc          16, 1
+     225: goto          171
+     228: iload         15
+     230: ifne          239
+     233: aload_1
+     234: invokevirtual #56                 // Method java/util/ArrayList.clear:()V
+     237: iconst_0
+     238: ireturn
+     239: iinc          9, 1
+     242: goto          86
+     245: iinc          8, 1
+     248: goto          74
+     251: iinc          7, 1
+     254: goto          62
+     257: iconst_1
+     258: ireturn
+
+  private static boolean verifyObject(zombie.iso.IsoObject, zombie.iso.sprite.IsoSprite);
+    Code:
+       0: aload_0
+       1: invokevirtual #30                 // Method zombie/iso/IsoObject.getSprite:()Lzombie/iso/sprite/IsoSprite;
+       4: ifnull        21
+       7: aload_0
+       8: invokevirtual #30                 // Method zombie/iso/IsoObject.getSprite:()Lzombie/iso/sprite/IsoSprite;
+      11: aload_1
+      12: if_acmpne     19
+      15: iconst_1
+      16: goto          20
+      19: iconst_0
+      20: ireturn
+      21: iconst_0
+      22: ireturn
+
+  public static void dumpContentsInSquare(zombie.iso.IsoObject);
+    Code:
+       0: aload_0
+       1: invokevirtual #207                // Method zombie/iso/IsoObject.getSquare:()Lzombie/iso/IsoGridSquare;
+       4: ifnonnull     8
+       7: return
+       8: iconst_0
+       9: istore_1
+      10: iload_1
+      11: aload_0
+      12: invokevirtual #211                // Method zombie/iso/IsoObject.getContainerCount:()I
+      15: if_icmpge     38
+      18: aload_0
+      19: iload_1
+      20: invokevirtual #214                // Method zombie/iso/IsoObject.getContainerByIndex:(I)Lzombie/inventory/ItemContainer;
+      23: astore_2
+      24: aload_2
+      25: aload_0
+      26: invokevirtual #207                // Method zombie/iso/IsoObject.getSquare:()Lzombie/iso/IsoGridSquare;
+      29: invokevirtual #218                // Method zombie/inventory/ItemContainer.dumpContentsInSquare:(Lzombie/iso/IsoGridSquare;)V
+      32: iinc          1, 1
+      35: goto          10
+      38: aload_0
+      39: invokestatic  #40                 // Method isObjectMultiSquare:(Lzombie/iso/IsoObject;)Z
+      42: ifeq          149
+      45: getstatic     #224                // Field threadLocalObjects3:Ljava/lang/ThreadLocal;
+      48: invokevirtual #48                 // Method java/lang/ThreadLocal.get:()Ljava/lang/Object;
+      51: checkcast     #54                 // class java/util/ArrayList
+      54: astore_1
+      55: aload_1
+      56: invokevirtual #56                 // Method java/util/ArrayList.clear:()V
+      59: aload_0
+      60: aload_1
+      61: invokestatic  #59                 // Method getAllMultiTileObjects:(Lzombie/iso/IsoObject;Ljava/util/ArrayList;)Z
+      64: ifne          82
+      67: getstatic     #63                 // Field zombie/core/Core.debug:Z
+      70: ifeq          81
+      73: getstatic     #69                 // Field zombie/debug/DebugType.General:Lzombie/debug/DebugType;
+      76: ldc           #75                 // String Failed to find all parts of a multi-tile object!
+      78: invokevirtual #77                 // Method zombie/debug/DebugType.warn:(Ljava/lang/Object;)V
+      81: return
+      82: aload_1
+      83: invokevirtual #81                 // Method java/util/ArrayList.iterator:()Ljava/util/Iterator;
+      86: astore_2
+      87: aload_2
+      88: invokeinterface #85,  1           // InterfaceMethod java/util/Iterator.hasNext:()Z
+      93: ifeq          149
+      96: aload_2
+      97: invokeinterface #90,  1           // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+     102: checkcast     #19                 // class zombie/iso/IsoObject
+     105: astore_3
+     106: aload_3
+     107: getfield      #93                 // Field zombie/iso/IsoObject.square:Lzombie/iso/IsoGridSquare;
+     110: astore        4
+     112: aload         4
+     114: ifnull        146
+     117: iconst_0
+     118: istore        5
+     120: iload         5
+     122: aload_3
+     123: invokevirtual #211                // Method zombie/iso/IsoObject.getContainerCount:()I
+     126: if_icmpge     146
+     129: aload_3
+     130: iload         5
+     132: invokevirtual #214                // Method zombie/iso/IsoObject.getContainerByIndex:(I)Lzombie/inventory/ItemContainer;
+     135: aload         4
+     137: invokevirtual #218                // Method zombie/inventory/ItemContainer.dumpContentsInSquare:(Lzombie/iso/IsoGridSquare;)V
+     140: iinc          5, 1
+     143: goto          120
+     146: goto          87
+     149: new           #54                 // class java/util/ArrayList
+     152: dup
+     153: invokespecial #227                // Method java/util/ArrayList."<init>":()V
+     156: astore_1
+     157: aload_0
+     158: getstatic     #228                // Field zombie/entity/ComponentType.SpriteConfig:Lzombie/entity/ComponentType;
+     161: invokevirtual #234                // Method zombie/iso/IsoObject.hasComponent:(Lzombie/entity/ComponentType;)Z
+     164: ifeq          185
+     167: aload_0
+     168: getstatic     #228                // Field zombie/entity/ComponentType.SpriteConfig:Lzombie/entity/ComponentType;
+     171: invokevirtual #238                // Method zombie/iso/IsoObject.getComponent:(Lzombie/entity/ComponentType;)Lzombie/entity/Component;
+     174: checkcast     #25                 // class zombie/entity/components/spriteconfig/SpriteConfig
+     177: aload_1
+     178: invokevirtual #132                // Method zombie/entity/components/spriteconfig/SpriteConfig.getAllMultiSquareObjects:(Ljava/util/ArrayList;)Z
+     181: pop
+     182: goto          191
+     185: aload_1
+     186: aload_0
+     187: invokevirtual #118                // Method java/util/ArrayList.add:(Ljava/lang/Object;)Z
+     190: pop
+     191: aload_1
+     192: invokevirtual #81                 // Method java/util/ArrayList.iterator:()Ljava/util/Iterator;
+     195: astore_2
+     196: aload_2
+     197: invokeinterface #85,  1           // InterfaceMethod java/util/Iterator.hasNext:()Z
+     202: ifeq          254
+     205: aload_2
+     206: invokeinterface #90,  1           // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+     211: checkcast     #19                 // class zombie/iso/IsoObject
+     214: astore_3
+     215: iconst_0
+     216: istore        4
+     218: iload         4
+     220: aload_3
+     221: invokevirtual #242                // Method zombie/iso/IsoObject.componentSize:()I
+     224: if_icmpge     251
+     227: aload_3
+     228: iload         4
+     230: invokevirtual #245                // Method zombie/iso/IsoObject.getComponentForIndex:(I)Lzombie/entity/Component;
+     233: astore        5
+     235: aload         5
+     237: ifnull        245
+     240: aload         5
+     242: invokevirtual #249                // Method zombie/entity/Component.dumpContentsInSquare:()V
+     245: iinc          4, 1
+     248: goto          218
+     251: goto          196
+     254: return
+
+  static {};
+    Code:
+       0: invokedynamic #253,  0            // InvokeDynamic #0:get:()Ljava/util/function/Supplier;
+       5: invokestatic  #256                // Method java/lang/ThreadLocal.withInitial:(Ljava/util/function/Supplier;)Ljava/lang/ThreadLocal;
+       8: putstatic     #44                 // Field threadLocalObjects1:Ljava/lang/ThreadLocal;
+      11: invokedynamic #253,  0            // InvokeDynamic #0:get:()Ljava/util/function/Supplier;
+      16: invokestatic  #256                // Method java/lang/ThreadLocal.withInitial:(Ljava/util/function/Supplier;)Ljava/lang/ThreadLocal;
+      19: putstatic     #103                // Field threadLocalObjects2:Ljava/lang/ThreadLocal;
+      22: invokedynamic #253,  0            // InvokeDynamic #0:get:()Ljava/util/function/Supplier;
+      27: invokestatic  #256                // Method java/lang/ThreadLocal.withInitial:(Ljava/util/function/Supplier;)Ljava/lang/ThreadLocal;
+      30: putstatic     #224                // Field threadLocalObjects3:Ljava/lang/ThreadLocal;
+      33: return
+}

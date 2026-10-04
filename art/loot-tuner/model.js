@@ -39,7 +39,7 @@
   function quantile(values,q) { const a=values.slice().sort((x,y)=>x-y); return a[Math.floor((a.length-1)*q)]||0; }
   function defaults(data) { return {version:1,baseline:data.meta.baseline,seed:24601,global:data.defaults?.global??1,material:.6,rolls:1,retention:1,selected:'all',overlay:'spawns',visible:Object.fromEntries(data.modules.map(m=>[m.id,true])),items:Object.fromEntries(data.modules.map(m=>[m.id,data.defaults?.items?.[m.id]??1]))}; }
   function migrateValue(path,value,baseline) {
-    if(baseline==='T&T 0.2.26')return value;
+    if(['T&T 0.2.26','T&T 0.2.27','T&T 0.2.28'].includes(baseline))return value;
     if(path==='global')return value/4.5;
     if(path.startsWith('items.')) {
       const id=path.slice(6);

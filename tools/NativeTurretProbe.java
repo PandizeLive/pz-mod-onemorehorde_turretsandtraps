@@ -52,7 +52,7 @@ public final class NativeTurretProbe {
         picker.getMethod("Parse").invoke(null);
         Object pools = picker.getField("ProceduralDistributions").get(null);
         int modules = 0;
-        for (String name : new String[]{"ElectronicStoreMisc", "CrateElectronics", "MechanicShelfElectric", "ArmyStorageElectronics", "ElectricianTools", "GunStoreAccessories", "ToolCabinetMechanics", "GarageTools", "CrateTools", "ToolStoreTools", "ToolStoreMisc", "MechanicShelfTools"}) {
+        for (String name : new String[]{"ElectronicStoreMisc", "CrateElectronics", "MechanicShelfElectric", "ArmyStorageElectronics", "ElectricianTools", "GunStoreAccessories", "ToolCabinetMechanics", "GarageTools", "CrateTools", "ToolStoreTools", "ToolStoreMisc", "MechanicShelfTools", "GarageMechanics", "CrateMechanics", "ElectronicStoreComputers", "ElectronicStoreHAMRadio"}) {
             Object pool = call(pools, "get", new Class<?>[]{Object.class}, name);
             check(pool != null, "Missing native loot pool: " + name);
             Object[] items = (Object[])pool.getClass().getField("items").get(pool);
@@ -64,8 +64,8 @@ public final class NativeTurretProbe {
                 }
             }
         }
-        check(modules == 102, "Native loot parser did not retain all module entries");
-        System.out.println("[OMHTT-Smoke] native-module-loot-parser pools=12 items=102 weights=positive");
+        check(modules == 121, "Native loot parser did not retain all module entries");
+        System.out.println("[OMHTT-Smoke] native-module-loot-parser pools=16 items=121 weights=positive");
         Class<?> squareType = Class.forName("zombie.iso.IsoGridSquare");
         Class<?> cellType = Class.forName("zombie.iso.IsoCell");
         Class<?> movingType = Class.forName("zombie.iso.IsoMovingObject");

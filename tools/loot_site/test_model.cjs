@@ -4,10 +4,10 @@ const site=path.resolve(__dirname,'../../art/loot-tuner');
 global.window={};require(path.join(site,'data.js'));
 const D=window.LOOT_DATA,M=require(path.join(site,'model.js'));
 async function run(){
-  assert.equal(D.containers.length,18514);assert.equal(D.routes.length,75);assert.equal(D.modules.length,15);
-  assert.equal(D.modules.find(m=>m.id==='Suppression').weight,2.25);
+  assert.equal(D.containers.length,18630);assert.equal(D.routes.length,79);assert.equal(D.modules.length,15);
+  assert.equal(D.modules.find(m=>m.id==='Suppression').weight,2.5);
   assert(D.modules.some(m=>m.id==='Critical')&&D.modules.some(m=>m.id==='Accuracy'));
-  assert.equal(Object.keys(D.pools).length,12);
+  assert.equal(Object.keys(D.pools).length,16);
   assert.equal(M.probability(.5,1,1,.6),.003);
   assert.equal(M.probability(.25,1,1,.6),.0015);
   assert.equal(M.probability(.1,1,.05,.6),.0001);
@@ -38,6 +38,8 @@ async function run(){
   assert.deepEqual(M.validate(approved,D),s,'Approved old multipliers normalize exactly to all ones');
   const oldData={...D,modules:D.modules.map(m=>({...m,weight:m.weight/4.5/factors[m.id]}))};
   assert.deepEqual(M.generate(oldData,approved),M.generate(D,s),'Normalization preserves every seeded container and count');
+  const prior={...s,baseline:'T&T 0.2.26',global:1.7,items:{...s.items,Firing:3}};
+  assert.deepEqual(M.validate(prior,D),{...prior,baseline:D.meta.baseline},'Already-normalized tuning survives without double division');
   const generated=M.generate(D,s);
   assert.equal(generated.containerTotals.reduce((a,b)=>a+b,0),generated.totals.reduce((a,b)=>a+b,0));
   assert(generated.spawns.length>0);

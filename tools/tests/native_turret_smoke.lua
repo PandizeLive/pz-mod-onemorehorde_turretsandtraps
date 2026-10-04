@@ -50,7 +50,7 @@ local function verifyTurrets()
             end
         end
     end
-    assert(count == 102, "Expected 102 component entries across twelve native loot pools")
+    assert(count == 121, "Expected 121 component entries across sixteen native loot pools")
     local retired = {"OMHTTModuleCapacitySmall", "OMHTTModuleCapacity", "OMHTTModuleCapacityLarge",
         "OMHTTModuleMotionDetection", "OMHTTModuleDetection360"}
     for i = 1, #retired do
@@ -58,10 +58,23 @@ local function verifyTurrets()
         assert(ScriptManager.instance:getItem(fullType) == nil and T.component(fullType) == nil, "Retired item remains registered")
     end
     local visibleComponents, visibleCount = {}, 0
+    local Audit = require("OMHTT/FirearmAudit")
+    local auditAccepted, auditRejected = 0, 0
     local scripts = getAllItems()
     for i = 0, scripts:size() - 1 do
         local script = scripts:get(i)
         local fullType = script:getFullName()
+        if script:isRanged() then
+            local evidence = Audit.inspect(fullType)
+            assert(evidence.item == fullType)
+            if evidence.accepted then
+                assert(evidence.range > 0 and evidence.cooldownMs > 0 and evidence.reloadMs >= 0)
+                auditAccepted = auditAccepted + 1
+            else
+                assert(type(evidence.reason) == "string")
+                auditRejected = auditRejected + 1
+            end
+        end
         local component = T.component(fullType)
         if component then
             assert(not script:getObsolete() and not script:isHidden(), "Current component is unavailable")
@@ -70,6 +83,8 @@ local function verifyTurrets()
             visibleComponents[component], visibleCount = true, visibleCount + 1
         end
     end
+    assert(auditAccepted >= 20 and auditRejected >= 2, "Expected conventional guns and cap-gun rejections")
+    print("[OMHTT-Smoke] native-firearm-audit accepted=" .. auditAccepted .. " rejected=" .. auditRejected)
     assert(visibleCount == 15, "Expected fifteen canonical components")
     print("[OMHTT-Smoke] native-component-list visible=15 hidden=0 duplicates=0 legacy=removed")
     local nativeContents = {active = {Detection360 = 1, Filter = 1}}
@@ -89,7 +104,7 @@ local function verifyTurrets()
     assert(T.contents(live).active.MotionDetection == 1, "Native module condition defaults are not active")
     detector:setCondition(0)
     assert(T.contents(live).active.MotionDetection == nil, "Broken native module remains active")
-    print("[OMHTT-Smoke] native-modules loot=102 profiles=valid condition=checked")
+    print("[OMHTT-Smoke] native-modules loot=121 profiles=valid condition=checked")
     local resources = ArrayList.new()
     local tools = {"Base.Screwdriver", "Base.Wrench"}
     local routes = {

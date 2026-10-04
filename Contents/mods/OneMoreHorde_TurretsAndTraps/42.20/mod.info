@@ -1,6 +1,6 @@
 name=OMH: Turrets & Traps
 id=OneMoreHorde_TurretsAndTraps
-modversion=0.2.27
+modversion=0.2.28
 versionMin=42.20
 icon=icon.png
 description=Single-player development test: craft modular potato turrets, deploy through Building, load real potatoes and a car battery, and pick up with contents intact. External power and battery fallback, configurable combat and power costs. Includes directional 1x2 Spike Barriers, reinforcement, native vaulting, ten-second servicing and five-item bundles. Module storage is available; automatic targeting and module effects are still in development. Temporary white developer markers. Use a disposable test world.

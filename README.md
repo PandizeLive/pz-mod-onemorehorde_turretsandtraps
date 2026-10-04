@@ -1,6 +1,6 @@
 # OMH: Turrets & Traps
 
-Project foundation created 2026-09-25. **Current 0.2.27:** [range, noise preview and firearm compatibility](docs/PATCH_v0.2.27.md). Installation/deployment evidence is in [RELEASE.md](docs/RELEASE.md). One combined six-step test covers the patch; native checks do not certify client rendering or frame smoothness.
+Project foundation created 2026-09-25. **Current 0.2.28:** [broader loot and startup firearm audit](docs/PATCH_v0.2.28.md). Installation/deployment evidence is in [RELEASE.md](docs/RELEASE.md). One combined five-step test covers the patch; native checks do not certify client rendering or frame smoothness.
 
 One edition with a Sandbox toggle menu. The planned mod adds maintainable defensive equipment to Project Zomboid Build 42, with optional Horde Night, Trait Shop, and Cure Defense integrations. Recheck the installed game build before implementing any engine-dependent behavior.
 
