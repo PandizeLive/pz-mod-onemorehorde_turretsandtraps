@@ -1,4 +1,5 @@
 __modules = {}
+GameTime = {isGamePaused = function() return false end}
 if not math.min then function math.min(a, b) if a < b then return a end return b end end
 if not math.max then function math.max(a, b) if a > b then return a end return b end end
 -- Standalone Kahlua registration omits the game's supplemental Lua standard library.
@@ -125,6 +126,12 @@ function makeSquare(x, y, z)
     end
     function square:getSpecialObjects() return self:getObjects() end
     function square:isBlockedTo(other) return self.blocked or other.blocked end
+    function square:testVisionAdjacent(dx, dy, dz)
+        local other = testSquares[require("OMHTT/Foundation").key(self:getX()+dx, self:getY()+dy, self:getZ()+dz)]
+        if not other or self.blocked or other.blocked then return "Blocked" end
+        if self.window or other.window then return "ClearThroughWindow" end
+        return "Clear"
+    end
     function square:isWindowTo(other) return self.window or other.window end
     function square:getMovingObjects()
         local objects = self.moving

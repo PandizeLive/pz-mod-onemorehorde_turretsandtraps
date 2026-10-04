@@ -1,3 +1,5 @@
+local Budget = require("OMHTT/TurretScheduler")
+local Clock = require("OMHTT/TurretClock")
 if isClient() or isServer() then return end
 local T = require("OMHTT/Turret")
 local M = require("OMHTT/TurretModules")
@@ -87,7 +89,7 @@ function A.step(entry, deadline)
     local square, state = object:getSquare(), T.state(object)
     if not square or not state or object:getObjectIndex() < 0
         or getCell():getGridSquare(square:getX(), square:getY(), square:getZ()) ~= square then return false end
-    local now = getTimestampMs()
+    local now = Clock.now()
     if now < entry.due and (not entry.target or now < (entry.fireDue or 0)) then return true end
     local aim = require("OMHTT/TurretAim").entries[object]
     if require("OMHTT/TurretSearch").pending[object] or (aim and aim.player) then return true end
@@ -147,7 +149,7 @@ end
 
 ---@return nil
 function A.tick()
-    local deadline = getTimestampMs() + 2
+    local deadline = Budget.limit(2)
     local count = math.min(4, #A.order)
     for i = 1, count do
         if getTimestampMs() >= deadline or #A.order == 0 then return end
@@ -165,5 +167,5 @@ function A.tick()
 end
 
 Events.OnOMHTTTurretChanged.Add(A.changed)
-Events.OnTick.Add(A.tick)
+Budget.register("A.tick", A.tick)
 return A

@@ -160,5 +160,7 @@
     "UI_OMHTT_ManageUnsupportedFirearm": "Unsupported weapon mechanism.",
     "UI_OMHTT_EngagementRange": "Engagement range: %1",
     "UI_OMHTT_RangeMax": "Max",
-    "UI_OMHTT_RangeTooltip": "Limit targeting distance."
+    "UI_OMHTT_RangeTooltip": "Limit targeting distance.",
+    "UI_OMHTT_ShowNoiseRadius": "Show noise radius",
+    "UI_OMHTT_NoiseRadiusTooltip": "Zombie hearing range when selected."
 }

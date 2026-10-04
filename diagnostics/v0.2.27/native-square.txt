@@ -1,0 +1,489 @@
+  public zombie.iso.LosUtil$TestResults testVisionAdjacent(int, int, int, boolean, boolean);
+    Code:
+       0: iload_1
+       1: iconst_m1
+       2: if_icmplt     30
+       5: iload_1
+       6: iconst_1
+       7: if_icmpgt     30
+      10: iload_2
+      11: iconst_m1
+      12: if_icmplt     30
+      15: iload_2
+      16: iconst_1
+      17: if_icmpgt     30
+      20: iload_3
+      21: iconst_m1
+      22: if_icmplt     30
+      25: iload_3
+      26: iconst_1
+      27: if_icmple     34
+      30: getstatic     #3905               // Field zombie/iso/LosUtil$TestResults.Blocked:Lzombie/iso/LosUtil$TestResults;
+      33: areturn
+      34: iload_3
+      35: iconst_1
+      36: if_icmpne     95
+      39: iload_1
+      40: ifne          47
+      43: iload_2
+      44: ifeq          95
+      47: aload_0
+      48: invokevirtual #3911               // Method HasElevatedFloor:()Z
+      51: ifeq          95
+      54: aload_0
+      55: invokevirtual #1684               // Method getCell:()Lzombie/iso/IsoCell;
+      58: aload_0
+      59: getfield      #9                  // Field x:I
+      62: aload_0
+      63: getfield      #13                 // Field y:I
+      66: aload_0
+      67: getfield      #16                 // Field z:I
+      70: iload_3
+      71: iadd
+      72: invokevirtual #471                // Method zombie/iso/IsoCell.getGridSquare:(III)Lzombie/iso/IsoGridSquare;
+      75: astore        6
+      77: aload         6
+      79: ifnull        95
+      82: aload         6
+      84: iload_1
+      85: iload_2
+      86: iconst_0
+      87: iload         4
+      89: iload         5
+      91: invokevirtual #3914               // Method testVisionAdjacent:(IIIZZ)Lzombie/iso/LosUtil$TestResults;
+      94: areturn
+      95: iload_3
+      96: iconst_m1
+      97: if_icmpne     160
+     100: iload_1
+     101: ifne          108
+     104: iload_2
+     105: ifeq          160
+     108: aload_0
+     109: invokevirtual #1684               // Method getCell:()Lzombie/iso/IsoCell;
+     112: aload_0
+     113: getfield      #9                  // Field x:I
+     116: iload_1
+     117: iadd
+     118: aload_0
+     119: getfield      #13                 // Field y:I
+     122: iload_2
+     123: iadd
+     124: aload_0
+     125: getfield      #16                 // Field z:I
+     128: iload_3
+     129: iadd
+     130: invokevirtual #471                // Method zombie/iso/IsoCell.getGridSquare:(III)Lzombie/iso/IsoGridSquare;
+     133: astore        6
+     135: aload         6
+     137: ifnull        160
+     140: aload         6
+     142: invokevirtual #3911               // Method HasElevatedFloor:()Z
+     145: ifeq          160
+     148: aload_0
+     149: iload_1
+     150: iload_2
+     151: iconst_0
+     152: iload         4
+     154: iload         5
+     156: invokevirtual #3914               // Method testVisionAdjacent:(IIIZZ)Lzombie/iso/LosUtil$TestResults;
+     159: areturn
+     160: iload_1
+     161: ifeq          272
+     164: iload_2
+     165: ifeq          272
+     168: iload         4
+     170: ifeq          272
+     173: aload_0
+     174: iload_1
+     175: iload_2
+     176: iload_3
+     177: iload         5
+     179: invokevirtual #3918               // Method DoDiagnalCheck:(IIIZ)Lzombie/iso/LosUtil$TestResults;
+     182: astore        6
+     184: getstatic     #208                // Field zombie/network/GameServer.server:Z
+     187: ifne          1111
+     190: aload         6
+     192: getstatic     #3922               // Field zombie/iso/LosUtil$TestResults.Clear:Lzombie/iso/LosUtil$TestResults;
+     195: if_acmpeq     222
+     198: aload         6
+     200: getstatic     #3924               // Field zombie/iso/LosUtil$TestResults.ClearThroughWindow:Lzombie/iso/LosUtil$TestResults;
+     203: if_acmpeq     222
+     206: aload         6
+     208: getstatic     #3927               // Field zombie/iso/LosUtil$TestResults.ClearThroughOpenDoor:Lzombie/iso/LosUtil$TestResults;
+     211: if_acmpeq     222
+     214: aload         6
+     216: getstatic     #3930               // Field zombie/iso/LosUtil$TestResults.ClearThroughClosedDoor:Lzombie/iso/LosUtil$TestResults;
+     219: if_acmpne     1111
+     222: aload_0
+     223: invokevirtual #1684               // Method getCell:()Lzombie/iso/IsoCell;
+     226: aload_0
+     227: getfield      #9                  // Field x:I
+     230: iload_1
+     231: iadd
+     232: aload_0
+     233: getfield      #13                 // Field y:I
+     236: iload_2
+     237: iadd
+     238: aload_0
+     239: getfield      #16                 // Field z:I
+     242: iload_3
+     243: iadd
+     244: invokevirtual #471                // Method zombie/iso/IsoCell.getGridSquare:(III)Lzombie/iso/IsoGridSquare;
+     247: astore        7
+     249: aload         7
+     251: ifnull        269
+     254: aload         7
+     256: iload_1
+     257: ineg
+     258: iload_2
+     259: ineg
+     260: iload_3
+     261: ineg
+     262: iload         5
+     264: invokevirtual #3918               // Method DoDiagnalCheck:(IIIZ)Lzombie/iso/LosUtil$TestResults;
+     267: astore        6
+     269: goto          1111
+     272: aload_0
+     273: invokevirtual #1684               // Method getCell:()Lzombie/iso/IsoCell;
+     276: aload_0
+     277: getfield      #9                  // Field x:I
+     280: iload_1
+     281: iadd
+     282: aload_0
+     283: getfield      #13                 // Field y:I
+     286: iload_2
+     287: iadd
+     288: aload_0
+     289: getfield      #16                 // Field z:I
+     292: iload_3
+     293: iadd
+     294: invokevirtual #471                // Method zombie/iso/IsoCell.getGridSquare:(III)Lzombie/iso/IsoGridSquare;
+     297: astore        7
+     299: getstatic     #3922               // Field zombie/iso/LosUtil$TestResults.Clear:Lzombie/iso/LosUtil$TestResults;
+     302: astore        8
+     304: aload         7
+     306: ifnull        1019
+     309: aload         7
+     311: getfield      #16                 // Field z:I
+     314: aload_0
+     315: getfield      #16                 // Field z:I
+     318: if_icmpne     1019
+     321: aload_0
+     322: getfield      #110                // Field specialObjects:Ljava/util/List;
+     325: invokeinterface #1782,  1         // InterfaceMethod java/util/List.isEmpty:()Z
+     330: ifne          667
+     333: iconst_0
+     334: istore        9
+     336: iload         9
+     338: aload_0
+     339: getfield      #110                // Field specialObjects:Ljava/util/List;
+     342: invokeinterface #559,  1          // InterfaceMethod java/util/List.size:()I
+     347: if_icmpge     667
+     350: aload_0
+     351: getfield      #110                // Field specialObjects:Ljava/util/List;
+     354: iload         9
+     356: invokeinterface #560,  2          // InterfaceMethod java/util/List.get:(I)Ljava/lang/Object;
+     361: checkcast     #93                 // class zombie/iso/IsoObject
+     364: astore        10
+     366: aload         10
+     368: ifnonnull     375
+     371: getstatic     #3922               // Field zombie/iso/LosUtil$TestResults.Clear:Lzombie/iso/LosUtil$TestResults;
+     374: areturn
+     375: aload         10
+     377: aload_0
+     378: aload         7
+     380: invokevirtual #3933               // Method zombie/iso/IsoObject.TestVision:(Lzombie/iso/IsoGridSquare;Lzombie/iso/IsoGridSquare;)Lzombie/iso/IsoObject$VisionResult;
+     383: astore        11
+     385: aload         11
+     387: getstatic     #3937               // Field zombie/iso/IsoObject$VisionResult.NoEffect:Lzombie/iso/IsoObject$VisionResult;
+     390: if_acmpeq     661
+     393: aload         11
+     395: getstatic     #3943               // Field zombie/iso/IsoObject$VisionResult.Unblocked:Lzombie/iso/IsoObject$VisionResult;
+     398: if_acmpne     438
+     401: aload         10
+     403: instanceof    #557                // class zombie/iso/objects/IsoDoor
+     406: ifeq          438
+     409: aload         10
+     411: checkcast     #557                // class zombie/iso/objects/IsoDoor
+     414: astore        12
+     416: aload         12
+     418: invokevirtual #568                // Method zombie/iso/objects/IsoDoor.IsOpen:()Z
+     421: ifeq          430
+     424: getstatic     #3927               // Field zombie/iso/LosUtil$TestResults.ClearThroughOpenDoor:Lzombie/iso/LosUtil$TestResults;
+     427: goto          433
+     430: getstatic     #3930               // Field zombie/iso/LosUtil$TestResults.ClearThroughClosedDoor:Lzombie/iso/LosUtil$TestResults;
+     433: astore        8
+     435: goto          661
+     438: aload         11
+     440: getstatic     #3943               // Field zombie/iso/IsoObject$VisionResult.Unblocked:Lzombie/iso/IsoObject$VisionResult;
+     443: if_acmpne     477
+     446: aload         10
+     448: instanceof    #565                // class zombie/iso/objects/IsoThumpable
+     451: ifeq          477
+     454: aload         10
+     456: checkcast     #565                // class zombie/iso/objects/IsoThumpable
+     459: astore        13
+     461: aload         13
+     463: invokevirtual #1654               // Method zombie/iso/objects/IsoThumpable.isDoor:()Z
+     466: ifeq          477
+     469: getstatic     #3927               // Field zombie/iso/LosUtil$TestResults.ClearThroughOpenDoor:Lzombie/iso/LosUtil$TestResults;
+     472: astore        8
+     474: goto          661
+     477: aload         11
+     479: getstatic     #3943               // Field zombie/iso/IsoObject$VisionResult.Unblocked:Lzombie/iso/IsoObject$VisionResult;
+     482: if_acmpne     501
+     485: aload         10
+     487: instanceof    #607                // class zombie/iso/objects/IsoWindow
+     490: ifeq          501
+     493: getstatic     #3924               // Field zombie/iso/LosUtil$TestResults.ClearThroughWindow:Lzombie/iso/LosUtil$TestResults;
+     496: astore        8
+     498: goto          661
+     501: aload         11
+     503: getstatic     #3946               // Field zombie/iso/IsoObject$VisionResult.Blocked:Lzombie/iso/IsoObject$VisionResult;
+     506: if_acmpne     526
+     509: aload         10
+     511: instanceof    #557                // class zombie/iso/objects/IsoDoor
+     514: ifeq          526
+     517: iload         5
+     519: ifne          526
+     522: getstatic     #3905               // Field zombie/iso/LosUtil$TestResults.Blocked:Lzombie/iso/LosUtil$TestResults;
+     525: areturn
+     526: aload         11
+     528: getstatic     #3946               // Field zombie/iso/IsoObject$VisionResult.Blocked:Lzombie/iso/IsoObject$VisionResult;
+     531: if_acmpne     566
+     534: aload         10
+     536: instanceof    #565                // class zombie/iso/objects/IsoThumpable
+     539: ifeq          566
+     542: aload         10
+     544: checkcast     #565                // class zombie/iso/objects/IsoThumpable
+     547: astore        14
+     549: aload         14
+     551: invokevirtual #1654               // Method zombie/iso/objects/IsoThumpable.isDoor:()Z
+     554: ifeq          566
+     557: iload         5
+     559: ifne          566
+     562: getstatic     #3905               // Field zombie/iso/LosUtil$TestResults.Blocked:Lzombie/iso/LosUtil$TestResults;
+     565: areturn
+     566: aload         11
+     568: getstatic     #3946               // Field zombie/iso/IsoObject$VisionResult.Blocked:Lzombie/iso/IsoObject$VisionResult;
+     571: if_acmpne     601
+     574: aload         10
+     576: instanceof    #565                // class zombie/iso/objects/IsoThumpable
+     579: ifeq          601
+     582: aload         10
+     584: checkcast     #565                // class zombie/iso/objects/IsoThumpable
+     587: astore        15
+     589: aload         15
+     591: invokevirtual #2340               // Method zombie/iso/objects/IsoThumpable.isWindow:()Z
+     594: ifeq          601
+     597: getstatic     #3905               // Field zombie/iso/LosUtil$TestResults.Blocked:Lzombie/iso/LosUtil$TestResults;
+     600: areturn
+     601: aload         11
+     603: getstatic     #3946               // Field zombie/iso/IsoObject$VisionResult.Blocked:Lzombie/iso/IsoObject$VisionResult;
+     606: if_acmpne     621
+     609: aload         10
+     611: instanceof    #621                // class zombie/iso/objects/IsoCurtain
+     614: ifeq          621
+     617: getstatic     #3905               // Field zombie/iso/LosUtil$TestResults.Blocked:Lzombie/iso/LosUtil$TestResults;
+     620: areturn
+     621: aload         11
+     623: getstatic     #3946               // Field zombie/iso/IsoObject$VisionResult.Blocked:Lzombie/iso/IsoObject$VisionResult;
+     626: if_acmpne     641
+     629: aload         10
+     631: instanceof    #607                // class zombie/iso/objects/IsoWindow
+     634: ifeq          641
+     637: getstatic     #3905               // Field zombie/iso/LosUtil$TestResults.Blocked:Lzombie/iso/LosUtil$TestResults;
+     640: areturn
+     641: aload         11
+     643: getstatic     #3946               // Field zombie/iso/IsoObject$VisionResult.Blocked:Lzombie/iso/IsoObject$VisionResult;
+     646: if_acmpne     661
+     649: aload         10
+     651: instanceof    #3442               // class zombie/iso/objects/IsoBarricade
+     654: ifeq          661
+     657: getstatic     #3905               // Field zombie/iso/LosUtil$TestResults.Blocked:Lzombie/iso/LosUtil$TestResults;
+     660: areturn
+     661: iinc          9, 1
+     664: goto          336
+     667: aload         7
+     669: getfield      #110                // Field specialObjects:Ljava/util/List;
+     672: invokeinterface #1782,  1         // InterfaceMethod java/util/List.isEmpty:()Z
+     677: ifne          1079
+     680: iconst_0
+     681: istore        9
+     683: iload         9
+     685: aload         7
+     687: getfield      #110                // Field specialObjects:Ljava/util/List;
+     690: invokeinterface #559,  1          // InterfaceMethod java/util/List.size:()I
+     695: if_icmpge     1016
+     698: aload         7
+     700: getfield      #110                // Field specialObjects:Ljava/util/List;
+     703: iload         9
+     705: invokeinterface #560,  2          // InterfaceMethod java/util/List.get:(I)Ljava/lang/Object;
+     710: checkcast     #93                 // class zombie/iso/IsoObject
+     713: astore        10
+     715: aload         10
+     717: ifnonnull     724
+     720: getstatic     #3922               // Field zombie/iso/LosUtil$TestResults.Clear:Lzombie/iso/LosUtil$TestResults;
+     723: areturn
+     724: aload         10
+     726: aload_0
+     727: aload         7
+     729: invokevirtual #3933               // Method zombie/iso/IsoObject.TestVision:(Lzombie/iso/IsoGridSquare;Lzombie/iso/IsoGridSquare;)Lzombie/iso/IsoObject$VisionResult;
+     732: astore        11
+     734: aload         11
+     736: getstatic     #3937               // Field zombie/iso/IsoObject$VisionResult.NoEffect:Lzombie/iso/IsoObject$VisionResult;
+     739: if_acmpeq     1010
+     742: aload         11
+     744: getstatic     #3943               // Field zombie/iso/IsoObject$VisionResult.Unblocked:Lzombie/iso/IsoObject$VisionResult;
+     747: if_acmpne     787
+     750: aload         10
+     752: instanceof    #557                // class zombie/iso/objects/IsoDoor
+     755: ifeq          787
+     758: aload         10
+     760: checkcast     #557                // class zombie/iso/objects/IsoDoor
+     763: astore        12
+     765: aload         12
+     767: invokevirtual #568                // Method zombie/iso/objects/IsoDoor.IsOpen:()Z
+     770: ifeq          779
+     773: getstatic     #3927               // Field zombie/iso/LosUtil$TestResults.ClearThroughOpenDoor:Lzombie/iso/LosUtil$TestResults;
+     776: goto          782
+     779: getstatic     #3930               // Field zombie/iso/LosUtil$TestResults.ClearThroughClosedDoor:Lzombie/iso/LosUtil$TestResults;
+     782: astore        8
+     784: goto          1010
+     787: aload         11
+     789: getstatic     #3943               // Field zombie/iso/IsoObject$VisionResult.Unblocked:Lzombie/iso/IsoObject$VisionResult;
+     792: if_acmpne     826
+     795: aload         10
+     797: instanceof    #565                // class zombie/iso/objects/IsoThumpable
+     800: ifeq          826
+     803: aload         10
+     805: checkcast     #565                // class zombie/iso/objects/IsoThumpable
+     808: astore        13
+     810: aload         13
+     812: invokevirtual #1654               // Method zombie/iso/objects/IsoThumpable.isDoor:()Z
+     815: ifeq          826
+     818: getstatic     #3927               // Field zombie/iso/LosUtil$TestResults.ClearThroughOpenDoor:Lzombie/iso/LosUtil$TestResults;
+     821: astore        8
+     823: goto          1010
+     826: aload         11
+     828: getstatic     #3943               // Field zombie/iso/IsoObject$VisionResult.Unblocked:Lzombie/iso/IsoObject$VisionResult;
+     831: if_acmpne     850
+     834: aload         10
+     836: instanceof    #607                // class zombie/iso/objects/IsoWindow
+     839: ifeq          850
+     842: getstatic     #3924               // Field zombie/iso/LosUtil$TestResults.ClearThroughWindow:Lzombie/iso/LosUtil$TestResults;
+     845: astore        8
+     847: goto          1010
+     850: aload         11
+     852: getstatic     #3946               // Field zombie/iso/IsoObject$VisionResult.Blocked:Lzombie/iso/IsoObject$VisionResult;
+     855: if_acmpne     875
+     858: aload         10
+     860: instanceof    #557                // class zombie/iso/objects/IsoDoor
+     863: ifeq          875
+     866: iload         5
+     868: ifne          875
+     871: getstatic     #3905               // Field zombie/iso/LosUtil$TestResults.Blocked:Lzombie/iso/LosUtil$TestResults;
+     874: areturn
+     875: aload         11
+     877: getstatic     #3946               // Field zombie/iso/IsoObject$VisionResult.Blocked:Lzombie/iso/IsoObject$VisionResult;
+     880: if_acmpne     915
+     883: aload         10
+     885: instanceof    #565                // class zombie/iso/objects/IsoThumpable
+     888: ifeq          915
+     891: aload         10
+     893: checkcast     #565                // class zombie/iso/objects/IsoThumpable
+     896: astore        14
+     898: aload         14
+     900: invokevirtual #1654               // Method zombie/iso/objects/IsoThumpable.isDoor:()Z
+     903: ifeq          915
+     906: iload         5
+     908: ifne          915
+     911: getstatic     #3905               // Field zombie/iso/LosUtil$TestResults.Blocked:Lzombie/iso/LosUtil$TestResults;
+     914: areturn
+     915: aload         11
+     917: getstatic     #3946               // Field zombie/iso/IsoObject$VisionResult.Blocked:Lzombie/iso/IsoObject$VisionResult;
+     920: if_acmpne     950
+     923: aload         10
+     925: instanceof    #565                // class zombie/iso/objects/IsoThumpable
+     928: ifeq          950
+     931: aload         10
+     933: checkcast     #565                // class zombie/iso/objects/IsoThumpable
+     936: astore        15
+     938: aload         15
+     940: invokevirtual #2340               // Method zombie/iso/objects/IsoThumpable.isWindow:()Z
+     943: ifeq          950
+     946: getstatic     #3905               // Field zombie/iso/LosUtil$TestResults.Blocked:Lzombie/iso/LosUtil$TestResults;
+     949: areturn
+     950: aload         11
+     952: getstatic     #3946               // Field zombie/iso/IsoObject$VisionResult.Blocked:Lzombie/iso/IsoObject$VisionResult;
+     955: if_acmpne     970
+     958: aload         10
+     960: instanceof    #621                // class zombie/iso/objects/IsoCurtain
+     963: ifeq          970
+     966: getstatic     #3905               // Field zombie/iso/LosUtil$TestResults.Blocked:Lzombie/iso/LosUtil$TestResults;
+     969: areturn
+     970: aload         11
+     972: getstatic     #3946               // Field zombie/iso/IsoObject$VisionResult.Blocked:Lzombie/iso/IsoObject$VisionResult;
+     975: if_acmpne     990
+     978: aload         10
+     980: instanceof    #607                // class zombie/iso/objects/IsoWindow
+     983: ifeq          990
+     986: getstatic     #3905               // Field zombie/iso/LosUtil$TestResults.Blocked:Lzombie/iso/LosUtil$TestResults;
+     989: areturn
+     990: aload         11
+     992: getstatic     #3946               // Field zombie/iso/IsoObject$VisionResult.Blocked:Lzombie/iso/IsoObject$VisionResult;
+     995: if_acmpne     1010
+     998: aload         10
+    1000: instanceof    #3442               // class zombie/iso/objects/IsoBarricade
+    1003: ifeq          1010
+    1006: getstatic     #3905               // Field zombie/iso/LosUtil$TestResults.Blocked:Lzombie/iso/LosUtil$TestResults;
+    1009: areturn
+    1010: iinc          9, 1
+    1013: goto          683
+    1016: goto          1079
+    1019: iload_3
+    1020: ifle          1079
+    1023: aload         7
+    1025: ifnull        1079
+    1028: aload_0
+    1029: getfield      #16                 // Field z:I
+    1032: iconst_m1
+    1033: if_icmpne     1047
+    1036: aload         7
+    1038: getfield      #16                 // Field z:I
+    1041: ifne          1047
+    1044: goto          1079
+    1047: aload         7
+    1049: invokevirtual #1755               // Method getProperties:()Lzombie/core/properties/PropertyContainer;
+    1052: getstatic     #1575               // Field zombie/iso/SpriteDetails/IsoFlagType.exterior:Lzombie/iso/SpriteDetails/IsoFlagType;
+    1055: invokevirtual #411                // Method zombie/core/properties/PropertyContainer.has:(Lzombie/iso/SpriteDetails/IsoFlagType;)Z
+    1058: ifeq          1079
+    1061: aload_0
+    1062: invokevirtual #1755               // Method getProperties:()Lzombie/core/properties/PropertyContainer;
+    1065: getstatic     #1575               // Field zombie/iso/SpriteDetails/IsoFlagType.exterior:Lzombie/iso/SpriteDetails/IsoFlagType;
+    1068: invokevirtual #411                // Method zombie/core/properties/PropertyContainer.has:(Lzombie/iso/SpriteDetails/IsoFlagType;)Z
+    1071: ifne          1079
+    1074: getstatic     #3905               // Field zombie/iso/LosUtil$TestResults.Blocked:Lzombie/iso/LosUtil$TestResults;
+    1077: astore        8
+    1079: aload         8
+    1081: astore        6
+    1083: aload_0
+    1084: getfield      #2547               // Field visionMatrix:I
+    1087: iload_1
+    1088: iconst_1
+    1089: iadd
+    1090: iload_2
+    1091: iconst_1
+    1092: iadd
+    1093: iload_3
+    1094: iconst_1
+    1095: iadd
+    1096: invokestatic  #3896               // Method getMatrixBit:(IIII)Z
+    1099: ifne          1107
+    1102: aload         6
+    1104: goto          1110
+    1107: getstatic     #3905               // Field zombie/iso/LosUtil$TestResults.Blocked:Lzombie/iso/LosUtil$TestResults;
+    1110: areturn
+    1111: aload         6
+    1113: areturn

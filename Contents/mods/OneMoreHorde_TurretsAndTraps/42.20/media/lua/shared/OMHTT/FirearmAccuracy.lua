@@ -52,8 +52,11 @@ end
 ---@nodiscard
 function A.chance(gun, stats, distance, prone)
     if stats.accuracy <= 0 then return 0 end
-    local modifier = math.max(A.sightless(distance, prone), A.sights(distance, gun:getMinSightRange(), gun:getMaxSightRange()))
-    return math.max(setting("MINIMUM_TO_HIT_CHANCE"), math.min(setting("MAXIMUM_TO_HIT_CHANCE"), stats.accuracy + modifier))
+    local far = stats.farAccuracy
+    local fraction = math.min(1, math.max(0, distance / stats.range))
+    local close = math.max(far, math.max(stats.accuracy, math.min(95, stats.accuracy + A.sightless(0, prone))))
+    local balanced = close + (far - close) * fraction
+    return math.min(100, balanced)
 end
 
 return A

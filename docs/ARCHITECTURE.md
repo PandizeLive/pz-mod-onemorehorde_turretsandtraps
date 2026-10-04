@@ -85,3 +85,15 @@ Mounted firearm drawing temporarily disables the native static item atlas by pre
 ## 0.2.26 narrow combat/performance adaptation
 
 FirearmAccuracy owns only native distance formula adaptation; Java probe verifies parity with installed CombatManager. TurretStats remains shared stat authority. Engagement cap lives in turret mod-data and TurretModules.profile governs search, shot eligibility and range preview. Automation schedules retained-target shots separately from bounded scans. TurretWorld caches inventory summaries for at most 200 ms, invalidates on transfer/configuration, and coalesces configuration refreshes. Diagnostics aggregates counts/max stage durations unless detailed output is enabled. None of this closes the aggregate scheduler, clock or multiplayer authority gate documented above.
+
+## 0.2.27 approved refinements
+
+FirearmClass classifies conventional guns from native metadata and original script range, with an explicit full-type override table for exceptional metadata. It never reads localized names. FirearmAccuracy retains native formula helpers for parity evidence and uses the native point-blank bonus to anchor a monotonic turret-specific distance curve ending at the configured 60/80 percent. This supersedes applying the severe native quadratic sight-band falloff to mounted guns.
+
+TurretModules profiles cache the resolved stats alongside engagement range; TurretStats.hearingRadius is shared by both emitted sound and the selected amber ring. ClientOptions registers a native PZAPI Mod Options checkbox. No server Sandbox preference is added for noise visibility.
+
+TurretScheduler rotates bounded aiming, manual search, automatic targeting/firing, feeder/configuration and impact/diagnostic workers through a shared 3ms wall-clock ceiling. A running native call is non-preemptible, so one work unit can overrun it. Render/UI and existing barrier/foundation maintenance are outside this combat budget; dense client frame measurements remain necessary. Aiming uses an eight-entry cursor.
+
+TurretClock advances real active seconds, capped at 100ms per tick, without scaling by fast-forward. Pause stops advancement; a long stall cannot produce a backlog of shots. Exact head cycles store the last active timestamp and session identity; process restart rebases remaining reload/rack/cooldown time, preserving ammunition. No unloaded combat or offline progress is simulated. Older cycles without clock metadata retain their existing deadline on their first update.
+
+Projectile obstruction uses installed IsoGridSquare.testVisionAdjacent, rejecting blocked/closed-door/window results and accepting clear/open-door edges. Loaded-path and conservative diagonal corner guards remain; low-fence movement collision no longer blocks bullets. Current native bytecode is recorded in diagnostics/v0.2.27/native-square.txt.

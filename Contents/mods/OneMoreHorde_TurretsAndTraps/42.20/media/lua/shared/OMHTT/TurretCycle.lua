@@ -1,3 +1,4 @@
+local Clock = require("OMHTT/TurretClock")
 local C = {}
 
 ---@param state table Persisted head cycle
@@ -6,6 +7,7 @@ local C = {}
 ---@param now number Real-time milliseconds
 ---@return string status
 function C.update(state, ammo, config, now)
+    Clock.restore(state, now)
     if state.nextShot and state.cooldownDuration and state.cooldownDuration ~= config.cooldown and state.nextShot > now then
         state.nextShot = now + math.min(1, (state.nextShot - now) / state.cooldownDuration) * config.cooldown
     end

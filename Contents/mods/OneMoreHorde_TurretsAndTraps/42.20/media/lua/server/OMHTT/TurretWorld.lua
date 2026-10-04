@@ -1,3 +1,5 @@
+local Budget = require("OMHTT/TurretScheduler")
+local Clock = require("OMHTT/TurretClock")
 if isClient() then return end
 local T = require("OMHTT/Turret")
 local F = require("OMHTT/Foundation")
@@ -98,7 +100,7 @@ function W.refresh(object)
         state.depthPolicy = "cube-depth-v2"
     end
     state.condition = object:getHealth()
-    T.cycle(contents, getTimestampMs())
+    T.cycle(contents, Clock.now())
     triggerEvent("OnOMHTTTurretChanged", object, contents.head)
 end
 
@@ -363,7 +365,7 @@ function W.fire(player, object, target)
     if contents.ammo == 0 then return "Empty" end
     local power = W.power(object, contents)
     if not power then return "NoPower" end
-    local cycle, status = T.cycle(contents, getTimestampMs())
+    local cycle, status = T.cycle(contents, Clock.now())
     if status ~= "Ready" then return status end
     local state = T.state(object)
     state.ammo = contents.ammo
@@ -390,7 +392,7 @@ function W.fire(player, object, target)
         if not G.profile(contents.head) and not object:getContainer():contains(contents.round) then return false end
         if player and not W.near(player, object) then return false end
         if not player and (not M.detects(state, contents) or not contents.active.Firing) then return false end
-        if G.profile(contents.head) and not G.consume(contents, stats, getTimestampMs()) then return false end
+        if G.profile(contents.head) and not G.consume(contents, stats, Clock.now()) then return false end
         if power.kind == "battery" then
             power.battery:setCurrentUsesFloat(math.max(0, power.battery:getCurrentUsesFloat() - power.cost))
         elseif power.kind == "generator" then
@@ -398,7 +400,7 @@ function W.fire(player, object, target)
         end
         if not G.profile(contents.head) then
             object:getContainer():Remove(contents.round)
-            Cycle.consume(cycle, contents.ammo - 1, stats, getTimestampMs())
+            Cycle.consume(cycle, contents.ammo - 1, stats, Clock.now())
         end
         D.defer("turret-resource-spent", {id = state.id, head = contents.head:getID(), power = power.kind, cost = power.cost})
         return true
@@ -419,7 +421,7 @@ function W.fire(player, object, target)
         end
         if not stats.firearm then
             local square = object:getSquare()
-            local radius = math.ceil(M.option("PotatoHearingRadius", 8, 0, 200) * stats.hearingMultiplier)
+            local radius = require("OMHTT/TurretStats").hearingRadius(contents.head, stats)
             if radius > 0 then addSound(object, square:getX(), square:getY(), square:getZ(), radius, 10) end
             D.defer("turret-hearing", {id = state.id, radius = radius, suppressed = stats.suppressed})
         end
@@ -438,8 +440,8 @@ end
 ---@return nil
 function W.feedTick()
     if isClient() or isServer() then return end
-    local now = getTimestampMs()
-    local deadline = now + 1
+    local now = Clock.now()
+    local deadline = Budget.limit(1)
     local changed = 0
     for object, configuration in pairs(refreshQueue) do
         refreshQueue[object] = nil
@@ -496,7 +498,7 @@ function W.feedTick()
     end
 end
 
-Events.OnTick.Add(W.feedTick)
+Budget.register("W.feedTick", W.feedTick)
 Events.LoadGridsquare.Add(W.squareLoaded)
 Events.OnObjectAdded.Add(W.loaded)
 Events.OnObjectAboutToBeRemoved.Add(W.removed)

@@ -1,3 +1,4 @@
+local Clock = require("OMHTT/TurretClock")
 local G = {servicing = {}}
 G.PROFILES = {
     ["Base.Pistol"] = {reload = 2.7, rack = 1.2, muzzle = 0.0823, yaw = 0, roll = -90},
@@ -92,6 +93,7 @@ end
 function G.update(contents, stats, now, operate)
     local gun = contents.head
     local state = G.state(gun)
+    Clock.restore(state, now)
     state.loaded = G.loaded(gun)
     if gun:getModData().OMHTTPowerOff then return state, "Off" end
     if G.servicing[gun] then return state, "Servicing" end

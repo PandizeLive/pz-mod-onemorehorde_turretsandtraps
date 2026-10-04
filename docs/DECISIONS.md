@@ -351,3 +351,7 @@ Add the green/red Power symbol, free ten-second base-only Repair, explicit rejec
 ## C77 — approved cadence, range and loot normalization (2026-10-04)
 
 Owner approves the combined patch including native distance accuracy: PATCH_v0.2.26.md. Firearm rate 0.75, potato unchanged; native damage/criticals retained. Engagement range is independent of head range. Precision Fire and recoil simulation are omitted. Loot global 4.5 and current component factors become base weights; controls reset to 1. Old Sandbox keys cannot double-multiply; website migration preserves effective tuning except the expressly approved owner reset. Summarize diagnostics and coalesce unchanged inventory work.
+
+## C78 — 0.2.27 range, hearing and compatibility
+
+Owner approved the revised recap on 2026-10-04. Precision includes bolt/lever/semi-auto-only rifles; automatic/burst-capable guns remain ordinary even in Single mode. Original script range supports classification, never a mandatory >40 rule or attachment/module promotion. Defaults 60/80 at full effective weapon range; the engagement cap does not rescale accuracy. Noise visibility is a local Mod Options preference. First P2C3e slice shares work and excludes paused/offline time; multiplayer and dense rendered performance remain acceptance gates.

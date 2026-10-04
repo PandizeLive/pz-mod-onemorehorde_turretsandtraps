@@ -1,3 +1,5 @@
+local Budget = require("OMHTT/TurretScheduler")
+local Clock = require("OMHTT/TurretClock")
 local T = require("OMHTT/Turret")
 local M = require("OMHTT/TurretModules")
 local D = require("OMHTT/Diagnostics")
@@ -73,7 +75,7 @@ end
 ---@return nil
 function S.tick()
     if isClient() or isServer() then return end
-    local deadline = getTimestampMs() + 2
+    local deadline = Budget.limit(2)
     local count = math.min(4, #S.order)
     for i = 1, count do
         if #S.order == 0 or getTimestampMs() >= deadline then return end
@@ -86,5 +88,5 @@ function S.tick()
     end
 end
 
-Events.OnTick.Add(S.tick)
+Budget.register("S.tick", S.tick)
 return S

@@ -18,6 +18,7 @@ local function verifyTurrets()
     assert(atlas:getDefaultValue() == oldDefault and (atlas:getValueAsString() == "true") == oldValue, "Atlas option restore failed")
     print("[OMHTT-Smoke] native-atlas-lua bypass=verified restore=verified")
     local Accuracy = require("OMHTT/FirearmAccuracy")
+    assert(type(GameTime.isGamePaused()) == "boolean", "Native pause API unavailable")
     OMHTT_AccuracyProbe = {}
     assert(CombatManager == nil, "CombatManager unexpectedly exposed; review direct helper use")
     for _, distance in pairs({0.5, 2, 3, 6, 10, 15, 30, 40}) do
@@ -327,6 +328,8 @@ local function verifyTurrets()
         assert(summary.ammo == 90 and config.firearm and config.magazine == gun:getMaxAmmo(), "Native firearm config mismatch")
         local expected = { ["Base.Pistol"] = {15, 400 / .75, 20, 4}, ["Base.Shotgun"] = {12, 1000 / .75, 70, 12}, ["Base.HuntingRifle"] = {40, 1200 / .75, 30, 4} }
         local stats = require("OMHTT/TurretStats").resolve(summary)
+        local precision = require("OMHTT/FirearmClass").precision(gun)
+        assert(Accuracy.chance(gun, stats, stats.range, false) == (precision and 80 or 60), "Maximum-range accuracy mismatch")
         local values = expected[fullType]
         if values then
             assert(stats.range == values[1] and math.abs(stats.cooldown - values[2]) < .001 and stats.critChance == values[3]

@@ -1,3 +1,5 @@
+local Budget = require("OMHTT/TurretScheduler")
+local Clock = require("OMHTT/TurretClock")
 if isClient() then return end
 
 local Foundation = require("OMHTT/Foundation")
@@ -17,6 +19,16 @@ local Combat = {
     SPLASH_LIMIT = 3,
 }
 local weapon = nil
+
+---@param square IsoGridSquare Origin
+---@param dx number Adjacent X
+---@param dy number Adjacent Y
+---@return boolean clear
+---@nodiscard
+local function clearEdge(square, dx, dy)
+    local result = tostring(square:testVisionAdjacent(dx, dy, 0, false, false))
+    return result == "Clear" or result == "ClearThroughOpenDoor"
+end
 local observations = {}
 Combat.pending, Combat.cursor = {}, 1
 
@@ -24,7 +36,9 @@ Combat.pending, Combat.cursor = {}, 1
 function Combat.observeImpacts()
     if isClient() or isServer() then return end
     local now = getTimestampMs()
-    for i = #observations, 1, -1 do
+    local deadline = Budget.limit(1)
+    for i = #observations, math.max(1, #observations - 3), -1 do
+        if getTimestampMs() >= deadline then break end
         local entry = observations[i]
         if now >= entry.checkAt then
             local zombie = entry.zombie
@@ -72,13 +86,16 @@ function Combat.clearLane(origin, destination, range)
         local y = origin:getY() + math.floor(dy * i / steps + 0.5)
         local square = getCell():getGridSquare(x, y, origin:getZ())
         if not square then return false, "unloaded-path" end
-        if previous:isBlockedTo(square) then return false, "blocked-edge" end
+        if not clearEdge(previous, x - previous:getX(), y - previous:getY()) then return false, "blocked-edge" end
         if previous:isWindowTo(square) then return false, "window-edge" end
         if x ~= previous:getX() and y ~= previous:getY() then
             local sideX = getCell():getGridSquare(x, previous:getY(), origin:getZ())
             local sideY = getCell():getGridSquare(previous:getX(), y, origin:getZ())
-            if not sideX or not sideY or previous:isBlockedTo(sideX) or previous:isBlockedTo(sideY)
-                or sideX:isBlockedTo(square) or sideY:isBlockedTo(square)
+            if not sideX or not sideY
+                or not clearEdge(previous, x - previous:getX(), 0)
+                or not clearEdge(previous, 0, y - previous:getY())
+                or not clearEdge(sideX, 0, y - previous:getY())
+                or not clearEdge(sideY, x - previous:getX(), 0)
                 or previous:isWindowTo(sideX) or previous:isWindowTo(sideY)
                 or sideX:isWindowTo(square) or sideY:isWindowTo(square) then return false, "diagonal-corner" end
         end
@@ -147,7 +164,7 @@ function Combat.fire(record, object, player, options)
     if isClient() or isServer() then return "MPCombatDeferred" end
     if record.kind ~= "potato" then return "WrongDevice" end
     if record.ammo <= 0 then return "Empty" end
-    local now = getTimestampMs()
+    local now = Clock.now()
     if not options.managed and record.nextShot > now + options.interval then
         Diagnostics.defer("shot-clock-rebased", {id = record.id, previous = record.nextShot, nowMs = now})
         record.nextShot = now + options.interval
@@ -326,8 +343,8 @@ end
 ---@return nil
 function Combat.tickFlights()
     if isClient() or isServer() then return end
-    local now, done = getTimestampMs(), 0
-    local deadline = now + 2
+    local now, done = Clock.now(), 0
+    local deadline = Budget.limit(2)
     for i = 1, math.min(16, #Combat.pending) do
         if #Combat.pending == 0 or done >= 4 or getTimestampMs() >= deadline then return end
         if Combat.cursor > #Combat.pending then Combat.cursor = 1 end
@@ -345,9 +362,9 @@ function Combat.tickFlights()
     end
 end
 
-Events.OnTick.Add(Combat.tickFlights)
+Budget.register("Combat.tickFlights", Combat.tickFlights)
 
-Events.OnTick.Add(Combat.observeImpacts)
+Budget.register("Combat.observeImpacts", Combat.observeImpacts)
 Events.OnGameStart.Add(Combat.resetObservations)
 
 return Combat

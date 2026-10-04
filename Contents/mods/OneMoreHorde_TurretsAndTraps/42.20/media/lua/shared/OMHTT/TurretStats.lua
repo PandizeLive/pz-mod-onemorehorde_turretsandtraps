@@ -1,4 +1,5 @@
 local G = require("OMHTT/Firearms")
+local Class = require("OMHTT/FirearmClass")
 local kits = {{"CapacitySmall", "Small", 50, 2}, {"Capacity", "", 100, 4}, {"CapacityLarge", "Large", 200, 6}}
 local S = {}
 
@@ -41,6 +42,7 @@ function S.resolve(contents)
     local magazine = math.floor(S.option("PotatoMagazineCapacity", 1, 1, 500))
     local ammoCapacity = S.option("PotatoAmmoCapacity", 100, 1, 500)
     local accuracy, rack = 100, 0
+    local farAccuracy = 100
     local critChance, critMultiplier = S.option("PotatoCriticalChance", 0, 0, 100), S.option("PotatoCriticalDamage", 2, 1, 20)
     if firearm then
         damage = (gun:getMinDamage() + gun:getMaxDamage()) * 50 * S.option("FirearmDamageMultiplier", 1, 0, 5)
@@ -60,10 +62,14 @@ function S.resolve(contents)
         ammoCapacity = S.option("FirearmAmmoCapacity", 100, 1, 500)
         accuracy = math.max(0, math.min(100, (gun:getHitChance() + gun:getAimingPerkHitChanceModifier()
             * S.option("FirearmAimingLevel", 3, 0, 10)) * S.option("FirearmAccuracyMultiplier", 1, 0, 3)))
+        local precision = Class.precision(gun)
+        farAccuracy = S.option(precision and "PrecisionRangeAccuracy" or "FirearmRangeAccuracy", precision and 80 or 60, 0, 100)
+            * math.min(1, S.option("FirearmAccuracyMultiplier", 1, 0, 3))
         knockdown = 0
         critChance = gun:getCriticalChance()
         critMultiplier = gun:getCriticalDamageMultiplier() * S.option("CriticalDamageMultiplier", 1, 0, 5)
     end
+    farAccuracy = math.min(100, farAccuracy + (active.Accuracy or 0) * S.option("AccuracyBonus", 5, 0, 100))
     accuracy = math.min(100, accuracy + (active.Accuracy or 0) * S.option("AccuracyBonus", 5, 0, 100))
     critChance = math.min(100, critChance + (active.Critical or 0) * S.option("CriticalBonus", 5, 0, 100))
     local remaining = 1
@@ -92,11 +98,21 @@ function S.resolve(contents)
         range = math.min(firearm and 50 or 30, range + S.bonus(active, "Range", 2, 10)),
         ammo = math.floor(ammoCapacity + extraAmmo),
         modules = math.floor(S.option("PotatoModuleCapacity", 4, 0, 20) + extraModules),
-        magazine = magazine, accuracy = accuracy, critChance = critChance, critMultiplier = critMultiplier, rack = rack * 1000, firearm = firearm ~= nil,
+        magazine = magazine, accuracy = accuracy, farAccuracy = farAccuracy, critChance = critChance, critMultiplier = critMultiplier, rack = rack * 1000, firearm = firearm ~= nil,
         suppressed = (active.Suppression or 0) > 0,
         hearingMultiplier = remaining,
         reload = reload * 1000, cooldown = math.max(cooldown, firearm and gun:isRackAfterShoot() and rack or 0) * 1000,
         autoloader = active.Autoloader ~= nil}
+end
+
+---@param head HandWeapon Mounted head
+---@param stats table Effective stats
+---@return number radius Zombie hearing tiles
+---@nodiscard
+function S.hearingRadius(head, stats)
+    local radius = S.option("PotatoHearingRadius", 8, 0, 200)
+    if stats.firearm then radius = head:getSoundRadius() end
+    return math.ceil(radius * stats.hearingMultiplier)
 end
 
 return S

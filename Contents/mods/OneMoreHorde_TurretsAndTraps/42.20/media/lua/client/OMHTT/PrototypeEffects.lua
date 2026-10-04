@@ -42,7 +42,7 @@ function E.receive(module, command, facts)
         effect = {id = facts.id, shot = facts.shot}
         E.effects[#E.effects + 1] = effect
     end
-    effect.phase, effect.start, effect.logged = command, getTimestampMs(), false
+    effect.phase, effect.start, effect.logged = command, require("OMHTT/TurretClock").now(), false
     effect.x, effect.y, effect.z = facts.x, facts.y, facts.z
     effect.fromX, effect.fromY, effect.flight = facts.fromX, facts.fromY, facts.flight or 0
     effect.target, effect.missed = facts.target, facts.missed
@@ -92,7 +92,7 @@ end
 ---@return nil
 function E.render()
     if #E.effects == 0 then return end
-    local now = getTimestampMs()
+    local now = require("OMHTT/TurretClock").now()
     for i = #E.effects, 1, -1 do
         local effect = E.effects[i]
         local elapsed = now - effect.start

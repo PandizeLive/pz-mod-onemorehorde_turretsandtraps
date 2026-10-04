@@ -6,6 +6,8 @@ local M = require("OMHTT/TurretModules")
 local Selection = require("OMHTT/BarrierSelection")
 local D = require("OMHTT/Diagnostics")
 local O = {selected = {}}
+local Options = require("OMHTT/ClientOptions")
+local Stats = require("OMHTT/TurretStats")
 local canvas = nil
 
 ---@param index number Local viewport
@@ -125,6 +127,18 @@ function O.render()
                     local x, y = O.screen(line[1], line[2], square:getZ(), index)
                     local tx, ty = O.screen(line[3], line[4], square:getZ(), index)
                     canvas:drawLine2(x, y, tx, ty, 0.85, 0.25, 0.85, 1)
+                end
+                if Options.noiseVisible() then
+                    local radius = Stats.hearingRadius(render.head, profile.stats)
+                    if radius > 0 then
+                        local ring = O.lines(square:getX() + 0.5, square:getY() + 0.5, radius, 0, 360)
+                        for i = 1, 64 do
+                            local line = ring[i]
+                            local x, y = O.screen(line[1], line[2], square:getZ(), index)
+                            local tx, ty = O.screen(line[3], line[4], square:getZ(), index)
+                            canvas:drawLine2(x, y, tx, ty, 0.8, 1, 0.65, 0.15)
+                        end
+                    end
                 end
                 canvas:clearStencilRect()
             end

@@ -145,6 +145,10 @@ public final class KahluaCheck {
             {"_", base + "client/OMHTT/BarrierMenu.lua"},
             {"_", "tools/tests/service_load_order_after.lua"},
             {"OMHTT/Damage", base + "server/OMHTT/Damage.lua"},
+            {"OMHTT/TurretClock", base + "shared/OMHTT/TurretClock.lua"},
+            {"_", "tools/tests/clock_bootstrap.lua"},
+            {"OMHTT/TurretScheduler", base + "shared/OMHTT/TurretScheduler.lua"},
+            {"OMHTT/FirearmClass", base + "shared/OMHTT/FirearmClass.lua"},
             {"OMHTT/TurretCycle", base + "shared/OMHTT/TurretCycle.lua"},
             {"OMHTT/Firearms", base + "shared/OMHTT/Firearms.lua"},
             {"OMHTT/TurretReloadAudio", base + "shared/OMHTT/TurretReloadAudio.lua"},
@@ -208,6 +212,7 @@ public final class KahluaCheck {
             {"OMHTT/TurretSlot", base + "client/OMHTT/TurretSlot.lua"},
             {"OMHTT/TurretAim", base + "shared/OMHTT/TurretAim.lua"},
             {"OMHTT/TurretRenderer", base + "client/OMHTT/TurretRenderer.lua"},
+            {"OMHTT/ClientOptions", base + "client/OMHTT/ClientOptions.lua"},
             {"OMHTT/TurretRange", base + "client/OMHTT/TurretRange.lua"},
             {"OMHTT/TurretSearch", base + "shared/OMHTT/TurretSearch.lua"},
             {"OMHTT/TurretManage", base + "client/OMHTT/TurretManage.lua"},
@@ -234,6 +239,7 @@ public final class KahluaCheck {
             {"_", base + "client/OMHTT/TurretMenu.lua"},
             {"_", "tools/tests/turret_preview.lua"},
             {"_", "tools/tests/firearms.lua"},
+            {"_", "tools/tests/checkpoint_027.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

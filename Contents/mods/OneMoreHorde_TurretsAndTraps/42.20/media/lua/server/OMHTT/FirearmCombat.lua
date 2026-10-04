@@ -51,7 +51,7 @@ function C.hit(record, origin, target, player, options)
     end
     local wear = gun:getConditionLowerChance()
     if wear > 0 and ZombRand(wear) == 0 then gun:setCondition(math.max(0, gun:getCondition() - 1)) end
-    local hearingRadius = math.ceil(gun:getSoundRadius() * stats.hearingMultiplier)
+    local hearingRadius = require("OMHTT/TurretStats").hearingRadius(gun, stats)
     if hearingRadius > 0 then addSound(options.object, origin:getX(), origin:getY(), origin:getZ(), hearingRadius, gun:getSoundVolume()) end
     D.defer("firearm-shot", {id = record.id, gun = gun:getFullType(), shot = record.shots,
         critical = critical, critChance = stats.critChance, critMultiplier = multiplier, hearingRadius = hearingRadius, suppressed = stats.suppressed, pellets = pellets, hits = hits, damage = lost * 100, condition = gun:getCondition(),

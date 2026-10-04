@@ -40,6 +40,8 @@ local function item(fullType)
     function value:getSoundVolume() return 30 end
     function value:getSwingSound() return "M9Shoot" end
     function value:getProjectileCount() return 1 end
+    function value:isTwoHandWeapon() return false end
+    function value:getFireModePossibilities() return nil end
     return value
 end
 local function container()
@@ -90,7 +92,7 @@ check(math.abs(Stats.resolve({head = generic, active = {}}).cooldown - full.cool
 SandboxVars.OMHTurretsTraps.FirearmRateMultiplier = nil
 local Accuracy = require("OMHTT/FirearmAccuracy")
 check(Accuracy.chance(generic, {accuracy = 0}, .5, false) == 0, "Disabled accuracy stays disabled at point blank")
-check(Accuracy.chance(generic, {accuracy = 50}, 6, false) > Accuracy.chance(generic, {accuracy = 50}, 30, false), "Native sight band beats long-distance penalty")
+check(Accuracy.chance(generic, {accuracy = 50, farAccuracy = 40, range = 30}, 6, false) > Accuracy.chance(generic, {accuracy = 50, farAccuracy = 40, range = 30}, 30, false), "Native sight band beats long-distance penalty")
 G.PROFILES[generic.fullType] = nil
 local specimens = {}
 for n = 1, #definitions do

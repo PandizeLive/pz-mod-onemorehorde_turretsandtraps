@@ -265,3 +265,9 @@ Record compatible Horde Night, Trait Shop, Cure Defense and website validator ve
 External publishing, pushing and public listing changes require owner authorization. P1C1 authorizes local implementation and validation, not publication.
 
 0.2.16 was tagged but never installed. The 0.2.15 captured test (20260929-223859-0986) revealed a repeated native inventory tooltip error caused by a literal percent in the dynamic packed-item tooltip. 0.2.16.1 replaces that with translated percent wording; the local test/v0.2.16 rollback remains intact.
+
+## 0.2.27 local checkpoint
+
+C78 approved. Source/tag/install evidence will be recorded after final validation. C77 owner test reported successful with engagement slider, fence firing and maximum-range accuracy corrections requested; those corrections are the scope of 0.2.27. No Workshop upload or remote push is authorized or claimed.
+
+Validation: 3,366 Kahlua assertions, 57 runtime/translation files and 153 package files passed. Stock 42.21 write/read smoke passed with native item/world persistence. Firearms B42 isolated probe accepted 51 conventional guns and conserved 153 shots; only Rifle_CapGun and Revolver_CapGun were rejected. Current game bytecode, native smoke logs and manifest are under diagnostics/v0.2.27; the modded summary is diagnostics/modded-027.log. Rendered owner acceptance remains pending.

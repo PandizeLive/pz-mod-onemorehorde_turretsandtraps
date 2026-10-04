@@ -48,6 +48,16 @@ function require(name)
     return testTurretRequire(name)
 end
 
+PZAPI = {ModOptions = {getOptions = function() return nil end, create = function()
+    local option = {getValue = function() return true end}
+    return {addTickBox = function() end, getOption = function() return option end}
+end}}
+ISSliderPanel = {new = function(self, x, y, w, h, target, callback)
+    return {currentValue = 1, initialise = function() end,
+        setValues = function(self, low, high) self.minValue, self.maxValue = low, high end,
+        setCurrentValue = function(self, value) self.currentValue = value end,
+        getCurrentValue = function(self) return self.currentValue end}
+end}
 ISComboBox = {new = function(self, x, y, w, h, target, callback)
     return {selected = 1, options = {}, initialise = function() end,
         clear = function(self) self.options = {} end,
