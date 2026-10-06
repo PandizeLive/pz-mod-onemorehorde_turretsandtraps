@@ -40,7 +40,7 @@ local function export()
     end
     for name in pairs(wanted) do pools[name] = ProceduralDistributions.list[name] end
     local writer = getFileWriter("loot-routes.json", true, false)
-    writer:write(encode({routes = routes, pools = pools, explicit = explicit, definitions = definitions})); writer:close()
+    writer:write(encode({requiredModId = "OneMoreHorde_Turrets", routes = routes, pools = pools, explicit = explicit, definitions = definitions})); writer:close()
     local reader = getFileReader("loot-tiles.txt", false)
     writer = getFileWriter("loot-tile-properties.txt", true, false)
     local tile = reader:readLine()

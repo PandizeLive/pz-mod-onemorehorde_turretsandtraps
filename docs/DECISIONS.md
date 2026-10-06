@@ -8,7 +8,7 @@ Recorded 2026-09-25 from the current planning conversation. This document is aut
 
 | ID | Requirement | Source |
 | --- | --- | --- |
-| C01 | One edition; expose a toggle menu in Sandbox options. | Owner's single-edition instruction |
+| C01 | One edition with Sandbox controls; C80 supersedes the single selectable-entry assumption with optional Turrets/Traps packages in one Workshop product. | Owner's single-edition instruction |
 | C02 | Potato turret is cheap, quiet, and uses farmable potato ammunition. | Original content pitch |
 | C03 | Aim for 3-5 successful direct hits against a reference zombie and higher knockdown chance. Base cadence is one shot per second, interpreted as real time for the prototype. | Original balance correction; latest explicit cadence instruction supersedes very slow firing |
 | C04 | Potatoes pop on zombie impact and deal extremely low splash damage for satisfaction. | Latest annotation |
@@ -359,3 +359,73 @@ Owner approved the revised recap on 2026-10-04. Precision includes bolt/lever/se
 ## C79: approved broader finds, all-gun startup audit and 5x tuning
 
 Owner approves the discussed patch and raises the prior 4.5x baseline to 5x. Add modest themed weights to GarageMechanics, CrateMechanics, ElectronicStoreComputers and ElectronicStoreHAMRadio; preserve uncommon jackpots. Raise normalized base weights by 10/9 with all rate defaults remaining one. Match LootLab and preserve account settings. Debug logging audits every ranged candidate once at startup in bounded batches, with accepted stats, rejection reasons and totals. Investigate the Louisville hang; surviving evidence cannot assign a cause. See PATCH_v0.2.28.md. No new combat balance, recipes or multiplayer enablement.
+
+## C80: selectable Turrets/Traps and roadmap reset
+
+Owner requests two selectable mods, OMH: Turrets and OMH: Traps, shipped together as OMH: Turrets & Traps so users can exclude Turrets. Record this in checkpoints/todos, reassess phases, review collaboration rules, report existing turret plans and suggest unique heads. This authorizes documentation, not a gameplay/package rewrite yet. Traps-only must be independent; turret-only support and shared loading without a third visible entry are recommendations to prove in R1C1. Old combined-ID/save behavior needs an explicit tested policy; do not equate a Sandbox disable with unloading a mod.
+
+Owner reaffirms that the assistant should correct mistakes, challenge proposals and recommend against features with material feasibility/performance/compatibility problems. Approval cannot prove engine capabilities. Revised ROADMAP.md uses R1-R6 IDs while ROADMAP_LEGACY_20261004.md retains previous P0-P6 history. Existing evidence remains valid and unresolved acceptance stays open. TURRET_HEAD_PROPOSALS.md contains unapproved concepts. No new recipes, stats, final art, multiplayer claim or publication is implied.
+
+## C81: offensive module planning and long battery life (2026-10-06)
+
+Owner broadly approves the discussed module direction and explicitly requests adding it to phases/checkpoints, followed by renewed turret-head discussion. This authorizes planning documentation; "most" is not approval of every suggested tuning value, propagation rule or head. No gameplay implementation, installation or release occurs in this update. See [offensive module checkpoints](checkpoints/R3_OFFENSIVE_MODULES.md).
+
+Explicit owner direction:
+
+- Most offensive modules should stack. Splitter adds one child shot per stack, each at 50% of original damage: one alternates left/right 15 degrees, two fire both, three add an alternating 30-degree child, and further stacks continue in paired 15-degree increments. The central shot remains the working interpretation; stack cap and additional-ammunition policy are unresolved.
+- Use the name **Fragment Module** for the radial-impact concept: five random radial child shots at 20% of original damage each. Owner prefers a minimum separation of **30 or 45 degrees**, superseding the earlier 20 degrees; exact selection remains open. Recommend 30 degrees with the wraparound gap checked too.
+- Impact should affect the first bullet of a magazine with a high stumble chance. Exact native reaction, reload eligibility, single-round heads and stack tuning need proof/selection; do not substitute full knockdown without discussion.
+- Module intensity/impact should increase battery usage, while batteries must remain long-lived rather than requiring daily replacement/recharging under normal use. Do not simply multiply the existing per-shot drain. Exact endurance target and representative firing workload remain tuning decisions.
+- Exclude Homing and Bleed. Exclude slowing turret effects that undermine OMH Horde Night zombies. Net/slow-based heads leave the active shortlist. This does not silently remove the separately planned concertina trap; R2C4 must revisit its slowdown against this concern before implementation.
+
+Working proposals retained for review: Piercing, Initial Blow and Execute; compatible combinations and capped stacking; Fragment once on the primary projectile's first successful impact per firing cycle, with terminal children; Fragment stacks improve damage rather than count; Impact stacks improve chance with recovery protection; empty-reload rearming; upfront predictable power cost and a separate negligible operating draw if justified. These details are not individually confirmed by the broad approval. Splitter ammunition cost, fragment range, head compatibility, secondary targeting/collateral and exact caps remain explicit scope gates. Existing potato splash remains a separate mechanic.
+
+Puddle/tack bullets are not scheduled; the proposed spike-canister ground trap is deferred. New head candidates remain proposals, with no selection or recipe approval. Maintain existing package, performance, multiplayer and publication gates; do not add planned features to WORKSHOP_CHANGELOG.txt.
+
+## C82: prune heads and replace flail with rotary blades (2026-10-06)
+
+Owner drops Extinguisher as clutter and Pneumatic Ram as too limited in reach to be efficient. Remove both from the active shortlist. Owner prefers Rotary Blades over Rotary Flail because rigid blades should be simpler than the implied flexible-body physics. Record Rotary Blades as the replacement close-defense concept; no chained-physics implementation or head prototype is authorized by this discussion alone.
+
+Working recommendation: bounded fixed-reach swept contacts synchronized to visible rotation, no per-frame damage or permanent aura, no Bleed/slow/stun-lock, and appropriate obstruction/target checks. Coverage, reach, player danger, damage cadence, victim caps, compatible modules, maintenance and recipe remain open. This design is plausibly simpler, not an engine capability claim. Preserve long battery life, owner-sourced final art and R3C1-R3C2 proof/approval gates. Updated candidates and tradeoffs are in [TURRET_HEAD_PROPOSALS.md](TURRET_HEAD_PROPOSALS.md).
+
+## C83: bat variant and temporary nail-scatter head ideas (2026-10-06)
+
+Owner suggests a bat head as a more accessible downgrade to blades and proposes that both could knock zombies back. Record Rotary Bat as a candidate sharing the rotary mechanism, and investigate brief native knockback with recovery protection for both variants. No exact reaction/chance, component availability, recipe or gameplay implementation is confirmed. The restriction against slowing and repeated permanent control remains; this suggestion reopens bounded knockback, not unlimited staggering.
+
+Owner also proposes a dedicated tack/nail head that deploys temporary ground hazards when zombies are in range, potentially in 360 degrees on available tiles. This reopens the previously deferred ground-scatter concept for head discussion, not tack-filled bullet/Puddle modules. Working recommendation is bounded tile patches in a stepped circular radius, with valid floor/path checks, consumable batches, finite life/contact uses, no overlapping damage multiplication and no slowing/Bleed. Coverage/module dependency, damage/contact behavior, player danger, caps, persistence/expiry and supplies remain unresolved. Treat Nail Scatter as a candidate for R3C1-R3C2, not an approved implementation or release. See the updated head proposal for tradeoffs and proof requirements.
+
+## C84: craftable improvised automation and expansion direction (2026-10-06)
+
+Owner requests improvised Detection/Firing modules as a worse-performing craftable route to automation. Working recommendation keeps them as separate role variants, one active item per role, interchangeable with standard variants. Owner proposes approximately 15% click-only misfire for improvised Firing instead of the suggested firing-rate ceiling. Recommend one roll per otherwise valid automatic cycle, normal retry cooldown, retained ammunition/opening-round entitlement, no persistent native jam and no full offensive power charge on failure. Exact misfire tuning/resource policy and Detection's reduced range/acquisition remain proposals. Do not stack the earlier firing-rate penalty on top without a new decision.
+
+Owner clarifies the Improvised Expansion Kit is a craftable version of the existing expansion packs that unlocks four module slots. Treat this as a four-slot expansion bonus through the existing dedicated socket; with the current four-slot base it provides eight total slots. It replaces rather than stacks with another kit. Owner requests a centered layout illustrated as four slots above two wider rows and allows adjusting counts to fit. Higher-tier sizes are not individually confirmed.
+
+Working layout/tier proposal: four centered base slots plus two eight-slot rows; total capacities None/Improvised/Small/Medium/Large = 4/8/12/16/20. Each tier unlocks another group of four; on a half-filled eight-slot row, activate the central four first. Distinguish this proposal from today's implemented 4/6/8/10. Preserve existing item identities and stored modules; explicitly handle saved Sandbox values and over-capacity turrets. Larger slot counts require bounded effect combinations and battery-endurance measurements, not higher drain simply for owning empty slots. Expansion ammunition bonuses and all new recipes/tools/skills/XP remain unresolved. C84 plans exceptions for improvised crafting; standard modules do not automatically become craftable. No gameplay patch or installation is authorized by this clarification alone.
+
+## C85: centered five-row expansion progression (2026-10-06)
+
+After checking the implemented 4/6/8/10 capacities, owner selects a centered five-row diagram with 2, 2, 3, 4 and 5 slots. Map the rows in order to base, Improvised, Small, Medium and Large: total capacities are **2/4/7/11/16**. Each expansion unlocks the next complete row; kit bonuses relative to the new base are 2/5/9/14. Preserve the single dedicated expansion socket and replacement rather than stacking.
+
+This latest layout supersedes C84's 4/8/8 diagram, 20-slot proposal and four-slot Improvised bonus. Improvised now supplies four total slots, adding two to the two-slot base. This consequence was stated in the update rather than silently retaining incompatible numbers. The base has enough space for Detection plus Firing; additional modules require expansion for that automatic configuration.
+
+Record the selected progression in R3C8 and the module plan. Existing gameplay remains 0.2.28; this planning update does not implement the new kit or recipes. Base reduction must preserve installed items and respect saved Sandbox settings through a reviewed migration policy. UI must handle non-default capacities without hiding items and center each row while retaining stable inventory identity. Ammo bonuses, crafting requirements, exact starter-module tuning and the gameplay implementation checkpoint remain open.
+
+## C86: compact-menu progression in equal upgrade groups (2026-10-06)
+
+Owner questions the pyramid's height, requests clearer visual alternatives and permits progression changes. After previews of a four-column grid, a two-row eight-column grid and tier-labeled rows, owner accepts progression of **2, 4, 4, 4**. Interpret these as the four expansion-upgrade increments beyond the two-slot base: None/Improvised/Small/Medium/Large totals **2/4/8/12/16**, with replacement-kit bonuses over base of **2/6/10/14**. This mapping is stated back to the owner and supersedes C85's intermediate totals of seven and eleven.
+
+Decouple capacity progression from physical menu rows. A compact two-row eight-column grid was the latest recommendation; the approval settles progression without separately requiring a named mockup or exact pixel geometry. The five-row pyramid is no longer a requirement. Keep the 16-slot maximum, single expansion socket, safe item preservation and battery/performance gates. R3C8 remains the implementation checkpoint; this update changes planning documents only.
+
+## C87: proceed with package split and consolidate deferred testing (2026-10-06)
+
+Following the next-patch recap and recommendation to split packages before adding content, owner approves proceeding with the update, will test later, and requests adding the outstanding test to the next patch while removing redundancies. Proceed with R1C1 loading/dependency proof and the reviewed R1C2 package split. This does not approve unresolved recipes, offensive-module tuning or every future roadmap item.
+
+Use one complete next-patch owner test in [R1_PACKAGE_SPLIT.md](checkpoints/R1_PACKAGE_SPLIT.md). Carry forward unverified 0.2.27/0.2.28 behavior, remove repeated setup and separate test-round requests, and retain historical evidence without calling deferred tests passed. Do not require another 0.2.28 player test before the approved work.
+
+Installed native inspection finds duplicate tile-definition numbers rejected. The existing 7316 registry contains both barrier and turret identities. Ask whether Turrets may require Traps (recommended existing-registry ownership) or whether standalone Turrets is mandatory before selecting a package workaround; do not turn shared-registry duplication into an accepted runtime error. Current installation stays intact during the proof.
+
+## C88: fully independent entries and fresh test worlds (2026-10-06)
+
+Owner explicitly approves full independence and a fresh test world after discussing the shared tile registry. Implement Traps-only, Turrets-only and both, with no required sibling/Core mod. Use new IDs OneMoreHorde_Traps and OneMoreHorde_Turrets; split tile registries into 7316/7317 and update turret sprite identities. No old combined-save migration is required for this development patch. Preserve item/state IDs and existing gameplay tuning.
+
+Maintain canonical Source and generate shared helpers identically into each package; native loading executes each shared virtual Lua path once. Keep recipes, settings, models, loot and update loops in their owning entry. Adapt manifests, rollback-safe installation and component-aware local LootLab exports. Retire the managed combined installation to a verified full backup. C87 deferred testing remains one consolidated 0.2.29 checklist; neither approval nor native checks establish rendered or multiplayer acceptance. No remote push, Workshop upload or website deployment is authorized by this change.

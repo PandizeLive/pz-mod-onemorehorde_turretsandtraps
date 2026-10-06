@@ -5,7 +5,7 @@ from PIL import Image, ImageDraw
 
 
 ROOT = Path(__file__).resolve().parents[1]
-MEDIA = ROOT / "Contents/mods/OneMoreHorde_TurretsAndTraps/42.20/media"
+MEDIA = ROOT / "Source/42.20/media"
 TILEDEF_NUMBER = 7316
 SHEET = "omhtt_barrier_01"
 
@@ -69,6 +69,49 @@ def build():
     png = (MEDIA / "textures/OMHTT_ProbeBase.png").read_bytes()
     pack += integer(len(png)) + png
     return tiles, pack
+
+
+def build_component(component):
+    _, original = build()
+    trap = component == "traps"
+    sheet = "omhtt_barrier_01" if trap else "omhtt_turret_01"
+    count = 28 if trap else 21
+    tiles = b"tdef" + integer(1) + integer(1)
+    tiles += (sheet + "\nOMHTT_" + component.title() + ".png\n").encode("ascii")
+    tiles += integer(4) + integer((count + 3) // 4) + integer(1) + integer(count) + integer(0) * count
+    position = 12
+
+    def read_int():
+        nonlocal position
+        value = struct.unpack_from("<i", original, position)[0]
+        position += 4
+        return value
+
+    def read_string():
+        nonlocal position
+        size = read_int()
+        value = original[position:position + size].decode("ascii")
+        position += size
+        return value
+
+    pages = []
+    for _ in range(struct.unpack_from("<i", original, 8)[0]):
+        name, sub_count, alpha = read_string(), read_int(), read_int()
+        entries = []
+        for _ in range(sub_count):
+            sprite = read_string()
+            rectangle = original[position:position + 32]
+            position += 32
+            index = int(sprite.rsplit("_", 1)[1])
+            if (index < 28) == trap:
+                entries.append(pack_string(sheet + "_" + str(index if trap else index - 28)) + rectangle)
+        size = read_int()
+        png = original[position:position + size]
+        position += size
+        if entries:
+            pages.append(pack_string(name) + integer(len(entries)) + integer(alpha) + b"".join(entries) + integer(size) + png)
+    assert position == len(original)
+    return tiles, b"PZPK" + integer(1) + integer(len(pages)) + b"".join(pages)
 
 
 if __name__ == "__main__":

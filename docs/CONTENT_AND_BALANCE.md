@@ -1,87 +1,57 @@
 # Content and balance plan
 
-Status: proposed tuning plan. Confirmed requirements are identified in [Decisions](DECISIONS.md); unapproved numbers here are experiments, not shipped defaults.
+Current summary through **0.2.28**, updated with C80 package planning and C81 offensive-module/battery direction. [Decisions](DECISIONS.md) records approval; [release state](RELEASE.md) records verification. Earlier values in historical patch documents are not current defaults. New recipes, skills and XP require owner discussion before implementation.
 
-Current basic tuning (0.2.3 / C33): **10 damage per front/side thump, 100 shared maximum HP**, both configurable in native Sandbox. Zero damage disables retaliation. Existing barriers preserve remaining percentage when maximum HP changes; free ten-second repair restores the configured maximum. Earlier basic 20-damage references below are superseded. Reinforced 25 damage remains a future approved design.
+## Existing content
 
-## Planned roster
+| Content | Current direction/defaults | Evidence/limits |
+| --- | --- | --- |
+| Spike Barrier | 1x2; front/exposed-end collision, open rear, see-through; 10 damage per front/side thump, shared 100 HP | Native player vaulting and directional scratch denominator 5 (one in five); damage/HP/risk configurable. Connected edges retain per-barrier identity |
+| Reinforced Spike Barrier | 25 thump damage, twice basic maximum HP; upgrade restores full condition | Implemented, with positive owner feedback. Distinct artwork input; final art external |
+| Barrier transport/service | Loose basic/reinforced weight 4/5; five-item same-tier bundles 6.6/8.25; free ten-second repair/pickup, full-condition recovery | Packing/service/deployment grant no XP. Do not generalize barrier condition-reset policy to turret contents |
+| Potato launcher | 35 direct damage; magazine 1; overlapping two-second reload/cooldown; 100 total-potato default; eight-tile zombie hearing | Higher direct-hit knockdown; 25% splash within 1.5 tiles, at most three secondary targets. Shared recovery protection; no secondary knockback |
+| Firearm mount | Actual conventional gun, native ammo/magazine/condition and stat inputs; firearm-wide rate .75; separate reload/cycling | Adapter, not complete player firing pipeline. Ordinary/precision range-accuracy defaults 60/80%; isolated modded evidence is not universal compatibility |
+| Modules/Expansion Kits | Inventory installation, declared stacking, actual resources/power, Sandbox gains/limits, loot-only | See [current modular-turret summary](MODULAR_TURRETS.md). Small/Medium/Large kits occupy one dedicated socket |
+| Loot/LootLab | Normalized 5x weights; overall/per-component controls default to 1; sixteen themed pools; uncommon five-plus jackpots | New containers only; map outcomes are estimates. C80 will make availability/export component-aware |
 
-Transport: P2C1b introduces individual barrier items; P2C1c introduces five-barrier packs. The owner confirmed a 67% encumbrance reduction: pack weight = 5 x individual barrier weight x 0.33. Individual weight and crafting costs remain test tuning. Packing cannot repair items or refill resources. Items/packs are scheduled and do not ship in the 0.2.0 construction candidate.
+Current base recipes and XP are in [the approved turret checkpoint](PHASE_2_CHECKPOINT_3.md#approved-recipes). Basic barrier recipe: four interchangeable planks/crafted spears, four binding units, retained sharp knife/cleaver, Carpentry 1 and 10 base crafting XP. Reinforcement: Carpentry 3, two additional planks, eight nails, retained hammer, 30 base XP. No recipe changes are implied by replanning.
 
-| Device | Intended role and behavior | Limiting costs | Earliest checkpoint |
+## Remaining confirmed/planned roster
+
+Planned content is not implemented or numerically approved merely because it appears here.
+
+| Device | Role | Open design/proof | Revised checkpoint |
 | --- | --- | --- | --- |
-| Potato turret | Quiet, cheap, farmable ammunition; one shot per second, higher knockdown, potato impact pop and tiny splash | Cadence, hopper capacity, wear; pressure/power design TBD | P1C3 prototype; P2C3 content |
-| Bed spikes / Punji | Cheap excavated ground stakes; players automatically jump over them; distinct identity from Spear Traps | Digging/rearming effort; wear/catching capacity proposed | P2C2, beginning with traversal prototype |
-| Spike Barrier / Cheval de frise | Cheap freestanding path blocker; damages attackers on thumps; blocks walking; player vaulting with front-side scratch risk is pending native proof | Direction, footprint, structural health and servicing | P1C2 prototype; P2C2 content |
-| Barbed barricade | Attach to an existing barricade; share its remaining HP; damage on thumps | Host health; independent wire wear proposed | P2C2 |
-| Concertina | Slow and damage while in contact | Wire cost, traffic wear, maximum slow proposed | P2C4 feasibility; P4C3 content |
-| Button / pressure plate | Pulse / maintained ON signal respectively | Placement, access, linkage limits TBD | P4C1 |
-| Beam sensor | Maintained ON while obstructed | Power, alignment, range and obstruction rules TBD | P4C3 |
-| Control unit | Change targeting for one or all compatible linked smart defenses, including players, other factions or no one; passive objects excluded | Authorized access, linking, smart-device capability and collateral details TBD | P4C1 |
-| Poke Floor | Retractable spikes, one strike window per cycle | Reset interval, strike capacity, wear/power TBD | P4C2 |
-| Dart emitter | Narrow fixed firing lane | Ammo, reset interval, partial recovery proposed | P4C2 |
-| Firearm sentry | Real ammunition; camera/controller-assisted targeting proposed | Ammo scarcity, power, acquisition/turning, magazine, wear | P5C1 |
-| Explosive launcher/trap | Specialized crowd damage | Expensive ammo, slow operation, collateral and safe range TBD | P5C2 |
+| Bed spikes / punji | Passive stake bed, automatic player crossing | Footprint, native crossing, contact trigger, injury, wear and recipe | R2C1-R2C2 |
+| Barbed barricade | Barbs attached to an existing barricade, damaging exposed-side thumps | Supported host types, shared HP/upgrade policy, wear, cleanup and recipe | R2C3 |
+| Concertina | Contact damage and previously planned movement slowdown | Revisit slowdown against C81 Horde Night compatibility concern before implementation; reversible composition, upkeep/caps/recipe remain unresolved | R2C4 |
+| Button / pressure plate | Pulse / ON while occupied | Links, access, occupancy, power and recipe | R4C1 |
+| Poke Floor | Retractable spike strike with legal reset cadence | Strike window, safety, targets, power/wear/recipe | R4C2 |
+| Dart emitter | Fixed triggered firing lane | Ammo, optional recovery, cadence and resources | R4C2 |
+| Beam sensor | ON while obstructed | Alignment, power, obstruction and range | R4C3 |
+| Control unit | Individual/all-linked compatible smart-device targeting | Authorization, players/factions/collateral, recognition capability | R4C3 |
+| Explosive launcher/trap | Broad specialized crowd-damage concept | Mechanism, ammo, minimum range, collateral and performance all undecided | R3C3, optional |
 
-Candidate supporting content: toggle switch, trip alarm, manual drop-weight trap. These remain suggestions. The control unit is now owner-confirmed planned content, with individual/all-linked targeting controls.
+Unique turret suggestions are kept separately in [TURRET_HEAD_PROPOSALS.md](TURRET_HEAD_PROPOSALS.md), with risks and recommendations. Toggle switches, trip alarms and manual drop-weight traps remain optional ideas, not confirmed additions.
 
-Do not bundle automatically triggered noise lures into the first release. The owner identified the tripwire -> sound behind zombie -> return across wire loop. Power consumption or a simple cooldown limits duration but does not establish fair routing behavior.
+## Trap constraints
 
-## Potato tuning
+Bed spikes and Poke Floor are different devices: passive stakes versus a signal-driven retractable mechanism. Automatic bed-spike traversal is not already solved by Spike Barrier vaulting. Prove the visible movement and blocked landing; do not substitute teleporting or faction immunity. Digging/grave workflow and replaceable stake bundles remain alternatives requiring a decision.
 
-- Owner target: 3-5 successful direct hits against a specified reference shambler, high knockdown chance, one shot per second. The prototype uses real time and fixed 0.50 HP direct damage, targeting 4-5 hits against current Normal-toughness health of 1.8-2.1. Tough/Random configurations must be reported separately; no percentage-of-target scaling.
-- Use fixed damage calibrated to the reference, not a percentage of each target's maximum health. This preserves tougher-zombie progression. This is the recommended implementation approach.
-- Misses, line obstruction, target acquisition, and reload downtime count toward practical effectiveness.
-- Proposed knockdown: direct hit only, standing targets only, with shared recovery protection across all devices. Exact chance and protection duration TBD.
-- Confirmed splash: real but extremely low damage. Proposed limit: bounded radius, victim count, and total splash budget, with no secondary stagger/knockdown or double-hit of the direct victim. Exact damage/radius remain TBD.
-- Aggregate splash must remain negligible at the maximum supported crowd density. A tiny amount per target can become substantial when multiplied by a large crowd.
-- Multiple synchronized turrets, downed targets, sprinters, tougher zombies, and splash finishing blows all require explicit tests.
-- Proposed pressure charging is not yet a requirement. Confirm the early turret's operation and ammunition/spoilage policy before recipes.
+Passive traps ignore smart-device filters. Barbed attachments must not attack through the protected side, remain after host destruction or process the same thump repeatedly. Clarify upgrade/repair behavior consistently with the owner's full-repair-on-upgrade preference before implementation.
 
-## Distinct trap behavior
+Concertina should damage only during contact. Recommend strongest-slow-only composition and a movement floor, with correct exit/death/despawn/unload cleanup. These are proposed safeguards, not an invented claim that a safe native movement API exists.
 
-Owner-selected Spike Barrier recipe: four total planks and/or basic crafted wooden spears in any mix, including four spears, plus four binding units and a retained sharp knife/cleaver. Basic Carpentry 1 / 10 base crafting XP is implemented in 0.2.0.1. The approved reinforced upgrade requires Carpentry 3, two extra planks, eight nails and a retained hammer; it awards 30 base crafting XP, doubles maximum durability to 200 and fully repairs under C43, and deals 25 damage per thump. Reinforcement is implemented in P2C2a, with positive owner feedback; the separate 0.2.7.1 test was waived. Packing/unpacking/redeployment award zero crafting XP. See [recipe review](RECIPE_COMPARISON.md).
+## Balance and release checks
 
-Recommended punji direction: shallow stake bed with replaceable bundles, partial damage, finite catching capacity and servicing. The owner's original grave workflow remains an open alternative. Do not reproduce another mod's assets/code or advertise the recommended design as already approved.
+C86 sets planned module-slot totals to **2/4/8/12/16** for None/Improvised/Small/Medium/Large, successive gains of **+2/+4/+4/+4**. The Improvised kit is craftable, and all kits replace one another in the dedicated socket. Physical UI rows are independent of unlock groups. [R3C8](checkpoints/R3C8_IMPROVISED_EXPANSION.md) covers compact-menu readability, existing-save/item preservation and crafting review. These planned values do not replace the installed 4/6/8/10 defaults until implementation; ammo bonuses remain separate.
 
-Confirmed player traversal is automatic jumping over the bed spikes, regardless of faction. The footprint must support a proven jump; excavation choice must not silently produce an uncrossable bed or fake teleport. This makes bed spikes an accessible crossing for hostile players too, so do not balance them as an anti-player wall. Zombie crossing/damage behavior is a separate requirement.
+C81 schedules stackable Splitter/Fragment/Impact direction plus proposed Piercing/Initial Blow/Execute in [R3C4-R3C7](checkpoints/R3_OFFENSIVE_MODULES.md). These are not live effects. Fragment means five radial shots, not a lingering damage area; minimum separation is pending between 30 and 45 degrees, with 30 recommended. Exclude Homing, Bleed and slowing turret effects. Preserve existing potato splash and module-specific stacking rules.
 
-Spike Barrier/cheval needs a clear attacked face and native obstruction behavior, with walking blocked. Player vaulting is now requested with 20% front-entry scratch risk and a safe rear; runtime remains non-vaultable until native proof. Passive hazards do not gain friendly immunity or remote disarming from controller modes. Barbed barricades must not hurt zombies through the protected side, repair the host on upgrade, survive as an invisible attacker after host destruction, or process one thump repeatedly.
+Module intensity must increase power usage without making batteries a daily replacement/recharging chore in ordinary use. Recalibrate base drain and modest effect costs together using defined firing workloads, test ordinary and heavily stacked loadouts, and state sustained-fire endurance separately. Exact duration, costs and idle draw remain tuning decisions. Acceptance must cover combinations with current Rapid-Fire and loading modules; do not label an unmeasured battery as lasting a fixed number of days.
 
-Concertina's damage is contact-only unless the owner later requests lingering damage. Recommend strongest-slow-only composition and a minimum movement floor. Exit, death, despawn, unload, and mod interference must restore appropriate movement. Do not overwrite another mod's entire speed state or permanently change a zombie's configured movement type.
+Measure kills per refill, damage/delay per resource, service time, structure survival, target progress and repeated crowd control, plus aggregate frame/network cost. Compare no defenses, one device, mixed defenses and a dense setup at the same difficulty/resources. Renewable ammunition cannot be balanced by construction expense alone.
 
-## Balance measures
+Shared reward pool size and score modifiers remain unresolved integration policy; historical 25% XP and x0.20 score figures are proposals, not shipped settings. Offline inclusion remains confirmed default ON. Do not fake attribution or duplicate rewards across packages.
 
-| Measure | Why it matters |
-| --- | --- |
-| Effective kills per reload/service | Limits unattended output |
-| Damage and delay per resource | Makes renewable and scarce ammo comparable |
-| Occupancy/target capacity | Prevents a single tile from controlling a whole wave |
-| Player Action Time per service | Measures maintenance burden without pricing everything in scarce loot |
-| Structure life under sustained pressure | Checks whether passive defenses become effectively immortal |
-| Target survival/advance time | Exposes knockdown and slow loops |
-| Shared XP per kill and per event | Confirms faction size does not multiply the pool |
-| Score earned at matched difficulty | Tests whether the proposed x0.20 modifier reflects increased survival |
-| Tick cost and network traffic at density | Establishes practical device limits |
-
-Proposed numerical starting points retained for experiments only: shared XP 25%; punji crossing damage equivalent to 15-25% of the reference shambler's health as fixed damage; concertina 25-40% movement reduction. Do not expose these as owner-approved defaults. Potato's earlier 6-10-hit target is discarded.
-
-## Required comparison scenarios
-
-Use the same game build, zombie configuration, lane geometry, player participation, and resource budget for controls. Compare no devices, one device, paired potato turrets, concertina plus turret, barriers plus servicing, and the maximum intended device density. Test both an engaged defender and an unattended position while the area remains active.
-
-Capture kills, survivors, time to breach, consumed ammo/materials, service time, crowd-control duration, server cost and score. Compare at least early and developed bases; construction expense alone does not constrain a mature renewable farm.
-
-Potato firing has a one-real-second minimum interval, superseding the earlier in-game-time proposal for that cadence. Decay clocks remain a separate design choice; servicing uses native Action Time. Record actual test clock settings and validate fast-forward without replaying a backlog of shots against today's targets.
-
-The current repair keeps a provisional 70% direct-hit knockdown chance and a three-real-second shared target recovery guard. It requests native animated stumble-and-fall with a modest force away from the turret and logs delayed displacement; global ragdoll settings are preserved. Barrier tuning is 0.20 actual HP per observed native animation strike marker, equivalent to 20 at a x100 damage display scale. Marker scheduling and destruction edge cases remain unaccepted; see the [patch record](checkpoints/P1_RETALIATION_RECORD.md). Module values remain proposals in [Modular turrets](MODULAR_TURRETS.md).
-
-## Deliberately deferred
-
-Live CCTV/remote aim, deep physical pits and climbing animations, general circuit logic, unlimited weapon-mod compatibility, incendiary systems, automatic distraction networks, and combat simulation outside the scoped Cure integration are not promised features. Reconsider only through a specific content decision and a bounded prototype.
-
-Basic barrier servicing (owner-approved 2026-09-27): pickup and free repair each take ten active seconds, stop on movement and award no XP. Pickup returns one full-condition item; repair restores 100 durability. Evaluate sustained-pressure balance because this intentionally makes repair a time-only cost. Basic/reinforced loose items weigh 4/5; their five-item packs weigh 6.6/8.25 (67% reduction). Upgrading also restores full durability (C43/C44).
-
-## 0.2.18 storage update (C65)
-
-Capacity is now one dedicated Expansion Kit socket. Small, Standard and Large tiers add 50/100/200 ammo and 2/4/6 regular slots, respectively, with decreasing loot weights. Existing Capacity items/settings become Standard without an ID change. Tier bonuses/loot are Sandbox-tunable; safe removal and native contents/weight remain. See PHASE_2_CHECKPOINT_3D3.md. The deferred defense roster above remains planned.
+Incendiaries, live CCTV/remote aim, deep physical pits, general circuit programming, unlimited weapon-mod compatibility and automatic distraction loops remain deferred. Cure simulation is last. A smaller verified content release need not wait for the entire roster.

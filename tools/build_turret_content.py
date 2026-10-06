@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-MEDIA = ROOT / "Contents/mods/OneMoreHorde_TurretsAndTraps/42.20/media"
+MEDIA = ROOT / "Source/42.20/media"
 
 
 def write(relative, content):
@@ -117,8 +117,8 @@ def main():
             OnIsValid = OMHTT_TurretWorld.onIsValid,
             OnCreate = OMHTT_TurretWorld.onCreate,
 """
-    for heading, index in zip("ENWS", range(44, 48)):
-        entity += f"            face {heading} {{\n                layer {{\n                    row = omhtt_barrier_01_{index},\n                }}\n            }}\n"
+    for heading, index in zip("ENWS", range(16, 20)):
+        entity += f"            face {heading} {{\n                layer {{\n                    row = omhtt_turret_01_{index},\n                }}\n            }}\n"
     entity += """        }
         component CraftRecipe {
             timedAction = BuildLowNoTool,
@@ -146,7 +146,7 @@ def main():
     for group in range(4):
         entity += f"    entity OMHTTPotatoVisual{group} {{\n        component SpriteConfig {{\n"
         for facing, heading in enumerate("ENWS"):
-            entity += f"            face {heading} {{\n                layer {{\n                    row = omhtt_barrier_01_{28 + group * 4 + facing},\n                }}\n            }}\n"
+            entity += f"            face {heading} {{\n                layer {{\n                    row = omhtt_turret_01_{group * 4 + facing},\n                }}\n            }}\n"
         entity += "        }\n    }\n"
     write("scripts/OMHTT_TurretConstruction.txt", entity + "}\n")
     texture = MEDIA / "textures/Item_OMHTT_TestCube.png"

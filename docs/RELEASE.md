@@ -1,6 +1,12 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.28
+## Current patch: 0.2.29 independent packages
+
+C88 approves full independence and fresh worlds. [Patch details](PATCH_v0.2.29.md) and [one deferred owner test](checkpoints/R1_PACKAGE_SPLIT.md#combined-owner-test-for-the-next-playable-build). Source verification passes 3,439 Kahlua assertions, 474 native translations and 192 packaged hashes. Actual native startup passes Traps-only, Turrets-only and both, with 93 unique Sandbox options and one shared startup hook. Native object write/read and the 51-gun modded-firearm probe pass. Installer fixtures verify backups, refusals, repeat install and injected-failure rollback. Installation is recorded separately in diagnostics/v0.2.29/install.json and local-release.json once completed.
+
+Loot weights and gameplay tuning are unchanged. Local exports identify Turrets ownership and yield zero module loot for Traps-only. Hosted LootLab remains at its verified 0.2.28 baseline; no website deployment, Workshop upload or remote push is part of this patch. Existing cumulative Workshop notes are retained.
+
+## Previous local installation: 0.2.28
 
 [C79 broader loot and startup firearm audit](PATCH_v0.2.28.md). Normalized 5x weights, sixteen native pools and bounded debug audit. 3,433 Kahlua assertions and 154 package hashes pass; native read/restart/save verifies 121 loot entries and twenty real guns/two cap-gun rejections. Isolated Firearms B42 audit matches admission for all 51 supported guns and two cap guns; 153 fired rounds conserved. Native write/read probes pass in 89.3/88.6 seconds. Installed from annotated `test/v0.2.28`, source `126ea390f8be960de7c67c882e7d7b16f66ecfff`. All 154 source/installed/archive hashes and the 153-file 0.2.27 backup verify. See [local release evidence](../diagnostics/v0.2.28/local-release.json).
 

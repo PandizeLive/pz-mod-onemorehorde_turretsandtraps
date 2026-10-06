@@ -1,0 +1,153 @@
+module Base {
+    entity OMHTTDeployTurret {
+        component UiConfig {
+            xuiSkin = default,
+            entityStyle = ES_OMHTTDeployTurret,
+            uiEnabled = false,
+        }
+        component SpriteConfig {
+            health = 100,
+            skillBaseHealth = 0,
+            bonusHealth = 0,
+            isThumpable = true,
+            breakSound = BreakObject,
+            OnIsValid = OMHTT_TurretWorld.onIsValid,
+            OnCreate = OMHTT_TurretWorld.onCreate,
+            face E {
+                layer {
+                    row = omhtt_turret_01_16,
+                }
+            }
+            face N {
+                layer {
+                    row = omhtt_turret_01_17,
+                }
+            }
+            face W {
+                layer {
+                    row = omhtt_turret_01_18,
+                }
+            }
+            face S {
+                layer {
+                    row = omhtt_turret_01_19,
+                }
+            }
+        }
+        component CraftRecipe {
+            timedAction = BuildLowNoTool,
+            time = 200,
+            category = OMHTurrets,
+            Tooltip = UI_OMHTT_DeployTurretDescription,
+            needToBeLearn = false,
+            OnAddToMenu = OMHTT_TurretMenuAvailable,
+            OnTest = OMHTT_Turret.recipeInput,
+            inputs {
+                item 1 [Base.OMHTTTurretBase] flags[ItemCount],
+            }
+        }
+    }
+    xuiSkin default {
+        entity ES_OMHTTDeployTurret {
+            LuaWindowClass = ISEntityWindow,
+            DisplayName = UI_OMHTT_DeployTurret,
+            Icon = OMHTT_TestCube,
+        }
+    }
+    entity OMHTTPotatoVisual0 {
+        component SpriteConfig {
+            face E {
+                layer {
+                    row = omhtt_turret_01_0,
+                }
+            }
+            face N {
+                layer {
+                    row = omhtt_turret_01_1,
+                }
+            }
+            face W {
+                layer {
+                    row = omhtt_turret_01_2,
+                }
+            }
+            face S {
+                layer {
+                    row = omhtt_turret_01_3,
+                }
+            }
+        }
+    }
+    entity OMHTTPotatoVisual1 {
+        component SpriteConfig {
+            face E {
+                layer {
+                    row = omhtt_turret_01_4,
+                }
+            }
+            face N {
+                layer {
+                    row = omhtt_turret_01_5,
+                }
+            }
+            face W {
+                layer {
+                    row = omhtt_turret_01_6,
+                }
+            }
+            face S {
+                layer {
+                    row = omhtt_turret_01_7,
+                }
+            }
+        }
+    }
+    entity OMHTTPotatoVisual2 {
+        component SpriteConfig {
+            face E {
+                layer {
+                    row = omhtt_turret_01_8,
+                }
+            }
+            face N {
+                layer {
+                    row = omhtt_turret_01_9,
+                }
+            }
+            face W {
+                layer {
+                    row = omhtt_turret_01_10,
+                }
+            }
+            face S {
+                layer {
+                    row = omhtt_turret_01_11,
+                }
+            }
+        }
+    }
+    entity OMHTTPotatoVisual3 {
+        component SpriteConfig {
+            face E {
+                layer {
+                    row = omhtt_turret_01_12,
+                }
+            }
+            face N {
+                layer {
+                    row = omhtt_turret_01_13,
+                }
+            }
+            face W {
+                layer {
+                    row = omhtt_turret_01_14,
+                }
+            }
+            face S {
+                layer {
+                    row = omhtt_turret_01_15,
+                }
+            }
+        }
+    }
+}

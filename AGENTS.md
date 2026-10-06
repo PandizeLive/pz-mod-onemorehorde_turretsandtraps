@@ -2,7 +2,9 @@
 
 Read README.md, docs/DECISIONS.md, and docs/ROADMAP.md before project changes. The workspace AGENTS.md also applies.
 
-- This is OMH: Turrets & Traps, a single edition controlled through Sandbox options. Do not recreate the abandoned Survival/Engineering/Siege edition plan.
+Be a candid technical collaborator: assess ideas before agreeing, explain material drawbacks and recommend simpler alternatives or dropping/deferring a feature when appropriate. Consider performance, compatibility, authority, persistence and player experience. Approval accepts a known tradeoff; it does not prove missing engine capabilities. Distinguish an acceptable design choice from a technical limitation. Never silently replace the approved behavior. The owner explicitly reaffirmed this on 2026-10-04.
+
+- Product direction (C80/C88): one Workshop download, OMH: Turrets & Traps, with two fully independent selectable entries, OMH: Turrets and OMH: Traps. Version 0.2.29 implements both without dependencies; see RELEASE.md for installation evidence. Owner approves fresh test worlds, not migration of old combined saves. This replaces the single-entry restriction, not the rejection of Survival/Engineering/Siege balance editions.
 - Preserve the distinction between owner-confirmed requirements, proposed defaults, verified implementation, and release evidence. Ask only about decisions that materially affect the current work; continue independent authorized work.
 - The 2026-09-25 authorization covers documentation, the cube-only technical placeholder, P1C1, and the owner's subsequent request to batch further checkpoints before player testing. P1C2-P1C4 prototype work is authorized; acceptance still requires evidence. Preserve the art restriction. Sibling-project changes and external publication remain outside scope.
 - Use the PZ modding skills and current installed game evidence for implementation. Historical decompiled references are discovery aids, not proof of current compatibility.
@@ -10,7 +12,7 @@ Read README.md, docs/DECISIONS.md, and docs/ROADMAP.md before project changes. T
 - Before major implementation, recommend the lowest sufficient reasoning effort and estimate the work. Follow the owner's workspace timing preferences. Keep checkpoints small and independently verifiable.
 - Preserve one shared defense XP pool. Include Offline Members is toggleable and defaults ON. Do not silently substitute connected-only rewards or a full pool per member.
 - Preserve potato impact pop and tiny damaging splash. Direct-hit knockdown and splash crowd-control restrictions remain separately tracked balance decisions.
-- Passive objects without smarts ignore controller target filters. Players automatically jump over bed spikes; the Spike Barrier blocks walking into it. The owner now requests player vaulting with a 20% front-side scratch chance and a safe rear; runtime vaulting remains blocked until its native collision prototype passes. Prove traversal in the installed game before claiming it works.
+- Passive objects without smarts ignore controller target filters. Players automatically jump over bed spikes; the Spike Barrier blocks walking into it. The owner now requests player vaulting with a 20% front-side scratch chance and a safe rear; Spike Barrier vaulting is implemented and has native evidence. Automatic bed-spike crossing is separate unimplemented content and still needs a current-build traversal proof.
 - Cure defense simulation is last. Offline reward eligibility does not imply simulated combat in unloaded areas or while the server is stopped.
 - Keep Horde Night's event/score authority and Trait Shop's progression authority in their respective projects. New integration contracts must be explicit and verified; do not invent API capabilities.
 - Local tests must establish the exact loaded package version. Supply complete owner tests in 4-8 short numbered steps and inspect logs after the test.
@@ -25,7 +27,7 @@ Read README.md, docs/DECISIONS.md, and docs/ROADMAP.md before project changes. T
 
 ## Release conventions (owner direction, 2026-09-26)
 
-- Follow docs/RELEASE_TOOLS.md, aligned with the reviewed Horde Night process. Use OMH: Turrets & Traps as the public name; preserve the internal mod ID and save keys.
+- Follow docs/RELEASE_TOOLS.md, aligned with the reviewed Horde Night process. Use OMH: Turrets & Traps as the public name; use independent IDs OneMoreHorde_Traps and OneMoreHorde_Turrets (C88); preserve existing item IDs and state keys. Old combined saves are outside the fresh-world test scope.
 - Use numeric three-field feature versions and fourth-field corrective versions; no checkpoint suffix in modversion. Keep historical build identifiers unchanged in evidence.
 - Use only the root OMH.cmd release menu and stable tools. Commit complete source on a non-main local branch and create an annotated test/v<version> rollback tag before installing. Do not invent a remote, Workshop ID or uploader.
 - Spike Barriers are 1x2, two tiles across and one deep. Front and side ends retaliate; the rear is safe. Preserve both-tile identity, condition, rotation and retirement.
@@ -90,3 +92,7 @@ Read README.md, docs/DECISIONS.md, and docs/ROADMAP.md before project changes. T
 - [2026-10-04] C78 approves 0.2.27: engagement slider; low-fence/barrier firing; 60/80 maximum-range defaults with semi-auto rifles included and metadata-based classification; local Mod Options noise ring; isolated modded-gun checks; aggregate scheduler and active-time audit. No Precision Fire, multiplayer enabling, new recipes or publication. See docs/PATCH_v0.2.27.md.
 
 - [2026-10-04] C79 approves 0.2.28: broader ordinary module pools, startup debug weapon audit and matching LootLab deployment; increase baked loot baseline from 4.5x to 5x (10/9), keeping normalized multipliers at 1. Investigate the Louisville hang without assuming responsibility or shipping an unproven engine workaround. Local install/admin deployment authorized; no Steam/GitHub publication. See docs/PATCH_v0.2.28.md.
+
+- [2026-10-04] C80 authorizes documentation/replanning and schedules the selectable Turrets/Traps split. Use revised R-phase checkpoint IDs; retain historical P IDs/evidence. No package split, new head, recipe, gameplay patch or release is authorized by the documentation request alone. Next recommended implementation is R1C1 loading/dependency proof, then passive-trap content. New turret concepts are proposals, not commitments.
+
+- [2026-10-06] C87 authorizes proceeding with R1C1-R1C2 package work after the next-patch recap. Owner will test later: carry the unverified 0.2.27/0.2.28 checks into the one next-patch test in docs/checkpoints/R1_PACKAGE_SPLIT.md and remove duplicate test-round requests. Do not require another old-build test or mark deferred checks passed. Resolve the shared tile-registry dependency choice before changing package identities; unresolved new content/recipe/module tuning is not covered by this approval.

@@ -1,0 +1,88 @@
+VERSION = 1,
+
+option OMHTurretsTraps.Enabled {
+    type = boolean,
+    default = true,
+    page = OMHTurretsTraps_General,
+    translation = OMHTurretsTraps_Enabled,
+}
+
+option OMHTurretsTraps.SpikeBarrier {
+    type = boolean,
+    default = true,
+    page = OMHTurretsTraps_BarrierPage,
+    translation = OMHTurretsTraps_SpikeBarrier,
+}
+
+option OMHTurretsTraps.SpikeBarrierDamage {
+    type = integer,
+    min = 0,
+    max = 1000,
+    default = 10,
+    page = OMHTurretsTraps_BarrierPage,
+    translation = OMHTurretsTraps_SpikeBarrierDamage,
+}
+
+option OMHTurretsTraps.SpikeBarrierHealth {
+    type = integer,
+    min = 1,
+    max = 10000,
+    default = 100,
+    page = OMHTurretsTraps_BarrierPage,
+    translation = OMHTurretsTraps_SpikeBarrierHealth,
+}
+
+option OMHTurretsTraps.SpikeBarrierScratchChance {
+    type = integer,
+    min = 0,
+    max = 50,
+    default = 5,
+    page = OMHTurretsTraps_BarrierPage,
+    translation = OMHTurretsTraps_SpikeBarrierScratchChance,
+}
+
+option OMHTurretsTraps.ReinforcedBarrierDamage {
+    type = integer,
+    min = 0,
+    max = 1000,
+    default = 25,
+    page = OMHTurretsTraps_BarrierPage,
+    translation = OMHTurretsTraps_ReinforcedBarrierDamage,
+}
+
+option OMHTurretsTraps.ReinforcedBarrierHealthMultiplier {
+    type = integer,
+    min = 1,
+    max = 10,
+    default = 2,
+    page = OMHTurretsTraps_BarrierPage,
+    translation = OMHTurretsTraps_ReinforcedBarrierHealthMultiplier,
+}
+
+option OMHTurretsTraps.FoundationTestControls {
+    type = boolean,
+    default = false,
+    page = OMHTurretsTraps_Debug,
+    translation = OMHTurretsTraps_FoundationTestControls,
+}
+
+option OMHTurretsTraps.DiagnosticLogging {
+    type = boolean,
+    default = true,
+    page = OMHTurretsTraps_Debug,
+    translation = OMHTurretsTraps_DiagnosticLogging,
+}
+
+option OMHTurretsTraps.ShowCollision {
+    type = boolean,
+    default = false,
+    page = OMHTurretsTraps_Debug,
+    translation = OMHTurretsTraps_ShowCollision,
+}
+
+option OMHTurretsTraps.DetailedLogging {
+    type = boolean,
+    default = false,
+    page = OMHTurretsTraps_Debug,
+    translation = OMHTurretsTraps_DetailedLogging,
+}

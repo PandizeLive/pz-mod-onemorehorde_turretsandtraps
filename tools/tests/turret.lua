@@ -117,7 +117,7 @@ options.managed = true
 options.commit = function() return false end
 check(Combat.fire(record, object, testPlayer, options) == "Unavailable" and zombie.health == 1.5, "Failed resource transaction applies no damage")
 check(object.sprite == nil, "Managed aiming does not invalidate or replace the base sprite")
-object.sprite = "omhtt_barrier_01_28"
+object.sprite = "omhtt_turret_01_0"
 function object:hasModData() return true end
 object.data = {OMHTTTurret = record}
 function object:getModData() return self.data end

@@ -8,7 +8,7 @@ from build_cube_placeholder import read_export, transformed_faces
 from build_foundation_sprite import render
 
 ROOT = Path(__file__).resolve().parents[1]
-MEDIA = ROOT / "Contents/mods/OneMoreHorde_TurretsAndTraps/42.20/media"
+MEDIA = ROOT / "Source/42.20/media"
 
 
 def build():

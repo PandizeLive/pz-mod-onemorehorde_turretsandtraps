@@ -8,20 +8,24 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 GAME = Path(os.environ.get("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"))
-VERSION = re.search(r"^modversion=(.+)$", (ROOT / "Contents/mods/OneMoreHorde_TurretsAndTraps/42.20/mod.info").read_text(), re.MULTILINE).group(1).strip()
+VERSION = re.search(r"^modversion=(.+)$", (ROOT / "Source/42.20/mod.info").read_text(), re.MULTILINE).group(1).strip()
 OUTPUT = ROOT / "diagnostics" / ("vault-prototype" if os.environ.get("OMHTT_VAULT_PROBE") == "1" else "v" + VERSION)
-CACHE = ROOT / "diagnostics/p1c1/server-cache"
+CACHE = OUTPUT / "server-cache"
 
 
 def main():
     OUTPUT.mkdir(parents=True, exist_ok=True)
-    source = ROOT / "Contents/mods/OneMoreHorde_TurretsAndTraps"
-    version = re.search(r"^modversion=(.+)$", (source / "42.20/mod.info").read_text(), re.MULTILINE).group(1).strip()
-    destination = CACHE / "mods/OneMoreHorde_TurretsAndTraps"
-    shutil.copytree(source, destination, dirs_exist_ok=True)
+    from build_packages import IDS, build
+    version, _ = build(check=True)
+    for identifier in IDS.values():
+        shutil.copytree(ROOT / "Contents/mods" / identifier, CACHE / "mods" / identifier, dirs_exist_ok=True)
+    settings = CACHE / "Server/OMHTT_P1C1.ini"
+    settings.parent.mkdir(parents=True, exist_ok=True)
+    settings.write_text("Mods=OneMoreHorde_Traps;OneMoreHorde_Turrets\nPublic=false\nPauseEmpty=true\nUPnP=false\nMap=Muldraugh, KY\nDefaultPort=29161\nUDPPort=29162\n", encoding="utf-8")
+    destination = CACHE / "mods/OneMoreHorde_Traps"
     probe = destination / "42.20/media/lua/server/OMHTT_TranslationSmoke.lua"
     probe.write_text((ROOT / "tools/tests/native_smoke.lua").read_text(encoding="utf-8"), encoding="utf-8")
-    turret_probe = destination / "42.20/media/lua/server/OMHTT_TurretSmoke.lua"
+    turret_probe = CACHE / "mods/OneMoreHorde_Turrets/42.20/media/lua/server/OMHTT_TurretSmoke.lua"
     turret_probe.write_text((ROOT / "tools/tests/native_turret_smoke.lua").read_text(encoding="utf-8"), encoding="utf-8")
     console = CACHE / "server-console.txt"
     transcript = OUTPUT / ("server-" + os.environ.get("OMHTT_PROBE_MODE", "write") + ".log")
@@ -31,7 +35,7 @@ def main():
     command = [str(GAME / "jre64/bin/java.exe"), "--enable-native-access=ALL-UNNAMED",
         "--add-exports=java.base/jdk.internal.misc=ALL-UNNAMED", "-XX:-CreateCoredumpOnCrash", "-Xmx1536m",
         "-Djava.library.path=./natives/;./natives/win64/;./", "-cp", str(classes) + (";projectzomboid.jar;." if os.environ.get("OMHTT_STOCK_CLASSES") == "1" else ";.;projectzomboid.jar"), "NativePersistenceCheck", str(OUTPUT / "native-objects"), os.environ.get("OMHTT_PROBE_MODE", "write"),
-        "-cachedir=" + str(CACHE), "-servername", "OMHTT_P1C1", "-nosteam", "-ip", "127.0.0.1", "-port", "29161"]
+        "-cachedir=" + str(CACHE), "-servername", "OMHTT_P1C1", "-nosteam", "-ip", "127.0.0.1", "-port", "29161", "-adminusername", "probe", "-adminpassword", "local-probe"]
     with transcript.open("w", encoding="utf-8") as output:
         process = subprocess.Popen(command, cwd=GAME, stdin=subprocess.PIPE, stdout=output,
             stderr=subprocess.STDOUT, text=True, creationflags=subprocess.CREATE_NO_WINDOW)
@@ -81,7 +85,7 @@ def main():
     assert "Saving GlobalModData" in text, "No native global state save"
     assert "Invalid SpriteConfig object! scripted object = OMHTT" not in text, "Invalid native barrier identity"
     assert "[OMHTT-Smoke] native-sandbox damage=10 maxHealth=100 tooltip=formatted" in text, "Native Sandbox options/tooltip invalid"
-    assert "[OMHTT-Smoke] native-texturepack entries=49 pages=27 png=valid" in text, "Native texture pack invalid"
+    assert "[OMHTT-Smoke] native-texturepacks traps=28 turrets=21 pages=27 png=valid" in text, "Native texture packs invalid"
     assert "[OMHTT-Smoke] native-module-loot-parser pools=16 items=121 weights=positive" in text, "Native module loot parse failed"
     assert "[OMHTT-Smoke] native-modules loot=121 profiles=valid condition=checked" in text, "Native module rules failed"
     assert "[OMHTT-Smoke] native-install exact=selected decoy=preserved preview=nonconsuming" in text, "Native Install selection failed"
@@ -97,7 +101,7 @@ def main():
     assert "Recipe OMHTTSpikeBarrier missing UiConfigScript" not in text, "Missing native menu UI configuration"
     shutil.copy2(console, OUTPUT / ("server-" + os.environ.get("OMHTT_PROBE_MODE", "write") + "-console.log"))
     for line in text.splitlines():
-        if any(token in line for token in ["version=42", "loading OneMoreHorde_TurretsAndTraps", "[OMHTT]", "[OMHTT-Smoke]", "SERVER STARTED", "Saving GlobalModData", "Shutdown handling finished"]):
+        if any(token in line for token in ["version=42", "loading OneMoreHorde_", "[OMHTT]", "[OMHTT-Smoke]", "SERVER STARTED", "Saving GlobalModData", "Shutdown handling finished"]):
             print(line)
     print(f"Dedicated startup/restart/save/shutdown smoke passed in {time.monotonic() - started:.1f}s; no player connected.")
 

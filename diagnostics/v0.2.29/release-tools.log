@@ -1,0 +1,2 @@
+PASS: two-package install, legacy retirement/full backup, repeat install, owner-file preservation, transactional rollback, read-only readiness, modified/untracked/unmanaged refusal, branch/tag gates, unavailable publication.
+Fixture: C:\Users\bandi\Zomboid_Modding\OMH\Turrets & Traps\diagnostics\release-tool-tests\split-x6ouo6ex

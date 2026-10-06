@@ -4,7 +4,7 @@ Status: draft specification. Read [Decisions](DECISIONS.md) for which requiremen
 
 ## Product and play loop
 
-One edition, one maintained implementation, individual Sandbox feature toggles. The player prepares a defensive position, shapes approaches, supplies devices, fights alongside them, and repairs/rearms between attacks. Cheap renewable ammunition is balanced through operating cadence, capacity, wear, and access to maintenance.
+C80 product direction: one Workshop download with selectable OMH: Turrets and OMH: Traps, maintained from one source tree with shared rules. Traps must run without turret content. C88 approves full independence and fresh test worlds. Version 0.2.29 uses separate mod IDs/tile registries with no dependency; native tests cover either entry alone and both together. Individual Sandbox controls remain within enabled content. The player prepares a defensive position, shapes approaches, supplies devices, fights alongside them, and repairs/rearms between attacks. Cheap renewable ammunition is balanced through operating cadence, capacity, wear, and access to maintenance.
 
 Recommended progression is hand-built obstructions and the potato turret, followed by connected mechanical devices, then powered targeting and specialized ammunition. This is an implementation/content order, not separate editions or a final recipe tree.
 
@@ -32,7 +32,7 @@ Bed spikes is the working term for the passive punji/stake bed, not the retracta
 
 Prove a visible, synchronized jump against the installed game's movement and collision system at the start of P2C2. Test approach directions, intended footprint, walk/run/sprint input, movement commands, obstruction at the landing, interruptions and observer synchronization. Recommended fallback when a valid jump cannot complete: stop before the hazard; do not teleport, walk through it or invent faction immunity. Exact injury/interruption behavior remains to be specified from that prototype.
 
-Spike Barrier is the working term for the freestanding cheval de frise. It blocks walking into/through its occupied footprint. The owner now requests deliberate player vaulting, with a 20% scratch chance from the front and a safe rear. Current runtime still blocks vaulting pending native collision/animation proof. Check every supported facing and joined corner. Zombie obstruction/thumping remains the planned defense behavior; do not solve player blocking by creating an indestructible zombie wall.
+Spike Barrier is the working term for the freestanding cheval de frise. Its connected front edges and exposed ends block walking; the rear remains open. The owner now requests deliberate player vaulting, with a 20% scratch chance from the front and a safe rear. The current Spike Barrier implements native low-fence vaulting and directional contact risk; bed-spike automatic traversal remains a separate unimplemented prototype. Check every supported facing and joined corner. Zombie obstruction/thumping remains the planned defense behavior; do not solve player blocking by creating an indestructible zombie wall.
 
 ## Signal model
 

@@ -2,7 +2,7 @@
 from pathlib import Path
 from build_cube_placeholder import cube_mesh
 
-MEDIA = Path(__file__).resolve().parents[1] / "Contents/mods/OneMoreHorde_TurretsAndTraps/42.20/media"
+MEDIA = Path(__file__).resolve().parents[1] / "Source/42.20/media"
 
 
 def build():

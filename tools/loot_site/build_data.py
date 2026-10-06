@@ -77,7 +77,7 @@ for f in (game/'media/lua/shared/Translate/EN').glob('*.json'):
   texts.update(json.loads(f.read_text(encoding='utf-8-sig')))
 for key,style,x,y in re.findall(r'addUntranslatedText\("([^"]+)", "([^"]+)", (\d+), (\d+)\)',(mp/'worldmap-annotations.lua').read_text()):
  if 'town' in style or 'city' in style:labels.append([texts.get(key,key.replace('MapLabel_','')),int(x),int(y)])
-package=r/'Contents/mods/OneMoreHorde_TurretsAndTraps/42.20'
+package=r/'Contents/mods/OneMoreHorde_Turrets/42.20'
 version=re.search(r'^modversion=(.+)$',(package/'mod.info').read_text(),re.M)[1].strip()
 weights=source['definitions']['WEIGHTS']
 for pool in source['pools']:

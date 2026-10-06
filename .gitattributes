@@ -1,5 +1,6 @@
 * text=auto eol=lf
 Contents/** -text
+Source/** -text
 *.png binary
 *.glb binary
 *.zip binary

@@ -1,0 +1,109 @@
+import argparse
+import json
+import re
+from pathlib import Path
+
+from build_barrier_tiles import build_component
+
+ROOT = Path(__file__).resolve().parents[1]
+SOURCE = ROOT / "Source"
+PACKAGES = ROOT / "Contents/mods"
+IDS = {"traps": "OneMoreHorde_Traps", "turrets": "OneMoreHorde_Turrets"}
+SHARED_LUA = {"Foundation", "Diagnostics", "Damage", "DamagePresentation", "ConstructionMenu", "CraftingMenu", "SandboxUI", "WorldHighlight", "PackageInfo"}
+TRAP_LUA = {"FoundationServer", "FoundationClient", "DevMarkers", "Construction"}
+TRAP_SCRIPTS = {"OMHTT_Items.txt", "OMHTT_PortableBarrier.txt", "OMHTT_construction.txt", "OMHTT_construction_ui.txt"}
+TRAP_OPTIONS = {"Enabled", "FoundationTestControls", "DiagnosticLogging", "ShowCollision", "DetailedLogging"}
+
+
+def owner(path):
+    name = path.name
+    relative = path.as_posix()
+    if name == "mod.info" or name == "sandbox-options.txt" or name.endswith((".tiles", ".pack")):
+        return set()
+    if name == "icon.png" or "/Translate/" in relative:
+        return set(IDS)
+    if path.suffix == ".lua":
+        if path.stem in SHARED_LUA:
+            return set(IDS)
+        if path.stem.startswith("Barrier") or path.stem in TRAP_LUA:
+            return {"traps"}
+        if path.stem.startswith(("Turret", "Firearm", "Hybrid", "Prototype")) or path.stem in {"ModuleLoot", "LootDefinitions", "TargetHealth", "ClientOptions"}:
+            return {"turrets"}
+        raise ValueError("Unassigned Lua module: " + relative)
+    if "/scripts/" in relative:
+        return {"traps"} if name in TRAP_SCRIPTS else {"turrets"}
+    if "/AnimSets/" in relative:
+        return {"traps"}
+    if "/textures/" in relative:
+        if name in {"OMHTT_TestCube.png", "OMHTT_Foundation.png"}:
+            return {"traps"}
+        return {"traps"} if "Barrier" in name else {"turrets"}
+    if relative.startswith("common/") or "/models_X/" in relative or "/sound/" in relative:
+        return {"turrets"}
+    raise ValueError("Unassigned package file: " + relative)
+
+
+def sandbox(component):
+    content = (SOURCE / "42.20/media/sandbox-options.txt").read_text(encoding="utf-8")
+    blocks = re.findall(r"option OMHTurretsTraps\.(\w+)\s*\{[^}]+\}", content)
+    result = ["VERSION = 1,\n"]
+    for match in re.finditer(r"option OMHTurretsTraps\.(\w+)\s*\{[^}]+\}", content):
+        key = match[1]
+        trap = key in TRAP_OPTIONS or "Barrier" in key
+        if trap == (component == "traps"):
+            result.append(match[0] + "\n")
+    assert blocks and len(result) > 1
+    return ("\n".join(result)).encode()
+
+
+def expected_files():
+    version = re.search(r"^modversion=(.+)$", (SOURCE / "42.20/mod.info").read_text(), re.M)[1].strip()
+    result = {component: {} for component in IDS}
+    for path in sorted(SOURCE.rglob("*")):
+        if not path.is_file() or path.name in {".gitkeep", ".keep"}:
+            continue
+        relative = path.relative_to(SOURCE)
+        for component in owner(relative):
+            result[component][relative.as_posix()] = path.read_bytes()
+    for component, identifier in IDS.items():
+        title = component.title()
+        pack = "OMHTT_Traps" if component == "traps" else "OMHTT_Turrets"
+        number = 7316 if component == "traps" else 7317
+        description = ("Independent single-player Spike Barriers: construction, vaulting, reinforcement, repair and portable packs."
+                       if component == "traps" else "Independent single-player modular potato and firearm turrets, modules, power and component loot.")
+        info = f"name=OMH: {title}\nid={identifier}\nmodversion={version}\nversionMin=42.20\nicon=icon.png\ndescription={description} Part of OMH: Turrets & Traps. Fresh test world required for 0.2.29. Temporary developer artwork.\ntiledef={pack} {number}\npack={pack}\n"
+        files = result[component]
+        files["42.20/mod.info"] = info.encode()
+        files["42.20/media/sandbox-options.txt"] = sandbox(component)
+        tiles, texturepack = build_component(component)
+        files[f"42.20/media/{pack}.tiles"] = tiles
+        files[f"42.20/media/texturepacks/{pack}.pack"] = texturepack
+        for layer in ["common", "42.20"]:
+            for directory in ["AnimSets", "actiongroups", "lua/client", "lua/server", "lua/shared"]:
+                files[f"{layer}/media/{directory}/.gitkeep"] = b""
+    return version, result
+
+
+def build(check=False):
+    version, expected = expected_files()
+    for component, files in expected.items():
+        package = PACKAGES / IDS[component]
+        existing = {p.relative_to(package).as_posix() for p in package.rglob("*") if p.is_file()}
+        extra = existing - files.keys()
+        if extra:
+            raise RuntimeError(f"Unexpected files in generated {component} package; inspect before retirement: {sorted(extra)}")
+        for relative, content in files.items():
+            target = package / relative
+            if check:
+                assert target.is_file() and target.read_bytes() == content, "Stale generated file: " + str(target)
+            else:
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(content)
+    return version, expected
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--check", action="store_true")
+    version, files = build(parser.parse_args().check)
+    print(json.dumps({"version": version, "packages": {IDS[k]: len(v) for k, v in files.items()}}))

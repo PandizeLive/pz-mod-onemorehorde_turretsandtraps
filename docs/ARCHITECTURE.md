@@ -1,6 +1,6 @@
 # Architecture and feasibility
 
-Reviewed against the current T&T source, Alex's PZ modding/Lua skills, the workspace/project agreements, and [Horde Night architecture](../../pz-mod-onemorehorde_protectthecure/docs/ARCHITECTURE.md); updated for **0.2.25**. Exact installation is recorded in RELEASE.md; rendered acceptance remains separate from automated/native checks.
+Reviewed against the current T&T source, Alex's PZ modding/Lua skills, the workspace/project agreements, and [Horde Night architecture](../../pz-mod-onemorehorde_protectthecure/docs/ARCHITECTURE.md); current runtime notes through **0.2.29**, with C88 independent package boundaries. Canonical Source generates two entries; shared Lua has identical paths/content, while recipes, settings, loops and tile registries are component-owned (Traps 7316, Turrets 7317). Native isolation and reverse-order combined loading pass; old combined-save migration is out of scope. Exact installation is recorded in RELEASE.md; rendered acceptance remains separate from automated/native checks.
 
 ## Relationship to Horde Night
 
@@ -11,8 +11,8 @@ We follow the same responsibility boundaries, but do **not** yet have equivalent
 | Shared gameplay policy | `Turret`, `TurretStats`, `TurretModules`, `Firearms`, `Barrier` define common rules; potato and conventional native-data guns share the universal base | Do not duplicate these rules in future MP handlers |
 | Authority separated from presentation | `TurretWorld`, combat and barrier runtimes own world outcomes; Manage/renderer/effects display them | Gameplay is explicitly SP-only. Several client timed actions perform local validated changes; future server transactions must own them |
 | Stable identity and persistence | Namespaced object markers, exact item inventory, scalar saved metadata; separate transient registries | Dedicated reconnect, zombie ownership, observers and transaction replay need proof |
-| Bounded/staggered work | Incremental manual search, automation, feeder, impact queues and diagnostic draining | These have separate budgets, not one shared frame ceiling. Aggregate density and render/aim traversal remain unproven |
-| Explicit clocks | Magazine servicing uses native Action Time; existing gun/turret deadlines use timestamp milliseconds | Audit pause/sleep/fast-forward behavior before MP. Do not claim world-time parity or silently change balance clocks |
+| Bounded/staggered work | Incremental manual search, automation, feeder, impact queues and diagnostic draining | A shared combat scheduler exists; native work units may overrun its soft ceiling. Dense frame measurements and render/maintenance costs remain unproven |
+| Explicit clocks | Magazine servicing uses native Action Time; turret cycles use the shared active-time clock with saved remaining-time rebasing | Audit pause/sleep/fast-forward behavior before MP. Do not claim world-time parity or silently change balance clocks |
 | Series ownership | No duplicate Horde quota, schedule, score, faction progression or Cure simulation engine | Integration adapters are planned, not registered/implemented |
 
 Horde Night's sibling-specific remote, Workshop, paired-package and review workflow does not become a T&T requirement merely through this comparison. T&T uses its own AGENTS.md and root OMH.cmd, with the workspace cumulative-changelog policy.
@@ -64,9 +64,9 @@ Rendering uses a static depth-mapped base tile and the installed head via `Rende
 
 ## Scheduling and performance
 
-Automation and manual targeting each have bounded candidate/time slices; the feeder processes at most four turrets within one millisecond per tick at 100ms service intervals. Impact and telemetry queues are bounded. These protections help distribute work but their independent allowances add together. Aim/render loops still traverse registered devices, and inventory summaries can repeat between consumers. There is no verified global many-turret frame budget yet.
+TurretScheduler rotates bounded combat workers through a shared 3ms wall-clock ceiling. Local candidate/time caps and bounded impact/telemetry queues remain; a running native call cannot be preempted and may overrun the ceiling. Inventory summaries are cached and invalidated on changes. Rendering, UI and existing barrier/foundation maintenance are outside the combat budget, so this is not a verified total frame-time guarantee.
 
-P2C3e must establish one aggregate work policy with fair incremental cursors, caps for scans/rays/impacts and diagnostics, plus dense mixed-turret measurements. Measure native crossings and full-frame behavior, not just the Lua fire-call duration. Pause/fast-forward tests must prove no free ammunition, unintended catch-up burst or portable-clock refill. Existing clocks are not rewritten by this magazine/UI patch.
+Revised R1C3 carries the remaining dense mixed-defense measurements from P2C3e. Measure native crossings, rendering and maintenance as well as Lua combat duration. The active-time clock and portable remaining-time rebasing are implemented; retain pause/fast-forward/restart resource checks as regressions and extend them to actual MP authority in R5C1. Detailed current scheduler/clock behavior is recorded in the 0.2.27 section below.
 
 ## Multiplayer and sibling integration gates
 
@@ -84,7 +84,7 @@ Mounted firearm drawing temporarily disables the native static item atlas by pre
 
 ## 0.2.26 narrow combat/performance adaptation
 
-FirearmAccuracy owns only native distance formula adaptation; Java probe verifies parity with installed CombatManager. TurretStats remains shared stat authority. Engagement cap lives in turret mod-data and TurretModules.profile governs search, shot eligibility and range preview. Automation schedules retained-target shots separately from bounded scans. TurretWorld caches inventory summaries for at most 200 ms, invalidates on transfer/configuration, and coalesces configuration refreshes. Diagnostics aggregates counts/max stage durations unless detailed output is enabled. None of this closes the aggregate scheduler, clock or multiplayer authority gate documented above.
+At 0.2.26, FirearmAccuracy adapted the native distance formula, with Java parity evidence against installed CombatManager; the 0.2.27 curve below supersedes that gameplay falloff. TurretStats remains shared stat authority. Engagement cap lives in turret mod-data and TurretModules.profile governs search, shot eligibility and range preview. Automation schedules retained-target shots separately from bounded scans. TurretWorld caches inventory summaries for at most 200 ms, invalidates on transfer/configuration, and coalesces configuration refreshes. Diagnostics aggregates counts/max stage durations unless detailed output is enabled. Dense full-frame and multiplayer authority evidence remain open despite the later scheduler/clock implementation.
 
 ## 0.2.27 approved refinements
 
@@ -101,3 +101,11 @@ Projectile obstruction uses installed IsoGridSquare.testVisionAdjacent, rejectin
 ## 0.2.28 discovery and diagnostics
 
 LootDefinitions remains the common source for native injection and LootLab export; four additional themed pools improve coverage without a runtime container scan. FirearmAudit uses the shared scheduler, a fifty-script traversal cap, one transient inspection item per visit and 100ms output pacing. Diagnostics.emit can report budget refusal without dropping a retained audit entry. Firearms.rejection supplies admission explanations; firearm stats/classification are resolved through the existing shared modules. Once-per-session debug work remains SP-only like current combat. World/saved inventory is untouched. No native multi-tile removal hook was added for the unassigned Louisville hang.
+
+## C80 planned package ownership
+
+OMH: Turrets and OMH: Traps are selectable components of one Workshop product, not duplicated editions. The minimum required combinations are traps-only and both; recommend turret-only as well. Validate native mod/common loading before selecting exact IDs and a shared helper distribution arrangement. Shared code has one maintained source and once-only initialization; do not copy independent policy implementations or force traps-only users to enable turret gameplay.
+
+Turrets owns bases/heads, firearm adapters, modules and their loot/recipes/settings/render/update hooks. Traps owns passive defenses and, provisionally, fixed triggered traps, sensors and controllers. Shared identity/placement/service/signal primitives must not require a turret module to initialize. Cross-component signals use optional declared capabilities, not direct unconditional requires. Feature absence must suppress associated items, recipes, loot, menus, settings and runtime hooks; a disabled Sandbox toggle is not a package split.
+
+R1C1 resolves old combined mod ID, item/world IDs, private-test saves and dependency/load order. Preserve existing identities where feasible; do not promise harmless removal from saves that contain component-owned items. R1C2 proves combinations, installation/backup manifests and component-aware LootLab/export. No such package changes are implemented by this documentation update.

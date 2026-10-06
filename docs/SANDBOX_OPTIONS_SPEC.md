@@ -1,5 +1,9 @@
 # Sandbox options specification
 
+## Independent packages in 0.2.29
+
+Traps owns the existing Enabled, FoundationTestControls, DiagnosticLogging, DetailedLogging, ShowCollision and barrier settings. Turrets owns TurretsEnabled, TurretTestControls, TurretDiagnosticLogging, TurretDetailedLogging and the existing turret/automation/module/loot settings. The generator writes only each enabled component's options; native combined loading confirms 93 unique options without duplicates. Both masters default ON, test controls OFF; numeric tuning is unchanged. Earlier tables below document historical additions, not a combined master in 0.2.29.
+
 ## Implemented through 0.2.7
 
 | Page | Option | Default / range |
@@ -129,3 +133,7 @@ Native registration order: OMH: T&T - General, Traps, Turrets, Automation, Modul
 ## Implemented P5C1a — 0.2.20
 
 The Turrets page adds a Firearms heading after the existing potato groups; no new top-level page. Controls: FirearmTurrets=true, FirearmAmmoCapacity=100 (1-500), FirearmAimingLevel=3 (0-10), FirearmAccuracyMultiplier=1 (0-3), FirearmDamageMultiplier=1 (0-5), FirearmRangeMultiplier=1 (0.1-3), FirearmReloadMultiplier=1 (0-5), FirearmCooldownMultiplier=1 (0.1-5), FirearmCycleMultiplier=1 (0.1-5), FirearmTurnSpeed=90 degrees/s (1-360). Zero accuracy means no hits. Shared power, base durability, module capacity/bonuses and automation controls still apply; potato ammo/combat controls do not alter gun stats. Maximum effective gun range is 50 tiles and cannot cross obstructions/unloaded space. Parent ordering remains General, Traps, Turrets, Automation, Modules, Loot, Debug. See PHASE_5_CHECKPOINT_1A.md for approximation limits.
+
+## C80 component ownership (planned)
+
+The tables above include historical implementation/proposal snapshots; current runtime declarations and release notes are authoritative. R1C1/R1C2 must partition settings by enabled Turrets/Traps component. Preserve the approved OMH: T&T - page prefix unless a separate naming change is approved. Traps-only must not show inactive turret/module options. Visual preference toggles remain local Mod Options; gameplay tuning remains Sandbox. No settings were added by the roadmap update.

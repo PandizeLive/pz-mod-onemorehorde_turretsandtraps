@@ -20,6 +20,8 @@ References: installed HandWeapon getters and item scripts; current IsoGridSquare
 
 ## Quick combined test
 
+The remaining checks were carried into the [single next-patch combined test](checkpoints/R1_PACKAGE_SPLIT.md#combined-owner-test-for-the-next-playable-build) on 2026-10-06. This historical checklist is not an additional requested test or evidence of acceptance.
+
 1. Restart and confirm **0.2.27**. Use the existing supplied potato/M16/rifle turrets, or add matching ammo, required magazine, charged battery, Detection and Firing. Leave build cheat on if useful.
 2. Drag Engagement range down, then to **Max**. Blue coverage and target eligibility should follow immediately. Pick up/redeploy or save/reload with a reduced cap; it should remain selected.
 3. Select a turret: amber shows noise, blue shows engagement. Add Suppression and check amber shrinks; toggle **Mod Options → OMH: Turrets & Traps → Show noise radius** and verify the preference survives restart.

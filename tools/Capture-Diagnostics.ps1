@@ -10,9 +10,11 @@ Copy-Item -LiteralPath $consolePath -Destination (Join-Path $captureDirectory 'c
 $lines = Get-Content -LiteralPath (Join-Path $captureDirectory 'console.txt')
 $lines | Select-String -Pattern '\[OMHTT' | ForEach-Object { $_.Line } | Set-Content -LiteralPath (Join-Path $captureDirectory 'omhtt.log') -Encoding utf8
 $lines | Select-String -Pattern 'ERROR|Exception|STACK TRACE|function:' -Context 2,8 | Out-String -Width 240 | Set-Content -LiteralPath (Join-Path $captureDirectory 'errors.log') -Encoding utf8
-$installedMarker = Join-Path $ZomboidDirectory 'mods/OneMoreHorde_TurretsAndTraps/.omhtt-foundation-install.json'
-if (Test-Path -LiteralPath $installedMarker) {
-    Copy-Item -LiteralPath $installedMarker -Destination (Join-Path $captureDirectory 'installed-manifest.json')
+foreach ($id in @('OneMoreHorde_Traps', 'OneMoreHorde_Turrets', 'OneMoreHorde_TurretsAndTraps')) {
+    $installedMarker = Join-Path $ZomboidDirectory "mods/$id/.omhtt-foundation-install.json"
+    if (Test-Path -LiteralPath $installedMarker) {
+        Copy-Item -LiteralPath $installedMarker -Destination (Join-Path $captureDirectory "$id-manifest.json")
+    }
 }
 $hash = (Get-FileHash -LiteralPath (Join-Path $captureDirectory 'console.txt') -Algorithm SHA256).Hash
 @{ capturedAt = (Get-Date).ToString('o'); source = $consolePath; sha256 = $hash } | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $captureDirectory 'capture.json') -Encoding utf8

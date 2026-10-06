@@ -18,38 +18,39 @@ public final class NativePersistenceCheck {
         if (!value) throw new IllegalStateException(message);
     }
 
+    private static void verifyTexturePack(String name, String prefix, int count, boolean turrets) throws Exception {
+        Object pack = Class.forName("zombie.fileSystem.TexturePackDevice").getConstructor(String.class, int.class).newInstance(name, 0);
+        Class<?> entriesType = Class.forName("zombie.fileSystem.FileSystem$TexturePackTextures");
+        Object entries = entriesType.getConstructor().newInstance();
+        call(pack, "getSubTextureInfo", new Class<?>[]{entriesType}, entries);
+        java.util.Map<?, ?> map = (java.util.Map<?, ?>)entries;
+        check(map.size() == count, "Native texture pack entry count: " + name);
+        java.util.Set<String> pages = new java.util.HashSet<>();
+        for (int index = 0; index < count; index++) {
+            Object entry = map.get(prefix + index);
+            String expected = turrets ? (index == 20 ? "OMHTT_ProbeBase" : index >= 16 ? "OMHTT_TestCube" : "OMHTT_Aim" + index)
+                : index >= 20 ? "OMHTT_ReinforcedBarrier" + ((index - 20) / 2)
+                : index >= 16 ? "OMHTT_Edges" : "OMHTT_Barrier" + ((index % 8) / 2);
+            check(entry != null && expected.equals(entry.getClass().getField("pageName").get(entry)), "Sprite mapped to wrong page: " + prefix + index);
+            pages.add(expected);
+        }
+        for (String page : pages) {
+            try (var stream = (java.io.InputStream)call(pack, "createStream", new Class<?>[]{String.class, java.io.InputStream.class}, page, null)) {
+                var image = javax.imageio.ImageIO.read(stream);
+                check(image != null && image.getWidth() == (page.equals("OMHTT_Edges") ? 256 : 128) && image.getHeight() == 256, "Native texture page unreadable: " + page);
+            }
+        }
+    }
+
     private static void verify(Path directory, String mode) throws Exception {
         verifyTurret(directory, mode);
         verifyFirearms(directory, mode);
         verifyHybrid(directory, mode);
         NativeVaultProbe.verify();
         NativeTurretProbe.verify();
-        Object pack = Class.forName("zombie.fileSystem.TexturePackDevice").getConstructor(String.class, int.class).newInstance("OMHTT_Barriers", 0);
-        Class<?> entriesType = Class.forName("zombie.fileSystem.FileSystem$TexturePackTextures");
-        Object entries = entriesType.getConstructor().newInstance();
-        call(pack, "getSubTextureInfo", new Class<?>[]{entriesType}, entries);
-        check(((java.util.Map<?, ?>)entries).size() == 49, "Native texture pack metadata did not load");
-        for (int index = 0; index < 49; index++) {
-            Object entry = ((java.util.Map<?, ?>)entries).get("omhtt_barrier_01_" + index);
-            String expected = index == 48 ? "OMHTT_ProbeBase" : index >= 44 ? "OMHTT_TestCube" : index >= 28 ? "OMHTT_Aim" + (index - 28)
-                : index >= 20 ? "OMHTT_ReinforcedBarrier" + ((index - 20) / 2)
-                : index >= 16 ? "OMHTT_Edges" : "OMHTT_Barrier" + ((index % 8) / 2);
-            check(entry != null && expected.equals(entry.getClass().getField("pageName").get(entry)), "Sprite mapped to wrong tier page: " + index);
-        }
-
-        for (int page = 0; page < 26; page++) {
-            String name = page < 4 ? "OMHTT_Barrier" + page : page < 8 ? "OMHTT_ReinforcedBarrier" + (page - 4)
-                : page < 24 ? "OMHTT_Aim" + (page - 8) : page == 24 ? "OMHTT_TestCube" : "OMHTT_ProbeBase";
-            try (var stream = (java.io.InputStream)call(pack, "createStream", new Class<?>[]{String.class, java.io.InputStream.class}, name, null)) {
-                var image = javax.imageio.ImageIO.read(stream);
-                check(image != null && image.getWidth() == 128 && image.getHeight() == 256, "Native texture page unreadable");
-            }
-        }
-        try (var stream = (java.io.InputStream)call(pack, "createStream", new Class<?>[]{String.class, java.io.InputStream.class}, "OMHTT_Edges", null)) {
-            var image = javax.imageio.ImageIO.read(stream);
-            check(image != null && image.getWidth() == 256 && image.getHeight() == 256, "Native outline texture page unreadable");
-        }
-        System.out.println("[OMHTT-Smoke] native-texturepack entries=49 pages=27 png=valid");
+        verifyTexturePack("OMHTT_Traps", "omhtt_barrier_01_", 28, false);
+        verifyTexturePack("OMHTT_Turrets", "omhtt_turret_01_", 21, true);
+        System.out.println("[OMHTT-Smoke] native-texturepacks traps=28 turrets=21 pages=27 png=valid");
         Class<?> lua = Class.forName("zombie.Lua.LuaManager");
         Object env = lua.getField("env").get(null);
         Object fixtures = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeFixtures");
@@ -196,7 +197,7 @@ public final class NativePersistenceCheck {
         iso.getMethod("load", ByteBuffer.class, int.class).invoke(restored, input, version);
         check(!input.hasRemaining(), "Unread turret bytes");
         check(get(restored, "getHealth").equals(37), "Turret health lost");
-        check("omhtt_barrier_01_28".equals(get(restored, "getSpriteName")), "Turret sprite lost");
+        check("omhtt_turret_01_0".equals(get(restored, "getSpriteName")), "Turret sprite lost");
         Object state = call(get(restored, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTTurret");
         check(Boolean.FALSE.equals(call(state, "rawget", new Class<?>[]{Object.class}, "automatic")), "Automatic switch lost");
         check("Toughest".equals(call(state, "rawget", new Class<?>[]{Object.class}, "priority")), "Target priority lost");

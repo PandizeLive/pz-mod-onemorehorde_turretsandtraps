@@ -1,0 +1,22 @@
+{
+    "Tooltip_OMHTT_PortableBarrier": "Place using Deploy Spike Barrier in the Building menu. Placement consumes one finished barrier and grants no XP.",
+    "Tooltip_OMHTT_BarrierPack": "Contains five Spike Barriers. Unpack in the Crafting menu. Bundled encumbrance is reduced by 67 percent.",
+    "Tooltip_OMHTT_ReinforcedBarrier": "Deploy through Building.",
+    "Tooltip_OMHTT_ReinforcedPack": "Five reinforced barriers. 67 percent less weight.",
+    "Tooltip_OMHTT_TurretBase": "Holds a head, ammo, modules and a battery.",
+    "Tooltip_OMHTT_PotatoHead": "Install in a turret base. Uses potatoes and power.",
+    "Tooltip_OMHTT_ModuleStorage": "Storage prototype. Module effects are not enabled yet.",
+    "Tooltip_OMHTT_ModuleFiring": "Fires on signal. Add Detection for automatic fire.",
+    "Tooltip_OMHTT_ModuleMotionDetection": "Tracks zombies. Add Firing to shoot automatically.",
+    "Tooltip_OMHTT_ModuleFilter": "Choose target priority in Manage.",
+    "Tooltip_OMHTT_ModuleDetection360": "Unlocks all directions.",
+    "Tooltip_OMHTT_ModuleRapidFire": "Increases fire rate. Stackable.",
+    "Tooltip_OMHTT_ModuleReload": "Speeds up reloading. Stackable.",
+    "Tooltip_OMHTT_ModuleAutoloader": "Eliminates reload time.",
+    "Tooltip_OMHTT_ModuleVelocity": "Increases damage and knockdown chance. Stackable.",
+    "Tooltip_OMHTT_ModuleRange": "Extends range. Stackable.",
+    "Tooltip_OMHTT_ModuleCapacity": "Expands ammo and module storage.",
+    "Tooltip_OMHTT_ModuleSuppression": "Reduces zombie hearing range. Stackable.",
+    "Tooltip_OMHTT_ModuleCritical": "Increases critical chance. Stackable.",
+    "Tooltip_OMHTT_ModuleAccuracy": "Increases firearm accuracy. Stackable."
+}

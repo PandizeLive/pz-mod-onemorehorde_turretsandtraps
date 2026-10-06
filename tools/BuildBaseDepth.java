@@ -7,7 +7,7 @@ public final class BuildBaseDepth {
  public static void main(String[] args) throws Exception {
   Class.forName("zombie.core.Core").getField("tileScale").setInt(null,2);
   BufferedImage mask=ImageIO.read(new File(args[0]));
-  BufferedImage out=new BufferedImage(1024,1792,BufferedImage.TYPE_INT_ARGB);
+  BufferedImage out=new BufferedImage(1024,768,BufferedImage.TYPE_INT_ARGB);
   Class<?> vec=Class.forName("org.joml.Vector3f");
   var ctor=vec.getConstructor(float.class,float.class,float.class);
   Object zero=ctor.newInstance(0f,0f,0f), min=ctor.newInstance(-.3125f,0f,-.3125f), max=ctor.newInstance(.3125f,.6123724f,.3125f);
@@ -25,7 +25,7 @@ public final class BuildBaseDepth {
     if(d<0 || d>1) {missing++; continue;}
    }
    int v=Math.round(d*255); int rgba=0xff000000|v<<16|v<<8|v;
-   for(int index=44;index<=47;index++) out.setRGB((index%8)*128+x,(index/8)*256+y,rgba);
+   for(int index=16;index<=19;index++) out.setRGB((index%8)*128+x,(index/8)*256+y,rgba);
    count++;
   }
   if(missing!=0) throw new IllegalStateException("Unmapped visible pixels: "+missing);

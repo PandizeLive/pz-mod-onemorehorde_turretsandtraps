@@ -11,7 +11,7 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 GAME = Path(os.environ.get("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"))
-PACKAGE = ROOT / "Contents/mods/OneMoreHorde_TurretsAndTraps"
+PACKAGE = ROOT / "Source"
 VERSION = re.search(r"^modversion=(.+)$", (PACKAGE / "42.20/mod.info").read_text(), re.MULTILINE).group(1).strip()
 OUTPUT = ROOT / "diagnostics" / ("v" + VERSION)
 
@@ -26,6 +26,8 @@ def run(command, cwd=None):
 
 
 def main():
+    from build_packages import build
+    _, packages = build(check=True)
     OUTPUT.mkdir(parents=True, exist_ok=True)
     classes = OUTPUT / "classes"
     classes.mkdir(exist_ok=True)
@@ -120,7 +122,7 @@ def main():
     depth_log = run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED",
         "-Djava.library.path=" + str(GAME), "-cp", os.pathsep.join([str(classes), str(GAME / "projectzomboid.jar")]),
         "BuildBaseDepth", PACKAGE / "42.20/media/textures/OMHTT_ProbeBase.png", OUTPUT / "base-depth.png", PACKAGE / "common/media"], cwd=GAME)
-    assert (OUTPUT / "base-depth.png").read_bytes() == (PACKAGE / "common/media/depthmaps/DEPTH_omhtt_barrier_01.png").read_bytes()
+    assert (OUTPUT / "base-depth.png").read_bytes() == (PACKAGE / "common/media/depthmaps/DEPTH_omhtt_turret_01.png").read_bytes()
     (OUTPUT / "base-depth.log").write_text(depth_log, encoding="utf-8")
     pages = list(dict.fromkeys(re.findall(r"page\s*=\s*(\w+)", sandbox)))
     assert pages == ["OMHTurretsTraps_General", "OMHTurretsTraps_BarrierPage", "OMHTurretsTraps_PotatoPage",
@@ -207,10 +209,12 @@ def main():
             if name not in evidence and name in native.namelist():
                 evidence[name + " (jar)"] = hashlib.sha256(native.read(name)).hexdigest()
     version = re.search(r"^modversion=(.+)$", (PACKAGE / "42.20/mod.info").read_text(), re.MULTILINE).group(1).strip()
-    manifest = {"version": version, "gameRoot": str(GAME), "nativeClassOrder": "stock-jar-first" if stock else "installed-loose-first", "files": files, "gameEvidence": evidence,
+    from build_packages import IDS
+    package_manifests = {IDS[component]: {name: hashlib.sha256(data).hexdigest() for name, data in contents.items()} for component, contents in packages.items()}
+    manifest = {"version": version, "gameRoot": str(GAME), "nativeClassOrder": "stock-jar-first" if stock else "installed-loose-first", "sourceFiles": files, "packages": package_manifests, "gameEvidence": evidence,
         "inGameAcceptance": "pending", "nativeTableFormatVersion": 249}
     (OUTPUT / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
-    print(f"Package checks passed: {len(files)} files, {len(keys)} translation keys; manifest recorded.")
+    print(f"Package checks passed: {len(files)} source files, {sum(len(p) for p in package_manifests.values())} packaged files, {len(keys)} translation keys; manifest recorded.")
 
 
 if __name__ == "__main__":

@@ -8,7 +8,7 @@ from build_cube_placeholder import read_export, transformed_faces
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "Contents/mods/OneMoreHorde_TurretsAndTraps/42.20/media/textures/OMHTT_TestCube.png"
+OUTPUT = ROOT / "Source/42.20/media/textures/OMHTT_TestCube.png"
 
 
 def render(document, binary, seconds, ground_y=224):

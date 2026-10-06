@@ -1,70 +1,72 @@
 # Turret inventory and module plan
 
-Current implementation: **P2C3d1 / 0.2.14** activates Firing, Motion Detection, Filter and 360 with loot-only acquisition and grouped Sandbox tuning. [Exact implemented scope and test](PHASE_2_CHECKPOINT_3D1.md). The six stat-module items remain debug-only storage; effects/gains/caps are d2. Crafting is deferred. Later proposals below remain unimplemented unless explicitly covered by d1.
+Current implementation through **0.2.28**, with C84 improvised-component proposals below. This replaces the old 0.2.14 snapshot; detailed historical approvals remain in [Decisions](DECISIONS.md) and versioned patch documents. Current values are defined in the packaged Sandbox options and shared stat resolver. Module crafting is not implemented; C84 schedules craftable improvised variants with recipes still to review.
 
-## Inventory interaction
+## Current inventory and operation
 
-Each turret has an ammunition area and module slots. Dragging actual components into/out of slots is the intended installation/removal flow; right-click installation menus are superseded. The dedicated window and native timed inventory transfers are implemented in 0.2.12. Working core modules activate from actual container contents; stat modules remain inactive.
+The dedicated Manage window uses actual items and native timed transfers: one head, reserve ammo, the appropriate magazine, battery, one Expansion Kit and regular module slots. Removing/redeploying retains exact head condition, contents, charge and cooldown state; carried weight includes contents. Repair restores base health, not the gun or battery.
 
-Installed component items, ammunition, wear and committed cooldowns must survive saving and pickup/redeployment. Transactions must not duplicate components, discard ammo, reset cooldowns or provide repeated module-swap repair. Tier upgrades restore full condition under C43; module-swap repair policy still needs an explicit decision if presented as an upgrade.
+Small/Medium/Large Expansion Kits expand ammo/module capacity through a dedicated socket and do not stack with each other. Regular slot defaults are four, rising to six/eight/ten with the kits. Sandbox values can change those capacities. Reject removal if remaining contents would not fit; never silently delete or dump them.
 
-## Ten module roles
+## Implemented module roles
 
-| Module | Confirmed role | Stacking / unsettled details |
+| Component | Role | Stacking |
 | --- | --- | --- |
-| Firing | Accept FIRE requests and operate the firing mechanism, enforcing ammunition, cooldown and the eventual power requirement | One recommended; power source/consumption TBD |
-| Motion Detection | Follow eligible zombies within range and a forward cone, aim, and supply FIRE requests | Stationary zombies remain detectable; no movement/breathing simulation. One recommended; arc/range/turning TBD |
-| Filter | Choose Closest, Furthest, Weakest or Toughest target priority | One recommended; Closest default and current-health ranking proposed. Priority is distinct from player/faction eligibility |
-| Rapid-Fire | Increase firing rate | Multiple modules explicitly allowed; each consumes module space. Formula, per-copy gain and minimum cooldown TBD |
-| Velocity | Increase direct-hit damage; increased direct-target knockdown chance supported as a proposal | Multiple modules explicitly allowed. Damage/chance gains and caps TBD; tiny splash and recovery protection must not be multiplied implicitly |
-| Capacity | Increase ammo storage and module space | Single dedicated expansion slot recommended, not owner-final. Reject removal until contents fit the reduced capacity; no deletion/automatic dumping |
-| Range | Increase firing and detection reach | Multiple modules explicitly allowed; increments/maximum TBD. Preserve obstruction checks and loaded-area bounds |
-| 360 | Expand placement-locked firing/detection coverage to all directions | C56 applies coverage to manual and automatic targeting. One recommended; no extra distance or standalone automation |
-| Reload | Reduce reload duration | Proposed for the firearm/reload checkpoint; stacking not yet decided |
-| Autoloader | Expensive module removing reload delay | Still consumes ammunition; retaining pump/bolt cycling and firing cadence is the recommended boundary, pending firearm feasibility |
+| Firing | Operates automated firing while enforcing resources and cadence | One |
+| Detection | Tracks eligible zombies, aims and supplies automatic fire requests | One; stationary zombies remain detectable |
+| Filter | Closest, Furthest, Weakest or Max Toughness priority | One; Max Toughness uses maximum HP and retains the target |
+| 360 | Unlocks all aiming/engagement directions | One; placement-locked forward cone otherwise |
+| Rapid-Fire | Improves firing cadence and relevant mechanical cycling | Stackable; configured gain/limit; no added accumulating-recoil system |
+| Reload | Reduces reload duration | Stackable; configured gain/limit |
+| Autoloader | Removes reload delay; ammunition, magazine requirements and cycling still apply | One |
+| Velocity | Increases damage and eligible knockdown chance | Stackable; configured gain/limit |
+| Range | Extends firing/detection range within implemented limits | Stackable; obstruction/loaded-area checks still apply |
+| Accuracy | Improves hit chance | Stackable |
+| Critical | Improves critical chance | Stackable; native firearm base critical chance/damage retained |
+| Suppression | Reduces zombie hearing radius, with approved processed/fallback audio | Stackable, diminishing returns and no separate count cap beyond slots |
 
-Firing, Motion Detection and Filter are separate. Earlier Smart-Fire/Powered-Firing merger proposals are superseded. Automatic fire needs Firing plus Detection. External button/plate/laser signals can request fixed-direction firing without onboard Detection. Filter alone neither detects nor fires.
+Non-stackable duplicates are rejected with feedback. Without Filter, a random eligible target is retained until invalid/dead. Power controls operation; manual Fire remains a deliberate request and does not bypass aim, resources or cooldown. Detection/Firing are distinct capabilities. The head must turn into alignment before firing.
 
-Buttons emit pulses; pressure plates remain ON while occupied and lasers while blocked. Device cadence bounds held signals. Multiple signal sources must not multiply firing rate or bypass cooldown. Target retention/hysteresis is recommended to prevent oscillating aim.
+Forward coverage defaults to 90 degrees, locked to placement. Engagement range is a per-turret slider bounded by effective weapon range. The selected blue coverage and optional amber hearing ring use current resolved stats; hearing display is a local Mod Options preference. Visual idle scanning does not move the coverage cone.
 
-## Stack balance and Sandbox controls
+## Planned improvised components and centered expansion layout
 
-Range, Velocity and Rapid-Fire stacking is owner-approved. Recommend additive per-copy bonuses with explicit caps rather than exponential multiplication. A positive minimum shot interval, bounded scan range and knockdown probability capped at 100 percent are implementation safety requirements, not excuses to silently disable stacking. Shared fallen-target recovery protection remains independent of rate and module count. Balance the combined rapid/velocity loadout.
+C84 requests craftable improvised Detection, Firing and Expansion variants; C86 simplifies progression after reviewing compact menu examples. The Expansion Kit uses the existing dedicated socket and replaces the installed kit; it does not occupy a regular module slot or stack with other kits. Keep one active Detection and one active Firing role across improvised/standard variants. Suggested Detection drawbacks are reduced automatic detection range and slower acquisition; owner proposes a 15% click-only failed trigger for Firing. Exact settings and recipes remain unapproved. On a failed trigger, recommend a normal cooldown, retained ammo and no persistent weapon jam or full effect-power cost; do not also impose the earlier proposed firing-rate penalty.
 
-Expose useful controls when each feature actually exists: base ammo/module capacity, capacity bonuses, detection cone/range, rate/damage/knockdown bonuses, range increment and maximum, and any power consumption. Keep categories under the relevant turret/defense and concise tooltips. Do not add inactive settings for planned modules.
+Planned C86 defaults: successive upgrades unlock 2, 4, 4 and 4 more slots beyond the two-slot base. Capacity progression is independent of physical UI rows. These replace C85's 2/4/7/11/16 plan, not the currently installed defaults until R3C8 is implemented.
 
-## Crafting routes deferred for modules
+| Kit | Bonus over base | Total slots | Gain over previous tier |
+| --- | --- | --- | --- |
+| None | 0 | 2 | Base |
+| Improvised, craftable | 2 | 4 | +2 |
+| Small | 6 | 8 | +4 |
+| Medium | 10 | 12 | +4 |
+| Large | 14 | 16 | +4 |
 
-The earlier wood/Mechanics-1 turret proposal is superseded by C49: metal universal base at Mechanics 2, powered potato head at Mechanics 2/Electrical 1, improvised head at Mechanics 4/Electrical 1. Complete and separate routes have identical material and XP totals. Exact recipes and retained tools are in [P2C3](PHASE_2_CHECKPOINT_3.md#approved-recipes).
+C86 retains four total slots for Improvised, adding two to the two-slot base. Each kit replaces the previous kit's total bonus rather than adding to it. The five-row pyramid is no longer required: a two-row, eight-column grid was recommended after interactive previews; a four-column alternative remains available for readability. Do not couple unlock groups to physical rows. UI must preserve readable labels and drag/drop targets at supported resolutions, with stable slot identity and scroll handling when needed. Locked slots remain visibly inactive. The two base slots can hold Detection and Firing, making expansion necessary for extra modules on an automatic turret.
 
-Future motion-detection crafting idea (deferred by C57): low-skill assembly using vanilla Base.MotionSensor, plus higher-skill fabrication from raw materials. Electrical is the recommended primary skill; exact ingredients/skill/XP are unsettled. Installed B42 provides MotionSensor and yields it through HomeAlarm dismantling.
+The planned base reduction from four to two requires an explicit migration policy before implementation. Do not delete, dump or silently disable installed modules, or reinterpret saved Sandbox bonus values as totals. Keep safe removal/downgrade checks and inventory slot identity independent of row coordinates. Non-default saved capacities also need reachable UI slots; the 16-slot preview is not permission to hide stored items.
 
-## Evidence and delivery
+Expansion ammunition capacity remains separate pending tuning. Additional empty slots do not themselves consume battery; active combinations must meet C81 power/endurance and combat-work limits. Standard modules remain loot-based unless separately approved for crafting. [R3C8's checkpoint brief](checkpoints/R3C8_IMPROVISED_EXPANSION.md) records exact capacity semantics, compact layout, migration and acceptance. It implements this scope after R3C4 resolves tuning/recipes; R3C7 includes the larger loadouts in combined acceptance.
 
-The current potato prototype uses immediate hits, range 6, overlapping two-second reload/cooldown in 0.2.13, direct knockdown chance 70 percent and a shared 3000 ms recovery guard. Those are implementation facts, not approved module bonuses. Velocity cannot affect gameplay projectile speed until real travel-time collision exists; a tracer alone would be cosmetic.
+## New heads and package boundary
 
-P2C2b finishes barrier selection and distinct reinforced texture inputs. P2C3a-c establishes approved turret recipes, native construction, real ammo/power inventory and exact-item transfers; P2C3d adds module effects, and P2C3e proves multiplayer/performance. Pressure plates, lasers and control-unit linking remain P4; firearm integration and Reload/Autoloader behavior remain P5. No module art is AI-generated.
+C80 schedules OMH: Turrets as a selectable component alongside OMH: Traps in one Workshop download. The installed build is not split yet. Turret items/recipes/module loot/render/combat hooks must not load in traps-only mode. Shared helper and optional signal contracts need the R1C1 loading proof.
 
-Acceptance: exact device/item checks at completion, persisted components/resources/deadlines, incompatible-item rejection, no duplicate grants on cancellation/concurrent requests, stack totals reflected accurately, capacity-removal refusal, and dedicated multiplayer proof before enabling that runtime. Current SP prototypes do not establish multiplayer support.
+Use the same universal base for [proposed unique heads](TURRET_HEAD_PROPOSALS.md). Each head declares ammunition, magazine/loading model, power, targeting/hit model and compatible modules. Reuse shared services; do not assume that damage, reload or accuracy multipliers have a sensible meaning for every utility/control head. Explain incompatibility rather than accepting inert modules.
 
-## Next checkpoint proposal after C56
+External button/plate/beam signals remain planned in R4C4. They may request legal actions but cannot bypass resource, targeting or timing constraints. Signals must not require Traps to enable turret-only operation or require Turrets for fixed powered traps.
 
-P2C3d1: lock the cone to stored placement orientation, independent of head aim. Apply the same range/angle/obstruction eligibility to manual and automatic shots and display the same effective geometry during placement/selection. C57 confirms a 90-degree default (45 degrees each side), with a short Sandbox control. Firing plus Motion Detection enables autonomous fire; Detection alone can track but cannot fire autonomously; Filter chooses Closest/Furthest/Weakest/Toughest. 360 changes angular coverage only and can expand manual targeting without granting autonomous fire. Removing 360 immediately restores the placement cone and invalidates out-of-cone targets. Existing loaded turrets use their saved base orientation, not last target heading.
+## Remaining gates
 
-Recommend Enable/Disable in Manage to stop autonomous shots while preserving servicing; manual Fire remains a separate deliberate action. Target acquisition must be bounded and staggered across turrets, with a final shot-time range/angle/obstruction/resource check. No wall penetration, unloaded combat or burst catch-up. These d1 details are implemented in 0.2.14 under C59.
+C81 schedules stackable offensive effects and intensity-based power costs with long battery life. Planned names are Splitter, Fragment Module, Impact, Piercing, Initial Blow and Execute; none is implemented by this documentation update. Confirmed geometry/damage directions, proposed propagation and unresolved caps/resources are separated in [R3C4-R3C7](checkpoints/R3_OFFENSIVE_MODULES.md). Homing, Bleed and slowing turret effects are excluded. Existing potato splash is not renamed or replaced by Fragment. Broad planning approval does not settle every per-head combination.
 
-P2C3d2: review concrete stack gains/caps, Capacity expansion/removal, Reload/Autoloader effects on the shared potato cycle, and their loot balance. Keep firearm-specific adapters for P5. C57 defers all module crafting, tools, skills and XP; no recipe review blocks core module effects.
+- R1C1-R1C2: optional package loading, registration ownership and save/ID policy.
+- R1C3: dense mixed-defense frame measurements, including rendering and maintenance outside the combat scheduler.
+- R3C1-R3C2: select and prove one new head; recipes/skills/XP require approval.
+- R3C4-R3C7: offensive effects, shared hit/resource contract and combined battery-endurance acceptance; preserve current modules and settings.
+- R4C4: optional cross-package signaling; no unlimited pulse backlog or reload replay.
+- R5C1: authoritative multiplayer transactions/combat, two observers, reconnect and replay protection.
+- Final art/audio and full modpack rendered acceptance remain independent of headless checks.
 
-The owner holds 0.2.13 visual/balance acceptance for the next combined gameplay test. The held test is combined with the 0.2.14 core automation build.
-
-## Loot-only acquisition — C57
-
-Modules will be found as loot for now. For d1 introduce Firing, Motion Detection, Filter and 360 into suitable current-game distributions; do not distribute inert future-effect modules as normal gameplay loot. Recommend electronics/industrial pools, with the two modules required for automation more available than optional Filter/360. Verify exact native pools and decide conservative weights during implementation. Recommend a useful module loot abundance Sandbox setting with a short tooltip. These are proposed distribution choices, not existing or owner-specified exact spawn weights.
-
-## Owner tuning — C58
-
-Include grouped Sandbox controls with d1: automation toggle, placement cone (90-degree default), bounded detection interval, global module loot multiplier and individual Firing/Detection/Filter/360 loot multipliers. Zero disables new drops; existing items remain. Reuse per-turret combat/storage/power controls. Current-game weighted loot requires honest multiplier labels rather than exact probability promises. Keep individual on/off and Filter priority in Manage. See SANDBOX_OPTIONS_SPEC.md for the planned table. Add stat-module bonuses/caps/loot controls with their functioning d2 effects.
-
-## Implemented stat modules — C63, 0.2.17
-
-Rapid-Fire, Reload, Velocity and Range stack with configurable gains/caps. Capacity has one dedicated socket and blocks unsafe removal; Autoloader removes reload delay. Manage uses Reload / Fire rate labels and effective values. Modules remain loot-only. See [current contract and combined test](PHASE_2_CHECKPOINT_3D2.md); earlier proposal sections are superseded where they differ.
+Do not add new module recipes, unsupported gun mechanisms, extra turret models or multiplayer claims merely to complete this documentation plan.

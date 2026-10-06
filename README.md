@@ -1,8 +1,12 @@
 # OMH: Turrets & Traps
 
-Project foundation created 2026-09-25. **Current 0.2.28:** [broader loot and startup firearm audit](docs/PATCH_v0.2.28.md). Installation/deployment evidence is in [RELEASE.md](docs/RELEASE.md). One combined five-step test covers the patch; native checks do not certify client rendering or frame smoothness.
+Project foundation created 2026-09-25. **Current patch 0.2.29:** [fully independent Traps and Turrets](docs/PATCH_v0.2.29.md). Installation/deployment evidence is in [RELEASE.md](docs/RELEASE.md). Owner testing is held for the [single next-patch combined test](docs/checkpoints/R1_PACKAGE_SPLIT.md#combined-owner-test-for-the-next-playable-build); native checks do not certify client rendering or frame smoothness.
 
-One edition with a Sandbox toggle menu. The planned mod adds maintainable defensive equipment to Project Zomboid Build 42, with optional Horde Night, Trait Shop, and Cure Defense integrations. Recheck the installed game build before implementing any engine-dependent behavior.
+One Workshop product with independent **OMH: Turrets** and **OMH: Traps** entries. Enable either or both in fresh worlds; neither requires the other. [Revised phases and split todo](docs/ROADMAP.md) and [unique head proposals](docs/TURRET_HEAD_PROPOSALS.md) track the next work. The project adds maintainable defensive equipment to Project Zomboid Build 42, with optional Horde Night, Trait Shop, and Cure Defense integrations. Recheck the installed game build before implementing any engine-dependent behavior.
+
+C81 adds [offensive module and battery-endurance checkpoints](docs/checkpoints/R3_OFFENSIVE_MODULES.md) to the plan: stackable effects including Splitter and Fragment Module, with long battery life and explicit head compatibility. Behavior proposals and unresolved tuning remain separate from owner-confirmed direction; no new module or head is implemented by this planning update.
+
+[R3C8: improvised components and compact expansion](docs/checkpoints/R3C8_IMPROVISED_EXPANSION.md) records the accepted **2/4/8/12/16** module-slot progression and the craftable Improvised kit, with a compact Manage grid independent of upgrade groups. Current installed capacities remain unchanged.
 
 ## Start here
 
@@ -17,7 +21,7 @@ One edition with a Sandbox toggle menu. The planned mod adds maintainable defens
 | [Roadmap](docs/ROADMAP.md) | Phases, checkpoint dependencies, deliverables, and acceptance gates |
 | [Validation](docs/VALIDATION.md) | Smallest useful checks, multiplayer coverage, and evidence policy |
 | [Release state](docs/RELEASE.md) | Packaging, publication baseline, and what has actually shipped |
-| [First implementation checkpoint](docs/checkpoints/P1C1_FOUNDATION.md) | Concrete scope for the next development step |
+| [First implementation checkpoint](docs/checkpoints/P1C1_FOUNDATION.md) | Historical foundation scope; current next work is in the revised roadmap |
 | [Artwork brief](art/README.md) | Required visual/audio states and source-asset tracking |
 
 ## Current direction
@@ -39,6 +43,6 @@ Confirmed facts live in [Decisions](docs/DECISIONS.md). A draft recommendation e
 
 `docs/` contains specifications and evidence; `docs/checkpoints/` contains checkpoint briefs and the reusable record template; `art/` contains the asset brief and will hold source artwork; `tools/` documents planned local validation and release tooling.
 
-The package is `Contents/mods/OneMoreHorde_TurretsAndTraps/42.20/`, with an accompanying `common/` directory. Current native validation targets stock B42.21.0. Isolated probes use stock-first classes because of an old optimizer override; the owner has demonstrated normal 42.21 client startup. Test-only Sandbox controls default OFF. Potato/firearm firing and barrier retaliation are SP-only. Constructed turrets consume real potatoes and power; old developer-menu prototypes remain separate diagnostic objects. Core automatic fire and four module effects are implemented in 0.2.14; stat-module effects are implemented in 0.2.17; rewards remain deferred. The barrier marker route has normal-speed SP damage evidence and is not certified lossless under skipped/fast-forwarded animation updates.
+Canonical runtime/assets live in `Source/`. `tools/build_packages.py` generates `Contents/mods/OneMoreHorde_Traps/` and `Contents/mods/OneMoreHorde_Turrets/`, each with `42.20/` and `common/`. Edit Source and rebuild; do not edit generated copies. Identical shared helper paths execute once when both are enabled. Current native validation targets stock B42.21.0. Isolated probes use stock-first classes because of an old optimizer override; the owner has demonstrated normal 42.21 client startup. Test-only Sandbox controls default OFF. Potato/firearm firing and barrier retaliation are SP-only. Constructed turrets consume real potatoes and power; old developer-menu prototypes remain separate diagnostic objects. Core automatic fire and four module effects are implemented in 0.2.14; stat-module effects are implemented in 0.2.17; rewards remain deferred. The barrier marker route has normal-speed SP damage evidence and is not certified lossless under skipped/fast-forwarded animation updates.
 
-Follow the [0.2.23 combined owner test](docs/PATCH_v0.2.23.md#quick-combined-test). Barrier recipes and servicing remain unchanged; basic/reinforced loose weights are 4/5. Turret recipes, tools, XP, power defaults and pending module work are documented in that checkpoint. Use [OMH.cmd](OMH.cmd) for local installation/readiness checks and log capture. See the [Horde Night-aligned naming and release process](docs/RELEASE_TOOLS.md). GitHub/Workshop actions remain unavailable until configured.
+Use only the [next-patch combined owner test](docs/checkpoints/R1_PACKAGE_SPLIT.md#combined-owner-test-for-the-next-playable-build) when you are ready to test 0.2.29. Older patch tests are historical, not additional rounds. Barrier recipes and servicing remain unchanged; basic/reinforced loose weights are 4/5. Turret recipes, tools, XP and power defaults remain documented in their implementation checkpoints. Use [OMH.cmd](OMH.cmd) for local installation/readiness checks and log capture. See the [Horde Night-aligned naming and release process](docs/RELEASE_TOOLS.md). GitHub/Workshop actions remain unavailable until configured.

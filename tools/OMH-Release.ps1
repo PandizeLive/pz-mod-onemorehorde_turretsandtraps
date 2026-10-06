@@ -7,15 +7,15 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path -Parent $PSScriptRoot
-$infoPath = Join-Path $projectRoot 'Contents/mods/OneMoreHorde_TurretsAndTraps/42.20/mod.info'
+$infoPath = Join-Path $projectRoot 'Contents/mods/OneMoreHorde_Traps/42.20/mod.info'
 $version = ((Get-Content -LiteralPath $infoPath | Where-Object { $_ -like 'modversion=*' }) -replace '^modversion=', '').Trim()
 
 function Invoke-ReleaseAction {
     param([string]$Selection, [bool]$CheckOnly)
     switch ($Selection) {
         'Info' { @{ Project = 'OMH: Turrets & Traps'; Version = $version; Tag = "test/v$version"; Remote = 'Not configured'; Workshop = 'Not configured' } | ConvertTo-Json }
-        'Check' { & (Join-Path $PSScriptRoot 'Install-Foundation.ps1') -ValidateOnly }
-        'Install' { & (Join-Path $PSScriptRoot 'Install-Foundation.ps1') -ValidateOnly:$CheckOnly }
+        'Check' { & (Join-Path $PSScriptRoot 'Install-Packages.ps1') -ValidateOnly }
+        'Install' { & (Join-Path $PSScriptRoot 'Install-Packages.ps1') -ValidateOnly:$CheckOnly }
         'Capture' { & (Join-Path $PSScriptRoot 'Capture-Diagnostics.ps1') }
         'Mirror' { throw 'GitHub mirroring is unavailable: no configured remote or draft PR. Nothing was pushed.' }
         'Publish' { throw 'Workshop publishing is unavailable: no configured Workshop item or publisher. Nothing was uploaded.' }

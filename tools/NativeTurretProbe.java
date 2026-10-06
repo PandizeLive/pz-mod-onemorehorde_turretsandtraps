@@ -74,7 +74,7 @@ public final class NativeTurretProbe {
         var squares = squareType.getConstructor(cellType, Class.forName("zombie.iso.SliceY"), int.class, int.class, int.class);
         Object square = squares.newInstance(cell, null, 6, 6, 0);
         Object object = Class.forName("zombie.iso.objects.IsoThumpable").getConstructor(cellType, squareType, String.class, boolean.class)
-            .newInstance(cell, square, "omhtt_barrier_01_44", false);
+            .newInstance(cell, square, "omhtt_turret_01_16", false);
         call(object, "setBlockAllTheSquare", new Class<?>[]{boolean.class}, true);
         call(object, "setCanPassThrough", new Class<?>[]{boolean.class}, true);
         call(object, "setIsThumpable", new Class<?>[]{boolean.class}, true);

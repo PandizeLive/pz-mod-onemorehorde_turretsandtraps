@@ -43,7 +43,7 @@ public final class KahluaCheck {
         Path root = Path.of(args[0]);
         Class<?> animNodeType = Class.forName("zombie.core.skinnedmodel.advancedanimation.AnimNode");
         Object node = animNodeType.getMethod("Parse", String.class).invoke(null,
-            root.resolve("Contents/mods/OneMoreHorde_TurretsAndTraps/42.20/media/AnimSets/zombie/thump/OMHTTBarrierClaw.xml").toString());
+            root.resolve("Source/42.20/media/AnimSets/zombie/thump/OMHTTBarrierClaw.xml").toString());
         if (node == null) throw new IllegalStateException("Native thump animation parser rejected node");
         var animEvents = (java.util.List<?>)animNodeType.getField("events").get(node);
         if (animEvents.size() != 4) throw new IllegalStateException("Expected two native strikes and two matching marker events");
@@ -89,7 +89,7 @@ public final class KahluaCheck {
             @SuppressWarnings("unchecked")
             var map = (java.util.Map<String, String>)field.get(null);
             map.clear();
-            fill.invoke(null, root.resolve("Contents/mods/OneMoreHorde_TurretsAndTraps/42.20").toString(), category[0], map, english, formatFixer);
+            fill.invoke(null, root.resolve("Source/42.20").toString(), category[0], map, english, formatFixer);
             if (map.isEmpty()) throw new IllegalStateException("Native translation category not loaded: " + category[0]);
             for (String key : map.keySet()) {
                 String.format(java.util.Locale.ROOT, map.get(key), "one", "two", "three", "four");
@@ -125,7 +125,7 @@ public final class KahluaCheck {
             }
         }
         System.out.println("Kahlua compilation: " + scripts.size() + " runtime/translation files passed");
-        String base = "Contents/mods/OneMoreHorde_TurretsAndTraps/42.20/media/lua/";
+        String base = "Source/42.20/media/lua/";
         String[][] stages = {
             {"_", "tools/tests/bootstrap.lua"},
             {"OMHTT/Foundation", base + "shared/OMHTT/Foundation.lua"},
@@ -141,6 +141,7 @@ public final class KahluaCheck {
             {"OMHTT/BarrierVault", base + "client/OMHTT/BarrierVault.lua"},
             {"_", Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/client/TimedActions/WalkToTimedAction.lua").toString()},
             {"OMHTT/BarrierApproachAction", base + "client/OMHTT/BarrierApproachAction.lua"},
+            {"OMHTT/WorldHighlight", base + "client/OMHTT/WorldHighlight.lua"},
             {"OMHTT/BarrierSelection", base + "client/OMHTT/BarrierSelection.lua"},
             {"_", base + "client/OMHTT/BarrierMenu.lua"},
             {"_", "tools/tests/service_load_order_after.lua"},
@@ -240,8 +241,9 @@ public final class KahluaCheck {
             {"_", "tools/tests/turret_preview.lua"},
             {"_", "tools/tests/firearms.lua"},
             {"_", "tools/tests/checkpoint_027.lua"},
-            {"OMHTT/FirearmAudit", "Contents/mods/OneMoreHorde_TurretsAndTraps/42.20/media/lua/shared/OMHTT/FirearmAudit.lua"},
+            {"OMHTT/FirearmAudit", "Source/42.20/media/lua/shared/OMHTT/FirearmAudit.lua"},
             {"_", "tools/tests/checkpoint_028.lua"},
+            {"_", "tools/tests/checkpoint_029.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

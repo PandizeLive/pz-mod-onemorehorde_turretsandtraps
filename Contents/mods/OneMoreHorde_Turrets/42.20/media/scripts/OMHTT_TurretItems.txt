@@ -1,0 +1,163 @@
+module Base {
+    item OMHTTTurretBase {
+        DisplayName = Turret Base,
+        ItemType = base:container,
+        DisplayCategory = Material,
+        Weight = 6,
+        WeightReduction = 0,
+        Capacity = 28,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        ConditionMax = 100,
+        AcceptItemFunction = OMHTT_Turret.accept,
+        Tooltip = Tooltip_OMHTT_TurretBase,
+    }
+    item OMHTTPotatoHead {
+        DisplayName = Potato Launcher Head,
+        WorldStaticModel = OMHTTProbeHead,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 4,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        ConditionMax = 100,
+        Tooltip = Tooltip_OMHTT_PotatoHead,
+    }
+    item OMHTTModuleFiring {
+        DisplayName = Firing Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleFiring,
+    }
+    item OMHTTModuleFilter {
+        DisplayName = Filter Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleFilter,
+    }
+    item OMHTTModuleRapidFire {
+        DisplayName = Rapid-Fire Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleRapidFire,
+    }
+    item OMHTTModuleVelocity {
+        DisplayName = Velocity Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleVelocity,
+    }
+    item OMHTTModuleRange {
+        DisplayName = Range Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleRange,
+    }
+    item OMHTTModuleSuppression {
+        DisplayName = Suppression Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleSuppression,
+    }
+
+    item OMHTTModuleCritical {
+        DisplayName = Critical Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleCritical,
+    }
+
+    item OMHTTModuleAccuracy {
+        DisplayName = Accuracy Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleAccuracy,
+    }
+    item OMHTTModuleReload {
+        DisplayName = Reload Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleReload,
+    }
+    item OMHTTModuleAutoloader {
+        DisplayName = Autoloader Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleAutoloader,
+    }
+    item OMHTTExpansionKitSmall {
+        DisplayName = Small Expansion Kit,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleCapacity,
+    }
+    item OMHTTExpansionKitMedium {
+        DisplayName = Medium Expansion Kit,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleCapacity,
+    }
+    item OMHTTExpansionKitLarge {
+        DisplayName = Large Expansion Kit,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleCapacity,
+    }
+    item OMHTTModuleDetection {
+        DisplayName = Detection Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleMotionDetection,
+    }
+    item OMHTTModule360 {
+        DisplayName = 360 Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleDetection360,
+    }
+}

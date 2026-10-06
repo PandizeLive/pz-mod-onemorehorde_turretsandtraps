@@ -1,5 +1,6 @@
-v0.2.28
+v0.2.29
 Single-player development test content
+- Added independent OMH: Traps and OMH: Turrets mod entries: enable either or both, with component-specific settings, enable switches and diagnostics. This development package split uses fresh worlds.
 - Added persistent test defenses with readable white developer markers and direction arrows.
 - Added 1x2 Spike Barriers with shared durability and removal; see-through connected runs have front collision and outer end caps, with an open rear. Newly exposed ends are capped after removal; front and side attacks cause 10 damage by default, while the rear is safe. Damage and maximum durability are configurable in Sandbox.
 - Added player vaulting with native Interact/run/sprint controls and low-fence reactions. Spike-side scratches occur at crossing contact with configurable 1-in-N risk; rear and end-cap crossings avoid spike scratches. Older full-square barriers can be picked up/redeployed to convert.

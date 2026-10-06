@@ -1,0 +1,11 @@
+# 0.2.29: independent Traps and Turrets
+
+C88 approves full independence and fresh worlds. OMH: Traps and OMH: Turrets now work separately or together, with no required sibling or Core entry. Separate native sprite registries remove the combined package dependency. Shared helpers have one canonical source and load once; recipes, settings, loot, assets and loops belong to their component.
+
+Enable switches are independent. Turrets has its own diagnostic/test controls and firearm audit gate; turret highlighting no longer loads barrier selection. Current item/state IDs, recipes, loot weights and gameplay tuning remain unchanged. The prior broader loot, startup firearm audit, range/noise display and active-time fixes carry forward. New offensive modules, 2/4/8/12/16 capacity progression and Improvised components are planned, not included.
+
+The installer stages and hashes both entries, verifies the annotated source tag, backs up the old managed combined folder and restores it if installation fails. It leaves saves and enabled selections alone. Use fresh worlds: no old combined-save migration is claimed. Local LootLab exports identify turret ownership; hosted LootLab remains on the unchanged 0.2.28 loot baseline.
+
+Validation: 3,439 Kahlua assertions, 474 native translations, 192 packaged files, actual Traps-only/Turrets-only/both startup, native object write/read, 51 supported modded firearms and 153 conserved shots. Package checks cover absent content, 93 unique options, independent masters and shared-hook deduplication. Installer fixtures include a forced second-package failure and complete rollback. Native/GPU rendering and connected-player multiplayer are different gates; player acceptance remains pending.
+
+Owner testing is deferred into [one eight-step fresh-world checklist](checkpoints/R1_PACKAGE_SPLIT.md#combined-owner-test-for-the-next-playable-build). Older patch checklists are historical, not extra rounds. See [release evidence](RELEASE.md) for the installed snapshot. No Workshop upload, GitHub push or website deployment is included.

@@ -212,7 +212,7 @@ local function verifyTurrets()
     print("[OMHTT-Smoke] native-install exact=selected decoy=preserved preview=nonconsuming")
     assert(not player:getInventory():contains(packed) and inventory:contains(battery), "Native build must consume the base but retain its contents for adoption")
     local square = IsoGridSquare.new(getCell(), nil, 6, 6, 0)
-    local object = IsoThumpable.new(getCell(), square, "omhtt_barrier_01_44", false)
+    local object = IsoThumpable.new(getCell(), square, "omhtt_turret_01_16", false)
     square:getObjects():add(object)
     square:getSpecialObjects():add(object)
     GameEntityFactory.CreateIsoObjectEntity(object, info:getScript():getParent(), true)
@@ -236,7 +236,7 @@ local function verifyTurrets()
         T.state(object).facing = facing
         W.refresh(object)
         assert(not object:getSprite():getProperties():has(IsoFlagType.FloorOverlay), "Upright base must not use floor depth")
-        assert(object:getSpriteName() == "omhtt_barrier_01_44" and object:getSpriteConfig():isValid(), "Hybrid aiming moved or invalidated stationary base")
+        assert(object:getSpriteName() == "omhtt_turret_01_16" and object:getSpriteConfig():isValid(), "Hybrid aiming moved or invalidated stationary base")
     end
     T.hybrid = function() return false end
     T.state(object).facing = 0
@@ -263,7 +263,7 @@ local function verifyTurrets()
     assert(contents.head:getWorldStaticItem() == "Base.OMHTTProbeHead", "Actual turret head has no native model")
     OMHTT_NativeTurret = object
     local wreckSquare = IsoGridSquare.new(getCell(), nil, 7, 7, 0)
-    local wreck = IsoThumpable.new(getCell(), wreckSquare, "omhtt_barrier_01_44", false)
+    local wreck = IsoThumpable.new(getCell(), wreckSquare, "omhtt_turret_01_16", false)
     wreckSquare:getObjects():add(wreck)
     wreckSquare:getSpecialObjects():add(wreck)
     wreck:getModData().OMHTTTurret = {schema = 1, id = "destruction-fixture"}

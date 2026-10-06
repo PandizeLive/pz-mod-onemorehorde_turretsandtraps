@@ -1,0 +1,124 @@
+module Base
+{
+    sound OMHTTSuppressedDesertEagleShoot
+    {
+        category = Item,
+        maxInstancesPerEmitter = 2,
+        clip { file = media/sound/DesertEagleShoot_layered.ogg, distanceMax = 1000, volume = 1, }
+    }
+    sound OMHTTSuppressedDoubleBarrelShotgunShoot
+    {
+        category = Item,
+        maxInstancesPerEmitter = 2,
+        clip { file = media/sound/DoubleBarrelShotgunShoot_layered.ogg, distanceMax = 1000, volume = 1, }
+    }
+    sound OMHTTSuppressedJS14Shoot
+    {
+        category = Item,
+        maxInstancesPerEmitter = 2,
+        clip { file = media/sound/JS14Shoot_layered.ogg, distanceMax = 1000, volume = 1, }
+    }
+    sound OMHTTSuppressedJS2000ShotgunShoot
+    {
+        category = Item,
+        maxInstancesPerEmitter = 2,
+        clip { file = media/sound/JS2000ShotgunShoot_layered.ogg, distanceMax = 1000, volume = 1, }
+    }
+    sound OMHTTSuppressedL92Shoot
+    {
+        category = Item,
+        maxInstancesPerEmitter = 2,
+        clip { file = media/sound/L92Shoot_layered.ogg, distanceMax = 1000, volume = 1, }
+    }
+    sound OMHTTSuppressedL94Shoot
+    {
+        category = Item,
+        maxInstancesPerEmitter = 2,
+        clip { file = media/sound/L94Shoot_layered.ogg, distanceMax = 1000, volume = 1, }
+    }
+    sound OMHTTSuppressedM14Shoot
+    {
+        category = Item,
+        maxInstancesPerEmitter = 2,
+        clip { file = media/sound/M14Shoot_layered.ogg, distanceMax = 1000, volume = 1, }
+    }
+    sound OMHTTSuppressedM16Shoot
+    {
+        category = Item,
+        maxInstancesPerEmitter = 2,
+        clip { file = media/sound/M16Shoot_layered.ogg, distanceMax = 1000, volume = 1, }
+    }
+    sound OMHTTSuppressedM1911Shoot
+    {
+        category = Item,
+        maxInstancesPerEmitter = 2,
+        clip { file = media/sound/M1911Shoot_layered.ogg, distanceMax = 1000, volume = 1, }
+    }
+    sound OMHTTSuppressedM36Shoot
+    {
+        category = Item,
+        maxInstancesPerEmitter = 2,
+        clip { file = media/sound/M36Shoot_layered.ogg, distanceMax = 1000, volume = 1, }
+    }
+    sound OMHTTSuppressedM625Shoot
+    {
+        category = Item,
+        maxInstancesPerEmitter = 2,
+        clip { file = media/sound/M625Shoot_layered.ogg, distanceMax = 1000, volume = 1, }
+    }
+    sound OMHTTSuppressedM9Shoot
+    {
+        category = Item,
+        maxInstancesPerEmitter = 2,
+        clip { file = media/sound/M9Shoot_layered.ogg, distanceMax = 1000, volume = 1, }
+    }
+    sound OMHTTSuppressedMSR700Shoot
+    {
+        category = Item,
+        maxInstancesPerEmitter = 2,
+        clip { file = media/sound/MSR700Shoot_layered.ogg, distanceMax = 1000, volume = 1, }
+    }
+    sound OMHTTSuppressedMSR788Shoot
+    {
+        category = Item,
+        maxInstancesPerEmitter = 2,
+        clip { file = media/sound/MSR788Shoot_layered.ogg, distanceMax = 1000, volume = 1, }
+    }
+    sound OMHTTSuppressedMagnumShoot
+    {
+        category = Item,
+        maxInstancesPerEmitter = 2,
+        clip { file = media/sound/MagnumShoot_layered.ogg, distanceMax = 1000, volume = 1, }
+    }
+    sound OMHTTSuppressedSawnOffDoubleBarrelShotgunShoot
+    {
+        category = Item,
+        maxInstancesPerEmitter = 2,
+        clip { file = media/sound/SawnOffDoubleBarrelShotgunShoot_layered.ogg, distanceMax = 1000, volume = 1, }
+    }
+    sound OMHTTSuppressedSawnOffJS2000ShotgunShoot
+    {
+        category = Item,
+        maxInstancesPerEmitter = 2,
+        clip { file = media/sound/SawnOffJS2000ShotgunShoot_layered.ogg, distanceMax = 1000, volume = 1, }
+    }
+    sound OMHTTSuppressedTrapperCarbineShoot
+    {
+        category = Item,
+        maxInstancesPerEmitter = 2,
+        clip { file = media/sound/TrapperCarbineShoot_layered.ogg, distanceMax = 1000, volume = 1, }
+    }
+    sound OMHTTPotatoSuppressed
+    {
+        category = Item,
+        maxInstancesPerEmitter = 2,
+        clip { file = media/sound/OMHTTPotato1_layered.ogg, distanceMax = 12, volume = 0.7, }
+        clip { file = media/sound/OMHTTPotato2_layered.ogg, distanceMax = 12, volume = 0.7, }
+    }
+    sound OMHTTPotatoReload
+    {
+        category = Item,
+        maxInstancesPerEmitter = 1,
+        clip { file = media/sound/stormyShotgunInsertRound.wav, distanceMax = 12, volume = 0.7, }
+    }
+}

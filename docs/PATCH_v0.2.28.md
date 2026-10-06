@@ -26,6 +26,8 @@ Current installed bytecode confirms the removal helper warns and returns -1 if a
 
 ## Quick combined test
 
+Deferred by the owner on 2026-10-06. The steps below are historical; run the [single next-patch combined test](checkpoints/R1_PACKAGE_SPLIT.md#combined-owner-test-for-the-next-playable-build) when that build is ready. Do not repeat this as a separate round or mark it passed.
+
 1. Restart PZ with T&T 0.2.28 and your usual gun mods. Start a disposable new world; enable Diagnostic logging, leave Detailed logging off, and keep loot multipliers at 1.
 2. Let the world run for thirty seconds. Normal gameplay should remain responsive while the weapon audit completes; I will check the accepted/rejected totals in your log.
 3. Check several previously unvisited garages, mechanic storage and electronics shelves. Expect more single/two-module finds with occasional jackpots; not every shelf should contain one.

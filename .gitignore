@@ -41,3 +41,8 @@ diagnostics/loot-isolot-current.txt
 diagnostics/pending-cadence/
 diagnostics/pending-cadence-console.log
 diagnostics/pending-check.log
+diagnostics/package-loading/cache/
+diagnostics/v*/server-cache/
+diagnostics/v*/package-cache-*/
+diagnostics/v*/modded-firearms-cache/
+diagnostics/p1c1/install-stage/

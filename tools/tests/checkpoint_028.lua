@@ -21,9 +21,9 @@ D.emit = function(event, fields)
     output[#output + 1] = {event = event, fields = fields}
     return true
 end
-SandboxVars.OMHTurretsTraps = {Enabled = true, DiagnosticLogging = false}
+SandboxVars.OMHTurretsTraps = {TurretsEnabled = true, TurretDiagnosticLogging = false}
 A.start(); check(not A.started, "Debug disabled does not scan or construct weapons")
-SandboxVars.OMHTurretsTraps.DiagnosticLogging = true
+SandboxVars.OMHTurretsTraps.TurretDiagnosticLogging = true
 A.start(); A.tick()
 check(A.pending and #output == 0 and inspected == 0, "Rate-limited audit retains pending entry")
 rejectWrite = false
