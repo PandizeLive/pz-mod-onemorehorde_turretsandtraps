@@ -1,5 +1,11 @@
 # Decision register
 
+## C98: proceed with backed-barb native verification (2026-10-07)
+
+Owner replies "approved" after the confirmed one-tile recipe/footprint handoff and the proposed next step of native support-health/contact verification. Proceed with that local investigation; no new recipe confirmation is required for the chosen wooden-frame construction. The turn's stated scope is native verification before gameplay code changes. This approval does not settle unresolved service/player/host-roster policies or authorize remote publication.
+
+The [native feasibility report](checkpoints/R2C3_NATIVE_FEASIBILITY_20261007.md) records successful native API, contact/timer, constructed-health/marker serialization and controlled zombie-crossing checks, plus the map-fence partial-counter reset and limits. Recommended first implementation scope is damageable player-built wall/fence edges; this recommendation is not a newly approved restriction. No gameplay files or installed package changed.
+
 ## C97: held playtest, performance audit and wall/fence-backed barbs (2026-10-07)
 
 Owner is away from the PC and holds the 0.2.30 gameplay test while continuing work. This is a deferral, not a pass or waiver. Owner says "approved. also confirm the new pipeline created with github" in response to the proposed performance audit plus barbed-attachment design. Scope is investigation/design and verification of the existing GitHub process; it does not request a new CI workflow, remote push, publication or gameplay installation.

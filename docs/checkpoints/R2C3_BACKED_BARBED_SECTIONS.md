@@ -25,6 +25,8 @@ Owner subsequently selects "crossing contact", then specifies barbs always use t
 
 ## Native evidence and feasibility gates
 
+The C98 [native feasibility report](R2C3_NATIVE_FEASIBILITY_20261007.md) now records eight host fixtures, twenty contact samples, timed native damage, eight controlled native zombie crossings and host serialization. Constructed host health persists; tested map-fence partial counters reset on object load. These are isolated fixture results, not rendered/autonomous acceptance or universal wall/fence support.
+
 Installed 42.21 sources, inspected 2026-10-07:
 
 - `media/lua/server/BuildingObjects/ISBuildIsoEntity.lua:154-162,195-198,618-620` distinguishes north/west wall collision and hoppable/tall-hoppable edges using `props:has(...)`. Nearby square occupancy alone is insufficient to identify backing or its exposed face.

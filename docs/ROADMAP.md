@@ -89,7 +89,8 @@ Authority design/testing begins with each device; R5C1 is integrated proof, not 
 
 - [x] C97: audit existing performance paths and verify the GitHub process/access; record [operation-count evidence and proposed optimizations](checkpoints/R1C3_PERFORMANCE_AUDIT_20261007.md). No gameplay patch or proven stall fix.
 - [x] C97: revise barb design to wall/fence-backed sections sharing support health; hold the 0.2.30 owner playtest while away.
-- [ ] Prove the selected barb host health/contact paths and settle remaining design before implementation.
+- [x] C98: run [initial native barb host/contact checks](checkpoints/R2C3_NATIVE_FEASIBILITY_20261007.md); distinguish constructed health persistence from map-fence counter reset and controlled motion from rendered acceptance.
+- [ ] Select supported barb host scope, settle remaining service/player/timer policies and prove integrated placement/lifecycle before release.
 - [x] Record C80 split requirement, revised roadmap and preserved historical evidence.
 - [x] Review collaboration guidance and require critical, evidence-based recommendations.
 - [x] Separate existing plans from new turret-head proposals.
