@@ -10,6 +10,8 @@ Owner then answers "crossing contact" to whether barbs damage zombies only attac
 
 Owner answers "yes" to "should the first hit happen immediately?" Immediate first contact damage is confirmed. Recommend a shared per-zombie two-second interval that persists through brief exits/re-entry and adjacent sections; recheck contact at each hit and stop damage outside contact. Shared cooldown details, player injury and clock semantics still need settlement/native verification. No independent attack/crossing bonus hit or damage-over-time after leaving is implied. Shared support health remains unchanged.
 
+Owner selects "wood frame" from the proposed recipe alternatives. Approve the presented wooden-frame construction materials: one Barbed Wire, two Planks, four Nails and two uses of Wire; retained hammer and pliers; Carpentry 1; 10 Carpentry XP. Wire consumption is two uses, not two full spools. This chooses the recipe, not the separately requested one-tile-wide footprint. No separate frame HP or host repair is added. Construction duration, servicing and footprint remain unresolved; material costs may be revisited if a different footprint is chosen.
+
 See [audit results and recommendations](checkpoints/R1C3_PERFORMANCE_AUDIT_20261007.md) and [backed-barb design](checkpoints/R2C3_BACKED_BARBED_SECTIONS.md). Operation counts establish redundant calls, not the cause of client pauses. No gameplay code changed in this checkpoint.
 
 ## C96: private GitHub development and Cloud planning process (2026-10-07)

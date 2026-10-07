@@ -1,12 +1,16 @@
 # Wall/fence-backed barbed sections
 
-2026-10-07; C97. Design work only. No gameplay implementation, recipe, artwork or new release has been approved by this checkpoint.
+2026-10-07; C97. Design work with the wooden-frame construction recipe selected. No gameplay implementation, artwork or new release has been approved by this checkpoint.
 
 ## Confirmed direction
 
 Owner clarifies: "id like the host of the barb to be connected to things like walls and fences. itd be semi freestanding. requires a surface behind it". The device is a supported barbed section against a wall/fence, not the suggested wooden window/door-barricade attachment. It belongs to independent Traps. It cannot be placed in open ground without backing. Final art remains owner-sourced; no new art is produced here.
 
-This replaces the proposed initial window/door host list. Owner subsequently selected "Share the supporting wall/fence health" when offered independent barb durability. Preserve one native support-health pool; attaching barbs must not add HP or repair the support. The selection settles health only, not the other proposed contact/removal defaults in that question. Damage numbers, recipe, slowing, player injury and support-loss recovery remain unresolved.
+This replaces the proposed initial window/door host list. Owner subsequently selected "Share the supporting wall/fence health" when offered independent barb durability. Preserve one native support-health pool; attaching barbs must not add HP or repair the support. The health selection alone did not settle the other proposed contact/removal defaults in that question; subsequent contact and recipe decisions are recorded below. Final damage tuning, slowing, player injury and support-loss recovery remain unresolved.
+
+## Selected construction recipe
+
+Owner chooses the wooden frame: consume one Barbed Wire, two Planks, four Nails and two uses of Wire. Retain hammer and pliers; require Carpentry 1 and award 10 Carpentry XP on initial construction. No additional frame HP or support repair. These costs were proposed for a one-tile-wide section, but the owner selected only the recipe; width remains unconfirmed. Revisit costs if the eventual footprint changes. Construction time, repair/removal materials and XP policy for redeployment remain to be settled. No alternative simple-wire or metal-frame recipe is selected.
 
 ## Recommended first contract (proposed)
 
@@ -35,4 +39,4 @@ Then verify four orientations and faces, corners, intended protected-side behavi
 
 ## Decisions remaining
 
-Footprint; support-loss recovery; supported first host classes with native shared health; whether reinforcement belongs to the wire or the host; final tuning around the owner's 10 damage/two-second example, shared-timer/clock behavior and any extra host wear; protected-side contact treatment; player injury; ingredients/tools/skill/XP and service costs. C94's 2.5x reinforced damage direction applies if a reinforced barb variant is chosen, not automatically to support health or costs. Shared support health, recurring time-based contact damage and immediate first contact damage are settled. Next prove suitable host health/contact paths, then present one concrete construction/service proposal.
+Footprint; construction time and servicing; support-loss recovery; supported first host classes with native shared health; whether reinforcement belongs to the wire or the host; final tuning around the owner's 10 damage/two-second example, shared-timer/clock behavior and any extra host wear; protected-side contact treatment; player injury. C94's 2.5x reinforced damage direction applies if a reinforced barb variant is chosen, not automatically to support health or costs. Shared support health, recurring time-based contact damage, immediate first contact damage and wooden-frame construction materials/tools/skill/XP are settled. Next prove suitable host health/contact paths and resolve footprint/service behavior.
