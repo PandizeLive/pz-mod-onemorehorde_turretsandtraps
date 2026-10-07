@@ -6,6 +6,8 @@ Owner is away from the PC and holds the 0.2.30 gameplay test while continuing wo
 
 Owner clarifies the barbed host as walls/fences, semi freestanding with a surface required behind it. This replaces the suggested first window/door-barricade host list. When asked about independent barb durability, owner selects "Share the supporting wall/fence health". Preserve the support's existing health pool, with no automatic repair or added HP. Do not silently substitute separate barb durability for hosts without usable health. Host eligibility, native attack/contact detection, damage, footprint, support-loss behavior and recipe/service choices still need proof or discussion. That answer settles health only, not the bundled proposed attack/removal behavior.
 
+Owner then answers "crossing contact" to whether barbs damage zombies only attacking the support or also crossing a supported fence. Include zombie fence-crossing contact damage; do not implement a thump-only substitute. This does not settle player injury, damage values, exact trigger cadence or supported engine paths. Recommend one hit per actual crossing with duplicate protection across updates/adjacent sections; native feasibility remains unverified.
+
 See [audit results and recommendations](checkpoints/R1C3_PERFORMANCE_AUDIT_20261007.md) and [backed-barb design](checkpoints/R2C3_BACKED_BARBED_SECTIONS.md). Operation counts establish redundant calls, not the cause of client pauses. No gameplay code changed in this checkpoint.
 
 ## C96: private GitHub development and Cloud planning process (2026-10-07)
