@@ -23,7 +23,7 @@ Planned content is not implemented or numerically approved merely because it app
 | Device | Role | Open design/proof | Revised checkpoint |
 | --- | --- | --- | --- |
 | Bed Spikes, basic/reinforced | C95 / 0.2.30: 1x2 short spikes, 20/50 fall damage, six wear, 100/200 durability, player brush-through | Rendered movement/falls and balance acceptance in TEST_v0.2.30.md | R2C1-R2C2 |
-| Backed barbed section | Wall/fence-backed, shared support HP; immediate first contact hit then recurring damage including crossings, working tuning 10 every two seconds (C97) | Native health/contact proof, footprint, shared timer policy, final tuning/wear, cleanup and recipe | R2C3 |
+| Backed barbed section | One tile-wide wooden frame, wall/fence-backed, shared support HP; immediate first contact hit then recurring damage including crossings, working tuning 10 every two seconds; construction recipe selected (C97) | Native health/contact proof, shared timer policy, final tuning/wear, cleanup and service | R2C3 |
 | Concertina | Contact damage and previously planned movement slowdown | Revisit slowdown against C81 Horde Night compatibility concern before implementation; reversible composition, upkeep/caps/recipe remain unresolved | R2C4 |
 | Button / pressure plate | Pulse / ON while occupied | Links, access, occupancy, power and recipe | R4C1 |
 | Poke Floor | Retractable spike strike with legal reset cadence | Strike window, safety, targets, power/wear/recipe | R4C2 |
