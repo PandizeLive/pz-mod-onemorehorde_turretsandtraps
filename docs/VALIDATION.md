@@ -4,6 +4,8 @@ Historical candidate `0.2.0`: [P2C1a](PHASE_2_CHECKPOINT_1.md) added native cons
 
 ## Current validation pointer
 
+Current installed **0.2.30**: PATCH_v0.2.30.md and RELEASE.md record 3,540 Kahlua assertions, 503 native translations, native bed API/recipe/24-part persistence proof, all three independent package selections, and verified installation. TEST_v0.2.30.md is the sole current six-step owner test. Rendered movement/falls and dense-client smoothness remain pending; the audio stall is not claimed fixed. The following 0.2.29 disposition is historical.
+
 Current 0.2.29 evidence is in RELEASE.md and PATCH_v0.2.29.md; earlier version notes are historical observations. C88 approves fully independent packages and fresh worlds. Native package isolation, shared registration and separate controls pass in all three selections; 3,439 Kahlua assertions pass. C89 waives remaining owner checks; [test disposition](TEST_v0.2.29.md) records separate client startups and the medical-loot review without marking skipped checks as passes. The consolidated checklist and older patch checklists are historical, not additional requested rounds. Future owner tests should focus on changed behavior and credible regression risks; native evidence does not certify unobserved rendering.
 
 ## Smallest reliable checks

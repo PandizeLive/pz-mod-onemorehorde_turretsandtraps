@@ -1,6 +1,14 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.29 independent packages
+## Current local installation: 0.2.30 Bed Spikes and performance
+
+Installed on 2026-10-06 via OMH.cmd from annotated `test/v0.2.30`, source `2e97f782603db0050d8e1220f15a9e3d152e37e9`. [Patch](PATCH_v0.2.30.md) implements C95: 1x2 basic/reinforced beds, 20/50 fresh-fall damage, six shared durability wear, 100/200 durability and five-second recovery protection. Existing prone zombies are excluded from repeat hits; walking is safe and running/sprinting has per-entry scratch risk. Includes approved recipes/services and native redeployment.
+
+3,540 Kahlua assertions pass, including bed contact, recovery persistence, injury, servicing and diagnostic gates. Native registration covers three recipes/four facings/24 parts; write/read verifies native part and persistent-authority identity/health. Native Traps-only, Turrets-only and both startup checks pass. All 176 source and 212 package/tag/installed/archive files match their manifests; both previous 0.2.29 packages are fully backed up and their 192 managed files verify. [Install record](../diagnostics/v0.2.30/install.json), [release verification](../diagnostics/v0.2.30/local-release.json), [archive](../artifacts/OMHTT-0.2.30.zip). Archive SHA-256: `fc098819d0123bcac546beeb36500e965f9d49ed8d924ae3e76634b9b9714b87`.
+
+Turret reaction tracking is gated by detailed turret diagnostics; duplicate renderer code is removed. Audio calls have separate stage timings. The 300-700ms client pauses are **not proven fixed**; isolated audio calls did not reproduce them. [One focused owner test](TEST_v0.2.30.md) covers rendered brush-through/falls and the heavy turret workload. No MP acceptance, Workshop upload, remote push or website deployment is claimed. Cumulative unuploaded notes are preserved. The release recorder now derives validation counts from current evidence rather than copying prior-version claims.
+
+## Previous local installation: 0.2.29 independent packages
 
 Owner follow-up, 2026-10-06: separate Traps-only/Turrets-only client startup is logged; remaining owner tests are explicitly waived, not new passes. [Medical-loot investigation](TEST_v0.2.29.md) finds no split-induced global loot increase. No new gameplay patch is indicated.
 

@@ -1,6 +1,6 @@
 # OMH: Turrets & Traps
 
-Project foundation created 2026-09-25. **Current installed 0.2.29:** [fully independent Traps and Turrets](docs/PATCH_v0.2.29.md). Installation evidence is in [RELEASE.md](docs/RELEASE.md). The owner waived the remaining combined test on 2026-10-06; [loot review and test disposition](docs/TEST_v0.2.29.md) records the evidence without treating skipped checks as passes. Native checks do not certify client rendering or frame smoothness.
+Project foundation created 2026-09-25. **Current installed 0.2.30:** [Bed Spikes and performance diagnostics](docs/PATCH_v0.2.30.md), retaining fully independent Traps and Turrets. Installation evidence is in [RELEASE.md](docs/RELEASE.md). The [focused six-step test](docs/TEST_v0.2.30.md) covers new beds and the heavy turret workload; audio stall elimination remains unproven. The owner-waived 0.2.29 regression round stays waived. Native checks do not certify client rendering or frame smoothness.
 
 One Workshop product with independent **OMH: Turrets** and **OMH: Traps** entries. Enable either or both in fresh worlds; neither requires the other. [Revised phases and split todo](docs/ROADMAP.md) and [unique head proposals](docs/TURRET_HEAD_PROPOSALS.md) track the next work. The project adds maintainable defensive equipment to Project Zomboid Build 42, with optional Horde Night, Trait Shop, and Cure Defense integrations. Recheck the installed game build before implementing any engine-dependent behavior.
 

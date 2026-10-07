@@ -2,6 +2,7 @@
 import hashlib
 import io
 import json
+import re
 import subprocess
 import zipfile
 from pathlib import Path
@@ -24,6 +25,18 @@ def main():
     tagged = zipfile.ZipFile(io.BytesIO(subprocess.check_output(git + ['archive', '--format=zip', tag, 'Source', 'Contents'])))
     for name, expected in manifest['sourceFiles'].items():
         assert digest(tagged.read('Source/' + name)) == expected, 'Tagged source differs: ' + name
+        assert digest((ROOT / 'Source' / name).read_bytes()) == expected, 'Working source differs: ' + name
+    validation = (output / 'validation.log').read_text(encoding='utf-8')
+    assertions = re.search(r'Assertions passed: (\d+)', validation)
+    assert assertions, 'Missing current validation result'
+    for mode in ['write', 'read']:
+        native = (output / ('server-' + mode + '.log')).read_text(encoding='utf-8')
+        assert '[OMHTT-Smoke] native-persistence mode=' + mode in native and 'Shutdown handling finished' in native
+        if (ROOT / 'Source/42.20/media/scripts/OMHTT_BedSpikes.txt').exists():
+            assert '[OMHTT-Beds] persistence mode=' + mode + ' parts=24' in native, 'Missing native bed persistence proof'
+    for selection in ['traps', 'turrets', 'both']:
+        result = json.loads((output / ('packages-' + selection + '.json')).read_text())
+        assert result['version'] == version and result['passed'], 'Missing current package isolation proof'
     archive = ROOT / 'artifacts' / ('OMHTT-' + version + '.zip')
     verified = 0
     with zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED) as zipped:
@@ -52,10 +65,9 @@ def main():
               'filesVerified': verified, 'sourceFilesVerified': len(manifest['sourceFiles']),
               'backup': install['backup'], 'backupsVerified': backups,
               'archive': str(archive), 'archiveSHA256': digest(archive.read_bytes()),
-              'kahluaAssertions': 3439, 'nativeWrite': 'passed', 'nativeRead': 'passed',
+              'kahluaAssertions': int(assertions[1]), 'nativeWrite': 'passed', 'nativeRead': 'passed',
               'nativeSelections': ['traps', 'turrets', 'both'],
-              'firearmsB42': {'accepted': 51, 'excludedCapGuns': 2, 'conservedShots': 153},
-              'clientAcceptance': 'pending; owner deferred', 'savePolicy': 'fresh worlds',
+              'clientAcceptance': 'pending focused owner test', 'savePolicy': 'fresh worlds',
               'publication': 'none', 'hostedLootLab': 'unchanged 0.2.28 baseline'}
     (output / 'local-release.json').write_text(json.dumps(record, indent=2) + '\n')
     print(json.dumps(record, indent=2))
