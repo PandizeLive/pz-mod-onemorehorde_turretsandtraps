@@ -1,4 +1,7 @@
 {
+    "Recipe_OMHTTBedSpikes": "Bed Spikes",
+    "Recipe_OMHTTDeployBedSpikes": "Deploy Bed Spikes",
+    "Recipe_OMHTTDeployReinforcedBedSpikes": "Deploy Reinforced Bed Spikes",
     "OMHTTSpikeBarrier": "Spike Barrier",
     "OMHTTDeploySpikeBarrier": "Deploy Spike Barrier",
     "OMHTTCraftSpikeBarrier": "Craft Spike Barrier",

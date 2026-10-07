@@ -1,6 +1,12 @@
 local F = require("OMHTT/Foundation")
 local S = require("OMHTT/FoundationServer")
 local C = require("OMHTT/PrototypeCombat")
+local oldControls = SandboxVars.OMHTurretsTraps.TurretTestControls
+local oldDetailed = SandboxVars.OMHTurretsTraps.TurretDetailedLogging
+local oldDiagnostic = SandboxVars.OMHTurretsTraps.TurretDiagnosticLogging
+local oldTrapDetailed = SandboxVars.OMHTurretsTraps.DetailedLogging
+SandboxVars.OMHTurretsTraps.TurretTestControls = true
+SandboxVars.OMHTurretsTraps.TurretDetailedLogging = true
 testMode = "sp"
 testSquares = {}
 for x = 94, 106 do
@@ -52,6 +58,33 @@ for i = 1, #testLogs do
     if string.find(testLogs[i], "event=shot%-reaction%-observed") then observed = true end
 end
 check(observed, "deferred diagnostic records actual reaction state")
+
+local reactionReads = 0
+local readState = target.getCurrentStateName
+target.getCurrentStateName = function(self) reactionReads = reactionReads + 1; return readState(self) end
+SandboxVars.OMHTurretsTraps.TurretDetailedLogging = false
+C.observeImpacts()
+SandboxVars.OMHTurretsTraps.TurretDetailedLogging = true
+testMillis = testMillis + 2000
+C.observeImpacts()
+check(reactionReads == 0, "Disabling detailed turret logging clears queued reaction tracking")
+SandboxVars.OMHTurretsTraps.TurretDetailedLogging = false
+SandboxVars.OMHTurretsTraps.DetailedLogging = true
+C.fire(record, object, testPlayer)
+reactionReads = 0
+SandboxVars.OMHTurretsTraps.TurretDetailedLogging = true
+testMillis = testMillis + 2000
+C.observeImpacts()
+check(reactionReads == 0, "Trap detailed logging does not collect turret reaction observations")
+SandboxVars.OMHTurretsTraps.DetailedLogging = false
+SandboxVars.OMHTurretsTraps.TurretDiagnosticLogging = false
+C.fire(record, object, testPlayer)
+reactionReads = 0
+SandboxVars.OMHTurretsTraps.TurretDiagnosticLogging = true
+testMillis = testMillis + 2000
+C.observeImpacts()
+check(reactionReads == 0, "Disabling turret diagnostics prevents reaction collection despite detailed toggle")
+target.getCurrentStateName = readState
 testData = {schema = 1, nextId = 9, tileCount = 1, tiles = {}}
 local legacy = {id = "test-8", kind = "potato", facing = -3, nextShot = 200, condition = 100,
     revision = 2, testOwner = "tester", ammo = 2, shots = 2, observedLoss = 0}
@@ -72,3 +105,7 @@ check(F.spriteFor("barrier", -4) == "media/textures/OMHTT_Barrier3.png",
     "negative legacy barrier heading cannot request missing sprite")
 testRoll = 0
 C.resetObservations()
+SandboxVars.OMHTurretsTraps.TurretTestControls = oldControls
+SandboxVars.OMHTurretsTraps.TurretDetailedLogging = oldDetailed
+SandboxVars.OMHTurretsTraps.TurretDiagnosticLogging = oldDiagnostic
+SandboxVars.OMHTurretsTraps.DetailedLogging = oldTrapDetailed

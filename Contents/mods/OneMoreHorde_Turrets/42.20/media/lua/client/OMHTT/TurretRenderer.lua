@@ -50,20 +50,6 @@ function R.loaded(square)
     end
 end
 
----@return nil
-function R.restoreDraw()
-    local restore = R.drawRestore
-    if not restore then return end
-    local atlas = restore.atlas
-    atlas:setValue(restore.default)
-    atlas:setDefaultToCurrentValue()
-    atlas:setValue(restore.enabled)
-    restore.head:setWorldXRotation(restore.x)
-    restore.head:setWorldYRotation(restore.y)
-    restore.head:setWorldZRotation(restore.z)
-    R.drawRestore = nil
-end
-
 ---@param object IsoObject Managed base
 ---@return number heading
 ---@nodiscard

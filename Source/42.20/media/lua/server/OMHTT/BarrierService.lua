@@ -20,32 +20,13 @@ function Service.resolve(player, object, id)
     return Footprint.exact(object)
 end
 
----@param item InventoryItem Candidate hammer
----@return boolean usable
----@nodiscard
-local function usableHammer(item)
-    return item:getCondition() > 0
-end
-
 ---@param player IsoPlayer Builder
 ---@param record table Existing barrier
 ---@return table? materials Exact materials, retained hammer and cheat flag
 ---@nodiscard
 function Service.reinforcementMaterials(player, record)
     if isClient() or isServer() or not F.barrierEnabled() or player:isDead() or record.tier == "reinforced" then return nil end
-    if player:isBuildCheat() then return {items = {}, cheat = true} end
-    if player:getPerkLevel(Perks.Woodwork) < 3 then return nil end
-    local inventory = player:getInventory()
-    local hammer = inventory:getFirstTagEvalRecurse(ItemTag.HAMMER, usableHammer)
-    if not hammer then return nil end
-    local planks = inventory:getSomeTypeRecurse("Base.Plank", 2)
-    local nails = inventory:getSomeTypeRecurse("Base.Nails", 8)
-    if planks:size() < 2 or nails:size() < 8 then return nil end
-    local items = {planks:get(0), planks:get(1)}
-    for i = 0, 7 do
-        items[#items + 1] = nails:get(i)
-    end
-    return {items = items, hammer = hammer, cheat = false}
+    return require("OMHTT/DefenseMaterials").reinforcement(player)
 end
 
 ---@param player IsoPlayer Acting player

@@ -2,6 +2,8 @@
 
 ## Current local installation: 0.2.29 independent packages
 
+Owner follow-up, 2026-10-06: separate Traps-only/Turrets-only client startup is logged; remaining owner tests are explicitly waived, not new passes. [Medical-loot investigation](TEST_v0.2.29.md) finds no split-induced global loot increase. No new gameplay patch is indicated.
+
 C88 approves full independence and fresh worlds. [Patch details](PATCH_v0.2.29.md) and [one deferred owner test](checkpoints/R1_PACKAGE_SPLIT.md#combined-owner-test-for-the-next-playable-build). Source verification passes 3,439 Kahlua assertions, 474 native translations and 192 packaged hashes. Actual native startup passes Traps-only, Turrets-only and both, with 93 unique Sandbox options and one shared startup hook. Native object write/read and the 51-gun modded-firearm probe pass. Installer fixtures verify backups, refusals, repeat install and injected-failure rollback.
 
 Installed 2026-10-06 from annotated `test/v0.2.29`, source `2f61d46535c9f64c15476aea58682bf4449a0cd8`, via root OMH.cmd. All 156 canonical source files and 192 packaged/tagged/installed/archive files match the validation manifest. The retired 0.2.28 combined folder is fully backed up and all 154 managed files verify. [Install record](../diagnostics/v0.2.29/install.json), [release verification](../diagnostics/v0.2.29/local-release.json), [archive](../artifacts/OMHTT-0.2.29.zip). Archive SHA-256: `99acab156f8cb52a9dbc413a2c25d9dbf547a5777890b49e4e3a3423ebab7d62`. Saves and enabled-mod selections were not changed.

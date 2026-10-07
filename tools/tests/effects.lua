@@ -76,5 +76,28 @@ check(lines == 1 and E.effects[1].muzzleHeight == .4166667, "Firearm tracer uses
 testMillis=testMillis+100
 E.render()
 check(#E.effects==0 and lines==1,"Firearm tracer expires without potato splash")
+local D = require("OMHTT/Diagnostics")
+local oldDefer, oldControls, oldDiagnostic = D.defer, SandboxVars.OMHTurretsTraps.TurretTestControls,
+    SandboxVars.OMHTurretsTraps.TurretDiagnosticLogging
+local timing = nil
+SandboxVars.OMHTurretsTraps.TurretTestControls = true
+SandboxVars.OMHTurretsTraps.TurretDiagnosticLogging = true
+D.defer = function(event, fields) if event == "potato-audio" then timing = fields end end
+getWorld = function() return {getFreeEmitter = function()
+    testMillis = testMillis + 2
+    return {playSound = function() testMillis = testMillis + 300; return 1 end,
+        setPitch = function() testMillis = testMillis + 4 end,
+        setVolume = function() testMillis = testMillis + 5 end}
+end} end
+E.sound("OMHTTPotatoFire", 1, 1, 0)
+check(timing and timing.audioMs == 311 and timing.emitterMs == 2 and timing.playMs == 300
+    and timing.pitchMs == 4 and timing.volumeMs == 5, "Audio telemetry isolates the blocking stage")
+timing = nil
+SandboxVars.OMHTurretsTraps.TurretDiagnosticLogging = false
+E.sound("OMHTTPotatoImpact", 1, 1, 0)
+check(timing == nil, "Disabled turret diagnostics create no per-sound telemetry")
+D.defer = oldDefer
+SandboxVars.OMHTurretsTraps.TurretTestControls = oldControls
+SandboxVars.OMHTurretsTraps.TurretDiagnosticLogging = oldDiagnostic
 getSpecificPlayer,getCell,getWorld,ISUIElement=oldSpecific,oldCell,oldWorld,oldElement
 ISUITextureGetter = oldTextureGetter

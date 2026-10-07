@@ -62,7 +62,7 @@ Expose only implemented controls. Do not display functional-looking toggles for 
 
 The control unit provides the owner-confirmed in-world individual/all-compatible-linked targeting selector, including players, other factions and no one. Only devices with smarts follow these filters; passive objects remain unaffected. Sandbox controls govern available capabilities and server rules; they do not replace this per-device/group interface. Zombie targeting, combinations, smart-device capability and collateral behavior must be specified before the relevant content ships.
 
-Player traversal defaults are confirmed design behavior, not new optional toggles: automatic jumping over passive bed spikes and no walking into the Spike Barrier. Player vaulting with 20% front scratch risk and safe rear supersedes the earlier vault ban but remains pending a native prototype. Do not add a faction-dependent exception or controller override. A proposed separate global player-damage setting does not alter these traversal requirements or give passive devices target recognition.
+C95 / 0.2.30 implements a Bed Spikes page: enable, 20% trip chance, 20/50 fall damage, 100/200 durability, six wear per damaging fall, five-second recovery protection and 20% running/sprinting scratch chance. Walking is safe. Saved values are preserved; durability controls apply to new construction/reinforcement. Native player brush-through uses a dedicated node without tree injury events. Barbed flooring is dropped; Spike Barrier vaulting remains unchanged.
 
 ## Configuration behavior
 

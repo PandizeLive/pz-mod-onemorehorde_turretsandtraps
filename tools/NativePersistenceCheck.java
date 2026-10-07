@@ -29,6 +29,8 @@ public final class NativePersistenceCheck {
         for (int index = 0; index < count; index++) {
             Object entry = map.get(prefix + index);
             String expected = turrets ? (index == 20 ? "OMHTT_ProbeBase" : index >= 16 ? "OMHTT_TestCube" : "OMHTT_Aim" + index)
+                : index >= 44 ? "OMHTT_ReinforcedBedSpikes" + ((index - 44) / 2)
+                : index >= 28 ? "OMHTT_BedSpikes" + ((index - 28) % 8 / 2)
                 : index >= 20 ? "OMHTT_ReinforcedBarrier" + ((index - 20) / 2)
                 : index >= 16 ? "OMHTT_Edges" : "OMHTT_Barrier" + ((index % 8) / 2);
             check(entry != null && expected.equals(entry.getClass().getField("pageName").get(entry)), "Sprite mapped to wrong page: " + prefix + index);
@@ -46,11 +48,12 @@ public final class NativePersistenceCheck {
         verifyTurret(directory, mode);
         verifyFirearms(directory, mode);
         verifyHybrid(directory, mode);
+        verifyBeds(directory, mode);
         NativeVaultProbe.verify();
         NativeTurretProbe.verify();
-        verifyTexturePack("OMHTT_Traps", "omhtt_barrier_01_", 28, false);
+        verifyTexturePack("OMHTT_Traps", "omhtt_barrier_01_", 52, false);
         verifyTexturePack("OMHTT_Turrets", "omhtt_turret_01_", 21, true);
-        System.out.println("[OMHTT-Smoke] native-texturepacks traps=28 turrets=21 pages=27 png=valid");
+        System.out.println("[OMHTT-Smoke] native-texturepacks traps=52 turrets=21 pages=35 png=valid");
         Class<?> lua = Class.forName("zombie.Lua.LuaManager");
         Object env = lua.getField("env").get(null);
         Object fixtures = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeFixtures");
@@ -306,6 +309,47 @@ public final class NativePersistenceCheck {
         check(get(get(source, "getItem"), "getWorldStaticItem").equals(get(item, "getWorldStaticItem")), "Hybrid model identity not saved");
         check("native-probe".equals(call(get(item, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTHybridProbe")), "Hybrid link not saved");
         System.out.println("[OMHTT-Smoke] native-hybrid-persistence mode=" + mode + " yaw=135 scale=1.25 height=0.3 model=preserved link=preserved");
+    }
+
+    private static void verifyBeds(Path directory, String mode) throws Exception {
+        Object env = Class.forName("zombie.Lua.LuaManager").getField("env").get(null);
+        Object fixtures = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeBedFixtures");
+        check(fixtures instanceof List<?>, "Bed fixtures missing");
+        List<?> parts = (List<?>)fixtures;
+        check(parts.size() == 24, "Expected 24 native bed parts across build/deploy/tier facings");
+        Class<?> iso = Class.forName("zombie.iso.IsoObject");
+        Class<?> cellType = Class.forName("zombie.iso.IsoCell");
+        Class<?> squareType = Class.forName("zombie.iso.IsoGridSquare");
+        Class<?> world = Class.forName("zombie.iso.IsoWorld");
+        Object cell = world.getField("currentCell").get(world.getField("instance").get(null));
+        int version = ((Number)world.getMethod("getWorldVersion").invoke(null)).intValue();
+        Files.createDirectories(directory);
+        for (int i = 0; i < parts.size(); i++) {
+            Object source = parts.get(i);
+            Path file = directory.resolve("bed-" + i + ".bin");
+            if (mode.equals("write")) {
+                ByteBuffer out = ByteBuffer.allocate(65536);
+                iso.getMethod("save", ByteBuffer.class).invoke(source, out);
+                Files.write(file, Arrays.copyOf(out.array(), out.position()));
+            }
+            ByteBuffer input = ByteBuffer.wrap(Files.readAllBytes(file));
+            Object restored = iso.getMethod("factoryFromFileInput", cellType, ByteBuffer.class).invoke(null, cell, input);
+            iso.getMethod("setSquare", squareType).invoke(restored, get(source, "getSquare"));
+            iso.getMethod("load", ByteBuffer.class, int.class).invoke(restored, input, version);
+            check(!input.hasRemaining(), "Bed stream not fully consumed");
+            for (String method : new String[]{"getSpriteName", "getHealth", "getMaxHealth", "isCanPassThrough", "isHoppable", "isThumpable"})
+                check(get(source, method).equals(get(restored, method)), "Bed changed on reload: " + method);
+            Object marker = call(get(restored, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTBed");
+            check(marker != null && call(marker, "rawget", new Class<?>[]{Object.class}, "id") != null, "Bed part identity lost");
+            Object module = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_BedSpikes");
+            Object store = call(module, "rawget", new Class<?>[]{Object.class}, "store");
+            Object records = call(store, "rawget", new Class<?>[]{Object.class}, "records");
+            Object record = call(records, "rawget", new Class<?>[]{Object.class}, call(marker, "rawget", new Class<?>[]{Object.class}, "id"));
+            check(record != null, "Saved bed part has no persistent authority record");
+            check(((Number)call(record, "rawget", new Class<?>[]{Object.class}, "health")).intValue() == ((Number)get(restored, "getHealth")).intValue(),
+                "Persistent bed authority and native part health differ");
+        }
+        System.out.println("[OMHTT-Beds] persistence mode=" + mode + " parts=24 identity=valid health=preserved movement=preserved");
     }
 
     public static void main(String[] args) throws Exception {

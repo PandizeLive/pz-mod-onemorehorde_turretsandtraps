@@ -66,6 +66,85 @@ option OMHTurretsTraps.ReinforcedBarrierHealthMultiplier {
     translation = OMHTurretsTraps_ReinforcedBarrierHealthMultiplier,
 }
 
+option OMHTurretsTraps.BedSpikes {
+    type = boolean,
+    default = true,
+    page = OMHTurretsTraps_BedPage,
+    translation = OMHTurretsTraps_BedSpikes,
+}
+
+option OMHTurretsTraps.BedTripChance {
+    type = integer,
+    default = 20,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_BedPage,
+    translation = OMHTurretsTraps_BedTripChance,
+}
+
+option OMHTurretsTraps.BedDamage {
+    type = integer,
+    default = 20,
+    min = 0,
+    max = 1000,
+    page = OMHTurretsTraps_BedPage,
+    translation = OMHTurretsTraps_BedDamage,
+}
+
+option OMHTurretsTraps.BedReinforcedDamage {
+    type = integer,
+    default = 50,
+    min = 0,
+    max = 2500,
+    page = OMHTurretsTraps_BedPage,
+    translation = OMHTurretsTraps_BedReinforcedDamage,
+}
+
+option OMHTurretsTraps.BedHealth {
+    type = integer,
+    default = 100,
+    min = 6,
+    max = 10000,
+    page = OMHTurretsTraps_BedPage,
+    translation = OMHTurretsTraps_BedHealth,
+}
+
+option OMHTurretsTraps.BedReinforcedHealth {
+    type = integer,
+    default = 200,
+    min = 6,
+    max = 10000,
+    page = OMHTurretsTraps_BedPage,
+    translation = OMHTurretsTraps_BedReinforcedHealth,
+}
+
+option OMHTurretsTraps.BedWear {
+    type = integer,
+    default = 6,
+    min = 0,
+    max = 1000,
+    page = OMHTurretsTraps_BedPage,
+    translation = OMHTurretsTraps_BedWear,
+}
+
+option OMHTurretsTraps.BedRecoverySeconds {
+    type = integer,
+    default = 5,
+    min = 0,
+    max = 60,
+    page = OMHTurretsTraps_BedPage,
+    translation = OMHTurretsTraps_BedRecoverySeconds,
+}
+
+option OMHTurretsTraps.BedScratchChance {
+    type = integer,
+    default = 20,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_BedPage,
+    translation = OMHTurretsTraps_BedScratchChance,
+}
+
 option OMHTurretsTraps.PotatoTurret {
     type = boolean,
     default = true,

@@ -13,16 +13,25 @@ local canvas = nil
 ---@return nil
 ---@param gain number? Fallback playback gain
 function E.sound(name, x, y, z, gain)
-    local started = getTimestampMs()
-    local emitter = getWorld():getFreeEmitter(x, y, z)
-    local handle = emitter:playSound(name)
     local pitch = 0.95 + ZombRand(101) / 1000
-    emitter:setPitch(handle, pitch)
     if string.find(name, "OMHTTPotato", 1, true) or string.find(name, "OMHTTSuppressedPotato", 1, true) then
         gain = require("OMHTT/TurretStats").option("PotatoPlaybackVolume", 35, 0, 100) / 100
     end
+    local logging = D.enabled("turrets")
+    local started = logging and getTimestampMs()
+    local emitter = getWorld():getFreeEmitter(x, y, z)
+    local acquired = logging and getTimestampMs()
+    local handle = emitter:playSound(name)
+    local played = logging and getTimestampMs()
+    emitter:setPitch(handle, pitch)
+    local pitched = logging and getTimestampMs()
     if gain then emitter:setVolume(handle, gain) end
-    D.defer("potato-audio", {sound = name, pitch = pitch, x = x, y = y, z = z, audioMs = getTimestampMs() - started})
+    if logging then
+        local finished = getTimestampMs()
+        D.defer("potato-audio", {sound = name, pitch = pitch, x = x, y = y, z = z,
+            audioMs = finished - started, emitterMs = acquired - started, playMs = played - acquired,
+            pitchMs = pitched - played, volumeMs = finished - pitched})
+    end
 end
 
 ---@param module string Namespace

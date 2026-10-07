@@ -28,7 +28,9 @@ The complete source passes 3,439 Kahlua assertions and 474 native translations. 
 
 ## Combined owner test for the next playable build
 
-This is the single pending test for 0.2.29, replacing separate 0.2.27/0.2.28 rounds. Do it later when convenient. Use a fresh world for each package selection, not an existing combined save; retain each world's selection across save/restart. Deferred player checks are not passes.
+**Closed by owner waiver, 2026-10-06:** the owner skips the remaining steps; do not request this full round again. The captured log confirms separate Traps-only and Turrets-only 0.2.29 starts. See [loot review and test disposition](../TEST_v0.2.29.md). The checklist below is retained as the historical issued test; omitted steps are not new passes.
+
+This was the single combined test for 0.2.29, replacing separate 0.2.27/0.2.28 rounds. Its instructions use a fresh world for each package selection, not an existing combined save, and retain each world's selection across save/restart.
 
 1. Restart PZ; confirm **OMH: Traps 0.2.29** and **OMH: Turrets 0.2.29** in the mod list. Use your compatible gun mods, the enabled component's Diagnostic logging ON, Detailed logging OFF and loot multipliers at 1. The console `packages-ready` line must report 0.2.29 and the selected entries.
 2. Start with Traps only: build/deploy a basic and reinforced barrier, vault from front/rear, repair and pick up. Turret recipes, module loot, turret settings and turret diagnostics must be absent.

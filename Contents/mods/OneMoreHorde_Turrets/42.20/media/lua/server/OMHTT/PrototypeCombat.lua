@@ -35,6 +35,11 @@ Combat.pending, Combat.cursor = {}, 1
 ---@return nil
 function Combat.observeImpacts()
     if isClient() or isServer() then return end
+    if not Diagnostics.enabled("turrets") or SandboxVars.OMHTurretsTraps.TurretDetailedLogging ~= true then
+        if #observations > 0 then observations = {} end
+        return
+    end
+    if #observations == 0 then return end
     local now = getTimestampMs()
     local deadline = Budget.limit(1)
     for i = #observations, math.max(1, #observations - 3), -1 do
@@ -293,9 +298,11 @@ function Combat.hit(record, origin, target, player, options)
         roll = roll, chance = options.knockdown, guardRemainingMs = remaining,
         state = target:getCurrentStateName(), ragdollAllowed = target:canRagdoll(),
         physicsRequested = target:usePhysicHitReaction()})
-    if #observations >= 12 then table.remove(observations, 1) end
-    observations[#observations + 1] = {zombie = target, id = record.id, shot = record.shots,
-        started = now, checkAt = now + 150, stage = 0, x = tx, y = ty}
+    if Diagnostics.enabled("turrets") and SandboxVars.OMHTurretsTraps.TurretDetailedLogging == true then
+        if #observations >= 12 then table.remove(observations, 1) end
+        observations[#observations + 1] = {zombie = target, id = record.id, shot = record.shots,
+            started = now, checkAt = now + 150, stage = 0, x = tx, y = ty}
+    end
     local splashStarted = getTimestampMs()
     local splash = 0
     local nearby = {}

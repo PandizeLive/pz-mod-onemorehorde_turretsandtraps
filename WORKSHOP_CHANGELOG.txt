@@ -1,5 +1,7 @@
-v0.2.29
+v0.2.30
 Single-player development test content
+- Added basic and reinforced 1x2 Bed Spikes: chance-based zombie trips, 20/50 damage on fresh falls, six shared durability wear per fall, and five seconds of trip protection after getting up. Existing prone zombies take no repeated damage. Walking players brush through safely; running/sprinting risks scratches. Includes construction, reinforcement, ten-second free repair/pickup, portable redeployment and Sandbox tuning, with temporary white technical markers.
+- Reduced unnecessary turret reaction tracking when detailed diagnostics are off and added separate audio-stage timings to investigate reported pauses. The client audio stall remains under investigation.
 - Added independent OMH: Traps and OMH: Turrets mod entries: enable either or both, with component-specific settings, enable switches and diagnostics. This development package split uses fresh worlds.
 - Added persistent test defenses with readable white developer markers and direction arrows.
 - Added 1x2 Spike Barriers with shared durability and removal; see-through connected runs have front collision and outer end caps, with an open rear. Newly exposed ends are capped after removal; front and side attacks cause 10 damage by default, while the rear is safe. Damage and maximum durability are configurable in Sandbox.

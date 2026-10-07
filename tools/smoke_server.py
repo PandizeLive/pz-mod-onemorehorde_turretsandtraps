@@ -25,6 +25,8 @@ def main():
     destination = CACHE / "mods/OneMoreHorde_Traps"
     probe = destination / "42.20/media/lua/server/OMHTT_TranslationSmoke.lua"
     probe.write_text((ROOT / "tools/tests/native_smoke.lua").read_text(encoding="utf-8"), encoding="utf-8")
+    bed_probe = destination / "42.20/media/lua/server/OMHTT_BedSmoke.lua"
+    bed_probe.write_text((ROOT / "tools/tests/native_beds.lua").read_text(encoding="utf-8"), encoding="utf-8")
     turret_probe = CACHE / "mods/OneMoreHorde_Turrets/42.20/media/lua/server/OMHTT_TurretSmoke.lua"
     turret_probe.write_text((ROOT / "tools/tests/native_turret_smoke.lua").read_text(encoding="utf-8"), encoding="utf-8")
     console = CACHE / "server-console.txt"
@@ -43,9 +45,9 @@ def main():
         try:
             while process.poll() is None and time.monotonic() - started < 150:
                 text = transcript.read_text(encoding="utf-8", errors="replace")
-                if 'Exception in thread "main"' in text:
+                if 'Exception in thread "main"' in text or "Server Terminated." in text:
                     raise RuntimeError(f"Game startup failed before probes; inspect {transcript.name}")
-                if "OMHTT_TranslationSmoke.lua:" in text or "OMHTT_TurretSmoke.lua:" in text:
+                if "OMHTT_TranslationSmoke.lua:" in text or "OMHTT_TurretSmoke.lua:" in text or "OMHTT_BedSmoke.lua:" in text:
                     process.stdin.write("quit\n")
                     process.stdin.flush()
                     process.wait(timeout=40)
@@ -69,6 +71,7 @@ def main():
                 process.terminate()
                 process.wait(timeout=15)
             probe.unlink(missing_ok=True)
+            bed_probe.unlink(missing_ok=True)
             turret_probe.unlink(missing_ok=True)
     text = transcript.read_text(encoding="utf-8", errors="replace")
     assert "[OMHTT-Smoke] native-distance-parity samples=16 passed=true" in text, "Native accuracy parity failed"
@@ -85,7 +88,9 @@ def main():
     assert "Saving GlobalModData" in text, "No native global state save"
     assert "Invalid SpriteConfig object! scripted object = OMHTT" not in text, "Invalid native barrier identity"
     assert "[OMHTT-Smoke] native-sandbox damage=10 maxHealth=100 tooltip=formatted" in text, "Native Sandbox options/tooltip invalid"
-    assert "[OMHTT-Smoke] native-texturepacks traps=28 turrets=21 pages=27 png=valid" in text, "Native texture packs invalid"
+    assert "[OMHTT-Smoke] native-texturepacks traps=52 turrets=21 pages=35 png=valid" in text, "Native texture packs invalid"
+    assert "[OMHTT-Beds] PASS" in text, "Native bed content invalid"
+    assert "[OMHTT-Beds] persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") + " parts=24" in text, "Native bed persistence failed"
     assert "[OMHTT-Smoke] native-module-loot-parser pools=16 items=121 weights=positive" in text, "Native module loot parse failed"
     assert "[OMHTT-Smoke] native-modules loot=121 profiles=valid condition=checked" in text, "Native module rules failed"
     assert "[OMHTT-Smoke] native-install exact=selected decoy=preserved preview=nonconsuming" in text, "Native Install selection failed"

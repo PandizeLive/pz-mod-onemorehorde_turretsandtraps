@@ -13,6 +13,8 @@ local function checkPackages()
         counts[name] = (counts[name] or 0) + 1
     end
     assert((counts["Base.OMHTTSpikeBarrierItem"] == 1) == expectedTraps, "Barrier item registration")
+    assert((counts["Base.OMHTTBedSpikesItem"] == 1) == expectedTraps, "Bed Spikes item registration")
+    assert((counts["Base.OMHTTReinforcedBedSpikesItem"] == 1) == expectedTraps, "Reinforced Bed Spikes item registration")
     assert((counts["Base.OMHTTTurretBase"] == 1) == expectedTurrets, "Turret item registration")
     assert((counts["Base.OMHTTModuleFiring"] == 1) == expectedTurrets, "Module item registration")
     assert((OMHTT_Turret ~= nil) == expectedTurrets, "Turret runtime isolation")
@@ -23,6 +25,7 @@ local function checkPackages()
         names[name] = true
     end
     assert((names["OMHTurretsTraps.SpikeBarrier"] == true) == expectedTraps, "Trap settings isolation")
+    assert((names["OMHTurretsTraps.BedSpikes"] == true) == expectedTraps, "Bed settings isolation")
     assert((names["OMHTurretsTraps.ShowCollision"] == true) == expectedTraps, "Trap debug isolation")
     assert((names["OMHTurretsTraps.PotatoTurret"] == true) == expectedTurrets, "Turret settings isolation")
     assert((names["OMHTurretsTraps.ModuleLootRate"] == true) == expectedTurrets, "Loot settings isolation")

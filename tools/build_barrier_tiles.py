@@ -75,7 +75,7 @@ def build_component(component):
     _, original = build()
     trap = component == "traps"
     sheet = "omhtt_barrier_01" if trap else "omhtt_turret_01"
-    count = 28 if trap else 21
+    count = 52 if trap else 21
     tiles = b"tdef" + integer(1) + integer(1)
     tiles += (sheet + "\nOMHTT_" + component.title() + ".png\n").encode("ascii")
     tiles += integer(4) + integer((count + 3) // 4) + integer(1) + integer(count) + integer(0) * count
@@ -111,6 +111,17 @@ def build_component(component):
         if entries:
             pages.append(pack_string(name) + integer(len(entries)) + integer(alpha) + b"".join(entries) + integer(size) + png)
     assert position == len(original)
+    if trap:
+        for tier in range(2):
+            for heading in range(4):
+                page = ("OMHTT_ReinforcedBedSpikes" if tier else "OMHTT_BedSpikes") + str(heading)
+                entries = []
+                for offset in ([44] if tier else [28, 36]):
+                    for part in range(2):
+                        entries.append(pack_string(sheet + "_" + str(offset + heading * 2 + part))
+                                       + struct.pack("<8i", 0, 0, 128, 256, 0, 0, 128, 256))
+                png = (MEDIA / "textures" / (page + ".png")).read_bytes()
+                pages.append(pack_string(page) + integer(len(entries)) + integer(1) + b"".join(entries) + integer(len(png)) + png)
     return tiles, b"PZPK" + integer(1) + integer(len(pages)) + b"".join(pages)
 
 

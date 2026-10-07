@@ -4,7 +4,7 @@ Historical candidate `0.2.0`: [P2C1a](PHASE_2_CHECKPOINT_1.md) added native cons
 
 ## Current validation pointer
 
-Current 0.2.29 evidence is in RELEASE.md and PATCH_v0.2.29.md; earlier version notes are historical observations. C88 approves fully independent packages and fresh worlds; owner testing remains deferred. Native package isolation, shared registration and separate controls pass in all three selections; 3,439 Kahlua assertions pass. All current player checks are consolidated in the [single next-patch test](checkpoints/R1_PACKAGE_SPLIT.md#combined-owner-test-for-the-next-playable-build); old patch checklists are historical and must not become additional requested rounds. Native package-combination/loading/absence checks precede installation; rendered acceptance remains pending until the owner tests later.
+Current 0.2.29 evidence is in RELEASE.md and PATCH_v0.2.29.md; earlier version notes are historical observations. C88 approves fully independent packages and fresh worlds. Native package isolation, shared registration and separate controls pass in all three selections; 3,439 Kahlua assertions pass. C89 waives remaining owner checks; [test disposition](TEST_v0.2.29.md) records separate client startups and the medical-loot review without marking skipped checks as passes. The consolidated checklist and older patch checklists are historical, not additional requested rounds. Future owner tests should focus on changed behavior and credible regression risks; native evidence does not certify unobserved rendering.
 
 ## Smallest reliable checks
 

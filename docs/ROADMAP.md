@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds, with owner testing deferred into one combined round. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. See [release evidence](RELEASE.md) and the [single deferred owner test](checkpoints/R1_PACKAGE_SPLIT.md#combined-owner-test-for-the-next-playable-build).
+Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
 New checkpoint IDs use **R** for the revised roadmap. Historical P0-P6 IDs and evidence remain in [the previous roadmap](ROADMAP_LEGACY_20261004.md) and individual patch records. Do not reuse their IDs or erase incomplete acceptance.
 
@@ -26,14 +26,14 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 | ID | Deliverable | Completion evidence |
 | --- | --- | --- |
-| R2C1 | Bed-spike/punji traversal and contact prototype | Agree footprint and damage/injury trigger. Prove visible automatic player crossing, blocked landing/interruption behavior and zombie contact without teleport/pathing shortcuts. Explain any native limitation before selecting a fallback |
-| R2C2 | Finish approved bed spikes: construction, servicing, wear, damage, Sandbox and persistence | Approve recipe/tools/skills/XP first; bounded contact processing, no repeat-contact damage/resource exploit, save/reload and absent-Turrets checks |
+| R2C1 | C91 short-spike bed: 1x2 player brush-through and zombie trip/contact prototype | Prove foliage movement and native zombie falls onto the bed. Agree trip chance, fall damage, player speed/injury and crawler handling; prevent double rolls across the two tiles and repeated trip chains |
+| R2C2 | Finish basic/reinforced Bed Spikes: construction, servicing, wear, Sandbox and persistence | Approve both recipes/tools/skills/XP and tier differences first; bounded contact processing, exact single fall damage, save/reload and absent-Turrets checks |
 | R2C3 | Barbed barricade attachment | Prove host lookup, exposed-side thumps, shared health/upgrade policy, destruction cleanup and single damage attribution. Agree host types and recipe first |
 | R2C4 | Concertina movement feasibility, then content if it passes | Contact-only damage; reversible slowing that composes with other effects and ends on exit/death/unload. No permanent movement mutation or silent substitute for slowing |
 
 C81 rejects slowing turret effects because they undermine OMH Horde Night zombies. Revisit concertina's separately planned slowdown with the owner before R2C4; do not silently delete or implement it under the turret-module decision.
 
-Bed spikes are the next recommended content feature. Barbed barricades can advance if automatic traversal is blocked; one failed prototype should not stall all traps. No new costs or balance numbers are approved by this plan.
+Bed Spikes content is implemented in 0.2.30 under C95, with native API, recipe and persistence checks. Rendered traversal/falls and dense-client smoothness remain pending in TEST_v0.2.30.md; the reported audio stalls remain under investigation.
 
 ## Phase 3: distinct turret heads and offensive modules
 
@@ -94,7 +94,9 @@ Authority design/testing begins with each device; R5C1 is integrated proof, not 
 - [ ] Review the next-patch combined owner test/full-modpack weapon audit when the owner tests later.
 - [ ] Scope R1C1 loading/dependency proof and old combined-ID/save handling.
 - [ ] Select a unique head; none is approved by this documentation update.
-- [ ] Agree bed-spike footprint/trigger, then recipe after traversal proof.
+- [x] C91 selects 1x2 short trip spikes, reinforced variant and player brush-through animation; barbed flooring dropped.
+- [x] C95 settles Bed Spikes tuning/servicing/recipes; 0.2.30 implements the content with native parsing/API/persistence proof.
+- [ ] Complete focused 0.2.30 rendered Bed Spikes and dense-turret performance test; native checks do not certify animation or smoothness.
 - [ ] Measure mixed-defense performance; prove authority before MP claims.
 - [ ] Capture an earlier log or live thread evidence if the Louisville hang recurs.
 

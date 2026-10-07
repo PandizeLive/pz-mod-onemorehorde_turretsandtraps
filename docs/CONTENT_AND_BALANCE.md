@@ -22,7 +22,7 @@ Planned content is not implemented or numerically approved merely because it app
 
 | Device | Role | Open design/proof | Revised checkpoint |
 | --- | --- | --- | --- |
-| Bed spikes / punji | Passive stake bed, automatic player crossing | Footprint, native crossing, contact trigger, injury, wear and recipe | R2C1-R2C2 |
+| Bed Spikes, basic/reinforced | C95 / 0.2.30: 1x2 short spikes, 20/50 fall damage, six wear, 100/200 durability, player brush-through | Rendered movement/falls and balance acceptance in TEST_v0.2.30.md | R2C1-R2C2 |
 | Barbed barricade | Barbs attached to an existing barricade, damaging exposed-side thumps | Supported host types, shared HP/upgrade policy, wear, cleanup and recipe | R2C3 |
 | Concertina | Contact damage and previously planned movement slowdown | Revisit slowdown against C81 Horde Night compatibility concern before implementation; reversible composition, upkeep/caps/recipe remain unresolved | R2C4 |
 | Button / pressure plate | Pulse / ON while occupied | Links, access, occupancy, power and recipe | R4C1 |
@@ -36,7 +36,9 @@ Unique turret suggestions are kept separately in [TURRET_HEAD_PROPOSALS.md](TURR
 
 ## Trap constraints
 
-Bed spikes and Poke Floor are different devices: passive stakes versus a signal-driven retractable mechanism. Automatic bed-spike traversal is not already solved by Spike Barrier vaulting. Prove the visible movement and blocked landing; do not substitute teleporting or faction immunity. Digging/grave workflow and replaceable stake bundles remain alternatives requiring a decision.
+Bed Spikes and Poke Floor are different devices: passive short trip spikes versus a signal-driven retractable mechanism. C91 replaces automatic jumping with foliage-style player movement. Prove both behaviors independently of Spike Barrier vaulting. Basic/reinforced beds occupy 1x2 on any clear floor. C94 approves construction and reinforcement costs/tools/skills/XP matching barriers, plus free ten-second repair/pickup. Barbed flooring is dropped; planned concertina and barbed barricade attachments remain separate concepts.
+
+C92-C95: walking is safe; running/sprinting has 20% scratch risk per whole-bed entry. Both tiers use 20% trip chance on eligible upright movement. Fresh falls from any source deal 20/50 damage and six shared durability wear; existing prone zombies/crawlers take no repeated hits. Durability is 100/200, lasting 17/34 damaging falls. Shared five-second trip protection after getting up replaces the three-fall counter. See PATCH_v0.2.30.md. Restraining total effectiveness remains an acceptance goal.
 
 Passive traps ignore smart-device filters. Barbed attachments must not attack through the protected side, remain after host destruction or process the same thump repeatedly. Clarify upgrade/repair behavior consistently with the owner's full-repair-on-upgrade preference before implementation.
 

@@ -65,6 +65,16 @@ public final class KahluaCheck {
         }
         if (strikeCount != 2 || markerCount != 2) throw new IllegalStateException("Strike/marker counts differ");
         System.out.println("Native animation parser: two strike markers matched, SetVariable bindings resolved");
+        Object bedNode = animNodeType.getMethod("Parse", String.class).invoke(null,
+            root.resolve("Source/42.20/media/AnimSets/player/movement/OMHTTBedBrush.xml").toString());
+        if (bedNode == null) throw new IllegalStateException("Native bed animation parser rejected node");
+        var bedEvents = (java.util.List<?>)animNodeType.getField("events").get(bedNode);
+        if (bedEvents.size() != 2) throw new IllegalStateException("Bed animation must only emit footsteps");
+        for (Object event : bedEvents) {
+            if (!event.getClass().getField("eventName").get(event).equals("Footstep"))
+                throw new IllegalStateException("Unexpected bed animation injury event");
+        }
+        System.out.println("Native bed animation parser: brush-through node valid, no tree injury events");
         Class<?> translatorType = Class.forName("zombie.core.Translator");
         Class<?> languageType = Class.forName("zombie.core.Language");
         var languageConstructor = languageType.getDeclaredConstructor(String.class, String.class, String.class, boolean.class);
@@ -146,6 +156,7 @@ public final class KahluaCheck {
             {"_", base + "client/OMHTT/BarrierMenu.lua"},
             {"_", "tools/tests/service_load_order_after.lua"},
             {"OMHTT/Damage", base + "server/OMHTT/Damage.lua"},
+            {"OMHTT/DefenseMaterials", base + "shared/OMHTT/DefenseMaterials.lua"},
             {"OMHTT/TurretClock", base + "shared/OMHTT/TurretClock.lua"},
             {"_", "tools/tests/clock_bootstrap.lua"},
             {"OMHTT/TurretScheduler", base + "shared/OMHTT/TurretScheduler.lua"},
@@ -244,6 +255,15 @@ public final class KahluaCheck {
             {"OMHTT/FirearmAudit", "Source/42.20/media/lua/shared/OMHTT/FirearmAudit.lua"},
             {"_", "tools/tests/checkpoint_028.lua"},
             {"_", "tools/tests/checkpoint_029.lua"},
+            {"_", "tools/tests/bed_bootstrap.lua"},
+            {"OMHTT/BedContact", base + "shared/OMHTT/BedContact.lua"},
+            {"OMHTT/BedSpikes", base + "shared/OMHTT/BedSpikes.lua"},
+            {"OMHTT/BedService", base + "server/OMHTT/BedService.lua"},
+            {"_", base + "server/OMHTT/BedRuntime.lua"},
+            {"_", base + "client/OMHTT/BedPlayer.lua"},
+            {"_", base + "client/OMHTT/BedServiceAction.lua"},
+            {"_", base + "client/OMHTT/BedMenu.lua"},
+            {"_", "tools/tests/bed_spikes.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

@@ -10,8 +10,8 @@ SOURCE = ROOT / "Source"
 PACKAGES = ROOT / "Contents/mods"
 IDS = {"traps": "OneMoreHorde_Traps", "turrets": "OneMoreHorde_Turrets"}
 SHARED_LUA = {"Foundation", "Diagnostics", "Damage", "DamagePresentation", "ConstructionMenu", "CraftingMenu", "SandboxUI", "WorldHighlight", "PackageInfo"}
-TRAP_LUA = {"FoundationServer", "FoundationClient", "DevMarkers", "Construction"}
-TRAP_SCRIPTS = {"OMHTT_Items.txt", "OMHTT_PortableBarrier.txt", "OMHTT_construction.txt", "OMHTT_construction_ui.txt"}
+TRAP_LUA = {"FoundationServer", "FoundationClient", "DevMarkers", "Construction", "DefenseMaterials"}
+TRAP_SCRIPTS = {"OMHTT_Items.txt", "OMHTT_PortableBarrier.txt", "OMHTT_construction.txt", "OMHTT_construction_ui.txt", "OMHTT_BedSpikes.txt"}
 TRAP_OPTIONS = {"Enabled", "FoundationTestControls", "DiagnosticLogging", "ShowCollision", "DetailedLogging"}
 
 
@@ -25,7 +25,7 @@ def owner(path):
     if path.suffix == ".lua":
         if path.stem in SHARED_LUA:
             return set(IDS)
-        if path.stem.startswith("Barrier") or path.stem in TRAP_LUA:
+        if path.stem.startswith(("Barrier", "Bed")) or path.stem in TRAP_LUA:
             return {"traps"}
         if path.stem.startswith(("Turret", "Firearm", "Hybrid", "Prototype")) or path.stem in {"ModuleLoot", "LootDefinitions", "TargetHealth", "ClientOptions"}:
             return {"turrets"}
@@ -37,7 +37,7 @@ def owner(path):
     if "/textures/" in relative:
         if name in {"OMHTT_TestCube.png", "OMHTT_Foundation.png"}:
             return {"traps"}
-        return {"traps"} if "Barrier" in name else {"turrets"}
+        return {"traps"} if "Barrier" in name or "BedSpikes" in name else {"turrets"}
     if relative.startswith("common/") or "/models_X/" in relative or "/sound/" in relative:
         return {"turrets"}
     raise ValueError("Unassigned package file: " + relative)
@@ -49,7 +49,7 @@ def sandbox(component):
     result = ["VERSION = 1,\n"]
     for match in re.finditer(r"option OMHTurretsTraps\.(\w+)\s*\{[^}]+\}", content):
         key = match[1]
-        trap = key in TRAP_OPTIONS or "Barrier" in key
+        trap = key in TRAP_OPTIONS or "Barrier" in key or key.startswith("Bed")
         if trap == (component == "traps"):
             result.append(match[0] + "\n")
     assert blocks and len(result) > 1
@@ -69,7 +69,7 @@ def expected_files():
         title = component.title()
         pack = "OMHTT_Traps" if component == "traps" else "OMHTT_Turrets"
         number = 7316 if component == "traps" else 7317
-        description = ("Independent single-player Spike Barriers: construction, vaulting, reinforcement, repair and portable packs."
+        description = ("Independent single-player Spike Barriers and Bed Spikes: construction, reinforcement, repair and portable defenses."
                        if component == "traps" else "Independent single-player modular potato and firearm turrets, modules, power and component loot.")
         info = f"name=OMH: {title}\nid={identifier}\nmodversion={version}\nversionMin=42.20\nicon=icon.png\ndescription={description} Part of OMH: Turrets & Traps. Fresh test world required for 0.2.29. Temporary developer artwork.\ntiledef={pack} {number}\npack={pack}\n"
         files = result[component]
