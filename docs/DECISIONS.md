@@ -1,5 +1,11 @@
 # Decision register
 
+## C96: private GitHub development and Cloud planning process (2026-10-07)
+
+Owner approved: "Approved. Go ahead and create this process." This follows discussion of using the normal full repository like Trait Shop, with Cloud restricted to planning and the PC implementing/testing. Create the private PandizeLive/pz-mod-onemorehorde_turretsandtraps repository, preserve local history, use dev as the initial/default branch and short-lived planning/implementation branches, retain immutable test/v<version> build tags, and reserve main plus official v<version>/GitHub Releases for confirmed official Workshop publication. Initial repository configuration and history/test-tag push are authorized; no gameplay change or Workshop upload is included.
+
+Use one shared set of existing planning documents, explicit proposal/approval/implementation/verification/publication status, and a current handoff. Cloud reads pushed code for context, saves planning changes through PRs into dev when requested, and identifies technical assumptions needing local verification. The local PC reconciles incoming plans before implementation and pushes updated evidence when authorized. No game-version bump or changelog reset follows from documentation-only changes. See [workflow](GITHUB_WORKFLOW.md).
+
 Recorded 2026-09-25 from the current planning conversation. This document is authoritative for approval status, not proof that a feature exists.
 
 ## Owner-confirmed requirements

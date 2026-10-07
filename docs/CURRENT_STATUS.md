@@ -1,0 +1,15 @@
+# Current development and planning handoff
+
+Updated 2026-10-07. Read this first in Cloud, then the linked authoritative records.
+
+- **Channel:** development. No official release or confirmed Workshop upload. Default shared branch: `dev`.
+- **Installed build:** 0.2.30, immutable `test/v0.2.30`, source `2e97f782603db0050d8e1220f15a9e3d152e37e9`. The last local installation record before GitHub setup is commit `01e67a3`; later workflow/docs commits do not change the game package.
+- **Implemented:** independent Turrets/Traps packages, existing modular potato/firearm turrets and barriers, Bed Spikes with C95 tuning, and performance/audio diagnostics. See [current patch](PATCH_v0.2.30.md) and [release evidence](RELEASE.md).
+- **Verified locally:** the existing release record reports 3,540 Kahlua assertions, native recipe/API/persistence checks, all three package selections, and installation hashes. These are recorded prior results, not tests rerun by Cloud or by this workflow setup.
+- **Pending:** [the focused six-step 0.2.30 owner test](TEST_v0.2.30.md), rendered movement/falls and dense-client smoothness. Audio stalls are not proven fixed. The old 0.2.29 owner-test waiver remains a waiver, not a pass or a new test requirement.
+- **Future planning:** [roadmap](ROADMAP.md), [decision register](DECISIONS.md), [offensive modules and battery questions](checkpoints/R3_OFFENSIVE_MODULES.md), and [improvised components/expansion](checkpoints/R3C8_IMPROVISED_EXPANSION.md). Do not assume roadmap entries authorize immediate implementation.
+- **Limits:** combat MP and optional integrations lack final acceptance; final art remains owner-sourced. New game API claims need current local evidence. Sibling code and user-level skills are not contained in this clone.
+- **Next local action:** review the owner's focused test when available, then discuss and implement the next explicitly approved scope. This repository setup adds no gameplay patch.
+- **Cloud action:** discuss and record future decisions in a planning branch/PR into `dev`; retain proposals versus approvals. Follow [GitHub workflow](GITHUB_WORKFLOW.md).
+
+For every new handoff, update this date and the affected status facts, record the branch/commit in the PR or task, and link exact decisions/test evidence. Do not copy historical results forward as fresh passes. A GitHub checkpoint does not prove the Work PC is currently online or that unpushed changes are available.

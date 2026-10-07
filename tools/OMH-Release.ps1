@@ -13,11 +13,11 @@ $version = ((Get-Content -LiteralPath $infoPath | Where-Object { $_ -like 'modve
 function Invoke-ReleaseAction {
     param([string]$Selection, [bool]$CheckOnly)
     switch ($Selection) {
-        'Info' { @{ Project = 'OMH: Turrets & Traps'; Version = $version; Tag = "test/v$version"; Remote = 'Not configured'; Workshop = 'Not configured' } | ConvertTo-Json }
+        'Info' { @{ Project = 'OMH: Turrets & Traps'; Version = $version; Status = 'Development build'; Tag = "test/v$version"; Remote = (Get-Content (Join-Path $PSScriptRoot 'github-process.json') -Raw | ConvertFrom-Json).repository; PlanningBranch = 'dev'; Workshop = 'Not configured' } | ConvertTo-Json }
         'Check' { & (Join-Path $PSScriptRoot 'Install-Packages.ps1') -ValidateOnly }
         'Install' { & (Join-Path $PSScriptRoot 'Install-Packages.ps1') -ValidateOnly:$CheckOnly }
         'Capture' { & (Join-Path $PSScriptRoot 'Capture-Diagnostics.ps1') }
-        'Mirror' { throw 'GitHub mirroring is unavailable: no configured remote or draft PR. Nothing was pushed.' }
+        'Mirror' { & (Join-Path $PSScriptRoot 'Mirror-Development.ps1') -ValidateOnly:$CheckOnly }
         'Publish' { throw 'Workshop publishing is unavailable: no configured Workshop item or publisher. Nothing was uploaded.' }
     }
 }
@@ -29,9 +29,9 @@ try {
     }
     if ($ValidateOnly) { throw 'Choose -Action Install -ValidateOnly or -Action Check.' }
     while ($true) {
-        Write-Host "`nOMH: Turrets & Traps v$version"
+        Write-Host "`nOMH: Turrets & Traps v$version - Development build"
         Write-Host '1 Install locally'
-        Write-Host '2 Mirror to GitHub (not configured)'
+        Write-Host '2 Mirror development to GitHub'
         Write-Host '3 Publish mod to Steam Workshop (not configured)'
         Write-Host '4 Check local install readiness'
         Write-Host '5 Check Workshop upload readiness (not configured)'

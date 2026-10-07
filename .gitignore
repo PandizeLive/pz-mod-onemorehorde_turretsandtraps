@@ -1,4 +1,10 @@
 diagnostics/p1c1/classes/
+/.local/
+/.gh-codex/
+/.env
+/.env.*
+/diagnostics/
+/artifacts/
 diagnostics/p1c1/native-home/
 diagnostics/p1c1/server-cache/
 diagnostics/p1c1/install-test/
