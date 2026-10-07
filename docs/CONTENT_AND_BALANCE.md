@@ -23,7 +23,7 @@ Planned content is not implemented or numerically approved merely because it app
 | Device | Role | Open design/proof | Revised checkpoint |
 | --- | --- | --- | --- |
 | Bed Spikes, basic/reinforced | C95 / 0.2.30: 1x2 short spikes, 20/50 fall damage, six wear, 100/200 durability, player brush-through | Rendered movement/falls and balance acceptance in TEST_v0.2.30.md | R2C1-R2C2 |
-| Backed barbed section | Wall/fence-backed, shared support HP; recurring contact damage including crossings, working tuning 10 every two seconds (C97) | Native health/contact proof, footprint, first-hit/timer policy, final tuning/wear, cleanup and recipe | R2C3 |
+| Backed barbed section | Wall/fence-backed, shared support HP; immediate first contact hit then recurring damage including crossings, working tuning 10 every two seconds (C97) | Native health/contact proof, footprint, shared timer policy, final tuning/wear, cleanup and recipe | R2C3 |
 | Concertina | Contact damage and previously planned movement slowdown | Revisit slowdown against C81 Horde Night compatibility concern before implementation; reversible composition, upkeep/caps/recipe remain unresolved | R2C4 |
 | Button / pressure plate | Pulse / ON while occupied | Links, access, occupancy, power and recipe | R4C1 |
 | Poke Floor | Retractable spike strike with legal reset cadence | Strike window, safety, targets, power/wear/recipe | R4C2 |
@@ -40,7 +40,7 @@ Bed Spikes and Poke Floor are different devices: passive short trip spikes versu
 
 C92-C95: walking is safe; running/sprinting has 20% scratch risk per whole-bed entry. Both tiers use 20% trip chance on eligible upright movement. Fresh falls from any source deal 20/50 damage and six shared durability wear; existing prone zombies/crawlers take no repeated hits. Durability is 100/200, lasting 17/34 damaging falls. Shared five-second trip protection after getting up replaces the three-fall counter. See PATCH_v0.2.30.md. Restraining total effectiveness remains an acceptance goal.
 
-Passive traps ignore smart-device filters. Barbed sections must not attack through the protected side or process the same contact repeatedly. C97 selects shared support health; attachment does not grant a free repair. Exact support-loss recovery, contact trigger and service behavior remain to be settled in checkpoints/R2C3_BACKED_BARBED_SECTIONS.md.
+Passive traps ignore smart-device filters. Barbed sections must not attack through the protected side or duplicate damage within the intended contact interval. C97 selects shared support health and recurring contact damage with an immediate first hit; attachment does not grant a free repair. Exact support-loss recovery, contact geometry and service behavior remain to be settled in checkpoints/R2C3_BACKED_BARBED_SECTIONS.md.
 
 Concertina should damage only during contact. Recommend strongest-slow-only composition and a movement floor, with correct exit/death/despawn/unload cleanup. These are proposed safeguards, not an invented claim that a safe native movement API exists.
 
