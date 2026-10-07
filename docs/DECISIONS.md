@@ -1,5 +1,13 @@
 # Decision register
 
+## C97: held playtest, performance audit and wall/fence-backed barbs (2026-10-07)
+
+Owner is away from the PC and holds the 0.2.30 gameplay test while continuing work. This is a deferral, not a pass or waiver. Owner says "approved. also confirm the new pipeline created with github" in response to the proposed performance audit plus barbed-attachment design. Scope is investigation/design and verification of the existing GitHub process; it does not request a new CI workflow, remote push, publication or gameplay installation.
+
+Owner clarifies the barbed host as walls/fences, semi freestanding with a surface required behind it. This replaces the suggested first window/door-barricade host list. When asked about independent barb durability, owner selects "Share the supporting wall/fence health". Preserve the support's existing health pool, with no automatic repair or added HP. Do not silently substitute separate barb durability for hosts without usable health. Host eligibility, native attack/contact detection, damage, footprint, support-loss behavior and recipe/service choices still need proof or discussion. That answer settles health only, not the bundled proposed attack/removal behavior.
+
+See [audit results and recommendations](checkpoints/R1C3_PERFORMANCE_AUDIT_20261007.md) and [backed-barb design](checkpoints/R2C3_BACKED_BARBED_SECTIONS.md). Operation counts establish redundant calls, not the cause of client pauses. No gameplay code changed in this checkpoint.
+
 ## C96: private GitHub development and Cloud planning process (2026-10-07)
 
 Owner approved: "Approved. Go ahead and create this process." This follows discussion of using the normal full repository like Trait Shop, with Cloud restricted to planning and the PC implementing/testing. Create the private PandizeLive/pz-mod-onemorehorde_turretsandtraps repository, preserve local history, use dev as the initial/default branch and short-lived planning/implementation branches, retain immutable test/v<version> build tags, and reserve main plus official v<version>/GitHub Releases for confirmed official Workshop publication. Initial repository configuration and history/test-tag push are authorized; no gameplay change or Workshop upload is included.
