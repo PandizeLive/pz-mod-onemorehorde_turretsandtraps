@@ -11,5 +11,6 @@ Updated 2026-10-07. Read this first in Cloud, then the linked authoritative reco
 - **Limits:** combat MP and optional integrations lack final acceptance; final art remains owner-sourced. New game API claims need current local evidence. Sibling code and user-level skills are not contained in this clone.
 - **Next local action:** review the owner's focused test when available, then discuss and implement the next explicitly approved scope. This repository setup adds no gameplay patch.
 - **Cloud action:** discuss and record future decisions in a planning branch/PR into `dev`; retain proposals versus approvals. Follow [GitHub workflow](GITHUB_WORKFLOW.md).
+- **Repository setup:** private repository/history/test tags are uploaded; [setup evidence](GITHUB_SETUP.md). The connected GitHub plugin cannot yet read this private repository. Authorize it under the PandizeLive connection and select `dev` before relying on Cloud access.
 
 For every new handoff, update this date and the affected status facts, record the branch/commit in the PR or task, and link exact decisions/test evidence. Do not copy historical results forward as fresh passes. A GitHub checkpoint does not prove the Work PC is currently online or that unpushed changes are available.
