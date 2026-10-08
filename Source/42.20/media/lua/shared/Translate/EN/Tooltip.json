@@ -19,5 +19,6 @@
     "Tooltip_OMHTT_ModuleCapacity": "Expands ammo and module storage.",
     "Tooltip_OMHTT_ModuleSuppression": "Reduces zombie hearing range. Stackable.",
     "Tooltip_OMHTT_ModuleCritical": "Increases critical chance. Stackable.",
-    "Tooltip_OMHTT_ModuleAccuracy": "Increases firearm accuracy. Stackable."
+    "Tooltip_OMHTT_ModuleAccuracy": "Increases firearm accuracy. Stackable.",
+    "Tooltip_OMHTT_Barbs": "One-tile barbed frame backed by a wall, fence, closed single-panel door or window. Arrows mark the damaging side. Door barbs follow the leaf; window barbs stay on the frame. No player injuries."
 }

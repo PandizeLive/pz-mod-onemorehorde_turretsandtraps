@@ -29,6 +29,7 @@ public final class NativePersistenceCheck {
         for (int index = 0; index < count; index++) {
             Object entry = map.get(prefix + index);
             String expected = turrets ? (index == 20 ? "OMHTT_ProbeBase" : index >= 16 ? "OMHTT_TestCube" : "OMHTT_Aim" + index)
+                : index >= 52 ? "OMHTT_Barb" + (index - 52)
                 : index >= 44 ? "OMHTT_ReinforcedBedSpikes" + ((index - 44) / 2)
                 : index >= 28 ? "OMHTT_BedSpikes" + ((index - 28) % 8 / 2)
                 : index >= 20 ? "OMHTT_ReinforcedBarrier" + ((index - 20) / 2)
@@ -49,11 +50,12 @@ public final class NativePersistenceCheck {
         verifyFirearms(directory, mode);
         verifyHybrid(directory, mode);
         verifyBeds(directory, mode);
+        NativeBarbProbe.verify(directory, mode);
         NativeVaultProbe.verify();
         NativeTurretProbe.verify();
-        verifyTexturePack("OMHTT_Traps", "omhtt_barrier_01_", 52, false);
+        verifyTexturePack("OMHTT_Traps", "omhtt_barrier_01_", 60, false);
         verifyTexturePack("OMHTT_Turrets", "omhtt_turret_01_", 21, true);
-        System.out.println("[OMHTT-Smoke] native-texturepacks traps=52 turrets=21 pages=35 png=valid");
+        System.out.println("[OMHTT-Smoke] native-texturepacks traps=60 turrets=21 pages=43 png=valid");
         Class<?> lua = Class.forName("zombie.Lua.LuaManager");
         Object env = lua.getField("env").get(null);
         Object fixtures = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeFixtures");

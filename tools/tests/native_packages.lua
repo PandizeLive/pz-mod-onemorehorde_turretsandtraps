@@ -18,6 +18,8 @@ local function checkPackages()
     assert((counts["Base.OMHTTTurretBase"] == 1) == expectedTurrets, "Turret item registration")
     assert((counts["Base.OMHTTModuleFiring"] == 1) == expectedTurrets, "Module item registration")
     assert((OMHTT_Turret ~= nil) == expectedTurrets, "Turret runtime isolation")
+    assert((OMHTT_BarbSections ~= nil) == expectedTraps, "Barb runtime isolation")
+    assert((SpriteConfigManager.GetObjectInfo("OMHTTBarbs") ~= nil) == expectedTraps, "Barb recipe isolation")
     local options, names = getSandboxOptions(), {}
     for i = 0, options:getNumOptions() - 1 do
         local name = options:getOptionByIndex(i):getName()
@@ -26,6 +28,7 @@ local function checkPackages()
     end
     assert((names["OMHTurretsTraps.SpikeBarrier"] == true) == expectedTraps, "Trap settings isolation")
     assert((names["OMHTurretsTraps.BedSpikes"] == true) == expectedTraps, "Bed settings isolation")
+    assert((names["OMHTurretsTraps.BarbSections"] == true) == expectedTraps, "Barb settings isolation")
     assert((names["OMHTurretsTraps.ShowCollision"] == true) == expectedTraps, "Trap debug isolation")
     assert((names["OMHTurretsTraps.PotatoTurret"] == true) == expectedTurrets, "Turret settings isolation")
     assert((names["OMHTurretsTraps.ModuleLootRate"] == true) == expectedTurrets, "Loot settings isolation")

@@ -264,6 +264,15 @@ public final class KahluaCheck {
             {"_", base + "client/OMHTT/BedServiceAction.lua"},
             {"_", base + "client/OMHTT/BedMenu.lua"},
             {"_", "tools/tests/bed_spikes.lua"},
+            {"OMHTT/BarbContact", base + "shared/OMHTT/BarbContact.lua"},
+            {"OMHTT/BarbSupport", base + "shared/OMHTT/BarbSupport.lua"},
+            {"_", "tools/tests/barbs.lua"},
+            {"OMHTT/BarbSections", base + "shared/OMHTT/BarbSections.lua"},
+            {"OMHTT/BarbService", base + "server/OMHTT/BarbService.lua"},
+            {"_", base + "server/OMHTT/BarbRuntime.lua"},
+            {"_", base + "client/OMHTT/BarbServiceAction.lua"},
+            {"_", base + "client/OMHTT/BarbMenu.lua"},
+            {"_", "tools/tests/barb_runtime.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

@@ -1,5 +1,21 @@
 # Decision register
 
+## C99: develop backed barbs; host expansion and conditional durability (2026-10-07)
+
+Owner explicitly requests: "Doors, windows, walls, and fences, and you're approved to develop it for the next patch." This authorizes local implementation of the one-tile wooden-frame barbs and the C97 recipe. It supersedes the earlier wall/fence-only host direction. Preserve the held 0.2.30 test, existing cumulative Workshop notes and manual GitHub mirroring; no publication is requested.
+
+When asked how to handle supports without persistent finite HP, owner directs: "If it doesn't have HP or it's infinite, then give the barbs HP and it gets damaged when it deals damage. Deal 1 damage to durability per damage activation, with 50 HP." This explicitly revises the previously universal shared-health rule: ordinary finite, damageable supports share native health, while other supports use a separate 50-HP barb pool. Successful damage activations wear that separate pool by one; neither attachment nor repair adds or heals native support HP. Partial map-fence counters that reset on native reload are not a persistent shared-health pool.
+
+Owner also directs: "Opening doors should have the barbs follow the door. Opening a window does not follow." Move door contact geometry with the native swinging leaf; keep window contact fixed across its opening. Do not disable ordinary door barbs just because the door opens. No additional collision, slowing, trips or player-injury policy is authorized here.
+
+Owner selects "Allow repair too" when offered the otherwise ten-second construction/removal, retained hammer/pliers and no removal refunds/XP defaults. Include repair of the separate barb pool. The implementation recommendation is the existing free, ten-second repair restoring 50; this recommendation is not an owner-specified new recipe. Shared support repairs remain native. Broken zero-HP sections require rebuilding; no repair of stale removed objects. The exact shared-glass versus independent window-frame health choice remains pending: preserving barbs after glass breaks requires frame-based independent durability. Both alternatives can be tested without selecting one for release.
+
+Ordinary single-panel door geometry has a current native API (`getSpriteEdge(false)`). Multi-panel doors may relocate/recreate objects when toggled, and garage doors have different movement; these classes are rejected by the initial helper pending additional native proof, rather than silently damaging their former doorway. This technical limitation was reported to the owner; it does not change the requested eventual host scope.
+
+Owner resolves the window choice with "50 HP on the window frame", then clarifies: "It won't increase the window's HP, it will stay on the window with 50HP until depleted." Window barbs always have independent 50 durability; opening/smashing the glass does not remove them or alter the window's native HP. Removing the actual backing object still removes its attachment. This settles the previously pending window policy above.
+
+Implementation and validation are in [0.2.31](PATCH_v0.2.31.md) and [C99 evidence](checkpoints/R2C3_IMPLEMENTATION_20261007.md). Release/installation status is recorded separately in RELEASE.md.
+
 ## C98: proceed with backed-barb native verification (2026-10-07)
 
 Owner replies "approved" after the confirmed one-tile recipe/footprint handoff and the proposed next step of native support-health/contact verification. Proceed with that local investigation; no new recipe confirmation is required for the chosen wooden-frame construction. The turn's stated scope is native verification before gameplay code changes. This approval does not settle unresolved service/player/host-roster policies or authorize remote publication.

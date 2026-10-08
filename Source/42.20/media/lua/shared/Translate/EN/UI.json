@@ -166,5 +166,8 @@
     "UI_OMHTT_RangeMax": "Max",
     "UI_OMHTT_RangeTooltip": "Limit targeting distance.",
     "UI_OMHTT_ShowNoiseRadius": "Show noise radius",
-    "UI_OMHTT_NoiseRadiusTooltip": "Zombie hearing range when selected."
+    "UI_OMHTT_NoiseRadiusTooltip": "Zombie hearing range when selected.",
+    "UI_OMHTT_Barbs": "Barbed Section",
+    "UI_OMHTT_BarbSharedHealth": "Support health: %1",
+    "UI_OMHTT_BarbServiceTools": "Hammer and pliers. Ten seconds. Removal returns no materials."
 }

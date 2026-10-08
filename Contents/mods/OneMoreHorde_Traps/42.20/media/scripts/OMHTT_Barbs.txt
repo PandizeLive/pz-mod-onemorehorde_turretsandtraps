@@ -1,0 +1,47 @@
+module Base {
+    entity OMHTTBarbs {
+        component UiConfig {
+            xuiSkin = default,
+            entityStyle = ES_OMHTTBarbs,
+            uiEnabled = false,
+        }
+        component SpriteConfig {
+            health = 1,
+            skillBaseHealth = 0,
+            bonusHealth = 0,
+            isThumpable = false,
+            OnIsValid = OMHTT_BarbSections.onIsValid,
+            OnCreate = OMHTT_BarbSections.onCreate,
+            face E { layer { row = omhtt_barrier_01_54, } }
+            face N { layer { row = omhtt_barrier_01_59, } }
+            face W { layer { row = omhtt_barrier_01_57, } }
+            face S { layer { row = omhtt_barrier_01_52, } }
+        }
+        component CraftRecipe {
+            timedAction = BuildLowHammer,
+            time = 200,
+            category = OMHTraps,
+            Tooltip = Tooltip_OMHTT_Barbs,
+            Tags = Carpentry,
+            needToBeLearn = false,
+            SkillRequired = Woodwork:1,
+            xpAward = Woodwork:10,
+            OnAddToMenu = OMHTT_BarbMenuAvailable,
+            inputs {
+                item 1 tags[base:hammer] mode:keep flags[Prop1;DontRecordInput],
+                item 1 tags[base:pliers] mode:keep flags[DontRecordInput],
+                item 1 [Base.BarbedWire],
+                item 2 [Base.Plank],
+                item 4 [Base.Nails],
+                item 2 [Base.Wire],
+            }
+        }
+    }
+    xuiSkin default {
+        entity ES_OMHTTBarbs {
+            LuaWindowClass = ISEntityWindow,
+            DisplayName = UI_OMHTT_Barbs,
+            Icon = OMHTT_Barrier0,
+        }
+    }
+}

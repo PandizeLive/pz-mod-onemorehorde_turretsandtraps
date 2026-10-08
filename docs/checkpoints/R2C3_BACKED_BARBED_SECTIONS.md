@@ -1,5 +1,7 @@
 # Wall/fence-backed barbed sections
 
+**Current C99 contract:** owner now authorizes development for doors, windows, walls and fences. See [0.2.31 implementation](../PATCH_v0.2.31.md). Doors follow the leaf; fixed window-frame barbs have independent 50 HP and survive open/smashed glass without increasing window HP. Supports without persistent damageable HP also get 50 barb durability, with one wear per damaging activation; other supports share health. Repair is included. The one-tile wooden recipe and immediate 10/two-second contact damage remain. Ordinary single-panel doors are implemented; multi-panel/garage doors require further proof. The C97 design history below is superseded where it conflicts with C99.
+
 2026-10-07; C97. Design work with the wooden-frame construction recipe selected. No gameplay implementation, artwork or new release has been approved by this checkpoint.
 
 ## Confirmed direction

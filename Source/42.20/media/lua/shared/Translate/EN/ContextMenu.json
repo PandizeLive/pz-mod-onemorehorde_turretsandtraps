@@ -38,5 +38,6 @@
     "ContextMenu_OMHTT_HybridLower": "Lower head",
     "ContextMenu_OMHTT_HybridLarger": "Enlarge head",
     "ContextMenu_OMHTT_HybridSmaller": "Shrink head",
-    "ContextMenu_OMHTT_RepairTurret": "Repair"
+    "ContextMenu_OMHTT_RepairTurret": "Repair",
+    "ContextMenu_OMHTT_RemoveBarbs": "Remove barbs"
 }

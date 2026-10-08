@@ -1,5 +1,7 @@
 # Focused owner test — 0.2.30
 
+Held, not passed or waived. Carried into [the combined 0.2.31 test](TEST_v0.2.31.md); do not request this as a separate round.
+
 Use a disposable single-player world with OMH: Traps and OMH: Turrets enabled. Restart the game after installation. Use debug/build cheat to prepare beds and the previous heavy turret setup; normal materials are needed only for the recipe check. Leave turret diagnostics ON and detailed turret logging OFF for performance evidence. The full split regression round remains waived.
 
 1. Confirm 0.2.30 in the loaded OMH developer menu/log. Build a basic Bed Spikes from the OMH: Traps construction category on a clear floor, rotating the preview. Expect two passable tiles and no overlap through a wall or occupied floor.

@@ -75,7 +75,7 @@ def build_component(component):
     _, original = build()
     trap = component == "traps"
     sheet = "omhtt_barrier_01" if trap else "omhtt_turret_01"
-    count = 52 if trap else 21
+    count = 60 if trap else 21
     tiles = b"tdef" + integer(1) + integer(1)
     tiles += (sheet + "\nOMHTT_" + component.title() + ".png\n").encode("ascii")
     tiles += integer(4) + integer((count + 3) // 4) + integer(1) + integer(count) + integer(0) * count
@@ -122,6 +122,27 @@ def build_component(component):
                                        + struct.pack("<8i", 0, 0, 128, 256, 0, 0, 128, 256))
                 png = (MEDIA / "textures" / (page + ".png")).read_bytes()
                 pages.append(pack_string(page) + integer(len(entries)) + integer(1) + b"".join(entries) + integer(len(png)) + png)
+        edges = [((64, 192), (127, 224)), ((64, 192), (1, 224)), ((127, 224), (64, 255)), ((1, 224), (64, 255))]
+        normals = [(-1, .5), (1, .5), (1, .5), (-1, .5)]
+        for axis, (start, end) in enumerate(edges):
+            for negative in range(2):
+                index = axis * 2 + negative
+                marker = Image.new("RGBA", (128, 256))
+                draw = ImageDraw.Draw(marker)
+                draw.line([start, end], fill="white", width=4)
+                cx, cy = (start[0] + end[0]) / 2, (start[1] + end[1]) / 2
+                nx, ny = normals[axis]
+                sign = -1 if negative else 1
+                tx, ty = cx + nx * sign * 18, cy + ny * sign * 18
+                draw.line([(cx, cy), (tx, ty)], fill="white", width=3)
+                draw.line([(tx - nx * sign * 7 - ny * 4, ty - ny * sign * 7 + nx * 4), (tx, ty),
+                           (tx - nx * sign * 7 + ny * 4, ty - ny * sign * 7 - nx * 4)], fill="white", width=2)
+                draw.text((45, 174), "BARB", fill="white")
+                stream = io.BytesIO()
+                marker.save(stream, format="PNG")
+                png = stream.getvalue()
+                entry = pack_string(sheet + "_" + str(52 + index)) + struct.pack("<8i", 0, 0, 128, 256, 0, 0, 128, 256)
+                pages.append(pack_string("OMHTT_Barb" + str(index)) + integer(1) + integer(1) + entry + integer(len(png)) + png)
     return tiles, b"PZPK" + integer(1) + integer(len(pages)) + b"".join(pages)
 
 

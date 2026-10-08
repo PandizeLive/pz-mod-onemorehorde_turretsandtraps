@@ -227,5 +227,12 @@
     "Sandbox_OMHTurretsTraps_BedRecoverySeconds": "Trip protection (seconds)",
     "Sandbox_OMHTurretsTraps_BedRecoverySeconds_tooltip": "Protection from spike-induced trips after getting up, shared across all beds. Weapon knockdowns remain possible.",
     "Sandbox_OMHTurretsTraps_BedScratchChance": "Running scratch chance (percent)",
-    "Sandbox_OMHTurretsTraps_BedScratchChance_tooltip": "Chance per bed entry while running or sprinting. Walking is safe."
+    "Sandbox_OMHTurretsTraps_BedScratchChance_tooltip": "Chance per bed entry while running or sprinting. Walking is safe.",
+    "Sandbox_OMHTurretsTraps_BarbPage": "OMH: T&T - Barbed Sections",
+    "Sandbox_OMHTurretsTraps_BarbSections": "Enable barbed sections",
+    "Sandbox_OMHTurretsTraps_BarbSections_tooltip": "Enable construction and zombie contact damage.",
+    "Sandbox_OMHTurretsTraps_BarbDamage": "Contact damage",
+    "Sandbox_OMHTurretsTraps_BarbDamage_tooltip": "Damage per activation. First contact hits immediately.",
+    "Sandbox_OMHTurretsTraps_BarbInterval": "Contact interval",
+    "Sandbox_OMHTurretsTraps_BarbInterval_tooltip": "Seconds between hits, shared across all sections touching one zombie."
 }

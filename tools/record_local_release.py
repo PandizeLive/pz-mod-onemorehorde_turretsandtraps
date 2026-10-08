@@ -34,6 +34,8 @@ def main():
         assert '[OMHTT-Smoke] native-persistence mode=' + mode in native and 'Shutdown handling finished' in native
         if (ROOT / 'Source/42.20/media/scripts/OMHTT_BedSpikes.txt').exists():
             assert '[OMHTT-Beds] persistence mode=' + mode + ' parts=24' in native, 'Missing native bed persistence proof'
+        if (ROOT / 'Source/42.20/media/scripts/OMHTT_Barbs.txt').exists():
+            assert '[OMHTT-Barbs] persistence mode=' + mode + ' pairs=8' in native, 'Missing native barb persistence proof'
     for selection in ['traps', 'turrets', 'both']:
         result = json.loads((output / ('packages-' + selection + '.json')).read_text())
         assert result['version'] == version and result['passed'], 'Missing current package isolation proof'

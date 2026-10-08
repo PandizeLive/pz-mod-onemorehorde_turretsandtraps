@@ -1,5 +1,9 @@
 # Release state and publication policy
 
+## Validated candidate: 0.2.31 backed Barbed Sections
+
+C99 implementation is complete in [PATCH_v0.2.31.md](PATCH_v0.2.31.md). 3,702 Kahlua assertions, 84 runtime/translation files, 516 native translation keys and 23 packet serializations pass. Native exact recipe consumption, eight frame/support pairs in write/fresh-process read, and Traps-only/Turrets-only/both startup pass. Package verification covers 184 source files, 220 packaged files, 105 unique Sandbox settings and identical shared helper files. See diagnostics/v0.2.31 for evidence. Tagging/local installation is pending this record; no Workshop upload or GitHub push is authorized. The 0.2.30 owner test is held and consolidated in TEST_v0.2.31.md.
+
 ## Current local installation: 0.2.30 Bed Spikes and performance
 
 Installed on 2026-10-06 via OMH.cmd from annotated `test/v0.2.30`, source `2e97f782603db0050d8e1220f15a9e3d152e37e9`. [Patch](PATCH_v0.2.30.md) implements C95: 1x2 basic/reinforced beds, 20/50 fresh-fall damage, six shared durability wear, 100/200 durability and five-second recovery protection. Existing prone zombies are excluded from repeat hits; walking is safe and running/sprinting has per-entry scratch risk. Includes approved recipes/services and native redeployment.

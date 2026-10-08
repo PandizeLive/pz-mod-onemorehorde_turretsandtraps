@@ -30,7 +30,7 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 | --- | --- | --- |
 | R2C1 | C91 short-spike bed: 1x2 player brush-through and zombie trip/contact prototype | Prove foliage movement and native zombie falls onto the bed. Agree trip chance, fall damage, player speed/injury and crawler handling; prevent double rolls across the two tiles and repeated trip chains |
 | R2C2 | Finish basic/reinforced Bed Spikes: construction, servicing, wear, Sandbox and persistence | Approve both recipes/tools/skills/XP and tier differences first; bounded contact processing, exact single fall damage, save/reload and absent-Turrets checks |
-| R2C3 | [Wall/fence-backed barbed section](checkpoints/R2C3_BACKED_BARBED_SECTIONS.md) | C97: backing required, shared native support health. Prove eligible hosts/contact/cleanup and single damage attribution; settle footprint, contact policy, recipe and service first |
+| R2C3 | [Backed barbed section](checkpoints/R2C3_BACKED_BARBED_SECTIONS.md) | C99 / 0.2.31 implements walls/fences, single-panel doors and independent 50-HP window-frame barbs; native construction/contact/persistence checks and held combined owner test. Multi-panel/garage doors remain unproven |
 | R2C4 | Concertina movement feasibility, then content if it passes | Contact-only damage; reversible slowing that composes with other effects and ends on exit/death/unload. No permanent movement mutation or silent substitute for slowing |
 
 C81 rejects slowing turret effects because they undermine OMH Horde Night zombies. Revisit concertina's separately planned slowdown with the owner before R2C4; do not silently delete or implement it under the turret-module decision.
@@ -90,7 +90,7 @@ Authority design/testing begins with each device; R5C1 is integrated proof, not 
 - [x] C97: audit existing performance paths and verify the GitHub process/access; record [operation-count evidence and proposed optimizations](checkpoints/R1C3_PERFORMANCE_AUDIT_20261007.md). No gameplay patch or proven stall fix.
 - [x] C97: revise barb design to wall/fence-backed sections sharing support health; hold the 0.2.30 owner playtest while away.
 - [x] C98: run [initial native barb host/contact checks](checkpoints/R2C3_NATIVE_FEASIBILITY_20261007.md); distinguish constructed health persistence from map-fence counter reset and controlled motion from rendered acceptance.
-- [ ] Select supported barb host scope, settle remaining service/player/timer policies and prove integrated placement/lifecycle before release.
+- [x] C99: implement backed barbs, conditional durability, fixed window frames, door-edge geometry, native construction and service. No player injuries; multi-panel/garage doors remain pending. See PATCH_v0.2.31.md for validation and release limitations.
 - [x] Record C80 split requirement, revised roadmap and preserved historical evidence.
 - [x] Review collaboration guidance and require critical, evidence-based recommendations.
 - [x] Separate existing plans from new turret-head proposals.
