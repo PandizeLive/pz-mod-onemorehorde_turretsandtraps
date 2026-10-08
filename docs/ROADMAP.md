@@ -120,3 +120,7 @@ Authority design/testing begins with each device; R5C1 is integrated proof, not 
 | P6 Cure simulation | R6C1-R6C3, still last |
 
 Discuss scope/tradeoffs before each gameplay checkpoint; recommend sufficient reasoning effort. Approval authorizes implementation, not a claim of feasibility. Record native/source proof, meaningful checks and complete 4-8-step owner tests. Mark implemented, verified, owner-accepted and published separately. Do not preassign versions or add planned work to the cumulative Workshop changelog.
+
+## Deferred placement alternative (C102, 2026-10-07)
+
+Retain the owner's idea of reintroducing a simplified Building interface. Current direction remains crafting plus inventory placement; do not re-enable duplicate construction/deployment recipes. Revisit only after the current crafting organization and placement repairs are accepted, with a clear distinction between creating an item and placing it.
