@@ -12,6 +12,9 @@ function OMHTT_NativeBarbCheck(squares)
     local cell, lookup = nativeCell(), {}
     for i = 0, squares:size() - 1 do
         local square = squares:get(i)
+        local floorObject = IsoObject.new(square, "floors_interior_tilesandwood_01_0", "floor")
+        square:getObjects():add(floorObject)
+        square:RecalcProperties()
         lookup[square:getX() .. ":" .. square:getY() .. ":0"] = square
     end
     getCell = function() return {getGridSquare = function(_, x, y, z) return lookup[x .. ":" .. y .. ":" .. z] end} end
@@ -74,12 +77,26 @@ function OMHTT_NativeBarbCheck(squares)
         local floor = lookup[(1000 + i * 4) .. ":1000:0"]
         local face = info:getFace(facing)
         assert(face:getWidth() == 1 and face:getHeight() == 1, "Barb footprint wrong")
+        local valid = {square = floor, facing = facing}
+        assert(B.onIsValid(valid) and valid.testCollisions == false, "Native backed panel preview rejected: " .. facing)
+        local panel = instanceItem("Base.OMHTTBarbedPanelItem")
+        player:getInventory():AddItem(panel)
+        local attach = CraftRecipeData.new(CraftMode.Handcraft, false, true, false, true)
+        attach:setRecipe(placement)
+        assert(attach:offerInputItem(placement:getInputs():get(0), panel)
+            and attach:offerInputItem(placement:getInputs():get(1), tools[1])
+            and attach:offerInputItem(placement:getInputs():get(2), tools[2]), "Native attach exact inputs rejected")
+        assert(attach:consumeInputs(ArrayList.new()), "Native panel consumption failed")
+        attach:processDestroyAndUsedItems(player)
+        assert(not player:getInventory():contains(panel) and player:getInventory():contains(tools[1])
+            and player:getInventory():contains(tools[2]), "Attach must consume one panel and retain tools")
         local original = IsoThumpable.new(cell, floor, face:getTileInfo(0, 0, 0):getSpriteName(), north)
         floor:getObjects():add(original)
         floor:getSpecialObjects():add(original)
         GameEntityFactory.CreateIsoObjectEntity(original, info:getScript():getParent(), true)
         local result = B.onCreate({thumpable = original, character = player, facing = facing})
         local frame = result.object
+        assert(not B.onIsValid(valid), "Native duplicate panel preview accepted")
         local record = B.record(frame)
         local resolved, exact, attachment, status = B.resolve(record)
         assert(resolved == frame and exact == host and status == "active", "Native frame/support binding failed")

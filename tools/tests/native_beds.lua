@@ -55,10 +55,19 @@ local function checkBeds()
         end
     end
     local zombie = IsoZombie.new(cell)
-    zombie:knockDown(false)
-    zombie:setUsePhysicHitReaction(false)
-    zombie:setHitForce(0)
-    assert(zombie:isKnockedDown(), "Native knockdown lifecycle was not entered")
+    zombie:setVariable("BumpAnimFinished", false)
+    zombie:setVariable("SprinterTripped", false)
+    zombie:setBumpType("OMHTTBedTrip")
+    assert(zombie:getBumpType() == "OMHTTBedTrip" and not zombie:isKnockedDown(), "Forward trip must not enter hit knockback")
+    for itemType, weight in pairs({OMHTTBarbedPanelItem = 2, OMHTTBedSpikesItem = 3,
+        OMHTTReinforcedBedSpikesItem = 4, OMHTTSpikeBarrierItem = 4, OMHTTReinforcedBarrierItem = 5,
+        OMHTTTurretBase = 6, OMHTTPotatoHead = 4}) do
+        local item = instanceItem("Base." .. itemType)
+        assert(item and item:getActualWeight() == weight, "Approved weight mismatch: " .. itemType)
+    end
+    Translator.loadFiles()
+    assert(getRecipeDisplayName("OMHTTPackSpikeBarriers") == "Pack Spike Barriers"
+        and getRecipeDisplayName("OMHTTPackReinforcedBarriers") == "Pack Reinforced Spike Barriers", "Pack naming mismatch")
     local player = IsoPlayer.new(cell)
     for _, spec in pairs({
         {"OMHTTReinforceSpikeBarrier", "Base.OMHTTSpikeBarrierItem", "Base.OMHTTReinforcedBarrierItem"},

@@ -12,7 +12,8 @@ function inventory:isInCharacterInventory(p) return p == player end
 function player:getInventory() return inventory end
 function player:isDead() return false end
 function player:getPlayerNum() return 0 end
-function player:isBuildCheat() return false end
+function player:isBuildCheat() return self.cheat == true end
+function player:setHaloNote(value) self.halo = value end
 local hammer, pliers = {}, {}
 function inventory:getFirstTagEvalRecurse(tag) return tag == ItemTag.HAMMER and hammer or pliers end
 local input = {}
@@ -49,6 +50,17 @@ for i = 1, #names do
     P.menu(0, context, {{items = {item}}})
     check(menuLabel == getText(i == 5 and "UI_OMHTT_AttachTrap" or "UI_OMHTT_PlaceTrap"), "Inventory action label is consistent")
 end
+local panelItem = {getFullType = function() return "Base.OMHTTBarbedPanelItem" end,
+    getContainer = function() return inventory end, getCondition = function() return 100 end}
+local toolsLookup = inventory.getFirstTagEvalRecurse
+inventory.getFirstTagEvalRecurse = function() return nil end
+check(not P.place(panelItem, player) and player.halo, "Missing tools give explicit feedback")
+player.cheat = true
+check(P.place(panelItem, player) == cursor and cursor:isValid({}), "Build Cheat permits panel cursor without hammer or pliers")
+player.cheat = false
+check(not cursor:isValid({}), "Turning cheat off rechecks tools before completion")
+inventory.getFirstTagEvalRecurse = toolsLookup
+check(cursor:isValid({}), "Restoring tools restores legal placement")
 check(OMHTT_PlacementHidden() == false, "All private placement entities stay out of Building")
 local all = ArrayList.new()
 all:add({getName = function() return "OMHTTDeployTurret" end})

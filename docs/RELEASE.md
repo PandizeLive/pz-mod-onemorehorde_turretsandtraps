@@ -1,10 +1,16 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.32 crafting and trap repairs
+## Current candidate: 0.2.33 crafting organization and movement repairs
+
+[C103 patch](PATCH_v0.2.33.md). 3,763 Kahlua assertions, 87 runtime/translation files, 528 native translation keys and 23 packet serializations pass. Validation covers expandable native list controls, filtered recipes, panel native cursor validation/create in four directions with world doubles, cheat/tool handling, and safe repeated completion. Native recipe/object checks validate approved weights, exact panel consumption/retained tools, current support predicates and forward landing/get-up conditions. Both brush nodes and complete trip event markers load with the current native animation parser. Native write/fresh-process read pass in 59.0/59.7 seconds. Traps-only, Turrets-only and both startup pass in 73.5/66.0/64.7 seconds. Static isolation verifies 106 Sandbox options and 28 identical shared helpers; manifest covers 182 source/219 package files.
+
+Tagged installation is pending. [Four-step owner test](TEST_v0.2.33.md) remains required for rendered behavior; pauses remain unresolved. No remote push or Workshop publication. Cumulative Workshop draft preserved.
+
+## Previous local installation: 0.2.32 crafting and trap repairs
 
 [C101 crafting and trap repairs](PATCH_v0.2.32.md). 3,728 Kahlua assertions, 85 runtime/translation files, 525 native translation keys and 23 packet serializations pass. Native write/fresh-process read pass in 90.5/78.9 seconds; exact portable reinforcement and panel crafting retain approved tools/materials/XP. Native bush recognition, environmental laceration and controlled get-up state cleanup pass. Twenty-four bed parts and eight barb/support pairs preserve identity/durability through native serialization. Traps-only, Turrets-only and both startup pass in 87.6/78.5/89.7 seconds. Static isolation verifies 106 Sandbox options and 27 identical shared helpers; the manifest covers 178 source and 214 package files.
 
-Installed 2026-10-07 through root OMH.cmd from annotated `test/v0.2.32`, source `ad64418d0541c85d238851167948c0b7946cdc31`. All 178 source and 214 tagged/package/installed/archive files match their manifests; both previous 0.2.31 packages' 220 managed backup files verify. [Install record](../diagnostics/v0.2.32/install.json), [release verification](../diagnostics/v0.2.32/local-release.json), [archive](../artifacts/OMHTT-0.2.32.zip). Archive SHA-256: `0b511862983f6aaf7c55547e1b7733475e1b681c0d6fd1c862acef64ff903a4b`. [Four-step owner test](TEST_v0.2.32.md) remains pending, especially natural rendered recovery/traversal and placement. Frame pauses are not proven fixed. No publication or remote push; cumulative Workshop notes preserved.
+Installed 2026-10-07 through root OMH.cmd from annotated `test/v0.2.32`, source `ad64418d0541c85d238851167948c0b7946cdc31`. All 178 source and 214 tagged/package/installed/archive files match their manifests; both previous 0.2.31 packages' 220 managed backup files verify. [Install record](../diagnostics/v0.2.32/install.json), [release verification](../diagnostics/v0.2.32/local-release.json), [archive](../artifacts/OMHTT-0.2.32.zip). Archive SHA-256: `0b511862983f6aaf7c55547e1b7733475e1b681c0d6fd1c862acef64ff903a4b`. [Owner findings](TEST_v0.2.32.md#owner-findings--2026-10-07) reject the movement/menu/placement behavior; superseded by the 0.2.33 repair test. Frame pauses are not proven fixed. No publication or remote push; cumulative Workshop notes preserved.
 
 ## Previous local installation: 0.2.31 backed Barbed Sections
 

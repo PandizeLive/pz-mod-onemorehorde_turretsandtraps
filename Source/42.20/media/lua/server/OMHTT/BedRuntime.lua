@@ -58,9 +58,9 @@ function B.zombie(zombie)
             for i = 1, #parts do parts[i]:setHealth(record.health) end
         end
     elseif roll and record and zombie:getBumpType() == "" and ZombRand(100) < B.option("TripChance", 40, 0, 100) then
-        zombie:knockDown(false)
-        zombie:setUsePhysicHitReaction(false)
-        zombie:setHitForce(0)
+        zombie:setVariable("BumpAnimFinished", false)
+        zombie:setVariable("SprinterTripped", false)
+        zombie:setBumpType("OMHTTBedTrip")
         state.requestedUntil = B.time + 2000
         D.defer("bed-trip", {id = record.id})
     end

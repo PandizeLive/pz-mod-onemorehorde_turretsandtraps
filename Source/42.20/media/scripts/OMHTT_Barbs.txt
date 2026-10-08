@@ -3,7 +3,7 @@ module Base {
         DisplayName = Barbed Panel,
         ItemType = base:normal,
         DisplayCategory = Material,
-        Weight = 4,
+        Weight = 2,
         Icon = OMHTT_Barrier0,
         Tooltip = Tooltip_OMHTT_Barbs,
     }

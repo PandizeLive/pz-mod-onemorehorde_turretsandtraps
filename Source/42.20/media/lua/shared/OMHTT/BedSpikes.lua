@@ -135,7 +135,6 @@ function B.configure(record, object)
     end
     object:setSprite("omhtt_barrier_01_" .. (28 + offset + record.facing * 2 + part))
     object:getSprite():getProperties():set("Bush", "true")
-    object:getSprite():getProperties():set("Bush", "true")
     object:getSquare():RecalcAllWithNeighbours(true)
     object:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_OBJECT_MODIFY)
     if not B.indexed[record.id] then

@@ -171,5 +171,8 @@
     "UI_OMHTT_BarbSharedHealth": "Support health: %1",
     "UI_OMHTT_BarbServiceTools": "Hammer and pliers. Ten seconds. Removal returns no materials.",
     "UI_OMHTT_PlaceTrap": "Place Trap",
-    "UI_OMHTT_AttachTrap": "Attach Trap"
+    "UI_OMHTT_AttachTrap": "Attach Trap",
+    "UI_OMHTT_CraftGroupPotatoTurret": "Potato Turret",
+    "UI_OMHTT_CraftGroupPotatoHead": "Potato Launcher Head",
+    "UI_OMHTT_BarbTools": "Requires a usable hammer and pliers."
 }

@@ -65,16 +65,37 @@ public final class KahluaCheck {
         }
         if (strikeCount != 2 || markerCount != 2) throw new IllegalStateException("Strike/marker counts differ");
         System.out.println("Native animation parser: two strike markers matched, SetVariable bindings resolved");
-        Object bedNode = animNodeType.getMethod("Parse", String.class).invoke(null,
-            root.resolve("Source/42.20/media/AnimSets/player/movement/OMHTTBedBrush.xml").toString());
-        if (bedNode == null) throw new IllegalStateException("Native bed animation parser rejected node");
-        var bedEvents = (java.util.List<?>)animNodeType.getField("events").get(bedNode);
-        if (bedEvents.size() != 2) throw new IllegalStateException("Bed animation must only emit footsteps");
-        for (Object event : bedEvents) {
-            if (!event.getClass().getField("eventName").get(event).equals("Footstep"))
-                throw new IllegalStateException("Unexpected bed animation injury event");
+        for (String mode : new String[]{"movement", "run"}) {
+            Object bedNode = animNodeType.getMethod("Parse", String.class).invoke(null,
+                root.resolve("Source/42.20/media/AnimSets/player/" + mode + "/OMHTTBedBrush.xml").toString());
+            if (bedNode == null) throw new IllegalStateException("Native bed animation parser rejected " + mode);
+            var bedEvents = (java.util.List<?>)animNodeType.getField("events").get(bedNode);
+            if (bedEvents.size() != 2) throw new IllegalStateException("Bed brush must only emit footsteps");
+            for (Object event : bedEvents) {
+                if (!event.getClass().getField("eventName").get(event).equals("Footstep"))
+                    throw new IllegalStateException("Unexpected bed animation injury event");
+            }
         }
-        System.out.println("Native bed animation parser: brush-through node valid, no tree injury events");
+        System.out.println("Native bed animation parser: walking/running brush nodes valid, no tree injury events");
+        for (String actor : new String[]{"player", "zombie"}) {
+            Object tripNode = animNodeType.getMethod("Parse", String.class).invoke(null,
+                root.resolve("Source/42.20/media/AnimSets/" + actor + "/bumped/OMHTTBedTrip.xml").toString());
+            if (tripNode == null) throw new IllegalStateException("Missing forward trip node");
+            if (!animNodeType.getField("animName").get(tripNode).equals("Bob_RunStumble"))
+                throw new IllegalStateException("Trip must use the native forward clip");
+            int landingEvents = 0, completionEvents = 0;
+            for (Object event : (java.util.List<?>)animNodeType.getField("events").get(tripNode)) {
+                String name = (String)event.getClass().getField("eventName").get(event);
+                String value = (String)event.getClass().getField("parameterValue").get(event);
+                if (name.equals("FallOnFront") && value.equals("true")) landingEvents++;
+                else if (name.equals("SetVariable") && event.getClass().getSimpleName().equals("AnimEventSetVariable")
+                    && (value.equals("SprinterTripped=true") || value.equals("BumpAnimFinished=true") || value.equals("BumpFallAnimFinished=true"))) completionEvents++;
+                else throw new IllegalStateException("Unexpected forward trip event: " + name + " " + value);
+            }
+            if (landingEvents != 1 || completionEvents != (actor.equals("player") ? 1 : 2))
+                throw new IllegalStateException("Incomplete trip landing/recovery markers");
+        }
+        System.out.println("Native trip parser: player/zombie forward clips and complete landing/recovery markers valid");
         Class<?> translatorType = Class.forName("zombie.core.Translator");
         Class<?> languageType = Class.forName("zombie.core.Language");
         var languageConstructor = languageType.getDeclaredConstructor(String.class, String.class, String.class, boolean.class);
@@ -201,6 +222,10 @@ public final class KahluaCheck {
             {"_", Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/client/Entity/ISUI/Controls/ISWidgetTitleHeader.lua").toString()},
             {"_", base + "client/OMHTT/CraftingMenu.lua"},
             {"_", "tools/tests/crafting_menu.lua"},
+            {"_", "tools/tests/crafting_groups_bootstrap.lua"},
+            {"_", Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/client/Entity/ISUI/CraftRecipe/ISRecipeScrollingListBox.lua").toString()},
+            {"OMHTT/CraftingGroups", base + "client/OMHTT/CraftingGroups.lua"},
+            {"_", "tools/tests/crafting_groups.lua"},
             {"_", "tools/tests/service_bootstrap.lua"},
             {"OMHTT/BarrierService", base + "server/OMHTT/BarrierService.lua"},
             {"_", "tools/tests/barrier_service.lua"},
@@ -264,7 +289,6 @@ public final class KahluaCheck {
             {"OMHTT/BarbSupport", base + "shared/OMHTT/BarbSupport.lua"},
             {"_", "tools/tests/bed_spikes.lua"},
             {"OMHTT/BarbContact", base + "shared/OMHTT/BarbContact.lua"},
-            {"OMHTT/BarbSupport", base + "shared/OMHTT/BarbSupport.lua"},
             {"_", "tools/tests/barbs.lua"},
             {"OMHTT/BarbSections", base + "shared/OMHTT/BarbSections.lua"},
             {"OMHTT/BarbService", base + "shared/OMHTT/BarbService.lua"},
@@ -275,6 +299,7 @@ public final class KahluaCheck {
             {"OMHTT/BarrierPlacement", base + "client/OMHTT/BarrierPlacement.lua"},
             {"_", base + "client/OMHTT/ConstructionMenu.lua"},
             {"_", "tools/tests/placement_inventory.lua"},
+            {"_", "tools/tests/panel_cursor.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

@@ -41,9 +41,8 @@ function B.player(player)
         and not player:isGodMod() and ZombRand(100) < B.option("SprintTripChance", 20, 0, 100) then
         player:setVariable("BumpDone", false)
         player:clearVariable("BumpFallType")
-        player:setBumpType("trippingFromSprint")
+        player:setBumpType("OMHTTBedTrip")
         player:setBumpFall(true)
-        player:setBumpFallType("pushedFront")
         player:reportEvent("wasBumped")
     end
     if id ~= state.bed and id and not down and (player:isRunning() or sprinting)

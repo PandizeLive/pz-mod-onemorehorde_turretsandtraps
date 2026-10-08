@@ -46,11 +46,14 @@ function P.place(item, player)
     logic:setManualSelectInputs(true)
     logic:clearManualInputs()
     logic:offerInputItem(item)
-    if definition[3] then
+    if definition[3] and not player:isBuildCheat() then
         local inventory = player:getInventory()
         local hammer = inventory:getFirstTagEvalRecurse(ItemTag.HAMMER, usable)
         local pliers = inventory:getFirstTagEvalRecurse(ItemTag.PLIERS, usable)
-        if not hammer or not pliers then return nil end
+        if not hammer or not pliers then
+            player:setHaloNote(getText("UI_OMHTT_BarbTools"))
+            return nil
+        end
         logic:offerInputItem(hammer)
         logic:offerInputItem(pliers)
     end
@@ -63,6 +66,7 @@ function P.place(item, player)
     ---@return boolean valid
     cursor.isValid = function(self, square, north)
         if not P.carried(item, player) then return false end
+        if definition[3] and not require("OMHTT/BarbService").tools(player) then return false end
         return valid(self, square, north)
     end
     if definition[3] then

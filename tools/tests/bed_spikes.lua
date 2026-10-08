@@ -86,13 +86,14 @@ check(a.passThrough and b.passThrough and not a.hoppable and not a.thumpable, "B
 local tripper = makeZombie(square, 10)
 function tripper:isGettingUp() return false end
 function tripper:isCrawling() return false end
-function tripper:getBumpType() return "" end
+function tripper:getBumpType() return self.bump or "" end
+function tripper:setBumpType(value) self.bump = value end
 B.zombie(tripper)
 tripper.square = second
 testRoll = 0
 B.zombie(tripper)
-check(tripper.nativeKnockdown and tripper.physics == false and tripper.hitForce == 0,
-    "Winning moved-entry roll enters native recoverable knockdown without physical shove")
+check(tripper.bump == "OMHTTBedTrip" and tripper.variables.SprinterTripped == false and not tripper.nativeKnockdown,
+    "Winning entry requests forward stumble with fresh native recovery flags and no shove")
 check(record.health == 100, "Requesting a fall does not charge damage or wear before landing")
 local zombie = makeZombie(square, 10)
 function zombie:isGettingUp() return self.gettingUp == true end
@@ -204,7 +205,8 @@ B.player(player)
 player.square, player.running, player.sprinting = square, false, true
 B.player(player)
 check(scratches == 2, "Sprinting inherits the per-entry running risk")
-check(player.bumpFall and player.event == "wasBumped", "Winning sprint-entry roll requests native fall")
+check(player.bumpFall and player.bump == "OMHTTBedTrip" and not player.bumpFallType and player.event == "wasBumped",
+    "Winning sprint entry requests forward fall without pushedFront backward animation")
 player.floor = true
 B.player(player)
 B.player(player)

@@ -354,13 +354,60 @@ public final class NativePersistenceCheck {
         Class<?> zombieType = Class.forName("zombie.characters.IsoZombie");
         Class<?> characterType = Class.forName("zombie.characters.IsoGameCharacter");
         Object zombie = zombieType.getConstructor(cellType).newInstance(cell);
-        call(zombie, "knockDown", new Class<?>[]{boolean.class}, false);
-        check(Boolean.TRUE.equals(get(zombie, "isKnockedDown")), "Native knockdown failed");
-        Object recovery = Class.forName("zombie.ai.states.ZombieGetUpState").getMethod("instance").invoke(null);
-        call(recovery, "enter", new Class<?>[]{characterType}, zombie);
-        call(recovery, "exit", new Class<?>[]{characterType}, zombie);
-        check(Boolean.FALSE.equals(get(zombie, "isKnockedDown")), "Native get-up exit must clear knockdown");
-        System.out.println("[OMHTT-Beds] controlled-native-recovery knockdown=true getUpExit=cleared rendered=unverified");
+        var serverFlag = Class.forName("zombie.network.GameServer").getField("server");
+        boolean wasServer = serverFlag.getBoolean(null);
+        serverFlag.setBoolean(null, false);
+        try {
+            Object bumped = Class.forName("zombie.ai.states.BumpedState").getMethod("instance").invoke(null);
+            Class<?> nodeType = Class.forName("zombie.core.skinnedmodel.advancedanimation.AnimNode");
+            Class<?> eventType = Class.forName("zombie.core.skinnedmodel.advancedanimation.AnimEvent");
+            Class<?> contextType = Class.forName("zombie.characters.action.ActionContext");
+            Class<?> stateType = Class.forName("zombie.characters.action.ActionState");
+            Class<?> actionGroupType = Class.forName("zombie.characters.action.ActionGroup");
+            Object context = get(zombie, "getActionContext");
+            Object group = actionGroupType.getMethod("getActionGroup", String.class).invoke(null, "zombie");
+            Object state = call(group, "findState", new Class<?>[]{String.class}, "bumped");
+            var transitions = (java.util.List<?>)stateType.getField("transitions").get(state);
+            Path source = directory.getParent().getParent().getParent().resolve("Source/42.20/media/AnimSets");
+            Object node = nodeType.getMethod("Parse", String.class).invoke(null, source.resolve("zombie/bumped/OMHTTBedTrip.xml").toString());
+            check(node != null && nodeType.getField("animName").get(node).equals("Bob_RunStumble"), "Trip must use forward native clip");
+            call(zombie, "setBumpType", new Class<?>[]{String.class}, "OMHTTBedTrip");
+            call(zombie, "setVariable", new Class<?>[]{String.class, boolean.class}, "BumpAnimFinished", false);
+            call(zombie, "setVariable", new Class<?>[]{String.class, boolean.class}, "SprinterTripped", false);
+            check(!Boolean.TRUE.equals(get(zombie, "isKnockedDown")), "Trip must not request hit knockback");
+            Object toGetUp = null;
+            for (Object transition : transitions) {
+                if (get(transition, "getTransitionTo").equals("getup")) toGetUp = transition;
+            }
+            check(toGetUp != null && !Boolean.TRUE.equals(call(toGetUp, "passes", new Class<?>[]{contextType, stateType}, context, state)),
+                "Recovery must wait for actual animation completion");
+            for (Object event : (java.util.List<?>)nodeType.getField("events").get(node)) {
+                String name = (String)eventType.getField("eventName").get(event);
+                if (name.equals("SetVariable")) {
+                    Object variable = event.getClass().getField("variableReference").get(event);
+                    String value = (String)event.getClass().getField("setVariableValue").get(event);
+                    call(variable, "setVariable", new Class<?>[]{Class.forName("zombie.core.skinnedmodel.advancedanimation.IAnimationVariableSource"), String.class}, zombie, value);
+                } else {
+                    call(bumped, "animEvent", new Class<?>[]{characterType,
+                        Class.forName("zombie.core.skinnedmodel.advancedanimation.AnimLayer"),
+                        Class.forName("zombie.core.skinnedmodel.animation.AnimationTrack"), eventType}, zombie, null, null, event);
+                }
+            }
+            check(Boolean.TRUE.equals(get(zombie, "isOnFloor")) && Boolean.TRUE.equals(get(zombie, "isFallOnFront")),
+                "Native forward fall event did not establish landing");
+            check(Boolean.TRUE.equals(call(toGetUp, "passes", new Class<?>[]{contextType, stateType}, context, state)),
+                "Completed trip cannot reach native get-up transition");
+            call(bumped, "exit", new Class<?>[]{characterType}, zombie);
+            Object recovery = Class.forName("zombie.ai.states.ZombieGetUpState").getMethod("instance").invoke(null);
+            call(recovery, "enter", new Class<?>[]{characterType}, zombie);
+            call(recovery, "exit", new Class<?>[]{characterType}, zombie);
+            check(Boolean.FALSE.equals(get(zombie, "isKnockedDown"))
+                && Boolean.FALSE.equals(call(zombie, "getVariableBoolean", new Class<?>[]{String.class}, "SprinterTripped")),
+                "Native get-up exit must clear recovery flags");
+            System.out.println("[OMHTT-Beds] controlled-native-recovery forwardLanding=true getUpTransition=passed getUpExit=cleared rendered=unverified");
+        } finally {
+            serverFlag.setBoolean(null, wasServer);
+        }
     }
 
     public static void main(String[] args) throws Exception {

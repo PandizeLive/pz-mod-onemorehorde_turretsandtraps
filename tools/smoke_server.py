@@ -93,6 +93,7 @@ def main():
     assert "[OMHTT-Smoke] native-sandbox damage=10 maxHealth=100 tooltip=formatted" in text, "Native Sandbox options/tooltip invalid"
     assert "[OMHTT-Smoke] native-texturepacks traps=60 turrets=21 pages=30 png=valid" in text, "Native texture packs invalid"
     assert "[OMHTT-Beds] PASS" in text, "Native bed content invalid"
+    assert "[OMHTT-Beds] controlled-native-recovery forwardLanding=true getUpTransition=passed getUpExit=cleared" in text, "Native forward trip recovery failed"
     assert "[OMHTT-Barbs] PASS" in text and "[OMHTT-Barbs] persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Native barb content/persistence invalid"
     assert "OMHTT_BarbSmoke.lua:" not in text, "Native barb probe raised a Lua/bridge error"
     assert "Lua code called from the wrong thread" not in text, "Native probe used the wrong Lua thread"
