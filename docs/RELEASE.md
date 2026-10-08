@@ -1,10 +1,14 @@
 # Release state and publication policy
 
-## Validated candidate: 0.2.31 backed Barbed Sections
+## Current local installation: 0.2.31 backed Barbed Sections
 
-C99 implementation is complete in [PATCH_v0.2.31.md](PATCH_v0.2.31.md). 3,702 Kahlua assertions, 84 runtime/translation files, 516 native translation keys and 23 packet serializations pass. Native exact recipe consumption, eight frame/support pairs in write/fresh-process read, and Traps-only/Turrets-only/both startup pass. Package verification covers 184 source files, 220 packaged files, 105 unique Sandbox settings and identical shared helper files. See diagnostics/v0.2.31 for evidence. Tagging/local installation is pending this record; no Workshop upload or GitHub push is authorized. The 0.2.30 owner test is held and consolidated in TEST_v0.2.31.md.
+Installed on 2026-10-07 via root OMH.cmd from annotated `test/v0.2.31`, source `d95c5647f59215c12c3557737529d3e455d68b26`. [Patch](PATCH_v0.2.31.md) implements C99: backed one-tile Barbed Sections, moving single-panel door contact, independent 50-HP window-frame barbs, conditional support durability and repair/removal. Window HP is unchanged; opening or smashing the glass leaves the frame's barbs active until depleted. Multi-panel/garage doors remain unsupported.
 
-## Current local installation: 0.2.30 Bed Spikes and performance
+3,702 Kahlua assertions, 84 runtime/translation files, 516 native translation keys and 23 packet serializations pass. Native exact recipe consumption, eight frame/support pairs in write/fresh-process read, and Traps-only/Turrets-only/both startup pass. Package verification covers 105 unique Sandbox settings and 27 identical shared helper files. All 184 source files and 220 package/tag/installed/archive files match their manifests; both previous 0.2.30 packages are backed up and their 212 managed files verify. [Install record](../diagnostics/v0.2.31/install.json), [release verification](../diagnostics/v0.2.31/local-release.json), [archive](../artifacts/OMHTT-0.2.31.zip). Archive SHA-256: `be707a5fa0e4275059137786d07b997aab34261a34196412de9653460d93388a`.
+
+The 0.2.30 owner test remains held and is consolidated in [one eight-step test](TEST_v0.2.31.md). Native checks do not certify rendered contact/movement or client smoothness; the reported 300-700ms pauses are not proven fixed. Fresh test worlds remain the approved scope. No Workshop upload, GitHub push or website deployment occurred. Cumulative unuploaded notes are preserved.
+
+## Previous local installation: 0.2.30 Bed Spikes and performance
 
 Installed on 2026-10-06 via OMH.cmd from annotated `test/v0.2.30`, source `2e97f782603db0050d8e1220f15a9e3d152e37e9`. [Patch](PATCH_v0.2.30.md) implements C95: 1x2 basic/reinforced beds, 20/50 fresh-fall damage, six shared durability wear, 100/200 durability and five-second recovery protection. Existing prone zombies are excluded from repeat hits; walking is safe and running/sprinting has per-entry scratch risk. Includes approved recipes/services and native redeployment.
 
