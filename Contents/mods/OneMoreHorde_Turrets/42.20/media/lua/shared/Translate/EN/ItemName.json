@@ -1,6 +1,6 @@
 {
-    "ItemName_Base.OMHTTBedSpikesItem": "Bed Spikes",
-    "ItemName_Base.OMHTTReinforcedBedSpikesItem": "Reinforced Bed Spikes",
+    "Base.OMHTTBedSpikesItem": "Bed Spikes",
+    "Base.OMHTTReinforcedBedSpikesItem": "Reinforced Bed Spikes",
     "Base.OMHTTSpikeBarrierItem": "Spike Barrier",
     "Base.OMHTTSpikeBarrierPack": "Spike Barrier Pack",
     "Base.OMHTTReinforcedBarrierItem": "Reinforced Spike Barrier",
@@ -22,5 +22,6 @@
     "Base.OMHTTModule360": "360 Module",
     "Base.OMHTTModuleSuppression": "Suppression Module",
     "Base.OMHTTModuleCritical": "Critical Module",
-    "Base.OMHTTModuleAccuracy": "Accuracy Module"
+    "Base.OMHTTModuleAccuracy": "Accuracy Module",
+    "Base.OMHTTBarbedPanelItem": "Barbed Panel"
 }

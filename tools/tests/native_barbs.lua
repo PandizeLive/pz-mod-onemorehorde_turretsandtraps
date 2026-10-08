@@ -20,8 +20,9 @@ function OMHTT_NativeBarbCheck(squares)
     local info = SpriteConfigManager.GetObjectInfo("OMHTTBarbs")
     assert(info, "Barb build entity missing")
     local recipe = info:getRecipe():getCraftRecipe()
-    assert(recipe:getOnAddToMenu() == "OMHTT_BarbMenuAvailable" and OMHTT_BarbMenuAvailable(), "Barb construction menu is closed in SP")
-    assert(getRecipeDisplayName("OMHTTBarbs") == "Barbed Section", "Barb recipe translation missing")
+    assert(recipe:getOnAddToMenu() == "OMHTT_PlacementHidden" and not OMHTT_PlacementHidden(), "Panel placement leaked into Building")
+    recipe = ScriptManager.instance:getCraftRecipe("Base.OMHTTCraftBarbs")
+    assert(getRecipeDisplayName("OMHTTBarbs") == "Barbed Panel", "Barb recipe translation missing")
     assert(recipe:getInputs():size() == 6 and recipe:getInputs():get(0):isKeep() and recipe:getInputs():get(1):isKeep(), "Retained barb tools wrong")
     assert(recipe:getRequiredSkill(0):getLevel() == 1 and recipe:getXPAward(0):getAmount() == 10, "Barb skill/XP wrong")
     local player = IsoPlayer.new(cell)
@@ -41,12 +42,19 @@ function OMHTT_NativeBarbCheck(squares)
     end
     local before = wire:getCurrentUses()
     assert(data:consumeInputs(ArrayList.new()), "Native barb consumption failed")
+    assert(data:createOutputs(ArrayList.new(), player) and data:getAllCreatedItems():size() == 1
+        and data:getFirstCreatedItem():getFullType() == "Base.OMHTTBarbedPanelItem", "Panel crafting must produce one portable item")
     data:processDestroyAndUsedItems(player)
     assert(wire:getCurrentUses() == before - 2, "Wire consumption must be two uses")
     assert(player:getInventory():contains(tools[1]) and player:getInventory():contains(tools[2]), "Barb tools consumed")
     assert(player:getInventory():getItemCountRecurse("Base.BarbedWire") == 0 and player:getInventory():getItemCountRecurse("Base.Plank") == 0
         and player:getInventory():getItemCountRecurse("Base.Nails") == 0, "Barb ingredients not consumed exactly")
     assert(tools[2]:hasTag(ItemTag.PLIERS), "Pliers service tag missing")
+    local Service = require("OMHTT/BarbService")
+    assert(Service and type(Service.tools) == "function", "Barb service unavailable through shared loading")
+    local placement = info:getRecipe():getCraftRecipe()
+    assert(placement:getInputs():size() == 3 and placement:getXPAwardCount() == 0
+        and placement:getRequiredSkillCount() == 0, "Attachment must consume only panel plus retained tools without repeating skill/XP")
     local faces, fixtures = {"e", "n", "w", "s"}, ArrayList.new()
     for i = 0, 7 do
         local facing = faces[i % 4 + 1]

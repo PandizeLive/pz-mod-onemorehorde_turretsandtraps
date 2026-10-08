@@ -1,4 +1,3 @@
-if isClient() or isServer() then return end
 local B = require("OMHTT/BarbSections")
 local S = require("OMHTT/BarbSupport")
 local Service = {}

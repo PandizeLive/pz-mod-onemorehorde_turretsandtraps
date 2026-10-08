@@ -88,4 +88,38 @@ module Base {
             item 5 Base.OMHTTReinforcedBarrierItem,
         }
     }
+    craftRecipe OMHTTReinforceSpikeBarrier {
+        timedAction = BuildLowHammer,
+        time = 200,
+        category = OMHTraps,
+        Tags = InHandCraft;Carpentry,
+        needToBeLearn = false,
+        SkillRequired = Woodwork:3,
+        xpAward = Woodwork:30,
+        OnAddToMenu = OMHTT_ConstructionMenuAvailable,
+        inputs {
+            item 1 tags[base:hammer] mode:keep flags[Prop1;DontRecordInput;NoBrokenItems],
+            item 1 [Base.OMHTTSpikeBarrierItem],
+            item 2 [Base.Plank],
+            item 8 [Base.Nails],
+        }
+        outputs { item 1 Base.OMHTTReinforcedBarrierItem, }
+    }
+    craftRecipe OMHTTReinforceBedSpikes {
+        timedAction = BuildLowHammer,
+        time = 200,
+        category = OMHTraps,
+        Tags = InHandCraft;Carpentry,
+        needToBeLearn = false,
+        SkillRequired = Woodwork:3,
+        xpAward = Woodwork:30,
+        OnAddToMenu = OMHTT_BedMenuAvailable,
+        inputs {
+            item 1 tags[base:hammer] mode:keep flags[Prop1;DontRecordInput;NoBrokenItems],
+            item 1 [Base.OMHTTBedSpikesItem],
+            item 2 [Base.Plank],
+            item 8 [Base.Nails],
+        }
+        outputs { item 1 Base.OMHTTReinforcedBedSpikesItem, }
+    }
 }

@@ -1,12 +1,18 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.31 backed Barbed Sections
+## 0.2.32 candidate — verified, installation pending
+
+[C101 crafting and trap repairs](PATCH_v0.2.32.md). 3,728 Kahlua assertions, 85 runtime/translation files, 525 native translation keys and 23 packet serializations pass. Native write/fresh-process read pass in 90.5/78.9 seconds; exact portable reinforcement and panel crafting retain approved tools/materials/XP. Native bush recognition, environmental laceration and controlled get-up state cleanup pass. Twenty-four bed parts and eight barb/support pairs preserve identity/durability through native serialization. Traps-only, Turrets-only and both startup pass in 87.6/78.5/89.7 seconds. Static isolation verifies 106 Sandbox options and 27 identical shared helpers; the manifest covers 178 source and 214 package files.
+
+Source and generated packages will be committed and tagged before root OMH.cmd installation. [Four-step owner test](TEST_v0.2.32.md) remains pending, especially natural rendered recovery/traversal and placement. Frame pauses are not proven fixed. No publication or remote push; cumulative Workshop notes preserved.
+
+## Previous local installation: 0.2.31 backed Barbed Sections
 
 Installed on 2026-10-07 via root OMH.cmd from annotated `test/v0.2.31`, source `d95c5647f59215c12c3557737529d3e455d68b26`. [Patch](PATCH_v0.2.31.md) implements C99: backed one-tile Barbed Sections, moving single-panel door contact, independent 50-HP window-frame barbs, conditional support durability and repair/removal. Window HP is unchanged; opening or smashing the glass leaves the frame's barbs active until depleted. Multi-panel/garage doors remain unsupported.
 
 3,702 Kahlua assertions, 84 runtime/translation files, 516 native translation keys and 23 packet serializations pass. Native exact recipe consumption, eight frame/support pairs in write/fresh-process read, and Traps-only/Turrets-only/both startup pass. Package verification covers 105 unique Sandbox settings and 27 identical shared helper files. All 184 source files and 220 package/tag/installed/archive files match their manifests; both previous 0.2.30 packages are backed up and their 212 managed files verify. [Install record](../diagnostics/v0.2.31/install.json), [release verification](../diagnostics/v0.2.31/local-release.json), [archive](../artifacts/OMHTT-0.2.31.zip). Archive SHA-256: `be707a5fa0e4275059137786d07b997aab34261a34196412de9653460d93388a`.
 
-The 0.2.30 owner test remains held and is consolidated in [one eight-step test](TEST_v0.2.31.md). Native checks do not certify rendered contact/movement or client smoothness; the reported 300-700ms pauses are not proven fixed. Fresh test worlds remain the approved scope. No Workshop upload, GitHub push or website deployment occurred. Cumulative unuploaded notes are preserved.
+The remaining 0.2.30 checks are consolidated in [one four-step test](TEST_v0.2.31.md). Native checks do not certify rendered contact/movement or client smoothness; the reported 300-700ms pauses are not proven fixed. Fresh test worlds remain the approved scope. No Workshop upload, GitHub push or website deployment occurred. Cumulative unuploaded notes are preserved.
 
 ## Previous local installation: 0.2.30 Bed Spikes and performance
 

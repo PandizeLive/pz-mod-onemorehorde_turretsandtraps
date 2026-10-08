@@ -122,7 +122,7 @@ option OMHTurretsTraps.PotatoRange {
 
 option OMHTurretsTraps.PotatoKnockdownChance {
     type = integer,
-    default = 70,
+    default = 40,
     min = 0,
     max = 100,
     page = OMHTurretsTraps_PotatoPage,

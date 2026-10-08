@@ -77,7 +77,7 @@ def main():
     for key in re.findall(r"Tooltip\s*=\s*(\w+)", item_script):
         assert key in translations and "prototype" not in translations[key].lower(), key
     textures = list((PACKAGE / "42.20/media/textures").glob("*.png"))
-    assert len(textures) == 48, "Existing markers and ten Bed Spikes technical markers required"
+    assert len(textures) == 41, "Existing markers plus one repeating bed tile and two inventory icons required"
     for heading, index in zip("ENWS", range(4)):
         for part in "AB":
             assert (PACKAGE / f"42.20/media/textures/OMHTT_BuildBarrier{heading}_{part}.png").read_bytes() == (PACKAGE / f"42.20/media/textures/OMHTT_Barrier{index}.png").read_bytes(), "Construction sprites reuse authorized technical markers"
@@ -126,7 +126,7 @@ def main():
     assert (OUTPUT / "base-depth.png").read_bytes() == (PACKAGE / "common/media/depthmaps/DEPTH_omhtt_turret_01.png").read_bytes()
     (OUTPUT / "base-depth.log").write_text(depth_log, encoding="utf-8")
     pages = list(dict.fromkeys(re.findall(r"page\s*=\s*(\w+)", sandbox)))
-    assert pages == ["OMHTurretsTraps_General", "OMHTurretsTraps_BarrierPage", "OMHTurretsTraps_BedPage", "OMHTurretsTraps_BarbPage", "OMHTurretsTraps_PotatoPage",
+    assert pages == ["OMHTurretsTraps_General", "OMHTurretsTraps_BarrierPage", "OMHTurretsTraps_PotatoPage",
                      "OMHTurretsTraps_AutomationPage", "OMHTurretsTraps_StatModulesPage", "OMHTurretsTraps_ModuleLootPage", "OMHTurretsTraps_Debug"]
     stock = os.environ.get("OMHTT_STOCK_CLASSES") == "1"
     classpath = os.pathsep.join(str(path) for path in ([classes, GAME / "projectzomboid.jar", GAME] if stock else [classes, GAME, GAME / "projectzomboid.jar"]))

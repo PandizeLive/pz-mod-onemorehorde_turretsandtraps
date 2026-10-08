@@ -35,7 +35,7 @@ function S.resolve(contents)
     local cooldown = S.option("PotatoCooldown", 2, 0.1, 60)
     local reload = S.option("PotatoReloadTime", 2, 0, 60)
     local damage = S.option("PotatoDamage", 35, 0, 1000)
-    local knockdown = S.option("PotatoKnockdownChance", 70, 0, 100)
+    local knockdown = S.option("PotatoKnockdownChance", 40, 0, 100)
     local range = S.option("PotatoRange", 6, 1, 20)
     local gun = contents and contents.head
     local firearm = G.profile(gun)

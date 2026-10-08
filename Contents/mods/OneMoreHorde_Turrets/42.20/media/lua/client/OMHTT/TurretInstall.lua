@@ -70,7 +70,7 @@ function I.menu(index, context, selection)
         local item = entry
         if type(entry) == "table" and entry.items then item = entry.items[1] end
         if item and not seen[item] and I.carried(item, player) then
-            context:addOption(getText("UI_OMHTT_ManageInstall"), item, I.install, player)
+            context:addOption(getText("UI_OMHTT_PlaceTrap"), item, I.install, player)
             seen[item] = true
             return
         end

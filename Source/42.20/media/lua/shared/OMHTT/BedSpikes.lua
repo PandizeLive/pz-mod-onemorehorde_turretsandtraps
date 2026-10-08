@@ -134,6 +134,8 @@ function B.configure(record, object)
         offset = 16
     end
     object:setSprite("omhtt_barrier_01_" .. (28 + offset + record.facing * 2 + part))
+    object:getSprite():getProperties():set("Bush", "true")
+    object:getSprite():getProperties():set("Bush", "true")
     object:getSquare():RecalcAllWithNeighbours(true)
     object:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_OBJECT_MODIFY)
     if not B.indexed[record.id] then
@@ -203,7 +205,14 @@ end
 function B.clear(square)
     if not square or not square:getFloor() or square:HasStairs() or square:HasStairsBelow()
         or square:isVehicleIntersecting() or square:has(IsoFlagType.water) or square:getMovingObjects():size() > 0
-        or square:getSpecialObjects():size() > 0 or not square:isFree(false) then return false end
+        or square:isSolid() or square:isSolidTrans() then return false end
+    local support = require("OMHTT/BarbSupport")
+    local objects = square:getSpecialObjects()
+    for i = 0, objects:size() - 1 do
+        local object = objects:get(i)
+        local marker = object:hasModData() and object:getModData().OMHTTBarbFrame
+        if not marker and not support.kind(object, true) and not support.kind(object, false) then return false end
+    end
     return true
 end
 
@@ -221,7 +230,9 @@ function B.onIsValid(params)
         if not B.clear(getCell():getGridSquare(x, y, record.z)) then return false end
     end
     local x, y = B.position(record, 1)
-    return not getCell():getGridSquare(record.x, record.y, record.z):isSomethingTo(getCell():getGridSquare(x, y, record.z))
+    if getCell():getGridSquare(record.x, record.y, record.z):isSomethingTo(getCell():getGridSquare(x, y, record.z)) then return false end
+    params.testCollisions = false
+    return true
 end
 
 ---@param params table Native construction completion

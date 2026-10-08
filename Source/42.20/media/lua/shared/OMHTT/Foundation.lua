@@ -1,6 +1,6 @@
 ---@class OMHTTFoundation
 local Foundation = {
-    VERSION = "0.2.31",
+    VERSION = "0.2.32",
     MODULE = "OMHTT_Foundation",
     STORE = "OMHTT_Foundation_v1",
     PREFIX = "OMHTT_P1C1_",
@@ -181,6 +181,13 @@ function Foundation.countPrototypes(square)
         end
     end
     return count
+end
+
+
+---@return boolean visible
+---@nodiscard
+function OMHTT_PlacementHidden()
+    return false
 end
 
 return Foundation

@@ -52,6 +52,27 @@ check(not hit and not roll, "Existing crawlers neither trip nor accumulate fall 
 
 B.initialize()
 testSquares = {}
+local candidate = makeSquare(9, 9, 0)
+function candidate:isSolid() return self.solid == true end
+function candidate:isSolidTrans() return false end
+check(B.clear(candidate), "Clear floor permits bed placement")
+local panel = IsoThumpable.new(getCell(), candidate, "omhtt_barrier_01_52", false, nil)
+panel:getModData().OMHTTBarbFrame = {id = "placement-panel"}
+candidate:AddSpecialObject(panel)
+local fence = IsoThumpable.new(getCell(), candidate, "carpentry_02_80", false, nil)
+function fence:isDoor() return false end
+function fence:isWindow() return false end
+function fence:isHoppable() return true end
+function fence:isTallHoppable() return false end
+candidate:AddSpecialObject(fence)
+check(B.clear(candidate), "Fence and attached panel do not occupy the adjacent floor footprint")
+candidate.solid = true
+check(not B.clear(candidate), "Solid obstacles remain blocked beside panels")
+candidate.solid = false
+local obstruction = IsoThumpable.new(getCell(), candidate, "omhtt_barrier_01_28", false, nil)
+obstruction:getModData().OMHTTBed = {id = "occupied"}
+candidate:AddSpecialObject(obstruction)
+check(not B.clear(candidate), "Existing bed cannot be overlapped")
 local square, second = makeSquare(10, 10, 0), makeSquare(10, 11, 0)
 local a = IsoThumpable.new(getCell(), square, "omhtt_barrier_01_28", false, nil)
 local b = IsoThumpable.new(getCell(), second, "omhtt_barrier_01_29", false, nil)
@@ -62,6 +83,17 @@ B.onCreate({thumpable = b, facing = "e"})
 local record = B.record(a)
 check(record == B.record(b) and record.health == 100 and #B.parts(record) == 2, "Both native callbacks adopt one bed and health pool")
 check(a.passThrough and b.passThrough and not a.hoppable and not a.thumpable, "Beds are passable and cannot be vaulted or thumped")
+local tripper = makeZombie(square, 10)
+function tripper:isGettingUp() return false end
+function tripper:isCrawling() return false end
+function tripper:getBumpType() return "" end
+B.zombie(tripper)
+tripper.square = second
+testRoll = 0
+B.zombie(tripper)
+check(tripper.nativeKnockdown and tripper.physics == false and tripper.hitForce == 0,
+    "Winning moved-entry roll enters native recoverable knockdown without physical shove")
+check(record.health == 100, "Requesting a fall does not charge damage or wear before landing")
 local zombie = makeZombie(square, 10)
 function zombie:isGettingUp() return self.gettingUp == true end
 function zombie:isCrawling() return self.crawler == true end
@@ -122,12 +154,20 @@ square:AddSpecialObject(a); second:AddSpecialObject(b)
 B.onCreate({thumpable = a, facing = "e"}); B.onCreate({thumpable = b, facing = "e"})
 record = B.record(a)
 function square:isSomethingTo(other) return self.blocked or other.blocked end
-local scratches, animation = 0, nil
+local scratches, cuts, animation = 0, 0, nil
 local inventory = {room = false, items = {}}
 function inventory:hasRoomFor() return self.room end
 function inventory:AddItem(item) self.items[#self.items + 1] = item end
 local player = {running = false, sprinting = false, square = square}
 function player:isDead() return false end
+function player:isNoClip() return self.noclip == true end
+function player:isGhostMode() return self.ghost == true end
+function player:isOnFloor() return self.floor == true end
+function player:clearVariable() end
+function player:setBumpType(value) self.bump = value end
+function player:setBumpFall(value) self.bumpFall = value end
+function player:setBumpFallType(value) self.bumpFallType = value end
+function player:reportEvent(value) self.event = value end
 function player:getSquare() return self.square end
 function player:getX() return self.square.x + .5 end
 function player:getY() return self.square.y + .5 end
@@ -144,6 +184,9 @@ function player:isBuildCheat() return true end
 function player:getBodyDamage() return {getBodyPart = function() return {setScratched = function(_, value, safe)
     check(value and safe, "Bed scratch uses environmental non-infected damage")
     scratches = scratches + 1
+end, setCut = function(_, value, safe)
+    check(value and safe, "Fall laceration is environmental, not zombie infection")
+    cuts = cuts + 1
 end} end} end
 testRoll = 0
 B.player(player)
@@ -161,6 +204,25 @@ B.player(player)
 player.square, player.running, player.sprinting = square, false, true
 B.player(player)
 check(scratches == 2, "Sprinting inherits the per-entry running risk")
+check(player.bumpFall and player.event == "wasBumped", "Winning sprint-entry roll requests native fall")
+player.floor = true
+B.player(player)
+B.player(player)
+check(cuts == 1, "Only an actual new landing causes one laceration")
+player.floor, player.noclip = false, true
+B.player(player)
+check(not animation and cuts == 1 and scratches == 2, "Noclip clears brush and bypasses bed injury")
+player.noclip, player.ghost = false, true
+B.player(player)
+check(not animation and cuts == 1 and scratches == 2, "Ghost mode also bypasses foliage")
+player.ghost, player.running, player.sprinting = false, false, false
+B.player(player)
+check(animation and cuts == 1 and scratches == 2, "Normal safe walking resumes after leaving noclip")
+player.floor = true
+B.player(player)
+check(cuts == 2, "A second distinct fall can injure again")
+player.floor = false
+B.player(player)
 
 local S = require("OMHTT/BedService")
 record.health = 40

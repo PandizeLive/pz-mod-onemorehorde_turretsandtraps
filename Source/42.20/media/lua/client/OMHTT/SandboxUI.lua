@@ -57,7 +57,11 @@ function UI.attach(panel)
     if panel.controls["OMHTurretsTraps.RapidFireBonus"] then
         sections = moduleGroups
     elseif panel.controls["OMHTurretsTraps.SpikeBarrier"] then
-        sections = {{"Sandbox_Title_OMHTurretsTraps_Barrier", {"SpikeBarrier", "SpikeBarrierDamage", "SpikeBarrierHealth", "SpikeBarrierScratchChance", "ReinforcedBarrierDamage", "ReinforcedBarrierHealthMultiplier"}}}
+        sections = {
+            {"Sandbox_Title_OMHTurretsTraps_Barrier", {"SpikeBarrier", "SpikeBarrierDamage", "SpikeBarrierHealth", "SpikeBarrierScratchChance", "ReinforcedBarrierDamage", "ReinforcedBarrierHealthMultiplier"}},
+            {"Sandbox_Title_OMHTurretsTraps_Beds", {"BedSpikes", "BedDamage", "BedReinforcedDamage", "BedHealth", "BedReinforcedHealth", "BedWear", "BedTripChance", "BedRecoverySeconds", "BedScratchChance", "BedSprintTripChance"}},
+            {"Sandbox_Title_OMHTurretsTraps_Barbs", {"BarbSections", "BarbDamage", "BarbInterval"}},
+        }
     elseif not panel.controls["OMHTurretsTraps.PotatoTurret"] then
         return panel
     end

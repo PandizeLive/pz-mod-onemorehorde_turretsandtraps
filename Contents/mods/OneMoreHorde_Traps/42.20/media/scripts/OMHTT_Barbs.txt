@@ -1,4 +1,12 @@
 module Base {
+    item OMHTTBarbedPanelItem {
+        DisplayName = Barbed Panel,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 4,
+        Icon = OMHTT_Barrier0,
+        Tooltip = Tooltip_OMHTT_Barbs,
+    }
     entity OMHTTBarbs {
         component UiConfig {
             xuiSkin = default,
@@ -21,8 +29,21 @@ module Base {
             timedAction = BuildLowHammer,
             time = 200,
             category = OMHTraps,
+            needToBeLearn = false,
+            OnAddToMenu = OMHTT_PlacementHidden,
+            inputs {
+                item 1 [Base.OMHTTBarbedPanelItem],
+                item 1 tags[base:hammer] mode:keep flags[Prop1;DontRecordInput],
+                item 1 tags[base:pliers] mode:keep flags[DontRecordInput],
+            }
+        }
+    }
+    craftRecipe OMHTTCraftBarbs {
+            timedAction = BuildLowHammer,
+            time = 200,
+            category = OMHTraps,
             Tooltip = Tooltip_OMHTT_Barbs,
-            Tags = Carpentry,
+            Tags = InHandCraft;Carpentry,
             needToBeLearn = false,
             SkillRequired = Woodwork:1,
             xpAward = Woodwork:10,
@@ -35,7 +56,7 @@ module Base {
                 item 4 [Base.Nails],
                 item 2 [Base.Wire],
             }
-        }
+            outputs { item 1 Base.OMHTTBarbedPanelItem, }
     }
     xuiSkin default {
         entity ES_OMHTTBarbs {

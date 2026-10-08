@@ -1,8 +1,8 @@
 {
     "Tooltip_OMHTT_BedSpikes": "1x2 short spikes. Zombies may trip and take damage when they fall onto the bed. Walk across safely; running or sprinting risks scratches. Each damaging fall wears the shared bed durability. Free ten-second repair and pickup.",
-    "Tooltip_OMHTT_PortableBarrier": "Place using Deploy Spike Barrier in the Building menu. Placement consumes one finished barrier and grants no XP.",
+    "Tooltip_OMHTT_PortableBarrier": "Right-click the crafted item and choose Place Trap. Placement consumes one finished barrier and grants no XP.",
     "Tooltip_OMHTT_BarrierPack": "Contains five Spike Barriers. Unpack in the Crafting menu. Bundled encumbrance is reduced by 67 percent.",
-    "Tooltip_OMHTT_ReinforcedBarrier": "Deploy through Building.",
+    "Tooltip_OMHTT_ReinforcedBarrier": "Right-click the crafted item and choose Place Trap.",
     "Tooltip_OMHTT_ReinforcedPack": "Five reinforced barriers. 67 percent less weight.",
     "Tooltip_OMHTT_TurretBase": "Holds a head, ammo, modules and a battery.",
     "Tooltip_OMHTT_PotatoHead": "Install in a turret base. Uses potatoes and power.",

@@ -54,22 +54,15 @@ module Base {
             }
         }
         component CraftRecipe {
-            timedAction = SharpenStakeWood,
+            timedAction = BuildLowNoTool,
             time = 200,
             category = OMHTraps,
-            Tooltip = Tooltip_OMHTT_BedSpikes,
-            Tags = Carpentry,
             needToBeLearn = false,
-            SkillRequired = Woodwork:1,
-            xpAward = Woodwork:10,
-            OnAddToMenu = OMHTT_BedMenuAvailable,
-            inputs {
-                item 1 tags[base:sharpknife] mode:keep flags[Prop1;DontRecordInput;IsNotDull;MayDegradeLight],
-                item 4 [Base.Plank;Base.SpearCrafted],
-                item 4 [Base.RippedSheets;Base.RippedSheetsDirty;Base.Twine],
-            }
+            OnAddToMenu = OMHTT_PlacementHidden,
+            inputs { item 1 [Base.OMHTTBedSpikesItem], }
         }
     }
+
     entity OMHTTDeployBedSpikes {
         component UiConfig {
             xuiSkin = default,
@@ -113,7 +106,7 @@ module Base {
             Tooltip = Tooltip_OMHTT_BedSpikes,
             Tags = Carpentry,
             needToBeLearn = false,
-            OnAddToMenu = OMHTT_BedMenuAvailable,
+            OnAddToMenu = OMHTT_PlacementHidden,
             inputs { item 1 [Base.OMHTTBedSpikesItem], }
         }
     }
@@ -160,25 +153,42 @@ module Base {
             Tooltip = Tooltip_OMHTT_BedSpikes,
             Tags = Carpentry,
             needToBeLearn = false,
-            OnAddToMenu = OMHTT_BedMenuAvailable,
+            OnAddToMenu = OMHTT_PlacementHidden,
             inputs { item 1 [Base.OMHTTReinforcedBedSpikesItem], }
         }
+    }
+    craftRecipe OMHTTCraftBedSpikes {
+            timedAction = SharpenStakeWood,
+            time = 200,
+            category = OMHTraps,
+            Tooltip = Tooltip_OMHTT_BedSpikes,
+            Tags = InHandCraft;Carpentry,
+            needToBeLearn = false,
+            SkillRequired = Woodwork:1,
+            xpAward = Woodwork:10,
+            OnAddToMenu = OMHTT_BedMenuAvailable,
+            inputs {
+                item 1 tags[base:sharpknife] mode:keep flags[Prop1;DontRecordInput;IsNotDull;MayDegradeLight],
+                item 4 [Base.Plank;Base.SpearCrafted],
+                item 4 [Base.RippedSheets;Base.RippedSheetsDirty;Base.Twine],
+            }
+            outputs { item 1 Base.OMHTTBedSpikesItem, }
     }
     xuiSkin default {
         entity ES_OMHTTBedSpikes {
             LuaWindowClass = ISEntityWindow,
             DisplayName = UI_OMHTT_BedSpikes,
-            Icon = OMHTT_BedSpikes0,
+            Icon = OMHTT_BedSpikes,
         }
         entity ES_OMHTTDeployBedSpikes {
             LuaWindowClass = ISEntityWindow,
             DisplayName = UI_OMHTT_DeployBedSpikes,
-            Icon = OMHTT_BedSpikes0,
+            Icon = OMHTT_BedSpikes,
         }
         entity ES_OMHTTDeployReinforcedBedSpikes {
             LuaWindowClass = ISEntityWindow,
             DisplayName = UI_OMHTT_DeployReinforcedBedSpikes,
-            Icon = OMHTT_ReinforcedBedSpikes0,
+            Icon = OMHTT_BedSpikes,
         }
     }
 }

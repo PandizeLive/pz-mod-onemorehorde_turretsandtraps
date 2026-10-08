@@ -145,9 +145,9 @@ local function checkNativeConstruction()
     local disabledVisible = callLuaBool(recipe:getOnAddToMenu(), params)
     isServer, isClient = serverFunction, clientFunction
     SandboxVars.OMHTurretsTraps.Enabled, SandboxVars.OMHTurretsTraps.SpikeBarrier = enabled, barrierEnabled
-    assert(visible == true and not disabledVisible, "Native callback must show enabled SP recipe and hide disabled content")
+    assert(not visible and not disabledVisible, "Placement-only recipes must stay hidden from Building")
     assert(not dottedVisible, "Reproduction changed: native global callback now accepts dotted paths")
-    print("[OMHTT-Smoke] native-build-menu registered=1 title=Spike_Barrier category=OMHTraps callback=resolved spGate=open disabledGate=closed dottedCallback=rejected")
+    print("[OMHTT-Smoke] native-build-menu registered=1 title=Spike_Barrier category=OMHTraps callback=resolved spGate=hidden disabledGate=closed dottedCallback=rejected")
     assert(found:getScript():getOnCreate() == "OMHTT_Construction.onCreate", "Native OnCreate hook missing")
     assert(found:getScript():getOnIsValid() == "OMHTT_Construction.onIsValid", "Native placement hook missing")
     local faces = {"e", "n", "w", "s"}
@@ -371,7 +371,7 @@ local function checkNativeConstruction()
     local reinforcedPack = getScriptManager():getCraftRecipe("Base.OMHTTPackReinforcedBarriers")
     local reinforcedUnpack = getScriptManager():getCraftRecipe("Base.OMHTTUnpackReinforcedBarriers")
     assert(reinforcedDeploy:getInputs():size() == 1 and reinforcedDeploy:getXPAwardCount() == 0, "Reinforced deployment repeats costs or XP")
-    assert(getRecipeDisplayName(reinforcedDeploy:getName()) == "Deploy Reinforced Spike Barrier", "Reinforced deployment name missing")
+    assert(getRecipeDisplayName(reinforcedDeploy:getName()) == "Reinforced Spike Barrier", "Reinforced deployment name missing")
     assert(getItemNameFromFullType("Base.OMHTTReinforcedBarrierItem") == "Reinforced Spike Barrier", "Reinforced item name missing")
     local reinforcedInputs = ArrayList.new()
     for i = 1, 5 do reinforcedInputs:add(instanceItem("Base.OMHTTReinforcedBarrierItem")) end

@@ -40,7 +40,7 @@ module Base {
             category = OMHTurrets,
             Tooltip = UI_OMHTT_DeployTurretDescription,
             needToBeLearn = false,
-            OnAddToMenu = OMHTT_TurretMenuAvailable,
+            OnAddToMenu = OMHTT_PlacementHidden,
             OnTest = OMHTT_Turret.recipeInput,
             inputs {
                 item 1 [Base.OMHTTTurretBase] flags[ItemCount],

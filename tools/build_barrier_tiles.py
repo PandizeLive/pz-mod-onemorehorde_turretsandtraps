@@ -112,37 +112,24 @@ def build_component(component):
             pages.append(pack_string(name) + integer(len(entries)) + integer(alpha) + b"".join(entries) + integer(size) + png)
     assert position == len(original)
     if trap:
-        for tier in range(2):
-            for heading in range(4):
-                page = ("OMHTT_ReinforcedBedSpikes" if tier else "OMHTT_BedSpikes") + str(heading)
-                entries = []
-                for offset in ([44] if tier else [28, 36]):
-                    for part in range(2):
-                        entries.append(pack_string(sheet + "_" + str(offset + heading * 2 + part))
-                                       + struct.pack("<8i", 0, 0, 128, 256, 0, 0, 128, 256))
-                png = (MEDIA / "textures" / (page + ".png")).read_bytes()
-                pages.append(pack_string(page) + integer(len(entries)) + integer(1) + b"".join(entries) + integer(len(png)) + png)
-        edges = [((64, 192), (127, 224)), ((64, 192), (1, 224)), ((127, 224), (64, 255)), ((1, 224), (64, 255))]
-        normals = [(-1, .5), (1, .5), (1, .5), (-1, .5)]
-        for axis, (start, end) in enumerate(edges):
-            for negative in range(2):
-                index = axis * 2 + negative
-                marker = Image.new("RGBA", (128, 256))
-                draw = ImageDraw.Draw(marker)
-                draw.line([start, end], fill="white", width=4)
-                cx, cy = (start[0] + end[0]) / 2, (start[1] + end[1]) / 2
-                nx, ny = normals[axis]
-                sign = -1 if negative else 1
-                tx, ty = cx + nx * sign * 18, cy + ny * sign * 18
-                draw.line([(cx, cy), (tx, ty)], fill="white", width=3)
-                draw.line([(tx - nx * sign * 7 - ny * 4, ty - ny * sign * 7 + nx * 4), (tx, ty),
-                           (tx - nx * sign * 7 + ny * 4, ty - ny * sign * 7 - nx * 4)], fill="white", width=2)
-                draw.text((45, 174), "BARB", fill="white")
-                stream = io.BytesIO()
-                marker.save(stream, format="PNG")
-                png = stream.getvalue()
-                entry = pack_string(sheet + "_" + str(52 + index)) + struct.pack("<8i", 0, 0, 128, 256, 0, 0, 128, 256)
-                pages.append(pack_string("OMHTT_Barb" + str(index)) + integer(1) + integer(1) + entry + integer(len(png)) + png)
+        entries = [pack_string(sheet + "_" + str(index)) + struct.pack("<8i", 0, 0, 128, 256, 0, 0, 128, 256) for index in range(28, 52)]
+        png = (MEDIA / "textures/OMHTT_BedSpikes.png").read_bytes()
+        pages.append(pack_string("OMHTT_BedSpikes") + integer(24) + integer(1) + b"".join(entries) + integer(len(png)) + png)
+        for axis in range(2):
+            marker = Image.new("RGBA", (128, 256))
+            draw = ImageDraw.Draw(marker)
+            draw.line([(64, 192), (127 if axis == 0 else 1, 224)], fill="white", width=4)
+            draw.text((45, 174), "BARB", fill="white")
+            stream = io.BytesIO()
+            marker.save(stream, format="PNG")
+            png = stream.getvalue()
+            entries = []
+            for edge in ([0, 3] if axis == 0 else [1, 2]):
+                dx, dy = ((0, 0) if edge < 2 else ((63, 32) if edge == 2 else (-63, 32)))
+                for side in range(2):
+                    entries.append(pack_string(sheet + "_" + str(52 + edge * 2 + side))
+                                   + struct.pack("<8i", 0, 0, 128, 256, dx, dy, 128, 256))
+            pages.append(pack_string("OMHTT_Barb" + str(axis)) + integer(4) + integer(1) + b"".join(entries) + integer(len(png)) + png)
     return tiles, b"PZPK" + integer(1) + integer(len(pages)) + b"".join(pages)
 
 

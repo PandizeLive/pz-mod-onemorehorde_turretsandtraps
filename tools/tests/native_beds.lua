@@ -17,8 +17,9 @@ local function checkBeds()
         local info = SpriteConfigManager.GetObjectInfo(entities[e])
         assert(info ~= nil, "Bed entity missing: " .. entities[e])
         local recipe = info:getRecipe():getCraftRecipe()
-        assert(callLuaBool(recipe:getOnAddToMenu(), {}) == true, "Bed menu callback unresolved")
+        assert(callLuaBool(recipe:getOnAddToMenu(), {}) == false, "Bed placement leaked into Building")
         if e == 1 then
+            recipe = ScriptManager.instance:getCraftRecipe("Base.OMHTTCraftBedSpikes")
             assert(recipe:getInputs():size() == 3 and recipe:getInputs():get(0):isKeep()
                 and recipe:getInputs():get(1):getIntAmount() == 4 and recipe:getInputs():get(2):getIntAmount() == 4,
                 "Bed construction inputs differ from approval")
@@ -39,6 +40,7 @@ local function checkBeds()
                     square:getSpecialObjects():add(object)
                     GameEntityFactory.CreateIsoObjectEntity(object, info:getScript():getParent(), true)
                     B.onCreate({thumpable = object, facing = faces[f]})
+                    assert(object:isBush() and square:hasBush(), "Bed must use native bush movement recognition")
                     assert(object:isCanPassThrough() and not object:isHoppable() and not object:isThumpable(), "Native bed movement flags incorrect")
                     parts[#parts + 1] = object
                 end
@@ -53,8 +55,40 @@ local function checkBeds()
         end
     end
     local zombie = IsoZombie.new(cell)
-    zombie:setBumpType("trippingFromSprint")
-    assert(zombie:getBumpType() == "trippingFromSprint", "Native trip setter/getter is not exposed")
+    zombie:knockDown(false)
+    zombie:setUsePhysicHitReaction(false)
+    zombie:setHitForce(0)
+    assert(zombie:isKnockedDown(), "Native knockdown lifecycle was not entered")
+    local player = IsoPlayer.new(cell)
+    for _, spec in pairs({
+        {"OMHTTReinforceSpikeBarrier", "Base.OMHTTSpikeBarrierItem", "Base.OMHTTReinforcedBarrierItem"},
+        {"OMHTTReinforceBedSpikes", "Base.OMHTTBedSpikesItem", "Base.OMHTTReinforcedBedSpikesItem"},
+    }) do
+        local recipe = ScriptManager.instance:getCraftRecipe("Base." .. spec[1])
+        assert(recipe and recipe:getRequiredSkill(0):getLevel() == 3 and recipe:getXPAward(0):getAmount() == 30,
+            "Portable reinforcement must preserve approved skill/XP")
+        local data = CraftRecipeData.new(CraftMode.Handcraft, false, true, false, true)
+        data:setRecipe(recipe)
+        local types, amounts = {"Base.Hammer", spec[2], "Base.Plank", "Base.Nails"}, {1, 1, 2, 8}
+        local hammer
+        for i = 1, #types do
+            for j = 1, amounts[i] do
+                local item = instanceItem(types[i])
+                player:getInventory():AddItem(item)
+                assert(data:offerInputItem(recipe:getInputs():get(i - 1), item), "Reinforcement input rejected")
+                if i == 1 then hammer = item end
+            end
+        end
+        assert(data:consumeInputs(ArrayList.new()) and data:createOutputs(ArrayList.new(), player), "Portable reinforcement failed")
+        data:processDestroyAndUsedItems(player)
+        assert(data:getAllCreatedItems():size() == 1 and data:getFirstCreatedItem():getFullType() == spec[3]
+            and player:getInventory():contains(hammer), "Reinforcement output/tool mismatch")
+    end
+    local part = player:getBodyDamage():getBodyPart(BodyPartType.LowerLeg_L)
+    part:setCut(true, true)
+    assert(part:isCut() and not part:IsInfected(), "Spike fall must be an environmental laceration")
+    player:getInventory():AddItem(instanceItem("Base.Pliers"))
+    assert(require("OMHTT/BarbService").tools(player), "Native retained hammer/pliers service lookup failed")
     assert(type(zombie:isGettingUp()) == "boolean" and type(zombie:isCrawling()) == "boolean", "Native recovery/crawler APIs unavailable")
     isServer, isClient, getCell = oldServer, oldClient, oldCell
     print("[OMHTT-Beds] PASS entities=3 facings=4 parts=24 wear=6 damage=20/50 nativeMovementFlags=valid nativeTripAPI=exposed")

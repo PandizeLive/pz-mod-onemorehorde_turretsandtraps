@@ -62,16 +62,16 @@ option OMHTurretsTraps.ReinforcedBarrierHealthMultiplier {
 option OMHTurretsTraps.BedSpikes {
     type = boolean,
     default = true,
-    page = OMHTurretsTraps_BedPage,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_BedSpikes,
 }
 
 option OMHTurretsTraps.BedTripChance {
     type = integer,
-    default = 20,
+    default = 40,
     min = 0,
     max = 100,
-    page = OMHTurretsTraps_BedPage,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_BedTripChance,
 }
 
@@ -80,7 +80,7 @@ option OMHTurretsTraps.BedDamage {
     default = 20,
     min = 0,
     max = 1000,
-    page = OMHTurretsTraps_BedPage,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_BedDamage,
 }
 
@@ -89,7 +89,7 @@ option OMHTurretsTraps.BedReinforcedDamage {
     default = 50,
     min = 0,
     max = 2500,
-    page = OMHTurretsTraps_BedPage,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_BedReinforcedDamage,
 }
 
@@ -98,7 +98,7 @@ option OMHTurretsTraps.BedHealth {
     default = 100,
     min = 6,
     max = 10000,
-    page = OMHTurretsTraps_BedPage,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_BedHealth,
 }
 
@@ -107,7 +107,7 @@ option OMHTurretsTraps.BedReinforcedHealth {
     default = 200,
     min = 6,
     max = 10000,
-    page = OMHTurretsTraps_BedPage,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_BedReinforcedHealth,
 }
 
@@ -116,7 +116,7 @@ option OMHTurretsTraps.BedWear {
     default = 6,
     min = 0,
     max = 1000,
-    page = OMHTurretsTraps_BedPage,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_BedWear,
 }
 
@@ -125,7 +125,7 @@ option OMHTurretsTraps.BedRecoverySeconds {
     default = 5,
     min = 0,
     max = 60,
-    page = OMHTurretsTraps_BedPage,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_BedRecoverySeconds,
 }
 
@@ -134,14 +134,23 @@ option OMHTurretsTraps.BedScratchChance {
     default = 20,
     min = 0,
     max = 100,
-    page = OMHTurretsTraps_BedPage,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_BedScratchChance,
+}
+
+option OMHTurretsTraps.BedSprintTripChance {
+    type = integer,
+    default = 20,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_BarrierPage,
+    translation = OMHTurretsTraps_BedSprintTripChance,
 }
 
 option OMHTurretsTraps.BarbSections {
     type = boolean,
     default = true,
-    page = OMHTurretsTraps_BarbPage,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_BarbSections,
 }
 
@@ -150,7 +159,7 @@ option OMHTurretsTraps.BarbDamage {
     min = 0,
     max = 1000,
     default = 10,
-    page = OMHTurretsTraps_BarbPage,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_BarbDamage,
 }
 
@@ -159,7 +168,7 @@ option OMHTurretsTraps.BarbInterval {
     min = 0.1,
     max = 60,
     default = 2,
-    page = OMHTurretsTraps_BarbPage,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_BarbInterval,
 }
 

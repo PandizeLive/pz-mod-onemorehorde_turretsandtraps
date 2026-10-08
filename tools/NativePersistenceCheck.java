@@ -29,9 +29,8 @@ public final class NativePersistenceCheck {
         for (int index = 0; index < count; index++) {
             Object entry = map.get(prefix + index);
             String expected = turrets ? (index == 20 ? "OMHTT_ProbeBase" : index >= 16 ? "OMHTT_TestCube" : "OMHTT_Aim" + index)
-                : index >= 52 ? "OMHTT_Barb" + (index - 52)
-                : index >= 44 ? "OMHTT_ReinforcedBedSpikes" + ((index - 44) / 2)
-                : index >= 28 ? "OMHTT_BedSpikes" + ((index - 28) % 8 / 2)
+                : index >= 52 ? "OMHTT_Barb" + (((index - 52) / 2 == 0 || (index - 52) / 2 == 3) ? 0 : 1)
+                : index >= 28 ? "OMHTT_BedSpikes"
                 : index >= 20 ? "OMHTT_ReinforcedBarrier" + ((index - 20) / 2)
                 : index >= 16 ? "OMHTT_Edges" : "OMHTT_Barrier" + ((index % 8) / 2);
             check(entry != null && expected.equals(entry.getClass().getField("pageName").get(entry)), "Sprite mapped to wrong page: " + prefix + index);
@@ -55,7 +54,7 @@ public final class NativePersistenceCheck {
         NativeTurretProbe.verify();
         verifyTexturePack("OMHTT_Traps", "omhtt_barrier_01_", 60, false);
         verifyTexturePack("OMHTT_Turrets", "omhtt_turret_01_", 21, true);
-        System.out.println("[OMHTT-Smoke] native-texturepacks traps=60 turrets=21 pages=43 png=valid");
+        System.out.println("[OMHTT-Smoke] native-texturepacks traps=60 turrets=21 pages=30 png=valid");
         Class<?> lua = Class.forName("zombie.Lua.LuaManager");
         Object env = lua.getField("env").get(null);
         Object fixtures = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeFixtures");
@@ -352,6 +351,16 @@ public final class NativePersistenceCheck {
                 "Persistent bed authority and native part health differ");
         }
         System.out.println("[OMHTT-Beds] persistence mode=" + mode + " parts=24 identity=valid health=preserved movement=preserved");
+        Class<?> zombieType = Class.forName("zombie.characters.IsoZombie");
+        Class<?> characterType = Class.forName("zombie.characters.IsoGameCharacter");
+        Object zombie = zombieType.getConstructor(cellType).newInstance(cell);
+        call(zombie, "knockDown", new Class<?>[]{boolean.class}, false);
+        check(Boolean.TRUE.equals(get(zombie, "isKnockedDown")), "Native knockdown failed");
+        Object recovery = Class.forName("zombie.ai.states.ZombieGetUpState").getMethod("instance").invoke(null);
+        call(recovery, "enter", new Class<?>[]{characterType}, zombie);
+        call(recovery, "exit", new Class<?>[]{characterType}, zombie);
+        check(Boolean.FALSE.equals(get(zombie, "isKnockedDown")), "Native get-up exit must clear knockdown");
+        System.out.println("[OMHTT-Beds] controlled-native-recovery knockdown=true getUpExit=cleared rendered=unverified");
     }
 
     public static void main(String[] args) throws Exception {

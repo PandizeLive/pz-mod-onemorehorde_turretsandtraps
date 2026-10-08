@@ -7,7 +7,7 @@ local active = {Reload = 2, RapidFire = 2, Velocity = 2, Range = 2, Capacity = 1
 local stats = S.resolve({active = active})
 check(math.abs(stats.cooldown - 2000 / 1.5) < 0.001 and math.abs(stats.reload - 2000 / 1.5) < 0.001,
     "Reload and Rapid-Fire independently stack speed without subtractive negative timers")
-check(stats.damage == 49 and stats.knockdown == 80 and stats.range == 10 and stats.modules == 8 and stats.ammo == 200,
+check(stats.damage == 49 and stats.knockdown == 50 and stats.range == 10 and stats.modules == 8 and stats.ammo == 200,
     "Damage, knockdown, range and storage bonuses combine")
 active.Autoloader = 1
 stats = S.resolve({active = active})

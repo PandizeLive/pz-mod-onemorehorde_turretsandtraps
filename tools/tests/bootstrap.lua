@@ -175,7 +175,7 @@ IsoObject = {new = function(square, sprite, name)
     function object:invalidateRenderChunkLevel(reason) self.renderInvalidated = reason end
     function object:getSprite()
         if self.noSprite then return nil end
-        return {getID = function() return 1918369792 end, getTextureForCurrentFrame = function()
+        return {getProperties = function() return {set = function() end} end, getID = function() return 1918369792 end, getTextureForCurrentFrame = function()
             if self.noTexture then return nil end
             return {
                 isReady = function() return not self.texturePending end,
