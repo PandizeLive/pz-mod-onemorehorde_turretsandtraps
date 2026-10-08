@@ -1,10 +1,12 @@
 # Release state and publication policy
 
-## Current candidate: 0.2.33 crafting organization and movement repairs
+## Current local installation: 0.2.33 crafting organization and movement repairs
 
 [C103 patch](PATCH_v0.2.33.md). 3,763 Kahlua assertions, 87 runtime/translation files, 528 native translation keys and 23 packet serializations pass. Validation covers expandable native list controls, filtered recipes, panel native cursor validation/create in four directions with world doubles, cheat/tool handling, and safe repeated completion. Native recipe/object checks validate approved weights, exact panel consumption/retained tools, current support predicates and forward landing/get-up conditions. Both brush nodes and complete trip event markers load with the current native animation parser. Native write/fresh-process read pass in 59.0/59.7 seconds. Traps-only, Turrets-only and both startup pass in 73.5/66.0/64.7 seconds. Static isolation verifies 106 Sandbox options and 28 identical shared helpers; manifest covers 182 source/219 package files.
 
-Tagged installation is pending. [Four-step owner test](TEST_v0.2.33.md) remains required for rendered behavior; pauses remain unresolved. No remote push or Workshop publication. Cumulative Workshop draft preserved.
+Installed 2026-10-07 through root OMH.cmd from annotated `test/v0.2.33`, source `7515cd4084fbea86f3420246ad13cf99011bebb8`. All 182 source and 219 tagged/package/installed/archive files match the validation manifest; both 0.2.32 packages' 214 managed backup files verify. [Install record](../diagnostics/v0.2.33/install.json), [release verification](../diagnostics/v0.2.33/local-release.json), [archive](../artifacts/OMHTT-0.2.33.zip). Archive SHA-256: `8669b56f8ac3dd553cb55de7e9c669a17fc35a8cea4af193f2379a7a05b4dcae`.
+
+[Four-step owner test](TEST_v0.2.33.md) remains required for rendered behavior; pauses remain unresolved. Local GitHub mirror preflight passed on the tagged commit; no remote push or Workshop publication occurred. Cumulative Workshop draft preserved.
 
 ## Previous local installation: 0.2.32 crafting and trap repairs
 
