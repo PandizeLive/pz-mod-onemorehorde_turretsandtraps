@@ -11,6 +11,6 @@ Owner-approved C101, following the 0.2.31 findings. Local development only; owne
 
 ## Verification
 
-3,728 Kahlua assertions pass, including carried-item invalidation, all five trap inventory routes, Building filtering, fence/panel co-placement, noclip/ghost bypass, sprint fall requests and single landing injury. Native recipe, lifecycle, persistence and independent-package evidence is recorded in RELEASE.md after completion. Headless checks cannot certify rendered transitions or frame smoothness. The reported 300–700 ms pauses are still not proven eliminated.
+3,728 Kahlua assertions pass, including carried-item invalidation, all five trap inventory routes, Building filtering, fence/panel co-placement, noclip/ghost bypass, sprint fall requests and single landing injury. Native recipe, lifecycle, write/fresh-process read persistence and all three independent-package checks passed; installed/tagged hashes and backup evidence are in [RELEASE.md](RELEASE.md). Headless checks cannot certify rendered transitions or frame smoothness. The reported 300–700 ms pauses are still not proven eliminated.
 
 Use the [four-step focused test](TEST_v0.2.32.md). The owner-waived older regression round stays waived.

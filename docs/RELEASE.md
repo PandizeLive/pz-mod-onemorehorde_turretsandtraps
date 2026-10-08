@@ -1,10 +1,10 @@
 # Release state and publication policy
 
-## 0.2.32 candidate — verified, installation pending
+## Current local installation: 0.2.32 crafting and trap repairs
 
 [C101 crafting and trap repairs](PATCH_v0.2.32.md). 3,728 Kahlua assertions, 85 runtime/translation files, 525 native translation keys and 23 packet serializations pass. Native write/fresh-process read pass in 90.5/78.9 seconds; exact portable reinforcement and panel crafting retain approved tools/materials/XP. Native bush recognition, environmental laceration and controlled get-up state cleanup pass. Twenty-four bed parts and eight barb/support pairs preserve identity/durability through native serialization. Traps-only, Turrets-only and both startup pass in 87.6/78.5/89.7 seconds. Static isolation verifies 106 Sandbox options and 27 identical shared helpers; the manifest covers 178 source and 214 package files.
 
-Source and generated packages will be committed and tagged before root OMH.cmd installation. [Four-step owner test](TEST_v0.2.32.md) remains pending, especially natural rendered recovery/traversal and placement. Frame pauses are not proven fixed. No publication or remote push; cumulative Workshop notes preserved.
+Installed 2026-10-07 through root OMH.cmd from annotated `test/v0.2.32`, source `ad64418d0541c85d238851167948c0b7946cdc31`. All 178 source and 214 tagged/package/installed/archive files match their manifests; both previous 0.2.31 packages' 220 managed backup files verify. [Install record](../diagnostics/v0.2.32/install.json), [release verification](../diagnostics/v0.2.32/local-release.json), [archive](../artifacts/OMHTT-0.2.32.zip). Archive SHA-256: `0b511862983f6aaf7c55547e1b7733475e1b681c0d6fd1c862acef64ff903a4b`. [Four-step owner test](TEST_v0.2.32.md) remains pending, especially natural rendered recovery/traversal and placement. Frame pauses are not proven fixed. No publication or remote push; cumulative Workshop notes preserved.
 
 ## Previous local installation: 0.2.31 backed Barbed Sections
 
