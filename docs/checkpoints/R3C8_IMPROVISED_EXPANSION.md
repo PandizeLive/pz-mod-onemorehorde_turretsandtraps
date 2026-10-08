@@ -1,5 +1,7 @@
 # R3C8: improvised components and compact module expansion
 
+**C104 / 2026-10-08:** choices and recipes below are now settled by owner approval and implemented in [0.2.34](../PATCH_v0.2.34.md). Two rows of eight, 25 reserve rounds for Improvised, 75-percent detection with normal acquisition, and 15-percent click-only automatic failure. Saved Sandbox values and existing contents remain intact. Historical planning text below is superseded where it labels those choices pending. Native/install evidence is in RELEASE.md; owner acceptance remains pending.
+
 Planning checkpoint, 2026-10-06. Sources: [C84-C86 decisions](../DECISIONS.md#c86-compact-menu-progression-in-equal-upgrade-groups-2026-10-06) and [module plan](../MODULAR_TURRETS.md#planned-improvised-components-and-centered-expansion-layout). Owner explicitly requests documenting the accepted progression in plans/checkpoints. This is scheduled work, not implemented or installed gameplay. Current 0.2.28 defaults remain 4/6/8/10 for None/Small/Medium/Large.
 
 ## Accepted module capacity progression

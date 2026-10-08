@@ -85,8 +85,8 @@ local function verifyTurrets()
     end
     assert(auditAccepted >= 20 and auditRejected >= 2, "Expected conventional guns and cap-gun rejections")
     print("[OMHTT-Smoke] native-firearm-audit accepted=" .. auditAccepted .. " rejected=" .. auditRejected)
-    assert(visibleCount == 15, "Expected fifteen canonical components")
-    print("[OMHTT-Smoke] native-component-list visible=15 hidden=0 duplicates=0 legacy=removed")
+    assert(visibleCount == 18, "Expected eighteen canonical components")
+    print("[OMHTT-Smoke] native-component-list visible=18 hidden=0 duplicates=0 legacy=removed")
     local nativeContents = {active = {Detection360 = 1, Filter = 1}}
     local profile = Modules.profile({baseFacing = 4, facing = 12, priority = "Toughest"}, nativeContents)
     assert(profile.cone == 360 and profile.heading == 90 and profile.priority == "Toughest", "Module profile failed")
@@ -105,6 +105,7 @@ local function verifyTurrets()
     detector:setCondition(0)
     assert(T.contents(live).active.MotionDetection == nil, "Broken native module remains active")
     print("[OMHTT-Smoke] native-modules loot=121 profiles=valid condition=checked")
+    assert(GameSounds.getSound("OMHTTTriggerClick") ~= nil, "Native click sound is unregistered")
     local resources = ArrayList.new()
     local tools = {"Base.Screwdriver", "Base.Wrench"}
     local routes = {
@@ -114,10 +115,19 @@ local function verifyTurrets()
         {"Complete", {MetalPipe = 3, SmallSheetMetal = 3, ScrapMetal = 3, Screws = 8, ElectronicsScrap = 2, ElectricWire = 1, TirePump = 1, DuctTape = 2}},
         {"CompleteImprovised", {MetalPipe = 3, SmallSheetMetal = 3, ScrapMetal = 7, Screws = 8, ElectronicsScrap = 2, ElectricWire = 1, DuctTape = 2}},
     }
+    routes[#routes + 1] = {"MotionDetectionImprovised", {ElectronicsScrap = 3, ElectricWire = 1, DuctTape = 2}, true}
+    routes[#routes + 1] = {"FiringImprovised", {ElectronicsScrap = 2, ElectricWire = 1, Screws = 4}, true}
+    routes[#routes + 1] = {"CapacityImprovised", {SmallSheetMetal = 1, ElectronicsScrap = 1, ElectricWire = 1, Screws = 4}, true}
     local packed = nil
     for index = 1, #routes do
         local route = routes[index]
-        local recipe = getScriptManager():getCraftRecipe("Base.OMHTTCraftTurret" .. route[1])
+        local prefix = route[3] and "Base.OMHTTCraft" or "Base.OMHTTCraftTurret"
+        tools[2] = route[3] and "Base.Pliers" or "Base.Wrench"
+        local recipe = getScriptManager():getCraftRecipe(prefix .. route[1])
+        if route[3] then
+            assert(recipe:getTime() * 5 == 20 * getGameTime():getMultiplierFromTimeDelta(1), "Improvised recipe must take twenty native seconds before skill modifiers")
+            assert(recipe:getXPAwardCount() == 1 and recipe:getXPAward(0):getPerk() == Perks.Electricity, "Improvised recipe awards only Electrical XP")
+        end
         assert(recipe and not recipe:needToBeLearn(), "Turret recipe unavailable")
         local data = CraftRecipeData.new(CraftMode.Handcraft, false, true, false, true)
         data:setRecipe(recipe)
@@ -149,6 +159,10 @@ local function verifyTurrets()
         local item = data:getFirstCreatedItem()
         assert(item and data:getAllCreatedItems():size() == 1, "Recipe must produce exactly one item")
         if route[1] == "Complete" then packed = item end
+        if route[3] then
+            assert(item:getFullType() == T.TYPES[route[1]] and item:getCondition() > 0, "Improvised recipe output mismatch")
+            assert(require("OMHTT/LootDefinitions").WEIGHTS[route[1]] == nil, "Improvised item leaked into module loot")
+        end
         if item:getFullType() == T.BASE then
             local expected = route[1] == "Base" and 0 or 1
             assert(T.contents(item:getInventory()).heads == expected, "Completed turret missing its real head")
@@ -178,14 +192,21 @@ local function verifyTurrets()
     inventory:AddItem("Base.OMHTTModuleReload")
     local velocity = inventory:AddItem("Base.OMHTTModuleVelocity")
     local stats = T.cycleConfig(T.contents(inventory))
-    assert(stats.modules == baseStats.modules + 4 and stats.ammo == baseStats.ammo + 100 and math.abs(stats.cooldown - baseStats.cooldown / 1.5) < 0.001
+    assert(stats.modules == baseStats.modules + 10 and stats.ammo == baseStats.ammo + 100 and math.abs(stats.cooldown - baseStats.cooldown / 1.5) < 0.001
         and math.abs(stats.reload - baseStats.reload / 1.5) < 0.001 and math.abs(stats.damage - baseStats.damage * 1.2) < 0.001, "Native effective module stats failed")
     assert(not T.canRemove(inventory, expansion), "Native capacity removal lost module limit")
     assert(not inventory:isItemAllowed(instanceItem("Base.OMHTTExpansionKitMedium")), "Native duplicate capacity accepted")
     velocity:setCondition(0)
     assert(T.cycleConfig(T.contents(inventory)).damage == baseStats.damage, "Broken native velocity remains active")
     inventory:Remove(velocity)
+    local excess = {}
+    for i = 0, inventory:getItems():size() - 1 do
+        local module = inventory:getItems():get(i)
+        if module:getFullType() == T.TYPES.Reload then excess[#excess + 1] = module end
+    end
+    for i = 1, #excess do inventory:Remove(excess[i]) end
     assert(T.canRemove(inventory, expansion), "Native capacity remains stuck after removing excess")
+    for i = 1, #excess do inventory:AddItem(excess[i]) end
     local info = SpriteConfigManager.GetObjectInfo("OMHTTDeployTurret")
     assert(info and info:getRecipe():getCraftRecipe():getXPAwardCount() == 0, "Deployment repeats XP")
     local recipe = info:getRecipe():getCraftRecipe()
@@ -262,6 +283,17 @@ local function verifyTurrets()
     contents.head:getModData().OMHTTCycle = {schema = 1, loaded = 1, nextShot = 123456789, cooldownDuration = 750, reloadDuration = 750}
     assert(contents.head:getWorldStaticItem() == "Base.OMHTTProbeHead", "Actual turret head has no native model")
     OMHTT_NativeTurret = object
+    local starter = instanceItem(T.BASE)
+    local starterStorage = starter:getInventory()
+    for _, component in pairs({T.HEAD, T.TYPES.MotionDetectionImprovised, T.TYPES.FiringImprovised, T.TYPES.CapacityImprovised, "Base.Potato"}) do
+        local item = starterStorage:AddItem(component)
+        starter:getModData()[component] = item:getID()
+    end
+    local starterContents = T.contents(starterStorage)
+    assert(T.cycleConfig(starterContents).modules == 4 and T.cycleConfig(starterContents).ammo == 125,
+        "Improvised native expansion has wrong defaults")
+    starterContents.head:getModData().OMHTTCycle = {schema = 1, loaded = 1, nextShot = 123456789, cooldownDuration = 2000}
+    OMHTT_NativeImprovised = starter
     local wreckSquare = IsoGridSquare.new(getCell(), nil, 7, 7, 0)
     local wreck = IsoThumpable.new(getCell(), wreckSquare, "omhtt_turret_01_16", false)
     wreckSquare:getObjects():add(wreck)
@@ -448,7 +480,7 @@ local function verifyTurrets()
     assert(base:getSpriteName() == H.SPRITE, "Rotating head changed base sprite")
     OMHTT_NativeHybridHead = world
     print("[OMHTT-Smoke] native-hybrid model=bound yaw=independent base=fixed lookup=exact")
-    print("[OMHTT-Smoke] native-turret recipes=5 loadedDeploy=exact contents=preserved weight=exact filters=valid cooldown=preserved")
+    print("[OMHTT-Smoke] native-turret recipes=8 loadedDeploy=exact contents=preserved weight=exact filters=valid cooldown=preserved")
     isServer, isClient = serverFunction, clientFunction
 end
 

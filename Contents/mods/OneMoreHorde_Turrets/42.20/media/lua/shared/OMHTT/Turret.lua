@@ -10,12 +10,13 @@ T.BASE = "Base.OMHTTTurretBase"
 T.HEAD = "Base.OMHTTPotatoHead"
 T.HEAD_VISUAL = {height = 0.4 - 16 / 192, scale = 0.512, muzzle = 0.55}
 T.CONTAINER = "OMHTTTurret"
-T.MODULES = {Firing = true, MotionDetection = true, Filter = true, RapidFire = true, Velocity = true,
+T.MODULES = {FiringImprovised = true, MotionDetectionImprovised = true, CapacityImprovised = true, Firing = true, MotionDetection = true, Filter = true, RapidFire = true, Velocity = true,
     Range = true, Critical = true, Accuracy = true, Suppression = true, Capacity = true, CapacitySmall = true, CapacityLarge = true, Detection360 = true, Reload = true, Autoloader = true}
 T.SINGLE = {Firing = true, MotionDetection = true, Filter = true, Detection360 = true, Autoloader = true}
 T.TYPES = {}
 T.COMPONENTS = {}
-local itemTypes = {CapacitySmall = "OMHTTExpansionKitSmall", Capacity = "OMHTTExpansionKitMedium",
+local roles = {FiringImprovised = "Firing", MotionDetectionImprovised = "MotionDetection"}
+local itemTypes = {CapacityImprovised = "OMHTTExpansionKitImprovised", MotionDetectionImprovised = "OMHTTModuleDetectionImprovised", CapacitySmall = "OMHTTExpansionKitSmall", Capacity = "OMHTTExpansionKitMedium",
     CapacityLarge = "OMHTTExpansionKitLarge", MotionDetection = "OMHTTModuleDetection", Detection360 = "OMHTTModule360"}
 for name in pairs(T.MODULES) do
     local fullType = "Base." .. (itemTypes[name] or "OMHTTModule" .. name)
@@ -27,6 +28,14 @@ end
 ---@nodiscard
 function T.component(fullType)
     return T.COMPONENTS[fullType]
+end
+
+---@param fullType string Exact item type
+---@return string? role Shared exclusivity key
+---@nodiscard
+function T.role(fullType)
+    local component = T.component(fullType)
+    return roles[component] or component
 end
 
 ---@param key string Setting suffix
@@ -102,7 +111,7 @@ function T.kind(item)
     if fullType == "Base.Potato" or G.AMMO[fullType] then return "ammo" end
     if fullType == "Base.CarBattery1" or fullType == "Base.CarBattery2" or fullType == "Base.CarBattery3" then return "battery" end
     local module = T.component(fullType)
-    if module == "Capacity" or module == "CapacitySmall" or module == "CapacityLarge" then return "capacity" end
+    if module == "CapacityImprovised" or module == "Capacity" or module == "CapacitySmall" or module == "CapacityLarge" then return "capacity" end
     if module and T.MODULES[module] then return "module" end
     return nil
 end
@@ -132,12 +141,15 @@ function T.contents(container)
             else
                 result.modules = result.modules + 1
             end
-            local component = T.component(item:getFullType())
+            local component = T.role(item:getFullType())
             result.moduleCounts[component] = (result.moduleCounts[component] or 0) + 1
             result.moduleNames[#result.moduleNames + 1] = item:getDisplayName()
             if item:getCondition() > 0 then
                 local name = T.component(item:getFullType())
                 result.active[name] = (result.active[name] or 0) + 1
+                if roles[name] then
+                    result.active[roles[name]] = (result.active[roles[name]] or 0) + 1
+                end
             end
         else
             result.invalid = result.invalid + 1
@@ -193,7 +205,7 @@ function T.accept(container, item)
         if G.profile(contents.head) then ammoType = G.ammoType(contents.head) end
         return contents.heads == 1 and item:getFullType() == ammoType and contents.reserveAll + (G.profile(contents.head) and G.loaded(contents.head) or 0) < stats.ammo
     end
-    local component = T.component(item:getFullType())
+    local component = T.role(item:getFullType())
     if T.SINGLE[component] and contents.moduleCounts[component] then return false end
     return contents.modules < stats.modules
 end
@@ -207,6 +219,7 @@ function T.canRemove(container, item)
     local contents = T.contents(container)
     if T.kind(item) == "head" then return not G.servicing[item] end
     if T.kind(item) == "capacity" and item:getCondition() > 0 then
+        contents.active.CapacityImprovised = nil
         contents.active.Capacity, contents.active.CapacitySmall, contents.active.CapacityLarge = nil, nil, nil
         if contents.capacities > 1 then
             local items = container:getItems()
@@ -228,7 +241,7 @@ end
 ---@return nil
 function T.configure(container)
     container:setType(T.CONTAINER)
-    local stats = Stats.resolve({active = {Capacity = 1, CapacitySmall = 1, CapacityLarge = 1}})
+    local stats = Stats.resolve({active = {CapacityImprovised = 1, Capacity = 1, CapacitySmall = 1, CapacityLarge = 1}})
     local capacity = math.ceil(10 + stats.ammo * 0.2 + (stats.modules + 1) * 0.3)
     container:setCapacity(capacity)
     if container:getContainingItem() then container:getContainingItem():setCapacity(capacity) end

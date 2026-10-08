@@ -1,5 +1,7 @@
 # Phases and checkpoints
 
+2026-10-08: C104 / 0.2.34 implements the R3C8 starter-module/expansion slice and further R1C3 aim/LOS cleanup. See PATCH_v0.2.34.md and TEST_v0.2.34.md. Standard module crafting, offensive modules, battery-endurance acceptance and client-stall resolution remain separate.
+
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
 New checkpoint IDs use **R** for the revised roadmap. Historical P0-P6 IDs and evidence remain in [the previous roadmap](ROADMAP_LEGACY_20261004.md) and individual patch records. Do not reuse their IDs or erase incomplete acceptance.

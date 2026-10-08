@@ -205,7 +205,7 @@ function Combat.fire(record, object, player, options)
     options.visits = visits
     if options.align and not options.align(target) then return "Aiming" end
     if options.projectileSpeed and #Combat.pending >= 128 then return "Unavailable" end
-    if options.commit and not options.commit() then return "Unavailable" end
+    if options.commit and not options.commit() then return options.failure or "Unavailable" end
     if not options.resolve and not weapon then
         weapon = instanceItem("Base.Hammer")
         weapon:setRanged(true)

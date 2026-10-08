@@ -39,15 +39,15 @@ function OMHTTBarrierServiceAction:start()
         end
         addSound(self.character, self.character:getX(), self.character:getY(), self.character:getZ(), 20, 1)
     end
-    Diagnostics.emit("barrier-service-start", {id = self.id, action = self.operation, seconds = 10})
+    Diagnostics.emit("barrier-service-start", {id = self.id, action = self.operation, seconds = self.seconds})
 end
 
 ---@return nil
 function OMHTTBarrierServiceAction:update()
     self.character:faceThisObject(self.object)
     self.elapsed = self.elapsed + math.min(getGameTime():getRealworldSecondsSinceLastUpdate(), 0.25)
-    self:setJobDelta(math.min(self.elapsed / 10, 0.999))
-    if self.elapsed >= 10 then
+    self:setJobDelta(math.min(self.elapsed / self.seconds, 0.999))
+    if self.elapsed >= self.seconds then
         self:forceComplete()
     end
 end
@@ -66,7 +66,7 @@ end
 
 ---@return boolean applied
 function OMHTTBarrierServiceAction:complete()
-    if self.done or self.elapsed < 10 then return false end
+    if self.done or self.elapsed < self.seconds then return false end
     self.done = true
     local Service = require("OMHTT/BarrierService")
     return Service.apply(self.character, self.object, self.id, self.operation)
@@ -87,6 +87,7 @@ function OMHTTBarrierServiceAction:new(character, object, id, operation)
     local o = ISBaseTimedAction.new(self, character)
     o.object, o.id, o.operation = object, id, operation
     o.elapsed, o.done = 0, false
+    o.seconds = o.operation == "Pickup" and 5 or 10
     o.maxTime = o:getDuration()
     return o
 end

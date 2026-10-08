@@ -1,5 +1,16 @@
 module Base
 {
+    sound OMHTTTriggerClick
+    {
+        category = Item,
+        maxInstancesPerEmitter = 1,
+        clip
+        {
+            file = media/sound/stormy9mmClick.wav,
+            distanceMax = 8,
+            volume = 0.7,
+        }
+    }
     sound OMHTTPotatoFire
     {
         category = Item,

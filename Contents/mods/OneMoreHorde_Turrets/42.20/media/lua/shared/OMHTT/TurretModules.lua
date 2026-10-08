@@ -19,9 +19,10 @@ end
 
 ---@param state table Device state
 ---@param contents table Inventory summary
+---@param automatic boolean? Apply automatic detection limits
 ---@return table profile
 ---@nodiscard
-function M.profile(state, contents)
+function M.profile(state, contents, automatic)
     local active = contents.active
     local cone = M.option("ForwardCone", 90, 10, 360)
     if active.Detection360 then
@@ -37,8 +38,10 @@ function M.profile(state, contents)
         end
     end
     local stats = T.cycleConfig(contents)
+    local range = stats.range
+    if automatic and active.MotionDetectionImprovised then range = range * 0.75 end
     return {stats = stats, heading = (state.baseFacing or state.facing or 0) * 22.5, cone = cone, omni = active.Detection360 ~= nil,
-        range = math.min(stats.range, state.engagementRange or 100000), priority = priority}
+        range = math.min(range, state.engagementRange or 100000), priority = priority}
 end
 
 ---@param origin IsoGridSquare Turret tile

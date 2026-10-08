@@ -160,4 +160,31 @@ module Base {
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_ModuleDetection360,
     }
+    item OMHTTModuleDetectionImprovised {
+        DisplayName = Detection Module (Improvised),
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_MotionDetectionImprovised,
+    }
+    item OMHTTModuleFiringImprovised {
+        DisplayName = Firing Module (Improvised),
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_FiringImprovised,
+    }
+    item OMHTTExpansionKitImprovised {
+        DisplayName = Expansion Kit (Improvised),
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_CapacityImprovised,
+    }
 }

@@ -45,7 +45,7 @@ function Aim.request(object, target, player)
         entry = {target = target, player = player, last = now, checkAt = 0}
         Aim.entries[object] = entry
     end
-    entry.speed = T.turnSpeed(T.contents(object:getContainer()).head)
+    entry.speed = T.turnSpeed(require("OMHTT/TurretWorld").contents(object).head)
     entry.expires = now + 2000 + 360000 / entry.speed
     return false
 end
@@ -70,10 +70,10 @@ function Aim.tick()
             local state = T.state(object)
             local valid = state and T.isOn(state) and W.valid(object) and now <= entry.expires
             if valid and now >= entry.checkAt then
-                local contents = T.contents(object:getContainer())
+                local contents = W.contents(object)
                 entry.speed = T.turnSpeed(contents.head)
                 valid = contents.head and contents.head:getCondition() > 0 and W.power(object, contents)
-                    and M.inside(object:getSquare(), entry.target, M.profile(state, contents))
+                    and M.inside(object:getSquare(), entry.target, M.profile(state, contents, entry.player == nil))
                     and Combat.clearLane(object:getSquare(), entry.target:getSquare(), T.cycleConfig(contents).range)
                 if entry.player then
                     valid = valid and W.near(entry.player, object)

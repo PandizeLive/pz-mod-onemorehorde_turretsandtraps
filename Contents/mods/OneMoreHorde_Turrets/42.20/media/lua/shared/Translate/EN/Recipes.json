@@ -20,5 +20,8 @@
     "OMHTTCraftBedSpikes": "Bed Spikes",
     "OMHTTCraftBarbs": "Barbed Panel",
     "OMHTTReinforceSpikeBarrier": "Reinforced Spike Barrier",
-    "OMHTTReinforceBedSpikes": "Reinforced Bed Spikes"
+    "OMHTTReinforceBedSpikes": "Reinforced Bed Spikes",
+    "OMHTTCraftMotionDetectionImprovised": "Detection Module (Improvised)",
+    "OMHTTCraftFiringImprovised": "Firing Module (Improvised)",
+    "OMHTTCraftCapacityImprovised": "Expansion Kit (Improvised)"
 }

@@ -236,5 +236,11 @@
     "Sandbox_Title_OMHTurretsTraps_Beds": "Bed Spikes",
     "Sandbox_Title_OMHTurretsTraps_Barbs": "Barbed Panel",
     "Sandbox_OMHTurretsTraps_BedSprintTripChance": "Player sprint trip chance",
-    "Sandbox_OMHTurretsTraps_BedSprintTripChance_tooltip": "Chance to trip when sprinting into Bed Spikes. Falling onto spikes causes a laceration."
+    "Sandbox_OMHTurretsTraps_BedSprintTripChance_tooltip": "Chance to trip when sprinting into Bed Spikes. Falling onto spikes causes a laceration.",
+    "Sandbox_OMHTurretsTraps_CapacityImprovisedModuleBonus": "Improvised kit: module slots",
+    "Sandbox_OMHTurretsTraps_CapacityImprovisedModuleBonus_tooltip": "Additional module slots. Default 2, for 4 total with the default base.",
+    "Sandbox_OMHTurretsTraps_CapacityImprovisedAmmoBonus": "Improvised kit: reserve rounds",
+    "Sandbox_OMHTurretsTraps_CapacityImprovisedAmmoBonus_tooltip": "Additional reserve ammunition. Does not increase magazine size.",
+    "Sandbox_OMHTurretsTraps_ImprovisedFiringFailure": "Improvised Firing: failure chance",
+    "Sandbox_OMHTurretsTraps_ImprovisedFiringFailure_tooltip": "Percent chance per valid automatic firing cycle. No ammunition or shot power is spent; retries use the normal cooldown. Manual fire is unaffected."
 }

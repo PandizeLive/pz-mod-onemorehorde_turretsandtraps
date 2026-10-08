@@ -20,5 +20,8 @@
     "Tooltip_OMHTT_ModuleSuppression": "Reduces zombie hearing range. Stackable.",
     "Tooltip_OMHTT_ModuleCritical": "Increases critical chance. Stackable.",
     "Tooltip_OMHTT_ModuleAccuracy": "Increases firearm accuracy. Stackable.",
-    "Tooltip_OMHTT_Barbs": "One-tile barbed frame backed by a wall, fence, closed single-panel door or window. Arrows mark the damaging side. Door barbs follow the leaf; window barbs stay on the frame. No player injuries."
+    "Tooltip_OMHTT_Barbs": "One-tile barbed frame backed by a wall, fence, closed single-panel door or window. Arrows mark the damaging side. Door barbs follow the leaf; window barbs stay on the frame. No player injuries.",
+    "Tooltip_OMHTT_MotionDetectionImprovised": "Automatic detection at 75 percent range, including Range bonuses. Normal tracking speed. One Detection Module per turret.",
+    "Tooltip_OMHTT_FiringImprovised": "Automatic firing with a configurable 15 percent default click-only failure. Failed triggers keep ammo and shot power, then wait the normal cooldown. Manual fire is unaffected. One Firing Module per turret.",
+    "Tooltip_OMHTT_CapacityImprovised": "Adds 2 module slots and 25 reserve rounds by default. Replaces other expansion kits; bonuses do not stack."
 }

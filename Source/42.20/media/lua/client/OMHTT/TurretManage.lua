@@ -165,18 +165,22 @@ function Panel:refresh()
     self.priorityButton:setEnable(contents.active.Filter ~= nil)
     local active = {}
     for name in pairs(M.CORE) do
-        if contents.active[name] then
+        if contents.active[name] and name ~= "FiringImprovised" and name ~= "MotionDetectionImprovised" then
             active[#active + 1] = contents.active[name]
         end
     end
     self.moduleEffects = getText("UI_OMHTT_ActiveModules", #active, profile.cone)
+    if contents.active.MotionDetectionImprovised or contents.active.FiringImprovised then
+        self.moduleEffects = self.moduleEffects .. " | " .. getText("UI_OMHTT_ImprovisedStatus",
+            string.format("%.1f", M.profile(state, contents, true).range))
+    end
     self.fireButton:setEnable(status == "Ready")
     local capacity = stats.modules
-    self.rows = math.max(2, math.ceil(math.max(contents.modules, capacity) / 5))
+    self.rows = math.max(2, math.ceil(math.max(contents.modules, capacity) / 8))
     self.moduleRow = math.min(self.moduleRow, self.rows - 2)
     for i = 1, #self.slots do self.slots[i].items = {} end
-    for i = 1, 10 do
-        local number = self.moduleRow * 5 + i
+    for i = 1, 16 do
+        local number = self.moduleRow * 8 + i
         local slot = self.moduleSlots[i]
         slot.disabled = number > capacity
         slot.label = getText("UI_OMHTT_ManageModule", number)
@@ -192,7 +196,7 @@ function Panel:refresh()
         if kind == "capacity" then slot = self.capacitySlot end
         if kind == "module" then
             modules = modules + 1
-            slot = self.moduleSlots[modules - self.moduleRow * 5]
+            slot = self.moduleSlots[modules - self.moduleRow * 8]
         end
         if kind and slot then slot.items[#slot.items + 1] = item end
     end
@@ -304,7 +308,7 @@ function OpenAction:perform()
         local font = getTextManager()
         local lineHeight = font:getFontHeight(UIFont.Small) + 3
         local titleHeight = font:getFontHeight(UIFont.Medium) + 16
-        local width = math.min(getPlayerScreenWidth(index) - 24, math.max(600, lineHeight * 29))
+        local width = math.min(getPlayerScreenWidth(index) - 24, math.max(800, lineHeight * 40))
         local slotHeight = lineHeight + 48
         local top = titleHeight + lineHeight + 12
         local modulesY = top + (slotHeight + 8) * 2
@@ -334,10 +338,10 @@ function OpenAction:perform()
         panel.ammoSlot = panel:addSlot("ammo", "", 12, top + slotHeight + 8, storageWidth * 0.38)
         panel.magazineSlot = panel:addSlot("magazine", "", 20 + storageWidth * 0.38, top + slotHeight + 8, storageWidth * 0.30)
         panel.capacitySlot = panel:addSlot("capacity", getText("UI_OMHTT_ManageCapacity"), 28 + storageWidth * 0.68, top + slotHeight + 8, storageWidth * 0.32)
-        local moduleWidth = (width - 48) / 5
-        for i = 1, 10 do
-            panel.moduleSlots[i] = panel:addSlot("module", "", 12 + ((i - 1) % 5) * (moduleWidth + 6),
-                modulesY + lineHeight + math.floor((i - 1) / 5) * (moduleHeight + 6), moduleWidth)
+        local moduleWidth = (width - 66) / 8
+        for i = 1, 16 do
+            panel.moduleSlots[i] = panel:addSlot("module", "", 12 + ((i - 1) % 8) * (moduleWidth + 6),
+                modulesY + lineHeight + math.floor((i - 1) / 8) * (moduleHeight + 6), moduleWidth)
             panel.moduleSlots[i]:setHeight(moduleHeight)
         end
         panel.priorityButton = ISButton:new(130, height - 38, width - 142, 28, "", panel, Panel.changePriority)

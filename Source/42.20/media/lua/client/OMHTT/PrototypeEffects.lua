@@ -39,6 +39,10 @@ end
 ---@param facts table Shot facts; target reference is local SP only
 ---@return nil
 function E.receive(module, command, facts)
+    if module == F.MODULE and command == "Click" then
+        if facts.sound then E.sound(facts.sound, facts.x, facts.y, facts.z) end
+        return
+    end
     if module ~= F.MODULE or (command ~= "Launch" and command ~= "Impact" and command ~= "GunShot") then return end
     local effect = nil
     for i = 1, #E.effects do

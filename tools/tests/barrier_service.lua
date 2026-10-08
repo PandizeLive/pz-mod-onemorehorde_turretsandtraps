@@ -55,11 +55,13 @@ check(not Service.apply(testPlayer, parts[2], id, "Pickup") and slot.device ~= n
 testInventory.room = true
 local pickup = testServiceAction(testPlayer, parts[2], id, "Pickup")
 pickup:start()
-for i = 1, 101 do pickup:update() end
+for i = 1, 49 do pickup:update() end
+check(not pickup.forced and not pickup:complete(), "Barrier pickup cannot complete before five seconds")
+pickup:update(); pickup:update()
 check(pickup:complete() and #testInventory.items == 1 and testInventory.items[1].condition == 100,
     "pickup from second half creates exactly one full-condition item")
 check(slot.device == nil and parts[1].removed and parts[2].removed, "pickup retires both world halves")
 check(not pickup:complete() and not Service.apply(testPlayer, parts[1], id, "Pickup") and #testInventory.items == 1,
     "replayed action and stale first-half action cannot duplicate pickup")
-check(pickup.stopOnWalk and pickup.stopOnRun and pickup.stopOnAim and pickup:getDuration() == action:getDuration(),
-    "pickup and repair share duration and native movement interrupts")
+check(pickup.stopOnWalk and pickup.stopOnRun and pickup.stopOnAim and pickup.seconds == 5 and action.seconds == 10,
+    "Pickup takes five seconds and repair ten, retaining native movement interrupts")

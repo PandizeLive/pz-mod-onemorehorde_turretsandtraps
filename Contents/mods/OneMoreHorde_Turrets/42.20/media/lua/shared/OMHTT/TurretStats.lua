@@ -1,6 +1,6 @@
 local G = require("OMHTT/Firearms")
 local Class = require("OMHTT/FirearmClass")
-local kits = {{"CapacitySmall", "Small", 50, 2}, {"Capacity", "", 100, 4}, {"CapacityLarge", "Large", 200, 6}}
+local kits = {{"CapacityImprovised", "Improvised", 25, 2}, {"CapacitySmall", "Small", 50, 6}, {"Capacity", "", 100, 10}, {"CapacityLarge", "Large", 200, 14}}
 local S = {}
 
 ---@param key string Setting
@@ -97,7 +97,7 @@ function S.resolve(contents)
         knockdown = math.min(100, knockdown + knockBonus),
         range = math.min(firearm and 50 or 30, range + S.bonus(active, "Range", 2, 10)),
         ammo = math.floor(ammoCapacity + extraAmmo),
-        modules = math.floor(S.option("PotatoModuleCapacity", 4, 0, 20) + extraModules),
+        modules = math.floor(S.option("PotatoModuleCapacity", 2, 0, 20) + extraModules),
         magazine = magazine, accuracy = accuracy, farAccuracy = farAccuracy, critChance = critChance, critMultiplier = critMultiplier, rack = rack * 1000, firearm = firearm ~= nil,
         suppressed = (active.Suppression or 0) > 0,
         hearingMultiplier = remaining,

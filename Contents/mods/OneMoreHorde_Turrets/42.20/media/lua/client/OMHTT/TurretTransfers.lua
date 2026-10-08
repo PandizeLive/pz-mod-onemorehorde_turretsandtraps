@@ -39,7 +39,7 @@ function X.rejection(player, item, source, destination)
             if instanceof(item, "HandWeapon") and item:isRanged() then return "UnsupportedFirearm" end
             return "TransferWrongItem"
         end
-        local component = T.component(item:getFullType())
+        local component = T.role(item:getFullType())
         if T.SINGLE[component] and contents.moduleCounts[component] then return "ModuleDoesNotStack" end
         if T.kind(item) == "ammo" then
             local head = contents.head
@@ -135,7 +135,7 @@ function X.queue(player, object, items, incoming, kind)
             if action.destContainer == storage then
                 local itemKind = T.kind(action.item)
                 if itemKind then counts[itemKind] = counts[itemKind] + 1 end
-                local component = T.component(action.item:getFullType())
+                local component = T.role(action.item:getFullType())
                 if component then components[component] = (components[component] or 0) + 1 end
             end
         end
@@ -149,7 +149,7 @@ function X.queue(player, object, items, incoming, kind)
         if incoming and (not source or not source:isInCharacterInventory(player)) then failure = "TransferCarried" end
         if not incoming and source ~= storage then failure = "TransferMissing" end
         if incoming and counts[kind] >= limits[kind] then failure = "TransferFull" end
-        local component = T.component(item:getFullType())
+        local component = T.role(item:getFullType())
         if incoming and T.SINGLE[component] and components[component] then failure = "ModuleDoesNotStack" end
         if pending[item] then failure = "TransferPending" end
         if failure then

@@ -233,8 +233,8 @@ check(carried.inventory:contains(battery) and math.abs(battery.charge - 0.369) <
 check(carried.data.OMHTTTurret.condition == 37 and carried.data.OMHTTTurret.nextShot == record.nextShot, "Pickup preserves durability and cooldown")
 check(not W.pickup(pickupPlayer, object, record.id) and #playerStorage.items == 1, "Repeated pickup cannot duplicate item")
 local Action = require("OMHTT/TurretPickupAction")
-local incomplete = {elapsed = 9.9, done = false}
-check(not Action.complete(incomplete), "Pickup cannot complete before ten seconds")
+local incomplete = {elapsed = 4.9, seconds = 5, done = false}
+check(not Action.complete(incomplete), "Pickup cannot complete before five seconds")
 instanceItem = oldInstanceItem
 
 local dropped = {}

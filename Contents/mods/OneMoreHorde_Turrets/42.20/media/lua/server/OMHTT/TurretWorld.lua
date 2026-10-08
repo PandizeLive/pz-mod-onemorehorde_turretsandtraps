@@ -375,7 +375,7 @@ function W.fire(player, object, target)
     local options = {range = stats.range, interval = stats.cooldown,
         damage = stats.damage / 100, knockdown = stats.knockdown, critChance = stats.critChance, critMultiplier = stats.critMultiplier,
         splash = stats.damage * T.option("SplashPercent", 25, 0, 100) / 10000, radius = T.option("SplashRadius", 1.5, 0, 3), managed = true,
-        profile = M.profile(state, contents), target = target, projectileSpeed = T.option("ProjectileSpeed", 20, 5, 100)}
+        profile = M.profile(state, contents, player == nil), target = target, projectileSpeed = T.option("ProjectileSpeed", 20, 5, 100)}
     if G.profile(contents.head) then
         options.projectileSpeed, options.splash, options.radius = nil, 0, 0
         options.resolve = require("OMHTT/FirearmCombat").hit
@@ -392,6 +392,20 @@ function W.fire(player, object, target)
         if not G.profile(contents.head) and not object:getContainer():contains(contents.round) then return false end
         if player and not W.near(player, object) then return false end
         if not player and (not M.detects(state, contents) or not contents.active.Firing) then return false end
+        if not player and contents.active.FiringImprovised
+            and ZombRand(10000) < M.option("ImprovisedFiringFailure", 15, 0, 100) * 100 then
+            cycle.nextShot, cycle.cooldownDuration = Clock.now() + stats.cooldown, stats.cooldown
+            options.failure = "Misfire"
+            local square = object:getSquare()
+            local sound = "OMHTTTriggerClick"
+            if G.profile(contents.head) then
+                local nativeSound = contents.head:getClickSound()
+                if nativeSound and nativeSound ~= "" then sound = nativeSound end
+            end
+            triggerEvent("OnServerCommand", F.MODULE, "Click", {sound = sound,
+                x = square:getX() + .5, y = square:getY() + .5, z = square:getZ()})
+            return false
+        end
         if G.profile(contents.head) and not G.consume(contents, stats, Clock.now()) then return false end
         if power.kind == "battery" then
             power.battery:setCurrentUsesFloat(math.max(0, power.battery:getCurrentUsesFloat() - power.cost))

@@ -29,7 +29,11 @@ Non-stackable duplicates are rejected with feedback. Without Filter, a random el
 
 Forward coverage defaults to 90 degrees, locked to placement. Engagement range is a per-turret slider bounded by effective weapon range. The selected blue coverage and optional amber hearing ring use current resolved stats; hearing display is a local Mod Options preference. Visual idle scanning does not move the coverage cone.
 
-## Planned improvised components and centered expansion layout
+## Improvised components and expansion
+
+C104 settles the earlier proposals and is implemented in [0.2.34](PATCH_v0.2.34.md): two rows of eight, fresh 2/4/8/12/16 slots, 75-percent automatic detection with normal speed, 15-percent click-only failures, +25 improvised reserve rounds, and approved Electrical-2 recipes. Preserve saved Sandbox values and stored items. The historical proposal text below no longer defines pending choices for this slice.
+
+### Historical proposal
 
 C84 requests craftable improvised Detection, Firing and Expansion variants; C86 simplifies progression after reviewing compact menu examples. The Expansion Kit uses the existing dedicated socket and replaces the installed kit; it does not occupy a regular module slot or stack with other kits. Keep one active Detection and one active Firing role across improvised/standard variants. Suggested Detection drawbacks are reduced automatic detection range and slower acquisition; owner proposes a 15% click-only failed trigger for Firing. Exact settings and recipes remain unapproved. On a failed trigger, recommend a normal cooldown, retained ammo and no persistent weapon jam or full effect-power cost; do not also impose the earlier proposed firing-rate penalty.
 

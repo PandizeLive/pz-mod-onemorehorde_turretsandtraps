@@ -207,6 +207,19 @@ check(victim.health < 5 and G.loaded(pair.gun) == 2 and noise == 1, "Gun spends 
 check(#require("OMHTT/PrototypeCombat").pending == 0, "Firearm does not launch potato projectiles")
 local prior = G.loaded(pair.gun)
 check(W.fire(nil, object, victim) == "Cooling" and G.loaded(pair.gun) == prior, "Gun integration enforces cooldown before spending")
+for i = 1, #pair.storage.items do
+    local module = pair.storage.items[i]
+    if module.fullType == T.TYPES.Firing then module.fullType = T.TYPES.FiringImprovised end
+end
+function pair.gun:getClickSound() return "M9Jam" end
+testMillis = G.state(pair.gun).nextShot
+SandboxVars.OMHTurretsTraps.ImprovisedFiringFailure = 100
+local beforeFailureHealth = victim.health
+check(W.fire(nil, object, victim) == "Misfire" and G.loaded(pair.gun) == prior
+    and not pair.gun:isJammed() and victim.health == beforeFailureHealth and noise == 1,
+    "Improvised firearm failure preserves chamber, health and noise without creating a jam")
+check(W.fire(nil, object, victim) == "Cooling", "Firearm failed-trigger cooldown prevents immediate retry")
+SandboxVars.OMHTurretsTraps.ImprovisedFiringFailure = nil
 SandboxVars.OMHTurretsTraps.FirearmAccuracyMultiplier = 0
 check(T.cycleConfig(T.contents(pair.storage)).accuracy == 0, "Zero accuracy multiplier allows no hits")
 SandboxVars.OMHTurretsTraps.FirearmTurrets = false

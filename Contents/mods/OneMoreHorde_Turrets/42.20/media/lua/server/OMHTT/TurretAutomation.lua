@@ -101,7 +101,7 @@ function A.step(entry, deadline)
         A.status(entry, "inactive")
         return true
     end
-    local profile = M.profile(state, contents)
+    local profile = M.profile(state, contents, true)
     local key = profile.heading .. ":" .. profile.cone .. ":" .. profile.range .. ":" .. profile.priority
     if entry.key ~= key then entry.job, entry.target = nil, nil end
     entry.key = key
@@ -118,8 +118,8 @@ function A.step(entry, deadline)
     end
     entry.job = nil
     if now >= entry.due then entry.due = now + interval end
-    if not target or not M.inside(square, target, profile)
-        or not Combat.clearLane(square, target:getSquare(), profile.range) then
+    if not target or (not retained and (not M.inside(square, target, profile)
+        or not Combat.clearLane(square, target:getSquare(), profile.range))) then
         entry.target = nil
         if entry.status ~= "no-target" then
             D.defer("turret-auto-search", {id = state.id, visits = job.visited, range = profile.range,
@@ -139,7 +139,7 @@ function A.step(entry, deadline)
     elseif contents.active.Firing and now >= (entry.fireDue or 0) then
         local result = W.fire(nil, object, target)
         entry.fireDue = now + 50
-        if result == "Fired" then entry.fireDue = now + T.cycleConfig(contents).cooldown end
+        if result == "Fired" or result == "Misfire" then entry.fireDue = now + T.cycleConfig(contents).cooldown end
         A.status(entry, result)
     elseif not contents.active.Firing then
         A.status(entry, "tracking-only")

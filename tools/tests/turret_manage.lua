@@ -79,7 +79,7 @@ check(completed and not inventory.visible and not inventory.pinned, "Manage leav
 local panel = testTurretPanel
 panel:prerender()
 check(not panel.fireButton.enabled and panel.status == "NoHead", "Empty base cannot fire")
-check(#panel.slots == 15 and panel.height <= 720 and panel.x >= 0, "Dedicated slots and controls fit 1280x720")
+check(#panel.slots == 21 and panel.height <= 720 and panel.x >= 0, "Sixteen module slots and controls fit 1280x720")
 check(panel.headSlot.missing and panel.magazineSlot.disabled and not panel.magazineSlot.missing, "Empty base highlights head without inventing a magazine requirement")
 for i = 1, #panel.slots do panel.slots[i]:prerender() end
 panel:fire()
@@ -186,6 +186,10 @@ carried:Remove(firstDetection)
 storage:AddItem(firstDetection)
 check(X.rejection(player, secondDetection, carried, storage) == "ModuleDoesNotStack", "Commit rejects duplicate installed module")
 check(not T.accept(storage, secondDetection), "Native container filter rejects duplicate module")
+secondDetection.fullType = T.TYPES.MotionDetectionImprovised
+check(X.rejection(player, secondDetection, carried, storage) == "ModuleDoesNotStack",
+    "Improvised Detection shares the standard Detection transfer role")
+secondDetection.fullType = T.TYPES.MotionDetection
 storage:Remove(firstDetection)
 local filter = item("Base.OMHTTModuleFilter")
 storage:AddItem(filter); panel:refresh()
@@ -200,12 +204,12 @@ local oldModules = SandboxVars.OMHTurretsTraps.PotatoModuleCapacity
 SandboxVars.OMHTurretsTraps.PotatoModuleCapacity = 20
 for i = 1, 20 do storage:AddItem(item("Base.OMHTTModuleRange")) end
 panel:refresh()
-check(panel.rows == 4, "High capacity uses additional scrollable rows")
+check(panel.rows == 3, "High capacity uses additional scrollable rows")
 panel:scrollModules(1); panel:scrollModules(1); panel:refresh()
-check(#panel.moduleSlots[10].items == 1 and panel.moduleRow == 2, "Twentieth module stays accessible")
+check(#panel.moduleSlots[12].items == 1 and panel.moduleRow == 1, "Twentieth module stays accessible")
 SandboxVars.OMHTurretsTraps.PotatoModuleCapacity = 4
 panel:refresh()
-check(panel.rows == 4, "Lowered capacity preserves access to stored modules")
+check(panel.rows == 3, "Lowered capacity preserves access to stored modules")
 check(panel.moduleSlots[4].disabled, "Over-capacity slots still allow recovery but not deposits")
 ISMouseDrag.dragging, ISMouseDrag.draggingFocus = {invalid}, {onMouseUp = function() end}
 panel.moduleSlots[4]:onMouseUp(1, 1)

@@ -2,27 +2,27 @@ local S = require("OMHTT/TurretStats")
 local C = require("OMHTT/TurretCycle")
 local settings = SandboxVars.OMHTurretsTraps
 local base = S.resolve()
-check(base.damage == 35 and base.range == 6 and base.ammo == 100 and base.modules == 4, "No modules preserve saved base balance")
+check(base.damage == 35 and base.range == 6 and base.ammo == 100 and base.modules == 2, "No modules preserve saved base balance")
 local active = {Reload = 2, RapidFire = 2, Velocity = 2, Range = 2, Capacity = 1}
 local stats = S.resolve({active = active})
 check(math.abs(stats.cooldown - 2000 / 1.5) < 0.001 and math.abs(stats.reload - 2000 / 1.5) < 0.001,
     "Reload and Rapid-Fire independently stack speed without subtractive negative timers")
-check(stats.damage == 49 and stats.knockdown == 50 and stats.range == 10 and stats.modules == 8 and stats.ammo == 200,
+check(stats.damage == 49 and stats.knockdown == 50 and stats.range == 10 and stats.modules == 12 and stats.ammo == 200,
     "Damage, knockdown, range and storage bonuses combine")
 active.Autoloader = 1
 stats = S.resolve({active = active})
 check(stats.reload == 0 and stats.cooldown > 0 and stats.magazine == 1, "Autoloader bypasses reload only")
 active = {Reload = 40, RapidFire = 40, Velocity = 40, Range = 40, Capacity = 40}
 stats = S.resolve({active = active})
-check(stats.damage == 70 and stats.knockdown == 90 and stats.range == 16 and stats.modules == 8 and stats.ammo == 200,
+check(stats.damage == 70 and stats.knockdown == 90 and stats.range == 16 and stats.modules == 12 and stats.ammo == 200,
     "Stack caps apply and legacy duplicate Capacity never compounds")
 check(math.abs(stats.cooldown - 2000 / 3) < 0.001 and math.abs(stats.reload - 2000 / 3) < 0.001, "Speed bonuses stop at configured cap")
-for _, tier in pairs({{"CapacitySmall", 50, 2}, {"Capacity", 100, 4}, {"CapacityLarge", 200, 6}}) do
+for _, tier in pairs({{"CapacityImprovised", 25, 2}, {"CapacitySmall", 50, 6}, {"Capacity", 100, 10}, {"CapacityLarge", 200, 14}}) do
     local expanded = S.resolve({active = {[tier[1]] = 1}})
     check(expanded.ammo == base.ammo + tier[2] and expanded.modules == base.modules + tier[3], "Expansion tier grants its own bonuses")
 end
 local mixed = S.resolve({active = {CapacitySmall = 1, Capacity = 1, CapacityLarge = 1}})
-check(mixed.ammo == base.ammo + 200 and mixed.modules == base.modules + 6, "Legacy mixed kits never add bonuses together")
+check(mixed.ammo == base.ammo + 200 and mixed.modules == base.modules + 14, "Legacy mixed kits never add bonuses together")
 local original = settings.PotatoKnockdownChance
 settings.PotatoKnockdownChance = 100
 check(S.resolve({active = active}).knockdown == 100, "Module cap cannot nerf higher base knockdown")
@@ -79,3 +79,7 @@ for stacks = 1, 30 do
     previousReduction, previousDiminishing = reduction, gain
 end
 check(math.abs(S.resolve({active = {Suppression = 2}}).hearingMultiplier - .25) < .000001, "Second suppression stack reaches 75 percent reduction")
+
+settings.PotatoModuleCapacity = 4
+settings.CapacitySmallModuleBonus, settings.CapacityModuleBonus, settings.CapacityLargeModuleBonus = 2, 4, 6
+check(S.resolve().modules == 4 and S.resolve({active = {CapacityLarge = 1}}).modules == 10, "Saved Sandbox bonus settings retain their meaning")

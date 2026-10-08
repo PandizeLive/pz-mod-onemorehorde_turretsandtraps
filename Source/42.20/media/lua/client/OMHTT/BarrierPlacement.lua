@@ -42,6 +42,7 @@ function P.place(item, player)
     containers:add(item:getContainer())
     if item:getContainer() ~= player:getInventory() then containers:add(player:getInventory()) end
     local cursor = ISBuildIsoEntity:new(player, info, 1, containers)
+    require("OMHTT/PlacementTiming").apply(cursor)
     local logic = cursor.buildPanelLogic
     logic:setManualSelectInputs(true)
     logic:clearManualInputs()

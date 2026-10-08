@@ -1,6 +1,12 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.33 crafting organization and movement repairs
+## Current patch: 0.2.34 starter modules, expansion and service timing
+
+[C104 patch](PATCH_v0.2.34.md). Source implementation and 3,823 Kahlua assertions pass, including role exclusivity, no-resource failed triggers, persisted cooldowns, manual versus automatic range, aim-cache/shot-freshness boundaries, one advisory ray per retained-target step, overflow slots and five/ten-second action timing. Native translation loading validates 548 keys; 89 runtime/translation files compile; 23 packet serializations pass. Static isolation covers 109 Sandbox options and 29 identical shared files; manifest covers 183 source/221 package files.
+
+Native write/fresh-process read pass in 55.8/54.2 seconds, including eight recipe transactions and exact-item improvised setup/loaded-round/cooldown restoration. Traps-only, Turrets-only and both startup pass in 50.6/48.6/45.3 seconds. The final client-only placement completion-order correction passes focused Kahlua timing checks and recompilation; headless startup cannot certify rendered placement. Source tag and installation are pending; the previous installed checkpoint is 0.2.33. Native checks do not establish client-stall resolution or rendered acceptance. The held 0.2.33 checks join [one six-step owner test](TEST_v0.2.34.md). Cumulative Workshop notes remain unuploaded; no GitHub push or publication is authorized.
+
+## Previous local installation: 0.2.33 crafting organization and movement repairs
 
 [C103 patch](PATCH_v0.2.33.md). 3,763 Kahlua assertions, 87 runtime/translation files, 528 native translation keys and 23 packet serializations pass. Validation covers expandable native list controls, filtered recipes, panel native cursor validation/create in four directions with world doubles, cheat/tool handling, and safe repeated completion. Native recipe/object checks validate approved weights, exact panel consumption/retained tools, current support predicates and forward landing/get-up conditions. Both brush nodes and complete trip event markers load with the current native animation parser. Native write/fresh-process read pass in 59.0/59.7 seconds. Traps-only, Turrets-only and both startup pass in 73.5/66.0/64.7 seconds. Static isolation verifies 106 Sandbox options and 28 identical shared helpers; manifest covers 182 source/219 package files.
 

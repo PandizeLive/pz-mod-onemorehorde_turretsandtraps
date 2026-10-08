@@ -23,15 +23,15 @@ function OMHTTTurretPickupAction:start()
     self:setActionAnim("Loot")
     self:setAnimVariable("LootPosition", "Low")
     self:setOverrideHandModels(nil, nil)
-    D.emit("turret-pickup-start", {id = self.id, operation = self.operation, seconds = 10})
+    D.emit("turret-pickup-start", {id = self.id, operation = self.operation, seconds = self.seconds})
 end
 
 ---@return nil
 function OMHTTTurretPickupAction:update()
     self.character:faceThisObject(self.object)
     self.elapsed = self.elapsed + math.min(getGameTime():getRealworldSecondsSinceLastUpdate(), 0.25)
-    self:setJobDelta(math.min(self.elapsed / 10, 0.999))
-    if self.elapsed >= 10 then self:forceComplete() end
+    self:setJobDelta(math.min(self.elapsed / self.seconds, 0.999))
+    if self.elapsed >= self.seconds then self:forceComplete() end
 end
 
 ---@return nil
@@ -48,7 +48,7 @@ end
 
 ---@return boolean completed
 function OMHTTTurretPickupAction:complete()
-    if self.elapsed < 10 or not self:isValid() then return false end
+    if self.elapsed < self.seconds or not self:isValid() then return false end
     self.done = true
     local W = require("OMHTT/TurretWorld")
     if self.operation == "Repair" then return W.repair(self.character, self.object, self.id) end
@@ -71,6 +71,7 @@ function OMHTTTurretPickupAction:new(character, object, operation)
     o.elapsed, o.done = 0, false
     o.operation = operation or "Pickup"
     o.stopOnWalk, o.stopOnRun = true, true
+    o.seconds = o.operation == "Pickup" and 5 or 10
     o.maxTime = o:getDuration()
     return o
 end

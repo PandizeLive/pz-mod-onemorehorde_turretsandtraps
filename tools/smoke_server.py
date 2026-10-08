@@ -54,7 +54,7 @@ def main():
                     process.stdin.flush()
                     process.wait(timeout=40)
                     raise RuntimeError(f"Native probe failed; inspect {transcript.name}")
-                if "*** SERVER STARTED" in text and "[OMHTT-Smoke] native-portable recipe=registered" in text and "[OMHTT-Smoke] native-turret recipes=5" in text:
+                if "*** SERVER STARTED" in text and "[OMHTT-Smoke] native-portable recipe=registered" in text and "[OMHTT-Smoke] native-turret recipes=8" in text:
                     assert "[OMHTT] server-ready version=" + version in text, "Mod did not initialize"
                     assert "[OMHTT-Smoke] native-translations checked=3 missing=0" in text, "Native translations failed smoke probe"
                     assert "[OMHTT-Smoke] native-build-menu registered=1 title=Spike_Barrier category=OMHTraps callback=resolved spGate=hidden disabledGate=closed dottedCallback=rejected" in text, "Native menu callback or enumeration failed smoke probe"
@@ -102,6 +102,7 @@ def main():
     assert "[OMHTT-Smoke] native-modules loot=121 profiles=valid condition=checked" in text, "Native module rules failed"
     assert "[OMHTT-Smoke] native-install exact=selected decoy=preserved preview=nonconsuming" in text, "Native Install selection failed"
     assert "[OMHTT-Smoke] native-turret-persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Turret world persistence failed"
+    assert "[OMHTT-Smoke] native-improvised mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Improvised exact-item persistence failed"
     assert "[OMHTT-Smoke] native-packed-turret mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Turret portable persistence failed"
     assert "[OMHTT-Smoke] native-firearms firearms=20 rounds=conserved models=bound reload=timed" in text, "Native firearm adapters failed"
     assert "[OMHTT-Smoke] native-magazines insert=eject=conserved chamber=retained replay=blocked capacity=checked mount=bound" in text, "Native magazine transaction failed"

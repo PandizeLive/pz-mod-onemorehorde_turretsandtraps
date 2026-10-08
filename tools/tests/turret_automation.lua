@@ -278,9 +278,71 @@ local oldFire, oldStats, fired = W.fire, T.cycleConfig, 0
 W.fire = function() fired = fired + 1; return "Fired" end
 T.cycleConfig = function(contents) local stats = oldStats(contents); stats.cooldown = 100; return stats end
 A.advance = function() error("Acquired target caused a new detection scan") end
+local originalLane, laneChecks = Combat.clearLane, 0
+Combat.clearLane = function(...) laneChecks = laneChecks + 1; return originalLane(...) end
 for i = 1, 10 do testMillis = testMillis + 100; A.step(entry, testMillis + 100) end
 check(fired == 10, "Fast acquired target fires ten times while detection deadline remains five seconds away")
+check(laneChecks == 10, "Retained target performs one advisory LOS check per step")
+Combat.clearLane = originalLane
 A.advance, W.fire, T.cycleConfig = priorAdvance, oldFire, oldStats
+local savedFailure = SandboxVars.OMHTurretsTraps.ImprovisedFiringFailure
+local beforeFailurePower = W.power
+local testBattery = {charge = .5, getCurrentUsesFloat = function(self) return self.charge end,
+    setCurrentUsesFloat = function(self, value) self.charge = value end}
+W.power = function() return {kind = "battery", battery = testBattery, cost = .01} end
+SandboxVars.OMHTurretsTraps.ImprovisedFiringFailure = 100
+firing.kind, detector.kind = T.TYPES.FiringImprovised, T.TYPES.MotionDetectionImprovised
+local improvised = T.contents(storage)
+check(improvised.active.Firing and improvised.active.MotionDetection
+    and improvised.moduleCounts.Firing == 1 and improvised.moduleCounts.MotionDetection == 1,
+    "Improvised variants enable their standard roles without using extra slots")
+local spare = add(T.TYPES.Firing); storage:Remove(spare)
+check(not T.accept(storage, spare), "Standard Firing cannot coexist with improvised Firing")
+firing.kind = T.TYPES.Firing; spare.kind = T.TYPES.FiringImprovised
+check(not T.accept(storage, spare), "Improvised Firing cannot coexist with standard Firing")
+firing.kind = T.TYPES.FiringImprovised
+local range = add(T.TYPES.Range)
+local fullRange = T.cycleConfig(T.contents(storage)).range
+check(M.profile(record, T.contents(storage), true).range == fullRange * .75
+    and M.profile(record, T.contents(storage)).range == fullRange, "Improvised detection applies after Range bonuses and leaves manual reach unchanged")
+storage:Remove(range)
+add("Base.Potato")
+head.data.OMHTTCycle = {schema = 1, loaded = 1, nextShot = 0}
+record.aimDegrees = 0
+local beforeMisfire, shotsBeforeMisfire = T.contents(storage).ammo, record.shots
+check(W.fire(nil, object, far) == "NoTarget", "Automatic commit rejects a target outside reduced detection reach")
+check(W.fire(nil, object, front) == "Misfire", "Guaranteed improvised failure returns a click-only outcome")
+check(T.contents(storage).ammo == beforeMisfire and record.shots == shotsBeforeMisfire
+    and head.data.OMHTTCycle.loaded == 1 and testBattery.charge == .5, "Failed trigger preserves ammunition, shot power, loaded round and shot count")
+check(W.fire(nil, object, front) == "Cooling", "Failed trigger cannot retry before normal cooldown")
+head.data.OMHTTCycle = nativeRoundTrip(head.data.OMHTTCycle)
+check(W.fire(nil, object, front) == "Cooling", "Serialized exact-head failure cooldown remains enforced")
+testMillis = head.data.OMHTTCycle.nextShot
+local nearBefore = W.near
+W.near = function() return true end
+check(W.fire({}, object, far) == "Fired", "Manual fire keeps full range and bypasses the improvised failure roll")
+W.near = nearBefore
+testMillis = testMillis + 2500
+add("Base.Potato")
+head.data.OMHTTCycle = {schema = 1, loaded = 1, nextShot = 0}
+SandboxVars.OMHTurretsTraps.ImprovisedFiringFailure = 0
+check(W.fire(nil, object, front) == "Fired", "Zero failure setting permits normal automatic firing")
+local priorContents, scans = T.contents, 0
+T.contents = function(container) scans = scans + 1; return priorContents(container) end
+testMillis = testMillis + 250
+record.aimDegrees = 180
+for i = 1, 10 do Aim.request(object, front, nil) end
+check(scans == 1, "Repeated same-window aim requests share one inventory scan")
+detector.condition = 0
+head.data.OMHTTCycle = {schema = 1, loaded = 1, nextShot = 0}
+check(W.fire(nil, object, front) == "Unavailable", "Fresh shot check rejects same-count broken detector despite cached aiming summary")
+T.contents = priorContents
+detector.condition = 100
+firing.kind, detector.kind = T.TYPES.Firing, T.TYPES.MotionDetection
+SandboxVars.OMHTurretsTraps.ImprovisedFiringFailure = savedFailure
+W.power = beforeFailurePower
+testMillis = testMillis + 3000
+Combat.tickFlights()
 object.index = -1
 A.tick()
 check(A.entries[object] == nil, "Removed turret retires from scheduler")
