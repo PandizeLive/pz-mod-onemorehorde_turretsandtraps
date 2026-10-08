@@ -30,6 +30,6 @@ Potato failed triggers reference the installed `stormy9mmClick.wav` through a re
 
 ## Verification and remaining acceptance
 
-Kahlua/native results and installation evidence are recorded in [RELEASE.md](RELEASE.md). Tests cover role exclusivity, preserved loaded rounds/power/cooldowns, manual versus automatic range, cached-aim/fresh-shot boundaries, LOS call counts, expanded layout/overflow, service timing, native recipes and fresh-process serialization.
+Installed from annotated `test/v0.2.34` / `60b5f24` on 2026-10-08. All 183 source/221 package, tag, installed and archive hashes match; both prior packages are backed up. 3,823 assertions, native write/fresh-process read and all three package startups pass. Detailed evidence is in [RELEASE.md](RELEASE.md). Tests cover role exclusivity, preserved loaded rounds/power/cooldowns, manual versus automatic range, cached-aim/fresh-shot boundaries, LOS call counts, expanded layout/overflow, service timing, native recipes and fresh-process serialization.
 
 The held 0.2.33 rendered test joins [one six-step owner test](TEST_v0.2.34.md). Rendered movement, high-scale UI readability and dense client frame smoothness remain unaccepted. Building and combat multiplayer remain deferred.
