@@ -13,7 +13,7 @@ Owner-approved 2026-10-07 (C96). Repository: [PandizeLive/pz-mod-onemorehorde_tu
 | `main` | Latest officially published release; created only after the first confirmed official Workshop content upload. |
 | `v<version>` and GitHub Release | Exact released source snapshot, created after confirming the official Workshop upload. |
 
-The initial default is `dev`. There is no official release or `main` branch yet. Keep numeric modversion values unchanged; current 0.2.30 is a development build. Do not rename/move historical test tags. Do not publish old development tags as GitHub Releases. Documentation-only commits need no package version bump or new test tag. Keep `dev` as the default after releases so planning still opens current work.
+The initial default is `dev`. There is no official release or `main` branch yet. Keep numeric modversion values unchanged; [CURRENT_STATUS.md](CURRENT_STATUS.md) identifies the current development build. Do not rename/move historical test tags. Do not publish old development tags as GitHub Releases. Documentation-only commits need no package version bump or new test tag. Keep `dev` as the default after releases so planning still opens current work.
 
 ## Start every session
 

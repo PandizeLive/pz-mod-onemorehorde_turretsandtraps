@@ -1,6 +1,8 @@
 # R3C4-R3C7: offensive modules and battery endurance
 
-Planning record, 2026-10-06, under [C81](../DECISIONS.md#c81-offensive-module-planning-and-long-battery-life-2026-10-06). Owner requests scheduling the broadly approved direction. This is not an implementation/release record; no gameplay version is assigned. Current installed 0.2.28 remains SP-only. Final recipes, art and unselected heads retain their existing approval gates.
+Planning record under [C81](../DECISIONS.md#c81-offensive-module-planning-and-long-battery-life-2026-10-06), synchronized 2026-10-08. Installed 0.2.34 retains SP-only combat and adds R3C8 starter components; none of this brief's offensive modules is implemented. Final recipes, art and unselected heads retain their approval gates. See [canonical roadmap status](../ROADMAP.md#current-checkpoint-status-and-next-work).
+
+**Next module checkpoint: R3C4 contract and battery baseline.** The documented sequence remains R3C4 -> R3C5 -> R3C6 -> R3C7; it does not require a new head first. The assistant's later suggestion to prioritize Initial Blow/Execute was an unapproved reorder, not missing scope: both were already listed in R3C6. This sync records the distinction without selecting a new gameplay patch.
 
 ## Owner direction and working proposals
 
@@ -38,7 +40,7 @@ Recommend a predictable resolved per-cycle cost charged with ammunition before l
 
 ## Checkpoints and acceptance
 
-The related [R3C8 starter-component/expansion checkpoint](R3C8_IMPROVISED_EXPANSION.md) supplies the accepted 2/4/8/12/16 slot totals. Scope its recipes, compact layout and migration with R3C4; include its maximum loadouts in R3C7. Additional empty slots do not themselves increase battery usage.
+The related [R3C8 starter-component/expansion checkpoint](R3C8_IMPROVISED_EXPANSION.md) is implemented and installed in 0.2.34. C104 independently settles its recipes, two-row eight-column layout, 2/4/8/12/16 fresh totals and saved-setting/item preservation. Those are no longer R3C4 decisions; offensive effect contracts and realistic endurance targets still are. Include the expanded maximum loadouts in R3C7. Empty slots add no battery cost. R3C8 owner acceptance remains in the combined 0.2.34 test.
 
 1. **R3C4 - contract and baseline.** Settle range, compatible heads, stack/target limits, damage ordering, Fragment separation/propagation, Splitter ammunition and Impact reload eligibility. Define source IDs and one damage/death route, no global weapon overrides or mutable zombie speed. Baseline current battery use and agree endurance target before gameplay tuning.
 2. **R3C5 - directional children.** Prove geometric rays/ordered candidates against installed game behavior before content. Then implement Splitter and Fragment separately on shared bounded work. Check misses, walls/windows/corners, loaded areas, coverage/collateral, origin-victim exclusion, angular minimum including 360-degree seam, exactly five Fragment rays and saved odd-stack alternation. Persist serializable state; do not let swapping a head replay an entitlement. Agree what happens to committed pending effects on save/unload.

@@ -552,3 +552,11 @@ All three improvised items are craft-only: Detection consumes 3 Electronics Scra
 Approve cached advisory aim inventory summaries and removal of same-step duplicate LOS checks while retaining fresh shot checks and multi-tick search revalidation. This is not proof the reported client pauses are fixed. Owner also reduces portable trap/turret placement and pickup to five seconds each, including panel attachment/removal; repair and reinforcement remain ten seconds. Native instant-placement debug behavior remains native.
 
 Local implementation, validation, tagging and installation are approved by "Approved to Patch". No remote push or publication is implied. The held 0.2.33 rendered test is consolidated into TEST_v0.2.34.md, not marked passed or waived. See PATCH_v0.2.34.md.
+
+## C105: synchronize roadmap and checkpoint status (2026-10-08)
+
+Owner asks what the documented next work was, challenges recommendations presented as the roadmap, and requests syncing checkpoints/phases. This authorizes documentation reconciliation, not a new gameplay slice, balance choice, reordered implementation sequence, remote push or publication.
+
+ROADMAP.md is the canonical execution/status index. R1C1-R1C2 are implemented/native-verified with remaining owner regression waived by C89. R2C1-R2C3 and R3C8 are implemented; outstanding rendered acceptance is consolidated in TEST_v0.2.34.md, not passed or waived. R1C3 remains partial, with client pauses unresolved. C104 settles R3C8 recipes/layout/tuning independently of the still-planned offensive-module contract.
+
+R2C4 concertina feasibility is the earliest unfinished content checkpoint in phase order, subject to the slowdown discussion. Phase 3 may proceed independently through R3C1 head selection or R3C4 module contract/battery baseline. The documented module sequence remains R3C4 -> R3C5 -> R3C6 -> R3C7. Initial Blow/Execute were already scheduled under R3C6; the assistant suggested prioritizing them without an approved reorder. No next gameplay patch is selected by this sync. Stable checkpoint IDs, historical evidence, Building deferral, optional scope and final Cure-simulation phase remain intact.

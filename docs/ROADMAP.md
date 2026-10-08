@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-2026-10-08: C104 / 0.2.34 implements the R3C8 starter-module/expansion slice and further R1C3 aim/LOS cleanup. See PATCH_v0.2.34.md and TEST_v0.2.34.md. Standard module crafting, offensive modules, battery-endurance acceptance and client-stall resolution remain separate.
+Synchronized 2026-10-08 against C80-C104 and installed 0.2.34. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -8,13 +8,34 @@ New checkpoint IDs use **R** for the revised roadmap. Historical P0-P6 IDs and e
 
 ## Product and existing work
 
-**0.2.30 adds Bed Spikes under C95**, with native recipe/API/save-load checks and six shared wear per damaging fall. The focused rendered test is TEST_v0.2.30.md. R1C3 removes unnecessary diagnostic work and adds audio-stage measurements; elimination of the reported client stalls remains open.
+**Installed 0.2.34** includes Bed Spikes, Barbed Panel and subsequent crafting, placement, traversal and starter-module changes. Native evidence is in [release state](RELEASE.md); the only active owner checklist is the [six-step combined test](TEST_v0.2.34.md). Held rendered checks are not passes or waivers. R1C3 includes diagnostic gating and aim/LOS cleanup; elimination of the reported 300-700ms client pauses remains open.
 
 One Workshop product/download: **OMH: Turrets & Traps**, with independent selectable entries **OMH: Turrets** (`OneMoreHorde_Turrets`) and **OMH: Traps** (`OneMoreHorde_Traps`). Neither requires the other or a third Core entry. Canonical shared helpers are generated into both with identical virtual paths.
 
 Existing SP content includes basic/reinforced Spike Barriers, portable items/packs, construction/vaulting/servicing, modular potato turrets, conventional firearm mounts, inventory/modules/power, loot and LootLab. Do not schedule their implementation again. Automated evidence covers twenty native guns and an isolated 51-gun Firearms B42 probe; full-modpack rendering, dense-client performance and MP are not certified.
 
-Shared combat scheduling and active-time clocks exist. Render/maintenance costs and integrated authority remain open. The Louisville hang is unassigned; preserve useful evidence if it recurs, without claiming OMH caused it or has been cleared. Final art/audio remain owner-sourced; module crafting remains deferred.
+Shared combat scheduling and active-time clocks exist. Render/maintenance costs and integrated authority remain open. The Louisville hang is unassigned; preserve useful evidence if it recurs, without claiming OMH caused it or has been cleared. Final art/audio remain owner-sourced. Improvised Detection/Firing/Expansion are craftable; standard module crafting remains deferred.
+
+## Current checkpoint status and next work
+
+| Phase / checkpoints | Status at 0.2.34 | Remaining work / next gate |
+| --- | --- | --- |
+| 1: R1C1-R1C2 package split | Implemented and native-verified in 0.2.29; remaining owner regression waived by C89 | Closed to further split regression; retain fresh-world policy and independent-package checks for changes |
+| 1: R1C3 performance/authority | Partial: audit and multiple optimizations implemented, including 0.2.34 aim/LOS cleanup | Measure the held dense-client workload; resolve measured stalls and authority gaps without claiming MP |
+| 2: R2C1-R2C2 Bed Spikes | Implemented with native checks, revised through subsequent patches | Rendered traversal, trips/recovery and placement acceptance in the combined 0.2.34 test |
+| 2: R2C3 Barbed Panel | Implemented with native contact/construction/persistence checks | Combined rendered acceptance; multi-panel/garage-door and player-injury extensions remain unimplemented |
+| 2: R2C4 concertina | Planned; earliest unfinished content checkpoint in phase order | Discuss slowing versus the Horde Night concern, then prove movement feasibility before content |
+| 3: R3C1-R3C2 new head | Candidates documented; none selected for implementation | Select one head and settle its concrete contract before prototyping |
+| 3: R3C3 explosive head | Optional, unscoped | Collateral/resource/effect-budget decisions and feasibility first |
+| 3: R3C4-R3C7 offensive modules/battery | Planning direction recorded; no new offensive module implemented | R3C4 contract/baseline, then R3C5 directional effects, R3C6 conditional/penetrating effects, R3C7 combined acceptance |
+| 3: R3C8 starter modules/expansion | C104 implemented, verified and installed in 0.2.34 | Combined owner acceptance; include maximum loadouts in future R3C7 endurance checks |
+| 4: R4C1-R4C4 signals/connected traps | Planned | Signal contract first; devices then optional turret receiver |
+| 5: R5C1-R5C3 MP/integrations/release | Planned; no certification or publication | Validate only the selected release scope; optional features need not all ship |
+| 6: R6C1-R6C3 Cure simulation | Deferred, last | Matching contracts and loaded-combat controls first |
+
+The phase order is not a mandatory queue through every feature. R1C3 continues alongside relevant SP content, and Phase 3 may proceed without finishing every passive trap. R3C1 head selection and R3C4 module contract/battery baseline are separate entry points; neither requires a new head to be implemented first. No next gameplay patch is selected by this sync.
+
+**Documented module sequence: R3C4 -> R3C5 -> R3C6 -> R3C7.** The assistant's suggestion to make Initial Blow/Execute the next content patch was an unapproved reorder; those effects were already listed under R3C6. Battery baseline already belongs to R3C4. Keep any proposed reorder explicit until the owner selects it. R3C8 was separately approved and implemented under C104; its later ID does not make completed work a future task.
 
 ## Phase 1: selectable packages and shared foundation
 
@@ -24,7 +45,7 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 | R1C2 | Implement the approved package boundary; adapt installer, manifests, backups, version reporting and component-aware LootLab/export | Traps-only loads no turret recipes/items/module loot/model registration/update loops. Both reproduce current behavior exactly once. Relevant settings/UI only; preserve IDs/state where feasible, without promising safe mid-save uninstall |
 | R1C3 | Measure mixed-defense performance and audit authority/transactions | Measure scans/rays/impacts/render/maintenance at meaningful density; fix measured bottlenecks. Define server-owned state and transport boundaries without duplicating gameplay rules. This does not enable MP |
 
-**R1C1-R1C2 implemented and native-verified in 0.2.29; owner acceptance pending.** The [package checkpoint](checkpoints/R1_PACKAGE_SPLIT.md) records separate tile registries, installer rollback and the single deferred test. R1C3 performance/authority measurement is the next recommended technical checkpoint; new content remains separately scoped. Splitting before new content avoids additional coupling. Performance/authority work can accompany passive-trap prototypes; completing all multiplayer work is not a prerequisite for another small SP feature.
+**R1C1-R1C2 implemented and native-verified in 0.2.29; remaining owner checks closed by C89 waiver, not passed.** The [package checkpoint](checkpoints/R1_PACKAGE_SPLIT.md) retains tile-registry, installer and test-disposition evidence. R1C3 remains the active technical checkpoint. Performance/authority work can accompany passive-trap prototypes; completing all multiplayer work is not a prerequisite for another small SP feature.
 
 ## Phase 2: passive traps
 
@@ -32,12 +53,12 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 | --- | --- | --- |
 | R2C1 | C91 short-spike bed: 1x2 player brush-through and zombie trip/contact prototype | Prove foliage movement and native zombie falls onto the bed. Agree trip chance, fall damage, player speed/injury and crawler handling; prevent double rolls across the two tiles and repeated trip chains |
 | R2C2 | Finish basic/reinforced Bed Spikes: construction, servicing, wear, Sandbox and persistence | Approve both recipes/tools/skills/XP and tier differences first; bounded contact processing, exact single fall damage, save/reload and absent-Turrets checks |
-| R2C3 | [Backed barbed section](checkpoints/R2C3_BACKED_BARBED_SECTIONS.md) | C99 / 0.2.31 implements walls/fences, single-panel doors and independent 50-HP window-frame barbs; native construction/contact/persistence checks and held combined owner test. Multi-panel/garage doors remain unproven |
+| R2C3 | [Barbed Panel](checkpoints/R2C3_BACKED_BARBED_SECTIONS.md) | C99 / 0.2.31 implements walls/fences, single-panel doors and independent 50-HP window-frame barbs; later naming/placement/crafting changes are included in 0.2.34. Native checks pass; combined rendered acceptance remains held. Multi-panel/garage doors remain unproven |
 | R2C4 | Concertina movement feasibility, then content if it passes | Contact-only damage; reversible slowing that composes with other effects and ends on exit/death/unload. No permanent movement mutation or silent substitute for slowing |
 
 C81 rejects slowing turret effects because they undermine OMH Horde Night zombies. Revisit concertina's separately planned slowdown with the owner before R2C4; do not silently delete or implement it under the turret-module decision.
 
-Bed Spikes content is implemented in 0.2.30 under C95, with native API, recipe and persistence checks. Rendered traversal/falls and dense-client smoothness remain pending in TEST_v0.2.30.md; the reported audio stalls remain under investigation.
+Bed Spikes content began in 0.2.30 under C95, with native API, recipe and persistence checks. Later traversal/recovery/placement changes are included in 0.2.34. Use only [the current combined test](TEST_v0.2.34.md) for outstanding rendered acceptance; older patch tests are historical. Phase 2 is not fully accepted and concertina is not implemented.
 
 ## Phase 3: distinct turret heads and offensive modules
 
@@ -50,9 +71,9 @@ Bed Spikes content is implemented in 0.2.30 under C95, with native API, recipe a
 | R3C5 | Directional-shot proof, then Splitter and Fragment in separate implementation slices | Real misses/obstructions, random angular separation including wraparound, bounded children, saved alternation, exact ammo/power transactions and measured dense-frame cost. No recursive effects |
 | R3C6 | Piercing and conditional-hit modules, one effect at a time | Ordered penetration; Initial Blow/Execute use bounded damage bonuses; Impact requires a proven stumble, first-round eligibility and recovery protection. Approve each concrete slice and combinations |
 | R3C7 | Combined module balance, endurance and lifecycle acceptance | Ordinary and heavily stacked loadouts preserve long battery life; calibrated intensity-based costs, save/reload/pickup, slots/UI/loot/Sandbox, native/modded guns and existing potato splash. No MP claim without R5C1 |
-| R3C8 | [Craftable improvised components and compact expansion](checkpoints/R3C8_IMPROVISED_EXPANSION.md) | C84/C86: upgrades add 2/4/4/4; total slots 2/4/8/12/16 for None/Improvised/Small/Medium/Large. Separate unlock groups from visual rows. Set ammo bonuses, review recipes/tools/skills/XP, prove role replacement and click-only failed-trigger timing, preserve installed items/Sandbox values through base-capacity reduction, readable slots and safe kit downgrade. Include maximum loadouts in R3C7 |
+| R3C8 | [Craftable improvised components and compact expansion](checkpoints/R3C8_IMPROVISED_EXPANSION.md) | C104 implemented/native-verified/installed in 0.2.34: two rows of eight, 2/4/8/12/16 fresh totals, approved recipes, 75% detection, 15% click-only failures and +25 improvised reserve. Saved values/items preserved. Owner acceptance remains in the combined test; larger loadouts remain part of R3C7 |
 
-R3C8 is an added checkpoint ID, not a requirement to run it after final balance acceptance: scope it in R3C4, implement the reviewed starter components/UI alongside module slices, then run R3C7 on the complete selected set. C86 replaces the five-row pyramid with simpler upgrade increments and a compact layout direction. Maximum remains 16; a two-row eight-column grid is recommended, with readable four-column alternatives explored. Improvised adds two slots for four total. See [module plan](MODULAR_TURRETS.md#planned-improvised-components-and-centered-expansion-layout).
+R3C8's former recipe/layout/migration gates were resolved independently by C104. Do not reopen them under R3C4. C104 selects the two-row eight-column grid; earlier pyramid/four-column alternatives are historical. R3C7 still measures the complete selected loadout. See [current module contract](MODULAR_TURRETS.md#improvised-components-and-expansion).
 
 C82 removes Extinguisher and Pneumatic Ram from the head shortlist and replaces Rotary Flail with **Rotary Blades** as the close-defense concept for R3C1 discussion. R3C2 must prove fixed-reach swept contacts, visible timing, obstructions and bounded damage cadence; physics, recipes and a gameplay patch are not implicitly approved.
 
@@ -67,7 +88,7 @@ The generic gun mount already exists; a newly compatible gun is not a new custom
 | R4C3 | Beam sensor and control unit | Power/alignment/obstruction proof; individual/all-compatible-linked control; passive hazards ignore filters. Decide player/faction/collateral policy before enabling it |
 | R4C4 | Optional cross-package turret signal receiver | Traps uses a small capability interface when Turrets is enabled; neither assumes the other is loaded. Signals cannot bypass aim/ammo/power/cooldown |
 
-Proposed ownership: controls, sensors and fixed triggered hazards in Traps; aimed swappable heads in Turrets. Validate in R1C1. Powered traps must not require turret content. General circuit programming and automatic noise-lure feedback loops stay deferred.
+Proposed ownership: controls, sensors and fixed triggered hazards in Traps; aimed swappable heads in Turrets. Validate future signal/content isolation in R4C1/R4C4 against the completed package boundary, without reopening R1C1. Powered traps must not require turret content. General circuit programming and automatic noise-lure feedback loops stay deferred.
 
 ## Phase 5: multiplayer, integrations and release
 
@@ -87,25 +108,13 @@ Authority design/testing begins with each device; R5C1 is integrated proof, not 
 | R6C2 | Engagement, attrition, breach and resource reconciliation | No virtual refills or duplicate survivors; compare loaded controls; bounded computation |
 | R6C3 | Rewards and lifecycle release gate | Real/simulated/restored kills deduplicate; offline rewards, restart/pause and load/unload cannot grant an advantage; matching sibling contracts precede compatibility claims |
 
-## Immediate todo
+## Active follow-up
 
-- [x] C97: audit existing performance paths and verify the GitHub process/access; record [operation-count evidence and proposed optimizations](checkpoints/R1C3_PERFORMANCE_AUDIT_20261007.md). No gameplay patch or proven stall fix.
-- [x] C97: revise barb design to wall/fence-backed sections sharing support health; hold the 0.2.30 owner playtest while away.
-- [x] C98: run [initial native barb host/contact checks](checkpoints/R2C3_NATIVE_FEASIBILITY_20261007.md); distinguish constructed health persistence from map-fence counter reset and controlled motion from rendered acceptance.
-- [x] C99: implement backed barbs, conditional durability, fixed window frames, door-edge geometry, native construction and service. No player injuries; multi-panel/garage doors remain pending. See PATCH_v0.2.31.md for validation and release limitations.
-- [x] Record C80 split requirement, revised roadmap and preserved historical evidence.
-- [x] Review collaboration guidance and require critical, evidence-based recommendations.
-- [x] Separate existing plans from new turret-head proposals.
-- [x] Record C81 offensive module direction, Fragment naming/angle alternatives and long battery life; revise head proposals around excluded and shared effects.
-- [ ] Scope R3C4: Fragment 30/45-degree choice, propagation, range, stack caps, Splitter ammo, Impact eligibility and battery workload/target.
-- [x] Carry pending 0.2.27/0.2.28 owner checks into one next-patch test without duplicate rounds or inferred passes.
-- [ ] Review the next-patch combined owner test/full-modpack weapon audit when the owner tests later.
-- [ ] Scope R1C1 loading/dependency proof and old combined-ID/save handling.
-- [ ] Select a unique head; none is approved by this documentation update.
-- [x] C91 selects 1x2 short trip spikes, reinforced variant and player brush-through animation; barbed flooring dropped.
-- [x] C95 settles Bed Spikes tuning/servicing/recipes; 0.2.30 implements the content with native parsing/API/persistence proof.
-- [ ] Complete focused 0.2.30 rendered Bed Spikes and dense-turret performance test; native checks do not certify animation or smoothness.
-- [ ] Measure mixed-defense performance; prove authority before MP claims.
+- [ ] Review the single [0.2.34 combined owner test](TEST_v0.2.34.md) when the owner can test; do not repeat waived 0.2.29 regression or request older patch tests separately.
+- [ ] R1C3: measure the reported mixed-defense pauses; use [the audit](checkpoints/R1C3_PERFORMANCE_AUDIT_20261007.md) and current patch evidence to select any further optimization. Prove integrated authority before MP claims.
+- [ ] R2C4: resolve concertina movement/slowdown scope before its feasibility prototype.
+- [ ] R3C1: select one unique head if taking the head track; shortlist membership is not implementation approval.
+- [ ] R3C4: if taking the module track, resolve Fragment angle/propagation/range, stack caps, Splitter ammunition, Impact eligibility, compatibility and battery workload/target before offensive content.
 - [ ] Capture an earlier log or live thread evidence if the Louisville hang recurs.
 
 ## Historical mapping
