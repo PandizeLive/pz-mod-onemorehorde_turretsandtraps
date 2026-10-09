@@ -9,6 +9,8 @@ C107 owner approval, 2026-10-08: "Approved. Go ahead and patch." Supersedes C106
 - Manage has three rows of 4/6/6. Fresh capacities remain 2/4/8/12/16; rows do not represent upgrade tiers. Saved settings, custom capacities and stored overflow remain accessible.
 - The zombie-only bed-trip animation disables native deferred displacement, retaining its forward stumble and native landing/get-up events. This targets the reported travel past the bed. Player movement, potato knockdown and damage rules are unchanged; damage still requires a fresh fall on the bed.
 
+Installed 2026-10-08 from `test/v0.2.35` / `07275b2`; 3,830 assertions, native write/read and independent package startups pass. All tagged/source/package/installed/archive hashes and prior backups verify.
+
 ## Evidence and limits
 
 Native recipe/action validation binds exact resolved ingredients before queuing; this game build rejects the automatic false input-table argument in ISHandcraftAction.FromLogic. Completion reads actual recipe-created items after the native transaction. No global action replacement, speculative refund or copied crafting transaction is introduced.
