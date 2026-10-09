@@ -17,7 +17,7 @@ local function checkBeds()
         local info = SpriteConfigManager.GetObjectInfo(entities[e])
         assert(info ~= nil, "Bed entity missing: " .. entities[e])
         local recipe = info:getRecipe():getCraftRecipe()
-        assert(callLuaBool(recipe:getOnAddToMenu(), {}) == false, "Bed placement leaked into Building")
+        assert(callLuaBool(recipe:getOnAddToMenu(), {recipe = recipe}) == (e > 1), "Building must expose current bed placement routes only")
         if e == 1 then
             recipe = ScriptManager.instance:getCraftRecipe("Base.OMHTTCraftBedSpikes")
             assert(recipe:getInputs():size() == 3 and recipe:getInputs():get(0):isKeep()

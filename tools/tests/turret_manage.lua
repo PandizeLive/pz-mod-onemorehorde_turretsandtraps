@@ -80,6 +80,15 @@ local panel = testTurretPanel
 panel:prerender()
 check(not panel.fireButton.enabled and panel.status == "NoHead", "Empty base cannot fire")
 check(#panel.slots == 21 and panel.height <= 720 and panel.x >= 0, "Sixteen module slots and controls fit 1280x720")
+local moduleRows = {}
+for i = 1, 16 do
+    local slot = panel.moduleSlots[i]
+    moduleRows[slot.y] = (moduleRows[slot.y] or 0) + 1
+end
+check(moduleRows[panel.moduleSlots[1].y] == 4 and moduleRows[panel.moduleSlots[5].y] == 6
+    and moduleRows[panel.moduleSlots[11].y] == 6, "Module geometry is exactly four/six/six")
+check(panel.moduleSlots[1].x > panel.moduleSlots[5].x and panel.moduleSlots[4].x < panel.moduleSlots[10].x,
+    "Four-slot first row is centered above the six-slot rows")
 check(panel.headSlot.missing and panel.magazineSlot.disabled and not panel.magazineSlot.missing, "Empty base highlights head without inventing a magazine requirement")
 for i = 1, #panel.slots do panel.slots[i]:prerender() end
 panel:fire()
@@ -204,12 +213,12 @@ local oldModules = SandboxVars.OMHTurretsTraps.PotatoModuleCapacity
 SandboxVars.OMHTurretsTraps.PotatoModuleCapacity = 20
 for i = 1, 20 do storage:AddItem(item("Base.OMHTTModuleRange")) end
 panel:refresh()
-check(panel.rows == 3, "High capacity uses additional scrollable rows")
+check(panel.rows == 4, "High capacity uses additional scrollable rows")
 panel:scrollModules(1); panel:scrollModules(1); panel:refresh()
-check(#panel.moduleSlots[12].items == 1 and panel.moduleRow == 1, "Twentieth module stays accessible")
+check(#panel.moduleSlots[14].items == 1 and panel.moduleRow == 1, "Twentieth module stays accessible")
 SandboxVars.OMHTurretsTraps.PotatoModuleCapacity = 4
 panel:refresh()
-check(panel.rows == 3, "Lowered capacity preserves access to stored modules")
+check(panel.rows == 4, "Lowered capacity preserves access to stored modules")
 check(panel.moduleSlots[4].disabled, "Over-capacity slots still allow recovery but not deposits")
 ISMouseDrag.dragging, ISMouseDrag.draggingFocus = {invalid}, {onMouseUp = function() end}
 panel.moduleSlots[4]:onMouseUp(1, 1)

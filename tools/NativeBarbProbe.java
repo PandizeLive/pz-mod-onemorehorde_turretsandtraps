@@ -33,7 +33,18 @@ public final class NativeBarbProbe {
         Object thread = threadType.getConstructor(platformType, table).newInstance(platform, env);
         threadType.getField("debugOwnerThread").set(thread, Thread.currentThread());
         Object function = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeBarbCheck");
-        Object result = threadType.getMethod("call", Object.class, Object[].class).invoke(thread, function, new Object[]{squares});
+        Class<?> playerType = Class.forName("zombie.characters.IsoPlayer");
+        Object builder = playerType.getConstructor(cellType).newInstance(cell);
+        Object players = playerType.getField("players").get(null);
+        Object previous = java.lang.reflect.Array.get(players, 0);
+        java.lang.reflect.Array.set(players, 0, builder);
+        call(env, "rawset", new Class<?>[]{Object.class, Object.class}, "OMHTT_NativeBuilder", builder);
+        Object result;
+        try {
+            result = threadType.getMethod("call", Object.class, Object[].class).invoke(thread, function, new Object[]{squares});
+        } finally {
+            java.lang.reflect.Array.set(players, 0, previous);
+        }
         check(result instanceof List<?>, "Barb native fixture creation failed");
         @SuppressWarnings("unchecked") List<Object> fixtures = (List<Object>)result;
         check(fixtures.size() == 16, "Expected eight frame/support pairs");

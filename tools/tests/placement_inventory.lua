@@ -62,18 +62,4 @@ check(not cursor:isValid({}), "Turning cheat off rechecks tools before completio
 inventory.getFirstTagEvalRecurse = toolsLookup
 check(cursor:isValid({}), "Restoring tools restores legal placement")
 check(OMHTT_PlacementHidden() == false, "All private placement entities stay out of Building")
-local all = ArrayList.new()
-all:add({getName = function() return "OMHTTDeployTurret" end})
-local chair = {getName = function() return "Chair" end}
-all:add(chair)
-all:add({getName = function() return "OMHTTDeployBedSpikes" end})
-local shown, reselected
-local panel = setmetatable({logic = {
-    getAllBuildableRecipes = function() return all end,
-    setRecipes = function(_, list) shown = list end,
-    getLastSelectedRecipe = function() return chair end,
-}, ReselectRecipeOrFirst = function(_, recipe) reselected = recipe end}, {__index = ISBuildPanel})
-panel:refreshList()
-check(shown:size() == 1 and shown:get(0) == chair and reselected == chair,
-    "Building excludes all OMH entries and empty categories while preserving vanilla selection")
 SpriteConfigManager, ISBuildIsoEntity, getCell, getSpecificPlayer = oldInfo, oldCursor, oldCell, oldPlayer

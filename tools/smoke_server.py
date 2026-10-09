@@ -57,7 +57,7 @@ def main():
                 if "*** SERVER STARTED" in text and "[OMHTT-Smoke] native-portable recipe=registered" in text and "[OMHTT-Smoke] native-turret recipes=8" in text:
                     assert "[OMHTT] server-ready version=" + version in text, "Mod did not initialize"
                     assert "[OMHTT-Smoke] native-translations checked=3 missing=0" in text, "Native translations failed smoke probe"
-                    assert "[OMHTT-Smoke] native-build-menu registered=1 title=Spike_Barrier category=OMHTraps callback=resolved spGate=hidden disabledGate=closed dottedCallback=rejected" in text, "Native menu callback or enumeration failed smoke probe"
+                    assert "[OMHTT-Smoke] native-build-menu registered=1 title=Spike_Barrier category=OMHNormal callback=resolved spGate=hidden disabledGate=closed dottedCallback=rejected" in text, "Native menu callback or enumeration failed smoke probe"
                     assert "[OMHTT-Smoke] native-construction entity=OMHTTSpikeBarrier faces=4 parts=16 inputs=3 translated=true mpGate=closed" in text, "Native construction registration failed smoke probe"
                     assert "[OMHTT-Smoke] native-sprites objects=16 valid=16 categoryTranslated=true" in text, "Native object creation or category translation failed"
                     assert "[OMHTT-Smoke] native-ingredients mixes=75 missingWood=blocked missingBindings=blocked missingTool=blocked dullTool=blocked brokenTool=blocked preview=nonconsuming" in text, "Native ingredient matrix failed smoke probe"
@@ -93,6 +93,7 @@ def main():
     assert "[OMHTT-Smoke] native-sandbox damage=10 maxHealth=100 tooltip=formatted" in text, "Native Sandbox options/tooltip invalid"
     assert "[OMHTT-Smoke] native-texturepacks traps=60 turrets=21 pages=30 png=valid" in text, "Native texture packs invalid"
     assert "[OMHTT-Beds] PASS" in text, "Native bed content invalid"
+    assert "[OMHTT-HybridBuild] native-original-recipe=true" in text, "Native hybrid crafting/building proof missing"
     assert "[OMHTT-Beds] controlled-native-recovery forwardLanding=true getUpTransition=passed getUpExit=cleared" in text, "Native forward trip recovery failed"
     assert "[OMHTT-Barbs] PASS" in text and "[OMHTT-Barbs] persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Native barb content/persistence invalid"
     assert "OMHTT_BarbSmoke.lua:" not in text, "Native barb probe raised a Lua/bridge error"

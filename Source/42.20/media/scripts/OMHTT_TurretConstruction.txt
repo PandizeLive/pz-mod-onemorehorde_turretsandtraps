@@ -37,10 +37,10 @@ module Base {
         component CraftRecipe {
             timedAction = BuildLowNoTool,
             time = 200,
-            category = OMHTurrets,
+            category = OMHNormal,
             Tooltip = UI_OMHTT_DeployTurretDescription,
             needToBeLearn = false,
-            OnAddToMenu = OMHTT_PlacementHidden,
+            OnAddToMenu = OMHTT_PlacementMenu,
             OnTest = OMHTT_Turret.recipeInput,
             inputs {
                 item 1 [Base.OMHTTTurretBase] flags[ItemCount],

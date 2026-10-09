@@ -56,7 +56,7 @@ module Base {
         component CraftRecipe {
             timedAction = BuildLowNoTool,
             time = 200,
-            category = OMHTraps,
+            category = OMHNormal,
             needToBeLearn = false,
             OnAddToMenu = OMHTT_PlacementHidden,
             inputs { item 1 [Base.OMHTTBedSpikesItem], }
@@ -102,11 +102,11 @@ module Base {
         component CraftRecipe {
             timedAction = BuildLowNoTool,
             time = 200,
-            category = OMHTraps,
+            category = OMHNormal,
             Tooltip = Tooltip_OMHTT_BedSpikes,
             Tags = Carpentry,
             needToBeLearn = false,
-            OnAddToMenu = OMHTT_PlacementHidden,
+            OnAddToMenu = OMHTT_PlacementMenu,
             inputs { item 1 [Base.OMHTTBedSpikesItem], }
         }
     }
@@ -149,18 +149,18 @@ module Base {
         component CraftRecipe {
             timedAction = BuildLowNoTool,
             time = 200,
-            category = OMHTraps,
+            category = OMHReinforced,
             Tooltip = Tooltip_OMHTT_BedSpikes,
             Tags = Carpentry,
             needToBeLearn = false,
-            OnAddToMenu = OMHTT_PlacementHidden,
+            OnAddToMenu = OMHTT_PlacementMenu,
             inputs { item 1 [Base.OMHTTReinforcedBedSpikesItem], }
         }
     }
     craftRecipe OMHTTCraftBedSpikes {
             timedAction = SharpenStakeWood,
             time = 200,
-            category = OMHTraps,
+            category = OMHNormal,
             Tooltip = Tooltip_OMHTT_BedSpikes,
             Tags = InHandCraft;Carpentry,
             needToBeLearn = false,

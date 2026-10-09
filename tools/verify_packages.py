@@ -14,6 +14,8 @@ def main():
         for name, text in lua.items():
             for dependency in re.findall(r'require\("(OMHTT/[^"\n]+)"\)', text):
                 assert dependency in lua, f"{component}: {name} requires absent {dependency}"
+        adapter = "OMHTT/BarrierPlacement" if component == "traps" else "OMHTT/TurretInstall"
+        assert adapter in lua and "OMHTT/HybridBuild" in lua, "Missing component Building adapter"
         options = re.findall(r"option\s+(\w+\.\w+)\s*\{", files["42.20/media/sandbox-options.txt"].decode())
         assert len(options) == len(set(options)), component + " has duplicate options"
         option_sets[component] = set(options)

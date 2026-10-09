@@ -1,6 +1,14 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.34 starter modules, expansion and service timing
+## 0.2.35 local candidate - Building fallback and feedback repairs
+
+[C107 patch](PATCH_v0.2.35.md). 3,830 Kahlua assertions pass; 89 runtime/translation files, 554 native translation keys, 23 packet serializations, 183 source/221 package files, 109 Sandbox options and 29 identical shared helpers validate. Focused checks cover carried-item priority, exact output identity, duplicate/cancel/failure handling, Building menu isolation, 4/6/6 geometry, custom overflow and zombie-only animation displacement metadata.
+
+Stock 42.21 native write/read pass in 47.9/47.5 seconds. The added native fixture displays the original crafting recipe in BuildLogic, checks its Normal category, binds exact validated inputs, invokes native ISHandcraftAction crafting, verifies actual output/consumption/retained tools and admits the result to no-XP deployment. Native animation parsing and controlled recovery pass. Initial probe iterations exposed the native automatic-input false-table incompatibility (fixed by explicit binding) and fixture position/stale-container issues (fixed in the probe); they are not pass evidence. The final client-only Building title normalization passes compilation/focused Kahlua validation. Headless probes do not render Building or establish natural zombie animation travel.
+
+Native startup includes known stock world-generation/cached-map metadata diagnostics; no mod probe failures remain in the passing runs. Rendered acceptance and dense-client pause resolution are not claimed. The earlier owner test's tentative unmentioned passes remain C106 evidence; only [four focused checks](TEST_v0.2.35.md) are requested. Traps-only, Turrets-only and both startup pass in 46.4/48.2/47.0 seconds. Installation/tag evidence follows after packaging. No remote push or Workshop publication; cumulative Workshop draft preserved.
+
+## Previous local installation: 0.2.34 starter modules, expansion and service timing
 
 [C104 patch](PATCH_v0.2.34.md). Source implementation and 3,823 Kahlua assertions pass, including role exclusivity, no-resource failed triggers, persisted cooldowns, manual versus automatic range, aim-cache/shot-freshness boundaries, one advisory ray per retained-target step, overflow slots and five/ten-second action timing. Native translation loading validates 548 keys; 89 runtime/translation files compile; 23 packet serializations pass. Static isolation covers 109 Sandbox options and 29 identical shared files; manifest covers 183 source/221 package files.
 

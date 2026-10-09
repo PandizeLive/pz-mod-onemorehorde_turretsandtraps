@@ -1,6 +1,6 @@
 # R2C3: Barbed Panel
 
-Current checkpoint contract, synchronized 2026-10-08. Implemented in 0.2.31 under C99 and revised through installed 0.2.34. Native construction/contact/persistence checks pass; rendered acceptance remains held in the single [combined owner test](../TEST_v0.2.34.md). See [canonical phase status](../ROADMAP.md#current-checkpoint-status-and-next-work). The former C97 wall/fence-only design and unsettled service proposals are historical, superseded by C99-C104.
+Current checkpoint contract, synchronized 2026-10-08. Implemented in 0.2.31 under C99 and revised through 0.2.35. Native construction/contact/persistence checks pass; C106 records tentative unmentioned owner passes; revised Building acceptance uses the [focused test](../TEST_v0.2.35.md). See [canonical phase status](../ROADMAP.md#current-checkpoint-status-and-next-work). The former C97 wall/fence-only design and unsettled service proposals are historical, superseded by C99-C104.
 
 ## Implemented contract
 
@@ -8,7 +8,7 @@ Current checkpoint contract, synchronized 2026-10-08. Implemented in 0.2.31 unde
 - Doors carry the contact edge with the leaf. Window barbs stay on the frame across open/smashed glass, with independent 50 HP and no increase to glass/window HP. Finite damageable supports share native health; supports without persistent damageable finite HP use independent 50-HP barb durability.
 - Immediate/default 10 zombie damage, then 10 every two seconds during actual exposed-side contact. A shared per-zombie interval prevents adjacent-panel and rapid re-entry multiplication. Contact stops on exit; no accumulated catch-up hits. Independent durability loses one per damaging activation. No player injury, slow, trip or knockback is implemented by barbs.
 - Bind to exact support identity; a replacement at the same location does not inherit the attachment. Unloaded backing suspends contact rather than proving destruction. Removal/breakage stops active contact. Loaded-edge indexing and bounded maintenance avoid whole-world scans.
-- Craft the portable panel, then use inventory **Attach Trap**. Building entries remain removed. The approved wooden recipe consumes one Barbed Wire, two Planks, four Nails and two Wire uses; retain hammer and pliers, Carpentry 1, 10 Carpentry XP. See [crafting conversion](../PATCH_v0.2.32.md).
+- Craft the portable panel, then use inventory **Attach Trap**. C107 also exposes one Building route: carried panel first, otherwise the original crafting recipe followed by attachment. The approved wooden recipe consumes one Barbed Wire, two Planks, four Nails and two Wire uses; retain hammer and pliers, Carpentry 1, 10 Carpentry XP. See [crafting conversion](../PATCH_v0.2.32.md).
 - Current attachment/removal takes five seconds under C104; repair remains ten seconds. Finite support health uses normal support repair; independent barb durability has a repair route. Placement does not grant support HP or a free support repair. Current service/item behavior is defined by the later patches, not the original C97 no-implementation proposal.
 
 ## Evidence and later corrections

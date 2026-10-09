@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Synchronized 2026-10-08 against C80-C104 and installed 0.2.34. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
+Synchronized 2026-10-08 against C80-C107 and patch 0.2.35. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -18,24 +18,24 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 ## Current checkpoint status and next work
 
-**Latest owner feedback (C106, 2026-10-08):** the [0.2.34 test is completed with findings](TEST_v0.2.34.md#owner-result-and-console-review-2026-10-08): excessive zombie trip travel fails acceptance; unmentioned checks are tentative owner-reported passes. Follow-up requests are Normal/Reinforced/Packed crafting organization, Building reintroduction and three module rows. Building input semantics await clarification; new-content decisions below are postponed. The implementation table remains the installed 0.2.34 baseline, with its previously held test now reviewed as described above.
+**Current corrective patch (C107, 2026-10-08):** 0.2.35 implements native Normal/Reinforced/Packed crafting categories, Building with carried-item priority and original-recipe fallback, 4/6/6 module rows, and zombie-only bed-trip displacement correction. C106 records the prior test's tentative unmentioned passes and failed zombie overshoot. Only the [focused 0.2.35 test](TEST_v0.2.35.md) remains for these changes; new-content choices stay postponed. See [release evidence](RELEASE.md) for local verification/install state.
 
-| Phase / checkpoints | Status at 0.2.34 | Remaining work / next gate |
+| Phase / checkpoints | Status at 0.2.35 | Remaining work / next gate |
 | --- | --- | --- |
 | 1: R1C1-R1C2 package split | Implemented and native-verified in 0.2.29; remaining owner regression waived by C89 | Closed to further split regression; retain fresh-world policy and independent-package checks for changes |
 | 1: R1C3 performance/authority | Partial: audit and multiple optimizations implemented, including 0.2.34 aim/LOS cleanup | Measure the held dense-client workload; resolve measured stalls and authority gaps without claiming MP |
-| 2: R2C1-R2C2 Bed Spikes | Implemented with native checks, revised through subsequent patches | Rendered traversal, trips/recovery and placement acceptance in the combined 0.2.34 test |
-| 2: R2C3 Barbed Panel | Implemented with native contact/construction/persistence checks | Combined rendered acceptance; multi-panel/garage-door and player-injury extensions remain unimplemented |
+| 2: R2C1-R2C2 Bed Spikes | Implemented with native checks, revised through subsequent patches | C106 tentative passes; verify corrected zombie landing/recovery in the focused 0.2.35 test |
+| 2: R2C3 Barbed Panel | Implemented with native contact/construction/persistence checks | C106 tentative passes; revised Building acceptance; multi-panel/garage-door and player-injury extensions remain unimplemented |
 | 2: R2C4 concertina | Planned; earliest unfinished content checkpoint in phase order | Discuss slowing versus the Horde Night concern, then prove movement feasibility before content |
 | 3: R3C1-R3C2 new head | Candidates documented; none selected for implementation | Select one head and settle its concrete contract before prototyping |
 | 3: R3C3 explosive head | Optional, unscoped | Collateral/resource/effect-budget decisions and feasibility first |
 | 3: R3C4-R3C7 offensive modules/battery | Planning direction recorded; no new offensive module implemented | R3C4 contract/baseline, then R3C5 directional effects, R3C6 conditional/penetrating effects, R3C7 combined acceptance |
-| 3: R3C8 starter modules/expansion | C104 implemented, verified and installed in 0.2.34 | Combined owner acceptance; include maximum loadouts in future R3C7 endurance checks |
+| 3: R3C8 starter modules/expansion | C104 implemented, verified and installed in 0.2.34 | C106 tentative passes; 4/6/6 layout acceptance in 0.2.35; include maximum loadouts in future R3C7 endurance checks |
 | 4: R4C1-R4C4 signals/connected traps | Planned | Signal contract first; devices then optional turret receiver |
 | 5: R5C1-R5C3 MP/integrations/release | Planned; no certification or publication | Validate only the selected release scope; optional features need not all ship |
 | 6: R6C1-R6C3 Cure simulation | Deferred, last | Matching contracts and loaded-combat controls first |
 
-The phase order is not a mandatory queue through every feature. R1C3 continues alongside relevant SP content, and Phase 3 may proceed without finishing every passive trap. R3C1 head selection and R3C4 module contract/battery baseline are separate entry points; neither requires a new head to be implemented first. No next gameplay patch is selected by this sync.
+The phase order is not a mandatory queue through every feature. R1C3 continues alongside relevant SP content, and Phase 3 may proceed without finishing every passive trap. R3C1 head selection and R3C4 module contract/battery baseline are separate entry points; neither requires a new head to be implemented first. C107 selects the corrective 0.2.35 patch; no following content patch is selected.
 
 **Documented module sequence: R3C4 -> R3C5 -> R3C6 -> R3C7.** The assistant's suggestion to make Initial Blow/Execute the next content patch was an unapproved reorder; those effects were already listed under R3C6. Battery baseline already belongs to R3C4. Keep any proposed reorder explicit until the owner selects it. R3C8 was separately approved and implemented under C104; its later ID does not make completed work a future task.
 
@@ -55,7 +55,7 @@ The phase order is not a mandatory queue through every feature. R1C3 continues a
 | --- | --- | --- |
 | R2C1 | C91 short-spike bed: 1x2 player brush-through and zombie trip/contact prototype | Prove foliage movement and native zombie falls onto the bed. Agree trip chance, fall damage, player speed/injury and crawler handling; prevent double rolls across the two tiles and repeated trip chains |
 | R2C2 | Finish basic/reinforced Bed Spikes: construction, servicing, wear, Sandbox and persistence | Approve both recipes/tools/skills/XP and tier differences first; bounded contact processing, exact single fall damage, save/reload and absent-Turrets checks |
-| R2C3 | [Barbed Panel](checkpoints/R2C3_BACKED_BARBED_SECTIONS.md) | C99 / 0.2.31 implements walls/fences, single-panel doors and independent 50-HP window-frame barbs; later naming/placement/crafting changes are included in 0.2.34. Native checks pass; combined rendered acceptance remains held. Multi-panel/garage doors remain unproven |
+| R2C3 | [Barbed Panel](checkpoints/R2C3_BACKED_BARBED_SECTIONS.md) | C99 / 0.2.31 implements walls/fences, single-panel doors and independent 50-HP window-frame barbs; later changes include 0.2.35 Building. Native checks pass; C106 records tentative owner acceptance of unmentioned behavior. Multi-panel/garage doors remain unproven |
 | R2C4 | Concertina movement feasibility, then content if it passes | Contact-only damage; reversible slowing that composes with other effects and ends on exit/death/unload. No permanent movement mutation or silent substitute for slowing |
 
 C81 rejects slowing turret effects because they undermine OMH Horde Night zombies. Revisit concertina's separately planned slowdown with the owner before R2C4; do not silently delete or implement it under the turret-module decision.

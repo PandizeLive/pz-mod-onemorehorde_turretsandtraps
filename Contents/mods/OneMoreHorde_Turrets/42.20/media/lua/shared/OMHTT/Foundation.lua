@@ -1,6 +1,6 @@
 ---@class OMHTTFoundation
 local Foundation = {
-    VERSION = "0.2.34",
+    VERSION = "0.2.35",
     MODULE = "OMHTT_Foundation",
     STORE = "OMHTT_Foundation_v1",
     PREFIX = "OMHTT_P1C1_",
@@ -188,6 +188,17 @@ end
 ---@nodiscard
 function OMHTT_PlacementHidden()
     return false
+end
+
+---@param params table Native recipe query
+---@return boolean visible
+function OMHTT_PlacementMenu(params)
+    if isClient() or isServer() then return false end
+    local name = params.recipe:getName()
+    if name == "OMHTTDeployTurret" then return OMHTT_TurretMenuAvailable(params) end
+    if name == "OMHTTBarbs" then return OMHTT_BarbMenuAvailable(params) end
+    if string.find(name, "BedSpikes", 1, true) then return OMHTT_BedMenuAvailable(params) end
+    return Foundation.barrierEnabled()
 end
 
 return Foundation

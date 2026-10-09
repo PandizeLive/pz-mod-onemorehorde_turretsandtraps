@@ -398,6 +398,7 @@ public final class NativePersistenceCheck {
             Path source = directory.getParent().getParent().getParent().resolve("Source/42.20/media/AnimSets");
             Object node = nodeType.getMethod("Parse", String.class).invoke(null, source.resolve("zombie/bumped/OMHTTBedTrip.xml").toString());
             check(node != null && nodeType.getField("animName").get(node).equals("Bob_RunStumble"), "Trip must use forward native clip");
+            check(!nodeType.getField("useDeferredMovement").getBoolean(node), "Zombie trip must not apply sprint-clip displacement");
             call(zombie, "setBumpType", new Class<?>[]{String.class}, "OMHTTBedTrip");
             call(zombie, "setVariable", new Class<?>[]{String.class, boolean.class}, "BumpAnimFinished", false);
             call(zombie, "setVariable", new Class<?>[]{String.class, boolean.class}, "SprinterTripped", false);

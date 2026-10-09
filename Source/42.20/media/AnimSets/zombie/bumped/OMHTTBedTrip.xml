@@ -4,6 +4,7 @@
     <m_AnimName>Bob_RunStumble</m_AnimName>
     <m_Priority>10</m_Priority>
     <m_Looped>false</m_Looped>
+    <m_useDeferredMovement>false</m_useDeferredMovement>
     <m_BlendTime>0.10</m_BlendTime>
     <m_SpeedScale>1.04</m_SpeedScale>
     <m_Conditions>

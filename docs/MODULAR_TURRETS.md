@@ -45,9 +45,9 @@ The dedicated expansion socket replaces the installed kit without consuming a re
 | Medium | 10 | 12 | +4 |
 | Large | 14 | 16 | +4 |
 
-The implemented two-row eight-column grid separates visual rows from unlock groups. Locked slots remain visibly inactive, and stored/custom overflow stays accessible. The two base slots can hold Detection and Firing. Saved Sandbox capacities are not overwritten or reinterpreted as totals; exact item identities remain stable. The earlier pyramid and four-column alternatives remain historical decisions, not pending choices.
+The C107 three-row 4/6/6 grid separates visual rows from unlock groups. Locked slots remain visibly inactive, and stored/custom overflow stays accessible. The two base slots can hold Detection and Firing. Saved Sandbox capacities are not overwritten or reinterpreted as totals; exact item identities remain stable. The earlier pyramid and four-column alternatives remain historical decisions, not pending choices.
 
-Reserve-ammunition bonuses are Improvised +25, Small +50, Medium +100 and Large +200. Empty slots add no battery cost. Standard modules/kits remain loot-based. [R3C8](checkpoints/R3C8_IMPROVISED_EXPANSION.md) is implemented/native-verified/installed, with rendered acceptance held in [the combined 0.2.34 test](TEST_v0.2.34.md). C104 resolved its former R3C4 recipe/layout gates independently; future R3C7 still includes larger loadouts in combined endurance/performance acceptance.
+Reserve-ammunition bonuses are Improvised +25, Small +50, Medium +100 and Large +200. Empty slots add no battery cost. Standard modules/kits remain loot-based. [R3C8](checkpoints/R3C8_IMPROVISED_EXPANSION.md) is implemented/native-verified/installed, with rendered acceptance held in [the focused 0.2.35 test](TEST_v0.2.35.md). C104 resolved its former R3C4 recipe/layout gates independently; future R3C7 still includes larger loadouts in combined endurance/performance acceptance.
 
 ## New heads and package boundary
 
@@ -59,7 +59,7 @@ External button/plate/beam signals remain planned in R4C4. They may request lega
 
 ## Remaining gates
 
-C81 schedules stackable offensive effects and intensity-based power costs with long battery life. Planned names are Splitter, Fragment Module, Impact, Piercing, Initial Blow and Execute; none is implemented in 0.2.34. Confirmed direction and unresolved choices are separated in [R3C4-R3C7](checkpoints/R3_OFFENSIVE_MODULES.md). The documented sequence remains contract/baseline, directional effects, conditional/penetrating effects, combined acceptance. An Initial Blow/Execute-first patch was suggested but not approved as a reorder. Homing, Bleed and slowing turret effects are excluded. Existing potato splash is not renamed or replaced by Fragment.
+C81 schedules stackable offensive effects and intensity-based power costs with long battery life. Planned names are Splitter, Fragment Module, Impact, Piercing, Initial Blow and Execute; none is implemented in 0.2.35. Confirmed direction and unresolved choices are separated in [R3C4-R3C7](checkpoints/R3_OFFENSIVE_MODULES.md). The documented sequence remains contract/baseline, directional effects, conditional/penetrating effects, combined acceptance. An Initial Blow/Execute-first patch was suggested but not approved as a reorder. Homing, Bleed and slowing turret effects are excluded. Existing potato splash is not renamed or replaced by Fragment.
 
 - R1C3: dense mixed-defense frame measurements, including rendering and maintenance outside the combat scheduler.
 - R3C1-R3C2: select and prove one new head; recipes/skills/XP require approval.

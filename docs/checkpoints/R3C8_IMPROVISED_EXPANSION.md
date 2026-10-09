@@ -18,7 +18,7 @@ Kits are mutually exclusive in the dedicated expansion socket. A higher tier rep
 
 ## Manage layout
 
-The approved and implemented grid has two rows of eight with visibly locked slots. Progression groups are independent of physical rows. The five-row pyramid, intermediate 2/4/7/11/16 totals and four-column alternative are historical.
+C107 revises the grid to three rows of 4/6/6 in 0.2.35 with visibly locked slots. Progression groups are independent of physical rows. The five-row pyramid, intermediate 2/4/7/11/16 totals and four-column alternative are historical.
 
 Head, magazine, reserve ammo, battery, expansion, power, range and firing/priority controls remain accessible. Saved Sandbox settings are preserved rather than overwritten by fresh defaults; item identities and overflow remain accessible. Unsafe kit removal/downgrade is rejected instead of deleting contents. Rendered readability/interaction acceptance remains in the combined owner test.
 
@@ -33,7 +33,7 @@ All three improvised items are craft-only. C104 approves Electrical 2, retained 
 C104 independently settled R3C8's former R3C4 recipe/layout/migration dependencies and authorized implementation. Do not reopen those choices or claim that all of R3C4 is complete. The numeric suffix is a stable identifier, not execution order.
 
 - **Verified:** 0.2.34's 3,823-assertion suite, native recipe transactions, exact improvised-item identity and loaded-round/cooldown persistence, independent package startup and installation hashes. See release evidence for the precise scope and client-only timing limitation.
-- **Held owner acceptance:** crafting visibility, Manage interaction, module behavior and service timing join earlier rendered checks in the single [six-step 0.2.34 test](../TEST_v0.2.34.md). No additional checklist is requested here.
+- **Owner acceptance:** C106 records completion of the earlier test with tentative unmentioned passes. Check only the revised layout in the [focused 0.2.35 test](../TEST_v0.2.35.md); do not repeat the old round.
 - **Future integration:** include 16-slot and supported custom loadouts in R3C7 damage, processing and battery-endurance measurements. Offensive-module propagation/caps and realistic endurance targets remain R3C4 decisions. More slots do not remove effect-specific limits.
 
 No multiplayer certification or publication is implied. R5C1 remains the MP gate; Building remains deferred until crafting/placement acceptance. This documentation sync does not change the installed build.

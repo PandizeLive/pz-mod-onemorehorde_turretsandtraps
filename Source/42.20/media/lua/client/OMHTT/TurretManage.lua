@@ -97,7 +97,7 @@ end
 ---@param delta number Wheel direction
 ---@return boolean handled
 function Panel:scrollModules(delta)
-    self.moduleRow = math.max(0, math.min(self.rows - 2, self.moduleRow + (delta > 0 and 1 or -1)))
+    self.moduleRow = math.max(0, math.min(self.rows - 3, self.moduleRow + (delta > 0 and 1 or -1)))
     self.nextRefresh = 0
     return true
 end
@@ -176,11 +176,11 @@ function Panel:refresh()
     end
     self.fireButton:setEnable(status == "Ready")
     local capacity = stats.modules
-    self.rows = math.max(2, math.ceil(math.max(contents.modules, capacity) / 8))
-    self.moduleRow = math.min(self.moduleRow, self.rows - 2)
+    self.rows = 3 + math.ceil(math.max(0, math.max(contents.modules, capacity) - 16) / 6)
+    self.moduleRow = math.min(self.moduleRow, self.rows - 3)
     for i = 1, #self.slots do self.slots[i].items = {} end
     for i = 1, 16 do
-        local number = self.moduleRow * 8 + i
+        local number = self.moduleRow * 6 + i
         local slot = self.moduleSlots[i]
         slot.disabled = number > capacity
         slot.label = getText("UI_OMHTT_ManageModule", number)
@@ -196,7 +196,7 @@ function Panel:refresh()
         if kind == "capacity" then slot = self.capacitySlot end
         if kind == "module" then
             modules = modules + 1
-            slot = self.moduleSlots[modules - self.moduleRow * 8]
+            slot = self.moduleSlots[modules - self.moduleRow * 6]
         end
         if kind and slot then slot.items[#slot.items + 1] = item end
     end
@@ -268,7 +268,7 @@ function Panel:prerender()
     self:drawText(getText("UI_OMHTT_Turret"), 12, 8, 1, 1, 1, 1, UIFont.Medium)
     self:drawText(getText("UI_OMHTT_ManageHint"), 12, self.titleHeight, 0.8, 0.8, 0.8, 1, UIFont.Small)
     local label = self.moduleLabel
-    if self.rows > 2 then label = label .. " — " .. getText("UI_OMHTT_ManageScroll") end
+    if self.rows > 3 then label = label .. " — " .. getText("UI_OMHTT_ManageScroll") end
     self:drawText(label, 12, self.modulesY, 1, 1, 1, 1, UIFont.Small)
     self:drawText(self.moduleEffects, 12, y, self.modulesMissing and 1 or 0.8, self.modulesMissing and 0.3 or 0.8, self.modulesMissing and 0.3 or 0.8, 1, UIFont.Small)
     self:drawText(getText("UI_OMHTT_Manage" .. self.status) .. " | " .. self.powerLabel, 12, y + h, 1, 1, 1, 1, UIFont.Small)
@@ -313,14 +313,14 @@ function OpenAction:perform()
         local top = titleHeight + lineHeight + 12
         local modulesY = top + (slotHeight + 8) * 2
         local moduleHeight = lineHeight * 2 + 24
-        local detailsY = modulesY + lineHeight + (moduleHeight + 6) * 2 + 6
+        local detailsY = modulesY + lineHeight + (moduleHeight + 6) * 3 + 6
         local height = detailsY + lineHeight * 8 + 82
         local x = getPlayerScreenLeft(index) + getPlayerScreenWidth(index) - width - 12
         local y = getPlayerScreenTop(index) + math.max(12, (getPlayerScreenHeight(index) - height) / 2)
         local panel = Panel:new(x, y, width, height)
         panel.player, panel.object, panel.nextRefresh = self.character, self.object, 0
         panel.deviceId, panel.slots, panel.moduleSlots = T.state(self.object).id, {}, {}
-        panel.moduleRow, panel.rows = 0, 2
+        panel.moduleRow, panel.rows = 0, 3
         panel.lineHeight, panel.titleHeight, panel.slotHeight = lineHeight, titleHeight, slotHeight
         panel.modulesY, panel.detailsY, panel.result, panel.reason = modulesY, detailsY, "", ""
         panel.moveWithMouse = true
@@ -338,10 +338,12 @@ function OpenAction:perform()
         panel.ammoSlot = panel:addSlot("ammo", "", 12, top + slotHeight + 8, storageWidth * 0.38)
         panel.magazineSlot = panel:addSlot("magazine", "", 20 + storageWidth * 0.38, top + slotHeight + 8, storageWidth * 0.30)
         panel.capacitySlot = panel:addSlot("capacity", getText("UI_OMHTT_ManageCapacity"), 28 + storageWidth * 0.68, top + slotHeight + 8, storageWidth * 0.32)
-        local moduleWidth = (width - 66) / 8
+        local moduleWidth = (width - 54) / 6
         for i = 1, 16 do
-            panel.moduleSlots[i] = panel:addSlot("module", "", 12 + ((i - 1) % 8) * (moduleWidth + 6),
-                modulesY + lineHeight + math.floor((i - 1) / 8) * (moduleHeight + 6), moduleWidth)
+            local row = i <= 4 and 0 or 1 + math.floor((i - 5) / 6)
+            local column = i <= 4 and i or (i - 5) % 6
+            panel.moduleSlots[i] = panel:addSlot("module", "", 12 + column * (moduleWidth + 6),
+                modulesY + lineHeight + row * (moduleHeight + 6), moduleWidth)
             panel.moduleSlots[i]:setHeight(moduleHeight)
         end
         panel.priorityButton = ISButton:new(130, height - 38, width - 142, 28, "", panel, Panel.changePriority)

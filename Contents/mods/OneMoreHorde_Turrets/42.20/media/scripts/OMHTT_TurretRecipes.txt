@@ -2,7 +2,7 @@ module Base {
     craftRecipe OMHTTCraftTurretBase {
         timedAction = Making,
         time = 150,
-        category = OMHTurrets,
+        category = OMHNormal,
         Tags = InHandCraft,
         needToBeLearn = false,
         SkillRequired = Mechanics:2,
@@ -26,7 +26,7 @@ module Base {
     craftRecipe OMHTTCraftTurretHead {
         timedAction = Making,
         time = 200,
-        category = OMHTurrets,
+        category = OMHNormal,
         Tags = InHandCraft,
         needToBeLearn = false,
         SkillRequired = Mechanics:2;Electricity:1,
@@ -53,7 +53,7 @@ module Base {
     craftRecipe OMHTTCraftTurretHeadImprovised {
         timedAction = Making,
         time = 250,
-        category = OMHTurrets,
+        category = OMHNormal,
         Tags = InHandCraft,
         needToBeLearn = false,
         SkillRequired = Mechanics:4;Electricity:1,
@@ -79,7 +79,7 @@ module Base {
     craftRecipe OMHTTCraftTurretComplete {
         timedAction = Making,
         time = 350,
-        category = OMHTurrets,
+        category = OMHNormal,
         Tags = InHandCraft,
         needToBeLearn = false,
         SkillRequired = Mechanics:2;Electricity:1,
@@ -107,7 +107,7 @@ module Base {
     craftRecipe OMHTTCraftTurretCompleteImprovised {
         timedAction = Making,
         time = 400,
-        category = OMHTurrets,
+        category = OMHNormal,
         Tags = InHandCraft,
         needToBeLearn = false,
         SkillRequired = Mechanics:4;Electricity:1,
@@ -134,7 +134,7 @@ module Base {
     craftRecipe OMHTTCraftMotionDetectionImprovised {
         timedAction = Making,
         time = 192,
-        category = OMHTurrets,
+        category = OMHNormal,
         Tags = InHandCraft,
         needToBeLearn = false,
         SkillRequired = Electricity:2,
@@ -156,7 +156,7 @@ module Base {
     craftRecipe OMHTTCraftFiringImprovised {
         timedAction = Making,
         time = 192,
-        category = OMHTurrets,
+        category = OMHNormal,
         Tags = InHandCraft,
         needToBeLearn = false,
         SkillRequired = Electricity:2,
@@ -178,7 +178,7 @@ module Base {
     craftRecipe OMHTTCraftCapacityImprovised {
         timedAction = Making,
         time = 192,
-        category = OMHTurrets,
+        category = OMHNormal,
         Tags = InHandCraft,
         needToBeLearn = false,
         SkillRequired = Electricity:2,

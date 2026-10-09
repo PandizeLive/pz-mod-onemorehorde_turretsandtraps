@@ -179,5 +179,8 @@
     "UI_OMHTT_ModuleFiringImprovised": "Firing*",
     "UI_OMHTT_ModuleCapacityImprovised": "Improvised",
     "UI_OMHTT_ManageMisfire": "Trigger failed",
-    "UI_OMHTT_ImprovisedStatus": "* Improvised | Detection range: %1"
+    "UI_OMHTT_ImprovisedStatus": "* Improvised | Detection range: %1",
+    "UI_OMHTT_CraftThenPlace": "Craft and place",
+    "UI_OMHTT_BuildRequirements": "Crafting requires the normal materials, tools and skills.",
+    "UI_OMHTT_BuildPickUp": "Pick up the crafted item to place it."
 }
