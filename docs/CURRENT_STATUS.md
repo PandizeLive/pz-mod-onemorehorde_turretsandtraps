@@ -1,6 +1,6 @@
 # Current development and planning handoff
 
-Updated 2026-10-08. Read this first in Cloud, then the linked authoritative records.
+Updated 2026-10-09. Read this first in Cloud, then the linked authoritative records.
 
 - **Latest approval:** C107 authorizes the [0.2.35 feedback patch](PATCH_v0.2.35.md): Normal/Reinforced/Packed, carried-item-first Building with original-recipe fallback, 4/6/6 module rows and short zombie bed trips. Capacity totals stay 2/4/8/12/16. Placement/pickup stays five seconds; repairs ten.
 - **Channel/branch:** development, `codex/performance-barbed-audit`, resumed from `4dc4eea`; fetched `origin/dev` (`5fc6446`, already included) before implementation. Private repository PandizeLive/pz-mod-onemorehorde_turretsandtraps. No official release or confirmed Workshop upload.
@@ -14,6 +14,6 @@ Updated 2026-10-08. Read this first in Cloud, then the linked authoritative reco
 - **Current follow-up:** complete the [four-step owner test](TEST_v0.2.35.md). Building interaction, layout readability and natural zombie landing remain rendered checks. New-content decisions are postponed; do not reopen the old full test.
 - **Future roadmap:** [canonical phase/checkpoint status](ROADMAP.md#current-checkpoint-status-and-next-work). R1C3 remains active; R2C4 concertina feasibility is the earliest unfinished new-content checkpoint. Phase 3 independently permits R3C1 head selection or R3C4 module contract/battery baseline, then R3C5 -> R3C6 -> R3C7. These discussions remain deferred by the owner's latest direction.
 - **Completed implementation, held acceptance:** R3C8 is installed, not future recipe/layout work. C106 records tentative owner passes; revised layout joins the focused 0.2.35 test; larger loadouts also belong in future R3C7 endurance acceptance. R1C1-R1C2 stay closed under the C89 waiver. Standard module crafting and offensive additions are not authorized by the improvised recipes.
-- **GitHub protocol:** local implementation follows [GITHUB_WORKFLOW.md](GITHUB_WORKFLOW.md). No push/PR/Workshop upload is implied by patch approval. Owner runs OMH.cmd option 2 to share this local checkpoint. Cloud cannot see unpushed work. Repository access was verified on 2026-10-07; GitHub Actions had no workflows/runs then, and an end-to-end Cloud planning PR was not exercised. These are historical setup facts, not fresh CI results.
+- **GitHub protocol:** C108 requires mirroring every completed update and versioned test findings under standing authorization. Use [GITHUB_WORKFLOW.md](GITHUB_WORKFLOW.md) and root OMH.cmd; the active development branch gets a draft PR into `dev`. Gameplay 0.2.35 remains owner-test pending. This session synchronizes 0.2.31-0.2.35 code, recorded evidence and the 0.2.34 owner findings; verify the remote checkpoint before claiming completion. No automatic merge or Workshop publication.
 
-0.2.35 is committed, tagged, validated and locally installed. Test now: only the four focused checks remain. No GitHub push, PR or Workshop upload is implied; Cloud cannot see this checkpoint until the owner mirrors it.
+0.2.35 is committed, tagged, validated and locally installed. Test now: only the four focused checks remain. C108 authorizes and requires the development push/draft PR and future test-result synchronization. Workshop publication remains separate.

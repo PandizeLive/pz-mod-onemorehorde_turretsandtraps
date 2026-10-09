@@ -8,7 +8,7 @@ New checkpoint IDs use **R** for the revised roadmap. Historical P0-P6 IDs and e
 
 ## Product and existing work
 
-**Installed 0.2.34** includes Bed Spikes, Barbed Panel and subsequent crafting, placement, traversal and starter-module changes. Native evidence is in [release state](RELEASE.md); the only active owner checklist is the [six-step combined test](TEST_v0.2.34.md). Held rendered checks are not passes or waivers. R1C3 includes diagnostic gating and aim/LOS cleanup; elimination of the reported 300-700ms client pauses remains open.
+**Installed 0.2.35** includes Bed Spikes, Barbed Panel and subsequent crafting, Building, traversal and starter-module changes. Native evidence is in [release state](RELEASE.md); the only active owner checklist is the [four-step focused test](TEST_v0.2.35.md). C106 records the earlier test findings; pending rendered checks are not passes or waivers. R1C3 includes diagnostic gating and aim/LOS cleanup; elimination of the reported 300-700ms client pauses remains open.
 
 One Workshop product/download: **OMH: Turrets & Traps**, with independent selectable entries **OMH: Turrets** (`OneMoreHorde_Turrets`) and **OMH: Traps** (`OneMoreHorde_Traps`). Neither requires the other or a third Core entry. Canonical shared helpers are generated into both with identical virtual paths.
 
