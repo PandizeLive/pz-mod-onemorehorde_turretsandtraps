@@ -18,7 +18,9 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 ## Current checkpoint status and next work
 
-**Current corrective patch (C107, 2026-10-08):** 0.2.35 implements native Normal/Reinforced/Packed crafting categories, Building with carried-item priority and original-recipe fallback, 4/6/6 module rows, and zombie-only bed-trip displacement correction. C106 records the prior test's tentative unmentioned passes and failed zombie overshoot. Only the [focused 0.2.35 test](TEST_v0.2.35.md) remains for these changes; new-content choices stay postponed. See [release evidence](RELEASE.md) for local verification/install state.
+**Latest test findings (C109, 2026-10-09):** 0.2.35 still launches zombies forward; top-level categories did not match the intended expandable group names. Repeated Building placement and trip/impact audio join the proposed corrective scope. See [owner findings](TEST_v0.2.35.md#owner-findings-and-console-review-2026-10-09); no new patch is implemented.
+
+**Installed corrective patch (C107, 2026-10-08):** 0.2.35 implements native Normal/Reinforced/Packed crafting categories, Building with carried-item priority and original-recipe fallback, 4/6/6 module rows, and zombie-only bed-trip displacement correction. C106 records the prior test's tentative unmentioned passes and failed zombie overshoot. Only the [focused 0.2.35 test](TEST_v0.2.35.md) remains for these changes; new-content choices stay postponed. See [release evidence](RELEASE.md) for local verification/install state.
 
 | Phase / checkpoints | Status at 0.2.35 | Remaining work / next gate |
 | --- | --- | --- |
