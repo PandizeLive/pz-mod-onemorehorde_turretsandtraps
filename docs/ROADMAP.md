@@ -18,6 +18,8 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 ## Current checkpoint status and next work
 
+**Latest owner feedback (C106, 2026-10-08):** the [0.2.34 test is completed with findings](TEST_v0.2.34.md#owner-result-and-console-review-2026-10-08): excessive zombie trip travel fails acceptance; unmentioned checks are tentative owner-reported passes. Follow-up requests are Normal/Reinforced/Packed crafting organization, Building reintroduction and three module rows. Building input semantics await clarification; new-content decisions below are postponed. The implementation table remains the installed 0.2.34 baseline, with its previously held test now reviewed as described above.
+
 | Phase / checkpoints | Status at 0.2.34 | Remaining work / next gate |
 | --- | --- | --- |
 | 1: R1C1-R1C2 package split | Implemented and native-verified in 0.2.29; remaining owner regression waived by C89 | Closed to further split regression; retain fresh-world policy and independent-package checks for changes |
@@ -110,7 +112,8 @@ Authority design/testing begins with each device; R5C1 is integrated proof, not 
 
 ## Active follow-up
 
-- [ ] Review the single [0.2.34 combined owner test](TEST_v0.2.34.md) when the owner can test; do not repeat waived 0.2.29 regression or request older patch tests separately.
+- [x] Review [0.2.34 owner feedback and captured console](TEST_v0.2.34.md#owner-result-and-console-review-2026-10-08). Preserve tentative owner passes separately from log proof; do not repeat the complete checklist.
+- [ ] Address C106 crafting/Building organization, three-row Manage layout and zombie trip-travel findings in a scoped corrective patch. Clarify Building inputs; retain 16-slot capacity and diagnose movement before changing damage eligibility.
 - [ ] R1C3: measure the reported mixed-defense pauses; use [the audit](checkpoints/R1C3_PERFORMANCE_AUDIT_20261007.md) and current patch evidence to select any further optimization. Prove integrated authority before MP claims.
 - [ ] R2C4: resolve concertina movement/slowdown scope before its feasibility prototype.
 - [ ] R3C1: select one unique head if taking the head track; shortlist membership is not implementation approval.
@@ -134,4 +137,4 @@ Discuss scope/tradeoffs before each gameplay checkpoint; recommend sufficient re
 
 ## Deferred placement alternative (C102, 2026-10-07)
 
-Retain the owner's idea of reintroducing a simplified Building interface. Current direction remains crafting plus inventory placement; do not re-enable duplicate construction/deployment recipes. Revisit only after the current crafting organization and placement repairs are accepted, with a clear distinction between creating an item and placing it.
+C106 reopens the simplified Building interface after the 0.2.34 test and requests corresponding Normal/Reinforced/Packed organization. Installed gameplay remains crafting plus inventory placement. Clarify whether Building places crafted items or consumes raw materials before implementation; packed transport bundles require unpacking. Reuse placement validation, identity and resource transactions rather than creating a second divergent path. This supersedes indefinite Building deferral, not the distinction between creating and placing an item.
