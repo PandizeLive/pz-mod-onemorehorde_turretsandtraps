@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Synchronized 2026-10-10 against C80-C117 and corrective patch 0.2.37. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
+Synchronized 2026-10-10 against C80-C118 and corrective patch 0.2.37. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -19,6 +19,8 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 ## Current checkpoint status and next work
 
 **C115 queued cleanup:** owner approved the C114 naming scheme and requests bundling it with the next update: remove complete-turret craft shortcuts, use Improvised for the alternate head recipe and Makeshift for starter modules/kit. Not implemented yet. R2C4 concertina feasibility remains the next unfinished content checkpoint; C116 approves its contact-only slowing direction, also requested for Barbed Panels; C117 approves half-speed for zombies. [Native feasibility and detailed choices](checkpoints/R2C4_CONCERTINA.md) remain open; this is not an implemented content patch.
+
+**C118 combined scope:** owner requests Bed Spikes-style player injuries for concertina/panels and independent durability for each placed Bed Spikes tile. The [combined checkpoint brief](checkpoints/R2C4_CONCERTINA.md#c118-player-contact-and-independent-bed-spikes) records current shared-state behavior and proposed inventory/balance consequences. Not implemented; C117 concertina recipe/durability proposals remain unapproved.
 
 **C113 review repairs:** 0.2.37 implements automatic/manual range feedback, recipe clarity, bounded barb audio, overlay caching/profiling and elapsed active clocks without catch-up bursts. The sole active checklist is [0.2.37](TEST_v0.2.37.md). Native/automated results are in RELEASE.md; actual dense-client pauses and visible/audio acceptance remain R1C3/R2 gates. No new-content checkpoint is reordered.
 
