@@ -3,8 +3,12 @@ require("Entity/ISUI/CraftRecipe/ISRecipeScrollingListBox")
 local G = {}
 local originalAdd = ISRecipeScrollingListBox.addGroup
 local titles = {Normal = "IGUI_CraftingCategories_OMHNormal",
-    Reinforced = "IGUI_CraftingCategories_OMHReinforced", Packed = "IGUI_CraftingCategories_OMHPacked"}
-local order = {"Normal", "Reinforced", "Packed"}
+    Reinforced = "IGUI_CraftingCategories_OMHReinforced", Packed = "IGUI_CraftingCategories_OMHPacked",
+    Heads = "IGUI_CraftingCategories_OMHHeads", Modules = "IGUI_CraftingCategories_OMHModules"}
+local order = {"Normal", "Reinforced", "Packed", "Heads", "Modules"}
+local turretGroups = {OMHTTCraftTurretHead = "Heads", OMHTTCraftTurretHeadImprovised = "Heads",
+    OMHTTCraftMotionDetectionImprovised = "Modules", OMHTTCraftFiringImprovised = "Modules",
+    OMHTTCraftCapacityImprovised = "Modules"}
 
 ---@param recipe CraftRecipe? Filtered recipe
 ---@return string? tier
@@ -12,6 +16,8 @@ local function tier(recipe)
     if not recipe then return nil end
     local name = recipe:getName()
     if string.sub(name, 1, 5) ~= "OMHTT" then return nil end
+    if recipe:getCategory() == "OMHTurrets" then return turretGroups[name] end
+    if recipe:getCategory() ~= "OMHTraps" then return nil end
     if string.find(name, "Pack", 1, true) or string.find(name, "Unpack", 1, true) then return "Packed" end
     if string.find(name, "Reinforce", 1, true) then return "Reinforced" end
     return "Normal"

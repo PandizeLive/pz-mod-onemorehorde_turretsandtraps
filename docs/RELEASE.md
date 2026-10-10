@@ -1,6 +1,12 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.36 tier groups, continuous Building and zombie collapse
+## 0.2.36.1 turret organization correction
+
+[C112 patch](PATCH_v0.2.36.1.md): root base/complete turret recipes, Heads and Modules groups, trap tiers retained, standalone Building turret base. No gameplay/audio/balance change. [Cross-system review](REVIEW_v0.2.36.1.md) records open findings; [focused owner test](TEST_v0.2.36.1.md) remains pending.
+
+3,891 Kahlua assertions pass; 91 runtime/translation files compile, 556 native translation keys and 23 packet serializations validate. The manifest covers 184 source and 223 package files; independent dependency checks cover 109 Sandbox options and 30 identical shared helpers. Native write/read pass in 56.4/56.8 seconds. Traps-only/Turrets-only/both startup pass in 59.6/49.8/49.5 seconds. Stock asset/world-generation diagnostics persist; there are no failed mod probes in these passing runs. Checks do not establish rendered movement/audio, mouse acceptance or resolution of client pauses. The native CraftRecipe.getCategory method used by grouping was also checked against installed 42.21 bytecode. Install/tag/archive verification follows below once completed; no Workshop upload.
+
+## Previous local installation: 0.2.36 tier groups, continuous Building and zombie collapse
 
 [C110 patch](PATCH_v0.2.36.md): restore OMH parent categories with expandable Normal/Reinforced/Packed list groups, continuous exact-item/original-recipe Building, zombie forward-collapse and native trip/impact sounds. Player movement, recipe costs, damage and recovery remain unchanged. [Focused owner test](TEST_v0.2.36.md) is pending.
 

@@ -5,5 +5,7 @@
     "IGUI_CraftingCategories_OMHTraps": "OMH: Traps",
     "IGUI_CraftingCategories_OMHNormal": "Normal",
     "IGUI_CraftingCategories_OMHReinforced": "Reinforced",
-    "IGUI_CraftingCategories_OMHPacked": "Packed"
+    "IGUI_CraftingCategories_OMHPacked": "Packed",
+    "IGUI_CraftingCategories_OMHHeads": "Heads",
+    "IGUI_CraftingCategories_OMHModules": "Modules"
 }
