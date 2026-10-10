@@ -1,12 +1,12 @@
 # R2C4: Concertina contact movement and combined cleanup
 
-Planning and read-only investigation, 2026-10-10, C114-C116. Installed build remains 0.2.37. No native movement probe or rendered test has passed for this new feature.
+Planning and read-only investigation, 2026-10-10, C114-C117. Installed build remains 0.2.37. No native movement probe or rendered test has passed for this new feature.
 
 ## Approved direction and remaining choices
 
 - Concertina deals contact damage and slows only during contact, without stacking or lingering effects. Owner wants the same contact behavior for Barbed Panels; current panels do not slow.
 - Reduce current movement by a divisor without resetting zombie type or restoring stale original speed. Prefer native transient modifiers if they satisfy the contract. Preserve Horde Night/current speed changes and unrelated modifiers. The prior prohibition on slowing turret heads is unchanged.
-- Proposed divisor: 2, or half current speed. Owner has delegated implementation technique, not selected this numerical balance.
+- C117 approves zombie contact divisor 2 (half current speed) for both concertina and Barbed Panels, including Horde Night zombies. Implementation technique remains delegated; native feasibility is not yet established.
 - Reuse the panel-style timed damage contract (currently 10 damage every two seconds), not per-frame damage. Discuss concertina footprint, player behavior, durability, recipe/tools/skills/XP before content implementation. Do not assume panel backing/shared-health rules apply to freestanding wire.
 - Existing complete-turret shortcut removal and approved Improvised/Makeshift names are bundled with the selected update; preserve identical head outputs and internal IDs.
 
@@ -30,4 +30,20 @@ Proposed ordering principle: enable/behavior first, then damage/cadence, durabil
 
 ## Delivery and recap
 
-Future recaps list only names of new changes in bullets; important decisions/limitations may accompany them in prose. This discussion queues Concertina Wire, contact slowdown for both wire/panels, Sandbox header organization, approved recipe naming and redundant complete-turret recipe removal. Pending footprint/recipe/balance and native feasibility prevent a fully specified content patch. Existing 0.2.37 acceptance and measured performance work remain separate, not new passes or a promised stall fix.
+Future recaps list only names of new changes in bullets; important decisions/limitations may accompany them in prose. This discussion queues Concertina Wire, contact slowdown for both wire/panels, Sandbox header organization, approved recipe naming and redundant complete-turret recipe removal. Pending footprint/recipe/player/durability choices and native feasibility prevent a fully specified content patch; the zombie divisor is approved. Existing 0.2.37 acceptance and measured performance work remain separate, not new passes or a promised stall fix.
+
+
+## Remaining defaults proposed under C117
+
+Awaiting owner choice; none of these new defaults is approved by the half-speed answer.
+
+| Choice | Proposed default |
+| --- | --- |
+| Footprint | One-tile freestanding coil on clear floor |
+| Durability | 50 independent HP; one wear per damaging activation |
+| Zombie damage | Match panel-style 10 every two seconds |
+| Craft | One Barbed Wire + two Wire; retain pliers; ten seconds; no skill requirement or XP |
+| Service | Five-second placement/pickup; ten-second free repair; no service XP |
+| Player contact | Half-speed while touching; no new injury mechanic in this slice, matching panels' existing no-player-injury scope |
+
+Footprint and durability refer to the whole coil, not each zombie. This proposal does not permit repeated division each tick, stacked wire slows, safe assumptions about native expiry, or a new global loot/speed change.

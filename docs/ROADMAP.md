@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Synchronized 2026-10-10 against C80-C116 and corrective patch 0.2.37. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
+Synchronized 2026-10-10 against C80-C117 and corrective patch 0.2.37. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -18,7 +18,7 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 ## Current checkpoint status and next work
 
-**C115 queued cleanup:** owner approved the C114 naming scheme and requests bundling it with the next update: remove complete-turret craft shortcuts, use Improvised for the alternate head recipe and Makeshift for starter modules/kit. Not implemented yet. R2C4 concertina feasibility remains the next unfinished content checkpoint; C116 now approves its contact-only slowing direction, also requested for Barbed Panels. [Native feasibility and detailed choices](checkpoints/R2C4_CONCERTINA.md) remain open; this is not an implemented content patch.
+**C115 queued cleanup:** owner approved the C114 naming scheme and requests bundling it with the next update: remove complete-turret craft shortcuts, use Improvised for the alternate head recipe and Makeshift for starter modules/kit. Not implemented yet. R2C4 concertina feasibility remains the next unfinished content checkpoint; C116 approves its contact-only slowing direction, also requested for Barbed Panels; C117 approves half-speed for zombies. [Native feasibility and detailed choices](checkpoints/R2C4_CONCERTINA.md) remain open; this is not an implemented content patch.
 
 **C113 review repairs:** 0.2.37 implements automatic/manual range feedback, recipe clarity, bounded barb audio, overlay caching/profiling and elapsed active clocks without catch-up bursts. The sole active checklist is [0.2.37](TEST_v0.2.37.md). Native/automated results are in RELEASE.md; actual dense-client pauses and visible/audio acceptance remain R1C3/R2 gates. No new-content checkpoint is reordered.
 
@@ -66,7 +66,7 @@ The phase order is not a mandatory queue through every feature. R1C3 continues a
 | R2C3 | [Barbed Panel](checkpoints/R2C3_BACKED_BARBED_SECTIONS.md) | C99 / 0.2.31 implements walls/fences, single-panel doors and independent 50-HP window-frame barbs; later changes include 0.2.35 Building. Native checks pass; C106 records tentative owner acceptance of unmentioned behavior. Multi-panel/garage doors remain unproven |
 | R2C4 | Concertina movement feasibility, then content if it passes | Contact-only damage; reversible slowing that composes with other effects and ends on exit/death/unload. No permanent movement mutation or silent substitute for slowing |
 
-C81 still rejects slowing turret effects. C116 explicitly accepts concertina contact-only slowing, with the same requested behavior for Barbed Panels, following the Horde Night concern discussion. Divisor and content details remain open; prove native movement/cleanup before implementation. See [R2C4 investigation](checkpoints/R2C4_CONCERTINA.md).
+C81 still rejects slowing turret effects. C116 explicitly accepts concertina contact-only slowing, with the same requested behavior for Barbed Panels, following the Horde Night concern discussion. C117 approves divisor 2; other content details remain open; prove native movement/cleanup before implementation. See [R2C4 investigation](checkpoints/R2C4_CONCERTINA.md).
 
 Bed Spikes content began in 0.2.30 under C95, with native API, recipe and persistence checks. Later traversal/recovery/placement changes are included in 0.2.34. Use only [the current combined test](TEST_v0.2.37.md) for outstanding rendered acceptance; older patch tests are historical. Phase 2 is not fully accepted and concertina is not implemented.
 
@@ -123,7 +123,7 @@ Authority design/testing begins with each device; R5C1 is integrated proof, not 
 - [x] Review [0.2.34 owner feedback and captured console](TEST_v0.2.34.md#owner-result-and-console-review-2026-10-08). Preserve tentative owner passes separately from log proof; do not repeat the complete checklist.
 - [ ] Address C106 crafting/Building organization, three-row Manage layout and zombie trip-travel findings in a scoped corrective patch. Clarify Building inputs; retain 16-slot capacity and diagnose movement before changing damage eligibility.
 - [ ] R1C3: measure the reported mixed-defense pauses; use [the audit](checkpoints/R1C3_PERFORMANCE_AUDIT_20261007.md) and current patch evidence to select any further optimization. Prove integrated authority before MP claims.
-- [ ] R2C4: prove C116 contact-only slowing and settle divisor, footprint, player interaction, durability and recipe.
+- [ ] R2C4: prove C116 contact-only slowing and settle footprint, player interaction, durability and recipe; divisor 2 is approved.
 - [ ] R3C1: select one unique head if taking the head track; shortlist membership is not implementation approval.
 - [ ] R3C4: if taking the module track, resolve Fragment angle/propagation/range, stack caps, Splitter ammunition, Impact eligibility, compatibility and battery workload/target before offensive content.
 - [ ] Capture an earlier log or live thread evidence if the Louisville hang recurs.
