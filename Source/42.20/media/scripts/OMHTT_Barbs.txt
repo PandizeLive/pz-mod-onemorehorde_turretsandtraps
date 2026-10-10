@@ -28,7 +28,7 @@ module Base {
         component CraftRecipe {
             timedAction = BuildLowHammer,
             time = 200,
-            category = OMHNormal,
+            category = OMHTraps,
             needToBeLearn = false,
             OnAddToMenu = OMHTT_PlacementMenu,
             inputs {
@@ -41,7 +41,7 @@ module Base {
     craftRecipe OMHTTCraftBarbs {
             timedAction = BuildLowHammer,
             time = 200,
-            category = OMHNormal,
+            category = OMHTraps,
             Tooltip = Tooltip_OMHTT_Barbs,
             Tags = InHandCraft;Carpentry,
             needToBeLearn = false,

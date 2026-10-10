@@ -96,6 +96,11 @@ check(tripper.bump == "OMHTTBedTrip" and tripper.variables.SprinterTripped == fa
     "Winning entry requests forward stumble with fresh native recovery flags and no shove")
 check(record.health == 100, "Requesting a fall does not charge damage or wear before landing")
 local zombie = makeZombie(square, 10)
+local impacts = 0
+function zombie:getEmitter() return {playSound = function(_, name)
+    check(name == "SpearCraftedHit", "Bed impact uses the registered native crafted-spear hit")
+    impacts = impacts + 1
+end} end
 function zombie:isGettingUp() return self.gettingUp == true end
 function zombie:isCrawling() return self.crawler == true end
 function zombie:getBumpType() return self.bump or "" end
@@ -107,6 +112,7 @@ check(math.abs(zombie.health - 9.8) < .00001 and record.health == 94 and a.healt
     "Fresh fall applies 20 damage and six wear once to shared durability")
 for i = 1, 30 do B.zombie(zombie) end
 check(record.health == 94 and math.abs(zombie.health - 9.8) < .00001, "Prone updates cannot repeat wear or damage")
+check(impacts == 1, "A damaging fall plays one impact; prone updates stay silent")
 zombie.floor, zombie.knocked, zombie.gettingUp = false, false, false
 B.zombie(zombie)
 record.tier, record.maxHealth, record.health = "reinforced", 200, 200

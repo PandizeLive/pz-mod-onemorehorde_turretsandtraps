@@ -136,6 +136,13 @@ def main():
     files = {str(path.relative_to(PACKAGE)).replace("\\", "/"): hashlib.sha256(path.read_bytes()).hexdigest()
         for path in sorted(PACKAGE.rglob("*")) if path.is_file()}
     sources = [
+        "media/AnimSets/zombie/knockeddown-headTop/HeadTopFall.xml",
+        "media/anims_X/Zombie/Zombie_HitDeath_HeadTop.x",
+        "media/AnimSets/zombie/climbfence/start.xml",
+        "media/AnimSets/zombie/falldown/frombehind.xml",
+        "media/scripts/generated/sounds/zombies/sounds_zombie_foley.txt",
+        "media/scripts/generated/sounds/weapons/sounds_melee_spears.txt",
+        "media/lua/server/BuildingObjects/ISBuildingObject.lua",
         "media/scripts/generated/items/weapon.txt",
         "media/scripts/generated/models_weapons.txt",
         "media/lua/shared/TimedActions/ISReloadWeaponAction.lua",

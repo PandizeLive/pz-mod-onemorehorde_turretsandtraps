@@ -2,7 +2,7 @@ module Base {
     craftRecipe OMHTTCraftSpikeBarrier {
         timedAction = SharpenStakeWood,
         time = 200,
-        category = OMHNormal,
+        category = OMHTraps,
         Tooltip = UI_OMHTT_SpikeBarrierDescription,
         Tags = InHandCraft;Carpentry,
         needToBeLearn = false,
@@ -23,7 +23,7 @@ module Base {
     craftRecipe OMHTTPackSpikeBarriers {
         timedAction = Making,
         time = 100,
-        category = OMHPacked,
+        category = OMHTraps,
         Tooltip = Tooltip_OMHTT_BarrierPack,
         Tags = InHandCraft;Carpentry,
         needToBeLearn = false,
@@ -40,7 +40,7 @@ module Base {
     craftRecipe OMHTTUnpackSpikeBarriers {
         timedAction = Making,
         time = 100,
-        category = OMHPacked,
+        category = OMHTraps,
         Tooltip = Tooltip_OMHTT_BarrierPack,
         Tags = InHandCraft;Carpentry,
         needToBeLearn = false,
@@ -57,7 +57,7 @@ module Base {
     craftRecipe OMHTTPackReinforcedBarriers {
         timedAction = Making,
         time = 100,
-        category = OMHPacked,
+        category = OMHTraps,
         Tooltip = Tooltip_OMHTT_ReinforcedPack,
         Tags = InHandCraft;Carpentry,
         needToBeLearn = false,
@@ -74,7 +74,7 @@ module Base {
     craftRecipe OMHTTUnpackReinforcedBarriers {
         timedAction = Making,
         time = 100,
-        category = OMHPacked,
+        category = OMHTraps,
         Tooltip = Tooltip_OMHTT_ReinforcedPack,
         Tags = InHandCraft;Carpentry,
         needToBeLearn = false,
@@ -91,7 +91,7 @@ module Base {
     craftRecipe OMHTTReinforceSpikeBarrier {
         timedAction = BuildLowHammer,
         time = 200,
-        category = OMHReinforced,
+        category = OMHTraps,
         Tags = InHandCraft;Carpentry,
         needToBeLearn = false,
         SkillRequired = Woodwork:3,
@@ -108,7 +108,7 @@ module Base {
     craftRecipe OMHTTReinforceBedSpikes {
         timedAction = BuildLowHammer,
         time = 200,
-        category = OMHReinforced,
+        category = OMHTraps,
         Tags = InHandCraft;Carpentry,
         needToBeLearn = false,
         SkillRequired = Woodwork:3,

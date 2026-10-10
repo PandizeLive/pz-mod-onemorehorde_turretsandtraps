@@ -81,20 +81,21 @@ public final class KahluaCheck {
             Object tripNode = animNodeType.getMethod("Parse", String.class).invoke(null,
                 root.resolve("Source/42.20/media/AnimSets/" + actor + "/bumped/OMHTTBedTrip.xml").toString());
             if (tripNode == null) throw new IllegalStateException("Missing forward trip node");
-            if (!animNodeType.getField("animName").get(tripNode).equals("Bob_RunStumble"))
+            if (!animNodeType.getField("animName").get(tripNode).equals(actor.equals("player") ? "Bob_RunStumble" : "Zombie_HitDeath_HeadTop"))
                 throw new IllegalStateException("Trip must use the native forward clip");
             if (animNodeType.getField("useDeferredMovement").getBoolean(tripNode) != actor.equals("player"))
                 throw new IllegalStateException("Only zombie bed trips must suppress clip displacement");
-            int landingEvents = 0, completionEvents = 0;
+            int landingEvents = 0, completionEvents = 0, sounds = 0;
             for (Object event : (java.util.List<?>)animNodeType.getField("events").get(tripNode)) {
                 String name = (String)event.getClass().getField("eventName").get(event);
                 String value = (String)event.getClass().getField("parameterValue").get(event);
                 if (name.equals("FallOnFront") && value.equals("true")) landingEvents++;
+                else if (actor.equals("zombie") && name.equals("PlaySound") && (value.equals("ZombieTrip") || value.equals("BodyHitGround"))) sounds++;
                 else if (name.equals("SetVariable") && event.getClass().getSimpleName().equals("AnimEventSetVariable")
                     && (value.equals("SprinterTripped=true") || value.equals("BumpAnimFinished=true") || value.equals("BumpFallAnimFinished=true"))) completionEvents++;
                 else throw new IllegalStateException("Unexpected forward trip event: " + name + " " + value);
             }
-            if (landingEvents != 1 || completionEvents != (actor.equals("player") ? 1 : 2))
+            if (landingEvents != 1 || completionEvents != (actor.equals("player") ? 1 : 2) || sounds != (actor.equals("player") ? 0 : 2))
                 throw new IllegalStateException("Incomplete trip landing/recovery markers");
         }
         System.out.println("Native trip parser: player/zombie forward clips and complete landing/recovery markers valid");
@@ -224,6 +225,10 @@ public final class KahluaCheck {
             {"_", Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/client/Entity/ISUI/Controls/ISWidgetTitleHeader.lua").toString()},
             {"_", base + "client/OMHTT/CraftingMenu.lua"},
             {"_", "tools/tests/crafting_menu.lua"},
+            {"_", "tools/tests/crafting_groups_bootstrap.lua"},
+            {"_", Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/client/Entity/ISUI/CraftRecipe/ISRecipeScrollingListBox.lua").toString()},
+            {"OMHTT/CraftingGroups", base + "client/OMHTT/CraftingGroups.lua"},
+            {"_", "tools/tests/crafting_groups.lua"},
             {"_", "tools/tests/service_bootstrap.lua"},
             {"OMHTT/BarrierService", base + "server/OMHTT/BarrierService.lua"},
             {"_", "tools/tests/barrier_service.lua"},
@@ -301,6 +306,7 @@ public final class KahluaCheck {
             {"OMHTT/HybridBuild", base + "client/OMHTT/HybridBuild.lua"},
             {"_", base + "client/OMHTT/ConstructionMenu.lua"},
             {"_", "tools/tests/hybrid_build.lua"},
+            {"_", "tools/tests/hybrid_repeat.lua"},
             {"_", "tools/tests/placement_inventory.lua"},
             {"_", "tools/tests/panel_cursor.lua"},
             {"_", "tools/tests/service_timing.lua"},

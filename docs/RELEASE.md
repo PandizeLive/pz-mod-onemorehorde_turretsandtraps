@@ -1,6 +1,12 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.35 Building fallback and feedback repairs
+## 0.2.36 corrective implementation: validated, awaiting local installation
+
+[C110 patch](PATCH_v0.2.36.md): restore OMH parent categories with expandable Normal/Reinforced/Packed list groups, continuous exact-item/original-recipe Building, zombie forward-collapse and native trip/impact sounds. Player movement, recipe costs, damage and recovery remain unchanged. [Focused owner test](TEST_v0.2.36.md) is pending.
+
+3,880 Kahlua assertions pass; 91 runtime/translation files compile, 554 native translations and 23 packet serializations validate. The manifest covers 184 source and 223 package files; independent dependency checks cover 109 Sandbox options and 30 identical shared helpers. Native write/fresh-process read pass in 55.0/50.4 seconds, including registered sounds, original-recipe consumption/retained tools and controlled forward landing/get-up. Traps-only, Turrets-only and both startup pass in 45.6/49.3/51.1 seconds. Final client-only placement reservation/heading/cache changes pass Kahlua checks; headless startup does not exercise mouse interaction. Native probes retain known stock asset/world-generation diagnostics; no mod probe failures remain. Installation is the next checkpoint. Existing owner failures remain in the affected versions; automated checks do not certify rendered movement/audio or resolve the reported client pauses. C108 requires the development mirror; Workshop publication remains separate. Cumulative unuploaded Workshop notes are preserved.
+
+## Previous local installation: 0.2.35 Building fallback and feedback repairs
 
 [C107 patch](PATCH_v0.2.35.md). 3,830 Kahlua assertions pass; 89 runtime/translation files, 554 native translation keys, 23 packet serializations, 183 source/221 package files, 109 Sandbox options and 29 identical shared helpers validate. Focused checks cover carried-item priority, exact output identity, duplicate/cancel/failure handling, Building menu isolation, 4/6/6 geometry, custom overflow and zombie-only animation displacement metadata.
 
@@ -8,7 +14,7 @@ Stock 42.21 native write/read pass in 47.9/47.5 seconds. The added native fixtur
 
 Native startup includes known stock world-generation/cached-map metadata diagnostics; no mod probe failures remain in the passing runs. Rendered acceptance and dense-client pause resolution are not claimed. The earlier owner test's tentative unmentioned passes remain C106 evidence; only [four focused checks](TEST_v0.2.35.md) are requested. Traps-only, Turrets-only and both startup pass in 46.4/48.2/47.0 seconds. Installed 2026-10-08 through root OMH.cmd from annotated `test/v0.2.35`, source `07275b234ab94f78cd3287ed51f296394c2056b2`. All 183 source/221 package files match tag, validation manifest, installed files and archive; both prior 0.2.34 backups (221 managed files) verify. Retired CraftingGroups.lua is absent from both installed packages. [Install record](../diagnostics/v0.2.35/install.json), [release verification](../diagnostics/v0.2.35/local-release.json), [archive](../artifacts/OMHTT-0.2.35.zip). Archive SHA-256: `9b6105b63f57ba245457024917b5d3ab3706fb1e2326fa6fcdd629f16d9fdb6e`. No remote push or Workshop publication; cumulative Workshop draft preserved.
 
-Owner follow-up 2026-10-09: 0.2.35 fails rendered acceptance for continued forward trip travel and the intended group naming. Repeated Building placement and native trip/impact audio are requested. Automated passes above remain valid only for their stated scope; see [C109 findings](TEST_v0.2.35.md#owner-findings-and-console-review-2026-10-09). No corrective patch is installed.
+Owner follow-up 2026-10-09: 0.2.35 fails rendered acceptance for continued forward trip travel and the intended group naming. Repeated Building placement and native trip/impact audio are requested. Automated passes above remain valid only for their stated scope; see [C109 findings](TEST_v0.2.35.md#owner-findings-and-console-review-2026-10-09). Superseded by the C110 / 0.2.36 corrective implementation; no rendered pass is inferred.
 
 ## Previous local installation: 0.2.34 starter modules, expansion and service timing
 

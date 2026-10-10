@@ -1,5 +1,7 @@
 ---@return nil
 local function checkBeds()
+    local sounds = {"ZombieTrip", "BodyHitGround", "SpearCraftedHit"}
+    for i = 1, #sounds do assert(GameSounds.getSound(sounds[i]) ~= nil, "Missing native bed sound: " .. sounds[i]) end
     local B = require("OMHTT/BedSpikes")
     local oldServer, oldClient, oldCell = isServer, isClient, getCell
     isServer = function() return false end

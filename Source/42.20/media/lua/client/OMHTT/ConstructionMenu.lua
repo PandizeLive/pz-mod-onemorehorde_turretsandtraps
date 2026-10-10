@@ -69,7 +69,7 @@ end
 ---@return nil
 function ISBuildPanel:update()
     originalUpdate(self)
-    if self.omhttAction or not self:getIsVisible() then return end
+    if self.omhttAction or self.omhttPlacement or not self:getIsVisible() then return end
     if self.omhttRefresh or self.omhttGeneration ~= generation then self:refreshList() end
 end
 
@@ -102,7 +102,7 @@ function ISWidgetBuildControl:prerender()
         return
     end
     self.omhttTitle = true
-    self.buttonCraft.enable = not panel.omhttAction and self.buttonCraft.enable
+    self.buttonCraft.enable = not panel.omhttAction and not panel.omhttPlacement and self.buttonCraft.enable
     local crafting = definition.craft == self.logic:getRecipe():getName()
     local title = definition.turret and "UI_OMHTT_ManageInstall"
         or (definition.deploy == "OMHTTBarbs" and "UI_OMHTT_AttachTrap" or "UI_OMHTT_PlaceTrap")
@@ -112,6 +112,7 @@ end
 ---@return nil
 local function inventoryChanged()
     generation = generation + 1
+    H.generation = generation
 end
 
 Events.OnContainerUpdate.Add(inventoryChanged)

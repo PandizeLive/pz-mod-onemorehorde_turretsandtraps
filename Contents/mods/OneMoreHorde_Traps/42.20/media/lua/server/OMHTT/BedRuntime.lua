@@ -48,7 +48,8 @@ function B.zombie(zombie)
         if record.tier == "reinforced" then
             amount = B.option("ReinforcedDamage", 50, 0, 2500)
         end
-        Damage.apply(zombie, amount / 100, record.id, "bed-spikes", nil, nil)
+        local lost = Damage.apply(zombie, amount / 100, record.id, "bed-spikes", nil, nil)
+        if lost > 0 then zombie:getEmitter():playSound("SpearCraftedHit") end
         record.health = math.max(0, record.health - B.option("Wear", 6, 0, 1000))
         D.defer("bed-fall", {id = record.id, health = record.health, damage100 = amount})
         if record.health == 0 then

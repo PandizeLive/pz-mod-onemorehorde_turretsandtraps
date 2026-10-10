@@ -2,6 +2,7 @@ if isClient() or isServer() then return end
 require("Entity/TimedActions/ISHandcraftAction")
 require("TimedActions/ISTimedActionQueue")
 local H = {}
+H.generation = 0
 H.definitions = {
     {item = "Base.OMHTTSpikeBarrierItem", craft = "OMHTTCraftSpikeBarrier", deploy = "OMHTTDeploySpikeBarrier"},
     {item = "Base.OMHTTReinforcedBarrierItem", craft = "OMHTTReinforceSpikeBarrier", deploy = "OMHTTDeployReinforcedBarrier"},
@@ -63,14 +64,134 @@ function H.place(player, definition, item)
 end
 
 ---@param panel ISBuildPanel Native panel
+---@param cursor ISBuildIsoEntity Session cursor
+---@return boolean active
+function H.active(panel, cursor)
+    return not panel.omhttClosed and not panel.player:isDead()
+        and getCell():getDrag(panel.player:getPlayerNum()) == cursor
+end
+
+---@param panel ISBuildPanel Native panel
 ---@param definition table Build route
+---@param cursor ISBuildIsoEntity Exact-item cursor
+---@param facing number? Previous orientation
+---@return ISBuildIsoEntity? cursor
+function H.bind(panel, definition, cursor, facing)
+    if not cursor then return nil end
+    if facing then cursor.nSprite = facing end
+    cursor.dragNilAfterPlace, cursor.blockAfterPlace = false, true
+    local complete, start = cursor.onActionComplete, cursor.onTimedActionStart
+    ---@param self ISBuildIsoEntity Original cursor
+    ---@return nil
+    cursor.onActionComplete = function(self)
+        complete(self)
+        self.blockBuild = false
+        panel.omhttPlacement = nil
+    end
+    ---@param self ISBuildIsoEntity Copied cursor
+    ---@param action ISBuildAction Native action
+    ---@return nil
+    cursor.onTimedActionStart = function(self, action)
+        start(self, action)
+        local perform = action.perform
+        ---@param timed ISBuildAction Completed action
+        ---@return nil
+        action.perform = function(timed)
+            if timed.omhttRepeated then return end
+            timed.omhttRepeated = true
+            perform(timed)
+            if H.active(panel, cursor) then H.repeatPlacement(panel, definition, cursor.nSprite) end
+        end
+    end
+    ---@param self ISBuildIsoEntity Original cursor
+    ---@param x number Tile X
+    ---@param y number Tile Y
+    ---@param z number Floor
+    ---@return nil
+    cursor.tryBuild = function(self, x, y, z)
+        if self.blockBuild or not H.active(panel, self) then return end
+        local action = ISBuildingObject.tryBuild(self, x, y, z)
+        if action then
+            action.onIsValid = self.objectInfo:getScript():getTimedActionOnIsValid()
+            self.blockBuild = true
+            panel.omhttPlacement = action
+        end
+    end
+    panel.buildEntity = cursor
+    return cursor
+end
+
+---@param panel ISBuildPanel Native panel
+---@param definition table Build route
+---@param facing number Last orientation
+---@return nil
+function H.repeatPlacement(panel, definition, facing)
+    if panel.omhttClosed or panel.player:isDead() or not H.recipe(panel.player, definition) then return end
+    local item = H.item(panel.player, definition)
+    if item then
+        H.bind(panel, definition, H.place(panel.player, definition, item), facing)
+        return
+    end
+    local containers = ISInventoryPaneContextMenu.getContainers(panel.player)
+    local logic = HandcraftLogic.new(panel.player, nil, nil)
+    logic:setContainers(containers)
+    logic:setRecipe(H.recipe(panel.player, definition))
+    local info = SpriteConfigManager.GetObjectInfo(definition.deploy)
+    if not info then return end
+    local preview = ISBuildIsoEntity:new(panel.player, info, facing, containers)
+    preview.dragNilAfterPlace = false
+    ---@param self ISBuildIsoEntity Planning cursor
+    ---@param square IsoGridSquare Destination
+    ---@return boolean available
+    preview.haveMaterial = function(self, square)
+        local position = panel.player:getCurrentSquare()
+        if self.omhttGeneration ~= H.generation or self.omhttPosition ~= position then
+            self.omhttGeneration = H.generation
+            self.omhttPosition = position
+            logic:setContainers(ISInventoryPaneContextMenu.getContainers(panel.player))
+            self.omhttAvailable = H.item(panel.player, definition) ~= nil or logic:canPerformCurrentRecipe()
+        end
+        return H.active(panel, self) and H.recipe(panel.player, definition) ~= nil
+            and self.omhttAvailable
+    end
+    ---@param self ISBuildIsoEntity Planning cursor
+    ---@param x number Tile X
+    ---@param y number Tile Y
+    ---@param z number Floor
+    ---@return nil
+    preview.tryBuild = function(self, x, y, z)
+        if self.blockBuild or not H.active(panel, self) then return end
+        local square = getCell():getGridSquare(x, y, z)
+        if not self:isValid(square) then return end
+        self.blockBuild = true
+        local orientation = self.nSprite
+        local started = H.start(panel, definition, function(output)
+            self.blockBuild = false
+            if not H.active(panel, self) then return end
+            local cursor = H.bind(panel, definition, H.place(panel.player, definition, output), orientation)
+            if cursor then
+                cursor:getSprite()
+                if cursor:isValid(square) then cursor:tryBuild(x, y, z) end
+            end
+        end, function() self.blockBuild = false end)
+        if not started then self.blockBuild = false end
+    end
+    panel.buildEntity = preview
+    getCell():setDrag(preview, panel.player:getPlayerNum())
+end
+
+---@param panel ISBuildPanel Native panel
+---@param definition table Build route
+---@param ready function? Exact crafted/carried item callback
+---@param cancelled function? Interrupted crafting callback
 ---@return boolean started
-function H.start(panel, definition)
+function H.start(panel, definition, ready, cancelled)
     local player = panel.player
-    if panel.omhttAction or player:isDead() or not H.recipe(player, definition) then return false end
+    if panel.omhttAction or panel.omhttPlacement or player:isDead() or not H.recipe(player, definition) then return false end
     local item = H.item(player, definition)
     if item then
-        panel.buildEntity = H.place(player, definition, item)
+        if ready then ready(item); return true end
+        panel.buildEntity = H.bind(panel, definition, H.place(player, definition, item))
         return panel.buildEntity ~= nil
     end
     local logic = HandcraftLogic.new(player, nil, nil)
@@ -114,6 +235,7 @@ function H.start(panel, definition)
     action.stop = function(self)
         panel.omhttAction = nil
         stop(self)
+        if cancelled then cancelled() end
     end
     ---@param self ISHandcraftAction Craft action
     ---@return nil
@@ -128,11 +250,12 @@ function H.start(panel, definition)
         for i = 0, outputs:size() - 1 do
             local output = outputs:get(i)
             if output:getFullType() == definition.item and carried(output, {player = player, definition = definition}) then
-                panel.buildEntity = H.place(player, definition, output)
+                if ready then ready(output) else H.bind(panel, definition, H.place(player, definition, output)) end
                 return
             end
         end
         player:setHaloNote(getText("UI_OMHTT_BuildPickUp"))
+        if cancelled then cancelled() end
     end
     ISTimedActionQueue.add(action)
     return true
