@@ -9,6 +9,7 @@ local O = {selected = {}}
 local Options = require("OMHTT/ClientOptions")
 local Stats = require("OMHTT/TurretStats")
 local canvas = nil
+local view = {}
 
 ---@param index number Local viewport
 ---@param source string Selection source
@@ -59,7 +60,11 @@ end
 ---@param index number Viewport
 ---@return number screenX
 ---@return number screenY
-function O.screen(x, y, z, index)
+function O.screen(x, y, z, index, projection)
+    if projection then
+        return (IsoUtils.XToScreen(x, y, z, 0) - projection.offX) / projection.zoom + projection.left,
+            (IsoUtils.YToScreen(x, y, z, 0) - projection.offY) / projection.zoom + projection.top
+    end
     local zoom = getCore():getZoom(index)
     return (IsoUtils.XToScreen(x, y, z, 0) - IsoCamera.getOffX(index)) / zoom + getPlayerScreenLeft(index),
         (IsoUtils.YToScreen(x, y, z, 0) - IsoCamera.getOffY(index)) / zoom + getPlayerScreenTop(index)
@@ -93,9 +98,55 @@ function O.lines(x, y, range, heading, cone, aim)
     return lines
 end
 
+---@param entry table Per-turret presentation state
+---@param key string Overlay layer
+---@param x number World X
+---@param y number World Y
+---@param range number Layer radius
+---@param heading number Locked coverage heading
+---@param cone number Coverage angle
+---@param aim number Current head heading
+---@return table lines Reused geometry
+function O.geometry(entry, key, x, y, range, heading, cone, aim)
+    entry.overlays = entry.overlays or {}
+    local cache = entry.overlays[key]
+    if not cache or cache.x ~= x or cache.y ~= y or cache.range ~= range or cache.heading ~= heading or cache.cone ~= cone then
+        cache = {x = x, y = y, range = range, heading = heading, cone = cone,
+            lines = O.lines(x, y, range, heading, cone, aim)}
+        entry.overlays[key] = cache
+    end
+    local angle = math.rad(aim)
+    local dx, dy = math.cos(angle), -math.sin(angle)
+    local tx, ty = x + dx * range, y + dy * range
+    local lines = cache.lines
+    local shaft, left, right = lines[#lines - 2], lines[#lines - 1], lines[#lines]
+    shaft[1], shaft[2], shaft[3], shaft[4] = x, y, tx, ty
+    left[1], left[2], left[3], left[4] = tx, ty, tx - dx * .4 + dy * .2, ty - dy * .4 - dx * .2
+    right[1], right[2], right[3], right[4] = tx, ty, tx - dx * .4 - dy * .2, ty - dy * .4 + dx * .2
+    return lines
+end
+
+---@param lines table World-space segments
+---@param count number Visible segments
+---@param z number Floor
+---@param index number Viewport
+---@param r number Red
+---@param g number Green
+---@param b number Blue
+---@return nil
+function O.draw(lines, count, z, index, r, g, b)
+    for i = 1, count do
+        local line = lines[i]
+        local x, y = O.screen(line[1], line[2], z, index, view)
+        local tx, ty = O.screen(line[3], line[4], z, index, view)
+        canvas:drawLine2(x, y, tx, ty, 0.85, r, g, b)
+    end
+end
+
 ---@return nil
 function O.render()
     if not T.enabled() or SandboxVars.OMHTurretsTraps.ShowTurretRange == false then return end
+    local started = D.enabled("turrets") and getTimestampMs()
     for index, entries in pairs(O.selected) do
         local object = entries.hover or entries.manage or entries.click
         local player = getSpecificPlayer(index)
@@ -118,32 +169,43 @@ function O.render()
                 if profile.omni then
                     cone = 360
                 end
-                local lines = O.lines(square:getX() + 0.5, square:getY() + 0.5,
-                    profile.range, profile.heading, cone, heading)
+                local x, y, z = square:getX() + .5, square:getY() + .5, square:getZ()
+                local coverage = render.hasDetector and render.automatic or profile
+                local lines = O.geometry(render, "coverage", x, y, coverage.range, profile.heading, cone, heading)
                 local left, top = getPlayerScreenLeft(index), getPlayerScreenTop(index)
+                view.left, view.top, view.zoom = left, top, getCore():getZoom(index)
+                view.offX, view.offY = IsoCamera.getOffX(index), IsoCamera.getOffY(index)
                 canvas:setStencilRect(left, top, getPlayerScreenWidth(index), getPlayerScreenHeight(index))
-                for i = 1, #lines do
-                    local line = lines[i]
-                    local x, y = O.screen(line[1], line[2], square:getZ(), index)
-                    local tx, ty = O.screen(line[3], line[4], square:getZ(), index)
-                    canvas:drawLine2(x, y, tx, ty, 0.85, 0.25, 0.85, 1)
+                local legend = render.rangeLegend
+                local refreshLegend = render.legendAutomatic ~= coverage.range or render.legendManual ~= profile.range
+                    or render.legendDetector ~= render.hasDetector
+                if render.hasDetector then
+                    O.draw(lines, #lines, z, index, .25, .85, 1)
+                    if coverage.range < profile.range then
+                        local manual = O.geometry(render, "manual", x, y, profile.range, profile.heading, cone, heading)
+                        O.draw(manual, #manual - 3, z, index, .65, .65, .65)
+                        if refreshLegend then legend = getText("UI_OMHTT_RangeLegend", string.format("%.1f", coverage.range), string.format("%.1f", profile.range)) end
+                    else
+                        if refreshLegend then legend = getText("UI_OMHTT_RangeSharedLegend", string.format("%.1f", coverage.range)) end
+                    end
+                else
+                    O.draw(lines, #lines, z, index, .65, .65, .65)
+                    if refreshLegend then legend = getText("UI_OMHTT_RangeManualLegend", string.format("%.1f", profile.range)) end
                 end
+                render.rangeLegend, render.legendAutomatic, render.legendManual, render.legendDetector = legend, coverage.range, profile.range, render.hasDetector
+                canvas:drawText(legend, left + 12, top + 12, 1, 1, 1, 1, UIFont.Small)
                 if Options.noiseVisible() then
                     local radius = Stats.hearingRadius(render.head, profile.stats)
                     if radius > 0 then
-                        local ring = O.lines(square:getX() + 0.5, square:getY() + 0.5, radius, 0, 360)
-                        for i = 1, 64 do
-                            local line = ring[i]
-                            local x, y = O.screen(line[1], line[2], square:getZ(), index)
-                            local tx, ty = O.screen(line[3], line[4], square:getZ(), index)
-                            canvas:drawLine2(x, y, tx, ty, 0.8, 1, 0.65, 0.15)
-                        end
+                        local ring = O.geometry(render, "noise", x, y, radius, 0, 360, 0)
+                        O.draw(ring, 64, z, index, 1, .65, .15)
                     end
                 end
                 canvas:clearStencilRect()
             end
         end
     end
+    if started then D.measure("range-render", getTimestampMs() - started) end
 end
 
 Events.OnObjectLeftMouseButtonDown.Add(O.clicked)

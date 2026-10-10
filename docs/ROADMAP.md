@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Synchronized 2026-10-09 against C80-C112 and corrective patch 0.2.36.1. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
+Synchronized 2026-10-09 against C80-C113 and corrective patch 0.2.37. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -8,7 +8,7 @@ New checkpoint IDs use **R** for the revised roadmap. Historical P0-P6 IDs and e
 
 ## Product and existing work
 
-**Current 0.2.36.1** includes Bed Spikes, Barbed Panel and subsequent crafting, Building, traversal and starter-module changes. Native evidence is in [release state](RELEASE.md); the only active owner checklist is the [four-step focused test](TEST_v0.2.36.1.md). C106 records the earlier test findings; pending rendered checks are not passes or waivers. R1C3 includes diagnostic gating and aim/LOS cleanup; elimination of the reported 300-700ms client pauses remains open.
+**Current 0.2.37** includes Bed Spikes, Barbed Panel and subsequent crafting, Building, traversal and starter-module changes. Native evidence is in [release state](RELEASE.md); the only active owner checklist is the [five-step focused test](TEST_v0.2.37.md). C106 records the earlier test findings; pending rendered checks are not passes or waivers. R1C3 includes diagnostic gating and aim/LOS cleanup; elimination of the reported 300-700ms client pauses remains open.
 
 One Workshop product/download: **OMH: Turrets & Traps**, with independent selectable entries **OMH: Turrets** (`OneMoreHorde_Turrets`) and **OMH: Traps** (`OneMoreHorde_Traps`). Neither requires the other or a third Core entry. Canonical shared helpers are generated into both with identical virtual paths.
 
@@ -18,13 +18,15 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 ## Current checkpoint status and next work
 
-**C112 follow-up:** 0.2.36.1 corrects Turrets organization to root base/complete recipes and Heads/Modules groups; traps retain tiers and Building keeps turret base ungrouped. The [cross-system review](REVIEW_v0.2.36.1.md) records current audio/visual/gameplay/code findings. Recommendations remain unapproved and do not reorder content checkpoints. The sole active owner checklist is [0.2.36.1](TEST_v0.2.36.1.md), carrying forward the unaccepted 0.2.36 rendered checks.
+**C113 review repairs:** 0.2.37 implements automatic/manual range feedback, recipe clarity, bounded barb audio, overlay caching/profiling and elapsed active clocks without catch-up bursts. The sole active checklist is [0.2.37](TEST_v0.2.37.md). Native/automated results are in RELEASE.md; actual dense-client pauses and visible/audio acceptance remain R1C3/R2 gates. No new-content checkpoint is reordered.
+
+**C112 follow-up:** 0.2.36.1 corrects Turrets organization to root base/complete recipes and Heads/Modules groups; traps retain tiers and Building keeps turret base ungrouped. The [cross-system review](REVIEW_v0.2.36.1.md) records current audio/visual/gameplay/code findings. Recommendations remain unapproved and do not reorder content checkpoints. Its owner checklist is now superseded by 0.2.37, carrying forward unaccepted rendered checks.
 
 **Latest test findings (C109, 2026-10-09):** 0.2.35 still launches zombies forward; top-level categories did not match the intended expandable group names. C110 approves repeated Building placement, zombie forward-collapse, tier groups and trip/impact audio. See [owner findings](TEST_v0.2.35.md#owner-findings-and-console-review-2026-10-09); the corrective implementation is 0.2.36, with rendered acceptance pending.
 
-**Corrective patch (C110, 2026-10-09):** 0.2.36 restores OMH parent categories with expandable Normal/Reinforced/Packed groups, continuous Building with exact-item/original-recipe fallback, zombie forward-collapse and native trip/impact audio. Player tripping and the 4/6/6 module layout remain unchanged. C106 records the prior test's tentative unmentioned passes and failed zombie overshoot. Only the replacement [focused 0.2.36.1 test](TEST_v0.2.36.1.md) remains for these changes; new-content choices stay postponed. See [release evidence](RELEASE.md) for local verification/install state.
+**Corrective patch (C110, 2026-10-09):** 0.2.36 restores OMH parent categories with expandable Normal/Reinforced/Packed groups, continuous Building with exact-item/original-recipe fallback, zombie forward-collapse and native trip/impact audio. Player tripping and the 4/6/6 module layout remain unchanged. C106 records the prior test's tentative unmentioned passes and failed zombie overshoot. Only the replacement [focused 0.2.37 test](TEST_v0.2.37.md) remains for these changes; new-content choices stay postponed. See [release evidence](RELEASE.md) for local verification/install state.
 
-| Phase / checkpoints | Status at 0.2.36.1 | Remaining work / next gate |
+| Phase / checkpoints | Status at 0.2.37 | Remaining work / next gate |
 | --- | --- | --- |
 | 1: R1C1-R1C2 package split | Implemented and native-verified in 0.2.29; remaining owner regression waived by C89 | Closed to further split regression; retain fresh-world policy and independent-package checks for changes |
 | 1: R1C3 performance/authority | Partial: audit and multiple optimizations implemented, including 0.2.34 aim/LOS cleanup | Measure the held dense-client workload; resolve measured stalls and authority gaps without claiming MP |

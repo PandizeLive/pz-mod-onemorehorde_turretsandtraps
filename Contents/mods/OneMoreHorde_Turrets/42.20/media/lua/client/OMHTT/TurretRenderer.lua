@@ -31,7 +31,10 @@ function R.changed(object, head)
         head:setWorldScale(scale)
     end
     local entry = R.entries[object] or {}
-    entry.head, entry.profile = head, M.profile(T.state(object), T.contents(object:getContainer()))
+    local contents = T.contents(object:getContainer())
+    entry.head, entry.profile = head, M.profile(T.state(object), contents)
+    entry.automatic = M.profile(T.state(object), contents, true)
+    entry.hasDetector = contents.active.MotionDetection ~= nil
     if G.profile(head) and not entry.support then
         entry.support = instanceItem("Base.OMHTTGunSupportVisual")
     end
@@ -63,6 +66,7 @@ end
 ---@return nil
 function R.animate(now)
     local A = require("OMHTT/TurretAutomation")
+    local started = D.enabled("turrets") and getTimestampMs()
     local speed = M.option("IdleSweepSpeed", 30, 0, 180)
     for object, entry in pairs(R.entries) do
         local state, automatic = T.state(object), A.entries[object]
@@ -97,6 +101,7 @@ function R.animate(now)
             entry.lastAim = state.aimDegrees
         end
     end
+    if started then D.measure("head-animation", getTimestampMs() - started) end
 end
 
 ---@param playerIndex number Native render viewport
@@ -106,6 +111,7 @@ function R.render(playerIndex)
     if not T.hybrid() then return end
     local player = getSpecificPlayer(playerIndex)
     if not player then return end
+    local started = D.enabled("turrets") and getTimestampMs()
     for object, entry in pairs(R.entries) do
         local square, state = object:getSquare(), T.state(object)
         if object:getObjectIndex() < 0 or not square or not state
@@ -140,6 +146,7 @@ function R.render(playerIndex)
             end
         end
     end
+    if started then D.measure("head-render", getTimestampMs() - started) end
 end
 
 ---@return nil

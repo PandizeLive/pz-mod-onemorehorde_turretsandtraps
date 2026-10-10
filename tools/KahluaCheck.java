@@ -162,6 +162,7 @@ public final class KahluaCheck {
         String base = "Source/42.20/media/lua/";
         String[][] stages = {
             {"_", "tools/tests/bootstrap.lua"},
+            {"OMHTT/ActiveTime", base + "shared/OMHTT/ActiveTime.lua"},
             {"OMHTT/Foundation", base + "shared/OMHTT/Foundation.lua"},
             {"OMHTT/Diagnostics", base + "shared/OMHTT/Diagnostics.lua"},
             {"OMHTT/BarrierGeometry", base + "shared/OMHTT/BarrierGeometry.lua"},

@@ -1,6 +1,12 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.36.1 turret organization correction
+## 0.2.37 feedback, audio and elapsed-time repairs
+
+[C113 patch](PATCH_v0.2.37.md): automatic/manual range presentation, explicit alternate-method recipe names, accurate output descriptions, rate-limited native barb audio, cached overlay geometry/projection, render profiling and pause-aware elapsed clocks. [Five-step test](TEST_v0.2.37.md) is pending; no new rendered acceptance or pause-resolution claim.
+
+3,919 Kahlua assertions pass; 93 runtime/translation files compile, 561 native translation keys and 23 packet serializations validate. Manifest: 185 source/225 package files. Independent checks: 109 Sandbox options, 31 identical shared helpers. Native write/read pass in 60.2/57.2 seconds; Traps-only/Turrets-only/both startup pass in 58.9/57.1/50.4 seconds. Native probes include head/complete tooltip identities and chain-link sound registration. Final translation byte-preservation cleanup passed native translation loading/Kahlua validation after the server runs; unrelated original strings are preserved. Known stock asset/world-generation diagnostics remain; no mod probe failures occur in passing runs. Tag/install/archive verification is recorded after installation. No Workshop upload.
+
+## Previous local installation: 0.2.36.1 turret organization correction
 
 [C112 patch](PATCH_v0.2.36.1.md): root base/complete turret recipes, Heads and Modules groups, trap tiers retained, standalone Building turret base. No gameplay/audio/balance change. [Cross-system review](REVIEW_v0.2.36.1.md) records open findings; [focused owner test](TEST_v0.2.36.1.md) remains pending.
 

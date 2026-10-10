@@ -191,6 +191,27 @@ function Diagnostics.count(event, amount)
     if Diagnostics.enabled() then counters[event] = (counters[event] or 0) + amount end
 end
 
+---@param event string Fixed stage name
+---@param elapsed number Stage duration in milliseconds
+---@return nil
+function Diagnostics.measure(event, elapsed)
+    if not Diagnostics.enabled() then return end
+    counters[event .. "Count"] = (counters[event .. "Count"] or 0) + 1
+    counters[event .. "TotalMs"] = (counters[event .. "TotalMs"] or 0) + elapsed
+    counters[event .. "MaxMs"] = math.max(counters[event .. "MaxMs"] or 0, elapsed)
+end
+
+local lastPulse, pulsePaused = nil, false
+
+---@return nil
+function Diagnostics.pulse()
+    local now, paused = getTimestampMs(), GameTime.isGamePaused()
+    if Diagnostics.enabled() and lastPulse and not paused and not pulsePaused then
+        Diagnostics.measure("active-update-gap", math.max(0, now - lastPulse))
+    end
+    lastPulse, pulsePaused = now, paused
+end
+
 ---@return nil
 function Diagnostics.flush()
     local now = getTimestampMs()
@@ -219,11 +240,13 @@ end
 
 ---@return nil
 function Diagnostics.reset()
+    lastPulse, pulsePaused = nil, false
     pending, pendingFirst, pendingLast = {}, 1, 0
     counters, summaryAt = {}, 0
     sequence, windowStart, windowLines, suppressed = 0, 0, 0, 0
 end
 
+Events.OnTickEvenPaused.Add(Diagnostics.pulse)
 Events.OnTick.Add(Diagnostics.flush)
 Events.OnGameStart.Add(Diagnostics.reset)
 return Diagnostics

@@ -105,6 +105,7 @@ end
 ---@return nil
 function E.render()
     if #E.effects == 0 then return end
+    local started = D.enabled("turrets") and getTimestampMs()
     local now = require("OMHTT/TurretClock").now()
     for i = #E.effects, 1, -1 do
         local effect = E.effects[i]
@@ -155,6 +156,7 @@ function E.render()
             end
         end
     end
+    if started then D.measure("effects-render", getTimestampMs() - started) end
 end
 
 ---@return nil

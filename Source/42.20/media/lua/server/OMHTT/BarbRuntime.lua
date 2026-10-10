@@ -5,6 +5,7 @@ local S = require("OMHTT/BarbSupport")
 local F = require("OMHTT/Foundation")
 local Damage = require("OMHTT/Damage")
 local edge = {}
+local soundAt = 0
 
 ---@param zombie IsoZombie Updated zombie
 ---@return nil
@@ -38,6 +39,12 @@ function B.zombie(zombie)
     end
     if C.step(state, B.time, B.session, selected ~= nil, interval) then
         local damage = Damage.apply(zombie, B.option("Damage", 10, 0, 1000) / 100, selected.id, "barbs", nil, nil)
+        local now = getTimestampMs()
+        if damage > 0 and now >= soundAt then
+            local handle = zombie:getEmitter():playSound("ZombieClawChainlinkFence")
+            zombie:getEmitter():setVolume(handle, 0.45)
+            soundAt = now + 250
+        end
         if S.wear(source, damage) then
             B.retire(selected)
         end

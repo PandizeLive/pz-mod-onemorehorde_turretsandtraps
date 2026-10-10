@@ -94,6 +94,12 @@ local function verifyTurrets()
     local tooltipBattery = instanceItem("Base.CarBattery1")
     tooltipBattery:setCurrentUsesFloat(0.37)
     live:AddItem(tooltipBattery)
+    for _, name in pairs({"OMHTTCraftTurretHead", "OMHTTCraftTurretHeadImprovised"}) do
+        assert(getScriptManager():getCraftRecipe("Base." .. name):getTooltip() == "UI_OMHTT_HeadDescription", "Head recipe uses wrong output description")
+    end
+    for _, name in pairs({"OMHTTCraftTurretComplete", "OMHTTCraftTurretCompleteImprovised"}) do
+        assert(getScriptManager():getCraftRecipe("Base." .. name):getTooltip() == "UI_OMHTT_CompleteDescription", "Complete recipe uses wrong output description")
+    end
     local chargeTooltip = T.description(live, 4)
     assert(string.find(chargeTooltip, "37 percent", 1, true), "Charge wording missing")
     assert(getText(chargeTooltip) == chargeTooltip, "Native tooltip translation must not reinterpret charge as format arguments")

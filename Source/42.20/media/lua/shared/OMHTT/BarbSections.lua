@@ -4,7 +4,8 @@ local C = require("OMHTT/BarbContact")
 local B = {nodes = {}, order = {}, nearby = {}, time = 0, cursor = 1, session = tostring(getTimestampMs())}
 OMHTT_BarbSections = B
 B.policy = {fixedWindowFrame = true}
-local previous = nil
+local ActiveTime = require("OMHTT/ActiveTime")
+local clock = ActiveTime.new()
 local moving = false
 local geometry = {}
 
@@ -238,11 +239,7 @@ end
 
 ---@return nil
 function B.tick()
-    local now = getTimestampMs()
-    if previous and not GameTime.isGamePaused() then
-        B.time = B.time + math.min(100, math.max(0, now - previous))
-    end
-    previous = now
+    B.time = B.time + ActiveTime.step(clock)
     for _ = 1, math.min(4, #B.order) do
         if B.cursor > #B.order then
             B.cursor = 1

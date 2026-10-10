@@ -2,6 +2,10 @@
 
 Owner requested discussion of inconsistencies across audio, visuals, gameplay and code. This is a targeted source/document review of the current SP build, not exhaustive certification, a new rendered test, or approval to implement every recommendation. C112 authorizes the Turrets grouping correction; the other recommendations below remain open.
 
+## Follow-up under C113
+
+Owner approved the actionable repairs and chose elapsed active timers without catch-up bursts. [0.2.37](PATCH_v0.2.37.md) implements range feedback, recipe clarity, barb audio, overlay caching, stage profiling and pause-aware clocks. The historical findings below remain evidence of the reviewed build; their earlier pending-approval wording is superseded by C113. Visible collapse/recovery and dense-client performance still require acceptance, not another speculative rewrite. Final art and other known scope boundaries remain deferred.
+
 ## Confirmed findings and recommendations
 
 | Priority / area | Evidence and player impact | Recommended next action / disposition |

@@ -65,7 +65,7 @@
     "UI_OMHTT_NoPower": "No power.",
     "UI_OMHTT_TurretContents": "Head: %1\nAmmo: %2\nBattery: %3\nModules: %4",
     "UI_OMHTT_TotalWeight": "Total weight: %1",
-    "UI_OMHTT_TurretDescription": "A powered base for a potato head or supported firearm.",
+    "UI_OMHTT_TurretDescription": "An empty turret base. Install a potato head or supported firearm, then add ammunition and power.",
     "UI_OMHTT_DeployTurretDescription": "Place the selected turret with its contents. Pickup preserves supplies.",
     "UI_OMHTT_Turret": "Turret",
     "UI_OMHTT_Manage": "Manage",
@@ -182,5 +182,10 @@
     "UI_OMHTT_ImprovisedStatus": "* Improvised | Detection range: %1",
     "UI_OMHTT_CraftThenPlace": "Craft and place",
     "UI_OMHTT_BuildRequirements": "Crafting requires the normal materials, tools and skills.",
-    "UI_OMHTT_BuildPickUp": "Pick up the crafted item to place it."
+    "UI_OMHTT_BuildPickUp": "Pick up the crafted item to place it.",
+    "UI_OMHTT_HeadDescription": "A potato launcher head for a turret base. Both crafting methods produce the same head.",
+    "UI_OMHTT_CompleteDescription": "A turret base with a potato launcher head installed. Add potatoes and power; automation modules are separate.",
+    "UI_OMHTT_RangeLegend": "Cyan: automatic %1 | Gray: manual %2",
+    "UI_OMHTT_RangeSharedLegend": "Cyan: automatic/manual %1",
+    "UI_OMHTT_RangeManualLegend": "Manual range: %1 | No detector"
 }

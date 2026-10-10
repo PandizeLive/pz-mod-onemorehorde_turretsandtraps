@@ -3,6 +3,7 @@ local nativeServer, nativeClient, nativeCell = nil, nil, nil
 ---@param squares ArrayList Native isolated squares with real chunks
 ---@return ArrayList fixtures
 function OMHTT_NativeBarbCheck(squares)
+    assert(GameSounds.getSound("ZombieClawChainlinkFence") ~= nil, "Missing native barb contact cue")
     local B = require("OMHTT/BarbSections")
     local S = require("OMHTT/BarbSupport")
     local C = require("OMHTT/BarbContact")

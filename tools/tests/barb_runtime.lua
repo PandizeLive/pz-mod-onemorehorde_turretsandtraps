@@ -51,7 +51,13 @@ function zombie:getWidth() return .3 end
 function zombie:getX() return self.x end
 function zombie:getY() return self.y end
 zombie.x, zombie.y = record.x + .5, record.y + .15
+local sounds = 0
+function zombie:getEmitter() return {playSound = function(_, name)
+    check(name == "ZombieClawChainlinkFence", "Barb contact uses registered native wire audio")
+    sounds = sounds + 1; return 1
+end, setVolume = function(_, handle, gain) check(gain == .45, "Contact sound has restrained playback gain") end} end
 B.zombie(zombie)
+check(sounds == 1, "Successful contact emits a cue")
 check(math.abs(zombie.health - 9.9) < .00001 and attachment.health == 49 and host.health == 50, "First runtime hit wears only window barbs")
 local savedResolve, contactLookups = B.resolve, 0
 B.resolve = function(r) contactLookups = contactLookups + 1 return savedResolve(r) end
@@ -60,7 +66,7 @@ check(attachment.health == 49 and contactLookups == 0, "Cooldown skips redundant
 B.resolve = savedResolve
 B.time = 2000
 B.zombie(zombie)
-check(attachment.health == 48, "Recurring runtime contact wears once")
+check(attachment.health == 48 and sounds == 1, "Damage proceeds while the independent crowd audio cap suppresses overlapping cues")
 zombie.y = record.y + .8
 B.time = 4000
 B.zombie(zombie)
@@ -141,5 +147,8 @@ check(B.time == before, "Paused clock cannot accelerate contact damage")
 GameTime.isGamePaused = oldPaused
 testMillis = testMillis + 10000
 B.tick()
-check(B.time == before + 100, "Long stalled frames cannot create catch-up damage bursts")
+check(B.time == before, "First resumed sample excludes the paused interval")
+testMillis = testMillis + 700
+B.tick()
+check(B.time == before + 700, "Active stalls preserve elapsed contact time")
 testResults[#testResults + 1] = "Barb runtime/placement/lifecycle/service: passed"

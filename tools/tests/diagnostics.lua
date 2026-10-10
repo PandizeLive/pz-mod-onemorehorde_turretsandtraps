@@ -79,3 +79,13 @@ testMillis = testMillis + 5000
 D.flush()
 check(#testLogs == oldCount + 1 and string.find(testLogs[#testLogs], "combat=500", 1, true), "One summary retains event count")
 D.reset()
+
+D.reset()
+oldCount = #testLogs
+for i = 1, 1000 do D.measure("test-stage", i % 7) end
+check(#testLogs == oldCount, "Stage profiling never prints per frame")
+testMillis = testMillis + 5000
+D.flush()
+check(#testLogs == oldCount + 1 and string.find(testLogs[#testLogs], "test-stageCount=1000", 1, true)
+    and string.find(testLogs[#testLogs], "test-stageMaxMs=6", 1, true), "Profiling retains counts and peak duration in one bounded summary")
+D.reset()

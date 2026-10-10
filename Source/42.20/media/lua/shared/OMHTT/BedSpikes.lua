@@ -1,7 +1,8 @@
 local F = require("OMHTT/Foundation")
 local B = {tiles = {}, nearby = {}, indexed = {}, removals = {}, count = 0, time = 0, session = tostring(getTimestampMs())}
 OMHTT_BedSpikes = B
-local previous = nil
+local ActiveTime = require("OMHTT/ActiveTime")
+local clock = ActiveTime.new()
 local removing = false
 local enabled = nil
 local facings = {e = 0, n = 1, w = 2, s = 3}
@@ -273,11 +274,7 @@ function B.tick()
         B.session = tostring(getTimestampMs()) .. ":" .. tostring(active)
         enabled = active
     end
-    local now = getTimestampMs()
-    if previous and not GameTime.isGamePaused() then
-        B.time = B.time + math.min(100, math.max(0, now - previous))
-    end
-    previous = now
+    B.time = B.time + ActiveTime.step(clock)
     for i = 1, 4 do
         local object = table.remove(B.removals)
         if not object then
