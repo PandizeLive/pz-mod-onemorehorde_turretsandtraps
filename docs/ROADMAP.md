@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Synchronized 2026-10-09 against C80-C113 and corrective patch 0.2.37. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
+Synchronized 2026-10-10 against C80-C115 and corrective patch 0.2.37. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -18,6 +18,8 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 ## Current checkpoint status and next work
 
+**C115 queued cleanup:** owner approved the C114 naming scheme and requests bundling it with the next update: remove complete-turret craft shortcuts, use Improvised for the alternate head recipe and Makeshift for starter modules/kit. Not implemented yet. R2C4 concertina feasibility remains the next unfinished content checkpoint; its slowing contract still needs a decision before implementation. No new-content patch is selected by naming approval.
+
 **C113 review repairs:** 0.2.37 implements automatic/manual range feedback, recipe clarity, bounded barb audio, overlay caching/profiling and elapsed active clocks without catch-up bursts. The sole active checklist is [0.2.37](TEST_v0.2.37.md). Native/automated results are in RELEASE.md; actual dense-client pauses and visible/audio acceptance remain R1C3/R2 gates. No new-content checkpoint is reordered.
 
 **C112 follow-up:** 0.2.36.1 corrects Turrets organization to root base/complete recipes and Heads/Modules groups; traps retain tiers and Building keeps turret base ungrouped. The [cross-system review](REVIEW_v0.2.36.1.md) records current audio/visual/gameplay/code findings. Recommendations remain unapproved and do not reorder content checkpoints. Its owner checklist is now superseded by 0.2.37, carrying forward unaccepted rendered checks.
@@ -30,7 +32,7 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 | --- | --- | --- |
 | 1: R1C1-R1C2 package split | Implemented and native-verified in 0.2.29; remaining owner regression waived by C89 | Closed to further split regression; retain fresh-world policy and independent-package checks for changes |
 | 1: R1C3 performance/authority | Partial: audit and multiple optimizations implemented, including 0.2.34 aim/LOS cleanup | Measure the held dense-client workload; resolve measured stalls and authority gaps without claiming MP |
-| 2: R2C1-R2C2 Bed Spikes | Implemented with native checks, revised through subsequent patches | C106 tentative passes; verify corrected zombie landing/recovery in the focused 0.2.36 test |
+| 2: R2C1-R2C2 Bed Spikes | Implemented with native checks, revised through subsequent patches | C106 tentative passes; verify corrected zombie landing/recovery in the focused 0.2.37 test |
 | 2: R2C3 Barbed Panel | Implemented with native contact/construction/persistence checks | C106 tentative passes; revised Building acceptance; multi-panel/garage-door and player-injury extensions remain unimplemented |
 | 2: R2C4 concertina | Planned; earliest unfinished content checkpoint in phase order | Discuss slowing versus the Horde Night concern, then prove movement feasibility before content |
 | 3: R3C1-R3C2 new head | Candidates documented; none selected for implementation | Select one head and settle its concrete contract before prototyping |
@@ -66,7 +68,7 @@ The phase order is not a mandatory queue through every feature. R1C3 continues a
 
 C81 rejects slowing turret effects because they undermine OMH Horde Night zombies. Revisit concertina's separately planned slowdown with the owner before R2C4; do not silently delete or implement it under the turret-module decision.
 
-Bed Spikes content began in 0.2.30 under C95, with native API, recipe and persistence checks. Later traversal/recovery/placement changes are included in 0.2.34. Use only [the current combined test](TEST_v0.2.34.md) for outstanding rendered acceptance; older patch tests are historical. Phase 2 is not fully accepted and concertina is not implemented.
+Bed Spikes content began in 0.2.30 under C95, with native API, recipe and persistence checks. Later traversal/recovery/placement changes are included in 0.2.34. Use only [the current combined test](TEST_v0.2.37.md) for outstanding rendered acceptance; older patch tests are historical. Phase 2 is not fully accepted and concertina is not implemented.
 
 ## Phase 3: distinct turret heads and offensive modules
 
@@ -81,7 +83,7 @@ Bed Spikes content began in 0.2.30 under C95, with native API, recipe and persis
 | R3C7 | Combined module balance, endurance and lifecycle acceptance | Ordinary and heavily stacked loadouts preserve long battery life; calibrated intensity-based costs, save/reload/pickup, slots/UI/loot/Sandbox, native/modded guns and existing potato splash. No MP claim without R5C1 |
 | R3C8 | [Craftable improvised components and compact expansion](checkpoints/R3C8_IMPROVISED_EXPANSION.md) | C104 implemented/native-verified/installed in 0.2.34: two rows of eight, 2/4/8/12/16 fresh totals, approved recipes, 75% detection, 15% click-only failures and +25 improvised reserve. Saved values/items preserved. Owner acceptance remains in the combined test; larger loadouts remain part of R3C7 |
 
-R3C8's former recipe/layout/migration gates were resolved independently by C104. Do not reopen them under R3C4. C104 selects the two-row eight-column grid; earlier pyramid/four-column alternatives are historical. R3C7 still measures the complete selected loadout. See [current module contract](MODULAR_TURRETS.md#improvised-components-and-expansion).
+R3C8's former recipe/layout/migration gates were resolved independently by C104. Do not reopen them under R3C4. C104 originally selected a two-row eight-column grid; C106/C107 supersede it with the current 4/6/6 layout. Earlier layouts are historical. R3C7 still measures the complete selected loadout. See [current module contract](MODULAR_TURRETS.md#improvised-components-and-expansion).
 
 C82 removes Extinguisher and Pneumatic Ram from the head shortlist and replaces Rotary Flail with **Rotary Blades** as the close-defense concept for R3C1 discussion. R3C2 must prove fixed-reach swept contacts, visible timing, obstructions and bounded damage cadence; physics, recipes and a gameplay patch are not implicitly approved.
 
