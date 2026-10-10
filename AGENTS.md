@@ -2,6 +2,14 @@
 
 Read README.md, docs/DECISIONS.md, and docs/ROADMAP.md before project changes. The workspace AGENTS.md also applies.
 
+## Per-turn context and consistency review (C111, owner-requested 2026-10-09)
+
+- At the start of every project turn, including discussion, reread this section and `docs/CURRENT_STATUS.md` from disk before substantive recommendations or work. Repeat after context compaction. Read the full applicable AGENTS.md at session start or when changed; consult relevant decisions/checkpoints before proposing or implementing changes. Do not rely on chat recollection alone.
+- Reconcile the latest owner corrections, approved scope, unresolved findings and actual implementation. Keep proposals, approval, implementation and acceptance separate. Do not silently forget deferred work, revive rejected choices or treat a documentation request as gameplay approval.
+- Before recommending or editing a player-facing change, inspect the affected choices and nearby behavior. Check meaning as well as mechanics: names, categories versus collapsible groups, action labels, crafting versus Building, and item families. A naming rule appropriate for traps need not fit turrets. Identify exceptions and redundant/empty groups; explain material tradeoffs before extending scope.
+- Before handoff, review the final behavior against those decisions and the player's actual workflow, including relevant performance, persistence and package-independence risks. Passing code tests does not establish coherent organization, rendered behavior or complete acceptance. Report concrete remaining issues; do not substitute a promise to be more careful for a recorded correction.
+- Persist new owner corrections and unresolved issues in the existing decision/status/test records during the same turn, and mirror completed project documentation under C108. Keep this checklist short; historical details belong in linked records. These instructions support continuity but are not a guarantee of perfect recall.
+
 ## GitHub and Cloud process (C96, owner-approved 2026-10-07)
 
 - Follow docs/GITHUB_WORKFLOW.md and read docs/CURRENT_STATUS.md at session start. The private full repository is PandizeLive/pz-mod-onemorehorde_turretsandtraps. `dev` is the default development/planning branch; `main` is reserved for confirmed official releases and does not exist before the first one.

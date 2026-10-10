@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Synchronized 2026-10-09 against C80-C110 and corrective patch 0.2.36. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
+Synchronized 2026-10-09 against C80-C111 and corrective patch 0.2.36. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -17,6 +17,8 @@ Existing SP content includes basic/reinforced Spike Barriers, portable items/pac
 Shared combat scheduling and active-time clocks exist. Render/maintenance costs and integrated authority remain open. The Louisville hang is unassigned; preserve useful evidence if it recurs, without claiming OMH caused it or has been cleared. Final art/audio remain owner-sourced. Improvised Detection/Firing/Expansion are craftable; standard module crafting remains deferred.
 
 ## Current checkpoint status and next work
+
+**C111 follow-up:** owner reports that the 0.2.36 Normal group is redundant under Turrets. Root base/complete-turret recipes plus Heads/Modules groups are a proposed correction, not yet approved. Per-turn context and semantic review instructions are now explicit in AGENTS.md; gameplay and roadmap order are unchanged. See [0.2.36 findings](TEST_v0.2.36.md#owner-grouping-feedback-and-console-review-2026-10-09).
 
 **Latest test findings (C109, 2026-10-09):** 0.2.35 still launches zombies forward; top-level categories did not match the intended expandable group names. C110 approves repeated Building placement, zombie forward-collapse, tier groups and trip/impact audio. See [owner findings](TEST_v0.2.35.md#owner-findings-and-console-review-2026-10-09); the corrective implementation is 0.2.36, with rendered acceptance pending.
 
