@@ -1,8 +1,8 @@
 # R3C4-R3C7: offensive modules and battery endurance
 
-Current work: **C146 / R3C6-R3C7**. See [weapon damage/range power proposal](#c146---weapon-damage-and-range-power-proposal-2026-10-11). Owner adds damage/range scaling to the global module-count power rule so stronger, longer-range weapons cost more per shot. Recommended weapon factor: max(1, sqrt((D/80) * (R/15))), using ordinary pre-module head damage and capped pre-module maximum range. Retain proposed 0.005% battery base, +5% per weighted module, equal initial weights and zero idle; numerical defaults remain proposed. At sixteen modules, vanilla M9 costs 0.009% per volley and MSR788 0.020785% (about 11,111 versus 4,811 volleys/full battery). C144 combat foundations are committed/tested but uninstalled; full integration and packaging remain outstanding. Installed 0.2.41/C138 unchanged.
+Current work: **C147 / R3C6-R3C7**. C147 approves and implements the complete C146 power formula alongside Piercing, Initial Blow, Execute and Impact. Release candidate 0.2.42 is built; final native restore/startup and tagged installation are in progress. No numerical decision remains. 5,241 Kahlua assertions, 98 compiled runtime/translation files, 664 native translation keys and 23 packet serializations pass; the 51-gun Firearms probe preserves 153 firing transactions. LootLab 0.2.42 is deployed and verified (24 modules/16 pools/170 entries, 74 API/page tests). [Patch](../PATCH_v0.2.42.md) | [test](../TEST_v0.2.42.md).
 
-**Current checkpoint: R3C6 implementation and R3C7 power-contract discussion.** R3C4/R3C5 current slice and owner round are complete. C144 authorizes proceeding and implements tested combat foundations; C145 requests global power redesign and calculated endurance; C146 adds weapon damage/range scaling before tuning. Numerical power defaults are proposals, not tested runtime behavior.
+**Current checkpoint:** R3C6 integration complete; R3C7 power validation and installation in progress. C147 settles the power model. C145/C146 below are historical proposal provenance.
 
 ## Historical direction and early working proposals (superseded below)
 
@@ -365,3 +365,8 @@ If the proposed generator extension is adopted, the 500-zombie/three-volley work
 ### Handoff and evidence limits
 
 Inspected c7fb931, fetched origin and verified the existing draft PR #1 branch into dev. Python arithmetic evaluated the formula and rounded whole-volley capacity down. No gameplay code, package, version, install or test-result change this turn; prior 5,155 Kahlua assertions remain previous evidence, not verification of this proposed power formula. Decision needed: settle this complete power formula/counting scope, then finish the approved module patch and its native/package/LootLab integration. Preserve custom settings rather than silently reset old worlds. Planning committed and mirrored under C108/C119.
+
+
+## C147 - approved formula and completed integration (2026-10-11)
+
+Owner: "Approved" in response to C146. Approves the complete battery formula, 1x weapon floor, pre-module damage/range inputs, equal per-type weights/counting exclusions, 5 percent per working module, 0.005 percent battery base, zero idle, and 0.0001 generator base with the same multipliers. No repeat numerical approval required. Continue C144-authorized integration, validation, installation and C108/C119 mirror. See [0.2.42 patch](../PATCH_v0.2.42.md) and the versioned test record for implementation and evidence.

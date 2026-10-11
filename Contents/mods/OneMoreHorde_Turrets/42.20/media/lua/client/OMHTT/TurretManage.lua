@@ -230,6 +230,9 @@ function Panel:refresh()
     end
     self.modulesMissing = #missing > 0
     if self.modulesMissing then self.moduleEffects = getText("UI_OMHTT_ManageMissing", table.concat(missing, ", ")) end
+    if (contents.active.Piercing or 0) > 0 and stats.piercing == 0 then
+        self.moduleEffects = self.moduleEffects .. " | " .. getText("UI_OMHTT_PiercingInactive")
+    end
     local charge = getText("UI_OMHTT_None")
     if contents.battery then charge = tostring(math.floor(contents.battery:getCurrentUsesFloat() * 100)) .. "%" end
     self.batterySlot.label = getText("UI_OMHTT_ManageBattery", charge)
@@ -241,11 +244,18 @@ function Panel:refresh()
         if power.kind == "battery" then self.powerLabel = getText("UI_OMHTT_ManagePowerBattery") end
         if power.kind == "disabled" then self.powerLabel = getText("UI_OMHTT_ManagePowerDisabled") end
     end
-    local statKey = table.concat({stats.damage, stats.range, stats.reload, stats.cooldown, stats.ammo, stats.modules, stats.knockdown, stats.accuracy, stats.critChance, stats.critMultiplier, stats.hearingMultiplier}, ":")
+    if contents.head then
+        if power and power.kind == "generator" then
+            self.powerLabel = self.powerLabel .. " | " .. getText("UI_OMHTT_GeneratorCost", string.format("%.6f", stats.generatorFuel))
+        elseif not power or power.kind == "battery" then
+            self.powerLabel = self.powerLabel .. " | " .. getText("UI_OMHTT_BatteryCost", string.format("%.5f", stats.batteryPercent))
+        end
+    end
+    local statKey = table.concat({stats.damage, stats.range, stats.reload, stats.cooldown, stats.ammo, stats.modules, stats.knockdown, stats.accuracy, stats.critChance, stats.critMultiplier, stats.hearingMultiplier, stats.batteryPercent, stats.generatorFuel}, ":")
     if self.lastStatKey ~= statKey then
         D.emit("turret-effective-stats", {id = self.deviceId, damage = stats.damage, range = stats.range,
             reload = stats.reload, cooldown = stats.cooldown, ammoCapacity = stats.ammo, moduleCapacity = stats.modules,
-            knockdown = stats.knockdown, autoloader = stats.autoloader, accuracy = stats.accuracy, critChance = stats.critChance, critMultiplier = stats.critMultiplier, hearingMultiplier = stats.hearingMultiplier})
+            knockdown = stats.knockdown, autoloader = stats.autoloader, accuracy = stats.accuracy, critChance = stats.critChance, critMultiplier = stats.critMultiplier, hearingMultiplier = stats.hearingMultiplier, batteryPercent = stats.batteryPercent, generatorFuel = stats.generatorFuel})
         self.lastStatKey = statKey
     end
     if self.lastStatus ~= status then

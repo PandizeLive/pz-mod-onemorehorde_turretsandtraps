@@ -149,7 +149,7 @@ option OMHTurretsTraps.PotatoSplashRadius {
 
 option OMHTurretsTraps.PotatoBatteryPercentPerShot {
     type = double,
-    default = 0.1,
+    default = 0.005,
     min = 0,
     max = 100,
     page = OMHTurretsTraps_PotatoPage,
@@ -158,7 +158,7 @@ option OMHTurretsTraps.PotatoBatteryPercentPerShot {
 
 option OMHTurretsTraps.PotatoGeneratorFuelPerShot {
     type = double,
-    default = 0.001,
+    default = 0.0001,
     min = 0,
     max = 1,
     page = OMHTurretsTraps_PotatoPage,
@@ -765,15 +765,6 @@ option OMHTurretsTraps.SplitterDamage {
     translation = OMHTurretsTraps_SplitterDamage,
 }
 
-option OMHTurretsTraps.SplitterPower {
-    type = double,
-    default = 25,
-    min = 0,
-    max = 200,
-    page = OMHTurretsTraps_StatModulesPage,
-    translation = OMHTurretsTraps_SplitterPower,
-}
-
 option OMHTurretsTraps.FragmentDamage {
     type = double,
     default = 20,
@@ -808,15 +799,6 @@ option OMHTurretsTraps.FragmentRange {
     max = 10,
     page = OMHTurretsTraps_StatModulesPage,
     translation = OMHTurretsTraps_FragmentRange,
-}
-
-option OMHTurretsTraps.FragmentPower {
-    type = double,
-    default = 25,
-    min = 0,
-    max = 200,
-    page = OMHTurretsTraps_StatModulesPage,
-    translation = OMHTurretsTraps_FragmentPower,
 }
 
 option OMHTurretsTraps.LootRateMagazine {
@@ -889,4 +871,112 @@ option OMHTurretsTraps.LootRateMotionDetectionEnhanced {
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRateMotionDetectionEnhanced,
+}
+
+option OMHTurretsTraps.ModulePowerBonus {
+    type = double,
+    default = 5,
+    min = 0,
+    max = 200,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_ModulePowerBonus,
+}
+
+option OMHTurretsTraps.PiercingRetention {
+    type = double,
+    default = 70,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_PiercingRetention,
+}
+
+option OMHTurretsTraps.InitialBlowBonus {
+    type = double,
+    default = 25,
+    min = 0,
+    max = 200,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_InitialBlowBonus,
+}
+
+option OMHTurretsTraps.InitialBlowThreshold {
+    type = double,
+    default = 90,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_InitialBlowThreshold,
+}
+
+option OMHTurretsTraps.ExecuteFirst {
+    type = double,
+    default = 10,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_ExecuteFirst,
+}
+
+option OMHTurretsTraps.ExecuteBonus {
+    type = double,
+    default = 2,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_ExecuteBonus,
+}
+
+option OMHTurretsTraps.ImpactFirst {
+    type = double,
+    default = 60,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_ImpactFirst,
+}
+
+option OMHTurretsTraps.ImpactBonus {
+    type = double,
+    default = 2,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_ImpactBonus,
+}
+
+option OMHTurretsTraps.LootRatePiercing {
+    type = double,
+    default = 1,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootRatePiercing,
+}
+
+option OMHTurretsTraps.LootRateInitialBlow {
+    type = double,
+    default = 1,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootRateInitialBlow,
+}
+
+option OMHTurretsTraps.LootRateExecute {
+    type = double,
+    default = 1,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootRateExecute,
+}
+
+option OMHTurretsTraps.LootRateImpact {
+    type = double,
+    default = 1,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootRateImpact,
 }

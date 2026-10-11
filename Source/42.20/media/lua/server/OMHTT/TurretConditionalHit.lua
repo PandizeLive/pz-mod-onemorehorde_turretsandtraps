@@ -1,4 +1,3 @@
-if isClient() or isServer() then return end
 local Health = require("OMHTT/TargetHealth")
 local Clock = require("OMHTT/TurretClock")
 local C = {}
@@ -12,8 +11,8 @@ function C.snapshot(zombie, stats)
     local maximum = Health.maximum(zombie)
     if maximum <= 0 then return {bonus = 1, execute = false} end
     local fraction = zombie:getHealth() / maximum
-    return {bonus = fraction >= stats.initialThreshold and 1 + stats.initialBlow or 1,
-        execute = stats.execute > 0 and fraction <= stats.execute}
+    return {bonus = fraction + .0000001 >= stats.initialThreshold and 1 + stats.initialBlow or 1,
+        execute = stats.execute > 0 and fraction <= stats.execute + .0000001}
 end
 
 ---@param zombie IsoZombie Successful primary victim

@@ -232,6 +232,7 @@ public final class NativePersistenceCheck {
                 Object cycle = call(get(item, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTCycle");
                 check(cycle != null && Double.valueOf(1).equals(call(cycle, "rawget", new Class<?>[]{Object.class}, "loaded")), "Head magazine lost");
                 check(Double.valueOf(123456789).equals(call(cycle, "rawget", new Class<?>[]{Object.class}, "nextShot")), "Head cooldown lost");
+                check(Boolean.FALSE.equals(call(cycle, "rawget", new Class<?>[]{Object.class}, "impactReady")) && Boolean.TRUE.equals(call(cycle, "rawget", new Class<?>[]{Object.class}, "impactEmpty")), "Impact magazine entitlement lost");
                 check(Double.valueOf(750).equals(call(cycle, "rawget", new Class<?>[]{Object.class}, "cooldownDuration")), "Modified cooldown duration lost");
                 check(Double.valueOf(750).equals(call(cycle, "rawget", new Class<?>[]{Object.class}, "reloadDuration")), "Modified reload duration lost");
                 head = true;

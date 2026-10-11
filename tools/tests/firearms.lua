@@ -277,8 +277,8 @@ local extended = container()
 gun.ammo, gun.chamber, gun.clip, gun.data = 0, false, true, {}
 extended:AddItem(gun)
 for i = 1, 50 do extended:AddItem(item("Base.Bullets9mm")) end
-local extendedStats = Stats.resolve({head = gun, active = {Magazine = 2, Splitter = 3}})
-check(extendedStats.magazine == 26 and extendedStats.effectPower == 1.75, "Magazine scales linearly and Splitter power adds to base")
+local extendedStats = Stats.resolve({head = gun, powerLoad = 5, active = {Magazine = 2, Splitter = 3}})
+check(extendedStats.magazine == 26 and extendedStats.modulePower == 1.25, "Magazine scales linearly and all module power adds to base")
 G.update(T.contents(extended), extendedStats, 1000000, true)
 G.update(T.contents(extended), extendedStats, 1100000, true)
 G.update(T.contents(extended), extendedStats, 1200000, true)
@@ -331,20 +331,62 @@ Volley.reset()
 check(W.fire(operator, object, victim) == "Fired" and T.contents(extended).ammo == beforeVolley - 4,
     "Integrated multi-pellet volley spends the combined cost once")
 check(#Volley.queue == 8 and Volley.reserved == 0, "Multi-pellet primary makes one five-fragment burst plus three side rays")
-check(math.abs(battery.charge - .998) < .000001, "Four offensive copies double firing cost once per volley")
+check(math.abs(battery.charge - (1 - .00005 * 1.3)) < .000001, "Six physical modules add 30 percent firing cost once per volley")
 Volley.reset()
 gun.ammo, gun.chamber, gun.data = 0, true, {}
 victim.health = .0001
 testMillis = testMillis + 1000000
 beforeVolley = T.contents(extended).ammo
-battery.charge = .001
-check(W.fire(operator, object, victim) == "NoPower" and T.contents(extended).ammo == beforeVolley and battery.charge == .001,
+battery.charge = .00001
+check(W.fire(operator, object, victim) == "NoPower" and T.contents(extended).ammo == beforeVolley and battery.charge == .00001,
     "Insufficient multiplied power cannot spend a final round")
 battery.charge = .998
 check(W.fire(operator, object, victim) == "Fired" and victim:isDead() and T.contents(extended).ammo == beforeVolley - 1,
     "Last-round exception pays one round and lethal primary remains eligible")
 check(#Volley.queue == 8 and Volley.queue[1].damage > .0001, "Lethal primary still produces full-budget fragments once")
 Volley.reset()
+SandboxVars.OMHTurretsTraps = {}
+local powerItems = container()
+powerItems:AddItem(item(T.TYPES.FiringEnhanced))
+powerItems:AddItem(item(T.TYPES.MotionDetectionImprovised))
+powerItems:AddItem(item(T.TYPES.CapacityLarge))
+local brokenModule = item(T.TYPES.Execute)
+brokenModule.condition = 0
+powerItems:AddItem(brokenModule)
+local powerContents = T.contents(powerItems)
+check(powerContents.powerLoad == 2 and powerContents.active.Firing == 1 and powerContents.active.FiringEnhanced == 1,
+    "Enhanced aliases count once, separate expansion and broken modules cost nothing")
+local powerStats = Stats.resolve(powerContents)
+check(math.abs(powerStats.batteryPercent - .0055) < .0000001 and powerStats.weaponPower == 1,
+    "Two working modules and potato floor match approved battery cost")
+Stats.POWER_WEIGHTS.FiringEnhanced = 2
+check(T.contents(powerItems).powerLoad == 3, "Per-type weight scales only its own module contribution")
+Stats.POWER_WEIGHTS.FiringEnhanced = 1
+for _, name in pairs({"Piercing", "InitialBlow", "Execute", "Impact"}) do
+    check(T.kind(item(T.TYPES[name])) == "module" and Stats.POWER_WEIGHTS[name] == 1, "New modules register with equal power weights")
+end
+local reference = item("Base.Pistol")
+function reference:getMaxAmmo() return 15 end
+function reference:isRackAfterShoot() return false end
+local m9 = Stats.resolve({head = reference, active = {}, powerLoad = 16})
+check(math.abs(m9.batteryPercent - .009) < .0000001 and math.abs(m9.generatorFuel - .00018) < .0000001,
+    "Sixteen-module M9 battery and generator cost match approved references")
+function reference:getMinDamage() return 1.2 end
+function reference:getMaxDamage() return 2 end
+function reference:getMaxRange() return 40 end
+local rifle = Stats.resolve({head = reference, active = {}, powerLoad = 16})
+check(math.abs(rifle.weaponPower - math.sqrt(16 / 3)) < .0000001 and math.floor(100 / rifle.batteryPercent) == 4811,
+    "MSR788-equivalent stats resolve expected weapon factor and endurance")
+local boosted = Stats.resolve({head = reference, active = {Velocity = 16, Range = 16, InitialBlow = 16, Execute = 16}, powerLoad = 16})
+check(boosted.damage > rifle.damage and boosted.range > rifle.range and boosted.batteryPercent == rifle.batteryPercent,
+    "Power uses pre-module ordinary damage and range, not conditional output")
+function reference:getMaxRange() return 400 end
+check(math.abs(Stats.resolve({head = reference, active = {}}).weaponPower - math.sqrt(2 * 50 / 15)) < .0000001,
+    "Weapon power uses the actual supported range cap")
+SandboxVars.OMHTurretsTraps = {PotatoBatteryPercentPerShot = .1, PotatoGeneratorFuelPerShot = .001, ModulePowerBonus = 10, SplitterPower = 200, FragmentPower = 200}
+local custom = Stats.resolve({active = {Splitter = 1, Fragment = 1}, powerLoad = 2})
+check(math.abs(custom.batteryPercent - .12) < .0000001 and math.abs(custom.generatorFuel - .0012) < .0000001,
+    "Saved custom base costs survive, retired Splitter/Fragment surcharges do not double-charge")
 W.near, W.refresh, ISBaseTimedAction.stop = oldNear, oldRefresh, oldStop
 T.hybrid, addSound = oldHybrid, oldSound
 SandboxVars.OMHTurretsTraps = oldSettings

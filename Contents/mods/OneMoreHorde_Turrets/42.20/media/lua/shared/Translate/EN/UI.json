@@ -194,5 +194,12 @@
     "UI_OMHTT_ModuleSplitter": "Splitter",
     "UI_OMHTT_ModuleFragment": "Fragment",
     "UI_OMHTT_ModuleFiringEnhanced": "Firing+",
-    "UI_OMHTT_ModuleMotionDetectionEnhanced": "Detection+"
+    "UI_OMHTT_ModuleMotionDetectionEnhanced": "Detection+",
+    "UI_OMHTT_ModulePiercing": "Piercing",
+    "UI_OMHTT_ModuleInitialBlow": "Initial Blow",
+    "UI_OMHTT_ModuleExecute": "Execute",
+    "UI_OMHTT_ModuleImpact": "Impact",
+    "UI_OMHTT_PiercingInactive": "Piercing requires a single-projectile firearm.",
+    "UI_OMHTT_GeneratorCost": "%1 fuel / volley",
+    "UI_OMHTT_BatteryCost": "%1 percent charge / volley"
 }

@@ -1,5 +1,6 @@
 local Clock = require("OMHTT/TurretClock")
 local Feed = require("OMHTT/FirearmFeed")
+local Impact = require("OMHTT/TurretImpactCycle")
 local G = {servicing = {}}
 G.PROFILES = {
     ["Base.Pistol"] = {reload = 2.7, rack = 1.2, muzzle = 0.0823, yaw = 0, roll = -90},
@@ -114,6 +115,7 @@ function G.update(contents, stats, now, operate)
         contents.reserve = contents.reserve + before - Feed.count(gun)
     end
     state.loaded = G.loaded(gun)
+    Impact.observe(state, state.loaded)
     if gun:getModData().OMHTTPowerOff then return state, "Off" end
     if G.servicing[gun] then return state, "Servicing" end
     if not G.enabled() then return state, "Disabled" end
@@ -152,6 +154,7 @@ function G.update(contents, stats, now, operate)
         state.reloadReady = nil
         contents.reserve = contents.reserve - count
         state.loaded = G.loaded(gun)
+        Impact.observe(state, state.loaded)
         if count == 0 then return state, "Empty" end
     end
     if gun:haveChamber() and not gun:isRoundChambered() then
@@ -176,6 +179,7 @@ function G.consume(contents, stats, now)
     local gun = contents.head
     local cycle, status = G.update(contents, stats, now, false)
     if status ~= "Ready" then return false end
+    Impact.consume(cycle)
     local cost = math.min(G.loaded(gun), 1 + (stats.splitter or 0))
     if gun:haveChamber() then
         gun:setRoundChambered(false)
@@ -192,6 +196,7 @@ function G.consume(contents, stats, now)
     cycle.nextShot, cycle.cooldownDuration = now + stats.cooldown, stats.cooldown
     if gun:isRackAfterShoot() then cycle.rackReady = now + stats.rack end
     cycle.loaded = G.loaded(gun)
+    Impact.observe(cycle, cycle.loaded)
     return true
 end
 

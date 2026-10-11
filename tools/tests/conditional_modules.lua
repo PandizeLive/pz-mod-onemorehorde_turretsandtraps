@@ -17,9 +17,13 @@ local stats = S.resolve({active = {InitialBlow = 16, Execute = 1, Impact = 1}})
 zombie.health = 9
 local eligibility = C.snapshot(zombie, stats)
 check(C.damage(zombie, .1, eligibility) == .5, "Exact 90 percent HP grants 5x primary damage at sixteen copies")
+zombie.health = 8.9999999
+check(C.snapshot(zombie, stats).bonus == 5, "Native float rounding preserves the Initial Blow boundary")
 zombie.health = 8.99
 check(C.damage(zombie, .1, C.snapshot(zombie, stats)) == .1, "Below 90 percent receives ordinary damage")
 check(C.damage(zombie, .1, eligibility) == .5, "Shotgun eligibility remains fixed for allocated pellets")
+zombie.health = 1.00000001
+check(C.snapshot(zombie, stats).execute, "Native float rounding preserves the Execute boundary")
 zombie.health = 1.001
 check(not C.snapshot(zombie, stats).execute, "Above threshold cannot execute")
 zombie.health = 1

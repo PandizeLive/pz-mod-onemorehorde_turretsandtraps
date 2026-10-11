@@ -13,10 +13,10 @@ for _, base in pairs({1, 7, 14, 30, 60}) do
 end
 SandboxVars.OMHTurretsTraps.PotatoMagazineCapacity = nil
 for count = 1, 40 do
-    local stats = Stats.resolve({active = {Fragment = count, Splitter = 2}})
+    local stats = Stats.resolve({powerLoad = count + 2, active = {Fragment = count, Splitter = 2}})
     check(math.abs(stats.fragmentDamage - math.min(.4, (.2 + (count - 1) * .05))) < .000001 and stats.fragmentRange == 4,
         "Fragment damage caps while range stays independent")
-    check(stats.effectPower == 1.5 + count * .25, "Power stays additive, including copies above damage cap")
+    check(math.abs(stats.effectPower - (1 + (count + 2) * .05)) < .000001, "Power stays additive, including copies above damage cap")
     for i = 1, count do
         check(math.abs(V.angle(count, i, -1)) <= 90 and V.angle(count, i, -1) ~= 0, "High-stack fan stays within 180 degrees and preserves primary")
     end

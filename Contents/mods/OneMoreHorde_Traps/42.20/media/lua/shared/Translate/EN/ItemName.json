@@ -32,5 +32,9 @@
     "Base.OMHTTModuleSplitter": "Splitter Module",
     "Base.OMHTTModuleFragment": "Fragment Module",
     "Base.OMHTTModuleFiringEnhanced": "Enhanced Firing Module",
-    "Base.OMHTTModuleDetectionEnhanced": "Enhanced Detection Module"
+    "Base.OMHTTModuleDetectionEnhanced": "Enhanced Detection Module",
+    "Base.OMHTTModulePiercing": "Piercing Module",
+    "Base.OMHTTModuleInitialBlow": "Initial Blow Module",
+    "Base.OMHTTModuleExecute": "Execute Module",
+    "Base.OMHTTModuleImpact": "Impact Module"
 }

@@ -4,6 +4,7 @@ local Accuracy = require("OMHTT/FirearmAccuracy")
 local Damage = require("OMHTT/Damage")
 local D = require("OMHTT/Diagnostics")
 local Modules = require("OMHTT/TurretModules")
+local Conditional = require("OMHTT/TurretConditionalHit")
 local C = {}
 
 ---@param record table Turret state
@@ -35,14 +36,18 @@ function C.hit(record, origin, target, player, options)
     local critical = options.critical
     if critical == nil then critical = ZombRand(10000) < stats.critChance * 100 end
     local multiplier = critical and stats.critMultiplier or 1
+    local eligibility = {}
+    for i = 1, #targets do eligibility[targets[i]] = Conditional.snapshot(targets[i], stats) end
     for i = 1, pellets do
         local victim = targets[(i - 1) % #targets + 1]
         local dx, dy = victim:getX() - origin:getX() - 0.5, victim:getY() - origin:getY() - 0.5
         local chance = Accuracy.chance(gun, stats, math.sqrt(dx * dx + dy * dy), victim:isProne())
         if not victim:isDead() and ZombRand(10000) < chance * 100 then
-            local hitX, hitY = victim:getX(), victim:getY()
-            lost = lost + Damage.apply(victim, stats.damage * multiplier / 100 / pellets, record.id, "firearm", player, gun)
+            local hitX, hitY, hitSquare = victim:getX(), victim:getY(), victim:getSquare()
+            local amount = Conditional.damage(victim, stats.damage * multiplier / 100 / pellets, eligibility[victim])
+            lost = lost + Damage.apply(victim, amount, record.id, "firearm", player, gun)
             require("OMHTT/TurretVolley").fragment(record, hitX, hitY, origin:getZ(), victim, player, options)
+            require("OMHTT/TurretVolley").pierce(record, origin, victim, player, options, hitSquare, hitX, hitY)
             hits = hits + 1
             local guard = victim:getModData().OMHTTKnockdownUntilMs
             if not victim:isDead() and not victim:isOnFloor() and not victim:isKnockedDown()
@@ -50,6 +55,7 @@ function C.hit(record, origin, target, player, options)
                 victim:knockDown(false)
                 victim:getModData().OMHTTKnockdownUntilMs = started + Combat.KNOCKDOWN_GUARD_MS
             end
+            Conditional.impact(victim, origin, options)
         end
     end
     require("OMHTT/TurretVolley").release(options)

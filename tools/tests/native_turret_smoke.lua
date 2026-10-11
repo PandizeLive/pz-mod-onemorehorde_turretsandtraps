@@ -50,7 +50,7 @@ local function verifyTurrets()
             end
         end
     end
-    assert(count == 150, "Expected 150 component entries across sixteen native loot pools")
+    assert(count == 170, "Expected 170 component entries across sixteen native loot pools")
     local retired = {"OMHTTModuleCapacitySmall", "OMHTTModuleCapacity", "OMHTTModuleCapacityLarge",
         "OMHTTModuleMotionDetection", "OMHTTModuleDetection360"}
     for i = 1, #retired do
@@ -89,7 +89,7 @@ local function verifyTurrets()
     end
     assert(auditAccepted >= 20 and auditRejected >= 2, "Expected conventional guns and cap-gun rejections")
     print("[OMHTT-Smoke] native-firearm-audit accepted=" .. auditAccepted .. " rejected=" .. auditRejected)
-    assert(visibleCount == 23, "Expected twenty-three canonical components")
+    assert(visibleCount == 27, "Expected twenty-seven canonical components")
     local largeStorage = instanceItem(T.BASE):getInventory()
     T.configure(largeStorage)
     local largeGun = instanceItem("Base.Pistol")
@@ -143,7 +143,7 @@ local function verifyTurrets()
     assert(T.contents(live).active.MotionDetection == 1, "Native module condition defaults are not active")
     detector:setCondition(0)
     assert(T.contents(live).active.MotionDetection == nil, "Broken native module remains active")
-    print("[OMHTT-Smoke] native-modules loot=150 profiles=valid condition=checked")
+    print("[OMHTT-Smoke] native-modules loot=170 profiles=valid condition=checked")
     assert(GameSounds.getSound("OMHTTTriggerClick") ~= nil, "Native click sound is unregistered")
     local resources = ArrayList.new()
     local tools = {"Base.Screwdriver", "Base.Wrench"}
@@ -318,7 +318,7 @@ local function verifyTurrets()
     T.state(object).condition = 37
     T.state(object).fixtureBatteryId = battery:getID()
     T.state(object).fixtureAmmoId = potato:getID()
-    contents.head:getModData().OMHTTCycle = {schema = 1, loaded = 1, nextShot = 123456789, cooldownDuration = 750, reloadDuration = 750}
+    contents.head:getModData().OMHTTCycle = {schema = 1, loaded = 1, nextShot = 123456789, cooldownDuration = 750, reloadDuration = 750, impactReady = false, impactEmpty = true}
     assert(contents.head:getWorldStaticItem() == "Base.OMHTTTurretProbe", "Actual turret head has no native model")
     OMHTT_NativeTurret = object
     local starter = instanceItem(T.BASE)
@@ -559,6 +559,32 @@ local function verifyTurrets()
     assert(victim:isStaggerBack() and not victim:isKnockedDown() and not victim:isOnFloor(), "Standing stagger requested a fall")
     victim:setStaggerBack(false)
     assert(not victim:isStaggerBack() and math.abs(victim:getHealth() - .37) < .00001, "Stagger changed health or failed to clear")
+    local Stats = require("OMHTT/TurretStats")
+    local savedOptions = SandboxVars.OMHTurretsTraps
+    SandboxVars.OMHTurretsTraps = {}
+    local powerStore = instanceItem(T.BASE):getInventory()
+    local powerGun = powerStore:AddItem("Base.Pistol")
+    powerStore:AddItem(T.TYPES.FiringEnhanced)
+    powerStore:AddItem(T.TYPES.MotionDetectionEnhanced)
+    powerStore:AddItem(T.TYPES.CapacityLarge)
+    for i = 1, 14 do powerStore:AddItem(T.TYPES.Execute) end
+    local powerContents = T.contents(powerStore)
+    local powerStats = Stats.resolve(powerContents)
+    assert(powerContents.powerLoad == 16 and math.abs(powerStats.batteryPercent - .009) < .000001, "Native M9 power or physical module counting failed")
+    assert(math.abs(powerStats.generatorFuel - .00018) < .0000001, "Native generator cost mismatch")
+    powerStore:Remove(powerGun)
+    powerStore:AddItem("Base.HuntingRifle")
+    powerStats = Stats.resolve(T.contents(powerStore))
+    assert(math.floor(100 / powerStats.batteryPercent) == 4811 and math.abs(powerStats.weaponPower - math.sqrt(16 / 3)) < .000001, "Native rifle endurance mismatch")
+    local Conditional = require("OMHTT/TurretConditionalHit")
+    victim:getModData().OMHTTInitialHealth = 3.7
+    victim:setHealth(.37)
+    local conditionalStats = Stats.resolve({active = {Execute = 1, InitialBlow = 2}})
+    assert(Conditional.snapshot(victim, conditionalStats).execute, "Native Execute boundary failed")
+    victim:setHealth(3.7)
+    assert(Conditional.snapshot(victim, conditionalStats).bonus == 1.5, "Native Initial Blow baseline failed")
+    SandboxVars.OMHTurretsTraps = savedOptions
+    print("[OMHTT-Smoke] native-power modules=16 aliases=once m9=0.009 rifleVolleys=4811 generator=matched conditionals=valid")
     print("[OMHTT-Smoke] native-offensive-feasibility health=creation-recorded wounded=preserved horde=preferred unknown=zero stagger=exposed-standing")
     print("[OMHTT-Smoke] native-turret recipes=6 loadedDeploy=exact contents=preserved weight=exact filters=valid cooldown=preserved")
     isServer, isClient = serverFunction, clientFunction

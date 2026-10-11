@@ -9,7 +9,7 @@ local groups = {
     {"Sandbox_Title_OMHTurretsTraps_Storage", {"PotatoAmmoCapacity", "PotatoModuleCapacity", "PotatoMagazineCapacity"}},
     {"Sandbox_Title_OMHTurretsTraps_Combat", {"PotatoDamage", "PotatoCriticalChance", "PotatoCriticalDamage", "PotatoCooldown", "PotatoReloadTime", "PotatoRange", "PotatoTurnSpeed", "PotatoProjectileSpeed", "PotatoKnockdownChance", "PotatoSplashPercent", "PotatoSplashRadius"}},
     {"Sandbox_Title_OMHTurretsTraps_Audio", {"PotatoHearingRadius", "PotatoPlaybackVolume"}},
-    {"Sandbox_Title_OMHTurretsTraps_Power", {"PotatoRequirePower", "PotatoBatteryPercentPerShot", "PotatoGeneratorFuelPerShot"}},
+    {"Sandbox_Title_OMHTurretsTraps_Power", {"PotatoRequirePower", "PotatoBatteryPercentPerShot", "PotatoGeneratorFuelPerShot", "ModulePowerBonus"}},
     {"Sandbox_Title_OMHTurretsTraps_Firearms", {"FirearmTurrets", "FirearmAmmoCapacity", "FirearmAimingLevel", "FirearmAccuracyMultiplier", "FirearmRangeAccuracy", "PrecisionRangeAccuracy", "FirearmDamageMultiplier", "FirearmRangeMultiplier", "FirearmReloadMultiplier", "FirearmRateMultiplier", "FirearmCycleMultiplier", "FirearmTurnSpeed"}},
 }
 
@@ -24,8 +24,12 @@ local moduleGroups = {
     {"Sandbox_Title_OMHTurretsTraps_Magazine", {"MagazineBonus"}},
     {"Sandbox_Title_OMHTurretsTraps_Velocity", {"VelocityBonus", "VelocityBonusCap", "VelocityKnockdownBonus", "VelocityKnockdownCap"}},
     {"Sandbox_Title_OMHTurretsTraps_Range", {"RangeBonus", "RangeBonusCap"}},
-    {"Sandbox_Title_OMHTurretsTraps_Splitter", {"SplitterDamage", "SplitterPower"}},
-    {"Sandbox_Title_OMHTurretsTraps_Fragment", {"FragmentDamage", "FragmentBonus", "FragmentDamageCap", "FragmentRange", "FragmentPower"}},
+    {"Sandbox_Title_OMHTurretsTraps_Splitter", {"SplitterDamage"}},
+    {"Sandbox_Title_OMHTurretsTraps_Fragment", {"FragmentDamage", "FragmentBonus", "FragmentDamageCap", "FragmentRange"}},
+    {"Sandbox_Title_OMHTurretsTraps_Piercing", {"PiercingRetention"}},
+    {"Sandbox_Title_OMHTurretsTraps_InitialBlow", {"InitialBlowBonus", "InitialBlowThreshold"}},
+    {"Sandbox_Title_OMHTurretsTraps_Execute", {"ExecuteFirst", "ExecuteBonus"}},
+    {"Sandbox_Title_OMHTurretsTraps_Impact", {"ImpactFirst", "ImpactBonus"}},
     {"Sandbox_Title_OMHTurretsTraps_Capacity", {"CapacityImprovisedModuleBonus", "CapacityImprovisedAmmoBonus", "CapacitySmallAmmoBonus", "CapacitySmallModuleBonus", "CapacityAmmoBonus", "CapacityModuleBonus", "CapacityLargeAmmoBonus", "CapacityLargeModuleBonus"}},
 }
 

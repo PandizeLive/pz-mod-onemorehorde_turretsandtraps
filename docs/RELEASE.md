@@ -1,6 +1,6 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.40 Magazine, Splitter and Fragment
+## Previous local installation: 0.2.40 Magazine, Splitter and Fragment
 
 C136 approves [the module patch](PATCH_v0.2.40.md). 5,018 Kahlua assertions, 96 compiled runtime/translation files, 608 native translation keys and 23 packet serializations pass. Native write/read pass in 81.1/80.8 seconds, including physical feed weight/ammo and all 20 native firearm mechanisms. Traps-only/Turrets-only/both startup pass in 90.5/91.5/90.2 seconds. Installed 2026-10-11 through root OMH.cmd from immutable `test/v0.2.40` / `d916e78736197d10bb5f6f669ca9a59b24d292bf`. All 190 source and 230 package/tag/installed/archive files verify, along with both previous 0.2.39 backups. Archive SHA-256: `31acf498d107e63779e2d33db8a3da437079f559cc76039d24225fc36d607536`. [Install](../diagnostics/v0.2.40/install.json) | [Verification](../diagnostics/v0.2.40/local-release.json) | [Combined owner test](TEST_v0.2.40.md). Rendered acceptance is pending; hosted LootLab stays at its explicitly labeled 0.2.28 baseline. No official release/Workshop upload; cumulative unuploaded notes are preserved.
 

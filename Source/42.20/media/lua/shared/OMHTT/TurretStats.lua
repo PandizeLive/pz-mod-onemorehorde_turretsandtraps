@@ -2,6 +2,7 @@ local G = require("OMHTT/Firearms")
 local Class = require("OMHTT/FirearmClass")
 local kits = {{"CapacityImprovised", "Improvised", 100, 2}, {"CapacitySmall", "Small", 200, 6}, {"Capacity", "", 400, 10}, {"CapacityLarge", "Large", 650, 14}}
 local S = {}
+S.POWER_WEIGHTS = {Firing = 1, FiringImprovised = 1, FiringEnhanced = 1, MotionDetection = 1, MotionDetectionImprovised = 1, MotionDetectionEnhanced = 1, Filter = 1, Detection360 = 1, RapidFire = 1, Reload = 1, Velocity = 1, Range = 1, Critical = 1, Accuracy = 1, Suppression = 1, Autoloader = 1, Magazine = 1, Splitter = 1, Fragment = 1, Piercing = 1, InitialBlow = 1, Execute = 1, Impact = 1}
 
 ---@param key string Setting
 ---@param fallback number Default
@@ -110,6 +111,9 @@ function S.resolve(contents)
     local execute, impact = active.Execute or 0, active.Impact or 0
     local knockBonus = math.min((active.Velocity or 0) * S.option("VelocityKnockdownBonus", 5, 0, 100),
         math.max(0, S.option("VelocityKnockdownCap", 90, 0, 100) - knockdown))
+    local weaponPower = math.max(1, math.sqrt(math.max(0, damage) / 80 * math.min(firearm and 50 or 30, range) / 15))
+    local modulePower = 1 + (contents and contents.powerLoad or 0) * S.option("ModulePowerBonus", 5, 0, 200) / 100
+    local effectPower = weaponPower * modulePower
     return {damage = damage * (1 + S.bonus(active, "Velocity", 20, 100) / 100),
         knockdown = math.min(100, knockdown + knockBonus),
         range = math.min(firearm and 50 or 30, range + S.bonus(active, "Range", 2, 10)),
@@ -124,7 +128,9 @@ function S.resolve(contents)
         impact = impact > 0 and math.min(100, S.option("ImpactFirst", 60, 0, 100) + (impact - 1) * S.option("ImpactBonus", 2, 0, 100)) or 0,
         fragmentDamage = math.min(S.option("FragmentDamageCap", 40, 0, 100), S.option("FragmentDamage", 20, 0, 100) + math.max(0, fragment - 1) * S.option("FragmentBonus", 5, 0, 100)) / 100,
         fragmentRange = S.option("FragmentRange", 4, 1, 10),
-        effectPower = 1 + splitter * S.option("SplitterPower", 25, 0, 200) / 100 + fragment * S.option("FragmentPower", 25, 0, 200) / 100,
+        effectPower = effectPower, weaponPower = weaponPower, modulePower = modulePower,
+        batteryPercent = S.option("PotatoBatteryPercentPerShot", 0.005, 0, 100) * effectPower,
+        generatorFuel = S.option("PotatoGeneratorFuelPerShot", 0.0001, 0, 1) * effectPower,
         magazine = magazine, accuracy = accuracy, farAccuracy = farAccuracy, critChance = critChance, critMultiplier = critMultiplier, rack = rack * 1000 / enhancement, firearm = firearm ~= nil,
         suppressed = (active.Suppression or 0) > 0,
         hearingMultiplier = remaining,

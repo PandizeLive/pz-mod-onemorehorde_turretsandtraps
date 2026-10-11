@@ -6,6 +6,7 @@ local Foundation = require("OMHTT/Foundation")
 local Diagnostics = require("OMHTT/Diagnostics")
 local Damage = require("OMHTT/Damage")
 local Modules = require("OMHTT/TurretModules")
+local Conditional = require("OMHTT/TurretConditionalHit")
 
 ---@class OMHTTPrototypeCombat
 local Combat = {
@@ -259,6 +260,7 @@ function Combat.hit(record, origin, target, player, options)
     local critical = options.critical
     if critical == nil then critical = ZombRand(10000) < (options.critChance or 0) * 100 end
     local directDamage = options.damage * (critical and options.critMultiplier or 1)
+    if options.stats then directDamage = Conditional.damage(target, directDamage, Conditional.snapshot(target, options.stats)) end
     Damage.apply(target, directDamage, record.id, "potato", player, weapon)
     require("OMHTT/TurretVolley").fragment(record, tx, ty, origin:getZ(), target, player, options)
     local damagedAt = getTimestampMs()
@@ -299,6 +301,7 @@ function Combat.hit(record, origin, target, player, options)
             end
         end
     end
+    Conditional.impact(target, origin, options)
     Diagnostics.defer("shot-knockdown", {id = record.id, shot = record.shots, reason = knockReason,
         roll = roll, chance = options.knockdown, guardRemainingMs = remaining,
         state = target:getCurrentStateName(), ragdollAllowed = target:canRagdoll(),

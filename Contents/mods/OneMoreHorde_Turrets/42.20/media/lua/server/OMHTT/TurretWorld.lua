@@ -326,10 +326,10 @@ end
 function W.power(object, contents)
     if SandboxVars.OMHTurretsTraps.PotatoRequirePower == false then return {kind = "disabled", cost = 0} end
     local square = object:getSquare()
-    local effectPower = T.cycleConfig(contents).effectPower
+    local stats = T.cycleConfig(contents)
     if square:hasGridPower() and square:getRoom() then return {kind = "grid", cost = 0} end
     if square:haveElectricity() then
-        local cost = T.option("GeneratorFuelPerShot", 0.001, 0, 1) * effectPower
+        local cost = stats.generatorFuel
         for generator in pairs(generators) do
             local origin = generator:getSquare()
             if not origin or generator:getObjectIndex() < 0 then
@@ -341,7 +341,7 @@ function W.power(object, contents)
         end
     end
     local battery = contents.battery
-    local cost = T.option("BatteryPercentPerShot", 0.1, 0, 100) / 100 * effectPower
+    local cost = stats.batteryPercent / 100
     if battery and battery:getCondition() > 0 and battery:getCurrentUsesFloat() > 0
         and battery:getCurrentUsesFloat() + 0.0000001 >= cost then
         return {kind = "battery", battery = battery, cost = cost}
@@ -411,6 +411,7 @@ function W.fire(player, object, target)
             return false
         end
         options.ammoCost = math.min(cycle.loaded, 1 + stats.splitter)
+        options.impactReady = cycle.impactReady == true
         if G.profile(contents.head) and not G.consume(contents, stats, Clock.now()) then return false end
         if power.kind == "battery" then
             power.battery:setCurrentUsesFloat(math.max(0, power.battery:getCurrentUsesFloat() - power.cost))

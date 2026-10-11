@@ -1,4 +1,40 @@
 module Base {
+    item OMHTTModulePiercing {
+        DisplayName = Piercing Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModulePiercing,
+    }
+    item OMHTTModuleInitialBlow {
+        DisplayName = Initial Blow Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleInitialBlow,
+    }
+    item OMHTTModuleExecute {
+        DisplayName = Execute Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleExecute,
+    }
+    item OMHTTModuleImpact {
+        DisplayName = Impact Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleImpact,
+    }
     item OMHTTModuleFiringEnhanced {
         DisplayName = Enhanced Firing Module,
         ItemType = base:normal,
