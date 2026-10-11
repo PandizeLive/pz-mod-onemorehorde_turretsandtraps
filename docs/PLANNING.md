@@ -75,3 +75,6 @@ C126: confirmed slot-limited Splitter and fixed-five Fragment with capped damage
 
 
 C127 supersedes C126's flat +2 magazine suggestion: owner requests percentage growth and rounding up, suggesting linear 25% per module. Working formula: ceil(base capacity * (1 + 0.25 * count)). Base-1 capacity remains two for modules 1-4 and reaches three at five; this affects paid Splitter slot efficiency. [Current contract](checkpoints/R3_OFFENSIVE_MODULES.md#c127-linear-percentage-magazine-growth-and-final-rounding-2026-10-10). No patch approval; Splitter ammo/leftover-round policy remains open. Inspected 9b36cb8 and fetched origin.
+
+
+C128 supersedes C127 plateaus: owner confirms minimum +1 ready round per module. At linear 25%, capacity = ceil(base + count * max(1, base * 0.25)). Base 1 now progresses 1/2/3/4/5 with 0/1/2/3/4 modules. Requested examples are in the checkpoint; remaining R3C4 choices unchanged. Inspected 3368a34 and fetched origin.
