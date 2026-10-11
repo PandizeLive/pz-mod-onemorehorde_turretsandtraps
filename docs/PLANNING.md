@@ -84,3 +84,6 @@ C129: confirmed magazine scaling is now linear 35%, minimum +1/module, rounded o
 
 
 C130 confirms C129 option B: any last loaded round permits the full Splitter volley, consumes that round, and waives extra-round charges regardless of capacity. Deliberate single-round loading is accepted. Next ammo decision: when two or more rounds remain but cannot pay the full volley, recommend full volley consuming all remaining rounds; alternative is affordable projectile count with the special one-round exception. Neither generalized rule is approved yet. R3C4 stays active; inspected 77e0f5d and fetched origin.
+
+
+C131 settles insufficient ammo: full Splitter volley, consume min(ready rounds, normal volley cost), require at least one round; no direct reserve charge for the shortfall. This includes C130's final-round exception. Magazine growth is 35% linear/minimum +1/final ceiling. Remaining R3C4 choices: Fragment damage increment/cap, range/coverage/propagation, compatibility and power/endurance. No implementation or new owner test. Inspected a773151 and fetched origin.

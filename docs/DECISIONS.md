@@ -714,3 +714,8 @@ Owner selects 35% linear capacity per Magazine Module, minimum +1 with final rou
 ## C130: last-loaded-round Splitter exemption approved (2026-10-11)
 
 Owner selects B: any weapon with one loaded round remaining gets the full Splitter volley for that round, irrespective of magazine capacity. Deliberate one-round loading was explained and is accepted. Consume the primary round; never fire with zero. Do not substitute the recommended capacity-one restriction. Behavior with two or more insufficient rounds remains open; full volley consuming remaining rounds is a new recommendation, not approval. No code/package/test change.
+
+
+## C131: insufficient-ammo full volley approved (2026-10-11)
+
+Owner selects A: fire the full configured Splitter volley when any ready ammunition remains; consume the lesser of ready rounds and normal volley cost. Four Splitters produce five projectiles for five, two or one consumed rounds when those are the respective ready totals. Zero cannot fire. This generalizes C130 without a capacity restriction or reserve-ammunition charge for the shortfall. Remaining R3C4 rules/native proofs are separate; no gameplay patch approval inferred.
