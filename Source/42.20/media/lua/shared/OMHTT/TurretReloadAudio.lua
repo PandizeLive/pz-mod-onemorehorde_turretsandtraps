@@ -20,6 +20,8 @@ end
 ---@return nil
 function A.play(object, entry, name)
     if not name or name == "" then return end
+    local logging = D.enabled("turrets")
+    local started = logging and getTimestampMs()
     for i = #entry.handles, 1, -1 do
         local sound = entry.handles[i]
         if not sound.emitter:isPlaying(sound.handle) then table.remove(entry.handles, i) end
@@ -31,12 +33,14 @@ function A.play(object, entry, name)
     local square = object:getSquare()
     local emitter = getWorld():getFreeEmitter(square:getX() + 0.5, square:getY() + 0.5, square:getZ())
     local handle = emitter:playSound(name)
-    emitter:setPitch(handle, 0.95 + ZombRand(101) / 1000)
     if name == "OMHTTPotatoReload" then
         emitter:setVolume(handle, require("OMHTT/TurretStats").option("PotatoPlaybackVolume", 35, 0, 100) / 100)
     end
     entry.handles[#entry.handles + 1] = {emitter = emitter, handle = handle}
-    D.defer("turret-reload-audio", {head = entry.head:getFullType(), phase = entry.phase, sound = name})
+    if logging then
+        D.defer("turret-reload-audio", {head = entry.head:getFullType(), phase = entry.phase, sound = name,
+            audioMs = getTimestampMs() - started})
+    end
 end
 
 ---@param object IsoObject Powered turret

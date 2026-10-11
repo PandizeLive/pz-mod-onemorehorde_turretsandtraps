@@ -26,6 +26,8 @@ def run(command, cwd=None):
 
 
 def main():
+    from build_sound_pitch import build as check_pitch
+    check_pitch(check=True)
     from build_packages import build
     _, packages = build(check=True)
     OUTPUT.mkdir(parents=True, exist_ok=True)
@@ -110,6 +112,13 @@ def main():
             assert sprite.getbbox() is not None
             assert all(r == g == b for r, g, b, a in sprite.get_flattened_data() if a), "Sprite must remain white/grayscale"
     javac = Path(os.environ.get("PZ_JAVAC", "C:/Program Files/Java/jdk-17/bin/javac.exe"))
+    run([javac, "-d", classes, ROOT / "tools/NativePitchCheck.java"])
+    pitch_log = run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED",
+        "-Djava.library.path=" + str(GAME), "-cp", os.pathsep.join([str(classes), str(GAME / "projectzomboid.jar")]),
+        "NativePitchCheck", PACKAGE / "42.20", OUTPUT / "pitch-cache", GAME], cwd=GAME)
+    assert "NATIVE_PITCH_PASS definitions=23 clips=2626 plays=690" in pitch_log
+    assert "Set pitch for" not in pitch_log, "Runtime pitch setter logging returned"
+    (OUTPUT / "native-pitch.log").write_text(pitch_log, encoding="utf-8")
     run([javac, "-d", classes, ROOT / "tools/KahluaCheck.java"])
     run([javac, "-cp", GAME / "projectzomboid.jar", "-d", classes, ROOT / "tools/HybridAssetCheck.java"])
     model_log = run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED",

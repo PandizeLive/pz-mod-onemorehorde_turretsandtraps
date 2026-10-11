@@ -18,13 +18,15 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 ## Current checkpoint status and next work
 
+**C122 corrective optimization:** [0.2.38.1](PATCH_v0.2.38.1.md) keeps native pitch variation, avoids per-play emitter mutation/logging, skips unoccupied Concertina lookups and adds trap/reload timing. The owner explicitly requested keeping pitch and optimizing again; the C121 variation-removal proposal is superseded. Only the [four-step performance comparison](TEST_v0.2.38.1.md) is requested. R1C3 remains open until owner comparison; Phase 3 decisions remain deferred.
+
 **C120 implementation:** the owner approved patching C114-C119. The 0.2.38 build implements Concertina Wire, contact-only half movement/player injuries for wire and panels, independently durable/recoverable spike tiles, Sandbox organization and approved recipe/naming cleanup. Native displacement API and item/world probes have evidence; final write/read/package checks and tagged installation pass. [Planning](PLANNING.md), [contract](checkpoints/R2C4_CONCERTINA.md) and [focused test](TEST_v0.2.38.md) are the shared handoff. Rendered/Horde Night interaction and dense-client performance remain open.
 
 **C113 review repairs:** 0.2.37 implements automatic/manual range feedback, recipe clarity, bounded barb audio, overlay caching/profiling and elapsed active clocks without catch-up bursts. Its held checks are carried into [0.2.38](TEST_v0.2.38.md). Native/automated results are in RELEASE.md; actual dense-client pauses and visible/audio acceptance remain R1C3/R2 gates. No new-content checkpoint is reordered.
 
 **C112 follow-up:** 0.2.36.1 corrects Turrets organization to root base/complete recipes and Heads/Modules groups; traps retain tiers and Building keeps turret base ungrouped. The [cross-system review](REVIEW_v0.2.36.1.md) records current audio/visual/gameplay/code findings. Recommendations remain unapproved and do not reorder content checkpoints. Its owner checklist is now superseded by 0.2.37, carrying forward unaccepted rendered checks.
 
-**Latest test findings (C121, 2026-10-10):** 0.2.38 generally functions per owner, but mixed-defense lag persists. Logs confirm update gaps up to 1,077 ms and 674 ms in runtime sound-pitch adjustment. Proposed removal of runtime pitch variation plus aggregate reload/trap timing awaits approval; R1C3 remains active. [Evidence and limits](TEST_v0.2.38.md#owner-findings-and-console-review-2026-10-10).
+**Latest test findings (C121, 2026-10-10):** 0.2.38 generally functions per owner, but mixed-defense lag persists. Logs confirm update gaps up to 1,077 ms and 674 ms in runtime sound-pitch adjustment. C122 supersedes the proposed removal of variation with native clip pitch and aggregate reload/trap timing; R1C3 remains active. [Evidence and limits](TEST_v0.2.38.md#owner-findings-and-console-review-2026-10-10).
 
 **Previous test findings (C109, 2026-10-09):** 0.2.35 still launches zombies forward; top-level categories did not match the intended expandable group names. C110 approves repeated Building placement, zombie forward-collapse, tier groups and trip/impact audio. See [owner findings](TEST_v0.2.35.md#owner-findings-and-console-review-2026-10-09); the corrective implementation is 0.2.36, with rendered acceptance pending.
 

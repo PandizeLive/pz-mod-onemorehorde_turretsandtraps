@@ -8,7 +8,7 @@ Current unmerged work is on **codex/performance-barbed-audit**, [draft PR #1](ht
 
 Fetch the remote and check open development/planning PRs before using dev alone as the current state. Read the active branch's AGENTS.md, this page and [CURRENT_STATUS.md](CURRENT_STATUS.md). Record which branch/commit was inspected. A chat's older answer or an old Cloud checkout is not a current checkpoint. Preserve unmerged work and reconcile incoming plans; do not reset, force-push or merge automatically.
 
-## Current combined update: 0.2.38 installed and verified; owner test pending
+## Previous combined update: 0.2.38 installed; provisional function report, lag reproduced
 
 C120 explicitly approves patching the whole current plan on 2026-10-10: [C119](DECISIONS.md#c119-approved-combined-plan-and-mandatory-github-planning-handoff-2026-10-10). Exact behavior, recipes and evidence limits: [combined checkpoint contract](checkpoints/R2C4_CONCERTINA.md).
 
@@ -44,4 +44,10 @@ Either chat can originate plans. The named Planning chat is optional; GitHub is 
 
 0.2.38 generally functions according to the owner, but mixed Bed Spikes/Concertina/turret play still lags. [Versioned findings](TEST_v0.2.38.md#owner-findings-and-console-review-2026-10-10) confirm 1,077-ms update gaps and 674-ms elapsed runtime-pitch calls; trap and reload costs remain unmeasured. General function is provisional, not automatic acceptance of every test item.
 
-**Proposed, not approved:** remove per-play pitch randomization in both turret audio paths, preserving clips/variants/volume/hearing, and add gated aggregate reload/trap timings. Less pitch variation is the explicit tradeoff. No gameplay/source/package changes are made in this report. R1C3 remains open; Phase 3 decisions are still deferred. Decision needed before the next patch.
+**Superseded by C122, never implemented:** remove per-play pitch randomization in both turret audio paths, preserving clips/variants/volume/hearing, and add gated aggregate reload/trap timings. Less pitch variation is the explicit tradeoff. No gameplay/source/package changes are made in this report. R1C3 remains open; Phase 3 decisions are still deferred. The subsequent C122 instruction below replaces this proposal.
+
+## Current corrective update: C122 / 0.2.38.1
+
+Owner requests preserving pitch variation and optimizing again. The implementation uses native sound-script clip pitch and random clip selection at all original 101 pitch values, avoiding FMODSoundEmitter.setPitch. Existing clips/weights/volume/hearing and native event-authored variation remain. Concertina skips adjacent unoccupied coils before object resolution, and aggregate reload/trap timing fills diagnostic gaps. No new content or balance change.
+
+[Patch](PATCH_v0.2.38.1.md) | [Four-step performance comparison and verification](TEST_v0.2.38.1.md) | [R1C3 checkpoint](checkpoints/R1C3_PERFORMANCE_AUDIT_20261007.md). Native tests establish parser/queued playback behavior; audible and mixed-workload performance acceptance remain pending. This supersedes C121's proposed loss of pitch variation and does not reopen Phase 3 decisions.

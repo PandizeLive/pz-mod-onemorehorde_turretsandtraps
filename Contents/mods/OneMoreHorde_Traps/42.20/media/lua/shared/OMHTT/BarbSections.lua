@@ -272,27 +272,29 @@ function B.onWireCreate(params)
 end
 
 ---@param actor IsoGameCharacter Updated actor
+---@param bucket table? Already located nearby hazards
 ---@return table? selected One touching hazard, shared by damage and movement
 ---@return table? attachment Durable state
-function B.contact(actor)
+function B.contact(actor, bucket)
     local square = actor:getSquare()
     if #B.order == 0 or not square then return nil end
-    local bucket = B.nearby[F.key(square:getX(), square:getY(), square:getZ())]
+    bucket = bucket or B.nearby[F.key(square:getX(), square:getY(), square:getZ())]
     if not bucket then return nil end
     local selected, source = nil, nil
+    local x, y, z = actor:getX(), actor:getY(), actor:getZ()
     for id in pairs(bucket) do
         local node = B.nodes[id]
-        if node and B.enabled(node.record.kind) then
+        if node and B.enabled(node.record.kind) and (node.record.kind ~= "wire"
+            or (math.floor(x) == node.record.x and math.floor(y) == node.record.y and math.floor(z) == node.record.z)) then
             local record = node.record
             local _, host, attachment, status = B.resolve(record)
             local touching = false
             if status == "active" then
                 if record.kind == "wire" then
-                    touching = math.floor(actor:getX()) == record.x and math.floor(actor:getY()) == record.y
-                        and math.floor(actor:getZ()) == record.z
+                    touching = true
                 else
                     touching = S.edge(host, record.north, record.side, geometry)
-                        and C.touching(geometry, actor:getX(), actor:getY(), actor:getZ(), actor:getWidth())
+                        and C.touching(geometry, x, y, z, actor:getWidth())
                 end
             end
             if touching and (not selected or id < selected.id) then selected, source = record, attachment end

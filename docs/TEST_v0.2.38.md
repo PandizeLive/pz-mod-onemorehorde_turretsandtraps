@@ -32,3 +32,7 @@ Root Capture saved `20261010-220500-0006`; [reviewed machine-readable evidence](
 - During gameplay there are five native `CellLoader` missing `vegetation_groundcover_01_*` tile errors. No Lua exception/stack trace appears in this interval. After returning to the menu, Firearms translation formatting warnings recur; neither issue is attributed to this mod or claimed to explain the hitches.
 
 Proposed next patch, awaiting owner approval: remove per-play runtime pitch randomization from turret effect/reload audio while retaining existing clips, clip selection, volumes and zombie-hearing rules; add gated aggregate timings for reload and Bed Spikes/barb processing. The audible tradeoff is less pitch variation, not silent or removed sounds. Compare a brief repeat of the same mixed workload after that patch. Keep R1C3 open; do not promise all lag is fixed.
+
+## Follow-up disposition (C122)
+
+The owner requested keeping pitch variation and optimizing again. The C121 removal-of-variation proposal was not implemented. [0.2.38.1](PATCH_v0.2.38.1.md) preserves the native 101-value pitch range and introduces a [four-step comparison](TEST_v0.2.38.1.md); this replaces the full checklist as the next requested test without erasing the findings above.

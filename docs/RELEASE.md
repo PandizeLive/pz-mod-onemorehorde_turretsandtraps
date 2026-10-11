@@ -1,6 +1,10 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.38 Concertina Wire and independent spike tiles
+## Current validated build: 0.2.38.1 native pitch and contact optimization
+
+[C122 patch](PATCH_v0.2.38.1.md). 3,860 Kahlua assertions; 94 runtime/translation files; 574 native translation keys; 23 packet serializations; 188 source/228 package files; 111 unique Sandbox options and 31 identical shared helpers. Native audio checks parse 23 definitions/2,626 clips and verify 690 starts with random queued pitch over all 101 original values, without the emitter setter. Native write/read passed in 148.4/142.1 seconds; Traps-only/Turrets-only/both startup passed in 132.0/130.1/129.4 seconds. Installation pending the immutable test tag. Owner audible/performance comparison remains pending; [four-step test](TEST_v0.2.38.1.md). No official release or Workshop upload.
+
+## Previous local installation: 0.2.38 Concertina Wire and independent spike tiles
 
 [C120 patch](PATCH_v0.2.38.md) implements the complete approved C114-C119 bundle. 3,946 Kahlua assertions; 94 compiled runtime/translation files; 574 native translation keys; 23 packet serializations. Native write/read pass in 95.7/90.6 seconds. Traps-only/Turrets-only/both startup pass in 81.3/83.3/88.3 seconds. The manifest covers 188 source and 228 package files; 111 Sandbox options and 31 identical shared helpers pass independent checks. Native wire recipes/retained tools, pair/single inventory conservation, independent tile state, contact delta and texture-registry checks pass. No owner/rendered acceptance is claimed. Installed 2026-10-10 through root OMH.cmd from immutable `test/v0.2.38` / `cdba8c610b66fe344b558b23ec4f1a9f7bb1a0f9`. All 188 source and 228 package/tag/installed/archive hashes match. Both previous 0.2.37 packages (225 files) have verified backups. [Install record](../diagnostics/v0.2.38/install.json), [release verification](../diagnostics/v0.2.38/local-release.json), [archive](../artifacts/OMHTT-0.2.38.zip). Archive SHA-256: `de6ab0b109fc6ae4eebeb299f10a4f9591dfa0264c7232061744a67d79addc77`. No official release or Workshop upload. [Six-step test](TEST_v0.2.38.md). Cumulative unpublished Workshop notes are preserved.
 

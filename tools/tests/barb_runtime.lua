@@ -157,4 +157,18 @@ check(B.time == before, "First resumed sample excludes the paused interval")
 testMillis = testMillis + 700
 B.tick()
 check(B.time == before + 700, "Active stalls preserve elapsed contact time")
+B.initialize()
+for x = -1, 1 do
+    for y = -1, 1 do B.index({id = "wire-" .. x .. ":" .. y, kind = "wire", x = x, y = y, z = 0}, true) end
+end
+local contactActor = {getSquare = function() return {getX = function() return 0 end, getY = function() return 0 end, getZ = function() return 0 end} end,
+    getX = function() return .5 end, getY = function() return .5 end, getZ = function() return 0 end}
+visits = 0
+B.resolve = function(record) visits = visits + 1; return nil, nil, record, "active" end
+local touching = B.contact(contactActor)
+check(touching and touching.id == "wire-0:0" and visits == 1, "Nine nearby coils resolve only the tile actually occupied")
+B.resolve = function() visits = visits + 1; return nil, nil, nil, "missing" end
+check(B.contact(contactActor) == nil, "Occupied coil still validates removal instead of trusting stale index")
+B.resolve = oldResolve
+B.initialize()
 testResults[#testResults + 1] = "Barb runtime/placement/lifecycle/service: passed"

@@ -14,7 +14,7 @@ getPlayerScreenHeight = function() return 720 end
 getWorld = function() return {getFreeEmitter = function(_, x,y,z)
     return {playSound = function(_, name) sounds[#sounds+1] = {name=name,x=x,y=y,z=z}; return #sounds end,
         setVolume = function(_,handle,gain) sounds[handle].gain=gain end,
-        setPitch = function(_, handle,pitch) check(pitch >= 0.95 and pitch <= 1.05, "Pitch stays within approved range"); sounds[handle].pitch=pitch end}
+        setPitch = function() error("Playback must use native clip pitch without the emitter setter") end}
 end} end
 ISUIElement = {new = function()
     return {instantiate=function() end, setStencilRect=function() end, clearStencilRect=function() end,
@@ -86,12 +86,12 @@ D.defer = function(event, fields) if event == "potato-audio" then timing = field
 getWorld = function() return {getFreeEmitter = function()
     testMillis = testMillis + 2
     return {playSound = function() testMillis = testMillis + 300; return 1 end,
-        setPitch = function() testMillis = testMillis + 4 end,
+        setPitch = function() error("Runtime pitch setter reintroduced") end,
         setVolume = function() testMillis = testMillis + 5 end}
 end} end
 E.sound("OMHTTPotatoFire", 1, 1, 0)
-check(timing and timing.audioMs == 311 and timing.emitterMs == 2 and timing.playMs == 300
-    and timing.pitchMs == 4 and timing.volumeMs == 5, "Audio telemetry isolates the blocking stage")
+check(timing and timing.audioMs == 307 and timing.emitterMs == 2 and timing.playMs == 300
+    and timing.pitchMs == nil and timing.volumeMs == 5, "Native clip playback avoids setter and retains stage telemetry")
 timing = nil
 SandboxVars.OMHTurretsTraps.TurretDiagnosticLogging = false
 E.sound("OMHTTPotatoImpact", 1, 1, 0)

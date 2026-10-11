@@ -5,7 +5,7 @@ local oldWorld, oldRandom = getWorld, ZombRand
 local played, stopped = {}, 0
 local emitter = {}
 function emitter:playSound(name) played[#played + 1] = name; return #played end
-function emitter:setPitch(handle, pitch) check(pitch >= .95 and pitch <= 1.05, "Mechanism pitch is bounded") end
+function emitter:setPitch(handle, pitch) error("Reload must preserve native pitch without the emitter setter") end
 function emitter:setVolume(handle,gain) check(gain==.35,"Potato reload playback gain matches shots") end
 function emitter:isPlaying(handle) return true end
 function emitter:stopSound(handle) stopped = stopped + 1 end

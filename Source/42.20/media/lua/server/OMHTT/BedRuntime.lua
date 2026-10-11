@@ -22,6 +22,7 @@ function B.zombie(zombie)
     if not B.nearby[key] then
         return
     end
+    local started = D.enabled("traps") and getTimestampMs()
     local data = zombie:getModData()
     local state = data.OMHTTBedContact
     local recovery = B.option("RecoverySeconds", 5, 0, 60) * 1000
@@ -65,6 +66,7 @@ function B.zombie(zombie)
         state.requestedUntil = B.time + 2000
         D.defer("bed-trip", {id = record.id})
     end
+    if started then D.measure("bed-contact", getTimestampMs() - started) end
 end
 
 Events.OnZombieUpdate.Add(B.zombie)
