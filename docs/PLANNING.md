@@ -69,3 +69,6 @@ No next patch is selected or underway. The 0.2.38.1 lag test is complete. Recomm
 ## Active checkpoint: R3C4 module contract and battery baseline (C125)
 
 Owner selected Modules. [Contract and current choices](checkpoints/R3_OFFENSIVE_MODULES.md#c125-module-track-selected-first-contract-choices-2026-10-10) now owns active planning: Splitter ammunition/stack cap, Fragment stacking and bounded propagation, followed by concrete compatibility/range/power rules. R3C5 Splitter/Fragment is the first implementation stage after settlement and native proof. R3C6 conditional/penetrating effects and R3C7 combined acceptance follow; no new head is selected. No gameplay implementation or numerical proposal is approved by this track choice. Inspected active branch at 4dc3836 and fetched origin before this update.
+
+
+C126: confirmed slot-limited Splitter and fixed-five Fragment with capped damage stacking. Discussing a Magazine Module for loaded capacity (separate from reserve expansion); Splitter extra-ammo option remains open. Proposed +2 rounds/module and firearm feed-extension approach require owner settlement/native proof. [Detailed evidence and unresolved interactions](checkpoints/R3_OFFENSIVE_MODULES.md#c126-selected-stacking-and-proposed-magazine-module-2026-10-10). Inspected fe67208 and fetched origin. No code/test/version changes.

@@ -23,3 +23,6 @@ Updated 2026-10-10. Read this first in Cloud, then the linked authoritative reco
 Owner follow-up to C123: "Yea seems fine." The owner is satisfied with the current lag improvement; existing measured limits and unrelated acceptance gates remain unchanged.
 
 Decision needed (C125): the owner selected Modules, activating R3C4 offensive-module planning and battery baseline. Settle the resource/stack/propagation choices in the checkpoint brief before R3C5 implementation. No gameplay patch or numerical tuning is approved by selecting this track; no owner test is requested. New-head selection stays deferred.
+
+
+C126 planning update: 2B slot-limited Splitter and 3A fixed-five Fragment with capped damage stacking are confirmed. Magazine capacity module feasibility is under discussion; Splitter ammunition cost and capacity bonus remain unapproved. R3C4 remains active; see the offensive-module checkpoint for reload/native-magazine and high-stack coverage constraints.

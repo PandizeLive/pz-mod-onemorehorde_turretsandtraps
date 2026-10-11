@@ -689,3 +689,8 @@ Owner asks what patch they are waiting for and requests the current roadmap/chec
 ## C125: module planning track selected (2026-10-10)
 
 Owner: Modules. Select R3C4 contract/battery baseline discussion, preserving R3C5 -> R3C6 -> R3C7 order and deferring new-head selection. This does not approve unresolved numbers, recipes or implementation. The checkpoint brief records the current ammo/stack/Fragment choices and their tradeoffs; recommendations remain proposals. Installed 0.2.38.1 and the completed lag test are unchanged. C108/C119 mirror applies.
+
+
+## C126: Splitter/Fragment stacking selected; magazine capacity question (2026-10-10)
+
+Owner selects 2B slot-limited Splitter stacking and 3A fixed-five Fragment damage stacking with a cap. These supersede the four-Splitter proposal and fragment-count stacking alternative. Owner asks about a Mag Size module to support paid Splitter children (1B); ammo choice and module scope/tuning remain open. Read-only source/native-Lua review and proposed +2 ready rounds per Magazine Module are recorded in R3_OFFENSIVE_MODULES.md. Native firearm capacity lifecycle is not proven, and no gameplay implementation, recipe, numerical cap or test is approved here. Mirror under C108/C119.
