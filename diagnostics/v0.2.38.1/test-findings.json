@@ -45,7 +45,7 @@
       "seconds": 129.4
     }
   ],
-  "ownerAcceptance": "pending focused comparison; 0.2.38 lag remains unresolved",
+  "ownerAcceptance": "C123: owner says lag seems gone; captured audio max 3 ms and residual update gaps up to 368 ms. Informal sample, not universal performance/audio acceptance.",
   "resolvedDevelopmentProbeIssues": [
     "Native probe initially assumed stock audio files were inside the mod; corrected the isolated asset map to use installed stock files where applicable.",
     "Initial probe regex overflowed on expanded metadata; replaced it with bounded iterative brace parsing.",
@@ -75,5 +75,6 @@
       }
     ],
     "archiveSHA256": "7398c87a4d339895e7d08ff39b26e0ce33a789a384f91ebfabaf8449e41e1108"
-  }
+  },
+  "ownerResult": "owner-test-20261010.json"
 }

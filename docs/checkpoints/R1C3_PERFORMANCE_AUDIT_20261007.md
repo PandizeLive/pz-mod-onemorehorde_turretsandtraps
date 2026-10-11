@@ -42,3 +42,7 @@ For cache/ray cleanup, compare operation counts before/after and preserve target
 ## C121/C122 audio and contact follow-up (2026-10-10)
 
 The 0.2.38 owner capture records active-update gaps up to 1,077 ms and 674 ms in the sound pitch setter. The current installed 42.21 setter bytecode logs and assigns pitch broadly across the emitter; the log explains a concrete avoidable path, not proof of every stall's cause. C122 approves optimization with pitch preserved. 0.2.38.1 uses the native script pitch field and randomized clip selection across the same 101 values, preserving owned samples/weighting and native event audio. Nine nearby Concertina tiles now require only the occupied tile's world lookup; live object/backing validation remains. Trap and reload aggregate timings expose remaining costs. Native queued audio and Lua checks pass; see [current test/verification](../TEST_v0.2.38.1.md). R1C3 stays open until comparable owner gameplay evidence establishes improvement.
+
+## C123 owner comparison (2026-10-10)
+
+The owner reports lag apparently gone on 0.2.38.1. The [captured comparison](../TEST_v0.2.38.1.md#owner-result-and-console-comparison-2026-10-10) shows audio max 3 ms versus 674 ms and trap callbacks max 2 ms. Update-gap maximum drops from 1,077 to 368 ms, but remaining outliers and fewer shots prevent claiming all stalls eliminated. The focused perceived-lag result is positive; no repeat checklist is requested. Keep residual-gap, larger-load and authority questions open without treating them as approval for new changes.
