@@ -1,6 +1,6 @@
 # Performance audit while the 0.2.30 owner test is held
 
-**Current disposition, 2026-10-08:** this is historical 0.2.30 audit evidence. [0.2.34](../PATCH_v0.2.34.md) implements advisory aim inventory caching and removal of duplicate same-step retained-target LOS checks, with fresh actual-shot validation. Those recommendations are no longer future implementation tasks. Other proposals below require their own scope/evidence; none proves the client pauses fixed. R1C3 remains open in [the roadmap](../ROADMAP.md#current-checkpoint-status-and-next-work), with owner capture/acceptance held in the [single combined test](../TEST_v0.2.34.md).
+**Current disposition, 2026-10-10:** this is historical 0.2.30 audit evidence, with C121/C122 findings below. [0.2.34](../PATCH_v0.2.34.md) implemented aim inventory caching and removal of duplicate same-step retained-target LOS checks. Installed [0.2.38.1](../PATCH_v0.2.38.1.md) preserves native pitch variation while avoiding the noisy emitter setter, skips irrelevant Concertina lookups and adds aggregate trap/reload timings. Other proposals below require their own scope/evidence. R1C3 stays open; only the [four-step performance comparison](../TEST_v0.2.38.1.md) is requested. No automated result proves the client pauses fixed.
 
 2026-10-07. Base: `dev` / `5fc64467873ea81404927882cdeb5b07d2e1c50a`, fetched and equal to origin/dev. C97 approves investigation and barbed-section design, not a new gameplay patch. Source/Contents remain the installed 0.2.30 implementation.
 
