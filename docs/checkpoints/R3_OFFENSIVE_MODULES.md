@@ -1,8 +1,8 @@
 # R3C4-R3C7: offensive modules and battery endurance
 
-Current work: **C145 / R3C6-R3C7**. See [global power/endurance proposal](#c145---global-module-power-model-and-endurance-proposal-2026-10-11). Owner selects a global module-count power rule with per-type multipliers, initially equal, and requests a recommendation/calculated endurance. Proposed defaults: 0.005% battery charge per firing cycle; +5% of base cost per installed module; all type weights 1; no battery idle draw; generator base 0.0001 native fuel units/cycle with the same multiplier. These numbers await approval and replace the old C144 A/B question. C144 combat foundations remain committed/tested but uninstalled; no gameplay changes in this calculation turn. C143 effect percentages remain approved. Installed 0.2.41/C138 unchanged.
+Current work: **C146 / R3C6-R3C7**. See [weapon damage/range power proposal](#c146---weapon-damage-and-range-power-proposal-2026-10-11). Owner adds damage/range scaling to the global module-count power rule so stronger, longer-range weapons cost more per shot. Recommended weapon factor: max(1, sqrt((D/80) * (R/15))), using ordinary pre-module head damage and capped pre-module maximum range. Retain proposed 0.005% battery base, +5% per weighted module, equal initial weights and zero idle; numerical defaults remain proposed. At sixteen modules, vanilla M9 costs 0.009% per volley and MSR788 0.020785% (about 11,111 versus 4,811 volleys/full battery). C144 combat foundations are committed/tested but uninstalled; full integration and packaging remain outstanding. Installed 0.2.41/C138 unchanged.
 
-**Current checkpoint: R3C6 implementation and R3C7 power-contract discussion.** R3C4/R3C5 current slice and owner round are complete. C144 authorizes proceeding and implements tested combat foundations; C145 requests global power redesign and calculated endurance before tuning. Numerical power defaults are proposals, not tested runtime behavior.
+**Current checkpoint: R3C6 implementation and R3C7 power-contract discussion.** R3C4/R3C5 current slice and owner round are complete. C144 authorizes proceeding and implements tested combat foundations; C145 requests global power redesign and calculated endurance; C146 adds weapon damage/range scaling before tuning. Numerical power defaults are proposals, not tested runtime behavior.
 
 ## Historical direction and early working proposals (superseded below)
 
@@ -323,3 +323,45 @@ Battery standby is indefinite from turret drain alone at zero idle draw. Native 
 Read TurretWorld.power/commit, TurretStats.resolve, Turret.contents, Sandbox defaults and installed-JAR IsoGenerator bytecode. Current turret writes occur only at committed firing: battery getCurrentUsesFloat/setCurrentUsesFloat and generator getFuel/setFuel. Installed generator getMaxFuel returns 10, getFuelPercentage divides by 10 then multiplies by 100; base 0.02/hour and Sandbox multiplier are explicit. Do not mistake fuel units for percentage points. The local bytecode extract SHA-256 is 0692eba20931fc468e2ab452ea98834b37657c33710908ce15d3bc8159c76dd2. Arithmetic computed using Python Decimal from the written formula; no new gameplay test ran and prior native/Kahlua results are unchanged.
 
 Inspected e3b7976, fetched origin and checked active draft PR #1. This is a planning/calculation update; C144 Source remains ahead of generated Contents. Item/loot/Sandbox/LootLab integration, complete native tests, release/version/tag and install still await completion. Installed 0.2.41 and completed C138 owner round unchanged. Decision needed: adopt or adjust the proposed 0.005% battery / 5%-per-copy / zero-idle / 0.0001-generator defaults and the stated counting scope, then finish the existing patch; no repeat approval of C143 effects.
+
+
+## C146 - Weapon damage and range power proposal (2026-10-11)
+
+Owner: "Let's add damage output / range as a multiplier to battery consumption. So depending on damage and range, it'll increase consumption. This will make snipers take more energy than a pistol." This confirms the additional design direction, not previously unoffered constants. Retain the approved C143 offensive effects and C144 implementation authorization; the numerical power model remains a proposal.
+
+### Recommended complete formula
+
+```
+moduleFactor = 1 + 0.05 * sum(installedCount[type] * weight[type])
+weaponFactor = max(1, sqrt((D / 80) * (R / 15)))
+batteryPercentPerVolley = 0.005 * moduleFactor * weaponFactor
+```
+
+All module weights start at 1. The module-count scope remains C145's proposal: nonbroken physical items in ordinary module slots, counted once, excluding head, battery and separate expansion socket. Replace old Splitter/Fragment-specific surcharges. The 1x weapon floor preserves the earlier potato/M9 endurance baseline; more powerful long-range heads pay extra without a hard upper factor cap. The square root softens the product: doubling damage and range gives 2x cost, not 4x. These are fixed 80-damage/15-tile reference constants, not a runtime lookup of an M9 that another mod could change.
+
+D is the installed head's ordinary average whole-shot damage in T&T's displayed scale, before Velocity, Initial Blow, Execute, criticals, splash, Splitter, Fragment or piercing victims. Firearms resolve (minDamage+maxDamage)*50 and the existing FirearmDamageMultiplier; potato uses PotatoDamage. R is that head's maximum firing range after the existing base range Sandbox multiplier and 50-firearm/30-potato cap, before Range modules. Normal gun attachment changes already reflected by getters count. Use capability, not target distance or the user's detection-range restriction. Count modules through the separate multiplier instead of charging their output bonuses again. This deliberately makes all initial module copies equal power burdens, as requested in C145; future type weights can differentiate them.
+
+Charge once for a committed volley, including misses, independent of victim health and actual damage dealt. Shotgun D is the whole-shot damage budget, never multiplied by pellet count. Execute cannot trigger a battery bill based on remaining HP. No retroactive per-victim energy charge or shot-cost randomness. Zero idle/search/reload draw and C145 saved-custom-setting policy remain. Resolve from the existing head/module configuration; no new zombie scans, history storage or high-frequency work. Future UI should show resolved consumption per volley with the same inputs used by authoritative firing.
+
+For consistency, recommend applying weaponFactor to C145's proposed generator extra cost as well: 0.0001 * moduleFactor * weaponFactor native fuel units/volley. This extension is proposed, not inferred approval for new generator behavior. Grid priority and native generator idle fuel remain unchanged.
+
+### Native examples and endurance
+
+Read installed 42.21 generated/items/weapon.txt: Base.Pistol MinDamage=0.6, MaxDamage=1.0, MaxRange=15; Base.AssaultRifle 1.0/1.6/30; Base.HuntingRifle 1.2/2.0/40. Those produce ordinary T&T damage 80/130/160 at default multipliers. Names in their native sound fields identify M9/M16/MSR788 respectively. Source TurretStats.lua confirms the conversion, potato 35/6 defaults, module modifiers and range caps. These are vanilla definitions, not the Firearms-mod overrides or an integrated runtime benchmark.
+
+All rows assume a full battery, sixteen counted modules, proposed defaults, no attachments and no stat overrides. Volleys mean paid firing cycles, not individual Splitter/pellet projectiles.
+
+| Head | Ordinary damage / range | Weapon factor | Battery % / volley | Whole volleys / battery | 500 zombies at 3 volleys each |
+| --- | --- | --- | --- | --- | --- |
+| Potato | 35 / 6 | 1.000 | 0.009000% | 11,111 | 13.50% |
+| M9 | 80 / 15 | 1.000 | 0.009000% | 11,111 | 13.50% |
+| M16 | 130 / 30 | 1.802776 | 0.016225% | 6,163 | 24.34% |
+| MSR788 | 160 / 40 | 2.309401 | 0.020785% | 4,811 | 31.18% |
+
+Earlier C145 universal endurance estimates now apply only at weaponFactor=1. The rifle costs more per shot, not necessarily more per kill or minute: damage, misses and rate of fire matter. Three volleys/kill is an illustrative equal-workload assumption, not a damage-model prediction; an MSR788 using one volley/kill consumes about 10.39% against 500 enemies, less than the M9 at three volleys/kill (13.5%). At sixteen modules, a hypothetical sustained one-volley/sec workload lasts about 185 minutes for M9 and 80 minutes for MSR788. Those are equal-rate comparisons, not their measured sustained cadence. At Enhanced's configured 4.5 cycles/sec, the vanilla M16 estimate becomes about 22m50s of firing, before reloads/target gaps; 10% firing duty extends that to roughly 3h48m elapsed. Real-time firing duration must not be labeled game hours. Battery idle remains indefinite from turret draw alone.
+
+If the proposed generator extension is adopted, the 500-zombie/three-volley workload adds 2.70% / 4.87% / 6.24% of the native ten-unit tank for M9/M16/MSR788. Add native idle separately (4.8% per game day at GeneratorFuelConsumption=1, no appliances), with maintenance and other loads still relevant. No multiplied idle charge per turret.
+
+### Handoff and evidence limits
+
+Inspected c7fb931, fetched origin and verified the existing draft PR #1 branch into dev. Python arithmetic evaluated the formula and rounded whole-volley capacity down. No gameplay code, package, version, install or test-result change this turn; prior 5,155 Kahlua assertions remain previous evidence, not verification of this proposed power formula. Decision needed: settle this complete power formula/counting scope, then finish the approved module patch and its native/package/LootLab integration. Preserve custom settings rather than silently reset old worlds. Planning committed and mirrored under C108/C119.
