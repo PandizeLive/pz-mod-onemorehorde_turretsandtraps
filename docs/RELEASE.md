@@ -376,3 +376,7 @@ Installed and archived 0.2.27 from annotated `test/v0.2.27`, source `6a7d28e3b1f
 ## 0.2.41 / C137 prepared checkpoint - 2026-10-11
 
 Approved Enhanced modules and corrective bundle; see PATCH_v0.2.41.md and TEST_v0.2.41.md. Automated/native proof is complete: 5,083 assertions, 51 Firearms guns, native write/read 50.1/51.2 seconds and all three package-isolation checks. Native weight limits remain; rendered acceptance pending. Hosted LootLab 0.2.41 is deployed and verified (diagnostics/v0.2.41/lootlab-release.json). Tag/install are recorded below only after completion. No Workshop publication; cumulative pending notes preserved.
+
+### 0.2.41 tagged installation completed
+
+Immutable `test/v0.2.41` / `9ccc8bce4fc96456da0241f01fb99c40b87d8cce` installed through root OMH.cmd on 2026-10-11. Both independent packages verify: 105 Traps + 125 Turrets files; 190 canonical source files; tagged/source/package/installed/archive hashes match. Both previous 0.2.40 managed backups verify. Archive SHA-256 `d4a74814a37add6721d777e0d17e0aa3f14ad61b2580e256b2ae42d779c3d522`. [Full machine record](../diagnostics/v0.2.41/local-release.json); [native proof summary](../diagnostics/v0.2.41/native-summary.json). Hosted LootLab deployed separately with verified bundle/Access checks. No Workshop publication or multiplayer/rendered acceptance. **Test now:** the focused 0.2.41 owner check.

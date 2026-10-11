@@ -21,3 +21,7 @@ Report only failures or "passed". Capture console.txt and installed markers afte
 - Hosted bundle/version, access checks and test evidence: [LootLab release record](../diagnostics/v0.2.41/lootlab-release.json). Twelve anonymous admin paths remain Access protected; both public API checks return 200. Authenticated physical-device appearance remains owner acceptance.
 
 Native harness corrections: visible component count changed from 21 to 23, pool-entry count from 138 to 150, including the outer smoke verifier. Intermediate obsolete-count failures were test expectations, not successful full-suite runs. Final verification is recorded separately. No Workshop publication, MP acceptance or GPU/audio certification.
+
+## Installed checkpoint
+
+`test/v0.2.41` / `9ccc8bce4fc96456da0241f01fb99c40b87d8cce`; root installer verified both packages and backups. [Exact local-release hashes](../diagnostics/v0.2.41/local-release.json). No owner gameplay result yet.

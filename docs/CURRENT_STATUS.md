@@ -2,7 +2,7 @@
 
 Updated 2026-10-11. Read with [AGENTS](../AGENTS.md) and [Planning](PLANNING.md).
 
-- **0.2.41 / C137 prepared for installation.** [Enhanced modules and corrections](PATCH_v0.2.41.md) implement the approved scope. Installed build remains 0.2.40 until tagged installation completes; [release evidence](RELEASE.md) records the actual result.
+- **Installed: 0.2.41 / C137.** [Enhanced modules and corrections](PATCH_v0.2.41.md) implement the approved scope. Tagged `test/v0.2.41` at `9ccc8bce4fc96456da0241f01fb99c40b87d8cce`; both packages installed through root OMH.cmd. All 190 source/230 package, installed/archive and prior 0.2.40 backup hashes verify. [Release evidence](RELEASE.md) | [machine record](../diagnostics/v0.2.41/local-release.json).
 - **Verification:** 5,083 Kahlua assertions; 96 runtime/translation files; 23 packet serializations; 625 native translation keys. All three package startups and 51-gun Firearms integration pass. Native write/read and exact install hashes are recorded in [versioned evidence](TEST_v0.2.41.md).
 - **Latest owner findings:** [0.2.40](TEST_v0.2.40.md#owner-findings-and-console-review---2026-10-11-c137) reports slow automatic rifles, the barrier placement cap and missing side visuals; 0.2.41 addresses those code causes. Rendered results remain unaccepted. The added handheld slowness report has no confirmed cause: T&T does not modify handheld firing properties; compare Single/Auto mode separately.
 - **Remaining limit:** Expansion +100/+200/+400/+650 are count bonuses. Native containers still cap at 50 portable/100 world weight. A full 750 potatoes does not fit; 750 pistol rounds pass native proof. No compression/storage redesign is approved.
@@ -13,4 +13,4 @@ Updated 2026-10-11. Read with [AGENTS](../AGENTS.md) and [Planning](PLANNING.md)
 - **Limits:** fresh worlds for renamed item IDs; SP combat only. Bounded ray processing remains 256 entries/128 steps per callback. Final art is owner-sourced placeholders. No MP certification, automatic merging or Workshop publication.
 - **GitHub:** branch `codex/performance-barbed-audit`, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1) into dev. Origin/dev was fetched and is an ancestor. C108/C119 require the completed code, plans and findings to be committed/mirrored; cloud uses this unmerged branch until merge. C111/C112 consistency review and feature-name-only recaps remain required.
 
-**Wait for a patch:** tagging/install/mirror are the final local release steps.
+**Test now:** restart into a fresh SP world for the focused 0.2.41 check; rendered acceptance remains pending.
