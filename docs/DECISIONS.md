@@ -840,3 +840,8 @@ Owner selects 1D Conservation Module, 2A existing-ammo-cost discount (including 
 ## C152 - module benefit list requested (2026-10-11)
 
 Owner requests each module and its current benefit in the blue-marked lower-right Manage details area. [Presentation contract](checkpoints/R3_AMMO_SAVER_MANAGE.md#c152---installed-module-benefit-list-in-manage-2026-10-11) recommends grouped duplicate counts, effective combined effects from actual settings/head, visible inactive/broken/capped reasons and a fixed-height scrollable list. Preserve C151 utilities above the modules, narrower window and 4/6/6; constrain left-side text to avoid overlap. Reuse existing 200 ms refresh/cached rows, no new tick handler. This adds requested next-update UI scope, not an installed fix or test pass. C149 correction remains first and C148 optimizations stay retained.
+
+
+## C153 - short module effects, individual-row hover explanations (2026-10-11)
+
+Owner directs concise Installed Modules rows such as `<14% HP` / `+2 Shots`, with explanations on module descriptions and hovering each individual list row. [Updated contract](checkpoints/R3_AMMO_SAVER_MANAGE.md#c153---compact-installed-modules-labels-and-row-tooltips-2026-10-11) replaces C152 descriptive sentences with name/count/compact effect; conditions go to each row's tooltip. Use inclusive `≤14% HP` to match actual Execute logic, not a gameplay change. Retain brief inactive/capped/broken flags, current values, grouped counts, scrolling and existing UI refresh. Next-patch design correction only; installed 0.2.42 and owner-test state unchanged.

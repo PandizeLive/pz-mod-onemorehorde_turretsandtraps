@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Synchronized 2026-10-11 against C80-C152 and the installed, native-verified 0.2.42 build. Its focused owner test is pending; the prior 0.2.41/C138 round remains complete. This is the canonical execution/status index.
+Synchronized 2026-10-11 against C80-C153 and the installed, native-verified 0.2.42 build. Its focused owner test is pending; the prior 0.2.41/C138 round remains complete. This is the canonical execution/status index.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -18,7 +18,7 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 ## Current checkpoint status and next work
 
-**C152 requested addition:** [module benefit list](checkpoints/R3_AMMO_SAVER_MANAGE.md#c152---installed-module-benefit-list-in-manage-2026-10-11) in the lower-right Manage details area. Recommend grouped counts and combined current effects, inactive/capped reasons and fixed-height scrolling; reuse cached 200 ms UI state. Preserve narrower window and utility separation. Requested for next update, not installed; C149 transfer fix remains first.
+**C153 Installed Modules display:** [compact rows and individual hover details](checkpoints/R3_AMMO_SAVER_MANAGE.md#c153---compact-installed-modules-labels-and-row-tooltips-2026-10-11): module/count plus short effect (e.g. Execute x3: ≤14% HP; Splitter x2: +2 Shots). Conditions/explanations move to each row tooltip. Supersedes C152 descriptive rows; retains scrolling, current effective values and narrower/separate-utility layout. Next-patch requirement, not installed; C149 remains first.
 
 **C151 module/UI design selected:** [Conservation Module contract](checkpoints/R3_AMMO_SAVER_MANAGE.md): 1D / 2A / combined 3A+3B / 4C. Name and layout no longer open; battery/expansion stay above narrower modules. Implementation not started; C149 transfer fix stays first, C148 retained and R3C7 open.
 
