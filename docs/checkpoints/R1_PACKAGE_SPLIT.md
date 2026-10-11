@@ -42,3 +42,8 @@ This was the single combined test for 0.2.29, replacing separate 0.2.27/0.2.28 r
 8. Report **Test Complete** with the loaded version, enabled entries and issues so the audit totals and runtime log can be reviewed. Do not deliberately reproduce the unresolved Louisville hang on a main save; preserve the early log if it recurs.
 
 R1C3 performance/authority work continues with subsequent optimizations; dense-client smoothness remains unaccepted. Only changed behavior and credible regression risks belong in the [current combined owner test](../TEST_v0.2.34.md). The waived split checklist stays closed; combat remains SP-only.
+
+
+## C148: 0.2.42 runtime audit (2026-10-11)
+
+[Callback inventory and optimization proposals](../PERFORMANCE_AUDIT_v0.2.42.md) records the requested investigation while the owner tests. Prioritize barrier maintenance, repeated barb object discovery and duplicate turret stat resolution; preserve contact timing and independent package behavior. Rendering/queue housekeeping follows; spatial target indexing needs measurement before a redesign. No gameplay edit, patch approval or current-owner-test outcome inferred. R1C3 remains partial alongside R3C7 verification.
