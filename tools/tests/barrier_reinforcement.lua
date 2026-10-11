@@ -95,7 +95,7 @@ check(Service.apply(testPlayer, object, id, "Repair") and record.condition == 20
 object:setHealth(150); P.sync(testData.tiles[anchor])
 check(Service.apply(testPlayer, object, id, "Pickup"), "reinforced pickup succeeds")
 local recovered = testInventory.items[#testInventory.items]
-check(recovered.kind == "Base.OMHTTReinforcedBarrierItem" and recovered.condition == 100,
+check(recovered.kind == "Base.OMHTTTrapSpikeBarrierReinforced" and recovered.condition == 100,
     "pickup returns one full-condition reinforced item")
 local deployed = build(902, "OMHTTDeployReinforcedBarrier", 20)
 check(deployed.tier == "reinforced" and deployed.condition == 200 and deployed.maxHealth == 200, "native reinforced deployment restores correct tier and health")

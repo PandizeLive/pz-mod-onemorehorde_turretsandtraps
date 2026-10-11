@@ -1,6 +1,6 @@
 local G = require("OMHTT/Firearms")
 local Class = require("OMHTT/FirearmClass")
-local kits = {{"CapacityImprovised", "Improvised", 25, 2}, {"CapacitySmall", "Small", 50, 6}, {"Capacity", "", 100, 10}, {"CapacityLarge", "Large", 200, 14}}
+local kits = {{"CapacityImprovised", "Improvised", 100, 2}, {"CapacitySmall", "Small", 200, 6}, {"Capacity", "", 400, 10}, {"CapacityLarge", "Large", 650, 14}}
 local S = {}
 
 ---@param key string Setting
@@ -27,9 +27,22 @@ function S.bonus(active, name, gain, cap)
         S.option(name .. "BonusCap", cap, 0, 1000))
 end
 
----@param contents table? Inventory summary
----@return table stats Effective values, times in milliseconds
+---@param gun HandWeapon Mounted firearm
+---@return boolean automatic Native Auto capability
 ---@nodiscard
+function S.automatic(gun)
+    if gun:getFireMode() == "Auto" then return true end
+    local modes = gun.getFireModePossibilities and gun:getFireModePossibilities()
+    if modes then
+        for i = 0, modes:size() - 1 do
+            if modes:get(i) == "Auto" then return true end
+        end
+    end
+    return false
+end
+
+---@param contents table? Installed inventory snapshot
+---@return table stats
 function S.resolve(contents)
     local active = contents and contents.active or {}
     local cooldown = S.option("PotatoCooldown", 2, 0.1, 60)
@@ -48,7 +61,7 @@ function S.resolve(contents)
         damage = (gun:getMinDamage() + gun:getMaxDamage()) * 50 * S.option("FirearmDamageMultiplier", 1, 0, 5)
         range = gun:getMaxRange() * S.option("FirearmRangeMultiplier", 1, 0.1, 3)
         cooldown = math.max(0.1, gun:getRecoilDelay() / 30)
-        if gun:getFireMode() == "Auto" then
+        if S.automatic(gun) then
             local cyclic = gun:getCyclicRateMultiplier()
             if cyclic <= 0 then cyclic = 1 end
             cooldown = (1 / 3) / (1.5 * cyclic)
@@ -81,7 +94,7 @@ function S.resolve(contents)
     for i = 1, #kits do
         local kit = kits[i]
         if active[kit[1]] then
-            extraAmmo = math.max(extraAmmo, S.option("Capacity" .. kit[2] .. "AmmoBonus", kit[3], 0, 500))
+            extraAmmo = math.max(extraAmmo, S.option("Capacity" .. kit[2] .. "AmmoBonus", kit[3], 0, 2000))
             extraModules = math.max(extraModules, S.option("Capacity" .. kit[2] .. "ModuleBonus", kit[4], 0, 20))
         end
     end
@@ -92,6 +105,7 @@ function S.resolve(contents)
     reload = math.min(reload, math.max(S.option("ReloadMinimum", 0.25, 0, 10), reload / (1 + loading / 100)))
     if active.Autoloader then reload = 0 end
     magazine = math.ceil(magazine + (active.Magazine or 0) * math.max(1, magazine * S.option("MagazineBonus", 35, 0, 200) / 100))
+    local enhancement = firearm and active.FiringEnhanced and S.option("EnhancedFireMultiplier", 4 / 3, 1, 5) or 1
     local splitter, fragment = active.Splitter or 0, active.Fragment or 0
     local knockBonus = math.min((active.Velocity or 0) * S.option("VelocityKnockdownBonus", 5, 0, 100),
         math.max(0, S.option("VelocityKnockdownCap", 90, 0, 100) - knockdown))
@@ -104,10 +118,10 @@ function S.resolve(contents)
         fragmentDamage = math.min(S.option("FragmentDamageCap", 40, 0, 100), S.option("FragmentDamage", 20, 0, 100) + math.max(0, fragment - 1) * S.option("FragmentBonus", 5, 0, 100)) / 100,
         fragmentRange = S.option("FragmentRange", 4, 1, 10),
         effectPower = 1 + splitter * S.option("SplitterPower", 25, 0, 200) / 100 + fragment * S.option("FragmentPower", 25, 0, 200) / 100,
-        magazine = magazine, accuracy = accuracy, farAccuracy = farAccuracy, critChance = critChance, critMultiplier = critMultiplier, rack = rack * 1000, firearm = firearm ~= nil,
+        magazine = magazine, accuracy = accuracy, farAccuracy = farAccuracy, critChance = critChance, critMultiplier = critMultiplier, rack = rack * 1000 / enhancement, firearm = firearm ~= nil,
         suppressed = (active.Suppression or 0) > 0,
         hearingMultiplier = remaining,
-        reload = reload * 1000, cooldown = math.max(cooldown, firearm and gun:isRackAfterShoot() and rack or 0) * 1000,
+        reload = reload * 1000, cooldown = math.max(cooldown, firearm and gun:isRackAfterShoot() and rack or 0) * 1000 / enhancement,
         autoloader = active.Autoloader ~= nil}
 end
 

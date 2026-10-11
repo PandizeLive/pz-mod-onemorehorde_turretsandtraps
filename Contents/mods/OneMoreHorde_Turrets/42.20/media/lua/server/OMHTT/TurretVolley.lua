@@ -65,14 +65,25 @@ end
 ---@param player IsoPlayer? Operator
 ---@param options table Committed shot snapshot
 ---@return nil
-function V.split(record, origin, target, player, options)
+function V.split(record, origin, target, player, options, impact)
     local stats = options.stats
     if stats.splitter == 0 then return end
     local x, y = origin:getX() + .5, origin:getY() + .5
     local angle = math.atan2(target:getY() - y, target:getX() - x)
     local side = record.splitterSide or -1
     if stats.splitter % 2 == 1 then record.splitterSide = -side end
-    local group = {kind = "splitter", player = player, weapon = options.effectWeapon, stats = stats, hits = {}}
+    local group = {kind = "splitter", player = player, weapon = options.effectWeapon, stats = stats, hits = {}, remaining = stats.splitter, rays = {}}
+    if impact and impact.firearm then
+        local dx, dy = impact.x - x, impact.y - y
+        local distance = math.sqrt(dx * dx + dy * dy)
+        local forward = math.min(impact.muzzle or require("OMHTT/Turret").HEAD_VISUAL.muzzle * require("OMHTT/Turret").HEAD_VISUAL.scale * 1.5, distance / 2)
+        group.fromX, group.fromY = x, y
+        if distance > 0 then group.fromX, group.fromY = x + dx / distance * forward, y + dy / distance * forward end
+        group.height = impact.muzzleHeight
+        group.rays[1] = {id = record.id, shot = tostring(record.shots) .. ":primary", x = impact.x, y = impact.y, z = impact.z,
+            fromX = group.fromX, fromY = group.fromY, muzzleHeight = group.height, firearm = true, missed = impact.missed}
+        impact.deferVisual = true
+    end
     local damage = options.damage * (options.critical and options.critMultiplier or 1) * stats.splitterDamage
     for i = 1, stats.splitter do
         V.ray(record, x, y, origin:getZ(), angle + math.rad(V.angle(stats.splitter, i, side)), stats.range, damage, group, i)
@@ -91,7 +102,7 @@ function V.fragment(record, x, y, z, target, player, options)
     if not options.fragmentReserved then return end
     V.release(options)
     local stats = options.stats
-    local group = {kind = "fragment", player = player, weapon = options.effectWeapon, stats = stats, hits = {[target] = true}}
+    local group = {kind = "fragment", player = player, weapon = options.effectWeapon, stats = stats, hits = {[target] = true}, remaining = 5, rays = {}, height = .30}
     local rotation = ZombRand(36000) / 100
     local damage = options.damage * (options.critical and options.critMultiplier or 1) * stats.fragmentDamage
     for i = 1, 5 do
@@ -121,9 +132,16 @@ function V.finish(ray)
         end
     end
     local distance = ray.bestDistance or math.min(ray.distance, ray.range)
-    triggerEvent("OnServerCommand", F.MODULE, "Ray", {id = ray.id, shot = ray.shot,
+    local facts = {id = ray.id, shot = ray.shot,
         x = ray.x + ray.dx * distance, y = ray.y + ray.dy * distance, z = ray.z,
-        fromX = ray.x, fromY = ray.y, firearm = true, missed = not hit, silent = true})
+        fromX = group.fromX or ray.x, fromY = group.fromY or ray.y, muzzleHeight = group.height, firearm = true, missed = not hit, silent = true}
+    if group.remaining then
+        group.rays[#group.rays + 1] = facts
+        group.remaining = group.remaining - 1
+        if group.remaining == 0 then triggerEvent("OnServerCommand", F.MODULE, "Volley", {rays = group.rays}) end
+    else
+        triggerEvent("OnServerCommand", F.MODULE, "Ray", facts)
+    end
 end
 
 ---@param ray table Incremental ray state
@@ -155,7 +173,10 @@ function V.step(ray)
     if not square then return true end
     if square ~= ray.square then
         local previous = ray.square or getCell():getGridSquare(math.floor(ray.x), math.floor(ray.y), ray.z)
-        if not previous or not require("OMHTT/PrototypeCombat").clearLane(previous, square, 2) then return true end
+        if not previous or not require("OMHTT/PrototypeCombat").clearLane(previous, square, 2) then
+            ray.distance = math.max(0, ray.distance - .25)
+            return true
+        end
         ray.square, ray.objectIndex, ray.scanning = square, 0, true
     end
     return false
@@ -169,7 +190,8 @@ function V.tick()
         local ray = V.queue[1]
         local origin = getCell():getGridSquare(math.floor(ray.x), math.floor(ray.y), ray.z)
         if not origin or V.step(ray) then
-            if origin then V.finish(ray) end
+            if not origin then ray.best, ray.bestDistance, ray.distance = nil, nil, 0 end
+            V.finish(ray)
             table.remove(V.queue, 1)
         end
     end

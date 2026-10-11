@@ -284,6 +284,13 @@ for i = 1, 10 do testMillis = testMillis + 100; A.step(entry, testMillis + 100) 
 check(fired == 10, "Fast acquired target fires ten times while detection deadline remains five seconds away")
 check(laneChecks == 10, "Retained target performs one advisory LOS check per step")
 Combat.clearLane = originalLane
+local beforeRescan = fired
+entry.due = 0
+entry.job = A.scan(square, p)
+A.advance = function() return false end
+for i = 1, 10 do testMillis = testMillis + 100; A.step(entry, testMillis + 100) end
+check(fired == beforeRescan + 10 and entry.job ~= nil, "Incomplete reprioritization scan cannot stall a valid acquired target")
+entry.job = nil
 A.advance, W.fire, T.cycleConfig = priorAdvance, oldFire, oldStats
 local savedFailure = SandboxVars.OMHTurretsTraps.ImprovisedFiringFailure
 local beforeFailurePower = W.power
@@ -291,6 +298,16 @@ local testBattery = {charge = .5, getCurrentUsesFloat = function(self) return se
     setCurrentUsesFloat = function(self, value) self.charge = value end}
 W.power = function() return {kind = "battery", battery = testBattery, cost = .01} end
 SandboxVars.OMHTurretsTraps.ImprovisedFiringFailure = 100
+firing.kind, detector.kind = T.TYPES.FiringImprovised, T.TYPES.MotionDetectionImprovised
+firing.kind, detector.kind = T.TYPES.FiringEnhanced, T.TYPES.MotionDetectionEnhanced
+local enhanced = T.contents(storage)
+check(enhanced.active.Firing and enhanced.active.MotionDetection and enhanced.moduleCounts.Firing == 1,
+    "Enhanced modules occupy one slot each and satisfy their normal roles")
+check(T.turnSpeed(head, enhanced.active) == T.turnSpeed(head) * 3, "Enhanced Detection triples tracking speed")
+local duplicate = add(T.TYPES.Firing); storage:Remove(duplicate)
+check(not T.accept(storage, duplicate), "Enhanced Firing excludes normal Firing")
+duplicate.kind = T.TYPES.MotionDetectionImprovised
+check(not T.accept(storage, duplicate), "Enhanced Detection excludes makeshift Detection")
 firing.kind, detector.kind = T.TYPES.FiringImprovised, T.TYPES.MotionDetectionImprovised
 local improvised = T.contents(storage)
 check(improvised.active.Firing and improvised.active.MotionDetection

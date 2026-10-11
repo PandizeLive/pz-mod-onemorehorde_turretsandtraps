@@ -84,6 +84,23 @@ V.ray(record, 1200.5, 1200.5, 0, 0, 4, .2, group, 1)
 V.tick()
 check(#V.queue == 1 and V.queue[1].objectIndex <= 127, "Dense moving-object lists yield after the 128-step callback bound")
 V.reset(); origin.moving = {}
+local oldEvent, emitted = triggerEvent, {}
+triggerEvent = function(event, module, command, facts) emitted[#emitted + 1] = {command=command,facts=facts} end
+local pairStats = Stats.resolve({active = {Splitter = 2}})
+local impact = {x=1203,y=1200.5,z=0,firearm=true,fromX=1200.5,fromY=1200.5,muzzle=.4}
+V.split(record, origin, victim, nil, {stats=pairStats,damage=.2}, impact)
+check(impact.deferVisual and #V.queue == 2 and #emitted == 0, "Primary waits for the resolved complete side fan")
+local first, second = V.queue[1], V.queue[2]
+first.distance, second.distance = 2, 3
+V.finish(first)
+check(#emitted == 0, "First completed side cannot flash independently")
+V.finish(second)
+check(#emitted == 1 and emitted[1].command == "Volley" and #emitted[1].facts.rays == 3,
+    "Two Splitters publish one center-left-right batch")
+local rays = emitted[1].facts.rays
+check(rays[2].y < rays[1].y and rays[3].y > rays[1].y and rays[1].fromX == rays[2].fromX,
+    "Both sides share the muzzle and surround the center")
+triggerEvent = oldEvent; V.reset()
 for ready = 1, 3 do
     local state = {loaded = ready, nextShot = 0}
     Cycle.consume(state, 20 - ready, {splitter = 5, magazine = 6, cooldown = 100, reload = 100}, 1000)

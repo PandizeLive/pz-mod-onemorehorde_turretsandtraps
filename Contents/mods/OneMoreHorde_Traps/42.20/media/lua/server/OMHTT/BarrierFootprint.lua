@@ -269,14 +269,6 @@ function Footprint.canBuild(x, y, z, facing)
     if failure then return failure end
     failure = Outline.canBuild({id = "candidate", x = x, y = y, z = z, facing = facing})
     if failure then return failure end
-    local needed = 0
-    if not store.tiles[Footprint.edgeKey(x, y, z, facing)] then
-        needed = needed + 1
-    end
-    if not store.tiles[Footprint.edgeKey(secondX, secondY, z, facing)] then
-        needed = needed + 1
-    end
-    if store.tileCount + needed > F.MAX_TILES then return "Limit" end
     return nil
 end
 
@@ -441,9 +433,6 @@ local function expandLegacy(record, slot)
     local x, y = Footprint.second(record, record.facing)
     local square = getCell():getGridSquare(x, y, record.z)
     local failure = available(square)
-    if not failure and not store.tiles[F.key(x, y, record.z)] and store.tileCount >= F.MAX_TILES then
-        failure = "Limit"
-    end
     if failure then
         if migrationWarnings[record.id] ~= failure then
             Diagnostics.emit("barrier-expansion-deferred", {id = record.id, reason = failure, x = x, y = y})
@@ -564,7 +553,6 @@ function Footprint.rotate(slot)
     local square = getCell():getGridSquare(x, y, record.z)
     local failure = available(square)
     if failure then return failure end
-    if not store.tiles[F.key(x, y, record.z)] and store.tileCount >= F.MAX_TILES then return "Limit" end
     local oldX, oldY = Footprint.second(record, record.facing)
     if record.width == 2 then
         local oldSquare = getCell():getGridSquare(oldX, oldY, record.z)

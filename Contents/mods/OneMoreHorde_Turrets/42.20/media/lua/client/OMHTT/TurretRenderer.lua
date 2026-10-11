@@ -36,7 +36,7 @@ function R.changed(object, head)
     entry.automatic = M.profile(T.state(object), contents, true)
     entry.hasDetector = contents.active.MotionDetection ~= nil
     if G.profile(head) and not entry.support then
-        entry.support = instanceItem("Base.OMHTTGunSupportVisual")
+        entry.support = instanceItem("Base.OMHTTTurretGunSupportVisual")
     end
     R.entries[object] = entry
 end

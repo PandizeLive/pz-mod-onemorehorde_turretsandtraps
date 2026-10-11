@@ -103,7 +103,7 @@ OMHTT_ConstructionMenuAvailable = Construction.onAddToMenu
 ---@nodiscard
 function Construction.portableInputAllowed(item, player)
     if isClient() or isServer() or not F.barrierEnabled() then return false end
-    if item:getFullType() == "Base.OMHTTSpikeBarrierItem" or item:getFullType() == "Base.OMHTTReinforcedBarrierItem" then
+    if item:getFullType() == "Base.OMHTTTrapSpikeBarrier" or item:getFullType() == "Base.OMHTTTrapSpikeBarrierReinforced" then
         return item:getCondition() == item:getConditionMax()
     end
     return true

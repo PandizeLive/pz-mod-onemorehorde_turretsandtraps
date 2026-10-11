@@ -14,7 +14,8 @@ local groups = {
 }
 
 local moduleGroups = {
-    {"Sandbox_Title_OMHTurretsTraps_Firing", {"ImprovisedFiringFailure"}},
+    {"Sandbox_Title_OMHTurretsTraps_Firing", {"ImprovisedFiringFailure", "EnhancedFireMultiplier"}},
+    {"Sandbox_Title_OMHTurretsTraps_Detection", {"EnhancedTurnMultiplier", "EnhancedDetectionInterval"}},
     {"Sandbox_Title_OMHTurretsTraps_Critical", {"CriticalBonus", "CriticalDamageMultiplier"}},
     {"Sandbox_Title_OMHTurretsTraps_Accuracy", {"AccuracyBonus"}},
     {"Sandbox_Title_OMHTurretsTraps_Suppression", {"SuppressionFirstReduction", "SuppressionDiminishing", "SuppressionVolumeFloor"}},

@@ -36,6 +36,14 @@ end
 ---@param facts table Shot facts; target reference is local SP only
 ---@return nil
 function E.receive(module, command, facts)
+    if module == F.MODULE and command == "Volley" then
+        for i = 1, math.min(64, #facts.rays) do E.receive(module, "Ray", facts.rays[i]) end
+        return
+    end
+    if module == F.MODULE and command == "GunShot" and facts.deferVisual then
+        E.sound(facts.sound or "OMHTTPotatoFire", facts.fromX, facts.fromY, facts.z, facts.gain)
+        return
+    end
     if module == F.MODULE and command == "Click" then
         if facts.sound then E.sound(facts.sound, facts.x, facts.y, facts.z) end
         return
@@ -99,6 +107,26 @@ function E.screen(x, y, z, index)
         (IsoUtils.YToScreen(x, y, z, 0) - IsoCamera.getOffY(index)) / zoom + getPlayerScreenTop(index)
 end
 
+---@param effect table Tracer
+---@param index number Viewport
+---@return table? endpoint Last visible point from the muzzle
+function E.visibleTrace(effect, index)
+    effect.visible = effect.visible or {}
+    if effect.visible[index] ~= nil then return effect.visible[index] or nil end
+    local dx, dy = effect.x - effect.fromX, effect.y - effect.fromY
+    local steps = math.max(1, math.min(100, math.ceil(math.sqrt(dx * dx + dy * dy) * 2)))
+    local point = nil
+    for step = 0, steps do
+        local fraction = step / steps
+        local x, y = effect.fromX + dx * fraction, effect.fromY + dy * fraction
+        local square = getCell():getGridSquare(math.floor(x), math.floor(y), effect.z)
+        if not square or not square:isCanSee(index) then break end
+        point = {x = x, y = y}
+    end
+    effect.visible[index] = point or false
+    return point
+end
+
 ---@return nil
 function E.render()
     if #E.effects == 0 then return end
@@ -107,14 +135,18 @@ function E.render()
     for i = #E.effects, 1, -1 do
         local effect = E.effects[i]
         local elapsed = now - effect.start
-        if (effect.phase == "Impact" and elapsed >= 450) or (effect.firearm and elapsed >= 100) or elapsed > effect.flight + 10000 then
+        local traceAge = effect.renderStart and now - effect.renderStart or 0
+        if (effect.phase == "Impact" and elapsed >= 450) or (effect.firearm and (traceAge >= 100 or elapsed >= 1000)) or elapsed > effect.flight + 10000 then
             table.remove(E.effects, i)
         else
             for index = 0, getNumActivePlayers() - 1 do
                 local player = getSpecificPlayer(index)
                 local wx, wy, height = E.position(effect)
                 local square = getCell():getGridSquare(math.floor(wx), math.floor(wy), effect.z)
-                if player and square and math.floor(player:getZ()) == effect.z and square:isCanSee(index) then
+                local trace = effect.firearm and E.visibleTrace(effect, index)
+                local visible = effect.firearm and trace or (not effect.firearm and square and square:isCanSee(index))
+                if player and math.floor(player:getZ()) == effect.z and visible then
+                    if trace then wx, wy = trace.x, trace.y end
                     local renderStarted = getTimestampMs()
                     if not canvas then
                         canvas = ISUIElement:new(0, 0, getCore():getScreenWidth(), getCore():getScreenHeight())
@@ -130,8 +162,9 @@ function E.render()
                     end
                     local x, y = E.screen(wx, wy, effect.z + height, index)
                     if effect.firearm then
+                        effect.renderStart = effect.renderStart or now
                         local sx, sy = E.screen(effect.fromX, effect.fromY, effect.z + effect.muzzleHeight, index)
-                        canvas:drawLine(nil, sx, sy, x, y, math.max(1, 1 / zoom), 1 - elapsed / 100, 0.9, 0.85, 0.65)
+                        canvas:drawLine(nil, sx, sy, x, y, math.max(1, 1 / zoom), 1 - traceAge / 100, 0.9, 0.85, 0.65)
                     elseif effect.phase == "Launch" then
                         local size = math.max(4, 6 / zoom)
                         canvas:drawRect(x - size / 2, y - size / 2, size, size * 0.75, 1, 0.55, 0.32, 0.13)

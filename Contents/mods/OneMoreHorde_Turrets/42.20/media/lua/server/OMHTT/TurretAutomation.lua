@@ -93,8 +93,9 @@ function A.step(entry, deadline)
     if now < entry.due and (not entry.target or now < (entry.fireDue or 0)) then return true end
     local aim = require("OMHTT/TurretAim").entries[object]
     if require("OMHTT/TurretSearch").pending[object] or (aim and aim.player) then return true end
-    local interval = M.option("DetectionInterval", 0.25, 0.1, 5) * 1000
     local contents = W.contents(object)
+    local interval = M.option("DetectionInterval", 0.25, 0.1, 5) * 1000
+    if contents.active.MotionDetectionEnhanced then interval = math.min(interval, M.option("EnhancedDetectionInterval", 0.1, 0.05, 5) * 1000) end
     if not W.valid(object) or not M.detects(state, contents) or not W.power(object, contents) then
         entry.job, entry.due = nil, now + interval
         entry.target = nil
@@ -108,16 +109,23 @@ function A.step(entry, deadline)
     local Combat = require("OMHTT/PrototypeCombat")
     local target = entry.target
     local sticky = profile.priority == "Random" or profile.priority == "Toughest"
-    local retained = (sticky or now < entry.due) and target and M.inside(square, target, profile)
+    local retained = target and M.inside(square, target, profile)
         and Combat.clearLane(square, target:getSquare(), profile.range)
     local job = {visited = 0}
-    if not retained then
+    if not retained or entry.job or (not sticky and now >= entry.due) then
         if not entry.job then entry.job = A.scan(square, profile) end
-        if not A.advance(entry.job, 64, deadline) then return true end
-        job, target = entry.job, entry.job.best
+        local fireReady = retained and contents.active.Firing and now >= (entry.fireDue or 0)
+        if not fireReady and A.advance(entry.job, 64, deadline) then
+            job = entry.job
+            if job.best then target, retained = job.best, false end
+            entry.job, entry.due = nil, now + interval
+        elseif not retained then
+            entry.target = nil
+            return true
+        end
+    elseif now >= entry.due then
+        entry.due = now + interval
     end
-    entry.job = nil
-    if now >= entry.due then entry.due = now + interval end
     if not target or (not retained and (not M.inside(square, target, profile)
         or not Combat.clearLane(square, target:getSquare(), profile.range))) then
         entry.target = nil

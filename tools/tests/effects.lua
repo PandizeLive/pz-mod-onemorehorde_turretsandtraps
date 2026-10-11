@@ -76,6 +76,19 @@ check(lines == 1 and E.effects[1].muzzleHeight == .4166667, "Firearm tracer uses
 testMillis=testMillis+100
 E.render()
 check(#E.effects==0 and lines==1,"Firearm tracer expires without potato splash")
+getCell = function() return {getGridSquare = function(_, x) return {isCanSee = function() return x < 13 end} end} end
+E.receive(F.MODULE, "Volley", {rays = {
+    {id="fan",shot="center",fromX=10,fromY=10,x=20,y=10,z=0,firearm=true},
+    {id="fan",shot="left",fromX=10,fromY=10,x=20,y=8,z=0,firearm=true},
+    {id="fan",shot="right",fromX=10,fromY=10,x=20,y=12,z=0,firearm=true}}})
+testMillis = testMillis + 200
+local previousLines = lines
+E.render()
+check(lines == previousLines + 3, "All three volley traces get a first render after a delayed frame with hidden endpoints")
+for i = 1, #E.effects do check(E.effects[i].visible[0].x < 13, "Tracer is clipped before unseen squares") end
+testMillis = testMillis + 100; E.render()
+check(#E.effects == 0, "Volley expires after its shared visible lifetime")
+getCell = function() return {getGridSquare = function() return {isCanSee = function() return visible end} end} end
 local D = require("OMHTT/Diagnostics")
 local oldDefer, oldControls, oldDiagnostic = D.defer, SandboxVars.OMHTurretsTraps.TurretTestControls,
     SandboxVars.OMHTurretsTraps.TurretDiagnosticLogging

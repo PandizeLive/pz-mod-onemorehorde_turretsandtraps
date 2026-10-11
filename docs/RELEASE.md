@@ -371,3 +371,8 @@ C78 approved. Source/tag/install evidence will be recorded after final validatio
 Validation: 3,366 Kahlua assertions, 57 runtime/translation files and 153 package files passed. Stock 42.21 write/read smoke passed with native item/world persistence. Firearms B42 isolated probe accepted 51 conventional guns and conserved 153 shots; only Rifle_CapGun and Revolver_CapGun were rejected. Current game bytecode, native smoke logs and manifest are under diagnostics/v0.2.27; the modded summary is diagnostics/modded-027.log. Rendered owner acceptance remains pending.
 
 Installed and archived 0.2.27 from annotated `test/v0.2.27`, source `6a7d28e3b1f6978bcb46ff07d1ecb31db7b322b8`. All 153 package files match source, tag, installed copy and ZIP. The prior 0.2.26 backup has 149 verified files. Exact paths and archive SHA-256: `diagnostics/v0.2.27/local-release.json`. No remote or Workshop publication.
+
+
+## 0.2.41 / C137 prepared checkpoint - 2026-10-11
+
+Approved Enhanced modules and corrective bundle; see PATCH_v0.2.41.md and TEST_v0.2.41.md. Automated/native proof is complete: 5,083 assertions, 51 Firearms guns, native write/read 50.1/51.2 seconds and all three package-isolation checks. Native weight limits remain; rendered acceptance pending. Hosted LootLab 0.2.41 is deployed and verified (diagnostics/v0.2.41/lootlab-release.json). Tag/install are recorded below only after completion. No Workshop publication; cumulative pending notes preserved.

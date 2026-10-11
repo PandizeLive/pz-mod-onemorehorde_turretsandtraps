@@ -1,7 +1,7 @@
 {
   "gameVersion": "42.21.0",
-  "modBaseline": "T&T 0.2.28",
-  "scope": "New-world SP estimates matching T&T 0.2.28",
+  "modBaseline": "T&T 0.2.41",
+  "scope": "New-world SP estimates matching T&T 0.2.41",
   "sources": [
     {
       "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\ProjectZomboid\\media\\maps\\Muldraugh, KY\\worldmap.xml",
@@ -14,14 +14,14 @@
       "bytes": 23191
     },
     {
-      "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\Contents\\mods\\OneMoreHorde_TurretsAndTraps\\42.20\\media\\lua\\shared\\OMHTT\\LootDefinitions.lua",
-      "sha256": "5a3fe3a186088f5f67f64ce6b61b63bcc1428fd24601c09265d6c4905961d297",
-      "bytes": 2382
+      "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\Contents\\mods\\OneMoreHorde_Turrets\\42.20\\media\\lua\\shared\\OMHTT\\LootDefinitions.lua",
+      "sha256": "4f329b449b94f5fc0bce2ab4116ff99bf8e25faa4abe744e50ae43316d498b76",
+      "bytes": 2755
     },
     {
       "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\loot-site\\cache\\Lua\\loot-routes.json",
-      "sha256": "14a0de9d302eb2301d9a20d9b2204c1f77430583143a5f294beb8a25082cfd63",
-      "bytes": 133595
+      "sha256": "f44b87451fd3e6aaa5e4d571d2cbc12283912a22bcc4d02893e6ea9bfee93e09",
+      "bytes": 134000
     },
     {
       "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\loot-site\\cache\\Lua\\loot-tile-properties.txt",
@@ -34,25 +34,38 @@
       "bytes": 371065
     },
     {
-      "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\Contents\\mods\\OneMoreHorde_TurretsAndTraps\\42.20\\media\\sandbox-options.txt",
-      "sha256": "bd2dafb1f361671c967e70f0d0708519a34bb6ac08b9da39001743ef7c40d0c0",
-      "bytes": 18876
+      "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\Contents\\mods\\OneMoreHorde_Turrets\\42.20\\media\\sandbox-options.txt",
+      "sha256": "f9f5e76bae635e614f71d882c7cd620554774b3b38a11c5bdccda64c6f1159b7",
+      "bytes": 20724
     }
   ],
   "dataset": {
-    "sha256": "35e691ca71f0f6f9a7b8d75d48509be9c96d52e11bcd881508184a9eed90cf70",
-    "bytes": 4360546
+    "sha256": "a2d10c21b81d285da1bc5a9fc03dda03dd257fd808930dc7ce9c6b4892247e34",
+    "bytes": 4361598
   },
   "extraction": {
     "game": "42.21.0",
-    "baseline": "T&T 0.2.28",
+    "baseline": "T&T 0.2.41",
     "previousBaselines": [
       "Installed 0.2.22",
       "T&T 0.2.23",
       "T&T 0.2.24",
       "T&T 0.2.25",
       "T&T 0.2.26",
-      "T&T 0.2.27"
+      "T&T 0.2.27",
+      "T&T 0.2.28",
+      "T&T 0.2.29",
+      "T&T 0.2.30",
+      "T&T 0.2.31",
+      "T&T 0.2.32",
+      "T&T 0.2.33",
+      "T&T 0.2.34",
+      "T&T 0.2.35",
+      "T&T 0.2.36",
+      "T&T 0.2.37",
+      "T&T 0.2.38",
+      "T&T 0.2.39",
+      "T&T 0.2.40"
     ],
     "headers": 4065,
     "roomRecords": 90827,
@@ -165,6 +178,8 @@
       "fruitbushc": 1,
       "fruitbusha": 1,
       "fruitbushd": 1
-    }
+    },
+    "requiredModId": "OneMoreHorde_Turrets",
+    "turretsEnabled": true
   }
 }

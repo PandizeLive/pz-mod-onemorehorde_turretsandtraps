@@ -39,10 +39,11 @@
   function quantile(values,q) { const a=values.slice().sort((x,y)=>x-y); return a[Math.floor((a.length-1)*q)]||0; }
   function defaults(data) { return {version:1,baseline:data.meta.baseline,seed:24601,global:data.defaults?.global??1,material:.6,rolls:1,retention:1,selected:'all',overlay:'spawns',visible:Object.fromEntries(data.modules.map(m=>[m.id,true])),items:Object.fromEntries(data.modules.map(m=>[m.id,data.defaults?.items?.[m.id]??1]))}; }
   function migrateValue(path,value,baseline) {
-    if(['T&T 0.2.26','T&T 0.2.27','T&T 0.2.28'].includes(baseline))return value;
+    if(/^T&T 0\.2\.(2[6-9]|3[0-9]|4[01])$/.test(baseline))return value;
     if(path==='global')return value/4.5;
     if(path.startsWith('items.')) {
       const id=path.slice(6);
+      if(['Magazine','Splitter','Fragment','FiringEnhanced','MotionDetectionEnhanced'].includes(id))return value;
       const factor=['Firing','MotionDetection','CapacitySmall','CapacityLarge','Autoloader'].includes(id)?3:2;
       return value/(baseline==='Installed 0.2.22'&&id==='Suppression'?1:factor);
     }
@@ -59,9 +60,10 @@
     }
     s.seed=Math.floor(s.seed);
     for(const m of data.modules) {
-      const value=legacy&&['Critical','Accuracy'].includes(m.id)&&input.items?.[m.id]===undefined?1:input.items?.[m.id];
+      const added=legacy&&['Magazine','Splitter','Fragment','FiringEnhanced','MotionDetectionEnhanced'].includes(m.id)&&input.items?.[m.id]===undefined;
+      const value=added?1:legacy&&['Critical','Accuracy'].includes(m.id)&&input.items?.[m.id]===undefined?1:input.items?.[m.id];
       if(typeof value!=='number' || !Number.isFinite(value) || value<0 || value>20) throw Error('Invalid '+m.name+' multiplier.');
-      s.items[m.id]=legacy?migrateValue("items."+m.id,value,input.baseline):value;
+      s.items[m.id]=legacy&&!added?migrateValue("items."+m.id,value,input.baseline):value;
       if(input.visible?.[m.id]!==undefined) {
         if(typeof input.visible[m.id]!=='boolean')throw Error('Invalid component visibility.');
         s.visible[m.id]=input.visible[m.id];

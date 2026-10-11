@@ -47,7 +47,7 @@ module Base {
             item 1 [Base.TirePump],
         }
         outputs {
-            item 1 Base.OMHTTPotatoHead,
+            item 1 Base.OMHTTTurretPotato,
         }
     }
     craftRecipe OMHTTCraftTurretHeadImprovised {
@@ -73,7 +73,7 @@ module Base {
             item 1 [Base.SmallSheetMetal],
         }
         outputs {
-            item 1 Base.OMHTTPotatoHead,
+            item 1 Base.OMHTTTurretPotato,
         }
     }
 
@@ -142,7 +142,7 @@ module Base {
             item 4 [Base.Screws],
         }
         outputs {
-            item 1 Base.OMHTTExpansionKitImprovised,
+            item 1 Base.OMHTTModuleExpansionImprovised,
         }
     }
 }

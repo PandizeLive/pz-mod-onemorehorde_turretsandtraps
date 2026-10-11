@@ -1,6 +1,6 @@
 local F = require("OMHTT/Foundation")
 local D = require("OMHTT/Diagnostics")
-local H = {ITEM = "Base.OMHTTProbeHead", SPRITE = "omhtt_turret_01_20"}
+local H = {ITEM = "Base.OMHTTTurretProbe", SPRITE = "omhtt_turret_01_20"}
 OMHTT_HybridProbe = H
 
 ---@param square IsoGridSquare? Probe square

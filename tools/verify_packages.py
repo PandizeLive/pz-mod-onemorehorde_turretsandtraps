@@ -32,7 +32,7 @@ def main():
         else:
             assert not any(name.startswith("OMHTT/Barrier") for name in lua)
             assert "OMHTT/FoundationServer" not in lua and "OMHTT/Construction" not in lua
-            assert "item OMHTTSpikeBarrierItem" not in scripts
+            assert "item OMHTTTrapSpikeBarrier" not in scripts
             assert "OMHTurretsTraps.SpikeBarrier" not in options
     assert not option_sets["traps"] & option_sets["turrets"], "Sandbox controls overlap"
     all_options = set(re.findall(r"option\s+(\w+\.\w+)\s*\{", (ROOT / "Source/42.20/media/sandbox-options.txt").read_text()))

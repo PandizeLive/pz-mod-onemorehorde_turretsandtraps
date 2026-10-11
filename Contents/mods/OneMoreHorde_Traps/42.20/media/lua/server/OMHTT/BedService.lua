@@ -37,7 +37,7 @@ function S.apply(player, object, id, operation)
     local record = S.resolve(player, object, id)
     if not record then return false end
     if operation == "Pickup" then
-        local name = record.tier == "reinforced" and "Base.OMHTTReinforcedBedSpikesItem" or "Base.OMHTTBedSpikesItem"
+        local name = record.tier == "reinforced" and "Base.OMHTTTrapBedSpikesReinforced" or "Base.OMHTTTrapBedSpikes"
         local item = instanceItem(name)
         if not player:getInventory():hasRoomFor(player, item) then
             player:setHaloNote(getText("UI_OMHTT_PickupNoRoom"), 255, 170, 80, 180)

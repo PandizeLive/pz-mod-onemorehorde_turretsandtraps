@@ -39,7 +39,7 @@ ISBuildIsoEntity = {new = function()
 end}
 getCell = function() return {setDrag = function(_, c) check(c == cursor, "Native cursor is installed") end} end
 getSpecificPlayer = function() return player end
-local names = {"SpikeBarrierItem", "ReinforcedBarrierItem", "BedSpikesItem", "ReinforcedBedSpikesItem", "BarbedPanelItem", "ConcertinaWire"}
+local names = {"TrapSpikeBarrier", "TrapSpikeBarrierReinforced", "TrapBedSpikes", "TrapBedSpikesReinforced", "TrapBarbedPanel", "TrapConcertinaWire"}
 local entities = {"OMHTTDeploySpikeBarrier", "OMHTTDeployReinforcedBarrier", "OMHTTDeployBedSpikesSingle", "OMHTTDeployReinforcedBedSpikesSingle", "OMHTTBarbs", "OMHTTDeployConcertinaWire"}
 for i = 1, #names do
     local item = {container = inventory}
@@ -64,7 +64,7 @@ for i = 1, #names do
     P.menu(0, context, {{items = {item}}})
     check(menuLabel == getText(i == 5 and "UI_OMHTT_AttachTrap" or "UI_OMHTT_PlaceTrap"), "Inventory action label is consistent")
 end
-local panelItem = {getFullType = function() return "Base.OMHTTBarbedPanelItem" end,
+local panelItem = {getFullType = function() return "Base.OMHTTTrapBarbedPanel" end,
     getContainer = function() return inventory end, getCondition = function() return 100 end}
 local toolsLookup = inventory.getFirstTagEvalRecurse
 inventory.getFirstTagEvalRecurse = function() return nil end

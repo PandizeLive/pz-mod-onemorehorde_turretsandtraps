@@ -435,7 +435,7 @@ function W.fire(player, object, target)
     end
     local Combat = require("OMHTT/PrototypeCombat")
     local result, impact = Combat.fire(state, object, player, options)
-    if result == "Fired" then Volley.split(state, object:getSquare(), target, player, options) end
+    if result == "Fired" then Volley.split(state, object:getSquare(), target, player, options, impact) end
     local committedAt = getTimestampMs()
     if result == "Fired" and not T.hybrid() then W.refresh(object) end
     local refreshedAt = getTimestampMs()

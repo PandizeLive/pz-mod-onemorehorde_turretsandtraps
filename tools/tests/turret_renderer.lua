@@ -94,7 +94,7 @@ function gun:setWorldYRotation(value) self.ry = value end
 function gun:setWorldZRotation(value) self.rz = value end
 local oldInstance = instanceItem
 instanceItem = function(fullType)
-    check(fullType == "Base.OMHTTGunSupportVisual", "Only a technical support is created for gun rendering")
+    check(fullType == "Base.OMHTTTurretGunSupportVisual", "Only a technical support is created for gun rendering")
     return {support = true}
 end
 R.changed(gunObject, gun)

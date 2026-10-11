@@ -4,12 +4,12 @@ local Beds = require("OMHTT/BedSpikes")
 local Barbs = require("OMHTT/BarbSections")
 local P = {}
 local definitions = {
-    ["Base.OMHTTSpikeBarrierItem"] = {"OMHTTDeploySpikeBarrier", F.barrierEnabled},
-    ["Base.OMHTTReinforcedBarrierItem"] = {"OMHTTDeployReinforcedBarrier", F.barrierEnabled},
-    ["Base.OMHTTBedSpikesItem"] = {"OMHTTDeployBedSpikes", Beds.enabled, false, true},
-    ["Base.OMHTTReinforcedBedSpikesItem"] = {"OMHTTDeployReinforcedBedSpikes", Beds.enabled, false, true},
-    ["Base.OMHTTConcertinaWire"] = {"OMHTTDeployConcertinaWire", Barbs.wireEnabled},
-    ["Base.OMHTTBarbedPanelItem"] = {"OMHTTBarbs", function() return Barbs.enabled() end, true},
+    ["Base.OMHTTTrapSpikeBarrier"] = {"OMHTTDeploySpikeBarrier", F.barrierEnabled},
+    ["Base.OMHTTTrapSpikeBarrierReinforced"] = {"OMHTTDeployReinforcedBarrier", F.barrierEnabled},
+    ["Base.OMHTTTrapBedSpikes"] = {"OMHTTDeployBedSpikes", Beds.enabled, false, true},
+    ["Base.OMHTTTrapBedSpikesReinforced"] = {"OMHTTDeployReinforcedBedSpikes", Beds.enabled, false, true},
+    ["Base.OMHTTTrapConcertinaWire"] = {"OMHTTDeployConcertinaWire", Barbs.wireEnabled},
+    ["Base.OMHTTTrapBarbedPanel"] = {"OMHTTBarbs", function() return Barbs.enabled() end, true},
 }
 
 ---@param item InventoryItem Selected item

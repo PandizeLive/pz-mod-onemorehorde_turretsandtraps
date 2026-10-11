@@ -50,7 +50,7 @@ local function verifyTurrets()
             end
         end
     end
-    assert(count == 138, "Expected 138 component entries across sixteen native loot pools")
+    assert(count == 150, "Expected 150 component entries across sixteen native loot pools")
     local retired = {"OMHTTModuleCapacitySmall", "OMHTTModuleCapacity", "OMHTTModuleCapacityLarge",
         "OMHTTModuleMotionDetection", "OMHTTModuleDetection360"}
     for i = 1, #retired do
@@ -75,6 +75,10 @@ local function verifyTurrets()
                 auditRejected = auditRejected + 1
             end
         end
+        if string.find(fullType, "Base.OMHTT", 1, true) == 1 then
+            assert(string.find(fullType, "Base.OMHTTTrap", 1, true) == 1 or string.find(fullType, "Base.OMHTTTurret", 1, true) == 1
+                or string.find(fullType, "Base.OMHTTModule", 1, true) == 1, "Inconsistent OMHTT item family: " .. fullType)
+        end
         local component = T.component(fullType)
         if component then
             assert(not script:getObsolete() and not script:isHidden(), "Current component is unavailable")
@@ -85,8 +89,37 @@ local function verifyTurrets()
     end
     assert(auditAccepted >= 20 and auditRejected >= 2, "Expected conventional guns and cap-gun rejections")
     print("[OMHTT-Smoke] native-firearm-audit accepted=" .. auditAccepted .. " rejected=" .. auditRejected)
-    assert(visibleCount == 21, "Expected twenty-one canonical components")
-    print("[OMHTT-Smoke] native-component-list visible=21 hidden=0 duplicates=0 legacy=removed")
+    assert(visibleCount == 23, "Expected twenty-three canonical components")
+    local largeStorage = instanceItem(T.BASE):getInventory()
+    T.configure(largeStorage)
+    local largeGun = instanceItem("Base.Pistol")
+    local largeAmmo = require("OMHTT/Firearms").ammoType(largeGun)
+    largeStorage:AddItem(largeGun)
+    largeStorage:AddItem(T.TYPES.CapacityLarge)
+    local largeStats = T.cycleConfig(T.contents(largeStorage))
+    assert(largeStats.ammo == 750, "Large expansion must add 650 rounds to the default 100")
+    for i = 1, largeStats.ammo do
+        local round = instanceItem(largeAmmo)
+        assert(T.accept(largeStorage, round) and largeStorage:hasRoomFor(nil, round), "Expanded native storage ran out of room at " .. i)
+        largeStorage:AddItem(round)
+    end
+    assert(not T.accept(largeStorage, instanceItem(largeAmmo)), "Large ammo limit must still reject overflow")
+    local heavyStorage = instanceItem(T.BASE):getInventory()
+    T.configure(heavyStorage)
+    heavyStorage:AddItem(T.HEAD)
+    heavyStorage:AddItem(T.TYPES.CapacityLarge)
+    local loaded = 0
+    while loaded < 750 do
+        local potato = instanceItem("Base.Potato")
+        assert(T.accept(heavyStorage, potato), "Count allowance changed before native weight limit")
+        if not heavyStorage:hasRoomFor(nil, potato) then break end
+        heavyStorage:AddItem(potato)
+        loaded = loaded + 1
+    end
+    assert(loaded > 200 and loaded < 750 and heavyStorage:getCapacity() == 50, "Native bag weight limit must remain effective")
+    print("[OMHTT-Smoke] native-heavy-expansion potatoes=" .. loaded .. " countAllowance=750 nativeWeightLimit=50")
+    print("[OMHTT-Smoke] native-large-expansion rounds=750 weight=real overflow=blocked")
+    print("[OMHTT-Smoke] native-component-list visible=23 hidden=0 duplicates=0 legacy=removed")
     local nativeContents = {active = {Detection360 = 1, Filter = 1}}
     local profile = Modules.profile({baseFacing = 4, facing = 12, priority = "Toughest"}, nativeContents)
     assert(profile.cone == 360 and profile.heading == 90 and profile.priority == "Toughest", "Module profile failed")
@@ -110,7 +143,7 @@ local function verifyTurrets()
     assert(T.contents(live).active.MotionDetection == 1, "Native module condition defaults are not active")
     detector:setCondition(0)
     assert(T.contents(live).active.MotionDetection == nil, "Broken native module remains active")
-    print("[OMHTT-Smoke] native-modules loot=138 profiles=valid condition=checked")
+    print("[OMHTT-Smoke] native-modules loot=150 profiles=valid condition=checked")
     assert(GameSounds.getSound("OMHTTTriggerClick") ~= nil, "Native click sound is unregistered")
     local resources = ArrayList.new()
     local tools = {"Base.Screwdriver", "Base.Wrench"}
@@ -190,17 +223,17 @@ local function verifyTurrets()
     assert(contents.ammo == 1 and contents.modules == 2 and T.canRemove(inventory, contents.head), "Inventory classification/removal guard failed")
     assert(math.abs(packed:getUnequippedWeight() - packed:getActualWeight() - inventory:getContentsWeight()) < 0.001, "Packed weight omits or duplicates contents")
     local baseStats = T.cycleConfig()
-    local expansion = instanceItem("Base.OMHTTExpansionKitMedium")
+    local expansion = instanceItem("Base.OMHTTModuleExpansionMedium")
     assert(inventory:isItemAllowed(expansion), "Native capacity socket rejected")
     inventory:AddItem(expansion)
     inventory:AddItem("Base.OMHTTModuleReload")
     inventory:AddItem("Base.OMHTTModuleReload")
     local velocity = inventory:AddItem("Base.OMHTTModuleVelocity")
     local stats = T.cycleConfig(T.contents(inventory))
-    assert(stats.modules == baseStats.modules + 10 and stats.ammo == baseStats.ammo + 100 and math.abs(stats.cooldown - baseStats.cooldown / 1.5) < 0.001
+    assert(stats.modules == baseStats.modules + 10 and stats.ammo == baseStats.ammo + 400 and math.abs(stats.cooldown - baseStats.cooldown / 1.5) < 0.001
         and math.abs(stats.reload - baseStats.reload / 1.5) < 0.001 and math.abs(stats.damage - baseStats.damage * 1.2) < 0.001, "Native effective module stats failed")
     assert(not T.canRemove(inventory, expansion), "Native capacity removal lost module limit")
-    assert(not inventory:isItemAllowed(instanceItem("Base.OMHTTExpansionKitMedium")), "Native duplicate capacity accepted")
+    assert(not inventory:isItemAllowed(instanceItem("Base.OMHTTModuleExpansionMedium")), "Native duplicate capacity accepted")
     velocity:setCondition(0)
     assert(T.cycleConfig(T.contents(inventory)).damage == baseStats.damage, "Broken native velocity remains active")
     inventory:Remove(velocity)
@@ -216,7 +249,7 @@ local function verifyTurrets()
     assert(info and info:getRecipe():getCraftRecipe():getXPAwardCount() == 0, "Deployment repeats XP")
     local recipe = info:getRecipe():getCraftRecipe()
     local decoy = player:getInventory():AddItem("Base.OMHTTTurretBase")
-    decoy:getInventory():AddItem("Base.OMHTTPotatoHead")
+    decoy:getInventory():AddItem("Base.OMHTTTurretPotato")
     player:getInventory():AddItem(packed)
     local containers = ArrayList.new()
     containers:add(player:getInventory())
@@ -286,7 +319,7 @@ local function verifyTurrets()
     T.state(object).fixtureBatteryId = battery:getID()
     T.state(object).fixtureAmmoId = potato:getID()
     contents.head:getModData().OMHTTCycle = {schema = 1, loaded = 1, nextShot = 123456789, cooldownDuration = 750, reloadDuration = 750}
-    assert(contents.head:getWorldStaticItem() == "Base.OMHTTProbeHead", "Actual turret head has no native model")
+    assert(contents.head:getWorldStaticItem() == "Base.OMHTTTurretProbe", "Actual turret head has no native model")
     OMHTT_NativeTurret = object
     local starter = instanceItem(T.BASE)
     local starterStorage = starter:getInventory()
@@ -295,7 +328,7 @@ local function verifyTurrets()
         starter:getModData()[component] = item:getID()
     end
     local starterContents = T.contents(starterStorage)
-    assert(T.cycleConfig(starterContents).modules == 4 and T.cycleConfig(starterContents).ammo == 125,
+    assert(T.cycleConfig(starterContents).modules == 4 and T.cycleConfig(starterContents).ammo == 200,
         "Improvised native expansion has wrong defaults")
     starterContents.head:getModData().OMHTTCycle = {schema = 1, loaded = 1, nextShot = 123456789, cooldownDuration = 2000}
     OMHTT_NativeImprovised = starter
@@ -482,12 +515,12 @@ local function verifyTurrets()
     assert(Guns.magazineRejection(player, magazineStorage, pistol, recovered, token) == "TransferMissing", "Stale head service accepted")
     magazineStorage:AddItem("Base.Bullets9mm")
     assert(T.accept(magazineStorage, instanceItem(T.HEAD)), "Reserve incorrectly prevents head swapping")
-    local mount = instanceItem("Base.OMHTTGunSupportVisual")
+    local mount = instanceItem("Base.OMHTTTurretGunSupportVisual")
     assert(mount and mount:getScriptItem():isHidden() and ScriptManager.instance:getModelScript(mount:getWorldStaticItem()), "Technical mount is missing, unbound or visible in spawn list")
     print("[OMHTT-Smoke] native-magazines insert=eject=conserved chamber=retained replay=blocked capacity=checked mount=bound")
     print("[OMHTT-Smoke] native-firearms firearms=20 rounds=conserved models=bound reload=timed")
     local H = require("OMHTT/HybridProbe")
-    local model = ScriptManager.instance:getModelScript("Base.OMHTTProbeHead")
+    local model = ScriptManager.instance:getModelScript("Base.OMHTTTurretProbe")
     assert(model and model:getMeshName() == "OMHTT_ProbeHead", "Native hybrid model script missing")
     local first = instanceItem(H.ITEM)
     local second = instanceItem(H.ITEM)

@@ -2,7 +2,7 @@ local L = {}
 L.POOLS = {"ElectronicStoreMisc", "CrateElectronics", "MechanicShelfElectric", "ArmyStorageElectronics",
     "ElectricianTools", "GunStoreAccessories", "ToolCabinetMechanics", "GarageTools", "CrateTools", "ToolStoreTools", "ToolStoreMisc", "MechanicShelfTools",
     "GarageMechanics", "CrateMechanics", "ElectronicStoreComputers", "ElectronicStoreHAMRadio"}
-L.WEIGHTS = {Magazine = 5, Splitter = 2.5, Fragment = 2.5, Firing = 30, MotionDetection = 30, Filter = 5, Detection360 = 2.5,
+L.WEIGHTS = {FiringEnhanced = 1.5, MotionDetectionEnhanced = 1.5, Magazine = 5, Splitter = 2.5, Fragment = 2.5, Firing = 30, MotionDetection = 30, Filter = 5, Detection360 = 2.5,
     Suppression = 2.5, Critical = 2.5, Accuracy = 5, RapidFire = 5, Reload = 5,
     Velocity = 5, Range = 5, CapacitySmall = 7.5, Capacity = 2.5, CapacityLarge = 1.5, Autoloader = 1.5}
 L.SUBSETS = {
@@ -23,7 +23,10 @@ L.SUBSETS.GarageMechanics = L.SUBSETS.GarageTools
 L.SUBSETS.CrateMechanics = L.SUBSETS.CrateTools
 L.SUBSETS.ElectronicStoreComputers = L.SUBSETS.ElectricianTools
 L.SUBSETS.ElectronicStoreHAMRadio = L.SUBSETS.ElectricianTools
-L.DEFAULTS = {global = 1, items = {Magazine = 1, Splitter = 1, Fragment = 1,
+for _, subset in pairs(L.SUBSETS) do
+    if subset.CapacityLarge then subset.FiringEnhanced, subset.MotionDetectionEnhanced = true, true end
+end
+L.DEFAULTS = {global = 1, items = {FiringEnhanced = 1, MotionDetectionEnhanced = 1, Magazine = 1, Splitter = 1, Fragment = 1,
     Firing = 1, MotionDetection = 1, Filter = 1, Detection360 = 1, Suppression = 1, RapidFire = 1, Reload = 1, Velocity = 1, Range = 1, CapacitySmall = 1, Capacity = 1, CapacityLarge = 1, Autoloader = 1, Critical = 1, Accuracy = 1
 }}
 return L

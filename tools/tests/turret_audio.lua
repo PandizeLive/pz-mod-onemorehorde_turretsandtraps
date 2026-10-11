@@ -13,7 +13,7 @@ function getWorld() return {getFreeEmitter = function() return emitter end} end
 function ZombRand(n) return 50 end
 local square = {getX = function() return 100 end, getY = function() return 100 end, getZ = function() return 0 end}
 local object = {getSquare = function() return square end}
-local potato = {getFullType = function() return "Base.OMHTTPotatoHead" end}
+local potato = {getFullType = function() return "Base.OMHTTTurretPotato" end}
 local stats = {reload = 2000}
 A.update(object, potato, {reloadReady = 2100}, "Reloading", stats, 100)
 A.update(object, potato, {reloadReady = 2100}, "Reloading", stats, 200)

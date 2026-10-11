@@ -12,11 +12,11 @@ local function checkPackages()
         local name = items:get(i):getFullName()
         counts[name] = (counts[name] or 0) + 1
     end
-    assert((counts["Base.OMHTTSpikeBarrierItem"] == 1) == expectedTraps, "Barrier item registration")
-    assert((counts["Base.OMHTTConcertinaWire"] == 1) == expectedTraps, "Wire item isolation")
+    assert((counts["Base.OMHTTTrapSpikeBarrier"] == 1) == expectedTraps, "Barrier item registration")
+    assert((counts["Base.OMHTTTrapConcertinaWire"] == 1) == expectedTraps, "Wire item isolation")
     assert((SpriteConfigManager.GetObjectInfo("OMHTTDeployConcertinaWire") ~= nil) == expectedTraps, "Wire placement isolation")
-    assert((counts["Base.OMHTTBedSpikesItem"] == 1) == expectedTraps, "Bed Spikes item registration")
-    assert((counts["Base.OMHTTReinforcedBedSpikesItem"] == 1) == expectedTraps, "Reinforced Bed Spikes item registration")
+    assert((counts["Base.OMHTTTrapBedSpikes"] == 1) == expectedTraps, "Bed Spikes item registration")
+    assert((counts["Base.OMHTTTrapBedSpikesReinforced"] == 1) == expectedTraps, "Reinforced Bed Spikes item registration")
     assert((counts["Base.OMHTTTurretBase"] == 1) == expectedTurrets, "Turret item registration")
     assert((counts["Base.OMHTTModuleFiring"] == 1) == expectedTurrets, "Module item registration")
     assert((OMHTT_Turret ~= nil) == expectedTurrets, "Turret runtime isolation")
@@ -57,7 +57,7 @@ local function checkPackages()
             end
         end
     end
-    assert(lootCount == (expectedTurrets and 138 or 0), "Wrong component loot count " .. lootCount)
+    assert(lootCount == (expectedTurrets and 150 or 0), "Wrong component loot count " .. lootCount)
     isServer, isClient = oldServer, oldClient
     print("[OMHTT-Packages] PASS traps=" .. tostring(expectedTraps) .. " turrets=" .. tostring(expectedTurrets)
         .. " loot=" .. lootCount .. " options=unique entries=independent")

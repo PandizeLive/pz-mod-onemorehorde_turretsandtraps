@@ -57,14 +57,14 @@ public final class NativeTurretProbe {
             Object[] items = (Object[])pool.getClass().getField("items").get(pool);
             for (Object item : items) {
                 String type = (String)item.getClass().getField("itemName").get(item);
-                if ((type.startsWith("Base.OMHTTModule") || type.startsWith("Base.OMHTTExpansionKit"))) {
+                if (type.startsWith("Base.OMHTTModule")) {
                     modules++;
                     check(item.getClass().getField("chance").getFloat(item) > 0, "Zero native module loot weight");
                 }
             }
         }
-        check(modules == 138, "Native loot parser did not retain all module entries");
-        System.out.println("[OMHTT-Smoke] native-module-loot-parser pools=16 items=138 weights=positive");
+        check(modules == 150, "Native loot parser did not retain all module entries");
+        System.out.println("[OMHTT-Smoke] native-module-loot-parser pools=16 items=150 weights=positive");
         Class<?> squareType = Class.forName("zombie.iso.IsoGridSquare");
         Class<?> cellType = Class.forName("zombie.iso.IsoCell");
         Class<?> movingType = Class.forName("zombie.iso.IsoMovingObject");

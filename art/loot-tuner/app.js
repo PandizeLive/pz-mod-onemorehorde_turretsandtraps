@@ -1,7 +1,7 @@
 'use strict';
 const D=window.LOOT_DATA, M=window.LootModel, $=id=>document.getElementById(id);
 let scenario=M.defaults(D), prepared=null, result=null, sample=null, generation=0, redrawPending=false;
-const colors=['#f2bd62','#56b4e9','#ed648c','#b888f5','#47ce88','#ff7959','#e0dc66','#74dedc','#bd97dc','#8ca756','#f69ed0','#d09a75','#bbc9da','#eea577','#93d6b5'];
+const colors=['#f2bd62','#56b4e9','#ed648c','#b888f5','#47ce88','#ff7959','#e0dc66','#74dedc','#bd97dc','#8ca756','#f69ed0','#d09a75','#bbc9da','#eea577','#93d6b5','#a3b8ff','#dc9f49','#ce82a9','#e9d6a0','#64aab0'];
 let markers=[],chanceCache=[];
 const number=n=>n.toLocaleString(undefined,{maximumFractionDigits:1});
 const pretty=s=>s.replace(/([a-z])([A-Z])/g,'$1 $2');

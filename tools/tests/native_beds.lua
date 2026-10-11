@@ -97,9 +97,9 @@ local function checkBeds()
     zombie:setVariable("SprinterTripped", false)
     zombie:setBumpType("OMHTTBedTrip")
     assert(zombie:getBumpType() == "OMHTTBedTrip" and not zombie:isKnockedDown(), "Forward trip must not enter hit knockback")
-    for itemType, weight in pairs({OMHTTBarbedPanelItem = 2, OMHTTBedSpikesItem = 1.5,
-        OMHTTReinforcedBedSpikesItem = 2, OMHTTSpikeBarrierItem = 4, OMHTTReinforcedBarrierItem = 5,
-        OMHTTTurretBase = 6, OMHTTPotatoHead = 4}) do
+    for itemType, weight in pairs({OMHTTTrapBarbedPanel = 2, OMHTTTrapBedSpikes = 1.5,
+        OMHTTTrapBedSpikesReinforced = 2, OMHTTTrapSpikeBarrier = 4, OMHTTTrapSpikeBarrierReinforced = 5,
+        OMHTTTurretBase = 6, OMHTTTurretPotato = 4}) do
         local item = instanceItem("Base." .. itemType)
         assert(item and item:getActualWeight() == weight, "Approved weight mismatch: " .. itemType)
     end
@@ -108,8 +108,8 @@ local function checkBeds()
         and getRecipeDisplayName("OMHTTPackReinforcedBarriers") == "Pack Reinforced Spike Barriers", "Pack naming mismatch")
     local player = IsoPlayer.new(cell)
     for _, spec in pairs({
-        {"OMHTTReinforceSpikeBarrier", "Base.OMHTTSpikeBarrierItem", "Base.OMHTTReinforcedBarrierItem"},
-        {"OMHTTReinforceBedSpikes", "Base.OMHTTBedSpikesItem", "Base.OMHTTReinforcedBedSpikesItem"},
+        {"OMHTTReinforceSpikeBarrier", "Base.OMHTTTrapSpikeBarrier", "Base.OMHTTTrapSpikeBarrierReinforced"},
+        {"OMHTTReinforceBedSpikes", "Base.OMHTTTrapBedSpikes", "Base.OMHTTTrapBedSpikesReinforced"},
     }) do
         local recipe = ScriptManager.instance:getCraftRecipe("Base." .. spec[1])
         assert(recipe and recipe:getRequiredSkill(0):getLevel() == 3 and recipe:getXPAward(0):getAmount() == (spec[1] == "OMHTTReinforceBedSpikes" and 15 or 30),

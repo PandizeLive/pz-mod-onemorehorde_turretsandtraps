@@ -82,6 +82,12 @@ function generic:getCyclicRateMultiplier() return 1 end
 function generic:isRackAfterShoot() return false end
 local auto = Stats.resolve({head = generic, active = {}})
 check(math.abs(auto.cooldown - 1000 / 3 / 1.5 / .75) < .001, "Automatic cadence uses clip/speed rather than recoil delay")
+function generic:getFireMode() return "Single" end
+function generic:getFireModePossibilities() return {size = function() return 2 end, get = function(_, i) return i == 0 and "Single" or "Auto" end} end
+check(math.abs(Stats.resolve({head = generic, active = {}}).cooldown - auto.cooldown) < .001, "Supported Auto cadence does not depend on modded default Single mode")
+local enhanced = Stats.resolve({head = generic, active = {FiringEnhanced = 1}})
+check(math.abs(enhanced.cooldown - auto.cooldown * .75) < .001, "Enhanced Firing removes the default 75-percent reduction")
+check(Stats.resolve({head = generic, active = {FiringEnhanced = 1, RapidFire = 1}}).cooldown < enhanced.cooldown, "Rapid-Fire still improves Enhanced Firing within its scaled floor")
 SandboxVars.OMHTurretsTraps.FirearmRateMultiplier = 1
 local full = Stats.resolve({head = generic, active = {}})
 check(math.abs(auto.cooldown * .75 - full.cooldown) < .001, "Global rate scales proportionally")

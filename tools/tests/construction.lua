@@ -137,7 +137,8 @@ end
 testData.tileCount = F.MAX_TILES - 1
 local capped = makeCursor("e", 1)
 ISBuildIsoEntity.create(capped, 140, 140, 0, false, "unused")
-check(capped.consumed == 0 and #capped.parts == 0, "ledger cap rejects both-tile reservation before materials")
+check(capped.consumed > 0 and #capped.parts == 2, "Real barrier placement crosses the old 64-entry prototype cap")
+P.retire(P.slot(testSquares["140:140:0"]), nil)
 testData.tileCount = 0
 testBuildCheat = true
 local cheat = makeCursor("e", 1)

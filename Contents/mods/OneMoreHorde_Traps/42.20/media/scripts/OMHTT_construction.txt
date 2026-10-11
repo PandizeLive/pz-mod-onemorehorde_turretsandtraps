@@ -101,7 +101,7 @@ module Base {
             OnAddToMenu = OMHTT_PlacementMenu,
             OnTest = OMHTT_Construction.portableInputAllowed,
             inputs {
-                item 1 [Base.OMHTTSpikeBarrierItem],
+                item 1 [Base.OMHTTTrapSpikeBarrier],
             }
         }
     }
@@ -152,7 +152,7 @@ module Base {
             OnAddToMenu = OMHTT_PlacementMenu,
             OnTest = OMHTT_Construction.portableInputAllowed,
             inputs {
-                item 1 [Base.OMHTTReinforcedBarrierItem],
+                item 1 [Base.OMHTTTrapSpikeBarrierReinforced],
             }
         }
     }

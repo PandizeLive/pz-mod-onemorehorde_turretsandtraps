@@ -223,17 +223,17 @@ check(panel.moduleSlots[4].disabled, "Over-capacity slots still allow recovery b
 ISMouseDrag.dragging, ISMouseDrag.draggingFocus = {invalid}, {onMouseUp = function() end}
 panel.moduleSlots[4]:onMouseUp(1, 1)
 check(panel.reason == getText("UI_OMHTT_ManageTransferFull"), "Locked slot explains rejected deposit")
-local expansion = item("Base.OMHTTExpansionKitMedium")
+local expansion = item("Base.OMHTTModuleExpansionMedium")
 carried:AddItem(expansion)
 actions = {}
 count = X.queue(player, object, {expansion}, true, "capacity")
 check(count == 1, "Dedicated capacity slot works when ordinary module slots are full")
 actions[1]:transferItem(expansion)
 panel:refresh()
-check(panel.capacitySlot.items[1] == expansion and panel.stats.modules == 8 and panel.stats.ammo == 102,
+check(panel.capacitySlot.items[1] == expansion and panel.stats.modules == 8 and panel.stats.ammo == 402,
     "Capacity slot displays exact component and expanded limits")
 check(X.rejection(player, expansion, storage, carried) == "CapacityFull", "Expanded modules block capacity removal with useful reason")
-local secondExpansion = item("Base.OMHTTExpansionKitMedium")
+local secondExpansion = item("Base.OMHTTModuleExpansionMedium")
 carried:AddItem(secondExpansion)
 check(X.rejection(player, secondExpansion, carried, storage) == "TransferFull", "Second capacity cannot recursively expand storage")
 for i = #storage.items, 1, -1 do

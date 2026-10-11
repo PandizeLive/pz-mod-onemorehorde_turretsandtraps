@@ -70,7 +70,7 @@ def main():
               'kahluaAssertions': int(assertions[1]), 'nativeWrite': 'passed', 'nativeRead': 'passed',
               'nativeSelections': ['traps', 'turrets', 'both'],
               'clientAcceptance': 'pending focused owner test', 'savePolicy': 'fresh worlds',
-              'publication': 'none', 'hostedLootLab': 'unchanged 0.2.28 baseline'}
+              'publication': 'none', 'hostedLootLab': json.loads((output / 'lootlab-release.json').read_text()) if (output / 'lootlab-release.json').exists() else 'No hosted update recorded for this release'}
     (output / 'local-release.json').write_text(json.dumps(record, indent=2) + '\n')
     print(json.dumps(record, indent=2))
 

@@ -7,22 +7,22 @@ local active = {Reload = 2, RapidFire = 2, Velocity = 2, Range = 2, Capacity = 1
 local stats = S.resolve({active = active})
 check(math.abs(stats.cooldown - 2000 / 1.5) < 0.001 and math.abs(stats.reload - 2000 / 1.5) < 0.001,
     "Reload and Rapid-Fire independently stack speed without subtractive negative timers")
-check(stats.damage == 49 and stats.knockdown == 50 and stats.range == 10 and stats.modules == 12 and stats.ammo == 200,
+check(stats.damage == 49 and stats.knockdown == 50 and stats.range == 10 and stats.modules == 12 and stats.ammo == 500,
     "Damage, knockdown, range and storage bonuses combine")
 active.Autoloader = 1
 stats = S.resolve({active = active})
 check(stats.reload == 0 and stats.cooldown > 0 and stats.magazine == 1, "Autoloader bypasses reload only")
 active = {Reload = 40, RapidFire = 40, Velocity = 40, Range = 40, Capacity = 40}
 stats = S.resolve({active = active})
-check(stats.damage == 70 and stats.knockdown == 90 and stats.range == 16 and stats.modules == 12 and stats.ammo == 200,
+check(stats.damage == 70 and stats.knockdown == 90 and stats.range == 16 and stats.modules == 12 and stats.ammo == 500,
     "Stack caps apply and legacy duplicate Capacity never compounds")
 check(math.abs(stats.cooldown - 2000 / 3) < 0.001 and math.abs(stats.reload - 2000 / 3) < 0.001, "Speed bonuses stop at configured cap")
-for _, tier in pairs({{"CapacityImprovised", 25, 2}, {"CapacitySmall", 50, 6}, {"Capacity", 100, 10}, {"CapacityLarge", 200, 14}}) do
+for _, tier in pairs({{"CapacityImprovised", 100, 2}, {"CapacitySmall", 200, 6}, {"Capacity", 400, 10}, {"CapacityLarge", 650, 14}}) do
     local expanded = S.resolve({active = {[tier[1]] = 1}})
     check(expanded.ammo == base.ammo + tier[2] and expanded.modules == base.modules + tier[3], "Expansion tier grants its own bonuses")
 end
 local mixed = S.resolve({active = {CapacitySmall = 1, Capacity = 1, CapacityLarge = 1}})
-check(mixed.ammo == base.ammo + 200 and mixed.modules == base.modules + 14, "Legacy mixed kits never add bonuses together")
+check(mixed.ammo == base.ammo + 650 and mixed.modules == base.modules + 14, "Legacy mixed kits never add bonuses together")
 local original = settings.PotatoKnockdownChance
 settings.PotatoKnockdownChance = 100
 check(S.resolve({active = active}).knockdown == 100, "Module cap cannot nerf higher base knockdown")

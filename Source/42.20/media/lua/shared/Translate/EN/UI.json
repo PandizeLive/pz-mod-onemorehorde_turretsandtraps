@@ -192,5 +192,7 @@
     "UI_OMHTT_BedReinforceRequirements": "Carpentry 3, hammer, 1 plank and 4 nails. Reinforces only this tile.",
     "UI_OMHTT_ModuleMagazine": "Magazine",
     "UI_OMHTT_ModuleSplitter": "Splitter",
-    "UI_OMHTT_ModuleFragment": "Fragment"
+    "UI_OMHTT_ModuleFragment": "Fragment",
+    "UI_OMHTT_ModuleFiringEnhanced": "Firing+",
+    "UI_OMHTT_ModuleMotionDetectionEnhanced": "Detection+"
 }

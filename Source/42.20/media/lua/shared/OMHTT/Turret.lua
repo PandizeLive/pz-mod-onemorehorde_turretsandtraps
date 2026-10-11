@@ -7,17 +7,17 @@ local G = require("OMHTT/Firearms")
 OMHTT_Turret = {}
 local T = OMHTT_Turret
 T.BASE = "Base.OMHTTTurretBase"
-T.HEAD = "Base.OMHTTPotatoHead"
+T.HEAD = "Base.OMHTTTurretPotato"
 T.HEAD_VISUAL = {height = 0.4 - 16 / 192, scale = 0.512, muzzle = 0.55}
 T.CONTAINER = "OMHTTTurret"
-T.MODULES = {Magazine = true, Splitter = true, Fragment = true, FiringImprovised = true, MotionDetectionImprovised = true, CapacityImprovised = true, Firing = true, MotionDetection = true, Filter = true, RapidFire = true, Velocity = true,
+T.MODULES = {FiringEnhanced = true, MotionDetectionEnhanced = true, Magazine = true, Splitter = true, Fragment = true, FiringImprovised = true, MotionDetectionImprovised = true, CapacityImprovised = true, Firing = true, MotionDetection = true, Filter = true, RapidFire = true, Velocity = true,
     Range = true, Critical = true, Accuracy = true, Suppression = true, Capacity = true, CapacitySmall = true, CapacityLarge = true, Detection360 = true, Reload = true, Autoloader = true}
 T.SINGLE = {Firing = true, MotionDetection = true, Filter = true, Detection360 = true, Autoloader = true}
 T.TYPES = {}
 T.COMPONENTS = {}
-local roles = {FiringImprovised = "Firing", MotionDetectionImprovised = "MotionDetection"}
-local itemTypes = {CapacityImprovised = "OMHTTExpansionKitImprovised", MotionDetectionImprovised = "OMHTTModuleDetectionImprovised", CapacitySmall = "OMHTTExpansionKitSmall", Capacity = "OMHTTExpansionKitMedium",
-    CapacityLarge = "OMHTTExpansionKitLarge", MotionDetection = "OMHTTModuleDetection", Detection360 = "OMHTTModule360"}
+local roles = {FiringEnhanced = "Firing", MotionDetectionEnhanced = "MotionDetection", FiringImprovised = "Firing", MotionDetectionImprovised = "MotionDetection"}
+local itemTypes = {MotionDetectionEnhanced = "OMHTTModuleDetectionEnhanced", CapacityImprovised = "OMHTTModuleExpansionImprovised", MotionDetectionImprovised = "OMHTTModuleDetectionImprovised", CapacitySmall = "OMHTTModuleExpansionSmall", Capacity = "OMHTTModuleExpansionMedium",
+    CapacityLarge = "OMHTTModuleExpansionLarge", MotionDetection = "OMHTTModuleDetection", Detection360 = "OMHTTModule360"}
 for name in pairs(T.MODULES) do
     local fullType = "Base." .. (itemTypes[name] or "OMHTTModule" .. name)
     T.TYPES[name], T.COMPONENTS[fullType] = fullType, name
@@ -75,9 +75,10 @@ end
 ---@param head InventoryItem? Installed head
 ---@return number degreesPerSecond
 ---@nodiscard
-function T.turnSpeed(head)
-    if G.profile(head) then return Stats.option("FirearmTurnSpeed", 90, 1, 360) end
-    return T.option("TurnSpeed", 90, 1, 360)
+function T.turnSpeed(head, active)
+    local speed = G.profile(head) and Stats.option("FirearmTurnSpeed", 90, 1, 360) or T.option("TurnSpeed", 90, 1, 360)
+    if active and active.MotionDetectionEnhanced then speed = speed * Stats.option("EnhancedTurnMultiplier", 3, 1, 10) end
+    return speed
 end
 
 ---@param contents table? Native inventory summary
@@ -250,6 +251,8 @@ function T.configure(container)
     container:setType(T.CONTAINER)
     local stats = Stats.resolve({active = {CapacityImprovised = 1, Capacity = 1, CapacitySmall = 1, CapacityLarge = 1}})
     local capacity = math.ceil(10 + stats.ammo * 0.2 + (stats.modules + 1) * 0.3)
+    -- Native B42 getCapacity clamps bags to 50 and world storage to 100.
+    capacity = math.min(capacity, container:getContainingItem() and 50 or 100)
     container:setCapacity(capacity)
     if container:getContainingItem() then container:getContainingItem():setCapacity(capacity) end
     container:setAcceptItemFunction("OMHTT_Turret.accept")

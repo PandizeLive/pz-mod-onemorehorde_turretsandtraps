@@ -274,5 +274,16 @@
     "Sandbox_OMHTurretsTraps_LootRateSplitter": "Splitter loot multiplier",
     "Sandbox_OMHTurretsTraps_LootRateSplitter_tooltip": "Multiplier for this module in eligible component loot pools. Zero disables new drops.",
     "Sandbox_OMHTurretsTraps_LootRateFragment": "Fragment loot multiplier",
-    "Sandbox_OMHTurretsTraps_LootRateFragment_tooltip": "Multiplier for this module in eligible component loot pools. Zero disables new drops."
+    "Sandbox_OMHTurretsTraps_LootRateFragment_tooltip": "Multiplier for this module in eligible component loot pools. Zero disables new drops.",
+    "Sandbox_Title_OMHTurretsTraps_Detection": "Detection",
+    "Sandbox_OMHTurretsTraps_EnhancedFireMultiplier": "Enhanced firing multiplier",
+    "Sandbox_OMHTurretsTraps_EnhancedFireMultiplier_tooltip": "Scales firearm cadence and its Rapid-Fire time floor. Default removes the normal 0.75 rate reduction.",
+    "Sandbox_OMHTurretsTraps_EnhancedTurnMultiplier": "Enhanced turning multiplier",
+    "Sandbox_OMHTurretsTraps_EnhancedTurnMultiplier_tooltip": "Scales turning speed while Enhanced Detection is installed.",
+    "Sandbox_OMHTurretsTraps_EnhancedDetectionInterval": "Enhanced scan interval (seconds)",
+    "Sandbox_OMHTurretsTraps_EnhancedDetectionInterval_tooltip": "Minimum time between bounded scans. Actual acquisition can take longer under load.",
+    "Sandbox_OMHTurretsTraps_LootRateFiringEnhanced": "Enhanced Firing loot multiplier",
+    "Sandbox_OMHTurretsTraps_LootRateFiringEnhanced_tooltip": "Multiplier in Large Expansion eligible pools. Zero disables new drops.",
+    "Sandbox_OMHTurretsTraps_LootRateMotionDetectionEnhanced": "Enhanced Detection loot multiplier",
+    "Sandbox_OMHTurretsTraps_LootRateMotionDetectionEnhanced_tooltip": "Multiplier in Large Expansion eligible pools. Zero disables new drops."
 }

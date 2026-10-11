@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Synchronized 2026-10-11 against C80-C136, the installed, native-verified 0.2.40 build; rendered acceptance is pending. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
+Synchronized 2026-10-11 against C80-C137, the prepared 0.2.41 corrective/content build; rendered acceptance is pending. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -18,7 +18,7 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 ## Current checkpoint status and next work
 
-**C136 current module checkpoint:** the complete Magazine/Splitter/Fragment baseline is approved and implemented in 0.2.40. R3C4 rules and native feed proof pass; R3C5 automated/native verification is complete, including all three package-isolation checks. Rendered acceptance joins Concertina in [one combined test](TEST_v0.2.40.md). R3C6 remains the next later discussion; R3C7 combined balance/endurance is pending.
+**C137 current module checkpoint:** 0.2.41 adds approved Enhanced Firing/Detection and larger reserve count bonuses, and corrects automatic cadence, placement limits and volley visuals. LootLab is refreshed to the same catalog. R3C4 is settled; R3C5 automated/native proof and remaining rendered acceptance are in [one focused test](TEST_v0.2.41.md). Native inventory weight remains a separate limit. R3C6 remains later discussion; R3C7 balance/endurance pending.
 
 **C132/C133 trap revision, implemented in 0.2.39:** owner requests one paired 1x2 Concertina trap with shared durability/service and one inventory item, alongside module work. Existing recipe/weight/total HP retained; native verification/install is tracked in [0.2.39 test evidence](TEST_v0.2.39.md). See [R2C4 contract](checkpoints/R2C4_CONCERTINA.md#c132-one-paired-1x2-concertina-trap-for-the-upcoming-patch-2026-10-11). This does not reorder R3C4-R3C7 or change independent Bed Spikes.
 
@@ -49,7 +49,7 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 | 2: R2C4 concertina | C133 linked 1x2 conversion installed/native-verified in 0.2.39 | Focused paired-wire owner acceptance remains; see TEST_v0.2.39.md |
 | 3: R3C1-R3C2 new head | Candidates documented; none selected for implementation | Select one head and settle its concrete contract before prototyping |
 | 3: R3C3 explosive head | Optional, unscoped | Collateral/resource/effect-budget decisions and feasibility first |
-| 3: R3C4-R3C7 offensive modules/battery | C136 settles selected R3C4 rules; Magazine/Splitter/Fragment implemented in 0.2.40; automated/native/package checks pass, owner acceptance pending | Finish R3C5 native/rendered acceptance; discuss R3C6 conditional/penetrating effects next, then R3C7 combined acceptance |
+| 3: R3C4-R3C7 offensive modules/battery | C137 / 0.2.41 corrects and extends C136 modules; automated/native checks pass, rendered acceptance pending | Finish R3C5 rendered acceptance; discuss R3C6 conditional/penetrating effects next, then R3C7 combined acceptance |
 | 3: R3C8 starter modules/expansion | C104 implemented, verified and installed in 0.2.34 | C106 tentative passes; 4/6/6 layout acceptance in 0.2.35; include maximum loadouts in future R3C7 endurance checks |
 | 4: R4C1-R4C4 signals/connected traps | Planned | Signal contract first; devices then optional turret receiver |
 | 5: R5C1-R5C3 MP/integrations/release | Planned; no certification or publication | Validate only the selected release scope; optional features need not all ship |

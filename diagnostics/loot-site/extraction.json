@@ -1,13 +1,26 @@
 {
   "game": "42.21.0",
-  "baseline": "T&T 0.2.28",
+  "baseline": "T&T 0.2.41",
   "previousBaselines": [
     "Installed 0.2.22",
     "T&T 0.2.23",
     "T&T 0.2.24",
     "T&T 0.2.25",
     "T&T 0.2.26",
-    "T&T 0.2.27"
+    "T&T 0.2.27",
+    "T&T 0.2.28",
+    "T&T 0.2.29",
+    "T&T 0.2.30",
+    "T&T 0.2.31",
+    "T&T 0.2.32",
+    "T&T 0.2.33",
+    "T&T 0.2.34",
+    "T&T 0.2.35",
+    "T&T 0.2.36",
+    "T&T 0.2.37",
+    "T&T 0.2.38",
+    "T&T 0.2.39",
+    "T&T 0.2.40"
   ],
   "headers": 4065,
   "roomRecords": 90827,
@@ -120,5 +133,7 @@
     "fruitbushc": 1,
     "fruitbusha": 1,
     "fruitbushd": 1
-  }
+  },
+  "requiredModId": "OneMoreHorde_Turrets",
+  "turretsEnabled": true
 }

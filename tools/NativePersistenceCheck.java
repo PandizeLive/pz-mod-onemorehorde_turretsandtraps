@@ -228,7 +228,7 @@ public final class NativePersistenceCheck {
             }
         }
         for (Object item : items) {
-            if ("Base.OMHTTPotatoHead".equals(get(item, "getFullType"))) {
+            if ("Base.OMHTTTurretPotato".equals(get(item, "getFullType"))) {
                 Object cycle = call(get(item, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTCycle");
                 check(cycle != null && Double.valueOf(1).equals(call(cycle, "rawget", new Class<?>[]{Object.class}, "loaded")), "Head magazine lost");
                 check(Double.valueOf(123456789).equals(call(cycle, "rawget", new Class<?>[]{Object.class}, "nextShot")), "Head cooldown lost");
@@ -242,7 +242,7 @@ public final class NativePersistenceCheck {
             String fullType = (String)get(item, "getFullType");
             if (fullType.equals("Base.OMHTTModuleRapidFire")) rapid++;
             if (fullType.equals("Base.OMHTTModuleReload")) reload++;
-            if (fullType.equals("Base.OMHTTExpansionKitMedium")) capacity++;
+            if (fullType.equals("Base.OMHTTModuleExpansionMedium")) capacity++;
         }
         check(rapid == 2 && reload == 2 && capacity == 1, "Stacked modules or expansion lost");
         check(battery && ammo && head, "Missing ammunition, battery or head cycle");
@@ -301,14 +301,14 @@ public final class NativePersistenceCheck {
             starterTypes.add(type);
             check(((Number)get(item, "getID")).intValue() == ((Number)call(get(starterRestored, "getModData"),
                 "rawget", new Class<?>[]{Object.class}, type)).intValue(), "Improvised exact-item identity changed");
-            if (type.equals("Base.OMHTTPotatoHead")) {
+            if (type.equals("Base.OMHTTTurretPotato")) {
                 Object cycle = call(get(item, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTCycle");
                 check(Double.valueOf(123456789).equals(call(cycle, "rawget", new Class<?>[]{Object.class}, "nextShot")), "Improvised failure cooldown lost");
                 check(Double.valueOf(1).equals(call(cycle, "rawget", new Class<?>[]{Object.class}, "loaded")), "Improvised loaded round lost");
             }
         }
         check(starterTypes.containsAll(java.util.Set.of("Base.OMHTTModuleFiringImprovised", "Base.OMHTTModuleDetectionImprovised",
-            "Base.OMHTTExpansionKitImprovised", "Base.OMHTTPotatoHead", "Base.Potato")), "Improvised setup changed types");
+            "Base.OMHTTModuleExpansionImprovised", "Base.OMHTTTurretPotato", "Base.Potato")), "Improvised setup changed types");
         System.out.println("[OMHTT-Smoke] native-improvised mode=" + mode + " items=5 identity=exact loaded=1 cooldown=preserved");
         System.out.println("[OMHTT-Smoke] native-packed-turret mode=" + mode + " items=8 charge=preserved condition=37 cooldown=preserved weight=exact");
         System.out.println("[OMHTT-Smoke] native-turret-persistence mode=" + mode + " items=8 charge=0.37 health=37 cooldown=preserved identity=exact sprite=valid");

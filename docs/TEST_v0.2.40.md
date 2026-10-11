@@ -29,3 +29,11 @@ SP combat only; no owner/GPU/audio or maximum-load endurance acceptance claimed.
 ## Installation and GitHub
 
 Native Traps-only/Turrets-only/both startup passed in 90.5/91.5/90.2 seconds. Installed through root OMH.cmd from immutable `test/v0.2.40` / `d916e78736197d10bb5f6f669ca9a59b24d292bf`. All 190 source and 230 package/tag/installed/archive files verify; both previous 0.2.39 backups verify. Archive SHA-256: `31acf498d107e63779e2d33db8a3da437079f559cc76039d24225fc36d607536`. [Install](../diagnostics/v0.2.40/install.json) | [Release verification](../diagnostics/v0.2.40/local-release.json). Development delivery uses the existing branch/draft PR #1 under C108/C119; no merge or Workshop publication.
+
+## Owner findings and console review - 2026-10-11 (C137)
+
+Owner reports slow M4/M16 cadence with Firearms, failure to place more Spike Barriers after many placements, and incomplete side tracers with two Splitters. No blanket pass was reported. Later clarifies that handheld rifles also feel slow; that is a separate undiagnosed finding.
+
+Capture `diagnostics/captures/20261011-023434-2341`, captured 2026-10-11 02:34:34 -04:00, source console SHA-256 `A105FE21AA9A42CAE36A57DD9437250B646A5C9116DC3DA0389D94D5B14BB88B`. Console and installed markers establish 0.2.40 on B42.21. Fifty-four construction-preview `status=Limit` records match the diagnostic 64-tile limit leaking into real placement; retired records counted too. Firearm audit records M4 Single/1333.333 ms and M16 Single/1111.111 ms, consistent with the reported 0.75/0.9 rates. Splitter code dispatched child visuals across later callbacks and hid whole tracers when endpoints were unseen; screenshot alone cannot establish missing damage.
+
+No OMHTT exception stack was found in the selected review. Stock asset/map warnings and Firearms Sandbox formatting errors exist, so this is not a clean-console claim. Logged stage maxima included fire 4 ms, audio 1 ms, effect/head rendering 2 ms; this limited sample is not universal performance acceptance. Raw captured console remains local; C137 patch/test records contain reviewed findings. Prior unreported checks remain pending.

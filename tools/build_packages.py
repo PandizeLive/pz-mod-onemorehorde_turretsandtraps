@@ -71,7 +71,7 @@ def expected_files():
         number = 7316 if component == "traps" else 7317
         description = ("Independent single-player Spike Barriers, Bed Spikes, Concertina Wire and backed Barbed Panels: crafting, placement, repair and portable defenses."
                        if component == "traps" else "Independent single-player modular potato and firearm turrets, modules, power and component loot.")
-        info = f"name=OMH: {title}\nid={identifier}\nmodversion={version}\nversionMin=42.20\nicon=icon.png\ndescription={description} Part of OMH: Turrets & Traps. Fresh test world required for 0.2.29. Temporary developer artwork.\ntiledef={pack} {number}\npack={pack}\n"
+        info = f"name=OMH: {title}\nid={identifier}\nmodversion={version}\nversionMin=42.20\nicon=icon.png\ndescription={description} Part of OMH: Turrets & Traps. Fresh test world required for 0.2.41 item identities. Temporary developer artwork.\ntiledef={pack} {number}\npack={pack}\n"
         files = result[component]
         files["42.20/mod.info"] = info.encode()
         files["42.20/media/sandbox-options.txt"] = sandbox(component)

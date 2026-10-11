@@ -55,7 +55,7 @@ for i = 1, #facings do
     local x, y, north = C.edge(floor.x, floor.y, heading)
     local backing = getCell():getGridSquare(x, y, 0) or makeSquare(x, y, 0)
     function backing:getCell() return getCell() end
-    local item = {container = inventory, getFullType = function() return "Base.OMHTTBarbedPanelItem" end,
+    local item = {container = inventory, getFullType = function() return "Base.OMHTTTrapBarbedPanel" end,
         getCondition = function() return 100 end, getContainer = function(self) return self.container end}
     local cursor = P.place(item, testPlayer)
     local before = consumed

@@ -4,12 +4,12 @@ require("TimedActions/ISTimedActionQueue")
 local H = {}
 H.generation = 0
 H.definitions = {
-    {item = "Base.OMHTTSpikeBarrierItem", craft = "OMHTTCraftSpikeBarrier", deploy = "OMHTTDeploySpikeBarrier"},
-    {item = "Base.OMHTTReinforcedBarrierItem", craft = "OMHTTReinforceSpikeBarrier", deploy = "OMHTTDeployReinforcedBarrier"},
-    {item = "Base.OMHTTBedSpikesItem", craft = "OMHTTCraftBedSpikes", deploy = "OMHTTDeployBedSpikes"},
-    {item = "Base.OMHTTReinforcedBedSpikesItem", craft = "OMHTTReinforceBedSpikes", deploy = "OMHTTDeployReinforcedBedSpikes"},
-    {item = "Base.OMHTTConcertinaWire", craft = "OMHTTCraftConcertinaWire", deploy = "OMHTTDeployConcertinaWire"},
-    {item = "Base.OMHTTBarbedPanelItem", craft = "OMHTTCraftBarbs", deploy = "OMHTTBarbs"},
+    {item = "Base.OMHTTTrapSpikeBarrier", craft = "OMHTTCraftSpikeBarrier", deploy = "OMHTTDeploySpikeBarrier"},
+    {item = "Base.OMHTTTrapSpikeBarrierReinforced", craft = "OMHTTReinforceSpikeBarrier", deploy = "OMHTTDeployReinforcedBarrier"},
+    {item = "Base.OMHTTTrapBedSpikes", craft = "OMHTTCraftBedSpikes", deploy = "OMHTTDeployBedSpikes"},
+    {item = "Base.OMHTTTrapBedSpikesReinforced", craft = "OMHTTReinforceBedSpikes", deploy = "OMHTTDeployReinforcedBedSpikes"},
+    {item = "Base.OMHTTTrapConcertinaWire", craft = "OMHTTCraftConcertinaWire", deploy = "OMHTTDeployConcertinaWire"},
+    {item = "Base.OMHTTTrapBarbedPanel", craft = "OMHTTCraftBarbs", deploy = "OMHTTBarbs"},
     {item = "Base.OMHTTTurretBase", craft = "OMHTTCraftTurretBase", deploy = "OMHTTDeployTurret", turret = true},
 }
 local byRecipe = {}

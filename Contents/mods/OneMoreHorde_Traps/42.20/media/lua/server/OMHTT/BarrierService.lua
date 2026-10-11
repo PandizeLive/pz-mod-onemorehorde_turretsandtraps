@@ -43,9 +43,9 @@ function Service.apply(player, object, id, operation)
     local slot = Footprint.slot(object:getSquare(), id)
     local before = record.condition
     if operation == "Pickup" then
-        local kind = "Base.OMHTTSpikeBarrierItem"
+        local kind = "Base.OMHTTTrapSpikeBarrier"
         if record.tier == "reinforced" then
-            kind = "Base.OMHTTReinforcedBarrierItem"
+            kind = "Base.OMHTTTrapSpikeBarrierReinforced"
         end
         local item = instanceItem(kind)
         if not player:getInventory():hasRoomFor(player, item) then

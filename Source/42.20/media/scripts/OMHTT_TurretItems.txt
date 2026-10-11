@@ -1,4 +1,22 @@
 module Base {
+    item OMHTTModuleFiringEnhanced {
+        DisplayName = Enhanced Firing Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleFiringEnhanced,
+    }
+    item OMHTTModuleDetectionEnhanced {
+        DisplayName = Enhanced Detection Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleDetectionEnhanced,
+    }
     item OMHTTModuleMagazine {
         DisplayName = Magazine Module,
         ItemType = base:normal,
@@ -40,9 +58,9 @@ module Base {
         AcceptItemFunction = OMHTT_Turret.accept,
         Tooltip = Tooltip_OMHTT_TurretBase,
     }
-    item OMHTTPotatoHead {
+    item OMHTTTurretPotato {
         DisplayName = Potato Launcher Head,
-        WorldStaticModel = OMHTTProbeHead,
+        WorldStaticModel = OMHTTTurretProbe,
         ItemType = base:normal,
         DisplayCategory = Material,
         Weight = 4,
@@ -143,7 +161,7 @@ module Base {
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_ModuleAutoloader,
     }
-    item OMHTTExpansionKitSmall {
+    item OMHTTModuleExpansionSmall {
         DisplayName = Small Expansion Kit,
         ItemType = base:normal,
         DisplayCategory = Material,
@@ -152,7 +170,7 @@ module Base {
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_ModuleCapacity,
     }
-    item OMHTTExpansionKitMedium {
+    item OMHTTModuleExpansionMedium {
         DisplayName = Medium Expansion Kit,
         ItemType = base:normal,
         DisplayCategory = Material,
@@ -161,7 +179,7 @@ module Base {
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_ModuleCapacity,
     }
-    item OMHTTExpansionKitLarge {
+    item OMHTTModuleExpansionLarge {
         DisplayName = Large Expansion Kit,
         ItemType = base:normal,
         DisplayCategory = Material,
@@ -206,7 +224,7 @@ module Base {
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_FiringImprovised,
     }
-    item OMHTTExpansionKitImprovised {
+    item OMHTTModuleExpansionImprovised {
         DisplayName = Makeshift Expansion Kit,
         ItemType = base:normal,
         DisplayCategory = Material,

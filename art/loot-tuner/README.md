@@ -12,7 +12,7 @@ This is a personal, offline balancing tool for **new-world estimates**. It does 
 4. Toggle individual components, or Show all / Hide all. Visibility never rerolls loot or changes rates. Select a town, zoom and hover dots for coordinates, floor, chances and generated quantities.
 5. Compare countywide and nearest-town estimates. Save/load scenario JSON to compare settings; export the Sandbox excerpt when satisfied. Apply settings yourself only after reviewing the excerpt.
 
-The baseline is **T&T 0.2.28** and **Project Zomboid 42.21.0**, including Critical/Accuracy and the reduced Suppression loot weight. The owner approved this gameplay patch and site update together. Gameplay installation is tracked separately in `docs/RELEASE.md`.
+The baseline is **T&T 0.2.41** and **Project Zomboid 42.21.0**, including Critical/Accuracy and the reduced Suppression loot weight. The owner approved this gameplay patch and site update together. Gameplay installation is tracked separately in `docs/RELEASE.md`.
 
 ## What the numbers mean
 
@@ -59,7 +59,7 @@ Pinch to zoom, drag with one finger, or use the 44px on-map zoom controls. Tap a
 
 ## Saved settings
 
-The hosted admin LootLab autosaves rates, seed, component visibility, estimate selection and overlay to the signed-in admin account. PC and phone must use the same login. Set to Default restores the T&T 0.2.28 scenario baseline (including Material 0.60, rolls 1 and retention 100%) and saves that reset. Map pan/zoom and town jumps are navigation, not saved tuning settings.
+The hosted admin LootLab autosaves rates, seed, component visibility, estimate selection and overlay to the signed-in admin account. PC and phone must use the same login. Set to Default restores the T&T 0.2.41 scenario baseline (including Material 0.60, rolls 1 and retention 100%) and saves that reset. Map pan/zoom and town jumps are navigation, not saved tuning settings.
 
 The account endpoint uses the existing admin host/Access/allowlist gate and a separate D1 table. Writes use revision checks; clients merge only locally changed fields after a conflict. Explicit reset/import replace the whole scenario. Saves debounce for 450 ms and refresh when the page regains focus or every 15 seconds while visible. A browser-local pending draft survives connection failures and reloads; the status distinguishes unsynced changes from successful saves. A failed initial read never uploads defaults. Local file copies use browser storage only.
 
@@ -93,3 +93,7 @@ Haul probabilities use an exact convolution of independent per-item rolls with a
 ## 0.2.28: normalized tuning
 
 Base weights now include approved global 4.5 and the prior component factors; all controls default to 1. Pool scales remain unchanged. New Sandbox export keys are ModuleLootRate and LootRate<Component>, preventing old saved multipliers from applying twice. Existing game loot controls start at the normalized baseline; generated loot is untouched. Old website scenarios/drafts convert their factors to retain effective weights. The owner scenario receives the requested 4.5-equivalent reset using a conditional revision update. Default estimates: 2,630 items, 83.17% one/two-item finds and 2.61% five-plus jackpots.
+
+## 0.2.41 catalog refresh
+
+Magazine, Splitter, Fragment, Enhanced Firing and Enhanced Detection now use the current game pools and weights. Both Enhanced modules match Large Expansion rarity and eligible pools. Existing account/scenario rates, seed and visibility are preserved; newly added modules start at multiplier 1. No global loot multiplier increase. The simulation still excludes physical container-capacity rejection.

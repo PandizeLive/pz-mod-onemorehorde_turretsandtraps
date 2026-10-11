@@ -1,6 +1,6 @@
 # Planning
 
-**Current C136 handoff:** Magazine, Splitter and Fragment are approved and implemented for 0.2.40. Native write/read and automated logic pass; all three package-isolation checks pass; 0.2.40 is tagged and installed. R3C5 acceptance remains pending; R3C6 is the next later discussion. [Patch](PATCH_v0.2.40.md) | [Combined test](TEST_v0.2.40.md). Earlier open-choice entries below are historical.
+**Current C137 handoff:** 0.2.41 implements the approved Enhanced modules, automatic cadence, placement/volley corrections, item families, expansion bonuses and hosted LootLab refresh. Verification is recorded in [the focused test](TEST_v0.2.41.md); installed/tagged state is authoritative in [CURRENT_STATUS](CURRENT_STATUS.md). [Patch](PATCH_v0.2.41.md). Native weight limits remain; a separate storage redesign is not approved. Handheld rifle slowness is undiagnosed; no handheld timing mutation found. R3C5 acceptance remains open, R3C6 later discussion. Earlier current/open-choice entries below are historical.
 
 
 Updated 2026-10-11 under C119/C133. This is the shared entry point for planning in the local PC chat and **OMH: Turrets & Traps - Planning**. Detailed contracts and approval history remain in the linked records; this page indexes them rather than replacing them.

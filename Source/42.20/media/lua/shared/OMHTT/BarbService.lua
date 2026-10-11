@@ -75,7 +75,7 @@ function Service.apply(player, object, id, operation)
     if operation ~= "Remove" then return false end
     local recovered = nil
     if record.kind == "wire" then
-        recovered = instanceItem("Base.OMHTTConcertinaWire")
+        recovered = instanceItem("Base.OMHTTTrapConcertinaWire")
         if not player:getInventory():hasRoomFor(player, recovered) then
             player:setHaloNote(getText("UI_OMHTT_PickupNoRoom"))
             return false

@@ -24,7 +24,7 @@ S.NATIVE = {
 ---@return string? sound Prepared replacement
 ---@nodiscard
 function S.suppressed(head)
-    if head:getFullType() == "Base.OMHTTPotatoHead" then return "OMHTTPotatoSuppressed" end
+    if head:getFullType() == "Base.OMHTTTurretPotato" then return "OMHTTPotatoSuppressed" end
     return S.NATIVE[head:getSwingSound()]
 end
 
