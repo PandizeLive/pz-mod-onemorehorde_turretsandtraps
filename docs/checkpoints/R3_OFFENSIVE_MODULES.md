@@ -370,3 +370,8 @@ Inspected c7fb931, fetched origin and verified the existing draft PR #1 branch i
 ## C147 - approved formula and completed integration (2026-10-11)
 
 Owner: "Approved" in response to C146. Approves the complete battery formula, 1x weapon floor, pre-module damage/range inputs, equal per-type weights/counting exclusions, 5 percent per working module, 0.005 percent battery base, zero idle, and 0.0001 generator base with the same multipliers. No repeat numerical approval required. Continue C144-authorized integration, validation, installation and C108/C119 mirror. See [0.2.42 patch](../PATCH_v0.2.42.md) and the versioned test record for implementation and evidence.
+
+
+## C150 - proposed ammo-saving module and Manage clarity (2026-10-11)
+
+[Ammo saver / battery / compact Manage discussion](R3_AMMO_SAVER_MANAGE.md) records the new owner request and 1A/1B/1C choices, with names included. No answer or implementation approval inferred. Proposed linear reuse, Splitter accounting alternatives, display-only precision and tooltip/endurance semantics remain to select. C149 performance correction stays first; installed 0.2.42 and R3C7 test remain unchanged.

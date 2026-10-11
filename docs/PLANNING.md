@@ -1,5 +1,7 @@
 # Planning
 
+**C150 discussion, not approved implementation:** [C150 module/UI choices](checkpoints/R3_AMMO_SAVER_MANAGE.md). Owner requests naming and behavioral/UI options as 1A/1B/1C directly in the reply, not a structured form. Recommend Ammo Saver + existing-cost discount + rounded tooltip/remaining volleys + battery/expansion in the grid gaps. Proposed stacking and interactions still need discussion. C149 transfer correction remains first priority.
+
 **C149 next-update scope:** owner retains C148 optimizations and requests fast matching Manage/inventory ammo transfers after reporting a bulk-transfer freeze. [Contract and diagnosis](PERFORMANCE_AUDIT_v0.2.42.md#c149-bulk-ammo-transfer-follow-up-2026-10-11) | [0.2.42 console finding](TEST_v0.2.42.md#c149-owner-finding-bulk-ammo-transfer-freeze-2026-10-11). Prioritize bounded transfer preparation/execution and shared validation before the other five improvements. No gameplay patch/install during this test; R3C7 remains open.
 
 **C148 investigation:** [0.2.42 runtime inventory and optimization proposals](PERFORMANCE_AUDIT_v0.2.42.md). Requested while the owner tests; gameplay remains unchanged. Proposed next optimization scope: barrier maintenance, barbed contact lookup reuse and turret stat reuse, followed by rendering/queue housekeeping. Approval to investigate is not approval to patch. R3C7 owner test remains pending.
