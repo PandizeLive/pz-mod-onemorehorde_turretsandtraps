@@ -1,6 +1,6 @@
 # R3C4-R3C7: offensive modules and battery endurance
 
-Current planning: **C142 / R3C6**. See [current Execute proposal](#c142---execute-base-plus-increment-proposal-2026-10-11). Owner proposes Execute at 10% HP for the first copy, +2 percentage points per additional copy. Recommended: more useful first-copy finishing and 40% at sixteen, compared with the prior proposed 48%. Impact remains proposed at 60% first/+2 points per extra (90% at sixteen). Numerical settlement/patch approval still pending; Initial Blow and Piercing unchanged. Installed 0.2.41 and C138 owner test completion unchanged. Earlier sections retain decision history.
+Current planning: **C143 / R3C6**. See [approved percentages](#c143---execute-and-impact-percentages-approved-2026-10-11). Owner approves Execute at 10% HP for the first copy/+2 percentage points per additional copy, and Impact at 60% chance first/+2 points per additional copy. Sixteen copies yield a 40% Execute threshold or 90% Impact chance. Initial Blow and Piercing remain selected and unchanged. These percentage choices are settled; do not ask for their approval again. Remaining compatibility/loot/power details and native feasibility are still open; this approval answers the numerical choice, not an unoffered complete patch. Installed 0.2.41 and C138 owner test completion unchanged. Earlier sections retain decision history.
 
 **Current checkpoint: R3C6 behavior discussion.** R3C4 selected rules and R3C5 implementation/owner round are complete for the existing slice; broader endurance validation remains R3C7. No new module implementation is authorized by this discussion.
 
@@ -236,3 +236,16 @@ For n>=1 Execute copies, proposed pre-hit HP threshold = 10 + 2*(n-1) percent. Z
 Recommend this over the assistant's flat 3-point Execute proposal: first-copy threshold rises from 3% to 10%, both curves reach 24% at eight copies, and sixteen copies now reach 40% instead of 48%. The initial module is useful earlier while each extra copy offers a modest improvement for its slot cost. Actual added value still depends on whether ordinary damage would already kill the target. Standard automated loadouts with Firing/Detection leave fourteen slots before other utilities, giving at most 36% Execute or 86% Impact when dedicated to that effect. These maxima cannot be combined in the same loadout. Physical capacity remains unchanged; higher Sandbox capacities retain C141's explicit balance caveat (this Execute formula reaches 100% at forty-six copies).
 
 Inspected 803d334; origin fetched and only active PR #1 checked. Arithmetic reviewed at zero/one and representative counts; no gameplay tests run. Installed 0.2.41/C138 test completion unchanged; no code, package, version, installation or Workshop edits. Decision needed: settle these proposed percentages, then remaining R3C6 compatibility/loot/power/native feasibility work; no new patch approval.
+
+
+## C143 - Execute and Impact percentages approved (2026-10-11)
+
+Owner: "Approved", directly answering "settle on Execute 10% +2 points and Impact 60% +2 points?" Both numerical progressions are now approved, superseding C140's Execute 7 points/copy and the unselected C140-C142 alternatives. No further confirmation of these values is needed.
+
+- Execute: for n>=1, pre-hit HP eligibility threshold = 10 + 2*(n-1) percent. Zero copies disables the effect. At 1/2/4/8/14/16 copies: 10/12/16/24/36/40%. A successful eligible primary hit kills; this is an HP threshold, not a random chance. It does not acquire Impact's first-shot restriction.
+- Impact: for n>=1, first-shot stumble chance = 60 + 2*(n-1) percent. Zero copies disables it. At 1/2/4/8/14/16 copies: 60/62/66/74/86/90%. One combined roll, not repeated reactions. Previously proposed detailed reload/rearm and recovery-protection rules remain separately tracked pending final contract settlement/native proof.
+- Initial Blow remains >=90% pre-hit HP with +25% damage/copy, no separate bonus cap. Piercing remains one extra aligned victim/copy with 70% successive damage retention and slot-limited stacking.
+
+Use standard sixteen-slot capacity as the balance target; Firing/Detection leave fourteen for other modules, and different effects compete for that same budget. No new physical slot limit, higher-Sandbox safety cap, expansion rescaling or unrelated module rebalance is silently approved. Retain C141/C142 caveats for custom larger capacities.
+
+Scope: numerical behavior approval only. Remaining head/secondary-effect compatibility details, native maximum-health/standing-stumble feasibility, acquisition weights, power pricing and endurance validation remain open under R3C6/R3C7. No gameplay code, version, install, test result or Workshop change in this approval-record update; installed 0.2.41 and C138 completed owner round unchanged. Inspected 50c3220, fetched origin and confirmed active draft PR #1; C119 approval record mirrored to GitHub.

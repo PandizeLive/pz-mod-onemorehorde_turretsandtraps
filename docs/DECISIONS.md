@@ -788,3 +788,8 @@ Owner asks how to tune percentages to avoid 100% at sixteen modules. [Revised pr
 ## C142 - Execute first-copy threshold proposal (2026-10-11)
 
 Owner proposes Execute at 10% HP for the first copy, +2 percentage points per additional copy. Recommended: more useful first-copy finishing and 40% at sixteen, compared with the prior proposed 48%. Impact remains proposed at 60% first/+2 points per extra (90% at sixteen). Numerical settlement/patch approval still pending; Initial Blow and Piercing unchanged. [Contract and arithmetic](checkpoints/R3_OFFENSIVE_MODULES.md#c142---execute-base-plus-increment-proposal-2026-10-11). Share Impact's stacking pattern only, not its first-shot restriction or probability semantics. Execute remains a deterministic kill on a successful eligible primary hit. No gameplay/version/test/install change; C119 planning mirror required.
+
+
+## C143 - Execute and Impact percentage approval (2026-10-11)
+
+Owner: "Approved", answering the explicit C142 numerical settlement question. Owner approves Execute at 10% HP for the first copy/+2 percentage points per additional copy, and Impact at 60% chance first/+2 points per additional copy. Sixteen copies yield a 40% Execute threshold or 90% Impact chance. Initial Blow and Piercing remain selected and unchanged. These percentage choices are settled; do not ask for their approval again. Remaining compatibility/loot/power details and native feasibility are still open; this approval answers the numerical choice, not an unoffered complete patch. [Approved contract](checkpoints/R3_OFFENSIVE_MODULES.md#c143---execute-and-impact-percentages-approved-2026-10-11). Installed 0.2.41/C138 unchanged; no new gameplay or test claim.
