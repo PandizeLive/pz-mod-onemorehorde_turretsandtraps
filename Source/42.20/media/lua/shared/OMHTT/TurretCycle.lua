@@ -43,7 +43,7 @@ end
 ---@param now number Real-time milliseconds
 ---@return nil
 function C.consume(state, remaining, config, now)
-    state.loaded = math.max(0, state.loaded - 1)
+    state.loaded = math.max(0, state.loaded - math.min(state.loaded, 1 + (config.splitter or 0)))
     state.nextShot = now + config.cooldown
     state.cooldownDuration = config.cooldown
     C.update(state, remaining, config, now)

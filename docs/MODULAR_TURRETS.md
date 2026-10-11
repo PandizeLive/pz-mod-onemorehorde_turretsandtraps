@@ -69,3 +69,8 @@ C81 schedules stackable offensive effects and intensity-based power costs with l
 - Final art/audio and full modpack rendered acceptance remain independent of headless checks.
 
 Do not add new module recipes, unsupported gun mechanisms, extra turret models or multiplayer claims merely to complete this documentation plan.
+
+
+## C136 implemented module slice (0.2.40)
+
+Magazine, Splitter and Fragment are now implemented under the approved C129-C136 rules. See [patch](PATCH_v0.2.40.md) and [verification/combined test](TEST_v0.2.40.md). This supersedes historical statements above that these three remain unimplemented. R3C6 effects and R3C7 combined endurance remain later work.

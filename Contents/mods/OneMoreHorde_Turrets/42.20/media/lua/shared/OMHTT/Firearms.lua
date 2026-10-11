@@ -1,4 +1,5 @@
 local Clock = require("OMHTT/TurretClock")
+local Feed = require("OMHTT/FirearmFeed")
 local G = {servicing = {}}
 G.PROFILES = {
     ["Base.Pistol"] = {reload = 2.7, rack = 1.2, muzzle = 0.0823, yaw = 0, roll = -90},
@@ -79,7 +80,7 @@ end
 function G.loaded(gun)
     local chamber = 0
     if gun:isRoundChambered() then chamber = 1 end
-    return gun:getCurrentAmmoCount() + chamber
+    return gun:getCurrentAmmoCount() + Feed.count(gun) + chamber
 end
 
 ---@param gun HandWeapon Supported firearm
@@ -107,6 +108,11 @@ function G.update(contents, stats, now, operate)
     local gun = contents.head
     local state = G.state(gun)
     Clock.restore(state, now)
+    if operate then
+        local before = Feed.count(gun)
+        Feed.restore(gun, stats.magazine, nil, false)
+        contents.reserve = contents.reserve + before - Feed.count(gun)
+    end
     state.loaded = G.loaded(gun)
     if gun:getModData().OMHTTPowerOff then return state, "Off" end
     if G.servicing[gun] then return state, "Servicing" end
@@ -122,7 +128,7 @@ function G.update(contents, stats, now, operate)
         state.rackReady = nil
         if contents.reserve == 0 then state.reloadReady = nil; return state, "Empty" end
         if not operate then return state, "Reloading" end
-        local amount = math.min(gun:getMaxAmmo(), contents.reserve)
+        local amount = math.min(stats.magazine, contents.reserve)
         local duration = stats.reload
         if not gun:getMagazineType() then duration = duration * amount end
         if not state.reloadReady then state.reloadReady = now + duration end
@@ -136,11 +142,12 @@ function G.update(contents, stats, now, operate)
             if count >= amount then break end
             local round = contents.rounds[i]
             if container:contains(round) and round:getFullType() == G.ammoType(gun) then
-                container:Remove(round)
+                if count < gun:getMaxAmmo() then container:Remove(round) end
                 count = count + 1
             end
         end
-        gun:setCurrentAmmoCount(count)
+        gun:setCurrentAmmoCount(math.min(count, gun:getMaxAmmo()))
+        Feed.set(gun, math.max(0, count - gun:getMaxAmmo()))
         if not gun:haveChamber() then gun:setSpentRoundCount(0) end
         state.reloadReady = nil
         contents.reserve = contents.reserve - count
@@ -153,7 +160,7 @@ function G.update(contents, stats, now, operate)
         if now < state.rackReady then return state, "Racking" end
         gun:setSpentRoundChambered(false)
         gun:setRoundChambered(true)
-        gun:setCurrentAmmoCount(gun:getCurrentAmmoCount() - 1)
+        Feed.spend(gun, 1)
         state.rackReady = nil
     end
     state.loaded = G.loaded(gun)
@@ -169,16 +176,18 @@ function G.consume(contents, stats, now)
     local gun = contents.head
     local cycle, status = G.update(contents, stats, now, false)
     if status ~= "Ready" then return false end
+    local cost = math.min(G.loaded(gun), 1 + (stats.splitter or 0))
     if gun:haveChamber() then
         gun:setRoundChambered(false)
         gun:setSpentRoundChambered(gun:isRackAfterShoot())
-        if not gun:isRackAfterShoot() and gun:getCurrentAmmoCount() > 0 then
-            gun:setCurrentAmmoCount(gun:getCurrentAmmoCount() - 1)
+        Feed.spend(gun, cost - 1)
+        if not gun:isRackAfterShoot() and gun:getCurrentAmmoCount() + Feed.count(gun) > 0 then
+            Feed.spend(gun, 1)
             gun:setRoundChambered(true)
         end
     else
-        gun:setCurrentAmmoCount(gun:getCurrentAmmoCount() - 1)
-        gun:setSpentRoundCount(gun:getSpentRoundCount() + 1)
+        Feed.spend(gun, cost)
+        gun:setSpentRoundCount(math.min(gun:getMaxAmmo(), gun:getSpentRoundCount() + cost))
     end
     cycle.nextShot, cycle.cooldownDuration = now + stats.cooldown, stats.cooldown
     if gun:isRackAfterShoot() then cycle.rackReady = now + stats.rack end
@@ -220,6 +229,7 @@ end
 ---@return InventoryItem? magazine Transferred native magazine
 function G.transferMagazine(player, storage, gun, magazine, token)
     if G.magazineRejection(player, storage, gun, magazine, token) then return nil end
+    if not magazine and not Feed.restore(gun, gun:getMaxAmmo(), player, true) then return nil end
     if magazine then
         magazine:getContainer():Remove(magazine)
         player:removeFromHands(magazine)

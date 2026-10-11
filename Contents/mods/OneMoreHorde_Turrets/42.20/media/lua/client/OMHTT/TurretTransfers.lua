@@ -81,6 +81,18 @@ function ISInventoryTransferAction:transferItem(item)
         D.emit("turret-transfer-rejected", {itemId = item:getID(), reason = reason})
         return
     end
+    if T.isContainer(source) then
+        local current = T.contents(source)
+        local head = current.head
+        if head and G.profile(head) then
+            local capacity = T.cycleConfig(current).magazine
+            if T.component(item:getFullType()) == "Magazine" and item:getCondition() > 0 then
+                current.active.Magazine = math.max(0, (current.active.Magazine or 0) - 1)
+                capacity = T.cycleConfig(current).magazine
+            end
+            if not require("OMHTT/FirearmFeed").restore(head, capacity, self.character, item == head) then return end
+        end
+    end
     if G.profile(item) then G.cancelLoading(item) end
     nativeTransfer(self, item)
     if T.kind(item) == "head" and destination:contains(item) and T.state(source:getParent()) then

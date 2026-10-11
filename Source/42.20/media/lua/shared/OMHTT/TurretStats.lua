@@ -91,6 +91,8 @@ function S.resolve(contents)
     rack = math.max(0.1, rack / (1 + rapid / 100))
     reload = math.min(reload, math.max(S.option("ReloadMinimum", 0.25, 0, 10), reload / (1 + loading / 100)))
     if active.Autoloader then reload = 0 end
+    magazine = math.ceil(magazine + (active.Magazine or 0) * math.max(1, magazine * S.option("MagazineBonus", 35, 0, 200) / 100))
+    local splitter, fragment = active.Splitter or 0, active.Fragment or 0
     local knockBonus = math.min((active.Velocity or 0) * S.option("VelocityKnockdownBonus", 5, 0, 100),
         math.max(0, S.option("VelocityKnockdownCap", 90, 0, 100) - knockdown))
     return {damage = damage * (1 + S.bonus(active, "Velocity", 20, 100) / 100),
@@ -98,6 +100,10 @@ function S.resolve(contents)
         range = math.min(firearm and 50 or 30, range + S.bonus(active, "Range", 2, 10)),
         ammo = math.floor(ammoCapacity + extraAmmo),
         modules = math.floor(S.option("PotatoModuleCapacity", 2, 0, 20) + extraModules),
+        splitter = splitter, fragment = fragment, splitterDamage = S.option("SplitterDamage", 50, 0, 100) / 100,
+        fragmentDamage = math.min(S.option("FragmentDamageCap", 40, 0, 100), S.option("FragmentDamage", 20, 0, 100) + math.max(0, fragment - 1) * S.option("FragmentBonus", 5, 0, 100)) / 100,
+        fragmentRange = S.option("FragmentRange", 4, 1, 10),
+        effectPower = 1 + splitter * S.option("SplitterPower", 25, 0, 200) / 100 + fragment * S.option("FragmentPower", 25, 0, 200) / 100,
         magazine = magazine, accuracy = accuracy, farAccuracy = farAccuracy, critChance = critChance, critMultiplier = critMultiplier, rack = rack * 1000, firearm = firearm ~= nil,
         suppressed = (active.Suppression or 0) > 0,
         hearingMultiplier = remaining,

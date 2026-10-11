@@ -24,5 +24,8 @@
     "Tooltip_OMHTT_MotionDetectionImprovised": "Automatic detection at 75 percent range, including Range bonuses. Normal tracking speed. One Detection Module per turret.",
     "Tooltip_OMHTT_FiringImprovised": "Automatic firing with a configurable 15 percent default click-only failure. Failed triggers keep ammo and shot power, then wait the normal cooldown. Manual fire is unaffected. One Firing Module per turret.",
     "Tooltip_OMHTT_CapacityImprovised": "Adds 2 module slots and 25 reserve rounds by default. Replaces other expansion kits; bonuses do not stack.",
-    "Tooltip_OMHTT_ConcertinaWire": "Linked 1x2 freestanding wire. Slows and damages zombies during contact; overlapping wire and panels do not stack. 50 shared durability, one wear per damaging activation. Walk safely; running risks scratches and sprinting risks a fall."
+    "Tooltip_OMHTT_ConcertinaWire": "Linked 1x2 freestanding wire. Slows and damages zombies during contact; overlapping wire and panels do not stack. 50 shared durability, one wear per damaging activation. Walk safely; running risks scratches and sprinting risks a fall.",
+    "Tooltip_OMHTT_ModuleMagazine": "Increases magazine capacity by 35 percent of base per copy, minimum +1. Linear growth, rounded up. Turret use only.",
+    "Tooltip_OMHTT_ModuleSplitter": "Adds one side shot at 50 percent primary damage per copy. Consumes up to one extra ready round per copy; one round still fires a full volley. +25 percent base firing power per copy.",
+    "Tooltip_OMHTT_ModuleFragment": "Five direct fragments on the first primary hit. 20 percent damage each, +5 percentage points per extra copy, maximum 40 percent. Four-tile range. +25 percent base firing power per copy."
 }

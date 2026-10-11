@@ -50,7 +50,7 @@ local function verifyTurrets()
             end
         end
     end
-    assert(count == 121, "Expected 121 component entries across sixteen native loot pools")
+    assert(count == 138, "Expected 138 component entries across sixteen native loot pools")
     local retired = {"OMHTTModuleCapacitySmall", "OMHTTModuleCapacity", "OMHTTModuleCapacityLarge",
         "OMHTTModuleMotionDetection", "OMHTTModuleDetection360"}
     for i = 1, #retired do
@@ -85,8 +85,8 @@ local function verifyTurrets()
     end
     assert(auditAccepted >= 20 and auditRejected >= 2, "Expected conventional guns and cap-gun rejections")
     print("[OMHTT-Smoke] native-firearm-audit accepted=" .. auditAccepted .. " rejected=" .. auditRejected)
-    assert(visibleCount == 18, "Expected eighteen canonical components")
-    print("[OMHTT-Smoke] native-component-list visible=18 hidden=0 duplicates=0 legacy=removed")
+    assert(visibleCount == 21, "Expected twenty-one canonical components")
+    print("[OMHTT-Smoke] native-component-list visible=21 hidden=0 duplicates=0 legacy=removed")
     local nativeContents = {active = {Detection360 = 1, Filter = 1}}
     local profile = Modules.profile({baseFacing = 4, facing = 12, priority = "Toughest"}, nativeContents)
     assert(profile.cone == 360 and profile.heading == 90 and profile.priority == "Toughest", "Module profile failed")
@@ -110,7 +110,7 @@ local function verifyTurrets()
     assert(T.contents(live).active.MotionDetection == 1, "Native module condition defaults are not active")
     detector:setCondition(0)
     assert(T.contents(live).active.MotionDetection == nil, "Broken native module remains active")
-    print("[OMHTT-Smoke] native-modules loot=121 profiles=valid condition=checked")
+    print("[OMHTT-Smoke] native-modules loot=138 profiles=valid condition=checked")
     assert(GameSounds.getSound("OMHTTTriggerClick") ~= nil, "Native click sound is unregistered")
     local resources = ArrayList.new()
     local tools = {"Base.Screwdriver", "Base.Wrench"}
@@ -415,13 +415,38 @@ local function verifyTurrets()
             assert(Guns.consume(T.contents(storage), config, clock), "Repeat cycle failed: " .. fullType)
             assert(T.contents(storage).ammo == before - 1, "Repeat cycle round loss: " .. fullType)
         end
+        local Feed = require("OMHTT/FirearmFeed")
+        -- Return the native load, then exercise the extension on every admitted mechanism.
+        local returnCount = Guns.loaded(gun)
+        gun:setCurrentAmmoCount(0)
+        gun:setRoundChambered(false)
+        for i = 1, returnCount + 100 do storage:AddItem(ammo) end
+        local expanded = require("OMHTT/TurretStats").resolve({head = gun, active = {Magazine = 2, Splitter = 2}})
+        local total = T.contents(storage).ammo
+        local weight = storage:getContentsWeight()
+        Guns.cancelLoading(gun)
+        for tick = 1, 4 do
+            clock = clock + 1000000
+            Guns.update(T.contents(storage), expanded, clock, true)
+        end
+        assert(Guns.loaded(gun) == expanded.magazine and Feed.count(gun) > 0
+            and gun:getCurrentAmmoCount() <= gun:getMaxAmmo(), "Expanded native feed failed: " .. fullType)
+        assert(T.contents(storage).ammo == total and math.abs(storage:getContentsWeight() - weight) < .001,
+            "Expanded loading lost ammunition or weight: " .. fullType)
+        assert(Guns.consume(T.contents(storage), expanded, clock) and T.contents(storage).ammo == total - 3,
+            "Expanded Splitter consumption failed: " .. fullType)
+        local savedFeed = Feed.count(gun)
+        Feed.restore(gun, gun:getMaxAmmo(), player, true)
+        assert(Feed.count(gun) == 0 and T.contents(storage).ammo == total - 3, "Feed removal lost rounds")
+        Feed.set(gun, savedFeed)
         gun:setCondition(7)
         if fullType == "Base.Pistol" then gun:attachWeaponPart(instanceItem("Base.Laser"), false) end
         base:getModData().OMHTTGunFixture = {fullType = fullType, total = T.contents(storage).ammo,
             rounds = gun:getCurrentAmmoCount(), chamber = gun:isRoundChambered(), gunId = gun:getID(),
-            condition = 7, nextShot = Guns.state(gun).nextShot, clip = gun:isContainsClip()}
+            feed = Feed.count(gun), condition = 7, nextShot = Guns.state(gun).nextShot, clip = gun:isContainsClip()}
         savedGuns:add(base)
     end
+    print("[OMHTT-Modules] native-feed firearms=20 weight=conserved ammo=conserved nativeCapacity=unchanged splitter=3rounds removal=conserved")
     OMHTT_NativeFirearms = savedGuns
     local magazineStorage = instanceItem(T.BASE):getInventory()
     local pistol = magazineStorage:AddItem("Base.Pistol")

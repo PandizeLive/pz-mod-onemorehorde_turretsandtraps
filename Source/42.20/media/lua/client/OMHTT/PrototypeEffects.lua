@@ -40,7 +40,7 @@ function E.receive(module, command, facts)
         if facts.sound then E.sound(facts.sound, facts.x, facts.y, facts.z) end
         return
     end
-    if module ~= F.MODULE or (command ~= "Launch" and command ~= "Impact" and command ~= "GunShot") then return end
+    if module ~= F.MODULE or (command ~= "Launch" and command ~= "Impact" and command ~= "GunShot" and command ~= "Ray") then return end
     local effect = nil
     for i = 1, #E.effects do
         local entry = E.effects[i]
@@ -68,7 +68,7 @@ function E.receive(module, command, facts)
             effect.fromY = facts.fromY + dy / distance * forward
         end
         E.sound(facts.sound or "OMHTTPotatoFire", effect.fromX, effect.fromY, facts.z, facts.gain)
-    else
+    elseif command ~= "Ray" then
         E.sound("OMHTTPotatoImpact", facts.x, facts.y, facts.z)
     end
     D.defer("projectile-effect", {id = facts.id, shot = facts.shot, phase = command, flightMs = effect.flight,

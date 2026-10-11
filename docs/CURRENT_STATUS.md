@@ -1,5 +1,8 @@
 # Current development and planning handoff
 
+**Current C136 handoff:** Magazine, Splitter and Fragment are approved and implemented for 0.2.40. Native write/read and automated logic pass; all three package-isolation checks pass; tagged installation follows. R3C5 acceptance remains pending; R3C6 is the next later discussion. [Patch](PATCH_v0.2.40.md) | [Combined test](TEST_v0.2.40.md). Earlier open-choice entries below are historical.
+
+
 Updated 2026-10-11. Read this first in Cloud, then the linked authoritative records.
 
 - **Per-turn review (C111/C112):** reread the short review section in [AGENTS.md](../AGENTS.md) and this file each turn and after compaction. Check semantic organization, audio, visuals, gameplay and code; distinguish confirmed issues, suspected causes, approval and acceptance.
@@ -37,3 +40,8 @@ C134 historical handoff (superseded by C135 below): owner requests Magazine plus
 
 
 C135 supersedes the C134 choices: owner selects Magazine + Splitter + Fragment, ammo overflow reserve -> player inventory -> floor, Splitter fan outside cone/capped at 180 degrees, direct-only children and +25% base firing power per copy. Magazine adds no draw. Native Actions.addOrDropItem confirms inventory-to-floor overflow. Decision needed only on the new Fragment baseline in R3_OFFENSIVE_MODULES.md C135; capacity/reload/ejection and bounded effect implementation remain technical proof work. No new gameplay patch or test; installed 0.2.39 remains unchanged.
+
+
+## C136 - approved module patch (2026-10-11)
+
+Owner: "Approved." This approves the complete C135 Fragment baseline alongside Magazine and Splitter, and authorizes implementation/verification/install. No further gameplay decision is required for this slice. [0.2.40 patch](PATCH_v0.2.40.md) implements the selected rules; automated/native/package verification passes; tagged installation follows. [Combined test/evidence](TEST_v0.2.40.md) includes the held paired-Concertina check. R3C4 contract is settled for this slice; R3C5 is implemented pending verification and rendered acceptance. R3C6 stays next for later discussion; R3C7 combined balance/endurance remains pending. Earlier open-choice paragraphs are historical and superseded by this approval.

@@ -32,14 +32,17 @@ function C.hit(record, origin, target, player, options)
         end
     end
     local hits, lost = 0, 0
-    local critical = ZombRand(10000) < stats.critChance * 100
+    local critical = options.critical
+    if critical == nil then critical = ZombRand(10000) < stats.critChance * 100 end
     local multiplier = critical and stats.critMultiplier or 1
     for i = 1, pellets do
         local victim = targets[(i - 1) % #targets + 1]
         local dx, dy = victim:getX() - origin:getX() - 0.5, victim:getY() - origin:getY() - 0.5
         local chance = Accuracy.chance(gun, stats, math.sqrt(dx * dx + dy * dy), victim:isProne())
         if not victim:isDead() and ZombRand(10000) < chance * 100 then
+            local hitX, hitY = victim:getX(), victim:getY()
             lost = lost + Damage.apply(victim, stats.damage * multiplier / 100 / pellets, record.id, "firearm", player, gun)
+            require("OMHTT/TurretVolley").fragment(record, hitX, hitY, origin:getZ(), victim, player, options)
             hits = hits + 1
             local guard = victim:getModData().OMHTTKnockdownUntilMs
             if not victim:isDead() and not victim:isOnFloor() and not victim:isKnockedDown()
@@ -49,6 +52,7 @@ function C.hit(record, origin, target, player, options)
             end
         end
     end
+    require("OMHTT/TurretVolley").release(options)
     local wear = gun:getConditionLowerChance()
     if wear > 0 and ZombRand(wear) == 0 then gun:setCondition(math.max(0, gun:getCondition() - 1)) end
     local hearingRadius = require("OMHTT/TurretStats").hearingRadius(gun, stats)

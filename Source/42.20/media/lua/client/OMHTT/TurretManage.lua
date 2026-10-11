@@ -210,7 +210,7 @@ function Panel:refresh()
     if magazineType then
         self.magazineSlot.emptyText = getText("UI_OMHTT_ManageDrop")
         local chamber = gun:isRoundChambered() and "+1" or ""
-        self.magazineSlot.label = getText("UI_OMHTT_ManageMagazine", tostring(gun:getCurrentAmmoCount()) .. chamber, gun:getMaxAmmo())
+        self.magazineSlot.label = getText("UI_OMHTT_ManageMagazine", tostring(gun:getCurrentAmmoCount() + require("OMHTT/FirearmFeed").count(gun)) .. chamber, stats.magazine)
         if gun:isContainsClip() then
             if not self.magazineIcon or self.magazineIcon:getFullType() ~= magazineType then
                 self.magazineIcon = instanceItem(magazineType)

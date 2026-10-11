@@ -307,6 +307,7 @@ function W.removed(object)
         remaining = items:size()
         for i = items:size() - 1, 0, -1 do
             local item = items:get(i)
+            if G.profile(item) then require("OMHTT/FirearmFeed").drop(item, square) end
             container:Remove(item)
             square:AddWorldInventoryItem(item, 0.5, 0.5, 0)
         end
@@ -325,9 +326,10 @@ end
 function W.power(object, contents)
     if SandboxVars.OMHTurretsTraps.PotatoRequirePower == false then return {kind = "disabled", cost = 0} end
     local square = object:getSquare()
+    local effectPower = T.cycleConfig(contents).effectPower
     if square:hasGridPower() and square:getRoom() then return {kind = "grid", cost = 0} end
     if square:haveElectricity() then
-        local cost = T.option("GeneratorFuelPerShot", 0.001, 0, 1)
+        local cost = T.option("GeneratorFuelPerShot", 0.001, 0, 1) * effectPower
         for generator in pairs(generators) do
             local origin = generator:getSquare()
             if not origin or generator:getObjectIndex() < 0 then
@@ -339,7 +341,7 @@ function W.power(object, contents)
         end
     end
     local battery = contents.battery
-    local cost = T.option("BatteryPercentPerShot", 0.1, 0, 100) / 100
+    local cost = T.option("BatteryPercentPerShot", 0.1, 0, 100) / 100 * effectPower
     if battery and battery:getCondition() > 0 and battery:getCurrentUsesFloat() > 0
         and battery:getCurrentUsesFloat() + 0.0000001 >= cost then
         return {kind = "battery", battery = battery, cost = cost}
@@ -371,8 +373,10 @@ function W.fire(player, object, target)
     state.ammo = contents.ammo
     local stats = T.cycleConfig(contents)
     if player and not target then return require("OMHTT/TurretSearch").request(player, object) end
+    local Volley = require("OMHTT/TurretVolley")
+    if not Volley.available(stats) then return "Unavailable" end
     local fireStarted = getTimestampMs()
-    local options = {range = stats.range, interval = stats.cooldown,
+    local options = {stats = stats, weapon = contents.head, range = stats.range, interval = stats.cooldown,
         damage = stats.damage / 100, knockdown = stats.knockdown, critChance = stats.critChance, critMultiplier = stats.critMultiplier,
         splash = stats.damage * T.option("SplashPercent", 25, 0, 100) / 10000, radius = T.option("SplashRadius", 1.5, 0, 3), managed = true,
         profile = M.profile(state, contents, player == nil), target = target, projectileSpeed = T.option("ProjectileSpeed", 20, 5, 100)}
@@ -406,6 +410,7 @@ function W.fire(player, object, target)
                 x = square:getX() + .5, y = square:getY() + .5, z = square:getZ()})
             return false
         end
+        options.ammoCost = math.min(cycle.loaded, 1 + stats.splitter)
         if G.profile(contents.head) and not G.consume(contents, stats, Clock.now()) then return false end
         if power.kind == "battery" then
             power.battery:setCurrentUsesFloat(math.max(0, power.battery:getCurrentUsesFloat() - power.cost))
@@ -413,14 +418,24 @@ function W.fire(player, object, target)
             power.generator:setFuel(math.max(0, power.generator:getFuel() - power.cost))
         end
         if not G.profile(contents.head) then
-            object:getContainer():Remove(contents.round)
-            Cycle.consume(cycle, contents.ammo - 1, stats, Clock.now())
+            local cost = math.min(cycle.loaded, 1 + stats.splitter)
+            local spent = 0
+            for i = 1, #contents.rounds do
+                if spent >= cost then break end
+                local round = contents.rounds[i]
+                if round:getFullType() == "Base.Potato" and object:getContainer():contains(round) then
+                    object:getContainer():Remove(round)
+                    spent = spent + 1
+                end
+            end
+            Cycle.consume(cycle, contents.ammo - spent, stats, Clock.now())
         end
         D.defer("turret-resource-spent", {id = state.id, head = contents.head:getID(), power = power.kind, cost = power.cost})
         return true
     end
     local Combat = require("OMHTT/PrototypeCombat")
     local result, impact = Combat.fire(state, object, player, options)
+    if result == "Fired" then Volley.split(state, object:getSquare(), target, player, options) end
     local committedAt = getTimestampMs()
     if result == "Fired" and not T.hybrid() then W.refresh(object) end
     local refreshedAt = getTimestampMs()

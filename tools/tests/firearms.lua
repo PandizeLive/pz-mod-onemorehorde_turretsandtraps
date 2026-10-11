@@ -265,6 +265,80 @@ action = Action:new(operator, object, magazine)
 action.started, G.servicing[gun] = true, action
 check(action:complete() and G.loaded(gun) == 8 and not carried:contains(magazine), "Completed insertion conserves rounds and chamber")
 check(not action:complete() and G.loaded(gun) == 8, "Duplicate complete cannot insert twice")
+-- Expanded magazines use real reserve items as a loaded extension.
+local Feed = require("OMHTT/FirearmFeed")
+local extended = container()
+gun.ammo, gun.chamber, gun.clip, gun.data = 0, false, true, {}
+extended:AddItem(gun)
+for i = 1, 50 do extended:AddItem(item("Base.Bullets9mm")) end
+local extendedStats = Stats.resolve({head = gun, active = {Magazine = 2, Splitter = 3}})
+check(extendedStats.magazine == 26 and extendedStats.effectPower == 1.75, "Magazine scales linearly and Splitter power adds to base")
+G.update(T.contents(extended), extendedStats, 1000000, true)
+G.update(T.contents(extended), extendedStats, 1100000, true)
+G.update(T.contents(extended), extendedStats, 1200000, true)
+check(G.loaded(gun) == 26 and gun.ammo == 14 and Feed.count(gun) == 11 and T.contents(extended).ammo == 50,
+    "Expanded reload preserves native capacity, physical feed rounds and total ammunition")
+check(G.consume(T.contents(extended), extendedStats, 1200000) and G.loaded(gun) == 22 and T.contents(extended).ammo == 46,
+    "Splitter spends four ready rounds, without charging reserve")
+Feed.restore(gun, 15, operator, false)
+check(T.contents(extended).ammo == 46 and gun.ammo + Feed.count(gun) == 15,
+    "Removing capacity returns surplus to already-paid reserve storage")
+local nativeLoaded = gun.ammo + 1
+Feed.restore(gun, 15, operator, true)
+check(Feed.count(gun) == 0 and G.loaded(gun) == nativeLoaded and T.contents(extended).ammo == 46,
+    "Head/magazine removal releases all feed rounds without creating or deleting items")
+for ready = 1, 4 do
+    gun.ammo, gun.chamber, gun.data = ready - 1, true, {}
+    local before = T.contents(extended).ammo
+    check(G.consume(T.contents(extended), extendedStats, 2000000) and G.loaded(gun) == 0
+        and T.contents(extended).ammo == before - ready, "Partial Splitter volleys spend available ready rounds only")
+end
+gun.ammo, gun.chamber, gun.data = 0, false, {}
+local beforeEmpty = T.contents(extended).ammo
+check(not G.consume(T.contents(extended), extendedStats, 3000000) and T.contents(extended).ammo == beforeEmpty,
+    "Empty chamber cannot spend reserve immediately")
+local Volley = require("OMHTT/TurretVolley")
+function object:getContainer() return extended end
+for _, name in pairs({"Magazine", "Magazine", "Splitter", "Splitter", "Splitter", "Fragment"}) do
+    extended:AddItem(item(T.TYPES[name]))
+end
+function gun:getProjectileCount() return 8 end
+SandboxVars.OMHTurretsTraps.FirearmAccuracyMultiplier = 3
+for tick = 1, 3 do
+    testMillis = testMillis + 1000000
+    G.update(T.contents(extended), T.cycleConfig(T.contents(extended)), testMillis, true)
+end
+Volley.reset()
+local battery = item("Base.CarBattery1")
+battery.charge = 1
+function battery:getCurrentUsesFloat() return self.charge end
+function battery:setCurrentUsesFloat(value) self.charge = value end
+extended:AddItem(battery)
+function origin:hasGridPower() return false end
+function origin:haveElectricity() return false end
+SandboxVars.OMHTurretsTraps.PotatoRequirePower = true
+local beforeVolley = T.contents(extended).ammo
+for i = 1, 256 do Volley.queue[i] = {} end
+check(W.fire(operator, object, victim) == "Unavailable" and T.contents(extended).ammo == beforeVolley and battery.charge == 1,
+    "Queue backpressure rejects before ammo or power commit")
+Volley.reset()
+check(W.fire(operator, object, victim) == "Fired" and T.contents(extended).ammo == beforeVolley - 4,
+    "Integrated multi-pellet volley spends the combined cost once")
+check(#Volley.queue == 8 and Volley.reserved == 0, "Multi-pellet primary makes one five-fragment burst plus three side rays")
+check(math.abs(battery.charge - .998) < .000001, "Four offensive copies double firing cost once per volley")
+Volley.reset()
+gun.ammo, gun.chamber, gun.data = 0, true, {}
+victim.health = .0001
+testMillis = testMillis + 1000000
+beforeVolley = T.contents(extended).ammo
+battery.charge = .001
+check(W.fire(operator, object, victim) == "NoPower" and T.contents(extended).ammo == beforeVolley and battery.charge == .001,
+    "Insufficient multiplied power cannot spend a final round")
+battery.charge = .998
+check(W.fire(operator, object, victim) == "Fired" and victim:isDead() and T.contents(extended).ammo == beforeVolley - 1,
+    "Last-round exception pays one round and lethal primary remains eligible")
+check(#Volley.queue == 8 and Volley.queue[1].damage > .0001, "Lethal primary still produces full-budget fragments once")
+Volley.reset()
 W.near, W.refresh, ISBaseTimedAction.stop = oldNear, oldRefresh, oldStop
 T.hybrid, addSound = oldHybrid, oldSound
 SandboxVars.OMHTurretsTraps = oldSettings

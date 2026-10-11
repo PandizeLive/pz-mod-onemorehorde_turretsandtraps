@@ -206,13 +206,16 @@ function Combat.fire(record, object, player, options)
     if options.align and not options.align(target) then return "Aiming" end
     if options.projectileSpeed and #Combat.pending >= 128 then return "Unavailable" end
     if options.commit and not options.commit() then return options.failure or "Unavailable" end
+    options.critical = ZombRand(10000) < (options.critChance or 0) * 100
+    require("OMHTT/TurretVolley").reserve(options)
     if not options.resolve and not weapon then
         weapon = instanceItem("Base.Hammer")
         weapon:setRanged(true)
         weapon:setKnockBackOnNoDeath(false)
         weapon:setSplatBloodOnNoDeath(false)
     end
-    record.ammo = record.ammo - 1
+    options.effectWeapon = options.resolve and options.weapon or weapon
+    record.ammo = record.ammo - (options.ammoCost or 1)
     record.shots = record.shots + 1
     record.nextShot = now + options.interval
     record.cooldownClock = "realtime-ms-v1"
@@ -253,9 +256,11 @@ function Combat.hit(record, origin, target, player, options)
     local impactSquare = target:getSquare()
     Diagnostics.defer("shot-hit-begin", {id = record.id, shot = record.shots, x = tx, y = ty, health = before,
         ammo = record.ammo, damageInput = options.damage, facing = record.facing})
-    local critical = ZombRand(10000) < (options.critChance or 0) * 100
+    local critical = options.critical
+    if critical == nil then critical = ZombRand(10000) < (options.critChance or 0) * 100 end
     local directDamage = options.damage * (critical and options.critMultiplier or 1)
     Damage.apply(target, directDamage, record.id, "potato", player, weapon)
+    require("OMHTT/TurretVolley").fragment(record, tx, ty, origin:getZ(), target, player, options)
     local damagedAt = getTimestampMs()
     local knocked = false
     local knockReason = "dead"
@@ -342,6 +347,7 @@ function Combat.arrive(shot)
         and Combat.clearLane(origin, square, options.range) then
         return Combat.hit(shot.record, origin, target, shot.player, options)
     end
+    require("OMHTT/TurretVolley").release(options)
     local facts = shot.facts
     Diagnostics.defer("shot-missed", {id = facts.id, shot = facts.shot, reason = "target-or-path-changed"})
     return {id = facts.id, shot = facts.shot, x = facts.x, y = facts.y, z = facts.z, missed = true}

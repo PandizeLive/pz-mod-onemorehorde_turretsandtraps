@@ -746,3 +746,102 @@ option OMHTurretsTraps.ImprovisedFiringFailure {
     page = OMHTurretsTraps_StatModulesPage,
     translation = OMHTurretsTraps_ImprovisedFiringFailure,
 }
+
+option OMHTurretsTraps.MagazineBonus {
+    type = double,
+    default = 35,
+    min = 0,
+    max = 200,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_MagazineBonus,
+}
+
+option OMHTurretsTraps.SplitterDamage {
+    type = double,
+    default = 50,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_SplitterDamage,
+}
+
+option OMHTurretsTraps.SplitterPower {
+    type = double,
+    default = 25,
+    min = 0,
+    max = 200,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_SplitterPower,
+}
+
+option OMHTurretsTraps.FragmentDamage {
+    type = double,
+    default = 20,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_FragmentDamage,
+}
+
+option OMHTurretsTraps.FragmentBonus {
+    type = double,
+    default = 5,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_FragmentBonus,
+}
+
+option OMHTurretsTraps.FragmentDamageCap {
+    type = double,
+    default = 40,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_FragmentDamageCap,
+}
+
+option OMHTurretsTraps.FragmentRange {
+    type = double,
+    default = 4,
+    min = 1,
+    max = 10,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_FragmentRange,
+}
+
+option OMHTurretsTraps.FragmentPower {
+    type = double,
+    default = 25,
+    min = 0,
+    max = 200,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_FragmentPower,
+}
+
+option OMHTurretsTraps.LootRateMagazine {
+    type = double,
+    default = 1,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootRateMagazine,
+}
+
+option OMHTurretsTraps.LootRateSplitter {
+    type = double,
+    default = 1,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootRateSplitter,
+}
+
+option OMHTurretsTraps.LootRateFragment {
+    type = double,
+    default = 1,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootRateFragment,
+}

@@ -167,6 +167,8 @@ public final class NativePersistenceCheck {
             check(get(gun, "isContainsClip").equals(call(expected, "rawget", new Class<?>[]{Object.class}, "clip")), "Magazine presence changed");
             total += ((Number)get(gun, "getCurrentAmmoCount")).intValue() + (Boolean.TRUE.equals(get(gun, "isRoundChambered")) ? 1 : 0);
             check(total == ((Number)call(expected, "rawget", new Class<?>[]{Object.class}, "total")).intValue(), "Firearm ammo duplicated or lost");
+            check(call(get(gun, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTFeedRounds")
+                .equals(call(expected, "rawget", new Class<?>[]{Object.class}, "feed")), "Loaded extension lost");
             Object cycle = call(get(gun, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTGunCycle");
             check(call(cycle, "rawget", new Class<?>[]{Object.class}, "nextShot").equals(call(expected, "rawget", new Class<?>[]{Object.class}, "nextShot")), "Gun cooldown lost");
             if (type.equals("Base.Pistol")) {

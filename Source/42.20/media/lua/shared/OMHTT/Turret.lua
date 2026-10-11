@@ -10,7 +10,7 @@ T.BASE = "Base.OMHTTTurretBase"
 T.HEAD = "Base.OMHTTPotatoHead"
 T.HEAD_VISUAL = {height = 0.4 - 16 / 192, scale = 0.512, muzzle = 0.55}
 T.CONTAINER = "OMHTTTurret"
-T.MODULES = {FiringImprovised = true, MotionDetectionImprovised = true, CapacityImprovised = true, Firing = true, MotionDetection = true, Filter = true, RapidFire = true, Velocity = true,
+T.MODULES = {Magazine = true, Splitter = true, Fragment = true, FiringImprovised = true, MotionDetectionImprovised = true, CapacityImprovised = true, Firing = true, MotionDetection = true, Filter = true, RapidFire = true, Velocity = true,
     Range = true, Critical = true, Accuracy = true, Suppression = true, Capacity = true, CapacitySmall = true, CapacityLarge = true, Detection360 = true, Reload = true, Autoloader = true}
 T.SINGLE = {Firing = true, MotionDetection = true, Filter = true, Detection360 = true, Autoloader = true}
 T.TYPES = {}
@@ -167,7 +167,14 @@ function T.contents(container)
         end
     end
     result.ammo = result.reserve
-    if G.profile(result.head) then result.ammo = result.ammo + G.loaded(result.head) end
+    if G.profile(result.head) then
+        local Feed = require("OMHTT/FirearmFeed")
+        local loaded = math.min(Feed.count(result.head), result.reserve)
+        Feed.set(result.head, loaded)
+        result.reserve = result.reserve - loaded
+        result.reserveAll = result.reserveAll - loaded
+        result.ammo = result.reserve + G.loaded(result.head)
+    end
     return result
 end
 

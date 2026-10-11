@@ -189,5 +189,8 @@
     "UI_OMHTT_RangeManualLegend": "Manual range: %1 | No detector",
     "UI_OMHTT_ConcertinaWire": "Concertina Wire",
     "UI_OMHTT_WireService": "Free ten-second repair; five-second pickup. No tools or XP.",
-    "UI_OMHTT_BedReinforceRequirements": "Carpentry 3, hammer, 1 plank and 4 nails. Reinforces only this tile."
+    "UI_OMHTT_BedReinforceRequirements": "Carpentry 3, hammer, 1 plank and 4 nails. Reinforces only this tile.",
+    "UI_OMHTT_ModuleMagazine": "Magazine",
+    "UI_OMHTT_ModuleSplitter": "Splitter",
+    "UI_OMHTT_ModuleFragment": "Fragment"
 }

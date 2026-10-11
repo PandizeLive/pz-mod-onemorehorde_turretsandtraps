@@ -20,8 +20,11 @@ local moduleGroups = {
     {"Sandbox_Title_OMHTurretsTraps_Suppression", {"SuppressionFirstReduction", "SuppressionDiminishing", "SuppressionVolumeFloor"}},
     {"Sandbox_Title_OMHTurretsTraps_RapidFire", {"RapidFireBonus", "RapidFireBonusCap", "RapidFireMinimum"}},
     {"Sandbox_Title_OMHTurretsTraps_Reload", {"ReloadBonus", "ReloadBonusCap", "ReloadMinimum"}},
+    {"Sandbox_Title_OMHTurretsTraps_Magazine", {"MagazineBonus"}},
     {"Sandbox_Title_OMHTurretsTraps_Velocity", {"VelocityBonus", "VelocityBonusCap", "VelocityKnockdownBonus", "VelocityKnockdownCap"}},
     {"Sandbox_Title_OMHTurretsTraps_Range", {"RangeBonus", "RangeBonusCap"}},
+    {"Sandbox_Title_OMHTurretsTraps_Splitter", {"SplitterDamage", "SplitterPower"}},
+    {"Sandbox_Title_OMHTurretsTraps_Fragment", {"FragmentDamage", "FragmentBonus", "FragmentDamageCap", "FragmentRange", "FragmentPower"}},
     {"Sandbox_Title_OMHTurretsTraps_Capacity", {"CapacityImprovisedModuleBonus", "CapacityImprovisedAmmoBonus", "CapacitySmallAmmoBonus", "CapacitySmallModuleBonus", "CapacityAmmoBonus", "CapacityModuleBonus", "CapacityLargeAmmoBonus", "CapacityLargeModuleBonus"}},
 }
 

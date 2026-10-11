@@ -1,5 +1,8 @@
 # Planning
 
+**Current C136 handoff:** Magazine, Splitter and Fragment are approved and implemented for 0.2.40. Native write/read and automated logic pass; all three package-isolation checks pass; tagged installation follows. R3C5 acceptance remains pending; R3C6 is the next later discussion. [Patch](PATCH_v0.2.40.md) | [Combined test](TEST_v0.2.40.md). Earlier open-choice entries below are historical.
+
+
 Updated 2026-10-11 under C119/C133. This is the shared entry point for planning in the local PC chat and **OMH: Turrets & Traps - Planning**. Detailed contracts and approval history remain in the linked records; this page indexes them rather than replacing them.
 
 ## Read the current branch
@@ -100,3 +103,8 @@ Owner requests adding Magazine and checking Splitter, then asks to discuss modul
 ## Current decisions: C135
 
 Owner selects Magazine + Splitter + Fragment; surplus loaded ammo returns reserve -> player inventory -> floor. Splitter coverage may leave the targeting cone with a 180-degree fan limit, children are direct-only, and power adds 25% of base per copy; Magazine has no surcharge. These replace the corresponding C134 proposals. [Remaining Fragment baseline](checkpoints/R3_OFFENSIVE_MODULES.md#c135-selected-module-rules-and-remaining-fragment-baseline-2026-10-11) proposes damage growth/cap, four-tile radius, primary-only single burst, distinct victims and additive power. New Fragment tuning remains unapproved. Native inventory/floor fallback source is verified; complete capacity lifecycle still requires runtime proof. Installed 0.2.39 is unchanged; combine its held owner check with the eventual module patch.
+
+
+## C136 - approved module patch (2026-10-11)
+
+Owner: "Approved." This approves the complete C135 Fragment baseline alongside Magazine and Splitter, and authorizes implementation/verification/install. No further gameplay decision is required for this slice. [0.2.40 patch](PATCH_v0.2.40.md) implements the selected rules; automated/native/package verification passes; tagged installation follows. [Combined test/evidence](TEST_v0.2.40.md) includes the held paired-Concertina check. R3C4 contract is settled for this slice; R3C5 is implemented pending verification and rendered acceptance. R3C6 stays next for later discussion; R3C7 combined balance/endurance remains pending. Earlier open-choice paragraphs are historical and superseded by this approval.
