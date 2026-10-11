@@ -676,4 +676,6 @@ Owner: "We should strive to keep the pitch changing, isn't pitch differences in 
 
 ## C123: positive lag result in 0.2.38.1 (2026-10-10)
 
+Follow-up: "Yea seems fine," then "Why are we still playing if it works?" Close the current owner lag test as accepted for the reported issue. The continued "Test now" handoff was unnecessary; no further play is required. Retain measured limitations without creating an indefinite testing obligation. Broader R1C3 work remains separate; no new patch is authorized.
+
 Owner: "Seems like lag is gone." Console capture confirms the loaded version and supports substantial audio improvement: 3-ms audio max versus 674 ms before, and 2-ms bed/barb callback maxima. Largest active-update gap remains 368 ms; the firing sample has 11 shots versus 58 before. Record a positive tentative result for perceived lag in this run, not blanket performance/audio acceptance. No repeated checklist, new code, publication or roadmap expansion is authorized. Keep residual performance and existing authority scope in R1C3; detailed evidence is in TEST_v0.2.38.1.md. C108 requires mirroring this result.

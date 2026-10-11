@@ -54,6 +54,8 @@ Owner requests preserving pitch variation and optimizing again. The implementati
 
 ## Latest owner result: C123 / 0.2.38.1
 
+Handoff correction: the current owner lag test is complete and accepted for the reported issue; no further play is required. Broader R1C3 work remains separate. Next-patch selection is still deferred.
+
 Owner reports noticeable lag apparently gone. [Console comparison](TEST_v0.2.38.1.md#owner-result-and-console-comparison-2026-10-10) supports the improvement: audio max 3 ms versus 674 ms; trap callbacks max 2 ms. Residual update gaps up to 368 ms and a smaller firing sample prevent a universal performance claim. No repeat stress checklist or new patch is requested. Normal play can continue; audio quality and unmentioned checks remain unconfirmed. R1C3 retains residual-gap/large-load/authority scope, and deferred content decisions stay deferred.
 
 Owner follow-up: "Yea seems fine." Satisfaction with the current lag improvement is confirmed; no new work or separate test is requested. Existing console evidence and remaining scope are unchanged.
