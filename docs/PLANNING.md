@@ -4,7 +4,7 @@ Updated 2026-10-10 under C119. This is the shared entry point for planning in th
 
 ## Read the current branch
 
-Current unmerged work is on **codex/performance-barbed-audit**, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1), targeting dev. [Open this Planning page on the active branch](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/blob/codex/performance-barbed-audit/docs/PLANNING.md). The **installed 0.2.38 build** implements the approved bundle. Native/automated checks and tagged installation verify; [release state](RELEASE.md) records the evidence. Owner/rendered acceptance remains pending.
+Current unmerged work is on **codex/performance-barbed-audit**, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1), targeting dev. [Open this Planning page on the active branch](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/blob/codex/performance-barbed-audit/docs/PLANNING.md). The **installed 0.2.38.1 build** implements the approved bundle and C122 native-pitch/contact optimization. Native/automated checks and tagged installation verify; [release state](RELEASE.md) records the evidence. Owner/rendered acceptance remains pending.
 
 Fetch the remote and check open development/planning PRs before using dev alone as the current state. Read the active branch's AGENTS.md, this page and [CURRENT_STATUS.md](CURRENT_STATUS.md). Record which branch/commit was inspected. A chat's older answer or an old Cloud checkout is not a current checkpoint. Preserve unmerged work and reconcile incoming plans; do not reset, force-push or merge automatically.
 
@@ -46,8 +46,8 @@ Either chat can originate plans. The named Planning chat is optional; GitHub is 
 
 **Superseded by C122, never implemented:** remove per-play pitch randomization in both turret audio paths, preserving clips/variants/volume/hearing, and add gated aggregate reload/trap timings. Less pitch variation is the explicit tradeoff. No gameplay/source/package changes are made in this report. R1C3 remains open; Phase 3 decisions are still deferred. The subsequent C122 instruction below replaces this proposal.
 
-## Current corrective update: C122 / 0.2.38.1
+## Current corrective update: C122 / 0.2.38.1 installed and verified
 
 Owner requests preserving pitch variation and optimizing again. The implementation uses native sound-script clip pitch and random clip selection at all original 101 pitch values, avoiding FMODSoundEmitter.setPitch. Existing clips/weights/volume/hearing and native event-authored variation remain. Concertina skips adjacent unoccupied coils before object resolution, and aggregate reload/trap timing fills diagnostic gaps. No new content or balance change.
 
-[Patch](PATCH_v0.2.38.1.md) | [Four-step performance comparison and verification](TEST_v0.2.38.1.md) | [R1C3 checkpoint](checkpoints/R1C3_PERFORMANCE_AUDIT_20261007.md). Native tests establish parser/queued playback behavior; audible and mixed-workload performance acceptance remain pending. This supersedes C121's proposed loss of pitch variation and does not reopen Phase 3 decisions.
+[Patch](PATCH_v0.2.38.1.md) | [Four-step performance comparison and verification](TEST_v0.2.38.1.md) | [R1C3 checkpoint](checkpoints/R1C3_PERFORMANCE_AUDIT_20261007.md). Automated/native checks, tagged installation and source/package/archive/backup hashes pass. Native tests establish parser/queued playback behavior; audible and mixed-workload performance acceptance remain pending. This supersedes C121's proposed loss of pitch variation and does not reopen Phase 3 decisions.

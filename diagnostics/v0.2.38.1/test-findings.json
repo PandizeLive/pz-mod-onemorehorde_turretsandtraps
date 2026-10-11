@@ -55,5 +55,25 @@
     "No source audio file changes, new samples, gameplay balance or save schema changes.",
     "No in-game frame-time or audible acceptance inferred from native queued playback.",
     "Unmeasured engine/GC/external hook causes are not cleared by avoiding setPitch."
-  ]
+  ],
+  "installation": {
+    "verified": true,
+    "tag": "test/v0.2.38.1",
+    "sourceCommit": "0654692d5fd04ca70a337073df6e6c0a71ac21a3",
+    "sourceFiles": 188,
+    "packageFiles": 228,
+    "backups": [
+      {
+        "package": "OneMoreHorde_Traps",
+        "version": "0.2.38",
+        "filesVerified": 105
+      },
+      {
+        "package": "OneMoreHorde_Turrets",
+        "version": "0.2.38",
+        "filesVerified": 123
+      }
+    ],
+    "archiveSHA256": "7398c87a4d339895e7d08ff39b26e0ce33a789a384f91ebfabaf8449e41e1108"
+  }
 }
