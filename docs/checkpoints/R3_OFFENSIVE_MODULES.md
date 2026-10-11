@@ -1,8 +1,8 @@
 # R3C4-R3C7: offensive modules and battery endurance
 
-Current work: **C147 / R3C6-R3C7**. C147 approves and implements the complete C146 power formula alongside Piercing, Initial Blow, Execute and Impact. Release candidate 0.2.42 is built; final native restore/startup and tagged installation are in progress. No numerical decision remains. 5,241 Kahlua assertions, 98 compiled runtime/translation files, 664 native translation keys and 23 packet serializations pass; the 51-gun Firearms probe preserves 153 firing transactions. LootLab 0.2.42 is deployed and verified (24 modules/16 pools/170 entries, 74 API/page tests). [Patch](../PATCH_v0.2.42.md) | [test](../TEST_v0.2.42.md).
+Current work: **C147 / R3C7 owner verification**. C147 completes the approved Piercing, Initial Blow, Execute and Impact modules and the C146 power formula. **0.2.42 is installed** from immutable `test/v0.2.42` / `2354a7ff3ed4ef174a0bbeb4d7d0051a620bc5d7`. R3C6 implementation is complete; R3C7 now awaits the focused owner test. No power decision remains. 5,241 Kahlua assertions, native write/read, three independent-package startups and the 51-gun Firearms integration pass. LootLab 0.2.42 is deployed and verified; 74 API/page tests pass. Rendered effects and crowd behavior remain owner acceptance.
 
-**Current checkpoint:** R3C6 integration complete; R3C7 power validation and installation in progress. C147 settles the power model. C145/C146 below are historical proposal provenance.
+**Current checkpoint:** R3C6 implementation and automated/native power validation complete; R3C7 rendered owner acceptance pending. C147 settles C145/C146 historical proposals.
 
 ## Historical direction and early working proposals (superseded below)
 

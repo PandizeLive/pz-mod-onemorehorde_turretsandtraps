@@ -18,3 +18,8 @@
 - LootLab model/default/static checks and 74 isolated API/page tests pass. Hosted 0.2.42 is deployed and bundle-verified; twelve anonymous admin paths remain protected, two public API endpoints retain 200. Saved tuning survives read migration. Catalog: 24 modules/16 pools/170 entries; model estimates 81.28 percent one/two-module successful finds and 4.78 percent five-plus. These exclude physical capacity/story losses.
 
 Earlier native attempts exposed the health float boundary and test-helper/server-load assumptions; those failed attempts are not pass evidence. A legacy dependency-loading fixture also ran; it is not proof of the actual independent packages. Only the versioned packages-*.json results establish that. No owner gameplay result is inferred. Automated thresholds do not establish rendered animation or crowd performance. No MP certification or Workshop publication.
+
+
+## Installed handoff
+
+Immutable `test/v0.2.42` / `2354a7ff3ed4ef174a0bbeb4d7d0051a620bc5d7`; installed through OMH.cmd. 192 source / 232 package, tagged, installed and archived hashes verify; previous 0.2.41 backups verify. Actual package startups pass: Traps 110.3s, Turrets 108.2s, both 111.4s. Initial package test expected the old 150-entry catalog; corrected to 170, then affected selections passed. [Machine record](../diagnostics/v0.2.42/local-release.json). **Test now**; owner results and console capture pending.

@@ -1,7 +1,7 @@
 {
   "checkpoint": "C147",
   "version": "0.2.42",
-  "status": "validated source; final independent-package startups and tagged install pending",
+  "status": "installed; focused owner test pending",
   "approval": "Owner Approved following C146 formula and generator recommendation",
   "assertions": 5241,
   "nativeTranslationKeys": 664,
@@ -33,5 +33,29 @@
     "server-write.log": "aabe51d137c7760eedc96e0382141f646ee80fc809564ca520cdf9f9d77c0110",
     "server-read.log": "b4933043b139e3e8b0fd75eca5b7c1591bd533092b60fdb416ae0a9bc35e2d15",
     "lootlab-release.json": "4f94676f93a73b1b65d0eef782f40708d7351757f0ec09f856c70a9a8489a8a0"
-  }
+  },
+  "sourceCommit": "2354a7ff3ed4ef174a0bbeb4d7d0051a620bc5d7",
+  "tag": "test/v0.2.42",
+  "independentPackageStartups": [
+    {
+      "selection": "traps",
+      "version": "0.2.42",
+      "passed": true,
+      "seconds": 110.3
+    },
+    {
+      "selection": "turrets",
+      "version": "0.2.42",
+      "passed": true,
+      "seconds": 108.2
+    },
+    {
+      "selection": "both",
+      "version": "0.2.42",
+      "passed": true,
+      "seconds": 111.4
+    }
+  ],
+  "installedFilesVerified": 232,
+  "sourceFilesVerified": 192
 }

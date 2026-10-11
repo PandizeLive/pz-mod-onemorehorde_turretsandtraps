@@ -813,3 +813,5 @@ Owner adds damage/range scaling to the global module-count power rule so stronge
 ## C147 - power defaults approved; complete the module patch (2026-10-11)
 
 Owner: "Approved" in response to C146. Approves the complete battery formula, 1x weapon floor, pre-module damage/range inputs, equal per-type weights/counting exclusions, 5 percent per working module, 0.005 percent battery base, zero idle, and 0.0001 generator base with the same multipliers. No repeat numerical approval required. Continue C144-authorized integration, validation, installation and C108/C119 mirror. See [0.2.42 patch](PATCH_v0.2.42.md) and the versioned test record for implementation and evidence.
+
+C147 completion: 0.2.42 is installed and verified from immutable test/v0.2.42 / 2354a7ff3ed4ef174a0bbeb4d7d0051a620bc5d7. R3C6 implementation is complete; R3C7 owner verification is pending. [Release](RELEASE.md) and [test](TEST_v0.2.42.md) preserve actual evidence and limits. Hosted LootLab matches the new catalog.

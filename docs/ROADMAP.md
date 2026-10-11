@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Synchronized 2026-10-11 against C80-C147, the installed, native-verified 0.2.41 corrective/content build; the owner round is complete with no issues reported (C138), subject to recorded evidence limits. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
+Synchronized 2026-10-11 against C80-C147 and the installed, native-verified 0.2.42 build. Its focused owner test is pending; the prior 0.2.41/C138 round remains complete. This is the canonical execution/status index.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -8,7 +8,7 @@ New checkpoint IDs use **R** for the revised roadmap. Historical P0-P6 IDs and e
 
 ## Product and existing work
 
-**Current installed 0.2.41** extends Magazine, Splitter and Fragment with Enhanced Firing/Detection and the current corrections, alongside Bed Spikes, Barbed Panel and subsequent crafting, Building, traversal and starter-module changes. Native evidence is in [release state](RELEASE.md); the latest [performance comparison](TEST_v0.2.38.1.md#owner-result-and-console-comparison-2026-10-10) is positive for perceived lag, with residual gaps and no repeat checklist requested. C106 records the earlier test findings; pending rendered checks are not passes or waivers. R1C3 includes diagnostic gating and aim/LOS cleanup; the reported lag fix is owner-accepted in 0.2.38.1. Broader performance/authority work remains separate and does not require continued play for this fix.
+**Previous installed 0.2.41** extends Magazine, Splitter and Fragment with Enhanced Firing/Detection and the current corrections, alongside Bed Spikes, Barbed Panel and subsequent crafting, Building, traversal and starter-module changes. Native evidence is in [release state](RELEASE.md); the latest [performance comparison](TEST_v0.2.38.1.md#owner-result-and-console-comparison-2026-10-10) is positive for perceived lag, with residual gaps and no repeat checklist requested. C106 records the earlier test findings; pending rendered checks are not passes or waivers. R1C3 includes diagnostic gating and aim/LOS cleanup; the reported lag fix is owner-accepted in 0.2.38.1. Broader performance/authority work remains separate and does not require continued play for this fix.
 
 One Workshop product/download: **OMH: Turrets & Traps**, with independent selectable entries **OMH: Turrets** (`OneMoreHorde_Turrets`) and **OMH: Traps** (`OneMoreHorde_Traps`). Neither requires the other or a third Core entry. Canonical shared helpers are generated into both with identical virtual paths.
 
@@ -18,9 +18,9 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 ## Current checkpoint status and next work
 
-**C147 R3C6/R3C7 implementation:** C147 approves and implements the complete C146 power formula alongside Piercing, Initial Blow, Execute and Impact. Release candidate 0.2.42 is built; final native restore/startup and tagged installation are in progress. No numerical decision remains. 5,241 Kahlua assertions, 98 compiled runtime/translation files, 664 native translation keys and 23 packet serializations pass; the 51-gun Firearms probe preserves 153 firing transactions. LootLab 0.2.42 is deployed and verified (24 modules/16 pools/170 entries, 74 API/page tests). [Patch](PATCH_v0.2.42.md) | [combined test](TEST_v0.2.42.md).
+**C147 R3C6/R3C7 implementation:** C147 completes the approved Piercing, Initial Blow, Execute and Impact modules and the C146 power formula. **0.2.42 is installed** from immutable `test/v0.2.42` / `2354a7ff3ed4ef174a0bbeb4d7d0051a620bc5d7`. R3C6 implementation is complete; R3C7 now awaits the focused owner test. No power decision remains. 5,241 Kahlua assertions, native write/read, three independent-package startups and the 51-gun Firearms integration pass. LootLab 0.2.42 is deployed and verified; 74 API/page tests pass. Rendered effects and crowd behavior remain owner acceptance. [Patch](PATCH_v0.2.42.md) | [test](TEST_v0.2.42.md).
 
-**C137 current module checkpoint:** 0.2.41 adds approved Enhanced Firing/Detection and larger reserve count bonuses, and corrects automatic cadence, placement limits and volley visuals. LootLab is refreshed to the same catalog. R3C4 is settled; R3C5 automated/native proof and the completed C138 owner round are in [one focused test](TEST_v0.2.41.md). Native inventory weight remains a separate limit. R3C6 combat foundations are now in progress under C144; R3C7 power numerical settlement is active under C146.
+**Historical C137 module checkpoint:** 0.2.41 adds approved Enhanced Firing/Detection and larger reserve count bonuses, and corrects automatic cadence, placement limits and volley visuals. LootLab is refreshed to the same catalog. R3C4 is settled; R3C5 automated/native proof and the completed C138 owner round are in [one focused test](TEST_v0.2.41.md). Native inventory weight remains a separate limit. C147 completes the subsequent R3C6 integration; R3C7 owner verification is now active.
 
 **C132/C133 trap revision, implemented in 0.2.39:** owner requests one paired 1x2 Concertina trap with shared durability/service and one inventory item, alongside module work. Existing recipe/weight/total HP retained; native verification/install is tracked in [0.2.39 test evidence](TEST_v0.2.39.md). See [R2C4 contract](checkpoints/R2C4_CONCERTINA.md#c132-one-paired-1x2-concertina-trap-for-the-upcoming-patch-2026-10-11). This does not reorder R3C4-R3C7 or change independent Bed Spikes.
 
@@ -42,7 +42,7 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 **Corrective patch (C110, 2026-10-09):** 0.2.36 restores OMH parent categories with expandable Normal/Reinforced/Packed groups, continuous Building with exact-item/original-recipe fallback, zombie forward-collapse and native trip/impact audio. Player tripping and the 4/6/6 module layout remain unchanged. C106 records the prior test's tentative unmentioned passes and failed zombie overshoot. Only the replacement [focused 0.2.38 test](TEST_v0.2.37.md) remains for these changes; new-content choices stay postponed. See [release evidence](RELEASE.md) for local verification/install state.
 
-| Phase / checkpoints | Status at 0.2.39 | Remaining work / next gate |
+| Phase / checkpoints | Status | Remaining work / next gate |
 | --- | --- | --- |
 | 1: R1C1-R1C2 package split | Implemented and native-verified in 0.2.29; remaining owner regression waived by C89 | Closed to further split regression; retain fresh-world policy and independent-package checks for changes |
 | 1: R1C3 performance/authority | Current lag fix implemented and owner-accepted in 0.2.38.1; broader checkpoint partial | No further test for this fix; broader load/authority work accompanies relevant future changes |
@@ -51,7 +51,7 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 | 2: R2C4 concertina | C133 linked 1x2 conversion installed/native-verified in 0.2.39 | Focused paired-wire owner acceptance remains; see TEST_v0.2.39.md |
 | 3: R3C1-R3C2 new head | Candidates documented; none selected for implementation | Select one head and settle its concrete contract before prototyping |
 | 3: R3C3 explosive head | Optional, unscoped | Collateral/resource/effect-budget decisions and feasibility first |
-| 3: R3C4-R3C7 offensive modules/battery | C137 / 0.2.41 corrects and extends C136 modules; automated/native checks pass; owner round complete with no issues reported (C138) | Finish C144 R3C6 integration after C146 power numerical settlement, then R3C7 combined acceptance |
+| 3: R3C4-R3C7 offensive modules/battery | C147 / 0.2.42 implements conditional/penetrating modules and unified power; automated/native checks pass; focused owner round pending | C147 implements R3C6 in 0.2.42; R3C7 awaits the focused owner test |
 | 3: R3C8 starter modules/expansion | C104 implemented, verified and installed in 0.2.34 | C106 tentative passes; 4/6/6 layout acceptance in 0.2.35; include maximum loadouts in future R3C7 endurance checks |
 | 4: R4C1-R4C4 signals/connected traps | Planned | Signal contract first; devices then optional turret receiver |
 | 5: R5C1-R5C3 MP/integrations/release | Planned; no certification or publication | Validate only the selected release scope; optional features need not all ship |
