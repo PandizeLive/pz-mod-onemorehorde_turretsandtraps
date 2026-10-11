@@ -90,4 +90,3 @@ for ready = 1, 3 do
     check(state.loaded == 0, "Potato partial volley consumes only the ready load")
 end
 SandboxVars.OMHTurretsTraps, testRoll = savedSettings, savedRoll
-

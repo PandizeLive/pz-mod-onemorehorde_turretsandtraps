@@ -1,6 +1,11 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.39 paired Concertina Wire
+## Current local installation: 0.2.40 Magazine, Splitter and Fragment
+
+C136 approves [the module patch](PATCH_v0.2.40.md). 5,018 Kahlua assertions, 96 compiled runtime/translation files, 608 native translation keys and 23 packet serializations pass. Native write/read pass in 81.1/80.8 seconds, including physical feed weight/ammo and all 20 native firearm mechanisms. Traps-only/Turrets-only/both startup pass in 90.5/91.5/90.2 seconds. Installed 2026-10-11 through root OMH.cmd from immutable `test/v0.2.40` / `d916e78736197d10bb5f6f669ca9a59b24d292bf`. All 190 source and 230 package/tag/installed/archive files verify, along with both previous 0.2.39 backups. Archive SHA-256: `31acf498d107e63779e2d33db8a3da437079f559cc76039d24225fc36d607536`. [Install](../diagnostics/v0.2.40/install.json) | [Verification](../diagnostics/v0.2.40/local-release.json) | [Combined owner test](TEST_v0.2.40.md). Rendered acceptance is pending; hosted LootLab stays at its explicitly labeled 0.2.28 baseline. No official release/Workshop upload; cumulative unuploaded notes are preserved.
+
+
+## Previous local installation: 0.2.39 paired Concertina Wire
 
 3,962 Kahlua assertions, 94 compiled runtime/translation files, 574 native translation keys and 23 packet serializations pass. Native write/fresh-process read pass in 150.6/130.0 seconds, preserving both wire objects and one shared ledger at 47 HP. Traps-only/Turrets-only/both startup pass in 134.6/117.2/124.1 seconds. Independent checks cover 111 Sandbox options and 31 identical shared helpers. Installed through root OMH.cmd on 2026-10-11 from immutable `test/v0.2.39` / `b18551573d5e1db286697e2464c2d0e5edc0fd10`. All 188 source and 228 package/tag/installed/archive files verify; both previous 0.2.38.1 package backups verify. Archive SHA-256: `72fcc5fb97f80d1771b78e188cf10e8f8423cc7705c11364391d505bf1d7f862`. [Patch](PATCH_v0.2.39.md), [focused test](TEST_v0.2.39.md), [verification](../diagnostics/v0.2.39/local-release.json). Rendered owner acceptance remains pending. No official release or Workshop upload; cumulative unuploaded notes are preserved.
 

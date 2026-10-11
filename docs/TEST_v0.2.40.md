@@ -1,6 +1,6 @@
 # 0.2.40 test and verification
 
-Status: source implemented and automated/native write-read passed; all three package-isolation checks passed; tagged installation follows. Owner acceptance is pending. One combined checklist replaces the held 0.2.39 Concertina test; the accepted 0.2.38.1 lag checklist stays closed.
+Status: implemented, automated/native/package verified, tagged and installed. Owner acceptance is pending. One combined checklist replaces the held 0.2.39 Concertina test; the accepted 0.2.38.1 lag checklist stays closed.
 
 ## Short owner test
 
@@ -28,4 +28,4 @@ SP combat only; no owner/GPU/audio or maximum-load endurance acceptance claimed.
 
 ## Installation and GitHub
 
-Native Traps-only/Turrets-only/both startup passed in 90.5/91.5/90.2 seconds. Pending immutable test/v0.2.40 tag, root OMH.cmd Install, hash verification and C108/C119 development mirror. Evidence below will be updated before handoff.
+Native Traps-only/Turrets-only/both startup passed in 90.5/91.5/90.2 seconds. Installed through root OMH.cmd from immutable `test/v0.2.40` / `d916e78736197d10bb5f6f669ca9a59b24d292bf`. All 190 source and 230 package/tag/installed/archive files verify; both previous 0.2.39 backups verify. Archive SHA-256: `31acf498d107e63779e2d33db8a3da437079f559cc76039d24225fc36d607536`. [Install](../diagnostics/v0.2.40/install.json) | [Release verification](../diagnostics/v0.2.40/local-release.json). Development delivery uses the existing branch/draft PR #1 under C108/C119; no merge or Workshop publication.
