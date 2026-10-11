@@ -78,3 +78,6 @@ C127 supersedes C126's flat +2 magazine suggestion: owner requests percentage gr
 
 
 C128 supersedes C127 plateaus: owner confirms minimum +1 ready round per module. At linear 25%, capacity = ceil(base + count * max(1, base * 0.25)). Base 1 now progresses 1/2/3/4/5 with 0/1/2/3/4 modules. Requested examples are in the checkpoint; remaining R3C4 choices unchanged. Inspected 3368a34 and fetched origin.
+
+
+C129: confirmed magazine scaling is now linear 35%, minimum +1/module, rounded once. One-round Splitter ammo exception requested; effective one-round capacity versus last loaded round remains a material clarification. Recommend effective capacity one to avoid intentional underloading for free side shots; no interpretation is approved yet. Active checkpoint remains R3C4. Inspected 9ba8df8 and fetched origin.

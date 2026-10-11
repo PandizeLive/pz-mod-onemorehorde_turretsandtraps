@@ -1,6 +1,6 @@
 # Current development and planning handoff
 
-Updated 2026-10-10. Read this first in Cloud, then the linked authoritative records.
+Updated 2026-10-11. Read this first in Cloud, then the linked authoritative records.
 
 - **Per-turn review (C111/C112):** reread the short review section in [AGENTS.md](../AGENTS.md) and this file each turn and after compaction. Check semantic organization, audio, visuals, gameplay and code; distinguish confirmed issues, suspected causes, approval and acceptance.
 - **Planning pipeline (C119):** [Planning](PLANNING.md) indexes proposed/approved/implemented/verified work and the active PR branch. Every substantive discussion and approval must be recorded and pushed before handoff, whether it starts here or in **OMH: Turrets & Traps - Planning**. No automatic chat synchronization is assumed.
@@ -27,4 +27,4 @@ Decision needed (C125): the owner selected Modules, activating R3C4 offensive-mo
 
 C126 planning update: 2B slot-limited Splitter and 3A fixed-five Fragment with capped damage stacking are confirmed. Magazine capacity module feasibility is under discussion; Splitter ammunition cost and capacity bonus remain unapproved. R3C4 remains active; see the offensive-module checkpoint for reload/native-magazine and high-stack coverage constraints.
 
-C128 magazine rule: owner requires minimum +1 ready round per module. At working linear 25%, use ceil(base + count * max(1, base * 0.25)), rounding once. Base 1 with two modules is 3. This supersedes C127 plateaus; Splitter ammo rules/native capacity verification remain open. No new patch/test.
+C129 magazine rule: confirmed linear 35% per module, minimum +1, using ceil(base + count * max(1, base * 0.35)), rounded once. One-round Splitter extra-ammo exception requested; clarify effective capacity one versus any last loaded round. Normal primary-shot consumption remains the contextual interpretation. No gameplay patch/test; R3C4 rules and native capacity proof remain open.

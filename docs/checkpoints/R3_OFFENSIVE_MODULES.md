@@ -86,3 +86,11 @@ C126's slot-limited Splitter and fixed-five/capped-damage Fragment choices stand
 ## C128: minimum one-round magazine gain (2026-10-10)
 
 C128: owner requires at least one added round per Magazine Module, explicitly base 1 plus two modules = 3. With the working linear 25% rate, use ceil(base + count * max(1, base * 0.25)), rounded once from the unmodified base. This supersedes C127 small-magazine plateaus. Examples for 1/2/3/4 modules: base 1 -> 2/3/4/5; base 7 -> 9/11/13/14; base 14 -> 18/21/25/28; base 30 -> 38/45/53/60; base 60 -> 75/90/105/120. No compounding or per-module rounding. Native capacity lifecycle, Splitter ammo rules and other R3C4 choices remain unresolved; no gameplay patch or test is authorized by this arithmetic clarification.
+
+## C129: 35-percent magazine scaling and one-round ammo exception (2026-10-11)
+
+Owner changes the magazine bonus to 35% per module, retaining linear growth, minimum +1 per module and final upward rounding. Confirmed design formula: ceil(base + count * max(1, base * 0.35)). This replaces the prior 25% value; no compounding or per-module rounding.
+
+Owner also requests ignoring ammo-consumption rules when a weapon has only one round in the magazine because no additional rounds remain. Context indicates waiving Splitter's extra-round costs while still consuming the normal primary shot; do not interpret this as infinite ordinary shots. The eligibility needs clarification: A) effective magazine capacity is one after modules, or B) any weapon currently has only one loaded round remaining. Recommend A: B permits intentionally loading one round to obtain all Splitter children at single-round cost and reduces the value of magazine expansion. Neither interpretation is approved by this discussion. Under A, increasing effective capacity would remove the exception; confirm that consequence. Default paid-child costs are implied as the direction being discussed but the complete ammo contract remains unsettled. Behavior with two or more rounds insufficient for a full volley is also still open.
+
+C126 slot-limited Splitter and fixed-five Fragment damage stacking stand. Native firearm capacity/servicing proof and other R3C4 rules remain pending. No code, package, version or new owner test. Mirror confirmed tuning and the unresolved question under C108/C119.

@@ -704,3 +704,8 @@ Owner requests multiplicative capacity with upward rounding and suggests linear 
 ## C128: minimum one-round magazine gain (2026-10-10)
 
 C128: owner requires at least one added round per Magazine Module, explicitly base 1 plus two modules = 3. With the working linear 25% rate, use ceil(base + count * max(1, base * 0.25)), rounded once from the unmodified base. This supersedes C127 small-magazine plateaus. Examples for 1/2/3/4 modules: base 1 -> 2/3/4/5; base 7 -> 9/11/13/14; base 14 -> 18/21/25/28; base 30 -> 38/45/53/60; base 60 -> 75/90/105/120. No compounding or per-module rounding. Native capacity lifecycle, Splitter ammo rules and other R3C4 choices remain unresolved; no gameplay patch or test is authorized by this arithmetic clarification.
+
+
+## C129: 35-percent capacity and one-round ammo exception (2026-10-11)
+
+Owner selects 35% linear capacity per Magazine Module, minimum +1 with final rounding, superseding C127/C128's 25%. Owner requests a one-round ammo exception; clarify effective one-round capacity versus any last loaded round before implementing. Context is Splitter extra-round charges, preserving normal primary-shot consumption. The checkpoint documents both interpretations and the last-round incentive tradeoff. No patch authorization inferred.
