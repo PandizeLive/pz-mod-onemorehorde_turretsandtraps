@@ -375,3 +375,8 @@ Owner: "Approved" in response to C146. Approves the complete battery formula, 1x
 ## C150 - proposed ammo-saving module and Manage clarity (2026-10-11)
 
 [Ammo saver / battery / compact Manage discussion](R3_AMMO_SAVER_MANAGE.md) records the new owner request and 1A/1B/1C choices, with names included. No answer or implementation approval inferred. Proposed linear reuse, Splitter accounting alternatives, display-only precision and tooltip/endurance semantics remain to select. C149 performance correction stays first; installed 0.2.42 and R3C7 test remain unchanged.
+
+
+## C151 - Conservation Module selected (2026-10-11)
+
+Owner selects Conservation Module, existing-cost discount including Splitter, combined cost/remaining-volley/runtime battery tooltip, and narrower Manage with utilities kept above the modules. [Current contract](R3_AMMO_SAVER_MANAGE.md#c151---selected-name-splitter-accounting-hybrid-battery-tooltip-and-separate-utilities-2026-10-11) supersedes C150 recommended names/layout. Discussion selections recorded; no immediate implementation/install or acceptance inferred.

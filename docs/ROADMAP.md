@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Synchronized 2026-10-11 against C80-C150 and the installed, native-verified 0.2.42 build. Its focused owner test is pending; the prior 0.2.41/C138 round remains complete. This is the canonical execution/status index.
+Synchronized 2026-10-11 against C80-C151 and the installed, native-verified 0.2.42 build. Its focused owner test is pending; the prior 0.2.41/C138 round remains complete. This is the canonical execution/status index.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -18,7 +18,7 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 ## Current checkpoint status and next work
 
-**C150 discussion:** [C150 module/UI choices](checkpoints/R3_AMMO_SAVER_MANAGE.md). New ammunition-saving module and compact Manage/battery presentation are proposed, not implemented or approved. Owner requests conversational 1A/1B/1C choices including names. No phase reordering; C149 transfer fix remains first and R3C7 stays open.
+**C151 module/UI design selected:** [Conservation Module contract](checkpoints/R3_AMMO_SAVER_MANAGE.md): 1D / 2A / combined 3A+3B / 4C. Name and layout no longer open; battery/expansion stay above narrower modules. Implementation not started; C149 transfer fix stays first, C148 retained and R3C7 open.
 
 **C149 next update:** owner retains C148 optimization work and adds matching fast, bounded ammo transfers as first priority. [Contract](PERFORMANCE_AUDIT_v0.2.42.md#c149-bulk-ammo-transfer-follow-up-2026-10-11). R3C7 now has an owner-reported 0.2.42 bulk-transfer freeze supported by concurrent log gaps; it remains open. Installed gameplay unchanged; fix verification follows the next patch.
 

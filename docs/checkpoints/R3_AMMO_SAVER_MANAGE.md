@@ -1,10 +1,12 @@
-# C150: Ammo-saving module and compact Manage proposal
+# Conservation Module and compact Manage contract (C150-C151)
+
+**Current C151 selections:** Conservation Module (1D), discount existing ammo cost including Splitter (2A), combined battery tooltip 3A+3B, and utilities kept above narrower module cells/window (4C). The blue gaps remain unused. Detailed selection provenance below supersedes the historical recommendations. Discussion selections are recorded; no immediate gameplay patch/install requested.
 
 2026-10-11. Owner requests a stackable module making two shots consume one round, better battery consumption information, narrower module slots/window, and battery/expansion placement in the two blue-marked gaps in the attached Manage screenshot. Owner then explicitly requests **1A/1B/1C choices in the reply, including name options, rather than a structured question form**, and says discussion is still needed. The unanswered form selected no option. **Discussion only; no implementation approval inferred.** Carry alongside C149 transfer work and retained C148 optimizations; installed 0.2.42 and ongoing R3C7 acceptance remain unchanged.
 
 Read current branch `codex/performance-barbed-audit` at `7142196f175ca8b3a796511f10afae7ba72d53b2`; fetched origin and confirmed open draft PR #1 into dev. Inspected TurretManage/OpenAction, TurretSlot/update, TurretWorld/fire, TurretStats, Firearms/consume and prior R3 power contract. The user-supplied screenshot shows the existing 4/6/6 grid with blank cells at either end of row one. This is a layout request, not a new test pass/failure.
 
-## Choices to discuss
+## Historical C150 choices (resolved/revised by C151 below)
 
 ### 1. Module name
 
@@ -51,6 +53,19 @@ Round **display only**, with adaptive precision: 0.23436% -> 0.23%, but retain 0
 
 Current width is max(800, font line height * 40), clamped to viewport; module width is (window width - 54)/6. Recommend testing roughly 20% narrower at the same normal font (about 640 vs 800), with measured-text/large-font safeguards rather than a hard universal width. Full names remain available through tooltips. The current battery slot is an ordinary ISToolTipInv item tooltip; add turret-specific details locally to this slot, not all car batteries globally. Preserve native drag/drop/right-click, viewport fit, oversized-capacity scrolling, empty/missing battery feedback and active power indication. Reuse existing 200 ms Manage refresh for tooltip calculations/text; add no continuous-fire history scan or new tick handler. Final rendered placement/legibility remains to verify after implementation approval.
 
-## Handoff
+## Historical C150 handoff
 
 Recommend **1A / 2A / 3A / 4A**, with the proposed linear uses-per-round stacking and normal per-volley power. Names, Splitter accounting, display variant and layout remain open. Do not treat the owner's request to discuss names/options as implementation approval. C149 transfer freeze remains the first corrective priority; C148 optimization list is retained. No gameplay, item/loot, version, install, published changelog or test acceptance changes this turn. **Decision needed:** discuss/select the options in the reply, without another structured form.
+
+
+## C151 - selected name, Splitter accounting, hybrid battery tooltip and separate utilities (2026-10-11)
+
+Owner selects **1D Conservation Module**, **2A**, asks whether **3A and 3B can be combined**, and selects **4C** because placing battery/expansion beside modules would be confusing. Treat this as the design selection/request for a combined tooltip, not an answer to a new approval form or an instruction to install immediately during the test.
+
+- **Name:** Conservation Module is selected. Do not keep asking for a name or substitute Ammo Saver/Ammo Efficiency. Its tooltip/short effect description must explicitly say ammunition so the selected broad name is not mistaken for battery efficiency. Internal item type should follow OMHTTModule naming when implemented.
+- **Ammo:** selected 2A applies conservation to the existing actual ammo charge, including Splitter and its one-round/partial fallback. Retain the proposed linear two/three/four uses at one/two/three copies as the working design; no different stacking rule was requested. Two Splitters with enough loaded ammo and one copy average 1.5 rounds per volley. Do not change normal per-volley power or Impact's real empty-reload condition. Native chamber/last-round/credit/persistence details still require implementation and verification; this selection is not that proof.
+- **Battery:** 3A and 3B can share one tooltip. Keep charge beside the battery. Hover shows adaptively rounded charge cost per volley, remaining battery-powered volleys from unrounded values, estimated continuous-firing duration in real minutes/hours, and zero idle drain. Preserve the active grid/generator indication; battery endurance is conditional on battery operation. Rounding is display-only and changes actual draw by zero. Do not convert to game days.
+- **Estimate contract:** clearly label the cadence model. Recommend a reload-aware continuous-firing estimate using current head/magazine/cooldown/rack/reload and conservation configuration, with hypothetical unlimited reserve and available targets. Exclude unpredictable aiming/target gaps, scheduler slowdown and pauses; those extend elapsed lifetime. If a reload-aware model cannot be verified for a supported gun, show an explicit configured-fire-rate estimate with reloads excluded instead of pretending it is sustained throughput. Reuse existing throttled Manage refresh, bounded local computation and no per-tick firing history. Zero-cost/no-head/no-battery states must be explicit. Exact duration text and arithmetic remain unimplemented.
+- **Layout:** retain battery, expansion and power controls above the module grid. Narrow the cells and window with font/viewport safeguards; retain 4/6/6 and leave its two end gaps unused. The 4A combined strip/schema is rejected, not the current target. Preserve drag/drop, full-name tooltips, capacity scrolling and separate utility identity.
+
+C149 fast matching/bounded ammo transfers remain first priority; C148 optimizations are retained in the same next-update plan. Conservation acquisition/rarity and technical counter implementation remain to settle with the implementation scope; do not quietly introduce a recipe or alter loot totals. No gameplay code, version, install, Workshop changelog or test-result changes. The design is recorded for the next patch; readiness/approval to execute that combined patch is separate from this discussion response. **Decision needed:** finish discussion/authorize the combined implementation when ready; do not repeat settled 1D/2A/3A+3B/4C choices.
