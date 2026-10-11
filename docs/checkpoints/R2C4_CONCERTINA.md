@@ -86,3 +86,5 @@ Implementation must validate both floor tiles and rotated footprint, maintain sh
 ## C133 implementation: 0.2.39
 
 Owner approves implementing C132. The linked pair uses one saved wire ledger record and two native object markers. Both occupied tiles share one runtime index, damage interval and health pool; either half services the unit. All four rotations check connected clear floor. Depletion/external removal/pickup retire both; an unloaded retired half is removed when it loads. Existing texture pixels are reused through native part aliases. Focused Kahlua checks pass; native verification/install and rendered acceptance are tracked in [TEST_v0.2.39.md](../TEST_v0.2.39.md). The prior C132 installed-state sentence is historical.
+
+C133 final local evidence: automated/native write-read, all independent package selections and tagged installation pass. See TEST_v0.2.39.md and RELEASE.md. Rendered acceptance remains pending; R3C4 module planning is unchanged.

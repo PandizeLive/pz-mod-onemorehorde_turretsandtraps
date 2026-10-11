@@ -1,10 +1,10 @@
 # Planning
 
-Updated 2026-10-10 under C119. This is the shared entry point for planning in the local PC chat and **OMH: Turrets & Traps - Planning**. Detailed contracts and approval history remain in the linked records; this page indexes them rather than replacing them.
+Updated 2026-10-11 under C119/C133. This is the shared entry point for planning in the local PC chat and **OMH: Turrets & Traps - Planning**. Detailed contracts and approval history remain in the linked records; this page indexes them rather than replacing them.
 
 ## Read the current branch
 
-Current unmerged work is on **codex/performance-barbed-audit**, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1), targeting dev. [Open this Planning page on the active branch](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/blob/codex/performance-barbed-audit/docs/PLANNING.md). C133 implementation is [0.2.39 paired Concertina](PATCH_v0.2.39.md); focused checks pass, native verification/install is in progress. The **previous installed 0.2.38.1 build** implements the approved bundle and C122 native-pitch/contact optimization. Native/automated checks and tagged installation verify; [release state](RELEASE.md) records the evidence. The reported lag fix is owner-accepted; individual unmentioned rendered/audio checks remain unconfirmed.
+Current unmerged work is on **codex/performance-barbed-audit**, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1), targeting dev. [Open this Planning page on the active branch](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/blob/codex/performance-barbed-audit/docs/PLANNING.md). C133 implementation is [0.2.39 paired Concertina](PATCH_v0.2.39.md); automated/native checks and tagged installation pass; rendered owner acceptance is pending. The **previous installed 0.2.38.1 build** implements the approved bundle and C122 native-pitch/contact optimization. Native/automated checks and tagged installation verify; [release state](RELEASE.md) records the evidence. The reported lag fix is owner-accepted; individual unmentioned rendered/audio checks remain unconfirmed.
 
 Fetch the remote and check open development/planning PRs before using dev alone as the current state. Read the active branch's AGENTS.md, this page and [CURRENT_STATUS.md](CURRENT_STATUS.md). Record which branch/commit was inspected. A chat's older answer or an old Cloud checkout is not a current checkpoint. Preserve unmerged work and reconcile incoming plans; do not reset, force-push or merge automatically.
 
@@ -46,7 +46,7 @@ Either chat can originate plans. The named Planning chat is optional; GitHub is 
 
 **Superseded by C122, never implemented:** remove per-play pitch randomization in both turret audio paths, preserving clips/variants/volume/hearing, and add gated aggregate reload/trap timings. Less pitch variation is the explicit tradeoff. No gameplay/source/package changes are made in this report. R1C3 remains open; Phase 3 decisions are still deferred. The subsequent C122 instruction below replaces this proposal.
 
-## Current corrective update: C122 / 0.2.38.1 installed and verified
+## Previous corrective update: C122 / 0.2.38.1 installed and verified
 
 Owner requests preserving pitch variation and optimizing again. The implementation uses native sound-script clip pitch and random clip selection at all original 101 pitch values, avoiding FMODSoundEmitter.setPitch. Existing clips/weights/volume/hearing and native event-authored variation remain. Concertina skips adjacent unoccupied coils before object resolution, and aggregate reload/trap timing fills diagnostic gaps. No new content or balance change.
 

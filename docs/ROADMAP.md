@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Synchronized 2026-10-11 against C80-C133, the installed 0.2.38.1 build and 0.2.39 implementation under verification. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
+Synchronized 2026-10-11 against C80-C133, the installed, native-verified 0.2.39 build; rendered acceptance is pending. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -8,7 +8,7 @@ New checkpoint IDs use **R** for the revised roadmap. Historical P0-P6 IDs and e
 
 ## Product and existing work
 
-**Current installed 0.2.38.1** includes Bed Spikes, Barbed Panel and subsequent crafting, Building, traversal and starter-module changes. Native evidence is in [release state](RELEASE.md); the latest [performance comparison](TEST_v0.2.38.1.md#owner-result-and-console-comparison-2026-10-10) is positive for perceived lag, with residual gaps and no repeat checklist requested. C106 records the earlier test findings; pending rendered checks are not passes or waivers. R1C3 includes diagnostic gating and aim/LOS cleanup; the reported lag fix is owner-accepted in 0.2.38.1. Broader performance/authority work remains separate and does not require continued play for this fix.
+**Current installed 0.2.39** includes Bed Spikes, Barbed Panel and subsequent crafting, Building, traversal and starter-module changes. Native evidence is in [release state](RELEASE.md); the latest [performance comparison](TEST_v0.2.38.1.md#owner-result-and-console-comparison-2026-10-10) is positive for perceived lag, with residual gaps and no repeat checklist requested. C106 records the earlier test findings; pending rendered checks are not passes or waivers. R1C3 includes diagnostic gating and aim/LOS cleanup; the reported lag fix is owner-accepted in 0.2.38.1. Broader performance/authority work remains separate and does not require continued play for this fix.
 
 One Workshop product/download: **OMH: Turrets & Traps**, with independent selectable entries **OMH: Turrets** (`OneMoreHorde_Turrets`) and **OMH: Traps** (`OneMoreHorde_Traps`). Neither requires the other or a third Core entry. Canonical shared helpers are generated into both with identical virtual paths.
 
@@ -38,13 +38,13 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 **Corrective patch (C110, 2026-10-09):** 0.2.36 restores OMH parent categories with expandable Normal/Reinforced/Packed groups, continuous Building with exact-item/original-recipe fallback, zombie forward-collapse and native trip/impact audio. Player tripping and the 4/6/6 module layout remain unchanged. C106 records the prior test's tentative unmentioned passes and failed zombie overshoot. Only the replacement [focused 0.2.38 test](TEST_v0.2.37.md) remains for these changes; new-content choices stay postponed. See [release evidence](RELEASE.md) for local verification/install state.
 
-| Phase / checkpoints | Status at 0.2.38.1 | Remaining work / next gate |
+| Phase / checkpoints | Status at 0.2.39 | Remaining work / next gate |
 | --- | --- | --- |
 | 1: R1C1-R1C2 package split | Implemented and native-verified in 0.2.29; remaining owner regression waived by C89 | Closed to further split regression; retain fresh-world policy and independent-package checks for changes |
 | 1: R1C3 performance/authority | Current lag fix implemented and owner-accepted in 0.2.38.1; broader checkpoint partial | No further test for this fix; broader load/authority work accompanies relevant future changes |
 | 2: R2C1-R2C2 Bed Spikes | Implemented with native checks, revised through subsequent patches | C106 tentative passes; verify corrected zombie landing/recovery in the focused 0.2.38 test |
 | 2: R2C3 Barbed Panel | Implemented with native contact/construction/persistence checks | C106 tentative passes; revised Building acceptance; player injuries added in 0.2.38; multi-panel/garage doors remain unimplemented |
-| 2: R2C4 concertina | C120 implemented in 0.2.38; native checks pass; owner acceptance pending | Rendered contact movement, traversal/injury and combined acceptance remain |
+| 2: R2C4 concertina | C133 linked 1x2 conversion installed/native-verified in 0.2.39 | Focused paired-wire owner acceptance remains; see TEST_v0.2.39.md |
 | 3: R3C1-R3C2 new head | Candidates documented; none selected for implementation | Select one head and settle its concrete contract before prototyping |
 | 3: R3C3 explosive head | Optional, unscoped | Collateral/resource/effect-budget decisions and feasibility first |
 | 3: R3C4-R3C7 offensive modules/battery | R3C4 planning selected under C125; no new offensive module implemented | R3C4 contract/baseline, then R3C5 directional effects, R3C6 conditional/penetrating effects, R3C7 combined acceptance |
