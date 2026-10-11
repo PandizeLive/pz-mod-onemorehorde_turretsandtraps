@@ -20,4 +20,6 @@ Updated 2026-10-10. Read this first in Cloud, then the linked authoritative reco
 - **Development handoff:** C120 content and C122 optimization, approved planning, versioned test findings and verified installation records belong to the active branch and draft PR #1. The current immutable gameplay checkpoint is `test/v0.2.38.1` / `0654692`; later documentation/evidence commits may follow it. Root Mirror verifies the remote commit; no merge is authorized.
 - **GitHub protocol:** C108/C119 require mirroring every completed update, planning discussion/approval and versioned finding through root OMH.cmd, with immutable eligible test tags and draft PR into dev. Cloud uses the development branch until merged. No automatic merge, official release or Workshop upload.
 
-Test now: normal play on installed 0.2.38.1 only; no repeat stress checklist requested. The owner reports noticeable lag apparently resolved in this sample, with residual update gaps documented. No new patch is needed solely from this positive report.
+Owner follow-up to C123: "Yea seems fine." The owner is satisfied with the current lag improvement; existing measured limits and unrelated acceptance gates remain unchanged.
+
+Test now: normal play on installed 0.2.38.1 only; no further dedicated lag test requested. No new patch is needed solely from this positive report.

@@ -15,6 +15,8 @@ The original full 0.2.38 checklist is historical context; unmentioned items are 
 
 Owner: "Seems like lag is gone." Record this as a positive, tentative owner result for noticeable lag in this sample. No repeat stress checklist is requested. Unmentioned audio quality and individual gameplay checks are not automatically passed.
 
+Owner follow-up: "Yea seems fine." Confirms satisfaction with the current lag improvement; no further issue or separate test is reported. Retain the console evidence and limits below without treating this acknowledgment as a new benchmark or acceptance of unrelated checks. No further dedicated lag test is requested.
+
 Root Capture `20261010-231708-7721` confirms both 0.2.38.1 entries on game 42.21. The snapshot was taken during gameplay; 59 summary windows span 290.763 seconds. [Reviewed metrics and capture hash](../diagnostics/v0.2.38.1/owner-test-20261010.json); raw console remains local.
 
 | Measurement | Previous 0.2.38 | Current 0.2.38.1 |
