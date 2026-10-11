@@ -8,13 +8,17 @@ local V = {queue = {}, reserved = 0}
 ---@return boolean available Bounded committed effect capacity
 ---@nodiscard
 function V.available(stats)
-    local count = stats.splitter + (stats.fragment > 0 and 5 or 0)
+    local count = stats.splitter + (stats.fragment > 0 and 5 or 0) + ((stats.piercing or 0) > 0 and 1 or 0)
     return count == 0 or #V.queue + V.reserved + count <= 256
 end
 
 ---@param options table Committed primary shot
 ---@return nil
 function V.reserve(options)
+    if options.stats and (options.stats.piercing or 0) > 0 then
+        options.pierceReserved = 1
+        V.reserved = V.reserved + 1
+    end
     if options.stats and options.stats.fragment > 0 then
         options.fragmentReserved = 5
         V.reserved = V.reserved + 5
@@ -24,6 +28,10 @@ end
 ---@param options table Finished primary shot
 ---@return nil
 function V.release(options)
+    if options.pierceReserved then
+        V.reserved = math.max(0, V.reserved - options.pierceReserved)
+        options.pierceReserved = nil
+    end
     if options.fragmentReserved then
         V.reserved = math.max(0, V.reserved - options.fragmentReserved)
         options.fragmentReserved = nil
@@ -100,7 +108,8 @@ end
 ---@return nil
 function V.fragment(record, x, y, z, target, player, options)
     if not options.fragmentReserved then return end
-    V.release(options)
+    V.reserved = math.max(0, V.reserved - options.fragmentReserved)
+    options.fragmentReserved = nil
     local stats = options.stats
     local group = {kind = "fragment", player = player, weapon = options.effectWeapon, stats = stats, hits = {[target] = true}, remaining = 5, rays = {}, height = .30}
     local rotation = ZombRand(36000) / 100
@@ -109,6 +118,32 @@ function V.fragment(record, x, y, z, target, player, options)
         local angle = math.rad(rotation + (i - 1) * 72 + ZombRand(4201) / 100 - 21)
         V.ray(record, x, y, z, angle, stats.fragmentRange, damage, group, i)
     end
+end
+
+---@param record table Committed primary identity
+---@param origin IsoGridSquare Muzzle square
+---@param target IsoZombie First primary hit
+---@param player IsoPlayer? Operator
+---@param options table Committed shot snapshot
+---@param square IsoGridSquare Victim square captured before damage
+---@param hitX number Victim X captured before damage
+---@param hitY number Victim Y captured before damage
+---@return nil
+function V.pierce(record, origin, target, player, options, square, hitX, hitY)
+    if not options.pierceReserved then return end
+    V.reserved = math.max(0, V.reserved - options.pierceReserved)
+    options.pierceReserved = nil
+    local stats = options.stats
+    local x, y = origin:getX() + .5, origin:getY() + .5
+    local dx, dy = hitX - x, hitY - y
+    local distance = math.sqrt(dx * dx + dy * dy)
+    if distance <= 0 or distance >= stats.range then return end
+    local group = {kind = "piercing", player = player, weapon = options.weapon, stats = stats,
+        hits = {[target] = true}, left = stats.piercing, fromX = hitX, fromY = hitY}
+    local damage = options.damage * (options.critical and options.critMultiplier or 1) * stats.pierceRetention
+    V.ray(record, x, y, origin:getZ(), math.atan2(dy, dx), stats.range, damage, group, 1)
+    local ray = V.queue[#V.queue]
+    ray.distance, ray.minimum, ray.square, ray.scanning = distance, distance, square, true
 end
 
 ---@param ray table Committed ray
@@ -121,13 +156,13 @@ function V.finish(ray)
         and math.abs((victim:getX() - ray.x) * ray.dy - (victim:getY() - ray.y) * ray.dx) <= math.max(.2, victim:getWidth())
         and (victim:getX() - ray.x) * ray.dx + (victim:getY() - ray.y) * ray.dy >= 0
         and (victim:getX() - ray.x) * ray.dx + (victim:getY() - ray.y) * ray.dy <= ray.range
-        and (group.kind ~= "fragment" or not group.hits[victim]) then
+        and (group.kind == "splitter" or not group.hits[victim]) then
         local chance = 100
         if group.stats.firearm then
             chance = require("OMHTT/FirearmAccuracy").chance(group.weapon, group.stats, ray.bestDistance, victim:isProne())
         end
         if ZombRand(10000) < chance * 100 then
-            if group.kind == "fragment" then group.hits[victim] = true end
+            if group.kind ~= "splitter" then group.hits[victim] = true end
             hit = Damage.apply(victim, ray.damage, ray.id, group.kind, group.player, group.weapon) > 0
         end
     end
@@ -142,6 +177,20 @@ function V.finish(ray)
     else
         triggerEvent("OnServerCommand", F.MODULE, "Ray", facts)
     end
+    if group.kind == "piercing" and victim then
+        group.hits[victim] = true
+        if hit then
+            group.left = group.left - 1
+            ray.damage = ray.damage * group.stats.pierceRetention
+        end
+        if group.left > 0 and ray.distance < ray.range and ray.square then
+            group.fromX, group.fromY = facts.x, facts.y
+            ray.minimum = math.max(ray.minimum, distance)
+            ray.best, ray.bestDistance, ray.scanning, ray.objectIndex = nil, nil, true, 0
+            return true
+        end
+    end
+    return false
 end
 
 ---@param ray table Incremental ray state
@@ -153,11 +202,11 @@ function V.step(ray)
             local candidate = objects:get(ray.objectIndex)
             ray.objectIndex = ray.objectIndex + 1
             if instanceof(candidate, "IsoZombie") and not candidate:isDead() and candidate:getSquare() == ray.square
-                and (ray.group.kind ~= "fragment" or not ray.group.hits[candidate]) then
+                and (ray.group.kind == "splitter" or not ray.group.hits[candidate]) then
                 local x, y = candidate:getX() - ray.x, candidate:getY() - ray.y
                 local along = x * ray.dx + y * ray.dy
                 local across = math.abs(x * ray.dy - y * ray.dx)
-                if along >= 0 and along <= ray.range and across <= math.max(.2, candidate:getWidth())
+                if along >= (ray.minimum or 0) and along <= ray.range and across <= math.max(.2, candidate:getWidth())
                     and (not ray.bestDistance or along < ray.bestDistance) then
                     ray.best, ray.bestDistance = candidate, along
                 end
@@ -191,8 +240,7 @@ function V.tick()
         local origin = getCell():getGridSquare(math.floor(ray.x), math.floor(ray.y), ray.z)
         if not origin or V.step(ray) then
             if not origin then ray.best, ray.bestDistance, ray.distance = nil, nil, 0 end
-            V.finish(ray)
-            table.remove(V.queue, 1)
+            if not V.finish(ray) then table.remove(V.queue, 1) end
         end
     end
 end

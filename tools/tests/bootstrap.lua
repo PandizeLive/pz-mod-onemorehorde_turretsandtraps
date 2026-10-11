@@ -262,6 +262,9 @@ function makeZombie(square, health)
     function zombie:isDead() return self.health <= 0 end
     function zombie:isOnFloor() return self.floor end
     function zombie:isProne() return self.floor end
+    function zombie:isStaggerBack() return self.stagger == true end
+    function zombie:setStaggerBack(value) self.stagger = value end
+    function zombie:isBumpFall() return self.bumpFall == true end
     function zombie:setKnockedDown(value) self.knocked = value end
     function zombie:isKnockedDown() return self.knocked == true end
     function zombie:knockDown(behind) self.knocked = true; self.nativeKnockdown = true end

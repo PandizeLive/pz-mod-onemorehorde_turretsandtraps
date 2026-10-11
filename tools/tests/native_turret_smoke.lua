@@ -543,6 +543,23 @@ local function verifyTurrets()
     assert(base:getSpriteName() == H.SPRITE, "Rotating head changed base sprite")
     OMHTT_NativeHybridHead = world
     print("[OMHTT-Smoke] native-hybrid model=bound yaw=independent base=fixed lookup=exact")
+    local Health = require("OMHTT/TargetHealth")
+    local victim = IsoZombie.new(getCell())
+    victim:setHealth(3.7)
+    Health.created(victim)
+    victim:setHealth(0.37)
+    Health.created(victim)
+    assert(math.abs(Health.maximum(victim) - 3.7) < .00001, "Wounded HP replaced the creation baseline")
+    victim:getModData().OMHToughnessInitialHealth = 6
+    assert(Health.maximum(victim) == 6, "Horde Night baseline was ignored")
+    victim:getModData().OMHToughnessInitialHealth = nil
+    victim:getModData().OMHTTInitialHealth = nil
+    assert(Health.maximum(victim) == 0, "Unknown HP baseline was invented")
+    victim:setStaggerBack(true)
+    assert(victim:isStaggerBack() and not victim:isKnockedDown() and not victim:isOnFloor(), "Standing stagger requested a fall")
+    victim:setStaggerBack(false)
+    assert(not victim:isStaggerBack() and math.abs(victim:getHealth() - .37) < .00001, "Stagger changed health or failed to clear")
+    print("[OMHTT-Smoke] native-offensive-feasibility health=creation-recorded wounded=preserved horde=preferred unknown=zero stagger=exposed-standing")
     print("[OMHTT-Smoke] native-turret recipes=6 loadedDeploy=exact contents=preserved weight=exact filters=valid cooldown=preserved")
     isServer, isClient = serverFunction, clientFunction
 end

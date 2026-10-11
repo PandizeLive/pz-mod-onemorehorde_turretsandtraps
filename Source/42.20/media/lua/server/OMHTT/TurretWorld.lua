@@ -411,6 +411,7 @@ function W.fire(player, object, target)
             return false
         end
         options.ammoCost = math.min(cycle.loaded, 1 + stats.splitter)
+        options.impactReady = cycle.impactReady == true
         if G.profile(contents.head) and not G.consume(contents, stats, Clock.now()) then return false end
         if power.kind == "battery" then
             power.battery:setCurrentUsesFloat(math.max(0, power.battery:getCurrentUsesFloat() - power.cost))

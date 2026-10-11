@@ -107,6 +107,7 @@ function S.resolve(contents)
     magazine = math.ceil(magazine + (active.Magazine or 0) * math.max(1, magazine * S.option("MagazineBonus", 35, 0, 200) / 100))
     local enhancement = firearm and active.FiringEnhanced and S.option("EnhancedFireMultiplier", 4 / 3, 1, 5) or 1
     local splitter, fragment = active.Splitter or 0, active.Fragment or 0
+    local execute, impact = active.Execute or 0, active.Impact or 0
     local knockBonus = math.min((active.Velocity or 0) * S.option("VelocityKnockdownBonus", 5, 0, 100),
         math.max(0, S.option("VelocityKnockdownCap", 90, 0, 100) - knockdown))
     return {damage = damage * (1 + S.bonus(active, "Velocity", 20, 100) / 100),
@@ -115,6 +116,12 @@ function S.resolve(contents)
         ammo = math.floor(ammoCapacity + extraAmmo),
         modules = math.floor(S.option("PotatoModuleCapacity", 2, 0, 20) + extraModules),
         splitter = splitter, fragment = fragment, splitterDamage = S.option("SplitterDamage", 50, 0, 100) / 100,
+        piercing = (active.Piercing or 0) > 0 and firearm and gun:getProjectileCount() <= 1 and active.Piercing or 0,
+        pierceRetention = S.option("PiercingRetention", 70, 0, 100) / 100,
+        initialBlow = (active.InitialBlow or 0) * S.option("InitialBlowBonus", 25, 0, 200) / 100,
+        initialThreshold = S.option("InitialBlowThreshold", 90, 0, 100) / 100,
+        execute = execute > 0 and (S.option("ExecuteFirst", 10, 0, 100) + (execute - 1) * S.option("ExecuteBonus", 2, 0, 100)) / 100 or 0,
+        impact = impact > 0 and math.min(100, S.option("ImpactFirst", 60, 0, 100) + (impact - 1) * S.option("ImpactBonus", 2, 0, 100)) or 0,
         fragmentDamage = math.min(S.option("FragmentDamageCap", 40, 0, 100), S.option("FragmentDamage", 20, 0, 100) + math.max(0, fragment - 1) * S.option("FragmentBonus", 5, 0, 100)) / 100,
         fragmentRange = S.option("FragmentRange", 4, 1, 10),
         effectPower = 1 + splitter * S.option("SplitterPower", 25, 0, 200) / 100 + fragment * S.option("FragmentPower", 25, 0, 200) / 100,
