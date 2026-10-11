@@ -72,3 +72,6 @@ Owner selected Modules. [Contract and current choices](checkpoints/R3_OFFENSIVE_
 
 
 C126: confirmed slot-limited Splitter and fixed-five Fragment with capped damage stacking. Discussing a Magazine Module for loaded capacity (separate from reserve expansion); Splitter extra-ammo option remains open. Proposed +2 rounds/module and firearm feed-extension approach require owner settlement/native proof. [Detailed evidence and unresolved interactions](checkpoints/R3_OFFENSIVE_MODULES.md#c126-selected-stacking-and-proposed-magazine-module-2026-10-10). Inspected fe67208 and fetched origin. No code/test/version changes.
+
+
+C127 supersedes C126's flat +2 magazine suggestion: owner requests percentage growth and rounding up, suggesting linear 25% per module. Working formula: ceil(base capacity * (1 + 0.25 * count)). Base-1 capacity remains two for modules 1-4 and reaches three at five; this affects paid Splitter slot efficiency. [Current contract](checkpoints/R3_OFFENSIVE_MODULES.md#c127-linear-percentage-magazine-growth-and-final-rounding-2026-10-10). No patch approval; Splitter ammo/leftover-round policy remains open. Inspected 9b36cb8 and fetched origin.

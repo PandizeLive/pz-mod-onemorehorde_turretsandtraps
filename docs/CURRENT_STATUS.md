@@ -26,3 +26,5 @@ Decision needed (C125): the owner selected Modules, activating R3C4 offensive-mo
 
 
 C126 planning update: 2B slot-limited Splitter and 3A fixed-five Fragment with capped damage stacking are confirmed. Magazine capacity module feasibility is under discussion; Splitter ammunition cost and capacity bonus remain unapproved. R3C4 remains active; see the offensive-module checkpoint for reload/native-magazine and high-stack coverage constraints.
+
+C127 magazine discussion: percentage scaling replaces flat +2. Suggested linear 25% uses ceil(base * (1 + 0.25 * moduleCount)), rounding once. Small magazines have plateaus (base 1 reaches 3 only with five modules); 25% tuning and Splitter ammo behavior remain unsettled. No new patch/test.

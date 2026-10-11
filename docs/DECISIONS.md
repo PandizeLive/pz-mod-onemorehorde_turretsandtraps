@@ -694,3 +694,8 @@ Owner: Modules. Select R3C4 contract/battery baseline discussion, preserving R3C
 ## C126: Splitter/Fragment stacking selected; magazine capacity question (2026-10-10)
 
 Owner selects 2B slot-limited Splitter stacking and 3A fixed-five Fragment damage stacking with a cap. These supersede the four-Splitter proposal and fragment-count stacking alternative. Owner asks about a Mag Size module to support paid Splitter children (1B); ammo choice and module scope/tuning remain open. Read-only source/native-Lua review and proposed +2 ready rounds per Magazine Module are recorded in R3_OFFENSIVE_MODULES.md. Native firearm capacity lifecycle is not proven, and no gameplay implementation, recipe, numerical cap or test is approved here. Mirror under C108/C119.
+
+
+## C127: magazine percentage-growth direction (2026-10-10)
+
+Owner requests multiplicative capacity with upward rounding and suggests linear +25% per module. Record ceil(base * (1 + 0.25 * count)) as the working formula, replacing the assistant's flat +2 proposal. Round once; do not compound or grant a hidden minimum increase per stack. The checkpoint records small-magazine plateaus and the five-module requirement for base-1 capacity to reach three. Exact 25% remains a suggested value pending design settlement; no implementation or Splitter ammunition choice is inferred.
