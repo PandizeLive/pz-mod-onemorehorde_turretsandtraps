@@ -39,3 +39,9 @@ For every substantive project planning discussion, correction or approval, inclu
 5. Move states only with evidence: Proposed -> Approved -> Implemented -> Verified. Record automated verification separately from owner acceptance; Published requires the existing release evidence. Include affected version findings when actual tests occur.
 
 Either chat can originate plans. The named Planning chat is optional; GitHub is the shared handoff and does not depend on automatic chat-history transfer. This protocol neither schedules background polling nor sends messages to another chat. A future chat must fetch/read the current checkpoint before advising.
+
+## Latest owner test and proposed follow-up (C121, 2026-10-10)
+
+0.2.38 generally functions according to the owner, but mixed Bed Spikes/Concertina/turret play still lags. [Versioned findings](TEST_v0.2.38.md#owner-findings-and-console-review-2026-10-10) confirm 1,077-ms update gaps and 674-ms elapsed runtime-pitch calls; trap and reload costs remain unmeasured. General function is provisional, not automatic acceptance of every test item.
+
+**Proposed, not approved:** remove per-play pitch randomization in both turret audio paths, preserving clips/variants/volume/hearing, and add gated aggregate reload/trap timings. Less pitch variation is the explicit tradeoff. No gameplay/source/package changes are made in this report. R1C3 remains open; Phase 3 decisions are still deferred. Decision needed before the next patch.
