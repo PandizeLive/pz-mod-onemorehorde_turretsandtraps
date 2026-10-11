@@ -1,6 +1,6 @@
 # Planning
 
-**Current C139 handoff:** owner requests R3C6 choices. [Four A/B proposals](checkpoints/R3_OFFENSIVE_MODULES.md#c139---r3c6-choices-offered-not-approved-2026-10-11) cover Piercing, Initial Blow, Execute and Impact; no selections or patch approval yet. Native standing stumble/full-health compatibility need proof; loot/power/endurance tuning remains after behavior selection. Installed 0.2.41 and C138 completed owner test are unchanged. [Current status](CURRENT_STATUS.md). Earlier current/open-choice entries below are historical.
+**Current C140 handoff:** [Selected uncapped rules and revised Impact proposal](checkpoints/R3_OFFENSIVE_MODULES.md#c140---selected-uncapped-rules-and-revised-impact-proposal-2026-10-11). Piercing is slot-limited; Initial Blow is >=90% HP/+25% per copy without cap; Execute is lethal below a linear 7%-per-copy threshold (15 copies reach full-health execution). Impact's first-shot direction stands; recommended diminishing chance curve awaits selection. Physical slots remain unchanged. Native health/stumble proofs and loot/power/endurance tuning remain open. No patch approval; installed 0.2.41/C138 test completion unchanged. Earlier current/open-choice entries below are historical.
 
 
 Updated 2026-10-11 under C119/C133. This is the shared entry point for planning in the local PC chat and **OMH: Turrets & Traps - Planning**. Detailed contracts and approval history remain in the linked records; this page indexes them rather than replacing them.
