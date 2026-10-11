@@ -684,3 +684,8 @@ Owner: "Seems like lag is gone." Console capture confirms the loaded version and
 ## C124: accurate next-patch handoff and roadmap reconciliation (2026-10-10)
 
 Owner asks what patch they are waiting for and requests the current roadmap/checkpoints. No next patch is selected or underway; the prior Wait for a patch label was misleading. C123 closes the current lag test. Reconcile the stale 0.2.37 status table and pre-fix lag wording without promoting unmentioned content checks to passes. Recommend R3C4 offensive-module contract/battery baseline next; R3C1 new-head selection is an independent alternative. Retain R3C4 -> R3C5 -> R3C6 -> R3C7 order and completed R3C8 implementation. This records a recommendation, not approval or new gameplay. No additional owner test is requested. C108/C119 require mirroring this correction.
+
+
+## C125: module planning track selected (2026-10-10)
+
+Owner: Modules. Select R3C4 contract/battery baseline discussion, preserving R3C5 -> R3C6 -> R3C7 order and deferring new-head selection. This does not approve unresolved numbers, recipes or implementation. The checkpoint brief records the current ammo/stack/Fragment choices and their tradeoffs; recommendations remain proposals. Installed 0.2.38.1 and the completed lag test are unchanged. C108/C119 mirror applies.

@@ -1,6 +1,6 @@
 # R3C4-R3C7: offensive modules and battery endurance
 
-Planning record under [C81](../DECISIONS.md#c81-offensive-module-planning-and-long-battery-life-2026-10-06), synchronized 2026-10-08. Installed 0.2.34 retains SP-only combat and adds R3C8 starter components; none of this brief's offensive modules is implemented. Final recipes, art and unselected heads retain their approval gates. See [canonical roadmap status](../ROADMAP.md#current-checkpoint-status-and-next-work).
+Planning record under [C81](../DECISIONS.md#c81-offensive-module-planning-and-long-battery-life-2026-10-06), synchronized 2026-10-10 under C125. Installed 0.2.38.1 retains SP-only combat and adds R3C8 starter components; none of this brief's offensive modules is implemented. Final recipes, art and unselected heads retain their approval gates. See [canonical roadmap status](../ROADMAP.md#current-checkpoint-status-and-next-work).
 
 **Next module checkpoint: R3C4 contract and battery baseline.** The documented sequence remains R3C4 -> R3C5 -> R3C6 -> R3C7; it does not require a new head first. The assistant's later suggestion to prioritize Initial Blow/Execute was an unapproved reorder, not missing scope: both were already listed in R3C6. This sync records the distinction without selecting a new gameplay patch.
 
@@ -50,3 +50,17 @@ The related [R3C8 starter-component/expansion checkpoint](R3C8_IMPROVISED_EXPANS
 Recommended propagation is deliberately finite: primary first impact may produce Fragment; later pierce hits and Splitter children do not; Fragment children cannot Fragment, Split or Pierce. Five paths each piercing three victims would otherwise permit 75 Fragment children from one cycle. Power pricing cannot replace hard work limits. Looser propagation requires a new measured scope decision.
 
 No permanent speed/status mutation, free ammo, recursive child effects, invented sibling reward API or double-counted death. Keep targeting/authority shared with current combat, with separate presentation facts. Do not claim MP from the server-directory location. Native proofs and bounded tests precede one complete 4-8-step owner test per playable combined checkpoint; no player test is requested for these documentation changes.
+
+## C125: module track selected; first contract choices (2026-10-10)
+
+Owner answers "Modules" to R3C4 versus R3C1 selection. This selects module planning and baseline work, not the unconfirmed numerical proposals or gameplay implementation. New heads stay deferred; R3C4 -> R3C5 -> R3C6 -> R3C7 remains unchanged. No new owner gameplay test is required.
+
+Preserve the recorded owner direction: Splitter side shots deal 50% original damage with 15-degree stepped angles; Fragment starts with five radial shots at 20% each. First discussion choices (all recommendations remain unapproved):
+
+| Choice | A (recommended) | B | Tradeoff |
+| --- | --- | --- | --- |
+| 1. Splitter ammunition | One normal firing cycle's ammo, extra effect power cost | One additional round per side shot | A revises the earlier extra-round recommendation because it keeps single-shot heads usable without inventing extra magazine capacity or a reserve-feed bypass. Stronger damage per ammo needs explicit power/stack balance; no extra inventory rounds are created. B requires a separate magazine/reserve sourcing contract. |
+| 2. Splitter limit | Four modules maximum, central shot plus four side shots | Slot-limited stacking | Four is a proposed limit, not an existing owner decision. It bounds projectile work and damage multiplication. More stacks require measured work limits. |
+| 3. Fragment stacking | Keep five fragments; stacks increase damage to an agreed cap | Stacks increase fragment count | Fixed count is easier to bound and keeps sound/effect/collision work predictable; damage increment/cap remain undecided. |
+
+Recommend the primary shot's first impact can trigger one Fragment burst; side shots/fragments cannot create further bursts. This interaction rule remains proposed. Recommend preserving standard-module loot acquisition and no new recipes in this first slice. Compatibility, shotgun whole-shot budgeting, side-shot range/coverage, fragment distance, damage increments/caps and numeric power/endurance targets still need a concrete contract after these foundational choices; no claim that three answers finish R3C4. Keep native firearm and potato special effects explicit. No battery benchmark was run for this discussion; measure defined firing workloads before claiming days or nights of endurance.

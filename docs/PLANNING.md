@@ -26,7 +26,7 @@ No unresolved owner choice remains for this approved bundle. The exposed native 
 
 ## Proposals and deferred work
 
-[ROADMAP.md](ROADMAP.md#current-checkpoint-status-and-next-work) remains the canonical phase order. R1C3 performance continues; unselected head candidates and the R3C4 offensive-module/battery contract remain deferred. Do not reclassify them as approved by "All approved" for the current bundle. Keep rejected/superseded options in decision history, out of the current implementation queue.
+[ROADMAP.md](ROADMAP.md#current-checkpoint-status-and-next-work) remains the canonical phase order. R1C3 performance continues; unselected head candidates remain deferred; C125 selects the R3C4 offensive-module/battery contract for active discussion. Do not reclassify them as approved by "All approved" for the current bundle. Keep rejected/superseded options in decision history, out of the current implementation queue.
 
 ## Required planning handoff
 
@@ -64,3 +64,8 @@ Owner follow-up: "Yea seems fine." Satisfaction with the current lag improvement
 ## Current decision: next checkpoint (C124)
 
 No next patch is selected or underway. The 0.2.38.1 lag test is complete. Recommend R3C4 offensive-module contract and battery baseline, followed by R3C5 Splitter/Fragment, R3C6 Piercing/Initial Blow/Execute/Impact, then R3C7 combined balance/endurance checks. R3C1 new-head selection and R3C2 prototype are an independent alternative. No change to phase order or implementation authorization. Existing unconfirmed individual content checks do not require another test before this planning discussion. See the corrected [checkpoint table](ROADMAP.md#current-checkpoint-status-and-next-work). Inspected active branch at 378dbac and fetched origin; draft PR #1 is the only open PR and targets dev.
+
+
+## Active checkpoint: R3C4 module contract and battery baseline (C125)
+
+Owner selected Modules. [Contract and current choices](checkpoints/R3_OFFENSIVE_MODULES.md#c125-module-track-selected-first-contract-choices-2026-10-10) now owns active planning: Splitter ammunition/stack cap, Fragment stacking and bounded propagation, followed by concrete compatibility/range/power rules. R3C5 Splitter/Fragment is the first implementation stage after settlement and native proof. R3C6 conditional/penetrating effects and R3C7 combined acceptance follow; no new head is selected. No gameplay implementation or numerical proposal is approved by this track choice. Inspected active branch at 4dc3836 and fetched origin before this update.

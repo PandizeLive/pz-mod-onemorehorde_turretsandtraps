@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Synchronized 2026-10-10 against C80-C124 and the installed 0.2.38.1 build. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
+Synchronized 2026-10-10 against C80-C125 and the installed 0.2.38.1 build. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -18,7 +18,9 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 ## Current checkpoint status and next work
 
-**C124 handoff:** no next patch is selected or underway. The current lag test is complete. Decision needed: select R3C4 (offensive-module contract and battery baseline, recommended) or R3C1 (new-head selection). The module sequence is R3C4 -> R3C5 -> R3C6 -> R3C7; head work is independently R3C1 -> R3C2. This is a recommendation, not patch approval. Unconfirmed individual content checks remain recorded but do not create a repeat-test requirement or block these discussions.
+**C125 current selection:** owner selected Modules. R3C4 contract/battery planning is active; R3C5 Splitter/Fragment remains the first implementation stage after its rules and feasibility are settled. R3C6 and R3C7 retain their order. New heads remain deferred; no gameplay patch or tuning is authorized solely by this track selection.
+
+**Historical C124 handoff (superseded by C125 selection below):** no next patch is selected or underway. The current lag test is complete. Decision needed: select R3C4 (offensive-module contract and battery baseline, recommended) or R3C1 (new-head selection). The module sequence is R3C4 -> R3C5 -> R3C6 -> R3C7; head work is independently R3C1 -> R3C2. This is a recommendation, not patch approval. Unconfirmed individual content checks remain recorded but do not create a repeat-test requirement or block these discussions.
 
 **C122 corrective optimization:** [0.2.38.1](PATCH_v0.2.38.1.md) keeps native pitch variation, avoids per-play emitter mutation/logging, skips unoccupied Concertina lookups and adds trap/reload timing. The owner explicitly requested keeping pitch and optimizing again; the C121 variation-removal proposal is superseded. The [performance comparison](TEST_v0.2.38.1.md) is complete and owner-accepted for the reported lag issue (C123). R1C3 retains broader residual-gap/large-load/authority scope without another current owner test. C124 corrects the handoff: no next patch is selected; choose the next Phase 3 track.
 
@@ -43,13 +45,13 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 | 2: R2C4 concertina | C120 implemented in 0.2.38; native checks pass; owner acceptance pending | Rendered contact movement, traversal/injury and combined acceptance remain |
 | 3: R3C1-R3C2 new head | Candidates documented; none selected for implementation | Select one head and settle its concrete contract before prototyping |
 | 3: R3C3 explosive head | Optional, unscoped | Collateral/resource/effect-budget decisions and feasibility first |
-| 3: R3C4-R3C7 offensive modules/battery | Planning direction recorded; no new offensive module implemented | R3C4 contract/baseline, then R3C5 directional effects, R3C6 conditional/penetrating effects, R3C7 combined acceptance |
+| 3: R3C4-R3C7 offensive modules/battery | R3C4 planning selected under C125; no new offensive module implemented | R3C4 contract/baseline, then R3C5 directional effects, R3C6 conditional/penetrating effects, R3C7 combined acceptance |
 | 3: R3C8 starter modules/expansion | C104 implemented, verified and installed in 0.2.34 | C106 tentative passes; 4/6/6 layout acceptance in 0.2.35; include maximum loadouts in future R3C7 endurance checks |
 | 4: R4C1-R4C4 signals/connected traps | Planned | Signal contract first; devices then optional turret receiver |
 | 5: R5C1-R5C3 MP/integrations/release | Planned; no certification or publication | Validate only the selected release scope; optional features need not all ship |
 | 6: R6C1-R6C3 Cure simulation | Deferred, last | Matching contracts and loaded-combat controls first |
 
-The phase order is not a mandatory queue through every feature. R1C3 continues alongside relevant SP content, and Phase 3 may proceed without finishing every passive trap. R3C1 head selection and R3C4 module contract/battery baseline are separate entry points; neither requires a new head to be implemented first. C120 selects and implements the 0.2.38 passive-content bundle; no subsequent head/module patch is selected.
+The phase order is not a mandatory queue through every feature. R1C3 continues alongside relevant SP content, and Phase 3 may proceed without finishing every passive trap. R3C1 head selection and R3C4 module contract/battery baseline are separate entry points; neither requires a new head to be implemented first. C120 selects and implements the 0.2.38 passive-content bundle; C125 selects the module planning track, with implementation scope/tuning still unresolved.
 
 **Documented module sequence: R3C4 -> R3C5 -> R3C6 -> R3C7.** The assistant's suggestion to make Initial Blow/Execute the next content patch was an unapproved reorder; those effects were already listed under R3C6. Battery baseline already belongs to R3C4. Keep any proposed reorder explicit until the owner selects it. R3C8 was separately approved and implemented under C104; its later ID does not make completed work a future task.
 
