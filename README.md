@@ -1,6 +1,6 @@
 # OMH: Turrets & Traps
 
-**Development build â€” testing pending. No official release yet.** The private [GitHub repository](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps) uses `dev` for current code and planning. Start with [current status](docs/CURRENT_STATUS.md) and the [development/release workflow](docs/GITHUB_WORKFLOW.md). Cloud discusses and documents plans; the local PC implements and tests them. Every completed update and versioned test finding is mirrored to GitHub under C108. Current owner findings: [0.2.34 completed with findings](docs/TEST_v0.2.34.md#owner-result-and-console-review-2026-10-08), [0.2.35 owner findings](docs/TEST_v0.2.35.md#owner-findings-and-console-review-2026-10-09); automated results remain in [release evidence](docs/RELEASE.md). Official releases are tracked separately after confirmed Workshop publication.
+**Development build â€” testing pending. No official release yet.** The private [GitHub repository](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps) uses `dev` for current code and planning. Start with [Planning](docs/PLANNING.md), [current status](docs/CURRENT_STATUS.md) and the [development/release workflow](docs/GITHUB_WORKFLOW.md). Cloud discusses and documents plans; the local PC implements and tests them. Every completed update and versioned test finding is mirrored to GitHub under C108. Current owner findings: [0.2.34 completed with findings](docs/TEST_v0.2.34.md#owner-result-and-console-review-2026-10-08), [0.2.35 owner findings](docs/TEST_v0.2.35.md#owner-findings-and-console-review-2026-10-09); automated results remain in [release evidence](docs/RELEASE.md). Official releases are tracked separately after confirmed Workshop publication.
 
 Project foundation created 2026-09-25. **Current installed patch 0.2.37:** [Targeting feedback, contact audio and active time](docs/PATCH_v0.2.37.md). Automatic/manual coverage is explicit; alternate recipes say Without Tire Pump and describe actual outputs. Barbs gain restrained contact audio. Overlay work is cached, render stages are profiled, and active timers count stalls without catch-up bursts while excluding pause/offline time. C112 recipe groups remain. See [release evidence](docs/RELEASE.md) and the [five-step test](docs/TEST_v0.2.37.md). Visible collapse/recovery and dense-client pause resolution are still unaccepted; no new content or multiplayer support is claimed.
 
@@ -14,6 +14,7 @@ C81 adds [offensive module and battery-endurance checkpoints](docs/checkpoints/R
 
 | Document | Purpose |
 | --- | --- |
+| [Planning](docs/PLANNING.md) | Current approved/proposed work and the active GitHub branch/PR |
 | [Decisions](docs/DECISIONS.md) | Owner-confirmed requirements, proposals, and unanswered questions |
 | [Design](docs/DESIGN.md) | Gameplay, signals, ownership, and operating behavior |
 | [Content and balance](docs/CONTENT_AND_BALANCE.md) | Device roster, progression, balance targets, and deferred ideas |

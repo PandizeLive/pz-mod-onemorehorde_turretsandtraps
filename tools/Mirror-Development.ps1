@@ -80,7 +80,9 @@ if ($branch -ne $config.developmentBranch) {
     if ($prs.Count -eq 0) {
         $bodyPath = Join-Path $projectRoot '.local/development-pr.md'
         New-Item -ItemType Directory -Path (Split-Path -Parent $bodyPath) -Force | Out-Null
-        $body = "Development checkpoint for $branch, targeting dev.`n`nReview the changed files and recorded decisions/test evidence before merging. This is not an official release or a Workshop upload.`n"
+        $planningUrl = "https://github.com/$($config.repository)/blob/$branch/docs/PLANNING.md"
+        $statusUrl = "https://github.com/$($config.repository)/blob/$branch/docs/CURRENT_STATUS.md"
+        $body = "Development checkpoint for $branch, targeting dev.`n`n## Planning`n`n[Planning and approvals]($planningUrl) | [Current status]($statusUrl)`n`nReview the changed files and recorded decisions/test evidence before merging. This is not an official release or a Workshop upload.`n"
         [IO.File]::WriteAllText($bodyPath, $body, (New-Object Text.UTF8Encoding($false)))
         Invoke-GitHub @('pr', 'create', '--repo', $config.repository, '--base', $config.developmentBranch, '--head', $branch, '--draft', '--title', "Development: $branch", '--body-file', $bodyPath) | Out-Host
     } else { $prs | ForEach-Object { Write-Output $_.url } }

@@ -1,13 +1,13 @@
 # R2C4: Concertina contact movement and combined cleanup
 
-Planning and read-only investigation, 2026-10-10, C114-C118. Installed build remains 0.2.37. No native movement probe or rendered test has passed for this new feature.
+Approved implementation plan, 2026-10-10, C114-C119; native investigation remains incomplete. Installed build remains 0.2.37. No native movement probe or rendered test has passed for this new feature.
 
-## Approved direction and remaining choices
+## Approved direction and technical gates
 
 - Concertina deals contact damage and slows only during contact, without stacking or lingering effects. Owner wants the same contact behavior for Barbed Panels; current panels do not slow.
 - Reduce current movement by a divisor without resetting zombie type or restoring stale original speed. Prefer native transient modifiers if they satisfy the contract. Preserve Horde Night/current speed changes and unrelated modifiers. The prior prohibition on slowing turret heads is unchanged.
 - C117 approves zombie contact divisor 2 (half current speed) for both concertina and Barbed Panels, including Horde Night zombies. Implementation technique remains delegated; native feasibility is not yet established.
-- Reuse the panel-style timed damage contract (currently 10 damage every two seconds), not per-frame damage. C118 selects Bed Spikes-style player injuries for wire and panels; settle concertina footprint, durability and recipe/tools/skills/XP before content implementation. Do not assume panel backing/shared-health rules apply to freestanding wire.
+- Reuse the panel-style timed damage contract (currently 10 damage every two seconds), not per-frame damage. C118 selects Bed Spikes-style player injuries for wire and panels; C119 approves the concertina footprint, durability and recipe/tools/skills/XP listed below. Do not assume panel backing/shared-health rules apply to freestanding wire.
 - Existing complete-turret shortcut removal and approved Improvised/Makeshift names are bundled with the selected update; preserve identical head outputs and internal IDs.
 
 ## Native investigation, not feasibility proof
@@ -26,18 +26,18 @@ Source/42.20/media/lua/client/OMHTT/SandboxUI.lua explicitly orders three page f
 
 Source/42.20/media/lua/shared/Translate/EN/Sandbox.json contains actual mojibake in Sandbox_Title_OMHTurretsTraps_Operation (U+00E2 U+20AC U+201D instead of an em dash), confirmed by UTF-8 JSON decoding. Queue heading cleanup and use simple readable text.
 
-Proposed ordering principle: enable/behavior first, then damage/cadence, durability, movement/player contact, and applicable resource/audio settings; keep related basic/reinforced values adjacent. Retain Traps/Turrets/etc. page ownership, preserve saved IDs/values, show no empty headings, and check Traps-only/Turrets-only/both views. New-world and server-edit forms use the same adapter and must retain keyboard/controller order after rearrangement.
+Approved ordering principle: enable/behavior first, then damage/cadence, durability, movement/player contact, and applicable resource/audio settings; keep related basic/reinforced values adjacent. Retain Traps/Turrets/etc. page ownership, preserve saved IDs/values, show no empty headings, and check Traps-only/Turrets-only/both views. New-world and server-edit forms use the same adapter and must retain keyboard/controller order after rearrangement.
 
 ## Delivery and recap
 
-Future recaps list only names of new changes in bullets; important decisions/limitations may accompany them in prose. This discussion queues Concertina Wire, contact slowdown for both wire/panels, Sandbox header organization, approved recipe naming and redundant complete-turret recipe removal. Pending footprint/recipe/durability and independent-bed inventory choices plus native feasibility prevent a fully specified content patch; the zombie divisor is approved. Existing 0.2.37 acceptance and measured performance work remain separate, not new passes or a promised stall fix.
+Future recaps list only names of new changes in bullets; important decisions/limitations may accompany them in prose. This discussion queues Concertina Wire, contact slowdown for both wire/panels, Sandbox header organization, approved recipe naming and redundant complete-turret recipe removal. C119 approves all current bundle choices below; native movement feasibility remains a prerequisite to shipping the requested behavior. Existing 0.2.37 acceptance and measured performance work remain separate, not new passes or a promised stall fix.
 
 
-## Remaining defaults proposed under C117
+## Concertina defaults proposed in C117 and approved in C119
 
-C117 proposals remain awaiting owner choice except player treatment, which C118 replaces below. The half-speed approval did not approve this whole table.
+C119 "All approved" accepts these defaults with C118 injury behavior replacing the rejected no-player-injury option. No additional design approval is needed for this table.
 
-| Choice | Proposed default |
+| Choice | Approved default |
 | --- | --- |
 | Footprint | One-tile freestanding coil on clear floor |
 | Durability | 50 independent HP; one wear per damaging activation |
@@ -55,7 +55,7 @@ Owner requests the existing Bed Spikes player treatment for concertina and panel
 
 Owner requests two independent placed spike traps; context is taken to mean Bed Spikes, not Spike Barriers. Source inspection confirms current shared health, whole-record destruction, a two-part service requirement and pickup into a two-tile item. Independent records alone would leave broken servicing or a duplication route; update the inventory unit and placement/service contract together.
 
-Proposals awaiting owner choice:
+C118 proposals approved by C119:
 
 - Each tile has 50 basic / 100 reinforced HP; six wear applies only to the tile that receives the fall. Keep 20/50 fall damage and one hit per fall. Pair nominal health stays 100/200; six-wear rounding means 18/34 total damaging falls if distributed evenly, versus 17/34 previously.
 - One craft at the current cost yields two one-tile inventory units. Pair placement consumes two; single-tile pickup returns one; allow one recovered unit to redeploy one tile. No half-item or duplicated full-pair refund.
@@ -63,4 +63,4 @@ Proposals awaiting owner choice:
 - Repair, pickup, reinforcement and breakage operate on the selected tile only. Placement retains the requested two-tile initial layout. Save/index/remove paths must handle one survivor without retiring its neighbor. No old-save migration is promised under the fresh-world policy.
 - Player entry rolls must not double because the two tiles now have separate IDs. Preserve current zombie tile-based eligibility, five-second recovery and one damage event per fall; no injury loop for existing prone actors.
 
-This requests a change beyond cosmetic splitting and needs the inventory/balance choice before a concrete patch can be finalized. No gameplay implementation is claimed.
+C119 settles these inventory/balance choices. Implementation and native/runtime validation remain pending; do not reopen the same approval gate.
