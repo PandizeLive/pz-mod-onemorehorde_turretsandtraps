@@ -23,3 +23,12 @@ Earlier native attempts exposed the health float boundary and test-helper/server
 ## Installed handoff
 
 Immutable `test/v0.2.42` / `2354a7ff3ed4ef174a0bbeb4d7d0051a620bc5d7`; installed through OMH.cmd. 192 source / 232 package, tagged, installed and archived hashes verify; previous 0.2.41 backups verify. Actual package startups pass: Traps 110.3s, Turrets 108.2s, both 111.4s. Initial package test expected the old 150-entry catalog; corrected to 170, then affected selections passed. [Machine record](../diagnostics/v0.2.42/local-release.json). **Test now**; owner results and console capture pending.
+
+
+## C149 owner finding: bulk ammo transfer freeze (2026-10-11)
+
+Owner reports disruptive freezes when transferring approximately 600 rounds through ordinary turret inventory, versus individually through Manage. Wants both fast and equal in rate. The test round is still in progress; do not infer passes for other checks or require another immediate reproduction.
+
+Console capture confirms OMHTT diagnostics version=0.2.42, side=sp. Summary sequences 74/77/78 report 106/300/194 transfers (600 combined), with maximum active-update gaps 49/343/542 ms; sequence 84 reports 100 transfers and 563 ms maximum. Concurrent firing/Manage rendering prevents attribution of all elapsed time to transfer code. No transfer-stage profiler exists yet. Source review confirms native groups up to 20 light items, Manage merging disabled, and repeated full-container validation scans; these are concrete optimization targets rather than a verified complete root cause.
+
+Local evidence: diagnostics/v0.2.42/console-c149-ammo-transfer.txt; 146,809 bytes; SHA-256 6ff4737a6940ab8183d6ecebedab8dd280e02c954032018e37d1195df6a75805; original last write 2026-10-11 18:35:14 local. Raw full console remains local. [Next-update contract](PERFORMANCE_AUDIT_v0.2.42.md#c149-bulk-ammo-transfer-follow-up-2026-10-11) retains C148 and prioritizes shared fast/bounded ammo transfers with correct pending-item accounting. **Wait for a patch** for this finding. No fix implemented or verified; installed 0.2.42 unchanged.

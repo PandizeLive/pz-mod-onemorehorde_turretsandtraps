@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Synchronized 2026-10-11 against C80-C148 and the installed, native-verified 0.2.42 build. Its focused owner test is pending; the prior 0.2.41/C138 round remains complete. This is the canonical execution/status index.
+Synchronized 2026-10-11 against C80-C149 and the installed, native-verified 0.2.42 build. Its focused owner test is pending; the prior 0.2.41/C138 round remains complete. This is the canonical execution/status index.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -17,6 +17,8 @@ Existing SP content includes basic/reinforced Spike Barriers, portable items/pac
 Shared combat scheduling and active-time clocks exist. Render/maintenance costs and integrated authority remain open. The Louisville hang is unassigned; preserve useful evidence if it recurs, without claiming OMH caused it or has been cleared. Final art/audio remain owner-sourced. Makeshift Detection/Firing/Expansion are craftable; standard module crafting remains deferred.
 
 ## Current checkpoint status and next work
+
+**C149 next update:** owner retains C148 optimization work and adds matching fast, bounded ammo transfers as first priority. [Contract](PERFORMANCE_AUDIT_v0.2.42.md#c149-bulk-ammo-transfer-follow-up-2026-10-11). R3C7 now has an owner-reported 0.2.42 bulk-transfer freeze supported by concurrent log gaps; it remains open. Installed gameplay unchanged; fix verification follows the next patch.
 
 **C148 R1C3 investigation:** [per-tick inventory and optimization proposals](PERFORMANCE_AUDIT_v0.2.42.md). No gameplay change; recommendations prioritize redundant maintenance/contact/stat work. The 0.2.42 owner test remains active under R3C7. Optimization implementation is proposed, not approved.
 

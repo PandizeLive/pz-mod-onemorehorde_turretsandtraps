@@ -47,3 +47,8 @@ R1C3 performance/authority work continues with subsequent optimizations; dense-c
 ## C148: 0.2.42 runtime audit (2026-10-11)
 
 [Callback inventory and optimization proposals](../PERFORMANCE_AUDIT_v0.2.42.md) records the requested investigation while the owner tests. Prioritize barrier maintenance, repeated barb object discovery and duplicate turret stat resolution; preserve contact timing and independent package behavior. Rendering/queue housekeeping follows; spatial target indexing needs measurement before a redesign. No gameplay edit, patch approval or current-owner-test outcome inferred. R1C3 remains partial alongside R3C7 verification.
+
+
+## C149: next-update optimization scope (2026-10-11)
+
+Owner retains C148 and requests matching fast Manage/inventory ammo transfer after a roughly 600-round transfer freeze. Prioritize [bounded shared transfer work](../PERFORMANCE_AUDIT_v0.2.42.md#c149-bulk-ammo-transfer-follow-up-2026-10-11), then the five C148 improvements. This is next-update work, not an installed fix. [R3C7 owner finding](../TEST_v0.2.42.md#c149-owner-finding-bulk-ammo-transfer-freeze-2026-10-11) remains open; no repeat immediate stress test required.
