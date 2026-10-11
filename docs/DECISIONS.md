@@ -719,3 +719,8 @@ Owner selects B: any weapon with one loaded round remaining gets the full Splitt
 ## C131: insufficient-ammo full volley approved (2026-10-11)
 
 Owner selects A: fire the full configured Splitter volley when any ready ammunition remains; consume the lesser of ready rounds and normal volley cost. Four Splitters produce five projectiles for five, two or one consumed rounds when those are the respective ready totals. Zero cannot fire. This generalizes C130 without a capacity restriction or reserve-ammunition charge for the shortfall. Remaining R3C4 rules/native proofs are separate; no gameplay patch approval inferred.
+
+
+## C132: paired 1x2 Concertina requested (2026-10-11)
+
+Owner requests 1x2 Concertina similar to Spike Barrier, explicitly rejecting independent Bed Spikes halves. Queue one carried item, paired placement, shared durability, whole-trap repair/pickup/depletion. Retain existing recipe, weight 2, 50 total HP and contact rules; no balance change was requested. Prevent seam-based extra activations/slowdown and duplicate refunds. Exact implementation and verification belong to the upcoming patch; no old-save migration or change to independent Bed Spikes is implied. See R2C4_CONCERTINA.md; R3C4 module choices remain open.

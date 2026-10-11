@@ -87,3 +87,6 @@ C130 confirms C129 option B: any last loaded round permits the full Splitter vol
 
 
 C131 settles insufficient ammo: full Splitter volley, consume min(ready rounds, normal volley cost), require at least one round; no direct reserve charge for the shortfall. This includes C130's final-round exception. Magazine growth is 35% linear/minimum +1/final ceiling. Remaining R3C4 choices: Fragment damage increment/cap, range/coverage/propagation, compatibility and power/endurance. No implementation or new owner test. Inspected a773151 and fetched origin.
+
+
+C132 adds approved 1x2 Concertina conversion to upcoming patch scope: one item places a linked pair with shared HP and whole-trap service/breakage, matching Spike Barrier identity rather than independent Bed Spikes. Existing recipe, weight 2, total HP 50 and contact behavior retained. [Contract](checkpoints/R2C4_CONCERTINA.md#c132-one-paired-1x2-concertina-trap-for-the-upcoming-patch-2026-10-11). Not yet implemented; module contract choices remain open. C131 full-volley ammo rule is already confirmed and mirrored.
