@@ -4,7 +4,7 @@ Updated 2026-10-10 under C119. This is the shared entry point for planning in th
 
 ## Read the current branch
 
-Current unmerged work is on **codex/performance-barbed-audit**, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1), targeting dev. [Open this Planning page on the active branch](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/blob/codex/performance-barbed-audit/docs/PLANNING.md). The **installed 0.2.38.1 build** implements the approved bundle and C122 native-pitch/contact optimization. Native/automated checks and tagged installation verify; [release state](RELEASE.md) records the evidence. Owner/rendered acceptance remains pending.
+Current unmerged work is on **codex/performance-barbed-audit**, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1), targeting dev. [Open this Planning page on the active branch](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/blob/codex/performance-barbed-audit/docs/PLANNING.md). The **installed 0.2.38.1 build** implements the approved bundle and C122 native-pitch/contact optimization. Native/automated checks and tagged installation verify; [release state](RELEASE.md) records the evidence. The reported lag fix is owner-accepted; individual unmentioned rendered/audio checks remain unconfirmed.
 
 Fetch the remote and check open development/planning PRs before using dev alone as the current state. Read the active branch's AGENTS.md, this page and [CURRENT_STATUS.md](CURRENT_STATUS.md). Record which branch/commit was inspected. A chat's older answer or an old Cloud checkout is not a current checkpoint. Preserve unmerged work and reconcile incoming plans; do not reset, force-push or merge automatically.
 
@@ -59,3 +59,8 @@ Handoff correction: the current owner lag test is complete and accepted for the 
 Owner reports noticeable lag apparently gone. [Console comparison](TEST_v0.2.38.1.md#owner-result-and-console-comparison-2026-10-10) supports the improvement: audio max 3 ms versus 674 ms; trap callbacks max 2 ms. Residual update gaps up to 368 ms and a smaller firing sample prevent a universal performance claim. No repeat stress checklist or new patch is requested. Normal play can continue; audio quality and unmentioned checks remain unconfirmed. R1C3 retains residual-gap/large-load/authority scope, and deferred content decisions stay deferred.
 
 Owner follow-up: "Yea seems fine." Satisfaction with the current lag improvement is confirmed; no new work or separate test is requested. Existing console evidence and remaining scope are unchanged.
+
+
+## Current decision: next checkpoint (C124)
+
+No next patch is selected or underway. The 0.2.38.1 lag test is complete. Recommend R3C4 offensive-module contract and battery baseline, followed by R3C5 Splitter/Fragment, R3C6 Piercing/Initial Blow/Execute/Impact, then R3C7 combined balance/endurance checks. R3C1 new-head selection and R3C2 prototype are an independent alternative. No change to phase order or implementation authorization. Existing unconfirmed individual content checks do not require another test before this planning discussion. See the corrected [checkpoint table](ROADMAP.md#current-checkpoint-status-and-next-work). Inspected active branch at 378dbac and fetched origin; draft PR #1 is the only open PR and targets dev.
