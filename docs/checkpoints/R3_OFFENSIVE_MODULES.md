@@ -1,6 +1,6 @@
 # R3C4-R3C7: offensive modules and battery endurance
 
-Planning record under [C81](../DECISIONS.md#c81-offensive-module-planning-and-long-battery-life-2026-10-06), synchronized 2026-10-10 under C125. Installed 0.2.38.1 retains SP-only combat and adds R3C8 starter components; none of this brief's offensive modules is implemented. Final recipes, art and unselected heads retain their approval gates. See [canonical roadmap status](../ROADMAP.md#current-checkpoint-status-and-next-work).
+Planning record under [C81](../DECISIONS.md#c81-offensive-module-planning-and-long-battery-life-2026-10-06), synchronized 2026-10-11 under C135. Installed 0.2.39 retains SP-only combat and R3C8 starter components; none of this brief's new modules is implemented. Magazine/Splitter/Fragment scope is selected; current Fragment tuning is below in C135. Final recipes, art and unselected heads retain their approval gates. See [canonical roadmap status](../ROADMAP.md#current-checkpoint-status-and-next-work).
 
 **Next module checkpoint: R3C4 contract and battery baseline.** The documented sequence remains R3C4 -> R3C5 -> R3C6 -> R3C7; it does not require a new head first. The assistant's later suggestion to prioritize Initial Blow/Execute was an unapproved reorder, not missing scope: both were already listed in R3C6. This sync records the distinction without selecting a new gameplay patch.
 
@@ -128,3 +128,25 @@ Recommend Magazine + Splitter first (R3C4/R3C5). Fragment is the next directiona
 Power proposal applies to battery and generator fuel; existing grid-power handling remains. With four Splitters, A costs twice the baseline per volley (about 500 default battery volleys), B three times (about 333). Neither numerical surcharge nor exemption is approved yet. Preserve long-life requirements and benchmark the selected workload.
 
 Common proposed defaults: existing standard-module loot acquisition, no new crafting recipe in this slice, distinct loot/Sandbox controls and Modules presentation; magazine scaling excludes the separate native chamber, while ready-round spending counts chamber plus loaded feed. Normal gun/magazine capacity must be restored on ejection/removal, with real ammo conserved. Shotgun side damage uses 50% of the whole primary-shot budget per copy, not per pellet. One volley uses one firing/reload cadence and one firing sound, with side-shot visuals/impact cues bounded. These are proposed implementation contracts, not verified engine capabilities. Native save/reload/ejection, module/head swaps, supported firearm classes and maximum-slot work budgets require proof before shipping. Unsupported custom weapon mechanics must not be silently admitted as compatible.
+
+
+## C135: selected module rules and remaining Fragment baseline (2026-10-11)
+
+Owner selects C134 1B/2A-amended/3A/4A/5A. Planned scope now includes Magazine, Splitter and Fragment. Magazine growth and full-volley available-ammo spending remain C129-C131. Splitter uses the aim-relative fan outside targeting coverage, native obstruction/range checks, a maximum 180-degree total fan with compressed spacing at high counts, direct-only children and +25% base firing power per installed copy. Magazine has no surcharge. Do not re-ask these choices.
+
+Capacity reduction returns each surplus round to turret reserve first, player inventory second, then the floor at the acting player's feet. C135 replaces rejecting removal merely because reserve is full. Preserve partial transfers and exactly-once ownership; never delete rounds when a recipient is unavailable. If the action has no valid actor or loaded destination at commit, keep its original ammo/state rather than committing a loss. Installed B42.21 shared/ActionManager.lua Actions.addOrDropItem implements inventory then floor on excess capacity; shared/TimedActions/ISCraftAction.lua complete uses it. That native helper does not implement reserve routing or transactional rollback. No new native runtime test was performed.
+
+Fragment already has five radial shots per burst, initially 20% primary damage each, with fixed shot count and capped damage stacking (C81/C126). The owner selected adding it after remaining tuning is settled; the following is a new recommended baseline, not approved:
+
+| Rule | Proposed baseline |
+| --- | --- |
+| Damage stacking | 20% of primary damage per fragment at one copy; +5 percentage points per additional copy; cap 40% at five copies. Display the cap; further copies have no damage benefit |
+| Range | Four tiles from the impacted zombie, independent of Range modules, respecting walls; radial shots may leave the targeting cone |
+| Angles | Five random directions, at least 30 degrees apart including the wraparound gap |
+| Trigger | One burst at the primary shot's first successful zombie hit per volley, including a lethal hit; no burst on a miss or wall impact. Shotguns get one burst, not one per pellet |
+| Victims/effects | Exclude the origin victim; each other zombie can take at most one fragment hit from that burst. Direct damage only; no splash, knockdown, splitting, piercing or recursive fragmentation |
+| Resources | No additional ammunition. Add 25% of base firing power per installed Fragment copy; additive with Splitter, not compounded. Charge the configured firing cost once per volley, including missed primaries; no idle draw |
+
+Use the primary shot's resolved damage budget, not damage actually lost by a nearly dead victim; share the volley critical multiplier, with no independent extra critical rolls. The potential extra damage budget is 100% of a primary at one copy or 200% at the cap, spread across up to five different victims and subject to misses/obstruction. This is crowd damage, not a guaranteed second hit on the original target. Battery power proposal: baseCost * (1 + .25 * splitterCount + .25 * fragmentCount); generator fuel uses the same multiplier, existing grid handling remains. Damage-capped surplus Fragment copies should be visibly unhelpful rather than concealed as a stat increase. All new Fragment numbers/trigger rules await owner settlement.
+
+Retain the previously proposed loot-only first implementation, native chamber accounting, whole-shot shotgun damage budgeting and native capacity/ejection proof requirements. Follow R3C4 -> R3C5 -> R3C7 for this selected slice; R3C6 remains later, not included by 1B. No new gameplay version/install/test in this discussion. Combine the held paired-Concertina owner check with the eventual module patch.
