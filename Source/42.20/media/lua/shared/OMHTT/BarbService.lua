@@ -22,12 +22,16 @@ function Service.tools(player, record)
 end
 
 ---@param record table Frame marker
+---@param selected IsoObject? Selected wire half
 ---@return IsoGridSquare? square Safe exposed service tile
 ---@nodiscard
-function Service.approach(record)
+function Service.approach(record, selected)
     local _, host, _, status = B.resolve(record)
     if status ~= "active" then return nil end
-    if record.kind == "wire" then return host:getSquare() end
+    if record.kind == "wire" then
+        if selected and B.record(selected) == record then return selected:getSquare() end
+        return host:getSquare()
+    end
     local edge = {}
     if not S.edge(host, record.north, record.side, edge) then return nil end
     if edge.side < 0 then
@@ -50,8 +54,9 @@ function Service.resolve(player, object, id)
     local record = B.record(object)
     if not record or record.id ~= id or not B.enabled(record.kind) or player:isDead() or not Service.tools(player, record) then return nil end
     local frame, _, attachment, status = B.resolve(record)
-    if frame ~= object or status ~= "active" then return nil end
-    local square = Service.approach(record)
+    if status ~= "active" then return nil end
+    if frame ~= object and (not record.paired or B.wirePart(record, 1) ~= object) then return nil end
+    local square = Service.approach(record, object)
     if not square or player:getZ() ~= record.z or not player:getSquare() then return nil end
     local dx, dy = player:getX() - square:getX() - .5, player:getY() - square:getY() - .5
     if dx * dx + dy * dy > 4 or player:getSquare():isSomethingTo(square) then return nil end

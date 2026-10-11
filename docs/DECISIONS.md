@@ -724,3 +724,8 @@ Owner selects A: fire the full configured Splitter volley when any ready ammunit
 ## C132: paired 1x2 Concertina requested (2026-10-11)
 
 Owner requests 1x2 Concertina similar to Spike Barrier, explicitly rejecting independent Bed Spikes halves. Queue one carried item, paired placement, shared durability, whole-trap repair/pickup/depletion. Retain existing recipe, weight 2, 50 total HP and contact rules; no balance change was requested. Prevent seam-based extra activations/slowdown and duplicate refunds. Exact implementation and verification belong to the upcoming patch; no old-save migration or change to independent Bed Spikes is implied. See R2C4_CONCERTINA.md; R3C4 module choices remain open.
+
+
+## C133: approve paired Concertina implementation (2026-10-11)
+
+Owner: "Approved" after the C132 paired-wire recap. Implement the 1x2 shared-identity/durability/service conversion now, preserving the settled recipe, weight 2 and total HP 50. Module contract choices remain separate and incomplete; this does not authorize invented Fragment tuning or unsupported native magazine behavior. Local validation/install and C108 development mirroring apply. See PATCH_v0.2.39.md and TEST_v0.2.39.md for implementation and evidence.

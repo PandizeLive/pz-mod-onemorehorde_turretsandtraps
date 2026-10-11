@@ -185,8 +185,10 @@ function OMHTT_NativeBarbCheck(squares)
         fixtures:add(host)
     end
     local wireInfo = SpriteConfigManager.GetObjectInfo("OMHTTDeployConcertinaWire")
-    assert(wireInfo and wireInfo:getFace("e"):getWidth() == 1 and wireInfo:getFace("e"):getHeight() == 1,
-        "Wire must occupy one native tile")
+    for _, direction in pairs({"e", "n", "w", "s"}) do
+        local face = wireInfo:getFace(direction)
+        assert(face:getWidth() * face:getHeight() == 2, "Wire must occupy two native tiles in every orientation")
+    end
     local wireRecipe = ScriptManager.instance:getCraftRecipe("Base.OMHTTCraftConcertinaWire")
     assert(wireRecipe:getRequiredSkillCount() == 0 and wireRecipe:getXPAwardCount() == 0
         and wireRecipe:getInputs():size() == 3 and wireRecipe:getInputs():get(0):isKeep(), "Wire recipe skill/XP/tools differ")
@@ -205,19 +207,26 @@ function OMHTT_NativeBarbCheck(squares)
     assert(inputs:getAllCreatedItems():size() == 1 and inputs:getFirstCreatedItem():getFullType() == "Base.OMHTTConcertinaWire"
         and player:getInventory():contains(pliers) and not player:getInventory():contains(barbedWire)
         and binding:getCurrentUses() == wireUses - 2, "Wire craft does not conserve inputs/output")
-    local floor = lookup["1001:1001:0"]
-    assert(B.onWireValid({square = floor}), "Clear floor rejects wire")
-    local coil = IsoThumpable.new(cell, floor, "omhtt_barrier_01_60", false)
+    local floor, tailFloor = lookup["1000:1001:0"], lookup["1001:1001:0"]
+    local preview = {square = floor, facing = "n", tileInfo = wireInfo:getFace("n"):getTileInfo(0, 0, 0)}
+    assert(B.onWireValid(preview), "Clear paired floor rejects wire")
+    local coil = IsoThumpable.new(cell, floor, "omhtt_barrier_01_61", false)
     floor:getObjects():add(coil); floor:getSpecialObjects():add(coil)
     GameEntityFactory.CreateIsoObjectEntity(coil, wireInfo:getScript():getParent(), true)
     B.onWireCreate({thumpable = coil})
+    local tail = IsoThumpable.new(cell, tailFloor, "omhtt_barrier_01_73", false)
+    tailFloor:getObjects():add(tail); tailFloor:getSpecialObjects():add(tail)
+    GameEntityFactory.CreateIsoObjectEntity(tail, wireInfo:getScript():getParent(), true)
+    B.onWireCreate({thumpable = tail})
     local wireRecord = B.record(coil)
     assert(wireRecord.kind == "wire" and wireRecord.health == 50 and coil:isCanPassThrough() and not coil:isThumpable(),
         "Wire durability or native collision differs")
-    assert(not B.onWireValid({square = floor}), "Wire permits duplicate placement")
+    assert(B.record(tail) == wireRecord and B.resolve(wireRecord) == coil, "Paired native wire identity differs")
+    assert(not B.onWireValid(preview), "Wire permits duplicate placement")
     for i = 1, 3 do S.wear(wireRecord, .1) end
     fixtures:add(coil)
-    print("[OMHTT-Wire] craft=exact wireUses=2 pliers=retained skills=0 xp=0 footprint=1 durability=50 duplicate=blocked")
+    fixtures:add(tail)
+    print("[OMHTT-Wire] craft=exact wireUses=2 pliers=retained skills=0 xp=0 footprint=2 durability=shared50 duplicate=blocked")
     print("[OMHTT-Barbs] PASS construction=8 facings=4 tools=retained wireUses=2 recipe=exact separateWindowHP=50 sharedHostHP=137")
     return fixtures
 end
@@ -226,6 +235,7 @@ end
 ---@return boolean valid
 function OMHTT_NativeBarbRestoredCheck(fixtures)
     local B = require("OMHTT/BarbSections")
+    B.initialize()
     for i = 0, 15, 2 do
         local frame = fixtures:get(i)
         local resolved, host, attachment, status = B.resolve(B.record(frame))
@@ -233,8 +243,11 @@ function OMHTT_NativeBarbRestoredCheck(fixtures)
         assert(attachment.shared or attachment.health == 47, "Independent durability did not survive")
     end
     local wire = fixtures:get(16)
+    B.loaded(fixtures:get(17):getSquare())
+    B.loaded(wire:getSquare())
     local frame, _, record, status = B.resolve(B.record(wire))
     assert(frame == wire and status == "active" and record.health == 47 and record.kind == "wire", "Wire state lost on reload")
+    assert(B.record(fixtures:get(17)) == record and record.paired, "Restored halves lost shared durability")
     isServer, isClient, getCell = nativeServer, nativeClient, nativeCell
     return true
 end

@@ -75,7 +75,7 @@ def build_component(component):
     _, original = build()
     trap = component == "traps"
     sheet = "omhtt_barrier_01" if trap else "omhtt_turret_01"
-    count = 72 if trap else 21
+    count = 76 if trap else 21
     tiles = b"tdef" + integer(1) + integer(1)
     tiles += (sheet + "\nOMHTT_" + component.title() + ".png\n").encode("ascii")
     tiles += integer(4) + integer((count + 3) // 4) + integer(1) + integer(count) + integer(0) * count
@@ -137,8 +137,8 @@ def build_component(component):
         stream = io.BytesIO()
         marker.save(stream, format="PNG")
         png = stream.getvalue()
-        entry = b"".join(pack_string(sheet + "_" + str(i)) + struct.pack("<8i", 0, 0, 128, 256, 0, 0, 128, 256) for i in range(60, 64))
-        pages.append(pack_string("OMHTT_Wire") + integer(4) + integer(1) + entry + integer(len(png)) + png)
+        entry = b"".join(pack_string(sheet + "_" + str(i)) + struct.pack("<8i", 0, 0, 128, 256, 0, 0, 128, 256) for i in list(range(60, 64)) + list(range(72, 76)))
+        pages.append(pack_string("OMHTT_Wire") + integer(8) + integer(1) + entry + integer(len(png)) + png)
     return tiles, b"PZPK" + integer(1) + integer(len(pages)) + b"".join(pages)
 
 

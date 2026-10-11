@@ -13,7 +13,7 @@ local Highlight = require("OMHTT/WorldHighlight")
 local function queue(object, player, id, operation)
     local record = B.record(object)
     if not record or record.id ~= id then return end
-    local square = S.approach(record)
+    local square = S.approach(record, object)
     if square and luautils.walkAdj(player, square) then
         ISTimedActionQueue.add(OMHTTBarbServiceAction:new(player, object, id, operation))
     end
@@ -41,7 +41,9 @@ local function menu(playerIndex, context, objects, test)
                     local _, host, attachment, status = B.resolve(record)
                     if status == "active" and B.enabled(record.kind) then
                         local option = context:addOption(getText(record.kind == "wire" and "UI_OMHTT_ConcertinaWire" or "UI_OMHTT_Barbs"), nil, nil)
-                        option.onHighlight, option.onHighlightParams = Highlight.highlight, {{frame}}
+                        local highlighted = {frame}
+                        if record.paired then highlighted = {B.wirePart(record, 0), B.wirePart(record, 1)} end
+                        option.onHighlight, option.onHighlightParams = Highlight.highlight, {highlighted}
                         local submenu = ISContextMenu:getNew(context)
                         context:addSubMenu(option, submenu)
                         local health = attachment.health

@@ -8,6 +8,7 @@ local ActiveTime = require("OMHTT/ActiveTime")
 local clock = ActiveTime.new()
 local moving = false
 local geometry = {}
+local wireFacings = {e = 0, n = 1, w = 2, s = 3}
 
 ---@param name string Setting suffix
 ---@param fallback number Default
@@ -41,6 +42,7 @@ function B.initialize()
     if B.store.nextId == nil then
         B.store.nextId = 1
     end
+    if not B.store.wires then B.store.wires = {} end
     B.nodes, B.order, B.nearby = {}, {}, {}
     B.cursor = 1
 end
@@ -49,8 +51,10 @@ end
 ---@param adding boolean Add or remove local index
 ---@return nil
 function B.index(record, adding)
-    for dx = -1, 1 do
-        for dy = -1, 1 do
+    local width = record.paired and record.facing % 2 == 1 and 2 or 1
+    local height = record.paired and record.facing % 2 == 0 and 2 or 1
+    for dx = -1, width do
+        for dy = -1, height do
             local key = F.key(record.x + dx, record.y + dy, record.z)
             local bucket = B.nearby[key]
             if adding then
@@ -92,7 +96,29 @@ end
 ---@return table? record
 ---@nodiscard
 function B.record(object)
-    return object and object:hasModData() and object:getModData().OMHTTBarbFrame or nil
+    local marker = object and object:hasModData() and object:getModData().OMHTTBarbFrame
+    if marker and marker.paired then return B.store and B.store.wires[marker.id] end
+    return marker or nil
+end
+
+---@param record table Wire identity
+---@param part number Zero-based half
+---@return IsoObject? object
+---@return string status
+function B.wirePart(record, part)
+    local x, y = record.x, record.y
+    if part == 1 then
+        if record.facing % 2 == 0 then y = y + 1 else x = x + 1 end
+    end
+    local square = getCell():getGridSquare(x, y, record.z)
+    if not square then return nil, "unloaded" end
+    local objects = square:getObjects()
+    for i = 0, objects:size() - 1 do
+        local object = objects:get(i)
+        local marker = object:hasModData() and object:getModData().OMHTTBarbFrame
+        if marker and marker.id == record.id then return object, "active" end
+    end
+    return nil, "missing"
 end
 
 ---@param record table Frame marker
@@ -102,6 +128,13 @@ end
 ---@return string status
 ---@nodiscard
 function B.resolve(record)
+    if record.paired then
+        if B.store.wires[record.id] ~= record then return nil, nil, nil, "missing" end
+        local first, firstStatus = B.wirePart(record, 0)
+        local second, secondStatus = B.wirePart(record, 1)
+        if firstStatus == "unloaded" or secondStatus == "unloaded" then return first, second, record, "unloaded" end
+        return first, second, record, first and second and record.health > 0 and "active" or "missing"
+    end
     local square = getCell():getGridSquare(record.x, record.y, record.z)
     if not square then return nil, nil, nil, "unloaded" end
     local objects, frame, host = square:getObjects(), nil, nil
@@ -127,7 +160,18 @@ end
 
 ---@param record table Frame marker
 ---@return nil
-function B.retire(record)
+---@param removing IsoObject? Object already being removed by the engine
+function B.retire(record, removing)
+    if record.paired then
+        local first, second = B.wirePart(record, 0), B.wirePart(record, 1)
+        if B.nodes[record.id] then B.index(record, false) end
+        B.store.wires[record.id] = nil
+        moving = true
+        if first and first ~= removing then first:getSquare():transmitRemoveItemFromSquare(first) end
+        if second and second ~= removing then second:getSquare():transmitRemoveItemFromSquare(second) end
+        moving = false
+        return
+    end
     local frame, host = B.resolve(record)
     if host and record.kind ~= "wire" then
         S.unbind(host, record.north, record.side, record.id)
@@ -169,8 +213,11 @@ end
 function B.loaded(square)
     if not B.store then return end
     local objects = square:getObjects()
-    for i = 0, objects:size() - 1 do
-        local record = B.record(objects:get(i))
+    for i = objects:size() - 1, 0, -1 do
+        local object = objects:get(i)
+        local record = B.record(object)
+        local marker = object:hasModData() and object:getModData().OMHTTBarbFrame
+        if marker and marker.paired and not record then square:transmitRemoveItemFromSquare(object) end
         if record and not B.nodes[record.id] then
             B.index(record, true)
         end
@@ -183,6 +230,7 @@ function B.removed(object)
     if moving then return end
     local record = B.record(object)
     if not record then return end
+    if record.paired then B.retire(record, object); return end
     local _, host = B.resolve(record)
     if host and record.kind ~= "wire" then
         S.unbind(host, record.north, record.side, record.id)
@@ -244,10 +292,17 @@ function B.onCreate(params)
     return {replaceObject = true, object = frame}
 end
 
----@param params table Native one-tile wire preview
+---@param params table Native two-tile wire preview
 ---@return boolean valid
 function B.onWireValid(params)
-    if not B.wireEnabled() or not B.store or not require("OMHTT/BedSpikes").clear(params.square) then return false end
+    if not B.wireEnabled() or not B.store or not params.square or not params.tileInfo then return false end
+    local facing = wireFacings[params.facing]
+    if facing == nil then return false end
+    local x, y, z = params.square:getX() - params.tileInfo:getX(), params.square:getY() - params.tileInfo:getY(), params.square:getZ()
+    local first = getCell():getGridSquare(x, y, z)
+    local second = getCell():getGridSquare(x + (facing % 2), y + (1 - facing % 2), z)
+    local Beds = require("OMHTT/BedSpikes")
+    if not Beds.clear(first) or not Beds.clear(second) or first:isSomethingTo(second) then return false end
     params.testCollisions = false
     return true
 end
@@ -259,16 +314,35 @@ function B.onWireCreate(params)
     local object = params.thumpable
     if B.record(object) then return end
     local square = object:getSquare()
-    local record = {id = "barb-" .. B.store.nextId, kind = "wire", x = square:getX(), y = square:getY(),
-        z = square:getZ(), health = 50, shared = false}
-    B.store.nextId = B.store.nextId + 1
-    object:getModData().OMHTTBarbFrame = record
+    local index = tonumber(string.match(object:getSpriteName(), "^omhtt_barrier_01_(%d+)$"))
+    if not index or (index < 60 or index > 63) and (index < 72 or index > 75) then error("[OMHTT] Invalid wire sprite") end
+    local part = index >= 72 and 1 or 0
+    local facing = index >= 72 and index - 72 or index - 60
+    local x, y = square:getX() - part * (facing % 2), square:getY() - part * (1 - facing % 2)
+    local record
+    if part == 1 then
+        local first = getCell():getGridSquare(x, y, square:getZ())
+        local objects = first and first:getObjects()
+        if objects then
+            for i = objects:size() - 1, 0, -1 do
+                local candidate = B.record(objects:get(i))
+                if candidate and candidate.paired and candidate.facing == facing and candidate.x == x and candidate.y == y then record = candidate; break end
+            end
+        end
+        if not record then error("[OMHTT] Wire anchor missing during construction") end
+    else
+        record = {id = "barb-" .. B.store.nextId, kind = "wire", x = x, y = y,
+            z = square:getZ(), health = 50, shared = false, paired = true, facing = facing}
+        B.store.nextId = B.store.nextId + 1
+        B.store.wires[record.id] = record
+    end
+    object:getModData().OMHTTBarbFrame = {id = record.id, kind = "wire", paired = true}
     object:setBlockAllTheSquare(false)
     object:setCanPassThrough(true)
     object:setIsHoppable(false)
     object:setIsThumpable(false)
     object:setIsDismantable(false)
-    B.index(record, true)
+    if part == 1 and not B.nodes[record.id] then B.index(record, true) end
 end
 
 ---@param actor IsoGameCharacter Updated actor
@@ -284,8 +358,14 @@ function B.contact(actor, bucket)
     local x, y, z = actor:getX(), actor:getY(), actor:getZ()
     for id in pairs(bucket) do
         local node = B.nodes[id]
-        if node and B.enabled(node.record.kind) and (node.record.kind ~= "wire"
-            or (math.floor(x) == node.record.x and math.floor(y) == node.record.y and math.floor(z) == node.record.z)) then
+        local wire = node and node.record.kind == "wire"
+        local touchingWire = false
+        if wire and math.floor(z) == node.record.z then
+            local dx, dy = math.floor(x) - node.record.x, math.floor(y) - node.record.y
+            touchingWire = dx == 0 and dy == 0 or node.record.paired and
+                (node.record.facing % 2 == 0 and dx == 0 and dy == 1 or node.record.facing % 2 == 1 and dx == 1 and dy == 0)
+        end
+        if node and B.enabled(node.record.kind) and (not wire or touchingWire) then
             local record = node.record
             local _, host, attachment, status = B.resolve(record)
             local touching = false

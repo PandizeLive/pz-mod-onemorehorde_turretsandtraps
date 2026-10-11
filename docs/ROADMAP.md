@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Synchronized 2026-10-11 against C80-C132 and the installed 0.2.38.1 build. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
+Synchronized 2026-10-11 against C80-C133, the installed 0.2.38.1 build and 0.2.39 implementation under verification. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -18,7 +18,7 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 ## Current checkpoint status and next work
 
-**C132 upcoming trap revision:** owner requests one paired 1x2 Concertina trap with shared durability/service and one inventory item, alongside module work. Existing recipe/weight/total HP retained; installed 0.2.38.1 remains one tile. See [R2C4 contract](checkpoints/R2C4_CONCERTINA.md#c132-one-paired-1x2-concertina-trap-for-the-upcoming-patch-2026-10-11). This does not reorder R3C4-R3C7 or change independent Bed Spikes.
+**C132/C133 trap revision, implemented in 0.2.39:** owner requests one paired 1x2 Concertina trap with shared durability/service and one inventory item, alongside module work. Existing recipe/weight/total HP retained; native verification/install is tracked in [0.2.39 test evidence](TEST_v0.2.39.md). See [R2C4 contract](checkpoints/R2C4_CONCERTINA.md#c132-one-paired-1x2-concertina-trap-for-the-upcoming-patch-2026-10-11). This does not reorder R3C4-R3C7 or change independent Bed Spikes.
 
 **C125-C131 current selection:** owner selected Modules, slot-limited Splitter and fixed-five Fragment damage stacking. Magazine growth is 35% linear with minimum +1/module and final rounding. Splitter fires the full volley with any ready ammunition and consumes min(ready rounds, normal volley cost); zero cannot fire. Fragment tuning, range/interaction and power/endurance remain open. R3C4 contract/battery planning is active; R3C5 Splitter/Fragment remains the first implementation stage after its rules and feasibility are settled. R3C6 and R3C7 retain their order. New heads remain deferred; no gameplay patch or tuning is authorized solely by this track selection.
 

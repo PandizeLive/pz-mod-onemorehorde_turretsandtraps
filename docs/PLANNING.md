@@ -4,7 +4,7 @@ Updated 2026-10-10 under C119. This is the shared entry point for planning in th
 
 ## Read the current branch
 
-Current unmerged work is on **codex/performance-barbed-audit**, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1), targeting dev. [Open this Planning page on the active branch](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/blob/codex/performance-barbed-audit/docs/PLANNING.md). The **installed 0.2.38.1 build** implements the approved bundle and C122 native-pitch/contact optimization. Native/automated checks and tagged installation verify; [release state](RELEASE.md) records the evidence. The reported lag fix is owner-accepted; individual unmentioned rendered/audio checks remain unconfirmed.
+Current unmerged work is on **codex/performance-barbed-audit**, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1), targeting dev. [Open this Planning page on the active branch](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/blob/codex/performance-barbed-audit/docs/PLANNING.md). C133 implementation is [0.2.39 paired Concertina](PATCH_v0.2.39.md); focused checks pass, native verification/install is in progress. The **previous installed 0.2.38.1 build** implements the approved bundle and C122 native-pitch/contact optimization. Native/automated checks and tagged installation verify; [release state](RELEASE.md) records the evidence. The reported lag fix is owner-accepted; individual unmentioned rendered/audio checks remain unconfirmed.
 
 Fetch the remote and check open development/planning PRs before using dev alone as the current state. Read the active branch's AGENTS.md, this page and [CURRENT_STATUS.md](CURRENT_STATUS.md). Record which branch/commit was inspected. A chat's older answer or an old Cloud checkout is not a current checkpoint. Preserve unmerged work and reconcile incoming plans; do not reset, force-push or merge automatically.
 
@@ -61,7 +61,7 @@ Owner reports noticeable lag apparently gone. [Console comparison](TEST_v0.2.38.
 Owner follow-up: "Yea seems fine." Satisfaction with the current lag improvement is confirmed; no new work or separate test is requested. Existing console evidence and remaining scope are unchanged.
 
 
-## Current decision: next checkpoint (C124)
+## Historical decision: next checkpoint (C124)
 
 No next patch is selected or underway. The 0.2.38.1 lag test is complete. Recommend R3C4 offensive-module contract and battery baseline, followed by R3C5 Splitter/Fragment, R3C6 Piercing/Initial Blow/Execute/Impact, then R3C7 combined balance/endurance checks. R3C1 new-head selection and R3C2 prototype are an independent alternative. No change to phase order or implementation authorization. Existing unconfirmed individual content checks do not require another test before this planning discussion. See the corrected [checkpoint table](ROADMAP.md#current-checkpoint-status-and-next-work). Inspected active branch at 378dbac and fetched origin; draft PR #1 is the only open PR and targets dev.
 
@@ -89,4 +89,4 @@ C130 confirms C129 option B: any last loaded round permits the full Splitter vol
 C131 settles insufficient ammo: full Splitter volley, consume min(ready rounds, normal volley cost), require at least one round; no direct reserve charge for the shortfall. This includes C130's final-round exception. Magazine growth is 35% linear/minimum +1/final ceiling. Remaining R3C4 choices: Fragment damage increment/cap, range/coverage/propagation, compatibility and power/endurance. No implementation or new owner test. Inspected a773151 and fetched origin.
 
 
-C132 adds approved 1x2 Concertina conversion to upcoming patch scope: one item places a linked pair with shared HP and whole-trap service/breakage, matching Spike Barrier identity rather than independent Bed Spikes. Existing recipe, weight 2, total HP 50 and contact behavior retained. [Contract](checkpoints/R2C4_CONCERTINA.md#c132-one-paired-1x2-concertina-trap-for-the-upcoming-patch-2026-10-11). Not yet implemented; module contract choices remain open. C131 full-volley ammo rule is already confirmed and mirrored.
+C132 adds approved 1x2 Concertina conversion to upcoming patch scope: one item places a linked pair with shared HP and whole-trap service/breakage, matching Spike Barrier identity rather than independent Bed Spikes. Existing recipe, weight 2, total HP 50 and contact behavior retained. [Contract](checkpoints/R2C4_CONCERTINA.md#c132-one-paired-1x2-concertina-trap-for-the-upcoming-patch-2026-10-11). C133 approves implementation, now in 0.2.39; native verification/install is tracked in TEST_v0.2.39.md. Module contract choices remain open. C131 full-volley ammo rule is already confirmed and mirrored.

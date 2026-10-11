@@ -47,9 +47,23 @@ public final class NativeBarbProbe {
         }
         check(result instanceof List<?>, "Barb native fixture creation failed");
         @SuppressWarnings("unchecked") List<Object> fixtures = (List<Object>)result;
-        check(fixtures.size() == 17, "Expected eight frame/support pairs and one coil");
+        check(fixtures.size() == 18, "Expected eight frame/support pairs and two linked wire halves");
         int version = ((Number)world.getMethod("getWorldVersion").invoke(null)).intValue();
         Files.createDirectories(directory);
+        Object module = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_BarbSections");
+        Object store = call(module, "rawget", new Class<?>[]{Object.class}, "store");
+        Object wires = call(store, "rawget", new Class<?>[]{Object.class}, "wires");
+        Path wireFile = directory.resolve("wire-records.bin");
+        if (mode.equals("write")) {
+            ByteBuffer output = ByteBuffer.allocate(65536);
+            call(wires, "save", new Class<?>[]{ByteBuffer.class}, output);
+            Files.write(wireFile, Arrays.copyOf(output.array(), output.position()));
+        }
+        Object restoredWires = platformType.getMethod("newTable").invoke(platform);
+        ByteBuffer wireInput = ByteBuffer.wrap(Files.readAllBytes(wireFile));
+        call(restoredWires, "load", new Class<?>[]{ByteBuffer.class, int.class}, wireInput, version);
+        check(!wireInput.hasRemaining(), "Unread shared wire state");
+        call(store, "rawset", new Class<?>[]{Object.class, Object.class}, "wires", restoredWires);
         for (int i = 0; i < fixtures.size(); i++) {
             Object source = fixtures.get(i);
             Path file = directory.resolve("barb-" + i + ".bin");
@@ -66,10 +80,10 @@ public final class NativeBarbProbe {
             check(!input.hasRemaining(), "Unread barb object data");
             for (String method : new String[]{"getSpriteName", "getHealth"})
                 check(get(source, method).equals(get(restored, method)), "Barb/support reload changed " + method);
-            if (i % 2 == 0) {
+            if (i % 2 == 0 || i >= 16) {
                 check(Boolean.TRUE.equals(get(restored, "isCanPassThrough")) && Boolean.FALSE.equals(get(restored, "isThumpable")), "Barb marker became a collider or target");
             }
-            String key = i % 2 == 0 ? "OMHTTBarbFrame" : "OMHTTBarbs";
+            String key = i % 2 == 0 || i >= 16 ? "OMHTTBarbFrame" : "OMHTTBarbs";
             Object expected = call(get(source, "getModData"), "rawget", new Class<?>[]{Object.class}, key);
             Object actual = call(get(restored, "getModData"), "rawget", new Class<?>[]{Object.class}, key);
             check(expected != null && actual != null, "Barb metadata missing on reload");
@@ -86,6 +100,6 @@ public final class NativeBarbProbe {
         }
         Object finish = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeBarbRestoredCheck");
         check(Boolean.TRUE.equals(threadType.getMethod("call", Object.class, Object[].class).invoke(thread, finish, new Object[]{fixtures})), "Restored barbs do not resolve");
-        System.out.println("[OMHTT-Barbs] persistence mode=" + mode + " pairs=8 wire=1 identity=valid durability=preserved hostHealth=unchanged collision=passable");
+        System.out.println("[OMHTT-Barbs] persistence mode=" + mode + " pairs=8 wire=2 identity=valid durability=shared-preserved hostHealth=unchanged collision=passable");
     }
 }

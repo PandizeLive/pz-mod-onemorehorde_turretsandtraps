@@ -7,11 +7,18 @@ SandboxVars.OMHTurretsTraps.BarbSections = true
 SandboxVars.OMHTurretsTraps.BarbWire = true
 local square = makeSquare(400, 400, 0)
 local second = makeSquare(400, 401, 0)
-local function coil(floor)
-    local object = IsoThumpable.new(getCell(), floor, "omhtt_barrier_01_60", false)
+local function coil(floor, facing)
+    facing = facing or 0
+    local object = IsoThumpable.new(getCell(), floor, "omhtt_barrier_01_" .. (60 + facing), false)
     floor:AddSpecialObject(object)
     B.onWireCreate({thumpable = object})
-    return object, B.record(object)
+    local x, y = floor.x + facing % 2, floor.y + 1 - facing % 2
+    local otherFloor = getCell():getGridSquare(x, y, 0) or makeSquare(x, y, 0)
+    local otherObject = IsoThumpable.new(getCell(), otherFloor, "omhtt_barrier_01_" .. (72 + facing), false)
+    otherFloor:AddSpecialObject(otherObject)
+    B.onWireCreate({thumpable = otherObject})
+    check(B.record(otherObject) == B.record(object), "Both wire halves resolve one durable identity")
+    return object, B.record(object), otherObject
 end
 local object, record = coil(square)
 local adjacent, other = coil(second)
@@ -130,4 +137,62 @@ check(Service.apply(player, adjacent, other.id, "Remove") and #inventory.items =
 check(not Service.apply(player, adjacent, other.id, "Remove") and #inventory.items == 1, "Repeated pickup cannot duplicate a coil")
 B.retire(record)
 check(B.contact(zombie) == nil, "Depleted/removed coil cannot strand movement contact")
+for facing = 0, 3 do
+    local floor = makeSquare(450 + facing * 4, 450, 0)
+    local tailFloor = makeSquare(floor.x + facing % 2, floor.y + 1 - facing % 2, 0)
+    function floor:isSolid() return false end
+    function floor:isSolidTrans() return false end
+    function tailFloor:isSolid() return false end
+    function tailFloor:isSolidTrans() return false end
+    function floor:isSomethingTo() return self.blocked == true end
+    function tailFloor:isSomethingTo() return false end
+    local direction = ({"e", "n", "w", "s"})[facing + 1]
+    local params = {square = floor, facing = direction, tileInfo = {getX = function() return 0 end, getY = function() return 0 end}}
+    check(B.onWireValid(params), "Both rotated wire tiles accept clear connected floors")
+    floor.blocked = true
+    check(not B.onWireValid(params), "Wire pair cannot span a wall")
+    floor.blocked = false
+    local head, pair, tail = coil(floor, facing)
+    check(not B.onWireValid(params), "Occupied paired footprint rejects duplicate placement")
+    zombie.square, zombie.x, zombie.y = floor, floor.x + .5, floor.y + .5
+    B.time = B.time + 3000
+    B.zombie(zombie)
+    check(pair.health == 49, "First half wears shared durability once")
+    zombie.square, zombie.x, zombie.y = tailFloor, tailFloor.x + .5, tailFloor.y + .5
+    B.zombie(zombie)
+    check(pair.health == 49 and B.contact(zombie) == pair, "Crossing the seam preserves contact and damage cooldown")
+    B.time = B.time + 2000
+    B.zombie(zombie)
+    check(pair.health == 48, "Second half wears the same durability pool")
+    B.initialize()
+    B.loaded(tailFloor); B.loaded(floor)
+    check(B.record(head) == B.record(tail) and #B.order == 1 and B.record(tail).health == 48,
+        "Reload order restores a single shared pool and scheduler entry")
+    local tailKey = require("OMHTT/Foundation").key(tailFloor.x, tailFloor.y, 0)
+    testSquares[tailKey] = nil
+    local _, _, _, unloadedStatus = B.resolve(pair)
+    check(unloadedStatus == "unloaded" and B.store.wires[pair.id] == pair, "Unloaded partner preserves shared durability")
+    testSquares[tailKey] = tailFloor
+    player.square, player.god = tailFloor, false
+    check(Service.apply(player, tail, pair.id, "Repair") and pair.health == 50, "Either half repairs the whole trap")
+    local count = #inventory.items
+    check(Service.apply(player, tail, pair.id, "Remove") and head.removed and tail.removed and #inventory.items == count + 1,
+        "Pickup from the second half removes both and yields one item")
+    check(not Service.apply(player, head, pair.id, "Remove") and #inventory.items == count + 1, "Other-half pickup replay cannot refund again")
+    local first, replacement, last = coil(floor, facing)
+    B.removed(last)
+    tailFloor:transmitRemoveItemFromSquare(last)
+    check(first.removed and not B.store.wires[replacement.id] and not B.nodes[replacement.id], "External half removal retires the complete trap")
+    local stale = IsoThumpable.new(getCell(), tailFloor, "omhtt_barrier_01_" .. (72 + facing), false)
+    stale:getModData().OMHTTBarbFrame = {id = replacement.id, paired = true, kind = "wire"}
+    tailFloor:AddSpecialObject(stale)
+    B.loaded(tailFloor)
+    check(stale.removed, "A retired half loading later cannot resurrect contact or inventory")
+    local depletedHead, depleted, depletedTail = coil(floor, facing)
+    depleted.health = 1
+    zombie.square, zombie.x, zombie.y = floor, floor.x + .5, floor.y + .5
+    B.time = B.time + 3000
+    B.zombie(zombie)
+    check(depletedHead.removed and depletedTail.removed and not B.store.wires[depleted.id], "Final damage activation breaks both halves")
+end
 testResults[#testResults + 1] = "Concertina contact, movement, player injuries and recovery: passed"

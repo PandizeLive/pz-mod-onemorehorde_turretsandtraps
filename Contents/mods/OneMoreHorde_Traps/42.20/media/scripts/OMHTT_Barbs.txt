@@ -79,10 +79,10 @@ module Base {
             isThumpable = false,
             OnIsValid = OMHTT_BarbSections.onWireValid,
             OnCreate = OMHTT_BarbSections.onWireCreate,
-            face E { layer { row = omhtt_barrier_01_60, } }
-            face N { layer { row = omhtt_barrier_01_61, } }
-            face W { layer { row = omhtt_barrier_01_62, } }
-            face S { layer { row = omhtt_barrier_01_63, } }
+            face E { layer { row = omhtt_barrier_01_60, row = omhtt_barrier_01_72, } }
+            face N { layer { row = omhtt_barrier_01_61 omhtt_barrier_01_73, } }
+            face W { layer { row = omhtt_barrier_01_62, row = omhtt_barrier_01_74, } }
+            face S { layer { row = omhtt_barrier_01_63 omhtt_barrier_01_75, } }
         }
         component CraftRecipe {
             timedAction = BuildLowNoTool,
