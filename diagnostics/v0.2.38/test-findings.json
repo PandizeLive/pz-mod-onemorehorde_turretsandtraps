@@ -47,5 +47,12 @@
   "ownerTest": "pending",
   "renderedMovement": "pending",
   "denseClientPauses": "unproven resolved",
-  "publication": "none"
+  "publication": "none",
+  "installation": {
+    "tag": "test/v0.2.38",
+    "sourceCommit": "cdba8c610b66fe344b558b23ec4f1a9f7bb1a0f9",
+    "sourceFilesVerified": 188,
+    "packageFilesVerified": 228,
+    "previousBackups": "0.2.37 both entries verified"
+  }
 }

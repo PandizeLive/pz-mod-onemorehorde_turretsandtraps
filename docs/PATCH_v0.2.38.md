@@ -21,4 +21,6 @@ Turret Base remains at root, with Heads and Modules groups. Removed both assembl
 
 Automated verification passed: 3,946 Kahlua assertions; 94 compiled runtime/translation files; 574 native translation keys; 23 packet serializations. Native write/read pass in 95.7/90.6 seconds. Traps-only/Turrets-only/both startup pass in 81.3/83.3/88.3 seconds. The manifest covers 188 source and 228 package files; 111 Sandbox options and 31 identical shared helpers pass independent checks.
 
+Installed and hash-verified through root OMH.cmd from `test/v0.2.38` / `cdba8c6`; previous 0.2.37 backups verify. See [release evidence](RELEASE.md).
+
 Verification and the single active owner checklist: [TEST_v0.2.38](TEST_v0.2.38.md). Existing collapse/audio and dense-client pause acceptance remain open. No multiplayer enablement, Workshop upload or automatic PR merge.

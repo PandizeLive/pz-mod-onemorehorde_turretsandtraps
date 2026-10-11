@@ -1,6 +1,6 @@
 # 0.2.38 focused test
 
-Status: automated/native verification passed; installation pending. Owner test not performed. This replaces the prior active checklist and carries its unaccepted collapse/audio/continuous-placement checks into one run. Older results remain historical.
+Status: automated/native verification and tagged installation passed. Owner test not performed. This replaces the prior active checklist and carries its unaccepted collapse/audio/continuous-placement checks into one run. Older results remain historical.
 
 ## Owner test (fresh world, single player)
 

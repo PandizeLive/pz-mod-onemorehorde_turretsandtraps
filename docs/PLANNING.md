@@ -4,11 +4,11 @@ Updated 2026-10-10 under C119. This is the shared entry point for planning in th
 
 ## Read the current branch
 
-Current unmerged work is on **codex/performance-barbed-audit**, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1), targeting dev. [Open this Planning page on the active branch](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/blob/codex/performance-barbed-audit/docs/PLANNING.md). The **0.2.38 candidate** implements the approved bundle. Final native verification passed; installation is pending; [release state](RELEASE.md) records the actual installed build.
+Current unmerged work is on **codex/performance-barbed-audit**, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1), targeting dev. [Open this Planning page on the active branch](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/blob/codex/performance-barbed-audit/docs/PLANNING.md). The **installed 0.2.38 build** implements the approved bundle. Native/automated checks and tagged installation verify; [release state](RELEASE.md) records the evidence. Owner/rendered acceptance remains pending.
 
 Fetch the remote and check open development/planning PRs before using dev alone as the current state. Read the active branch's AGENTS.md, this page and [CURRENT_STATUS.md](CURRENT_STATUS.md). Record which branch/commit was inspected. A chat's older answer or an old Cloud checkout is not a current checkpoint. Preserve unmerged work and reconcile incoming plans; do not reset, force-push or merge automatically.
 
-## Current combined update: verified candidate, installation pending
+## Current combined update: 0.2.38 installed and verified; owner test pending
 
 C120 explicitly approves patching the whole current plan on 2026-10-10: [C119](DECISIONS.md#c119-approved-combined-plan-and-mandatory-github-planning-handoff-2026-10-10). Exact behavior, recipes and evidence limits: [combined checkpoint contract](checkpoints/R2C4_CONCERTINA.md).
 
