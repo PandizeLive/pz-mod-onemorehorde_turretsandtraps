@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Synchronized 2026-10-11 against C80-C138, the installed, native-verified 0.2.41 corrective/content build; the owner round is complete with no issues reported (C138), subject to recorded evidence limits. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
+Synchronized 2026-10-11 against C80-C139, the installed, native-verified 0.2.41 corrective/content build; the owner round is complete with no issues reported (C138), subject to recorded evidence limits. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -17,6 +17,8 @@ Existing SP content includes basic/reinforced Spike Barriers, portable items/pac
 Shared combat scheduling and active-time clocks exist. Render/maintenance costs and integrated authority remain open. The Louisville hang is unassigned; preserve useful evidence if it recurs, without claiming OMH caused it or has been cleared. Final art/audio remain owner-sourced. Makeshift Detection/Firing/Expansion are craftable; standard module crafting remains deferred.
 
 ## Current checkpoint status and next work
+
+**C139 active discussion:** [Piercing/Initial Blow/Execute/Impact choices](checkpoints/R3_OFFENSIVE_MODULES.md#c139---r3c6-choices-offered-not-approved-2026-10-11) are offered, not selected or approved. Native health/stumble feasibility and loot/power/endurance tuning remain explicit gates. Installed 0.2.41 and C138 test completion are unchanged.
 
 **C137 current module checkpoint:** 0.2.41 adds approved Enhanced Firing/Detection and larger reserve count bonuses, and corrects automatic cadence, placement limits and volley visuals. LootLab is refreshed to the same catalog. R3C4 is settled; R3C5 automated/native proof and the completed C138 owner round are in [one focused test](TEST_v0.2.41.md). Native inventory weight remains a separate limit. R3C6 remains later discussion; R3C7 balance/endurance pending.
 

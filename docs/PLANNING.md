@@ -1,6 +1,6 @@
 # Planning
 
-**Current C138 handoff:** 0.2.41 implements the approved Enhanced modules, automatic cadence, placement/volley corrections, item families, expansion bonuses and hosted LootLab refresh. Verification is recorded in [the focused test](TEST_v0.2.41.md); installed/tagged state is authoritative in [CURRENT_STATUS](CURRENT_STATUS.md). [Patch](PATCH_v0.2.41.md). Native weight limits remain; a separate storage redesign is not approved. Handheld rifle slowness is undiagnosed; no handheld timing mutation found. Owner reports "Test Complete" for 0.2.41, with no new issue or repeat requested. Console findings/evidence limits are in the versioned test. R3C6 is next for discussion, not implementation. Earlier current/open-choice entries below are historical.
+**Current C139 handoff:** owner requests R3C6 choices. [Four A/B proposals](checkpoints/R3_OFFENSIVE_MODULES.md#c139---r3c6-choices-offered-not-approved-2026-10-11) cover Piercing, Initial Blow, Execute and Impact; no selections or patch approval yet. Native standing stumble/full-health compatibility need proof; loot/power/endurance tuning remains after behavior selection. Installed 0.2.41 and C138 completed owner test are unchanged. [Current status](CURRENT_STATUS.md). Earlier current/open-choice entries below are historical.
 
 
 Updated 2026-10-11 under C119/C133. This is the shared entry point for planning in the local PC chat and **OMH: Turrets & Traps - Planning**. Detailed contracts and approval history remain in the linked records; this page indexes them rather than replacing them.
