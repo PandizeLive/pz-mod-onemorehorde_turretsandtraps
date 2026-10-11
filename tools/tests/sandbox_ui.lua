@@ -23,7 +23,8 @@ check(#panel.children==4 and panel.scrollHeight==height and #panel.joypadButtons
 local unrelated={controls={}}
 check(UI.attach(unrelated)==unrelated and unrelated.omhttTitles==nil, "Other mods' Sandbox pages untouched")
 local modules = {controls = {}, labels = {}, settingNames = {}, children = {}, width = 500}
-local names = {"CapacityAmmoBonus", "RangeBonus", "VelocityBonus", "ReloadBonus", "RapidFireBonus"}
+local names = {"CapacityAmmoBonus", "RangeBonus", "VelocityBonus", "ReloadBonus", "RapidFireBonus",
+    "CapacityImprovisedModuleBonus", "CapacityImprovisedAmmoBonus", "ImprovisedFiringFailure"}
 for i = 1, #names do
     local name = "OMHTurretsTraps." .. names[i]
     modules.settingNames[i] = name
@@ -35,8 +36,25 @@ modules.setScrollHeight = panel.setScrollHeight
 modules.prerender = function(self) self.originalCalled = true end
 UI.attach(modules)
 modules:prerender()
-check(#modules.children == 5 and modules.settingNames[1] == "OMHTurretsTraps.RapidFireBonus"
-    and modules.settingNames[5] == "OMHTurretsTraps.CapacityAmmoBonus", "Module tuning has five ordered headings")
+check(#modules.children == 6 and modules.settingNames[1] == "OMHTurretsTraps.ImprovisedFiringFailure"
+    and modules.settingNames[6] == "OMHTurretsTraps.CapacityImprovisedModuleBonus"
+    and modules.settingNames[8] == "OMHTurretsTraps.CapacityAmmoBonus", "Firing reliability and starter expansion settings have correct semantic headings")
 UI.attach(modules); modules.width = 700; modules:prerender()
-check(#modules.children == 5 and #modules.joypadButtonsY == 5, "Module headings survive resize without duplicates")
+check(#modules.children == 6 and #modules.joypadButtonsY == 8, "Module headings survive resize without duplicates")
+local traps = {controls = {}, labels = {}, settingNames = {}, children = {}, width = 500}
+local keys = {"BedScratchChance", "BarbMovementDivisor", "ReinforcedBarrierDamage", "SpikeBarrierHealth", "SpikeBarrier", "BedSpikes", "BedHealth", "BarbWire", "BarbSections"}
+for i = 1, #keys do
+    local name = "OMHTurretsTraps." .. keys[i]
+    traps.settingNames[i] = name
+    traps.controls[name] = {setY = function(self, y) self.y = y end, getHeight = function() return 20 end}
+    traps.labels[name] = traps.controls[name]
+end
+traps.addChild, traps.getWidth, traps.insertNewLineOfButtons = panel.addChild, panel.getWidth, panel.insertNewLineOfButtons
+traps.setScrollHeight, traps.prerender = panel.setScrollHeight, function() end
+ISServerSandboxOptionsUI:createPanel(traps)
+traps:prerender()
+check(#traps.children == 4 and traps.settingNames[1] == "OMHTurretsTraps.SpikeBarrier"
+    and traps.settingNames[2] == "OMHTurretsTraps.ReinforcedBarrierDamage"
+    and traps.settingNames[9] == "OMHTurretsTraps.BedScratchChance", "Trap damage precedes durability; shared player injuries have their own final heading")
+check(#traps.joypadButtonsY == #keys, "Server editing retains controller order for all settings")
 getTextManager=oldTextManager

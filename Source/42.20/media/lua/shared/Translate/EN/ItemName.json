@@ -24,7 +24,8 @@
     "Base.OMHTTModuleCritical": "Critical Module",
     "Base.OMHTTModuleAccuracy": "Accuracy Module",
     "Base.OMHTTBarbedPanelItem": "Barbed Panel",
-    "Base.OMHTTModuleDetectionImprovised": "Detection Module (Improvised)",
-    "Base.OMHTTModuleFiringImprovised": "Firing Module (Improvised)",
-    "Base.OMHTTExpansionKitImprovised": "Expansion Kit (Improvised)"
+    "Base.OMHTTModuleDetectionImprovised": "Makeshift Detection Module",
+    "Base.OMHTTModuleFiringImprovised": "Makeshift Firing Module",
+    "Base.OMHTTExpansionKitImprovised": "Makeshift Expansion Kit",
+    "Base.OMHTTConcertinaWire": "Concertina Wire"
 }

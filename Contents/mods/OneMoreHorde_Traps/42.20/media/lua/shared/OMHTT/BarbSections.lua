@@ -26,10 +26,13 @@ end
 
 ---@return boolean enabled
 ---@nodiscard
-function B.enabled()
+function B.enabled(kind)
     local options = SandboxVars.OMHTurretsTraps
-    return not isClient() and not isServer() and options ~= nil and options.Enabled ~= false and options.BarbSections ~= false
+    return not isClient() and not isServer() and options ~= nil and options.Enabled ~= false and options[kind == "wire" and "BarbWire" or "BarbSections"] ~= false
 end
+
+---@return boolean enabled
+function B.wireEnabled() return B.enabled("wire") end
 
 ---@return nil
 function B.initialize()
@@ -108,9 +111,12 @@ function B.resolve(record)
         if marker and marker.id == record.id then
             frame = object
         end
-        if S.attachment(object, record.north, record.side) == record.id then
+        if record.kind ~= "wire" and S.attachment(object, record.north, record.side) == record.id then
             host = object
         end
+    end
+    if record.kind == "wire" then
+        return frame, frame, frame and B.record(frame), frame and record.health > 0 and "active" or "missing"
     end
     if not frame or not host then return frame, host, nil, "missing" end
     local attachment = host:getModData().OMHTTBarbs[S.faceKey(record.north, record.side)]
@@ -123,7 +129,7 @@ end
 ---@return nil
 function B.retire(record)
     local frame, host = B.resolve(record)
-    if host then
+    if host and record.kind ~= "wire" then
         S.unbind(host, record.north, record.side, record.id)
     end
     if B.nodes[record.id] then
@@ -139,6 +145,7 @@ end
 ---@param host IsoObject Backing object
 ---@return nil
 function B.visual(record, frame, host)
+    if record.kind == "wire" then return end
     if not S.edge(host, record.north, record.side, geometry) then return end
     local index = geometry.north and 52 or 54
     if geometry.x > record.x then
@@ -177,7 +184,7 @@ function B.removed(object)
     local record = B.record(object)
     if not record then return end
     local _, host = B.resolve(record)
-    if host then
+    if host and record.kind ~= "wire" then
         S.unbind(host, record.north, record.side, record.id)
     end
     if B.nodes[record.id] then
@@ -237,6 +244,63 @@ function B.onCreate(params)
     return {replaceObject = true, object = frame}
 end
 
+---@param params table Native one-tile wire preview
+---@return boolean valid
+function B.onWireValid(params)
+    if not B.wireEnabled() or not B.store or not require("OMHTT/BedSpikes").clear(params.square) then return false end
+    params.testCollisions = false
+    return true
+end
+
+---@param params table Native wire construction completion
+---@return nil
+function B.onWireCreate(params)
+    if not B.wireEnabled() or not B.store then error("[OMHTT] Wire construction unavailable") end
+    local object = params.thumpable
+    if B.record(object) then return end
+    local square = object:getSquare()
+    local record = {id = "barb-" .. B.store.nextId, kind = "wire", x = square:getX(), y = square:getY(),
+        z = square:getZ(), health = 50, shared = false}
+    B.store.nextId = B.store.nextId + 1
+    object:getModData().OMHTTBarbFrame = record
+    object:setBlockAllTheSquare(false)
+    object:setCanPassThrough(true)
+    object:setIsHoppable(false)
+    object:setIsThumpable(false)
+    object:setIsDismantable(false)
+    B.index(record, true)
+end
+
+---@param actor IsoGameCharacter Updated actor
+---@return table? selected One touching hazard, shared by damage and movement
+---@return table? attachment Durable state
+function B.contact(actor)
+    local square = actor:getSquare()
+    if #B.order == 0 or not square then return nil end
+    local bucket = B.nearby[F.key(square:getX(), square:getY(), square:getZ())]
+    if not bucket then return nil end
+    local selected, source = nil, nil
+    for id in pairs(bucket) do
+        local node = B.nodes[id]
+        if node and B.enabled(node.record.kind) then
+            local record = node.record
+            local _, host, attachment, status = B.resolve(record)
+            local touching = false
+            if status == "active" then
+                if record.kind == "wire" then
+                    touching = math.floor(actor:getX()) == record.x and math.floor(actor:getY()) == record.y
+                        and math.floor(actor:getZ()) == record.z
+                else
+                    touching = S.edge(host, record.north, record.side, geometry)
+                        and C.touching(geometry, actor:getX(), actor:getY(), actor:getZ(), actor:getWidth())
+                end
+            end
+            if touching and (not selected or id < selected.id) then selected, source = record, attachment end
+        end
+    end
+    return selected, source
+end
+
 ---@return nil
 function B.tick()
     B.time = B.time + ActiveTime.step(clock)
@@ -258,7 +322,8 @@ function B.tick()
     end
 end
 
-OMHTT_BarbMenuAvailable = B.enabled
+OMHTT_BarbMenuAvailable = function() return B.enabled() end
+OMHTT_BarbWireMenuAvailable = B.wireEnabled
 if isClient() or isServer() then return B end
 Events.OnInitGlobalModData.Add(B.initialize)
 Events.LoadGridsquare.Add(B.loaded)

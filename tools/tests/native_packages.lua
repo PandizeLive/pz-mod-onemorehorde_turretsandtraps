@@ -13,6 +13,8 @@ local function checkPackages()
         counts[name] = (counts[name] or 0) + 1
     end
     assert((counts["Base.OMHTTSpikeBarrierItem"] == 1) == expectedTraps, "Barrier item registration")
+    assert((counts["Base.OMHTTConcertinaWire"] == 1) == expectedTraps, "Wire item isolation")
+    assert((SpriteConfigManager.GetObjectInfo("OMHTTDeployConcertinaWire") ~= nil) == expectedTraps, "Wire placement isolation")
     assert((counts["Base.OMHTTBedSpikesItem"] == 1) == expectedTraps, "Bed Spikes item registration")
     assert((counts["Base.OMHTTReinforcedBedSpikesItem"] == 1) == expectedTraps, "Reinforced Bed Spikes item registration")
     assert((counts["Base.OMHTTTurretBase"] == 1) == expectedTurrets, "Turret item registration")
@@ -28,6 +30,7 @@ local function checkPackages()
     end
     assert((names["OMHTurretsTraps.SpikeBarrier"] == true) == expectedTraps, "Trap settings isolation")
     assert((names["OMHTurretsTraps.BedSpikes"] == true) == expectedTraps, "Bed settings isolation")
+    assert((names["OMHTurretsTraps.BarbWire"] == true) == expectedTraps, "Wire settings isolation")
     assert((names["OMHTurretsTraps.BarbSections"] == true) == expectedTraps, "Barb settings isolation")
     assert((names["OMHTurretsTraps.ShowCollision"] == true) == expectedTraps, "Trap debug isolation")
     assert((names["OMHTurretsTraps.PotatoTurret"] == true) == expectedTurrets, "Turret settings isolation")

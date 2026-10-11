@@ -95,7 +95,7 @@ option OMHTurretsTraps.BedReinforcedDamage {
 
 option OMHTurretsTraps.BedHealth {
     type = integer,
-    default = 100,
+    default = 50,
     min = 6,
     max = 10000,
     page = OMHTurretsTraps_BarrierPage,
@@ -104,7 +104,7 @@ option OMHTurretsTraps.BedHealth {
 
 option OMHTurretsTraps.BedReinforcedHealth {
     type = integer,
-    default = 200,
+    default = 100,
     min = 6,
     max = 10000,
     page = OMHTurretsTraps_BarrierPage,
@@ -198,4 +198,20 @@ option OMHTurretsTraps.DetailedLogging {
     default = false,
     page = OMHTurretsTraps_Debug,
     translation = OMHTurretsTraps_DetailedLogging,
+}
+
+option OMHTurretsTraps.BarbWire {
+    type = boolean,
+    default = true,
+    page = OMHTurretsTraps_BarrierPage,
+    translation = OMHTurretsTraps_BarbWire,
+}
+
+option OMHTurretsTraps.BarbMovementDivisor {
+    type = double,
+    default = 2,
+    min = 1,
+    max = 10,
+    page = OMHTurretsTraps_BarrierPage,
+    translation = OMHTurretsTraps_BarbMovementDivisor,
 }

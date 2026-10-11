@@ -26,8 +26,9 @@ function ISBuildPanel:refreshList()
         local definition = H.definitions[i]
         local recipe = H.recipe(self.player, definition)
         if recipe then
-            if H.item(self.player, definition) then
-                local info = SpriteConfigManager.GetObjectInfo(definition.deploy)
+            local item = H.item(self.player, definition)
+            if item then
+                local info = H.info(self.player, definition, item)
                 recipe = info and info:getRecipe():getCraftRecipe()
             end
             if recipe then

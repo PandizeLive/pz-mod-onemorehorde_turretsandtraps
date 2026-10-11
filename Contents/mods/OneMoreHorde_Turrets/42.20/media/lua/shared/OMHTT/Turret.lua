@@ -307,9 +307,6 @@ function T.onCrafted(data, player)
         local health = T.option("Health", 100, 1, 10000)
         item:getModData().OMHTTTurret = {schema = 1, kind = "potato", facing = 0, shots = 0, nextShot = 0,
             condition = health, maxHealth = health, revision = 1}
-        if string.find(data:getRecipe():getName(), "Complete", 1, true) then
-            item:getInventory():AddItem(T.HEAD)
-        end
     end
     D.emit("turret-crafted", {recipe = data:getRecipe():getName(), item = item:getFullType(), itemId = item:getID()})
 end

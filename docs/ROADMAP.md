@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Synchronized 2026-10-10 against C80-C119 and corrective patch 0.2.37. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
+Synchronized 2026-10-10 against C80-C120 and the 0.2.38 candidate. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -8,37 +8,33 @@ New checkpoint IDs use **R** for the revised roadmap. Historical P0-P6 IDs and e
 
 ## Product and existing work
 
-**Current 0.2.37** includes Bed Spikes, Barbed Panel and subsequent crafting, Building, traversal and starter-module changes. Native evidence is in [release state](RELEASE.md); the only active owner checklist is the [five-step focused test](TEST_v0.2.37.md). C106 records the earlier test findings; pending rendered checks are not passes or waivers. R1C3 includes diagnostic gating and aim/LOS cleanup; elimination of the reported 300-700ms client pauses remains open.
+**Current 0.2.38 candidate** includes Bed Spikes, Barbed Panel and subsequent crafting, Building, traversal and starter-module changes. Native evidence is in [release state](RELEASE.md); the only active owner checklist is the [six-step focused test](TEST_v0.2.38.md). C106 records the earlier test findings; pending rendered checks are not passes or waivers. R1C3 includes diagnostic gating and aim/LOS cleanup; elimination of the reported 300-700ms client pauses remains open.
 
 One Workshop product/download: **OMH: Turrets & Traps**, with independent selectable entries **OMH: Turrets** (`OneMoreHorde_Turrets`) and **OMH: Traps** (`OneMoreHorde_Traps`). Neither requires the other or a third Core entry. Canonical shared helpers are generated into both with identical virtual paths.
 
 Existing SP content includes basic/reinforced Spike Barriers, portable items/packs, construction/vaulting/servicing, modular potato turrets, conventional firearm mounts, inventory/modules/power, loot and LootLab. Do not schedule their implementation again. Automated evidence covers twenty native guns and an isolated 51-gun Firearms B42 probe; full-modpack rendering, dense-client performance and MP are not certified.
 
-Shared combat scheduling and active-time clocks exist. Render/maintenance costs and integrated authority remain open. The Louisville hang is unassigned; preserve useful evidence if it recurs, without claiming OMH caused it or has been cleared. Final art/audio remain owner-sourced. Improvised Detection/Firing/Expansion are craftable; standard module crafting remains deferred.
+Shared combat scheduling and active-time clocks exist. Render/maintenance costs and integrated authority remain open. The Louisville hang is unassigned; preserve useful evidence if it recurs, without claiming OMH caused it or has been cleared. Final art/audio remain owner-sourced. Makeshift Detection/Firing/Expansion are craftable; standard module crafting remains deferred.
 
 ## Current checkpoint status and next work
 
-**C119 approval:** [Planning](PLANNING.md) is the required GitHub handoff for all discussion/approval turns. Owner approved the entire current combined contract; implementation and native slowdown feasibility remain.
+**C120 implementation:** the owner approved patching C114-C119. The 0.2.38 candidate implements Concertina Wire, contact-only half movement/player injuries for wire and panels, independently durable/recoverable spike tiles, Sandbox organization and approved recipe/naming cleanup. Native displacement API and item/world probes have evidence; final write/read/package checks pass and installation is pending. [Planning](PLANNING.md), [contract](checkpoints/R2C4_CONCERTINA.md) and [focused test](TEST_v0.2.38.md) are the shared handoff. Rendered/Horde Night interaction and dense-client performance remain open.
 
-**C115 queued cleanup:** owner approved the C114 naming scheme and requests bundling it with the next update: remove complete-turret craft shortcuts, use Improvised for the alternate head recipe and Makeshift for starter modules/kit. Not implemented yet. R2C4 concertina feasibility remains the next unfinished content checkpoint; C116 approves its contact-only slowing direction, also requested for Barbed Panels; C117 approves half-speed for zombies. [Native feasibility and detailed choices](checkpoints/R2C4_CONCERTINA.md) remain open; this is not an implemented content patch.
-
-**C118 combined scope:** owner requests Bed Spikes-style player injuries for concertina/panels and independent durability for each placed Bed Spikes tile. The [combined checkpoint brief](checkpoints/R2C4_CONCERTINA.md#c118-player-contact-and-independent-bed-spikes) records current shared-state behavior and proposed inventory/balance consequences. C119 approves the concertina defaults and independent-bed inventory/balance changes. Not implemented; no further design approval is needed for those settled values.
-
-**C113 review repairs:** 0.2.37 implements automatic/manual range feedback, recipe clarity, bounded barb audio, overlay caching/profiling and elapsed active clocks without catch-up bursts. The sole active checklist is [0.2.37](TEST_v0.2.37.md). Native/automated results are in RELEASE.md; actual dense-client pauses and visible/audio acceptance remain R1C3/R2 gates. No new-content checkpoint is reordered.
+**C113 review repairs:** 0.2.37 implements automatic/manual range feedback, recipe clarity, bounded barb audio, overlay caching/profiling and elapsed active clocks without catch-up bursts. Its held checks are carried into [0.2.38](TEST_v0.2.38.md). Native/automated results are in RELEASE.md; actual dense-client pauses and visible/audio acceptance remain R1C3/R2 gates. No new-content checkpoint is reordered.
 
 **C112 follow-up:** 0.2.36.1 corrects Turrets organization to root base/complete recipes and Heads/Modules groups; traps retain tiers and Building keeps turret base ungrouped. The [cross-system review](REVIEW_v0.2.36.1.md) records current audio/visual/gameplay/code findings. Recommendations remain unapproved and do not reorder content checkpoints. Its owner checklist is now superseded by 0.2.37, carrying forward unaccepted rendered checks.
 
 **Latest test findings (C109, 2026-10-09):** 0.2.35 still launches zombies forward; top-level categories did not match the intended expandable group names. C110 approves repeated Building placement, zombie forward-collapse, tier groups and trip/impact audio. See [owner findings](TEST_v0.2.35.md#owner-findings-and-console-review-2026-10-09); the corrective implementation is 0.2.36, with rendered acceptance pending.
 
-**Corrective patch (C110, 2026-10-09):** 0.2.36 restores OMH parent categories with expandable Normal/Reinforced/Packed groups, continuous Building with exact-item/original-recipe fallback, zombie forward-collapse and native trip/impact audio. Player tripping and the 4/6/6 module layout remain unchanged. C106 records the prior test's tentative unmentioned passes and failed zombie overshoot. Only the replacement [focused 0.2.37 test](TEST_v0.2.37.md) remains for these changes; new-content choices stay postponed. See [release evidence](RELEASE.md) for local verification/install state.
+**Corrective patch (C110, 2026-10-09):** 0.2.36 restores OMH parent categories with expandable Normal/Reinforced/Packed groups, continuous Building with exact-item/original-recipe fallback, zombie forward-collapse and native trip/impact audio. Player tripping and the 4/6/6 module layout remain unchanged. C106 records the prior test's tentative unmentioned passes and failed zombie overshoot. Only the replacement [focused 0.2.38 test](TEST_v0.2.37.md) remains for these changes; new-content choices stay postponed. See [release evidence](RELEASE.md) for local verification/install state.
 
 | Phase / checkpoints | Status at 0.2.37 | Remaining work / next gate |
 | --- | --- | --- |
 | 1: R1C1-R1C2 package split | Implemented and native-verified in 0.2.29; remaining owner regression waived by C89 | Closed to further split regression; retain fresh-world policy and independent-package checks for changes |
 | 1: R1C3 performance/authority | Partial: audit and multiple optimizations implemented, including 0.2.34 aim/LOS cleanup | Measure the held dense-client workload; resolve measured stalls and authority gaps without claiming MP |
-| 2: R2C1-R2C2 Bed Spikes | Implemented with native checks, revised through subsequent patches | C106 tentative passes; verify corrected zombie landing/recovery in the focused 0.2.37 test |
-| 2: R2C3 Barbed Panel | Implemented with native contact/construction/persistence checks | C106 tentative passes; revised Building acceptance; multi-panel/garage-door and player-injury extensions remain unimplemented |
-| 2: R2C4 concertina | Planned; earliest unfinished content checkpoint in phase order | C116 accepts contact-only slowing; C119 settles content/balance choices; prove native movement feasibility |
+| 2: R2C1-R2C2 Bed Spikes | Implemented with native checks, revised through subsequent patches | C106 tentative passes; verify corrected zombie landing/recovery in the focused 0.2.38 test |
+| 2: R2C3 Barbed Panel | Implemented with native contact/construction/persistence checks | C106 tentative passes; revised Building acceptance; player injuries added in 0.2.38; multi-panel/garage doors remain unimplemented |
+| 2: R2C4 concertina | C120 implemented in 0.2.38; native checks pass; owner acceptance pending | Rendered contact movement, traversal/injury and combined acceptance remain |
 | 3: R3C1-R3C2 new head | Candidates documented; none selected for implementation | Select one head and settle its concrete contract before prototyping |
 | 3: R3C3 explosive head | Optional, unscoped | Collateral/resource/effect-budget decisions and feasibility first |
 | 3: R3C4-R3C7 offensive modules/battery | Planning direction recorded; no new offensive module implemented | R3C4 contract/baseline, then R3C5 directional effects, R3C6 conditional/penetrating effects, R3C7 combined acceptance |
@@ -47,7 +43,7 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 | 5: R5C1-R5C3 MP/integrations/release | Planned; no certification or publication | Validate only the selected release scope; optional features need not all ship |
 | 6: R6C1-R6C3 Cure simulation | Deferred, last | Matching contracts and loaded-combat controls first |
 
-The phase order is not a mandatory queue through every feature. R1C3 continues alongside relevant SP content, and Phase 3 may proceed without finishing every passive trap. R3C1 head selection and R3C4 module contract/battery baseline are separate entry points; neither requires a new head to be implemented first. C110 selects the corrective 0.2.36 patch; no following content patch is selected.
+The phase order is not a mandatory queue through every feature. R1C3 continues alongside relevant SP content, and Phase 3 may proceed without finishing every passive trap. R3C1 head selection and R3C4 module contract/battery baseline are separate entry points; neither requires a new head to be implemented first. C120 selects and implements the 0.2.38 passive-content bundle; no subsequent head/module patch is selected.
 
 **Documented module sequence: R3C4 -> R3C5 -> R3C6 -> R3C7.** The assistant's suggestion to make Initial Blow/Execute the next content patch was an unapproved reorder; those effects were already listed under R3C6. Battery baseline already belongs to R3C4. Keep any proposed reorder explicit until the owner selects it. R3C8 was separately approved and implemented under C104; its later ID does not make completed work a future task.
 
@@ -70,9 +66,9 @@ The phase order is not a mandatory queue through every feature. R1C3 continues a
 | R2C3 | [Barbed Panel](checkpoints/R2C3_BACKED_BARBED_SECTIONS.md) | C99 / 0.2.31 implements walls/fences, single-panel doors and independent 50-HP window-frame barbs; later changes include 0.2.35 Building. Native checks pass; C106 records tentative owner acceptance of unmentioned behavior. Multi-panel/garage doors remain unproven |
 | R2C4 | Concertina movement feasibility, then content if it passes | Contact-only damage; reversible slowing that composes with other effects and ends on exit/death/unload. No permanent movement mutation or silent substitute for slowing |
 
-C81 still rejects slowing turret effects. C116 explicitly accepts concertina contact-only slowing, with the same requested behavior for Barbed Panels, following the Horde Night concern discussion. C117 approves divisor 2 and C119 approves the remaining current content details; prove native movement/cleanup before implementation. See [R2C4 investigation](checkpoints/R2C4_CONCERTINA.md).
+C81 still rejects slowing turret effects. C116 explicitly accepts concertina contact-only slowing, with the same requested behavior for Barbed Panels, following the Horde Night concern discussion. C117 approves divisor 2 and C119 approves the remaining current content details; native displacement scaling is implemented with real-object API proof; rendered acceptance remains. See [R2C4 investigation](checkpoints/R2C4_CONCERTINA.md).
 
-Bed Spikes content began in 0.2.30 under C95, with native API, recipe and persistence checks. Later traversal/recovery/placement changes are included in 0.2.34. Use only [the current combined test](TEST_v0.2.37.md) for outstanding rendered acceptance; older patch tests are historical. Phase 2 is not fully accepted and concertina is not implemented.
+Bed Spikes content began in 0.2.30 under C95, with native API, recipe and persistence checks. Later traversal/recovery/placement changes are included in 0.2.34. Use only [the current combined test](TEST_v0.2.38.md) for outstanding rendered acceptance; older patch tests are historical. Phase 2 is not fully accepted; concertina is implemented in 0.2.38 with owner testing pending.
 
 ## Phase 3: distinct turret heads and offensive modules
 
@@ -127,7 +123,7 @@ Authority design/testing begins with each device; R5C1 is integrated proof, not 
 - [x] Review [0.2.34 owner feedback and captured console](TEST_v0.2.34.md#owner-result-and-console-review-2026-10-08). Preserve tentative owner passes separately from log proof; do not repeat the complete checklist.
 - [ ] Address C106 crafting/Building organization, three-row Manage layout and zombie trip-travel findings in a scoped corrective patch. Clarify Building inputs; retain 16-slot capacity and diagnose movement before changing damage eligibility.
 - [ ] R1C3: measure the reported mixed-defense pauses; use [the audit](checkpoints/R1C3_PERFORMANCE_AUDIT_20261007.md) and current patch evidence to select any further optimization. Prove integrated authority before MP claims.
-- [ ] R2C4: prove C116 contact-only slowing and implement the C119-approved footprint, player interaction, durability and recipe; divisor 2 is approved.
+- [ ] R2C4: C120 / 0.2.38 implementation is complete; finish installation and focused rendered acceptance. Divisor 2 and the C119 content/inventory contract remain unchanged.
 - [ ] R3C1: select one unique head if taking the head track; shortlist membership is not implementation approval.
 - [ ] R3C4: if taking the module track, resolve Fragment angle/propagation/range, stack caps, Splitter ammunition, Impact eligibility, compatibility and battery workload/target before offensive content.
 - [ ] Capture an earlier log or live thread evidence if the Louisville hang recurs.

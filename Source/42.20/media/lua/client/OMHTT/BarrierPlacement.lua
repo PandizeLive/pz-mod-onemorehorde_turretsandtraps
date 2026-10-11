@@ -6,9 +6,10 @@ local P = {}
 local definitions = {
     ["Base.OMHTTSpikeBarrierItem"] = {"OMHTTDeploySpikeBarrier", F.barrierEnabled},
     ["Base.OMHTTReinforcedBarrierItem"] = {"OMHTTDeployReinforcedBarrier", F.barrierEnabled},
-    ["Base.OMHTTBedSpikesItem"] = {"OMHTTDeployBedSpikes", Beds.enabled},
-    ["Base.OMHTTReinforcedBedSpikesItem"] = {"OMHTTDeployReinforcedBedSpikes", Beds.enabled},
-    ["Base.OMHTTBarbedPanelItem"] = {"OMHTTBarbs", Barbs.enabled, true},
+    ["Base.OMHTTBedSpikesItem"] = {"OMHTTDeployBedSpikes", Beds.enabled, false, true},
+    ["Base.OMHTTReinforcedBedSpikesItem"] = {"OMHTTDeployReinforcedBedSpikes", Beds.enabled, false, true},
+    ["Base.OMHTTConcertinaWire"] = {"OMHTTDeployConcertinaWire", Barbs.wireEnabled},
+    ["Base.OMHTTBarbedPanelItem"] = {"OMHTTBarbs", function() return Barbs.enabled() end, true},
 }
 
 ---@param item InventoryItem Selected item
@@ -29,6 +30,25 @@ local function usable(item)
     return item:getCondition() > 0
 end
 
+---@param item InventoryItem Carried trap
+---@param player IsoPlayer Builder
+---@return string route Native entity ID
+---@return InventoryItem? companion Second independent tile
+function P.route(item, player)
+    local definition = P.carried(item, player)
+    local companion = nil
+    if definition[4] then
+        local candidates = player:getInventory():getAllTypeRecurse(item:getFullType())
+        for i = 0, candidates:size() - 1 do
+            local other = candidates:get(i)
+            if other ~= item and P.carried(other, player) then companion = other; break end
+        end
+    end
+    local route = definition[1]
+    if definition[4] and not companion then route = route .. "Single" end
+    return route, companion
+end
+
 ---@param item InventoryItem Selected item
 ---@param player IsoPlayer Builder
 ---@return ISBuildIsoEntity? cursor
@@ -36,17 +56,22 @@ function P.place(item, player)
     local definition = P.carried(item, player)
     if not definition or player:isDead() then return nil end
     require("BuildingObjects/ISBuildIsoEntity")
-    local info = SpriteConfigManager.GetObjectInfo(definition[1])
+    local route, companion = P.route(item, player)
+    local info = SpriteConfigManager.GetObjectInfo(route)
     if not info then return nil end
     local containers = ArrayList.new()
     containers:add(item:getContainer())
     if item:getContainer() ~= player:getInventory() then containers:add(player:getInventory()) end
+    if companion and companion:getContainer() ~= item:getContainer() and companion:getContainer() ~= player:getInventory() then
+        containers:add(companion:getContainer())
+    end
     local cursor = ISBuildIsoEntity:new(player, info, 1, containers)
     require("OMHTT/PlacementTiming").apply(cursor)
     local logic = cursor.buildPanelLogic
     logic:setManualSelectInputs(true)
     logic:clearManualInputs()
     logic:offerInputItem(item)
+    if companion then logic:offerInputItem(companion) end
     if definition[3] and not player:isBuildCheat() then
         local inventory = player:getInventory()
         local hammer = inventory:getFirstTagEvalRecurse(ItemTag.HAMMER, usable)
@@ -66,7 +91,7 @@ function P.place(item, player)
     ---@param north boolean Facing
     ---@return boolean valid
     cursor.isValid = function(self, square, north)
-        if not P.carried(item, player) then return false end
+        if not P.carried(item, player) or companion and not P.carried(companion, player) then return false end
         if definition[3] and not require("OMHTT/BarbService").tools(player) then return false end
         return valid(self, square, north)
     end

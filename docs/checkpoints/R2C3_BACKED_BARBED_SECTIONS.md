@@ -1,5 +1,7 @@
 # R2C3: Barbed Panel
 
+Current override: C120 / [0.2.38](../PATCH_v0.2.38.md) adds contact-only half movement and Bed Spikes-style player injuries to panels, shared with Concertina Wire. The backing/door/window health contract below is unchanged. Native/automated checks pass; rendered owner acceptance remains pending.
+
 Current checkpoint contract, synchronized 2026-10-08. Implemented in 0.2.31 under C99 and revised through 0.2.35. Native construction/contact/persistence checks pass; C106 records tentative unmentioned owner passes; revised Building acceptance uses the [focused test](../TEST_v0.2.35.md). See [canonical phase status](../ROADMAP.md#current-checkpoint-status-and-next-work). The former C97 wall/fence-only design and unsettled service proposals are historical, superseded by C99-C104.
 
 ## Implemented contract

@@ -1,6 +1,6 @@
 # R2C4: Concertina contact movement and combined cleanup
 
-Approved implementation plan, 2026-10-10, C114-C119; native investigation remains incomplete. Installed build remains 0.2.37. No native movement probe or rendered test has passed for this new feature.
+Implemented as the C120 / 0.2.38 candidate on 2026-10-10. [Patch details](../PATCH_v0.2.38.md), [test evidence](../TEST_v0.2.38.md) and [release/install state](../RELEASE.md) are authoritative. Native displacement scaling is feasible; final validation passes; installation is pending. Rendered and Horde Night integration acceptance remain pending. The investigation/proposals below preserve their historical context; C119 approved their settled values.
 
 ## Approved direction and technical gates
 
@@ -64,3 +64,9 @@ C118 proposals approved by C119:
 - Player entry rolls must not double because the two tiles now have separate IDs. Preserve current zombie tile-based eligibility, five-second recovery and one damage event per fall; no injury loop for existing prone actors.
 
 C119 settles these inventory/balance choices. Implementation and native/runtime validation remain pending; do not reopen the same approval gate.
+
+## C120 implementation
+
+The native event order places deferred movement before OnZombieUpdate/OnPlayerUpdate and collision resolution afterward. BarbMovement scales getNextX/Y relative to current X/Y only during contact. It leaves persistent speed/type untouched and bypasses native climbing, bump falls, knockdowns, ragdolls and non-crawling prone movement. One combined wire/panel pass avoids stacking. Current input motion is halved rather than cached as a "normal speed" snapshot. Real native player/zombie API probes pass; rendered motion, vault transitions and interaction with third-party movement hooks still require the focused owner check.
+
+All settled content/inventory/naming/header changes are implemented in the 0.2.38 candidate. Distinct native sprite IDs are necessary for pair/single entity routes; they share the same bed pixels. Concertina uses one white WIRE technical marker across its orientation IDs and inventory icon. Wire weight is 2; repair/pickup need no tools. No old-save conversion, final art, new packing recipes or Spike Barrier changes were added.

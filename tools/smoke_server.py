@@ -54,7 +54,7 @@ def main():
                     process.stdin.flush()
                     process.wait(timeout=40)
                     raise RuntimeError(f"Native probe failed; inspect {transcript.name}")
-                if "*** SERVER STARTED" in text and "[OMHTT-Smoke] native-portable recipe=registered" in text and "[OMHTT-Smoke] native-turret recipes=8" in text:
+                if "*** SERVER STARTED" in text and "[OMHTT-Smoke] native-portable recipe=registered" in text and "[OMHTT-Smoke] native-turret recipes=6" in text:
                     assert "[OMHTT] server-ready version=" + version in text, "Mod did not initialize"
                     assert "[OMHTT-Smoke] native-translations checked=3 missing=0" in text, "Native translations failed smoke probe"
                     assert "[OMHTT-Smoke] native-build-menu registered=1 title=Spike_Barrier category=OMHTraps callback=resolved spGate=hidden disabledGate=closed dottedCallback=rejected" in text, "Native menu callback or enumeration failed smoke probe"
@@ -91,14 +91,15 @@ def main():
     assert "Saving GlobalModData" in text, "No native global state save"
     assert "Invalid SpriteConfig object! scripted object = OMHTT" not in text, "Invalid native barrier identity"
     assert "[OMHTT-Smoke] native-sandbox damage=10 maxHealth=100 tooltip=formatted" in text, "Native Sandbox options/tooltip invalid"
-    assert "[OMHTT-Smoke] native-texturepacks traps=60 turrets=21 pages=30 png=valid" in text, "Native texture packs invalid"
+    assert "[OMHTT-Smoke] native-texturepacks traps=72 turrets=21 pages=31 png=valid" in text, "Native texture packs invalid"
     assert "[OMHTT-Beds] PASS" in text, "Native bed content invalid"
     assert "[OMHTT-HybridBuild] native-original-recipe=true" in text, "Native hybrid crafting/building proof missing"
     assert "[OMHTT-Beds] controlled-native-recovery forwardLanding=true getUpTransition=passed getUpExit=cleared" in text, "Native forward trip recovery failed"
+    assert "[OMHTT-Wire] craft=exact" in text and "[OMHTT-BarbMovement] native-delta=half" in text, "Wire/native displacement proof missing"
     assert "[OMHTT-Barbs] PASS" in text and "[OMHTT-Barbs] persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Native barb content/persistence invalid"
     assert "OMHTT_BarbSmoke.lua:" not in text, "Native barb probe raised a Lua/bridge error"
     assert "Lua code called from the wrong thread" not in text, "Native probe used the wrong Lua thread"
-    assert "[OMHTT-Beds] persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") + " parts=24" in text, "Native bed persistence failed"
+    assert "[OMHTT-Beds] persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") + " parts=32" in text, "Native bed persistence failed"
     assert "[OMHTT-Smoke] native-module-loot-parser pools=16 items=121 weights=positive" in text, "Native module loot parse failed"
     assert "[OMHTT-Smoke] native-modules loot=121 profiles=valid condition=checked" in text, "Native module rules failed"
     assert "[OMHTT-Smoke] native-install exact=selected decoy=preserved preview=nonconsuming" in text, "Native Install selection failed"

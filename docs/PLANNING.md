@@ -4,25 +4,25 @@ Updated 2026-10-10 under C119. This is the shared entry point for planning in th
 
 ## Read the current branch
 
-Current unmerged work is on **codex/performance-barbed-audit**, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1), targeting dev. [Open this Planning page on the active branch](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/blob/codex/performance-barbed-audit/docs/PLANNING.md). The installed build is **0.2.37**; the approved changes below are not installed.
+Current unmerged work is on **codex/performance-barbed-audit**, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1), targeting dev. [Open this Planning page on the active branch](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/blob/codex/performance-barbed-audit/docs/PLANNING.md). The **0.2.38 candidate** implements the approved bundle. Final native verification passed; installation is pending; [release state](RELEASE.md) records the actual installed build.
 
 Fetch the remote and check open development/planning PRs before using dev alone as the current state. Read the active branch's AGENTS.md, this page and [CURRENT_STATUS.md](CURRENT_STATUS.md). Record which branch/commit was inspected. A chat's older answer or an old Cloud checkout is not a current checkpoint. Preserve unmerged work and reconcile incoming plans; do not reset, force-push or merge automatically.
 
-## Next combined update: approved, implementation pending
+## Current combined update: verified candidate, installation pending
 
-Owner approved the whole current plan on 2026-10-10: [C119](DECISIONS.md#c119-approved-combined-plan-and-mandatory-github-planning-handoff-2026-10-10). Exact behavior, recipes and evidence limits: [combined checkpoint contract](checkpoints/R2C4_CONCERTINA.md).
+C120 explicitly approves patching the whole current plan on 2026-10-10: [C119](DECISIONS.md#c119-approved-combined-plan-and-mandatory-github-planning-handoff-2026-10-10). Exact behavior, recipes and evidence limits: [combined checkpoint contract](checkpoints/R2C4_CONCERTINA.md).
 
 | Change | State | Contract / remaining technical work |
 | --- | --- | --- |
-| Concertina Wire | Approved, not implemented | One-tile independent coil and approved recipe/durability/service defaults |
-| Shared barbed-contact slowdown | Approved; native feasibility open | Half speed only in contact, no stacking/stale speed restoration; include Horde Night zombies |
-| Barbed-contact player injuries | Approved, not implemented | Bed Spikes walking/running/sprint/fresh-landing rules for wire and panels |
-| Independent Bed Spikes durability and servicing | Approved, not implemented | Two independent tiles, per-tile wear/breakage, pair placement and honest single-tile pickup |
-| Sandbox header organization | Approved; source faults confirmed | Correct missing starter mappings, readable headings and semantic order; preserve saved IDs/values |
-| Improvised/Makeshift naming | Approved, not implemented | Alternate head recipe versus actual starter-item tier; identical standard head output |
-| Redundant complete-turret recipe removal | Approved, not implemented | Keep base/head crafting and manual assembly |
+| Concertina Wire | Implemented; automated checks pass | One-tile independent coil and approved recipe/durability/service defaults |
+| Shared barbed-contact slowdown | Implemented; native delta proof passed | Half speed only in contact, no stacking/stale speed restoration; include Horde Night zombies |
+| Barbed-contact player injuries | Implemented; automated checks pass | Bed Spikes walking/running/sprint/fresh-landing rules for wire and panels |
+| Independent Bed Spikes durability and servicing | Implemented; automated checks pass | Two independent tiles, per-tile wear/breakage, pair placement and honest single-tile pickup |
+| Sandbox header organization | Implemented; automated checks pass | Correct missing starter mappings, readable headings and semantic order; preserve saved IDs/values |
+| Improvised/Makeshift naming | Implemented; automated checks pass | Alternate head recipe versus actual starter-item tier; identical standard head output |
+| Redundant complete-turret recipe removal | Implemented; automated checks pass | Keep base/head crafting and manual assembly |
 
-No unresolved owner choice remains for this approved bundle. Native movement feasibility is a technical gate, not a request to reapprove the design. If it cannot meet the contract, report the concrete limitation before changing behavior. Existing performance, rendered collapse and audio acceptance remain open in [current status](CURRENT_STATUS.md); none is claimed solved by this plan.
+No unresolved owner choice remains for this approved bundle. The exposed native displacement path passes real-object probes; rendered movement and interaction with other movement hooks remain acceptance checks. [Patch and test handoff](PATCH_v0.2.38.md) distinguish native evidence from owner acceptance. Existing performance, rendered collapse and audio acceptance remain open in [current status](CURRENT_STATUS.md); none is claimed solved by this plan.
 
 ## Proposals and deferred work
 

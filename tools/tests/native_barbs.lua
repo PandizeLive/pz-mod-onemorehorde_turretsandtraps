@@ -71,8 +71,8 @@ function OMHTT_NativeBarbCheck(squares)
         assert(logic:isContainersAccessible(containers), "Fixture crafting containers must be in reach")
         action:performRecipe()
         local outputs = logic:getRecipeData():getAllCreatedItems()
-        assert(outputs:size() == 1 and inventory:contains(outputs:get(0))
-            and outputs:get(0):getFullType() == "Base.OMHTTBedSpikesItem", "Fallback must leave one actual carried output")
+        assert(outputs:size() == 2 and inventory:contains(outputs:get(0)) and inventory:contains(outputs:get(1))
+            and outputs:get(0):getFullType() == "Base.OMHTTBedSpikesItem", "Fallback must leave two independent carried tiles")
         assert(inventory:contains(knife) and inventory:getAllTypeRecurse("Base.Plank"):isEmpty()
             and inventory:getAllTypeRecurse("Base.RippedSheets"):isEmpty(), "Fallback must retain tools and consume inputs exactly")
         local deploy = SpriteConfigManager.GetObjectInfo("OMHTTDeployBedSpikes"):getRecipe():getCraftRecipe()
@@ -80,6 +80,25 @@ function OMHTT_NativeBarbCheck(squares)
         build:setRecipe(deploy)
         assert(build:canPerformCurrentRecipe(), "Crafted output cannot enter native placement")
         assert(deploy:getXPAwardCount() == 0, "Placement must award no crafting XP")
+        local pairItems = ArrayList.new()
+        pairItems:add(outputs:get(0))
+        local pairData = CraftRecipeData.new(CraftMode.Handcraft, false, true, false, true)
+        pairData:setRecipe(deploy)
+        assert(not pairData:canConsumeInputs(ArrayList.new(), pairItems, true, true), "One tile must not pay for pair placement")
+        pairItems:add(outputs:get(1))
+        assert(pairData:canConsumeInputs(ArrayList.new(), pairItems, true, true), "Two tiles must pay for pair placement")
+        for i = 0, pairItems:size() - 1 do assert(pairData:offerInputItem(deploy:getInputs():get(0), pairItems:get(i))) end
+        assert(pairData:consumeInputs(ArrayList.new()), "Pair placement cannot consume bound tiles")
+        pairData:processDestroyAndUsedItems(builder)
+        assert(not inventory:contains(pairItems:get(0)) and not inventory:contains(pairItems:get(1)), "Pair placement consumes exactly two inventory units")
+        local single = SpriteConfigManager.GetObjectInfo("OMHTTDeployBedSpikesSingle"):getRecipe():getCraftRecipe()
+        local recovered = instanceItem("Base.OMHTTBedSpikesItem")
+        inventory:AddItem(recovered)
+        local singleData = CraftRecipeData.new(CraftMode.Handcraft, false, true, false, true)
+        singleData:setRecipe(single)
+        assert(singleData:offerInputItem(single:getInputs():get(0), recovered) and singleData:consumeInputs(ArrayList.new()), "Recovered tile cannot deploy singly")
+        singleData:processDestroyAndUsedItems(builder)
+        assert(not inventory:contains(recovered), "Single placement fails to consume its exact recovered unit")
         print("[OMHTT-HybridBuild] native-original-recipe=true build-category=true craft-output=exact ingredients=consumed tools=retained deploy-xp=0")
     end
     local data = CraftRecipeData.new(CraftMode.Handcraft, false, true, false, true)
@@ -165,6 +184,40 @@ function OMHTT_NativeBarbCheck(squares)
         fixtures:add(frame)
         fixtures:add(host)
     end
+    local wireInfo = SpriteConfigManager.GetObjectInfo("OMHTTDeployConcertinaWire")
+    assert(wireInfo and wireInfo:getFace("e"):getWidth() == 1 and wireInfo:getFace("e"):getHeight() == 1,
+        "Wire must occupy one native tile")
+    local wireRecipe = ScriptManager.instance:getCraftRecipe("Base.OMHTTCraftConcertinaWire")
+    assert(wireRecipe:getRequiredSkillCount() == 0 and wireRecipe:getXPAwardCount() == 0
+        and wireRecipe:getInputs():size() == 3 and wireRecipe:getInputs():get(0):isKeep(), "Wire recipe skill/XP/tools differ")
+    assert(wireRecipe:getTime() * 5 == 10 * getGameTime():getMultiplierFromTimeDelta(1), "Wire crafting must take ten seconds")
+    local inputs = CraftRecipeData.new(CraftMode.Handcraft, false, true, false, true)
+    inputs:setRecipe(wireRecipe)
+    local pliers, barbedWire, binding = instanceItem("Base.Pliers"), instanceItem("Base.BarbedWire"), instanceItem("Base.Wire")
+    local ingredients = {pliers, barbedWire, binding}
+    for i = 1, #ingredients do
+        player:getInventory():AddItem(ingredients[i])
+        assert(inputs:offerInputItem(wireRecipe:getInputs():get(i - 1), ingredients[i]), "Wire input rejected")
+    end
+    local wireUses = binding:getCurrentUses()
+    assert(inputs:consumeInputs(ArrayList.new()) and inputs:createOutputs(ArrayList.new(), player), "Wire craft transaction failed")
+    inputs:processDestroyAndUsedItems(player)
+    assert(inputs:getAllCreatedItems():size() == 1 and inputs:getFirstCreatedItem():getFullType() == "Base.OMHTTConcertinaWire"
+        and player:getInventory():contains(pliers) and not player:getInventory():contains(barbedWire)
+        and binding:getCurrentUses() == wireUses - 2, "Wire craft does not conserve inputs/output")
+    local floor = lookup["1001:1001:0"]
+    assert(B.onWireValid({square = floor}), "Clear floor rejects wire")
+    local coil = IsoThumpable.new(cell, floor, "omhtt_barrier_01_60", false)
+    floor:getObjects():add(coil); floor:getSpecialObjects():add(coil)
+    GameEntityFactory.CreateIsoObjectEntity(coil, wireInfo:getScript():getParent(), true)
+    B.onWireCreate({thumpable = coil})
+    local wireRecord = B.record(coil)
+    assert(wireRecord.kind == "wire" and wireRecord.health == 50 and coil:isCanPassThrough() and not coil:isThumpable(),
+        "Wire durability or native collision differs")
+    assert(not B.onWireValid({square = floor}), "Wire permits duplicate placement")
+    for i = 1, 3 do S.wear(wireRecord, .1) end
+    fixtures:add(coil)
+    print("[OMHTT-Wire] craft=exact wireUses=2 pliers=retained skills=0 xp=0 footprint=1 durability=50 duplicate=blocked")
     print("[OMHTT-Barbs] PASS construction=8 facings=4 tools=retained wireUses=2 recipe=exact separateWindowHP=50 sharedHostHP=137")
     return fixtures
 end
@@ -173,12 +226,15 @@ end
 ---@return boolean valid
 function OMHTT_NativeBarbRestoredCheck(fixtures)
     local B = require("OMHTT/BarbSections")
-    for i = 0, fixtures:size() - 1, 2 do
+    for i = 0, 15, 2 do
         local frame = fixtures:get(i)
         local resolved, host, attachment, status = B.resolve(B.record(frame))
         assert(resolved == frame and host == fixtures:get(i + 1) and status == "active", "Restored backing identity did not resolve")
         assert(attachment.shared or attachment.health == 47, "Independent durability did not survive")
     end
+    local wire = fixtures:get(16)
+    local frame, _, record, status = B.resolve(B.record(wire))
+    assert(frame == wire and status == "active" and record.health == 47 and record.kind == "wire", "Wire state lost on reload")
     isServer, isClient, getCell = nativeServer, nativeClient, nativeCell
     return true
 end

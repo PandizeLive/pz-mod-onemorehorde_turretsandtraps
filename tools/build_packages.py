@@ -37,7 +37,7 @@ def owner(path):
     if "/textures/" in relative:
         if name in {"OMHTT_TestCube.png", "OMHTT_Foundation.png"}:
             return {"traps"}
-        return {"traps"} if "Barrier" in name or "BedSpikes" in name else {"turrets"}
+        return {"traps"} if "Barrier" in name or "BedSpikes" in name or "ConcertinaWire" in name else {"turrets"}
     if relative.startswith("common/") or "/models_X/" in relative or "/sound/" in relative:
         return {"turrets"}
     raise ValueError("Unassigned package file: " + relative)
@@ -69,7 +69,7 @@ def expected_files():
         title = component.title()
         pack = "OMHTT_Traps" if component == "traps" else "OMHTT_Turrets"
         number = 7316 if component == "traps" else 7317
-        description = ("Independent single-player Spike Barriers, Bed Spikes and backed Barbed Panels: crafting, placement, repair and portable defenses."
+        description = ("Independent single-player Spike Barriers, Bed Spikes, Concertina Wire and backed Barbed Panels: crafting, placement, repair and portable defenses."
                        if component == "traps" else "Independent single-player modular potato and firearm turrets, modules, power and component loot.")
         info = f"name=OMH: {title}\nid={identifier}\nmodversion={version}\nversionMin=42.20\nicon=icon.png\ndescription={description} Part of OMH: Turrets & Traps. Fresh test world required for 0.2.29. Temporary developer artwork.\ntiledef={pack} {number}\npack={pack}\n"
         files = result[component]

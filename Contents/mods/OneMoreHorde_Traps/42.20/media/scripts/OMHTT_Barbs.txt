@@ -58,7 +58,62 @@ module Base {
             }
             outputs { item 1 Base.OMHTTBarbedPanelItem, }
     }
+    item OMHTTConcertinaWire {
+        DisplayName = Concertina Wire,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 2,
+        Icon = OMHTT_ConcertinaWire,
+        Tooltip = Tooltip_OMHTT_ConcertinaWire,
+    }
+    entity OMHTTDeployConcertinaWire {
+        component UiConfig {
+            xuiSkin = default,
+            entityStyle = ES_OMHTTConcertinaWire,
+            uiEnabled = false,
+        }
+        component SpriteConfig {
+            health = 50,
+            skillBaseHealth = 0,
+            bonusHealth = 0,
+            isThumpable = false,
+            OnIsValid = OMHTT_BarbSections.onWireValid,
+            OnCreate = OMHTT_BarbSections.onWireCreate,
+            face E { layer { row = omhtt_barrier_01_60, } }
+            face N { layer { row = omhtt_barrier_01_61, } }
+            face W { layer { row = omhtt_barrier_01_62, } }
+            face S { layer { row = omhtt_barrier_01_63, } }
+        }
+        component CraftRecipe {
+            timedAction = BuildLowNoTool,
+            time = 100,
+            category = OMHTraps,
+            needToBeLearn = false,
+            OnAddToMenu = OMHTT_PlacementMenu,
+            inputs { item 1 [Base.OMHTTConcertinaWire], }
+        }
+    }
+    craftRecipe OMHTTCraftConcertinaWire {
+        timedAction = BuildLowNoTool,
+        time = 96,
+        category = OMHTraps,
+        Tooltip = Tooltip_OMHTT_ConcertinaWire,
+        Tags = InHandCraft,
+        needToBeLearn = false,
+        OnAddToMenu = OMHTT_BarbWireMenuAvailable,
+        inputs {
+            item 1 tags[base:pliers] mode:keep flags[Prop1;DontRecordInput;NoBrokenItems],
+            item 1 [Base.BarbedWire],
+            item 2 [Base.Wire],
+        }
+        outputs { item 1 Base.OMHTTConcertinaWire, }
+    }
     xuiSkin default {
+        entity ES_OMHTTConcertinaWire {
+            LuaWindowClass = ISEntityWindow,
+            DisplayName = UI_OMHTT_ConcertinaWire,
+            Icon = OMHTT_ConcertinaWire,
+        }
         entity ES_OMHTTBarbs {
             LuaWindowClass = ISEntityWindow,
             DisplayName = UI_OMHTT_Barbs,

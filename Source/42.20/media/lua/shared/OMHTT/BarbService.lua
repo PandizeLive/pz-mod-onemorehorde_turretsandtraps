@@ -10,9 +10,11 @@ local function usable(item)
 end
 
 ---@param player IsoPlayer Acting player
+---@param record table? Selected hazard
 ---@return boolean present
 ---@nodiscard
-function Service.tools(player)
+function Service.tools(player, record)
+    if record and record.kind == "wire" then return true end
     if player:isBuildCheat() then return true end
     local inventory = player:getInventory()
     return inventory:getFirstTagEvalRecurse(ItemTag.HAMMER, usable) ~= nil
@@ -25,6 +27,7 @@ end
 function Service.approach(record)
     local _, host, _, status = B.resolve(record)
     if status ~= "active" then return nil end
+    if record.kind == "wire" then return host:getSquare() end
     local edge = {}
     if not S.edge(host, record.north, record.side, edge) then return nil end
     if edge.side < 0 then
@@ -44,9 +47,8 @@ end
 ---@return table? record
 ---@nodiscard
 function Service.resolve(player, object, id)
-    if not B.enabled() or player:isDead() or not Service.tools(player) then return nil end
     local record = B.record(object)
-    if not record or record.id ~= id then return nil end
+    if not record or record.id ~= id or not B.enabled(record.kind) or player:isDead() or not Service.tools(player, record) then return nil end
     local frame, _, attachment, status = B.resolve(record)
     if frame ~= object or status ~= "active" then return nil end
     local square = Service.approach(record)
@@ -66,7 +68,16 @@ function Service.apply(player, object, id, operation)
     if not attachment then return false end
     if operation == "Repair" then return S.repair(attachment) end
     if operation ~= "Remove" then return false end
+    local recovered = nil
+    if record.kind == "wire" then
+        recovered = instanceItem("Base.OMHTTConcertinaWire")
+        if not player:getInventory():hasRoomFor(player, recovered) then
+            player:setHaloNote(getText("UI_OMHTT_PickupNoRoom"))
+            return false
+        end
+    end
     B.retire(record)
+    if recovered then player:getInventory():AddItem(recovered) end
     return true
 end
 

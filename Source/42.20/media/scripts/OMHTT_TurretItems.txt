@@ -161,7 +161,7 @@ module Base {
         Tooltip = Tooltip_OMHTT_ModuleDetection360,
     }
     item OMHTTModuleDetectionImprovised {
-        DisplayName = Detection Module (Improvised),
+        DisplayName = Makeshift Detection Module,
         ItemType = base:normal,
         DisplayCategory = Material,
         Weight = 0.3,
@@ -170,7 +170,7 @@ module Base {
         Tooltip = Tooltip_OMHTT_MotionDetectionImprovised,
     }
     item OMHTTModuleFiringImprovised {
-        DisplayName = Firing Module (Improvised),
+        DisplayName = Makeshift Firing Module,
         ItemType = base:normal,
         DisplayCategory = Material,
         Weight = 0.3,
@@ -179,7 +179,7 @@ module Base {
         Tooltip = Tooltip_OMHTT_FiringImprovised,
     }
     item OMHTTExpansionKitImprovised {
-        DisplayName = Expansion Kit (Improvised),
+        DisplayName = Makeshift Expansion Kit,
         ItemType = base:normal,
         DisplayCategory = Material,
         Weight = 0.3,

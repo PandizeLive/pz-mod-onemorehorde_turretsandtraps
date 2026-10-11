@@ -8,6 +8,7 @@ H.definitions = {
     {item = "Base.OMHTTReinforcedBarrierItem", craft = "OMHTTReinforceSpikeBarrier", deploy = "OMHTTDeployReinforcedBarrier"},
     {item = "Base.OMHTTBedSpikesItem", craft = "OMHTTCraftBedSpikes", deploy = "OMHTTDeployBedSpikes"},
     {item = "Base.OMHTTReinforcedBedSpikesItem", craft = "OMHTTReinforceBedSpikes", deploy = "OMHTTDeployReinforcedBedSpikes"},
+    {item = "Base.OMHTTConcertinaWire", craft = "OMHTTCraftConcertinaWire", deploy = "OMHTTDeployConcertinaWire"},
     {item = "Base.OMHTTBarbedPanelItem", craft = "OMHTTCraftBarbs", deploy = "OMHTTBarbs"},
     {item = "Base.OMHTTTurretBase", craft = "OMHTTCraftTurretBase", deploy = "OMHTTDeployTurret", turret = true},
 }
@@ -16,6 +17,7 @@ for i = 1, #H.definitions do
     local definition = H.definitions[i]
     definition.adapter = definition.turret and "OMHTT/TurretInstall" or "OMHTT/BarrierPlacement"
     byRecipe[definition.craft], byRecipe[definition.deploy] = definition, definition
+    if string.find(definition.deploy, "BedSpikes", 1, true) then byRecipe[definition.deploy .. "Single"] = definition end
 end
 
 ---@param recipe CraftRecipe? Selected native recipe
@@ -40,6 +42,16 @@ end
 function H.item(player, definition)
     return player:getInventory():getFirstTypeEvalArgRecurse(definition.item, carried,
         {player = player, definition = definition})
+end
+
+---@param player IsoPlayer Builder
+---@param definition table Route
+---@param item InventoryItem Carried item
+---@return SpriteConfigManager.ObjectInfo? info Exact deployment quantity
+function H.info(player, definition, item)
+    local route = definition.deploy
+    if string.find(route, "BedSpikes", 1, true) then route = require(definition.adapter).route(item, player) end
+    return SpriteConfigManager.GetObjectInfo(route)
 end
 
 ---@param player IsoPlayer Builder

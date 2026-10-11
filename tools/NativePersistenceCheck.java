@@ -29,6 +29,8 @@ public final class NativePersistenceCheck {
         for (int index = 0; index < count; index++) {
             Object entry = map.get(prefix + index);
             String expected = turrets ? (index == 20 ? "OMHTT_ProbeBase" : index >= 16 ? "OMHTT_TestCube" : "OMHTT_Aim" + index)
+                : index >= 64 ? "OMHTT_BedSpikes"
+                : index >= 60 ? "OMHTT_Wire"
                 : index >= 52 ? "OMHTT_Barb" + (((index - 52) / 2 == 0 || (index - 52) / 2 == 3) ? 0 : 1)
                 : index >= 28 ? "OMHTT_BedSpikes"
                 : index >= 20 ? "OMHTT_ReinforcedBarrier" + ((index - 20) / 2)
@@ -52,9 +54,9 @@ public final class NativePersistenceCheck {
         NativeBarbProbe.verify(directory, mode);
         NativeVaultProbe.verify();
         NativeTurretProbe.verify();
-        verifyTexturePack("OMHTT_Traps", "omhtt_barrier_01_", 60, false);
+        verifyTexturePack("OMHTT_Traps", "omhtt_barrier_01_", 72, false);
         verifyTexturePack("OMHTT_Turrets", "omhtt_turret_01_", 21, true);
-        System.out.println("[OMHTT-Smoke] native-texturepacks traps=60 turrets=21 pages=30 png=valid");
+        System.out.println("[OMHTT-Smoke] native-texturepacks traps=72 turrets=21 pages=31 png=valid");
         Class<?> lua = Class.forName("zombie.Lua.LuaManager");
         Object env = lua.getField("env").get(null);
         Object fixtures = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeFixtures");
@@ -344,7 +346,7 @@ public final class NativePersistenceCheck {
         Object fixtures = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeBedFixtures");
         check(fixtures instanceof List<?>, "Bed fixtures missing");
         List<?> parts = (List<?>)fixtures;
-        check(parts.size() == 24, "Expected 24 native bed parts across build/deploy/tier facings");
+        check(parts.size() == 32, "Expected 32 native bed parts across build/deploy/tier facings");
         Class<?> iso = Class.forName("zombie.iso.IsoObject");
         Class<?> cellType = Class.forName("zombie.iso.IsoCell");
         Class<?> squareType = Class.forName("zombie.iso.IsoGridSquare");
@@ -377,7 +379,7 @@ public final class NativePersistenceCheck {
             check(((Number)call(record, "rawget", new Class<?>[]{Object.class}, "health")).intValue() == ((Number)get(restored, "getHealth")).intValue(),
                 "Persistent bed authority and native part health differ");
         }
-        System.out.println("[OMHTT-Beds] persistence mode=" + mode + " parts=24 identity=valid health=preserved movement=preserved");
+        System.out.println("[OMHTT-Beds] persistence mode=" + mode + " parts=32 identity=valid health=preserved movement=preserved");
         Class<?> zombieType = Class.forName("zombie.characters.IsoZombie");
         Class<?> characterType = Class.forName("zombie.characters.IsoGameCharacter");
         Object zombie = zombieType.getConstructor(cellType).newInstance(cell);

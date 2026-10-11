@@ -48,7 +48,7 @@ local function menu(playerIndex, context, objects, test)
         return
     end
     local parts = B.parts(record)
-    if #parts ~= 2 then
+    if #parts ~= 1 then
         return
     end
     local title = record.tier == "reinforced" and "UI_OMHTT_ReinforcedBedSpikes" or "UI_OMHTT_BedSpikes"
@@ -63,7 +63,7 @@ local function menu(playerIndex, context, objects, test)
         local upgrade = submenu:addOption(getText("ContextMenu_OMHTT_Reinforce"), parts[1], queue, player, record.id, "Reinforce")
         upgrade.notAvailable = require("OMHTT/BedService").materials(player, record) == nil
         upgrade.toolTip = ISWorldObjectContextMenu.addToolTip()
-        upgrade.toolTip.description = getText("UI_OMHTT_ReinforceRequirements")
+        upgrade.toolTip.description = getText("UI_OMHTT_BedReinforceRequirements")
     end
     for i = 1, submenu.numOptions - 1 do
         local entry = submenu.options[i]

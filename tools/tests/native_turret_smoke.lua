@@ -98,7 +98,7 @@ local function verifyTurrets()
         assert(getScriptManager():getCraftRecipe("Base." .. name):getTooltip() == "UI_OMHTT_HeadDescription", "Head recipe uses wrong output description")
     end
     for _, name in pairs({"OMHTTCraftTurretComplete", "OMHTTCraftTurretCompleteImprovised"}) do
-        assert(getScriptManager():getCraftRecipe("Base." .. name):getTooltip() == "UI_OMHTT_CompleteDescription", "Complete recipe uses wrong output description")
+        assert(getScriptManager():getCraftRecipe("Base." .. name) == nil, "Removed shortcut recipe still registered")
     end
     local chargeTooltip = T.description(live, 4)
     assert(string.find(chargeTooltip, "37 percent", 1, true), "Charge wording missing")
@@ -118,8 +118,6 @@ local function verifyTurrets()
         {"Base", {MetalPipe = 2, SmallSheetMetal = 2, ScrapMetal = 1, Screws = 8}},
         {"Head", {MetalPipe = 1, SmallSheetMetal = 1, ScrapMetal = 2, ElectronicsScrap = 2, ElectricWire = 1, TirePump = 1, DuctTape = 2}},
         {"HeadImprovised", {MetalPipe = 1, SmallSheetMetal = 1, ScrapMetal = 6, ElectronicsScrap = 2, ElectricWire = 1, DuctTape = 2}},
-        {"Complete", {MetalPipe = 3, SmallSheetMetal = 3, ScrapMetal = 3, Screws = 8, ElectronicsScrap = 2, ElectricWire = 1, TirePump = 1, DuctTape = 2}},
-        {"CompleteImprovised", {MetalPipe = 3, SmallSheetMetal = 3, ScrapMetal = 7, Screws = 8, ElectronicsScrap = 2, ElectricWire = 1, DuctTape = 2}},
     }
     routes[#routes + 1] = {"MotionDetectionImprovised", {ElectronicsScrap = 3, ElectricWire = 1, DuctTape = 2}, true}
     routes[#routes + 1] = {"FiringImprovised", {ElectronicsScrap = 2, ElectricWire = 1, Screws = 4}, true}
@@ -164,18 +162,19 @@ local function verifyTurrets()
         for i = 0, #tools - 1 do assert(player:getInventory():contains(inputs:get(i)), "Turret recipe consumed retained tool") end
         local item = data:getFirstCreatedItem()
         assert(item and data:getAllCreatedItems():size() == 1, "Recipe must produce exactly one item")
-        if route[1] == "Complete" then packed = item end
+        if route[1] == "Base" then packed = item end
         if route[3] then
             assert(item:getFullType() == T.TYPES[route[1]] and item:getCondition() > 0, "Improvised recipe output mismatch")
             assert(require("OMHTT/LootDefinitions").WEIGHTS[route[1]] == nil, "Improvised item leaked into module loot")
         end
         if item:getFullType() == T.BASE then
-            local expected = route[1] == "Base" and 0 or 1
+            local expected = 0
             assert(T.contents(item:getInventory()).heads == expected, "Completed turret missing its real head")
         end
     end
     assert(packed and packed:getWeightReduction() == 0, "Turret must not reduce contents weight")
     local inventory = packed:getInventory()
+    inventory:AddItem(instanceItem(T.HEAD))
     assert(not inventory:isItemAllowed(instanceItem("Base.Plank")), "Native container accepted unrelated item")
     assert(not inventory:isItemAllowed(instanceItem(T.HEAD)), "Native container accepted second head")
     local battery = instanceItem("Base.CarBattery1")
@@ -486,7 +485,7 @@ local function verifyTurrets()
     assert(base:getSpriteName() == H.SPRITE, "Rotating head changed base sprite")
     OMHTT_NativeHybridHead = world
     print("[OMHTT-Smoke] native-hybrid model=bound yaw=independent base=fixed lookup=exact")
-    print("[OMHTT-Smoke] native-turret recipes=8 loadedDeploy=exact contents=preserved weight=exact filters=valid cooldown=preserved")
+    print("[OMHTT-Smoke] native-turret recipes=6 loadedDeploy=exact contents=preserved weight=exact filters=valid cooldown=preserved")
     isServer, isClient = serverFunction, clientFunction
 end
 

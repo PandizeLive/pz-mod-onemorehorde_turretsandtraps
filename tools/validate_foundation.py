@@ -77,7 +77,7 @@ def main():
     for key in re.findall(r"Tooltip\s*=\s*(\w+)", item_script):
         assert key in translations and "prototype" not in translations[key].lower(), key
     textures = list((PACKAGE / "42.20/media/textures").glob("*.png"))
-    assert len(textures) == 41, "Existing markers plus one repeating bed tile and two inventory icons required"
+    assert len(textures) == 43, "Existing technical markers plus Bed Spikes and Concertina Wire icons required"
     for heading, index in zip("ENWS", range(4)):
         for part in "AB":
             assert (PACKAGE / f"42.20/media/textures/OMHTT_BuildBarrier{heading}_{part}.png").read_bytes() == (PACKAGE / f"42.20/media/textures/OMHTT_Barrier{index}.png").read_bytes(), "Construction sprites reuse authorized technical markers"

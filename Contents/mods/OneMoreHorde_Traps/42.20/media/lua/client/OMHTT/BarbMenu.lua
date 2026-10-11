@@ -25,7 +25,7 @@ end
 ---@param test boolean Native test pass
 ---@return nil
 local function menu(playerIndex, context, objects, test)
-    if test or not B.enabled() then return end
+    if test or (not B.enabled() and not B.wireEnabled()) then return end
     local player = getSpecificPlayer(playerIndex)
     if not player or player:isDead() then return end
     local seen = {}
@@ -39,8 +39,8 @@ local function menu(playerIndex, context, objects, test)
                 if record and not seen[record.id] then
                     seen[record.id] = true
                     local _, host, attachment, status = B.resolve(record)
-                    if status == "active" then
-                        local option = context:addOption(getText("UI_OMHTT_Barbs"), nil, nil)
+                    if status == "active" and B.enabled(record.kind) then
+                        local option = context:addOption(getText(record.kind == "wire" and "UI_OMHTT_ConcertinaWire" or "UI_OMHTT_Barbs"), nil, nil)
                         option.onHighlight, option.onHighlightParams = Highlight.highlight, {{frame}}
                         local submenu = ISContextMenu:getNew(context)
                         context:addSubMenu(option, submenu)
@@ -50,12 +50,12 @@ local function menu(playerIndex, context, objects, test)
                             submenu:addOption(getText("UI_OMHTT_BarbSharedHealth", health), nil, nil).notAvailable = true
                         else
                             submenu:addOption(getText("ContextMenu_OMHTT_BarrierCondition", health, 50), nil, nil).notAvailable = true
-                            submenu:addOption(getText("ContextMenu_OMHTT_RepairBarrier"), frame, queue, player, record.id, "Repair").notAvailable = health >= 50 or not S.tools(player)
+                            submenu:addOption(getText("ContextMenu_OMHTT_RepairBarrier"), frame, queue, player, record.id, "Repair").notAvailable = health >= 50 or not S.tools(player, record)
                         end
-                        local remove = submenu:addOption(getText("ContextMenu_OMHTT_RemoveBarbs"), frame, queue, player, record.id, "Remove")
-                        remove.notAvailable = not S.tools(player)
+                        local remove = submenu:addOption(getText(record.kind == "wire" and "ContextMenu_OMHTT_PickupBarrier" or "ContextMenu_OMHTT_RemoveBarbs"), frame, queue, player, record.id, "Remove")
+                        remove.notAvailable = not S.tools(player, record)
                         remove.toolTip = ISWorldObjectContextMenu.addToolTip()
-                        remove.toolTip.description = getText("UI_OMHTT_BarbServiceTools")
+                        remove.toolTip.description = getText(record.kind == "wire" and "UI_OMHTT_WireService" or "UI_OMHTT_BarbServiceTools")
                     end
                 end
             end

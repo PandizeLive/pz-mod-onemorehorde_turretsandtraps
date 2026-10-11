@@ -3,6 +3,8 @@ if isClient() or isServer() then
 end
 local B = require("OMHTT/BedSpikes")
 local F = require("OMHTT/Foundation")
+local Barbs = require("OMHTT/BarbSections")
+local Movement = require("OMHTT/BarbMovement")
 local crossings = {}
 
 ---@param player IsoPlayer Player landing on a bed
@@ -28,16 +30,20 @@ function B.player(player)
     if B.enabled() and square then
         id = B.tiles[F.key(square:getX(), square:getY(), square:getZ())]
     end
+    local barb = Barbs.contact(player)
+    local touching = id ~= nil or barb ~= nil
+    local traversing = Movement.traversing(player)
+    if barb then Movement.apply(player, Barbs.option("MovementDivisor", 2, 1, 10)) end
     local down = player:isOnFloor()
     local state = crossings[index]
     if not state then
         state = {down = down}
         crossings[index] = state
     end
-    player:setVariable("OMHTTBedBrush", id ~= nil and player:isPlayerMoving() and not down)
-    if down and not state.down and id then injureFall(player) end
+    player:setVariable("OMHTTBedBrush", touching and player:isPlayerMoving() and not down and not traversing)
+    if down and not state.down and touching then injureFall(player) end
     local sprinting = player:isSprinting()
-    if id ~= state.bed and id and not down and (sprinting or state.sprinting)
+    if touching and not state.touching and not down and not traversing and (sprinting or state.sprinting)
         and not player:isGodMod() and ZombRand(100) < B.option("SprintTripChance", 20, 0, 100) then
         player:setVariable("BumpDone", false)
         player:clearVariable("BumpFallType")
@@ -45,7 +51,7 @@ function B.player(player)
         player:setBumpFall(true)
         player:reportEvent("wasBumped")
     end
-    if id ~= state.bed and id and not down and (player:isRunning() or sprinting)
+    if touching and not state.touching and not down and not traversing and (player:isRunning() or sprinting)
         and not player:isGodMod() and ZombRand(100) < B.option("ScratchChance", 20, 0, 100) then
         local leg = BodyPartType.LowerLeg_L
         if ZombRand(2) == 1 then
@@ -53,7 +59,7 @@ function B.player(player)
         end
         player:getBodyDamage():getBodyPart(leg):setScratched(true, true)
     end
-    state.bed, state.down, state.sprinting = id, down, sprinting
+    state.touching, state.down, state.sprinting = touching, down, sprinting
 end
 
 Events.OnPlayerUpdate.Add(B.player)

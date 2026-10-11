@@ -43,7 +43,7 @@ function B.zombie(zombie)
     frame.prone, frame.down, frame.crawler, frame.moving = zombie:isOnFloor(), down, zombie:isCrawling(), moving
     frame.bed, frame.tile, frame.x, frame.y = record and record.id, key, x, y
     local hit, roll = C.step(state, frame)
-    if hit and record and #B.parts(record) == 2 then
+    if hit and record and #B.parts(record) == 1 then
         local amount = B.option("Damage", 20, 0, 1000)
         if record.tier == "reinforced" then
             amount = B.option("ReinforcedDamage", 50, 0, 2500)

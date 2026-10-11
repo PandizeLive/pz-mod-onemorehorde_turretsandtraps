@@ -1,5 +1,10 @@
 # Release state and publication policy
 
+## Verified candidate: 0.2.38 Concertina Wire and independent spike tiles
+
+[C120 patch](PATCH_v0.2.38.md) implements the complete approved C114-C119 bundle. 3,946 Kahlua assertions; 94 compiled runtime/translation files; 574 native translation keys; 23 packet serializations. Native write/read pass in 95.7/90.6 seconds. Traps-only/Turrets-only/both startup pass in 81.3/83.3/88.3 seconds. The manifest covers 188 source and 228 package files; 111 Sandbox options and 31 identical shared helpers pass independent checks. Native wire recipes/retained tools, pair/single inventory conservation, independent tile state, contact delta and texture-registry checks pass. No owner/rendered acceptance is claimed. Installation is pending; the previous installation below remains active until the root installer succeeds. [Six-step test](TEST_v0.2.38.md). Cumulative unpublished Workshop notes are preserved.
+
+
 ## Current local installation: 0.2.37 feedback, audio and elapsed-time repairs
 
 [C113 patch](PATCH_v0.2.37.md): automatic/manual range presentation, explicit alternate-method recipe names, accurate output descriptions, rate-limited native barb audio, cached overlay geometry/projection, render profiling and pause-aware elapsed clocks. [Five-step test](TEST_v0.2.37.md) is pending; no new rendered acceptance or pause-resolution claim.

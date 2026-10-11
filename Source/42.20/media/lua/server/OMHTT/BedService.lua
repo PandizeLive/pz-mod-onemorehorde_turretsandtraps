@@ -11,7 +11,7 @@ local S = {}
 ---@nodiscard
 function S.resolve(player, object, id)
     local record = B.record(object)
-    if not B.enabled() or player:isDead() or not record or record.id ~= id or #B.parts(record) ~= 2 then return nil end
+    if not B.enabled() or player:isDead() or not record or record.id ~= id or #B.parts(record) ~= 1 then return nil end
     local square = object:getSquare()
     if not square or player:getZ() ~= square:getZ() or object:getObjectIndex() < 0 then return nil end
     local dx, dy = player:getX() - square:getX() - 0.5, player:getY() - square:getY() - 0.5
@@ -25,7 +25,7 @@ end
 ---@nodiscard
 function S.materials(player, record)
     if not B.enabled() or record.tier == "reinforced" then return nil end
-    return require("OMHTT/DefenseMaterials").reinforcement(player)
+    return require("OMHTT/DefenseMaterials").reinforcement(player, 1)
 end
 
 ---@param player IsoPlayer Acting player
@@ -57,7 +57,7 @@ function S.apply(player, object, id, operation)
         record.tier = "reinforced"
         record.maxHealth = B.maxHealth(record)
         if not materials.cheat then
-            addXp(player, Perks.Woodwork, 30)
+            addXp(player, Perks.Woodwork, 15)
         end
     elseif operation ~= "Repair" or record.health >= record.maxHealth then
         return false

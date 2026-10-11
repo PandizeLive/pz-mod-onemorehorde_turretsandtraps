@@ -13,7 +13,7 @@ local function checkBeds()
     OMHTT_NativeBedFixtures = ArrayList.new()
     assert(SandboxVars.OMHTurretsTraps.BedWear == 6 and SandboxVars.OMHTurretsTraps.BedDamage == 20
         and SandboxVars.OMHTurretsTraps.BedReinforcedDamage == 50, "Bed tuning defaults missing")
-    local entities = {"OMHTTBedSpikes", "OMHTTDeployBedSpikes", "OMHTTDeployReinforcedBedSpikes"}
+    local entities = {"OMHTTBedSpikes", "OMHTTDeployBedSpikes", "OMHTTDeployReinforcedBedSpikes", "OMHTTDeployBedSpikesSingle", "OMHTTDeployReinforcedBedSpikesSingle"}
     local faces = {"e", "n", "w", "s"}
     for e = 1, #entities do
         local info = SpriteConfigManager.GetObjectInfo(entities[e])
@@ -29,7 +29,7 @@ local function checkBeds()
         end
         for f = 1, #faces do
             local face = info:getFace(faces[f])
-            assert(face:getWidth() * face:getHeight() == 2, "Bed footprint is not two tiles")
+            assert(face:getWidth() * face:getHeight() == (e > 3 and 1 or 2), "Bed footprint is not two tiles")
             local baseX, baseY = 800 + e * 20 + f * 3, 800
             local parts = {}
             for x = 0, face:getWidth() - 1 do
@@ -48,21 +48,57 @@ local function checkBeds()
                 end
             end
             local record = B.record(parts[1])
-            assert(record == B.record(parts[2]) and #B.parts(record) == 2, "Bed lost shared identity")
+            assert(#B.parts(record) == 1 and (e > 3 and record.single or e <= 3 and record ~= B.record(parts[2])), "Bed tiles must have independent identity")
             record.health = record.maxHealth - 6
             for p = 1, #parts do
-                parts[p]:setHealth(record.health)
+                local partRecord = B.record(parts[p])
+                parts[p]:setHealth(partRecord.health)
                 OMHTT_NativeBedFixtures:add(parts[p])
             end
         end
     end
+    for _, name in pairs({"OMHTTDeployBedSpikesSingle", "OMHTTDeployReinforcedBedSpikesSingle"}) do
+        local info = SpriteConfigManager.GetObjectInfo(name)
+        assert(info and info:getRecipe():getCraftRecipe():getInputs():get(0):getIntAmount() == 1, "Single-tile recovery route missing")
+        for i = 1, #faces do
+            local face = info:getFace(faces[i])
+            assert(face:getWidth() * face:getHeight() == 1, "Single recovery route still places a pair")
+        end
+    end
     local zombie = IsoZombie.new(cell)
+    local movement = require("OMHTT/BarbMovement")
+    for _, actor in pairs({zombie, IsoPlayer.new(cell)}) do
+        actor:setX(100); actor:setY(100)
+        actor:setNextX(100); actor:setNextY(100)
+        actor:moveUnmodded(0.4, 0.2)
+        movement.apply(actor, 2)
+        assert(math.abs(actor:getNextX() - 100.2) < .0001 and math.abs(actor:getNextY() - 100.1) < .0001,
+            "Native deferred displacement cannot be halved through Lua")
+        actor:setNextX(100); actor:setNextY(100)
+        actor:moveUnmodded(0.8, 0.4)
+        assert(math.abs(actor:getNextX() - 100.8) < .0001, "Contact factor persists after leaving")
+    end
+    zombie:setCrawler(true)
+    zombie:setOnFloor(true)
+    zombie:setX(100); zombie:setY(100); zombie:setNextX(100.8); zombie:setNextY(100.4)
+    movement.apply(zombie, 2)
+    assert(math.abs(zombie:getNextX() - 100.4) < .0001, "Crawler current step is not scaled")
+    zombie:setCrawler(false)
+    zombie:setNextX(100.8); zombie:setNextY(100.4)
+    movement.apply(zombie, 2)
+    assert(math.abs(zombie:getNextX() - 100.8) < .0001, "Fallen displacement must remain native")
+    zombie:setOnFloor(false)
+    zombie:setBumpFall(true)
+    movement.apply(zombie, 2)
+    assert(math.abs(zombie:getNextX() - 100.8) < .0001, "Trip displacement must remain native")
+    zombie:setBumpFall(false)
+    print("[OMHTT-BarbMovement] native-delta=half exit=unchanged player=zombie pending-collision=true")
     zombie:setVariable("BumpAnimFinished", false)
     zombie:setVariable("SprinterTripped", false)
     zombie:setBumpType("OMHTTBedTrip")
     assert(zombie:getBumpType() == "OMHTTBedTrip" and not zombie:isKnockedDown(), "Forward trip must not enter hit knockback")
-    for itemType, weight in pairs({OMHTTBarbedPanelItem = 2, OMHTTBedSpikesItem = 3,
-        OMHTTReinforcedBedSpikesItem = 4, OMHTTSpikeBarrierItem = 4, OMHTTReinforcedBarrierItem = 5,
+    for itemType, weight in pairs({OMHTTBarbedPanelItem = 2, OMHTTBedSpikesItem = 1.5,
+        OMHTTReinforcedBedSpikesItem = 2, OMHTTSpikeBarrierItem = 4, OMHTTReinforcedBarrierItem = 5,
         OMHTTTurretBase = 6, OMHTTPotatoHead = 4}) do
         local item = instanceItem("Base." .. itemType)
         assert(item and item:getActualWeight() == weight, "Approved weight mismatch: " .. itemType)
@@ -76,11 +112,12 @@ local function checkBeds()
         {"OMHTTReinforceBedSpikes", "Base.OMHTTBedSpikesItem", "Base.OMHTTReinforcedBedSpikesItem"},
     }) do
         local recipe = ScriptManager.instance:getCraftRecipe("Base." .. spec[1])
-        assert(recipe and recipe:getRequiredSkill(0):getLevel() == 3 and recipe:getXPAward(0):getAmount() == 30,
+        assert(recipe and recipe:getRequiredSkill(0):getLevel() == 3 and recipe:getXPAward(0):getAmount() == (spec[1] == "OMHTTReinforceBedSpikes" and 15 or 30),
             "Portable reinforcement must preserve approved skill/XP")
         local data = CraftRecipeData.new(CraftMode.Handcraft, false, true, false, true)
         data:setRecipe(recipe)
-        local types, amounts = {"Base.Hammer", spec[2], "Base.Plank", "Base.Nails"}, {1, 1, 2, 8}
+        local count = spec[1] == "OMHTTReinforceBedSpikes" and 1 or 2
+        local types, amounts = {"Base.Hammer", spec[2], "Base.Plank", "Base.Nails"}, {1, 1, count, count * 4}
         local hammer
         for i = 1, #types do
             for j = 1, amounts[i] do
@@ -102,7 +139,7 @@ local function checkBeds()
     assert(require("OMHTT/BarbService").tools(player), "Native retained hammer/pliers service lookup failed")
     assert(type(zombie:isGettingUp()) == "boolean" and type(zombie:isCrawling()) == "boolean", "Native recovery/crawler APIs unavailable")
     isServer, isClient, getCell = oldServer, oldClient, oldCell
-    print("[OMHTT-Beds] PASS entities=3 facings=4 parts=24 wear=6 damage=20/50 nativeMovementFlags=valid nativeTripAPI=exposed")
+    print("[OMHTT-Beds] PASS entities=5 facings=4 parts=32 wear=6 damage=20/50 nativeMovementFlags=valid nativeTripAPI=exposed")
 end
 
 Events.OnServerStarted.Add(checkBeds)

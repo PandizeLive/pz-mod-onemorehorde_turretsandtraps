@@ -1,5 +1,5 @@
 local F = require("OMHTT/Foundation")
-local B = {tiles = {}, nearby = {}, indexed = {}, removals = {}, count = 0, time = 0, session = tostring(getTimestampMs())}
+local B = {tiles = {}, nearby = {}, indexed = {}, count = 0, time = 0, session = tostring(getTimestampMs())}
 OMHTT_BedSpikes = B
 local ActiveTime = require("OMHTT/ActiveTime")
 local clock = ActiveTime.new()
@@ -46,8 +46,8 @@ end
 ---@return number health
 ---@nodiscard
 function B.maxHealth(record)
-    if record.tier == "reinforced" then return B.option("ReinforcedHealth", 200, 6, 10000) end
-    return B.option("Health", 100, 6, 10000)
+    if record.tier == "reinforced" then return B.option("ReinforcedHealth", 100, 6, 10000) end
+    return B.option("Health", 50, 6, 10000)
 end
 
 ---@param record table Bed record
@@ -74,16 +74,13 @@ end
 ---@nodiscard
 function B.parts(record)
     local result = {}
-    for part = 0, 1 do
-        local x, y = B.position(record, part)
-        local square = getCell():getGridSquare(x, y, record.z)
-        if square then
-            local objects = square:getSpecialObjects()
-            for i = 0, objects:size() - 1 do
-                local object = objects:get(i)
-                if B.record(object) == record then
-                    result[#result + 1] = object
-                end
+    local square = getCell():getGridSquare(record.x, record.y, record.z)
+    if square then
+        local objects = square:getSpecialObjects()
+        for i = 0, objects:size() - 1 do
+            local object = objects:get(i)
+            if B.record(object) == record then
+                result[#result + 1] = object
             end
         end
     end
@@ -95,23 +92,20 @@ end
 ---@return nil
 function B.index(record, delta)
     B.count = B.count + delta
-    for part = 0, 1 do
-        local x, y = B.position(record, part)
-        local key = F.key(x, y, record.z)
-        if delta > 0 then
-            B.tiles[key] = record.id
-        else
-            B.tiles[key] = nil
-        end
-        for dx = -2, 2 do
-            for dy = -2, 2 do
-                local near = F.key(x + dx, y + dy, record.z)
-                local count = (B.nearby[near] or 0) + delta
-                if count > 0 then
-                    B.nearby[near] = count
-                else
-                    B.nearby[near] = nil
-                end
+    local key = F.key(record.x, record.y, record.z)
+    if delta > 0 then
+        B.tiles[key] = record.id
+    else
+        B.tiles[key] = nil
+    end
+    for dx = -2, 2 do
+        for dy = -2, 2 do
+            local near = F.key(record.x + dx, record.y + dy, record.z)
+            local count = (B.nearby[near] or 0) + delta
+            if count > 0 then
+                B.nearby[near] = count
+            else
+                B.nearby[near] = nil
             end
         end
     end
@@ -134,7 +128,9 @@ function B.configure(record, object)
     if record.tier == "reinforced" then
         offset = 16
     end
-    object:setSprite("omhtt_barrier_01_" .. (28 + offset + record.facing * 2 + part))
+    local index = 28 + offset + record.facing * 2 + part
+    if record.single then index = 64 + record.facing + (record.tier == "reinforced" and 4 or 0) end
+    object:setSprite("omhtt_barrier_01_" .. index)
     object:getSprite():getProperties():set("Bush", "true")
     object:getSquare():RecalcAllWithNeighbours(true)
     object:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_OBJECT_MODIFY)
@@ -166,16 +162,8 @@ function B.removed(object)
     if not record then
         return
     end
-    local parts = B.parts(record)
-    if B.indexed[record.id] then
-        B.index(record, -1)
-    end
+    if B.indexed[record.id] then B.index(record, -1) end
     B.store.records[record.id] = nil
-    for i = 1, #parts do
-        if parts[i] ~= object then
-            B.removals[#B.removals + 1] = parts[i]
-        end
-    end
 end
 
 ---@param square IsoGridSquare Loaded square
@@ -211,7 +199,7 @@ function B.clear(square)
     for i = 0, objects:size() - 1 do
         local object = objects:get(i)
         local marker = object:hasModData() and object:getModData().OMHTTBarbFrame
-        if not marker and not support.kind(object, true) and not support.kind(object, false) then return false end
+        if (marker and marker.kind == "wire") or not marker and not support.kind(object, true) and not support.kind(object, false) then return false end
     end
     return true
 end
@@ -235,6 +223,14 @@ function B.onIsValid(params)
     return true
 end
 
+---@param params table Native one-tile placement validation
+---@return boolean valid
+function B.onSingleValid(params)
+    if not B.enabled() or not B.store or not B.clear(params.square) then return false end
+    params.testCollisions = false
+    return true
+end
+
 ---@param params table Native construction completion
 ---@return nil
 function B.onCreate(params)
@@ -244,25 +240,18 @@ function B.onCreate(params)
         return
     end
     local index = tonumber(string.match(object:getSpriteName(), "^omhtt_barrier_01_(%d+)$"))
-    if not index or index < 28 or index > 51 then error("[OMHTT] Invalid bed sprite") end
+    if not index or index < 28 or index > 71 or index > 51 and index < 64 then error("[OMHTT] Invalid bed sprite") end
+    local single = index >= 64
+    if single then index = (index >= 68 and 44 or 36) + (index % 4) * 2 end
     local part, facing = (index - 28) % 2, facings[params.facing]
     local square = object:getSquare()
     local x, y = square:getX(), square:getY()
-    if facing % 2 == 0 then
-        y = y - part
-    else
-        x = x - part
-    end
-    local key = F.key(x, y, square:getZ())
-    local record = B.store.records[B.tiles[key]]
-    if not record then
-        record = {id = "bed-" .. B.store.nextId, x = x, y = y, z = square:getZ(), facing = facing,
-            tier = index >= 44 and "reinforced" or "basic", deployed = index >= 36}
-        B.store.nextId = B.store.nextId + 1
-        record.maxHealth = B.maxHealth(record)
-        record.health = record.maxHealth
-        B.store.records[record.id] = record
-    end
+    local record = {id = "bed-" .. B.store.nextId, x = x, y = y, z = square:getZ(), facing = facing,
+        tier = index >= 44 and "reinforced" or "basic", deployed = index >= 36, single = single}
+    B.store.nextId = B.store.nextId + 1
+    record.maxHealth = B.maxHealth(record)
+    record.health = record.maxHealth
+    B.store.records[record.id] = record
     object:getModData().OMHTTBed = {id = record.id, part = part}
     B.configure(record, object)
 end
@@ -275,15 +264,7 @@ function B.tick()
         enabled = active
     end
     B.time = B.time + ActiveTime.step(clock)
-    for i = 1, 4 do
-        local object = table.remove(B.removals)
-        if not object then
-            break
-        end
-        if object:getSquare() and object:getObjectIndex() >= 0 then
-            object:getSquare():transmitRemoveItemFromSquare(object)
-        end
-    end
+
 end
 
 OMHTT_BedMenuAvailable = B.enabled

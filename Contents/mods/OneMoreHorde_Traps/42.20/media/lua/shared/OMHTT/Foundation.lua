@@ -1,6 +1,6 @@
 ---@class OMHTTFoundation
 local Foundation = {
-    VERSION = "0.2.37",
+    VERSION = "0.2.38",
     MODULE = "OMHTT_Foundation",
     STORE = "OMHTT_Foundation_v1",
     PREFIX = "OMHTT_P1C1_",
@@ -196,6 +196,7 @@ function OMHTT_PlacementMenu(params)
     if isClient() or isServer() then return false end
     local name = params.recipe:getName()
     if name == "OMHTTDeployTurret" then return OMHTT_TurretMenuAvailable(params) end
+    if name == "OMHTTDeployConcertinaWire" then return OMHTT_BarbWireMenuAvailable(params) end
     if name == "OMHTTBarbs" then return OMHTT_BarbMenuAvailable(params) end
     if string.find(name, "BedSpikes", 1, true) then return OMHTT_BedMenuAvailable(params) end
     return Foundation.barrierEnabled()

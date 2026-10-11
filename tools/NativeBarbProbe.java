@@ -47,7 +47,7 @@ public final class NativeBarbProbe {
         }
         check(result instanceof List<?>, "Barb native fixture creation failed");
         @SuppressWarnings("unchecked") List<Object> fixtures = (List<Object>)result;
-        check(fixtures.size() == 16, "Expected eight frame/support pairs");
+        check(fixtures.size() == 17, "Expected eight frame/support pairs and one coil");
         int version = ((Number)world.getMethod("getWorldVersion").invoke(null)).intValue();
         Files.createDirectories(directory);
         for (int i = 0; i < fixtures.size(); i++) {
@@ -86,6 +86,6 @@ public final class NativeBarbProbe {
         }
         Object finish = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeBarbRestoredCheck");
         check(Boolean.TRUE.equals(threadType.getMethod("call", Object.class, Object[].class).invoke(thread, finish, new Object[]{fixtures})), "Restored barbs do not resolve");
-        System.out.println("[OMHTT-Barbs] persistence mode=" + mode + " pairs=8 identity=valid durability=preserved hostHealth=unchanged collision=passable");
+        System.out.println("[OMHTT-Barbs] persistence mode=" + mode + " pairs=8 wire=1 identity=valid durability=preserved hostHealth=unchanged collision=passable");
     }
 }

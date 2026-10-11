@@ -7,12 +7,14 @@ local UI = {}
 local groups = {
     {"Sandbox_Title_OMHTurretsTraps_Operation", {"PotatoTurret", "PotatoHealth", "IdleSweepSpeed"}},
     {"Sandbox_Title_OMHTurretsTraps_Storage", {"PotatoAmmoCapacity", "PotatoModuleCapacity", "PotatoMagazineCapacity"}},
-    {"Sandbox_Title_OMHTurretsTraps_Combat", {"PotatoDamage", "PotatoCriticalChance", "PotatoCriticalDamage", "PotatoCooldown", "PotatoReloadTime", "PotatoRange", "PotatoHearingRadius", "PotatoPlaybackVolume", "PotatoTurnSpeed", "PotatoProjectileSpeed", "PotatoKnockdownChance", "PotatoSplashPercent", "PotatoSplashRadius"}},
+    {"Sandbox_Title_OMHTurretsTraps_Combat", {"PotatoDamage", "PotatoCriticalChance", "PotatoCriticalDamage", "PotatoCooldown", "PotatoReloadTime", "PotatoRange", "PotatoTurnSpeed", "PotatoProjectileSpeed", "PotatoKnockdownChance", "PotatoSplashPercent", "PotatoSplashRadius"}},
+    {"Sandbox_Title_OMHTurretsTraps_Audio", {"PotatoHearingRadius", "PotatoPlaybackVolume"}},
     {"Sandbox_Title_OMHTurretsTraps_Power", {"PotatoRequirePower", "PotatoBatteryPercentPerShot", "PotatoGeneratorFuelPerShot"}},
     {"Sandbox_Title_OMHTurretsTraps_Firearms", {"FirearmTurrets", "FirearmAmmoCapacity", "FirearmAimingLevel", "FirearmAccuracyMultiplier", "FirearmRangeAccuracy", "PrecisionRangeAccuracy", "FirearmDamageMultiplier", "FirearmRangeMultiplier", "FirearmReloadMultiplier", "FirearmRateMultiplier", "FirearmCycleMultiplier", "FirearmTurnSpeed"}},
 }
 
 local moduleGroups = {
+    {"Sandbox_Title_OMHTurretsTraps_Firing", {"ImprovisedFiringFailure"}},
     {"Sandbox_Title_OMHTurretsTraps_Critical", {"CriticalBonus", "CriticalDamageMultiplier"}},
     {"Sandbox_Title_OMHTurretsTraps_Accuracy", {"AccuracyBonus"}},
     {"Sandbox_Title_OMHTurretsTraps_Suppression", {"SuppressionFirstReduction", "SuppressionDiminishing", "SuppressionVolumeFloor"}},
@@ -20,7 +22,7 @@ local moduleGroups = {
     {"Sandbox_Title_OMHTurretsTraps_Reload", {"ReloadBonus", "ReloadBonusCap", "ReloadMinimum"}},
     {"Sandbox_Title_OMHTurretsTraps_Velocity", {"VelocityBonus", "VelocityBonusCap", "VelocityKnockdownBonus", "VelocityKnockdownCap"}},
     {"Sandbox_Title_OMHTurretsTraps_Range", {"RangeBonus", "RangeBonusCap"}},
-    {"Sandbox_Title_OMHTurretsTraps_Capacity", {"CapacitySmallAmmoBonus", "CapacitySmallModuleBonus", "CapacityAmmoBonus", "CapacityModuleBonus", "CapacityLargeAmmoBonus", "CapacityLargeModuleBonus"}},
+    {"Sandbox_Title_OMHTurretsTraps_Capacity", {"CapacityImprovisedModuleBonus", "CapacityImprovisedAmmoBonus", "CapacitySmallAmmoBonus", "CapacitySmallModuleBonus", "CapacityAmmoBonus", "CapacityModuleBonus", "CapacityLargeAmmoBonus", "CapacityLargeModuleBonus"}},
 }
 
 ---@param panel ISPanel Sandbox panel
@@ -58,9 +60,10 @@ function UI.attach(panel)
         sections = moduleGroups
     elseif panel.controls["OMHTurretsTraps.SpikeBarrier"] then
         sections = {
-            {"Sandbox_Title_OMHTurretsTraps_Barrier", {"SpikeBarrier", "SpikeBarrierDamage", "SpikeBarrierHealth", "SpikeBarrierScratchChance", "ReinforcedBarrierDamage", "ReinforcedBarrierHealthMultiplier"}},
-            {"Sandbox_Title_OMHTurretsTraps_Beds", {"BedSpikes", "BedDamage", "BedReinforcedDamage", "BedHealth", "BedReinforcedHealth", "BedWear", "BedTripChance", "BedRecoverySeconds", "BedScratchChance", "BedSprintTripChance"}},
-            {"Sandbox_Title_OMHTurretsTraps_Barbs", {"BarbSections", "BarbDamage", "BarbInterval"}},
+            {"Sandbox_Title_OMHTurretsTraps_Barrier", {"SpikeBarrier", "SpikeBarrierDamage", "ReinforcedBarrierDamage", "SpikeBarrierHealth", "ReinforcedBarrierHealthMultiplier", "SpikeBarrierScratchChance"}},
+            {"Sandbox_Title_OMHTurretsTraps_Beds", {"BedSpikes", "BedDamage", "BedReinforcedDamage", "BedHealth", "BedReinforcedHealth", "BedWear", "BedTripChance", "BedRecoverySeconds"}},
+            {"Sandbox_Title_OMHTurretsTraps_Barbs", {"BarbSections", "BarbWire", "BarbDamage", "BarbInterval", "BarbMovementDivisor"}},
+            {"Sandbox_Title_OMHTurretsTraps_PlayerContact", {"BedScratchChance", "BedSprintTripChance"}},
         }
     elseif not panel.controls["OMHTurretsTraps.PotatoTurret"] then
         return panel

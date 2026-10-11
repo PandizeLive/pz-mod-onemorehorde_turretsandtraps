@@ -63,7 +63,7 @@ check(#widget.items == 5 and widget.items[1].item == turretBase:getRecipe()
     and widget.items[2].groupNode.id == "Normal" and widget.items[4].groupNode.id == "Reinforced",
     "Building keeps turret base at root and trap tiers without empty component or Packed groups")
 local turrets = ArrayList.new()
-local rootNames = {"OMHTTCraftTurretBase", "OMHTTCraftTurretComplete", "OMHTTCraftTurretCompleteImprovised"}
+local rootNames = {"OMHTTCraftTurretBase"}
 local rootNodes = {}
 for i = 1, #rootNames do
     rootNodes[i] = leaf(rootNames[i], nil, "OMHTurrets"); turrets:add(rootNodes[i])
@@ -73,12 +73,12 @@ turrets:add(head); turrets:add(leaf("OMHTTCraftTurretHeadImprovised", nil, "OMHT
 local moduleNames = {"OMHTTCraftMotionDetectionImprovised", "OMHTTCraftFiringImprovised", "OMHTTCraftCapacityImprovised"}
 for i = 1, #moduleNames do turrets:add(leaf(moduleNames[i], nil, "OMHTurrets")) end
 local grouped = G.nodes(widget, turrets, head:getRecipe(), false)
-check(grouped:size() == 5, "Turrets has three root recipes and exactly two component groups")
-for i = 1, #rootNodes do check(grouped:get(i - 1) == rootNodes[i], "Complete/base turret recipes keep exact native root nodes") end
-check(grouped:get(3).id == "Heads" and grouped:get(3):getChildren():size() == 2, "Both head recipes belong to Heads")
-check(grouped:get(4).id == "Modules" and grouped:get(4):getChildren():size() == 3, "Modules includes the expansion kit")
+check(grouped:size() == 3, "Turrets has one root recipe and exactly two component groups")
+for i = 1, #rootNodes do check(grouped:get(i - 1) == rootNodes[i], "Base turret recipe keep exact native root nodes") end
+check(grouped:get(1).id == "Heads" and grouped:get(1):getChildren():size() == 2, "Both head recipes belong to Heads")
+check(grouped:get(2).id == "Modules" and grouped:get(2):getChildren():size() == 3, "Modules includes the expansion kit")
 widget.items = {}; selection = widget:addGroup(nil, turrets, head:getRecipe(), false)
-check(selection == 5 and #widget.items == 10 and widget.items[4].groupNode:getExpandedState() == E.OPEN,
+check(selection == 3 and #widget.items == 8 and widget.items[2].groupNode:getExpandedState() == E.OPEN,
     "Native turret list selects and expands a head without adding a Normal group")
 filtered = ArrayList.new(); filtered:add(head)
 widget.items = {}; widget:addGroup(nil, filtered, head:getRecipe(), false)

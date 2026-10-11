@@ -75,7 +75,7 @@ def build_component(component):
     _, original = build()
     trap = component == "traps"
     sheet = "omhtt_barrier_01" if trap else "omhtt_turret_01"
-    count = 60 if trap else 21
+    count = 72 if trap else 21
     tiles = b"tdef" + integer(1) + integer(1)
     tiles += (sheet + "\nOMHTT_" + component.title() + ".png\n").encode("ascii")
     tiles += integer(4) + integer((count + 3) // 4) + integer(1) + integer(count) + integer(0) * count
@@ -112,9 +112,9 @@ def build_component(component):
             pages.append(pack_string(name) + integer(len(entries)) + integer(alpha) + b"".join(entries) + integer(size) + png)
     assert position == len(original)
     if trap:
-        entries = [pack_string(sheet + "_" + str(index)) + struct.pack("<8i", 0, 0, 128, 256, 0, 0, 128, 256) for index in range(28, 52)]
+        entries = [pack_string(sheet + "_" + str(index)) + struct.pack("<8i", 0, 0, 128, 256, 0, 0, 128, 256) for index in list(range(28, 52)) + list(range(64, 72))]
         png = (MEDIA / "textures/OMHTT_BedSpikes.png").read_bytes()
-        pages.append(pack_string("OMHTT_BedSpikes") + integer(24) + integer(1) + b"".join(entries) + integer(len(png)) + png)
+        pages.append(pack_string("OMHTT_BedSpikes") + integer(32) + integer(1) + b"".join(entries) + integer(len(png)) + png)
         for axis in range(2):
             marker = Image.new("RGBA", (128, 256))
             draw = ImageDraw.Draw(marker)
@@ -130,6 +130,15 @@ def build_component(component):
                     entries.append(pack_string(sheet + "_" + str(52 + edge * 2 + side))
                                    + struct.pack("<8i", 0, 0, 128, 256, dx, dy, 128, 256))
             pages.append(pack_string("OMHTT_Barb" + str(axis)) + integer(4) + integer(1) + b"".join(entries) + integer(len(png)) + png)
+        marker = Image.new("RGBA", (128, 256))
+        draw = ImageDraw.Draw(marker)
+        draw.polygon([(64, 190), (126, 222), (64, 254), (2, 222)], outline="white", width=3)
+        draw.text((48, 215), "WIRE", fill="white")
+        stream = io.BytesIO()
+        marker.save(stream, format="PNG")
+        png = stream.getvalue()
+        entry = b"".join(pack_string(sheet + "_" + str(i)) + struct.pack("<8i", 0, 0, 128, 256, 0, 0, 128, 256) for i in range(60, 64))
+        pages.append(pack_string("OMHTT_Wire") + integer(4) + integer(1) + entry + integer(len(png)) + png)
     return tiles, b"PZPK" + integer(1) + integer(len(pages)) + b"".join(pages)
 
 

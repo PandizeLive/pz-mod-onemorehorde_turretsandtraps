@@ -47,6 +47,12 @@ check(#B.order == 4, "One index entry per section")
 local record, host, frame = records[4], hosts[4], frames[4]
 local attachment = host.data.OMHTTBarbs[S.faceKey(record.north, record.side)]
 local zombie = makeZombie(host.square, 10)
+function zombie:isClimbing() return false end
+function zombie:isBumpFall() return false end
+function zombie:getNextX() return self.nx or self.x end
+function zombie:getNextY() return self.ny or self.y end
+function zombie:setNextX(value) self.nx = value end
+function zombie:setNextY(value) self.ny = value end
 function zombie:getWidth() return .3 end
 function zombie:getX() return self.x end
 function zombie:getY() return self.y end
@@ -62,7 +68,7 @@ check(math.abs(zombie.health - 9.9) < .00001 and attachment.health == 49 and hos
 local savedResolve, contactLookups = B.resolve, 0
 B.resolve = function(r) contactLookups = contactLookups + 1 return savedResolve(r) end
 for i = 1, 60 do B.zombie(zombie) end
-check(attachment.health == 49 and contactLookups == 0, "Cooldown skips redundant geometry and support lookups")
+check(attachment.health == 49 and contactLookups > 0, "Damage cooldown retains continuous contact checks without extra wear")
 B.resolve = savedResolve
 B.time = 2000
 B.zombie(zombie)

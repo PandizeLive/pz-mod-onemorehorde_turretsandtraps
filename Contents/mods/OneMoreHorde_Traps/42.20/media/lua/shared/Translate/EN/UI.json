@@ -177,15 +177,17 @@
     "UI_OMHTT_BarbTools": "Requires a usable hammer and pliers.",
     "UI_OMHTT_ModuleMotionDetectionImprovised": "Detection*",
     "UI_OMHTT_ModuleFiringImprovised": "Firing*",
-    "UI_OMHTT_ModuleCapacityImprovised": "Improvised",
+    "UI_OMHTT_ModuleCapacityImprovised": "Makeshift",
     "UI_OMHTT_ManageMisfire": "Trigger failed",
-    "UI_OMHTT_ImprovisedStatus": "* Improvised | Detection range: %1",
+    "UI_OMHTT_ImprovisedStatus": "* Makeshift | Detection range: %1",
     "UI_OMHTT_CraftThenPlace": "Craft and place",
     "UI_OMHTT_BuildRequirements": "Crafting requires the normal materials, tools and skills.",
     "UI_OMHTT_BuildPickUp": "Pick up the crafted item to place it.",
     "UI_OMHTT_HeadDescription": "A potato launcher head for a turret base. Both crafting methods produce the same head.",
-    "UI_OMHTT_CompleteDescription": "A turret base with a potato launcher head installed. Add potatoes and power; automation modules are separate.",
     "UI_OMHTT_RangeLegend": "Cyan: automatic %1 | Gray: manual %2",
     "UI_OMHTT_RangeSharedLegend": "Cyan: automatic/manual %1",
-    "UI_OMHTT_RangeManualLegend": "Manual range: %1 | No detector"
+    "UI_OMHTT_RangeManualLegend": "Manual range: %1 | No detector",
+    "UI_OMHTT_ConcertinaWire": "Concertina Wire",
+    "UI_OMHTT_WireService": "Free ten-second repair; five-second pickup. No tools or XP.",
+    "UI_OMHTT_BedReinforceRequirements": "Carpentry 3, hammer, 1 plank and 4 nails. Reinforces only this tile."
 }

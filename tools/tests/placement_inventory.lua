@@ -7,7 +7,12 @@ SandboxVars.OMHTurretsTraps.BedSpikes = true
 SandboxVars.OMHTurretsTraps.BarbSections = true
 local selected, cursor, menuLabel
 local player = {}
-local inventory = {}
+local inventory = {items = {}}
+function inventory:getAllTypeRecurse()
+    local result = ArrayList.new()
+    for i = 1, #self.items do result:add(self.items[i]) end
+    return result
+end
 function inventory:isInCharacterInventory(p) return p == player end
 function player:getInventory() return inventory end
 function player:isDead() return false end
@@ -34,15 +39,24 @@ ISBuildIsoEntity = {new = function()
 end}
 getCell = function() return {setDrag = function(_, c) check(c == cursor, "Native cursor is installed") end} end
 getSpecificPlayer = function() return player end
-local names = {"SpikeBarrierItem", "ReinforcedBarrierItem", "BedSpikesItem", "ReinforcedBedSpikesItem", "BarbedPanelItem"}
-local entities = {"OMHTTDeploySpikeBarrier", "OMHTTDeployReinforcedBarrier", "OMHTTDeployBedSpikes", "OMHTTDeployReinforcedBedSpikes", "OMHTTBarbs"}
+local names = {"SpikeBarrierItem", "ReinforcedBarrierItem", "BedSpikesItem", "ReinforcedBedSpikesItem", "BarbedPanelItem", "ConcertinaWire"}
+local entities = {"OMHTTDeploySpikeBarrier", "OMHTTDeployReinforcedBarrier", "OMHTTDeployBedSpikesSingle", "OMHTTDeployReinforcedBedSpikesSingle", "OMHTTBarbs", "OMHTTDeployConcertinaWire"}
 for i = 1, #names do
     local item = {container = inventory}
     function item:getFullType() return "Base.OMHTT" .. names[i] end
     function item:getContainer() return self.container end
     function item:getCondition() return 100 end
+    inventory.items = {item}
     check(P.place(item, player) == cursor and selected == entities[i], "Each portable item resolves its native placement recipe")
     check(cursor.buildPanelLogic.manual and cursor.dragNilAfterPlace and cursor:isValid({}), "Placement binds exact selected item and is single use")
+    if i == 3 or i == 4 then
+        local companion = {getFullType = item.getFullType, getContainer = function() return inventory end, getCondition = function() return 100 end}
+        inventory.items = {item, companion}
+        local route, exact = P.route(item, player)
+        check(exact == companion and route == string.sub(entities[i], 1, #entities[i] - 6), "Two carried tiles select exact pair placement")
+        P.place(item, player)
+        inventory.items = {item}
+    end
     item.container = nil
     check(not cursor:isValid({}) and not P.place(item, player), "Dropping selected item invalidates preview; no replacement item can be consumed")
     item.container = inventory
