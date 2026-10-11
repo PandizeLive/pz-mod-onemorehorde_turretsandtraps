@@ -709,3 +709,8 @@ C128: owner requires at least one added round per Magazine Module, explicitly ba
 ## C129: 35-percent capacity and one-round ammo exception (2026-10-11)
 
 Owner selects 35% linear capacity per Magazine Module, minimum +1 with final rounding, superseding C127/C128's 25%. Owner requests a one-round ammo exception; clarify effective one-round capacity versus any last loaded round before implementing. Context is Splitter extra-round charges, preserving normal primary-shot consumption. The checkpoint documents both interpretations and the last-round incentive tradeoff. No patch authorization inferred.
+
+
+## C130: last-loaded-round Splitter exemption approved (2026-10-11)
+
+Owner selects B: any weapon with one loaded round remaining gets the full Splitter volley for that round, irrespective of magazine capacity. Deliberate one-round loading was explained and is accepted. Consume the primary round; never fire with zero. Do not substitute the recommended capacity-one restriction. Behavior with two or more insufficient rounds remains open; full volley consuming remaining rounds is a new recommendation, not approval. No code/package/test change.

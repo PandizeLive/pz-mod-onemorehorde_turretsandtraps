@@ -81,3 +81,6 @@ C128 supersedes C127 plateaus: owner confirms minimum +1 ready round per module.
 
 
 C129: confirmed magazine scaling is now linear 35%, minimum +1/module, rounded once. One-round Splitter ammo exception requested; effective one-round capacity versus last loaded round remains a material clarification. Recommend effective capacity one to avoid intentional underloading for free side shots; no interpretation is approved yet. Active checkpoint remains R3C4. Inspected 9ba8df8 and fetched origin.
+
+
+C130 confirms C129 option B: any last loaded round permits the full Splitter volley, consumes that round, and waives extra-round charges regardless of capacity. Deliberate single-round loading is accepted. Next ammo decision: when two or more rounds remain but cannot pay the full volley, recommend full volley consuming all remaining rounds; alternative is affordable projectile count with the special one-round exception. Neither generalized rule is approved yet. R3C4 stays active; inspected 77e0f5d and fetched origin.
