@@ -159,3 +159,7 @@ Owner: "Approved." This approves the complete C135 Fragment baseline alongside M
 ## C137 current corrective/content extension - 0.2.41
 
 The C136 Magazine/Splitter/Fragment rules remain settled. Enhanced Firing/Detection and the expansion/placement/visual corrections are implemented in [0.2.41](../PATCH_v0.2.41.md); [test](../TEST_v0.2.41.md) covers their remaining acceptance. Enhanced Firing replaces its normal role and scales default 75% firearm cadence to 100%, retaining bounded Rapid-Fire. Enhanced Detection replaces Detection, triples turning and requests 0.10-second scans. Both are loot-only, same weight/pools as Large Expansion. Makeshift/Small/Medium/Large add 100/200/400/650 ammo count, subject to native 50/100 weight limits. Grouped Splitter visuals preserve centered and side rays without changing direct-only damage. Native-derived cadence is turret-only; handheld gun timing is not modified. R3C5 acceptance remains open; R3C6 remains later discussion.
+
+## C138 - requested owner round complete
+
+Owner reports "Test Complete" for 0.2.41 with no new issue. No repeat required. [Console findings](../TEST_v0.2.41.md#c138---owner-test-complete-and-console-review-2026-10-11) distinguish observed configuration/firing from unreported individual checks. R3C6 remains next for discussion, not approved implementation; R1C3 retains the unattributed 331-ms update gap.

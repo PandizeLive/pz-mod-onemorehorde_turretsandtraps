@@ -380,3 +380,7 @@ Approved Enhanced modules and corrective bundle; see PATCH_v0.2.41.md and TEST_v
 ### 0.2.41 tagged installation completed
 
 Immutable `test/v0.2.41` / `9ccc8bce4fc96456da0241f01fb99c40b87d8cce` installed through root OMH.cmd on 2026-10-11. Both independent packages verify: 105 Traps + 125 Turrets files; 190 canonical source files; tagged/source/package/installed/archive hashes match. Both previous 0.2.40 managed backups verify. Archive SHA-256 `d4a74814a37add6721d777e0d17e0aa3f14ad61b2580e256b2ae42d779c3d522`. [Full machine record](../diagnostics/v0.2.41/local-release.json); [native proof summary](../diagnostics/v0.2.41/native-summary.json). Hosted LootLab deployed separately with verified bundle/Access checks. No Workshop publication or multiplayer/rendered acceptance. **Test now:** the focused 0.2.41 owner check.
+
+### 0.2.41 owner round completed - C138 / 2026-10-11
+
+Owner: "Test Complete," no new issue. Console confirms live 0.2.41 and no OMHTT exception; [findings](TEST_v0.2.41.md#c138---owner-test-complete-and-console-review-2026-10-11) and [capture summary](../diagnostics/v0.2.41/owner-test-20261011.json) retain evidence limits and an unattributed 331-ms update gap. No repeat requested. Initial install/native evidence unchanged; no package/version/tag/Workshop changes. R3C6 discussion is next, without patch authorization.

@@ -1,0 +1,42 @@
+{
+  "version": "0.2.41",
+  "ownerStatement": "Test Complete",
+  "disposition": "Owner round complete, no issues reported; individual checklist items not separately attested. No repeat requested.",
+  "capture": {
+    "sha256": "492B23B4E8B32A79F76982366FC885317F959D71BA4742556CB64B52DB25FB0C",
+    "source": "C:\\Users\\bandi\\Zomboid\\console.txt",
+    "capturedAt": "2026-10-11T14:33:14.9762401-04:00"
+  },
+  "installedVersions": {
+    "OneMoreHorde_Traps-manifest.json": "0.2.41",
+    "OneMoreHorde_Turrets-manifest.json": "0.2.41"
+  },
+  "gameVersion": "42.21",
+  "summaryWindows": 74,
+  "firearmShots": 154,
+  "timingMaxMs": {
+    "active-update-gapMaxMs": 331.0,
+    "turret-fire-result_fireMsMax": 4.0,
+    "potato-audio_audioMsMax": 1.0,
+    "turret-reload-audio_audioMsMax": 1.0,
+    "head-renderMaxMs": 2.0,
+    "effects-renderMaxMs": 2.0
+  },
+  "exceptionOrStackTraceFound": false,
+  "placementLimitEvents": 0,
+  "effectiveStatsEvidence": [
+    "[OMHTT-Diag] version=0.2.41 side=sp seq=46 ms=1791741950559 event=turret-effective-stats suppressed=0 accuracy=100 ammoCapacity=100 autoloader=false cooldown=2000 critChance=0 critMultiplier=2 damage=35 hearingMultiplier=1 id=turret-1428388236 knockdown=40 moduleCapacity=2 range=6 reload=2000",
+    "[OMHTT-Diag] version=0.2.41 side=sp seq=61 ms=1791741990912 event=turret-effective-stats suppressed=0 accuracy=62 ammoCapacity=100 autoloader=false cooldown=296.2962962962963 critChance=20 critMultiplier=4 damage=130.0000011920929 hearingMultiplier=1 id=turret-1428388236 knockdown=0 moduleCapacity=2 range=30 reload=2700",
+    "[OMHTT-Diag] version=0.2.41 side=sp seq=65 ms=1791741995145 event=turret-effective-stats suppressed=0 accuracy=62 ammoCapacity=750 autoloader=false cooldown=296.2962962962963 critChance=20 critMultiplier=4 damage=130.0000011920929 hearingMultiplier=1 id=turret-1428388236 knockdown=0 moduleCapacity=16 range=30 reload=2700",
+    "[OMHTT-Diag] version=0.2.41 side=sp seq=74 ms=1791742005895 event=turret-effective-stats suppressed=0 accuracy=62 ammoCapacity=750 autoloader=false cooldown=296.2962962962963 critChance=20 critMultiplier=4 damage=130.0000011920929 hearingMultiplier=1 id=turret-1428388236 knockdown=0 moduleCapacity=16 range=30 reload=2700",
+    "[OMHTT-Diag] version=0.2.41 side=sp seq=80 ms=1791742011564 event=turret-effective-stats suppressed=0 accuracy=62 ammoCapacity=750 autoloader=false cooldown=222.22222222222223 critChance=20 critMultiplier=4 damage=130.0000011920929 hearingMultiplier=1 id=turret-1428388236 knockdown=0 moduleCapacity=16 range=30 reload=2700",
+    "[OMHTT-Diag] version=0.2.41 side=sp seq=126 ms=1791742129111 event=turret-effective-stats suppressed=0 accuracy=62 ammoCapacity=750 autoloader=false cooldown=222.22222222222223 critChance=20 critMultiplier=4 damage=130.0000011920929 hearingMultiplier=1 id=turret-1428388236 knockdown=0 moduleCapacity=16 range=30 reload=2700",
+    "[OMHTT-Diag] version=0.2.41 side=sp seq=161 ms=1791742245543 event=turret-effective-stats suppressed=0 accuracy=62 ammoCapacity=750 autoloader=false cooldown=222.22222222222223 critChance=20 critMultiplier=4 damage=130.0000011920929 hearingMultiplier=1 id=turret-1428388236 knockdown=0 moduleCapacity=16 range=30 reload=2700"
+  ],
+  "limits": [
+    "Existing engine font/fluid/recipe/map/tile errors remain; not a clean-console claim.",
+    "331-ms update gap is unattributed.",
+    "No logged M4/Firearms-mod load or >32-barrier placement sequence; not independently proven by this capture.",
+    "No independent per-ray visual, handheld-speed or authenticated LootLab certification."
+  ]
+}

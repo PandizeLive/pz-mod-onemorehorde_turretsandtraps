@@ -760,3 +760,13 @@ Native capacity caveat: B42 clamps ordinary bag storage to 50 and world storage 
 Owner follow-up reports the handheld M4/M16 also fire slowly and asks whether T&T modifies handheld weapons. Source review finds no writes to fire mode/recoil delay/cyclic rate or player attack timing. A native Firearms fixture checks those properties before and after feeding/firing all 51 supported guns; they remain unchanged. Mounted operation does mutate real ammo/chamber state. Firearms defaults these two rifles to Single and exposes Auto; selected mode is a diagnostic check, not a confirmed explanation of the owner's handheld behavior. No handheld gameplay change is authorized or included.
 
 [Patch](PATCH_v0.2.41.md) | [Verification and focused owner test](TEST_v0.2.41.md). R3C5 acceptance remains open; R3C6 remains later discussion. Branch inspected at 7a9cf388; origin/dev was fetched and is an ancestor; only existing draft PR #1 was open. Rendered/audio acceptance remains distinct from automated/native verification.
+
+## C138 - owner test complete and console review (2026-10-11)
+
+Owner: "Test Complete." Close the requested 0.2.41 test round with no issues reported; do not infer separate attestations for every checklist item or request a repeat. No new gameplay is authorized by completion.
+
+Capture `20261011-143314-8532`, 2026-10-11 14:33:14 -04:00; SHA-256 `492B23B4E8B32A79F76982366FC885317F959D71BA4742556CB64B52DB25FB0C`. Both installed markers and live diagnostics identify 0.2.41, game 42.21. Seventy-four summary windows record 154 firearm shots. Effective configuration changes from 296.296 to 222.222 ms firing intervals and from 100/two to 750/sixteen ammo/module capacity. These support Enhanced Firing/Large Expansion configuration, not sustained measured RPM.
+
+No exception/stack trace or `status=Limit` appears. Nineteen engine ERROR lines concern fonts, fluid names, native recipe icons, map data or vegetation tiles; no OMHTT exception found. This is not a whole-console clean claim. Maximum active-update gap is 331 ms; firing work peaks at 4 ms, shot/reload audio at 1 ms and effect/head rendering at 2 ms. The gap's cause is unassigned; retain under R1C3 without a repeat test or universal performance clearance.
+
+The capture does not independently prove the modded M4 case, >32-barrier placement, every side tracer, paired-Concertina servicing or authenticated LootLab appearance. Unreported specifics and handheld slowdown remain distinct from the completed round. Reviewed summary: diagnostics/v0.2.41/owner-test-20261011.json; raw console stays local. R3C6 Piercing/Initial Blow/Execute/Impact is next for discussion, not approved implementation. Branch inspected at 29820ad; origin fetched; draft PR #1 remains the only open PR.
