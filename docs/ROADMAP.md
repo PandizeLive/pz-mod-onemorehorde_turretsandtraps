@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Synchronized 2026-10-11 against C80-C141, the installed, native-verified 0.2.41 corrective/content build; the owner round is complete with no issues reported (C138), subject to recorded evidence limits. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
+Synchronized 2026-10-11 against C80-C142, the installed, native-verified 0.2.41 corrective/content build; the owner round is complete with no issues reported (C138), subject to recorded evidence limits. This is the canonical execution/status index; checkpoint briefs hold detailed contracts, and versioned patch/test records preserve evidence. Documentation reconciliation does not approve new gameplay or reorder the roadmap.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -18,7 +18,7 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 ## Current checkpoint status and next work
 
-**C141 active discussion:** [Slot-budget percentage proposal](checkpoints/R3_OFFENSIVE_MODULES.md#c141---slot-budget-percentage-proposal-2026-10-11). Proposed Impact 60% first/+2 points per additional copy and Execute 3 HP-threshold points per copy stay below 100% within the standard sixteen slots; these replacement values await selection. C140 choices remain current until changed. Higher Sandbox capacities require explicit balance handling. No patch approval; native health/stumble feasibility and compatibility/loot/power/endurance tuning remain open. Installed 0.2.41 and C138 test completion unchanged.
+**C142 active discussion:** [Execute base-plus-increment proposal](checkpoints/R3_OFFENSIVE_MODULES.md#c142---execute-base-plus-increment-proposal-2026-10-11). Owner proposes Execute at 10% HP for the first copy, +2 percentage points per additional copy. Recommended: more useful first-copy finishing and 40% at sixteen, compared with the prior proposed 48%. Impact remains proposed at 60% first/+2 points per extra (90% at sixteen). Numerical settlement/patch approval still pending; Initial Blow and Piercing unchanged. Native health/stumble feasibility and compatibility/loot/power/endurance tuning remain open. Installed 0.2.41/C138 unchanged.
 
 **C137 current module checkpoint:** 0.2.41 adds approved Enhanced Firing/Detection and larger reserve count bonuses, and corrects automatic cadence, placement limits and volley visuals. LootLab is refreshed to the same catalog. R3C4 is settled; R3C5 automated/native proof and the completed C138 owner round are in [one focused test](TEST_v0.2.41.md). Native inventory weight remains a separate limit. R3C6 remains later discussion; R3C7 balance/endurance pending.
 

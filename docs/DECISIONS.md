@@ -783,3 +783,8 @@ Owner selects 1B, Initial Blow >=90% HP/+25% per copy without cap, Execute insta
 ## C141 - module capacity as percentage balance (2026-10-11)
 
 Owner asks how to tune percentages to avoid 100% at sixteen modules. [Revised proposal](checkpoints/R3_OFFENSIVE_MODULES.md#c141---slot-budget-percentage-proposal-2026-10-11): Impact retains 60% first-copy benefit and adds two percentage points per extra copy (90% at sixteen); Execute would change from the selected seven to three HP-threshold percentage points per copy (48% at sixteen). These replacement values are not approved; preserve C140 selections until chosen. Initial Blow +25% damage and Piercing remain selected and unchanged. Standard automation leaves fourteen effect slots, and Sandbox can exceed the standard sixteen-slot budget; no claim of an unlimited below-100% linear curve. No gameplay patch authorized. Installed 0.2.41/C138 test completion unchanged; planning-only GitHub mirror required.
+
+
+## C142 - Execute first-copy threshold proposal (2026-10-11)
+
+Owner proposes Execute at 10% HP for the first copy, +2 percentage points per additional copy. Recommended: more useful first-copy finishing and 40% at sixteen, compared with the prior proposed 48%. Impact remains proposed at 60% first/+2 points per extra (90% at sixteen). Numerical settlement/patch approval still pending; Initial Blow and Piercing unchanged. [Contract and arithmetic](checkpoints/R3_OFFENSIVE_MODULES.md#c142---execute-base-plus-increment-proposal-2026-10-11). Share Impact's stacking pattern only, not its first-shot restriction or probability semantics. Execute remains a deterministic kill on a successful eligible primary hit. No gameplay/version/test/install change; C119 planning mirror required.
