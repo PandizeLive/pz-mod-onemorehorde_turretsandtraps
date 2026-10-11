@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Synchronized 2026-10-11 against C80-C151 and the installed, native-verified 0.2.42 build. Its focused owner test is pending; the prior 0.2.41/C138 round remains complete. This is the canonical execution/status index.
+Synchronized 2026-10-11 against C80-C152 and the installed, native-verified 0.2.42 build. Its focused owner test is pending; the prior 0.2.41/C138 round remains complete. This is the canonical execution/status index.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -17,6 +17,8 @@ Existing SP content includes basic/reinforced Spike Barriers, portable items/pac
 Shared combat scheduling and active-time clocks exist. Render/maintenance costs and integrated authority remain open. The Louisville hang is unassigned; preserve useful evidence if it recurs, without claiming OMH caused it or has been cleared. Final art/audio remain owner-sourced. Makeshift Detection/Firing/Expansion are craftable; standard module crafting remains deferred.
 
 ## Current checkpoint status and next work
+
+**C152 requested addition:** [module benefit list](checkpoints/R3_AMMO_SAVER_MANAGE.md#c152---installed-module-benefit-list-in-manage-2026-10-11) in the lower-right Manage details area. Recommend grouped counts and combined current effects, inactive/capped reasons and fixed-height scrolling; reuse cached 200 ms UI state. Preserve narrower window and utility separation. Requested for next update, not installed; C149 transfer fix remains first.
 
 **C151 module/UI design selected:** [Conservation Module contract](checkpoints/R3_AMMO_SAVER_MANAGE.md): 1D / 2A / combined 3A+3B / 4C. Name and layout no longer open; battery/expansion stay above narrower modules. Implementation not started; C149 transfer fix stays first, C148 retained and R3C7 open.
 

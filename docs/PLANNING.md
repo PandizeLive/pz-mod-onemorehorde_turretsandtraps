@@ -1,5 +1,7 @@
 # Planning
 
+**C152 requested addition:** [module benefit list](checkpoints/R3_AMMO_SAVER_MANAGE.md#c152---installed-module-benefit-list-in-manage-2026-10-11) in the lower-right Manage details area. Recommend grouped counts and combined current effects, inactive/capped reasons and fixed-height scrolling; reuse cached 200 ms UI state. Preserve narrower window and utility separation. Requested for next update, not installed; C149 transfer fix remains first.
+
 **C151 selected design:** [Conservation Module and compact Manage](checkpoints/R3_AMMO_SAVER_MANAGE.md): 1D Conservation Module, 2A existing ammo-cost discount, combined 3A+3B battery tooltip and 4C utilities retained above narrower module cells. Leave grid gaps empty; rounding changes display only. Discussion selections recorded, no immediate patch/install requested. C149 transfer correction remains first; C148 retained.
 
 **C149 next-update scope:** owner retains C148 optimizations and requests fast matching Manage/inventory ammo transfers after reporting a bulk-transfer freeze. [Contract and diagnosis](PERFORMANCE_AUDIT_v0.2.42.md#c149-bulk-ammo-transfer-follow-up-2026-10-11) | [0.2.42 console finding](TEST_v0.2.42.md#c149-owner-finding-bulk-ammo-transfer-freeze-2026-10-11). Prioritize bounded transfer preparation/execution and shared validation before the other five improvements. No gameplay patch/install during this test; R3C7 remains open.

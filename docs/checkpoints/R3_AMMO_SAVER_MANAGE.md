@@ -1,6 +1,6 @@
 # Conservation Module and compact Manage contract (C150-C151)
 
-**Current C151 selections:** Conservation Module (1D), discount existing ammo cost including Splitter (2A), combined battery tooltip 3A+3B, and utilities kept above narrower module cells/window (4C). The blue gaps remain unused. Detailed selection provenance below supersedes the historical recommendations. Discussion selections are recorded; no immediate gameplay patch/install requested.
+**Current C151 selections:** Conservation Module (1D), discount existing ammo cost including Splitter (2A), combined battery tooltip 3A+3B, and utilities kept above narrower module cells/window (4C). The blue gaps remain unused. C152 additionally requests a current-benefit list in the lower-right details area. Detailed selection provenance below supersedes the historical recommendations. Discussion selections are recorded; no immediate gameplay patch/install requested.
 
 2026-10-11. Owner requests a stackable module making two shots consume one round, better battery consumption information, narrower module slots/window, and battery/expansion placement in the two blue-marked gaps in the attached Manage screenshot. Owner then explicitly requests **1A/1B/1C choices in the reply, including name options, rather than a structured question form**, and says discussion is still needed. The unanswered form selected no option. **Discussion only; no implementation approval inferred.** Carry alongside C149 transfer work and retained C148 optimizations; installed 0.2.42 and ongoing R3C7 acceptance remain unchanged.
 
@@ -69,3 +69,27 @@ Owner selects **1D Conservation Module**, **2A**, asks whether **3A and 3B can b
 - **Layout:** retain battery, expansion and power controls above the module grid. Narrow the cells and window with font/viewport safeguards; retain 4/6/6 and leave its two end gaps unused. The 4A combined strip/schema is rejected, not the current target. Preserve drag/drop, full-name tooltips, capacity scrolling and separate utility identity.
 
 C149 fast matching/bounded ammo transfers remain first priority; C148 optimizations are retained in the same next-update plan. Conservation acquisition/rarity and technical counter implementation remain to settle with the implementation scope; do not quietly introduce a recipe or alter loot totals. No gameplay code, version, install, Workshop changelog or test-result changes. The design is recorded for the next patch; readiness/approval to execute that combined patch is separate from this discussion response. **Decision needed:** finish discussion/authorize the combined implementation when ready; do not repeat settled 1D/2A/3A+3B/4C choices.
+
+
+## C152 - installed module benefit list in Manage (2026-10-11)
+
+Owner marks the unused lower-right details area beside the existing turret stats and asks to list every module with its current benefit. Add this requested feature to the next-update Manage scope. This is an informational panel; preserve C151 separate utility slots above the 4/6/6 grid and its narrower-window direction. No immediate gameplay patch/install inferred during the ongoing discussion/test.
+
+Recommended presentation: a fixed-height scrollable list, one row per installed module type, with duplicate count and combined effective benefit. Avoid sixteen repeated descriptions for sixteen identical copies. List all installed types, including inactive ones; distinguish working copies from broken copies so the displayed count cannot imply a benefit that does not exist. Use stable ordering and full-detail hover text for long conditions. Battery and expansion remain separate utility slots, not ordinary module rows.
+
+Examples with default settings and the stated working-copy counts (illustrative, not an assertion about the screenshot's complete loadout):
+
+| Row | Current benefit text |
+| --- | --- |
+| Execute x3 | Finishes targets at 14% HP or lower |
+| Initial Blow x2 | +50% primary damage against targets at 90% HP or higher |
+| Splitter x2 | Two extra side shots at 50% damage each |
+| Impact x2 | 62% stagger chance on the first shot after an empty reload |
+
+Conservation uses the selected rule when implemented: e.g. x2 gives three firing uses per normally charged round (about 67% ammo saved); apply it to existing Splitter cost rather than say every full volley costs one-third round. No claim that Conservation exists in installed 0.2.42.
+
+Use resolved current configuration and actual Sandbox values, not hardcoded example percentages. Respect head compatibility, active/broken modules, caps and interacting effects: mark Piercing inactive for unsupported heads, show Range's effective gain at the range cap, and avoid claiming a Reload reduction when Autoloader already overrides the timer. Show conditions on Initial Blow/Execute/Impact rather than imply permanent unconditional damage/control. Full explanatory details can live on hover, with short meaningful row text in the panel. State inactive/capped reasons in text as well as subdued styling. No source-code/internal IDs in player-facing rows.
+
+Layout should reserve a right-hand column and constrain/wrap left-side stat/status text so they cannot overlap in the narrower window. Keep engagement slider, action/status feedback and bottom buttons clear. The marked area cannot show ten-plus distinct types at once; use scrolling rather than growing window height or hiding modules. Verify normal/large fonts and 720p/split viewport fit after implementation; exact pixel width/row count is not yet rendered proof.
+
+TurretManage already refreshes effective state every 200 ms and TurretStats exposes combined module effects. Reuse that snapshot, cache formatted rows on relevant configuration/settings changes, and avoid per-frame per-module inventory rescans or new tick callbacks. Some effective contributions/statuses need a presentation helper derived from the same combat rules; existing scalar stats are not proof of a complete ready-made breakdown. C149 transfer correction remains first; C148 optimizations and C151 Conservation/battery/layout remain included. No item/loot/version/install/test changes. **Wait for a patch:** requested list recorded in the next-update plan; implementation is not yet installed.
