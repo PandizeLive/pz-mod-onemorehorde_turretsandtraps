@@ -31,3 +31,6 @@ Historical C126 planning update (tuning/ammo superseded by C129-C131): 2B slot-l
 C129 magazine rule: confirmed linear 35% per module, minimum +1, using ceil(base + count * max(1, base * 0.35)), rounded once. C131 confirms a full Splitter volley whenever at least one ready round remains, consuming min(ready rounds, normal volley cost). This includes the last-round exception and accepted underloading benefit. Fragment tuning, range/interaction and power/endurance choices remain open. No module gameplay patch/test; R3C4 rules and native capacity proof remain open.
 
 C132 upcoming scope: Concertina becomes one linked 1x2 trap, one carried item and shared HP/service/breakage. Retain current recipe, weight 2, total HP 50 and wire contact behavior. C133 now implements it in 0.2.39, with verification/install tracked above; R3C4 module choices remain open. See R2C4_CONCERTINA.md.
+
+
+C134 current handoff: owner requests Magazine plus a Splitter review and explicitly asks to discuss module rules this turn. Implementation is held for the choices in R3_OFFENSIVE_MODULES.md C134; recommend Magazine + Splitter first. Approved magazine growth and Splitter ammo/stack rules stand. Fragment and later module tuning are not silently selected. No new gameplay patch/test; installed 0.2.39 remains unchanged. Decision needed on scope, removal, coverage, child effects and power.

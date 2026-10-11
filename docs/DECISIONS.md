@@ -729,3 +729,8 @@ Owner requests 1x2 Concertina similar to Spike Barrier, explicitly rejecting ind
 ## C133: approve paired Concertina implementation (2026-10-11)
 
 Owner: "Approved" after the C132 paired-wire recap. Implement the 1x2 shared-identity/durability/service conversion now, preserving the settled recipe, weight 2 and total HP 50. Module contract choices remain separate and incomplete; this does not authorize invented Fragment tuning or unsupported native magazine behavior. Local validation/install and C108 development mirroring apply. See PATCH_v0.2.39.md and TEST_v0.2.39.md for implementation and evidence.
+
+
+## C134: Magazine requested; discuss Splitter and module scope before patching (2026-10-11)
+
+Owner: "Add the new module as well", then "Check for splitter too. We should discuss the rules of possible modules to add this turn". Interpret the singular new module as Magazine from C126-C131. The later instruction requests discussion before implementation, while retaining the intended module addition. Inspect active fb51d09 and fetch origin; no gameplay edits, version bump, tests or installation in this discussion. Existing growth/ammo/stack decisions remain approved; new choices below are recommendations only. Record/mirror this handoff under C119. See R3_OFFENSIVE_MODULES.md C134.

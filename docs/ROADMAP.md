@@ -18,6 +18,8 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 ## Current checkpoint status and next work
 
+**C134 active module discussion:** Magazine is requested; owner asks to review Splitter and settle module rules before patching. Recommend Magazine + Splitter under R3C4/R3C5; Fragment is optional pending tuning, R3C6 stays later. [Current choices](checkpoints/R3_OFFENSIVE_MODULES.md#c134-current-module-discussion-and-choices-2026-10-11). Installed 0.2.39 is unchanged.
+
 **C132/C133 trap revision, implemented in 0.2.39:** owner requests one paired 1x2 Concertina trap with shared durability/service and one inventory item, alongside module work. Existing recipe/weight/total HP retained; native verification/install is tracked in [0.2.39 test evidence](TEST_v0.2.39.md). See [R2C4 contract](checkpoints/R2C4_CONCERTINA.md#c132-one-paired-1x2-concertina-trap-for-the-upcoming-patch-2026-10-11). This does not reorder R3C4-R3C7 or change independent Bed Spikes.
 
 **C125-C131 current selection:** owner selected Modules, slot-limited Splitter and fixed-five Fragment damage stacking. Magazine growth is 35% linear with minimum +1/module and final rounding. Splitter fires the full volley with any ready ammunition and consumes min(ready rounds, normal volley cost); zero cannot fire. Fragment tuning, range/interaction and power/endurance remain open. R3C4 contract/battery planning is active; R3C5 Splitter/Fragment remains the first implementation stage after its rules and feasibility are settled. R3C6 and R3C7 retain their order. New heads remain deferred; no gameplay patch or tuning is authorized solely by this track selection.

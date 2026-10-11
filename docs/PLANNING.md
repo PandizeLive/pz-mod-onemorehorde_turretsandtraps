@@ -90,3 +90,8 @@ C131 settles insufficient ammo: full Splitter volley, consume min(ready rounds, 
 
 
 C132 adds approved 1x2 Concertina conversion to upcoming patch scope: one item places a linked pair with shared HP and whole-trap service/breakage, matching Spike Barrier identity rather than independent Bed Spikes. Existing recipe, weight 2, total HP 50 and contact behavior retained. [Contract](checkpoints/R2C4_CONCERTINA.md#c132-one-paired-1x2-concertina-trap-for-the-upcoming-patch-2026-10-11). C133 approves implementation, now in 0.2.39; native verification/install is tracked in TEST_v0.2.39.md. Module contract choices remain open. C131 full-volley ammo rule is already confirmed and mirrored.
+
+
+## Current discussion: C134 Magazine + Splitter
+
+Owner requests adding Magazine and checking Splitter, then asks to discuss module rules this turn before implementation. Recommend Magazine + Splitter first; Fragment remains optional and R3C6 effects remain later. The [C134 choices](checkpoints/R3_OFFENSIVE_MODULES.md#c134-current-module-discussion-and-choices-2026-10-11) cover scope, safe capacity removal, side-shot coverage/effects and power. Existing C129-C131 growth/ammo choices stay confirmed. New defaults are recommendations, not approvals. Inspected fb51d09 and fetched origin; no source/version/install/test changes. Installed 0.2.39 remains available; its owner test can join the module patch.
