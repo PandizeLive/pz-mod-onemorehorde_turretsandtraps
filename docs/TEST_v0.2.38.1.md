@@ -4,6 +4,8 @@ Automated check: 3,860 Kahlua assertions, 94 runtime/translation files, 574 nati
 
 ## Owner test
 
+**Completed for the reported lag issue.** The owner confirmed the improvement and corrected the unnecessary "Test now" handoff. The steps below are historical; no additional play or repeated test is required. Existing measurements and unrelated acceptance limits remain recorded separately.
+
 1. Restart, confirm **0.2.38.1** loaded and use a fresh test world. Recreate the same mixed Bed Spikes/Concertina/loaded potato-turret setup and approximately the same crowd as the lagging test. Keep diagnostic logging enabled for both entries and detailed logging off.
 2. Let the turret fire/reload for about 30 seconds. Expect the same sounds with subtle pitch variation, normal volume and no missing/repeated reload cue.
 3. Lead the crowd over spikes and wire while the turret fires for about a minute. Expect normal contact slowing/damage, independent spike wear and recovery. Note any pauses and whether they coincide with firing, reloading or trap contact.

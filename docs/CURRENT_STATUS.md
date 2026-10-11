@@ -22,4 +22,4 @@ Updated 2026-10-10. Read this first in Cloud, then the linked authoritative reco
 
 Owner follow-up to C123: "Yea seems fine." The owner is satisfied with the current lag improvement; existing measured limits and unrelated acceptance gates remain unchanged.
 
-Test now: normal play on installed 0.2.38.1 only; no further dedicated lag test requested. No new patch is needed solely from this positive report.
+Wait for a patch: the current lag test is complete and the owner accepts the improvement. No further play or testing is required for this fix. No next patch is selected; broader performance work does not reopen this completed test.
