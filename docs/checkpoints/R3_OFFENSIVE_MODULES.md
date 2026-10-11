@@ -1,8 +1,8 @@
 # R3C4-R3C7: offensive modules and battery endurance
 
-Current work: **C144 / R3C6**. See [implementation progress and remaining choice](#c144---approved-implementation-progress-and-power-choice-2026-10-11). Owner approves proceeding after C143. R3C6 combat foundations are implemented in Source and pass 5,155 Kahlua assertions; native health/stagger method feasibility also passed in an isolated 42.21 probe. This is an unfinished development checkpoint, not an installed patch. A concrete power-cost question is pending: slots alone (recommended) versus +25% base firing power per new-module copy. Loot-only weight 2.5 alongside Splitter/Fragment was offered with that question. Item/loot/Sandbox/LootLab integration, complete native validation and packaging/install remain outstanding. C143 percentages remain approved. Installed 0.2.41/C138 unchanged; no new owner test yet.
+Current work: **C145 / R3C6-R3C7**. See [global power/endurance proposal](#c145---global-module-power-model-and-endurance-proposal-2026-10-11). Owner selects a global module-count power rule with per-type multipliers, initially equal, and requests a recommendation/calculated endurance. Proposed defaults: 0.005% battery charge per firing cycle; +5% of base cost per installed module; all type weights 1; no battery idle draw; generator base 0.0001 native fuel units/cycle with the same multiplier. These numbers await approval and replace the old C144 A/B question. C144 combat foundations remain committed/tested but uninstalled; no gameplay changes in this calculation turn. C143 effect percentages remain approved. Installed 0.2.41/C138 unchanged.
 
-**Current checkpoint: R3C6 behavior discussion.** R3C4 selected rules and R3C5 implementation/owner round are complete for the existing slice; broader endurance validation remains R3C7. No new module implementation is authorized by this discussion.
+**Current checkpoint: R3C6 implementation and R3C7 power-contract discussion.** R3C4/R3C5 current slice and owner round are complete. C144 authorizes proceeding and implements tested combat foundations; C145 requests global power redesign and calculated endurance before tuning. Numerical power defaults are proposals, not tested runtime behavior.
 
 ## Historical direction and early working proposals (superseded below)
 
@@ -266,3 +266,60 @@ Evidence: real 42.21 object probe in diagnostics/r3c6-native/server-write.log pa
 5,155 Kahlua assertions pass, including 72 additional checks for chosen curves, fixed shotgun eligibility, threshold boundaries, single death, unknown/Horde baselines, save/reload entitlement, guard/knockdown precedence, bounded two-victim piercing with 70%/49% damage and solid-edge blocking. World/player objects in this suite are doubles. Existing 23 packet checks pass. These results do not claim a full 0.2.42 patch or package install. Reviewed evidence is diagnostics/r3c6-native/checkpoint.json; raw probe logs remain local.
 
 Remaining: answer the offered power choice; finish visible item registrations/tooltips, supported-head feedback, sorted Sandbox entries, native loot/LootLab catalog, complete native/full-package tests, versioned release docs, cumulative Workshop draft, tag and local installation. Existing 0.2.41 packages/install/test tag remain unchanged; Source is ahead of generated Contents at this development checkpoint. No new owner test is requested. Source changes exclude the old immutable test tag from this mirror as intended. Inspected 23f3fe7 and fetched origin; existing draft PR #1 remains the handoff.
+
+
+## C145 - global module power model and endurance proposal (2026-10-11)
+
+Owner: "Let's create a global rule for power consumption based on module count. We can have a value that multiplies the power consumption for certain modules, but we'll start with all being the same. What's your recommendation for power? Calculate how long it'd last based on hordes, or idle time, etc."
+
+Confirmed direction: one count-based rule across modules, with per-type weights initially equal. This supersedes the unanswered C144 slots-only versus 25%-per-new-copy choice; do not ask that old question again. The owner requests numerical recommendations, not immediate implementation of an unpresented endurance target. C143 offensive percentages remain settled. No source/gameplay changes in this turn.
+
+### Proposed rule and default values, awaiting selection
+
+`firing cost = base firing cost * (1 + module surcharge * sum(physical module copies * type weight))`
+
+- Global module surcharge: **5% of base cost per copy**, additive. Every type's weight starts at **1.0**. A future weight 2 contributes +10% of base per copy rather than doubling the whole turret cost. No exponential compounding and no separate module-count cap beyond actual capacity. This replaces, rather than stacks with, existing Splitter/Fragment 25% surcharges; Magazine and utility modules join the same ordinary-slot rule.
+- Count each non-broken physical item occupying an ordinary module slot once, including Firing/Detection and Enhanced replacements. Do not sum the aliased `active` keys: Enhanced/Improvised items also populate their normal role keys and would be double-counted. Count copies even when their conditional damage does not trigger that shot. Empty slots, heads, batteries and the separate Expansion Kit socket do not contribute. Expansion is a storage/capacity kit rather than an ordinary-slot module; this is an explicit proposed scope detail.
+- Start with one global Sandbox surcharge control and a per-type weight table for later tuning; avoid twenty identical new sliders. Keep base battery/fuel controls in the Power section and show actual resolved cost in Manage. Reuse the existing inventory summary and committed-shot transaction; no extra per-tick scans or damage-hit billing.
+- Base battery cost: **0.005% of full charge per firing cycle**, down from current 0.1%. This deliberately changes the zero-module allowance from about 1,000 to 20,000 cycles to satisfy long-life direction before charging all modules. At sixteen modules the cost is 0.009% and budget about 11,111 cycles. The comparison is battery capacity, not ammo capacity or a guarantee of multi-day continuous fire.
+- Battery idle/search/turning/reload draw: **zero**, matching existing behavior. Off, paused and offline do not spend charge. Charge once per committed primary firing cycle, including a miss; Splitter children/Fragment rays/pierced victims do not create separate bills. No-target attempts, failed commits and empty clicks are not firing cycles.
+- Generator base extra cost: **0.0001 native fuel units/cycle**, down from current 0.001, with the same module multiplier. Full native tank is 10 fuel units. This yields five full-battery equivalents in turret firing alone before native idle/appliance usage; it does not replace native generator fuel consumption or condition loss. Preserve existing mains-grid priority/no battery charge while grid-powered and battery fallback behavior.
+- Existing saved base/Sandbox choices must not be silently reset. New defaults and retirement/replacement of the old SplitterPower/FragmentPower controls need a clear implementation/migration note; apply the proposed balance explicitly in the eventual owner test rather than assuming saved 0.1 values became 0.005.
+
+### Calculated battery budget
+
+Full battery, proposed defaults, all type weights 1; whole firing cycles rounded down. These are Decimal arithmetic estimates, not a benchmark or an owner playtest.
+
+| Occupied module slots | Cost multiplier | Battery per cycle | Cycles/full battery |
+| --- | --- | --- | --- |
+| 0 | 1.00x | 0.0050% | 20,000 |
+| 2 | 1.10x | 0.0055% | 18,181 |
+| 4 | 1.20x | 0.0060% | 16,666 |
+| 8 | 1.40x | 0.0070% | 14,285 |
+| 12 | 1.60x | 0.0080% | 12,500 |
+| 16 | 1.80x | 0.0090% | 11,111 |
+
+### Illustrative hordes
+
+One turret, sixteen ordinary-slot modules, full charge, average **three committed firing cycles per zombie killed**, including misses. Hordes are illustrative sizes, not claims about the owner's Horde Night configuration. Ammo is replenished as needed. Secondary effects can reduce required cycles; tougher targets or poor accuracy can increase them. Values in the hordes column are fractional equivalent workload, not a count of fully completed waves.
+
+| Zombies/horde | Firing cycles | Battery used | Equivalent hordes/battery | Extra generator tank used |
+| --- | --- | --- | --- | --- |
+| 100 | 300 | 2.7% | 37.0 | 0.54% |
+| 300 | 900 | 8.1% | 12.3 | 1.62% |
+| 500 | 1,500 | 13.5% | 7.4 | 2.70% |
+| 1,000 | 3,000 | 27.0% | 3.7 | 5.40% |
+
+At six cycles per kill, double usage and halve equivalent horde counts. A 500-zombie workload then uses 27% battery (about 3.7 equivalent hordes); at three cycles it uses 13.5% (about 7.4). With one such horde per day and no other firing, those are approximately 3.7 or 7.4 days; a different event schedule changes calendar life. Several turrets sharing the same kill workload split total cycles and individual battery use, but overkill/concurrent wasted shots are not assumed away.
+
+### Continuous fire, standby and generator time
+
+At sixteen modules: about 6h10m of actual firing time at 0.5 cycles/s (default two-second potato cadence); 3h05m at 1/s; 54m52s at 3.375/s; 41m09s at 4.5/s (the configured Enhanced M4/M16 baseline before Rapid-Fire). These are real-time cycle-rate models, excluding reload, aiming, target gaps and pauses; those extend elapsed wall time at the same firing count. Rapid-Fire/higher supported cadence shortens it. Do not treat these configured rates as a measured sustained rate or default game hours. At 10% firing duty and 4.5/s while firing, wall time would be about 6h51m because idle costs no battery charge.
+
+Battery standby is indefinite from turret drain alone at zero idle draw. Native generator standby is different: installed 42.21 code uses 0.02 native fuel units per game hour at GeneratorFuelConsumption=1 before appliances. A 10-unit tank has a fuel-only zero-appliance ceiling of 500 game hours (20.8 game days), subject to condition/maintenance. Baseline idle burns 4.8% of the tank per game day. Under the illustrative daily 500-zombie/three-cycle workload at sixteen modules, turret firing adds 2.7% per day, total 7.5%, or about 13.3 fuel-only game days with no other loads and maintained condition. Base-generator idle does not multiply with the number of turrets; only their shot costs add. DayLength changes conversion to real time; native time and firing time are distinct. A six-hour game-night example at native multiplier 1 adds 1.2% generator idle fuel plus that night's 2.7% firing, totaling 3.9%, before other appliances.
+
+### Evidence and state
+
+Read TurretWorld.power/commit, TurretStats.resolve, Turret.contents, Sandbox defaults and installed-JAR IsoGenerator bytecode. Current turret writes occur only at committed firing: battery getCurrentUsesFloat/setCurrentUsesFloat and generator getFuel/setFuel. Installed generator getMaxFuel returns 10, getFuelPercentage divides by 10 then multiplies by 100; base 0.02/hour and Sandbox multiplier are explicit. Do not mistake fuel units for percentage points. The local bytecode extract SHA-256 is 0692eba20931fc468e2ab452ea98834b37657c33710908ce15d3bc8159c76dd2. Arithmetic computed using Python Decimal from the written formula; no new gameplay test ran and prior native/Kahlua results are unchanged.
+
+Inspected e3b7976, fetched origin and checked active draft PR #1. This is a planning/calculation update; C144 Source remains ahead of generated Contents. Item/loot/Sandbox/LootLab integration, complete native tests, release/version/tag and install still await completion. Installed 0.2.41 and completed C138 owner round unchanged. Decision needed: adopt or adjust the proposed 0.005% battery / 5%-per-copy / zero-idle / 0.0001-generator defaults and the stated counting scope, then finish the existing patch; no repeat approval of C143 effects.
