@@ -1000,3 +1000,7 @@ Owner reports yellow cards in orange rows and green cards in yellow rows. Confir
 ## C185 - Approved shared rarity anchors (2026-10-12)
 
 Owner: "1A". Approves C184 option 1A: saved tier weights define rarity across LootLab and the mod, including existing rarity battery surcharges. Implement in 0.2.47.4 with geometric midpoint boundaries (ties rarer), positive strictly descending anchors, Sandbox export, automatic compatibility and explicit invalid-setting handling. No new loot/default weights or account data writes authorized. [Contract](LOOTLAB_TIER_PERSISTENCE.md#c185-shared-rarity-anchors-2026-10-12). Inspected active branch 3f8e32d and fetched origin; no incoming planning change. Automated verification, deployment/install and owner acceptance remain separate.
+
+## C186 - Owner rarity audio received and next-update recap (2026-10-12)
+
+Owner supplied seven named rarity WAVs in Audio/Turrets & Traps and requested a recap. Record files received for the already selected C182 custom-audio option; next work is Module Pack rarity reveal audio. Highest-rarity-only playback remains the recommended integration to avoid layered fanfares, using C185 cached classification. Inventory/format inspection only this turn; no gameplay/version/install changes or audible acceptance. Existing inset-panel layout selection is consistent with installed UI, not new scope. [Contract](PACK_POLISH.md#c186-owner-rarity-sounds-received-2026-10-12).
