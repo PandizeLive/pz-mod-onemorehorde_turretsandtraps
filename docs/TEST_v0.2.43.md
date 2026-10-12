@@ -19,3 +19,11 @@
 - LootLab: 75 API/page tests, numerical model/package-default tests, unchanged-account migration, verified deployment and protected admin routes.
 
 Initial native attempts stopped on old 170-entry/27-component fixture expectations; updated to the new 175/28 counts. The renderer experiment using `next` was rejected by runtime validation and replaced with an explicit bounded registry. These failures were corrected before the passing release checks. Stock world-generation/asset diagnostics remain in headless logs and are not reclassified as OMH errors. Owner acceptance is pending; prior 0.2.41/C138 acceptance stays closed. The 0.2.42 bulk-transfer finding carries into this focused test.
+
+## C155 owner screenshots and console review (2026-10-11)
+
+Owner reports UI boundaries/alignment/battery-text concerns and requests new design options. Screenshots show the compact Manage screen and noisy battery tooltip; this is evidence of those visual issues, not Test Complete. The requested targeted test outcomes, including 600-round transfer and Conservation persistence, were not individually reported.
+
+Reviewed console.txt snapshot SHA-256 `26ab08918b441cbf59d80ba7125e262117eee3501215be631faacb459220f2af` (125738 bytes). Loaded diagnostics confirm version 0.2.43. No OMH Lua exception/stack trace was identified; native font/script/map warnings are present. Sample maxima: active update gap 676 ms, transfer batch 5 ms, transfer preparation 6 ms. Visible transfer records include battery servicing; these observations do not prove the bulk-ammunition freeze is fixed. Large wall-clock gaps at unchanged frame numbers are not reclassified as active-game freezes.
+
+Source review confirms the old estimate excludes reload/rack and rebuilds at the 200-ms Manage refresh. C155 proposes cached hover/change-driven estimates, native progress bars and a clearer layout. Discussion only; current gameplay and acceptance status remain unchanged.

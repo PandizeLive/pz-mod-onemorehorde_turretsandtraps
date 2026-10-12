@@ -18,6 +18,8 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 ## Current checkpoint status and next work
 
+**C155 discussion:** [Manage boundaries, automatic rarity, Once each, battery clarity and Synergy options](checkpoints/R3_MANAGE_RARITY_SYNERGY.md). Owner screenshots request UI corrections and new proposals; no patch approval or completed-test report yet. Installed 0.2.43 stays unchanged. R3C7 remains open; no transfer/performance pass inferred. **Decision needed:** select the numbered options in the contract.
+
 **C154 / 0.2.43 installed and automatically verified.** The approved C148-C153 bundle includes bounded matching ammo transfers, five runtime optimizations, Conservation Module, compact Manage, battery estimates and short Installed Modules rows with individual tooltips. No design decision remains. R3C7 and the relevant R1C3 acceptance checks share [one six-step test](TEST_v0.2.43.md); the 0.2.42 transfer finding carries forward without reopening the completed 0.2.41 round. [Patch](PATCH_v0.2.43.md) | [module/UI contract](checkpoints/R3_AMMO_SAVER_MANAGE.md) | [optimization contract](PERFORMANCE_AUDIT_v0.2.42.md).
 
 15,739 Kahlua assertions, 101 runtime/translation files, 705 native translation keys, exact-item write/read and all three package selections pass. The 600-round native probe used 30 groups: 13 ms preparation and 10 ms peak group in the fresh process. This excludes rendered gameplay and does not certify removal of all client pauses. LootLab 0.2.43 is deployed and verified with 25 modules, 16 pools and 175 entries; 75 API/page tests pass, saved tuning is preserved.

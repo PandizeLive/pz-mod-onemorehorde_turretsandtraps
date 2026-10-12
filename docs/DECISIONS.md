@@ -850,3 +850,8 @@ Owner directs concise Installed Modules rows such as `<14% HP` / `+2 Shots`, wit
 ## C154 - combined implementation approved (2026-10-11)
 
 Owner: "Approved. Go ahead and patch all of this, including the ammo transfer fix and optimizations." This authorizes C148-C153 as the combined 0.2.43 patch: fast bounded transfers through both interfaces; the five recorded maintenance/cache/stat/render/queue optimizations; Conservation Module; narrower Manage; battery endurance tooltip; compact Installed Modules list with individual row details. Native verification, local install and the standing C108 development mirror follow. Owner acceptance remains pending; no Workshop publication or merge. Conservation is loot-only with the existing offensive-module weight (2.5), normal module weight (0.3), and ordinary power load (1); no recipe.
+
+
+## C155 - Manage presentation, target cycling and Synergy discussion (2026-10-11)
+
+Owner requests segmented/dimmed UI regions, left-name/right-effect Installed Modules rows, automatic Horde Night rarity colors, remaining bars, reload-aware concise battery text without tick calculations, Once each Filter priority and a possible rare Synergy module. Explicit request: "Let's discuss. Show image examples and options." [Full contract/options](checkpoints/R3_MANAGE_RARITY_SYNERGY.md) recommends 1A inset panels, 2A log-spaced positive catalog weights, 3A one fired shot per round member, 4A cached reload-aware per-shot estimates, and 5A one extra nonrecursive Fragment burst per Synergy per shot. These defaults and Synergy tuning remain proposals. Source/package/install unchanged. No completed owner test or acceptance inferred; console findings recorded against 0.2.43.

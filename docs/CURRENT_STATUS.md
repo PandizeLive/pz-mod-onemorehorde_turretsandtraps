@@ -1,5 +1,7 @@
 # Current development and planning handoff
 
+**C155 discussion:** [Manage boundaries, automatic rarity, Once each, battery clarity and Synergy options](checkpoints/R3_MANAGE_RARITY_SYNERGY.md). Owner screenshots request UI corrections and new proposals; no patch approval or completed-test report yet. Installed 0.2.43 stays unchanged. R3C7 remains open; no transfer/performance pass inferred. **Decision needed:** select the numbered options in the contract.
+
 Updated 2026-10-11. Read with [AGENTS](../AGENTS.md) and [Planning](PLANNING.md).
 
 **C154 / 0.2.43 installed and automatically verified.** The approved C148-C153 bundle includes bounded matching ammo transfers, five runtime optimizations, Conservation Module, compact Manage, battery estimates and short Installed Modules rows with individual tooltips. No design decision remains. R3C7 and the relevant R1C3 acceptance checks share [one six-step test](TEST_v0.2.43.md); the 0.2.42 transfer finding carries forward without reopening the completed 0.2.41 round. [Patch](PATCH_v0.2.43.md) | [module/UI contract](checkpoints/R3_AMMO_SAVER_MANAGE.md) | [optimization contract](PERFORMANCE_AUDIT_v0.2.42.md).
@@ -12,4 +14,4 @@ Updated 2026-10-11. Read with [AGENTS](../AGENTS.md) and [Planning](PLANNING.md)
 - **Retained limits:** SP combat only, no multiplayer certification. Native reserve weight limits remain separate from expansion count. Secondary work retains 256 queued rays / 128 steps per callback. Fresh-world item-ID policy and owner-sourced placeholder art remain.
 - **GitHub:** `codex/performance-barbed-audit`, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1) into dev; immutable development tag and C108/C119 mirror required. No merge or Workshop upload.
 
-**Test now:** 0.2.43 is installed. Follow the linked six-step test; owner acceptance remains pending. C108 GitHub mirror follows this installation checkpoint.
+**Decision needed:** discuss C155 choices; 0.2.43 remains installed and its earlier test is not marked complete. The C154 install/tag and findings are verified on GitHub at `02e7ed1`.
