@@ -5,7 +5,7 @@ function testInventory:hasRoomFor() return self.room end
 function testInventory:AddItem(item) self.items[#self.items + 1] = item; return item end
 function testPlayer:getInventory() return testInventory end
 function instanceItem(kind) return {kind = kind, condition = 100} end
-function getGameTime() return {getRealworldSecondsSinceLastUpdate = function() return 0.1 end} end
+function getGameTime() return {getMinutesPerDay = function() return 60 end, getRealworldSecondsSinceLastUpdate = function() return 0.1 end} end
 
 function testPlayer:setIsFarming() end
 ISTimedActionQueue = {getTimedActionQueue = function() return {resetQueue = function() end} end}

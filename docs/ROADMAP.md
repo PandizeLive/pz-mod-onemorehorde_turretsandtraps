@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Synchronized 2026-10-12 against C80-C164 and the implemented, native-verified 0.2.44 build. Its owner test now has C161 failures/proposed corrections; the prior 0.2.41/C138 round remains complete. This is the canonical execution/status index.
+Synchronized 2026-10-12 against C80-C165 and the implemented, native-verified 0.2.45 build. Rendered owner acceptance and safe packed-weight preservation remain open. This is the canonical execution/status index.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -18,54 +18,30 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 ## Current checkpoint status and next work
 
-**C164 LootLab UI deployed:** all 28 entries have stable ID-keyed colors; five module-family shapes match the list and map; Show all / Hide all stays visible beneath the sync banner. Desktop/mobile browser checks, 76 API/page tests and deployment verification pass. [Evidence](../diagnostics/lootlab-ui-20261012/release.json). Gameplay remains 0.2.44; the [C161-C163 corrective/content patch](checkpoints/R3_EFFECT_POLISH.md) is next, not implemented.
+**C165 / 0.2.45 implemented and automatically verified.** Tack startup, delayed effects/audio, shotgun accuracy/Piercing, rarity-based power, concise module/battery feedback and slider polish are complete. [Patch](PATCH_v0.2.45.md) | [five-step test](TEST_v0.2.45.md). Installation is the next release step; owner acceptance remains pending.
 
-**C163 sound selected:** Martyrdom uses 4G, native AttackStomp, with audio starting before its .75-second post-death pop so the main impact aligns. The captured attack suggests an initial .20-second audio lead (.55 seconds after death); rendered synchronization still needs verification. C162 power/accuracy/Fragment/Tack directions remain. [Current contract](checkpoints/R3_EFFECT_POLISH.md#c163---martyrdom-stomp-selection-and-audio-lead-2026-10-12). Planning only: installed 0.2.44 still has the confirmed Tack initialization failure.
+16,011 Kahlua assertions, native write/fresh-process read, all three independent-package selections and 51 supported Firearms weapons pass. These checks do not certify rendered layout, audible timing or crowded-client frame smoothness.
 
+**Packed-weight compression remains approved but unfinished.** Pick Up should automatically pack the turret, preserve its normal contents summary, and unpack through existing placement. The tested native opaque-buffer restoration is unavailable to ordinary Lua; exact arbitrary-item preservation is not proven. Existing pickup weight remains. No equipped-only substitute or partial property reconstruction ships.
 
-
-**C160 / 0.2.44 implemented and automatically verified.** Manage sections/rarity/bars, reload-aware battery feedback, Once Each and Synergy/Martyrdom/Tack are complete under the [approved contract](checkpoints/R3_MANAGE_RARITY_SYNERGY.md). Bounded admission precedes resource commitment; terminal effects cannot recurse. [Patch](PATCH_v0.2.44.md) | [one six-step test](TEST_v0.2.44.md).
-
-15,931 Kahlua assertions, native write/read, all three package selections and 51 supported Firearms guns pass. LootLab matches 28 modules / 193 entries; 76 API/page tests and browser model/import checks pass. These checks do not certify rendered gameplay or client frame smoothness. The prior 676-ms gap remains unassigned. Held 0.2.43 checks join this test; no old round is newly marked passed.
-
-**Historical C137 module checkpoint:** 0.2.41 adds approved Enhanced Firing/Detection and larger reserve count bonuses, and corrects automatic cadence, placement limits and volley visuals. LootLab is refreshed to the same catalog. R3C4 is settled; R3C5 automated/native proof and the completed C138 owner round are in [one focused test](TEST_v0.2.41.md). Native inventory weight remains a separate limit. C147 completes the subsequent R3C6 integration; R3C7 owner verification is now active.
-
-**C132/C133 trap revision, implemented in 0.2.39:** owner requests one paired 1x2 Concertina trap with shared durability/service and one inventory item, alongside module work. Existing recipe/weight/total HP retained; native verification/install is tracked in [0.2.39 test evidence](TEST_v0.2.39.md). See [R2C4 contract](checkpoints/R2C4_CONCERTINA.md#c132-one-paired-1x2-concertina-trap-for-the-upcoming-patch-2026-10-11). This does not reorder R3C4-R3C7 or change independent Bed Spikes.
-
-**C125-C131 historical selection:** owner selected Modules, slot-limited Splitter and fixed-five Fragment damage stacking. Magazine growth is 35% linear with minimum +1/module and final rounding. Splitter fires the full volley with any ready ammunition and consumes min(ready rounds, normal volley cost); zero cannot fire. C135-C136 subsequently settle Fragment tuning, range/interaction and firing power; those choices are no longer open. R3C4 contract/battery planning is active; R3C5 Splitter/Fragment remains the first implementation stage after its rules and feasibility are settled. R3C6 and R3C7 retain their order. New heads remain deferred; no gameplay patch or tuning is authorized solely by this track selection.
-
-**Historical C124 handoff (superseded by C125 selection below):** no next patch is selected or underway. The current lag test is complete. Decision needed: select R3C4 (offensive-module contract and battery baseline, recommended) or R3C1 (new-head selection). The module sequence is R3C4 -> R3C5 -> R3C6 -> R3C7; head work is independently R3C1 -> R3C2. This is a recommendation, not patch approval. Unconfirmed individual content checks remain recorded but do not create a repeat-test requirement or block these discussions.
-
-**C122 corrective optimization:** [0.2.38.1](PATCH_v0.2.38.1.md) keeps native pitch variation, avoids per-play emitter mutation/logging, skips unoccupied Concertina lookups and adds trap/reload timing. The owner explicitly requested keeping pitch and optimizing again; the C121 variation-removal proposal is superseded. The [performance comparison](TEST_v0.2.38.1.md) is complete and owner-accepted for the reported lag issue (C123). R1C3 retains broader residual-gap/large-load/authority scope without another current owner test. C124 corrects the handoff: no next patch is selected; choose the next Phase 3 track.
-
-**C120 implementation:** the owner approved patching C114-C119. The 0.2.38 build implements Concertina Wire, contact-only half movement/player injuries for wire and panels, independently durable/recoverable spike tiles, Sandbox organization and approved recipe/naming cleanup. Native displacement API and item/world probes have evidence; final write/read/package checks and tagged installation pass. [Planning](PLANNING.md), [contract](checkpoints/R2C4_CONCERTINA.md) and [focused test](TEST_v0.2.38.md) are the shared handoff. Rendered/Horde Night interaction and dense-client performance remain open.
-
-**C113 review repairs:** 0.2.37 implements automatic/manual range feedback, recipe clarity, bounded barb audio, overlay caching/profiling and elapsed active clocks without catch-up bursts. Its held checks are carried into [0.2.38](TEST_v0.2.38.md). Native/automated results are in RELEASE.md; actual dense-client pauses and visible/audio acceptance remain R1C3/R2 gates. No new-content checkpoint is reordered.
-
-**C112 follow-up:** 0.2.36.1 corrects Turrets organization to root base/complete recipes and Heads/Modules groups; traps retain tiers and Building keeps turret base ungrouped. The [cross-system review](REVIEW_v0.2.36.1.md) records current audio/visual/gameplay/code findings. Recommendations remain unapproved and do not reorder content checkpoints. Its owner checklist is now superseded by 0.2.37, carrying forward unaccepted rendered checks.
-
-**Historical pre-fix test findings (C121, 2026-10-10):** 0.2.38 generally functions per owner, but mixed-defense lag persists. Logs confirm update gaps up to 1,077 ms and 674 ms in runtime sound-pitch adjustment. C122 supersedes the proposed removal of variation with native clip pitch and aggregate reload/trap timing; R1C3 remains active. [Evidence and limits](TEST_v0.2.38.md#owner-findings-and-console-review-2026-10-10).
-
-**Previous test findings (C109, 2026-10-09):** 0.2.35 still launches zombies forward; top-level categories did not match the intended expandable group names. C110 approves repeated Building placement, zombie forward-collapse, tier groups and trip/impact audio. See [owner findings](TEST_v0.2.35.md#owner-findings-and-console-review-2026-10-09); the corrective implementation is 0.2.36, with rendered acceptance pending.
-
-**Corrective patch (C110, 2026-10-09):** 0.2.36 restores OMH parent categories with expandable Normal/Reinforced/Packed groups, continuous Building with exact-item/original-recipe fallback, zombie forward-collapse and native trip/impact audio. Player tripping and the 4/6/6 module layout remain unchanged. C106 records the prior test's tentative unmentioned passes and failed zombie overshoot. Only the replacement [focused 0.2.38 test](TEST_v0.2.37.md) remains for these changes; new-content choices stay postponed. See [release evidence](RELEASE.md) for local verification/install state.
+C164 LootLab colors, family shapes and sticky Show all / Hide all are already deployed and verified. R3C7 combined acceptance and relevant R1C3 performance work remain active. No Workshop publication.
 
 | Phase / checkpoints | Status | Remaining work / next gate |
 | --- | --- | --- |
 | 1: R1C1-R1C2 package split | Implemented and native-verified in 0.2.29; remaining owner regression waived by C89 | Closed to further split regression; retain fresh-world policy and independent-package checks for changes |
-| 1: R1C3 performance/authority | C154 / 0.2.43 bounded transfers and five runtime optimizations installed; native checks pass | Combined 0.2.43 owner test; broader authority/load scope remains |
+| 1: R1C3 performance/authority | C154 / 0.2.43 bounded transfers and five runtime optimizations installed; native checks pass | Relevant checks carried into the focused 0.2.45 test; broader authority/load scope remains |
 | 2: R2C1-R2C2 Bed Spikes | Implemented with native checks, revised through subsequent patches | C106 tentative passes; verify corrected zombie landing/recovery in the focused 0.2.38 test |
 | 2: R2C3 Barbed Panel | Implemented with native contact/construction/persistence checks | C106 tentative passes; revised Building acceptance; player injuries added in 0.2.38; multi-panel/garage doors remain unimplemented |
 | 2: R2C4 concertina | C133 linked 1x2 conversion installed/native-verified in 0.2.39 | Focused paired-wire owner acceptance remains; see TEST_v0.2.39.md |
 | 3: R3C1-R3C2 new head | Candidates documented; none selected for implementation | Select one head and settle its concrete contract before prototyping |
 | 3: R3C3 explosive head | Optional, unscoped | Collateral/resource/effect-budget decisions and feasibility first |
-| 3: R3C4-R3C7 offensive modules/battery | C147 implemented offensive modules/power; C160 / 0.2.44 adds terminal Synergy effects and Manage feedback | R3C7 combined 0.2.44 owner test pending |
+| 3: R3C4-R3C7 offensive modules/battery | C165 / 0.2.45 corrects effects, shotgun accuracy/Piercing, rarity power and Manage feedback | R3C7 focused 0.2.45 owner test pending; packed-weight work unfinished |
 | 3: R3C8 starter modules/expansion | C104 implemented, verified and installed in 0.2.34 | C106 tentative passes; 4/6/6 layout acceptance in 0.2.35; include maximum loadouts in future R3C7 endurance checks |
 | 4: R4C1-R4C4 signals/connected traps | Planned | Signal contract first; devices then optional turret receiver |
 | 5: R5C1-R5C3 MP/integrations/release | Planned; no certification or publication | Validate only the selected release scope; optional features need not all ship |
 | 6: R6C1-R6C3 Cure simulation | Deferred, last | Matching contracts and loaded-combat controls first |
 
-The phase order is not a mandatory queue through every feature. R1C3 continues alongside relevant SP content, and Phase 3 may proceed without finishing every passive trap. R3C1 head selection and R3C4 module contract/battery baseline are separate entry points; neither requires a new head to be implemented first. C120 selects and implements the 0.2.38 passive-content bundle; C125 selects the module planning track, with implementation scope/tuning still unresolved.
+The phase order is not a mandatory queue through every feature. R1C3 continues alongside relevant SP content, and Phase 3 may proceed without finishing every passive trap. R3C1 head selection and R3C4 module contract/battery baseline are separate entry points; neither requires a new head to be implemented first. C120 selects and implements the 0.2.38 passive-content bundle; C125 selected the module track; C165 completes the current approved corrections except packed-weight compression.
 
 **Documented module sequence: R3C4 -> R3C5 -> R3C6 -> R3C7.** The assistant's suggestion to make Initial Blow/Execute the next content patch was an unapproved reorder; those effects were already listed under R3C6. Battery baseline already belongs to R3C4. Keep any proposed reorder explicit until the owner selects it. R3C8 was separately approved and implemented under C104; its later ID does not make completed work a future task.
 

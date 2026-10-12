@@ -16,7 +16,7 @@ ISBaseTimedAction.perform = function() completed = true end
 luautils.walkAdjObject = function(player, object, diagonal) check(not diagonal, "Manage uses cardinal native adjacent path"); return reachable end
 ISTimedActionQueue.add = function(action) queued = action; actions[#actions + 1] = action end
 ISTimedActionQueue.getTimedActionQueue = function() return {queue = actions} end
-getTextManager = function() return {MeasureStringX = function() return 300 end, getFontHeight = function() return 18 end} end
+getTextManager = function() return {WrapText = function(self, font, text, width) return text end, MeasureStringX = function() return 300 end, getFontHeight = function() return 18 end} end
 function getPlayerScreenLeft() return 0 end
 function getPlayerScreenTop() return 0 end
 function getPlayerScreenWidth() return 1280 end

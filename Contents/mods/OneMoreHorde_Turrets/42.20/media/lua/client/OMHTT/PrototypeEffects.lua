@@ -76,7 +76,7 @@ function E.receive(module, command, facts)
             effect.fromY = facts.fromY + dy / distance * forward
         end
         E.sound(facts.sound or "OMHTTPotatoFire", effect.fromX, effect.fromY, facts.z, facts.gain)
-    elseif command ~= "Ray" then
+    elseif command ~= "Ray" and not facts.silent then
         E.sound("OMHTTPotatoImpact", facts.x, facts.y, facts.z)
     end
     D.defer("projectile-effect", {id = facts.id, shot = facts.shot, phase = command, flightMs = effect.flight,

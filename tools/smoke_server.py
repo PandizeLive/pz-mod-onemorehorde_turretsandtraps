@@ -109,7 +109,7 @@ def main():
     assert "Lua code called from the wrong thread" not in text, "Native probe used the wrong Lua thread"
     assert "[OMHTT-Beds] persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") + " parts=32" in text, "Native bed persistence failed"
     assert "[OMHTT-Smoke] native-module-loot-parser pools=16 items=193 weights=positive" in text, "Native module loot parse failed"
-    assert "native-power modules=16 aliases=once m9=0.009 rifleVolleys=4811 generator=matched conditionals=valid" in text, "Native power/conditional integration failed"
+    assert "native-power modules=16 aliases=once m9=0.09 rifleShots=481 generator=matched conditionals=valid" in text, "Native power/conditional integration failed"
     assert "[OMHTT-Smoke] native-modules loot=193 profiles=valid condition=checked" in text, "Native module rules failed"
     assert "[OMHTT-Smoke] native-install exact=selected decoy=preserved preview=nonconsuming" in text, "Native Install selection failed"
     assert "[OMHTT-Smoke] native-turret-persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Turret world persistence failed"

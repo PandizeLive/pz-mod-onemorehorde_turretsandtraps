@@ -1,20 +1,18 @@
 # Planning
 
-**C164 LootLab UI deployed:** all 28 entries have stable ID-keyed colors; five module-family shapes match the list and map; Show all / Hide all stays visible beneath the sync banner. Desktop/mobile browser checks, 76 API/page tests and deployment verification pass. [Evidence](../diagnostics/lootlab-ui-20261012/release.json). Gameplay remains 0.2.44; the [C161-C163 corrective/content patch](checkpoints/R3_EFFECT_POLISH.md) is next, not implemented.
+**C165 / 0.2.45 implemented and automatically verified.** Tack startup, delayed effects/audio, shotgun accuracy/Piercing, rarity-based power, concise module/battery feedback and slider polish are complete. [Patch](PATCH_v0.2.45.md) | [five-step test](TEST_v0.2.45.md). Installation is the next release step; owner acceptance remains pending.
 
-**C163 sound selected:** Martyrdom uses 4G, native AttackStomp, with audio starting before its .75-second post-death pop so the main impact aligns. The captured attack suggests an initial .20-second audio lead (.55 seconds after death); rendered synchronization still needs verification. C162 power/accuracy/Fragment/Tack directions remain. [Current contract](checkpoints/R3_EFFECT_POLISH.md#c163---martyrdom-stomp-selection-and-audio-lead-2026-10-12). Planning only: installed 0.2.44 still has the confirmed Tack initialization failure.
+16,011 Kahlua assertions, native write/fresh-process read, all three independent-package selections and 51 supported Firearms weapons pass. These checks do not certify rendered layout, audible timing or crowded-client frame smoothness.
 
+**Packed-weight compression remains approved but unfinished.** Pick Up should automatically pack the turret, preserve its normal contents summary, and unpack through existing placement. The tested native opaque-buffer restoration is unavailable to ordinary Lua; exact arbitrary-item preservation is not proven. Existing pickup weight remains. No equipped-only substitute or partial property reconstruction ships.
 
+C164 LootLab colors, family shapes and sticky Show all / Hide all are already deployed and verified. R3C7 combined acceptance and relevant R1C3 performance work remain active. No Workshop publication.
 
-**C160 / 0.2.44 installed and automatically verified.** Manage sections/rarity/bars, reload-aware battery feedback, Once Each and Synergy/Martyrdom/Tack are complete under the [approved contract](checkpoints/R3_MANAGE_RARITY_SYNERGY.md). Bounded admission precedes resource commitment; terminal effects cannot recurse. [Patch](PATCH_v0.2.44.md) | [one six-step test](TEST_v0.2.44.md).
-
-15,931 Kahlua assertions, native write/read, all three package selections and 51 supported Firearms guns pass. LootLab matches 28 modules / 193 entries; 76 API/page tests and browser model/import checks pass. These checks do not certify rendered gameplay or client frame smoothness. The prior 676-ms gap remains unassigned. Held 0.2.43 checks join this test; no old round is newly marked passed.
-
-Updated 2026-10-12 under C119/C133. This is the shared entry point for planning in the local PC chat and **OMH: Turrets & Traps - Planning**. Detailed contracts and approval history remain in the linked records; this page indexes them rather than replacing them.
+Updated 2026-10-12 under C119/C165. This is the shared local/Cloud planning entry point. Historical decisions below do not override the current handoff.
 
 ## Read the current branch
 
-Current unmerged work is on **codex/performance-barbed-audit**, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1), targeting dev. [Open Planning on that branch](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/blob/codex/performance-barbed-audit/docs/PLANNING.md). **0.2.44 / C160 is installed and automatically verified** from `test/v0.2.44`; [release evidence](RELEASE.md) records exact source/package/archive/backup hashes. [Combined owner test](TEST_v0.2.44.md) recorded C161 failures; no repeat round is requested before correction. Earlier entries below preserve history and do not replace this handoff.
+Current unmerged work is on **codex/performance-barbed-audit**, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1), targeting dev. [Open Planning on that branch](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/blob/codex/performance-barbed-audit/docs/PLANNING.md). **0.2.45 / C165 is implemented and automatically verified**; see [release evidence](RELEASE.md) for tagged installation state and the [current owner test](TEST_v0.2.45.md). Prior 0.2.44 findings remain historical, with packing explicitly unfinished.
 
 Fetch the remote and check open development/planning PRs before using dev alone as the current state. Read the active branch's AGENTS.md, this page and [CURRENT_STATUS.md](CURRENT_STATUS.md). Record which branch/commit was inspected. A chat's older answer or an old Cloud checkout is not a current checkpoint. Preserve unmerged work and reconcile incoming plans; do not reset, force-push or merge automatically.
 

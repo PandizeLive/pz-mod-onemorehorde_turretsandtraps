@@ -4,7 +4,7 @@ local Budget = require("OMHTT/TurretScheduler")
 local Damage = require("OMHTT/Damage")
 local F = require("OMHTT/Foundation")
 local E = {jobs = {}, fields = {}, fieldOrder = {}, fieldCursor = 1, buckets = {}, reservedJobs = 0, reservedFields = 0, fieldCount = 0,
-    serial = 0, injuryAt = {}, maxMs = 0, maxAge = 0, audioAt = 0}
+    serial = 0, injuryAt = {}, maxMs = 0, maxAge = 0, audioAt = {}}
 
 ---@param stats table Effective modules
 ---@return number hits Maximum eligible projectile victims
@@ -86,7 +86,7 @@ function E.contact(actor)
     local now = Clock.now()
     for _, field in pairs(bucket) do
         local dx, dy = actor:getX() - field.x, actor:getY() - field.y
-        if now < field.expires and dx * dx + dy * dy <= field.radius * field.radius then
+        if now >= field.starts and now < field.expires and dx * dx + dy * dy <= field.radius * field.radius then
             local origin = getCell():getGridSquare(math.floor(field.x), math.floor(field.y), field.z)
             if E.inside(origin, actor, field.x, field.y, field.radius) then return field end
         end
@@ -114,7 +114,7 @@ function E.hit(zombie, alive, x, y, z, record, player, options)
             options.procFields, E.reservedFields = options.procFields - 1, E.reservedFields - 1
             E.serial = E.serial + 1
             local field = {id = tostring(E.serial), x = x, y = y, z = z, radius = stats.tack,
-                damage = stats.tackDamage, expires = now + stats.tackLifetime, source = record.id}
+                damage = stats.tackDamage, starts = now + 500, expires = now + 500 + stats.tackLifetime, source = record.id}
             E.fields[field.id], data.OMHTTTackField = field, field.id
             E.fieldOrder[#E.fieldOrder + 1] = field
             E.fieldCount = E.fieldCount + 1
@@ -126,15 +126,20 @@ function E.hit(zombie, alive, x, y, z, record, player, options)
         options.procJobs, E.reservedJobs = options.procJobs - 1, E.reservedJobs - 1
         E.serial = E.serial + 1
         E.jobs[#E.jobs + 1] = {id = tostring(E.serial), x = x, y = y, z = z, radius = stats.martyrdom, damage = stats.martyrdomDamage,
-            source = record.id, player = player, weapon = options.effectWeapon, seen = {}, queuedAt = now,
+            source = record.id, player = player, weapon = options.effectWeapon, seen = {}, queuedAt = now, due = now + 750, audioDue = now + 550,
             dx = -math.ceil(stats.martyrdom), dy = -math.ceil(stats.martyrdom), index = 0}
-        addSound(zombie, math.floor(x), math.floor(y), z, 20, 20)
-        if now >= E.audioAt then
-            triggerEvent("OnServerCommand", F.MODULE, "Impact", {id = record.id, shot = "martyrdom:" .. E.serial,
-                x = x, y = y, z = z, fromX = x, fromY = y})
-            E.audioAt = now + 100
-        end
+
     end
+end
+
+---@param name string Native or owned sound script
+---@param effect table Captured position
+---@return nil
+function E.sound(name, effect)
+    local now = Clock.now()
+    if E.audioAt[name] and now < E.audioAt[name] then return end
+    E.audioAt[name] = now + 100
+    triggerEvent("OnServerCommand", F.MODULE, "Click", {sound = name, x = effect.x, y = effect.y, z = effect.z})
 end
 
 ---@param player IsoPlayer Nearby player
@@ -153,6 +158,18 @@ end
 ---@param job table Incremental terminal burst
 ---@return boolean complete
 function E.step(job)
+    local now = Clock.now()
+    if job.audioDue and now >= job.audioDue and not job.sounded then
+        job.sounded = true
+        E.sound("AttackStomp", job)
+    end
+    if job.due and now < job.due then return nil end
+    if not job.started then
+        job.started = true
+        addSound(nil, math.floor(job.x), math.floor(job.y), job.z, 20, 20)
+        triggerEvent("OnServerCommand", F.MODULE, "Impact", {id = job.source, shot = "martyrdom:" .. tostring(job.id),
+            x = job.x, y = job.y, z = job.z, fromX = job.x, fromY = job.y, silent = true})
+    end
     local radius = math.ceil(job.radius)
     if job.dy > radius then return true end
     local origin = getCell():getGridSquare(math.floor(job.x), math.floor(job.y), job.z)
@@ -194,6 +211,10 @@ function E.tick()
             E.fieldOrder[E.fieldCursor] = E.fieldOrder[#E.fieldOrder]
             E.fieldOrder[#E.fieldOrder] = nil
         else
+            if now >= field.starts and not field.sounded then
+                field.sounded = true
+                E.sound("MetalworkingPunchDrop", field)
+            end
             E.fieldCursor = E.fieldCursor + 1
         end
     end
@@ -202,7 +223,9 @@ function E.tick()
         if consumed >= #E.jobs or getTimestampMs() >= deadline then break end
         local job = E.jobs[consumed + 1]
         E.maxAge = math.max(E.maxAge, now - job.queuedAt)
-        if E.step(job) then consumed = consumed + 1 end
+        local complete = E.step(job)
+        if complete == nil then break end
+        if complete then consumed = consumed + 1 end
     end
     if consumed > 0 then
         local count = #E.jobs
@@ -219,14 +242,17 @@ function E.save()
     for _, field in pairs(E.fields) do
         if field.expires > now then
             data.fields[#data.fields + 1] = {id = field.id, x = field.x, y = field.y, z = field.z,
-                radius = field.radius, damage = field.damage, remaining = field.expires - now, source = field.source}
+                radius = field.radius, damage = field.damage, remaining = field.expires - now, source = field.source,
+                startRemaining = math.max(0, field.starts - now), sounded = field.sounded}
         end
     end
     data.jobs = {}
     for i = 1, #E.jobs do
         local job = E.jobs[i]
         data.jobs[i] = {id = job.id, x = job.x, y = job.y, z = job.z, radius = job.radius,
-            damage = job.damage, source = job.source}
+            damage = job.damage, source = job.source, remaining = math.max(0, (job.due or now) - now),
+            audioRemaining = math.max(0, (job.audioDue or now) - now), sounded = job.sounded, started = job.started,
+            dx = job.dx, dy = job.dy, index = job.index}
     end
     data.injury = {}
     for index, expires in pairs(E.injuryAt) do
@@ -238,19 +264,22 @@ end
 function E.load()
     E.jobs, E.fields, E.buckets, E.injuryAt, E.fieldOrder, E.fieldCursor = {}, {}, {}, {}, {}, 1
     E.reservedJobs, E.reservedFields, E.fieldCount = 0, 0, 0
+    E.audioAt = {}
     local data, now = ModData.getOrCreate("OMHTTTack"), Clock.now()
     E.serial = data.serial or 0
     for index, remaining in pairs(data.injury or {}) do E.injuryAt[index] = now + math.min(1000, remaining) end
     for i = 1, #(data.fields or {}) do
         local field = data.fields[i]
         field.expires = now + field.remaining
+        field.starts = now + (field.startRemaining or 0)
         E.fields[field.id], E.fieldCount = field, E.fieldCount + 1
         E.fieldOrder[#E.fieldOrder + 1] = field
         E.index(field, true)
     end
     for i = 1, #(data.jobs or {}) do
         local job = data.jobs[i]
-        job.dx, job.dy, job.index, job.seen, job.queuedAt = -math.ceil(job.radius), -math.ceil(job.radius), 0, {}, now
+        job.dx, job.dy, job.index, job.seen, job.queuedAt = job.dx or -math.ceil(job.radius), job.dy or -math.ceil(job.radius), 0, {}, now
+        job.due, job.audioDue = now + (job.remaining or 0), now + (job.audioRemaining or 0)
         E.jobs[#E.jobs + 1] = job
     end
 end

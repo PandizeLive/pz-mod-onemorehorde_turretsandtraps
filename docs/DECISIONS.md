@@ -901,3 +901,10 @@ Owner says "4G, but play it slightly before they pop so the impact is timed corr
 ## C164 - immediate LootLab colors, shapes and sticky controls (2026-10-12)
 
 Owner requests new-module colors, proposes per-type shapes, then requests sticky Show/Hide All and says "Fix that this turn, and recap the next patch." This authorizes the small hosted UI update. Implemented 28 stable ID-keyed colors with future fallback, five family shapes across map/list and sticky visibility controls below the responsive sync banner. No loot/model/account/gameplay tuning changes. [Implementation and evidence](checkpoints/R3_EFFECT_POLISH.md#c164---lootlab-appearance-and-scrolling-correction-2026-10-12). C161-C163 gameplay patch remains pending separately. No new final art, mod install or Workshop publication.
+
+
+## C165 - approved correction patch and packed-pickup clarification (2026-10-12)
+
+Owner says "Approved" after the C164 recap, authorizing implementation of C161-C163. The seven interior rarity surcharges follow the proposed .1/.2/.4/.7/1/1.5/2 table as implementation tuning. [0.2.45 patch](PATCH_v0.2.45.md) implements the effects, startup, accuracy/Piercing, descriptions, additive power and UI changes. Automated verification is separate from owner acceptance; C108/C119 mirror remains required.
+
+During native weight verification the bag flag proved equipped-only. The owner clarified that reduction means after pickup, then confirmed automatic packing when clicking Pick Up, the normal contents summary, and unpacking through the existing placement action. This approves that flow, not a Java dependency or lossy item reconstruction. The ordinary-Lua native snapshot restore route failed because ByteBuffer is not exposed, and reflection is debug-only. Packed-weight implementation is withheld pending reliable exact-item preservation; the rest of the correction patch proceeds independently. Earlier assistant wording that packing would simply restore everything preceded this proof and is corrected here. The requested weight reduction remains approved and unfinished, not silently replaced by equipped-only reduction.

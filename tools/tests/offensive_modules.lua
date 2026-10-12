@@ -16,7 +16,7 @@ for count = 1, 40 do
     local stats = Stats.resolve({powerLoad = count + 2, active = {Fragment = count, Splitter = 2}})
     check(math.abs(stats.fragmentDamage - math.min(.4, (.2 + (count - 1) * .05))) < .000001 and stats.fragmentRange == 4,
         "Fragment damage caps while range stays independent")
-    check(math.abs(stats.effectPower - (1 + (count + 2) * .05)) < .000001, "Power stays additive, including copies above damage cap")
+    check(math.abs(stats.effectPower - (1 + count + 2)) < .000001, "Power stays additive, including copies above damage cap")
     for i = 1, count do
         check(math.abs(V.angle(count, i, -1)) <= 90 and V.angle(count, i, -1) ~= 0, "High-stack fan stays within 180 degrees and preserves primary")
     end
@@ -30,10 +30,10 @@ local stats = Stats.resolve({active = {Splitter = 3, Fragment = 5}})
 local record = {id = "modules", shots = 1}
 local options = {stats = stats, damage = 1, critical = true, critMultiplier = 2}
 V.reset(); V.reserve(options)
-check(V.reserved == 8, "Admission reserves the primary burst and side rays")
+check(V.reserved == 9, "Admission reserves the primary burst and side rays")
 V.fragment(record, victim:getX(), victim:getY(), 0, victim, nil, options)
 V.fragment(record, victim:getX(), victim:getY(), 0, victim, nil, options)
-check(#V.queue == 5 and V.reserved == 3, "Primary callbacks cannot produce a second fragment burst")
+check(#V.queue == 5 and V.reserved == 4, "Primary callbacks cannot produce a second fragment burst")
 for i = 1, 5 do
     local ray = V.queue[i]
     check(ray.damage == .8 and ray.range == 4 and ray.group.hits[victim], "Fragments inherit full critical budget and exclude primary victim")

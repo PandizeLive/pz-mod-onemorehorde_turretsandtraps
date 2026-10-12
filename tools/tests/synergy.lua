@@ -66,13 +66,13 @@ check(V.reserve(shot), "Mixed Synergy shot admitted")
 local record = {id = "proc-test", shots = 1}
 E.hit(a, true, a:getX(), a:getY(), 0, record, nil, shot)
 E.hit(a, true, a:getX(), a:getY(), 0, record, nil, shot)
-check(E.fieldCount == 1 and E.contact(a), "Repeated hits across the lifetime create one stationary field")
+check(E.fieldCount == 1 and not E.contact(a), "Repeated hits across the lifetime create one stationary field")
 local fieldId = a.data.OMHTTTackField
 V.cancel(shot)
 check(E.reservedFields == 0 and E.reservedJobs == 0 and V.reserved == 0, "Unused worst-case capacity is released")
-now = now + 5000
+now = now + 5500
 E.save(); savedData = nativeRoundTrip(savedData)
-now = now + 500000
+now = now + 550000
 E.load()
 check(E.contact(a) and E.fields[fieldId].expires - now == 5000, "Save/load retains remaining active lifetime, excluding offline time")
 now = now + 5001
@@ -92,6 +92,7 @@ E.hit(a, true, a:getX(), a:getY(), 0, record, nil, shot)
 V.cancel(shot)
 local near = makeZombie(testSquares["2002:2000:0"], .1)
 local fieldsBefore = E.fieldCount
+now = now + 750
 for _ = 1, 200 do if #E.jobs > 0 then E.tick() end end
 check(near:isDead() and #E.jobs == 0 and E.fieldCount == fieldsBefore, "Martyrdom terminal kill creates no recursive burst or Tack field")
 a.getEmitter = oldEmitter
@@ -127,6 +128,7 @@ for _, linked in pairs({false, true}) do
     check(#V.queue == (linked and 5 or 0), "Linked Splitter produces one Fragment generation")
     check(math.abs(b.health - (linked and 9.875 or 9.9)) < .0001, "Synergy retains Initial Blow health eligibility")
     V.release(owner)
+    now = now + 250
     for _ = 1, 1000 do if #V.queue > 0 then V.tick() end end
     check(#V.queue == 0 and V.reserved == 0 and E.reservedFields == 0, "Lineage drains and returns all unused reservation credits")
 end

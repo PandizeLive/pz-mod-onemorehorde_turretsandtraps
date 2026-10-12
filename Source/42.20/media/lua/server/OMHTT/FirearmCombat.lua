@@ -36,19 +36,19 @@ function C.hit(record, origin, target, player, options)
     local critical = options.critical
     if critical == nil then critical = ZombRand(10000) < stats.critChance * 100 end
     local multiplier = critical and stats.critMultiplier or 1
+    local dx, dy = target:getX() - origin:getX() - .5, target:getY() - origin:getY() - .5
+    local aimHit = ZombRand(10000) < Accuracy.chance(gun, stats, math.sqrt(dx * dx + dy * dy), target:isProne()) * 100
+    local firstHit
     local eligibility = {}
     for i = 1, #targets do eligibility[targets[i]] = Conditional.snapshot(targets[i], stats) end
     for i = 1, pellets do
         local victim = targets[(i - 1) % #targets + 1]
-        local dx, dy = victim:getX() - origin:getX() - 0.5, victim:getY() - origin:getY() - 0.5
-        local chance = Accuracy.chance(gun, stats, math.sqrt(dx * dx + dy * dy), victim:isProne())
-        if not victim:isDead() and ZombRand(10000) < chance * 100 then
+        if aimHit and not victim:isDead() then
             local hitX, hitY, hitSquare = victim:getX(), victim:getY(), victim:getSquare()
             local amount = Conditional.damage(victim, stats.damage * multiplier / 100 / pellets, eligibility[victim])
             lost = lost + Damage.apply(victim, amount, record.id, "firearm", player, gun)
             require("OMHTT/TurretProc").hit(victim, true, hitX, hitY, origin:getZ(), record, player, options)
-            require("OMHTT/TurretVolley").fragment(record, hitX, hitY, origin:getZ(), victim, player, options)
-            require("OMHTT/TurretVolley").pierce(record, origin, victim, player, options, hitSquare, hitX, hitY)
+            if not firstHit then firstHit = {victim = victim, x = hitX, y = hitY, square = hitSquare} end
             hits = hits + 1
             local guard = victim:getModData().OMHTTKnockdownUntilMs
             if not victim:isDead() and not victim:isOnFloor() and not victim:isKnockedDown()
@@ -59,7 +59,15 @@ function C.hit(record, origin, target, player, options)
             Conditional.impact(victim, origin, options)
         end
     end
-    require("OMHTT/TurretVolley").release(options)
+    local Volley = require("OMHTT/TurretVolley")
+    if firstHit then
+        if not Volley.pierce(record, origin, firstHit.victim, player, options, firstHit.square, firstHit.x, firstHit.y) then
+            Volley.fragment(record, firstHit.x, firstHit.y, origin:getZ(), firstHit.victim, player, options)
+        end
+    else
+        Volley.miss(record, origin, target, player, options)
+    end
+    Volley.release(options)
     local wear = gun:getConditionLowerChance()
     if wear > 0 and ZombRand(wear) == 0 then gun:setCondition(math.max(0, gun:getCondition() - 1)) end
     local hearingRadius = require("OMHTT/TurretStats").hearingRadius(gun, stats)

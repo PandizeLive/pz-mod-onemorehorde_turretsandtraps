@@ -76,6 +76,10 @@ end
 function Slot:update()
     if ISMouseDrag.draggingFocus == self and not isMouseButtonDown(0) then self:clearDrag() end
     local item = self.items[1]
+    if self.kind == "module" or self.kind == "capacity" then
+        local name = item and T.component(item:getFullType())
+        self.detailText = name and require("OMHTT/TurretDescriptions").get(name, true) or nil
+    end
     if self.detailProvider and self:isMouseOver() and not ISMouseDrag.dragging then self.detailText = self.detailProvider() end
     if self:isMouseOver() and not ISMouseDrag.dragging and self.detailText then
         if not self.tooltip then

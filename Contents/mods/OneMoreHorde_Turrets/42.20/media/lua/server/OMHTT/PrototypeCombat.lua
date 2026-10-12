@@ -355,7 +355,9 @@ function Combat.arrive(shot)
         and Combat.clearLane(origin, square, options.range) then
         return Combat.hit(shot.record, origin, target, shot.player, options)
     end
-    require("OMHTT/TurretVolley").release(options)
+    local volley = require("OMHTT/TurretVolley")
+    volley.miss(shot.record, origin, target, shot.player, options, shot.facts.x, shot.facts.y)
+    volley.release(options)
     local facts = shot.facts
     Diagnostics.defer("shot-missed", {id = facts.id, shot = facts.shot, reason = "target-or-path-changed"})
     return {id = facts.id, shot = facts.shot, x = facts.x, y = facts.y, z = facts.z, missed = true}

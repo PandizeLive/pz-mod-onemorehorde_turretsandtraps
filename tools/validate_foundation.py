@@ -57,7 +57,8 @@ def main():
         assert all(isinstance(v, str) for v in values.values())
         assert not translations.keys() & values.keys(), "Duplicate translation keys"
         translations.update(values)
-    keys = set(re.findall(r'getText\("([A-Za-z0-9_]+)"', lua)) - {"UI_OMHTT_", "ContextMenu_OMHTT_Hybrid", "UI_OMHTT_Module", "UI_OMHTT_Effect"}
+    keys = set(re.findall(r'getText\("([A-Za-z0-9_]+)"', lua)) - {"UI_OMHTT_", "ContextMenu_OMHTT_Hybrid", "UI_OMHTT_Module", "UI_OMHTT_Effect", "UI_OMHTT_Rarity"}
+    keys.update("UI_OMHTT_Rarity" + str(band) for band in range(1, 8))
     keys.update("ContextMenu_OMHTT_Hybrid" + action for action in ["Create", "Remove", "Rotate", "Spin", "Raise", "Lower", "Larger", "Smaller"])
     keys.update("UI_OMHTT_" + status for status in [
         "Agrees", "Waiting", "Denied", "VersionMismatch", "TooFar", "Unavailable", "Inspected", "Stale",

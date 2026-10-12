@@ -2,7 +2,6 @@ local G = require("OMHTT/Firearms")
 local Class = require("OMHTT/FirearmClass")
 local kits = {{"CapacityImprovised", "Improvised", 100, 2}, {"CapacitySmall", "Small", 200, 6}, {"Capacity", "", 400, 10}, {"CapacityLarge", "Large", 650, 14}}
 local S = {}
-S.POWER_WEIGHTS = {Synergy = 1, Martyrdom = 1, Tack = 1, Conservation = 1, Firing = 1, FiringImprovised = 1, FiringEnhanced = 1, MotionDetection = 1, MotionDetectionImprovised = 1, MotionDetectionEnhanced = 1, Filter = 1, Detection360 = 1, RapidFire = 1, Reload = 1, Velocity = 1, Range = 1, Critical = 1, Accuracy = 1, Suppression = 1, Autoloader = 1, Magazine = 1, Splitter = 1, Fragment = 1, Piercing = 1, InitialBlow = 1, Execute = 1, Impact = 1}
 
 ---@param key string Setting
 ---@param fallback number Default
@@ -112,7 +111,7 @@ function S.resolve(contents)
     local knockBonus = math.min((active.Velocity or 0) * S.option("VelocityKnockdownBonus", 5, 0, 100),
         math.max(0, S.option("VelocityKnockdownCap", 90, 0, 100) - knockdown))
     local weaponPower = math.max(1, math.sqrt(math.max(0, damage) / 80 * math.min(firearm and 50 or 30, range) / 15))
-    local modulePower = 1 + (contents and contents.powerLoad or 0) * S.option("ModulePowerBonus", 5, 0, 200) / 100
+    local modulePower = 1 + (contents and contents.powerLoad or 0) * S.option("ModulePowerBonus", 5, 0, 200) / 5
     local effectPower = weaponPower * modulePower
     return {damage = damage * (1 + S.bonus(active, "Velocity", 20, 100) / 100),
         knockdown = math.min(100, knockdown + knockBonus),
@@ -127,7 +126,7 @@ function S.resolve(contents)
         tackDamage = S.option("TackDamage", 10, 0, 1000),
         tackLifetime = S.option("TackLifetime", 10, 1, 60) * 1000,
         splitter = splitter, fragment = fragment, splitterDamage = S.option("SplitterDamage", 50, 0, 100) / 100,
-        piercing = (active.Piercing or 0) > 0 and firearm and gun:getProjectileCount() <= 1 and active.Piercing or 0,
+        piercing = (active.Piercing or 0) > 0 and firearm and active.Piercing or 0,
         pierceRetention = S.option("PiercingRetention", 70, 0, 100) / 100,
         initialBlow = (active.InitialBlow or 0) * S.option("InitialBlowBonus", 25, 0, 200) / 100,
         initialThreshold = S.option("InitialBlowThreshold", 90, 0, 100) / 100,

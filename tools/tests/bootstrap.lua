@@ -238,7 +238,7 @@ IsoThumpable = {new = function(cell, square, sprite, north)
     return object
 end}
 
-function getGameTime() return {getWorldAgeHours = function() return testTime end} end
+function getGameTime() return {getMinutesPerDay = function() return 60 end, getWorldAgeHours = function() return testTime end} end
 testRoll = 0
 function ZombRand(maximum) return testRoll end
 function instanceof(object, kind) return object.kind == kind end

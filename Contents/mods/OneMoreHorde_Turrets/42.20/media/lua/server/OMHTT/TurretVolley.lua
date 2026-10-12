@@ -2,7 +2,8 @@ if isClient() or isServer() then return end
 local Budget = require("OMHTT/TurretScheduler")
 local Damage = require("OMHTT/Damage")
 local F = require("OMHTT/Foundation")
-local V = {queue = {}, reserved = 0}
+local Clock = require("OMHTT/TurretClock")
+local V = {queue = {}, reserved = 0, serial = 0, cursor = 1}
 local Proc = require("OMHTT/TurretProc")
 local Conditional = require("OMHTT/TurretConditionalHit")
 
@@ -11,7 +12,7 @@ local Conditional = require("OMHTT/TurretConditionalHit")
 function V.capacity(stats)
     local children = (stats.splitter or 0) + (stats.piercing or 0)
     return (stats.splitter or 0) + ((stats.fragment or 0) > 0 and 5 or 0)
-        + ((stats.piercing or 0) > 0 and 1 or 0)
+        + (((stats.piercing or 0) > 0 or (stats.fragment or 0) > 0) and 1 or 0)
         + (stats.synergy and (stats.fragment or 0) > 0 and children * 5 or 0)
 end
 
@@ -42,7 +43,6 @@ function V.reserve(options)
     options.primaryDone = nil
     options.rayBudget = V.capacity(options.stats)
     options.pending = options.managed and 2 or 1
-    options.fragmentHits = {}
     options.fragmentReserved = options.stats.fragment > 0 and 5 or nil
     options.pierceReserved = options.stats.piercing > 0 and 1 or nil
     V.reserved = V.reserved + options.rayBudget
@@ -92,6 +92,10 @@ end
 ---@return nil
 function V.ray(record, x, y, z, angle, range, damage, group, index)
     local owner = group.options
+    if not group.persistId then
+        V.serial = V.serial + 1
+        group.persistId = tostring(V.serial)
+    end
     if owner and owner.pending then
         if owner.rayBudget <= 0 then error("Ray admission exhausted") end
         owner.rayBudget, V.reserved = owner.rayBudget - 1, V.reserved - 1
@@ -147,8 +151,9 @@ function V.fragment(record, x, y, z, target, player, options)
     options.fragmentReserved = nil
     local stats = options.stats
     local owner = options.root or options
-    if owner.fragmentHits then owner.fragmentHits[target] = true end
-    local group = {options = owner, kind = "fragment", player = player, weapon = options.effectWeapon, stats = stats, hits = {[target] = true}, remaining = 5, rays = {}, height = .30}
+    local group = {options = owner, kind = "fragment", player = player, weapon = options.effectWeapon, stats = stats, hits = {}, remaining = 5, rays = {}, height = .30}
+    if target then group.hits[target] = true end
+    group.due = Clock.now() + 250
     local rotation = ZombRand(36000) / 100
     local damage = options.damage * (options.critical and options.critMultiplier or 1) * stats.fragmentDamage
     for i = 1, 5 do
@@ -180,6 +185,7 @@ function V.pierce(record, origin, target, player, options, square, hitX, hitY)
     V.ray(record, x, y, origin:getZ(), math.atan2(dy, dx), stats.range, damage, group, 1)
     local ray = V.queue[#V.queue]
     ray.distance, ray.minimum, ray.square, ray.scanning = distance, distance, square, true
+    return true
 end
 
 ---@param ray table Committed ray
@@ -192,7 +198,7 @@ function V.finish(ray)
         and math.abs((victim:getX() - ray.x) * ray.dy - (victim:getY() - ray.y) * ray.dx) <= math.max(.2, victim:getWidth())
         and (victim:getX() - ray.x) * ray.dx + (victim:getY() - ray.y) * ray.dy >= 0
         and (victim:getX() - ray.x) * ray.dx + (victim:getY() - ray.y) * ray.dy <= ray.range
-        and (group.kind == "splitter" or not group.hits[victim]) then
+        and (group.kind == "splitter" or not V.seen(group, victim)) then
         local chance = 100
         if group.stats.firearm then
             chance = require("OMHTT/FirearmAccuracy").chance(group.weapon, group.stats, ray.bestDistance, victim:isProne())
@@ -208,10 +214,7 @@ function V.finish(ray)
                 local record = {id = ray.id, shots = ray.shot}
                 Proc.hit(victim, true, x, y, ray.z, record, group.player, owner)
                 Conditional.impact(victim, square, owner)
-                if group.kind ~= "fragment" and group.stats.fragment > 0 and not owner.fragmentHits[victim] then
-                    V.fragment(record, x, y, ray.z, victim, group.player, {root = owner, stats = group.stats,
-                        effectWeapon = group.weapon, damage = ray.damage, critical = false, fragmentReserved = 5})
-                end
+
             end
         end
     end
@@ -230,14 +233,20 @@ function V.finish(ray)
         group.hits[victim] = true
         if hit then
             group.left = group.left - 1
-            ray.damage = ray.damage * group.stats.pierceRetention
         end
         if group.left > 0 and ray.distance < ray.range and ray.square then
+            if hit then ray.damage = ray.damage * group.stats.pierceRetention end
             group.fromX, group.fromY = facts.x, facts.y
             ray.minimum = math.max(ray.minimum, distance)
             ray.best, ray.bestDistance, ray.scanning, ray.objectIndex = nil, nil, true, 0
             return true
         end
+    end
+    if group.options and group.stats.fragment > 0 and group.kind ~= "fragment"
+        and (group.kind == "piercing" or group.kind == "terminal" or group.stats.synergy) then
+        V.fragment({id = ray.id, shots = ray.shot}, facts.x, facts.y, ray.z, victim, group.player,
+            {root = group.options, stats = group.stats, effectWeapon = group.weapon,
+                damage = ray.damage, critical = false, fragmentReserved = 5})
     end
     if group.options then V.done(group.options) end
     return false
@@ -251,8 +260,8 @@ function V.step(ray)
         if ray.objectIndex < objects:size() then
             local candidate = objects:get(ray.objectIndex)
             ray.objectIndex = ray.objectIndex + 1
-            if instanceof(candidate, "IsoZombie") and not candidate:isDead() and candidate:getSquare() == ray.square
-                and (ray.group.kind == "splitter" or not ray.group.hits[candidate]) then
+            if ray.group.kind ~= "terminal" and instanceof(candidate, "IsoZombie") and not candidate:isDead() and candidate:getSquare() == ray.square
+                and (ray.group.kind == "splitter" or not V.seen(ray.group, candidate)) then
                 local x, y = candidate:getX() - ray.x, candidate:getY() - ray.y
                 local along = x * ray.dx + y * ray.dy
                 local across = math.abs(x * ray.dy - y * ray.dx)
@@ -283,29 +292,140 @@ end
 
 ---@return nil
 function V.tick()
-    local deadline = Budget.limit(1)
-    local consumed = 0
+    local deadline, now = Budget.limit(1), Clock.now()
+    local waiting = 0
     for _ = 1, 128 do
-        if consumed >= #V.queue or getTimestampMs() >= deadline then break end
-        local ray = V.queue[consumed + 1]
-        local origin = getCell():getGridSquare(math.floor(ray.x), math.floor(ray.y), ray.z)
-        if not origin or V.step(ray) then
-            if not origin then ray.best, ray.bestDistance, ray.distance = nil, nil, 0 end
-            if not V.finish(ray) then consumed = consumed + 1 end
+        if #V.queue == 0 or waiting >= #V.queue or getTimestampMs() >= deadline then break end
+        if V.cursor > #V.queue then V.cursor = 1 end
+        local ray = V.queue[V.cursor]
+        local group = ray.group
+        if group.due and now < group.due then
+            waiting, V.cursor = waiting + 1, V.cursor + 1
+        else
+            waiting = 0
+            if group.kind == "fragment" and not group.sounded then
+                group.sounded = true
+                Proc.sound("OMHTTSuppressedM9Shoot", ray)
+            end
+            local origin = getCell():getGridSquare(math.floor(ray.x), math.floor(ray.y), ray.z)
+            local complete = false
+            if not origin or V.step(ray) then
+                if not origin then ray.best, ray.bestDistance, ray.distance = nil, nil, 0 end
+                complete = not V.finish(ray)
+            end
+            if complete then
+                V.queue[V.cursor] = V.queue[#V.queue]
+                V.queue[#V.queue] = nil
+            else
+                V.cursor = V.cursor + 1
+            end
         end
     end
-    if consumed > 0 then
-        local count = #V.queue
-        for i = 1, count - consumed do V.queue[i] = V.queue[i + consumed] end
-        for i = count - consumed + 1, count do V.queue[i] = nil end
+end
+
+---@param group table Persistent lineage
+---@param actor IsoZombie Candidate
+---@return boolean seen
+function V.seen(group, actor)
+    if group.hits[actor] then return true end
+    local saved = actor:getModData().OMHTTSavedRayHits
+    if saved and saved[group.persistId] then
+        group.hits[actor] = true
+        return true
+    end
+    return false
+end
+
+---@param record table Shot identity
+---@param origin IsoGridSquare Muzzle
+---@param target IsoZombie Aim point
+---@param player IsoPlayer? Operator
+---@param options table Admitted shot
+---@param targetX number? Original projectile aim X
+---@param targetY number? Original projectile aim Y
+---@return nil
+function V.miss(record, origin, target, player, options, targetX, targetY)
+    if not options.fragmentReserved then return end
+    options.fragmentReserved = nil
+    local x, y = origin:getX() + .5, origin:getY() + .5
+    local group = {options = options, kind = "terminal", player = player, weapon = options.weapon, stats = options.stats, hits = {}}
+    V.ray(record, x, y, origin:getZ(), math.atan2((targetY or target:getY()) - y, (targetX or target:getX()) - x), options.stats.range,
+        options.damage * (options.critical and options.critMultiplier or 1), group, 1)
+end
+
+---@return nil
+function V.save()
+    local data, now = ModData.getOrCreate("OMHTTVolley"), Clock.now()
+    data.serial, data.rays, data.groups, data.owners = V.serial, {}, {}, {}
+    local groups, owners, live = {}, {}, {}
+    for i = 1, #V.queue do live[V.queue[i].group.persistId] = true end
+    for i = 1, #V.queue do
+        local ray, saved = V.queue[i], {}
+        local group, owner = ray.group, ray.group.options
+        for key, value in pairs(ray) do
+            if type(value) == "number" or type(value) == "string" or type(value) == "boolean" then saved[key] = value end
+        end
+        saved.scanning, saved.objectIndex, saved.bestDistance = ray.square ~= nil, 0, nil
+        if ray.square then saved.squareX, saved.squareY = ray.square:getX(), ray.square:getY() end
+        if not owners[owner] then
+            owners[owner] = #data.owners + 1
+            data.owners[owners[owner]] = {stats = owner.stats, rayBudget = owner.rayBudget, procJobs = owner.procJobs,
+                procFields = owner.procFields, impactReady = owner.impactReady}
+        end
+        if not groups[group] then
+            groups[group] = #data.groups + 1
+            local copy = {stats = group.stats, owner = owners[owner], rays = group.rays, delay = math.max(0, (group.due or now) - now)}
+            for key, value in pairs(group) do
+                if type(value) == "number" or type(value) == "string" or type(value) == "boolean" then copy[key] = value end
+            end
+            for actor in pairs(group.hits) do
+                local marks, kept = actor:getModData().OMHTTSavedRayHits, {}
+                if marks then for id in pairs(marks) do if live[id] then kept[id] = true end end end
+                kept[group.persistId] = true
+                actor:getModData().OMHTTSavedRayHits = kept
+            end
+            data.groups[groups[group]] = copy
+        end
+        saved.group = groups[group]
+        data.rays[i] = saved
+    end
+end
+
+---@return nil
+function V.load()
+    V.reset()
+    local data, now = ModData.getOrCreate("OMHTTVolley"), Clock.now()
+    V.serial = data.serial or 0
+    local owners, groups = {}, {}
+    for i = 1, #(data.owners or {}) do
+        local owner = data.owners[i]
+        owner.pending, owner.primaryDone = 0, true
+        owners[i] = owner
+        V.reserved = V.reserved + owner.rayBudget
+        Proc.reservedJobs = Proc.reservedJobs + owner.procJobs
+        Proc.reservedFields = Proc.reservedFields + owner.procFields
+    end
+    for i = 1, #(data.groups or {}) do
+        local group = data.groups[i]
+        group.options, group.hits, group.due = owners[group.owner], {}, now + group.delay
+        groups[i] = group
+    end
+    for i = 1, #(data.rays or {}) do
+        local ray = data.rays[i]
+        ray.group = groups[ray.group]
+        if ray.squareX then ray.square = getCell():getGridSquare(ray.squareX, ray.squareY, ray.z) end
+        if not ray.square then ray.scanning = false end
+        ray.group.options.pending = ray.group.options.pending + 1
+        V.queue[#V.queue + 1] = ray
     end
 end
 
 ---@return nil
 function V.reset()
-    V.queue, V.reserved = {}, 0
+    V.queue, V.reserved, V.cursor = {}, 0, 1
 end
 
 Budget.register("TurretVolley.tick", V.tick)
-Events.OnGameStart.Add(V.reset)
+Events.OnGameStart.Add(V.load)
+Events.OnSave.Add(V.save)
 return V

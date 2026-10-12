@@ -11,7 +11,7 @@ return function(player)
     store:AddItem(T.TYPES.Tack)
     local contents = T.contents(store)
     local stats = Stats.resolve(contents)
-    assert(contents.modules == 3 and contents.powerLoad == 3 and stats.synergy and stats.tack == 1 and stats.martyrdom == 1.5,
+    assert(contents.modules == 3 and contents.powerLoad == 5 and stats.synergy and stats.tack == 1 and stats.martyrdom == 1.5,
         "Native proc modules did not resolve")
     assert(synergy:getWeight() == instanceItem(T.TYPES.Conservation):getWeight(), "Module encumbrance drift")
     local parts = {BodyPartType.ForeArm_L, BodyPartType.ForeArm_R, BodyPartType.LowerLeg_L, BodyPartType.LowerLeg_R}

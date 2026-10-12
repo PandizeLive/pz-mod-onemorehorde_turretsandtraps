@@ -199,6 +199,8 @@ public final class KahluaCheck {
             {"OMHTT/Firearms", base + "shared/OMHTT/Firearms.lua"},
             {"OMHTT/TurretReloadAudio", base + "shared/OMHTT/TurretReloadAudio.lua"},
             {"OMHTT/TurretSounds", base + "shared/OMHTT/TurretSounds.lua"},
+            {"OMHTT/LootDefinitions", base + "shared/OMHTT/LootDefinitions.lua"},
+            {"OMHTT/TurretRarity", base + "shared/OMHTT/TurretRarity.lua"},
             {"OMHTT/TurretStats", base + "shared/OMHTT/TurretStats.lua"},
             {"OMHTT/Turret", base + "shared/OMHTT/Turret.lua"},
             {"OMHTT/TargetHealth", base + "shared/OMHTT/TargetHealth.lua"},
@@ -269,6 +271,7 @@ public final class KahluaCheck {
             {"OMHTT/LootDefinitions", base + "shared/OMHTT/LootDefinitions.lua"},
             {"OMHTT/TurretRarity", base + "shared/OMHTT/TurretRarity.lua"},
             {"OMHTT/TurretBatteryEstimate", base + "shared/OMHTT/TurretBatteryEstimate.lua"},
+            {"OMHTT/TurretDescriptions", base + "shared/OMHTT/TurretDescriptions.lua"},
             {"OMHTT/TurretBenefits", base + "client/OMHTT/TurretBenefits.lua"},
             {"OMHTT/TurretBenefitList", base + "client/OMHTT/TurretBenefitList.lua"},
             {"OMHTT/TurretManage", base + "client/OMHTT/TurretManage.lua"},
@@ -335,7 +338,12 @@ public final class KahluaCheck {
             {"_", "tools/tests/placement_inventory.lua"},
             {"_", "tools/tests/panel_cursor.lua"},
             {"_", "tools/tests/service_timing.lua"},
+            {"_", "tools/tests/tack_load_order_before.lua"},
+            {"_", base + "client/OMHTT/TurretTackMarkers.lua"},
+            {"_", base + "client/OMHTT/TurretTackContact.lua"},
+            {"_", "tools/tests/tack_load_order_after.lua"},
             {"_", "tools/tests/synergy.lua"},
+            {"_", "tools/tests/effect_polish.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

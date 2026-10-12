@@ -1,11 +1,11 @@
 if isClient() or isServer() then return end
-local E = require("OMHTT/TurretProc")
+local E
 local P = require("OMHTT/ContactPlayer")
 local Movement = require("OMHTT/BarbMovement")
 local Contact = require("OMHTT/BarbContact")
 local Clock = require("OMHTT/TurretClock")
-local Damage = require("OMHTT/Damage")
-P.tackContact = E.contact
+local Damage
+
 local session = tostring(getTimestampMs())
 
 ---@param player IsoPlayer Updated player
@@ -33,6 +33,11 @@ local function zombieUpdate(zombie)
     end
 end
 
-Events.OnPlayerUpdate.Add(playerUpdate)
-Events.OnZombieUpdate.Add(zombieUpdate)
+Events.OnGameStart.Add(function()
+    E = require("OMHTT/TurretProc")
+    Damage = require("OMHTT/Damage")
+    P.tackContact = E.contact
+    Events.OnPlayerUpdate.Add(playerUpdate)
+    Events.OnZombieUpdate.Add(zombieUpdate)
+end)
 return {player = playerUpdate, zombie = zombieUpdate}

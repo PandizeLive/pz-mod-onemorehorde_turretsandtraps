@@ -1,5 +1,11 @@
 # C161 - 0.2.44 owner findings and next corrective/content plan
 
+
+## C165 - implementation and native packing limitation
+
+Owner approves the patch, then clarifies automatic packing on Pick Up, unchanged contents summary, and unpacking through placement. 0.2.45 implements the approved effects/UI/power scope; [patch](../PATCH_v0.2.45.md) and [test](../TEST_v0.2.45.md) carry current evidence. Native ordinary-inventory weight compression remains unfinished: the bag flag is equipped-only, opaque snapshot buffers cannot be restored through exposed ordinary Lua, and debug reflection is unavailable in play. No partial item-property serialization or new Java dependency is authorized as a substitute. Preserve this approved requirement for the next implementation decision; existing exact items and weight remain intact. Earlier "not implemented" statements below describe the prior discussion state.
+
+
 ## C164 - LootLab appearance and scrolling correction (2026-10-12)
 
 Owner requests colors for new modules, proposes shapes for module types, asks Show/Hide All to follow while scrolling, then explicitly requests "Fix that this turn, and recap the next patch." Implemented/deployed this UI-only update separately from the pending gameplay patch. Inspected branch `codex/performance-barbed-audit` at `38afcb8`, then refreshed origin before deployment/mirroring.

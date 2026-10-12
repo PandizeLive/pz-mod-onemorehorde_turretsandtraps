@@ -155,7 +155,7 @@ function T.contents(container)
             result.moduleNames[#result.moduleNames + 1] = item:getDisplayName()
             if item:getCondition() > 0 then
                 local name = T.component(item:getFullType())
-                if kind == "module" then result.powerLoad = result.powerLoad + (Stats.POWER_WEIGHTS[name] or 1) end
+                if kind == "module" then result.powerLoad = result.powerLoad + require("OMHTT/TurretRarity").get(name).surcharge end
                 result.active[name] = (result.active[name] or 0) + 1
                 if roles[name] then
                     result.active[roles[name]] = (result.active[roles[name]] or 0) + 1

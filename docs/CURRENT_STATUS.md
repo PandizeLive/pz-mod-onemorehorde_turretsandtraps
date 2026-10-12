@@ -1,21 +1,19 @@
 # Current development and planning handoff
 
-**C164 LootLab UI deployed:** all 28 entries have stable ID-keyed colors; five module-family shapes match the list and map; Show all / Hide all stays visible beneath the sync banner. Desktop/mobile browser checks, 76 API/page tests and deployment verification pass. [Evidence](../diagnostics/lootlab-ui-20261012/release.json). Gameplay remains 0.2.44; the [C161-C163 corrective/content patch](checkpoints/R3_EFFECT_POLISH.md) is next, not implemented.
-
-**C163 sound selected:** Martyrdom uses 4G, native AttackStomp, with audio starting before its .75-second post-death pop so the main impact aligns. The captured attack suggests an initial .20-second audio lead (.55 seconds after death); rendered synchronization still needs verification. C162 power/accuracy/Fragment/Tack directions remain. [Current contract](checkpoints/R3_EFFECT_POLISH.md#c163---martyrdom-stomp-selection-and-audio-lead-2026-10-12). Planning only: installed 0.2.44 still has the confirmed Tack initialization failure.
-
-
-
 Updated 2026-10-12. Read with [AGENTS](../AGENTS.md) and [Planning](PLANNING.md).
 
-**C160 / 0.2.44 installed and automatically verified.** Manage sections/rarity/bars, reload-aware battery feedback, Once Each and Synergy/Martyrdom/Tack are complete under the [approved contract](checkpoints/R3_MANAGE_RARITY_SYNERGY.md). Bounded admission precedes resource commitment; terminal effects cannot recurse. [Patch](PATCH_v0.2.44.md) | [one six-step test](TEST_v0.2.44.md).
+**C165 / 0.2.45 implemented and automatically verified.** Tack startup, delayed effects/audio, shotgun accuracy/Piercing, rarity-based power, concise module/battery feedback and slider polish are complete. [Patch](PATCH_v0.2.45.md) | [five-step test](TEST_v0.2.45.md). Installation is the next release step; owner acceptance remains pending.
 
-15,931 Kahlua assertions, native write/read, all three package selections and 51 supported Firearms guns pass. LootLab matches 28 modules / 193 entries; 76 API/page tests and browser model/import checks pass. These checks do not certify rendered gameplay or client frame smoothness. The prior 676-ms gap remains unassigned. Held 0.2.43 checks join this test; no old round is newly marked passed.
+16,011 Kahlua assertions, native write/fresh-process read, all three independent-package selections and 51 supported Firearms weapons pass. These checks do not certify rendered layout, audible timing or crowded-client frame smoothness.
 
-- **Release:** 0.2.44 is installed from immutable `test/v0.2.44`; 202 source / 250 tagged, packaged, installed and archived files match. Exact evidence is recorded in [release state](RELEASE.md). No Workshop upload; cumulative pending notes preserved.
-- **Roadmap:** R3C6 implementation is complete; R3C7 combined module/power acceptance and relevant R1C3 performance checks remain active. [Canonical index](ROADMAP.md#current-checkpoint-status-and-next-work). New heads, MP and signals remain separate decisions.
-- **Prior findings:** C138 closes 0.2.41 with no reported issues; unmentioned individual checks are not certified. C123 accepts the reported lag improvement. The Louisville hang remains unassigned.
-- **Limits:** SP combat only, fresh-world item-ID policy, native inventory weight limits and owner-sourced final art. Bounded overload delays firing; markers/audio are paced separately. No promise of lag-free crowds.
-- **GitHub:** `codex/performance-barbed-audit`, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1) into dev. C108/C119 requires the completed update and evidence to be mirrored. No merge or publication.
+**Packed-weight compression remains approved but unfinished.** Pick Up should automatically pack the turret, preserve its normal contents summary, and unpack through existing placement. The tested native opaque-buffer restoration is unavailable to ordinary Lua; exact arbitrary-item preservation is not proven. Existing pickup weight remains. No equipped-only substitute or partial property reconstruction ships.
 
-**Wait for a patch:** the Martyrdom sound decision is settled in C163. The corrective/content patch is not implemented or installed. 0.2.44 remains installed with failed Tack initialization; no repeat test is requested before correction.
+C164 LootLab colors, family shapes and sticky Show all / Hide all are already deployed and verified. R3C7 combined acceptance and relevant R1C3 performance work remain active. No Workshop publication.
+
+- **Release:** 203 source / 251 packaged files; immutable tag and installation evidence will be recorded in [release state](RELEASE.md).
+- **Roadmap:** R3C6 implementation is complete; R3C7 and R1C3 acceptance remain open. [Canonical index](ROADMAP.md#current-checkpoint-status-and-next-work). New heads, MP and signals remain separate decisions.
+- **Prior findings:** C138 closes 0.2.41 with no reported issues; unmentioned individual checks are not certified. C123 accepts the reported lag improvement. The Louisville hang and prior 676-ms gap remain unassigned.
+- **Limits:** SP combat only, fresh-world item-ID policy, native inventory weight limits and owner-sourced final art. Bounded overload delays firing; no promise of lag-free crowds.
+- **GitHub:** `codex/performance-barbed-audit`, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1) into dev. C108/C119 requires mirroring the completed update/evidence; no merge or publication.
+
+**Wait for a patch:** native verification has passed; tagged installation and development mirror are being completed.

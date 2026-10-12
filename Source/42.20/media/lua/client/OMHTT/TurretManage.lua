@@ -163,6 +163,7 @@ function Panel:refresh()
     self.batteryContents = contents
     local batteryKey = benefitsKey .. ":" .. (contents.battery and contents.battery:getCurrentUsesFloat() or 0)
         .. ":" .. stats.batteryPercent .. ":" .. stats.reload .. ":" .. stats.cooldown .. ":" .. stats.magazine
+        .. ":" .. getGameTime():getMinutesPerDay()
         .. ":" .. (cycle and cycle.loaded or 0) .. ":" .. (cycle and cycle.conservationDebt or 0)
     if batteryKey ~= self.batteryKey then self.batteryKey, self.batteryText = batteryKey, nil end
     self.stats = stats
@@ -255,9 +256,12 @@ function Panel:refresh()
     end
     self.modulesMissing = #missing > 0
     if self.modulesMissing then self.moduleEffects = getText("UI_OMHTT_ManageMissing", table.concat(missing, ", ")) end
+    self.moduleWarning = ""
     if (contents.active.Piercing or 0) > 0 and stats.piercing == 0 then
-        self.moduleEffects = self.moduleEffects .. " | " .. getText("UI_OMHTT_PiercingInactive")
+        self.moduleWarning = getText("UI_OMHTT_PiercingInactive")
     end
+    self.moduleLines = getTextManager():WrapText(UIFont.Small, self.moduleEffects
+        .. (self.moduleWarning ~= "" and "\n" .. self.moduleWarning or ""), self.width / 2 - 24)
     local charge = getText("UI_OMHTT_None")
     if contents.battery then charge = tostring(math.floor(contents.battery:getCurrentUsesFloat() * 100)) .. "%" end
     self.batterySlot.label = getText("UI_OMHTT_ManageBattery", charge)
@@ -309,24 +313,24 @@ function Panel:prerender()
     local h, y = self.lineHeight, self.detailsY
     self:section(6, self.equipmentY, self.width - 12, self.modulesY - self.equipmentY - 4, getText("UI_OMHTT_Equipment"))
     self:section(6, self.modulesY, self.width - 12, y - self.modulesY - 4, "")
-    self:section(6, y - h, self.width / 2 - 10, h * 8, getText("UI_OMHTT_Status"))
-    self:drawRect(6, y + h * 7 + 2, self.width - 12, h + 10, .8, .08, .08, .08)
-    self:drawRectBorder(6, y + h * 7 + 2, self.width - 12, h + 10, .7, .3, .3, .3)
+    self:section(6, y - h, self.width / 2 - 10, h * 9, getText("UI_OMHTT_Status"))
+    self:drawRect(6, y + h * 8 + 2, self.width - 12, h + 10, .8, .08, .08, .08)
+    self:drawRectBorder(6, y + h * 8 + 2, self.width - 12, h + 10, .7, .3, .3, .3)
     self:drawText(getText("UI_OMHTT_Turret"), 12, 8, 1, 1, 1, 1, UIFont.Medium)
     self:drawText(getText("UI_OMHTT_ManageHint"), 12, self.titleHeight, 0.8, 0.8, 0.8, 1, UIFont.Small)
     local label = self.moduleLabel
     if self.rows > 3 then label = label .. " — " .. getText("UI_OMHTT_ManageScroll") end
     self:drawText(label, 12, self.modulesY, 1, 1, 1, 1, UIFont.Small)
-    self:setStencilRect(12, y, self.width / 2 - 18, h * 7)
-    self:drawText(self.moduleEffects, 12, y, self.modulesMissing and 1 or 0.8, self.modulesMissing and 0.3 or 0.8, self.modulesMissing and 0.3 or 0.8, 1, UIFont.Small)
-    self:drawText(getText("UI_OMHTT_Manage" .. self.status) .. " | " .. self.powerLabel, 12, y + h, 1, 1, 1, 1, UIFont.Small)
+    self:setStencilRect(12, y, self.width / 2 - 18, h * 8)
+    self:drawText(self.moduleLines, 12, y, self.modulesMissing and 1 or 0.8, self.modulesMissing and 0.3 or 0.8, self.modulesMissing and 0.3 or 0.8, 1, UIFont.Small)
+    self:drawText(getText("UI_OMHTT_Manage" .. self.status) .. " | " .. self.powerLabel, 12, y + h * 2, 1, 1, 1, 1, UIFont.Small)
     local stats = self.stats
     self:drawText(getText("UI_OMHTT_CompactStats", string.format("%.1f", stats.damage), string.format("%.1f", stats.range),
-        self.object:getHealth(), self.object:getMaxHealth()), 12, y + h * 2, 1, 1, 1, 1, UIFont.Small)
+        self.object:getHealth(), self.object:getMaxHealth()), 12, y + h * 3, 1, 1, 1, 1, UIFont.Small)
     self:drawText(getText("UI_OMHTT_ManageTiming", string.format("%.2f", stats.reload / 1000), string.format("%.2f", 1000 / stats.cooldown)),
-        12, y + h * 3, 1, 1, 1, 1, UIFont.Small)
+        12, y + h * 4, 1, 1, 1, 1, UIFont.Small)
     self:drawText(getText("UI_OMHTT_CompactChances", string.format("%.0f", stats.accuracy), string.format("%.0f", stats.critChance),
-        string.format("%.1f", stats.critMultiplier)), 12, y + h * 4, 1, 1, 1, 1, UIFont.Small)
+        string.format("%.1f", stats.critMultiplier)), 12, y + h * 5, 1, 1, 1, 1, UIFont.Small)
     local message = self.result .. ":" .. self.reason
     if self.lastMessage ~= message then
         self.lastMessage, self.messageAt = message, now
@@ -334,11 +338,11 @@ function Panel:prerender()
     local elapsed = now - self.messageAt
     local glow = 0
     if elapsed < 1500 then glow = (1 - elapsed / 1500) * (0.5 + 0.5 * math.cos(elapsed / 120)) end
-    self:drawText(self.result, 12, y + h * 5, 0.9 + glow * 0.1, 0.85 + glow * 0.15, 0.65 + glow * 0.35, 1, UIFont.Small)
-    self:drawText(self.reason, 12, y + h * 6, 0.9 + glow * 0.1, 0.85 + glow * 0.15, 0.65 + glow * 0.35, 1, UIFont.Small)
+    self:drawText(self.result, 12, y + h * 6, 0.9 + glow * 0.1, 0.85 + glow * 0.15, 0.65 + glow * 0.35, 1, UIFont.Small)
+    self:drawText(self.reason, 12, y + h * 7, 0.9 + glow * 0.1, 0.85 + glow * 0.15, 0.65 + glow * 0.35, 1, UIFont.Small)
     self:clearStencilRect()
     self:drawText(getText("UI_OMHTT_EngagementRange", T.state(self.object).engagementRange and string.format("%.1f", self.engagementRange) or getText("UI_OMHTT_RangeMax")),
-        12, y + h * 7, 1, 1, 1, 1, UIFont.Small)
+        12, y + h * 8 + 6, 1, 1, 1, 1, UIFont.Small)
 end
 
 ---@param x number Local X
@@ -363,14 +367,14 @@ function OpenAction:perform()
         local top = titleHeight + lineHeight * 2 + 12
         local moduleHeight = lineHeight * 2 + 24
         local available = getPlayerScreenHeight(index) - 24
-        local preferred = top + (slotHeight + 8) * 2 + lineHeight * 2 + (moduleHeight + 6) * 3 + 6 + lineHeight * 8 + 82
+        local preferred = top + (slotHeight + 8) * 2 + lineHeight * 2 + (moduleHeight + 6) * 3 + 6 + lineHeight * 9 + 82
         local trim = math.max(0, preferred - available)
         local slotTrim = math.min(24, trim / 5)
         slotHeight = slotHeight - slotTrim
         moduleHeight = moduleHeight - math.min(12, math.max(0, trim - slotTrim * 2) / 3)
         local modulesY = top + (slotHeight + 8) * 2
         local detailsY = modulesY + lineHeight * 2 + (moduleHeight + 6) * 3 + 6
-        local height = detailsY + lineHeight * 8 + 82
+        local height = detailsY + lineHeight * 9 + 82
         local x = getPlayerScreenLeft(index) + getPlayerScreenWidth(index) - width - 12
         local y = getPlayerScreenTop(index) + math.max(12, (getPlayerScreenHeight(index) - height) / 2)
         local panel = Panel:new(x, y, width, height)
@@ -383,10 +387,12 @@ function OpenAction:perform()
         panel.moveWithMouse = true
         panel.backgroundColor = {r = 0.04, g = 0.04, b = 0.04, a = 0.96}
         panel:initialise()
-        panel.benefitList = BenefitList:new(width / 2 + 4, detailsY - lineHeight, width / 2 - 16, lineHeight * 8, lineHeight)
+        panel.benefitList = BenefitList:new(width / 2 + 4, detailsY - lineHeight, width / 2 - 16, lineHeight * 9, lineHeight)
         panel.benefitList:initialise()
         panel:addChild(panel.benefitList)
-        panel.rangeSlider = ISSliderPanel:new(width / 2, detailsY + lineHeight * 7 - 3, width / 2 - 12, 24, panel, Panel.changeRange)
+        local rangeLabel = getText("UI_OMHTT_EngagementRange", getText("UI_OMHTT_RangeMax"))
+        local rangeX = math.min(width - 150, 28 + font:MeasureStringX(UIFont.Small, rangeLabel))
+        panel.rangeSlider = ISSliderPanel:new(rangeX, detailsY + lineHeight * 8 + 5, width - rangeX - 24, lineHeight + 2, panel, Panel.changeRange)
         panel.rangeSlider:initialise()
         panel.rangeSlider.toolTipText = getText("UI_OMHTT_RangeTooltip")
         panel:addChild(panel.rangeSlider)
