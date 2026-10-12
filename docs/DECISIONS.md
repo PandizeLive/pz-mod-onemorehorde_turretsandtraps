@@ -1004,3 +1004,7 @@ Owner: "1A". Approves C184 option 1A: saved tier weights define rarity across Lo
 ## C186 - Owner rarity audio received and next-update recap (2026-10-12)
 
 Owner supplied seven named rarity WAVs in Audio/Turrets & Traps and requested a recap. Record files received for the already selected C182 custom-audio option; next work is Module Pack rarity reveal audio. Highest-rarity-only playback remains the recommended integration to avoid layered fanfares, using C185 cached classification. Inventory/format inspection only this turn; no gameplay/version/install changes or audible acceptance. Existing inset-panel layout selection is consistent with installed UI, not new scope. [Contract](PACK_POLISH.md#c186-owner-rarity-sounds-received-2026-10-12).
+
+## C187 - Requested current LootLab weight check (2026-10-12)
+
+Owner expects a couple Mythic items and requests confirmation of the next patch. Saved weights cannot yet be verified: available browser is signed out and auto-review rejected the read-only database access path pending explicit account authorization. Requested permission or an export. Do not claim Mythic assignments from old defaults. C186 custom rarity audio remains next; no implementation/version/install changes this turn. [Details](PACK_POLISH.md#c187-current-weights-check-2026-10-12).
