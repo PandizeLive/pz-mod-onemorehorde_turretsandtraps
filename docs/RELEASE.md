@@ -1,6 +1,12 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.47.2 / C181
+## Current local installation: 0.2.47.3 / C182
+
+Native pack ticking/selection, four-second rarity fade, live LootLab rarity feedback and equal-weight tier reopening are implemented. 16,101 assertions, native write/read and all three independent package selections pass. [Patch](PATCH_v0.2.47.3.md) | [Four-step test](TEST_v0.2.47.3.md). Installed through root OMH.cmd from immutable `test/v0.2.47.3` / `c2fb25ab3ce5605d08358eec6915fa61443ba937`. All 208 source / 256 tagged, packaged, installed and archived files match; both 0.2.47.2 backups verify. Archive SHA-256: `3374682da600ad195978d50a980cae22e6179ea22b8aab70d4e41b53d7da893c`. [Machine verification](../diagnostics/v0.2.47.3/local-release.json). No Workshop publication. Owner-rendered acceptance, custom rarity clips and additional randomized native-event pitch remain pending; the unsafe pitch setter is not used.
+
+LootLab is deployed as Worker `aae57e83-5747-47a6-bdb1-a58f60ba94da`: 78 API/page tests and Edge drag/drop, live color/badge, reopening, weight input, sticky layout and mobile checks pass. Deployed backend bytes match the previous release; only static assets changed. Protected routes verify. No account data/schema changes; tier weights are remembered while the page remains open. [Deployment evidence](../diagnostics/v0.2.47.3/lootlab-release.json). Data baseline remains 0.2.47. The unrelated dirty website checkout was preserved.
+
+## Previous local installation: 0.2.47.2 / C181
 
 Capacity-warning correction and Manage-style Module Pack collection are verified. 16,094 assertions, native write/read, all three independent package selections and source/package no-pcall scans pass. [Patch](PATCH_v0.2.47.2.md) | [Four-step test](TEST_v0.2.47.2.md). Installed through root OMH.cmd from immutable `test/v0.2.47.2` / `381b803aad553dcfec0b9320e6ed8a3d9662cf33`. All 208 source / 256 tagged, packaged, installed and archived files match; both 0.2.47.1 backups verify. Archive SHA-256: `0c551508a170ba6d6273b9a50e1836e099d04f3250fdb010f8ae49dc04e74ea0`. [Machine verification](../diagnostics/v0.2.47.2/local-release.json). Restart before the owner test. No Workshop publication; sound/particle selections remain pending.
 

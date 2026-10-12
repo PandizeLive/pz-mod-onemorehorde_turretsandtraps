@@ -4,7 +4,7 @@
 
 Native pitch variation requested, but additional randomized pitch is **not implemented**: the installed event path ignores clip pitch and the emitter setter writes every queued/active sound. Native rotation is played unchanged; no unrelated audio is modified. Custom rarity sounds remain pending, with the approved pickup cue providing selection feedback. No particles. No loot/default/rarity-formula changes.
 
-Implementation and automated verification are complete; installation/deployment evidence follows in RELEASE.md. Owner acceptance remains pending. The current console still identifies 0.2.47.1; it cannot validate 0.2.47.2/3. The owner's 0.2.47.2 LootLab report is recorded in its test findings.
+0.2.47.3 is installed from its immutable test tag; all 256 installed files and both backups verify. LootLab is deployed and verified. Installation/deployment evidence is in RELEASE.md. Owner acceptance remains pending. The current console still identifies 0.2.47.1; it cannot validate 0.2.47.2/3. The owner's 0.2.47.2 LootLab report is recorded in its test findings.
 
 C181 fixed the native carried-capacity warnings: six-weight base permits 44 contents weight, while ammo-count limits remain separate. Defaults fill all seven rarity bands; saved all-one multipliers leave Common empty. Saved tuning is preserved.
 

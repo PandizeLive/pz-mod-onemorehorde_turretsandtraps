@@ -12,5 +12,6 @@
     "Native rendered audio/pulse acceptance pending",
     "Custom rarity files absent",
     "Additional native event pitch variation not implemented"
-  ]
+  ],
+  "installedProtectedCallHits": []
 }
