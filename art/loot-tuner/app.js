@@ -1,7 +1,28 @@
 'use strict';
 const D=window.LOOT_DATA, M=window.LootModel, $=id=>document.getElementById(id);
 let scenario=M.defaults(D), prepared=null, result=null, sample=null, generation=0, redrawPending=false;
-const colors=['#f2bd62','#56b4e9','#ed648c','#b888f5','#47ce88','#ff7959','#e0dc66','#74dedc','#bd97dc','#8ca756','#f69ed0','#d09a75','#bbc9da','#eea577','#93d6b5','#a3b8ff','#dc9f49','#ce82a9','#e9d6a0','#64aab0'];
+const moduleAppearance={
+  Firing:['#f2bd62','circle'],MotionDetection:['#56b4e9','circle'],Filter:['#ed648c','circle'],Detection360:['#b888f5','circle'],Suppression:['#47ce88','circle'],
+  RapidFire:['#ff7959','triangle'],Reload:['#e0dc66','square'],Velocity:['#74dedc','triangle'],Range:['#bd97dc','triangle'],
+  CapacitySmall:['#8ca756','hexagon'],Capacity:['#f69ed0','hexagon'],CapacityLarge:['#d09a75','hexagon'],Autoloader:['#bbc9da','square'],
+  Critical:['#eea577','triangle'],Accuracy:['#93d6b5','triangle'],Magazine:['#a3b8ff','square'],Splitter:['#dc9f49','diamond'],Fragment:['#ce82a9','diamond'],
+  FiringEnhanced:['#e9d6a0','circle'],MotionDetectionEnhanced:['#64aab0','circle'],Piercing:['#8edbff','diamond'],InitialBlow:['#ffb4a2','diamond'],
+  Execute:['#e96969','diamond'],Impact:['#c4db72','diamond'],Conservation:['#70d4ac','square'],Synergy:['#d4a6ff','diamond'],Martyrdom:['#ff934f','diamond'],Tack:['#f5db84','diamond']
+};
+const familyNames={circle:'Control',triangle:'Ballistics',square:'Ammo & reload',diamond:'Hit effects',hexagon:'Expansion'};
+function appearance(id){
+  if(moduleAppearance[id])return moduleAppearance[id];
+  let hash=0;for(const ch of id)hash=(hash*31+ch.charCodeAt(0))>>>0;
+  return [`hsl(${hash%360} 65% 70%)`,'circle'];
+}
+const appearances=D.modules.map(m=>appearance(m.id)),colors=appearances.map(a=>a[0]);
+const shapePoints={triangle:[[0,-1],[.866,.5],[-.866,.5]],square:[[-.707,-.707],[.707,-.707],[.707,.707],[-.707,.707]],diamond:[[0,-1],[1,0],[0,1],[-1,0]],hexagon:[[0,-1],[.866,-.5],[.866,.5],[0,1],[-.866,.5],[-.866,-.5]]};
+function drawMarker(x,y,r,module){
+  const points=shapePoints[appearances[module][1]];ctx.beginPath();
+  if(points){points.forEach(([px,py],i)=>i?ctx.lineTo(x+px*r,y+py*r):ctx.moveTo(x+px*r,y+py*r));ctx.closePath();}
+  else ctx.arc(x,y,r,0,Math.PI*2);
+  ctx.fill();
+}
 let markers=[],chanceCache=[];
 const number=n=>n.toLocaleString(undefined,{maximumFractionDigits:1});
 const pretty=s=>s.replace(/([a-z])([A-Z])/g,'$1 $2');
@@ -20,7 +41,7 @@ for(const m of [{id:'all',name:'All components'},...D.modules]){const o=document
 for(const [i,m] of D.modules.entries()){
   const div=document.createElement('div');div.className='component';div.id='component-'+m.id;
   const top=document.createElement('div'),label=document.createElement('label'),swatch=document.createElement('span'),span=document.createElement('span'),show=document.createElement('input'),input=document.createElement('input'),small=document.createElement('small');
-  top.className='component-top';label.className='component-name';swatch.className='swatch';swatch.style.backgroundColor=colors[i];
+  top.className='component-top';label.className='component-name';swatch.className='swatch shape-'+appearances[i][1];swatch.style.backgroundColor=colors[i];swatch.title=familyNames[appearances[i][1]];
   show.type='checkbox';show.id='show-'+m.id;show.setAttribute('aria-label','Show '+m.name+' on map');
   show.addEventListener('change',()=>{scenario.visible[m.id]=show.checked;controls();updateSampleSummary();scheduleDraw();saveSettings();});
   span.textContent=m.name;input.type='number';input.min=0;input.max=20;input.step=.05;input.id='item-'+m.id;input.className='rate';input.setAttribute('aria-label',m.name+' loot multiplier');
@@ -30,7 +51,7 @@ for(const [i,m] of D.modules.entries()){
   small.id='estimate-'+m.id;label.append(show,swatch,span);top.append(label,input);
   const rarity=document.createElement('div'),track=document.createElement('div'),marker=document.createElement('span'),ends=document.createElement('div');
   rarity.className='rarity';track.className='rarity-track';track.id='rarity-'+m.id;track.setAttribute('role','meter');track.setAttribute('aria-label',m.name+' estimated abundance');track.setAttribute('aria-valuemin','0');track.setAttribute('aria-valuemax','1000');
-  marker.className='rarity-marker';marker.id='rarity-marker-'+m.id;marker.style.backgroundColor=colors[i];track.append(marker);
+  marker.className='rarity-marker shape-'+appearances[i][1];marker.id='rarity-marker-'+m.id;marker.style.backgroundColor=colors[i];track.append(marker);
   ends.className='rarity-ends';for(const text of ['Rare','Common']){const end=document.createElement('span');end.textContent=text;ends.append(end);}rarity.append(track,ends);
   div.append(top,rarity,small);$('components').append(div);
 }
@@ -159,7 +180,7 @@ function draw(){
         // Small screen-space separation makes co-located components visible without inventing tiles.
         const angle=module/D.modules.length*Math.PI*2;x+=Math.cos(angle)*6;y+=Math.sin(angle)*6;
         ctx.globalAlpha=scenario.overlay==='spawns'?.95:Math.min(.85,.16+Math.sqrt(value)*.7);ctx.fillStyle=colors[module];
-        ctx.beginPath();ctx.arc(x,y,M.markerRadius(scenario.overlay,sample.containerTotals[index],result.hauls[index].jackpot),0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+        drawMarker(x,y,M.markerRadius(scenario.overlay,sample.containerTotals[index],result.hauls[index].jackpot),module);ctx.globalAlpha=1;
         markers.push({x,y,container:index,module,radius:M.markerRadius(scenario.overlay,sample.containerTotals[index],result.hauls[index].jackpot)});
       }else{
         const key=Math.floor(x/18)+','+Math.floor(y/18)+','+module;
@@ -170,7 +191,7 @@ function draw(){
     else D.containers.forEach((c,index)=>{if(c.x<left||c.x>right||c.y<top||c.y>bottom)return;for(let i=0;i<D.modules.length;i++){if(!scenario.visible[D.modules[i].id])continue;const chance=containerChance(index,i);if(chance>0)dot(index,i,chance,0);}});
     for(const b of bins.values()){
       const angle=b.module/D.modules.length*Math.PI*2;
-      ctx.globalAlpha=scenario.overlay==='spawns'?.85:.45;ctx.fillStyle=colors[b.module];ctx.beginPath();ctx.arc(b.x/b.n+Math.cos(angle)*5,b.y/b.n+Math.sin(angle)*5,Math.min(b.jackpot&&scenario.overlay==='spawns'?13:9,2+Math.sqrt(b.value)*1.5+(b.jackpot&&scenario.overlay==='spawns'?4:0)),0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+      ctx.globalAlpha=scenario.overlay==='spawns'?.85:.45;ctx.fillStyle=colors[b.module];drawMarker(b.x/b.n+Math.cos(angle)*5,b.y/b.n+Math.sin(angle)*5,Math.min(b.jackpot&&scenario.overlay==='spawns'?13:9,2+Math.sqrt(b.value)*1.5+(b.jackpot&&scenario.overlay==='spawns'?4:0)),b.module);ctx.globalAlpha=1;
     }
   }
   ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='600 12px system-ui';
@@ -178,6 +199,7 @@ function draw(){
   let tiles=10**Math.floor(Math.log10(100/view.scale));if(tiles*view.scale<40)tiles*=5;
   ctx.textAlign='right';ctx.font='11px system-ui';ctx.fillStyle='#edf0e8';ctx.fillText(number(tiles)+' tiles',width-17,height-34);ctx.strokeStyle='#edf0e8';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(width-17-tiles*view.scale,height-24);ctx.lineTo(width-17,height-24);ctx.stroke();
 }
+new ResizeObserver(()=>{$('visibilityActions').style.top=Math.ceil($('syncBanner').getBoundingClientRect().height)+'px';}).observe($('syncBanner'));
 let firstResize=true;
 new ResizeObserver(()=>{gestures.reset();const rect=canvas.getBoundingClientRect();width=rect.width;height=rect.height;const dpr=window.devicePixelRatio||1;canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);firstResize?(fit(),firstResize=false):scheduleDraw();}).observe(canvas);
 let settingsSync=null;

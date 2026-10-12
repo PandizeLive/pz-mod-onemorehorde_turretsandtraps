@@ -21,3 +21,11 @@
 @media(max-width:700px){.workspace{padding:12px}.mobile-jump{display:inline-block;padding:10px 0}.toolbar{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:10px}.toolbar label{min-width:0;display:block}.toolbar select{display:block;width:100%;max-width:none;margin:4px 0 0}.toolbar #seedBadge{font-size:11px;overflow-wrap:anywhere}.map-wrap{height:56svh;min-height:300px;max-height:560px}.map-note{font-size:10px;left:8px;bottom:8px;padding:5px 6px;max-width:calc(100% - 110px)}.map-note span{display:none}.metrics strong{font-size:23px}.metrics article{min-width:0}.method code{overflow-wrap:anywhere}aside{padding:16px}.tables{min-width:0}table{table-layout:fixed}td,th{overflow-wrap:anywhere}.component small{font-size:12px}.badges{gap:5px}}
 
 .sync-banner{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 24px;background:#192326;border-bottom:1px solid var(--line);font-size:13px}.sync-banner span{flex:1;min-width:180px}.sync-banner a{color:var(--accent)}.sync-banner.sync-error{color:#ffd398;border-bottom-color:var(--accent)}.sync-banner [hidden]{display:none}@media(max-width:700px){.sync-banner{padding:10px 16px}}
+
+.visibility-actions{position:sticky;top:46px;z-index:4;background:var(--panel);padding:10px 0;border-bottom:1px solid var(--line)}
+.visibility-actions button{min-height:40px;flex:1}.shape-legend{font-size:12px;color:var(--muted);line-height:1.8}
+.swatch{width:12px;height:12px}.component .component-name{grid-template-columns:20px 12px minmax(0,1fr)}
+.shape-square{border-radius:0;clip-path:polygon(15% 15%,85% 15%,85% 85%,15% 85%)}
+.shape-triangle{border-radius:0;clip-path:polygon(50% 0%,93.3% 75%,6.7% 75%)}
+.shape-diamond{border-radius:0;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%)}
+.shape-hexagon{border-radius:0;clip-path:polygon(50% 0%,93.3% 25%,93.3% 75%,50% 100%,6.7% 75%,6.7% 25%)}

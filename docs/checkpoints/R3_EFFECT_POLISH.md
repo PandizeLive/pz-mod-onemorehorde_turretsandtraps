@@ -1,5 +1,17 @@
 # C161 - 0.2.44 owner findings and next corrective/content plan
 
+## C164 - LootLab appearance and scrolling correction (2026-10-12)
+
+Owner requests colors for new modules, proposes shapes for module types, asks Show/Hide All to follow while scrolling, then explicitly requests "Fix that this turn, and recap the next patch." Implemented/deployed this UI-only update separately from the pending gameplay patch. Inspected branch `codex/performance-barbed-audit` at `38afcb8`, then refreshed origin before deployment/mirroring.
+
+Confirmed defect: a 20-element positional palette was used for 28 entries, leaving Piercing, Initial Blow, Execute, Impact, Conservation, Synergy, Martyrdom and Tack without assigned colors. Colors now use stable module IDs and a deterministic fallback. Existing twenty colors are retained. Five family shapes appear in swatches, abundance markers and both zoomed/aggregated map overlays: circle Control; triangle Ballistics; square Ammo/reload; diamond Hit effects; hexagon Expansion. Color identifies the individual component; rarity remains on its existing abundance scale. This is site UI notation, not new mod art or gameplay categories.
+
+Show all / Hide all uses CSS sticky positioning, with a ResizeObserver adjusting for the wrapping sync banner's height; no scroll handler or polling. The row has an opaque background and remains below that banner at desktop/mobile sizes. Existing loot seed, weights, visibility persistence and jackpot/size semantics remain.
+
+Verified 28 colors, reorder stability and future-ID fallback; numerical model and pan/zoom checks pass; 76 API/page tests pass. Headless Edge checks at 1360x900 and 390x844 confirm sticky controls, working hide/show of all 28 and no page errors; screenshots inspected. Hosted deployment `374ee38a-d419-498a-b55a-2787f903faf9` uploads the three changed UI assets from an isolated copy of the prior verified release. Worker bundle matches dry-run; twelve protected routes and two public APIs pass. No database/settings writes, gameplay installation or Workshop publication. [Machine evidence](../../diagnostics/lootlab-ui-20261012/release.json).
+
+The next gameplay patch remains C161-C163: Tack startup correction; short in-game battery feedback; rarity-linked additive power/module tooltips; slider/status polish; shotgun aiming/Piercing; packed-contents weight reduction; delayed Martyrdom/Tack/terminal-stop Fragment with selected audio. This LootLab update does not claim those fixes are implemented.
+
 ## C163 - Martyrdom stomp selection and audio lead (2026-10-12)
 
 Owner selects **4G / native AttackStomp** and requests starting it slightly before the pop because the sound has an attack. This settles the last sound choice; no new gameplay implementation or acceptance is claimed by this planning update.

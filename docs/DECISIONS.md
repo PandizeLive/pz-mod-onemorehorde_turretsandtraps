@@ -896,3 +896,8 @@ Owner says "1C ... start at 1.0, and each module adds between 0.1x - 2.0x", sele
 ## C163 - Martyrdom sound selection and early playback (2026-10-12)
 
 Owner says "4G, but play it slightly before they pop so the impact is timed correctly. The file has some attack to it." Select native AttackStomp and begin its audio before the .75-second death-to-pop deadline. [Current contract](checkpoints/R3_EFFECT_POLISH.md#c163---martyrdom-stomp-selection-and-audio-lead-2026-10-12) proposes a .20-second lead based on the existing capture's .182-second peak / .209-second RMS attack relative to audible onset. This offset is initial calibration, not an owner-specified exact value or verified rendered synchronization. Damage/pop/AI noise remain at .75 seconds; no new gameplay implementation, install or test pass is claimed. C162 choices remain, and no sound selection remains open. Commit/mirror these planning changes under C108/C119.
+
+
+## C164 - immediate LootLab colors, shapes and sticky controls (2026-10-12)
+
+Owner requests new-module colors, proposes per-type shapes, then requests sticky Show/Hide All and says "Fix that this turn, and recap the next patch." This authorizes the small hosted UI update. Implemented 28 stable ID-keyed colors with future fallback, five family shapes across map/list and sticky visibility controls below the responsive sync banner. No loot/model/account/gameplay tuning changes. [Implementation and evidence](checkpoints/R3_EFFECT_POLISH.md#c164---lootlab-appearance-and-scrolling-correction-2026-10-12). C161-C163 gameplay patch remains pending separately. No new final art, mod install or Workshop publication.

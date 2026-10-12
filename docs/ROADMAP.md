@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Synchronized 2026-10-12 against C80-C163 and the implemented, native-verified 0.2.44 build. Its owner test now has C161 failures/proposed corrections; the prior 0.2.41/C138 round remains complete. This is the canonical execution/status index.
+Synchronized 2026-10-12 against C80-C164 and the implemented, native-verified 0.2.44 build. Its owner test now has C161 failures/proposed corrections; the prior 0.2.41/C138 round remains complete. This is the canonical execution/status index.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -17,6 +17,8 @@ Existing SP content includes basic/reinforced Spike Barriers, portable items/pac
 Shared combat scheduling and active-time clocks exist. Render/maintenance costs and integrated authority remain open. The Louisville hang is unassigned; preserve useful evidence if it recurs, without claiming OMH caused it or has been cleared. Final art/audio remain owner-sourced. Makeshift Detection/Firing/Expansion are craftable; standard module crafting remains deferred.
 
 ## Current checkpoint status and next work
+
+**C164 LootLab UI deployed:** all 28 entries have stable ID-keyed colors; five module-family shapes match the list and map; Show all / Hide all stays visible beneath the sync banner. Desktop/mobile browser checks, 76 API/page tests and deployment verification pass. [Evidence](../diagnostics/lootlab-ui-20261012/release.json). Gameplay remains 0.2.44; the [C161-C163 corrective/content patch](checkpoints/R3_EFFECT_POLISH.md) is next, not implemented.
 
 **C163 sound selected:** Martyrdom uses 4G, native AttackStomp, with audio starting before its .75-second post-death pop so the main impact aligns. The captured attack suggests an initial .20-second audio lead (.55 seconds after death); rendered synchronization still needs verification. C162 power/accuracy/Fragment/Tack directions remain. [Current contract](checkpoints/R3_EFFECT_POLISH.md#c163---martyrdom-stomp-selection-and-audio-lead-2026-10-12). Planning only: installed 0.2.44 still has the confirmed Tack initialization failure.
 

@@ -106,3 +106,5 @@ Piercing, Initial Blow, Execute and Impact are loot-only modules with the same 2
 ## 0.2.43 catalog refresh
 
 Conservation uses offensive-module weight 2.5, adding five entries to the same eligible pools (25 modules, 175 entries). Other weights and global controls are unchanged. Saved 0.2.42 tuning is retained; Conservation starts at multiplier 1 and visible.
+
+Module colors are keyed by ID, with a deterministic fallback for future entries. Shapes indicate Control, Ballistics, Ammo/reload, Hit effects or Expansion in both legend and map; marker size retains existing haul/count semantics. Show all / Hide all stays beneath the sync banner while scrolling. These are display controls, not loot-rate changes.
