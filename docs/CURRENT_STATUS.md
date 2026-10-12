@@ -1,6 +1,6 @@
 # Current development and planning handoff
 
-**C155 discussion:** [Manage boundaries, automatic rarity, Once each, battery clarity and Synergy options](checkpoints/R3_MANAGE_RARITY_SYNERGY.md). Owner screenshots request UI corrections and new proposals; no patch approval or completed-test report yet. Installed 0.2.43 stays unchanged. R3C7 remains open; no transfer/performance pass inferred. **Decision needed:** select the numbered options in the contract.
+**C156 selections:** [Header bands, seven-stop logarithmic rarity, Once each, cached battery estimates and single-copy/100-percent Synergy](checkpoints/R3_MANAGE_RARITY_SYNERGY.md#c156---selected-options-and-full-palette-2026-10-11). Owner selected 1B/2A/3A/4A/5D; pale-blue and deep-purple endpoints are included. **Decision needed:** 6A Fragment-only Synergy interactions (recommended) or 6B broader offensive interactions requiring individual rules. Installed 0.2.43 and owner acceptance remain unchanged; no gameplay patch in this discussion.
 
 Updated 2026-10-11. Read with [AGENTS](../AGENTS.md) and [Planning](PLANNING.md).
 
@@ -14,4 +14,4 @@ Updated 2026-10-11. Read with [AGENTS](../AGENTS.md) and [Planning](PLANNING.md)
 - **Retained limits:** SP combat only, no multiplayer certification. Native reserve weight limits remain separate from expansion count. Secondary work retains 256 queued rays / 128 steps per callback. Fresh-world item-ID policy and owner-sourced placeholder art remain.
 - **GitHub:** `codex/performance-barbed-audit`, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1) into dev; immutable development tag and C108/C119 mirror required. No merge or Workshop upload.
 
-**Decision needed:** discuss C155 choices; 0.2.43 remains installed and its earlier test is not marked complete. The C154 install/tag and findings are verified on GitHub at `02e7ed1`.
+**Decision needed:** settle the C156 Synergy interaction scope; 0.2.43 remains installed and its earlier test is not marked complete. The C154 install/tag and findings are verified on GitHub at `02e7ed1`.

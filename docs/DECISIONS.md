@@ -855,3 +855,8 @@ Owner: "Approved. Go ahead and patch all of this, including the ammo transfer fi
 ## C155 - Manage presentation, target cycling and Synergy discussion (2026-10-11)
 
 Owner requests segmented/dimmed UI regions, left-name/right-effect Installed Modules rows, automatic Horde Night rarity colors, remaining bars, reload-aware concise battery text without tick calculations, Once each Filter priority and a possible rare Synergy module. Explicit request: "Let's discuss. Show image examples and options." [Full contract/options](checkpoints/R3_MANAGE_RARITY_SYNERGY.md) recommends 1A inset panels, 2A log-spaced positive catalog weights, 3A one fired shot per round member, 4A cached reload-aware per-shot estimates, and 5A one extra nonrecursive Fragment burst per Synergy per shot. These defaults and Synergy tuning remain proposals. Source/package/install unchanged. No completed owner test or acceptance inferred; console findings recorded against 0.2.43.
+
+
+## C156 - selected Manage design, full rarity spectrum and single-copy Synergy (2026-10-11)
+
+Owner selects 1B, 2A with the missing ultra-easy/ultra-hard colors, 3A, 4A, and custom 5D: "It will be only 1 instance allowed, but it's 100% chance." Record one installed Synergy per turret and guaranteed activation on eligible hits; this supersedes stackable burst allowances and chance-based Synergy. Horde Night endpoint constants are verified as #82AEFF and #420D82, yielding seven rarity stops. [Selected contract](checkpoints/R3_MANAGE_RARITY_SYNERGY.md#c156---selected-options-and-full-palette-2026-10-11) retains no-recursion recommendations and explicitly asks 6A Fragment-only versus 6B broader offensive interaction scope. No repeat of settled choices; no gameplay changes/install or inferred test acceptance.

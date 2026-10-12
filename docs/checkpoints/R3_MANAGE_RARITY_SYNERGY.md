@@ -1,5 +1,20 @@
 # C155 - Manage boundaries, rarity, Once each and Synergy discussion
 
+## C156 - selected options and full palette (2026-10-11)
+
+Owner selects **1B Header bands**, **2A logarithmic rarity with both extreme colors**, **3A one fired shot per target**, **4A cached per-shot/count/reload-aware time estimates**, and **5D one installed Synergy module per turret with 100 percent activation chance**. The earlier five-color recommendation and stackable Synergy burst allowance are superseded. Selection settles those design choices; this discussion turn does not install a gameplay patch or mark 0.2.43 accepted.
+
+The selected rarity palette has seven stops: pale blue `#82AEFF` (EASIEST_DETAIL), cyan-blue `#73CCFF` (cozy), green `#59E666`, yellow `#FFFA4D`, orange `#FF9433`, red `#FF2E2E`, deep purple `#420D82` (EXTREME_DETAIL). The highest positive loaded loot weight maps to pale blue/commonest; the lowest maps to purple/rarest. Preserve the logarithmic normalization; round to seven stops instead of five. Dim surface tint and lightened text must preserve readability, especially for the dark-purple endpoint. No Horde Night runtime dependency.
+
+Interpret 5D as one **installed module**, not one proc per shot: every eligible successful secondary hit activates its allowed interaction. Do not silently retain 5A's one-extra-burst ceiling. Recommended safeguards remain no recursive proc generations and bounded scheduled work; these are not a reduction in the selected 100 percent chance. Higher effect counts may increase queue latency and require a measured admission policy before implementation can promise performance.
+
+**Remaining interaction-scope choice:**
+
+- **6A recommended: Fragment only for the first Synergy version.** Successful Splitter/Piercing hits trigger Fragment when that module is installed. Source-hit damage scaling carries forward; Fragment children cannot trigger additional module chains. Existing primary-hit effects keep their existing rules.
+- **6B: Broader offensive interactions.** Extend eligibility to effects such as Execute, Initial Blow and Impact as well. The eligible effect matrix and per-hit/per-shot rules must be discussed; 100 percent Synergy eligibility does not automatically convert Impact's own chance to 100 percent or remove other conditions.
+
+The new 5D rule materially increases the number of effects compared with 5A; no duplicate-install exploit, effect dropping or recursive chaining is assumed approved. Large Expansion-equivalent loot weight/pools remain the existing rarity proposal. Current preview's Header bands selection is consistent with 1B; its old five-stop colors are superseded by this correction.
+
 2026-10-11. Discussion only; installed 0.2.43 and its immutable test tag are unchanged. Owner requests visual examples and options, not implementation. Current branch inspected: `codex/performance-barbed-audit` at `02e7ed19d15c0997e5e1a0d4f6e4cedf779b3e77`; origin fetched. Follow-up choices belong here and in DECISIONS before patching.
 
 ## Confirmed requests
