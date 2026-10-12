@@ -50,21 +50,29 @@ public final class NativeTurretProbe {
         Class<?> picker = Class.forName("zombie.inventory.ItemPickerJava");
         picker.getMethod("Parse").invoke(null);
         Object pools = picker.getField("ProceduralDistributions").get(null);
-        int modules = 0;
+        int modules = 0, packs = 0;
         for (String name : new String[]{"ElectronicStoreMisc", "CrateElectronics", "MechanicShelfElectric", "ArmyStorageElectronics", "ElectricianTools", "GunStoreAccessories", "ToolCabinetMechanics", "GarageTools", "CrateTools", "ToolStoreTools", "ToolStoreMisc", "MechanicShelfTools", "GarageMechanics", "CrateMechanics", "ElectronicStoreComputers", "ElectronicStoreHAMRadio"}) {
             Object pool = call(pools, "get", new Class<?>[]{Object.class}, name);
             check(pool != null, "Missing native loot pool: " + name);
             Object[] items = (Object[])pool.getClass().getField("items").get(pool);
+            int poolPacks = 0;
             for (Object item : items) {
                 String type = (String)item.getClass().getField("itemName").get(item);
-                if (type.startsWith("Base.OMHTTModule")) {
+                if (type.equals("Base.OMHTTModulePack")) {
+                    packs++;
+                    poolPacks++;
+                    check(item.getClass().getField("chance").getFloat(item) > 0, "Zero native pack loot weight");
+                } else if (type.startsWith("Base.OMHTTModule")) {
                     modules++;
                     check(item.getClass().getField("chance").getFloat(item) > 0, "Zero native module loot weight");
                 }
             }
+            check(poolPacks == 1, "Expected exactly one pack entry per native pool: " + name);
         }
         check(modules == 208, "Native loot parser did not retain all module entries");
         System.out.println("[OMHTT-Smoke] native-module-loot-parser pools=16 items=208 weights=positive");
+        check(packs == 16, "Native loot parser did not retain all pack entries");
+        System.out.println("[OMHTT-Smoke] native-pack-loot-parser pools=16 packs=16 weights=positive");
         Class<?> squareType = Class.forName("zombie.iso.IsoGridSquare");
         Class<?> cellType = Class.forName("zombie.iso.IsoCell");
         Class<?> movingType = Class.forName("zombie.iso.IsoMovingObject");

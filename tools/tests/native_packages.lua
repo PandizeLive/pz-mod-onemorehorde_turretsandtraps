@@ -19,6 +19,7 @@ local function checkPackages()
     assert((counts["Base.OMHTTTrapBedSpikesReinforced"] == 1) == expectedTraps, "Reinforced Bed Spikes item registration")
     assert((counts["Base.OMHTTTurretBase"] == 1) == expectedTurrets, "Turret item registration")
     assert((counts["Base.OMHTTModuleFiring"] == 1) == expectedTurrets, "Module item registration")
+    assert((counts["Base.OMHTTModulePack"] == 1) == expectedTurrets, "Module pack item isolation")
     assert((OMHTT_Turret ~= nil) == expectedTurrets, "Turret runtime isolation")
     assert((OMHTT_BarbSections ~= nil) == expectedTraps, "Barb runtime isolation")
     assert((SpriteConfigManager.GetObjectInfo("OMHTTBarbs") ~= nil) == expectedTraps, "Barb recipe isolation")
@@ -35,6 +36,7 @@ local function checkPackages()
     assert((names["OMHTurretsTraps.ShowCollision"] == true) == expectedTraps, "Trap debug isolation")
     assert((names["OMHTurretsTraps.PotatoTurret"] == true) == expectedTurrets, "Turret settings isolation")
     assert((names["OMHTurretsTraps.ModuleLootRate"] == true) == expectedTurrets, "Loot settings isolation")
+    assert((names["OMHTurretsTraps.PackZombieChance"] == true) == expectedTurrets, "Pack settings isolation")
     local oldServer, oldClient = isServer, isClient
     isServer = function() return false end
     isClient = function() return false end
@@ -49,15 +51,18 @@ local function checkPackages()
         SandboxVars.OMHTurretsTraps.Enabled = oldTraps
         require("OMHTT/ModuleLoot").loaded()
     end
-    local lootCount = 0
+    local lootCount, packCount = 0, 0
     for _, pool in pairs(ProceduralDistributions.list) do
         for i = 1, #pool.items, 2 do
-            if string.sub(pool.items[i], 1, 10) == "Base.OMHTT" then
+            if pool.items[i] == "Base.OMHTTModulePack" then
+                packCount = packCount + 1
+            elseif string.sub(pool.items[i], 1, 10) == "Base.OMHTT" then
                 lootCount = lootCount + 1
             end
         end
     end
     assert(lootCount == (expectedTurrets and 208 or 0), "Wrong component loot count " .. lootCount)
+    assert(packCount == (expectedTurrets and 16 or 0), "Wrong pack loot count " .. packCount)
     isServer, isClient = oldServer, oldClient
     print("[OMHTT-Packages] PASS traps=" .. tostring(expectedTraps) .. " turrets=" .. tostring(expectedTurrets)
         .. " loot=" .. lootCount .. " options=unique entries=independent")

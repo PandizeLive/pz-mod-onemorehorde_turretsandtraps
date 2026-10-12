@@ -331,5 +331,9 @@
     "Sandbox_Title_OMHTurretsTraps_Martyrdom": "Martyrdom",
     "Sandbox_Title_OMHTurretsTraps_Tack": "Tack",
     "Sandbox_OMHTurretsTraps_LootRateRegulator": "Regulator Module",
-    "Sandbox_OMHTurretsTraps_LootRateRegulator_tooltip": "Multiplier for Regulator Module loot. 0 disables it."
+    "Sandbox_OMHTurretsTraps_LootRateRegulator_tooltip": "Multiplier for Regulator Module loot. 0 disables it.",
+    "Sandbox_OMHTurretsTraps_PackLootWeight": "Module Pack Weight",
+    "Sandbox_OMHTurretsTraps_PackLootWeight_tooltip": "Relative container loot weight, before pool and global multipliers. 0 disables container packs.",
+    "Sandbox_OMHTurretsTraps_PackZombieChance": "Zombie Module Pack Chance",
+    "Sandbox_OMHTurretsTraps_PackZombieChance_tooltip": "Percent chance per newly killed zombie, including turret kills. At most one pack per body. 0 disables it."
 }

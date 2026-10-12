@@ -49,6 +49,7 @@ public final class NativePersistenceCheck {
 
     private static void verify(Path directory, String mode) throws Exception {
         verifyTurret(directory, mode);
+        verifyModulePack(directory, mode);
         verifyFirearms(directory, mode);
         verifyHybrid(directory, mode);
         verifyBeds(directory, mode);
@@ -127,6 +128,31 @@ public final class NativePersistenceCheck {
             }
         }
         System.out.println("[OMHTT-Smoke] native-persistence mode=" + mode + " parts=28 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved legacy=8 edges=8 outline=4 reinforced=8 orientation=preserved");
+    }
+
+    private static void verifyModulePack(Path directory, String mode) throws Exception {
+        Object env = Class.forName("zombie.Lua.LuaManager").getField("env").get(null);
+        Object source = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeModulePack");
+        check(source != null, "Module pack fixture missing");
+        Path path = directory.resolve("module-pack.bin");
+        if (mode.equals("write")) {
+            ByteBuffer output = ByteBuffer.allocate(16384);
+            call(source, "saveWithSize", new Class<?>[]{ByteBuffer.class, boolean.class}, output, false);
+            Files.write(path, Arrays.copyOf(output.array(), output.position()));
+        }
+        int version = ((Number)Class.forName("zombie.iso.IsoWorld").getMethod("getWorldVersion").invoke(null)).intValue();
+        ByteBuffer input = ByteBuffer.wrap(Files.readAllBytes(path));
+        Object restored = Class.forName("zombie.inventory.InventoryItem").getMethod("loadItem", ByteBuffer.class, int.class).invoke(null, input, version);
+        check(!input.hasRemaining(), "Module pack unread bytes");
+        check("Base.OMHTTModulePack".equals(get(restored, "getFullType")), "Module pack type changed");
+        check(Math.abs(((Number)get(restored, "getActualWeight")).doubleValue() - .2) < .000001, "Module pack weight changed");
+        Object data = get(restored, "getModData");
+        Object names = call(data, "rawget", new Class<?>[]{Object.class}, "OMHTTPackRewards");
+        String[] expected = {"Regulator", "CapacityLarge", "Regulator"};
+        for (int i = 0; i < expected.length; i++)
+            check(expected[i].equals(call(names, "rawget", new Class<?>[]{Object.class}, Double.valueOf(i + 1))), "Module pack reward changed");
+        check(call(data, "rawget", new Class<?>[]{Object.class}, "OMHTTPackOpened") == null, "Unopened pack became opened");
+        System.out.println("[OMHTT-Smoke] native-module-pack-persistence mode=" + mode + " rewards=3 duplicates=preserved unopened=true");
     }
 
     private static void verifyFirearms(Path directory, String mode) throws Exception {

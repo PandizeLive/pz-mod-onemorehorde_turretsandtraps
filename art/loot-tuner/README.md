@@ -14,7 +14,7 @@ This is a personal, offline balancing tool for **new-world estimates**. It does 
 4. Toggle individual components, or Show all / Hide all. Visibility never rerolls loot or changes rates. Select a town, zoom and hover dots for coordinates, floor, chances and generated quantities.
 5. Compare countywide and nearest-town estimates. Save/load scenario JSON to compare settings; export the Sandbox excerpt when satisfied. Apply settings yourself only after reviewing the excerpt.
 
-The baseline is **T&T 0.2.46** and **Project Zomboid 42.21.0**, including Critical/Accuracy and the reduced Suppression loot weight. The owner approved this gameplay patch and site update together. Gameplay installation is tracked separately in `docs/RELEASE.md`.
+The baseline is **T&T 0.2.47** and **Project Zomboid 42.21.0**, including Critical/Accuracy and the reduced Suppression loot weight. The owner approved this gameplay patch and site update together. Gameplay installation is tracked separately in `docs/RELEASE.md`.
 
 ## What the numbers mean
 
@@ -61,7 +61,7 @@ Pinch to zoom, drag with one finger, or use the 44px on-map zoom controls. Tap a
 
 ## Saved settings
 
-The hosted admin LootLab autosaves rates, seed, component visibility, estimate selection and overlay to the signed-in admin account. PC and phone must use the same login. Set to Default restores the T&T 0.2.46 scenario baseline (including Material 0.60, rolls 1 and retention 100%) and saves that reset. Map pan/zoom and town jumps are navigation, not saved tuning settings.
+The hosted admin LootLab autosaves rates, seed, component visibility, estimate selection and overlay to the signed-in admin account. PC and phone must use the same login. Set to Default restores the T&T 0.2.47 scenario baseline (including Material 0.60, rolls 1 and retention 100%) and saves that reset. Map pan/zoom and town jumps are navigation, not saved tuning settings.
 
 The account endpoint uses the existing admin host/Access/allowlist gate and a separate D1 table. Writes use revision checks; clients merge only locally changed fields after a conflict. Explicit reset/import replace the whole scenario. Saves debounce for 450 ms and refresh when the page regains focus or every 15 seconds while visible. A browser-local pending draft survives connection failures and reloads; the status distinguishes unsynced changes from successful saves. A failed initial read never uploads defaults. Local file copies use browser storage only.
 
@@ -114,3 +114,7 @@ Module colors are keyed by ID, with a deterministic fallback for future entries.
 ## Scrolling layout
 
 On desktop/tablet widths above 700px, the map and its controls stay below the sync banner while the component list scrolls. All summary metrics, town/pool tables and methodology are below the complete tuning area; Statistics jumps there directly. On phones the map stays in normal page flow above tuning so it does not cover the controls; statistics remain last. Sticky positioning uses CSS, with banner-height updates only on resize, not scroll-time model work.
+
+## 0.2.47 defaults and packs
+
+New defaults match the owner export, while the underlying multiplier scale and saved values are preserved. Module Packs supplement loose loot (container weight 1.0; independent 15% body chance) and contain three draws from all 29 entries. Current map/haul metrics model loose modules only, not pack drops or their contents. The corpse percentage is a separate game Sandbox setting, not Material loot or container weight.

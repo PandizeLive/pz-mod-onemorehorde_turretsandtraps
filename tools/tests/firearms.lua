@@ -360,7 +360,7 @@ local powerStats = Stats.resolve(powerContents)
 check(math.abs(powerStats.batteryPercent - .000855) < .0000001 and powerStats.weaponPower == 1,
     "Two working modules and potato floor match approved battery cost")
 for _, name in pairs({"Piercing", "InitialBlow", "Execute", "Impact"}) do
-    check(T.kind(item(T.TYPES[name])) == "module" and require("OMHTT/TurretRarity").get(name).surcharge == .6,
+    check(T.kind(item(T.TYPES[name])) == "module" and require("OMHTT/TurretRarity").get(name).surcharge == ((name == "Piercing" or name == "InitialBlow") and .4 or .6),
         "Offensive modules use their loaded rarity surcharge")
 end
 local reference = item("Base.Pistol")

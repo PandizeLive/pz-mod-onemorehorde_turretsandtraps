@@ -35,8 +35,12 @@ function B.battery(contents, stats)
     local loaded = gun and require("OMHTT/Firearms").loaded(gun) or state and state.loaded
     local seconds = Estimate.duration(stats, gun, volleys, loaded, state and state.conservationDebt) / 1000
     local minutes = seconds / 60 * 1440 / getGameTime():getMinutesPerDay()
-    local time = string.format("%.1f", minutes)
     local unit = getText("UI_OMHTT_BatteryMinutes")
+    if minutes >= 60 then
+        minutes = minutes / 60
+        unit = getText("UI_OMHTT_BatteryHours")
+    end
+    local time = string.format("%.1f", minutes)
     return getText("UI_OMHTT_BatteryCost", costText) .. " <LINE> "
         .. getText("UI_OMHTT_BatteryVolleys", volleys) .. " <LINE> "
         .. getText("UI_OMHTT_BatteryTime", time, unit)

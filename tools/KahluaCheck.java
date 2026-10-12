@@ -294,6 +294,7 @@ public final class KahluaCheck {
             {"_", "tools/tests/turret_install.lua"},
             {"OMHTT/LootDefinitions", base + "shared/OMHTT/LootDefinitions.lua"},
             {"_", "tools/tests/module_loot_bootstrap.lua"},
+            {"OMHTT/TurretModulePack", base + "shared/OMHTT/TurretModulePack.lua"},
             {"OMHTT/ModuleLoot", base + "server/OMHTT/ModuleLoot.lua"},
             {"_", "tools/tests/module_loot.lua"},
             {"_", "tools/tests/turret_manage.lua"},
@@ -346,6 +347,10 @@ public final class KahluaCheck {
             {"_", "tools/tests/effect_polish.lua"},
             {"OMHTT/TurretItemTooltip", base + "client/OMHTT/TurretItemTooltip.lua"},
             {"_", "tools/tests/regulator.lua"},
+            {"_", base + "server/OMHTT/TurretPackLoot.lua"},
+            {"OMHTT/TurretPackReveal", base + "client/OMHTT/TurretPackReveal.lua"},
+            {"OMHTT/TurretPackAction", base + "client/OMHTT/TurretPackAction.lua"},
+            {"_", "tools/tests/module_pack.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

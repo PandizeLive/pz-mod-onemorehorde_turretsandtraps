@@ -33,7 +33,7 @@ async function run(){
   assert.deepEqual(M.haulDistribution([.5],2),[.25,.5,.25,0,0,0]);
   assert(M.markerRadius('spawns',5,0)>M.markerRadius('spawns',4,0));
   assert(M.markerRadius('chances',0,.5)>M.markerRadius('chances',0,.01));
-  const s=M.defaults(D);assert.deepEqual(M.validate(s,D),s);assert.equal(s.global,1);assert.equal(s.items.Firing,1);assert.equal(s.items.Filter,1);
+  const s=M.defaults(D);assert.deepEqual(M.validate(s,D),s);assert.equal(s.global,1);assert.equal(s.items.Firing,.5);assert.equal(s.items.Filter,2);
   const added=['Magazine','Splitter','Fragment','FiringEnhanced','MotionDetectionEnhanced','Piercing','InitialBlow','Execute','Impact','Conservation','Synergy','Martyrdom','Tack','Regulator'];
   const factors=Object.fromEntries(D.modules.map(m=>[m.id,added.includes(m.id)?1:['Firing','MotionDetection','CapacitySmall','CapacityLarge','Autoloader'].includes(m.id)?3:2]));
   const saved={...s,baseline:'T&T 0.2.28',global:2.7,seed:348,items:{...s.items,Firing:0},visible:{...s.visible,Range:false}};
@@ -47,10 +47,11 @@ async function run(){
     assert.equal(D.modules.find(m=>m.id===id).weight,D.modules.find(m=>m.id==='CapacityLarge').weight);
     for(const pool of Object.values(D.pools))assert.equal(pool.modules.includes(id),pool.modules.includes('CapacityLarge'));
   }
+  const normalized={...s,items:Object.fromEntries(D.modules.map(m=>[m.id,1]))};
   const approved={...s,baseline:'T&T 0.2.25',global:4.5,items:factors};
-  assert.deepEqual(M.validate(approved,D),s,'Approved old multipliers normalize exactly to all ones');
+  assert.deepEqual(M.validate(approved,D),normalized,'Approved old multipliers normalize exactly to all ones');
   const oldData={...D,modules:D.modules.map(m=>({...m,weight:m.weight/4.5/factors[m.id]}))};
-  assert.deepEqual(M.generate(oldData,approved),M.generate(D,s),'Normalization preserves every seeded container and count');
+  assert.deepEqual(M.generate(oldData,approved),M.generate(D,normalized),'Normalization preserves every seeded container and count');
   const prior={...s,baseline:'T&T 0.2.26',global:1.7,items:{...s.items,Firing:3}};
   assert.deepEqual(M.validate(prior,D),{...prior,baseline:D.meta.baseline},'Already-normalized tuning survives without double division');
   const generated=M.generate(D,s);

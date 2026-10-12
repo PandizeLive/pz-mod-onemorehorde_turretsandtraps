@@ -1,4 +1,6 @@
-# C173 - Module pack and owner loot weights
+# Module pack and owner loot weights
+
+**Current: C177 is implemented in 0.2.47; see the final contract below. Earlier sections preserve decision history.**
 
 2026-10-12. Owner requests recording a new card-pack-like item for the next combined game patch, alongside adaptive battery hours/minutes, and says one more support requirement is coming. Concept and use of the supplied weights are confirmed; implementation is held for the remaining pack rules. C174 now identifies the additional support topic as a separate proposed Viewpoint compatibility workstream. No source/package/default/settings or hosted account changes in this planning turn. Inspected 5300ae965abd18774e0d017e9d69a29f0606020d; origin fetched without incoming changes.
 
@@ -162,3 +164,17 @@ Current ModuleLoot.lua only injects procedural container pools; it has no module
 Only new material choice: independent pack chance per eligible zombie body, including turret kills. Recommend 1% (1B); offer 0.5% (1A) and 2% (1C). For 1,000 eligible bodies these yield expected 5/10/20 packs and 15/30/60 rewards respectively, before any failed item placement; actual samples vary. These are design probabilities, not measured native loot rates. Proposed separate Sandbox percentage, zero disables, at most one pack per body; ordinary loot unchanged. No rate selected yet. This is the final known balance gate; do not request another generic patch approval after selection. Implementation must verify corpse inventory insertion timing and prevent repeat rolls on reload/event duplication without per-tick corpse scanning.
 
 Base inspected 1f143eb59e66da70cf0ed3c9b12650c6f4797fe4; origin fetched, no incoming dev commits. No source/package/install/version or test-result changes. C171 corrective issues and C170 cancellation remain unchanged; Viewpoint remains separate. C108/C119 mirror applies.
+
+## C177 15 percent body rate and implementation
+
+2026-10-12. Owner overrides the proposed 1% with: "should be way more common, like 15%". The C175/C176 approvals remain in force; no further generic approval gate. This section supersedes all historical unresolved pack choices above.
+
+Implemented in 0.2.47: Module Pack (Base.OMHTTModulePack), weight .2, loot-only, two-second interruptible opening, three independent weighted rewards with duplicates. All 29 catalog entries, including expansion kits, are eligible; Makeshift crafted variants are excluded. Container weight 1.0 supplements existing loose modules in the same sixteen eligible pools. New Sandbox corpse chance defaults to 15%, range 0-100, zero disables. At most one pack per newly killed body, including turret kills; ordinary corpse loot is unchanged. Expected 150 packs / 450 rewards per 1,000 deaths at default, with natural sampling variation. This is intentionally generous, not a rare corpse reward.
+
+Installed 42.21 native IsoZombie.onKilled calls DoZombieInventory before OnZombieDead. The event adds to that inventory and records a once-only marker; no corpse scans or per-tick loot work. Disabled Turrets/feature/global module loot and multiplayer gates remain closed. The selected outcomes are stored on the exact pack before granting; all three real items are inserted before consuming it. Failed grants keep the pack and its draw; repeated completion is blocked. Reward grant precedes the optional default-on four-second reveal, so Skip/Close cannot reroll or lose rewards. Reveal reuses Manage icons/rarity colors and draws bounded visible cards only while its panel is open.
+
+The supplied 29 effective weights become defaults by changing the existing per-item default multipliers, preserving the old raw weight scale and saved custom values. Global default remains 1; the export's saved global 1.0110954207 is not made a universal baseline. Pack odds use the current per-item effective weights. Zero-weight entries are excluded. Rarity colors/names and additive power surcharges therefore follow the new loaded weights (for example, default Regulator becomes Uncommon at weight 6). Existing worlds/accounts keep their explicit tuning; use new/reset defaults or import the export to adopt these values there. No save/account database is rewritten.
+
+Battery duration uses minutes below 60 and hours from 60, with one decimal; cost, reload-aware duration calculation and .00045 base setting are unchanged. The separate C171 tooltip fix draws the four translated module lines directly instead of sending percentage text back through the native translation-key parser. Capacity warning cleanup remains open; Viewpoint remains separate and packed-turret reduction stays abandoned.
+
+LootLab baseline 0.2.47 is deployed from a verified isolated snapshot; live bundle and Access/public route checks pass. Map/statistics explicitly remain loose-module estimates and exclude packs. Native, Kahlua, browser and deployment evidence are recorded in [the version test](../TEST_v0.2.47.md); rendered gameplay is pending. Development mirror required under C108/C119; no Workshop upload.

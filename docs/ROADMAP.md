@@ -1,20 +1,12 @@
 # Phases and checkpoints
 
-**C176 - pack rules selected:** three independent rewards (duplicates allowed); rare packs alongside loose modules at relative container weight 1.0; all 29 exported entries eligible, including expansion kits. Owner also requests packs on zombie bodies more often. [Remaining zombie drop-rate choice](checkpoints/R3_MODULE_PACK.md#c176-selected-pack-rules-and-zombie-body-loot). Hour/minute fix and supplied weights remain approved; no additional pack-design approval round needed after this rate is settled.
+**C177 / 0.2.47 implemented; final installation checks in progress.** Module Packs contain three independently weighted rewards, including expansion kits and duplicates. Packs supplement loose modules at container weight 1.0 and a separately configurable **15% per zombie body**, including turret kills. Optional default-on four-second reveal with Skip; two-second opening. All 29 owner-exported weights are the new defaults. Battery estimates switch to hours at 60 in-game minutes; inventory module descriptions bypass the native translation-key formatting failure.
 
+[Patch](PATCH_v0.2.47.md) | [Five-step test](TEST_v0.2.47.md) | [Approved contract](checkpoints/R3_MODULE_PACK.md#c177-15-percent-body-rate-and-implementation) | [Release evidence](RELEASE.md).
 
-**C175 - patch scope approved, pack choices pending:** owner approves the hour/minute fix and module pack, explicitly reaffirms all 29 supplied weights, then requests questions/options first if needed. [Current choices](checkpoints/R3_MODULE_PACK.md#c175-approval-and-remaining-choices). Present reward count, acquisition and eligibility before implementing dependent pack/loot behavior. Viewpoint remains separate.
+Existing Sandbox/account tuning is preserved; new/reset defaults use the export. Rarity and power costs follow those loaded weights. LootLab 0.2.47 is deployed; its map still estimates loose modules only, excluding pack drops/rewards. Capacity warnings from C171 remain open. Rendered reveal/tooltip and R3C7 owner acceptance remain pending; native checks do not establish those passes. Packed-turret weight reduction remains abandoned (C170); Viewpoint remains a separate unapproved prototype. No Workshop upload.
 
-
-**C174 - Viewpoint feasibility:** optional support is realistic enough for a prototype, but rendering/selection and performance remain unverified. [Evidence and separate compatibility proposal](checkpoints/VIEWPOINT_COMPATIBILITY.md). No implementation or new chat authorized; C173 remains the next content/corrective planning track.
-
-
-**C173 - next combined patch planning:** module reward pack, optional default-on rolling reveal using Manage icons/text/rarity colors, owner-exported module weights, and battery hours/minutes formatting. [Confirmed direction and all 29 weights](checkpoints/R3_MODULE_PACK.md). The additional support topic is Viewpoint (C174), proposed as a separate workstream; remaining pack rules still need settlement before implementation. C171 tooltip/capacity corrections remain queued; packing reduction stays abandoned.
-
-
-C171: [LootLab direct weights](LOOTLAB_DIRECT_WEIGHTS.md) deployed. Next corrective game scope to settle: adaptive battery minutes/hours, native tooltip percent/translation failure and repeated capacity configuration warnings. R3C7 acceptance stays open.
-
-Synchronized 2026-10-12 against C80-C176 and native-verified 0.2.46. Packed-weight reduction is abandoned under C170; R3C7 owner acceptance remains open.
+Synchronized 2026-10-12 through C177.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -32,11 +24,7 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 ## Current checkpoint status and next work
 
-**C168 / 0.2.46 installed and verified; owner test pending.** Owner approved revised 2B: .00045% base battery use, additive rarity surcharges .1/.15/.25/.4/.6/.8/1.0, plus C167 packing/weight/Regulator/names. Regulator provides +25% endurance per copy, battery-only, no self-surcharge; all module item weights are .2. Seven names end in Epic/Legendary/Mythic. Inventory rarity tooltip uses exposed UI methods. [Patch](PATCH_v0.2.46.md) | [focused test](TEST_v0.2.46.md).
-
-16,046 Kahlua assertions, 760 native translations, 113 compiled files, native write/read, three independent package selections and 51 Firearms weapons pass. LootLab 0.2.46 is deployed with 29 modules/208 entries; 77 API/page tests and desktop/mobile browser checks pass. Owner/rendered gameplay acceptance remains pending.
-
-**C170: packed-turret weight reduction is abandoned at the owner's request.** Existing pickup/placement keeps actual contents and their full weight. No carry-case alternative, lighter-base change or Java dependency is selected. Remove packing from the active queue; do not reopen it without a new owner request. 0.2.46 remains installed; its focused test is pending.
+**C177 / 0.2.47:** pack/weights/hour correction implemented; use the focused [current test](TEST_v0.2.47.md). C171 capacity warnings remain open. Historical acceptance gaps below are not new test requests or newly claimed passes. C170 packed-weight cancellation remains final.
 
 | Phase / checkpoints | Status | Remaining work / next gate |
 | --- | --- | --- |
@@ -47,13 +35,13 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 | 2: R2C4 concertina | C133 linked 1x2 conversion installed/native-verified in 0.2.39 | Focused paired-wire owner acceptance remains; see TEST_v0.2.39.md |
 | 3: R3C1-R3C2 new head | Candidates documented; none selected for implementation | Select one head and settle its concrete contract before prototyping |
 | 3: R3C3 explosive head | Optional, unscoped | Collateral/resource/effect-budget decisions and feasibility first |
-| 3: R3C4-R3C7 offensive modules/battery | C168 / 0.2.46 adds Regulator, rebalances endurance, lowers module weights and fixes rarity feedback | R3C7 focused 0.2.46 owner test pending; packed-weight work abandoned under C170 |
+| 3: R3C4-R3C7 offensive modules/battery | C177 / 0.2.47 adds weighted packs, 15% corpse acquisition and adaptive battery hours after the C168 endurance/Regulator update | R3C7 focused 0.2.47 owner test pending; packed-weight work abandoned under C170 |
 | 3: R3C8 starter modules/expansion | C104 implemented, verified and installed in 0.2.34 | C106 tentative passes; 4/6/6 layout acceptance in 0.2.35; include maximum loadouts in future R3C7 endurance checks |
 | 4: R4C1-R4C4 signals/connected traps | Planned | Signal contract first; devices then optional turret receiver |
 | 5: R5C1-R5C3 MP/integrations/release | Planned; no certification or publication | Validate only the selected release scope; optional features need not all ship |
 | 6: R6C1-R6C3 Cure simulation | Deferred, last | Matching contracts and loaded-combat controls first |
 
-The phase order is not a mandatory queue through every feature. R1C3 continues alongside relevant SP content, and Phase 3 may proceed without finishing every passive trap. R3C1 head selection and R3C4 module contract/battery baseline are separate entry points; neither requires a new head to be implemented first. C120 selects and implements the 0.2.38 passive-content bundle; C125 selected the module track; C165 completes the current approved corrections except packed-weight compression.
+The phase order is not a mandatory queue through every feature. R1C3 continues alongside relevant SP content, and Phase 3 may proceed without finishing every passive trap. R3C1 head selection and R3C4 module contract/battery baseline are separate entry points; neither requires a new head to be implemented first. C120 selects and implements the 0.2.38 passive-content bundle; C125 selected the module track; C177 completes the approved pack/weight/hour bundle; C171 capacity warnings remain open and packed-weight compression is abandoned (C170).
 
 **Documented module sequence: R3C4 -> R3C5 -> R3C6 -> R3C7.** The assistant's suggestion to make Initial Blow/Execute the next content patch was an unapproved reorder; those effects were already listed under R3C6. Battery baseline already belongs to R3C4. Keep any proposed reorder explicit until the owner selects it. R3C8 was separately approved and implemented under C104; its later ID does not make completed work a future task.
 

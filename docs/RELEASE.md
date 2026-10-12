@@ -1,5 +1,12 @@
 # Release state and publication policy
 
+## 0.2.47 / C177 - verified, ready for local installation
+
+Module Packs, 15% once-per-body loot, all 29 supplied weights, battery hours/minutes and the inventory percent-tooltip correction are implemented. [Patch](PATCH_v0.2.47.md) | [Five-step test](TEST_v0.2.47.md). 16,071 Kahlua assertions, native write/read (including unopened-pack rewards) and all three independent package selections pass. 208 source / 256 packaged files match the validated manifest. Owner/rendered acceptance remains pending; capacity warnings remain open.
+
+LootLab 0.2.47 is deployed from isolated verified source; Worker `b267828b-e930-4e46-98d2-7a5ec4f4495b`, 78 API/page tests, local browser checks and live bundle/routes verification pass. [Deployment evidence](../diagnostics/v0.2.47/lootlab-release.json). Saved tuning is preserved; map estimates exclude packs. No Workshop publication; pending changelog remains cumulative. Local installation evidence follows after the annotated rollback tag is created.
+
+
 **C170 disposition:** the owner abandoned packed-turret weight reduction after this build. Historical implementation limitations below are retained as release evidence; packing is no longer pending work.
 
 ## Current local installation: 0.2.46 / C168

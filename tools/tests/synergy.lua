@@ -35,7 +35,7 @@ check(complete and not selected, "Dead cohort members are skipped; later arrival
 R.refresh({})
 check(R.get("Firing").b == 1 and R.get("Synergy").b == 130/255, "Seven-stop scale includes both blue and purple extremes")
 R.refresh({LootRateSynergy = 0, LootRateTack = 0})
-check(R.get("Synergy").weight == 0 and R.get("Martyrdom").b == 130/255, "Disabled weights are excluded from extrema")
+check(R.get("Synergy").weight == 0 and R.get("Autoloader").b == 130/255, "Disabled weights are excluded from extrema")
 R.refresh({ModuleLootRate = 0})
 check(R.get("Firing").weight == 0, "Global loot off uses disabled neutral colors")
 R.refresh({})

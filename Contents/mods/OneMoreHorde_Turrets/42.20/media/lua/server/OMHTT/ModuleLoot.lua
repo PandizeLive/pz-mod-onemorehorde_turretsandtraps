@@ -4,6 +4,7 @@ local M = require("OMHTT/TurretModules")
 local D = require("OMHTT/Diagnostics")
 local T = require("OMHTT/Turret")
 local L = require("OMHTT/LootDefinitions")
+local Pack = require("OMHTT/TurretModulePack")
 
 ---@return nil
 function L.apply()
@@ -19,7 +20,7 @@ function L.apply()
             local items = pool.items
             for index = #items - 1, 1, -2 do
                 local module = T.component(items[index])
-                if module and L.WEIGHTS[module] then
+                if (module and L.WEIGHTS[module]) or items[index] == Pack.TYPE then
                     table.remove(items, index + 1)
                     table.remove(items, index)
                 end
@@ -32,6 +33,11 @@ function L.apply()
                     items[#items + 1] = effective
                 end
                 D.trace("module-loot-weight", {pool = name, module = module, weight = effective})
+            end
+            local packWeight = M.option("PackLootWeight", 1, 0, 100) * L.SCALES[name] * multiplier
+            if packWeight > 0 then
+                items[#items + 1] = Pack.TYPE
+                items[#items + 1] = packWeight
             end
         else
             D.emit("module-loot-missing-pool", {pool = name})

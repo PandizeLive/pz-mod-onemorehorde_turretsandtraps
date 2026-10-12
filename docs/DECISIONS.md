@@ -959,3 +959,8 @@ Owner approves the hour patch and module pack, explicitly adds the new weights, 
 ## C176 - Three-reward packs, supplemental loot and zombie bodies (2026-10-12)
 
 Owner selects 1B/2A/3A: three independent draws with duplicates, packs alongside loose modules at container weight 1.0, and all 29 exported entries including expansion kits. Adds more-frequent pack finds on zombie bodies. [Contract and final rate choice](checkpoints/R3_MODULE_PACK.md#c176-selected-pack-rules-and-zombie-body-loot). Recommend separately configurable 1% per eligible body, with 0.5%/2% alternatives; numerical rate not yet approved. Container weights and corpse probabilities are distinct. Existing hour/weight/pack approval persists; do not require generic reapproval after the rate choice. No gameplay patch or test claim this turn.
+
+
+## C177 - Fifteen-percent corpse packs and 0.2.47 implementation (2026-10-12)
+
+Owner: "should be way more common, like 15%". Select 15% independent once-per-body pack chance, including turret kills, separate from container weight 1.0. Existing approval covers three rewards, duplicates, all 29 entries, optional reveal, supplied weights and battery hour/minute fix. Implemented with native inventory transactions and event timing evidence; [final contract](checkpoints/R3_MODULE_PACK.md#c177-15-percent-body-rate-and-implementation), [patch](PATCH_v0.2.47.md), [test](TEST_v0.2.47.md). C171 inventory tooltip correction is included; capacity warnings remain open. Saved tuning preserved; rarity/power follow loaded weights. LootLab deployed with loose-module-only estimate note. No further design gate, Workshop upload, Viewpoint implementation or packed-turret weight reduction.

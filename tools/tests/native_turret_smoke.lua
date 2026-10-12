@@ -29,6 +29,27 @@ local function verifyTurrets()
     end
     print("[OMHTT-Smoke] distance-accuracy samples=16 config=native")
     local player = IsoPlayer.new(getCell())
+    local Pack = require("OMHTT/TurretModulePack")
+    OMHTT_NativeModulePack = instanceItem(Pack.TYPE)
+    OMHTT_NativeModulePack:getModData().OMHTTPackRewards = {"Regulator", "CapacityLarge", "Regulator"}
+    local pack = instanceItem(Pack.TYPE)
+    assert(pack and math.abs(pack:getActualWeight() - 0.2) < .000001, "Native module pack script/weight missing")
+    player:getInventory():AddItem(pack)
+    pack:getModData().OMHTTPackRewards = {"Regulator", "CapacityLarge", "Regulator"}
+    local rewards = Pack.open(player, pack)
+    assert(rewards and #rewards == 3 and not player:getInventory():contains(pack), "Native pack exchange failed")
+    assert(rewards[1] ~= rewards[3] and rewards[2]:getFullType() == T.TYPES.CapacityLarge, "Native pack duplicates/expansions wrong")
+    assert(Pack.open(player, pack) == nil, "Native pack double completion")
+    for i = 1, #rewards do assert(player:getInventory():contains(rewards[i])); player:getInventory():Remove(rewards[i]) end
+    require("OMHTT/TurretPackLoot")
+    local priorChance = SandboxVars.OMHTurretsTraps.PackZombieChance
+    SandboxVars.OMHTurretsTraps.PackZombieChance = 100
+    local corpseSource = IsoZombie.new(getCell())
+    local before = corpseSource:getInventory():getItems():size()
+    Pack.onDeath(corpseSource); Pack.onDeath(corpseSource)
+    assert(corpseSource:getInventory():getItems():size() == before + 1, "Native corpse pack must be inserted once")
+    SandboxVars.OMHTurretsTraps.PackZombieChance = priorChance
+    print("[OMHTT-Smoke] native-module-pack rewards=3 duplicates=distinct expansion=valid repeat=blocked corpse=once")
     local Modules = require("OMHTT/TurretModules")
     local Loot = require("OMHTT/ModuleLoot")
     assert(getSandboxOptions():getOptionByName("OMHTurretsTraps.ModuleLootRate"):getDefaultValue() == Loot.DEFAULTS.global, "Native global loot default drift")
@@ -41,7 +62,12 @@ local function verifyTurrets()
     local count = 0
     for i = 1, #Loot.POOLS do
         local items = ProceduralDistributions.list[Loot.POOLS[i]].items
+        local packs = 0
         for n = 1, #items, 2 do
+            if items[n] == Pack.TYPE then
+                packs = packs + 1
+                assert(math.abs(items[n + 1] - Loot.SCALES[Loot.POOLS[i]]) < .000001, "Native pack weight mismatch")
+            end
             if require("OMHTT/Turret").component(items[n]) then
                 assert(instanceItem(items[n]), "Loot module script missing")
                 local kind = T.component(items[n])
@@ -49,6 +75,7 @@ local function verifyTurrets()
                 count = count + 1
             end
         end
+        assert(packs == 1, "Native pack pool must contain exactly one pack entry")
     end
     assert(count == 208, "Expected 208 component entries across sixteen native loot pools")
     local retired = {"OMHTTModuleCapacitySmall", "OMHTTModuleCapacity", "OMHTTModuleCapacityLarge",

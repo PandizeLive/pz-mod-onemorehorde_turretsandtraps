@@ -8,6 +8,9 @@ function O.register()
         options = PZAPI.ModOptions:create("OneMoreHorde_TurretsAndTraps", "OMH: Turrets")
         options:addTickBox("ShowNoiseRadius", getText("UI_OMHTT_ShowNoiseRadius"), true, getText("UI_OMHTT_NoiseRadiusTooltip"))
     end
+    if not options:getOption("PackAnimation") then
+        options:addTickBox("PackAnimation", getText("UI_OMHTT_PackAnimation"), true, getText("UI_OMHTT_PackAnimationTooltip"))
+    end
     O.options = options
 end
 
@@ -19,4 +22,12 @@ function O.noiseVisible()
 end
 
 O.register()
+
+---@return boolean enabled
+---@nodiscard
+function O.packAnimation()
+    if not O.options then O.register() end
+    return O.options:getOption("PackAnimation"):getValue()
+end
+
 return O

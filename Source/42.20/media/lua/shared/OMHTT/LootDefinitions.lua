@@ -30,7 +30,35 @@ for _, subset in pairs(L.SUBSETS) do
         subset.Synergy, subset.Martyrdom, subset.Tack = true, true, true
     end
 end
-L.DEFAULTS = {global = 1, items = {Regulator = 1, Synergy = 1, Martyrdom = 1, Tack = 1, Conservation = 1, Piercing = 1, InitialBlow = 1, Execute = 1, Impact = 1, FiringEnhanced = 1, MotionDetectionEnhanced = 1, Magazine = 1, Splitter = 1, Fragment = 1,
-    Firing = 1, MotionDetection = 1, Filter = 1, Detection360 = 1, Suppression = 1, RapidFire = 1, Reload = 1, Velocity = 1, Range = 1, CapacitySmall = 1, Capacity = 1, CapacityLarge = 1, Autoloader = 1, Critical = 1, Accuracy = 1
+L.DEFAULTS = {global = 1, items = {
+    Firing = 0.5,
+    MotionDetection = 0.5,
+    Filter = 2,
+    Detection360 = 3.2,
+    Suppression = 1.6,
+    RapidFire = 1.2,
+    Reload = 1.2,
+    Velocity = 1,
+    Range = 1.4,
+    CapacitySmall = 1,
+    Capacity = 1,
+    CapacityLarge = 1,
+    Autoloader = 1,
+    Critical = 1.6,
+    Accuracy = 1.4,
+    Magazine = 1.2,
+    Splitter = 1.2,
+    Fragment = 1.2,
+    FiringEnhanced = 1,
+    MotionDetectionEnhanced = 1,
+    Piercing = 1.6,
+    InitialBlow = 1.6,
+    Execute = 1,
+    Impact = 1.2,
+    Conservation = 0.8,
+    Synergy = 1,
+    Martyrdom = 1.3333333333333333,
+    Tack = 1.3333333333333333,
+    Regulator = 1.0909090909090908
 }}
 return L

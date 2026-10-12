@@ -15,8 +15,7 @@ function ISToolTipInv:render()
     local component = self.item and T.component(self.item:getFullType())
     if component then
         local old = self.item:getTooltip()
-        local description = require("OMHTT/TurretDescriptions").get(component, false)
-        self.item:setTooltip((string.gsub(description, "\n[^\n]*$", "")))
+        self.item:setTooltip(nil)
         tooltipRender(self)
         if not ISContextMenu.instance or not ISContextMenu.instance.visibleCheck then
             require("OMHTT/TurretItemTooltip").footer(self, component)

@@ -21,14 +21,16 @@ local items = {size = function() return #modules end, get = function(self, i) re
 local contents = T.contents({getItems = function() return items end})
 check(contents.modules == 3 and contents.active.Regulator == 2 and contents.powerLoad == 0,
     "Regulator occupies slots, broken copies do not work, no self-surcharge")
-check(R.get("Regulator").band == 4 and R.get("Synergy").surcharge == 1, "Regulator is Rare without changing rarity extrema")
+check(R.get("Regulator").band == 3 and R.get("Synergy").surcharge == 1, "Owner weight makes Regulator Uncommon; Synergy retains maximum surcharge")
 local description = require("OMHTT/TurretDescriptions").get("Regulator", false)
-check(string.find(description, "Battery Drain: +0x", 1, true) and string.find(description, "Rarity: Rare"), "Regulator tooltip reports its actual exception")
+check(string.find(description, "Battery Drain: +0x", 1, true) and string.find(description, "Rarity: Uncommon"), "Regulator tooltip reports its actual exception")
 SandboxVars.OMHTurretsTraps.PotatoBatteryPercentPerShot = .1
 check(S.resolve({active = {}}).batteryPercent == .1, "Existing custom sandbox settings are not silently overwritten")
 SandboxVars.OMHTurretsTraps = saved
 R.refresh(saved or {})
 
+local originalTextManager = getTextManager
+getTextManager = function() return {WrapText = function(self, font, text, width) return text end} end
 local originalCore = getCore
 getCore = function() return {getScreenHeight = function() return 720 end} end
 local panel = {height = 100, width = 250, y = 660, labels = {}, backgroundColor = {a=1,r=0,g=0,b=0}, borderColor = {a=1,r=1,g=1,b=1}}
@@ -44,7 +46,8 @@ function panel:drawRect() end
 function panel:drawRectBorder() end
 function panel:drawText(text) self.labels[#self.labels + 1] = text end
 require("OMHTT/TurretItemTooltip").footer(panel, "Regulator")
-check(panel.height == 126 and panel.y + panel.height < 720 and panel.redraw,
+check(panel.height == 180 and panel.y + panel.height < 720 and panel.redraw,
     "Colored footer fits the screen with no native public padding fields")
-check(#panel.labels == 1 and string.find(panel.labels[1], "Rarity:"), "Exactly one colored rarity footer")
+check(#panel.labels == 4 and string.find(panel.labels[4], "Rarity:"), "Four dynamic lines outside native translation, including rarity")
 getCore = originalCore
+getTextManager = originalTextManager
