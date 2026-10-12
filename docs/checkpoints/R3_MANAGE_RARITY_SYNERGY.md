@@ -1,5 +1,32 @@
 # C155 - Manage boundaries, rarity, Once each and Synergy discussion
 
+## C159 - design ready for implementation (2026-10-11)
+
+Owner selects **6A minor blunt player injury** and **7A one-second player injury protection**, explicitly emphasizes Synergy optimization, and asks whether the plan is ready plus a recap. All raised gameplay choices are settled. This turn records readiness; the owner requested a recap, so no gameplay implementation/install is claimed. Historical recommendations below do not reopen settled choices.
+
+### Final selected bundle
+
+- Manage header bands/dim sections; bounded Installed Modules background with name left/effect right and existing individual tooltips.
+- Seven-stop Horde Night rarity spectrum, including pale-blue/deep-purple endpoints, using logarithmic loaded loot weights; cache rather than calculate during drawing.
+- Native-style battery/reserve/magazine bars and concise per-shot/count/estimated-time battery tooltip, including real reload/chamber rules; changed-state/hover-driven calculation.
+- Once each Filter priority: nearest first, then minimum legal turn, one fired shot per selected primary target; misses count, non-fired failures do not. New arrivals join the next round; targeting still honors range/cone/LOS.
+- Synergy Module: one installed, loot weight 1.0, every eligible projectile hit gains applicable module interactions. Includes Splitter/Piercing/Fragment; other modules retain their health/reload/chance conditions. No repeated Fragment generation or recreated muzzle paths; Martyrdom/Tack damage cannot generate further effects.
+- Martyrdom Module: loot weight 1.5, eligible projectile kills produce 20 zombie damage in a 1.5-tile base radius and 20-tile attracting noise. Radius +.25 tile per extra copy; no fire or wall/floor penetration.
+- Tack Module: loot weight 1.5, eligible hit drops a ten-active-second field, base radius 1 tile plus .25 per extra copy, 10 damage/2 seconds and half movement in contact. No overlapping damage/slow multiplication. Same zombie can drop another after expiry on a new eligible hit; hits during the lifetime do not refresh/spam fields. Players use existing barb traversal/injury behavior.
+- Minor Martyrdom player injury: 2 damage to one limb body part plus 5 additional pain, without adding bleeding/burn/fracture/knockdown. At most one such injury per player per active second across all turrets. Existing injuries are preserved. Body-part units are not identical to overall health percentage; native validation remains required.
+- LootLab, Sandbox controls, module descriptions/benefit list, rarity and power/slot integration updated alongside the three new modules. Existing recipes and independent package requirements remain.
+
+### Optimization requirements and verification gates
+
+1. Reuse the shared combat scheduler. Process chain jobs incrementally with both work-count and elapsed-time limits; preserve bounded queues. No synchronous recursive effect generation, full-world scans or one runtime object per tack.
+2. Reserve/admit committed effect work before spending ammunition/power. If saturated, back-pressure new firing rather than silently discard an already promised 100-percent activation or accumulate unbounded work. The tradeoff under overload is potentially slower firing, not an unbounded frame stall. Exact reservation/job accounting must be proven during implementation; no measured throughput promise yet.
+3. Use local spatial buckets for Tack contact and nearby burst victims; maintain deduplication across simultaneous hits/turrets. Refresh/expire with active clocks; no catch-up damage burst after pause, lag or load. Overlap handling must not extend lifetime indefinitely or multiply DoT.
+4. Reuse per-shot module/stat snapshots and track effect lineage, preserving the triggering turret and actual damage/kill attribution. Keep world-attracting noise separate from capped/reused audio and visible particle presentation; preserve native pitch variation without the earlier expensive emitter mutation.
+5. No new per-tick UI estimates. Reuse contact-only native displacement scaling without persistent speed overrides. Ensure generated effects work with Turrets alone and do not introduce a Traps or Horde Night dependency.
+6. Verify dense maximum-slot combinations, multiple turrets, repeated Tack rearming, queue saturation/drain, stable memory/expiry, wall/floor rules, player injury throttling, native save/reload and independent packages. Report maximum callback time/queue age and actual client evidence separately. Retain the unexplained 676-ms 0.2.43 gap as unresolved; do not label the new design lag-free before measurement.
+
+Readiness: no remaining owner choice blocks starting implementation. Native feasibility, stress validation and rendered acceptance are implementation gates, not fulfilled by this approval. Use existing common module inventory conventions and owner-provided/approved placeholders unless evidence reveals a material new tradeoff. Recommend High reasoning for the cross-effect/state work; likely over 25 minutes, so Fast is recommended for the implementation run. One combined short owner test after verified installation; no extra historical test round now. Standing C108/C119 requires mirror/install records when the patch is actually completed.
+
 ## C158 - selected module tuning and player injury options (2026-10-11)
 
 Owner selects **1A terminal death-burst/Tack damage**, **2A Martyrdom on eligible projectile kills**, **3A ten-second Tack lifetime with rearming after expiry**, **4B linear +0.25-tile radius per extra module**, and **5B player interaction**. Martyrdom adds a **20-tile noise radius**. Owner requests options for minor explosion injuries, suggesting a bruise. This settles those choices and supersedes the once-per-zombie-lifetime Tack recommendation; player explosion injury remains a discussion gate.

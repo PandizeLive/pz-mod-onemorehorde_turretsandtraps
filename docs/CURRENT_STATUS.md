@@ -1,6 +1,6 @@
 # Current development and planning handoff
 
-**C158 selections:** [Martyrdom/Tack tuning and player injury options](checkpoints/R3_MANAGE_RARITY_SYNERGY.md#c158---selected-module-tuning-and-player-injury-options-2026-10-11). Selected 1A/2A/3A/4B/5B: terminal effects, projectile-kill bursts with 20-tile noise, Tack rearming after its ten-second lifetime, +0.25-tile radius per extra copy, and player interaction. **Decision needed:** 6A blunt injury / 6B scratch / 6C soreness, and 7A one-second player injury protection / 7B each burst. Installed 0.2.43 and test acceptance unchanged; discussion only.
+**C159 ready:** [Final Manage/module bundle and optimization requirements](checkpoints/R3_MANAGE_RARITY_SYNERGY.md#c159---design-ready-for-implementation-2026-10-11). Owner selects 6A minor blunt player injury and 7A one-second protection, and emphasizes Synergy performance. All raised design choices are settled; native/stress proof remains implementation work. Current request is readiness/recap, not a completed patch. Installed 0.2.43 and test acceptance unchanged.
 
 Updated 2026-10-11. Read with [AGENTS](../AGENTS.md) and [Planning](PLANNING.md).
 
@@ -14,4 +14,4 @@ Updated 2026-10-11. Read with [AGENTS](../AGENTS.md) and [Planning](PLANNING.md)
 - **Retained limits:** SP combat only, no multiplayer certification. Native reserve weight limits remain separate from expansion count. Secondary work retains 256 queued rays / 128 steps per callback. Fresh-world item-ID policy and owner-sourced placeholder art remain.
 - **GitHub:** `codex/performance-barbed-audit`, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1) into dev; immutable development tag and C108/C119 mirror required. No merge or Workshop upload.
 
-**Decision needed:** choose C158 player explosion injury and burst protection; 0.2.43 remains installed and its earlier test is not marked complete. The C154 install/tag and findings are verified on GitHub at `02e7ed1`.
+**Wait for a patch:** C159 design is ready for implementation; this readiness checkpoint makes no gameplay changes. 0.2.43 remains installed and its earlier test is not marked complete. No further design question is currently required.
