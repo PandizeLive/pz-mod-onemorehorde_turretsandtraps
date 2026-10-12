@@ -7,8 +7,8 @@
 - One bounded tick stream, final-only selection/rarity cue, Collect/replacement cleanup and long-frame no-backlog behavior pass. Already granted rewards remain intact.
 - 500 render frames create no items or text wraps; only visible card indices are drawn. Small-view controls remain within bounds. These are test doubles, not client rendering acceptance.
 - All seven native UI sound handles still load/stop; no audio files or sound definitions changed.
-- Native write/read and Traps-only/Turrets-only/both startup: pending completion.
-- Tagged local installation: pending completion. Owner visual/audio acceptance pending.
+- Native write/read and Traps-only/Turrets-only/both startup pass on installed engine 42.21.0. [Native evidence](../diagnostics/v0.2.48.1/native-verification.json).
+- Installed from immutable test/v0.2.48.1 / def298402fa617ccd2e033b5f4de95e6fe2c0392. All 216 source and 264 tagged/packaged/installed/archived files match; both 0.2.48 backups verify. [Release evidence](../diagnostics/v0.2.48.1/local-release.json). Owner visual/audio acceptance pending.
 
 No loot, combat, battery, persistence format or hosted site changes. The C189 0.2.48 LootLab deployment remains current. The only initial validation failure was the fixture's old 16-card/four-second expectation; it was updated and the complete validation passes.
 

@@ -1,0 +1,20 @@
+{
+  "write": {
+    "logSHA256": "d6e181ccd7ad29d8778c52b9188a4a18ff08240d0278feb32f589368e40db258",
+    "markers": [
+      "[OMHTT-Smoke] native-module-pack rewards=3 duplicates=distinct expansion=valid repeat=blocked corpse=once",
+      "[OMHTT-Smoke] native-rarity-sounds tiers=7 clips=7 spatial=false",
+      "[OMHTT-Smoke] native-persistence mode=write parts=28 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved legacy=8 edges=8 outline=4 reinforced=8 orientation=preserved",
+      "Shutdown handling finished"
+    ]
+  },
+  "read": {
+    "logSHA256": "bbc5a22dfea6fde29a8c711aa52e6d041f43db3148b631ed4812e42d6ec8f3fd",
+    "markers": [
+      "[OMHTT-Smoke] native-module-pack rewards=3 duplicates=distinct expansion=valid repeat=blocked corpse=once",
+      "[OMHTT-Smoke] native-rarity-sounds tiers=7 clips=7 spatial=false",
+      "[OMHTT-Smoke] native-persistence mode=read parts=28 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved legacy=8 edges=8 outline=4 reinforced=8 orientation=preserved",
+      "Shutdown handling finished"
+    ]
+  }
+}
