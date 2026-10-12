@@ -1,6 +1,8 @@
 # Phases and checkpoints
 
-Synchronized 2026-10-12 against C80-C170 and native-verified 0.2.46. Packed-weight reduction is abandoned under C170; R3C7 owner acceptance remains open.
+C171: [LootLab direct weights](LOOTLAB_DIRECT_WEIGHTS.md) deployed. Next corrective game scope to settle: adaptive battery minutes/hours, native tooltip percent/translation failure and repeated capacity configuration warnings. R3C7 acceptance stays open.
+
+Synchronized 2026-10-12 against C80-C171 and native-verified 0.2.46. Packed-weight reduction is abandoned under C170; R3C7 owner acceptance remains open.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 

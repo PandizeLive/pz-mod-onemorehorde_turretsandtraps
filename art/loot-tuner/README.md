@@ -1,5 +1,7 @@
 # Knox Country Loot Lab
 
+Component controls edit direct loot weights (zero disables). Global/material/roll controls remain separate. Existing saved scenarios, cloud values and Sandbox exports retain their multiplier schema; the UI converts weight to/from the baseline internally, without rescaling saved tuning. Display formatting does not rewrite stored values. Limits match the game's per-item 0–20 multiplier, expressed as 0–20 times each component's baseline weight.
+
 Open `index.html` directly in a desktop browser. Keep `data.js`, `model.js`, `app.js`, `style.css` and `provenance.json` alongside it. No server, account or internet connection is required.
 
 This is a personal, offline balancing tool for **new-world estimates**. It does not change the game, install a gameplay patch, or predict a save's exact future drops.
@@ -7,7 +9,7 @@ This is a personal, offline balancing tool for **new-world estimates**. It does 
 ## Use
 
 1. Choose a component, or All components.
-2. Change the T&T global multiplier and individual component multipliers. Material loot defaults to Apocalypse's 0.60; use your intended world settings.
+2. Change the T&T global multiplier and individual component loot weights. Material loot defaults to Apocalypse's 0.60; use your intended world settings.
 3. Click **Refresh spawns** for a new seed. Generated spawns shows one sample world, with a distinct color for each component. Switch to Container chances to inspect possible containers.
 4. Toggle individual components, or Show all / Hide all. Visibility never rerolls loot or changes rates. Select a town, zoom and hover dots for coordinates, floor, chances and generated quantities.
 5. Compare countywide and nearest-town estimates. Save/load scenario JSON to compare settings; export the Sandbox excerpt when satisfied. Apply settings yourself only after reviewing the excerpt.
@@ -53,7 +55,7 @@ No browser-rendering acceptance is claimed by the automated checks. The model an
 
 ## Mobile controls and rarity
 
-Pinch to zoom, drag with one finger, or use the 44px on-map zoom controls. Tap a nearby marker when zoomed in for container details. The Tune loot / Back to map links avoid scrolling through the report on a phone. Legend checkboxes, dots, names and rate fields use fixed columns. A separate colored marker moves on a fixed logarithmic 0–1,000+ expected-items scale; it includes the final scenario multipliers and retention. It reflects estimated abundance, not random sample luck.
+Pinch to zoom, drag with one finger, or use the 44px on-map zoom controls. Tap a nearby marker when zoomed in for container details. The Tune loot / Back to map links avoid scrolling through the report on a phone. Legend checkboxes, dots, names and weight fields use fixed columns. A separate colored marker moves on a fixed logarithmic 0–1,000+ expected-items scale; it includes the final scenario multipliers and retention. It reflects estimated abundance, not random sample luck.
 
 `tools/loot_site/test_map_controls.cjs` checks the actual gesture controller for pinch anchoring, pinch-to-pan continuity, cancellation, taps and limits. Physical iOS/Android interaction remains a user acceptance check.
 

@@ -11,6 +11,11 @@
     return Math.min(1, Math.ceil(weight*global*item*material*100-1e-10)/10000);
   }
   function rolls(base, multiplier) { return Math.max(1, Math.floor(base*multiplier)); }
+  function lootWeight(component, multiplier) { return component.weight*multiplier; }
+  function weightMultiplier(component, weight) {
+    if(!Number.isFinite(weight)||weight<0||weight>component.weight*20)throw Error('Weight must be between 0 and '+component.weight*20+'.');
+    return weight/component.weight;
+  }
   function choose(rules, counts, forced, random) {
     if (forced.length) return forced[forced.length-1];
     let required=[], available=[];
@@ -183,6 +188,6 @@
     const poolMeans=pools.map((name,p)=>({name,containers:worlds.reduce((n,w)=>n+w.reduce((a,r)=>a+r[p],0),0)/samples}));
     return {itemMeans,expectations,presence,regions,poolMeans,mean:selected.reduce((n,i)=>n+itemMeans[i],0),lo:quantile(draws,.05),hi:quantile(draws,.95),zero,probabilities,poolProbabilities,meanTrials,hauls,haulByPool};
   }
-  root.LootModel={migrateValue,rng,probability,rolls,choose,binomial,quantile,defaults,validate,prepare,evaluate,regionFor,generate,haulDistribution,markerRadius};
+  root.LootModel={lootWeight,weightMultiplier,migrateValue,rng,probability,rolls,choose,binomial,quantile,defaults,validate,prepare,evaluate,regionFor,generate,haulDistribution,markerRadius};
   if(typeof module!=='undefined')module.exports=root.LootModel;
 })(typeof window!=='undefined'?window:globalThis);

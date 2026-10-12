@@ -929,3 +929,8 @@ Owner asks what still blocks packed weight reduction and for the simplest safe o
 ## C170 - Abandon packed-weight reduction; focused test (2026-10-12)
 
 Owner: "I guess we'll just have to abandon the idea. What's my short test?" Cancels the packed-turret weight-reduction feature and its feasibility work. Keep existing exact-item pickup/placement at full contents weight; do not substitute C169 alternatives. Module weight .2 and all other installed 0.2.46 changes remain. Current planning/roadmap are updated; historical failures remain recorded. Provide the complete short five-step 0.2.46 test, then inspect console.txt after the owner reports completion. No test acceptance, new patch, gameplay edit or version bump is implied. C108/C119 documentation mirror applies.
+
+
+## C171 - Direct LootLab weights and ongoing 0.2.46 findings (2026-10-12)
+
+Owner requests direct component weights in LootLab and annotates the battery estimate remaining in minutes. Implemented/deployed direct-weight controls with unchanged saved tuning/schema and compatible Sandbox export; 77 API/page tests plus model/browser checks pass. [Contract/evidence](LOOTLAB_DIRECT_WEIGHTS.md). Confirmed minutes-only formatting and console tooltip/capacity issues are recorded for the next game correction, not silently patched or accepted. No game balance/code/version change, no database tuning write, no new gameplay acceptance. C170 packing cancellation remains. C108/C119 mirror applies.

@@ -1,5 +1,7 @@
 # 0.2.46 - Focused owner test
 
+**C171 findings, 2026-10-12:** owner reports minutes-only duration display. Console confirms 0.2.46 with a new tooltip-formatting exception and repeated native capacity warnings. [Details and console evidence](LOOTLAB_DIRECT_WEIGHTS.md#game-findings-not-a-completed-test-pass). Test remains incomplete; prior automated passes do not clear these rendered findings. LootLab direct-weight controls are now deployed separately.
+
 Use SP and your existing test turret. Packed-weight reduction is abandoned under C170; no packing test is needed.
 
 1. Restart; confirm **0.2.46** and Sandbox **Battery use = 0.00045**.

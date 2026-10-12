@@ -7,7 +7,7 @@
   "status": "passed",
   "scope": "Numerical model, seeded per-container spawning and extracted-data integrity; no in-game spawn certification",
   "generatedItems": 4119,
-  "elapsedMs": 3407,
+  "elapsedMs": 3640,
   "candidates": 18630,
   "worldSamples": 256,
   "baseline": {

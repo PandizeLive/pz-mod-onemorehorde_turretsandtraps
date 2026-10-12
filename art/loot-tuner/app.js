@@ -44,10 +44,10 @@ for(const [i,m] of D.modules.entries()){
   top.className='component-top';label.className='component-name';swatch.className='swatch shape-'+appearances[i][1];swatch.style.backgroundColor=colors[i];swatch.title=familyNames[appearances[i][1]];
   show.type='checkbox';show.id='show-'+m.id;show.setAttribute('aria-label','Show '+m.name+' on map');
   show.addEventListener('change',()=>{scenario.visible[m.id]=show.checked;controls();updateSampleSummary();scheduleDraw();saveSettings();});
-  span.textContent=m.name;input.type='number';input.min=0;input.max=20;input.step=.05;input.id='item-'+m.id;input.className='rate';input.setAttribute('aria-label',m.name+' loot multiplier');
-  const changeRate=()=>{if(input.value.trim()===''||!Number.isFinite(Number(input.value)))return;scenario.items[m.id]=bounded(input.value,0,20,1);saveSettings();scheduleUpdate();};
+  span.textContent=m.name;input.type='number';input.min=0;input.max=m.weight*20;input.step='any';input.id='item-'+m.id;input.className='rate';input.setAttribute('aria-label',m.name+' loot weight');input.title=`Loot weight: 0–${m.weight*20}. Default ${M.lootWeight(m,D.defaults?.items?.[m.id]??1)}. Zero disables this component.`;
+  const changeRate=()=>{if(input.value.trim()===''||!input.validity.valid)return;const weight=Number(input.value);if(!Number.isFinite(weight))return;scenario.items[m.id]=M.weightMultiplier(m,weight);saveSettings();scheduleUpdate();};
   input.addEventListener('input',changeRate);
-  input.addEventListener('change',()=>{changeRate();input.value=scenario.items[m.id];});
+  input.addEventListener('change',()=>{changeRate();input.value=weightText(m);});
   small.id='estimate-'+m.id;label.append(show,swatch,span);top.append(label,input);
   const rarity=document.createElement('div'),track=document.createElement('div'),marker=document.createElement('span'),ends=document.createElement('div');
   rarity.className='rarity';track.className='rarity-track';track.id='rarity-'+m.id;track.setAttribute('role','meter');track.setAttribute('aria-label',m.name+' estimated abundance');track.setAttribute('aria-valuemin','0');track.setAttribute('aria-valuemax','1000');
@@ -59,9 +59,10 @@ function bounded(value,min,max,fallback){const n=Number(value);return Number.isF
 let updateTimer=null;
 function scheduleUpdate(){clearTimeout(updateTimer);updateTimer=setTimeout(()=>{updateTimer=null;update();},150);}
 function fieldValue(id,value){const input=$(id);if(document.activeElement!==input)input.value=value;}
+function weightText(m){return Number(M.lootWeight(m,scenario.items[m.id]).toPrecision(12));}
 function controls(){
   for(const key of ['global','material','rolls','retention']){fieldValue(key,scenario[key]);$(key+'Out').textContent=key==='retention'?Math.round(scenario[key]*100)+'%':scenario[key].toFixed(2)+'×';}
-  for(const m of D.modules){fieldValue('item-'+m.id,scenario.items[m.id]);$('show-'+m.id).checked=scenario.visible[m.id];$('component-'+m.id).classList.toggle('is-hidden',!scenario.visible[m.id]);}
+  for(const m of D.modules){fieldValue('item-'+m.id,weightText(m));$('show-'+m.id).checked=scenario.visible[m.id];$('component-'+m.id).classList.toggle('is-hidden',!scenario.visible[m.id]);}
   $('overlay').value=scenario.overlay;$('seedBadge').textContent='Seed '+scenario.seed;
   fieldValue('seed',scenario.seed);$('selected').value=scenario.selected;
 }
@@ -87,7 +88,7 @@ function update(){
   $('zero').textContent=result.zero===0?'0%':result.zero<.0001?'<0.01%':(100*result.zero).toFixed(2)+'%';
   D.modules.forEach((m,i)=>{
     const expected=result.itemMeans[i],track=$('rarity-'+m.id);
-    $('estimate-'+m.id).textContent=`${sample.totals[i]} generated · ${number(expected)} expected · weight ${m.weight}`;
+    $('estimate-'+m.id).textContent=`${sample.totals[i]} generated · ${number(expected)} expected`;
     $('rarity-marker-'+m.id).style.left=(window.LootMapControls.rarityPosition(expected)*100)+'%';
     track.setAttribute('aria-valuenow',String(Math.min(1000,expected)));track.setAttribute('aria-valuetext',expected===0?'Disabled':number(expected)+' expected items countywide');
     track.title=expected===0?'Disabled':number(expected)+' expected items countywide; fixed 0–1,000+ log scale';

@@ -1,5 +1,7 @@
 # Current development and planning handoff
 
+**C171:** direct component weights are live in LootLab; saved tuning and Sandbox exports preserve their effective values. [Implementation and findings](LOOTLAB_DIRECT_WEIGHTS.md). The ongoing 0.2.46 test reports minutes-only battery display; console also confirms a tooltip formatting exception and repeated capacity warnings. These game corrections remain pending; do not claim full acceptance.
+
 Updated 2026-10-12. Read [AGENTS](../AGENTS.md) and [Planning](PLANNING.md).
 
 **C168 / 0.2.46 installed and verified; owner test pending.** Owner approved revised 2B: .00045% base battery use, additive rarity surcharges .1/.15/.25/.4/.6/.8/1.0, plus C167 packing/weight/Regulator/names. Regulator provides +25% endurance per copy, battery-only, no self-surcharge; all module item weights are .2. Seven names end in Epic/Legendary/Mythic. Inventory rarity tooltip uses exposed UI methods. [Patch](PATCH_v0.2.46.md) | [focused test](TEST_v0.2.46.md).
@@ -10,4 +12,4 @@ Updated 2026-10-12. Read [AGENTS](../AGENTS.md) and [Planning](PLANNING.md).
 
 R3C7 owner acceptance and relevant R1C3 performance work remain open. SP combat/fresh-world identity policy and owner-sourced final art remain. No Workshop upload. The original 0.2.45 inventory tooltip failure is recorded, not erased. The closed test save Battery use was backed up and corrected from .1 to .00045; all other bytes/settings remain unchanged. [Save-setting evidence](../diagnostics/v0.2.46/test-save-setting.json).
 
-GitHub: `codex/performance-barbed-audit`, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1). C108/C119 development mirror applies. **Test now:** 0.2.46 is installed from immutable `test/v0.2.46`; see the five-step test above. Packed-weight reduction is abandoned under C170.
+GitHub: `codex/performance-barbed-audit`, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1). C108/C119 development mirror applies. **Test now: LootLab direct weights.** Game 0.2.46 remains installed from immutable `test/v0.2.46`; C171 corrective findings are pending and acceptance is incomplete. Packed-weight reduction is abandoned under C170.

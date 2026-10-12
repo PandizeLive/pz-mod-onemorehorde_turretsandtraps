@@ -1,5 +1,7 @@
 # Planning
 
+**C171:** direct component weights are live in LootLab; saved tuning and Sandbox exports preserve their effective values. [Implementation and findings](LOOTLAB_DIRECT_WEIGHTS.md). The ongoing 0.2.46 test reports minutes-only battery display; console also confirms a tooltip formatting exception and repeated capacity warnings. These game corrections remain pending; do not claim full acceptance.
+
 **C168 / 0.2.46 installed and verified; owner test pending.** Owner approved revised 2B: .00045% base battery use, additive rarity surcharges .1/.15/.25/.4/.6/.8/1.0, plus C167 packing/weight/Regulator/names. Regulator provides +25% endurance per copy, battery-only, no self-surcharge; all module item weights are .2. Seven names end in Epic/Legendary/Mythic. Inventory rarity tooltip uses exposed UI methods. [Patch](PATCH_v0.2.46.md) | [focused test](TEST_v0.2.46.md).
 
 16,046 Kahlua assertions, 760 native translations, 113 compiled files, native write/read, three independent package selections and 51 Firearms weapons pass. LootLab 0.2.46 is deployed with 29 modules/208 entries; 77 API/page tests and desktop/mobile browser checks pass. Owner/rendered gameplay acceptance remains pending.
