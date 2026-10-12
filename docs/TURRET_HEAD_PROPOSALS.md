@@ -1,5 +1,13 @@
 # Unique turret head candidates
 
+## C192 active new-head selection (2026-10-12)
+
+Owner requests starting the new-head track and seeing our list. This selects R3C1 discussion, not a specific head or gameplay implementation. Present choices: 1A Ballista/heavy bolt (recommended first); 1B Rotary Blades; 1C Rotary Bat; 1D Scrapshot cannon (conditional); 1E Nail Scatter (conditional); 1F Grenade lobber (later); 1G Arc emitter (later). Ballista offers the simplest first extension of the projectile system; Rotary Blades offers a larger mechanical difference but needs visible sweep/contact and obstruction proof.
+
+Current shortlist caveats supersede historical exclusions below: Tack and delayed endpoint Fragment are now implemented, and contact slowdown is already approved for existing wire/Tack. Earlier statements that tack bullets remain excluded or Fragment is immediate are historical, not current module rules. Nail Scatter needs a distinct supply/deployment role relative to Tack; Scrapshot needs a distinct role relative to mounted shotguns with Splitter/Fragment. No renewed approval of slowing for new heads is implied. Module compatibility must follow current implemented module contracts, not the old R3C4 placeholders below.
+
+All seven remain candidates. Potato and mounted firearms already exist; Extinguisher and Ram remain dropped, and Rotary Flail remains replaced by Blades. Next decision is which head to specify; behavior, ammo, compatible modules, collateral, recipe, wear and power must be settled before implementation. C191 timing polish stays queued for the next patch. Final art stays owner-sourced.
+
 Planning review, 2026-10-06, revised after C81 offensive-module discussion and C82 head pruning. C82 drops Extinguisher and Ram and replaces the flail concept with Rotary Blades. The remaining heads are candidates, not approved implementations or proven native capabilities. Recipes, skills, XP, stats and exact power remain undecided. Battery longevity is an explicit requirement. Reuse the universal base and module inventory instead of duplicating turret systems. See [offensive module direction](checkpoints/R3_OFFENSIVE_MODULES.md) for confirmed concepts versus proposed tuning.
 
 ## Existing plans

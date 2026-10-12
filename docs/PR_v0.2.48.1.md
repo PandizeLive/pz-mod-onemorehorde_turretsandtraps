@@ -7,3 +7,5 @@ Validation: 16,180 assertions and 117 Lua/translation compilations pass, includi
 [Planning](docs/PLANNING.md) | [Current status](docs/CURRENT_STATUS.md) | [Contract](docs/PACK_POLISH.md) | [Release](docs/RELEASE.md)
 
 Development only; no merge, Workshop upload or official release. Includes the prior 0.2.48 custom audio and owner weights; hosted LootLab remains on that verified baseline.
+
+C192: New-head selection (R3C1) is now the active content discussion; seven candidates recorded in [the shortlist](docs/TURRET_HEAD_PROPOSALS.md#c192-active-new-head-selection-2026-10-12). No individual head or implementation approved. C191 pack timing remains queued for the next patch.
