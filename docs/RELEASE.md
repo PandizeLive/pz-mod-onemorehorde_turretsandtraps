@@ -1,19 +1,19 @@
 # Release state and publication policy
 
-## 0.2.47 / C177 - verified, ready for local installation
+## Current local installation: 0.2.47 / C177
 
 Module Packs, 15% once-per-body loot, all 29 supplied weights, battery hours/minutes and the inventory percent-tooltip correction are implemented. [Patch](PATCH_v0.2.47.md) | [Five-step test](TEST_v0.2.47.md). 16,071 Kahlua assertions, native write/read (including unopened-pack rewards) and all three independent package selections pass. 208 source / 256 packaged files match the validated manifest. Owner/rendered acceptance remains pending; capacity warnings remain open.
 
-LootLab 0.2.47 is deployed from isolated verified source; Worker `b267828b-e930-4e46-98d2-7a5ec4f4495b`, 78 API/page tests, local browser checks and live bundle/routes verification pass. [Deployment evidence](../diagnostics/v0.2.47/lootlab-release.json). Saved tuning is preserved; map estimates exclude packs. No Workshop publication; pending changelog remains cumulative. Local installation evidence follows after the annotated rollback tag is created.
+LootLab 0.2.47 is deployed from isolated verified source; Worker `b267828b-e930-4e46-98d2-7a5ec4f4495b`, 78 API/page tests, local browser checks and live bundle/routes verification pass. [Deployment evidence](../diagnostics/v0.2.47/lootlab-release.json). Saved tuning is preserved; map estimates exclude packs. No Workshop publication; pending changelog remains cumulative. Installed through root OMH.cmd from immutable `test/v0.2.47` / `4a2f0dad29e49b0f9919dc9fb36196b9facf3e12`. All 208 source / 256 tagged/package/installed/archive files match; both 0.2.46 backups verify. Archive SHA-256: `8e7a0e732a0c81861adb6a8c23dc26e7b4acb12b63a22743b70a186b71ea15b3`. [Install](../diagnostics/v0.2.47/install.json) | [Machine verification](../diagnostics/v0.2.47/local-release.json). The running client must restart; loaded-version and owner acceptance remain pending.
 
 
 **C170 disposition:** the owner abandoned packed-turret weight reduction after this build. Historical implementation limitations below are retained as release evidence; packing is no longer pending work.
 
-## Current local installation: 0.2.46 / C168
+## Previous local installation: 0.2.46 / C168
 
 Installed through root OMH.cmd from immutable `test/v0.2.46` / `ea2bd4d97da791bfcb7cc26338d9a060f90f77f8`. All 204 source and 252 tagged/package/installed/archive files match; both previous 0.2.45 backups verify. Archive SHA-256: `03b30859771a89b73d902787e91ae41d2e6d5baa9b8089e29cf3e353789eb47e`. [Install](../diagnostics/v0.2.46/install.json) | [Machine verification](../diagnostics/v0.2.46/local-release.json).
 
-16,046 Kahlua assertions, native write/read, three independent selections and 51 Firearms guns pass. LootLab is deployed with 29 modules and verified protected routes/tuning migration. [Patch](PATCH_v0.2.46.md) | [Five-step test](TEST_v0.2.46.md). Owner/rendered acceptance is pending. Approved full packed-weight reduction remains unfinished; current contents retain full weight. No Workshop upload; cumulative draft retained.
+16,046 Kahlua assertions, native write/read, three independent selections and 51 Firearms guns pass. LootLab is deployed with 29 modules and verified protected routes/tuning migration. [Patch](PATCH_v0.2.46.md) | [Five-step test](TEST_v0.2.46.md). Owner/rendered acceptance is pending. Packed-weight reduction was subsequently abandoned under C170; current contents retain full weight. No Workshop upload; cumulative draft retained.
 
 The closed 2026-10-11_13-56-01 test save was backed up and its Battery use changed from .1 to .00045, with every other byte preserved. [One-value correction evidence](../diagnostics/v0.2.46/test-save-setting.json). Other saves are unchanged.
 

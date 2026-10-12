@@ -19,3 +19,7 @@ LootLab numerical/model tests and 78 API/page tests pass; headless Edge desktop/
 Early validation exposed test expectations tied to old rarity weights and parser/isolation counters that included the new Pack prefix; tests now distinguish 208 modules from 16 pack entries. One validation redirection collided with its own log path; rerunning without that redirect passed. These are tooling findings, not owner gameplay passes. C171 capacity warnings remain open; no 51-gun integration rerun is claimed for this patch's inventory/UI/loot changes.
 
 **Owner acceptance pending.** No new owner console was supplied during implementation.
+
+## Installed handoff
+
+Installed from immutable `test/v0.2.47` / `4a2f0dad29e49b0f9919dc9fb36196b9facf3e12`. All 208 source / 256 tagged/package/installed/archive files and both 0.2.46 backups verify. [Installation evidence](../diagnostics/v0.2.47/local-release.json). Restart required; actual client version and owner acceptance remain pending. **Test now.**

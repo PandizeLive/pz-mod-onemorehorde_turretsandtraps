@@ -2,7 +2,7 @@
 
 Updated 2026-10-12. Read [AGENTS](../AGENTS.md) and [Planning](PLANNING.md).
 
-**C177 / 0.2.47 implemented; final installation checks in progress.** Module Packs contain three independently weighted rewards, including expansion kits and duplicates. Packs supplement loose modules at container weight 1.0 and a separately configurable **15% per zombie body**, including turret kills. Optional default-on four-second reveal with Skip; two-second opening. All 29 owner-exported weights are the new defaults. Battery estimates switch to hours at 60 in-game minutes; inventory module descriptions bypass the native translation-key formatting failure.
+**C177 / 0.2.47 installed and verified; owner test pending.** Module Packs contain three independently weighted rewards, including expansion kits and duplicates. Packs supplement loose modules at container weight 1.0 and a separately configurable **15% per zombie body**, including turret kills. Optional default-on four-second reveal with Skip; two-second opening. All 29 owner-exported weights are the new defaults. Battery estimates switch to hours at 60 in-game minutes; inventory module descriptions bypass the native translation-key formatting failure.
 
 [Patch](PATCH_v0.2.47.md) | [Five-step test](TEST_v0.2.47.md) | [Approved contract](checkpoints/R3_MODULE_PACK.md#c177-15-percent-body-rate-and-implementation) | [Release evidence](RELEASE.md).
 
@@ -12,4 +12,4 @@ GitHub: `codex/performance-barbed-audit`, [draft PR #1](https://github.com/Pandi
 
 R1C3 performance work and R3C7 acceptance remain open. The owner accepted the earlier perceived-lag improvement in 0.2.38.1; do not reopen that test or claim universal performance certification. SP/fresh-world policy and independent Turrets/Traps packages remain. C171 records 0.2.46 minutes-only/tooltip/capacity findings; this build addresses the first two, not the capacity warnings. No old test is silently marked passed or waived.
 
-**Wait for a patch:** final install/mirror pending; this status will be updated after verification.
+**Test now:** restart to load 0.2.47, then use the five-step test above. All 208 source / 256 tagged, installed and archive files match; both 0.2.46 backups verify. GitHub development mirror follows this installation record.
