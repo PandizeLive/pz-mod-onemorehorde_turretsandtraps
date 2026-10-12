@@ -1008,3 +1008,7 @@ Owner supplied seven named rarity WAVs in Audio/Turrets & Traps and requested a 
 ## C187 - Requested current LootLab weight check (2026-10-12)
 
 Owner expects a couple Mythic items and requests confirmation of the next patch. Saved weights cannot yet be verified: available browser is signed out and auto-review rejected the read-only database access path pending explicit account authorization. Requested permission or an export. Do not claim Mythic assignments from old defaults. C186 custom rarity audio remains next; no implementation/version/install changes this turn. [Details](PACK_POLISH.md#c187-current-weights-check-2026-10-12).
+
+## C188 - Authorized read and verified current LootLab weights (2026-10-12)
+
+Owner: "Approve read-only check" for the explicit C187 account/database query. SELECT succeeded with one row read and zero writes, revision196 at 2026-10-12 22:26:27 UTC. Four Mythics at weight1: Autoloader, Enhanced Firing, Enhanced Detection, Synergy. All seven anchors20/18/14/10/6/3/1 are valid and populated. Record the exact snapshot for the next sound/weight patch plan; no gameplay/default/site mutation performed. Do not imply that read approval installed the values or authorizes unrelated global loot changes. [Contract](PACK_POLISH.md#c188-verified-saved-weights-2026-10-12).

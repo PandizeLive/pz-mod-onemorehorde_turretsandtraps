@@ -64,3 +64,21 @@ Level review: all seven contain nonzero audio and no full-scale PCM samples. Abu
 Owner asks to check new LootLab weights, expects a couple Mythic items, and requests next-patch confirmation. Do not substitute shipped defaults for saved account state. The available in-app browser is at Cloudflare Access sign-in. Automatic approval review rejected the attempted read-only D1 scenario query because explicit authorization for the account/database path was missing; it did not execute. Asked the owner to approve that read-only query or supply a scenario export. No credentials, account settings, loot defaults or gameplay assets changed.
 
 Exact Mythic names/count/weights are unverified until the saved scenario is read. The confirmed next feature remains the seven owner-created rarity reveal sounds; highest-rarity-only cue selection remains the recommended implementation. The request does not establish that the current website weights are already installed in-game, nor authorize an invented tuning baseline. Carry verified values into the next patch plan once available. Installed build remains 0.2.47.4. This check requires no repeat combat test.
+
+## C188 - Verified saved weights (2026-10-12)
+
+Owner explicitly approved the read-only query for the configured LootLab account/database, resolving C187's access gate. The production SELECT returned revision 196, updated 2026-10-12 22:26:27 UTC, with rows_read=1, rows_written=0 and changed_db=false. The current shipped LootLab model validates the scenario; the C185 classifier verifies the assignments below. No account settings, gameplay defaults, installed files or originals were modified.
+
+| Tier | Weight | Components |
+| --- | ---: | --- |
+| Abundant | 20 | Reload, Accuracy, Regulator |
+| Common | 18 | Filter, Rapid-Fire, Range, Magazine |
+| Uncommon | 14 | Firing, Detection, Small Expansion Kit |
+| Rare | 10 | 360, Suppression, Velocity, Critical, Piercing |
+| Epic | 6 | Medium Expansion Kit, Splitter, Initial Blow, Impact, Conservation |
+| Legendary | 3 | Large Expansion Kit, Fragment, Execute, Martyrdom, Tack |
+| Mythic | 1 | Autoloader, Enhanced Firing, Enhanced Detection, Synergy |
+
+All 29 components match a tier exactly. Four Mythics each weigh 1: Autoloader, Enhanced Firing, Enhanced Detection and Synergy. Global module loot multiplier is 1.011111111111111. The local scenario snapshot also preserves material=0.6, rolls=1 and retention=0.7, but retention is simulator-only and this request does not authorize silently retuning unrelated global game loot options. Tier rarity remains relative selection weighting, not a direct spawn percentage.
+
+Next patch plan: import the verified module weights and seven rarity anchors alongside owner-created pack reveal audio, using highest actual reward rarity for the one pack cue. Integration remains pending; read-only approval does not claim an installed update. Existing-world Sandbox values are not overwritten just by changing new-world defaults. Recheck saved revision before implementing if the owner makes further LootLab edits. [Reviewed weight evidence](../diagnostics/lootlab-c187/verified-weights.json); full scenario is retained locally at diagnostics/lootlab-c187/omh-loot-scenario.json. Inspected 70fe974 and fetched origin; draft PR #1 remains the only open PR. No new test or repeat combat requirement.
