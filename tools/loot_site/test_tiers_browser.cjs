@@ -28,6 +28,24 @@ assert.equal(await page.locator('#component-rarity-Regulator').textContent(),'Ra
 await page.getByRole('button',{name:'Plan with tiers'}).click();await page.getByLabel('Move Synergy to tier',{exact:true}).selectOption('5');
 await page.getByRole('button',{name:'Cancel draft'}).click();assert.equal(await page.locator('#item-Synergy').inputValue(),'1');
 await page.getByRole('button',{name:'Plan with tiers'}).click();await page.getByLabel('Move Synergy to tier',{exact:true}).selectOption('6');
+await page.getByRole('button',{name:'Cancel draft'}).click();
+await page.getByRole('button',{name:'Plan with tiers'}).click();
+const names=['Abundant','Common','Uncommon','Rare','Epic','Legendary','Mythic'],anchors=[20,16,12,8,5,2,1];
+for(let i=0;i<7;i++){const field=page.getByLabel(names[i]+' tier weight',{exact:true});await field.fill(String(anchors[i]));await field.press('Tab');}
+const samples=['Reload','Filter','Firing','Range','Impact','Fragment','Synergy'];
+for(let i=0;i<7;i++){
+ await page.getByLabel('Move '+({Reload:'Reload',Filter:'Filter',Firing:'Firing',Range:'Range',Impact:'Impact',Fragment:'Fragment',Synergy:'Synergy'}[samples[i]])+' to tier',{exact:true}).selectOption(String(i));
+ assert.equal(await page.locator('[data-module="'+samples[i]+'"] .tier-actual').textContent(),names[i]);
+}
+await page.getByRole('button',{name:'Confirm weights'}).click();
+const downloadPromise=page.waitForEvent('download');await page.locator('#lua').click();const exported=await downloadPromise;
+const lua=fs.readFileSync(await exported.path(),'utf8');for(let i=0;i<7;i++)assert(lua.includes('RarityWeight'+names[i]+' = '+anchors[i]+','));
+await page.reload();await page.waitForFunction(()=>document.querySelector('#loading').hidden,{timeout:60000});
+for(let i=0;i<7;i++)assert.equal(await page.locator('#component-rarity-'+samples[i]).textContent(),names[i]);
+await page.getByRole('button',{name:'Plan with tiers'}).click();
+await page.getByLabel('Mythic tier weight',{exact:true}).fill('2');await page.getByLabel('Mythic tier weight',{exact:true}).press('Tab');
+await page.getByRole('button',{name:'Confirm weights'}).click();assert.match(await page.locator('.tier-status').textContent(),/decrease/);
+await page.getByLabel('Mythic tier weight',{exact:true}).fill('1');await page.getByLabel('Mythic tier weight',{exact:true}).press('Tab');
 await page.screenshot({path:path.join(out,'tiers-desktop.png')});
 await page.setViewportSize({width:390,height:844});await page.screenshot({path:path.join(out,'tiers-mobile.png')});
 assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));

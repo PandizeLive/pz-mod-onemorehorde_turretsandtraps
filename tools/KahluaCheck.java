@@ -347,6 +347,7 @@ public final class KahluaCheck {
             {"_", "tools/tests/effect_polish.lua"},
             {"OMHTT/TurretItemTooltip", base + "client/OMHTT/TurretItemTooltip.lua"},
             {"_", "tools/tests/regulator.lua"},
+            {"_", "tools/tests/rarity_anchors.lua"},
             {"_", base + "server/OMHTT/TurretPackLoot.lua"},
             {"OMHTT/TurretPackReveal", base + "client/OMHTT/TurretPackReveal.lua"},
             {"OMHTT/TurretPackAction", base + "client/OMHTT/TurretPackAction.lua"},

@@ -335,5 +335,22 @@
     "Sandbox_OMHTurretsTraps_PackLootWeight": "Module Pack Weight",
     "Sandbox_OMHTurretsTraps_PackLootWeight_tooltip": "Relative container loot weight, before pool and global multipliers. 0 disables container packs.",
     "Sandbox_OMHTurretsTraps_PackZombieChance": "Zombie Module Pack Chance",
-    "Sandbox_OMHTurretsTraps_PackZombieChance_tooltip": "Percent chance per newly killed zombie, including turret kills. At most one pack per body. 0 disables it."
+    "Sandbox_OMHTurretsTraps_PackZombieChance_tooltip": "Percent chance per newly killed zombie, including turret kills. At most one pack per body. 0 disables it.",
+    "Sandbox_Title_OMHTurretsTraps_Rarity": "Rarity Weights",
+    "Sandbox_Title_OMHTurretsTraps_LootGeneral": "Loot and Module Packs",
+    "Sandbox_Title_OMHTurretsTraps_LootComponents": "Component Loot Multipliers",
+    "Sandbox_OMHTurretsTraps_RarityWeightAbundant": "Abundant weight",
+    "Sandbox_OMHTurretsTraps_RarityWeightAbundant_tooltip": "All seven weights must be positive and decrease from Abundant to Mythic. Rarity and battery cost use proportional midpoints. All zero uses automatic rarity. Does not change loot weights.",
+    "Sandbox_OMHTurretsTraps_RarityWeightCommon": "Common weight",
+    "Sandbox_OMHTurretsTraps_RarityWeightCommon_tooltip": "All seven weights must be positive and decrease from Abundant to Mythic. Rarity and battery cost use proportional midpoints. All zero uses automatic rarity. Does not change loot weights.",
+    "Sandbox_OMHTurretsTraps_RarityWeightUncommon": "Uncommon weight",
+    "Sandbox_OMHTurretsTraps_RarityWeightUncommon_tooltip": "All seven weights must be positive and decrease from Abundant to Mythic. Rarity and battery cost use proportional midpoints. All zero uses automatic rarity. Does not change loot weights.",
+    "Sandbox_OMHTurretsTraps_RarityWeightRare": "Rare weight",
+    "Sandbox_OMHTurretsTraps_RarityWeightRare_tooltip": "All seven weights must be positive and decrease from Abundant to Mythic. Rarity and battery cost use proportional midpoints. All zero uses automatic rarity. Does not change loot weights.",
+    "Sandbox_OMHTurretsTraps_RarityWeightEpic": "Epic weight",
+    "Sandbox_OMHTurretsTraps_RarityWeightEpic_tooltip": "All seven weights must be positive and decrease from Abundant to Mythic. Rarity and battery cost use proportional midpoints. All zero uses automatic rarity. Does not change loot weights.",
+    "Sandbox_OMHTurretsTraps_RarityWeightLegendary": "Legendary weight",
+    "Sandbox_OMHTurretsTraps_RarityWeightLegendary_tooltip": "All seven weights must be positive and decrease from Abundant to Mythic. Rarity and battery cost use proportional midpoints. All zero uses automatic rarity. Does not change loot weights.",
+    "Sandbox_OMHTurretsTraps_RarityWeightMythic": "Mythic weight",
+    "Sandbox_OMHTurretsTraps_RarityWeightMythic_tooltip": "All seven weights must be positive and decrease from Abundant to Mythic. Rarity and battery cost use proportional midpoints. All zero uses automatic rarity. Does not change loot weights."
 }

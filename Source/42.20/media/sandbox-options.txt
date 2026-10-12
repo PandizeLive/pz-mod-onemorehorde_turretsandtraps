@@ -1311,3 +1311,66 @@ option OMHTurretsTraps.PackZombieChance {
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_PackZombieChance,
 }
+
+option OMHTurretsTraps.RarityWeightAbundant {
+    type = double,
+    default = 0,
+    min = 0,
+    max = 1000000,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_RarityWeightAbundant,
+}
+
+option OMHTurretsTraps.RarityWeightCommon {
+    type = double,
+    default = 0,
+    min = 0,
+    max = 1000000,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_RarityWeightCommon,
+}
+
+option OMHTurretsTraps.RarityWeightUncommon {
+    type = double,
+    default = 0,
+    min = 0,
+    max = 1000000,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_RarityWeightUncommon,
+}
+
+option OMHTurretsTraps.RarityWeightRare {
+    type = double,
+    default = 0,
+    min = 0,
+    max = 1000000,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_RarityWeightRare,
+}
+
+option OMHTurretsTraps.RarityWeightEpic {
+    type = double,
+    default = 0,
+    min = 0,
+    max = 1000000,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_RarityWeightEpic,
+}
+
+option OMHTurretsTraps.RarityWeightLegendary {
+    type = double,
+    default = 0,
+    min = 0,
+    max = 1000000,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_RarityWeightLegendary,
+}
+
+option OMHTurretsTraps.RarityWeightMythic {
+    type = double,
+    default = 0,
+    min = 0,
+    max = 1000000,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_RarityWeightMythic,
+}

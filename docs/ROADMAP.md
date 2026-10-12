@@ -1,10 +1,12 @@
 # Phases and checkpoints
 
+**C185 / 0.2.47.4:** owner selected 1A. Saved tier weights now define the same rarity/color and battery surcharge in LootLab and the mod, using proportional midpoints. Exact anchor weights match their named tiers. Sandbox export includes the seven anchors; apply it to game settings and restart to use them in-game. Existing unset anchors keep automatic rarity; actual module/drop weights are preserved. Implemented and automated/native/browser verified; LootLab deployed. Tagged local installation is being finalized; owner acceptance pending. [Patch](PATCH_v0.2.47.4.md) | [Test](TEST_v0.2.47.4.md) | [Contract](LOOTLAB_TIER_PERSISTENCE.md#c185-shared-rarity-anchors-2026-10-12).
+
 **C183 / LootLab persistence correction:** confirmed tier weights now save with account settings and survive refresh, reopening and device changes. Offline confirmed edits use the existing account-scoped draft recovery. The local HTML copy uses browser storage. Cancel discards the draft; equal-weight assignments are reconstructed from saved tier values. Deployed and verified; no gameplay/package changes, so the installed mod remains **0.2.47.3**. [Contract and test](LOOTLAB_TIER_PERSISTENCE.md) | [Deployment](../diagnostics/lootlab-c183/release.json). This supersedes C182's page-session-only limitation.
 
 **C182 / 0.2.47.3:** approved rotation ticks (1B), pickup selection cue (2B), custom rarity audio pending owner files (3C), and a pulse-only four-second fade (4B). Pack audio uses native UI events with one shared bounded tick stream, no catch-up burst and cleanup on Collect. LootLab now shows calculated rarity in the normal list, refreshes draft feedback, and automatically groups equal weights when reopening. C183 adds persistent account tier weights across reloads. [Patch](PATCH_v0.2.47.3.md) | [Test](TEST_v0.2.47.3.md) | [Contract and pitch limitation](PACK_POLISH.md).
 
-Native pitch variation requested, but additional randomized pitch is **not implemented**: the installed event path ignores clip pitch and the emitter setter writes every queued/active sound. Native rotation is played unchanged; no unrelated audio is modified. Custom rarity sounds remain pending, with the approved pickup cue providing selection feedback. No particles. No loot/default/rarity-formula changes.
+Native pitch variation requested, but additional randomized pitch is **not implemented**: the installed event path ignores clip pitch and the emitter setter writes every queued/active sound. Native rotation is played unchanged; no unrelated audio is modified. Custom rarity sounds remain pending, with the approved pickup cue providing selection feedback. No particles. C182 did not change loot defaults or the rarity formula; C185 now supersedes the custom-tier classification rule.
 
 ## Product and existing work
 
@@ -18,7 +20,7 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 ## Current checkpoint status and next work
 
-**C177 / 0.2.47:** pack/weights/hour correction implemented; use the focused [current test](TEST_v0.2.47.md). C171 capacity warnings remain open. Historical acceptance gaps below are not new test requests or newly claimed passes. C170 packed-weight cancellation remains final.
+**C177 / 0.2.47:** pack/weights/hour correction implemented; use the focused [current test](TEST_v0.2.47.md). C171 capacity warnings were corrected under C181. Historical acceptance gaps below are not new test requests or newly claimed passes. C170 packed-weight cancellation remains final.
 
 | Phase / checkpoints | Status | Remaining work / next gate |
 | --- | --- | --- |

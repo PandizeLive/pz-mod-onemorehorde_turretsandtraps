@@ -67,8 +67,8 @@ function fieldValue(id,value){const input=$(id);if(document.activeElement!==inpu
 function weightText(m){return Number(M.lootWeight(m,scenario.items[m.id]).toPrecision(12));}
 function controls(){
   tierPlanner.refresh();
-  const rarityBands=window.LootTiers.bands(D.modules,Object.fromEntries(D.modules.map(m=>[m.id,M.lootWeight(m,scenario.items[m.id])])));
-  for(const m of D.modules){const b=rarityBands[m.id],badge=$('component-rarity-'+m.id);badge.textContent=b<0?'Disabled':window.LootTiers.names[b];badge.style.setProperty('--rarity-color',b<0?'#82928a':window.LootTiers.colors[b]);}
+  const rarityBands=window.LootTiers.bands(D.modules,Object.fromEntries(D.modules.map(m=>[m.id,M.lootWeight(m,scenario.items[m.id])])),window.LootTiers.names.map(name=>scenario.tierWeights[name]));
+  for(const m of D.modules){const b=rarityBands[m.id],badge=$('component-rarity-'+m.id);badge.textContent=b===-2?'Invalid tiers':b<0?'Disabled':window.LootTiers.names[b];badge.style.setProperty('--rarity-color',b<0?'#82928a':window.LootTiers.colors[b]);}
   for(const key of ['global','material','rolls','retention']){fieldValue(key,scenario[key]);$(key+'Out').textContent=key==='retention'?Math.round(scenario[key]*100)+'%':scenario[key].toFixed(2)+'×';}
   for(const m of D.modules){fieldValue('item-'+m.id,weightText(m));$('show-'+m.id).checked=scenario.visible[m.id];$('component-'+m.id).classList.toggle('is-hidden',!scenario.visible[m.id]);}
   $('overlay').value=scenario.overlay;$('seedBadge').textContent='Seed '+scenario.seed;
@@ -129,12 +129,14 @@ $('reset').addEventListener('click',()=>{const old=scenario.seed;scenario=M.defa
 function download(name,text,type){const a=document.createElement('a'),url=URL.createObjectURL(new Blob([text],{type}));a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);$('feedback').textContent='Exported '+name+'.';}
 $('save').addEventListener('click',()=>download('omh-loot-scenario.json',JSON.stringify(scenario,null,2),'application/json'));
 $('lua').addEventListener('click',()=>{
+  let anchors;try{anchors=window.LootTiers.sandbox(window.LootTiers.names.map(name=>scenario.tierWeights[name]));}catch(error){$('feedback').textContent=error.message;return;}
   const lines=[`-- OMH loot tuning: ${D.meta.baseline} keys. Merge into your SandboxVars table.`,
     '-- Do not replace an entire save configuration with this excerpt.',
+    '-- Rarity anchors require OMH: Turrets 0.2.47.4 or newer; zero means automatic.',
     '-- Retention and model seed are estimates only; not game settings.',
     '-- Assumes ZombiePopLootEffect = 0 and a new-world time multiplier of 1.',
     `MaterialLootNew = ${scenario.material},`,`RollsMultiplier = ${scenario.rolls},`,'OMHTurretsTraps = {',`    ModuleLootRate = ${scenario.global},`,
-    ...D.modules.map(m=>`    LootRate${m.id} = ${scenario.items[m.id]},`),'}'];
+    ...anchors,...D.modules.map(m=>`    LootRate${m.id} = ${scenario.items[m.id]},`),'}'];
   download('omh-loot-sandbox-excerpt.lua',lines.join('\n')+'\n','text/plain');
 });
 $('load').addEventListener('click',()=>$('file').click());

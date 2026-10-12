@@ -68,6 +68,12 @@ function UI.attach(panel)
     local sections = groups
     if panel.controls["OMHTurretsTraps.RapidFireBonus"] then
         sections = moduleGroups
+    elseif panel.controls["OMHTurretsTraps.ModuleLootRate"] then
+        sections = {
+            {"Sandbox_Title_OMHTurretsTraps_LootGeneral", {"ModuleLootRate", "PackLootWeight", "PackZombieChance"}},
+            {"Sandbox_Title_OMHTurretsTraps_Rarity", {"RarityWeightAbundant", "RarityWeightCommon", "RarityWeightUncommon", "RarityWeightRare", "RarityWeightEpic", "RarityWeightLegendary", "RarityWeightMythic"}},
+            {"Sandbox_Title_OMHTurretsTraps_LootComponents", {"LootRateFiring", "LootRateMotionDetection", "LootRateFilter", "LootRateDetection360", "LootRateRapidFire", "LootRateSuppression", "LootRateReload", "LootRateAutoloader", "LootRateVelocity", "LootRateRange", "LootRateCapacity", "LootRateCapacitySmall", "LootRateCapacityLarge", "LootRateCritical", "LootRateAccuracy", "LootRateMagazine", "LootRateSplitter", "LootRateFragment", "LootRateFiringEnhanced", "LootRateMotionDetectionEnhanced", "LootRatePiercing", "LootRateInitialBlow", "LootRateExecute", "LootRateImpact", "LootRateConservation", "LootRateSynergy", "LootRateMartyrdom", "LootRateTack", "LootRateRegulator"}},
+        }
     elseif panel.controls["OMHTurretsTraps.SpikeBarrier"] then
         sections = {
             {"Sandbox_Title_OMHTurretsTraps_Barrier", {"SpikeBarrier", "SpikeBarrierDamage", "ReinforcedBarrierDamage", "SpikeBarrierHealth", "ReinforcedBarrierHealthMultiplier", "SpikeBarrierScratchChance"}},

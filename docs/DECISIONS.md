@@ -996,3 +996,7 @@ Owner corrects the C182 session-only limitation: tier weights must remain saved 
 ## C184 - Diagnose inconsistent tier and card rarities (2026-10-12)
 
 Owner reports yellow cards in orange rows and green cards in yellow rows. Confirmed cause is separate manual tier labels and the unchanged logarithmic runtime classifier, not demonstrated stale saved weights. Record this as unresolved semantic acceptance. Recommend shared saved tier-weight rarity anchors in LootLab and the mod (1A); alternatively derive fixed tier weights from the existing classifier (1B). The first changes rarity-based power costs; the second restricts custom tier weights. No new gameplay/site change approved by this question. See LOOTLAB_TIER_PERSISTENCE.md#c184-rarity-row-conflict-2026-10-12.
+
+## C185 - Approved shared rarity anchors (2026-10-12)
+
+Owner: "1A". Approves C184 option 1A: saved tier weights define rarity across LootLab and the mod, including existing rarity battery surcharges. Implement in 0.2.47.4 with geometric midpoint boundaries (ties rarer), positive strictly descending anchors, Sandbox export, automatic compatibility and explicit invalid-setting handling. No new loot/default weights or account data writes authorized. [Contract](LOOTLAB_TIER_PERSISTENCE.md#c185-shared-rarity-anchors-2026-10-12). Inspected active branch 3f8e32d and fetched origin; no incoming planning change. Automated verification, deployment/install and owner acceptance remain separate.

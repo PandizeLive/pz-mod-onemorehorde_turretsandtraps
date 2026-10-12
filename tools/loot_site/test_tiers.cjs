@@ -41,3 +41,25 @@ assert.equal(T.confirmTiers(initial,unset.map((v,i)=>i===4?2:v))[4],2);
 const roundTrip=M.validate(JSON.parse(JSON.stringify({...M.defaults(D),tierWeights:Object.fromEntries(T.names.map((name,i)=>[name,tierSave[i]]))})),D);
 assert.equal(roundTrip.tierWeights.Rare,4.25);
 console.log('PASS tier snapshot conflict and scenario persistence');
+
+const anchors=[20,16,12,8,5,2,1];
+assert.equal(T.anchorError(anchors),null);
+for(let i=0;i<7;i++){
+ const actual=T.bands(modules,{...weights,Regulator:anchors[i]},anchors).Regulator;
+ assert.equal(actual,i,`exact anchor ${T.names[i]}`);
+}
+for(let i=0;i<6;i++){
+ const boundary=Math.sqrt(anchors[i]*anchors[i+1]);
+ assert.equal(T.bands(modules,{...weights,Regulator:boundary},anchors).Regulator,i+1);
+ assert.equal(T.bands(modules,{...weights,Regulator:boundary*1.00001},anchors).Regulator,i);
+}
+assert.equal(T.bands(modules,{...weights,Regulator:0},anchors).Regulator,-1);
+assert.deepEqual(T.bands(modules,weights,unset),T.bands(modules,weights));
+for(const invalid of [[20,16,12,8,5,2,2],[20,16,12,8,5,2,0],[20,16,12,8,5,2,null]]){
+ assert(T.anchorError(invalid));assert.throws(()=>T.sandbox(invalid));
+ assert.equal(T.bands(modules,weights,invalid).Regulator,-2);
+}
+assert(T.sandbox(anchors).includes('    RarityWeightRare = 8,'));
+assert(T.sandbox(unset).every(line=>line.endsWith(' = 0,')));
+assert.equal(T.bands(modules,{...weights,Regulator:8,Firing:200},anchors).Regulator,3);
+console.log('PASS custom anchors, proportional boundaries, tie toward rarer, no extreme drift, invalid/export guards and automatic compatibility');

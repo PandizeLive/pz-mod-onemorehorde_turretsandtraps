@@ -2,33 +2,91 @@ local L = require("OMHTT/LootDefinitions")
 local R = {cache = {}}
 R.surcharges = {.1, .15, .25, .4, .6, .8, 1}
 R.stops = {{130,174,255}, {115,204,255}, {89,230,102}, {255,250,77}, {255,148,51}, {255,46,46}, {66,13,130}}
+R.names = {"Abundant", "Common", "Uncommon", "Rare", "Epic", "Legendary", "Mythic"}
+
+---@param settings table Loaded sandbox values
+---@return table|nil anchors Custom weights, or automatic mode
+---@return string|nil error Invalid custom configuration
+local function readAnchors(settings)
+    local anchors, configured = {}, false
+    for i = 1, #R.names do
+        local value = settings["RarityWeight" .. R.names[i]] or 0
+        anchors[i] = value
+        if value ~= 0 then
+            configured = true
+        end
+    end
+    if not configured then return nil end
+    for i = 1, #anchors do
+        local value = anchors[i]
+        if type(value) ~= "number" or value ~= value or value <= 0 or value > 1000000 then
+            return nil, "All seven rarity weights must be positive and finite. Using automatic rarity."
+        end
+        if i > 1 and value >= anchors[i - 1] then
+            return nil, "Rarity weights must decrease from Abundant to Mythic. Using automatic rarity."
+        end
+    end
+    return anchors
+end
+
+---@param weight number Positive effective item weight
+---@param low number Minimum positive weight
+---@param high number Maximum positive weight
+---@param boundaries table|nil Cached custom proportional boundaries
+---@return integer band One-based rarity
+local function classify(weight, low, high, boundaries)
+    if boundaries then
+        for i = 1, #boundaries do
+            if weight > boundaries[i] then return i end
+        end
+        return 7
+    end
+    if high <= low then return 1 end
+    return math.max(1, math.min(7, math.floor(math.log(high / weight) / math.log(high / low) * 6 + .5) + 1))
+end
 
 ---@param settings table Loaded sandbox values
 ---@return nil
 function R.refresh(settings)
     R.initialized = true
-    local weights, low, high = {}, math.huge, 0
+    local anchors, error = readAnchors(settings)
+    if error and error ~= R.anchorError then
+        print("[OMHTT] " .. error)
+    end
+    R.anchorError = error
+    local boundaries
+    if anchors then
+        boundaries = {}
+        for i = 1, #anchors - 1 do
+            boundaries[i] = math.sqrt(anchors[i] * anchors[i + 1])
+        end
+    end
+    local weights, low, high, baseLow, baseHigh = {}, math.huge, 0, math.huge, 0
     for name, base in pairs(L.WEIGHTS) do
+        baseLow, baseHigh = math.min(baseLow, base), math.max(baseHigh, base)
         local multiplier = settings["LootRate" .. name]
-        if type(multiplier) ~= "number" then multiplier = L.DEFAULTS.items[name] end
+        if type(multiplier) ~= "number" then
+            multiplier = L.DEFAULTS.items[name]
+        end
         local weight = base * math.max(0, math.min(20, multiplier))
-        if settings.ModuleLootRate == 0 then weight = 0 end
+        if settings.ModuleLootRate == 0 then
+            weight = 0
+        end
         weights[name] = weight
-        if weight > 0 then low, high = math.min(low, weight), math.max(high, weight) end
+        if weight > 0 then
+            low, high = math.min(low, weight), math.max(high, weight)
+        end
     end
     R.cache = {}
     for name, weight in pairs(weights) do
-        local color, band = {150,150,150}, 1
-        if weight > 0 and high > low then
-            band = math.floor(math.log(high / weight) / math.log(high / low) * 6 + .5) + 1
-            color = R.stops[math.max(1, math.min(7, band))]
-        end
+        local band
         if weight <= 0 then
-            local baseLow, baseHigh = math.huge, 0
-            for _, value in pairs(L.WEIGHTS) do baseLow, baseHigh = math.min(baseLow, value), math.max(baseHigh, value) end
-            band = math.floor(math.log(baseHigh / L.WEIGHTS[name]) / math.log(baseHigh / baseLow) * 6 + .5) + 1
-            color = R.stops[band]
-        elseif high == low then color = R.stops[1] end
+            -- Owned items remain usable when their loot is disabled.
+            band = classify(L.WEIGHTS[name], baseLow, baseHigh, boundaries)
+        else
+            band = classify(weight, low, high, boundaries)
+        end
+        local color = R.stops[band]
         R.cache[name] = {band = band, surcharge = R.surcharges[band], weight = weight, r = color[1] / 255, g = color[2] / 255, b = color[3] / 255,
             tr = .55 + color[1] / 255 * .45, tg = .55 + color[2] / 255 * .45, tb = .55 + color[3] / 255 * .45}
     end
@@ -39,7 +97,6 @@ end
 function R.get(name)
     if not R.initialized then
         R.refresh(SandboxVars.OMHTurretsTraps or {})
-        R.initialized = true
     end
     return R.cache[name] or R.neutral
 end

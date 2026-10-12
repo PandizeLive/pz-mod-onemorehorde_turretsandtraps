@@ -44,3 +44,5 @@ Initial seven tier values are geometric centers between the current positive min
 Defaults use Abundant/Common/Uncommon/Rare/Epic/Legendary/Mythic counts **2/2/8/4/8/4/1**. Current saved all-one multipliers use **2/0/1/8/11/6/1**. Both follow the existing formula. More balanced colors require deliberate weight edits; because module power costs follow rarity, that can change battery drain. [Spread checks](../diagnostics/pack-polish/rarity-spread.json).
 
 The owner-only hosted editor is deployed from the isolated verified release source. Only the tier asset was added to the authenticated route allowlist; account/database/public API behavior is preserved. The dirty website checkout was not deployed. Source patch and deployment proof are retained with 0.2.47.2.
+
+C185 / 0.2.47.4 supersedes the relative min/max rule when saved custom rarity anchors are active. Pack rewards use the same anchor-derived rarity as Manage and battery costs. [Shared rule](LOOTLAB_TIER_PERSISTENCE.md#c185-shared-rarity-anchors-2026-10-12). Audio and pulse behavior are unchanged.

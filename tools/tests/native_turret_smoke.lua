@@ -664,6 +664,22 @@ local function verifyTurrets()
     print("[OMHTT-Smoke] native-conservation guns=3 lastRound=two-uses cooldown=retained impact=not-rearmed")
     require("OMHTT/NativeProc")(player)
     require("OMHTT/NativeBulkTransfer")(player)
+    local Rarity = require("OMHTT/TurretRarity")
+    local raritySettings, rarityAnchors = {}, {20, 16, 12, 8, 5, 2, 1}
+    for i = 1, #Rarity.names do
+        local name = "RarityWeight" .. Rarity.names[i]
+        local option = getSandboxOptions():getOptionByName("OMHTurretsTraps." .. name)
+        assert(option and option:getDefaultValue() == 0, "Native rarity setting missing: " .. name)
+        raritySettings[name] = rarityAnchors[i]
+    end
+    local LootDefinitions = require("OMHTT/LootDefinitions")
+    for i = 1, #rarityAnchors do
+        raritySettings.LootRateRange = rarityAnchors[i] / LootDefinitions.WEIGHTS.Range
+        Rarity.refresh(raritySettings)
+        assert(Rarity.get("Range").band == i and Rarity.get("Range").surcharge == Rarity.surcharges[i], "Native custom rarity/power parity failed")
+    end
+    Rarity.refresh(savedOptions)
+    print("[OMHTT-Smoke] native-rarity anchors=7 settings=registered defaults=automatic colorsAndSurcharges=matched")
     SandboxVars.OMHTurretsTraps = savedOptions
     print("[OMHTT-Smoke] native-power modules=16 aliases=once m9=0.00495 rifleShots=8747 generator=matched conditionals=valid")
     print("[OMHTT-Smoke] native-offensive-feasibility health=creation-recorded wounded=preserved horde=preferred unknown=zero stagger=exposed-standing")
