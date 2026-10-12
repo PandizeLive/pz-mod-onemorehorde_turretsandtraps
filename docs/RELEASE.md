@@ -1,6 +1,14 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.45 / C165
+## Current local installation: 0.2.46 / C168
+
+Installed through root OMH.cmd from immutable `test/v0.2.46` / `ea2bd4d97da791bfcb7cc26338d9a060f90f77f8`. All 204 source and 252 tagged/package/installed/archive files match; both previous 0.2.45 backups verify. Archive SHA-256: `03b30859771a89b73d902787e91ae41d2e6d5baa9b8089e29cf3e353789eb47e`. [Install](../diagnostics/v0.2.46/install.json) | [Machine verification](../diagnostics/v0.2.46/local-release.json).
+
+16,046 Kahlua assertions, native write/read, three independent selections and 51 Firearms guns pass. LootLab is deployed with 29 modules and verified protected routes/tuning migration. [Patch](PATCH_v0.2.46.md) | [Five-step test](TEST_v0.2.46.md). Owner/rendered acceptance is pending. Approved full packed-weight reduction remains unfinished; current contents retain full weight. No Workshop upload; cumulative draft retained.
+
+The closed 2026-10-11_13-56-01 test save was backed up and its Battery use changed from .1 to .00045, with every other byte preserved. [One-value correction evidence](../diagnostics/v0.2.46/test-save-setting.json). Other saves are unchanged.
+
+## Previous local installation: 0.2.45 / C165
 
 Installed through root OMH.cmd from immutable `test/v0.2.45` / `fea3e092a93313db48d689108f200f7a1db48065`. All 203 source and 251 tagged/package/installed/archive files match; both previous 0.2.44 backups verify. Archive SHA-256: `4a12690831fce92ace09e68540d1764fa10749e1dc32edafae18669d9d7d6a3c`. [Install](../diagnostics/v0.2.45/install.json) | [Machine verification](../diagnostics/v0.2.45/local-release.json).
 

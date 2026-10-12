@@ -17,3 +17,7 @@ Native write/fresh-process read pass in 46.2/46.5 seconds. Traps-only/Turrets-on
 LootLab numerical/default/appearance checks, 77 API/page tests and desktop/mobile browser checks pass. Saved 0.2.44 tuning migrates without rescaling; Regulator defaults are added. The deployed bundle and protected/public routes verify. [Deployment evidence](../diagnostics/v0.2.46/lootlab-release.json).
 
 No rendered game acceptance, universal crowd-performance claim, or packed-weight success is implied. The prior 0.2.45 inventory tooltip failure remains recorded in its versioned test record. Final native probes precede line-ending-only normalization and tooltip-number formatting validation; the final Kahlua/package suite passes afterward.
+
+## Installed handoff
+
+Installed from immutable `test/v0.2.46`; all 204 source / 252 package, installed and archive files match. Both 0.2.45 backups verify. The closed existing test save received only the approved Battery use correction to .00045, with a verified backup. [Release evidence](../diagnostics/v0.2.46/local-release.json) | [Save correction](../diagnostics/v0.2.46/test-save-setting.json). **Test now.**
