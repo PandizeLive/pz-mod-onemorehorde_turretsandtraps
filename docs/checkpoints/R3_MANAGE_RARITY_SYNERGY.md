@@ -1,5 +1,25 @@
 # C155 - Manage boundaries, rarity, Once each and Synergy discussion
 
+## C158 - selected module tuning and player injury options (2026-10-11)
+
+Owner selects **1A terminal death-burst/Tack damage**, **2A Martyrdom on eligible projectile kills**, **3A ten-second Tack lifetime with rearming after expiry**, **4B linear +0.25-tile radius per extra module**, and **5B player interaction**. Martyrdom adds a **20-tile noise radius**. Owner requests options for minor explosion injuries, suggesting a bruise. This settles those choices and supersedes the once-per-zombie-lifetime Tack recommendation; player explosion injury remains a discussion gate.
+
+Selected baseline: Martyrdom 20 zombie damage, base damage radius 1.5 tiles; Tack 10 damage every 2 seconds, half movement in contact, base radius 1 tile and 10 active-second lifetime. Radius stacks only: base + .25 * (workingCopies - 1). Martyrdom noise radius is 20, separate from damage radius and radius stacking. Native zombie-attracting world sound and audible pop are separate paths; provide both with appropriate presentation throttling that does not silently delete attraction events. No fire or wall/floor penetration. Player Tack traversal/injury follows existing barbs; player explosion damage must not reuse the 20-zombie-damage value.
+
+Tack rearming: record next eligibility on the zombie across all turrets. A successful eligible hit drops one stationary field; hits during its ten-second lifetime do not refresh it or create more fields from that zombie. After expiry, the next successful eligible hit may drop another; expiry alone does not automatically spawn a field. This is independent of Once each round boundaries. Preserve elapsed active-time semantics, save/reload behavior and per-zombie deduplication. Dead zombies cannot rearm, but an already dropped field may finish its lifetime.
+
+### Native injury evidence and proposed choices
+
+Installed B42.21 `BodyPart` exposes `AddDamage`, `setAdditionalPain`, `setScratched`, `setCut` and burn APIs. Vanilla timed actions call additional-pain methods, and native ISHealthPanel has scratch/cut/burn treatment routes. No separate Bruise flag/status was found in the current BodyPart API or English health-panel strings; do not promise a named native Bruise wound. A bruise-like effect can instead use minor local body-part health loss and pain. Exact in-engine pain duration/display and local-to-overall health scaling need native verification before implementation values are certified.
+
+- **6A recommended: minor blunt injury.** Proposed 2 health points of damage to one limb body part plus 5 additional pain; no new bleeding wound, fracture, burn, knockdown or infection. These are body-part units, not a promise of exactly 2 percent overall health. Preserve all existing injuries; no bandaging introduced by this effect.
+- **6B: light scratch.** One native non-zombie scratch on a limb, with ordinary wound care/bleeding behavior; no added Knox-infection roll. A more visible/treatable health-panel injury, but harsher and less consistent with 'minor pop'. Do not fake a scratch as a bruise or erase pre-existing infection.
+- **6C: soreness only.** Proposed +5 additional pain with no direct health damage or wound. Least punishing but does not implement actual health loss.
+
+One remaining crowd-balance choice accompanies injury type: **7A recommended**, at most one Martyrdom player injury per one active second across all turrets; **7B**, every nearby burst can injure the player. Numerous small bursts can otherwise cause large cumulative damage. This proposed player-only protection does not limit zombie burst damage, world noise or guaranteed Synergy activation; it is not implemented or silently assumed approved.
+
+No gameplay patch this turn. Retain C156 UI/targeting selections, C157 loot weights (Martyrdom/Tack 1.5, Synergy 1.0), single Synergy and eligible Fragment interactions. 0.2.43 test disposition remains unchanged. Next discussion is limited to 6/7; do not reopen settled choices.
+
 ## C157 - broader Synergy, Martyrdom and Tack (2026-10-11)
 
 Owner selects **6B**, adds **Martyrdom Module** (zombies pop on death, nearby damage, stacks increase AoE distance, loot weight **1.5**) and **Tack Module** (first shot on a new target drops tacks, barbed-style contact slowdown and damage, stacks increase AoE distance, loot weight **1.5**). Owner explicitly requires Splitter and **Fragment** to trigger these through Synergy and changes **Synergy loot weight to 1.0**. Preserve the selected single installed Synergy and 100-percent eligible activation. These numbers are loot-distribution weights, not inventory encumbrance. With current positive weights Synergy becomes the purple minimum; per-world tuning can change that.

@@ -1,6 +1,6 @@
 # Current development and planning handoff
 
-**C157 module direction:** [Martyrdom, Tack and broader Synergy](checkpoints/R3_MANAGE_RARITY_SYNERGY.md#c157---broader-synergy-martyrdom-and-tack-2026-10-11). Owner selects 6B; Martyrdom/Tack loot weights 1.5, Synergy 1.0. Splitter and Fragment must be able to trigger the new passives through single-copy/100-percent Synergy. C156 UI/priority choices remain selected. **Decision needed:** chain termination, death trigger, Tack lifetime, radius growth and player interaction. Installed 0.2.43 and test acceptance unchanged; discussion only.
+**C158 selections:** [Martyrdom/Tack tuning and player injury options](checkpoints/R3_MANAGE_RARITY_SYNERGY.md#c158---selected-module-tuning-and-player-injury-options-2026-10-11). Selected 1A/2A/3A/4B/5B: terminal effects, projectile-kill bursts with 20-tile noise, Tack rearming after its ten-second lifetime, +0.25-tile radius per extra copy, and player interaction. **Decision needed:** 6A blunt injury / 6B scratch / 6C soreness, and 7A one-second player injury protection / 7B each burst. Installed 0.2.43 and test acceptance unchanged; discussion only.
 
 Updated 2026-10-11. Read with [AGENTS](../AGENTS.md) and [Planning](PLANNING.md).
 
@@ -14,4 +14,4 @@ Updated 2026-10-11. Read with [AGENTS](../AGENTS.md) and [Planning](PLANNING.md)
 - **Retained limits:** SP combat only, no multiplayer certification. Native reserve weight limits remain separate from expansion count. Secondary work retains 256 queued rays / 128 steps per callback. Fresh-world item-ID policy and owner-sourced placeholder art remain.
 - **GitHub:** `codex/performance-barbed-audit`, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1) into dev; immutable development tag and C108/C119 mirror required. No merge or Workshop upload.
 
-**Decision needed:** settle C157 new-module tuning and interaction rules; 0.2.43 remains installed and its earlier test is not marked complete. The C154 install/tag and findings are verified on GitHub at `02e7ed1`.
+**Decision needed:** choose C158 player explosion injury and burst protection; 0.2.43 remains installed and its earlier test is not marked complete. The C154 install/tag and findings are verified on GitHub at `02e7ed1`.
