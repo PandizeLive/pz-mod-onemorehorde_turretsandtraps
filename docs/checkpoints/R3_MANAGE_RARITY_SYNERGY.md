@@ -1,5 +1,33 @@
 # C155 - Manage boundaries, rarity, Once each and Synergy discussion
 
+## C157 - broader Synergy, Martyrdom and Tack (2026-10-11)
+
+Owner selects **6B**, adds **Martyrdom Module** (zombies pop on death, nearby damage, stacks increase AoE distance, loot weight **1.5**) and **Tack Module** (first shot on a new target drops tacks, barbed-style contact slowdown and damage, stacks increase AoE distance, loot weight **1.5**). Owner explicitly requires Splitter and **Fragment** to trigger these through Synergy and changes **Synergy loot weight to 1.0**. Preserve the selected single installed Synergy and 100-percent eligible activation. These numbers are loot-distribution weights, not inventory encumbrance. With current positive weights Synergy becomes the purple minimum; per-world tuning can change that.
+
+This supersedes the 6A recommendation and the prior Large Expansion-equivalent Synergy weight. Header bands, seven-color logarithmic rarity, Once each and cached battery estimates remain selected. New modules and broad interactions are design direction; numerical damage/radii/lifetime/trigger attribution and the chain graph are not yet settled. No gameplay patch or version bump in this discussion.
+
+### Recommended interaction contract (not yet approved)
+
+Without Synergy, new passives use primary projectile hits/kills. With Synergy, Splitter, Piercing and Fragment projectile hits gain the same applicable passives. Preserve Initial Blow's health gate, Execute's threshold and Impact's first-after-reload gate/chance; recommend one successful Impact stagger per original shot, not a new reload entitlement for each secondary.
+
+Prevent repeated effect types within a projectile lineage: Fragment can carry Martyrdom/Tack but never spawn Fragment again, and no secondary recreates muzzle Splitter or Piercing routes. A Splitter/Piercing hit may produce Fragment; those generated fragments may then trigger the new passives. Thus the old blanket 'Fragment children cannot trigger module chains' recommendation is superseded. Synergy's 100 percent is eligibility, not a rewrite of another module's chance or conditions.
+
+**1A recommended:** death-burst and Tack contact damage are terminal (cannot trigger additional modules). **1B alternative:** allow one additional Martyrdom generation, then stop; greater burst workload. Neither permits unlimited death/Fragment/Tack recursion. Fixed work budgets remain, but the scheduler cannot silently discard promised 100-percent activations; bounded admission/deferred work requires implementation measurements.
+
+**2A recommended:** Martyrdom triggers when an eligible turret projectile kills a zombie; one burst, fixed **20 damage**, no fire, no wall/floor penetration. **2B alternative:** an eligible hit marks the zombie, and any later death triggers its one burst. This requires persistent ownership/mark rules and must preserve the actual killer's attribution. Same proposed damage. Both keep stacking limited to radius, not damage.
+
+**3A recommended:** Tack is dropped at the first successful eligible hit position, once per zombie lifetime across turrets; the patch stays on the ground **10 active seconds**, doing **10 damage every 2 seconds** with **half movement only on contact**. **3B alternative:** same rules, **20 seconds**. No refresh on repeated shots. No per-round rearming through Once each. Overlapping patches do not multiply slowdown or DoT; recommend the same contact timer/nonstacking behavior with existing barbs. Generated fields are effects, not collectible constructed wire; no per-tack world object. Save/load/unload cleanup and exact first-hit persistence need native proof; do not claim current barb code already implements temporary fields.
+
+**4A recommended:** base radii **1.5 tiles Martyrdom / 1 tile Tack**, radius = base * sqrt(1 + 0.5 * (workingCopies - 1)), so every extra module adds 50 percent of the base area without a hard stack cap. First three radii: Martyrdom 1.50/1.84/2.12, Tack 1.00/1.22/1.41. **4B alternative:** same base radii, +0.25 tile radius per extra copy; easier labels but area/workload grow quadratically. Radius, not damage/duration, is the requested stacking effect.
+
+**5A recommended:** both new effects damage/slow zombies only. **5B alternative:** Martyrdom also damages players, and Tack uses existing barbed player movement/injury rules (safe walking versus running/sprint risk). Option 5B needs explicit player damage selection; do not silently apply zombie damage values to players. Existing trap behavior is unchanged by either choice.
+
+### Feasibility and content follow-through
+
+Installed `BarbRuntime` currently uses 10/2s and movement divisor 2; `BarbMovement.apply` scales pending displacement rather than storing/restoring base speeds. Temporary Tack needs its own lifetime/spatial index while reusing compatible movement/contact helpers; it must work with OMH: Turrets alone, not introduce a Traps dependency. Use a small reusable marker/decal and batched/cullable presentation, not an item/object per tack; final art remains owner-sourced. Both new modules need loot/Sandbox/tooltip/Installed Modules/LootLab coverage and ordinary slot/power accounting when implemented. Inventory weight, assets and precise pools remain proposed; preserve owner-selected loot weights. Martyrdom audio should be a bounded impact/pop cue with native pitch variation, not a full grenade blast/fire effect.
+
+Planning records updated on `codex/performance-barbed-audit` after fetching origin. 0.2.43 acceptance stays pending; this is not a test completion report. Next discussion: choose 1-5 above, then settle any selected alternative's material rules before implementing.
+
 ## C156 - selected options and full palette (2026-10-11)
 
 Owner selects **1B Header bands**, **2A logarithmic rarity with both extreme colors**, **3A one fired shot per target**, **4A cached per-shot/count/reload-aware time estimates**, and **5D one installed Synergy module per turret with 100 percent activation chance**. The earlier five-color recommendation and stackable Synergy burst allowance are superseded. Selection settles those design choices; this discussion turn does not install a gameplay patch or mark 0.2.43 accepted.
