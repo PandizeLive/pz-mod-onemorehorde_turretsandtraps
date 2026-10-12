@@ -26,7 +26,8 @@ function drawMarker(x,y,r,module){
 let markers=[],chanceCache=[];
 const tierPlanner=window.LootTiers.mount({element:$('tierPlanner'),modules:D.modules,
   read:()=>Object.fromEntries(D.modules.map(m=>[m.id,M.lootWeight(m,scenario.items[m.id])])),
-  apply:weights=>{for(const m of D.modules)if(weights[m.id]!==M.lootWeight(m,scenario.items[m.id]))scenario.items[m.id]=M.weightMultiplier(m,weights[m.id]);saveSettings();controls();scheduleUpdate();}});
+  readTiers:()=>window.LootTiers.names.map(name=>scenario.tierWeights[name]),
+  apply:(weights,tiers)=>{scenario.tierWeights=Object.fromEntries(window.LootTiers.names.map((name,i)=>[name,tiers[i]]));for(const m of D.modules)if(weights[m.id]!==M.lootWeight(m,scenario.items[m.id]))scenario.items[m.id]=M.weightMultiplier(m,weights[m.id]);saveSettings();controls();scheduleUpdate();}});
 const number=n=>n.toLocaleString(undefined,{maximumFractionDigits:1});
 const pretty=s=>s.replace(/([a-z])([A-Z])/g,'$1 $2');
 const canvas=$('map'), ctx=canvas.getContext('2d');

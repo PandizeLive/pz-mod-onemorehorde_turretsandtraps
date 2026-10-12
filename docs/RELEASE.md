@@ -1,5 +1,9 @@
 # Release state and publication policy
 
+## Latest hosted correction: C183
+
+LootLab tier weights now persist in account settings across reload/reopen and sync between devices. Worker `01b226e9-cd75-42f6-bada-d8b33c008d27`; 82 API/page tests and browser reload checks pass. [Contract/test](LOOTLAB_TIER_PERSISTENCE.md) | [Evidence](../diagnostics/lootlab-c183/release.json). Mod 0.2.47.3 and its immutable test tag/install are unchanged.
+
 ## Current local installation: 0.2.47.3 / C182
 
 Native pack ticking/selection, four-second rarity fade, live LootLab rarity feedback and equal-weight tier reopening are implemented. 16,101 assertions, native write/read and all three independent package selections pass. [Patch](PATCH_v0.2.47.3.md) | [Four-step test](TEST_v0.2.47.3.md). Installed through root OMH.cmd from immutable `test/v0.2.47.3` / `c2fb25ab3ce5605d08358eec6915fa61443ba937`. All 208 source / 256 tagged, packaged, installed and archived files match; both 0.2.47.2 backups verify. Archive SHA-256: `3374682da600ad195978d50a980cae22e6179ea22b8aab70d4e41b53d7da893c`. [Machine verification](../diagnostics/v0.2.47.3/local-release.json). No Workshop publication. Owner-rendered acceptance, custom rarity clips and additional randomized native-event pitch remain pending; the unsafe pitch setter is not used.

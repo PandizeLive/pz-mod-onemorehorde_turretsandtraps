@@ -32,3 +32,12 @@ for(const tier of [0,3,6]){T.assign(reopened,reg,tier);assert.equal(T.bands(modu
 console.log('PASS reopening, matching weights, custom tier values, precision tolerance, duplicate tiers and computed rarity changes');
 
 assert.equal(T.confirm(T.create(modules,weights),modules,{...weights,Firing:14}).Firing,14);
+
+const unset=T.names.map(()=>null),initial=T.create(modules,weights,unset);
+initial.tiers[3]=4.25;
+const tierSave=T.confirmTiers(initial,unset);assert.equal(tierSave[3],4.25);
+assert.throws(()=>T.confirmTiers(initial,unset.map((v,i)=>i===3?5:v)),/Saved tier weights changed/);
+assert.equal(T.confirmTiers(initial,unset.map((v,i)=>i===4?2:v))[4],2);
+const roundTrip=M.validate(JSON.parse(JSON.stringify({...M.defaults(D),tierWeights:Object.fromEntries(T.names.map((name,i)=>[name,tierSave[i]]))})),D);
+assert.equal(roundTrip.tierWeights.Rare,4.25);
+console.log('PASS tier snapshot conflict and scenario persistence');

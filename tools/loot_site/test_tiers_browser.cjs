@@ -16,6 +16,7 @@ assert.equal(await page.locator('[data-module="Regulator"] .tier-actual').textCo
 assert.equal(await page.locator('[data-module="Regulator"]').evaluate(e=>e.style.getPropertyValue('--rarity-color')),'#fffa4d');
 await page.getByLabel('Rare tier weight',{exact:true}).fill('4.25');await page.getByLabel('Rare tier weight',{exact:true}).press('Tab');
 await page.getByRole('button',{name:'Confirm weights'}).click();
+await page.reload();await page.waitForFunction(()=>document.querySelector('#loading').hidden,{timeout:60000});
 await page.getByRole('button',{name:'Plan with tiers'}).click();assert.equal(await page.locator('[data-tier="3"] [data-module="Regulator"]').count(),1);
 assert.equal(await page.getByLabel('Rare tier weight',{exact:true}).inputValue(),'4.25');
 await page.getByLabel('Move Regulator to tier',{exact:true}).selectOption('6');

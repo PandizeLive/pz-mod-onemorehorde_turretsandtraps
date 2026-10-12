@@ -48,4 +48,4 @@ Local tools
 - Corrected carried turret storage limits and repeated tooltip capacity warnings.
 - Added the OMH release menu with verified local installation and debug-log capture.
 - Added Knox Country LootLab with seeded spawn/probability maps, mobile zoom, component tuning and account-synced settings matching the gameplay loot definitions, expected occupied-container counts, per-container haul probabilities and larger five-plus jackpot circles.
-- Added a draft tier-list editor to LootLab with per-tier weights, personal overrides, live rarity badges, automatic equal-weight grouping on reopen and explicit confirmation.
+- Added a draft tier-list editor to LootLab with per-tier weights, personal overrides, live rarity badges, automatic equal-weight grouping on reopen, persistent account tier weights across refreshes/devices and explicit confirmation.

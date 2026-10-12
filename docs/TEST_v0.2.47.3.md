@@ -7,7 +7,7 @@
 3. Refresh LootLab. Move a module between Abundant and Mythic: its badge/background update to the calculated rarity. Confirm and check its normal-list rarity badge matches.
 4. Give a tier a distinct weight, move a module into it, Confirm, then reopen: that module returns to the matching tier. Cancel a different move: the saved weight stays unchanged.
 
-Report anything unexpected; console.txt will be reviewed. Custom rarity audio is pending. Native event playback does not add forced random pitch; map marker colors are component identities, separate from rarity. Tier definitions are retained during this page session, not as new account metadata.
+Report anything unexpected; console.txt will be reviewed. Custom rarity audio is pending. Native event playback does not add forced random pitch; map marker colors are component identities, separate from rarity. C183 now saves tier definitions with account settings across refreshes and devices; see LOOTLAB_TIER_PERSISTENCE.md.
 
 ## Automated verification
 
