@@ -20,3 +20,11 @@ No loot, combat, battery, persistence format or hosted site changes. The C189 0.
 4. Open another pack and Collect early: all three rewards remain, and its ticking stops. Report pacing/audio issues; I will inspect console.txt.
 
 No repeated combat test or fresh world is needed solely for this UI correction. Existing weights remain whatever that save loaded.
+
+## C191 - Owner result and console review (2026-10-12)
+
+Owner: "Works well!" Current reel behavior accepted; the requested 150-ms spacing and 250-ms earlier rarity cue are queued for the next patch. They are not in installed 0.2.48.1. No repeat test now.
+
+Captured console and both installed markers with root OMH.cmd: 20261012-195320-4179, SHA-256 `a407239acd7bc6d970b10d713771c109473b92f676b020bf9657a26d082bdb05`. Version 0.2.48.1 is loaded. Ten pack actions complete; no errors/exceptions/stack traces appear after the first pack begins. Recorded active-update gaps in that segment peak at 54 ms; this is not a dedicated pack-render benchmark or combat stress test. Earlier font/fluid/Firearms translation errors prevent a blanket clean-console claim. No OMHTT pack exception found. [Compact evidence](../diagnostics/v0.2.48.1/owner-test-20261012.json); raw console remains local.
+
+The owner's general pack report does not independently attest every earlier module, every sound tier, early Collect case or historical acceptance item. Preserve automated evidence separately. R3C7's pack slice is accepted; broader combined balance/endurance/lifecycle remains open.

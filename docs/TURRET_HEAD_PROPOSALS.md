@@ -25,6 +25,8 @@ C83 adds Rotary Bat and Nail Scatter as discussion candidates and reopens limite
 | Grenade lobber | Slow explosive area attack, potentially reaching a different trajectory after proof | Real explosive supplies, minimum range and player/structure collateral | Optional R3C3. Fragment already provides secondary damage, so a lobber needs distinct payload/trajectory behavior. Do not assert lobbed cover-clearing is supported before collision proof |
 | Arc emitter | Short-range damage chaining to a small number of nearby targets | Experimental technology, strict hop limits and resource budget | Lower-priority revision of arc stunner: damage-focused, no slow or default prolonged stun. Chain/Charge could define it. Engine damage/presentation and realistic long-lived power balance need proof; not in first grounded roster |
 
+C191 review (2026-10-12): Tack now supplies temporary damaging/slowing floor fields, so Nail Scatter needs a distinct role before selection; do not treat the original shortlist as automatically current gameplay scope. No head is selected.
+
 Recommend **Ballista** first for implementation fit, followed by **Rotary Blades** for a distinct role. Keep **Scrapshot** conditional on a useful difference from a modded shotgun. Grenade lobber and Arc emitter remain later candidates. C82 selects blades as the close-defense concept to discuss, not the next implementation checkpoint.
 
 ## Rotary Blades: working behavior proposal

@@ -1,8 +1,8 @@
 # Release state and publication policy
 
-## 0.2.48.1 / C190
+## 0.2.48.1 / C190 (owner result C191)
 
-Staggered, longer and faster-opening pack reels implemented. 16,180 assertions and 117 Lua/translation compile checks pass. Native write/read and all three package combinations pass. Root OMH.cmd installed immutable `test/v0.2.48.1` / `def298402fa617ccd2e033b5f4de95e6fe2c0392`; all 216 source and 264 tagged/packaged/installed/archive files match and both 0.2.48 backups verify. [Local proof](../diagnostics/v0.2.48.1/local-release.json). Owner pacing acceptance remains pending. [Patch](PATCH_v0.2.48.1.md) | [Test](TEST_v0.2.48.1.md). LootLab and reward weights remain on C189; no hosted deployment or Workshop upload.
+Staggered, longer and faster-opening pack reels implemented. 16,180 assertions and 117 Lua/translation compile checks pass. Native write/read and all three package combinations pass. Root OMH.cmd installed immutable `test/v0.2.48.1` / `def298402fa617ccd2e033b5f4de95e6fe2c0392`; all 216 source and 264 tagged/packaged/installed/archive files match and both 0.2.48 backups verify. [Local proof](../diagnostics/v0.2.48.1/local-release.json). C191 records owner acceptance of the current reel behavior; two refinements are queued for the next patch. [Patch](PATCH_v0.2.48.1.md) | [Test](TEST_v0.2.48.1.md). LootLab and reward weights remain on C189; no hosted deployment or Workshop upload.
 
 ## 0.2.48 / C189
 
