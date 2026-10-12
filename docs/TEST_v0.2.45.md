@@ -17,3 +17,9 @@ Implementation verification passes. The Kahlua suite passes 16,011 assertions, i
 Earlier native runs exposed an obsolete weight assertion and the real packed-buffer limitation; they are not passes. [Packing failure](../diagnostics/v0.2.45/packing-api-failure.log) records `bufferMeta=nil` and unavailable `rewind`. Debug reflection is also unavailable in ordinary play. Rendered sound timing, font layout and crowded-client frame smoothness remain owner checks regardless of headless results.
 
 Installed from immutable `test/v0.2.45`; 203 source / 251 package, installed and archived files match. Both prior 0.2.44 backups verify. [Exact release record](../diagnostics/v0.2.45/local-release.json).
+
+## Partial owner result and console review - 2026-10-12
+
+Owner reports battery drain effects work, but a full late-game turret estimates about 1.5 in-game minutes. Latest console identifies 0.2.45 SP and logs 4.079648422352103% per shot, 250-ms cooldown, 212.5 damage, range 30 and 16 modules. Latest saved base drain is 0.1 versus shipped .005, with ModulePowerBonus 5 and native 90-minute days. No save changes were made. Current maximum per-module surcharge remains +2, not a turret-wide cap. Power balance needs discussion under [C166](checkpoints/R3_POWER_PACKING_OPTIONS.md).
+
+**Failed client check:** repeated `__sub not defined for operands in render` at TurretMenu.lua:24 in the new inventory rarity-color overlay. Native tooltip padding fields are accessed as Lua values; repair their runtime-safe rendering before acceptance. [Captured review](../diagnostics/v0.2.45/owner-20261012/power-tooltip-review.json). Counts are log occurrences, not unique failures; duplicated stack output is possible. Other effects/UI/stress acceptance remains unconfirmed. No repeat checklist requested during this discussion.

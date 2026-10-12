@@ -1,0 +1,11 @@
+{
+  "consoleBytes": 3717565,
+  "consoleSHA256": "0ac569644d6df3ea5a861ecaca78beb04137e6ef34b08deadbb481b495aad67d",
+  "versionConfirmed": "0.2.45",
+  "tooltipErrorMessageCount": 538,
+  "tooltipStackReferenceCount": 2690,
+  "latestStats": [
+    "LOG  : Lua          f:28571> [OMHTT-Diag] version=0.2.45 side=sp seq=246 ms=1791788152311 event=turret-effective-stats suppressed=0 accuracy=65 ammoCapacity=750 autoloader=false batteryPercent=4.079648422352103 cooldown=250 critChance=20 critMultiplier=4 damage=212.5 generatorFuel=0.04079648422352103 hearingMultiplier=1 id=turret-1789873298 knockdown=0 moduleCapacity=16 range=30 reload=2700"
+  ],
+  "scope": "Owner reports battery works but endurance about 1.5 game minutes; other acceptance unconfirmed. Repeated inventory tooltip error confirmed."
+}

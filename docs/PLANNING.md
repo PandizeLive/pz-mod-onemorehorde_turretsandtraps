@@ -1,5 +1,9 @@
 # Planning
 
+## C166 - Endurance and packing discussion (2026-10-12)
+
+Owner reports battery drain works but the late-game turret lasts about 1.5 in-game minutes. Latest saved Battery use is 0.1, twenty times the shipped .005 default; log confirms 4.07965% per shot. Console also confirms repeated inventory rarity-tooltip errors at TurretMenu.lua:24. Battery acceptance is partial; the rest of the patch is not cleared. [Evidence and numbered options](checkpoints/R3_POWER_PACKING_OPTIONS.md) cover safe pickup alternatives, six-hour endurance tuning, Power Efficiency and seven rarity names. These are discussion proposals, not new gameplay approval. Packing remains unfinished. **Decision needed** on the four choice groups; no repeat test requested while discussing the corrective patch.
+
 **C165 / 0.2.45 installed and automatically verified.** Tack startup, delayed effects/audio, shotgun accuracy/Piercing, rarity-based power, concise module/battery feedback and slider polish are complete. [Patch](PATCH_v0.2.45.md) | [five-step test](TEST_v0.2.45.md). Installed from immutable `test/v0.2.45`; owner acceptance remains pending.
 
 16,011 Kahlua assertions, native write/fresh-process read, all three independent-package selections and 51 supported Firearms weapons pass. These checks do not certify rendered layout, audible timing or crowded-client frame smoothness.
