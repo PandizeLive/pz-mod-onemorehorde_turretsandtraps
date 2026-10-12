@@ -2,7 +2,7 @@
 
 ## 0.2.48 / C189
 
-Custom pack audio and revision-196 loot defaults implemented and validated. LootLab deployment verified as Worker `1007244f-ad66-4416-bede-2f2f64063abe`; existing account settings preserved. Native persistence/package checks and tagged installation in progress. [Test](TEST_v0.2.48.md) | [Patch](PATCH_v0.2.48.md). No Workshop upload or official release.
+Custom pack audio and revision-196 loot defaults implemented and validated. LootLab deployment verified as Worker `1007244f-ad66-4416-bede-2f2f64063abe`; existing account settings preserved. Native write/read and all three independent package checks pass. Installed with root OMH.cmd from immutable `test/v0.2.48` / `303ee3da684de23b695cb270a3919039c6a86d9c`; all 216 source and 264 tagged/packaged/installed/archived files and both 0.2.47.4 backups verify. [Local evidence](../diagnostics/v0.2.48/local-release.json). Owner audible/rendered acceptance pending. [Test](TEST_v0.2.48.md) | [Patch](PATCH_v0.2.48.md). No Workshop upload or official release.
 
 ## Previous correction: 0.2.47.4 / C185
 

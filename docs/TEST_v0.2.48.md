@@ -7,11 +7,13 @@
 - Pack render probe: 300 frames, zero new items/text wraps; existing bounded tick scheduling is unchanged. No new protected calls, events or per-tick allocations in changed shipped Lua.
 - 83 API/page tests pass, including old-tab baseline compatibility, preservation of weights/anchors and rejection of malformed/missing fields. Model/default/tier tests pass.
 - Edge verifies real drag/drop, exact seven-tier colors, custom weights, confirmation/reload persistence, exported Sandbox settings, saved tuning, reset, desktop/mobile bounds and zero page errors.
-- Traps-only, Turrets-only and combined package startup all pass on native 42.21.0. Native write/read persistence: pending completion.
+- Traps-only, Turrets-only and combined package startup all pass on native 42.21.0. Native write/read persistence passes in fresh processes; defaults, rarity-linked battery costs, all seven sound bindings and real pack reward/loot handling verify.
 - LootLab deployed as Worker 1007244f-ad66-4416-bede-2f2f64063abe. Production bundle, protected routes and public endpoints verified. No account data writes.
-- Tagged local installation: pending completion. Owner audible/rendered acceptance pending.
+- Installed from immutable test/v0.2.48 / 303ee3da684de23b695cb270a3919039c6a86d9c. All 216 source and 264 tagged/packaged/installed/archived files match; both 0.2.47.4 backups verify. [Evidence](../diagnostics/v0.2.48/local-release.json). Owner audible/rendered acceptance pending.
 
 The full-retention model estimates 15.1% five-plus-component hauls among successful containers with the approved weights. This is a conditional simulator result, not an in-game spawn guarantee. Existing saves are not silently retuned.
+
+Initial test runs caught stale expectations for the previous loot/power defaults and the standalone audio harness's missing UI emitter initialization. Those fixture issues were corrected; final native write/read and Lua runs pass. Native engine startup warnings are not treated as owner-client acceptance.
 
 ## Short owner test
 
