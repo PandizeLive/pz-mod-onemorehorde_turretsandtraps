@@ -1,5 +1,8 @@
 # Planning
 
+**C176 - pack rules selected:** three independent rewards (duplicates allowed); rare packs alongside loose modules at relative container weight 1.0; all 29 exported entries eligible, including expansion kits. Owner also requests packs on zombie bodies more often. [Remaining zombie drop-rate choice](checkpoints/R3_MODULE_PACK.md#c176-selected-pack-rules-and-zombie-body-loot). Hour/minute fix and supplied weights remain approved; no additional pack-design approval round needed after this rate is settled.
+
+
 **C175 - patch scope approved, pack choices pending:** owner approves the hour/minute fix and module pack, explicitly reaffirms all 29 supplied weights, then requests questions/options first if needed. [Current choices](checkpoints/R3_MODULE_PACK.md#c175-approval-and-remaining-choices). Present reward count, acquisition and eligibility before implementing dependent pack/loot behavior. Viewpoint remains separate.
 
 

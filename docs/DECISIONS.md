@@ -954,3 +954,8 @@ Owner asks whether first-person mod support is realistic before moving it to ano
 ## C175 - Module-pack/hour patch approval and weights reaffirmed (2026-10-12)
 
 Owner approves the hour patch and module pack, explicitly adds the new weights, and then invites questions/options first. Scope approved: adaptive battery hours/minutes, weighted pack/reveal, all 29 supplied effective weights. [Remaining material choices and proposed defaults](checkpoints/R3_MODULE_PACK.md#c175-approval-and-remaining-choices): reward count, additional versus replacement loot, expansion-kit eligibility. These choices are not settled by feature approval. No gameplay/package change this turn; Viewpoint stays separate and C171 findings remain pending. C108/C119 planning mirror applies.
+
+
+## C176 - Three-reward packs, supplemental loot and zombie bodies (2026-10-12)
+
+Owner selects 1B/2A/3A: three independent draws with duplicates, packs alongside loose modules at container weight 1.0, and all 29 exported entries including expansion kits. Adds more-frequent pack finds on zombie bodies. [Contract and final rate choice](checkpoints/R3_MODULE_PACK.md#c176-selected-pack-rules-and-zombie-body-loot). Recommend separately configurable 1% per eligible body, with 0.5%/2% alternatives; numerical rate not yet approved. Container weights and corpse probabilities are distinct. Existing hour/weight/pack approval persists; do not require generic reapproval after the rate choice. No gameplay patch or test claim this turn.

@@ -1,5 +1,8 @@
 # Phases and checkpoints
 
+**C176 - pack rules selected:** three independent rewards (duplicates allowed); rare packs alongside loose modules at relative container weight 1.0; all 29 exported entries eligible, including expansion kits. Owner also requests packs on zombie bodies more often. [Remaining zombie drop-rate choice](checkpoints/R3_MODULE_PACK.md#c176-selected-pack-rules-and-zombie-body-loot). Hour/minute fix and supplied weights remain approved; no additional pack-design approval round needed after this rate is settled.
+
+
 **C175 - patch scope approved, pack choices pending:** owner approves the hour/minute fix and module pack, explicitly reaffirms all 29 supplied weights, then requests questions/options first if needed. [Current choices](checkpoints/R3_MODULE_PACK.md#c175-approval-and-remaining-choices). Present reward count, acquisition and eligibility before implementing dependent pack/loot behavior. Viewpoint remains separate.
 
 
@@ -11,7 +14,7 @@
 
 C171: [LootLab direct weights](LOOTLAB_DIRECT_WEIGHTS.md) deployed. Next corrective game scope to settle: adaptive battery minutes/hours, native tooltip percent/translation failure and repeated capacity configuration warnings. R3C7 acceptance stays open.
 
-Synchronized 2026-10-12 against C80-C175 and native-verified 0.2.46. Packed-weight reduction is abandoned under C170; R3C7 owner acceptance remains open.
+Synchronized 2026-10-12 against C80-C176 and native-verified 0.2.46. Packed-weight reduction is abandoned under C170; R3C7 owner acceptance remains open.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 

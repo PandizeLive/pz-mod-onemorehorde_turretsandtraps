@@ -135,7 +135,7 @@ When incorporating these as new baseline/default weights, apply them once. Rebas
 }
 ```
 
-**Decision needed:** the owner has another support requirement to add; continue discussion before patching.
+Historical C173 gate superseded: Viewpoint was identified in C174; see the latest C176 selections below.
 
 
 ## C175 approval and remaining choices
@@ -151,3 +151,14 @@ Choices presented (not selected):
 Proposed routine defaults: Module Pack name, 0.2 item weight, loot-only/no new crafting recipe, two-second opening action and four-second optional default-on reveal with Skip. Reward committed once before the visual reveal; skip/close must not reroll or duplicate it. Existing Manage icons/rarity text and dim backgrounds, bounded visible cards, UI work only while open. Defaults remain proposals until owner response; native transaction/persistence behavior needs proof.
 
 All 29 new effective weights apply to the module catalog and selected pack eligibility, with existing tuning preservation and no double application as described above. Battery formatting changes units at 60 in-game minutes and leaves drain/reload-inclusive estimation arithmetic unchanged. C171 tooltip/capacity findings remain explicitly queued, not claimed fixed. Medium effort suits the display correction; recommend Fast for the full pack implementation if estimated over 25 minutes.
+
+
+## C176 selected pack rules and zombie-body loot
+
+2026-10-12. Owner selects 1B, 2A and 3A, adding: "We'll also have them appear on zombie bodies more often." Three independent weighted rewards per pack, duplicates allowed; packs supplement loose modules at relative weight 1.0 in existing module-eligible container pools; all 29 exported entries eligible, including expansion kits. Keep the C175 routine defaults unless subsequently revised; no need to ask the same questions again. Interpret the zombie-body request as packs, not a global increase to unrelated corpse loot or individual modules.
+
+Current ModuleLoot.lua only injects procedural container pools; it has no module/pack zombie-body route. Installed vanilla Distributions.lua has outfit-specific tables that replace inventorymale/inventoryfemale, so adding to only the generic table would miss many zombies. A complete corpse route and once-only reward accounting require native verification during implementation. Container weight 1.0 is not a 1% corpse drop rate; do not equate those values.
+
+Only new material choice: independent pack chance per eligible zombie body, including turret kills. Recommend 1% (1B); offer 0.5% (1A) and 2% (1C). For 1,000 eligible bodies these yield expected 5/10/20 packs and 15/30/60 rewards respectively, before any failed item placement; actual samples vary. These are design probabilities, not measured native loot rates. Proposed separate Sandbox percentage, zero disables, at most one pack per body; ordinary loot unchanged. No rate selected yet. This is the final known balance gate; do not request another generic patch approval after selection. Implementation must verify corpse inventory insertion timing and prevent repeat rolls on reload/event duplication without per-tick corpse scanning.
+
+Base inspected 1f143eb59e66da70cf0ed3c9b12650c6f4797fe4; origin fetched, no incoming dev commits. No source/package/install/version or test-result changes. C171 corrective issues and C170 cancellation remain unchanged; Viewpoint remains separate. C108/C119 mirror applies.
