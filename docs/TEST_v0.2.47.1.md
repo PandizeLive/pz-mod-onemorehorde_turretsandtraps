@@ -18,3 +18,5 @@ Foundation plus corrective audit: **16,094 assertions**, 117 runtime/translation
 - Native write verifies script metadata for all 29 entries, no pack injection across all 16 pools with zero weights, retained unopened packs and successful opening after weights return. Native write/fresh-process read pass in 77.7/63.7 seconds, retaining reward names and duplicates. Traps-only/Turrets-only/both isolation passes in 67.8/57.5/54.8 seconds. These are headless checks, not player sessions.
 
 Current client console still reflects an older session; no rendered 0.2.47.1 pass is claimed. C171 capacity warnings remain unresolved separately. LootLab is unchanged at verified 0.2.47.
+
+Installed from immutable `test/v0.2.47.1`; all 256 package/archive/installed hashes and both previous-package backups verify. Guideline scan: 101 source / 117 packaged / 117 installed Lua files, zero pcall/xpcall, tabs or BOMs; new-pack non-guard inline-conditional scan is clear. [Evidence](../diagnostics/v0.2.47.1/audit/guidelines.json).

@@ -1,8 +1,8 @@
 # Release state and publication policy
 
-## Current corrective build: 0.2.47.1 / C180
+## Current local installation: 0.2.47.1 / C180
 
-[Patch](PATCH_v0.2.47.1.md) | [Four-step combined test](TEST_v0.2.47.1.md). 16,094 assertions, native write/read and all three package-isolation selections pass. Zero pcall/xpcall in source/packages; pack style corrections included. Owner-rendered acceptance is pending. The 15% drop chance, three rewards and weights are unchanged; old C171 capacity warnings remain open. LootLab stays at 0.2.47; no hosted or Workshop publication in this correction. Local install evidence will be recorded after the immutable tag is installed.
+[Patch](PATCH_v0.2.47.1.md) | [Four-step combined test](TEST_v0.2.47.1.md). 16,094 assertions, native write/read and all three package-isolation selections pass. Zero pcall/xpcall in source/packages; pack style corrections included. Owner-rendered acceptance is pending. The 15% drop chance, three rewards and weights are unchanged; old C171 capacity warnings remain open. LootLab stays at 0.2.47; no hosted or Workshop publication in this correction. Installed through root OMH.cmd from immutable `test/v0.2.47.1` / `169116e5fdc75c33e4a790bf4e4ee1abd1612924`. All 208 source / 256 tagged, packaged, installed and archived files match; both 0.2.47 backups verify. Archive SHA-256: `474c88ddf1ab7a015e4cc4c363bd09923ed8abc6d949513b827ec8d4e5bb03f3`. [Install](../diagnostics/v0.2.47.1/install.json) | [Machine verification](../diagnostics/v0.2.47.1/local-release.json). Restart the client before testing.
 
 ## Previous local installation: 0.2.47 / C177
 
