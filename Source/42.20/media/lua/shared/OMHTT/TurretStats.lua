@@ -113,6 +113,7 @@ function S.resolve(contents)
     local weaponPower = math.max(1, math.sqrt(math.max(0, damage) / 80 * math.min(firearm and 50 or 30, range) / 15))
     local modulePower = 1 + (contents and contents.powerLoad or 0) * S.option("ModulePowerBonus", 5, 0, 200) / 5
     local effectPower = weaponPower * modulePower
+    local regulator = 1 + .25 * (active.Regulator or 0)
     return {damage = damage * (1 + S.bonus(active, "Velocity", 20, 100) / 100),
         knockdown = math.min(100, knockdown + knockBonus),
         range = math.min(firearm and 50 or 30, range + S.bonus(active, "Range", 2, 10)),
@@ -135,7 +136,8 @@ function S.resolve(contents)
         fragmentDamage = math.min(S.option("FragmentDamageCap", 40, 0, 100), S.option("FragmentDamage", 20, 0, 100) + math.max(0, fragment - 1) * S.option("FragmentBonus", 5, 0, 100)) / 100,
         fragmentRange = S.option("FragmentRange", 4, 1, 10),
         effectPower = effectPower, weaponPower = weaponPower, modulePower = modulePower,
-        batteryPercent = S.option("PotatoBatteryPercentPerShot", 0.005, 0, 100) * effectPower,
+        regulator = regulator,
+        batteryPercent = S.option("PotatoBatteryPercentPerShot", 0.00045, 0, 100) * effectPower / regulator,
         generatorFuel = S.option("PotatoGeneratorFuelPerShot", 0.0001, 0, 1) * effectPower,
         magazine = magazine, accuracy = accuracy, farAccuracy = farAccuracy, critChance = critChance, critMultiplier = critMultiplier, rack = rack * 1000 / enhancement, firearm = firearm ~= nil,
         suppressed = (active.Suppression or 0) > 0,

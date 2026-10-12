@@ -10,7 +10,7 @@ T.BASE = "Base.OMHTTTurretBase"
 T.HEAD = "Base.OMHTTTurretPotato"
 T.HEAD_VISUAL = {height = 0.4 - 16 / 192, scale = 0.512, muzzle = 0.55}
 T.CONTAINER = "OMHTTTurret"
-T.MODULES = {Synergy = true, Martyrdom = true, Tack = true, Conservation = true, Piercing = true, InitialBlow = true, Execute = true, Impact = true, FiringEnhanced = true, MotionDetectionEnhanced = true, Magazine = true, Splitter = true, Fragment = true, FiringImprovised = true, MotionDetectionImprovised = true, CapacityImprovised = true, Firing = true, MotionDetection = true, Filter = true, RapidFire = true, Velocity = true,
+T.MODULES = {Regulator = true, Synergy = true, Martyrdom = true, Tack = true, Conservation = true, Piercing = true, InitialBlow = true, Execute = true, Impact = true, FiringEnhanced = true, MotionDetectionEnhanced = true, Magazine = true, Splitter = true, Fragment = true, FiringImprovised = true, MotionDetectionImprovised = true, CapacityImprovised = true, Firing = true, MotionDetection = true, Filter = true, RapidFire = true, Velocity = true,
     Range = true, Critical = true, Accuracy = true, Suppression = true, Capacity = true, CapacitySmall = true, CapacityLarge = true, Detection360 = true, Reload = true, Autoloader = true}
 T.SINGLE = {Synergy = true, Firing = true, MotionDetection = true, Filter = true, Detection360 = true, Autoloader = true}
 T.TYPES = {}
@@ -155,7 +155,7 @@ function T.contents(container)
             result.moduleNames[#result.moduleNames + 1] = item:getDisplayName()
             if item:getCondition() > 0 then
                 local name = T.component(item:getFullType())
-                if kind == "module" then result.powerLoad = result.powerLoad + require("OMHTT/TurretRarity").get(name).surcharge end
+                if kind == "module" and name ~= "Regulator" then result.powerLoad = result.powerLoad + require("OMHTT/TurretRarity").get(name).surcharge end
                 result.active[name] = (result.active[name] or 0) + 1
                 if roles[name] then
                     result.active[roles[name]] = (result.active[roles[name]] or 0) + 1

@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Synchronized 2026-10-12 against C80-C165 and the implemented, native-verified 0.2.45 build. Rendered owner acceptance and safe packed-weight preservation remain open. This is the canonical execution/status index.
+Synchronized 2026-10-12 against C80-C168 and native-verified 0.2.46. Full packing remains technically unfinished; R3C7 owner acceptance remains open.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -18,29 +18,22 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 ## Current checkpoint status and next work
 
-## C167 - Selected packing, module weight, Regulator and rarity (2026-10-12)
+**C168 / 0.2.46 implemented and verified; installation in progress.** Owner approved revised 2B: .00045% base battery use, additive rarity surcharges .1/.15/.25/.4/.6/.8/1.0, plus C167 packing/weight/Regulator/names. Regulator provides +25% endurance per copy, battery-only, no self-surcharge; all module item weights are .2. Seven names end in Epic/Legendary/Mythic. Inventory rarity tooltip uses exposed UI methods. [Patch](PATCH_v0.2.46.md) | [focused test](TEST_v0.2.46.md).
 
-Owner selects 1C (full automatic packing), adds module item weight .3 -> .2, selects 3B named **Regulator Module**, and 4A **Abundant / Common / Uncommon / Rare / Epic / Legendary / Mythic**. Packing remains a native feasibility task; this does not authorize an added Java dependency or lossy restoration. The revised power proposal is base **.0008%** with **+.1x to +1x per module**, explicitly submitted for evaluation. [Updated contract and calculations](checkpoints/R3_POWER_PACKING_OPTIONS.md#c167---selected-directions-and-revised-power-evaluation-2026-10-12). With the tested weapon/day/cadence, sixteen highest-cost modules give only 3.54 hours before reloads, so the prior six-hour target needs qualification or lower base drain. **Decision needed:** retain .0008 for stronger power tradeoffs, or use .00045 for about 6.3 hours on that high-cost reference build. No gameplay patch or saved-setting change this discussion; existing tooltip defect remains queued.
+16,046 Kahlua assertions, 760 native translations, 113 compiled files, native write/read, three independent package selections and 51 Firearms weapons pass. LootLab 0.2.46 is deployed with 29 modules/208 entries; 77 API/page tests and desktop/mobile browser checks pass. Owner/rendered gameplay acceptance remains pending.
 
-
-**C165 / 0.2.45 installed and automatically verified.** Tack startup, delayed effects/audio, shotgun accuracy/Piercing, rarity-based power, concise module/battery feedback and slider polish are complete. [Patch](PATCH_v0.2.45.md) | [five-step test](TEST_v0.2.45.md). Installed from immutable `test/v0.2.45`; owner acceptance remains pending.
-
-16,011 Kahlua assertions, native write/fresh-process read, all three independent-package selections and 51 supported Firearms weapons pass. These checks do not certify rendered layout, audible timing or crowded-client frame smoothness.
-
-**Packed-weight compression remains approved but unfinished.** Pick Up should automatically pack the turret, preserve its normal contents summary, and unpack through existing placement. The tested native opaque-buffer restoration is unavailable to ordinary Lua; exact arbitrary-item preservation is not proven. Existing pickup weight remains. No equipped-only substitute or partial property reconstruction ships.
-
-C164 LootLab colors, family shapes and sticky Show all / Hide all are already deployed and verified. R3C7 combined acceptance and relevant R1C3 performance work remain active. No Workshop publication.
+**Packing remains unfinished, despite approved implementation scope.** The ordinary-Lua native buffer route and generic object loaders still require unavailable buffer positioning/version decoding; no safe arbitrary-item restore path has been proven. Existing exact-item pickup/placement retains full contents weight. No Java dependency, partial item reconstruction or equipped-only substitution ships. Further progress requires a supported native bridge or a separately discussed dependency, not another balance choice.
 
 | Phase / checkpoints | Status | Remaining work / next gate |
 | --- | --- | --- |
 | 1: R1C1-R1C2 package split | Implemented and native-verified in 0.2.29; remaining owner regression waived by C89 | Closed to further split regression; retain fresh-world policy and independent-package checks for changes |
-| 1: R1C3 performance/authority | C154 / 0.2.43 bounded transfers and five runtime optimizations installed; native checks pass | Relevant checks carried into the focused 0.2.45 test; broader authority/load scope remains |
+| 1: R1C3 performance/authority | C154 / 0.2.43 bounded transfers and five runtime optimizations installed; native checks pass | Relevant checks carried into the focused 0.2.46 test; broader authority/load scope remains |
 | 2: R2C1-R2C2 Bed Spikes | Implemented with native checks, revised through subsequent patches | C106 tentative passes; verify corrected zombie landing/recovery in the focused 0.2.38 test |
 | 2: R2C3 Barbed Panel | Implemented with native contact/construction/persistence checks | C106 tentative passes; revised Building acceptance; player injuries added in 0.2.38; multi-panel/garage doors remain unimplemented |
 | 2: R2C4 concertina | C133 linked 1x2 conversion installed/native-verified in 0.2.39 | Focused paired-wire owner acceptance remains; see TEST_v0.2.39.md |
 | 3: R3C1-R3C2 new head | Candidates documented; none selected for implementation | Select one head and settle its concrete contract before prototyping |
 | 3: R3C3 explosive head | Optional, unscoped | Collateral/resource/effect-budget decisions and feasibility first |
-| 3: R3C4-R3C7 offensive modules/battery | C165 / 0.2.45 corrects effects, shotgun accuracy/Piercing, rarity power and Manage feedback | R3C7 focused 0.2.45 owner test pending; packed-weight work unfinished |
+| 3: R3C4-R3C7 offensive modules/battery | C168 / 0.2.46 adds Regulator, rebalances endurance, lowers module weights and fixes rarity feedback | R3C7 focused 0.2.46 owner test pending; packed-weight work unfinished |
 | 3: R3C8 starter modules/expansion | C104 implemented, verified and installed in 0.2.34 | C106 tentative passes; 4/6/6 layout acceptance in 0.2.35; include maximum loadouts in future R3C7 endurance checks |
 | 4: R4C1-R4C4 signals/connected traps | Planned | Signal contract first; devices then optional turret receiver |
 | 5: R5C1-R5C3 MP/integrations/release | Planned; no certification or publication | Validate only the selected release scope; optional features need not all ship |

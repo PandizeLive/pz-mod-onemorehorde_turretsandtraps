@@ -7,7 +7,7 @@ const moduleAppearance={
   CapacitySmall:['#8ca756','hexagon'],Capacity:['#f69ed0','hexagon'],CapacityLarge:['#d09a75','hexagon'],Autoloader:['#bbc9da','square'],
   Critical:['#eea577','triangle'],Accuracy:['#93d6b5','triangle'],Magazine:['#a3b8ff','square'],Splitter:['#dc9f49','diamond'],Fragment:['#ce82a9','diamond'],
   FiringEnhanced:['#e9d6a0','circle'],MotionDetectionEnhanced:['#64aab0','circle'],Piercing:['#8edbff','diamond'],InitialBlow:['#ffb4a2','diamond'],
-  Execute:['#e96969','diamond'],Impact:['#c4db72','diamond'],Conservation:['#70d4ac','square'],Synergy:['#d4a6ff','diamond'],Martyrdom:['#ff934f','diamond'],Tack:['#f5db84','diamond']
+  Execute:['#e96969','diamond'],Impact:['#c4db72','diamond'],Conservation:['#70d4ac','square'],Regulator:['#a1c7ff','square'],Synergy:['#d4a6ff','diamond'],Martyrdom:['#ff934f','diamond'],Tack:['#f5db84','diamond']
 };
 const familyNames={circle:'Control',triangle:'Ballistics',square:'Ammo & reload',diamond:'Hit effects',hexagon:'Expansion'};
 function appearance(id){

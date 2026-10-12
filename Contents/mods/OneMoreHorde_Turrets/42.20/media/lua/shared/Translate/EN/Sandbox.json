@@ -43,7 +43,7 @@
     "Sandbox_OMHTurretsTraps_PotatoSplashRadius": "Splash radius",
     "Sandbox_OMHTurretsTraps_PotatoSplashRadius_tooltip": "Splash distance in tiles.",
     "Sandbox_OMHTurretsTraps_PotatoBatteryPercentPerShot": "Battery use",
-    "Sandbox_OMHTurretsTraps_PotatoBatteryPercentPerShot_tooltip": "Base battery charge percent per firing volley, before module and weapon multipliers. No idle drain.",
+    "Sandbox_OMHTurretsTraps_PotatoBatteryPercentPerShot_tooltip": "Base battery charge percent per shot, before module and weapon multipliers. No idle drain.",
     "Sandbox_OMHTurretsTraps_PotatoGeneratorFuelPerShot": "Generator use",
     "Sandbox_OMHTurretsTraps_PotatoGeneratorFuelPerShot_tooltip": "Base extra generator fuel units per firing volley, before module and weapon multipliers. A full tank holds 10 units; native idle use is unchanged.",
     "Sandbox_OMHTurretsTraps_PotatoHealth": "Durability",
@@ -329,5 +329,7 @@
     "Sandbox_OMHTurretsTraps_TackDamage_tooltip": "Zombie damage; player injuries are separate.",
     "Sandbox_OMHTurretsTraps_TackLifetime_tooltip": "Active seconds before expiry.",
     "Sandbox_Title_OMHTurretsTraps_Martyrdom": "Martyrdom",
-    "Sandbox_Title_OMHTurretsTraps_Tack": "Tack"
+    "Sandbox_Title_OMHTurretsTraps_Tack": "Tack",
+    "Sandbox_OMHTurretsTraps_LootRateRegulator": "Regulator Module",
+    "Sandbox_OMHTurretsTraps_LootRateRegulator_tooltip": "Multiplier for Regulator Module loot. 0 disables it."
 }

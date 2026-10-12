@@ -11,9 +11,17 @@ return function(player)
     store:AddItem(T.TYPES.Tack)
     local contents = T.contents(store)
     local stats = Stats.resolve(contents)
-    assert(contents.modules == 3 and contents.powerLoad == 5 and stats.synergy and stats.tack == 1 and stats.martyrdom == 1.5,
+    assert(contents.modules == 3 and math.abs(contents.powerLoad - 2.6) < .00001 and stats.synergy and stats.tack == 1 and stats.martyrdom == 1.5,
         "Native proc modules did not resolve")
     assert(synergy:getWeight() == instanceItem(T.TYPES.Conservation):getWeight(), "Module encumbrance drift")
+    local beforeRegulator = stats.batteryPercent
+    local regulator = store:AddItem(T.TYPES.Regulator)
+    local regulated = Stats.resolve(T.contents(store))
+    assert(math.abs(regulator:getActualWeight() - .2) < .00001 and math.abs(regulated.batteryPercent * 1.25 - beforeRegulator) < .0000001,
+        "Native Regulator weight or battery reduction failed")
+    assert(regulated.generatorFuel == stats.generatorFuel, "Regulator changed generator consumption")
+    regulator:setCondition(0)
+    assert(Stats.resolve(T.contents(store)).batteryPercent == beforeRegulator, "Broken Regulator still works")
     local parts = {BodyPartType.ForeArm_L, BodyPartType.ForeArm_R, BodyPartType.LowerLeg_L, BodyPartType.LowerLeg_R}
     local before, after = 0, 0
     player:setGodMod(false)

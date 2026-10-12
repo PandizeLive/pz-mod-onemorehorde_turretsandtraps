@@ -37,5 +37,6 @@
     "Tooltip_OMHTT_ModuleConservation": "Two shots per round; +1 shot per extra module.",
     "Tooltip_OMHTT_ModuleSynergy": "Secondary projectile hits trigger module effects.",
     "Tooltip_OMHTT_ModuleMartyrdom": "Kills cause a delayed damaging pop; extra modules increase radius.",
-    "Tooltip_OMHTT_ModuleTack": "Drops slowing, damaging tacks; extra modules increase radius."
+    "Tooltip_OMHTT_ModuleTack": "Drops slowing, damaging tacks; extra modules increase radius.",
+    "Tooltip_OMHTT_ModuleRegulator": "+25%% battery life per module."
 }

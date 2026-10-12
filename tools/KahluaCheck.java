@@ -344,6 +344,8 @@ public final class KahluaCheck {
             {"_", "tools/tests/tack_load_order_after.lua"},
             {"_", "tools/tests/synergy.lua"},
             {"_", "tools/tests/effect_polish.lua"},
+            {"OMHTT/TurretItemTooltip", base + "client/OMHTT/TurretItemTooltip.lua"},
+            {"_", "tools/tests/regulator.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

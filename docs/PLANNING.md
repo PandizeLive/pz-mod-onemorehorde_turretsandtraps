@@ -1,22 +1,16 @@
 # Planning
 
-## C167 - Selected packing, module weight, Regulator and rarity (2026-10-12)
+**C168 / 0.2.46 implemented and verified; installation in progress.** Owner approved revised 2B: .00045% base battery use, additive rarity surcharges .1/.15/.25/.4/.6/.8/1.0, plus C167 packing/weight/Regulator/names. Regulator provides +25% endurance per copy, battery-only, no self-surcharge; all module item weights are .2. Seven names end in Epic/Legendary/Mythic. Inventory rarity tooltip uses exposed UI methods. [Patch](PATCH_v0.2.46.md) | [focused test](TEST_v0.2.46.md).
 
-Owner selects 1C (full automatic packing), adds module item weight .3 -> .2, selects 3B named **Regulator Module**, and 4A **Abundant / Common / Uncommon / Rare / Epic / Legendary / Mythic**. Packing remains a native feasibility task; this does not authorize an added Java dependency or lossy restoration. The revised power proposal is base **.0008%** with **+.1x to +1x per module**, explicitly submitted for evaluation. [Updated contract and calculations](checkpoints/R3_POWER_PACKING_OPTIONS.md#c167---selected-directions-and-revised-power-evaluation-2026-10-12). With the tested weapon/day/cadence, sixteen highest-cost modules give only 3.54 hours before reloads, so the prior six-hour target needs qualification or lower base drain. **Decision needed:** retain .0008 for stronger power tradeoffs, or use .00045 for about 6.3 hours on that high-cost reference build. No gameplay patch or saved-setting change this discussion; existing tooltip defect remains queued.
+16,046 Kahlua assertions, 760 native translations, 113 compiled files, native write/read, three independent package selections and 51 Firearms weapons pass. LootLab 0.2.46 is deployed with 29 modules/208 entries; 77 API/page tests and desktop/mobile browser checks pass. Owner/rendered gameplay acceptance remains pending.
 
-**C165 / 0.2.45 installed and automatically verified.** Tack startup, delayed effects/audio, shotgun accuracy/Piercing, rarity-based power, concise module/battery feedback and slider polish are complete. [Patch](PATCH_v0.2.45.md) | [five-step test](TEST_v0.2.45.md). Installed from immutable `test/v0.2.45`; owner acceptance remains pending.
+**Packing remains unfinished, despite approved implementation scope.** The ordinary-Lua native buffer route and generic object loaders still require unavailable buffer positioning/version decoding; no safe arbitrary-item restore path has been proven. Existing exact-item pickup/placement retains full contents weight. No Java dependency, partial item reconstruction or equipped-only substitution ships. Further progress requires a supported native bridge or a separately discussed dependency, not another balance choice.
 
-16,011 Kahlua assertions, native write/fresh-process read, all three independent-package selections and 51 supported Firearms weapons pass. These checks do not certify rendered layout, audible timing or crowded-client frame smoothness.
-
-**Packed-weight compression remains approved but unfinished.** Pick Up should automatically pack the turret, preserve its normal contents summary, and unpack through existing placement. The tested native opaque-buffer restoration is unavailable to ordinary Lua; exact arbitrary-item preservation is not proven. Existing pickup weight remains. No equipped-only substitute or partial property reconstruction ships.
-
-C164 LootLab colors, family shapes and sticky Show all / Hide all are already deployed and verified. R3C7 combined acceptance and relevant R1C3 performance work remain active. No Workshop publication.
-
-Updated 2026-10-12 under C119/C165. This is the shared local/Cloud planning entry point. Historical decisions below do not override the current handoff.
+Updated 2026-10-12 under C168.
 
 ## Read the current branch
 
-Current unmerged work is on **codex/performance-barbed-audit**, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1), targeting dev. [Open Planning on that branch](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/blob/codex/performance-barbed-audit/docs/PLANNING.md). **0.2.45 / C165 is installed and automatically verified**; see [release evidence](RELEASE.md) for tagged installation state and the [current owner test](TEST_v0.2.45.md). Prior 0.2.44 findings remain historical, with packing explicitly unfinished.
+Current unmerged work is on **codex/performance-barbed-audit**, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1), targeting dev. **0.2.46 / C168** is implemented/native-verified; see [release state](RELEASE.md) for installation and [current test](TEST_v0.2.46.md). Full packing remains unfinished. Historical discussions below do not override this handoff.
 
 Fetch the remote and check open development/planning PRs before using dev alone as the current state. Read the active branch's AGENTS.md, this page and [CURRENT_STATUS.md](CURRENT_STATUS.md). Record which branch/commit was inspected. A chat's older answer or an old Cloud checkout is not a current checkpoint. Preserve unmerged work and reconcile incoming plans; do not reset, force-push or merge automatically.
 

@@ -40,5 +40,6 @@
     "Base.OMHTTModuleConservation": "Conservation Module",
     "Base.OMHTTModuleSynergy": "Synergy Module",
     "Base.OMHTTModuleMartyrdom": "Martyrdom Module",
-    "Base.OMHTTModuleTack": "Tack Module"
+    "Base.OMHTTModuleTack": "Tack Module",
+    "Base.OMHTTModuleRegulator": "Regulator Module"
 }

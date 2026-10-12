@@ -1,6 +1,6 @@
 local L = require("OMHTT/LootDefinitions")
 local R = {cache = {}}
-R.surcharges = {.1, .2, .4, .7, 1, 1.5, 2}
+R.surcharges = {.1, .15, .25, .4, .6, .8, 1}
 R.stops = {{130,174,255}, {115,204,255}, {89,230,102}, {255,250,77}, {255,148,51}, {255,46,46}, {66,13,130}}
 
 ---@param settings table Loaded sandbox values

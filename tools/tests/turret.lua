@@ -84,7 +84,7 @@ local object = {square = square}
 function object:getSquare() return self.square end
 contents = T.contents(other)
 local power = W.power(object, contents)
-check(power.kind == "battery" and math.abs(power.cost - 0.00019) < 0.000001, "Four Range modules give 0.019 percent battery cost")
+check(power.kind == "battery" and math.abs(power.cost - 0.0000117) < 0.000001, "Four Range modules give 0.00117 percent battery cost")
 square.grid, square.room = true, {}
 check(W.power(object, contents).kind == "grid", "External grid preferred over battery")
 square.room = nil
@@ -153,8 +153,8 @@ check(zombie.health == 1.5, "No direct damage before projectile arrival")
 testMillis = testMillis + 100
 require("OMHTT/PrototypeCombat").tickFlights()
 check(math.abs(zombie.health - 1.15) < 0.000001, "Default shot deals exactly 35 points or 0.35 native HP")
-check(not other:contains(potato) and math.abs(battery.charge - 0.36981) < 0.000001, "Shot spends one exact potato and battery charge once")
-check(W.fire(testPlayer, object, zombie) == "Empty" and math.abs(battery.charge - 0.36981) < 0.000001, "Empty turret spends no additional charge")
+check(not other:contains(potato) and math.abs(battery.charge - 0.3699883) < 0.000001, "Shot spends one exact potato and battery charge once")
+check(W.fire(testPlayer, object, zombie) == "Empty" and math.abs(battery.charge - 0.3699883) < 0.000001, "Empty turret spends no additional charge")
 local generator = {kind = "IsoGenerator", fuel = 1, active = true, connected = true, index = 0}
 function generator:hasModData() return false end
 function generator:getSquare() return square end
@@ -177,8 +177,8 @@ other:AddItem(item("Base.Potato", 0.2))
 record.nextShot = 0
 check(W.fire(testPlayer, object, zombie) == "Reloading", "Replenishing empty turret reloads")
 testMillis = testMillis + 2000
-check(W.fire(testPlayer, object, zombie) == "Fired" and math.abs(generator.fuel - 0.99962) < 0.000001, "Generator shot charges fuel exactly once")
-check(math.abs(battery.charge - 0.36981) < 0.000001, "Generator operation preserves battery charge")
+check(W.fire(testPlayer, object, zombie) == "Fired" and math.abs(generator.fuel - 0.99974) < 0.000001, "Generator shot charges fuel exactly once")
+check(math.abs(battery.charge - 0.3699883) < 0.000001, "Generator operation preserves battery charge")
 testMillis = testMillis + 100
 require("OMHTT/PrototypeCombat").tickFlights()
 testPlayer.x, testPlayer.y, testPlayer.z, testPlayer.getSquare = oldX, oldY, oldZ, oldSquare
@@ -229,7 +229,7 @@ playerStorage.room = true
 check(not W.pickup(pickupPlayer, object, "stale-id") and #other.items == beforeCount, "Stale pickup rejected before mutation")
 check(W.pickup(pickupPlayer, object, record.id) and #other.items == 0 and #playerStorage.items == 1, "Pickup transfers once and removes world object")
 local carried = playerStorage.items[1]
-check(carried.inventory:contains(battery) and math.abs(battery.charge - 0.36981) < 0.000001, "Pickup preserves battery identity and charge")
+check(carried.inventory:contains(battery) and math.abs(battery.charge - 0.3699883) < 0.000001, "Pickup preserves battery identity and charge")
 check(carried.data.OMHTTTurret.condition == 37 and carried.data.OMHTTTurret.nextShot == record.nextShot, "Pickup preserves durability and cooldown")
 check(not W.pickup(pickupPlayer, object, record.id) and #playerStorage.items == 1, "Repeated pickup cannot duplicate item")
 local Action = require("OMHTT/TurretPickupAction")
@@ -253,7 +253,7 @@ local foundBattery = false
 for i = 1, #dropped do
     if dropped[i] == battery then foundBattery = true end
 end
-check(foundBattery and math.abs(battery.charge - 0.36981) < 0.000001, "Fallback preserves exact battery charge")
+check(foundBattery and math.abs(battery.charge - 0.3699883) < 0.000001, "Fallback preserves exact battery charge")
 W.removed(object)
 check(#dropped == beforeDrop + 2, "Repeated removal cannot duplicate salvage")
 object.data.OMHTTTurret = {schema = 1, id = "empty-destroy-unit"}

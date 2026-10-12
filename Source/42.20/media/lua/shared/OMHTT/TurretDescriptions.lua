@@ -8,7 +8,8 @@ local D = {cache = {}}
 ---@return string description Four concise fields
 function D.get(name, rich)
     local rarity = R.get(name)
-    local surcharge = string.format("%.1f", string.sub(name, 1, 8) == "Capacity" and 0 or rarity.surcharge * S.option("ModulePowerBonus", 5, 0, 200) / 5)
+    local surcharge = string.format("%.2f", (string.sub(name, 1, 8) == "Capacity" or name == "Regulator") and 0 or rarity.surcharge * S.option("ModulePowerBonus", 5, 0, 200) / 5)
+    surcharge = string.gsub(surcharge, "%.?0+$", "")
     local key = name .. tostring(rich) .. tostring(rarity.band) .. surcharge
     if D.cache[key] then return D.cache[key] end
     local feature = "Tooltip_OMHTT_Module" .. name

@@ -260,8 +260,10 @@
     "UI_OMHTT_Rarity1": "Abundant",
     "UI_OMHTT_Rarity2": "Common",
     "UI_OMHTT_Rarity3": "Uncommon",
-    "UI_OMHTT_Rarity4": "Scarce",
-    "UI_OMHTT_Rarity5": "Rare",
-    "UI_OMHTT_Rarity6": "Very Rare",
-    "UI_OMHTT_Rarity7": "Ultra Rare"
+    "UI_OMHTT_Rarity4": "Rare",
+    "UI_OMHTT_Rarity5": "Epic",
+    "UI_OMHTT_Rarity6": "Legendary",
+    "UI_OMHTT_Rarity7": "Mythic",
+    "UI_OMHTT_ModuleRegulator": "Regulator",
+    "UI_OMHTT_EffectBattery": "-%1%% Battery"
 }

@@ -15,15 +15,13 @@ function ISToolTipInv:render()
     local component = self.item and T.component(self.item:getFullType())
     if component then
         local old = self.item:getTooltip()
-        self.item:setTooltip(require("OMHTT/TurretDescriptions").get(component, false))
+        local description = require("OMHTT/TurretDescriptions").get(component, false)
+        self.item:setTooltip((string.gsub(description, "\n[^\n]*$", "")))
         tooltipRender(self)
-        self.item:setTooltip(old)
         if not ISContextMenu.instance or not ISContextMenu.instance.visibleCheck then
-            local rarity = require("OMHTT/TurretRarity").get(component)
-            local label = getText("UI_OMHTT_ModuleRarity", getText("UI_OMHTT_Rarity" .. rarity.band))
-            local y = self.height - self.tooltip.padBottom - self.tooltip:getLineSpacing()
-            self:drawText(label, self.tooltip.padLeft, y, rarity.tr, rarity.tg, rarity.tb, 1, self.tooltip:getFont())
+            require("OMHTT/TurretItemTooltip").footer(self, component)
         end
+        self.item:setTooltip(old)
         return
     end
     if self.item and self.item:getFullType() == T.BASE then
