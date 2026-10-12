@@ -934,3 +934,8 @@ Owner: "I guess we'll just have to abandon the idea. What's my short test?" Canc
 ## C171 - Direct LootLab weights and ongoing 0.2.46 findings (2026-10-12)
 
 Owner requests direct component weights in LootLab and annotates the battery estimate remaining in minutes. Implemented/deployed direct-weight controls with unchanged saved tuning/schema and compatible Sandbox export; 77 API/page tests plus model/browser checks pass. [Contract/evidence](LOOTLAB_DIRECT_WEIGHTS.md). Confirmed minutes-only formatting and console tooltip/capacity issues are recorded for the next game correction, not silently patched or accepted. No game balance/code/version change, no database tuning write, no new gameplay acceptance. C170 packing cancellation remains. C108/C119 mirror applies.
+
+
+## C172 - Sticky LootLab map and bottom statistics (2026-10-12)
+
+Owner requests that the map follow while scrolling and statistics move to the page bottom. Implements/deploys a bounded CSS-sticky desktop/tablet map with toolbar and full-width bottom statistics, including summary metrics and tables. Narrow phones retain normal map flow to avoid covering controls. [Behavior and evidence](LOOTLAB_SCROLLING_MAP.md). Browser layout/weight suites and all 77 API/page checks pass. No saved tuning, game code/version, database or pending C171 game-fix status changes. C108/C119 development mirror applies.

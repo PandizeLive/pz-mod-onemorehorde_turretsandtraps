@@ -1,5 +1,7 @@
 # Current development and planning handoff
 
+**C172:** [LootLab scrolling map and bottom statistics](LOOTLAB_SCROLLING_MAP.md) deployed and verified; desktop/tablet map follows the module controls and releases before full-width statistics. Phones retain normal map flow. Saved tuning is unchanged; game findings remain pending.
+
 **C171:** direct component weights are live in LootLab; saved tuning and Sandbox exports preserve their effective values. [Implementation and findings](LOOTLAB_DIRECT_WEIGHTS.md). The ongoing 0.2.46 test reports minutes-only battery display; console also confirms a tooltip formatting exception and repeated capacity warnings. These game corrections remain pending; do not claim full acceptance.
 
 Updated 2026-10-12. Read [AGENTS](../AGENTS.md) and [Planning](PLANNING.md).

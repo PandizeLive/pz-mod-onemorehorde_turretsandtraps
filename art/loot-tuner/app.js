@@ -200,7 +200,7 @@ function draw(){
   let tiles=10**Math.floor(Math.log10(100/view.scale));if(tiles*view.scale<40)tiles*=5;
   ctx.textAlign='right';ctx.font='11px system-ui';ctx.fillStyle='#edf0e8';ctx.fillText(number(tiles)+' tiles',width-17,height-34);ctx.strokeStyle='#edf0e8';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(width-17-tiles*view.scale,height-24);ctx.lineTo(width-17,height-24);ctx.stroke();
 }
-new ResizeObserver(()=>{$('visibilityActions').style.top=Math.ceil($('syncBanner').getBoundingClientRect().height)+'px';}).observe($('syncBanner'));
+new ResizeObserver(()=>{const height=Math.ceil($('syncBanner').getBoundingClientRect().height)+'px';$('visibilityActions').style.top=height;$('mapArea').style.setProperty('--sync-height',height);}).observe($('syncBanner'));
 let firstResize=true;
 new ResizeObserver(()=>{gestures.reset();const rect=canvas.getBoundingClientRect();width=rect.width;height=rect.height;const dpr=window.devicePixelRatio||1;canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);firstResize?(fit(),firstResize=false):scheduleDraw();}).observe(canvas);
 let settingsSync=null;
