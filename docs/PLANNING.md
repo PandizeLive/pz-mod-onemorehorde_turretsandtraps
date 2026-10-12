@@ -1,6 +1,6 @@
 # Planning
 
-**C165 / 0.2.45 implemented and automatically verified.** Tack startup, delayed effects/audio, shotgun accuracy/Piercing, rarity-based power, concise module/battery feedback and slider polish are complete. [Patch](PATCH_v0.2.45.md) | [five-step test](TEST_v0.2.45.md). Installation is the next release step; owner acceptance remains pending.
+**C165 / 0.2.45 installed and automatically verified.** Tack startup, delayed effects/audio, shotgun accuracy/Piercing, rarity-based power, concise module/battery feedback and slider polish are complete. [Patch](PATCH_v0.2.45.md) | [five-step test](TEST_v0.2.45.md). Installed from immutable `test/v0.2.45`; owner acceptance remains pending.
 
 16,011 Kahlua assertions, native write/fresh-process read, all three independent-package selections and 51 supported Firearms weapons pass. These checks do not certify rendered layout, audible timing or crowded-client frame smoothness.
 
@@ -12,7 +12,7 @@ Updated 2026-10-12 under C119/C165. This is the shared local/Cloud planning entr
 
 ## Read the current branch
 
-Current unmerged work is on **codex/performance-barbed-audit**, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1), targeting dev. [Open Planning on that branch](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/blob/codex/performance-barbed-audit/docs/PLANNING.md). **0.2.45 / C165 is implemented and automatically verified**; see [release evidence](RELEASE.md) for tagged installation state and the [current owner test](TEST_v0.2.45.md). Prior 0.2.44 findings remain historical, with packing explicitly unfinished.
+Current unmerged work is on **codex/performance-barbed-audit**, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1), targeting dev. [Open Planning on that branch](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/blob/codex/performance-barbed-audit/docs/PLANNING.md). **0.2.45 / C165 is installed and automatically verified**; see [release evidence](RELEASE.md) for tagged installation state and the [current owner test](TEST_v0.2.45.md). Prior 0.2.44 findings remain historical, with packing explicitly unfinished.
 
 Fetch the remote and check open development/planning PRs before using dev alone as the current state. Read the active branch's AGENTS.md, this page and [CURRENT_STATUS.md](CURRENT_STATUS.md). Record which branch/commit was inspected. A chat's older answer or an old Cloud checkout is not a current checkpoint. Preserve unmerged work and reconcile incoming plans; do not reset, force-push or merge automatically.
 

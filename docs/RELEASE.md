@@ -1,6 +1,12 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.44 / C160
+## Current local installation: 0.2.45 / C165
+
+Installed through root OMH.cmd from immutable `test/v0.2.45` / `fea3e092a93313db48d689108f200f7a1db48065`. All 203 source and 251 tagged/package/installed/archive files match; both previous 0.2.44 backups verify. Archive SHA-256: `4a12690831fce92ace09e68540d1764fa10749e1dc32edafae18669d9d7d6a3c`. [Install](../diagnostics/v0.2.45/install.json) | [Machine verification](../diagnostics/v0.2.45/local-release.json).
+
+16,011 Kahlua assertions, 112 compiled runtime/translation files, 754 native translation keys, native write/read, all three independent-package selections and the 51-gun Firearms probe pass. [Patch](PATCH_v0.2.45.md) | [Five-step test and evidence limits](TEST_v0.2.45.md). The approved packed-weight flow is unfinished pending safe exact-item restoration; pickup weight remains unchanged. Rendered owner acceptance remains pending. C164 LootLab UI is already deployed; no catalog changes require a deployment in this build. No Workshop upload; cumulative notes preserved.
+
+## Previous local installation: 0.2.44 / C160
 
 **C161 owner finding:** the installed build has a confirmed Tack marker startup error. [Findings](TEST_v0.2.44.md#owner-findings-and-console-review-2026-10-12) supersede the pending-test handoff; installation/hash evidence remains valid. Corrective gameplay patch not yet installed.
 

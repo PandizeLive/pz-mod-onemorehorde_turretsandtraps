@@ -2,7 +2,7 @@
 
 Updated 2026-10-12. Read with [AGENTS](../AGENTS.md) and [Planning](PLANNING.md).
 
-**C165 / 0.2.45 implemented and automatically verified.** Tack startup, delayed effects/audio, shotgun accuracy/Piercing, rarity-based power, concise module/battery feedback and slider polish are complete. [Patch](PATCH_v0.2.45.md) | [five-step test](TEST_v0.2.45.md). Installation is the next release step; owner acceptance remains pending.
+**C165 / 0.2.45 installed and automatically verified.** Tack startup, delayed effects/audio, shotgun accuracy/Piercing, rarity-based power, concise module/battery feedback and slider polish are complete. [Patch](PATCH_v0.2.45.md) | [five-step test](TEST_v0.2.45.md). Installed from immutable `test/v0.2.45`; owner acceptance remains pending.
 
 16,011 Kahlua assertions, native write/fresh-process read, all three independent-package selections and 51 supported Firearms weapons pass. These checks do not certify rendered layout, audible timing or crowded-client frame smoothness.
 
@@ -10,10 +10,10 @@ Updated 2026-10-12. Read with [AGENTS](../AGENTS.md) and [Planning](PLANNING.md)
 
 C164 LootLab colors, family shapes and sticky Show all / Hide all are already deployed and verified. R3C7 combined acceptance and relevant R1C3 performance work remain active. No Workshop publication.
 
-- **Release:** 203 source / 251 packaged files; immutable tag and installation evidence will be recorded in [release state](RELEASE.md).
+- **Release:** All 203 source / 251 tagged, packaged, installed and archived files match; both 0.2.44 backups verify. [Release evidence](RELEASE.md).
 - **Roadmap:** R3C6 implementation is complete; R3C7 and R1C3 acceptance remain open. [Canonical index](ROADMAP.md#current-checkpoint-status-and-next-work). New heads, MP and signals remain separate decisions.
 - **Prior findings:** C138 closes 0.2.41 with no reported issues; unmentioned individual checks are not certified. C123 accepts the reported lag improvement. The Louisville hang and prior 676-ms gap remain unassigned.
 - **Limits:** SP combat only, fresh-world item-ID policy, native inventory weight limits and owner-sourced final art. Bounded overload delays firing; no promise of lag-free crowds.
 - **GitHub:** `codex/performance-barbed-audit`, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1) into dev. C108/C119 requires mirroring the completed update/evidence; no merge or publication.
 
-**Wait for a patch:** native verification has passed; tagged installation and development mirror are being completed.
+**Test now:** restart and use the [five-step 0.2.45 test](TEST_v0.2.45.md). Packed-weight compression is excluded and remains unfinished.
