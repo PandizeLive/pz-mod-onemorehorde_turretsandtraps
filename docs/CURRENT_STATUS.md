@@ -1,8 +1,8 @@
 # Current development and planning handoff
 
-## C166 - Endurance and packing discussion (2026-10-12)
+## C167 - Selected packing, module weight, Regulator and rarity (2026-10-12)
 
-Owner reports battery drain works but the late-game turret lasts about 1.5 in-game minutes. Latest saved Battery use is 0.1, twenty times the shipped .005 default; log confirms 4.07965% per shot. Console also confirms repeated inventory rarity-tooltip errors at TurretMenu.lua:24. Battery acceptance is partial; the rest of the patch is not cleared. [Evidence and numbered options](checkpoints/R3_POWER_PACKING_OPTIONS.md) cover safe pickup alternatives, six-hour endurance tuning, Power Efficiency and seven rarity names. These are discussion proposals, not new gameplay approval. Packing remains unfinished. **Decision needed** on the four choice groups; no repeat test requested while discussing the corrective patch.
+Owner selects 1C (full automatic packing), adds module item weight .3 -> .2, selects 3B named **Regulator Module**, and 4A **Abundant / Common / Uncommon / Rare / Epic / Legendary / Mythic**. Packing remains a native feasibility task; this does not authorize an added Java dependency or lossy restoration. The revised power proposal is base **.0008%** with **+.1x to +1x per module**, explicitly submitted for evaluation. [Updated contract and calculations](checkpoints/R3_POWER_PACKING_OPTIONS.md#c167---selected-directions-and-revised-power-evaluation-2026-10-12). With the tested weapon/day/cadence, sixteen highest-cost modules give only 3.54 hours before reloads, so the prior six-hour target needs qualification or lower base drain. **Decision needed:** retain .0008 for stronger power tradeoffs, or use .00045 for about 6.3 hours on that high-cost reference build. No gameplay patch or saved-setting change this discussion; existing tooltip defect remains queued.
 
 Updated 2026-10-12. Read with [AGENTS](../AGENTS.md) and [Planning](PLANNING.md).
 
@@ -20,4 +20,4 @@ C164 LootLab colors, family shapes and sticky Show all / Hide all are already de
 - **Limits:** SP combat only, fresh-world item-ID policy, native inventory weight limits and owner-sourced final art. Bounded overload delays firing; no promise of lag-free crowds.
 - **GitHub:** `codex/performance-barbed-audit`, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1) into dev. C108/C119 requires mirroring the completed update/evidence; no merge or publication.
 
-**Decision needed:** see C166 above; 0.2.45 remains installed with a confirmed inventory-tooltip error. Packed-weight compression is unfinished.
+**Decision needed:** see C167 above; 0.2.45 remains installed with a confirmed inventory-tooltip error. Packed-weight compression is unfinished.
