@@ -330,7 +330,7 @@ IsoFlagType = {water="water", solid="solid", solidtrans="solidtrans", collideN="
 function getSprite(name) return {getProperties = function() return {set = function() end, unset = function() end} end} end
 IsoFlagType.FloorOverlay = "FloorOverlay"
 function getWorld() return {getFreeEmitter = function() return {playSound = function() return 1 end, setPitch = function() end, setVolume = function() end} end} end
-function getSoundManager() return {PlayWorldSound = function() end} end
+function getSoundManager() return {PlayWorldSound = function() end, playUISound = function() return 0 end, stopUISound = function() end} end
 
 UIFont = {Small="small"}
 function getTextManager() return {DrawStringCentre = function() testDraws = testDraws + 1 end} end

@@ -1,0 +1,16 @@
+{
+  "version": "0.2.47.3",
+  "protectedCallHits": [],
+  "review": [
+    "Explicit native UI events and owned handles; no runtime pitch setter",
+    "No new tick/world handlers; no catch-up audio bursts",
+    "No new render-time tables, item instances or text wrapping",
+    "Parent imports and annotated Lua functions retained",
+    "Native create/save/load and three package selections passed"
+  ],
+  "limits": [
+    "Native rendered audio/pulse acceptance pending",
+    "Custom rarity files absent",
+    "Additional native event pitch variation not implemented"
+  ]
+}

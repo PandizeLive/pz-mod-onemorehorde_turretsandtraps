@@ -8,6 +8,10 @@ local active = {}
 
 ---@return nil
 function Panel:close()
+    if self.sound and self.sound ~= 0 then
+        getSoundManager():stopUISound(self.sound)
+        self.sound = nil
+    end
     active[self.playerIndex] = nil
     self:removeFromUIManager()
 end
@@ -29,10 +33,25 @@ end
 function Panel:prerender()
     ISPanel.prerender(self)
     self:drawText(getText("UI_OMHTT_ModulePack"), 12, 8, 1, 1, 1, 1, UIFont.Medium)
-    local progress = math.min(1, math.max(0, (getTimestampMs() - self.started) / 4000))
+    local now = getTimestampMs()
+    local progress = math.min(1, math.max(0, (now - self.started) / 4000))
+    local crossed = math.floor((1 - (1 - progress) ^ 3) * 13)
     if progress == 1 and not self.finished then
         self.finished = true
+        self.settledAt = now
+        if self.sound and self.sound ~= 0 then
+            getSoundManager():stopUISound(self.sound)
+        end
+        self.sound = getSoundManager():playUISound("UIObjectMenuObjectPickup")
+    elseif not self.finished and crossed > self.crossed and now - self.lastTick >= 100 then
+        if self.sound and self.sound ~= 0 then
+            getSoundManager():stopUISound(self.sound)
+        end
+        self.sound = getSoundManager():playUISound("UIObjectMenuObjectRotate")
+        self.lastTick = now
     end
+    self.crossed = crossed
+    local pulse = self.finished and math.max(0, 1 - (now - self.settledAt) / 4000) or 0
     local cardWidth = self.finished and (self.width - 20) or self.cardWidth
     local offset = (1 - (1 - progress) ^ 3) * 13 * cardWidth
     for row = 1, P.COUNT do
@@ -47,8 +66,8 @@ function Panel:prerender()
                 if x + cardWidth >= 10 and x < self.width - 10 then
                     local card = self.reels[row][i]
                     local color = card.color
-                    self:drawRect(x + 2, y + 2, cardWidth - 4, self.rowHeight - 10, .12, color.r, color.g, color.b)
-                    self:drawRectBorder(x + 2, y + 2, cardWidth - 4, self.rowHeight - 10, .5, color.r, color.g, color.b)
+                    self:drawRect(x + 2, y + 2, cardWidth - 4, self.rowHeight - 10, .12 + .2 * pulse, color.r, color.g, color.b)
+                    self:drawRectBorder(x + 2, y + 2, cardWidth - 4, self.rowHeight - 10, .5 + .5 * pulse, color.r, color.g, color.b)
                     if card.texture then
                         self:drawTextureScaledAspect(card.texture, x + cardWidth / 2 - 14, y + 8, 28, 28, 1, 1, 1, 1)
                     end
@@ -84,7 +103,7 @@ function Panel.show(player, rewards)
     panel:initialise()
     panel.playerIndex, panel.started = index, getTimestampMs()
     panel.fontHeight, panel.rowHeight, panel.cardWidth = fontHeight, rowHeight, math.min(180, width - 20)
-    panel.offset = 0
+    panel.offset, panel.crossed, panel.lastTick = 0, 0, panel.started
     panel.backgroundColor = {r = .04, g = .04, b = .04, a = .96}
     panel.moveWithMouse = true
     panel.reels = {}

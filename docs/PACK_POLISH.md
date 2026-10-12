@@ -1,4 +1,16 @@
-# C181 - Pack presentation, sounds and tier drafting
+# C182 - Pack cues and tier reopening
+
+**C182 / 0.2.47.3:** approved rotation ticks (1B), pickup selection cue (2B), custom rarity audio pending owner files (3C), and a pulse-only four-second fade (4B). Pack audio uses native UI events with one shared bounded tick stream, no catch-up burst and cleanup on Collect. LootLab now shows calculated rarity in the normal list, refreshes draft feedback, and automatically groups equal weights when reopening. Confirmed tier weights persist for the page session; full reload derives centers from loaded weights. [Patch](PATCH_v0.2.47.3.md) | [Test](TEST_v0.2.47.3.md) | [Contract and pitch limitation](PACK_POLISH.md).
+
+Native pitch variation requested, but additional randomized pitch is **not implemented**: the installed event path ignores clip pitch and the emitter setter writes every queued/active sound. Native rotation is played unchanged; no unrelated audio is modified. Custom rarity sounds remain pending, with the approved pickup cue providing selection feedback. No particles. No loot/default/rarity-formula changes.
+
+## Current implementation (supersedes the earlier pending choices below)
+
+Ticking uses UIObjectMenuObjectRotate; settlement uses UIObjectMenuObjectPickup once for the simultaneous three-row result. One pack-owned sound handle is stopped before replacement and on Collect. At most one tick per frame, separated by at least 100 ms, with missed crossings discarded. No tick handler, world noise, per-frame text wrapping, temporary inventory items or particle allocation. One linear rarity-tint/border pulse starts when results settle and fades for four seconds, then stays at the original panel tint.
+
+Native evidence: SoundManager.playUISound uses the installed FMOD event; stopUISound acts on its returned handle. FMODSoundEmitter.setPitch writes the pitch field for every queued/active voice, not just a matching handle. EventSound never consumes that field; FileSound does. Therefore no setter or ineffective pitched event variants are shipped. This leaves additional randomized tick pitch unresolved. No engine/global sound mutation or extracted runtime audio is introduced.
+
+Tier cards and the draft spread update from every assignment/weight edit; the normal weight list now has a named rarity badge in the same palette. Map identity colors/shapes remain independent. Reopening places matching weights into tiers with a small relative floating-point tolerance; duplicate weights prefer the actual calculated band, otherwise the first matching tier. Confirm retains tier weights for this page session; Cancel discards changes. Reloading derives initial centers from currently loaded weights. Unmodified auto-assigned members do not overwrite concurrent saved edits. Actual colors still use the native relative min/max formula, not the assignment label.
 
 ## Capacity diagnosis
 
@@ -10,7 +22,7 @@ The 0.2.47.1 client console reproduces InventoryContainer.setCapacity warnings, 
 
 Manage's opaque dark panel, inset reward rows, subdued rarity backgrounds/borders. When rolling finishes, each row shows its actual selected item at full width instead of retaining neighboring distractor cards. One full-width green Collect button closes the presentation; rewards were secured before it opened, so early Collect is safe. Short viewport scrolling remains, with arrow controls moved to the title area. No new per-frame allocations, audio or particle handler.
 
-## Sound choices pending
+## Historical C181 choices (superseded by C182 above)
 
 Local audition: art/PACK_AUDIO.html. Installed native FMOD captures; audio metadata and non-silence checks in diagnostics/pack-polish/audio-evidence.json. Eight clips play only on request. HTML includes a Manage-style settled-result layout preview and an optional bounded particle preview, not installed effects.
 
@@ -21,7 +33,7 @@ Local audition: art/PACK_AUDIO.html. Installed native FMOD captures; audio metad
 
 Proposed timing: one shared tick stream for the three simultaneous reels, bounded voice rate; selected cue at each settle; one highest-rarity reveal cue per pack to avoid three layered fanfares. UI-only audio must not attract zombies. Verify native playback controls before implementation. No sound/particle choice is assumed from a rendered HTML preview.
 
-## LootLab tier editor
+## Original C181 tier editor (reopening revised by C182 above)
 
 Optional section above regular tuning. All 29 modules start unassigned with existing weights. Dropping into a tier assigns that tier's weight; keyboard/touch Move to menus are equivalent. Each assigned module permits an individual weight override. Changing a tier weight updates its non-overridden members only. Returning to unassigned restores that module's opening weight; confirming leaves unassigned current settings alone. Confirm validates and applies through existing save/sync/export; Cancel does nothing. Conflicting externally changed assigned weights reject confirmation rather than overwrite them. Drafts are transient, not account writes.
 

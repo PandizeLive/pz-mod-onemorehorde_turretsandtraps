@@ -97,6 +97,13 @@ end} end
 local Reveal = require("OMHTT/TurretPackReveal")
 ISPanel.new = function(self, x, y, width, height) return setmetatable({x=x,y=y,width=width,height=height}, {__index=self}) end
 ISPanel.prerender = function() end
+local oldSoundManager = getSoundManager
+local sounds, stops = {}, {}
+local manager = {
+    playUISound = function(_, name) sounds[#sounds + 1] = name; return #sounds end,
+    stopUISound = function(_, handle) stops[handle] = true end,
+}
+getSoundManager = function() return manager end
 local panel = Reveal.show(player, rewards)
 local openCreates, openWraps = creates, wraps
 started = realMillis()
@@ -104,6 +111,31 @@ for i = 1, 300 do testMillis = testMillis + 16; panel:prerender() end
 local renderMs = realMillis() - started
 check(creates == openCreates and wraps == openWraps, "Reveal frames do not instantiate items or wrap text")
 check(openCreates == 0 and openWraps == 29, "Reveal uses script metadata without creating display items")
+local ticks, selected = 0, 0
+for i = 1, #sounds do
+    if sounds[i] == "UIObjectMenuObjectRotate" then ticks = ticks + 1 end
+    if sounds[i] == "UIObjectMenuObjectPickup" then selected = selected + 1 end
+end
+check(ticks > 0 and ticks <= 13 and selected == 1, "One bounded native tick stream and one shared selection cue")
+local before = #sounds
+panel:prerender()
+check(#sounds == before, "Repeated completed frame does not replay selected sound")
+local pulseAlpha = 0
+panel.drawRectBorder = function(_, x, y, w, h, alpha) pulseAlpha = alpha end
+local settled = panel.settledAt
+testMillis = settled + 2000; panel:prerender()
+check(math.abs(pulseAlpha - .75) < .001, "Rarity border pulse is half faded after two seconds")
+testMillis = settled + 4000; panel:prerender()
+check(pulseAlpha == .5, "Rarity pulse fully fades after four seconds")
+panel:close()
+check(stops[#sounds], "Closing stops only the pack-owned sound handle")
+local lagged = Reveal.show(player, rewards)
+before = #sounds
+testMillis = testMillis + 2500; lagged:prerender()
+check(#sounds == before + 1, "Lag skips missed ticks without an audio backlog burst")
+lagged:close()
+check(stops[#sounds], "Early Collect stops its pending tick")
+getSoundManager = oldSoundManager
 screenHeight = 360
 local small = Reveal.show(player, rewards)
 check(small.y >= 0 and small.y + small.height <= screenHeight, "360-pixel reveal fits viewport")

@@ -1,6 +1,6 @@
-v0.2.47.2
+v0.2.47.3
 Single-player development test content
-- Added Module Packs with three weighted module/expansion rewards, a default-on rolling reveal with Manage-style panels, a green Collect button and support for smaller viewports, supplemental container loot and a configurable 15% zombie-body drop chance; no packs drop when all reward weights are disabled.
+- Added Module Packs with three weighted module/expansion rewards, a default-on rolling reveal with Manage-style panels, a green Collect button, native ticking/selection cues, a four-second rarity fade and support for smaller viewports, supplemental container loot and a configurable 15% zombie-body drop chance; no packs drop when all reward weights are disabled.
 - Applied owner-tuned module loot defaults across the game and LootLab while preserving saved tuning.
 - Added the loot-only Regulator Module, providing 25% more battery life per copy without extra power draw; includes LootLab tuning.
 - Reduced all module item weights from 0.3 to 0.2.
@@ -48,4 +48,4 @@ Local tools
 - Corrected carried turret storage limits and repeated tooltip capacity warnings.
 - Added the OMH release menu with verified local installation and debug-log capture.
 - Added Knox Country LootLab with seeded spawn/probability maps, mobile zoom, component tuning and account-synced settings matching the gameplay loot definitions, expected occupied-container counts, per-container haul probabilities and larger five-plus jackpot circles.
-- Added a draft tier-list editor to LootLab with per-tier weights, personal overrides and explicit confirmation.
+- Added a draft tier-list editor to LootLab with per-tier weights, personal overrides, live rarity badges, automatic equal-weight grouping on reopen and explicit confirmation.

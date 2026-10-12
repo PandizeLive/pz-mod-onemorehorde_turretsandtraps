@@ -16,3 +16,7 @@ SP; replaces previous unfinished pack test. Existing saved weights are preserved
 Tier model tests cover seven-band defaults, equal/zero weights, unassigned preservation, conflict rejection and bounds. Browser tests pass real pointer drag/drop, keyboard assignment, custom weights, Confirm/Cancel, mobile width, audio playback and zero page errors. 78 backend/page tests pass; 23 focused tests pass after the final editor adjustment. Deployment checks verify the live backend and protected asset route; saved account tuning is unchanged by deployment. Runtime sound/particle acceptance is not claimed.
 
 Installed/tag/archive hashes match for all 256 package files; both previous 0.2.47.1 backups verify. 101 source / 117 packaged / 117 installed Lua files contain no pcall/xpcall, tabs or BOMs. [Install evidence](../diagnostics/v0.2.47.2/local-release.json).
+
+## C182 owner follow-up (2026-10-12)
+
+Owner reports rarity/color not updating on tier movement and requests same-weight grouping on reopen. Browser reproduction confirms tier cards already recalculate actual bands; assignment row names can legitimately differ after changing extrema. Normal component colors represented map identity and lacked a named rarity badge. 0.2.47.3 makes that distinction visible with updating badges and draft summary, and adds automatic matching groups. No game pass was reported; console.txt still shows 0.2.47.1.

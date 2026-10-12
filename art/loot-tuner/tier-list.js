@@ -9,9 +9,15 @@ function bands(modules,weights){
   for(const m of modules){const w=weights[m.id];result[m.id]=w<=0?-1:high===low?0:Math.max(0,Math.min(6,Math.floor(Math.log(high/w)/Math.log(high/low)*6+.5)));}
   return result;
 }
-function create(modules,weights){
+function create(modules,weights,previousTiers){
   const positive=Object.values(weights).filter(w=>w>0),high=positive.length?Math.max(...positive):15,low=positive.length?Math.min(...positive):1;
-  return {original:{...weights},weights:{...weights},groups:{},custom:{},tiers:names.map((_,i)=>high*(low/high)**(i/6))};
+  const tiers=previousTiers?[...previousTiers]:names.map((_,i)=>Number((high*(low/high)**(i/6)).toPrecision(12)));
+  const groups={},calculated=bands(modules,weights);
+  for(const m of modules){
+    const matches=tiers.map((value,i)=>Math.abs(value-weights[m.id])<=1e-10*Math.max(Number.EPSILON,value,weights[m.id])?i:-1).filter(i=>i>=0);
+    if(matches.length)groups[m.id]=matches.includes(calculated[m.id])?calculated[m.id]:matches[0];
+  }
+  return {original:{...weights},weights:{...weights},groups,custom:{},tiers};
 }
 function assign(draft,module,tier){
   if(tier===-1){delete draft.groups[module.id];delete draft.custom[module.id];draft.weights[module.id]=draft.original[module.id];return true;}
@@ -22,7 +28,7 @@ function assign(draft,module,tier){
 function confirm(draft,modules,current){
   const out={...current};
   for(const m of modules){
-    if(draft.groups[m.id]===undefined)continue;
+    if(draft.groups[m.id]===undefined||draft.weights[m.id]===draft.original[m.id])continue;
     if(current[m.id]!==draft.original[m.id])throw Error('Saved weights changed while this draft was open. Cancel and reopen to use the latest values.');
     const value=draft.weights[m.id];
     if(!Number.isFinite(value)||value<0||value>m.weight*20)throw Error('Invalid weight for '+m.name);
@@ -31,15 +37,16 @@ function confirm(draft,modules,current){
   return out;
 }
 function mount({element,modules,read,apply}){
-  let draft=null,dragged=null;
+  let draft=null,dragged=null,confirmedTiers=null;
   const el=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n;};
   const toolbar=el('div','tier-toolbar'),open=el('button','','Plan with tiers'),summary=el('span','hint');
   open.type='button';toolbar.append(open,summary);element.append(toolbar);
   const body=el('div','tier-editor');body.hidden=true;element.append(body);
-  const refreshSummary=()=>{const count=Array(7).fill(0);for(const b of Object.values(bands(modules,read())))if(b>=0)count[b]++;summary.textContent=count.filter(n=>n>0).length+'/7 rarity colors used · '+modules.length+' components';};
+  const refreshSummary=()=>{const count=Array(7).fill(0);for(const b of Object.values(bands(modules,draft?draft.weights:read())))if(b>=0)count[b]++;summary.textContent=count.filter(n=>n>0).length+'/7 rarity colors used · '+modules.length+' components';};
   function render(){
+    refreshSummary();
     body.replaceChildren();
-    const description=el('p','hint','Drag modules into a tier, or use their Move to menu. Tier weights seed assignments; personal overrides stay editable. Unassigned modules keep their current weights. Nothing is applied until Confirm.');
+    const description=el('p','hint','Drag modules into a tier, or use their Move to menu. Tier weights seed assignments; personal overrides stay editable. Unassigned modules keep their current weights. Matching weights are placed automatically when reopened. Tier weights are remembered for this page session. Nothing is applied until Confirm.');
     const status=el('p','tier-status');status.setAttribute('role','status');
     const band=bands(modules,draft.weights),counts=Array(7).fill(0);for(const b of Object.values(band))if(b>=0)counts[b]++;
     const preview=el('div','tier-spread');preview.setAttribute('aria-label','Draft rarity distribution');
@@ -60,7 +67,7 @@ function mount({element,modules,read,apply}){
     }
     for(const m of modules){
       const tier=draft.groups[m.id]??-1,card=el('article','tier-card'),b=band[m.id];card.draggable=true;card.dataset.module=m.id;
-      card.style.setProperty('--rarity-color',b<0?'#82928a':colors[b]);
+      card.style.setProperty('--rarity-color',b<0?'#82928a':colors[b]);card.dataset.rarity=b<0?'Disabled':names[b];
       card.ondragstart=e=>{if(['INPUT','SELECT','OPTION'].includes(e.target.tagName)){e.preventDefault();return;}dragged=m.id;e.dataTransfer.setData('text/plain',m.id);e.dataTransfer.effectAllowed='move';};card.ondragend=()=>{dragged=null;};
       card.append(el('strong','',m.name),el('small','tier-actual',(b<0?'Disabled':names[b])+(draft.custom[m.id]?' · custom':'')));
       const input=el('input');input.type='number';input.min=0;input.max=m.weight*20;input.step='any';input.value=Number(draft.weights[m.id].toPrecision(12));input.disabled=tier<0;input.setAttribute('aria-label',m.name+' draft weight');
@@ -71,10 +78,10 @@ function mount({element,modules,read,apply}){
       card.append(input,move);lanes[tier+1].append(card);
     }
     const footer=el('div','tier-footer'),accept=el('button','primary','Confirm weights'),cancel=el('button','','Cancel draft');
-    accept.type=cancel.type='button';accept.onclick=()=>{try{const weights=confirm(draft,modules,read());apply(weights);draft=null;body.hidden=true;open.hidden=false;refreshSummary();}catch(error){status.textContent=error.message;}};
+    accept.type=cancel.type='button';accept.onclick=()=>{try{const weights=confirm(draft,modules,read());apply(weights);confirmedTiers=[...draft.tiers];draft=null;body.hidden=true;open.hidden=false;refreshSummary();}catch(error){status.textContent=error.message;}};
     cancel.onclick=()=>{draft=null;body.hidden=true;open.hidden=false;refreshSummary();};footer.append(status,accept,cancel);body.append(footer);
   }
-  open.onclick=()=>{draft=create(modules,read());render();body.hidden=false;open.hidden=true;};
+  open.onclick=()=>{draft=create(modules,read(),confirmedTiers);render();body.hidden=false;open.hidden=true;};
   refreshSummary();return {refresh:refreshSummary};
 }
 const api={names,colors,bands,create,assign,confirm,mount};

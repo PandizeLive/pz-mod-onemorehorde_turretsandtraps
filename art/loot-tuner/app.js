@@ -26,7 +26,7 @@ function drawMarker(x,y,r,module){
 let markers=[],chanceCache=[];
 const tierPlanner=window.LootTiers.mount({element:$('tierPlanner'),modules:D.modules,
   read:()=>Object.fromEntries(D.modules.map(m=>[m.id,M.lootWeight(m,scenario.items[m.id])])),
-  apply:weights=>{for(const m of D.modules)if(weights[m.id]!==M.lootWeight(m,scenario.items[m.id]))scenario.items[m.id]=M.weightMultiplier(m,weights[m.id]);saveSettings();scheduleUpdate();}});
+  apply:weights=>{for(const m of D.modules)if(weights[m.id]!==M.lootWeight(m,scenario.items[m.id]))scenario.items[m.id]=M.weightMultiplier(m,weights[m.id]);saveSettings();controls();scheduleUpdate();}});
 const number=n=>n.toLocaleString(undefined,{maximumFractionDigits:1});
 const pretty=s=>s.replace(/([a-z])([A-Z])/g,'$1 $2');
 const canvas=$('map'), ctx=canvas.getContext('2d');
@@ -51,12 +51,13 @@ for(const [i,m] of D.modules.entries()){
   const changeRate=()=>{if(input.value.trim()===''||!input.validity.valid)return;const weight=Number(input.value);if(!Number.isFinite(weight))return;scenario.items[m.id]=M.weightMultiplier(m,weight);saveSettings();scheduleUpdate();};
   input.addEventListener('input',changeRate);
   input.addEventListener('change',()=>{changeRate();input.value=weightText(m);});
+  const badge=document.createElement('small');badge.id='component-rarity-'+m.id;badge.className='component-rarity';
   small.id='estimate-'+m.id;label.append(show,swatch,span);top.append(label,input);
   const rarity=document.createElement('div'),track=document.createElement('div'),marker=document.createElement('span'),ends=document.createElement('div');
   rarity.className='rarity';track.className='rarity-track';track.id='rarity-'+m.id;track.setAttribute('role','meter');track.setAttribute('aria-label',m.name+' estimated abundance');track.setAttribute('aria-valuemin','0');track.setAttribute('aria-valuemax','1000');
   marker.className='rarity-marker shape-'+appearances[i][1];marker.id='rarity-marker-'+m.id;marker.style.backgroundColor=colors[i];track.append(marker);
   ends.className='rarity-ends';for(const text of ['Rare','Common']){const end=document.createElement('span');end.textContent=text;ends.append(end);}rarity.append(track,ends);
-  div.append(top,rarity,small);$('components').append(div);
+  div.append(top,badge,rarity,small);$('components').append(div);
 }
 function bounded(value,min,max,fallback){const n=Number(value);return Number.isFinite(n)?Math.min(max,Math.max(min,n)):fallback;}
 let updateTimer=null;
@@ -65,6 +66,8 @@ function fieldValue(id,value){const input=$(id);if(document.activeElement!==inpu
 function weightText(m){return Number(M.lootWeight(m,scenario.items[m.id]).toPrecision(12));}
 function controls(){
   tierPlanner.refresh();
+  const rarityBands=window.LootTiers.bands(D.modules,Object.fromEntries(D.modules.map(m=>[m.id,M.lootWeight(m,scenario.items[m.id])])));
+  for(const m of D.modules){const b=rarityBands[m.id],badge=$('component-rarity-'+m.id);badge.textContent=b<0?'Disabled':window.LootTiers.names[b];badge.style.setProperty('--rarity-color',b<0?'#82928a':window.LootTiers.colors[b]);}
   for(const key of ['global','material','rolls','retention']){fieldValue(key,scenario[key]);$(key+'Out').textContent=key==='retention'?Math.round(scenario[key]*100)+'%':scenario[key].toFixed(2)+'×';}
   for(const m of D.modules){fieldValue('item-'+m.id,weightText(m));$('show-'+m.id).checked=scenario.visible[m.id];$('component-'+m.id).classList.toggle('is-hidden',!scenario.visible[m.id]);}
   $('overlay').value=scenario.overlay;$('seedBadge').textContent='Seed '+scenario.seed;
