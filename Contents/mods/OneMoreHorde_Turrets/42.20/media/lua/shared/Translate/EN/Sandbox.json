@@ -309,5 +309,7 @@
     "Sandbox_Title_OMHTurretsTraps_Piercing": "Piercing",
     "Sandbox_Title_OMHTurretsTraps_InitialBlow": "Initial Blow",
     "Sandbox_Title_OMHTurretsTraps_Execute": "Execute",
-    "Sandbox_Title_OMHTurretsTraps_Impact": "Impact"
+    "Sandbox_Title_OMHTurretsTraps_Impact": "Impact",
+    "Sandbox_OMHTurretsTraps_LootRateConservation": "Conservation loot multiplier",
+    "Sandbox_OMHTurretsTraps_LootRateConservation_tooltip": "Multiplier for this module in eligible component loot pools. Zero disables new drops."
 }

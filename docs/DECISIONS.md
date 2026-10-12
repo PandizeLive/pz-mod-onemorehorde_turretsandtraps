@@ -845,3 +845,8 @@ Owner requests each module and its current benefit in the blue-marked lower-righ
 ## C153 - short module effects, individual-row hover explanations (2026-10-11)
 
 Owner directs concise Installed Modules rows such as `<14% HP` / `+2 Shots`, with explanations on module descriptions and hovering each individual list row. [Updated contract](checkpoints/R3_AMMO_SAVER_MANAGE.md#c153---compact-installed-modules-labels-and-row-tooltips-2026-10-11) replaces C152 descriptive sentences with name/count/compact effect; conditions go to each row's tooltip. Use inclusive `≤14% HP` to match actual Execute logic, not a gameplay change. Retain brief inactive/capped/broken flags, current values, grouped counts, scrolling and existing UI refresh. Next-patch design correction only; installed 0.2.42 and owner-test state unchanged.
+
+
+## C154 - combined implementation approved (2026-10-11)
+
+Owner: "Approved. Go ahead and patch all of this, including the ammo transfer fix and optimizations." This authorizes C148-C153 as the combined 0.2.43 patch: fast bounded transfers through both interfaces; the five recorded maintenance/cache/stat/render/queue optimizations; Conservation Module; narrower Manage; battery endurance tooltip; compact Installed Modules list with individual row details. Native verification, local install and the standing C108 development mirror follow. Owner acceptance remains pending; no Workshop publication or merge. Conservation is loot-only with the existing offensive-module weight (2.5), normal module weight (0.3), and ordinary power load (1); no recipe.

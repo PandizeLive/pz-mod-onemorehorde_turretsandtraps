@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Synchronized 2026-10-11 against C80-C153 and the installed, native-verified 0.2.42 build. Its focused owner test is pending; the prior 0.2.41/C138 round remains complete. This is the canonical execution/status index.
+Synchronized 2026-10-11 against C80-C154 and the implemented, native-verified 0.2.43 build. Its focused owner test is pending; the prior 0.2.41/C138 round remains complete. This is the canonical execution/status index.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -18,15 +18,9 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 ## Current checkpoint status and next work
 
-**C153 Installed Modules display:** [compact rows and individual hover details](checkpoints/R3_AMMO_SAVER_MANAGE.md#c153---compact-installed-modules-labels-and-row-tooltips-2026-10-11): module/count plus short effect (e.g. Execute x3: ≤14% HP; Splitter x2: +2 Shots). Conditions/explanations move to each row tooltip. Supersedes C152 descriptive rows; retains scrolling, current effective values and narrower/separate-utility layout. Next-patch requirement, not installed; C149 remains first.
+**C154 / 0.2.43 implemented and automatically verified; tagged installation pending.** The approved C148-C153 bundle includes bounded matching ammo transfers, five runtime optimizations, Conservation Module, compact Manage, battery estimates and short Installed Modules rows with individual tooltips. No design decision remains. R3C7 and the relevant R1C3 acceptance checks share [one six-step test](TEST_v0.2.43.md); the 0.2.42 transfer finding carries forward without reopening the completed 0.2.41 round. [Patch](PATCH_v0.2.43.md) | [module/UI contract](checkpoints/R3_AMMO_SAVER_MANAGE.md) | [optimization contract](PERFORMANCE_AUDIT_v0.2.42.md).
 
-**C151 module/UI design selected:** [Conservation Module contract](checkpoints/R3_AMMO_SAVER_MANAGE.md): 1D / 2A / combined 3A+3B / 4C. Name and layout no longer open; battery/expansion stay above narrower modules. Implementation not started; C149 transfer fix stays first, C148 retained and R3C7 open.
-
-**C149 next update:** owner retains C148 optimization work and adds matching fast, bounded ammo transfers as first priority. [Contract](PERFORMANCE_AUDIT_v0.2.42.md#c149-bulk-ammo-transfer-follow-up-2026-10-11). R3C7 now has an owner-reported 0.2.42 bulk-transfer freeze supported by concurrent log gaps; it remains open. Installed gameplay unchanged; fix verification follows the next patch.
-
-**C148 R1C3 investigation:** [per-tick inventory and optimization proposals](PERFORMANCE_AUDIT_v0.2.42.md). No gameplay change; recommendations prioritize redundant maintenance/contact/stat work. The 0.2.42 owner test remains active under R3C7. Optimization implementation is proposed, not approved.
-
-**C147 R3C6/R3C7 implementation:** C147 completes the approved Piercing, Initial Blow, Execute and Impact modules and the C146 power formula. **0.2.42 is installed** from immutable `test/v0.2.42` / `2354a7ff3ed4ef174a0bbeb4d7d0051a620bc5d7`. R3C6 implementation is complete; R3C7 now awaits the focused owner test. No power decision remains. 5,241 Kahlua assertions, native write/read, three independent-package startups and the 51-gun Firearms integration pass. LootLab 0.2.42 is deployed and verified; 74 API/page tests pass. Rendered effects and crowd behavior remain owner acceptance. [Patch](PATCH_v0.2.42.md) | [test](TEST_v0.2.42.md).
+15,739 Kahlua assertions, 101 runtime/translation files, 705 native translation keys, exact-item write/read and all three package selections pass. The 600-round native probe used 30 groups: 13 ms preparation and 10 ms peak group in the fresh process. This excludes rendered gameplay and does not certify removal of all client pauses. LootLab 0.2.43 is deployed and verified with 25 modules, 16 pools and 175 entries; 75 API/page tests pass, saved tuning is preserved.
 
 **Historical C137 module checkpoint:** 0.2.41 adds approved Enhanced Firing/Detection and larger reserve count bonuses, and corrects automatic cadence, placement limits and volley visuals. LootLab is refreshed to the same catalog. R3C4 is settled; R3C5 automated/native proof and the completed C138 owner round are in [one focused test](TEST_v0.2.41.md). Native inventory weight remains a separate limit. C147 completes the subsequent R3C6 integration; R3C7 owner verification is now active.
 

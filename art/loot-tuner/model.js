@@ -43,7 +43,7 @@
     if(path==='global')return value/4.5;
     if(path.startsWith('items.')) {
       const id=path.slice(6);
-      if(['Magazine','Splitter','Fragment','FiringEnhanced','MotionDetectionEnhanced','Piercing','InitialBlow','Execute','Impact'].includes(id))return value;
+      if(['Magazine','Splitter','Fragment','FiringEnhanced','MotionDetectionEnhanced','Piercing','InitialBlow','Execute','Impact','Conservation'].includes(id))return value;
       const factor=['Firing','MotionDetection','CapacitySmall','CapacityLarge','Autoloader'].includes(id)?3:2;
       return value/(baseline==='Installed 0.2.22'&&id==='Suppression'?1:factor);
     }
@@ -60,7 +60,7 @@
     }
     s.seed=Math.floor(s.seed);
     for(const m of data.modules) {
-      const added=legacy&&['Magazine','Splitter','Fragment','FiringEnhanced','MotionDetectionEnhanced','Piercing','InitialBlow','Execute','Impact'].includes(m.id)&&input.items?.[m.id]===undefined;
+      const added=legacy&&['Magazine','Splitter','Fragment','FiringEnhanced','MotionDetectionEnhanced','Piercing','InitialBlow','Execute','Impact','Conservation'].includes(m.id)&&input.items?.[m.id]===undefined;
       const value=added?1:legacy&&['Critical','Accuracy'].includes(m.id)&&input.items?.[m.id]===undefined?1:input.items?.[m.id];
       if(typeof value!=='number' || !Number.isFinite(value) || value<0 || value>20) throw Error('Invalid '+m.name+' multiplier.');
       s.items[m.id]=legacy&&!added?migrateValue("items."+m.id,value,input.baseline):value;

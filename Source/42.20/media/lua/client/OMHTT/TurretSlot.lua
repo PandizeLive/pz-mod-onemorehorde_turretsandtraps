@@ -2,6 +2,7 @@ if isClient() or isServer() then return end
 require("ISUI/ISPanel")
 require("ISUI/ISInventoryPane")
 require("ISUI/ISToolTipInv")
+require("ISUI/ISToolTip")
 local T = require("OMHTT/Turret")
 local Slot = ISPanel:derive("OMHTTTurretSlot")
 
@@ -75,7 +76,18 @@ end
 function Slot:update()
     if ISMouseDrag.draggingFocus == self and not isMouseButtonDown(0) then self:clearDrag() end
     local item = self.items[1]
-    if self:isMouseOver() and item and not ISMouseDrag.dragging then
+    if self:isMouseOver() and not ISMouseDrag.dragging and self.detailText then
+        if not self.tooltip then
+            self.tooltip = ISToolTip:new()
+            self.tooltip:initialise()
+            self.tooltip:addToUIManager()
+            self.tooltip:setOwner(self)
+            self.tooltip.maxLineWidth = 360
+        end
+        self.tooltip:setName(item and item:getDisplayName() or getText("UI_OMHTT_BatteryEstimate"))
+        self.tooltip.description = self.detailText
+        self.tooltip:setVisible(true)
+    elseif self:isMouseOver() and item and not ISMouseDrag.dragging then
         if not self.tooltip then
             self.tooltip = ISToolTipInv:new(item)
             self.tooltip:initialise()
@@ -113,7 +125,7 @@ function Slot:prerender()
         if #self.items > 1 then name = tostring(#self.items) .. " x " .. name end
     end
     local textX, textY = 44, h + 8
-    if self.kind == "module" then textX, textY = 4, h + 20 end
+    if self.kind == "module" then textX, textY = 4, math.min(h + 20, self.height - h - 2) end
     self:setStencilRect(textX, textY, self.width - textX - 4, h + 4)
     self:drawText(name, textX, textY, 1, 1, 1, 1, UIFont.Small)
     self:clearStencilRect()

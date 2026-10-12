@@ -45,9 +45,10 @@ end
 ---@param config table Effective tuning
 ---@param now number Real-time milliseconds
 ---@return nil
-function C.consume(state, remaining, config, now)
+---@param spent number? Actual whole rounds charged
+function C.consume(state, remaining, config, now, spent)
     Impact.consume(state)
-    state.loaded = math.max(0, state.loaded - math.min(state.loaded, 1 + (config.splitter or 0)))
+    state.loaded = math.max(0, state.loaded - (spent or math.min(state.loaded, 1 + (config.splitter or 0))))
     state.nextShot = now + config.cooldown
     state.cooldownDuration = config.cooldown
     C.update(state, remaining, config, now)

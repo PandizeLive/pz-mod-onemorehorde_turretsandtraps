@@ -2,7 +2,7 @@ if isClient() then return end
 local F = require("OMHTT/Foundation")
 local G = require("OMHTT/BarrierGeometry")
 local D = require("OMHTT/Diagnostics")
-local O = {}
+local O = {generation = 0}
 local store, footprint = nil, nil
 local removing = {}
 local desired, byOwner = {}, {}
@@ -18,6 +18,7 @@ end
 
 ---@return nil
 function O.changed()
+    O.generation = O.generation + 1
     dirty = true
 end
 

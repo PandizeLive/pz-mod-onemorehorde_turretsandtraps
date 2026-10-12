@@ -10,7 +10,7 @@ T.BASE = "Base.OMHTTTurretBase"
 T.HEAD = "Base.OMHTTTurretPotato"
 T.HEAD_VISUAL = {height = 0.4 - 16 / 192, scale = 0.512, muzzle = 0.55}
 T.CONTAINER = "OMHTTTurret"
-T.MODULES = {Piercing = true, InitialBlow = true, Execute = true, Impact = true, FiringEnhanced = true, MotionDetectionEnhanced = true, Magazine = true, Splitter = true, Fragment = true, FiringImprovised = true, MotionDetectionImprovised = true, CapacityImprovised = true, Firing = true, MotionDetection = true, Filter = true, RapidFire = true, Velocity = true,
+T.MODULES = {Conservation = true, Piercing = true, InitialBlow = true, Execute = true, Impact = true, FiringEnhanced = true, MotionDetectionEnhanced = true, Magazine = true, Splitter = true, Fragment = true, FiringImprovised = true, MotionDetectionImprovised = true, CapacityImprovised = true, Firing = true, MotionDetection = true, Filter = true, RapidFire = true, Velocity = true,
     Range = true, Critical = true, Accuracy = true, Suppression = true, Capacity = true, CapacitySmall = true, CapacityLarge = true, Detection360 = true, Reload = true, Autoloader = true}
 T.SINGLE = {Firing = true, MotionDetection = true, Filter = true, Detection360 = true, Autoloader = true}
 T.TYPES = {}
@@ -92,15 +92,17 @@ end
 ---@param now number Real-time milliseconds
 ---@return table? state Persisted on the exact head item
 ---@return string status
-function T.cycle(contents, now)
+---@param stats table? Already resolved operation stats
+function T.cycle(contents, now, stats)
     if not contents.head then return nil, "NoHead" end
-    if G.profile(contents.head) then return G.update(contents, T.cycleConfig(contents), now, false) end
+    stats = stats or T.cycleConfig(contents)
+    if G.profile(contents.head) then return G.update(contents, stats, now, false) end
     if SandboxVars.OMHTurretsTraps.PotatoTurret == false then return nil, "Disabled" end
     local data = contents.head:getModData()
     if not data.OMHTTCycle then data.OMHTTCycle = {schema = 1, loaded = 0, nextShot = 0} end
     local state = data.OMHTTCycle
     if data.OMHTTPowerOff then return state, "Off" end
-    return state, Cycle.update(state, contents.ammo, T.cycleConfig(contents), now)
+    return state, Cycle.update(state, contents.ammo, stats, now)
 end
 
 ---@param item InventoryItem Candidate
@@ -121,7 +123,7 @@ end
 ---@return table summary Actual inventory contents
 ---@nodiscard
 function T.contents(container)
-    local result = {reserve = 0, reserveAll = 0, rounds = {}, ammo = 0, modules = 0, powerLoad = 0, capacities = 0, heads = 0, batteries = 0, invalid = 0, moduleNames = {}, active = {}, moduleCounts = {}, weight = 0}
+    local result = {reserve = 0, reserveAll = 0, rounds = {}, ammo = 0, modules = 0, powerLoad = 0, capacities = 0, heads = 0, batteries = 0, invalid = 0, moduleNames = {}, moduleDetails = {}, active = {}, moduleCounts = {}, weight = 0}
     local items = container:getItems()
     for i = 0, items:size() - 1 do
         local item = items:get(i)
@@ -141,6 +143,12 @@ function T.contents(container)
                 result.capacities = result.capacities + 1
             else
                 result.modules = result.modules + 1
+            end
+            if kind == "module" then
+                local name = T.component(item:getFullType())
+                local entry = result.moduleDetails[name] or {count = 0}
+                entry.count = entry.count + 1
+                result.moduleDetails[name] = entry
             end
             local component = T.role(item:getFullType())
             result.moduleCounts[component] = (result.moduleCounts[component] or 0) + 1
@@ -188,6 +196,15 @@ function T.isContainer(container)
         or (container:getContainingItem() ~= nil and container:getContainingItem():getFullType() == T.BASE))
 end
 
+---@param container ItemContainer Transfer endpoint
+---@return table summary Operation-scoped acceptance fields
+function T.transferContents(container)
+    if T.transferSnapshots and T.transferSnapshots[container] then return T.transferSnapshots[container] end
+    local contents = T.contents(container)
+    if T.transferSnapshots then T.transferSnapshots[container] = contents end
+    return contents
+end
+
 ---@param container ItemContainer Destination
 ---@param item InventoryItem Candidate
 ---@return boolean allowed
@@ -197,7 +214,7 @@ function T.accept(container, item)
     local kind = T.kind(item)
     if not kind then return false end
     if container:contains(item) then return true end
-    local contents = T.contents(container)
+    local contents = T.transferContents(container)
     if kind == "head" then
         if contents.heads > 0 then return false end
         if G.profile(item) then
@@ -208,7 +225,9 @@ function T.accept(container, item)
     end
     if kind == "battery" then return contents.batteries == 0 end
     if kind == "capacity" then return contents.capacities == 0 end
-    local stats = Stats.resolve(contents)
+    local stats = T.transferSnapshots and contents.transferStats or Stats.resolve(contents)
+    if not stats then stats = Stats.resolve(contents) end
+    if T.transferSnapshots then contents.transferStats = stats end
     if kind == "ammo" then
         local ammoType = "Base.Potato"
         if G.profile(contents.head) then ammoType = G.ammoType(contents.head) end
@@ -225,8 +244,9 @@ end
 ---@nodiscard
 function T.canRemove(container, item)
     if not T.isContainer(container) then return true end
-    local contents = T.contents(container)
     if T.kind(item) == "head" then return not G.servicing[item] end
+    if T.kind(item) ~= "capacity" then return true end
+    local contents = T.contents(container)
     if T.kind(item) == "capacity" and item:getCondition() > 0 then
         contents.active.CapacityImprovised = nil
         contents.active.Capacity, contents.active.CapacitySmall, contents.active.CapacityLarge = nil, nil, nil

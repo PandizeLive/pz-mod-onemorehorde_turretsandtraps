@@ -1198,3 +1198,12 @@ option OMHTurretsTraps.LootRateImpact {
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRateImpact,
 }
+
+option OMHTurretsTraps.LootRateConservation {
+    type = double,
+    default = 1,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootRateConservation,
+}

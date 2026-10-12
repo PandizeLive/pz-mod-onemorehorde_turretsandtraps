@@ -11,6 +11,8 @@ local G = require("OMHTT/Firearms")
 local Magazine = require("OMHTT/TurretMagazineAction")
 local Slot = require("OMHTT/TurretSlot")
 local Range = require("OMHTT/TurretRange")
+local Benefits = require("OMHTT/TurretBenefits")
+local BenefitList = require("OMHTT/TurretBenefitList")
 local Search = require("OMHTT/TurretSearch")
 local Panel = ISPanel:derive("OMHTTTurretPanel")
 local OpenAction = ISBaseTimedAction:derive("OMHTTTurretOpenAction")
@@ -18,6 +20,7 @@ local active = {}
 
 ---@return nil
 function Panel:close()
+    self.benefitList:hideTooltip()
     for i = 1, #self.slots do self.slots[i]:hideTooltip(); self.slots[i]:clearDrag() end
     Range.focus(self.player:getPlayerNum(), "manage", self.object, false)
     active[self.player:getPlayerNum()] = nil
@@ -132,8 +135,9 @@ function Panel:refresh()
     local W = require("OMHTT/TurretWorld")
     local storage = self.object:getContainer()
     local contents = T.contents(storage)
-    local cycle, status = T.cycle(contents, require("OMHTT/TurretClock").now())
-    local power = W.power(self.object, contents)
+    local stats = T.cycleConfig(contents)
+    local cycle, status = T.cycle(contents, require("OMHTT/TurretClock").now(), stats)
+    local power = W.power(self.object, contents, stats)
     if not power and contents.head then status = "NoPower" end
     if contents.head and contents.head:getCondition() <= 0 then status = "NoHead" end
     if not T.isOn(T.state(self.object)) then status = "Off" end
@@ -144,8 +148,9 @@ function Panel:refresh()
         self.result, self.reason = getText("UI_OMHTT_Manage" .. response.status), ""
     end
     local state = T.state(self.object)
-    local profile = M.profile(state, contents)
-    local stats = T.cycleConfig(contents)
+    local profile = M.profile(state, contents, false, stats)
+    self.benefitList.rows = Benefits.rows(contents, stats)
+    self.batterySlot.detailText = Benefits.battery(contents, stats)
     self.stats = stats
     self.engagementRange = profile.range
     if self.rangeMaximum ~= math.max(2, math.ceil(stats.range)) then
@@ -244,13 +249,7 @@ function Panel:refresh()
         if power.kind == "battery" then self.powerLabel = getText("UI_OMHTT_ManagePowerBattery") end
         if power.kind == "disabled" then self.powerLabel = getText("UI_OMHTT_ManagePowerDisabled") end
     end
-    if contents.head then
-        if power and power.kind == "generator" then
-            self.powerLabel = self.powerLabel .. " | " .. getText("UI_OMHTT_GeneratorCost", string.format("%.6f", stats.generatorFuel))
-        elseif not power or power.kind == "battery" then
-            self.powerLabel = self.powerLabel .. " | " .. getText("UI_OMHTT_BatteryCost", string.format("%.5f", stats.batteryPercent))
-        end
-    end
+
     local statKey = table.concat({stats.damage, stats.range, stats.reload, stats.cooldown, stats.ammo, stats.modules, stats.knockdown, stats.accuracy, stats.critChance, stats.critMultiplier, stats.hearingMultiplier, stats.batteryPercent, stats.generatorFuel}, ":")
     if self.lastStatKey ~= statKey then
         D.emit("turret-effective-stats", {id = self.deviceId, damage = stats.damage, range = stats.range,
@@ -280,14 +279,15 @@ function Panel:prerender()
     local label = self.moduleLabel
     if self.rows > 3 then label = label .. " — " .. getText("UI_OMHTT_ManageScroll") end
     self:drawText(label, 12, self.modulesY, 1, 1, 1, 1, UIFont.Small)
+    self:setStencilRect(12, y, self.width / 2 - 18, h * 7)
     self:drawText(self.moduleEffects, 12, y, self.modulesMissing and 1 or 0.8, self.modulesMissing and 0.3 or 0.8, self.modulesMissing and 0.3 or 0.8, 1, UIFont.Small)
     self:drawText(getText("UI_OMHTT_Manage" .. self.status) .. " | " .. self.powerLabel, 12, y + h, 1, 1, 1, 1, UIFont.Small)
     local stats = self.stats
-    self:drawText(getText("UI_OMHTT_ManageStats", string.format("%.1f", stats.damage), string.format("%.1f", stats.range),
+    self:drawText(getText("UI_OMHTT_CompactStats", string.format("%.1f", stats.damage), string.format("%.1f", stats.range),
         self.object:getHealth(), self.object:getMaxHealth()), 12, y + h * 2, 1, 1, 1, 1, UIFont.Small)
     self:drawText(getText("UI_OMHTT_ManageTiming", string.format("%.2f", stats.reload / 1000), string.format("%.2f", 1000 / stats.cooldown)),
         12, y + h * 3, 1, 1, 1, 1, UIFont.Small)
-    self:drawText(getText("UI_OMHTT_ManageChances", string.format("%.0f", stats.accuracy), string.format("%.0f", stats.critChance),
+    self:drawText(getText("UI_OMHTT_CompactChances", string.format("%.0f", stats.accuracy), string.format("%.0f", stats.critChance),
         string.format("%.1f", stats.critMultiplier)), 12, y + h * 4, 1, 1, 1, 1, UIFont.Small)
     local message = self.result .. ":" .. self.reason
     if self.lastMessage ~= message then
@@ -298,6 +298,7 @@ function Panel:prerender()
     if elapsed < 1500 then glow = (1 - elapsed / 1500) * (0.5 + 0.5 * math.cos(elapsed / 120)) end
     self:drawText(self.result, 12, y + h * 5, 0.9 + glow * 0.1, 0.85 + glow * 0.15, 0.65 + glow * 0.35, 1, UIFont.Small)
     self:drawText(self.reason, 12, y + h * 6, 0.9 + glow * 0.1, 0.85 + glow * 0.15, 0.65 + glow * 0.35, 1, UIFont.Small)
+    self:clearStencilRect()
     self:drawText(getText("UI_OMHTT_EngagementRange", T.state(self.object).engagementRange and string.format("%.1f", self.engagementRange) or getText("UI_OMHTT_RangeMax")),
         12, y + h * 7, 1, 1, 1, 1, UIFont.Small)
 end
@@ -318,11 +319,17 @@ function OpenAction:perform()
         local font = getTextManager()
         local lineHeight = font:getFontHeight(UIFont.Small) + 3
         local titleHeight = font:getFontHeight(UIFont.Medium) + 16
-        local width = math.min(getPlayerScreenWidth(index) - 24, math.max(800, lineHeight * 40))
+        local width = math.min(getPlayerScreenWidth(index) - 24, math.max(640, lineHeight * 32))
         local slotHeight = lineHeight + 48
         local top = titleHeight + lineHeight + 12
-        local modulesY = top + (slotHeight + 8) * 2
         local moduleHeight = lineHeight * 2 + 24
+        local available = getPlayerScreenHeight(index) - 24
+        local preferred = top + (slotHeight + 8) * 2 + lineHeight + (moduleHeight + 6) * 3 + 6 + lineHeight * 8 + 82
+        local trim = math.max(0, preferred - available)
+        local slotTrim = math.min(24, trim / 5)
+        slotHeight = slotHeight - slotTrim
+        moduleHeight = moduleHeight - math.min(12, math.max(0, trim - slotTrim * 2) / 3)
+        local modulesY = top + (slotHeight + 8) * 2
         local detailsY = modulesY + lineHeight + (moduleHeight + 6) * 3 + 6
         local height = detailsY + lineHeight * 8 + 82
         local x = getPlayerScreenLeft(index) + getPlayerScreenWidth(index) - width - 12
@@ -336,6 +343,9 @@ function OpenAction:perform()
         panel.moveWithMouse = true
         panel.backgroundColor = {r = 0.04, g = 0.04, b = 0.04, a = 0.96}
         panel:initialise()
+        panel.benefitList = BenefitList:new(width / 2 + 4, detailsY, width / 2 - 16, lineHeight * 7, lineHeight)
+        panel.benefitList:initialise()
+        panel:addChild(panel.benefitList)
         panel.rangeSlider = ISSliderPanel:new(width / 2, detailsY + lineHeight * 7 - 3, width / 2 - 12, 24, panel, Panel.changeRange)
         panel.rangeSlider:initialise()
         panel.rangeSlider.toolTipText = getText("UI_OMHTT_RangeTooltip")

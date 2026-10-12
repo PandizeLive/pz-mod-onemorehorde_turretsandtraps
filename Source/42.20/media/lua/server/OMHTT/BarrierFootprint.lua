@@ -463,7 +463,10 @@ function Footprint.sync(slot, reason)
         Outline.changed()
         Diagnostics.emit("barrier-outline-migrate", {id = record.id, facing = record.facing})
     end
-    local healthObjects = Footprint.healthObjects(record)
+    local colliders = record.collisionModel == "outline-v1" and Outline.objects(record) or {}
+    local healthObjects = {}
+    for i = 1, #parts do healthObjects[#healthObjects + 1] = parts[i] end
+    for i = 1, #colliders do healthObjects[#healthObjects + 1] = colliders[i] end
     local loss = 0
     for i = 1, #healthObjects do
         loss = loss + math.max(0, record.condition - healthObjects[i]:getHealth())
@@ -499,10 +502,10 @@ function Footprint.sync(slot, reason)
         local object = parts[i]
         if record.collisionModel == "outline-v1" then
             local changed = object:isBlockAllTheSquare() or not object:isCanPassThrough() or object:isThumpable()
-            object:setBlockAllTheSquare(false)
-            object:setCanPassThrough(true)
-            object:setIsThumpable(false)
             if changed then
+                object:setBlockAllTheSquare(false)
+                object:setCanPassThrough(true)
+                object:setIsThumpable(false)
                 object:getSquare():RecalcAllWithNeighbours(true)
             end
         end
@@ -532,12 +535,15 @@ function Footprint.sync(slot, reason)
         end
     end
     if record.collisionModel == "outline-v1" then
-        local colliders = Outline.objects(record)
         for i = 1, #colliders do
-            colliders[i]:setMaxHealth(record.maxHealth)
-            colliders[i]:setHealth(record.condition)
+            if colliders[i]:getMaxHealth() ~= record.maxHealth then colliders[i]:setMaxHealth(record.maxHealth) end
+            if colliders[i]:getHealth() ~= record.condition then colliders[i]:setHealth(record.condition) end
         end
-        Outline.refresh(record)
+        local now = getTimestampMs()
+        if reason or slot.outlineGeneration ~= Outline.generation or not slot.outlineCheck or now >= slot.outlineCheck then
+            Outline.refresh(record)
+            slot.outlineGeneration, slot.outlineCheck = Outline.generation, now + 1000
+        end
     end
     return true
 end

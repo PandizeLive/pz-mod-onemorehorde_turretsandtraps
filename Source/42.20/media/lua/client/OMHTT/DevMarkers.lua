@@ -38,6 +38,7 @@ end
 
 ---@return nil
 local function update()
+    if #markers == 0 then return end
     local now = getTimestampMs()
     local checked = 0
     for i = #markers, 1, -1 do

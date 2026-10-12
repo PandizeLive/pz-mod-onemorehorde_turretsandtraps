@@ -85,3 +85,8 @@ Owner retains C148 for the next update, reports freezing when transferring appro
 5. Add bounded aggregate timings for queue preparation, validation/acceptance, commitment and refresh. Use focused native/Kahlua checks before one short same-quantity comparison through both interfaces, including cancellation/full storage. No heavy reproduction or install during the current owner test.
 
 Local console snapshot: `diagnostics/v0.2.42/console-c149-ammo-transfer.txt`, 146,809 bytes, SHA-256 `6ff4737a6940ab8183d6ecebedab8dd280e02c954032018e37d1195df6a75805`; source last write 2026-10-11 18:35:14 local. [Versioned finding](TEST_v0.2.42.md#c149-owner-finding-bulk-ammo-transfer-freeze-2026-10-11). No gameplay change or fix verification. **Wait for a patch** for this issue; R3C7 is not automatically passed or closed.
+
+
+## C154 - approved and implemented in 0.2.43 (2026-10-11)
+
+The owner explicitly approved patching the complete bundle, including the transfer fix and five optimizations. [Final behavior](PATCH_v0.2.43.md) and [test](TEST_v0.2.43.md) distinguish automated/native proof from pending owner acceptance. Battery time uses the permitted explicit configured-fire-rate model (reloads excluded). Conservation uses existing offensive loot rarity (2.5), 0.3 weight and ordinary power load; no recipe. Prior discussion-only gates in this historical record are superseded.

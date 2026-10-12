@@ -175,12 +175,17 @@ end
 ---@param stats table Effective values
 ---@param now number Milliseconds
 ---@return boolean consumed
+---@return number? cost Actual whole-round charge
 function G.consume(contents, stats, now)
     local gun = contents.head
     local cycle, status = G.update(contents, stats, now, false)
     if status ~= "Ready" then return false end
     Impact.consume(cycle)
-    local cost = math.min(G.loaded(gun), 1 + (stats.splitter or 0))
+    local cost = require("OMHTT/TurretConservation").consume(cycle, math.min(G.loaded(gun), 1 + (stats.splitter or 0)), stats.conservation or 1)
+    if cost == 0 then
+        cycle.nextShot, cycle.cooldownDuration = now + stats.cooldown, stats.cooldown
+        return true, 0
+    end
     if gun:haveChamber() then
         gun:setRoundChambered(false)
         gun:setSpentRoundChambered(gun:isRackAfterShoot())
@@ -197,7 +202,7 @@ function G.consume(contents, stats, now)
     if gun:isRackAfterShoot() then cycle.rackReady = now + stats.rack end
     cycle.loaded = G.loaded(gun)
     Impact.observe(cycle, cycle.loaded)
-    return true
+    return true, cost
 end
 
 ---@param player IsoPlayer Operator

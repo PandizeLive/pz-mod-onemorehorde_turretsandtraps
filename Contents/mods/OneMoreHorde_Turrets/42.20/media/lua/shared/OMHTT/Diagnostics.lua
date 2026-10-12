@@ -214,6 +214,7 @@ end
 
 ---@return nil
 function Diagnostics.flush()
+    if pendingFirst > pendingLast and not Diagnostics.enabled() then return end
     local now = getTimestampMs()
     if now - summaryAt >= 5000 or now < summaryAt then
         summaryAt = now

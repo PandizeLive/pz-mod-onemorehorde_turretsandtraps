@@ -1,6 +1,14 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.42 / C147
+## Current candidate: 0.2.43 / C154
+
+**C154 / 0.2.43 implemented and automatically verified; tagged installation pending.** The approved C148-C153 bundle includes bounded matching ammo transfers, five runtime optimizations, Conservation Module, compact Manage, battery estimates and short Installed Modules rows with individual tooltips. No design decision remains. R3C7 and the relevant R1C3 acceptance checks share [one six-step test](TEST_v0.2.43.md); the 0.2.42 transfer finding carries forward without reopening the completed 0.2.41 round. [Patch](PATCH_v0.2.43.md) | [module/UI contract](checkpoints/R3_AMMO_SAVER_MANAGE.md) | [optimization contract](PERFORMANCE_AUDIT_v0.2.42.md).
+
+15,739 Kahlua assertions, 101 runtime/translation files, 705 native translation keys, exact-item write/read and all three package selections pass. The 600-round native probe used 30 groups: 13 ms preparation and 10 ms peak group in the fresh process. This excludes rendered gameplay and does not certify removal of all client pauses. LootLab 0.2.43 is deployed and verified with 25 modules, 16 pools and 175 entries; 75 API/page tests pass, saved tuning is preserved.
+
+Tagged installation and byte-for-byte archive/backup verification pending. No Workshop upload; cumulative pending changelog preserved.
+
+## Previous local installation: 0.2.42 / C147
 
 C147 completes the approved Piercing, Initial Blow, Execute and Impact modules and the C146 power formula. **0.2.42 is installed** from immutable `test/v0.2.42` / `2354a7ff3ed4ef174a0bbeb4d7d0051a620bc5d7`. R3C6 implementation is complete; R3C7 now awaits the focused owner test. No power decision remains. 5,241 Kahlua assertions, native write/read, three independent-package startups and the 51-gun Firearms integration pass. LootLab 0.2.42 is deployed and verified; 74 API/page tests pass. Rendered effects and crowd behavior remain owner acceptance. All 192 source and 232 tagged/package/installed/archive files verify, as do both previous 0.2.41 backups. Native write/read: 114.0/138.8 seconds; Traps/Turrets/both startup: 110.3/108.2/111.4 seconds. Archive SHA-256: `31609d4ad1c80391cf35077379b555cd36d577c66bcd7192bf80cc111a4d1839`. [Install](../diagnostics/v0.2.42/install.json) | [machine verification](../diagnostics/v0.2.42/local-release.json) | [focused test](TEST_v0.2.42.md). No Workshop upload; cumulative pending changelog preserved.
 

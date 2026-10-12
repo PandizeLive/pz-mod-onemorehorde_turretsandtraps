@@ -1,4 +1,13 @@
 module Base {
+    item OMHTTModuleConservation {
+        DisplayName = Conservation Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.3,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleConservation,
+    }
     item OMHTTModulePiercing {
         DisplayName = Piercing Module,
         ItemType = base:normal,

@@ -22,7 +22,8 @@ end
 ---@param automatic boolean? Apply automatic detection limits
 ---@return table profile
 ---@nodiscard
-function M.profile(state, contents, automatic)
+---@param resolved table? Already resolved operation stats
+function M.profile(state, contents, automatic, resolved)
     local active = contents.active
     local cone = M.option("ForwardCone", 90, 10, 360)
     if active.Detection360 then
@@ -37,7 +38,7 @@ function M.profile(state, contents, automatic)
             end
         end
     end
-    local stats = T.cycleConfig(contents)
+    local stats = resolved or T.cycleConfig(contents)
     local range = stats.range
     if automatic and active.MotionDetectionImprovised then range = range * 0.75 end
     return {stats = stats, heading = (state.baseFacing or state.facing or 0) * 22.5, cone = cone, omni = active.Detection360 ~= nil,

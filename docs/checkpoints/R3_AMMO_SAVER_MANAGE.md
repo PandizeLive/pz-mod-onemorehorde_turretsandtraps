@@ -104,3 +104,8 @@ Use name/count plus a compact effect, for example (defaults, stated working coun
 Each row has its own hover explanation with current values and conditions, using the module description as the source of meaning: health requirements, primary-hit restriction, side-shot damage/ammo, empty-reload trigger, eligibility/recovery rules, and cap/incompatibility/broken-copy details as applicable. Do not dump those sentences into the compact row. Keep brief `Inactive`/`Capped`/`Broken` state text visible where needed; explain why on hover. Hover describes that row, not a global panel tooltip or a clicked/opened inventory item requirement. Synchronize with current configuration/settings, reuse cached/throttled UI state, and preserve native item tooltips separately.
 
 Requested for the next patch with C152's scrollable fixed-height list and C151's narrower/separate-utility layout. No new gameplay values, version, install or test acceptance; C149 transfer fix remains first. **Wait for a patch:** compact-label requirement recorded, not yet installed.
+
+
+## C154 - approved and implemented in 0.2.43 (2026-10-11)
+
+The owner explicitly approved patching the complete bundle, including the transfer fix and five optimizations. [Final behavior](../PATCH_v0.2.43.md) and [test](../TEST_v0.2.43.md) distinguish automated/native proof from pending owner acceptance. Battery time uses the permitted explicit configured-fire-rate model (reloads excluded). Conservation uses existing offensive loot rarity (2.5), 0.3 weight and ordinary power load; no recipe. Prior discussion-only gates in this historical record are superseded.

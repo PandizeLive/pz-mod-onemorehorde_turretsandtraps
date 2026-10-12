@@ -57,7 +57,7 @@ def main():
         assert all(isinstance(v, str) for v in values.values())
         assert not translations.keys() & values.keys(), "Duplicate translation keys"
         translations.update(values)
-    keys = set(re.findall(r'getText\("([A-Za-z0-9_]+)"', lua)) - {"UI_OMHTT_", "ContextMenu_OMHTT_Hybrid", "UI_OMHTT_Module"}
+    keys = set(re.findall(r'getText\("([A-Za-z0-9_]+)"', lua)) - {"UI_OMHTT_", "ContextMenu_OMHTT_Hybrid", "UI_OMHTT_Module", "UI_OMHTT_Effect"}
     keys.update("ContextMenu_OMHTT_Hybrid" + action for action in ["Create", "Remove", "Rotate", "Spin", "Raise", "Lower", "Larger", "Smaller"])
     keys.update("UI_OMHTT_" + status for status in [
         "Agrees", "Waiting", "Denied", "VersionMismatch", "TooFar", "Unavailable", "Inspected", "Stale",
@@ -65,6 +65,7 @@ def main():
         "WrongDevice", "Empty", "Cooling", "NoTarget", "Fired", "Refilled", "Aimed", "NotCompared", "WrongBarrier", "BarrierRotated",
     ])
     keys.update("UI_OMHTT_Manage" + status for status in ['Drop', 'Hint', 'Head', 'Battery', 'Ammo', 'Modules', 'Module', 'Locked', 'ModulesHint', 'PowerNone', 'PowerExternal', 'PowerBattery', 'PowerDisabled', 'Stats', 'Timing', 'Fire', 'Off', 'Queued', 'TransferMissing', 'TransferReach', 'CapacityFull', 'UnloadFirst', 'TransferFavorite', 'TransferWrongItem', 'TransferFull', 'TransferCarried', 'TransferPending', 'NoHead', 'NoPower', 'Empty', 'Ready', 'Cooling', 'Reloading', 'NoTarget', 'Fired', 'Unavailable', 'MPCombatDeferred', 'WrongDevice', 'Disabled', 'Jammed', 'NoMagazine', 'Racking', 'WrongAmmo'])
+    keys.update("UI_OMHTT_Effect" + name for name in ["Damage", "Shots", "Stagger", "Ammo", "HP", "Piercing", "Magazine", "Range", "Rate", "Reload", "Chance", "Noise", "Active", "Inactive", "Broken", "Capped", "Degrees", "Detection"])
     keys.update("UI_OMHTT_Module" + name for name in ["Firing", "MotionDetection", "Filter", "Detection360"])
     keys.update("UI_OMHTT_Priority" + name for name in ["Closest", "Furthest", "Weakest", "Toughest"])
     keys.update(["UI_OMHTT_PowerOn", "UI_OMHTT_PowerOff", "UI_OMHTT_PriorityRandom"])

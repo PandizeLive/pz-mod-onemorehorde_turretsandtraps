@@ -36,5 +36,6 @@
     "Base.OMHTTModulePiercing": "Piercing Module",
     "Base.OMHTTModuleInitialBlow": "Initial Blow Module",
     "Base.OMHTTModuleExecute": "Execute Module",
-    "Base.OMHTTModuleImpact": "Impact Module"
+    "Base.OMHTTModuleImpact": "Impact Module",
+    "Base.OMHTTModuleConservation": "Conservation Module"
 }

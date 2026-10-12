@@ -27,13 +27,14 @@ ISMouseDrag = {}
 ISInventoryItem = {renderItemIcon = function() end}
 ISInventoryPane = {}
 ISInventoryTransferAction = {
+    canMergeAction = function(self, other) return self ~= other and other.srcContainer == self.srcContainer and other.destContainer == self.destContainer end,
     isValid = function(self) return self.srcContainer:contains(self.item) end,
     transferItem = function(self, item)
         self.srcContainer:Remove(item)
         self.destContainer:AddItem(item)
     end,
     new = function(self, player, item, source, destination)
-        return setmetatable({character = player, item = item, srcContainer = source, destContainer = destination}, {__index = self})
+        return setmetatable({character = player, item = item, queueList = {{items = {item}, type = item:getFullType(), time = 1}}, srcContainer = source, destContainer = destination}, {__index = self})
     end
 }
 testTurretOldPanel = oldPanel

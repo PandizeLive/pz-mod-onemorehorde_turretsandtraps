@@ -72,10 +72,11 @@ function Aim.tick()
             local valid = state and T.isOn(state) and W.valid(object) and now <= entry.expires
             if valid and now >= entry.checkAt then
                 local contents = W.contents(object)
+                local stats = T.cycleConfig(contents)
                 entry.speed = T.turnSpeed(contents.head, contents.active)
-                valid = contents.head and contents.head:getCondition() > 0 and W.power(object, contents)
-                    and M.inside(object:getSquare(), entry.target, M.profile(state, contents, entry.player == nil))
-                    and Combat.clearLane(object:getSquare(), entry.target:getSquare(), T.cycleConfig(contents).range)
+                valid = contents.head and contents.head:getCondition() > 0 and W.power(object, contents, stats)
+                    and M.inside(object:getSquare(), entry.target, M.profile(state, contents, entry.player == nil, stats))
+                    and Combat.clearLane(object:getSquare(), entry.target:getSquare(), stats.range)
                 if entry.player then
                     valid = valid and W.near(entry.player, object)
                 else

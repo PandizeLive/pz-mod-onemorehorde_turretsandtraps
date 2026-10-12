@@ -36,6 +36,7 @@ local function item(fullType)
     function result:getCurrentUsesFloat() return self.charge end
     function result:getModData() return self.data end
     function result:getActualWeight() return 1 end
+    function result:getWeight() return self.weight or 1 end
     function result:getContainer() return self.container end
     function result:isFavorite() return self.favorite == true end
     return result
@@ -310,6 +311,35 @@ panel:changeRange(3)
 check(T.state(object).engagementRange == 3, "Manage selects explicit three-tile engagement cap")
 panel:changeRange(panel.rangeMaximum)
 check(T.state(object).engagementRange == nil, "Manage Max restores adaptive weapon range")
+actions = {}
+local bulkStorage, bulkCarried = container(false), container(true)
+local bulkObject = {getContainer = function() return bulkStorage end, hasModData = function() return true end,
+    getModData = function() return {OMHTTTurret = {schema = 1, id = "bulk-600"}} end}
+bulkStorage.parent = bulkObject
+local bulkPlayer = {getPlayerNum = function() return 0 end, getInventory = function() return bulkCarried end}
+bulkStorage:AddItem(item(T.HEAD))
+bulkStorage:AddItem(item(T.TYPES.CapacityLarge))
+SandboxVars.OMHTurretsTraps.PotatoAmmoCapacity = 100
+local bulk = {}
+for i = 1, 600 do bulk[i] = item("Base.Potato"); bulk[i].weight = .01; bulkCarried:AddItem(bulk[i]) end
+local queuedBulk = X.queue(bulkPlayer, bulkObject, bulk, true, "ammo")
+check(queuedBulk == 600 and #actions == 30, "All 600 requested rounds are scheduled without direct mutation")
+check(#actions[1].queueList[1].items == 20 and not actions[1]:canMergeAction(actions[2]), "Prepared native groups cannot be collapsed and lose their members")
+check(X.queue(bulkPlayer, bulkObject, bulk, true, "ammo") == 0, "Duplicate bulk request cannot reserve the same rounds twice")
+for first = 1, 600, 20 do
+    T.transferSnapshots = {}
+    for i = first, first + 19 do
+        local batch = actions[math.floor((i - 1) / 20) + 1]
+        batch.item = bulk[i]
+        check(batch:isValid(), "Each batched item retains validation")
+        batch:transferItem(bulk[i])
+        check(T.transferContents(bulkStorage).ammo == i, "Snapshot tracks every committed round")
+    end
+    T.transferSnapshots = nil
+    check(T.contents(bulkStorage).ammo == first + 19, "Fresh scan agrees after each batch")
+end
+check(T.contents(bulkStorage).ammo == 600 and #bulkCarried.items == 0, "600 exact items arrive once")
+check(T.transferSnapshots == nil, "No transfer cache survives between callbacks")
 reachable = false
 local action = ISInventoryTransferAction:new(player, battery, storage, carried)
 check(not action:isValid(), "Native outgoing drag revalidates turret reach")

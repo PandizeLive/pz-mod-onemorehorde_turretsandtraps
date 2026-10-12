@@ -234,14 +234,20 @@ end
 ---@return nil
 function V.tick()
     local deadline = Budget.limit(1)
+    local consumed = 0
     for _ = 1, 128 do
-        if #V.queue == 0 or getTimestampMs() >= deadline then return end
-        local ray = V.queue[1]
+        if consumed >= #V.queue or getTimestampMs() >= deadline then break end
+        local ray = V.queue[consumed + 1]
         local origin = getCell():getGridSquare(math.floor(ray.x), math.floor(ray.y), ray.z)
         if not origin or V.step(ray) then
             if not origin then ray.best, ray.bestDistance, ray.distance = nil, nil, 0 end
-            if not V.finish(ray) then table.remove(V.queue, 1) end
+            if not V.finish(ray) then consumed = consumed + 1 end
         end
+    end
+    if consumed > 0 then
+        local count = #V.queue
+        for i = 1, count - consumed do V.queue[i] = V.queue[i + consumed] end
+        for i = count - consumed + 1, count do V.queue[i] = nil end
     end
 end
 

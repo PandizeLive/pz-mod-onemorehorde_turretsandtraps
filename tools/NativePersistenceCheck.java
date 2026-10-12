@@ -235,6 +235,7 @@ public final class NativePersistenceCheck {
                 check(Boolean.FALSE.equals(call(cycle, "rawget", new Class<?>[]{Object.class}, "impactReady")) && Boolean.TRUE.equals(call(cycle, "rawget", new Class<?>[]{Object.class}, "impactEmpty")), "Impact magazine entitlement lost");
                 check(Double.valueOf(750).equals(call(cycle, "rawget", new Class<?>[]{Object.class}, "cooldownDuration")), "Modified cooldown duration lost");
                 check(Double.valueOf(750).equals(call(cycle, "rawget", new Class<?>[]{Object.class}, "reloadDuration")), "Modified reload duration lost");
+                check(Double.valueOf(.5).equals(call(cycle, "rawget", new Class<?>[]{Object.class}, "conservationDebt")), "Conservation progress lost");
                 head = true;
             }
         }

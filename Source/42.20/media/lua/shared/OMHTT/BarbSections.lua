@@ -8,6 +8,7 @@ local ActiveTime = require("OMHTT/ActiveTime")
 local clock = ActiveTime.new()
 local moving = false
 local geometry = {}
+local resolvedObjects = {}
 local wireFacings = {e = 0, n = 1, w = 2, s = 3}
 
 ---@param name string Setting suffix
@@ -45,12 +46,15 @@ function B.initialize()
     if not B.store.wires then B.store.wires = {} end
     B.nodes, B.order, B.nearby = {}, {}, {}
     B.cursor = 1
+    resolvedObjects = {}
 end
 
 ---@param record table Frame marker
 ---@param adding boolean Add or remove local index
 ---@return nil
 function B.index(record, adding)
+    resolvedObjects[record.id] = nil
+    resolvedObjects[record.id .. ":0"], resolvedObjects[record.id .. ":1"] = nil, nil
     local width = record.paired and record.facing % 2 == 1 and 2 or 1
     local height = record.paired and record.facing % 2 == 0 and 2 or 1
     for dx = -1, width do
@@ -112,11 +116,15 @@ function B.wirePart(record, part)
     end
     local square = getCell():getGridSquare(x, y, record.z)
     if not square then return nil, "unloaded" end
+    local key = record.id .. ":" .. part
+    local cached = resolvedObjects[key]
+    if cached and cached:getSquare() == square and cached:getObjectIndex() >= 0 and B.record(cached) == record then return cached, "active" end
+    resolvedObjects[key] = nil
     local objects = square:getObjects()
     for i = 0, objects:size() - 1 do
         local object = objects:get(i)
         local marker = object:hasModData() and object:getModData().OMHTTBarbFrame
-        if marker and marker.id == record.id then return object, "active" end
+        if marker and marker.id == record.id then resolvedObjects[key] = object; return object, "active" end
     end
     return nil, "missing"
 end
@@ -137,8 +145,15 @@ function B.resolve(record)
     end
     local square = getCell():getGridSquare(record.x, record.y, record.z)
     if not square then return nil, nil, nil, "unloaded" end
-    local objects, frame, host = square:getObjects(), nil, nil
-    for i = 0, objects:size() - 1 do
+    local cached = resolvedObjects[record.id]
+    local frame, host = cached and cached.frame, cached and cached.host
+    local valid = frame and host and frame:getSquare() == square and host:getSquare() == square
+        and frame:getObjectIndex() >= 0 and host:getObjectIndex() >= 0 and B.record(frame) == record
+        and (record.kind == "wire" or S.attachment(host, record.north, record.side) == record.id)
+    if not valid then
+        frame, host = nil, nil
+        local objects = square:getObjects()
+        for i = 0, objects:size() - 1 do
         local object = objects:get(i)
         local marker = B.record(object)
         if marker and marker.id == record.id then
@@ -147,6 +162,9 @@ function B.resolve(record)
         if record.kind ~= "wire" and S.attachment(object, record.north, record.side) == record.id then
             host = object
         end
+    end
+        if record.kind == "wire" then host = frame end
+        resolvedObjects[record.id] = frame and host and {frame = frame, host = host} or nil
     end
     if record.kind == "wire" then
         return frame, frame, frame and B.record(frame), frame and record.health > 0 and "active" or "missing"

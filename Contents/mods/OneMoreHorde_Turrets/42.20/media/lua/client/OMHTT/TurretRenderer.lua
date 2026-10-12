@@ -4,7 +4,7 @@ local D = require("OMHTT/Diagnostics")
 local G = require("OMHTT/Firearms")
 local M = require("OMHTT/TurretModules")
 local Aim = require("OMHTT/TurretAim")
-local R = {entries = {}, mode = nil, lastCheck = 0, headHeight = T.HEAD_VISUAL.height, headScale = T.HEAD_VISUAL.scale}
+local R = {order = {}, ordered = {}, cursor = 1, entries = {}, mode = nil, lastCheck = 0, headHeight = T.HEAD_VISUAL.height, headScale = T.HEAD_VISUAL.scale}
 
 ---@return nil
 function R.restoreDraw()
@@ -33,12 +33,16 @@ function R.changed(object, head)
     local entry = R.entries[object] or {}
     local contents = T.contents(object:getContainer())
     entry.head, entry.profile = head, M.profile(T.state(object), contents)
-    entry.automatic = M.profile(T.state(object), contents, true)
+    entry.automatic = M.profile(T.state(object), contents, true, entry.profile.stats)
     entry.hasDetector = contents.active.MotionDetection ~= nil
     if G.profile(head) and not entry.support then
         entry.support = instanceItem("Base.OMHTTTurretGunSupportVisual")
     end
     R.entries[object] = entry
+    if not R.ordered[object] then
+        R.order[#R.order + 1] = object
+        R.ordered[object] = true
+    end
 end
 
 ---@param square IsoGridSquare Loaded square
@@ -68,6 +72,7 @@ function R.animate(now)
     local A = require("OMHTT/TurretAutomation")
     local started = D.enabled("turrets") and getTimestampMs()
     local speed = M.option("IdleSweepSpeed", 30, 0, 180)
+    local configuredCone = M.option("ForwardCone", 90, 10, 360)
     for object, entry in pairs(R.entries) do
         local state, automatic = T.state(object), A.entries[object]
         if state then
@@ -75,7 +80,7 @@ function R.animate(now)
             entry.lastFrame = now
             if automatic and automatic.status == "no-target" and not Aim.entries[object] and entry.head and speed > 0 then
                 local profile = entry.profile
-                local cone = M.option("ForwardCone", 90, 10, 360)
+                local cone = configuredCone
                 if profile.omni then
                     cone = 360
                 end
@@ -112,6 +117,7 @@ function R.render(playerIndex)
     local player = getSpecificPlayer(playerIndex)
     if not player then return end
     local started = D.enabled("turrets") and getTimestampMs()
+    local atlas
     for object, entry in pairs(R.entries) do
         local square, state = object:getSquare(), T.state(object)
         if object:getObjectIndex() < 0 or not square or not state
@@ -126,7 +132,7 @@ function R.render(playerIndex)
                 if profile then
                     local head = entry.head
                     local oldX, oldY, oldZ = head:getWorldXRotation(), head:getWorldYRotation(), head:getWorldZRotation()
-                    local atlas = getDebugOptions():getOptionByName("WorldItemAtlas.Enable")
+                    atlas = atlas or getDebugOptions():getOptionByName("WorldItemAtlas.Enable")
                     local restore = R.restoreBuffer or {}
                     R.restoreBuffer, R.drawRestore = restore, restore
                     restore.atlas, restore.enabled, restore.default = atlas, atlas:getValueAsString() == "true", atlas:getDefaultValue()
@@ -156,12 +162,21 @@ function R.tick()
     R.animate(now)
     if now - R.lastCheck < 1000 then return end
     R.lastCheck = now
-    for object in pairs(R.entries) do
+    local deadline = now + 1
+    for i = 1, math.min(8, #R.order) do
+        if R.cursor > #R.order then R.cursor = 1 end
+        local object = R.order[R.cursor]
+        if not object then break end
         local square = object:getSquare()
-        if not square or object:getObjectIndex() < 0 or not T.state(object)
+        if not R.entries[object] or not square or object:getObjectIndex() < 0 or not T.state(object)
             or getCell():getGridSquare(square:getX(), square:getY(), square:getZ()) ~= square then
-            R.entries[object] = nil
+            R.entries[object], R.ordered[object] = nil, nil
+            R.order[R.cursor] = R.order[#R.order]
+            R.order[#R.order] = nil
+        else
+            R.cursor = R.cursor + 1
         end
+        if getTimestampMs() >= deadline then break end
     end
     local mode = T.hybrid()
     if mode == R.mode then return end

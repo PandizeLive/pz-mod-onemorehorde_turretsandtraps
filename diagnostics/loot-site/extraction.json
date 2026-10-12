@@ -1,6 +1,6 @@
 {
   "game": "42.21.0",
-  "baseline": "T&T 0.2.42",
+  "baseline": "T&T 0.2.43",
   "previousBaselines": [
     "Installed 0.2.22",
     "T&T 0.2.23",
@@ -21,7 +21,8 @@
     "T&T 0.2.38",
     "T&T 0.2.39",
     "T&T 0.2.40",
-    "T&T 0.2.41"
+    "T&T 0.2.41",
+    "T&T 0.2.42"
   ],
   "headers": 4065,
   "roomRecords": 90827,

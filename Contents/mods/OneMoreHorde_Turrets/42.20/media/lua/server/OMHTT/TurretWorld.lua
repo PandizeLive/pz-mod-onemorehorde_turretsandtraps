@@ -323,10 +323,11 @@ end
 ---@param contents table Inventory summary
 ---@return table? source Power transaction
 ---@nodiscard
-function W.power(object, contents)
+---@param resolved table? Already resolved operation stats
+function W.power(object, contents, resolved)
     if SandboxVars.OMHTurretsTraps.PotatoRequirePower == false then return {kind = "disabled", cost = 0} end
     local square = object:getSquare()
-    local stats = T.cycleConfig(contents)
+    local stats = resolved or T.cycleConfig(contents)
     if square:hasGridPower() and square:getRoom() then return {kind = "grid", cost = 0} end
     if square:haveElectricity() then
         local cost = stats.generatorFuel
@@ -365,13 +366,13 @@ function W.fire(player, object, target)
     if not player and (not M.detects(T.state(object), contents) or not contents.active.Firing) then return "Unavailable" end
     if contents.heads ~= 1 or contents.head:getCondition() <= 0 then return "NoHead" end
     if contents.ammo == 0 then return "Empty" end
-    local power = W.power(object, contents)
+    local stats = T.cycleConfig(contents)
+    local power = W.power(object, contents, stats)
     if not power then return "NoPower" end
-    local cycle, status = T.cycle(contents, Clock.now())
+    local cycle, status = T.cycle(contents, Clock.now(), stats)
     if status ~= "Ready" then return status end
     local state = T.state(object)
     state.ammo = contents.ammo
-    local stats = T.cycleConfig(contents)
     if player and not target then return require("OMHTT/TurretSearch").request(player, object) end
     local Volley = require("OMHTT/TurretVolley")
     if not Volley.available(stats) then return "Unavailable" end
@@ -379,7 +380,7 @@ function W.fire(player, object, target)
     local options = {stats = stats, weapon = contents.head, range = stats.range, interval = stats.cooldown,
         damage = stats.damage / 100, knockdown = stats.knockdown, critChance = stats.critChance, critMultiplier = stats.critMultiplier,
         splash = stats.damage * T.option("SplashPercent", 25, 0, 100) / 10000, radius = T.option("SplashRadius", 1.5, 0, 3), managed = true,
-        profile = M.profile(state, contents, player == nil), target = target, projectileSpeed = T.option("ProjectileSpeed", 20, 5, 100)}
+        profile = M.profile(state, contents, player == nil, stats), target = target, projectileSpeed = T.option("ProjectileSpeed", 20, 5, 100)}
     if G.profile(contents.head) then
         options.projectileSpeed, options.splash, options.radius = nil, 0, 0
         options.resolve = require("OMHTT/FirearmCombat").hit
@@ -412,14 +413,18 @@ function W.fire(player, object, target)
         end
         options.ammoCost = math.min(cycle.loaded, 1 + stats.splitter)
         options.impactReady = cycle.impactReady == true
-        if G.profile(contents.head) and not G.consume(contents, stats, Clock.now()) then return false end
+        if G.profile(contents.head) then
+            local committed, charged = G.consume(contents, stats, Clock.now())
+            if not committed then return false end
+            options.ammoCost = charged
+        end
         if power.kind == "battery" then
             power.battery:setCurrentUsesFloat(math.max(0, power.battery:getCurrentUsesFloat() - power.cost))
         elseif power.kind == "generator" then
             power.generator:setFuel(math.max(0, power.generator:getFuel() - power.cost))
         end
         if not G.profile(contents.head) then
-            local cost = math.min(cycle.loaded, 1 + stats.splitter)
+            local cost = require("OMHTT/TurretConservation").consume(cycle, math.min(cycle.loaded, 1 + stats.splitter), stats.conservation)
             local spent = 0
             for i = 1, #contents.rounds do
                 if spent >= cost then break end
@@ -429,7 +434,8 @@ function W.fire(player, object, target)
                     spent = spent + 1
                 end
             end
-            Cycle.consume(cycle, contents.ammo - spent, stats, Clock.now())
+            options.ammoCost = spent
+            Cycle.consume(cycle, contents.ammo - spent, stats, Clock.now(), spent)
         end
         D.defer("turret-resource-spent", {id = state.id, head = contents.head:getID(), power = power.kind, cost = power.cost})
         return true
@@ -500,12 +506,12 @@ function W.feedTick()
                 local contents = W.contents(object)
                 if contents.head then
                     local stats = T.cycleConfig(contents)
-                    if W.valid(object) and T.isOn(state) and W.power(object, contents) then
+                    if W.valid(object) and T.isOn(state) and W.power(object, contents, stats) then
                         local cycle, status
                         if G.profile(contents.head) then
                             cycle, status = G.update(contents, stats, now, true)
                         else
-                            cycle, status = T.cycle(contents, now)
+                            cycle, status = T.cycle(contents, now, stats)
                         end
                         Audio.update(object, contents.head, cycle, status, stats, now)
                         if state.feedStatus ~= status then

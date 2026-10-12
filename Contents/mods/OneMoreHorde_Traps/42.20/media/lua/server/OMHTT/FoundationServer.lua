@@ -175,14 +175,17 @@ end
 function Server.tick()
     if not store or #keys == 0 then return end
     local visited = 0
+    local deadline = getTimestampMs() + 1
     for i = 1, math.min(4, #keys) do
+        if visited > 0 and getTimestampMs() >= deadline then break end
         if cursor > #keys then
             cursor = 1
         end
         local slot = store.tiles[keys[cursor]]
         cursor = cursor + 1
         visited = visited + 1
-        if slot.retired then
+        if slot.retired and (not slot.cleanupAt or getTimestampMs() >= slot.cleanupAt) then
+            slot.cleanupAt = getTimestampMs() + 1000
             if slot.outlineRetired then
                 Outline.refresh(slot.outlineRetired)
             end

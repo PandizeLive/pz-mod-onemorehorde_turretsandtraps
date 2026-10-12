@@ -94,15 +94,16 @@ function A.step(entry, deadline)
     local aim = require("OMHTT/TurretAim").entries[object]
     if require("OMHTT/TurretSearch").pending[object] or (aim and aim.player) then return true end
     local contents = W.contents(object)
+    local stats = T.cycleConfig(contents)
     local interval = M.option("DetectionInterval", 0.25, 0.1, 5) * 1000
     if contents.active.MotionDetectionEnhanced then interval = math.min(interval, M.option("EnhancedDetectionInterval", 0.1, 0.05, 5) * 1000) end
-    if not W.valid(object) or not M.detects(state, contents) or not W.power(object, contents) then
+    if not W.valid(object) or not M.detects(state, contents) or not W.power(object, contents, stats) then
         entry.job, entry.due = nil, now + interval
         entry.target = nil
         A.status(entry, "inactive")
         return true
     end
-    local profile = M.profile(state, contents, true)
+    local profile = M.profile(state, contents, true, stats)
     local key = profile.heading .. ":" .. profile.cone .. ":" .. profile.range .. ":" .. profile.priority
     if entry.key ~= key then entry.job, entry.target = nil, nil end
     entry.key = key

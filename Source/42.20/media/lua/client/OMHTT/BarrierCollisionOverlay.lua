@@ -11,7 +11,7 @@ local nextReport = 0
 function Overlay.update()
     local options = SandboxVars.OMHTurretsTraps
     if not options or not options.ShowCollision then
-        lines = {}
+        if #lines > 0 then lines = {} end
         return
     end
     local now = getTimestampMs()
