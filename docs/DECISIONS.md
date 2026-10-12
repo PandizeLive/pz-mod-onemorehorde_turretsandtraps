@@ -992,3 +992,7 @@ Owner selected 1B with native pitch variation, 2B, 3C, and 4B with a four-second
 ## C183 - Persistent LootLab tier weights (2026-10-12)
 
 Owner corrects the C182 session-only limitation: tier weights must remain saved after refreshing or reopening LootLab. Implement account-backed persistence using the existing versioned settings JSON, with browser storage in the local copy. Save only on Confirm; maintain Cancel, exact module weights, automatic matching groups, per-field conflict merging and offline recovery. Old clients must not delete new tier metadata. No new database table/migration, gameplay version, local install or Workshop publication. Deployed and verified; details in LOOTLAB_TIER_PERSISTENCE.md.
+
+## C184 - Diagnose inconsistent tier and card rarities (2026-10-12)
+
+Owner reports yellow cards in orange rows and green cards in yellow rows. Confirmed cause is separate manual tier labels and the unchanged logarithmic runtime classifier, not demonstrated stale saved weights. Record this as unresolved semantic acceptance. Recommend shared saved tier-weight rarity anchors in LootLab and the mod (1A); alternatively derive fixed tier weights from the existing classifier (1B). The first changes rarity-based power costs; the second restricts custom tier weights. No new gameplay/site change approved by this question. See LOOTLAB_TIER_PERSISTENCE.md#c184-rarity-row-conflict-2026-10-12.
