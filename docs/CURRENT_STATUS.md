@@ -1,6 +1,10 @@
 # Current development and planning handoff
 
-**C180 / 0.2.47.1 corrective patch installed and verified; owner test pending.** Owner approved the C178/C179 fixes. Inventory tooltip wrapping is cached; pack reveals fit the player viewport with scrolling and fixed controls, use native script metadata, and reuse unchanged reward pools. Empty reward pools suppress container/corpse packs while preserving existing packs. Pack-code inline-conditionals are cleaned up; no pcall/xpcall added. The 15% body rate, three rewards and 29 supplied weights are unchanged.
+**C181 / 0.2.47.2:** capacity-warning cause confirmed and corrected; pack reveal adopts Manage-style dark panels and one full-width green Collect button. LootLab tier editor is deployed with draft assignments, per-tier weights, personal overrides and explicit Confirm/Cancel. Native sound-choice HTML is ready; ticking/selection/rarity playback and optional particles await the owner's selections and are not installed. [Patch](PATCH_v0.2.47.2.md) | [Test/findings](TEST_v0.2.47.2.md) | [Audio and tier plan](PACK_POLISH.md).
+
+All seven rarity bands are populated by the supplied defaults. The observed session retains all-one saved multipliers, leaving Common empty (six bands used); no settings were silently reset. Native carried capacity is 44 for the six-weight turret; item count limits remain separate. Older C171 capacity warnings now have a concrete reproduction and fix, with rendered tooltip confirmation pending. Game install is pending final validation; no Workshop publication.
+
+**Previous C180 / 0.2.47.1:** corrective patch installed and verified; owner test pending. Owner approved the C178/C179 fixes. Inventory tooltip wrapping is cached; pack reveals fit the player viewport with scrolling and fixed controls, use native script metadata, and reuse unchanged reward pools. Empty reward pools suppress container/corpse packs while preserving existing packs. Pack-code inline-conditionals are cleaned up; no pcall/xpcall added. The 15% body rate, three rewards and 29 supplied weights are unchanged.
 
 [Corrective patch](PATCH_v0.2.47.1.md) | [Combined short test](TEST_v0.2.47.1.md). Supersedes the queued/approval-needed status of C178/C179. Native/GPU owner acceptance remains distinct. C171 capacity warnings remain an earlier separate unresolved finding. LootLab remains deployed at 0.2.47; this correction needs no hosted change.
 
@@ -16,4 +20,4 @@ GitHub: `codex/performance-barbed-audit`, [draft PR #1](https://github.com/Pandi
 
 R1C3 performance work and R3C7 acceptance remain open. The owner accepted the earlier perceived-lag improvement in 0.2.38.1; do not reopen that test or claim universal performance certification. SP/fresh-world policy and independent Turrets/Traps packages remain. C171 records 0.2.46 minutes-only/tooltip/capacity findings; this build addresses the first two, not the capacity warnings. No old test is silently marked passed or waived.
 
-**Test now:** restart to load 0.2.47, then use the five-step test above. All 208 source / 256 tagged, installed and archive files match; both 0.2.46 backups verify. C108 development mirroring applies to this installation record.
+Current owner test is TEST_v0.2.47.2.md after its installation is recorded. Earlier sequences are superseded, not marked passed.

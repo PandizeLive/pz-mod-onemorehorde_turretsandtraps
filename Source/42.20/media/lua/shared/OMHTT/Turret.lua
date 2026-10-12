@@ -272,10 +272,13 @@ function T.configure(container)
     container:setType(T.CONTAINER)
     local stats = Stats.resolve({active = {CapacityImprovised = 1, Capacity = 1, CapacitySmall = 1, CapacityLarge = 1}})
     local capacity = math.ceil(10 + stats.ammo * 0.2 + (stats.modules + 1) * 0.3)
-    -- Native B42 getCapacity clamps bags to 50 and world storage to 100.
-    capacity = math.min(capacity, container:getContainingItem() and 50 or 100)
-    container:setCapacity(capacity)
-    if container:getContainingItem() then container:getContainingItem():setCapacity(capacity) end
+    local item = container:getContainingItem()
+    if item then
+        capacity = math.min(capacity, math.max(0, math.floor(50 - item:getActualWeight())))
+        item:setCapacity(capacity)
+    else
+        container:setCapacity(math.min(capacity, 100))
+    end
     container:setAcceptItemFunction("OMHTT_Turret.accept")
     container:setExplored(true)
 end

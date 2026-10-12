@@ -109,10 +109,10 @@ function Reveal:removeFromUIManager() end
 local panel = Reveal.show(player, rewards)
 panel:prerender()
 check(not panel.finished and #panel.reels == 3 and #panel.reels[1] == 16, "Three bounded visual reels")
-panel:skip(); panel:prerender()
-check(panel.finished and drawCount > 0 and panel.reels[1][14].lines[1] == rewards[1]:getFullType(), "Skip lands on the already granted reward")
-panel:close()
-for i = 1, #rewards do check(inventory:contains(rewards[i]), "Closing reveal preserves grants") end
+panel.started = testMillis - 4000; panel:prerender()
+check(panel.finished and drawCount > 0 and panel.reels[1][14].lines[1] == rewards[1]:getFullType(), "Finished reveal lands on the already granted reward")
+panel.collectButton.callback(panel)
+for i = 1, #rewards do check(inventory:contains(rewards[i]), "Collect preserves previously granted rewards") end
 local Action = require("OMHTT/TurretPackAction")
 local actionPack = item(P.TYPE)
 actionPack.data.OMHTTPackRewards = {"Regulator", "Regulator", "CapacityLarge"}

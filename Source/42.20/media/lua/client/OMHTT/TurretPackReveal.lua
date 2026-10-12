@@ -12,11 +12,6 @@ function Panel:close()
     self:removeFromUIManager()
 end
 
----@return nil
-function Panel:skip()
-    self.started = getTimestampMs() - 4000
-end
-
 ---@param delta number Wheel direction
 ---@return boolean handled
 function Panel:onMouseWheel(delta)
@@ -37,9 +32,9 @@ function Panel:prerender()
     local progress = math.min(1, math.max(0, (getTimestampMs() - self.started) / 4000))
     if progress == 1 and not self.finished then
         self.finished = true
-        self.skipButton:setEnable(false)
     end
-    local offset = (1 - (1 - progress) ^ 3) * 13 * self.cardWidth
+    local cardWidth = self.finished and (self.width - 20) or self.cardWidth
+    local offset = (1 - (1 - progress) ^ 3) * 13 * cardWidth
     for row = 1, P.COUNT do
         local y = 40 + (row - 1) * self.rowHeight - self.offset
         local clipTop = math.max(40, y)
@@ -48,23 +43,25 @@ function Panel:prerender()
             self:setStencilRect(10, clipTop, self.width - 20, clipBottom - clipTop)
             self:drawRect(10, y, self.width - 20, self.rowHeight - 6, .95, .025, .025, .025)
             for i = 1, #self.reels[row] do
-                local x = self.width / 2 - self.cardWidth / 2 + (i - 1) * self.cardWidth - offset
-                if x + self.cardWidth >= 10 and x < self.width - 10 then
+                local x = self.width / 2 - cardWidth / 2 + (i - 1) * cardWidth - offset
+                if x + cardWidth >= 10 and x < self.width - 10 then
                     local card = self.reels[row][i]
                     local color = card.color
-                    self:drawRect(x + 2, y + 2, self.cardWidth - 4, self.rowHeight - 10, .24, color.r, color.g, color.b)
-                    self:drawRectBorder(x + 2, y + 2, self.cardWidth - 4, self.rowHeight - 10, .8, color.r, color.g, color.b)
+                    self:drawRect(x + 2, y + 2, cardWidth - 4, self.rowHeight - 10, .12, color.r, color.g, color.b)
+                    self:drawRectBorder(x + 2, y + 2, cardWidth - 4, self.rowHeight - 10, .5, color.r, color.g, color.b)
                     if card.texture then
-                        self:drawTextureScaledAspect(card.texture, x + self.cardWidth / 2 - 14, y + 8, 28, 28, 1, 1, 1, 1)
+                        self:drawTextureScaledAspect(card.texture, x + cardWidth / 2 - 14, y + 8, 28, 28, 1, 1, 1, 1)
                     end
                     for n = 1, #card.lines do
-                        self:drawTextCentre(card.lines[n], x + self.cardWidth / 2, y + 40 + (n - 1) * self.fontHeight,
+                        self:drawTextCentre(card.lines[n], x + cardWidth / 2, y + 40 + (n - 1) * self.fontHeight,
                             color.tr, color.tg, color.tb, 1, UIFont.Small)
                     end
                 end
             end
-            self:drawRect(self.width / 2 - 1, y, 2, 8, 1, 1, 1, 1)
-            self:drawRect(self.width / 2 - 1, y + self.rowHeight - 14, 2, 8, 1, 1, 1, 1)
+            if not self.finished then
+                self:drawRect(self.width / 2 - 1, y, 2, 8, 1, 1, 1, 1)
+                self:drawRect(self.width / 2 - 1, y + self.rowHeight - 14, 2, 8, 1, 1, 1, 1)
+            end
             self:clearStencilRect()
         end
     end
@@ -88,6 +85,7 @@ function Panel.show(player, rewards)
     panel.playerIndex, panel.started = index, getTimestampMs()
     panel.fontHeight, panel.rowHeight, panel.cardWidth = fontHeight, rowHeight, math.min(180, width - 20)
     panel.offset = 0
+    panel.backgroundColor = {r = .04, g = .04, b = .04, a = .96}
     panel.moveWithMouse = true
     panel.reels = {}
     local entries, total = P.pool()
@@ -118,18 +116,15 @@ function Panel.show(player, rewards)
         end
         panel.reels[row] = reel
     end
-    local buttonWidth = math.min(100, (width - 96) / 2)
-    local skip = ISButton:new(12, height - 34, buttonWidth, 24, getText("UI_OMHTT_PackSkip"), panel, Panel.skip)
-    skip:initialise()
-    panel:addChild(skip)
-    panel.skipButton = skip
-    local close = ISButton:new(width - buttonWidth - 12, height - 34, buttonWidth, 24, getText("UI_OMHTT_PackClose"), panel, Panel.close)
-    close:initialise()
-    panel:addChild(close)
-    panel.closeButton = close
+    local collect = ISButton:new(12, height - 34, width - 24, 24, getText("UI_OMHTT_PackCollect"), panel, Panel.close)
+    collect.backgroundColor = {r = .08, g = .42, b = .16, a = .9}
+    collect.backgroundColorMouseOver = {r = .12, g = .58, b = .22, a = 1}
+    collect:initialise()
+    panel:addChild(collect)
+    panel.collectButton = collect
     if panel.maxOffset > 0 then
         for direction = -1, 1, 2 do
-            local button = ISButton:new(width / 2 - 13 + direction * 15, height - 34, 26, 24,
+            local button = ISButton:new(width - 44 + direction * 15, 8, 26, 24,
                 direction < 0 and "^" or "v", panel, Panel.scroll)
             button.direction = direction
             button:initialise()

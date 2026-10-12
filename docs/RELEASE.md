@@ -1,6 +1,12 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.47.1 / C180
+## Current corrective build: 0.2.47.2 / C181
+
+Capacity-warning correction and Manage-style Module Pack collection are verified. 16,094 assertions, native write/read, all three independent package selections and source/package no-pcall scans pass. [Patch](PATCH_v0.2.47.2.md) | [Four-step test](TEST_v0.2.47.2.md). Installation evidence is pending the tagged install. No Workshop publication; sound/particle selections remain pending.
+
+LootLab's tier editor is deployed as Worker `6fcaff5f-804c-4d0f-a6ea-b1cc9a91a35d`. Its existing data baseline stays 0.2.47 because this correction does not retune gameplay loot. 78 API/page tests, focused browser checks, deployed backend comparison and protected-route checks pass. [Deployment evidence](../diagnostics/v0.2.47.2/lootlab-release.json). No account values were written by the deployment. The isolated release retains the approved previous backend plus the authenticated tier-list asset; the unrelated dirty website checkout was preserved.
+
+## Previous local installation: 0.2.47.1 / C180
 
 [Patch](PATCH_v0.2.47.1.md) | [Four-step combined test](TEST_v0.2.47.1.md). 16,094 assertions, native write/read and all three package-isolation selections pass. Zero pcall/xpcall in source/packages; pack style corrections included. Owner-rendered acceptance is pending. The 15% drop chance, three rewards and weights are unchanged; old C171 capacity warnings remain open. LootLab stays at 0.2.47; no hosted or Workshop publication in this correction. Installed through root OMH.cmd from immutable `test/v0.2.47.1` / `169116e5fdc75c33e4a790bf4e4ee1abd1612924`. All 208 source / 256 tagged, packaged, installed and archived files match; both 0.2.47 backups verify. Archive SHA-256: `474c88ddf1ab7a015e4cc4c363bd09923ed8abc6d949513b827ec8d4e5bb03f3`. [Install](../diagnostics/v0.2.47.1/install.json) | [Machine verification](../diagnostics/v0.2.47.1/local-release.json). Restart the client before testing.
 

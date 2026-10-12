@@ -1,0 +1,27 @@
+const assert=require('node:assert/strict'),path=require('node:path'),fs=require('node:fs'),{pathToFileURL}=require('node:url');
+const {chromium}=require('C:/Users/bandi/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const root=path.resolve(__dirname,'../..'),out=path.join(root,'diagnostics/pack-polish');
+(async()=>{const browser=await chromium.launch({channel:'msedge',headless:true});try{
+const page=await browser.newPage({viewport:{width:1360,height:900}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
+await page.goto(pathToFileURL(path.join(root,'art/loot-tuner/index.html')).href);await page.waitForFunction(()=>document.querySelector('#loading').hidden,{timeout:60000});
+const before=await page.locator('#item-Regulator').inputValue();
+await page.getByRole('button',{name:'Plan with tiers'}).click();assert.equal(await page.locator('[data-tier="-1"] .tier-card').count(),29);
+const source=page.locator('[data-module="Regulator"] strong');await source.scrollIntoViewIfNeeded();const box=await source.boundingBox();
+await page.mouse.move(box.x+10,box.y+6);await page.mouse.down();await page.mouse.move(box.x+35,box.y+12,{steps:10});
+const target=page.locator('[data-tier="3"] .tier-heading');await target.scrollIntoViewIfNeeded();const dest=await target.boundingBox();
+await page.mouse.move(dest.x+20,dest.y+20,{steps:10});await page.mouse.up();
+assert.equal(await page.locator('[data-tier="3"] [data-module="Regulator"]').count(),1);
+assert.equal(await page.locator('#item-Regulator').inputValue(),before);
+await page.getByLabel('Regulator draft weight',{exact:true}).fill('3.25');await page.getByLabel('Regulator draft weight',{exact:true}).press('Tab');
+await page.getByRole('button',{name:'Confirm weights'}).click();await page.waitForFunction(()=>document.querySelector('#item-Regulator').value==='3.25');
+await page.getByRole('button',{name:'Plan with tiers'}).click();await page.getByLabel('Move Synergy to tier',{exact:true}).selectOption('5');
+await page.getByRole('button',{name:'Cancel draft'}).click();assert.equal(await page.locator('#item-Synergy').inputValue(),'1');
+await page.getByRole('button',{name:'Plan with tiers'}).click();await page.getByLabel('Move Synergy to tier',{exact:true}).selectOption('6');
+await page.screenshot({path:path.join(out,'tiers-desktop.png')});
+await page.setViewportSize({width:390,height:844});await page.screenshot({path:path.join(out,'tiers-mobile.png')});
+assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+await page.goto(pathToFileURL(path.join(root,'art/PACK_AUDIO.html')).href);await page.locator('audio').first().evaluate(a=>a.play());await page.waitForTimeout(150);
+assert(await page.locator('audio').first().evaluate(a=>a.currentTime>0));await page.getByRole('button',{name:'Preview restrained rarity pulse + particles'}).click();
+await page.setViewportSize({width:1200,height:900});await page.screenshot({path:path.join(out,'sounds.png')});assert.deepEqual(errors,[]);
+console.log('PASS tier drag/drop, keyboard assignment, custom weight, explicit confirm, cancel, mobile bounds, native audition playback; zero page errors');
+}finally{await browser.close();}})().catch(e=>{console.error(e);process.exit(1)});

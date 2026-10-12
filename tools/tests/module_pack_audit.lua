@@ -107,7 +107,7 @@ check(openCreates == 0 and openWraps == 29, "Reveal uses script metadata without
 screenHeight = 360
 local small = Reveal.show(player, rewards)
 check(small.y >= 0 and small.y + small.height <= screenHeight, "360-pixel reveal fits viewport")
-check(small.closeButton.y + small.closeButton.height <= small.height and small.skipButton.y >= 0, "Reveal controls remain reachable")
+check(small.collectButton.y + small.collectButton.height <= small.height and small.collectButton.width == small.width - 24, "Reveal controls remain reachable")
 small:onMouseWheel(100)
 check(small.offset == small.maxOffset and small.maxOffset > 0, "Wheel reaches final reward")
 small:scroll({direction=-100})
@@ -115,8 +115,8 @@ check(small.offset == 0, "Arrow scroll returns to first reward")
 fontHeight = 28
 local large = Reveal.show(player, rewards)
 check(large.height <= screenHeight and large.maxOffset > 0, "Large fonts retain a scrollable body")
-large:skip(); large:prerender()
-check(large.finished, "Skip works within constrained viewport")
+large.started = testMillis - 4000; large:prerender()
+check(large.finished, "Reveal completion works within constrained viewport")
 local overflow = math.max(0, small.height - screenHeight)
 local U = require("OMHTT/TurretItemTooltip")
 local tip = {getLineSpacing = function() return 18 end, getFont = function() return UIFont.Small end}

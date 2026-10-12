@@ -1,6 +1,10 @@
 # Planning
 
-**C180 / 0.2.47.1 corrective patch installed and verified; owner test pending.** Owner approved the C178/C179 fixes. Inventory tooltip wrapping is cached; pack reveals fit the player viewport with scrolling and fixed controls, use native script metadata, and reuse unchanged reward pools. Empty reward pools suppress container/corpse packs while preserving existing packs. Pack-code inline-conditionals are cleaned up; no pcall/xpcall added. The 15% body rate, three rewards and 29 supplied weights are unchanged.
+**C181 / 0.2.47.2:** capacity-warning cause confirmed and corrected; pack reveal adopts Manage-style dark panels and one full-width green Collect button. LootLab tier editor is deployed with draft assignments, per-tier weights, personal overrides and explicit Confirm/Cancel. Native sound-choice HTML is ready; ticking/selection/rarity playback and optional particles await the owner's selections and are not installed. [Patch](PATCH_v0.2.47.2.md) | [Test/findings](TEST_v0.2.47.2.md) | [Audio and tier plan](PACK_POLISH.md).
+
+All seven rarity bands are populated by the supplied defaults. The observed session retains all-one saved multipliers, leaving Common empty (six bands used); no settings were silently reset. Native carried capacity is 44 for the six-weight turret; item count limits remain separate. Older C171 capacity warnings now have a concrete reproduction and fix, with rendered tooltip confirmation pending. Game install is pending final validation; no Workshop publication.
+
+**Previous C180 / 0.2.47.1:** corrective patch installed and verified; owner test pending. Owner approved the C178/C179 fixes. Inventory tooltip wrapping is cached; pack reveals fit the player viewport with scrolling and fixed controls, use native script metadata, and reuse unchanged reward pools. Empty reward pools suppress container/corpse packs while preserving existing packs. Pack-code inline-conditionals are cleaned up; no pcall/xpcall added. The 15% body rate, three rewards and 29 supplied weights are unchanged.
 
 [Corrective patch](PATCH_v0.2.47.1.md) | [Combined short test](TEST_v0.2.47.1.md). Supersedes the queued/approval-needed status of C178/C179. Native/GPU owner acceptance remains distinct. C171 capacity warnings remain an earlier separate unresolved finding. LootLab remains deployed at 0.2.47; this correction needs no hosted change.
 
@@ -12,7 +16,7 @@ Existing Sandbox/account tuning is preserved; new/reset defaults use the export.
 
 ## Read the current branch
 
-Current unmerged work is on **codex/performance-barbed-audit**, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1), targeting dev. **0.2.47.1 / C180** is implemented; see [release state](RELEASE.md) for installation and [current test](TEST_v0.2.47.1.md). Packed-weight reduction is abandoned under C170. Historical discussions below do not override this handoff.
+Current unmerged work is on **codex/performance-barbed-audit**, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1), targeting dev. **0.2.47.2 / C181** is implemented; see [release state](RELEASE.md) for installation and [current test](TEST_v0.2.47.2.md). Packed-weight reduction is abandoned under C170. Historical discussions below do not override this handoff.
 
 Fetch the remote and check open development/planning PRs before using dev alone as the current state. Read the active branch's AGENTS.md, this page and [CURRENT_STATUS.md](CURRENT_STATUS.md). Record which branch/commit was inspected. A chat's older answer or an old Cloud checkout is not a current checkpoint. Preserve unmerged work and reconcile incoming plans; do not reset, force-push or merge automatically.
 

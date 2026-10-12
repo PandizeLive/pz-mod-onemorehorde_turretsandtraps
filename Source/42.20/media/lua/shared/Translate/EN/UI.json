@@ -270,6 +270,7 @@
     "UI_OMHTT_ModulePack": "Module Pack",
     "UI_OMHTT_OpenModulePack": "Open Module Pack",
     "UI_OMHTT_PackSkip": "Skip",
+    "UI_OMHTT_PackCollect": "Collect",
     "UI_OMHTT_PackClose": "Close",
     "UI_OMHTT_PackReceived": "Received %1 modules.",
     "UI_OMHTT_PackUnavailable": "Unable to open pack. Check enabled module weights.",

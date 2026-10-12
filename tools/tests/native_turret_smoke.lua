@@ -29,6 +29,11 @@ local function verifyTurrets()
     end
     print("[OMHTT-Smoke] distance-accuracy samples=16 config=native")
     local player = IsoPlayer.new(getCell())
+    local capacityItem = instanceItem(T.BASE)
+    T.configure(capacityItem:getInventory())
+    assert(capacityItem:getCapacity() == 44 and capacityItem:getInventory():getCapacity() == 44, "Carried capacity must subtract six-unit base weight")
+    assert(capacityItem:getActualWeight() == 6, "Capacity correction must not reduce turret weight")
+    print("[OMHTT-Smoke] native-turret-capacity carried=44 baseWeight=6")
     local Pack = require("OMHTT/TurretModulePack")
     OMHTT_NativeModulePack = instanceItem(Pack.TYPE)
     OMHTT_NativeModulePack:getModData().OMHTTPackRewards = {"Regulator", "CapacityLarge", "Regulator"}
@@ -170,8 +175,8 @@ local function verifyTurrets()
         heavyStorage:AddItem(potato)
         loaded = loaded + 1
     end
-    assert(loaded > 200 and loaded < 750 and heavyStorage:getCapacity() == 50, "Native bag weight limit must remain effective")
-    print("[OMHTT-Smoke] native-heavy-expansion potatoes=" .. loaded .. " countAllowance=750 nativeWeightLimit=50")
+    assert(loaded > 0 and loaded < 750 and heavyStorage:getCapacity() == 44 and not heavyStorage:hasRoomFor(nil, instanceItem("Base.Potato")), "Native bag weight limit must include the base weight")
+    print("[OMHTT-Smoke] native-heavy-expansion potatoes=" .. loaded .. " countAllowance=750 nativeWeightLimit=44")
     print("[OMHTT-Smoke] native-large-expansion rounds=750 weight=real overflow=blocked")
     print("[OMHTT-Smoke] native-component-list visible=23 hidden=0 duplicates=0 legacy=removed")
     local nativeContents = {active = {Detection360 = 1, Filter = 1}}

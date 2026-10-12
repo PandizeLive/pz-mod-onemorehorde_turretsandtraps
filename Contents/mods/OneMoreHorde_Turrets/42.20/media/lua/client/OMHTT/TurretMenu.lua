@@ -24,7 +24,6 @@ function ISToolTipInv:render()
         return
     end
     if self.item and self.item:getFullType() == T.BASE then
-        T.configure(self.item:getInventory())
         local old = self.item:getTooltip()
         self.item:setTooltip(getTextManager():WrapText(UIFont.Small, T.description(self.item:getInventory(), self.item:getActualWeight()), 320))
         tooltipRender(self)

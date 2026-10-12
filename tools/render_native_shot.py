@@ -23,6 +23,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("event")
     parser.add_argument("output", type=Path)
+    parser.add_argument("--updates", type=int, default=750, choices=range(1, 10001), metavar="1..10000")
     parser.add_argument("--game", type=Path, default=Path("C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"))
     args = parser.parse_args()
     args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -92,7 +93,7 @@ def main():
         emitter = Attributes(Vector(0, 0, 1), Vector(0, 0, 0), Vector(0, 0, -1), Vector(0, 1, 0))
         set_attributes(instance, C.byref(emitter))
         start(instance)
-        for _ in range(750):
+        for _ in range(args.updates):
             update(system)
         state = C.c_int()
         playback_state(instance, C.byref(state))

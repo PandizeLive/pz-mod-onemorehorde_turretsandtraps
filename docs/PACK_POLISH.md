@@ -1,0 +1,32 @@
+# C181 - Pack presentation, sounds and tier drafting
+
+## Capacity diagnosis
+
+The 0.2.47.1 client console reproduces InventoryContainer.setCapacity warnings, stating a maximum of 44. Native current-build bytecode computes 50 minus the item's actual weight. The turret base weighs 6. T.configure requested 50, while TurretMenu's tooltip called configure on every render. This is owned mod code, not random loot or an expansion-kit probability problem. [Evidence](../diagnostics/pack-polish/capacity-evidence.json).
+
+0.2.47.2 clamps carried capacity to floor(50 - actualWeight), preserving world storage's 100-unit limit, count allowances and all existing contents. Configuration runs through existing crafting/deploy/pickup/transfer paths; hovering no longer mutates capacity. The native physical limit already applied to the carried item; no inventory-weight reduction is introduced. The physical storage now consistently exposes the same limit as the containing item. Native test: 44 capacity, unchanged six-unit base, 199 potatoes plus the tested head/kit before the native room check refuses another; ammunition-count allowance is still 750. Warning-free native proof does not certify the actual player's next session.
+
+## Implemented presentation
+
+Manage's opaque dark panel, inset reward rows, subdued rarity backgrounds/borders. When rolling finishes, each row shows its actual selected item at full width instead of retaining neighboring distractor cards. One full-width green Collect button closes the presentation; rewards were secured before it opened, so early Collect is safe. Short viewport scrolling remains, with arrow controls moved to the title area. No new per-frame allocations, audio or particle handler.
+
+## Sound choices pending
+
+Local audition: art/PACK_AUDIO.html. Installed native FMOD captures; audio metadata and non-silence checks in diagnostics/pack-polish/audio-evidence.json. Eight clips play only on request. HTML includes a Manage-style settled-result layout preview and an optional bounded particle preview, not installed effects.
+
+- 1A soft highlight (recommended); 1B object rotation; 1C UI click.
+- 2A play confirmation (recommended); 2B object pickup; 2C object placement.
+- 3A native level-up; 3B click-to-start; 3C owner-created rarity sounds (recommended). Native level-up risks implying XP, and native reveal candidates are comparatively long. Until custom clips arrive, use the chosen selected cue only if the owner approves that fallback.
+- Proposed 4A restrained color pulse plus up to eight short particles per selected card (24 total); 4B pulse only; 4C none. Await owner selection. Particle preview respects reduced motion.
+
+Proposed timing: one shared tick stream for the three simultaneous reels, bounded voice rate; selected cue at each settle; one highest-rarity reveal cue per pack to avoid three layered fanfares. UI-only audio must not attract zombies. Verify native playback controls before implementation. No sound/particle choice is assumed from a rendered HTML preview.
+
+## LootLab tier editor
+
+Optional section above regular tuning. All 29 modules start unassigned with existing weights. Dropping into a tier assigns that tier's weight; keyboard/touch Move to menus are equivalent. Each assigned module permits an individual weight override. Changing a tier weight updates its non-overridden members only. Returning to unassigned restores that module's opening weight; confirming leaves unassigned current settings alone. Confirm validates and applies through existing save/sync/export; Cancel does nothing. Conflicting externally changed assigned weights reject confirmation rather than overwrite them. Drafts are transient, not account writes.
+
+Initial seven tier values are geometric centers between the current positive minimum and maximum, the inverse of the game's logarithmic seven-band classifier. The displayed computed rarity always uses actual draft weights, so changing extremes/overrides can change a card's calculated band independently of its assignment row. This is shown rather than forcing a fake color. Zero-weight modules are explicitly disabled. No per-tier rarity lock, percentile redistribution or hidden game-default update. Existing map family shapes/component colors remain separate from rarity colors.
+
+Defaults use Abundant/Common/Uncommon/Rare/Epic/Legendary/Mythic counts **2/2/8/4/8/4/1**. Current saved all-one multipliers use **2/0/1/8/11/6/1**. Both follow the existing formula. More balanced colors require deliberate weight edits; because module power costs follow rarity, that can change battery drain. [Spread checks](../diagnostics/pack-polish/rarity-spread.json).
+
+The owner-only hosted editor is deployed from the isolated verified release source. Only the tier asset was added to the authenticated route allowlist; account/database/public API behavior is preserved. The dirty website checkout was not deployed. Source patch and deployment proof are retained with 0.2.47.2.

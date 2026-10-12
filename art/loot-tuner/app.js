@@ -24,6 +24,9 @@ function drawMarker(x,y,r,module){
   ctx.fill();
 }
 let markers=[],chanceCache=[];
+const tierPlanner=window.LootTiers.mount({element:$('tierPlanner'),modules:D.modules,
+  read:()=>Object.fromEntries(D.modules.map(m=>[m.id,M.lootWeight(m,scenario.items[m.id])])),
+  apply:weights=>{for(const m of D.modules)if(weights[m.id]!==M.lootWeight(m,scenario.items[m.id]))scenario.items[m.id]=M.weightMultiplier(m,weights[m.id]);saveSettings();scheduleUpdate();}});
 const number=n=>n.toLocaleString(undefined,{maximumFractionDigits:1});
 const pretty=s=>s.replace(/([a-z])([A-Z])/g,'$1 $2');
 const canvas=$('map'), ctx=canvas.getContext('2d');
@@ -61,6 +64,7 @@ function scheduleUpdate(){clearTimeout(updateTimer);updateTimer=setTimeout(()=>{
 function fieldValue(id,value){const input=$(id);if(document.activeElement!==input)input.value=value;}
 function weightText(m){return Number(M.lootWeight(m,scenario.items[m.id]).toPrecision(12));}
 function controls(){
+  tierPlanner.refresh();
   for(const key of ['global','material','rolls','retention']){fieldValue(key,scenario[key]);$(key+'Out').textContent=key==='retention'?Math.round(scenario[key]*100)+'%':scenario[key].toFixed(2)+'×';}
   for(const m of D.modules){fieldValue('item-'+m.id,weightText(m));$('show-'+m.id).checked=scenario.visible[m.id];$('component-'+m.id).classList.toggle('is-hidden',!scenario.visible[m.id]);}
   $('overlay').value=scenario.overlay;$('seedBadge').textContent='Seed '+scenario.seed;
