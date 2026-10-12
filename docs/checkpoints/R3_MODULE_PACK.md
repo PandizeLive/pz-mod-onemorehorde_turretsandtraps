@@ -136,3 +136,18 @@ When incorporating these as new baseline/default weights, apply them once. Rebas
 ```
 
 **Decision needed:** the owner has another support requirement to add; continue discussion before patching.
+
+
+## C175 approval and remaining choices
+
+2026-10-12. Owner: "Understood, approved for the hour patch and module pack", followed by "Also the new weights" and permission to present questions/options first. This approves the feature scope and supplied weight adoption, not an unspecified loot-economy design. Viewpoint stays separate. No game code/package/settings change in this discussion. Base inspected: 2722432792b6cf264205eade531fe9e3d5c027ad; origin fetched, no incoming dev commits.
+
+Choices presented (not selected):
+
+- 1A recommended: one reward per pack. 1B: three independent rewards, duplicates possible. One is easier to balance and keeps opening brief.
+- 2A recommended: packs are rare additional finds alongside loose modules, relative weight 1.0 in existing module-eligible pools. This increases total loot; weight is not a percentage. 2B: replace loose-module loot with packs, tuned for comparable overall module frequency; this changes location-specific reward mixes and needs LootLab validation. Do not silently remove loose modules or add pack loot before this choice.
+- 3A recommended: all 29 entries from the export, including expansion kits. 3B: the 26 modules only; expansion kits stay as loose loot. Makeshift craftable modules remain outside the supplied catalog.
+
+Proposed routine defaults: Module Pack name, 0.2 item weight, loot-only/no new crafting recipe, two-second opening action and four-second optional default-on reveal with Skip. Reward committed once before the visual reveal; skip/close must not reroll or duplicate it. Existing Manage icons/rarity text and dim backgrounds, bounded visible cards, UI work only while open. Defaults remain proposals until owner response; native transaction/persistence behavior needs proof.
+
+All 29 new effective weights apply to the module catalog and selected pack eligibility, with existing tuning preservation and no double application as described above. Battery formatting changes units at 60 in-game minutes and leaves drain/reload-inclusive estimation arithmetic unchanged. C171 tooltip/capacity findings remain explicitly queued, not claimed fixed. Medium effort suits the display correction; recommend Fast for the full pack implementation if estimated over 25 minutes.

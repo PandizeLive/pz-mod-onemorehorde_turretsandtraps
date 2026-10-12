@@ -1,5 +1,8 @@
 # Planning
 
+**C175 - patch scope approved, pack choices pending:** owner approves the hour/minute fix and module pack, explicitly reaffirms all 29 supplied weights, then requests questions/options first if needed. [Current choices](checkpoints/R3_MODULE_PACK.md#c175-approval-and-remaining-choices). Present reward count, acquisition and eligibility before implementing dependent pack/loot behavior. Viewpoint remains separate.
+
+
 **C174 - Viewpoint feasibility:** optional support is realistic enough for a prototype, but rendering/selection and performance remain unverified. [Evidence and separate compatibility proposal](checkpoints/VIEWPOINT_COMPATIBILITY.md). No implementation or new chat authorized; C173 remains the next content/corrective planning track.
 
 

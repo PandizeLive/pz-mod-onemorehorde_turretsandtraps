@@ -949,3 +949,8 @@ Owner requests a new card-pack-like item using all module weights, an optional d
 ## C174 - Project Viewpoint feasibility inquiry (2026-10-12)
 
 Owner asks whether first-person mod support is realistic before moving it to another chat. Read-only inspection finds installed Viewpoint 0.1.6 for PZ 42.21, mouse world-coordinate helpers and native context-menu harvesting; OMHTT retains isometric selection/overlay assumptions and an unproven native 3D render hook under Viewpoint. [Evidence and proposal](checkpoints/VIEWPOINT_COMPATIBILITY.md). Recommend a separate optional adapter prototype for one turret and trap, preserving dependency-free core packages. Full rendering/performance support remains unverified; no implementation, dependency change or chat creation authorized. C173 pack/weights/battery planning stays separate and its remaining choices are unresolved. C108/C119 mirror applies.
+
+
+## C175 - Module-pack/hour patch approval and weights reaffirmed (2026-10-12)
+
+Owner approves the hour patch and module pack, explicitly adds the new weights, and then invites questions/options first. Scope approved: adaptive battery hours/minutes, weighted pack/reveal, all 29 supplied effective weights. [Remaining material choices and proposed defaults](checkpoints/R3_MODULE_PACK.md#c175-approval-and-remaining-choices): reward count, additional versus replacement loot, expansion-kit eligibility. These choices are not settled by feature approval. No gameplay/package change this turn; Viewpoint stays separate and C171 findings remain pending. C108/C119 planning mirror applies.
