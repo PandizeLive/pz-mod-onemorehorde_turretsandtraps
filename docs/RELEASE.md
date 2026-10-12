@@ -1,12 +1,12 @@
 # Release state and publication policy
 
-## Current candidate: 0.2.44 / C160
+## Current local installation: 0.2.44 / C160
 
 **C160 / 0.2.44 implemented and automatically verified.** Manage sections/rarity/bars, reload-aware battery feedback, Once Each and Synergy/Martyrdom/Tack are complete under the [approved contract](checkpoints/R3_MANAGE_RARITY_SYNERGY.md). Bounded admission precedes resource commitment; terminal effects cannot recurse. [Patch](PATCH_v0.2.44.md) | [one six-step test](TEST_v0.2.44.md).
 
 15,931 Kahlua assertions, native write/read, all three package selections and 51 supported Firearms guns pass. LootLab matches 28 modules / 193 entries; 76 API/page tests and browser model/import checks pass. These checks do not certify rendered gameplay or client frame smoothness. The prior 676-ms gap remains unassigned. Held 0.2.43 checks join this test; no old round is newly marked passed.
 
-202 source / 250 package files; package independence and all automated probes pass. Tagged installation and archive verification pending the final release step. [Test evidence](TEST_v0.2.44.md) | [LootLab deployment](../diagnostics/v0.2.44/lootlab-release.json). No Workshop upload.
+Installed through root OMH.cmd from immutable `test/v0.2.44` / `6d094958f7fb8c59893ef3a7ad491fbd60805d42`. All 202 source and 250 tagged/package/installed/archive files match; both previous 0.2.43 backups verify. Archive SHA-256: `d476463498b178fc13420e2382a684dc5e0bfe063b38e307de0c178b9f808175`. [Install](../diagnostics/v0.2.44/install.json) | [Machine verification](../diagnostics/v0.2.44/local-release.json). [Test evidence](TEST_v0.2.44.md) | [LootLab deployment](../diagnostics/v0.2.44/lootlab-release.json). No Workshop upload.
 
 
 ## Previous local installation: 0.2.43 / C154

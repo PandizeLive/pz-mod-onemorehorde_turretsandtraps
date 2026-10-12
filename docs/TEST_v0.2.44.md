@@ -1,6 +1,6 @@
 # 0.2.44 focused test
 
-**Owner test pending.** This is the single combined test, including held 0.2.43 checks; older rounds need not be repeated.
+**Installed; owner test pending.** This is the single combined test, including held 0.2.43 checks; older rounds need not be repeated.
 
 1. Restart and confirm **0.2.44**. Open a firearm turret with Large Expansion. Check section borders, rarity colors, right-aligned module effects, supply bars and battery hover.
 2. Transfer **600 rounds** through inventory, then Manage; interrupt once. Both should batch quickly without loss or freezes. One Conservation copy should give two uses per round, including Splitter costs.
@@ -20,3 +20,5 @@
 - LootLab: 28 modules, 16 pools, 193 entries; 76 API/page tests; seeded model, map controls and independent-package defaults pass. Browser imports preserve prior normalized tuning and supply the three new defaults. Production bundle/access checks recorded in `diagnostics/v0.2.44/lootlab-release.json`.
 
 No new owner test or console acceptance is claimed this turn. The C155 676-ms gap and Louisville hang remain unassigned. GPU presentation, real crowd smoothness and a live active-field restore are pending. R3C7 and broader R1C3 remain open; multiplayer remains deferred.
+
+Tagged/source/package/installed/archive hashes and both 0.2.43 backups verify: [machine release record](../diagnostics/v0.2.44/local-release.json).
