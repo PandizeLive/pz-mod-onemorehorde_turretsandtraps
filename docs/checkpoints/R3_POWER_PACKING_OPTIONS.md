@@ -1,5 +1,9 @@
 # C166 - Pickup weight, power endurance and rarity discussion
 
+## C170 - Owner abandons packed-weight reduction (2026-10-12)
+
+**C170: packed-turret weight reduction is abandoned at the owner's request.** Existing pickup/placement keeps actual contents and their full weight. No carry-case alternative, lighter-base change or Java dependency is selected. Remove packing from the active queue; do not reopen it without a new owner request. 0.2.46 remains installed; its focused test is pending. Historical proposals below are superseded for packing. Owner requests the short installed-patch test; no new gameplay change or build is needed.
+
 ## C169 - Simplest safe packing alternatives (2026-10-12)
 
 Owner asks what still blocks packing and for the simplest safe options. Discussion only; no replacement behavior or dependency is approved. Inspected current branch at 9648bbbd301003f3ae29a81f9771ee3fcb2ab6ec and fetched origin without incoming changes. The repeated Inset panels visual selection does not change this scope.

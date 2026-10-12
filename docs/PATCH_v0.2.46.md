@@ -1,5 +1,7 @@
 # 0.2.46 - Battery endurance and Regulator
 
+**C170 disposition:** the owner abandoned packed-turret weight reduction after this build. Historical implementation limitations below are retained as release evidence; packing is no longer pending work.
+
 C168 approves the C167 selections. [Contract](checkpoints/R3_POWER_PACKING_OPTIONS.md) | [Focused test](TEST_v0.2.46.md).
 
 - Battery endurance rebalance

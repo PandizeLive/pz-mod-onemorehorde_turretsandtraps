@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Synchronized 2026-10-12 against C80-C168 and native-verified 0.2.46. Full packing remains technically unfinished; R3C7 owner acceptance remains open.
+Synchronized 2026-10-12 against C80-C170 and native-verified 0.2.46. Packed-weight reduction is abandoned under C170; R3C7 owner acceptance remains open.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -22,7 +22,7 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 16,046 Kahlua assertions, 760 native translations, 113 compiled files, native write/read, three independent package selections and 51 Firearms weapons pass. LootLab 0.2.46 is deployed with 29 modules/208 entries; 77 API/page tests and desktop/mobile browser checks pass. Owner/rendered gameplay acceptance remains pending.
 
-**Packing remains unfinished, despite approved implementation scope.** The ordinary-Lua native buffer route and generic object loaders still require unavailable buffer positioning/version decoding; no safe arbitrary-item restore path has been proven. Existing exact-item pickup/placement retains full contents weight. No Java dependency, partial item reconstruction or equipped-only substitution ships. Further progress requires a supported native bridge or a separately discussed dependency, not another balance choice.
+**C170: packed-turret weight reduction is abandoned at the owner's request.** Existing pickup/placement keeps actual contents and their full weight. No carry-case alternative, lighter-base change or Java dependency is selected. Remove packing from the active queue; do not reopen it without a new owner request. 0.2.46 remains installed; its focused test is pending.
 
 | Phase / checkpoints | Status | Remaining work / next gate |
 | --- | --- | --- |
@@ -33,7 +33,7 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 | 2: R2C4 concertina | C133 linked 1x2 conversion installed/native-verified in 0.2.39 | Focused paired-wire owner acceptance remains; see TEST_v0.2.39.md |
 | 3: R3C1-R3C2 new head | Candidates documented; none selected for implementation | Select one head and settle its concrete contract before prototyping |
 | 3: R3C3 explosive head | Optional, unscoped | Collateral/resource/effect-budget decisions and feasibility first |
-| 3: R3C4-R3C7 offensive modules/battery | C168 / 0.2.46 adds Regulator, rebalances endurance, lowers module weights and fixes rarity feedback | R3C7 focused 0.2.46 owner test pending; packed-weight work unfinished |
+| 3: R3C4-R3C7 offensive modules/battery | C168 / 0.2.46 adds Regulator, rebalances endurance, lowers module weights and fixes rarity feedback | R3C7 focused 0.2.46 owner test pending; packed-weight work abandoned under C170 |
 | 3: R3C8 starter modules/expansion | C104 implemented, verified and installed in 0.2.34 | C106 tentative passes; 4/6/6 layout acceptance in 0.2.35; include maximum loadouts in future R3C7 endurance checks |
 | 4: R4C1-R4C4 signals/connected traps | Planned | Signal contract first; devices then optional turret receiver |
 | 5: R5C1-R5C3 MP/integrations/release | Planned; no certification or publication | Validate only the selected release scope; optional features need not all ship |

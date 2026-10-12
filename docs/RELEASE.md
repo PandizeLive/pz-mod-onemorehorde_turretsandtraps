@@ -1,5 +1,7 @@
 # Release state and publication policy
 
+**C170 disposition:** the owner abandoned packed-turret weight reduction after this build. Historical implementation limitations below are retained as release evidence; packing is no longer pending work.
+
 ## Current local installation: 0.2.46 / C168
 
 Installed through root OMH.cmd from immutable `test/v0.2.46` / `ea2bd4d97da791bfcb7cc26338d9a060f90f77f8`. All 204 source and 252 tagged/package/installed/archive files match; both previous 0.2.45 backups verify. Archive SHA-256: `03b30859771a89b73d902787e91ae41d2e6d5baa9b8089e29cf3e353789eb47e`. [Install](../diagnostics/v0.2.46/install.json) | [Machine verification](../diagnostics/v0.2.46/local-release.json).

@@ -1,18 +1,16 @@
 # Planning
 
-**C169 packing discussion:** [Native carry case, lighter base, or continued exact-packing feasibility](checkpoints/R3_POWER_PACKING_OPTIONS.md#c169---simplest-safe-packing-alternatives-2026-10-12). Recommend equipped native reduction for simplicity only if the owner accepts changing the ordinary-inventory requirement. No alternative/dependency selected; no gameplay change. Decision needed for packing; 0.2.46 remains installed.
-
 **C168 / 0.2.46 installed and verified; owner test pending.** Owner approved revised 2B: .00045% base battery use, additive rarity surcharges .1/.15/.25/.4/.6/.8/1.0, plus C167 packing/weight/Regulator/names. Regulator provides +25% endurance per copy, battery-only, no self-surcharge; all module item weights are .2. Seven names end in Epic/Legendary/Mythic. Inventory rarity tooltip uses exposed UI methods. [Patch](PATCH_v0.2.46.md) | [focused test](TEST_v0.2.46.md).
 
 16,046 Kahlua assertions, 760 native translations, 113 compiled files, native write/read, three independent package selections and 51 Firearms weapons pass. LootLab 0.2.46 is deployed with 29 modules/208 entries; 77 API/page tests and desktop/mobile browser checks pass. Owner/rendered gameplay acceptance remains pending.
 
-**Packing remains unfinished, despite approved implementation scope.** The ordinary-Lua native buffer route and generic object loaders still require unavailable buffer positioning/version decoding; no safe arbitrary-item restore path has been proven. Existing exact-item pickup/placement retains full contents weight. No Java dependency, partial item reconstruction or equipped-only substitution ships. Further progress requires a supported native bridge or a separately discussed dependency, not another balance choice.
+**C170: packed-turret weight reduction is abandoned at the owner's request.** Existing pickup/placement keeps actual contents and their full weight. No carry-case alternative, lighter-base change or Java dependency is selected. Remove packing from the active queue; do not reopen it without a new owner request. 0.2.46 remains installed; its focused test is pending.
 
-Updated 2026-10-12 under C168.
+Updated 2026-10-12 under C170.
 
 ## Read the current branch
 
-Current unmerged work is on **codex/performance-barbed-audit**, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1), targeting dev. **0.2.46 / C168** is implemented/native-verified; see [release state](RELEASE.md) for installation and [current test](TEST_v0.2.46.md). Full packing remains unfinished. Historical discussions below do not override this handoff.
+Current unmerged work is on **codex/performance-barbed-audit**, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1), targeting dev. **0.2.46 / C168** is implemented/native-verified; see [release state](RELEASE.md) for installation and [current test](TEST_v0.2.46.md). Packed-weight reduction is abandoned under C170. Historical discussions below do not override this handoff.
 
 Fetch the remote and check open development/planning PRs before using dev alone as the current state. Read the active branch's AGENTS.md, this page and [CURRENT_STATUS.md](CURRENT_STATUS.md). Record which branch/commit was inspected. A chat's older answer or an old Cloud checkout is not a current checkpoint. Preserve unmerged work and reconcile incoming plans; do not reset, force-push or merge automatically.
 
