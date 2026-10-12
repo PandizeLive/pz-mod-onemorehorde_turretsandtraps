@@ -21,7 +21,7 @@ function ISPanel:setHeight(height) self.height = height end
 function ISPanel:drawText(text) check(type(text) == "string", "Manage draws resolved status text") end
 ISButton = {new = function(self, x, y, w, h, title, target, callback)
     return {initialise = function() end, setEnable = function(self, enabled) self.enabled = enabled end,
-        target = target, callback = callback, setTitle = function(self, title) self.title = title end}
+        x=x, y=y, width=w, height=h, target = target, callback = callback, setTitle = function(self, title) self.title = title end}
 end}
 ISMouseDrag = {}
 ISInventoryItem = {renderItemIcon = function() end}

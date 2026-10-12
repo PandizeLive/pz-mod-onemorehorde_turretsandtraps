@@ -1,11 +1,11 @@
-v0.2.47
+v0.2.47.1
 Single-player development test content
-- Added Module Packs with three weighted module/expansion rewards, a default-on skippable rolling reveal, supplemental container loot and a configurable 15% zombie-body drop chance.
+- Added Module Packs with three weighted module/expansion rewards, a default-on skippable rolling reveal that fits smaller viewports, supplemental container loot and a configurable 15% zombie-body drop chance; no packs drop when all reward weights are disabled.
 - Applied owner-tuned module loot defaults across the game and LootLab while preserving saved tuning.
 - Added the loot-only Regulator Module, providing 25% more battery life per copy without extra power draw; includes LootLab tuning.
 - Reduced all module item weights from 0.3 to 0.2.
 - Rebalanced battery endurance with a 0.00045% default base cost and +0.1x to +1.0x additive rarity costs.
-- Added Abundant, Common, Uncommon, Rare, Epic, Legendary and Mythic rarity names; corrected inventory module/rarity tooltip rendering and percent-format errors.
+- Added Abundant, Common, Uncommon, Rare, Epic, Legendary and Mythic rarity names; corrected inventory module/rarity tooltip rendering and percent-format errors, with cached text layout.
 - Added loot-only Conservation Module with two ammunition uses per round at one copy and one more use per extra copy. Discounts Splitter ammo costs; progress persists on the head and power still applies per shot. Includes matching LootLab entries.
 - Matched Manage and inventory ammunition batching, with bounded native groups and reduced repeated inventory work. Optimized barrier maintenance, barbed contact lookup, turret stat/render work and secondary-shot queues.
 - Narrowed Manage while retaining 4/6/6 and separate utility slots. Added section backgrounds/borders, loaded-loot rarity colors, native supply bars, and a scrollable Installed Modules list with names left, effects right and concise Feature/Stackable/Battery Drain/Rarity tooltips. Polished the engagement slider and wrapped applicability messages. Battery hover shows rounded cost per shot, shots left and approximate in-game firing time with adaptive minutes/hours and reload/chamber delays in the calculation; actual consumption precision is unchanged.

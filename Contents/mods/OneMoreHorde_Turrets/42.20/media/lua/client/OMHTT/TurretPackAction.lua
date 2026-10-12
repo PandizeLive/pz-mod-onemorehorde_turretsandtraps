@@ -28,7 +28,9 @@ end
 function A:update()
     self.elapsed = self.elapsed + math.min(getGameTime():getRealworldSecondsSinceLastUpdate(), .25)
     self:setJobDelta(math.min(self.elapsed / 2, .999))
-    if self.elapsed >= 2 then self:forceComplete() end
+    if self.elapsed >= 2 then
+        self:forceComplete()
+    end
 end
 
 ---@return nil
@@ -88,7 +90,9 @@ local function menu(index, context, items)
     if not player or player:isDead() then return end
     for i = 1, #items do
         local item = items[i]
-        if not instanceof(item, "InventoryItem") then item = item.items[1] end
+        if not instanceof(item, "InventoryItem") then
+            item = item.items[1]
+        end
         if item and item:getFullType() == P.TYPE then
             context:addOption(getText("UI_OMHTT_OpenModulePack"), item, open, player)
             return

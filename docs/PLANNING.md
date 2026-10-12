@@ -1,10 +1,10 @@
 # Planning
 
-**C179 recorded:** audit corrections remain queued; no new gameplay approval inferred. Alex's no-pcall/xpcall rule is verified across source, packages and installed copies, and retained in the per-turn agreement. Full compliance is not claimed: tooltip layout caching and new-pack inline-conditional style cleanup remain. [Guideline check](AUDIT_v0.2.47.md#c179---alex-guideline-confirmation-and-queued-work).
+**C180 / 0.2.47.1 corrective patch verified; local installation pending.** Owner approved the C178/C179 fixes. Inventory tooltip wrapping is cached; pack reveals fit the player viewport with scrolling and fixed controls, use native script metadata, and reuse unchanged reward pools. Empty reward pools suppress container/corpse packs while preserving existing packs. Pack-code inline-conditionals are cleaned up; no pcall/xpcall added. The 15% body rate, three rewards and 29 supplied weights are unchanged.
 
-**C178 audit completed:** no new permanent tick loop or tested reward duplication/loss found. Confirmed concerns: per-frame inventory tooltip wrapping, reveal overflow in a 360-pixel viewport, and useless pack drops when every reward weight is zero. [Findings, evidence and recommended corrections](AUDIT_v0.2.47.md). 16,084 audit/suite assertions pass; actual 0.2.47 client performance is unverified because console.txt still records 0.2.46. Gameplay files/install unchanged; corrective patch not yet approved.
+[Corrective patch](PATCH_v0.2.47.1.md) | [Combined short test](TEST_v0.2.47.1.md). Supersedes the queued/approval-needed status of C178/C179. Native/GPU owner acceptance remains distinct. C171 capacity warnings remain an earlier separate unresolved finding. LootLab remains deployed at 0.2.47; this correction needs no hosted change.
 
-**C177 / 0.2.47 installed and verified; owner test pending.** Module Packs contain three independently weighted rewards, including expansion kits and duplicates. Packs supplement loose modules at container weight 1.0 and a separately configurable **15% per zombie body**, including turret kills. Optional default-on four-second reveal with Skip; two-second opening. All 29 owner-exported weights are the new defaults. Battery estimates switch to hours at 60 in-game minutes; inventory module descriptions bypass the native translation-key formatting failure.
+**Previous C177 / 0.2.47 installed and verified; owner test pending.** Module Packs contain three independently weighted rewards, including expansion kits and duplicates. Packs supplement loose modules at container weight 1.0 and a separately configurable **15% per zombie body**, including turret kills. Optional default-on four-second reveal with Skip; two-second opening. All 29 owner-exported weights are the new defaults. Battery estimates switch to hours at 60 in-game minutes; inventory module descriptions bypass the native translation-key formatting failure.
 
 [Patch](PATCH_v0.2.47.md) | [Five-step test](TEST_v0.2.47.md) | [Approved contract](checkpoints/R3_MODULE_PACK.md#c177-15-percent-body-rate-and-implementation) | [Release evidence](RELEASE.md).
 
@@ -12,7 +12,7 @@ Existing Sandbox/account tuning is preserved; new/reset defaults use the export.
 
 ## Read the current branch
 
-Current unmerged work is on **codex/performance-barbed-audit**, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1), targeting dev. **0.2.47 / C177** is implemented; see [release state](RELEASE.md) for installation and [current test](TEST_v0.2.47.md). Packed-weight reduction is abandoned under C170. Historical discussions below do not override this handoff.
+Current unmerged work is on **codex/performance-barbed-audit**, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1), targeting dev. **0.2.47.1 / C180** is implemented; see [release state](RELEASE.md) for installation and [current test](TEST_v0.2.47.1.md). Packed-weight reduction is abandoned under C170. Historical discussions below do not override this handoff.
 
 Fetch the remote and check open development/planning PRs before using dev alone as the current state. Read the active branch's AGENTS.md, this page and [CURRENT_STATUS.md](CURRENT_STATUS.md). Record which branch/commit was inspected. A chat's older answer or an old Cloud checkout is not a current checkpoint. Preserve unmerged work and reconcile incoming plans; do not reset, force-push or merge automatically.
 

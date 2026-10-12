@@ -178,3 +178,8 @@ The supplied 29 effective weights become defaults by changing the existing per-i
 Battery duration uses minutes below 60 and hours from 60, with one decimal; cost, reload-aware duration calculation and .00045 base setting are unchanged. The separate C171 tooltip fix draws the four translated module lines directly instead of sending percentage text back through the native translation-key parser. Capacity warning cleanup remains open; Viewpoint remains separate and packed-turret reduction stays abandoned.
 
 LootLab baseline 0.2.47 is deployed from a verified isolated snapshot; live bundle and Access/public route checks pass. Map/statistics explicitly remain loose-module estimates and exclude packs. Native, Kahlua, browser and deployment evidence are recorded in [the version test](../TEST_v0.2.47.md); rendered gameplay is pending. Development mirror required under C108/C119; no Workshop upload.
+
+
+## C180 - Approved audit correction
+
+Owner approves solving the C178/C179 issues. 0.2.47.1 implements the corrections without changing the acquisition/reward contract. Empty eligibility is refreshed with loaded loot settings (`ModuleLoot.apply`) and checked without scanning module weights on each death; opening refreshes the reusable weighted pool if loaded values change. Existing packs remain available after weights are restored. Reveal metadata is prepared per opening from native script items, preserving current translated names and rarity colors; only drawing occurs per frame. Large fonts/short viewports scroll the complete reward rows while controls remain fixed. [Patch](../PATCH_v0.2.47.1.md) and [combined test](../TEST_v0.2.47.1.md) supersede the earlier pending-correction status.

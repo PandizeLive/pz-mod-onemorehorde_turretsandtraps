@@ -2,22 +2,35 @@ local L = require("OMHTT/LootDefinitions")
 local T = require("OMHTT/Turret")
 local M = require("OMHTT/TurretModules")
 local P = {TYPE = "Base.OMHTTModulePack", COUNT = 3}
+local names, weights, entries = {}, {}, {}
+for name in pairs(L.WEIGHTS) do
+    names[#names + 1] = name
+end
+table.sort(names)
 
 ---@return table entries Weighted eligible modules
 ---@return number total
 ---@nodiscard
 function P.pool()
-    local names, entries, total = {}, {}, 0
-    for name in pairs(L.WEIGHTS) do names[#names + 1] = name end
-    table.sort(names)
+    local changed = P.total == nil
     for i = 1, #names do
         local name = names[i]
         local weight = L.WEIGHTS[name] * M.option("LootRate" .. name, L.DEFAULTS.items[name], 0, 20)
+        if weights[i] ~= weight then
+            weights[i], changed = weight, true
+        end
+    end
+    if not changed then return entries, P.total end
+    entries = {}
+    local total = 0
+    for i = 1, #names do
+        local name, weight = names[i], weights[i]
         if weight > 0 then
             total = total + weight
             entries[#entries + 1] = {name = name, ceiling = total}
         end
     end
+    P.total = total
     return entries, total
 end
 
@@ -48,7 +61,9 @@ function P.open(player, pack)
         local entries, total = P.pool()
         if total <= 0 then return nil end
         names = {}
-        for i = 1, P.COUNT do names[i] = P.pick(entries, total, ZombRandFloat(0, 1)) end
+        for i = 1, P.COUNT do
+            names[i] = P.pick(entries, total, ZombRandFloat(0, 1))
+        end
         data.OMHTTPackRewards = names
     end
     if #names ~= P.COUNT then return nil end
@@ -61,13 +76,17 @@ function P.open(player, pack)
     for i = 1, P.COUNT do
         inventory:AddItem(rewards[i])
         if not inventory:contains(rewards[i]) then
-            for n = 1, i do inventory:Remove(rewards[n]) end
+            for n = 1, i do
+                inventory:Remove(rewards[n])
+            end
             return nil
         end
     end
     inventory:Remove(pack)
     if inventory:contains(pack) then
-        for i = 1, P.COUNT do inventory:Remove(rewards[i]) end
+        for i = 1, P.COUNT do
+            inventory:Remove(rewards[i])
+        end
         return nil
     end
     data.OMHTTPackOpened = true
@@ -83,9 +102,15 @@ function P.onDeath(zombie)
     data.OMHTTPackRolled = true
     local chance = M.option("PackZombieChance", 15, 0, 100)
     if chance <= 0 or M.option("ModuleLootRate", L.DEFAULTS.global, 0, 20) <= 0 then return end
+    if P.total == nil then
+        P.pool()
+    end
+    if P.total <= 0 then return end
     if ZombRand(10000) >= chance * 100 then return end
     local inventory = zombie:getInventory()
-    if inventory then inventory:AddItem(P.TYPE) end
+    if inventory then
+        inventory:AddItem(P.TYPE)
+    end
 end
 
 return P

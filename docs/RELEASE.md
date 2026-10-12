@@ -1,6 +1,10 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.47 / C177
+## Current corrective build: 0.2.47.1 / C180
+
+[Patch](PATCH_v0.2.47.1.md) | [Four-step combined test](TEST_v0.2.47.1.md). 16,094 assertions, native write/read and all three package-isolation selections pass. Zero pcall/xpcall in source/packages; pack style corrections included. Owner-rendered acceptance is pending. The 15% drop chance, three rewards and weights are unchanged; old C171 capacity warnings remain open. LootLab stays at 0.2.47; no hosted or Workshop publication in this correction. Local install evidence will be recorded after the immutable tag is installed.
+
+## Previous local installation: 0.2.47 / C177
 
 Module Packs, 15% once-per-body loot, all 29 supplied weights, battery hours/minutes and the inventory percent-tooltip correction are implemented. [Patch](PATCH_v0.2.47.md) | [Five-step test](TEST_v0.2.47.md). 16,071 Kahlua assertions, native write/read (including unopened-pack rewards) and all three independent package selections pass. 208 source / 256 packaged files match the validated manifest. Owner/rendered acceptance remains pending; capacity warnings remain open.
 

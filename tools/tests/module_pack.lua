@@ -48,6 +48,8 @@ check(P.open(player, emptyPack) == nil and inventory:contains(emptyPack), "Zero 
 testMode = "client"
 check(P.open(player, emptyPack) == nil, "Deferred MP opening stays disabled")
 testMode = "sp"
+for name in pairs(L.WEIGHTS) do settings["LootRate" .. name] = nil end
+P.pool()
 local count = 0
 local zombie = {data = {}, getInventory = function() return {AddItem = function(_, kind) check(kind == P.TYPE, "Only packs added to bodies"); count = count + 1 end} end}
 function zombie:getModData() return self.data end
@@ -76,7 +78,11 @@ check(string.find(B.battery(contents, stats), "6.0 in-game hours", 1, true), "Lo
 check(stats.batteryPercent == .1, "Duration formatting never changes consumption")
 E.duration, getGameTime = originalDuration, originalTime
 local Reveal = require("OMHTT/TurretPackReveal")
-local originalManager = getTextManager
+ZombRandFloat = function() return .25 end
+local originalManager, originalScripts = getTextManager, getScriptManager
+getScriptManager = function() return {getItem = function(_, kind) return {
+    getDisplayName = function() return kind end, getNormalTexture = function() return nil end}
+end} end
 getTextManager = function() return {getFontHeight = function() return 16 end,
     WrapText = function(_, font, text, width) return text end} end
 instanceItem = function(kind)
@@ -116,8 +122,9 @@ check(not action:complete() and inventory:contains(actionPack), "Opening cannot 
 action.elapsed = 2
 check(action:complete() and not inventory:contains(actionPack), "Completed action grants before reveal")
 check(not action:complete(), "Timed action duplicate completion blocked")
-getTextManager = originalManager
+getTextManager, getScriptManager = originalManager, originalScripts
 ISPanel.new, ISPanel.prerender = originalNew, originalPrerender
 instanceItem, ZombRand, ZombRandFloat = oldFactory, oldRoll, oldFloat
 for key in pairs(settings) do settings[key] = nil end
 for key, value in pairs(oldSettings) do settings[key] = value end
+P.pool()

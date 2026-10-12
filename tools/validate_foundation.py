@@ -142,7 +142,7 @@ def main():
     stock = os.environ.get("OMHTT_STOCK_CLASSES") == "1"
     classpath = os.pathsep.join(str(path) for path in ([classes, GAME / "projectzomboid.jar", GAME] if stock else [classes, GAME, GAME / "projectzomboid.jar"]))
     log = run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED", "-Djava.awt.headless=true",
-        "-Duser.home=" + str(OUTPUT / "native-home"), "-cp", classpath, "KahluaCheck", ROOT], cwd=GAME)
+        "-Duser.home=" + str(OUTPUT / "native-home"), "-cp", classpath, "KahluaCheck", ROOT, "tools/tests/module_pack_audit.lua"], cwd=GAME)
     (OUTPUT / "validation.log").write_text(log, encoding="utf-8")
     files = {str(path.relative_to(PACKAGE)).replace("\\", "/"): hashlib.sha256(path.read_bytes()).hexdigest()
         for path in sorted(PACKAGE.rglob("*")) if path.is_file()}

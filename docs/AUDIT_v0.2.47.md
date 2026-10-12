@@ -40,3 +40,8 @@ The governing references remain Alex's pz-modding-practices and pz-lua-best-prac
 Known remaining gaps: C178's per-frame tooltip wrapping/cache issue and non-guard inline conditionals in the new pack files (TurretPackAction update/menu, TurretPackReveal rendering/selection/close, TurretModulePack corpse insertion). The latter is a style deviation, not a reproduced engine failure. Include style cleanup when implementing the focused correction; do not modify immutable 0.2.47 packages just to restyle them.
 
 Recorded next corrective-patch candidates: tooltip layout caching, viewport-safe reveal, empty-pool acquisition suppression; optional cached reveal display metadata. Keep the 15% rate, three rewards and supplied weights. This request authorizes recording/verification, not a gameplay implementation or install. C171 capacity warnings remain open separately. The per-turn project agreement now carries the no-protected-call rule and explicit guideline-gap reporting for future chats. No extra owner test is requested for this documentation check.
+
+
+## C180 - Correction implemented in 0.2.47.1
+
+The owner subsequently approved solving these issues. The audit above remains historical evidence; its approval-needed state no longer applies. [Corrective patch](PATCH_v0.2.47.1.md) fixes all three defects and pack style deviations, replaces temporary display items with verified native script metadata, and reuses unchanged reward pools. The audit fixture now asserts desired behavior and runs in normal foundation validation. C171 capacity warnings remain separate. See [current evidence](TEST_v0.2.47.1.md).

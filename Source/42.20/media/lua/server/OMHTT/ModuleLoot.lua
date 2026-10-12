@@ -8,6 +8,7 @@ local Pack = require("OMHTT/TurretModulePack")
 
 ---@return nil
 function L.apply()
+    local _, packTotal = Pack.pool()
     local multiplier = M.option("ModuleLootRate", L.DEFAULTS.global, 0, 20)
     if isServer() or SandboxVars.OMHTurretsTraps.TurretsEnabled == false or SandboxVars.OMHTurretsTraps.PotatoTurret == false then
         multiplier = 0
@@ -35,7 +36,7 @@ function L.apply()
                 D.trace("module-loot-weight", {pool = name, module = module, weight = effective})
             end
             local packWeight = M.option("PackLootWeight", 1, 0, 100) * L.SCALES[name] * multiplier
-            if packWeight > 0 then
+            if packWeight > 0 and packTotal > 0 then
                 items[#items + 1] = Pack.TYPE
                 items[#items + 1] = packWeight
             end

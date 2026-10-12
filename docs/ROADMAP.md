@@ -1,12 +1,16 @@
 # Phases and checkpoints
 
+**C180 / 0.2.47.1 corrective patch verified; local installation pending.** Owner approved the C178/C179 fixes. Inventory tooltip wrapping is cached; pack reveals fit the player viewport with scrolling and fixed controls, use native script metadata, and reuse unchanged reward pools. Empty reward pools suppress container/corpse packs while preserving existing packs. Pack-code inline-conditionals are cleaned up; no pcall/xpcall added. The 15% body rate, three rewards and 29 supplied weights are unchanged.
+
+[Corrective patch](PATCH_v0.2.47.1.md) | [Combined short test](TEST_v0.2.47.1.md). Supersedes the queued/approval-needed status of C178/C179. Native/GPU owner acceptance remains distinct. C171 capacity warnings remain an earlier separate unresolved finding. LootLab remains deployed at 0.2.47; this correction needs no hosted change.
+
 **C177 / 0.2.47 installed and verified; owner test pending.** Module Packs contain three independently weighted rewards, including expansion kits and duplicates. Packs supplement loose modules at container weight 1.0 and a separately configurable **15% per zombie body**, including turret kills. Optional default-on four-second reveal with Skip; two-second opening. All 29 owner-exported weights are the new defaults. Battery estimates switch to hours at 60 in-game minutes; inventory module descriptions bypass the native translation-key formatting failure.
 
 [Patch](PATCH_v0.2.47.md) | [Five-step test](TEST_v0.2.47.md) | [Approved contract](checkpoints/R3_MODULE_PACK.md#c177-15-percent-body-rate-and-implementation) | [Release evidence](RELEASE.md).
 
 Existing Sandbox/account tuning is preserved; new/reset defaults use the export. Rarity and power costs follow those loaded weights. LootLab 0.2.47 is deployed; its map still estimates loose modules only, excluding pack drops/rewards. Capacity warnings from C171 remain open. Rendered reveal/tooltip and R3C7 owner acceptance remain pending; native checks do not establish those passes. Packed-turret weight reduction remains abandoned (C170); Viewpoint remains a separate unapproved prototype. No Workshop upload.
 
-Synchronized 2026-10-12 through C177.
+Synchronized 2026-10-12 through C180.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 

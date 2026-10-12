@@ -1,5 +1,7 @@
 # OMH: Turrets & Traps
 
+Current corrective patch: **0.2.47.1 / C180**. [Pack/tooltip corrections](docs/PATCH_v0.2.47.1.md) | [Short test](docs/TEST_v0.2.47.1.md) | [Current status](docs/CURRENT_STATUS.md).
+
 **Development build â€” testing pending. No official release yet.** The private [GitHub repository](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps) uses `dev` for current code and planning. Start with [Planning](docs/PLANNING.md), [current status](docs/CURRENT_STATUS.md) and the [development/release workflow](docs/GITHUB_WORKFLOW.md). Cloud discusses and documents plans; the local PC implements and tests them. Every completed update and versioned test finding is mirrored to GitHub under C108. Current owner findings: [0.2.34 completed with findings](docs/TEST_v0.2.34.md#owner-result-and-console-review-2026-10-08), [0.2.35 owner findings](docs/TEST_v0.2.35.md#owner-findings-and-console-review-2026-10-09); automated results remain in [release evidence](docs/RELEASE.md). Official releases are tracked separately after confirmed Workshop publication.
 
 Project foundation created 2026-09-25. **Current patch 0.2.47:** [Module Packs, owner loot weights and battery hours](docs/PATCH_v0.2.47.md), implemented under C177. [Current status](docs/CURRENT_STATUS.md) | [five-step test](docs/TEST_v0.2.47.md) | [release state](docs/RELEASE.md). LootLab is deployed with preserved saved tuning. C171 capacity warnings remain open; rendered pack/tooltip acceptance is pending. Packed-turret weight reduction remains abandoned under C170.

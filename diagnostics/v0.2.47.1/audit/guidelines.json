@@ -1,0 +1,18 @@
+{
+  "version": "0.2.47.1",
+  "scans": {
+    "source": {
+      "files": 101,
+      "pcallXpcallTokens": 0,
+      "tabs": 0,
+      "utf8Bom": 0
+    },
+    "packages": {
+      "files": 117,
+      "pcallXpcallTokens": 0,
+      "tabs": 0,
+      "utf8Bom": 0
+    }
+  },
+  "newPackInlineViolations": []
+}

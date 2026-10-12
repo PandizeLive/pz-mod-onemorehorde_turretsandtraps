@@ -78,6 +78,33 @@ local function verifyTurrets()
         assert(packs == 1, "Native pack pool must contain exactly one pack entry")
     end
     assert(count == 208, "Expected 208 component entries across sixteen native loot pools")
+    for kind in pairs(Loot.WEIGHTS) do
+        local script = getScriptManager():getItem(T.TYPES[kind])
+        assert(script and script:getDisplayName() ~= "", "Pack script display metadata unavailable")
+        script:getNormalTexture()
+        SandboxVars.OMHTurretsTraps["LootRate" .. kind] = 0
+    end
+    Loot.apply()
+    assert(Pack.total == 0, "Loaded empty pool eligibility must be cached")
+    for i = 1, #Loot.POOLS do
+        local items = ProceduralDistributions.list[Loot.POOLS[i]].items
+        for n = 1, #items, 2 do
+            assert(items[n] ~= Pack.TYPE, "Empty pool must not inject container packs")
+        end
+    end
+    local emptyPack = instanceItem(Pack.TYPE)
+    player:getInventory():AddItem(emptyPack)
+    assert(Pack.open(player, emptyPack) == nil and player:getInventory():contains(emptyPack), "Empty pool must preserve carried packs")
+    for kind, value in pairs(Loot.DEFAULTS.items) do
+        SandboxVars.OMHTurretsTraps["LootRate" .. kind] = value
+    end
+    Loot.loaded()
+    local restored = Pack.open(player, emptyPack)
+    assert(restored and #restored == 3, "Existing packs must recover when eligible rewards return")
+    for i = 1, #restored do
+        player:getInventory():Remove(restored[i])
+    end
+    print("[OMHTT-Smoke] native-pack-correction scriptMetadata=29 emptyPoolInjection=blocked carriedPack=preserved eligibilityRestore=pass")
     local retired = {"OMHTTModuleCapacitySmall", "OMHTTModuleCapacity", "OMHTTModuleCapacityLarge",
         "OMHTTModuleMotionDetection", "OMHTTModuleDetection360"}
     for i = 1, #retired do

@@ -6,6 +6,14 @@ settings.TurretsEnabled, settings.PotatoTurret = true, true
 settings.ModuleLootRate, settings.PackZombieChance = 1, 15
 for name in pairs(L.WEIGHTS) do settings["LootRate" .. name] = nil end
 testMode = "sp"
+local cachedEntries = P.pool()
+check(cachedEntries == P.pool(), "Unchanged loaded weights reuse the reward pool")
+local M = require("OMHTT/TurretModules")
+local oldOption, weightReads = M.option, 0
+M.option = function(name, default, low, high)
+    if string.sub(name, 1, 8) == "LootRate" then weightReads = weightReads + 1 end
+    return oldOption(name, default, low, high)
+end
 local drops, rolls, calls = 0, 0, 0
 local inventory = {AddItem = function() drops = drops + 1 end}
 local zombie = {data = {}, getInventory = function() return inventory end}
@@ -19,12 +27,15 @@ for i = 1, 10000 do
 end
 local deathMs = realMillis() - started
 check(drops == 1500 and rolls == 10000, "10,000 unique death rolls produce exactly 1,500 packs on exhaustive RNG boundaries; repeats add none")
+check(weightReads == 0, "Death callbacks never scan component weights")
+M.option = oldOption
 for name in pairs(L.WEIGHTS) do settings["LootRate" .. name] = 0 end
+local emptyEntries, emptyTotal = P.pool()
 zombie.data = {}
 P.onDeath(zombie)
-local emptyEntries, emptyTotal = P.pool()
-check(drops == 1501 and #emptyEntries == 0 and emptyTotal == 0, "Reproduced: empty reward pool still allows corpse packs")
+check(drops == 1500 and rolls == 10000 and #emptyEntries == 0 and emptyTotal == 0, "Empty reward pool suppresses corpse packs without RNG")
 for name in pairs(L.WEIGHTS) do settings["LootRate" .. name] = nil end
+P.pool()
 local function item(kind)
     local value = {kind = kind, data = {}}
     function value:getFullType() return self.kind end
@@ -80,6 +91,9 @@ getPlayerScreenWidth = function() return 1280 end
 getPlayerScreenHeight = function() return screenHeight end
 getPlayerScreenLeft = function() return 0 end
 getPlayerScreenTop = function() return 0 end
+getScriptManager = function() return {getItem = function(_, kind) return {
+    getDisplayName = function() return kind end, getNormalTexture = function() return nil end}
+end} end
 local Reveal = require("OMHTT/TurretPackReveal")
 ISPanel.new = function(self, x, y, width, height) return setmetatable({x=x,y=y,width=width,height=height}, {__index=self}) end
 ISPanel.prerender = function() end
@@ -89,11 +103,21 @@ started = realMillis()
 for i = 1, 300 do testMillis = testMillis + 16; panel:prerender() end
 local renderMs = realMillis() - started
 check(creates == openCreates and wraps == openWraps, "Reveal frames do not instantiate items or wrap text")
-check(openCreates == 29 and openWraps == 29, "Reveal prepares all 29 display items once per opening")
+check(openCreates == 0 and openWraps == 29, "Reveal uses script metadata without creating display items")
 screenHeight = 360
 local small = Reveal.show(player, rewards)
-check(small.y < 0 and small.y + small.height > screenHeight, "Reproduced: 360-pixel split viewport overflows vertically")
-local overflow = small.height - screenHeight
+check(small.y >= 0 and small.y + small.height <= screenHeight, "360-pixel reveal fits viewport")
+check(small.closeButton.y + small.closeButton.height <= small.height and small.skipButton.y >= 0, "Reveal controls remain reachable")
+small:onMouseWheel(100)
+check(small.offset == small.maxOffset and small.maxOffset > 0, "Wheel reaches final reward")
+small:scroll({direction=-100})
+check(small.offset == 0, "Arrow scroll returns to first reward")
+fontHeight = 28
+local large = Reveal.show(player, rewards)
+check(large.height <= screenHeight and large.maxOffset > 0, "Large fonts retain a scrollable body")
+large:skip(); large:prerender()
+check(large.finished, "Skip works within constrained viewport")
+local overflow = math.max(0, small.height - screenHeight)
 local U = require("OMHTT/TurretItemTooltip")
 local tip = {getLineSpacing = function() return 18 end, getFont = function() return UIFont.Small end}
 local tooltip = {tooltip=tip, backgroundColor={a=1,r=0,g=0,b=0}, borderColor={a=1,r=1,g=1,b=1},
@@ -101,8 +125,17 @@ local tooltip = {tooltip=tip, backgroundColor={a=1,r=0,g=0,b=0}, borderColor={a=
     setHeight=function() end, drawRect=function() end, drawRectBorder=function() end, drawText=function() end}
 wraps = 0
 for i = 1, 600 do U.footer(tooltip, "Regulator") end
-check(wraps == 600, "Reproduced: unchanged tooltip wraps text on every render")
-testPackAudit = "deaths=10000 repeats=10000 packs=1500 emptyPoolCorpseDrop=true mockDeathBatchMs=" .. deathMs
+check(wraps == 1, "Unchanged tooltip wraps once across 600 frames")
+local steadyWraps = wraps
+tooltip.getWidth = function() return 300 end
+U.footer(tooltip, "Regulator")
+check(wraps == 2, "Tooltip width invalidates wrapping")
+tip.getFont = function() return UIFont.Medium end
+U.footer(tooltip, "Regulator")
+check(wraps == 3, "Tooltip font invalidates wrapping")
+U.footer(tooltip, "Firing")
+check(wraps == 4, "Tooltip description invalidates wrapping")
+testPackAudit = "deaths=10000 repeats=10000 packs=1500 emptyPoolCorpseDrop=false mockDeathBatchMs=" .. deathMs
     .. " partialGrantRollback=pass removeRollback=pass revealCreateItems=" .. openCreates
     .. " revealFrames=300 newFrameItems=0 newFrameWraps=0 mockRenderBatchMs=" .. renderMs
-    .. " smallViewportOverflowPx=" .. overflow .. " tooltipFrames=600 tooltipWraps=" .. wraps
+    .. " smallViewportOverflowPx=" .. overflow .. " tooltipFrames=600 tooltipWraps=" .. steadyWraps
