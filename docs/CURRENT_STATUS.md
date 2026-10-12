@@ -2,6 +2,8 @@
 
 Updated 2026-10-12. Read [AGENTS](../AGENTS.md) and [Planning](PLANNING.md).
 
+**C169:** owner requests simplest safe packing options. [Discussion](checkpoints/R3_POWER_PACKING_OPTIONS.md#c169---simplest-safe-packing-alternatives-2026-10-12) distinguishes native equipped reduction, lighter empty base and continued full-packing feasibility. No replacement or dependency approved. **Decision needed for packing;** installed 0.2.46 remains available for its existing test.
+
 **C168 / 0.2.46 installed and verified; owner test pending.** Owner approved revised 2B: .00045% base battery use, additive rarity surcharges .1/.15/.25/.4/.6/.8/1.0, plus C167 packing/weight/Regulator/names. Regulator provides +25% endurance per copy, battery-only, no self-surcharge; all module item weights are .2. Seven names end in Epic/Legendary/Mythic. Inventory rarity tooltip uses exposed UI methods. [Patch](PATCH_v0.2.46.md) | [focused test](TEST_v0.2.46.md).
 
 16,046 Kahlua assertions, 760 native translations, 113 compiled files, native write/read, three independent package selections and 51 Firearms weapons pass. LootLab 0.2.46 is deployed with 29 modules/208 entries; 77 API/page tests and desktop/mobile browser checks pass. Owner/rendered gameplay acceptance remains pending.

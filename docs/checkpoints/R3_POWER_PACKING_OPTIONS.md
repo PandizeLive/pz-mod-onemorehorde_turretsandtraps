@@ -1,5 +1,23 @@
 # C166 - Pickup weight, power endurance and rarity discussion
 
+## C169 - Simplest safe packing alternatives (2026-10-12)
+
+Owner asks what still blocks packing and for the simplest safe options. Discussion only; no replacement behavior or dependency is approved. Inspected current branch at 9648bbbd301003f3ae29a81f9771ee3fcb2ab6ec and fetched origin without incoming changes. The repeated Inset panels visual selection does not change this scope.
+
+The missing piece is exact persistent contents restoration, not weight arithmetic. Current container pickup preserves real items. Native InventoryContainer.getContentsWeight counts the actual contents; getEquippedWeight applies the contents reduction plus the native equipped-base factor. The tested storeInByteData buffer route cannot call rewind from ordinary Lua (see diagnostics/v0.2.45/packing-api-failure.log). Full snapshots are needed for arbitrary guns, attachments, ammunition, condition, battery state and mod data; a list of types/counts is insufficient. This is an unproven Lua route, not proof that every native solution is impossible. Earlier promises of straightforward sealed packing were premature.
+
+Current 42.21 bytecode was checked again: InventoryItem.isFakeEquipped is a computed key-ring special case requiring top-level player inventory, not a public general-purpose switch. Do not disguise turrets as key rings. Neither item-weight mutations nor hidden world storage is a recommended workaround.
+
+| Choice | Proposed behavior | Tradeoff |
+| --- | --- | --- |
+| 1A - Native carry case (recommended for simplicity) | Keep actual contents in the existing turret container; use 67% native contents reduction while held/equipped in an agreed supported slot; existing placement uses those same items | Uses an equipment slot; loose inventory retains full contents weight; native equipped-base weight also applies. Does not fulfill original ordinary-inventory compression |
+| 1B - Lighter empty base | Reduce the portable base's own weight; retain current contents/pickup | Least code change, but limited benefit for ammunition-heavy builds and not contents compression. Amount needs a choice |
+| 1C - Exact original behavior | Retain automatic packing and ordinary-inventory reduction; investigate a maintained native bridge/dependency and prove lossless restoration first | Most work and possible additional install/update compatibility burden. No bridge is selected, validated or approved; no delivery promise |
+
+Recommend 1A if the owner accepts a carry slot. If ordinary-inventory reduction is essential, retain 1C as a feasibility task, not a supposedly simple patch. Any bridge route must verify complete item roundtrips across save/restart, repeated pickup/place, cancellation and failure without loss/duplication before shipping. No per-tick weight rewriting. A dependency requires an explicit informed decision once a concrete candidate is identified.
+
+**Decision needed:** choose whether to relax ordinary-inventory reduction for 1A/1B, or retain the existing 1C requirement. The installed 0.2.46 test remains available; this discussion does not request another gameplay test.
+
 2026-10-12. Discussion only, not patch approval. Inspected `codex/performance-barbed-audit` at `40881f4259a529b38597fa41692bc9d92342f9c4`; origin fetched with no incoming changes. Owner reports battery drain effects work but a full late-game turret shows about 1.5 in-game minutes. Requests safe packing alternatives, at least six in-game hours, an efficiency module and more enjoyable rarity names. Prior inset-panel selection remains unchanged.
 
 ## Verified findings
