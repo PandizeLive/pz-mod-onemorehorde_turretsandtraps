@@ -879,3 +879,10 @@ Owner selects 6A and 7A, emphasizes optimization because Synergy can get dicey, 
 ## C160 — 0.2.44 implementation approved (2026-10-11)
 
 Owner says “Approved.” after C159 readiness/recap. Implement the complete Manage, rarity, Once each, Synergy/Martyrdom/Tack bundle and its bounded processing contract. Local verification, package independence, LootLab and C108 mirror remain required. No owner gameplay acceptance or publication is implied.
+
+
+## C161 - owner findings, delayed effects and rarity-power discussion (2026-10-12)
+
+Owner requests simpler percent/in-game-time battery text, slider/status polish, investigation of distant accuracy, .75-second Martyrdom and .5-second Tack delays with auditioned native sounds, 67-percent packed turret weight compression, range-end Fragment with .25-second delay and existing suppressed pistol audio, Piercing on all guns including shotguns, and a four-field Feature/Stackable/Battery Drain/Rarity tooltip format. Rarity and drain should be linked over 1.1x-3.0x. Owner invites choices where something is off; sound selection is explicitly requested through the existing HTML audition workflow. The layout picker selects Inset panels. [C161 contract](checkpoints/R3_EFFECT_POLISH.md) records exact requests, confirmed errors, recommended interpretations and numbered alternatives. Current 5-percent additive module surcharge is not retroactively a rarity multiplier. Fragment endpoint, power interpretation and far-range balance require discussion; no gameplay implementation is claimed this turn.
+
+Console review confirms 1,355 Tack marker null-module exceptions in the captured 0.2.44 SP slice. The first failing startup is absent. Current native Lua search-path evidence supports early client-to-server require as the cause; ordered startup proof belongs in correction. Earlier automated evidence is retained with this explicit coverage failure; owner acceptance remains open. Local audio picker renders six native candidates plus the existing suppressed M9 reference. C108/C119 requires mirroring these findings and plans now.

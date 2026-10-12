@@ -1,10 +1,13 @@
 # Planning
 
+**C161 / 0.2.44 owner findings:** Tack marker startup is broken: the captured SP console records 1,355 null-module exceptions. UI polish, delayed effects/audio, universal firearm Piercing, packed contents compression and concise module tooltips are requested. Rarity-power scope, accuracy tuning, Fragment endpoint and sound selections are being discussed in the [corrective/content contract](checkpoints/R3_EFFECT_POLISH.md). No new gameplay build is installed; do not ask for more play on the faulty build. [Versioned findings](TEST_v0.2.44.md#owner-findings-and-console-review-2026-10-12).
+
+
 **C160 / 0.2.44 installed and automatically verified.** Manage sections/rarity/bars, reload-aware battery feedback, Once Each and Synergy/Martyrdom/Tack are complete under the [approved contract](checkpoints/R3_MANAGE_RARITY_SYNERGY.md). Bounded admission precedes resource commitment; terminal effects cannot recurse. [Patch](PATCH_v0.2.44.md) | [one six-step test](TEST_v0.2.44.md).
 
 15,931 Kahlua assertions, native write/read, all three package selections and 51 supported Firearms guns pass. LootLab matches 28 modules / 193 entries; 76 API/page tests and browser model/import checks pass. These checks do not certify rendered gameplay or client frame smoothness. The prior 676-ms gap remains unassigned. Held 0.2.43 checks join this test; no old round is newly marked passed.
 
-Updated 2026-10-11 under C119/C133. This is the shared entry point for planning in the local PC chat and **OMH: Turrets & Traps - Planning**. Detailed contracts and approval history remain in the linked records; this page indexes them rather than replacing them.
+Updated 2026-10-12 under C119/C133. This is the shared entry point for planning in the local PC chat and **OMH: Turrets & Traps - Planning**. Detailed contracts and approval history remain in the linked records; this page indexes them rather than replacing them.
 
 ## Read the current branch
 

@@ -1,6 +1,9 @@
 # Current development and planning handoff
 
-Updated 2026-10-11. Read with [AGENTS](../AGENTS.md) and [Planning](PLANNING.md).
+**C161 / 0.2.44 owner findings:** Tack marker startup is broken: the captured SP console records 1,355 null-module exceptions. UI polish, delayed effects/audio, universal firearm Piercing, packed contents compression and concise module tooltips are requested. Rarity-power scope, accuracy tuning, Fragment endpoint and sound selections are being discussed in the [corrective/content contract](checkpoints/R3_EFFECT_POLISH.md). No new gameplay build is installed; do not ask for more play on the faulty build. [Versioned findings](TEST_v0.2.44.md#owner-findings-and-console-review-2026-10-12).
+
+
+Updated 2026-10-12. Read with [AGENTS](../AGENTS.md) and [Planning](PLANNING.md).
 
 **C160 / 0.2.44 installed and automatically verified.** Manage sections/rarity/bars, reload-aware battery feedback, Once Each and Synergy/Martyrdom/Tack are complete under the [approved contract](checkpoints/R3_MANAGE_RARITY_SYNERGY.md). Bounded admission precedes resource commitment; terminal effects cannot recurse. [Patch](PATCH_v0.2.44.md) | [one six-step test](TEST_v0.2.44.md).
 
@@ -12,4 +15,4 @@ Updated 2026-10-11. Read with [AGENTS](../AGENTS.md) and [Planning](PLANNING.md)
 - **Limits:** SP combat only, fresh-world item-ID policy, native inventory weight limits and owner-sourced final art. Bounded overload delays firing; markers/audio are paced separately. No promise of lag-free crowds.
 - **GitHub:** `codex/performance-barbed-audit`, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1) into dev. C108/C119 requires the completed update and evidence to be mirrored. No merge or publication.
 
-**Test now:** restart into 0.2.44 and follow the [single six-step test](TEST_v0.2.44.md). Gameplay acceptance is pending; inspect `console.txt` after the owner reports results.
+**Decision needed:** select the remaining options in [C161](checkpoints/R3_EFFECT_POLISH.md). 0.2.44 remains installed; its gameplay acceptance failed at Tack initialization. No repeat test is needed before the corrective patch.

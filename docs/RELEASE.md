@@ -2,6 +2,8 @@
 
 ## Current local installation: 0.2.44 / C160
 
+**C161 owner finding:** the installed build has a confirmed Tack marker startup error. [Findings](TEST_v0.2.44.md#owner-findings-and-console-review-2026-10-12) supersede the pending-test handoff; installation/hash evidence remains valid. Corrective gameplay patch not yet installed.
+
 **C160 / 0.2.44 implemented and automatically verified.** Manage sections/rarity/bars, reload-aware battery feedback, Once Each and Synergy/Martyrdom/Tack are complete under the [approved contract](checkpoints/R3_MANAGE_RARITY_SYNERGY.md). Bounded admission precedes resource commitment; terminal effects cannot recurse. [Patch](PATCH_v0.2.44.md) | [one six-step test](TEST_v0.2.44.md).
 
 15,931 Kahlua assertions, native write/read, all three package selections and 51 supported Firearms guns pass. LootLab matches 28 modules / 193 entries; 76 API/page tests and browser model/import checks pass. These checks do not certify rendered gameplay or client frame smoothness. The prior 676-ms gap remains unassigned. Held 0.2.43 checks join this test; no old round is newly marked passed.

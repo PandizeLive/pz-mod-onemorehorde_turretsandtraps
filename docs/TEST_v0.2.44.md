@@ -1,6 +1,6 @@
 # 0.2.44 focused test
 
-**Installed; owner test pending.** This is the single combined test, including held 0.2.43 checks; older rounds need not be repeated.
+**Installed; owner findings received, corrective discussion active.** This is the single combined test, including held 0.2.43 checks; older rounds need not be repeated.
 
 1. Restart and confirm **0.2.44**. Open a firearm turret with Large Expansion. Check section borders, rarity colors, right-aligned module effects, supply bars and battery hover.
 2. Transfer **600 rounds** through inventory, then Manage; interrupt once. Both should batch quickly without loss or freezes. One Conservation copy should give two uses per round, including Splitter costs.
@@ -22,3 +22,13 @@
 No new owner test or console acceptance is claimed this turn. The C155 676-ms gap and Louisville hang remain unassigned. GPU presentation, real crowd smoothness and a live active-field restore are pending. R3C7 and broader R1C3 remain open; multiplayer remains deferred.
 
 Tagged/source/package/installed/archive hashes and both 0.2.43 backups verify: [machine release record](../diagnostics/v0.2.44/local-release.json).
+
+## Owner findings and console review (2026-10-12)
+
+Owner reports battery wording/time, engagement slider and clipped status issues; overly reliable distant hits; Tack/Martyrdom errors; and requests changed effect timing, Fragment/Piercing behavior, carrying weight and rarity-linked module tooltips/power. This is not a Test Complete or acceptance of unmentioned checks.
+
+Root OMH Capture saved `diagnostics/captures/20261012-002038-5027`. The 4,644,397-byte console starts mid-stack at frame 28400 and confirms 0.2.44 SP. It contains **1,355** identical `attempted index: fieldOrder of non-table: null` RuntimeExceptions from `TurretTackMarkers.update`, line 25, through `TurretScheduler.tick`. Maximum summarized active gap in this snapshot is 39 ms; startup and preceding performance are not present. Error spam makes this unsuitable as clean performance acceptance. No distinct Martyrdom stack appears in the captured slice; do not invent a second cause.
+
+Client-level `require("OMHTT/TurretProc")` captures a server-owned module before its load path may exist. Current 42.21 bytecode confirms shared/client path registration and null on missing require; reproduce the ordered startup during correction. The previous test harness preloaded server modules, so its passing isolated module tests did not cover this failure path. Contact startup, markers and dependent Martyrdom behavior must be audited together. Hiding nil with an empty table is not a fix.
+
+[Machine summary](../diagnostics/v0.2.44/owner-20261012/console-review.json) and [selected trace](../diagnostics/v0.2.44/owner-20261012/evidence.txt) retain scoped evidence. Full raw capture remains local. [C161 requested corrections and choices](checkpoints/R3_EFFECT_POLISH.md). No new source/package/install or claim that all other checks passed. No further owner test of this faulty build is requested.
