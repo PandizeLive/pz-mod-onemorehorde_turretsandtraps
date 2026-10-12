@@ -107,7 +107,7 @@ getSoundManager = function() return manager end
 local panel = Reveal.show(player, rewards)
 local openCreates, openWraps = creates, wraps
 started = realMillis()
-for i = 1, 300 do testMillis = testMillis + 16; panel:prerender() end
+for i = 1, 500 do testMillis = testMillis + 16; panel:prerender() end
 local renderMs = realMillis() - started
 check(creates == openCreates and wraps == openWraps, "Reveal frames do not instantiate items or wrap text")
 check(openCreates == 0 and openWraps == 29, "Reveal uses script metadata without creating display items")
@@ -117,7 +117,7 @@ for i = 1, #sounds do
     if sounds[i] == "UIObjectMenuObjectPickup" then selected = selected + 1 end
     if string.sub(sounds[i], 1, 9) == "OMHTTPack" then reveals = reveals + 1 end
 end
-check(ticks > 0 and ticks <= 13 and selected == 1, "One bounded native tick stream and one shared selection cue")
+check(ticks > 0 and ticks <= 67 and selected == 1, "One bounded native tick stream and one shared selection cue")
 check(reveals == 1 and sounds[#sounds] == panel.revealCue, "Exactly one cached highest-rarity cue for all three rewards")
 local before = #sounds
 panel:prerender()
@@ -146,7 +146,7 @@ for i = 1, #kinds do
     local proof = Reveal.show(player, result)
     check(proof.revealCue == "OMHTTPack" .. rarity.names[i], "Highest actual reward selects the tier cue, independent of decoys")
     before = #sounds
-    testMillis = testMillis + 4001
+    testMillis = testMillis + 6701
     proof:prerender()
     check(#sounds == before + 2, "Settlement plays one selection cue and one rarity cue")
     proof:prerender()
@@ -156,6 +156,41 @@ for i = 1, #kinds do
     replacement:close()
 end
 rarity.refresh(settings)
+local staggered = Reveal.show(player, rewards)
+local base = testMillis
+local previousSounds = #sounds
+staggered:prerender()
+check(staggered.reels[1].position == 0 and staggered.reels[3].position == 0, "All reels start at their first card")
+testMillis = base + 100; staggered:prerender()
+local oldPosition = (1 - (1 - .1 / 4) ^ 3) * 13
+check(staggered.reels[1].position > oldPosition * 1.9 and staggered.reels[2].position == 0,
+    "First reel opens twice as fast while later rows await their offset")
+testMillis = base + 500; staggered:prerender()
+check(staggered.reels[1].position > staggered.reels[2].position and staggered.reels[2].position > 0
+    and staggered.reels[3].position == 0, "Middle reel starts 350ms after the top")
+testMillis = base + 1000; staggered:prerender()
+check(staggered.reels[1].position > staggered.reels[2].position and staggered.reels[2].position > staggered.reels[3].position
+    and staggered.reels[3].position > 0, "Bottom reel starts last at 700ms")
+for row = 1, 3 do
+    testMillis = base + 6000 + (row - 1) * 350; staggered:prerender()
+    check(staggered.reels[row].settledAt == testMillis and staggered.reels[row].position == 39, "Each reel lands on its exact winner after six seconds")
+    if row < 3 then
+        check(not staggered.finished and not staggered.reels[row + 1].settledAt, "Later rows keep rolling after an earlier row settles")
+        check(sounds[#sounds] == "UIObjectMenuObjectRotate", "No selection or rarity cue before the last row stops")
+    end
+end
+check(staggered.finished and staggered.settledAt == base + 6700 and sounds[#sounds] == staggered.revealCue,
+    "One final rarity cue follows the bottom reel")
+local rowAlphas = {}
+staggered.drawRectBorder = function(_, x, y, w, h, alpha) rowAlphas[#rowAlphas + 1] = alpha end
+testMillis = base + 8000; staggered:prerender()
+check(#rowAlphas == 3 and rowAlphas[1] < rowAlphas[2] and rowAlphas[2] < rowAlphas[3], "Each row's pulse fades from its own stop")
+staggered:close()
+local skipped = Reveal.show(player, rewards)
+previousSounds = #sounds
+testMillis = testMillis + 20000; skipped:prerender()
+check(#sounds == previousSounds + 2 and skipped.finished, "A long frame settles every row without replaying missed ticks")
+skipped:close()
 getSoundManager = oldSoundManager
 screenHeight = 360
 local small = Reveal.show(player, rewards)
@@ -168,7 +203,7 @@ check(small.offset == 0, "Arrow scroll returns to first reward")
 fontHeight = 28
 local large = Reveal.show(player, rewards)
 check(large.height <= screenHeight and large.maxOffset > 0, "Large fonts retain a scrollable body")
-large.started = testMillis - 4000; large:prerender()
+large.started = testMillis - 6700; large:prerender()
 check(large.finished, "Reveal completion works within constrained viewport")
 local overflow = math.max(0, small.height - screenHeight)
 local U = require("OMHTT/TurretItemTooltip")
@@ -190,5 +225,5 @@ U.footer(tooltip, "Firing")
 check(wraps == 4, "Tooltip description invalidates wrapping")
 testPackAudit = "deaths=10000 repeats=10000 packs=1500 emptyPoolCorpseDrop=false mockDeathBatchMs=" .. deathMs
     .. " partialGrantRollback=pass removeRollback=pass revealCreateItems=" .. openCreates
-    .. " revealFrames=300 newFrameItems=0 newFrameWraps=0 mockRenderBatchMs=" .. renderMs
+    .. " revealFrames=500 newFrameItems=0 newFrameWraps=0 mockRenderBatchMs=" .. renderMs
     .. " smallViewportOverflowPx=" .. overflow .. " tooltipFrames=600 tooltipWraps=" .. steadyWraps

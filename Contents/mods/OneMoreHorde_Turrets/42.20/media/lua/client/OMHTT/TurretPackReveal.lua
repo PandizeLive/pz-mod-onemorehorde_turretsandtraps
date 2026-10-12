@@ -5,6 +5,10 @@ local T = require("OMHTT/Turret")
 local R = require("OMHTT/TurretRarity")
 local Panel = ISPanel:derive("OMHTTTurretPackReveal")
 local active = {}
+local ROLL_DURATION = 6000
+local ROW_DELAY = 350
+local TRAVEL_CARDS = 39
+local WINNER_CARD = TRAVEL_CARDS + 1
 
 ---@return nil
 function Panel:close()
@@ -38,9 +42,25 @@ function Panel:prerender()
     ISPanel.prerender(self)
     self:drawText(getText("UI_OMHTT_ModulePack"), 12, 8, 1, 1, 1, 1, UIFont.Medium)
     local now = getTimestampMs()
-    local progress = math.min(1, math.max(0, (now - self.started) / 4000))
-    local crossed = math.floor((1 - (1 - progress) ^ 3) * 13)
-    if progress == 1 and not self.finished then
+    local allFinished, crossedCard = true, false
+    for row = 1, #self.reels do
+        local reel = self.reels[row]
+        local progress = math.min(1, math.max(0, (now - self.started - (row - 1) * ROW_DELAY) / ROLL_DURATION))
+        reel.position = (1 - (1 - progress) ^ 3) * TRAVEL_CARDS
+        local crossed = math.floor(reel.position)
+        if crossed > reel.crossed then
+            crossedCard = true
+        end
+        reel.crossed = crossed
+        if progress == 1 then
+            if not reel.settledAt then
+                reel.settledAt = now
+            end
+        else
+            allFinished = false
+        end
+    end
+    if allFinished and not self.finished then
         self.finished = true
         self.settledAt = now
         if self.sound and self.sound ~= 0 then
@@ -48,28 +68,31 @@ function Panel:prerender()
         end
         self.sound = getSoundManager():playUISound("UIObjectMenuObjectPickup")
         self.revealSound = getSoundManager():playUISound(self.revealCue)
-    elseif not self.finished and crossed > self.crossed and now - self.lastTick >= 100 then
+    elseif not self.finished and crossedCard and now - self.lastTick >= 100 then
         if self.sound and self.sound ~= 0 then
             getSoundManager():stopUISound(self.sound)
         end
         self.sound = getSoundManager():playUISound("UIObjectMenuObjectRotate")
         self.lastTick = now
     end
-    self.crossed = crossed
-    local pulse = self.finished and math.max(0, 1 - (now - self.settledAt) / 4000) or 0
-    local cardWidth = self.finished and (self.width - 20) or self.cardWidth
-    local offset = (1 - (1 - progress) ^ 3) * 13 * cardWidth
-    for row = 1, P.COUNT do
+    for row = 1, #self.reels do
+        local reel = self.reels[row]
+        local pulse = reel.settledAt and math.max(0, 1 - (now - reel.settledAt) / 4000) or 0
+        local cardWidth = reel.settledAt and (self.width - 20) or self.cardWidth
+        local offset = reel.position * cardWidth
         local y = 40 + (row - 1) * self.rowHeight - self.offset
         local clipTop = math.max(40, y)
         local clipBottom = math.min(self.height - 42, y + self.rowHeight - 6)
         if clipBottom > clipTop then
             self:setStencilRect(10, clipTop, self.width - 20, clipBottom - clipTop)
             self:drawRect(10, y, self.width - 20, self.rowHeight - 6, .95, .025, .025, .025)
-            for i = 1, #self.reels[row] do
+            local center = self.width / 2 - cardWidth / 2
+            local first = math.max(1, math.floor((10 - center + offset) / cardWidth) + 1)
+            local last = math.min(#reel, math.ceil((self.width - 10 - center + offset) / cardWidth))
+            for i = first, last do
                 local x = self.width / 2 - cardWidth / 2 + (i - 1) * cardWidth - offset
                 if x + cardWidth >= 10 and x < self.width - 10 then
-                    local card = self.reels[row][i]
+                    local card = reel[i]
                     local color = card.color
                     self:drawRect(x + 2, y + 2, cardWidth - 4, self.rowHeight - 10, .12 + .2 * pulse, color.r, color.g, color.b)
                     self:drawRectBorder(x + 2, y + 2, cardWidth - 4, self.rowHeight - 10, .5 + .5 * pulse, color.r, color.g, color.b)
@@ -82,7 +105,7 @@ function Panel:prerender()
                     end
                 end
             end
-            if not self.finished then
+            if not reel.settledAt then
                 self:drawRect(self.width / 2 - 1, y, 2, 8, 1, 1, 1, 1)
                 self:drawRect(self.width / 2 - 1, y + self.rowHeight - 14, 2, 8, 1, 1, 1, 1)
             end
@@ -108,7 +131,7 @@ function Panel.show(player, rewards)
     panel:initialise()
     panel.playerIndex, panel.started = index, getTimestampMs()
     panel.fontHeight, panel.rowHeight, panel.cardWidth = fontHeight, rowHeight, math.min(180, width - 20)
-    panel.offset, panel.crossed, panel.lastTick = 0, 0, panel.started
+    panel.offset, panel.lastTick = 0, panel.started
     panel.backgroundColor = {r = .04, g = .04, b = .04, a = .96}
     panel.moveWithMouse = true
     panel.reels = {}
@@ -134,10 +157,10 @@ function Panel.show(player, rewards)
     end
     panel.maxOffset = math.max(0, P.COUNT * panel.rowHeight - (height - 82))
     for row = 1, #rewards do
-        local reel = {}
-        for i = 1, 16 do
+        local reel = {position = 0, crossed = 0}
+        for i = 1, WINNER_CARD + 2 do
             local name = T.component(rewards[row]:getFullType())
-            if i ~= 14 and total > 0 then
+            if i ~= WINNER_CARD and total > 0 then
                 name = P.pick(entries, total, ZombRandFloat(0, 1))
             end
             reel[i] = cards[name]

@@ -108,9 +108,9 @@ function Reveal:addToUIManager() end
 function Reveal:removeFromUIManager() end
 local panel = Reveal.show(player, rewards)
 panel:prerender()
-check(not panel.finished and #panel.reels == 3 and #panel.reels[1] == 16, "Three bounded visual reels")
-panel.started = testMillis - 4000; panel:prerender()
-check(panel.finished and drawCount > 0 and panel.reels[1][14].lines[1] == rewards[1]:getFullType(), "Finished reveal lands on the already granted reward")
+check(not panel.finished and #panel.reels == 3 and #panel.reels[1] == 42, "Three bounded visual reels")
+panel.started = testMillis - 6700; panel:prerender()
+check(panel.finished and drawCount > 0 and panel.reels[1][40].lines[1] == rewards[1]:getFullType(), "Finished reveal lands on the already granted reward")
 panel.collectButton.callback(panel)
 for i = 1, #rewards do check(inventory:contains(rewards[i]), "Collect preserves previously granted rewards") end
 local Action = require("OMHTT/TurretPackAction")

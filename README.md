@@ -2,7 +2,7 @@
 
 Latest LootLab correction: [shared saved rarity anchors](docs/LOOTLAB_TIER_PERSISTENCE.md#c185-shared-rarity-anchors-2026-10-12), C185.
 
-Current patch: **0.2.48 / C189**. [Custom pack audio and owner loot defaults](docs/PATCH_v0.2.48.md) | [Short test](docs/TEST_v0.2.48.md) | [Current status](docs/CURRENT_STATUS.md).
+Current patch: **0.2.48.1 / C190**. [Staggered pack reels](docs/PATCH_v0.2.48.1.md) | [Short test](docs/TEST_v0.2.48.1.md) | [Current status](docs/CURRENT_STATUS.md).
 
 **Development build â€” testing pending. No official release yet.** The private [GitHub repository](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps) uses `dev` for current code and planning. Start with [Planning](docs/PLANNING.md), [current status](docs/CURRENT_STATUS.md) and the [development/release workflow](docs/GITHUB_WORKFLOW.md). Cloud discusses and documents plans; the local PC implements and tests them. Every completed update and versioned test finding is mirrored to GitHub under C108. Current owner findings: [0.2.34 completed with findings](docs/TEST_v0.2.34.md#owner-result-and-console-review-2026-10-08), [0.2.35 owner findings](docs/TEST_v0.2.35.md#owner-findings-and-console-review-2026-10-09); automated results remain in [release evidence](docs/RELEASE.md). Official releases are tracked separately after confirmed Workshop publication.
 
