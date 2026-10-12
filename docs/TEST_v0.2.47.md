@@ -23,3 +23,9 @@ Early validation exposed test expectations tied to old rarity weights and parser
 ## Installed handoff
 
 Installed from immutable `test/v0.2.47` / `4a2f0dad29e49b0f9919dc9fb36196b9facf3e12`. All 208 source / 256 tagged/package/installed/archive files and both 0.2.46 backups verify. [Installation evidence](../diagnostics/v0.2.47/local-release.json). Restart required; actual client version and owner acceptance remain pending. **Test now.**
+
+## C178 follow-up audit, 2026-10-12
+
+**C178 audit completed:** no new permanent tick loop or tested reward duplication/loss found. Confirmed concerns: per-frame inventory tooltip wrapping, reveal overflow in a 360-pixel viewport, and useless pack drops when every reward weight is zero. [Findings, evidence and recommended corrections](AUDIT_v0.2.47.md). 16,084 audit/suite assertions pass; actual 0.2.47 client performance is unverified because console.txt still records 0.2.46. Gameplay files/install unchanged; corrective patch not yet approved.
+
+No new owner gameplay pass. Optional fault-injection/layout/performance checks reproduce the three concerns while confirming partial-grant rollback, duplicate-event protection and no item/text preparation per reveal frame. See the audit for mock-timing limits. Existing five-step test remains the complete owner sequence.

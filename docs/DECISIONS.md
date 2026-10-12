@@ -964,3 +964,8 @@ Owner selects 1B/2A/3A: three independent draws with duplicates, packs alongside
 ## C177 - Fifteen-percent corpse packs and 0.2.47 implementation (2026-10-12)
 
 Owner: "should be way more common, like 15%". Select 15% independent once-per-body pack chance, including turret kills, separate from container weight 1.0. Existing approval covers three rewards, duplicates, all 29 entries, optional reveal, supplied weights and battery hour/minute fix. Implemented with native inventory transactions and event timing evidence; [final contract](checkpoints/R3_MODULE_PACK.md#c177-15-percent-body-rate-and-implementation), [patch](PATCH_v0.2.47.md), [test](TEST_v0.2.47.md). C171 inventory tooltip correction is included; capacity warnings remain open. Saved tuning preserved; rarity/power follow loaded weights. LootLab deployed with loose-module-only estimate note. No further design gate, Workshop upload, Viewpoint implementation or packed-turret weight reduction.
+
+
+## C178 - Review of 0.2.47 performance and new features (2026-10-12)
+
+Owner requests a double-check of optimizations/performance and concerns. [Audit](AUDIT_v0.2.47.md) records confirmed tooltip allocation, small-viewport reveal overflow and empty-reward-pool acquisition issues; recommends a small corrective patch with unchanged balance. Review/test/documentation only; no gameplay patch approval inferred. Source/Contents and installed test/v0.2.47 unchanged. 16,084 combined assertions pass; current console is still 0.2.46. C108/C119 mirror applies.

@@ -1,0 +1,11 @@
+{
+  "auditedCommit": "369c6a49419ca53767c26fef33f22e88e1ed91c5",
+  "consoleBytes": 445557,
+  "consoleSHA256": "f34a417c685bc670cb64ea14853c4f62e04cb67488826ca3b8608fedaf463c2d",
+  "consoleVersions": [
+    "0.2.46"
+  ],
+  "has0247ConsoleEvidence": false,
+  "previousVersionLargestRecordedUpdateGapMs": 12842,
+  "finding": "Old-version update gaps are not proof of 0.2.47 runtime cost or attribution."
+}

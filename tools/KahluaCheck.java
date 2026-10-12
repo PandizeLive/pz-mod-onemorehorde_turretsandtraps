@@ -380,6 +380,14 @@ public final class KahluaCheck {
                 throw new IllegalStateException("Failed stage: " + stage[1], error.getCause());
             }
         }
+        if (args.length > 1) {
+            Path audit = root.resolve(args[1]);
+            try (Reader reader = Files.newBufferedReader(audit)) {
+                Object chunk = compile.invoke(null, reader, audit.toString(), env);
+                call.invoke(thread, chunk, new Object[0]);
+            }
+            System.out.println("Optional audit: " + get.invoke(env, "testPackAudit"));
+        }
         Object packets = get.invoke(env, "testPackets");
         int count = ((Number)tableType.getMethod("len").invoke(packets)).intValue();
         var buffer = java.nio.ByteBuffer.allocate(60000);
