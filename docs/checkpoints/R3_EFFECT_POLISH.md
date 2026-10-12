@@ -1,5 +1,18 @@
 # C161 - 0.2.44 owner findings and next corrective/content plan
 
+## C162 - selected rules and expanded Martyrdom audition (2026-10-12)
+
+Owner proposes 1C: begin at 1.0x and add .1x-2.0x per module; selects 2A, 3B and 5B; rejects the first Martyrdom sounds as too extreme and requests more choices. No gameplay implementation this discussion.
+
+- Power direction: additive `1 + sum(module surcharge)`, with each working copy adding .1-2.0 by rarity. This is mathematically the same overall curve as C161 1B, expressed more clearly. Replace the old 5-percent module-count factor, not an additional multiplier on top of it; retain the separate weapon factor. Examples: one cheapest 1.1x, one highest-cost 3x, sixteen cheapest 2.6x, sixteen highest-cost 33x. Direct multiplication of module costs is rejected. The upper end remains a substantial battery-life penalty, not equivalent to the previous gentle surcharge. Tooltips should show `Battery Drain: +0.1x` through `+2.0x` to communicate addition. Suggested seven-band increments are +.1, +.2, +.4, +.7, +1, +1.5, +2; interior values are a recommendation, not an owner-selected table.
+- **2A selected:** one aim roll per shotgun shot; retain 60% ordinary / 80% precision maximum-range defaults for now.
+- **3B selected:** Fragment at terminal projectile stop: impact after remaining penetration is exhausted, solid obstruction or range end on a miss, followed by the requested .25-second delay. Preserve one finite source lineage and full-range limit; Fragment never recursively generates Fragment.
+- **5B selected:** native MetalworkingPunchDrop for delayed Tack landing. Do not reopen the sound choice.
+- **4 remains open:** replace rejected 4A-4C in the picker with 4D BareHandsHit (recommended audition), 4E PlungerHit, 4F CorkPopWine, 4G AttackStomp, 4H ZombieRipClothing. These are registered installed-game events and each passed non-silent stopped native capture. BulletHitBody and CorkPopChampagne did not finish the isolated default-parameter capture and were excluded, not silently shipped with truncated previews. Existing suppressed M9 reference is retained; Tack selection is fixed in the picker. [Updated local sound picker](../../art/EFFECT_AUDIO.html).
+
+Only the sound selection and any objection to the recommended interior rarity increments remain for discussion. Installed 0.2.44 is unchanged and still has the C161 initialization failure. R3C7/R1C3 acceptance stays open; no more play is requested before the corrective patch. Earlier choices below are historical; this section supersedes their unresolved state.
+
+
 2026-10-12. Owner requests the changes below after testing 0.2.44. This records requested direction and the remaining material choices; no gameplay patch is installed by this discussion. Active branch inspected: `codex/performance-barbed-audit`, `f4bac32fc9c524c3a694a55c9f8829014f6c6b26`; origin fetched, only the existing development draft PR is open.
 
 ## Confirmed findings

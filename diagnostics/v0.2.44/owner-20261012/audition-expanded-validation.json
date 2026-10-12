@@ -1,0 +1,50 @@
+[
+  {
+    "code": "4D",
+    "name": "BareHandsHit",
+    "event": "event:/Weapon/Melee/BareHands/Hit",
+    "seconds": 0.5966041666666667,
+    "peak": 0.784088134765625,
+    "previewGain": 1
+  },
+  {
+    "code": "4E",
+    "name": "PlungerHit",
+    "event": "event:/Weapon/Melee/BluntShort/Plunger/Hit",
+    "seconds": 0.5891875,
+    "peak": 0.8680419921875,
+    "previewGain": 1
+  },
+  {
+    "code": "4F",
+    "name": "CorkPopWine",
+    "event": "event:/Character/Survival/Cooking/CorkPop/Wine",
+    "seconds": 2.913895833333333,
+    "peak": 1.0,
+    "previewGain": 0.9
+  },
+  {
+    "code": "4G",
+    "name": "AttackStomp",
+    "event": "event:/Character/Combat/AttackStomp",
+    "seconds": 0.7540625,
+    "peak": 0.376739501953125,
+    "previewGain": 1
+  },
+  {
+    "code": "4H",
+    "name": "ZombieRipClothing",
+    "event": "event:/Character/Combat/RipCloth",
+    "seconds": 0.8102708333333334,
+    "peak": 0.308349609375,
+    "previewGain": 1
+  },
+  {
+    "code": "5B",
+    "name": "MetalworkingPunchDrop",
+    "event": "event:/Weapon/Melee/BluntShort/MetalworkingPunch/Drop",
+    "seconds": 0.7407916666666666,
+    "peak": 1.0,
+    "previewGain": 0.9
+  }
+]

@@ -1,6 +1,7 @@
 # Planning
 
-**C161 / 0.2.44 owner findings:** Tack marker startup is broken: the captured SP console records 1,355 null-module exceptions. UI polish, delayed effects/audio, universal firearm Piercing, packed contents compression and concise module tooltips are requested. Rarity-power scope, accuracy tuning, Fragment endpoint and sound selections are being discussed in the [corrective/content contract](checkpoints/R3_EFFECT_POLISH.md). No new gameplay build is installed; do not ask for more play on the faulty build. [Versioned findings](TEST_v0.2.44.md#owner-findings-and-console-review-2026-10-12).
+**C162 selections:** 2A shotgun aim roll, 3B terminal-stop Fragment and 5B metal-drop Tack audio are settled. Owner proposes additive power starting at 1.0x, plus .1-2.0 per module; this gives 2.6x-33x for sixteen equal-cost modules. Martyrdom needs a new sound choice from five smaller native candidates. [Current contract and picker](checkpoints/R3_EFFECT_POLISH.md#c162---selected-rules-and-expanded-martyrdom-audition-2026-10-12). No gameplay patch is installed; 0.2.44's confirmed client failure remains.
+
 
 
 **C160 / 0.2.44 installed and automatically verified.** Manage sections/rarity/bars, reload-aware battery feedback, Once Each and Synergy/Martyrdom/Tack are complete under the [approved contract](checkpoints/R3_MANAGE_RARITY_SYNERGY.md). Bounded admission precedes resource commitment; terminal effects cannot recurse. [Patch](PATCH_v0.2.44.md) | [one six-step test](TEST_v0.2.44.md).
