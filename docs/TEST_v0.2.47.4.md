@@ -10,7 +10,7 @@
 - Hosted deployment and protected-route/public-endpoint verification pass. [Evidence](../diagnostics/v0.2.47.4/lootlab-release.json).
 - Reviewed changed shipped Lua: no protected calls, per-tick work, additional event loop or dependency between packages. The rarity helper follows Alex's annotations/guard/style conventions; existing unrelated style debt is not claimed resolved.
 
-Owner acceptance remains pending. Current console.txt still identifies **0.2.47.1**, so it cannot validate this build. Native/browser tests are not rendered owner acceptance.
+Installed 0.2.47.4 from the immutable test tag; all 256 files and both backups verify. Owner acceptance remains pending. Current console.txt still identifies **0.2.47.1**, so it cannot validate this build. Native/browser tests are not rendered owner acceptance.
 
 ## Short owner test
 
