@@ -1,5 +1,7 @@
 # Current development and planning handoff
 
+**C179 recorded:** audit corrections remain queued; no new gameplay approval inferred. Alex's no-pcall/xpcall rule is verified across source, packages and installed copies, and retained in the per-turn agreement. Full compliance is not claimed: tooltip layout caching and new-pack inline-conditional style cleanup remain. [Guideline check](AUDIT_v0.2.47.md#c179---alex-guideline-confirmation-and-queued-work).
+
 **C178 audit completed:** no new permanent tick loop or tested reward duplication/loss found. Confirmed concerns: per-frame inventory tooltip wrapping, reveal overflow in a 360-pixel viewport, and useless pack drops when every reward weight is zero. [Findings, evidence and recommended corrections](AUDIT_v0.2.47.md). 16,084 audit/suite assertions pass; actual 0.2.47 client performance is unverified because console.txt still records 0.2.46. Gameplay files/install unchanged; corrective patch not yet approved.
 
 Updated 2026-10-12. Read [AGENTS](../AGENTS.md) and [Planning](PLANNING.md).

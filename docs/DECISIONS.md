@@ -969,3 +969,8 @@ Owner: "should be way more common, like 15%". Select 15% independent once-per-bo
 ## C178 - Review of 0.2.47 performance and new features (2026-10-12)
 
 Owner requests a double-check of optimizations/performance and concerns. [Audit](AUDIT_v0.2.47.md) records confirmed tooltip allocation, small-viewport reveal overflow and empty-reward-pool acquisition issues; recommends a small corrective patch with unchanged balance. Review/test/documentation only; no gameplay patch approval inferred. Source/Contents and installed test/v0.2.47 unchanged. 16,084 combined assertions pass; current console is still 0.2.46. C108/C119 mirror applies.
+
+
+## C179 - Record audit concerns and reaffirm Alex guidelines (2026-10-12)
+
+Owner: "Note this down and confirm Alex’s guidelines are being followed, including no Pcalls". Record the C178 corrections without inferring gameplay patch approval. Direct scans confirm zero pcall/xpcall tokens in owned source, packages and installed copies; retain validator enforcement and add a concise per-turn reminder. Full compliance is qualified: tooltip wrapping/caching and new-pack inline-conditional style gaps remain. [Evidence and pending scope](AUDIT_v0.2.47.md#c179---alex-guideline-confirmation-and-queued-work). No package/version/install/balance change; C108/C119 mirror applies.

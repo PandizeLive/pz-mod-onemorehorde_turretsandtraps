@@ -1,5 +1,7 @@
 # Planning
 
+**C179 recorded:** audit corrections remain queued; no new gameplay approval inferred. Alex's no-pcall/xpcall rule is verified across source, packages and installed copies, and retained in the per-turn agreement. Full compliance is not claimed: tooltip layout caching and new-pack inline-conditional style cleanup remain. [Guideline check](AUDIT_v0.2.47.md#c179---alex-guideline-confirmation-and-queued-work).
+
 **C178 audit completed:** no new permanent tick loop or tested reward duplication/loss found. Confirmed concerns: per-frame inventory tooltip wrapping, reveal overflow in a 360-pixel viewport, and useless pack drops when every reward weight is zero. [Findings, evidence and recommended corrections](AUDIT_v0.2.47.md). 16,084 audit/suite assertions pass; actual 0.2.47 client performance is unverified because console.txt still records 0.2.46. Gameplay files/install unchanged; corrective patch not yet approved.
 
 **C177 / 0.2.47 installed and verified; owner test pending.** Module Packs contain three independently weighted rewards, including expansion kits and duplicates. Packs supplement loose modules at container weight 1.0 and a separately configurable **15% per zombie body**, including turret kills. Optional default-on four-second reveal with Skip; two-second opening. All 29 owner-exported weights are the new defaults. Battery estimates switch to hours at 60 in-game minutes; inventory module descriptions bypass the native translation-key formatting failure.

@@ -29,3 +29,7 @@ Installed from immutable `test/v0.2.47` / `4a2f0dad29e49b0f9919dc9fb36196b9facf3
 **C178 audit completed:** no new permanent tick loop or tested reward duplication/loss found. Confirmed concerns: per-frame inventory tooltip wrapping, reveal overflow in a 360-pixel viewport, and useless pack drops when every reward weight is zero. [Findings, evidence and recommended corrections](AUDIT_v0.2.47.md). 16,084 audit/suite assertions pass; actual 0.2.47 client performance is unverified because console.txt still records 0.2.46. Gameplay files/install unchanged; corrective patch not yet approved.
 
 No new owner gameplay pass. Optional fault-injection/layout/performance checks reproduce the three concerns while confirming partial-grant rollback, duplicate-event protection and no item/text preparation per reveal frame. See the audit for mock-timing limits. Existing five-step test remains the complete owner sequence.
+
+## C179 static guideline check
+
+101 source / 117 packaged / 117 installed Lua files: zero pcall/xpcall references, no BOMs or tabs. [Evidence](../diagnostics/v0.2.47/audit/guidelines.json). This is a static scan, not a new gameplay test or full style certification; non-guard inline conditionals and C178 caching work remain queued. Source/Contents and installed 0.2.47 are unchanged.
