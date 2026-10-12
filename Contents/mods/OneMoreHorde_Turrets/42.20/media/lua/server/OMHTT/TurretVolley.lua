@@ -3,39 +3,68 @@ local Budget = require("OMHTT/TurretScheduler")
 local Damage = require("OMHTT/Damage")
 local F = require("OMHTT/Foundation")
 local V = {queue = {}, reserved = 0}
+local Proc = require("OMHTT/TurretProc")
+local Conditional = require("OMHTT/TurretConditionalHit")
+
+---@param stats table Shot stats
+---@return number rays Worst-case lineage capacity
+function V.capacity(stats)
+    local children = (stats.splitter or 0) + (stats.piercing or 0)
+    return (stats.splitter or 0) + ((stats.fragment or 0) > 0 and 5 or 0)
+        + ((stats.piercing or 0) > 0 and 1 or 0)
+        + (stats.synergy and (stats.fragment or 0) > 0 and children * 5 or 0)
+end
+
+---@param options table Root shot owner
+---@return nil
+function V.done(options)
+    if not options.pending then return end
+    options.pending = options.pending - 1
+    if options.pending == 0 then
+        V.reserved = V.reserved - options.rayBudget
+        options.rayBudget = 0
+        Proc.release(options)
+    end
+end
 
 ---@param stats table Effective modules
 ---@return boolean available Bounded committed effect capacity
 ---@nodiscard
 function V.available(stats)
-    local count = stats.splitter + (stats.fragment > 0 and 5 or 0) + ((stats.piercing or 0) > 0 and 1 or 0)
-    return count == 0 or #V.queue + V.reserved + count <= 256
+    return #V.queue + V.reserved + V.capacity(stats) <= 256 and Proc.available(stats)
 end
 
 ---@param options table Committed primary shot
 ---@return nil
 function V.reserve(options)
-    if options.stats and (options.stats.piercing or 0) > 0 then
-        options.pierceReserved = 1
-        V.reserved = V.reserved + 1
-    end
-    if options.stats and options.stats.fragment > 0 then
-        options.fragmentReserved = 5
-        V.reserved = V.reserved + 5
-    end
+    if not options.stats then return true end
+    if not V.available(options.stats) then return false end
+    options.primaryDone = nil
+    options.rayBudget = V.capacity(options.stats)
+    options.pending = options.managed and 2 or 1
+    options.fragmentHits = {}
+    options.fragmentReserved = options.stats.fragment > 0 and 5 or nil
+    options.pierceReserved = options.stats.piercing > 0 and 1 or nil
+    V.reserved = V.reserved + options.rayBudget
+    Proc.reserve(options)
+    return true
 end
 
----@param options table Finished primary shot
+---@param options table Primary owner after impact or cancellation
 ---@return nil
 function V.release(options)
-    if options.pierceReserved then
-        V.reserved = math.max(0, V.reserved - options.pierceReserved)
-        options.pierceReserved = nil
-    end
-    if options.fragmentReserved then
-        V.reserved = math.max(0, V.reserved - options.fragmentReserved)
-        options.fragmentReserved = nil
-    end
+    if options.primaryDone then return end
+    options.primaryDone = true
+    options.fragmentReserved, options.pierceReserved = nil, nil
+    V.done(options)
+end
+
+---@param options table Admission whose resource commit failed
+---@return nil
+function V.cancel(options)
+    if not options.pending then return end
+    options.pending = 1
+    V.done(options)
 end
 
 ---@param count number Installed Splitters
@@ -62,6 +91,12 @@ end
 ---@param index number Child identity
 ---@return nil
 function V.ray(record, x, y, z, angle, range, damage, group, index)
+    local owner = group.options
+    if owner and owner.pending then
+        if owner.rayBudget <= 0 then error("Ray admission exhausted") end
+        owner.rayBudget, V.reserved = owner.rayBudget - 1, V.reserved - 1
+        owner.pending = owner.pending + 1
+    end
     V.queue[#V.queue + 1] = {x = x, y = y, z = z, dx = math.cos(angle), dy = math.sin(angle),
         range = range, distance = 0, damage = damage, group = group, id = record.id,
         shot = tostring(record.shots) .. ":" .. group.kind .. ":" .. index, objectIndex = 0}
@@ -75,12 +110,12 @@ end
 ---@return nil
 function V.split(record, origin, target, player, options, impact)
     local stats = options.stats
-    if stats.splitter == 0 then return end
+    if stats.splitter == 0 then V.done(options); return end
     local x, y = origin:getX() + .5, origin:getY() + .5
     local angle = math.atan2(target:getY() - y, target:getX() - x)
     local side = record.splitterSide or -1
     if stats.splitter % 2 == 1 then record.splitterSide = -side end
-    local group = {kind = "splitter", player = player, weapon = options.effectWeapon, stats = stats, hits = {}, remaining = stats.splitter, rays = {}}
+    local group = {options = options, kind = "splitter", player = player, weapon = options.effectWeapon, stats = stats, hits = {}, remaining = stats.splitter, rays = {}}
     if impact and impact.firearm then
         local dx, dy = impact.x - x, impact.y - y
         local distance = math.sqrt(dx * dx + dy * dy)
@@ -96,6 +131,7 @@ function V.split(record, origin, target, player, options, impact)
     for i = 1, stats.splitter do
         V.ray(record, x, y, origin:getZ(), angle + math.rad(V.angle(stats.splitter, i, side)), stats.range, damage, group, i)
     end
+    V.done(options)
 end
 
 ---@param record table Shot identity
@@ -108,10 +144,11 @@ end
 ---@return nil
 function V.fragment(record, x, y, z, target, player, options)
     if not options.fragmentReserved then return end
-    V.reserved = math.max(0, V.reserved - options.fragmentReserved)
     options.fragmentReserved = nil
     local stats = options.stats
-    local group = {kind = "fragment", player = player, weapon = options.effectWeapon, stats = stats, hits = {[target] = true}, remaining = 5, rays = {}, height = .30}
+    local owner = options.root or options
+    if owner.fragmentHits then owner.fragmentHits[target] = true end
+    local group = {options = owner, kind = "fragment", player = player, weapon = options.effectWeapon, stats = stats, hits = {[target] = true}, remaining = 5, rays = {}, height = .30}
     local rotation = ZombRand(36000) / 100
     local damage = options.damage * (options.critical and options.critMultiplier or 1) * stats.fragmentDamage
     for i = 1, 5 do
@@ -131,14 +168,13 @@ end
 ---@return nil
 function V.pierce(record, origin, target, player, options, square, hitX, hitY)
     if not options.pierceReserved then return end
-    V.reserved = math.max(0, V.reserved - options.pierceReserved)
     options.pierceReserved = nil
     local stats = options.stats
     local x, y = origin:getX() + .5, origin:getY() + .5
     local dx, dy = hitX - x, hitY - y
     local distance = math.sqrt(dx * dx + dy * dy)
     if distance <= 0 or distance >= stats.range then return end
-    local group = {kind = "piercing", player = player, weapon = options.weapon, stats = stats,
+    local group = {options = options, kind = "piercing", player = player, weapon = options.weapon, stats = stats,
         hits = {[target] = true}, left = stats.piercing, fromX = hitX, fromY = hitY}
     local damage = options.damage * (options.critical and options.critMultiplier or 1) * stats.pierceRetention
     V.ray(record, x, y, origin:getZ(), math.atan2(dy, dx), stats.range, damage, group, 1)
@@ -163,7 +199,20 @@ function V.finish(ray)
         end
         if ZombRand(10000) < chance * 100 then
             if group.kind ~= "splitter" then group.hits[victim] = true end
-            hit = Damage.apply(victim, ray.damage, ray.id, group.kind, group.player, group.weapon) > 0
+            local owner = group.options
+            local x, y, square = victim:getX(), victim:getY(), victim:getSquare()
+            local amount = ray.damage
+            if group.stats.synergy then amount = Conditional.damage(victim, amount, Conditional.snapshot(victim, group.stats)) end
+            hit = Damage.apply(victim, amount, ray.id, group.kind, group.player, group.weapon) > 0
+            if hit and group.stats.synergy and owner then
+                local record = {id = ray.id, shots = ray.shot}
+                Proc.hit(victim, true, x, y, ray.z, record, group.player, owner)
+                Conditional.impact(victim, square, owner)
+                if group.kind ~= "fragment" and group.stats.fragment > 0 and not owner.fragmentHits[victim] then
+                    V.fragment(record, x, y, ray.z, victim, group.player, {root = owner, stats = group.stats,
+                        effectWeapon = group.weapon, damage = ray.damage, critical = false, fragmentReserved = 5})
+                end
+            end
         end
     end
     local distance = ray.bestDistance or math.min(ray.distance, ray.range)
@@ -190,6 +239,7 @@ function V.finish(ray)
             return true
         end
     end
+    if group.options then V.done(group.options) end
     return false
 end
 

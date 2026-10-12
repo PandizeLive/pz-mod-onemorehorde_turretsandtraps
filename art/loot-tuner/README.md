@@ -12,7 +12,7 @@ This is a personal, offline balancing tool for **new-world estimates**. It does 
 4. Toggle individual components, or Show all / Hide all. Visibility never rerolls loot or changes rates. Select a town, zoom and hover dots for coordinates, floor, chances and generated quantities.
 5. Compare countywide and nearest-town estimates. Save/load scenario JSON to compare settings; export the Sandbox excerpt when satisfied. Apply settings yourself only after reviewing the excerpt.
 
-The baseline is **T&T 0.2.43** and **Project Zomboid 42.21.0**, including Critical/Accuracy and the reduced Suppression loot weight. The owner approved this gameplay patch and site update together. Gameplay installation is tracked separately in `docs/RELEASE.md`.
+The baseline is **T&T 0.2.44** and **Project Zomboid 42.21.0**, including Critical/Accuracy and the reduced Suppression loot weight. The owner approved this gameplay patch and site update together. Gameplay installation is tracked separately in `docs/RELEASE.md`.
 
 ## What the numbers mean
 
@@ -59,7 +59,7 @@ Pinch to zoom, drag with one finger, or use the 44px on-map zoom controls. Tap a
 
 ## Saved settings
 
-The hosted admin LootLab autosaves rates, seed, component visibility, estimate selection and overlay to the signed-in admin account. PC and phone must use the same login. Set to Default restores the T&T 0.2.43 scenario baseline (including Material 0.60, rolls 1 and retention 100%) and saves that reset. Map pan/zoom and town jumps are navigation, not saved tuning settings.
+The hosted admin LootLab autosaves rates, seed, component visibility, estimate selection and overlay to the signed-in admin account. PC and phone must use the same login. Set to Default restores the T&T 0.2.44 scenario baseline (including Material 0.60, rolls 1 and retention 100%) and saves that reset. Map pan/zoom and town jumps are navigation, not saved tuning settings.
 
 The account endpoint uses the existing admin host/Access/allowlist gate and a separate D1 table. Writes use revision checks; clients merge only locally changed fields after a conflict. Explicit reset/import replace the whole scenario. Saves debounce for 450 ms and refresh when the page regains focus or every 15 seconds while visible. A browser-local pending draft survives connection failures and reloads; the status distinguishes unsynced changes from successful saves. A failed initial read never uploads defaults. Local file copies use browser storage only.
 

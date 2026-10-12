@@ -2,7 +2,7 @@ local T = require("OMHTT/Turret")
 local Health = require("OMHTT/TargetHealth")
 local M = {}
 M.CORE = T.MODULES
-M.PRIORITIES = {"Closest", "Furthest", "Weakest", "Toughest"}
+M.PRIORITIES = {"Closest", "Furthest", "Weakest", "Toughest", "OnceEach"}
 
 ---@param key string Full setting suffix
 ---@param fallback number Default

@@ -76,6 +76,7 @@ end
 function Slot:update()
     if ISMouseDrag.draggingFocus == self and not isMouseButtonDown(0) then self:clearDrag() end
     local item = self.items[1]
+    if self.detailProvider and self:isMouseOver() and not ISMouseDrag.dragging then self.detailText = self.detailProvider() end
     if self:isMouseOver() and not ISMouseDrag.dragging and self.detailText then
         if not self.tooltip then
             self.tooltip = ISToolTip:new()
@@ -106,8 +107,17 @@ end
 function Slot:prerender()
     ISPanel.prerender(self)
     local h = self.owner.lineHeight
+    local color = self.rarity
+    if color then self:drawRect(1, 1, self.width - 2, self.height - 2, .18, color.r, color.g, color.b) end
     local red, green = self.missing and 1 or 0.8, self.missing and 0.3 or 0.8
     self:drawText(self.label, 8, 4, red, green, green, 1, UIFont.Small)
+    if self.meter then
+        local labelWidth = getTextManager():MeasureStringX(UIFont.Small, self.label)
+        local start = 16 + labelWidth
+        if self.width - start > 14 then
+            self:drawProgressBar(start, 7, self.width - start - 6, 7, self.meter, {r = .55, g = .8, b = .5, a = 1})
+        end
+    end
     if self.missing then self:drawRectBorder(0, 0, self.width, self.height, 1, 1, 0.3, 0.3) end
     local item = self.items[1]
     local name = self.emptyText or getText("UI_OMHTT_ManageDrop")
@@ -127,7 +137,7 @@ function Slot:prerender()
     local textX, textY = 44, h + 8
     if self.kind == "module" then textX, textY = 4, math.min(h + 20, self.height - h - 2) end
     self:setStencilRect(textX, textY, self.width - textX - 4, h + 4)
-    self:drawText(name, textX, textY, 1, 1, 1, 1, UIFont.Small)
+    self:drawText(name, textX, textY, color and color.tr or 1, color and color.tg or 1, color and color.tb or 1, 1, UIFont.Small)
     self:clearStencilRect()
     if self.disabled then self:drawRect(0, 0, self.width, self.height, 0.4, 0, 0, 0) end
     if self:isMouseOver() and ISMouseDrag.dragging and ISMouseDrag.draggingFocus ~= self then

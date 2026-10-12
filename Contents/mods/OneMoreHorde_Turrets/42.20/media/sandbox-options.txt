@@ -989,3 +989,80 @@ option OMHTurretsTraps.LootRateConservation {
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRateConservation,
 }
+
+option OMHTurretsTraps.LootRateSynergy {
+    type = double,
+    default = 1,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootRateSynergy,
+}
+
+option OMHTurretsTraps.LootRateMartyrdom {
+    type = double,
+    default = 1,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootRateMartyrdom,
+}
+
+option OMHTurretsTraps.LootRateTack {
+    type = double,
+    default = 1,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootRateTack,
+}
+
+option OMHTurretsTraps.MartyrdomRadius
+{
+    type = double,
+    min = 0.25,
+    max = 10,
+    default = 1.5,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_MartyrdomRadius,
+}
+
+option OMHTurretsTraps.MartyrdomDamage
+{
+    type = double,
+    min = 0,
+    max = 1000,
+    default = 20,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_MartyrdomDamage,
+}
+
+option OMHTurretsTraps.TackRadius
+{
+    type = double,
+    min = 0.25,
+    max = 10,
+    default = 1,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_TackRadius,
+}
+
+option OMHTurretsTraps.TackDamage
+{
+    type = double,
+    min = 0,
+    max = 1000,
+    default = 10,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_TackDamage,
+}
+
+option OMHTurretsTraps.TackLifetime
+{
+    type = double,
+    min = 1,
+    max = 60,
+    default = 10,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_TackLifetime,
+}

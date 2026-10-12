@@ -34,5 +34,8 @@
     "Tooltip_OMHTT_ModuleInitialBlow": "Against targets at 90 percent health or higher, adds 25 percent primary damage per copy. No stacking cap.",
     "Tooltip_OMHTT_ModuleExecute": "A successful primary hit kills targets at 10 percent health or below. Each extra copy adds 2 percentage points to the threshold.",
     "Tooltip_OMHTT_ModuleImpact": "First shot after an empty reload has a 60 percent chance to stagger one standing target. Each extra copy adds 2 percentage points. Five-second recovery protection; partial top-ups do not reset it.",
-    "Tooltip_OMHTT_ModuleConservation": "Two ammunition uses per round with one copy; each extra copy adds one use. Discounts normal Splitter ammo cost. Progress stays with the head; reloads and module swaps do not reset it. Power is still consumed every volley."
+    "Tooltip_OMHTT_ModuleConservation": "Two ammunition uses per round with one copy; each extra copy adds one use. Discounts normal Splitter ammo cost. Progress stays with the head; reloads and module swaps do not reset it. Power is still consumed every volley.",
+    "Tooltip_OMHTT_ModuleSynergy": "Secondary projectile hits gain module effects. Fragment cannot create more Fragment. Burst and Tack damage never trigger effects. One installed.",
+    "Tooltip_OMHTT_ModuleMartyrdom": "Projectile kills pop: 20 nearby zombie damage and 20-tile noise. Radius 1.5 tiles, +0.25 per extra module. Minor blunt injury to nearby players, at most once per second.",
+    "Tooltip_OMHTT_ModuleTack": "An eligible hit drops tacks for 10 seconds: 10 damage every 2 seconds and half movement in contact. Radius 1 tile, +0.25 per extra module. Same target can drop again after expiry. Overlap does not stack; walking is safe for players."
 }

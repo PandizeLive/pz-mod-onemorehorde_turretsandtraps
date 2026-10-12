@@ -10,9 +10,9 @@ T.BASE = "Base.OMHTTTurretBase"
 T.HEAD = "Base.OMHTTTurretPotato"
 T.HEAD_VISUAL = {height = 0.4 - 16 / 192, scale = 0.512, muzzle = 0.55}
 T.CONTAINER = "OMHTTTurret"
-T.MODULES = {Conservation = true, Piercing = true, InitialBlow = true, Execute = true, Impact = true, FiringEnhanced = true, MotionDetectionEnhanced = true, Magazine = true, Splitter = true, Fragment = true, FiringImprovised = true, MotionDetectionImprovised = true, CapacityImprovised = true, Firing = true, MotionDetection = true, Filter = true, RapidFire = true, Velocity = true,
+T.MODULES = {Synergy = true, Martyrdom = true, Tack = true, Conservation = true, Piercing = true, InitialBlow = true, Execute = true, Impact = true, FiringEnhanced = true, MotionDetectionEnhanced = true, Magazine = true, Splitter = true, Fragment = true, FiringImprovised = true, MotionDetectionImprovised = true, CapacityImprovised = true, Firing = true, MotionDetection = true, Filter = true, RapidFire = true, Velocity = true,
     Range = true, Critical = true, Accuracy = true, Suppression = true, Capacity = true, CapacitySmall = true, CapacityLarge = true, Detection360 = true, Reload = true, Autoloader = true}
-T.SINGLE = {Firing = true, MotionDetection = true, Filter = true, Detection360 = true, Autoloader = true}
+T.SINGLE = {Synergy = true, Firing = true, MotionDetection = true, Filter = true, Detection360 = true, Autoloader = true}
 T.TYPES = {}
 T.COMPONENTS = {}
 local roles = {FiringEnhanced = "Firing", MotionDetectionEnhanced = "MotionDetection", FiringImprovised = "Firing", MotionDetectionImprovised = "MotionDetection"}

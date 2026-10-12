@@ -40,6 +40,12 @@ public final class KahluaCheck {
             return 1;
         });
         set.invoke(env, "nativeRoundTrip", roundTrip);
+        Object realMillis = Proxy.newProxyInstance(functionType.getClassLoader(), new Class<?>[] {functionType}, (proxy, method, values) -> {
+            if (!method.getName().equals("call")) return null;
+            values[0].getClass().getMethod("push", Object.class).invoke(values[0], System.nanoTime() / 1000000.0);
+            return 1;
+        });
+        set.invoke(env, "realMillis", realMillis);
         Path root = Path.of(args[0]);
         Class<?> animNodeType = Class.forName("zombie.core.skinnedmodel.advancedanimation.AnimNode");
         Object node = animNodeType.getMethod("Parse", String.class).invoke(null,
@@ -198,6 +204,7 @@ public final class KahluaCheck {
             {"OMHTT/TargetHealth", base + "shared/OMHTT/TargetHealth.lua"},
             {"OMHTT/TurretModules", base + "shared/OMHTT/TurretModules.lua"},
             {"OMHTT/TurretConditionalHit", base + "server/OMHTT/TurretConditionalHit.lua"},
+            {"OMHTT/TurretProc", base + "server/OMHTT/TurretProc.lua"},
             {"OMHTT/TurretVolley", base + "server/OMHTT/TurretVolley.lua"},
             {"OMHTT/PrototypeCombat", base + "server/OMHTT/PrototypeCombat.lua"},
             {"OMHTT/FirearmAccuracy", base + "shared/OMHTT/FirearmAccuracy.lua"},
@@ -259,12 +266,16 @@ public final class KahluaCheck {
             {"OMHTT/ClientOptions", base + "client/OMHTT/ClientOptions.lua"},
             {"OMHTT/TurretRange", base + "client/OMHTT/TurretRange.lua"},
             {"OMHTT/TurretSearch", base + "shared/OMHTT/TurretSearch.lua"},
+            {"OMHTT/LootDefinitions", base + "shared/OMHTT/LootDefinitions.lua"},
+            {"OMHTT/TurretRarity", base + "shared/OMHTT/TurretRarity.lua"},
+            {"OMHTT/TurretBatteryEstimate", base + "shared/OMHTT/TurretBatteryEstimate.lua"},
             {"OMHTT/TurretBenefits", base + "client/OMHTT/TurretBenefits.lua"},
             {"OMHTT/TurretBenefitList", base + "client/OMHTT/TurretBenefitList.lua"},
             {"OMHTT/TurretManage", base + "client/OMHTT/TurretManage.lua"},
             {"_", "tools/tests/turret_manage_load_order.lua"},
             {"OMHTT/TurretWorld", base + "server/OMHTT/TurretWorld.lua"},
             {"OMHTT/TurretPickupAction", base + "shared/OMHTT/TurretPickupAction.lua"},
+            {"OMHTT/TurretOnceEach", base + "server/OMHTT/TurretOnceEach.lua"},
             {"OMHTT/TurretAutomation", base + "server/OMHTT/TurretAutomation.lua"},
             {"_", "tools/tests/turret.lua"},
             {"_", "tools/tests/turret_renderer.lua"},
@@ -303,6 +314,7 @@ public final class KahluaCheck {
             {"OMHTT/BedSpikes", base + "shared/OMHTT/BedSpikes.lua"},
             {"OMHTT/BedService", base + "server/OMHTT/BedService.lua"},
             {"_", base + "server/OMHTT/BedRuntime.lua"},
+            {"OMHTT/ContactPlayer", base + "client/OMHTT/ContactPlayer.lua"},
             {"_", base + "client/OMHTT/BedPlayer.lua"},
             {"_", base + "client/OMHTT/BedServiceAction.lua"},
             {"_", base + "client/OMHTT/BedMenu.lua"},
@@ -323,6 +335,7 @@ public final class KahluaCheck {
             {"_", "tools/tests/placement_inventory.lua"},
             {"_", "tools/tests/panel_cursor.lua"},
             {"_", "tools/tests/service_timing.lua"},
+            {"_", "tools/tests/synergy.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {
@@ -365,6 +378,7 @@ public final class KahluaCheck {
             maximum = Math.max(maximum, buffer.position());
         }
         System.out.println("Native packet serialization: " + count + " packets; largest=" + maximum + " bytes");
+        System.out.println("Proc test-double stress: " + get.invoke(env, "testProcStress"));
         System.out.println("Assertions passed: " + get.invoke(env, "testAssertions"));
         System.out.println("World/player/network/UI objects were test doubles; in-game acceptance remains pending.");
         System.exit(0);

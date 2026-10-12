@@ -2,6 +2,8 @@ local T = require("OMHTT/Turret")
 local S = require("OMHTT/TurretStats")
 local M = require("OMHTT/TurretModules")
 local B = {}
+local Rarity = require("OMHTT/TurretRarity")
+local Estimate = require("OMHTT/TurretBatteryEstimate")
 
 ---@param value number Value displayed, never used for consumption
 ---@return string text
@@ -10,6 +12,7 @@ function B.number(value)
     if value == 0 then return "0" end
     if math.abs(value) < .01 then return string.format("%.4f", value) end
     if math.abs(value) < 1 then return string.format("%.2f", value) end
+    if value ~= math.floor(value) then return (string.gsub(string.format("%.2f", value), "%.?0+$", "")) end
     return string.format("%.0f", value)
 end
 
@@ -26,9 +29,16 @@ function B.battery(contents, stats)
     local costText = B.number(cost)
     if cost < .0001 then costText = "<0.0001" end
     local volleys = math.floor(contents.battery:getCurrentUsesFloat() * 100 / cost + .0000001)
+    local gun = stats.firearm and contents.head or nil
+    local data = contents.head:getModData()
+    local state = gun and data.OMHTTGunCycle or data.OMHTTCycle
+    local loaded = gun and require("OMHTT/Firearms").loaded(gun) or state and state.loaded
+    local seconds = Estimate.duration(stats, gun, volleys, loaded, state and state.conservationDebt) / 1000
+    local time = seconds < 120 and string.format("%.0f", seconds) or string.format("%.1f", seconds / 60)
+    local unit = getText(seconds < 120 and "UI_OMHTT_BatterySeconds" or "UI_OMHTT_BatteryMinutes")
     return getText("UI_OMHTT_BatteryCost", costText) .. " <LINE> "
         .. getText("UI_OMHTT_BatteryVolleys", volleys) .. " <LINE> "
-        .. getText("UI_OMHTT_BatteryTime", string.format("%.1f", volleys * stats.cooldown / 60000)) .. " <LINE> "
+        .. getText("UI_OMHTT_BatteryTime", time, unit) .. " <LINE> "
         .. getText("UI_OMHTT_BatteryAssumptions")
 end
 
@@ -45,7 +55,10 @@ function B.rows(contents, stats)
         if name == "MotionDetectionEnhanced" then tooltipKey = "Tooltip_OMHTT_ModuleDetectionEnhanced" end
         if name == "FiringImprovised" or name == "MotionDetectionImprovised" then tooltipKey = "Tooltip_OMHTT_" .. name end
         local details = getText(tooltipKey)
-        if name == "Conservation" then label, value = "Ammo", stats.conservation
+        if name == "Synergy" then label = "Synergy"
+        elseif name == "Martyrdom" then label, value = "Radius", stats.martyrdom
+        elseif name == "Tack" then label, value = "Radius", stats.tack
+        elseif name == "Conservation" then label, value = "Ammo", stats.conservation
         elseif name == "Splitter" then
             label, value = "Shots", stats.splitter
             details = getText("UI_OMHTT_EffectSecondary", B.number(stats.splitterDamage * 100))
@@ -92,7 +105,13 @@ function B.rows(contents, stats)
         if count == 0 then label = "Broken" end
         local effect = getText("UI_OMHTT_Effect" .. label, value and B.number(value) or "")
         local title = getText("UI_OMHTT_Module" .. name) .. (entry.count > 1 and " x" .. entry.count or "")
-        rows[#rows + 1] = {name = name, title = title, effect = effect, inactive = count == 0 or label == "Inactive",
+        local rarity = Rarity.get(name)
+        local lootText = getText("UI_OMHTT_LootCrafted")
+        if rarity.weight then
+            lootText = rarity.weight == 0 and getText("UI_OMHTT_LootDisabled") or getText("UI_OMHTT_LootWeight", B.number(rarity.weight))
+        end
+        details = details .. " <LINE> " .. lootText
+        rows[#rows + 1] = {name = name, title = title, effect = effect, color = Rarity.get(name), inactive = count == 0 or label == "Inactive",
             details = getText("UI_OMHTT_EffectWorking", count, entry.count) .. " <LINE> " .. effect .. " <LINE> " .. details}
     end
     table.sort(rows, function(a, b) return a.title < b.title end)

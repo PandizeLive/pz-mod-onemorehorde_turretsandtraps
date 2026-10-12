@@ -35,6 +35,9 @@ end
 
 ---@return nil
 function List:prerender()
+    self:drawRect(0, 0, self.width, self.height, .85, .015, .015, .015)
+    self:drawRectBorder(0, 0, self.width, self.height, .8, .3, .3, .3)
+    self:drawRect(0, 0, self.width, self.lineHeight, .9, .12, .12, .12)
     self.offset = math.min(self.offset, math.max(0, #self.rows - self.visibleRows))
     self:drawText(getText("UI_OMHTT_InstalledModules"), 4, 0, 1, 1, 1, 1, UIFont.Small)
     for i = 1, self.visibleRows do
@@ -42,9 +45,13 @@ function List:prerender()
         if not row then break end
         local y = i * self.lineHeight
         local shade = row.inactive and .5 or .85
-        self:setStencilRect(4, y, self.width - 8, self.lineHeight)
-        self:drawText(row.title .. "  " .. row.effect, 4, y, shade, shade, shade, 1, UIFont.Small)
+        local color = row.color
+        local effectWidth = getTextManager():MeasureStringX(UIFont.Small, row.effect)
+        if color then self:drawRect(1, y, self.width - 2, self.lineHeight, .14, color.r, color.g, color.b) end
+        self:setStencilRect(4, y, math.max(0, self.width - effectWidth - 16), self.lineHeight)
+        self:drawText(row.title, 4, y, color and color.tr or shade, color and color.tg or shade, color and color.tb or shade, row.inactive and .5 or 1, UIFont.Small)
         self:clearStencilRect()
+        self:drawTextRight(row.effect, self.width - 6, y, shade, shade, shade, 1, UIFont.Small)
     end
     if #self.rows > self.visibleRows then self:drawRect(self.width - 2, self.lineHeight, 2, self.height - self.lineHeight, .7, .5, .5, .5) end
 end

@@ -13,6 +13,7 @@ local Slot = require("OMHTT/TurretSlot")
 local Range = require("OMHTT/TurretRange")
 local Benefits = require("OMHTT/TurretBenefits")
 local BenefitList = require("OMHTT/TurretBenefitList")
+local Rarity = require("OMHTT/TurretRarity")
 local Search = require("OMHTT/TurretSearch")
 local Panel = ISPanel:derive("OMHTTTurretPanel")
 local OpenAction = ISBaseTimedAction:derive("OMHTTTurretOpenAction")
@@ -149,8 +150,21 @@ function Panel:refresh()
     end
     local state = T.state(self.object)
     local profile = M.profile(state, contents, false, stats)
-    self.benefitList.rows = Benefits.rows(contents, stats)
-    self.batterySlot.detailText = Benefits.battery(contents, stats)
+    local signature = {contents.head and contents.head:getID() or 0, contents.head and contents.head:getCondition() or 0}
+    for name, entry in pairs(contents.moduleDetails) do
+        signature[#signature + 1] = name .. ":" .. entry.count .. ":" .. (contents.active[name] or 0)
+    end
+    table.sort(signature, function(a, b) return tostring(a) < tostring(b) end)
+    local benefitsKey = table.concat(signature, "|")
+    if self.benefitsKey ~= benefitsKey then
+        self.benefitsKey = benefitsKey
+        self.benefitList.rows = Benefits.rows(contents, stats)
+    end
+    self.batteryContents = contents
+    local batteryKey = benefitsKey .. ":" .. (contents.battery and contents.battery:getCurrentUsesFloat() or 0)
+        .. ":" .. stats.batteryPercent .. ":" .. stats.reload .. ":" .. stats.cooldown .. ":" .. stats.magazine
+        .. ":" .. (cycle and cycle.loaded or 0) .. ":" .. (cycle and cycle.conservationDebt or 0)
+    if batteryKey ~= self.batteryKey then self.batteryKey, self.batteryText = batteryKey, nil end
     self.stats = stats
     self.engagementRange = profile.range
     if self.rangeMaximum ~= math.max(2, math.ceil(stats.range)) then
@@ -183,7 +197,7 @@ function Panel:refresh()
     local capacity = stats.modules
     self.rows = 3 + math.ceil(math.max(0, math.max(contents.modules, capacity) - 16) / 6)
     self.moduleRow = math.min(self.moduleRow, self.rows - 3)
-    for i = 1, #self.slots do self.slots[i].items = {} end
+    for i = 1, #self.slots do self.slots[i].items, self.slots[i].rarity = {}, nil end
     for i = 1, 16 do
         local number = self.moduleRow * 6 + i
         local slot = self.moduleSlots[i]
@@ -203,10 +217,13 @@ function Panel:refresh()
             modules = modules + 1
             slot = self.moduleSlots[modules - self.moduleRow * 6]
         end
-        if kind and slot then slot.items[#slot.items + 1] = item end
+        if kind and slot then
+            slot.items[#slot.items + 1] = item
+            if kind == "module" or kind == "capacity" then slot.rarity = Rarity.get(T.component(item:getFullType())) end
+        end
     end
     local loaded = stats.firearm and G.loaded(contents.head) or 0
-    self.ammoSlot.label = getText("UI_OMHTT_ManageReserve", contents.reserveAll + loaded, stats.ammo)
+    self.ammoSlot.label = getText("UI_OMHTT_ManageReserve", contents.reserveAll, math.max(0, stats.ammo - loaded))
     local gun = stats.firearm and contents.head or nil
     local magazineType = gun and gun:getMagazineType()
     self.magazineSlot.disabled = not magazineType
@@ -224,6 +241,9 @@ function Panel:refresh()
             self.magazineSlot.items[1] = self.magazineIcon
         end
     end
+    self.ammoSlot.meter = math.min(1, contents.reserveAll / math.max(1, stats.ammo - loaded))
+    self.magazineSlot.meter = math.min(1, (cycle and cycle.loaded or 0) / math.max(1, stats.magazine))
+    self.batterySlot.meter = contents.battery and contents.battery:getCurrentUsesFloat() or 0
     self.headSlot.missing = not contents.head or contents.head:getCondition() <= 0
     self.batterySlot.missing = contents.head ~= nil and not power
     self.ammoSlot.missing = contents.head ~= nil and contents.ammo == 0
@@ -264,6 +284,19 @@ function Panel:refresh()
     end
 end
 
+---@param x number Left
+---@param y number Top
+---@param width number Width
+---@param height number Height
+---@param title string Header text
+---@return nil
+function Panel:section(x, y, width, height, title)
+    self:drawRect(x, y, width, height, .85, .025, .025, .025)
+    self:drawRectBorder(x, y, width, height, .8, .3, .3, .3)
+    self:drawRect(x, y, width, self.lineHeight, .9, .12, .12, .12)
+    self:drawText(title, x + 6, y, .9, .9, .9, 1, UIFont.Small)
+end
+
 ---@return nil
 function Panel:prerender()
     if not require("OMHTT/TurretWorld").near(self.player, self.object) then self:close(); return end
@@ -274,6 +307,11 @@ function Panel:prerender()
         self:refresh()
     end
     local h, y = self.lineHeight, self.detailsY
+    self:section(6, self.equipmentY, self.width - 12, self.modulesY - self.equipmentY - 4, getText("UI_OMHTT_Equipment"))
+    self:section(6, self.modulesY, self.width - 12, y - self.modulesY - 4, "")
+    self:section(6, y - h, self.width / 2 - 10, h * 8, getText("UI_OMHTT_Status"))
+    self:drawRect(6, y + h * 7 + 2, self.width - 12, h + 10, .8, .08, .08, .08)
+    self:drawRectBorder(6, y + h * 7 + 2, self.width - 12, h + 10, .7, .3, .3, .3)
     self:drawText(getText("UI_OMHTT_Turret"), 12, 8, 1, 1, 1, 1, UIFont.Medium)
     self:drawText(getText("UI_OMHTT_ManageHint"), 12, self.titleHeight, 0.8, 0.8, 0.8, 1, UIFont.Small)
     local label = self.moduleLabel
@@ -313,6 +351,7 @@ end
 
 ---@return nil
 function OpenAction:perform()
+    Rarity.refresh(SandboxVars.OMHTurretsTraps or {})
     if require("OMHTT/TurretWorld").near(self.character, self.object) then
         local index = self.character:getPlayerNum()
         if active[index] then active[index]:close() end
@@ -321,16 +360,16 @@ function OpenAction:perform()
         local titleHeight = font:getFontHeight(UIFont.Medium) + 16
         local width = math.min(getPlayerScreenWidth(index) - 24, math.max(640, lineHeight * 32))
         local slotHeight = lineHeight + 48
-        local top = titleHeight + lineHeight + 12
+        local top = titleHeight + lineHeight * 2 + 12
         local moduleHeight = lineHeight * 2 + 24
         local available = getPlayerScreenHeight(index) - 24
-        local preferred = top + (slotHeight + 8) * 2 + lineHeight + (moduleHeight + 6) * 3 + 6 + lineHeight * 8 + 82
+        local preferred = top + (slotHeight + 8) * 2 + lineHeight * 2 + (moduleHeight + 6) * 3 + 6 + lineHeight * 8 + 82
         local trim = math.max(0, preferred - available)
         local slotTrim = math.min(24, trim / 5)
         slotHeight = slotHeight - slotTrim
         moduleHeight = moduleHeight - math.min(12, math.max(0, trim - slotTrim * 2) / 3)
         local modulesY = top + (slotHeight + 8) * 2
-        local detailsY = modulesY + lineHeight + (moduleHeight + 6) * 3 + 6
+        local detailsY = modulesY + lineHeight * 2 + (moduleHeight + 6) * 3 + 6
         local height = detailsY + lineHeight * 8 + 82
         local x = getPlayerScreenLeft(index) + getPlayerScreenWidth(index) - width - 12
         local y = getPlayerScreenTop(index) + math.max(12, (getPlayerScreenHeight(index) - height) / 2)
@@ -338,12 +377,13 @@ function OpenAction:perform()
         panel.player, panel.object, panel.nextRefresh = self.character, self.object, 0
         panel.deviceId, panel.slots, panel.moduleSlots = T.state(self.object).id, {}, {}
         panel.moduleRow, panel.rows = 0, 3
+        panel.equipmentY = top - lineHeight
         panel.lineHeight, panel.titleHeight, panel.slotHeight = lineHeight, titleHeight, slotHeight
         panel.modulesY, panel.detailsY, panel.result, panel.reason = modulesY, detailsY, "", ""
         panel.moveWithMouse = true
         panel.backgroundColor = {r = 0.04, g = 0.04, b = 0.04, a = 0.96}
         panel:initialise()
-        panel.benefitList = BenefitList:new(width / 2 + 4, detailsY, width / 2 - 16, lineHeight * 7, lineHeight)
+        panel.benefitList = BenefitList:new(width / 2 + 4, detailsY - lineHeight, width / 2 - 16, lineHeight * 8, lineHeight)
         panel.benefitList:initialise()
         panel:addChild(panel.benefitList)
         panel.rangeSlider = ISSliderPanel:new(width / 2, detailsY + lineHeight * 7 - 3, width / 2 - 12, 24, panel, Panel.changeRange)
@@ -352,10 +392,15 @@ function OpenAction:perform()
         panel:addChild(panel.rangeSlider)
         panel.headSlot = panel:addSlot("head", getText("UI_OMHTT_ManageHead"), 12, top, (width - 32) / 2)
         panel.batterySlot = panel:addSlot("battery", "", width / 2 + 4, top, (width - 32) / 2 - 88)
+        panel.batterySlot.detailProvider = function()
+            if not panel.batteryText then panel.batteryText = Benefits.battery(panel.batteryContents, panel.stats) end
+            return panel.batteryText
+        end
         panel.powerButton = ISButton:new(width - 92, top, 80, panel.slotHeight, "", panel, Panel.togglePower)
         panel.powerButton.prerender = Panel.drawPower
         local storageWidth = width - 40
         panel.ammoSlot = panel:addSlot("ammo", "", 12, top + slotHeight + 8, storageWidth * 0.38)
+        panel.ammoSlot.detailText = getText("UI_OMHTT_ReserveCapacity")
         panel.magazineSlot = panel:addSlot("magazine", "", 20 + storageWidth * 0.38, top + slotHeight + 8, storageWidth * 0.30)
         panel.capacitySlot = panel:addSlot("capacity", getText("UI_OMHTT_ManageCapacity"), 28 + storageWidth * 0.68, top + slotHeight + 8, storageWidth * 0.32)
         local moduleWidth = (width - 54) / 6

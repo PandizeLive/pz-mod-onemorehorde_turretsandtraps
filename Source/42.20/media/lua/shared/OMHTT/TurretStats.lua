@@ -2,7 +2,7 @@ local G = require("OMHTT/Firearms")
 local Class = require("OMHTT/FirearmClass")
 local kits = {{"CapacityImprovised", "Improvised", 100, 2}, {"CapacitySmall", "Small", 200, 6}, {"Capacity", "", 400, 10}, {"CapacityLarge", "Large", 650, 14}}
 local S = {}
-S.POWER_WEIGHTS = {Conservation = 1, Firing = 1, FiringImprovised = 1, FiringEnhanced = 1, MotionDetection = 1, MotionDetectionImprovised = 1, MotionDetectionEnhanced = 1, Filter = 1, Detection360 = 1, RapidFire = 1, Reload = 1, Velocity = 1, Range = 1, Critical = 1, Accuracy = 1, Suppression = 1, Autoloader = 1, Magazine = 1, Splitter = 1, Fragment = 1, Piercing = 1, InitialBlow = 1, Execute = 1, Impact = 1}
+S.POWER_WEIGHTS = {Synergy = 1, Martyrdom = 1, Tack = 1, Conservation = 1, Firing = 1, FiringImprovised = 1, FiringEnhanced = 1, MotionDetection = 1, MotionDetectionImprovised = 1, MotionDetectionEnhanced = 1, Filter = 1, Detection360 = 1, RapidFire = 1, Reload = 1, Velocity = 1, Range = 1, Critical = 1, Accuracy = 1, Suppression = 1, Autoloader = 1, Magazine = 1, Splitter = 1, Fragment = 1, Piercing = 1, InitialBlow = 1, Execute = 1, Impact = 1}
 
 ---@param key string Setting
 ---@param fallback number Default
@@ -120,6 +120,12 @@ function S.resolve(contents)
         ammo = math.floor(ammoCapacity + extraAmmo),
         modules = math.floor(S.option("PotatoModuleCapacity", 2, 0, 20) + extraModules),
         conservation = 1 + (active.Conservation or 0),
+        synergy = active.Synergy ~= nil,
+        martyrdom = active.Martyrdom and S.option("MartyrdomRadius", 1.5, .25, 10) + (active.Martyrdom - 1) * .25 or 0,
+        martyrdomDamage = S.option("MartyrdomDamage", 20, 0, 1000),
+        tack = active.Tack and S.option("TackRadius", 1, .25, 10) + (active.Tack - 1) * .25 or 0,
+        tackDamage = S.option("TackDamage", 10, 0, 1000),
+        tackLifetime = S.option("TackLifetime", 10, 1, 60) * 1000,
         splitter = splitter, fragment = fragment, splitterDamage = S.option("SplitterDamage", 50, 0, 100) / 100,
         piercing = (active.Piercing or 0) > 0 and firearm and gun:getProjectileCount() <= 1 and active.Piercing or 0,
         pierceRetention = S.option("PiercingRetention", 70, 0, 100) / 100,

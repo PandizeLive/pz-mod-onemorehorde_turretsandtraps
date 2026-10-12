@@ -33,6 +33,12 @@ def main():
     turret_probe.write_text((ROOT / "tools/tests/native_turret_smoke.lua").read_text(encoding="utf-8"), encoding="utf-8")
     bulk_probe = turret_probe.parent / "OMHTT/NativeBulkTransfer.lua"
     bulk_probe.write_text((ROOT / "tools/tests/native_bulk_transfer.lua").read_text(encoding="utf-8"), encoding="utf-8")
+    (turret_probe.parent / "OMHTT/NativeProc.lua").write_text((ROOT / "tools/tests/native_proc.lua").read_text(encoding="utf-8"), encoding="utf-8")
+    for name in ['TurretProc', 'TurretVolley']:
+        core = (ROOT / ('Source/42.20/media/lua/server/OMHTT/' + name + '.lua')).read_text(encoding='utf-8')
+        assert core.startswith('if isClient() or isServer() then return end\n')
+        core = core.split('\n', 1)[1].replace('require("OMHTT/TurretProc")', 'require("OMHTT/NativeTurretProc")')
+        (turret_probe.parent / ('OMHTT/Native' + name + '.lua')).write_text(core, encoding='utf-8')
     console = CACHE / "server-console.txt"
     transcript = OUTPUT / ("server-" + os.environ.get("OMHTT_PROBE_MODE", "write") + ".log")
     classes = OUTPUT / "persistence-classes"
@@ -102,9 +108,9 @@ def main():
     assert "OMHTT_BarbSmoke.lua:" not in text, "Native barb probe raised a Lua/bridge error"
     assert "Lua code called from the wrong thread" not in text, "Native probe used the wrong Lua thread"
     assert "[OMHTT-Beds] persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") + " parts=32" in text, "Native bed persistence failed"
-    assert "[OMHTT-Smoke] native-module-loot-parser pools=16 items=175 weights=positive" in text, "Native module loot parse failed"
+    assert "[OMHTT-Smoke] native-module-loot-parser pools=16 items=193 weights=positive" in text, "Native module loot parse failed"
     assert "native-power modules=16 aliases=once m9=0.009 rifleVolleys=4811 generator=matched conditionals=valid" in text, "Native power/conditional integration failed"
-    assert "[OMHTT-Smoke] native-modules loot=175 profiles=valid condition=checked" in text, "Native module rules failed"
+    assert "[OMHTT-Smoke] native-modules loot=193 profiles=valid condition=checked" in text, "Native module rules failed"
     assert "[OMHTT-Smoke] native-install exact=selected decoy=preserved preview=nonconsuming" in text, "Native Install selection failed"
     assert "[OMHTT-Smoke] native-turret-persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Turret world persistence failed"
     assert "[OMHTT-Smoke] native-improvised mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Improvised exact-item persistence failed"

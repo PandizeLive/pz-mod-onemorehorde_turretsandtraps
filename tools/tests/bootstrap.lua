@@ -75,7 +75,7 @@ function getSpecificPlayer(index) return testPlayer end
 
 Events = {}
 Events.OnObjectAdded = {handlers = {}, Add = function() end}
-for _, name in pairs({"OnInitGlobalModData", "LoadGridsquare", "OnObjectAboutToBeRemoved", "OnClientCommand", "OnServerCommand", "OnFillWorldObjectContextMenu", "OnGameStart", "OnTickEvenPaused", "OnTick", "OnPostRender", "OnPreUIDraw", "OnPostUIDraw", "OnZombieCreate", "OnZombieUpdate", "OnZombieDead", "OnContextKey", "OnPlayerUpdate"}) do
+for _, name in pairs({"OnSave", "OnInitGlobalModData", "LoadGridsquare", "OnObjectAboutToBeRemoved", "OnClientCommand", "OnServerCommand", "OnFillWorldObjectContextMenu", "OnGameStart", "OnTickEvenPaused", "OnTick", "OnPostRender", "OnPreUIDraw", "OnPostUIDraw", "OnZombieCreate", "OnZombieUpdate", "OnZombieDead", "OnContextKey", "OnPlayerUpdate"}) do
     local handlers = {}
     Events[name] = {handlers = handlers, Add = function(callback) table.insert(handlers, callback) end}
 end

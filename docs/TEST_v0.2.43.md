@@ -1,5 +1,7 @@
 # 0.2.43 focused test
 
+**Superseded test handoff:** uncompleted checks are carried into [one 0.2.44 test](TEST_v0.2.44.md). This is not a pass or waiver; do not request a separate 0.2.43 round.
+
 ## Owner test — pending
 
 1. Restart Zomboid and confirm **0.2.43**. Use your test world and a firearm turret with Large Expansion and room for 600 matching rounds.

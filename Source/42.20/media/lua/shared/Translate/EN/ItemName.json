@@ -37,5 +37,8 @@
     "Base.OMHTTModuleInitialBlow": "Initial Blow Module",
     "Base.OMHTTModuleExecute": "Execute Module",
     "Base.OMHTTModuleImpact": "Impact Module",
-    "Base.OMHTTModuleConservation": "Conservation Module"
+    "Base.OMHTTModuleConservation": "Conservation Module",
+    "Base.OMHTTModuleSynergy": "Synergy Module",
+    "Base.OMHTTModuleMartyrdom": "Martyrdom Module",
+    "Base.OMHTTModuleTack": "Tack Module"
 }

@@ -27,7 +27,7 @@ end
 function A.scan(origin, profile)
     local radius = math.ceil(profile.range)
     return {origin = origin, profile = profile, radius = radius, x = -radius, y = -radius,
-        index = 0, bestDistance = 0, visited = 0}
+        index = 0, bestDistance = 0, visited = 0, members = {}, seen = {}}
 end
 
 ---@param job table Incremental scan
@@ -47,9 +47,12 @@ function A.advance(job, budget, deadline)
             job.visited = job.visited + 1
             if instanceof(zombie, "IsoZombie") then
                 local inside, distance = M.inside(job.origin, zombie, job.profile)
-                local select = inside and (job.profile.priority == "Random"
+                local select = inside and (job.profile.priority == "OnceEach" or job.profile.priority == "Random"
                     or M.better(zombie, distance, job.best, job.bestDistance, job.profile.priority))
                 if select and Combat.clearLane(job.origin, zombie:getSquare(), job.profile.range) then
+                    if job.profile.priority == "OnceEach" and not job.seen[zombie] then
+                        job.members[#job.members + 1], job.seen[zombie] = zombie, true
+                    end
                     if job.profile.priority == "Random" then
                         job.eligible = (job.eligible or 0) + 1
                         select = ZombRand(job.eligible) == 0
@@ -105,7 +108,7 @@ function A.step(entry, deadline)
     end
     local profile = M.profile(state, contents, true, stats)
     local key = profile.heading .. ":" .. profile.cone .. ":" .. profile.range .. ":" .. profile.priority
-    if entry.key ~= key then entry.job, entry.target = nil, nil end
+    if entry.key ~= key then entry.job, entry.target, entry.round = nil, nil, nil end
     entry.key = key
     local Combat = require("OMHTT/PrototypeCombat")
     local target = entry.target
@@ -113,7 +116,24 @@ function A.step(entry, deadline)
     local retained = target and M.inside(square, target, profile)
         and Combat.clearLane(square, target:getSquare(), profile.range)
     local job = {visited = 0}
-    if not retained or entry.job or (not sticky and now >= entry.due) then
+    if profile.priority == "OnceEach" then
+        if not retained then
+            if not entry.round then
+                if not entry.job then entry.job = A.scan(square, profile) end
+                if not A.advance(entry.job, 64, deadline) then return true end
+                entry.round = {members = entry.job.members, used = {}}
+                entry.job = nil
+            end
+            local complete, selected = require("OMHTT/TurretOnceEach").select(entry.round, square, profile, state.aimDegrees or profile.heading, deadline)
+            if not complete then return true end
+            target, retained = selected, false
+            if not target then
+                entry.round, entry.target, entry.due = nil, nil, now + interval
+                A.status(entry, "no-target")
+                return true
+            end
+        end
+    elseif not retained or entry.job or (not sticky and now >= entry.due) then
         if not entry.job then entry.job = A.scan(square, profile) end
         local fireReady = retained and contents.active.Firing and now >= (entry.fireDue or 0)
         if not fireReady and A.advance(entry.job, 64, deadline) then
@@ -149,6 +169,10 @@ function A.step(entry, deadline)
         local result = W.fire(nil, object, target)
         entry.fireDue = now + 50
         if result == "Fired" or result == "Misfire" then entry.fireDue = now + T.cycleConfig(contents).cooldown end
+        if result == "Fired" and profile.priority == "OnceEach" and entry.round then
+            entry.round.used[target], entry.round.started = true, true
+            entry.target, entry.due = nil, now
+        end
         A.status(entry, result)
     elseif not contents.active.Firing then
         A.status(entry, "tracking-only")

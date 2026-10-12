@@ -1,6 +1,15 @@
 # Release state and publication policy
 
-## Current local installation: 0.2.43 / C154
+## Current candidate: 0.2.44 / C160
+
+**C160 / 0.2.44 implemented and automatically verified.** Manage sections/rarity/bars, reload-aware battery feedback, Once Each and Synergy/Martyrdom/Tack are complete under the [approved contract](checkpoints/R3_MANAGE_RARITY_SYNERGY.md). Bounded admission precedes resource commitment; terminal effects cannot recurse. [Patch](PATCH_v0.2.44.md) | [one six-step test](TEST_v0.2.44.md).
+
+15,931 Kahlua assertions, native write/read, all three package selections and 51 supported Firearms guns pass. LootLab matches 28 modules / 193 entries; 76 API/page tests and browser model/import checks pass. These checks do not certify rendered gameplay or client frame smoothness. The prior 676-ms gap remains unassigned. Held 0.2.43 checks join this test; no old round is newly marked passed.
+
+202 source / 250 package files; package independence and all automated probes pass. Tagged installation and archive verification pending the final release step. [Test evidence](TEST_v0.2.44.md) | [LootLab deployment](../diagnostics/v0.2.44/lootlab-release.json). No Workshop upload.
+
+
+## Previous local installation: 0.2.43 / C154
 
 **C154 / 0.2.43 installed and automatically verified.** The approved C148-C153 bundle includes bounded matching ammo transfers, five runtime optimizations, Conservation Module, compact Manage, battery estimates and short Installed Modules rows with individual tooltips. No design decision remains. R3C7 and the relevant R1C3 acceptance checks share [one six-step test](TEST_v0.2.43.md); the 0.2.42 transfer finding carries forward without reopening the completed 0.2.41 round. [Patch](PATCH_v0.2.43.md) | [module/UI contract](checkpoints/R3_AMMO_SAVER_MANAGE.md) | [optimization contract](PERFORMANCE_AUDIT_v0.2.42.md).
 

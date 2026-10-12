@@ -1,0 +1,14 @@
+Native animation parser: two strike markers matched, SetVariable bindings resolved
+Native bed animation parser: walking/running brush nodes valid, no tree injury events
+Native trip parser: player/zombie forward clips and complete landing/recovery markers valid
+Native JSON translation loading and substitution: 743 keys passed
+Kahlua compilation: 111 runtime/translation files passed
+Native packet serialization: 23 packets; largest=390 bytes
+Proc test-double stress: bursts=160 zombies=486 callbacks=481 maxCallbackMs=1.370099999010563 drainMs=364.59400000423193
+Assertions passed: 15931.0
+World/player/network/UI objects were test doubles; in-game acceptance remains pending.
+Failed to load file Guid table.
+Failed to load file Guid table.
+Failed to load file Guid table.
+Failed to load file Guid table.
+Failed to load file Guid table.

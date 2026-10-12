@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Synchronized 2026-10-11 against C80-C154 and the implemented, native-verified 0.2.43 build. Its focused owner test is pending; the prior 0.2.41/C138 round remains complete. This is the canonical execution/status index.
+Synchronized 2026-10-11 against C80-C160 and the implemented, native-verified 0.2.44 build. Its focused owner test is pending; the prior 0.2.41/C138 round remains complete. This is the canonical execution/status index.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -18,11 +18,9 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 ## Current checkpoint status and next work
 
-**C159 ready:** [Final Manage/module bundle and optimization requirements](checkpoints/R3_MANAGE_RARITY_SYNERGY.md#c159---design-ready-for-implementation-2026-10-11). Owner selects 6A minor blunt player injury and 7A one-second protection, and emphasizes Synergy performance. All raised design choices are settled; native/stress proof remains implementation work. Current request is readiness/recap, not a completed patch. Installed 0.2.43 and test acceptance unchanged.
+**C160 / 0.2.44 implemented and automatically verified.** Manage sections/rarity/bars, reload-aware battery feedback, Once Each and Synergy/Martyrdom/Tack are complete under the [approved contract](checkpoints/R3_MANAGE_RARITY_SYNERGY.md). Bounded admission precedes resource commitment; terminal effects cannot recurse. [Patch](PATCH_v0.2.44.md) | [one six-step test](TEST_v0.2.44.md).
 
-**C154 / 0.2.43 installed and automatically verified.** The approved C148-C153 bundle includes bounded matching ammo transfers, five runtime optimizations, Conservation Module, compact Manage, battery estimates and short Installed Modules rows with individual tooltips. No design decision remains. R3C7 and the relevant R1C3 acceptance checks share [one six-step test](TEST_v0.2.43.md); the 0.2.42 transfer finding carries forward without reopening the completed 0.2.41 round. [Patch](PATCH_v0.2.43.md) | [module/UI contract](checkpoints/R3_AMMO_SAVER_MANAGE.md) | [optimization contract](PERFORMANCE_AUDIT_v0.2.42.md).
-
-15,739 Kahlua assertions, 101 runtime/translation files, 705 native translation keys, exact-item write/read and all three package selections pass. The 600-round native probe used 30 groups: 13 ms preparation and 10 ms peak group in the fresh process. This excludes rendered gameplay and does not certify removal of all client pauses. LootLab 0.2.43 is deployed and verified with 25 modules, 16 pools and 175 entries; 75 API/page tests pass, saved tuning is preserved.
+15,931 Kahlua assertions, native write/read, all three package selections and 51 supported Firearms guns pass. LootLab matches 28 modules / 193 entries; 76 API/page tests and browser model/import checks pass. These checks do not certify rendered gameplay or client frame smoothness. The prior 676-ms gap remains unassigned. Held 0.2.43 checks join this test; no old round is newly marked passed.
 
 **Historical C137 module checkpoint:** 0.2.41 adds approved Enhanced Firing/Detection and larger reserve count bonuses, and corrects automatic cadence, placement limits and volley visuals. LootLab is refreshed to the same catalog. R3C4 is settled; R3C5 automated/native proof and the completed C138 owner round are in [one focused test](TEST_v0.2.41.md). Native inventory weight remains a separate limit. C147 completes the subsequent R3C6 integration; R3C7 owner verification is now active.
 
@@ -55,7 +53,7 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 | 2: R2C4 concertina | C133 linked 1x2 conversion installed/native-verified in 0.2.39 | Focused paired-wire owner acceptance remains; see TEST_v0.2.39.md |
 | 3: R3C1-R3C2 new head | Candidates documented; none selected for implementation | Select one head and settle its concrete contract before prototyping |
 | 3: R3C3 explosive head | Optional, unscoped | Collateral/resource/effect-budget decisions and feasibility first |
-| 3: R3C4-R3C7 offensive modules/battery | C147 implemented offensive modules/power; C154 / 0.2.43 adds Conservation and compact feedback | R3C7 combined 0.2.43 owner test pending |
+| 3: R3C4-R3C7 offensive modules/battery | C147 implemented offensive modules/power; C160 / 0.2.44 adds terminal Synergy effects and Manage feedback | R3C7 combined 0.2.44 owner test pending |
 | 3: R3C8 starter modules/expansion | C104 implemented, verified and installed in 0.2.34 | C106 tentative passes; 4/6/6 layout acceptance in 0.2.35; include maximum loadouts in future R3C7 endurance checks |
 | 4: R4C1-R4C4 signals/connected traps | Planned | Signal contract first; devices then optional turret receiver |
 | 5: R5C1-R5C3 MP/integrations/release | Planned; no certification or publication | Validate only the selected release scope; optional features need not all ship |
@@ -84,7 +82,7 @@ The phase order is not a mandatory queue through every feature. R1C3 continues a
 | R2C3 | [Barbed Panel](checkpoints/R2C3_BACKED_BARBED_SECTIONS.md) | C99 / 0.2.31 implements walls/fences, single-panel doors and independent 50-HP window-frame barbs; later changes include 0.2.35 Building. Native checks pass; C106 records tentative owner acceptance of unmentioned behavior. Multi-panel/garage doors remain unproven |
 | R2C4 | Concertina movement feasibility, then content if it passes | Contact-only damage; reversible slowing that composes with other effects and ends on exit/death/unload. No permanent movement mutation or silent substitute for slowing |
 
-C81 still rejects slowing turret effects. C116 explicitly accepts concertina contact-only slowing, with the same requested behavior for Barbed Panels, following the Horde Night concern discussion. C117 approves divisor 2 and C119 approves the remaining current content details; native displacement scaling is implemented with real-object API proof; rendered acceptance remains. See [R2C4 investigation](checkpoints/R2C4_CONCERTINA.md).
+C81 rejected general slowing turret effects; C157-C160 explicitly approve temporary Tack contact fields. C116 explicitly accepts concertina contact-only slowing, with the same requested behavior for Barbed Panels, following the Horde Night concern discussion. C117 approves divisor 2 and C119 approves the remaining current content details; native displacement scaling is implemented with real-object API proof; rendered acceptance remains. See [R2C4 investigation](checkpoints/R2C4_CONCERTINA.md).
 
 Bed Spikes content began in 0.2.30 under C95, with native API, recipe and persistence checks. Later traversal/recovery/placement changes are included in 0.2.34. Use only [the current combined test](TEST_v0.2.38.md) for outstanding rendered acceptance; older patch tests are historical. Phase 2 is not fully accepted; concertina is implemented in 0.2.38 with owner testing pending.
 

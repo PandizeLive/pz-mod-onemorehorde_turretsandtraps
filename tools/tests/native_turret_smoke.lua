@@ -50,7 +50,7 @@ local function verifyTurrets()
             end
         end
     end
-    assert(count == 175, "Expected 175 component entries across sixteen native loot pools")
+    assert(count == 193, "Expected 193 component entries across sixteen native loot pools")
     local retired = {"OMHTTModuleCapacitySmall", "OMHTTModuleCapacity", "OMHTTModuleCapacityLarge",
         "OMHTTModuleMotionDetection", "OMHTTModuleDetection360"}
     for i = 1, #retired do
@@ -89,7 +89,7 @@ local function verifyTurrets()
     end
     assert(auditAccepted >= 20 and auditRejected >= 2, "Expected conventional guns and cap-gun rejections")
     print("[OMHTT-Smoke] native-firearm-audit accepted=" .. auditAccepted .. " rejected=" .. auditRejected)
-    assert(visibleCount == 28, "Expected twenty-eight canonical components")
+    assert(visibleCount == 31, "Expected thirty-one canonical components")
     local largeStorage = instanceItem(T.BASE):getInventory()
     T.configure(largeStorage)
     local largeGun = instanceItem("Base.Pistol")
@@ -143,7 +143,7 @@ local function verifyTurrets()
     assert(T.contents(live).active.MotionDetection == 1, "Native module condition defaults are not active")
     detector:setCondition(0)
     assert(T.contents(live).active.MotionDetection == nil, "Broken native module remains active")
-    print("[OMHTT-Smoke] native-modules loot=175 profiles=valid condition=checked")
+    print("[OMHTT-Smoke] native-modules loot=193 profiles=valid condition=checked")
     assert(GameSounds.getSound("OMHTTTriggerClick") ~= nil, "Native click sound is unregistered")
     local resources = ArrayList.new()
     local tools = {"Base.Screwdriver", "Base.Wrench"}
@@ -603,6 +603,7 @@ local function verifyTurrets()
         assert(Guns.loaded(gun) == 0 and cycle.conservationDebt == 0, "Second use did not consume native last round")
     end
     print("[OMHTT-Smoke] native-conservation guns=3 lastRound=two-uses cooldown=retained impact=not-rearmed")
+    require("OMHTT/NativeProc")(player)
     require("OMHTT/NativeBulkTransfer")(player)
     SandboxVars.OMHTurretsTraps = savedOptions
     print("[OMHTT-Smoke] native-power modules=16 aliases=once m9=0.009 rifleVolleys=4811 generator=matched conditionals=valid")

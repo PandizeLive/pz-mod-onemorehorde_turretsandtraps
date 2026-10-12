@@ -206,9 +206,13 @@ function Combat.fire(record, object, player, options)
     options.visits = visits
     if options.align and not options.align(target) then return "Aiming" end
     if options.projectileSpeed and #Combat.pending >= 128 then return "Unavailable" end
-    if options.commit and not options.commit() then return options.failure or "Unavailable" end
+    local volley = require("OMHTT/TurretVolley")
+    if not volley.reserve(options) then return "Unavailable" end
+    if options.commit and not options.commit() then
+        volley.cancel(options)
+        return options.failure or "Unavailable"
+    end
     options.critical = ZombRand(10000) < (options.critChance or 0) * 100
-    require("OMHTT/TurretVolley").reserve(options)
     if not options.resolve and not weapon then
         weapon = instanceItem("Base.Hammer")
         weapon:setRanged(true)
@@ -262,6 +266,7 @@ function Combat.hit(record, origin, target, player, options)
     local directDamage = options.damage * (critical and options.critMultiplier or 1)
     if options.stats then directDamage = Conditional.damage(target, directDamage, Conditional.snapshot(target, options.stats)) end
     Damage.apply(target, directDamage, record.id, "potato", player, weapon)
+    require("OMHTT/TurretProc").hit(target, true, tx, ty, origin:getZ(), record, player, options)
     require("OMHTT/TurretVolley").fragment(record, tx, ty, origin:getZ(), target, player, options)
     local damagedAt = getTimestampMs()
     local knocked = false

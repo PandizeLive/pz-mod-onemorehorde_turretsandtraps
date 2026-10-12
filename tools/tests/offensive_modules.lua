@@ -30,10 +30,10 @@ local stats = Stats.resolve({active = {Splitter = 3, Fragment = 5}})
 local record = {id = "modules", shots = 1}
 local options = {stats = stats, damage = 1, critical = true, critMultiplier = 2}
 V.reset(); V.reserve(options)
-check(V.reserved == 5, "Delayed primary reserves one burst of queue capacity")
+check(V.reserved == 8, "Admission reserves the primary burst and side rays")
 V.fragment(record, victim:getX(), victim:getY(), 0, victim, nil, options)
 V.fragment(record, victim:getX(), victim:getY(), 0, victim, nil, options)
-check(#V.queue == 5 and V.reserved == 0, "Primary callbacks cannot produce a second fragment burst")
+check(#V.queue == 5 and V.reserved == 3, "Primary callbacks cannot produce a second fragment burst")
 for i = 1, 5 do
     local ray = V.queue[i]
     check(ray.damage == .8 and ray.range == 4 and ray.group.hits[victim], "Fragments inherit full critical budget and exclude primary victim")
@@ -43,10 +43,10 @@ for i = 1, 5 do
         check(math.deg(math.acos(dot)) >= 29.999, "All five radial directions have at least 30 degrees separation")
     end
 end
-V.reset(); V.split(record, origin, victim, nil, options)
+V.reset(); options.pending = nil; V.split(record, origin, victim, nil, options)
 check(#V.queue == 3 and V.queue[1].damage == 1 and record.splitterSide == 1, "Splitter adds one half-damage child per copy with shared critical")
 local firstOdd = V.queue[3].dy
-V.reset(); V.split(record, origin, victim, nil, options)
+V.reset(); options.pending = nil; V.split(record, origin, victim, nil, options)
 check(V.queue[3].dy == -firstOdd and record.splitterSide == -1, "Odd outer side alternates each volley")
 check(nativeRoundTrip(record).splitterSide == -1, "Odd-side state survives native mod-data serialization")
 local function drain()

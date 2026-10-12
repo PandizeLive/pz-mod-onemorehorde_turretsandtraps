@@ -1,5 +1,14 @@
 # C155 - Manage boundaries, rarity, Once each and Synergy discussion
 
+## C160 - implemented and automatically verified (2026-10-11)
+
+**C160 / 0.2.44 implemented and automatically verified.** Manage sections/rarity/bars, reload-aware battery feedback, Once Each and Synergy/Martyrdom/Tack are complete under the [approved contract](R3_MANAGE_RARITY_SYNERGY.md). Bounded admission precedes resource commitment; terminal effects cannot recurse. [Patch](../PATCH_v0.2.44.md) | [one six-step test](../TEST_v0.2.44.md).
+
+15,931 Kahlua assertions, native write/read, all three package selections and 51 supported Firearms guns pass. LootLab matches 28 modules / 193 entries; 76 API/page tests and browser model/import checks pass. These checks do not certify rendered gameplay or client frame smoothness. The prior 676-ms gap remains unassigned. Held 0.2.43 checks join this test; no old round is newly marked passed.
+
+[Automated/native evidence and the combined owner test](../TEST_v0.2.44.md) distinguish API/serialization proof from rendered acceptance. Native BodyPart damage/pain/protection and field serialization pass; synthetic stress drains bounded work. No owner acceptance or MP enablement. LootLab browser imports were additionally corrected to recognize the three new modules and preserve 0.2.42/0.2.43 normalized values.
+
+
 ## C159 - design ready for implementation (2026-10-11)
 
 Owner selects **6A minor blunt player injury** and **7A one-second player injury protection**, explicitly emphasizes Synergy optimization, and asks whether the plan is ready plus a recap. All raised gameplay choices are settled. This turn records readiness; the owner requested a recap, so no gameplay implementation/install is claimed. Historical recommendations below do not reopen settled choices.

@@ -46,6 +46,7 @@ function C.hit(record, origin, target, player, options)
             local hitX, hitY, hitSquare = victim:getX(), victim:getY(), victim:getSquare()
             local amount = Conditional.damage(victim, stats.damage * multiplier / 100 / pellets, eligibility[victim])
             lost = lost + Damage.apply(victim, amount, record.id, "firearm", player, gun)
+            require("OMHTT/TurretProc").hit(victim, true, hitX, hitY, origin:getZ(), record, player, options)
             require("OMHTT/TurretVolley").fragment(record, hitX, hitY, origin:getZ(), victim, player, options)
             require("OMHTT/TurretVolley").pierce(record, origin, victim, player, options, hitSquare, hitX, hitY)
             hits = hits + 1

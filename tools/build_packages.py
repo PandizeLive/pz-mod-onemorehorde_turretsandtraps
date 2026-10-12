@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "Source"
 PACKAGES = ROOT / "Contents/mods"
 IDS = {"traps": "OneMoreHorde_Traps", "turrets": "OneMoreHorde_Turrets"}
-SHARED_LUA = {"ActiveTime", "Foundation", "Diagnostics", "Damage", "DamagePresentation", "ConstructionMenu", "CraftingMenu", "CraftingGroups", "HybridBuild", "SandboxUI", "WorldHighlight", "PackageInfo", "PlacementTiming"}
+SHARED_LUA = {"ContactPlayer", "BarbMovement", "BarbContact", "ActiveTime", "Foundation", "Diagnostics", "Damage", "DamagePresentation", "ConstructionMenu", "CraftingMenu", "CraftingGroups", "HybridBuild", "SandboxUI", "WorldHighlight", "PackageInfo", "PlacementTiming"}
 TRAP_LUA = {"FoundationServer", "FoundationClient", "DevMarkers", "Construction", "DefenseMaterials"}
 TRAP_SCRIPTS = {"OMHTT_Items.txt", "OMHTT_PortableBarrier.txt", "OMHTT_construction.txt", "OMHTT_construction_ui.txt", "OMHTT_BedSpikes.txt", "OMHTT_Barbs.txt"}
 TRAP_OPTIONS = {"Enabled", "FoundationTestControls", "DiagnosticLogging", "ShowCollision", "DetailedLogging"}
@@ -33,7 +33,7 @@ def owner(path):
     if "/scripts/" in relative:
         return {"traps"} if name in TRAP_SCRIPTS else {"turrets"}
     if "/AnimSets/" in relative:
-        return {"traps"}
+        return set(IDS)
     if "/textures/" in relative:
         if name in {"OMHTT_TestCube.png", "OMHTT_Foundation.png"}:
             return {"traps"}

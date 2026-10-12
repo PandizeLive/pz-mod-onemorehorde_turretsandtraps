@@ -875,3 +875,7 @@ Owner selects 1A, 2A with 20-radius noise, 3A with retrigger after the ten-secon
 ## C159 - injury choices finalized; optimized implementation readiness (2026-10-11)
 
 Owner selects 6A and 7A, emphasizes optimization because Synergy can get dicey, and asks "Are we ready to implement? Recap." This settles minor blunt injury (proposed 2 limb body-part damage plus 5 pain) and one active-second player-only burst protection. [Final contract](checkpoints/R3_MANAGE_RARITY_SYNERGY.md#c159---design-ready-for-implementation-2026-10-11) consolidates C155-C158 and requires incremental bounded effect jobs, admission/back-pressure, local Tack indexing, per-shot snapshots, terminal DoT/death damage, cached UI and measured multi-turret stress/native persistence tests. No owner-design question remains; technical proof remains implementation work. Readiness/recap only this turn; no gameplay patch, installation or inferred 0.2.43 test pass.
+
+## C160 — 0.2.44 implementation approved (2026-10-11)
+
+Owner says “Approved.” after C159 readiness/recap. Implement the complete Manage, rarity, Once each, Synergy/Martyrdom/Tack bundle and its bounded processing contract. Local verification, package independence, LootLab and C108 mirror remain required. No owner gameplay acceptance or publication is implied.

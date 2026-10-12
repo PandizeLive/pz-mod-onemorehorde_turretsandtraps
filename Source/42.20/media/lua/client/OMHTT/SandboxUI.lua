@@ -14,6 +14,8 @@ local groups = {
 }
 
 local moduleGroups = {
+    {"Sandbox_Title_OMHTurretsTraps_Martyrdom", {"MartyrdomRadius", "MartyrdomDamage"}},
+    {"Sandbox_Title_OMHTurretsTraps_Tack", {"TackRadius", "TackDamage", "TackLifetime"}},
     {"Sandbox_Title_OMHTurretsTraps_Firing", {"ImprovisedFiringFailure", "EnhancedFireMultiplier"}},
     {"Sandbox_Title_OMHTurretsTraps_Detection", {"EnhancedTurnMultiplier", "EnhancedDetectionInterval"}},
     {"Sandbox_Title_OMHTurretsTraps_Critical", {"CriticalBonus", "CriticalDamageMultiplier"}},
