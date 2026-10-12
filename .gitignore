@@ -52,3 +52,6 @@ diagnostics/v*/server-cache/
 diagnostics/v*/package-cache-*/
 diagnostics/v*/modded-firearms-cache/
 diagnostics/p1c1/install-stage/
+
+# Local Cloudflare deployment cache
+.wrangler/
