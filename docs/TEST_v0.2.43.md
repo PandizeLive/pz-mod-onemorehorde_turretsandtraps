@@ -12,6 +12,7 @@
 ## Automated evidence
 
 - 15,739 assertions and 101 compiled runtime/translation files: recorded in `diagnostics/v0.2.43/validation.log`; includes 0–16-copy arithmetic, Splitter costs, progress across module changes, last-round/Impact rules, grouped UI states and 600-item exact ownership/reservation checks.
+- Firearms B42 integration: 51 supported guns, 153 firing transactions; handheld timing unchanged.
 - Native firearm probe: pistol, shotgun and hunting rifle last-round conservation, retained cooldown and no false Impact rearm.
 - Native inventory probe: 600 real rounds in 30 groups, exact identities/counts. First pass: 13 ms preparation, 11 ms peak group; subsequent fresh process: 13/10 ms. These isolated timings exclude live rendering, normal timed-action animation and dense combat; they do not certify elimination of the owner's 343–563 ms pauses.
 - Native write/read confirms exact head progress and existing object/item/charge state. Independent Traps/Turrets/both startup and file manifests are recorded by the release tools.

@@ -18,7 +18,7 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 ## Current checkpoint status and next work
 
-**C154 / 0.2.43 implemented and automatically verified; tagged installation pending.** The approved C148-C153 bundle includes bounded matching ammo transfers, five runtime optimizations, Conservation Module, compact Manage, battery estimates and short Installed Modules rows with individual tooltips. No design decision remains. R3C7 and the relevant R1C3 acceptance checks share [one six-step test](TEST_v0.2.43.md); the 0.2.42 transfer finding carries forward without reopening the completed 0.2.41 round. [Patch](PATCH_v0.2.43.md) | [module/UI contract](checkpoints/R3_AMMO_SAVER_MANAGE.md) | [optimization contract](PERFORMANCE_AUDIT_v0.2.42.md).
+**C154 / 0.2.43 installed and automatically verified.** The approved C148-C153 bundle includes bounded matching ammo transfers, five runtime optimizations, Conservation Module, compact Manage, battery estimates and short Installed Modules rows with individual tooltips. No design decision remains. R3C7 and the relevant R1C3 acceptance checks share [one six-step test](TEST_v0.2.43.md); the 0.2.42 transfer finding carries forward without reopening the completed 0.2.41 round. [Patch](PATCH_v0.2.43.md) | [module/UI contract](checkpoints/R3_AMMO_SAVER_MANAGE.md) | [optimization contract](PERFORMANCE_AUDIT_v0.2.42.md).
 
 15,739 Kahlua assertions, 101 runtime/translation files, 705 native translation keys, exact-item write/read and all three package selections pass. The 600-round native probe used 30 groups: 13 ms preparation and 10 ms peak group in the fresh process. This excludes rendered gameplay and does not certify removal of all client pauses. LootLab 0.2.43 is deployed and verified with 25 modules, 16 pools and 175 entries; 75 API/page tests pass, saved tuning is preserved.
 
@@ -47,13 +47,13 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 | Phase / checkpoints | Status | Remaining work / next gate |
 | --- | --- | --- |
 | 1: R1C1-R1C2 package split | Implemented and native-verified in 0.2.29; remaining owner regression waived by C89 | Closed to further split regression; retain fresh-world policy and independent-package checks for changes |
-| 1: R1C3 performance/authority | Current lag fix implemented and owner-accepted in 0.2.38.1; broader checkpoint partial | No further test for this fix; broader load/authority work accompanies relevant future changes |
+| 1: R1C3 performance/authority | C154 / 0.2.43 bounded transfers and five runtime optimizations installed; native checks pass | Combined 0.2.43 owner test; broader authority/load scope remains |
 | 2: R2C1-R2C2 Bed Spikes | Implemented with native checks, revised through subsequent patches | C106 tentative passes; verify corrected zombie landing/recovery in the focused 0.2.38 test |
 | 2: R2C3 Barbed Panel | Implemented with native contact/construction/persistence checks | C106 tentative passes; revised Building acceptance; player injuries added in 0.2.38; multi-panel/garage doors remain unimplemented |
 | 2: R2C4 concertina | C133 linked 1x2 conversion installed/native-verified in 0.2.39 | Focused paired-wire owner acceptance remains; see TEST_v0.2.39.md |
 | 3: R3C1-R3C2 new head | Candidates documented; none selected for implementation | Select one head and settle its concrete contract before prototyping |
 | 3: R3C3 explosive head | Optional, unscoped | Collateral/resource/effect-budget decisions and feasibility first |
-| 3: R3C4-R3C7 offensive modules/battery | C147 / 0.2.42 implements conditional/penetrating modules and unified power; automated/native checks pass; focused owner round pending | C147 implements R3C6 in 0.2.42; R3C7 awaits the focused owner test |
+| 3: R3C4-R3C7 offensive modules/battery | C147 implemented offensive modules/power; C154 / 0.2.43 adds Conservation and compact feedback | R3C7 combined 0.2.43 owner test pending |
 | 3: R3C8 starter modules/expansion | C104 implemented, verified and installed in 0.2.34 | C106 tentative passes; 4/6/6 layout acceptance in 0.2.35; include maximum loadouts in future R3C7 endurance checks |
 | 4: R4C1-R4C4 signals/connected traps | Planned | Signal contract first; devices then optional turret receiver |
 | 5: R5C1-R5C3 MP/integrations/release | Planned; no certification or publication | Validate only the selected release scope; optional features need not all ship |
