@@ -18,6 +18,7 @@ def apply_defaults(data, turrets_enabled=True):
     data['meta']['requiredModId'] = 'OneMoreHorde_Turrets'
     data['meta']['turretsEnabled'] = turrets_enabled
     data['defaults'] = {'global': float(values['ModuleLootRate']) if turrets_enabled else 0,
+                        'tierWeights': {name: float(values['RarityWeight' + name]) or None for name in ['Abundant','Common','Uncommon','Rare','Epic','Legendary','Mythic']},
                         'items': {m['id']: float(values['LootRate' + m['id']]) for m in data['modules']}}
     return data
 

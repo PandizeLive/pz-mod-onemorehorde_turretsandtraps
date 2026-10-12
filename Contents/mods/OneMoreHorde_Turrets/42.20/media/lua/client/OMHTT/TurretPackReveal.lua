@@ -12,6 +12,10 @@ function Panel:close()
         getSoundManager():stopUISound(self.sound)
         self.sound = nil
     end
+    if self.revealSound and self.revealSound ~= 0 then
+        getSoundManager():stopUISound(self.revealSound)
+        self.revealSound = nil
+    end
     active[self.playerIndex] = nil
     self:removeFromUIManager()
 end
@@ -43,6 +47,7 @@ function Panel:prerender()
             getSoundManager():stopUISound(self.sound)
         end
         self.sound = getSoundManager():playUISound("UIObjectMenuObjectPickup")
+        self.revealSound = getSoundManager():playUISound(self.revealCue)
     elseif not self.finished and crossed > self.crossed and now - self.lastTick >= 100 then
         if self.sound and self.sound ~= 0 then
             getSoundManager():stopUISound(self.sound)
@@ -113,9 +118,13 @@ function Panel.show(player, rewards)
     for i = 1, #entries do
         names[entries[i].name] = true
     end
+    local highestBand = 1
     for i = 1, #rewards do
-        names[T.component(rewards[i]:getFullType())] = true
+        local name = T.component(rewards[i]:getFullType())
+        names[name] = true
+        highestBand = math.max(highestBand, R.get(name).band)
     end
+    panel.revealCue = "OMHTTPack" .. R.names[highestBand]
     for name in pairs(names) do
         local item = getScriptManager():getItem(T.TYPES[name])
         local wrapped = getTextManager():WrapText(UIFont.Small, item:getDisplayName(), panel.cardWidth - 14)

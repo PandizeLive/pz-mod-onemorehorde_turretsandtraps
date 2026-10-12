@@ -1,6 +1,10 @@
 # Release state and publication policy
 
-## Current correction: 0.2.47.4 / C185
+## 0.2.48 / C189
+
+Custom pack audio and revision-196 loot defaults implemented and validated. LootLab deployment verified as Worker `1007244f-ad66-4416-bede-2f2f64063abe`; existing account settings preserved. Native persistence/package checks and tagged installation in progress. [Test](TEST_v0.2.48.md) | [Patch](PATCH_v0.2.48.md). No Workshop upload or official release.
+
+## Previous correction: 0.2.47.4 / C185
 
 Shared rarity anchors implemented; 16,137 assertions and 117 Lua/translation compile checks pass. Real Edge verifies all seven exact-weight bands, drag/drop, personal overrides, Confirm/reload, invalid tiers and exported Sandbox anchors; 82 API/page tests pass. Traps-only, Turrets-only and both package selections pass. Native write/read runs pass, including seven native Sandbox registrations and matched anchor rarity/surcharges. Installed via root OMH.cmd from immutable `test/v0.2.47.4` / `fb3029f0f7a3d7a57b4889d835c4453d2b6ab45a`. All 208 source and 256 tagged, packaged, installed and archived files match; both 0.2.47.3 backups verify. [Local release evidence](../diagnostics/v0.2.47.4/local-release.json). Owner acceptance remains pending. [Patch](PATCH_v0.2.47.4.md) | [Test](TEST_v0.2.47.4.md).
 

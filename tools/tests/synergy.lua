@@ -33,7 +33,7 @@ complete, selected = Once.select(round, origin, profile, 0, math.huge)
 check(complete and not selected, "Dead cohort members are skipped; later arrivals are absent")
 
 R.refresh({})
-check(R.get("Firing").b == 1 and R.get("Synergy").b == 130/255, "Seven-stop scale includes both blue and purple extremes")
+check(R.get("Reload").b == 1 and R.get("Synergy").b == 130/255, "Seven-stop scale includes both blue and purple extremes")
 R.refresh({LootRateSynergy = 0, LootRateTack = 0})
 check(R.get("Synergy").weight == 0 and R.get("Autoloader").b == 130/255, "Disabled weights are excluded from extrema")
 R.refresh({ModuleLootRate = 0})

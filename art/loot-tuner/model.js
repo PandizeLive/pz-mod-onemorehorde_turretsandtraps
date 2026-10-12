@@ -43,7 +43,7 @@
   }
   function quantile(values,q) { const a=values.slice().sort((x,y)=>x-y); return a[Math.floor((a.length-1)*q)]||0; }
   const tierNames=['Abundant','Common','Uncommon','Rare','Epic','Legendary','Mythic'];
-  function defaults(data) { return {version:1,baseline:data.meta.baseline,seed:24601,tierWeights:Object.fromEntries(tierNames.map(name=>[name,null])),global:data.defaults?.global??1,material:.6,rolls:1,retention:1,selected:'all',overlay:'spawns',visible:Object.fromEntries(data.modules.map(m=>[m.id,true])),items:Object.fromEntries(data.modules.map(m=>[m.id,data.defaults?.items?.[m.id]??1]))}; }
+  function defaults(data) { return {version:1,baseline:data.meta.baseline,seed:24601,tierWeights:Object.fromEntries(tierNames.map(name=>[name,data.defaults?.tierWeights?.[name]??null])),global:data.defaults?.global??1,material:.6,rolls:1,retention:1,selected:'all',overlay:'spawns',visible:Object.fromEntries(data.modules.map(m=>[m.id,true])),items:Object.fromEntries(data.modules.map(m=>[m.id,data.defaults?.items?.[m.id]??1]))}; }
   function migrateValue(path,value,baseline) {
     if(/^T&T 0\.2\.(2[6-9]|3[0-9]|4[0-7])$/.test(baseline))return value;
     if(path==='global')return value/4.5;
@@ -65,6 +65,7 @@
       s[key]=legacy?migrateValue(key,input[key],input.baseline):input[key];
     }
     s.seed=Math.floor(s.seed);
+    s.tierWeights=Object.fromEntries(tierNames.map(name=>[name,null]));
     if(input.tierWeights!==undefined){
       const tiers=input.tierWeights;
       if(!tiers||typeof tiers!=='object'||Array.isArray(tiers)||Object.keys(tiers).length!==7||Object.keys(tiers).some(k=>!tierNames.includes(k)))throw Error('Invalid tier weights.');

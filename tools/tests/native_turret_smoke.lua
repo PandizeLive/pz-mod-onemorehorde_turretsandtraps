@@ -71,7 +71,7 @@ local function verifyTurrets()
         for n = 1, #items, 2 do
             if items[n] == Pack.TYPE then
                 packs = packs + 1
-                assert(math.abs(items[n + 1] - Loot.SCALES[Loot.POOLS[i]]) < .000001, "Native pack weight mismatch")
+                assert(math.abs(items[n + 1] - Loot.DEFAULTS.global * Loot.SCALES[Loot.POOLS[i]]) < .000001, "Native pack weight mismatch")
             end
             if require("OMHTT/Turret").component(items[n]) then
                 assert(instanceItem(items[n]), "Loot module script missing")
@@ -629,12 +629,12 @@ local function verifyTurrets()
     for i = 1, 14 do powerStore:AddItem(T.TYPES.Execute) end
     local powerContents = T.contents(powerStore)
     local powerStats = Stats.resolve(powerContents)
-    assert(math.abs(powerContents.powerLoad - 10) < .00001 and math.abs(powerStats.batteryPercent - .00495) < .000001, "Native M9 rarity power failed")
-    assert(math.abs(powerStats.generatorFuel - .0011) < .0000001, "Native generator cost mismatch")
+    assert(math.abs(powerContents.powerLoad - 13.2) < .00001 and math.abs(powerStats.batteryPercent - .00639) < .000001, "Native M9 rarity power failed")
+    assert(math.abs(powerStats.generatorFuel - .00142) < .0000001, "Native generator cost mismatch")
     powerStore:Remove(powerGun)
     powerStore:AddItem("Base.HuntingRifle")
     powerStats = Stats.resolve(T.contents(powerStore))
-    assert(math.floor(100 / powerStats.batteryPercent) == 8747 and math.abs(powerStats.weaponPower - math.sqrt(16 / 3)) < .000001, "Native rifle endurance mismatch")
+    assert(math.floor(100 / powerStats.batteryPercent) == 6776 and math.abs(powerStats.weaponPower - math.sqrt(16 / 3)) < .000001, "Native rifle endurance mismatch")
     local Conditional = require("OMHTT/TurretConditionalHit")
     victim:getModData().OMHTTInitialHealth = 3.7
     victim:setHealth(.37)
@@ -669,7 +669,7 @@ local function verifyTurrets()
     for i = 1, #Rarity.names do
         local name = "RarityWeight" .. Rarity.names[i]
         local option = getSandboxOptions():getOptionByName("OMHTurretsTraps." .. name)
-        assert(option and option:getDefaultValue() == 0, "Native rarity setting missing: " .. name)
+        assert(option and option:getDefaultValue() == ({20, 18, 14, 10, 6, 3, 1})[i], "Native rarity setting missing: " .. name)
         raritySettings[name] = rarityAnchors[i]
     end
     local LootDefinitions = require("OMHTT/LootDefinitions")
@@ -679,9 +679,9 @@ local function verifyTurrets()
         assert(Rarity.get("Range").band == i and Rarity.get("Range").surcharge == Rarity.surcharges[i], "Native custom rarity/power parity failed")
     end
     Rarity.refresh(savedOptions)
-    print("[OMHTT-Smoke] native-rarity anchors=7 settings=registered defaults=automatic colorsAndSurcharges=matched")
+    print("[OMHTT-Smoke] native-rarity anchors=7 settings=registered defaults=owner-tiers colorsAndSurcharges=matched")
     SandboxVars.OMHTurretsTraps = savedOptions
-    print("[OMHTT-Smoke] native-power modules=16 aliases=once m9=0.00495 rifleShots=8747 generator=matched conditionals=valid")
+    print("[OMHTT-Smoke] native-power modules=16 aliases=once m9=0.00639 rifleShots=6776 generator=matched conditionals=valid")
     print("[OMHTT-Smoke] native-offensive-feasibility health=creation-recorded wounded=preserved horde=preferred unknown=zero stagger=exposed-standing")
     print("[OMHTT-Smoke] native-turret recipes=6 loadedDeploy=exact contents=preserved weight=exact filters=valid cooldown=preserved")
     isServer, isClient = serverFunction, clientFunction

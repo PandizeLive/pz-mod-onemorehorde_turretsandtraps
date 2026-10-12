@@ -111,12 +111,14 @@ for i = 1, 300 do testMillis = testMillis + 16; panel:prerender() end
 local renderMs = realMillis() - started
 check(creates == openCreates and wraps == openWraps, "Reveal frames do not instantiate items or wrap text")
 check(openCreates == 0 and openWraps == 29, "Reveal uses script metadata without creating display items")
-local ticks, selected = 0, 0
+local ticks, selected, reveals = 0, 0, 0
 for i = 1, #sounds do
     if sounds[i] == "UIObjectMenuObjectRotate" then ticks = ticks + 1 end
     if sounds[i] == "UIObjectMenuObjectPickup" then selected = selected + 1 end
+    if string.sub(sounds[i], 1, 9) == "OMHTTPack" then reveals = reveals + 1 end
 end
 check(ticks > 0 and ticks <= 13 and selected == 1, "One bounded native tick stream and one shared selection cue")
+check(reveals == 1 and sounds[#sounds] == panel.revealCue, "Exactly one cached highest-rarity cue for all three rewards")
 local before = #sounds
 panel:prerender()
 check(#sounds == before, "Repeated completed frame does not replay selected sound")
@@ -128,13 +130,32 @@ check(math.abs(pulseAlpha - .75) < .001, "Rarity border pulse is half faded afte
 testMillis = settled + 4000; panel:prerender()
 check(pulseAlpha == .5, "Rarity pulse fully fades after four seconds")
 panel:close()
-check(stops[#sounds], "Closing stops only the pack-owned sound handle")
+check(stops[#sounds] and stops[#sounds - 1], "Closing stops both pack-owned selection and rarity handles")
 local lagged = Reveal.show(player, rewards)
 before = #sounds
 testMillis = testMillis + 2500; lagged:prerender()
 check(#sounds == before + 1, "Lag skips missed ticks without an audio backlog burst")
 lagged:close()
 check(stops[#sounds], "Early Collect stops its pending tick")
+local rarity = require("OMHTT/TurretRarity")
+local anchorOptions = {RarityWeightAbundant=20, RarityWeightCommon=18, RarityWeightUncommon=14, RarityWeightRare=10, RarityWeightEpic=6, RarityWeightLegendary=3, RarityWeightMythic=1}
+rarity.refresh(anchorOptions)
+local kinds = {"Regulator", "Filter", "Firing", "Piercing", "Impact", "Execute", "Synergy"}
+for i = 1, #kinds do
+    local result = {item(T.TYPES.Regulator), item(T.TYPES[kinds[i]]), item(T.TYPES.Regulator)}
+    local proof = Reveal.show(player, result)
+    check(proof.revealCue == "OMHTTPack" .. rarity.names[i], "Highest actual reward selects the tier cue, independent of decoys")
+    before = #sounds
+    testMillis = testMillis + 4001
+    proof:prerender()
+    check(#sounds == before + 2, "Settlement plays one selection cue and one rarity cue")
+    proof:prerender()
+    check(#sounds == before + 2, "Completed frames never duplicate tier audio")
+    local replacement = Reveal.show(player, result)
+    check(stops[#sounds] and stops[#sounds - 1], "Opening another pack stops both prior voices")
+    replacement:close()
+end
+rarity.refresh(settings)
 getSoundManager = oldSoundManager
 screenHeight = 360
 local small = Reveal.show(player, rewards)

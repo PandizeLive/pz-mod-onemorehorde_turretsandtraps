@@ -53,5 +53,5 @@ settings.LootFiring = 3
 settings.ModuleLootRate, settings.LootRateFiring = nil, nil
 L.apply()
 local _, normalized = count(L.POOLS[1], "Firing")
-check(math.abs(normalized - 15 * L.SCALES[L.POOLS[1]]) < 0.000001, "Legacy saved multipliers cannot double-apply normalized weights")
+check(math.abs(normalized - L.WEIGHTS.Firing * L.DEFAULTS.items.Firing * L.DEFAULTS.global * L.SCALES[L.POOLS[1]]) < 0.000001, "Legacy saved multipliers cannot double-apply normalized weights")
 settings.ModuleLootMultiplier, settings.LootFiring = nil, nil

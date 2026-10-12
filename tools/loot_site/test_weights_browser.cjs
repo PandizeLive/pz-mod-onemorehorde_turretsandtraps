@@ -1,7 +1,7 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('node:url');
 const {chromium}=require('C:/Users/bandi/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
-const root=path.resolve(__dirname,'../..'),site=path.join(root,'art/loot-tuner'),out=path.join(root,'diagnostics/v0.2.47/loot-browser');
+const root=path.resolve(__dirname,'../..'),site=path.join(root,'art/loot-tuner'),out=path.join(root,'diagnostics/v0.2.48/loot-browser');
 global.window={};require(path.join(site,'data.js'));const D=window.LOOT_DATA,M=require(path.join(site,'model.js'));
 (async()=>{
   fs.mkdirSync(out,{recursive:true});
@@ -27,7 +27,7 @@ global.window={};require(path.join(site,'data.js'));const D=window.LOOT_DATA,M=r
     const imported={...saved,items:{...saved.items,Regulator:.5}};
     await page.locator('#file').setInputFiles({name:'existing-scenario.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(imported))});
     await page.waitForFunction(()=>document.querySelector('#item-Regulator').value==='2.75');
-    await page.locator('#reset').click();await page.waitForFunction(()=>document.querySelector('#item-Regulator').value==='6');
+    await page.locator('#reset').click();await page.waitForFunction(()=>document.querySelector('#item-Regulator').value==='20');
     await input.scrollIntoViewIfNeeded();await page.screenshot({path:path.join(out,'desktop.png')});
     await page.locator('#hideAll').click();assert.equal(await page.locator('.component.is-hidden').count(),29);
     await page.locator('#showAll').click();assert.equal(await page.locator('.component.is-hidden').count(),0);

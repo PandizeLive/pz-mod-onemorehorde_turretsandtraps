@@ -1,0 +1,74 @@
+{
+  "assets": [
+    {
+      "tier": "Abundant",
+      "sha256": "f2d934bbd7d791a8cb59995c059ec6f433e660f68cb2aa4a0b5a62a30a38ece0",
+      "originalBytesPreserved": true,
+      "channels": 2,
+      "rate": 48000,
+      "frames": 188308,
+      "sampleWidth": 2
+    },
+    {
+      "tier": "Common",
+      "sha256": "6d6e2c49274475f4a45512406e36ad2055896285555e928ce34aadab2a42df58",
+      "originalBytesPreserved": true,
+      "channels": 2,
+      "rate": 48000,
+      "frames": 188308,
+      "sampleWidth": 2
+    },
+    {
+      "tier": "Uncommon",
+      "sha256": "ac7694219eef36d7b293992ca9f9cef06539e8bdfda185bac1bb3326887e76df",
+      "originalBytesPreserved": true,
+      "channels": 2,
+      "rate": 48000,
+      "frames": 188308,
+      "sampleWidth": 2
+    },
+    {
+      "tier": "Rare",
+      "sha256": "d5fe259ce98e577e3a3252b3095d09ebd6b532c22f8d65603012c33e66fb9f44",
+      "originalBytesPreserved": true,
+      "channels": 2,
+      "rate": 48000,
+      "frames": 188308,
+      "sampleWidth": 2
+    },
+    {
+      "tier": "Epic",
+      "sha256": "7783117ce3393060180256336dd3b155d73c9d2358099dfae48587f672cfa9cc",
+      "originalBytesPreserved": true,
+      "channels": 2,
+      "rate": 48000,
+      "frames": 188308,
+      "sampleWidth": 2
+    },
+    {
+      "tier": "Legendary",
+      "sha256": "787d645184abba7af3b74b294cea9b25051f8ab0603e7384001fb19495c4bb62",
+      "originalBytesPreserved": true,
+      "channels": 2,
+      "rate": 48000,
+      "frames": 188308,
+      "sampleWidth": 2
+    },
+    {
+      "tier": "Mythic",
+      "sha256": "07912ef5429f228ce155ec7f361efa848e294f8916ac8ee1c58962b22e709993",
+      "originalBytesPreserved": true,
+      "channels": 2,
+      "rate": 48000,
+      "frames": 188308,
+      "sampleWidth": 2
+    }
+  ],
+  "nativeUIPlays": 7,
+  "nativeUIStops": 7,
+  "audibleAcceptance": "pending",
+  "highestActualReward": "all seven fixtures pass",
+  "renderFrames": 300,
+  "newFrameItems": 0,
+  "newFrameWraps": 0
+}

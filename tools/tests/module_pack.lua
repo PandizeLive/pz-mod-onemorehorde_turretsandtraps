@@ -7,7 +7,7 @@ for key, value in pairs(settings) do oldSettings[key] = value end
 for name in pairs(L.WEIGHTS) do settings["LootRate" .. name] = nil end
 local entries, total = P.pool()
 check(#entries == 29 and total > 0, "All 29 exported modules and expansion kits are eligible")
-check(L.WEIGHTS.Firing * L.DEFAULTS.items.Firing == 15 and L.WEIGHTS.Martyrdom * L.DEFAULTS.items.Martyrdom == 2,
+check(L.WEIGHTS.Firing * L.DEFAULTS.items.Firing == 14 and L.WEIGHTS.Martyrdom * L.DEFAULTS.items.Martyrdom == 3,
     "Owner weights are defaults on the unchanged saved multiplier scale")
 local sample = {{name = "first", ceiling = 1}, {name = "last", ceiling = 4}}
 check(P.pick(sample, 4, 0) == "first" and P.pick(sample, 4, .25) == "last" and P.pick(sample, 4, .9999) == "last", "Weighted cumulative boundaries")

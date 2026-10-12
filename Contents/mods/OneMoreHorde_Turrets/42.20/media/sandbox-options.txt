@@ -480,7 +480,7 @@ option OMHTurretsTraps.ModuleLootRate {
     type = double,
     min = 0,
     max = 20,
-    default = 1,
+    default = 1.011111111111111,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_ModuleLootMultiplier,
 }
@@ -489,7 +489,7 @@ option OMHTurretsTraps.LootRateFiring {
     type = double,
     min = 0,
     max = 20,
-    default = 0.5,
+    default = 0.4666666666666667,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootFiring,
 }
@@ -498,7 +498,7 @@ option OMHTurretsTraps.LootRateMotionDetection {
     type = double,
     min = 0,
     max = 20,
-    default = 0.5,
+    default = 0.4666666666666667,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootMotionDetection,
 }
@@ -507,7 +507,7 @@ option OMHTurretsTraps.LootRateFilter {
     type = double,
     min = 0,
     max = 20,
-    default = 2,
+    default = 3.6,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootFilter,
 }
@@ -516,14 +516,14 @@ option OMHTurretsTraps.LootRateDetection360 {
     type = double,
     min = 0,
     max = 20,
-    default = 3.2,
+    default = 4,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootDetection360,
 }
 
 option OMHTurretsTraps.LootRateRapidFire {
     type = double,
-    default = 1.2,
+    default = 3.6,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -534,14 +534,14 @@ option OMHTurretsTraps.LootRateSuppression {
     type = double,
     min = 0,
     max = 20,
-    default = 1.6,
+    default = 4,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootSuppression,
 }
 
 option OMHTurretsTraps.LootRateReload {
     type = double,
-    default = 1.2,
+    default = 4,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -550,7 +550,7 @@ option OMHTurretsTraps.LootRateReload {
 
 option OMHTurretsTraps.LootRateAutoloader {
     type = double,
-    default = 1,
+    default = 0.6666666666666666,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -559,7 +559,7 @@ option OMHTurretsTraps.LootRateAutoloader {
 
 option OMHTurretsTraps.LootRateVelocity {
     type = double,
-    default = 1,
+    default = 2,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -568,7 +568,7 @@ option OMHTurretsTraps.LootRateVelocity {
 
 option OMHTurretsTraps.LootRateRange {
     type = double,
-    default = 1.4,
+    default = 3.6,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -577,7 +577,7 @@ option OMHTurretsTraps.LootRateRange {
 
 option OMHTurretsTraps.LootRateCapacity {
     type = double,
-    default = 1,
+    default = 2.4,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -586,7 +586,7 @@ option OMHTurretsTraps.LootRateCapacity {
 
 option OMHTurretsTraps.LootRateCapacitySmall {
     type = double,
-    default = 1,
+    default = 1.8666666666666667,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -595,7 +595,7 @@ option OMHTurretsTraps.LootRateCapacitySmall {
 
 option OMHTurretsTraps.LootRateCapacityLarge {
     type = double,
-    default = 1,
+    default = 2,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -678,7 +678,7 @@ option OMHTurretsTraps.LootRateCritical {
     type = double,
     min = 0,
     max = 20,
-    default = 1.6,
+    default = 4,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootCritical,
 }
@@ -687,7 +687,7 @@ option OMHTurretsTraps.LootRateAccuracy {
     type = double,
     min = 0,
     max = 20,
-    default = 1.4,
+    default = 4,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootAccuracy,
 }
@@ -803,7 +803,7 @@ option OMHTurretsTraps.FragmentRange {
 
 option OMHTurretsTraps.LootRateMagazine {
     type = double,
-    default = 1.2,
+    default = 3.6,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -812,7 +812,7 @@ option OMHTurretsTraps.LootRateMagazine {
 
 option OMHTurretsTraps.LootRateSplitter {
     type = double,
-    default = 1.2,
+    default = 2.4,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -857,7 +857,7 @@ option OMHTurretsTraps.EnhancedDetectionInterval {
 
 option OMHTurretsTraps.LootRateFiringEnhanced {
     type = double,
-    default = 1,
+    default = 0.6666666666666666,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -866,7 +866,7 @@ option OMHTurretsTraps.LootRateFiringEnhanced {
 
 option OMHTurretsTraps.LootRateMotionDetectionEnhanced {
     type = double,
-    default = 1,
+    default = 0.6666666666666666,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -947,7 +947,7 @@ option OMHTurretsTraps.ImpactBonus {
 
 option OMHTurretsTraps.LootRatePiercing {
     type = double,
-    default = 1.6,
+    default = 4,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -956,7 +956,7 @@ option OMHTurretsTraps.LootRatePiercing {
 
 option OMHTurretsTraps.LootRateInitialBlow {
     type = double,
-    default = 1.6,
+    default = 2.4,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -965,7 +965,7 @@ option OMHTurretsTraps.LootRateInitialBlow {
 
 option OMHTurretsTraps.LootRateExecute {
     type = double,
-    default = 1,
+    default = 1.2,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -974,7 +974,7 @@ option OMHTurretsTraps.LootRateExecute {
 
 option OMHTurretsTraps.LootRateImpact {
     type = double,
-    default = 1.2,
+    default = 2.4,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -983,7 +983,7 @@ option OMHTurretsTraps.LootRateImpact {
 
 option OMHTurretsTraps.LootRateConservation {
     type = double,
-    default = 0.8,
+    default = 2.4,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -1001,7 +1001,7 @@ option OMHTurretsTraps.LootRateSynergy {
 
 option OMHTurretsTraps.LootRateMartyrdom {
     type = double,
-    default = 1.3333333333333333,
+    default = 2,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -1010,7 +1010,7 @@ option OMHTurretsTraps.LootRateMartyrdom {
 
 option OMHTurretsTraps.LootRateTack {
     type = double,
-    default = 1.3333333333333333,
+    default = 2,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -1069,7 +1069,7 @@ option OMHTurretsTraps.TackLifetime
 
 option OMHTurretsTraps.LootRateRegulator {
     type = double,
-    default = 1.0909090909090908,
+    default = 3.6363636363636362,
     min = 0,
     max = 20,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -1096,7 +1096,7 @@ option OMHTurretsTraps.PackZombieChance {
 
 option OMHTurretsTraps.RarityWeightAbundant {
     type = double,
-    default = 0,
+    default = 20,
     min = 0,
     max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -1105,7 +1105,7 @@ option OMHTurretsTraps.RarityWeightAbundant {
 
 option OMHTurretsTraps.RarityWeightCommon {
     type = double,
-    default = 0,
+    default = 18,
     min = 0,
     max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -1114,7 +1114,7 @@ option OMHTurretsTraps.RarityWeightCommon {
 
 option OMHTurretsTraps.RarityWeightUncommon {
     type = double,
-    default = 0,
+    default = 14,
     min = 0,
     max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -1123,7 +1123,7 @@ option OMHTurretsTraps.RarityWeightUncommon {
 
 option OMHTurretsTraps.RarityWeightRare {
     type = double,
-    default = 0,
+    default = 10,
     min = 0,
     max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -1132,7 +1132,7 @@ option OMHTurretsTraps.RarityWeightRare {
 
 option OMHTurretsTraps.RarityWeightEpic {
     type = double,
-    default = 0,
+    default = 6,
     min = 0,
     max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -1141,7 +1141,7 @@ option OMHTurretsTraps.RarityWeightEpic {
 
 option OMHTurretsTraps.RarityWeightLegendary {
     type = double,
-    default = 0,
+    default = 3,
     min = 0,
     max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
@@ -1150,7 +1150,7 @@ option OMHTurretsTraps.RarityWeightLegendary {
 
 option OMHTurretsTraps.RarityWeightMythic {
     type = double,
-    default = 0,
+    default = 1,
     min = 0,
     max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,

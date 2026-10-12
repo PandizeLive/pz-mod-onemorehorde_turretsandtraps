@@ -21,9 +21,9 @@ local items = {size = function() return #modules end, get = function(self, i) re
 local contents = T.contents({getItems = function() return items end})
 check(contents.modules == 3 and contents.active.Regulator == 2 and contents.powerLoad == 0,
     "Regulator occupies slots, broken copies do not work, no self-surcharge")
-check(R.get("Regulator").band == 3 and R.get("Synergy").surcharge == 1, "Owner weight makes Regulator Uncommon; Synergy retains maximum surcharge")
+check(R.get("Regulator").band == 1 and R.get("Synergy").surcharge == 1, "Owner weight makes Regulator Abundant; Synergy retains maximum surcharge")
 local description = require("OMHTT/TurretDescriptions").get("Regulator", false)
-check(string.find(description, "Battery Drain: +0x", 1, true) and string.find(description, "Rarity: Uncommon"), "Regulator tooltip reports its actual exception")
+check(string.find(description, "Battery Drain: +0x", 1, true) and string.find(description, "Rarity: Abundant"), "Regulator tooltip reports its actual exception")
 SandboxVars.OMHTurretsTraps.PotatoBatteryPercentPerShot = .1
 check(S.resolve({active = {}}).batteryPercent == .1, "Existing custom sandbox settings are not silently overwritten")
 SandboxVars.OMHTurretsTraps = saved

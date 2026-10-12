@@ -22,6 +22,14 @@ public final class NativeTurretProbe {
         }
         System.out.println("[OMHTT-Smoke] native-distance-parity samples=16 passed=true");
         Class<?> sounds = Class.forName("zombie.GameSounds");
+        for (String tier : new String[]{"Abundant","Common","Uncommon","Rare","Epic","Legendary","Mythic"}) {
+            Object sound = sounds.getMethod("getSound", String.class).invoke(null, "OMHTTPack" + tier);
+            java.util.List<?> clips = (java.util.List<?>)sound.getClass().getField("clips").get(sound);
+            check(clips.size() == 1, "Pack tier must have exactly one authored clip");
+            check(((String)call(clips.get(0), "getFile", new Class<?>[0])).equals("media/sound/OMHTTPack" + tier + ".wav"), "Wrong rarity file");
+            check(!sound.getClass().getField("is3d").getBoolean(sound), "Rarity sound must be UI-only");
+        }
+        System.out.println("[OMHTT-Smoke] native-rarity-sounds tiers=7 clips=7 spatial=false");
         for (String kind : new String[]{"Fire", "Impact"}) {
             Object sound = sounds.getMethod("getSound", String.class).invoke(null, "OMHTTPotato" + kind);
             java.util.List<?> clips = (java.util.List<?>)sound.getClass().getField("clips").get(sound);

@@ -26,6 +26,9 @@ public final class NativePitchCheck {
         Class.forName("zombie.SoundManager").getField("instance").set(null, soundManager);
         Class<?> emitterType = Class.forName("fmod.fmod.FMODSoundEmitter");
         Object emitter = emitterType.getConstructor().newInstance();
+        Field uiEmitter = soundManager.getClass().getDeclaredField("uiEmitter");
+        uiEmitter.setAccessible(true);
+        uiEmitter.set(soundManager, emitter);
         call(emitter, "setPos", new Class<?>[]{float.class,float.class,float.class}, 10f,10f,0f);
         Field pending = emitterType.getDeclaredField("toStart");
         pending.setAccessible(true);
@@ -84,6 +87,31 @@ public final class NativePitchCheck {
         }
         check(definitions == 23 && clipsChecked == 2626 && plays == 690, "Incomplete source sound coverage");
         System.out.printf(Locale.ROOT,"NATIVE_PITCH_PASS definitions=%d clips=%d plays=%d range=0.950-1.050 steps=101 queued-pitch=verified maxPlayMs=%.3f%n", definitions, clipsChecked, plays, maximum);
+        String packText = Files.readString(Path.of(args[0], "media/scripts/OMHTT_PackSounds.txt"));
+        Matcher packMatch = pattern.matcher(packText);
+        int packPlays = 0;
+        while (packMatch.find()) {
+            int finish = packMatch.end(), depth = 1;
+            while (depth > 0) { char token = packText.charAt(finish++); if (token == '{') depth++; if (token == '}') depth--; }
+            Object script = scriptType.getConstructor().newInstance();
+            call(script, "Load", new Class<?>[]{String.class, String.class}, packMatch.group(1), packText.substring(packMatch.start(), finish));
+            Object sound = scriptType.getField("gameSound").get(script);
+            List<?> clips = (List<?>)gs.getField("clips").get(sound);
+            check(clips.size() == 1 && !gs.getField("is3d").getBoolean(sound), "Pack sounds must be one UI-only clip");
+            Object clip = clips.get(0);
+            String file = (String)call(clip, "getFile", new Class<?>[]{});
+            Path asset = Path.of(args[0], file);
+            check(Files.exists(asset), "Missing owner rarity sound");
+            active.put(file.toLowerCase(Locale.ROOT), asset.toString());
+            clip.getClass().getField("volume").setFloat(clip, 0f);
+            sounds.getMethod("addSound", gs).invoke(null, sound);
+            long handle = (Long)call(soundManager, "playUISound", new Class<?>[]{String.class}, packMatch.group(1));
+            check(handle != 0, "Native UI rarity sound failed: " + packMatch.group(1));
+            call(soundManager, "stopUISound", new Class<?>[]{long.class}, handle);
+            packPlays++;
+        }
+        check(packPlays == 7, "Missing rarity sound coverage");
+        System.out.println("NATIVE_PACK_AUDIO_PASS tiers=7 nativeUIHandles=7 stopped=7 volume=muted");
         System.exit(0);
     }
 }
