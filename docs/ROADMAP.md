@@ -1,8 +1,11 @@
 # Phases and checkpoints
 
+**C173 - next combined patch planning:** module reward pack, optional default-on rolling reveal using Manage icons/text/rarity colors, owner-exported module weights, and battery hours/minutes formatting. [Confirmed direction and all 29 weights](checkpoints/R3_MODULE_PACK.md). Await the owner's additional support requirement and remaining pack rules before implementation. C171 tooltip/capacity corrections remain queued; packing reduction stays abandoned.
+
+
 C171: [LootLab direct weights](LOOTLAB_DIRECT_WEIGHTS.md) deployed. Next corrective game scope to settle: adaptive battery minutes/hours, native tooltip percent/translation failure and repeated capacity configuration warnings. R3C7 acceptance stays open.
 
-Synchronized 2026-10-12 against C80-C171 and native-verified 0.2.46. Packed-weight reduction is abandoned under C170; R3C7 owner acceptance remains open.
+Synchronized 2026-10-12 against C80-C173 and native-verified 0.2.46. Packed-weight reduction is abandoned under C170; R3C7 owner acceptance remains open.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 

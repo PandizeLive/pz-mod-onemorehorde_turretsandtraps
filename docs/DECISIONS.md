@@ -939,3 +939,8 @@ Owner requests direct component weights in LootLab and annotates the battery est
 ## C172 - Sticky LootLab map and bottom statistics (2026-10-12)
 
 Owner requests that the map follow while scrolling and statistics move to the page bottom. Implements/deploys a bounded CSS-sticky desktop/tablet map with toolbar and full-width bottom statistics, including summary metrics and tables. Narrow phones retain normal map flow to avoid covering controls. [Behavior and evidence](LOOTLAB_SCROLLING_MAP.md). Browser layout/weight suites and all 77 API/page checks pass. No saved tuning, game code/version, database or pending C171 game-fix status changes. C108/C119 development mirror applies.
+
+
+## C173 - Module pack, rolling reveal and supplied loot weights (2026-10-12)
+
+Owner requests a new card-pack-like item using all module weights, an optional default-on CS2-style roll with Manage module icons/text/rarity-colored foreground and background, combined with battery hours/minutes formatting. Requests using the attached LootLab tuning and confirmation before one more support requirement. Validated all 29 exported entries; recorded exact original JSON/hash and effective weights, including Regulator 6, Firing/Detection 15 and Martyrdom/Tack 2. [Plan](checkpoints/R3_MODULE_PACK.md). This turn records the approved direction; no implementation until remaining support and pack details are discussed. Normalize relative pack selection rather than equating it with independent container loot rolls; committed-outcome visual reveal and migration avoiding double-applied weights are recommendations to verify. C171 defects stay queued. C108/C119 planning mirror applies.

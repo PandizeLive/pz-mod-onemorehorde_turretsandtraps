@@ -1,5 +1,8 @@
 # Planning
 
+**C173 - next combined patch planning:** module reward pack, optional default-on rolling reveal using Manage icons/text/rarity colors, owner-exported module weights, and battery hours/minutes formatting. [Confirmed direction and all 29 weights](checkpoints/R3_MODULE_PACK.md). Await the owner's additional support requirement and remaining pack rules before implementation. C171 tooltip/capacity corrections remain queued; packing reduction stays abandoned.
+
+
 **C172:** [LootLab scrolling map and bottom statistics](LOOTLAB_SCROLLING_MAP.md) deployed and verified; desktop/tablet map follows the module controls and releases before full-width statistics. Phones retain normal map flow. Saved tuning is unchanged; game findings remain pending.
 
 **C171:** direct component weights are live in LootLab; saved tuning and Sandbox exports preserve their effective values. [Implementation and findings](LOOTLAB_DIRECT_WEIGHTS.md). The ongoing 0.2.46 test reports minutes-only battery display; console also confirms a tooltip formatting exception and repeated capacity warnings. These game corrections remain pending; do not claim full acceptance.
