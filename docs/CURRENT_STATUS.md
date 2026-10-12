@@ -1,6 +1,9 @@
 # Current development and planning handoff
 
-**C173 - next combined patch planning:** module reward pack, optional default-on rolling reveal using Manage icons/text/rarity colors, owner-exported module weights, and battery hours/minutes formatting. [Confirmed direction and all 29 weights](checkpoints/R3_MODULE_PACK.md). Await the owner's additional support requirement and remaining pack rules before implementation. C171 tooltip/capacity corrections remain queued; packing reduction stays abandoned.
+**C174 - Viewpoint feasibility:** optional support is realistic enough for a prototype, but rendering/selection and performance remain unverified. [Evidence and separate compatibility proposal](checkpoints/VIEWPOINT_COMPATIBILITY.md). No implementation or new chat authorized; C173 remains the next content/corrective planning track.
+
+
+**C173 - next combined patch planning:** module reward pack, optional default-on rolling reveal using Manage icons/text/rarity colors, owner-exported module weights, and battery hours/minutes formatting. [Confirmed direction and all 29 weights](checkpoints/R3_MODULE_PACK.md). The additional support topic is Viewpoint (C174), proposed as a separate workstream; remaining pack rules still need settlement before implementation. C171 tooltip/capacity corrections remain queued; packing reduction stays abandoned.
 
 
 **C172:** [LootLab scrolling map and bottom statistics](LOOTLAB_SCROLLING_MAP.md) deployed and verified; desktop/tablet map follows the module controls and releases before full-width statistics. Phones retain normal map flow. Saved tuning is unchanged; game findings remain pending.

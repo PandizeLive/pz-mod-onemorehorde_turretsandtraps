@@ -1,6 +1,6 @@
 # C173 - Module pack and owner loot weights
 
-2026-10-12. Owner requests recording a new card-pack-like item for the next combined game patch, alongside adaptive battery hours/minutes, and says one more support requirement is coming. Concept and use of the supplied weights are confirmed; implementation is held until that requirement and remaining pack rules are discussed. No source/package/default/settings or hosted account changes in this planning turn. Inspected 5300ae965abd18774e0d017e9d69a29f0606020d; origin fetched without incoming changes.
+2026-10-12. Owner requests recording a new card-pack-like item for the next combined game patch, alongside adaptive battery hours/minutes, and says one more support requirement is coming. Concept and use of the supplied weights are confirmed; implementation is held for the remaining pack rules. C174 now identifies the additional support topic as a separate proposed Viewpoint compatibility workstream. No source/package/default/settings or hosted account changes in this planning turn. Inspected 5300ae965abd18774e0d017e9d69a29f0606020d; origin fetched without incoming changes.
 
 ## Confirmed direction
 
@@ -9,7 +9,7 @@
 - Reveal cards follow Manage styling: module icon, name/text, rarity-colored text and dim colored background. Reuse existing assets/style; no new final artwork is authorized.
 - Apply the owner-provided effective module weights below in the planned update; use the same catalog for pack selection and existing module weighting rather than inventing a separate rarity table.
 - Combine with the battery duration display correction: appropriate in-game minutes/hours without a power-balance change.
-- Wait for the owner's additional support requirement before implementation. C171's tooltip-formatting error and repeated capacity warnings remain open and must not disappear from the corrective queue.
+- C174 identifies the additional support topic as Project Viewpoint, recommended as a separate optional compatibility prototype; no implementation approval yet. Remaining pack rules still require discussion. C171's tooltip-formatting error and repeated capacity warnings remain open and must not disappear from the corrective queue.
 
 ## Recommended implementation contract, not yet settled
 
