@@ -1,6 +1,6 @@
 # Current development and planning handoff
 
-**C162 selections:** 2A shotgun aim roll, 3B terminal-stop Fragment and 5B metal-drop Tack audio are settled. Owner proposes additive power starting at 1.0x, plus .1-2.0 per module; this gives 2.6x-33x for sixteen equal-cost modules. Martyrdom needs a new sound choice from five smaller native candidates. [Current contract and picker](checkpoints/R3_EFFECT_POLISH.md#c162---selected-rules-and-expanded-martyrdom-audition-2026-10-12). No gameplay patch is installed; 0.2.44's confirmed client failure remains.
+**C163 sound selected:** Martyrdom uses 4G, native AttackStomp, with audio starting before its .75-second post-death pop so the main impact aligns. The captured attack suggests an initial .20-second audio lead (.55 seconds after death); rendered synchronization still needs verification. C162 power/accuracy/Fragment/Tack directions remain. [Current contract](checkpoints/R3_EFFECT_POLISH.md#c163---martyrdom-stomp-selection-and-audio-lead-2026-10-12). Planning only: installed 0.2.44 still has the confirmed Tack initialization failure.
 
 
 
@@ -16,4 +16,4 @@ Updated 2026-10-12. Read with [AGENTS](../AGENTS.md) and [Planning](PLANNING.md)
 - **Limits:** SP combat only, fresh-world item-ID policy, native inventory weight limits and owner-sourced final art. Bounded overload delays firing; markers/audio are paced separately. No promise of lag-free crowds.
 - **GitHub:** `codex/performance-barbed-audit`, [draft PR #1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1) into dev. C108/C119 requires the completed update and evidence to be mirrored. No merge or publication.
 
-**Decision needed:** select Martyrdom sound 4D-4H in [C162](checkpoints/R3_EFFECT_POLISH.md). 0.2.44 remains installed; its gameplay acceptance failed at Tack initialization. No repeat test is needed before the corrective patch.
+**Wait for a patch:** the Martyrdom sound decision is settled in C163. The corrective/content patch is not implemented or installed. 0.2.44 remains installed with failed Tack initialization; no repeat test is requested before correction.

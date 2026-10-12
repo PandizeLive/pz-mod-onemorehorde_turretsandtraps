@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-Synchronized 2026-10-12 against C80-C162 and the implemented, native-verified 0.2.44 build. Its owner test now has C161 failures/proposed corrections; the prior 0.2.41/C138 round remains complete. This is the canonical execution/status index.
+Synchronized 2026-10-12 against C80-C163 and the implemented, native-verified 0.2.44 build. Its owner test now has C161 failures/proposed corrections; the prior 0.2.41/C138 round remains complete. This is the canonical execution/status index.
 
 Replanned 2026-10-04 under C80, extended 2026-10-06 under C81 for offensive modules and battery endurance. C87/C88 approve fully independent packages and fresh worlds. **0.2.29** implements the split and retains SP combat; native isolation checks pass for Traps, Turrets and both. C89 closes the remaining owner test by waiver; [test disposition](TEST_v0.2.29.md) and [release evidence](RELEASE.md) distinguish observed results from skipped checks. Do not gate further planning on another full 0.2.29 regression round.
 
@@ -18,7 +18,7 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 ## Current checkpoint status and next work
 
-**C162 selections:** 2A shotgun aim roll, 3B terminal-stop Fragment and 5B metal-drop Tack audio are settled. Owner proposes additive power starting at 1.0x, plus .1-2.0 per module; this gives 2.6x-33x for sixteen equal-cost modules. Martyrdom needs a new sound choice from five smaller native candidates. [Current contract and picker](checkpoints/R3_EFFECT_POLISH.md#c162---selected-rules-and-expanded-martyrdom-audition-2026-10-12). No gameplay patch is installed; 0.2.44's confirmed client failure remains.
+**C163 sound selected:** Martyrdom uses 4G, native AttackStomp, with audio starting before its .75-second post-death pop so the main impact aligns. The captured attack suggests an initial .20-second audio lead (.55 seconds after death); rendered synchronization still needs verification. C162 power/accuracy/Fragment/Tack directions remain. [Current contract](checkpoints/R3_EFFECT_POLISH.md#c163---martyrdom-stomp-selection-and-audio-lead-2026-10-12). Planning only: installed 0.2.44 still has the confirmed Tack initialization failure.
 
 
 

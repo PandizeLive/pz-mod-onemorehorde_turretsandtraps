@@ -1,5 +1,16 @@
 # C161 - 0.2.44 owner findings and next corrective/content plan
 
+## C163 - Martyrdom stomp selection and audio lead (2026-10-12)
+
+Owner selects **4G / native AttackStomp** and requests starting it slightly before the pop because the sound has an attack. This settles the last sound choice; no new gameplay implementation or acceptance is claimed by this planning update.
+
+- Keep the actual pop, damage and 20-tile AI attraction at eligible death + .75 active seconds. Advance playback only, rather than advancing damage or delaying the pop to the end of the sound.
+- Initial calibration: start audio .20 seconds before the pop, at death + .55 active seconds. The existing native capture has its largest sample .1816 seconds after audible onset and its loudest 10-ms RMS window about .2086 seconds after onset. These relative measurements support a starting offset, not a proven exact native playback delay; capture startup silence, native variants and rendered scheduling can affect alignment. Verify in game and adjust the one audio-lead constant if needed.
+- Use the existing bounded effect scheduler and active clock; no per-zombie timer or new world scan. Start audio once, preserve the original burst deadline, and avoid replaying the lead-in after restore. Pause and late-job behavior must be tested with the other delayed effects. Audible startup and AI attraction are distinct: the requested 20-tile noise remains at the pop.
+- Retain 5B MetalworkingPunchDrop for Tack, the existing suppressed M9 mix for Fragment, and all C162 power/accuracy/endpoint directions. Historical picker alternatives remain references, not open requirements.
+
+Read-only evidence: local AttackStomp WAV captured from installed B42.21.0 native event `event:/Character/Combat/AttackStomp`; mono 48-kHz analysis, first audible sample above -75 dB at 1.001354 seconds, peak sample at 1.182938 seconds, strongest RMS window starting at 1.21 seconds. The approximately one-second leading capture silence is not included in the proposed audio lead. No gameplay test ran this turn. Starting source/planning commit: `eb1ee7c76c7f9ced3f895ab7ec5ad3e2196fc373`, branch `codex/performance-barbed-audit`; refreshed origin and inspected the existing sole draft PR #1 into dev.
+
 ## C162 - selected rules and expanded Martyrdom audition (2026-10-12)
 
 Owner proposes 1C: begin at 1.0x and add .1x-2.0x per module; selects 2A, 3B and 5B; rejects the first Martyrdom sounds as too extreme and requests more choices. No gameplay implementation this discussion.
@@ -8,9 +19,9 @@ Owner proposes 1C: begin at 1.0x and add .1x-2.0x per module; selects 2A, 3B and
 - **2A selected:** one aim roll per shotgun shot; retain 60% ordinary / 80% precision maximum-range defaults for now.
 - **3B selected:** Fragment at terminal projectile stop: impact after remaining penetration is exhausted, solid obstruction or range end on a miss, followed by the requested .25-second delay. Preserve one finite source lineage and full-range limit; Fragment never recursively generates Fragment.
 - **5B selected:** native MetalworkingPunchDrop for delayed Tack landing. Do not reopen the sound choice.
-- **4 remains open:** replace rejected 4A-4C in the picker with 4D BareHandsHit (recommended audition), 4E PlungerHit, 4F CorkPopWine, 4G AttackStomp, 4H ZombieRipClothing. These are registered installed-game events and each passed non-silent stopped native capture. BulletHitBody and CorkPopChampagne did not finish the isolated default-parameter capture and were excluded, not silently shipped with truncated previews. Existing suppressed M9 reference is retained; Tack selection is fixed in the picker. [Updated local sound picker](../../art/EFFECT_AUDIO.html).
+- **Historical C162 audition (settled by C163 above):** replace rejected 4A-4C in the picker with 4D BareHandsHit (recommended audition), 4E PlungerHit, 4F CorkPopWine, 4G AttackStomp, 4H ZombieRipClothing. These are registered installed-game events and each passed non-silent stopped native capture. BulletHitBody and CorkPopChampagne did not finish the isolated default-parameter capture and were excluded, not silently shipped with truncated previews. Existing suppressed M9 reference is retained; Tack selection is fixed in the picker. [Updated local sound picker](../../art/EFFECT_AUDIO.html).
 
-Only the sound selection and any objection to the recommended interior rarity increments remain for discussion. Installed 0.2.44 is unchanged and still has the C161 initialization failure. R3C7/R1C3 acceptance stays open; no more play is requested before the corrective patch. Earlier choices below are historical; this section supersedes their unresolved state.
+At C162 the sound selection remained open; C163 above settles it. Interior rarity increments remain recommended implementation tuning. Installed 0.2.44 is unchanged and still has the C161 initialization failure. R3C7/R1C3 acceptance stays open; no more play is requested before the corrective patch. Earlier choices below are historical; this section supersedes their unresolved state.
 
 
 2026-10-12. Owner requests the changes below after testing 0.2.44. This records requested direction and the remaining material choices; no gameplay patch is installed by this discussion. Active branch inspected: `codex/performance-barbed-audit`, `f4bac32fc9c524c3a694a55c9f8829014f6c6b26`; origin fetched, only the existing development draft PR is open.
@@ -27,7 +38,7 @@ Only the sound selection and any objection to the recommended interior rarity in
 ## Requested changes
 
 - Short battery tooltip: `0.27% / shot`, estimated shots left, and approximate in-game duration. Remove continuous-target/unlimited-ammo prose and the words "including reloads"; retain reloads in calculation. Convert using the world's native day length, cache on relevant state/hover, and label in-game time clearly. Rounding stays display-only.
-- Martyrdom: wait .75 active seconds after eligible death, then burst/audio/20-radius AI noise together. Keep existing terminal damage, radius stacking and minor player-injury rule.
+- Martyrdom: wait .75 active seconds after eligible death, then burst and 20-radius AI noise together; C163 advances AttackStomp playback so its impact aligns with that burst. Keep existing terminal damage, radius stacking and minor player-injury rule.
 - Tack: wait .5 active seconds after eligible impact, then play landing audio and start the ten-active-second field. Retain same-zombie rearm after field expiry and no refresh/stacked contact. Capture impact position, not a later moving-target position.
 - Fragment: remove hit requirement; .25 active-second delay at projectile endpoint, existing suppressed pistol sound (audition uses the shipped layered M9). Preserve five fragments, current damage stacking, finite Synergy lineage and precommit reservations. Endpoint choice below remains material.
 - Piercing: all supported guns, including shotguns. Recommend one penetration chain per original shot (not per pellet), retaining the existing victim/damage constraints; native shotgun pellets remain the current adapter approximation. Potato head is not a gun and is not newly included by this instruction.
