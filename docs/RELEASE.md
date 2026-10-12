@@ -1,8 +1,8 @@
 # Release state and publication policy
 
-## Current corrective build: 0.2.47.2 / C181
+## Current local installation: 0.2.47.2 / C181
 
-Capacity-warning correction and Manage-style Module Pack collection are verified. 16,094 assertions, native write/read, all three independent package selections and source/package no-pcall scans pass. [Patch](PATCH_v0.2.47.2.md) | [Four-step test](TEST_v0.2.47.2.md). Installation evidence is pending the tagged install. No Workshop publication; sound/particle selections remain pending.
+Capacity-warning correction and Manage-style Module Pack collection are verified. 16,094 assertions, native write/read, all three independent package selections and source/package no-pcall scans pass. [Patch](PATCH_v0.2.47.2.md) | [Four-step test](TEST_v0.2.47.2.md). Installed through root OMH.cmd from immutable `test/v0.2.47.2` / `381b803aad553dcfec0b9320e6ed8a3d9662cf33`. All 208 source / 256 tagged, packaged, installed and archived files match; both 0.2.47.1 backups verify. Archive SHA-256: `0c551508a170ba6d6273b9a50e1836e099d04f3250fdb010f8ae49dc04e74ea0`. [Machine verification](../diagnostics/v0.2.47.2/local-release.json). Restart before the owner test. No Workshop publication; sound/particle selections remain pending.
 
 LootLab's tier editor is deployed as Worker `6fcaff5f-804c-4d0f-a6ea-b1cc9a91a35d`. Its existing data baseline stays 0.2.47 because this correction does not retune gameplay loot. 78 API/page tests, focused browser checks, deployed backend comparison and protected-route checks pass. [Deployment evidence](../diagnostics/v0.2.47.2/lootlab-release.json). No account values were written by the deployment. The isolated release retains the approved previous backend plus the authenticated tier-list asset; the unrelated dirty website checkout was preserved.
 
