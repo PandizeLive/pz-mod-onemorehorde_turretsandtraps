@@ -27,3 +27,5 @@ C199 records selected heavy Ballista, corrected Bat2A,40-damage/1s Blades and op
 C200 confirms240-damage lower-accuracy Ballista and independent25RPM rotary arms with high battery consumption. [Timing calculations and pending accuracy/power choices](docs/TURRET_HEAD_PROPOSALS.md#c200-independent-arms-at25rpm-and-ballista-accuracy-2026-10-12) distinguish confirmed scope from proposed values. Gameplay unchanged.
 
 C201 supersedes C200's retained swing timers: owner requests25RPM converted to non360 movement too. [Corrected150degree/second swing/spin timing](docs/TURRET_HEAD_PROPOSALS.md#c201-shared-angular-speed-for-swing-and-spin-2026-10-12);90degree arc implies0.6s each way. Gameplay unchanged.
+
+C202 replaces90degree swing arcs with45degree total front/rear sectors; sides require360. [Updated geometry/timing](docs/TURRET_HEAD_PROPOSALS.md#c202-45degree-front-and-rear-arcs-2026-10-12):0.3s each way at150degrees/second. No gameplay implementation.

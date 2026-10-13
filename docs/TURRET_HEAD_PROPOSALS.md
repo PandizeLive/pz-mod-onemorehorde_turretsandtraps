@@ -1,5 +1,13 @@
 # Unique turret head candidates
 
+## C202 45degree front and rear arcs (2026-10-12)
+
+Owner annotates C201's90degree assumption: "It should be45degrees on the front and back. It won't hit the sides unless it has360." Confirm45degree total front sector and45degree total rear sector, each centered on its opposite arm's placement axis (plus/minus22.5degrees). Side sectors are excluded without360, including through collision-radius padding or interpolated sweeps. This supersedes C199/C20190degree working geometry. With360 the arms spin continuously and can contact all directions within physical reach, subject to obstruction.
+
+At approved25RPM-equivalent150degrees/second,45/150=0.3s endpoint-to-endpoint and0.6s out-and-back with no added dwell. Opposite arms move together.360 operation remains2.4s/full revolution and1.2s between opposite-arm passages at a fixed angle. Narrowing the arc at unchanged angular speed increases repeat contacts inside the sector; it does not preserve old1s/1.5s swing cadence. At sector center ideal crossings are0.3s apart (Bat20/0.3=66.667DPS, Blades40/0.3=133.333DPS before geometry/health/reactions/modules), versus16.667/33.333 during360 spin at a fixed angle. These are mathematical upper contact-rate illustrations, not native measured damage or guaranteed continuous occupancy. Make this tradeoff visible; do not silently impose a shared cross-arm cooldown contrary to C200.
+
+Independently deduplicate each arm's physical stroke/pass; prove reversal/edge contact cannot repeatedly hit without a distinct crossing. Module speed changes must affect render/contact/power consistently. Shared shove recovery remains separate from ordinary damage. All prior module exclusions,240Ballista/reduced-accuracy direction,20Bat/40Blades damage and shove chances remain. Exact accuracy, motor power, injury, wear, recipes and spear lifecycle remain unsettled. C191 pack timing queued. Same-turn correction after36b5773; no source/version/install/test changes. Mirror with C200/C201.
+
 ## C201 shared angular speed for swing and spin (2026-10-12)
 
 Owner annotates C200's retained non360 timing assumption: "Convert the25RPM to the rate without360." This explicitly supersedes the old Bat1.5s and Blades1s non360 timers and the C200 interpretation retaining them. Use one baseline angular speed for both rotary heads and both motion modes:25*360/60=150degrees/second before compatible speed modifiers.

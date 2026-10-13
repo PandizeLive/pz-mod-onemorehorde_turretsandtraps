@@ -1,5 +1,7 @@
 # Phases and checkpoints
 
+**C202 /45degree front and rear rotary arcs (2026-10-12).** Owner replaces proposed90degree swing with45degrees total at front and45degrees total at rear. Side sectors cannot be hit without360. At approved150degrees/second, each stroke is0.3s and out/back0.6s;360 spin remains25RPM. [Corrected geometry](TURRET_HEAD_PROPOSALS.md#c202-45degree-front-and-rear-arcs-2026-10-12). Accuracy/power choices remain open; C191 timing queued.
+
 **C201 /25RPM also defines non360 swing speed (2026-10-12).** Owner corrects C200: convert25RPM into the non360 swing rate, replacing old Bat1.5s/Blades1s timers. Both modes use150degrees/second. At the proposed90degree arc, each direction takes0.6s and an out/back cycle1.2s; opposite arms move together. [Corrected kinematics](TURRET_HEAD_PROPOSALS.md#c201-shared-angular-speed-for-swing-and-spin-2026-10-12). Accuracy/power proposals remain unapproved; C191 timing queued.
 
 **C200 / Ballista240 and independent25-RPM rotary arms (2026-10-12).** Owner approves240 Ballista damage with reduced accuracy; approves independent arm hits, high battery consumption and25RPM. Interpreted as25RPM spin with360, retaining prior unupgraded swing intervals; interpretation is explicit, not newly verified. [Timing math and accuracy/power choices](TURRET_HEAD_PROPOSALS.md#c200-independent-arms-at25rpm-and-ballista-accuracy-2026-10-12). No shared damage lockout across arms; per-pass duplicate prevention remains necessary. C191 timing queued; gameplay unchanged.
