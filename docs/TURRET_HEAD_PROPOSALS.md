@@ -1,5 +1,15 @@
 # Unique turret head candidates
 
+## C201 shared angular speed for swing and spin (2026-10-12)
+
+Owner annotates C200's retained non360 timing assumption: "Convert the25RPM to the rate without360." This explicitly supersedes the old Bat1.5s and Blades1s non360 timers and the C200 interpretation retaining them. Use one baseline angular speed for both rotary heads and both motion modes:25*360/60=150degrees/second before compatible speed modifiers.
+
+Without360, opposite arms oscillate together through their respective front/rear arcs. With the currently proposed90degree total arc, one endpoint-to-endpoint stroke takes90/150=0.6seconds, and an out-and-back cycle takes1.2seconds. For any selected arc A degrees, one-way duration=A/150; do not silently treat25RPM as25swings/minute. Arc90degrees remains the explicit working geometry from C199, not native-rendered proof. Ideal timing excludes an added reversal dwell; do not add an unrequested pause without discussing its effect.
+
+With360, a revolution still takes2.4seconds and opposite-arm passages at a stationary angular position are1.2seconds apart. Non360 contact rate is angle-dependent: a zombie at the middle of a90degree sector can be crossed every0.6seconds by its local arm, whereas crossings near endpoints alternate shorter/longer gaps. The opposite arm attacks the opposite sector, not the same stationary target. Thus equal angular speed does not imply equal per-victim damage frequency between oscillation and full rotation. Conditional nominal sector-center DPS is Bat20/0.6=33.333 and Blades40/0.6=66.667, before movement/obstructions/modifiers, versus16.667/33.333 on full rotation. This is concentrated coverage, not evidence of measured in-game throughput. Preserve one hit per distinct victim per arm stroke/pass, not per frame; independent arm damage is still approved. Endpoint overlap/reversal contact needs proof to avoid jitter/double hits on a stationary victim without a distinct new pass.
+
+Motor-time charging remains a recommendation, not newly approved by annotating its combined commentary paragraph. C200 accuracy and exact battery-budget options remain proposed; no reply selected them. Ballista240/6s/18tiles with reduced accuracy and all module exclusions stay confirmed. C191 timing remains queued. Documentation only; no source/version/install changes. This same-turn correction follows C200 local commit eb4b00e and will be mirrored with it.
+
 ## C200 independent arms at25RPM and Ballista accuracy (2026-10-12)
 
 Owner: "1A - It'll also be less accurate than normal. 2B - They consume a lot of battery, but are very strong. 25rpm." Approves C199 Ballista240 base damage, preserving6s spacing and18tile range, and requests reduced accuracy. Approves independent damage eligibility for each physical arm, explicitly rejects the recommended shared per-victim damage interval across both arms, and specifies25RPM with high battery use for rotary heads. Exact accuracy/drain are not yet selected.
