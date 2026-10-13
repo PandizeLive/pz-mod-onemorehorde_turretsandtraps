@@ -1,5 +1,39 @@
 # Unique turret head candidates
 
+## C211 Cloud ammunition decisions and PC handoff (2026-10-13)
+
+Owner continued C210 in the Cloud Planning chat. Decisions below are design approvals only; no implementation, recipe, installed version or test acceptance changes. Inspected active development checkpoint `63c32db96290aac36d497a5d065aef68388df270` on `codex/performance-barbed-audit`; it contains current `origin/dev` (`5fc6446`). Cloud planning is recorded on `planning/lobber-ammunition` based on that unmerged checkpoint so the latest decisions and implementation context are preserved. PC should fetch this branch and reconcile/cherry-pick its documentation commits into its active development branch before further design or implementation; do not assume chat synchronization or automatically merge PRs.
+
+### Confirmed owner selections
+
+- Owner requests visible additional ammunition when multiloading, including future supported mod-added weapon ammunition. Show each loaded type and count, using actual item names/icons, plus the next ammunition to fire. Reserve inventory and rounds actually loaded must remain distinguishable. Exact controls/layout remain design work; no mockup capacity is an approved capacity.
+- Owner selects **2B: player-controlled ammunition priority**, replacing the proposed load-order rule. Players can order ammo types rather than having inventory order choose the payload.
+- Owner selects **3B: stop when the preferred type runs out unless fallback is enabled**. The player-facing **Use next ammo type** toggle defaults OFF. With fallback enabled, follow the player's priority order; proposed blocked status is **Preferred ammo empty**. Do not silently spend a lower-priority valuable payload while fallback is OFF. Loaded/chambered-round switching and return-to-preferred behavior still need agreement and native feasibility review.
+- Owner selects **1A: Improvised Shell, ordinary Aerosol Bomb and ordinary Pipe Bomb** as the initial Lobber roster. The shell is turret-only ammunition. Player-facing explanation: **Requires the launcher's powered arming system; cannot be thrown by hand.** No new handheld explosive or conversion into one is authorized. Proposed tier direction is Shell < Aerosol Bomb < Pipe Bomb in blast power/radius; exact values, costs and recipes are unselected. Earlier alternate roster recommendations remain historical.
+- Owner first wrote **1A / 2C**, then corrected **2A I meant**. Final choice is **two seconds after landing**, explicitly replacing the three-second option. It is not an in-flight fuse or impact detonation.
+- C210's blast rule remains: zombie/player damage, no fire or structural damage. Turret use of Aerosol Bomb must respect that rule without changing its native handheld behavior. Loose Scrap Metal for Scrapshot remains selected; quantity is undecided.
+- Owner now directs: **Keep continuing this planning process and update GitHub every time. I'll use this until the PC chat picks it up.** Continue the C108/C119 per-turn documentation/push workflow without asking again. Each substantive reply must preserve selected rules, proposed choices and corrections in the shared records before handoff.
+
+### Compatibility and unresolved interactions
+
+Preserving/displaying real ammunition identities is a design direction, not universal compatibility with every mod. Recommend explicit per-head admission and per-ammo behavior definitions covering effects, loading and resource accounting. Native remote/sensor/fire-only payloads are not implicitly accepted. A matching name/category alone does not prove support. The exact extension contract requires local investigation.
+
+Retain priorities, fallback preference and exact ammunition through save/reload, head changes and pickup; determine ownership and safe unloading behavior before implementation. Priority must not magically convert a chambered round or retroactively change an in-flight payload. These are proposed consistency requirements, not verified capabilities or settled switching policy.
+
+Remaining choices: range/minimum range; blast damage/radius/falloff and player injury; capacity/reload/cadence/power; module compatibility and bounded propagation; Scrapshot quantity/spread/damage/economy; recipes/tools/skills/XP; audio/presentation; ammo switching and extension behavior. Native trajectory, obstruction, controlled no-environment-damage blast, persistence and actual UI behavior need local verification. Installed 0.2.49 and its deferred owner test remain unchanged; no new test is requested now.
+
+## C212 Proposed Lobber range and cadence choices (2026-10-13)
+
+Next discussion bundle only; no owner selection yet. Set the head's placement role before picking payload blast numbers. Ranges are unmodified targeting limits, not a guarantee that bystanders or the turret are safe from a later-selected blast radius.
+
+- **1A recommended: 6-tile minimum / 18-tile maximum.** Mid-range support with a close-defense gap; same maximum as the current unmodified Ballista.
+- **1B: 8-tile minimum / 24-tile maximum.** More of an artillery role, but needs more space and a larger tested trajectory/obstruction envelope.
+- **2A recommended: one launch every 6 seconds.** More responsive, with the selected two-second fuse beginning separately after landing.
+- **2B: one launch every 8 seconds.** Slower bombardment and lower ammunition demand; greater risk that moving targets leave before follow-up fire.
+
+These are proposed base launch intervals, not an additional reload delay or settled module behavior. Baseline sustained cadence, reload overlap, first-shot timing and modifier interactions must be made explicit before implementation. No target-leading, wall-clearing, trajectory or measured balance claim follows from these options. Follow with payload blast numbers/falloff and player injury, then loading/capacity/power/module details. Scrapshot remains a separate selected design track.
+
+
 ## C210 payload rules and improvised ammunition balance (2026-10-13)
 
 Owner selects C2091C, with possible rudimentary/improvised explosive and concern that it becomes the best option outside turrets; also selects2B/3A/4A. Confirm multiple payload types for the lobber, landing followed by a short fixed fuse (duration not settled), loose Base.ScrapMetal feed for Scrapshot (quantity not settled), and blast damage to zombies/players without fire or structure damage. These settle design rules, not implementation approval. Do not reinterpret2B as an already-lit fuse during flight or an approved number of seconds.

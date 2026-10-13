@@ -1136,3 +1136,14 @@ Owner selects C2081A/1B. Both heads enter discussion; no implementation or speci
 ## C210 - Multi-payload ammunition, landing fuse and improvised balance concern (2026-10-13)
 
 Owner confirms C2091C/2B/3A/4A and raises possible improvised explosives becoming dominant outside turrets. Confirm multiple payloads, short fuse after landing, loose ScrapMetal and actor-only/no-fire/no-structure turret blast. Propose turret-only Improvised Shell1A, weak throwable1B or native-only1C; no new shell or numerical balance approved. Native Aerosolbomb ignition metadata requires turret-specific no-fire behavior without editing handheld scripts. [Contract and proposed roster](TURRET_HEAD_PROPOSALS.md#c210-payload-rules-and-improvised-ammunition-balance-2026-10-13). Fetchedc6042cf and checked sole PR#1. Planning only;0.2.49 test remains deferred.
+
+
+## C211 - Cloud ammo roster, priority, fallback and corrected fuse (2026-10-13)
+
+Owner asks for an explainable turret-only shell and visible additional loaded ammo for future supported ammo mods. Selects **2B** player-controlled priority, then **3B** stop on preferred-ammo exhaustion unless **Use next ammo type** is enabled (default OFF). Later selects **1A** roster (Improvised Shell/Aerosol Bomb/Pipe Bomb) and first **2C**, immediately correcting to **2A I meant**: the approved fuse is **two seconds after landing**, not three. The shell requires the launcher's powered arming system and cannot be thrown by hand. Exact damage/radius/recipes are still open. C210 actor-only blast and no fire/structure damage persist. [Full contract](TURRET_HEAD_PROPOSALS.md#c211-cloud-ammunition-decisions-and-pc-handoff-2026-10-13).
+
+Owner explicitly requests continuing planning here and updating GitHub every time until the PC chat picks it up, reaffirming C108/C119. This record consolidates the intervening Cloud selections that had previously only been acknowledged in chat. Branch `planning/lobber-ammunition` starts from active `codex/performance-barbed-audit` checkpoint `63c32db`, including current dev. PC must fetch/reconcile the planning commits. No gameplay implementation approval, new version, owner test, or publication claim.
+
+## C212 - Proposed Lobber engagement envelope and cadence (2026-10-13)
+
+Present next choices: 1A recommended 6-18 tiles versus 1B 8-24 tiles; 2A recommended six-second base launch interval versus 2B eight seconds. The approved two-second post-landing fuse is independent. These are recommendations, not owner-selected numbers or verified native capabilities; blast safety, reload/modifier interactions and power remain to settle. [Options and tradeoffs](TURRET_HEAD_PROPOSALS.md#c212-proposed-lobber-range-and-cadence-choices-2026-10-13). Preserve installed 0.2.49 and deferred acceptance.
