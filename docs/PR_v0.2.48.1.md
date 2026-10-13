@@ -35,3 +35,5 @@ C203 presents [accuracy and battery options](docs/TURRET_HEAD_PROPOSALS.md#c203-
 C204 approves [Ballista accuracy and battery / rotary motor budget](docs/TURRET_HEAD_PROPOSALS.md#c204-approved-accuracy-and-battery-2026-10-12):75/60/45%,6in-game motor-hours baseline, and revised0.025% per Ballista shot. Gameplay implementation remains pending.
 
 C205 presents [durability, head repair, player injury and complete recipe options](docs/TURRET_HEAD_PROPOSALS.md#c205-durability-repair-injury-and-recipes-2026-10-12). Existing base repair and native item definitions reviewed; all new options remain proposals.
+
+C206 confirms [Potato-style base-only maintenance and moderate rotary injuries](docs/TURRET_HEAD_PROPOSALS.md#c206-base-only-maintenance-and-rotary-mounting-2026-10-12); standard recipe direction approved, integrated versus separate rotary mount remains a choice. Native saw-blade loot entries checked. No gameplay implementation or new test claim.
