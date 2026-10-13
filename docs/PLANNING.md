@@ -1,5 +1,7 @@
 # Planning
 
+**C196 / rotary Splitter excluded (2026-10-12).** Owner removes Splitter from Bat/Blades compatibility and favors fewer forced adaptations. Prior exclusions remain. Recommend also excluding Piercing and Conservation, rather than inventing cleave/wear meanings; that recommendation remains a choice. [Current scope](TURRET_HEAD_PROPOSALS.md#c196-simpler-rotary-compatibility-2026-10-12). Ballista and existing heads are unaffected; C191 timing remains queued.
+
 **C195 / initial rotary module scope settled (2026-10-12).** Owner selects C194 1B/2B/3A: continuous swings with no magazine/reset cycle; physical melee first, deferring Fragment/Tack/Martyrdom/Synergy; Range/Accuracy incompatible initially. Magazine/Reload/Autoloader/Impact are also unsupported on rotary heads. These restrictions do not change existing heads or settle Ballista compatibility. [Confirmed scope](TURRET_HEAD_PROPOSALS.md#c195-continuous-physical-rotary-scope-2026-10-12). Remaining physical adaptations, tuning and recipes stay open; C191 timing remains queued.
 
 **C194 / head rules confirmed; module adaptations under discussion (2026-10-12).** Ballista consumes crafted spears; rotary heads use forward coverage with 360 Module support and can injure players in their moving sweep. Owner selects discussing melee equivalents (4B), not blanket approval of proposed mappings. [Compatibility discussion](TURRET_HEAD_PROPOSALS.md#c194-confirmed-head-rules-and-module-adaptations-2026-10-12). Recipes, exact tuning and rotary feasibility remain open; C191 timing polish stays queued.

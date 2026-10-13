@@ -1,5 +1,15 @@
 # Unique turret head candidates
 
+## C196 simpler rotary compatibility (2026-10-12)
+
+Owner: "Let's not use splitter either. We can avoid a lot of the modules I guess." Explicitly excludes Splitter on Rotary Bat/Blades and supports simplifying module compatibility. No change to Splitter on existing projectile heads; Ballista compatibility remains separately specified. Prior rotary exclusions/deferred effects remain: Magazine, Reload, Autoloader, Impact, Fragment, Tack, Martyrdom, Synergy, Range and Accuracy. There is no new request to remove any module item globally.
+
+Recommend 1A: also leave Piercing and Conservation incompatible with rotary heads initially. Baseline sweep contact should determine physical multi-target behavior without relabeling it penetration; ammo-saving need not become a new durability-saving system. Alternative 1B retains discussion of the earlier cleave and wear adaptations. These two exclusions are recommendations, not automatically inferred approval. Do not ask again about Splitter or prior confirmed exclusions.
+
+Remaining candidates are ordinary automation/control, attack speed/damage/critical/health-conditional effects, noise reduction, power regulation and expansion module slots. Exact head-specific benefits, Enhanced Firing baseline, compatibility feedback, stats and recipes still need settlement. Recommended UI: identify incompatible modules clearly, reject new incompatible installs, and preserve existing items during head swaps without silently deleting or ejecting contents; final swap behavior remains to be specified. No code/version/install changes. R3C1 remains active, with R3C2 mechanical proof outstanding. C191 timing remains queued.
+
+Inspected 736acd2 and fetched origin; sole open draft PR #1 targets dev. This records a narrower design, not an engine impossibility or a completed implementation.
+
 ## C195 continuous physical rotary scope (2026-10-12)
 
 Owner: "1B / 2B / 3A" in response to C194. Confirm the initial Bat/Blades implementation scope:
