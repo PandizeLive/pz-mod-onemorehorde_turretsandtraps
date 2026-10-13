@@ -31,3 +31,5 @@ C201 supersedes C200's retained swing timers: owner requests25RPM converted to n
 C202 replaces90degree swing arcs with45degree total front/rear sectors; sides require360. [Updated geometry/timing](docs/TURRET_HEAD_PROPOSALS.md#c202-45degree-front-and-rear-arcs-2026-10-12):0.3s each way at150degrees/second. No gameplay implementation.
 
 C203 presents [accuracy and battery options](docs/TURRET_HEAD_PROPOSALS.md#c203-accuracy-and-battery-options-2026-10-12), including verified current-formula arithmetic and module-adjusted endurance examples. All new values/rules remain proposed; gameplay unchanged.
+
+C204 approves [Ballista accuracy and battery / rotary motor budget](docs/TURRET_HEAD_PROPOSALS.md#c204-approved-accuracy-and-battery-2026-10-12):75/60/45%,6in-game motor-hours baseline, and revised0.025% per Ballista shot. Gameplay implementation remains pending.

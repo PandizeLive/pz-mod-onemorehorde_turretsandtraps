@@ -1,5 +1,17 @@
 # Unique turret head candidates
 
+## C204 approved accuracy and battery (2026-10-12)
+
+Owner: "1A / 2A / 3A -0.025%." Approves the C203 accuracy and rotary battery options and overrides proposed Ballista0.05% with0.025% per committed shot. Do not retain0.05% as the new default or ask these choices again.
+
+- Ballista240damage/6s/18tile base remains. Accuracy is75% near,60% at9tiles and45% at18tiles before compatible modifiers, with smooth distance falloff. Preserve true selected endpoints rather than silently adding native point-blank bonuses. Physical rotary contacts remain outside accuracy RNG.
+- Rotary full-charge baseline is6in-game hours of motor operation at150degrees/second before modifiers, corresponding to100/6 percentage points per in-game motor hour. Charge while moving even when missing; automated heads finish the current swing and stop when no valid target remains. Stopped motor has no operation draw. Speed increases draw, existing additive rarity costs apply and Regulator extends life.2hours at3x drain,2.5hours with one Regulator, are examples not universal loadout promises. Pause/offline time excluded; game-hour conversion and transitions need implementation proof.
+- Ballista base shot charge is0.025 percentage points at240damage/18tiles, or0.00025 normalized charge.100/0.025=4000 shots from100% before other modifiers. At3x drain this becomes about1333 shots; one Regulator gives about1666. Preserve damage/range and module scaling through a head-specific calibration, without changing guns/potato. Actual committed misses spend resources; cancelled/no-target shots do not. Full precision drives accounting, not rounded tooltip text.
+
+Battery counts ignore spear stock, head wear, interruptions and future feed decisions; not a promise of4000 uninterrupted shots. Resource/time-skip and rendered tests remain outstanding. Existing rotor45degree opposed arcs,25RPM spin/150degree-per-second oscillation, independent arm contact, damage/shove values and module exclusions remain selected. Remaining work: durability/wear and repair costs; player injury severity; head recipes/tools/skills/XP; spear condition/recovery/feed; final supported-module details, critical/noise and safe-service/stop behavior. Recipe approval required before implementation under project agreement. No source/version/install/test changes this turn; C191 pack timing remains queued.
+
+Inspected889f8f0 and fetched origin; sole open draft PR#1 targets dev. This is recorded owner approval, not completed gameplay implementation.
+
 ## C203 accuracy and battery options (2026-10-12)
 
 Owner requests options and recommendations. These are proposed values, not approvals or implementation. Existing selected240Ballista/6s/18tiles, Bat20/Blades40, opposite45degree arcs,25RPM-equivalent speed and module exclusions remain unchanged.
