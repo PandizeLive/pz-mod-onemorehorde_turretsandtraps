@@ -1152,3 +1152,8 @@ Present next choices: 1A recommended 6-18 tiles versus 1B 8-24 tiles; 2A recomme
 ## C213 - Lobber 6-18 tiles and two-second firing interval (2026-10-13)
 
 Owner: "1A / 2 - 2seconds". Confirms C212's 6-18-tile range and supplies a two-second base launch interval instead of either proposed six/eight-second option. C211's two-second post-landing fuse remains separate and unchanged. This is design approval, not authorization to implement a patch. [Contract and proposed payload balance choices](TURRET_HEAD_PROPOSALS.md#c213-approved-lobber-range-and-two-second-cadence-2026-10-13) record 30 theoretical base launches/minute, overlapping payload considerations, proposed 1A restrained versus 1B heavier zombie damage at 2/3/4-tile radii, and 2A linear versus 2B inner-half full-damage falloff. These next choices remain unapproved; player injury and all other unresolved contracts retain their gates. Inspected planning checkpoint 530c07c and checked remote branches (development still 63c32db). Documentation only; 0.2.49 test remains deferred.
+
+
+## C214 - Request for stock Pipe Bomb and Aerosol Bomb damage (2026-10-13)
+
+Owner asks for native damage, selecting none of C213's proposed balance values. Existing installed-game script evidence records ExplosionPower/ExplosionRange 90/7 and 70/6 respectively, not measured HP loss. [Clarification and native follow-up](TURRET_HEAD_PROPOSALS.md#c214-native-explosive-baseline-question-2026-10-13) prevents interpreting those fields as direct damage or presenting proposed turret numbers as native parity. Actual damage conversion remains a local evidence question; no game-dependent tests ran in Cloud. Inspected b667d02; remote development remains 63c32db. Documentation only.
