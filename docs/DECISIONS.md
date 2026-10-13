@@ -1157,3 +1157,8 @@ Owner: "1A / 2 - 2seconds". Confirms C212's 6-18-tile range and supplies a two-s
 ## C214 - Request for stock Pipe Bomb and Aerosol Bomb damage (2026-10-13)
 
 Owner asks for native damage, selecting none of C213's proposed balance values. Existing installed-game script evidence records ExplosionPower/ExplosionRange 90/7 and 70/6 respectively, not measured HP loss. [Clarification and native follow-up](TURRET_HEAD_PROPOSALS.md#c214-native-explosive-baseline-question-2026-10-13) prevents interpreting those fields as direct damage or presenting proposed turret numbers as native parity. Actual damage conversion remains a local evidence question; no game-dependent tests ran in Cloud. Inspected b667d02; remote development remains 63c32db. Documentation only.
+
+
+## C215 - Investigate native explosive damage conversion (2026-10-13)
+
+Owner: "Figure out what the damage values equate to". Investigation retrieves pinned public 42.0 source and compares committed 42.20 character bytecode; neither establishes 42.21 bomb health loss. Historical capped power/random Hit input and its additional downstream modifiers are documented, not represented as current health damage. [Findings and exact local evidence needed](TURRET_HEAD_PROPOSALS.md#c215-explosion-damage-trace-and-version-mismatch-2026-10-13). Current damage options remain unselected; no gameplay change, native execution or test-status change. Inspected ff3c75a and remote branches; active development remains 63c32db.
