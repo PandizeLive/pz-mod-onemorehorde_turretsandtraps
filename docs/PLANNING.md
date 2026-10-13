@@ -1,5 +1,7 @@
 # Planning
 
+**C205 / durability, repair, injury and recipe options proposed (2026-10-12).** Owner requests the remaining service/crafting choices. Recommend separate100-condition heads, Ballista2000-shot/Bat12-hour/Blades18-hour use life, existing-style10s free full head repair, moderate guarded rotary injuries and standard separate-head recipes. [Full choices](TURRET_HEAD_PROPOSALS.md#c205-durability-repair-injury-and-recipes-2026-10-12). These are proposals, not approvals. Current installed build and C191 queued timing remain unchanged.
+
 **C204 / accuracy and battery approved (2026-10-12).** Owner selects C203 1A/2A and modifies3A to0.025% per Ballista shot. Ballista accuracy75/60/45% close/9/18tiles; rotary baseline6in-game motor-hours before modifiers. Ballista4000 battery-limited shots at240damage/18tiles before modifiers. [Approved contract](TURRET_HEAD_PROPOSALS.md#c204-approved-accuracy-and-battery-2026-10-12). Durability, injury, recipes and remaining lifecycle details are still open; C191 timing queued.
 
 **C203 / accuracy and battery options presented (2026-10-12).** Owner requests options/recommendations. Recommend Ballista75/60/45% close/mid/max accuracy (1A), rotary6-hour motor baseline before modifiers (2A), and Ballista0.05% per shot at selected base stats (3A). Existing low shot formula and harsher/lighter alternatives are explicit. [Options and calculations](TURRET_HEAD_PROPOSALS.md#c203-accuracy-and-battery-options-2026-10-12). All are proposals; C191 timing remains queued.

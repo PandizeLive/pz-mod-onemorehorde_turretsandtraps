@@ -33,3 +33,5 @@ C202 replaces90degree swing arcs with45degree total front/rear sectors; sides re
 C203 presents [accuracy and battery options](docs/TURRET_HEAD_PROPOSALS.md#c203-accuracy-and-battery-options-2026-10-12), including verified current-formula arithmetic and module-adjusted endurance examples. All new values/rules remain proposed; gameplay unchanged.
 
 C204 approves [Ballista accuracy and battery / rotary motor budget](docs/TURRET_HEAD_PROPOSALS.md#c204-approved-accuracy-and-battery-2026-10-12):75/60/45%,6in-game motor-hours baseline, and revised0.025% per Ballista shot. Gameplay implementation remains pending.
+
+C205 presents [durability, head repair, player injury and complete recipe options](docs/TURRET_HEAD_PROPOSALS.md#c205-durability-repair-injury-and-recipes-2026-10-12). Existing base repair and native item definitions reviewed; all new options remain proposals.
