@@ -1,0 +1,66 @@
+return function(player)
+    local T = require("OMHTT/Turret")
+    local S = require("OMHTT/TurretStats")
+    local Heads = require("OMHTT/TurretHeads")
+    local shared = {MetalPipe = 1, SmallSheetMetal = 1, ScrapMetal = 2, ElectronicsScrap = 2, ElectricWire = 1, Screws = 8}
+    local cases = {
+        {"Ballista", {Plank = 4, MetalBar = 2, Rope = 1, Nails = 8}, {"Hammer", "Saw"}, 90},
+        {"RotaryBat", {BaseballBat = 2}, {"Hammer"}, 60},
+        {"RotaryBlades", {CircularSawblade = 2, MetalBar = 2}, {"SheetMetalSnips"}, 90},
+    }
+    local resources = ArrayList.new()
+    for n = 1, #cases do
+        local case = cases[n]
+        local recipe = getScriptManager():getCraftRecipe("Base.OMHTTCraft" .. case[1])
+        assert(recipe and not recipe:needToBeLearn(), "Missing head recipe " .. case[1])
+        assert(math.abs(recipe:getTime() * 5 - case[4] * getGameTime():getMultiplierFromTimeDelta(1)) < .001, "Head recipe duration conversion")
+        local inputs, tools = ArrayList.new(), {"Screwdriver", "Wrench", "Pliers"}
+        for i = 1, #case[3] do tools[#tools + 1] = case[3][i] end
+        for i = 1, #tools do inputs:add(instanceItem("Base." .. tools[i])) end
+        for _, group in pairs({shared, case[2]}) do
+            for name, count in pairs(group) do
+                for i = 1, count do inputs:add(instanceItem("Base." .. name)) end
+            end
+        end
+        local data = CraftRecipeData.new(CraftMode.Handcraft, false, true, false, true)
+        data:setRecipe(recipe)
+        assert(data:canConsumeInputs(resources, inputs, true, true), "Native head ingredients rejected: " .. case[1])
+        for i = 0, inputs:size() - 1 do
+            local item = inputs:get(i)
+            assert(item, "Missing native recipe material")
+            player:getInventory():AddItem(item)
+            for j = 0, recipe:getInputs():size() - 1 do data:offerInputItem(recipe:getInputs():get(j), item) end
+        end
+        assert(data:consumeInputs(resources) and data:createOutputs(resources, player), "Head recipe transaction failed")
+        data:luaCallOnCreate(player)
+        data:processDestroyAndUsedItems(player)
+        local head = data:getFirstCreatedItem()
+        assert(head and head:getFullType() == "Base.OMHTTTurret" .. case[1] and data:getAllCreatedItems():size() == 1, "Head output identity/count")
+        for i = 0, #tools - 1 do assert(player:getInventory():contains(inputs:get(i)), "Head craft consumed retained tool") end
+        local base = instanceItem(T.BASE)
+        local inventory = base:getInventory()
+        T.configure(inventory)
+        assert(T.accept(inventory, head), "Head install rejected")
+        inventory:AddItem(head)
+        local stats = S.resolve(T.contents(inventory))
+        assert(stats.headKind == case[1], "Native head profile mismatch")
+        if stats.rotary then
+            local splitter = instanceItem(T.TYPES.Splitter)
+            assert(not T.accept(inventory, splitter), "Rotary accepted incompatible Splitter")
+            inventory:AddItem(splitter)
+            local contents = T.contents(inventory)
+            assert(not contents.active.Splitter and contents.powerLoad == 0 and T.canRemove(inventory, splitter), "Incompatible stored module must be inactive/removable/free of power cost")
+            assert(not T.accept(inventory, instanceItem("Base.Potato")), "Rotary accepted ammunition")
+        else
+            local spear = instanceItem("Base.SpearCrafted")
+            assert(T.accept(inventory, spear) and not T.accept(inventory, instanceItem("Base.Potato")), "Ballista feed identity mismatch")
+            inventory:AddItem(spear)
+            assert(T.contents(inventory).ammo == 1, "Ballista native spear inventory count")
+            assert(Heads.accuracy(stats, 9) == 60, "Ballista midpoint accuracy")
+        end
+    end
+    for _, name in pairs({"SpearCraftedSwing", "AxeSawBladeHit", "BaseballBatHit"}) do
+        assert(GameSounds.getSound(name), "Native head sound missing: " .. name)
+    end
+    print("[OMHTT-Heads] native recipes=3 outputs=3 retainedTools=verified timing=verified ammo=spears modules=filtered sounds=3")
+end

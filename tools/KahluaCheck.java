@@ -201,6 +201,7 @@ public final class KahluaCheck {
             {"OMHTT/TurretSounds", base + "shared/OMHTT/TurretSounds.lua"},
             {"OMHTT/LootDefinitions", base + "shared/OMHTT/LootDefinitions.lua"},
             {"OMHTT/TurretRarity", base + "shared/OMHTT/TurretRarity.lua"},
+            {"OMHTT/TurretHeads", base + "shared/OMHTT/TurretHeads.lua"},
             {"OMHTT/TurretStats", base + "shared/OMHTT/TurretStats.lua"},
             {"OMHTT/Turret", base + "shared/OMHTT/Turret.lua"},
             {"OMHTT/TargetHealth", base + "shared/OMHTT/TargetHealth.lua"},
@@ -279,6 +280,8 @@ public final class KahluaCheck {
             {"OMHTT/TurretWorld", base + "server/OMHTT/TurretWorld.lua"},
             {"OMHTT/TurretPickupAction", base + "shared/OMHTT/TurretPickupAction.lua"},
             {"OMHTT/TurretOnceEach", base + "server/OMHTT/TurretOnceEach.lua"},
+            {"OMHTT/TurretBallista", base + "server/OMHTT/TurretBallista.lua"},
+            {"OMHTT/TurretRotary", base + "server/OMHTT/TurretRotary.lua"},
             {"OMHTT/TurretAutomation", base + "server/OMHTT/TurretAutomation.lua"},
             {"_", "tools/tests/turret.lua"},
             {"_", "tools/tests/turret_renderer.lua"},
@@ -352,6 +355,7 @@ public final class KahluaCheck {
             {"OMHTT/TurretPackReveal", base + "client/OMHTT/TurretPackReveal.lua"},
             {"OMHTT/TurretPackAction", base + "client/OMHTT/TurretPackAction.lua"},
             {"_", "tools/tests/module_pack.lua"},
+            {"_", "tools/tests/turret_heads.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

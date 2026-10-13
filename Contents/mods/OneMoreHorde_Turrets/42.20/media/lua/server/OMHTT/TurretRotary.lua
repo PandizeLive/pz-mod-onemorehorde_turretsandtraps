@@ -1,0 +1,235 @@
+if isClient() or isServer() then return end
+local T = require("OMHTT/Turret")
+local Heads = require("OMHTT/TurretHeads")
+local M = require("OMHTT/TurretModules")
+local Clock = require("OMHTT/TurretClock")
+local Conditional = require("OMHTT/TurretConditionalHit")
+local Damage = require("OMHTT/Damage")
+local R = {}
+local weapon
+local parts
+
+---@param player IsoPlayer Operator
+---@param object IsoObject Base
+---@return string status
+function R.start(player, object)
+    local W = require("OMHTT/TurretWorld")
+    if not player or not W.near(player, object) then return "Unavailable" end
+    local contents = W.contents(object)
+    local stats = T.cycleConfig(contents)
+    if not W.power(object, contents, stats) then return "NoPower" end
+    local state = T.state(object)
+    state.rotaryManual = Clock.now() + 90000 / stats.motorSpeed
+    return "Fired"
+end
+
+---@param player IsoPlayer Contact victim
+---@param blades boolean Cutting head
+---@param now number Active milliseconds
+---@return nil
+function R.injure(player, blades, now)
+    if player:isDead() or player:isGodMod() or player:isNoClip() or player:isGhostMode() then return end
+    local data = player:getModData()
+    if not data.OMHTTRotaryInjury then
+        data.OMHTTRotaryInjury = {}
+    end
+    local guard = data.OMHTTRotaryInjury
+    Clock.restore(guard, now)
+    if guard.nextShot and now < guard.nextShot then return end
+    guard.nextShot = now + 2000
+    if not parts then
+        parts = {BodyPartType.ForeArm_L, BodyPartType.ForeArm_R, BodyPartType.UpperLeg_L, BodyPartType.UpperLeg_R}
+    end
+    local part = player:getBodyDamage():getBodyPart(parts[ZombRand(#parts) + 1])
+    if blades then
+        part:setCut(true, true)
+    else
+        part:AddDamage(2)
+        part:setAdditionalPain(math.min(100, part:getAdditionalPain() + 5))
+    end
+end
+
+---@param entry table Active turret job
+---@param actor IsoMovingObject Candidate
+---@param job table Observed sweep
+---@return nil
+function R.contact(entry, actor, job)
+    local zombie = instanceof(actor, "IsoZombie")
+    local player = instanceof(actor, "IsoPlayer")
+    if not zombie and not player then return end
+    local origin = entry.object:getSquare()
+    local square = actor:getSquare()
+    if not square or actor:isDead() or square:getZ() ~= origin:getZ() then return end
+    local dx, dy = actor:getX() - origin:getX() - .5, actor:getY() - origin:getY() - .5
+    if dx * dx + dy * dy > job.profile.range * job.profile.range then return end
+    local bearing = math.deg(math.atan2(-dy, dx)) - job.profile.heading
+    local relative = (bearing + 540) % 360 - 180
+    if not job.profile.omni and math.abs(relative) > 22.5 and math.abs(relative) < 157.5 then return end
+    if not require("OMHTT/PrototypeCombat").clearLane(origin, square, 2) then return end
+    if zombie and M.inside(origin, actor, job.detection) then
+        job.target = true
+    end
+    if not job.moving or not T.isOn(T.state(entry.object)) then return end
+    if Clock.now() - job.at > 150 then return end
+    local arm, pass = Heads.crossing(bearing, job.before, job.after, job.profile.omni)
+    if not arm then return end
+    if player then
+        R.injure(actor, job.stats.headKind == "RotaryBlades", Clock.now())
+        return
+    end
+    if entry.hits[arm][actor] == pass then return end
+    entry.hits[arm][actor] = pass
+    if not weapon then
+        weapon = instanceItem("Base.Hammer")
+    end
+    local amount = job.stats.damage / 100
+    if ZombRand(10000) < job.stats.critChance * 100 then
+        amount = amount * job.stats.critMultiplier
+    end
+    amount = Conditional.damage(actor, amount, Conditional.snapshot(actor, job.stats))
+    Damage.apply(actor, amount, T.state(entry.object).id, "rotary", nil, weapon)
+    Conditional.impact(actor, origin, {impactReady = true, stats = {impact = job.stats.knockdown}})
+    if Clock.now() >= (entry.soundAt or 0) then
+        entry.soundAt = Clock.now() + 150
+        local radius = require("OMHTT/TurretStats").hearingRadius(entry.rotaryHead, job.stats)
+        if radius > 0 then
+            addSound(entry.object, origin:getX(), origin:getY(), origin:getZ(), radius, 10)
+        end
+        local sound = job.stats.headKind == "RotaryBlades" and "AxeSawBladeHit" or "BaseballBatHit"
+        require("OMHTT/PrototypeEffects").sound(sound, origin:getX() + .5, origin:getY() + .5, origin:getZ(), job.stats.hearingMultiplier)
+    end
+end
+
+---@param entry table Scheduler entry
+---@param deadline number Wall-clock budget
+---@return boolean retained
+function R.step(entry, deadline)
+    local W = require("OMHTT/TurretWorld")
+    local object, now = entry.object, Clock.now()
+    local state, contents = T.state(object), W.contents(object)
+    if entry.rotaryContents ~= contents then
+        entry.rotaryContents, entry.rotaryStats = contents, T.cycleConfig(contents)
+    end
+    local stats = entry.rotaryStats
+    local head = contents.head
+    if not state or not stats.rotary then return false end
+    if entry.rotaryHead ~= head then
+        entry.rotaryHead, entry.rotaryAt, entry.rotaryJob = head, now, nil
+        entry.gameAt = getGameTime():getWorldAgeHours()
+        entry.travel, entry.checkedTravel, entry.hits = 0, 0, {setmetatable({}, {__mode = "k"}), setmetatable({}, {__mode = "k"})}
+        state.rotaryMoving = false
+    end
+    local elapsed = math.max(0, now - entry.rotaryAt)
+    entry.rotaryAt = now
+    local gameNow = getGameTime():getWorldAgeHours()
+    local gameHours = math.max(0, gameNow - entry.gameAt)
+    entry.gameAt = gameNow
+    local powered = W.valid(object) and T.isOn(state) and head:getCondition() > 0
+    if entry.rotaryJob and now - entry.rotaryJob.at > 150 then
+        entry.rotaryJob.moving = false
+    end
+    if not powered then
+        state.rotaryMoving, state.rotaryManual = false, nil
+        entry.rotaryJob, entry.hasTarget = nil, false
+        return true
+    end
+    local profile = M.profile(state, contents, true, stats)
+    local automatic = M.detects(state, contents) and contents.active.Firing
+    local manual = state.rotaryManual and now < state.rotaryManual
+    local wants = manual or (automatic and entry.hasTarget)
+    local moving = state.rotaryMoving == true
+    if moving and not wants and entry.stopAt == nil then
+        local span = profile.omni and 180 or 45
+        entry.stopAt = (math.floor(entry.travel / span) + 1) * span
+    elseif wants then
+        entry.stopAt = nil
+    end
+    if wants and not moving and not manual and contents.active.FiringImprovised then
+        if now < (entry.retryAt or 0) then
+            wants = false
+        elseif ZombRand(10000) < M.option("ImprovisedFiringFailure", 15, 0, 100) * 100 then
+            wants = false
+            entry.retryAt = now + stats.cooldown
+            local square = object:getSquare()
+            require("OMHTT/PrototypeEffects").sound("OMHTTTriggerClick", square:getX() + .5, square:getY() + .5, square:getZ(), 1)
+        end
+    end
+    if wants and not moving then
+        moving = true
+        elapsed, gameHours = 0, 0
+    end
+    local before = entry.travel
+    if moving then
+        local travel = elapsed / 1000 * stats.motorSpeed
+        if entry.stopAt then
+            travel = math.min(travel, math.max(0, entry.stopAt - before))
+        end
+        local seconds = travel / stats.motorSpeed
+        local hours = gameHours
+        if elapsed > 0 then
+            hours = hours * math.min(1, seconds * 1000 / elapsed)
+        end
+        local cost = stats.motorPower * hours
+        local transaction = {batteryPercent = cost, generatorFuel = stats.generatorFuel * seconds}
+        local power = W.power(object, contents, transaction)
+        if not power then
+            if contents.battery and contents.battery:getCurrentUsesFloat() > 0 then
+                contents.battery:setCurrentUsesFloat(0)
+            end
+            state.rotaryManual = nil
+            moving = false
+            entry.rotaryJob = nil
+            entry.checkedTravel = entry.travel
+        else
+            if power.kind == "battery" then
+                power.battery:setCurrentUsesFloat(math.max(0, power.battery:getCurrentUsesFloat() - power.cost))
+            elseif power.kind == "generator" then
+                power.generator:setFuel(math.max(0, power.generator:getFuel() - power.cost))
+            end
+            entry.travel = before + travel
+        end
+        if entry.stopAt and entry.travel >= entry.stopAt then
+            moving = false
+        end
+    end
+    state.rotaryMoving = moving
+    local angle = Heads.motion(entry.travel, profile.omni)
+    state.aimDegrees = (profile.heading + angle + 360) % 360
+    if not entry.rotaryJob then
+        if not moving and not manual and (not automatic or now < (entry.rotaryScanAt or 0)) then return true end
+        entry.rotaryJob = {at = now, x = -2, y = -2, index = 0, profile = M.profile(state, contents, false, stats), detection = profile, stats = stats,
+            moving = entry.travel > entry.checkedTravel, before = math.max(entry.checkedTravel, entry.travel - stats.motorSpeed * .1), after = entry.travel}
+        entry.checkedTravel = entry.travel
+    end
+    local job = entry.rotaryJob
+    for i = 1, 48 do
+        if getTimestampMs() >= deadline then return true end
+        if job.y > 2 then
+            entry.hasTarget = job.target == true
+            local interval = M.option("DetectionInterval", .25, .1, 5)
+            if contents.active.MotionDetectionEnhanced then
+                interval = math.min(interval, M.option("EnhancedDetectionInterval", .1, .05, 5))
+            end
+            entry.rotaryScanAt = now + interval * 1000
+            entry.rotaryJob = nil
+            return true
+        end
+        local origin = object:getSquare()
+        local square = getCell():getGridSquare(origin:getX() + job.x, origin:getY() + job.y, origin:getZ())
+        local objects = square and square:getMovingObjects()
+        if objects and job.index < objects:size() then
+            local actor = objects:get(job.index)
+            job.index = job.index + 1
+            R.contact(entry, actor, job)
+        else
+            job.index = 0
+            job.x = job.x + 1
+            if job.x > 2 then
+                job.x, job.y = -2, job.y + 1
+            end
+        end
+    end
+    return true
+end
+
+return R

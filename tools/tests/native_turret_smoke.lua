@@ -662,6 +662,7 @@ local function verifyTurrets()
         assert(Guns.loaded(gun) == 0 and cycle.conservationDebt == 0, "Second use did not consume native last round")
     end
     print("[OMHTT-Smoke] native-conservation guns=3 lastRound=two-uses cooldown=retained impact=not-rearmed")
+    require("OMHTT/NativeHeads")(player)
     require("OMHTT/NativeProc")(player)
     require("OMHTT/NativeBulkTransfer")(player)
     local Rarity = require("OMHTT/TurretRarity")

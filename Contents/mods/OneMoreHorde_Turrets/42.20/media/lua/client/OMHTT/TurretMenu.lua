@@ -102,7 +102,7 @@ local function fillMenu(playerIndex, context, worldobjects, test)
             local manageOption = menu:addOption(getText("UI_OMHTT_Manage"), object, manage, player)
             Range.bind(manageOption, {object})
             local shot = menu:addOption(getText("ContextMenu_OMHTT_TurretFire"), object, fire, player)
-            shot.notAvailable = not W.near(player, object) or not contents.head or contents.ammo == 0 or W.power(object, contents) == nil
+            shot.notAvailable = not W.near(player, object) or not contents.head or (not T.cycleConfig(contents).rotary and contents.ammo == 0) or W.power(object, contents) == nil
             local recovery = menu:addOption(getText("ContextMenu_OMHTT_PickupTurret"), object, pickup, player)
             recovery.toolTip = ISWorldObjectContextMenu.addToolTip()
             recovery.toolTip.description = getText("UI_OMHTT_ServiceDuration")

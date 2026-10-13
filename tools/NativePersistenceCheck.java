@@ -52,6 +52,7 @@ public final class NativePersistenceCheck {
         verifyModulePack(directory, mode);
         verifyFirearms(directory, mode);
         verifyHybrid(directory, mode);
+        verifyNewHeads(directory, mode);
         verifyBeds(directory, mode);
         NativeBarbProbe.verify(directory, mode);
         NativeVaultProbe.verify();
@@ -128,6 +129,30 @@ public final class NativePersistenceCheck {
             }
         }
         System.out.println("[OMHTT-Smoke] native-persistence mode=" + mode + " parts=28 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved legacy=8 edges=8 outline=4 reinforced=8 orientation=preserved");
+    }
+
+    private static void verifyNewHeads(Path directory, String mode) throws Exception {
+        Class<?> itemType = Class.forName("zombie.inventory.InventoryItem");
+        Class<?> factory = Class.forName("zombie.inventory.InventoryItemFactory");
+        int version = ((Number)Class.forName("zombie.iso.IsoWorld").getMethod("getWorldVersion").invoke(null)).intValue();
+        for (String name : new String[]{"Ballista", "RotaryBat", "RotaryBlades"}) {
+            String type = "Base.OMHTTTurret" + name;
+            Object item = factory.getMethod("CreateItem", String.class).invoke(null, type);
+            Object data = get(item, "getModData");
+            call(data, "rawset", new Class<?>[]{Object.class, Object.class}, "OMHTTFixtureDebt", .5);
+            Path file = directory.resolve("head-" + name + ".bin");
+            if (mode.equals("write")) {
+                ByteBuffer output = ByteBuffer.allocate(16384);
+                call(item, "saveWithSize", new Class<?>[]{ByteBuffer.class, boolean.class}, output, false);
+                Files.write(file, Arrays.copyOf(output.array(), output.position()));
+            }
+            ByteBuffer input = ByteBuffer.wrap(Files.readAllBytes(file));
+            Object restored = itemType.getMethod("loadItem", ByteBuffer.class, int.class).invoke(null, input, version);
+            check(!input.hasRemaining() && type.equals(get(restored, "getFullType")), "New head identity/stream mismatch");
+            check(get(restored, "getCondition").equals(get(item, "getCondition")), "New head condition mismatch");
+            check(Double.valueOf(.5).equals(call(get(restored, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTFixtureDebt")), "New head mod data lost");
+        }
+        System.out.println("[OMHTT-Heads] persistence mode=" + mode + " heads=3 identity=condition=modData=preserved");
     }
 
     private static void verifyModulePack(Path directory, String mode) throws Exception {

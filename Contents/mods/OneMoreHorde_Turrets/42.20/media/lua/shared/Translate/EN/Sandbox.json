@@ -352,5 +352,9 @@
     "Sandbox_OMHTurretsTraps_RarityWeightLegendary": "Legendary weight",
     "Sandbox_OMHTurretsTraps_RarityWeightLegendary_tooltip": "All seven weights must be positive and decrease from Abundant to Mythic. Rarity and battery cost use proportional midpoints. All zero uses automatic rarity. Does not change loot weights.",
     "Sandbox_OMHTurretsTraps_RarityWeightMythic": "Mythic weight",
-    "Sandbox_OMHTurretsTraps_RarityWeightMythic_tooltip": "All seven weights must be positive and decrease from Abundant to Mythic. Rarity and battery cost use proportional midpoints. All zero uses automatic rarity. Does not change loot weights."
+    "Sandbox_OMHTurretsTraps_RarityWeightMythic_tooltip": "All seven weights must be positive and decrease from Abundant to Mythic. Rarity and battery cost use proportional midpoints. All zero uses automatic rarity. Does not change loot weights.",
+    "Sandbox_OMHTurretsTraps_BallistaBatteryPercent": "Ballista battery use",
+    "Sandbox_OMHTurretsTraps_BallistaBatteryPercent_tooltip": "Battery charge percent per base Ballista shot, before module modifiers.",
+    "Sandbox_OMHTurretsTraps_RotaryBatteryHours": "Rotary motor hours",
+    "Sandbox_OMHTurretsTraps_RotaryBatteryHours_tooltip": "In-game motor hours per full battery before module and speed modifiers."
 }

@@ -6,7 +6,7 @@ local R = require("OMHTT/TurretRarity")
 local Panel = ISPanel:derive("OMHTTTurretPackReveal")
 local active = {}
 local ROLL_DURATION = 6000
-local ROW_DELAY = 350
+local ROW_DELAY = 150
 local TRAVEL_CARDS = 39
 local WINNER_CARD = TRAVEL_CARDS + 1
 
@@ -60,6 +60,9 @@ function Panel:prerender()
             allFinished = false
         end
     end
+    if not self.revealSound and now >= self.started + ROLL_DURATION + (#self.reels - 1) * ROW_DELAY - 250 then
+        self.revealSound = getSoundManager():playUISound(self.revealCue)
+    end
     if allFinished and not self.finished then
         self.finished = true
         self.settledAt = now
@@ -67,7 +70,7 @@ function Panel:prerender()
             getSoundManager():stopUISound(self.sound)
         end
         self.sound = getSoundManager():playUISound("UIObjectMenuObjectPickup")
-        self.revealSound = getSoundManager():playUISound(self.revealCue)
+
     elseif not self.finished and crossedCard and now - self.lastTick >= 100 then
         if self.sound and self.sound ~= 0 then
             getSoundManager():stopUISound(self.sound)

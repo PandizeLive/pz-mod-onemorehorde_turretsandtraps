@@ -17,6 +17,13 @@ function A.changed(object, head)
         A.entries[object] = entry
         A.order[#A.order + 1] = entry
     end
+    local definition = require("OMHTT/TurretHeads").get(head)
+    entry.rotaryKind = definition and definition.rotary == true
+    local state = T.state(object)
+    if state then
+        state.rotaryManual, state.rotaryMoving = nil, false
+    end
+    entry.rotaryHead, entry.rotaryJob, entry.stopAt = nil, nil, nil
     entry.job, entry.due, entry.status, entry.target, entry.fireDue = nil, 0, nil, nil, 0
 end
 
@@ -93,6 +100,9 @@ function A.step(entry, deadline)
     if not square or not state or object:getObjectIndex() < 0
         or getCell():getGridSquare(square:getX(), square:getY(), square:getZ()) ~= square then return false end
     local now = Clock.now()
+    if entry.rotaryKind then
+        return require("OMHTT/TurretRotary").step(entry, deadline)
+    end
     if now < entry.due and (not entry.target or now < (entry.fireDue or 0)) then return true end
     local aim = require("OMHTT/TurretAim").entries[object]
     if require("OMHTT/TurretSearch").pending[object] or (aim and aim.player) then return true end

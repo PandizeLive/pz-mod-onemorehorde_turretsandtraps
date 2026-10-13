@@ -81,7 +81,8 @@ function X.rejection(player, item, source, destination)
         if T.kind(item) == "ammo" then
             local head = contents.head
             local gun = require("OMHTT/Firearms")
-            local ammoType = "Base.Potato"
+            local definition = require("OMHTT/TurretHeads").get(head)
+            local ammoType = definition and definition.ammo or "Base.Potato"
             if gun.profile(head) then ammoType = gun.ammoType(head) end
             if head and item:getFullType() ~= ammoType then return "WrongAmmo" end
         end
@@ -140,7 +141,8 @@ function ISInventoryTransferAction:transferItem(item)
                 if container == source or container == destination then
                     summary.reserveAll = summary.reserveAll + delta
                     local firearm = G.profile(summary.head)
-                    local ammoType = firearm and G.ammoType(summary.head) or "Base.Potato"
+                    local definition = require("OMHTT/TurretHeads").get(summary.head)
+                    local ammoType = firearm and G.ammoType(summary.head) or (definition and definition.ammo or "Base.Potato")
                     if item:getFullType() == ammoType then
                         summary.reserve = summary.reserve + delta
                         summary.ammo = summary.ammo + delta

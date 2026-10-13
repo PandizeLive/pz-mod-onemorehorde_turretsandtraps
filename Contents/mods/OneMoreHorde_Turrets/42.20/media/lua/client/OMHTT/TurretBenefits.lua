@@ -24,6 +24,11 @@ function B.battery(contents, stats)
     if not contents.head or contents.head:getCondition() <= 0 or not contents.battery or contents.battery:getCondition() <= 0 then
         return getText("UI_OMHTT_BatteryUnavailable")
     end
+    if stats.rotary then
+        if stats.motorPower == 0 then return getText("UI_OMHTT_BatteryFree") end
+        local hours = contents.battery:getCurrentUsesFloat() * 100 / stats.motorPower
+        return getText("UI_OMHTT_MotorBattery", B.number(stats.motorPower), string.format("%.1f", hours))
+    end
     local cost = stats.batteryPercent
     if cost == 0 then return getText("UI_OMHTT_BatteryFree") end
     local costText = B.number(cost)
@@ -90,12 +95,13 @@ function B.rows(contents, stats)
             local prior = S.resolve({head = contents.head, active = without, powerLoad = contents.powerLoad})
             label, value = "Rate", (prior.cooldown / stats.cooldown - 1) * 100
         elseif name == "Detection360" then label, value = "Degrees", 360
-        elseif name == "FiringEnhanced" then label, value = "Rate", stats.firearm and (S.option("EnhancedFireMultiplier", 4 / 3, 1, 5) - 1) * 100 or 0
+        elseif name == "FiringEnhanced" then label, value = "Rate", (stats.firearm or stats.headKind) and (S.option("EnhancedFireMultiplier", 4 / 3, 1, 5) - 1) * 100 or 0
         elseif name == "MotionDetectionEnhanced" or name == "MotionDetection" or name == "MotionDetectionImprovised" then
             label, value = "Detection", name == "MotionDetectionImprovised" and stats.range * .75 or stats.range
         end
         if value == 0 and label ~= "Inactive" then label = "Capped" end
         if count == 0 then label = "Broken" end
+        if not require("OMHTT/TurretHeads").supports(contents.head, name) then label, value = "Inactive", nil end
         local effect = getText("UI_OMHTT_Effect" .. label, value and B.number(value) or "")
         local title = getText("UI_OMHTT_Module" .. name) .. (entry.count > 1 and " x" .. entry.count or "")
         rows[#rows + 1] = {name = name, title = title, effect = effect, color = Rarity.get(name), inactive = count == 0 or label == "Inactive",

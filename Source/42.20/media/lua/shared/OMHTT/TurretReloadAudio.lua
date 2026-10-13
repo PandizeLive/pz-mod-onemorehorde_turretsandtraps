@@ -51,6 +51,10 @@ end
 ---@param now number Milliseconds
 ---@return nil
 function A.update(object, head, cycle, status, stats, now)
+    if stats.rotary or stats.headKind == "Ballista" then
+        A.stop(object)
+        return
+    end
     local phase = "idle"
     if cycle and cycle.reloadReady and cycle.reloadReady > now and stats.reload > 0 then
         phase = "reload"

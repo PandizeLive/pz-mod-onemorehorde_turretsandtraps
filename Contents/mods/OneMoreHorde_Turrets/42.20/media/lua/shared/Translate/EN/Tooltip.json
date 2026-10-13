@@ -39,5 +39,8 @@
     "Tooltip_OMHTT_ModuleMartyrdom": "Kills cause a delayed damaging pop; extra modules increase radius.",
     "Tooltip_OMHTT_ModuleTack": "Drops slowing, damaging tacks; extra modules increase radius.",
     "Tooltip_OMHTT_ModuleRegulator": "+25%% battery life per module.",
-    "Tooltip_OMHTT_ModulePack": "Contains three random modules. Duplicates possible."
+    "Tooltip_OMHTT_ModulePack": "Contains three random modules. Duplicates possible.",
+    "Tooltip_OMHTT_BallistaHead": "Uses crafted spears. Install in a turret base.",
+    "Tooltip_OMHTT_RotaryBatHead": "Powered front and rear sweeps. Add 360 for full rotation.",
+    "Tooltip_OMHTT_RotaryBladesHead": "Powered front and rear sweeps. Add 360 for full rotation."
 }

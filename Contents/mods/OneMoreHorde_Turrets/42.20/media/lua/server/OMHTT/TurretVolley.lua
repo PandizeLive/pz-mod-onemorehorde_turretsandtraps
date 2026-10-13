@@ -200,7 +200,9 @@ function V.finish(ray)
         and (victim:getX() - ray.x) * ray.dx + (victim:getY() - ray.y) * ray.dy <= ray.range
         and (group.kind == "splitter" or not V.seen(group, victim)) then
         local chance = 100
-        if group.stats.firearm then
+        if group.stats.headKind == "Ballista" then
+            chance = require("OMHTT/TurretHeads").accuracy(group.stats, ray.bestDistance)
+        elseif group.stats.firearm then
             chance = require("OMHTT/FirearmAccuracy").chance(group.weapon, group.stats, ray.bestDistance, victim:isProne())
         end
         if ZombRand(10000) < chance * 100 then

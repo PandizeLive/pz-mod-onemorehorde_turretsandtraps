@@ -114,7 +114,7 @@
     "UI_OMHTT_PriorityFurthest": "Furthest",
     "UI_OMHTT_PriorityWeakest": "Weakest",
     "UI_OMHTT_PriorityToughest": "Max Toughness",
-    "UI_OMHTT_ActiveModules": "Active module types: %1 | Cone: %2Â°",
+    "UI_OMHTT_ActiveModules": "Active module types: %1 | Cone: %2°",
     "UI_OMHTT_ModuleFiring": "Firing",
     "UI_OMHTT_ModuleMotionDetection": "Detection",
     "UI_OMHTT_ModuleFilter": "Filter",
@@ -123,7 +123,7 @@
     "UI_OMHTT_ChargePercent": "%1 percent",
     "UI_OMHTT_ManageCapacity": "Expansion",
     "UI_OMHTT_ManageCapacityFull": "Remove excess ammo or modules first.",
-    "UI_OMHTT_ManageSearching": "Searchingâ€¦",
+    "UI_OMHTT_ManageSearching": "Searching…",
     "UI_OMHTT_ManageInstall": "Install Trap",
     "UI_OMHTT_InstallMissing": "Selected turret is no longer available.",
     "UI_OMHTT_ModuleRapidFire": "Rapid-Fire",
@@ -134,7 +134,7 @@
     "UI_OMHTT_ModuleCapacity": "Medium",
     "UI_OMHTT_ModuleCapacitySmall": "Small",
     "UI_OMHTT_ModuleCapacityLarge": "Large",
-    "UI_OMHTT_Searching": "Searchingâ€¦",
+    "UI_OMHTT_Searching": "Searching…",
     "UI_OMHTT_ManageScroll": "Scroll for more slots",
     "UI_OMHTT_InstallFailed": "Cannot install. See debug log.",
     "UI_OMHTT_ManageDisabled": "Disabled in Sandbox.",
@@ -275,5 +275,7 @@
     "UI_OMHTT_PackReceived": "Received %1 modules.",
     "UI_OMHTT_PackUnavailable": "Unable to open pack. Check enabled module weights.",
     "UI_OMHTT_PackAnimation": "Module pack animation",
-    "UI_OMHTT_PackAnimationTooltip": "Show the rolling reveal when opening a module pack."
+    "UI_OMHTT_PackAnimationTooltip": "Show the rolling reveal when opening a module pack.",
+    "UI_OMHTT_MotorBattery": "%1%% / in-game motor hour <LINE> About %2 in-game motor hours left.",
+    "UI_OMHTT_MotorSpeed": "Motor: %1 RPM equivalent"
 }

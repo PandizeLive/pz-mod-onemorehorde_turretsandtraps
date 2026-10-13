@@ -247,7 +247,12 @@ function Panel:refresh()
     self.batterySlot.meter = contents.battery and contents.battery:getCurrentUsesFloat() or 0
     self.headSlot.missing = not contents.head or contents.head:getCondition() <= 0
     self.batterySlot.missing = contents.head ~= nil and not power
-    self.ammoSlot.missing = contents.head ~= nil and contents.ammo == 0
+    self.ammoSlot.missing = contents.head ~= nil and not stats.rotary and contents.ammo == 0
+    self.ammoSlot.disabled = stats.rotary
+    if stats.rotary then
+        self.ammoSlot.label = getText("UI_OMHTT_ManageNotNeeded")
+        self.magazineSlot.label = getText("UI_OMHTT_ManageNotNeeded")
+    end
     self.magazineSlot.missing = magazineType ~= nil and not gun:isContainsClip()
     local missing = {}
     if T.isOn(state) and automationAllowed and contents.head and (contents.active.MotionDetection or contents.active.Firing) then
@@ -327,8 +332,9 @@ function Panel:prerender()
     local stats = self.stats
     self:drawText(getText("UI_OMHTT_CompactStats", string.format("%.1f", stats.damage), string.format("%.1f", stats.range),
         self.object:getHealth(), self.object:getMaxHealth()), 12, y + h * 3, 1, 1, 1, 1, UIFont.Small)
-    self:drawText(getText("UI_OMHTT_ManageTiming", string.format("%.2f", stats.reload / 1000), string.format("%.2f", 1000 / stats.cooldown)),
-        12, y + h * 4, 1, 1, 1, 1, UIFont.Small)
+    local timing = getText("UI_OMHTT_ManageTiming", string.format("%.2f", stats.reload / 1000), string.format("%.2f", 1000 / stats.cooldown))
+    if stats.rotary then timing = getText("UI_OMHTT_MotorSpeed", string.format("%.1f", stats.motorSpeed / 6)) end
+    self:drawText(timing, 12, y + h * 4, 1, 1, 1, 1, UIFont.Small)
     self:drawText(getText("UI_OMHTT_CompactChances", string.format("%.0f", stats.accuracy), string.format("%.0f", stats.critChance),
         string.format("%.1f", stats.critMultiplier)), 12, y + h * 5, 1, 1, 1, 1, UIFont.Small)
     local message = self.result .. ":" .. self.reason

@@ -4,6 +4,7 @@ local D = require("OMHTT/Diagnostics")
 local Cycle = require("OMHTT/TurretCycle")
 local Stats = require("OMHTT/TurretStats")
 local G = require("OMHTT/Firearms")
+local Heads = require("OMHTT/TurretHeads")
 OMHTT_Turret = {}
 local T = OMHTT_Turret
 T.BASE = "Base.OMHTTTurretBase"
@@ -97,7 +98,8 @@ function T.cycle(contents, now, stats)
     if not contents.head then return nil, "NoHead" end
     stats = stats or T.cycleConfig(contents)
     if G.profile(contents.head) then return G.update(contents, stats, now, false) end
-    if SandboxVars.OMHTurretsTraps.PotatoTurret == false then return nil, "Disabled" end
+    if stats.rotary then return {loaded = 0}, "Ready" end
+    if not Heads.get(contents.head) and SandboxVars.OMHTurretsTraps.PotatoTurret == false then return nil, "Disabled" end
     local data = contents.head:getModData()
     if not data.OMHTTCycle then data.OMHTTCycle = {schema = 1, loaded = 0, nextShot = 0} end
     local state = data.OMHTTCycle
@@ -110,8 +112,8 @@ end
 ---@nodiscard
 function T.kind(item)
     local fullType = item:getFullType()
-    if fullType == T.HEAD or G.profile(item) then return "head" end
-    if fullType == "Base.Potato" or G.AMMO[fullType] then return "ammo" end
+    if fullType == T.HEAD or Heads.get(item) or G.profile(item) then return "head" end
+    if fullType == "Base.Potato" or fullType == "Base.SpearCrafted" or G.AMMO[fullType] then return "ammo" end
     if fullType == "Base.CarBattery1" or fullType == "Base.CarBattery2" or fullType == "Base.CarBattery3" then return "battery" end
     local module = T.component(fullType)
     if module == "CapacityImprovised" or module == "Capacity" or module == "CapacitySmall" or module == "CapacityLarge" then return "capacity" end
@@ -165,7 +167,17 @@ function T.contents(container)
             result.invalid = result.invalid + 1
         end
     end
-    local ammoType = "Base.Potato"
+    for name in pairs(result.active) do
+        if not Heads.supports(result.head, name) then
+            if name ~= "Regulator" then
+                result.powerLoad = result.powerLoad - result.active[name] * require("OMHTT/TurretRarity").get(name).surcharge
+            end
+            result.active[name] = nil
+        end
+    end
+    local definition = Heads.get(result.head)
+    local ammoType = definition and definition.ammo or "Base.Potato"
+    if definition and definition.rotary then ammoType = "" end
     if G.profile(result.head) then ammoType = G.ammoType(result.head) end
     for i = 1, #result.rounds do
         local round = result.rounds[i]
@@ -229,10 +241,13 @@ function T.accept(container, item)
     if not stats then stats = Stats.resolve(contents) end
     if T.transferSnapshots then contents.transferStats = stats end
     if kind == "ammo" then
-        local ammoType = "Base.Potato"
+        local definition = Heads.get(contents.head)
+        if definition and definition.rotary then return false end
+        local ammoType = definition and definition.ammo or "Base.Potato"
         if G.profile(contents.head) then ammoType = G.ammoType(contents.head) end
         return contents.heads == 1 and item:getFullType() == ammoType and contents.reserveAll + (G.profile(contents.head) and G.loaded(contents.head) or 0) < stats.ammo
     end
+    if not Heads.supports(contents.head, T.component(item:getFullType())) then return false end
     local component = T.role(item:getFullType())
     if T.SINGLE[component] and contents.moduleCounts[component] then return false end
     return contents.modules < stats.modules

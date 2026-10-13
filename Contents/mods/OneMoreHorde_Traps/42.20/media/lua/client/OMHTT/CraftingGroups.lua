@@ -6,7 +6,7 @@ local titles = {Normal = "IGUI_CraftingCategories_OMHNormal",
     Reinforced = "IGUI_CraftingCategories_OMHReinforced", Packed = "IGUI_CraftingCategories_OMHPacked",
     Heads = "IGUI_CraftingCategories_OMHHeads", Modules = "IGUI_CraftingCategories_OMHModules"}
 local order = {"Normal", "Reinforced", "Packed", "Heads", "Modules"}
-local turretGroups = {OMHTTCraftTurretHead = "Heads", OMHTTCraftTurretHeadImprovised = "Heads",
+local turretGroups = {OMHTTCraftBallista = "Heads", OMHTTCraftRotaryBat = "Heads", OMHTTCraftRotaryBlades = "Heads", OMHTTCraftTurretHead = "Heads", OMHTTCraftTurretHeadImprovised = "Heads",
     OMHTTCraftMotionDetectionImprovised = "Modules", OMHTTCraftFiringImprovised = "Modules",
     OMHTTCraftCapacityImprovised = "Modules"}
 

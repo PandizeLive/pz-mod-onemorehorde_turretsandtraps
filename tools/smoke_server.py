@@ -31,6 +31,7 @@ def main():
     barb_probe.write_text((ROOT / "tools/tests/native_barbs.lua").read_text(encoding="utf-8"), encoding="utf-8")
     turret_probe = CACHE / "mods/OneMoreHorde_Turrets/42.20/media/lua/server/OMHTT_TurretSmoke.lua"
     turret_probe.write_text((ROOT / "tools/tests/native_turret_smoke.lua").read_text(encoding="utf-8"), encoding="utf-8")
+    (turret_probe.parent / "OMHTT/NativeHeads.lua").write_text((ROOT / "tools/tests/native_heads.lua").read_text(encoding="utf-8"), encoding="utf-8")
     bulk_probe = turret_probe.parent / "OMHTT/NativeBulkTransfer.lua"
     bulk_probe.write_text((ROOT / "tools/tests/native_bulk_transfer.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativeProc.lua").write_text((ROOT / "tools/tests/native_proc.lua").read_text(encoding="utf-8"), encoding="utf-8")
@@ -85,6 +86,7 @@ def main():
             barb_probe.unlink(missing_ok=True)
             turret_probe.unlink(missing_ok=True)
     text = transcript.read_text(encoding="utf-8", errors="replace")
+    assert "[OMHTT-Heads] native recipes=3" in text, "Native head recipe/metadata proof failed"
     assert "[OMHTT-Smoke] native-distance-parity samples=16 passed=true" in text, "Native accuracy parity failed"
     assert "[OMHTT-Smoke] native-atlas-lua bypass=verified restore=verified" in text, "Native atlas exposure failed"
     assert "[OMHTT-Smoke] native-suppression sounds=18 potato=2 reload=native" in text, "Native audio registration failed"

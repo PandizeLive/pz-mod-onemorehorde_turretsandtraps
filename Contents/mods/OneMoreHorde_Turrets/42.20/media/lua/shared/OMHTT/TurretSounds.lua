@@ -25,6 +25,7 @@ S.NATIVE = {
 ---@nodiscard
 function S.suppressed(head)
     if head:getFullType() == "Base.OMHTTTurretPotato" then return "OMHTTPotatoSuppressed" end
+    if require("OMHTT/TurretHeads").get(head) then return nil end
     return S.NATIVE[head:getSwingSound()]
 end
 

@@ -2,6 +2,7 @@ local G = require("OMHTT/Firearms")
 local Class = require("OMHTT/FirearmClass")
 local kits = {{"CapacityImprovised", "Improvised", 100, 2}, {"CapacitySmall", "Small", 200, 6}, {"Capacity", "", 400, 10}, {"CapacityLarge", "Large", 650, 14}}
 local S = {}
+local Heads = require("OMHTT/TurretHeads")
 
 ---@param key string Setting
 ---@param fallback number Default
@@ -82,6 +83,17 @@ function S.resolve(contents)
         critChance = gun:getCriticalChance()
         critMultiplier = gun:getCriticalDamageMultiplier() * S.option("CriticalDamageMultiplier", 1, 0, 5)
     end
+    local head = Heads.get(gun)
+    local rotary = head and head.rotary == true
+    if head then
+        damage, range, knockdown = head.damage, head.range, head.shove or 0
+        accuracy, farAccuracy, critChance, critMultiplier = 100, 100, 0, 2
+        cooldown, reload, magazine = .6, 0, 0
+        if not rotary then
+            cooldown, reload, magazine = head.cooldown, head.cooldown, 1
+            accuracy, farAccuracy = 75, 45
+        end
+    end
     farAccuracy = math.min(100, farAccuracy + (active.Accuracy or 0) * S.option("AccuracyBonus", 5, 0, 100))
     accuracy = math.min(100, accuracy + (active.Accuracy or 0) * S.option("AccuracyBonus", 5, 0, 100))
     critChance = math.min(100, critChance + (active.Critical or 0) * S.option("CriticalBonus", 5, 0, 100))
@@ -105,7 +117,7 @@ function S.resolve(contents)
     reload = math.min(reload, math.max(S.option("ReloadMinimum", 0.25, 0, 10), reload / (1 + loading / 100)))
     if active.Autoloader then reload = 0 end
     magazine = math.ceil(magazine + (active.Magazine or 0) * math.max(1, magazine * S.option("MagazineBonus", 35, 0, 200) / 100))
-    local enhancement = firearm and active.FiringEnhanced and S.option("EnhancedFireMultiplier", 4 / 3, 1, 5) or 1
+    local enhancement = (firearm or head) and active.FiringEnhanced and S.option("EnhancedFireMultiplier", 4 / 3, 1, 5) or 1
     local splitter, fragment = active.Splitter or 0, active.Fragment or 0
     local execute, impact = active.Execute or 0, active.Impact or 0
     local knockBonus = math.min((active.Velocity or 0) * S.option("VelocityKnockdownBonus", 5, 0, 100),
@@ -114,7 +126,17 @@ function S.resolve(contents)
     local modulePower = 1 + (contents and contents.powerLoad or 0) * S.option("ModulePowerBonus", 5, 0, 200) / 5
     local effectPower = weaponPower * modulePower
     local regulator = 1 + .25 * (active.Regulator or 0)
-    return {damage = damage * (1 + S.bonus(active, "Velocity", 20, 100) / 100),
+    local shotPower = S.option("PotatoBatteryPercentPerShot", 0.00045, 0, 100) * effectPower / regulator
+    local motorSpeed = 150 * (1 + rapid / 100) * enhancement
+    local motorPower = 100 / S.option("RotaryBatteryHours", 6, .1, 100) * modulePower / regulator * motorSpeed / 150
+    if head and not rotary then
+        shotPower = S.option("BallistaBatteryPercent", .025, 0, 100) * weaponPower / math.sqrt(3.6) * modulePower / regulator
+    elseif rotary then
+        shotPower = motorPower / 3600
+        magazine = 0
+    end
+    return {headKind = head and head.key, rotary = rotary, motorSpeed = motorSpeed, motorPower = motorPower,
+        damage = damage * (1 + S.bonus(active, "Velocity", 20, 100) / 100),
         knockdown = math.min(100, knockdown + knockBonus),
         range = math.min(firearm and 50 or 30, range + S.bonus(active, "Range", 2, 10)),
         ammo = math.floor(ammoCapacity + extraAmmo),
@@ -127,7 +149,7 @@ function S.resolve(contents)
         tackDamage = S.option("TackDamage", 10, 0, 1000),
         tackLifetime = S.option("TackLifetime", 10, 1, 60) * 1000,
         splitter = splitter, fragment = fragment, splitterDamage = S.option("SplitterDamage", 50, 0, 100) / 100,
-        piercing = (active.Piercing or 0) > 0 and firearm and active.Piercing or 0,
+        piercing = (active.Piercing or 0) > 0 and (firearm or (head and not rotary)) and active.Piercing or 0,
         pierceRetention = S.option("PiercingRetention", 70, 0, 100) / 100,
         initialBlow = (active.InitialBlow or 0) * S.option("InitialBlowBonus", 25, 0, 200) / 100,
         initialThreshold = S.option("InitialBlowThreshold", 90, 0, 100) / 100,
@@ -137,12 +159,12 @@ function S.resolve(contents)
         fragmentRange = S.option("FragmentRange", 4, 1, 10),
         effectPower = effectPower, weaponPower = weaponPower, modulePower = modulePower,
         regulator = regulator,
-        batteryPercent = S.option("PotatoBatteryPercentPerShot", 0.00045, 0, 100) * effectPower / regulator,
+        batteryPercent = shotPower,
         generatorFuel = S.option("PotatoGeneratorFuelPerShot", 0.0001, 0, 1) * effectPower,
         magazine = magazine, accuracy = accuracy, farAccuracy = farAccuracy, critChance = critChance, critMultiplier = critMultiplier, rack = rack * 1000 / enhancement, firearm = firearm ~= nil,
         suppressed = (active.Suppression or 0) > 0,
         hearingMultiplier = remaining,
-        reload = reload * 1000, cooldown = math.max(cooldown, firearm and gun:isRackAfterShoot() and rack or 0) * 1000 / enhancement,
+        reload = reload * 1000, cooldown = rotary and 90000 / motorSpeed or math.max(cooldown, firearm and gun:isRackAfterShoot() and rack or 0) * 1000 / enhancement,
         autoloader = active.Autoloader ~= nil}
 end
 

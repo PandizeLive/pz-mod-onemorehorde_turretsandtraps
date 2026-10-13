@@ -39,10 +39,11 @@ function M.profile(state, contents, automatic, resolved)
         end
     end
     local stats = resolved or T.cycleConfig(contents)
+    if stats.rotary and cone < 360 then cone = 45 end
     local range = stats.range
     if automatic and active.MotionDetectionImprovised then range = range * 0.75 end
-    return {stats = stats, heading = (state.baseFacing or state.facing or 0) * 22.5, cone = cone, omni = active.Detection360 ~= nil,
-        range = math.min(range, state.engagementRange or 100000), priority = priority}
+    return {rotary = stats.rotary, stats = stats, heading = (state.baseFacing or state.facing or 0) * 22.5, cone = cone, omni = active.Detection360 ~= nil,
+        range = stats.rotary and not automatic and stats.range or math.min(range, state.engagementRange or 100000), priority = priority}
 end
 
 ---@param origin IsoGridSquare Turret tile
@@ -61,6 +62,7 @@ function M.inside(origin, zombie, profile)
     if distance < 0.000001 or profile.cone >= 360 then return true, distance end
     local heading = math.rad(profile.heading)
     local dot = (dx * math.cos(heading) - dy * math.sin(heading)) / math.sqrt(distance)
+    if profile.rotary then dot = math.abs(dot) end
     return dot + 0.0000001 >= math.cos(math.rad(profile.cone / 2)), distance
 end
 
@@ -86,6 +88,7 @@ end
 function M.detects(state, contents)
     local gun = require("OMHTT/Firearms")
     local enabled = SandboxVars.OMHTurretsTraps.PotatoTurret ~= false
+    if require("OMHTT/TurretHeads").get(contents.head) then enabled = true end
     if gun.profile(contents.head) then enabled = gun.enabled() end
     return enabled and T.enabled() and SandboxVars.OMHTurretsTraps.AutomationEnabled ~= false and T.isOn(state)
         and contents.heads == 1 and contents.head:getCondition() > 0 and contents.active.MotionDetection ~= nil

@@ -1,39 +1,11 @@
-# Staggered pack reels (0.2.48.1)
+# New turret heads and pack timing (0.2.49)
 
-Module Pack reels previously moved and stopped together. They now start 350 ms apart, run six seconds each and open at twice the previous speed. Rows reveal independently from top to bottom; the final row triggers the existing shared selection/rarity audio. Immediate collection and reward odds are preserved.
+Adds craftable Ballista, Rotary Bat and Rotary Blades to the universal base. Ballista consumes crafted spears with selected accuracy and battery cost; rotaries use paired physical sectors, optional360 spin, motor-time power and guarded player injuries. Mounting materials are integrated into each recipe, with eight Ballista nails. Module compatibility and Manage feedback follow each head; original heads remain unchanged. Pack rows start150ms apart and rarity audio leads the final stop250ms.
 
-Validation: 16,180 assertions and 117 Lua/translation compilations pass, including exact winners, staggered timing, independent pulses and bounded audio after long frames. The 500-frame probe adds no items/text wraps. Native write/read and all three package combinations pass. Tagged installation verifies 264 files and both backups; see the [versioned test](docs/TEST_v0.2.48.1.md). C191 records owner acceptance of the reel behavior and console confirmation; 150-ms spacing and a 250-ms earlier rarity cue are approved for the next patch, not implemented here.
+Contact work uses the existing shared scheduler and bounded local scans. Long stalls bill elapsed operating time without replaying attacks. Final art remains owner-sourced; technical cubes and rendered/audio acceptance are explicitly pending.
 
-[Planning](docs/PLANNING.md) | [Current status](docs/CURRENT_STATUS.md) | [Contract](docs/PACK_POLISH.md) | [Release](docs/RELEASE.md)
+Validation:16,574 assertions,120 Lua/translation compilations, three actual native recipe transactions and retained tools, new-head native item save/reload, and Traps-only/Turrets-only/combined package startup. [Versioned evidence and focused owner test](docs/TEST_v0.2.49.md). Tagged installation evidence is recorded in [Release](docs/RELEASE.md).
 
-Development only; no merge, Workshop upload or official release. Includes the prior 0.2.48 custom audio and owner weights; hosted LootLab remains on that verified baseline.
+[Planning](docs/PLANNING.md) | [Current status](docs/CURRENT_STATUS.md) | [Head contract](docs/TURRET_HEAD_PROPOSALS.md) | [Roadmap](docs/ROADMAP.md)
 
-C192: New-head selection (R3C1) is now the active content discussion; seven candidates recorded in [the shortlist](docs/TURRET_HEAD_PROPOSALS.md#c192-active-new-head-selection-2026-10-12). No individual head or implementation approved. C191 pack timing remains queued for the next patch.
-
-C193: Owner selects Ballista, Rotary Blades and Rotary Bat for development. [Head contract and choices](docs/TURRET_HEAD_PROPOSALS.md#c193-three-head-development-scope-2026-10-12) records remaining behavior/recipe decisions and shared rotary architecture. No new gameplay implemented; C191 timing polish stays queued.
-
-C194 confirms crafted-spear ammunition, directional rotary coverage with 360 upgrade and player contact damage. [Module adaptations](docs/TURRET_HEAD_PROPOSALS.md#c194-confirmed-head-rules-and-module-adaptations-2026-10-12) are under discussion; no gameplay implementation yet.
-
-C195: Owner selects continuous physical rotary attacks, defers secondary-effect adaptations and excludes Range/Accuracy plus magazine-cycle modules initially. [Confirmed rotary scope](docs/TURRET_HEAD_PROPOSALS.md#c195-continuous-physical-rotary-scope-2026-10-12); remaining tuning/recipes are open. No gameplay patch this turn.
-
-C196 excludes rotary Splitter and records [simpler compatibility recommendations](docs/TURRET_HEAD_PROPOSALS.md#c196-simpler-rotary-compatibility-2026-10-12). Piercing/Conservation exclusions are proposed, not approved. No gameplay change.
-
-C197 confirms inherent Bat/Blades multi-target sweep contact and excludes Piercing/Conservation. [Current head contract](docs/TURRET_HEAD_PROPOSALS.md#c197-inherent-rotary-multi-target-contact-2026-10-12). Planning only; stats/recipes and native proof remain.
-
-C198 presents [starting combat-stat choices](docs/TURRET_HEAD_PROPOSALS.md#c198-starting-combat-stat-choices-2026-10-12) for the three selected heads. Values are proposals, not approved or implemented. Existing installed build remains unchanged.
-
-C199 records selected heavy Ballista, corrected Bat2A,40-damage/1s Blades and opposed-arm swing/spin motion. [Rifle comparison and remaining choices](docs/TURRET_HEAD_PROPOSALS.md#c199-selected-stats-and-opposite-rotary-arms-2026-10-12). No gameplay implementation.
-
-C200 confirms240-damage lower-accuracy Ballista and independent25RPM rotary arms with high battery consumption. [Timing calculations and pending accuracy/power choices](docs/TURRET_HEAD_PROPOSALS.md#c200-independent-arms-at25rpm-and-ballista-accuracy-2026-10-12) distinguish confirmed scope from proposed values. Gameplay unchanged.
-
-C201 supersedes C200's retained swing timers: owner requests25RPM converted to non360 movement too. [Corrected150degree/second swing/spin timing](docs/TURRET_HEAD_PROPOSALS.md#c201-shared-angular-speed-for-swing-and-spin-2026-10-12);90degree arc implies0.6s each way. Gameplay unchanged.
-
-C202 replaces90degree swing arcs with45degree total front/rear sectors; sides require360. [Updated geometry/timing](docs/TURRET_HEAD_PROPOSALS.md#c202-45degree-front-and-rear-arcs-2026-10-12):0.3s each way at150degrees/second. No gameplay implementation.
-
-C203 presents [accuracy and battery options](docs/TURRET_HEAD_PROPOSALS.md#c203-accuracy-and-battery-options-2026-10-12), including verified current-formula arithmetic and module-adjusted endurance examples. All new values/rules remain proposed; gameplay unchanged.
-
-C204 approves [Ballista accuracy and battery / rotary motor budget](docs/TURRET_HEAD_PROPOSALS.md#c204-approved-accuracy-and-battery-2026-10-12):75/60/45%,6in-game motor-hours baseline, and revised0.025% per Ballista shot. Gameplay implementation remains pending.
-
-C205 presents [durability, head repair, player injury and complete recipe options](docs/TURRET_HEAD_PROPOSALS.md#c205-durability-repair-injury-and-recipes-2026-10-12). Existing base repair and native item definitions reviewed; all new options remain proposals.
-
-C206 confirms [Potato-style base-only maintenance and moderate rotary injuries](docs/TURRET_HEAD_PROPOSALS.md#c206-base-only-maintenance-and-rotary-mounting-2026-10-12); standard recipe direction approved, integrated versus separate rotary mount remains a choice. Native saw-blade loot entries checked. No gameplay implementation or new test claim.
+Development only: this draft PR targets dev. No merge, Workshop upload or official release. Hosted LootLab and owner loot settings remain unchanged.

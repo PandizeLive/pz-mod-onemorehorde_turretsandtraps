@@ -28,6 +28,8 @@ function R.changed(object, head)
     if head then
         local scale = R.headScale
         if G.profile(head) then scale = 1 end
+        local definition = require("OMHTT/TurretHeads").get(head)
+        if definition and definition.rotary then scale = .25 end
         head:setWorldScale(scale)
     end
     local entry = R.entries[object] or {}
@@ -78,7 +80,9 @@ function R.animate(now)
         if state then
             local elapsed = math.min(100, math.max(0, now - (entry.lastFrame or now))) / 1000
             entry.lastFrame = now
-            if automatic and automatic.status == "no-target" and not Aim.entries[object] and entry.head and speed > 0 then
+            if entry.profile.stats.rotary then
+                entry.visualHeading = state.aimDegrees
+            elseif automatic and automatic.status == "no-target" and not Aim.entries[object] and entry.head and speed > 0 then
                 local profile = entry.profile
                 local cone = configuredCone
                 if profile.omni then
@@ -146,6 +150,12 @@ function R.render(playerIndex)
                     atlas:setDefaultToCurrentValue()
                     Render3DItem(head, square, square:getX() + 0.5, square:getY() + 0.5, square:getZ() + R.headHeight + 0.1, -1)
                     R.restoreDraw()
+                elseif entry.profile.stats.rotary then
+                    for arm = 0, 1 do
+                        local angle = math.rad(heading + arm * 180)
+                        Render3DItem(entry.head, square, square:getX() + .5 + math.cos(angle) * .65,
+                            square:getY() + .5 - math.sin(angle) * .65, square:getZ() + R.headHeight, (yaw + arm * 180) % 360)
+                    end
                 else
                     Render3DItem(entry.head, square, square:getX() + 0.5, square:getY() + 0.5, square:getZ() + R.headHeight, yaw)
                 end

@@ -25,5 +25,8 @@
     "OMHTTCraftConcertinaWire": "Concertina Wire",
     "OMHTTDeployConcertinaWire": "Concertina Wire",
     "OMHTTDeployBedSpikesSingle": "Bed Spikes",
-    "OMHTTDeployReinforcedBedSpikesSingle": "Reinforced Bed Spikes"
+    "OMHTTDeployReinforcedBedSpikesSingle": "Reinforced Bed Spikes",
+    "OMHTTCraftBallista": "Ballista Head",
+    "OMHTTCraftRotaryBat": "Rotary Bat Head",
+    "OMHTTCraftRotaryBlades": "Rotary Blades Head"
 }

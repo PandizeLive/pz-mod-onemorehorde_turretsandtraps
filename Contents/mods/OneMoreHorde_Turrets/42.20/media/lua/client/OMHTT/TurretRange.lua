@@ -165,7 +165,7 @@ function O.render()
                 end
                 local heading = R.heading(object)
                 local profile = render.profile
-                local cone = M.option("ForwardCone", 90, 10, 360)
+                local cone = profile.rotary and 45 or M.option("ForwardCone", 90, 10, 360)
                 if profile.omni then
                     cone = 360
                 end
@@ -191,6 +191,10 @@ function O.render()
                 else
                     O.draw(lines, #lines, z, index, .65, .65, .65)
                     if refreshLegend then legend = getText("UI_OMHTT_RangeManualLegend", string.format("%.1f", profile.range)) end
+                end
+                if profile.rotary and not profile.omni then
+                    local rear = O.geometry(render, "rear", x, y, coverage.range, profile.heading + 180, cone, heading + 180)
+                    O.draw(rear, #rear, z, index, .25, .85, 1)
                 end
                 render.rangeLegend, render.legendAutomatic, render.legendManual, render.legendDetector = legend, coverage.range, profile.range, render.hasDetector
                 canvas:drawText(legend, left + 12, top + 12, 1, 1, 1, 1, UIFont.Small)

@@ -135,6 +135,7 @@ function W.setPower(player, object, enabled)
     if not W.near(player, object) then return false end
     local state = T.state(object)
     state.powered, state.automatic = enabled, nil
+    state.rotaryManual, state.rotaryMoving = nil, false
     require("OMHTT/TurretAim").entries[object] = nil
     local search = require("OMHTT/TurretSearch").pending[object]
     if search then search.cancelled = true end
@@ -247,6 +248,7 @@ function W.pickup(player, object, id)
     state.condition = object:getHealth()
     local copied = {}
     for key, value in pairs(state) do copied[key] = value end
+    copied.rotaryManual, copied.rotaryMoving = nil, false
     item:getModData().OMHTTTurret = copied
     item:setCondition(math.max(1, math.floor(state.condition / state.maxHealth * item:getConditionMax())))
     T.configure(item:getInventory())
@@ -365,6 +367,9 @@ function W.fire(player, object, target)
     local contents = T.contents(object:getContainer())
     if not player and (not M.detects(T.state(object), contents) or not contents.active.Firing) then return "Unavailable" end
     if contents.heads ~= 1 or contents.head:getCondition() <= 0 then return "NoHead" end
+    if require("OMHTT/TurretHeads").get(contents.head) and T.cycleConfig(contents).rotary then
+        return require("OMHTT/TurretRotary").start(player, object)
+    end
     if contents.ammo == 0 then return "Empty" end
     local stats = T.cycleConfig(contents)
     local power = W.power(object, contents, stats)
@@ -385,6 +390,10 @@ function W.fire(player, object, target)
         options.projectileSpeed, options.splash, options.radius = nil, 0, 0
         options.resolve = require("OMHTT/FirearmCombat").hit
         options.weapon, options.stats, options.object = contents.head, stats, object
+    end
+    if stats.headKind == "Ballista" then
+        options.projectileSpeed, options.splash, options.radius = nil, 0, 0
+        options.resolve = require("OMHTT/TurretBallista").hit
     end
     ---@param selected IsoZombie Chosen target
     ---@return boolean aligned
@@ -429,7 +438,7 @@ function W.fire(player, object, target)
             for i = 1, #contents.rounds do
                 if spent >= cost then break end
                 local round = contents.rounds[i]
-                if round:getFullType() == "Base.Potato" and object:getContainer():contains(round) then
+                if round:getFullType() == contents.round:getFullType() and object:getContainer():contains(round) then
                     object:getContainer():Remove(round)
                     spent = spent + 1
                 end

@@ -1,5 +1,9 @@
 # C182 - Pack cues and tier reopening
 
+## C207 - C191 timing installed in 0.2.49
+
+C191 timing is now implemented with the new-head patch:150-ms row spacing, six-second rolls,6/6.15/6.3s stops and the single rarity cue at6.05s (250ms before the bottom stop). Final selection remains6.3s. Behavioral checks pass for normal and skipped frames; reward identities, four-second fade and probabilities are unchanged. [Version test](TEST_v0.2.49.md); audible timing awaits the owner.
+
 **C183 / LootLab persistence correction:** confirmed tier weights now save with account settings and survive refresh, reopening and device changes. Offline confirmed edits use the existing account-scoped draft recovery. The local HTML copy uses browser storage. Cancel discards the draft; equal-weight assignments are reconstructed from saved tier values. Deployed and verified; no gameplay/package changes, so the installed mod remains **0.2.47.3**. [Contract and test](LOOTLAB_TIER_PERSISTENCE.md) | [Deployment](../diagnostics/lootlab-c183/release.json). This supersedes C182's page-session-only limitation.
 
 **C182 / 0.2.47.3:** approved rotation ticks (1B), pickup selection cue (2B), custom rarity audio pending owner files (3C), and a pulse-only four-second fade (4B). Pack audio uses native UI events with one shared bounded tick stream, no catch-up burst and cleanup on Collect. LootLab now shows calculated rarity in the normal list, refreshes draft feedback, and automatically groups equal weights when reopening. Confirmed tier weights persist for the page session; full reload derives centers from loaded weights. [Patch](PATCH_v0.2.47.3.md) | [Test](TEST_v0.2.47.3.md) | [Contract and pitch limitation](PACK_POLISH.md).

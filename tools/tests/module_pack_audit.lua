@@ -118,7 +118,7 @@ for i = 1, #sounds do
     if string.sub(sounds[i], 1, 9) == "OMHTTPack" then reveals = reveals + 1 end
 end
 check(ticks > 0 and ticks <= 67 and selected == 1, "One bounded native tick stream and one shared selection cue")
-check(reveals == 1 and sounds[#sounds] == panel.revealCue, "Exactly one cached highest-rarity cue for all three rewards")
+check(reveals == 1 and sounds[panel.revealSound] == panel.revealCue, "Exactly one cached highest-rarity cue for all three rewards")
 local before = #sounds
 panel:prerender()
 check(#sounds == before, "Repeated completed frame does not replay selected sound")
@@ -165,22 +165,28 @@ testMillis = base + 100; staggered:prerender()
 local oldPosition = (1 - (1 - .1 / 4) ^ 3) * 13
 check(staggered.reels[1].position > oldPosition * 1.9 and staggered.reels[2].position == 0,
     "First reel opens twice as fast while later rows await their offset")
-testMillis = base + 500; staggered:prerender()
+testMillis = base + 200; staggered:prerender()
 check(staggered.reels[1].position > staggered.reels[2].position and staggered.reels[2].position > 0
-    and staggered.reels[3].position == 0, "Middle reel starts 350ms after the top")
+    and staggered.reels[3].position == 0, "Middle reel starts 150ms after the top")
 testMillis = base + 1000; staggered:prerender()
 check(staggered.reels[1].position > staggered.reels[2].position and staggered.reels[2].position > staggered.reels[3].position
-    and staggered.reels[3].position > 0, "Bottom reel starts last at 700ms")
+    and staggered.reels[3].position > 0, "Bottom reel starts last at 300ms")
 for row = 1, 3 do
-    testMillis = base + 6000 + (row - 1) * 350; staggered:prerender()
+    if row == 2 then
+        testMillis = base + 6049; staggered:prerender()
+        check(not staggered.revealSound, "Rarity cue waits until its lead-in")
+        testMillis = base + 6050; staggered:prerender()
+        check(staggered.revealSound ~= nil and not staggered.finished, "Rarity cue starts 250ms before bottom stop")
+    end
+    testMillis = base + 6000 + (row - 1) * 150; staggered:prerender()
     check(staggered.reels[row].settledAt == testMillis and staggered.reels[row].position == 39, "Each reel lands on its exact winner after six seconds")
     if row < 3 then
         check(not staggered.finished and not staggered.reels[row + 1].settledAt, "Later rows keep rolling after an earlier row settles")
-        check(sounds[#sounds] == "UIObjectMenuObjectRotate", "No selection or rarity cue before the last row stops")
+        check(sounds[#sounds] == "UIObjectMenuObjectRotate", "No selection cue before the last row stops")
     end
 end
-check(staggered.finished and staggered.settledAt == base + 6700 and sounds[#sounds] == staggered.revealCue,
-    "One final rarity cue follows the bottom reel")
+check(staggered.finished and staggered.settledAt == base + 6300 and sounds[#sounds] == "UIObjectMenuObjectPickup",
+    "One early rarity cue and final selection cue")
 local rowAlphas = {}
 staggered.drawRectBorder = function(_, x, y, w, h, alpha) rowAlphas[#rowAlphas + 1] = alpha end
 testMillis = base + 8000; staggered:prerender()

@@ -42,5 +42,8 @@
     "Base.OMHTTModuleMartyrdom": "Martyrdom Module",
     "Base.OMHTTModuleTack": "Tack Module",
     "Base.OMHTTModuleRegulator": "Regulator Module",
-    "Base.OMHTTModulePack": "Module Pack"
+    "Base.OMHTTModulePack": "Module Pack",
+    "Base.OMHTTTurretBallista": "Ballista Head",
+    "Base.OMHTTTurretRotaryBat": "Rotary Bat Head",
+    "Base.OMHTTTurretRotaryBlades": "Rotary Blades Head"
 }

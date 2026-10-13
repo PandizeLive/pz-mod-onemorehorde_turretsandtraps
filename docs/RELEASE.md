@@ -1,5 +1,9 @@
 # Release state and publication policy
 
+## 0.2.49 / C207
+
+New head prototypes and C191 pack timing implemented. Automated/native/package checks pass; see [test evidence](TEST_v0.2.49.md). Source commit, immutable test tag and root-menu installation are pending. Owner rendered/audio acceptance remains pending; technical cube markers only. No hosted LootLab change, Workshop upload or official release.
+
 ## 0.2.48.1 / C190 (owner result C191)
 
 Staggered, longer and faster-opening pack reels implemented. 16,180 assertions and 117 Lua/translation compile checks pass. Native write/read and all three package combinations pass. Root OMH.cmd installed immutable `test/v0.2.48.1` / `def298402fa617ccd2e033b5f4de95e6fe2c0392`; all 216 source and 264 tagged/packaged/installed/archive files match and both 0.2.48 backups verify. [Local proof](../diagnostics/v0.2.48.1/local-release.json). C191 records owner acceptance of the current reel behavior; two refinements are queued for the next patch. [Patch](PATCH_v0.2.48.1.md) | [Test](TEST_v0.2.48.1.md). LootLab and reward weights remain on C189; no hosted deployment or Workshop upload.
