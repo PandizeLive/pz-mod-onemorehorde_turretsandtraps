@@ -2,7 +2,7 @@
 
 ## 0.2.49 / C207
 
-New head prototypes and C191 pack timing implemented. Automated/native/package checks pass; see [test evidence](TEST_v0.2.49.md). Source commit, immutable test tag and root-menu installation are pending. Owner rendered/audio acceptance remains pending; technical cube markers only. No hosted LootLab change, Workshop upload or official release.
+New head prototypes and C191 pack timing implemented. Automated/native/package checks pass; see [test evidence](TEST_v0.2.49.md). Installed via root OMH.cmd from immutable `test/v0.2.49` / `9cc84c0232b1a8348eb16927b0bc43ef8774abfd`. All220 source files and268 tagged/packaged/installed/archive files match; both0.2.48.1 backups verify. [Release evidence](../diagnostics/v0.2.49/local-release.json). Owner rendered/audio acceptance remains pending; technical cube markers only. No hosted LootLab change, Workshop upload or official release.
 
 ## 0.2.48.1 / C190 (owner result C191)
 

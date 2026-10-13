@@ -6,6 +6,8 @@ Native B42.21.0 stock-first probes pass in fresh write/read processes. Three new
 
 Source: diagnostics/v0.2.49/validation.log, server-write.log, server-read.log, packages-*.json and manifest.json. Native smoke fixtures exercise SP logic in an isolated server harness; this does not certify multiplayer. Owner client console has not yet been reviewed for this version. No owner test has passed by implication.
 
+Installed from immutable test/v0.2.49 /9cc84c0 using root OMH.cmd. All268 files match, both0.2.48.1 backups pass, and the local archive is verified. [Proof](../diagnostics/v0.2.49/local-release.json).
+
 ## Short owner test
 
 1. Restart into the fresh test world and confirm **0.2.49**. Check all three head recipes under **OMH: Turrets > Heads**; Ballista includes eight nails.
