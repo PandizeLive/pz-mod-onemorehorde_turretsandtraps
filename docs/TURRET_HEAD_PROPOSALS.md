@@ -1,5 +1,34 @@
 # Unique turret head candidates
 
+## C215 Explosion damage trace and version mismatch (2026-10-13)
+
+Owner requests determining what native explosion power equates to. Read-only Cloud investigation found a concrete historical formula, but **does not establish current B42.21 health loss**. No game installed, game-dependent test run, native game artifact downloaded or gameplay file changed.
+
+### Historical public code, explicitly Build 42.0
+
+Pinned public reference: [piromasta/PZDecompiled at 8032006](https://github.com/piromasta/PZDecompiled/tree/8032006b1d52490cbad1dd228f3380d38f7e0612), branch beta/unstable/b42. [Core.java line 144](https://github.com/piromasta/PZDecompiled/blob/8032006b1d52490cbad1dd228f3380d38f7e0612/zombie/core/Core.java#L144) declares GameVersion(42, 0). It is not the installed 42.21 source.
+
+[IsoGridSquare.explosion, line 8966](https://github.com/piromasta/PZDecompiled/blob/8032006b1d52490cbad1dd228f3380d38f7e0612/zombie/iso/IsoGridSquare.java#L8966) computes `p = min(ExplosionPower, 80)` then calls character Hit with `Rand.Next(p / 30.0, p / 30.0 * 2.0) + ExtraDamage`, a synthetic Base.Axe and a fake zombie attacker. Substituting the recorded power inputs:
+
+| Item power input | Capped power | Historical raw Hit input, before ExtraDamage and further processing |
+| --- | --- | --- |
+| Aerosol Bomb 70 | 70 | approximately 2.333 to 4.667 |
+| Pipe Bomb 90 | 80 | approximately 2.667 to 5.333 |
+
+This is **not HP loss** and not a 233-467/267-533 OMH damage claim. In that same historical source, processHitDamage applies target/attacker/weapon-dependent factors and hitConsequences applies weapon-category reduction. ExtraDamage and the synthetic weapon/attacker state also need evidence. Do not mix this old caller with new downstream code to fabricate an exact result.
+
+Historical drawCircleExplosion performs a same-floor radius test and line-of-sight/closed-door exclusion; its damage call contains no explicit distance falloff. It also invokes environmental burning/fire from ExplosionPower independently of the item's separate fire branch. Therefore zero item fire settings alone do not establish that a native blast is environmentally harmless. These are historical observations, not confirmed 42.21 behavior. Player burn/body-part processing exists separately, so a single zombie damage number would not describe player injuries either.
+
+### Newer repository bytecode demonstrates why the old result is insufficient
+
+The committed p1combat server log identifies **42.20**. Its [IsoGameCharacter bytecode](../diagnostics/p1combat/IsoGameCharacter.javap.txt) has processInstantExplosionHitDamage returning input damage times the supplied multiplier, selected when HandWeapon.isExplosive is true (around line 15007). hitConsequences calls CombatManager.applyGlobalDamageReductionMultipliers and CombatManager.applyDamage (around line 15235). This differs materially from the public 42.0 synthetic-axe implementation. The repository lacks the matching complete explosion caller and CombatManager dump needed to trace actual values. No claim that current normal bombs use either path has been verified here. The mod's own Damage.lua uses direct native health subtraction and reports damage100 = health loss * 100; arbitrary raw Hit arguments cannot be compared to that scale.
+
+### Exact PC follow-up
+
+Read current installed **42.21** item definitions for both ordinary payloads, including ExtraDamage and explosive classification. Trace IsoTrap's triggering path, IsoGridSquare's explosion loop (and any replacement helper), the actual HandWeapon supplied to Hit, IsoGameCharacter.processHitDamage/hitConsequences, CombatManager.applyGlobalDamageReductionMultipliers/applyDamage, and player-specific body-damage handling. Record game/JAR identity and method evidence. Determine random bounds, power cap, distance/obstruction behavior, repeat-hit behavior, environmental effects and player injury separately. A local controlled health-delta check belongs on the PC if source/bytecode alone does not settle it; Cloud does not run it. Existing 42.21 item power/range evidence alone is insufficient.
+
+C213 turret damage/radius/falloff proposals remain unselected; no balance change, new patch approval or owner-test result follows. This investigation narrows the missing prerequisite instead of declaring an unverified historical conversion current. GitHub API searches returned Forbidden; public raw GitHub source and native Git reads worked. Installed 0.2.49 owner acceptance stays deferred.
+
 ## C214 Native explosive baseline question (2026-10-13)
 
 Owner asks how much damage normal Pipe Bombs and Aerosol Bombs do before choosing the proposed turret balance. Repository C209/C210 records installed B42.21.0 script evidence: ordinary Base.PipeBomb has ExplosionPower 90 and ExplosionRange 7, with zero fire settings; ordinary Base.Aerosolbomb has ExplosionPower 70 and ExplosionRange 6, plus FireStartingChance 10 and FireStartingEnergy 20. These are native explosion parameters, **not verified 90/70 health damage per target**. The available Cloud records do not establish the native power-to-health calculation, distance/randomness/obstruction behavior or resulting player versus zombie damage. Do not invent that conversion or compare C213's proposed direct zombie damage as if the scales matched.
