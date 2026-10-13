@@ -1126,3 +1126,8 @@ Implemented0.2.49 with all prior selected head rules and C191 pack timing. Exact
 ## C208 - Owner test deferred and next-head advice (2026-10-13)
 
 Owner cannot test0.2.49 now and asks whether to add heads. Recommend one design discussion first, with Grenade Lobber1A, Scrapshot1B, Arc Emitter1C and Nail Scatter1D/defer. Reasons, overlap and native-proof gates are recorded in [the contract](TURRET_HEAD_PROPOSALS.md#c208-next-head-options-while-testing-is-deferred-2026-10-13). No new head selected or approved; current build and R3C2 acceptance remain unchanged. Fetched origin at72806fe; sole draft PR#1. Planning-only update under C119/C108.
+
+
+## C209 - Grenade Lobber and Scrapshot selected for design (2026-10-13)
+
+Owner selects C2081A/1B. Both heads enter discussion; no implementation or specific ammo/collateral contract approved. [Initial choices](TURRET_HEAD_PROPOSALS.md#c209-grenade-lobber-and-scrapshot-design-2026-10-13) recommend native PipeBomb feed, impact detonation, loose ScrapMetal feed and actor-only blast collateral. Native script confirms PipeBomb identity only; trajectory and explosion behavior need proof. Installed0.2.49 owner test remains deferred; no code/version/test-result changes. Fetched origin0a58373; sole draft PR#1 into dev.

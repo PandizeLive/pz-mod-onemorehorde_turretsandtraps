@@ -1,5 +1,21 @@
 # Unique turret head candidates
 
+## C209 grenade lobber and scrapshot design (2026-10-13)
+
+Owner selects C2081A and1B: Grenade Lobber plus Scrapshot Cannon for discussion. This supersedes the recommendation to discuss only one. Both reuse the universal-base direction; no new recipe, balance, module mapping or gameplay implementation is approved by selection.0.2.49 owner test remains deferred.
+
+Proposed distinct roles: Grenade Lobber is slow area damage with real explosive ammunition and a minimum firing distance; Scrapshot is a short-range broad volley using scavenged ammunition. Scrapshot needs its resource economy and spread to differ from existing firearm heads; do not define it only as a shotgun with a different label. No invisible free ammunition or extra whole-turret crafts.
+
+First owner choices (all proposals):
+
+1. Grenade ammunition: **1A recommended**, ordinary native Base.PipeBomb only initially; **1B**, dedicated craftable launcher ammunition with a separately agreed recipe; **1C**, multiple native explosive payload types, requiring a per-type behavior/compatibility matrix. Remote/sensor/triggered variants are not included in1A. Native installed B42.21.0 generated/items/weapon.txt lines759-766 verifies PipeBomb with ExplosionPower90/ExplosionRange7; this verifies item existence, not a safe launcher API or the proposed turret damage values. Native values do not silently settle turret tuning.
+2. Grenade detonation: **2A recommended**, detonate on first valid impact; **2B**, land then detonate after a short fixed fuse, accepting that zombies can move away. Exact fuse timing and trajectory/obstruction behavior still need settlement/proof. No promise of firing over walls, native bouncing or arbitrary mod-grenade support.
+3. Scrapshot feed: **3A recommended**, consume loose Base.ScrapMetal directly, avoiding a new ammo craft; **3B**, loose nails; **3C**, a dedicated crafted scrap-load item. Exact material quantity and cadence remain open. Propose a powered firing mechanism; energy cost and any extra consumables must be settled rather than inferred from the material alone.
+4. Grenade collateral: **4A recommended**, blast damages zombies and players, without ignition or structure damage; **4B**, destructive blast that can also damage surroundings. Structure/fire scope and native feasibility must be discussed before4B implementation. Neither is a promise that the native explosion can simply toggle those effects;4A may require the project's controlled damage path.
+
+Recommendations1A/2A/3A/4A. After settlement: range/minimum range, damage/falloff/projectile count, cadence, battery, head recipes and service, injury specifics, sound/visuals, module compatibility and bounded proc propagation. Final art remains owner-sourced. Implementation order is not yet approved. No new assertions, gameplay tests, code/version or installation changes. Fetched origin at0a58373; sole open draft PR#1 into dev. Planning mirrored under C108/C119.
+
+
 ## C208 next-head options while testing is deferred (2026-10-13)
 
 Owner: "I'm not able to test right now, should we add new turret heads?" This is a request for advice, not approval of another gameplay patch. Defer the0.2.49 owner test without claiming a pass or requiring immediate play. R3C2 remains the active prototype-acceptance checkpoint for Ballista/Bat/Blades. Final-art, rendered sweep/contact alignment and audible behavior remain unverified; automated/native proof is unchanged.
