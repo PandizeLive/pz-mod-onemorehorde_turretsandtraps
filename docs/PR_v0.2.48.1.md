@@ -21,3 +21,5 @@ C196 excludes rotary Splitter and records [simpler compatibility recommendations
 C197 confirms inherent Bat/Blades multi-target sweep contact and excludes Piercing/Conservation. [Current head contract](docs/TURRET_HEAD_PROPOSALS.md#c197-inherent-rotary-multi-target-contact-2026-10-12). Planning only; stats/recipes and native proof remain.
 
 C198 presents [starting combat-stat choices](docs/TURRET_HEAD_PROPOSALS.md#c198-starting-combat-stat-choices-2026-10-12) for the three selected heads. Values are proposals, not approved or implemented. Existing installed build remains unchanged.
+
+C199 records selected heavy Ballista, corrected Bat2A,40-damage/1s Blades and opposed-arm swing/spin motion. [Rifle comparison and remaining choices](docs/TURRET_HEAD_PROPOSALS.md#c199-selected-stats-and-opposite-rotary-arms-2026-10-12). No gameplay implementation.
