@@ -1,5 +1,13 @@
 # Unique turret head candidates
 
+## C197 inherent rotary multi-target contact (2026-10-12)
+
+Owner: "1A, the blade and bat are always piercing." Approves C196 1A: Piercing and Conservation are incompatible with Rotary Bat and Rotary Blades. Clarifies inherent multi-target contact: hitting one zombie must not inherently end the physical sweep; additional zombies contacted by the moving weapon can be hit without a module. Do not implement the rejected Piercing-module victim-count/damage-falloff mapping as an implicit baseline.
+
+Physical interpretation preserves already established constraints: actual visible reach, selected forward sector or 360 upgrade, same-level obstruction checks and player danger on moving contact. This is not projectile wall penetration or an invisible radius attack. Recommend once per distinct victim per stroke to prevent frame-rate-dependent repeated damage; exact stroke/reaction cadence and dense-horde workload proof remain part of R3C2. No newly approved numerical victim cap or damage falloff is implied. Any necessary gameplay cap must be discussed rather than silently converting the owner's inherent multi-target request into single-target hits.
+
+Initial rotary exclusions are now Splitter, Piercing, Conservation, Magazine, Reload, Autoloader, Impact, Fragment, Tack, Martyrdom, Synergy, Range and Accuracy. Existing projectile-head behavior is unchanged, and Ballista remains a separate compatibility contract. No more decisions are needed about these exclusions. Remaining candidate module benefits, head stats, injury severity, power/wear, recipes and spear lifecycle remain to settle. No gameplay/version/install/test changes this turn. C191 timing stays queued. Inspected 81b349e and fetched origin; sole open draft PR #1 targets dev.
+
 ## C196 simpler rotary compatibility (2026-10-12)
 
 Owner: "Let's not use splitter either. We can avoid a lot of the modules I guess." Explicitly excludes Splitter on Rotary Bat/Blades and supports simplifying module compatibility. No change to Splitter on existing projectile heads; Ballista compatibility remains separately specified. Prior rotary exclusions/deferred effects remain: Magazine, Reload, Autoloader, Impact, Fragment, Tack, Martyrdom, Synergy, Range and Accuracy. There is no new request to remove any module item globally.

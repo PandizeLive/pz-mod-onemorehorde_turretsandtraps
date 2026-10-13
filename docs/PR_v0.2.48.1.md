@@ -17,3 +17,5 @@ C194 confirms crafted-spear ammunition, directional rotary coverage with 360 upg
 C195: Owner selects continuous physical rotary attacks, defers secondary-effect adaptations and excludes Range/Accuracy plus magazine-cycle modules initially. [Confirmed rotary scope](docs/TURRET_HEAD_PROPOSALS.md#c195-continuous-physical-rotary-scope-2026-10-12); remaining tuning/recipes are open. No gameplay patch this turn.
 
 C196 excludes rotary Splitter and records [simpler compatibility recommendations](docs/TURRET_HEAD_PROPOSALS.md#c196-simpler-rotary-compatibility-2026-10-12). Piercing/Conservation exclusions are proposed, not approved. No gameplay change.
+
+C197 confirms inherent Bat/Blades multi-target sweep contact and excludes Piercing/Conservation. [Current head contract](docs/TURRET_HEAD_PROPOSALS.md#c197-inherent-rotary-multi-target-contact-2026-10-12). Planning only; stats/recipes and native proof remain.
