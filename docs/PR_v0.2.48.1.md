@@ -9,3 +9,5 @@ Validation: 16,180 assertions and 117 Lua/translation compilations pass, includi
 Development only; no merge, Workshop upload or official release. Includes the prior 0.2.48 custom audio and owner weights; hosted LootLab remains on that verified baseline.
 
 C192: New-head selection (R3C1) is now the active content discussion; seven candidates recorded in [the shortlist](docs/TURRET_HEAD_PROPOSALS.md#c192-active-new-head-selection-2026-10-12). No individual head or implementation approved. C191 pack timing remains queued for the next patch.
+
+C193: Owner selects Ballista, Rotary Blades and Rotary Bat for development. [Head contract and choices](docs/TURRET_HEAD_PROPOSALS.md#c193-three-head-development-scope-2026-10-12) records remaining behavior/recipe decisions and shared rotary architecture. No new gameplay implemented; C191 timing polish stays queued.

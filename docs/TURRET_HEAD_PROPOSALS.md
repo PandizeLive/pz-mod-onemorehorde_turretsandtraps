@@ -1,5 +1,26 @@
 # Unique turret head candidates
 
+## C193 three-head development scope (2026-10-12)
+
+Owner: "Let's create 1A 1B and 1C." Ballista, Rotary Blades and Rotary Bat are selected for development; this supersedes the unselected roster state below. Do not ask the owner to select the heads again. Scope authorization does not settle their previously unresolved behavior, ammo, recipes, stats or module interactions. No gameplay implementation/install this turn.
+
+Recommended architecture: retain universal base, inventory, power, scheduling and service paths; implement one rotary mechanism with separate Bat/Blades tuning. Ballista extends projectile handling, while rotary heads need swept contact consistent with visible reach. Read-only inspection at 051e41b finds TurretStats currently branches on firearm profile, gates Piercing on firearm and otherwise uses potato-like defaults. TurretVolley also branches on firearm for impact handling. Explicit head capabilities are needed before adding these heads; do not merely classify Ballista or rotary heads as another potato weapon.
+
+Present these unresolved choices before gameplay work:
+
+| Decision | A (recommended) | B |
+| --- | --- | --- |
+| 1: Ballista ammunition | Dedicated craftable heavy bolts; separate head and ammo recipes | Consume crafted spears as oversized bolts, reusing an existing item |
+| 2: Rotary coverage | Inherent full-circle physical sweep; 360 Module has no benefit | Facing-limited sweep, with 360 Module unlocking full circle |
+| 3: Rotary player danger | Players in the moving sweep can be injured, requiring safe servicing | Players immune to rotary contact |
+| 4: Module behavior | Explicit physical compatibility: Ballista projectile effects; rotary stat/conditional effects where meaningful; reject ammo/projectile-only modules on rotary heads | Design custom melee equivalents for otherwise incompatible modules, increasing scope and balance work |
+
+Recommend prototype Ballista first, then shared rotary contact and Bat/Blades tuning, packaged together if proofs pass. Bat emphasizes lower damage and more shove; Blades emphasizes damage, without a permanent reaction loop. Exact chance/damage/reach/cadence and resource costs remain proposals to settle after these structural choices. Bolt recovery is desirable only after exact-item conservation is proven; no free recovery of Splitter/Conservation-generated projectiles. Neither recovery chance nor enabled recovery is approved by the head selection.
+
+Recipe ingredients, retained tools, skills and XP must be reviewed with the owner under the project agreement before adding recipes. Preserve long battery life, independent Turrets operation, existing save/pickup state, no catch-up bursts and bounded workload. Verify module changes do not alter existing firearm/potato behavior. Final assets stay owner-sourced; only the already authorized technical cube/arrow placeholders can be used for proofs. R3C2 native/rendered proof is outstanding, not inferred from this design.
+
+C191 pack refinements remain part of the next patch. R1C3/R3C7 remain open with accepted findings preserved. High effort is recommended for the shared combat implementation; it is likely to exceed 25 minutes, so Fast is recommended for that work. This turn records selection and concrete choices only.
+
 ## C192 active new-head selection (2026-10-12)
 
 Owner requests starting the new-head track and seeing our list. This selects R3C1 discussion, not a specific head or gameplay implementation. Present choices: 1A Ballista/heavy bolt (recommended first); 1B Rotary Blades; 1C Rotary Bat; 1D Scrapshot cannon (conditional); 1E Nail Scatter (conditional); 1F Grenade lobber (later); 1G Arc emitter (later). Ballista offers the simplest first extension of the projectile system; Rotary Blades offers a larger mechanical difference but needs visible sweep/contact and obstruction proof.
