@@ -1162,3 +1162,8 @@ Owner asks for native damage, selecting none of C213's proposed balance values. 
 ## C215 - Investigate native explosive damage conversion (2026-10-13)
 
 Owner: "Figure out what the damage values equate to". Investigation retrieves pinned public 42.0 source and compares committed 42.20 character bytecode; neither establishes 42.21 bomb health loss. Historical capped power/random Hit input and its additional downstream modifiers are documented, not represented as current health damage. [Findings and exact local evidence needed](TURRET_HEAD_PROPOSALS.md#c215-explosion-damage-trace-and-version-mismatch-2026-10-13). Current damage options remain unselected; no gameplay change, native execution or test-status change. Inspected ff3c75a and remote branches; active development remains 63c32db.
+
+
+## C216 - Assign native damage answer to PC and continue independent planning (2026-10-13)
+
+Owner: "Well note that down so it'll be answered once the PC has the decompiled code. What else shall we discuss". C215 becomes an explicit PC follow-up; damage/radius/falloff remain unselected. Present proposed chambered-ammo switching (1A finish chambered round; 1B recommended pause and explicitly unload/reload safely) and fallback recovery (2A recommended return to preferred at next reload/selection; 2B exhaust fallback first). [Full choices and item-preservation rules](TURRET_HEAD_PROPOSALS.md#c216-pc-damage-follow-up-and-ammo-switching-discussion-2026-10-13). No answers to these options inferred. Inspected 0c42c32 and unchanged remote development 63c32db. Planning only, mirrored under standing authorization; no game tests or new implementation approval.

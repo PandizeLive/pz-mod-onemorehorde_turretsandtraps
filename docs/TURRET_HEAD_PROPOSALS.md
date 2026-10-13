@@ -1,5 +1,21 @@
 # Unique turret head candidates
 
+## C216 PC damage follow-up and ammo switching discussion (2026-10-13)
+
+Owner explicitly directs keeping the native damage question for the PC once its decompiled code is available, then asks what else to discuss. C215 is now an owner-requested PC follow-up: answer the actual normal Pipe Bomb/Aerosol Bomb health-damage conversion against the installed build before presenting a native-equivalent turret balance. Historical formulas remain reference only. Damage/radius/falloff options stay unselected; do not block unrelated design choices on this investigation or repeat the historical raw inputs as health loss.
+
+Next proposed discussion concerns priority changes with an already chambered payload and return from fallback. C211 player-defined priority and fallback default OFF are already selected; do not reopen them. The mixed loaded-ammo display is also selected. These new options concern the committed next round, not dropping other loaded/reserve types or imposing a one-type inventory restriction. Actual feeder/chamber support across heads needs local verification; no universal mod-weapon compatibility is claimed.
+
+**1A: finish the chambered round.** A priority change affects the following load; the next shot still uses its actual chambered payload. Keep that payload visibly marked as next. Simple and uninterrupted, but may spend one valuable round after the player changes preference.
+
+**1B recommended: pause and switch safely.** If a priority change selects a different type than the chambered round, pause firing and require an explicit unload/reload action. Return the exact unspent round to storage; preserve it if storage cannot accept it. Do not destroy, convert or silently discard ammunition, and do not consume another lower-priority round merely to clear the chamber. No free instantaneous swap; native supported action timing and interruption behavior remain local design/proof work. Already launched rounds retain their original payload/fuse.
+
+**2A recommended: return to the preferred type at the next reload/selection opportunity when it becomes available.** Applies while fallback is enabled. A previously chambered fallback round retains its identity; apply the selected switching policy, not a mid-flight replacement. UI distinguishes actual next round from preferred type.
+
+**2B: keep using the fallback type until it runs out**, then reconsider the priority list. Fewer changes, but may continue spending lower-priority ammunition even after the preferred supply is restored. Explicit user priority changes still follow choice 1.
+
+All four options are proposals awaiting the owner's selection. No new capacity, magazine layout, switching duration, player-injury rule, gameplay implementation or test status is settled. After ammo handling, continue with Scrapshot range/feed/spread and then module/power/recipe rules; native explosive damage remains assigned to the PC. Installed 0.2.49 owner test stays deferred.
+
 ## C215 Explosion damage trace and version mismatch (2026-10-13)
 
 Owner requests determining what native explosion power equates to. Read-only Cloud investigation found a concrete historical formula, but **does not establish current B42.21 health loss**. No game installed, game-dependent test run, native game artifact downloaded or gameplay file changed.
