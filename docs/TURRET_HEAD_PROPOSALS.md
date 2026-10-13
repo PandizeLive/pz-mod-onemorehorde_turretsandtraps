@@ -1,5 +1,11 @@
 # Unique turret head candidates
 
+## C214 Native explosive baseline question (2026-10-13)
+
+Owner asks how much damage normal Pipe Bombs and Aerosol Bombs do before choosing the proposed turret balance. Repository C209/C210 records installed B42.21.0 script evidence: ordinary Base.PipeBomb has ExplosionPower 90 and ExplosionRange 7, with zero fire settings; ordinary Base.Aerosolbomb has ExplosionPower 70 and ExplosionRange 6, plus FireStartingChance 10 and FireStartingEnergy 20. These are native explosion parameters, **not verified 90/70 health damage per target**. The available Cloud records do not establish the native power-to-health calculation, distance/randomness/obstruction behavior or resulting player versus zombie damage. Do not invent that conversion or compare C213's proposed direct zombie damage as if the scales matched.
+
+PC follow-up: inspect the current installed native explosion damage path and, when authorized as part of local work, verify representative damage outcomes before claiming parity with handheld ammunition. Preserve the distinction between native Aerosol ignition and the approved no-fire turret behavior. No game installation or game-dependent test in Cloud. C213 payload damage/radius and falloff remain unselected; the prior 80/120/180 and 120/180/240 bundles are arbitrary proposed turret baselines, not measurements of stock explosives. No new design choice or implementation approval is inferred from the question. Current installed 0.2.49 and deferred owner test are unchanged.
+
 ## C213 Approved Lobber range and two-second cadence (2026-10-13)
 
 Owner answers C212: **1A / 2 - 2seconds**. Approve the **6-tile minimum / 18-tile maximum** unmodified engagement range and replace the proposed six/eight-second launch intervals with **one launch every two seconds**. This is the base firing interval, not a correction to C211's separately approved **two-second fuse after landing**. Travel time precedes that fuse. Resource, aim and legal-target requirements still apply; reload overlap, capacity and module modifiers remain to settle without silently slowing the selected baseline.
