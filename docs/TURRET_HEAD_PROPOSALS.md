@@ -1,5 +1,26 @@
 # Unique turret head candidates
 
+## C219 Scrapshot direct feed and revised Lobber firing interval (2026-10-13)
+
+Owner: **Let's do every 2 seconds, and a reload isn't necessary since there's no mag. We'll change grenade launch to 3.5 seconds.** This settles the following design values:
+
+| Head | Base interval between shots | Feed/reload decision | Other retained choices |
+| --- | --- | --- | --- |
+| Scrapshot | 2 seconds | No magazine and no reload cycle; consume actual loose feed as needed for a shot | 6-tile maximum, 60-degree total shot spread |
+| Grenade Lobber | 3.5 seconds, replacing C213's 2 seconds | Existing mixed-ammo priority/safe switching decisions retained; no new feed/capacity rule selected here | 6-18-tile range; separate 2-second fuse starts after landing |
+
+The no-magazine/no-reload direction applies to Scrapshot in this exchange, not an inferred removal of the Lobber's ammo switching rules. No artificial magazine, reload wait or extra volley timer for Scrapshot. Inventory loading/transfer is distinct from a firing reload cycle; absence of a magazine does not grant free ammunition or bypass ordinary target, power and cooldown requirements. Use the shared firing path with an explicit direct-feed capability; exact implementation needs local verification. Do not implement source or tooling from this design approval.
+
+The two head firing intervals are base values before separately reviewed compatible modifiers. Lobber's post-landing fuse is unchanged and independent of travel time and firing cadence. Existing launched rounds retain their identity/fuse. The native explosive health-damage question remains for the PC's current decompiled code under C215/C216.
+
+### Next recommendation, not yet approved
+
+Recommend **one Scrap Metal per shot**, releasing multiple fragments that share one total shot damage budget. This matches the existing whole-shot pellet-budget principle and avoids multiplying the full displayed damage by fragment count. Consumption was not selected by the owner's timing answer; fragment count and total damage still need agreement. Do not automatically grant the current firearm pellet/target caps or a damage-per-pellet number. Preserve the selected 60-degree pattern without silently changing other heads.
+
+No magazine implies the existing Magazine/Reload/Autoloader effects have no ordinary job on Scrapshot; recommend marking those unsupported rather than inventing replacement effects. Impact's opening-magazine trigger also needs a compatibility decision. These are consequences to discuss, not an approval of a complete module matrix. Rapid-Fire is a natural candidate for the existing shot-interval effect, subject to the later compatibility/power contract. Prior compatible-module rules on other heads are unchanged.
+
+Still open: ammo quantity, fragment count/total damage, hit distribution, player collateral, criticals, knockback, battery, reserve capacity, applicable module effects and head recipe. Installed 0.2.49 and its deferred owner acceptance remain unchanged. No gameplay tests, version bump, source/assets/tooling changes or release publication.
+
 ## C218 Scrapshot consistency correction and plain firing terms (2026-10-13)
 
 Owner selects **1A**, explicitly accepts **60 degrees**, and challenges why the discussion deviated from existing spread behavior or invented unnecessary mechanics. Owner also challenges the terms "volley" and "every however many seconds". Record C217 1A's six-tile maximum and 60-degree total shot spread as the selected proposal; do not infer approval of C217 option 2, its one-scrap quantity, or either two/three-second timing. Owner requests that useful differences be offered as recommendations with reasons, not introduced as necessary bespoke systems. This is a planning correction, not gameplay implementation approval.
