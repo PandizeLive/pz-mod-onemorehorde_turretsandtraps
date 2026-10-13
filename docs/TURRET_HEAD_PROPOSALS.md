@@ -1,5 +1,43 @@
 # Unique turret head candidates
 
+## C203 accuracy and battery options (2026-10-12)
+
+Owner requests options and recommendations. These are proposed values, not approvals or implementation. Existing selected240Ballista/6s/18tiles, Bat20/Blades40, opposite45degree arcs,25RPM-equivalent speed and module exclusions remain unchanged.
+
+1: Ballista unmodified aimed-hit probability (smooth linear interpolation over physical effective range):
+
+| Choice | Near-zero-distance limit | Half range9tiles | Full range18tiles |
+| --- | --- | --- | --- |
+| 1A recommended, heavy but unreliable | 75% | 60% | 45% |
+| 1B more forgiving | 85% | 70% | 55% |
+| 1C very inaccurate | 65% | 50% | 35% |
+
+Range endpoints follow actual effective head range if a compatible Range module changes it; an engagement slider must not rescale distance falloff to make the same target easier/harder. Accuracy upgrades, if supported by final Ballista matrix, must change true hit probability and tooltip together. Current FirearmAccuracy.chance increases its close endpoint using native point-blank settings; blindly passing75 would not guarantee75. Implement a head-specific endpoint profile without modifying existing gun behavior or double-applying native bonuses. Chance is an intended-target outcome under eligible clear-shot conditions, not a promise of exact short-sample hit counts or final secondary-projectile outcomes. Do not give rotary physical contacts random miss rolls; Accuracy remains incompatible there.
+
+2: Rotary motor baseline at approved150degrees/second, from100% charge before module, Regulator or speed modifiers:
+
+| Choice | Full motor-running duration | Baseline drain per in-game motor hour | With total3x module drain, no Regulator |
+| --- | --- | --- | --- |
+| 2A recommended | 6hours | 16.6667% | 2hours |
+| 2B very hungry | 3hours | 33.3333% | 1hour |
+| 2C forgiving | 12hours | 8.3333% | 4hours |
+
+C203 now recommends6hours rather than C200's3 because active module surcharges compound the short baseline. Both rotary heads use the selected baseline at their current base geometry/stats; retain existing damage/range factor semantics for applicable changes and additive rarity load, not a fresh multiplier for every contacted zombie. At default module-power setting, module factor=1+sum(applicable surcharge), and Regulator divides drain by1+0.25*count. Thus2A at3x becomes2hours, or2.5hours with one Regulator; this is a hypothetical3x load, not an assertion all loadouts cost3x. Final compatible module set determines actual draw. Do not charge for excluded effects as active benefits; swap/storage handling remains explicit contract work.
+
+Proposed billing rules with rotary endurance choice: drain while motor actually moves, including empty swings/misses, not once per victim, arm or render frame. Stopped/off motor has zero operation draw. With Detection/Firing automation, recommend start on a valid target in physical coverage and stop after finishing the current stroke when no valid target remains; exact manual behavior/start-stop transitions require lifecycle proof. Swing/spin at the same angular speed share baseline draw;360's existing rarity surcharge still applies. Higher speed scales motor draw proportionally to actual angular speed, in addition to existing module electrical load, so Rapid-Fire is not free motor work. Game-hour basis must respect configured day length in both consumption and estimate, excluding pause/offline time. For illustration only, with a60-real-minute game day,6in-game-hours is15real minutes; at3x it is5real minutes. This makes higher module builds hungry despite the six-hour label. Reconcile sleep/fast-forward/lag safely; no free backlog of attacks or energy after exhaustion. These motor rules are proposals bundled for discussion, not approved by an earlier speed annotation.
+
+3: Ballista shot cost, before module surcharge/Regulator, evaluated at240damage/18tiles:
+
+| Choice | Charge per committed shot | Approximate shots from100% |
+| --- | --- | --- |
+| 3A recommended, meaningful electrical cost | 0.05% | 2000 |
+| 3B preserve shared shot baseline without new head coefficient | 0.000853815% | 117121 |
+| 3C heavier electrical cost | 0.10% | 1000 |
+
+Evidence: TurretStats.resolve currently uses0.00045% * max(1,sqrt(damage/80 * range/15)) * moduleFactor / regulator. For240/18 the weapon factor is sqrt(3.6)=1.8973666; TurretWorld.power divides displayed percent by100 before deducting normalized charge. This is not0.085% or0.00085 normalized units. New heads are not implemented, so3B is a calculation if this baseline is reused, not an observed Ballista. Recommend3A via a head-specific electrical coefficient calibrated at240/18, preserving future damage/range and module scaling; do not globally raise firearm/potato drain. Misses still spend power for committed shots; no-target/cancelled shots do not. At3x load3A allows about666shots, or833 with one Regulator, ignoring leftover charge rounding. Shots are battery-only potential and do not imply available spears or ignore durability. Display full internal precision; rounded UI values never drive accounting.
+
+Recommendation1A/2A/3A. All rates use percentage points of charge, and rotary hours mean motor-running game hours, not guaranteed calendar survival or end-game loadout life. Player injury/wear/recipes/spear lifecycle and final module capabilities remain open. No Source/Contents/version/install/test changes. Inspectedf203255, fetched origin and checked sole open draft PR#1. C191 timing remains queued.
+
 ## C202 45degree front and rear arcs (2026-10-12)
 
 Owner annotates C201's90degree assumption: "It should be45degrees on the front and back. It won't hit the sides unless it has360." Confirm45degree total front sector and45degree total rear sector, each centered on its opposite arm's placement axis (plus/minus22.5degrees). Side sectors are excluded without360, including through collision-radius padding or interpolated sweeps. This supersedes C199/C20190degree working geometry. With360 the arms spin continuously and can contact all directions within physical reach, subject to obstruction.

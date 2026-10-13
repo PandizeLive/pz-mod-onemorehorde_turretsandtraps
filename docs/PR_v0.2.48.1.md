@@ -29,3 +29,5 @@ C200 confirms240-damage lower-accuracy Ballista and independent25RPM rotary arms
 C201 supersedes C200's retained swing timers: owner requests25RPM converted to non360 movement too. [Corrected150degree/second swing/spin timing](docs/TURRET_HEAD_PROPOSALS.md#c201-shared-angular-speed-for-swing-and-spin-2026-10-12);90degree arc implies0.6s each way. Gameplay unchanged.
 
 C202 replaces90degree swing arcs with45degree total front/rear sectors; sides require360. [Updated geometry/timing](docs/TURRET_HEAD_PROPOSALS.md#c202-45degree-front-and-rear-arcs-2026-10-12):0.3s each way at150degrees/second. No gameplay implementation.
+
+C203 presents [accuracy and battery options](docs/TURRET_HEAD_PROPOSALS.md#c203-accuracy-and-battery-options-2026-10-12), including verified current-formula arithmetic and module-adjusted endurance examples. All new values/rules remain proposed; gameplay unchanged.
