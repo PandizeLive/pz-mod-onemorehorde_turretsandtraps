@@ -1,5 +1,7 @@
 # Planning
 
+**C198 / starting combat stats proposed (2026-10-12).** Owner requests the next decision. Present separate Ballista, Bat and Blades stat choices; recommend 1A/2A/3A. These are test baselines, not approved or measured balance. [Stat options](TURRET_HEAD_PROPOSALS.md#c198-starting-combat-stat-choices-2026-10-12). Prior head/module decisions remain settled; durability, power, injury severity and recipes follow. C191 timing remains queued.
+
 **C197 / rotary multi-target contact confirmed (2026-10-12).** Owner approves excluding Piercing and Conservation and states Bat/Blades are always piercing. Both therefore have inherent multi-target physical sweep contact, without a Piercing module. Visible reach, forward/360 coverage and obstruction still govern contact. [Confirmed contract](TURRET_HEAD_PROPOSALS.md#c197-inherent-rotary-multi-target-contact-2026-10-12). Stats/recipes and native contact proof remain; C191 pack timing stays queued.
 
 **C196 / rotary Splitter excluded (2026-10-12).** Owner removes Splitter from Bat/Blades compatibility and favors fewer forced adaptations. Prior exclusions remain. Recommend also excluding Piercing and Conservation, rather than inventing cleave/wear meanings; that recommendation remains a choice. [Current scope](TURRET_HEAD_PROPOSALS.md#c196-simpler-rotary-compatibility-2026-10-12). Ballista and existing heads are unaffected; C191 timing remains queued.

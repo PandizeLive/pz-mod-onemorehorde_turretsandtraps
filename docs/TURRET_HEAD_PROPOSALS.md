@@ -1,5 +1,28 @@
 # Unique turret head candidates
 
+## C198 starting combat stat choices (2026-10-12)
+
+Owner asks for the next decision. Provide starting combat-stat options, not a new request to approve the already settled heads or module exclusions. Current source sandbox defaults verified: Potato damage35, cooldown2s, reload2s, range6, knockdown40%; battery base0.00045% per shot. Existing overlapping potato timers are unchanged. These comparisons do not establish equivalent head strength or zombie kill counts.
+
+All proposals below are before modules, against zombies, using existing displayed damage units. Attack intervals are real seconds at normal game speed. Ballista interval means total sustained shot spacing, not an additional serial reload of the same length; feed/cycle details remain to specify. Range/reach uses horizontal tiles from the turret center. Rotary reach is a target requiring matching physical presentation and obstruction proof; do not silently create invisible reach.
+
+| Choice | Head / role | Damage | Attack interval | Range or reach | Native shove chance proposal |
+| --- | --- | --- | --- | --- | --- |
+| 1A recommended | Ballista, balanced heavy shot | 120 | 4s | 18 tiles | No new inherent shove proposed |
+| 1B | Ballista, heavier slower shot | 180 | 6s | 18 tiles | Same |
+| 2A recommended | Bat, control-focused | 20 | 1.5s per stroke | 1.25 tiles | 40% per eligible surviving contact |
+| 2B | Bat, more damage / less control | 30 | 1.5s per stroke | 1.25 tiles | 20% |
+| 3A recommended | Blades, heavier contact | 40 | 1.5s per stroke | 1.25 tiles | 10% |
+| 3B | Blades, faster lighter contact | 25 | 1s per stroke | 1.25 tiles | 10% |
+
+Recommend 1A/2A/3A. Rotary damage applies to each distinct contacted zombie once per stroke; preserve inherent multi-target hits with no approved victim-count cap or successive-victim falloff. Forward coverage/360 module and player contact danger are already selected. Player injuries need their own severity rule; do not use these zombie damage values automatically on player body parts.
+
+Recommend reusing the existing five-second shared victim reaction protection for Bat/Blades shove, allowing damage during protection but no repeated forced reactions. Shove is a brief native reaction, not a teleport, guaranteed knockdown or physics launch; native/rendered suitability still needs proof. This protection and the once-per-stroke rule are explicitly proposed as part of the stat baseline. Do not duplicate independent immunity timers per turret.
+
+Tradeoffs: Ballista 1A and1B have equal nominal direct DPS30 before misses/turning, but1B saves spears per damage and loses responsiveness; recovery/ammo economy remain unresolved. Bat2A offers less damage with more attempted control, not an objectively weaker head. Blade3B has lower nominal per-victim DPS25 versus26.67 for3A but more frequent contact checks, wear/power opportunities and reaction rolls; resource tuning must account for cadence. Inherent multi-target contact multiplies actual damage with crowd occupancy, so per-target DPS is not total throughput. Exact module mappings/critical/accuracy/noise, head health/wear, player injury, power, acquisition recipes/tools/skills/XP and spear lifecycle remain open. No Source/Contents/version/install/test changes. C191 timing remains queued.
+
+Inspected 19b3871, fetched origin and checked sole open draft PR #1. Planning proposals only; no owner stat choice yet.
+
 ## C197 inherent rotary multi-target contact (2026-10-12)
 
 Owner: "1A, the blade and bat are always piercing." Approves C196 1A: Piercing and Conservation are incompatible with Rotary Bat and Rotary Blades. Clarifies inherent multi-target contact: hitting one zombie must not inherently end the physical sweep; additional zombies contacted by the moving weapon can be hit without a module. Do not implement the rejected Piercing-module victim-count/damage-falloff mapping as an implicit baseline.

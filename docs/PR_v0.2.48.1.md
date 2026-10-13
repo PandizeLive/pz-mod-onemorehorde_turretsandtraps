@@ -19,3 +19,5 @@ C195: Owner selects continuous physical rotary attacks, defers secondary-effect 
 C196 excludes rotary Splitter and records [simpler compatibility recommendations](docs/TURRET_HEAD_PROPOSALS.md#c196-simpler-rotary-compatibility-2026-10-12). Piercing/Conservation exclusions are proposed, not approved. No gameplay change.
 
 C197 confirms inherent Bat/Blades multi-target sweep contact and excludes Piercing/Conservation. [Current head contract](docs/TURRET_HEAD_PROPOSALS.md#c197-inherent-rotary-multi-target-contact-2026-10-12). Planning only; stats/recipes and native proof remain.
+
+C198 presents [starting combat-stat choices](docs/TURRET_HEAD_PROPOSALS.md#c198-starting-combat-stat-choices-2026-10-12) for the three selected heads. Values are proposals, not approved or implemented. Existing installed build remains unchanged.
