@@ -1,5 +1,23 @@
 # Unique turret head candidates
 
+## C218 Scrapshot consistency correction and plain firing terms (2026-10-13)
+
+Owner selects **1A**, explicitly accepts **60 degrees**, and challenges why the discussion deviated from existing spread behavior or invented unnecessary mechanics. Owner also challenges the terms "volley" and "every however many seconds". Record C217 1A's six-tile maximum and 60-degree total shot spread as the selected proposal; do not infer approval of C217 option 2, its one-scrap quantity, or either two/three-second timing. Owner requests that useful differences be offered as recommendations with reasons, not introduced as necessary bespoke systems. This is a planning correction, not gameplay implementation approval.
+
+### Read-only comparison with existing behavior
+
+- Current `Source/42.20/media/lua/server/OMHTT/FirearmCombat.lua` resolves native projectile count (bounded 1-9), shares the whole-shot damage budget across those pellets, and assigns them to the selected victim plus at most two nearby valid victims within 1.2 tiles of that victim. It does **not** define a general 60-degree shotgun cone. This current approximation is not proof that native shotgun spread is 60 degrees.
+- `TurretVolley.angle` separately supplies Splitter's existing alternating/paired 15-degree side steps, compressed only when needed to stay within 180 degrees. Neither this module pattern nor targeting coverage should silently be replaced by a Scrapshot spread proposal.
+- `TurretStats` and `Firearms` already distinguish shot cooldown, reload, chamber/racking and supported module modifiers. Volley is an existing internal term for a firing event plus its projectiles; it is not a new player-facing attack mode or an extra timing gate.
+
+The assistant's purpose in suggesting 60 degrees was a broad close-range scrap shot. It had not established a reason to replace the existing shot model or explained that it was introducing a new angular pattern. Retain the owner's selected angle as Scrapshot's intended pattern, but the PC must reconcile it with the shared projectile handling before promising a working implementation. Do not rewrite other heads' spread, the turret targeting arc or Splitter angles. Final technical interpretation should be explained if the owner meant a different existing spread concept; no silent reinterpretation.
+
+### Corrected recommendation and remaining choices
+
+Use **shot**, **fire rate/shot cooldown**, **reload time** and **ammo per shot** in the discussion. A Scrapshot shot is the single trigger event that releases its scrap projectiles; "volley" in C217 meant that event, not multiple separately timed shots. The proposed every-two/three-second wording meant candidate base shot cooldowns, not a new wait after ordinary reload. Neither timing was selected. Recommend reusing the shared firing/reloading/module framework and choosing the head's base values within it, without an additional volley timer or head-specific timing system.
+
+One loose Scrap Metal per shot remains a simple recommendation, not approved consumption. Actual fragment count, damage distribution and ammo accounting still need a concrete proposal; native/modded compatibility must preserve real identity. Fire rate, reload time, capacity and applicable module effects remain open. Lobber's already approved two-second launch interval and separate two-second post-landing fuse are unchanged. Native explosive damage remains assigned to the PC under C215/C216. No test, version, source, asset or tooling changes; installed 0.2.49 owner acceptance remains deferred.
+
 ## C217 Ammo switching selected and Scrapshot pattern options (2026-10-13)
 
 Owner selects C216 **1B / 2A**. Confirm: a player priority change that conflicts with the chambered round pauses firing and requires an explicit safe unload/reload action, preserving the exact unspent round. If storage cannot accept that item, preserve it and block the swap rather than discard it. No free instantaneous conversion or effect on launched rounds. With fallback enabled, return to the preferred type at the next reload when available, without changing the identity of a round already chambered. This automatic selection at a normal reload is distinct from the player's explicit priority-change action; no mid-chamber automatic swap is implied. C211 fallback default OFF, visible loaded types/counts and actual next round remain selected. Native action timing and support across modded ammo/heads still need local proof.
