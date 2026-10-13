@@ -1,5 +1,26 @@
 # Unique turret head candidates
 
+## C220 Scrapshot feed and module exclusions approved; damage choices (2026-10-13)
+
+Owner: **Approved, what's next to discuss?** This approves the immediately preceding recommendations: **one Scrap Metal per Scrapshot shot**, **multiple fragments sharing one total shot damage budget**, and **Magazine, Reload and Autoloader unsupported on Scrapshot**. Keep C219's two-second base shot interval, no magazine/reload cycle, and C218's six-tile maximum/60-degree spread. Do not expand this approval into a full module matrix or gameplay implementation authorization. Impact was not among the three explicitly presented exclusions and remains a compatibility question.
+
+Grenade Lobber retains 3.5-second base launch interval, two-second post-landing fuse, 6-18-tile engagement range and the approved ammo-priority/fallback/switching rules. Native bomb health damage remains assigned to the PC's current decompiled code. Installed 0.2.49 owner acceptance remains deferred.
+
+### Next discussion: Scrapshot fragments and total damage
+
+Recommend a small concrete baseline rather than a new combat mechanic: **six fragments per shot**, sharing **120 total zombie damage** before modifiers. Six permits a bounded shot with a simple 20-damage share per fragment. This is a proposed starting balance, not a measured shotgun equivalent, native engine outcome or owner-approved fragment count. It does not introduce a new global pellet cap or alter other heads.
+
+Present two choices using the same proposed six-fragment count:
+
+| Option | Fragments per shot | Total base zombie damage | Base damage per fragment |
+| --- | --- | --- | --- |
+| **1A recommended: moderate** | 6 | 120 | 20 |
+| **1B: stronger** | 6 | 180 | 30 |
+
+Both are proposals; the owner can change the fragment count or values instead. At the approved two-second base shot interval, theoretical primary damage budgets are 60/90 per second before misses, obstruction, target distribution, modifiers and other limits. These are total shot budgets across all primary victims, not full damage to each zombie in the spread or guaranteed per-target DPS. The lower recommendation starts conservatively with common scrap feed and no reload downtime; cost effectiveness and crowd performance still need local measurement.
+
+Recommend preserving the existing shared-budget principle when resolving misses: fragments that miss or are blocked lose their share rather than redistributing it to surviving hits. The 60-degree pattern's distribution and whether several fragments may strike one victim still require an explicit compatible hit contract before local implementation. Do not claim the current mounted-shotgun approximation already supplies that geometry. Player collateral, accuracy, criticals, knockback, power, storage, remaining module effects and head recipe remain open. No tests or gameplay changes this turn.
+
 ## C219 Scrapshot direct feed and revised Lobber firing interval (2026-10-13)
 
 Owner: **Let's do every 2 seconds, and a reload isn't necessary since there's no mag. We'll change grenade launch to 3.5 seconds.** This settles the following design values:
