@@ -1147,3 +1147,8 @@ Owner explicitly requests continuing planning here and updating GitHub every tim
 ## C212 - Proposed Lobber engagement envelope and cadence (2026-10-13)
 
 Present next choices: 1A recommended 6-18 tiles versus 1B 8-24 tiles; 2A recommended six-second base launch interval versus 2B eight seconds. The approved two-second post-landing fuse is independent. These are recommendations, not owner-selected numbers or verified native capabilities; blast safety, reload/modifier interactions and power remain to settle. [Options and tradeoffs](TURRET_HEAD_PROPOSALS.md#c212-proposed-lobber-range-and-cadence-choices-2026-10-13). Preserve installed 0.2.49 and deferred acceptance.
+
+
+## C213 - Lobber 6-18 tiles and two-second firing interval (2026-10-13)
+
+Owner: "1A / 2 - 2seconds". Confirms C212's 6-18-tile range and supplies a two-second base launch interval instead of either proposed six/eight-second option. C211's two-second post-landing fuse remains separate and unchanged. This is design approval, not authorization to implement a patch. [Contract and proposed payload balance choices](TURRET_HEAD_PROPOSALS.md#c213-approved-lobber-range-and-two-second-cadence-2026-10-13) record 30 theoretical base launches/minute, overlapping payload considerations, proposed 1A restrained versus 1B heavier zombie damage at 2/3/4-tile radii, and 2A linear versus 2B inner-half full-damage falloff. These next choices remain unapproved; player injury and all other unresolved contracts retain their gates. Inspected planning checkpoint 530c07c and checked remote branches (development still 63c32db). Documentation only; 0.2.49 test remains deferred.

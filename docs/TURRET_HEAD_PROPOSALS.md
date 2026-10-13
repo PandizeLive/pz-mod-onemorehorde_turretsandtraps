@@ -1,5 +1,23 @@
 # Unique turret head candidates
 
+## C213 Approved Lobber range and two-second cadence (2026-10-13)
+
+Owner answers C212: **1A / 2 - 2seconds**. Approve the **6-tile minimum / 18-tile maximum** unmodified engagement range and replace the proposed six/eight-second launch intervals with **one launch every two seconds**. This is the base firing interval, not a correction to C211's separately approved **two-second fuse after landing**. Travel time precedes that fuse. Resource, aim and legal-target requirements still apply; reload overlap, capacity and module modifiers remain to settle without silently slowing the selected baseline.
+
+At uninterrupted base cadence the theoretical launch demand is 30 rounds/minute, three times the previous six-second recommendation. This is timing arithmetic, not a measured practical firing rate or a newly approved ammo/power budget. Multiple payloads may be airborne or awaiting detonation simultaneously; local implementation must preserve each committed payload's identity, fuse and resource accounting. Two seconds between launches does not imply two seconds from launch to explosion. The selected minimum range is a targeting restriction, not guaranteed bystander safety.
+
+Current next discussion: payload zombie damage/radius and falloff. All numbers below are **proposed starting values**, not native-item conversions or owner approvals. Native handheld item behavior stays unchanged. The current actor-only/no-fire/no-structure rule and C211 roster/priority/fallback remain confirmed. Player injuries need a separate agreed rule; do not copy these zombie numbers onto player body parts.
+
+| Payload | 1A restrained damage, recommended | 1B heavier damage | Proposed radius for either option |
+| --- | --- | --- | --- |
+| Improvised Shell | 80 | 120 | 2 tiles |
+| Aerosol Bomb | 120 | 180 | 3 tiles |
+| Pipe Bomb | 180 | 240 | 4 tiles |
+
+Values are peak damage per zombie per blast before falloff/modifiers; they are not percentages, guaranteed kill counts or total group damage. Both bundles propose these radii; the owner may change individual values. Recommend 1A because the selected two-second launch interval already gives substantial crowd coverage; supply costs, payload density and module effects still need combined balance review. Do not infer additional direct-impact damage or guaranteed knockdown.
+
+**2A recommended:** linear falloff from full damage at the center to zero at the radius boundary. **2B:** full damage across the inner half-radius, then linear falloff to zero at the outer edge; more forgiving against moving crowds, with greater aggregate damage. Both remain proposals. Blast obstruction, player injuries, head/ammo recipes, capacity/reload, battery, module propagation, targeting/trajectory and Scrapshot details remain unresolved. No implementation approval, gameplay changes, new tests or change to the deferred 0.2.49 owner acceptance.
+
 ## C211 Cloud ammunition decisions and PC handoff (2026-10-13)
 
 Owner continued C210 in the Cloud Planning chat. Decisions below are design approvals only; no implementation, recipe, installed version or test acceptance changes. Inspected active development checkpoint `63c32db96290aac36d497a5d065aef68388df270` on `codex/performance-barbed-audit`; it contains current `origin/dev` (`5fc6446`). Cloud planning is recorded on `planning/lobber-ammunition` based on that unmerged checkpoint so the latest decisions and implementation context are preserved. PC should fetch this branch and reconcile/cherry-pick its documentation commits into its active development branch before further design or implementation; do not assume chat synchronization or automatically merge PRs.
@@ -24,7 +42,7 @@ Remaining choices: range/minimum range; blast damage/radius/falloff and player i
 
 ## C212 Proposed Lobber range and cadence choices (2026-10-13)
 
-Next discussion bundle only; no owner selection yet. Set the head's placement role before picking payload blast numbers. Ranges are unmodified targeting limits, not a guarantee that bystanders or the turret are safe from a later-selected blast radius.
+Historical proposal bundle; C213 records the owner-selected range and replacement two-second cadence. Set the head's placement role before picking payload blast numbers. Ranges are unmodified targeting limits, not a guarantee that bystanders or the turret are safe from a later-selected blast radius.
 
 - **1A recommended: 6-tile minimum / 18-tile maximum.** Mid-range support with a close-defense gap; same maximum as the current unmodified Ballista.
 - **1B: 8-tile minimum / 24-tile maximum.** More of an artillery role, but needs more space and a larger tested trajectory/obstruction envelope.
