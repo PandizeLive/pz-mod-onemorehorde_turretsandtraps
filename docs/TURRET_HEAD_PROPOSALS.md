@@ -1,5 +1,25 @@
 # Unique turret head candidates
 
+## C222 PC planning reconciliation (2026-10-13)
+
+User: "I used our planning chat to update. Check github for new progress." Read the live branch/PR inventory. The planning branch contains ten commits after63c32db, through5b623ef7e11b9e5114054485b0eaeb6f61ea7a32; only CURRENT_STATUS, PLANNING, DECISIONS and this contract differ. Imported those commits with author/provenance preserved, then recorded this pickup. The Cloud branch has no PR because its API access was blocked; the existing development draft PR#1 now carries the synchronized documentation. No PR merge, source change, version bump, game test or new implementation approval follows.
+
+Latest selected values, overriding historical proposals:
+
+| Item | Current approved design |
+| --- | --- |
+| Lobber ammunition | Turret-only Improvised Shell, ordinary Aerosol Bomb and Pipe Bomb; show loaded types/counts and actual next payload separately from reserves |
+| Ammo priority | Player-ordered; Use next ammo type defaults OFF; stop on preferred exhaustion unless enabled |
+| Switching | Conflicting priority change pauses for explicit safe unload/reload; preserve exact round; if storage cannot accept it, block swap; fallback returns to preferred at next normal load |
+| Lobber timing/range |6-18 tiles;3.5-second base launch interval; independent2-second fuse starts after landing |
+| Lobber collateral | Zombie/player damage, no fire or structural damage; native handheld behavior unchanged |
+| Scrapshot | One loose ScrapMetal per shot;2-second interval; no magazine/reload;6-tile reach,60-degree total shot spread |
+| Scrapshot primary damage | Six fragments at15 each;90 total if all connect before modifiers; misses/obstruction lose their share |
+| Scrapshot exclusions | Magazine, Reload, Autoloader approved; Impact exclusion still proposed |
+
+Do not reopen the shell/roster/fuse/priority decisions as unanswered. Do not mistake approved90 total for90 per fragment or per victim, or substitute earlier120/180 proposals. Native explosive HP conversion (C215/C216) is the next local technical follow-up, not resolved by old power metadata or42.0 source. Remaining compatibility, player injury, power, recipes and fragment victim/hit details still need settlement before implementation. No new native-damage result is claimed during this sync. Installed0.2.49 and deferred owner acceptance remain unchanged.
+
+
 ## C221 Scrapshot six fragments at 15 damage each (2026-10-13)
 
 Owner selects **1A - 15 damage per fragment**, amending C220's recommended per-fragment value while retaining its six-fragment count. Approved base **zombie** damage is therefore **6 x 15 = 90 total per shot**, not 120. Do not retain the proposed 20-per-fragment value or interpret 90 as damage to every target. Existing selected rules remain: one Scrap Metal per shot before any later approved module accounting, two-second base firing interval, no magazine/reload cycle, six-tile maximum, 60-degree total spread, and shared whole-shot damage budgeting. Magazine/Reload/Autoloader stay unsupported under C220.

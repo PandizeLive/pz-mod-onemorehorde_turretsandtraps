@@ -1192,3 +1192,8 @@ Owner: "Approved, what's next to discuss?" Approves the preceding one Scrap Meta
 ## C221 - Scrapshot six fragments, 15 damage each (2026-10-13)
 
 Owner: "1A - 15 damage per fragment". Retain six fragments from C220 option 1A and replace 20 damage each with 15, for 90 total base zombie damage per shot. [Contract and next compatibility recommendation](TURRET_HEAD_PROPOSALS.md#c221-scrapshot-six-fragments-at-15-damage-each-2026-10-13). Preserve the shared shot budget and earlier feed/range/spread/timing approvals. Recommend additionally excluding Impact because no empty-reload trigger exists; do not infer approval of that new recommendation or other modules. No gameplay patch approval, native execution or new test result. Inspected 2d12c1c and unchanged remote development 63c32db; planning update only.
+
+
+## C222 - PC pickup of Cloud planning C211-C221 (2026-10-13)
+
+User requests checking GitHub progress. Fetched origin/planning/lobber-ammunition at5b623ef and inspected all ten new documentation commits; imported them into active development under C119, preserving approvals and superseded values. [Consolidated handoff](TURRET_HEAD_PROPOSALS.md#c222-pc-planning-reconciliation-2026-10-13). Only draft PR#1 exists; no PR merge or gameplay changes. Native explosive-damage trace remains an explicit PC follow-up. No new design approval or test result;0.2.49 acceptance stays deferred.

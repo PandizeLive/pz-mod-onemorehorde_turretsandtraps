@@ -9,3 +9,5 @@ Validation:16,574 assertions,120 Lua/translation compilations, three actual nati
 [Planning](docs/PLANNING.md) | [Current status](docs/CURRENT_STATUS.md) | [Head contract](docs/TURRET_HEAD_PROPOSALS.md) | [Roadmap](docs/ROADMAP.md)
 
 Development only: this draft PR targets dev. No merge, Workshop upload or official release. Hosted LootLab and owner loot settings remain unchanged.
+
+Cloud planning C211-C221 has been picked up under C222 from `planning/lobber-ammunition` at `5b623ef`. [Next-head decisions](docs/TURRET_HEAD_PROPOSALS.md#c222-pc-planning-reconciliation-2026-10-13) now cover the Lobber payload/priority/fuse/range rules and Scrapshot6x15-damage direct feed. These are planning approvals only; the heads are not implemented by these documentation commits. Native bomb health damage remains a PC follow-up, and0.2.49 testing is deferred.
