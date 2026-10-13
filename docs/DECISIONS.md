@@ -1121,3 +1121,8 @@ Owner conditionally selects no new head wear, explicitly says only the base is t
 Owner: "1A, we should also add nails to the ballista. I think we're far enough to start this patch. You're approved to begin." This authorizes the C206 integrated mount option and implementation. Eight nails is the selected implementation quantity, not a separately quoted owner number. No separate mount item, redundant complete-turret recipe, new head-wear system or final art.
 
 Implemented0.2.49 with all prior selected head rules and C191 pack timing. Exact implementation defaults, Filter exclusion, tests and remaining rendered limitations are in [the current contract](TURRET_HEAD_PROPOSALS.md#c207-approved-integrated-mounts-and-implemented-prototypes-2026-10-12). Inspected4518077 and fetched origin before work. Alex guidelines applied: no shipped pcall/xpcall/ipairs/next; new non-guard inline conditionals expanded, helpers imported, SP guards preserved and contacts budgeted/cached. Automated/native results are distinct from owner acceptance. No sibling project, hosted LootLab, account weights, Workshop or official release changes.
+
+
+## C208 - Owner test deferred and next-head advice (2026-10-13)
+
+Owner cannot test0.2.49 now and asks whether to add heads. Recommend one design discussion first, with Grenade Lobber1A, Scrapshot1B, Arc Emitter1C and Nail Scatter1D/defer. Reasons, overlap and native-proof gates are recorded in [the contract](TURRET_HEAD_PROPOSALS.md#c208-next-head-options-while-testing-is-deferred-2026-10-13). No new head selected or approved; current build and R3C2 acceptance remain unchanged. Fetched origin at72806fe; sole draft PR#1. Planning-only update under C119/C108.

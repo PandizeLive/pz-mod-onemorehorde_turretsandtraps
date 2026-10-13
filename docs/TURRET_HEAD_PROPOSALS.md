@@ -1,5 +1,19 @@
 # Unique turret head candidates
 
+## C208 next-head options while testing is deferred (2026-10-13)
+
+Owner: "I'm not able to test right now, should we add new turret heads?" This is a request for advice, not approval of another gameplay patch. Defer the0.2.49 owner test without claiming a pass or requiring immediate play. R3C2 remains the active prototype-acceptance checkpoint for Ballista/Bat/Blades. Final-art, rendered sweep/contact alignment and audible behavior remain unverified; automated/native proof is unchanged.
+
+Recommend using the downtime to settle one additional head design, not expanding the untested implementation batch. Choices for discussion:
+
+- **1A Grenade Lobber (recommended):** strongest remaining distinct role through slow explosive payloads and minimum-range placement. Optional R3C3. Discuss ammunition, impact versus fuse, player/structure/fire collateral, safe range and module propagation. Actual lob trajectory/cover interaction needs a local native feasibility probe; do not promise firing over walls. No implementation approval inferred.
+- **1B Scrapshot Cannon:** grounded improvised-ammo option, likely to reuse more of the projectile pipeline, but it needs a meaningful scrap-economy/volley distinction from mounted shotguns and Splitter/Fragment before adding another head.
+- **1C Arc Emitter:** damage-focused bounded chain attack, no default prolonged stun. Distinct but less grounded; presentation, power and bounded chain/module behavior require proof. Lower priority.
+- **1D Nail Scatter:** keep deferred unless a purpose beyond Tack's temporary ground hazards is selected. Earlier no-Tack/no-slow shortlist statements are historical and superseded by later approved module/contact content.
+
+These choices do not change the roster, roadmap order, ammo recipes, gameplay code or installed version. A user selection would authorize further discussion; concrete prototype work needs its own scoped approval. Recorded after reading current handoff/roadmap and fetching origin at72806fe; sole open draft PR#1 targets dev. No owner play occurred, so no new console result or performance measurement is claimed.
+
+
 ## C207 approved integrated mounts and implemented prototypes (2026-10-12)
 
 Owner: "1A, we should also add nails to the ballista. I think we're far enough to start this patch. You're approved to begin." This authorizes the C206 integrated mount option and implementation. Eight nails is the selected implementation quantity, not a separately quoted owner number. No separate mount item, redundant complete-turret recipe, new head-wear system or final art.

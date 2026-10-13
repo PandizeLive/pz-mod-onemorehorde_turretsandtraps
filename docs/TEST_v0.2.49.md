@@ -18,3 +18,7 @@ Installed from immutable test/v0.2.49 /9cc84c0 using root OMH.cmd. All268 files 
 6. Report any visual mismatch, silence, wrong contact or lag. I will inspect **console.txt** against the loaded version; there is no additional old-content test list.
 
 Final weapon art and GPU strike alignment are pending. Technical cubes indicate mechanism motion, not final blade/bat proportions. R3C2 remains open until the focused rendered test; R1C3/R3C7 broader load/endurance remain separate.
+
+## C208 owner availability (2026-10-13)
+
+Owner cannot test now. Focused client test is deferred, not passed, failed or waived. No new console result is claimed. Keep the existing short test for when the owner is available; do not request immediate play.
