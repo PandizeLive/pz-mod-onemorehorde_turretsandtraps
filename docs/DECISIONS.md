@@ -1131,3 +1131,8 @@ Owner cannot test0.2.49 now and asks whether to add heads. Recommend one design 
 ## C209 - Grenade Lobber and Scrapshot selected for design (2026-10-13)
 
 Owner selects C2081A/1B. Both heads enter discussion; no implementation or specific ammo/collateral contract approved. [Initial choices](TURRET_HEAD_PROPOSALS.md#c209-grenade-lobber-and-scrapshot-design-2026-10-13) recommend native PipeBomb feed, impact detonation, loose ScrapMetal feed and actor-only blast collateral. Native script confirms PipeBomb identity only; trajectory and explosion behavior need proof. Installed0.2.49 owner test remains deferred; no code/version/test-result changes. Fetched origin0a58373; sole draft PR#1 into dev.
+
+
+## C210 - Multi-payload ammunition, landing fuse and improvised balance concern (2026-10-13)
+
+Owner confirms C2091C/2B/3A/4A and raises possible improvised explosives becoming dominant outside turrets. Confirm multiple payloads, short fuse after landing, loose ScrapMetal and actor-only/no-fire/no-structure turret blast. Propose turret-only Improvised Shell1A, weak throwable1B or native-only1C; no new shell or numerical balance approved. Native Aerosolbomb ignition metadata requires turret-specific no-fire behavior without editing handheld scripts. [Contract and proposed roster](TURRET_HEAD_PROPOSALS.md#c210-payload-rules-and-improvised-ammunition-balance-2026-10-13). Fetchedc6042cf and checked sole PR#1. Planning only;0.2.49 test remains deferred.

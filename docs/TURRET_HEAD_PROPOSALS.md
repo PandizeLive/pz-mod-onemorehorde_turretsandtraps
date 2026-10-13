@@ -1,5 +1,23 @@
 # Unique turret head candidates
 
+## C210 payload rules and improvised ammunition balance (2026-10-13)
+
+Owner selects C2091C, with possible rudimentary/improvised explosive and concern that it becomes the best option outside turrets; also selects2B/3A/4A. Confirm multiple payload types for the lobber, landing followed by a short fixed fuse (duration not settled), loose Base.ScrapMetal feed for Scrapshot (quantity not settled), and blast damage to zombies/players without fire or structure damage. These settle design rules, not implementation approval. Do not reinterpret2B as an already-lit fuse during flight or an approved number of seconds.
+
+Recommend a new **Improvised Shell** as turret-only ammunition: an ordinary inventory/ammo item consumed by the launcher, without the native throwable-weapon, placed-bomb or explosive activation behavior. The fictional launcher supplies its firing/arming mechanism; this is a gameplay restriction, not real-world explosive guidance. No conversion recipe into handheld bombs. Simpler than creating a new handheld explosive and maintaining different handheld/mounted damage variants. It prevents adding a new usable handheld explosive through this mod; arbitrary third-party item conversions are outside the compatibility guarantee.
+
+Options presented for this unresolved addition:
+- **1A recommended:** turret-only Improvised Shell. Proposed lower blast damage and smaller radius than the native-payload tiers; exact cost, stats and recipe need agreement. Starting ammunition, not a claim that it can never dominate turret cost efficiency.
+- **1B:** weak throwable Improvised Grenade, also usable by the turret. More gameplay flexibility but requires separate handheld balance and broader injury/exploit testing. Do not silently grant a turret-only damage buff.
+- **1C:** no new explosive ammunition; use selected native payloads only. Simplest maintenance, less accessible explosive supply.
+
+Proposed initial roster if1A is chosen: Improvised Shell, ordinary Base.Aerosolbomb and Base.PipeBomb. Multi-payload selection does not mean all modded grenades, fire-only payloads or native remote/sensor/triggered variants are supported. Native installed B42.21.0 weapon.txt verifies Aerosolbomb as base:weapon with Throw/PhysicsObject, ExplosionPower70/Range6 and FireStartingChance10/Energy20; PipeBomb is base:weapon with Throw/PhysicsObject, Power90/Range7 and zero fire settings. These prove stock metadata only, not turret outcome, explosion API safety or exact turret balance. They support a provisional Shell < Aerosol Bomb < Pipe Bomb power/radius ladder, not copied damage percentages.
+
+Consistency with4A: turret-fired Aerosol Bombs must not ignite, even though their native handheld definition can. Keep handheld/native item scripts unchanged; the approved no-fire/no-structure rule concerns turret blasts. A controlled damage path may be necessary; prove obstruction, player injury and no environmental destruction locally. Do not accept fire-only payloads and silently turn them into unrelated blast weapons.
+
+Remaining next choices: confirm improvised-ammo scope/roster; set fuse seconds and mixed-ammo selection/reload behavior; range/minimum range, blast falloff and player injury; Scrapshot material quantity, pellet/spread behavior; power, cadence, modules, recipes and presentation. The balance concern remains relevant inside turrets too, so compare cost per effective damage and supply accessibility rather than assuming a weak round is balanced. Planning only; installed0.2.49 owner test stays deferred. Fetched origin atc6042cf; sole open draft PR#1 into dev. No gameplay or new test result.
+
+
 ## C209 grenade lobber and scrapshot design (2026-10-13)
 
 Owner selects C2081A and1B: Grenade Lobber plus Scrapshot Cannon for discussion. This supersedes the recommendation to discuss only one. Both reuse the universal-base direction; no new recipe, balance, module mapping or gameplay implementation is approved by selection.0.2.49 owner test remains deferred.
