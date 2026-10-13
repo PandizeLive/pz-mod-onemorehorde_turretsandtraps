@@ -1,5 +1,22 @@
 # Unique turret head candidates
 
+## C217 Ammo switching selected and Scrapshot pattern options (2026-10-13)
+
+Owner selects C216 **1B / 2A**. Confirm: a player priority change that conflicts with the chambered round pauses firing and requires an explicit safe unload/reload action, preserving the exact unspent round. If storage cannot accept that item, preserve it and block the swap rather than discard it. No free instantaneous conversion or effect on launched rounds. With fallback enabled, return to the preferred type at the next reload when available, without changing the identity of a round already chambered. This automatic selection at a normal reload is distinct from the player's explicit priority-change action; no mid-chamber automatic swap is implied. C211 fallback default OFF, visible loaded types/counts and actual next round remain selected. Native action timing and support across modded ammo/heads still need local proof.
+
+C215/C216's native explosive damage comparison remains an explicit PC follow-up using current decompiled code. No new damage selection, implementation approval, version or owner-test result. Installed 0.2.49 acceptance remains deferred.
+
+### Next proposals: Scrapshot's role and firing pattern
+
+Loose Base.ScrapMetal feed is already selected by C210. Its intended distinguishing role is converting scavenged material directly into a short-range volley without requiring shotgun shells or a new ammunition craft. Range/spread and feed/cadence below are proposals, not verified balance or native capabilities. Confirm actual usefulness against existing mounted shotgun/module combinations during local development.
+
+- **1A recommended: broad close-defense fan**, 6-tile maximum range and 60-degree total shot spread (plus/minus 30 degrees around aim).
+- **1B: tighter reach**, 8-tile maximum range and 35-degree total shot spread (plus/minus 17.5 degrees around aim). More concentrated and farther-reaching, but closer to the existing mounted-shotgun role.
+- **2A recommended: one Scrap Metal per volley, one volley every three seconds.** At uninterrupted base cadence, theoretical feed demand is 20 items/minute before resource/reload limits.
+- **2B: one Scrap Metal per volley, one volley every two seconds.** More responsive at theoretical 30 items/minute; damage and energy per volley still require agreement. The selected two-second Lobber interval does not automatically apply to Scrapshot.
+
+Spread is the firing fan, not the head's detection/targeting field of view. This proposes discrete projectile paths rather than automatic damage to every actor in the cone. Pellet count/damage, distribution, multiple pellets hitting one victim, obstruction, falloff, injury, minimum range, reserves/loading, criticals, knockback, power, module effects and recipes remain unselected. No maintenance/wear rule from the historical shortlist is revived. C206 base-only maintenance direction remains the reference for service discussion. Options may be adjusted individually; choosing these numbers does not settle the remaining mechanics. Recommend 1A/2A, then define the actual volley before choosing damage.
+
 ## C216 PC damage follow-up and ammo switching discussion (2026-10-13)
 
 Owner explicitly directs keeping the native damage question for the PC once its decompiled code is available, then asks what else to discuss. C215 is now an owner-requested PC follow-up: answer the actual normal Pipe Bomb/Aerosol Bomb health-damage conversion against the installed build before presenting a native-equivalent turret balance. Historical formulas remain reference only. Damage/radius/falloff options stay unselected; do not block unrelated design choices on this investigation or repeat the historical raw inputs as health loss.
@@ -14,7 +31,7 @@ Next proposed discussion concerns priority changes with an already chambered pay
 
 **2B: keep using the fallback type until it runs out**, then reconsider the priority list. Fewer changes, but may continue spending lower-priority ammunition even after the preferred supply is restored. Explicit user priority changes still follow choice 1.
 
-All four options are proposals awaiting the owner's selection. No new capacity, magazine layout, switching duration, player-injury rule, gameplay implementation or test status is settled. After ammo handling, continue with Scrapshot range/feed/spread and then module/power/recipe rules; native explosive damage remains assigned to the PC. Installed 0.2.49 owner test stays deferred.
+Historical options: C217 selects 1B/2A; 1A/2B are not selected. No new capacity, magazine layout, switching duration, player-injury rule, gameplay implementation or test status is settled. After ammo handling, continue with Scrapshot range/feed/spread and then module/power/recipe rules; native explosive damage remains assigned to the PC. Installed 0.2.49 owner test stays deferred.
 
 ## C215 Explosion damage trace and version mismatch (2026-10-13)
 
