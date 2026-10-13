@@ -13,3 +13,5 @@ C192: New-head selection (R3C1) is now the active content discussion; seven cand
 C193: Owner selects Ballista, Rotary Blades and Rotary Bat for development. [Head contract and choices](docs/TURRET_HEAD_PROPOSALS.md#c193-three-head-development-scope-2026-10-12) records remaining behavior/recipe decisions and shared rotary architecture. No new gameplay implemented; C191 timing polish stays queued.
 
 C194 confirms crafted-spear ammunition, directional rotary coverage with 360 upgrade and player contact damage. [Module adaptations](docs/TURRET_HEAD_PROPOSALS.md#c194-confirmed-head-rules-and-module-adaptations-2026-10-12) are under discussion; no gameplay implementation yet.
+
+C195: Owner selects continuous physical rotary attacks, defers secondary-effect adaptations and excludes Range/Accuracy plus magazine-cycle modules initially. [Confirmed rotary scope](docs/TURRET_HEAD_PROPOSALS.md#c195-continuous-physical-rotary-scope-2026-10-12); remaining tuning/recipes are open. No gameplay patch this turn.

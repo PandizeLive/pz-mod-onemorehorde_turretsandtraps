@@ -1,5 +1,19 @@
 # Unique turret head candidates
 
+## C195 continuous physical rotary scope (2026-10-12)
+
+Owner: "1B / 2B / 3A" in response to C194. Confirm the initial Bat/Blades implementation scope:
+
+- Continuous swings with normal per-stroke cadence, without the proposed magazine/reset sequence. Magazine, Reload, Autoloader and Impact have no rotary function initially. Continuous describes the attack pattern, not authorization to run constantly while idle.
+- Physical melee first. Fragment, Tack, Martyrdom and Synergy rotary adaptations are deferred. Do not add endpoint shrapnel, Tack fields or death explosions to rotary attacks in this slice.
+- Range and Accuracy are explicitly incompatible with rotary heads initially; no invisible extended reach and no new glancing-hit accuracy mechanic.
+
+These choices apply to Rotary Bat and Rotary Blades. Existing potato/firearm module behavior stays intact. Ballista still uses crafted spears and needs its own exact ammo/module lifecycle specification. C194 forward coverage with 360 upgrade and player injury from moving contact remain confirmed.
+
+Do not infer approval of all unnumbered C194 proposals from this reply. Physical Splitter/Piercing and Conservation-as-wear remain candidate adaptations requiring precise behavior/tuning; other module mappings need a final compatibility matrix. In particular, clarify how follow-up Splitter swings differ from Rapid-Fire during continuous attacks, and how many victims the baseline physical sweep reaches before choosing Piercing bonuses. Recipe materials/tools/skills/XP, base stats, durability/power, player injury severity and spear recovery remain open. No repeat selection of the three heads or these confirmed restrictions is needed.
+
+R3C1 roster/structural choices advance; R3C2 contact/rendered/native proofs remain outstanding. No Source/Contents/version/install changes or new gameplay test this turn. C191 timing refinements stay queued for the next patch. Inspected 98dffb6 and fetched origin; only existing draft PR #1 targets dev.
+
 ## C194 confirmed head rules and module adaptations (2026-10-12)
 
 Owner selects C193 1B/2B/3A/4B, explicitly requiring discussion of module feasibility. Confirmed: crafted-spear Ballista ammunition; forward rotary sweep with 360 Module unlocking full-circle coverage; moving rotary contact can injure players. 4B authorizes exploring melee adaptations, not implementation of every mapping or a guarantee all modules can be supported. Base.SpearCrafted already appears in project recipes; attached/upgraded spear variants are not implicitly accepted. Exact item condition/recovery, head recipes, balance, safe shutdown/service and injury severity remain unresolved.
