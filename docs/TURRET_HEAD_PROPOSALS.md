@@ -1,5 +1,17 @@
 # Unique turret head candidates
 
+## C221 Scrapshot six fragments at 15 damage each (2026-10-13)
+
+Owner selects **1A - 15 damage per fragment**, amending C220's recommended per-fragment value while retaining its six-fragment count. Approved base **zombie** damage is therefore **6 x 15 = 90 total per shot**, not 120. Do not retain the proposed 20-per-fragment value or interpret 90 as damage to every target. Existing selected rules remain: one Scrap Metal per shot before any later approved module accounting, two-second base firing interval, no magazine/reload cycle, six-tile maximum, 60-degree total spread, and shared whole-shot damage budgeting. Magazine/Reload/Autoloader stay unsupported under C220.
+
+A missed or blocked fragment loses its share; do not redistribute that lost damage to other hits. Ninety is the total unmodified primary-shot budget if all six fragments connect, not guaranteed damage to the selected target or a kill guarantee. Actual victim distribution, possible multiple hits on one victim, accuracy/critical/knockback, collateral and secondary-module interactions still need a compatible hit contract. At the selected baseline cadence the theoretical primary damage budget is 45 per second before misses, obstruction and modifiers. This arithmetic is not measured gameplay balance.
+
+### Next recommendation: Impact compatibility
+
+Recommend **Impact unsupported on Scrapshot as well**: its existing first-shot-after-empty-reload condition has no matching reload event on the selected direct-feed head. Do not invent a refill trigger, timed entitlement or always-on stumble adaptation. C220 approved only Magazine, Reload and Autoloader exclusions; Impact exclusion remains a recommendation awaiting the owner, not automatically included in this answer. `docs/PATCH_v0.2.42.md` records the existing trigger and later Conservation planning explicitly preserves the real empty-reload condition. Preserve Impact behavior on other heads.
+
+After that, review the remaining projectile modules using their established meanings, including concrete direct-feed resource handling where required; no blanket compatibility claim. Power/critical/knockback/player danger and recipes remain separate decisions. Grenade Lobber stays at 3.5-second launches and a two-second post-landing fuse; its native damage comparison is still assigned to the PC. No new patch authorization, game tests or owner acceptance; installed 0.2.49 test remains deferred.
+
 ## C220 Scrapshot feed and module exclusions approved; damage choices (2026-10-13)
 
 Owner: **Approved, what's next to discuss?** This approves the immediately preceding recommendations: **one Scrap Metal per Scrapshot shot**, **multiple fragments sharing one total shot damage budget**, and **Magazine, Reload and Autoloader unsupported on Scrapshot**. Keep C219's two-second base shot interval, no magazine/reload cycle, and C218's six-tile maximum/60-degree spread. Do not expand this approval into a full module matrix or gameplay implementation authorization. Impact was not among the three explicitly presented exclusions and remains a compatibility question.

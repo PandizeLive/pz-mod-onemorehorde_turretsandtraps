@@ -1187,3 +1187,8 @@ Owner: "Let's do every 2 seconds, and a reload isn't necessary since there's no 
 ## C220 - Approve Scrapshot consumption, shared damage and three module exclusions (2026-10-13)
 
 Owner: "Approved, what's next to discuss?" Approves the preceding one Scrap Metal per shot, shared total fragment damage, and Magazine/Reload/Autoloader exclusions. Does not settle Impact or other unpresented module choices. [Contract and next damage choices](TURRET_HEAD_PROPOSALS.md#c220-scrapshot-feed-and-module-exclusions-approved-damage-choices-2026-10-13) recommend six fragments sharing 120 total zombie damage (20 each), versus six sharing 180 (30 each); these new numbers await selection. Other selected timing/range/feed behavior remains; no new implementation approval or test outcome. Inspected c5189aa and unchanged remote development 63c32db. Planning Markdown only, committed and mirrored under standing authorization.
+
+
+## C221 - Scrapshot six fragments, 15 damage each (2026-10-13)
+
+Owner: "1A - 15 damage per fragment". Retain six fragments from C220 option 1A and replace 20 damage each with 15, for 90 total base zombie damage per shot. [Contract and next compatibility recommendation](TURRET_HEAD_PROPOSALS.md#c221-scrapshot-six-fragments-at-15-damage-each-2026-10-13). Preserve the shared shot budget and earlier feed/range/spread/timing approvals. Recommend additionally excluding Impact because no empty-reload trigger exists; do not infer approval of that new recommendation or other modules. No gameplay patch approval, native execution or new test result. Inspected 2d12c1c and unchanged remote development 63c32db; planning update only.
