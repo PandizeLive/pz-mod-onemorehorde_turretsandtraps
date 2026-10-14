@@ -1,5 +1,7 @@
 # Unique turret head candidates
 
+**C229 / consolidated pre-patch choices (2026-10-14).** Owner requests all remaining choices and recommendations before implementation. [Twelve decision groups](NEXT_PATCH_CHOICES.md) cover mixed ammo, new-head effects, Potato splash overlap, reloads, power, Lure acquisition, exact recipes, player injuries, aiming/travel and the Ballista weight constraint. All A options are recommendations, not approvals; 12A corrects capacity presentation without increasing physical storage. C225-C228 approvals remain intact. No gameplay/version/install/test-status change.
+
 ## C228 Combined patch scope and pack-flow correction (2026-10-13)
 
 Owner: "Let's approve a new patch. Recap the new update." Requests adding [Module Pack Skip/Collect and completion-owned rarity audio](PACK_POLISH.md#c228---skip-then-collect-and-completion-owned-rarity-audio-2026-10-13) to the combined update. Record the requested next-patch scope without treating unset balance/recipe choices as selected or claiming implementation has occurred.

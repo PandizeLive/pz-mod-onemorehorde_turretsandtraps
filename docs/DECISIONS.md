@@ -1239,3 +1239,12 @@ Do not mistake this answer for older rotary/Potato choices. Scarcity tradeoff ac
 Owner explicitly requests Skip while rolling, Collect only after finished, and rarity audio only at roll completion including Skip, not Collect. Also says "Let's approve a new patch. Recap the new update." **C228 / combined next-patch recap and pack-flow correction (2026-10-13).** Owner requests approving the new patch and its recap, adding neutral Skip during rolling, green Collect after completion, and one rarity cue at natural/Skip completion, never triggered by Collect. This supersedes the250ms-early cue trigger. [Combined scope and remaining choices](TURRET_HEAD_PROPOSALS.md#c228-combined-patch-scope-and-pack-flow-correction-2026-10-13) | [Pack contract](PACK_POLISH.md#c228---skip-then-collect-and-completion-owned-rarity-audio-2026-10-13). Exact recipes, remaining module/ammo rules, reload/power and player injuries remain unset; no gameplay build/install/test-status change in this recap.
 
 Source review confirms always-green Collect and early cue; it does not prove a collect-triggered playback call because close currently stops audio. Record observed versus inferred separately. Settled features remain in requested patch scope; do not infer unselected numerical recipes or module propagation. Inspected34c8e19 and fetched origin. Documentation only, mirrored under standing authorization.
+
+
+## C229 - Consolidated choices requested before patching (2026-10-14)
+
+Owner: Provide the choices and your recommendations for everything we still need to settle before patching.
+
+**C229 / consolidated pre-patch choices (2026-10-14).** Owner requests all remaining choices and recommendations before implementation. [Twelve decision groups](NEXT_PATCH_CHOICES.md) cover mixed ammo, new-head effects, Potato splash overlap, reloads, power, Lure acquisition, exact recipes, player injuries, aiming/travel and the Ballista weight constraint. All A options are recommendations, not approvals; 12A corrects capacity presentation without increasing physical storage. C225-C228 approvals remain intact. No gameplay/version/install/test-status change.
+
+Inspected active development15e8b63 and fetched origin. This is a proposal slate, not selection of all A defaults. Preserve prior accepted scarcity/module exceptions. Engine feasibility and bounded scheduling are implementation obligations, not owner decisions. Planning documentation only; mirror under C108/C119.
