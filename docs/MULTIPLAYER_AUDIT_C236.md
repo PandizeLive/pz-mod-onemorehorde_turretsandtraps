@@ -37,4 +37,21 @@ Keep the guards until a deliberate port supplies server-owned deployment/service
 
 Void requires exact-module item identity, server-owned counts/debt and safe removal/reload transactions. Do not synchronize partial ModData tables or store live object references in replicated payloads. Do not remove guards and rely on the existing SP native transfer override. Define zombie-ownership and player-injury authority before enabling effects.
 
-Then verify simultaneous service requests, duplicate commands, disconnects, reconnects, restart persistence, moving modules between turrets, zombie ownership changes and two-observer effects on dedicated and listen servers. Keep the owner test deferred until that path exists. A separate MP implementation checkpoint is recommended; the current approval to verify does not silently authorize an entire networking rewrite.
+Then verify simultaneous service requests, duplicate commands, disconnects, reconnects, restart persistence, moving modules between turrets, zombie ownership changes and two-observer effects on dedicated and listen servers. Keep the owner test deferred until that path exists. C237 corrects the earlier implication that this established project requirement needed fresh generic scope approval.
+
+## C237 - Original multiplayer requirement and continuation (2026-10-14)
+
+Owner: "Okay, we knew this was for multiplayer from the beginning. Why have we stopped? What's needed."
+
+Multiplayer was an original delivery requirement: P1C1 requires authoritative lifecycle and dedicated-server agreement; ROADMAP R5C1 requires server-owned combat, service and inventory. The roadmap explicitly says authority design begins with each device, not at final certification. SP-first prototypes and later integrated MP acceptance were documented, but accumulated SP-only production paths are unfinished engineering, not an unforeseen external blocker. C236's premature handoff and implication that MP was new scope were incorrect. Deferred owner testing does not prevent implementation or automated/native verification. The combined content patch remains approved and unfinished.
+
+Recommended implementation order within the existing R1C3/R5C1 scope:
+
+1. Establish one production turret lifecycle: server-validated placement, exact-item loading, firing and pickup. Reuse shared rules and stable identity; do not promote debug-only permissions to production authorization.
+2. Move service, module installation, magazine switching, pack rewards and Void conversion to repeat-safe authoritative transactions. Revalidate reach, item identity, current state and revision; concurrent clients must not duplicate or lose resources.
+3. Establish zombie-ownership-aware damage/death and player-injury handling, then integrate approved heads, projectiles, secondary effects and trap contacts through that path. Prevent double damage/rewards across observers.
+4. Replicate bounded state/effect changes to clients for Manage, animation, audio and late join. UI stays client-only; clients request actions rather than dictate outcomes.
+5. Preserve inventories, module-owned Void counts/debt, device identity and timers across pickup, disconnect, area reload and restart. Share global work/network budgets and retain independent turret/trap packages.
+6. Run native and automated authority, replay, concurrency, persistence and load checks during development. Dedicated/listen-server sessions with two observers remain required before an MP compatibility claim; owner participation stays deferred.
+
+Start with the common authority/transaction path before completing new ammo integrations, avoiding another SP-only implementation to port later. This is the engineering recommendation, not a claim that the port is complete or that a live engine limitation has been solved. No new gameplay balance choice is required by the identified gaps. Optional sibling integrations and publication remain separately scoped.

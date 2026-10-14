@@ -1,6 +1,6 @@
 # OMH: Turrets & Traps
 
-**Active development:** [C236 combined-patch progress](docs/PATCH_C236_PROGRESS.md). The patch is unfinished; installed0.2.49 remains unchanged and player testing is deferred. [Multiplayer audit](docs/MULTIPLAYER_AUDIT_C236.md) confirms production gameplay is currently SP-only.
+**Active development:** [C236 combined-patch progress](docs/PATCH_C236_PROGRESS.md). The patch is unfinished; installed0.2.49 remains unchanged and player testing is deferred. [C237 multiplayer correction and work sequence](docs/MULTIPLAYER_AUDIT_C236.md#c237---original-multiplayer-requirement-and-continuation-2026-10-14): MP remains an original requirement; production paths are still SP-only and need authority/transaction work. Deferred testing does not stop approved development.
 
 Latest LootLab correction: [shared saved rarity anchors](docs/LOOTLAB_TIER_PERSISTENCE.md#c185-shared-rarity-anchors-2026-10-12), C185.
 
