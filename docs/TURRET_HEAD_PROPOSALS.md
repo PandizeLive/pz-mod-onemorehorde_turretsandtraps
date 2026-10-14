@@ -1,5 +1,32 @@
 # Unique turret head candidates
 
+## C223 PC damage findings and remaining decision agenda (2026-10-13)
+
+Owner asks to discuss everything still requiring discussion, including damage. This authorizes investigation and planning, not a gameplay patch. Inspected active development38b5e397 and fetched origin; prior C211-C222 selections remain authoritative. Installed0.2.49 and deferred owner acceptance are unchanged.
+
+The [installed42.21 damage trace](NATIVE_EXPLOSIVE_DAMAGE.md) supersedes historical42.0 inputs. Ordinary Aerosol Bomb zombie damage potential is350 to below700 on OMH's scale, radius6; Pipe Bomb450 to below900, radius7, before overkill clamping and exceptional hooks/states. The native path has no distance falloff. Player injury is a separate native path. Do not call earlier turret proposals native-equivalent, or mistake this investigation for complete in-world blast verification.
+
+### Current options, all unapproved
+
+| Choice | A | B | C |
+| --- | --- | --- | --- |
+| 1. Lobber damage: Shell / Aerosol / Pipe | **Recommended:80/120/180**, radii2/3/4; Shell mainly wounds |120/180/240, same radii; stronger center hits | Preserve ordinary bombs' native damage/radii; Shell still needs a value. Not recommended for automatic crowd clearing |
+| 2. Tuned-blast falloff (1A/1B) | **Recommended: linear center-to-zero edge** | Full damage through inner half, then linear to zero | Not applicable |
+| 3. Scrapshot victim allocation | **Recommended: multiple fragments may hit one zombie**, maximum90 unmodified if all six connect; misses keep their lost share | One fragment per zombie, maximum15 unmodified per victim; more crowd-focused | Not applicable |
+| 4. Scrapshot Impact | **Recommended: unsupported**, since there is no empty reload | Adapt its trigger; would need a separate explicit design, not an automatic refill/always-on substitution | Not applicable |
+
+Selecting one option does not approve all other recommendations or authorize a patch. Choice1C deliberately differs from tuned falloff; reconcile before implementation if combined with choice2. Existing Scrapshot60-degree/six-fragment spread remains;3A permits multiple physical hits rather than guaranteeing six hits on the selected target.
+
+### Remaining topics after these choices
+
+- **Module compatibility:** produce an explicit per-head matrix. Lobber Splitter, Piercing and secondary effects need blast-specific decisions; Scrapshot direct-feed Splitter/Conservation accounting cannot silently inherit a chamber's last-round exception. Decide critical/Initial Blow/Execute application once per shot versus per fragment and Synergy/Fragment/Tack/Martyrdom propagation. Recommend preserving established module meanings, preventing recursive effect chains and avoiding six independent full-strength secondary bursts by accident; no blanket exclusion or new per-shot proc rule is approved here.
+- **Accuracy, collision and danger:** Scrapshot criticals/knockback and player collateral; Lobber scatter and player injury severity/body status. Recommend normal obstruction checks and injury processing once per blast, not once per nearby square. Actual roof/door/arc obstruction and actor-only environmental isolation require local proof. Do not equate zombie damage with player HP.
+- **Feed, storage and power:** Lobber loaded capacity/reload overlap versus its settled3.5-second base cadence; safe-switch action duration; both heads' reserve limits/loading and calibrated battery costs with current module/Regulator rules. Damage/radius should be chosen before battery tuning. No new idle drain or additive cooldown is implied.
+- **Recipes and service:** exact head/shell ingredients, tools, skills, XP, weights and shell yield. Recommend existing base-only wear/service and integrated head mounts; no separate head durability or new handheld shell use. Numeric recipes must be reviewed before code.
+- **Audio and visible feedback:** choose launch/landing/fuse/blast cues, Scrapshot report and readable danger feedback. Final art remains owner-sourced; native sound suitability and cube placeholder behavior must be verified.
+
+Engineering responsibilities, not additional owner questionnaires: exact-item preservation across switching/pickup/save, one-time delayed detonation, unloaded/pause behavior, bounded spatial queries/effect work, no recursive proc explosion, native authority and no fire/building damage. Flag concrete limitations if discovered. R3C3 native trajectory/blast prototype remains a gate after the design is settled; R3C2's existing owner test remains deferred.
+
 ## C222 PC planning reconciliation (2026-10-13)
 
 User: "I used our planning chat to update. Check github for new progress." Read the live branch/PR inventory. The planning branch contains ten commits after63c32db, through5b623ef7e11b9e5114054485b0eaeb6f61ea7a32; only CURRENT_STATUS, PLANNING, DECISIONS and this contract differ. Imported those commits with author/provenance preserved, then recorded this pickup. The Cloud branch has no PR because its API access was blocked; the existing development draft PR#1 now carries the synchronized documentation. No PR merge, source change, version bump, game test or new implementation approval follows.

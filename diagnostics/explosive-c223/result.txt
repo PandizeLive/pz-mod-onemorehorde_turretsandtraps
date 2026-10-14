@@ -1,0 +1,8 @@
+LOG  : General      f:0 st:201,480,839> version=42.21.0 4a0e9546ec demo=false
+LOG  : General      f:0 st:201,599,367> [ExplosionProbe] Base.Aerosolbomb power=70 range=6 extra=0.0 explosive=true melee=false
+LOG  : General      f:0 st:201,599,379> [ExplosionProbe] raw=3.5 processed=3.5 delta=3.5 omhDamage=350.0
+LOG  : General      f:0 st:201,599,380> [ExplosionProbe] raw=7.0 processed=7.0 delta=7.0 omhDamage=700.0
+LOG  : General      f:0 st:201,599,381> [ExplosionProbe] Base.PipeBomb power=90 range=7 extra=0.0 explosive=true melee=false
+LOG  : General      f:0 st:201,599,382> [ExplosionProbe] raw=4.5 processed=4.5 delta=4.5 omhDamage=450.0
+LOG  : General      f:0 st:201,599,384> [ExplosionProbe] raw=9.0 processed=9.0 delta=9.0 omhDamage=900.0
+LOG  : General      f:0 st:201,599,386> [ExplosionProbe] PASS native processing and health subtraction; full blast scene not exercised

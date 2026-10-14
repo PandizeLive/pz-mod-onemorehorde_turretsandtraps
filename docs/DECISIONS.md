@@ -1197,3 +1197,10 @@ Owner: "1A - 15 damage per fragment". Retain six fragments from C220 option 1A a
 ## C222 - PC pickup of Cloud planning C211-C221 (2026-10-13)
 
 User requests checking GitHub progress. Fetched origin/planning/lobber-ammunition at5b623ef and inspected all ten new documentation commits; imported them into active development under C119, preserving approvals and superseded values. [Consolidated handoff](TURRET_HEAD_PROPOSALS.md#c222-pc-planning-reconciliation-2026-10-13). Only draft PR#1 exists; no PR merge or gameplay changes. Native explosive-damage trace remains an explicit PC follow-up. No new design approval or test result;0.2.49 acceptance stays deferred.
+
+
+## C223 - PC explosive damage proof and consolidated remaining choices (2026-10-13)
+
+Owner requests discussion including the damage issue and other remaining decisions. Inspected development38b5e397 and fetched origin. Read installed42.21 bytecode; isolated native execution verifies explosive/non-melee classification, zero ExtraDamage and four deterministic damage-boundary health deltas. First run timed out during startup; second completed successfully. Full explosion/player/trajectory behavior is not tested. **C223 / native damage answered; remaining head choices (2026-10-13).** Installed42.21 bytecode plus a stock-first real-item/native-health probe establish ordinary zombie damage potential: Aerosol350-<700/radius6, Pipe450-<900/radius7 on OMH's scale, before overkill clamping. No native distance falloff; player injury is separate. Full blast scene/trajectory remains unverified. [Evidence](NATIVE_EXPLOSIVE_DAMAGE.md) | [Options and complete remaining agenda](TURRET_HEAD_PROPOSALS.md#c223-pc-damage-findings-and-remaining-decision-agenda-2026-10-13). Tuned damage/falloff, Scrapshot victim allocation/Impact, module matrix, injury/accuracy, feed/power, recipes and feedback remain proposals. No gameplay patch approved;0.2.49 owner test remains deferred.
+
+Options1A/1B/1C,2A/2B,3A/3B and4A/4B are recommendations only. Preserve C211-C221 approvals; no source/version/install/owner-acceptance changes. Planning/evidence mirrored under C108/C119.
