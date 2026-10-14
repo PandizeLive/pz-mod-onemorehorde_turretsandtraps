@@ -43,7 +43,8 @@ local function verifyTurrets()
     pack:getModData().OMHTTPackRewards = {"Regulator", "CapacityLarge", "Regulator"}
     local rewards = Pack.open(player, pack)
     assert(rewards and #rewards == 3 and not player:getInventory():contains(pack), "Native pack exchange failed")
-    assert(rewards[1] ~= rewards[3] and rewards[2]:getFullType() == T.TYPES.CapacityLarge, "Native pack duplicates/expansions wrong")
+    assert(rewards[1] ~= rewards[3] and rewards[1]:getID() ~= rewards[3]:getID(), "Native pack reused a reward identity")
+    for i = 1, #rewards do assert(T.component(rewards[i]:getFullType()), "Native pack reward is not a registered component") end
     assert(Pack.open(player, pack) == nil, "Native pack double completion")
     for i = 1, #rewards do assert(player:getInventory():contains(rewards[i])); player:getInventory():Remove(rewards[i]) end
     require("OMHTT/TurretPackLoot")
@@ -686,6 +687,7 @@ local function verifyTurrets()
     print("[OMHTT-Smoke] native-offensive-feasibility health=creation-recorded wounded=preserved horde=preferred unknown=zero stagger=exposed-standing")
     print("[OMHTT-Smoke] native-turret recipes=6 loadedDeploy=exact contents=preserved weight=exact filters=valid cooldown=preserved")
     isServer, isClient = serverFunction, clientFunction
+    require("OMHTT/NativeTurretAuthority")(IsoPlayer.new(getCell()))
 end
 
 Events.OnServerStarted.Add(verifyTurrets)

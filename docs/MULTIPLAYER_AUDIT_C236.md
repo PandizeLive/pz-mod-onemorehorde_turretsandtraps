@@ -1,5 +1,7 @@
 # C236 multiplayer verification (2026-10-14)
 
+**Current follow-up:** [C241](PATCH_C241_PROGRESS.md) implements production server turret state, placement and service actions. The table below is the historical C236 audit; its pack/lifecycle rows are superseded by C240/C241. Inventory, combat and trap authority remain unfinished.
+
 **Result: production gameplay is not multiplayer-compatible.** This is an existing supported-mode restriction, not a newly observed networking regression. The owner requested verification and explicitly deferred player testing. No multiplayer port, live server session, owner test, release or installation is claimed by this audit.
 
 ## Verified restrictions

@@ -10,8 +10,8 @@ SandboxVars.OMHTurretsTraps = {Enabled=true, TurretsEnabled=true, BedSpikes=true
 for _, mode in pairs({"client", "server"}) do
     testMode = mode
     check(not T.accept(nil, nil), "MP rejects turret inventory before touching native input: " .. mode)
-    check(not T.hybrid() and not T.recipeInput(nil, nil) and not OMHTT_TurretMenuAvailable({}), "Production turret build/render gates remain SP-only: " .. mode)
-    check(not W.valid(nil), "MP has no active production world turret: " .. mode)
+    check(not T.hybrid() and T.recipeInput(nil, nil) and OMHTT_TurretMenuAvailable({}), "Turret crafting is available; hybrid rendering remains gated: " .. mode)
+    check(not W.valid(nil), "Missing production turret is rejected: " .. mode)
     check(Combat.fire({kind="potato",ammo=4,shots=0}, nil, nil) == "MPCombatDeferred", "MP combat is explicitly deferred: " .. mode)
     check(Pack.open(nil, nil) == nil, "Pack opening rejects missing authoritative player/item: " .. mode)
     check(not Bed.enabled(), "Bed Spikes are disabled in MP: " .. mode)

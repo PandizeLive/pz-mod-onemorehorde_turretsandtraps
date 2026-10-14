@@ -1,5 +1,7 @@
 # Phases and checkpoints
 
+**C241 / production multiplayer lifecycle advanced (2026-10-14).** Owner reaffirms completing as much MP implementation as possible. Server-owned placed/packed turret state, native placement and repeat-safe pickup/repair are implemented; a stock dedicated-server callback/service probe passes with no clients connected. [Evidence and remaining implementation](PATCH_C241_PROGRESS.md). Manage/inventory, remote-zombie combat, traps and retained C235 content remain unfinished. No install or MP acceptance.
+
 **C240 active implementation:** R1C3/R5C1 production multiplayer authority and the R5C2 Horde scoring subset are in progress within the existing combined C235 patch. [Completed code, evidence and remaining transport/transaction work](PATCH_C240_PROGRESS.md). None of these MP checkpoints is accepted or installed; deferred owner testing is not a development gate.
 
 **C236 active work:** complete the approved combined C235 content/ammo patch; [progress and remaining gates](PATCH_C236_PROGRESS.md). Multiplayer verification found existing SP-only production guards; [audit and future port requirements](MULTIPLAYER_AUDIT_C236.md). This does not mark a multiplayer milestone complete or request player testing.

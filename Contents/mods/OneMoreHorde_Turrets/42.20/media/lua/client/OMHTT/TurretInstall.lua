@@ -1,5 +1,6 @@
-if isClient() or isServer() then return end
+if isServer() then return end
 local T = require("OMHTT/Turret")
+require("OMHTT/TurretPlacement")
 local D = require("OMHTT/Diagnostics")
 local I = {}
 

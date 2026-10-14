@@ -8,6 +8,7 @@ local Cycle = require("OMHTT/TurretCycle")
 local M = require("OMHTT/TurretModules")
 local G = require("OMHTT/Firearms")
 local Audio = require("OMHTT/TurretReloadAudio")
+local Authority = require("OMHTT/TurretAuthority")
 OMHTT_TurretWorld = {}
 local W = OMHTT_TurretWorld
 local facings = {e = 0, n = 4, w = 8, s = 12}
@@ -28,7 +29,7 @@ end
 ---@return boolean valid
 ---@nodiscard
 function W.valid(object)
-    return not isClient() and not isServer() and T.enabled() and T.state(object) ~= nil
+    return not isClient() and T.enabled() and T.state(object) ~= nil
         and object:getObjectIndex() >= 0 and object:getSquare() ~= nil and object:getHealth() > 0
 end
 
@@ -37,7 +38,7 @@ end
 ---@return boolean ready
 ---@nodiscard
 function W.near(player, object)
-    if not W.valid(object) or player:isDead() then return false end
+    if not player or not W.valid(object) or player:isDead() then return false end
     local square = object:getSquare()
     if player:getZ() ~= square:getZ() then return false end
     local origin = player:getSquare()
@@ -46,21 +47,6 @@ function W.near(player, object)
     if math.abs(origin:getX() - square:getX()) > 1 or math.abs(origin:getY() - square:getY()) > 1 then return false end
     local dx, dy = player:getX() - square:getX() - 0.5, player:getY() - square:getY() - 0.5
     return dx * dx + dy * dy <= 4 and origin:canReachTo(square)
-end
-
----@param params table Native placement test
----@return boolean valid
----@nodiscard
-function W.onIsValid(params)
-    if isClient() or isServer() or not T.enabled() or not params.square then return false end
-    local square = params.square
-    if not square:TreatAsSolidFloor() or square:isSolid() or square:isSolidTrans() then return false end
-    local objects = square:getObjects()
-    for i = 0, objects:size() - 1 do
-        local object = objects:get(i)
-        if T.state(object) or (object:hasModData() and (object:getModData().OMHTT or object:getModData().OMHTTEdge)) then return false end
-    end
-    return true
 end
 
 ---@param object IsoThumpable Device
@@ -100,7 +86,9 @@ function W.refresh(object)
         state.depthPolicy = "cube-depth-v2"
     end
     state.condition = object:getHealth()
-    T.cycle(contents, Clock.now())
+    if not isServer() then
+        T.cycle(contents, Clock.now())
+    end
     triggerEvent("OnOMHTTTurretChanged", object, contents.head)
 end
 
@@ -132,6 +120,7 @@ end
 ---@param enabled boolean Switch value
 ---@return boolean changed
 function W.setPower(player, object, enabled)
+    if isClient() or isServer() then return false end
     if not W.near(player, object) then return false end
     local state = T.state(object)
     state.powered, state.automatic = enabled, nil
@@ -158,9 +147,9 @@ function W.setPower(player, object, enabled)
 end
 
 ---@param params table Native construction callback
----@return nil
+---@return table? result Native transmission instruction
 function W.onCreate(params)
-    if isClient() or isServer() then return end
+    if isClient() then return end
     local object, player, data = params.thumpable, params.character, params.craftRecipeData
     if T.state(object) then return end
     D.emit("turret-placement", {cheat = player:isBuildCheat(), x = object:getX(), y = object:getY(),
@@ -172,17 +161,24 @@ function W.onCreate(params)
             if items:get(i):getFullType() == T.BASE then source = items:get(i) end
         end
     end
-    if source and source:getModData().OMHTTDeployed then source = nil end
+    if source and ((isServer() and not Authority.available(source))
+        or (not isServer() and source:getModData().OMHTTDeployed)) then
+        object:getSquare():transmitRemoveItemFromSquare(object)
+        return {objectAlreadyTransmitted = true}
+    end
     if not source then
         if not player:isBuildCheat() then
             object:getSquare():transmitRemoveItemFromSquare(object)
             D.emit("turret-deploy-rejected", {reason = "missing-exact-item"})
-            return
+            return {objectAlreadyTransmitted = true}
         end
         source = instanceItem(T.BASE)
         T.configure(source:getInventory())
     end
     local previous = source:getModData().OMHTTTurret
+    if isServer() then
+        previous = Authority.packed(source)
+    end
     local health = T.option("Health", 100, 1, 10000)
     local state = {schema = 1, id = "turret-" .. source:getID(), kind = "potato", facing = facings[params.facing],
         condition = math.max(1, math.floor(source:getCondition() / source:getConditionMax() * health)),
@@ -193,6 +189,14 @@ function W.onCreate(params)
         state.id = "turret-" .. source:getID()
     end
     object:getModData().OMHTTTurret = state
+    if isServer() then
+        if not Authority.register(object, state) then
+            object:getSquare():transmitRemoveItemFromSquare(object)
+            return {objectAlreadyTransmitted = true}
+        end
+        state = Authority.state(object)
+        Authority.deployed(source)
+    end
     W.clearBuildRefund(object)
     source:getModData().OMHTTDeployed = true
     object:setName(getText("UI_OMHTT_TurretBase"))
@@ -208,10 +212,17 @@ function W.onCreate(params)
     object:setContainer(container)
     T.moveContents(source:getInventory(), container)
     if source:getContainer() then
+        local sourceContainer = source:getContainer()
         player:removeFromHands(source)
-        source:getContainer():Remove(source)
+        sourceContainer:Remove(source)
+        if isServer() then
+            sendRemoveItemFromContainer(sourceContainer, source)
+        end
     end
     W.refresh(object)
+    if isServer() then
+        Authority.publish(object, false)
+    end
     object:getSquare():RecalcAllWithNeighbours(true)
     D.emit("turret-deployed", {id = state.id, facing = state.facing, health = state.condition,
         ammo = T.contents(container).ammo, items = container:getItems():size(), x = object:getX(), y = object:getY()})
@@ -229,6 +240,10 @@ function W.repair(player, object, id)
     state.condition = object:getHealth()
     state.revision = state.revision + 1
     W.refresh(object)
+    if isServer() then
+        object:sync()
+        Authority.publish(object)
+    end
     D.emit("turret-repaired", {id = id, health = state.condition})
     return true
 end
@@ -240,6 +255,7 @@ end
 function W.pickup(player, object, id)
     if not W.near(player, object) or T.state(object).id ~= id then return false end
     local item = instanceItem(T.BASE)
+    if not item then return false end
     local state = T.state(object)
     if state.depthPolicy ~= "cube-depth-v2" then
         object:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_OBJECT_MODIFY)
@@ -261,10 +277,16 @@ function W.pickup(player, object, id)
         player:setHaloNote(getText("UI_OMHTT_PickupNoRoom"), 255, 170, 80, 180)
         return false
     end
+    if player:getInventory():AddItem(item) ~= item then return false end
     T.moveContents(contents, item:getInventory())
+    if isServer() then
+        Authority.retire(object, item)
+    end
     object:getModData().OMHTTTurret = nil
     object:getSquare():transmitRemoveItemFromSquare(object)
-    player:getInventory():AddItem(item)
+    if isServer() then
+        sendAddItemToContainer(player:getInventory(), item)
+    end
     D.emit("turret-picked-up", {id = id, items = item:getInventory():getItems():size(), weight = weight,
         shots = copied.shots, nextShot = copied.nextShot})
     return true
@@ -274,6 +296,9 @@ end
 ---@return nil
 function W.loaded(object)
     if instanceof(object, "IsoGenerator") then generators[object] = true end
+    if isServer() then
+        Authority.bind(object)
+    end
     if T.state(object) and object:getContainer() then
         W.clearBuildRefund(object)
         object:setBlockAllTheSquare(true)
@@ -282,6 +307,9 @@ function W.loaded(object)
         object:getSquare():RecalcAllWithNeighbours(true)
         T.configure(object:getContainer())
         W.refresh(object)
+        if isServer() then
+            Authority.publish(object, false)
+        end
         D.emit("turret-restored", {id = T.state(object).id, health = object:getHealth(), items = object:getContainer():getItems():size()})
     end
 end
@@ -289,6 +317,9 @@ end
 ---@param square IsoGridSquare Loaded tile
 ---@return nil
 function W.squareLoaded(square)
+    if isServer() then
+        Authority.reconcile(square)
+    end
     local objects = square:getObjects()
     for i = 0, objects:size() - 1 do W.loaded(objects:get(i)) end
 end
@@ -315,6 +346,9 @@ function W.removed(object)
         end
     end
     object:getModData().OMHTTTurret = nil
+    if isServer() then
+        Authority.retire(object)
+    end
     for i = 1, 2 do
         square:AddWorldInventoryItem("Base.ScrapMetal", 0.35 + i * 0.1, 0.5, 0)
     end
@@ -357,6 +391,7 @@ end
 ---@param target IsoZombie? Detected target for autonomous shot
 ---@return string result
 function W.fire(player, object, target)
+    if isClient() or isServer() then return "Unavailable" end
     local started = getTimestampMs()
     if not T.isOn(T.state(object)) then return "Off" end
     if player then
@@ -547,4 +582,5 @@ Budget.register("W.feedTick", W.feedTick)
 Events.LoadGridsquare.Add(W.squareLoaded)
 Events.OnObjectAdded.Add(W.loaded)
 Events.OnObjectAboutToBeRemoved.Add(W.removed)
+Events.OnDestroyIsoThumpable.Add(W.removed)
 return W

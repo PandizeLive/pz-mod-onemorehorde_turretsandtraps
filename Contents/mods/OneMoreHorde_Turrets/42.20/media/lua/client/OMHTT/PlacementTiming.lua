@@ -3,6 +3,7 @@ local P = {}
 ---@param cursor ISBuildIsoEntity Exact portable-item cursor
 ---@return nil
 function P.apply(cursor)
+    if isClient() then return end
     local start = cursor.onTimedActionStart
     ---@param self ISBuildIsoEntity Copied build cursor
     ---@param action ISBuildAction Native placement action

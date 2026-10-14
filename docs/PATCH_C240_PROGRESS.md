@@ -1,5 +1,7 @@
 # C240 multiplayer and Horde Night implementation — unfinished
 
+Subsequent implementation: [C241 production lifecycle and current remaining work](PATCH_C241_PROGRESS.md). The evidence below records the C240 checkpoint.
+
 2026-10-14. Owner approved implementation and deferred gameplay testing. Follow-up **1A**: ordinary native collision is neutral; active defense effects require receiving-run opt-in. This remains one combined patch with unfinished C235 content/Void work, not a newly split release.
 
 ## Implemented in this development checkpoint

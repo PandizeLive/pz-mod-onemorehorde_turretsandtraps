@@ -324,6 +324,7 @@ end
 ---@return table? state
 ---@nodiscard
 function T.state(object)
+    if isServer() then return require("OMHTT/TurretAuthority").state(object) end
     if not object or not object:hasModData() then return nil end
     local state = object:getModData().OMHTTTurret
     if type(state) ~= "table" or state.schema ~= 1 then return nil end
@@ -334,7 +335,7 @@ end
 ---@return boolean available
 ---@nodiscard
 function OMHTT_TurretMenuAvailable(params)
-    return not isClient() and not isServer() and T.enabled()
+    return T.enabled()
 end
 
 ---@param item InventoryItem Input candidate
@@ -342,7 +343,7 @@ end
 ---@return boolean allowed
 ---@nodiscard
 function T.recipeInput(item, player)
-    return not isClient() and not isServer() and T.enabled()
+    return T.enabled()
 end
 
 ---@param data CraftRecipeData Completed craft

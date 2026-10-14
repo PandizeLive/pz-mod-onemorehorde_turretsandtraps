@@ -114,15 +114,15 @@ def main():
             bonusHealth = 0,
             isThumpable = true,
             breakSound = BreakObject,
-            OnIsValid = OMHTT_TurretWorld.onIsValid,
-            OnCreate = OMHTT_TurretWorld.onCreate,
+            OnIsValid = OMHTT_TurretPlacement.valid,
+            OnCreate = OMHTT_TurretPlacement.create,
 """
     for heading, index in zip("ENWS", range(16, 20)):
         entity += f"            face {heading} {{\n                layer {{\n                    row = omhtt_turret_01_{index},\n                }}\n            }}\n"
     entity += """        }
         component CraftRecipe {
             timedAction = BuildLowNoTool,
-            time = 200,
+            time = 250,
             category = OMHTurrets,
             Tooltip = UI_OMHTT_DeployTurretDescription,
             needToBeLearn = false,

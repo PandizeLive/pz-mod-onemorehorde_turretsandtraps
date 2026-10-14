@@ -280,6 +280,8 @@ public final class KahluaCheck {
             {"OMHTT/TurretBenefitList", base + "client/OMHTT/TurretBenefitList.lua"},
             {"OMHTT/TurretManage", base + "client/OMHTT/TurretManage.lua"},
             {"_", "tools/tests/turret_manage_load_order.lua"},
+            {"OMHTT/TurretAuthority", base + "server/OMHTT/TurretAuthority.lua"},
+            {"OMHTT/TurretPlacement", base + "shared/OMHTT/TurretPlacement.lua"},
             {"OMHTT/TurretWorld", base + "server/OMHTT/TurretWorld.lua"},
             {"OMHTT/TurretPickupAction", base + "shared/OMHTT/TurretPickupAction.lua"},
             {"OMHTT/TurretOnceEach", base + "server/OMHTT/TurretOnceEach.lua"},
@@ -362,6 +364,7 @@ public final class KahluaCheck {
             {"_", "tools/tests/turret_heads.lua"},
             {"_", "tools/tests/turret_void.lua"},
             {"_", "tools/tests/multiplayer_audit.lua"},
+            {"_", "tools/tests/turret_authority.lua"},
             {"_", "tools/tests/horde_defense.lua"},
         };
         for (String[] stage : stages) {

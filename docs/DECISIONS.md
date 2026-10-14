@@ -1325,3 +1325,8 @@ This turn records the selections and inspects existing Horde run configuration a
 ## C240 - implementation authorized; ordinary collision neutral (2026-10-14)
 
 Owner: "Approved. Go ahead and implement the multiplayer patch with the Horde Night integration. We'll test later." Follow-up explicitly selects **1A: ordinary native collision is neutral; active effects require receiving-run opt-in**. Preserve C239 /5, per-run consent and default-or-harder audit. Gameplay acceptance remains deferred, not a development blocker. [Working implementation and evidence](PATCH_C240_PROGRESS.md).
+
+
+## C241 - multiplayer catch-up implementation reaffirmed (2026-10-14)
+
+Owner: "You need to ensure that we're caught up on Multiplayer implementation. You're approved to complete as much as possible." Continue approved production authority and native verification now, retaining C235/C240 scope and deferred owner testing. No new generic approval gate or change to the settled Horde policy. [Implemented lifecycle and remaining work](PATCH_C241_PROGRESS.md).

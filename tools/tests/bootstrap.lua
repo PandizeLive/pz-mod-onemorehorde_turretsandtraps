@@ -74,6 +74,7 @@ function testPlayer:getRole() return {hasCapability = function() return testAdmi
 function getSpecificPlayer(index) return testPlayer end
 
 Events = {}
+Events.OnDestroyIsoThumpable = {handlers = {}, Add = function() end}
 Events.OnObjectAdded = {handlers = {}, Add = function() end}
 for _, name in pairs({"OnSave", "OnInitGlobalModData", "LoadGridsquare", "OnObjectAboutToBeRemoved", "OnClientCommand", "OnServerCommand", "OnFillWorldObjectContextMenu", "OnGameStart", "OnTickEvenPaused", "OnTick", "OnPostRender", "OnPreUIDraw", "OnPostUIDraw", "OnZombieCreate", "OnZombieUpdate", "OnZombieDead", "OnContextKey", "OnPlayerUpdate"}) do
     local handlers = {}

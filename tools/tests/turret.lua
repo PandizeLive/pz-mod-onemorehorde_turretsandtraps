@@ -37,6 +37,7 @@ local function container()
     function result:AddItem(candidate)
         self.items[#self.items + 1] = candidate
         candidate.container = self
+        return candidate
     end
     function result:Remove(candidate)
         for i = #self.items, 1, -1 do
