@@ -1,5 +1,22 @@
 # C231 Void Module and capacity revision (2026-10-14)
 
+## C235 Final capacity selected; ready for implementation (2026-10-14)
+
+Owner selects C234 **1B** and asks whether ready to patch. Confirm **40 spears,20 launchable explosives total in any mixture,250 ordinary firearm base rounds**. Each supported explosive counts1, no subtype quota or weighted mixture. Counts include ready ammunition under existing total-ammo accounting; physical room checks remain. Special spear/explosive ceilings are not expanded by kits; ordinary firearm expansion bonuses and module-slot upgrades remain, as specified in C234. Void bypasses reserve caps/weight while retaining finite magazines, reloads and per-type accounting. Do not delete existing excess items or truncate native loaded magazines. This settles the last presented balance choice.
+
+Design is ready for the combined C228 update plus C229-C235 refinements: Lobber/Makeshift Bomb/Scrapshot, Lure, Ballista travel/range, rotary reach/coverage/effects, Potato Piercing, built-in magazines, approved module interactions, ammo compatibility/attenuated donor stats, Void and selective physical capacity, and Pack Skip/Collect/completion audio. Latest corrections override historical proposal-only paragraphs in this file and NEXT_PATCH_CHOICES.md. All recipe selections are now settled; no new generic planning approval is needed. The owner's current question requests readiness confirmation, not a claim that code/build work has already happened.
+
+Remaining work is engineering validation, not another owner design questionnaire:
+
+1. Prove exact-module Void save/load, bounded conversion, retained relevant donor state and physical/virtual magazine service without duplication, loss or materialization of virtual rounds; preserve Conservation debt and ammo identity across swaps.
+2. Prove travelling projectile/landing fuse and actor-only explosion/contact behavior, admitted bounded proc work and no recursive mini-grenade chains; preserve approved damage, timings and independently selectable packages.
+3. Verify native crafting transactions, cached compatibility discovery, coherent Manage/tooltip/loot metadata and truthful storage/power estimates. Use existing no-protected-call guidance and meaningful smallest-first checks; do not substitute passing assertions for rendered acceptance.
+4. Package/install through OMH.cmd with immutable test tag and source/installed parity; publish development findings to the existing GitHub route. No Workshop upload/PR merge/new multiplayer milestone is implied. Provide one concise owner test after a playable build, not now.
+
+Installed0.2.49 and its partial owner findings remain unchanged. No gameplay code, assets, version, install or test-result change in this readiness turn. Native limitations discovered during implementation must be reported before substituting behavior. Recommend High reasoning for the combined integration, and Fast because implementation/native validation is likely to exceed25minutes. This is a complexity estimate, not an execution time guarantee.
+
+Fetched origin from fb1dc39 with no incoming planning change. Record C235 and mirror under C108/C119. Handoff: ready to implement / Wait for a patch, not Test now.
+
 ## C234 Shared explosive capacity and Makeshift Bomb (2026-10-14)
 
 Owner annotates the separate grenade quotas: types should not be limited because they are all launchable explosives. Treat this as **one shared explosive-ammo count allowance**, each supported bomb counting1, with any mixture; remove per-type6/4/etc ceilings and the C233 weighted-fraction mixture budget. This corrects capacity semantics, not native weight checks, approved payload-specific damage/radius, ammo priority or the homogeneous loaded-magazine rule. It does not establish safe launch behavior for every unrecognized mod explosive: compatibility still needs a verified payload definition. Current Makeshift/Aerosol/Pipe roster remains supported design; no subtype-specific storage quota.

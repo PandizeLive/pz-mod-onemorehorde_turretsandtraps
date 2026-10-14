@@ -1283,3 +1283,10 @@ Owner gives40/40/250 as illustrative targets, not a fixed approved balance table
 **C234 / shared explosive capacity and Makeshift Bomb confirmed (2026-10-14).** Owner rejects per-explosive-type quotas, chooses Makeshift Bomb naming and approves25%of relative donor-stat difference. [Settled rules and final capacity choice](VOID_MODULE.md#c234-shared-explosive-capacity-and-makeshift-bomb-2026-10-14). One shared bomb count replaces subtype limits/weighted mixing;40 versus20 total bombs remains proposed. No gameplay/install/test-status change.
 
 Owner answers1 by annotation correcting explosive subtypes, and2A selecting C233 stat scaling. Each supported bomb counts1 within a common allowance; no separate subtype quota or weighted mixture budget. Numerical40/20 choice still proposed, not fabricated approval. Makeshift Bomb is turret-only with unchanged selected recipe/damage; supported payload verification is not waived for arbitrary mod items. Fetched9ec9acb; docs only, standing mirror required.
+
+
+## C235 - Final ammo capacity and combined patch readiness (2026-10-14)
+
+**C235 / final capacity selected; ready to implement (2026-10-14).** Owner selects1B:40 spears,20 shared launchable explosives in any mixture,250 ordinary firearm base rounds. [Combined readiness and verification gates](VOID_MODULE.md#c235-final-capacity-selected-ready-for-implementation-2026-10-14). Last presented balance choice settled; remaining work is native integration/validation, not further generic design approval. Installed0.2.49 unchanged; no gameplay/install/test-status change in this readiness turn.
+
+Owner:1B; Are we ready to patch? This answer selects C2341B, not an earlier alternate option with the same label. Confirm readiness of design; do not misreport a built/installed patch or seek repeated general approval. Preserve prior engineering gates, supported-mode restrictions and publication boundaries. Current response is a documentation/readiness handoff; no gameplay changes this turn. Fetchedfb1dc39; standing mirror required.
