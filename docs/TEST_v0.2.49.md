@@ -22,3 +22,12 @@ Final weapon art and GPU strike alignment are pending. Technical cubes indicate 
 ## C208 owner availability (2026-10-13)
 
 Owner cannot test now. Focused client test is deferred, not passed, failed or waived. No new console result is claimed. Keep the existing short test for when the owner is available; do not request immediate play.
+
+
+## C224 partial owner findings and console review (2026-10-13)
+
+Owner reports Ballista limited to44 spears and bullet-like firing. Requests rotary90-degree front/rear coverage and longer reach, Ballista narrower FOV/longer range/travelling spear. This supersedes the earlier no-client-feedback status for these findings only; no claim that other checks passed.
+
+Read current console.txt:0.2.49 SP diagnostics,242156-byte captured snapshot; hash/time in [metadata](../diagnostics/head-feedback-c224/console-metadata.json), relevant records in [filtered console](../diagnostics/head-feedback-c224/console-findings.txt). TransferFull appears both for ordinary transfer validation and Manage ammo transfer; later ammo43/loaded1 is consistent with the report. Native Crafted Spear weight2 and configured100-weight storage support a weight-limit diagnosis, not a44-round magazine limit. Exact inventory weights were not captured. Source explicitly disables Ballista projectile travel and marks its effects firearm=true, confirming the presentation finding. No new runtime exception attributable to OMHTT was identified in the inspected error/exception lines; stock world/tile errors are present, so do not call the whole log clean or certify unrelated mods.
+
+No fixes implemented, no new tests run, no install. Rotaries' wider sectors/reach are requested balance revisions, not a claim that the earlier approved45-degree/1.25-tile implementation malfunctioned. Full0.2.49 acceptance remains open without another immediate test request.

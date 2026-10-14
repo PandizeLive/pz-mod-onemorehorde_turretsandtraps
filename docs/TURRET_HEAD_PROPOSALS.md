@@ -1,5 +1,38 @@
 # Unique turret head candidates
 
+## C224 Owner head feedback, Lure and magazine redesign (2026-10-13)
+
+Owner requests native bomb damage again, noting scarcity as a reason to retain strength; this is not selection of C2231C yet. Confirms C2232A linear falloff conditionally on the damage choice, and3A multiple Scrapshot fragments may hit one victim, additionally requesting wider spread and more fragments. Replaces the proposed Scrapshot Impact exclusion with4C: built-in magazines for all heads, capacities to discuss. Thus Scrapshot's former no-magazine/no-reload rule and its magazine-related exclusions are reopened/superseded in design; do not implement Impact exclusion. Confirm exact scope for ammunition-free rotary heads before implementation.
+
+Additional requested direction: new player-triggered Lure Module; rotary front/rear angular coverage increased from45 to90 degrees each (angular width, not scan distance); longer bat/blade reach supplied by an extended central mount; Ballista narrower FOV, more range and a visibly travelling spear like Potato, fast but not bullet-fast, with an arc if practical. These are design requests and owner test findings, not numeric default approvals or a completed-patch claim. No new assets generated; final art remains owner-sourced.
+
+### Read-only findings
+
+- Installed42.21 ordinary bomb damage is Aerosol350-<700, radius6; Pipe450-<900, radius7, on OMH's damage scale. [Native calculation evidence](NATIVE_EXPLOSIVE_DAMAGE.md). These are zombie damage budgets before overkill clamping, not player health damage; no native distance falloff. Scarcity makes native-strength ammo defensible, but broad automatic blasts and renewable Improvised Shell balance remain separate. User-reported scarcity has not been quantified in this investigation.
+- Ballista's `TurretWorld.fire` branch explicitly clears `projectileSpeed`; `TurretBallista.hit` immediately resolves damage and returns `firearm=true`, hence its bullet trace. The Potato `PrototypeCombat` path already schedules bounded flights, but its arrival resolver and presentation are not a drop-in spear resolver. A shallow presentation arc is feasible in the existing interpolation; genuine ballistic obstacle/roof clearance is not proven and must not be promised. Recommend real travel-time impact, spear presentation and a shallow visual arc while preserving obstruction rules.
+- `Turret.configure` clamps placed storage to100 weight units; `TurretTransfers.rejection` additionally checks native `hasRoomFor`. Native Crafted Spear weighs2.0. Ballista inherits advertised100 ammo before expansion, creating a real mismatch for heavy spear feed. Owner reports44 spears; console0.2.49 confirms ammo/full-transfer rejections and an ammo43/loaded1 state, consistent with the weight bottleneck. Exact item-weight inventory snapshot was not captured. This is reserve/container storage, not a44-round magazine. Do not raise capacity beyond prior native safety limits or change player-held spear weight without native proof and a lifecycle-safe design.
+- Rotary range is1.25; motion, contact, targeting and overlay use45-degree front/rear sectors. All must agree when changing to90. At the retained25RPM angular speed, wider sweeps take longer to reverse; do not silently double motor speed to preserve the old short stroke time.
+- Native `STrapGlobalObject.addSound` uses `addSound` to attract zombie hearing. Lure can reuse world sound plus an audible cue and bounded cooldown; it should not directly assign zombie targets or promise every zombie will abandon its current target. Multiplayer authority remains a separate verification gate.
+
+### Next options (new numbering for this response; all proposals)
+
+| Group | A (recommended) | B |
+| --- | --- | --- |
+|1 Lobber strength|Native ordinary-bomb damage/radii, with selected linear falloff; Improvised Shell120 at radius2|Strict native ordinary-bomb damage/radii without falloff; Shell value still separate. Would replace conditional2A for ordinary bombs|
+|2 Lure controls|Manual Play Lure button; radius30;10-second cooldown|Manual button plus repeating toggle; radius30; one pulse every5seconds|
+|3 Rotary reach|1.75 tiles, from1.25, with90-degree front/rear sectors|2 tiles, same sectors; more coverage/clearance needed|
+|4 Ballista profile|45-degree FOV,24-tile range,24tiles/sec; about1second at maximum range|30-degree FOV,30-tile range, same24tiles/sec; about1.25seconds at maximum range|
+|5 Scrapshot spread/fragments|90degrees,8x15=120 total primary damage|120degrees,10x15=150 total primary damage|
+|6 Built-in magazines|Potato1, Ballista3, Lobber1, Scrapshot6|Potato3, Ballista5, Lobber3, Scrapshot10|
+
+Group1A means native-strength **center** damage plus custom falloff, not exact native blast behavior. Other damage/radius proposals remain alternatives if owner rejects both. No-fire/no-structure and2-second landing fuse remain confirmed. Group3 preserves angular speed, not former reversal interval. Group4's speed and arc require matching delayed collision/damage presentation; no additional damage buff or guaranteed bypass over walls. Preserve lower Ballista accuracy unless explicitly changed; expanded ranges change its distance curve and energy factor and must be shown honestly.
+
+Recommend both group6 bundles apply to ammo-using custom heads only, retain actual native firearm capacities, and exempt ammo-free rotary heads. This exception needs owner confirmation because their wording was all heads. Magazine/Reload/Autoloader/Impact should be reviewed again for Scrapshot with real magazine/reload events. No invented rotary ammunition or swing-count reload. Existing per-head base shot cadence is retained; new reload durations/overlap still need selection. Capacity is ready ammunition, separate from reserves/weight;3 Ballista ready spears will not by itself fix the44-spear storage ceiling.
+
+Lure should be powered, non-stacking and use the shared scheduler with no catch-up sound bursts. Sound choice, rarity/loot weight (including LootLab/packs), battery cost and repeat-state lifecycle remain open. Suppression must not silently shrink an explicitly selected lure radius. These defaults and exclusions are recommendations, not owner approvals. Fragment count increases total damage at the retained15 each; do not claim90 remains the approved new total after increasing count. Module propagation, head/shell recipes, reserve solution, player injury and native projectile/persistence proof remain subsequent decisions/work.
+
+No gameplay/source/version/install change this turn. Owner now supplies partial0.2.49 feedback; update its test record rather than retaining a blanket no-client-evidence statement or marking unrelated checks passed. Inspected c3a2f1e and fetched origin before recording this update.
+
 ## C223 PC damage findings and remaining decision agenda (2026-10-13)
 
 Owner asks to discuss everything still requiring discussion, including damage. This authorizes investigation and planning, not a gameplay patch. Inspected active development38b5e397 and fetched origin; prior C211-C222 selections remain authoritative. Installed0.2.49 and deferred owner acceptance are unchanged.
