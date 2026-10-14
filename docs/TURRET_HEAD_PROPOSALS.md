@@ -1,5 +1,15 @@
 # Unique turret head candidates
 
+## C227 Lobber Conservation and Splitter approved (2026-10-13)
+
+Owner selects **C2261B**: Grenade Lobber supports **both Conservation and Splitter**. Retain existing Conservation uses-per-round accounting and stacking, Splitter's50%side-projectile damage and current ammo charging, including insufficient-ammo/full-shot and last-round exceptions. The selected scarcity tradeoff is accepted; do not keep treating inclusion of either module as undecided or silently remove the exceptions for explosives.
+
+Side grenades retain their selected payload's blast radius, linear falloff and separate two-second fuse after landing, with the50%multiplier applied to damage rather than radius or fuse. Base launch interval remains3.5seconds and built-in magazine3. Do not infer side grenades deal full native damage, spawn further Splitters, or cost a full extra payload in every ammo state. Conservation changes consumption, not the identity of an already launched payload; exact unspent items and fractional accounting must survive the existing lifecycle boundaries.
+
+This approval does not settle mixed loaded-payload allocation within one firing event, permit silent conversion of an Aerosol Bomb into a Pipe Bomb, or approve new Fragment/Synergy recursive blast behavior. Recommend one selected ammo type for a firing event and its side grenades, honoring the already approved priority/fallback/safe-switching rules; final mixed-magazine accounting still needs a concrete contract. Piercing exclusion on Lobber remains a separate recommendation, not implied by1B.
+
+Remaining decisions: complete Lobber/Scrapshot module-effect matrix and per-victim/secondary propagation, payload allocation, magazine reload timings, battery/Lure rarity/default/loot rules, exact recipes and player injury. Native trajectory/actor-only blast, bounded workload, reserve-weight and save/pickup proof remain implementation gates. No gameplay patch authorization, source/assets/version/install/test-status change. Inspected f416cd8 and fetched origin before recording. Mirror under C108/C119.
+
 ## C226 Rotary effects, Potato contact behavior and Lure range selected (2026-10-13)
 
 Owner selects C225 **1A;2B with "It'll apply on all zombie contacts";3A with5-20tiles**. Confirm Tack and Martyrdom support for both rotary heads; implement Potato Piercing rather than rejecting the module; link Lure audible loudness and attraction range in one slider with5-20tile bounds. This supersedes C225's proposed10-60bounds and30default. No default within the new range has been selected. These are design approvals, not a completed gameplay patch or approval of remaining unspecified rules.
