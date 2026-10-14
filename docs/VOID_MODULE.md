@@ -1,5 +1,34 @@
 # C231 Void Module and capacity revision (2026-10-14)
 
+## C232 Selective capacity, broad ammo families and compact decisions (2026-10-14)
+
+Owner replaces the blanket75% proposal with **selective maxima for stronger/slower ammunition** (1C). Accepts rotten and other potato variants, requests automatic support for modded spears, selects **3A with Void beside Ammo**, **4A safe portable removal**, and **5A Mythic/defaultweight1**. Void still uses magazines. All previously approved module-owned/non-withdrawable storage rules remain. Exact ammo caps, treatment of donor condition/metadata and the scope of prepared potato foods are not automatically settled by the family-compatibility request.
+
+Presentation instruction is persisted in AGENTS.md C232: compact numbered decision tables, recommendation and one short material concern; detailed rationale in documents. Do not repeat settled choices as questions.
+
+### Confirmed native evidence
+
+- Installed42.21 `XpSystem/XpUpdate.lua` calls `weapon:getScriptItem():containsWeaponCategory(WeaponCategory.SPEAR)`. Native `generated/items/weapon.txt` includes many `base:spear` weapons (crafted/fire-hardened/crude/long and attached-tool variants). Correctly categorized mod HandWeapons can follow the same classifier. Cache classification by full type after scripts load; provide explicit allow/deny compatibility overrides for miscategorized items. Do not match English names, blindly accept any identifier containing Spear, or rescan all item scripts each tick.
+- Current source hardcodes `Base.SpearCrafted` and `Base.Potato` in `Turret.kind`, acceptance and reserve counting, and head ammo metadata. Broadening only the UI would leave firing/transfers broken; route acceptance, physical reserve counting, firing, tooltip, Void conversion and saves through the same ammo-family classifier.
+- `Base.Potato` uses `FoodType=Vegetables` and `Tags=base:isseed`, neither uniquely identifies potatoes. Native food scripts also contain SweetPotato, jars/cans/opened variants and PotatoPancakes; name matching would incorrectly include seeds and recipes. Use explicit native whole-potato types plus a mod compatibility registry/custom opt-in tag. Native rotten/cooked states belong to the same Food item and need no separate ID. Owner explicitly overrides the C231 rotten-food rejection for potato ammo.
+- No spear matches were found in the locally installed FirearmsVanilla42.16 media/scripts search; many visible spear variants are already native. This does not rule out other versions/add-ons or establish the currently enabled mod roster. Promise category-based interoperability, not universal support for incorrectly tagged mods.
+
+### Remaining compact options (proposals, not approved)
+
+| Topic | A (recommended) | B | Material concern |
+| --- | --- | --- | --- |
+|1 Physical special-ammo caps |Spears40, Improvised Shells12, Aerosol Bombs6, Pipe Bombs6; other existing limits unchanged |Spears20, Shells6, Aerosol3, Pipe3; others unchanged |These hard ceilings include ready ammunition; expansion kits cannot raise them. Native weight may still bind; Void is exempt, but magazine sizes remain finite. |
+|2 Projectile/ammo statistics |Accepted variants use the mounted head's existing damage; Void stores standardized full-type counts and discards condition/freshness |Preserve donor condition and scale damage from individual spear stats |B adds balance and serialization work; one ammo family's modded melee damage must not accidentally become a Ballista damage exploit. |
+|3 Potato-family boundary |Whole Potato/SweetPotato and registered equivalents, including rotten/cooked/burnt states; no cans, jars, seeds or prepared dishes |Also support opened canned/jarred potatoes |B needs an explicit ammunition yield and container-return rule; never silently destroy containers or convert arbitrary dishes. |
+
+For1, the spear cap is shared by all accepted spear variants; changing full type must not multiply storage. Limits apply to each listed explosive family, shared across equivalent registered variants; mixed Lobber reserves may hold each distinct approved payload up to its limit, still subject to real weight. Existing types are not blanket nerfed. Expansion kits still supply module slots and their existing ammo benefit for uncapped ordinary families. Values are proposed test baselines, not measured balance. Native loaded firearm magazines are not truncated by a new generic cap. On existing over-cap contents, block further additions without deleting ammunition. With1B, the Lobber's base3-magazine still fits3 native bombs; any larger magazine module is bounded by actual family ammo availability as in the current cycle.
+
+For2A, conversion preserves full-type identity/count for display and compatibility, not item-instance details; standardized charges cannot be physically withdrawn. Rotten potato acceptance does not imply all rotten food is ammunition. Existing favorited-item protections and unsupported explosive variant guards remain. Intact spear requirement remains the proposed baseline; if broken spear use is desired, select it explicitly rather than silently treating broken tools as usable. Category inclusion is an engineering method; no new mod dependency required.
+
+UI: distinct Void target adjacent to Ammo, explicit Store in Void, no install-time or normal Ammo-transfer auto-conversion. Show compatible current ammo in Ammo/selected-head context; Void tooltip lists all stored types. Manual operation, safe removal and Mythic acquisition are selected, not open. Same bounded transfer path, cached revision-based display and normal reload/magazine behavior remain engineering obligations.
+
+Based on ecff49d; fetched origin. No gameplay/source/version/install/test-acceptance changes. These selections and remaining options supersede conflicting C231 proposal text below; preserve history rather than claiming the75% nerf was approved.
+
 Owner selects C2301A (five mini grenades) and2B (Tire Pump standard recipes for both heads, with same-output improvised alternatives). They would prefer a more distinctive donor component but accept the pump; do not reopen those recipes without new evidence. The module/recipe choices are approved design, not implemented.
 
 Owner replaces the proposed fixed40-spear/deferred-storage decision with3C: reduce all ammo capacities by roughly75%, introduce **Void Module**, consume physical ammo into effectively unlimited weightless storage for turret use, associate storage with the exact module, show currently compatible ammo in the turret Ammo section and all contained ammo in its tooltip. Module portability and non-withdrawable ammo are explicit direction. Reduction scope/exact values and detailed lifecycle remain open. Prior40-spear choice is the baseline for comparison, not permission to silently choose40 or10 after this revision.

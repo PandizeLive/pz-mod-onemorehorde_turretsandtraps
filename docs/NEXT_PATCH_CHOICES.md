@@ -1,5 +1,7 @@
 # C229 Consolidated pre-patch choices (2026-10-14)
 
+**C232 / selective ammo limits and Void controls selected (2026-10-14).** Owner replaces blanket75% cuts with selective ammo maxima, allows rotten/variant potatoes and requests modded-spear support; selects manual Void beside Ammo, safe module removal and Mythic rarity. Magazines remain. [Native classification evidence and compact remaining choices](VOID_MODULE.md#c232-selective-capacity-broad-ammo-families-and-compact-decisions-2026-10-14). Exact caps, donor-stat normalization and prepared-potato scope remain proposals. Compact decision-table preference added to AGENTS.md. No gameplay/install/test-status change.
+
 **C231 / mini grenades and recipes selected; Void storage proposed (2026-10-14).** Owner selects C2301A and2B, replacing storage option3 with a roughly75% ammo-capacity reduction and portable Void Module holding permanently converted weightless ammo by type. [Approved direction, tradeoffs and remaining choices](VOID_MODULE.md). Reduction scope, normalization, conversion interaction, removal and rarity remain proposals. Preserve five-mini behavior, pump/improvised same-output recipes and earlier unrelated approvals. No gameplay/install/test-status change.
 
 ## C230 Owner selections and revised recipe/Fragment proposals (2026-10-14)
