@@ -1,6 +1,65 @@
 # C229 Consolidated pre-patch choices (2026-10-14)
 
-Proposals only. Owner asks for all remaining choices and recommendations before patching. Based on active development 15e8b63 and C225-C228; all A options below are recommended. No gameplay, version, installation or test-acceptance change. This document completes the decision agenda rather than reopening approved head statistics, magazine capacities, Lobber Conservation/Splitter, rotary Tack/Martyrdom, Potato Piercing or pack controls/audio.
+## C230 Owner selections and revised recipe/Fragment proposals (2026-10-14)
+
+This section supersedes the proposal-only status below for selected groups. Owner chooses C229 **1A, 2A with mini-grenade Fragment, 3B, 4A, 5A, 6A, 7B, 9A with two Scrap Metal, 10A, 11A, 12A with a40-spear limit**. Group8 is expressly returned for native-component/improvised recipe proposals. No gameplay implementation or test acceptance follows from this documentation update.
+
+- Mixed reserves with homogeneous loaded magazines, per-payload Conservation, existing fallback and ammo exceptions selected.
+- Lobber's compatible-module option selected, but its Fragment burst becomes mini grenades. Exact count/damage/radius/fuse/propagation below remain proposals, not silently inferred approval. This change applies to Lobber Fragment, not a global replacement of firearm/Scrapshot/Potato Fragment.
+- Scrapshot Splitter adds one60-damage side projectile per module, not another eight-fragment fan. Other selected module rules retained.
+- Potato attenuated splash overlap, reload2/6/4/3seconds, C2296A power, Uncommon-default Lure weight14, moderate injuries and scattered Lobber aiming selected.
+- Shell recipe now consumes **two Scrap Metal**, not six, with the other9A values unchanged. Owner's rationale: cover both pipe ends; record as game-recipe flavor, not real fabrication guidance.
+- Ballista gets a40-spear count limit. Interpret40 as total stored ammunition, including ready spears, consistent with current overall ammo-limit accounting; magazine remains5 and its separate modules still work within total storage. Owner asks whether expansion can increase it and suggests investigating a bypass if weight-bound. Fixed40 with no spear-count expansion this patch is a recommendation pending the storage clarification below; do not silently claim a scalable expansion policy was approved. Future ammo-type-specific expansion is requested for consideration.
+
+### Native/source evidence and storage answer
+
+Inspected installed42.21 `media/scripts/generated/items/normal.txt (TirePump)`, `weapon.txt (Shotgun, DoubleBarrelShotgun, SpearCrafted)` and current native `zombie.inventory.ItemContainer` bytecode. Tire Pump is a native item weighing2; Crafted Spear weighs2. Native shotguns are genuine available item definitions, not invented gun-receiver parts (`Base.Receiver` is electronics and must not be described as a firearm receiver).
+
+`TurretStats.resolve` adds expansion ammo bonuses100/200/400/650 to a count limit. `Turret.configure` already sizes placed storage using the maximum configured kit stats and clamps it to100 weight, regardless of which kit is installed. `TurretTransfers.rejection` also checks native `hasRoomFor`. Therefore kits do not currently expand the weight capacity; heavier ammo can hit weight before count.40 spears alone weigh80; head/battery/modules add more. With a base40 plus current bonuses the advertised limits would be140/240/440/690, which this storage cannot realize. Do not advertise those spear counts.
+
+Native `ItemContainer.setCapacity(int)` warns above100 on ordinary world containers but then assigns the requested capacity; it is not an immutable Java100 clamp. Our clamp respects that warned threshold. Calling an over-limit setter is therefore technically possible but not verified as a safe supported solution. Carried `InventoryContainer` additionally has its own50-minus-item-weight rule (earlier confirmed maximum44 for the six-weight base). Do not conflate the carried44-weight warning with44 spears. Pickup also requires actual contents weight to fit the player's inventory.
+
+Recommendation: fixed40 total spears for this patch, truthful weight-space display, expansion kits still improve module slots but no unreachable spear promise. Future investigation should compare a dedicated spear rack using real bounded containers with an over-limit placed-container prototype; verify transfer, save/reload, kit removal and pickup before selecting. Do not modify native spear weights, bypass checks silently, fake a vehicle container or revive packed-weight reduction. Feasibility exploration is not implementation approval for a virtual-ammo subsystem. Even40 is a count ceiling, not a guarantee with arbitrary heavier contents.
+
+### New option1: mini-grenade Fragment (proposals)
+
+- **1A recommended:** Five mini grenades, emitted0.25seconds after the parent explosion; short0.25second outward flight up to2tiles, each with a0.5second fuse after landing and1-tile blast radius. Each deals the existing Fragment percentage of that parent's center damage: default20%, +5percentage points per extra Fragment up to the existing40% cap. Thus a150-damage Shell gives five30-damage mini blasts with one Fragment. Preserve linear falloff, walls/same-floor/actor-only behavior; mini grenades do not inherit full native bomb damage/radius. Count and radius do not stack. No extra ammunition charge or new power surcharge beyond selected module power; reserve work before firing.
+- **1B:** Eight mini grenades with the same combined center-damage budget as1A, so each gets5/8 of1A's damage. Same timing/radius/travel. More visual activity and collision/explosion processing, no extra aggregate damage budget.
+
+Both: side-parent grenades create minis only with Synergy. Mini damage may trigger Tack/Martyrdom under the selected Synergy rules, but never another Fragment or Splitter generation; resulting proc effects remain terminal under existing protections. Player damage/scratch chance scales by the same mini damage fraction relative to the parent, not a full10-damage/50%-scratch roll for every mini. Duplicate player collision processing stays blocked; distinct mini explosions may overlap. These are bounded-work design targets, not proven performance. Mini landing/detonation lifecycle must be validated, including parent expiry and unload cleanup.
+
+### New option2: native-component recipes (proposals)
+
+Recommend alternative recipes producing the **same head item and statistics**, following the existing Potato head pattern. Improvised means no special donor item, higher skill/time and some extra common scrap, not a new inferior head/inventory variant. Both routes include the integrated mount. In-game quantities only.
+
+| Input or requirement | Lobber standard | Lobber improvised | Scrapshot standard | Scrapshot improvised |
+| --- | --- | --- | --- | --- |
+| Special component |1 Tire Pump |None |1 native shotgun |None |
+| Metal Pipes |2 |2 |1 |2 |
+| Small Metal Sheets |2 |2 |1 |1 |
+| Scrap Metal |2 |4 |2 |4 |
+| Electronics Scrap |4 |4 |2 |2 |
+| Electric Wire |2 |2 |1 |1 |
+| Screws |12 |12 |8 |8 |
+| Mechanics/Electrical |3/2 |4/2 |2/1 |4/1 |
+| Mechanics/Electrical XP |30/10 |30/10 |20/5 |20/5 |
+| Recipe time |864 |1080 |576 |720 |
+
+- **2A recommended:** Table above. Lobber uses a Tire Pump as the thematic pneumatic component; Scrapshot salvages a shotgun assembly. Accept native Shotgun/DoubleBarrelShotgun and their sawn-off variants, nonbroken, unloaded/chamber-empty and attachments removed. Reject unsafe inputs rather than deleting their ammunition/attachments. Native gun ballistics/ammo type are not inherited by the finished head.
+- **2B:** Same except Scrapshot's special component is a Tire Pump instead of a shotgun. Easier shared sourcing; loses the distinct shotgun donor identity. Same improvised recipes and stats.
+
+All routes retain screwdriver, wrench/pipe wrench, pliers and metal saw. Yield1; Lobber weight8, Scrapshot6; no recipe book; base-only maintenance. Time values are script recipe units; improvised is25%longer than its standard route. Costs/tools/skills/XP/time all need owner selection. Existing Potato recipes are comparison evidence and are not being changed. Recipes named Improvised follow existing scheme; do not duplicate the output inventory items. Actual native transaction validation remains an implementation gate.
+
+### New option3: immediate spear expansion policy
+
+- **3A recommended:** Fixed40 total spears now, kits still grant module slots; evaluate native-safe ammo racks/type-specific expansion in a later checkpoint.
+- **3B:** Treat40 as the unexpanded base and prototype scalable storage before completing the Ballista part of this patch. Exact kit spear bonuses need a later choice after feasibility; do not reuse +100/+200/+400/+650 automatically. Other approved patch work can proceed independently.
+
+Only these three revised decisions remain open from this turn. All other C229 selections above stay settled. Checked2a1b7cf, fetched origin with no newer planning changes; documentation mirrored through the existing development PR, without gameplay/source/version/install/test changes.
+
+## Historical C229 proposal slate
+
+Proposals only at C229; the C230 selections above now take precedence. Owner asks for all remaining choices and recommendations before patching. Based on active development 15e8b63 and C225-C228; all A options below are recommended. No gameplay, version, installation or test-acceptance change. This document completes the decision agenda rather than reopening approved head statistics, magazine capacities, Lobber Conservation/Splitter, rotary Tack/Martyrdom, Potato Piercing or pack controls/audio.
 
 ## 1. Lobber mixed ammunition
 
