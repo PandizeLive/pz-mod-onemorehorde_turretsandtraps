@@ -1,5 +1,22 @@
 # C231 Void Module and capacity revision (2026-10-14)
 
+## C234 Shared explosive capacity and Makeshift Bomb (2026-10-14)
+
+Owner annotates the separate grenade quotas: types should not be limited because they are all launchable explosives. Treat this as **one shared explosive-ammo count allowance**, each supported bomb counting1, with any mixture; remove per-type6/4/etc ceilings and the C233 weighted-fraction mixture budget. This corrects capacity semantics, not native weight checks, approved payload-specific damage/radius, ammo priority or the homogeneous loaded-magazine rule. It does not establish safe launch behavior for every unrecognized mod explosive: compatibility still needs a verified payload definition. Current Makeshift/Aerosol/Pipe roster remains supported design; no subtype-specific storage quota.
+
+Owner explicitly selects the name **Makeshift Bomb**, superseding Improvised Shell and Improvised Grenade as player-facing labels. Retain the selected turret-only arming,150/radius4 and recipe with two Scrap Metal. No new handheld capability or unrelated shotgun-shell rename.
+
+Owner selects C233 **2A**: head multiplier=1+0.25*(donorDamage/referenceDamage-1). Twice-reference spear damage produces1.25x head damage (240->300); half-reference produces0.875x (240->210). Existing condition preservation is separate from this base-stat multiplier. This is approved design, not implemented/verified. Reuse the architecture for future firearm alternate ammo without silently adding an entire new firearm ammo roster now.
+
+One remaining count choice to present, proposals only:
+
+- **1A recommended:**40 total spears,40 total launchable bombs in any mixture,250 ordinary firearm base rounds. Matches the owner's earlier suggested counts and simpler family rule; stronger native-bomb stockpiles are balanced primarily by acquisition cost/rarity, not falsely claimed equal damage. Other previous kit/weight/Void/magazine distinctions remain: special family caps do not expand, normal firearm kits still add ammo, module slots remain useful and Void bypasses reserve caps.
+- **1B:**Same but20 total bombs. More conservative explosive endurance; no per-type quotas.
+
+Do not claim either numerical choice selected merely from the annotation: owner answered1 by correcting the subtype treatment, not choosing the old1A/1B values. This revised recommendation favors their earlier40 target while plainly accepting the higher potential of Pipe-heavy loadouts; C233's arithmetic remains illustrative evidence, not equivalence. Until selected the shared-bomb principle, Makeshift name and25%stat contribution are settled, while final family count values are proposals.
+
+Based on9ec9acb, fetched origin. Documentation only; no gameplay/version/install/test changes. Mirror under C108/C119. Required annotation response must explicitly acknowledge the shared count and include its inline directive.
+
 ## C233 Ammo balance, attenuated stats and separated decisions (2026-10-14)
 
 Owner suggests comparable limits such as40 spears/40 grenades/250 rounds, explicitly asking damage balance including AoE rather than approving equal counts. Rejects the ambiguous Shell label for the turret projectile; use **Improvised Grenade** as player-facing name, leaving shotgun shells clearly distinct. Existing recipe and150/radius4 behavior stay selected; this is naming, not a handheld grenade capability. Existing internal identifiers need not change solely for the label.
