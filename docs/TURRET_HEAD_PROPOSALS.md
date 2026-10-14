@@ -1,5 +1,29 @@
 # Unique turret head candidates
 
+## C228 Combined patch scope and pack-flow correction (2026-10-13)
+
+Owner: "Let's approve a new patch. Recap the new update." Requests adding [Module Pack Skip/Collect and completion-owned rarity audio](PACK_POLISH.md#c228---skip-then-collect-and-completion-owned-rarity-audio-2026-10-13) to the combined update. Record the requested next-patch scope without treating unset balance/recipe choices as selected or claiming implementation has occurred.
+
+Player-facing recap, feature names only:
+
+- Grenade Lobber
+- Improvised Shell
+- Scrapshot
+- Lure Module
+- Ballista spear flight and range update
+- Ballista ammunition-capacity correction
+- Extended rotary reach and coverage
+- Rotary Tack and Martyrdom support
+- Potato Piercing
+- Built-in turret magazines
+- Lobber Conservation and Splitter support
+- Module Pack Skip/Collect controls
+- Module Pack reveal-audio timing
+
+Approved numerical values remain in C225-C227; preserve150/radius4 Shell, native-strength ordinary bombs with linear falloff,5-20tile Lure,2-tile/90-degree rotaries,24-tile/45-degree/24tiles-sec Ballista,8x15/90-degree Scrapshot, and3/5/3/10 custom-head magazines. The capacity correction remains an engineering target requiring native-safe storage/pickup proof; it does not revive packed-weight compression. Final art remains owner-sourced.
+
+Material choices still unset: remaining Lobber/Scrapshot module propagation and mixed-ammo behavior; reload times, power and Lure acquisition/tuning; exact head/shell recipes (including tools/skills/XP/yield), player blast/Scrapshot injuries. User's patch intent does not supply missing recipe values. Consolidate these choices before full implementation rather than repeatedly asking to approve already-selected features. No new gameplay patch/test/install/version state in this recap;0.2.49 remains installed with partial owner findings. Starting34c8e19; fetched origin. Planning mirror under C108/C119.
+
 ## C227 Lobber Conservation and Splitter approved (2026-10-13)
 
 Owner selects **C2261B**: Grenade Lobber supports **both Conservation and Splitter**. Retain existing Conservation uses-per-round accounting and stacking, Splitter's50%side-projectile damage and current ammo charging, including insufficient-ammo/full-shot and last-round exceptions. The selected scarcity tradeoff is accepted; do not keep treating inclusion of either module as undecided or silently remove the exceptions for explosives.

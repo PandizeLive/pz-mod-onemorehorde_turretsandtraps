@@ -1,5 +1,18 @@
 # C182 - Pack cues and tier reopening
 
+## C228 - Skip then Collect and completion-owned rarity audio (2026-10-13)
+
+Owner requests this behavior in the next combined patch:
+
+- While any reel is rolling, show one full-width **Skip** button using the normal neutral button colors; do not show Collect.
+- Skip finishes the current reveal immediately, retaining its already determined rewards; it does not collect/close or reroll. After natural completion or Skip, replace it with the existing green **Collect** button.
+- Play the existing single highest-reward rarity cue exactly once when the overall roll completes, including Skip. Collect must never start/restart that cue. Keep reward count, probabilities, existing row stagger and four-second reveal fade.
+- This replaces C191/C207's250ms-early playback trigger with completion-time playback. Preserve the authored audio; do not trim its lead-in or add a duplicate per-row cue.
+
+Current `TurretPackReveal` source always shows green Collect bound to `Panel.close`, schedules rarity audio250ms before the bottom stop, and stops audio in close. It does **not** explicitly start rarity audio from Collect. The owner's reported perceived timing is recorded without claiming a reproduced collect-trigger bug. Fix ownership with one idempotent finish transition for natural completion/Skip, separate from close/Collect and resilient to repeated clicks or frames. Use a completion flag independently of the playback handle so failed/no-audio playback cannot retry each frame. Do not allow close/Collect to start another cue; allow an already-started finite cue to finish where appropriate while retaining replacement/reset cleanup.
+
+Rewards are already granted before the reveal under the existing architecture; button wording does not authorize moving reward ownership into UI code. Animation-disabled acquisition remains unchanged; no forced new reveal window implied. No source/assets/version/build/test changes in this recap turn. The requested flow is settled for the next patch; integration tests should exercise natural completion, Skip before/after any old cue boundary, repeated Skip/Collect and unchanged rewards.
+
 ## C207 - C191 timing installed in 0.2.49
 
 C191 timing is now implemented with the new-head patch:150-ms row spacing, six-second rolls,6/6.15/6.3s stops and the single rarity cue at6.05s (250ms before the bottom stop). Final selection remains6.3s. Behavioral checks pass for normal and skipped frames; reward identities, four-second fade and probabilities are unchanged. [Version test](TEST_v0.2.49.md); audible timing awaits the owner.
