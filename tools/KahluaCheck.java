@@ -197,6 +197,8 @@ public final class KahluaCheck {
             {"OMHTT/TurretCycle", base + "shared/OMHTT/TurretCycle.lua"},
             {"OMHTT/FirearmFeed", base + "shared/OMHTT/FirearmFeed.lua"},
             {"OMHTT/Firearms", base + "shared/OMHTT/Firearms.lua"},
+            {"OMHTT/TurretAmmo", base + "shared/OMHTT/TurretAmmo.lua"},
+            {"OMHTT/TurretVoid", base + "shared/OMHTT/TurretVoid.lua"},
             {"OMHTT/TurretReloadAudio", base + "shared/OMHTT/TurretReloadAudio.lua"},
             {"OMHTT/TurretSounds", base + "shared/OMHTT/TurretSounds.lua"},
             {"OMHTT/LootDefinitions", base + "shared/OMHTT/LootDefinitions.lua"},
@@ -356,6 +358,8 @@ public final class KahluaCheck {
             {"OMHTT/TurretPackAction", base + "client/OMHTT/TurretPackAction.lua"},
             {"_", "tools/tests/module_pack.lua"},
             {"_", "tools/tests/turret_heads.lua"},
+            {"_", "tools/tests/turret_void.lua"},
+            {"_", "tools/tests/multiplayer_audit.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {
@@ -407,6 +411,8 @@ public final class KahluaCheck {
         }
         System.out.println("Native packet serialization: " + count + " packets; largest=" + maximum + " bytes");
         System.out.println("Proc test-double stress: " + get.invoke(env, "testProcStress"));
+        System.out.println("Void foundation audit: " + get.invoke(env, "testVoidAudit"));
+        System.out.println("Multiplayer audit: " + get.invoke(env, "testMultiplayerAudit"));
         System.out.println("Assertions passed: " + get.invoke(env, "testAssertions"));
         System.out.println("World/player/network/UI objects were test doubles; in-game acceptance remains pending.");
         System.exit(0);

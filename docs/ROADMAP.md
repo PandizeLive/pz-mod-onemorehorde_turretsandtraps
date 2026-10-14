@@ -1,5 +1,7 @@
 # Phases and checkpoints
 
+**C236 active work:** complete the approved combined C235 content/ammo patch; [progress and remaining gates](PATCH_C236_PROGRESS.md). Multiplayer verification found existing SP-only production guards; [audit and future port requirements](MULTIPLAYER_AUDIT_C236.md). This does not mark a multiplayer milestone complete or request player testing.
+
 **C235 / final capacity selected; ready to implement (2026-10-14).** Owner selects1B:40 spears,20 shared launchable explosives in any mixture,250 ordinary firearm base rounds. [Combined readiness and verification gates](VOID_MODULE.md#c235-final-capacity-selected-ready-for-implementation-2026-10-14). Last presented balance choice settled; remaining work is native integration/validation, not further generic design approval. Installed0.2.49 unchanged; no gameplay/install/test-status change in this readiness turn.
 
 **C234 / shared explosive capacity and Makeshift Bomb confirmed (2026-10-14).** Owner rejects per-explosive-type quotas, chooses Makeshift Bomb naming and approves25%of relative donor-stat difference. [Settled rules and final capacity choice](VOID_MODULE.md#c234-shared-explosive-capacity-and-makeshift-bomb-2026-10-14). One shared bomb count replaces subtype limits/weighted mixing;40 versus20 total bombs remains proposed. No gameplay/install/test-status change.

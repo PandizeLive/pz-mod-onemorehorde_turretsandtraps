@@ -16,12 +16,41 @@ function Panel:close()
         getSoundManager():stopUISound(self.sound)
         self.sound = nil
     end
-    if self.revealSound and self.revealSound ~= 0 then
+    if not self.finished and self.revealSound and self.revealSound ~= 0 then
         getSoundManager():stopUISound(self.revealSound)
         self.revealSound = nil
     end
     active[self.playerIndex] = nil
     self:removeFromUIManager()
+end
+
+---@return nil
+function Panel:finish()
+    if self.finished then return end
+    local now = getTimestampMs()
+    self.finished, self.settledAt = true, now
+    for row = 1, #self.reels do
+        local reel = self.reels[row]
+        reel.position, reel.crossed = TRAVEL_CARDS, TRAVEL_CARDS
+        reel.settledAt = reel.settledAt or now
+    end
+    if self.sound and self.sound ~= 0 then
+        getSoundManager():stopUISound(self.sound)
+    end
+    self.sound = getSoundManager():playUISound("UIObjectMenuObjectPickup")
+    self.revealSound = getSoundManager():playUISound(self.revealCue)
+    self.collectButton:setTitle(getText("UI_OMHTT_PackCollect"))
+    self.collectButton.backgroundColor = {r = .08, g = .42, b = .16, a = .9}
+    self.collectButton.backgroundColorMouseOver = {r = .12, g = .58, b = .22, a = 1}
+end
+
+---@return nil
+function Panel:activate()
+    if self.finished then
+        self:close()
+    else
+        self:finish()
+    end
 end
 
 ---@param delta number Wheel direction
@@ -46,6 +75,9 @@ function Panel:prerender()
     for row = 1, #self.reels do
         local reel = self.reels[row]
         local progress = math.min(1, math.max(0, (now - self.started - (row - 1) * ROW_DELAY) / ROLL_DURATION))
+        if self.finished then
+            progress = 1
+        end
         reel.position = (1 - (1 - progress) ^ 3) * TRAVEL_CARDS
         local crossed = math.floor(reel.position)
         if crossed > reel.crossed then
@@ -60,17 +92,8 @@ function Panel:prerender()
             allFinished = false
         end
     end
-    if not self.revealSound and now >= self.started + ROLL_DURATION + (#self.reels - 1) * ROW_DELAY - 250 then
-        self.revealSound = getSoundManager():playUISound(self.revealCue)
-    end
     if allFinished and not self.finished then
-        self.finished = true
-        self.settledAt = now
-        if self.sound and self.sound ~= 0 then
-            getSoundManager():stopUISound(self.sound)
-        end
-        self.sound = getSoundManager():playUISound("UIObjectMenuObjectPickup")
-
+        self:finish()
     elseif not self.finished and crossedCard and now - self.lastTick >= 100 then
         if self.sound and self.sound ~= 0 then
             getSoundManager():stopUISound(self.sound)
@@ -170,9 +193,9 @@ function Panel.show(player, rewards)
         end
         panel.reels[row] = reel
     end
-    local collect = ISButton:new(12, height - 34, width - 24, 24, getText("UI_OMHTT_PackCollect"), panel, Panel.close)
-    collect.backgroundColor = {r = .08, g = .42, b = .16, a = .9}
-    collect.backgroundColorMouseOver = {r = .12, g = .58, b = .22, a = 1}
+    local collect = ISButton:new(12, height - 34, width - 24, 24, getText("UI_OMHTT_PackSkip"), panel, Panel.activate)
+    collect.backgroundColor = {r = .12, g = .12, b = .12, a = .9}
+    collect.backgroundColorMouseOver = {r = .22, g = .22, b = .22, a = 1}
     collect:initialise()
     panel:addChild(collect)
     panel.collectButton = collect

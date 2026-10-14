@@ -1,5 +1,7 @@
 # OMH: Turrets & Traps
 
+**Active development:** [C236 combined-patch progress](docs/PATCH_C236_PROGRESS.md). The patch is unfinished; installed0.2.49 remains unchanged and player testing is deferred. [Multiplayer audit](docs/MULTIPLAYER_AUDIT_C236.md) confirms production gameplay is currently SP-only.
+
 Latest LootLab correction: [shared saved rarity anchors](docs/LOOTLAB_TIER_PERSISTENCE.md#c185-shared-rarity-anchors-2026-10-12), C185.
 
 Current patch: **0.2.49 / C207**, new head prototypes and C191 timing refinements implemented; owner acceptance pending. [New turret heads](docs/PATCH_v0.2.49.md) | [Short test](docs/TEST_v0.2.49.md) | [Current status](docs/CURRENT_STATUS.md).

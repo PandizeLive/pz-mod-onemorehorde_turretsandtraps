@@ -130,7 +130,7 @@ check(math.abs(pulseAlpha - .75) < .001, "Rarity border pulse is half faded afte
 testMillis = settled + 4000; panel:prerender()
 check(pulseAlpha == .5, "Rarity pulse fully fades after four seconds")
 panel:close()
-check(stops[#sounds] and stops[#sounds - 1], "Closing stops both pack-owned selection and rarity handles")
+check(not stops[#sounds] and stops[#sounds - 1], "Collect stops selection but lets the completed rarity cue finish")
 local lagged = Reveal.show(player, rewards)
 before = #sounds
 testMillis = testMillis + 2500; lagged:prerender()
@@ -152,7 +152,7 @@ for i = 1, #kinds do
     proof:prerender()
     check(#sounds == before + 2, "Completed frames never duplicate tier audio")
     local replacement = Reveal.show(player, result)
-    check(stops[#sounds] and stops[#sounds - 1], "Opening another pack stops both prior voices")
+    check(not stops[#sounds] and stops[#sounds - 1], "Opening another pack preserves the completed reveal tail")
     replacement:close()
 end
 rarity.refresh(settings)
@@ -174,9 +174,9 @@ check(staggered.reels[1].position > staggered.reels[2].position and staggered.re
 for row = 1, 3 do
     if row == 2 then
         testMillis = base + 6049; staggered:prerender()
-        check(not staggered.revealSound, "Rarity cue waits until its lead-in")
+        check(not staggered.revealSound, "Rarity cue waits for whole-roll completion")
         testMillis = base + 6050; staggered:prerender()
-        check(staggered.revealSound ~= nil and not staggered.finished, "Rarity cue starts 250ms before bottom stop")
+        check(not staggered.revealSound and not staggered.finished, "No early rarity cue before the bottom row stops")
     end
     testMillis = base + 6000 + (row - 1) * 150; staggered:prerender()
     check(staggered.reels[row].settledAt == testMillis and staggered.reels[row].position == 39, "Each reel lands on its exact winner after six seconds")
@@ -185,13 +185,26 @@ for row = 1, 3 do
         check(sounds[#sounds] == "UIObjectMenuObjectRotate", "No selection cue before the last row stops")
     end
 end
-check(staggered.finished and staggered.settledAt == base + 6300 and sounds[#sounds] == "UIObjectMenuObjectPickup",
-    "One early rarity cue and final selection cue")
+check(staggered.finished and staggered.settledAt == base + 6300 and sounds[#sounds] == staggered.revealCue,
+    "Selection and rarity cue play together at whole-roll completion")
 local rowAlphas = {}
 staggered.drawRectBorder = function(_, x, y, w, h, alpha) rowAlphas[#rowAlphas + 1] = alpha end
 testMillis = base + 8000; staggered:prerender()
 check(#rowAlphas == 3 and rowAlphas[1] < rowAlphas[2] and rowAlphas[2] < rowAlphas[3], "Each row's pulse fades from its own stop")
 staggered:close()
+local manualSkip = Reveal.show(player, rewards)
+local skipSounds = #sounds
+manualSkip.collectButton.callback(manualSkip)
+check(manualSkip.finished and manualSkip.collectButton.title == getText("UI_OMHTT_PackCollect"), "Skip finishes and changes the control to Collect")
+check(#sounds == skipSounds + 2 and not manualSkip.removed, "Skip plays completion cues without closing")
+for row = 1, #manualSkip.reels do
+    check(manualSkip.reels[row].position == 39, "Skip lands on each previously selected reward")
+end
+manualSkip:finish()
+manualSkip:prerender()
+check(#sounds == skipSounds + 2, "Repeated finish and render cannot duplicate audio")
+manualSkip.collectButton.callback(manualSkip)
+check(#sounds == skipSounds + 2 and not stops[manualSkip.revealSound], "Collect never replays or cuts rarity sound")
 local skipped = Reveal.show(player, rewards)
 previousSounds = #sounds
 testMillis = testMillis + 20000; skipped:prerender()
