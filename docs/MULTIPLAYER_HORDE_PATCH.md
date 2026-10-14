@@ -4,7 +4,7 @@ Date: 2026-10-14. Status: prepared implementation specification, not a playable 
 
 Owner: "This mod is supposed to work with OMH: Horde Night, and it'll be allowed to be used with a Score Divider. We need to make sure it's safe to add and score. Brush up on Horde Night, and prepare a patch for Multiplayer integration."
 
-This authorizes preparation of coordinated Horde Night compatibility and confirms the intended Allowed-with-divider policy. MP remains an original requirement; the combined C235 content patch remains approved and unfinished. Do not invent a numeric divider or revive separate assisted editions. Existing O07 proposes x0.20, but was never confirmed. Three scoring choices below remain decisions; they do not revoke approval for independent MP engineering. No live owner test is requested now.
+This authorizes preparation of coordinated Horde Night compatibility and confirms the intended Allowed-with-divider policy. MP remains an original requirement; the combined C235 content patch remains approved and unfinished. C239 selects the three policies below: divide by5, per-run opt-in, and default-or-harder eligibility. O07's x0.20 is now confirmed. No separate assisted edition or automatic world-wide penalty is selected. No live owner test is requested now.
 
 ## Reviewed evidence
 
@@ -18,33 +18,29 @@ This authorizes preparation of coordinated Horde Night compatibility and confirm
 - [Website score validator](../../OMH%20Website/cloudflare-api/src/score-modifiers.ts) accepts only `cure-run` and `trait-shop`; [review policy](../../OMH%20Website/cloudflare-api/src/review-policy.ts) checks reconciled totals. Game and validator changes must agree before new T&T records are accepted. No deployment or database update is included in preparation.
 - Reran Horde Night `tools/validate-mod-settings.py` against the installed game Kahlua: **149 settings, persistence and score assertions pass**, including existing multiplicative Cure/Shop behavior and repeated normalization. This is existing-policy baseline verification, not T&T/MP acceptance. No gameplay code changed for this preparation.
 
-## Decisions to settle
+## C239 - Selected scoring policies (2026-10-14)
+
+Owner selects **1A / 2B / 3B** from C238. These selections replace the recommendations below; they are approved design, not implemented or verified gameplay.
 
 ### 1. Score Divider
 
-Recommendation: **A, divide by 5 (retain 20%)**, the existing O07 proposal. Automated defenses can considerably extend survival, so start conservative and tune from actual results; no measured equivalence is claimed.
-
-- A: divide by 5, retain 20%.
-- B: divide by 2, retain 50%.
-- C: divide by 10, retain 10%.
+**Selected1A: divide by5, retain20%.** Confirms the existing O07 proposal. No measured equivalence to unassisted survival is claimed; preserve the approved value pending actual balance evidence.
 
 One T&T modifier covers either selectable package or both, independent of device/module/player counts. Preserve multiplicative composition with approved modifiers and round the combined award once at the core boundary. For an illustrative unmodified score of100, A yields20; with Trait Shop10; with Cure and Trait Shop12. No kill, Horde or Trait XP counts are divided. This does not choose a shared-XP percentage.
 
 ### 2. Activation scope
 
-Recommendation: **A, a world with either T&T gameplay package enabled marks scoring runs for the divider**. This is the simplest auditable policy and covers passive obstruction, slowdown and Lure as well as damage. Tradeoff: someone who never uses a defense also receives the divider. Workshop subscription/download alone does not count. This recommendation revises the earlier usage-based proposal; it is not already selected.
+**Selected2B: explicit per-run opt-in.** Merely enabling either package does not select the divider for everyone. Use Horde Night's authoritative run identity and existing permission checks for run configuration; a client, nearby device or other faction cannot silently opt a run in. Borrowing a defense cannot bypass the receiving run's consent or duplicate its modifier. Device ownership and server-validated permission remain required for service/resource actions, independently of scoring.
 
-- A: enabled-world policy, one persistent mark per affected run.
-- B: explicit per-run opt-in. More work: server-owned device ownership/permission and cross-faction help rules must prevent an outsider forcing a penalty or giving free assistance. Physical obstruction and attraction still need a defensible policy; damage-only tracking is insufficient.
+Enforcement work: resolve the affected Horde event before special damage, slowdown, knockdown or delayed effects, not only on death. Recommend using the receiving run's opt-in to permit those effects, including borrowed defenses; never fake a player killer or force a divider on an unconsenting run. Native obstacle collision and sound attraction are separate feasibility checks: ordinary blockers and world sounds cannot be assumed to filter by event identity. Check Lure and barriers explicitly before claiming unassisted eligibility. If those effects cannot be isolated safely, present the concrete limitation and policy alternatives rather than silently enabling the world-wide rule or changing consent. This is an implementation investigation, not another request to reapprove2B.
 
 Once applicable, mod removal, disabling a setting, reconnect or borrowed-device transfer cannot clear that run's mark. Apply only to future awards, including a currently active event affected after activation; never recalculate already completed events. Preserve prior eligibility flags and frozen Official scores. Pre-integration benefit history remains unverified rather than retrospectively certified. A new run alone cannot certify a retained character/world as previously unassisted without the selected policy's provenance.
 
 ### 3. Official settings baseline
 
-Recommendation: **A, reviewed gameplay defaults initially**. Audio/UI changes do not affect eligibility. Unknown or easier gameplay settings remain Custom/unverified with explanations and without overwriting the owner's settings.
+**Selected3B: default-or-harder settings audit in the initial integration.** Audio/UI changes do not affect eligibility. Unknown or easier gameplay settings remain Custom/unverified with explanations and without overwriting the owner's settings. Do not reduce this selection to a defaults-only first release.
 
-- A: exact reviewed gameplay defaults for the supported version; expand harder variants after review.
-- B: audit and accept default-or-harder settings in the initial integration. Requires per-setting direction and interaction tests, including loot, power, contact, capacity and module effects; a generic numerical comparison is unsafe.
+Audit each active gameplay setting and its consuming code for direction, disabled behavior, bounds and interactions. In particular,0can mean disabled/unlimited rather than harder; loot weights are relative, so lowering a weak module's weight can make strong modules more likely; rarity anchors also influence power costs. More damage/health/capacity/range, faster firing, cheaper power and stronger proc effects cannot be blanket-approved. Classify combinations against the reviewed version baseline and preserve historical provenance after restoration/removal. Ambiguous or missing values stay unverified rather than being guessed harder. Reuse Horde's existing integrity vocabulary and test its dedicated-server polling path.
 
 Other enabled mods still follow Horde Night's own policy. T&T approval cannot approve unknown firearm mods, altered scripts or the whole mod list. These choices concern Official eligibility, not whether standalone/custom gameplay can function.
 

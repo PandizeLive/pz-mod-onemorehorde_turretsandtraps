@@ -21,7 +21,7 @@ Pack checks cover natural completion, manual Skip, duplicate finish, Collect, ca
 
 ## Remaining approved work
 
-C238 adds the owner's explicit Horde Night/Score Divider integration preparation: [coordinated patch specification](MULTIPLAYER_HORDE_PATCH.md). Numeric scoring policy still needs selection; this does not cancel independent MP work or the existing content bundle. No implementation is claimed for the new specification.
+C238-C239 adds the owner's Horde Night integration and selected divide-by5/per-run-opt-in/default-or-harder policy: [coordinated patch specification](MULTIPLAYER_HORDE_PATCH.md). These choices are settled; implement the consent, settings and authority paths without cancelling the existing content bundle. No implementation is claimed for the specification.
 
 C237 reaffirms the original MP requirement and corrects the premature C236 stop. [Authority/transaction work and recommended sequence](MULTIPLAYER_AUDIT_C236.md#c237---original-multiplayer-requirement-and-continuation-2026-10-14) belong to existing R1C3/R5C1. Build that shared path before completing ammo integration below; owner testing remains deferred, not an implementation blocker. This note supplies no new gameplay or compatibility evidence.
 

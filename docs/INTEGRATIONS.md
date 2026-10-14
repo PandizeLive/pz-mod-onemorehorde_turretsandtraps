@@ -1,6 +1,6 @@
 # OMH and Trait Shop integration plan
 
-Current status C238: owner confirms Horde Night compatibility and Allowed-with-Score-Divider direction; [reviewed MP/scoring patch preparation](MULTIPLAYER_HORDE_PATCH.md) supersedes the old source snapshot below. Exact divider, activation scope and official settings baseline remain decisions. No scoring integration is implemented by that preparation. Existing shared-XP and Cure simulation proposals remain separate, unapproved where marked. No sibling project was changed by the foundation pass or C238.
+Current status C239: owner selects divide by5, explicit per-run opt-in and default-or-harder eligibility; [reviewed MP/scoring contract](MULTIPLAYER_HORDE_PATCH.md) supersedes the old source snapshot below. Native enforcement and coordinated implementation remain outstanding. Existing shared-XP and Cure simulation proposals remain separate, unapproved where marked. No sibling project was changed by this planning update.
 
 ## Baseline and project coordination
 
@@ -62,7 +62,7 @@ Use durable per-recipient pending/settled receipts or an equivalent idempotent l
 
 ## Horde scoring
 
-Owner direction: follow Trait Shop's approved-modifier approach rather than separate editions/categories. Proposed initial Turrets & Traps reduction is 80%, meaning remaining score x0.20. This value still needs tuning confirmation and does not establish current official eligibility.
+Owner direction: follow Trait Shop's approved-modifier approach rather than separate editions/categories. C239 confirms an80%reduction, meaning remaining score x0.20, with explicit per-run opt-in and a default-or-harder eligibility audit. The value is approved; coordinated implementation and verification are still required for Official eligibility.
 
 | Example modifiers | Base 100 result |
 | --- | ---: |
