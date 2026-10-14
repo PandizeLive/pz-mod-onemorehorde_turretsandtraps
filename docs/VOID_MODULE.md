@@ -1,5 +1,35 @@
 # C231 Void Module and capacity revision (2026-10-14)
 
+## C233 Ammo balance, attenuated stats and separated decisions (2026-10-14)
+
+Owner suggests comparable limits such as40 spears/40 grenades/250 rounds, explicitly asking damage balance including AoE rather than approving equal counts. Rejects the ambiguous Shell label for the turret projectile; use **Improvised Grenade** as player-facing name, leaving shotgun shells clearly distinct. Existing recipe and150/radius4 behavior stay selected; this is naming, not a handheld grenade capability. Existing internal identifiers need not change solely for the label.
+
+Owner selects C2322B with a correction: donor ammo statistics should contribute an attenuated bonus/multiplier, not be added in full to head damage; this framework will also support future alternate firearm ammunition. C2323A (whole potatoes/SweetPotato/registered equivalents including rotten/cooked states, no cans/jars/seeds/prepared dishes) is approved. Relevant per-ammo quality/condition cannot be erased by Void conversion if needed for selected stat behavior. Replace the proposed flat full-type-only count map with counts grouped by full type and relevant validated quality/stat state; do not keep whole live inventory-item objects in metadata or silently discard all condition. Aggregated display can still show totals by type. More distinct state groups increase storage work; process/copy them through bounded operations and cache displayed totals.
+
+Vegetable launcher annotation is a request to explore an idea, not approve implementation. Record a future produce-ammo extension to Potato Launcher as the preferred first exploration; a separate head should need a distinct role. Keep this patch's approved whole-potato boundary. No new final art or recipes are authorized by the joke.
+
+Owner then corrects decision presentation: separate each topic, give brief thoughts, show options, blank line before the next topic. This supersedes C232's combined-table preference and is persisted in AGENTS.md. Current response should address the vegetable annotation with its required inline directive.
+
+### Decision1 proposals: capacity targets
+
+- **1A recommended:** Standard firearm base allowance250 rounds, spear-family hard ceiling40, Improvised Grenade20, Aerosol Bomb6, Pipe Bomb4. Existing potato and scrap limits unchanged. Standard firearm expansion ammo bonuses remain applicable; special-ammo hard ceilings do not grow with kits, whose module-slot benefit remains. Void bypasses reserve limits, not magazine/reload behavior. These are starting balance targets, not guaranteed equal damage or physically guaranteed storage.
+- **1B:** Same, but Improvised Grenade40, Aerosol12, Pipe8. More generous explosive endurance and substantially greater crowd-damage potential.
+
+Mixed Lobber ammo should share its capacity budget: sum(count for payload / its pure-payload allowance) <=1, including ready rounds. This is a proposal within either option, replacing the earlier independent-per-payload allowance proposal; e.g.10 Improvised Grenades plus2 Pipe Bombs fills1A. Cannot fill every payload to its standalone maximum at once. Spear variants likewise share one family limit. Native weight checks still apply;250 heavy/modded rounds are a count target, not immunity from weight. Existing excess contents are never deleted. Magazines and native firearm loaded rounds are not silently truncated. No blanket75% reduction is selected.
+
+Arithmetic evidence:40*240=9600 potential spear damage before hit chance, overkill and module effects. Hypothetical grenade sum-of-falloff weights3 means each150 grenade applies450 aggregate damage:20*450=9000,40*450=18000. This is an illustrative crowd assumption, not measured typical target density. Native Aerosol center damage350-<700/radius6 and Pipe450-<900/radius7 imply much more area potential. Linear falloff over a uniformly populated circular area has average factor1/3 and area proportional to radius squared; obstruction, density, timing, misses and overkill break simple equalities.250 bullets at illustrative40 damage is10000; actual guns have different damage and cadence, so no universal equivalence claim. Conservation/Splitter/Fragment/critical/proc builds further vary damage per stored round. Keep fixed published family values instead of dynamically recapping inventory on module changes.
+
+### Decision2 proposals: ammo stat contribution
+
+Compare compatible donor ammo's base damage stat to the designated ordinary ammo reference for that head/family, before modules and criticals. Let r=donorDamage/referenceDamage.
+
+- **2A recommended:** Head damage multiplier=1+0.25*(r-1). A spear with twice the reference damage adds25%:240 becomes300. A half-strength spear gives0.875x:240 becomes210.
+- **2B:** Use0.50 instead: double-strength spear yields360 head damage; half-strength yields180.
+
+One proposed shared framework for current spear handling and later alternate firearm ammo. Do not pretend existing bullet items all expose comparable weapon damage; future firearm ammo needs its own registered relative modifier/reference, not the mounted gun's damage counted twice. Baseline ratio uses average native min/max damage where available; condition is retained separately and is not automatically a second damage multiplier. Require finite nonnegative values and a positive reference; unsupported stats remain unavailable until a compatibility adapter supplies meaning. The percentage compresses ordinary differences but is not an upper bound against absurd mod stats; outlier policy/condition wear behavior still requires validation if found. No new uncapped 1:1 addition, stealth clamp or global firearm damage rewrite authorized.
+
+This is planning only, based on714170c with origin fetched. Existing C229-C232 unrelated choices remain approved. Native feasibility, exact damage weighting selection and this capacity proposal are not yet implemented. Mirror under C108/C119; no source/version/install/test changes.
+
 ## C232 Selective capacity, broad ammo families and compact decisions (2026-10-14)
 
 Owner replaces the blanket75% proposal with **selective maxima for stronger/slower ammunition** (1C). Accepts rotten and other potato variants, requests automatic support for modded spears, selects **3A with Void beside Ammo**, **4A safe portable removal**, and **5A Mythic/defaultweight1**. Void still uses magazines. All previously approved module-owned/non-withdrawable storage rules remain. Exact ammo caps, treatment of donor condition/metadata and the scope of prepared potato foods are not automatically settled by the family-compatibility request.
