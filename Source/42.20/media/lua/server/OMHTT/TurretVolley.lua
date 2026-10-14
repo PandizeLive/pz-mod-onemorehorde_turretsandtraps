@@ -1,4 +1,5 @@
 if isClient() or isServer() then return end
+local Horde = require("OMHTT/DefenseHorde")
 local Budget = require("OMHTT/TurretScheduler")
 local Damage = require("OMHTT/Damage")
 local F = require("OMHTT/Foundation")
@@ -193,7 +194,7 @@ end
 function V.finish(ray)
     local victim, group = ray.best, ray.group
     local hit = false
-    if victim and not victim:isDead() and victim:getSquare() == ray.square
+    if victim and not victim:isDead() and Horde.allowed(victim) and victim:getSquare() == ray.square
         and getCell():getGridSquare(ray.square:getX(), ray.square:getY(), ray.z) == ray.square
         and math.abs((victim:getX() - ray.x) * ray.dy - (victim:getY() - ray.y) * ray.dx) <= math.max(.2, victim:getWidth())
         and (victim:getX() - ray.x) * ray.dx + (victim:getY() - ray.y) * ray.dy >= 0

@@ -2,6 +2,8 @@ local L = require("OMHTT/LootDefinitions")
 local T = require("OMHTT/Turret")
 local M = require("OMHTT/TurretModules")
 local P = {TYPE = "Base.OMHTTModulePack", COUNT = 3}
+-- Retain failed draws outside client-writable item metadata.
+local pending = setmetatable({}, {__mode = "k"})
 local names, weights, entries = {}, {}, {}
 for name in pairs(L.WEIGHTS) do
     names[#names + 1] = name
@@ -51,12 +53,12 @@ end
 ---@param pack InventoryItem Exact carried pack
 ---@return table? rewards Granted items, or nil without consuming the pack
 function P.open(player, pack)
-    if isClient() or isServer() or not T.enabled() or player:isDead() then return nil end
+    if isClient() or not player or not pack or not T.enabled() or player:isDead() then return nil end
     local inventory = player:getInventory()
     if pack:getFullType() ~= P.TYPE or pack:getContainer() ~= inventory or not inventory:contains(pack) then return nil end
     local data = pack:getModData()
     if data.OMHTTPackOpened then return nil end
-    local names = data.OMHTTPackRewards
+    local names = pending[pack]
     if not names then
         local entries, total = P.pool()
         if total <= 0 then return nil end
@@ -64,7 +66,7 @@ function P.open(player, pack)
         for i = 1, P.COUNT do
             names[i] = P.pick(entries, total, ZombRandFloat(0, 1))
         end
-        data.OMHTTPackRewards = names
+        pending[pack] = names
     end
     if #names ~= P.COUNT then return nil end
     local rewards = {}
@@ -90,13 +92,21 @@ function P.open(player, pack)
         return nil
     end
     data.OMHTTPackOpened = true
+    data.OMHTTPackRewards = nil
+    pending[pack] = nil
+    if isServer() then
+        sendRemoveItemFromContainer(inventory, pack)
+        for i = 1, #rewards do
+            sendAddItemToContainer(inventory, rewards[i])
+        end
+    end
     return rewards
 end
 
 ---@param zombie IsoZombie Newly killed zombie after native inventory generation
 ---@return nil
 function P.onDeath(zombie)
-    if isClient() or isServer() or not T.enabled() or SandboxVars.OMHTurretsTraps.PotatoTurret == false then return end
+    if isClient() or not T.enabled() or SandboxVars.OMHTurretsTraps.PotatoTurret == false then return end
     local data = zombie:getModData()
     if data.OMHTTPackRolled then return end
     data.OMHTTPackRolled = true
@@ -109,7 +119,10 @@ function P.onDeath(zombie)
     if ZombRand(10000) >= chance * 100 then return end
     local inventory = zombie:getInventory()
     if inventory then
-        inventory:AddItem(P.TYPE)
+        local pack = inventory:AddItem(P.TYPE)
+        if isServer() and pack then
+            sendAddItemToContainer(inventory, pack)
+        end
     end
 end
 

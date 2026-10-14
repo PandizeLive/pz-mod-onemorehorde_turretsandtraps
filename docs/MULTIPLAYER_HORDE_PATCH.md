@@ -1,5 +1,7 @@
 # C238 - Multiplayer and Horde Night scoring patch preparation
 
+**C240 owner confirmation:** implement now, gameplay testing later. Ordinary native collision is neutral; active defense effects require receiving-run opt-in (1A). See [implementation progress](PATCH_C240_PROGRESS.md). Earlier obstruction alternatives below are superseded by this decision.
+
 Date: 2026-10-14. Status: prepared implementation specification, not a playable patch or MP certification.
 
 Owner: "This mod is supposed to work with OMH: Horde Night, and it'll be allowed to be used with a Score Divider. We need to make sure it's safe to add and score. Brush up on Horde Night, and prepare a patch for Multiplayer integration."

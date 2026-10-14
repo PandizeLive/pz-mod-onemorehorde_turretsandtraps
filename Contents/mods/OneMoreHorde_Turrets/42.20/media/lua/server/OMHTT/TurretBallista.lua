@@ -4,6 +4,7 @@ local Damage = require("OMHTT/Damage")
 local Conditional = require("OMHTT/TurretConditionalHit")
 local Volley = require("OMHTT/TurretVolley")
 local Proc = require("OMHTT/TurretProc")
+local Horde = require("OMHTT/DefenseHorde")
 local B = {}
 local weapon
 
@@ -22,6 +23,7 @@ function B.hit(record, origin, target, player, options)
     local x, y, square = target:getX(), target:getY(), target:getSquare()
     local dx, dy = x - origin:getX() - .5, y - origin:getY() - .5
     local hit = ZombRand(10000) < Heads.accuracy(stats, math.sqrt(dx * dx + dy * dy)) * 100
+    hit = hit and Horde.allowed(target)
     if hit then
         local amount = options.damage * (options.critical and stats.critMultiplier or 1)
         amount = Conditional.damage(target, amount, Conditional.snapshot(target, stats))

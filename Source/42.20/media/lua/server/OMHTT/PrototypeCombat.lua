@@ -1,3 +1,4 @@
+local Horde = require("OMHTT/DefenseHorde")
 local Budget = require("OMHTT/TurretScheduler")
 local Clock = require("OMHTT/TurretClock")
 if isClient() then return end
@@ -137,7 +138,7 @@ function Combat.candidates(origin, range)
                             end
                             visits = visits + 1
                             local zombie = objects:get(index)
-                            if not seen[zombie] and instanceof(zombie, "IsoZombie") and not zombie:isDead() then
+                            if not seen[zombie] and instanceof(zombie, "IsoZombie") and not zombie:isDead() and Horde.allowed(zombie) then
                                 seen[zombie] = true
                                 local zx = zombie:getX() - origin:getX() - 0.5
                                 local zy = zombie:getY() - origin:getY() - 0.5
@@ -193,7 +194,7 @@ function Combat.fire(record, object, player, options)
     end
     if options.target then
         local inside = Modules.inside(origin, options.target, options.profile)
-        if inside and Combat.clearLane(origin, options.target:getSquare(), options.range) then
+        if inside and Horde.allowed(options.target) and Combat.clearLane(origin, options.target:getSquare(), options.range) then
             target = options.target
         else
             target = nil
@@ -256,6 +257,10 @@ end
 ---@param options table Damage snapshot
 ---@return table impact Presentation facts
 function Combat.hit(record, origin, target, player, options)
+    if not Horde.allowed(target) then
+        require("OMHTT/TurretVolley").release(options)
+        return {id = record.id, shot = record.shots, x = target:getX(), y = target:getY(), z = target:getZ(), missed = true}
+    end
     local now, tx, ty = getTimestampMs(), target:getX(), target:getY()
     local before = target:getHealth()
     local impactSquare = target:getSquare()
@@ -339,6 +344,7 @@ function Combat.hit(record, origin, target, player, options)
         dead = target:isDead(), critical = critical, knockdown = knocked, splash = splash, ammo = record.ammo,
         directMs = damagedAt - now, reactionMs = splashStarted - damagedAt,
         splashMs = getTimestampMs() - splashStarted, hitMs = getTimestampMs() - now})
+    require("OMHTT/TurretVolley").release(options)
     return {x = tx, y = ty, z = origin:getZ(), id = record.id, shot = record.shots, target = target,
         fromX = origin:getX() + 0.5, fromY = origin:getY() + 0.5}
 end

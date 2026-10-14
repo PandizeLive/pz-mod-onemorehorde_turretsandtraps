@@ -2,6 +2,7 @@ local Budget = require("OMHTT/TurretScheduler")
 local Clock = require("OMHTT/TurretClock")
 local T = require("OMHTT/Turret")
 local M = require("OMHTT/TurretModules")
+local Horde = require("OMHTT/DefenseHorde")
 local D = require("OMHTT/Diagnostics")
 local S = {targets = setmetatable({}, {__mode = "k"}), pending = {}, order = {}, cursor = 1, results = setmetatable({}, {__mode = "k"})}
 
@@ -17,7 +18,7 @@ function S.request(player, object)
     local held = S.targets[object]
     local Combat = require("OMHTT/PrototypeCombat")
     if held and held.priority == profile.priority and (profile.priority == "Random" or profile.priority == "Toughest")
-        and M.inside(object:getSquare(), held.target, profile)
+        and Horde.allowed(held.target) and M.inside(object:getSquare(), held.target, profile)
         and Combat.clearLane(object:getSquare(), held.target:getSquare(), profile.range) then
         return require("OMHTT/TurretWorld").fire(player, object, held.target)
     end

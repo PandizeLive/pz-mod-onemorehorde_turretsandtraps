@@ -2,6 +2,7 @@ if isClient() then return end
 
 require("OMHTT/Foundation")
 local Diagnostics = require("OMHTT/Diagnostics")
+local Horde = require("OMHTT/DefenseHorde")
 local Damage = {}
 
 ---@param zombie IsoZombie Living victim
@@ -13,6 +14,8 @@ local Damage = {}
 ---@return number lost Actual native health removed
 function Damage.apply(zombie, amount, source, kind, operator, weapon)
     if isClient() or isServer() or zombie:isDead() or amount <= 0 then return 0 end
+    local allowed, core, token = Horde.beginDamage(zombie, amount, source, kind)
+    if not allowed then return 0 end
     local before = zombie:getHealth()
     local remaining = before - amount
     if remaining < 0.000001 then
@@ -20,11 +23,11 @@ function Damage.apply(zombie, amount, source, kind, operator, weapon)
     end
     zombie:setHealth(remaining)
     if remaining == 0 then
-        if operator then
-            zombie:hitConsequences(weapon, operator, true, 0, true)
-        else
-            zombie:Kill(nil, false)
-        end
+        -- Manual device fire must not grant ordinary weapon-kill credit.
+        zombie:Kill(nil, false)
+    end
+    if core then
+        core.endDamage(zombie, token)
     end
     local lost = before - zombie:getHealth()
     Diagnostics.defer("damage-applied", {id = source, kind = kind, before = before,

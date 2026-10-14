@@ -1,8 +1,10 @@
 # OMH: Turrets & Traps
 
-**C239 scoring selections:** [Multiplayer and Horde Night scoring](docs/MULTIPLAYER_HORDE_PATCH.md). Divide by5, explicit per-run opt-in and default-or-harder eligibility audit approved. Implementation and native enforcement remain outstanding; no new gameplay or MP readiness claimed. C238's149 assertions cover the existing Horde baseline only.
+**C240 implementation in progress:** [Multiplayer/Horde changes, verification and remaining work](docs/PATCH_C240_PROGRESS.md). Collision is neutral; active effects require receiving-run consent. Server pack transactions and core scoring integration are implemented, but the production MP port remains unfinished and uninstalled.
 
-**Active development:** [C236 combined-patch progress](docs/PATCH_C236_PROGRESS.md). The patch is unfinished; installed0.2.49 remains unchanged and player testing is deferred. [C237 multiplayer correction and work sequence](docs/MULTIPLAYER_AUDIT_C236.md#c237---original-multiplayer-requirement-and-continuation-2026-10-14): MP remains an original requirement; production paths are still SP-only and need authority/transaction work. Deferred testing does not stop approved development.
+**Approved scoring contract:** [Multiplayer and Horde Night scoring](docs/MULTIPLAYER_HORDE_PATCH.md). Divide by5, explicit per-run opt-in and default-or-harder eligibility audit. C240 above records actual implementation separately from remaining MP enforcement and acceptance.
+
+**Active development:** [C240 combined-patch progress](docs/PATCH_C240_PROGRESS.md), retaining the approved C235 content/Void work and [C236 foundation](docs/PATCH_C236_PROGRESS.md). Installed0.2.49 remains unchanged; player testing is deferred. MP is an original requirement and production authority/transactions remain unfinished. Deferred testing does not stop approved development.
 
 Latest LootLab correction: [shared saved rarity anchors](docs/LOOTLAB_TIER_PERSISTENCE.md#c185-shared-rarity-anchors-2026-10-12), C185.
 

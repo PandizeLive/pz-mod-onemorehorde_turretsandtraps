@@ -1,76 +1,50 @@
-if isClient() or isServer() then return end
-require("TimedActions/ISBaseTimedAction")
+if isServer() then return end
 require("TimedActions/ISTimedActionQueue")
 require("ISUI/ISInventoryPaneContextMenu")
 local P = require("OMHTT/TurretModulePack")
 local T = require("OMHTT/Turret")
-local A = ISBaseTimedAction:derive("OMHTTTurretPackAction")
+local A = require("OMHTT/TurretPackTimedAction")
+local seen, order = {}, {}
 
----@return boolean valid
-function A:isValid()
-    return not self.done and not self.character:isDead() and T.enabled()
-        and self.pack:getContainer() == self.character:getInventory() and self.character:getInventory():contains(self.pack)
-end
-
+---@param player IsoPlayer Recipient
+---@param rewards string[] Server-selected full item types
 ---@return nil
-function A:start()
-    self:setActionAnim("Loot")
-    self:setAnimVariable("LootPosition", "Mid")
-    self:setOverrideHandModels(nil, nil)
-end
-
----@return number duration Native action budget; completion uses elapsed real time
-function A:getDuration()
-    return 480
-end
-
----@return nil
-function A:update()
-    self.elapsed = self.elapsed + math.min(getGameTime():getRealworldSecondsSinceLastUpdate(), .25)
-    self:setJobDelta(math.min(self.elapsed / 2, .999))
-    if self.elapsed >= 2 then
-        self:forceComplete()
-    end
-end
-
----@return nil
-function A:stop()
-    self.done = true
-    ISBaseTimedAction.stop(self)
-end
-
----@return nil
-function A:perform()
-    ISBaseTimedAction.perform(self)
-end
-
----@return boolean complete
-function A:complete()
-    if self.elapsed < 2 or not self:isValid() then return false end
-    self.done = true
-    local rewards = P.open(self.character, self.pack)
-    if not rewards then
-        self.character:setHaloNote(getText("UI_OMHTT_PackUnavailable"), 255, 255, 255, 120)
-        return false
-    end
+function A.present(player, rewards)
     if require("OMHTT/ClientOptions").packAnimation() then
-        require("OMHTT/TurretPackReveal").show(self.character, rewards)
+        require("OMHTT/TurretPackReveal").show(player, rewards)
     else
-        self.character:setHaloNote(getText("UI_OMHTT_PackReceived", P.COUNT), 255, 255, 255, 120)
+        player:setHaloNote(getText("UI_OMHTT_PackReceived", P.COUNT), 255, 255, 255, 120)
     end
-    return true
 end
 
----@param character IsoPlayer Operator
----@param pack InventoryItem Exact pack
----@return table action
-function A:new(character, pack)
-    local o = ISBaseTimedAction.new(self, character)
-    o.pack, o.done, o.elapsed = pack, false, 0
-    o.stopOnWalk, o.stopOnRun = true, true
-    o.maxTime = o:getDuration()
-    return o
+---@param module string Command namespace
+---@param command string Command name
+---@param args table Server result; presentation only
+---@return nil
+local function result(module, command, args)
+    if module ~= "OMHTT" or command ~= "PackOpened" or type(args) ~= "table" then return end
+    if type(args.packId) ~= "number" or type(args.playerId) ~= "number" or type(args.rewards) ~= "table"
+        or #args.rewards ~= P.COUNT then return end
+    for i = 1, P.COUNT do
+        if type(args.rewards[i]) ~= "string" or not T.component(args.rewards[i]) then return end
+    end
+    local key = tostring(args.playerId) .. ":" .. tostring(args.packId)
+    if seen[key] then return end
+    for i = 0, getNumActivePlayers() - 1 do
+        local player = getSpecificPlayer(i)
+        if player and player:getOnlineID() == args.playerId then
+            seen[key] = true
+            order[#order + 1] = key
+            if #order > 64 then
+                seen[table.remove(order, 1)] = nil
+            end
+            A.present(player, args.rewards)
+            return
+        end
+    end
 end
+
+Events.OnServerCommand.Add(result)
 
 ---@param pack InventoryItem Exact selected pack
 ---@param player IsoPlayer Operator

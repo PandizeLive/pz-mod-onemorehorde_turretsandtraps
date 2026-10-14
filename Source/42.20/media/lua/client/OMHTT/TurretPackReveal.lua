@@ -141,7 +141,7 @@ function Panel:prerender()
 end
 
 ---@param player IsoPlayer Recipient
----@param rewards table Already granted items
+---@param rewards table Already granted items or server-selected full item types
 ---@return table panel
 function Panel.show(player, rewards)
     local index = player:getPlayerNum()
@@ -167,9 +167,17 @@ function Panel.show(player, rewards)
     for i = 1, #entries do
         names[entries[i].name] = true
     end
+    local rewardNames = {}
+    for i = 1, #rewards do
+        local fullType = rewards[i]
+        if type(fullType) ~= "string" then
+            fullType = rewards[i]:getFullType()
+        end
+        rewardNames[i] = T.component(fullType)
+    end
     local highestBand = 1
     for i = 1, #rewards do
-        local name = T.component(rewards[i]:getFullType())
+        local name = rewardNames[i]
         names[name] = true
         highestBand = math.max(highestBand, R.get(name).band)
     end
@@ -185,7 +193,7 @@ function Panel.show(player, rewards)
     for row = 1, #rewards do
         local reel = {position = 0, crossed = 0}
         for i = 1, WINNER_CARD + 2 do
-            local name = T.component(rewards[row]:getFullType())
+            local name = rewardNames[row]
             if i ~= WINNER_CARD and total > 0 then
                 name = P.pick(entries, total, ZombRandFloat(0, 1))
             end

@@ -22,6 +22,7 @@ end
 function inventory:Remove(item) self.items[item] = nil; item.container = nil end
 local function item(kind)
     local value = {kind = kind, data = {}}
+    function value:getID() return 123 end
     function value:getFullType() return self.kind end
     function value:getModData() return self.data end
     function value:getContainer() return self.container end
@@ -35,6 +36,7 @@ inventory:AddItem(pack)
 inventory.fail = true
 check(P.open(player, pack) == nil and inventory:contains(pack), "Failed reward insertion preserves pack")
 local selected = pack.data.OMHTTPackRewards
+check(selected == nil, "Pending rewards are not stored in client-writable item metadata")
 inventory.fail = false
 ZombRandFloat = function() error("Retry must not reroll committed pack") end
 local rewards = P.open(player, pack)
@@ -46,7 +48,7 @@ local emptyPack = item(P.TYPE)
 inventory:AddItem(emptyPack)
 check(P.open(player, emptyPack) == nil and inventory:contains(emptyPack), "Zero eligible weights preserve unopened pack")
 testMode = "client"
-check(P.open(player, emptyPack) == nil, "Deferred MP opening stays disabled")
+check(P.open(player, emptyPack) == nil, "Clients cannot consume packs or mint rewards")
 testMode = "sp"
 for name in pairs(L.WEIGHTS) do settings["LootRate" .. name] = nil end
 P.pool()
@@ -118,10 +120,42 @@ local actionPack = item(P.TYPE)
 actionPack.data.OMHTTPackRewards = {"Regulator", "Regulator", "CapacityLarge"}
 inventory:AddItem(actionPack)
 local action = Action:new(player, actionPack)
-check(not action:complete() and inventory:contains(actionPack), "Opening cannot complete before two seconds")
-action.elapsed = 2
+check(action.maxTime == 100 and action.elapsed == nil, "Native action clock replaces nonserialized elapsed state")
 check(action:complete() and not inventory:contains(actionPack), "Completed action grants before reveal")
 check(not action:complete(), "Timed action duplicate completion blocked")
+local oldAdd, oldRemove, oldSend = sendAddItemToContainer, sendRemoveItemFromContainer, sendServerCommand
+local added, removed, results = 0, 0, 0
+sendAddItemToContainer = function(container, reward)
+    check(container == inventory and inventory:contains(reward), "Server syncs committed reward items")
+    added = added + 1
+end
+sendRemoveItemFromContainer = function(container, consumed)
+    check(container == inventory and not inventory:contains(consumed), "Server syncs committed pack removal")
+    removed = removed + 1
+end
+sendServerCommand = function(recipient, namespace, command, args)
+    check(recipient == player and namespace == "OMHTT" and command == "PackOpened", "Targeted reveal result")
+    check(#args.rewards == 3 and args.rewards[1] ~= T.TYPES.Regulator, "Client metadata cannot select reward")
+    testPackets[#testPackets + 1] = args
+    results = results + 1
+end
+function player:getOnlineID() return 7 end
+testMode = "server"
+local serverPack = item(P.TYPE)
+serverPack.data.OMHTTPackRewards = {"Regulator", "Regulator", "Regulator"}
+inventory:AddItem(serverPack)
+ZombRandFloat = function() return 0 end
+-- A fresh constructor mirrors NetTimedAction reconstruction: no client start/update.
+local reconstructed = Action:new(player, serverPack)
+check(reconstructed:complete(), "Server-reconstructed action completes without client-only elapsed or started fields")
+check(added == 3 and removed == 1 and results == 1, "One committed server transaction and one reveal")
+check(not Action:new(player, serverPack):complete(), "New action replay against consumed pack grants nothing")
+check(added == 3 and removed == 1, "Replay emits no duplicate inventory sync")
+testMode = "client"
+local clientPack = item(P.TYPE); inventory:AddItem(clientPack)
+check(not Action:new(player, clientPack):complete() and inventory:contains(clientPack), "Client complete cannot mutate inventory")
+testMode = "sp"
+sendAddItemToContainer, sendRemoveItemFromContainer, sendServerCommand = oldAdd, oldRemove, oldSend
 getTextManager, getScriptManager = originalManager, originalScripts
 ISPanel.new, ISPanel.prerender = originalNew, originalPrerender
 instanceItem, ZombRand, ZombRandFloat = oldFactory, oldRoll, oldFloat

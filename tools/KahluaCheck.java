@@ -186,6 +186,7 @@ public final class KahluaCheck {
             {"OMHTT/BarrierSelection", base + "client/OMHTT/BarrierSelection.lua"},
             {"_", base + "client/OMHTT/BarrierMenu.lua"},
             {"_", "tools/tests/service_load_order_after.lua"},
+            {"OMHTT/DefenseHorde", base + "shared/OMHTT/DefenseHorde.lua"},
             {"OMHTT/Damage", base + "server/OMHTT/Damage.lua"},
             {"OMHTT/DefenseMaterials", base + "shared/OMHTT/DefenseMaterials.lua"},
             {"OMHTT/TurretClock", base + "shared/OMHTT/TurretClock.lua"},
@@ -355,11 +356,13 @@ public final class KahluaCheck {
             {"_", "tools/tests/rarity_anchors.lua"},
             {"_", base + "server/OMHTT/TurretPackLoot.lua"},
             {"OMHTT/TurretPackReveal", base + "client/OMHTT/TurretPackReveal.lua"},
+            {"OMHTT/TurretPackTimedAction", base + "shared/OMHTT/TurretPackTimedAction.lua"},
             {"OMHTT/TurretPackAction", base + "client/OMHTT/TurretPackAction.lua"},
             {"_", "tools/tests/module_pack.lua"},
             {"_", "tools/tests/turret_heads.lua"},
             {"_", "tools/tests/turret_void.lua"},
             {"_", "tools/tests/multiplayer_audit.lua"},
+            {"_", "tools/tests/horde_defense.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

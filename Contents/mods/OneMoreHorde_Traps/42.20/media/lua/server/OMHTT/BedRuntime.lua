@@ -1,6 +1,7 @@
 if isClient() or isServer() then
     return
 end
+local Horde = require("OMHTT/DefenseHorde")
 local B = require("OMHTT/BedSpikes")
 local C = require("OMHTT/BedContact")
 local F = require("OMHTT/Foundation")
@@ -11,6 +12,7 @@ local frame = {}
 ---@param zombie IsoZombie Updated zombie
 ---@return nil
 function B.zombie(zombie)
+    if not Horde.allowed(zombie) then return end
     if B.count == 0 or not B.enabled() or not B.store or zombie:isDead() then
         return
     end

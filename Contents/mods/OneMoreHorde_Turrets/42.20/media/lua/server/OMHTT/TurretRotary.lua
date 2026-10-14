@@ -1,4 +1,5 @@
 if isClient() or isServer() then return end
+local Horde = require("OMHTT/DefenseHorde")
 local T = require("OMHTT/Turret")
 local Heads = require("OMHTT/TurretHeads")
 local M = require("OMHTT/TurretModules")
@@ -57,6 +58,7 @@ function R.contact(entry, actor, job)
     local zombie = instanceof(actor, "IsoZombie")
     local player = instanceof(actor, "IsoPlayer")
     if not zombie and not player then return end
+    if zombie and not Horde.allowed(actor) then return end
     local origin = entry.object:getSquare()
     local square = actor:getSquare()
     if not square or actor:isDead() or square:getZ() ~= origin:getZ() then return end

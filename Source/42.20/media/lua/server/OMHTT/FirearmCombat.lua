@@ -1,4 +1,5 @@
 if isClient() or isServer() then return end
+local Horde = require("OMHTT/DefenseHorde")
 local G = require("OMHTT/Firearms")
 local Accuracy = require("OMHTT/FirearmAccuracy")
 local Damage = require("OMHTT/Damage")
@@ -43,7 +44,7 @@ function C.hit(record, origin, target, player, options)
     for i = 1, #targets do eligibility[targets[i]] = Conditional.snapshot(targets[i], stats) end
     for i = 1, pellets do
         local victim = targets[(i - 1) % #targets + 1]
-        if aimHit and not victim:isDead() then
+        if aimHit and not victim:isDead() and Horde.allowed(victim) then
             local hitX, hitY, hitSquare = victim:getX(), victim:getY(), victim:getSquare()
             local amount = Conditional.damage(victim, stats.damage * multiplier / 100 / pellets, eligibility[victim])
             lost = lost + Damage.apply(victim, amount, record.id, "firearm", player, gun)

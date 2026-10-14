@@ -1,4 +1,5 @@
 if isClient() or isServer() then return end
+local Horde = require("OMHTT/DefenseHorde")
 local E
 local P = require("OMHTT/ContactPlayer")
 local Movement = require("OMHTT/BarbMovement")
@@ -18,7 +19,7 @@ end
 ---@param zombie IsoZombie Updated zombie
 ---@return nil
 local function zombieUpdate(zombie)
-    if zombie:isDead() then return end
+    if zombie:isDead() or not Horde.allowed(zombie) then return end
     -- Built wire owns overlap contact; use the same persisted timer when crossing its boundary.
     if P.barbs and P.barbs.contact(zombie) then return end
     local field = E.contact(zombie)

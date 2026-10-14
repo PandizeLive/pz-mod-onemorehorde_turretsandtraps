@@ -13,7 +13,7 @@ for _, mode in pairs({"client", "server"}) do
     check(not T.hybrid() and not T.recipeInput(nil, nil) and not OMHTT_TurretMenuAvailable({}), "Production turret build/render gates remain SP-only: " .. mode)
     check(not W.valid(nil), "MP has no active production world turret: " .. mode)
     check(Combat.fire({kind="potato",ammo=4,shots=0}, nil, nil) == "MPCombatDeferred", "MP combat is explicitly deferred: " .. mode)
-    check(Pack.open(nil, nil) == nil, "MP opening cannot consume pack or grant rewards: " .. mode)
+    check(Pack.open(nil, nil) == nil, "Pack opening rejects missing authoritative player/item: " .. mode)
     check(not Bed.enabled(), "Bed Spikes are disabled in MP: " .. mode)
     check(not Barb.enabled("panel") and not Barb.enabled("wire"), "Barbed Panels and Concertina are disabled in MP: " .. mode)
 end

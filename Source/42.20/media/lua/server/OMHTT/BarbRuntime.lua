@@ -1,4 +1,5 @@
 if isClient() or isServer() then return end
+local Horde = require("OMHTT/DefenseHorde")
 local B = require("OMHTT/BarbSections")
 local C = require("OMHTT/BarbContact")
 local S = require("OMHTT/BarbSupport")
@@ -11,6 +12,7 @@ local soundAt = 0
 ---@param zombie IsoZombie Updated zombie
 ---@return nil
 function B.zombie(zombie)
+    if not Horde.allowed(zombie) then return end
     if #B.order == 0 or (not B.enabled() and not B.wireEnabled()) or zombie:isDead() then return end
     local square = zombie:getSquare()
     if not square then return end

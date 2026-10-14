@@ -1320,3 +1320,8 @@ Owner: "1A / 2B / 3B", referring to C238's final choices. Confirms divide by5 (r
 Update MULTIPLAYER_HORDE_PATCH.md, integration contract and current roadmap/status accordingly. One T&T factor applies for either or both packages, composing with other approved modifiers; no kill/XP division or retroactive rescoring. Consent must belong to the authoritative receiving run, with normal run-configuration permissions. Recommend gating special assistance by that consent; investigate native physical obstruction and Lure attraction before promising complete isolation. Do not force opt-in from a foreign device, silently select the rejected world-wide policy, or claim unknown settings are harder. No new owner decision is requested until a concrete unresolved behavior or native limitation is established. Shared-XP rules remain separate.
 
 This turn records the selections and inspects existing Horde run configuration and T&T contact paths. No runtime/sibling edits, tests, installation or new MP acceptance. Fetched origin; no missing origin/dev commits. Independent approved MP/content work remains outstanding; player tests stay deferred. Standing T&T development mirror applies.
+
+
+## C240 - implementation authorized; ordinary collision neutral (2026-10-14)
+
+Owner: "Approved. Go ahead and implement the multiplayer patch with the Horde Night integration. We'll test later." Follow-up explicitly selects **1A: ordinary native collision is neutral; active effects require receiving-run opt-in**. Preserve C239 /5, per-run consent and default-or-harder audit. Gameplay acceptance remains deferred, not a development blocker. [Working implementation and evidence](PATCH_C240_PROGRESS.md).

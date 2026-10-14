@@ -1,5 +1,7 @@
 # Phases and checkpoints
 
+**C240 active implementation:** R1C3/R5C1 production multiplayer authority and the R5C2 Horde scoring subset are in progress within the existing combined C235 patch. [Completed code, evidence and remaining transport/transaction work](PATCH_C240_PROGRESS.md). None of these MP checkpoints is accepted or installed; deferred owner testing is not a development gate.
+
 **C236 active work:** complete the approved combined C235 content/ammo patch; [progress and remaining gates](PATCH_C236_PROGRESS.md). Multiplayer verification found existing SP-only production guards; [audit and future port requirements](MULTIPLAYER_AUDIT_C236.md). This does not mark a multiplayer milestone complete or request player testing.
 
 **C235 / final capacity selected; ready to implement (2026-10-14).** Owner selects1B:40 spears,20 shared launchable explosives in any mixture,250 ordinary firearm base rounds. [Combined readiness and verification gates](VOID_MODULE.md#c235-final-capacity-selected-ready-for-implementation-2026-10-14). Last presented balance choice settled; remaining work is native integration/validation, not further generic design approval. Installed0.2.49 unchanged; no gameplay/install/test-status change in this readiness turn.

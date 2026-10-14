@@ -3,6 +3,7 @@ if isClient() then return end
 local Footprint = require("OMHTT/BarrierFootprint")
 local Foundation = require("OMHTT/Foundation")
 local Damage = require("OMHTT/Damage")
+local Horde = require("OMHTT/DefenseHorde")
 local Diagnostics = require("OMHTT/Diagnostics")
 local Barrier = {TYPE = "OMHTTBarrierClaw", TOKEN = "OMHTTBarrierStrike"}
 local generation = 0
@@ -73,7 +74,7 @@ function Barrier.update(zombie)
     end
     local target = zombie:getThumpTarget()
     if zombie:isDead() or not target or zombie:getCurrentStateName() ~= "ThumpState"
-        or not Foundation.barrierEnabled() then
+        or not Foundation.barrierEnabled() or not Horde.allowed(zombie) then
         if data and data.OMHTTBarrierStrike then
             Barrier.release(zombie)
         end
