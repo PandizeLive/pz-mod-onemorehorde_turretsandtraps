@@ -1,5 +1,7 @@
 # C229 Consolidated pre-patch choices (2026-10-14)
 
+**C231 / mini grenades and recipes selected; Void storage proposed (2026-10-14).** Owner selects C2301A and2B, replacing storage option3 with a roughly75% ammo-capacity reduction and portable Void Module holding permanently converted weightless ammo by type. [Approved direction, tradeoffs and remaining choices](VOID_MODULE.md). Reduction scope, normalization, conversion interaction, removal and rarity remain proposals. Preserve five-mini behavior, pump/improvised same-output recipes and earlier unrelated approvals. No gameplay/install/test-status change.
+
 ## C230 Owner selections and revised recipe/Fragment proposals (2026-10-14)
 
 This section supersedes the proposal-only status below for selected groups. Owner chooses C229 **1A, 2A with mini-grenade Fragment, 3B, 4A, 5A, 6A, 7B, 9A with two Scrap Metal, 10A, 11A, 12A with a40-spear limit**. Group8 is expressly returned for native-component/improvised recipe proposals. No gameplay implementation or test acceptance follows from this documentation update.
