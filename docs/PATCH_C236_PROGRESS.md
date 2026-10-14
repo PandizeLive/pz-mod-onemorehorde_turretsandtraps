@@ -21,6 +21,8 @@ Pack checks cover natural completion, manual Skip, duplicate finish, Collect, ca
 
 ## Remaining approved work
 
+C238 adds the owner's explicit Horde Night/Score Divider integration preparation: [coordinated patch specification](MULTIPLAYER_HORDE_PATCH.md). Numeric scoring policy still needs selection; this does not cancel independent MP work or the existing content bundle. No implementation is claimed for the new specification.
+
 C237 reaffirms the original MP requirement and corrects the premature C236 stop. [Authority/transaction work and recommended sequence](MULTIPLAYER_AUDIT_C236.md#c237---original-multiplayer-requirement-and-continuation-2026-10-14) belong to existing R1C3/R5C1. Build that shared path before completing ammo integration below; owner testing remains deferred, not an implementation blocker. This note supplies no new gameplay or compatibility evidence.
 
 1. Wire physical/virtual ammo into reloads, safe head/module removal, payload priority/fallback and Manage. Prove actual InventoryItem persistence, bounded conversion, Conservation debt portability and no virtual-round materialization or free Impact rearming.

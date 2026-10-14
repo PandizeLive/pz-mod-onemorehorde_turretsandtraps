@@ -94,6 +94,8 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 
 ## Current checkpoint status and next work
 
+**C238 coordination:** owner explicitly requests preparing Horde Night integration with a Score Divider alongside MP. [Patch specification](MULTIPLAYER_HORDE_PATCH.md) links R1C3/R5C1 production authority with the R5C2 Horde-scoring subset. Core recognition, persistent policy, score math/export and website validation are coordinated work, not an addon-only whitelist toggle. Three policy choices remain; shared Trait Shop XP and Cure simulation are not silently added to this patch.
+
 **C235-C237:** the combined head/ammo/module/pack patch is approved and partially implemented, not installed; [actual progress](PATCH_C236_PROGRESS.md). Installed0.2.49 remains unchanged and owner testing deferred. MP remains an original requirement, with production authority work outstanding under R1C3/R5C1; [recommended sequence and correction](MULTIPLAYER_AUDIT_C236.md#c237---original-multiplayer-requirement-and-continuation-2026-10-14). No further generic design approval or immediate owner test is required to continue. R3C7 retains broader acceptance; C170 packed-weight cancellation remains final.
 
 | Phase / checkpoints | Status | Remaining work / next gate |
@@ -110,7 +112,8 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 | 3: R3C8 starter modules/expansion | C104 implemented, verified and installed in 0.2.34 | C106 tentative passes; 4/6/6 layout acceptance in 0.2.35; include maximum loadouts in future R3C7 endurance checks |
 | 4: R4C1-R4C4 signals/connected traps | Planned | Signal contract first; devices then optional turret receiver |
 | 5: R5C1 MP | Original requirement reaffirmed C237; audit confirms production paths still SP-only | Recommended next engineering dependency: common authority/transactions before new ammo integration, then integrated MP proof; owner tests deferred |
-| 5: R5C2-R5C3 integrations/release | Planned; no certification or publication | Optional sibling contracts and publication remain separate; not prerequisites for implementing core MP |
+| 5: R5C2 Horde scoring | C238 owner requests MP/scoring integration preparation; source review and149 existing-policy assertions complete | Set divider, activation and settings policy; coordinated core/T&T/website implementation and evidence. Shared Trait Shop XP remains separate |
+| 5: R5C3 release | No certification or publication | Preserve independent packages; coordinated score validators before official integration claims; separate publication authorization |
 | 6: R6C1-R6C3 Cure simulation | Deferred, last | Matching contracts and loaded-combat controls first |
 
 The phase order is not a mandatory queue through every feature. R1C3 continues alongside relevant SP content, and Phase 3 may proceed without finishing every passive trap. R3C1 head selection and R3C4 module contract/battery baseline are separate entry points; neither requires a new head to be implemented first. C120 selects and implements the 0.2.38 passive-content bundle; C125 selected the module track; C177 completes the approved pack/weight/hour bundle; C171 capacity warnings were corrected under C181; C189 implements supplied rarity audio/weights and C191 queues only the new timing refinements, and packed-weight compression remains abandoned (C170).

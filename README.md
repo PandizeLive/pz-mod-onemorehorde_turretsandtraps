@@ -1,5 +1,7 @@
 # OMH: Turrets & Traps
 
+**C238 patch preparation:** [Multiplayer and Horde Night scoring](docs/MULTIPLAYER_HORDE_PATCH.md). Allowed-with-Score-Divider direction confirmed; divider amount, activation and Official settings policy remain choices. Existing Horde policy checks pass149 assertions; no new gameplay or MP readiness claimed.
+
 **Active development:** [C236 combined-patch progress](docs/PATCH_C236_PROGRESS.md). The patch is unfinished; installed0.2.49 remains unchanged and player testing is deferred. [C237 multiplayer correction and work sequence](docs/MULTIPLAYER_AUDIT_C236.md#c237---original-multiplayer-requirement-and-continuation-2026-10-14): MP remains an original requirement; production paths are still SP-only and need authority/transaction work. Deferred testing does not stop approved development.
 
 Latest LootLab correction: [shared saved rarity anchors](docs/LOOTLAB_TIER_PERSISTENCE.md#c185-shared-rarity-anchors-2026-10-12), C185.

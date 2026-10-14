@@ -1,6 +1,6 @@
 # OMH and Trait Shop integration plan
 
-Status: proposed contracts and coordinated work. Existing support and required changes are distinguished below. No sibling project was changed by the foundation pass.
+Current status C238: owner confirms Horde Night compatibility and Allowed-with-Score-Divider direction; [reviewed MP/scoring patch preparation](MULTIPLAYER_HORDE_PATCH.md) supersedes the old source snapshot below. Exact divider, activation scope and official settings baseline remain decisions. No scoring integration is implemented by that preparation. Existing shared-XP and Cure simulation proposals remain separate, unapproved where marked. No sibling project was changed by the foundation pass or C238.
 
 ## Baseline and project coordination
 
