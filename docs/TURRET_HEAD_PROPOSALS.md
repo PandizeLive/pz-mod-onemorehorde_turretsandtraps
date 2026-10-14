@@ -1,5 +1,39 @@
 # Unique turret head candidates
 
+## C225 Selected revisions and previous-head module review (2026-10-13)
+
+Owner selects C224 **1A with Shell150/radius4 and an expensive recipe direction;2B with adjustable volume/range and Horde Night's attraction sound;3B;4A;5A;6B**. Also requests considering modules for previous heads. These selections settle the listed design defaults, not the remaining module/recipe rules or a gameplay patch. Starting development commit a45f57b; fetched origin before recording. Installed0.2.49 and its partial owner findings remain unchanged.
+
+| Confirmed item | Selected behavior |
+| --- | --- |
+| Lobber ordinary bombs | Native zombie damage roll/radius: Aerosol350-<700/6 tiles, Pipe450-<900/7 tiles, with custom linear center-to-zero-edge falloff. Actor-only, no fire/structure damage; handheld behavior unchanged |
+| Improvised Shell |150 center zombie damage,4-tile radius, same falloff; more expensive crafting desired, exact ingredients/tools/skills/XP/yield still open |
+| Lure | Manual button plus repeating toggle, five-second repeat interval; user-adjustable volume/range; reuse Horde Night attraction audio. Exact slider relationship/limits, rarity, power and acquisition still open |
+| Rotary Bat/Blades |2-tile physical reach via mount extension;90-degree front/rear sectors; retain25RPM angular speed and360 behavior |
+| Ballista |45-degree FOV,24-tile range,24tiles/sec spear travel (about1second at base maximum range); shallow visual arc desired, true ballistic clearance still unproven |
+| Scrapshot |90-degree fan,8 fragments at15 each,120 total unmodified primary damage if all connect; multiple hits per victim allowed, misses lose their share |
+| Built-in magazines | Potato3, Ballista5, Lobber3, Scrapshot10; C2246B scope retains native firearm capacities and exempts ammunition-free rotaries. Magazine growth uses the existing35%/minimum+1/final-ceiling rule unless separately changed |
+
+Capacity here is ready ammunition, not reserve weight. The Ballista44-spear storage mismatch remains a separate engineering issue. Reload timings/overlap must be settled with the selected base shot intervals; do not silently add sequential waits. More expensive Shell materials are direction, not approval to invent a recipe.
+
+### Read-only compatibility and audio evidence
+
+`TurretHeads.supports` currently rejects rotary Filter, Splitter, Piercing, Conservation, Magazine, Reload, Autoloader, Impact, Fragment, Tack, Martyrdom, Synergy, Range and Accuracy. C195-C197 deliberately excluded most of these; owner now authorizes reconsideration, not their automatic activation. `TurretRotary.contact` already applies Critical, Initial Blow and Execute; `TurretStats` applies Velocity damage/reaction, Rapid-Fire/Enhanced Firing motor speed, Regulator, suppression and expansion module slots. Enhanced Detection improves scan interval; its normal3xaim-turn benefit is not3xrotary motor speed. Head-specific descriptions must state actual effects.
+
+Potato currently accepts Piercing as active, counts it in module power, then `TurretStats.resolve` produces piercing0 and `PrototypeCombat.hit` never invokes `TurretVolley.pierce`. This is a verified source-level no-effect compatibility inconsistency, not a newly failed game test. Ballista already calls Piercing, Fragment and hit effects; converting its flight must preserve their timing and meaning. Firearm/Potato existing module support is not a new feature. Potato splash currently does not call proc propagation; any new Synergy-on-splash behavior needs explicit settlement rather than accidental activation during this audit.
+
+Audio file found at `OMH/Audio/Horde Night/soundattraction.wav`, SHA256 `F1D7317FB67773F448EB9164886FDB8B5279F20FF7F514B2FBA09BF8E62FFC35`. Sibling `OMH_sounds.txt` defines `OMH_SoundAttraction` as a non3D UI cue; client bootstrap handles audible cue and gameplay world sound separately. Reuse the owned clip in a Turrets-namespaced positional definition, bundled independently; do not require Horde Night, modify sibling files or copy its protected-call wrappers. Native hearing events attract attention without guaranteeing target replacement. Selected sound is located, not newly auditioned/implemented.
+
+### Proposed next choices (unapproved)
+
+1. **Rotary effects:**1A recommended, add Tack and Martyrdom using existing field/death meanings and delays;1B add Martyrdom only;1C retain current exclusions. A sweep can hit many victims: use per-victim eligibility, existing no-stacked Tack fields/retrigger lifetime, shared bounded work and no recursive explosion chain. Current proc reservations assume projectile counts, so simply removing exclusions would be incorrect. Any gameplay cap needed beyond scheduling must be discussed. Synergy has no distinct work on a plain multi-contact sweep because those are primary contacts; keep it unsupported unless a secondary effect path is separately approved.
+2. **Potato Piercing:**2A recommended, mark unsupported, reject new installation and deactivate a carried copy after head swaps without charging its surcharge; preserve the item.2B implement actual penetration; would need to choose where its splash/Fragment occur and whether later hits inherit knockdown. Retain existing splash identity until those rules are chosen. Do not leave an accepted module draining battery for no effect.
+3. **Lure controls:**3A recommended, one Loudness slider controlling audible volume and zombie attraction range together, proposed10-60tiles/default30 with Off via toggle;3B separate audible-volume and attraction-range sliders. Either needs bounds and power scaling by attraction radius so a louder/wider lure is not free. The owner approved adjustability, not either mapping or numeric limits yet. Reuse one scheduler with no catch-up burst; Suppression affects attacks, not the explicitly selected lure setting.
+
+Recommend Lure compatible with all heads, including rotaries. Preserve meaningful existing rotary stat effects; keep ammo/reload effects, Splitter, redundant Piercing and Accuracy unsupported on rotary heads. Range must not create invisible reach beyond the extended mount; defer a telescoping-arm adaptation. Filter would only change start/activation criteria, not make a physical sweep spare incidental victims, so it is low priority rather than a free compatibility fix. Lure non-stacking remains recommended, not settled by selecting repeating controls.
+
+Before implementation, complete the module matrix for Lobber/Scrapshot, especially Conservation/Splitter with scarce native bombs, pellet effects and Synergy propagation. Conservation can multiply rare bomb supply and Splitter can multiply blast events; their meaning/cost needs a deliberate choice alongside native-strength ammo. Remaining gates include reload durations, power/Lure rarity and LootLab inclusion, recipes, player injury, projectile/reserve lifecycle and native/rendered proof. No code, asset, version, installation or test-acceptance changes in this planning update.
+
 ## C224 Owner head feedback, Lure and magazine redesign (2026-10-13)
 
 Owner requests native bomb damage again, noting scarcity as a reason to retain strength; this is not selection of C2231C yet. Confirms C2232A linear falloff conditionally on the damage choice, and3A multiple Scrapshot fragments may hit one victim, additionally requesting wider spread and more fragments. Replaces the proposed Scrapshot Impact exclusion with4C: built-in magazines for all heads, capacities to discuss. Thus Scrapshot's former no-magazine/no-reload rule and its magazine-related exclusions are reopened/superseded in design; do not implement Impact exclusion. Confirm exact scope for ammunition-free rotary heads before implementation.
