@@ -56,6 +56,58 @@ return function(player)
     local remove = OMHTTBarbServiceAction:new(player, last, paired.id, "Remove")
     assert(remove:complete() and not remove:complete() and not Wire.record(first) and not Wire.record(last), "Native wire pickup did not retire both bindings exactly once")
     assert(player:getInventory():getFirstType("Base.OMHTTTrapConcertinaWire"), "Native recovered wire missing")
+    local F = require("OMHTT/Foundation")
+    local P = require("OMHTT/BarrierFootprint")
+    require("OMHTT/BarrierServiceAction")
+    local a, b = square(26, 20), square(26, 21)
+    local state = {id = "native-service-barrier", kind = "barrier", x = 26, y = 20, z = 0, facing = 0,
+        width = 2, placementSource = "construction", condition = 40, maxHealth = 100, observedLoss = 0, revision = 1}
+    local keyA, keyB = F.key(26, 20, 0), F.key(26, 21, 0)
+    local ledger = {tiles = {}, nextId = 1, tileCount = 2}
+    ledger.tiles[keyA] = {device = state, x = 26, y = 20, z = 0, epoch = 1}
+    ledger.tiles[keyB] = {anchor = keyA, x = 26, y = 21, z = 0, epoch = 1}
+    P.initialize(ledger, {keyA, keyB})
+    local barrierParts = {}
+    for i = 1, 2 do
+        local target = i == 1 and a or b
+        local part = IsoThumpable.new(nativeCell, target, "omhtt_barrier_01_" .. (i - 1), false)
+        part:setName(F.PREFIX .. state.id)
+        part:setMaxHealth(100)
+        part:setHealth(40)
+        F.writeMarker(part, state)
+        target:getObjects():add(part)
+        target:getSpecialObjects():add(part)
+        barrierParts[i] = part
+    end
+    local approach = square(25, 20)
+    player:setX(25.5)
+    player:setY(20.5)
+    player:setCurrent(approach)
+    local repairBarrier = OMHTTBarrierServiceAction:new(player, barrierParts[1], state.id, "Repair")
+    assert(repairBarrier:getDuration() == 500 and repairBarrier:complete() and not repairBarrier:complete(),
+        "Native server barrier repair relies on client elapsed time or replays")
+    assert(barrierParts[2]:getHealth() == 100, "Native barrier partner health not repaired")
+    local pickupBarrier = OMHTTBarrierServiceAction:new(player, barrierParts[2], state.id, "Pickup")
+    assert(pickupBarrier:getDuration() == 250 and pickupBarrier:complete() and not pickupBarrier:complete(),
+        "Native server barrier pickup failed or duplicated")
+    assert(player:getInventory():getFirstType("Base.OMHTTTrapSpikeBarrier"), "Native recovered barrier missing")
+    print("[OMHTT-Smoke] native-server-barrier repair=both pickup=once clientElapsed=unused mappedRemoval=not-tested")
+    local buildLedger = {tiles = {}, nextId = 100, tileCount = 0}
+    P.initialize(buildLedger, {})
+    for x = 31, 34 do for y = 19, 23 do square(x, y) end end
+    local built
+    for part = 0, 1 do
+        local target = squares[key(32, 20 + part, 0)]
+        local object = IsoThumpable.new(nativeCell, target, "omhtt_barrier_01_" .. part, false)
+        target:getObjects():add(object)
+        target:getSpecialObjects():add(object)
+        local info = SpriteConfigManager.GetObjectInfo("OMHTTSpikeBarrier")
+        GameEntityFactory.CreateIsoObjectEntity(object, info:getScript():getParent(), true)
+        require("OMHTT/Construction").onCreate({thumpable = object, character = player, facing = "e"})
+        built = P.exact(object)
+    end
+    assert(built and #P.parts(built) == 2 and #P.colliders(built) == 4, "Native server construction did not create its paired four-edge outline")
+    print("[OMHTT-Smoke] native-server-barrier-build callback=production parts=2 colliders=4 clients=0")
     getCell = nativeGetCell
     print("[OMHTT-Smoke] native-server-traps bed=repair-pickup wire=paired-repair-pickup publicMarkers=ignored clients=0 mappedRemoval=not-tested")
 end

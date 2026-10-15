@@ -1,0 +1,158 @@
+local S = require("OMHTT/DefenseCombatServer")
+local C = require("OMHTT/DefenseCombatClient")
+local P = require("OMHTT/DefenseCombatProtocol")
+local oldMode, oldCore, oldServer, oldClient, oldPlayer = testMode, OneMoreHordeDefenseIntegration, sendServerCommand, sendClientCommand, getSpecificPlayer
+local serverPackets, clientPackets, completions = {}, {}, {}
+local player = {getOnlineID = function() return 12 end, isDead = function() return false end}
+local stranger = {getOnlineID = function() return 13 end, isDead = function() return false end}
+OneMoreHordeDefenseIntegration = nil
+getSpecificPlayer = function(index) return index == 0 and player or nil end
+sendServerCommand = function(recipient, module, command, message)
+    check(recipient == player and module == P.MODULE, "Combat addresses the actual zombie owner only")
+    serverPackets[#serverPackets + 1] = {command, nativeRoundTrip(message)}
+end
+sendClientCommand = function(sender, module, command, message)
+    check(sender == player and module == P.MODULE, "Receipt uses the authenticated local owner")
+    clientPackets[#clientPackets + 1] = {command, nativeRoundTrip(message)}
+end
+local nextId = 3000
+check(math.floor(P.EPSILON * 1000) >= 1, "Lethal reservation survives native thousandth-health quantization")
+local function actor(id)
+    local z = {id = id, health = 1, data = {}, owner = player}
+    function z:getOnlineID() return self.id end
+    function z:getPersistentOutfitID() return self.id * 10 end
+    function z:getOwnerPlayer() return self.owner end
+    function z:getOwner() return self.connection or (self.owner and player) end
+    function z:getHealth() return self.health end
+    function z:setHealth(value) self.health = value end
+    function z:isDead() return self.health <= 0 end
+    function z:isRemoteZombie() return self.remote == true end
+    function z:isInvulnerable() return self.invulnerable == true end
+    function z:getModData() return self.data end
+    function z:getX() return 100 end
+    function z:getY() return 100 end
+    function z:getZ() return 0 end
+    function z:Kill(attacker) check(attacker == nil, "Device death never fabricates player credit"); self.health = 0; self.killed = true end
+    return z
+end
+local function pair()
+    nextId = nextId + 1
+    local server, client = actor(nextId), actor(nextId)
+    testMode = "client"; C.created(client)
+    testMode = "server"; S.created(server)
+    return server, client
+end
+local function done(lost, reason) completions[#completions + 1] = {lost, reason} end
+local function clientReceive()
+    local packet = table.remove(serverPackets, 1)
+    check(packet ~= nil, "Expected server command")
+    testMode = "client"; C.command(P.MODULE, packet[1], packet[2]); testMode = "server"
+    return packet
+end
+local function serverReceive(sender)
+    local packet = table.remove(clientPackets, 1)
+    check(packet ~= nil, "Expected owner acknowledgement")
+    S.command(P.MODULE, packet[1], sender or player, packet[2])
+    return packet
+end
+local server, client = pair()
+check(S.request(server, .3, "turret-1", "firearm", done), "Server accepts owner-aware damage")
+check(not S.request(server, .3, "turret-1", "firearm", done), "One pending hit per native victim bounds contention")
+clientReceive()
+check(client.health == 1 and server.health == 1, "Prepare does not damage either replica")
+local ready = serverReceive(stranger)
+check(#serverPackets == 0, "Another player's Ready cannot authorize a commit")
+S.command(P.MODULE, ready[1], player, ready[2])
+client.health = .8 -- Ordinary local player damage occurs between preparation and commit.
+local commit = clientReceive()
+check(math.abs(client.health - .5) < .000001, "Relative damage preserves an intervening ordinary player hit")
+testMode = "client"; C.command(P.MODULE, commit[1], commit[2]); testMode = "server"
+check(math.abs(client.health - .5) < .000001, "Repeated commit cannot apply the same damage twice")
+serverReceive(); serverReceive()
+check(math.abs(server.health - .5) < .000001 and #completions == 1 and math.abs(completions[1][1] - .3) < .000001,
+    "Server commits one bounded receipt and one completion callback")
+S.command(P.MODULE, ready[1], player, ready[2])
+check(#serverPackets == 0, "Late Ready cannot recreate a finished hit")
+
+server, client = pair()
+local beforeCompletions = #completions
+S.request(server, .3, "bed-1", "bed-spikes", done)
+clientReceive(); serverReceive()
+client.remote = true
+clientReceive(); serverReceive()
+check(client.health == 1 and server.health == 1 and #completions == beforeCompletions + 1,
+    "A replica that lost native control refuses the damage command")
+
+server, client = pair()
+S.request(server, .3, "wire-1", "barbs", done)
+clientReceive(); serverReceive(); clientReceive()
+server.owner = stranger
+serverReceive()
+check(server.health == 1 and completions[#completions][2] == "ownership-uncertain" and #serverPackets == 0,
+    "An ambiguous ownership handoff is reported and never replays damage on the new owner")
+
+server, client = pair()
+local finisher = false
+OneMoreHordeDefenseIntegration = {API_VERSION = 1, authorize = function() return true end,
+    beginDamage = function(_, source, kind, lethal) finisher = lethal; return true, {} end,
+    endDamage = function(z) check(z.killed and finisher, "Horde finisher context spans the actual server death") end}
+S.request(server, 2, "turret-1", "firearm", done)
+clientReceive(); serverReceive(); clientReceive()
+check(not client:isDead() and client.health == P.EPSILON and not finisher, "Owner reserves lethal damage; server still owns terminal attribution")
+serverReceive()
+check(server.killed and finisher and completions[#completions][1] == 1, "Server commits exactly the reported native health loss before death")
+OneMoreHordeDefenseIntegration = nil
+
+server, client = pair()
+S.request(server, .3, "turret-1", "firearm", done)
+clientReceive()
+server.owner = nil
+serverReceive()
+check(client.health == 1 and completions[#completions][2] == "cancelled", "Disconnect before commit does not hurt the zombie")
+check(not S.request(server, 0/0, "turret-1", "firearm", done), "NaN damage cannot enter the queue")
+
+server, client = pair()
+check(not S.request(server, .3, {}, "firearm", done), "Invalid provenance cannot enter the queue")
+server.invulnerable = true
+check(not S.request(server, .3, "turret-1", "firearm", done), "Invulnerable native targets are rejected before sending")
+server.invulnerable = false
+S.request(server, .3, "turret-1", "firearm", done)
+clientReceive()
+server.connection = {} -- Same player identity, different native connection.
+serverReceive()
+check(server.health == 1 and client.health == 1 and completions[#completions][2] == "cancelled",
+    "Reconnected player identity cannot complete the previous connection's operation")
+local tinyAfter, tinyLost, tinyLethal = P.result(.0012, .0005)
+check(tinyAfter == P.EPSILON and not tinyLethal and math.abs(tinyLost - .0002) < .000001,
+    "Nonlethal sub-thousandth result stays alive on the native health wire")
+
+server, client = pair()
+S.request(server, .3, "turret-1", "firearm", done)
+local originalPrepare = clientReceive()
+serverReceive()
+local delayedCommit = table.remove(serverPackets, 1)
+local replacement = actor(client.id) -- The native object/online ID/outfit combination is reused.
+testMode = "client"
+C.created(replacement)
+C.command(P.MODULE, originalPrepare[1], originalPrepare[2])
+C.command(P.MODULE, delayedCommit[1], delayedCommit[2])
+check(replacement.health == 1, "Old prepare+commit cannot damage a recycled identity with a new client receipt")
+testMode = "server"
+S.created(server)
+clientPackets = {}
+
+serverPackets, clientPackets = {}, {}
+local held = {}
+for i = 1, P.MAX_PENDING do
+    held[i] = pair()
+    check(S.request(held[i], .1, "wire-1", "barbs", done), "Bounded queue accepts available capacity")
+end
+local extra = pair()
+check(not S.request(extra, .1, "wire-1", "barbs", done), "Queue limit rejects excess work without sending a packet")
+local oldMillis = testMillis
+testMillis = testMillis + P.TIMEOUT + 1
+for i = 1, 9 do S.tick() end
+check(S.request(extra, .1, "wire-1", "barbs", done), "Bounded timeout sweep recovers all pending capacity")
+S.created(extra)
+testMillis = oldMillis
+testMode, OneMoreHordeDefenseIntegration, sendServerCommand, sendClientCommand, getSpecificPlayer = oldMode, oldCore, oldServer, oldClient, oldPlayer

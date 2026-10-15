@@ -1,6 +1,6 @@
 # C236 multiplayer verification (2026-10-14)
 
-Current implementation: [C243 feed, power and trap lifecycle](PATCH_C243_PROGRESS.md). Combat transport and the remaining authority paths are still unfinished; no MP acceptance.
+Current implementation: [C244 combat transport and multiplayer barriers](PATCH_C244_PROGRESS.md). Barrier lifecycle is implemented; owner-directed combat remains experimental and disconnected from production firing/contact. Ownership handoff, Panel authority and the remaining integration are unfinished; no MP acceptance.
 
 **Current follow-up:** [C242](PATCH_C242_PROGRESS.md) adds MP Manage, bounded server transfer actions, magazines and range/priority controls after [C241](PATCH_C241_PROGRESS.md)'s production turret lifecycle. The table below is the historical C236 audit; pack/lifecycle/Manage rows are partly superseded by C240-C242. Feed/Void and remaining transfer endpoints, combat and trap authority remain unfinished; no MP acceptance.
 

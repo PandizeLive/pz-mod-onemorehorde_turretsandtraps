@@ -112,6 +112,7 @@ end
 
 function makeSquare(x, y, z)
     local square = {x = x, y = y, z = z, objects = {}, moving = {}, floor = true, free = true, blocked = false, window = false}
+    function square:getCell() return getCell() end
     function square:getX() return self.x end
     function square:getY() return self.y end
     function square:getZ() return self.z end

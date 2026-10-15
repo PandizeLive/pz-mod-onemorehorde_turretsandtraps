@@ -58,3 +58,6 @@ diagnostics/p1c1/install-stage/
 
 # Native validation library extraction cache
 .lwjgl/
+
+# Workspace-local probe runners and extracted native libraries
+/.tmp/

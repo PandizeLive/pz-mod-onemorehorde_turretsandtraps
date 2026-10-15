@@ -26,8 +26,6 @@ check(not Service.apply(testPlayer, parts[1], "stale", "Pickup"), "wrong device 
 testPlayer.x = 310
 check(not Service.apply(testPlayer, parts[1], id, "Repair"), "distant repair rejected")
 testPlayer.x = 300.5
-testMode = "server"
-check(not Service.apply(testPlayer, parts[1], id, "Pickup"), "multiplayer service remains closed")
 testMode = "sp"
 local action = testServiceAction(testPlayer, parts[1], id, "Repair")
 action:start()

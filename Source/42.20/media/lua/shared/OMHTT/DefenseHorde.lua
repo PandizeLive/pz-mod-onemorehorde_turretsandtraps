@@ -18,14 +18,15 @@ end
 ---@param amount number Native damage
 ---@param source string Device identity
 ---@param kind string Effect family
+---@param lethal boolean? Confirmed terminal result from an asynchronous owner receipt
 ---@return boolean allowed
 ---@return table|nil core
 ---@return table|nil token
-function H.beginDamage(zombie, amount, source, kind)
+function H.beginDamage(zombie, amount, source, kind, lethal)
     if isClient() or not zombie then return false end
     local core = rawget(_G, "OneMoreHordeDefenseIntegration")
     if core and core.API_VERSION == 1 then
-        local allowed, token = core.beginDamage(zombie, source, kind, zombie:getHealth() - amount < 0.000001)
+        local allowed, token = core.beginDamage(zombie, source, kind, lethal == true or zombie:getHealth() - amount < 0.000001)
         return allowed, core, token
     end
     return H.allowed(zombie)

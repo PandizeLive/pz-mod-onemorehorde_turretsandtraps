@@ -133,7 +133,7 @@ local function checkNativeConstruction()
     end
     assert(matches == 1, "Recipe must appear exactly once in native BuildLogic")
     local params = {player = player, recipe = recipe, shouldShowAll = true}
-    assert(not callLuaBool(recipe:getOnAddToMenu(), params), "Native callback bridge bypassed MP gate")
+    assert(not callLuaBool(recipe:getOnAddToMenu(), params), "Placement-only recipe should stay hidden in Building")
     local serverFunction, clientFunction = isServer, isClient
     local enabled, barrierEnabled = SandboxVars.OMHTurretsTraps.Enabled, SandboxVars.OMHTurretsTraps.SpikeBarrier
     isServer = function() return false end
@@ -224,8 +224,8 @@ local function checkNativeConstruction()
         end
     end
     assert(type(OMHTT_Construction.onCreate) == "function", "Construction Lua callback missing")
-    assert(not OMHTT_Construction.onAddToMenu({shouldShowAll = true}), "MP construction must stay disabled")
-    print("[OMHTT-Smoke] native-construction entity=OMHTTSpikeBarrier faces=4 parts=" .. parts .. " inputs=3 translated=true mpGate=closed")
+    assert(OMHTT_Construction.onAddToMenu({shouldShowAll = true}), "Native server construction should be available")
+    print("[OMHTT-Smoke] native-construction entity=OMHTTSpikeBarrier faces=4 parts=" .. parts .. " inputs=3 translated=true serverCallback=available")
     print("[OMHTT-Smoke] native-sprites objects=16 valid=16 categoryTranslated=true")
     for i = 16, 19 do
         local square = IsoGridSquare.new(getCell(), nil, i, 0, 0)
@@ -430,8 +430,8 @@ local function checkNativeConstruction()
     assert(not craft:OnTestItem(instanceItem("Base.Plank"), player), "Disabled portable crafting allowed")
     isServer, isClient = serverFunction, clientFunction
     SandboxVars.OMHTurretsTraps.Enabled, SandboxVars.OMHTurretsTraps.SpikeBarrier = enabled, barrierEnabled
-    assert(not craft:OnTestItem(instanceItem("Base.Plank"), player), "MP portable crafting gate bypassed")
-    print("[OMHTT-Smoke] native-portable recipe=registered mixes=75 crafted=1 tool=retained deployInputs=1 deployXP=0 missing=blocked damaged=blocked toggles=blocked mp=blocked")
+    assert(craft:OnTestItem(instanceItem("Base.Plank"), player), "Server portable crafting rejected")
+    print("[OMHTT-Smoke] native-portable recipe=registered mixes=75 crafted=1 tool=retained deployInputs=1 deployXP=0 missing=blocked damaged=blocked toggles=blocked serverInput=allowed")
 end
 
 Events.OnServerStarted.Add(checkNativeConstruction)

@@ -1338,3 +1338,8 @@ Owner: "Keep going with the remaining multiplayer implementation. You're already
 ## C243 — complete approved MP work and mirror progress (2026-10-14)
 
 Owner explicitly authorizes ALL multiplayer integration patches and requests continued completion without waiting for owner testing, plus a GitHub push. This preserves C235 content and the C239/C240 scoring policies; it does not certify unsupported engine behavior. Implemented feed/power/trap service progress and remaining authority work are recorded in [C243](PATCH_C243_PROGRESS.md). Existing sibling Horde integration may be mirrored as development under this explicit request, without updating its older release tag or publishing. No new generic approval gate.
+
+
+## C244 — continue zombie combat synchronization and remaining MP work (2026-10-14)
+
+Owner: "Why are we stopping again? Keep going with zombie combat synchronization and the remaining multiplayer work. You're already approved. Finish as much as possible and push it to GitHub." Continue implementation, verification and the development mirror under existing authority; no player-test or generic approval gate. [C244 implementation and evidence](PATCH_C244_PROGRESS.md) separates working barrier lifecycle from the experimental combat receipt path and its unresolved native ownership/async attribution cases. This does not change gameplay balance or certify MP completion.

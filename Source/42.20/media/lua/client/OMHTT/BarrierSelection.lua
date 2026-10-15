@@ -1,4 +1,4 @@
-if isClient() or isServer() then return end
+if isServer() then return end
 local F = require("OMHTT/Foundation")
 local Selection = {}
 
@@ -22,7 +22,7 @@ end
 ---@param y number Cursor world Y
 ---@return table entries Complete barriers, direct picks before nearby footprints
 function Selection.collect(player, worldobjects, x, y)
-    local Footprint = require("OMHTT/BarrierFootprint")
+    local Footprint = require(isClient() and "OMHTT/BarrierView" or "OMHTT/BarrierFootprint")
     local entries, seen = {}, {}
     local z = math.floor(player:getZ())
     local function add(object, source)

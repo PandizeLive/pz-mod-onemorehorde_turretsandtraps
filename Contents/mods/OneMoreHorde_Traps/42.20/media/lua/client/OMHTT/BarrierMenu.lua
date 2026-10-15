@@ -1,4 +1,4 @@
-if isClient() or isServer() then return end
+if isServer() then return end
 require("OMHTT/BarrierServiceAction")
 require("OMHTT/BarrierApproachAction")
 require("TimedActions/ISTimedActionQueue")
@@ -14,7 +14,7 @@ local Selection = require("OMHTT/BarrierSelection")
 ---@param operation string Pickup or Repair
 ---@return nil
 local function queueService(object, player, id, operation)
-    local Footprint = require("OMHTT/BarrierFootprint")
+    local Footprint = require(isClient() and "OMHTT/BarrierView" or "OMHTT/BarrierFootprint")
     local record = Footprint.exact(object)
     if not record or record.id ~= id then return end
     local route = Approach.route(player, record)
@@ -43,7 +43,7 @@ local function fillMenu(playerIndex, context, worldobjects, test)
     local player = getSpecificPlayer(playerIndex)
     if not player or player:isDead() then return end
     -- Server Lua is registered after client Lua in single-player. Resolve at use time.
-    local Footprint = require("OMHTT/BarrierFootprint")
+    local Footprint = require(isClient() and "OMHTT/BarrierView" or "OMHTT/BarrierFootprint")
     local z = math.floor(player:getZ())
     local x = IsoUtils.XToIso(getMouseXScaled(), getMouseYScaled(), z)
     local y = IsoUtils.YToIso(getMouseXScaled(), getMouseYScaled(), z)
@@ -53,8 +53,12 @@ local function fillMenu(playerIndex, context, worldobjects, test)
     for i = 1, #entries do
         local entry = entries[i]
         local record, object, parts = entry.record, entry.object, entry.parts
-        local slot = Footprint.slot(object:getSquare(), record.id)
-        if slot and Footprint.sync(slot, "menu") then
+        local ready = isClient()
+        if not isClient() then
+            local slot = Footprint.slot(object:getSquare(), record.id)
+            ready = slot and Footprint.sync(slot, "menu")
+        end
+        if ready then
             local headings = {"E", "N", "W", "S"}
             local title = "ContextMenu_OMHTT_BarrierFacing"
             if record.tier == "reinforced" then
@@ -80,24 +84,26 @@ local function fillMenu(playerIndex, context, worldobjects, test)
             Selection.bindHighlight(repair, parts)
             repair.notAvailable = record.condition >= record.maxHealth
             if record.tier ~= "reinforced" then
-                local Service = require("OMHTT/BarrierService")
                 local upgrade = menu:addOption(getText("ContextMenu_OMHTT_Reinforce"), object, queueService, player, record.id, "Reinforce")
                 Selection.bindHighlight(upgrade, parts)
-                upgrade.notAvailable = Service.reinforcementMaterials(player, record) == nil
+                upgrade.notAvailable = require("OMHTT/DefenseMaterials").reinforcement(player) == nil
                 upgrade.toolTip = ISWorldObjectContextMenu.addToolTip()
                 upgrade.toolTip.description = getText("UI_OMHTT_ReinforceRequirements")
             end
-            local plan, reason = Vault.plan(player, object, record.id)
-            local label = reason
-            if plan then
-                label = "ContextMenu_OMHTT_VaultRear"
-                if plan.side == "front" then
-                    label = "ContextMenu_OMHTT_VaultFront"
+            local plan, reason
+            if not isClient() then
+                plan, reason = Vault.plan(player, object, record.id)
+                local label = reason
+                if plan then
+                    label = "ContextMenu_OMHTT_VaultRear"
+                    if plan.side == "front" then
+                        label = "ContextMenu_OMHTT_VaultFront"
+                    end
                 end
+                local vault = menu:addOption(getText(label), object, Vault.queue, player, record.id)
+                vault.notAvailable = plan == nil
+                Selection.bindHighlight(vault, parts)
             end
-            local vault = menu:addOption(getText(label), object, Vault.queue, player, record.id)
-            vault.notAvailable = plan == nil
-            Selection.bindHighlight(vault, parts)
             Diagnostics.emit("barrier-menu", {id = record.id, condition = record.condition, max = record.maxHealth,
                 source = entry.source, choice = i, collisionModel = record.collisionModel, vault = plan and plan.side or reason,
                 playerX = player:getX(), playerY = player:getY(), playerZ = player:getZ()})

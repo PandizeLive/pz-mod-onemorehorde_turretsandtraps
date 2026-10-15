@@ -172,6 +172,7 @@ public final class KahluaCheck {
             {"OMHTT/Foundation", base + "shared/OMHTT/Foundation.lua"},
             {"OMHTT/Diagnostics", base + "shared/OMHTT/Diagnostics.lua"},
             {"OMHTT/BarrierGeometry", base + "shared/OMHTT/BarrierGeometry.lua"},
+            {"OMHTT/BarrierView", base + "shared/OMHTT/BarrierView.lua"},
             {"OMHTT/BarrierOutline", base + "server/OMHTT/BarrierOutline.lua"},
             {"_", Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/shared/ISBaseObject.lua").toString()},
             {"_", Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/shared/TimedActions/ISBaseTimedAction.lua").toString()},
@@ -187,6 +188,9 @@ public final class KahluaCheck {
             {"_", base + "client/OMHTT/BarrierMenu.lua"},
             {"_", "tools/tests/service_load_order_after.lua"},
             {"OMHTT/DefenseHorde", base + "shared/OMHTT/DefenseHorde.lua"},
+            {"OMHTT/DefenseCombatProtocol", base + "shared/OMHTT/DefenseCombatProtocol.lua"},
+            {"OMHTT/DefenseCombatServer", base + "server/OMHTT/DefenseCombatServer.lua"},
+            {"OMHTT/DefenseCombatClient", base + "client/OMHTT/DefenseCombatClient.lua"},
             {"OMHTT/Damage", base + "server/OMHTT/Damage.lua"},
             {"OMHTT/DefenseMaterials", base + "shared/OMHTT/DefenseMaterials.lua"},
             {"OMHTT/TurretClock", base + "shared/OMHTT/TurretClock.lua"},
@@ -252,6 +256,8 @@ public final class KahluaCheck {
             {"_", "tools/tests/service_bootstrap.lua"},
             {"OMHTT/BarrierService", base + "server/OMHTT/BarrierService.lua"},
             {"_", "tools/tests/barrier_service.lua"},
+            {"_", "tools/tests/barrier_server_service.lua"},
+            {"_", "tools/tests/barrier_network_view.lua"},
             {"_", "tools/tests/barrier_settings.lua"},
             {"_", "tools/tests/barrier_vault.lua"},
             {"_", "tools/tests/barrier_corners.lua"},
@@ -375,6 +381,7 @@ public final class KahluaCheck {
             {"OMHTT/TurretVoidAction", base + "shared/OMHTT/TurretVoidAction.lua"},
             {"_", "tools/tests/turret_authority.lua"},
             {"_", "tools/tests/horde_defense.lua"},
+            {"_", "tools/tests/defense_combat_network.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

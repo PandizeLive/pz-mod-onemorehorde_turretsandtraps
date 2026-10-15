@@ -24,8 +24,11 @@ def main():
         (ROOT / "tools/tests/native_turret_authority.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (lua / "OMHTT/NativeTrapServices.lua").write_text(
         (ROOT / "tools/tests/native_trap_services.lua").read_text(encoding="utf-8"), encoding="utf-8")
+    (lua / "OMHTT/NativeCombatAuthority.lua").write_text(
+        (ROOT / "tools/tests/native_combat_authority.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (lua / "OMHTT_AuthorityProbe.lua").write_text(
         'Events.OnServerStarted.Add(function()\n'
+        '    require("OMHTT/NativeCombatAuthority")()\n'
         '    require("OMHTT/NativeTurretAuthority")(IsoPlayer.new(getCell()))\n'
         'end)\n', encoding="utf-8")
     settings = cache / "Server/OMHTT_Authority.ini"

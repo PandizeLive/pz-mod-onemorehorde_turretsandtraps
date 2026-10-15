@@ -120,6 +120,7 @@ fronts, caps = counts({north, isolated})
 check(fronts == 4 and caps == 4, "native destruction exposes neighbor cap without retiring neighbor")
 local staleSquare = testSquares[F.key(810, 810, 0)]
 local stale = IsoThumpable.new(getCell(), staleSquare, "omhtt_barrier_01_16", true)
+stale:setName(F.PREFIX .. "gone:" .. F.key(810, 810, 0) .. ":N")
 stale:getModData().OMHTTEdge = {id = "gone", anchor = "gone", key = F.key(810, 810, 0) .. ":N"}
 staleSquare:AddSpecialObject(stale)
 O.reconcile(staleSquare)

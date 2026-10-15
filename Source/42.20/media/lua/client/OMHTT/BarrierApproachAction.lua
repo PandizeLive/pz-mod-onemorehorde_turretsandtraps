@@ -1,4 +1,4 @@
-if isClient() or isServer() then return end
+if isServer() then return end
 require("TimedActions/WalkToTimedAction")
 require("OMHTT/BarrierServiceAction")
 local Approach = require("OMHTT/BarrierApproach")
@@ -20,7 +20,7 @@ function OMHTTBarrierApproachAction:update()
         return
     end
     local now = getTimestampMs()
-    local Footprint = require("OMHTT/BarrierFootprint")
+    local Footprint = require(isClient() and "OMHTT/BarrierView" or "OMHTT/BarrierFootprint")
     local record = Footprint.exact(self.object)
     local from = self.character:getCurrentSquare()
     if not from then
@@ -65,7 +65,7 @@ end
 
 ---@return nil
 function OMHTTBarrierApproachAction:perform()
-    local Footprint = require("OMHTT/BarrierFootprint")
+    local Footprint = require(isClient() and "OMHTT/BarrierView" or "OMHTT/BarrierFootprint")
     local record = Footprint.exact(self.object)
     ISWalkToTimedAction.perform(self)
     if record and Approach.ready(self.character, record) then

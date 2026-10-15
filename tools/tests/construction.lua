@@ -12,7 +12,7 @@ S.initialize()
 check(C.onAddToMenu({}), "native construction does not require debug controls")
 for _, mode in pairs({"client", "server"}) do
     testMode = mode
-    check(not C.onAddToMenu({}), "MP construction remains explicitly gated on " .. mode)
+    check(C.onAddToMenu({}), "Native construction is available with server completion on " .. mode)
 end
 testMode = "sp"
 
