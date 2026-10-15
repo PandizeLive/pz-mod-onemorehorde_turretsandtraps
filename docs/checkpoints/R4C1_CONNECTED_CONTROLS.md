@@ -1,5 +1,25 @@
 # R4C1 — buttons, pressure plates and links
 
+## C253: read/write sharing selected and native selector reviewed, 2026-10-15
+
+Owner selects C2521A with the correction that everyone can read/view, while the selected group can write/change; C2522 is resolved by the same rule rather than a separate restricted Public mode. Owner requests using the native Horde Manager gradient circle for the 20-tile display and connection graphics.
+
+### Selected access model
+
+Placer remains the owner. All players can inspect a reachable device's ordinary status, settings and permitted inventory presentation. Private grants device writes to owner/admin; Faction also grants writes to current members of the selected faction; Public grants writes to everyone. This supersedes C252's proposed Public operation-only mode: selected writers can configure and service, including loading/unloading and pickup/dismantling, subject to normal action validation. No extra owner-only operational restrictions should silently survive. Owner/admin control ownership and sharing policy, retained from 1A; this prevents a public operator from simply making the owner's device Private to themselves. Explain this policy-management distinction in the UI.
+
+Read access is not a global remote inventory broadcast or disclosure of server-private combat/Void ledgers. Apply existing reach/relevance limits and bounded inspection requests equally to readers; grey out mutation controls for readers. Server validates every write, including native inventory routes, controller operations and optional external adapters. A public read-only GUI with an unrestricted native inventory path would not enforce the selected rule. Pickup/redeployment must preserve the ownership/access contract on exact items rather than implicitly letting any carrier become the owner; explicit ownership transfer remains separate future design. Plate contact activation remains independent from management write permission. Controller destruction does not release device ownership.
+
+### Native visual evidence
+
+Installed B42.21 `media/lua/client/DebugUIs/ISSpawnHordeUI.lua:397` defines `addMarker`: `getWorldMarkers():addGridSquareMarker(...)` followed by `setScaleCircleTexture(true)`. Its prerender updates size only when changed; `removeMarker` removes both marker and arrow when dismissed. Thus the native circular graphic can be reused without launching Horde Manager or enabling debug spawning.
+
+T&T already calls that native marker API in `TurretTackMarkers.lua:34`. `TurretRange.lua:142` and `BarrierCollisionOverlay.lua:67` separately render projected connection/edge lines through UI drawing. The circle marker itself is not a straight-link renderer; recommend separate connection lines matching the circle's colors/softness, with the native circle retained for radius/endpoints. A matching line fade is proposed visual treatment, not a verified native gradient-line API or already-rendered acceptance.
+
+Use one selected controller's 20-tile circle during placement, inspection and linking; show its relevant links, not every network continuously. Local presentation only; no per-frame network state broadcast. Cache marker identity/geometry, update on relevant movement/config changes, clean up on closing/unload and account for split-screen selection. Verify size against actual 20-tile world coordinates before shipping: native parameter names and existing call sites alone do not prove radius-versus-diameter rendering. Test floor/zoom/occlusion alignment and visible edge consistency against the server range rule. No new final-art asset is required for the native circle; final owner-art restriction remains.
+
+No gameplay files or installed build changed. Remaining design covers recipes, controller/input dimensions and power, durability/services, floor rules and each receiver's response to held signals. This records the approved access direction and native feasibility finding, not completion of those implementation tasks.
+
 ## C252: targeting/radius selections and placer ownership discussion, 2026-10-15
 
 Owner selects C251 **1A, 2B, 4A and 5A**: physical plate activation is separate from receiver targeting; fixed 20-tile controller radius; ownership survives controller loss; controller target defaults allow local overrides. Owner asks how Horde Night can inform the radius/base model, and proposes locking devices to their placer with selectable faction/public access. This is a requested ownership discussion, not an implemented change or approval of the new detailed proposals below. It potentially supersedes C250 public-before-controller behavior; do not implement both incompatible defaults.

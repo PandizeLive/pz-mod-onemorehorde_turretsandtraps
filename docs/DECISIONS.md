@@ -1386,3 +1386,8 @@ Corrected stale current-table entries for head/content implementation, the pack 
 ## C252 — controller radius, Horde consistency and personal ownership (2026-10-15)
 
 **C252 / controller radius and placer-ownership discussion (2026-10-15).** Owner selects receiver-side filtering, 20-tile controller radius, persistent ownership after controller loss and local targeting overrides. Proposes placer-owned devices with faction/public sharing. [Horde consistency evidence and two remaining ownership/access choices](checkpoints/R4C1_CONNECTED_CONTROLS.md#c252-targetingradius-selections-and-placer-ownership-discussion-2026-10-15). Recommend management radius separate from ownership; Horde identity/consent remain separate from territory. No reusable base-area API identified in inspected local runtime. Sharing details remain proposals; installed 0.2.50 unchanged.
+
+
+## C253 — public inspection, selected-group writes and native range marker (2026-10-15)
+
+**C253 / read/write sharing confirmed; native range graphic identified (2026-10-15).** Everyone may inspect; Private/Faction/Public determines device writes, with placer ownership retained. Public is not limited to operation-only. Native Horde Manager uses the existing world circle marker API; straight links need separate matching rendering. [Selected access and native evidence](checkpoints/R4C1_CONNECTED_CONTROLS.md#c253-readwrite-sharing-selected-and-native-selector-reviewed-2026-10-15). Radius calibration/rendered acceptance and remaining device recipes/lifecycle design are pending. No gameplay or installed 0.2.50 change.
