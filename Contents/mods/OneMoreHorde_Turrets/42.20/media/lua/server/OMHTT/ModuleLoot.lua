@@ -10,7 +10,7 @@ local Pack = require("OMHTT/TurretModulePack")
 function L.apply()
     local _, packTotal = Pack.pool()
     local multiplier = M.option("ModuleLootRate", L.DEFAULTS.global, 0, 20)
-    if isServer() or SandboxVars.OMHTurretsTraps.TurretsEnabled == false or SandboxVars.OMHTurretsTraps.PotatoTurret == false then
+    if SandboxVars.OMHTurretsTraps.TurretsEnabled == false or SandboxVars.OMHTurretsTraps.PotatoTurret == false then
         multiplier = 0
     end
     D.emit("module-loot-summary", {pools = #L.POOLS, multiplier = multiplier})
@@ -48,7 +48,7 @@ end
 
 ---@return nil
 function L.loaded()
-    if isServer() then return end
+    if isClient() then return end
     L.apply()
     ItemPickerJava.Parse()
 end

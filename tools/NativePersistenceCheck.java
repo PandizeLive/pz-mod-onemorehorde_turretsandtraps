@@ -453,7 +453,10 @@ public final class NativePersistenceCheck {
             Object group = actionGroupType.getMethod("getActionGroup", String.class).invoke(null, "zombie");
             Object state = call(group, "findState", new Class<?>[]{String.class}, "bumped");
             var transitions = (java.util.List<?>)stateType.getField("transitions").get(state);
-            Path source = directory.getParent().getParent().getParent().resolve("Source/42.20/media/AnimSets");
+            Path project = directory.toAbsolutePath();
+            while (project != null && !Files.isDirectory(project.resolve("Source/42.20/media/AnimSets"))) project = project.getParent();
+            check(project != null, "Native probe cannot locate project animation sources");
+            Path source = project.resolve("Source/42.20/media/AnimSets");
             Object node = nodeType.getMethod("Parse", String.class).invoke(null, source.resolve("zombie/bumped/OMHTTBedTrip.xml").toString());
             check(node != null && nodeType.getField("animName").get(node).equals("Zombie_HitDeath_HeadTop"), "Zombies must use native forward collapse");
             check(!nodeType.getField("useDeferredMovement").getBoolean(node), "Zombie trip must not apply sprint-clip displacement");

@@ -19,7 +19,6 @@ local definitions = {
 function P.carried(item, player)
     if not item or not item:getContainer() or not item:getContainer():isInCharacterInventory(player) then return nil end
     local definition = definitions[item:getFullType()]
-    if isClient() and definition and definition[3] then return nil end
     if definition and definition[2]() and item:getCondition() > 0 then return definition end
     return nil
 end

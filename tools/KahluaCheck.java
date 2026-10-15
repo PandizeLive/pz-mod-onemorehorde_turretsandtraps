@@ -351,6 +351,7 @@ public final class KahluaCheck {
             {"_", "tools/tests/barb_runtime.lua"},
             {"_", "tools/tests/concertina.lua"},
             {"_", "tools/tests/wire_multiplayer.lua"},
+            {"_", "tools/tests/panel_multiplayer.lua"},
             {"OMHTT/BarrierPlacement", base + "client/OMHTT/BarrierPlacement.lua"},
             {"_", "tools/tests/hybrid_build_bootstrap.lua"},
             {"OMHTT/HybridBuild", base + "client/OMHTT/HybridBuild.lua"},

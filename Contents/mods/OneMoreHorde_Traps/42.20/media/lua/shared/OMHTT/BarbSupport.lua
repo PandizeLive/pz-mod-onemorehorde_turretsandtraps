@@ -1,12 +1,59 @@
 local S = {}
+local bindings = setmetatable({}, {__mode = "k"})
+
+---@return nil
+function S.reset()
+    bindings = setmetatable({}, {__mode = "k"})
+end
+
+---@param object IsoObject Exact support
+---@param north boolean Support axis
+---@param side number Exposed face
+---@return table? record Private server attachment or detached local view
+function S.record(object, north, side)
+    if not object then return nil end
+    local entries = isServer() and bindings[object] or nil
+    if not isServer() and object:hasModData() then
+        entries = object:getModData().OMHTTBarbs
+    end
+    return entries and entries[S.faceKey(north, side)]
+end
+
+---@param object IsoObject Bound support
+---@return nil
+function S.publish(object)
+    if not isServer() then return end
+    local view = {}
+    for key, record in pairs(bindings[object] or {}) do
+        local copy = {}
+        for field, value in pairs(record) do copy[field] = value end
+        view[key] = copy
+    end
+    object:getModData().OMHTTBarbs = view
+    object:transmitModData()
+end
+
+---@param object IsoObject Exact native support validated against the private frame registry
+---@param record table Persistent private attachment
+---@return nil
+function S.restore(object, record)
+    if not isServer() then return end
+    local entries = bindings[object]
+    if not entries then
+        entries = {}
+        bindings[object] = entries
+    end
+    entries[S.faceKey(record.north, record.side)] = record
+end
 
 ---@param object IsoObject Candidate support
 ---@param north boolean Selected backing edge
+---@param nativeOnly boolean? Private ledger restoration ignores public markers
 ---@return string? kind
 ---@nodiscard
-function S.kind(object, north)
+function S.kind(object, north, nativeOnly)
     if not object or not object:getSquare() or object:getObjectIndex() < 0 then return nil end
-    if object:hasModData() then
+    if object:hasModData() and not nativeOnly and not (isServer() and bindings[object]) then
         local data = object:getModData()
         if data.OMHTTBed or data.OMHTTBarbFrame or data.OMHTT or data.OMHTTEdge or data.OMHTTTurret then return nil end
     end
@@ -82,9 +129,7 @@ end
 ---@return string? id Existing attachment
 ---@nodiscard
 function S.attachment(object, north, side)
-    if not object or not object:hasModData() then return nil end
-    local marker = object:getModData().OMHTTBarbs
-    local record = marker and marker[S.faceKey(north, side)]
+    local record = S.record(object, north, side)
     return record and record.id
 end
 
@@ -138,15 +183,16 @@ end
 
 ---@param square IsoGridSquare? Loaded backing square
 ---@param north boolean Selected edge
+---@param nativeOnly boolean? Private ledger restoration
 ---@return IsoObject? host Exact primary support, even when currently open
 ---@nodiscard
-function S.find(square, north)
+function S.find(square, north, nativeOnly)
     if not square then return nil end
     local objects = square:getObjects()
     local backing = nil
     for i = 0, objects:size() - 1 do
         local object = objects:get(i)
-        local kind = S.kind(object, north)
+        local kind = S.kind(object, north, nativeOnly)
         if kind == "door" or kind == "window" or kind == "constructed-door" or kind == "constructed-window" then
             return object
         end
@@ -164,7 +210,7 @@ end
 ---@param policy table Explicit lifecycle choices
 ---@return boolean bound
 function S.bind(object, north, side, id, policy)
-    if isClient() or isServer() or type(id) ~= "string" or id == "" or (side ~= -1 and side ~= 1)
+    if isClient() or type(id) ~= "string" or id == "" or (side ~= -1 and side ~= 1)
         or not S.active(object, north, policy) or S.attachment(object, north, side) then return false end
     if not S.edge(object, north, side, {}) then return false end
     local data = object:getModData()
@@ -175,7 +221,12 @@ function S.bind(object, north, side, id, policy)
     if not record.shared then
         record.health = 50
     end
-    data.OMHTTBarbs[S.faceKey(north, side)] = record
+    if isServer() then
+        S.restore(object, record)
+        S.publish(object)
+    else
+        data.OMHTTBarbs[S.faceKey(north, side)] = record
+    end
     return true
 end
 
@@ -202,8 +253,13 @@ end
 ---@param id string Expected attachment identity
 ---@return boolean removed
 function S.unbind(object, north, side, id)
-    if isClient() or isServer() or not id or S.attachment(object, north, side) ~= id then return false end
-    object:getModData().OMHTTBarbs[S.faceKey(north, side)] = nil
+    if isClient() or not id or S.attachment(object, north, side) ~= id then return false end
+    if isServer() then
+        bindings[object][S.faceKey(north, side)] = nil
+        S.publish(object)
+    else
+        object:getModData().OMHTTBarbs[S.faceKey(north, side)] = nil
+    end
     return true
 end
 
@@ -222,7 +278,7 @@ function S.resolve(square, north, side, id, policy)
     for i = 0, objects:size() - 1 do
         local object = objects:get(i)
         if S.attachment(object, north, side) == id then
-            local record = object:getModData().OMHTTBarbs[S.faceKey(north, side)]
+            local record = S.record(object, north, side)
             if not record.shared and record.health <= 0 then return nil, "worn-out" end
             if S.active(object, north, policy) then return object, "active" end
             return nil, "inactive"

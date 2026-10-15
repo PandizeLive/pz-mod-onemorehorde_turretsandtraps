@@ -207,13 +207,25 @@ end
 ---@nodiscard
 function Footprint.exact(object)
     if not store or not instanceof(object, "IsoThumpable") then return nil end
-    if object:hasModData() and object:getModData().OMHTTEdge then return Outline.exact(object) end
+    if isServer() then
+        local outline = Outline.exact(object)
+        if outline then return outline end
+    elseif object:hasModData() and object:getModData().OMHTTEdge then
+        return Outline.exact(object)
+    end
     local square = object:getSquare()
     if not square or object:getObjectIndex() < 0 or object:getHealth() <= 0 then return nil end
-    if not object:hasModData() then return nil end
-    local marker = object:getModData().OMHTT
-    if not marker then return nil end
-    local slot = Footprint.slot(square, marker.id)
+    local id
+    if isServer() then
+        local name = object:getName()
+        if type(name) ~= "string" or string.sub(name, 1, #F.PREFIX) ~= F.PREFIX then return nil end
+        id = string.sub(name, #F.PREFIX + 1)
+    else
+        local marker = object:hasModData() and object:getModData().OMHTT
+        if not marker then return nil end
+        id = marker.id
+    end
+    local slot = Footprint.slot(square, id)
     if not slot or not slot.device or slot.device.kind ~= "barrier" then return nil end
     local record = slot.device
     local exact, count = F.find(square, record.id)

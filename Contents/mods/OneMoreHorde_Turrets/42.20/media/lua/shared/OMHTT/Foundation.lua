@@ -144,7 +144,9 @@ end
 ---@return boolean matches
 ---@nodiscard
 function Foundation.matches(object, id)
-    if object:getName() ~= Foundation.PREFIX .. id or not object:hasModData() then return false end
+    if object:getName() ~= Foundation.PREFIX .. id then return false end
+    if isServer() then return true end
+    if not object:hasModData() then return false end
     local marker = object:getModData().OMHTT
     return type(marker) == "table" and marker.id == id and marker.schema == 1
 end

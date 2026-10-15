@@ -68,6 +68,9 @@ def main():
                 process.terminate()
                 process.wait(timeout=15)
         assert passed, f"Native turret authority probe failed; inspect {transcript}"
+        content = transcript.read_text(encoding="utf-8", errors="replace")
+        mod_errors = [line for line in content.splitlines() if "MOD:OMH:" in line and "Exception thrown" in line]
+        assert not mod_errors, f"Native mod callbacks threw despite completion markers: {mod_errors}; inspect {transcript}"
     print("Stock dedicated-server turret authority/services passed; no player clients connected.")
     print(transcript)
 

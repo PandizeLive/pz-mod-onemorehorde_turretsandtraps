@@ -33,8 +33,10 @@ end
 ---@param zombie IsoZombie Native observed instance
 ---@return nil
 function C.observe(zombie)
-    if isClient() and not zombie:isDead() and zombie:getOnlineID() ~= -1 then
-        indexed[zombie:getOnlineID()] = zombie
+    if not isClient() or zombie:isDead() then return end
+    local id = zombie:getOnlineID()
+    if id ~= -1 and indexed[id] ~= zombie then
+        indexed[id] = zombie
     end
 end
 
@@ -54,12 +56,21 @@ function C.command(module, command, message)
     local player = owner(message.owner)
     if not player then return end
     local zombie = indexed[message.id]
+    local prior = zombie and receipts[zombie]
+    if command == "Status" and prior and prior.token == message.token and prior.sequence == message.sequence
+        and prior.nonce == message.receipt and zombie:getOnlineID() == message.id
+        and zombie:getPersistentOutfitID() == message.outfit then
+        if not prior.applied then
+            prior.cancelled = true
+        end
+        reply(player, prior.applied and "Applied" or "Unapplied", message, prior)
+        return
+    end
     if not zombie or zombie:isDead() or zombie:getOnlineID() ~= message.id
         or zombie:getPersistentOutfitID() ~= message.outfit or zombie:isRemoteZombie() then
         reply(player, "Reject", message)
         return
     end
-    local prior = receipts[zombie]
     if command == "Prepare" then
         if not P.number(message.x, -1000000, 1000000) or not P.number(message.y, -1000000, 1000000)
             or not P.number(message.z, -32, 32) or math.abs(zombie:getZ() - message.z) > .5
@@ -78,10 +89,19 @@ function C.command(module, command, message)
             expires = getTimestampMs() + P.TIMEOUT}
         receipts[zombie] = receipt
         reply(player, "Ready", message, receipt)
-    elseif command == "Commit" then
-        if not prior or prior.token ~= message.token or prior.sequence ~= message.sequence
+    elseif command == "Commit" or command == "Reconcile" then
+        if not prior or prior.cancelled or prior.token ~= message.token or prior.sequence ~= message.sequence
             or not P.token(message.receipt) or prior.nonce ~= message.receipt then return end
-        if prior.applied then reply(player, "Applied", message, prior); return end
+        if prior.applied then reply(player, prior.reconciled and "Reconciled" or "Applied", message, prior); return end
+        if command == "Reconcile" then
+            if getTimestampMs() > prior.expires or not P.number(message.health, P.EPSILON, 1000000) then return end
+            prior.before = zombie:getHealth()
+            prior.after = math.min(prior.before, message.health)
+            prior.lethal, prior.applied, prior.reconciled = false, true, true
+            zombie:setHealth(prior.after)
+            reply(player, "Reconciled", message, prior)
+            return
+        end
         if getTimestampMs() > prior.expires or not P.number(message.amount, 0.000001, 1000000)
             or zombie:isInvulnerable() then reply(player, "Reject", message); return end
         local before = zombie:getHealth()

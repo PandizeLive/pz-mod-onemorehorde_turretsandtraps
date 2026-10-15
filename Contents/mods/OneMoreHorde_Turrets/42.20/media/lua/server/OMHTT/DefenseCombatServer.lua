@@ -37,6 +37,65 @@ local function envelope(job)
     return {token = job.token, id = job.id, outfit = job.outfit, owner = job.player:getOnlineID(), sequence = job.sequence}
 end
 
+---@param job table Operation whose previous owner cannot still apply damage
+---@return boolean prepared
+local function prepare(job)
+    local zombie = job.zombie
+    local player, connection = zombie:getOwnerPlayer(), zombie:getOwner()
+    if not player or not connection or player:isDead() or player:getOnlineID() == -1
+        or not P.identity(player:getOnlineID()) then return false end
+    local sequence = (serials[zombie] or 0) + 1
+    serials[zombie] = sequence
+    job.player, job.connection, job.sequence, job.receipt = player, connection, sequence, nil
+    job.phase = job.result and "settle-prepare" or "prepare"
+    local message = envelope(job)
+    message.x, message.y, message.z = zombie:getX(), zombie:getY(), zombie:getZ()
+    sendServerCommand(player, P.MODULE, "Prepare", message)
+    return true
+end
+
+---@param job table Confirmed client result
+---@return nil
+local function commitResult(job)
+    local result, zombie = job.result, job.zombie
+    local allowed, core, token = H.beginDamage(zombie, result.lost, job.source, job.kind, result.lethal)
+    if not allowed then finish(job, 0, "consent-changed"); return end
+    zombie:setHealth(math.min(zombie:getHealth(), result.after))
+    if result.lethal then
+        zombie:setHealth(0)
+        zombie:Kill(nil, false)
+    end
+    if core then
+        core.endDamage(zombie, token)
+    end
+    finish(job, result.lost, "applied")
+    triggerEvent("OnOMHTTDamage", zombie, result.lost, job.source, job.kind)
+end
+
+---@param job table Pending operation
+---@return boolean same Native identity remains alive
+local function alive(job)
+    return not job.zombie:isDead() and job.zombie:getOnlineID() == job.id
+        and job.zombie:getPersistentOutfitID() == job.outfit
+end
+
+---@param job table Operation at an ownership boundary
+---@return nil
+local function handoff(job)
+    if job.phase == "commit" then
+        job.phase = "query"
+        local message = envelope(job)
+        message.receipt = job.receipt
+        sendServerCommand(job.player, P.MODULE, "Status", message)
+    elseif job.phase ~= "query" then
+        if job.result and not job.zombie:getOwner() then
+            commitResult(job)
+        elseif not prepare(job) then
+            finish(job, 0, "owner-unavailable")
+        end
+    end
+end
+
 ---@param zombie IsoZombie Exact server victim
 ---@param amount number Server-calculated native damage
 ---@param source string Server device identity
@@ -49,7 +108,7 @@ function S.request(zombie, amount, source, kind, callback)
         or type(source) ~= "string" or #source == 0 or #source > 160
         or type(kind) ~= "string" or #kind == 0 or #kind > 64 or not H.allowed(zombie) then return false end
     local player = zombie:getOwnerPlayer()
-    if not player or not zombie:getOwner() or player:isDead() or zombie:getOnlineID() == -1
+    if not player or not zombie:getOwner() or player:isDead() or zombie:getOnlineID() == -1 or player:getOnlineID() == -1
         or not P.identity(player:getOnlineID()) or not P.identity(zombie:getOnlineID())
         or not P.identity(zombie:getPersistentOutfitID()) then return false end
     serial = serial + 1
@@ -77,36 +136,59 @@ function S.command(module, command, player, message)
     local job = pending[message.token]
     if not job or job.player ~= player or message.id ~= job.id or message.outfit ~= job.outfit
         or message.sequence ~= job.sequence or message.owner ~= player:getOnlineID() then return end
-    if getTimestampMs() > job.deadline or not current(job) then
-        finish(job, 0, job.phase == "commit" and "ownership-uncertain" or "cancelled")
+    if getTimestampMs() > job.deadline or not alive(job) or not H.allowed(job.zombie) then
+        finish(job, 0, (job.phase == "commit" or job.phase == "query" or job.result) and "ownership-uncertain" or "cancelled")
         return
     end
-    if command == "Reject" then finish(job, 0, "rejected"); return end
-    if command == "Ready" and job.phase == "prepare" then
+    if command == "Unapplied" and job.phase == "query" and message.receipt == job.receipt then
+        if not prepare(job) then
+            finish(job, 0, "owner-unavailable")
+        end
+        return
+    end
+    if command == "Reject" then
+        if current(job) then
+            finish(job, 0, job.result and "reconciliation-failed" or "rejected")
+        else
+            handoff(job)
+        end
+        return
+    end
+    if command == "Ready" and (job.phase == "prepare" or job.phase == "settle-prepare") then
+        if not current(job) then handoff(job); return end
         if not P.token(message.receipt) then return end
-        job.phase = "commit"
+        job.phase = job.result and "settle-commit" or "commit"
         job.receipt = message.receipt
         local commit = envelope(job)
         commit.amount, commit.receipt = job.amount, job.receipt
-        sendServerCommand(player, P.MODULE, "Commit", commit)
-    elseif command == "Applied" and job.phase == "commit" then
+        if job.result then
+            commit.health = job.result.after
+        end
+        sendServerCommand(player, P.MODULE, job.result and "Reconcile" or "Commit", commit)
+    elseif command == "Applied" and (job.phase == "commit" or job.phase == "query") then
         if message.receipt ~= job.receipt then return end
         if not P.number(message.before, P.EPSILON, 1000000) then return end
         local after, lost, lethal = P.result(message.before, job.amount)
         if not P.number(message.after, P.EPSILON, 1000000) or math.abs(message.after - after) > 0.00001
             or message.lethal ~= lethal then return end
-        -- No await between consent/finisher context and the server's actual death.
-        local allowed, core, token = H.beginDamage(job.zombie, lost, job.source, job.kind, lethal)
-        if not allowed then finish(job, 0, "consent-changed"); return end
-        job.zombie:setHealth(math.min(job.zombie:getHealth(), after))
-        if lethal then
-            job.zombie:setHealth(0)
-            job.zombie:Kill(nil, false)
+        job.result = {after = after, lost = lost, lethal = lethal}
+        if current(job) or not job.zombie:getOwner() then
+            commitResult(job)
+        else
+            if not prepare(job) then
+                finish(job, 0, "owner-unavailable")
+            end
         end
-        if core then core.endDamage(job.zombie, token) end
-        -- Remove before publishing to prevent reentrant callbacks from completing twice.
-        finish(job, lost, "applied")
-        triggerEvent("OnOMHTTDamage", job.zombie, lost, job.source, job.kind)
+    elseif command == "Reconciled" and job.phase == "settle-commit" then
+        if message.receipt ~= job.receipt or not P.number(message.before, P.EPSILON, 1000000)
+            or not P.number(message.after, P.EPSILON, 1000000)
+            or math.abs(message.after - math.min(message.before, job.result.after)) > .00001 then return end
+        job.result.after = math.min(job.result.after, message.after)
+        if current(job) then
+            commitResult(job)
+        else
+            handoff(job)
+        end
     end
 end
 
@@ -119,8 +201,10 @@ function S.tick()
         if cursor > #order then cursor = 1 end
         local job = order[cursor]
         cursor = cursor + 1
-        if now > job.deadline or not current(job) then
-            finish(job, 0, job.phase == "commit" and "ownership-uncertain" or "cancelled")
+        if now > job.deadline or not alive(job) or not H.allowed(job.zombie) then
+            finish(job, 0, (job.phase == "commit" or job.phase == "query" or job.result) and "ownership-uncertain" or "cancelled")
+        elseif not current(job) then
+            handoff(job)
         end
     end
 end

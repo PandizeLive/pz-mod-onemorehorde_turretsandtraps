@@ -9,6 +9,10 @@ return function(player)
     local function key(x, y, z) return x .. ":" .. y .. ":" .. z end
     local function square(x, y)
         local result = IsoGridSquare.new(nativeCell, nil, x, y, 0)
+        local chunk = IsoChunk.new(nativeCell)
+        chunk:assignLoadID()
+        chunk:setSquare(x % 8, y % 8, 0, result)
+        assert(result:getChunk() == chunk, "Fixture square needs native chunk ownership")
         squares[key(x, y, 0)] = result
         return result
     end
@@ -108,6 +112,40 @@ return function(player)
     end
     assert(built and #P.parts(built) == 2 and #P.colliders(built) == 4, "Native server construction did not create its paired four-edge outline")
     print("[OMHTT-Smoke] native-server-barrier-build callback=production parts=2 colliders=4 clients=0")
+    local panelSquare = square(36, 20)
+    local window = IsoWindow.new(nativeCell, panelSquare, getSprite("fixtures_windows_01_0"), false)
+    panelSquare:getObjects():add(window)
+    panelSquare:getSpecialObjects():add(window)
+    local temporary = IsoThumpable.new(nativeCell, panelSquare, "omhtt_barrier_01_52", false)
+    panelSquare:getObjects():add(temporary)
+    panelSquare:getSpecialObjects():add(temporary)
+    local initialGlass = window:getHealth()
+    local panel = Wire.onCreate({thumpable = temporary, facing = "e"}).object
+    local panelRecord = Wire.record(panel)
+    local Support = require("OMHTT/BarbSupport")
+    local attachment = Support.record(window, false, panelRecord.side)
+    assert(attachment and attachment.health == 50 and window:getHealth() == initialGlass, "Native panel changed glass health")
+    window:getModData().OMHTTBarbs = {}
+    panel:getModData().OMHTTBarbFrame = {id = "forged"}
+    assert(Wire.record(panel) == panelRecord and Support.attachment(window, false, panelRecord.side) == panelRecord.id,
+        "Native panel accepts public metadata as authority")
+    Wire.initialize()
+    Wire.loaded(panelSquare)
+    panelRecord = Wire.record(panel)
+    attachment = Support.record(window, false, panelRecord.side)
+    assert(attachment and attachment.health == 50, "Native panel private bindings did not survive registry reload")
+    attachment.health = 13
+    player:getInventory():AddItem(instanceItem("Base.Hammer"))
+    player:getInventory():AddItem(instanceItem("Base.Pliers"))
+    player:setX(36.5)
+    player:setY(20.5)
+    player:setCurrent(panelSquare)
+    local panelFix = OMHTTBarbServiceAction:new(player, panel, panelRecord.id, "Repair")
+    assert(panelFix:complete() and not panelFix:complete() and attachment.health == 50, "Native panel repair failed")
+    local panelRemove = OMHTTBarbServiceAction:new(player, panel, panelRecord.id, "Remove")
+    assert(panelRemove:complete() and not panelRemove:complete() and not Wire.record(panel), "Native panel retirement failed")
+    assert(window:getHealth() == initialGlass, "Native panel service changed supporting glass health")
+    print("[OMHTT-Smoke] native-server-panel construct=production repair=once removal=once glass=unchanged publicMarkers=ignored clients=0")
     getCell = nativeGetCell
     print("[OMHTT-Smoke] native-server-traps bed=repair-pickup wire=paired-repair-pickup publicMarkers=ignored clients=0 mappedRemoval=not-tested")
 end

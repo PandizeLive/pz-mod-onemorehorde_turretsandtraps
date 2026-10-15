@@ -76,6 +76,12 @@ function Service.apply(player, object, id, operation)
     if operation == "Repair" then
         if not S.repair(attachment) then return false end
         B.publishWire(record)
+        if isServer() and not record.paired then
+            local _, host = B.resolve(record)
+            if host then
+                S.publish(host)
+            end
+        end
         return true
     end
     if operation ~= "Remove" then return false end

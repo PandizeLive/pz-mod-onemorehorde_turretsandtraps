@@ -33,8 +33,12 @@ settings.ModuleLootRate = 0; L.apply()
 for module in pairs(L.WEIGHTS) do check(count(L.POOLS[1], module) == 0, "Global zero disables new module loot") end
 check(ProceduralDistributions.list[L.POOLS[1]].items[1] == "BatteryBox", "Other mod and vanilla loot preserved")
 settings.ModuleLootRate = 1
-testMode = "server"; L.apply()
-check(count(L.POOLS[1], "Firing") == 0, "Deferred multiplayer gets no unusable module loot")
+testMode = "server"; L.apply(); L.apply()
+check(count(L.POOLS[1], "Firing") == 1, "Dedicated server registers module loot once")
+check(ProceduralDistributions.list[L.POOLS[1]].items[1] == "BatteryBox", "Server module registration preserves ordinary loot")
+settings.TurretsEnabled = false; L.apply()
+check(count(L.POOLS[1], "Firing") == 0, "Dedicated server respects disabled turret loot")
+settings.TurretsEnabled = true
 testMode = "sp"
 settings.ModuleLootRate, settings.LootRateFilter = originalGlobal, originalFilter
 

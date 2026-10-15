@@ -1,5 +1,13 @@
 -- Real native actors on a stock dedicated server. No client transport is simulated by this probe.
 return function()
+    local loot = require("OMHTT/ModuleLoot")
+    local items = ProceduralDistributions.list[loot.POOLS[1]].items
+    local found = 0
+    for i = 1, #items, 2 do
+        if items[i] == "Base.OMHTTModuleFiring" and items[i + 1] > 0 then found = found + 1 end
+    end
+    assert(found == 1, "Dedicated server did not register module loot exactly once during native startup")
+    print("[OMHTT-Smoke] native-server-module-loot startup=registered count=once clients=0")
     local D = require("OMHTT/Damage")
     local P = require("OMHTT/DefenseCombatProtocol")
     local zombie = IsoZombie.new(getCell())

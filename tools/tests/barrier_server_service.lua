@@ -10,6 +10,10 @@ local _, slot = P.place(first, testPlayer)
 local record = slot.device
 record.placementSource = "construction"
 local parts = P.parts(record)
+parts[1]:getModData().OMHTT = {id = "forged", schema = 1}
+parts[1]:getModData().OMHTTEdge = {id = "forged"}
+check(P.exact(parts[1]) == record and #P.parts(record) == 2,
+    "Server barrier identity survives overwritten public markers")
 for i = 1, #parts do
     parts[i].sync = function(self) self.nativeSynced = true end
 end

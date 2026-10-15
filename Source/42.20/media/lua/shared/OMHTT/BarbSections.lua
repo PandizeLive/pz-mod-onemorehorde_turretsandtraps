@@ -12,6 +12,23 @@ local resolvedObjects = {}
 local wireFacings = {e = 0, n = 1, w = 2, s = 3}
 local wireBindings = setmetatable({}, {__mode = "k"})
 local wireTiles = {}
+local panelBindings = setmetatable({}, {__mode = "k"})
+local panelTiles = {}
+local panelRemovals = {}
+
+---@param frame IsoObject Server-owned panel frame
+---@param record table Private persistent panel
+---@return nil
+local function bindPanel(frame, record)
+    panelBindings[frame] = record
+    local view = {}
+    for key, value in pairs(record) do
+        if key ~= "attachment" then
+            view[key] = value
+        end
+    end
+    frame:getModData().OMHTTBarbFrame = {id = record.id, view = view}
+end
 
 ---@param record table Authoritative wire
 ---@param part number Zero-based half
@@ -53,7 +70,6 @@ end
 ---@return boolean enabled
 ---@nodiscard
 function B.enabled(kind)
-    if (isClient() or isServer()) and kind ~= "wire" then return false end
     local options = SandboxVars.OMHTurretsTraps
     return options ~= nil and options.Enabled ~= false and options[kind == "wire" and "BarbWire" or "BarbSections"] ~= false
 end
@@ -72,11 +88,22 @@ function B.initialize()
         B.store.nextId = 1
     end
     if not B.store.wires then B.store.wires = {} end
+    if not B.store.panels then
+        B.store.panels = {}
+    end
     if not B.store.retiredTiles then B.store.retiredTiles = {} end
     B.nodes, B.order, B.nearby = {}, {}, {}
     B.cursor = 1
     resolvedObjects = {}
     wireBindings, wireTiles = setmetatable({}, {__mode = "k"}), {}
+    panelBindings, panelTiles = setmetatable({}, {__mode = "k"}), {}
+    panelRemovals = {}
+    S.reset()
+    for id, record in pairs(B.store.panels) do
+        local key = F.key(record.x, record.y, record.z)
+        panelTiles[key] = panelTiles[key] or {}
+        panelTiles[key][id] = true
+    end
     for id, record in pairs(B.store.wires) do
         wireTiles[wireKey(record, 0)], wireTiles[wireKey(record, 1)] = id, id
     end
@@ -134,6 +161,11 @@ end
 ---@nodiscard
 function B.record(object)
     if isServer() then
+        local panel = object and panelBindings[object]
+        local position = object and object:getSquare()
+        if panel and B.store.panels[panel.id] == panel and object:getObjectIndex() >= 0
+            and position and position:getX() == panel.x and position:getY() == panel.y and position:getZ() == panel.z
+            and object:getName() == "OMHTTPanel:" .. panel.id then return panel end
         local record = object and wireBindings[object]
         local square = object and object:getSquare()
         if record and B.store and B.store.wires[record.id] == record and square
@@ -143,11 +175,12 @@ function B.record(object)
     local marker = object and object:hasModData() and object:getModData().OMHTTBarbFrame
     if isClient() then
         local view = marker and marker.view
-        if not view or not view.paired or not B.store then return nil end
-        local record = B.store.wires[view.id]
+        if not view or not B.store then return nil end
+        local collection = view.paired and B.store.wires or B.store.panels
+        local record = collection[view.id]
         if not record then
             record = {}
-            B.store.wires[view.id] = record
+            collection[view.id] = record
         end
         if not record.revision or view.revision >= record.revision then
             for key, value in pairs(view) do
@@ -242,7 +275,8 @@ function B.resolve(record)
         return frame, frame, frame and B.record(frame), frame and record.health > 0 and "active" or "missing"
     end
     if not frame or not host then return frame, host, nil, "missing" end
-    local attachment = host:getModData().OMHTTBarbs[S.faceKey(record.north, record.side)]
+    local attachment = S.record(host, record.north, record.side)
+    if not attachment then return frame, host, nil, "missing" end
     if (not attachment.shared and attachment.health <= 0) or not S.active(host, record.north, B.policy)
         or not S.edge(host, record.north, record.side, geometry) then return frame, host, attachment, "inactive" end
     return frame, host, attachment, "active"
@@ -281,8 +315,17 @@ function B.retire(record, removing)
     if B.nodes[record.id] then
         B.index(record, false)
     end
-    if frame then
+    if isServer() then
+        B.store.panels[record.id] = nil
+        local bucket = panelTiles[F.key(record.x, record.y, record.z)]
+        if bucket then
+            bucket[record.id] = nil
+        end
+    end
+    if frame and frame ~= removing then
+        moving = true
         frame:getSquare():transmitRemoveItemFromSquare(frame)
+        moving = false
     end
 end
 
@@ -307,6 +350,9 @@ function B.visual(record, frame, host)
     if frame:getSpriteName() ~= name then
         frame:setSprite(name)
         frame:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_OBJECT_MODIFY)
+        if isServer() then
+            frame:transmitUpdatedSpriteToClients()
+        end
     end
 end
 
@@ -317,6 +363,37 @@ function B.loaded(square)
     local objects = square:getObjects()
     if isServer() then
         local key = F.key(square:getX(), square:getY(), square:getZ())
+        local panels = panelTiles[key]
+        if panels then
+            for id in pairs(panels) do
+                local record = B.store.panels[id]
+                local host = record and S.find(square, record.north, true)
+                local frame
+                for i = 0, objects:size() - 1 do
+                    local candidate = objects:get(i)
+                    if candidate:getName() == "OMHTTPanel:" .. id then
+                        frame = candidate
+                        break
+                    end
+                end
+                if frame and host and S.kind(host, record.north, true) == record.hostKind then
+                    bindPanel(frame, record)
+                    S.restore(host, record.attachment)
+                    S.publish(host)
+                    frame:transmitModData()
+                    if not B.nodes[id] then
+                        B.index(record, true)
+                    end
+                else
+                    if frame then
+                        moving = true
+                        square:transmitRemoveItemFromSquare(frame)
+                        moving = false
+                    end
+                    B.store.panels[id], panels[id] = nil, nil
+                end
+            end
+        end
         local retiredSprite = B.store.retiredTiles[key]
         if retiredSprite then
             moving = true
@@ -361,9 +438,21 @@ end
 ---@return nil
 function B.removed(object)
     if moving then return end
+    if isServer() then
+        for _, north in pairs({false, true}) do
+            for side = -1, 1, 2 do
+                local id = S.attachment(object, north, side)
+                local panel = id and B.store.panels[id]
+                if panel then
+                    panelRemovals[id] = panel
+                end
+            end
+        end
+    end
     local record = B.record(object)
     if not record then return end
     if record.paired then B.retire(record, object); return end
+    if isServer() then panelRemovals[record.id] = record; return end
     local _, host = B.resolve(record)
     if host and record.kind ~= "wire" then
         S.unbind(host, record.north, record.side, record.id)
@@ -410,6 +499,16 @@ function B.onCreate(params)
     local frame = IsoThumpable.new(square:getCell(), square, "omhtt_barrier_01_52", north)
     frame:getModData().OMHTTBarbFrame = record
     original:getModData().OMHTTBarbFrame = record
+    if isServer() then
+        record.revision, record.hostKind = 1, S.kind(host, north)
+        record.attachment = S.record(host, north, side)
+        B.store.panels[id] = record
+        local key = F.key(x, y, square:getZ())
+        panelTiles[key] = panelTiles[key] or {}
+        panelTiles[key][id] = true
+        frame:setName("OMHTTPanel:" .. id)
+        bindPanel(frame, record)
+    end
     frame:setBlockAllTheSquare(false)
     frame:setCanPassThrough(true)
     frame:setIsHoppable(false)
@@ -527,6 +626,13 @@ end
 ---@return nil
 function B.tick()
     if isClient() then return end
+    local removed = 0
+    for id, record in pairs(panelRemovals) do
+        panelRemovals[id] = nil
+        B.retire(record)
+        removed = removed + 1
+        if removed >= 4 then break end
+    end
     B.time = B.time + ActiveTime.step(clock)
     for _ = 1, math.min(4, #B.order) do
         if B.cursor > #B.order then

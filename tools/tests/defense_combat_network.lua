@@ -5,14 +5,15 @@ local oldMode, oldCore, oldServer, oldClient, oldPlayer = testMode, OneMoreHorde
 local serverPackets, clientPackets, completions = {}, {}, {}
 local player = {getOnlineID = function() return 12 end, isDead = function() return false end}
 local stranger = {getOnlineID = function() return 13 end, isDead = function() return false end}
+local activePlayer = player
 OneMoreHordeDefenseIntegration = nil
-getSpecificPlayer = function(index) return index == 0 and player or nil end
+getSpecificPlayer = function(index) return index == 0 and activePlayer or nil end
 sendServerCommand = function(recipient, module, command, message)
-    check(recipient == player and module == P.MODULE, "Combat addresses the actual zombie owner only")
+    check((recipient == player or recipient == stranger) and module == P.MODULE, "Combat addresses a selected native owner only")
     serverPackets[#serverPackets + 1] = {command, nativeRoundTrip(message)}
 end
 sendClientCommand = function(sender, module, command, message)
-    check(sender == player and module == P.MODULE, "Receipt uses the authenticated local owner")
+    check(sender == activePlayer and module == P.MODULE, "Receipt uses the authenticated local owner")
     clientPackets[#clientPackets + 1] = {command, nativeRoundTrip(message)}
 end
 local nextId = 3000
@@ -88,8 +89,39 @@ S.request(server, .3, "wire-1", "barbs", done)
 clientReceive(); serverReceive(); clientReceive()
 server.owner = stranger
 serverReceive()
-check(server.health == 1 and completions[#completions][2] == "ownership-uncertain" and #serverPackets == 0,
-    "An ambiguous ownership handoff is reported and never replays damage on the new owner")
+check(server.health == 1 and #serverPackets == 1, "Applied receipt survives handoff and prepares the new owner")
+local replacementOwner = actor(client.id)
+replacementOwner.health = .6
+activePlayer = stranger
+testMode = "client"; C.created(replacementOwner); testMode = "server"
+clientReceive(); serverReceive(stranger)
+local reconciliation = clientReceive()
+check(replacementOwner.health == .6, "Handoff does not subtract damage twice or heal lower new-owner health")
+serverReceive(stranger)
+check(server.health == .6 and completions[#completions][2] == "applied", "Handoff settles the original hit once")
+testMode = "client"; C.command(P.MODULE, reconciliation[1], reconciliation[2]); testMode = "server"
+serverReceive(stranger)
+check(server.health == .6, "Repeated handoff reconciliation is idempotent")
+activePlayer = player
+
+serverPackets, clientPackets = {}, {}
+server, client = pair()
+S.request(server, .3, "wire-1", "barbs", done)
+clientReceive(); serverReceive()
+local heldCommit = table.remove(serverPackets, 1)
+server.owner, client.remote = stranger, true
+for i = 1, 10 do S.tick() end
+clientReceive(); serverReceive()
+testMode = "client"; C.command(P.MODULE, heldCommit[1], heldCommit[2]); testMode = "server"
+check(client.health == 1, "Unapplied status revokes a delayed commit after handoff")
+clientPackets = {}
+activePlayer = stranger
+replacementOwner = actor(client.id)
+testMode = "client"; C.created(replacementOwner); testMode = "server"
+clientReceive(); serverReceive(stranger); clientReceive(); serverReceive(stranger)
+check(math.abs(replacementOwner.health - .7) < .00001 and math.abs(server.health - .7) < .00001,
+    "A revoked old-owner hit is applied once by the new owner")
+activePlayer = player
 
 server, client = pair()
 local finisher = false
@@ -108,7 +140,7 @@ S.request(server, .3, "turret-1", "firearm", done)
 clientReceive()
 server.owner = nil
 serverReceive()
-check(client.health == 1 and completions[#completions][2] == "cancelled", "Disconnect before commit does not hurt the zombie")
+check(client.health == 1 and completions[#completions][2] == "owner-unavailable", "Disconnect before commit does not hurt the zombie")
 check(not S.request(server, 0/0, "turret-1", "firearm", done), "NaN damage cannot enter the queue")
 
 server, client = pair()
@@ -120,8 +152,10 @@ S.request(server, .3, "turret-1", "firearm", done)
 clientReceive()
 server.connection = {} -- Same player identity, different native connection.
 serverReceive()
-check(server.health == 1 and client.health == 1 and completions[#completions][2] == "cancelled",
-    "Reconnected player identity cannot complete the previous connection's operation")
+check(server.health == 1 and client.health == 1 and #serverPackets == 1,
+    "Changed native connection requires a fresh preparation")
+S.created(server)
+serverPackets, clientPackets = {}, {}
 local tinyAfter, tinyLost, tinyLethal = P.result(.0012, .0005)
 check(tinyAfter == P.EPSILON and not tinyLethal and math.abs(tinyLost - .0002) < .000001,
     "Nonlethal sub-thousandth result stays alive on the native health wire")

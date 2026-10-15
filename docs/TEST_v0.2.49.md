@@ -36,3 +36,10 @@ No fixes implemented, no new tests run, no install. Rotaries' wider sectors/reac
 ## C244 development verification; installed test unchanged (2026-10-14)
 
 Uninstalled development source after the immutable 0.2.49 test tag passes 20,141 assertions, 142 Lua/translation compilations and 238-source/290-package parity checks. Stock dedicated-server probes cover native ownerless damage/death and paired Spike Barrier construction/services alongside existing turret/Bed/Concertina services. No clients connected; synthetic-square fixtures do not prove mapped removal or combat ownership handoff. [Full findings and unresolved combat cases](PATCH_C244_PROGRESS.md). The installed 0.2.49 owner test and its original evidence are unchanged; this is not owner acceptance or a multiplayer-ready release.
+
+
+## C245 — uninstalled multiplayer development verification (2026-10-14)
+
+No owner test or 0.2.49 acceptance change. [C245](PATCH_C245_PROGRESS.md):20,216 assertions;142 Lua/translation compilations;808 native translation keys;238 source/290 packaged files. Stock dedicated-server native lifecycle/loot callbacks pass with zero clients. Native remote ownership, packet ordering, corpse transport and mapped-world removal remain unverified. The corrected harness rejects mod callback exceptions; prior fixture failures are retained and C244 construction evidence is qualified. No new test tag or installation.
+
+The broader stock native write and read/restart regression suite also passes (67.3s/70.8s, zero clients). It covers existing native serialization, traps, firearms/ammo, packs, collision/visibility, recipes, accuracy and sound registrations; SP-emulated checks are not MP certification. The initial nested-output-path fixture failure was repaired and retained as failed evidence. See C245 for exact paths and limitations.

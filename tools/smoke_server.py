@@ -88,6 +88,8 @@ def main():
             barb_probe.unlink(missing_ok=True)
             turret_probe.unlink(missing_ok=True)
     text = transcript.read_text(encoding="utf-8", errors="replace")
+    mod_errors = [line for line in text.splitlines() if "MOD:OMH:" in line and "Exception thrown" in line]
+    assert not mod_errors, f"Native mod callbacks threw despite completion markers: {mod_errors}"
     assert "[OMHTT-Heads] native recipes=3" in text, "Native head recipe/metadata proof failed"
     assert "[OMHTT-Smoke] native-distance-parity samples=16 passed=true" in text, "Native accuracy parity failed"
     assert "[OMHTT-Smoke] native-atlas-lua bypass=verified restore=verified" in text, "Native atlas exposure failed"

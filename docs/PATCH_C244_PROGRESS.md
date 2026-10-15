@@ -1,5 +1,7 @@
 # C244 — zombie combat transport and multiplayer barriers
 
+**C245 evidence correction:** the C244 native Barrier construction fixture logged missing-chunk exceptions despite reaching its completion marker. The marker did not establish clean callback execution. [C245 fixes the fixture, strengthens failure detection and reruns](PATCH_C245_PROGRESS.md#correction-to-the-c244-evidence). Original logs remain unchanged.
+
 2026-10-14. The owner explicitly requests continuing zombie synchronization and all remaining approved multiplayer implementation without waiting for a player test, and pushing progress. C235/C240 authorization remains active; no new generic approval or owner-test gate is introduced.
 
 ## Implemented
