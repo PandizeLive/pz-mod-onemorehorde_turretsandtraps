@@ -8,6 +8,8 @@ LootLab: 31 modules, 227 module/pool entries; numerical, weight, rarity and fixe
 
 Automated results do not establish rendered animation/audio quality, owner gameplay acceptance or live multiplayer scoring. No owner test or console review has occurred for 0.2.50 yet. Companion Horde integration remains the C246 coordinated core; connected acceptance is deferred.
 
+Installed from immutable `test/v0.2.50` / `22cd6d4a4b77cd1b7f29d4b861575ae370f4a160`. All 259 source and 317 tagged/packaged/installed/archive files match; both 0.2.49 backups verify. [Local release evidence](../diagnostics/v0.2.50/local-release.json).
+
 ## Short owner test — when available
 
 1. Restart and confirm 0.2.50. Craft/install Lobber and Scrapshot; check the new recipes and magazines.

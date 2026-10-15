@@ -6,4 +6,6 @@ Validation: 20,401 assertions, 167 Lua/translation files, five new native recipe
 
 [Current status](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/blob/codex/performance-barbed-audit/docs/CURRENT_STATUS.md) · [0.2.50 test findings](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/blob/codex/performance-barbed-audit/docs/TEST_v0.2.50.md) · [Horde integration PR 4](https://github.com/AlexVDefi/pz-mod-onemorehorde_protectthecure/pull/4)
 
+0.2.50 is installed locally from immutable `test/v0.2.50`; source/package/archive/install hashes and both previous-package backups verify. Hosted LootLab includes Lure and Void.
+
 Development/test release only. No main merge or Workshop upload.
