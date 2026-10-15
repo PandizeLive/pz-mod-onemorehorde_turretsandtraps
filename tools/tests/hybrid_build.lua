@@ -106,6 +106,51 @@ check(panel.logic.list:size() == 7, "Absent Turrets content is omitted without l
 local before = #queue
 panel:createBuildIsoEntity(true)
 check(#queue == before, "Passive native refresh never starts crafting")
+local priorMode, priorClock, fromLogic = testMode, getTimestampMs, ISHandcraftAction.FromLogic
+local now, nativeCompletions = 1000, 0
+panel.logic = nil
+testMode = "client"
+getTimestampMs = function() return now end
+ISHandcraftAction.FromLogic = function(logic)
+    return {character = player, logic = logic, isValid = function() return true end,
+        stop = function() end, perform = function() nativeCompletions = nativeCompletions + 1 end}
+end
+inventory.items, placed = {}, nil
+check(H.start(panel, definition), "MP Building queues the original native craft action")
+local networkCraft = queue[#queue]
+networkCraft:perform(); networkCraft:perform()
+check(nativeCompletions == 1 and panel.omhttPending and not placed,
+    "Client completion neither crafts locally nor reads server-only created items")
+check(not H.start(panel, definition), "Pending server output prevents a duplicate craft")
+inventory.items = {carried}
+now = now + 150
+H.poll(panel)
+check(not placed, "Unchanged inventory generation does not trigger another recursive search")
+H.generation = H.generation + 1
+now = now + 150
+H.poll(panel)
+check(placed == carried and not panel.omhttPending, "Replicated output unlocks exact carried-item placement")
+local resolved = placed
+H.poll(panel)
+check(placed == resolved and nativeCompletions == 1, "Repeated panel updates cannot duplicate completion")
+inventory.items, placed = {}, nil
+local cancelled = 0
+H.awaitInventory(panel, definition, nil, nil, function() cancelled = cancelled + 1 end)
+panel.omhttClosed = true
+H.poll(panel)
+inventory.items = {carried}
+now = now + 200
+H.generation = H.generation + 1
+H.poll(panel)
+check(not placed and not panel.omhttPending and cancelled == 1,
+    "Closing during replication cancels follow-up without consuming the received item")
+panel.omhttClosed, inventory.items = false, {}
+H.awaitInventory(panel, definition, nil, nil, function() cancelled = cancelled + 1 end)
+now = now + 10001
+H.poll(panel)
+check(not placed and not panel.omhttPending and cancelled == 2,
+    "Missing or ground-dropped output times out without inventing items or repeating the recipe")
+testMode, getTimestampMs, ISHandcraftAction.FromLogic = priorMode, priorClock, fromLogic
 P.carried, H.place = oldCarried, oldPlace
 ScriptManager, HandcraftLogic, ISHandcraftAction = oldScript, oldHandcraft, oldAction
 ISInventoryPaneContextMenu, ISTimedActionQueue, SpriteConfigManager = oldMenu, oldQueue, oldInfo

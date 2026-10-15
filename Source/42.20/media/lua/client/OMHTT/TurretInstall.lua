@@ -34,6 +34,7 @@ function I.install(item, player)
     local containers = ArrayList.new()
     containers:add(item:getContainer())
     local cursor = ISBuildIsoEntity:new(player, info, 1, containers)
+    cursor.omhttInputs = {item}
     require("OMHTT/PlacementTiming").apply(cursor)
     local logic = cursor.buildPanelLogic
     logic:setManualSelectInputs(true)

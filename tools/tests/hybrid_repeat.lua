@@ -86,6 +86,27 @@ preview = drag
 panel.omhttClosed = true
 preview:tryBuild(4, 2, 0)
 check(not H.active(panel, preview), "Closed Building cannot continue the placement session")
+local oldMode, oldClock = testMode, getTimestampMs
+local now, held = 1000, true
+testMode, getTimestampMs = "client", function() return now end
+panel.omhttClosed = false
+local consumed = {getContainer = function() return {contains = function() return held end} end}
+local remoteCursor = H.bind(panel, definition, H.place(player, definition, consumed), 3)
+remoteCursor.omhttInputs = {consumed}
+remoteCursor:tryBuild(4, 2, 0)
+queued:perform()
+check(panel.omhttPending and not panel.omhttPlacement and drag == remoteCursor,
+    "MP placement completion clears native action and waits for consumption replication")
+local remoteAction = queued
+remoteCursor:tryBuild(4, 2, 0)
+check(queued == remoteAction, "Pending consumption cannot enqueue the same item twice")
+held, nextItem = false, second
+H.generation = H.generation + 1
+now = now + 150
+H.poll(panel)
+check(not panel.omhttPending and drag ~= remoteCursor and drag.item == second and drag.nSprite == 3,
+    "Replicated removal rebinds the next item with the original facing")
+testMode, getTimestampMs = oldMode, oldClock
 getCell, ISBuildIsoEntity, ISBuildingObject = saved.getCell, saved.cursor, saved.building
 HandcraftLogic, SpriteConfigManager, ISInventoryPaneContextMenu = saved.handcraft, saved.info, saved.menu
 H.item, H.place, H.recipe, H.start = saved.item, saved.place, saved.recipe, saved.start

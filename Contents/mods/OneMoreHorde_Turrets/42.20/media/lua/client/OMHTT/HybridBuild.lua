@@ -1,4 +1,4 @@
-if isClient() or isServer() then return end
+if isServer() then return end
 require("Entity/TimedActions/ISHandcraftAction")
 require("TimedActions/ISTimedActionQueue")
 local H = {}
@@ -84,6 +84,65 @@ function H.active(panel, cursor)
 end
 
 ---@param panel ISBuildPanel Native panel
+---@return nil
+function H.poll(panel)
+    local pending = panel.omhttPending
+    if not pending then return end
+    if panel.omhttClosed or panel.player:isDead() or pending.cursor and not H.active(panel, pending.cursor) then
+        panel.omhttPending = nil
+        if pending.cancelled then pending.cancelled() end
+        return
+    end
+    local now = getTimestampMs()
+    if now < pending.nextCheck then return end
+    pending.nextCheck = now + 100
+    if not H.recipe(panel.player, pending.definition) then
+        panel.omhttPending = nil
+        if pending.cancelled then pending.cancelled() end
+        return
+    end
+    if pending.generation == H.generation and now < pending.deadline then return end
+    pending.generation = H.generation
+    if pending.cursor then
+        local inputs = pending.cursor.omhttInputs or {}
+        for i = 1, #inputs do
+            local item = inputs[i]
+            local container = item:getContainer()
+            if container and container:contains(item) and now < pending.deadline then return end
+        end
+        panel.omhttPending = nil
+        H.repeatPlacement(panel, pending.definition, pending.cursor.nSprite)
+        return
+    end
+    local item = H.item(panel.player, pending.definition)
+    if item then
+        panel.omhttPending = nil
+        if pending.ready then
+            pending.ready(item)
+        else
+            H.bind(panel, pending.definition, H.place(panel.player, pending.definition, item))
+        end
+    elseif now >= pending.deadline then
+        panel.omhttPending = nil
+        panel.player:setHaloNote(getText("UI_OMHTT_BuildPickUp"))
+        if pending.cancelled then pending.cancelled() end
+    end
+end
+
+---@param panel ISBuildPanel Native panel
+---@param definition table Build route
+---@param cursor ISBuildIsoEntity? Completed placement awaiting consumption replication
+---@param ready function? Crafted item callback
+---@param cancelled function? Abandoned follow-up callback
+---@return nil
+function H.awaitInventory(panel, definition, cursor, ready, cancelled)
+    local now = getTimestampMs()
+    panel.omhttPending = {definition = definition, cursor = cursor, ready = ready, cancelled = cancelled,
+        deadline = now + 10000, nextCheck = now}
+    H.poll(panel)
+end
+
+---@param panel ISBuildPanel Native panel
 ---@param definition table Build route
 ---@param cursor ISBuildIsoEntity Exact-item cursor
 ---@param facing number? Previous orientation
@@ -112,7 +171,14 @@ function H.bind(panel, definition, cursor, facing)
             if timed.omhttRepeated then return end
             timed.omhttRepeated = true
             perform(timed)
-            if H.active(panel, cursor) then H.repeatPlacement(panel, definition, cursor.nSprite) end
+            panel.omhttPlacement = nil
+            if H.active(panel, cursor) then
+                if isClient() then
+                    H.awaitInventory(panel, definition, cursor)
+                else
+                    H.repeatPlacement(panel, definition, cursor.nSprite)
+                end
+            end
         end
     end
     ---@param self ISBuildIsoEntity Original cursor
@@ -121,7 +187,7 @@ function H.bind(panel, definition, cursor, facing)
     ---@param z number Floor
     ---@return nil
     cursor.tryBuild = function(self, x, y, z)
-        if self.blockBuild or not H.active(panel, self) then return end
+        if self.blockBuild or panel.omhttPending or not H.active(panel, self) then return end
         local action = ISBuildingObject.tryBuild(self, x, y, z)
         if action then
             action.onIsValid = self.objectInfo:getScript():getTimedActionOnIsValid()
@@ -199,7 +265,7 @@ end
 ---@return boolean started
 function H.start(panel, definition, ready, cancelled)
     local player = panel.player
-    if panel.omhttAction or panel.omhttPlacement or player:isDead() or not H.recipe(player, definition) then return false end
+    if panel.omhttAction or panel.omhttPlacement or panel.omhttPending or player:isDead() or not H.recipe(player, definition) then return false end
     local item = H.item(player, definition)
     if item then
         if ready then ready(item); return true end
@@ -258,6 +324,11 @@ function H.start(panel, definition, ready, cancelled)
         panel.omhttAction = nil
         panel.omhttRefresh = true
         if panel.omhttClosed or self.character:isDead() or not H.recipe(self.character, definition) then return end
+        if isClient() then
+            -- Native complete() crafts on the server; client RecipeData has no created items.
+            H.awaitInventory(panel, definition, nil, ready, cancelled)
+            return
+        end
         local outputs = self.logic:getRecipeData():getAllCreatedItems()
         for i = 0, outputs:size() - 1 do
             local output = outputs:get(i)

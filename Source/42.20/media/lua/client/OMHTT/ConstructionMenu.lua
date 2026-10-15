@@ -1,4 +1,4 @@
-if isClient() or isServer() then return end
+if isServer() then return end
 require("Entity/ISUI/BuildRecipe/ISBuildPanel")
 require("Entity/ISUI/BuildRecipe/ISWidgetBuildControl")
 local H = require("OMHTT/HybridBuild")
@@ -70,13 +70,15 @@ end
 ---@return nil
 function ISBuildPanel:update()
     originalUpdate(self)
-    if self.omhttAction or self.omhttPlacement or not self:getIsVisible() then return end
+    H.poll(self)
+    if self.omhttAction or self.omhttPlacement or self.omhttPending or not self:getIsVisible() then return end
     if self.omhttRefresh or self.omhttGeneration ~= generation then self:refreshList() end
 end
 
 ---@return nil
 function ISBuildPanel:OnCloseWindow()
     self.omhttClosed = true
+    H.poll(self)
     originalClose(self)
 end
 
@@ -103,7 +105,7 @@ function ISWidgetBuildControl:prerender()
         return
     end
     self.omhttTitle = true
-    self.buttonCraft.enable = not panel.omhttAction and not panel.omhttPlacement and self.buttonCraft.enable
+    self.buttonCraft.enable = not panel.omhttAction and not panel.omhttPlacement and not panel.omhttPending and self.buttonCraft.enable
     local crafting = definition.craft == self.logic:getRecipe():getName()
     local title = definition.turret and "UI_OMHTT_ManageInstall"
         or (definition.deploy == "OMHTTBarbs" and "UI_OMHTT_AttachTrap" or "UI_OMHTT_PlaceTrap")
