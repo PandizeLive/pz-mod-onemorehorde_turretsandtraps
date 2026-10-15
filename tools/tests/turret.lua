@@ -30,6 +30,7 @@ local function container()
     end
     function result:getType() return self.kind end
     function result:getContainingItem() return nil end
+    function result:getParent() return nil end
     function result:contains(candidate)
         for i = 1, #self.items do if self.items[i] == candidate then return true end end
         return false

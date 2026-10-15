@@ -163,5 +163,164 @@ check(T.state(missing) == nil and persisted.world["turret-missing-native-fixture
 local replacement = device("turret-after-missing-fixture")
 A.retire(replacement)
 
+local Transfer = require("OMHTT/TurretTransferAction")
+local Control = require("OMHTT/TurretControlAction")
+local transferObject = device("turret-transfer-fixture")
+function transferObject:transmitUpdatedSpriteToClients() self.spriteSent = true end
+function player:hasTrait() return false end
+function player:isWearingAwkwardGloves() return false end
+function player:removeFromHands() end
+local oldTraits = CharacterTrait
+local oldNativeTransfer = ISTransferAction
+ISTransferAction = {removeItemOnCharacter = function(_, operator, candidate)
+    operator:removeFromHands(candidate)
+    candidate.detached = true
+end}
+CharacterTrait = {DEXTROUS = "dex", ALL_THUMBS = "thumbs"}
+local transferId = T.state(transferObject).id
+local inv, target = player.inventory, transferObject.inventory
+inv.kind = "inventory"
+for _, container in pairs({inv, target}) do
+    function container:getParent() return self == target and transferObject or nil end
+    function container:isInCharacterInventory(p) return self == p.inventory end
+    function container:isRemoveItemAllowed() return true end
+    function container:isItemAllowed() return true end
+    function container:getItemById(id)
+        for i = 1, #self.items do if self.items[i]:getID() == id then return self.items[i] end end
+    end
+end
+local function component(kind)
+    local value = item(kind)
+    function value:getDisplayName() return kind end
+    function value:getUnequippedWeight() return self.weight end
+    function value:isFavorite() return self.favorite == true end
+    return value
+end
+local head = component(T.HEAD)
+inv:AddItem(head)
+local adds, removes = 0, 0
+sendRemoveItemFromContainer = function(source, candidate)
+    check(not source:contains(candidate), "Transfer removal sync follows the committed move")
+    removes = removes + 1
+end
+sendAddItemToContainer = function(destination, candidate)
+    check(destination:contains(candidate), "Transfer addition sync follows the committed move")
+    adds = adds + 1
+end
+local transfer = Transfer:new(player, transferObject, head, true, transferId)
+testMode = "client"
+check(not transfer:complete() and inv:contains(head), "Client transfer completion cannot move items")
+testMode = "server"
+check(not Transfer:new(player, transferObject, head, true, "stale"):complete(), "Wrong turret identity rejects transfer")
+check(not Transfer:new(player, transferObject, head, true):complete(), "Missing serialized identity rejects transfer")
+target.room = false
+check(not transfer:complete() and inv:contains(head), "No-room transfer preserves item")
+target.room, target.failAdd = true, true
+check(not transfer:complete() and inv:contains(head) and removes == 0, "Failed native insertion rolls back before synchronization")
+target.failAdd = false
+transfer = Transfer:new(player, transferObject, head, true, transferId)
+check(transfer:complete() and target:contains(head) and adds == 1 and removes == 1, "Server moves exact head and synchronizes both endpoints once")
+check(head.detached, "Deposited equipment uses native attachment/hand/worn-item cleanup")
+check(not transfer:complete(), "Repeated completion cannot duplicate a transfer")
+local secondHead = component(T.HEAD)
+inv:AddItem(secondHead)
+check(not Transfer:new(player, transferObject, secondHead, true, transferId):complete(), "Server rejects a second head")
+local potato = component("Base.Potato")
+inv:AddItem(potato)
+potato.favorite = true
+check(not Transfer:new(player, transferObject, potato, true, transferId):complete(), "Favorite item cannot be deposited")
+potato.favorite = false
+check(not Transfer:new(player, transferObject, potato, true, transferId, {potato.id, potato.id}):complete(), "Repeated batch identities are rejected")
+check(not Transfer:new(player, transferObject, potato, true, transferId, {potato.id}):complete(), "Heavy ammunition cannot use light-item batching")
+check(Transfer:new(player, transferObject, potato, true, transferId):complete(), "Exact ammo can enter the mounted matching head")
+check(not Transfer:new(player, transferObject, potato, true, transferId):complete(), "Concurrent stale incoming transfer is rejected")
+check(not Transfer:new(player, transferObject, potato, false, transferId, nil, false):complete(), "Unsupported destination is rejected instead of silently changed")
+check(Transfer:new(player, transferObject, potato, false, transferId):complete() and inv:contains(potato), "Outgoing transfer restores the exact item")
+local state = T.state(transferObject)
+check(not Control:new(player, transferObject, transferId, "Power", true):complete(), "Unfinished combat controls cannot be enabled through control actions")
+check(not Control:new(player, transferObject, transferId, "Range", 0/0):complete(), "Nonfinite ranges are rejected")
+check(not Control:new(player, transferObject, transferId, "Range", -1):complete(), "Negative ranges are rejected")
+check(not Control:new(player, transferObject, transferId, "Range", 9999):complete(), "Out-of-range values are rejected")
+local range = Control:new(player, transferObject, transferId, "Range", 2)
+check(range:complete() and state.engagementRange == 2 and not range:complete(), "Range is set by the server exactly once")
+check(Control:new(player, transferObject, transferId, "Range", 0):complete() and state.engagementRange == nil, "Max range clears the custom limit")
+check(not Control:new(player, transferObject, transferId, "Priority", "Weakest"):complete(), "Priority requires a working Filter module")
+target:AddItem(component(T.TYPES.Filter))
+check(Control:new(player, transferObject, transferId, "Priority", "Weakest"):complete() and state.priority == "Weakest", "Server validates and stores a known priority")
+check(not Control:new(player, transferObject, transferId, "Priority", "Unknown"):complete(), "Unknown priorities are rejected")
+local oldCapacity = SandboxVars.OMHTurretsTraps.PotatoAmmoCapacity
+SandboxVars.OMHTurretsTraps.PotatoAmmoCapacity = 500
+target:AddItem(component(T.TYPES.CapacityLarge))
+local rounds, started, maxBatch = {}, realMillis(), 0
+for i = 1, 600 do
+    local round = component("Base.Potato")
+    round.weight = .05
+    inv:AddItem(round)
+    rounds[i] = round
+end
+local oversized = {}
+for i = 1, 21 do oversized[i] = rounds[i]:getID() end
+check(not Transfer:new(player, transferObject, rounds[1], true, transferId, oversized):complete(), "More than twenty batch entries are rejected")
+for offset = 1, 600, 20 do
+    local ids = {}
+    for i = offset, offset + 19 do ids[#ids + 1] = rounds[i]:getID() end
+    local begin = realMillis()
+    check(Transfer:new(player, transferObject, rounds[offset], true, transferId, ids):complete(), "Bounded server batch completes")
+    maxBatch = math.max(maxBatch, realMillis() - begin)
+end
+check(T.contents(target).reserve == 600, "All six hundred exact rounds arrive through thirty server actions")
+testMPTransfer = "items=600 batches=30 maxBatchMs=" .. maxBatch .. " elapsedMs=" .. (realMillis() - started)
+local oldBonus = SandboxVars.OMHTurretsTraps.CapacityLargeAmmoBonus
+SandboxVars.OMHTurretsTraps.CapacityLargeAmmoBonus = 105
+local limited, limitedIds = {}, {}
+for i = 1, 20 do
+    local round = component("Base.Potato")
+    round.weight = .05
+    inv:AddItem(round)
+    limited[i], limitedIds[i] = round, round:getID()
+end
+check(Transfer:new(player, transferObject, limited[1], true, transferId, limitedIds):complete(), "Batch moves the portion that fits")
+check(T.contents(target).reserve == 605 and inv:contains(limited[6]) and inv:contains(limited[20]), "Incremental batch accounting stops exactly at the remaining capacity")
+SandboxVars.OMHTurretsTraps.CapacityLargeAmmoBonus = oldBonus
+SandboxVars.OMHTurretsTraps.PotatoAmmoCapacity = oldCapacity
+local oldQueue, oldBegin = ISTimedActionQueue, ISBaseTimedAction.begin
+local queue = {queue = {}}
+function queue:indexOf(action)
+    for i = 1, #self.queue do if self.queue[i] == action then return i end end
+    return -1
+end
+ISTimedActionQueue = {
+    getTimedActionQueue = function() return queue end,
+    add = function(action) queue.queue[#queue.queue + 1] = action end,
+}
+ISBaseTimedAction.begin = function(action) action.begun = true end
+testMode = "client"
+local selected = {}
+for i = 1, 41 do
+    selected[i] = component("Base.Potato")
+    selected[i].weight = .05
+    inv:AddItem(selected[i])
+end
+local Network = require("OMHTT/TurretNetworkTransfers")
+check(Network.queue(player, transferObject, selected, true, "ammo") == 41, "Manage queues exact multiplayer ammo candidates")
+local batches = 0
+while #queue.queue > 0 do
+    local action = queue.queue[1]
+    action:begin()
+    check(action.begun and #action.ids <= 20, "Client batch merges before native action serialization and stays bounded")
+    batches = batches + 1
+    table.remove(queue.queue, 1)
+end
+check(batches == 3 and inv:contains(selected[41]), "Forty-one queued rounds form three actions without client inventory mutation")
+local nativeDrag = ISInventoryTransferAction:new(player, selected[1], inv, target)
+check(nativeDrag.Type == Transfer.Type and nativeDrag.id == transferId, "Ordinary native inventory drag routes to the same validated action")
+local declined = ISInventoryTransferAction:new(player, limited[1], target, {getType = function() return "floor" end, getContainingItem = function() return nil end})
+check(declined.destinationBag == false and not declined:isValid(), "Unsupported native drag cannot silently route to the player's main inventory")
+ISTimedActionQueue, ISBaseTimedAction.begin = oldQueue, oldBegin
+testMode = "server"
+A.retire(transferObject)
+CharacterTrait = oldTraits
+ISTransferAction = oldNativeTransfer
+
 testMode, ModData.getOrCreate, instanceItem, W.refresh = oldMode, oldStore, oldFactory, oldRefresh
 sendAddItemToContainer, sendRemoveItemFromContainer = oldAdd, oldRemove

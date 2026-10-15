@@ -28,6 +28,7 @@ function N.menu(index, context, objects, test)
         local object = objects[i]
         if not seen[object] and T.state(object) and object:getObjectIndex() >= 0 and object:getHealth() > 0 then
             seen[object] = true
+            context:addOption(getText("UI_OMHTT_Manage"), object, require("OMHTT/TurretManage"), player)
             context:addOption(getText("ContextMenu_OMHTT_PickupTurret"), object, N.queue, player, "Pickup")
             local repair = context:addOption(getText("ContextMenu_OMHTT_RepairTurret"), object, N.queue, player, "Repair")
             repair.notAvailable = object:getHealth() >= object:getMaxHealth()

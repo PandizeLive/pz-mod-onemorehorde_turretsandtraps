@@ -1,5 +1,7 @@
 # OMH: Turrets & Traps
 
+**C242 / multiplayer inventory and Manage advanced (2026-10-14).** MP Manage, server-completed component/ammo transfers, bounded twenty-item batches, magazine servicing and range/priority controls are implemented in development source. [Evidence, endpoint limits and remaining implementation](docs/PATCH_C242_PROGRESS.md). Combat, trap authority, feed/Void integration and final Horde certification remain unfinished. Installed0.2.49 is unchanged; no MP acceptance.
+
 **C241 / production multiplayer lifecycle advanced (2026-10-14).** Owner reaffirms completing as much MP implementation as possible. Server-owned placed/packed turret state, native placement and repeat-safe pickup/repair are implemented; a stock dedicated-server callback/service probe passes with no clients connected. [Evidence and remaining implementation](docs/PATCH_C241_PROGRESS.md). Manage/inventory, remote-zombie combat, traps and retained C235 content remain unfinished. No install or MP acceptance.
 
 **C240 implementation in progress:** [Multiplayer/Horde changes, verification and remaining work](docs/PATCH_C240_PROGRESS.md). Collision is neutral; active effects require receiving-run consent. Server pack transactions and core scoring integration are implemented, but the production MP port remains unfinished and uninstalled.

@@ -1,4 +1,4 @@
-if isClient() or isServer() then return end
+if isServer() then return end
 require("ISUI/ISPanel")
 require("ISUI/ISButton")
 require("RadioCom/ISUIRadio/ISSliderPanel")
@@ -6,15 +6,23 @@ require("TimedActions/ISBaseTimedAction")
 local T = require("OMHTT/Turret")
 local M = require("OMHTT/TurretModules")
 local D = require("OMHTT/Diagnostics")
-local X = require("OMHTT/TurretTransfers")
+local X = require(isClient() and "OMHTT/TurretNetworkTransfers" or "OMHTT/TurretTransfers")
+local Access = require("OMHTT/TurretAccess")
+local View = require("OMHTT/TurretNetworkView")
 local G = require("OMHTT/Firearms")
 local Magazine = require("OMHTT/TurretMagazineAction")
 local Slot = require("OMHTT/TurretSlot")
-local Range = require("OMHTT/TurretRange")
+local Range
+if not isClient() then
+    Range = require("OMHTT/TurretRange")
+end
 local Benefits = require("OMHTT/TurretBenefits")
 local BenefitList = require("OMHTT/TurretBenefitList")
 local Rarity = require("OMHTT/TurretRarity")
-local Search = require("OMHTT/TurretSearch")
+local Search
+if not isClient() then
+    Search = require("OMHTT/TurretSearch")
+end
 local Panel = ISPanel:derive("OMHTTTurretPanel")
 local OpenAction = ISBaseTimedAction:derive("OMHTTTurretOpenAction")
 local active = {}
@@ -23,7 +31,9 @@ local active = {}
 function Panel:close()
     self.benefitList:hideTooltip()
     for i = 1, #self.slots do self.slots[i]:hideTooltip(); self.slots[i]:clearDrag() end
-    Range.focus(self.player:getPlayerNum(), "manage", self.object, false)
+    if Range then
+        Range.focus(self.player:getPlayerNum(), "manage", self.object, false)
+    end
     active[self.player:getPlayerNum()] = nil
     self:removeFromUIManager()
     D.emit("turret-manage-close", {id = self.deviceId})
@@ -56,6 +66,7 @@ end
 
 ---@return nil
 function Panel:fire()
+    if isClient() then return end
     local result = require("OMHTT/TurretWorld").fire(self.player, self.object)
     self.result, self.reason = getText("UI_OMHTT_Manage" .. result), ""
     self.nextRefresh = 0
@@ -63,25 +74,29 @@ end
 
 ---@return nil
 function Panel:togglePower()
+    if isClient() then return end
     require("OMHTT/TurretWorld").setPower(self.player, self.object, not T.isOn(T.state(self.object)))
     self.nextRefresh = 0
 end
 
 ---@return nil
 function Panel:changePriority()
-    local W = require("OMHTT/TurretWorld")
-    if not W.near(self.player, self.object) then return end
+    if not Access.near(self.player, self.object) then return end
     local contents = T.contents(self.object:getContainer())
     if not contents.active.Filter then return end
     local state = T.state(self.object)
     local priority = M.profile(state, contents).priority
     for i = 1, #M.PRIORITIES do
         if priority == M.PRIORITIES[i] then
+            if isClient() then
+                View.control(self.player, self.object, "Priority", M.PRIORITIES[i % #M.PRIORITIES + 1])
+                return
+            end
             state.priority = M.PRIORITIES[i % #M.PRIORITIES + 1]
             break
         end
     end
-    W.refresh(self.object)
+    require("OMHTT/TurretWorld").refresh(self.object)
     self.nextRefresh = 0
     D.emit("turret-priority", {id = state.id, priority = state.priority})
 end
@@ -89,6 +104,10 @@ end
 ---@param value number Slider tile value
 ---@return nil
 function Panel:changeRange(value)
+    if isClient() then
+        self.pendingRange = value < self.rangeMaximum and math.floor(value) or 0
+        return
+    end
     local W = require("OMHTT/TurretWorld")
     if not W.near(self.player, self.object) then return end
     local state = T.state(self.object)
@@ -133,17 +152,26 @@ end
 
 ---@return nil
 function Panel:refresh()
-    local W = require("OMHTT/TurretWorld")
     local storage = self.object:getContainer()
     local contents = T.contents(storage)
     local stats = T.cycleConfig(contents)
-    local cycle, status = T.cycle(contents, require("OMHTT/TurretClock").now(), stats)
-    local power = W.power(self.object, contents, stats)
+    local cycle, status, power
+    if isClient() then
+        cycle, status = View.cycle(contents)
+        power = View.power(self.object, contents, stats)
+        if self.pendingRange ~= nil and not self.rangeSlider.dragInside then
+            View.control(self.player, self.object, "Range", self.pendingRange)
+            self.pendingRange = nil
+        end
+    else
+        cycle, status = T.cycle(contents, require("OMHTT/TurretClock").now(), stats)
+        power = require("OMHTT/TurretWorld").power(self.object, contents, stats)
+    end
     if not power and contents.head then status = "NoPower" end
     if contents.head and contents.head:getCondition() <= 0 then status = "NoHead" end
     if not T.isOn(T.state(self.object)) then status = "Off" end
     self.status = status
-    local response = Search.results[self.object]
+    local response = Search and Search.results[self.object]
     if response and self.searchResponse ~= response then
         self.searchResponse = response
         self.result, self.reason = getText("UI_OMHTT_Manage" .. response.status), ""
@@ -177,6 +205,7 @@ function Panel:refresh()
     end
     local powered = T.isOn(state)
     self.powerButton:setTitle("")
+    self.powerButton:setEnable(not isClient())
     self.powerButton.tooltip = getText(powered and "UI_OMHTT_PowerOn" or "UI_OMHTT_PowerOff")
     self.powerButton.backgroundColor = powered and {r = 0.08, g = 0.42, b = 0.16, a = 0.9} or {r = 0.48, g = 0.08, b = 0.08, a = 0.9}
     self.powerButton.backgroundColorMouseOver = powered and {r = 0.12, g = 0.58, b = 0.22, a = 1} or {r = 0.65, g = 0.12, b = 0.12, a = 1}
@@ -194,7 +223,7 @@ function Panel:refresh()
         self.moduleEffects = self.moduleEffects .. " | " .. getText("UI_OMHTT_ImprovisedStatus",
             string.format("%.1f", M.profile(state, contents, true).range))
     end
-    self.fireButton:setEnable(status == "Ready")
+    self.fireButton:setEnable(not isClient() and status == "Ready")
     local capacity = stats.modules
     self.rows = 3 + math.ceil(math.max(0, math.max(contents.modules, capacity) - 16) / 6)
     self.moduleRow = math.min(self.moduleRow, self.rows - 3)
@@ -308,7 +337,7 @@ end
 
 ---@return nil
 function Panel:prerender()
-    if not require("OMHTT/TurretWorld").near(self.player, self.object) then self:close(); return end
+    if not Access.near(self.player, self.object, self.deviceId) then self:close(); return end
     ISPanel.prerender(self)
     local now = getTimestampMs()
     if now >= self.nextRefresh then
@@ -362,7 +391,10 @@ end
 ---@return nil
 function OpenAction:perform()
     Rarity.refresh(SandboxVars.OMHTurretsTraps or {})
-    if require("OMHTT/TurretWorld").near(self.character, self.object) then
+    if Access.near(self.character, self.object) then
+        if isClient() then
+            self.object:getContainer():requestSync()
+        end
         local index = self.character:getPlayerNum()
         if active[index] then active[index]:close() end
         local font = getTextManager()
@@ -431,7 +463,9 @@ function OpenAction:perform()
         panel:refresh()
         panel:addToUIManager()
         active[index] = panel
-        Range.focus(index, "manage", self.object, true)
+        if Range then
+            Range.focus(index, "manage", self.object, true)
+        end
         D.emit("turret-manage-open", {id = panel.deviceId, interface = "dedicated", width = width, height = height})
     end
     ISBaseTimedAction.perform(self)
@@ -439,7 +473,7 @@ end
 
 ---@return boolean valid
 function OpenAction:isValid()
-    return require("OMHTT/TurretWorld").near(self.character, self.object)
+    return Access.near(self.character, self.object)
 end
 
 ---@param player IsoPlayer Operator

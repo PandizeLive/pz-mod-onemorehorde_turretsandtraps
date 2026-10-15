@@ -1,5 +1,7 @@
 # Planning
 
+**C242 / multiplayer inventory and Manage advanced (2026-10-14).** Owner explicitly requests continuing without waiting for testing. MP Manage, server-completed component/ammo transfers, bounded twenty-item batches, magazine servicing and range/priority controls are implemented in development source. [Evidence, endpoint limits and remaining implementation](PATCH_C242_PROGRESS.md). Combat, trap authority, feed/Void integration and final Horde certification remain unfinished. Installed0.2.49 is unchanged; no MP acceptance.
+
 **C241 / production multiplayer lifecycle advanced (2026-10-14).** Owner reaffirms completing as much MP implementation as possible. Server-owned placed/packed turret state, native placement and repeat-safe pickup/repair are implemented; a stock dedicated-server callback/service probe passes with no clients connected. [Evidence and remaining implementation](PATCH_C241_PROGRESS.md). Manage/inventory, remote-zombie combat, traps and retained C235 content remain unfinished. No install or MP acceptance.
 
 **C240 / multiplayer implementation in progress (2026-10-14).** Owner explicitly approves implementing the MP/Horde integration and defers gameplay testing. Follow-up selects neutral ordinary collision, opt-in for active effects. [Actual implementation, verification and remaining work](PATCH_C240_PROGRESS.md). Server pack transactions and coordinated scoring changes are in the working tree; full production MP is not yet ready. No install or publication.

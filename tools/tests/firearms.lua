@@ -239,8 +239,11 @@ function gun:setContainsClip(value) self.clip = value end
 local carried = container()
 function carried:isInCharacterInventory() return true end
 local operator = {getInventory = function() return carried end, removeFromHands = function() end}
-local oldNear, oldRefresh, oldStop = W.near, W.refresh, ISBaseTimedAction.stop
+local Access = require("OMHTT/TurretAccess")
+local oldNear, oldRefresh, oldStop = Access.near, W.refresh, ISBaseTimedAction.stop
+local oldWorldNear = W.near
 local near = true
+Access.near = function() return near end
 W.near = function() return near end
 W.refresh = function() end
 ISBaseTimedAction.stop = function() end
@@ -400,6 +403,7 @@ check(rolls == 1 and victim.health == beforeHealth and #Volley.queue == 1 and Vo
     "Nine-pellet shotgun rolls accuracy once; a complete miss still traces its terminal Fragment endpoint")
 accuracy.chance = oldChance
 Volley.cancel(pelletOptions); Volley.reset()
-W.near, W.refresh, ISBaseTimedAction.stop = oldNear, oldRefresh, oldStop
+Access.near, W.refresh, ISBaseTimedAction.stop = oldNear, oldRefresh, oldStop
+W.near = oldWorldNear
 T.hybrid, addSound = oldHybrid, oldSound
 SandboxVars.OMHTurretsTraps = oldSettings

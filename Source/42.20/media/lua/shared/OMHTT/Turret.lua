@@ -192,7 +192,9 @@ function T.contents(container)
     if G.profile(result.head) then
         local Feed = require("OMHTT/FirearmFeed")
         local loaded = math.min(Feed.count(result.head), result.reserve)
-        Feed.set(result.head, loaded)
+        if not isClient() then
+            Feed.set(result.head, loaded)
+        end
         result.reserve = result.reserve - loaded
         result.reserveAll = result.reserveAll - loaded
         result.ammo = result.reserve + G.loaded(result.head)
@@ -222,11 +224,23 @@ end
 ---@return boolean allowed
 ---@nodiscard
 function T.accept(container, item)
-    if isClient() or isServer() or not T.enabled() then return false end
+    if not container or not item then return false end
+    if isServer() then return false end
+    if isClient() and not T.state(container:getParent()) then return false end
+    return T.accepts(container, item)
+end
+
+---@param container ItemContainer Destination
+---@param item InventoryItem Candidate
+---@param summary table? Transaction-local incoming-ammo counts
+---@return boolean allowed
+---@nodiscard
+function T.accepts(container, item, summary)
+    if not T.enabled() then return false end
     local kind = T.kind(item)
     if not kind then return false end
     if container:contains(item) then return true end
-    local contents = T.transferContents(container)
+    local contents = summary or T.transferContents(container)
     if kind == "head" then
         if contents.heads > 0 then return false end
         if G.profile(item) then
@@ -237,7 +251,7 @@ function T.accept(container, item)
     end
     if kind == "battery" then return contents.batteries == 0 end
     if kind == "capacity" then return contents.capacities == 0 end
-    local stats = T.transferSnapshots and contents.transferStats or Stats.resolve(contents)
+    local stats = (summary or T.transferSnapshots) and contents.transferStats or Stats.resolve(contents)
     if not stats then stats = Stats.resolve(contents) end
     if T.transferSnapshots then contents.transferStats = stats end
     if kind == "ammo" then

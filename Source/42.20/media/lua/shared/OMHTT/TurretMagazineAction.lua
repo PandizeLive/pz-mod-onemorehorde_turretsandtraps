@@ -1,15 +1,14 @@
-if isClient() or isServer() then return end
 require("TimedActions/ISBaseTimedAction")
-require("TimedActions/ISTimedActionQueue")
 local T = require("OMHTT/Turret")
 local G = require("OMHTT/Firearms")
 local D = require("OMHTT/Diagnostics")
-local Action = ISBaseTimedAction:derive("OMHTTTurretMagazineAction")
+local Access = require("OMHTT/TurretAccess")
+OMHTTTurretMagazineAction = ISBaseTimedAction:derive("OMHTTTurretMagazineAction")
+local Action = OMHTTTurretMagazineAction
 
 ---@return string? reason
 function Action:rejection()
-    local W = require("OMHTT/TurretWorld")
-    if self.done or not W.near(self.character, self.object) then return "TransferReach" end
+    if self.done or type(self.id) ~= "string" or not Access.near(self.character, self.object, self.id) then return "TransferReach" end
     return G.magazineRejection(self.character, self.object:getContainer(), self.gun, self.magazine, self)
 end
 
@@ -27,8 +26,10 @@ end
 ---@return nil
 function Action:start()
     self.started = true
-    G.servicing[self.gun] = self
-    G.cancelLoading(self.gun)
+    if not isClient() then
+        G.servicing[self.gun] = self
+        G.cancelLoading(self.gun)
+    end
     self:setActionAnim("Loot")
     self:setAnimVariable("LootPosition", "Low")
     self:setOverrideHandModels(nil, nil)
@@ -59,8 +60,9 @@ end
 
 ---@return boolean completed
 function Action:complete()
+    if isClient() then return false end
     local reason = self:rejection()
-    if not self.started or reason then
+    if (not isServer() and not self.started) or reason then
         self.done = true
         self:release()
         return false
@@ -74,6 +76,9 @@ function Action:complete()
     self.done = true
     self:release()
     require("OMHTT/TurretWorld").refresh(self.object)
+    if isServer() then
+        require("OMHTT/TurretAuthority").publish(self.object)
+    end
     D.emit("turret-magazine", {gun = gun:getID(), inserted = self.magazine ~= nil,
         rounds = magazine:getCurrentAmmoCount(), chamber = gun:isRoundChambered()})
     return true
@@ -87,11 +92,18 @@ end
 ---@param character IsoPlayer Operator
 ---@param object IsoObject Turret
 ---@param magazine InventoryItem? Insert, or eject when nil
+---@param gun HandWeapon? Expected exact mounted firearm
+---@param id string? Expected turret identity
 ---@return table action
-function Action:new(character, object, magazine)
+function Action:new(character, object, magazine, gun, id)
     local action = ISBaseTimedAction.new(self, character)
     action.object, action.magazine = object, magazine
-    action.gun = T.contents(object:getContainer()).head
+    action.gun, action.id = gun, id
+    if not isServer() then
+        action.gun = gun or T.contents(object:getContainer()).head
+        local state = T.state(object)
+        action.id = id or (state and state.id)
+    end
     action.done = false
     action.seconds = magazine and 1.5 or 1.2
     action.stopOnWalk, action.stopOnRun = true, true
@@ -105,6 +117,7 @@ end
 ---@return number queued
 ---@return string? reason
 function Action.queue(player, object, magazine)
+    require("TimedActions/ISTimedActionQueue")
     local action = Action:new(player, object, magazine)
     local reason = action:rejection()
     if reason then return 0, reason end

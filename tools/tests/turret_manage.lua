@@ -3,12 +3,15 @@ local W = require("OMHTT/TurretWorld")
 local T = require("OMHTT/Turret")
 local X = require("OMHTT/TurretTransfers")
 local originalNear, originalPower, originalFire, originalRefresh = W.near, W.power, W.fire, W.refresh
+local Access = require("OMHTT/TurretAccess")
+local originalAccess = Access.near
 local originalPerform = ISBaseTimedAction.perform
 local originalWalk, originalQueue = luautils.walkAdjObject, ISTimedActionQueue.add
 local originalManager = getTextManager
 local reachable, queued, fired, completed = true, nil, 0, false
 local actions = {}
 W.near = function() return reachable end
+Access.near = function() return reachable end
 W.power = function() return {kind = "battery"} end
 W.fire = function() fired = fired + 1; return "NoTarget" end
 W.refresh = function() end
@@ -353,4 +356,5 @@ check(queued == nil, "Failed approach cannot open distant inventory")
 SandboxVars.OMHTurretsTraps.PotatoAmmoCapacity = oldCapacity
 SandboxVars.OMHTurretsTraps.PotatoModuleCapacity = oldModules
 W.near, W.power, W.fire, W.refresh, ISBaseTimedAction.perform = originalNear, originalPower, originalFire, originalRefresh, originalPerform
+Access.near = originalAccess
 luautils.walkAdjObject, ISTimedActionQueue.add, getTextManager, ISPanel = originalWalk, originalQueue, originalManager, testTurretOldPanel

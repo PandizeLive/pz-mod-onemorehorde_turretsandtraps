@@ -1,5 +1,7 @@
 # Phases and checkpoints
 
+**C242 / R1C3 and R5C1 implementation continues (2026-10-14).** MP Manage, server-completed component/ammo transfers, bounded twenty-item batches, magazine servicing and range/priority controls are implemented in development source. [Evidence, endpoint limits and remaining implementation](PATCH_C242_PROGRESS.md). Combat, trap authority, feed/Void integration and final Horde certification remain unfinished. Deferred owner testing does not block development. No milestone acceptance or installation.
+
 **C241 / production multiplayer lifecycle advanced (2026-10-14).** Owner reaffirms completing as much MP implementation as possible. Server-owned placed/packed turret state, native placement and repeat-safe pickup/repair are implemented; a stock dedicated-server callback/service probe passes with no clients connected. [Evidence and remaining implementation](PATCH_C241_PROGRESS.md). Manage/inventory, remote-zombie combat, traps and retained C235 content remain unfinished. No install or MP acceptance.
 
 **C240 active implementation:** R1C3/R5C1 production multiplayer authority and the R5C2 Horde scoring subset are in progress within the existing combined C235 patch. [Completed code, evidence and remaining transport/transaction work](PATCH_C240_PROGRESS.md). None of these MP checkpoints is accepted or installed; deferred owner testing is not a development gate.

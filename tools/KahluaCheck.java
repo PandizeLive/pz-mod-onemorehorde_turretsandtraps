@@ -265,7 +265,11 @@ public final class KahluaCheck {
             {"_", "tools/tests/turret_audio.lua"},
             {"_", "tools/tests/turret_manage_bootstrap.lua"},
             {"OMHTT/TurretTransfers", base + "client/OMHTT/TurretTransfers.lua"},
-            {"OMHTT/TurretMagazineAction", base + "client/OMHTT/TurretMagazineAction.lua"},
+            {"OMHTT/TurretAccess", base + "shared/OMHTT/TurretAccess.lua"},
+            {"OMHTT/TurretControlAction", base + "shared/OMHTT/TurretControlAction.lua"},
+            {"OMHTT/TurretTransferAction", base + "shared/OMHTT/TurretTransferAction.lua"},
+            {"OMHTT/TurretNetworkView", base + "client/OMHTT/TurretNetworkView.lua"},
+            {"OMHTT/TurretMagazineAction", base + "shared/OMHTT/TurretMagazineAction.lua"},
             {"OMHTT/TurretSlot", base + "client/OMHTT/TurretSlot.lua"},
             {"OMHTT/TurretAim", base + "shared/OMHTT/TurretAim.lua"},
             {"OMHTT/TurretRenderer", base + "client/OMHTT/TurretRenderer.lua"},
@@ -364,6 +368,7 @@ public final class KahluaCheck {
             {"_", "tools/tests/turret_heads.lua"},
             {"_", "tools/tests/turret_void.lua"},
             {"_", "tools/tests/multiplayer_audit.lua"},
+            {"OMHTT/TurretNetworkTransfers", base + "client/OMHTT/TurretNetworkTransfers.lua"},
             {"_", "tools/tests/turret_authority.lua"},
             {"_", "tools/tests/horde_defense.lua"},
         };
@@ -419,6 +424,7 @@ public final class KahluaCheck {
         System.out.println("Proc test-double stress: " + get.invoke(env, "testProcStress"));
         System.out.println("Void foundation audit: " + get.invoke(env, "testVoidAudit"));
         System.out.println("Multiplayer audit: " + get.invoke(env, "testMultiplayerAudit"));
+        System.out.println("MP transfer mock stress: " + get.invoke(env, "testMPTransfer"));
         System.out.println("Assertions passed: " + get.invoke(env, "testAssertions"));
         System.out.println("World/player/network/UI objects were test doubles; in-game acceptance remains pending.");
         System.exit(0);

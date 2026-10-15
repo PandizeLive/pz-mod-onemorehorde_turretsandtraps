@@ -238,21 +238,36 @@ end
 ---@param token table Active action identity
 ---@return InventoryItem? magazine Transferred native magazine
 function G.transferMagazine(player, storage, gun, magazine, token)
+    if isClient() then return nil end
     if G.magazineRejection(player, storage, gun, magazine, token) then return nil end
-    if not magazine and not Feed.restore(gun, gun:getMaxAmmo(), player, true) then return nil end
     if magazine then
-        magazine:getContainer():Remove(magazine)
+        local source = magazine:getContainer()
+        source:Remove(magazine)
         player:removeFromHands(magazine)
         gun:setCurrentAmmoCount(magazine:getCurrentAmmoCount())
         gun:setContainsClip(true)
+        if isServer() then
+            sendRemoveItemFromContainer(source, magazine)
+        end
     else
         magazine = instanceItem(gun:getMagazineType())
+        if not magazine then return nil end
         magazine:setCurrentAmmoCount(gun:getCurrentAmmoCount())
-        player:getInventory():AddItem(magazine)
+        local inventory = player:getInventory()
+        if not inventory:hasRoomFor(player, magazine) then return nil end
+        if inventory:AddItem(magazine) ~= magazine then return nil end
+        Feed.restore(gun, gun:getMaxAmmo(), player, true)
         gun:setContainsClip(false)
         gun:setCurrentAmmoCount(0)
+        if isServer() then
+            sendAddItemToContainer(inventory, magazine)
+        end
     end
     G.cancelLoading(gun)
+    if isServer() then
+        syncHandWeaponFields(player, gun)
+        syncItemModData(player, gun)
+    end
     return magazine
 end
 

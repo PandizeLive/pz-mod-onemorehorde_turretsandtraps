@@ -1330,3 +1330,7 @@ Owner: "Approved. Go ahead and implement the multiplayer patch with the Horde Ni
 ## C241 - multiplayer catch-up implementation reaffirmed (2026-10-14)
 
 Owner: "You need to ensure that we're caught up on Multiplayer implementation. You're approved to complete as much as possible." Continue approved production authority and native verification now, retaining C235/C240 scope and deferred owner testing. No new generic approval gate or change to the settled Horde policy. [Implemented lifecycle and remaining work](PATCH_C241_PROGRESS.md).
+
+## C242 - continue multiplayer implementation without the owner test (2026-10-14)
+
+Owner: "Keep going with the remaining multiplayer implementation. You're already approved, so complete as much as possible without waiting for me to test." Continue C235/C240/C241 implementation; do not request another generic approval or treat deferred owner testing as a development blocker. [Implemented inventory/Manage checkpoint, native findings and remaining work](PATCH_C242_PROGRESS.md). This checkpoint introduces no new balance choice, release approval or acceptance claim. Preserve the established Horde policies and remaining content work. Development source is mirrored through the standing T&T pipeline; sibling manual-mirror restrictions remain.

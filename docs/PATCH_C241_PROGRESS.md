@@ -1,5 +1,7 @@
 # C241 production multiplayer lifecycle — unfinished combined patch
 
+Follow-up: [C242 inventory, Manage and magazine implementation](PATCH_C242_PROGRESS.md). The open-work list below is the historical C241 checkpoint.
+
 2026-10-14. Owner: “You need to ensure that we're caught up on Multiplayer implementation. You're approved to complete as much as possible.” Continues C235/C240, including the settled Horde /5, receiving-run opt-in, default-or-harder audit and neutral ordinary collision. No new balance decision is needed for this checkpoint.
 
 ## Implemented

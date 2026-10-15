@@ -1,4 +1,4 @@
-if isClient() or isServer() then return end
+if isServer() then return end
 require("ISUI/ISPanel")
 require("ISUI/ISInventoryPane")
 require("ISUI/ISToolTipInv")
