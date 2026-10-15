@@ -1,5 +1,11 @@
 # R4C1 — buttons, pressure plates and links
 
+## C256: controller power choices confirmed, 2026-10-15
+
+Owner selects C255 **1A and 2A**. A full ordinary backup battery supplies **48 in-game hours** of powered controller operation; grid/generator supply takes priority without consuming or recharging the backup battery. Controller power loss disables controller commands/group edits, while devices retain their settings/local overrides and direct button/plate connections continue operating subject to each receiver's own power, ammunition, cooldown and permissions. Ownership/access protection persists. Restore controller operation through the agreed one-second recovery check, with no historical pulse replay.
+
+This settles controller endurance and outage behavior; do not reopen these as proposed choices. Exact fractional battery accounting, native power/placement integration and bounded server validation remain implementation verification. No gameplay patch, install or test result is inferred from the design selections. Remaining design concerns each receiver's pulse/held/OFF response and the first R4C2 damaging receiver; Poke Floor is still a recommendation, not approved content. Optional third-party adapters still require exact-version verification. Installed 0.2.50 remains unchanged.
+
 ## C255: device specifications selected, 2026-10-15
 
 Owner selects C254 **1B with controller correction, 2A, 3A, 4A and 5A**. These are design approvals, not a request to start a gameplay patch in this turn. Preserve installed 0.2.50 and its pending owner/MP acceptance.
