@@ -1,5 +1,27 @@
 # R4C1 — buttons, pressure plates and links
 
+## C255: device specifications selected, 2026-10-15
+
+Owner selects C254 **1B with controller correction, 2A, 3A, 4A and 5A**. These are design approvals, not a request to start a gameplay patch in this turn. Preserve installed 0.2.50 and its pending owner/MP acceptance.
+
+- **Placement:** floor pressure plate, wall-mounted button; controller is an installable device similar to a ham radio, overriding 1B's wall-mounted-controller proposal. Treat it as an inventory device placed in the world, not a wall panel or an actual radio transmitter. Ground/tabletop mounting follows supported placement proof; table support is an intended radio-like interaction, not an already-tested capability. Same-floor connection scope from the selected option remains.
+- **Recipes/skills/XP:** approved C2542A exactly: button 1 Electronics Scrap + 1 Electric Wire + 2 Screws, Electrical 1/5 XP; plate 1 Plank + 2 Electronics Scrap + 1 Electric Wire + 4 Nails, Carpentry 1/Electrical 1, 5 Carpentry/10 Electrical XP; controller 2 Small Metal Sheets + 4 Electronics Scrap + 2 Electric Wire + 4 Screws, Electrical 3/20 XP. Retain screwdriver/pliers; plate also requires a retained hammer. No service XP.
+- **Power:** controller uses grid/generator supply with small-battery fallback. Mechanical button/plate remain battery-free. Battery endurance and outage consequences are the next choices; no automatic battery charging or free receiver power is inferred.
+- **Durability/services:** 100 HP each, no ordinary triggering wear; five-second placement/pickup, free ten-second repair. State-preserving ownership rules still apply to pickup/replacement.
+- **Links:** no additional material cost for creating/removing connections; allowance is included in recipes. Twenty-tile links, 32 input/output limits and server checks remain.
+
+### Native radio inspection
+
+Installed B42.21 `media/scripts/generated/items/radio.txt:203` defines HamRadio1 with `IsPortable=false`, `UsesBattery=true`, `WorldObjectSprite` and native radio type; HamRadio2/makeshift variants follow the same broad pattern. `RWMPower.lua` accepts `Base.Battery`; `RWMGridPower.lua` selects its UI according to the device power mode. This supports the native placement/battery analogy, not a claim that stock ham radios automatically provide the approved dual-source controller behavior. Use existing native power/placement conventions where verified and retain OMHTT server-owned resource/accounting/access paths. Do not copy native radio weight, drain rate, frequencies or broadcasting features into the controller. Final art remains owner-sourced.
+
+### Next two controller choices — proposals only
+
+**1 — Battery endurance.** Recommend **1A: 48 in-game hours** of powered controller operation from a full ordinary battery. **1B: 24 in-game hours.** Constant low operating drain, no cost per menu click or connected-device count; grid/generator supply takes priority and does not consume or recharge the fallback battery. Exact native fractional-charge persistence and reasonable generator load must be verified/tuned; these durations are balance proposals, not measured native radio runtimes. Respect pause/time advancement and active loaded simulation policy without offline catch-up combat.
+
+**2 — Controller outage behavior.** Recommend **2A:** controller commands/group edits become unavailable, but assigned devices retain their last settings/local overrides and independently powered direct button/plate connections keep operating. **2B:** loss of controller power also disables activation of its assigned devices until power returns. Both retain ownership and use the selected one-second recovery check; no stored-pulse replay. 2A makes a controller a management device and avoids one empty small battery shutting down an otherwise powered base. This does not let a missing input remain held ON or let devices bypass their own energy/cooldown rules.
+
+Remaining receiver-specific held-signal reactions, collision/placement tests and first Poke Floor content contract are separate from these controller choices. No extra recipes or automatic dependency support is inferred.
+
 ## C254: native-style ranges/FOV requested; device choices proposed, 2026-10-15
 
 Owner requests extending the native graphic to ranges and FOV where feasible, then asks for new decisions. This approves the visual direction for the planned work, not a new installed patch or the device proposals below. Read/write access, 20-tile controller/link ranges, 32 inputs/outputs, per-receiver signal responses and other selected rules remain unchanged.

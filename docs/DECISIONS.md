@@ -1396,3 +1396,8 @@ Corrected stale current-table entries for head/content implementation, the pack 
 ## C254 — range/FOV styling and next device choices (2026-10-15)
 
 **C254 / native-style range/FOV visuals and device choices (2026-10-15).** Owner requests native-style visuals for ranges and FOV. Full native circles are available; angular sectors require separate matching geometry. Found stale rotary/Ballista visual-cone selection in current TurretRange.lua; preserve combat rules while correcting display in planned work. [Evidence and proposed placement/recipes/power/service/link choices](checkpoints/R4C1_CONNECTED_CONTROLS.md#c254-native-style-rangesfov-requested-device-choices-proposed-2026-10-15). Choices await selection; no gameplay/install change.
+
+
+## C255 — installable controller and approved device specifications (2026-10-15)
+
+**C255 / control-device specifications selected (2026-10-15).** Owner approves floor plates, wall buttons and a ham-radio-like installable controller; C2542A recipes/skills/XP, grid/generator plus small-battery fallback, 100 HP/free service and material-free links selected. [Exact selections, native radio evidence and two remaining controller choices](checkpoints/R4C1_CONNECTED_CONTROLS.md#c255-device-specifications-selected-2026-10-15). Battery endurance/outage behavior remain proposals. No gameplay/install change.
