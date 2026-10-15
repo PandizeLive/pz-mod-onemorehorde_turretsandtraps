@@ -1411,3 +1411,8 @@ Corrected stale current-table entries for head/content implementation, the pack 
 ## C257 — present decisions directly; receiver options (2026-10-15)
 
 **C257 / concrete receiver choices supplied (2026-10-15).** Owner requests actual choices whenever decisions remain; recorded in AGENTS.md. [Four proposals](checkpoints/R4C1_CONNECTED_CONTROLS.md#c257-concrete-receiver-choices-presented-2026-10-15): projectile-head held response, rotary held response, optional inhibition and first Poke Floor/dart design. No new selection or gameplay change; controller power choices remain settled.
+
+
+## C258 — unified activation, controller wording and Poke Floor (2026-10-15)
+
+**C258 / unified signal activation and Poke Floor selected (2026-10-15).** Owner chooses sustained operation for all head types while powered by inputs, one-cycle button activation, optional controller "allow turning" and Poke Floor as the next receiver. [Selections and three material clarifications](checkpoints/R4C1_CONNECTED_CONTROLS.md#c258-unified-powered-activation-and-poke-floor-selected-2026-10-15): energy source versus switching, ON/OFF versus rotation wording, and connected-only versus all-turret scope. No per-device held-default re-selection needed; no gameplay/install change.

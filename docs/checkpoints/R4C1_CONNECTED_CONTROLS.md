@@ -1,5 +1,21 @@
 # R4C1 — buttons, pressure plates and links
 
+## C258: unified powered activation and Poke Floor selected, 2026-10-15
+
+Owner selects C257 **1B**, directs rotary behavior to follow the same rule, selects **3A** with controller wording **"allow turning"**, and selects **4A Poke Floor**. Owner describes inputs as power: a held plate continuously powers the connected turret, a button briefly powers one shot, and turrets otherwise remain offline until plates/buttons/tripwire/etc. provide activation. This supersedes the separate C257 proposed single-shot defaults and requests one coherent activation model. Tripwire is a named future input example; its own recipe/implementation is not automatically included.
+
+Settled direction: held input permits ongoing normal operation for projectile and rotary heads; button pulse permits one normal firing/mechanical cycle; no blanket per-head held-mode decision needs reopening. Preserve normal magazine/cadence/targeting/resource constraints unless the power-source question below explicitly changes them. Multiple simultaneous sources must not multiply rate. Normal OFF stops new activations; already-launched ordnance remains real and mechanical devices finish safe stopping. The selected optional inhibition behavior is retained in intent, but "allow turning" requires clarification before introducing a label or a new rotation feature. Poke Floor enters active R4C2 design; damage, materials, power and player injuries are not settled by selecting it.
+
+### Necessary clarification choices — recommendations, not selections
+
+**1 — What a connection supplies.** **1A recommended:** the input acts as a power switch; receiver battery/generator remains the actual energy source and existing drain applies only as appropriate during operation. **1B:** inputs route actual energy from a shared powered network, allowing receivers to run without their own battery/generator connection. 1B requires a source/consumption/fallback contract; mechanical plates cannot generate energy, and controller backup endurance does not silently cover every linked motor. Owner's power wording is not sufficient to remove prior per-device power accounting or infer a free-energy design.
+
+**2 — Meaning of "allow turning".** **2A recommended given the selected inhibition option:** permission for inputs to turn a device ON/OFF; use "Allow signal control" as a clearer proposed label. **2B:** physically allow/prevent the turret head rotating. The latter is a separate aim/motor feature and does not itself specify inverted activation. Preserve the owner's requested phrase as quoted source text; do not silently replace it with either meaning.
+
+**3 — Scope of offline until signaled.** **3A recommended:** devices explicitly assigned to signal control wait offline for input; ordinary unlinked turrets keep their existing manual/automatic operation. **3B:** all turrets require a trigger connection, replacing their ordinary standalone activation workflow. The owner's sentence leaves this scope unresolved; do not silently break existing automation or silently narrow an intended global change.
+
+C256 controller outage/ownership rules remain selected unless explicitly superseded. These clarification requests resolve material power/aim/scope differences, not a new generic approval gate. No gameplay implementation, install or owner-test result this turn.
+
 ## C257: concrete receiver choices presented, 2026-10-15
 
 Owner corrects the handoff: if decisions remain, send the choices immediately. This presentation requirement is recorded in AGENTS.md. No additional gameplay selection is inferred.
