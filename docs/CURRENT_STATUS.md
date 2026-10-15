@@ -1,5 +1,7 @@
 # Current development and planning handoff
 
+**C257 / concrete receiver choices supplied (2026-10-15).** Owner requests actual choices whenever decisions remain; recorded in AGENTS.md. [Four proposals](checkpoints/R4C1_CONNECTED_CONTROLS.md#c257-concrete-receiver-choices-presented-2026-10-15): projectile-head held response, rotary held response, optional inhibition and first Poke Floor/dart design. No new selection or gameplay change; controller power choices remain settled.
+
 **C256 / controller power settled (2026-10-15).** Owner selects 48 in-game hours per full backup battery and independent device operation during controller outages. Grid/generator takes priority; settings, direct signals and ownership persist, with receiver resource rules intact. [Confirmed contract](checkpoints/R4C1_CONNECTED_CONTROLS.md#c256-controller-power-choices-confirmed-2026-10-15). Receiver-specific pulse/held/OFF responses and R4C2 content remain to discuss; native integration remains to implement/verify. Installed 0.2.50 unchanged.
 
 **C255 / control-device specifications selected (2026-10-15).** Owner approves floor plates, wall buttons and a ham-radio-like installable controller; C2542A recipes/skills/XP, grid/generator plus small-battery fallback, 100 HP/free service and material-free links selected. [Exact selections, native radio evidence and two remaining controller choices](checkpoints/R4C1_CONNECTED_CONTROLS.md#c255-device-specifications-selected-2026-10-15). Battery endurance/outage behavior remain proposals. No gameplay/install change.

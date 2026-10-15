@@ -1,5 +1,21 @@
 # R4C1 — buttons, pressure plates and links
 
+## C257: concrete receiver choices presented, 2026-10-15
+
+Owner corrects the handoff: if decisions remain, send the choices immediately. This presentation requirement is recorded in AGENTS.md. No additional gameplay selection is inferred.
+
+Proposed receiver behavior, subject to owner selection; preserve C250's per-device qualification of 4B rather than treating a held signal as universal repeat permission:
+
+1. **Projectile turret heads** (firearms, Potato, Ballista, Lobber, Scrapshot). **1A:** one normal firing cycle when a linked plate becomes occupied, then wait until the combined input clears before another entry-triggered cycle. **1B:** fire at normal cadence while any linked plate stays occupied. Recommend **1A** to preserve deliberate plate-triggered shots; a button always requests one normal firing cycle. A cycle retains current Splitter/ammo semantics, not one arbitrary projectile. Signal targeting uses existing authorized targeting/aiming requirements, not the triggerer's coordinates or automatic new detection powers.
+
+2. **Rotary heads.** **2A:** run while an input remains ON, then stop safely; a button requests one normal sweep/cycle. **2B:** one sweep/cycle per activation even while an input remains ON. Recommend **2A** as the natural motor behavior. Exact completion/parking during 360 rotation remains an implementation definition tied to current motor speed, not a new attack rate or free extra cycle.
+
+3. **Inverted response.** **3A:** expose a per-compatible-device Disable while ON option, alongside its selected normal behavior. **3B:** ordinary activation only. Recommend **3A**, allowing an occupied safety plate to inhibit a device. Inhibit is an additional gate: OFF removes inhibition but does not by itself provide a fire command, power or an armed state. Unknown/stale inhibitor state stays inhibited until actual occupancy is validated; disconnected/missing input handling must not silently interpret danger as safe. Existing explicit device power/arming remains authoritative.
+
+4. **First new connected trap to design.** **4A:** Poke Floor, retractable spikes controlled by these signals. **4B:** fixed dart emitter, a ranged trap with ammunition. Recommend **4A** to establish a clear physical receiver for Traps-only use. Selection is design scope only; damage, strike/cycle behavior, power, recipe and injury contract must be provided together next, not inferred from existing Bed Spikes.
+
+Common proposal: OR held-input state (any input ON means combined ON, all clear means OFF); simultaneous held inputs do not multiply rate, and busy pulses never backlog. When normal activation ends, stop admitting new attacks but retain already-launched projectiles/armed bombs and complete safe mechanical retraction. Signal-controlled mode must be explicitly chosen so adding the system does not disable existing unlinked autonomous turrets. Receiver signals do not bypass aim, cooldown, ammo, power, injury or Horde consent. Design of turret responses anticipates optional R4C4; it does not silently make Traps depend on Turrets or declare every cross-package adapter implemented. No gameplay/install change.
+
 ## C256: controller power choices confirmed, 2026-10-15
 
 Owner selects C255 **1A and 2A**. A full ordinary backup battery supplies **48 in-game hours** of powered controller operation; grid/generator supply takes priority without consuming or recharging the backup battery. Controller power loss disables controller commands/group edits, while devices retain their settings/local overrides and direct button/plate connections continue operating subject to each receiver's own power, ammunition, cooldown and permissions. Ownership/access protection persists. Restore controller operation through the agreed one-second recovery check, with no historical pulse replay.

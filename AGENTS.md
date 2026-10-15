@@ -4,6 +4,8 @@ Read README.md, docs/DECISIONS.md, and docs/ROADMAP.md before project changes. T
 
 ## Per-turn context and consistency review (C111, owner-requested 2026-10-09)
 
+- C257: When identifying remaining owner decisions, present the actual numbered choices and recommendations in that response. Do not end with only "decisions next" and make the owner request them again.
+
 - At the start of every project turn, including discussion, reread this section and `docs/CURRENT_STATUS.md` from disk before substantive recommendations or work. Repeat after context compaction. Read the full applicable AGENTS.md at session start or when changed; consult relevant decisions/checkpoints before proposing or implementing changes. Do not rely on chat recollection alone.
 - C119 planning pipeline: read `docs/PLANNING.md` with current status; every substantive planning discussion/approval must update the linked contract and decision provenance, then commit/mirror before handoff. Check active PR branches when dev is older. The optional Planning chat uses this same GitHub handoff; do not assume automatic chat synchronization.
 - Reconcile the latest owner corrections, approved scope, unresolved findings and actual implementation. Keep proposals, approval, implementation and acceptance separate. Do not silently forget deferred work, revive rejected choices or treat a documentation request as gameplay approval.
