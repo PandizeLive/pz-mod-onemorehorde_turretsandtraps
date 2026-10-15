@@ -1,5 +1,29 @@
 # R4C1 — buttons, pressure plates and links
 
+## C254: native-style ranges/FOV requested; device choices proposed, 2026-10-15
+
+Owner requests extending the native graphic to ranges and FOV where feasible, then asks for new decisions. This approves the visual direction for the planned work, not a new installed patch or the device proposals below. Read/write access, 20-tile controller/link ranges, 32 inputs/outputs, per-receiver signal responses and other selected rules remain unchanged.
+
+### Native feasibility and existing display findings
+
+Installed B42.21 `javap zombie.iso.WorldMarkers$GridSquareMarker` exposes size/position, color, alpha/fade/blink, textures and circle scaling, but no angular-sector setting. Reuse it for circular range displays; directional cones require separate sector geometry matching the native soft-gradient appearance. Do not claim the full circular marker can directly become an arbitrary sector, generate new final art, or depict full-circle attack coverage for a directional head. Use shared actual head targeting data, including front/rear rotary sectors, 360 coverage, automatic/manual reach and minimum range where applicable. Reuse cached geometry and only draw selected/inspected devices. Native size/zoom/floor calibration and custom filled-sector rendering still need runtime proof; retain accurate outlines if that proof fails rather than misleading coverage.
+
+Read-only finding in current `TurretRange.lua`: `profile.rotary and 45 or ForwardCone` supplies the visual cone, while actual `TurretRotary.lua` permits front/rear +/-45 degrees (90-degree sectors). The overlay also ignores the Ballista head's `cone = 45` from `TurretHeads.lua`/`TurretStats.lua`. Record this as a visible-coverage mismatch to correct within the requested range/FOV work; no combat balance change or gameplay test pass inferred. Native API inspection and Lua source establish these findings; no rendered gradient-sector test occurred this discussion.
+
+### Next decisions — recommendations only
+
+**1 — Placement and floors.** Recommend **1A**: one-tile floor plate, one-tile floor controller, button mountable on wall or floor; same-floor signal links/control for the first slice. **1B**: plate on floor, controller/button wall-mounted only; same-floor links/control. Plates are passable; exact coexistence with other placed traps needs a placement proof, not a promised unrestricted overlap. Floor control across stairs is not silently granted by the 20-tile radius.
+
+**2 — Crafting.** Recommend **2A** affordable recipes: button = 1 Electronics Scrap + 1 Electric Wire + 2 Screws, Electrical 1; pressure plate = 1 Plank + 2 Electronics Scrap + 1 Electric Wire + 4 Nails, Carpentry 1/Electrical 1; controller = 2 Small Metal Sheets + 4 Electronics Scrap + 2 Electric Wire + 4 Screws, Electrical 3. **2B**: same inputs but double the Electronics Scrap and Electric Wire requirements on each recipe. Retain screwdriver/pliers, plus hammer for the plate. Propose Electrical XP 5/10/20 respectively and 5 Carpentry XP for plate crafting only; no service XP. Validate exact current native script identities and recipe transactions before implementation. These costs, skills and XP are proposals, not prior approvals.
+
+**3 — Controller power.** Recommend **3A**: grid/generator supply with a small-battery fallback. **3B**: small battery only. **3C**: unpowered controller, with receivers alone consuming operating power. This affects the controller only; confirmed mechanical inputs remain battery-free. Battery endurance and controller outage effects on inherited settings/direct links must be specified after the power selection. Under every option, ownership locks persist without controller power and direct physical signals do not become free energy for receivers.
+
+**4 — Durability/service.** Recommend **4A**: 100 HP for each input/controller, no wear just from triggering; five-second placement/pickup and free ten-second repair, matching the existing service timing. **4B**: same HP/timing, repair consumes 1 Electronics Scrap. Normal damage/destruction applies; no deliberate invulnerability. Action interruption, exact picked-up state and native destruction support remain implementation checks. Repair cost is not implied by existing turret recipes; owner selection is required.
+
+**5 — Link materials.** Recommend **5A**: wiring allowance is included in device recipes; creating/removing links has no additional material cost. **5B**: consume 1 Electric Wire per link, return it only on deliberate authorized unlinking; destruction loses it. 5A keeps larger 32-link setups and rewiring simple. 5B requires persistent per-edge material ownership and duplicate/refund-safe server transactions. Both retain the 20-tile limit and setup-only connection display.
+
+These five choices are the next discussion, not an implementation authorization. A useful first damaging receiver still requires R4C2 content rules; Poke Floor remains the recommendation. Controller outage behavior, battery endurance, player/collateral handling per receiver, overlap and exact native placement support must be resolved/proven before the combined gameplay build. No installed 0.2.50 files changed.
+
 ## C253: read/write sharing selected and native selector reviewed, 2026-10-15
 
 Owner selects C2521A with the correction that everyone can read/view, while the selected group can write/change; C2522 is resolved by the same rule rather than a separate restricted Public mode. Owner requests using the native Horde Manager gradient circle for the 20-tile display and connection graphics.

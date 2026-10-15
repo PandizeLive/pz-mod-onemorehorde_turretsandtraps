@@ -1391,3 +1391,8 @@ Corrected stale current-table entries for head/content implementation, the pack 
 ## C253 — public inspection, selected-group writes and native range marker (2026-10-15)
 
 **C253 / read/write sharing confirmed; native range graphic identified (2026-10-15).** Everyone may inspect; Private/Faction/Public determines device writes, with placer ownership retained. Public is not limited to operation-only. Native Horde Manager uses the existing world circle marker API; straight links need separate matching rendering. [Selected access and native evidence](checkpoints/R4C1_CONNECTED_CONTROLS.md#c253-readwrite-sharing-selected-and-native-selector-reviewed-2026-10-15). Radius calibration/rendered acceptance and remaining device recipes/lifecycle design are pending. No gameplay or installed 0.2.50 change.
+
+
+## C254 — range/FOV styling and next device choices (2026-10-15)
+
+**C254 / native-style range/FOV visuals and device choices (2026-10-15).** Owner requests native-style visuals for ranges and FOV. Full native circles are available; angular sectors require separate matching geometry. Found stale rotary/Ballista visual-cone selection in current TurretRange.lua; preserve combat rules while correcting display in planned work. [Evidence and proposed placement/recipes/power/service/link choices](checkpoints/R4C1_CONNECTED_CONTROLS.md#c254-native-style-rangesfov-requested-device-choices-proposed-2026-10-15). Choices await selection; no gameplay/install change.
