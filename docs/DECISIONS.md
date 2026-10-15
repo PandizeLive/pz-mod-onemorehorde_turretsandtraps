@@ -1376,3 +1376,8 @@ Corrected stale current-table entries for head/content implementation, the pack 
 ## C250 — selected controls and external-mod investigation (2026-10-15)
 
 **C250 / R4C1 selections and external-mod research (2026-10-15).** Mechanical inputs, editable local/controller targeting, 20-tile links with 32 inputs/outputs, receiver-specific held-signal behavior, controller-based faction-base access and one-second recovery selected/amended. Filter scope, base boundary and controller lifecycle remain open. [Current selections and researched mod candidates](checkpoints/R4C1_CONNECTED_CONTROLS.md#c250-selections-and-compatibility-research-2026-10-15). Recommend standalone controls with optional verified adapters; no dependency or gameplay implementation approved by this discussion. Installed 0.2.50 unchanged.
+
+
+## C251 — independent controls and proposed controller rules (2026-10-15)
+
+**C251 / standalone controls with optional integrations approved (2026-10-15).** Owner agrees to our own system with support for other mods. Specific adapters remain unverified; no required dependency selected. [Next controller choices](checkpoints/R4C1_CONNECTED_CONTROLS.md#c251-independent-controls-approved-controller-choices-proposed-2026-10-15): trigger/target filters, base boundary, assignment, controller-loss policy and local overrides. These recommendations await selection; no gameplay or installed-build change.

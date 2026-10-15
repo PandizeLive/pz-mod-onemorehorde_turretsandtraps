@@ -1,5 +1,25 @@
 # R4C1 — buttons, pressure plates and links
 
+## C251: independent controls approved; controller choices proposed, 2026-10-15
+
+Owner agrees to building OMHTT's own control system with support for other mods and requests the next decisions. This selects the standalone/optional-integration architecture previously recommended. It does not establish compatibility with any specific mod, authorize a required dependency, or settle the proposed behavior below. Retain Pulse, held ON/OFF and separate power availability, with per-mod adapters verified against exact supported versions. No gameplay implementation this discussion.
+
+### Proposed next choices
+
+1. **Trigger versus target filtering.** Recommend 1A: any player or zombie physically triggers a plate; compatible receiving devices apply local/controller target filters. 1B: add separately configurable plate-trigger filters as well as receiver-target filters. 1B would qualify the previous everyone-can-trigger rule. Default receiver targets should be zombies; player/faction/no-one settings remain explicit. Target filters do not guarantee immunity to physical strikes or explosive collateral; per-receiver injury rules and server PvP/safehouse restrictions still apply. Passive wire/spikes do not gain selective immunity.
+
+2. **Base boundary.** Recommend 2A: owner marks two corners to define a rectangular controller area, with explicitly selected floors; the area constrains eligible assignments and does not claim unrelated world objects. 2B: fixed 20-tile radius around the controller. Boundary size/floors are separate from each confirmed 20-tile signal connection. The first option fits irregular base sizes better but requires bounds/overlap validation. Area-size budget and precise floor selection remain part of implementation preparation rather than an inferred unlimited-world claim.
+
+3. **Claiming devices.** Recommend 3A: explicitly assign devices inside the area; a Claim unassigned devices action can batch eligible devices with preview. 3B: automatically claim every unclaimed compatible device in the area. Never override another controller's claim. Protect assigned inputs/links as well as receivers, otherwise an outsider could bypass a trap's lock by rewiring its button. Public physical activation remains separate from configuration. Recommend one owning controller per device, faction access when faction-owned and a personal owner for solo players; no new faction prerequisite.
+
+4. **Controller loss.** Recommend 4A: power loss or destruction does not remove device ownership; authorized owners can replace/rebind the controller, or deliberately release devices to public access. 4B: destruction releases assigned devices to public access. Power loss alone must not unlock devices under either option. Prefer 4A to avoid making controller destruction an instant takeover exploit. Do not treat access persistence as automatic ongoing signal power: missing sources go OFF and each receiver obeys its approved signal-loss behavior. Faction-disband recovery remains an explicit lifecycle rule, not permission for an arbitrary player to inherit the network; recommend recorded placing-owner/admin recovery after membership validation.
+
+5. **Local versus controller targeting.** Recommend 5A: devices inherit controller target defaults, with an authorized local override and a clear Inherit/Override indicator. 5B: controller targeting is mandatory while assigned. Both support manual per-device targeting before assignment and controller editing afterward. 5A best preserves the owner's request for both individual and controller operation. Changing a default affects only inheriting devices; never silently overwrite local exceptions.
+
+### Scope and technical implications
+
+These are recommendations for the next selection, not approvals. A minimal claim/configuration controller must move forward alongside R4C1 if the owner selects this flow; beam sensors and full R4C3 group functionality are not silently included. Traps-only must remain independent: shared device identity/permission capabilities must not require Turrets. No per-tick whole-area scan for claiming; index devices and update membership on placement/movement/configuration. Validate both endpoints and claimed status at every mutation, including removal, inventory/services and external adapters. Current TurretAccess.lua validates proximity/reach/identity, not the proposed controller policy; controller access is new work, not already enforced. Two simultaneous claims must resolve on the server to one owner. Recipes, dimensions, power, durability and per-head signal reactions remain later content decisions.
+
 ## C250: selections and compatibility research, 2026-10-15
 
 This section supersedes the conflicting C249 proposals below. Owner selects and amends the design, then requests investigation of other mods providing redstone-like power/triggers. No gameplay implementation, dependency installation or integration claim is implied.
