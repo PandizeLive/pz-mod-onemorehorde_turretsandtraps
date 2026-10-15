@@ -87,14 +87,13 @@ end
 ---@param gun HandWeapon Supported firearm
 ---@return table state Persisted mechanical deadlines
 function G.state(gun)
-    local data = gun:getModData()
-    if not data.OMHTTGunCycle then data.OMHTTGunCycle = {schema = 1, nextShot = 0} end
-    return data.OMHTTGunCycle
+    return require("OMHTT/TurretItemState").get(gun, "gun", {schema = 1, nextShot = 0})
 end
 
 ---@param gun HandWeapon Supported firearm
 ---@return nil
 function G.cancelLoading(gun)
+    if isClient() then return end
     local state = G.state(gun)
     state.reloadReady, state.rackReady = nil, nil
 end
@@ -106,6 +105,7 @@ end
 ---@return table cycle Real magazine state
 ---@return string status
 function G.update(contents, stats, now, operate)
+    if isClient() then return nil, "Unavailable" end
     local gun = contents.head
     local state = G.state(gun)
     Clock.restore(state, now)
@@ -116,7 +116,13 @@ function G.update(contents, stats, now, operate)
     end
     state.loaded = G.loaded(gun)
     Impact.observe(state, state.loaded)
-    if gun:getModData().OMHTTPowerOff then return state, "Off" end
+    local powerOff = gun:getModData().OMHTTPowerOff
+    if isServer() then
+        local storage = gun:getContainer()
+        local turret = storage and require("OMHTT/Turret").state(storage:getParent())
+        powerOff = not turret or not require("OMHTT/Turret").isOn(turret)
+    end
+    if powerOff then return state, "Off" end
     if G.servicing[gun] then return state, "Servicing" end
     if not G.enabled() then return state, "Disabled" end
     if gun:getCondition() <= 0 then return state, "NoHead" end
@@ -144,7 +150,12 @@ function G.update(contents, stats, now, operate)
             if count >= amount then break end
             local round = contents.rounds[i]
             if container:contains(round) and round:getFullType() == G.ammoType(gun) then
-                if count < gun:getMaxAmmo() then container:Remove(round) end
+                if count < gun:getMaxAmmo() then
+                    container:Remove(round)
+                    if isServer() then
+                        sendRemoveItemFromContainer(container, round)
+                    end
+                end
                 count = count + 1
             end
         end
@@ -177,6 +188,7 @@ end
 ---@return boolean consumed
 ---@return number? cost Actual whole-round charge
 function G.consume(contents, stats, now)
+    if isClient() then return false end
     local gun = contents.head
     local cycle, status = G.update(contents, stats, now, false)
     if status ~= "Ready" then return false end
@@ -265,8 +277,7 @@ function G.transferMagazine(player, storage, gun, magazine, token)
     end
     G.cancelLoading(gun)
     if isServer() then
-        syncHandWeaponFields(player, gun)
-        syncItemModData(player, gun)
+        require("OMHTT/TurretItemState").publish(gun, player)
     end
     return magazine
 end

@@ -1,24 +1,26 @@
 -- Extra loaded rounds remain real items in the turret. Only their ready count is persisted.
 local Feed = {}
+local State = require("OMHTT/TurretItemState")
 
 ---@param gun HandWeapon Mounted firearm
 ---@return number rounds Turret-owned loaded extension
 ---@nodiscard
 function Feed.count(gun)
-    return gun:getModData().OMHTTFeedRounds or 0
+    return State.get(gun, "feed") or 0
 end
 
 ---@param gun HandWeapon Mounted firearm
 ---@param count number Nonnegative loaded extension
 ---@return nil
 function Feed.set(gun, count)
-    gun:getModData().OMHTTFeedRounds = count > 0 and count or nil
+    State.set(gun, "feed", count > 0 and count or nil)
 end
 
 ---@param gun HandWeapon Mounted firearm
 ---@param amount number Available magazine/feed rounds to spend
 ---@return nil
 function Feed.spend(gun, amount)
+    if isClient() then return end
     local native = math.min(amount, gun:getCurrentAmmoCount())
     gun:setCurrentAmmoCount(gun:getCurrentAmmoCount() - native)
     local remaining = amount - native
@@ -29,6 +31,9 @@ function Feed.spend(gun, amount)
         local item = items:get(i)
         if item:getFullType() == gun:getAmmoType():getItemKey() then
             storage:Remove(item)
+            if isServer() then
+                sendRemoveItemFromContainer(storage, item)
+            end
             remaining = remaining - 1
             Feed.set(gun, Feed.count(gun) - 1)
             if remaining == 0 then break end

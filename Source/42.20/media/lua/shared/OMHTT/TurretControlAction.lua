@@ -14,6 +14,8 @@ function Action:isValid()
         for i = 1, #M.PRIORITIES do
             if self.value == M.PRIORITIES[i] then return true end
         end
+    elseif self.command == "Power" then
+        return type(self.value) == "boolean"
     elseif self.command == "Range" then
         return type(self.value) == "number" and self.value == self.value and self.value % 1 == 0
             and self.value >= 0 and self.value <= math.max(2, math.ceil(T.cycleConfig(contents).range))
@@ -25,6 +27,9 @@ end
 function Action:complete()
     if isClient() or not self:isValid() then return false end
     self.done = true
+    if self.command == "Power" then
+        return require("OMHTT/TurretWorld").setPower(self.character, self.object, self.value)
+    end
     local state = T.state(self.object)
     if self.command == "Priority" then
         state.priority = self.value

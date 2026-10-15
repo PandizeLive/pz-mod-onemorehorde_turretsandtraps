@@ -1,5 +1,7 @@
 # C236 multiplayer verification (2026-10-14)
 
+Current implementation: [C243 feed, power and trap lifecycle](PATCH_C243_PROGRESS.md). Combat transport and the remaining authority paths are still unfinished; no MP acceptance.
+
 **Current follow-up:** [C242](PATCH_C242_PROGRESS.md) adds MP Manage, bounded server transfer actions, magazines and range/priority controls after [C241](PATCH_C241_PROGRESS.md)'s production turret lifecycle. The table below is the historical C236 audit; pack/lifecycle/Manage rows are partly superseded by C240-C242. Feed/Void and remaining transfer endpoints, combat and trap authority remain unfinished; no MP acceptance.
 
 **Result: production gameplay is not multiplayer-compatible.** This is an existing supported-mode restriction, not a newly observed networking regression. The owner requested verification and explicitly deferred player testing. No multiplayer port, live server session, owner test, release or installation is claimed by this audit.

@@ -19,7 +19,7 @@ end
 
 ---@return nil
 function B.tick()
-    if isClient() or isServer() or GameTime.isGamePaused() then return end
+    if isClient() or GameTime.isGamePaused() then return end
     B.deadline = getTimestampMs() + 3
     for i = 1, #B.workers do
         if getTimestampMs() >= B.deadline then break end

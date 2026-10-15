@@ -51,6 +51,7 @@ end
 ---@return table? record
 ---@nodiscard
 function Service.resolve(player, object, id)
+    if not player then return nil end
     local record = B.record(object)
     if not record or record.id ~= id or not B.enabled(record.kind) or player:isDead() or not Service.tools(player, record) then return nil end
     local frame, _, attachment, status = B.resolve(record)
@@ -69,9 +70,14 @@ end
 ---@param operation string Repair or Remove
 ---@return boolean applied
 function Service.apply(player, object, id, operation)
+    if isClient() then return false end
     local attachment, record = Service.resolve(player, object, id)
     if not attachment then return false end
-    if operation == "Repair" then return S.repair(attachment) end
+    if operation == "Repair" then
+        if not S.repair(attachment) then return false end
+        B.publishWire(record)
+        return true
+    end
     if operation ~= "Remove" then return false end
     local recovered = nil
     if record.kind == "wire" then
@@ -81,8 +87,11 @@ function Service.apply(player, object, id, operation)
             return false
         end
     end
+    if recovered and player:getInventory():AddItem(recovered) ~= recovered then return false end
     B.retire(record)
-    if recovered then player:getInventory():AddItem(recovered) end
+    if recovered and isServer() then
+        sendAddItemToContainer(player:getInventory(), recovered)
+    end
     return true
 end
 

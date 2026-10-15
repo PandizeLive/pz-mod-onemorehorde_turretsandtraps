@@ -14,7 +14,7 @@ end
 function M.reinforcement(player, planksNeeded)
     planksNeeded = planksNeeded or 2
     local nailsNeeded = planksNeeded * 4
-    if isClient() or isServer() or player:isDead() then return nil end
+    if not player or player:isDead() then return nil end
     if player:isBuildCheat() then return {items = {}, cheat = true} end
     if player:getPerkLevel(Perks.Woodwork) < 3 then return nil end
     local inventory = player:getInventory()

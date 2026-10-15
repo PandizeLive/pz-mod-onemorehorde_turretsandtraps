@@ -1,6 +1,3 @@
-if isClient() or isServer() then
-    return
-end
 local B = require("OMHTT/BedSpikes")
 local S = {}
 
@@ -11,11 +8,11 @@ local S = {}
 ---@nodiscard
 function S.resolve(player, object, id)
     local record = B.record(object)
-    if not B.enabled() or player:isDead() or not record or record.id ~= id or #B.parts(record) ~= 1 then return nil end
+    if not player or not B.enabled() or player:isDead() or not record or record.id ~= id or #B.parts(record) ~= 1 then return nil end
     local square = object:getSquare()
     if not square or player:getZ() ~= square:getZ() or object:getObjectIndex() < 0 then return nil end
     local dx, dy = player:getX() - square:getX() - 0.5, player:getY() - square:getY() - 0.5
-    if dx * dx + dy * dy > 4 or player:getSquare():isSomethingTo(square) then return nil end
+    if not player:getSquare() or dx * dx + dy * dy > 4 or player:getSquare():isSomethingTo(square) then return nil end
     return record
 end
 
@@ -34,6 +31,7 @@ end
 ---@param operation string Pickup, Repair or Reinforce
 ---@return boolean applied
 function S.apply(player, object, id, operation)
+    if isClient() then return false end
     local record = S.resolve(player, object, id)
     if not record then return false end
     if operation == "Pickup" then
@@ -43,8 +41,11 @@ function S.apply(player, object, id, operation)
             player:setHaloNote(getText("UI_OMHTT_PickupNoRoom"), 255, 170, 80, 180)
             return false
         end
+        if player:getInventory():AddItem(item) ~= item then return false end
         B.retire(record)
-        player:getInventory():AddItem(item)
+        if isServer() then
+            sendAddItemToContainer(player:getInventory(), item)
+        end
         return true
     elseif operation == "Reinforce" then
         local materials = S.materials(player, record)
@@ -52,7 +53,11 @@ function S.apply(player, object, id, operation)
         for i = 1, #materials.items do
             local item = materials.items[i]
             player:removeFromHands(item)
-            item:getContainer():Remove(item)
+            local source = item:getContainer()
+            source:Remove(item)
+            if isServer() then
+                sendRemoveItemFromContainer(source, item)
+            end
         end
         record.tier = "reinforced"
         record.maxHealth = B.maxHealth(record)
@@ -64,7 +69,14 @@ function S.apply(player, object, id, operation)
     end
     record.health = record.maxHealth
     local parts = B.parts(record)
-    for i = 1, #parts do B.configure(record, parts[i]) end
+    for i = 1, #parts do
+        B.configure(record, parts[i])
+        if isServer() then
+            parts[i]:sync()
+            parts[i]:transmitUpdatedSpriteToClients()
+            parts[i]:transmitModData()
+        end
+    end
     return true
 end
 

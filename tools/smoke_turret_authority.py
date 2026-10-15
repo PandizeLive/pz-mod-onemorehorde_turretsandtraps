@@ -8,6 +8,7 @@ import time
 ROOT = Path(__file__).resolve().parents[1]
 GAME = Path(os.environ.get("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"))
 OUTPUT = ROOT / "diagnostics/c241-multiplayer/authority-server"
+IDENTIFIERS = ["OneMoreHorde_Turrets"]
 
 
 def main():
@@ -16,17 +17,20 @@ def main():
     cache = OUTPUT / "cache"
     identifier = "OneMoreHorde_Turrets"
     destination = cache / "mods" / identifier
-    shutil.copytree(ROOT / "Contents/mods" / identifier, destination, dirs_exist_ok=True)
+    for selected in IDENTIFIERS:
+        shutil.copytree(ROOT / "Contents/mods" / selected, cache / "mods" / selected, dirs_exist_ok=True)
     lua = destination / "42.20/media/lua/server"
     (lua / "OMHTT/NativeTurretAuthority.lua").write_text(
         (ROOT / "tools/tests/native_turret_authority.lua").read_text(encoding="utf-8"), encoding="utf-8")
+    (lua / "OMHTT/NativeTrapServices.lua").write_text(
+        (ROOT / "tools/tests/native_trap_services.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (lua / "OMHTT_AuthorityProbe.lua").write_text(
         'Events.OnServerStarted.Add(function()\n'
         '    require("OMHTT/NativeTurretAuthority")(IsoPlayer.new(getCell()))\n'
         'end)\n', encoding="utf-8")
     settings = cache / "Server/OMHTT_Authority.ini"
     settings.parent.mkdir(parents=True, exist_ok=True)
-    settings.write_text("Mods=OneMoreHorde_Turrets\nPublic=false\nPauseEmpty=true\nUPnP=false\nMap=Muldraugh, KY\nDefaultPort=29163\nUDPPort=29164\n", encoding="utf-8")
+    settings.write_text("Mods=" + ";".join(IDENTIFIERS) + "\nPublic=false\nPauseEmpty=true\nUPnP=false\nMap=Muldraugh, KY\nDefaultPort=29163\nUDPPort=29164\n", encoding="utf-8")
     transcript = OUTPUT / "server.log"
     command = [str(GAME / "jre64/bin/java.exe"), "--enable-native-access=ALL-UNNAMED",
                "--add-exports=java.base/jdk.internal.misc=ALL-UNNAMED", "-XX:-CreateCoredumpOnCrash", "-Xmx1536m",

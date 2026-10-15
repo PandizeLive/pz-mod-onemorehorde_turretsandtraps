@@ -1334,3 +1334,7 @@ Owner: "You need to ensure that we're caught up on Multiplayer implementation. Y
 ## C242 - continue multiplayer implementation without the owner test (2026-10-14)
 
 Owner: "Keep going with the remaining multiplayer implementation. You're already approved, so complete as much as possible without waiting for me to test." Continue C235/C240/C241 implementation; do not request another generic approval or treat deferred owner testing as a development blocker. [Implemented inventory/Manage checkpoint, native findings and remaining work](PATCH_C242_PROGRESS.md). This checkpoint introduces no new balance choice, release approval or acceptance claim. Preserve the established Horde policies and remaining content work. Development source is mirrored through the standing T&T pipeline; sibling manual-mirror restrictions remain.
+
+## C243 — complete approved MP work and mirror progress (2026-10-14)
+
+Owner explicitly authorizes ALL multiplayer integration patches and requests continued completion without waiting for owner testing, plus a GitHub push. This preserves C235 content and the C239/C240 scoring policies; it does not certify unsupported engine behavior. Implemented feed/power/trap service progress and remaining authority work are recorded in [C243](PATCH_C243_PROGRESS.md). Existing sibling Horde integration may be mirrored as development under this explicit request, without updating its older release tag or publishing. No new generic approval gate.

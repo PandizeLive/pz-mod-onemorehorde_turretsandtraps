@@ -134,6 +134,9 @@ function Action:complete()
         if isServer() then
             sendRemoveItemFromContainer(source, candidate)
             sendAddItemToContainer(destination, candidate)
+            if G.profile(candidate) then
+                require("OMHTT/TurretItemState").publish(candidate, self.character)
+            end
         end
         moved = moved + 1
         if summary then
@@ -145,7 +148,7 @@ function Action:complete()
     if G.profile(contents.head) then
         Feed.restore(contents.head, T.cycleConfig(contents).magazine, self.character, false)
         if isServer() then
-            syncItemModData(self.character, contents.head)
+            require("OMHTT/TurretItemState").publish(contents.head, self.character)
         end
     end
     local W = require("OMHTT/TurretWorld")

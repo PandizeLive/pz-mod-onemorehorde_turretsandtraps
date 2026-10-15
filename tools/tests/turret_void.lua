@@ -104,7 +104,7 @@ stale.data.OMHTTVoid = {schema = 99, untouched = true}
 local round = item("Base.Bullets9mm")
 source:add(round)
 check(not V.deposit(stale, round, source) and source:contains(round) and stale.data.OMHTTVoid.untouched, "Unknown schema is preserved without consuming input")
-for _, mode in pairs({"client", "server"}) do
+for _, mode in pairs({"client"}) do
     testMode = mode
     local revision = V.data(module).revision
     check(not V.deposit(module, round, source) and source:contains(round), "MP conversion remains guarded: " .. mode)
@@ -114,4 +114,4 @@ end
 testMode = "sp"
 A.cache = {}
 getScriptManager, WeaponCategory, instanceof = oldScripts, oldCategory, oldInstance
-testVoidAudit = "conversion=600 groups=2 mockBatchMs=" .. elapsed .. " nativeTablePersistence=pass mpMutationGuards=pass integration=pending"
+testVoidAudit = "conversion=600 groups=2 mockBatchMs=" .. elapsed .. " nativeTablePersistence=pass clientMutationGuards=pass integration=pending"

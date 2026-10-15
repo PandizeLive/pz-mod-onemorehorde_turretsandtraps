@@ -95,15 +95,20 @@ end
 ---@return string status
 ---@param stats table? Already resolved operation stats
 function T.cycle(contents, now, stats)
+    if isClient() then return nil, "Unavailable" end
     if not contents.head then return nil, "NoHead" end
     stats = stats or T.cycleConfig(contents)
     if G.profile(contents.head) then return G.update(contents, stats, now, false) end
     if stats.rotary then return {loaded = 0}, "Ready" end
-    if not Heads.get(contents.head) and SandboxVars.OMHTurretsTraps.PotatoTurret == false then return nil, "Disabled" end
-    local data = contents.head:getModData()
-    if not data.OMHTTCycle then data.OMHTTCycle = {schema = 1, loaded = 0, nextShot = 0} end
-    local state = data.OMHTTCycle
-    if data.OMHTTPowerOff then return state, "Off" end
+    local state = require("OMHTT/TurretItemState").get(contents.head, "cycle", {schema = 1, loaded = 0, nextShot = 0})
+    if not Heads.get(contents.head) and SandboxVars.OMHTurretsTraps.PotatoTurret == false then return state, "Disabled" end
+    local powerOff = contents.head:getModData().OMHTTPowerOff
+    if isServer() then
+        local storage = contents.head:getContainer()
+        local turret = storage and T.state(storage:getParent())
+        powerOff = not turret or not T.isOn(turret)
+    end
+    if powerOff then return state, "Off" end
     return state, Cycle.update(state, contents.ammo, stats, now)
 end
 

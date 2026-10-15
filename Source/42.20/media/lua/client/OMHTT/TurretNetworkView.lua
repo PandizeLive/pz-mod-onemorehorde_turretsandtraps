@@ -24,12 +24,12 @@ function V.cycle(contents)
     local head = contents.head
     if not head then return nil, "NoHead" end
     local data = head:getModData()
-    local state = data.OMHTTCycle
+    local state = G.profile(head) and data.OMHTTGunCycle or data.OMHTTCycle
     local loaded = state and state.loaded or 0
     if G.profile(head) then
         loaded = G.loaded(head)
     end
-    return {loaded = loaded}, "Unavailable"
+    return {loaded = loaded}, state and state.status or "Unavailable"
 end
 
 ---@param object IsoObject Device

@@ -1,4 +1,4 @@
-if isClient() or isServer() then
+if isServer() then
     return
 end
 require("OMHTT/BedServiceAction")

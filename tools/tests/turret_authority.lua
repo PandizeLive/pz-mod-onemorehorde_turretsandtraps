@@ -5,7 +5,9 @@ local Action = require("OMHTT/TurretPickupAction")
 local oldMode, oldStore, oldFactory, oldRefresh = testMode, ModData.getOrCreate, instanceItem, W.refresh
 local oldAdd, oldRemove = sendAddItemToContainer, sendRemoveItemFromContainer
 local persisted, sent = {}, {}
+local itemStore = {}
 ModData.getOrCreate = function(key)
+    if key == "OMHTTItemAuthorityV1" then return itemStore end
     check(key == "OMHTTProductionTurretsV1", "Production state uses a separate global store")
     return persisted
 end
@@ -115,7 +117,7 @@ sendAddItemToContainer = function(container, added)
 end
 sendRemoveItemFromContainer = function() error("Pickup must not separately synchronize nested contents") end
 local id = T.state(object).id
-check(W.fire(player, object) == "Unavailable" and not W.setPower(player, object, true), "Service support does not accidentally enable unfinished multiplayer combat")
+check(W.fire(player, object) == "Unavailable", "Feed support does not accidentally enable unfinished multiplayer combat")
 local repair = Action:new(player, object, "Repair", id)
 check(repair.maxTime == 500 and repair.elapsed == 0, "Server reconstructs ten-second repair without client elapsed state")
 check(repair:complete() and object.health == 100 and object.healthSynced, "Server completion repairs and synchronizes native health")
@@ -237,7 +239,7 @@ check(not Transfer:new(player, transferObject, potato, true, transferId):complet
 check(not Transfer:new(player, transferObject, potato, false, transferId, nil, false):complete(), "Unsupported destination is rejected instead of silently changed")
 check(Transfer:new(player, transferObject, potato, false, transferId):complete() and inv:contains(potato), "Outgoing transfer restores the exact item")
 local state = T.state(transferObject)
-check(not Control:new(player, transferObject, transferId, "Power", true):complete(), "Unfinished combat controls cannot be enabled through control actions")
+check(not Control:new(player, transferObject, transferId, "Power", "true"):complete(), "Power control rejects a non-boolean")
 check(not Control:new(player, transferObject, transferId, "Range", 0/0):complete(), "Nonfinite ranges are rejected")
 check(not Control:new(player, transferObject, transferId, "Range", -1):complete(), "Negative ranges are rejected")
 check(not Control:new(player, transferObject, transferId, "Range", 9999):complete(), "Out-of-range values are rejected")
@@ -318,6 +320,87 @@ local declined = ISInventoryTransferAction:new(player, limited[1], target, {getT
 check(declined.destinationBag == false and not declined:isValid(), "Unsupported native drag cannot silently route to the player's main inventory")
 ISTimedActionQueue, ISBaseTimedAction.begin = oldQueue, oldBegin
 testMode = "server"
+local ItemState = require("OMHTT/TurretItemState")
+local oldPlayers, oldMeta, oldWeapon = getOnlinePlayers, syncItemModData, syncHandWeaponFields
+local mounted = item("Base.Pistol")
+mounted.kind = "HandWeapon"
+mounted.container = target
+local first = {getX = function() return 200 end, getY = function() return 200 end}
+local second = {getX = function() return 201 end, getY = function() return 200 end}
+local distant = {getX = function() return 999 end, getY = function() return 999 end}
+local observers, fields, metadata = {first, second, distant}, {}, 0
+getOnlinePlayers = function()
+    return {size = function() return #observers end, get = function(_, i) return observers[i + 1] end}
+end
+syncHandWeaponFields = function(recipient, actual)
+    check(actual == mounted and recipient ~= distant, "Native mounted-gun fields go only to nearby actual observers")
+    fields[recipient] = (fields[recipient] or 0) + 1
+end
+syncItemModData = function(recipient, actual)
+    check(recipient ~= nil and actual == mounted, "Native metadata sync always has a real recipient")
+    metadata = metadata + 1
+end
+mounted.data.OMHTTGunCycle = {schema = 1, loaded = 99999, nextShot = -99999}
+local private = ItemState.get(mounted, "gun", {schema = 1, nextShot = 1234, loaded = 3})
+check(private.loaded == 3 and private.nextShot == 1234, "Forged public cycle is never adopted by server authority")
+ItemState.set(mounted, "feed", 2)
+ItemState.publish(mounted, first)
+check(fields[first] == 1 and fields[second] == 1 and metadata == 1, "One transition updates two observers without duplicate metadata broadcast")
+check(mounted.data.OMHTTGunCycle ~= private and mounted.data.OMHTTFeedRounds == 2, "Presentation is a detached copy of private state")
+mounted.data.OMHTTGunCycle.loaded, mounted.data.OMHTTFeedRounds = 99999, 99999
+check(ItemState.get(mounted, "gun").loaded == 3 and ItemState.get(mounted, "feed") == 2, "Later public replacement cannot create loaded ammo")
+testMode = "client"
+check(not ItemState.set(mounted, "feed", 500), "Client feed writes are denied")
+local gunView = ItemState.get(mounted, "gun")
+check(gunView == mounted.data.OMHTTGunCycle, "Client reads only the replicated presentation")
+testMode = "server"
+observers = {}
+ItemState.publish(mounted)
+check(metadata == 1, "No connected observers means no invalid nil-player packet")
+getOnlinePlayers, syncItemModData, syncHandWeaponFields = oldPlayers, oldMeta, oldWeapon
+local V = require("OMHTT/TurretVoid")
+local VoidAction = require("OMHTT/TurretVoidAction")
+local void = component(V.TYPE)
+void.data.OMHTTVoid = {schema = 1, revision = 1, groups = {{type = "Base.Bullets9mm", count = 999999}}, debt = {}}
+target:AddItem(void)
+local virtualRounds, virtualIds = {}, {}
+for i = 1, 20 do
+    local round = component("Base.Bullets9mm")
+    target:AddItem(round)
+    virtualRounds[i], virtualIds[i] = round, round:getID()
+end
+check(V.count(void) == 0, "Forged public Void counts are never accepted as server inventory")
+getOnlinePlayers = function() return {size = function() return 0 end} end
+syncItemModData = function(recipient, actual) check(recipient == player and actual == void, "Committed Void snapshot is synchronized to operator") end
+local conversion = VoidAction:new(player, transferObject, transferId, void, virtualIds)
+check(not VoidAction:new(player, transferObject, "wrong", void, virtualIds):complete(), "Wrong turret cannot convert ammunition")
+check(not VoidAction:new(player, transferObject, transferId, void, {virtualIds[1], virtualIds[1]}):complete(), "Duplicate conversion IDs are rejected before removal")
+virtualRounds[1].favorite = true
+check(not conversion:complete() and target:contains(virtualRounds[1]), "Favorite ammunition remains physical")
+virtualRounds[1].favorite = false
+local potatoHead = component(require("OMHTT/Turret").HEAD)
+target:AddItem(potatoHead)
+ItemState.set(potatoHead, "cycle", {schema = 1, loaded = 1})
+local potatoEnabled = SandboxVars.OMHTurretsTraps.PotatoTurret
+SandboxVars.OMHTurretsTraps.PotatoTurret = false
+local disabledCycle, disabledStatus = T.cycle({head = potatoHead, ammo = 100}, 1000, {})
+check(disabledCycle.loaded == 1 and disabledStatus == "Disabled", "Disabled head retains an inert state for server publication")
+SandboxVars.OMHTurretsTraps.PotatoTurret = potatoEnabled
+check(not conversion:complete() and V.count(void) == 0 and target:contains(virtualRounds[1]),
+    "Physical non-firearm magazine reservations cannot also become virtual ammo")
+target:Remove(potatoHead)
+check(conversion:complete() and not conversion:complete() and V.count(void) == 20, "Twenty exact rounds convert once to the installed module")
+local count, group = V.count(void, nil, "Base.Bullets9mm")
+check(count == 20 and not target:contains(virtualRounds[1]), "Physical removal and private virtual credit agree")
+void.data.OMHTTVoid.groups[1].count = 999999
+check(V.count(void) == 20, "Replicated Void snapshot does not alias private ammunition")
+local used, cost = V.consume(void, group, 1, 2)
+check(used and cost == 0 and V.count(void) == 20, "Server Conservation retains the first fractional use")
+used, cost = V.consume(void, group, 1, 2)
+check(used and cost == 1 and V.count(void) == 19, "Server Conservation charges the second use exactly once")
+local saved = nativeRoundTrip(itemStore)
+check(saved.items[tostring(void:getID())].void.groups[1].count == 19, "Private Void count survives native table serialization")
+getOnlinePlayers, syncItemModData = oldPlayers, oldMeta
 A.retire(transferObject)
 CharacterTrait = oldTraits
 ISTransferAction = oldNativeTransfer

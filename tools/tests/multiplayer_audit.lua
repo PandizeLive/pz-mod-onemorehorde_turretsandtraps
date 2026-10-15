@@ -14,8 +14,8 @@ for _, mode in pairs({"client", "server"}) do
     check(not W.valid(nil), "Missing production turret is rejected: " .. mode)
     check(Combat.fire({kind="potato",ammo=4,shots=0}, nil, nil) == "MPCombatDeferred", "MP combat is explicitly deferred: " .. mode)
     check(Pack.open(nil, nil) == nil, "Pack opening rejects missing authoritative player/item: " .. mode)
-    check(not Bed.enabled(), "Bed Spikes are disabled in MP: " .. mode)
-    check(not Barb.enabled("panel") and not Barb.enabled("wire"), "Barbed Panels and Concertina are disabled in MP: " .. mode)
+    check(Bed.enabled(), "Bed Spikes lifecycle is enabled in MP: " .. mode)
+    check(not Barb.enabled("panel") and Barb.enabled("wire"), "Concertina lifecycle enabled; panel authority remains gated: " .. mode)
 end
 testMode, SandboxVars.OMHTurretsTraps = oldMode, oldSettings
 testMultiplayerAudit = "clientAndServerGuards=pass gameplayCompatibility=blocked liveDedicated=not-run liveListen=not-run"

@@ -1,4 +1,4 @@
-if isClient() or isServer() then return end
+if isServer() then return end
 require("OMHTT/BarbServiceAction")
 require("TimedActions/ISTimedActionQueue")
 local B = require("OMHTT/BarbSections")

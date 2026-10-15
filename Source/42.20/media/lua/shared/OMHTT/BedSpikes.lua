@@ -6,6 +6,8 @@ local clock = ActiveTime.new()
 local removing = false
 local enabled = nil
 local facings = {e = 0, n = 1, w = 2, s = 3}
+local bindings = setmetatable({}, {__mode = "k"})
+local persistedTiles = {}
 
 ---@param name string Sandbox suffix
 ---@param fallback number Default
@@ -26,20 +28,25 @@ end
 ---@nodiscard
 function B.enabled()
     local options = SandboxVars.OMHTurretsTraps
-    return not isClient() and not isServer() and options ~= nil and options.Enabled ~= false and options.BedSpikes ~= false
+    return options ~= nil and options.Enabled ~= false and options.BedSpikes ~= false
 end
 
 ---@return nil
 function B.initialize()
-    if isClient() or isServer() then
-        return
+    if isClient() then
+        B.store = {nextId = 1, records = {}}
+    else
+        B.store = ModData.getOrCreate("OMHTTBedSpikes")
     end
-    B.store = ModData.getOrCreate("OMHTTBedSpikes")
     if B.store.nextId == nil then
         B.store.nextId, B.store.records = 1, {}
     end
     B.tiles, B.nearby, B.indexed = {}, {}, {}
     B.count = 0
+    bindings, persistedTiles = setmetatable({}, {__mode = "k"}), {}
+    for id, record in pairs(B.store.records) do
+        persistedTiles[F.key(record.x, record.y, record.z)] = id
+    end
 end
 
 ---@param record table Bed record
@@ -64,8 +71,17 @@ end
 ---@return table? record
 ---@nodiscard
 function B.record(object)
-    if not B.store or not object or not object:hasModData() then return nil end
+    if not B.store or not object then return nil end
+    if isServer() then
+        local record = bindings[object]
+        local square = object:getSquare()
+        if record and B.store.records[record.id] == record and square
+            and square:getX() == record.x and square:getY() == record.y and square:getZ() == record.z then return record end
+        return nil
+    end
+    if not object:hasModData() then return nil end
     local marker = object:getModData().OMHTTBed
+    if isClient() then return marker and marker.view end
     return marker and B.store.records[marker.id]
 end
 
@@ -116,6 +132,16 @@ end
 ---@param object IsoThumpable Loaded part
 ---@return nil
 function B.configure(record, object)
+    if isClient() then return end
+    if isServer() then
+        bindings[object] = record
+        persistedTiles[F.key(record.x, record.y, record.z)] = record.id
+        local view = {}
+        for key, value in pairs(record) do
+            view[key] = value
+        end
+        object:getModData().OMHTTBed = {id = record.id, part = record.part or 0, view = view}
+    end
     object:setBlockAllTheSquare(false)
     object:setCanPassThrough(true)
     object:setIsHoppable(false)
@@ -142,11 +168,13 @@ end
 ---@param record table Bed record
 ---@return nil
 function B.retire(record)
+    if isClient() then return end
     local parts = B.parts(record)
     if B.indexed[record.id] then
         B.index(record, -1)
     end
     B.store.records[record.id] = nil
+    persistedTiles[F.key(record.x, record.y, record.z)] = nil
     removing = true
     for i = 1, #parts do parts[i]:getSquare():transmitRemoveItemFromSquare(parts[i]) end
     removing = false
@@ -164,6 +192,8 @@ function B.removed(object)
     end
     if B.indexed[record.id] then B.index(record, -1) end
     B.store.records[record.id] = nil
+    persistedTiles[F.key(record.x, record.y, record.z)] = nil
+    bindings[object] = nil
 end
 
 ---@param square IsoGridSquare Loaded square
@@ -173,14 +203,36 @@ function B.loaded(square)
         return
     end
     local objects = square:getSpecialObjects()
+    if isServer() then
+        local id = persistedTiles[F.key(square:getX(), square:getY(), square:getZ())]
+        local record = id and B.store.records[id]
+        if not record then return end
+        for i = 0, objects:size() - 1 do
+            local object = objects:get(i)
+            local sprite = object:getSpriteName()
+            local index = sprite and tonumber(string.match(sprite, "^omhtt_barrier_01_(%d+)$"))
+            if instanceof(object, "IsoThumpable") and index and (index >= 28 and index <= 51 or index >= 64 and index <= 71) then
+                B.configure(record, object)
+                return
+            end
+        end
+        return
+    end
     for i = objects:size() - 1, 0, -1 do
         local object = objects:get(i)
         local marker = object:hasModData() and object:getModData().OMHTTBed
         if marker then
-            local record = B.store.records[marker.id]
+            local record = isClient() and marker.view or B.store.records[marker.id]
             if record then
-                B.configure(record, object)
-            else
+                if isClient() then
+                    B.store.records[record.id] = record
+                    if not B.indexed[record.id] then
+                        B.index(record, 1)
+                    end
+                else
+                    B.configure(record, object)
+                end
+            elseif not isClient() then
                 square:transmitRemoveItemFromSquare(object)
             end
         end
@@ -234,6 +286,7 @@ end
 ---@param params table Native construction completion
 ---@return nil
 function B.onCreate(params)
+    if isClient() then return end
     if not B.enabled() then error("[OMHTT] Bed construction unavailable") end
     local object = params.thumpable
     if B.record(object) then
@@ -246,8 +299,11 @@ function B.onCreate(params)
     local part, facing = (index - 28) % 2, facings[params.facing]
     local square = object:getSquare()
     local x, y = square:getX(), square:getY()
+    if isServer() and persistedTiles[F.key(x, y, square:getZ())] then
+        error("[OMHTT] Duplicate bed placement")
+    end
     local record = {id = "bed-" .. B.store.nextId, x = x, y = y, z = square:getZ(), facing = facing,
-        tier = index >= 44 and "reinforced" or "basic", deployed = index >= 36, single = single}
+        tier = index >= 44 and "reinforced" or "basic", deployed = index >= 36, single = single, part = part}
     B.store.nextId = B.store.nextId + 1
     record.maxHealth = B.maxHealth(record)
     record.health = record.maxHealth
@@ -268,7 +324,6 @@ function B.tick()
 end
 
 OMHTT_BedMenuAvailable = B.enabled
-if isClient() or isServer() then return B end
 Events.OnInitGlobalModData.Add(B.initialize)
 Events.LoadGridsquare.Add(B.loaded)
 Events.OnObjectAboutToBeRemoved.Add(B.removed)

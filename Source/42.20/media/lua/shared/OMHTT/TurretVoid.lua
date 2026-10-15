@@ -1,4 +1,5 @@
 local Ammo = require("OMHTT/TurretAmmo")
+local State = require("OMHTT/TurretItemState")
 local V = {TYPE = "Base.OMHTTModuleVoid", LIMIT = 9007199254740991}
 
 ---@param module InventoryItem? Exact storage owner
@@ -6,11 +7,11 @@ local V = {TYPE = "Base.OMHTTModuleVoid", LIMIT = 9007199254740991}
 ---@return table? data Persisted bounded-by-variant storage
 function V.data(module, create)
     if not module or module:getFullType() ~= V.TYPE then return nil end
-    local metadata = module:getModData()
-    if metadata.OMHTTVoid == nil and create and not isClient() and not isServer() then
-        metadata.OMHTTVoid = {schema = 1, revision = 0, groups = {}, debt = {}}
+    local initial
+    if create and not isClient() then
+        initial = {schema = 1, revision = 0, groups = {}, debt = {}}
     end
-    local data = metadata.OMHTTVoid
+    local data = State.get(module, "void", initial)
     if type(data) ~= "table" or data.schema ~= 1 or type(data.groups) ~= "table"
         or type(data.debt) ~= "table" or type(data.revision) ~= "number" then return nil end
     return data
@@ -30,7 +31,7 @@ end
 ---@param source ItemContainer Expected source
 ---@return boolean converted
 function V.deposit(module, item, source)
-    if isClient() or isServer() then return false end
+    if isClient() then return false end
     if not item or not source or item:getContainer() ~= source or not source:contains(item) or item:isFavorite() then return false end
     if not module or module:getFullType() ~= V.TYPE or module:getCondition() <= 0 then return false end
     local descriptor = Ammo.describe(item)
@@ -55,6 +56,9 @@ function V.deposit(module, item, source)
         data.groups[#data.groups + 1] = descriptor
     end
     data.revision = data.revision + 1
+    if isServer() then
+        sendRemoveItemFromContainer(source, item)
+    end
     return true
 end
 
@@ -84,7 +88,7 @@ end
 ---@param amount number Validated integer debit
 ---@return boolean consumed
 function V.spend(module, descriptor, amount)
-    if isClient() or isServer() then return false end
+    if isClient() then return false end
     local data = V.data(module)
     if not data or type(amount) ~= "number" or amount < 0 or amount > V.LIMIT or amount ~= math.floor(amount) then return false end
     for i = 1, #data.groups do
@@ -109,7 +113,7 @@ end
 ---@return boolean committed
 ---@return number? cost Whole rounds consumed
 function V.consume(module, descriptor, uses, divisor)
-    if isClient() or isServer() then return false end
+    if isClient() then return false end
     local data = V.data(module)
     if not data or not descriptor or type(uses) ~= "number" or uses < 1 or uses > V.LIMIT
         or uses ~= math.floor(uses) or type(divisor) ~= "number" or divisor < 1 or divisor > V.LIMIT then return false end

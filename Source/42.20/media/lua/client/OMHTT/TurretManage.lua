@@ -74,7 +74,10 @@ end
 
 ---@return nil
 function Panel:togglePower()
-    if isClient() then return end
+    if isClient() then
+        View.control(self.player, self.object, "Power", not T.isOn(T.state(self.object)))
+        return
+    end
     require("OMHTT/TurretWorld").setPower(self.player, self.object, not T.isOn(T.state(self.object)))
     self.nextRefresh = 0
 end
@@ -205,7 +208,7 @@ function Panel:refresh()
     end
     local powered = T.isOn(state)
     self.powerButton:setTitle("")
-    self.powerButton:setEnable(not isClient())
+    self.powerButton:setEnable(true)
     self.powerButton.tooltip = getText(powered and "UI_OMHTT_PowerOn" or "UI_OMHTT_PowerOff")
     self.powerButton.backgroundColor = powered and {r = 0.08, g = 0.42, b = 0.16, a = 0.9} or {r = 0.48, g = 0.08, b = 0.08, a = 0.9}
     self.powerButton.backgroundColorMouseOver = powered and {r = 0.12, g = 0.58, b = 0.22, a = 1} or {r = 0.65, g = 0.12, b = 0.12, a = 1}

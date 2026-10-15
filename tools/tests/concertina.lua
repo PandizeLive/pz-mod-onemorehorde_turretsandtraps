@@ -122,7 +122,7 @@ Beds.player(player)
 check(scratches == 1 and not player.trip, "God mode prevents barb injury and trips")
 local inventory = {items = {}, room = true}
 function inventory:hasRoomFor() return self.room end
-function inventory:AddItem(item) self.items[#self.items + 1] = item end
+function inventory:AddItem(item) self.items[#self.items + 1] = item; return item end
 function player:getInventory() return inventory end
 function player:isBuildCheat() return false end
 function player:setHaloNote() end

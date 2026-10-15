@@ -163,7 +163,7 @@ function square:isSomethingTo(other) return self.blocked or other.blocked end
 local scratches, cuts, animation = 0, 0, nil
 local inventory = {room = false, items = {}}
 function inventory:hasRoomFor() return self.room end
-function inventory:AddItem(item) self.items[#self.items + 1] = item end
+function inventory:AddItem(item) self.items[#self.items + 1] = item; return item end
 local player = {running = false, sprinting = false, square = square}
 function player:isKnockedDown() return false end
 function player:isRagdoll() return false end

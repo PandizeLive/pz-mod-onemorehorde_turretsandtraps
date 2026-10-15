@@ -1,12 +1,10 @@
-if isClient() or isServer() then
-    return
-end
 require("TimedActions/ISBaseTimedAction")
 OMHTTBedServiceAction = ISBaseTimedAction:derive("OMHTTBedServiceAction")
 
 ---@return boolean valid
 ---@nodiscard
 function OMHTTBedServiceAction:isValid()
+    if self.done or type(self.id) ~= "string" then return false end
     local S = require("OMHTT/BedService")
     local record = S.resolve(self.character, self.object, self.id)
     return record ~= nil and (self.operation == "Pickup" or (self.operation == "Repair" and record.health < record.maxHealth)
@@ -43,6 +41,7 @@ end
 ---@return nil
 function OMHTTBedServiceAction:update()
     self.character:faceThisObject(self.object)
+    if isClient() or isServer() then return end
     self.elapsed = self.elapsed + math.min(getGameTime():getRealworldSecondsSinceLastUpdate(), 0.25)
     self:setJobDelta(math.min(self.elapsed / self.seconds, 0.999))
     if self.elapsed >= self.seconds then
@@ -63,7 +62,9 @@ end
 
 ---@return boolean applied
 function OMHTTBedServiceAction:complete()
-    if self.done or self.elapsed < self.seconds then return false end
+    if isClient() then return false end
+    if not isServer() and self.elapsed < self.seconds then return false end
+    if not self:isValid() then return false end
     self.done = true
     return require("OMHTT/BedService").apply(self.character, self.object, self.id, self.operation)
 end
@@ -71,6 +72,7 @@ end
 ---@return number seconds
 ---@nodiscard
 function OMHTTBedServiceAction:getDuration()
+    if isClient() or isServer() then return self.seconds * 50 end
     return 480
 end
 
@@ -83,7 +85,8 @@ function OMHTTBedServiceAction:new(character, object, id, operation)
     local o = ISBaseTimedAction.new(self, character)
     o.object, o.id, o.operation = object, id, operation
     o.seconds = o.operation == "Pickup" and 5 or 10
-    o.elapsed, o.done, o.maxTime = 0, false, 480
+    o.elapsed, o.done = 0, false
     o.stopOnWalk, o.stopOnRun = true, true
+    o.maxTime = o:getDuration()
     return o
 end

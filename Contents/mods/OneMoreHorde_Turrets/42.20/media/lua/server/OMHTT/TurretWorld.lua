@@ -120,16 +120,18 @@ end
 ---@param enabled boolean Switch value
 ---@return boolean changed
 function W.setPower(player, object, enabled)
-    if isClient() or isServer() then return false end
+    if isClient() or type(enabled) ~= "boolean" then return false end
     if not W.near(player, object) then return false end
     local state = T.state(object)
     state.powered, state.automatic = enabled, nil
     state.rotaryManual, state.rotaryMoving = nil, false
-    require("OMHTT/TurretAim").entries[object] = nil
-    local search = require("OMHTT/TurretSearch").pending[object]
-    if search then search.cancelled = true end
-    local auto = require("OMHTT/TurretAutomation").entries[object]
-    if auto then auto.target, auto.job, auto.status = nil, nil, "inactive" end
+    if not isServer() then
+        require("OMHTT/TurretAim").entries[object] = nil
+        local search = require("OMHTT/TurretSearch").pending[object]
+        if search then search.cancelled = true end
+        local auto = require("OMHTT/TurretAutomation").entries[object]
+        if auto then auto.target, auto.job, auto.status = nil, nil, "inactive" end
+    end
     local head = T.contents(object:getContainer()).head
     Audio.stop(object)
     if head then
@@ -137,11 +139,17 @@ function W.setPower(player, object, enabled)
         if G.profile(head) then
             G.cancelLoading(head)
         else
-            local cycle = head:getModData().OMHTTCycle
+            local cycle = require("OMHTT/TurretItemState").get(head, "cycle")
             if cycle then cycle.reloadReady, cycle.pending = nil, nil end
         end
     end
     W.refresh(object)
+    if isServer() then
+        if head then
+            require("OMHTT/TurretItemState").publish(head, player)
+        end
+        Authority.publish(object)
+    end
     D.emit("turret-power-toggle", {id = state.id, enabled = enabled})
     return true
 end
@@ -519,7 +527,7 @@ end
 
 ---@return nil
 function W.feedTick()
-    if isClient() or isServer() then return end
+    if isClient() then return end
     local now = Clock.now()
     local deadline = Budget.limit(1)
     local changed = 0
@@ -557,7 +565,13 @@ function W.feedTick()
                         else
                             cycle, status = T.cycle(contents, now, stats)
                         end
-                        Audio.update(object, contents.head, cycle, status, stats, now)
+                        if not isServer() then
+                            Audio.update(object, contents.head, cycle, status, stats, now)
+                        elseif state.feedStatus ~= status or state.feedLoaded ~= cycle.loaded then
+                            cycle.status = status
+                            state.feedLoaded = cycle.loaded
+                            require("OMHTT/TurretItemState").publish(contents.head)
+                        end
                         if state.feedStatus ~= status then
                             D.defer("turret-cycle", {id = state.id, head = contents.head:getFullType(), status = status})
                             state.feedStatus = status
