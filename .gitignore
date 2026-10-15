@@ -55,3 +55,6 @@ diagnostics/p1c1/install-stage/
 
 # Local Cloudflare deployment cache
 .wrangler/
+
+# Native validation library extraction cache
+.lwjgl/
