@@ -25,4 +25,3 @@ function ISToolTipInv:render()
     end
     tooltipRender(self)
 end
-
