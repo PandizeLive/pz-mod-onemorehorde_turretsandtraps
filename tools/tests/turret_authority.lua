@@ -386,13 +386,14 @@ SandboxVars.OMHTurretsTraps.PotatoTurret = false
 local disabledCycle, disabledStatus = T.cycle({head = potatoHead, ammo = 100}, 1000, {})
 check(disabledCycle.loaded == 1 and disabledStatus == "Disabled", "Disabled head retains an inert state for server publication")
 SandboxVars.OMHTurretsTraps.PotatoTurret = potatoEnabled
-check(not conversion:complete() and V.count(void) == 0 and target:contains(virtualRounds[1]),
-    "Physical non-firearm magazine reservations cannot also become virtual ammo")
+check(conversion:complete() and V.count(void) == 20 and ItemState.get(potatoHead, "cycle").loaded == 0,
+    "Explicit conversion cancels physical ready reservations before crediting virtual ammo")
 target:Remove(potatoHead)
-check(conversion:complete() and not conversion:complete() and V.count(void) == 20, "Twenty exact rounds convert once to the installed module")
+check(not conversion:complete() and V.count(void) == 20, "Twenty exact rounds cannot be converted twice")
 local count, group = V.count(void, nil, "Base.Bullets9mm")
 check(count == 20 and not target:contains(virtualRounds[1]), "Physical removal and private virtual credit agree")
-void.data.OMHTTVoid.groups[1].count = 999999
+void.data.OMHTTVoid.total = 999999
+check(void.data.OMHTTVoid.summary and #void.data.OMHTTVoid.groups == 0, "Native item metadata excludes the private quality ledger")
 check(V.count(void) == 20, "Replicated Void snapshot does not alias private ammunition")
 local used, cost = V.consume(void, group, 1, 2)
 check(used and cost == 0 and V.count(void) == 20, "Server Conservation retains the first fractional use")

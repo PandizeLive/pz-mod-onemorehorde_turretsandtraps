@@ -1,11 +1,13 @@
 local H = {}
 H.definitions = {
-    ["Base.OMHTTTurretBallista"] = {key = "Ballista", ammo = "Base.SpearCrafted", damage = 240, range = 18, cooldown = 6, weight = 6},
-    ["Base.OMHTTTurretRotaryBat"] = {key = "RotaryBat", rotary = true, damage = 20, range = 1.25, shove = 40, weight = 5},
-    ["Base.OMHTTTurretRotaryBlades"] = {key = "RotaryBlades", rotary = true, damage = 40, range = 1.25, shove = 10, weight = 6},
+    ["Base.OMHTTTurretLobber"] = {key = "Lobber", damage = 150, range = 18, minimumRange = 6, cooldown = 3.5, reload = 4, magazine = 3, ammoCapacity = 20, weight = 8},
+    ["Base.OMHTTTurretScrapshot"] = {key = "Scrapshot", ammo = "Base.ScrapMetal", damage = 120, range = 8, cone = 90, cooldown = 2, reload = 3, magazine = 10, weight = 6},
+    ["Base.OMHTTTurretBallista"] = {key = "Ballista", ammo = "Base.SpearCrafted", damage = 240, range = 24, cooldown = 6, reload = 6, magazine = 5, cone = 45, ammoCapacity = 40, weight = 6},
+    ["Base.OMHTTTurretRotaryBat"] = {key = "RotaryBat", rotary = true, damage = 20, range = 2, shove = 40, weight = 5},
+    ["Base.OMHTTTurretRotaryBlades"] = {key = "RotaryBlades", rotary = true, damage = 40, range = 2, shove = 10, weight = 6},
 }
 H.excluded = {Filter = true, Splitter = true, Piercing = true, Conservation = true, Magazine = true, Reload = true,
-    Autoloader = true, Impact = true, Fragment = true, Tack = true, Martyrdom = true, Synergy = true, Range = true, Accuracy = true}
+    Autoloader = true, Impact = true, Fragment = true, Synergy = true, Range = true, Accuracy = true, Void = true}
 
 ---@param item InventoryItem? Head
 ---@return table? definition
@@ -21,6 +23,7 @@ end
 ---@nodiscard
 function H.supports(item, name)
     local definition = H.get(item)
+    if definition and definition.key == "Lobber" and name == "Piercing" then return false end
     return not definition or not definition.rotary or not H.excluded[name]
 end
 
@@ -40,12 +43,12 @@ end
 ---@nodiscard
 function H.motion(travel, omni)
     if omni then return travel % 360, math.floor(travel / 360) end
-    local stroke = math.floor(travel / 45)
-    local offset = travel % 45
+    local stroke = math.floor(travel / 90)
+    local offset = travel % 90
     if stroke % 2 == 1 then
-        offset = 45 - offset
+        offset = 90 - offset
     end
-    return offset - 22.5, stroke
+    return offset - 45, stroke
 end
 
 ---@param bearing number Heading relative to placement axis
@@ -64,15 +67,15 @@ function H.crossing(bearing, before, after, omni)
             local pass = math.floor((after - phase) / 360)
             local crossing = pass * 360 + phase
             if crossing > before and crossing <= after then return arm + 1, pass end
-        elseif math.abs(angle) <= 22.5 then
-            local first, last = math.floor(before / 45), math.floor(after / 45)
+        elseif math.abs(angle) <= 45 then
+            local first, last = math.floor(before / 90), math.floor(after / 90)
             for stroke = first, last do
-                local phase = angle + 22.5
+                local phase = angle + 45
                 if stroke % 2 == 1 then
-                    phase = 45 - phase
+                    phase = 90 - phase
                 end
-                local crossing = stroke * 45 + phase
-                if crossing > before and crossing <= after then return arm + 1, math.floor(crossing / 45) end
+                local crossing = stroke * 90 + phase
+                if crossing > before and crossing <= after then return arm + 1, math.floor(crossing / 90) end
             end
         end
     end

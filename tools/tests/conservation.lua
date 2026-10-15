@@ -32,6 +32,7 @@ check(#rows == 5 and stats.conservation == 3, "Grouped list includes inactive an
 for i = 1, #rows do
     local row = rows[i]
     check(row.details ~= "" and row.effect ~= "", "Every grouped module has a short effect and individual details")
-    if row.name == "Piercing" or row.name == "Impact" then check(row.inactive, "Incompatible and broken modules marked inactive") end
+    if row.name == "Impact" then check(row.inactive, "Broken module marked inactive") end
+    if row.name == "Piercing" then check(not row.inactive, "Potato Piercing is now supported") end
 end
 check(B.number(.23436) == "0.23" and B.number(.005) == "0.0050", "Display rounding preserves small draw readability")

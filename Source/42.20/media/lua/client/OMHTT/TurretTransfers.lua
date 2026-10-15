@@ -123,6 +123,9 @@ function ISInventoryTransferAction:transferItem(item)
         T.transferSnapshots = nil
         local current = T.contents(source)
         local head = current.head
+        if head and (item == head or item == current.void) then
+            require("OMHTT/TurretFeed").cancel(head)
+        end
         if head and G.profile(head) then
             local capacity = T.cycleConfig(current).magazine
             if T.component(item:getFullType()) == "Magazine" and item:getCondition() > 0 then
@@ -143,7 +146,7 @@ function ISInventoryTransferAction:transferItem(item)
                     local firearm = G.profile(summary.head)
                     local definition = require("OMHTT/TurretHeads").get(summary.head)
                     local ammoType = firearm and G.ammoType(summary.head) or (definition and definition.ammo or "Base.Potato")
-                    if item:getFullType() == ammoType then
+                    if require("OMHTT/TurretAmmo").accepts(summary.head, item:getFullType()) then
                         summary.reserve = summary.reserve + delta
                         summary.ammo = summary.ammo + delta
                         if firearm and summary.reserve < 0 then

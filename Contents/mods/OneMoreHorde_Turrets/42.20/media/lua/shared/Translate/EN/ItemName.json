@@ -45,5 +45,10 @@
     "Base.OMHTTModulePack": "Module Pack",
     "Base.OMHTTTurretBallista": "Ballista Head",
     "Base.OMHTTTurretRotaryBat": "Rotary Bat Head",
-    "Base.OMHTTTurretRotaryBlades": "Rotary Blades Head"
+    "Base.OMHTTTurretRotaryBlades": "Rotary Blades Head",
+    "ItemName_Base.OMHTTTurretLobber": "Grenade Lobber Head",
+    "ItemName_Base.OMHTTTurretScrapshot": "Scrapshot Head",
+    "ItemName_Base.OMHTTAmmoMakeshiftBomb": "Makeshift Bomb",
+    "ItemName_Base.OMHTTModuleLure": "Lure Module",
+    "ItemName_Base.OMHTTModuleVoid": "Void Module"
 }

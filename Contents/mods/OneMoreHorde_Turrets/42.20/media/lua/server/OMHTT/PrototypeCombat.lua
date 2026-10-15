@@ -193,6 +193,8 @@ function Combat.fire(record, object, player, options)
         fromX = origin:getX() + 0.5, fromY = origin:getY() + 0.5, target = target}
     if options.projectileSpeed then
         local dx, dy = tx - facts.fromX, ty - facts.fromY
+        facts.projectile = options.projectile
+        facts.sound = options.projectile == "spear" and "SpearCraftedSwing" or nil
         facts.start = now
         facts.flight = math.max(50, math.sqrt(dx * dx + dy * dy) / options.projectileSpeed * 1000)
         Combat.pending[#Combat.pending + 1] = {record = {id = record.id, shots = record.shots, ammo = record.ammo, facing = record.facing},
@@ -211,40 +213,14 @@ end
 ---@param player IsoPlayer? Operator
 ---@param options table Damage snapshot
 ---@return table impact Presentation facts
-function Combat.hit(record, origin, target, player, options)
-    if not Horde.allowed(target) then
-        require("OMHTT/TurretVolley").release(options)
-        return {id = record.id, shot = record.shots, x = target:getX(), y = target:getY(), z = target:getZ(), missed = true}
-    end
-    local now, tx, ty = getTimestampMs(), target:getX(), target:getY()
-    local before = target:getHealth()
-    local impactSquare = target:getSquare()
-    Diagnostics.defer("shot-hit-begin", {id = record.id, shot = record.shots, x = tx, y = ty, health = before,
-        ammo = record.ammo, damageInput = options.damage, facing = record.facing})
-    local critical = options.critical
-    if critical == nil then critical = ZombRand(10000) < (options.critChance or 0) * 100 end
-    local directDamage = options.damage * (critical and options.critMultiplier or 1)
-    if options.stats then directDamage = Conditional.damage(target, directDamage, Conditional.snapshot(target, options.stats)) end
-    local damagedAt = getTimestampMs()
-    local knocked = false
-    require("OMHTT/TurretVolley").fragment(record, tx, ty, origin:getZ(), target, player, options)
-    require("OMHTT/TurretHit").resolve(target, directDamage, record.id, "potato", options, function()
-        require("OMHTT/TurretProc").hit(target, true, tx, ty, origin:getZ(), record, player, options)
-        local guard = require("OMHTT/DefenseActorState").get(target).OMHTTKnockdownUntilMs
-        if not target:isDead() and not target:isOnFloor() and not target:isKnockedDown()
-            and (not guard or guard <= getTimestampMs()) and ZombRand(100) < options.knockdown then
-            knocked = require("OMHTT/DefenseMotion").request(target, "knock", record.id, origin:getX() + .5, origin:getY() + .5)
-            if knocked then require("OMHTT/DefenseActorState").get(target).OMHTTKnockdownUntilMs = getTimestampMs() + Combat.KNOCKDOWN_GUARD_MS end
-        end
-        Conditional.impact(target, origin, options)
-        Diagnostics.defer("shot-damage-confirmed", {id = record.id, shot = record.shots, dead = target:isDead(), knocked = knocked})
-        if not isServer() and Diagnostics.enabled("turrets") and SandboxVars.OMHTurretsTraps.TurretDetailedLogging == true then
-            if #observations >= 12 then table.remove(observations, 1) end
-            observations[#observations + 1] = {zombie = target, id = record.id, shot = record.shots,
-                started = now, checkAt = now + 150, stage = 0, x = tx, y = ty}
-        end
-    end)
-    local splashStarted = getTimestampMs()
+---@param record table Source identity
+---@param target IsoZombie Direct contact excluded from splash
+---@param impactSquare IsoGridSquare Contact square
+---@param tx number Contact X
+---@param ty number Contact Y
+---@param options table Bounded splash settings
+---@return number contacts
+function Combat.splash(record, target, impactSquare, tx, ty, options)
     local splash = 0
     local nearby = {}
     if options.splash > 0 and options.radius > 0 then
@@ -263,6 +239,47 @@ function Combat.hit(record, origin, target, player, options)
             end
         end
     end
+    return splash
+end
+
+function Combat.hit(record, origin, target, player, options)
+    if not Horde.allowed(target) then
+        require("OMHTT/TurretVolley").release(options)
+        return {id = record.id, shot = record.shots, x = target:getX(), y = target:getY(), z = target:getZ(), missed = true}
+    end
+    local now, tx, ty = getTimestampMs(), target:getX(), target:getY()
+    local before = target:getHealth()
+    local impactSquare = target:getSquare()
+    Diagnostics.defer("shot-hit-begin", {id = record.id, shot = record.shots, x = tx, y = ty, health = before,
+        ammo = record.ammo, damageInput = options.damage, facing = record.facing})
+    local critical = options.critical
+    if critical == nil then critical = ZombRand(10000) < (options.critChance or 0) * 100 end
+    local directDamage = options.damage * (critical and options.critMultiplier or 1)
+    if options.stats then directDamage = Conditional.damage(target, directDamage, Conditional.snapshot(target, options.stats)) end
+    local damagedAt = getTimestampMs()
+    local knocked = false
+    local volley = require("OMHTT/TurretVolley")
+    if not volley.pierce(record, origin, target, player, options, impactSquare, tx, ty) then
+        volley.fragment(record, tx, ty, origin:getZ(), target, player, options)
+    end
+    require("OMHTT/TurretHit").resolve(target, directDamage, record.id, "potato", options, function()
+        require("OMHTT/TurretProc").hit(target, true, tx, ty, origin:getZ(), record, player, options)
+        local guard = require("OMHTT/DefenseActorState").get(target).OMHTTKnockdownUntilMs
+        if not target:isDead() and not target:isOnFloor() and not target:isKnockedDown()
+            and (not guard or guard <= getTimestampMs()) and ZombRand(100) < options.knockdown then
+            knocked = require("OMHTT/DefenseMotion").request(target, "knock", record.id, origin:getX() + .5, origin:getY() + .5)
+            if knocked then require("OMHTT/DefenseActorState").get(target).OMHTTKnockdownUntilMs = getTimestampMs() + Combat.KNOCKDOWN_GUARD_MS end
+        end
+        Conditional.impact(target, origin, options)
+        Diagnostics.defer("shot-damage-confirmed", {id = record.id, shot = record.shots, dead = target:isDead(), knocked = knocked})
+        if not isServer() and Diagnostics.enabled("turrets") and SandboxVars.OMHTurretsTraps.TurretDetailedLogging == true then
+            if #observations >= 12 then table.remove(observations, 1) end
+            observations[#observations + 1] = {zombie = target, id = record.id, shot = record.shots,
+                started = now, checkAt = now + 150, stage = 0, x = tx, y = ty}
+        end
+    end)
+    local splashStarted = getTimestampMs()
+    local splash = Combat.splash(record, target, impactSquare, tx, ty, options)
     Diagnostics.defer("shot-hit-end", {id = record.id, shot = record.shots, before = before, after = target:getHealth(),
         dead = target:isDead(), critical = critical, knockdown = knocked, splash = splash, ammo = record.ammo,
         directMs = damagedAt - now, reactionMs = splashStarted - damagedAt,
@@ -282,6 +299,7 @@ function Combat.arrive(shot)
         and getCell():getGridSquare(square:getX(), square:getY(), square:getZ()) == square
         and getCell():getGridSquare(origin:getX(), origin:getY(), origin:getZ()) == origin
         and Combat.clearLane(origin, square, options.range) then
+        if options.resolve then return options.resolve(shot.record, origin, target, shot.player, options) end
         return Combat.hit(shot.record, origin, target, shot.player, options)
     end
     local volley = require("OMHTT/TurretVolley")

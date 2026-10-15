@@ -1,7 +1,7 @@
 {
   "gameVersion": "42.21.0",
-  "modBaseline": "T&T 0.2.47",
-  "scope": "New-world SP estimates matching T&T 0.2.47",
+  "modBaseline": "T&T 0.2.50",
+  "scope": "New-world SP estimates matching T&T 0.2.50",
   "sources": [
     {
       "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\ProjectZomboid\\media\\maps\\Muldraugh, KY\\worldmap.xml",
@@ -15,8 +15,8 @@
     },
     {
       "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\Contents\\mods\\OneMoreHorde_Turrets\\42.20\\media\\lua\\shared\\OMHTT\\LootDefinitions.lua",
-      "sha256": "97b1fd0d082a341bb0c9eb0d6554f596d950a307e3f4fa242df0ca6c2b5dd585",
-      "bytes": 3537
+      "sha256": "9576a26085f07e2c82ed2241d601d0c6b503dbb2213171bd107fea023070c996",
+      "bytes": 3764
     },
     {
       "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\loot-site\\cache\\Lua\\loot-routes.json",
@@ -35,13 +35,13 @@
     },
     {
       "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\Contents\\mods\\OneMoreHorde_Turrets\\42.20\\media\\sandbox-options.txt",
-      "sha256": "6a27c74fe2a50e8750daa8a83a655207fda68285c83c7b0f19c3749241618a8b",
-      "bytes": 25259
+      "sha256": "7ed9298199efdb8d73b7f3c9ff14cf1c79e34b2678ef9c1f2356b685c176bad3",
+      "bytes": 27639
     }
   ],
   "dataset": {
-    "sha256": "6a350727bc927e02680517fa3a13b43633d9471a5a311161828065a4c58b1aca",
-    "bytes": 4362948
+    "sha256": "72370d0e54693780c17f449c281053df5c27fb2cb7e802e259876ca07e3de3a7",
+    "bytes": 4363396
   },
   "extraction": {
     "game": "42.21.0",

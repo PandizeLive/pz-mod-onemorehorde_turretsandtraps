@@ -23,9 +23,13 @@ end
 local Panel = ISPanel:derive("OMHTTTurretPanel")
 local OpenAction = ISBaseTimedAction:derive("OMHTTTurretOpenAction")
 local active = {}
+local Utilities = require("OMHTT/TurretUtilities")
+Panel.storeVoid = Utilities.store
+Panel.inspectVoid = Utilities.inspect
 
 ---@return nil
 function Panel:close()
+    if self.voidList then self.voidList:onMouseDown() end
     self.benefitList:hideTooltip()
     for i = 1, #self.slots do self.slots[i]:hideTooltip(); self.slots[i]:clearDrag() end
     if Range then
@@ -220,6 +224,9 @@ function Panel:refresh()
     self.priorityButton:setTitle(getText("UI_OMHTT_Priority", getText("UI_OMHTT_Priority" .. profile.priority)))
     self.priorityButton:setEnable(contents.active.Filter ~= nil)
     local active = {}
+local Utilities = require("OMHTT/TurretUtilities")
+Panel.storeVoid = Utilities.store
+Panel.inspectVoid = Utilities.inspect
     for name in pairs(M.CORE) do
         if contents.active[name] and name ~= "FiringImprovised" and name ~= "MotionDetectionImprovised" then
             active[#active + 1] = contents.active[name]
@@ -269,7 +276,9 @@ function Panel:refresh()
     if magazineType then
         self.magazineSlot.emptyText = getText("UI_OMHTT_ManageDrop")
         local chamber = gun:isRoundChambered() and "+1" or ""
-        self.magazineSlot.label = getText("UI_OMHTT_ManageMagazine", tostring(gun:getCurrentAmmoCount() + require("OMHTT/FirearmFeed").count(gun)) .. chamber, stats.magazine)
+        if not (cycle and cycle.virtual) then
+            self.magazineSlot.label = getText("UI_OMHTT_ManageMagazine", tostring(gun:getCurrentAmmoCount() + require("OMHTT/FirearmFeed").count(gun)) .. chamber, stats.magazine)
+        end
         if gun:isContainsClip() then
             if not self.magazineIcon or self.magazineIcon:getFullType() ~= magazineType then
                 self.magazineIcon = instanceItem(magazineType)
@@ -278,6 +287,15 @@ function Panel:refresh()
             self.magazineSlot.items[1] = self.magazineIcon
         end
     end
+    self.voidSlot.disabled = contents.void == nil
+    if self.utilityButton then
+        self.utilityButton:setEnable(contents.void ~= nil or contents.active.Lure ~= nil or stats.headKind == "Lobber")
+    end
+    if not magazineType and cycle and cycle.payload then
+        local script = getScriptManager():getItem(cycle.payload)
+        self.magazineSlot.emptyText = script and script:getDisplayName() or cycle.payload
+    end
+    self.voidSlot.emptyText = contents.void and tostring(contents.virtualAmmo) or getText("UI_OMHTT_NoModule")
     self.ammoSlot.meter = math.min(1, contents.reserveAll / math.max(1, stats.ammo - loaded))
     self.magazineSlot.meter = math.min(1, (cycle and cycle.loaded or 0) / math.max(1, stats.magazine))
     self.batterySlot.meter = contents.battery and require("OMHTT/TurretBattery").charge(contents.battery) or 0
@@ -449,11 +467,14 @@ function OpenAction:perform()
         end
         panel.powerButton = ISButton:new(width - 92, top, 80, panel.slotHeight, "", panel, Panel.togglePower)
         panel.powerButton.prerender = Panel.drawPower
-        local storageWidth = width - 40
-        panel.ammoSlot = panel:addSlot("ammo", "", 12, top + slotHeight + 8, storageWidth * 0.38)
+        local storageWidth = width - 48
+        panel.ammoSlot = panel:addSlot("ammo", "", 12, top + slotHeight + 8, storageWidth * 0.28)
         panel.ammoSlot.detailText = getText("UI_OMHTT_ReserveCapacity")
-        panel.magazineSlot = panel:addSlot("magazine", "", 20 + storageWidth * 0.38, top + slotHeight + 8, storageWidth * 0.30)
-        panel.capacitySlot = panel:addSlot("capacity", getText("UI_OMHTT_ManageCapacity"), 28 + storageWidth * 0.68, top + slotHeight + 8, storageWidth * 0.32)
+        panel.voidSlot = panel:addSlot("void", getText("UI_OMHTT_Void"), 20 + storageWidth * .28, top + slotHeight + 8, storageWidth * .16)
+        panel.voidSlot.emptyText = getText("UI_OMHTT_ManageDrop")
+        panel.voidSlot.detailText = getText("UI_OMHTT_VoidHint")
+        panel.magazineSlot = panel:addSlot("magazine", "", 28 + storageWidth * .44, top + slotHeight + 8, storageWidth * .28)
+        panel.capacitySlot = panel:addSlot("capacity", getText("UI_OMHTT_ManageCapacity"), 36 + storageWidth * .72, top + slotHeight + 8, storageWidth * .28)
         local moduleWidth = (width - 54) / 6
         for i = 1, 16 do
             local row = i <= 4 and 0 or 1 + math.floor((i - 5) / 6)
@@ -465,7 +486,8 @@ function OpenAction:perform()
         panel.priorityButton = ISButton:new(130, height - 38, width - 142, 28, "", panel, Panel.changePriority)
         panel.fireButton = ISButton:new(12, height - 38, 110, 28, getText("UI_OMHTT_ManageFire"), panel, Panel.fire)
         local close = ISButton:new(width - 34, 6, 26, 24, "X", panel, Panel.close)
-        local buttons = {panel.fireButton, panel.powerButton, panel.priorityButton, close}
+        panel.utilityButton = ISButton:new(width - 146, 6, 104, 24, getText("UI_OMHTT_Controls"), panel, Utilities.menu)
+        local buttons = {panel.fireButton, panel.powerButton, panel.priorityButton, panel.utilityButton, close}
         for i = 1, #buttons do buttons[i]:initialise(); panel:addChild(buttons[i]) end
         panel:refresh()
         panel:addToUIManager()

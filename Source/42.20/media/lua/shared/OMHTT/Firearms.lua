@@ -61,6 +61,7 @@ function G.registerAmmunition()
 end
 
 Events.OnGameStart.Add(G.registerAmmunition)
+Events.OnServerStarted.Add(G.registerAmmunition)
 
 ---@return boolean enabled
 ---@nodiscard
@@ -252,6 +253,7 @@ end
 function G.transferMagazine(player, storage, gun, magazine, token)
     if isClient() then return nil end
     if G.magazineRejection(player, storage, gun, magazine, token) then return nil end
+    require("OMHTT/TurretFeed").cancel(gun)
     if magazine then
         local source = magazine:getContainer()
         source:Remove(magazine)

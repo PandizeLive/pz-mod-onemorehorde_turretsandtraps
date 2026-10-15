@@ -4,6 +4,35 @@ local guards = setmetatable({}, {__mode = "k"})
 local serial, received = 0, {}
 
 ---@param player IsoPlayer Local victim
+---@param amount number Body-part health loss, at most ten
+---@param chance number Scratch probability
+---@return nil
+local function blastInjury(player, amount, chance)
+    if player:isDead() or player:isGodMod() or player:isNoClip() or player:isGhostMode() then return end
+    local parts = {BodyPartType.ForeArm_L, BodyPartType.ForeArm_R, BodyPartType.UpperLeg_L, BodyPartType.UpperLeg_R}
+    local part = player:getBodyDamage():getBodyPart(parts[ZombRand(#parts) + 1])
+    part:AddDamage(amount)
+    if ZombRand(10000) < chance * 10000 then
+        part:setScratched(true, true)
+    end
+end
+
+---@param player IsoPlayer Server-selected collateral victim
+---@param amount number Bounded injury
+---@param chance number Bounded scratch probability
+---@return nil
+function I.blast(player, amount, chance)
+    if isClient() or amount <= 0 or player:isDead() or player:isGodMod() or player:isNoClip() or player:isGhostMode() then return end
+    amount, chance = math.min(10, amount), math.max(0, math.min(.5, chance))
+    if isServer() then
+        serial = serial + 1
+        sendServerCommand(player, "OMHTT_InjuryV1", "blast", {id = player:getOnlineID(), serial = serial, amount = amount, chance = chance})
+    else
+        blastInjury(player, amount, chance)
+    end
+end
+
+---@param player IsoPlayer Local victim
 ---@param kind string bruise or cut
 ---@return nil
 local function apply(player, kind)
@@ -42,13 +71,18 @@ end
 ---@param message table Server-selected victim and event
 ---@return nil
 function I.receive(module, command, message)
-    if not isClient() or module ~= "OMHTT_InjuryV1" or (command ~= "bruise" and command ~= "cut" and command ~= "rotaryBruise")
+    if not isClient() or module ~= "OMHTT_InjuryV1" or (command ~= "bruise" and command ~= "cut" and command ~= "rotaryBruise" and command ~= "blast")
         or type(message) ~= "table" or not P.identity(message.id) or not P.number(message.serial, 1, 1000000000000) then return end
+    if command == "blast" and (not P.number(message.amount, 0, 10) or not P.number(message.chance, 0, .5)) then return end
     for index = 0, 3 do
         local player = getSpecificPlayer(index)
         if player and player:getOnlineID() == message.id and message.serial > (received[index] or 0) then
             received[index] = message.serial
-            apply(player, command)
+            if command == "blast" then
+                blastInjury(player, message.amount, message.chance)
+            else
+                apply(player, command)
+            end
             return
         end
     end

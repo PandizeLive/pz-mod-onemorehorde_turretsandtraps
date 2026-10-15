@@ -39,7 +39,13 @@ function M.profile(state, contents, automatic, resolved)
         end
     end
     local stats = resolved or T.cycleConfig(contents)
-    if stats.rotary and cone < 360 then cone = 45 end
+    if cone < 360 then
+        if stats.rotary then
+            cone = 90
+        elseif stats.cone then
+            cone = stats.cone
+        end
+    end
     local range = stats.range
     if automatic and active.MotionDetectionImprovised then range = range * 0.75 end
     return {rotary = stats.rotary, stats = stats, heading = (state.baseFacing or state.facing or 0) * 22.5, cone = cone, omni = active.Detection360 ~= nil,
@@ -59,6 +65,7 @@ function M.inside(origin, zombie, profile)
     local dx, dy = zombie:getX() - origin:getX() - 0.5, zombie:getY() - origin:getY() - 0.5
     local distance = dx * dx + dy * dy
     if distance > profile.range * profile.range then return false, distance end
+    if profile.stats and distance < (profile.stats.minimumRange or 0) ^ 2 then return false, distance end
     if distance < 0.000001 or profile.cone >= 360 then return true, distance end
     local heading = math.rad(profile.heading)
     local dot = (dx * math.cos(heading) - dy * math.sin(heading)) / math.sqrt(distance)

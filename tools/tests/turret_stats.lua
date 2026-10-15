@@ -11,7 +11,7 @@ check(stats.damage == 49 and stats.knockdown == 50 and stats.range == 10 and sta
     "Damage, knockdown, range and storage bonuses combine")
 active.Autoloader = 1
 stats = S.resolve({active = active})
-check(stats.reload == 0 and stats.cooldown > 0 and stats.magazine == 1, "Autoloader bypasses reload only")
+check(stats.reload == 0 and stats.cooldown > 0 and stats.magazine == 3, "Autoloader bypasses reload only; Potato built-in magazine has three rounds")
 active = {Reload = 40, RapidFire = 40, Velocity = 40, Range = 40, Capacity = 40}
 stats = S.resolve({active = active})
 check(stats.damage == 70 and stats.knockdown == 90 and stats.range == 16 and stats.modules == 12 and stats.ammo == 500,
@@ -43,7 +43,7 @@ check(state.reloadReady == 2000, "Removing and reinserting reload cannot erase r
 C.update(state, 100, base, 2000)
 C.consume(state, 99, base, 2000)
 C.update(state, 99, S.resolve({active = {RapidFire = 4, Autoloader = 1}}), 3000)
-check(state.nextShot == 3500 and state.loaded == 1, "Rapid-Fire retimes remaining cooldown while Autoloader completes reload")
+check(state.nextShot == 3500 and state.loaded == 2, "Rapid-Fire retimes remaining cooldown and preserves the two unspent ready rounds")
 C.update(state, 99, base, 3000)
 check(state.nextShot == 4000, "Removing Rapid-Fire restores remaining cooldown fraction")
 state = nativeRoundTrip(state)

@@ -28,5 +28,10 @@
     "OMHTTDeployReinforcedBedSpikesSingle": "Reinforced Bed Spikes",
     "OMHTTCraftBallista": "Ballista Head",
     "OMHTTCraftRotaryBat": "Rotary Bat Head",
-    "OMHTTCraftRotaryBlades": "Rotary Blades Head"
+    "OMHTTCraftRotaryBlades": "Rotary Blades Head",
+    "Recipe_OMHTTCraftLobber": "Craft Grenade Lobber Head",
+    "Recipe_OMHTTCraftLobberImprovised": "Craft Improvised Grenade Lobber Head",
+    "Recipe_OMHTTCraftScrapshot": "Craft Scrapshot Head",
+    "Recipe_OMHTTCraftScrapshotImprovised": "Craft Improvised Scrapshot Head",
+    "Recipes_OMHTTCraftMakeshiftBomb": "Makeshift Bomb"
 }

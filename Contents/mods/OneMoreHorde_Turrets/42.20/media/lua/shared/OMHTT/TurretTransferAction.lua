@@ -117,6 +117,9 @@ function Action:complete()
         local rejected = self:rejection(candidate, summary)
         self.done = true
         if rejected then break end
+        if not self.incoming and (candidate == T.contents(storage).head or candidate:getFullType() == "Base.OMHTTModuleVoid") then
+            require("OMHTT/TurretFeed").cancel(T.contents(storage).head)
+        end
         source:Remove(candidate)
         if destination:AddItem(candidate) ~= candidate then
             source:AddItem(candidate)

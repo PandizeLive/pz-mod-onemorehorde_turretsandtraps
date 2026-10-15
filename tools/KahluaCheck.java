@@ -214,6 +214,7 @@ public final class KahluaCheck {
             {"OMHTT/Firearms", base + "shared/OMHTT/Firearms.lua"},
             {"OMHTT/TurretAmmo", base + "shared/OMHTT/TurretAmmo.lua"},
             {"OMHTT/TurretVoid", base + "shared/OMHTT/TurretVoid.lua"},
+            {"OMHTT/TurretFeed", base + "shared/OMHTT/TurretFeed.lua"},
             {"OMHTT/TurretReloadAudio", base + "shared/OMHTT/TurretReloadAudio.lua"},
             {"OMHTT/TurretSounds", base + "shared/OMHTT/TurretSounds.lua"},
             {"OMHTT/LootDefinitions", base + "shared/OMHTT/LootDefinitions.lua"},
@@ -228,6 +229,9 @@ public final class KahluaCheck {
             {"OMHTT/TurretTackServer", base + "server/OMHTT/TurretTackServer.lua"},
             {"OMHTT/TurretVolley", base + "server/OMHTT/TurretVolley.lua"},
             {"OMHTT/PrototypeCombat", base + "server/OMHTT/PrototypeCombat.lua"},
+            {"OMHTT/TurretScrapshot", base + "server/OMHTT/TurretScrapshot.lua"},
+            {"OMHTT/TurretOrdnance", base + "server/OMHTT/TurretOrdnance.lua"},
+            {"OMHTT/TurretLure", base + "server/OMHTT/TurretLure.lua"},
             {"OMHTT/FirearmAccuracy", base + "shared/OMHTT/FirearmAccuracy.lua"},
             {"OMHTT/FirearmCombat", base + "server/OMHTT/FirearmCombat.lua"},
             {"OMHTT/BarrierSprites", base + "shared/OMHTT/BarrierSprites.lua"},
@@ -299,6 +303,9 @@ public final class KahluaCheck {
             {"OMHTT/TurretDescriptions", base + "shared/OMHTT/TurretDescriptions.lua"},
             {"OMHTT/TurretBenefits", base + "client/OMHTT/TurretBenefits.lua"},
             {"OMHTT/TurretBenefitList", base + "client/OMHTT/TurretBenefitList.lua"},
+            {"OMHTT/TurretVoidAction", base + "shared/OMHTT/TurretVoidAction.lua"},
+            {"OMHTT/TurretVoidView", base + "shared/OMHTT/TurretVoidView.lua"},
+            {"OMHTT/TurretUtilities", base + "client/OMHTT/TurretUtilities.lua"},
             {"OMHTT/TurretManage", base + "client/OMHTT/TurretManage.lua"},
             {"_", "tools/tests/turret_manage_load_order.lua"},
             {"OMHTT/TurretAuthority", base + "server/OMHTT/TurretAuthority.lua"},
@@ -395,6 +402,7 @@ public final class KahluaCheck {
             {"OMHTT/TurretTackView", base + "client/OMHTT/TurretTackView.lua"},
             {"OMHTT/BarrierContact", base + "client/OMHTT/BarrierContact.lua"},
             {"_", "tools/tests/multiplayer_effects.lua"},
+            {"_", "tools/tests/content_c247.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {
@@ -450,6 +458,7 @@ public final class KahluaCheck {
         System.out.println("Multiplayer audit: " + get.invoke(env, "testMultiplayerAudit"));
         System.out.println("MP transfer mock stress: " + get.invoke(env, "testMPTransfer"));
         System.out.println("Assertions passed: " + get.invoke(env, "testAssertions"));
+        System.out.println("C247 content: " + get.invoke(env, "testC247"));
         System.out.println("World/player/network/UI objects were test doubles; in-game acceptance remains pending.");
         System.exit(0);
     }

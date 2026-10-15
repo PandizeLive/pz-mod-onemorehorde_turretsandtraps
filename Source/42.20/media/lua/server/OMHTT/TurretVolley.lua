@@ -11,6 +11,10 @@ local Conditional = require("OMHTT/TurretConditionalHit")
 ---@param stats table Shot stats
 ---@return number rays Worst-case lineage capacity
 function V.capacity(stats)
+    if stats.headKind == "Lobber" then return 0 end
+    if stats.headKind == "Scrapshot" then
+        return 8 + stats.splitter + (stats.fragment > 0 and (6 + (stats.synergy and stats.splitter * 5 or 0)) or 0)
+    end
     local children = (stats.splitter or 0) + (stats.piercing or 0)
     return (stats.splitter or 0) + ((stats.fragment or 0) > 0 and 5 or 0)
         + (((stats.piercing or 0) > 0 or (stats.fragment or 0) > 0) and 1 or 0)
@@ -105,6 +109,13 @@ function V.ray(record, x, y, z, angle, range, damage, group, index)
     V.queue[#V.queue + 1] = {x = x, y = y, z = z, dx = math.cos(angle), dy = math.sin(angle),
         range = range, distance = 0, damage = damage, group = group, id = record.id,
         shot = tostring(record.shots) .. ":" .. group.kind .. ":" .. index, objectIndex = 0}
+    if group.stats.headKind == "Ballista" and group.kind ~= "fragment" then
+        local ray = V.queue[#V.queue]
+        ray.flightStart, ray.speed = Clock.now(), 24
+        require("OMHTT/DefenseEffects").emit("Launch", {id = ray.id, shot = ray.shot, x = x + ray.dx * range,
+            y = y + ray.dy * range, z = z, fromX = x, fromY = y, start = ray.flightStart,
+            flight = range / ray.speed * 1000, projectile = "spear", silent = true})
+    end
 end
 
 ---@param record table Persisted device controls
@@ -193,8 +204,21 @@ end
 ---@return nil
 function V.finish(ray)
     local victim, group = ray.best, ray.group
+    if victim and group.kind == "scrapshot" and group.options.scrapPending and group.options.scrapPending[victim] then
+        ray.waitingDamage = true
+        return true
+    end
+    if victim and instanceof(victim, "IsoZombie") and not Damage.available(victim) then
+        ray.waitingDamage = true
+        return true
+    end
+    ray.waitingDamage = nil
+    if ray.speed and Clock.now() < ray.flightStart + (ray.bestDistance or ray.distance) / ray.speed * 1000 then
+        ray.waitingDamage = true
+        return true
+    end
     local hit = false
-    if victim and not victim:isDead() and Horde.allowed(victim) and victim:getSquare() == ray.square
+    if victim and not victim:isDead() and ((group.kind == "scrapshot" and instanceof(victim, "IsoPlayer")) or Horde.allowed(victim)) and victim:getSquare() == ray.square
         and getCell():getGridSquare(ray.square:getX(), ray.square:getY(), ray.z) == ray.square
         and math.abs((victim:getX() - ray.x) * ray.dy - (victim:getY() - ray.y) * ray.dx) <= math.max(.2, victim:getWidth())
         and (victim:getX() - ray.x) * ray.dx + (victim:getY() - ray.y) * ray.dy >= 0
@@ -208,45 +232,71 @@ function V.finish(ray)
         end
         if ZombRand(10000) < chance * 100 then
             if group.kind ~= "splitter" then group.hits[victim] = true end
+            if group.kind == "scrapshot" then
+                hit = require("OMHTT/TurretScrapshot").hit(ray, victim)
+            else
             local owner = group.options
             local x, y, square = victim:getX(), victim:getY(), victim:getSquare()
             local amount = ray.damage
             if group.stats.synergy then amount = Conditional.damage(victim, amount, Conditional.snapshot(victim, group.stats)) end
             hit = require("OMHTT/TurretHit").resolve(victim, amount, ray.id, group.kind, owner, function()
+                if group.kind == "piercing" and not group.stats.firearm and not group.stats.headKind and owner then
+                    local combat = require("OMHTT/PrototypeCombat")
+                    local record = {id = ray.id, shots = ray.shot}
+                    combat.splash(record, victim, square, x, y, {splash = ray.damage * (owner.splash or 0) / math.max(.000001, owner.damage),
+                        radius = owner.radius or 0, range = group.stats.range})
+                    local state = require("OMHTT/DefenseActorState").get(victim)
+                    if not victim:isDead() and not victim:isOnFloor() and not victim:isKnockedDown()
+                        and (not state.OMHTTKnockdownUntilMs or state.OMHTTKnockdownUntilMs <= getTimestampMs())
+                        and ZombRand(100) < group.stats.knockdown then
+                        if require("OMHTT/DefenseMotion").request(victim, "knock", ray.id, ray.x, ray.y) then
+                            state.OMHTTKnockdownUntilMs = getTimestampMs() + combat.KNOCKDOWN_GUARD_MS
+                        end
+                    end
+                end
                 if group.stats.synergy and owner then
                     local record = {id = ray.id, shots = ray.shot}
                     Proc.hit(victim, true, x, y, ray.z, record, group.player, owner)
                     Conditional.impact(victim, square, owner)
                 end
             end)
+            end
         end
     end
     local distance = ray.bestDistance or math.min(ray.distance, ray.range)
     local facts = {id = ray.id, shot = ray.shot,
         x = ray.x + ray.dx * distance, y = ray.y + ray.dy * distance, z = ray.z,
         fromX = group.fromX or ray.x, fromY = group.fromY or ray.y, muzzleHeight = group.height, firearm = true, missed = not hit, silent = true}
-    if group.remaining then
+    if ray.speed then
+        if not victim or (hit and group.left and group.left <= 1) or group.kind == "splitter" then
+            facts.firearm, facts.projectile = false, "spear"
+            require("OMHTT/DefenseEffects").emit("Impact", facts)
+        end
+    elseif group.kind == "scrapshot" then
+        require("OMHTT/DefenseEffects").emit("Ray", facts)
+    elseif group.remaining then
         group.rays[#group.rays + 1] = facts
         group.remaining = group.remaining - 1
         if group.remaining == 0 then require("OMHTT/DefenseEffects").emit("Volley", {rays = group.rays}) end
     else
         require("OMHTT/DefenseEffects").emit("Ray", facts)
     end
-    if group.kind == "piercing" and victim then
+    if (group.kind == "piercing" or group.kind == "scrapshot") and victim then
         group.hits[victim] = true
         if hit then
             group.left = group.left - 1
+            group.penetrated = true
         end
         if group.left > 0 and ray.distance < ray.range and ray.square then
             if hit then ray.damage = ray.damage * group.stats.pierceRetention end
             group.fromX, group.fromY = facts.x, facts.y
-            ray.minimum = math.max(ray.minimum, distance)
+            ray.minimum = math.max(ray.minimum or 0, distance)
             ray.best, ray.bestDistance, ray.scanning, ray.objectIndex = nil, nil, true, 0
             return true
         end
     end
     if group.options and group.stats.fragment > 0 and group.kind ~= "fragment"
-        and (group.kind == "piercing" or group.kind == "terminal" or group.stats.synergy) then
+        and (group.kind == "piercing" or group.kind == "terminal" or (group.stats.synergy and not group.primary)) then
         V.fragment({id = ray.id, shots = ray.shot}, facts.x, facts.y, ray.z, victim, group.player,
             {root = group.options, stats = group.stats, effectWeapon = group.weapon,
                 damage = ray.damage, critical = false, fragmentReserved = 5})
@@ -263,7 +313,7 @@ function V.step(ray)
         if ray.objectIndex < objects:size() then
             local candidate = objects:get(ray.objectIndex)
             ray.objectIndex = ray.objectIndex + 1
-            if ray.group.kind ~= "terminal" and instanceof(candidate, "IsoZombie") and not candidate:isDead() and candidate:getSquare() == ray.square
+            if ray.group.kind ~= "terminal" and (instanceof(candidate, "IsoZombie") or (ray.group.kind == "scrapshot" and instanceof(candidate, "IsoPlayer"))) and not candidate:isDead() and candidate:getSquare() == ray.square
                 and (ray.group.kind == "splitter" or not V.seen(ray.group, candidate)) then
                 local x, y = candidate:getX() - ray.x, candidate:getY() - ray.y
                 local along = x * ray.dx + y * ray.dy
@@ -302,7 +352,7 @@ function V.tick()
         if V.cursor > #V.queue then V.cursor = 1 end
         local ray = V.queue[V.cursor]
         local group = ray.group
-        if group.due and now < group.due then
+        if (group.due and now < group.due) or (ray.speed and now < ray.flightStart + (ray.bestDistance or ray.distance) / ray.speed * 1000) then
             waiting, V.cursor = waiting + 1, V.cursor + 1
         else
             waiting = 0
@@ -312,7 +362,7 @@ function V.tick()
             end
             local origin = getCell():getGridSquare(math.floor(ray.x), math.floor(ray.y), ray.z)
             local complete = false
-            if not origin or V.step(ray) then
+            if not origin or ray.waitingDamage or V.step(ray) then
                 if not origin then ray.best, ray.bestDistance, ray.distance = nil, nil, 0 end
                 complete = not V.finish(ray)
             end
@@ -368,12 +418,25 @@ function V.save()
         for key, value in pairs(ray) do
             if type(value) == "number" or type(value) == "string" or type(value) == "boolean" then saved[key] = value end
         end
+        if ray.flightStart then saved.flightElapsed = now - ray.flightStart end
         saved.scanning, saved.objectIndex, saved.bestDistance = ray.square ~= nil, 0, nil
         if ray.square then saved.squareX, saved.squareY = ray.square:getX(), ray.square:getY() end
         if not owners[owner] then
             owners[owner] = #data.owners + 1
+            local savedScrap = {}
+            if isServer() and owner.scrapId then
+                local actors = {}
+                for actor in pairs(owner.scrapEligibility) do actors[actor] = true end
+                for actor in pairs(owner.scrapInjury) do actors[actor] = true end
+                for actor in pairs(actors) do
+                    local key = tostring(actor:getOnlineID()) .. ":" .. tostring(instanceof(actor, "IsoZombie") and actor:getPersistentOutfitID() or "player")
+                    savedScrap[key] = {id = owner.scrapId, eligibility = owner.scrapEligibility[actor],
+                        effects = owner.scrapEffects[actor], injury = owner.scrapInjury[actor]}
+                end
+            end
             data.owners[owners[owner]] = {stats = owner.stats, rayBudget = owner.rayBudget, procJobs = owner.procJobs,
-                procFields = owner.procFields, impactReady = owner.impactReady}
+                procFields = owner.procFields, impactReady = owner.impactReady, scrapId = owner.scrapId, savedScrap = savedScrap,
+                damage = owner.damage, splash = owner.splash, radius = owner.radius}
         end
         if not groups[group] then
             groups[group] = #data.groups + 1
@@ -403,6 +466,7 @@ function V.load()
     for i = 1, #(data.owners or {}) do
         local owner = data.owners[i]
         owner.pending, owner.primaryDone = 0, true
+        owner.scrapEligibility, owner.scrapEffects, owner.scrapInjury, owner.scrapPending = {}, {}, {}, {}
         owners[i] = owner
         V.reserved = V.reserved + owner.rayBudget
         Proc.reservedJobs = Proc.reservedJobs + owner.procJobs
@@ -416,6 +480,7 @@ function V.load()
     for i = 1, #(data.rays or {}) do
         local ray = data.rays[i]
         ray.group = groups[ray.group]
+        if ray.flightElapsed then ray.flightStart = now - ray.flightElapsed end
         if ray.squareX then ray.square = getCell():getGridSquare(ray.squareX, ray.squareY, ray.z) end
         if not ray.square then ray.scanning = false end
         ray.group.options.pending = ray.group.options.pending + 1

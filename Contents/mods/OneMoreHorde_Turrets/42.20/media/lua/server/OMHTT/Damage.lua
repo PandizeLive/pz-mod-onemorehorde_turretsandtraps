@@ -9,6 +9,12 @@ local waiting, active = {}, setmetatable({}, {__mode = "k"})
 local byVictim = setmetatable({}, {__mode = "k"})
 local queued, cursor = 0, 1
 
+---@param zombie IsoZombie Exact candidate
+---@return boolean capacity Bounded queue has room for another hit
+function Damage.available(zombie)
+    return queued < 256 and (not byVictim[zombie] or #byVictim[zombie] < 8)
+end
+
 ---@param zombie IsoZombie Living victim
 ---@param amount number Fixed native health loss
 ---@param source string Device identity

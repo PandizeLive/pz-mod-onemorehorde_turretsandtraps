@@ -4,7 +4,7 @@ testMode = "sp"
 SandboxVars.OMHTurretsTraps.Enabled = true
 SandboxVars.OMHTurretsTraps.PotatoTurret = true
 local config = T.cycleConfig()
-check(config.magazine == 1 and config.reload == 2000 and config.cooldown == 2000, "Default potato cycle is magazine one with overlapping two-second timers")
+check(config.magazine == 3 and config.reload == 2000 and config.cooldown == 2000, "Default potato cycle has three rounds and overlapping two-second timers")
 local nextId = 1000
 local function item(kind, weight)
     nextId = nextId + 1
@@ -15,6 +15,9 @@ local function item(kind, weight)
     function result:getActualWeight() return self.weight end
     function result:getID() return self.id end
     function result:getCondition() return self.condition end
+    function result:getAge() return 0 end
+    function result:isCooked() return false end
+    function result:isBurnt() return false end
     function result:getCurrentUsesFloat() return self.charge end
     function result:setCurrentUsesFloat(value) self.charge = value end
     function result:getContainer() return self.container end

@@ -42,5 +42,10 @@
     "Tooltip_OMHTT_ModulePack": "Contains three random modules. Duplicates possible.",
     "Tooltip_OMHTT_BallistaHead": "Uses crafted spears. Install in a turret base.",
     "Tooltip_OMHTT_RotaryBatHead": "Powered front and rear sweeps. Add 360 for full rotation.",
-    "Tooltip_OMHTT_RotaryBladesHead": "Powered front and rear sweeps. Add 360 for full rotation."
+    "Tooltip_OMHTT_RotaryBladesHead": "Powered front and rear sweeps. Add 360 for full rotation.",
+    "Tooltip_OMHTT_LobberHead": "Launches grenades with a fuse after landing.",
+    "Tooltip_OMHTT_ScrapshotHead": "Fires a wide fan of metal fragments.",
+    "Tooltip_OMHTT_MakeshiftBomb": "Ammunition for the Grenade Lobber.",
+    "Tooltip_OMHTT_ModuleLure": "Attracts zombies with an adjustable sound.",
+    "Tooltip_OMHTT_ModuleVoid": "Stores ammunition without weight. Stored ammunition cannot be withdrawn."
 }

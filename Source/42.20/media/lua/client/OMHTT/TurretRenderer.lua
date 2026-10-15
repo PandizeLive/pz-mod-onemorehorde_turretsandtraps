@@ -180,8 +180,8 @@ function R.render(playerIndex)
                 elseif entry.profile.stats.rotary then
                     for arm = 0, 1 do
                         local angle = math.rad(heading + arm * 180)
-                        Render3DItem(entry.head, square, square:getX() + .5 + math.cos(angle) * .65,
-                            square:getY() + .5 - math.sin(angle) * .65, square:getZ() + R.headHeight, (yaw + arm * 180) % 360)
+                        Render3DItem(entry.head, square, square:getX() + .5 + math.cos(angle) * 1,
+                            square:getY() + .5 - math.sin(angle) * 1, square:getZ() + R.headHeight, (yaw + arm * 180) % 360)
                     end
                 else
                     Render3DItem(entry.head, square, square:getX() + 0.5, square:getY() + 0.5, square:getZ() + R.headHeight, yaw)

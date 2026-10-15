@@ -29,7 +29,7 @@ global.window={};require(path.join(site,'data.js'));const D=window.LOOT_DATA,M=r
     await page.waitForFunction(()=>document.querySelector('#item-Regulator').value==='2.75');
     await page.locator('#reset').click();await page.waitForFunction(()=>document.querySelector('#item-Regulator').value==='20');
     await input.scrollIntoViewIfNeeded();await page.screenshot({path:path.join(out,'desktop.png')});
-    await page.locator('#hideAll').click();assert.equal(await page.locator('.component.is-hidden').count(),29);
+    await page.locator('#hideAll').click();assert.equal(await page.locator('.component.is-hidden').count(),31);
     await page.locator('#showAll').click();assert.equal(await page.locator('.component.is-hidden').count(),0);
     await page.setViewportSize({width:390,height:844});await input.scrollIntoViewIfNeeded();
     const bounds=await input.boundingBox();assert(bounds.x>=0&&bounds.x+bounds.width<=391);

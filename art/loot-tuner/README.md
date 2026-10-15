@@ -1,3 +1,5 @@
+Current catalog: T&T 0.2.50, including Lure and Void. Existing account weights and tier anchors are preserved.
+
 # Knox Country Loot Lab
 
 Component controls edit direct loot weights (zero disables). Global/material/roll controls remain separate. Existing saved scenarios, cloud values and Sandbox exports retain their multiplier schema; the UI converts weight to/from the baseline internally, without rescaling saved tuning. Display formatting does not rewrite stored values. Limits match the game's per-item 0–20 multiplier, expressed as 0–20 times each component's baseline weight.

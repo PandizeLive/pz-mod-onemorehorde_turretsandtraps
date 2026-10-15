@@ -1,6 +1,6 @@
 {
   "status": "passed",
-  "htmlIds": 51,
+  "htmlIds": 52,
   "localDependencies": [
     "style.css",
     "https://admin.onemorehorde.com/admin/LootLab/",
@@ -14,6 +14,7 @@
     "model.js",
     "map-controls.js",
     "settings-sync.js",
+    "tier-list.js",
     "app.js"
   ],
   "sourceHashes": 7,

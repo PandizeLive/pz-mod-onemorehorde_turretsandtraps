@@ -9,6 +9,10 @@ local E = {jobs = {}, fields = {}, fieldOrder = {}, fieldCursor = 1, buckets = {
 ---@param stats table Effective modules
 ---@return number hits Maximum eligible projectile victims
 function E.hits(stats)
+    if stats.headKind == "Scrapshot" then
+        return (8 + (stats.synergy and stats.splitter or 0)) * (1 + stats.piercing)
+            + (stats.synergy and stats.fragment > 0 and 5 * (1 + stats.splitter) or 0)
+    end
     local children = stats.synergy and ((stats.splitter or 0) + (stats.piercing or 0)) or 0
     return 9 + children + (stats.synergy and (stats.fragment or 0) > 0 and 5 * (1 + children) or 0)
 end

@@ -83,7 +83,7 @@ local function verifyTurrets()
         end
         assert(packs == 1, "Native pack pool must contain exactly one pack entry")
     end
-    assert(count == 208, "Expected 208 component entries across sixteen native loot pools")
+    assert(count == 227, "Expected 227 component entries across sixteen native loot pools")
     for kind in pairs(Loot.WEIGHTS) do
         local script = getScriptManager():getItem(T.TYPES[kind])
         assert(script and script:getDisplayName() ~= "", "Pack script display metadata unavailable")
@@ -110,7 +110,7 @@ local function verifyTurrets()
     for i = 1, #restored do
         player:getInventory():Remove(restored[i])
     end
-    print("[OMHTT-Smoke] native-pack-correction scriptMetadata=29 emptyPoolInjection=blocked carriedPack=preserved eligibilityRestore=pass")
+    print("[OMHTT-Smoke] native-pack-correction scriptMetadata=31 emptyPoolInjection=blocked carriedPack=preserved eligibilityRestore=pass")
     local retired = {"OMHTTModuleCapacitySmall", "OMHTTModuleCapacity", "OMHTTModuleCapacityLarge",
         "OMHTTModuleMotionDetection", "OMHTTModuleDetection360"}
     for i = 1, #retired do
@@ -137,7 +137,7 @@ local function verifyTurrets()
         end
         if string.find(fullType, "Base.OMHTT", 1, true) == 1 then
             assert(string.find(fullType, "Base.OMHTTTrap", 1, true) == 1 or string.find(fullType, "Base.OMHTTTurret", 1, true) == 1
-                or string.find(fullType, "Base.OMHTTModule", 1, true) == 1, "Inconsistent OMHTT item family: " .. fullType)
+                or string.find(fullType, "Base.OMHTTModule", 1, true) == 1 or fullType == "Base.OMHTTAmmoMakeshiftBomb", "Inconsistent OMHTT item family: " .. fullType)
         end
         local component = T.component(fullType)
         if component then
@@ -149,7 +149,7 @@ local function verifyTurrets()
     end
     assert(auditAccepted >= 20 and auditRejected >= 2, "Expected conventional guns and cap-gun rejections")
     print("[OMHTT-Smoke] native-firearm-audit accepted=" .. auditAccepted .. " rejected=" .. auditRejected)
-    assert(visibleCount == 32, "Expected thirty-two canonical components")
+    assert(visibleCount == 34, "Expected thirty-four canonical components")
     local largeStorage = instanceItem(T.BASE):getInventory()
     T.configure(largeStorage)
     local largeGun = instanceItem("Base.Pistol")
@@ -157,7 +157,7 @@ local function verifyTurrets()
     largeStorage:AddItem(largeGun)
     largeStorage:AddItem(T.TYPES.CapacityLarge)
     local largeStats = T.cycleConfig(T.contents(largeStorage))
-    assert(largeStats.ammo == 750, "Large expansion must add 650 rounds to the default 100")
+    assert(largeStats.ammo == 900, "Large expansion must add 650 rounds to the default 250")
     for i = 1, largeStats.ammo do
         local round = instanceItem(largeAmmo)
         assert(T.accept(largeStorage, round) and largeStorage:hasRoomFor(nil, round), "Expanded native storage ran out of room at " .. i)
@@ -178,7 +178,7 @@ local function verifyTurrets()
     end
     assert(loaded > 0 and loaded < 750 and heavyStorage:getCapacity() == 44 and not heavyStorage:hasRoomFor(nil, instanceItem("Base.Potato")), "Native bag weight limit must include the base weight")
     print("[OMHTT-Smoke] native-heavy-expansion potatoes=" .. loaded .. " countAllowance=750 nativeWeightLimit=44")
-    print("[OMHTT-Smoke] native-large-expansion rounds=750 weight=real overflow=blocked")
+    print("[OMHTT-Smoke] native-large-expansion rounds=900 weight=real overflow=blocked")
     print("[OMHTT-Smoke] native-component-list visible=23 hidden=0 duplicates=0 legacy=removed")
     local nativeContents = {active = {Detection360 = 1, Filter = 1}}
     local profile = Modules.profile({baseFacing = 4, facing = 12, priority = "Toughest"}, nativeContents)
@@ -203,7 +203,7 @@ local function verifyTurrets()
     assert(T.contents(live).active.MotionDetection == 1, "Native module condition defaults are not active")
     detector:setCondition(0)
     assert(T.contents(live).active.MotionDetection == nil, "Broken native module remains active")
-    print("[OMHTT-Smoke] native-modules loot=208 profiles=valid condition=checked")
+    print("[OMHTT-Smoke] native-modules loot=227 profiles=valid condition=checked")
     assert(GameSounds.getSound("OMHTTTriggerClick") ~= nil, "Native click sound is unregistered")
     local resources = ArrayList.new()
     local tools = {"Base.Screwdriver", "Base.Wrench"}

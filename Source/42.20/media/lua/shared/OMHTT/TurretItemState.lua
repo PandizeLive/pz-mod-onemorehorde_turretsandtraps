@@ -82,7 +82,11 @@ function S.publish(item, player)
     if not isServer() then return end
     local record, data = entry(item), item:getModData()
     for kind, name in pairs(names) do
-        data[name] = copy(record[kind])
+        if kind == "void" then
+            data[name] = require("OMHTT/TurretVoid").summary(item, record[kind])
+        else
+            data[name] = copy(record[kind])
+        end
     end
     local container = item:getContainer()
     local parent = container and container:getParent()

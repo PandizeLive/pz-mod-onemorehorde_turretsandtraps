@@ -12,8 +12,8 @@ function palette(modules){
   return vm.runInContext('D.modules.map((m,i)=>({id:m.id,color:colors[i],shape:appearances[i][1]}))',context);
 }
 const modules=data.LOOT_DATA.modules,normal=palette(modules),reverse=palette([...modules].reverse());
-assert.equal(normal.length,29);
-assert.equal(new Set(normal.map(m=>m.color)).size,29);
+assert.equal(normal.length,31);
+assert.equal(new Set(normal.map(m=>m.color)).size,31);
 for(const m of normal){
   assert.match(m.color,/^#[0-9a-f]{6}$/i);
   assert(['circle','triangle','square','diamond','hexagon'].includes(m.shape));
@@ -22,4 +22,4 @@ for(const m of normal){
 assert.equal(normal.find(m=>m.id==='Conservation').shape,'square');
 assert.equal(normal.find(m=>m.id==='CapacityLarge').shape,'hexagon');
 assert.equal(palette([{id:'FutureModule'}])[0].color,palette([{id:'Other'}, {id:'FutureModule'}])[1].color);
-console.log('Passed: all 29 colors, family shapes, reorder stability and future-ID fallback.');
+console.log('Passed: all 31 colors, family shapes, reorder stability and future-ID fallback.');

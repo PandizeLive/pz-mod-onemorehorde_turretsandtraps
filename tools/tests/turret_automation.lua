@@ -57,6 +57,7 @@ for i = 1, 80 do makeZombie(front.square, 4) end
 check(scan("Furthest") == far, "Dense near crowd does not hide far targets after 64 entities")
 local items, nextId = {}, 8000
 local storage = {}
+function storage:getParent() return nil end
 function storage:getItems() return {size = function() return #items end, get = function(_, i) return items[i + 1] end} end
 function storage:contains(item) for i = 1, #items do if items[i] == item then return true end end return false end
 function storage:Remove(item) for i = #items, 1, -1 do if items[i] == item then table.remove(items, i) end end end
@@ -69,6 +70,10 @@ local function add(kind)
     function item:getID() return self.id end
     function item:getCondition() return self.condition end
     function item:getModData() return self.data end
+    function item:getContainer() return storage end
+    function item:getAge() return 0 end
+    function item:isCooked() return false end
+    function item:isBurnt() return false end
     items[#items + 1] = item
     return item
 end

@@ -76,6 +76,8 @@ function B.rows(contents, stats)
         elseif name == "Piercing" then
             label, value = "Piercing", stats.piercing
             if stats.piercing == 0 then label = "Inactive" end
+        elseif name == "Void" then label, value = "Void", nil
+        elseif name == "Lure" then label, value = "Lure", nil
         elseif name == "Fragment" then
             label, value = "Damage", stats.fragmentDamage * 100
         elseif name == "Magazine" then label, value = "Magazine", stats.magazine - base.magazine

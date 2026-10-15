@@ -1,5 +1,12 @@
 # Release state and publication policy
 
+## 0.2.50 / C247 — development packaging, 2026-10-15
+
+The approved content bundle and prior multiplayer authority are packaged and validated. 20,401 assertions; 259 source/317 package files; five new native recipes; virtual-firearm transactions; write/read and all independent package combinations pass. Connected MP and rendered owner acceptance remain pending. Source is awaiting its immutable test tag and local install below. No Workshop content upload or main merge; cumulative draft retains all unpublished changes.
+
+Hosted LootLab catalog deployed and verified: [release evidence](../diagnostics/v0.2.50/lootlab-release.json). Unrelated stale website checkout was not overwritten; exact changed settings source and tests are retained with the evidence.
+
+
 ## C246 development source, not installed
 
 [Existing-roster multiplayer implementation](PATCH_C246_MULTIPLAYER.md) is verified by automated and zero-client native probes. No version bump, test-tag movement, install, main merge, website deployment or Workshop upload. The combined C235 release remains uninstalled and its additional content is retained.

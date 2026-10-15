@@ -56,11 +56,12 @@ return function(player)
             assert(T.accept(inventory, spear) and not T.accept(inventory, instanceItem("Base.Potato")), "Ballista feed identity mismatch")
             inventory:AddItem(spear)
             assert(T.contents(inventory).ammo == 1, "Ballista native spear inventory count")
-            assert(Heads.accuracy(stats, 9) == 60, "Ballista midpoint accuracy")
+            assert(Heads.accuracy(stats, 12) == 60, "Ballista midpoint accuracy")
         end
     end
     for _, name in pairs({"SpearCraftedSwing", "AxeSawBladeHit", "BaseballBatHit"}) do
         assert(GameSounds.getSound(name), "Native head sound missing: " .. name)
     end
     print("[OMHTT-Heads] native recipes=3 outputs=3 retainedTools=verified timing=verified ammo=spears modules=filtered sounds=3")
+    require("OMHTT/NativeContentC247")(player)
 end

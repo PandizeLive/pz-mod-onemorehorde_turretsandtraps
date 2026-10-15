@@ -1,13 +1,13 @@
 {
   "haul": {
-    "expectedSuccessfulContainers": 2832.3640575420172,
-    "oneOrTwoShare": 0.7000863466914419,
-    "jackpotShare": 0.1508745436473202
+    "expectedSuccessfulContainers": 2959.7608401078,
+    "oneOrTwoShare": 0.6892333299867899,
+    "jackpotShare": 0.15271633274695398
   },
   "status": "passed",
   "scope": "Numerical model, seeded per-container spawning and extracted-data integrity; no in-game spawn certification",
-  "generatedItems": 7005,
-  "elapsedMs": 3901,
+  "generatedItems": 7527,
+  "elapsedMs": 3648,
   "candidates": 18630,
   "worldSamples": 256,
   "baseline": {
@@ -58,7 +58,9 @@
       "Synergy": true,
       "Martyrdom": true,
       "Tack": true,
-      "Regulator": true
+      "Regulator": true,
+      "Lure": true,
+      "Void": true
     },
     "items": {
       "Firing": 0.4666666666666667,
@@ -89,15 +91,17 @@
       "Synergy": 1,
       "Martyrdom": 2,
       "Tack": 2,
-      "Regulator": 3.6363636363636362
+      "Regulator": 3.6363636363636362,
+      "Lure": 1,
+      "Void": 1
     }
   },
   "selectedEstimate": {
-    "mean": 7158.270363671876,
-    "lo": 6921,
-    "hi": 7398
+    "mean": 7688.218572265626,
+    "lo": 7431,
+    "hi": 7955
   },
-  "allComponentsMean": 7158.270363671876,
+  "allComponentsMean": 7688.218572265626,
   "pools": [
     {
       "name": "ElectronicStoreMisc",
@@ -167,75 +171,75 @@
   "regions": [
     {
       "name": "WestPoint",
-      "mean": 385.39906718754827,
-      "lo": 333,
-      "hi": 443
+      "mean": 412.1440687500549,
+      "lo": 358,
+      "hi": 477
     },
     {
       "name": "Riverside",
-      "mean": 615.9977058594087,
-      "lo": 534,
-      "hi": 704
+      "mean": 664.5883691406585,
+      "lo": 572,
+      "hi": 751
     },
     {
       "name": "Muldraugh",
-      "mean": 436.2543496094208,
-      "lo": 368,
-      "hi": 498
+      "mean": 471.2883425781782,
+      "lo": 414,
+      "hi": 534
     },
     {
       "name": "Brandenburg",
-      "mean": 362.5631578125366,
-      "lo": 298,
-      "hi": 426
+      "mean": 387.6217546875426,
+      "lo": 326,
+      "hi": 446
     },
     {
       "name": "Ekron",
-      "mean": 397.8880343750621,
-      "lo": 342,
-      "hi": 456
+      "mean": 431.3247890625726,
+      "lo": 375,
+      "hi": 497
     },
     {
       "name": "Irvington",
-      "mean": 420.73053437502404,
-      "lo": 358,
-      "hi": 482
+      "mean": 457.05692968753067,
+      "lo": 395,
+      "hi": 517
     },
     {
       "name": "EchoCreek",
-      "mean": 313.1762625000282,
-      "lo": 264,
-      "hi": 360
+      "mean": 340.9567437500326,
+      "lo": 292,
+      "hi": 400
     },
     {
       "name": "Louisville",
-      "mean": 2992.906915625132,
-      "lo": 2826,
-      "hi": 3164
+      "mean": 3191.202178125122,
+      "lo": 3023,
+      "hi": 3362
     },
     {
       "name": "MarchRidge",
-      "mean": 148.89895312500673,
-      "lo": 109,
-      "hi": 194
+      "mean": 160.42032656250865,
+      "lo": 118,
+      "hi": 209
     },
     {
       "name": "FallasLake",
-      "mean": 278.23574843752476,
-      "lo": 225,
-      "hi": 331
+      "mean": 301.60807500002466,
+      "lo": 250,
+      "hi": 353
     },
     {
       "name": "Rosewood",
-      "mean": 406.83507812503547,
-      "lo": 346,
-      "hi": 465
+      "mean": 437.5887812500428,
+      "lo": 366,
+      "hi": 496
     },
     {
       "name": "ValleyStation",
-      "mean": 399.3845566406399,
-      "lo": 339,
-      "hi": 456
+      "mean": 432.4182136718921,
+      "lo": 370,
+      "hi": 499
     }
   ]
 }

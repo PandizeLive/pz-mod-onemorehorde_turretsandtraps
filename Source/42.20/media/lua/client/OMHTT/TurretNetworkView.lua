@@ -35,12 +35,13 @@ function V.cycle(contents)
     if not head then return nil, "NoHead" end
     if T.cycleConfig(contents).rotary then return {loaded = 0}, "Ready" end
     local data = head:getModData()
-    local state = G.profile(head) and data.OMHTTGunCycle or data.OMHTTCycle
+    local virtual = data.OMHTTCycle and data.OMHTTCycle.virtual
+    local state = G.profile(head) and not virtual and data.OMHTTGunCycle or data.OMHTTCycle
     local loaded = state and state.loaded or 0
-    if G.profile(head) then
+    if G.profile(head) and not virtual then
         loaded = G.loaded(head)
     end
-    return {loaded = loaded}, state and state.status or "Unavailable"
+    return {loaded = loaded, virtual = virtual, payload = state and state.payload}, state and state.status or "Unavailable"
 end
 
 ---@param object IsoObject Device

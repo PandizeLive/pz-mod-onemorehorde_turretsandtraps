@@ -68,6 +68,7 @@ local b = makeZombie(testSquares["1603:1600:0"], 10)
 local c = makeZombie(testSquares["1604:1600:0"], 10)
 for _, victim in pairs({primary, a, b, c}) do function victim:getWidth() return .3 end end
 local piercingStats = S.resolve({active = {}})
+piercingStats.knockdown = 0
 piercingStats.piercing, piercingStats.pierceRetention, piercingStats.range = 2, .7, 6
 local shot = {stats = piercingStats, damage = 1}
 V.reset(); V.reserve(shot)

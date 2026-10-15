@@ -1353,3 +1353,9 @@ Owner explicitly requests resolving combat handoff, finishing remaining MP work,
 ## C246 — complete the approved multiplayer implementation (2026-10-14)
 
 Owner: "Complete multiplayer support." This reiterates the prior approvals to implement all multiplayer/Horde integration and push progress without waiting for owner testing. Implemented the remaining existing-roster paths and conservative consent-safe attraction admission; no new balance choice or content recipe is inferred. [Final behavior, evidence and limits](PATCH_C246_MULTIPLAYER.md). R1C3/R5C1 implementation and connected acceptance are distinct. Full C235 new-content/Void integration remains approved and unfinished; do not discard it, split the combined release, or call zero-client probes multiplayer acceptance.
+
+## C247: complete content bundle on multiplayer authority (2026-10-15)
+
+**C247 / 0.2.50 content bundle implemented and validated (2026-10-15).** Complete C235 content is integrated with C246 authority: Lobber/Makeshift Bomb, Scrapshot, Lure, Void, head magazines/ammo families, revised Ballista/rotary/Potato contacts and pack flow. 20,401 assertions, native recipes/virtual-firearm transactions, write/read and independent packages pass. Connected MP and rendered owner acceptance remain pending. [Patch](PATCH_v0.2.50.md) | [Verification](TEST_v0.2.50.md). Packaging/install and dev mirror are the final delivery steps; no Workshop publication.
+
+The metal-saw tool uses the current native tag, not a nonexistent Hacksaw identity. Void uses private descriptor/debt state with compact replicated counts and bounded inspection; no new withdrawal or weight workaround. Scrapshot serializes same-shot contacts per victim across owner receipts. Approved tuning and cumulative unpublished notes are preserved.

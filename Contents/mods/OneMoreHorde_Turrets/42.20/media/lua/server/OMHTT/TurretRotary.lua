@@ -70,7 +70,7 @@ function R.contact(entry, actor, job)
     if dx * dx + dy * dy > job.profile.range * job.profile.range then return end
     local bearing = math.deg(math.atan2(-dy, dx)) - job.profile.heading
     local relative = (bearing + 540) % 360 - 180
-    if not job.profile.omni and math.abs(relative) > 22.5 and math.abs(relative) < 157.5 then return end
+    if not job.profile.omni and math.abs(relative) > 45 and math.abs(relative) < 135 then return end
     if not require("OMHTT/PrototypeCombat").clearLane(origin, square, 2) then return end
     if zombie and M.inside(origin, actor, job.detection) then
         job.target = true
@@ -84,6 +84,11 @@ function R.contact(entry, actor, job)
         return
     end
     if entry.hits[arm][actor] == pass then return end
+    local Proc = require("OMHTT/TurretProc")
+    if not Proc.available(job.stats) then return end
+    local proc = {stats = job.stats}
+    Proc.reserve(proc)
+    local hitX, hitY = actor:getX(), actor:getY()
     entry.hits[arm][actor] = pass
     if not weapon then
         weapon = instanceItem("Base.Hammer")
@@ -96,8 +101,10 @@ function R.contact(entry, actor, job)
     local source = T.state(entry.object).id
     Damage.resolve(actor, amount, source, "rotary", function(lost)
         if lost > 0 then
+            Proc.hit(actor, true, hitX, hitY, square:getZ(), {id = source}, nil, proc)
             Conditional.impact(actor, origin, {source = source, impactReady = true, stats = {impact = job.stats.knockdown}})
         end
+        Proc.release(proc)
     end)
     if Clock.now() >= (entry.soundAt or 0) then
         entry.soundAt = Clock.now() + 150
@@ -149,7 +156,7 @@ function R.step(entry, deadline)
     local wants = manual or (automatic and entry.hasTarget)
     local moving = state.rotaryMoving == true
     if moving and not wants and entry.stopAt == nil then
-        local span = profile.omni and 180 or 45
+        local span = profile.omni and 180 or 90
         entry.stopAt = (math.floor(entry.travel / span) + 1) * span
     elseif wants then
         entry.stopAt = nil

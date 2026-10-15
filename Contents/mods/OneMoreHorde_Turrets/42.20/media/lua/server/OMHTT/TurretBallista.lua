@@ -39,8 +39,8 @@ function B.hit(record, origin, target, player, options)
     end
     Volley.release(options)
     return {id = record.id, shot = record.shots, x = x, y = y, z = origin:getZ(),
-        fromX = origin:getX() + .5, fromY = origin:getY() + .5, sound = "SpearCraftedSwing",
-        muzzle = .4, muzzleHeight = .4, firearm = true, missed = not hit}
+        fromX = origin:getX() + .5, fromY = origin:getY() + .5,
+        muzzle = .4, muzzleHeight = .4, projectile = "spear", sound = "SpearCraftedHit", missed = not hit}
 end
 
 return B

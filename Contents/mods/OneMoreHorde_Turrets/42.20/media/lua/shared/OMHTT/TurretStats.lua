@@ -53,7 +53,7 @@ function S.resolve(contents)
     local range = S.option("PotatoRange", 6, 1, 20)
     local gun = contents and contents.head
     local firearm = G.profile(gun)
-    local magazine = math.floor(S.option("PotatoMagazineCapacity", 1, 1, 500))
+    local magazine = math.floor(S.option("PotatoMagazineCapacity", 3, 1, 500))
     local ammoCapacity = S.option("PotatoAmmoCapacity", 100, 1, 500)
     local accuracy, rack = 100, 0
     local farAccuracy = 100
@@ -73,7 +73,7 @@ function S.resolve(contents)
         reload = firearm.reload * S.option("FirearmReloadMultiplier", 1, 0, 5)
         rack = firearm.rack * S.option("FirearmCycleMultiplier", 1, 0.1, 5) / rate
         magazine = gun:getMaxAmmo()
-        ammoCapacity = S.option("FirearmAmmoCapacity", 100, 1, 500)
+        ammoCapacity = S.option("FirearmAmmoCapacity", 250, 1, 500)
         accuracy = math.max(0, math.min(100, (gun:getHitChance() + gun:getAimingPerkHitChanceModifier()
             * S.option("FirearmAimingLevel", 3, 0, 10)) * S.option("FirearmAccuracyMultiplier", 1, 0, 3)))
         local precision = Class.precision(gun)
@@ -90,8 +90,11 @@ function S.resolve(contents)
         accuracy, farAccuracy, critChance, critMultiplier = 100, 100, 0, 2
         cooldown, reload, magazine = .6, 0, 0
         if not rotary then
-            cooldown, reload, magazine = head.cooldown, head.cooldown, 1
-            accuracy, farAccuracy = 75, 45
+            cooldown, reload, magazine = head.cooldown, head.reload, head.magazine
+            if head.key == "Ballista" then
+                accuracy, farAccuracy = 75, 45
+            end
+            ammoCapacity = head.ammoCapacity or ammoCapacity
         end
     end
     farAccuracy = math.min(100, farAccuracy + (active.Accuracy or 0) * S.option("AccuracyBonus", 5, 0, 100))
@@ -110,6 +113,7 @@ function S.resolve(contents)
             extraModules = math.max(extraModules, S.option("Capacity" .. kit[2] .. "ModuleBonus", kit[4], 0, 20))
         end
     end
+    if head and head.ammoCapacity then extraAmmo = 0 end
     local rapid = S.bonus(active, "RapidFire", 25, 200)
     local loading = S.bonus(active, "Reload", 25, 200)
     cooldown = math.min(cooldown, math.max(math.min(cooldown, S.option("RapidFireMinimum", 0.25, 0.1, 10)), cooldown / (1 + rapid / 100)))
@@ -129,13 +133,20 @@ function S.resolve(contents)
     local shotPower = S.option("PotatoBatteryPercentPerShot", 0.00045, 0, 100) * effectPower / regulator
     local motorSpeed = 150 * (1 + rapid / 100) * enhancement
     local motorPower = 100 / S.option("RotaryBatteryHours", 6, .1, 100) * modulePower / regulator * motorSpeed / 150
-    if head and not rotary then
-        shotPower = S.option("BallistaBatteryPercent", .025, 0, 100) * weaponPower / math.sqrt(3.6) * modulePower / regulator
+    if head and head.key == "Lobber" then
+        local payload = require("OMHTT/TurretAmmo").bombs[contents.payloadType]
+        shotPower = (payload and payload.power or .02) * modulePower / regulator * (1 + S.bonus(active, "Velocity", 20, 100) / 100)
+        shotPower = shotPower * math.max(1, (range + S.bonus(active, "Range", 2, 10)) / head.range) * (1 + splitter * .5)
+    elseif head and head.key == "Scrapshot" then
+        shotPower = .002 * modulePower / regulator * (1 + S.bonus(active, "Velocity", 20, 100) / 100) * (1 + splitter * .5)
+            * math.max(1, (range + S.bonus(active, "Range", 2, 10)) / head.range)
+    elseif head and not rotary then
+        shotPower = S.option("BallistaBatteryPercent", .025, 0, 100) * weaponPower / math.sqrt(4.8) * modulePower / regulator
     elseif rotary then
         shotPower = motorPower / 3600
         magazine = 0
     end
-    return {headKind = head and head.key, rotary = rotary, motorSpeed = motorSpeed, motorPower = motorPower,
+    return {headKind = head and head.key, minimumRange = head and head.minimumRange or 0, cone = head and head.cone, rotary = rotary, motorSpeed = motorSpeed, motorPower = motorPower,
         damage = damage * (1 + S.bonus(active, "Velocity", 20, 100) / 100),
         knockdown = math.min(100, knockdown + knockBonus),
         range = math.min(firearm and 50 or 30, range + S.bonus(active, "Range", 2, 10)),
@@ -149,7 +160,7 @@ function S.resolve(contents)
         tackDamage = S.option("TackDamage", 10, 0, 1000),
         tackLifetime = S.option("TackLifetime", 10, 1, 60) * 1000,
         splitter = splitter, fragment = fragment, splitterDamage = S.option("SplitterDamage", 50, 0, 100) / 100,
-        piercing = (active.Piercing or 0) > 0 and (firearm or (head and not rotary)) and active.Piercing or 0,
+        piercing = (active.Piercing or 0) > 0 and not rotary and (not head or head.key ~= "Lobber") and active.Piercing or 0,
         pierceRetention = S.option("PiercingRetention", 70, 0, 100) / 100,
         initialBlow = (active.InitialBlow or 0) * S.option("InitialBlowBonus", 25, 0, 200) / 100,
         initialThreshold = S.option("InitialBlowThreshold", 90, 0, 100) / 100,

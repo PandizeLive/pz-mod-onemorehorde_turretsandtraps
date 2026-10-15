@@ -61,7 +61,7 @@ local function checkPackages()
             end
         end
     end
-    assert(lootCount == (expectedTurrets and 208 or 0), "Wrong component loot count " .. lootCount)
+    assert(lootCount == (expectedTurrets and 227 or 0), "Wrong component loot count " .. lootCount)
     assert(packCount == (expectedTurrets and 16 or 0), "Wrong pack loot count " .. packCount)
     isServer, isClient = oldServer, oldClient
     print("[OMHTT-Packages] PASS traps=" .. tostring(expectedTraps) .. " turrets=" .. tostring(expectedTurrets)

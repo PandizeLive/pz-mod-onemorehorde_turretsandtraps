@@ -9,7 +9,24 @@ local Action = OMHTTTurretControlAction
 function Action:isValid()
     if self.done or type(self.id) ~= "string" or not Access.near(self.character, self.object, self.id) then return false end
     local contents = T.contents(self.object:getContainer())
-    if self.command == "Priority" then
+    if self.command == "LurePulse" or self.command == "LureRepeat" then
+        return contents.active.Lure ~= nil and type(self.value) == "boolean"
+    elseif self.command == "LureRange" then
+        return contents.active.Lure ~= nil and type(self.value) == "number" and self.value >= 5 and self.value <= 20 and self.value % 1 == 0
+    elseif self.command == "AmmoFallback" then
+        return contents.head and contents.head:getFullType() == "Base.OMHTTTurretLobber" and type(self.value) == "boolean"
+    elseif self.command == "AmmoOrder" then
+        if not contents.head or contents.head:getFullType() ~= "Base.OMHTTTurretLobber" or type(self.value) ~= "string" or #self.value > 160 then return false end
+        local seen, count = {}, 0
+        for fullType in string.gmatch(self.value, "[^|]+") do
+            if seen[fullType] or not require("OMHTT/TurretAmmo").bombs[fullType] then return false end
+            seen[fullType], count = true, count + 1
+        end
+        return count == 3
+    elseif self.command == "AmmoPreferred" or self.command == "AmmoSwitch" then
+        return contents.head and contents.head:getFullType() == "Base.OMHTTTurretLobber"
+            and require("OMHTT/TurretAmmo").bombs[self.value] ~= nil
+    elseif self.command == "Priority" then
         if not contents.active.Filter then return false end
         for i = 1, #M.PRIORITIES do
             if self.value == M.PRIORITIES[i] then return true end
@@ -40,7 +57,25 @@ function Action:complete()
         return true
     end
     local state = T.state(self.object)
-    if self.command == "Priority" then
+    local contents = T.contents(self.object:getContainer())
+    if self.command == "LurePulse" then
+        require("OMHTT/TurretLure").pulse(self.object, contents, require("OMHTT/TurretClock").now())
+    elseif self.command == "LureRepeat" then
+        state.lureRepeat = self.value and T.isOn(state)
+    elseif self.command == "LureRange" then
+        state.lureRange = self.value
+    elseif self.command == "AmmoOrder" then
+        state.ammoOrder = self.value
+        state.ammoPreferred = string.match(self.value, "^[^|]+")
+    elseif self.command == "AmmoFallback" then
+        state.ammoFallback = self.value
+    elseif self.command == "AmmoPreferred" or self.command == "AmmoSwitch" then
+        state.ammoPreferred = self.value
+        state.ammoOrder = nil
+        if self.command == "AmmoSwitch" then
+            require("OMHTT/TurretFeed").cancel(contents.head)
+        end
+    elseif self.command == "Priority" then
         state.priority = self.value
     else
         state.engagementRange = self.value > 0 and self.value or nil

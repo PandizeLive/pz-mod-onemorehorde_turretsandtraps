@@ -90,6 +90,7 @@ function W.refresh(object)
     local state = T.state(object)
     if not state or not object:getContainer() then return end
     local contents = T.contents(object:getContainer())
+    if isServer() and contents.void then require("OMHTT/TurretItemState").publish(contents.void) end
     if contents.head and not feeders[object] then
         feeders[object] = true
         feederOrder[#feederOrder + 1] = object
@@ -145,7 +146,7 @@ function W.contents(object)
         snapshots[object] = entry
     end
     local contents = entry.contents
-    if G.profile(contents.head) then contents.ammo = contents.reserve + G.loaded(contents.head) end
+    if G.profile(contents.head) then contents.ammo = contents.reserve + G.loaded(contents.head) + (contents.virtualAmmo or 0) end
     return contents
 end
 
@@ -158,6 +159,7 @@ function W.setPower(player, object, enabled)
     if not W.near(player, object) then return false end
     local state = T.state(object)
     state.powered, state.automatic = enabled, nil
+    if not enabled then state.lureRepeat = false end
     state.rotaryManual, state.rotaryMoving = nil, false
     require("OMHTT/TurretAim").entries[object] = nil
     local search = require("OMHTT/TurretSearch").pending[object]
@@ -304,7 +306,7 @@ function W.pickup(player, object, id)
     state.condition = object:getHealth()
     local copied = {}
     for key, value in pairs(state) do copied[key] = value end
-    copied.rotaryManual, copied.rotaryMoving = nil, false
+    copied.rotaryManual, copied.rotaryMoving, copied.lureRepeat = nil, false, false
     item:getModData().OMHTTTurret = copied
     item:setCondition(math.max(1, math.floor(state.condition / state.maxHealth * item:getConditionMax())))
     T.configure(item:getInventory())
@@ -318,6 +320,7 @@ function W.pickup(player, object, id)
         return false
     end
     if player:getInventory():AddItem(item) ~= item then return false end
+    state.lureRepeat = false
     T.moveContents(contents, item:getInventory())
     if isServer() then
         Authority.retire(object, item)
@@ -447,10 +450,11 @@ function W.fire(player, object, target)
     end
     if contents.ammo == 0 then return "Empty" end
     local stats = T.cycleConfig(contents)
-    local power = W.power(object, contents, stats)
-    if not power then return "NoPower" end
     local cycle, status = T.cycle(contents, Clock.now(), stats)
     if status ~= "Ready" then return status end
+    stats = T.cycleConfig(contents)
+    local power = W.power(object, contents, stats)
+    if not power then return "NoPower" end
     local state = T.state(object)
     state.ammo = contents.ammo
     if player and not target then return require("OMHTT/TurretSearch").request(player, object) end
@@ -467,8 +471,19 @@ function W.fire(player, object, target)
         options.weapon, options.stats, options.object = contents.head, stats, object
     end
     if stats.headKind == "Ballista" then
-        options.projectileSpeed, options.splash, options.radius = nil, 0, 0
+        options.projectileSpeed, options.splash, options.radius = 24, 0, 0
+        options.projectile = "spear"
         options.resolve = require("OMHTT/TurretBallista").hit
+    end
+    if stats.headKind == "Lobber" or stats.headKind == "Scrapshot" then
+        options.projectileSpeed, options.splash, options.radius = nil, 0, 0
+        options.resolve = require("OMHTT/TurretOrdnance").launch
+        if not require("OMHTT/TurretOrdnance").available(stats) then return "Unavailable" end
+    end
+    local descriptor = require("OMHTT/TurretFeed").descriptor(contents, cycle)
+    if descriptor then
+        options.ammoDescriptor = descriptor
+        options.damage = options.damage * descriptor.multiplier
     end
     ---@param selected IsoZombie Chosen target
     ---@return boolean aligned
@@ -478,7 +493,7 @@ function W.fire(player, object, target)
     ---@return boolean committed
     function options.commit()
         if not W.valid(object) or not object:getContainer():contains(contents.head) then return false end
-        if not G.profile(contents.head) and not object:getContainer():contains(contents.round) then return false end
+        if not G.profile(contents.head) and not cycle.virtual and not object:getContainer():contains(contents.round) then return false end
         if player and not W.near(player, object) then return false end
         if not player and (not M.detects(state, contents) or not contents.active.Firing) then return false end
         if not player and contents.active.FiringImprovised
@@ -497,38 +512,27 @@ function W.fire(player, object, target)
         end
         options.ammoCost = math.min(cycle.loaded, 1 + stats.splitter)
         options.impactReady = cycle.impactReady == true
-        if G.profile(contents.head) then
-            local committed, charged = G.consume(contents, stats, Clock.now())
-            if not committed then return false end
-            options.ammoCost = charged
-        end
+        local committed, charged = require("OMHTT/TurretFeed").consume(contents, stats, cycle, Clock.now())
+        if not committed then return false end
+        options.ammoCost = charged
         if power.kind == "battery" then
             require("OMHTT/TurretBattery").spend(power.battery, power.cost)
         elseif power.kind == "generator" then
             power.generator:setFuel(math.max(0, power.generator:getFuel() - power.cost))
             require("OMHTT/TurretPowerSync").changed(power.generator)
         end
-        if not G.profile(contents.head) then
-            local cost = require("OMHTT/TurretConservation").consume(cycle, math.min(cycle.loaded, 1 + stats.splitter), stats.conservation)
-            local spent = 0
-            for i = 1, #contents.rounds do
-                if spent >= cost then break end
-                local round = contents.rounds[i]
-                if round:getFullType() == contents.round:getFullType() and object:getContainer():contains(round) then
-                    if isServer() then sendRemoveItemFromContainer(object:getContainer(), round) end
-                    object:getContainer():Remove(round)
-                    spent = spent + 1
-                end
-            end
-            options.ammoCost = spent
-            Cycle.consume(cycle, contents.ammo - spent, stats, Clock.now(), spent)
-        end
         D.defer("turret-resource-spent", {id = state.id, head = contents.head:getID(), power = power.kind, cost = power.cost})
         return true
     end
     local Combat = require("OMHTT/PrototypeCombat")
     local result, impact = Combat.fire(state, object, player, options)
-    if result == "Fired" then Volley.split(state, object:getSquare(), target, player, options, impact) end
+    if result == "Fired" then
+        if stats.headKind == "Lobber" or stats.headKind == "Scrapshot" then
+            Volley.done(options)
+        else
+            Volley.split(state, object:getSquare(), target, player, options, impact)
+        end
+    end
     local committedAt = getTimestampMs()
     if result == "Fired" then
         if isServer() then
@@ -602,7 +606,7 @@ function W.feedTick()
                     if W.valid(object) and T.isOn(state) and W.power(object, contents, stats) then
                         local cycle, status
                         if G.profile(contents.head) then
-                            cycle, status = G.update(contents, stats, now, true)
+                            cycle, status = require("OMHTT/TurretFeed").update(contents, stats, now, true)
                         else
                             cycle, status = T.cycle(contents, now, stats)
                         end
@@ -620,6 +624,7 @@ function W.feedTick()
                         Audio.stop(object)
                         if G.profile(contents.head) then G.cancelLoading(contents.head) end
                     end
+                    require("OMHTT/TurretLure").update(object, contents, now)
                     W.publishRuntime(object, state, contents, now)
                 else
                     Audio.stop(object)

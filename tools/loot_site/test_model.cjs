@@ -4,7 +4,7 @@ const site=path.resolve(__dirname,'../../art/loot-tuner');
 global.window={};require(path.join(site,'data.js'));
 const D=window.LOOT_DATA,M=require(path.join(site,'model.js'));
 async function run(){
-  assert.equal(D.containers.length,18630);assert.equal(D.routes.length,79);assert.equal(D.modules.length,29);
+  assert.equal(D.containers.length,18630);assert.equal(D.routes.length,79);assert.equal(D.modules.length,31);
   for(const [id,weight] of [['Regulator',5.5],['Synergy',1],['Martyrdom',1.5],['Tack',1.5]])assert.equal(D.modules.find(m=>m.id===id).weight,weight);
   assert.equal(D.modules.find(m=>m.id==='Suppression').weight,2.5);
   assert(D.modules.some(m=>m.id==='Critical')&&D.modules.some(m=>m.id==='Accuracy'));
@@ -77,7 +77,7 @@ async function run(){
   for(const c of D.containers){assert(D.routes[c.route]);assert.equal(typeof c.capacity,'string');assert(c.x>=0&&c.y>=0);assert(Array.isArray(c.forced));}
   const old={...s,baseline:'Installed 0.2.22',items:{...s.items},visible:{...s.visible},global:2.5};delete old.items.Critical;delete old.items.Accuracy;delete old.visible.Critical;delete old.visible.Accuracy;
   const upgraded=M.validate(old,D);assert.equal(upgraded.global,2.5/4.5);assert.equal(upgraded.items.Critical,.5);assert.equal(upgraded.baseline,D.meta.baseline);
-  assert.deepEqual(D.pools.ElectricianTools.modules.slice().sort(),['Firing','MotionDetection','Filter','Detection360','Regulator'].sort());
+  assert.deepEqual(D.pools.ElectricianTools.modules.slice().sort(),['Firing','MotionDetection','Filter','Detection360','Regulator','Lure'].sort());
   const small={...D,containers:[{...D.containers[0],route:0,room:'only',forced:['GunStoreAccessories']}],routes:[{rules:[{name:'GunStoreAccessories',min:0,max:99}]}]};
   const certain={...s,global:20,material:10,items:Object.fromEntries(D.modules.map(m=>[m.id,20]))};
   const one=M.generate(small,certain),mini=M.evaluate(small,await M.prepare(small,1,()=>{},8),certain);

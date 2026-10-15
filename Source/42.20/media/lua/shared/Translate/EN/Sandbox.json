@@ -356,5 +356,9 @@
     "Sandbox_OMHTurretsTraps_BallistaBatteryPercent": "Ballista battery use",
     "Sandbox_OMHTurretsTraps_BallistaBatteryPercent_tooltip": "Battery charge percent per base Ballista shot, before module modifiers.",
     "Sandbox_OMHTurretsTraps_RotaryBatteryHours": "Rotary motor hours",
-    "Sandbox_OMHTurretsTraps_RotaryBatteryHours_tooltip": "In-game motor hours per full battery before module and speed modifiers."
+    "Sandbox_OMHTurretsTraps_RotaryBatteryHours_tooltip": "In-game motor hours per full battery before module and speed modifiers.",
+    "Sandbox_OMHTurretsTraps_LootRateLure": "Lure Module",
+    "Sandbox_OMHTurretsTraps_LootRateVoid": "Void Module",
+    "Sandbox_OMHTurretsTraps_LootRateLure_tooltip": "Loot weight multiplier. Zero disables this module.",
+    "Sandbox_OMHTurretsTraps_LootRateVoid_tooltip": "Loot weight multiplier. Zero disables this module."
 }

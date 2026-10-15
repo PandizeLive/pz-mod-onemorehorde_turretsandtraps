@@ -83,7 +83,7 @@ check(completed and not inventory.visible and not inventory.pinned, "Manage leav
 local panel = testTurretPanel
 panel:prerender()
 check(not panel.fireButton.enabled and panel.status == "NoHead", "Empty base cannot fire")
-check(#panel.slots == 21 and panel.height <= 720 and panel.x >= 0, "Sixteen module slots and controls fit 1280x720")
+check(#panel.slots == 22 and panel.height <= 720 and panel.x >= 0, "Sixteen module slots, Void storage and controls fit 1280x720")
 local moduleRows = {}
 for i = 1, 16 do
     local slot = panel.moduleSlots[i]

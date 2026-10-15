@@ -49,7 +49,7 @@ function E.receive(module, command, facts)
         if facts.sound then E.sound(facts.sound, facts.x, facts.y, facts.z, facts.gain) end
         return
     end
-    if module ~= F.MODULE or (command ~= "Launch" and command ~= "Impact" and command ~= "GunShot" and command ~= "Ray") then return end
+    if module ~= F.MODULE or (command ~= "Launch" and command ~= "Land" and command ~= "Impact" and command ~= "GunShot" and command ~= "Ray") then return end
     local effect = nil
     for i = 1, #E.effects do
         local entry = E.effects[i]
@@ -66,6 +66,7 @@ function E.receive(module, command, facts)
     effect.fromX, effect.fromY, effect.flight = facts.fromX, facts.fromY, facts.flight or 0
     effect.target, effect.missed = facts.target, facts.missed
     effect.firearm = facts.firearm == true
+    effect.projectile = facts.projectile
     effect.muzzleHeight = facts.muzzleHeight or T.HEAD_VISUAL.height
     if command == "Launch" or command == "GunShot" then
         if not isClient() then effect.start = facts.start or effect.start end
@@ -76,9 +77,11 @@ function E.receive(module, command, facts)
             effect.fromX = facts.fromX + dx / distance * forward
             effect.fromY = facts.fromY + dy / distance * forward
         end
-        E.sound(facts.sound or "OMHTTPotatoFire", effect.fromX, effect.fromY, facts.z, facts.gain)
+        if not facts.silent then
+            E.sound(facts.sound or "OMHTTPotatoFire", effect.fromX, effect.fromY, facts.z, facts.gain)
+        end
     elseif command ~= "Ray" and not facts.silent then
-        E.sound("OMHTTPotatoImpact", facts.x, facts.y, facts.z)
+        E.sound(facts.sound or (effect.projectile == "spear" and "SpearCraftedHit" or "OMHTTPotatoImpact"), facts.x, facts.y, facts.z)
     end
     D.defer("projectile-effect", {id = facts.id, shot = facts.shot, phase = command, flightMs = effect.flight,
         x = facts.x, y = facts.y, z = facts.z, fromX = effect.fromX, fromY = effect.fromY})
@@ -160,15 +163,25 @@ function E.render()
                         wx = effect.fromX + (wx - effect.fromX) * fraction
                         wy = effect.fromY + (wy - effect.fromY) * fraction
                         height = 0.32 + (height - 0.32) * fraction
+                        if effect.projectile then height = height + math.sin(fraction * math.pi) * .35 end
                     end
                     local x, y = E.screen(wx, wy, effect.z + height, index)
                     if effect.firearm then
                         effect.renderStart = effect.renderStart or now
                         local sx, sy = E.screen(effect.fromX, effect.fromY, effect.z + effect.muzzleHeight, index)
                         canvas:drawLine(nil, sx, sy, x, y, math.max(1, 1 / zoom), 1 - traceAge / 100, 0.9, 0.85, 0.65)
-                    elseif effect.phase == "Launch" then
+                    elseif effect.phase == "Launch" or effect.phase == "Land" then
                         local size = math.max(4, 6 / zoom)
-                        canvas:drawRect(x - size / 2, y - size / 2, size, size * 0.75, 1, 0.55, 0.32, 0.13)
+                        if effect.projectile == "spear" then
+                            local dx, dy = wx - effect.fromX, wy - effect.fromY
+                            local length = math.sqrt(dx * dx + dy * dy)
+                            if length > 0 then
+                                local sx, sy = E.screen(wx - dx / length * .6, wy - dy / length * .6, effect.z + height, index)
+                                canvas:drawLine(nil, sx, sy, x, y, math.max(1, 2 / zoom), 1, .85, .85, .85)
+                            end
+                        else
+                            canvas:drawRect(x - size / 2, y - size / 2, size, size * 0.75, 1, 0.55, 0.32, 0.13)
+                        end
                     else
                         local age = elapsed / 450
                         for n = 0, 5 do

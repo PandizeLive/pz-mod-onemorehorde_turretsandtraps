@@ -1,5 +1,8 @@
-v0.2.49
+v0.2.50
 Development test content
+- Added Grenade Lobber and Scrapshot heads with normal/improvised recipes, turret-only Makeshift Bomb ammunition, finite magazines, payload priorities and bounded module effects.
+- Added Lure and Void Modules: adjustable manual/repeating attraction, and portable module-owned virtual ammunition with finite magazines, exact-item storage and private multiplayer accounting. Includes LootLab entries.
+- Expanded Ballista range with travelling spears and modded-spear classification, extended rotary reach/sectors with contact effects, and enabled Potato piercing splash/knockdown contacts. Added whole-potato variants and selective physical ammo limits.
 - Added server-authoritative multiplayer placement, management, ammunition/power, combat and trap effects, with synchronized presentation and persistent exact-item contents. Connected multiplayer acceptance remains pending.
 - Added coordinated Horde Night opt-in assistance and the selected score divider, with consent-aware defense damage, movement effects and attraction.
 - Fixed small battery costs rounding away at each shot; fractional charge now persists with the battery.

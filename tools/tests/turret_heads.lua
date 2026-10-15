@@ -10,12 +10,12 @@ local function head(name)
 end
 local ballista, bat, blades = head("Ballista"), head("RotaryBat"), head("RotaryBlades")
 local stats = S.resolve({head = ballista, active = {}, powerLoad = 0})
-check(stats.damage == 240 and stats.range == 18 and stats.cooldown == 6000 and stats.reload == 6000, "Ballista base combat contract")
-check(math.abs(stats.batteryPercent - .025) < .0000001 and stats.magazine == 1, "Ballista calibrated power and single spear feed")
-check(H.accuracy(stats, 0) == 75 and H.accuracy(stats, 9) == 60 and H.accuracy(stats, 18) == 45, "Ballista accuracy uses true near/mid/far endpoints")
+check(stats.damage == 240 and stats.range == 24 and stats.cooldown == 6000 and stats.reload == 6000, "Ballista base combat contract")
+check(math.abs(stats.batteryPercent - .025) < .0000001 and stats.magazine == 5, "Ballista calibrated power and built-in five-spear magazine")
+check(H.accuracy(stats, 0) == 75 and H.accuracy(stats, 12) == 60 and H.accuracy(stats, 24) == 45, "Ballista accuracy uses true near/mid/far endpoints")
 check(H.accuracy(stats, 50) == 45, "Accuracy endpoint clamps without extrapolation")
 stats = S.resolve({head = ballista, active = {Conservation = 2, Splitter = 2, Piercing = 2, Magazine = 2}, powerLoad = 3})
-check(stats.conservation == 3 and stats.splitter == 2 and stats.piercing == 2 and stats.magazine == 3, "Ballista uses existing projectile module accounting")
+check(stats.conservation == 3 and stats.splitter == 2 and stats.piercing == 2 and stats.magazine == 9, "Ballista uses existing projectile module accounting")
 check(math.abs(stats.batteryPercent - .1) < .000001, "Ballista additive module power")
 for _, item in pairs({bat, blades}) do
     stats = S.resolve({head = item, active = {}, powerLoad = 0})
@@ -26,26 +26,26 @@ end
 stats = S.resolve({head = bat, active = {RapidFire = 1, Regulator = 1}, powerLoad = 2})
 check(stats.motorSpeed == 187.5 and math.abs(stats.motorPower - 50) < .00001, "Speed and rarity drain scale once; Regulator offsets speed in this example")
 local profile = M.profile({baseFacing = 0}, {head = bat, active = {}}, false)
-check(profile.rotary and profile.cone == 45 and profile.range == 1.25, "Rotary placement-locked dual sector profile")
+check(profile.rotary and profile.cone == 90 and profile.range == 2, "Rotary placement-locked dual sector profile")
 for degrees = -180, 180 do
-    local allowed = math.abs(degrees) <= 22.5 or math.abs(degrees) >= 157.5
-    local arm = H.crossing(degrees, 0, 90, false)
+    local allowed = math.abs(degrees) <= 45 or math.abs(degrees) >= 135
+    local arm = H.crossing(degrees, 0, 180, false)
     if degrees ~= -22 and degrees ~= 158 then
         check((arm ~= nil) == allowed, "Both sectors exclude side hits: " .. degrees)
     end
 end
-local a, pass = H.crossing(0, 0, 22.5, false)
+local a, pass = H.crossing(0, 0, 45, false)
 check(a == 1 and pass == 0, "Forward arm crosses sector center")
-check(H.crossing(0, 22.5, 30, false) == nil, "Crossing endpoint cannot hit twice")
-check(H.crossing(180, 0, 22.5, false) == 2, "Rear arm is independently physical")
+check(H.crossing(0, 45, 60, false) == nil, "Crossing endpoint cannot hit twice")
+check(H.crossing(180, 0, 45, false) == 2, "Rear arm is independently physical")
 check(H.crossing(90, 0, 90, false) == nil and H.crossing(90, 0, 90, true) == 1, "Only 360 permits side contact")
-check(H.motion(45, false) == 22.5 and H.motion(90, false) == -22.5, "Oscillation reverses at agreed endpoints")
+check(H.motion(90, false) == 45 and H.motion(180, false) == -45, "Oscillation reverses at agreed endpoints")
 check(H.motion(360, true) == 0, "Continuous revolution closes at 2.4 seconds")
 local total = 0
 for i = 1, 240 do
     if H.crossing(0, (i - 1) * 1.5, i * 1.5, false) then total = total + 1 end
 end
-check(total == 8, "25RPM-equivalent oscillation crosses sector center eight times in 2.4s")
+check(total == 4, "25RPM-equivalent oscillation crosses sector center four times in 2.4s")
 local consumed = require("OMHTT/TurretConservation")
 local debt, paid = {}, 0
 for i = 1, 6 do paid = paid + consumed.consume(debt, 1, 3) end

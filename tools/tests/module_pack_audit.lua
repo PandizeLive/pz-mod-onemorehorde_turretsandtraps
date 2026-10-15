@@ -110,7 +110,7 @@ started = realMillis()
 for i = 1, 500 do testMillis = testMillis + 16; panel:prerender() end
 local renderMs = realMillis() - started
 check(creates == openCreates and wraps == openWraps, "Reveal frames do not instantiate items or wrap text")
-check(openCreates == 0 and openWraps == 29, "Reveal uses script metadata without creating display items")
+check(openCreates == 0 and openWraps == 31, "Reveal uses script metadata without creating display items")
 local ticks, selected, reveals = 0, 0, 0
 for i = 1, #sounds do
     if sounds[i] == "UIObjectMenuObjectRotate" then ticks = ticks + 1 end

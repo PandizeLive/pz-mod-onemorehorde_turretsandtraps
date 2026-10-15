@@ -41,6 +41,7 @@ check(R.get("Firing").weight == 0, "Global loot off uses disabled neutral colors
 R.refresh({})
 
 local one = S.resolve({active = {Conservation = 1}})
+one.magazine = 1
 for _, capacity in pairs({1, 7, 14, 30, 60}) do
     for _, divisor in pairs({1, 2, 3, 9, 17}) do
         for _, cost in pairs({1, 2, 5, 12}) do

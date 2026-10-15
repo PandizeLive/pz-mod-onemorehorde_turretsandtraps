@@ -31,6 +31,15 @@ testLogs = {}
 testDialogs = 0
 function print(value) testLogs[#testLogs + 1] = tostring(value) end
 function getTimestampMs() return testMillis end
+WeaponCategory = {SPEAR = "spear"}
+function getScriptManager()
+    return {getItem = function(_, fullType)
+        if fullType == "Base.SpearCrafted" then
+            return {containsWeaponCategory = function() return true end,
+                getMinDamage = function() return 1 end, getMaxDamage = function() return 1 end}
+        end
+    end}
+end
 function getMouseXScaled() return 400 end
 function getMouseYScaled() return 300 end
 IsoDirections = {N = "N", S = "S", E = "E", W = "W"}
@@ -346,7 +355,13 @@ UIFont = {Small="small"}
 function getTextManager() return {DrawStringCentre = function() testDraws = testDraws + 1 end} end
 
 function getScriptManager()
-    return {getAllItems = function() return {size = function() return 0 end} end}
+    return {getAllItems = function() return {size = function() return 0 end} end,
+        getItem = function(_, fullType)
+            if fullType == "Base.SpearCrafted" then
+                return {containsWeaponCategory = function() return true end,
+                    getMinDamage = function() return 1 end, getMaxDamage = function() return 1 end}
+            end
+        end}
 end
 
 CombatConfigKey = setmetatable({}, {__index = function(t, key) return key end})

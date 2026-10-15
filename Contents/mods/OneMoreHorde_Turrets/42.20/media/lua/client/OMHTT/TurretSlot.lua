@@ -22,6 +22,7 @@ end
 ---@param y number Local mouse Y
 ---@return boolean handled
 function Slot:onMouseDown(x, y)
+    if self.kind == "void" then self.owner:inspectVoid(); return true end
     if self.kind == "magazine" then
         if #self.items > 0 then self.owner:feedback(0, "EjectMagazine") end
         return true
@@ -45,6 +46,8 @@ function Slot:onMouseUp(x, y)
         local items = ISInventoryPane.getActualItems(ISMouseDrag.dragging)
         if self.disabled then
             self.owner:feedback(0, "TransferFull")
+        elseif self.kind == "void" then
+            self.owner:storeVoid(items)
         elseif self.kind == "magazine" then
             self.owner:magazine(items[1])
         else
@@ -63,6 +66,7 @@ end
 ---@param y number Local mouse Y
 ---@return boolean handled
 function Slot:onRightMouseUp(x, y)
+    if self.kind == "void" then self.owner:inspectVoid(); return true end
     if self.kind == "magazine" then
         self.owner:magazine(nil)
     else
@@ -138,7 +142,7 @@ function Slot:prerender()
         end
         if #self.items > 1 then name = tostring(#self.items) .. " x " .. name end
     end
-    local textX, textY = 44, h + 8
+    local textX, textY = self.kind == "void" and 8 or 44, h + 8
     if self.kind == "module" then textX, textY = 4, math.min(h + 20, self.height - h - 2) end
     self:setStencilRect(textX, textY, self.width - textX - 4, h + 4)
     self:drawText(name, textX, textY, color and color.tr or 1, color and color.tg or 1, color and color.tb or 1, 1, UIFont.Small)

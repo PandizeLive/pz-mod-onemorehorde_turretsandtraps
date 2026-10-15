@@ -39,7 +39,7 @@ function List:prerender()
     self:drawRectBorder(0, 0, self.width, self.height, .8, .3, .3, .3)
     self:drawRect(0, 0, self.width, self.lineHeight, .9, .12, .12, .12)
     self.offset = math.min(self.offset, math.max(0, #self.rows - self.visibleRows))
-    self:drawText(getText("UI_OMHTT_InstalledModules"), 4, 0, 1, 1, 1, 1, UIFont.Small)
+    self:drawText(self.title or getText("UI_OMHTT_InstalledModules"), 4, 0, 1, 1, 1, 1, UIFont.Small)
     for i = 1, self.visibleRows do
         local row = self.rows[self.offset + i]
         if not row then break end
