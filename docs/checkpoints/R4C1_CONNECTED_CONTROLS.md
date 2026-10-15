@@ -1,5 +1,28 @@
 # R4C1 — buttons, pressure plates and links
 
+## C252: targeting/radius selections and placer ownership discussion, 2026-10-15
+
+Owner selects C251 **1A, 2B, 4A and 5A**: physical plate activation is separate from receiver targeting; fixed 20-tile controller radius; ownership survives controller loss; controller target defaults allow local overrides. Owner asks how Horde Night can inform the radius/base model, and proposes locking devices to their placer with selectable faction/public access. This is a requested ownership discussion, not an implemented change or approval of the new detailed proposals below. It potentially supersedes C250 public-before-controller behavior; do not implement both incompatible defaults.
+
+### Horde Night evidence and consistent boundaries
+
+Read-only review of the local coordinated Horde checkout, without sibling edits:
+
+- `OMH_Phase4FactionIdentity.lua`: `snapshotFaction` reads native faction name, owner and membership; `createFactionRecord` allocates a persistent OMH faction owner ID with leadership/name/membership history. `retireDisbandedFaction` retires the identity and active memberships. Useful model: live faction membership and persistent identity, not current display name or nearest player as ownership.
+- `OMH_Phase4FactionRuntime.lua`: active memberships map players to faction owner records for run management. These are event/run ownership records, not a native base claim.
+- `OMH_DefenseIntegration.lua` and T&T `DefenseHorde.lua`: defense permission and scoring follow the receiving Horde event and consent. A device's owner, public access, controller proximity or faction association does not authorize assistance to a non-consenting run.
+- No reusable faction base-area boundary/claim-radius API was identified in the inspected runtime. This is a scoped code-review finding, not proof that no future/shared area system can exist. Do not derive controller reach from spawn, attraction, event or Cure-related distances, or mutate a private Horde ledger to manufacture a claim API.
+
+Recommendation: preserve the selected 20-tile controller radius as a management boundary, distinct from the also-selected 20-tile signal-link range and from persistent ownership. Cross-package faction identity should use an explicit capability/adapter contract if needed; Traps/Turrets must still work without Horde installed. Do not hard-require its internal faction registry or claim an existing supported identity export. Radius floor semantics remain open; no unlimited vertical control is inferred.
+
+### Next choices — recommendations only
+
+**1 — Ownership versus sharing.** Recommend **1A**: device belongs to its placer by default, with Private / Faction / Public access settings; sharing does not transfer title, and only owner/admin changes sharing or ownership. **1B**: allow transferring the device into faction ownership, with the faction leader managing access. 1A is simpler to recover and makes controller loss irrelevant to ownership; 1B needs explicit succession/disband handling. For 1A, recommend returning Faction sharing to Private if the placer leaves or the selected faction dissolves, never silently reassigning it to a newly joined or same-name replacement faction. Explicit transfer may remain a separate later action. These are new access defaults for approval, not already enforced in current TurretAccess.lua.
+
+**2 — Public privileges.** Recommend **2A**: Public permits ordinary operation, adding supplies and repairs; owner retains configuration, removal of contents, pickup/dismantling and access changes. **2B**: Public permits configuration and all servicing, including removal of contents and pickup/dismantling, while only owner/admin can change access/ownership while the device exists. 2B deliberately makes public equipment recoverable by strangers; clarify that Public is not automatically a transfer of title. Faction sharing should permit cooperative operation/configuration/servicing but not changing owner/access without owner/admin authorization; exact destructive-service delegation remains to be confirmed with the access matrix.
+
+Controller assignment must be explicit and authorized under device permissions, not radius-based auto-claiming. A controller cannot take over private devices by being placed nearby. Apply equivalent protection to inputs and links, preserve public physical plate triggering, and require server-side validation for direct actions, controller commands and third-party signals. Proposed sharing does not grant immunity to passive hazards or change target/collateral policy. Controllers change authorized device defaults; existing local overrides retain C2515A behavior. No gameplay files, build, tests or installed 0.2.50 changed.
+
 ## C251: independent controls approved; controller choices proposed, 2026-10-15
 
 Owner agrees to building OMHTT's own control system with support for other mods and requests the next decisions. This selects the standalone/optional-integration architecture previously recommended. It does not establish compatibility with any specific mod, authorize a required dependency, or settle the proposed behavior below. Retain Pulse, held ON/OFF and separate power availability, with per-mod adapters verified against exact supported versions. No gameplay implementation this discussion.

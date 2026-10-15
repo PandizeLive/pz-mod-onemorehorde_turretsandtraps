@@ -1381,3 +1381,8 @@ Corrected stale current-table entries for head/content implementation, the pack 
 ## C251 — independent controls and proposed controller rules (2026-10-15)
 
 **C251 / standalone controls with optional integrations approved (2026-10-15).** Owner agrees to our own system with support for other mods. Specific adapters remain unverified; no required dependency selected. [Next controller choices](checkpoints/R4C1_CONNECTED_CONTROLS.md#c251-independent-controls-approved-controller-choices-proposed-2026-10-15): trigger/target filters, base boundary, assignment, controller-loss policy and local overrides. These recommendations await selection; no gameplay or installed-build change.
+
+
+## C252 — controller radius, Horde consistency and personal ownership (2026-10-15)
+
+**C252 / controller radius and placer-ownership discussion (2026-10-15).** Owner selects receiver-side filtering, 20-tile controller radius, persistent ownership after controller loss and local targeting overrides. Proposes placer-owned devices with faction/public sharing. [Horde consistency evidence and two remaining ownership/access choices](checkpoints/R4C1_CONNECTED_CONTROLS.md#c252-targetingradius-selections-and-placer-ownership-discussion-2026-10-15). Recommend management radius separate from ownership; Horde identity/consent remain separate from territory. No reusable base-area API identified in inspected local runtime. Sharing details remain proposals; installed 0.2.50 unchanged.
