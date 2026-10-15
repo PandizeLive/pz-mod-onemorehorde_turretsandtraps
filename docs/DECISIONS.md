@@ -1371,3 +1371,8 @@ Corrected stale current-table entries for head/content implementation, the pack 
 ## C249 — R4C1 preparation and choices (2026-10-15)
 
 **C249 / R4C1 discussion prepared (2026-10-15).** Owner requests preparing and discussing connected controls. [Six proposed choices and multiplayer/performance constraints](checkpoints/R4C1_CONNECTED_CONTROLS.md): input power, plate detection, bounded links, cycling, access and recovery. Existing button-pulse/plate-held behavior is retained; choices are recommendations, not implementation approval. Recipes/service/ownership details follow; damaging receivers remain R4C2. Installed 0.2.50 and pending acceptance are unchanged.
+
+
+## C250 — selected controls and external-mod investigation (2026-10-15)
+
+**C250 / R4C1 selections and external-mod research (2026-10-15).** Mechanical inputs, editable local/controller targeting, 20-tile links with 32 inputs/outputs, receiver-specific held-signal behavior, controller-based faction-base access and one-second recovery selected/amended. Filter scope, base boundary and controller lifecycle remain open. [Current selections and researched mod candidates](checkpoints/R4C1_CONNECTED_CONTROLS.md#c250-selections-and-compatibility-research-2026-10-15). Recommend standalone controls with optional verified adapters; no dependency or gameplay implementation approved by this discussion. Installed 0.2.50 unchanged.
