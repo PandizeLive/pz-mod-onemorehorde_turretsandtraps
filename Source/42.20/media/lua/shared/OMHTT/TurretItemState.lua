@@ -1,7 +1,7 @@
 -- Item modData is a replicated view. MP authority lives only in server GlobalModData.
 local S = {}
 local store
-local names = {cycle = "OMHTTCycle", gun = "OMHTTGunCycle", feed = "OMHTTFeedRounds", void = "OMHTTVoid"}
+local names = {cycle = "OMHTTCycle", gun = "OMHTTGunCycle", feed = "OMHTTFeedRounds", void = "OMHTTVoid", battery = "OMHTTBatteryDrain"}
 
 ---@param value any Persistable value
 ---@return any copy Detached snapshot

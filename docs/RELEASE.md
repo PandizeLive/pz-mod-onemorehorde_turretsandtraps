@@ -1,5 +1,9 @@
 # Release state and publication policy
 
+## C246 development source, not installed
+
+[Existing-roster multiplayer implementation](PATCH_C246_MULTIPLAYER.md) is verified by automated and zero-client native probes. No version bump, test-tag movement, install, main merge, website deployment or Workshop upload. The combined C235 release remains uninstalled and its additional content is retained.
+
 ## 0.2.49 / C207
 
 New head prototypes and C191 pack timing implemented. Automated/native/package checks pass; see [test evidence](TEST_v0.2.49.md). Installed via root OMH.cmd from immutable `test/v0.2.49` / `9cc84c0232b1a8348eb16927b0bc43ef8774abfd`. All220 source files and268 tagged/packaged/installed/archive files match; both0.2.48.1 backups verify. [Release evidence](../diagnostics/v0.2.49/local-release.json). Owner rendered/audio acceptance remains pending; technical cube markers only. No hosted LootLab change, Workshop upload or official release.

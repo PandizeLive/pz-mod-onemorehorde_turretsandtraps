@@ -22,15 +22,6 @@ local Combat = {
 }
 local weapon = nil
 
----@param square IsoGridSquare Origin
----@param dx number Adjacent X
----@param dy number Adjacent Y
----@return boolean clear
----@nodiscard
-local function clearEdge(square, dx, dy)
-    local result = tostring(square:testVisionAdjacent(dx, dy, 0, false, false))
-    return result == "Clear" or result == "ClearThroughOpenDoor"
-end
 local observations = {}
 Combat.pending, Combat.cursor = {}, 1
 
@@ -73,43 +64,7 @@ function Combat.resetObservations()
     Combat.pending, Combat.cursor = {}, 1
 end
 
----@param origin IsoGridSquare Device square
----@param destination IsoGridSquare Target square
----@param range number? Maximum tile distance
----@return boolean clear
----@return string? reason Blocked path category
----@nodiscard
-function Combat.clearLane(origin, destination, range)
-    range = range or Combat.RANGE
-    if not origin or not destination then return false, "missing-square" end
-    if origin:getZ() ~= destination:getZ() then return false, "different-floor" end
-    local dx = destination:getX() - origin:getX()
-    local dy = destination:getY() - origin:getY()
-    local steps = math.max(math.abs(dx), math.abs(dy))
-    if steps > math.ceil(range) then return false, "range" end
-    local previous = origin
-    for i = 1, steps do
-        local x = origin:getX() + math.floor(dx * i / steps + 0.5)
-        local y = origin:getY() + math.floor(dy * i / steps + 0.5)
-        local square = getCell():getGridSquare(x, y, origin:getZ())
-        if not square then return false, "unloaded-path" end
-        if not clearEdge(previous, x - previous:getX(), y - previous:getY()) then return false, "blocked-edge" end
-        if previous:isWindowTo(square) then return false, "window-edge" end
-        if x ~= previous:getX() and y ~= previous:getY() then
-            local sideX = getCell():getGridSquare(x, previous:getY(), origin:getZ())
-            local sideY = getCell():getGridSquare(previous:getX(), y, origin:getZ())
-            if not sideX or not sideY
-                or not clearEdge(previous, x - previous:getX(), 0)
-                or not clearEdge(previous, 0, y - previous:getY())
-                or not clearEdge(sideX, 0, y - previous:getY())
-                or not clearEdge(sideY, x - previous:getX(), 0)
-                or previous:isWindowTo(sideX) or previous:isWindowTo(sideY)
-                or sideX:isWindowTo(square) or sideY:isWindowTo(square) then return false, "diagonal-corner" end
-        end
-        previous = square
-    end
-    return true
-end
+Combat.clearLane = require("OMHTT/DefenseLine").clear
 
 ---@param origin IsoGridSquare Device square
 ---@param range number? Maximum tile distance
@@ -168,7 +123,7 @@ function Combat.fire(record, object, player, options)
         knockdown = Combat.KNOCKDOWN_CHANCE, splash = Combat.SPLASH_DAMAGE, radius = 1.1}
     Diagnostics.defer("shot-attempt", {id = record.id, ammo = record.ammo, shots = record.shots,
         nowMs = getTimestampMs(), nextShotMs = record.nextShot, kind = record.kind})
-    if isClient() or isServer() then return "MPCombatDeferred" end
+    if isClient() or (isServer() and not options.managed) then return "MPCombatDeferred" end
     if record.kind ~= "potato" then return "WrongDevice" end
     if record.ammo <= 0 then return "Empty" end
     local now = Clock.now()
@@ -270,57 +225,25 @@ function Combat.hit(record, origin, target, player, options)
     if critical == nil then critical = ZombRand(10000) < (options.critChance or 0) * 100 end
     local directDamage = options.damage * (critical and options.critMultiplier or 1)
     if options.stats then directDamage = Conditional.damage(target, directDamage, Conditional.snapshot(target, options.stats)) end
-    Damage.apply(target, directDamage, record.id, "potato", player, weapon)
-    require("OMHTT/TurretProc").hit(target, true, tx, ty, origin:getZ(), record, player, options)
-    require("OMHTT/TurretVolley").fragment(record, tx, ty, origin:getZ(), target, player, options)
     local damagedAt = getTimestampMs()
     local knocked = false
-    local knockReason = "dead"
-    local roll = -1
-    local remaining = 0
-    if not target:isDead() then
-        if target:isOnFloor() or target:isKnockedDown() then
-            knockReason = "already-down"
-        else
-            local last = target:getModData().OMHTTKnockdownUntilMs
-            if last and last > now + Combat.KNOCKDOWN_GUARD_MS then
-                last = now + Combat.KNOCKDOWN_GUARD_MS
-                target:getModData().OMHTTKnockdownUntilMs = last
-            end
-            if last and now < last then
-                remaining = last - now
-                knockReason = "recovery-guard"
-            else
-                roll = ZombRand(100)
-                knockReason = "chance-miss"
-                if roll < options.knockdown then
-                    target:knockDown(false)
-                    target:setPlayerAttackPosition("FRONT")
-                    target:setUsePhysicHitReaction(false)
-                    local dx = tx - origin:getX() - 0.5
-                    local dy = ty - origin:getY() - 0.5
-                    local length = math.sqrt(dx * dx + dy * dy)
-                    if length > 0 then
-                        target:setHitDir(Vector2.new(dx / length, dy / length))
-                    end
-                    target:setHitForce(0.35)
-                    target:getModData().OMHTTKnockdownUntilMs = now + Combat.KNOCKDOWN_GUARD_MS
-                    knocked = true
-                    knockReason = "requested"
-                end
-            end
+    require("OMHTT/TurretVolley").fragment(record, tx, ty, origin:getZ(), target, player, options)
+    require("OMHTT/TurretHit").resolve(target, directDamage, record.id, "potato", options, function()
+        require("OMHTT/TurretProc").hit(target, true, tx, ty, origin:getZ(), record, player, options)
+        local guard = require("OMHTT/DefenseActorState").get(target).OMHTTKnockdownUntilMs
+        if not target:isDead() and not target:isOnFloor() and not target:isKnockedDown()
+            and (not guard or guard <= getTimestampMs()) and ZombRand(100) < options.knockdown then
+            knocked = require("OMHTT/DefenseMotion").request(target, "knock", record.id, origin:getX() + .5, origin:getY() + .5)
+            if knocked then require("OMHTT/DefenseActorState").get(target).OMHTTKnockdownUntilMs = getTimestampMs() + Combat.KNOCKDOWN_GUARD_MS end
         end
-    end
-    Conditional.impact(target, origin, options)
-    Diagnostics.defer("shot-knockdown", {id = record.id, shot = record.shots, reason = knockReason,
-        roll = roll, chance = options.knockdown, guardRemainingMs = remaining,
-        state = target:getCurrentStateName(), ragdollAllowed = target:canRagdoll(),
-        physicsRequested = target:usePhysicHitReaction()})
-    if Diagnostics.enabled("turrets") and SandboxVars.OMHTurretsTraps.TurretDetailedLogging == true then
-        if #observations >= 12 then table.remove(observations, 1) end
-        observations[#observations + 1] = {zombie = target, id = record.id, shot = record.shots,
-            started = now, checkAt = now + 150, stage = 0, x = tx, y = ty}
-    end
+        Conditional.impact(target, origin, options)
+        Diagnostics.defer("shot-damage-confirmed", {id = record.id, shot = record.shots, dead = target:isDead(), knocked = knocked})
+        if not isServer() and Diagnostics.enabled("turrets") and SandboxVars.OMHTurretsTraps.TurretDetailedLogging == true then
+            if #observations >= 12 then table.remove(observations, 1) end
+            observations[#observations + 1] = {zombie = target, id = record.id, shot = record.shots,
+                started = now, checkAt = now + 150, stage = 0, x = tx, y = ty}
+        end
+    end)
     local splashStarted = getTimestampMs()
     local splash = 0
     local nearby = {}
@@ -335,7 +258,7 @@ function Combat.hit(record, origin, target, player, options)
             local dy = zombie:getY() - ty
             if options.splash > 0 and dx * dx + dy * dy <= options.radius * options.radius
                 and Combat.clearLane(impactSquare, zombie:getSquare(), options.range) then
-                Damage.apply(zombie, options.splash, record.id, "splash", player, weapon)
+                Damage.resolve(zombie, options.splash, record.id, "splash")
                 splash = splash + 1
             end
         end
@@ -371,7 +294,7 @@ end
 
 ---@return nil
 function Combat.tickFlights()
-    if isClient() or isServer() then return end
+    if isClient() then return end
     local now, done = Clock.now(), 0
     local deadline = Budget.limit(2)
     for i = 1, math.min(16, #Combat.pending) do
@@ -381,7 +304,7 @@ function Combat.tickFlights()
         if now >= shot.due then
             table.remove(Combat.pending, Combat.cursor)
             local facts = Combat.arrive(shot)
-            triggerEvent("OnServerCommand", Foundation.MODULE, "Impact", facts)
+            require("OMHTT/DefenseEffects").emit("Impact", facts)
             Diagnostics.defer("shot-arrived", {id = facts.id, shot = facts.shot, delayMs = now - shot.facts.start,
                 lateMs = now - shot.due, missed = facts.missed == true})
             done = done + 1

@@ -134,7 +134,7 @@ function Action:complete()
         if isServer() then
             sendRemoveItemFromContainer(source, candidate)
             sendAddItemToContainer(destination, candidate)
-            if G.profile(candidate) then
+            if G.profile(candidate) or T.kind(candidate) == "battery" then
                 require("OMHTT/TurretItemState").publish(candidate, self.character)
             end
         end

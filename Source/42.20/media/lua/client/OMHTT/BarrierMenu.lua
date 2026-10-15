@@ -91,19 +91,17 @@ local function fillMenu(playerIndex, context, worldobjects, test)
                 upgrade.toolTip.description = getText("UI_OMHTT_ReinforceRequirements")
             end
             local plan, reason
-            if not isClient() then
-                plan, reason = Vault.plan(player, object, record.id)
-                local label = reason
-                if plan then
-                    label = "ContextMenu_OMHTT_VaultRear"
-                    if plan.side == "front" then
-                        label = "ContextMenu_OMHTT_VaultFront"
-                    end
+            plan, reason = Vault.plan(player, object, record.id)
+            local label = reason
+            if plan then
+                label = "ContextMenu_OMHTT_VaultRear"
+                if plan.side == "front" then
+                    label = "ContextMenu_OMHTT_VaultFront"
                 end
-                local vault = menu:addOption(getText(label), object, Vault.queue, player, record.id)
-                vault.notAvailable = plan == nil
-                Selection.bindHighlight(vault, parts)
             end
+            local vault = menu:addOption(getText(label), object, Vault.queue, player, record.id)
+            vault.notAvailable = plan == nil
+            Selection.bindHighlight(vault, parts)
             Diagnostics.emit("barrier-menu", {id = record.id, condition = record.condition, max = record.maxHealth,
                 source = entry.source, choice = i, collisionModel = record.collisionModel, vault = plan and plan.side or reason,
                 playerX = player:getX(), playerY = player:getY(), playerZ = player:getZ()})

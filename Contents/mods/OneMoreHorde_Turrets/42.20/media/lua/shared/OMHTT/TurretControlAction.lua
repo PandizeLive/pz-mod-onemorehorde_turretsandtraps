@@ -16,6 +16,8 @@ function Action:isValid()
         end
     elseif self.command == "Power" then
         return type(self.value) == "boolean"
+    elseif self.command == "Fire" then
+        return self.value == true
     elseif self.command == "Range" then
         return type(self.value) == "number" and self.value == self.value and self.value % 1 == 0
             and self.value >= 0 and self.value <= math.max(2, math.ceil(T.cycleConfig(contents).range))
@@ -29,6 +31,13 @@ function Action:complete()
     self.done = true
     if self.command == "Power" then
         return require("OMHTT/TurretWorld").setPower(self.character, self.object, self.value)
+    end
+    if self.command == "Fire" then
+        local result = require("OMHTT/TurretWorld").fire(self.character, self.object)
+        if isServer() then
+            sendServerCommand(self.character, "OMHTT_TurretControl", "Result", {id = self.id, status = result})
+        end
+        return true
     end
     local state = T.state(self.object)
     if self.command == "Priority" then

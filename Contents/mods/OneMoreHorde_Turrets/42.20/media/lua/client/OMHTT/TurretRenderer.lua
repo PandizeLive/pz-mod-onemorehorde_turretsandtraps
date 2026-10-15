@@ -1,10 +1,33 @@
-if isClient() or isServer() then return end
+if isServer() then return end
 local T = require("OMHTT/Turret")
 local D = require("OMHTT/Diagnostics")
 local G = require("OMHTT/Firearms")
 local M = require("OMHTT/TurretModules")
 local Aim = require("OMHTT/TurretAim")
 local R = {order = {}, ordered = {}, cursor = 1, entries = {}, mode = nil, lastCheck = 0, headHeight = T.HEAD_VISUAL.height, headScale = T.HEAD_VISUAL.scale}
+
+---@param object IsoObject Replicated device; this only changes its local presentation
+---@param head InventoryItem? Replicated installed head
+---@return nil
+function R.fallback(object, head)
+    if not isClient() then return end
+    local state = T.state(object)
+    local overlay = head and not G.profile(head) and not T.hybrid()
+    local facing = overlay and state.facing or (state.baseFacing or state.facing)
+    local sprite = T.sprite(facing, overlay)
+    if object:getSpriteName() ~= sprite then
+        object:setSprite(sprite)
+        object:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_OBJECT_MODIFY)
+    end
+    local config = object:getSpriteConfig()
+    if not config or not config:isValid() or config:getTileInfo():getSpriteName() ~= sprite then
+        local entity = "OMHTTDeployTurret"
+        if overlay then entity = "OMHTTPotatoVisual" .. math.floor(require("OMHTT/Foundation").normalizeFacing(facing) / 4) end
+        local info = SpriteConfigManager.GetObjectInfo(entity)
+        if config then GameEntityFactory.RemoveComponentType(object, ComponentType.SpriteConfig) end
+        GameEntityFactory.AddComponent(object, ComponentType.SpriteConfig:CreateComponentFromScript(info:getScript()))
+    end
+end
 
 ---@return nil
 function R.restoreDraw()
@@ -25,6 +48,7 @@ end
 ---@return nil
 function R.changed(object, head)
     if not T.state(object) then R.entries[object] = nil; return end
+    R.fallback(object, head)
     if head then
         local scale = R.headScale
         if G.profile(head) then scale = 1 end
@@ -71,16 +95,19 @@ end
 ---@param now number Current tick timestamp
 ---@return nil
 function R.animate(now)
-    local A = require("OMHTT/TurretAutomation")
+    local A = not isClient() and require("OMHTT/TurretAutomation")
     local started = D.enabled("turrets") and getTimestampMs()
     local speed = M.option("IdleSweepSpeed", 30, 0, 180)
     local configuredCone = M.option("ForwardCone", 90, 10, 360)
     for object, entry in pairs(R.entries) do
-        local state, automatic = T.state(object), A.entries[object]
+        local state, automatic = T.state(object), A and A.entries[object]
         if state then
             local elapsed = math.min(100, math.max(0, now - (entry.lastFrame or now))) / 1000
             entry.lastFrame = now
-            if entry.profile.stats.rotary then
+            if isClient() then
+                local desired = state.aimDegrees or (state.facing or 0) * 22.5
+                entry.visualHeading = Aim.move(entry.visualHeading or desired, desired, elapsed * 720)
+            elseif entry.profile.stats.rotary then
                 entry.visualHeading = state.aimDegrees
             elseif automatic and automatic.status == "no-target" and not Aim.entries[object] and entry.head and speed > 0 then
                 local profile = entry.profile
@@ -184,6 +211,10 @@ function R.tick()
             R.order[R.cursor] = R.order[#R.order]
             R.order[#R.order] = nil
         else
+            if isClient() then
+                local head = T.contents(object:getContainer()).head
+                R.changed(object, head)
+            end
             R.cursor = R.cursor + 1
         end
         if getTimestampMs() >= deadline then break end
@@ -191,6 +222,7 @@ function R.tick()
     local mode = T.hybrid()
     if mode == R.mode then return end
     R.mode = mode
+    if isClient() then return end
     local W = require("OMHTT/TurretWorld")
     for object in pairs(R.entries) do
         if object:getObjectIndex() >= 0 and object:getSquare() then W.refresh(object) end
@@ -200,6 +232,11 @@ end
 
 Events.OnOMHTTTurretChanged.Add(R.changed)
 Events.LoadGridsquare.Add(R.loaded)
+Events.OnObjectAdded.Add(function(object)
+    if isClient() and T.state(object) and object:getContainer() then
+        R.changed(object, T.contents(object:getContainer()).head)
+    end
+end)
 Events.RenderOpaqueObjectsInWorld.Add(R.render)
 Events.OnTick.Add(R.tick)
 return R

@@ -45,3 +45,8 @@ No owner test or 0.2.49 acceptance change. [C245](PATCH_C245_PROGRESS.md):20,216
 The broader stock native write and read/restart regression suite also passes (67.3s/70.8s, zero clients). It covers existing native serialization, traps, firearms/ammo, packs, collision/visibility, recipes, accuracy and sound registrations; SP-emulated checks are not MP certification. The initial nested-output-path fixture failure was repaired and retained as failed evidence. See C245 for exact paths and limitations.
 
 C245 continued in the same approved turn: multiplayer craft-first/repeat Building now waits for native inventory replication. Final 20,227-assertion run passes (`diagnostics/c245-multiplayer/building-validation-console.log`), including delayed output/removal, duplicate completion, cancellation and timeout fixtures. Earlier 20,216/native results remain historical evidence; no connected client or installed-build acceptance is added. Native ownership API inspection rules out a health-sync/ownership-lock shortcut; see C245 findings.
+
+
+## C246 development-source verification (2026-10-14)
+
+[Multiplayer implementation and complete evidence](PATCH_C246_MULTIPLAYER.md): 20,319 assertions; 161 compilations; native zero-client production firing/services; write/read persistence; three independent package selections; 462 Horde assertions. These test the uninstalled development source, not immutable test/v0.2.49 or a new owner session. Connected dedicated/listen acceptance is pending. No new owner console result is asserted.

@@ -44,6 +44,27 @@ function V.parts(record)
     return parts
 end
 
+---@param record table Replicated barrier
+---@return table objects Exact native collision parts for local traversal
+function V.colliders(record)
+    if record.collisionModel ~= "outline-v1" then return V.parts(record) or {} end
+    local result = {}
+    for x = record.x - 2, record.x + 2 do
+        for y = record.y - 2, record.y + 2 do
+            local square = getCell():getGridSquare(x, y, record.z)
+            local objects = square and square:getSpecialObjects()
+            if objects then
+                for i = 0, objects:size() - 1 do
+                    local object = objects:get(i)
+                    local edge = object:hasModData() and object:getModData().OMHTTEdge
+                    if edge and edge.id == record.id then result[#result + 1] = object end
+                end
+            end
+        end
+    end
+    return result
+end
+
 ---@param x number Preview anchor
 ---@param y number Preview anchor
 ---@param z number Floor

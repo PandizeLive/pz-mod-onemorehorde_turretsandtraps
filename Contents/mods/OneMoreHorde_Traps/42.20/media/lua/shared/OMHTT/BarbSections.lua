@@ -451,6 +451,11 @@ function B.removed(object)
     end
     local record = B.record(object)
     if not record then return end
+    if isClient() then
+        if B.nodes[record.id] then B.index(record, false) end
+        if record.paired then B.store.wires[record.id] = nil else B.store.panels[record.id] = nil end
+        return
+    end
     if record.paired then B.retire(record, object); return end
     if isServer() then panelRemovals[record.id] = record; return end
     local _, host = B.resolve(record)
@@ -656,6 +661,9 @@ OMHTT_BarbMenuAvailable = function() return B.enabled() end
 OMHTT_BarbWireMenuAvailable = B.wireEnabled
 Events.OnInitGlobalModData.Add(B.initialize)
 Events.LoadGridsquare.Add(B.loaded)
+Events.OnObjectAdded.Add(function(object)
+    if isClient() and object:getSquare() then B.loaded(object:getSquare()) end
+end)
 Events.OnObjectAboutToBeRemoved.Add(B.removed)
 Events.OnTick.Add(B.tick)
 return B

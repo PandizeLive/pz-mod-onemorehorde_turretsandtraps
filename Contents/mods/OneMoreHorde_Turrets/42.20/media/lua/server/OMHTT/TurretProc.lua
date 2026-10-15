@@ -1,4 +1,4 @@
-if isClient() or isServer() then return end
+if isClient() then return end
 local Clock = require("OMHTT/TurretClock")
 local Budget = require("OMHTT/TurretScheduler")
 local Damage = require("OMHTT/Damage")
@@ -107,7 +107,7 @@ function E.hit(zombie, alive, x, y, z, record, player, options)
     if not alive or not options.procJobs then return end
     local stats, now = options.stats, Clock.now()
     if stats.tack > 0 then
-        local data = zombie:getModData()
+        local data = require("OMHTT/DefenseActorState").get(zombie)
         local previous = E.fields[data.OMHTTTackField]
         if not previous or now >= previous.expires then
             if options.procFields <= 0 then error("Tack admission exhausted") end
@@ -119,6 +119,7 @@ function E.hit(zombie, alive, x, y, z, record, player, options)
             E.fieldOrder[#E.fieldOrder + 1] = field
             E.fieldCount = E.fieldCount + 1
             E.index(field, true)
+            if isServer() then require("OMHTT/TurretTackServer").publish(field) end
         end
     end
     if stats.martyrdom > 0 and zombie:isDead() then
@@ -139,12 +140,16 @@ function E.sound(name, effect)
     local now = Clock.now()
     if E.audioAt[name] and now < E.audioAt[name] then return end
     E.audioAt[name] = now + 100
-    triggerEvent("OnServerCommand", F.MODULE, "Click", {sound = name, x = effect.x, y = effect.y, z = effect.z})
+    require("OMHTT/DefenseEffects").emit("Click", {sound = name, x = effect.x, y = effect.y, z = effect.z})
 end
 
 ---@param player IsoPlayer Nearby player
 ---@return nil
 function E.injure(player)
+    if isServer() then
+        require("OMHTT/DefenseInjury").request(player, "bruise", 1000)
+        return
+    end
     if player:isDead() or player:isGodMod() or player:isNoClip() or player:isGhostMode() then return end
     local index, now = player:getPlayerNum(), Clock.now()
     if E.injuryAt[index] and now < E.injuryAt[index] then return end
@@ -166,8 +171,8 @@ function E.step(job)
     if job.due and now < job.due then return nil end
     if not job.started then
         job.started = true
-        addSound(nil, math.floor(job.x), math.floor(job.y), job.z, 20, 20)
-        triggerEvent("OnServerCommand", F.MODULE, "Impact", {id = job.source, shot = "martyrdom:" .. tostring(job.id),
+        require("OMHTT/DefenseHorde").sound(nil, math.floor(job.x), math.floor(job.y), job.z, 20, 20)
+        require("OMHTT/DefenseEffects").emit("Impact", {id = job.source, shot = "martyrdom:" .. tostring(job.id),
             x = job.x, y = job.y, z = job.z, fromX = job.x, fromY = job.y, silent = true})
     end
     local radius = math.ceil(job.radius)
@@ -187,7 +192,7 @@ function E.step(job)
             if instanceof(actor, "IsoPlayer") then
                 E.injure(actor)
             else
-                Damage.apply(actor, job.damage / 100, job.source, "martyrdom", job.player, job.weapon)
+                Damage.resolve(actor, job.damage / 100, job.source, "martyrdom")
             end
         end
         if job.index > moving:size() or moving:get(job.index - 1) ~= actor then job.index = job.index - 1 end
@@ -206,6 +211,7 @@ function E.tick()
         if E.fieldCursor > #E.fieldOrder then E.fieldCursor = 1 end
         local field = E.fieldOrder[E.fieldCursor]
         if now >= field.expires then
+            if isServer() then require("OMHTT/TurretTackServer").publish(field, true) end
             E.index(field, false)
             E.fields[field.id], E.fieldCount = nil, E.fieldCount - 1
             E.fieldOrder[E.fieldCursor] = E.fieldOrder[#E.fieldOrder]
@@ -287,4 +293,5 @@ end
 Budget.register("TurretProc.tick", E.tick)
 Events.OnSave.Add(E.save)
 Events.OnGameStart.Add(E.load)
+Events.OnServerStarted.Add(E.load)
 return E

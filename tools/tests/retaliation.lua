@@ -58,8 +58,10 @@ a.thumpTarget = barrier
 B.update(a)
 a.variables[B.TOKEN] = "left"
 testMode = "server"
+a.owner = testPlayer
 B.update(a)
-check(a.health > 1.54 and D.apply(a, 1, "test", "barrier", nil, nil) == 0, "dedicated combat path fails closed")
+check(a.health > 1.54 and D.apply(a, 1, "test", "barrier", nil, nil) == 0, "Owned zombies require the acknowledged damage path")
+a.owner = nil
 testMode = "client"
 B.update(a)
 check(a.health > 1.54, "MP client cannot retaliate independently")

@@ -20,6 +20,12 @@ end
 ---@return nil
 function A.play(object, entry, name)
     if not name or name == "" then return end
+    if isServer() then
+        local square = object:getSquare()
+        require("OMHTT/DefenseEffects").emit("Click", {sound = name, x = square:getX() + .5,
+            y = square:getY() + .5, z = square:getZ()})
+        return
+    end
     local logging = D.enabled("turrets")
     local started = logging and getTimestampMs()
     for i = #entry.handles, 1, -1 do

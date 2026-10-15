@@ -1,4 +1,4 @@
-if isClient() or isServer() then return end
+if isClient() then return end
 local Horde = require("OMHTT/DefenseHorde")
 local T = require("OMHTT/Turret")
 local Heads = require("OMHTT/TurretHeads")
@@ -29,6 +29,10 @@ end
 ---@param now number Active milliseconds
 ---@return nil
 function R.injure(player, blades, now)
+    if isServer() then
+        require("OMHTT/DefenseInjury").request(player, blades and "cut" or "rotaryBruise", 2000)
+        return
+    end
     if player:isDead() or player:isGodMod() or player:isNoClip() or player:isGhostMode() then return end
     local data = player:getModData()
     if not data.OMHTTRotaryInjury then
@@ -89,16 +93,20 @@ function R.contact(entry, actor, job)
         amount = amount * job.stats.critMultiplier
     end
     amount = Conditional.damage(actor, amount, Conditional.snapshot(actor, job.stats))
-    Damage.apply(actor, amount, T.state(entry.object).id, "rotary", nil, weapon)
-    Conditional.impact(actor, origin, {impactReady = true, stats = {impact = job.stats.knockdown}})
+    local source = T.state(entry.object).id
+    Damage.resolve(actor, amount, source, "rotary", function(lost)
+        if lost > 0 then
+            Conditional.impact(actor, origin, {source = source, impactReady = true, stats = {impact = job.stats.knockdown}})
+        end
+    end)
     if Clock.now() >= (entry.soundAt or 0) then
         entry.soundAt = Clock.now() + 150
         local radius = require("OMHTT/TurretStats").hearingRadius(entry.rotaryHead, job.stats)
         if radius > 0 then
-            addSound(entry.object, origin:getX(), origin:getY(), origin:getZ(), radius, 10)
+            Horde.sound(entry.object, origin:getX(), origin:getY(), origin:getZ(), radius, 10)
         end
         local sound = job.stats.headKind == "RotaryBlades" and "AxeSawBladeHit" or "BaseballBatHit"
-        require("OMHTT/PrototypeEffects").sound(sound, origin:getX() + .5, origin:getY() + .5, origin:getZ(), job.stats.hearingMultiplier)
+        require("OMHTT/DefenseEffects").emit("Click", {sound = sound, x = origin:getX() + .5, y = origin:getY() + .5, z = origin:getZ(), gain = job.stats.hearingMultiplier})
     end
 end
 
@@ -153,7 +161,7 @@ function R.step(entry, deadline)
             wants = false
             entry.retryAt = now + stats.cooldown
             local square = object:getSquare()
-            require("OMHTT/PrototypeEffects").sound("OMHTTTriggerClick", square:getX() + .5, square:getY() + .5, square:getZ(), 1)
+            require("OMHTT/DefenseEffects").emit("Click", {sound = "OMHTTTriggerClick", x = square:getX() + .5, y = square:getY() + .5, z = square:getZ()})
         end
     end
     if wants and not moving then
@@ -175,8 +183,8 @@ function R.step(entry, deadline)
         local transaction = {batteryPercent = cost, generatorFuel = stats.generatorFuel * seconds}
         local power = W.power(object, contents, transaction)
         if not power then
-            if contents.battery and contents.battery:getCurrentUsesFloat() > 0 then
-                contents.battery:setCurrentUsesFloat(0)
+            if contents.battery and require("OMHTT/TurretBattery").charge(contents.battery) > 0 then
+                require("OMHTT/TurretBattery").spend(contents.battery, 1)
             end
             state.rotaryManual = nil
             moving = false
@@ -184,9 +192,10 @@ function R.step(entry, deadline)
             entry.checkedTravel = entry.travel
         else
             if power.kind == "battery" then
-                power.battery:setCurrentUsesFloat(math.max(0, power.battery:getCurrentUsesFloat() - power.cost))
+                require("OMHTT/TurretBattery").spend(power.battery, power.cost)
             elseif power.kind == "generator" then
                 power.generator:setFuel(math.max(0, power.generator:getFuel() - power.cost))
+                require("OMHTT/TurretPowerSync").changed(power.generator)
             end
             entry.travel = before + travel
         end

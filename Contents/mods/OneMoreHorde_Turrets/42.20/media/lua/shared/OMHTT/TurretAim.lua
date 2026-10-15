@@ -55,7 +55,7 @@ end
 
 ---@return nil
 function Aim.tick()
-    if isClient() or isServer() then return end
+    if isClient() then return end
     local W = require("OMHTT/TurretWorld")
     local Combat = require("OMHTT/PrototypeCombat")
     local now = Clock.now()
@@ -100,6 +100,9 @@ function Aim.tick()
                     Aim.entries[object] = nil
                     local result = W.fire(entry.player, object, entry.target)
                     require("OMHTT/TurretSearch").results[object] = {status = result, at = now}
+                    if isServer() then
+                        sendServerCommand(entry.player, "OMHTT_TurretControl", "Result", {id = state.id, status = result})
+                    end
                 end
             end
         end

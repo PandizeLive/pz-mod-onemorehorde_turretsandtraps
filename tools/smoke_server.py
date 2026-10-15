@@ -39,7 +39,7 @@ def main():
     (turret_probe.parent / "OMHTT/NativeProc.lua").write_text((ROOT / "tools/tests/native_proc.lua").read_text(encoding="utf-8"), encoding="utf-8")
     for name in ['TurretProc', 'TurretVolley']:
         core = (ROOT / ('Source/42.20/media/lua/server/OMHTT/' + name + '.lua')).read_text(encoding='utf-8')
-        assert core.startswith('if isClient() or isServer() then return end\n')
+        assert core.startswith('if isClient() then return end\n')
         core = core.split('\n', 1)[1].replace('require("OMHTT/TurretProc")', 'require("OMHTT/NativeTurretProc")')
         (turret_probe.parent / ('OMHTT/Native' + name + '.lua')).write_text(core, encoding='utf-8')
     console = CACHE / "server-console.txt"

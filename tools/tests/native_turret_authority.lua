@@ -110,6 +110,43 @@ return function(player)
     assert(Control:new(player, rebuilt, currentId, "Power", false):complete() and not T.isOn(T.state(rebuilt)), "Native power-off action failed")
     assert(Control:new(player, rebuilt, currentId, "Power", true):complete() and T.isOn(T.state(rebuilt)), "Native power-on action failed")
     print("[OMHTT-Smoke] native-server-feed reload=3-conserved publicMetadata=ignored power=server fields=recipient-native clients=0")
+    local target = IsoZombie.new(getCell())
+    target:setCurrent(square)
+    target:setX(8.5)
+    target:setY(8.25)
+    target:setZ(0)
+    target:setHealth(100)
+    local Clock = require("OMHTT/TurretClock")
+    local oldNow, oldRandom = Clock.now, ZombRand
+    Clock.now = function() return clock + stats.reload + stats.rack + stats.cooldown + 1000 end
+    ZombRand = function() return 0 end
+    T.state(rebuilt).aimDegrees = require("OMHTT/TurretAim").angle(rebuilt, target)
+    local Battery = require("OMHTT/TurretBattery")
+    local charge = Battery.charge(battery)
+    local supply = W.power(rebuilt, T.contents(rebuilt:getContainer()), stats)
+    -- The native fixture square is not in the mapped world; provide only its lookup.
+    local oldCell, nativeCell = getCell, getCell()
+    getCell = function() return {getGridSquare = function(_, x, y, z)
+        if x == 8 and y == 8 and z == 0 then return square end
+        return nativeCell:getGridSquare(x, y, z)
+    end} end
+    local fired = W.fire(player, rebuilt, target)
+    getCell = oldCell
+    assert(fired == "Fired", "Production dedicated-server firearm dispatch failed: " .. tostring(fired))
+    assert(target:getHealth() < 100 and G.loaded(gun) == 2
+        and (supply.kind ~= "battery" or math.abs(Battery.charge(battery) - charge + supply.cost) < .00000001),
+        "Production fire state health=" .. tostring(target:getHealth()) .. " loaded=" .. tostring(G.loaded(gun))
+            .. " charge=" .. tostring(battery:getCurrentUsesFloat()) .. " before=" .. tostring(charge)
+            .. " power=" .. tostring(supply.kind) .. " cost=" .. tostring(supply.cost))
+    W.publishRuntime(rebuilt, T.state(rebuilt), T.contents(rebuilt:getContainer()), Clock.now())
+    local remainder = ItemState.get(battery, "battery").debt
+    battery:getModData().OMHTTBatteryDrain.debt = -999
+    assert(math.abs(ItemState.get(battery, "battery").debt - remainder) < .00000001,
+        "Forged battery view changed private fractional accounting")
+    ItemState.publish(battery, player)
+    Clock.now, ZombRand = oldNow, oldRandom
+    target:setHealth(0)
+    print("[OMHTT-Smoke] native-server-production-fire damage=confirmed ammo=one power=" .. supply.kind .. " presentation=published clients=0")
     assert(Transfer:new(player, rebuilt, gun, false, currentId):complete(), "Native firearm removal failed")
     local head = player:getInventory():AddItem(T.HEAD)
     assert(Transfer:new(player, rebuilt, head, true, currentId):complete(), "Native potato head install failed")

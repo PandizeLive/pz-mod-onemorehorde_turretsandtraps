@@ -1,4 +1,4 @@
-if isClient() or isServer() then return end
+if isServer() then return end
 local E
 local Clock = require("OMHTT/TurretClock")
 local Budget = require("OMHTT/TurretScheduler")
@@ -42,6 +42,10 @@ local function update()
 end
 
 Events.OnGameStart.Add(function()
-    E = require("OMHTT/TurretProc")
-    Budget.register("TurretTackMarkers.update", update)
+    E = require(isClient() and "OMHTT/TurretTackView" or "OMHTT/TurretProc")
+    if isClient() then
+        Events.OnTick.Add(update)
+    else
+        Budget.register("TurretTackMarkers.update", update)
+    end
 end)

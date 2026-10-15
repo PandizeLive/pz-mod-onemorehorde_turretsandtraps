@@ -13,7 +13,8 @@ GAME = Path(os.environ.get("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapp
 
 def check(selection):
     version, expected = build(check=True)
-    output = ROOT / "diagnostics" / ("v" + version)
+    output = Path(os.environ.get("OMHTT_DIAGNOSTIC_DIR", str(ROOT / "diagnostics" / ("v" + version))))
+    output.mkdir(parents=True, exist_ok=True)
     cache = output / ("package-cache-" + selection)
     selected = ["traps"] if selection == "traps" else ["turrets"] if selection == "turrets" else ["turrets", "traps"]
     for component, files in expected.items():
@@ -61,6 +62,7 @@ def check(selection):
     assert "NoSuchFileException" not in text
     assert "tiledef number" not in text.lower()
     assert text.count("[OMHTT] packages-ready") == 1, "Shared startup hook duplicated"
+    assert not any("MOD:OMH:" in line and "Exception thrown" in line for line in text.splitlines()), "Mod startup callback failed"
     result = {"selection": selection, "version": version, "passed": True, "seconds": round(time.monotonic() - started, 1)}
     (output / ("packages-" + selection + ".json")).write_text(json.dumps(result, indent=2) + "\n")
     print(json.dumps(result), flush=True)

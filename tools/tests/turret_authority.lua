@@ -117,7 +117,7 @@ sendAddItemToContainer = function(container, added)
 end
 sendRemoveItemFromContainer = function() error("Pickup must not separately synchronize nested contents") end
 local id = T.state(object).id
-check(W.fire(player, object) == "Unavailable", "Feed support does not accidentally enable unfinished multiplayer combat")
+check(W.fire(player, object) == "Off", "Server firing obeys private power state despite forged public metadata")
 local repair = Action:new(player, object, "Repair", id)
 check(repair.maxTime == 500 and repair.elapsed == 0, "Server reconstructs ten-second repair without client elapsed state")
 check(repair:complete() and object.health == 100 and object.healthSynced, "Server completion repairs and synchronizes native health")

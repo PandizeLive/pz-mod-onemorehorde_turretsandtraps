@@ -1,4 +1,4 @@
-if isClient() or isServer() then
+if isServer() then
     return
 end
 local P = {}
@@ -17,6 +17,7 @@ end
 ---@param player IsoPlayer Updated local player
 ---@return nil
 function P.update(player, id, barb, divisor, trip, scratch)
+    if isClient() and not player:isLocalPlayer() then return end
     local index = player:getPlayerNum()
     if player:isNoClip() or player:isGhostMode() or player:isDead() then
         player:setVariable("OMHTTBedBrush", false)

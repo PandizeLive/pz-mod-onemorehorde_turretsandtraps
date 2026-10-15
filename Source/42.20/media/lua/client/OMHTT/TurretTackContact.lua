@@ -1,4 +1,4 @@
-if isClient() or isServer() then return end
+if isServer() then return end
 local Horde = require("OMHTT/DefenseHorde")
 local E
 local P = require("OMHTT/ContactPlayer")
@@ -12,7 +12,7 @@ local session = tostring(getTimestampMs())
 ---@param player IsoPlayer Updated player
 ---@return nil
 local function playerUpdate(player)
-    if P.trapsRegistered then return end
+    if P.trapsRegistered or (isClient() and not player:isLocalPlayer()) then return end
     P.update(player, nil, E.contact(player), 2, 20, 20)
 end
 
@@ -35,10 +35,14 @@ local function zombieUpdate(zombie)
 end
 
 Events.OnGameStart.Add(function()
-    E = require("OMHTT/TurretProc")
-    Damage = require("OMHTT/Damage")
+    E = require(isClient() and "OMHTT/TurretTackView" or "OMHTT/TurretProc")
+    if not isClient() then Damage = require("OMHTT/Damage") end
     P.tackContact = E.contact
     Events.OnPlayerUpdate.Add(playerUpdate)
-    Events.OnZombieUpdate.Add(zombieUpdate)
+    if not isClient() then Events.OnZombieUpdate.Add(zombieUpdate) end
+    require("OMHTT/DefenseMotion").checks.tack = function(zombie, source)
+        local field = E.contact(zombie)
+        return field ~= nil and field.source == source
+    end
 end)
 return {player = playerUpdate, zombie = zombieUpdate}

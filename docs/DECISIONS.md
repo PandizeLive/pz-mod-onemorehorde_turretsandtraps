@@ -1348,3 +1348,8 @@ Owner: "Why are we stopping again? Keep going with zombie combat synchronization
 ## C245 — continued ownership handoff and multiplayer implementation (2026-10-14)
 
 Owner explicitly requests resolving combat handoff, finishing remaining MP work, and pushing progress without another approval or test gate. Continue within C235/C240 scope. [C245 implementation and evidence](PATCH_C245_PROGRESS.md) records the completed Panel lifecycle/server-loot work and ordinary handoff recovery, without concealing the disconnect-after-apply and native packet/consent limitations. No balance choice, install, merge or release is inferred. C245 also corrects the C244 native fixture evidence: completion markers had not ruled out logged callback exceptions.
+
+
+## C246 — complete the approved multiplayer implementation (2026-10-14)
+
+Owner: "Complete multiplayer support." This reiterates the prior approvals to implement all multiplayer/Horde integration and push progress without waiting for owner testing. Implemented the remaining existing-roster paths and conservative consent-safe attraction admission; no new balance choice or content recipe is inferred. [Final behavior, evidence and limits](PATCH_C246_MULTIPLAYER.md). R1C3/R5C1 implementation and connected acceptance are distinct. Full C235 new-content/Void integration remains approved and unfinished; do not discard it, split the combined release, or call zero-client probes multiplayer acceptance.

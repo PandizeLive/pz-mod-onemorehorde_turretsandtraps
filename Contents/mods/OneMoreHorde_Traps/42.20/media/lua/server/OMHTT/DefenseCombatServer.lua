@@ -28,7 +28,7 @@ local function current(job)
     local zombie = job.zombie
     return not zombie:isDead() and zombie:getOnlineID() == job.id
         and zombie:getPersistentOutfitID() == job.outfit and zombie:getOwnerPlayer() == job.player
-        and zombie:getOwner() == job.connection and not job.player:isDead() and H.allowed(zombie)
+        and zombie:getOwner() == job.connection and not job.player:isDead() and H.matches(zombie, job.lease)
 end
 
 ---@param job table Authorized operation
@@ -58,6 +58,7 @@ end
 ---@return nil
 local function commitResult(job)
     local result, zombie = job.result, job.zombie
+    if not H.matches(zombie, job.lease) then finish(job, 0, "consent-changed"); return end
     local allowed, core, token = H.beginDamage(zombie, result.lost, job.source, job.kind, result.lethal)
     if not allowed then finish(job, 0, "consent-changed"); return end
     zombie:setHealth(math.min(zombie:getHealth(), result.after))
@@ -117,7 +118,7 @@ function S.request(zombie, amount, source, kind, callback)
     local job = {token = session .. ":" .. serial, sequence = sequence, zombie = zombie, player = player,
         connection = zombie:getOwner(),
         id = zombie:getOnlineID(), outfit = zombie:getPersistentOutfitID(), amount = amount,
-        source = source, kind = kind, callback = callback, phase = "prepare", deadline = getTimestampMs() + P.TIMEOUT,
+        source = source, kind = kind, lease = H.capture(zombie), callback = callback, phase = "prepare", deadline = getTimestampMs() + P.TIMEOUT,
         index = #order + 1}
     pending[job.token], victims[zombie], order[job.index] = job, job, job
     local message = envelope(job)
@@ -136,7 +137,7 @@ function S.command(module, command, player, message)
     local job = pending[message.token]
     if not job or job.player ~= player or message.id ~= job.id or message.outfit ~= job.outfit
         or message.sequence ~= job.sequence or message.owner ~= player:getOnlineID() then return end
-    if getTimestampMs() > job.deadline or not alive(job) or not H.allowed(job.zombie) then
+    if getTimestampMs() > job.deadline or not alive(job) or not H.matches(job.zombie, job.lease) then
         finish(job, 0, (job.phase == "commit" or job.phase == "query" or job.result) and "ownership-uncertain" or "cancelled")
         return
     end
@@ -157,6 +158,10 @@ function S.command(module, command, player, message)
     if command == "Ready" and (job.phase == "prepare" or job.phase == "settle-prepare") then
         if not current(job) then handoff(job); return end
         if not P.token(message.receipt) then return end
+        if not H.mark(job.zombie, job.lease, job.source, job.kind) then
+            finish(job, 0, "consent-changed")
+            return
+        end
         job.phase = job.result and "settle-commit" or "commit"
         job.receipt = message.receipt
         local commit = envelope(job)
@@ -201,7 +206,7 @@ function S.tick()
         if cursor > #order then cursor = 1 end
         local job = order[cursor]
         cursor = cursor + 1
-        if now > job.deadline or not alive(job) or not H.allowed(job.zombie) then
+        if now > job.deadline or not alive(job) or not H.matches(job.zombie, job.lease) then
             finish(job, 0, (job.phase == "commit" or job.phase == "query" or job.result) and "ownership-uncertain" or "cancelled")
         elseif not current(job) then
             handoff(job)

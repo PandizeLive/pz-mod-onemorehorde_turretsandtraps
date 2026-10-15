@@ -37,6 +37,9 @@ end
 function S.finish(entry, result)
     S.pending[entry.object] = nil
     S.results[entry.object] = {status = result, at = getTimestampMs()}
+    if isServer() and T.state(entry.object) then
+        sendServerCommand(entry.player, "OMHTT_TurretControl", "Result", {id = T.state(entry.object).id, status = result})
+    end
     D.emit("turret-manual-search", {id = T.state(entry.object) and T.state(entry.object).id,
         result = result, queueMs = getTimestampMs() - entry.started, searchMs = entry.workMs,
         slices = entry.slices, visits = entry.job.visited})
@@ -75,7 +78,7 @@ end
 
 ---@return nil
 function S.tick()
-    if isClient() or isServer() then return end
+    if isClient() then return end
     local deadline = Budget.limit(2)
     local count = math.min(4, #S.order)
     for i = 1, count do

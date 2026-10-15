@@ -1,4 +1,4 @@
-if isClient() or isServer() then return end
+if isServer() then return end
 require("TimedActions/ISClimbOverFence")
 local F = require("OMHTT/Foundation")
 local Diagnostics = require("OMHTT/Diagnostics")
@@ -13,8 +13,8 @@ local lastInputReport = {}
 ---@return table? plan Validated crossing
 ---@return string? reason Rejection translation key
 function Vault.plan(player, object, id)
-    if isClient() or isServer() or not F.barrierEnabled() or player:isDead() then return nil, "UI_OMHTT_Unavailable" end
-    local Footprint = require("OMHTT/BarrierFootprint")
+    if isServer() or not F.barrierEnabled() or player:isDead() then return nil, "UI_OMHTT_Unavailable" end
+    local Footprint = require(isClient() and "OMHTT/BarrierView" or "OMHTT/BarrierFootprint")
     local record = Footprint.exact(object)
     if not record or record.id ~= id or not Footprint.parts(record) then return nil, "UI_OMHTT_Unavailable" end
     if record.collisionModel ~= "edge-v1" and record.collisionModel ~= "outline-v1" then return nil, "ContextMenu_OMHTT_VaultRedeploy" end
@@ -98,12 +98,13 @@ end
 ---@param player IsoPlayer Local player update
 ---@return nil
 function Vault.update(player)
+    if isClient() and not player:isLocalPlayer() then return end
     local plan = active[player]
     if not plan then
         Vault.autoVault(player)
         return
     end
-    local Footprint = require("OMHTT/BarrierFootprint")
+    local Footprint = require(isClient() and "OMHTT/BarrierView" or "OMHTT/BarrierFootprint")
     local record = Footprint.exact(plan.object)
     if player:isDead() or not record or record.id ~= plan.id or not Footprint.parts(record)
         or not F.barrierEnabled() then
@@ -248,7 +249,7 @@ function Vault.forDirection(player, direction)
     end
     local square = getCell():getGridSquare(x, y, from:getZ())
     if not square then return nil end
-    local Footprint = require("OMHTT/BarrierFootprint")
+    local Footprint = require(isClient() and "OMHTT/BarrierView" or "OMHTT/BarrierFootprint")
     local objects = square:getSpecialObjects()
     local refusal = nil
     for i = 0, objects:size() - 1 do

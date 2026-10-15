@@ -1,4 +1,4 @@
-if isClient() or isServer() then return end
+if isServer() then return end
 require("ISUI/ISUIElement")
 local T = require("OMHTT/Turret")
 local R = require("OMHTT/TurretRenderer")

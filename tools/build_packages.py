@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "Source"
 PACKAGES = ROOT / "Contents/mods"
 IDS = {"traps": "OneMoreHorde_Traps", "turrets": "OneMoreHorde_Turrets"}
-SHARED_LUA = {"DefenseCombatProtocol", "DefenseCombatServer", "DefenseCombatClient", "DefenseHorde", "ContactPlayer", "BarbMovement", "BarbContact", "ActiveTime", "Foundation", "Diagnostics", "Damage", "DamagePresentation", "ConstructionMenu", "CraftingMenu", "CraftingGroups", "HybridBuild", "SandboxUI", "WorldHighlight", "PackageInfo", "PlacementTiming"}
+SHARED_LUA = {"DefenseAuthority", "DefenseActorState", "DefenseLine", "DefenseInjury", "DefenseEffects", "DefenseMotion", "DefenseCombatProtocol", "DefenseCombatServer", "DefenseCombatClient", "DefenseHorde", "ContactPlayer", "BarbMovement", "BarbContact", "ActiveTime", "Foundation", "Diagnostics", "Damage", "DamagePresentation", "ConstructionMenu", "CraftingMenu", "CraftingGroups", "HybridBuild", "SandboxUI", "WorldHighlight", "PackageInfo", "PlacementTiming"}
 TRAP_LUA = {"FoundationServer", "FoundationClient", "DevMarkers", "Construction", "DefenseMaterials"}
 TRAP_SCRIPTS = {"OMHTT_Items.txt", "OMHTT_PortableBarrier.txt", "OMHTT_construction.txt", "OMHTT_construction_ui.txt", "OMHTT_BedSpikes.txt", "OMHTT_Barbs.txt"}
 TRAP_OPTIONS = {"Enabled", "FoundationTestControls", "DiagnosticLogging", "ShowCollision", "DetailedLogging"}
@@ -69,8 +69,9 @@ def expected_files():
         title = component.title()
         pack = "OMHTT_Traps" if component == "traps" else "OMHTT_Turrets"
         number = 7316 if component == "traps" else 7317
-        description = ("Independent single-player Spike Barriers, Bed Spikes, Concertina Wire and backed Barbed Panels: crafting, placement, repair and portable defenses."
-                       if component == "traps" else "Independent single-player modular potato, firearm, Ballista and rotary turrets, modules, power and component loot.")
+        description = ("Independent Spike Barriers, Bed Spikes, Concertina Wire and backed Barbed Panels: crafting, placement, repair and portable defenses."
+                       if component == "traps" else "Independent modular potato, firearm, Ballista and rotary turrets, modules, power and component loot.")
+        description += " Development build with server-authoritative multiplayer paths; connected multiplayer acceptance is pending."
         info = f"name=OMH: {title}\nid={identifier}\nmodversion={version}\nversionMin=42.20\nicon=icon.png\ndescription={description} Part of OMH: Turrets & Traps. Fresh test world required for 0.2.41 item identities. Temporary developer artwork.\ntiledef={pack} {number}\npack={pack}\n"
         files = result[component]
         files["42.20/mod.info"] = info.encode()

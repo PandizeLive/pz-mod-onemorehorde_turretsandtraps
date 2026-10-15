@@ -1,4 +1,4 @@
-if isClient() or isServer() then return end
+if isClient() then return end
 local Heads = require("OMHTT/TurretHeads")
 local Damage = require("OMHTT/Damage")
 local Conditional = require("OMHTT/TurretConditionalHit")
@@ -27,9 +27,10 @@ function B.hit(record, origin, target, player, options)
     if hit then
         local amount = options.damage * (options.critical and stats.critMultiplier or 1)
         amount = Conditional.damage(target, amount, Conditional.snapshot(target, stats))
-        Damage.apply(target, amount, record.id, "ballista", player, weapon)
-        Proc.hit(target, true, x, y, origin:getZ(), record, player, options)
-        Conditional.impact(target, square, options)
+        require("OMHTT/TurretHit").resolve(target, amount, record.id, "ballista", options, function()
+            Proc.hit(target, true, x, y, origin:getZ(), record, player, options)
+            Conditional.impact(target, square, options)
+        end)
         if not Volley.pierce(record, origin, target, player, options, square, x, y) then
             Volley.fragment(record, x, y, origin:getZ(), target, player, options)
         end

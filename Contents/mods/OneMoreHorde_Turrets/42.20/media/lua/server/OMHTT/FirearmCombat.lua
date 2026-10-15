@@ -1,4 +1,4 @@
-if isClient() or isServer() then return end
+if isClient() then return end
 local Horde = require("OMHTT/DefenseHorde")
 local G = require("OMHTT/Firearms")
 local Accuracy = require("OMHTT/FirearmAccuracy")
@@ -42,22 +42,29 @@ function C.hit(record, origin, target, player, options)
     local firstHit
     local eligibility = {}
     for i = 1, #targets do eligibility[targets[i]] = Conditional.snapshot(targets[i], stats) end
-    for i = 1, pellets do
-        local victim = targets[(i - 1) % #targets + 1]
-        if aimHit and not victim:isDead() and Horde.allowed(victim) then
+    for i = 1, #targets do
+        local victim = targets[i]
+        local allocated = math.floor((pellets - i) / #targets) + 1
+        if allocated > 0 and aimHit and not victim:isDead() and Horde.allowed(victim) then
             local hitX, hitY, hitSquare = victim:getX(), victim:getY(), victim:getSquare()
-            local amount = Conditional.damage(victim, stats.damage * multiplier / 100 / pellets, eligibility[victim])
-            lost = lost + Damage.apply(victim, amount, record.id, "firearm", player, gun)
-            require("OMHTT/TurretProc").hit(victim, true, hitX, hitY, origin:getZ(), record, player, options)
-            if not firstHit then firstHit = {victim = victim, x = hitX, y = hitY, square = hitSquare} end
-            hits = hits + 1
-            local guard = victim:getModData().OMHTTKnockdownUntilMs
-            if not victim:isDead() and not victim:isOnFloor() and not victim:isKnockedDown()
-                and (not guard or guard < started) and ZombRand(100) < stats.knockdown then
-                victim:knockDown(false)
-                victim:getModData().OMHTTKnockdownUntilMs = started + Combat.KNOCKDOWN_GUARD_MS
+            local amount = Conditional.damage(victim, stats.damage * multiplier / 100 / pellets * allocated, eligibility[victim])
+            local admitted = require("OMHTT/TurretHit").resolve(victim, amount, record.id, "firearm", options, function(actual)
+                lost = lost + actual
+                require("OMHTT/TurretProc").hit(victim, true, hitX, hitY, origin:getZ(), record, player, options)
+                local guard = require("OMHTT/DefenseActorState").get(victim).OMHTTKnockdownUntilMs
+                local chance = 1 - (1 - stats.knockdown / 100) ^ allocated
+                if not victim:isDead() and not victim:isOnFloor() and not victim:isKnockedDown()
+                    and (not guard or guard < getTimestampMs()) and ZombRand(10000) < chance * 10000 then
+                    if require("OMHTT/DefenseMotion").request(victim, "knock", record.id) then
+                        require("OMHTT/DefenseActorState").get(victim).OMHTTKnockdownUntilMs = getTimestampMs() + Combat.KNOCKDOWN_GUARD_MS
+                    end
+                end
+                Conditional.impact(victim, origin, options)
+            end)
+            if admitted then
+                if not firstHit then firstHit = {victim = victim, x = hitX, y = hitY, square = hitSquare} end
+                hits = hits + allocated
             end
-            Conditional.impact(victim, origin, options)
         end
     end
     local Volley = require("OMHTT/TurretVolley")
@@ -72,7 +79,7 @@ function C.hit(record, origin, target, player, options)
     local wear = gun:getConditionLowerChance()
     if wear > 0 and ZombRand(wear) == 0 then gun:setCondition(math.max(0, gun:getCondition() - 1)) end
     local hearingRadius = require("OMHTT/TurretStats").hearingRadius(gun, stats)
-    if hearingRadius > 0 then addSound(options.object, origin:getX(), origin:getY(), origin:getZ(), hearingRadius, gun:getSoundVolume()) end
+    Horde.sound(options.object, origin:getX(), origin:getY(), origin:getZ(), hearingRadius, gun:getSoundVolume())
     D.defer("firearm-shot", {id = record.id, gun = gun:getFullType(), shot = record.shots,
         critical = critical, critChance = stats.critChance, critMultiplier = multiplier, hearingRadius = hearingRadius, suppressed = stats.suppressed, pellets = pellets, hits = hits, damage = lost * 100, condition = gun:getCondition(),
         magazine = gun:getCurrentAmmoCount(), chamber = gun:isRoundChambered(), ms = getTimestampMs() - started})

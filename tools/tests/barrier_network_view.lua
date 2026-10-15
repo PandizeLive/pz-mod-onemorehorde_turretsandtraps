@@ -39,6 +39,9 @@ for x = 62, 66 do
     end
 end
 testPlayer.x, testPlayer.y, testPlayer.z = 63.5, 64.5, 0
+ClimbOverFenceState = {instance = function() return "ClimbOverFenceState" end}
+function testPlayer:getCurrentState() return self.state end
+function testPlayer:getCurrentSquare() return nil end
 local action = OMHTTBarrierServiceAction:new(testPlayer, parts[1], record.id, "Pickup")
 check(action:isValid() and not action:complete() and P.parts(record) ~= nil, "Client service preview is valid but cannot grant or retire")
 local savedRequire = require

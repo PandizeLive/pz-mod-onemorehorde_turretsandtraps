@@ -1,4 +1,4 @@
-if isClient() or isServer() then return end
+if isClient() then return end
 local Horde = require("OMHTT/DefenseHorde")
 local Budget = require("OMHTT/TurretScheduler")
 local Damage = require("OMHTT/Damage")
@@ -212,13 +212,13 @@ function V.finish(ray)
             local x, y, square = victim:getX(), victim:getY(), victim:getSquare()
             local amount = ray.damage
             if group.stats.synergy then amount = Conditional.damage(victim, amount, Conditional.snapshot(victim, group.stats)) end
-            hit = Damage.apply(victim, amount, ray.id, group.kind, group.player, group.weapon) > 0
-            if hit and group.stats.synergy and owner then
-                local record = {id = ray.id, shots = ray.shot}
-                Proc.hit(victim, true, x, y, ray.z, record, group.player, owner)
-                Conditional.impact(victim, square, owner)
-
-            end
+            hit = require("OMHTT/TurretHit").resolve(victim, amount, ray.id, group.kind, owner, function()
+                if group.stats.synergy and owner then
+                    local record = {id = ray.id, shots = ray.shot}
+                    Proc.hit(victim, true, x, y, ray.z, record, group.player, owner)
+                    Conditional.impact(victim, square, owner)
+                end
+            end)
         end
     end
     local distance = ray.bestDistance or math.min(ray.distance, ray.range)
@@ -228,9 +228,9 @@ function V.finish(ray)
     if group.remaining then
         group.rays[#group.rays + 1] = facts
         group.remaining = group.remaining - 1
-        if group.remaining == 0 then triggerEvent("OnServerCommand", F.MODULE, "Volley", {rays = group.rays}) end
+        if group.remaining == 0 then require("OMHTT/DefenseEffects").emit("Volley", {rays = group.rays}) end
     else
-        triggerEvent("OnServerCommand", F.MODULE, "Ray", facts)
+        require("OMHTT/DefenseEffects").emit("Ray", facts)
     end
     if group.kind == "piercing" and victim then
         group.hits[victim] = true
@@ -430,5 +430,6 @@ end
 
 Budget.register("TurretVolley.tick", V.tick)
 Events.OnGameStart.Add(V.load)
+Events.OnServerStarted.Add(V.load)
 Events.OnSave.Add(V.save)
 return V

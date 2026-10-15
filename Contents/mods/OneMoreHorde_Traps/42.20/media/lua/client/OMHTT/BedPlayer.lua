@@ -1,14 +1,19 @@
-if isClient() or isServer() then return end
+if isServer() then return end
 local B = require("OMHTT/BedSpikes")
 local F = require("OMHTT/Foundation")
 local Barbs = require("OMHTT/BarbSections")
 local P = require("OMHTT/ContactPlayer")
 P.trapsRegistered = true
 P.barbs = Barbs
+require("OMHTT/DefenseMotion").checks.traps = function(zombie, source)
+    local barb = Barbs.contact(zombie)
+    return barb ~= nil and barb.id == source
+end
 
 ---@param player IsoPlayer Updated player
 ---@return nil
 function B.player(player)
+    if isClient() and not player:isLocalPlayer() then return end
     local square = player:getSquare()
     local id = B.enabled() and square and B.tiles[F.key(square:getX(), square:getY(), square:getZ())] or nil
     local barb = Barbs.contact(player)

@@ -12,10 +12,7 @@ local View = require("OMHTT/TurretNetworkView")
 local G = require("OMHTT/Firearms")
 local Magazine = require("OMHTT/TurretMagazineAction")
 local Slot = require("OMHTT/TurretSlot")
-local Range
-if not isClient() then
-    Range = require("OMHTT/TurretRange")
-end
+local Range = require("OMHTT/TurretRange")
 local Benefits = require("OMHTT/TurretBenefits")
 local BenefitList = require("OMHTT/TurretBenefitList")
 local Rarity = require("OMHTT/TurretRarity")
@@ -66,7 +63,10 @@ end
 
 ---@return nil
 function Panel:fire()
-    if isClient() then return end
+    if isClient() then
+        View.control(self.player, self.object, "Fire", true)
+        return
+    end
     local result = require("OMHTT/TurretWorld").fire(self.player, self.object)
     self.result, self.reason = getText("UI_OMHTT_Manage" .. result), ""
     self.nextRefresh = 0
@@ -162,6 +162,10 @@ function Panel:refresh()
     if isClient() then
         cycle, status = View.cycle(contents)
         power = View.power(self.object, contents, stats)
+        local result = View.result
+        if result and result.id == self.deviceId and getTimestampMs() - result.at < 3000 then
+            self.result = getText("UI_OMHTT_Manage" .. result.status)
+        end
         if self.pendingRange ~= nil and not self.rangeSlider.dragInside then
             View.control(self.player, self.object, "Range", self.pendingRange)
             self.pendingRange = nil
@@ -192,7 +196,7 @@ function Panel:refresh()
         self.benefitList.rows = Benefits.rows(contents, stats)
     end
     self.batteryContents = contents
-    local batteryKey = benefitsKey .. ":" .. (contents.battery and contents.battery:getCurrentUsesFloat() or 0)
+    local batteryKey = benefitsKey .. ":" .. (contents.battery and require("OMHTT/TurretBattery").charge(contents.battery) or 0)
         .. ":" .. stats.batteryPercent .. ":" .. stats.reload .. ":" .. stats.cooldown .. ":" .. stats.magazine
         .. ":" .. getGameTime():getMinutesPerDay()
         .. ":" .. (cycle and cycle.loaded or 0) .. ":" .. (cycle and cycle.conservationDebt or 0)
@@ -226,7 +230,7 @@ function Panel:refresh()
         self.moduleEffects = self.moduleEffects .. " | " .. getText("UI_OMHTT_ImprovisedStatus",
             string.format("%.1f", M.profile(state, contents, true).range))
     end
-    self.fireButton:setEnable(not isClient() and status == "Ready")
+    self.fireButton:setEnable(status == "Ready")
     local capacity = stats.modules
     self.rows = 3 + math.ceil(math.max(0, math.max(contents.modules, capacity) - 16) / 6)
     self.moduleRow = math.min(self.moduleRow, self.rows - 3)
@@ -276,7 +280,7 @@ function Panel:refresh()
     end
     self.ammoSlot.meter = math.min(1, contents.reserveAll / math.max(1, stats.ammo - loaded))
     self.magazineSlot.meter = math.min(1, (cycle and cycle.loaded or 0) / math.max(1, stats.magazine))
-    self.batterySlot.meter = contents.battery and contents.battery:getCurrentUsesFloat() or 0
+    self.batterySlot.meter = contents.battery and require("OMHTT/TurretBattery").charge(contents.battery) or 0
     self.headSlot.missing = not contents.head or contents.head:getCondition() <= 0
     self.batterySlot.missing = contents.head ~= nil and not power
     self.ammoSlot.missing = contents.head ~= nil and not stats.rotary and contents.ammo == 0
@@ -300,7 +304,7 @@ function Panel:refresh()
     self.moduleLines = getTextManager():WrapText(UIFont.Small, self.moduleEffects
         .. (self.moduleWarning ~= "" and "\n" .. self.moduleWarning or ""), self.width / 2 - 24)
     local charge = getText("UI_OMHTT_None")
-    if contents.battery then charge = tostring(math.floor(contents.battery:getCurrentUsesFloat() * 100)) .. "%" end
+    if contents.battery then charge = tostring(math.floor(require("OMHTT/TurretBattery").charge(contents.battery) * 100)) .. "%" end
     self.batterySlot.label = getText("UI_OMHTT_ManageBattery", charge)
     self.capacitySlot.disabled = contents.capacities > 0
     self.moduleLabel = getText("UI_OMHTT_ManageModules", contents.modules, capacity)

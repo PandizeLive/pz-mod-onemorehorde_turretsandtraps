@@ -2,7 +2,17 @@ if isServer() then return end
 local T = require("OMHTT/Turret")
 require("OMHTT/TurretPickupAction")
 require("TimedActions/ISTimedActionQueue")
+require("ISUI/ISContextMenu")
+require("ISUI/ISWorldObjectContextMenu")
 local N = {}
+local Range = require("OMHTT/TurretRange")
+
+---@param object IsoObject Selected turret
+---@param player IsoPlayer Operator
+---@return nil
+function N.fire(object, player)
+    require("OMHTT/TurretNetworkView").control(player, object, "Fire", true)
+end
 
 ---@param object IsoThumpable Selected turret
 ---@param player IsoPlayer Local operator
@@ -28,10 +38,22 @@ function N.menu(index, context, objects, test)
         local object = objects[i]
         if not seen[object] and T.state(object) and object:getObjectIndex() >= 0 and object:getHealth() > 0 then
             seen[object] = true
-            context:addOption(getText("UI_OMHTT_Manage"), object, require("OMHTT/TurretManage"), player)
-            context:addOption(getText("ContextMenu_OMHTT_PickupTurret"), object, N.queue, player, "Pickup")
-            local repair = context:addOption(getText("ContextMenu_OMHTT_RepairTurret"), object, N.queue, player, "Repair")
+            local option = context:addOption(getText("UI_OMHTT_Turret"), nil, nil)
+            Range.bind(option, {object})
+            local menu = ISContextMenu:getNew(context)
+            context:addSubMenu(option, menu)
+            local manage = menu:addOption(getText("UI_OMHTT_Manage"), object, require("OMHTT/TurretManage"), player)
+            Range.bind(manage, {object})
+            local fire = menu:addOption(getText("ContextMenu_OMHTT_TurretFire"), object, N.fire, player)
+            Range.bind(fire, {object})
+            local pickup = menu:addOption(getText("ContextMenu_OMHTT_PickupTurret"), object, N.queue, player, "Pickup")
+            pickup.toolTip = ISWorldObjectContextMenu.addToolTip()
+            pickup.toolTip.description = getText("UI_OMHTT_ServiceDuration")
+            local repair = menu:addOption(getText("ContextMenu_OMHTT_RepairTurret"), object, N.queue, player, "Repair")
             repair.notAvailable = object:getHealth() >= object:getMaxHealth()
+            Range.bind(repair, {object})
+            local condition = menu:addOption(getText("ContextMenu_OMHTT_BarrierCondition", object:getHealth(), object:getMaxHealth()), nil, nil)
+            condition.notAvailable = true
         end
     end
 end

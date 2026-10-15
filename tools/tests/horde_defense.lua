@@ -56,3 +56,13 @@ check(Damage.apply(zombie, 2, "turret-a", "potato", testPlayer) > 0 and zombie:i
 testMode = "client"
 check(not H.allowed(zombie) and not H.beginDamage(zombie, 1, "turret-a", "potato"), "Client cannot authorize effects")
 testMode, OneMoreHordeDefenseIntegration = oldMode, oldCore
+
+local oldSound, sounds = addSound, 0
+addSound = function() sounds = sounds + 1 end
+testMode, OneMoreHordeDefenseIntegration = "server", {API_VERSION = 1, worldSoundAllowed = function() return false end}
+check(not H.sound(nil, 1, 2, 0, 20, 20) and sounds == 0, "Unassisted active run prevents automated world attraction")
+OneMoreHordeDefenseIntegration.worldSoundAllowed = function() return true end
+check(H.sound(nil, 1, 2, 0, 20, 20) and sounds == 1, "Consented native world attraction is emitted once")
+OneMoreHordeDefenseIntegration = {API_VERSION = 1}
+check(not H.sound(nil, 1, 2, 0, 20, 20), "Older core without attraction admission fails closed")
+addSound, testMode, OneMoreHordeDefenseIntegration = oldSound, oldMode, oldCore

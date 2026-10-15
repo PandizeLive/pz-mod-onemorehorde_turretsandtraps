@@ -5,6 +5,16 @@ local G = require("OMHTT/Firearms")
 local Control = require("OMHTT/TurretControlAction")
 local V = {}
 
+---@param module string Namespace
+---@param command string Result notification
+---@param message table Server operation result
+---@return nil
+function V.receive(module, command, message)
+    if not isClient() or module ~= "OMHTT_TurretControl" or command ~= "Result" or type(message) ~= "table"
+        or type(message.id) ~= "string" or type(message.status) ~= "string" then return end
+    V.result = {id = message.id, status = message.status, at = getTimestampMs()}
+end
+
 ---@param player IsoPlayer Operator
 ---@param object IsoObject Device
 ---@param command string Supported control
@@ -23,6 +33,7 @@ end
 function V.cycle(contents)
     local head = contents.head
     if not head then return nil, "NoHead" end
+    if T.cycleConfig(contents).rotary then return {loaded = 0}, "Ready" end
     local data = head:getModData()
     local state = G.profile(head) and data.OMHTTGunCycle or data.OMHTTCycle
     local loaded = state and state.loaded or 0
@@ -43,9 +54,10 @@ function V.power(object, contents, stats)
     if square:hasGridPower() and square:getRoom() then return {kind = "grid"} end
     if square:haveElectricity() then return {kind = "generator"} end
     local battery = contents.battery
-    if battery and battery:getCondition() > 0 and battery:getCurrentUsesFloat() > 0
-        and battery:getCurrentUsesFloat() + .0000001 >= stats.batteryPercent / 100 then return {kind = "battery"} end
+    if battery and battery:getCondition() > 0 and require("OMHTT/TurretBattery").charge(battery) > 0
+        and require("OMHTT/TurretBattery").charge(battery) + .0000001 >= stats.batteryPercent / 100 then return {kind = "battery"} end
     return nil
 end
 
+Events.OnServerCommand.Add(V.receive)
 return V

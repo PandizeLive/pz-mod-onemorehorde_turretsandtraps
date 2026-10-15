@@ -35,17 +35,14 @@ function C.impact(zombie, origin, options)
     local state = string.lower(zombie:getCurrentStateName())
     if zombie:isDead() or zombie:isProne() or zombie:isKnockedDown() or zombie:isStaggerBack()
         or string.find(state, "getup", 1, true) or string.find(state, "stagger", 1, true) or zombie:isBumpFall() then return false end
-    local data, now = zombie:getModData(), Clock.now()
+    local data, now = require("OMHTT/DefenseActorState").get(zombie), Clock.now()
     if not data.OMHTTImpactGuard then data.OMHTTImpactGuard = {} end
     local guard = data.OMHTTImpactGuard
     Clock.restore(guard, now)
     if guard.nextShot and now < guard.nextShot then return false end
     if ZombRand(10000) >= options.stats.impact * 100 then return false end
-    local dx, dy = zombie:getX() - origin:getX() - .5, zombie:getY() - origin:getY() - .5
-    local length = math.sqrt(dx * dx + dy * dy)
-    if length > 0 then zombie:setHitDir(Vector2.new(dx / length, dy / length)) end
-    zombie:setHitForce(.1)
-    zombie:setStaggerBack(true)
+    if not require("OMHTT/DefenseMotion").request(zombie, "stagger", options.source or "turret-impact",
+        origin:getX() + .5, origin:getY() + .5) then return false end
     guard.nextShot = now + 5000
     return true
 end

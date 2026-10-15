@@ -15,6 +15,40 @@ local facings = {e = 0, n = 4, w = 8, s = 12}
 local generators = {}
 local feeders, feederOrder, feederCursor = {}, {}, 1
 local snapshots, refreshQueue = {}, {}
+local presentations = setmetatable({}, {__mode = "k"})
+
+---@param object IsoObject Server-owned turret
+---@param state table Authoritative controls
+---@param contents table Inventory snapshot
+---@param now number Active clock
+---@return nil
+function W.publishRuntime(object, state, contents, now)
+    if not isServer() then return end
+    local view = presentations[object]
+    if not view then
+        view = {due = 0, batteryDue = 0}
+        presentations[object] = view
+    end
+    if now >= view.due then
+        view.due = now + 250
+        local heading = math.floor((state.aimDegrees or 0) / 2)
+        if view.heading ~= heading or view.shots ~= state.shots or view.moving ~= state.rotaryMoving
+            or view.status ~= state.feedStatus or view.loaded ~= state.feedLoaded then
+            view.heading, view.shots, view.moving = heading, state.shots, state.rotaryMoving
+            view.status, view.loaded = state.feedStatus, state.feedLoaded
+            Authority.publish(object)
+        end
+    end
+    if now >= view.batteryDue then
+        view.batteryDue = now + 1000
+        local battery = contents.battery
+        if battery and view.charge ~= require("OMHTT/TurretBattery").charge(battery) then
+            view.charge = require("OMHTT/TurretBattery").charge(battery)
+            sendItemStats(battery)
+            require("OMHTT/TurretItemState").publish(battery)
+        end
+    end
+end
 
 ---@param object IsoThumpable Managed turret
 ---@return nil
@@ -63,7 +97,7 @@ function W.refresh(object)
     if Audio.entries[object] and Audio.entries[object].head ~= contents.head then Audio.stop(object) end
     if contents.head then contents.head:getModData().OMHTTPowerOff = not T.isOn(state) end
     state.baseFacing = state.baseFacing or state.facing
-    local hybrid = T.hybrid()
+    local hybrid = isServer() or T.hybrid()
     local sprite = T.sprite(state.baseFacing or state.facing, false)
     getSprite(sprite):getProperties():unset(IsoFlagType.FloorOverlay)
     if contents.head and not G.profile(contents.head) and not hybrid then sprite = T.sprite(state.facing, true) end
@@ -125,13 +159,11 @@ function W.setPower(player, object, enabled)
     local state = T.state(object)
     state.powered, state.automatic = enabled, nil
     state.rotaryManual, state.rotaryMoving = nil, false
-    if not isServer() then
-        require("OMHTT/TurretAim").entries[object] = nil
-        local search = require("OMHTT/TurretSearch").pending[object]
-        if search then search.cancelled = true end
-        local auto = require("OMHTT/TurretAutomation").entries[object]
-        if auto then auto.target, auto.job, auto.status = nil, nil, "inactive" end
-    end
+    require("OMHTT/TurretAim").entries[object] = nil
+    local search = require("OMHTT/TurretSearch").pending[object]
+    if search then search.cancelled = true end
+    local auto = require("OMHTT/TurretAutomation").entries[object]
+    if auto then auto.target, auto.job, auto.status = nil, nil, "inactive" end
     local head = T.contents(object:getContainer()).head
     Audio.stop(object)
     if head then
@@ -387,8 +419,8 @@ function W.power(object, contents, resolved)
     end
     local battery = contents.battery
     local cost = stats.batteryPercent / 100
-    if battery and battery:getCondition() > 0 and battery:getCurrentUsesFloat() > 0
-        and battery:getCurrentUsesFloat() + 0.0000001 >= cost then
+    if battery and battery:getCondition() > 0 and require("OMHTT/TurretBattery").charge(battery) > 0
+        and require("OMHTT/TurretBattery").charge(battery) + 0.0000001 >= cost then
         return {kind = "battery", battery = battery, cost = cost}
     end
     return nil
@@ -399,7 +431,7 @@ end
 ---@param target IsoZombie? Detected target for autonomous shot
 ---@return string result
 function W.fire(player, object, target)
-    if isClient() or isServer() then return "Unavailable" end
+    if isClient() then return "Unavailable" end
     local started = getTimestampMs()
     if not T.isOn(T.state(object)) then return "Off" end
     if player then
@@ -425,7 +457,7 @@ function W.fire(player, object, target)
     local Volley = require("OMHTT/TurretVolley")
     if not Volley.available(stats) then return "Unavailable" end
     local fireStarted = getTimestampMs()
-    local options = {stats = stats, weapon = contents.head, range = stats.range, interval = stats.cooldown,
+    local options = {source = state.id, stats = stats, weapon = contents.head, range = stats.range, interval = stats.cooldown,
         damage = stats.damage / 100, knockdown = stats.knockdown, critChance = stats.critChance, critMultiplier = stats.critMultiplier,
         splash = stats.damage * T.option("SplashPercent", 25, 0, 100) / 10000, radius = T.option("SplashRadius", 1.5, 0, 3), managed = true,
         profile = M.profile(state, contents, player == nil, stats), target = target, projectileSpeed = T.option("ProjectileSpeed", 20, 5, 100)}
@@ -459,7 +491,7 @@ function W.fire(player, object, target)
                 local nativeSound = contents.head:getClickSound()
                 if nativeSound and nativeSound ~= "" then sound = nativeSound end
             end
-            triggerEvent("OnServerCommand", F.MODULE, "Click", {sound = sound,
+            require("OMHTT/DefenseEffects").emit("Click", {sound = sound,
                 x = square:getX() + .5, y = square:getY() + .5, z = square:getZ()})
             return false
         end
@@ -471,9 +503,10 @@ function W.fire(player, object, target)
             options.ammoCost = charged
         end
         if power.kind == "battery" then
-            power.battery:setCurrentUsesFloat(math.max(0, power.battery:getCurrentUsesFloat() - power.cost))
+            require("OMHTT/TurretBattery").spend(power.battery, power.cost)
         elseif power.kind == "generator" then
             power.generator:setFuel(math.max(0, power.generator:getFuel() - power.cost))
+            require("OMHTT/TurretPowerSync").changed(power.generator)
         end
         if not G.profile(contents.head) then
             local cost = require("OMHTT/TurretConservation").consume(cycle, math.min(cycle.loaded, 1 + stats.splitter), stats.conservation)
@@ -482,6 +515,7 @@ function W.fire(player, object, target)
                 if spent >= cost then break end
                 local round = contents.rounds[i]
                 if round:getFullType() == contents.round:getFullType() and object:getContainer():contains(round) then
+                    if isServer() then sendRemoveItemFromContainer(object:getContainer(), round) end
                     object:getContainer():Remove(round)
                     spent = spent + 1
                 end
@@ -496,7 +530,14 @@ function W.fire(player, object, target)
     local result, impact = Combat.fire(state, object, player, options)
     if result == "Fired" then Volley.split(state, object:getSquare(), target, player, options, impact) end
     local committedAt = getTimestampMs()
-    if result == "Fired" and not T.hybrid() then W.refresh(object) end
+    if result == "Fired" then
+        if isServer() then
+            require("OMHTT/TurretItemState").publish(contents.head, player)
+            W.queueRefresh(object, false)
+        elseif not T.hybrid() then
+            W.refresh(object)
+        end
+    end
     local refreshedAt = getTimestampMs()
     if impact then
         if stats.suppressed then
@@ -510,12 +551,12 @@ function W.fire(player, object, target)
         if not stats.firearm then
             local square = object:getSquare()
             local radius = require("OMHTT/TurretStats").hearingRadius(contents.head, stats)
-            if radius > 0 then addSound(object, square:getX(), square:getY(), square:getZ(), radius, 10) end
+            require("OMHTT/DefenseHorde").sound(object, square:getX(), square:getY(), square:getZ(), radius, 10)
             D.defer("turret-hearing", {id = state.id, radius = radius, suppressed = stats.suppressed})
         end
         local command = "Launch"
         if impact.firearm then command = "GunShot" end
-        triggerEvent("OnServerCommand", F.MODULE, command, impact)
+        require("OMHTT/DefenseEffects").emit(command, impact)
     end
     local effectsAt = getTimestampMs()
     D.defer("turret-fire-result", {id = state.id, result = result, ammo = state.ammo, power = power.kind, automatic = player == nil,
@@ -565,9 +606,8 @@ function W.feedTick()
                         else
                             cycle, status = T.cycle(contents, now, stats)
                         end
-                        if not isServer() then
-                            Audio.update(object, contents.head, cycle, status, stats, now)
-                        elseif state.feedStatus ~= status or state.feedLoaded ~= cycle.loaded then
+                        Audio.update(object, contents.head, cycle, status, stats, now)
+                        if isServer() and (state.feedStatus ~= status or state.feedLoaded ~= cycle.loaded) then
                             cycle.status = status
                             state.feedLoaded = cycle.loaded
                             require("OMHTT/TurretItemState").publish(contents.head)
@@ -580,6 +620,7 @@ function W.feedTick()
                         Audio.stop(object)
                         if G.profile(contents.head) then G.cancelLoading(contents.head) end
                     end
+                    W.publishRuntime(object, state, contents, now)
                 else
                     Audio.stop(object)
                     feeders[object], snapshots[object] = nil, nil

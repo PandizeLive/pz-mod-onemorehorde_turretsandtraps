@@ -1,4 +1,4 @@
-if isClient() or isServer() then
+if isClient() then
     return
 end
 local Horde = require("OMHTT/DefenseHorde")
@@ -25,7 +25,7 @@ function B.zombie(zombie)
         return
     end
     local started = D.enabled("traps") and getTimestampMs()
-    local data = zombie:getModData()
+    local data = require("OMHTT/DefenseActorState").get(zombie)
     local state = data.OMHTTBedContact
     local recovery = B.option("RecoverySeconds", 5, 0, 60) * 1000
     if not state or state.session ~= B.session or not state.seen or B.time - state.seen > 1000 then
@@ -51,21 +51,29 @@ function B.zombie(zombie)
         if record.tier == "reinforced" then
             amount = B.option("ReinforcedDamage", 50, 0, 2500)
         end
-        local lost = Damage.apply(zombie, amount / 100, record.id, "bed-spikes", nil, nil)
-        if lost > 0 then zombie:getEmitter():playSound("SpearCraftedHit") end
+        Damage.resolve(zombie, amount / 100, record.id, "bed-spikes", function(lost)
+            if lost <= 0 then return end
+            require("OMHTT/DefenseEffects").contact("SpearCraftedHit", zombie, 1)
+        end)
         record.health = math.max(0, record.health - B.option("Wear", 6, 0, 1000))
         D.defer("bed-fall", {id = record.id, health = record.health, damage100 = amount})
         if record.health == 0 then
             B.retire(record)
         else
             local parts = B.parts(record)
-            for i = 1, #parts do parts[i]:setHealth(record.health) end
+            for i = 1, #parts do
+                parts[i]:setHealth(record.health)
+                if isServer() then
+                    parts[i]:getModData().OMHTTBed.view.health = record.health
+                    parts[i]:transmitModData()
+                    parts[i]:sync()
+                end
+            end
         end
     elseif roll and record and zombie:getBumpType() == "" and ZombRand(100) < B.option("TripChance", 40, 0, 100) then
-        zombie:setVariable("BumpAnimFinished", false)
-        zombie:setVariable("SprinterTripped", false)
-        zombie:setBumpType("OMHTTBedTrip")
-        state.requestedUntil = B.time + 2000
+        if require("OMHTT/DefenseMotion").request(zombie, "trip", record.id) then
+            state.requestedUntil = B.time + 2000
+        end
         D.defer("bed-trip", {id = record.id})
     end
     if started then D.measure("bed-contact", getTimestampMs() - started) end

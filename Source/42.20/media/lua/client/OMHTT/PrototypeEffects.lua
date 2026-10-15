@@ -36,6 +36,7 @@ end
 ---@param facts table Shot facts; target reference is local SP only
 ---@return nil
 function E.receive(module, command, facts)
+    if module == F.MODULE and not require("OMHTT/DefenseEffects").accept(facts) then return end
     if module == F.MODULE and command == "Volley" then
         for i = 1, math.min(64, #facts.rays) do E.receive(module, "Ray", facts.rays[i]) end
         return
@@ -45,7 +46,7 @@ function E.receive(module, command, facts)
         return
     end
     if module == F.MODULE and command == "Click" then
-        if facts.sound then E.sound(facts.sound, facts.x, facts.y, facts.z) end
+        if facts.sound then E.sound(facts.sound, facts.x, facts.y, facts.z, facts.gain) end
         return
     end
     if module ~= F.MODULE or (command ~= "Launch" and command ~= "Impact" and command ~= "GunShot" and command ~= "Ray") then return end
@@ -67,7 +68,7 @@ function E.receive(module, command, facts)
     effect.firearm = facts.firearm == true
     effect.muzzleHeight = facts.muzzleHeight or T.HEAD_VISUAL.height
     if command == "Launch" or command == "GunShot" then
-        effect.start = facts.start or effect.start
+        if not isClient() then effect.start = facts.start or effect.start end
         local dx, dy = facts.x - facts.fromX, facts.y - facts.fromY
         local distance = math.sqrt(dx * dx + dy * dy)
         if distance > 0 then

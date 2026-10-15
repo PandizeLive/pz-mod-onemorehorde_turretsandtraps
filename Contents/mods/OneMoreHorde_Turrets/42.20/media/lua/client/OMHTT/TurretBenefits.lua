@@ -26,14 +26,14 @@ function B.battery(contents, stats)
     end
     if stats.rotary then
         if stats.motorPower == 0 then return getText("UI_OMHTT_BatteryFree") end
-        local hours = contents.battery:getCurrentUsesFloat() * 100 / stats.motorPower
+        local hours = require("OMHTT/TurretBattery").charge(contents.battery) * 100 / stats.motorPower
         return getText("UI_OMHTT_MotorBattery", B.number(stats.motorPower), string.format("%.1f", hours))
     end
     local cost = stats.batteryPercent
     if cost == 0 then return getText("UI_OMHTT_BatteryFree") end
     local costText = B.number(cost)
     if cost < .0001 then costText = "<0.0001" end
-    local volleys = math.floor(contents.battery:getCurrentUsesFloat() * 100 / cost + .0000001)
+    local volleys = math.floor(require("OMHTT/TurretBattery").charge(contents.battery) * 100 / cost + .0000001)
     local gun = stats.firearm and contents.head or nil
     local data = contents.head:getModData()
     local state = gun and data.OMHTTGunCycle or data.OMHTTCycle

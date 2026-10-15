@@ -26,6 +26,7 @@ local function actor(id)
     function z:getOwner() return self.connection or (self.owner and player) end
     function z:getHealth() return self.health end
     function z:setHealth(value) self.health = value end
+    function z:getNetworkCharacterAI() return {extraUpdate = function() self.extraUpdates = (self.extraUpdates or 0) + 1 end} end
     function z:isDead() return self.health <= 0 end
     function z:isRemoteZombie() return self.remote == true end
     function z:isInvulnerable() return self.invulnerable == true end
@@ -126,8 +127,10 @@ activePlayer = player
 server, client = pair()
 local finisher = false
 OneMoreHordeDefenseIntegration = {API_VERSION = 1, authorize = function() return true end,
-    beginDamage = function(_, source, kind, lethal) finisher = lethal; return true, {} end,
-    endDamage = function(z) check(z.killed and finisher, "Horde finisher context spans the actual server death") end}
+    beginDamage = function(_, source, kind, lethal) finisher = lethal; return true, lethal and {} or nil end,
+    endDamage = function(z, token)
+        if token then check(z.killed and finisher, "Horde finisher context spans the actual server death") end
+    end}
 S.request(server, 2, "turret-1", "firearm", done)
 clientReceive(); serverReceive(); clientReceive()
 check(not client:isDead() and client.health == P.EPSILON and not finisher, "Owner reserves lethal damage; server still owns terminal attribution")
@@ -177,6 +180,68 @@ clientPackets = {}
 
 serverPackets, clientPackets = {}, {}
 local held = {}
+-- Receipts outlive native actor unload/recycling; only the original token can settle them.
+server, client = pair()
+S.request(server, .3, "turret-archive", "firearm", done)
+clientReceive(); serverReceive(); clientReceive()
+clientPackets = {}
+testMode = "client"; C.created(actor(client.id)); testMode = "server"
+server.owner = stranger
+S.tick()
+clientReceive(); serverReceive()
+activePlayer = stranger
+clientReceive(); serverReceive(stranger); clientReceive(); serverReceive(stranger)
+check(math.abs(server.health - .7) < .000001 and completions[#completions][2] == "applied",
+    "Unloaded old-owner actor retains its receipt and handoff settles without another damage subtraction")
+activePlayer = player
+
+local runOwner, runEvent = {}, {}
+local marks = 0
+OneMoreHordeDefenseIntegration = {API_VERSION = 1,
+    authorize = function() return true, runOwner, runEvent end,
+    beginDamage = function(_, _, _, lethal) check(not lethal, "Pre-dispatch assistance is never a fabricated finisher"); marks = marks + 1; return true end,
+    endDamage = function() end}
+server, client = pair()
+S.request(server, .3, "turret-run", "firearm", done)
+clientReceive()
+runEvent = {}
+serverReceive()
+check(#serverPackets == 0 and client.health == 1 and marks == 0,
+    "A new receiving Horde event cancels the old event's pending hit before dispatch")
+server, client = pair()
+S.request(server, .3, "turret-run", "firearm", done)
+clientReceive(); serverReceive()
+check(marks == 1 and client.health == 1, "Run assistance is marked before the owner can apply damage")
+S.created(server)
+serverPackets, clientPackets = {}, {}
+OneMoreHordeDefenseIntegration = nil
+
+local damage = require("OMHTT/Damage")
+server, client = pair()
+local confirmed = 0
+local function count(lost) confirmed = confirmed + lost end
+check(damage.resolve(server, .2, "first", "firearm", count)
+    and damage.resolve(server, .3, "second", "splitter", count), "Concurrent device hits are admitted into a bounded victim queue")
+check(#serverPackets == 1, "Only one relative health operation is in flight per victim")
+clientReceive(); serverReceive(); clientReceive(); serverReceive()
+check(math.abs(confirmed - .2) < .000001 and #serverPackets == 0, "Completion does not recursively burst the queued hit")
+damage.tick()
+clientReceive(); serverReceive(); clientReceive(); serverReceive()
+check(math.abs(confirmed - .5) < .000001 and math.abs(client.health - .5) < .000001,
+    "Serialized hits preserve both damage amounts without overwriting one another")
+
+server, client = pair()
+local hit = require("OMHTT/TurretHit")
+local volley = require("OMHTT/TurretVolley")
+local owner = {pending = 1, rayBudget = 0, procJobs = 0, procFields = 0}
+local callbacks = 0
+hit.resolve(server, .2, "retained", "fragment", owner, function() callbacks = callbacks + 1 end)
+volley.done(owner)
+check(owner.pending == 1 and callbacks == 0, "Pending owner acknowledgement retains the root effect reservation")
+clientReceive(); serverReceive(); clientReceive(); serverReceive()
+check(owner.pending == 0 and callbacks == 1, "Confirmed effect runs once before releasing the final reservation")
+
+serverPackets, clientPackets = {}, {}
 for i = 1, P.MAX_PENDING do
     held[i] = pair()
     check(S.request(held[i], .1, "wire-1", "barbs", done), "Bounded queue accepts available capacity")

@@ -81,7 +81,19 @@ function B.record(object)
     end
     if not object:hasModData() then return nil end
     local marker = object:getModData().OMHTTBed
-    if isClient() then return marker and marker.view end
+    if isClient() then
+        local view = marker and marker.view
+        if not view then return nil end
+        local record = B.store.records[view.id]
+        if not record then
+            record = {}
+            B.store.records[view.id] = record
+        end
+        for key, value in pairs(view) do
+            record[key] = value
+        end
+        return record
+    end
     return marker and B.store.records[marker.id]
 end
 
@@ -222,7 +234,7 @@ function B.loaded(square)
         local object = objects:get(i)
         local marker = object:hasModData() and object:getModData().OMHTTBed
         if marker then
-            local record = isClient() and marker.view or B.store.records[marker.id]
+            local record = isClient() and B.record(object) or B.store.records[marker.id]
             if record then
                 if isClient() then
                     B.store.records[record.id] = record
@@ -326,6 +338,9 @@ end
 OMHTT_BedMenuAvailable = B.enabled
 Events.OnInitGlobalModData.Add(B.initialize)
 Events.LoadGridsquare.Add(B.loaded)
+Events.OnObjectAdded.Add(function(object)
+    if isClient() and object:getSquare() then B.loaded(object:getSquare()) end
+end)
 Events.OnObjectAboutToBeRemoved.Add(B.removed)
 Events.OnTick.Add(B.tick)
 return B

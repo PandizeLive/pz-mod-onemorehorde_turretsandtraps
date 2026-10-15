@@ -68,6 +68,8 @@ end
 local object = {getSquare = function() return origin end, hasModData = function() return true end,
     getModData = function() return {OMHTTTurret = state} end}
 local battery = {charge = 1, getCondition = function() return 100 end}
+battery.data = {}
+function battery:getModData() return self.data end
 function battery:getCurrentUsesFloat() return self.charge end
 function battery:setCurrentUsesFloat(value) self.charge = value end
 function origin:hasGridPower() return false end

@@ -1,0 +1,11 @@
+# Development: multiplayer authority, Horde integration and turret content
+
+Enables production multiplayer paths for the existing turret/trap roster: server-owned placement and exact-item services, ammunition/power, automatic/manual combat, contact effects and client presentation. Owner-aware damage receipts recover handoffs without intentionally replaying confirmed hits; bounded queues keep secondary effects and transfers controlled. Fractional battery drain now survives native whole-use rounding.
+
+Horde Night integration retains explicit receiving-run consent, one /5 score divider, default-or-harder review and neutral collision. The coordinated core blocks automated defense attraction while any active Horde has not opted in; audible effects remain. Companion changes: [Horde PR 4](https://github.com/AlexVDefi/pz-mod-onemorehorde_protectthecure/pull/4).
+
+Validation: 20,319 assertions, 161 Lua/translation compilations, independent package startup, native production firing/services and write/read persistence; 462 coordinated Horde assertions. Native server probes had **zero connected clients**. A disconnect after commit without a recoverable receipt expires the hit without replay. Actual native packet ordering, ownership migration, remote rendering and connected dedicated/listen scoring acceptance remain unverified.
+
+[Planning](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/blob/codex/performance-barbed-audit/docs/PLANNING.md) · [Current status](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/blob/codex/performance-barbed-audit/docs/CURRENT_STATUS.md) · [C246 implementation and limits](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/blob/codex/performance-barbed-audit/docs/PATCH_C246_MULTIPLAYER.md) · [Versioned findings](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/blob/codex/performance-barbed-audit/docs/TEST_v0.2.49.md)
+
+Installed 0.2.49 and its immutable tag are unchanged. No main merge, website deployment or Workshop upload. The approved C235 Lobber/Scrapshot/Lure/Void content bundle remains unfinished and retained; this multiplayer implementation does not complete or split that release.

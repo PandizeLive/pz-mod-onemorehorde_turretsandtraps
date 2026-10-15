@@ -1,11 +1,10 @@
-if isClient() or isServer() then return end
+if isClient() then return end
 local Horde = require("OMHTT/DefenseHorde")
 local B = require("OMHTT/BarbSections")
 local C = require("OMHTT/BarbContact")
 local S = require("OMHTT/BarbSupport")
 local F = require("OMHTT/Foundation")
 local Damage = require("OMHTT/Damage")
-local Movement = require("OMHTT/BarbMovement")
 local D = require("OMHTT/Diagnostics")
 local soundAt = 0
 
@@ -19,7 +18,7 @@ function B.zombie(zombie)
     local bucket = B.nearby[F.key(square:getX(), square:getY(), square:getZ())]
     if not bucket then return end
     local started = D.enabled("traps") and getTimestampMs()
-    local data = zombie:getModData()
+    local data = require("OMHTT/DefenseActorState").get(zombie)
     local state = data.OMHTTBarbContact
     if not state then
         state = {}
@@ -27,18 +26,27 @@ function B.zombie(zombie)
     end
     local interval = B.option("Interval", 2, .1, 60) * 1000
     local selected, source = B.contact(zombie, bucket)
-    if selected then Movement.apply(zombie, B.option("MovementDivisor", 2, 1, 10)) end
+    if selected then require("OMHTT/DefenseMotion").request(zombie, "slow", selected.id, B.option("MovementDivisor", 2, 1, 10)) end
     if C.step(state, B.time, B.session, selected ~= nil, interval) then
-        local damage = Damage.apply(zombie, B.option("Damage", 10, 0, 1000) / 100, selected.id, "barbs", nil, nil)
-        local now = getTimestampMs()
-        if damage > 0 and now >= soundAt then
-            local handle = zombie:getEmitter():playSound("ZombieClawChainlinkFence")
-            zombie:getEmitter():setVolume(handle, 0.45)
-            soundAt = now + 250
-        end
-        if S.wear(source, damage) then
-            B.retire(selected)
-        end
+        Damage.resolve(zombie, B.option("Damage", 10, 0, 1000) / 100, selected.id, "barbs", function(damage)
+            local node = B.nodes[selected.id]
+            if damage <= 0 or not node or node.record ~= selected then return end
+            local now = getTimestampMs()
+            if now >= soundAt then
+                require("OMHTT/DefenseEffects").contact("ZombieClawChainlinkFence", zombie, .45)
+                soundAt = now + 250
+            end
+            if S.wear(source, damage) then
+                B.retire(selected)
+            elseif isServer() then
+                if selected.kind == "wire" then
+                    B.publishWire(selected)
+                else
+                    local _, host = B.resolve(selected)
+                    if host then S.publish(host) end
+                end
+            end
+        end)
     end
     if started then D.measure("barb-contact", getTimestampMs() - started) end
 end

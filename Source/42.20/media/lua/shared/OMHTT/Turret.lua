@@ -70,7 +70,7 @@ end
 ---@return boolean enabled Native opaque world pass, no loose head object
 ---@nodiscard
 function T.hybrid()
-    return not isClient() and not isServer() and getCore():isOption3DGroundItem()
+    return not isServer() and getCore():isOption3DGroundItem()
 end
 
 ---@param head InventoryItem? Installed head
@@ -389,7 +389,7 @@ function T.description(container, baseWeight)
     local head = getText("UI_OMHTT_NoHead")
     if contents.head then head = contents.head:getDisplayName() end
     local charge = getText("UI_OMHTT_NoBattery")
-    if contents.battery then charge = getText("UI_OMHTT_ChargePercent", tostring(math.floor(contents.battery:getCurrentUsesFloat() * 100))) end
+    if contents.battery then charge = getText("UI_OMHTT_ChargePercent", tostring(math.floor(require("OMHTT/TurretBattery").charge(contents.battery) * 100))) end
     local modules = getText("UI_OMHTT_None")
     if #contents.moduleNames > 0 then modules = table.concat(contents.moduleNames, ", ") end
     return getText("UI_OMHTT_TurretContents", head, tostring(contents.ammo), charge, modules)

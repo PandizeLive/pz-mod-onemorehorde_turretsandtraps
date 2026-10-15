@@ -296,6 +296,8 @@ local savedFailure = SandboxVars.OMHTurretsTraps.ImprovisedFiringFailure
 local beforeFailurePower = W.power
 local testBattery = {charge = .5, getCurrentUsesFloat = function(self) return self.charge end,
     setCurrentUsesFloat = function(self, value) self.charge = value end}
+testBattery.data = {}
+function testBattery:getModData() return self.data end
 W.power = function() return {kind = "battery", battery = testBattery, cost = .01} end
 SandboxVars.OMHTurretsTraps.ImprovisedFiringFailure = 100
 firing.kind, detector.kind = T.TYPES.FiringImprovised, T.TYPES.MotionDetectionImprovised

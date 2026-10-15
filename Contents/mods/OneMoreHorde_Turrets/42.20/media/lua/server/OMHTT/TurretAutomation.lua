@@ -1,6 +1,6 @@
 local Budget = require("OMHTT/TurretScheduler")
 local Clock = require("OMHTT/TurretClock")
-if isClient() or isServer() then return end
+if isClient() then return end
 local T = require("OMHTT/Turret")
 local M = require("OMHTT/TurretModules")
 local Horde = require("OMHTT/DefenseHorde")

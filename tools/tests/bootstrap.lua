@@ -76,7 +76,7 @@ function getSpecificPlayer(index) return testPlayer end
 Events = {}
 Events.OnDestroyIsoThumpable = {handlers = {}, Add = function() end}
 Events.OnObjectAdded = {handlers = {}, Add = function() end}
-for _, name in pairs({"OnSave", "OnInitGlobalModData", "LoadGridsquare", "OnObjectAboutToBeRemoved", "OnClientCommand", "OnServerCommand", "OnFillWorldObjectContextMenu", "OnGameStart", "OnTickEvenPaused", "OnTick", "OnPostRender", "OnPreUIDraw", "OnPostUIDraw", "OnZombieCreate", "OnZombieUpdate", "OnZombieDead", "OnContextKey", "OnPlayerUpdate"}) do
+for _, name in pairs({"OnServerStarted", "OnSave", "OnInitGlobalModData", "LoadGridsquare", "OnObjectAboutToBeRemoved", "OnClientCommand", "OnServerCommand", "OnFillWorldObjectContextMenu", "OnGameStart", "OnTickEvenPaused", "OnTick", "OnPostRender", "OnPreUIDraw", "OnPostUIDraw", "OnZombieCreate", "OnZombieUpdate", "OnZombieDead", "OnContextKey", "OnPlayerUpdate"}) do
     local handlers = {}
     Events[name] = {handlers = handlers, Add = function(callback) table.insert(handlers, callback) end}
 end
@@ -255,6 +255,13 @@ end
 function makeZombie(square, health)
     local zombie = {kind = "IsoZombie", square = square, health = health, floor = false, data = {}, hits = 0,
         kills = 0, variables = {ThumpType = "Door"}, state = "thump"}
+    function zombie:getOnlineID() return self.onlineId or -1 end
+    function zombie:getPersistentOutfitID() return self.outfitId or 0 end
+    function zombie:getOwner() return self.owner end
+    function zombie:getOwnerPlayer() return self.owner end
+    function zombie:isRemoteZombie() return self.remote == true end
+    function zombie:getRealState() return self.state end
+    function zombie:isInvulnerable() return self.invulnerable == true end
     function zombie:getSquare() return self.square end
     function zombie:getX() return self.square.x + 0.5 end
     function zombie:getY() return self.square.y + 0.5 end
@@ -276,6 +283,7 @@ function makeZombie(square, health)
     function zombie:canRagdoll() return self.allowRagdoll == true end
     function zombie:isRagdoll() return self.ragdoll == true end
     function zombie:getCurrentStateName() return self.state end
+    function zombie:getNetworkCharacterAI() return {extraUpdate = function() self.extraUpdates = (self.extraUpdates or 0) + 1 end} end
     function zombie:getThumpTarget() return self.thumpTarget end
     function zombie:getVariableString(name) return self.variables[name] end
     function zombie:setVariable(name, value) self.variables[name] = value end

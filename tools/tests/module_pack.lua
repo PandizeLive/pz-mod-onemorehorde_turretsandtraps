@@ -70,7 +70,8 @@ local minutes = 59.9
 getGameTime = function() return {getMinutesPerDay = function() return 1440 end} end
 E.duration = function() return minutes * 60000 end
 local head = {getCondition = function() return 100 end, getModData = function() return {} end}
-local battery = {getCondition = function() return 100 end, getCurrentUsesFloat = function() return 1 end}
+local battery = {getCondition = function() return 100 end, getCurrentUsesFloat = function() return 1 end,
+    getModData = function() return {} end}
 local contents, stats = {head = head, battery = battery}, {batteryPercent = .1}
 check(string.find(B.battery(contents, stats), "59.9 in-game minutes", 1, true), "Below one hour uses minutes")
 minutes = 60
