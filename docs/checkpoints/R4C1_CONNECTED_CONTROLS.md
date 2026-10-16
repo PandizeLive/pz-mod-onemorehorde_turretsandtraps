@@ -1,5 +1,15 @@
 # R4C1 — buttons, pressure plates and links
 
+## C271: R4C1 design readiness, 2026-10-16
+
+Owner asks whether anything else needs discussion before implementing pressure plates and the system. The R4C1 foundation has sufficient selected design to implement: pressure plates, wall buttons, installable controller, same-floor20-tile connections with32 inputs/outputs, existing Manage power/fire behavior from C270, Detection signal integration, ownership/sharing, persisted links, feedback and selected recipes/services/controller backup. No further generic permission or signal-gating choice is needed. Preserve the simple power-switch model; do not reopen C269's withdrawn aiming-while-OFF or target-presence gate.
+
+Remaining implementation checks are engineering work: authoritative occupancy/commands, bounded propagation, simultaneous-source resolution without multiplied cadence, source removal/unload/reload recovery without stuck power or replayed pulses, native placement/recipe compatibility, independent packages, and Horde consent. These require verification, not another design questionnaire or waiting for the deferred0.2.52 owner test. Third-party adapter compatibility remains version-specific and must not be claimed without proof.
+
+Poke Floor's selected repeated-strike behavior belongs to R4C2; its damage, rate, materials, power and injury details remain a separate content discussion and do not block R4C1. Scope this readiness answer to the existing turret receivers and signal foundation, not an implicitly balanced/newly approved damaging trap.
+
+This turn records readiness, not completed implementation or a new gameplay instruction inferred from a question. Installed0.2.52 and deferred rendered/connected-client acceptance remain unchanged. Recommend High reasoning for implementation; this cross-package MP feature may exceed25 minutes, so Fast is recommended if available.
+
 ## C270: plate toggles actual device power, 2026-10-16
 
 Owner explicitly corrects "an attached plate controls whether firing is allowed": it sends fire while pressed and powers the connected device by toggling the existing Manage power button. On release the turret has no operating power and does not aim. This latest correction supersedes C269's separate firing-permission gate and plate-OFF aiming behavior, including the earlier owner's aiming sentence that C269 followed. Do not add a second player-facing arming/gating subsystem.

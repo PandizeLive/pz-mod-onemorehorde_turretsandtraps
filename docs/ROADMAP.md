@@ -1,5 +1,7 @@
 # Phases and checkpoints
 
+**C271 / R4C1 ready for implementation (2026-10-16).** [Readiness and scope](checkpoints/R4C1_CONNECTED_CONTROLS.md#c271-r4c1-design-readiness-2026-10-16): no remaining design decision blocks plates, buttons, controller and links using C270's existing power-switch/fire model. Multiplayer, persistence, performance and native placement checks remain implementation work. Poke Floor balance/recipe belongs to R4C2 and does not block this foundation. Readiness discussion only; installed0.2.52 and deferred acceptance unchanged.
+
 **C270 / simple power-switch correction (2026-10-16).** Owner clarifies that a pressed plate switches the connected device's existing Manage power ON and supplies fire; release switches power OFF, stopping aiming as well as firing. [Current signal contract](checkpoints/R4C1_CONNECTED_CONTROLS.md#c270-plate-toggles-actual-device-power-2026-10-16) supersedes C269's separate permission gate and aiming-while-OFF model. No additional rotation control; repeating Poke Floor selection retained. Documentation only; installed0.2.52 testing remains deferred.
 
 **C269 / historical signal discussion, superseded by C270.** The separate firing gate and plate-OFF aiming interpretation are withdrawn. Retain the selected no-extra-rotation-toggle direction and repeating Poke Floor strikes; use C270 above for current power/fire behavior.
