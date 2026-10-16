@@ -1471,6 +1471,10 @@ Owner follow-up (2026-10-16): "I like the new design"; corrected C266 layout acc
 
 Owner says Firing requires a fire signal supplied by a pressure plate or Detection; an unpressed connected plate prevents firing while Detection continues aiming. Requests Detection-equipped turrets as signal sources for connected traps. Selects2A subject to this model and3A repeating Poke Floor strikes. [Confirmed semantics, recommended sensor output and remaining empty-target choice](checkpoints/R4C1_CONNECTED_CONTROLS.md#c269-fire-requests-and-firing-permission-2026-10-16). Do not interpret this as selection of C2681A/1B or an OR of all signal sources that lets Detection bypass an OFF plate. No implementation or test acceptance inferred.
 
+## C275 — 500 capacity and loaded pickup selected, 2026-10-16
+
+Owner selects1A/2B from the capacity/pickup choices:500 nominal total controller storage; allow loaded pickup when the player can carry the controller and contents at full weight, no reduction. [Contract](checkpoints/R4C1_CONNECTED_CONTROLS.md#c275-500-capacity-and-full-weight-loaded-pickup-selected-2026-10-16). Supersedes recommended empty-only pickup; exact-item carry persistence and native limits require implementation verification. No new gameplay/test claim.
+
 ## C274 — stockpile plus player transfers; per-head numbering, 2026-10-16
 
 Owner selects1B with direct player-inventory transfers also allowed and asks for storage sufficient for multiple turrets, then selects2B per-head automatic numbering. [Confirmed choices, capacity evidence and proposals](checkpoints/R4C1_CONNECTED_CONTROLS.md#c274-shared-controller-stockpile-and-per-head-numbering-2026-10-16). Recommend500 nominal total across five native compartments;1000 alternative. Neither capacity nor empty-before-pickup recommendation is selected. Correct earlier C230 setter-only conclusion: current native getCapacity caps ordinary containers at100. No gameplay or test acceptance inferred.

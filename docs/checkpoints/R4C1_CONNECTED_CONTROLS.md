@@ -1,5 +1,13 @@
 # R4C1 — buttons, pressure plates and links
 
+## C275: 500 capacity and full-weight loaded pickup selected, 2026-10-16
+
+Owner answers C2741A and2B: **500 nominal total controller storage** and **loaded controller pickup when the player can carry its full weight, with no weight reduction**. This selects the five native100-capacity compartment design target, presented as one storage view, and supersedes the empty-before-pickup recommendation. Controller stockpile plus direct player-inventory transfers, per-head automatic numbering and custom names remain selected.
+
+Pickup must account for the controller, installed components and every retained item at full effective carried weight; preserve exact item state/contents through pickup, save/load and redeployment. Reject insufficient capacity before removing the world device or moving any contents. Use the established authoritative transaction and interruption rules; concurrent storage transfers cannot duplicate, lose or omit items during pickup. Do not assume five placed compartments translate directly into a carried native500-capacity bag: carried-container integration and safe full-weight persistence remain implementation verification, not permission to compress items, bypass native capacity checks or silently revert to empty-only pickup.
+
+The two presented decisions are settled. No additional design questionnaire or owner test is required to investigate/implement the selected design; engine feasibility must still be established and any concrete incompatibility reported. This turn records selection only, not completed implementation, installed changes or multiplayer acceptance. Installed0.2.52 owner testing remains deferred.
+
 ## C274: shared controller stockpile and per-head numbering, 2026-10-16
 
 Owner selects C2731B amended to also permit direct transfers from the operator's inventory, requests substantial controller storage for multiple turrets' items/ammo/heads/modules, and selects2B per-head automatic numbering. Thus both player inventory and controller storage are valid explicit sources/destinations; do not force an intermediate deposit for a direct player transfer or silently draw from unrelated containers. Present both locations clearly. Selected naming examples: Potato Launcher1, Potato Launcher2, Ballista1. Preserve custom names and stable allocated numbers; source permissions/concurrency checks remain required.
