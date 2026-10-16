@@ -1467,7 +1467,13 @@ Owner follow-up (2026-10-16): "I like the new design"; corrected C266 layout acc
 
 ## C269 — owner clarifies fire signal and plate gating, 2026-10-16
 
+**Historical: C270 supersedes the separate gate and aiming-while-OFF interpretation below.**
+
 Owner says Firing requires a fire signal supplied by a pressure plate or Detection; an unpressed connected plate prevents firing while Detection continues aiming. Requests Detection-equipped turrets as signal sources for connected traps. Selects2A subject to this model and3A repeating Poke Floor strikes. [Confirmed semantics, recommended sensor output and remaining empty-target choice](checkpoints/R4C1_CONNECTED_CONTROLS.md#c269-fire-requests-and-firing-permission-2026-10-16). Do not interpret this as selection of C2681A/1B or an OR of all signal sources that lets Detection bypass an OFF plate. No implementation or test acceptance inferred.
+
+## C270 — plate uses the existing Manage power switch, 2026-10-16
+
+Owner corrects the firing-permission interpretation: pressing a plate supplies fire and switches the connected device ON; release switches it OFF, so it does not aim. [Current contract](checkpoints/R4C1_CONNECTED_CONTROLS.md#c270-plate-toggles-actual-device-power-2026-10-16). Replace the separate firing gate with existing device power behavior; keep normal resource accounting and selected repeating Poke Floor. Withdraw C269's default target-presence restriction on external fire requests. Documentation-only clarification, not gameplay implementation or test acceptance.
 
 ## C268 — planning resumed; owner test deferred, 2026-10-16
 

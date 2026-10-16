@@ -1,6 +1,23 @@
 # R4C1 — buttons, pressure plates and links
 
+## C270: plate toggles actual device power, 2026-10-16
+
+Owner explicitly corrects "an attached plate controls whether firing is allowed": it sends fire while pressed and powers the connected device by toggling the existing Manage power button. On release the turret has no operating power and does not aim. This latest correction supersedes C269's separate firing-permission gate and plate-OFF aiming behavior, including the earlier owner's aiming sentence that C269 followed. Do not add a second player-facing arming/gating subsystem.
+
+- Plate pressed: set the connected device's existing power state ON and supply fire at its normal permitted cycle rate.
+- Plate released: set that power state OFF; no aiming, acquisition or new firing. A local Detection request cannot switch the device back on or bypass OFF.
+- Detection may aim and provide fire requests only while the device is powered. Firing remains the turret's firing actuator. A direct plate fire request is not merely permission for Detection to request fire.
+- "Power" here uses the existing Manage switch and existing energy/resource accounting, not free battery charge or a newly selected shared electrical supply. Preserve normal ammo, cadence, server authority and Horde consent.
+- Retain selected2A's no-extra-rotation-toggle direction. Any optional "Disable while active" connection must use the same device-power OFF behavior, not C269's firing-only veto that leaves aiming active.
+- Retain selected3A repeating Poke Floor cycles while powered and one-cycle button requests. OFF stops new cycles; already launched ordnance and safe completion/retraction remain governed by existing lifecycle rules.
+
+Withdraw C269's proposed target-presence requirement as the default interpretation of a direct fire signal; the owner is clarifying simple power/fire behavior, not requesting another generic permission choice. Exact aiming fallback must follow the established head/facing contract during implementation, without silently discarding external fire requests just because Detection is installed. No new signal mode or UI control is approved by this correction.
+
+Documentation only: installed0.2.52 unchanged, owner test deferred and connected acceptance pending. No gameplay patch or implementation proof is claimed.
+
 ## C269: fire requests and firing permission, 2026-10-16
+
+**Superseded by C270:** the separate firing-permission gate, plate-OFF aiming, firing-only safety veto and proposed target-presence default below are historical and must not guide implementation.
 
 Owner replaces C268 choice 1 with a signal-source contract: a turret with Firing requires a fire signal, supplied by an external trigger or its Detection module. A connected plate supplies fire/activation while pressed; an unpressed connected plate prevents Detection's fire request from firing, while Detection still aims normally. A Detection-equipped turret may supply a connected trap's fire signal; activation/power controls whether that signal can act. Owner selects C2682A subject to this clarification and C2683A repeating Poke Floor strikes.
 
