@@ -1,5 +1,13 @@
 # R4C1 — buttons, pressure plates and links
 
+## C278: increased ammo maximum and overweight warning requested, 2026-10-16
+
+Owner redirects the capacity discussion: increase the maximum with an overweight warning icon, and asks for the original Large Expansion ammo maximum. This selects the direction of higher physical ammo allowances with visible weight feedback; no exact replacement count, Void removal, weight reduction or native-limit bypass is selected. C277's proposed1500 target is not an approved value. Retain C277's controller heavy-carry selection.
+
+Historical evidence: PHASE_2_CHECKPOINT_3D3.md records the first Large Expansion in0.2.18 as100 base +200 kit =300 potatoes. PATCH_v0.2.41.md records the later familiar total750 (100 base +650 kit), also supported by C137/C139 runtime records. Current TurretStats firearm defaults are250 base +650 =900; potato default remains100 +650 =750. These are count ceilings, not guaranteed weight capacity or the owner's saved Sandbox values.
+
+An overweight warning can explain pickup/carry burden without changing ammo mass. It cannot by itself bypass native ItemContainer.getCapacity limits (ordinary placed100, carried50); this turn rechecked current installed stock bytecode. Higher counts that fit existing weight are distinct from heavier total storage, which still needs a verified storage implementation. Recommend warning on actual carrying eligibility/burden, not treating a hard container rejection as merely advisory. Exact maximum and warning presentation remain to settle; no gameplay implementation, tests or release change this turn.
+
 ## C277: heavy carry selected; normal turret endurance discussion, 2026-10-16
 
 Owner selects C2761A: normal controller pickup when it fits, native two-handed heavy carry otherwise, retaining full contents weight and native drop/lifecycle behavior subject to implementation proof. Asks whether this permits expanding ordinary turrets, makes Void unnecessary and supports more realistic runtime. Those questions initiate a balance/storage discussion; they do not approve removing Void, new numeric ammo limits or automatic controller resupply.
