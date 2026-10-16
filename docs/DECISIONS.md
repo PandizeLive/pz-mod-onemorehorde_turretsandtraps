@@ -1471,6 +1471,10 @@ Owner follow-up (2026-10-16): "I like the new design"; corrected C266 layout acc
 
 Owner says Firing requires a fire signal supplied by a pressure plate or Detection; an unpressed connected plate prevents firing while Detection continues aiming. Requests Detection-equipped turrets as signal sources for connected traps. Selects2A subject to this model and3A repeating Poke Floor strikes. [Confirmed semantics, recommended sensor output and remaining empty-target choice](checkpoints/R4C1_CONNECTED_CONTROLS.md#c269-fire-requests-and-firing-permission-2026-10-16). Do not interpret this as selection of C2681A/1B or an OR of all signal sources that lets Detection bypass an OFF plate. No implementation or test acceptance inferred.
 
+## C276 — two-handed heavy carry feasibility question, 2026-10-16
+
+Owner asks whether native fridge-like carrying allows over100 controller weight. [Current Lua/bytecode evidence and1A/1B choices](checkpoints/R4C1_CONNECTED_CONTROLS.md#c276-native-two-handed-heavy-carrying-investigated-2026-10-16): recommend the distinct native heavy-item action when ordinary pickup does not fit; contents retain full weight and forced-drop/lifecycle integration needs proof. Question does not itself select heavy-carry expansion or establish a working five-compartment portable controller. C275 remains selected pending this choice; no gameplay change.
+
 ## C275 — 500 capacity and loaded pickup selected, 2026-10-16
 
 Owner selects1A/2B from the capacity/pickup choices:500 nominal total controller storage; allow loaded pickup when the player can carry the controller and contents at full weight, no reduction. [Contract](checkpoints/R4C1_CONNECTED_CONTROLS.md#c275-500-capacity-and-full-weight-loaded-pickup-selected-2026-10-16). Supersedes recommended empty-only pickup; exact-item carry persistence and native limits require implementation verification. No new gameplay/test claim.
