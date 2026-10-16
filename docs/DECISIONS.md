@@ -1471,6 +1471,10 @@ Owner follow-up (2026-10-16): "I like the new design"; corrected C266 layout acc
 
 Owner says Firing requires a fire signal supplied by a pressure plate or Detection; an unpressed connected plate prevents firing while Detection continues aiming. Requests Detection-equipped turrets as signal sources for connected traps. Selects2A subject to this model and3A repeating Poke Floor strikes. [Confirmed semantics, recommended sensor output and remaining empty-target choice](checkpoints/R4C1_CONNECTED_CONTROLS.md#c269-fire-requests-and-firing-permission-2026-10-16). Do not interpret this as selection of C2681A/1B or an OR of all signal sources that lets Detection bypass an OFF plate. No implementation or test acceptance inferred.
 
+## C279 — eight in-game hours of ammunition, 2026-10-16
+
+Owner requests most turrets sustain eight in-game hours without additional modules besides expansions. [Target, source-derived timing and remaining day-length choice](checkpoints/R4C1_CONNECTED_CONTROLS.md#c279-eight-in-game-hours-of-ammunition-requested-2026-10-16). Large Expansion is the working interpretation; ordinary reloads included, battery/durability separate. Recommend world-day-length-aware capacity; fixed90-minute-day baseline is an alternative, neither selected yet. Current native Apocalypse/bytecode mapping verified; no claimed installed-world setting or heavy-storage feasibility. No gameplay/test change.
+
 ## C278 — higher ammo maximum and overweight feedback requested, 2026-10-16
 
 Owner says to increase the maximum with an overweight warning icon and asks for the original Large Expansion amount. [Historical counts and feasibility distinction](checkpoints/R4C1_CONNECTED_CONTROLS.md#c278-increased-ammo-maximum-and-overweight-warning-requested-2026-10-16). Increased physical allowance/weight feedback is the requested direction, but no exact count or Void retirement is approved. Original0.2.18 potato total300; familiar0.2.41 total750; current firearm default900. Current stock getter rechecked: ordinary placed100/carried50 limits remain hard limits, not just warnings. Fetched origin; no gameplay or acceptance change.
