@@ -1,5 +1,14 @@
 # R4C1 — buttons, pressure plates and links
 
+## C259: power-switch selection and Detection clarification, 2026-10-15
+
+Owner selects C258 **1A**: signals activate receivers using their existing power supplies; mechanical triggers do not generate energy. For2/3 the owner asks whether removing Detection already addresses activation/scope; this is a question, not selection of the prior alternatives.
+
+Reviewed `TurretModules.detects`, `TurretAutomation.step` and `TurretWorld.fire`: Detection enables automatic acquisition/aiming while master power is ON; Firing enables automatic shooting. Without Firing, automation can track only. Removing Detection is not equivalent to signal gating or physical rotation locking. Recommend omitting the extra Allow turning toggle and retaining these distinct module roles.
+
+Two explicit proposals are recorded with the current [0.2.50 findings](../TEST_FINDINGS_v0.2.50.md#decisions-proposed-not-selected):2A linked receivers wait for input and unlinked devices retain current automation;2B all turrets require inputs.2A is recommended but not yet selected. Preserve recipe, ownership, controller power and outage decisions. No new targeting without Detection, inverted response or global autonomy removal is inferred. Corrective work takes priority; R4C1/Poke Floor remain planned, not implemented. No gameplay/install change.
+
+
 ## C258: unified powered activation and Poke Floor selected, 2026-10-15
 
 Owner selects C257 **1B**, directs rotary behavior to follow the same rule, selects **3A** with controller wording **"allow turning"**, and selects **4A Poke Floor**. Owner describes inputs as power: a held plate continuously powers the connected turret, a button briefly powers one shot, and turrets otherwise remain offline until plates/buttons/tripwire/etc. provide activation. This supersedes the separate C257 proposed single-shot defaults and requests one coherent activation model. Tripwire is a named future input example; its own recipe/implementation is not automatically included.

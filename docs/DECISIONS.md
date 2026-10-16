@@ -1416,3 +1416,8 @@ Corrected stale current-table entries for head/content implementation, the pack 
 ## C258 — unified activation, controller wording and Poke Floor (2026-10-15)
 
 **C258 / unified signal activation and Poke Floor selected (2026-10-15).** Owner chooses sustained operation for all head types while powered by inputs, one-cycle button activation, optional controller "allow turning" and Poke Floor as the next receiver. [Selections and three material clarifications](checkpoints/R4C1_CONNECTED_CONTROLS.md#c258-unified-powered-activation-and-poke-floor-selected-2026-10-15): energy source versus switching, ON/OFF versus rotation wording, and connected-only versus all-turret scope. No per-device held-default re-selection needed; no gameplay/install change.
+
+
+## C259 — owner test findings, UI direction and Detection clarification (2026-10-15)
+
+**C259 / 0.2.50 owner findings and correction discussion (2026-10-15).** Owner completes the test with alternate-ammo rejection, Void reload stall, UI/FOV defects and requested Manage/pack/tooltip improvements. Captured SP0.2.50 console and installed manifests; confirmed the stale exact-ammo transfer check, tooltip title fallback, Expansion dimming and preview-cone mismatch. Void stall is log-confirmed; its root cause remains under investigation. Initial native weight audit and Scrapshot spread/damage comparison are recorded. [Full findings and two concrete choices](TEST_FINDINGS_v0.2.50.md). C2581A receiver power-switch semantics selected; Detection explanation and linked-only signal recommendation remain discussion. No gameplay/install change, blanket test acceptance or connected MP pass. Prioritize corrective work before new connected-control content; retained R4C1/Poke Floor planning is not dropped.

@@ -1,6 +1,6 @@
 # OMH: Turrets & Traps
 
-Current development: **0.2.50 / C247**. [Content patch](docs/PATCH_v0.2.50.md) · [Verification and short test](docs/TEST_v0.2.50.md). Connected multiplayer and rendered owner acceptance remain pending.
+Current installed development: **0.2.50 / C247**. **C259: owner test completed with failures; corrections are under discussion.** [Findings and correction choices](docs/TEST_FINDINGS_v0.2.50.md) · [Content patch](docs/PATCH_v0.2.50.md) · [Verification](docs/TEST_v0.2.50.md). Connected multiplayer acceptance remains pending; no corrective build installed yet.
 
 **C246 / production multiplayer paths implemented (2026-10-14).** Server-controlled combat, traps, ownership receipts, contact/player reactions, replicated effects/Manage/rendering and fractional battery persistence now run for the existing roster. 20,319 assertions, 462 coordinated Horde checks, native zero-client production callbacks, write/read persistence and all package startup combinations pass. Connected dedicated/listen-server acceptance remains pending; receipt loss after disconnect fails closed without replay. [Implementation, evidence, limitations and retained C235 scope](docs/PATCH_C246_MULTIPLAYER.md). Installed 0.2.49 is unchanged; no publication or live MP certification. Earlier entries below are historical checkpoints.
 
