@@ -86,6 +86,7 @@ instanceItem = function(kind) creates = creates + 1; return item(kind) end
 getTextManager = function() return {
     getFontHeight = function() return fontHeight end,
     WrapText = function(_, font, text) wraps = wraps + 1; return text end,
+    MeasureStringX = function(_, font, text) return #text * 8 end,
 } end
 getPlayerScreenWidth = function() return 1280 end
 getPlayerScreenHeight = function() return screenHeight end
@@ -226,22 +227,27 @@ large.started = testMillis - 6700; large:prerender()
 check(large.finished, "Reveal completion works within constrained viewport")
 local overflow = math.max(0, small.height - screenHeight)
 local U = require("OMHTT/TurretItemTooltip")
-local tip = {getLineSpacing = function() return 18 end, getFont = function() return UIFont.Small end}
+local tip = {getLineSpacing = function() return 18 end, getFont = function() return UIFont.Small end,
+    setX = function() end, setY = function() end}
 local tooltip = {tooltip=tip, backgroundColor={a=1,r=0,g=0,b=0}, borderColor={a=1,r=1,g=1,b=1},
     getHeight=function() return 100 end, getWidth=function() return 250 end, getY=function() return 0 end,
-    setHeight=function() end, drawRect=function() end, drawRectBorder=function() end, drawText=function() end}
+    setHeight=function() end, drawRect=function() end, drawRectBorder=function() end, drawText=function() end,
+    setWidth=function() end, getX=function() return 0 end, setX=function() end, setY=function() end,
+    item={DoTooltip=function() end}}
 wraps = 0
 for i = 1, 600 do U.footer(tooltip, "Regulator") end
-check(wraps == 1, "Unchanged tooltip wraps once across 600 frames")
+check(wraps == 0, "Unwrapped tooltip does not invoke wrapping across 600 frames")
+local cachedLayout = tooltip.OMHTTFooterLayout
 local steadyWraps = wraps
 tooltip.getWidth = function() return 300 end
 U.footer(tooltip, "Regulator")
-check(wraps == 2, "Tooltip width invalidates wrapping")
+check(tooltip.OMHTTFooterLayout == cachedLayout, "Native tooltip width does not rebuild unwrapped lines")
 tip.getFont = function() return UIFont.Medium end
 U.footer(tooltip, "Regulator")
-check(wraps == 3, "Tooltip font invalidates wrapping")
+check(tooltip.OMHTTFooterLayout ~= cachedLayout, "Tooltip font invalidates measured lines")
+cachedLayout = tooltip.OMHTTFooterLayout
 U.footer(tooltip, "Firing")
-check(wraps == 4, "Tooltip description invalidates wrapping")
+check(tooltip.OMHTTFooterLayout ~= cachedLayout and wraps == 0, "Tooltip description invalidates measured lines without wrapping")
 testPackAudit = "deaths=10000 repeats=10000 packs=1500 emptyPoolCorpseDrop=false mockDeathBatchMs=" .. deathMs
     .. " partialGrantRollback=pass removeRollback=pass revealCreateItems=" .. openCreates
     .. " revealFrames=500 newFrameItems=0 newFrameWraps=0 mockRenderBatchMs=" .. renderMs

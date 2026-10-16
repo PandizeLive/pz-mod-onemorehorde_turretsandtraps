@@ -114,6 +114,15 @@ function S.resolve(contents)
         end
     end
     if head and head.ammoCapacity then extraAmmo = 0 end
+    if head and head.key == "Scrapshot" then
+        ammoCapacity, extraAmmo = 20, 0
+        local limits = {30, 40, 60, 80}
+        for i = 1, #kits do
+            if active[kits[i][1]] then
+                ammoCapacity = math.max(ammoCapacity, limits[i])
+            end
+        end
+    end
     local rapid = S.bonus(active, "RapidFire", 25, 200)
     local loading = S.bonus(active, "Reload", 25, 200)
     cooldown = math.min(cooldown, math.max(math.min(cooldown, S.option("RapidFireMinimum", 0.25, 0.1, 10)), cooldown / (1 + rapid / 100)))

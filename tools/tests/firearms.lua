@@ -406,4 +406,24 @@ Volley.cancel(pelletOptions); Volley.reset()
 Access.near, W.refresh, ISBaseTimedAction.stop = oldNear, oldRefresh, oldStop
 W.near = oldWorldNear
 T.hybrid, addSound = oldHybrid, oldSound
+local reloadGun, reloadStorage = item("Base.Pistol"), container()
+function reloadGun:getAmmoType() return {getItemKey = function() return "Base.Bullets9mm" end} end
+function reloadGun:getMaxAmmo() return 15 end
+function reloadGun:getMagazineType() return "Base.9mmClip" end
+function reloadGun:isRackAfterShoot() return false end
+reloadStorage:AddItem(reloadGun)
+reloadGun.ammo, reloadGun.chamber = 5, true
+for i = 1, 20 do reloadStorage:AddItem(item("Base.Bullets9mm")) end
+local extension = require("OMHTT/FirearmFeed")
+extension.set(reloadGun, 4)
+local reloadConfig = Stats.resolve({head = reloadGun, active = {Magazine = 1}})
+local reloadState = G.state(reloadGun)
+reloadState.impactReady, reloadState.conservationDebt, reloadState.nextShot = false, .5, 900000
+local totalBefore = T.contents(reloadStorage).ammo
+check(require("OMHTT/TurretReload").start(T.contents(reloadStorage), reloadConfig, 500000), "Partial native magazine starts manual top-up")
+G.update(T.contents(reloadStorage), reloadConfig, 500000 + reloadConfig.reload, true)
+check(T.contents(reloadStorage).ammo == totalBefore and reloadGun.ammo == 15
+    and extension.count(reloadGun) == reloadConfig.magazine - 15, "Native and extended loaded rounds top up without duplication")
+check(reloadGun.chamber and reloadState.conservationDebt == .5 and not reloadState.impactReady and reloadState.nextShot == 900000,
+    "Native manual reload retains chamber, debt, cooldown and Impact")
 SandboxVars.OMHTurretsTraps = oldSettings

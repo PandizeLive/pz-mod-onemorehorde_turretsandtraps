@@ -29,6 +29,9 @@ Panel.inspectVoid = Utilities.inspect
 
 ---@return nil
 function Panel:close()
+    if self.orderPanel then
+        self.orderPanel:close()
+    end
     if self.voidList then self.voidList:onMouseDown() end
     self.benefitList:hideTooltip()
     for i = 1, #self.slots do self.slots[i]:hideTooltip(); self.slots[i]:clearDrag() end
@@ -292,10 +295,32 @@ function Panel:refresh()
         self.magazineSlot.emptyText = script and script:getDisplayName() or cycle.payload
     end
     self.voidSlot.label = getText("UI_OMHTT_Void") .. ": " .. tostring(contents.virtualAmmo)
-    local rows, types = require("OMHTT/TurretVoid").preview(contents.void, contents.head)
-    local script = rows[1] and getScriptManager():getItem(rows[1].type)
-    self.voidSlot.emptyText = script and script:getDisplayName() or getText(contents.void and "UI_OMHTT_VoidEmpty" or "UI_OMHTT_NoModule")
-    if types > 1 then self.voidSlot.emptyText = self.voidSlot.emptyText .. " +" .. tostring(types - 1) end
+    local rows = require("OMHTT/TurretLoadOrder").rows(contents, state, nil, true)
+    local firstAmmo, firstVoid, ammoTypes = nil, nil, 0
+    for i = 1, #rows do
+        if rows[i].physical > 0 then
+            ammoTypes = ammoTypes + 1
+            firstAmmo = firstAmmo or rows[i].type
+        end
+        if rows[i].virtual > 0 then
+            firstVoid = firstVoid or rows[i].type
+        end
+    end
+    local _, voidTypes = require("OMHTT/TurretVoid").preview(contents.void, contents.head)
+    ---@param fullType string? Ammunition identity
+    ---@return string name
+    local function label(fullType)
+        local script = fullType and getScriptManager():getItem(fullType)
+        return script and script:getDisplayName() or getText("UI_OMHTT_None")
+    end
+    self.ammoSlot.summary = getText("UI_OMHTT_NextLoad", label(firstAmmo))
+    self.ammoSlot.subtext = getText("UI_OMHTT_AmmoTypes", ammoTypes)
+    self.voidSlot.summary = getText("UI_OMHTT_NextLoad", label(firstVoid))
+    self.voidSlot.subtext = getText("UI_OMHTT_AmmoTypes", voidTypes)
+    local nextShot = cycle and cycle.loaded and cycle.loaded > 0 and (cycle.payload or contents.payloadType)
+    self.magazineSlot.summary = getText("UI_OMHTT_NextShot", label(nextShot))
+    self.loadOrderButton:setEnable(contents.head ~= nil and not stats.rotary)
+    self.reloadButton:setEnable(power ~= nil and T.isOn(state) and require("OMHTT/TurretReload").allowed(contents, stats))
     self.voidSlot.detailText = require("OMHTT/TurretVoid").description(contents.void, contents.head, true)
     require("OMHTT/TurretManageExtras").refresh(self, contents, stats)
     self.ammoSlot.meter = math.min(1, contents.reserveAll / math.max(1, stats.ammo - loaded))
@@ -371,7 +396,8 @@ function Panel:prerender()
         self:refresh()
     end
     local h, y = self.lineHeight, self.detailsY
-    self:section(6, self.equipmentY, self.width - 12, self.modulesY - self.equipmentY - 4, getText("UI_OMHTT_Equipment"))
+    self:section(6, self.equipmentY, self.width - 12, self.ammunitionY - self.equipmentY - 6, getText("UI_OMHTT_Equipment"))
+    self:section(6, self.ammunitionY, self.width - 12, self.modulesY - self.ammunitionY - 6, getText("UI_OMHTT_Ammunition"))
     self:section(6, self.modulesY, self.width - 12, y - self.modulesY - 4, "")
     self:section(6, y - h, self.width / 2 - 10, h * 9, getText("UI_OMHTT_Status"))
     self:drawRect(6, y + h * 8 + 2, self.width - 12, h + 10, .8, .08, .08, .08)
@@ -407,6 +433,13 @@ function Panel:prerender()
     require("OMHTT/TurretManageExtras").draw(self)
 end
 
+---@param delta number Scroll direction
+---@return boolean handled
+function Panel:onMouseWheel(delta)
+    self:setYScroll(math.max(math.min(0, self.height - self.contentHeight), math.min(0, self:getYScroll() - delta * 36)))
+    return true
+end
+
 ---@param x number Local X
 ---@param y number Local Y
 ---@return boolean handled
@@ -432,12 +465,15 @@ function OpenAction:perform()
         local top = titleHeight + lineHeight * 2 + 12
         local moduleHeight = lineHeight * 2 + 24
         local available = getPlayerScreenHeight(index) - 24
-        local preferred = 70 + top + (slotHeight + 8) * 2 + lineHeight * 2 + (moduleHeight + 6) * 3 + 6 + lineHeight * 9 + 82
+        local preferred = 70 + top + (slotHeight + 8) * 3 + lineHeight * 4 + (moduleHeight + 6) * 3 + 6 + lineHeight * 9 + 82
         local trim = math.max(0, preferred - available)
-        local slotTrim = math.min(24, trim / 5)
-        slotHeight = slotHeight - slotTrim
-        moduleHeight = moduleHeight - math.min(12, math.max(0, trim - slotTrim * 2) / 3)
-        local modulesY = top + (slotHeight + 8) * 2
+        local slotTrim = math.min(24, trim / 6)
+        slotHeight = math.max(lineHeight * 3 + 12, slotHeight - slotTrim)
+        moduleHeight = moduleHeight - math.min(12, math.max(0, trim - slotTrim * 3) / 3)
+        local ammunitionY = top + slotHeight + 10
+        local ammoY = ammunitionY + math.max(32, lineHeight + 8)
+        local magazineY = ammoY + slotHeight + 6
+        local modulesY = magazineY + slotHeight + 10
         local detailsY = modulesY + lineHeight * 2 + (moduleHeight + 6) * 3 + 6
         local height = detailsY + lineHeight * 9 + 82
         local x = getPlayerScreenLeft(index) + getPlayerScreenWidth(index) - width - 12
@@ -446,12 +482,14 @@ function OpenAction:perform()
         panel.player, panel.object, panel.nextRefresh = self.character, self.object, 0
         panel.deviceId, panel.slots, panel.moduleSlots = T.state(self.object).id, {}, {}
         panel.moduleRow, panel.rows = 0, 3
-        panel.equipmentY = top - lineHeight
+        panel.equipmentY, panel.ammunitionY = top - lineHeight, ammunitionY
         panel.lineHeight, panel.titleHeight, panel.slotHeight = lineHeight, titleHeight, slotHeight
         panel.modulesY, panel.detailsY, panel.result, panel.reason = modulesY, detailsY, "", ""
         panel.moveWithMouse = true
         panel.backgroundColor = {r = 0.04, g = 0.04, b = 0.04, a = 0.96}
         panel:initialise()
+        panel:setScrollChildren(true)
+        panel:addScrollBars(false)
         panel.benefitList = BenefitList:new(width / 2 + 4, detailsY - lineHeight, width / 2 - 16, lineHeight * 9, lineHeight)
         panel.benefitList:initialise()
         panel:addChild(panel.benefitList)
@@ -461,22 +499,33 @@ function OpenAction:perform()
         panel.rangeSlider:initialise()
         panel.rangeSlider.toolTipText = getText("UI_OMHTT_RangeTooltip")
         panel:addChild(panel.rangeSlider)
-        panel.headSlot = panel:addSlot("head", getText("UI_OMHTT_ManageHead"), 12, top, (width - 32) / 2)
-        panel.batterySlot = panel:addSlot("battery", "", width / 2 + 4, top, (width - 32) / 2 - 88)
+        local equipmentWidth = width - 40
+        local headWidth, expansionWidth = equipmentWidth * .36, equipmentWidth * .20
+        local batteryX = 28 + headWidth + expansionWidth
+        panel.headSlot = panel:addSlot("head", getText("UI_OMHTT_ManageHead"), 12, top, headWidth)
+        panel.capacitySlot = panel:addSlot("capacity", getText("UI_OMHTT_ManageCapacity"), 20 + headWidth, top, expansionWidth)
+        panel.batterySlot = panel:addSlot("battery", "", batteryX, top, width - batteryX - 72)
         panel.batterySlot.detailProvider = function()
             if not panel.batteryText then panel.batteryText = Benefits.battery(panel.batteryContents, panel.stats) end
             return panel.batteryText
         end
-        panel.powerButton = ISButton:new(width - 92, top, 80, panel.slotHeight, "", panel, Panel.togglePower)
+        panel.powerButton = ISButton:new(width - 66, top, 54, panel.slotHeight, "", panel, Panel.togglePower)
         panel.powerButton.prerender = Panel.drawPower
-        local storageWidth = width - 48
-        panel.ammoSlot = panel:addSlot("ammo", "", 12, top + slotHeight + 8, storageWidth * 0.28)
-        panel.ammoSlot.detailText = getText("UI_OMHTT_ReserveCapacity")
-        panel.voidSlot = panel:addSlot("void", getText("UI_OMHTT_Void"), 20 + storageWidth * .28, top + slotHeight + 8, storageWidth * .16)
-        panel.voidSlot.emptyText = getText("UI_OMHTT_ManageDrop")
+        local reserveWidth = (width - 32) / 2
+        panel.ammoSlot = panel:addSlot("ammo", "", 12, ammoY, reserveWidth)
+        panel.voidSlot = panel:addSlot("void", getText("UI_OMHTT_Void"), 20 + reserveWidth, ammoY, reserveWidth)
         panel.voidSlot.detailText = getText("UI_OMHTT_VoidHint")
-        panel.magazineSlot = panel:addSlot("magazine", "", 28 + storageWidth * .44, top + slotHeight + 8, storageWidth * .28)
-        panel.capacitySlot = panel:addSlot("capacity", getText("UI_OMHTT_ManageCapacity"), 36 + storageWidth * .72, top + slotHeight + 8, storageWidth * .28)
+        panel.magazineSlot = panel:addSlot("magazine", "", 12, magazineY, width - 24)
+        panel.magazineSlot.textInsetRight = 88
+        panel.loadOrderButton = ISButton:new(width - 126, ammunitionY + 2, 114, 26, getText("UI_OMHTT_LoadOrder"), panel, function(self)
+            require("OMHTT/TurretLoadOrderPanel").open(self)
+        end)
+        panel.reloadButton = ISButton:new(width - 96, magazineY + math.max(4, (slotHeight - 26) / 2), 76, 26, getText("UI_OMHTT_Reload"), panel, function(self)
+            local contents = T.contents(self.object:getContainer())
+            if contents.head then
+                Utilities.control(self, "Reload", contents.head:getID())
+            end
+        end)
         local moduleWidth = (width - 54) / 6
         for i = 1, 16 do
             local row = i <= 4 and 0 or 1 + math.floor((i - 5) / 6)
@@ -489,7 +538,7 @@ function OpenAction:perform()
         panel.fireButton = ISButton:new(12, height - 38, 110, 28, getText("UI_OMHTT_ManageFire"), panel, Panel.fire)
         local close = ISButton:new(width - 34, 6, 26, 24, "X", panel, Panel.close)
         require("OMHTT/TurretManageExtras").create(panel, rangeX)
-        local buttons = {panel.fireButton, panel.powerButton, panel.priorityButton, close}
+        local buttons = {panel.fireButton, panel.powerButton, panel.priorityButton, panel.loadOrderButton, panel.reloadButton, close}
         for i = 1, #buttons do buttons[i]:initialise(); panel:addChild(buttons[i]) end
         panel:refresh()
         panel:addToUIManager()

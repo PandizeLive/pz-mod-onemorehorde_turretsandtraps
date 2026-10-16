@@ -30,16 +30,19 @@ SandboxVars.OMHTurretsTraps = saved
 R.refresh(saved or {})
 
 local originalTextManager = getTextManager
-getTextManager = function() return {WrapText = function(self, font, text, width) return text end} end
+getTextManager = function() return {MeasureStringX = function(self, font, text) return #text * 8 end} end
 local originalCore = getCore
-getCore = function() return {getScreenHeight = function() return 720 end} end
+getCore = function() return {getScreenHeight = function() return 720 end, getScreenWidth = function() return 1280 end} end
 local panel = {height = 100, width = 250, y = 660, labels = {}, backgroundColor = {a=1,r=0,g=0,b=0}, borderColor = {a=1,r=1,g=1,b=1}}
 panel.tooltip = {getLineSpacing = function() return 18 end, getFont = function() return UIFont.Small end,
-    setY = function(self, y) self.y = y end}
+    setY = function(self, y) self.y = y end, setX = function(self, x) self.x = x end}
 panel.item = {DoTooltip = function() panel.redraw = true end}
 function panel:getHeight() return self.height end
 function panel:getWidth() return self.width end
 function panel:getY() return self.y end
+function panel:getX() return self.x or 100 end
+function panel:setX(value) self.x = value end
+function panel:setWidth(value) self.width = value end
 function panel:setHeight(value) self.height = value end
 function panel:setY(value) self.y = value end
 function panel:drawRect() end

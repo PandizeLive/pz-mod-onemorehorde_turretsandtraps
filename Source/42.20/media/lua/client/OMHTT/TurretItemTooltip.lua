@@ -16,17 +16,23 @@ function U.footer(panel, component)
     else
         description = require("OMHTT/TurretHeadDescription").get(panel.item)
     end
-    local font, width = tip:getFont(), panel:getWidth() - 10
+    local font, originalWidth = tip:getFont(), panel:getWidth()
     local layout = panel.OMHTTFooterLayout
-    if not layout or layout.description ~= description or layout.font ~= font or layout.width ~= width then
-        layout = {description = description, font = font, width = width,
-            lines = string.split(getTextManager():WrapText(font, description, width), "\n")}
+    if not layout or layout.description ~= description or layout.font ~= font then
+        layout = {description = description, font = font, width = 0, lines = string.split(description, "\n")}
+        for i = 1, #layout.lines do
+            layout.width = math.max(layout.width, getTextManager():MeasureStringX(font, layout.lines[i]) + 12)
+        end
         panel.OMHTTFooterLayout = layout
     end
     local lines = layout.lines
+    local required = math.max(originalWidth, layout.width)
+    panel:setWidth(required)
+    panel:setX(math.max(0, math.min(panel:getX(), getCore():getScreenWidth() - required - 1)))
+    tip:setX(panel:getX())
     local total = height + spacing * #lines + 8
     local top = math.max(0, math.min(panel:getY(), getCore():getScreenHeight() - total - 1))
-    if top ~= panel:getY() then
+    if top ~= panel:getY() or required ~= originalWidth then
         panel:setY(top)
         tip:setY(top)
         panel:drawRect(0, 0, panel:getWidth(), height, panel.backgroundColor.a, panel.backgroundColor.r, panel.backgroundColor.g, panel.backgroundColor.b)
@@ -38,11 +44,8 @@ function U.footer(panel, component)
     local rarity = component and R.get(component)
     for i = 1, #lines do
         local colored = rarity and string.find(lines[i], getText("UI_OMHTT_ModuleRarity", ""), 1, true) ~= nil
-        local drain = getText("UI_OMHTT_ModuleDrain", ""):match("^[^:]+:")
-        local bad = drain and string.find(lines[i], drain, 1, true) ~= nil
-        local good = not bad and string.find(lines[i], "+", 1, true) ~= nil
         panel:drawText(lines[i], 5, height + 4 + (i - 1) * spacing,
-            colored and rarity.tr or (good and .55 or 1), colored and rarity.tg or (bad and .6 or 1), colored and rarity.tb or ((good or bad) and .6 or 1), 1, tip:getFont())
+            colored and rarity.tr or 1, colored and rarity.tg or 1, colored and rarity.tb or 1, 1, tip:getFont())
     end
 end
 

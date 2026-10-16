@@ -76,8 +76,11 @@ function O.launch(record, origin, target, player, options)
         local children = (i == 0 or stats.synergy) and fragments or 0
         O.reserved = O.reserved + children
         O.add({source = record.id, shot = tostring(record.shots) .. ":" .. i, x = x, y = y, z = origin:getZ(),
-            dx = math.cos(a), dy = math.sin(a), range = distance, speed = 8, fuse = 2000,
+            dx = math.cos(a), dy = math.sin(a), range = distance, speed = 8, fuse = 1250,
             damage = damage * (i == 0 and 1 or .5), injuryScale = i == 0 and 1 or .5, radius = payload.radius, children = children,
+            sound = options.ammoDescriptor and options.ammoDescriptor.type == "Base.PipeBomb" and "PipeBombExplode"
+                or (options.ammoDescriptor and options.ammoDescriptor.type == "Base.Aerosolbomb" and "AerosolBombExplode" or "FireCrackerSingleExplode"),
+            gain = payload.damage and .35 or 1,
             eligible = i == 0 or stats.synergy, stats = stats, shared = shared, due = Clock.now()})
     end
     if stats.splitter % 2 == 1 then
@@ -156,12 +159,16 @@ function O.step(job)
         job.started = true
         Horde.sound(nil, math.floor(job.x), math.floor(job.y), job.z, 40, 40)
         Effects.emit("Impact", {id = job.source, shot = "grenade:" .. job.id, x = job.x, y = job.y, z = job.z,
-            fromX = job.x, fromY = job.y, sound = "PipeBombExplode"})
+            fromX = job.x, fromY = job.y, sound = job.sound or "FireCrackerSingleExplode", gain = job.gain or .15,
+            silent = job.mini and job.shared.miniSoundAt ~= nil and now - job.shared.miniSoundAt < 120})
+        if job.mini and (not job.shared.miniSoundAt or now - job.shared.miniSoundAt >= 120) then
+            job.shared.miniSoundAt = now
+        end
         for i = 1, job.children do
             local angle = math.rad((i - 1) * 72 + ZombRand(3600) / 100)
             O.reserved = O.reserved - 1
             O.add({source = job.source, shot = job.shot .. ":mini" .. i, x = job.x, y = job.y, z = job.z,
-                dx = math.cos(angle), dy = math.sin(angle), range = 2, speed = 8, fuse = 500,
+                dx = math.cos(angle), dy = math.sin(angle), range = 2, speed = 8, fuse = 500, mini = true, gain = .15, sound = "FireCrackerSingleExplode",
                 damage = job.damage * job.stats.fragmentDamage, injuryScale = (job.injuryScale or 1) * job.stats.fragmentDamage, radius = 1, children = 0,
                 eligible = job.stats.synergy, stats = job.stats, shared = job.shared, due = now + 250})
         end

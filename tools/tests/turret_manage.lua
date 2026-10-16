@@ -90,6 +90,14 @@ require("OMHTT/TurretManageExtras").refresh(panel, {active = {Lure = 1}}, {headK
 check(panel.height + panel.y <= 720 and panel.lureSlider.visible and panel.landingSlider.visible,
     "Lure and Landing Distance remain inside a 720p viewport together")
 panel:refresh()
+check(panel.ammoSlot.width == panel.voidSlot.width and panel.magazineSlot.y > panel.ammoSlot.y
+    and panel.capacitySlot.y == panel.headSlot.y, "Accepted layout keeps equal reserves, Magazine below and Expansion in Equipment")
+local originalScreenHeight = getPlayerScreenHeight
+getPlayerScreenHeight = function() return 600 end
+require("OMHTT/TurretManageExtras").refresh(panel, {active = {Lure = 1}}, {headKind = "Lobber", minimumRange = 6, range = 18})
+check(panel.height + panel.y <= 600 and panel.scrollHeight == panel.contentHeight, "Constrained viewport exposes full content through native scrolling")
+getPlayerScreenHeight = originalScreenHeight
+panel:refresh()
 local moduleRows = {}
 for i = 1, 16 do
     local slot = panel.moduleSlots[i]
@@ -361,6 +369,26 @@ ISInventoryTransferAction:new(player, battery, storage, carried):transferItem(ba
 check(observedTime == 12345, "Component transfer uses pause-aware time, never wall clock")
 ISInventoryTransferAction:new(player, battery, carried, storage):transferItem(battery)
 Clock.now, T.cycle = oldClock, oldCycle
+local OrderPanel = require("OMHTT/TurretLoadOrderPanel")
+storage:AddItem(item("Base.OMHTTTurretLobber"))
+storage:AddItem(item("Base.PipeBomb"))
+storage:AddItem(item("Base.OMHTTAmmoMakeshiftBomb"))
+local currentHead = T.contents(storage).head
+if currentHead and currentHead:getFullType() ~= "Base.OMHTTTurretLobber" then storage:Remove(currentHead) end
+OrderPanel.open(panel)
+local orderPanel = panel.orderPanel
+check(orderPanel and orderPanel.height + orderPanel.y <= 720 and #orderPanel.rows == 2, "Load Order opens a viewport-bounded native list")
+orderPanel.list.selected = 2
+orderPanel:move({step = -1})
+check(orderPanel.rows[1].type == "Base.PipeBomb", "Load Order moves selected ammo to next-load priority")
+orderPanel:apply()
+check(queued and queued.command == "AmmoOrder" and queued.value.order == "Base.PipeBomb|Base.OMHTTAmmoMakeshiftBomb",
+    "Shared editor queues exact ordered types through the authoritative action")
+check(queued:complete() and T.state(object).ammoOrders["Base.OMHTTTurretLobber"] == queued.value.order,
+    "Load Order Apply persists the accepted request")
+OrderPanel.open(panel)
+check(panel.orderPanel.rows[1].type == "Base.PipeBomb", "Reopening Load Order retains saved priority")
+panel.orderPanel:close()
 reachable = false
 local action = ISInventoryTransferAction:new(player, battery, storage, carried)
 check(not action:isValid(), "Native outgoing drag revalidates turret reach")

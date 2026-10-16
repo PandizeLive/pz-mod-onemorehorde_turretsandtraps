@@ -10,21 +10,33 @@ end
 function ISPanel:initialise() end
 function ISPanel:addToUIManager() testTurretPanel = self end
 function ISPanel:removeFromUIManager() self.removed = true end
-function ISPanel:addChild(child) self.children[#self.children + 1] = child end
+function ISPanel:addChild(child) self.children[#self.children + 1] = child; child.parent = self end
 function ISPanel:prerender() end
 function ISPanel:isMouseOver() return false end
 function ISPanel:setStencilRect() end
 function ISPanel:clearStencilRect() end
 function ISPanel:drawRectBorder() end
 function ISPanel:drawRect() end
+function ISPanel:drawProgressBar(x, y, width, height, value) check(x >= 0 and x + width <= self.width and value >= 0 and value <= 1, "Supply meter stays inside its slot") end
 function ISPanel:setY(y) self.y = y end
 function ISPanel:setHeight(height) self.height = height end
+function ISPanel:setScrollChildren(value) self.scrollChildren = value end
+function ISPanel:addScrollBars() end
+function ISPanel:setScrollHeight(value) self.scrollHeight = value end
+function ISPanel:getYScroll() return self.yScroll or 0 end
+function ISPanel:setYScroll(value) self.yScroll = value end
 function ISPanel:drawText(text) check(type(text) == "string", "Manage draws resolved status text") end
 ISButton = {new = function(self, x, y, w, h, title, target, callback)
     return {initialise = function() end, setWidth = function(self, w) self.width = w end, setY = function(self, y) self.y = y end, setVisible = function(self, visible) self.visible = visible end, setEnable = function(self, enabled) self.enabled = enabled end,
         x=x, y=y, width=w, height=h, target = target, callback = callback, setTitle = function(self, title) self.title = title end}
 end}
 ISMouseDrag = {}
+ISScrollingListBox = ISPanel:derive("TestScrollingList")
+function ISScrollingListBox:clear() self.items, self.selected = {}, 0 end
+function ISScrollingListBox:addItem(name, value)
+    self.items = self.items or {}
+    self.items[#self.items + 1] = {text = name, item = value, index = #self.items + 1}
+end
 ISInventoryItem = {renderItemIcon = function() end}
 ISInventoryPane = {}
 ISInventoryTransferAction = {

@@ -48,7 +48,8 @@ return function(player)
             assert(powder:getCurrentUses() == powderUses - 8 and tape:getCurrentUses() == tapeUses - 2, "Bomb drainable quantities are uses, not whole containers")
         end
     end
-    for _, name in pairs({"OMHTTLure", "PipeBombExplode", "JS2000ShotgunShoot", "SpearCraftedHit"}) do
+    for _, name in pairs({"OMHTTLure", "PipeBombExplode", "JS2000ShotgunShoot", "SpearCraftedHit", "FireCrackerSingleExplode",
+        "AttachRopeTree", "StoreItemSmallWoodenBox", "DoubleBarrelShotgunInsertAmmoStart", "DoubleBarrelShotgunInsertAmmo", "DoubleBarrelShotgunInsertAmmoStop"}) do
         assert(GameSounds.getSound(name), "New-head sound missing: " .. name)
     end
     local base = instanceItem(T.BASE)
@@ -77,6 +78,28 @@ return function(player)
     assert(cycle.loaded == 0 and Void.count(module) == 29, "Removing storage loses or duplicates rounds")
     local nativeServer = isServer
     isServer = function() return false end
+    local physicalGun = storage:AddItem("Base.Pistol")
+    storage:Remove(gun)
+    local extension = require("OMHTT/FirearmFeed")
+    local Reload = require("OMHTT/TurretReload")
+    local G = require("OMHTT/Firearms")
+    physicalGun:setContainsClip(true)
+    physicalGun:setCurrentAmmoCount(5)
+    physicalGun:setRoundChambered(true)
+    storage:AddItem(T.TYPES.Magazine)
+    for _ = 1, 25 do storage:AddItem("Base.Bullets9mm") end
+    extension.set(physicalGun, 4)
+    local before = T.contents(storage).ammo
+    local physicalStats = T.cycleConfig(T.contents(storage))
+    assert(Reload.start(T.contents(storage), physicalStats, 200000), "Native partial magazine reload did not start")
+    G.update(T.contents(storage), physicalStats, 200000 + physicalStats.reload, true)
+    assert(T.contents(storage).ammo == before and physicalGun:getCurrentAmmoCount() == physicalGun:getMaxAmmo()
+        and extension.count(physicalGun) == physicalStats.magazine - physicalGun:getMaxAmmo(), "Native extended magazine top-up lost or duplicated ammo")
+    for fullType, bonus in pairs(require("OMHTT/TurretAmmo").scraps) do
+        local scrap = instanceItem(fullType)
+        assert(scrap and require("OMHTT/TurretAmmo").describe(scrap).multiplier == 1 + bonus, "Native scrap bonus mismatch: " .. fullType)
+    end
+    print("[OMHTT-C267] nativeReload=conserved extension=conserved scrapFamilies=8 sounds=verified")
     local spearBase = instanceItem(T.BASE)
     local spearStorage = spearBase:getInventory()
     local ballista = spearStorage:AddItem("Base.OMHTTTurretBallista")

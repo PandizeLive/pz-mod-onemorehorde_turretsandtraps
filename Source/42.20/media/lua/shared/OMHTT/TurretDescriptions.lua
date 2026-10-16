@@ -1,4 +1,3 @@
-local T = require("OMHTT/Turret")
 local R = require("OMHTT/TurretRarity")
 local S = require("OMHTT/TurretStats")
 local D = {cache = {}}
@@ -38,15 +37,12 @@ function D.get(name, rich)
     if name == "MotionDetectionEnhanced" then feature = "Tooltip_OMHTT_ModuleDetectionEnhanced" end
     if string.sub(name, 1, 8) == "Capacity" then feature = "Tooltip_OMHTT_ModuleCapacity" end
     if name == "FiringImprovised" or name == "MotionDetectionImprovised" or name == "CapacityImprovised" then feature = "Tooltip_OMHTT_" .. name end
-    local single = T.SINGLE[name] or string.sub(name, 1, 8) == "Capacity"
-        or name == "FiringImprovised" or name == "MotionDetectionImprovised" or name == "FiringEnhanced" or name == "MotionDetectionEnhanced"
     local color = rich and string.format(" <RGB:%.3f,%.3f,%.3f> ", rarity.tr, rarity.tg, rarity.tb) or ""
     local sep = rich and " <LINE> " or "\n"
     local text = getText("UI_OMHTT_ModuleFeature", getText(feature)) .. sep
-        .. (rich and not single and " <RGB:0.55,0.95,0.6> " or "")
         .. getText("UI_OMHTT_ModuleStackable", stack) .. sep
-        .. (rich and " <RGB:1,0.6,0.6> " or "") .. getText("UI_OMHTT_ModuleDrain", surcharge) .. sep
-        .. color .. getText("UI_OMHTT_ModuleRarity", getText("UI_OMHTT_Rarity" .. rarity.band))
+        .. getText("UI_OMHTT_ModuleDrain", surcharge) .. sep
+        .. color .. getText("UI_OMHTT_ModuleRarity", getText("UI_OMHTT_Rarity" .. rarity.band)) .. (rich and " <RGB:1,1,1> " or "")
     D.cache[key] = text
     return text
 end

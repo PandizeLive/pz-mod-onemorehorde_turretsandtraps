@@ -129,6 +129,17 @@ function V.summary(module, data)
     if selected then
         counts[selected] = totals[selected] or 0
     end
+    local compatibleRows = V.preview(module, head)
+    for i = 1, #compatibleRows do counts[compatibleRows[i].type] = compatibleRows[i].count end
+    if head and source and source:getParent() then
+        local state = require("OMHTT/Turret").state(source:getParent())
+        local Order = require("OMHTT/TurretLoadOrder")
+        local types = Order.types(Order.saved(state, head))
+        for i = 1, #types do
+            local fullType = types[i]
+            counts[fullType] = totals[fullType] or 0
+        end
+    end
     local families, first = {}, {}
     for family, count in pairs(data.families) do families[family] = count end
     for fullType in pairs(totals) do

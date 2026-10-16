@@ -75,7 +75,7 @@ local object = {hasModData = function() return true end, getModData = function()
 storage.parent = object
 storage:AddItem(item("Base.OMHTTAmmoMakeshiftBomb"))
 contents = T.contents(storage)
-check(contents.payloadType == "Base.PipeBomb", "Fallback defaults off even when another bomb is present")
+check(contents.payloadType == "Base.OMHTTAmmoMakeshiftBomb", "C267 load order skips unavailable legacy preference")
 record.ammoFallback = true
 contents = T.contents(storage)
 check(contents.payloadType == "Base.OMHTTAmmoMakeshiftBomb", "Fallback selects available supported payload")
@@ -105,7 +105,7 @@ for i = 1, 200 do
     O.step(job)
     if job.landed then break end
 end
-check(job.landed and job.due == now + 2000, "Grenade lands before starting the two-second fuse")
+check(job.landed and job.due == now + 1250, "Grenade lands before starting the 1.25-second fuse")
 now = job.due - 1
 check(O.step(job) == nil and #O.jobs == 3, "No damage or minis before landing fuse completes")
 now = now + 1
@@ -185,5 +185,79 @@ testMode, sendClientCommand = "sp", previousSend
 local summary = Void.summary(module, Void.data(module))
 check(summary.summary and #summary.groups == 0 and not summary.debt["Base.Potato"] and summary.total == 11,
     "Replicated Void summary contains counts, never quality groups or Conservation accounting")
+local Order = require("OMHTT/TurretLoadOrder")
+local Reload = require("OMHTT/TurretReload")
+local Ammo = require("OMHTT/TurretAmmo")
+local ammoStorage = container()
+record.powered = true
+ammoStorage.parent = object
+local scrapHead = ammoStorage:AddItem(item("Base.OMHTTTurretScrapshot"))
+local scrapVoid = ammoStorage:AddItem(item(Void.TYPE))
+local gold = source:AddItem(item("Base.GoldScrap"))
+check(Void.deposit(scrapVoid, gold, source), "Rare native scrap enters exact Void storage")
+for i = 1, 12 do ammoStorage:AddItem(item("Base.ScrapMetal")) end
+record.ammoOrders = {[scrapHead:getFullType()] = "Base.ScrapMetal|Base.GoldScrap"}
+local selected = T.contents(ammoStorage)
+local config = S.resolve(selected)
+local oldSource = #ammoStorage.items
+local loaded = Feed.update(selected, config, now, true)
+now = now + config.reload
+Feed.update(T.contents(ammoStorage), config, now, true)
+check(loaded.payload == "Base.ScrapMetal" and loaded.loaded == 10, "Ordered custom magazine loads one physical type")
+check(not Reload.allowed(T.contents(ammoStorage), config), "Full unchanged magazine has no redundant Reload")
+loaded.debts = {["Base.ScrapMetal"] = .5}
+loaded.impactReady, loaded.nextShot = false, now + config.cooldown
+local retainedDeadline = loaded.nextShot
+record.ammoOrders[scrapHead:getFullType()] = "Base.GoldScrap|Base.ScrapMetal"
+check(T.contents(ammoStorage).payloadType == "Base.ScrapMetal", "Changing order cannot rewrite an already loaded magazine")
+check(Reload.start(T.contents(ammoStorage), config, now), "Manual reload accepts changed next type")
+check(#ammoStorage.items == oldSource and Void.count(scrapVoid) == 1 and loaded.loaded == 0,
+    "Reload creates no physical refund and spends no virtual ammunition")
+now = now + config.reload
+Feed.update(T.contents(ammoStorage), config, now, true)
+check(loaded.loaded == 1 and loaded.virtual and loaded.payload == "Base.GoldScrap"
+    and loaded.debts["Base.ScrapMetal"] == .5 and loaded.nextShot == retainedDeadline and not loaded.impactReady,
+    "Reload preserves Conservation debt, cooldown and consumed Impact entitlement")
+check(Feed.descriptor(T.contents(ammoStorage), loaded).multiplier == 1.15, "Void gold retains the physical material bonus")
+local request = {head = scrapHead:getID(), previous = Order.saved(record, scrapHead), order = "Base.SteelScrap|Base.ScrapMetal"}
+check(Order.valid(request, T.contents(ammoStorage), record), "Exact-head current load-order edit accepted")
+request.previous = "stale"
+check(not Order.valid(request, T.contents(ammoStorage), record), "Concurrent stale load-order edit rejected")
+request.previous, request.order = Order.saved(record, scrapHead), "Base.ScrapMetal|Base.ScrapMetal"
+check(not Order.valid(request, T.contents(ammoStorage), record), "Duplicate load-order types rejected")
+request.order = "Base.PipeBomb"
+check(not Order.valid(request, T.contents(ammoStorage), record), "Incompatible load-order type rejected")
+local copied = require("OMHTT/TurretAuthority").copy(record)
+check(copied.ammoOrders ~= record.ammoOrders and Order.saved(nativeRoundTrip(copied), scrapHead) == Order.saved(record, scrapHead),
+    "Replicated and persisted orders are independent exact copies")
+for kind, bonus in pairs(Ammo.scraps) do
+    check(Ammo.accepts(scrapHead, kind) and Ammo.describe(item(kind)).multiplier == 1 + bonus, "Each native scrap has its approved damage bonus")
+end
+for _, pair in pairs({{"", 20}, {"CapacityImprovised", 30}, {"CapacitySmall", 40}, {"Capacity", 60}, {"CapacityLarge", 80}}) do
+    local active = {}
+    if pair[1] ~= "" then active[pair[1]] = 1 end
+    check(S.resolve({head = scrapHead, active = active}).ammo == pair[2], "Scrap reserve follows the safe expansion progression")
+end
+for i = 1, 25 do
+    local kind = "Test.C267Scrap" .. string.format("%02d", i)
+    Ammo.overrides[kind] = "scrap"
+    local candidate = source:AddItem(item(kind))
+    check(Void.deposit(scrapVoid, candidate, source), "Large type-list fixture converts exact ammo")
+end
+record.ammoOrders[scrapHead:getFullType()] = "Test.C267Scrap25|Base.GoldScrap|Base.ScrapMetal"
+local compactRows = Order.rows(T.contents(ammoStorage), record, nil, true)
+check(#compactRows <= 23 and compactRows[1].type == "Test.C267Scrap25" and compactRows[1].virtual == 1,
+    "Routine Manage summary stays bounded while retaining a preferred type beyond its twenty-row preview")
+check(Order.select(T.contents(ammoStorage), record) == "Test.C267Scrap25", "Feeder selects cached exact priority beyond preview")
+local originalVoid = State.get(scrapVoid, "void")
+for i = 1, 2 do Void.deposit(scrapVoid, source:AddItem(item("Base.GoldScrap")), source) end
+record.ammoOrders[scrapHead:getFullType()] = "Base.GoldScrap|Base.ScrapMetal"
+State.set(scrapVoid, "void", Void.summary(scrapVoid, originalVoid))
+testMode = "client"
+check(Reload.allowed(T.contents(ammoStorage), config), "Client enables a useful virtual top-up from replicated counts without private descriptors")
+check(not Reload.start(T.contents(ammoStorage), config, now), "Client cannot mutate reload accounting")
+testMode = "sp"
+State.set(scrapVoid, "void", originalVoid)
+for i = 1, 25 do Ammo.overrides["Test.C267Scrap" .. string.format("%02d", i)] = nil end
 testMode, SandboxVars.OMHTurretsTraps, Clock.now = oldMode, oldSettings, oldClock
 testC247 = "finiteVirtualMagazine=pass exactModuleDebt=pass mixedPayload=pass boundedGrenadeLineage=pass lureNoCatchup=pass"

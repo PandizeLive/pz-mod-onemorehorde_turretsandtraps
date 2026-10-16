@@ -1463,3 +1463,10 @@ Owner: "Expansion should be on Equipment. I do prefer that." Reports continued i
 
 
 Owner follow-up (2026-10-16): "I like the new design"; corrected C266 layout accepted and patch recap requested. This accepts the design, not installed gameplay or actual mobile interaction. C263-C266 corrective scope is unchanged.
+
+
+## C267 — correction patch implementation approved, 2026-10-16
+
+Owner: "Approved" following the C263–C266 patch recap and accepted corrected Manage design. This authorizes implementation, verification, local installation and the standing C108 GitHub mirror. **C267 / 0.2.52 corrective patch (2026-10-16).** Owner explicitly approves the C263–C266 recap. Implemented the accepted Equipment/Ammunition layout, shared per-head Load Order, safe manual Reload, next-load/next-shot summaries, eight scrap types and bonuses,20/30/40/60/80 scrap limits, quieter Makeshift blasts,1.25-second Lobber fuse/5.5-second base interval, head reload audio and unwrapped white descriptions except rarity. [Patch](PATCH_v0.2.52.md) | [Verification and short test](TEST_v0.2.52.md). Automated/native checks are recorded separately from pending rendered/connected-client acceptance. R4C1 physical inputs/controller remain next. No Workshop publication or main merge.
+
+Preserve one ammo type per magazine, normal speed upgrades without a detonation gate, private server accounting and pending connected acceptance. The approved work does not include R4C1 physical controls, new recipes or a Workshop upload.

@@ -31,37 +31,11 @@ function F.select(contents, container)
     if G.profile(head) then return G.ammoType(head) end
     local cycle = State.get(head, "cycle")
     if cycle and cycle.loaded and cycle.loaded > 0 and cycle.payload then return cycle.payload end
-    if head:getFullType() == "Base.OMHTTTurretLobber" then
-        local state = require("OMHTT/Turret").state(container:getParent())
-        local first = state and state.ammoPreferred or F.BOMBS[1]
-        local order = {first}
-        for i = 1, #F.BOMBS do
-            if F.BOMBS[i] ~= first then
-                order[#order + 1] = F.BOMBS[i]
-            end
-        end
-        if state and state.ammoOrder then
-            order = {}
-            for fullType in string.gmatch(state.ammoOrder, "[^|]+") do
-                order[#order + 1] = fullType
-            end
-        end
-        first = order[1]
-        if not state or not state.ammoFallback then return first end
-        for i = 1, #order do
-            if F.physical(contents, order[i]) > 0 or Void.count(contents.void, head, order[i]) > 0 then return order[i] end
-        end
-        return first
-    end
-    for i = 1, #contents.rounds do
-        local fullType = contents.rounds[i]:getFullType()
-        if Ammo.accepts(head, fullType) then return fullType end
-    end
-    local _, group = Void.count(contents.void, head)
-    if group then return group.type end
+    local state = require("OMHTT/Turret").state(container:getParent())
+    local selected = require("OMHTT/TurretLoadOrder").select(contents, state)
+    if selected then return selected end
     local definition = require("OMHTT/TurretHeads").get(head)
-    if definition then return definition.ammo end
-    return "Base.Potato"
+    return definition and definition.ammo or "Base.Potato"
 end
 
 ---@param head InventoryItem Exact head
@@ -73,6 +47,7 @@ function F.cancel(head)
     cycle.loaded, cycle.pending, cycle.reloadReady, cycle.rackReady = 0, nil, nil, nil
     cycle.virtual, cycle.moduleId, cycle.descriptor, cycle.payload = nil, nil, nil, nil
     cycle.suppressImpactReload, cycle.virtualRack = true, nil
+    cycle.manualImpactReady = nil
     -- Service cannot manufacture a new first-shot entitlement.
     require("OMHTT/TurretImpactCycle").consume(cycle)
 end
@@ -174,8 +149,8 @@ function F.update(contents, stats, now, operate)
         cycle.rackReady, cycle.virtualRack = nil, true
     end
     if cycle.suppressImpactReload and cycle.loaded > 0 then
-        require("OMHTT/TurretImpactCycle").consume(cycle)
-        cycle.suppressImpactReload = nil
+        cycle.impactReady = cycle.manualImpactReady == true
+        cycle.suppressImpactReload, cycle.manualImpactReady = nil, nil
     end
     cycle.status = status
     return cycle, status

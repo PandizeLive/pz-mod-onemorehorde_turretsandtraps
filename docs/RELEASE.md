@@ -1,5 +1,9 @@
 # Release state and publication policy
 
+## 0.2.52 / C267 — Manage and ammunition correction patch, 2026-10-16
+
+Approved C263–C266 implementation. [Patch](PATCH_v0.2.52.md) | [Verification](TEST_v0.2.52.md). Local installation evidence and GitHub delivery will be recorded after the immutable test tag is installed. No Workshop upload; all pending player notes remain in the cumulative draft.
+
 ## 0.2.51 / C262 — development correction patch, 2026-10-15
 
 [Patch](PATCH_v0.2.51.md) and [verification](TEST_v0.2.51.md). 20,441 assertions, 264 source/322 package files and all independent selections pass. Native production and persistence evidence are retained in diagnostics/v0.2.51. Installed through root OMH.cmd from immutable `test/v0.2.51` / `9141ced6352f6f3b88823751ccb16dcd8d0b0f93`. All264 source and322 tagged/packaged/installed/archive files match; both0.2.50 package backups verify. [Install/archive evidence](../diagnostics/v0.2.51/local-release.json). C108 development delivery retains the existing branch/draft PR and immutable test tag. No Workshop upload, main merge or LootLab deployment; cumulative unpublished notes are retained.

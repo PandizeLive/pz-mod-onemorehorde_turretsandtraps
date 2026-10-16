@@ -1,6 +1,11 @@
 local G = require("OMHTT/Firearms")
 local D = require("OMHTT/Diagnostics")
 local A = {entries = {}}
+local mechanisms = {
+    Ballista = {start = "AttachRopeTree", finish = "StoreItemSmallWoodenBox"},
+    Lobber = {start = "DoubleBarrelShotgunInsertAmmoStart", insert = "DoubleBarrelShotgunInsertAmmo", finish = "DoubleBarrelShotgunInsertAmmoStop"},
+    Scrapshot = {start = "DoubleBarrelShotgunInsertAmmo", finish = "DoubleBarrelShotgunInsertAmmoStop"},
+}
 
 ---@param object IsoObject Turret
 ---@return nil
@@ -57,7 +62,7 @@ end
 ---@param now number Milliseconds
 ---@return nil
 function A.update(object, head, cycle, status, stats, now)
-    if stats.rotary or stats.headKind == "Ballista" then
+    if stats.rotary then
         A.stop(object)
         return
     end
@@ -67,7 +72,7 @@ function A.update(object, head, cycle, status, stats, now)
     elseif cycle and cycle.rackReady and cycle.rackReady > now then
         phase = "rack"
     end
-    if status == "NoHead" or status == "Disabled" or status == "Jammed" or status == "NoMagazine" or status == "Servicing" then
+    if status == "Off" or status == "NoPower" or status == "NoHead" or status == "Disabled" or status == "Jammed" or status == "NoMagazine" or status == "Servicing" then
         A.stop(object)
         return
     end
@@ -79,13 +84,26 @@ function A.update(object, head, cycle, status, stats, now)
         A.entries[object] = entry
     end
     local gun = G.profile(head)
+    local mechanism = mechanisms[stats.headKind]
     if entry.phase ~= phase then
-        if entry.phase == "reload" and gun then A.play(object, entry, head:getInsertAmmoStopSound()) end
+        if entry.phase == "reload" then
+            if gun then
+                A.play(object, entry, head:getInsertAmmoStopSound())
+            end
+            if mechanism then
+                A.play(object, entry, mechanism.finish)
+            end
+        end
         entry.phase, entry.nextInsert = phase, nil
         if phase == "reload" then
             if gun then
                 A.play(object, entry, head:getInsertAmmoStartSound())
                 entry.nextInsert = now + math.min(150, stats.reload / 2)
+            elseif mechanism then
+                A.play(object, entry, mechanism.start)
+                if mechanism.insert then
+                    entry.nextInsert = now + stats.reload / 2
+                end
             else
                 A.play(object, entry, "OMHTTPotatoReload")
             end
@@ -94,9 +112,11 @@ function A.update(object, head, cycle, status, stats, now)
         end
     end
     if entry.nextInsert and now >= entry.nextInsert and phase == "reload" then
-        A.play(object, entry, head:getInsertAmmoSound())
+        A.play(object, entry, mechanism and mechanism.insert or head:getInsertAmmoSound())
         entry.nextInsert = nil
-        if not head:getMagazineType() then entry.nextInsert = now + math.max(100, stats.reload) end
+        if gun and not head:getMagazineType() then
+            entry.nextInsert = now + math.max(100, stats.reload)
+        end
     end
     if phase == "idle" then
         local playing = false

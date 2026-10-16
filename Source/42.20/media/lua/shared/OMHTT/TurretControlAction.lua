@@ -17,19 +17,11 @@ function Action:isValid()
         local stats = T.cycleConfig(contents)
         return stats.headKind == "Lobber" and type(self.value) == "number" and self.value % 1 == 0
             and self.value >= stats.minimumRange and self.value <= stats.range
-    elseif self.command == "AmmoFallback" then
-        return contents.head and contents.head:getFullType() == "Base.OMHTTTurretLobber" and type(self.value) == "boolean"
     elseif self.command == "AmmoOrder" then
-        if not contents.head or contents.head:getFullType() ~= "Base.OMHTTTurretLobber" or type(self.value) ~= "string" or #self.value > 160 then return false end
-        local seen, count = {}, 0
-        for fullType in string.gmatch(self.value, "[^|]+") do
-            if seen[fullType] or not require("OMHTT/TurretAmmo").bombs[fullType] then return false end
-            seen[fullType], count = true, count + 1
-        end
-        return count == 3
-    elseif self.command == "AmmoPreferred" or self.command == "AmmoSwitch" then
-        return contents.head and contents.head:getFullType() == "Base.OMHTTTurretLobber"
-            and require("OMHTT/TurretAmmo").bombs[self.value] ~= nil
+        return require("OMHTT/TurretLoadOrder").valid(self.value, contents, T.state(self.object))
+    elseif self.command == "Reload" then
+        return contents.head and self.value == contents.head:getID() and T.isOn(T.state(self.object))
+            and require("OMHTT/TurretReload").allowed(contents, T.cycleConfig(contents))
     elseif self.command == "Priority" then
         if not contents.active.Filter then return false end
         for i = 1, #M.PRIORITIES do
@@ -71,16 +63,13 @@ function Action:complete()
     elseif self.command == "LandingRange" then
         state.landingRange = self.value
     elseif self.command == "AmmoOrder" then
-        state.ammoOrder = self.value
-        state.ammoPreferred = string.match(self.value, "^[^|]+")
-    elseif self.command == "AmmoFallback" then
-        state.ammoFallback = self.value
-    elseif self.command == "AmmoPreferred" or self.command == "AmmoSwitch" then
-        state.ammoPreferred = self.value
-        state.ammoOrder = nil
-        if self.command == "AmmoSwitch" then
-            require("OMHTT/TurretFeed").cancel(contents.head)
-        end
+        state.ammoOrders = state.ammoOrders or {}
+        state.ammoOrders[contents.head:getFullType()] = self.value.order
+    elseif self.command == "Reload" then
+        local stats = T.cycleConfig(contents)
+        local world = require("OMHTT/TurretWorld")
+        if not world.power(self.object, contents, stats) then return false end
+        if not require("OMHTT/TurretReload").start(contents, stats, require("OMHTT/TurretClock").now()) then return false end
     elseif self.command == "Priority" then
         state.priority = self.value
     else
@@ -109,7 +98,7 @@ end
 ---@param object IsoObject Exact turret
 ---@param id string Expected identity
 ---@param command string Range or Priority
----@param value number|string Requested value
+---@param value number|string|boolean|table Requested value
 ---@return OMHTTTurretControlAction action
 function Action:new(character, object, id, command, value)
     local o = ISBaseTimedAction.new(self, character)

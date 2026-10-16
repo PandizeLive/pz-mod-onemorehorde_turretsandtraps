@@ -67,7 +67,6 @@ end
 ---@return boolean handled
 function Slot:onRightMouseUp(x, y)
     if self.kind == "void" then require("OMHTT/TurretUtilities").menu(self.owner, "void"); return true end
-    if self.kind == "magazine" and self.owner.stats.headKind == "Lobber" then require("OMHTT/TurretUtilities").menu(self.owner, "ammo"); return true end
     if self.kind == "magazine" then
         self.owner:magazine(nil)
     else
@@ -93,7 +92,7 @@ function Slot:update()
             self.tooltip:initialise()
             self.tooltip:addToUIManager()
             self.tooltip:setOwner(self)
-            self.tooltip.maxLineWidth = 360
+            self.tooltip.maxLineWidth = 10000
         end
         self.tooltip:setName(self.detailTitle or (item and item:getDisplayName()) or self.label)
         self.tooltip.description = self.detailText
@@ -129,6 +128,22 @@ function Slot:prerender()
         end
     end
     if self.missing then self:drawRectBorder(0, 0, self.width, self.height, 1, 1, 0.3, 0.3) end
+    if self.summary then
+        local right = self.textInsetRight or 0
+        self:setStencilRect(8, h + 3, self.width - 16 - right, self.height - h - 5)
+        self:drawText(self.summary, 8, h + 4, 1, 1, 1, 1, UIFont.Small)
+        if self.subtext then
+            self:drawText(self.subtext, 8, h * 2 + 6, .75, .75, .75, 1, UIFont.Small)
+        end
+        self:clearStencilRect()
+        if self.disabled and self.kind ~= "magazine" then
+            self:drawRect(0, 0, self.width, self.height, .4, 0, 0, 0)
+        end
+        if self:isMouseOver() and ISMouseDrag.dragging and ISMouseDrag.draggingFocus ~= self then
+            self:drawRectBorder(0, 0, self.width, self.height, 1, .8, .8, .8)
+        end
+        return
+    end
     local item = self.items[1]
     local name = self.emptyText or getText("UI_OMHTT_ManageDrop")
     if item then

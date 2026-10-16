@@ -129,6 +129,10 @@ end
 ---@param panel ISPanel Manage window
 ---@return nil
 function U.menu(panel, kind)
+    if kind == "ammo" then
+        require("OMHTT/TurretLoadOrderPanel").open(panel)
+        return
+    end
     local contents, state = T.contents(panel.object:getContainer()), T.state(panel.object)
     local menu = ISContextMenu.get(panel.player:getPlayerNum(), getMouseX(), getMouseY())
     if kind == "lure" and contents.active.Lure then
@@ -138,31 +142,6 @@ function U.menu(panel, kind)
         local ranges = ISContextMenu:getNew(menu)
         menu:addSubMenu(option, ranges)
         for i = 5, 20 do ranges:addOption(tostring(i), panel, U.control, "LureRange", i) end
-    end
-    if kind == "ammo" and contents.head and contents.head:getFullType() == "Base.OMHTTTurretLobber" then
-        menu:addOption(getText(state.ammoFallback and "UI_OMHTT_FallbackOff" or "UI_OMHTT_FallbackOn"), panel, U.control, "AmmoFallback", not state.ammoFallback)
-        local bombs = require("OMHTT/TurretFeed").BOMBS
-        for i = 1, #bombs do
-            local script = getScriptManager():getItem(bombs[i])
-            local label = script and script:getDisplayName() or bombs[i]
-            local option = menu:addOption(label, panel, U.control, "AmmoPreferred", bombs[i])
-            local sub = ISContextMenu:getNew(menu)
-            menu:addSubMenu(option, sub)
-            sub:addOption(getText("UI_OMHTT_AmmoNextReload"), panel, U.control, "AmmoPreferred", bombs[i])
-            sub:addOption(getText("UI_OMHTT_AmmoSwitch"), panel, U.control, "AmmoSwitch", bombs[i])
-            local second = sub:addOption(getText("UI_OMHTT_AmmoSecond"), nil, nil)
-            local orders = ISContextMenu:getNew(sub)
-            sub:addSubMenu(second, orders)
-            for j = 1, #bombs do
-                if j ~= i then
-                    local k = 6 - i - j
-                    local script2 = getScriptManager():getItem(bombs[j])
-                    local script3 = getScriptManager():getItem(bombs[k])
-                    orders:addOption(script2:getDisplayName() .. " -> " .. script3:getDisplayName(), panel,
-                        U.control, "AmmoOrder", bombs[i] .. "|" .. bombs[j] .. "|" .. bombs[k])
-                end
-            end
-        end
     end
     if kind == "void" and contents.void then
         menu:addOption(getText("UI_OMHTT_VoidStored"), panel, U.inspect)

@@ -96,7 +96,7 @@ end
 function G.cancelLoading(gun)
     if isClient() then return end
     local state = G.state(gun)
-    state.reloadReady, state.rackReady = nil, nil
+    state.reloadReady, state.rackReady, state.manualReload = nil, nil, nil
 end
 
 ---@param contents table Exact inventory summary
@@ -133,11 +133,15 @@ function G.update(contents, stats, now, operate)
         state.nextShot = now + math.min(1, (state.nextShot - now) / state.cooldownDuration) * stats.cooldown
     end
     state.cooldownDuration = stats.cooldown
-    if state.loaded == 0 then
+    if contents.reserve == 0 then
+        state.reloadReady, state.manualReload = nil, nil
+        if state.loaded == 0 then return state, "Empty" end
+    end
+    if state.loaded == 0 or state.manualReload then
         state.rackReady = nil
-        if contents.reserve == 0 then state.reloadReady = nil; return state, "Empty" end
         if not operate then return state, "Reloading" end
-        local amount = math.min(stats.magazine, contents.reserve)
+        local existing = gun:getCurrentAmmoCount() + Feed.count(gun)
+        local amount = math.min(math.max(0, stats.magazine - existing), contents.reserve)
         local duration = stats.reload
         if not gun:getMagazineType() then duration = duration * amount end
         if not state.reloadReady then state.reloadReady = now + duration end
@@ -147,23 +151,29 @@ function G.update(contents, stats, now, operate)
         state.reloadDuration = duration
         if now < state.reloadReady then return state, "Reloading" end
         local container, count = gun:getContainer(), 0
+        local reserved = Feed.count(gun)
         for i = 1, #contents.rounds do
             if count >= amount then break end
             local round = contents.rounds[i]
             if container:contains(round) and round:getFullType() == G.ammoType(gun) then
-                if count < gun:getMaxAmmo() then
-                    container:Remove(round)
-                    if isServer() then
-                        sendRemoveItemFromContainer(container, round)
+                if reserved > 0 then
+                    reserved = reserved - 1
+                else
+                    if count < math.max(0, gun:getMaxAmmo() - gun:getCurrentAmmoCount()) then
+                        container:Remove(round)
+                        if isServer() then
+                            sendRemoveItemFromContainer(container, round)
+                        end
                     end
+                    count = count + 1
                 end
-                count = count + 1
             end
         end
-        gun:setCurrentAmmoCount(math.min(count, gun:getMaxAmmo()))
-        Feed.set(gun, math.max(0, count - gun:getMaxAmmo()))
+        local inserted = math.min(count, math.max(0, gun:getMaxAmmo() - gun:getCurrentAmmoCount()))
+        gun:setCurrentAmmoCount(gun:getCurrentAmmoCount() + inserted)
+        Feed.set(gun, Feed.count(gun) + count - inserted)
         if not gun:haveChamber() then gun:setSpentRoundCount(0) end
-        state.reloadReady = nil
+        state.reloadReady, state.manualReload = nil, nil
         contents.reserve = contents.reserve - count
         state.loaded = G.loaded(gun)
         Impact.observe(state, state.loaded)

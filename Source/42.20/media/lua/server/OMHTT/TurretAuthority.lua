@@ -43,6 +43,14 @@ function A.copy(source)
             result[key] = value
         end
     end
+    if type(source.ammoOrders) == "table" then
+        result.ammoOrders = {}
+        for head, order in pairs(source.ammoOrders) do
+            if type(head) == "string" and #head <= 256 and type(order) == "string" and #order <= 16384 then
+                result.ammoOrders[head] = order
+            end
+        end
+    end
     return result
 end
 

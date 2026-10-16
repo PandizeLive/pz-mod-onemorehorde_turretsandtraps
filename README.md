@@ -1,5 +1,9 @@
 # OMH: Turrets & Traps
 
+**C267 / 0.2.52 corrective patch (2026-10-16).** Owner explicitly approves the C263–C266 recap. Implemented the accepted Equipment/Ammunition layout, shared per-head Load Order, safe manual Reload, next-load/next-shot summaries, eight scrap types and bonuses,20/30/40/60/80 scrap limits, quieter Makeshift blasts,1.25-second Lobber fuse/5.5-second base interval, head reload audio and unwrapped white descriptions except rarity. [Patch](docs/PATCH_v0.2.52.md) | [Verification and short test](docs/TEST_v0.2.52.md). Automated/native checks are recorded separately from pending rendered/connected-client acceptance. R4C1 physical inputs/controller remain next. No Workshop publication or main merge.
+
+Earlier entries below are historical checkpoints.
+
 **C266:** [Expansion restored to Equipment; corrected mockup](docs/TEST_FINDINGS_v0.2.51.md#c266--expansion-in-equipment-and-mobile-preview-2026-10-16). Planning only; installed0.2.51 unchanged.
 
 **C265:** Correction choices settled; [revised Manage layout, Reload and timing rules](docs/TEST_FINDINGS_v0.2.51.md#c265--layout-reload-and-final-correction-selections-2026-10-16). Planning only; installed0.2.51 unchanged.

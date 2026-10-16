@@ -26,7 +26,7 @@ function List:update()
         self.tooltip:initialise()
         self.tooltip:addToUIManager()
         self.tooltip:setOwner(self)
-        self.tooltip.maxLineWidth = 360
+        self.tooltip.maxLineWidth = 10000
     end
     self.tooltip:setName(row.title)
     self.tooltip.description = row.details
