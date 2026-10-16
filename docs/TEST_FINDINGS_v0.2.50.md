@@ -1,5 +1,7 @@
 # 0.2.50 owner findings and correction plan
 
+**C260 selection update:** owner chooses eight40-damage Scrapshot pellets (320total); retain existing90-degree spread because no spread change was selected. C259 balance alternatives below are historical proposals. [Directional Firing feasibility and separate-module recommendation](checkpoints/R4C1_CONNECTED_CONTROLS.md#c260-directional-firing-and-scrapshot-selection-2026-10-15) address the owner's follow-up; no gameplay change or Autonomy merge. Other C259 findings remain open.
+
 ## C259: owner test completed with failures, 2026-10-15
 
 This is a diagnosis/planning checkpoint, not an implemented patch. Owner reports Test Completed and the findings below. Installed 0.2.50 remains unchanged; no blanket acceptance or connected multiplayer pass is inferred. Follow the project test-findings discussion rule before gameplay edits.
