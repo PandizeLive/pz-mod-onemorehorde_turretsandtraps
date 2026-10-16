@@ -1,5 +1,30 @@
 # R4C1 — buttons, pressure plates and links
 
+## C280: fixed balance selected and per-head ammunition estimates, 2026-10-16
+
+Owner selects C2791B, explicitly rejecting exact programmed endurance: use fixed capacities as balance, and provide per-head estimates plus thoughts on guns. Supersedes C279's recommendation to scale allowance with day length or current weapon timing. The selected reference remains90-minute days/eight in-game hours =30 real minutes. No runtime capacity estimator or day-length-dependent limit is approved.
+
+Inspected current TurretStats, TurretHeads, TurretCycle, Firearms profiles and TurretBatteryEstimate plus installed generated weapon scripts. Steady-cycle arithmetic:1800 / (cadence + max(0,reload+rack-cadence)/magazine), one ammo per shot, ordinary firing, no efficiency/speed/loaded-capacity upgrades. This approximates the existing finite-duration estimate; initial magazine/chamber and tick/aim delays can shift results slightly. Source-derived estimates, not a measured uninterrupted30-minute gameplay test.
+
+| Head/example | Approximate ammo for30 real minutes | Proposed rounded Large limit |
+| --- | ---: | ---: |
+| Potato |900 potatoes |1000 |
+| Ballista |300 spears |350 |
+| Grenade Lobber |328 launchable bombs |350 |
+| Scrapshot |858 scrap items |900 |
+| Rotary Bat / Blades |0 |Not applicable |
+| Native M9 pistol |2295 rounds |See shared firearm proposal |
+| Native M14 semi-auto |1700 rounds |See shared firearm proposal |
+| Native M16 auto |4189 rounds |See shared firearm proposal |
+| Native pump shotgun |874 shells |See shared firearm proposal |
+| Native bolt-action rifle |822 rounds |See shared firearm proposal |
+
+Gun examples use installed script recoil/magazine values and current adapter reload/rack values: M9 15/.5333s/2.7s+1.6s; M14 20/.8889s/2.7s+1.6s; M16 30/.2963s/2.7s+1.6s; Shotgun5/1.3333s/(5*.833s)+.8s; HuntingRifle4/1.6s/(4*.590s)+1.6s. Ordinary chambered baseline, not Enhanced Firing or native handheld RPM. Modded guns may differ. Initial chamber convention does not justify presenting exact counts as guarantees.
+
+Recommendation, not approved: fixed Large allowance5000 ordinary firearm rounds and1000 shotgun shells, preserving distinct custom-head allowances above. Slower pistols/semi-auto/precision guns naturally last longer; faster/modded guns may exhaust sooner. Do not compute caps dynamically by mounted RPM. Ammo-family classification/head swapping and retained excess must remain safe; exact lower-tier progression remains unsettled.
+
+Hundreds of spears/bombs are a major physical stockpile (350 native crafted spears at2.0 each =700 weight before equipment). These targets require storage work and do not prove native admission; no weight reduction or silently bypassed capacity is approved. Warning describes carry burden, not a substitute for container support. Larger reserves increase sustained AoE availability without changing per-shot damage/cadence, and explosive crafting cost still matters. Rotary endurance depends on battery, not ammo; no battery/durability rebalance is authorized here. No new gameplay/tests/install; installed0.2.52 acceptance remains deferred.
+
 ## C279: eight in-game hours of ammunition requested, 2026-10-16
 
 Owner requests enough ammunition for most turrets to fire for eight in-game hours without additional modules besides expansions. This selects an ammunition-endurance target, not a specific round count or an eight-hour guarantee for battery/durability. Working interpretation: Large Expansion reaches the target, ordinary head/native firearm cadence and magazine/reloads included, no Conservation, Rapid-Fire, Enhanced Firing, Magazine or Autoloader bonuses. Ordinary Firing/Detection required by the operating mode remain functional prerequisites, not endurance upgrades. Lower expansion progression remains to settle; do not infer eight hours for every tier or no-kit turrets.
