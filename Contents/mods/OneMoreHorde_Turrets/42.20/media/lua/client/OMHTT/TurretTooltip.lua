@@ -6,7 +6,7 @@ local tooltipRender = ISToolTipInv.render
 ---@return nil
 function ISToolTipInv:render()
     local component = self.item and T.component(self.item:getFullType())
-    if component then
+    if component or (self.item and T.kind(self.item) == "head") then
         local old = self.item:getTooltip()
         self.item:setTooltip(nil)
         tooltipRender(self)

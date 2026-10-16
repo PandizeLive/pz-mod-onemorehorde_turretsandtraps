@@ -125,6 +125,8 @@ end
 contents.active.Lure = 1
 record.lureRepeat, record.lureRange = true, 20
 lure.update(object, contents, now)
+lure.update(object, contents, now + 9999)
+check(sounds == 1, "Lure loop waits the complete ten seconds")
 lure.update(object, contents, now + 20000)
 check(sounds == 2, "Lag counts elapsed time but allows only one repeat pulse per update")
 record.powered = false

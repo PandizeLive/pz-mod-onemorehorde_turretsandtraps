@@ -1,5 +1,9 @@
 # Release state and publication policy
 
+## 0.2.51 / C262 — development correction patch, 2026-10-15
+
+[Patch](PATCH_v0.2.51.md) and [verification](TEST_v0.2.51.md). 20,441 assertions, 264 source/322 package files and all independent selections pass. Native production and persistence evidence are retained in diagnostics/v0.2.51. Commit/tag/install/mirror are pending completion of the release sequence; installed0.2.50 remains the prior baseline until verified. No Workshop upload, main merge or LootLab deployment; cumulative unpublished notes are retained.
+
 ## 0.2.50 / C247 — development packaging, 2026-10-15
 
 The approved content bundle and prior multiplayer authority are packaged and validated. 20,401 assertions; 259 source/317 package files; five new native recipes; virtual-firearm transactions; write/read and all independent package combinations pass. Connected MP and rendered owner acceptance remain pending. Installed from immutable `test/v0.2.50` / `22cd6d4a4b77cd1b7f29d4b861575ae370f4a160`. All 259 source and 317 tagged/packaged/installed/archive files match; both 0.2.49 backups verify. [Local release evidence](../diagnostics/v0.2.50/local-release.json). No Workshop content upload or main merge; cumulative draft retains all unpublished changes.

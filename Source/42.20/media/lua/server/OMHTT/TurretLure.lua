@@ -31,9 +31,9 @@ function L.pulse(object, contents, now)
         power.generator:setFuel(math.max(0, power.generator:getFuel() - power.cost))
         require("OMHTT/TurretPowerSync").changed(power.generator)
     end
-    state.lureCycle.nextShot = now + 5000
+    state.lureCycle.nextShot = now + 10000
     Effects.emit("Click", {sound = "OMHTTLure", x = square:getX() + .5,
-        y = square:getY() + .5, z = square:getZ(), gain = range / 20})
+        y = square:getY() + .5, z = square:getZ(), gain = range / 20, lureRange = range})
     return true
 end
 
@@ -52,7 +52,7 @@ function L.update(object, contents, now)
     end
     if state.lureRepeat and (not state.lureCycle.nextShot or now >= state.lureCycle.nextShot) then
         if not L.pulse(object, contents, now) then
-            state.lureCycle.nextShot = now + 5000
+            state.lureCycle.nextShot = now + 10000
         end
     end
 end

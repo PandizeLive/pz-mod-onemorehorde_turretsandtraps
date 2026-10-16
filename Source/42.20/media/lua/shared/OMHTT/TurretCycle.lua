@@ -18,6 +18,10 @@ function C.update(state, ammo, config, now)
         state.reloadReady = now + math.min(1, (state.reloadReady - now) / state.reloadDuration) * config.reload
     end
     state.reloadDuration = config.reload
+    -- Repair pre-0.2.51 transfer deadlines written with wall time after a pause.
+    -- A pending operation can never legitimately exceed its full duration.
+    if state.reloadReady then state.reloadReady = math.min(state.reloadReady, now + config.reload) end
+    if state.nextShot then state.nextShot = math.min(state.nextShot, now + config.cooldown) end
     local capacity = math.max(1, math.floor(config.magazine))
     state.loaded = math.max(0, math.min(state.loaded or 0, math.min(capacity, ammo)))
     Impact.observe(state, state.loaded)

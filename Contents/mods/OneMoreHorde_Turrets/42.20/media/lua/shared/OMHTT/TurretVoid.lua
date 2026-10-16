@@ -2,6 +2,73 @@ local Ammo = require("OMHTT/TurretAmmo")
 local State = require("OMHTT/TurretItemState")
 local V = {TYPE = "Base.OMHTTModuleVoid", LIMIT = 9007199254740991}
 local countCache = setmetatable({}, {__mode = "k"})
+local descriptionCache = setmetatable({}, {__mode = "k"})
+local previewCache = setmetatable({}, {__mode = "k"})
+
+---@param module InventoryItem? Storage module
+---@param head InventoryItem? Compatibility filter
+---@return table rows At most twenty type counts
+---@return number types Total compatible types
+function V.preview(module, head)
+    local data = V.data(module)
+    if not data then return {}, 0 end
+    if data.summary then
+        if head and data.previewHead == head:getFullType() then return data.compatible or {}, data.compatibleTypes or 0 end
+        if head then
+            local rows = {}
+            for i = 1, #(data.preview or {}) do
+                local row = data.preview[i]
+                if Ammo.accepts(head, row.type) then rows[#rows + 1] = row end
+            end
+            return rows, #rows
+        end
+        return data.preview or {}, data.typeCount or 0
+    end
+    local cache = previewCache[data]
+    local key = head and head:getFullType() or "*"
+    if not cache or cache.revision ~= data.revision then
+        cache = {revision = data.revision, views = {}}
+        previewCache[data] = cache
+    end
+    if cache.views[key] then return cache.views[key].rows, cache.views[key].count end
+    local keys, totals = {}, V.totals(data)
+    for fullType, count in pairs(totals) do
+        if count > 0 and (not head or Ammo.accepts(head, fullType)) then keys[#keys + 1] = fullType end
+    end
+    table.sort(keys)
+    local rows = {}
+    for i = 1, math.min(20, #keys) do rows[i] = {type = keys[i], count = totals[keys[i]]} end
+    cache.views[key] = {rows = rows, count = #keys}
+    return rows, #keys
+end
+
+---@param module InventoryItem? Storage module
+---@param head InventoryItem? Compatibility filter
+---@param rich boolean? Rich tooltip
+---@return string description
+function V.description(module, head, rich)
+    local data = V.data(module)
+    local key = (head and head:getFullType() or "*") .. tostring(rich)
+    local cached = data and descriptionCache[data]
+    if cached and cached.revision == data.revision and cached[key] then return cached[key] end
+    local rows, types = V.preview(module, head)
+    local lines = {}
+    for i = 1, #rows do
+        local script = getScriptManager():getItem(rows[i].type)
+        lines[#lines + 1] = (script and script:getDisplayName() or rows[i].type) .. ": " .. tostring(rows[i].count)
+    end
+    if types > #rows then lines[#lines + 1] = getText("UI_OMHTT_VoidMore", types - #rows) end
+    if #lines == 0 then lines[1] = getText("UI_OMHTT_VoidEmpty") end
+    local text = table.concat(lines, rich and " <LINE> " or "\n")
+    if data then
+        if not cached or cached.revision ~= data.revision then
+            cached = {revision = data.revision}
+            descriptionCache[data] = cached
+        end
+        cached[key] = text
+    end
+    return text
+end
 
 ---@param data table Authoritative storage
 ---@return table totals Counts indexed by ammunition type
@@ -70,8 +137,12 @@ function V.summary(module, data)
             first[family] = fullType
         end
     end
+    local preview, typeCount = V.preview(module)
+    local compatible, compatibleTypes = V.preview(module, head)
     return {schema = 1, revision = data.revision, groups = {}, debt = {}, summary = true,
-        total = data.total, families = families, counts = counts, first = first}
+        total = data.total, families = families, counts = counts, first = first,
+        preview = preview, typeCount = typeCount, compatible = compatible, compatibleTypes = compatibleTypes,
+        previewHead = head and head:getFullType()}
 end
 
 ---@param module InventoryItem? Exact storage owner

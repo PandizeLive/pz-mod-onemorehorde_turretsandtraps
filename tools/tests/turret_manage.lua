@@ -65,6 +65,8 @@ local function container(carried)
     function result:hasRoomFor() return self.room end
     function result:setType(value) self.kind = value end
     function result:setCapacity() end
+    function result:getCapacity() return 100 end
+    function result:getCapacityWeight() return T.contents(self).weight end
     function result:setAcceptItemFunction() end
     function result:setExplored() end
     return result
@@ -84,6 +86,10 @@ local panel = testTurretPanel
 panel:prerender()
 check(not panel.fireButton.enabled and panel.status == "NoHead", "Empty base cannot fire")
 check(#panel.slots == 22 and panel.height <= 720 and panel.x >= 0, "Sixteen module slots, Void storage and controls fit 1280x720")
+require("OMHTT/TurretManageExtras").refresh(panel, {active = {Lure = 1}}, {headKind = "Lobber", minimumRange = 6, range = 18})
+check(panel.height + panel.y <= 720 and panel.lureSlider.visible and panel.landingSlider.visible,
+    "Lure and Landing Distance remain inside a 720p viewport together")
+panel:refresh()
 local moduleRows = {}
 for i = 1, 16 do
     local slot = panel.moduleSlots[i]
@@ -236,6 +242,7 @@ actions[1]:transferItem(expansion)
 panel:refresh()
 check(panel.capacitySlot.items[1] == expansion and panel.stats.modules == 8 and panel.stats.ammo == 402,
     "Capacity slot displays exact component and expanded limits")
+check(panel.capacitySlot.disabled, "Expansion is dim only when its excess contents block removal")
 check(X.rejection(player, expansion, storage, carried) == "CapacityFull", "Expanded modules block capacity removal with useful reason")
 local secondExpansion = item("Base.OMHTTModuleExpansionMedium")
 carried:AddItem(secondExpansion)
@@ -243,6 +250,8 @@ check(X.rejection(player, secondExpansion, carried, storage) == "TransferFull", 
 for i = #storage.items, 1, -1 do
     if T.kind(storage.items[i]) == "module" then storage:Remove(storage.items[i]) end
 end
+panel:refresh()
+check(not panel.capacitySlot.disabled, "Removable Expansion is visibly enabled")
 check(X.rejection(player, expansion, storage, carried) == nil, "Capacity can be removed after excess modules are withdrawn")
 for i = 1, 3 do storage:AddItem(item("Base.Potato")) end
 check(not T.canRemove(storage, expansion), "Expanded ammunition blocks capacity removal")
@@ -343,6 +352,15 @@ for first = 1, 600, 20 do
 end
 check(T.contents(bulkStorage).ammo == 600 and #bulkCarried.items == 0, "600 exact items arrive once")
 check(T.transferSnapshots == nil, "No transfer cache survives between callbacks")
+local Clock = require("OMHTT/TurretClock")
+local oldClock, oldCycle = Clock.now, T.cycle
+local observedTime
+Clock.now = function() return 12345 end
+T.cycle = function(_, time) observedTime = time end
+ISInventoryTransferAction:new(player, battery, storage, carried):transferItem(battery)
+check(observedTime == 12345, "Component transfer uses pause-aware time, never wall clock")
+ISInventoryTransferAction:new(player, battery, carried, storage):transferItem(battery)
+Clock.now, T.cycle = oldClock, oldCycle
 reachable = false
 local action = ISInventoryTransferAction:new(player, battery, storage, carried)
 check(not action:isValid(), "Native outgoing drag revalidates turret reach")

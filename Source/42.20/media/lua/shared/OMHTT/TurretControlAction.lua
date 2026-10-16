@@ -13,6 +13,10 @@ function Action:isValid()
         return contents.active.Lure ~= nil and type(self.value) == "boolean"
     elseif self.command == "LureRange" then
         return contents.active.Lure ~= nil and type(self.value) == "number" and self.value >= 5 and self.value <= 20 and self.value % 1 == 0
+    elseif self.command == "LandingRange" then
+        local stats = T.cycleConfig(contents)
+        return stats.headKind == "Lobber" and type(self.value) == "number" and self.value % 1 == 0
+            and self.value >= stats.minimumRange and self.value <= stats.range
     elseif self.command == "AmmoFallback" then
         return contents.head and contents.head:getFullType() == "Base.OMHTTTurretLobber" and type(self.value) == "boolean"
     elseif self.command == "AmmoOrder" then
@@ -64,6 +68,8 @@ function Action:complete()
         state.lureRepeat = self.value and T.isOn(state)
     elseif self.command == "LureRange" then
         state.lureRange = self.value
+    elseif self.command == "LandingRange" then
+        state.landingRange = self.value
     elseif self.command == "AmmoOrder" then
         state.ammoOrder = self.value
         state.ammoPreferred = string.match(self.value, "^[^|]+")

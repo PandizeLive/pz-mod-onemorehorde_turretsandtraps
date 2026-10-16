@@ -1,5 +1,7 @@
 # 0.2.50 owner findings and correction plan
 
+C262 follow-up: the reported corrections are implemented in [0.2.51](PATCH_v0.2.51.md), including the diagnosed wall-clock/active-clock reload deadline mismatch. [Focused retest](TEST_v0.2.51.md). The original 0.2.50 findings below remain historical evidence; implementation does not mark them owner-passed.
+
 **C261 selection update:** triggered Firing-only shots consume normal ammo/power even without targets; Lobber receives its own landing-distance control, separate from Engagement Range. [Confirmed selections](checkpoints/R4C1_CONNECTED_CONTROLS.md#c261-blind-firing-and-lobber-distance-confirmed-2026-10-15). Firing/Detection remain separate; no implementation or test pass is implied.
 
 **C260 selection update:** owner chooses eight40-damage Scrapshot pellets (320total); retain existing90-degree spread because no spread change was selected. C259 balance alternatives below are historical proposals. [Directional Firing feasibility and separate-module recommendation](checkpoints/R4C1_CONNECTED_CONTROLS.md#c260-directional-firing-and-scrapshot-selection-2026-10-15) address the owner's follow-up; no gameplay change or Autonomy merge. Other C259 findings remain open.

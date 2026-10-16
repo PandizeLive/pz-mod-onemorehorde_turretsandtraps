@@ -36,17 +36,18 @@ end
 ---@param stats table Effective modules
 ---@return boolean available Bounded committed effect capacity
 ---@nodiscard
-function V.available(stats)
-    return #V.queue + V.reserved + V.capacity(stats) <= 256 and Proc.available(stats)
+function V.available(stats, extra)
+    return #V.queue + V.reserved + V.capacity(stats) + (extra or 0) <= 256 and Proc.available(stats)
 end
 
 ---@param options table Committed primary shot
 ---@return nil
 function V.reserve(options)
     if not options.stats then return true end
-    if not V.available(options.stats) then return false end
+    local extra = options.forward and 1 or 0
+    if not V.available(options.stats, extra) then return false end
     options.primaryDone = nil
-    options.rayBudget = V.capacity(options.stats)
+    options.rayBudget = V.capacity(options.stats) + extra
     options.pending = options.managed and 2 or 1
     options.fragmentReserved = options.stats.fragment > 0 and 5 or nil
     options.pierceReserved = options.stats.piercing > 0 and 1 or nil
@@ -109,7 +110,7 @@ function V.ray(record, x, y, z, angle, range, damage, group, index)
     V.queue[#V.queue + 1] = {x = x, y = y, z = z, dx = math.cos(angle), dy = math.sin(angle),
         range = range, distance = 0, damage = damage, group = group, id = record.id,
         shot = tostring(record.shots) .. ":" .. group.kind .. ":" .. index, objectIndex = 0}
-    if group.stats.headKind == "Ballista" and group.kind ~= "fragment" then
+    if group.stats.headKind == "Ballista" and group.kind ~= "fragment" and group.kind ~= "forward" then
         local ray = V.queue[#V.queue]
         ray.flightStart, ray.speed = Clock.now(), 24
         require("OMHTT/DefenseEffects").emit("Launch", {id = ray.id, shot = ray.shot, x = x + ray.dx * range,
@@ -128,11 +129,11 @@ function V.split(record, origin, target, player, options, impact)
     local stats = options.stats
     if stats.splitter == 0 then V.done(options); return end
     local x, y = origin:getX() + .5, origin:getY() + .5
-    local angle = math.atan2(target:getY() - y, target:getX() - x)
+    local angle = math.atan2((options.aimY or target:getY()) - y, (options.aimX or target:getX()) - x)
     local side = record.splitterSide or -1
     if stats.splitter % 2 == 1 then record.splitterSide = -side end
     local group = {options = options, kind = "splitter", player = player, weapon = options.effectWeapon, stats = stats, hits = {}, remaining = stats.splitter, rays = {}}
-    if impact and impact.firearm then
+    if impact and impact.firearm and not options.forward then
         local dx, dy = impact.x - x, impact.y - y
         local distance = math.sqrt(dx * dx + dy * dy)
         local forward = math.min(impact.muzzle or require("OMHTT/Turret").HEAD_VISUAL.muzzle * require("OMHTT/Turret").HEAD_VISUAL.scale * 1.5, distance / 2)
@@ -238,9 +239,10 @@ function V.finish(ray)
             local owner = group.options
             local x, y, square = victim:getX(), victim:getY(), victim:getSquare()
             local amount = ray.damage
-            if group.stats.synergy then amount = Conditional.damage(victim, amount, Conditional.snapshot(victim, group.stats)) end
+            local primary = group.kind == "forward" and not group.penetrated
+            if primary or group.stats.synergy then amount = Conditional.damage(victim, amount, Conditional.snapshot(victim, group.stats)) end
             hit = require("OMHTT/TurretHit").resolve(victim, amount, ray.id, group.kind, owner, function()
-                if group.kind == "piercing" and not group.stats.firearm and not group.stats.headKind and owner then
+                if (group.kind == "piercing" or group.kind == "forward") and not group.stats.firearm and not group.stats.headKind and owner then
                     local combat = require("OMHTT/PrototypeCombat")
                     local record = {id = ray.id, shots = ray.shot}
                     combat.splash(record, victim, square, x, y, {splash = ray.damage * (owner.splash or 0) / math.max(.000001, owner.damage),
@@ -254,7 +256,16 @@ function V.finish(ray)
                         end
                     end
                 end
-                if group.stats.synergy and owner then
+                if primary and group.stats.firearm and not victim:isDead() and not victim:isOnFloor() and not victim:isKnockedDown() then
+                    local state = require("OMHTT/DefenseActorState").get(victim)
+                    if (not state.OMHTTKnockdownUntilMs or state.OMHTTKnockdownUntilMs <= getTimestampMs())
+                        and ZombRand(100) < group.stats.knockdown then
+                        if require("OMHTT/DefenseMotion").request(victim, "knock", ray.id, ray.x, ray.y) then
+                            state.OMHTTKnockdownUntilMs = getTimestampMs() + 3000
+                        end
+                    end
+                end
+                if (primary or group.stats.synergy) and owner then
                     local record = {id = ray.id, shots = ray.shot}
                     Proc.hit(victim, true, x, y, ray.z, record, group.player, owner)
                     Conditional.impact(victim, square, owner)
@@ -269,7 +280,7 @@ function V.finish(ray)
         fromX = group.fromX or ray.x, fromY = group.fromY or ray.y, muzzleHeight = group.height, firearm = true, missed = not hit, silent = true}
     if ray.speed then
         if not victim or (hit and group.left and group.left <= 1) or group.kind == "splitter" then
-            facts.firearm, facts.projectile = false, "spear"
+            facts.firearm, facts.projectile = false, group.stats.headKind == "Ballista" and "spear" or nil
             require("OMHTT/DefenseEffects").emit("Impact", facts)
         end
     elseif group.kind == "scrapshot" then
@@ -281,7 +292,7 @@ function V.finish(ray)
     else
         require("OMHTT/DefenseEffects").emit("Ray", facts)
     end
-    if (group.kind == "piercing" or group.kind == "scrapshot") and victim then
+    if (group.kind == "piercing" or group.kind == "scrapshot" or group.kind == "forward") and victim then
         group.hits[victim] = true
         if hit then
             group.left = group.left - 1
@@ -296,7 +307,7 @@ function V.finish(ray)
         end
     end
     if group.options and group.stats.fragment > 0 and group.kind ~= "fragment"
-        and (group.kind == "piercing" or group.kind == "terminal" or (group.stats.synergy and not group.primary)) then
+        and (group.kind == "piercing" or group.kind == "terminal" or group.kind == "forward" or (group.stats.synergy and not group.primary)) then
         V.fragment({id = ray.id, shots = ray.shot}, facts.x, facts.y, ray.z, victim, group.player,
             {root = group.options, stats = group.stats, effectWeapon = group.weapon,
                 damage = ray.damage, critical = false, fragmentReserved = 5})
@@ -402,7 +413,7 @@ function V.miss(record, origin, target, player, options, targetX, targetY)
     options.fragmentReserved = nil
     local x, y = origin:getX() + .5, origin:getY() + .5
     local group = {options = options, kind = "terminal", player = player, weapon = options.weapon, stats = options.stats, hits = {}}
-    V.ray(record, x, y, origin:getZ(), math.atan2((targetY or target:getY()) - y, (targetX or target:getX()) - x), options.stats.range,
+    V.ray(record, x, y, origin:getZ(), math.atan2((targetY or options.aimY or target:getY()) - y, (targetX or options.aimX or target:getX()) - x), options.stats.range,
         options.damage * (options.critical and options.critMultiplier or 1), group, 1)
 end
 
@@ -436,7 +447,7 @@ function V.save()
             end
             data.owners[owners[owner]] = {stats = owner.stats, rayBudget = owner.rayBudget, procJobs = owner.procJobs,
                 procFields = owner.procFields, impactReady = owner.impactReady, scrapId = owner.scrapId, savedScrap = savedScrap,
-                damage = owner.damage, splash = owner.splash, radius = owner.radius}
+                damage = owner.damage, splash = owner.splash, radius = owner.radius, source = owner.source}
         end
         if not groups[group] then
             groups[group] = #data.groups + 1

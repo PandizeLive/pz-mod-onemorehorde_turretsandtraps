@@ -1,5 +1,8 @@
 require("ISUI/ISPanel")
 require("ISUI/ISButton")
+require("ISUI/ISToolTip")
+require("ISUI/ISInventoryPaneContextMenu")
+require("TimedActions/ISTimedActionQueue")
 local P = require("OMHTT/TurretModulePack")
 local T = require("OMHTT/Turret")
 local R = require("OMHTT/TurretRarity")
@@ -12,6 +15,7 @@ local WINNER_CARD = TRAVEL_CARDS + 1
 
 ---@return nil
 function Panel:close()
+    if self.tooltip then self.tooltip:removeFromUIManager(); self.tooltip = nil end
     if self.sound and self.sound ~= 0 then
         getSoundManager():stopUISound(self.sound)
         self.sound = nil
@@ -22,6 +26,67 @@ function Panel:close()
     end
     active[self.playerIndex] = nil
     self:removeFromUIManager()
+end
+
+---@return nil
+function Panel:openNext()
+    if not self.finished or self.opening or not self.nextPack then return end
+    local pack = self.nextPack
+    if not pack:getContainer() or not pack:getContainer():isInCharacterInventory(self.player) then return end
+    self.opening = true
+    ISInventoryPaneContextMenu.transferIfNeeded(self.player, pack)
+    ISTimedActionQueue.add(require("OMHTT/TurretPackTimedAction"):new(self.player, pack))
+    self:close()
+end
+
+---@param inventory ItemContainer Accessible carried container
+---@param depth number Bounded nesting depth
+---@return number count
+---@return InventoryItem? first
+function Panel:packCount(inventory, depth)
+    local items, count, first = inventory:getItems(), 0, nil
+    for i = 0, items:size() - 1 do
+        local item = items:get(i)
+        if item:getFullType() == P.TYPE then
+            count, first = count + 1, first or item
+        elseif depth < 8 and instanceof(item, "InventoryContainer") then
+            local found, candidate = self:packCount(item:getInventory(), depth + 1)
+            count, first = count + found, first or candidate
+        end
+    end
+    return count, first
+end
+
+---@return nil
+function Panel:update()
+    local now = getTimestampMs()
+    if self.finished and now >= self.countDue then
+        local count
+        count, self.nextPack = self:packCount(self.player:getInventory(), 0)
+        self.countDue = now + 500
+        self.nextButton:setTitle(getText("UI_OMHTT_PackNext", count))
+        self.nextButton:setEnable(count > 0 and not self.player:isDead())
+    end
+    local mouseX, mouseY = getMouseX() - self:getAbsoluteX(), getMouseY() - self:getAbsoluteY()
+    local row = math.floor((mouseY - 40 + self.offset) / self.rowHeight) + 1
+    local reel = self.reels[row]
+    if mouseX >= (self.width - self.cardWidth) / 2 and mouseX < (self.width + self.cardWidth) / 2 and mouseY >= 40 and mouseY < self.height - 42
+        and reel and reel.settledAt then
+        local card = reel[WINNER_CARD]
+        if not self.tooltip then
+            self.tooltip = ISToolTip:new()
+            self.tooltip:initialise()
+            self.tooltip:setOwner(self)
+            self.tooltip.maxLineWidth = 360
+            self.tooltip:addToUIManager()
+        end
+        self.tooltip:setName(getText("UI_OMHTT_Module" .. card.name))
+        self.tooltip.description = require("OMHTT/TurretDescriptions").get(card.name, true)
+        self.tooltip:setVisible(true)
+    elseif self.tooltip then
+        self.tooltip:removeFromUIManager()
+        self.tooltip = nil
+    end
 end
 
 ---@return nil
@@ -42,6 +107,9 @@ function Panel:finish()
     self.collectButton:setTitle(getText("UI_OMHTT_PackCollect"))
     self.collectButton.backgroundColor = {r = .08, g = .42, b = .16, a = .9}
     self.collectButton.backgroundColorMouseOver = {r = .12, g = .58, b = .22, a = 1}
+    self.collectButton:setWidth((self.width - 30) / 2)
+    self.nextButton:setVisible(true)
+    self.countDue = 0
 end
 
 ---@return nil
@@ -156,6 +224,7 @@ function Panel.show(player, rewards)
         getPlayerScreenTop(index) + (getPlayerScreenHeight(index) - height) / 2, width, height)
     panel:initialise()
     panel.playerIndex, panel.started = index, getTimestampMs()
+    panel.player, panel.countDue = player, 0
     panel.fontHeight, panel.rowHeight, panel.cardWidth = fontHeight, rowHeight, math.min(180, width - 20)
     panel.offset, panel.lastTick = 0, panel.started
     panel.backgroundColor = {r = .04, g = .04, b = .04, a = .96}
@@ -186,7 +255,7 @@ function Panel.show(player, rewards)
         local item = getScriptManager():getItem(T.TYPES[name])
         local wrapped = getTextManager():WrapText(UIFont.Small, item:getDisplayName(), panel.cardWidth - 14)
         local lines = string.split(wrapped, "\n")
-        cards[name] = {lines = lines, texture = item:getNormalTexture(), color = R.get(name)}
+        cards[name] = {name = name, lines = lines, texture = item:getNormalTexture(), color = R.get(name)}
         panel.rowHeight = math.max(panel.rowHeight, 52 + #lines * fontHeight)
     end
     panel.maxOffset = math.max(0, P.COUNT * panel.rowHeight - (height - 82))
@@ -207,6 +276,12 @@ function Panel.show(player, rewards)
     collect:initialise()
     panel:addChild(collect)
     panel.collectButton = collect
+    panel.nextButton = ISButton:new(width / 2 + 3, height - 34, (width - 30) / 2, 24,
+        getText("UI_OMHTT_PackNext", 0), panel, Panel.openNext)
+    panel.nextButton:initialise()
+    panel.nextButton:setEnable(false)
+    panel.nextButton:setVisible(false)
+    panel:addChild(panel.nextButton)
     if panel.maxOffset > 0 then
         for direction = -1, 1, 2 do
             local button = ISButton:new(width - 44 + direction * 15, 8, 26, 24,

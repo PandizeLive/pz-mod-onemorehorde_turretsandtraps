@@ -1,6 +1,6 @@
 # OMH: Turrets & Traps
 
-Current installed development: **0.2.50 / C247**. **C259: owner test completed with failures; corrections are under discussion.** [Findings and correction choices](docs/TEST_FINDINGS_v0.2.50.md) · [Content patch](docs/PATCH_v0.2.50.md) · [Verification](docs/TEST_v0.2.50.md). Connected multiplayer acceptance remains pending; no corrective build installed yet.
+Development patch **0.2.51 / C262** implements the owner-test corrections and confirmed forward-fire/Lobber choices. [Patch](docs/PATCH_v0.2.51.md) · [Short test](docs/TEST_v0.2.51.md) · [Current status](docs/CURRENT_STATUS.md) · [Install/mirror evidence](docs/RELEASE.md). Rendered and connected multiplayer acceptance remain pending. Historical entries below describe their original checkpoints, not current implementation status.
 
 **C246 / production multiplayer paths implemented (2026-10-14).** Server-controlled combat, traps, ownership receipts, contact/player reactions, replicated effects/Manage/rendering and fractional battery persistence now run for the existing roster. 20,319 assertions, 462 coordinated Horde checks, native zero-client production callbacks, write/read persistence and all package startup combinations pass. Connected dedicated/listen-server acceptance remains pending; receipt loss after disconnect fails closed without replay. [Implementation, evidence, limitations and retained C235 scope](docs/PATCH_C246_MULTIPLAYER.md). Installed 0.2.49 is unchanged; no publication or live MP certification. Earlier entries below are historical checkpoints.
 
@@ -18,7 +18,7 @@ Current installed development: **0.2.50 / C247**. **C259: owner test completed w
 
 **Approved scoring contract:** [Multiplayer and Horde Night scoring](docs/MULTIPLAYER_HORDE_PATCH.md). Divide by5, explicit per-run opt-in and default-or-harder eligibility audit. C240 above records actual implementation separately from remaining MP enforcement and acceptance.
 
-**Active development:** [C240 combined-patch progress](docs/PATCH_C240_PROGRESS.md), retaining the approved C235 content/Void work and [C236 foundation](docs/PATCH_C236_PROGRESS.md). Installed0.2.49 remains unchanged; player testing is deferred. MP is an original requirement and production authority/transactions remain unfinished. Deferred testing does not stop approved development.
+**Active development:** Follow [CURRENT_STATUS.md](docs/CURRENT_STATUS.md) and the [checkpoint table](docs/ROADMAP.md#current-checkpoint-status-and-next-work) for the current implementation and pending acceptance.
 
 Latest LootLab correction: [shared saved rarity anchors](docs/LOOTLAB_TIER_PERSISTENCE.md#c185-shared-rarity-anchors-2026-10-12), C185.
 

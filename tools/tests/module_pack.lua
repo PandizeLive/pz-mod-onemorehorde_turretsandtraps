@@ -114,6 +114,21 @@ panel:prerender()
 check(not panel.finished and #panel.reels == 3 and #panel.reels[1] == 42, "Three bounded visual reels")
 panel.started = testMillis - 6700; panel:prerender()
 check(panel.finished and drawCount > 0 and panel.reels[1][40].lines[1] == rewards[1]:getFullType(), "Finished reveal lands on the already granted reward")
+check(panel.nextButton.visible, "Open Next appears only after the roll finishes")
+local nextCount, nextPack = panel:packCount({getItems = function() return {size = function() return 2 end,
+    get = function(_, i) return i == 0 and emptyPack or rewards[1] end} end}, 0)
+check(nextCount == 1 and nextPack == emptyPack, "Open Next counts carried packs and keeps exact item identity")
+local oldContext, oldQueue = ISInventoryPaneContextMenu, ISTimedActionQueue.add
+local queuedNext
+ISInventoryPaneContextMenu = {transferIfNeeded = function(_, value) check(value == emptyPack, "Next uses the selected native pack") end}
+ISTimedActionQueue.add = function(action) queuedNext = action end
+function inventory:isInCharacterInventory() return true end
+panel.nextPack = emptyPack
+panel:openNext()
+check(queuedNext and inventory:contains(emptyPack), "Open Next queues authority action without consuming or granting on click")
+panel:openNext()
+check(panel.opening and inventory:contains(emptyPack), "Repeated Open Next does not duplicate consumption")
+ISInventoryPaneContextMenu, ISTimedActionQueue.add = oldContext, oldQueue
 panel.collectButton.callback(panel)
 for i = 1, #rewards do check(inventory:contains(rewards[i]), "Collect preserves previously granted rewards") end
 local Action = require("OMHTT/TurretPackAction")

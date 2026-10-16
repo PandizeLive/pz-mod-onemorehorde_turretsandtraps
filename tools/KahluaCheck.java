@@ -306,10 +306,14 @@ public final class KahluaCheck {
             {"OMHTT/TurretVoidAction", base + "shared/OMHTT/TurretVoidAction.lua"},
             {"OMHTT/TurretVoidView", base + "shared/OMHTT/TurretVoidView.lua"},
             {"OMHTT/TurretUtilities", base + "client/OMHTT/TurretUtilities.lua"},
+            {"OMHTT/TurretCapacity", base + "shared/OMHTT/TurretCapacity.lua"},
+            {"OMHTT/TurretHeadDescription", base + "shared/OMHTT/TurretHeadDescription.lua"},
+            {"OMHTT/TurretManageExtras", base + "client/OMHTT/TurretManageExtras.lua"},
             {"OMHTT/TurretManage", base + "client/OMHTT/TurretManage.lua"},
             {"_", "tools/tests/turret_manage_load_order.lua"},
             {"OMHTT/TurretAuthority", base + "server/OMHTT/TurretAuthority.lua"},
             {"OMHTT/TurretPlacement", base + "shared/OMHTT/TurretPlacement.lua"},
+            {"OMHTT/TurretForward", base + "server/OMHTT/TurretForward.lua"},
             {"OMHTT/TurretWorld", base + "server/OMHTT/TurretWorld.lua"},
             {"OMHTT/TurretPowerSync", base + "server/OMHTT/TurretPowerSync.lua"},
             {"OMHTT/TurretPickupAction", base + "shared/OMHTT/TurretPickupAction.lua"},
@@ -403,6 +407,7 @@ public final class KahluaCheck {
             {"OMHTT/BarrierContact", base + "client/OMHTT/BarrierContact.lua"},
             {"_", "tools/tests/multiplayer_effects.lua"},
             {"_", "tools/tests/content_c247.lua"},
+            {"_", "tools/tests/corrections_c262.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

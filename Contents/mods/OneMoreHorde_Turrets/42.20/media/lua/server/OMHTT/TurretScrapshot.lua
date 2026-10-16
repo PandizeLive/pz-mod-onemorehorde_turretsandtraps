@@ -10,7 +10,7 @@ local S = {}
 ---@return table facts Fire sound
 function S.launch(record, origin, target, player, options)
     local x, y, stats = origin:getX() + .5, origin:getY() + .5, options.stats
-    local angle = math.atan2(target:getY() - y, target:getX() - x)
+    local angle = math.atan2((options.aimY or target:getY()) - y, (options.aimX or target:getX()) - x)
     angle = angle + math.rad((ZombRand(20001) / 10000 - 1) * 10 / math.max(1, stats.accuracy / 100))
     options.scrapId = tostring(record.id) .. ":" .. tostring(record.shots)
     options.scrapEligibility, options.scrapEffects, options.scrapInjury, options.scrapPending = {}, {}, {}, {}

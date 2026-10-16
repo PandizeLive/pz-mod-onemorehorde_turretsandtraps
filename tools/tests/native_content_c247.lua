@@ -75,6 +75,50 @@ return function(player)
     Feed.cancel(gun)
     storage:Remove(module)
     assert(cycle.loaded == 0 and Void.count(module) == 29, "Removing storage loses or duplicates rounds")
+    local nativeServer = isServer
+    isServer = function() return false end
+    local spearBase = instanceItem(T.BASE)
+    local spearStorage = spearBase:getInventory()
+    local ballista = spearStorage:AddItem("Base.OMHTTTurretBallista")
+    local spearVoid = spearStorage:AddItem(Void.TYPE)
+    for _ = 1, 12 do
+        local spear = player:getInventory():AddItem("Base.SpearCrafted")
+        assert(Void.deposit(spearVoid, spear, player:getInventory()), "Native spear conversion failed")
+    end
+    local spearStats = T.cycleConfig(T.contents(spearStorage))
+    local spearNow, fired = 1000, 0
+    for _ = 1, 1500 do
+        local current = T.contents(spearStorage)
+        local ready, phase = Feed.update(current, spearStats, spearNow, true)
+        if phase == "Ready" then
+            assert(Feed.consume(current, spearStats, ready, spearNow), "Native spear debit failed")
+            fired = fired + 1
+        end
+        spearNow = spearNow + 100
+    end
+    assert(fired == 12 and Void.count(spearVoid) == 0, "Native Void Ballista repeated feed stalled: " .. tostring(fired))
+    isServer = nativeServer
+    local Capacity = require("OMHTT/TurretCapacity")
+    for _, pair in pairs({{"Scrapshot", "Base.ScrapMetal"}, {"Ballista", "Base.SpearCrafted"}, {"Lobber", "Base.PipeBomb"}}) do
+        local box = ItemContainer.new(T.CONTAINER, player:getSquare(), nil)
+        T.configure(box)
+        assert(box:getCapacity() == 100, "Placed-container weight ceiling changed")
+        box:AddItem("Base.OMHTTTurret" .. pair[1])
+        box:AddItem("Base.CarBattery1")
+        box:AddItem(T.TYPES.CapacityLarge)
+        for _ = 1, 16 do box:AddItem(T.TYPES.Range) end
+        local current = T.contents(box)
+        current.payloadType = pair[2]
+        local limit = Capacity.limit(box, current, T.cycleConfig(current))
+        for _ = 1, limit do
+            local round = instanceItem(pair[2])
+            assert(box:hasRoomFor(player, round), "Displayed physical allowance exceeds native weight limit")
+            box:AddItem(round)
+        end
+        assert(not T.accept(box, instanceItem(pair[2])) or not box:hasRoomFor(player, instanceItem(pair[2])),
+            "Physical/count capacity audit left an unreported extra slot")
+        print("[OMHTT-C262] native-capacity head=" .. pair[1] .. " physicalLimit=" .. tostring(limit))
+    end
     local bomb = instanceItem("Base.OMHTTAmmoMakeshiftBomb")
     assert(not instanceof(bomb, "HandWeapon"), "Makeshift Bomb accidentally became a handheld explosive")
     print("[OMHTT-C247] recipes=5 drainableUses=8/2 tools=retained sounds=4 virtualNativeGun=no-materialized-rounds exactModule=preserved")

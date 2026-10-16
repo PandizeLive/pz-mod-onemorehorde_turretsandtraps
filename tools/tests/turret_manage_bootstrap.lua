@@ -17,10 +17,11 @@ function ISPanel:setStencilRect() end
 function ISPanel:clearStencilRect() end
 function ISPanel:drawRectBorder() end
 function ISPanel:drawRect() end
+function ISPanel:setY(y) self.y = y end
 function ISPanel:setHeight(height) self.height = height end
 function ISPanel:drawText(text) check(type(text) == "string", "Manage draws resolved status text") end
 ISButton = {new = function(self, x, y, w, h, title, target, callback)
-    return {initialise = function() end, setEnable = function(self, enabled) self.enabled = enabled end,
+    return {initialise = function() end, setWidth = function(self, w) self.width = w end, setY = function(self, y) self.y = y end, setVisible = function(self, visible) self.visible = visible end, setEnable = function(self, enabled) self.enabled = enabled end,
         x=x, y=y, width=w, height=h, target = target, callback = callback, setTitle = function(self, title) self.title = title end}
 end}
 ISMouseDrag = {}
@@ -54,7 +55,7 @@ PZAPI = {ModOptions = {getOptions = function() return nil end, create = function
     return {addTickBox = function() end, getOption = function() return option end}
 end}}
 ISSliderPanel = {new = function(self, x, y, w, h, target, callback)
-    return {currentValue = 1, initialise = function() end,
+    return {setWidth = function(self, w) self.width = w end, setY = function(self, y) self.y = y end, setVisible = function(self, v) self.visible = v end, currentValue = 1, initialise = function() end,
         setValues = function(self, low, high) self.minValue, self.maxValue = low, high end,
         setCurrentValue = function(self, value) self.currentValue = value end,
         getCurrentValue = function(self) return self.currentValue end}

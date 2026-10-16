@@ -1,7 +1,7 @@
 local H = {}
 H.definitions = {
     ["Base.OMHTTTurretLobber"] = {key = "Lobber", damage = 150, range = 18, minimumRange = 6, cooldown = 3.5, reload = 4, magazine = 3, ammoCapacity = 20, weight = 8},
-    ["Base.OMHTTTurretScrapshot"] = {key = "Scrapshot", ammo = "Base.ScrapMetal", damage = 120, range = 8, cone = 90, cooldown = 2, reload = 3, magazine = 10, weight = 6},
+    ["Base.OMHTTTurretScrapshot"] = {key = "Scrapshot", ammo = "Base.ScrapMetal", damage = 320, range = 8, cone = 90, cooldown = 2, reload = 3, magazine = 10, weight = 6},
     ["Base.OMHTTTurretBallista"] = {key = "Ballista", ammo = "Base.SpearCrafted", damage = 240, range = 24, cooldown = 6, reload = 6, magazine = 5, cone = 45, ammoCapacity = 40, weight = 6},
     ["Base.OMHTTTurretRotaryBat"] = {key = "RotaryBat", rotary = true, damage = 20, range = 2, shove = 40, weight = 5},
     ["Base.OMHTTTurretRotaryBlades"] = {key = "RotaryBlades", rotary = true, damage = 40, range = 2, shove = 10, weight = 6},

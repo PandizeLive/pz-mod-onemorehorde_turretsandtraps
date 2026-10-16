@@ -56,12 +56,13 @@ function O.launch(record, origin, target, player, options)
         damage = damage * options.critMultiplier
     end
     local x, y = origin:getX() + .5, origin:getY() + .5
-    local dx, dy = target:getX() - x, target:getY() - y
+    local tx, ty = options.aimX or target:getX(), options.aimY or target:getY()
+    local dx, dy = tx - x, ty - y
     local distance = math.sqrt(dx * dx + dy * dy)
     local scatter = (.5 + math.min(1, math.max(0, (distance - 6) / 12))) / math.max(1, stats.accuracy / 100)
     local offset = ZombRand(62832) / 10000
     local radius = math.sqrt(ZombRand(10001) / 10000) * scatter
-    local aimX, aimY = target:getX() + math.cos(offset) * radius, target:getY() + math.sin(offset) * radius
+    local aimX, aimY = tx + math.cos(offset) * radius, ty + math.sin(offset) * radius
     dx, dy = aimX - x, aimY - y
     distance = math.min(stats.range, math.sqrt(dx * dx + dy * dy))
     local angle = math.atan2(dy, dx)

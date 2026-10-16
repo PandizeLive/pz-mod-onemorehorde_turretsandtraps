@@ -66,7 +66,8 @@ end
 ---@param y number Local mouse Y
 ---@return boolean handled
 function Slot:onRightMouseUp(x, y)
-    if self.kind == "void" then self.owner:inspectVoid(); return true end
+    if self.kind == "void" then require("OMHTT/TurretUtilities").menu(self.owner, "void"); return true end
+    if self.kind == "magazine" and self.owner.stats.headKind == "Lobber" then require("OMHTT/TurretUtilities").menu(self.owner, "ammo"); return true end
     if self.kind == "magazine" then
         self.owner:magazine(nil)
     else
@@ -83,6 +84,7 @@ function Slot:update()
     if self.kind == "module" or self.kind == "capacity" then
         local name = item and T.component(item:getFullType())
         self.detailText = name and require("OMHTT/TurretDescriptions").get(name, true) or nil
+        if name == "Void" then self.detailText = self.detailText .. " <LINE> " .. require("OMHTT/TurretVoid").description(item, nil, true) end
     end
     if self.detailProvider and self:isMouseOver() and not ISMouseDrag.dragging then self.detailText = self.detailProvider() end
     if self:isMouseOver() and not ISMouseDrag.dragging and self.detailText then
@@ -93,7 +95,7 @@ function Slot:update()
             self.tooltip:setOwner(self)
             self.tooltip.maxLineWidth = 360
         end
-        self.tooltip:setName(item and item:getDisplayName() or getText("UI_OMHTT_BatteryEstimate"))
+        self.tooltip:setName(self.detailTitle or (item and item:getDisplayName()) or self.label)
         self.tooltip.description = self.detailText
         self.tooltip:setVisible(true)
     elseif self:isMouseOver() and item and not ISMouseDrag.dragging then

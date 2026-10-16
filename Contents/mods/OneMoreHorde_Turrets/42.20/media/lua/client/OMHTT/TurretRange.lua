@@ -165,7 +165,7 @@ function O.render()
                 end
                 local heading = R.heading(object)
                 local profile = render.profile
-                local cone = profile.rotary and 45 or M.option("ForwardCone", 90, 10, 360)
+                local cone = profile.cone
                 if profile.omni then
                     cone = 360
                 end

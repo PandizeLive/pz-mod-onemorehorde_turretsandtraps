@@ -144,6 +144,15 @@ return function(player)
     assert(math.abs(ItemState.get(battery, "battery").debt - remainder) < .00000001,
         "Forged battery view changed private fractional accounting")
     ItemState.publish(battery, player)
+    local firing = player:getInventory():AddItem(T.TYPES.Firing)
+    assert(Transfer:new(player, rebuilt, firing, true, currentId):complete(), "Native Firing module install failed")
+    Clock.now = function() return clock + stats.reload + stats.rack + stats.cooldown * 3 + 2000 end
+    local beforeForward = G.loaded(gun)
+    assert(W.fire(player, rebuilt) == "Fired" and G.loaded(gun) == beforeForward - 1,
+        "Native Firing-only manual dispatch must shoot without a target")
+    assert(W.fire(player, rebuilt) == "Cooling", "Repeated command must respect native firing cooldown")
+    assert(Transfer:new(player, rebuilt, firing, false, currentId):complete(), "Native Firing module removal failed")
+    print("[OMHTT-C262] native-forward-fire target=none ammo=one cooldown=guarded clients=0")
     Clock.now, ZombRand = oldNow, oldRandom
     target:setHealth(0)
     print("[OMHTT-Smoke] native-server-production-fire damage=confirmed ammo=one power=" .. supply.kind .. " presentation=published clients=0")

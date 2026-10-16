@@ -80,11 +80,7 @@ function X.rejection(player, item, source, destination)
         if T.SINGLE[component] and contents.moduleCounts[component] then return "ModuleDoesNotStack" end
         if T.kind(item) == "ammo" then
             local head = contents.head
-            local gun = require("OMHTT/Firearms")
-            local definition = require("OMHTT/TurretHeads").get(head)
-            local ammoType = definition and definition.ammo or "Base.Potato"
-            if gun.profile(head) then ammoType = gun.ammoType(head) end
-            if head and item:getFullType() ~= ammoType then return "WrongAmmo" end
+            if head and not require("OMHTT/TurretAmmo").accepts(head, item:getFullType()) then return "WrongAmmo" end
         end
         if T.kind(item) == "ammo" and not contents.head then return "NoHead" end
         if not T.accept(destination, item) then return "TransferFull" end
@@ -174,7 +170,7 @@ function ISInventoryTransferAction:transferItem(item)
         if i == 2 then container = destination end
         if T.isContainer(container) and T.kind(item) ~= "ammo" then
             T.configure(container)
-            T.cycle(T.contents(container), getTimestampMs())
+            T.cycle(T.contents(container), require("OMHTT/TurretClock").now())
         end
         if T.state(container:getParent()) then W.queueRefresh(container:getParent(), T.kind(item) ~= "ammo") end
     end

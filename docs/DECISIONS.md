@@ -1431,3 +1431,8 @@ Corrected stale current-table entries for head/content implementation, the pack 
 ## C261 — blind forward firing and separate landing distance (2026-10-15)
 
 **C261 / blind firing and separate Lobber distance confirmed (2026-10-15).** Owner selects C260 **1A and 2B**: triggered Firing-only operation shoots forward and spends normal ammo/power even without a target; Lobber gets a separate landing-distance control instead of reusing Engagement Range. Firing and Detection remain separate. [Confirmed contract](checkpoints/R4C1_CONNECTED_CONTROLS.md#c261-blind-firing-and-lobber-distance-confirmed-2026-10-15). Scrapshot remains selected at eight40-damage pellets/320total with its existing90-degree spread. Design selections recorded; installed0.2.50 and outstanding correction/MP acceptance status unchanged.
+
+
+## C262 — implement the approved correction patch, 2026-10-15
+
+Owner: “Approved. Go ahead and implement the patch with all the fixes and confirmed changes. Keep multiplayer in mind and push it to GitHub.” Implements C259 findings plus C260/C261 selections; see [0.2.51 patch](PATCH_v0.2.51.md) and [verification](TEST_v0.2.51.md). No new balance/recipe choices are inferred. Scrapshot stays eight40-damage pellets with its existing90-degree spread; Firing/Detection remain separate. The Void stall is now traced to mixed wall/active clocks, not assumed to be a depletion issue. Native placed capacity remains100 and the logical head caps remain40spears/20bombs; physical weight still applies. R4C1 physical devices remain recorded next, following the C259 correction priority. Approval is implementation authority, not owner or connected multiplayer test acceptance.

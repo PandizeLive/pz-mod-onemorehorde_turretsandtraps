@@ -220,13 +220,9 @@ function Panel:refresh()
     self.powerButton.tooltip = getText(powered and "UI_OMHTT_PowerOn" or "UI_OMHTT_PowerOff")
     self.powerButton.backgroundColor = powered and {r = 0.08, g = 0.42, b = 0.16, a = 0.9} or {r = 0.48, g = 0.08, b = 0.08, a = 0.9}
     self.powerButton.backgroundColorMouseOver = powered and {r = 0.12, g = 0.58, b = 0.22, a = 1} or {r = 0.65, g = 0.12, b = 0.12, a = 1}
-    local automationAllowed = SandboxVars.OMHTurretsTraps.AutomationEnabled ~= false
     self.priorityButton:setTitle(getText("UI_OMHTT_Priority", getText("UI_OMHTT_Priority" .. profile.priority)))
     self.priorityButton:setEnable(contents.active.Filter ~= nil)
     local active = {}
-local Utilities = require("OMHTT/TurretUtilities")
-Panel.storeVoid = Utilities.store
-Panel.inspectVoid = Utilities.inspect
     for name in pairs(M.CORE) do
         if contents.active[name] and name ~= "FiringImprovised" and name ~= "MotionDetectionImprovised" then
             active[#active + 1] = contents.active[name]
@@ -267,7 +263,10 @@ Panel.inspectVoid = Utilities.inspect
         end
     end
     local loaded = stats.firearm and G.loaded(contents.head) or 0
-    self.ammoSlot.label = getText("UI_OMHTT_ManageReserve", contents.reserveAll, math.max(0, stats.ammo - loaded))
+    local physicalLimit, freeWeight = require("OMHTT/TurretCapacity").limit(storage, contents, stats)
+    self.ammoSlot.detailText = getText("UI_OMHTT_AmmoPhysical", stats.ammo, physicalLimit, string.format("%.1f", freeWeight))
+    self.headSlot.detailText = contents.head and require("OMHTT/TurretHeadDescription").get(contents.head, true, stats) or nil
+    self.ammoSlot.label = getText("UI_OMHTT_ManageReserve", contents.reserveAll, physicalLimit)
     local gun = stats.firearm and contents.head or nil
     local magazineType = gun and gun:getMagazineType()
     self.magazineSlot.disabled = not magazineType
@@ -288,14 +287,17 @@ Panel.inspectVoid = Utilities.inspect
         end
     end
     self.voidSlot.disabled = contents.void == nil
-    if self.utilityButton then
-        self.utilityButton:setEnable(contents.void ~= nil or contents.active.Lure ~= nil or stats.headKind == "Lobber")
-    end
     if not magazineType and cycle and cycle.payload then
         local script = getScriptManager():getItem(cycle.payload)
         self.magazineSlot.emptyText = script and script:getDisplayName() or cycle.payload
     end
-    self.voidSlot.emptyText = contents.void and tostring(contents.virtualAmmo) or getText("UI_OMHTT_NoModule")
+    self.voidSlot.label = getText("UI_OMHTT_Void") .. ": " .. tostring(contents.virtualAmmo)
+    local rows, types = require("OMHTT/TurretVoid").preview(contents.void, contents.head)
+    local script = rows[1] and getScriptManager():getItem(rows[1].type)
+    self.voidSlot.emptyText = script and script:getDisplayName() or getText(contents.void and "UI_OMHTT_VoidEmpty" or "UI_OMHTT_NoModule")
+    if types > 1 then self.voidSlot.emptyText = self.voidSlot.emptyText .. " +" .. tostring(types - 1) end
+    self.voidSlot.detailText = require("OMHTT/TurretVoid").description(contents.void, contents.head, true)
+    require("OMHTT/TurretManageExtras").refresh(self, contents, stats)
     self.ammoSlot.meter = math.min(1, contents.reserveAll / math.max(1, stats.ammo - loaded))
     self.magazineSlot.meter = math.min(1, (cycle and cycle.loaded or 0) / math.max(1, stats.magazine))
     self.batterySlot.meter = contents.battery and require("OMHTT/TurretBattery").charge(contents.battery) or 0
@@ -308,13 +310,12 @@ Panel.inspectVoid = Utilities.inspect
         self.magazineSlot.label = getText("UI_OMHTT_ManageNotNeeded")
     end
     self.magazineSlot.missing = magazineType ~= nil and not gun:isContainsClip()
-    local missing = {}
-    if T.isOn(state) and automationAllowed and contents.head and (contents.active.MotionDetection or contents.active.Firing) then
-        if not contents.active.MotionDetection then missing[#missing + 1] = getText("UI_OMHTT_ModuleMotionDetection") end
-        if not contents.active.Firing then missing[#missing + 1] = getText("UI_OMHTT_ModuleFiring") end
+    self.modulesMissing = false
+    if contents.active.Firing and not contents.active.MotionDetection then
+        self.moduleEffects = self.moduleEffects .. " | " .. getText("UI_OMHTT_FixedFacing")
+    elseif contents.active.MotionDetection and not contents.active.Firing then
+        self.moduleEffects = self.moduleEffects .. " | " .. getText("UI_OMHTT_TrackingOnly")
     end
-    self.modulesMissing = #missing > 0
-    if self.modulesMissing then self.moduleEffects = getText("UI_OMHTT_ManageMissing", table.concat(missing, ", ")) end
     self.moduleWarning = ""
     if (contents.active.Piercing or 0) > 0 and stats.piercing == 0 then
         self.moduleWarning = getText("UI_OMHTT_PiercingInactive")
@@ -324,7 +325,7 @@ Panel.inspectVoid = Utilities.inspect
     local charge = getText("UI_OMHTT_None")
     if contents.battery then charge = tostring(math.floor(require("OMHTT/TurretBattery").charge(contents.battery) * 100)) .. "%" end
     self.batterySlot.label = getText("UI_OMHTT_ManageBattery", charge)
-    self.capacitySlot.disabled = contents.capacities > 0
+    self.capacitySlot.disabled = self.capacitySlot.items[1] ~= nil and not T.canRemove(storage, self.capacitySlot.items[1])
     self.moduleLabel = getText("UI_OMHTT_ManageModules", contents.modules, capacity)
     self.powerLabel = getText("UI_OMHTT_ManagePowerNone")
     if power then
@@ -378,7 +379,7 @@ function Panel:prerender()
     self:drawText(getText("UI_OMHTT_Turret"), 12, 8, 1, 1, 1, 1, UIFont.Medium)
     self:drawText(getText("UI_OMHTT_ManageHint"), 12, self.titleHeight, 0.8, 0.8, 0.8, 1, UIFont.Small)
     local label = self.moduleLabel
-    if self.rows > 3 then label = label .. " — " .. getText("UI_OMHTT_ManageScroll") end
+    if self.rows > 3 then label = label .. " - " .. getText("UI_OMHTT_ManageScroll") end
     self:drawText(label, 12, self.modulesY, 1, 1, 1, 1, UIFont.Small)
     self:setStencilRect(12, y, self.width / 2 - 18, h * 8)
     self:drawText(self.moduleLines, 12, y, self.modulesMissing and 1 or 0.8, self.modulesMissing and 0.3 or 0.8, self.modulesMissing and 0.3 or 0.8, 1, UIFont.Small)
@@ -403,6 +404,7 @@ function Panel:prerender()
     self:clearStencilRect()
     self:drawText(getText("UI_OMHTT_EngagementRange", T.state(self.object).engagementRange and string.format("%.1f", self.engagementRange) or getText("UI_OMHTT_RangeMax")),
         12, y + h * 8 + 6, 1, 1, 1, 1, UIFont.Small)
+    require("OMHTT/TurretManageExtras").draw(self)
 end
 
 ---@param x number Local X
@@ -423,14 +425,14 @@ function OpenAction:perform()
         local index = self.character:getPlayerNum()
         if active[index] then active[index]:close() end
         local font = getTextManager()
-        local lineHeight = font:getFontHeight(UIFont.Small) + 3
+        local lineHeight = font:getFontHeight(UIFont.Small) + (getPlayerScreenHeight(index) >= 800 and 3 or 0)
         local titleHeight = font:getFontHeight(UIFont.Medium) + 16
         local width = math.min(getPlayerScreenWidth(index) - 24, math.max(640, lineHeight * 32))
         local slotHeight = lineHeight + 48
         local top = titleHeight + lineHeight * 2 + 12
         local moduleHeight = lineHeight * 2 + 24
         local available = getPlayerScreenHeight(index) - 24
-        local preferred = top + (slotHeight + 8) * 2 + lineHeight * 2 + (moduleHeight + 6) * 3 + 6 + lineHeight * 9 + 82
+        local preferred = 70 + top + (slotHeight + 8) * 2 + lineHeight * 2 + (moduleHeight + 6) * 3 + 6 + lineHeight * 9 + 82
         local trim = math.max(0, preferred - available)
         local slotTrim = math.min(24, trim / 5)
         slotHeight = slotHeight - slotTrim
@@ -486,8 +488,8 @@ function OpenAction:perform()
         panel.priorityButton = ISButton:new(130, height - 38, width - 142, 28, "", panel, Panel.changePriority)
         panel.fireButton = ISButton:new(12, height - 38, 110, 28, getText("UI_OMHTT_ManageFire"), panel, Panel.fire)
         local close = ISButton:new(width - 34, 6, 26, 24, "X", panel, Panel.close)
-        panel.utilityButton = ISButton:new(width - 146, 6, 104, 24, getText("UI_OMHTT_Controls"), panel, Utilities.menu)
-        local buttons = {panel.fireButton, panel.powerButton, panel.priorityButton, panel.utilityButton, close}
+        require("OMHTT/TurretManageExtras").create(panel, rangeX)
+        local buttons = {panel.fireButton, panel.powerButton, panel.priorityButton, close}
         for i = 1, #buttons do buttons[i]:initialise(); panel:addChild(buttons[i]) end
         panel:refresh()
         panel:addToUIManager()

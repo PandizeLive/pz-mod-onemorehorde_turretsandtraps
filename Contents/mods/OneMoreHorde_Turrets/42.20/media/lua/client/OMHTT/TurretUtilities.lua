@@ -128,10 +128,10 @@ end
 
 ---@param panel ISPanel Manage window
 ---@return nil
-function U.menu(panel)
+function U.menu(panel, kind)
     local contents, state = T.contents(panel.object:getContainer()), T.state(panel.object)
     local menu = ISContextMenu.get(panel.player:getPlayerNum(), getMouseX(), getMouseY())
-    if contents.active.Lure then
+    if kind == "lure" and contents.active.Lure then
         menu:addOption(getText("UI_OMHTT_LurePulse"), panel, U.control, "LurePulse", true)
         menu:addOption(getText(state.lureRepeat and "UI_OMHTT_LureStop" or "UI_OMHTT_LureRepeat"), panel, U.control, "LureRepeat", not state.lureRepeat)
         local option = menu:addOption(getText("UI_OMHTT_LureRange", state.lureRange or 10), nil, nil)
@@ -139,7 +139,7 @@ function U.menu(panel)
         menu:addSubMenu(option, ranges)
         for i = 5, 20 do ranges:addOption(tostring(i), panel, U.control, "LureRange", i) end
     end
-    if contents.head and contents.head:getFullType() == "Base.OMHTTTurretLobber" then
+    if kind == "ammo" and contents.head and contents.head:getFullType() == "Base.OMHTTTurretLobber" then
         menu:addOption(getText(state.ammoFallback and "UI_OMHTT_FallbackOff" or "UI_OMHTT_FallbackOn"), panel, U.control, "AmmoFallback", not state.ammoFallback)
         local bombs = require("OMHTT/TurretFeed").BOMBS
         for i = 1, #bombs do
@@ -158,13 +158,13 @@ function U.menu(panel)
                     local k = 6 - i - j
                     local script2 = getScriptManager():getItem(bombs[j])
                     local script3 = getScriptManager():getItem(bombs[k])
-                    orders:addOption(script2:getDisplayName() .. " → " .. script3:getDisplayName(), panel,
+                    orders:addOption(script2:getDisplayName() .. " -> " .. script3:getDisplayName(), panel,
                         U.control, "AmmoOrder", bombs[i] .. "|" .. bombs[j] .. "|" .. bombs[k])
                 end
             end
         end
     end
-    if contents.void then
+    if kind == "void" and contents.void then
         menu:addOption(getText("UI_OMHTT_VoidStored"), panel, U.inspect)
         menu:addOption(getText("UI_OMHTT_StoreReserveVoid"), panel, U.store, contents.rounds)
     end

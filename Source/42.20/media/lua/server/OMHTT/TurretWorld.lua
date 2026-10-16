@@ -433,17 +433,19 @@ end
 ---@param object IsoThumpable Exact turret
 ---@param target IsoZombie? Detected target for autonomous shot
 ---@return string result
-function W.fire(player, object, target)
+function W.fire(player, object, target, signal)
     if isClient() then return "Unavailable" end
     local started = getTimestampMs()
     if not T.isOn(T.state(object)) then return "Off" end
     if player then
         if not W.near(player, object) then return "Unavailable" end
-    elseif not target or not W.valid(object) then
+    elseif (not target and not signal) or not W.valid(object) then
         return "Unavailable"
     end
     local contents = T.contents(object:getContainer())
-    if not player and (not M.detects(T.state(object), contents) or not contents.active.Firing) then return "Unavailable" end
+    if not player and SandboxVars.OMHTurretsTraps.AutomationEnabled == false then return "Unavailable" end
+    local forward = not target and contents.active.Firing and not contents.active.MotionDetection
+    if not player and ((not forward and not M.detects(T.state(object), contents)) or not contents.active.Firing) then return "Unavailable" end
     if contents.heads ~= 1 or contents.head:getCondition() <= 0 then return "NoHead" end
     if require("OMHTT/TurretHeads").get(contents.head) and T.cycleConfig(contents).rotary then
         return require("OMHTT/TurretRotary").start(player, object)
@@ -457,14 +459,14 @@ function W.fire(player, object, target)
     if not power then return "NoPower" end
     local state = T.state(object)
     state.ammo = contents.ammo
-    if player and not target then return require("OMHTT/TurretSearch").request(player, object) end
+    if player and not target and not forward then return require("OMHTT/TurretSearch").request(player, object) end
     local Volley = require("OMHTT/TurretVolley")
     if not Volley.available(stats) then return "Unavailable" end
     local fireStarted = getTimestampMs()
     local options = {source = state.id, stats = stats, weapon = contents.head, range = stats.range, interval = stats.cooldown,
         damage = stats.damage / 100, knockdown = stats.knockdown, critChance = stats.critChance, critMultiplier = stats.critMultiplier,
         splash = stats.damage * T.option("SplashPercent", 25, 0, 100) / 10000, radius = T.option("SplashRadius", 1.5, 0, 3), managed = true,
-        profile = M.profile(state, contents, player == nil, stats), target = target, projectileSpeed = T.option("ProjectileSpeed", 20, 5, 100)}
+        profile = M.profile(state, contents, player == nil, stats), target = target, forward = forward, projectileSpeed = T.option("ProjectileSpeed", 20, 5, 100)}
     if G.profile(contents.head) then
         options.projectileSpeed, options.splash, options.radius = nil, 0, 0
         options.resolve = require("OMHTT/FirearmCombat").hit
@@ -495,7 +497,7 @@ function W.fire(player, object, target)
         if not W.valid(object) or not object:getContainer():contains(contents.head) then return false end
         if not G.profile(contents.head) and not cycle.virtual and not object:getContainer():contains(contents.round) then return false end
         if player and not W.near(player, object) then return false end
-        if not player and (not M.detects(state, contents) or not contents.active.Firing) then return false end
+        if not player and ((not forward and not M.detects(state, contents)) or not contents.active.Firing) then return false end
         if not player and contents.active.FiringImprovised
             and ZombRand(10000) < M.option("ImprovisedFiringFailure", 15, 0, 100) * 100 then
             cycle.nextShot, cycle.cooldownDuration = Clock.now() + stats.cooldown, stats.cooldown
@@ -525,7 +527,12 @@ function W.fire(player, object, target)
         return true
     end
     local Combat = require("OMHTT/PrototypeCombat")
-    local result, impact = Combat.fire(state, object, player, options)
+    local result, impact
+    if forward then
+        result, impact = require("OMHTT/TurretForward").fire(state, object, player, options)
+    else
+        result, impact = Combat.fire(state, object, player, options)
+    end
     if result == "Fired" then
         if stats.headKind == "Lobber" or stats.headKind == "Scrapshot" then
             Volley.done(options)
