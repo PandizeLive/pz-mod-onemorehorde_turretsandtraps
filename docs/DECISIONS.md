@@ -1426,3 +1426,8 @@ Corrected stale current-table entries for head/content implementation, the pack 
 ## C260 — Scrapshot320 and separate Firing/Detection roles (2026-10-15)
 
 **C260 / Scrapshot damage selected and directional Firing clarified (2026-10-15).** Owner selects eight40-damage pellets (320total) and explains the original Firing/Detection separation for triggered traps. Existing turret fire/manual paths still require target acquisition; the coordinate/direction ray engine supports a feasible forward-shot implementation, not an already-working trigger mode. Recommend retaining separate modules: Firing actuates, Detection acquires/aims. [Contract, evidence and remaining behavior proposals](checkpoints/R4C1_CONNECTED_CONTROLS.md#c260-directional-firing-and-scrapshot-selection-2026-10-15). Preserve current90-degree Scrapshot spread because no spread change was selected. No Autonomy merge, all-turrets trigger requirement, gameplay edit or install inferred.
+
+
+## C261 — blind forward firing and separate landing distance (2026-10-15)
+
+**C261 / blind firing and separate Lobber distance confirmed (2026-10-15).** Owner selects C260 **1A and 2B**: triggered Firing-only operation shoots forward and spends normal ammo/power even without a target; Lobber gets a separate landing-distance control instead of reusing Engagement Range. Firing and Detection remain separate. [Confirmed contract](checkpoints/R4C1_CONNECTED_CONTROLS.md#c261-blind-firing-and-lobber-distance-confirmed-2026-10-15). Scrapshot remains selected at eight40-damage pellets/320total with its existing90-degree spread. Design selections recorded; installed0.2.50 and outstanding correction/MP acceptance status unchanged.

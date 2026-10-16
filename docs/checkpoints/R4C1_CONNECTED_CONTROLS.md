@@ -1,5 +1,15 @@
 # R4C1 — buttons, pressure plates and links
 
+## C261: blind firing and Lobber distance confirmed, 2026-10-15
+
+Owner answers C260 **1A and 2B**. These settle the two presented behavior choices:
+
+- **Blind triggered firing:** with Firing and no Detection, an admitted trigger fires along the configured facing without requiring or scanning for a zombie. Ordinary ammunition and power are spent even if the lane is empty. A button requests one normal firing cycle; held input permits the existing cadence. Preserve spread, obstruction, range, cooldown, finite magazines, conditional effects, player injury rules and per-victim Horde consent. Detection remains the separate acquisition/aiming capability; no Autonomy merge.
+- **Lobber landing distance:** provide a dedicated landing-distance control in the modular Manage interface, separate from Engagement Range. It determines the intended distance for forward shots without target acquisition; Engagement Range retains its targeting role. Actual landing retains normal scatter/obstruction. Implementation must validate this value against the effective minimum/maximum projectile range on the server and retain it with device settings; this is not a range bypass or permission to ignore a wall. Detected-target shots continue using target position rather than silently overriding aim with the blind-fire distance. UI defaults/step size are routine implementation details, not a new owner-choice gate.
+
+This supersedes C260's proposal to reuse Engagement Range for Lobber landing distance. Preserve selected Scrapshot eight40-damage pellets/320total and existing90-degree spread. No selection to require triggers for all existing unlinked turrets is inferred; preserve current standalone behavior unless expressly revised. Corrective patch findings remain open and linked-control implementation/native/MP proof remain required. No gameplay edit, installed update or new test acceptance in this planning checkpoint.
+
+
 ## C260: directional Firing and Scrapshot selection, 2026-10-15
 
 Owner selects C2591D: eight40-damage Scrapshot pellets,320total (2.67times the current120). No spread/cadence/range change selected; retain current90-degree fan,90-degree acquisition FOV,8-tile range and timing unless later changed. This supersedes the three proposed C259 damage choices, not the outstanding correction scope.
