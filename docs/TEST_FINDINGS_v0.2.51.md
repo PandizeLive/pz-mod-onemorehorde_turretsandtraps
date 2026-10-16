@@ -121,3 +121,6 @@ Owner still cannot manipulate the mobile preview. Emulated touch success did not
 ![Corrected phone layout](mockups/c266/phone.png)
 
 No Source/Contents, version, tag or installation change. The owner indicates this correction should settle the mockup; do not reopen settled choices or require another play test for planning. Implementation remains the next step, with C263-C265 corrections and multiplayer safety retained.
+
+
+Owner follow-up (2026-10-16): "I like the new design"; corrected C266 layout accepted and patch recap requested. This accepts the design, not installed gameplay or actual mobile interaction. C263-C266 corrective scope is unchanged.

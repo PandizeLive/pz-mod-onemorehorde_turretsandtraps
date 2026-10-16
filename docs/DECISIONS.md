@@ -1460,3 +1460,6 @@ Owner selects1A/2B/3A without cap/4A and requests Reload. Next-load versus actua
 **C266 / final layout correction (2026-10-16).** Expansion belongs in Equipment with Head and Battery/Power. Magazine spans the row beneath equal-width Ammo/Void. Owner still cannot manipulate the preview on mobile; provide a static preview and do not claim touch support is fixed. [Corrected layout](TEST_FINDINGS_v0.2.51.md#c266--expansion-in-equipment-and-mobile-preview-2026-10-16). C265 gameplay selections remain unchanged; installed0.2.51 unchanged.
 
 Owner: "Expansion should be on Equipment. I do prefer that." Reports continued inability to manipulate on mobile, and says the corrected mockup should settle the layout. This supersedes C265 Magazine/Expansion pairing; preserve its other selections. No source patch or installed-build acceptance inferred.
+
+
+Owner follow-up (2026-10-16): "I like the new design"; corrected C266 layout accepted and patch recap requested. This accepts the design, not installed gameplay or actual mobile interaction. C263-C266 corrective scope is unchanged.
