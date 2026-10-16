@@ -74,3 +74,38 @@ Use explicit material bonuses rather than silently assuming item weight or a sin
 - **4B:** same damage for all scraps in this correction patch; display Base/+0% and balance material bonuses separately.
 
 Settled remaining fixes remain retained: new-head reload audio, taller bounded Manage layout, unwrapped white descriptions except rarity, and plain rotary RPM. No Source/Contents/version/install change in C264; selections and unselected options are mirrored under C108.
+
+
+## C265 — layout, Reload and final correction selections, 2026-10-16
+
+Owner selects C2641A with vertical-layout refinements, 2B (one ammo type per magazine), 3A without its proposed timing cap, and4A (modest material bonuses). Requests next loaded-shot/type-count feedback on Ammo/Void and a Magazine Reload button. Reports the prior preview could not be manipulated on mobile. These are design selections; this turn does not change Source/Contents, version, installed files or immutable test tags.
+
+### Selected layout and feedback
+
+Retain the native inset-panel style. One Ammunition header contains the shared Load Order button. Ammo/Void stay equal width; Magazine sits below them, with Expansion alongside where space permits. Power belongs beside Battery, not Expansion. Narrow preview stacks these rows; actual native game layout must stay within the viewport rather than blindly adopt a phone-height window. Preserve the 4/6/6 module arrangement in the desktop game layout.
+
+Recommended precise wording: Ammo/Void show **Next load: [type]** and **4 Ammo Types** (singular for one), counting available compatible types in their respective source. Magazine shows the actual **Next shot: [loaded type]**. The shared priority resolves the next available load across both sources. Do not call a reserve candidate the next fired shot while a different magazine is still loaded. Empty/incompatible sources show no compatible ammunition. Preview values are examples, not a readout of the current save.
+
+### Manual Reload and accounting
+
+Owner requests Reload on Magazine; feasible with server validation and ordinary reload duration, applying the latest saved Load Order and preserving unused ammunition. Retain one type per magazine. Existing loaded type remains until a reload; Apply itself does not transform loaded rounds. Disable non-applicable/reloading/no-useful-action states. Reach, permissions, current head, inventory and concurrent edits must be validated on the server.
+
+Read-only evidence: custom-head TurretFeed stores one cycle.payload and optional Void descriptor/module identity; ammunition is consumed when fired, so clearing a logical loaded cycle must NOT manufacture a physical refund. Native firearms actually contain loaded rounds and need their native/exact-item unload/reload handling; no UI-only count clearing. Preserve Conservation debt, cooldowns, pending work and Impact entitlement; a manual reload must not grant free ammunition or first-shot bonuses. This is implementation guidance, not runtime proof that a new Reload command already exists.
+
+### Confirmed timing and material balance
+
+Lobber fuse becomes1.25seconds and base firing interval5.5seconds. Normal Rapid-Fire/Enhanced Firing upgrades remain, with no new travel-based floor and no explosion-completion callback lock. Existing generic module limits remain unchanged. Base timing leaves nominal headroom at current range; speed upgrades can produce another launch before the previous detonation. That is the consequence of the owner's explicit removal of the proposed cap, not a guarantee of strict explosion-then-launch ordering.
+
+Selected Scrapshot bonuses: ScrapMetal/aluminum +0%; copper/brass +5%; iron/steel +10%; gold/silver +15%. Base8x40 remains; show exact bonus and effective per-pellet damage in Load Order. Physical reserve20/30/40/60/80 and native weight checks remain; Void is weightless. C263/C264 sound, reload audio, white unwrapped tooltips except rarity and plain rotary RPM changes remain in the correction bundle.
+
+### Revised preview and evidence limits
+
+The prior preview was intended to be interactive, but its checks covered desktop clicks/narrow layout, not touch. The cause of the owner's mobile failure is unknown; do not claim a platform diagnosis or actual-device fix. Revised preview uses one selected layout, an inline Load Order editor and explicit44px Up/Down tap targets, avoiding reliance on dragging or switching layout variants.
+
+Browser checks passed mouse input at736px and emulated touch taps at390px/320px: open, reorder Gold to top, Apply, next-load update with existing loaded type unchanged, Reload, loaded-type update and reopen with retained order. Equal Ammo/Void widths, no horizontal overflow with the editor open and no page script errors. Desktop and phone screenshots inspected. This is local UI simulation, not native gameplay, real inventory accounting, connected multiplayer or the owner's actual mobile app acceptance.
+
+![Revised desktop layout](mockups/c265/desktop.png)
+![Phone layout](mockups/c265/phone.png)
+![Phone Load Order](mockups/c265/load-order-phone.png)
+
+Decision provenance: owner explicitly requests Magazine below Ammo/Void, dislikes Power beside Expansion, selects1A/2B/3A without cap/4A, asks for Reload and reports mobile failure. Next-load versus next-shot wording and normal-duration reload mechanics above are assistant recommendations resolving those requests without changing the selected single-type magazine rule. No new gameplay balance question remains for this correction slice. Implementation and verification are next; no additional owner play session is requested here.
