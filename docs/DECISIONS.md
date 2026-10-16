@@ -1441,3 +1441,8 @@ Owner: “Approved. Go ahead and implement the patch with all the fixes and conf
 ## C263 — owner correction report and Load Order mockup, 2026-10-15
 
 Owner reports loud Makeshift explosions, asks Lobber to wait for detonation, requests Large Expansion scrap around80 and other metal scraps, shared Ammo/Void Load Order menus with arbitrary ordering, equal widths and more height, head reload sounds, white unwrapped descriptions except rarity, and plain rotary RPM. [All eleven findings, captured evidence and concrete choices](TEST_FINDINGS_v0.2.51.md). Proposed sound/cap/family/reorder semantics are not selections. Existing installed0.2.51 remains unchanged. This is a correction discussion under the project agreement, not a blanket gameplay approval or successful owner acceptance.
+
+
+## C264 — correction selections and owner timing revision, 2026-10-16
+
+Owner selects C2631B/2A/3B/4A: single-firecracker Makeshift audio,20/30/40/60/80 scrap reserve progression, gold/silver compatibility and order changes at next reload. Requests one shared Load Order control, mockup layouts, per-ammo bonus display and mixed-magazine feasibility. Rejects an explosion-completion firing gate; prefers shorter fuse and longer shot delay. [Selections, native/code evidence, inspected layouts and outstanding choices](TEST_FINDINGS_v0.2.51.md#c264--selections-shared-button-layouts-and-timing-revision-2026-10-16). Layout, mixed magazine behavior, exact timing/module treatment and numeric scrap bonuses are proposals. No gameplay patch or acceptance inferred.

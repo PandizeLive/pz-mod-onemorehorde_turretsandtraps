@@ -1,6 +1,6 @@
 # OMH: Turrets & Traps
 
-**C263:** Owner testing found remaining audio, loading and UI issues. [Findings and next correction choices](docs/TEST_FINDINGS_v0.2.51.md); installed0.2.51 unchanged.
+**C264:** Correction selections recorded; [layout mockups, mixed-magazine feasibility and remaining timing/bonus choices](docs/TEST_FINDINGS_v0.2.51.md#c264--selections-shared-button-layouts-and-timing-revision-2026-10-16). Installed0.2.51 unchanged.
 
 Installed development patch **0.2.51 / C262** implements the owner-test corrections and confirmed forward-fire/Lobber choices. [Patch](docs/PATCH_v0.2.51.md) · [Short test](docs/TEST_v0.2.51.md) · [Current status](docs/CURRENT_STATUS.md) · [Install/mirror evidence](docs/RELEASE.md). Rendered and connected multiplayer acceptance remain pending. Historical entries below describe their original checkpoints, not current implementation status.
 

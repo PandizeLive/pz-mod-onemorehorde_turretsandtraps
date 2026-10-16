@@ -29,3 +29,48 @@ Root OMH.cmd captured console.txt and installed manifests at `diagnostics/captur
 **4 — Applying Load Order.** 4A recommended: finish the current magazine, use highest-priority available type at the next reload. 4B: Apply requests a safe unload/reload immediately, so the next shot uses the selected available type; extra handling and exact-ammo refund/space checks required. Never transform loaded ammo in place or delete overflow. Both source buttons edit the same order, with server validation and head-change/concurrent-edit protection.
 
 No Source/Contents edits, gameplay version bump, tag movement or installation this turn. C263 correction decisions precede implementation per the project owner-test agreement. R4C1 physical controls remain retained next, not silently dropped.
+
+## C264 — selections, shared-button layouts and timing revision, 2026-10-16
+
+Owner selects C2631B (single firecracker), 2A (20/30/40/60/80 reserve progression), 3B (include gold/silver), and4A (order changes at the next reload). Void remains the answer to physical storage constraints; native weight protection is retained. Owner proposes damage/stat bonuses for rarer scrap and asks to display each ammo's benefit in Load Order; exact bonuses remain unselected.
+
+Owner corrects the duplicated-button proposal: one shared Load Order button near Ammo/Void, showing both sources. Requests layout mockups while retaining the liked inset-panel design. Owner asks whether magazines can mix ammunition, and rejects waiting for an explosion callback: shorten fuse and lengthen firing interval instead. This supersedes C263's recommended pending-primary firing gate; do not implement that gate as though it were accepted.
+
+### Layout choices
+
+- **1A / Shared header — recommended.** Equipment retains inset panels; Expansion joins the upper equipment row. A single Ammunition header button sits over equal-width Ammo/Void and the Magazine slot. Smallest height of the three.
+- **1B / Shared footer.** Ammo/Void share a footer Load Order button; Magazine/Expansion are stacked beside them. Keeps Expansion near its current region but costs more height.
+- **1C / Roomier rows.** Equal-width Ammo/Void occupy one row, Magazine/Expansion another. Clearest separation, greatest height; needs responsive scrolling on shorter game viewports.
+
+![Shared header](mockups/c264/shared-header.png)
+![Shared footer](mockups/c264/shared-footer.png)
+![Roomier rows](mockups/c264/roomier-rows.png)
+
+These are functional layout proposals with sample values, not installed UI screenshots or new art direction. Interactive preview lives in the task-owned `turret-ammo-layouts.html`; browser checks passed all three Up/Down/Apply/reopen interactions, no script errors, and360px closed-layout horizontal-overflow checks. All three rendered images were inspected. No native game rendering is claimed.
+
+### Mixed-magazine feasibility and choices
+
+TurretFeed currently stores one `cycle.payload` and optionally one Void descriptor/module identity per loaded magazine, selects one physical/virtual source and charges Conservation debt by payload. The custom heads can support mixed magazines, but this requires a bounded ordered round/descriptor list and exact source/accounting changes; it is not a UI-only switch or an existing native feature. Preserve save/reload, pickup, head/module removal, MP authority, Conservation and Splitter accounting. Native firearm caliber/alternate-ammo support is not expanded by this proposal.
+
+- **2A — recommended:** mixed magazines for our custom ammo heads. Fill by priority; if the first type runs out, top up with the next type. Example three-round Lobber: two Makeshift Bombs then one Pipe Bomb. No forced alternation or programmable patterns. A full magazine of the first type remains normal when enough is available. C2634A remains: changed order applies at the next reload.
+- **2B:** retain one type per magazine for now, using the selected priority at every reload.
+
+Per-projectile payload behavior must remain truthful when a mixed magazine crosses a type boundary during Splitter consumption; do not spend one type and report another. This is an implementation verification requirement, not approval of unlimited ammo conversion or new firearm compatibility.
+
+### Lobber timing choices
+
+Verified code: speed8tiles/second, fuse2seconds after landing, base interval3.5seconds, range18tiles, default RangeBonusCap10 (effective maximum28), hard non-firearm range cap30. Rapid-Fire and Enhanced Firing both reduce the interval. An intermediate commentary incorrectly said maximum24tiles; corrected to28 before final recommendations. Default maximum travel plus proposed1.25second fuse is4.75seconds. At the hard30tile cap it is5seconds.
+
+Both choices propose fuse**1.25seconds** and base shot interval**5.5seconds**. This is ordinary mechanical timing, not an explosion-completion lock. Lag or delayed scheduler work can still cause occasional overlap; do not promise a strict event-order guarantee without the rejected gate.
+
+- **3A — recommended:** allow speed modules to reduce the5.5second interval, with a minimum computed from configured effective range /8 +1.25 fuse +0.75seconds headroom. Compute/cache on configuration changes; never wait for actual detonation. At18tiles the floor is4.25seconds, at28 it is5.5, at30 it is5.75. This keeps some short-range speed benefit and prevents ordinary module-driven timing overlap. At the floor, additional speed modules give no Lobber cadence benefit; show that in applicability/effective stats.
+- **3B:** fixed5.5second Lobber interval, with firing-speed bonuses disabled for that head. Simpler but reduces Rapid-Fire/Enhanced Firing usefulness;30tile custom range leaves0.5seconds nominal headroom.
+
+### Scrap bonus choices
+
+Use explicit material bonuses rather than silently assuming item weight or a single global loot rarity equals damage. Both options show the exact bonus in Load Order, keep one item per firing use and retain physical weight checks. Scarcer materials being stronger is a game-balance choice, not a claim about real material performance.
+
+- **4A — recommended modest bonuses:** ordinary Scrap Metal/aluminum +0%; copper/brass +5%; iron/steel +10%; gold/silver +15%. Their lighter weights already benefit storage. Display per-pellet damage as well as the bonus where useful; base remains8×40.
+- **4B:** same damage for all scraps in this correction patch; display Base/+0% and balance material bonuses separately.
+
+Settled remaining fixes remain retained: new-head reload audio, taller bounded Manage layout, unwrapped white descriptions except rarity, and plain rotary RPM. No Source/Contents/version/install change in C264; selections and unselected options are mirrored under C108.
