@@ -1471,6 +1471,10 @@ Owner follow-up (2026-10-16): "I like the new design"; corrected C266 layout acc
 
 Owner says Firing requires a fire signal supplied by a pressure plate or Detection; an unpressed connected plate prevents firing while Detection continues aiming. Requests Detection-equipped turrets as signal sources for connected traps. Selects2A subject to this model and3A repeating Poke Floor strikes. [Confirmed semantics, recommended sensor output and remaining empty-target choice](checkpoints/R4C1_CONNECTED_CONTROLS.md#c269-fire-requests-and-firing-permission-2026-10-16). Do not interpret this as selection of C2681A/1B or an OR of all signal sources that lets Detection bypass an OFF plate. No implementation or test acceptance inferred.
 
+## C274 — stockpile plus player transfers; per-head numbering, 2026-10-16
+
+Owner selects1B with direct player-inventory transfers also allowed and asks for storage sufficient for multiple turrets, then selects2B per-head automatic numbering. [Confirmed choices, capacity evidence and proposals](checkpoints/R4C1_CONNECTED_CONTROLS.md#c274-shared-controller-stockpile-and-per-head-numbering-2026-10-16). Recommend500 nominal total across five native compartments;1000 alternative. Neither capacity nor empty-before-pickup recommendation is selected. Correct earlier C230 setter-only conclusion: current native getCapacity caps ordinary containers at100. No gameplay or test acceptance inferred.
+
 ## C273 — full controller management and names requested, 2026-10-16
 
 Owner requests all turret Manage functions from the controller, specifically adding/removing modules and changing heads. Requests a top name bar, head-name/count defaults on placement and retention of custom text. [Expanded contract, current adjacency evidence and concrete choices](checkpoints/R4C1_CONNECTED_CONTROLS.md#c273-full-remote-manage-and-turret-names-requested-2026-10-16). Player versus controller inventory and shared versus per-head stable numbering are proposals. No implemented feature or test acceptance inferred; selected plate power/fire behavior is unchanged.
