@@ -1,5 +1,19 @@
 # R4C1 — buttons, pressure plates and links
 
+## C268: planning resumed and next choices, 2026-10-16
+
+Owner: "Can't test right now, let's resume planning. What's next to discuss?" The installed 0.2.52 correction patch remains awaiting rendered and connected multiplayer acceptance. No new test result or implementation authorization is inferred. R4C1 physical buttons/plates/controller and links are the next roadmap delivery; Poke Floor is the selected first R4C2 receiver to design alongside that foundation.
+
+Do not reopen C253-C256 access, device recipes, placement, service, 20-tile range, 32 input/output limits or 48-hour controller backup. C261 settles blind forward firing and separate Lobber landing distance. The unresolved C258/C259 activation scope and physical meaning of "allow turning" require explicit proposals, not an assumed global automation change.
+
+**1 — Which turrets wait for signals?** Recommend **1A:** only turrets explicitly assigned to signal control wait for an input; ordinary unlinked turrets retain current automation. **1B:** every turret requires a trigger before automatic firing. 1B changes the ordinary standalone workflow. In signal mode, losing/removing a link must leave the turret waiting safely rather than silently restoring autonomous fire; switching back to standalone is an authorized explicit edit. Neither option removes the master OFF switch or supplies free energy.
+
+**2 — Safety and turning controls.** Recommend **2A:** retain the selected safety inhibition as a clearly named "Disable while active" connection; use the existing Detection/Firing distinction for tracking versus forward fire, without a new physical rotation-lock toggle. **2B:** the same safety input plus a separate "Allow turning" setting that can lock aim while Detection remains installed. 2B needs a further fixed-facing target-acquisition contract and adds a distinct control; it is not equivalent to removing Detection. Both retain fail-safe inhibition on unknown/stale input and normal targeting/resource/Horde checks. This clarifies the selected intent, not a silent deletion of safety inhibition.
+
+**3 — Poke Floor while powered.** Recommend **3A:** repeatedly extend and retract at a fixed cycle rate while a signal is held; a button requests one cycle. **3B:** extend and remain raised while held, with contact injuries rather than repeated strikes. 3A creates an active striking trap distinct from existing Bed Spikes; 3B resembles a switchable static spike obstacle. No rate/damage/HP/power/recipe/player-injury values are selected here. Provide those as the next cohesive content contract once the mechanic is selected; do not inherit Bed Spikes values implicitly.
+
+Implementation constraints remain server-authoritative, bounded local occupancy checks and state-change propagation, OR-combined activation with inhibition taking precedence, no multiplied cadence from several inputs, no queued catch-up shots, and no simulation of unloaded combat. Those are engineering requirements, not extra player decisions. No source, package, version, changelog or test evidence changes in this discussion.
+
 ## C261: blind firing and Lobber distance confirmed, 2026-10-15
 
 Owner answers C260 **1A and 2B**. These settle the two presented behavior choices:
