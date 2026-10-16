@@ -1471,6 +1471,10 @@ Owner follow-up (2026-10-16): "I like the new design"; corrected C266 layout acc
 
 Owner says Firing requires a fire signal supplied by a pressure plate or Detection; an unpressed connected plate prevents firing while Detection continues aiming. Requests Detection-equipped turrets as signal sources for connected traps. Selects2A subject to this model and3A repeating Poke Floor strikes. [Confirmed semantics, recommended sensor output and remaining empty-target choice](checkpoints/R4C1_CONNECTED_CONTROLS.md#c269-fire-requests-and-firing-permission-2026-10-16). Do not interpret this as selection of C2681A/1B or an OR of all signal sources that lets Detection bypass an OFF plate. No implementation or test acceptance inferred.
 
+## C281 — Large ammo defaults approved; heavy-storage path clarified, 2026-10-16
+
+Owner accepts C280's default proposals and asks how heavy lifting permits over100 weight. [Approved counts and corrected native evidence](checkpoints/R4C1_CONNECTED_CONTROLS.md#c281-ammo-defaults-approved-controlled-over-capacity-storage-investigation-2026-10-16). Current native AddItem skips room admission; ISEquipHeavyItem uses exact-item server completion/both hands. Recommend investigating a scoped over-capacity real-item transfer path rather than claiming compartments are mandatory. Not proven safe in complete MP/save/carry lifecycle; controller architecture replacement remains to reconcile. No gameplay or test acceptance claim.
+
 ## C280 — fixed balance selected; head and firearm estimates, 2026-10-16
 
 Owner selects1B and clarifies this is balancing, not exact programmed endurance. [Fixed reference, source-derived estimates and proposed limits](checkpoints/R4C1_CONNECTED_CONTROLS.md#c280-fixed-balance-selected-and-per-head-ammunition-estimates-2026-10-16). No automatic day-length/RPM capacity scaling. Rounded Large proposals and lower-tier progression remain unselected; no Void removal, battery rebalance or native-weight bypass. Estimates include ordinary reload/cadence and are not runtime acceptance. No gameplay change.
