@@ -1,5 +1,21 @@
 # R4C1 — buttons, pressure plates and links
 
+## C269: fire requests and firing permission, 2026-10-16
+
+Owner replaces C268 choice 1 with a signal-source contract: a turret with Firing requires a fire signal, supplied by an external trigger or its Detection module. A connected plate supplies fire/activation while pressed; an unpressed connected plate prevents Detection's fire request from firing, while Detection still aims normally. A Detection-equipped turret may supply a connected trap's fire signal; activation/power controls whether that signal can act. Owner selects C2682A subject to this clarification and C2683A repeating Poke Floor strikes.
+
+**Confirmed direction:** preserve Firing as the firing actuator and Detection as target acquisition/aiming plus a possible fire-signal source. Standalone Detection can provide the local fire request without requiring an external plate. Once an activation plate is connected, its OFF state cannot be overridden by a local Detection request: fire-request sources and external firing permission cannot be flattened into one OR expression. A signal supplies logical activation, not battery energy. Plate OFF permits normal aiming when actual power/master state permits it; it must not shut down the entire tracking system. Master OFF, missing energy, inhibition, ammunition, cooldown, ownership and per-victim Horde consent remain authoritative. Manual Fire is not granted a bypass of a connected safety/activation gate.
+
+**2A remains compatible:** "Disable while active" is a veto on firing/actuation and wins over plate or Detection fire requests. It does not add a rotation lock; ordinary aiming can continue. Unknown/stale safety input stays inhibited. Multiple activation plates retain any-ON semantics, without multiplying cadence; no missing-link automatic return to standalone or queued shots.
+
+**Detection output recommendation:** use a live eligible-target signal, rather than waiting for an actual successful shot, so a turret can serve as a sensor for a connected trap without consuming ammunition just to signal it. Respect the source's activation/inhibition and actual power as well as the receiving trap's own permission/resources. The receiver uses its own targeting rules; do not silently forward target coordinates or grant tracking to a receiver without that capability. This is the proposed interpretation of the owner's newly requested sensor-to-trap link, not an already implemented API. Source without Firing may sense/signal but cannot shoot itself. Reject cyclic signal links in the first implementation; use bounded server state propagation, not recursive immediate firing.
+
+**One material ambiguity remains: Detection installed, plate ON, no eligible target.** **1A recommended:** Detection-equipped turrets wait for a target; without Detection the plate fires straight as already agreed. **1B:** a plate requests a shot even with Detection and no target; use configured fixed forward direction when there is no valid target. Both preserve plate-OFF aiming-only behavior, normal resource use and the existing no-Detection blind-fire contract. The owner has not selected this empty-target rule; do not silently convert a plate to only a target-present gate or silently add blind-fire fallback with Detection.
+
+**Poke Floor:** 3A selected: continuously repeat extension/retraction cycles while activated; button requests one cycle. Damage, cadence, footprint, power, durability, injuries and recipe remain unselected and require their cohesive next design discussion. No Bed Spikes values are inherited automatically.
+
+Documentation only. Installed 0.2.52 remains unchanged, owner testing deferred and connected acceptance pending. This selection records behavior and the remaining edge case; it is not a gameplay patch or a tested implementation.
+
 ## C268: planning resumed and next choices, 2026-10-16
 
 Owner: "Can't test right now, let's resume planning. What's next to discuss?" The installed 0.2.52 correction patch remains awaiting rendered and connected multiplayer acceptance. No new test result or implementation authorization is inferred. R4C1 physical buttons/plates/controller and links are the next roadmap delivery; Poke Floor is the selected first R4C2 receiver to design alongside that foundation.

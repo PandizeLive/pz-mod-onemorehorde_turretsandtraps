@@ -1465,6 +1465,10 @@ Owner: "Expansion should be on Equipment. I do prefer that." Reports continued i
 Owner follow-up (2026-10-16): "I like the new design"; corrected C266 layout accepted and patch recap requested. This accepts the design, not installed gameplay or actual mobile interaction. C263-C266 corrective scope is unchanged.
 
 
+## C269 — owner clarifies fire signal and plate gating, 2026-10-16
+
+Owner says Firing requires a fire signal supplied by a pressure plate or Detection; an unpressed connected plate prevents firing while Detection continues aiming. Requests Detection-equipped turrets as signal sources for connected traps. Selects2A subject to this model and3A repeating Poke Floor strikes. [Confirmed semantics, recommended sensor output and remaining empty-target choice](checkpoints/R4C1_CONNECTED_CONTROLS.md#c269-fire-requests-and-firing-permission-2026-10-16). Do not interpret this as selection of C2681A/1B or an OR of all signal sources that lets Detection bypass an OFF plate. No implementation or test acceptance inferred.
+
 ## C268 — planning resumed; owner test deferred, 2026-10-16
 
 Owner cannot test now and requests resuming planning. No test pass/failure or new gameplay approval is inferred. R4C1 is next; preserve all settled C253-C261 choices. [Three current proposals](checkpoints/R4C1_CONNECTED_CONTROLS.md#c268-planning-resumed-and-next-choices-2026-10-16) address signal-mode scope, safety/rotation wording, and the first R4C2 Poke Floor's held behavior. Recommendations are 1A/2A/3A, not selections. Installed 0.2.52 remains unchanged and pending rendered/connected-client acceptance.
