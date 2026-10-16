@@ -1471,6 +1471,10 @@ Owner follow-up (2026-10-16): "I like the new design"; corrected C266 layout acc
 
 Owner says Firing requires a fire signal supplied by a pressure plate or Detection; an unpressed connected plate prevents firing while Detection continues aiming. Requests Detection-equipped turrets as signal sources for connected traps. Selects2A subject to this model and3A repeating Poke Floor strikes. [Confirmed semantics, recommended sensor output and remaining empty-target choice](checkpoints/R4C1_CONNECTED_CONTROLS.md#c269-fire-requests-and-firing-permission-2026-10-16). Do not interpret this as selection of C2681A/1B or an OR of all signal sources that lets Detection bypass an OFF plate. No implementation or test acceptance inferred.
 
+## C272 — controller explanation and menu requested, 2026-10-16
+
+Owner asks for controller purpose and a menu mockup. [Explanation, proposed menu and browser-only verification](checkpoints/R4C1_CONNECTED_CONTROLS.md#c272-controller-purpose-and-menu-proposal-2026-10-16). No new gameplay choice, final art, implementation or test acceptance inferred. Controller management remains separate from direct signal operation and existing device ownership.
+
 ## C271 — R4C1 readiness confirmed, 2026-10-16
 
 Owner asks whether more discussion is needed before pressure-plate/control implementation. [Readiness assessment](checkpoints/R4C1_CONNECTED_CONTROLS.md#c271-r4c1-design-readiness-2026-10-16): existing selected controls, recipes/access/lifecycle and C270 power/fire rules suffice for R4C1. Engineering verification remains; do not turn it into more owner design gates. Separate R4C2 Poke Floor balance/recipe is not included or blocking. No source change, installation or test claim in this readiness turn.

@@ -1,5 +1,17 @@
 # R4C1 — buttons, pressure plates and links
 
+## C272: controller purpose and menu proposal, 2026-10-16
+
+Owner requests explaining the controller and a menu mockup. The controller is the installed central management interface for explicitly assigned, authorized devices within20 tiles on its floor: inspect devices, create/inspect signal connections, configure compatible receiver targeting/defaults and local overrides, and manage permitted Private/Faction/Public access. Ownership does not originate from the controller and cannot be stolen by nearby assignment; policy changes remain owner/admin-only. Readers retain bounded status access, not permission to edit.
+
+It is not the source of turret battery energy and is not required in the live path of an established direct plate-to-device connection. Controller power is for management; loss of controller supply/backup disables management writes while direct connections and persistent ownership remain. C270 is unchanged: plate pressed powers the connected device ON and sends fire; release powers it OFF, stopping aiming/firing. Receiver energy/ammo and server checks still apply.
+
+Proposed Manage-style layout: equipment/power and backup charge at top; assigned device list on left; selected device's incoming/outgoing links, access and compatible target override on right; controller target default below. Mobile reflows vertically. Add Connection and harmless Highlight Links are proposed control placements, not new attack actions. Mockup preview controls are outside the product window and do not propose an in-game ability to simulate physical plate occupation. Displayed names, distances, charge and conditions are illustrative. No final art or gameplay assets are introduced.
+
+![Controller menu proposal](../mockups/controller-menu-c272.png)
+
+The conversation includes a locally interactive preview. Headless browser checks passed signal ON/OFF, controller outage retaining direct links while edits disable, local connection creation, selection/access retention and no horizontal overflow at736/390/320-pixel viewport widths; desktop/mobile screenshots inspected. This is browser-prototype evidence only, not PZ rendering, phone-app interaction, multiplayer or implementation acceptance. Layout remains a proposal; existing gameplay approvals are unchanged. Installed0.2.52 remains unchanged and owner tests deferred.
+
 ## C271: R4C1 design readiness, 2026-10-16
 
 Owner asks whether anything else needs discussion before implementing pressure plates and the system. The R4C1 foundation has sufficient selected design to implement: pressure plates, wall buttons, installable controller, same-floor20-tile connections with32 inputs/outputs, existing Manage power/fire behavior from C270, Detection signal integration, ownership/sharing, persisted links, feedback and selected recipes/services/controller backup. No further generic permission or signal-gating choice is needed. Preserve the simple power-switch model; do not reopen C269's withdrawn aiming-while-OFF or target-presence gate.
