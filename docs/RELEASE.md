@@ -2,7 +2,7 @@
 
 ## 0.2.52 / C267 — Manage and ammunition correction patch, 2026-10-16
 
-Approved C263–C266 implementation. [Patch](PATCH_v0.2.52.md) | [Verification](TEST_v0.2.52.md). Local installation evidence and GitHub delivery will be recorded after the immutable test tag is installed. No Workshop upload; all pending player notes remain in the cumulative draft.
+Approved C263–C266 implementation. [Patch](PATCH_v0.2.52.md) | [Verification](TEST_v0.2.52.md). Installed **0.2.52** from immutable `test/v0.2.52` / `9d4c5f5252158ab8eb6ba3bba81187b379407990`. All267 source and325 tagged/packaged/installed/archive files match; both0.2.51 backups verify. Full suite:20,510 assertions; native write/read and all three independent package selections pass. [Local release evidence](../diagnostics/v0.2.52/local-release.json). Rendered/connected multiplayer acceptance remains pending; the C108 development mirror carries this release record. No Workshop publication. No Workshop upload; all pending player notes remain in the cumulative draft.
 
 ## 0.2.51 / C262 — development correction patch, 2026-10-15
 

@@ -4,7 +4,7 @@
 
 The full Kahlua/native-parser validator passes 20,510 assertions: 267 source files and 325 packaged files (118 Traps, 207 Turrets). New checks cover shared Load Order opening/reordering/applying/reopening, exact-head/stale/duplicate/incompatible requests, native table round trips, one-type magazine retention, physical/virtual reload accounting, Conservation/Impact/cooldown retention, scrap bonuses and the five reserve limits. Manage geometry is checked at 1280×720 and a constrained 600px-high viewport.
 
-Native stock 42.21 probes verify actual firearm top-up with an extended magazine, all eight scrap script items, chosen sound events, authority publication and pickup/redeployment of saved orders. Fresh-process write/read and Traps-only/Turrets-only/combined startup results are recorded in diagnostics/v0.2.52. Release/install evidence is recorded separately after deployment.
+Native stock 42.21 probes verify actual firearm top-up with an extended magazine, all eight scrap script items, chosen sound events, authority publication and pickup/redeployment of saved orders. Fresh-process write/read and Traps-only/Turrets-only/combined startup results are recorded in diagnostics/v0.2.52. All325 installed/archive files and both0.2.51 backups match the immutable test tag. [Install evidence](../diagnostics/v0.2.52/local-release.json).
 
 These are automated Lua test-double and zero-client native checks. Rendered UI, audible balance, arbitrary modded ammunition and connected dedicated/listen-server acceptance remain pending. Native map/property warnings also appear in the isolated startup environment; they are distinct from T&T callback failures. No new owner result is inferred from approval.
 
