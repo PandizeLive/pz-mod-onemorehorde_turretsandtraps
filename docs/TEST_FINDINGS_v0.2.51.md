@@ -1,0 +1,31 @@
+# C263 — 0.2.51 owner findings and correction choices
+
+2026-10-15. Owner reports loud Makeshift Bombs, overlapping Lobber shots before detonation, unstable-looking physical scrap capacity, missing scrap variants, cramped Manage, Load Order needs, missing head reload audio, wrapped tooltip color loss and unnecessary rotary rate wording. Attached mockup places Load order inside the Ammo panel. All eleven points below are retained. This is investigation/planning, not a newly installed patch or blanket owner pass.
+
+## Captured evidence
+
+Root OMH.cmd captured console.txt and installed manifests at `diagnostics/captures/20261015-233602-4452`. Console SHA256 `70bc8e918a88b581bcda01b33c07fe26e0a934f4e808b83e7643e4e28e238372`; loaded diagnostics show version0.2.51, sideSP. No T&T Lua exception was found in the inspected capture. Native/map and other-mod warnings remain; they are not evidence of T&T failure. Raw console stays local.
+
+## Findings and requested fixes
+
+1. `TurretOrdnance.step` uses PipeBombExplode for every primary and mini grenade. Audible gain and zombie-attraction radius are separate. Preserve attraction/damage unless explicitly selected otherwise. Native candidate auditions were rendered and checked non-silent; proposed choices below. Mini explosions also need reduced, bounded presentation to avoid a pile of full-volume pipe bombs.
+2. Lobber cooldown3.5seconds is independent of travel at8tiles/second plus2second fuse. At18tiles that is approximately4.25seconds before normal collision/scatter/scheduler effects, so the second launch can precede detonation. Recommend per-turret pending-primary tracking: next firing cycle waits for all primary grenades from its prior volley to detonate or retire, and normal cooldown/reload readiness. Fragment children do not extend that gate. Preserve pause/persistence, cancellation and no-catch-up behavior; server owns completion. Do not use a guessed fixed delay.
+3. Scrapshot inherits potato capacity plus expansion bonuses, then hits native weight. It has no dedicated count cap. Owner requests roughly80 with Large Expansion. Native weight protection must remain:80 cannot guarantee space for arbitrary heavier mod items. Proposed total reserve ladder below; preserve current ten-round magazine and make reserve versus magazine semantics explicit.
+4. Ammo.family currently accepts only Base.ScrapMetal. Installed42.21 scripts define AluminumScrap, CopperScrap, BrassScrap, IronScrap and SteelScrap at0.5weight versus ScrapMetal1.0; GoldScrap/SilverScrap are0.05. Broad hasmetal tags would accept unrelated metal objects. Use explicit native types and registered compatibility overrides for modded scrap; do not classify by item display-name substring.
+5–6. Replace payload-specific controls with one Load Order editor opened from matching buttons in Ammo and Void. One order per equipped head/ammo family, shared across both sources, listing compatible type, physical/Void counts and Up/Down controls. Save on explicit Apply via validated server action. Proposed: skip unavailable types, retain preferences, append newly encountered compatible types predictably. The current loaded magazine semantics require a choice below. Do not maintain contradictory separate physical/Void orders.
+7–8. Equal-width Ammo/Void inset panels with dedicated aligned footer buttons below the drop zone; increase Manage height where screen room allows, retain bounded layout/scrolling on smaller viewports. Do not overlay buttons on item icons/drop text. Owner's selected Inset panels variant and supplied screenshot inform functional layout only.
+9. TurretReloadAudio explicitly skips Ballista; Lobber/Scrapshot use potato fallback. Add verified native per-head reload/start/finish cues tied to actual cycle transitions, including server-replicated playback with no duplicate host sounds. Rotary heads have no ammunition reload and should not gain a fake reload.
+10. Remove new positive/negative colors from module descriptions; retain rarity color only. Prefer concise unwrapped feature/stack lines and text-sized tooltip width. The current native item tooltip wraps first, then recognizes positive/negative content per line, explaining white continuations.
+11. Replace `Motor: %1 RPM equivalent` with `%1 RPM` in the Firerate field. Keep battery endurance units truthful; the owner's correction concerns firing-rate wording.
+
+## Choices presented (proposals, not selected)
+
+**1 — Makeshift explosion sound.** 1A recommended: native AerosolBombExplode at proposed35% gain; 1B: FireCrackerSingleExplode at35%; 1C: existing PipeBombExplode at20%. These are audition gains, not measured equal loudness or installed settings. Native pipe/aerosol payloads can retain their own identity; mini-grenade gain/voice limiting should prevent repeated full-volume booms. Local audition: `diagnostics/audio-audition/c263/SOUND_CHOICES.html`, evidence `audition.json`.
+
+**2 — Scrap reserve cap.** 2A recommended: None/Makeshift/Small/Medium/Large =20/30/40/60/80. 2B: flat80 regardless of expansion, like the existing fixed spear cap. Both retain native weight protection and ten-round magazine; neither promises80 heavy mod scraps fit. Void remains weightless and does not inherit the physical reserve cap.
+
+**3 — Scrap families.** 3A recommended: ordinary Scrap Metal plus aluminum/copper/brass/iron/steel; one item per shot, same damage. 3B: also accept gold/silver at the same damage, despite their much lower weight. Registered mod variants remain explicit, not all-metal wildcard acceptance. New material damage scaling is not inferred.
+
+**4 — Applying Load Order.** 4A recommended: finish the current magazine, use highest-priority available type at the next reload. 4B: Apply requests a safe unload/reload immediately, so the next shot uses the selected available type; extra handling and exact-ammo refund/space checks required. Never transform loaded ammo in place or delete overflow. Both source buttons edit the same order, with server validation and head-change/concurrent-edit protection.
+
+No Source/Contents edits, gameplay version bump, tag movement or installation this turn. C263 correction decisions precede implementation per the project owner-test agreement. R4C1 physical controls remain retained next, not silently dropped.

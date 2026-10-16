@@ -1436,3 +1436,8 @@ Corrected stale current-table entries for head/content implementation, the pack 
 ## C262 — implement the approved correction patch, 2026-10-15
 
 Owner: “Approved. Go ahead and implement the patch with all the fixes and confirmed changes. Keep multiplayer in mind and push it to GitHub.” Implements C259 findings plus C260/C261 selections; see [0.2.51 patch](PATCH_v0.2.51.md) and [verification](TEST_v0.2.51.md). No new balance/recipe choices are inferred. Scrapshot stays eight40-damage pellets with its existing90-degree spread; Firing/Detection remain separate. The Void stall is now traced to mixed wall/active clocks, not assumed to be a depletion issue. Native placed capacity remains100 and the logical head caps remain40spears/20bombs; physical weight still applies. R4C1 physical devices remain recorded next, following the C259 correction priority. Approval is implementation authority, not owner or connected multiplayer test acceptance.
+
+
+## C263 — owner correction report and Load Order mockup, 2026-10-15
+
+Owner reports loud Makeshift explosions, asks Lobber to wait for detonation, requests Large Expansion scrap around80 and other metal scraps, shared Ammo/Void Load Order menus with arbitrary ordering, equal widths and more height, head reload sounds, white unwrapped descriptions except rarity, and plain rotary RPM. [All eleven findings, captured evidence and concrete choices](TEST_FINDINGS_v0.2.51.md). Proposed sound/cap/family/reorder semantics are not selections. Existing installed0.2.51 remains unchanged. This is a correction discussion under the project agreement, not a blanket gameplay approval or successful owner acceptance.

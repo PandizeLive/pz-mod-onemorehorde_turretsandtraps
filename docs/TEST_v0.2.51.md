@@ -1,5 +1,7 @@
 # 0.2.51 verification and short owner test
 
+C263 owner follow-up reports remaining issues; see [captured findings and pending choices](TEST_FINDINGS_v0.2.51.md). Automated results below remain valid within their stated scope; owner acceptance is not complete.
+
 ## Automated evidence
 
 - Full validator: 20,441 assertions; 264 source files, 322 packaged files and 257 literal translation keys. Includes ammo-family transfer, active-clock transfer, invalid reload-deadline recovery, Void summaries, removable Expansion, module/head text, small-screen Lure/Landing layout, exact-pack Open Next and targetless firing.
