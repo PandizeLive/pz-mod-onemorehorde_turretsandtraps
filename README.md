@@ -1,5 +1,7 @@
 # OMH: Turrets & Traps
 
+**C266:** [Expansion restored to Equipment; corrected mockup](docs/TEST_FINDINGS_v0.2.51.md#c266--expansion-in-equipment-and-mobile-preview-2026-10-16). Planning only; installed0.2.51 unchanged.
+
 **C265:** Correction choices settled; [revised Manage layout, Reload and timing rules](docs/TEST_FINDINGS_v0.2.51.md#c265--layout-reload-and-final-correction-selections-2026-10-16). Planning only; installed0.2.51 unchanged.
 
 **C264:** Correction selections recorded; [layout mockups, mixed-magazine feasibility and remaining timing/bonus choices](docs/TEST_FINDINGS_v0.2.51.md#c264--selections-shared-button-layouts-and-timing-revision-2026-10-16). Installed0.2.51 unchanged.

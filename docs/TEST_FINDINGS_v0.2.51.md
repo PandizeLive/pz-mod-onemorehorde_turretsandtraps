@@ -109,3 +109,15 @@ Browser checks passed mouse input at736px and emulated touch taps at390px/320px:
 ![Phone Load Order](mockups/c265/load-order-phone.png)
 
 Decision provenance: owner explicitly requests Magazine below Ammo/Void, dislikes Power beside Expansion, selects1A/2B/3A without cap/4A, asks for Reload and reports mobile failure. Next-load versus next-shot wording and normal-duration reload mechanics above are assistant recommendations resolving those requests without changing the selected single-type magazine rule. No new gameplay balance question remains for this correction slice. Implementation and verification are next; no additional owner play session is requested here.
+
+
+## C266 — Expansion in Equipment and mobile preview, 2026-10-16
+
+Owner corrects Expansion placement: keep it in Equipment. Revised desktop row is Head, Expansion, Battery with adjacent Power; Magazine occupies the full row below equal-width Ammo/Void. Shared Load Order, Reload, next-load/next-shot and type counts remain. This supersedes C265's Magazine/Expansion pairing, without changing confirmed gameplay selections.
+
+Owner still cannot manipulate the mobile preview. Emulated touch success did not establish actual app compatibility; the underlying cause remains unknown. Supply a static image alongside the corrected preview so interaction is unnecessary to review the layout. Rendered desktop736 and phone320 screenshots inspected; desktop/390/320 browser checks retain equal reserve widths, no page overflow and functional local Load Order/Reload simulation. No native-game or actual-mobile interaction acceptance claimed.
+
+![Corrected layout](mockups/c266/desktop.png)
+![Corrected phone layout](mockups/c266/phone.png)
+
+No Source/Contents, version, tag or installation change. The owner indicates this correction should settle the mockup; do not reopen settled choices or require another play test for planning. Implementation remains the next step, with C263-C265 corrections and multiplayer safety retained.

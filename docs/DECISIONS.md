@@ -1453,3 +1453,10 @@ Owner selects C2631B/2A/3B/4A: single-firecracker Makeshift audio,20/30/40/60/80
 **C265 / correction selections settled (2026-10-16).** Shared Load Order header selected with Magazine below equal-width Ammo/Void, Power beside Battery, next-load/type-count feedback and requested manual Reload. One ammo type per magazine retained. Lobber fuse1.25s/base interval5.5s selected with normal speed upgrades and no new timing cap; upgraded shots may overlap prior explosions. Scrap bonuses selected at0/5/10/15%. [Contract, reload safety and touch-tested preview](TEST_FINDINGS_v0.2.51.md#c265--layout-reload-and-final-correction-selections-2026-10-16). No gameplay/install change;0.2.51 remains installed. Corrective implementation precedes retained R4C1 devices.
 
 Owner selects1A/2B/3A without cap/4A and requests Reload. Next-load versus actual next-shot wording and safe reload semantics are recommendations, not claims of shipped functionality. The previous preview failed on the owner's mobile; new emulated touch checks pass, actual app remains unverified.
+
+
+## C266 — Expansion belongs in Equipment, 2026-10-16
+
+**C266 / final layout correction (2026-10-16).** Expansion belongs in Equipment with Head and Battery/Power. Magazine spans the row beneath equal-width Ammo/Void. Owner still cannot manipulate the preview on mobile; provide a static preview and do not claim touch support is fixed. [Corrected layout](TEST_FINDINGS_v0.2.51.md#c266--expansion-in-equipment-and-mobile-preview-2026-10-16). C265 gameplay selections remain unchanged; installed0.2.51 unchanged.
+
+Owner: "Expansion should be on Equipment. I do prefer that." Reports continued inability to manipulate on mobile, and says the corrected mockup should settle the layout. This supersedes C265 Magazine/Expansion pairing; preserve its other selections. No source patch or installed-build acceptance inferred.
