@@ -2,7 +2,7 @@
 
 ## 0.2.51 / C262 — development correction patch, 2026-10-15
 
-[Patch](PATCH_v0.2.51.md) and [verification](TEST_v0.2.51.md). 20,441 assertions, 264 source/322 package files and all independent selections pass. Native production and persistence evidence are retained in diagnostics/v0.2.51. Commit/tag/install/mirror are pending completion of the release sequence; installed0.2.50 remains the prior baseline until verified. No Workshop upload, main merge or LootLab deployment; cumulative unpublished notes are retained.
+[Patch](PATCH_v0.2.51.md) and [verification](TEST_v0.2.51.md). 20,441 assertions, 264 source/322 package files and all independent selections pass. Native production and persistence evidence are retained in diagnostics/v0.2.51. Installed through root OMH.cmd from immutable `test/v0.2.51` / `9141ced6352f6f3b88823751ccb16dcd8d0b0f93`. All264 source and322 tagged/packaged/installed/archive files match; both0.2.50 package backups verify. [Install/archive evidence](../diagnostics/v0.2.51/local-release.json). C108 development delivery retains the existing branch/draft PR and immutable test tag. No Workshop upload, main merge or LootLab deployment; cumulative unpublished notes are retained.
 
 ## 0.2.50 / C247 — development packaging, 2026-10-15
 

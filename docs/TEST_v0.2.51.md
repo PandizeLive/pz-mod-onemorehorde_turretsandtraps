@@ -10,6 +10,8 @@
 
 These checks include native objects and Lua test doubles. They do not establish rendered acceptance, arbitrary mod compatibility, connected dedicated/listen-server behavior or measured multiplayer performance. No owner acceptance is inferred from patch approval.
 
+Installed from immutable test/v0.2.51 (`9141ced`); [verified installed files and backups](../diagnostics/v0.2.51/local-release.json).
+
 ## Test now — six checks
 
 1. Restart and confirm **0.2.51**. Open Manage: hover Head, Ammo, Void, battery and modules; confirm distinct text, stack benefits, readable layout and removable Expansion styling.
