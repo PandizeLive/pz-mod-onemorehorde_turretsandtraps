@@ -1,5 +1,9 @@
 # Decision register
 
+## C287: preview both proposed Manage layouts (2026-10-17)
+
+Owner: "Show the designs for both options." [Comparison and browser verification](TEST_FINDINGS_v0.2.53.md#c287--both-manage-designs-previewed-2026-10-17). This authorizes design previews, not selection of1A/1B or a new implementation. Preserve C286 corrections, the accepted Controller direction and pending native/connected acceptance. No balance, authority, installed version or Workshop changes.
+
 ## C286: owner UI failures and corrective design discussion (2026-10-17)
 
 Owner reports overlapping Turret Manage framing, blocked dragging under the name controls, excessive complexity, a Controller unlike the approved preview, and a black screen during Controller menu use. [Diagnosis, proposed corrections and one layout choice](TEST_FINDINGS_v0.2.53.md). The native UI-name recursion is independently reproduced; retained logs cannot identify the original trigger. Recommend1A compact single page with expandable detailed stats;1B uses Equipment/Modules tabs. This is a finding/design discussion, not a selection or new patch implementation. Preserve the accepted C284 Controller hierarchy, multiplayer authority and installed0.2.53 evidence; prioritize corrections before R4C2. Standing C108/C119 authorizes mirroring these findings.

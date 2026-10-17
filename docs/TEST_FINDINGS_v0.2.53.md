@@ -35,3 +35,11 @@ Both choices include crash correction, a dedicated drag bar and restoration of t
 ## Verification required for the correction
 
 Use the actual native UI naming/path methods in the regression, check sibling sections and title hit areas at supported font/screen sizes, and check repeated Controller -> Manage -> stockpile open/close paths. Preserve MP read/write and stale/removed-device guards. Rendered acceptance and connected-client acceptance remain distinct. Do not repeat unrelated prior gameplay tests.
+
+## C287 — both Manage designs previewed, 2026-10-17
+
+Owner requests seeing both options, without selecting either or approving implementation. Created `turret-manage-cleanup.html` in the thread visualization directory (`C:/Users/bandi/.codex/visualizations/2026/10/06/01a11283-2701-7630-a9bf-aac054c7bf3c`). The comparison contains Compact page (1A) and Two tabs (1B), with working equipment/module tabs, Details disclosure, local name/power/range/loop controls and a title-bar drag demonstration. Item transfers/fire are labeled preview-only; no gameplay action is performed. Sample values match the owner's Scrapshot screenshot; no balance change is proposed.
+
+Both preserve Equipment expansion/battery/power, shared Load Order, equal Ammo/Void panels, Magazine below, 4/6/6 desktop module slots, rarity colors and left-name/right-benefit alignment. Small-screen preview reflows the module grid for readability, not as a selected PZ layout change. Compact remains the recommended no-tab workflow; the tabbed alternative is materially shorter. The dedicated drag band is separate from name editing in both.
+
+Browser checks verified the Details disclosure and both Equipment/Modules tab states, with no captured JavaScript error. Narrow preview at360 viewport width had no child extending beyond the product window; the final spacing pass reduced the compact desktop window to about915px high at640px width. This is a browser design preview, not native PZ rendering, mobile-host certification or multiplayer verification. C286 crash/layout corrections remain pending; installed0.2.53 is unchanged. No Controller design re-selection is requested.
