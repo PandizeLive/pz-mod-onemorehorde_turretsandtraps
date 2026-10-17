@@ -509,3 +509,5 @@ Owner directly requests Module Stats under expanding Details, category tooltips,
 ## C297 — dedicated attached Stockpile and transfer/UI corrections (2026-10-17)
 
 Owner requests paired mockups after partially successful 0.2.53.5 testing. [Correction contract and evidence](../CORRECTIONS_C297.md) covers a visible Controller Battery slot, distinct section titles/action rows, red/green turret power and exact-item transfers both ways. Owner explicitly requires a dedicated native inventory component attached to the Controller, not repositioning the player's HUD. Native list reuse needs a scoped adapter and engine validation; no cloned item storage. Proposal/mockups only, no gameplay version change. Corrections precede R4C2 and do not close deferred connected acceptance.
+
+C298 adds the confirmed red **One More Horde** / white **- Turret Management Menu** and **- Controller Menu** title treatment. Preview updated; final patch approval is still pending as requested by the owner.

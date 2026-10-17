@@ -42,3 +42,11 @@ Native evidence is the installed game at `C:/Program Files (x86)/Steam/steamapps
 ## Status
 
 Owner requirements and correction are recorded; proposed layout/native-component integration is presented for review. No new gameplay build or test request this turn. GitHub development mirror follows C108/C119 on the existing branch/draft PR, with no merge or Workshop publication.
+
+## C298 — One More Horde title branding (2026-10-17)
+
+Owner likes the proposed layout and requests the exact titles **One More Horde - Turret Management Menu** and **One More Horde - Controller Menu**, with **One More Horde red** and the separator/menu name **white**. Owner says approval can follow confirmation; this is not yet implementation approval for the corrective patch.
+
+Confirmed feasible without changing the draggable title-bar behavior. Reuse the existing Horde Night brand-title RGB **0.85, 0.25, 0.25** (approximately `#D94040`), verified read-only in sibling `OMH_ScoreboardUI.lua` at the `IGUI_OMH_Title` draw call. The white suffix uses RGB 1, 1, 1. Render as measured text segments in the title bar rather than another input/control; retain the right-hand close button and account for font scaling/narrow layouts. No sibling changes or new gameplay are authorized by this branding request.
+
+The editable preview now contains both branded titles. The C297 image snapshots above predate this title-only addition and remain evidence of the original reviewed layout. Preview/source structure checked; no new engine test or acceptance claim. Include the branding in the C297 corrective scope when approved. Installed 0.2.53.5 remains unchanged.

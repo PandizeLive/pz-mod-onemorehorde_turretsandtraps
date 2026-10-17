@@ -1,5 +1,9 @@
 # Decision register
 
+## C298: One More Horde menu-title branding (2026-10-17)
+
+Owner requests `One More Horde - Turret Management Menu` and `One More Horde - Controller Menu`, with red brand text and white separator/suffix. Existing Horde Night title RGB 0.85/0.25/0.25 verified; editable preview updated. [Exact requirement and implementation notes](CORRECTIONS_C297.md#c298--one-more-horde-title-branding-2026-10-17). Owner's "Once confirmed, we can approve" reserves final patch approval; no gameplay change or install this turn.
+
 ## C297: attached native Stockpile and clearer Manage controls (2026-10-17)
 
 Owner reports 0.2.53.5 mostly working and requests a Controller battery slot, clear section/action separation, red/green power feedback and direct Manage/Stockpile drag transfers. Requests paired mockups, then explicitly clarifies the Stockpile must be a dedicated component connected to the Controller menu, not the player's repositioned HUD. [Findings, proposal and evidence](CORRECTIONS_C297.md). Preserve the native list/item system with a scoped adapter, exact inventory and existing authority/capacity. Read-only audit and mockups completed; layout proposal awaiting review, no new implementation/install or blanket acceptance implied.
