@@ -1,5 +1,19 @@
 # R4C1 — buttons, pressure plates and links
 
+## C284: paired controller and turret Manage mockups, 2026-10-16
+
+Owner requests controller and turret Manage mockups. Created a connected, responsive conversation preview and static screenshots, preserving the selected inset panels/shared ammunition header and C283 storage/ammo plan. No new design choices or gameplay implementation are inferred from the mockup request.
+
+Controller: equipment/grid/backup and500-capacity stockpile, assigned-device list, selected-device status, full Manage entry, owner/private-faction-public access, connections and target controls. Turret: editable name/Auto, controller context, explicit controller-stockpile/player transfer source, Equipment with head/battery/expansion/power, weight warning, equal Ammo/Void panels under one Load Order button, full-width magazine/Reload,4/6/6 module grid, status/installed-benefits sections, Engagement Range and separate Lure controls. Mobile reflows to readable narrower rows. New-device-default access control placement is a UI proposal, not authority to change existing ownership defaults.
+
+All names, stock quantities, weights, timing/stat summaries and rarity colors in this prototype are illustrative layout content, not game telemetry, revised tuning or proof of actual loaded capacity. Browser actions change only local preview state; they do not manage game devices. Native icons/assets are not recreated; this is functional UI planning, not final art. The head picker demonstrates another head configuration, not a verified live item transaction. Full runtime tooltip/stat/ownership rules remain governed by the existing contracts.
+
+Headless browser checks passed controller-to-Manage navigation, naming propagation, local load-order movement, power feedback, module install/remove, source selection and bounded sample ammo loading, Lure toggle, no horizontal overflow at736/390/320 widths, and no script errors. Desktop/mobile/dark/light screenshots inspected; this does not establish phone-client interaction, PZ rendering, save/load, gameplay or MP acceptance.
+
+[Controller preview](../mockups/controller-c284.png) | [Turret preview](../mockups/turret-c284.png) | [Controller narrow preview](../mockups/controller-c284-mobile.png) | [Turret narrow preview](../mockups/turret-c284-mobile.png).
+
+Planning/mockup update only. No source/package/version/install changes; installed0.2.52 acceptance and C283 engineering verification remain pending.
+
 ## C283: storage route and full expansion progression approved, 2026-10-16
 
 Owner selects C282 **1A and2A**. Controlled over-capacity storage of real items is approved for turrets and the controller; preserve full contents weight, turret ammo-family/count limits and the controller's500-weight stockpile limit. Native two-handed pickup applies when ordinary pickup cannot fit. This supersedes the earlier controller five-compartment proposal while preserving ownership, direct player/controller transfers and exact-item persistence requirements.
