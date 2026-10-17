@@ -125,7 +125,8 @@ function Panel:prerender()
     self.nameEntry:refresh()
     self.nameEntry:setVisible(state ~= nil and state.kind ~= "Controller")
     self.policy:setEnable(writable and A.write(self.player, state, true) or false)
-    self.manage:setEnable(state ~= nil and state.kind == "Turret" and host.powered == true and state.controller == host.id)
+    self.manage:setEnable(state ~= nil and state.kind == "Turret"
+        and (A.near(self.player, self.selected) or (host.powered == true and state.controller == host.id)))
     self.assign:setEnable(state ~= nil and self.selected ~= self.object and host.kind == "Controller"
         and host.powered == true and A.write(self.player, host) and A.write(self.player, state))
     self.link:setEnable(linkable == true)
@@ -141,6 +142,32 @@ function Panel:prerender()
     self.assign:setVisible(state ~= nil and self.selected ~= self.object and host.kind == "Controller")
     self.link:setVisible(state ~= nil and state.kind == "Turret" and self.linkSource ~= nil)
     self.unlink:setVisible(state ~= nil and state.kind == "Turret" and self.linkSource ~= nil)
+    local remoteReason
+    if host.powered ~= true then
+        remoteReason = getText("UI_OMHTT_ControllerPowerNeeded")
+    elseif state and state.controller ~= host.id then
+        remoteReason = getText("UI_OMHTT_ControllerAssignNeeded")
+    else
+        remoteReason = getText("UI_OMHTT_ControllerSessionPending")
+    end
+    self.manage.tooltip = nil
+    if not self.manage.enable then
+        self.manage.tooltip = remoteReason
+    end
+    self.assign.tooltip = nil
+    if not self.assign.enable then
+        self.assign.tooltip = host.powered ~= true and getText("UI_OMHTT_ControllerPowerNeeded")
+            or getText("UI_OMHTT_ControllerAccessNeeded")
+    end
+    self.policy.tooltip = nil
+    if not self.policy.enable then
+        self.policy.tooltip = getText(A.write(self.player, state, true)
+            and "UI_OMHTT_ControllerReachNeeded" or "UI_OMHTT_ControllerAccessNeeded")
+    end
+    self.clearInputs.tooltip = getText("UI_OMHTT_ControllerReachNeeded")
+    self.source.tooltip = self.clearInputs.tooltip
+    self.link.tooltip = self.clearInputs.tooltip
+    self.unlink.tooltip = self.link.tooltip
     self.policy:setTitle(getText("UI_OMHTT_Access", state and state.access or "—"))
     self.assign:setTitle(getText(state and state.controller == host.id and "UI_OMHTT_Unassign" or "UI_OMHTT_Assign"))
 
@@ -172,7 +199,9 @@ function Panel.open(player, object)
     panel:addChild(panel.devices)
     panel.nameEntry = require("OMHTT/ControlNameEntry").create(panel, nil, 274, 90, 366, 28)
     panel.manage = button(panel, 274, 246, 246, getText("UI_OMHTT_OpenManage"), function(self)
-        if U.remote(self.player, self.object, self.selected) then
+        if A.near(self.player, self.selected) then
+            require("OMHTT/TurretManage")(self.selected, self.player)
+        elseif U.remote(self.player, self.object, self.selected) then
             require("OMHTT/TurretManage")(self.selected, self.player, self.object)
         end
     end)

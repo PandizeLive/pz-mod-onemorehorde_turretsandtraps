@@ -20,7 +20,8 @@ function List:update()
     if self:isMouseOver() and self:getMouseY() >= self.lineHeight then
         row = self.rows[self.offset + math.floor((self:getMouseY() - self.lineHeight) / self.lineHeight) + 1]
     end
-    if not row then self:hideTooltip(); return end
+    local header = self:isMouseOver() and self:getMouseY() < self.lineHeight
+    if not row and not header then self:hideTooltip(); return end
     if not self.tooltip then
         self.tooltip = ISToolTip:new()
         self.tooltip:initialise()
@@ -28,8 +29,8 @@ function List:update()
         self.tooltip:setOwner(self)
         self.tooltip.maxLineWidth = 10000
     end
-    self.tooltip:setName(row.title)
-    self.tooltip.description = row.details
+    self.tooltip:setName(header and getText("UI_OMHTT_InstalledModules") or row.title)
+    self.tooltip.description = header and getText("UI_OMHTT_ModuleStatsHelp") or row.details
     self.tooltip:setVisible(true)
 end
 

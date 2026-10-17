@@ -98,30 +98,32 @@ check(panel.ammoSlot.width == panel.voidSlot.width and panel.magazineSlot.y > pa
 local originalScreenHeight = getPlayerScreenHeight
 getPlayerScreenHeight = function() return 600 end
 require("OMHTT/TurretManageExtras").refresh(panel, {active = {Lure = 1}}, {headKind = "Lobber", minimumRange = 6, range = 18})
-check(panel.height + panel.y <= 600 and panel.body.scrollHeight == panel.body.contentHeight, "Constrained viewport scrolls the content, not the window controls")
+check(panel.height + panel.y <= 600 and panel.body.scrollHeight == panel.body.contentHeight, "Constrained viewport has no outer scrolling")
 local Layout = require("OMHTT/TurretManageLayout")
 local titleY, footerY = panel.nameEntry.y, panel.fireButton.y
 check(panel.nameEntry.y >= panel.titleHeight and panel.body.y >= panel.nameEntry.y + panel.nameEntry.height + 4
     and not panel.equipmentTab and not panel.modulesTab, "Single-page content preserves the dedicated drag and name bands")
 check(panel.headSlot.parent==panel.body and panel.moduleSlots[1].parent==panel.body
     and panel.moduleSlots[1].y>panel.magazineSlot.y+panel.magazineSlot.height, "Equipment, ammunition and modules share one sequential page")
+check(panel.moduleGridBottom <= panel.body.height, "All sixteen module slots fit the non-scrolling 600p body: " .. panel.moduleGridBottom .. "/" .. panel.body.height)
 local closedHeight=panel.body.contentHeight
 panel.moduleLines="Line one\nLine two\nLine three\nLine four"
 panel.detailsButton.callback(panel)
-check(#panel.detailLines==4 and panel.body.contentHeight==closedHeight+panel.lineHeight*7+16,
-    "Expanded Details measures all wrapped lines plus the three stats rows")
+check(#panel.detailLines==4 and panel.detailsPage and panel.benefitList.visible,
+    "Small viewport shows all Details in an in-menu page, including Module Stats")
 local beforeChildY=panel.headSlot:getAbsoluteY()
 panel.body:onMouseWheel(20)
 check(panel.headSlot:getAbsoluteY()==beforeChildY+panel.body:getYScroll(), "Actual native setScrollChildren function moves slots with section headers")
 check(panel.reloadButton.y==panel.loadOrderButton.y and panel.reloadButton.x+panel.reloadButton.width<panel.loadOrderButton.x,
     "Reload and Load Order are adjacent outside magazine contents")
-check(panel.body:getYScroll() < 0 and panel.nameEntry.y == titleY and panel.fireButton.y == footerY,
-    "Expanded details scroll without moving the name or firing controls")
+check(panel.body:getYScroll() == 0 and panel.nameEntry.y == titleY and panel.height + panel.y <= 600,
+    "Whole-menu wheel never scrolls and expanded Details stays on screen")
 panel.body:prerender()
 panel.body:render()
 check(panel.equipmentBottom==panel.ammunitionBottom and panel.headSlot.x+panel.headSlot.width<panel.ammoSlot.x and panel.ammunitionBottom<panel.modulesY
-    and panel.moduleGridBottom<panel.benefitList.y and panel.detailsButton.y>=panel.modulesY and panel.detailsButton.y+panel.detailsButton.height<=panel.modulesY+panel.headerHeight,
+    and panel.benefitList.y>=panel.headerHeight and panel.detailsButton.y==4,
     "Section backgrounds, slots, benefits and Details have distinct bounds")
+panel.detailsButton.callback(panel)
 panel.body:setYScroll(0)
 local slot=panel.headSlot
 local inside={x=slot:getAbsoluteX()+48,y=slot:getAbsoluteY()+panel.lineHeight+10,level=0}
@@ -150,9 +152,20 @@ for i = 1, #panel.slots do
 end
 panel.body:prerender()
 panel.body:render()
-panel.detailsButton.callback(panel)
 getPlayerScreenHeight = originalScreenHeight
 panel:refresh()
+getPlayerScreenHeight = function() return 1200 end
+Layout.refresh(panel)
+local collapsedHeight = panel.height
+panel.detailsButton.callback(panel)
+check(panel.height > collapsedHeight and not panel.detailsPage and panel.benefitList.visible,
+    "Details grows the window vertically on a sufficient viewport")
+check(panel.benefitList.y + panel.benefitList.height <= panel.body.height,
+    "Expanded Module Stats stays within the body")
+panel.detailsButton.callback(panel)
+check(not panel.benefitList.visible and panel.height == collapsedHeight, "Collapsing Details hides Module Stats and shrinks window")
+getPlayerScreenHeight = originalScreenHeight
+Layout.refresh(panel)
 local moduleRows = {}
 for i = 1, 16 do
     local slot = panel.moduleSlots[i]
@@ -433,17 +446,39 @@ local currentHead = T.contents(storage).head
 if currentHead and currentHead:getFullType() ~= "Base.OMHTTTurretLobber" then storage:Remove(currentHead) end
 OrderPanel.open(panel)
 local orderPanel = panel.orderPanel
-check(orderPanel and orderPanel.height + orderPanel.y <= 720 and #orderPanel.rows == 2, "Load Order opens a viewport-bounded native list")
-orderPanel.list.selected = 2
+check(orderPanel and orderPanel.parent == panel and not panel.body.visible and not panel.nameEntry.visible,
+    "Load Order occupies Manage rather than adding a floating window")
+local bombGroup
+for i = 1, #orderPanel.groups do
+    if orderPanel.groups[i].platform == "bomb" then bombGroup = orderPanel.groups[i] end
+end
+check(bombGroup and #bombGroup.rows == 2, "Explosives share one platform")
+for i = 1, #orderPanel.rows do
+    if orderPanel.rows[i].type == "Base.PipeBomb" then orderPanel.list.selected = i end
+end
 orderPanel:move({step = -1})
-check(orderPanel.rows[1].type == "Base.PipeBomb", "Load Order moves selected ammo to next-load priority")
+check(bombGroup.rows[1].type == "Base.PipeBomb", "Load Order moves selected ammo within its own platform")
+orderPanel:move({step = -1})
+check(bombGroup.rows[1].type == "Base.PipeBomb", "Ammunition cannot cross its platform header")
 orderPanel:apply()
-check(queued and queued.command == "AmmoOrder" and queued.value.order == "Base.PipeBomb|Base.OMHTTAmmoMakeshiftBomb",
+check(queued and queued.command == "AmmoPlatformOrder" and queued.value.order == "Base.PipeBomb|Base.OMHTTAmmoMakeshiftBomb",
     "Shared editor queues exact ordered types through the authoritative action")
-check(queued:complete() and T.state(object).ammoOrders["Base.OMHTTTurretLobber"] == queued.value.order,
-    "Load Order Apply persists the accepted request")
+check(queued:complete() and T.state(object).ammoOrders["@bomb"] == queued.value.order,
+    "Load Order Apply persists the platform request")
+check(panel.body.visible and panel.nameEntry.visible and not panel.orderPanel, "Apply returns to the intact Manage page")
+local LoadOrder = require("OMHTT/TurretLoadOrder")
+check(not LoadOrder.validGroup({platform="bomb", previous=queued.value.order, order="Base.Potato"}, T.state(object)),
+    "Server rejects cross-platform priority injection")
+check(not LoadOrder.validGroup({platform="bomb", previous="", order=queued.value.order}, T.state(object)),
+    "Server rejects a stale platform edit")
+check(LoadOrder.saved(T.state(object), T.contents(storage).head) == queued.value.order,
+    "Live reload selection consumes the platform preference")
 OrderPanel.open(panel)
-check(panel.orderPanel.rows[1].type == "Base.PipeBomb", "Reopening Load Order retains saved priority")
+local savedBomb
+for i = 1, #panel.orderPanel.groups do
+    if panel.orderPanel.groups[i].platform == "bomb" then savedBomb = panel.orderPanel.groups[i] end
+end
+check(savedBomb.rows[1].type == "Base.PipeBomb", "Reopening Load Order retains saved priority")
 panel.orderPanel:close()
 reachable = false
 local action = ISInventoryTransferAction:new(player, battery, storage, carried)

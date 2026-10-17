@@ -122,7 +122,10 @@ function Slot:prerender()
     local color = self.rarity
     if color then self:drawRect(1, 1, self.width - 2, self.height - 2, .18, color.r, color.g, color.b) end
     local red, green = self.missing and 1 or 0.8, self.missing and 0.3 or 0.8
-    self:drawText(self.label, 8, 4, red, green, green, 1, UIFont.Small)
+    local narrowModule = self.kind == "module" and self.height < h * 2 + 8
+    if not narrowModule then
+        self:drawText(self.label, 8, 4, red, green, green, 1, UIFont.Small)
+    end
     if self.meter then
         local labelWidth = getTextManager():MeasureStringX(UIFont.Small, self.label)
         local start = 16 + labelWidth
@@ -155,7 +158,7 @@ function Slot:prerender()
     end
     if item then
         if self.kind == "module" then
-            ISInventoryItem.renderItemIcon(self, item, self.width / 2 - 8, self.compact and 6 or h + 2, 1, 16, 16)
+            ISInventoryItem.renderItemIcon(self, item, narrowModule and 4 or self.width / 2 - 8, narrowModule and 5 or (self.compact and 6 or h + 2), 1, 16, 16)
         else
             ISInventoryItem.renderItemIcon(self, item, 8, h + 8, 1, 32, 32)
         end
@@ -168,6 +171,9 @@ function Slot:prerender()
     end
     local textX, textY = self.kind == "void" and 8 or 44, h + 8
     if self.kind == "module" then textX, textY = 4, math.min(h + 20, self.height - h - 2) end
+    if narrowModule then
+        textX, textY = 24, 4
+    end
     local clipX, clipY, clipW, clipH = self:clampStencilRectToParent(textX, textY, self.width - textX - 4, h + 4)
     self:drawText(name, textX, textY, color and color.tr or 1, color and color.tg or 1, color and color.tb or 1, 1, UIFont.Small)
     self:clearStencilRect()

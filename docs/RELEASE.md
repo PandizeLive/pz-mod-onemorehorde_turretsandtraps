@@ -1,5 +1,9 @@
 # Release state and publication policy
 
+## 0.2.53.5 / C296 — Manage and Controller corrections
+
+Owner-requested [patch](PATCH_v0.2.53.5.md); [verification and test](TEST_v0.2.53.5.md). Full validator passes 20,989 assertions and native write/read passes. All three independent package checks pass. Immutable tagging and local installation are next. No Workshop upload or cumulative-changelog reset; rendered/connected acceptance remains pending.
+
 ## 0.2.53.4 / C294 — stockpile and controller audit corrections
 
 Owner-approved [corrective patch](PATCH_v0.2.53.4.md); [validation and test](TEST_v0.2.53.4.md). Full validator passes 20,982 assertions; native write/read and all independent package selections pass. Installed from immutable `test/v0.2.53.4` / `9519a3399bfd4bf499582aa9c0ef13420a17253f`; all 285 source and 361 tagged/packaged/installed/archive files match, and both 0.2.53.3 backups verify. [Release evidence](../diagnostics/v0.2.53.4/local-release.json). Rendered and connected multiplayer acceptance remain pending. No Workshop upload or cumulative-changelog reset.

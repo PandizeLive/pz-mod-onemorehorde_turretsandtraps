@@ -1,5 +1,9 @@
 # Decision register
 
+## C296: expanding Details, grouped Load Order and Controller reach correction (2026-10-17)
+
+Owner directly requests Module Stats inside + Details, vertical expansion instead of whole-menu scrolling, category tooltips/removal of the drop hint, and a full-size grouped Load Order page. Owner reports disabled Assign/Open Manage and clarifies Access/Connections require standing inside the Controller world tile. Implement these corrections with existing ownership/power authority; no new recipe/balance decision. [Contract, evidence and limits](PATCH_v0.2.53.5.md). Owner separately reports C295 launch slowdown solved; exact cause remains unconfirmed. Rendered/connected acceptance is not inferred.
+
 ## C295: investigate launch and whole-PC slowdown (2026-10-17)
 
 Owner asks why launching/playing now slows the whole PC; clarification is "Starts on the main menu, stops on exit or minimize." Read-only process/resource, log, display-setting and current-hook inspection is authorized. [Evidence, uncertainty and recommended comparison](LAUNCH_LAG_C295.md). No source, display, Java-agent, other-mod or driver change was requested or made. Current 0.2.53.4 loading is confirmed; no completed acceptance result is inferred.

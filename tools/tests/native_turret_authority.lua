@@ -37,7 +37,7 @@ return function(player)
     assert(repair:getDuration() == 500 and repair:complete(), "Native server repair failed")
     assert(object:getHealth() == object:getMaxHealth() and not repair:complete(), "Native repair replay was accepted")
     local pickup = Action:new(player, object, "Pickup", id)
-    T.state(object).ammoOrders = {[T.HEAD] = "Base.SweetPotato|Base.Potato"}
+    T.state(object).ammoOrders = {[T.HEAD] = "Base.SweetPotato|Base.Potato", ["@potato"] = "Base.Potato|Base.SweetPotato"}
     A.publish(object)
     assert(object:getModData().OMHTTTurret.ammoOrders[T.HEAD] == "Base.SweetPotato|Base.Potato", "Native publication dropped saved load order")
     assert(pickup:getDuration() == 250 and pickup:complete(), "Native server pickup failed")
@@ -59,6 +59,7 @@ return function(player)
     assert(T.state(rebuilt).shots == 0 and T.state(rebuilt).maxHealth == 100 and T.state(rebuilt).facing == 4, "Redeployment imported forged packed controls")
     assert(rebuilt:getContainer():contains(battery) and A.packed(packed) == nil, "Redeployment failed to consume trusted packed state")
     assert(T.state(rebuilt).ammoOrders[T.HEAD] == "Base.SweetPotato|Base.Potato", "Native pickup/redeploy dropped saved load order")
+    assert(T.state(rebuilt).ammoOrders["@potato"] == "Base.Potato|Base.SweetPotato", "Native pickup/redeploy dropped platform order")
     local Transfer = require("OMHTT/TurretTransferAction")
     local Magazine = require("OMHTT/TurretMagazineAction")
     local Control = require("OMHTT/TurretControlAction")
@@ -82,6 +83,16 @@ return function(player)
     assert(orderAction:complete() and not orderAction:complete(), "Native Load Order action did not commit once")
     assert(T.state(rebuilt).ammoOrders[gun:getFullType()] == ammoType, "Native Load Order did not persist per head")
     assert(not Control:new(player, rebuilt, currentId, "AmmoOrder", orderValue):isValid(), "Native stale Load Order request accepted")
+    local platformValue = {platform="bomb", previous="", order="Base.PipeBomb|Base.OMHTTAmmoMakeshiftBomb"}
+    local platformAction = Control:new(player,rebuilt,currentId,"AmmoPlatformOrder",platformValue)
+    local network = NetTimedAction.new()
+    network:set(player,platformAction)
+    assert(platformAction:complete() and not platformAction:complete(),"Native platform order must commit once")
+    assert(rebuilt:getModData().OMHTTTurret.ammoOrders["@bomb"]==platformValue.order,"Native platform order not published")
+    assert(not Control:new(player,rebuilt,currentId,"AmmoPlatformOrder",platformValue):isValid(),"Stale native platform request accepted")
+    local invalid={platform="bomb",previous=platformValue.order,order=ammoType}
+    assert(not Control:new(player,rebuilt,currentId,"AmmoPlatformOrder",invalid):isValid(),"Cross-platform native request accepted")
+    print("[OMHTT-Controls] native-platform-order other-head=valid stale=rejected cross-family=rejected publication=retained pickup=retained")
     local rounds, ids = {}, {}
     for i = 1, 20 do
         rounds[i] = player:getInventory():AddItem(ammoType)

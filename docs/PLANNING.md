@@ -1,5 +1,7 @@
 # Planning
 
+**C296 / requested Manage and Controller corrections:** [0.2.53.5 implementation](PATCH_v0.2.53.5.md) and [verification/short test](TEST_v0.2.53.5.md). Module Stats moves inside expanding Details; Load Order becomes a grouped in-menu page; Controller reach/power feedback is corrected. Implemented; 20,989 assertions, native write/read and all three independent package selections pass. Local installation is next. Owner reports the C295 launch slowdown solved. The general same-tile symptom is not reproduced by native adjacent fixtures; rendered and connected acceptance remain open. Corrections precede R4C2.
+
 **C295 / investigate before further changes:** [Main-menu/desktop slowdown](LAUNCH_LAG_C295.md). Owner confirms minimize/exit relief. Recommend a controlled 60-FPS then VSync comparison; no hardware bottleneck or specific mod/driver culprit is established. No new implementation approved or settings changed; installed 0.2.53.4 remains current.
 
 **C294 / C293 approved, implemented and installed:** [0.2.53.4 stockpile/controller corrections](PATCH_v0.2.53.4.md), with [verification](TEST_v0.2.53.4.md) and [verified release files/backups](../diagnostics/v0.2.53.4/local-release.json). No outstanding design decision; rendered/connected acceptance remains deferred. R4C2 follows the corrective checkpoint.

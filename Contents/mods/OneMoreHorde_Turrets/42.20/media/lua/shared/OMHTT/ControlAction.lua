@@ -19,7 +19,7 @@ function Action:isValid()
         local target = A.state(self.target)
         return target and target.id == self.targetId and A.write(self.character, target)
             and A.range(self.object, self.target) and type(self.value) == "boolean"
-            and (self.command ~= "Assign" or state.kind == "Controller")
+            and (self.command ~= "Assign" or (state.kind == "Controller" and state.powered == true))
     elseif self.command == "ClearInputs" then
         return state.kind == "Turret"
     elseif self.command == "Trigger" then

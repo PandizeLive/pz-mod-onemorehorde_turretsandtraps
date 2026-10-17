@@ -3,6 +3,37 @@ local Void = require("OMHTT/TurretVoid")
 local G = require("OMHTT/Firearms")
 local L = {}
 local orders = setmetatable({}, {__mode = "k"})
+local heads = {potato = "Base.OMHTTTurretPotato", spear = "Base.OMHTTTurretBallista",
+    bomb = "Base.OMHTTTurretLobber", scrap = "Base.OMHTTTurretScrapshot"}
+
+---@param fullType string Ammunition identity
+---@return string? platform Exact compatibility family
+function L.platform(fullType)
+    local family = Ammo.family(fullType)
+    if family == "round" then return "round:" .. fullType end
+    if heads[family] then return family end
+end
+
+---@param head InventoryItem Installed head
+---@return string? platform
+function L.headPlatform(head)
+    if not head then return nil end
+    if G.profile(head) then return "round:" .. G.ammoType(head) end
+    for family, fullType in pairs(heads) do
+        if head:getFullType() == fullType then return family end
+    end
+end
+
+---@param state table Device settings
+---@param platform string Compatibility family
+---@return string order Platform preference with legacy fallback
+function L.groupSaved(state, platform)
+    local saved = state.ammoOrders
+    if saved and saved["@" .. platform] then return saved["@" .. platform] end
+    if saved and heads[platform] and saved[heads[platform]] then return saved[heads[platform]] end
+    if platform == "bomb" then return state.ammoOrder or state.ammoPreferred or "" end
+    return ""
+end
 
 ---@param text string Serialized preference
 ---@return table types Exact tokens
@@ -35,9 +66,101 @@ end
 ---@nodiscard
 function L.saved(state, head)
     if not head or not state then return "" end
+    local platform = L.headPlatform(head)
+    if platform then
+        local saved = L.groupSaved(state, platform)
+        if saved ~= "" then return saved end
+    end
     if state.ammoOrders and state.ammoOrders[head:getFullType()] then return state.ammoOrders[head:getFullType()] end
     if head:getFullType() == "Base.OMHTTTurretLobber" then return state.ammoOrder or state.ammoPreferred or "" end
     return ""
+end
+
+---@param contents table All physical ammunition
+---@param state table Device settings
+---@param totals table? Complete paged Void totals
+---@return table groups Platform groups with ordered types
+function L.groups(contents, state, totals)
+    local entries, platforms = {}, {}
+    ---@param fullType string Ammo identity
+    ---@return table? row
+    local function add(fullType)
+        local platform = L.platform(fullType)
+        if not platform then return nil end
+        local group = entries[platform]
+        if not group then
+            group = {platform = platform, previous = L.groupSaved(state, platform), entries = {}, rows = {}}
+            entries[platform], platforms[#platforms + 1] = group, platform
+        end
+        if not group.entries[fullType] then
+            group.entries[fullType] = {type = fullType, platform = platform, physical = 0, virtual = 0}
+        end
+        return group.entries[fullType]
+    end
+    for fullType, count in pairs(contents.roundCounts) do
+        local row = add(fullType)
+        if row then
+            row.physical = count
+        end
+    end
+    local data = Void.data(contents.void)
+    if not totals and data then
+        totals = data.summary and data.counts or Void.totals(data)
+    end
+    if totals then
+        for fullType, count in pairs(totals) do
+            local row = add(fullType)
+            if row then
+                row.virtual = count
+            end
+        end
+    end
+    for _, value in pairs(state.ammoOrders or {}) do
+        local types = L.types(value)
+        for i = 1, #types do
+            add(types[i])
+        end
+    end
+    table.sort(platforms)
+    local result = {}
+    for i = 1, #platforms do
+        local group = entries[platforms[i]]
+        local preference, seen, keys = L.types(group.previous), {}, {}
+        for j = 1, #preference do
+            local row = add(preference[j])
+            if row and row.platform == group.platform and not seen[row.type] then
+                group.rows[#group.rows + 1], seen[row.type] = row, true
+            end
+        end
+        for fullType in pairs(group.entries) do
+            if not seen[fullType] then
+                keys[#keys + 1] = fullType
+            end
+        end
+        table.sort(keys)
+        for j = 1, #keys do
+            group.rows[#group.rows + 1] = group.entries[keys[j]]
+        end
+        result[#result + 1] = group
+    end
+    return result
+end
+
+---@param value table Platform mutation
+---@param state table Authoritative settings
+---@return boolean valid
+function L.validGroup(value, state)
+    if type(value) ~= "table" or type(value.platform) ~= "string" or #value.platform > 240
+        or type(value.order) ~= "string" or #value.order > 16384
+        or value.previous ~= L.groupSaved(state, value.platform) then return false end
+    local types, seen = L.types(value.order), {}
+    if #types == 0 or #types > 256 or string.sub(value.order, -1) == "|" then return false end
+    for i = 1, #types do
+        local fullType = types[i]
+        if seen[fullType] or #fullType > 256 or L.platform(fullType) ~= value.platform then return false end
+        seen[fullType] = true
+    end
+    return true
 end
 
 ---@param contents table Inventory snapshot

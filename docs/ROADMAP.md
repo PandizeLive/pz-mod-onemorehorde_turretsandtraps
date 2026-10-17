@@ -1,5 +1,7 @@
 # Phases and checkpoints
 
+**C296 / requested Manage and Controller corrections:** [0.2.53.5 implementation](PATCH_v0.2.53.5.md) and [verification/short test](TEST_v0.2.53.5.md). Module Stats moves inside expanding Details; Load Order becomes a grouped in-menu page; Controller reach/power feedback is corrected. Implemented; 20,989 assertions, native write/read and all three independent package selections pass. Local installation is next. Owner reports the C295 launch slowdown solved. The general same-tile symptom is not reproduced by native adjacent fixtures; rendered and connected acceptance remain open. Corrections precede R4C2.
+
 **C294 / corrective checkpoint installed:** [0.2.53.4](PATCH_v0.2.53.4.md) addresses all five C292 findings, the related stale-stockpile lease path and capitalization. Automated/native/release checks pass; rendered and connected owner acceptance remain pending in the [test record](TEST_v0.2.53.4.md). R4C2 remains the next content checkpoint.
 
 **C293 / before the held test and R4C2:** implement the [five integration corrections and consistent UI labels](CORRECTIONS_C293.md). This review does not expand stockpile admission or change gameplay. Installed 0.2.53.3 remains unchanged and pending rendered/connected acceptance.

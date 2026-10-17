@@ -85,7 +85,7 @@ function ISPanel:getYScroll() return self.yScroll or 0 end
 function ISPanel:setYScroll(value) self.yScroll = value end
 function ISPanel:drawText(text) check(type(text) == "string", "Manage draws resolved status text") end
 ISButton = {new = function(self, x, y, w, h, title, target, callback)
-    return {setX = function(self, x) self.x = x end, setHeight = function(self, h) self.height = h end, initialise = function() end, setWidth = function(self, w) self.width = w end, setY = function(self, y) self.y = y end, setVisible = function(self, visible) self.visible = visible end, setEnable = function(self, enabled) self.enabled = enabled end,
+    return {setX = function(self, x) self.x = x end, setHeight = function(self, h) self.height = h end, initialise = function() end, setWidth = function(self, w) self.width = w end, setY = function(self, y) self.y = y end, setVisible = function(self, visible) self.visible = visible end, setEnable = function(self, enabled) self.enabled = enabled; self.enable = enabled end,
         x=x, y=y, width=w, height=h, title=title, target = target, callback = callback, setTitle = function(self, title) self.title = title end}
 end}
 ISMouseDrag = {}

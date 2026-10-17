@@ -41,6 +41,13 @@ function Panel:close()
     end
     if self.voidList then self.voidList:onMouseDown() end
     self.benefitList:hideTooltip()
+    for i = 1, #self.headerHelp do
+        local control = self.headerHelp[i]
+        if control.tooltipUI then
+            control.tooltipUI:removeFromUIManager()
+            control.tooltipUI = nil
+        end
+    end
     for i = 1, #self.slots do self.slots[i]:hideTooltip(); self.slots[i]:clearDrag() end
     if Range then
         Range.focus(self.player:getPlayerNum(), "manage", self.object, false)
@@ -234,11 +241,6 @@ function Panel:refresh()
     self.priorityButton:setTitle(getText("UI_OMHTT_Priority", getText("UI_OMHTT_Priority" .. profile.priority)))
     self.priorityButton:setEnable(contents.active.Filter ~= nil)
     local active = {}
-local Drag = require("OMHTT/ControlWindowDrag")
-Panel.onMouseDown = Drag.start
-Panel.onMouseUp = Drag.stop
-Panel.onMouseUpOutside = Drag.stop
-Panel.update = Drag.update
     for name in pairs(M.CORE) do
         if contents.active[name] and name ~= "FiringImprovised" and name ~= "MotionDetectionImprovised" then
             active[#active + 1] = contents.active[name]
@@ -332,7 +334,7 @@ Panel.update = Drag.update
     self.voidSlot.subtext = getText("UI_OMHTT_AmmoTypes", voidTypes)
     local nextShot = cycle and cycle.loaded and cycle.loaded > 0 and (cycle.payload or contents.payloadType)
     self.magazineSlot.summary = getText("UI_OMHTT_NextShot", label(nextShot))
-    self.loadOrderButton:setEnable(contents.head ~= nil and not stats.rotary)
+    self.loadOrderButton:setEnable(true)
     self.reloadButton:setEnable(power ~= nil and T.isOn(state) and require("OMHTT/TurretReload").allowed(contents, stats))
     self.voidSlot.detailText = require("OMHTT/TurretVoid").description(contents.void, contents.head, true)
     require("OMHTT/TurretManageExtras").refresh(self, contents, stats)
@@ -397,6 +399,7 @@ function Panel:prerender()
         require("OMHTT/ControlManage").refresh(self)
     end
     require("OMHTT/TurretManageLayout").refresh(self)
+    require("OMHTT/TurretManageLayout").page(self)
     require("OMHTT/TurretManageLayout").draw(self)
 end
 

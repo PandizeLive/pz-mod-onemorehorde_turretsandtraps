@@ -33,3 +33,7 @@ Recommended short comparison, using native Options and no world changes:
 4. Report which state helps. If neither does, next isolate the Java-agent/overlay route with a separate launch before modifying gameplay; no save needs loading for this symptom.
 
 This test is proposed, not performed. Owner's usual 144 cap can be restored after comparison. Reducing UI render rate is a subsequent isolated option, not bundled into the first comparison.
+
+## Owner follow-up (C296, 2026-10-17)
+
+Owner reports **Solved**. No specific setting or cause was identified in that reply. Close this diagnostic as owner-reported resolved without attributing it to the mod or a particular display setting.

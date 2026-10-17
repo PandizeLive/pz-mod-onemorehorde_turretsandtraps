@@ -26,3 +26,7 @@ Installed from immutable `test/v0.2.53.4` / `9519a3399bfd4bf499582aa9c0ef13420a1
 4. Use Controller/remote Manage while a long inventory transfer runs. Check device selection, usable controls and no growing renewal queue. Close/reopen, then report any issues; Codex checks `console.txt` afterward.
 
 No need to repeat the settled combat test. This remains a deferred owner test until actually performed.
+
+## C296 owner findings (2026-10-17)
+
+Launch slowdown reported solved. Owner requests Module Stats under expanding Details without whole-menu scrolling, header tooltips, and an in-menu Load Order grouped by platform. Access/Connections reportedly require standing inside the Controller world tile; Assign/Open Manage remain disabled in the screenshot, whose Controller is offline with zero backup. This is not a blanket test pass. Native adjacent access and the power/assignment distinction are tracked in [0.2.53.5](PATCH_v0.2.53.5.md); rendered reproduction remains pending.

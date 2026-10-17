@@ -21,7 +21,7 @@ function A.near(player, object)
     if not origin or not square or origin:getZ() ~= square:getZ() then return false end
     local dx, dy = player:getX() - square:getX() - .5, player:getY() - square:getY() - .5
     return math.abs(origin:getX() - square:getX()) <= 1 and math.abs(origin:getY() - square:getY()) <= 1
-        and dx * dx + dy * dy <= 4 and (origin == square or origin:canReachTo(square))
+        and math.abs(dx) <= 1.6 and math.abs(dy) <= 1.6 and (origin == square or origin:canReachTo(square))
 end
 
 ---@param first IsoObject Device

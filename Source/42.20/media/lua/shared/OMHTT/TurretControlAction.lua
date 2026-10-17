@@ -19,6 +19,8 @@ function Action:isValid()
             and self.value >= stats.minimumRange and self.value <= stats.range
     elseif self.command == "AmmoOrder" then
         return require("OMHTT/TurretLoadOrder").valid(self.value, contents, T.state(self.object))
+    elseif self.command == "AmmoPlatformOrder" then
+        return require("OMHTT/TurretLoadOrder").validGroup(self.value, T.state(self.object))
     elseif self.command == "Reload" then
         return contents.head and self.value == contents.head:getID() and T.isOn(T.state(self.object))
             and require("OMHTT/TurretReload").allowed(contents, T.cycleConfig(contents))
@@ -65,6 +67,9 @@ function Action:complete()
     elseif self.command == "AmmoOrder" then
         state.ammoOrders = state.ammoOrders or {}
         state.ammoOrders[contents.head:getFullType()] = self.value.order
+    elseif self.command == "AmmoPlatformOrder" then
+        state.ammoOrders = state.ammoOrders or {}
+        state.ammoOrders["@" .. self.value.platform] = self.value.order
     elseif self.command == "Reload" then
         local stats = T.cycleConfig(contents)
         local world = require("OMHTT/TurretWorld")

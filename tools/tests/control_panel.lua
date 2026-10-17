@@ -48,6 +48,25 @@ for i = 1, #panel.detailBody.children do
         and child.y >= 0 and (child.visible == false or child.y + child.height <= panel.detailBody.contentHeight),
         "Controller details fit their scrollable content")
 end
+local turret = setmetatable({data={OMHTTControl={id="ui-turret",kind="Turret",owner="ui-owner",access="Private",links={}},
+    OMHTTTurret={schema=1,id="ui-turret",powered=false}}}, {__index=object})
+panel.devices:addItem("Turret",turret)
+panel.devices.selected=2
+object.data.OMHTTControl.powered=false
+panel:prerender()
+check(panel.manage.enabled and not panel.assign.enabled and panel.assign.tooltip==getText("UI_OMHTT_ControllerPowerNeeded"),
+    "Offline Controller permits directly reachable Manage, explains remote Assign power requirement")
+check(panel.policy.enabled,"Directly reachable device Access remains editable without Controller power")
+A.near=function(p,o) return o==object end
+panel:prerender()
+check(not panel.manage.enabled and panel.manage.tooltip==getText("UI_OMHTT_ControllerPowerNeeded"),"Remote Manage explains offline power")
+object.data.OMHTTControl.powered=true
+panel:prerender()
+check(panel.assign.enabled and not panel.manage.enabled and panel.manage.tooltip==getText("UI_OMHTT_ControllerAssignNeeded"),
+    "Powered Controller exposes Assign before remote Manage")
+A.near=function() return true end
+panel.devices.selected=1
+panel:prerender()
 local oldInventory,oldLoot=getPlayerInventory,getPlayerLoot
 local function nativePage()
     return {inventoryPane={inventory=inventory},backpacks={{inventory=inventory,capacity=100}},refreshBackpacks=ISInventoryPage.refreshBackpacks,
