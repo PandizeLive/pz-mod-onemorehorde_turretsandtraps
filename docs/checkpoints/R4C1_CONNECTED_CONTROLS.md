@@ -1,5 +1,9 @@
 # R4C1 — buttons, pressure plates and links
 
+## C292 — deferred-test audit (2026-10-17)
+
+[Five reproduced integration findings](../AUDIT_C292_v0.2.53.3.md) remain before corrective acceptance: native stockpile destinations/callbacks, unassigned auto names, Controller list work budget and remote-session renewal queues. Owner requests audit while unavailable to test.0.2.53.3 remains installed; R4C2 does not supersede these findings.
+
 ## C291 — management and stockpile correction (2026-10-17)
 
 Owner authorizes the compact side-by-side management layout, working native child scrolling, accessible Details/Installed Modules, Enter/blur automatic naming, weight beside the name, removal of Controller naming, defense-supply stockpile admission and existing white-cube Controller presentation. [Patch/audit](../PATCH_v0.2.53.3.md) and [verification](../TEST_v0.2.53.3.md) supersede C290's failed rendered behavior. Preserve native inventory,500 stockpile limit, full contents weight, remote management and ownership/signal rules. R4C2 remains next after corrective acceptance.

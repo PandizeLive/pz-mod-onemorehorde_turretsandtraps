@@ -1,0 +1,20 @@
+Native UI: children follow scrolling only after the parent enables it
+Failed to load file Guid table.
+Native animation parser: two strike markers matched, SetVariable bindings resolved
+Failed to load file Guid table.
+Failed to load file Guid table.
+Native bed animation parser: walking/running brush nodes valid, no tree injury events
+Failed to load file Guid table.
+Failed to load file Guid table.
+Native trip parser: player/zombie forward clips and complete landing/recovery markers valid
+Native JSON translation loading and substitution: 967 keys passed
+Kahlua compilation: 205 runtime/translation files passed
+Optional audit: C292: five adverse-path reproductions confirmed; production unchanged
+Native packet serialization: 24 packets; largest=392 bytes
+Proc test-double stress: bursts=160 zombies=486 callbacks=440 maxCallbackMs=0.8589999675750732 drainMs=238.42909997701645
+Void foundation audit: conversion=600 groups=2 mockBatchMs=3.056100010871887 nativeTablePersistence=pass clientMutationGuards=pass integration=pending
+Multiplayer audit: authorityAndOwnerProtocol=pass contactAndPresentation=pass liveDedicated=zero-client-probe liveListen=pending liveTwoClient=pending
+MP transfer mock stress: items=600 batches=30 maxBatchMs=4.812299966812134 elapsedMs=102.54769998788834
+Assertions passed: 20834.0
+C247 content: finiteVirtualMagazine=pass exactModuleDebt=pass mixedPayload=pass boundedGrenadeLineage=pass lureNoCatchup=pass
+World/player/network/UI objects were test doubles; in-game acceptance remains pending.

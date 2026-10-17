@@ -1,5 +1,7 @@
 # 0.2.53.3 verification and short test
 
+**C292 audit:** five additional integration defects reproduced; see [findings](AUDIT_C292_v0.2.53.3.md). Owner test remains deferred. Installed0.2.53.3 is unchanged; recommend correcting these before running the retained short test.
+
 ## Automated evidence
 
 Full validator:20,909 assertions;205 runtime/translation compilations;283 Source and357 package files (134 Traps,223 Turrets);297 literal translation references. Native UIElement coordinates and installed Lua scrolling initialization are exercised. UI checks cover aligned sections, equal Ammo/Void, adjacent actions, fixed name/footer, accessible Details, nested stencil bounds and600px viewport. Name tests cover Enter-plus-blur deduplication, blur saving, blank gray placeholder and read-only rejection. Stockpile tests cover unrelated-item rejection,500-weight batch admission and unchanged ordinary inventory behavior. Multiplayer authority/serialization and existing regression checks remain included.

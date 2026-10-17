@@ -1,5 +1,9 @@
 # Decision register
 
+## C292: deferred-test audit (2026-10-17)
+
+Owner: “Unable to test this moment. Audit and check for any issues.” Audit and reproduce current integration/performance defects; preserve the installed patch and pending acceptance. [Five confirmed findings](AUDIT_C292_v0.2.53.3.md). No new gameplay, balance, recipe, art, or feature approval inferred. C108 authorizes mirroring this audit/test record.
+
 ## C291: native scrolling and compact management correction (2026-10-17)
 
 Owner explicitly requests implementing and auditing the reported defects. Equipment and Ammunition share a row; Reload/Load Order are adjacent; title is "Turret Management Menu". Keep the shaded headers. Details/module stats must remain accessible. Rename commits on Enter or blur; clearing shows the automatic name in gray; weight shares that row. Controllers have no rename UI. Stockpile accepts defense supplies only, retaining access,500 capacity and removal of pre-existing unrelated items. Controller uses the existing authorized white-cube technical art. Preserve gameplay and server authority; no new approval or owner test blocks implementation. [Implementation/audit](PATCH_v0.2.53.3.md). Owner's report rejects the relevant0.2.53.2 rendered behavior; its automated results are not acceptance.
