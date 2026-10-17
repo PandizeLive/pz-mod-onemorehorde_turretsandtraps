@@ -149,9 +149,12 @@ function Slot:prerender()
     end
     local item = self.items[1]
     local name = self.emptyText or getText("UI_OMHTT_ManageDrop")
+    if self.kind == "module" and not item then
+        name = self.disabled and getText("UI_OMHTT_ManageLocked") or "+"
+    end
     if item then
         if self.kind == "module" then
-            ISInventoryItem.renderItemIcon(self, item, self.width / 2 - 8, h + 2, 1, 16, 16)
+            ISInventoryItem.renderItemIcon(self, item, self.width / 2 - 8, self.compact and 6 or h + 2, 1, 16, 16)
         else
             ISInventoryItem.renderItemIcon(self, item, 8, h + 8, 1, 32, 32)
         end
@@ -176,8 +179,8 @@ end
 ---@param delta number Wheel direction
 ---@return boolean handled
 function Slot:onMouseWheel(delta)
-    if self.kind == "module" then return self.owner:scrollModules(delta) end
-    return false
+    if self.kind == "module" and self.owner.rows > 3 then return self.owner:scrollModules(delta) end
+    return self.owner:onMouseWheel(delta)
 end
 
 ---@return nil
@@ -199,6 +202,7 @@ end
 function Slot:new(owner, kind, label, x, y, width, height)
     local slot = ISPanel.new(self, x, y, width, height)
     slot.owner, slot.kind, slot.label, slot.items = owner, kind, label, {}
+    slot.borderColor = {r = .22, g = .22, b = .22, a = .5}
     slot.backgroundColor = {r = 0.08, g = 0.08, b = 0.08, a = 1}
     return slot
 end

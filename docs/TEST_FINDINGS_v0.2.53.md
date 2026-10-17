@@ -64,3 +64,7 @@ Owner: "Make sure it's clean and not overwhelming." This refines the selected1B 
 - Verify actual native UI behavior and compare the result with the selected preview, including normal/small supported screen sizes, font sizes, tab switching, dragging and repeated open/close. A browser preview or rectangle-only test does not establish native visual acceptance.
 
 This requirement is recorded for the corrective patch. No additional owner decision is needed for this presentation refinement; implementation and rendered acceptance remain pending.
+
+## C289 — approved correction implemented, 2026-10-17
+
+Owner explicitly approves the selected cleanup. [0.2.53.1 implementation](PATCH_v0.2.53.1.md) and [focused test/evidence](TEST_v0.2.53.1.md) now track the correction. The 0.2.53 failures above remain historical failures, not retroactive passes. Rendered black-screen recovery and menu acceptance await the owner retest.

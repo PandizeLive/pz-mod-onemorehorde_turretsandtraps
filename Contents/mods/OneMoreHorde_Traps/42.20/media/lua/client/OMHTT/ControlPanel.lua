@@ -7,6 +7,7 @@ local A = require("OMHTT/ControlAccess")
 local U = require("OMHTT/ControlClient")
 local Panel = ISPanel:derive("OMHTTControllerPanel")
 local Storage = ISPanel:derive("OMHTTControllerStorage")
+local active = {}
 
 ---@param panel ISPanel Parent
 ---@param x number X
@@ -72,7 +73,8 @@ function Panel:select()
     local object = row and row.item
     if object == self.selected then return end
     self.selected = object
-    self.name:setText(object and U.name(object) or "")
+    self.renewDue = 0
+    self.nameEntry:setText(object and U.name(object) or "")
     if object and object ~= self.object then
         U.remote(self.player, self.object, object)
     end
@@ -83,16 +85,20 @@ function Panel:close()
     require("OMHTT/ControlOverlay").panels[self] = nil
     if self.marker then
         self.marker:remove()
+        self.marker = nil
     end
     if self.storage then
-        self.storage:removeFromUIManager()
+        self.storage:close()
+    end
+    if active[self.player:getPlayerNum()] == self then
+        active[self.player:getPlayerNum()] = nil
     end
     self:removeFromUIManager()
 end
 
 ---@return nil
 function Panel:prerender()
-    if not A.near(self.player, self.object) then
+    if not A.state(self.object) or not A.near(self.player, self.object) then
         self:close(); return
     end
     ISPanel.prerender(self)
@@ -101,35 +107,19 @@ function Panel:prerender()
         self:scan()
     end
     self:select()
+    if self.linkSource and (self.linkSource:getObjectIndex() < 0 or not A.state(self.linkSource)) then
+        self.linkSource = nil
+    end
     local host = A.state(self.object)
     local state = A.state(self.selected)
-    self:drawText(U.name(self.object), 14, 10, 1, 1, 1, 1, UIFont.Medium)
-    self:drawText(host.kind == "Controller" and (host.powered and "Powered • 20 tiles • Backup " .. tostring(host.backup or 0) .. "%" or "Offline • battery or grid power required")
-        or "Local device controls", 14, 40, .75, .8, .8, 1, UIFont.Small)
-    self:drawRect(260, 76, self.width - 274, self.height - 90, .9, .035, .035, .035)
-    self:drawRectBorder(260, 76, self.width - 274, self.height - 90, 1, .28, .28, .28)
-    if state then
-        self:drawText(state.kind .. " • " .. state.access .. " • Owner: " .. state.owner, 274, 134, .8, .8, .8, 1, UIFont.Small)
-        local status = state.active and "Input: ON" or "Input: OFF"
-        local connections = "Output links: " .. #state.links .. " / 32"
-        if state.kind == "Turret" then
-            local turret = require("OMHTT/Turret").state(self.selected)
-            status = turret and turret.powered and "Power: ON" or "Power: OFF"
-            connections = "Receiver • Firing Module required"
-        elseif state.kind == "Controller" then
-            status = state.powered and "Power: ON" or "Power: OFF"
-            connections = "Assignment limit: 32 inputs / 32 turrets"
-        elseif state.kind == "Button" then
-            status = "Press for one firing cycle"
-        end
-        self:drawText(status, 274, 160, .8, .8, .8, 1, UIFont.Small)
-        self:drawText(connections, 274, 184, .8, .8, .8, 1, UIFont.Small)
-        self:drawText(state.controller == host.id and "Assigned to this controller" or "Not assigned to this controller", 274, 208, .8, .8, .8, 1, UIFont.Small)
-        if now >= (self.renewDue or 0) and self.selected ~= self.object then
-            self.renewDue = now + 5000
+    if now >= (self.renewDue or 0) then
+        self.renewDue = now + 5000
+        if state and self.selected ~= self.object then
             U.remote(self.player, self.object, self.selected)
         end
+        require("OMHTT/ControlPanelLayout").snapshot(self)
     end
+    require("OMHTT/ControlPanelLayout").draw(self, host, state)
     local writable = state and A.authorized(self.player, self.selected)
     local linkable = state and A.write(self.player, state) and self.linkSource
         and A.authorized(self.player, self.linkSource) and A.range(self.linkSource, self.selected)
@@ -144,8 +134,37 @@ function Panel:prerender()
     self.trigger:setEnable(writable == true and state.kind == "Plate")
     self.clearInputs:setEnable(writable == true and state.kind == "Turret")
     self.trigger:setTitle(state and state.kind == "Plate" and "Trigger: " .. (state.trigger or "Both") or "Trigger: —")
-    self:drawText(self.linkSource and "Selected input: " .. U.name(self.linkSource) or "Choose a plate/button, then select an output to link.",
-        274, 338, .7, .75, .8, 1, UIFont.Small)
+    self.source:setVisible(state ~= nil and (state.kind == "Plate" or state.kind == "Button"))
+    self.trigger:setVisible(state ~= nil and state.kind == "Plate")
+    self.clearInputs:setVisible(state ~= nil and state.kind == "Turret")
+    self.manage:setVisible(state ~= nil and state.kind == "Turret")
+    self.assign:setVisible(state ~= nil and self.selected ~= self.object and host.kind == "Controller")
+    self.link:setVisible(state ~= nil and state.kind == "Turret" and self.linkSource ~= nil)
+    self.unlink:setVisible(state ~= nil and state.kind == "Turret" and self.linkSource ~= nil)
+    self.policy:setTitle(getText("UI_OMHTT_Access", state and state.access or "—"))
+    self.assign:setTitle(getText(state and state.controller == host.id and "UI_OMHTT_Unassign" or "UI_OMHTT_Assign"))
+
+end
+
+---@return nil
+function Storage:close()
+    if ISMouseDrag.draggingFocus == self.left or ISMouseDrag.draggingFocus == self.right then
+        ISMouseDrag.dragging, ISMouseDrag.draggingFocus = nil, nil
+    end
+    if self.owner and self.owner.storage == self then
+        self.owner.storage = nil
+    end
+    self:removeFromUIManager()
+end
+
+---@param x number Local x
+---@param y number Local y
+---@return boolean handled
+function Panel:onMouseDown(x, y)
+    if y < self.titleHeight then
+        ISPanel.onMouseDown(self, x, y)
+    end
+    return true
 end
 
 ---@return nil
@@ -166,8 +185,8 @@ end
 
 ---@return nil
 function Storage:prerender()
-    if not A.near(self.player, self.object) then
-        self:removeFromUIManager(); return
+    if not A.state(self.object) or not A.near(self.player, self.object) then
+        self:close(); return
     end
     ISPanel.prerender(self)
     self:drawText("Your inventory", 12, 12, 1, 1, 1, 1, UIFont.Medium)
@@ -203,15 +222,21 @@ function Storage:onMouseUp(x, y, incoming)
     return true
 end
 
+---@param object IsoObject? Stockpile controller
 ---@return nil
-function Panel:stockpile()
+function Panel:stockpile(object)
+    object = object or self.object
+    if not A.state(object) or A.state(object).kind ~= "Controller" or not A.near(self.player, object) then return end
     if self.storage then
-        self.storage:removeFromUIManager()
+        self.storage:close()
     end
-    local panel = Storage:new(self.x + 20, self.y + 20, 680, 480)
-    panel.player, panel.object = self.player, self.object
+    local pn = self.player:getPlayerNum()
+    local x = math.max(getPlayerScreenLeft(pn) + 12, math.min(self.x + 20, getPlayerScreenLeft(pn) + getPlayerScreenWidth(pn) - 692))
+    local y = math.max(getPlayerScreenTop(pn) + 12, math.min(self.y + 20, getPlayerScreenTop(pn) + getPlayerScreenHeight(pn) - 492))
+    local panel = Storage:new(x, y, 680, 480)
+    panel.player, panel.object, panel.owner = self.player, object, self
     if isClient() then
-        self.object:getContainer():requestSync()
+        object:getContainer():requestSync()
     end
     panel.backgroundColor = {r = .04, g = .04, b = .04, a = .98}
     panel:initialise()
@@ -250,7 +275,7 @@ function Panel:stockpile()
             ISTimedActionQueue.add(Transfer:new(self.player, self.object, row.item, false))
         end
     end)
-    button(panel, 550, 438, 118, "Close", function(self) self:removeFromUIManager() end)
+    button(panel, 550, 438, 118, getText("UI_OMHTT_Close"), Storage.close)
     panel:refresh()
     button(panel, 480, 40, 86, "Previous", function(self)
         self.page = math.max(0, (self.page or 0) - 200)
@@ -270,7 +295,11 @@ end
 ---@return ISPanel? panel
 function Panel.open(player, object)
     if not A.near(player, object) then return nil end
-    local panel = Panel:new(40, 60, 820, 490)
+    local old = active[player:getPlayerNum()]
+    if old then old:close() end
+    local pn = player:getPlayerNum()
+    local panel = Panel:new(getPlayerScreenLeft(pn) + 12, getPlayerScreenTop(pn) + 12,
+        math.min(860, getPlayerScreenWidth(pn) - 24), math.min(680, getPlayerScreenHeight(pn) - 24))
     panel.player, panel.object, panel.scanDue = player, object, 0
     panel.backgroundColor = {r = .04, g = .04, b = .04, a = .97}
     panel:initialise()
@@ -279,12 +308,12 @@ function Panel.open(player, object)
     panel.devices:initialise()
     panel.devices.itemheight = 30
     panel:addChild(panel.devices)
-    panel.name = ISTextEntryBox:new("", 274, 90, 366, 28)
-    panel.name:initialise()
-    panel:addChild(panel.name)
+    panel.nameEntry = ISTextEntryBox:new("", 274, 90, 366, 28)
+    panel.nameEntry:initialise()
+    panel:addChild(panel.nameEntry)
     panel.save = button(panel, 650, 90, 140, "Save name", function(self)
         if self.selected then
-            U.command(self.player, self.selected, "Name", self.name:getText())
+            U.command(self.player, self.selected, "Name", self.nameEntry:getText())
         end
     end)
     panel.manage = button(panel, 274, 246, 246, "Open full Manage", function(self)
@@ -323,7 +352,8 @@ function Panel.open(player, object)
             U.command(self.player, self.selected, "Access", mode)
         end
     end)
-    local stock = button(panel, 532, 386, 258, "Open stockpile", Panel.stockpile)
+    local stock = button(panel, 532, 386, 258, getText("UI_OMHTT_OpenStockpile"), function(self) self:stockpile() end)
+    panel.stockButton = stock
     stock:setEnable(A.state(object).kind == "Controller")
     panel.clearInputs = button(panel, 274, 430, 246, "Clear input links", function(self)
         if self.selected then
@@ -336,7 +366,8 @@ function Panel.open(player, object)
         local modes = {Both = "Players", Players = "Zombies", Zombies = "Both"}
         U.command(self.player, self.selected, "Trigger", modes[state.trigger or "Both"])
     end)
-    button(panel, 780, 8, 28, "X", Panel.close)
+    panel.closeButton = button(panel, panel.width - 40, 6, 28, "X", Panel.close)
+    require("OMHTT/ControlPanelLayout").create(panel)
     panel.devices:addItem("◆ " .. U.name(object), object)
     panel.devices.selected = 1
     panel:scan()
@@ -345,6 +376,7 @@ function Panel.open(player, object)
         panel.marker:setScaleCircleTexture(true)
     end
     panel:addToUIManager()
+    active[player:getPlayerNum()] = panel
     require("OMHTT/ControlOverlay").panels[panel] = true
     return panel
 end

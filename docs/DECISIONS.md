@@ -1,5 +1,9 @@
 # Decision register
 
+## C289: approved corrective patch (2026-10-17)
+
+Owner: “Approved.” Authorizes implementing the selected C288 two-tab Manage and Controller cleanup, including C286 recursion/window-lifecycle fixes, validation, installation and the standing C108 GitHub mirror. Preserve gameplay, remote authority and exact-item accounting. [Implementation](PATCH_v0.2.53.1.md) | [Checks and short test](TEST_v0.2.53.1.md). Approval does not establish rendered or connected multiplayer acceptance.
+
 ## C288: two-tab Manage selected (2026-10-17)
 
 Owner: "1B / Recap the update." Selects the two-tab design from C287, superseding the compact-page recommendation. [Final corrective scope](TEST_FINDINGS_v0.2.53.md#c288--two-tab-manage-selected-update-recap-2026-10-17). Record the choice and recap; no implementation/install/test acceptance is claimed in this discussion turn. Preserve C286 crash correction, approved Controller hierarchy and multiplayer authority. Owner follow-up: "Make sure it's clean and not overwhelming." Record concrete presentation/verification criteria in the same C288 contract; no new feature or design choice is inferred.

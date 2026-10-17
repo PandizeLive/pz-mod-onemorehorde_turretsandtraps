@@ -1,0 +1,180 @@
+if isServer() then return end
+require("ISUI/ISPanel")
+local L = {}
+local U = require("OMHTT/ControlClient")
+local A = require("OMHTT/ControlAccess")
+local Details = ISPanel:derive("OMHTTControllerDetails")
+
+---@param delta number Wheel movement
+---@return boolean handled
+function Details:onMouseWheel(delta)
+    self:setYScroll(math.max(math.min(0, self.height - self.contentHeight), math.min(0, self:getYScroll() - delta * 36)))
+    return true
+end
+
+---@return nil
+function Details:prerender()
+    self:drawRectStatic(0, 0, self.width, self.height, .9, .06, .07, .06)
+    self:setStencilRect(0, 0, self.width, self.height)
+    L.drawDetails(self.owner, A.state(self.owner.object), A.state(self.owner.selected))
+end
+
+---@return nil
+function Details:render()
+    self:clearStencilRect()
+end
+
+---@param control ISUIElement Control
+---@param x number Left
+---@param y number Top
+---@param width number Width
+---@return nil
+local function place(control, x, y, width)
+    control:setX(x)
+    control:setY(y)
+    control:setWidth(width)
+end
+
+---@param panel ISPanel Controller window
+---@return nil
+function L.create(panel)
+    local h = getTextManager():getFontHeight(UIFont.Small) + 4
+    panel.lineHeight = h
+    panel.titleHeight = getTextManager():getFontHeight(UIFont.Medium) + 16
+    panel.equipmentY = panel.titleHeight + 10
+    panel.devicesY = panel.equipmentY + h * 5 + 34
+    panel.detailX = math.floor(panel.width * .32)
+    local x, y, width = panel.detailX + 10, panel.devicesY, panel.width - panel.detailX - 24
+    local half = (width - 8) / 2
+    place(panel.devices, 12, y, panel.detailX - 24)
+    panel.devices:setHeight(panel.height - y - 14)
+    panel.devices.itemheight = h + 10
+    place(panel.nameEntry, x, y + 8, width - 84)
+    place(panel.save, x + width - 76, y + 8, 76)
+    panel.infoY = y + 46
+    panel.actionY = panel.infoY + h * 4 + 8
+    place(panel.manage, x, panel.actionY, half)
+    place(panel.assign, x + half + 8, panel.actionY, half)
+    panel.accessY = panel.actionY + 40
+    place(panel.policy, x, panel.accessY + h, width)
+    panel.connectionY = panel.accessY + h * 2 + 42
+    place(panel.source, x, panel.connectionY + h * 3, half)
+    place(panel.trigger, x + half + 8, panel.connectionY + h * 3, half)
+    place(panel.link, x, panel.connectionY + h * 3, half)
+    place(panel.unlink, x + half + 8, panel.connectionY + h * 3, half)
+    place(panel.clearInputs, x, panel.connectionY + h * 3 + 36, width)
+    place(panel.stockButton, panel.width / 2 + 10, panel.equipmentY + h * 2 + 18, panel.width / 2 - 34)
+    panel.manage:setTitle(getText("UI_OMHTT_OpenManage"))
+    panel.save:setTitle(getText("UI_OMHTT_SaveName"))
+    panel.source:setTitle(getText("UI_OMHTT_SelectInput"))
+    panel.link:setTitle(getText("UI_OMHTT_LinkInput"))
+    panel.unlink:setTitle(getText("UI_OMHTT_UnlinkInput"))
+    panel.clearInputs:setTitle(getText("UI_OMHTT_ClearInputs"))
+    panel.manage.backgroundColor = {r = .06, g = .24, b = .09, a = 1}
+    panel.detailBody = Details:new(panel.detailX, y, panel.width - panel.detailX - 12, panel.height - y - 14)
+    local body = panel.detailBody
+    body.owner = panel
+    body:initialise()
+    body.background = false
+    body:setScrollChildren(true)
+    body:addScrollBars(false)
+    panel:addChild(body)
+    local controls = {panel.nameEntry, panel.save, panel.manage, panel.assign, panel.policy, panel.source, panel.trigger, panel.link, panel.unlink, panel.clearInputs}
+    for i = 1, #controls do
+        local control = controls[i]
+        panel:removeChild(control)
+        control:setX(control.x - body.x)
+        control:setY(control.y - body.y)
+        body:addChild(control)
+    end
+    body.contentHeight = panel.clearInputs.y + panel.clearInputs.height + 12
+    body:setScrollHeight(body.contentHeight)
+end
+
+---@param panel ISPanel Controller window
+---@return nil
+function L.snapshot(panel)
+    local container = panel.object:getContainer()
+    panel.stockWeight = container and container:getCapacityWeight() or 0
+    panel.ammoSummary = nil
+    local state = A.state(panel.selected)
+    if state and state.kind == "Turret" then
+        local contents = require("OMHTT/Turret").contents(panel.selected:getContainer())
+        panel.ammoSummary = getText("UI_OMHTT_ControllerAmmo", contents.reserveAll, contents.virtualAmmo)
+    end
+end
+
+---@param panel ISPanel Controller window
+---@param host table Host state
+---@param state table? Selection state
+---@return nil
+function L.draw(panel, host, state)
+    local h, x, width = panel.lineHeight, panel.detailX + 10, panel.width - panel.detailX - 24
+    panel:drawRect(1, 1, panel.width - 2, panel.titleHeight - 2, 1, .13, .15, .13)
+    panel:setStencilRect(12, 4, panel.width - 64, panel.titleHeight - 4)
+    panel:drawText(U.name(panel.object), 12, 8, 1, 1, 1, 1, UIFont.Medium)
+    panel:clearStencilRect()
+    panel:drawRect(12, panel.equipmentY, panel.width - 24, h * 4 + 22, .9, .08, .09, .08)
+    panel:drawText(getText("UI_OMHTT_Equipment"), 22, panel.equipmentY + 4, .75, .75, .75, 1, UIFont.Small)
+    local backup = tostring(math.floor(host.backup or 0)) .. "%"
+    local power = host.powered and "UI_OMHTT_ControllerPowered" or "UI_OMHTT_ControllerOffline"
+    panel:drawText(getText(power, backup), 22, panel.equipmentY + h + 8, .85, .85, .85, 1, UIFont.Small)
+    panel:drawProgressBar(22, panel.equipmentY + h * 2 + 14, panel.width / 2 - 48, 7,
+        math.max(0, math.min(1, (host.backup or 0) / 100)), {r = .55, g = .8, b = .5, a = 1})
+    panel:drawText(getText("UI_OMHTT_ControllerRange"), 22, panel.equipmentY + h * 3 + 8, .7, .7, .7, 1, UIFont.Small)
+    panel:drawText(getText("UI_OMHTT_StockWeight", string.format("%.1f", panel.stockWeight or 0)), panel.width / 2 + 10,
+        panel.equipmentY + h + 8, .85, .85, .85, 1, UIFont.Small)
+    panel:drawText(getText("UI_OMHTT_Devices"), 12, panel.devicesY - h - 2, .75, .75, .75, 1, UIFont.Small)
+end
+
+---@param panel ISPanel Controller window
+---@param host table? Host state
+---@param state table? Selection state
+---@return nil
+function L.drawDetails(panel, host, state)
+    if not host or not state then return end
+    local body, h, x = panel.detailBody, panel.lineHeight, 10
+    local width = body.width - 24
+    local infoY, accessY, connectionY = panel.infoY - body.y, panel.accessY - body.y, panel.connectionY - body.y
+    body:setStencilRect(x, infoY, width, h * 4)
+    local dx, dy = panel.selected:getX() - panel.object:getX(), panel.selected:getY() - panel.object:getY()
+    body:drawText(getText("UI_OMHTT_DeviceDistance", string.format("%.1f", math.sqrt(dx * dx + dy * dy))), x, infoY, .75, .75, .75, 1, UIFont.Small)
+    local status = state.active and "UI_OMHTT_InputOn" or "UI_OMHTT_InputOff"
+    if state.kind == "Turret" then
+        local T = require("OMHTT/Turret")
+        status = T.isOn(T.state(panel.selected)) and "UI_OMHTT_PowerOn" or "UI_OMHTT_PowerOff"
+    elseif state.kind == "Controller" then
+        status = state.powered and "UI_OMHTT_PowerOn" or "UI_OMHTT_PowerOff"
+    end
+    body:drawText(getText(status), x, infoY + h, .85, .85, .85, 1, UIFont.Small)
+    local assigned = state.controller == host.id and "UI_OMHTT_DeviceAssigned" or "UI_OMHTT_DeviceUnassigned"
+    if panel.selected == panel.object then
+        assigned = "UI_OMHTT_ControlController"
+    end
+    local info = getText("UI_OMHTT_DeviceCondition", panel.selected:getHealth(), panel.selected:getMaxHealth())
+    body:drawText(panel.ammoSummary or info, x, infoY + h * 2, .75, .75, .75, 1, UIFont.Small)
+    body:drawText(panel.ammoSummary and info or getText(assigned), x, infoY + h * 3, .75, .75, .75, 1, UIFont.Small)
+    body:clearStencilRect()
+    body:drawText(getText("UI_OMHTT_AccessTitle"), x, accessY, .75, .75, .75, 1, UIFont.Small)
+    body:setStencilRect(x, accessY + h + 32, width, h)
+    body:drawText(getText("UI_OMHTT_ControlOwner", state.owner), x, accessY + h + 32, .65, .65, .65, 1, UIFont.Small)
+    body:clearStencilRect()
+    body:drawText(getText("UI_OMHTT_Connections"), x, connectionY, .75, .75, .75, 1, UIFont.Small)
+    body:setStencilRect(x, connectionY + h, width, h * 2)
+    local hint = getText("UI_OMHTT_SelectInputHint")
+    if panel.linkSource then
+        hint = getText("UI_OMHTT_SelectedInput", U.name(panel.linkSource))
+    end
+    body:drawText(hint, x, connectionY + h, .8, .8, .8, 1, UIFont.Small)
+    local count = getText("UI_OMHTT_OutputCount", #state.links)
+    if state.kind == "Turret" then
+        count = getText("UI_OMHTT_ReceiverHint")
+    end
+    if state.kind == "Controller" then
+        count = getText("UI_OMHTT_ControllerLimits")
+    end
+    body:drawText(count, x, connectionY + h * 2, .7, .7, .7, 1, UIFont.Small)
+    body:clearStencilRect()
+end
+
+return L

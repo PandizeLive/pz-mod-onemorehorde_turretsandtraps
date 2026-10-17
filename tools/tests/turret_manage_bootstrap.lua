@@ -11,12 +11,21 @@ function ISPanel:initialise() end
 function ISPanel:addToUIManager() testTurretPanel = self end
 function ISPanel:removeFromUIManager() self.removed = true end
 function ISPanel:addChild(child) self.children[#self.children + 1] = child; child.parent = self end
+function ISPanel:removeChild(child)
+    for i = #self.children, 1, -1 do if self.children[i] == child then table.remove(self.children, i) end end
+    child.parent = nil
+end
+function ISPanel:setX(x) self.x = x end
+function ISPanel:setWidth(width) self.width = width end
+function ISPanel:setVisible(value) self.visible = value end
 function ISPanel:prerender() end
 function ISPanel:isMouseOver() return false end
 function ISPanel:setStencilRect() end
 function ISPanel:clearStencilRect() end
 function ISPanel:drawRectBorder() end
 function ISPanel:drawRect() end
+function ISPanel:drawRectStatic() end
+function ISPanel:onMouseDown() self.moving = true end
 function ISPanel:drawProgressBar(x, y, width, height, value) check(x >= 0 and x + width <= self.width and value >= 0 and value <= 1, "Supply meter stays inside its slot") end
 function ISPanel:setY(y) self.y = y end
 function ISPanel:setHeight(height) self.height = height end
@@ -27,8 +36,8 @@ function ISPanel:getYScroll() return self.yScroll or 0 end
 function ISPanel:setYScroll(value) self.yScroll = value end
 function ISPanel:drawText(text) check(type(text) == "string", "Manage draws resolved status text") end
 ISButton = {new = function(self, x, y, w, h, title, target, callback)
-    return {initialise = function() end, setWidth = function(self, w) self.width = w end, setY = function(self, y) self.y = y end, setVisible = function(self, visible) self.visible = visible end, setEnable = function(self, enabled) self.enabled = enabled end,
-        x=x, y=y, width=w, height=h, target = target, callback = callback, setTitle = function(self, title) self.title = title end}
+    return {setX = function(self, x) self.x = x end, setHeight = function(self, h) self.height = h end, initialise = function() end, setWidth = function(self, w) self.width = w end, setY = function(self, y) self.y = y end, setVisible = function(self, visible) self.visible = visible end, setEnable = function(self, enabled) self.enabled = enabled end,
+        x=x, y=y, width=w, height=h, title=title, target = target, callback = callback, setTitle = function(self, title) self.title = title end}
 end}
 ISMouseDrag = {}
 ISScrollingListBox = ISPanel:derive("TestScrollingList")
@@ -67,7 +76,7 @@ PZAPI = {ModOptions = {getOptions = function() return nil end, create = function
     return {addTickBox = function() end, getOption = function() return option end}
 end}}
 ISSliderPanel = {new = function(self, x, y, w, h, target, callback)
-    return {setWidth = function(self, w) self.width = w end, setY = function(self, y) self.y = y end, setVisible = function(self, v) self.visible = v end, currentValue = 1, initialise = function() end,
+    return {x=x, y=y, width=w, height=h, setWidth = function(self, w) self.width = w end, setY = function(self, y) self.y = y end, setVisible = function(self, v) self.visible = v end, currentValue = 1, initialise = function() end,
         setValues = function(self, low, high) self.minValue, self.maxValue = low, high end,
         setCurrentValue = function(self, value) self.currentValue = value end,
         getCurrentValue = function(self) return self.currentValue end}

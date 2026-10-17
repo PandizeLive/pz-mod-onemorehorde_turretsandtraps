@@ -9,7 +9,6 @@ local E = {}
 ---@param x number Slider origin
 ---@return nil
 function E.create(panel, x)
-    panel.extraBaseHeight = panel.height
     panel.lureSlider = ISSliderPanel:new(x, 0, panel.width - x - 168, panel.lineHeight + 2, panel, function(self, value)
         self.pendingLure = math.floor(value)
     end)
@@ -41,16 +40,10 @@ end
 function E.refresh(panel, contents, stats)
     local state = T.state(panel.object)
     panel.hasLure, panel.hasLanding = contents.active.Lure ~= nil, stats.headKind == "Lobber"
-    local rowHeight = math.max(30, panel.lineHeight + 10)
-    local y = panel.detailsY + panel.lineHeight * 9 + 20
-    panel.lureY = y
     panel.lureSlider:setVisible(panel.hasLure)
     panel.lurePlay:setVisible(panel.hasLure)
     panel.lureLoop:setVisible(panel.hasLure)
     if panel.hasLure then
-        panel.lureSlider:setY(y + 3)
-        panel.lurePlay:setY(y)
-        panel.lureLoop:setY(y)
         panel.lureLoop:setTitle(getText(state.lureRepeat and "UI_OMHTT_LoopOn" or "UI_OMHTT_LoopOff"))
         if not panel.lureSlider.dragInside then
             if panel.pendingLure then
@@ -59,12 +52,9 @@ function E.refresh(panel, contents, stats)
             end
             panel.lureSlider:setCurrentValue(state.lureRange or 10, true)
         end
-        y = y + rowHeight
     end
-    panel.landingY = y
     panel.landingSlider:setVisible(panel.hasLanding)
     if panel.hasLanding then
-        panel.landingSlider:setY(y + 3)
         if panel.landingMaximum ~= stats.range then
             panel.landingMaximum = stats.range
             panel.landingSlider:setValues(math.ceil(stats.minimumRange), math.floor(stats.range), 1, 5, true)
@@ -76,16 +66,8 @@ function E.refresh(panel, contents, stats)
             end
             panel.landingSlider:setCurrentValue(math.max(stats.minimumRange, math.min(stats.range, state.landingRange or stats.range)), true)
         end
-        y = y + rowHeight
     end
-    panel.contentHeight = math.max(panel.extraBaseHeight, y + 48)
-    panel:setScrollHeight(panel.contentHeight)
-    panel:setHeight(math.min(panel.contentHeight, getPlayerScreenHeight(panel.player:getPlayerNum()) - 24))
-    local top = getPlayerScreenTop(panel.player:getPlayerNum())
-    local bottom = top + getPlayerScreenHeight(panel.player:getPlayerNum())
-    panel:setY(math.max(top + 12, math.min(panel.y, bottom - panel.height - 12)))
-    panel.fireButton:setY(panel.contentHeight - 38)
-    panel.priorityButton:setY(panel.contentHeight - 38)
+    require("OMHTT/TurretManageLayout").refresh(panel)
 end
 
 ---@param panel ISPanel Manage window
@@ -93,11 +75,9 @@ end
 function E.draw(panel)
     local state = T.state(panel.object)
     if panel.hasLure then
-        panel:section(6, panel.lureY - 2, panel.width - 12, math.max(30, panel.lineHeight + 10), "")
         panel:drawText(getText("UI_OMHTT_LureRange", state.lureRange or 10), 12, panel.lureY + 4, 1, 1, 1, 1, UIFont.Small)
     end
     if panel.hasLanding then
-        panel:section(6, panel.landingY - 2, panel.width - 12, math.max(30, panel.lineHeight + 10), "")
         panel:drawText(getText("UI_OMHTT_LandingRange", math.min(panel.stats.range, state.landingRange or panel.stats.range)),
             12, panel.landingY + 4, 1, 1, 1, 1, UIFont.Small)
     end

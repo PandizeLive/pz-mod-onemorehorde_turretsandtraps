@@ -322,7 +322,9 @@ public final class KahluaCheck {
             {"_", "tools/tests/control_ui_bootstrap.lua"},
             {"OMHTT/ControlClient", base + "client/OMHTT/ControlClient.lua"},
             {"OMHTT/ControlManage", base + "client/OMHTT/ControlManage.lua"},
+            {"OMHTT/ControlPanelLayout", base + "client/OMHTT/ControlPanelLayout.lua"},
             {"OMHTT/ControlPanel", base + "client/OMHTT/ControlPanel.lua"},
+            {"OMHTT/TurretManageLayout", base + "client/OMHTT/TurretManageLayout.lua"},
             {"OMHTT/TurretManage", base + "client/OMHTT/TurretManage.lua"},
             {"_", "tools/tests/turret_manage_load_order.lua"},
             {"OMHTT/TurretAuthority", base + "server/OMHTT/TurretAuthority.lua"},
@@ -434,6 +436,15 @@ public final class KahluaCheck {
                     String source = nativeLua.substring(nativeLua.indexOf("function ISUIElement:drawLine("), nativeLua.indexOf("function ISUIElement:drawLineAbsolute("));
                     source = source.replace("function ISUIElement:drawLine(", "function testNativeDrawLine(self, ");
                     Object nativeChunk = compile.invoke(null, new java.io.StringReader(source), element.toString(), env);
+                    call.invoke(thread, nativeChunk, new Object[0]);
+                }
+                if (stage[1].equals("tools/tests/control_panel.lua")) {
+                    Path ui = Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/client/ISUI/ISUIElement.lua");
+                    String nativeLua = Files.readString(ui);
+                    String source = nativeLua.substring(nativeLua.indexOf("function ISUIElement:tostring()"), nativeLua.indexOf("function ISUIElement:drawProgressBar("));
+                    source += nativeLua.substring(nativeLua.indexOf("function ISUIElement:toTypeNameString()"), nativeLua.indexOf("function ISUIElement:debugPrintTree("));
+                    source = source.replace("ISUIElement:", "testControlPanelBase:");
+                    Object nativeChunk = compile.invoke(null, new java.io.StringReader(source), ui.toString(), env);
                     call.invoke(thread, nativeChunk, new Object[0]);
                 }
                 if (stage[1].equals("tools/tests/turret_manage.lua")) {

@@ -210,6 +210,8 @@ def main():
         "media/lua/server/Items/ProceduralDistributions.lua", "media/lua/server/Items/SuburbsDistributions.lua",
         "zombie/inventory/ItemPickerJava.class", "zombie/Lua/LuaEventManager.class", "zombie/SandboxOptions.class",
         "media/lua/client/ISUI/ISButton.lua", "media/lua/shared/Entity/TimedActions/ISHandcraftAction.lua",
+        "media/lua/client/ISUI/ISUIElement.lua", "media/lua/client/ISUI/ISPanel.lua",
+        "media/lua/client/ISUI/ISScrollingListBox.lua",
         "media/lua/client/Entity/ISUI/Controls/ISItemSlot.lua",
         "media/lua/client/ISUI/ISInventoryPage.lua", "zombie/iso/fboRenderChunk/FBORenderCell.class",
         "media/lua/client/Entity/ISUI/CraftRecipe/ISHandCraftPanel.lua",

@@ -33,6 +33,7 @@ function Panel:close()
         self.orderPanel:close()
     end
     if self.voidList then self.voidList:onMouseDown() end
+    require("OMHTT/ControlManage").close(self)
     self.benefitList:hideTooltip()
     for i = 1, #self.slots do self.slots[i]:hideTooltip(); self.slots[i]:clearDrag() end
     if Range then
@@ -246,7 +247,7 @@ function Panel:refresh()
         local number = self.moduleRow * 6 + i
         local slot = self.moduleSlots[i]
         slot.disabled = number > capacity
-        slot.label = getText("UI_OMHTT_ManageModule", number)
+        slot.label = ""
         if number > capacity then slot.label = getText("UI_OMHTT_ManageLocked") end
     end
     local items, modules = storage:getItems(), 0
@@ -347,7 +348,7 @@ function Panel:refresh()
         self.moduleWarning = getText("UI_OMHTT_PiercingInactive")
     end
     self.moduleLines = getTextManager():WrapText(UIFont.Small, self.moduleEffects
-        .. (self.moduleWarning ~= "" and "\n" .. self.moduleWarning or ""), self.width / 2 - 24)
+        .. (self.moduleWarning ~= "" and "\n" .. self.moduleWarning or ""), self.width - 48)
     local charge = getText("UI_OMHTT_None")
     if contents.battery then charge = tostring(math.floor(require("OMHTT/TurretBattery").charge(contents.battery) * 100)) .. "%" end
     self.batterySlot.label = getText("UI_OMHTT_ManageBattery", charge)
@@ -374,19 +375,6 @@ function Panel:refresh()
     end
 end
 
----@param x number Left
----@param y number Top
----@param width number Width
----@param height number Height
----@param title string Header text
----@return nil
-function Panel:section(x, y, width, height, title)
-    self:drawRect(x, y, width, height, .85, .025, .025, .025)
-    self:drawRectBorder(x, y, width, height, .8, .3, .3, .3)
-    self:drawRect(x, y, width, self.lineHeight, .9, .12, .12, .12)
-    self:drawText(title, x + 6, y, .9, .9, .9, 1, UIFont.Small)
-end
-
 ---@return nil
 function Panel:prerender()
     if not Access.near(self.player, self.object, self.deviceId, true) then self:close(); return end
@@ -397,50 +385,14 @@ function Panel:prerender()
         self:refresh()
         require("OMHTT/ControlManage").refresh(self)
     end
-    local h, y = self.lineHeight, self.detailsY
-    self:section(6, self.equipmentY, self.width - 12, self.ammunitionY - self.equipmentY - 6, getText("UI_OMHTT_Equipment"))
-    self:section(6, self.ammunitionY, self.width - 12, self.modulesY - self.ammunitionY - 6, getText("UI_OMHTT_Ammunition"))
-    self:section(6, self.modulesY, self.width - 12, y - self.modulesY - 4, "")
-    self:section(6, y - h, self.width / 2 - 10, h * 9, getText("UI_OMHTT_Status"))
-    self:drawRect(6, y + h * 8 + 2, self.width - 12, h + 10, .8, .08, .08, .08)
-    self:drawRectBorder(6, y + h * 8 + 2, self.width - 12, h + 10, .7, .3, .3, .3)
-    if not self.controller then
-        self:drawText(self.weightLabel or getText("UI_OMHTT_ManageHint"), 12, self.titleHeight, 0.8, 0.8, 0.8, 1, UIFont.Small)
-    end
-    local label = self.moduleLabel
-    if self.rows > 3 then label = label .. " - " .. getText("UI_OMHTT_ManageScroll") end
-    self:drawText(label, 12, self.modulesY, 1, 1, 1, 1, UIFont.Small)
-    self:setStencilRect(12, y, self.width / 2 - 18, h * 8)
-    self:drawText(self.moduleLines, 12, y, self.modulesMissing and 1 or 0.8, self.modulesMissing and 0.3 or 0.8, self.modulesMissing and 0.3 or 0.8, 1, UIFont.Small)
-    self:drawText(getText("UI_OMHTT_Manage" .. self.status) .. " | " .. self.powerLabel, 12, y + h * 2, 1, 1, 1, 1, UIFont.Small)
-    local stats = self.stats
-    self:drawText(getText("UI_OMHTT_CompactStats", string.format("%.1f", stats.damage), string.format("%.1f", stats.range),
-        self.object:getHealth(), self.object:getMaxHealth()), 12, y + h * 3, 1, 1, 1, 1, UIFont.Small)
-    local timing = getText("UI_OMHTT_ManageTiming", string.format("%.2f", stats.reload / 1000), string.format("%.2f", 1000 / stats.cooldown))
-    if stats.rotary then timing = getText("UI_OMHTT_MotorSpeed", string.format("%.1f", stats.motorSpeed / 6)) end
-    self:drawText(timing, 12, y + h * 4, 1, 1, 1, 1, UIFont.Small)
-    self:drawText(getText("UI_OMHTT_CompactChances", string.format("%.0f", stats.accuracy), string.format("%.0f", stats.critChance),
-        string.format("%.1f", stats.critMultiplier)), 12, y + h * 5, 1, 1, 1, 1, UIFont.Small)
-    local message = self.result .. ":" .. self.reason
-    if self.lastMessage ~= message then
-        self.lastMessage, self.messageAt = message, now
-    end
-    local elapsed = now - self.messageAt
-    local glow = 0
-    if elapsed < 1500 then glow = (1 - elapsed / 1500) * (0.5 + 0.5 * math.cos(elapsed / 120)) end
-    self:drawText(self.result, 12, y + h * 6, 0.9 + glow * 0.1, 0.85 + glow * 0.15, 0.65 + glow * 0.35, 1, UIFont.Small)
-    self:drawText(self.reason, 12, y + h * 7, 0.9 + glow * 0.1, 0.85 + glow * 0.15, 0.65 + glow * 0.35, 1, UIFont.Small)
-    self:clearStencilRect()
-    self:drawText(getText("UI_OMHTT_EngagementRange", T.state(self.object).engagementRange and string.format("%.1f", self.engagementRange) or getText("UI_OMHTT_RangeMax")),
-        12, y + h * 8 + 6, 1, 1, 1, 1, UIFont.Small)
-    require("OMHTT/TurretManageExtras").draw(self)
+    require("OMHTT/TurretManageLayout").refresh(self)
+    require("OMHTT/TurretManageLayout").draw(self)
 end
 
 ---@param delta number Scroll direction
 ---@return boolean handled
 function Panel:onMouseWheel(delta)
-    self:setYScroll(math.max(math.min(0, self.height - self.contentHeight), math.min(0, self:getYScroll() - delta * 36)))
-    return true
+    return self.body:onMouseWheel(delta)
 end
 
 ---@param x number Local X
@@ -464,21 +416,10 @@ function OpenAction:perform()
         local lineHeight = font:getFontHeight(UIFont.Small) + (getPlayerScreenHeight(index) >= 800 and 3 or 0)
         local titleHeight = font:getFontHeight(UIFont.Medium) + 16
         local width = math.min(getPlayerScreenWidth(index) - 24, math.max(640, lineHeight * 32))
-        local slotHeight = lineHeight + 48
-        local top = titleHeight + lineHeight * 2 + 12
-        local moduleHeight = lineHeight * 2 + 24
-        local available = getPlayerScreenHeight(index) - 24
-        local preferred = 70 + top + (slotHeight + 8) * 3 + lineHeight * 4 + (moduleHeight + 6) * 3 + 6 + lineHeight * 9 + 82
-        local trim = math.max(0, preferred - available)
-        local slotTrim = math.min(24, trim / 6)
-        slotHeight = math.max(lineHeight * 3 + 12, slotHeight - slotTrim)
-        moduleHeight = moduleHeight - math.min(12, math.max(0, trim - slotTrim * 3) / 3)
-        local ammunitionY = top + slotHeight + 10
-        local ammoY = ammunitionY + math.max(32, lineHeight + 8)
-        local magazineY = ammoY + slotHeight + 6
-        local modulesY = magazineY + slotHeight + 10
-        local detailsY = modulesY + lineHeight * 2 + (moduleHeight + 6) * 3 + 6
-        local height = detailsY + lineHeight * 9 + 82
+        local slotHeight = math.max(60, lineHeight * 3 + 12)
+        local top, ammunitionY, ammoY, magazineY, modulesY, detailsY = 0, 0, 0, 0, 0, 0
+        local moduleHeight = lineHeight * 2 + 16
+        local height = math.min(getPlayerScreenHeight(index) - 24, 240 + lineHeight * 26)
         local x = getPlayerScreenLeft(index) + getPlayerScreenWidth(index) - width - 12
         local y = getPlayerScreenTop(index) + math.max(12, (getPlayerScreenHeight(index) - height) / 2)
         local panel = Panel:new(x, y, width, height)
@@ -492,8 +433,6 @@ function OpenAction:perform()
         panel.moveWithMouse = true
         panel.backgroundColor = {r = 0.04, g = 0.04, b = 0.04, a = 0.96}
         panel:initialise()
-        panel:setScrollChildren(true)
-        panel:addScrollBars(false)
         panel.benefitList = BenefitList:new(width / 2 + 4, detailsY - lineHeight, width / 2 - 16, lineHeight * 9, lineHeight)
         panel.benefitList:initialise()
         panel:addChild(panel.benefitList)
@@ -545,13 +484,15 @@ function OpenAction:perform()
         local buttons = {panel.fireButton, panel.powerButton, panel.priorityButton, panel.loadOrderButton, panel.reloadButton, close}
         for i = 1, #buttons do buttons[i]:initialise(); panel:addChild(buttons[i]) end
         require("OMHTT/ControlManage").create(panel)
+        require("OMHTT/TurretManageLayout").create(panel)
         panel:refresh()
+        require("OMHTT/ControlManage").refresh(panel)
         panel:addToUIManager()
         active[index] = panel
         if Range then
             Range.focus(index, "manage", self.object, true)
         end
-        D.emit("turret-manage-open", {id = panel.deviceId, interface = "dedicated", width = width, height = height})
+        D.emit("turret-manage-open", {id = panel.deviceId, interface = "dedicated", width = width, height = panel.height})
     end
     ISBaseTimedAction.perform(self)
 end

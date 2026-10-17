@@ -1,5 +1,9 @@
 # Release state and publication policy
 
+## 0.2.53.1 / C289 — corrective menus, 2026-10-17
+
+Approved C286–C288 implementation. [Patch](PATCH_v0.2.53.1.md) | [Verification](TEST_v0.2.53.1.md). Full validator passes20,856 assertions; native release checks and installation are in progress. No Workshop publication or main merge. The cumulative unpublished changelog is preserved.
+
 ## 0.2.53 / C285 — connected controls, 2026-10-16
 
 **C285 / 0.2.53 installed (2026-10-16).** Controller, pressure plates/buttons, remote full Manage, ownership/naming, stockpile transfers, native heavy pickup and C283 ammo capacities are installed from immutable `test/v0.2.53` / `cff0fe9e591db5a2589d784f0fc9410be05dac80`. All 278 source and 348 tagged/packaged/installed/archive files match; both 0.2.52 backups verify. 20,807 assertions, native write/read and all three independent package selections pass. [Patch](PATCH_v0.2.53.md) | [Five-step test](TEST_v0.2.53.md) | [Release evidence](../diagnostics/v0.2.53/local-release.json). Rendered and connected dedicated/listen acceptance remain deferred. R4C1 is implemented for the approved turret receiver; R4C2 damaging receivers remain next. Development delivery uses the existing branch/draft PR under C108; no Workshop upload or main merge.

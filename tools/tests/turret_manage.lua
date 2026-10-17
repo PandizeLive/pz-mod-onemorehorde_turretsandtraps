@@ -98,7 +98,34 @@ check(panel.ammoSlot.width == panel.voidSlot.width and panel.magazineSlot.y > pa
 local originalScreenHeight = getPlayerScreenHeight
 getPlayerScreenHeight = function() return 600 end
 require("OMHTT/TurretManageExtras").refresh(panel, {active = {Lure = 1}}, {headKind = "Lobber", minimumRange = 6, range = 18})
-check(panel.height + panel.y <= 600 and panel.scrollHeight == panel.contentHeight, "Constrained viewport exposes full content through native scrolling")
+check(panel.height + panel.y <= 600 and panel.body.scrollHeight == panel.body.contentHeight, "Constrained viewport scrolls the content, not the window controls")
+local Layout = require("OMHTT/TurretManageLayout")
+local titleY, footerY = panel.nameEntry.y, panel.fireButton.y
+check(panel.nameEntry.y >= panel.titleHeight and panel.body.y > panel.modulesTab.y + panel.modulesTab.height,
+    "Dedicated drag band and tabs are separate from the editable name and content")
+Layout.select(panel, "modules")
+check(panel.moduleSlots[1].visible and panel.benefitList.visible and not panel.headSlot.visible
+    and not panel.loadOrderButton.visible and not panel.powerButton.visible, "Modules page hides equipment controls")
+panel.detailsButton.callback(panel)
+panel.body:onMouseWheel(20)
+check(panel.body:getYScroll() < 0 and panel.nameEntry.y == titleY and panel.fireButton.y == footerY,
+    "Expanded details scroll without moving the name, tabs or firing controls")
+panel.body:prerender()
+panel.body:render()
+check(panel.benefitList.y >= panel.moduleSlots[16].y + panel.moduleSlots[16].height
+    and panel.detailsY >= panel.benefitList.y + panel.benefitList.height, "Modules, benefits and Details never overlap")
+Layout.select(panel, "equipment")
+check(panel.headSlot.visible and panel.loadOrderButton.visible and not panel.moduleSlots[1].visible
+    and panel.body:getYScroll() == 0, "Returning to Equipment resets content scroll and restores equipment")
+check(panel.detailsY >= panel.magazineSlot.y + panel.magazineSlot.height,
+    "Equipment details start after the magazine")
+for i = 1, #panel.slots do
+    local slot = panel.slots[i]
+    check(slot.x >= 8 and slot.x + slot.width <= panel.body.width - 20, "Content slots leave a clear scrollbar gutter")
+end
+panel.body:prerender()
+panel.body:render()
+panel.detailsButton.callback(panel)
 getPlayerScreenHeight = originalScreenHeight
 panel:refresh()
 local moduleRows = {}

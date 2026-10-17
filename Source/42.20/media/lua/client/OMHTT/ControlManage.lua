@@ -9,16 +9,16 @@ local controls = {"fireButton", "priorityButton", "reloadButton", "lurePlay", "l
 ---@param panel ISPanel Turret Manage
 ---@return nil
 function E.create(panel)
-    panel.nameEntry = ISTextEntryBox:new(U.name(panel.object), 12, 6, panel.width - 208, 26)
+    panel.nameEntry = ISTextEntryBox:new(U.name(panel.object), 12, panel.titleHeight + 4, panel.width - 208, 26)
     panel.nameEntry:initialise()
     panel:addChild(panel.nameEntry)
-    local save = ISButton:new(panel.width - 188, 6, 86, 26, "Save name", panel, function(self)
+    local save = ISButton:new(panel.width - 188, panel.titleHeight + 4, 86, 26, getText("UI_OMHTT_SaveName"), panel, function(self)
         U.command(self.player, self.object, "Name", self.nameEntry:getText())
     end)
     save:initialise()
     panel:addChild(save)
     panel.nameSave = save
-    local auto = ISButton:new(panel.width - 96, 6, 52, 26, "Auto", panel, function(self)
+    local auto = ISButton:new(panel.width - 96, panel.titleHeight + 4, 52, 26, getText("UI_OMHTT_AutoName"), panel, function(self)
         U.command(self.player, self.object, "Name", "")
         self.nameEntry:setText("")
     end)
@@ -26,11 +26,11 @@ function E.create(panel)
     panel:addChild(auto)
     panel.nameAuto = auto
     if panel.controller then
-        panel.sourceButton = ISButton:new(12, panel.titleHeight, panel.width - 24, 26, "Transfer destination: Your inventory", panel, function(self)
+        panel.sourceButton = ISButton:new(12, panel.titleHeight + 36, panel.width - 24, 26, "Transfer destination: Your inventory", panel, function(self)
             self.toStockpile = not self.toStockpile
             self.sourceButton:setTitle(self.toStockpile and "Transfer destination: Controller stockpile" or "Transfer destination: Your inventory")
             if self.toStockpile then
-                require("OMHTT/ControlPanel").stockpile({player = self.player, object = self.controller, x = self.x, y = self.y})
+                require("OMHTT/ControlPanel").stockpile(self, self.controller)
             end
         end)
         panel.sourceButton:initialise()
@@ -64,6 +64,15 @@ function E.refresh(panel)
     if panel.sourceButton then
         panel.sourceButton:setTitle((panel.toStockpile and "To stockpile" or "To inventory") .. "  •  " .. panel.weightLabel)
         panel.sourceButton:setEnable(writable)
+    end
+end
+
+---@param panel ISPanel Manage window
+---@return nil
+function E.close(panel)
+    if panel.storage then
+        panel.storage:close()
+        panel.storage = nil
     end
 end
 
