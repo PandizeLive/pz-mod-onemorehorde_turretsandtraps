@@ -2,7 +2,7 @@
 
 ## 0.2.53.1 / C289 — corrective menus, 2026-10-17
 
-Approved C286–C288 implementation. [Patch](PATCH_v0.2.53.1.md) | [Verification](TEST_v0.2.53.1.md). Full validator passes20,856 assertions; native release checks and installation are in progress. No Workshop publication or main merge. The cumulative unpublished changelog is preserved.
+**C289 / 0.2.53.1 installed (2026-10-17).** Approved two-tab Manage, dedicated drag bars, expandable Details, Controller layout/overview, native UI-name recursion correction and stockpile lifecycle cleanup are installed from immutable `test/v0.2.53.1` / `983dcf13217f7f2b20b96366e406d74bc8d3f0e8`. Full validator:20,856 assertions; native write/read and Traps-only/Turrets-only/both startup pass. All280 source and351 tagged/packaged/installed/archive files match; both0.2.53 backups verify. [Patch](PATCH_v0.2.53.1.md) | [Four-step test](TEST_v0.2.53.1.md) | [Release evidence](../diagnostics/v0.2.53.1/local-release.json). Rendered and connected MP acceptance remain pending. No gameplay/authority changes; R4C2 follows the corrective check. Development delivery uses the existing branch/draft PR; no Workshop publication.
 
 ## 0.2.53 / C285 — connected controls, 2026-10-16
 
