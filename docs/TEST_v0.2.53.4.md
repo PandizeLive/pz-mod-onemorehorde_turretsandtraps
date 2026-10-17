@@ -1,5 +1,9 @@
 # 0.2.53.4 verification and short test
 
+## C295 owner report, 2026-10-17
+
+Owner reports whole-PC slowdown starting at the main menu and stopping on minimize/exit. Current console confirms 0.2.53.4 loaded; this does not establish a pass for the deferred four-step corrective test. [Resource samples, limitations and proposed diagnostic](LAUNCH_LAG_C295.md). No confirmed culprit or production change. Preserve pending rendered/connected acceptance.
+
 ## Automated evidence
 
 Full validator passes 20,982 assertions, 209 runtime/translation compilations and 26 native-format command tables (largest 392 bytes). Package manifest covers 285 source files and 361 generated files: 136 Traps, 225 Turrets. All 300 literal translation references resolve. No shipped `pcall`/`xpcall` calls.

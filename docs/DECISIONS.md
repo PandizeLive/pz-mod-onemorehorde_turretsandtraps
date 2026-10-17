@@ -1,5 +1,9 @@
 # Decision register
 
+## C295: investigate launch and whole-PC slowdown (2026-10-17)
+
+Owner asks why launching/playing now slows the whole PC; clarification is "Starts on the main menu, stops on exit or minimize." Read-only process/resource, log, display-setting and current-hook inspection is authorized. [Evidence, uncertainty and recommended comparison](LAUNCH_LAG_C295.md). No source, display, Java-agent, other-mod or driver change was requested or made. Current 0.2.53.4 loading is confirmed; no completed acceptance result is inferred.
+
 ## C294: C293 corrective patch approved (2026-10-17)
 
 Owner: "Approved" following the stockpile clarification, capitalization audit and five recommended corrections. Implement, validate, install and mirror under the established local workflow; no additional gameplay decision is required. [0.2.53.4 implementation](PATCH_v0.2.53.4.md). Preserve defense-only admission and native recovery of existing items. Related validation closes stale remote-stockpile access from local turret proximity and handles synchronized replacement items for native callbacks. Connected and rendered acceptance are still pending, not waived by this approval.

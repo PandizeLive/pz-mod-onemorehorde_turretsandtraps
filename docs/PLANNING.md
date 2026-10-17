@@ -1,5 +1,7 @@
 # Planning
 
+**C295 / investigate before further changes:** [Main-menu/desktop slowdown](LAUNCH_LAG_C295.md). Owner confirms minimize/exit relief. Recommend a controlled 60-FPS then VSync comparison; no hardware bottleneck or specific mod/driver culprit is established. No new implementation approved or settings changed; installed 0.2.53.4 remains current.
+
 **C294 / C293 approved, implemented and installed:** [0.2.53.4 stockpile/controller corrections](PATCH_v0.2.53.4.md), with [verification](TEST_v0.2.53.4.md) and [verified release files/backups](../diagnostics/v0.2.53.4/local-release.json). No outstanding design decision; rendered/connected acceptance remains deferred. R4C2 follows the corrective checkpoint.
 
 **C293 / corrective plan:** [Stockpile scope, UI capitalization and solutions to all five C292 findings](CORRECTIONS_C293.md). Preserve defense-only deposits, native recovery, exact destinations and server authority. No new gameplay choice; implementation remains next. Installed 0.2.53.3 unchanged.
