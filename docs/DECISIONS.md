@@ -1,5 +1,9 @@
 # Decision register
 
+## C286: owner UI failures and corrective design discussion (2026-10-17)
+
+Owner reports overlapping Turret Manage framing, blocked dragging under the name controls, excessive complexity, a Controller unlike the approved preview, and a black screen during Controller menu use. [Diagnosis, proposed corrections and one layout choice](TEST_FINDINGS_v0.2.53.md). The native UI-name recursion is independently reproduced; retained logs cannot identify the original trigger. Recommend1A compact single page with expandable detailed stats;1B uses Equipment/Modules tabs. This is a finding/design discussion, not a selection or new patch implementation. Preserve the accepted C284 Controller hierarchy, multiplayer authority and installed0.2.53 evidence; prioritize corrections before R4C2. Standing C108/C119 authorizes mirroring these findings.
+
 ## C285: implement the approved connected-controls patch (2026-10-16)
 
 Owner: "Looks good. Approved to patch. Implement the controller, pressure plates, updated menus, and ammo capacity changes. Keep multiplayer in mind and push it to GitHub." This approves C283 storage/capacity rules and C284 menu direction for local implementation, native verification, installation and the standing development mirror. [Implementation](PATCH_v0.2.53.md) | [Tests](TEST_v0.2.53.md). No new approval or owner-test gate; connected/rendered acceptance remains deferred, and no Workshop/main publication is authorized.
