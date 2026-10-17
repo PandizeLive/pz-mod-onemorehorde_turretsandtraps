@@ -1,6 +1,6 @@
 # Phases and checkpoints
 
-**C294 / corrective checkpoint implemented:** [0.2.53.4](PATCH_v0.2.53.4.md) addresses all five C292 findings, the related stale-stockpile lease path and capitalization. Automated checks pass; native/release verification and owner acceptance are tracked in the [test record](TEST_v0.2.53.4.md). R4C2 remains the next content checkpoint.
+**C294 / corrective checkpoint installed:** [0.2.53.4](PATCH_v0.2.53.4.md) addresses all five C292 findings, the related stale-stockpile lease path and capitalization. Automated/native/release checks pass; rendered and connected owner acceptance remain pending in the [test record](TEST_v0.2.53.4.md). R4C2 remains the next content checkpoint.
 
 **C293 / before the held test and R4C2:** implement the [five integration corrections and consistent UI labels](CORRECTIONS_C293.md). This review does not expand stockpile admission or change gameplay. Installed 0.2.53.3 remains unchanged and pending rendered/connected acceptance.
 

@@ -1,6 +1,6 @@
 # Planning
 
-**C294 / C293 approved and implemented:** [0.2.53.4 stockpile/controller corrections](PATCH_v0.2.53.4.md), with [verification](TEST_v0.2.53.4.md). No outstanding design decision; release verification and deferred rendered/connected acceptance remain distinct. R4C2 follows the corrective checkpoint.
+**C294 / C293 approved, implemented and installed:** [0.2.53.4 stockpile/controller corrections](PATCH_v0.2.53.4.md), with [verification](TEST_v0.2.53.4.md) and [verified release files/backups](../diagnostics/v0.2.53.4/local-release.json). No outstanding design decision; rendered/connected acceptance remains deferred. R4C2 follows the corrective checkpoint.
 
 **C293 / corrective plan:** [Stockpile scope, UI capitalization and solutions to all five C292 findings](CORRECTIONS_C293.md). Preserve defense-only deposits, native recovery, exact destinations and server authority. No new gameplay choice; implementation remains next. Installed 0.2.53.3 unchanged.
 

@@ -10,6 +10,10 @@ Native write/read passes (54.9/62.8 seconds). The exact bag withdrawal and remov
 
 Probe corrections: the isolated fixture player had no square during shutdown encoding, and invoking the native constructor there crossed the Lua thread boundary. Constructor extraction now runs on the actual game Lua thread; shutdown byte encoding temporarily restores the fixture square. Both failed probes were rejected before the passing runs. Neither failure established a production exception. The final six English caption-only changes followed native probes; the final full validator and rebuilt manifest include those captions. Rendered SP and connected dedicated/listen acceptance remain pending; argument extraction/encoding is narrower evidence than a live connected transfer. Current owner `console.txt` remains the earlier 0.2.53.2 session, last written 2026-10-17 at03:54 local; no new owner test is inferred.
 
+## Installed build
+
+Installed from immutable `test/v0.2.53.4` / `9519a3399bfd4bf499582aa9c0ef13420a17253f`. All 285 source and 361 tagged/packaged/installed/archive files match. Both previous 0.2.53.3 package backups verify. [Installation record](../diagnostics/v0.2.53.4/install.json) | [Release hashes and backup evidence](../diagnostics/v0.2.53.4/local-release.json). C108 development delivery uses the existing branch/draft PR; no Workshop publication.
+
 ## Test now, when available
 
 1. Restart and confirm **0.2.53.4**. Scroll Manage and open **Details**; check headings/controls move together and Stockpile/Load labels have consistent capitals.

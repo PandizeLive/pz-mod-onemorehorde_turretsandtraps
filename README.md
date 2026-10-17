@@ -1,6 +1,6 @@
 # OMH: Turrets & Traps
 
-**C294 / approved corrections implemented:** [0.2.53.4 stockpile, names, Controller performance, remote renewal and UI labels](docs/PATCH_v0.2.53.4.md). [Verification and short test](docs/TEST_v0.2.53.4.md). Release verification is in progress; rendered/connected acceptance remains pending.
+**C294 / approved corrections installed:** [0.2.53.4 stockpile, names, Controller performance, remote renewal and UI labels](docs/PATCH_v0.2.53.4.md). [Verification and short test](docs/TEST_v0.2.53.4.md). All 361 installed/tagged/package/archive files and both prior-package backups verify; rendered/connected acceptance remains pending. [Release evidence](diagnostics/v0.2.53.4/local-release.json).
 
 **C293 / audit follow-up:** [Defense-only stockpile clarification, UI capitalization and five corrective solutions](docs/CORRECTIONS_C293.md). Planning recorded; installed 0.2.53.3 unchanged. Correct these issues before the held owner test and R4C2.
 
