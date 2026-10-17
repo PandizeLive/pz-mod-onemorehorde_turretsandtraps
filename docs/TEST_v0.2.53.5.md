@@ -4,6 +4,12 @@ C296, 2026-10-17. Owner reports 0.2.53.4 launch slowdown solved, but Manage Deta
 
 ## Automated verification
 
+### C297 owner findings, 2026-10-17
+
+Owner reports most behavior working, but missing Controller battery affordance, header/action crowding, black power toggle, rejected Stockpile-to-turret head installation and unsuccessful installed-item drops into Stockpile. Requests a dedicated connected native inventory component, explicitly **not moving the player's HUD**. [Diagnosis and proposed correction previews](CORRECTIONS_C297.md). Console confirms 0.2.53.5 SP and three `TransferCarried` head rejections (frames 8636/8862/9829); no T&T Lua exception/stack overflow found. Existing world metadata/skeleton warnings remain separate. Partial acceptance only; corrections and connected acceptance are outstanding. No gameplay changes from this review.
+
+### Original build checks
+
 - Full Kahlua/native translation and asset validator: **20,989 assertions**, 209 compiled Lua/translation inputs, 985 translated keys. Layout/page/read-only/order tests use UI doubles; they do not establish rendered acceptance.
 - Native server write probe passes adjacent access in six directions and diagonal edge handling; platform orders commit once, reject stale/cross-family requests, publish and survive pickup/redeployment. Native restart/read and Traps-only, Turrets-only and both-package startup checks pass.
 - Static package closure passes: Traps/Turrets stay independent, 160 combined sandbox options and 66 identical shared files. No shipped pcall/xpcall.

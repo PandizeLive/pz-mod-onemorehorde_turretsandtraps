@@ -1,5 +1,9 @@
 # Decision register
 
+## C297: attached native Stockpile and clearer Manage controls (2026-10-17)
+
+Owner reports 0.2.53.5 mostly working and requests a Controller battery slot, clear section/action separation, red/green power feedback and direct Manage/Stockpile drag transfers. Requests paired mockups, then explicitly clarifies the Stockpile must be a dedicated component connected to the Controller menu, not the player's repositioned HUD. [Findings, proposal and evidence](CORRECTIONS_C297.md). Preserve the native list/item system with a scoped adapter, exact inventory and existing authority/capacity. Read-only audit and mockups completed; layout proposal awaiting review, no new implementation/install or blanket acceptance implied.
+
 ## C296: expanding Details, grouped Load Order and Controller reach correction (2026-10-17)
 
 Owner directly requests Module Stats inside + Details, vertical expansion instead of whole-menu scrolling, category tooltips/removal of the drop hint, and a full-size grouped Load Order page. Owner reports disabled Assign/Open Manage and clarifies Access/Connections require standing inside the Controller world tile. Implement these corrections with existing ownership/power authority; no new recipe/balance decision. [Contract, evidence and limits](PATCH_v0.2.53.5.md). Owner separately reports C295 launch slowdown solved; exact cause remains unconfirmed. Rendered/connected acceptance is not inferred.
