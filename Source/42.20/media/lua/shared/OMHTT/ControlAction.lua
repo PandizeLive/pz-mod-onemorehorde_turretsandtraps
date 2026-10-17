@@ -6,14 +6,9 @@ local Action = OMHTTControlAction
 ---@return boolean valid
 function Action:isValid()
     local state = A.state(self.object)
-    if self.done or not state or state.id ~= self.id or not A.authorized(self.character, self.object, self.command == "Remote" or self.command == "Pulse")
+    if self.done or not state or state.id ~= self.id or not A.authorized(self.character, self.object, self.command == "Pulse")
         or self.object:getHealth() <= 0 then return false end
     if self.command == "Pulse" then return state.kind == "Button" end
-    if self.command == "Remote" then
-        local target = A.state(self.target)
-        return state.kind == "Controller" and state.powered == true and target and target.id == self.targetId
-            and target.controller == state.id and A.range(self.object, self.target)
-    end
     if not A.write(self.character, state) then return false end
     if self.command == "Name" then
         return state.kind ~= "Controller" and type(self.value) == "string" and #self.value <= 48 and not string.find(self.value, "[%c<>]")
@@ -41,10 +36,7 @@ function Action:complete()
     self.done = true
     local W = require("OMHTT/ControlWorld")
     local state = W.state(self.object)
-    if self.command == "Remote" then
-        A.session(self.character, self.object, self.target)
-        return true
-    elseif self.command == "Pulse" then
+    if self.command == "Pulse" then
         state.pulseUntil = getTimestampMs() + 1
         for i = 1, #state.links do
             local target = W.objects[state.links[i]]

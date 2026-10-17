@@ -93,6 +93,7 @@ def main():
     mod_errors = [line for line in text.splitlines() if "MOD:OMH:" in line and "Exception thrown" in line]
     assert not mod_errors, f"Native mod callbacks threw despite completion markers: {mod_errors}"
     assert "[OMHTT-Controls] native devices=3" in text, "Native control-device proof missing"
+    assert "[OMHTT-Controls] native-stock-transfer selectedBag=exact removedBag=rejected constructorArgs=retained" in text, "Native stockpile transfer proof missing"
     assert "[OMHTT-Heads] native recipes=3" in text, "Native head recipe/metadata proof failed"
     assert "[OMHTT-C247] recipes=5 drainableUses=8/2 tools=retained sounds=4 virtualNativeGun=no-materialized-rounds exactModule=preserved" in text, "Native content and virtual ammunition proof failed"
     assert "[OMHTT-Smoke] native-distance-parity samples=16 passed=true" in text, "Native accuracy parity failed"

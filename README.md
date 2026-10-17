@@ -1,5 +1,7 @@
 # OMH: Turrets & Traps
 
+**C294 / approved corrections implemented:** [0.2.53.4 stockpile, names, Controller performance, remote renewal and UI labels](docs/PATCH_v0.2.53.4.md). [Verification and short test](docs/TEST_v0.2.53.4.md). Release verification is in progress; rendered/connected acceptance remains pending.
+
 **C293 / audit follow-up:** [Defense-only stockpile clarification, UI capitalization and five corrective solutions](docs/CORRECTIONS_C293.md). Planning recorded; installed 0.2.53.3 unchanged. Correct these issues before the held owner test and R4C2.
 
 **C292 / deferred-test audit (2026-10-17).** Owner cannot test and requests another audit. Five adverse paths reproduced: stockpile withdrawal destination loss, missing native transfer callback, stale unassigned-head placeholder, unbudgeted Controller list finalization and queued remote-renewal growth. [Evidence and recommended corrections](docs/AUDIT_C292_v0.2.53.3.md). All357 installed files still match0.2.53.3; no production/package/version/install change. This is an audit, not owner or connected-MP acceptance. Correct these gaps before the deferred test and R4C2.

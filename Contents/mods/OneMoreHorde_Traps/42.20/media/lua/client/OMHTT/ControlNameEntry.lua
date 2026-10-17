@@ -49,7 +49,7 @@ function Entry:refresh()
         self.observed, self.submitted = name, name
         self:setText(name)
     end
-    local head, number = state and state.numberHead, state and state.number
+    local head, number = state and state.headType, state and state.number
     if not self.placeholderReady or head ~= self.placeholderHead or number ~= self.placeholderNumber then
         self.placeholderReady, self.placeholderHead, self.placeholderNumber = true, head, number
         self:setPlaceholderText(self.object and U.name(self.object, true) or "")

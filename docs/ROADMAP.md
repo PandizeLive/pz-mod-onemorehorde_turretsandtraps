@@ -1,5 +1,7 @@
 # Phases and checkpoints
 
+**C294 / corrective checkpoint implemented:** [0.2.53.4](PATCH_v0.2.53.4.md) addresses all five C292 findings, the related stale-stockpile lease path and capitalization. Automated checks pass; native/release verification and owner acceptance are tracked in the [test record](TEST_v0.2.53.4.md). R4C2 remains the next content checkpoint.
+
 **C293 / before the held test and R4C2:** implement the [five integration corrections and consistent UI labels](CORRECTIONS_C293.md). This review does not expand stockpile admission or change gameplay. Installed 0.2.53.3 remains unchanged and pending rendered/connected acceptance.
 
 **C292 / deferred-test audit (2026-10-17).** Owner cannot test and requests another audit. Five adverse paths reproduced: stockpile withdrawal destination loss, missing native transfer callback, stale unassigned-head placeholder, unbudgeted Controller list finalization and queued remote-renewal growth. [Evidence and recommended corrections](AUDIT_C292_v0.2.53.3.md). All357 installed files still match0.2.53.3; no production/package/version/install change. This is an audit, not owner or connected-MP acceptance. Correct these gaps before the deferred test and R4C2.

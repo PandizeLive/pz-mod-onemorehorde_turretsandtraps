@@ -1,5 +1,7 @@
 # 0.2.53.3 verification and short test
 
+**Superseded for testing by C294 / [0.2.53.4](TEST_v0.2.53.4.md):** the five follow-up findings are corrected there. Keep this version's evidence historical; use the newer four-step test.
+
 **C293 follow-up:** [Stockpile clarification, capitalization findings and corrective verification plan](CORRECTIONS_C293.md). No new test run or acceptance is implied; keep the four-step owner test held until corrections are ready.
 
 **C292 audit:** five additional integration defects reproduced; see [findings](AUDIT_C292_v0.2.53.3.md). Owner test remains deferred. Installed0.2.53.3 is unchanged; recommend correcting these before running the retained short test.

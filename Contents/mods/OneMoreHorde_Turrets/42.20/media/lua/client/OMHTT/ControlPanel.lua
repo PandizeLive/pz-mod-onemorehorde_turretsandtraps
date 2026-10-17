@@ -30,41 +30,37 @@ end
 ---@return nil
 function Panel:scan()
     if not self.scanIndex then
-        self.scanIndex, self.scanResults = 0, {}
+        self.scanIndex, self.scanObjectIndex, self.scanResults, self.scanSelection = 0, 0, {}, {}
     end
     local square, deadline = self.object:getSquare(), getTimestampMs() + 2
+    if not square then return end
     for step = 1, 64 do
         local index = self.scanIndex
         if index >= 1681 then
-            self.devices:clear()
-            local host = A.state(self.object)
-            for i = 1, #self.scanResults do
-                local object = self.scanResults[i]
-                local state = A.state(object)
-                if state then
-                    self.devices:addItem(U.name(object), object)
-                    if object == self.selected then
-                        self.devices.selected = #self.devices.items
-                    end
-                end
-            end
-            self.scanIndex, self.scanResults = nil, nil
+            self.devices.items, self.devices.count = self.scanResults, #self.scanResults
+            self.devices.itemheightoverride = {}
+            self.devices.selected = self.scanSelection[self.selected] or 1
+            self.devices:setScrollHeight(#self.scanResults * self.devices.itemheight)
+            self.scanIndex, self.scanResults, self.scanSelection, self.scanObjectIndex = nil, nil, nil, nil
             self.scanDue = getTimestampMs() + 5000
             return
         end
         local dx, dy = math.floor(index / 41) - 20, index % 41 - 20
-        self.scanIndex = index + 1
+        local objects
         if dx * dx + dy * dy <= 400 then
             local tile = getCell():getGridSquare(square:getX() + dx, square:getY() + dy, square:getZ())
-            local objects = tile and tile:getObjects()
-            if objects then
-                for i = 0, objects:size() - 1 do
-                    local object = objects:get(i)
-                    if A.state(object) then
-                        self.scanResults[#self.scanResults + 1] = object
-                    end
-                end
+            objects = tile and tile:getObjects()
+        end
+        if objects and self.scanObjectIndex < objects:size() then
+            local object = objects:get(self.scanObjectIndex)
+            self.scanObjectIndex = self.scanObjectIndex + 1
+            if object:getObjectIndex() >= 0 and A.state(object) and not self.scanSelection[object] then
+                local row = #self.scanResults + 1
+                self.scanResults[row] = {text = U.name(object), item = object, itemindex = row, height = self.devices.itemheight}
+                self.scanSelection[object] = row
             end
+        else
+            self.scanIndex, self.scanObjectIndex = index + 1, 0
         end
         if getTimestampMs() >= deadline then return end
     end
@@ -175,26 +171,26 @@ function Panel.open(player, object)
     panel.devices.itemheight = 30
     panel:addChild(panel.devices)
     panel.nameEntry = require("OMHTT/ControlNameEntry").create(panel, nil, 274, 90, 366, 28)
-    panel.manage = button(panel, 274, 246, 246, "Open full Manage", function(self)
+    panel.manage = button(panel, 274, 246, 246, getText("UI_OMHTT_OpenManage"), function(self)
         if U.remote(self.player, self.object, self.selected) then
             require("OMHTT/TurretManage")(self.selected, self.player, self.object)
         end
     end)
-    panel.assign = button(panel, 532, 246, 258, "Assign / unassign", function(self)
+    panel.assign = button(panel, 532, 246, 258, getText("UI_OMHTT_Assign"), function(self)
         local state = A.state(self.selected)
         if state then
             U.command(self.player, self.object, "Assign", state.controller ~= A.state(self.object).id, self.selected)
         end
         self.scanDue = 0
     end)
-    panel.source = button(panel, 274, 292, 166, "Use as input", function(self) self.linkSource = self.selected end)
-    panel.link = button(panel, 450, 292, 166, "Link selected", function(self)
+    panel.source = button(panel, 274, 292, 166, getText("UI_OMHTT_SelectInput"), function(self) self.linkSource = self.selected end)
+    panel.link = button(panel, 450, 292, 166, getText("UI_OMHTT_LinkInput"), function(self)
         if self.linkSource and self.selected then
             U.remote(self.player, self.object, self.linkSource)
             U.command(self.player, self.linkSource, "Link", true, self.selected)
         end
     end)
-    panel.unlink = button(panel, 626, 292, 164, "Unlink selected", function(self)
+    panel.unlink = button(panel, 626, 292, 164, getText("UI_OMHTT_UnlinkInput"), function(self)
         if self.linkSource and self.selected then
             U.remote(self.player, self.object, self.linkSource)
             U.command(self.player, self.linkSource, "Link", false, self.selected)
@@ -214,7 +210,7 @@ function Panel.open(player, object)
     local stock = button(panel, 532, 386, 258, getText("UI_OMHTT_OpenStockpile"), function(self) self:stockpile() end)
     panel.stockButton = stock
     stock:setEnable(A.state(object).kind == "Controller")
-    panel.clearInputs = button(panel, 274, 430, 246, "Clear input links", function(self)
+    panel.clearInputs = button(panel, 274, 430, 246, getText("UI_OMHTT_ClearInputs"), function(self)
         if self.selected then
             U.command(self.player, self.selected, "ClearInputs")
         end

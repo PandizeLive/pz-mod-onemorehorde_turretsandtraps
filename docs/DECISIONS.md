@@ -1,5 +1,9 @@
 # Decision register
 
+## C294: C293 corrective patch approved (2026-10-17)
+
+Owner: "Approved" following the stockpile clarification, capitalization audit and five recommended corrections. Implement, validate, install and mirror under the established local workflow; no additional gameplay decision is required. [0.2.53.4 implementation](PATCH_v0.2.53.4.md). Preserve defense-only admission and native recovery of existing items. Related validation closes stale remote-stockpile access from local turret proximity and handles synchronized replacement items for native callbacks. Connected and rendered acceptance are still pending, not waived by this approval.
+
 ## C293: stockpile clarification, capitalization and corrective proposals (2026-10-17)
 
 Owner asks why backpacks/clothing appeared in the audit, reaffirms turret/trap-only storage, requests a UI capitalization check, and asks to consider solutions to the listed findings. [Reviewed contract and recommended corrections](CORRECTIONS_C293.md). The backpack is a withdrawal destination; clothing describes legacy-item recovery, not admission. Keep the existing scope. Title-case actions/short labels and the five engineering corrections are recommended without a new gameplay decision. This is review/planning, not a new installation or test acceptance. Standing C108/C119 authorize recording and mirroring the findings.

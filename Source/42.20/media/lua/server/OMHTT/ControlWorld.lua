@@ -498,13 +498,21 @@ function W.packTurret(object, item)
     W.removed(object)
 end
 
----@param object IsoObject Assigned turret
+---@param object IsoObject Placed turret
+---@param headItem InventoryItem? Current head
 ---@return nil
 function W.number(object, headItem)
     local state = W.state(object)
-    if not state or not state.controller then return end
+    if not state then return end
     local head = headItem and headItem:getFullType() or "Base"
-    if state.numberHead == head and state.numberController == state.controller then return end
+    local changed = state.headType ~= head
+    state.headType = head
+    if not state.controller or (state.numberHead == head and state.numberController == state.controller) then
+        if changed then
+            W.publish(object)
+        end
+        return
+    end
     local maximum = 0
     for _, other in pairs(W.records().records) do
         if other.controller == state.controller and other.numberHead == head then

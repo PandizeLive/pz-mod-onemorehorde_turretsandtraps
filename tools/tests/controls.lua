@@ -70,8 +70,8 @@ check(Action:new(owner, plate, "Access", "Faction", nil, input.id):complete() an
 faction.getOwner = function() return "new-owner" end
 check(not A.authorized(stranger, plate), "Disbanded/recreated faction cannot inherit access")
 check(Action:new(owner, controller, "Assign", true, target, host.id, output.id):complete(), "Explicit assignment")
-check(Action:new(owner, controller, "Remote", nil, target, host.id, output.id):complete() and A.authorized(owner, target), "Scoped remote session")
-check(not Action:new(stranger, controller, "Remote", nil, target, host.id, output.id):complete() or not A.authorized(stranger, target), "Read session cannot grant writes")
+check(require("OMHTT/ControlRemote").request(owner, controller, target) and A.authorized(owner, target), "Scoped remote session")
+check(not require("OMHTT/ControlRemote").request(stranger, controller, target) or not A.authorized(stranger, target), "Read session cannot grant writes")
 host.powered = false
 check(not A.authorized(owner, target), "Controller outage blocks remote mutation")
 host.powered = true

@@ -1,5 +1,9 @@
 # Release state and publication policy
 
+## 0.2.53.4 / C294 — stockpile and controller audit corrections
+
+Owner-approved [corrective patch](PATCH_v0.2.53.4.md); [validation and test](TEST_v0.2.53.4.md). Full validator passes 20,982 assertions; native write/read and all independent package selections pass. Preparing tagged installation; do not treat this entry as installation evidence. No Workshop upload or cumulative-changelog reset.
+
 ## 0.2.53.3 / C291 — compact management and stockpile correction
 
 Owner-authorized correction; [patch/audit](PATCH_v0.2.53.3.md) and [verification](TEST_v0.2.53.3.md). 20,909 assertions, native save/reload and all three independent package startup checks pass. Installed from immutable `test/v0.2.53.3` / `9aab2905ab6e003654e1ac1e7f4df1e51ab623b5`; all283 source and357 tagged/packaged/installed/archive files match, and both0.2.53.2 backups verify. [Release evidence](../diagnostics/v0.2.53.3/local-release.json). Rendered and connected multiplayer acceptance remain pending. No Workshop upload or cumulative-changelog reset.

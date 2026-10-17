@@ -1,5 +1,7 @@
 # C293 — stockpile clarification, capitalization and audit corrections
 
+**C294 outcome:** owner subsequently approved implementation. [0.2.53.4](PATCH_v0.2.53.4.md) implements this plan; use its [verification record](TEST_v0.2.53.4.md) for current delivery/acceptance status. The remainder preserves the original planning provenance.
+
 Owner request, 2026-10-17: confirm that stockpiles hold turret/trap supplies only, check UI capitalization, and consider solutions to the five C292 findings. This records the review and recommended implementation, not a new installed patch or test acceptance. Installed version remains 0.2.53.3. [Underlying reproductions](AUDIT_C292_v0.2.53.3.md).
 
 ## Stockpile contract and clarification

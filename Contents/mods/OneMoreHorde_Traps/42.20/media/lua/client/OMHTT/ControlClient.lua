@@ -5,6 +5,7 @@ require("TimedActions/ISInventoryTransferAction")
 local A = require("OMHTT/ControlAccess")
 local Action = require("OMHTT/ControlAction")
 local Transfer = require("OMHTT/ControlTransferAction")
+Transfer.setOnComplete = ISInventoryTransferAction.setOnComplete
 local C = require("OMHTT/ControlDefinitions")
 local U = {}
 require("OMHTT/ControlInventory")
@@ -47,11 +48,7 @@ end
 ---@param target IsoObject Assigned device
 ---@return boolean opened
 function U.remote(player, controller, target)
-    local state, host = A.state(target), A.state(controller)
-    if not host or not state or not host.powered or state.controller ~= host.id or not A.near(player, controller) then return false end
-    A.session(player, controller, target)
-    U.command(player, controller, "Remote", nil, target)
-    return true
+    return require("OMHTT/ControlRemote").request(player, controller, target)
 end
 
 ---@param object IsoObject Device
@@ -62,8 +59,8 @@ function U.name(object, automatic)
     if not state then return "" end
     if state.kind ~= "Controller" and not automatic and state.name and state.name ~= "" then return state.name end
     if state.kind == "Turret" then
-        local head = require("OMHTT/Turret").contents(object:getContainer()).head
-        local name = head and head:getDisplayName() or getText("UI_OMHTT_TurretBase")
+        local head = state.headType
+        local name = head and head ~= "Base" and getItemNameFromFullType(head) or getText("UI_OMHTT_TurretBase")
         return name .. (state.number and " " .. state.number or "")
     end
     return getText("UI_OMHTT_Control" .. state.kind)
@@ -196,7 +193,11 @@ function ISInventoryTransferAction:new(player, item, source, destination, time)
                 return require("OMHTT/TurretTransferAction"):new(player, turret, item, not incoming, record.id, nil, nil, incoming)
             end
         end
-        return Transfer:new(player, object, item, incoming == true, state.id)
+        local bag
+        if not incoming and destination ~= player:getInventory() then
+            bag = destination and destination:getContainingItem() or false
+        end
+        return Transfer:new(player, object, item, incoming == true, state.id, bag)
     end
     return nativeTransfer(self, player, item, source, destination, time)
 end

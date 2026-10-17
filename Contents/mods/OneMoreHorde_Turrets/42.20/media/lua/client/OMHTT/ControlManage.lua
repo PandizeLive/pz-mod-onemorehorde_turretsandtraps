@@ -12,9 +12,9 @@ function E.create(panel)
     panel.nameEntry = require("OMHTT/ControlNameEntry").create(panel, panel.object, 12,
         panel.titleHeight + 4, panel.width - weightWidth - 24, row)
     if panel.controller then
-        panel.sourceButton = ISButton:new(12, panel.nameEntry.y + row + 6, panel.width - 24, row, "Transfer destination: Your inventory", panel, function(self)
+        panel.sourceButton = ISButton:new(12, panel.nameEntry.y + row + 6, panel.width - 24, row, getText("UI_OMHTT_ToInventory"), panel, function(self)
             self.toStockpile = not self.toStockpile
-            self.sourceButton:setTitle(self.toStockpile and "Transfer destination: Controller stockpile" or "Transfer destination: Your inventory")
+            self.sourceButton:setTitle(self.toStockpile and getText("UI_OMHTT_ToStockpile") or getText("UI_OMHTT_ToInventory"))
             if self.toStockpile then
                 require("OMHTT/ControlPanel").stockpile(self, self.controller)
             end
@@ -47,7 +47,7 @@ function E.refresh(panel)
     local weight = storage:getCapacityWeight() + 6
     panel.weightLabel = string.format("Weight: %.1f%s", weight, weight > 100 and " !" or "")
     if panel.sourceButton then
-        panel.sourceButton:setTitle(panel.toStockpile and "To stockpile" or "To inventory")
+        panel.sourceButton:setTitle(panel.toStockpile and getText("UI_OMHTT_ToStockpile") or getText("UI_OMHTT_ToInventory"))
         panel.sourceButton:setEnable(writable)
     end
 end

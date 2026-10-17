@@ -334,6 +334,8 @@ public final class KahluaCheck {
             {"_", "tools/tests/control_ui_bootstrap.lua"},
             {"OMHTT/ControlWindowDrag", base + "client/OMHTT/ControlWindowDrag.lua"},
             {"OMHTT/ControlInventory", base + "client/OMHTT/ControlInventory.lua"},
+            {"OMHTT/ControlTransferCallbacks", base + "client/OMHTT/ControlTransferCallbacks.lua"},
+            {"OMHTT/ControlRemote", base + "shared/OMHTT/ControlRemote.lua"},
             {"OMHTT/ControlClient", base + "client/OMHTT/ControlClient.lua"},
             {"OMHTT/ControlNameEntry", base + "client/OMHTT/ControlNameEntry.lua"},
             {"OMHTT/ControlManage", base + "client/OMHTT/ControlManage.lua"},
@@ -436,6 +438,7 @@ public final class KahluaCheck {
             {"OMHTT/ControlOverlay", base + "client/OMHTT/ControlOverlay.lua"},
             {"_", "tools/tests/control_panel.lua"},
             {"_", "tools/tests/control_inventory.lua"},
+            {"_", "tools/tests/control_corrections.lua"},
             {"_", "tools/tests/horde_defense.lua"},
             {"_", "tools/tests/defense_combat_network.lua"},
             {"OMHTT/TurretTackView", base + "client/OMHTT/TurretTackView.lua"},
@@ -455,6 +458,11 @@ public final class KahluaCheck {
                     call.invoke(thread, nativeChunk, new Object[0]);
                 }
                 if (stage[1].equals("tools/tests/control_ui_bootstrap.lua")) {
+                    Path inventoryAction = Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/client/TimedActions/ISInventoryTransferAction.lua");
+                    String nativeAction = Files.readString(inventoryAction);
+                    String callback = nativeAction.substring(nativeAction.indexOf("function ISInventoryTransferAction:setOnComplete("), nativeAction.indexOf("function ISInventoryTransferAction:getTimeDelta()"));
+                    Object callbackChunk = compile.invoke(null, new java.io.StringReader(callback), inventoryAction.toString(), env);
+                    call.invoke(thread, callbackChunk, new Object[0]);
                     Path ui = Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/client/ISUI/ISUIElement.lua");
                     String nativeLua = Files.readString(ui);
                     String source = nativeLua.substring(nativeLua.indexOf("function ISUIElement:setScrollChildren(b)"), nativeLua.indexOf("function ISUIElement:getScrollChildren()"));

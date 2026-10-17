@@ -57,11 +57,10 @@ end
 ---@param object IsoObject Assigned target
 ---@param read boolean? Read-only request
 ---@return boolean reachable
-function A.authorized(player, object, read)
+function A.remoteAllowed(player, object, read)
     if not player or player:isDead() or not object or object:getObjectIndex() < 0 then return false end
     local state = A.state(object)
     if not read and not A.write(player, state) then return false end
-    if A.near(player, object) then return true end
     local sessions = A.remote[player]
     local session = sessions and sessions[object]
     if not session or session.target ~= object or getTimestampMs() > session.untilTime then return false end
@@ -74,12 +73,22 @@ function A.authorized(player, object, read)
 end
 
 ---@param player IsoPlayer Operator
+---@param object IsoObject Device
+---@param read boolean? Read-only request
+---@return boolean reachable
+function A.authorized(player, object, read)
+    if not player or player:isDead() or not object or object:getObjectIndex() < 0 then return false end
+    if not read and not A.write(player, A.state(object)) then return false end
+    return A.near(player, object) or A.remoteAllowed(player, object, read)
+end
+
+---@param player IsoPlayer Operator
 ---@param object IsoObject Turret
 ---@return IsoObject? controller Authorized remote stockpile
 function A.stockpile(player, object)
     local sessions = A.remote[player]
     local session = sessions and sessions[object]
-    if session and session.target == object and A.authorized(player, object) then
+    if session and session.target == object and A.remoteAllowed(player, object) then
         return session.controller
     end
 end
@@ -94,7 +103,13 @@ function A.session(player, controller, target)
         sessions = setmetatable({}, {__mode = "k"})
         A.remote[player] = sessions
     end
-    sessions[target] = {controller = controller, target = target, untilTime = getTimestampMs() + 15000}
+    local now = getTimestampMs()
+    for object, session in pairs(sessions) do
+        if session.untilTime < now then
+            sessions[object] = nil
+        end
+    end
+    sessions[target] = {controller = controller, target = target, untilTime = now + 15000}
 end
 
 return A

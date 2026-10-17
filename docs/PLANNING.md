@@ -1,5 +1,7 @@
 # Planning
 
+**C294 / C293 approved and implemented:** [0.2.53.4 stockpile/controller corrections](PATCH_v0.2.53.4.md), with [verification](TEST_v0.2.53.4.md). No outstanding design decision; release verification and deferred rendered/connected acceptance remain distinct. R4C2 follows the corrective checkpoint.
+
 **C293 / corrective plan:** [Stockpile scope, UI capitalization and solutions to all five C292 findings](CORRECTIONS_C293.md). Preserve defense-only deposits, native recovery, exact destinations and server authority. No new gameplay choice; implementation remains next. Installed 0.2.53.3 unchanged.
 
 **C292 / deferred-test audit (2026-10-17).** Owner cannot test and requests another audit. Five adverse paths reproduced: stockpile withdrawal destination loss, missing native transfer callback, stale unassigned-head placeholder, unbudgeted Controller list finalization and queued remote-renewal growth. [Evidence and recommended corrections](AUDIT_C292_v0.2.53.3.md). All357 installed files still match0.2.53.3; no production/package/version/install change. This is an audit, not owner or connected-MP acceptance. Correct these gaps before the deferred test and R4C2.

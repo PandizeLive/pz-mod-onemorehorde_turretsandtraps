@@ -177,6 +177,28 @@ public final class NativePersistenceCheck {
         Object state = call(get(restored, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTControl");
         check("control-owner".equals(call(state, "rawget", new Class<?>[]{Object.class}, "owner")), "Heavy controller owner lost");
         System.out.println("[OMHTT-Controls] persistence mode=" + mode + " items=250 weight=over100 owner=preserved");
+        Object transfer = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeStockTransfer");
+        check(transfer != null, "Stockpile transfer fixture missing");
+        Object operator = call(transfer, "rawget", new Class<?>[]{Object.class}, "character");
+        Object bag = call(transfer, "rawget", new Class<?>[]{Object.class}, "destinationBag");
+        Object networkAction = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeStockNetwork");
+        check(networkAction != null, "Native constructor extraction must run on the game Lua thread");
+        var argumentField = networkAction.getClass().getDeclaredField("actionArgs");
+        argumentField.setAccessible(true);
+        Object arguments = argumentField.get(networkAction);
+        check(call(arguments, "rawget", new Class<?>[]{Object.class}, "destinationBag") == bag, "Native constructor argument extraction lost selected bag");
+        check(call(arguments, "rawget", new Class<?>[]{Object.class}, "character") == operator, "Native constructor argument extraction lost operator");
+        ByteBuffer encoded = ByteBuffer.allocate(16384);
+        var squareField = operator.getClass().getField("square");
+        Object previousSquare = squareField.get(operator);
+        squareField.set(operator, call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeStockSquare"));
+        try {
+            call(arguments, "save", new Class<?>[]{ByteBuffer.class}, encoded);
+        } finally {
+            squareField.set(operator, previousSquare);
+        }
+        check(encoded.position() > 0, "Native transfer arguments did not encode");
+        System.out.println("[OMHTT-Controls] native-stock-transfer selectedBag=exact removedBag=rejected constructorArgs=retained bytes=" + encoded.position());
         Object ammo = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeLargeAmmo");
         Path ammoPath = directory.resolve("large-ammo.bin");
         if (mode.equals("write")) {

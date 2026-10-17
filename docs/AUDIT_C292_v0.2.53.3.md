@@ -1,5 +1,7 @@
 # C292 — deferred-test audit of 0.2.53.3
 
+**C294 resolution:** the five findings are addressed in [0.2.53.4](PATCH_v0.2.53.4.md), with [corrective regression/native evidence](TEST_v0.2.53.4.md). The original adverse reproductions remain in Git commit `52fad39`; the current audit launcher invokes the new expected-behavior checks. Historical audit results below are preserved, not reclassified as owner acceptance.
+
 **C293 clarification:** backpack refers to withdrawing an allowed item into a carried bag; clothing refers to recovery of an item stored before the defense-supply filter. Neither is a proposed new stockpile category. [Concrete corrective plan and UI capitalization review](CORRECTIONS_C293.md).
 
 Owner request,2026-10-17: “Unable to test this moment. Audit and check for any issues.” This is an audit checkpoint, not a new gameplay approval or acceptance result. Audited installed source commit `9aab2905ab6e003654e1ac1e7f4df1e51ab623b5`, with release documentation at `79188293dca0ae17fe8ff0a7ed9d55ac5a083535`. GitHub dev ancestry and the active development PR were reconciled. Source, packages, version, immutable tag and installation are unchanged.
