@@ -1,5 +1,26 @@
 # R4C1 — buttons, pressure plates and links
 
+## C282: remaining decisions scoped to storage and expansion progression, 2026-10-16
+
+Owner asks whether anything else needs deciding. No new implementation/storage selection is inferred from this question. R4C1 signal/access/recipes/controller range/power/naming choices remain settled; Poke Floor content remains a separate R4C2 discussion and does not block existing receivers. Save/load, concurrent MP transfers, native heavy pickup/drop, large-inventory performance and package independence are implementation verification, not extra owner design decisions.
+
+**1 — Storage approach (last turn's unanswered proposal). 1A recommended:** controlled over-capacity native real-item inventory for turrets, native two-hand pickup when ordinary pickup cannot fit; use the same approach for the controller while retaining its selected500-weight stockpile limit. This explicitly replaces the five-compartment implementation proposal while preserving capacity/source/ownership design. Keep full actual contents weight, bounded authorized transfers and warnings. **1B:** retain normal native storage admission; the approved large ammo ceilings may not physically fit, and loading them is not claimed supported. No virtual conversion, generic-container override or automatic resupply is included.
+
+**2 — Lower expansion tiers. 2A recommended:** rebalance the complete fixed progression using the proposed table below; preserve current no-kit defaults and approved Large limits. **2B:** increase Large only, leaving lower tiers at their current limits; simpler balance change but a large last-tier jump. Counts are total allowances, not added bonuses, and do not change module-slot progression.
+
+| Ammunition | No kit (unchanged) | Makeshift | Small | Medium | Large (approved) |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Potatoes |100 |250 |500 |750 |1000 |
+| Spears |40 |100 |175 |250 |350 |
+| Launchable bombs |20 |75 |150 |250 |350 |
+| Scrap |20 |200 |400 |650 |900 |
+| Ordinary firearm rounds |250 |1000 |2500 |3750 |5000 |
+| Shotgun shells |250 |400 |600 |800 |1000 |
+
+These lower-tier numbers and storage choice are proposals only. Owner's current defaults may be overridden by saved Sandbox settings; implementation must preserve overrides and reconcile exposure rather than blindly overwrite saves. Real contents are preserved when swapping heads or reducing capacity; established admission/service checks must not delete excess ammo. Void remains unchanged and portable/weight-free; battery/condition balance and automatic controller refill are outside this scope. No further generic design questionnaire should be inserted after these two selections unless implementation reveals a concrete gameplay tradeoff.
+
+Documentation only, no version/install/tests;0.2.52 acceptance deferred.
+
 ## C281: ammo defaults approved; controlled over-capacity storage investigation, 2026-10-16
 
 Owner accepts C280's proposed defaults and asks how heavy-object lifting permits more than100 weight. Approved Large ceilings:1000 potatoes,350 spears,350 launchable bombs,900 scrap,5000 ordinary firearm rounds,1000 shotgun shells. Fixed balance only; lower-tier progression remains unsettled. Rotary heads remain ammo-free. No Void retirement, weight reduction, battery rebalance or completed implementation is implied.
