@@ -1,5 +1,9 @@
 # Decision register
 
+## C299: OMH family colors audited; T&T accent choice open (2026-10-17)
+
+Owner requests palette comparison before approving the patch. [Source-backed findings and three accent proposals](CORRECTIONS_C297.md#c299--omh-family-palette-audit-and-tt-accent-proposals-2026-10-17): Horde Night red/gold, Cure blue and Trait Shop green identities; native menus also share red/gold. Recommend 1A copper-orange, alternatives 1B violet / 1C steel. Preserve C298 red brand/white menu title, power semantics and rarity colors. No accent selected, sibling change, gameplay patch or installation.
+
 ## C298: One More Horde menu-title branding (2026-10-17)
 
 Owner requests `One More Horde - Turret Management Menu` and `One More Horde - Controller Menu`, with red brand text and white separator/suffix. Existing Horde Night title RGB 0.85/0.25/0.25 verified; editable preview updated. [Exact requirement and implementation notes](CORRECTIONS_C297.md#c298--one-more-horde-title-branding-2026-10-17). Owner's "Once confirmed, we can approve" reserves final patch approval; no gameplay change or install this turn.

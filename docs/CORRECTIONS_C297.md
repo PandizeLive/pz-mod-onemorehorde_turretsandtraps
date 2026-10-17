@@ -50,3 +50,30 @@ Owner likes the proposed layout and requests the exact titles **One More Horde -
 Confirmed feasible without changing the draggable title-bar behavior. Reuse the existing Horde Night brand-title RGB **0.85, 0.25, 0.25** (approximately `#D94040`), verified read-only in sibling `OMH_ScoreboardUI.lua` at the `IGUI_OMH_Title` draw call. The white suffix uses RGB 1, 1, 1. Render as measured text segments in the title bar rather than another input/control; retain the right-hand close button and account for font scaling/narrow layouts. No sibling changes or new gameplay are authorized by this branding request.
 
 The editable preview now contains both branded titles. The C297 image snapshots above predate this title-only addition and remain evidence of the original reviewed layout. Preview/source structure checked; no new engine test or acceptance claim. Include the branding in the C297 corrective scope when approved. Installed 0.2.53.5 remains unchanged.
+
+## C299 — OMH family palette audit and T&T accent proposals (2026-10-17)
+
+Owner asks to compare OMH color schemes, recalling blue Cure Defense, green Trait Shop and red/yellow Horde Night. This is a follow-up design discussion before patch approval, not approval to recolor or modify sibling projects.
+
+Read-only evidence:
+
+| Surface | Current colors | Source |
+| --- | --- | --- |
+| Horde Night / main OMH website | Red `#E0312F`, gold `#E0B82F`, charcoal surfaces | Sibling `OMH Website/app/globals.css`, root tokens plus `.red-label` and `.hero h1 span` |
+| Cure Defense website identity | Light blue `#85C6FF`, darker blue border `#285E8C`, blue-black background `#0A2743` | Same stylesheet, `.cure-section` |
+| Trait Shop website identity | Green `#92DB9A`, darker green border `#357345`, green-black background `#102F1B` | Same stylesheet, `.trait-shop-section` |
+| Horde Night in-game title | Red RGB 0.85/0.25/0.25; gold subtitle 0.95/0.75/0.2 | `OMH_ScoreboardUI.lua`, `IGUI_OMH_Title` / `IGUI_OMH_ScoreboardTitle` drawing |
+| Trait Shop in-game title | Same red/gold titles; positive-trait green `#72B86D` | `OMHTS_Presentation.lua` constants and `OMHTS_ShopWindow.lua` title/positive-list drawing |
+| Cure Defense custody menu | Native title, gold heading and cyan explanatory accent; red urgency | `OMH_CureCustodyUI.lua`, `CustodyWindow.prerender` |
+
+The owner recalls the product identities correctly, but the live source does **not** enforce a single unique color throughout each in-game UI. Do not describe website branding as a uniform runtime theme or treat these local source reads as verification of the deployed website/Workshop snapshot.
+
+Proposed **1A (recommended): Copper-orange `#E7A05A`**, with a restrained dark-brown accent surface `#30251B`. Distinct from Cure's blue and Trait Shop's green and suitable for this mechanical theme; warmer/more orange than Horde Night gold. Use for selected controls and small section accents, not every border or text line.
+
+**1B: Violet `#B99AEA`**, dark surface `#282132`. Strong family separation, but overlaps the existing Mythic visual language more noticeably.
+
+**1C: Steel `#C2C9D0`**, dark surface `#272B30`. Quiet and close to native Zomboid, but less distinctive from ordinary gray UI.
+
+Recommended application preserves the C298 **red One More Horde / white menu-name** titles, charcoal section bodies and mostly white labels. The chosen T&T accent is secondary. Keep green/red power, error feedback and calculated rarity colors independent; those encode states, not product branding. Rarity already occupies many hues, so location and restraint matter more than claiming any color is exclusively available. If the owner intends to replace the brand red itself, discuss that explicitly rather than silently overriding C298.
+
+No accent selected or applied to the combined preview yet. The preview retains C298 red/white titles. Final corrective-patch approval remains pending; no gameplay/source/package/install change.

@@ -1,5 +1,7 @@
 # Planning
 
+**C299 / accent choice open:** [Family palette audit and 1A copper-orange / 1B violet / 1C steel proposals](CORRECTIONS_C297.md#c299--omh-family-palette-audit-and-tt-accent-proposals-2026-10-17). Recommend 1A for restrained T&T-specific accents, retaining red One More Horde / white menu titles and independent power/rarity semantics. No selected accent or patch approval; gameplay remains 0.2.53.5.
+
 **C298 / branding added to C297 scope:** [Exact red/white menu titles](CORRECTIONS_C297.md#c298--one-more-horde-title-branding-2026-10-17). Preview updated using established Horde Night red. No new design choice needed; final corrective-patch approval remains pending, matching the owner's "Once confirmed, we can approve." No gameplay/install change.
 
 **C297 / proposed corrective layout and native Stockpile integration:** [Owner findings, exact clarification, causes and paired mockups](CORRECTIONS_C297.md). Dedicated attached Stockpile component leaves player HUD unchanged; visible ordinary Battery slot, separated header/action rows, persistent red/green power feedback and both-direction exact-item transfers. Review complete; proposal awaiting layout review, no gameplay patch/install. Versioned findings recorded in [0.2.53.5 test evidence](TEST_v0.2.53.5.md). Corrections remain before R4C2.

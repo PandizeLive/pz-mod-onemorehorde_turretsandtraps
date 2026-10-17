@@ -1,5 +1,7 @@
 # Current development and planning handoff
 
+**C299 / family palette comparison (2026-10-17).** [Verified current source colors and T&T accent options](CORRECTIONS_C297.md#c299--omh-family-palette-audit-and-tt-accent-proposals-2026-10-17). Recommend copper-orange secondary accents while retaining C298 red/white titles; violet and steel alternatives. No accent chosen or corrective-patch approval yet. Preview shows C298 titles, installed 0.2.53.5 unchanged; C297 corrections remain before R4C2.
+
 **C298 / menu-title branding confirmed (2026-10-17).** [C297 follow-up](CORRECTIONS_C297.md#c298--one-more-horde-title-branding-2026-10-17): red **One More Horde**, white **- Turret Management Menu** / **- Controller Menu**, using the existing Horde Night title red. Editable preview updated; owner reserves final corrective-patch approval. Installed 0.2.53.5 unchanged; C297 corrections precede R4C2.
 
 **C297 / 0.2.53.5 owner findings and previews (2026-10-17).** Owner reports mostly working, with battery affordance, section crowding, black power state and bidirectional Stockpile transfer gaps. Clarifies the Stockpile should be a dedicated connected native component, not a moved HUD. [Causes, proposed corrections and paired previews](CORRECTIONS_C297.md). Console confirms three head-transfer rejections and no T&T exception in the reviewed session. Planning/audit only; installed 0.2.53.5 unchanged, corrective review precedes R4C2, connected acceptance remains pending.
