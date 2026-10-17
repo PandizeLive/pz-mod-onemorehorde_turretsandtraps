@@ -51,3 +51,16 @@ Owner selects **1B** and requests a recap. The corrective design is now settled 
 Planned update: Controller crash correction; two-tab Turret Manage; dedicated window drag bars; consistent panel spacing/backgrounds; expandable combat details; Controller layout aligned with the approved preview; child-window lifecycle cleanup. Preserve equipment/ammo grouping, rarity colors, remote multiplayer permissions and exact-item transactions. No gameplay or balance additions are inferred.
 
 This turn records the selection and requested recap, not an implementation, installed build or successful crash retest. C286 corrections remain the next work before R4C2 content; installed0.2.53 remains unchanged.
+
+### C288 follow-up — clean, approachable presentation
+
+Owner: "Make sure it's clean and not overwhelming." This refines the selected1B design; it does not add features or reopen the layout choice. Acceptance criteria for implementation:
+
+- Keep the two tabs and a stable header/footer; changing tabs must not make common controls jump around.
+- Use consistent alignment, padding and section backgrounds. Avoid nested framing, overlapping headers, clipped labels and decorative borders around every row.
+- Keep primary actions obvious. Put detailed combat statistics behind Details, and longer explanations in tooltips. Keep essential state/errors visible and show only device/module-relevant optional controls.
+- Use restrained rarity color on modules; keep other labels neutral. Replace repetitive slot numbers/Drop here instructions with one concise hint while keeping empty targets clear.
+- Preserve all existing management functions, remote permissions and item accounting. Simplifying presentation must not silently remove controls or weaken access rules.
+- Verify actual native UI behavior and compare the result with the selected preview, including normal/small supported screen sizes, font sizes, tab switching, dragging and repeated open/close. A browser preview or rectangle-only test does not establish native visual acceptance.
+
+This requirement is recorded for the corrective patch. No additional owner decision is needed for this presentation refinement; implementation and rendered acceptance remain pending.
