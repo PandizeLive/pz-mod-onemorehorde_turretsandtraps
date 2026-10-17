@@ -9,3 +9,5 @@ The existing power path selects another charged spare when necessary; this is ex
 Stored counts are cached, invalidated by native container changes, and rebuilt in slices of at most64 entries per UI update. Idle updates do not iterate contents. Selection filtering examines at most16 entries per update and permits one outstanding action. Single-player uses confirmed completion even if perform preceded the container mutation; multiplayer waits for the existing exact-item replication callback. The native action still owns all inventory mutation. No new global per-tick handler, shipped protected calls or generated icon asset.
 
 [Verification and short test](TEST_v0.2.53.8.md). C301 grey styling and R4C2 priority remain unchanged. Rendered and connected multiplayer acceptance remain pending.
+
+Installed from immutable `test/v0.2.53.8` / `33f446e57c4715b88e9f66276d5fe3a190ec4b2a`. All 288 source and 367 tagged/packaged/installed/archive files match; both 0.2.53.7 backups verify. [Release evidence](../diagnostics/v0.2.53.8/local-release.json). Development delivery uses the existing branch/draft PR under C108; no merge or Workshop upload.

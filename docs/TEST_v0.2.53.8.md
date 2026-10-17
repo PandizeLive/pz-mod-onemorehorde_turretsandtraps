@@ -16,3 +16,5 @@ No rendered client or connected multiplayer pass is claimed. No new engine autho
 4. Start another multi-battery deposit, then walk away or close Controller. Confirm the remaining batteries stay in your inventory. Reopen and verify counts; report any visual/interaction issue.
 
 Review console.txt after this test. Keep prior rendered/controller and connected MP acceptance open.
+
+Installed from immutable `test/v0.2.53.8` / `33f446e57c4715b88e9f66276d5fe3a190ec4b2a`. All 288 source and 367 tagged/packaged/installed/archive files match; both 0.2.53.7 backups verify. [Release evidence](../diagnostics/v0.2.53.8/local-release.json). Development delivery uses the existing branch/draft PR under C108; no merge or Workshop upload.
