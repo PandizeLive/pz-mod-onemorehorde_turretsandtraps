@@ -15,7 +15,7 @@ end
 
 ---@return nil
 function Details:prerender()
-    self:drawRectStatic(0, 0, self.width, self.height, .95, .045, .04, .035)
+    self:drawRectStatic(0, 0, self.width, self.height, .95, .045, .045, .045)
     self:setStencilRect(0, 0, self.width, self.height)
     L.drawDetails(self.owner, A.state(self.owner.object), A.state(self.owner.selected))
 end
@@ -177,7 +177,7 @@ function L.draw(panel, host, state)
     panel:drawText(getText(power), textX, panel.equipmentY + h + 10, .85, .85, .85, 1, UIFont.Small)
     panel:drawText(getText("UI_OMHTT_ControllerRange"), textX, panel.equipmentY + h * 2 + 12, .7, .7, .7, 1, UIFont.Small)
     panel:clearStencilRect()
-    panel:drawText(getText("UI_OMHTT_Devices"), 12, panel.devicesY - h - 2, .9, .75, .6, 1, UIFont.Small)
+    panel:drawText(getText("UI_OMHTT_Devices"), 12, panel.devicesY - h - 2, .9, .9, .9, 1, UIFont.Small)
 end
 
 ---@param panel ISPanel Controller window

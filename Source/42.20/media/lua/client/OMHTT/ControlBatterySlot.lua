@@ -126,7 +126,7 @@ function Slot.create(owner, x, y, width, height)
     local slot = Slot:new(x, y, width, height)
     slot.owner = owner
     slot.backgroundColor = {r = .06, g = .06, b = .06, a = 1}
-    slot.borderColor = {r = .3, g = .25, b = .2, a = .6}
+    slot.borderColor = {r = .3, g = .3, b = .3, a = .6}
     slot:initialise()
     owner:addChild(slot)
     return slot

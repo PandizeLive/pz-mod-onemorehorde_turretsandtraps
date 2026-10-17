@@ -1,5 +1,9 @@
 # Decision register
 
+## C301: grey replaces copper-orange (2026-10-17)
+
+Owner finds the copper build brown/bland and directly requests returning to grey. This authorizes a color-only correction, superseding C299/C300's accent choice. Use neutral charcoal/grey surfaces, borders, highlights and labels. Retain red/white OMH titles, green/red power states, rarity colors, separate action rows, attached native Stockpile, Battery slot and exact transfers. [0.2.53.7 patch](PATCH_v0.2.53.7.md) / [verification](TEST_v0.2.53.7.md). No general C300 gameplay acceptance is inferred from this aesthetic feedback.
+
 ## C300: copper-orange corrective patch approved (2026-10-17)
 
 Owner: "We'll do copper-orange. So instead of the green background accents, we'll use that color I think. Let's try it out. You're approved." Implements the reviewed C297 correction and C298 titles with C299 option 1A: copper-orange #E7A05A / dark #30251B, charcoal bodies, red One More Horde and white menu suffixes. Green/red power states and module rarities stay independent. Attached native Stockpile belongs to Controller rather than moving the player's HUD. Visible ordinary Battery and exact-item transfers are included. [Patch](PATCH_v0.2.53.6.md) and [verification](TEST_v0.2.53.6.md) track implementation separately from installation and rendered/connected acceptance. No sibling edits, merge or Workshop publication.

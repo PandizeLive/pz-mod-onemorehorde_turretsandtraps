@@ -2,6 +2,10 @@
 
 C300, 2026-10-17. Corrects C297 owner findings against 0.2.53.5 and implements the approved copper-orange C299 choice. Owner has not tested this build yet.
 
+## C301 owner feedback — 2026-10-17
+
+Owner rejects the brown/copper appearance and requests grey. This does not establish acceptance of transfers, Controller behavior or multiplayer. The console snapshot reviewed through frame 4658, modified 18:45:38 local, confirms 0.2.53.6 loaded on 42.21, with no Lua trace/error or stack-overflow marker found. Firearms Sandbox translation-format warnings remain unrelated to the palette change. [Color correction](PATCH_v0.2.53.7.md).
+
 ## Automated verification
 
 - Full validator passes **20,986 assertions**, compiling 215 runtime/translation inputs and loading 994 translated keys. Package manifest contains 288 source files and 367 generated package files.

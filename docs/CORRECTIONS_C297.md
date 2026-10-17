@@ -81,3 +81,7 @@ No accent selected or applied to the combined preview yet. The preview retains C
 ## C300 — approved copper-orange implementation (2026-10-17)
 
 Owner selects copper-orange and explicitly approves trying the corrective design. C299's open choice and C298's pending final approval are now settled. Implemented in [0.2.53.6](PATCH_v0.2.53.6.md), including red/white OMH titles, separated header/actions, visible backup Battery, attached native Stockpile and exact-item transfers. The player's HUD remains separate. Power/rarity colors retain their meanings. [Verification and short test](TEST_v0.2.53.6.md) distinguish automated/native evidence from pending rendered and connected acceptance; this follow-up supersedes the earlier proposal-only status.
+
+## C301 — return to neutral grey (2026-10-17)
+
+Owner rejects copper-orange after viewing the installed 0.2.53.6 menu. Neutral grey replaces the brown/copper theme in [0.2.53.7](PATCH_v0.2.53.7.md), including the Controller selection highlight. Red/white OMH titles, power/rarity colors and C300 functionality remain. The older copper mockup/decision is superseded, not an alternative still awaiting approval. [Verification](TEST_v0.2.53.7.md) remains distinct from owner visual acceptance.

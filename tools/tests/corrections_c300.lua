@@ -98,7 +98,7 @@ theme.power(b,false,false)
 check(b.backgroundColor.r>b.backgroundColor.g and not b.enable,"Read-only Off remains red while interaction is disabled")
 check(theme.off.r==.48 and theme.on.g==.42,"Native mutable setters never corrupt shared theme colors")
 theme.button(b);b:setEnable(true)
-check(b.backgroundColor.r==theme.surface.r and theme.accent.r>theme.accent.g and theme.accent.g>theme.accent.b,"Copper theme survives native button enable refresh")
+check(b.backgroundColor.r==theme.surface.r and theme.accent.r==theme.accent.g and theme.accent.g==theme.accent.b,"Neutral grey theme survives native button enable refresh")
 A.state,A.near,A.range=old.state,old.near,old.range
 T.state,T.kind,T.canRemove,T.enabled,T.accepts=old.ts,old.kind,old.remove,old.enabled,old.accept
 testMode,testMillis=old.mode,old.clock

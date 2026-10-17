@@ -204,6 +204,7 @@ function Panel.open(player, object)
     panel.devices = ISScrollingListBox:new(12, 76, 236, 400)
     panel.devices:initialise()
     panel.devices.itemheight = 30
+    panel.devices.selectionColor = Theme.hover
     panel:addChild(panel.devices)
     panel.nameEntry = require("OMHTT/ControlNameEntry").create(panel, nil, 274, 90, 366, 28)
     panel.manage = button(panel, 274, 246, 246, getText("UI_OMHTT_OpenManage"), function(self)
