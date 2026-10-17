@@ -2,7 +2,7 @@
 
 ## 0.2.53.6 / C300 — copper-orange menus and attached Stockpile
 
-Owner-approved [corrective patch](PATCH_v0.2.53.6.md); [verification and test](TEST_v0.2.53.6.md). Full validator passes 20,986 assertions; native write/read, static dependency closure and all three independent package startup checks pass. Installation is next. No Workshop upload or cumulative-changelog reset; rendered/connected acceptance remains pending.
+Owner-approved [corrective patch](PATCH_v0.2.53.6.md); [verification and test](TEST_v0.2.53.6.md). Full validator passes 20,986 assertions; native write/read, static dependency closure and all three independent package startup checks pass. Installed from immutable `test/v0.2.53.6` / `c84fb616dc4e5c2cc376f6b0ec5aeaa51d6a5514`. All 288 source and 367 tagged/packaged/installed/archive files match; both 0.2.53.5 backups verify. [Release evidence](../diagnostics/v0.2.53.6/local-release.json). No Workshop upload or cumulative-changelog reset; rendered/connected acceptance remains pending.
 
 ## 0.2.53.5 / C296 — Manage and Controller corrections
 

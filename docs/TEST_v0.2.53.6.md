@@ -12,7 +12,7 @@ C300, 2026-10-17. Corrects C297 owner findings against 0.2.53.5 and implements t
 - During development, the new native button test exposed mutable shared colors, and the expanded compact-layout assertion caught a two-pixel frame overflow. Both were corrected and the full validator rerun. A package-check attempt stopped on a deliberately stale generated file during editing; packages were rebuilt and the isolation sequence restarted.
 - Owner console is unchanged since the C297 0.2.53.5 session (266003 bytes; 2026-10-17 16:47:46 local). There is no 0.2.53.6 owner-test result to claim.
 
-Installation is not yet recorded. Rendered SP and connected dedicated/listen multiplayer acceptance remain pending.
+Installed from immutable `test/v0.2.53.6` / `c84fb616dc4e5c2cc376f6b0ec5aeaa51d6a5514`. All 288 source and 367 tagged/packaged/installed/archive files match; both 0.2.53.5 backups verify. [Release evidence](../diagnostics/v0.2.53.6/local-release.json). Rendered SP and connected dedicated/listen multiplayer acceptance remain pending.
 
 ## Short test
 

@@ -20,3 +20,7 @@ Existing 64-object/two-millisecond Controller scan budget and five-second refres
 No damage, recipes, capacities, sounds, rarity distribution or battery-drain balance changed. Shipped Lua retains the no-pcall/xpcall/ipairs/next gate. Shared Control modules remain independent of Turrets-only UI at load time.
 
 [Verification and focused test](TEST_v0.2.53.6.md). Automated/native checks are distinct from rendered gameplay and connected multiplayer acceptance. C108 delivery uses the existing development branch/draft PR; no merge or Workshop upload.
+
+## Delivery
+
+Installed from immutable `test/v0.2.53.6` / `c84fb616dc4e5c2cc376f6b0ec5aeaa51d6a5514`. All 288 source and 367 tagged/packaged/installed/archive files match; both 0.2.53.5 backups verify. [Release evidence](../diagnostics/v0.2.53.6/local-release.json). Development delivery uses the existing branch and draft PR; rendered/connected acceptance remains open.
