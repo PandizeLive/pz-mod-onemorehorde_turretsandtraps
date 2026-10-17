@@ -8,7 +8,7 @@ local Action = OMHTTTurretVoidAction
 ---@return ItemContainer? source Authorized source container
 function Action:source()
     if self.origin == "controller" then
-        local controller = require("OMHTT/ControlAccess").stockpile(self.character, self.object)
+        local controller = require("OMHTT/ControlAccess").stockpile(self.character, self.object, self.controller)
         return controller and controller:getContainer()
     end
     if self.origin == nil or self.origin == "turret" then return self.object:getContainer() end
@@ -84,11 +84,12 @@ end
 ---@param ids table At most twenty exact physical ammunition IDs
 ---@param origin string? turret or inventory
 ---@param bag InventoryContainer? Exact carried source bag
+---@param controller IsoObject? Exact source stockpile
 ---@return OMHTTTurretVoidAction action
-function Action:new(character, object, id, module, ids, origin, bag)
+function Action:new(character, object, id, module, ids, origin, bag, controller)
     local o = ISBaseTimedAction.new(self, character)
     o.object, o.id, o.module, o.ids = object, id, module, ids
-    o.origin, o.bag = origin, bag
+    o.origin, o.bag, o.controller = origin, bag, controller
     o.done, o.stopOnWalk, o.stopOnRun = false, true, true
     o.maxTime = o:getDuration()
     return o

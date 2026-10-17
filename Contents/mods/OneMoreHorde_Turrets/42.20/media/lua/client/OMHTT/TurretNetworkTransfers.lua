@@ -25,7 +25,9 @@ function ISInventoryTransferAction:new(character, item, srcContainer, destContai
             if not incoming and destContainer ~= character:getInventory() then
                 bag = destContainer:getContainingItem() or false
             end
-            local action = Action:new(character, object, item, incoming, state.id, nil, bag, destContainer:getType() == "OMHTTController")
+            local other = incoming and srcContainer or destContainer
+            local controller = other:getType() == "OMHTTController" and other:getParent() or nil
+            local action = Action:new(character, object, item, incoming, state.id, nil, bag, destContainer:getType() == "OMHTTController", controller)
             action.srcContainer, action.destContainer = srcContainer, destContainer
             return action
         end
@@ -44,7 +46,7 @@ function Action:begin()
                 local candidate = queue.queue[position + 1]
                 if not candidate or candidate.Type ~= self.Type or candidate.object ~= self.object
                     or candidate.incoming ~= self.incoming or candidate.id ~= self.id or candidate.ids
-                    or candidate.destinationBag ~= self.destinationBag or candidate.stockpile ~= self.stockpile
+                    or candidate.destinationBag ~= self.destinationBag or candidate.stockpile ~= self.stockpile or candidate.controller ~= self.controller
                     or candidate.onCompleteFunc or not candidate.item
                     or candidate.item:getContainer() ~= self.item:getContainer()
                     or candidate.item:getFullType() ~= self.item:getFullType() then break end
@@ -61,9 +63,11 @@ end
 ---@param items table Exact selected items
 ---@param incoming boolean Into turret
 ---@param kind string Slot family
+---@param stockpile boolean? Withdraw into controller
+---@param controller IsoObject? Exact stockpile endpoint
 ---@return number queued
 ---@return string? reason
-function X.queue(player, object, items, incoming, kind, stockpile)
+function X.queue(player, object, items, incoming, kind, stockpile, controller)
     if not Access.near(player, object) then return 0, "TransferReach" end
     local state, queued, reason = T.state(object), 0, nil
     local pending = {}
@@ -90,7 +94,7 @@ function X.queue(player, object, items, incoming, kind, stockpile)
     local prepared, batch = {}, nil
     for i = 1, #items do
         local item = items[i]
-        local action = Action:new(player, object, item, incoming, state.id, nil, nil, stockpile)
+        local action = Action:new(player, object, item, incoming, state.id, nil, nil, stockpile, controller)
         local rejection = action:rejection(item, summary)
         if pending[item:getID()] then
             rejection = "TransferPending"

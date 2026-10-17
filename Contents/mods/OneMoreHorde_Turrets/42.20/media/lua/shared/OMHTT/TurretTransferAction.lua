@@ -12,7 +12,7 @@ local Action = OMHTTTurretTransferAction
 function Action:destination()
     if self.incoming then return self.object:getContainer() end
     if self.stockpile then
-        local controller = require("OMHTT/ControlAccess").stockpile(self.character, self.object)
+        local controller = require("OMHTT/ControlAccess").stockpile(self.character, self.object, self.controller)
         return controller and controller:getContainer()
     end
     if self.destinationBag == nil then return self.character:getInventory() end
@@ -27,7 +27,7 @@ end
 ---@param summary table? Transaction-local incoming-ammo counts
 ---@return string? reason
 function Action:rejection(candidate, summary)
-    if self.done or type(self.incoming) ~= "boolean" or type(self.id) ~= "string"
+    if self.done or self.cancelled or type(self.incoming) ~= "boolean" or type(self.id) ~= "string"
         or not Access.near(self.character, self.object, self.id) then return "TransferReach" end
     if not candidate then return "TransferMissing" end
     local source, storage = candidate:getContainer(), self.object:getContainer()
@@ -35,7 +35,7 @@ function Action:rejection(candidate, summary)
     local destination = self:destination()
     if not destination then return "TransferCarried" end
     if self.incoming then
-        local controller = require("OMHTT/ControlAccess").stockpile(self.character, self.object)
+        local controller = require("OMHTT/ControlAccess").stockpile(self.character, self.object, self.controller)
         local stockpile = controller and controller:getContainer()
         if source == storage or (not source:isInCharacterInventory(self.character) and source ~= stockpile) then return "TransferCarried" end
         if candidate:isFavorite() then return "TransferFavorite" end
@@ -43,6 +43,8 @@ function Action:rejection(candidate, summary)
         destination = storage
     elseif source ~= storage then
         return "TransferMissing"
+    elseif self.stockpile and candidate:isFavorite() then
+        return "TransferFavorite"
     end
     if not T.canRemove(source, candidate) then return "CapacityFull" end
     if not source:isRemoveItemAllowed(candidate) then return "TransferWrongItem" end
@@ -85,11 +87,16 @@ end
 
 ---@return nil
 function Action:perform()
-    if self.onCompleteFunc and self.item and self.item:getContainer() == self:destination() then
-        local args = self.onCompleteArgs
-        self.onCompleteFunc(args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8])
+    if not isServer() and self.onCompleteFunc then
+        require("OMHTT/ControlTransferCallbacks").complete(self)
     end
     ISBaseTimedAction.perform(self)
+end
+
+---@return nil
+function Action:stop()
+    self.cancelled = true
+    ISBaseTimedAction.stop(self)
 end
 
 ---@return boolean completed
@@ -192,12 +199,15 @@ end
 ---@param id string Expected turret identity
 ---@param ids table? At most twenty exact same-type light-ammo IDs
 ---@param destinationBag InventoryItem? Exact carried destination bag; nil means main inventory
+---@param stockpile boolean? Withdraw into stockpile
+---@param controller IsoObject? Exact stockpile endpoint
 ---@return OMHTTTurretTransferAction action
-function Action:new(character, object, item, incoming, id, ids, destinationBag, stockpile)
+function Action:new(character, object, item, incoming, id, ids, destinationBag, stockpile, controller)
     local o = ISBaseTimedAction.new(self, character)
     o.object, o.item, o.incoming, o.id, o.ids = object, item, incoming, id, ids
     o.destinationBag = destinationBag
     o.stockpile = stockpile == true
+    o.controller = controller
     o.done, o.stopOnWalk, o.stopOnRun = false, true, true
     o.maxTime = o:getDuration()
     return o

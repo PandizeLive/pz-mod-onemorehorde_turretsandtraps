@@ -105,7 +105,7 @@ check(panel.nameEntry.y >= panel.titleHeight and panel.body.y >= panel.nameEntry
     and not panel.equipmentTab and not panel.modulesTab, "Single-page content preserves the dedicated drag and name bands")
 check(panel.headSlot.parent==panel.body and panel.moduleSlots[1].parent==panel.body
     and panel.moduleSlots[1].y>panel.magazineSlot.y+panel.magazineSlot.height, "Equipment, ammunition and modules share one sequential page")
-check(panel.moduleGridBottom <= panel.body.height, "All sixteen module slots fit the non-scrolling 600p body: " .. panel.moduleGridBottom .. "/" .. panel.body.height)
+check(panel.modulesBottom <= panel.body.height, "All sixteen module slots fit the non-scrolling 600p body: " .. panel.moduleGridBottom .. "/" .. panel.body.height)
 local closedHeight=panel.body.contentHeight
 panel.moduleLines="Line one\nLine two\nLine three\nLine four"
 panel.detailsButton.callback(panel)
@@ -121,7 +121,7 @@ check(panel.body:getYScroll() == 0 and panel.nameEntry.y == titleY and panel.hei
 panel.body:prerender()
 panel.body:render()
 check(panel.equipmentBottom==panel.ammunitionBottom and panel.headSlot.x+panel.headSlot.width<panel.ammoSlot.x and panel.ammunitionBottom<panel.modulesY
-    and panel.benefitList.y>=panel.headerHeight and panel.detailsButton.y==4,
+    and panel.benefitList.y>=panel.headerHeight and panel.detailsButton.y>=panel.headerHeight+4,
     "Section backgrounds, slots, benefits and Details have distinct bounds")
 panel.detailsButton.callback(panel)
 panel.body:setYScroll(0)

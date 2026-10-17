@@ -21,6 +21,13 @@ end
 function Action.canStore(character, object, item)
     local state = A.state(object)
     local source = item and item:getContainer()
+    if source and source:getType() == "OMHTTTurret" then
+        local turret = source:getParent()
+        local record = require("OMHTT/Turret").state(turret)
+        if not record or item:isFavorite() then return false end
+        local action = require("OMHTT/TurretTransferAction"):new(character, turret, item, false, record.id, nil, nil, true, object)
+        return action:isValid()
+    end
     return state ~= nil and state.kind == "Controller" and A.near(character, object) and A.write(character, state)
         and require("OMHTT/ControlDefinitions").storable(item)
         and source ~= nil and source:contains(item) and source:isRemoveItemAllowed(item)
@@ -35,6 +42,10 @@ function Action:isValid()
         or not A.near(self.character, self.object) or not A.write(self.character, state) or not self.item then return false end
     local source, storage = self.item:getContainer(), self.object:getContainer()
     if not source or not source:contains(self.item) or not source:isRemoveItemAllowed(self.item) then return false end
+    if self.selectBattery then
+        return self.incoming and source == storage and self.item:getFullType() == "Base.Battery"
+            and self.item:getCondition() > 0 and require("OMHTT/TurretBattery").charge(self.item) > 0
+    end
     if self.incoming then
         return Action.canStore(self.character, self.object, self.item)
     end
@@ -46,6 +57,14 @@ end
 ---@return boolean complete
 function Action:complete()
     if isClient() or not self:isValid() then return false end
+    if self.selectBattery then
+        local world = require("OMHTT/ControlWorld")
+        world.batteries[self.object] = self.item
+        world.state(self.object).batteryId = self.item:getID()
+        world.publish(self.object)
+        self.done = true
+        return true
+    end
     local source = self.item:getContainer()
     local destination = self:destination()
     source:Remove(self.item)
@@ -61,6 +80,7 @@ function Action:complete()
         local world = require("OMHTT/ControlWorld")
         world.batteries[self.object] = self.item
         world.state(self.object).batteryId = self.item:getID()
+        world.publish(self.object)
     end
     if isServer() then
         sendRemoveItemFromContainer(source, self.item)
@@ -94,11 +114,13 @@ end
 ---@param incoming boolean Into stockpile
 ---@param id string? Expected identity
 ---@param destinationBag InventoryItem|boolean? Exact carried destination; false rejects unsupported destinations
+---@param selectBattery boolean? Select a spare already in stockpile
 ---@return OMHTTControlTransferAction action
-function Action:new(character, object, item, incoming, id, destinationBag)
+function Action:new(character, object, item, incoming, id, destinationBag, selectBattery)
     local action = ISBaseTimedAction.new(self, character)
     action.object, action.item, action.incoming, action.id = object, item, incoming, id
     action.destinationBag = destinationBag
+    action.selectBattery = selectBattery == true
     if not isServer() then
         action.id = id or (A.state(object) and A.state(object).id)
     end

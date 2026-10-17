@@ -6,7 +6,10 @@ from build_packages import IDS, ROOT, build
 
 OPTIONAL_TRAPS = {
     "OMHTT/ControlClient": {"OMHTT/Turret", "OMHTT/TurretTransferAction"},
-    "OMHTT/ControlManage": {"OMHTT/TurretAccess"},
+    # Manage callbacks are invoked only by the Turrets-only management window.
+    "OMHTT/ControlManage": {"OMHTT/TurretAccess", "OMHTT/Turret"},
+    # This branch requires an existing OMHTTTurret source container.
+    "OMHTT/ControlTransferAction": {"OMHTT/Turret", "OMHTT/TurretTransferAction"},
     "OMHTT/ControlPanel": {"OMHTT/TurretManage"},
     "OMHTT/ControlPanelLayout": {"OMHTT/Turret"},
     "OMHTT/ControlWorld": {"OMHTT/Turret", "OMHTT/TurretAutomation", "OMHTT/TurretWorld"},

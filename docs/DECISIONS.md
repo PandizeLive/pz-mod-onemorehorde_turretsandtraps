@@ -1,5 +1,9 @@
 # Decision register
 
+## C300: copper-orange corrective patch approved (2026-10-17)
+
+Owner: "We'll do copper-orange. So instead of the green background accents, we'll use that color I think. Let's try it out. You're approved." Implements the reviewed C297 correction and C298 titles with C299 option 1A: copper-orange #E7A05A / dark #30251B, charcoal bodies, red One More Horde and white menu suffixes. Green/red power states and module rarities stay independent. Attached native Stockpile belongs to Controller rather than moving the player's HUD. Visible ordinary Battery and exact-item transfers are included. [Patch](PATCH_v0.2.53.6.md) and [verification](TEST_v0.2.53.6.md) track implementation separately from installation and rendered/connected acceptance. No sibling edits, merge or Workshop publication.
+
 ## C299: OMH family colors audited; T&T accent choice open (2026-10-17)
 
 Owner requests palette comparison before approving the patch. [Source-backed findings and three accent proposals](CORRECTIONS_C297.md#c299--omh-family-palette-audit-and-tt-accent-proposals-2026-10-17): Horde Night red/gold, Cure blue and Trait Shop green identities; native menus also share red/gold. Recommend 1A copper-orange, alternatives 1B violet / 1C steel. Preserve C298 red brand/white menu title, power semantics and rarity colors. No accent selected, sibling change, gameplay patch or installation.

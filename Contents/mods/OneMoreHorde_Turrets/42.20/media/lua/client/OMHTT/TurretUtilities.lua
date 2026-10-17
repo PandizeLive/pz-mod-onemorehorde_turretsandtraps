@@ -22,7 +22,7 @@ function U.store(panel, items)
     local contents = T.contents(panel.object:getContainer())
     if not contents.void then return end
     local groups = {}
-    local controller = require("OMHTT/ControlAccess").stockpile(panel.player, panel.object)
+    local controller = require("OMHTT/ControlAccess").stockpile(panel.player, panel.object, panel.controller)
     local stockpile = controller and controller:getContainer()
     for i = 1, #items do
         local item, source = items[i], items[i]:getContainer()
@@ -43,7 +43,7 @@ function U.store(panel, items)
             local origin = source == panel.object:getContainer() and "turret" or "inventory"
             if source == stockpile then origin = "controller" end
             ISTimedActionQueue.add(Action:new(panel.player, panel.object, panel.deviceId, contents.void,
-                batch, origin, origin == "inventory" and source:getContainingItem() or nil))
+                batch, origin, origin == "inventory" and source:getContainingItem() or nil, panel.controller))
         end
     end
 end

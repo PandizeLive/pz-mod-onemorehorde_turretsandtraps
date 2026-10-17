@@ -1,5 +1,7 @@
 # Current development and planning handoff
 
+**C300 / 0.2.53.6 approved and implemented (2026-10-17).** Owner selects copper-orange and approves the C297–C299 corrective patch. [Implementation](PATCH_v0.2.53.6.md): red/white OMH titles, copper accents, separate action rows, attached native Stockpile, visible backup Battery and exact bidirectional transfers. [Verification/test](TEST_v0.2.53.6.md) passes 20,986 assertions, native write/read and all three package selections. Installation is next; rendered/connected acceptance remains pending. No new design decision; corrections remain before R4C2.
+
 **C299 / family palette comparison (2026-10-17).** [Verified current source colors and T&T accent options](CORRECTIONS_C297.md#c299--omh-family-palette-audit-and-tt-accent-proposals-2026-10-17). Recommend copper-orange secondary accents while retaining C298 red/white titles; violet and steel alternatives. No accent chosen or corrective-patch approval yet. Preview shows C298 titles, installed 0.2.53.5 unchanged; C297 corrections remain before R4C2.
 
 **C298 / menu-title branding confirmed (2026-10-17).** [C297 follow-up](CORRECTIONS_C297.md#c298--one-more-horde-title-branding-2026-10-17): red **One More Horde**, white **- Turret Management Menu** / **- Controller Menu**, using the existing Horde Night title red. Editable preview updated; owner reserves final corrective-patch approval. Installed 0.2.53.5 unchanged; C297 corrections precede R4C2.

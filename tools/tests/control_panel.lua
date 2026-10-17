@@ -1,6 +1,8 @@
 local A = require("OMHTT/ControlAccess")
 local Panel = require("OMHTT/ControlPanel")
 local oldMode, oldNear = testMode, A.near
+local managerBefore=getTextManager
+getTextManager=function() return {getFontHeight=function() return 18 end,MeasureStringX=function(_,font,text) return #text*9 end} end
 local oldPanel, oldList, oldButton, oldText = ISPanel, ISScrollingListBox, ISButton, ISTextEntryBox
 local oldMarkers = getWorldMarkers
 ISPanel, ISScrollingListBox, ISButton, ISTextEntryBox = testControlPanelBase, testControlListBase, testControlButtonBase, testControlTextBase
@@ -78,8 +80,9 @@ getPlayerInventory=function() return carriedPage end
 getPlayerLoot=function() return lootPage end
 panel:stockpile()
 panel:stockpile()
-check(lootPage.selected==inventory and lootPage.visible and carriedPage.visible and lootPage.capacity==500
-    and lootPage.backpacks[1].capacity==500 and not panel.storage, "Stockpile reuses the native inventory and loot panes with its 500-weight display")
+check(lootPage.selected==nil and not lootPage.visible and not carriedPage.visible and not lootPage.pinned
+    and panel.stockWing and panel.stockWing.inventoryPane.inventory==inventory,
+    "Stockpile owns a native pane while HUD inventory selection, visibility and position remain unchanged")
 local previousMouse=isMouseButtonDown
 panel:onMouseDown(12,8)
 isMouseButtonDown=function() return false end
@@ -124,10 +127,11 @@ A.authorized=oldAuthorized
 U.command, Faction = oldCommand, oldFaction
 panel:close()
 check(panel.removed and not require("OMHTT/ControlOverlay").panels[panel], "Controller closes its range/link overlay")
-check(lootPage.visible and carriedPage.visible, "Closing Controller leaves native inventory lifetime under player control")
+check(not lootPage.visible and not carriedPage.visible and panel.stockWing.visible==false,
+    "Closing Controller closes only its attached pane, leaving the HUD untouched")
 local remoteManage={player=player,controller=object}
 Panel.stockpile(remoteManage,object)
-check(lootPage.selected==inventory and not remoteManage.storage, "Remote Manage opens the same native stockpile")
+check(lootPage.selected==nil and not remoteManage.storage, "Remote Manage opens the attached Controller stockpile without changing HUD selection")
 getPlayerInventory,getPlayerLoot=oldInventory,oldLoot
 local oldScreen, oldTextManager = getPlayerScreenHeight, getTextManager
 getPlayerScreenHeight = function() return 600 end
@@ -138,6 +142,27 @@ check(large.y + large.height <= 600 and large.detailBody.contentHeight > large.d
 local nextPanel = Panel.open(player, object)
 check(large.removed, "Only one Controller window per player remains open")
 nextPanel:close()
+local oldWidth = getPlayerScreenWidth
+getPlayerScreenWidth = function() return 900 end
+getTextManager = oldTextManager
+local compact = Panel.open(player, object)
+check(compact.stockCompact and not compact.stockWing.visible and compact.stockButton.visible,
+    "Narrow screens retain an attached Stockpile page instead of a clipped side pane")
+check(compact.stockButton.y >= compact.equipmentY + compact.lineHeight * 3 + 12
+    and compact.stockButton.y + compact.stockButton.height < compact.devicesY,
+    "Compact Stockpile action clears power/range text and Devices")
+compact:showStockpile(true)
+check(compact.stockWing.visible and not compact.devices.visible and not compact.detailBody.visible
+    and not compact.batterySlot.visible and compact.stockButton.y + compact.stockButton.height <= compact.height,
+    "Compact Stockpile page hides covered controls and keeps Back within the window")
+compact:showStockpile(false)
+check(not compact.stockWing.visible and compact.devices.visible and compact.detailBody.visible
+    and compact.batterySlot.visible and compact.stockButton.y == compact.stockButtonY,
+    "Returning from Stockpile restores controller controls at their original positions")
+compact:close()
+getPlayerScreenWidth = oldWidth
 getPlayerScreenHeight, getTextManager = oldScreen, oldTextManager
 A.near, getWorldMarkers, testMode = oldNear, oldMarkers, oldMode
 ISPanel, ISScrollingListBox, ISButton, ISTextEntryBox = oldPanel, oldList, oldButton, oldText
+
+getTextManager=managerBefore

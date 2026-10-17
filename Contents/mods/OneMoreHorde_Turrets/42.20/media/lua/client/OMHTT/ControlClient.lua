@@ -190,7 +190,11 @@ function ISInventoryTransferAction:new(player, item, source, destination, time)
             local T = require("OMHTT/Turret")
             local record = T.state(turret)
             if record then
-                return require("OMHTT/TurretTransferAction"):new(player, turret, item, not incoming, record.id, nil, nil, incoming)
+                local actionType = require("OMHTT/TurretTransferAction")
+                actionType.setOnComplete = ISInventoryTransferAction.setOnComplete
+                local action = actionType:new(player, turret, item, not incoming, record.id, nil, nil, incoming, object)
+                action.srcContainer, action.destContainer = source, destination
+                return action
             end
         end
         local bag

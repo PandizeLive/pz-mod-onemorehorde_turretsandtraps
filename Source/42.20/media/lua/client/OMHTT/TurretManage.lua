@@ -72,14 +72,14 @@ end
 ---@return nil
 function Panel:transfer(items, incoming, kind)
     local route = self.controller and require("OMHTT/TurretNetworkTransfers") or X
-    local count, reason = route.queue(self.player, self.object, items, incoming, kind, self.toStockpile)
+    local count, reason = route.queue(self.player, self.object, items, incoming, kind, self.toStockpile, self.controller)
     self:feedback(count, reason)
 end
 
 ---@param item InventoryItem? Insert this magazine, or eject when nil
 ---@return nil
 function Panel:magazine(item)
-    local count, reason = Magazine.queue(self.player, self.object, item, self.toStockpile)
+    local count, reason = Magazine.queue(self.player, self.object, item, self.toStockpile, self.controller)
     self:feedback(count, reason)
 end
 
@@ -234,10 +234,8 @@ function Panel:refresh()
     end
     local powered = T.isOn(state)
     self.powerButton:setTitle("")
-    self.powerButton:setEnable(true)
     self.powerButton.tooltip = getText(powered and "UI_OMHTT_PowerOn" or "UI_OMHTT_PowerOff")
-    self.powerButton.backgroundColor = powered and {r = 0.08, g = 0.42, b = 0.16, a = 0.9} or {r = 0.48, g = 0.08, b = 0.08, a = 0.9}
-    self.powerButton.backgroundColorMouseOver = powered and {r = 0.12, g = 0.58, b = 0.22, a = 1} or {r = 0.65, g = 0.12, b = 0.12, a = 1}
+    require("OMHTT/ControlTheme").power(self.powerButton, powered, not self.readOnly)
     self.priorityButton:setTitle(getText("UI_OMHTT_Priority", getText("UI_OMHTT_Priority" .. profile.priority)))
     self.priorityButton:setEnable(contents.active.Filter ~= nil)
     local active = {}

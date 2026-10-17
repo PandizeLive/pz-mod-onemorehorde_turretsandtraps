@@ -1,4 +1,13 @@
 {
+    "UI_OMHTT_ManageTransferDestination": "Drop into your inventory or an accessible Controller Stockpile.",
+    "UI_OMHTT_Brand": "One More Horde",
+    "UI_OMHTT_ControllerTitle": "Controller Menu",
+    "UI_OMHTT_StockpileTitle": "Stockpile",
+    "UI_OMHTT_StockpileBack": "Back to Controller",
+    "UI_OMHTT_ControllerBattery": "Backup Battery",
+    "UI_OMHTT_ControllerBatteryDrop": "Drop Battery Here",
+    "UI_OMHTT_ControllerPowerReady": "Online",
+    "UI_OMHTT_ControllerPowerEmpty": "Offline - Add a Battery or Electricity",
     "UI_OMHTT_BedSpikes": "Bed Spikes",
     "UI_OMHTT_ReinforcedBedSpikes": "Reinforced Bed Spikes",
     "UI_OMHTT_DeployBedSpikes": "Bed Spikes",

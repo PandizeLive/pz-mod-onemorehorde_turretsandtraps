@@ -2,6 +2,7 @@ if isServer() then return end
 require("ISUI/ISPanel")
 require("ISUI/ISButton")
 local L = {}
+local Theme = require("OMHTT/ControlTheme")
 local T = require("OMHTT/Turret")
 local Body = ISPanel:derive("OMHTTManageBody")
 
@@ -22,7 +23,11 @@ function L.refresh(panel)
     local resized = screen ~= panel.layoutScreen
     panel.layoutScreen, panel.layoutDetails, panel.layoutLines = screen, panel.detailsOpen, panel.moduleLines
     panel.layoutLure, panel.layoutLanding = panel.hasLure, panel.hasLanding
-    local h, row = panel.lineHeight, math.max(28, panel.lineHeight + 8)
+    local h = panel.lineHeight
+    local compact = screen < 720
+    local row = math.max(compact and 22 or 28, h + (compact and 2 or 8))
+    panel.compactFooter = compact
+    panel.detailsButton:setHeight(row)
     panel.detailLines = string.split(getTextManager():WrapText(UIFont.Small, panel.moduleLines or "", math.floor(panel.body.width / 2) - 28), "\n")
     panel.detailsButton:setTitle(getText(panel.detailsOpen and "UI_OMHTT_DetailsClose" or "UI_OMHTT_DetailsOpen"))
     if resized then
@@ -35,17 +40,18 @@ function L.refresh(panel)
         end
         panel.moduleGridBottom = moduleTop + 3 * (moduleHeight + 4)
     end
+    panel.modulesBottom = panel.moduleGridBottom + row + 6
     local detailsHeight = math.max(h * (#panel.detailLines + 3) + 16, h * 7 + 16)
-    local footer = 48 + h * 2 + 14 + row * (1 + (panel.hasLure and 1 or 0) + (panel.hasLanding and 1 or 0))
-    local bodyHeight = panel.moduleGridBottom + 8
+    local footer = (compact and 40 or 48) + h * (compact and 1 or 2) + (compact and 8 or 14) + row * (1 + (panel.hasLure and 1 or 0) + (panel.hasLanding and 1 or 0))
+    local bodyHeight = panel.modulesBottom + 8
     local desired = panel.body.y + bodyHeight + footer + (panel.detailsOpen and detailsHeight + 8 or 0)
     panel:setHeight(math.min(screen - 24, desired))
     local top = getPlayerScreenTop(panel.player:getPlayerNum())
     panel:setY(math.max(top + 12, math.min(panel.y, top + screen - panel.height - 12)))
-    local bottom = panel.height - 48
+    local bottom = panel.height - (compact and 40 or 48)
     panel.fireButton:setY(bottom)
     panel.priorityButton:setY(bottom)
-    panel.feedbackY = bottom - h * 2 - 8
+    panel.feedbackY = bottom - h * (compact and 1 or 2) - (compact and 4 or 8)
     local y = panel.feedbackY - row * (1 + (panel.hasLure and 1 or 0) + (panel.hasLanding and 1 or 0)) - 6
     panel.rangeY = y
     panel.rangeSlider:setY(y + 4)
@@ -61,8 +67,8 @@ function L.refresh(panel)
     panel.landingSlider:setY(y + 4)
     panel.body:setHeight(math.max(80, panel.rangeY - panel.body.y - 6))
     panel.detailsPage = panel.detailsOpen and desired > screen - 24
-    panel.detailsY = panel.detailsPage and panel.headerHeight + 12 or panel.moduleGridBottom + 8
-    panel.detailsButton:setY(panel.detailsPage and 4 or panel.modulesY + 2)
+    panel.detailsY = panel.detailsPage and panel.headerHeight + row + 16 or panel.modulesBottom + 8
+    panel.detailsButton:setY(panel.detailsPage and panel.headerHeight + 8 or panel.moduleGridBottom + 2)
     panel.benefitList:setY(panel.detailsY)
     panel.benefitList:setX(math.floor(panel.body.width / 2) + 4)
     panel.benefitList:setWidth(panel.body.width - panel.benefitList.x - 8)
@@ -76,6 +82,9 @@ function L.refresh(panel)
         panel.slots[i]:setVisible(not panel.detailsPage)
     end
     panel.powerButton:setVisible(not panel.detailsPage)
+    if panel.sourceButton then
+        panel.sourceButton:setVisible(not panel.detailsPage)
+    end
     panel.reloadButton:setVisible(not panel.detailsPage)
     panel.loadOrderButton:setVisible(not panel.detailsPage)
     panel.equipmentHelp:setVisible(not panel.detailsPage)
@@ -93,10 +102,7 @@ end
 ---@param title string Section caption
 ---@return nil
 function Body:section(x, width, y, bottom, title)
-    self:drawRect(x, y, width, bottom - y, .95, .055, .055, .055)
-    self:drawRectBorder(x, y, width, bottom - y, .6, .25, .25, .25)
-    self:drawRect(x, y, width, self.owner.headerHeight, 1, .12, .12, .12)
-    self:drawText(title, x + 6, y + 4, .9, .9, .9, 1, UIFont.Small)
+    Theme.section(self, x, y, width, bottom - y, self.owner.headerHeight, title)
 end
 
 ---@return nil
@@ -107,7 +113,7 @@ function Body:prerender()
     if not p.detailsPage then
         self:section(4, p.equipmentWidth, 4, p.equipmentBottom, getText("UI_OMHTT_Equipment"))
         self:section(p.ammunitionX, p.ammunitionWidth, 4, p.ammunitionBottom, getText("UI_OMHTT_Ammunition"))
-        self:section(4, self.width - 12, p.modulesY, p.moduleGridBottom, p.moduleLabel)
+        self:section(4, self.width - 12, p.modulesY, p.modulesBottom, p.moduleLabel)
     else
         self:section(4, self.width - 12, 4, self.height - 4, getText("UI_OMHTT_DetailsOpen"))
     end
@@ -153,9 +159,6 @@ function L.create(panel)
     panel:setHeight(math.min(getPlayerScreenHeight(panel.player:getPlayerNum()) - 24, 240 + h * 26))
     panel.contentHeight = panel.height
     local nameBottom = panel.nameEntry.y + panel.nameEntry.height
-    if panel.sourceButton then
-        nameBottom = panel.sourceButton.y + panel.sourceButton.height
-    end
     panel.body = Body:new(6, nameBottom + 8, width - 12, 200)
     panel.body.owner = panel
     panel.body:initialise()
@@ -169,6 +172,9 @@ function L.create(panel)
     adopt(panel, panel.reloadButton)
     adopt(panel, panel.loadOrderButton)
     adopt(panel, panel.benefitList)
+    if panel.sourceButton then
+        adopt(panel, panel.sourceButton)
+    end
     local rowWidth = panel.body.width - 28
     panel.headerHeight = math.max(26, h + 8)
     local slot = math.max(54, h * 3 + 6)
@@ -181,9 +187,6 @@ function L.create(panel)
     local measure = getTextManager()
     local reloadWidth = math.max(80, measure:MeasureStringX(UIFont.Small, getText("UI_OMHTT_Reload")) + 16)
     local orderWidth = math.max(114, measure:MeasureStringX(UIFont.Small, getText("UI_OMHTT_LoadOrder")) + 16)
-    if measure:MeasureStringX(UIFont.Small, getText("UI_OMHTT_Ammunition")) + reloadWidth + orderWidth + 24 > ammoWidth then
-        panel.headerHeight = panel.headerHeight + h + 10
-    end
     local top, second = 4 + panel.headerHeight + 6, 4 + panel.headerHeight + slot + 14
     local headWidth = math.floor((equipment - 6) * .60)
     panel.headSlot:setX(8)
@@ -211,14 +214,20 @@ function L.create(panel)
     for i = 1, #slots do
         slots[i]:setHeight(slot)
     end
-    local buttonY = 4 + panel.headerHeight - panel.reloadButton.height - 3
+    local buttonY = second + slot + 6
     panel.loadOrderButton:setWidth(orderWidth)
     panel.loadOrderButton:setX(ammoX + ammoWidth - orderWidth)
     panel.loadOrderButton:setY(buttonY)
     panel.reloadButton:setX(panel.loadOrderButton.x - reloadWidth - 6)
     panel.reloadButton:setWidth(reloadWidth)
     panel.reloadButton:setY(buttonY)
-    panel.equipmentBottom = second + slot + 6
+    panel.equipmentBottom = buttonY + panel.reloadButton.height + 6
+    if panel.sourceButton then
+        panel.sourceButton:setX(8)
+        panel.sourceButton:setY(buttonY)
+        panel.sourceButton:setWidth(equipment)
+        panel.sourceButton:setHeight(panel.reloadButton.height)
+    end
     panel.ammunitionY, panel.ammunitionBottom = 4, panel.equipmentBottom
     panel.modulesY = panel.ammunitionBottom + 10
     local moduleTop = panel.modulesY + panel.headerHeight + 6
@@ -239,11 +248,14 @@ function L.create(panel)
     panel.benefitList:setWidth(rowWidth)
     panel.benefitList:setHeight(h * 7)
     panel.benefitList.visibleRows = 6
-    panel.detailsButton = ISButton:new(8 + rowWidth - 110, panel.modulesY + 2, 110, panel.headerHeight - 4, "", panel, function(self)
+    panel.detailsButton = ISButton:new(8 + rowWidth - 110, panel.moduleGridBottom + 2, 110, math.max(28, h + 8), "", panel, function(self)
         self.detailsOpen = not self.detailsOpen
         L.refresh(self)
     end)
     panel.detailsButton:initialise()
+    Theme.button(panel.detailsButton)
+    Theme.button(panel.loadOrderButton)
+    Theme.button(panel.reloadButton)
     panel.body:addChild(panel.detailsButton)
     ---@param x number Header left
     ---@param y number Header top
@@ -261,8 +273,8 @@ function L.create(panel)
         return control
     end
     panel.equipmentHelp = help(4, 4, panel.equipmentWidth, "UI_OMHTT_EquipmentHelp")
-    panel.ammunitionHelp = help(panel.ammunitionX, 4, panel.reloadButton.x - panel.ammunitionX - 2, "UI_OMHTT_AmmunitionHelp")
-    panel.modulesHelp = help(4, panel.modulesY, panel.detailsButton.x - 8, "UI_OMHTT_ModulesHelp")
+    panel.ammunitionHelp = help(panel.ammunitionX, 4, panel.ammunitionWidth, "UI_OMHTT_AmmunitionHelp")
+    panel.modulesHelp = help(4, panel.modulesY, panel.body.width - 12, "UI_OMHTT_ModulesHelp")
     panel.detailsButton.tooltip = getText("UI_OMHTT_ModuleStatsHelp")
     panel.headerHelp = {panel.equipmentHelp, panel.ammunitionHelp, panel.modulesHelp, panel.detailsButton}
     L.refresh(panel)
@@ -285,7 +297,7 @@ function L.page(panel)
     panel.body:setVisible(visible)
     panel.nameEntry:setVisible(visible)
     if panel.sourceButton then
-        panel.sourceButton:setVisible(visible)
+        panel.sourceButton:setVisible(visible and not panel.detailsPage)
     end
     panel.rangeSlider:setVisible(visible)
     panel.fireButton:setVisible(visible)
@@ -305,15 +317,18 @@ end
 ---@param panel ISPanel Window
 ---@return nil
 function L.draw(panel)
-    panel:drawRect(1, 1, panel.width - 2, panel.titleHeight - 2, 1, .13, .15, .13)
-    panel:drawText(getText("UI_OMHTT_TurretTitle"), 12, 8, 1, 1, 1, 1, UIFont.Medium)
+    Theme.title(panel, "UI_OMHTT_TurretTitle")
     if panel.orderPanel then return end
     panel:drawTextRight(panel.weightLabel or "", panel.width - 12, panel.titleHeight + 10, .75, .75, .75, 1, UIFont.Small)
     panel:drawText(getText("UI_OMHTT_EngagementRange", T.state(panel.object).engagementRange and string.format("%.1f", panel.engagementRange) or getText("UI_OMHTT_RangeMax")), 12, panel.rangeY + 4, 1, 1, 1, 1, UIFont.Small)
     require("OMHTT/TurretManageExtras").draw(panel)
     panel:setStencilRect(12, panel.feedbackY, panel.width - 24, panel.lineHeight * 2)
-    panel:drawText(getText("UI_OMHTT_Manage" .. panel.status) .. " | " .. panel.powerLabel, 12, panel.feedbackY, .85, .85, .85, 1, UIFont.Small)
-    panel:drawText(panel.reason ~= "" and panel.reason or panel.result, 12, panel.feedbackY + panel.lineHeight, .95, .85, .65, 1, UIFont.Small)
+    local status = getText("UI_OMHTT_Manage" .. panel.status) .. " | " .. panel.powerLabel
+    local feedback = panel.reason ~= "" and panel.reason or panel.result
+    panel:drawText(panel.compactFooter and feedback ~= "" and feedback or status, 12, panel.feedbackY, .85, .85, .85, 1, UIFont.Small)
+    if not panel.compactFooter then
+        panel:drawText(feedback, 12, panel.feedbackY + panel.lineHeight, .95, .85, .65, 1, UIFont.Small)
+    end
     panel:clearStencilRect()
 end
 

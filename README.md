@@ -1,5 +1,7 @@
 # OMH: Turrets & Traps
 
+**C300 / 0.2.53.6 approved and implemented (2026-10-17).** Owner selects copper-orange and approves the C297–C299 corrective patch. [Implementation](docs/PATCH_v0.2.53.6.md): red/white OMH titles, copper accents, separate action rows, attached native Stockpile, visible backup Battery and exact bidirectional transfers. [Verification/test](docs/TEST_v0.2.53.6.md) passes 20,986 assertions, native write/read and all three package selections. Installation is next; rendered/connected acceptance remains pending. No new design decision; corrections remain before R4C2.
+
 **C296 / 0.2.53.5 installed:** [Expanding Details/Module Stats, grouped Load Order and Controller interaction](docs/PATCH_v0.2.53.5.md). [Verification and four-step test](docs/TEST_v0.2.53.5.md). 20,989 assertions, native write/read and all three independent package selections pass. All 361 installed/tagged/package/archive files and both 0.2.53.4 backups verify. [Release evidence](diagnostics/v0.2.53.5/local-release.json). Rendered and connected acceptance remain pending.
 
 **C294 / approved corrections installed:** [0.2.53.4 stockpile, names, Controller performance, remote renewal and UI labels](docs/PATCH_v0.2.53.4.md). [Verification and short test](docs/TEST_v0.2.53.4.md). All 361 installed/tagged/package/archive files and both prior-package backups verify; rendered/connected acceptance remains pending. [Release evidence](diagnostics/v0.2.53.4/local-release.json).

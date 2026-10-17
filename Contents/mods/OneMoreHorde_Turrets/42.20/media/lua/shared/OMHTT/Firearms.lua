@@ -244,7 +244,7 @@ function G.magazineRejection(player, storage, gun, magazine, token)
         local source = magazine:getContainer()
         if not source or not source:contains(magazine) then return "TransferCarried" end
         if not source:isInCharacterInventory(player) then
-            local controller = require("OMHTT/ControlAccess").stockpile(player, storage:getParent())
+            local controller = require("OMHTT/ControlAccess").stockpile(player, storage:getParent(), token and token.controller)
             if not controller or source ~= controller:getContainer() then return "TransferCarried" end
         end
         if magazine:getFullType() ~= gun:getMagazineType() then return "WrongMagazine" end
@@ -283,7 +283,7 @@ function G.transferMagazine(player, storage, gun, magazine, token)
         magazine:setCurrentAmmoCount(gun:getCurrentAmmoCount())
         local inventory = player:getInventory()
         if token and token.stockpile then
-            local controller = require("OMHTT/ControlAccess").stockpile(player, storage:getParent())
+            local controller = require("OMHTT/ControlAccess").stockpile(player, storage:getParent(), token and token.controller)
             if not controller then return nil end
             inventory = controller:getContainer()
             if inventory:getCapacityWeight() + magazine:getUnequippedWeight() > 500 then return nil end

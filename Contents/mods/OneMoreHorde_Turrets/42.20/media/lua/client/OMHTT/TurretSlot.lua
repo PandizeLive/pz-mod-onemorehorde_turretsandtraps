@@ -81,7 +81,10 @@ end
 
 ---@return nil
 function Slot:update()
-    if ISMouseDrag.draggingFocus == self and not isMouseButtonDown(0) then self:clearDrag() end
+    if ISMouseDrag.draggingFocus == self and not isMouseButtonDown(0) then
+        self.owner:feedback(0, "TransferDestination")
+        self:clearDrag()
+    end
     local item = self.items[1]
     if self.kind == "module" or self.kind == "capacity" then
         local name = item and T.component(item:getFullType())
@@ -130,7 +133,7 @@ function Slot:prerender()
         local labelWidth = getTextManager():MeasureStringX(UIFont.Small, self.label)
         local start = 16 + labelWidth
         if self.width - start > 14 then
-            self:drawProgressBar(start, 7, self.width - start - 6, 7, self.meter, {r = .55, g = .8, b = .5, a = 1})
+            self:drawProgressBar(start, 7, self.width - start - 6, 7, self.meter, require("OMHTT/ControlTheme").accent)
         end
     end
     if self.missing then self:drawRectBorder(0, 0, self.width, self.height, 1, 1, 0.3, 0.3) end

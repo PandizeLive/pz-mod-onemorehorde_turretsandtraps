@@ -310,6 +310,7 @@ public final class KahluaCheck {
             {"OMHTT/TurretTransfers", base + "client/OMHTT/TurretTransfers.lua"},
             {"OMHTT/TurretNetworkView", base + "client/OMHTT/TurretNetworkView.lua"},
             {"OMHTT/TurretMagazineAction", base + "shared/OMHTT/TurretMagazineAction.lua"},
+            {"OMHTT/ControlTheme", base + "client/OMHTT/ControlTheme.lua"},
             {"OMHTT/TurretSlot", base + "client/OMHTT/TurretSlot.lua"},
             {"OMHTT/TurretAim", base + "shared/OMHTT/TurretAim.lua"},
             {"OMHTT/TurretRenderer", base + "client/OMHTT/TurretRenderer.lua"},
@@ -332,6 +333,8 @@ public final class KahluaCheck {
             {"OMHTT/ControlAction", base + "shared/OMHTT/ControlAction.lua"},
             {"OMHTT/ControlTransferAction", base + "shared/OMHTT/ControlTransferAction.lua"},
             {"_", "tools/tests/control_ui_bootstrap.lua"},
+            {"OMHTT/ControlBatterySlot", base + "client/OMHTT/ControlBatterySlot.lua"},
+            {"OMHTT/ControlStockpilePane", base + "client/OMHTT/ControlStockpilePane.lua"},
             {"OMHTT/ControlWindowDrag", base + "client/OMHTT/ControlWindowDrag.lua"},
             {"OMHTT/ControlInventory", base + "client/OMHTT/ControlInventory.lua"},
             {"OMHTT/ControlTransferCallbacks", base + "client/OMHTT/ControlTransferCallbacks.lua"},
@@ -446,6 +449,11 @@ public final class KahluaCheck {
             {"_", "tools/tests/multiplayer_effects.lua"},
             {"_", "tools/tests/content_c247.lua"},
             {"_", "tools/tests/corrections_c262.lua"},
+            {"_", "tools/tests/corrections_c300.lua"},
+            {"_", "tools/tests/native_stockpile_ui_setup.lua"},
+            {"_", System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid") + "/media/lua/client/ISUI/ISInventoryPane.lua"},
+            {"OMHTT/ControlStockpilePane", base + "client/OMHTT/ControlStockpilePane.lua"},
+            {"_", "tools/tests/native_stockpile_ui.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {
@@ -477,6 +485,14 @@ public final class KahluaCheck {
                     source += nativeLua.substring(nativeLua.indexOf("function ISUIElement:toTypeNameString()"), nativeLua.indexOf("function ISUIElement:debugPrintTree("));
                     source = source.replace("ISUIElement:", "testControlPanelBase:");
                     Object nativeChunk = compile.invoke(null, new java.io.StringReader(source), ui.toString(), env);
+                    call.invoke(thread, nativeChunk, new Object[0]);
+                }
+                if (stage[1].equals("tools/tests/corrections_c300.lua")) {
+                    Path button = Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/client/ISUI/ISButton.lua");
+                    String nativeLua = Files.readString(button);
+                    String source = nativeLua.substring(nativeLua.indexOf("function ISButton:setEnable("), nativeLua.indexOf("function ISButton:isEnabled()"));
+                    source = source.replace("function ISButton:setEnable(", "function testC300NativeSetEnable(self, ");
+                    Object nativeChunk = compile.invoke(null, new java.io.StringReader(source), button.toString(), env);
                     call.invoke(thread, nativeChunk, new Object[0]);
                 }
                 if (stage[1].equals("tools/tests/turret_manage.lua")) {

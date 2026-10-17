@@ -7,6 +7,7 @@ local A = require("OMHTT/ControlAccess")
 local U = require("OMHTT/ControlClient")
 local Panel = ISPanel:derive("OMHTTControllerPanel")
 local Drag = require("OMHTT/ControlWindowDrag")
+local Theme = require("OMHTT/ControlTheme")
 Panel.onMouseDown = Drag.start
 Panel.onMouseUp = Drag.stop
 Panel.onMouseUpOutside = Drag.stop
@@ -23,6 +24,7 @@ local active = {}
 local function button(panel, x, y, width, text, callback)
     local result = ISButton:new(x, y, width, 28, text, panel, callback)
     result:initialise()
+    Theme.button(result)
     panel:addChild(result)
     return result
 end
@@ -82,6 +84,12 @@ end
 ---@return nil
 function Panel:close()
     self.nameEntry:commit()
+    if self.stockWing then
+        self.stockWing:close()
+    end
+    if self.batterySlot then
+        self.batterySlot:cleanup()
+    end
     require("OMHTT/ControlOverlay").panels[self] = nil
     if self.marker then
         self.marker:remove()
@@ -188,7 +196,7 @@ function Panel.open(player, object)
     if old then old:close() end
     local pn = player:getPlayerNum()
     local panel = Panel:new(getPlayerScreenLeft(pn) + 12, getPlayerScreenTop(pn) + 12,
-        math.min(860, getPlayerScreenWidth(pn) - 24), math.min(680, getPlayerScreenHeight(pn) - 24))
+        math.min(A.state(object).kind == "Controller" and 1220 or 860, getPlayerScreenWidth(pn) - 24), math.min(720, getPlayerScreenHeight(pn) - 24))
     panel.player, panel.object, panel.scanDue = player, object, 0
     panel.backgroundColor = {r = .04, g = .04, b = .04, a = .97}
     panel:initialise()
@@ -199,10 +207,10 @@ function Panel.open(player, object)
     panel:addChild(panel.devices)
     panel.nameEntry = require("OMHTT/ControlNameEntry").create(panel, nil, 274, 90, 366, 28)
     panel.manage = button(panel, 274, 246, 246, getText("UI_OMHTT_OpenManage"), function(self)
-        if A.near(self.player, self.selected) then
-            require("OMHTT/TurretManage")(self.selected, self.player)
-        elseif U.remote(self.player, self.object, self.selected) then
-            require("OMHTT/TurretManage")(self.selected, self.player, self.object)
+        local requested = U.remote(self.player, self.object, self.selected)
+        if A.near(self.player, self.selected) or requested then
+            local host = A.state(self.object)
+            require("OMHTT/TurretManage")(self.selected, self.player, host.kind == "Controller" and self.object or nil)
         end
     end)
     panel.assign = button(panel, 532, 246, 258, getText("UI_OMHTT_Assign"), function(self)
@@ -236,7 +244,7 @@ function Panel.open(player, object)
             U.command(self.player, self.selected, "Access", mode)
         end
     end)
-    local stock = button(panel, 532, 386, 258, getText("UI_OMHTT_OpenStockpile"), function(self) self:stockpile() end)
+    local stock = button(panel, 532, 386, 258, getText("UI_OMHTT_OpenStockpile"), function(self) self:showStockpile(not self.stockPage) end)
     panel.stockButton = stock
     stock:setEnable(A.state(object).kind == "Controller")
     panel.clearInputs = button(panel, 274, 430, 246, getText("UI_OMHTT_ClearInputs"), function(self)
@@ -252,17 +260,59 @@ function Panel.open(player, object)
     end)
     panel.closeButton = button(panel, panel.width - 40, 6, 28, "X", Panel.close)
     require("OMHTT/ControlPanelLayout").create(panel)
+    if A.state(object).kind == "Controller" then
+        local top = panel.equipmentY + panel.lineHeight + 12
+        panel.batterySlot = require("OMHTT/ControlBatterySlot").create(panel, 22, top,
+            math.floor(panel.controlWidth / 2) - 30, panel.lineHeight * 2 + 20)
+        panel.stockWing = require("OMHTT/ControlStockpilePane").create(panel,
+            panel.stockCompact and 12 or panel.controlWidth + 8,
+            panel.titleHeight + 10, panel.stockCompact and panel.width - 24 or panel.width - panel.controlWidth - 20,
+            panel.height - panel.titleHeight - (panel.stockCompact and 58 or 24))
+        panel.stockWing:setVisible(not panel.stockCompact)
+    end
     panel.devices:addItem(U.name(object), object)
     panel.devices.selected = 1
     panel:scan()
     if A.state(object).kind == "Controller" then
-        panel.marker = getWorldMarkers():addGridSquareMarker(object:getSquare(), .4, .75, 1, false, 40)
+        panel.marker = getWorldMarkers():addGridSquareMarker(object:getSquare(), Theme.accent.r, Theme.accent.g, Theme.accent.b, false, 40)
         panel.marker:setScaleCircleTexture(true)
     end
     panel:addToUIManager()
     active[player:getPlayerNum()] = panel
     require("OMHTT/ControlOverlay").panels[panel] = true
     return panel
+end
+
+---@param visible boolean? Show compact stockpile page
+---@return nil
+function Panel:showStockpile(visible)
+    if not self.stockWing then return end
+    self:bringToTop()
+    if not self.stockCompact then return end
+    self.stockPage = visible ~= false
+    self.stockWing:setVisible(self.stockPage)
+    self.detailBody:setVisible(not self.stockPage)
+    self.devices:setVisible(not self.stockPage)
+    self.batterySlot:setVisible(not self.stockPage)
+    self.stockButton:setTitle(getText(self.stockPage and "UI_OMHTT_StockpileBack" or "UI_OMHTT_OpenStockpile"))
+    self.stockButton:setY(self.stockPage and self.height - 42 or self.stockButtonY)
+    self.stockButton:setX(self.stockPage and 12 or self.controlWidth / 2 + 10)
+    self.stockButton:setWidth(self.stockPage and self.width - 24 or self.controlWidth / 2 - 34)
+    if not self.stockPage then
+        self.stockWing.inventoryPane:cleanup()
+    end
+end
+
+---@param player IsoPlayer Operator
+---@param object IsoObject Controller
+---@return ISPanel? panel
+function Panel.show(player, object)
+    local panel = active[player:getPlayerNum()]
+    if panel and panel.object == object then
+        panel:bringToTop()
+        return panel
+    end
+    return Panel.open(player, object)
 end
 
 return Panel

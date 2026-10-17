@@ -77,3 +77,7 @@ Proposed **1A (recommended): Copper-orange `#E7A05A`**, with a restrained dark-b
 Recommended application preserves the C298 **red One More Horde / white menu-name** titles, charcoal section bodies and mostly white labels. The chosen T&T accent is secondary. Keep green/red power, error feedback and calculated rarity colors independent; those encode states, not product branding. Rarity already occupies many hues, so location and restraint matter more than claiming any color is exclusively available. If the owner intends to replace the brand red itself, discuss that explicitly rather than silently overriding C298.
 
 No accent selected or applied to the combined preview yet. The preview retains C298 red/white titles. Final corrective-patch approval remains pending; no gameplay/source/package/install change.
+
+## C300 — approved copper-orange implementation (2026-10-17)
+
+Owner selects copper-orange and explicitly approves trying the corrective design. C299's open choice and C298's pending final approval are now settled. Implemented in [0.2.53.6](PATCH_v0.2.53.6.md), including red/white OMH titles, separated header/actions, visible backup Battery, attached native Stockpile and exact-item transfers. The player's HUD remains separate. Power/rarity colors retain their meanings. [Verification and short test](TEST_v0.2.53.6.md) distinguish automated/native evidence from pending rendered and connected acceptance; this follow-up supersedes the earlier proposal-only status.

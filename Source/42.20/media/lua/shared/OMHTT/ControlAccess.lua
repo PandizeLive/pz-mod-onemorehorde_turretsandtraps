@@ -84,11 +84,18 @@ end
 
 ---@param player IsoPlayer Operator
 ---@param object IsoObject Turret
----@return IsoObject? controller Authorized remote stockpile
-function A.stockpile(player, object)
+---@param controller IsoObject? Exact requested stockpile
+---@return IsoObject? controller Authorized stockpile
+function A.stockpile(player, object, controller)
+    if controller then
+        local host = A.state(controller)
+        if not host or host.kind ~= "Controller" or controller:getHealth() <= 0
+            or not A.near(player, controller) or not A.write(player, host) or not A.write(player, A.state(object)) then return nil end
+        if A.near(player, object) then return controller end
+    end
     local sessions = A.remote[player]
     local session = sessions and sessions[object]
-    if session and session.target == object and A.remoteAllowed(player, object) then
+    if session and session.target == object and (not controller or session.controller == controller) and A.remoteAllowed(player, object) then
         return session.controller
     end
 end

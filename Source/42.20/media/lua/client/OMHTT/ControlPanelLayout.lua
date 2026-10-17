@@ -1,6 +1,7 @@
 if isServer() then return end
 require("ISUI/ISPanel")
 local L = {}
+local Theme = require("OMHTT/ControlTheme")
 local U = require("OMHTT/ControlClient")
 local A = require("OMHTT/ControlAccess")
 local Details = ISPanel:derive("OMHTTControllerDetails")
@@ -14,7 +15,7 @@ end
 
 ---@return nil
 function Details:prerender()
-    self:drawRectStatic(0, 0, self.width, self.height, .9, .06, .07, .06)
+    self:drawRectStatic(0, 0, self.width, self.height, .95, .045, .04, .035)
     self:setStencilRect(0, 0, self.width, self.height)
     L.drawDetails(self.owner, A.state(self.owner.object), A.state(self.owner.selected))
 end
@@ -41,10 +42,13 @@ function L.create(panel)
     local h = getTextManager():getFontHeight(UIFont.Small) + 4
     panel.lineHeight = h
     panel.titleHeight = getTextManager():getFontHeight(UIFont.Medium) + 16
+    local stock = A.state(panel.object).kind == "Controller"
+    panel.stockCompact = stock and panel.width < 980
+    panel.controlWidth = stock and not panel.stockCompact and math.floor(panel.width * .62) or panel.width
     panel.equipmentY = panel.titleHeight + 10
     panel.devicesY = panel.equipmentY + h * 5 + 34
-    panel.detailX = math.floor(panel.width * .32)
-    local x, y, width = panel.detailX + 10, panel.devicesY, panel.width - panel.detailX - 24
+    panel.detailX = math.floor(panel.controlWidth * .29)
+    local x, y, width = panel.detailX + 10, panel.devicesY, panel.controlWidth - panel.detailX - 24
     local half = (width - 8) / 2
     place(panel.devices, 12, y, panel.detailX - 24)
     panel.devices:setHeight(panel.height - y - 14)
@@ -63,14 +67,16 @@ function L.create(panel)
     place(panel.link, x, panel.connectionY + h * 3, half)
     place(panel.unlink, x + half + 8, panel.connectionY + h * 3, half)
     place(panel.clearInputs, x, panel.connectionY + h * 3 + 36, width)
-    place(panel.stockButton, panel.width / 2 + 10, panel.equipmentY + h * 2 + 18, panel.width / 2 - 34)
+    place(panel.stockButton, panel.controlWidth / 2 + 10, panel.equipmentY + h * 3 + 12, panel.controlWidth / 2 - 34)
     panel.manage:setTitle(getText("UI_OMHTT_OpenManage"))
     panel.source:setTitle(getText("UI_OMHTT_SelectInput"))
     panel.link:setTitle(getText("UI_OMHTT_LinkInput"))
     panel.unlink:setTitle(getText("UI_OMHTT_UnlinkInput"))
     panel.clearInputs:setTitle(getText("UI_OMHTT_ClearInputs"))
-    panel.manage.backgroundColor = {r = .06, g = .24, b = .09, a = 1}
-    panel.detailBody = Details:new(panel.detailX, y, panel.width - panel.detailX - 12, panel.height - y - 14)
+    Theme.button(panel.manage)
+    panel.stockButtonY = panel.stockButton.y
+    panel.stockButton:setVisible(panel.stockCompact == true)
+    panel.detailBody = Details:new(panel.detailX, y, panel.controlWidth - panel.detailX - 12, panel.height - y - 14)
     local body = panel.detailBody
     body.owner = panel
     body:initialise()
@@ -139,10 +145,7 @@ end
 ---@return nil
 function Details:section(y, bottom, title)
     local width = self.width - 24
-    self:drawRect(4, y, width, bottom - y, .95, .045, .045, .045)
-    self:drawRectBorder(4, y, width, bottom - y, .6, .25, .25, .25)
-    self:drawRect(4, y, width, self.owner.lineHeight + 4, 1, .12, .12, .12)
-    self:drawText(title, 10, y + 2, .9, .9, .9, 1, UIFont.Small)
+    Theme.section(self, 4, y, width, bottom - y, self.owner.lineHeight + 6, title)
 end
 
 ---@param panel ISPanel Controller window
@@ -163,24 +166,18 @@ end
 ---@param state table? Selection state
 ---@return nil
 function L.draw(panel, host, state)
-    local h, x, width = panel.lineHeight, panel.detailX + 10, panel.width - panel.detailX - 24
-    panel:drawRect(1, 1, panel.width - 2, panel.titleHeight - 2, 1, .13, .15, .13)
-    panel:setStencilRect(12, 4, panel.width - 64, panel.titleHeight - 4)
-    panel:drawText(U.name(panel.object), 12, 8, 1, 1, 1, 1, UIFont.Medium)
+    local h, x, width = panel.lineHeight, panel.detailX + 10, panel.controlWidth - panel.detailX - 24
+    Theme.title(panel, "UI_OMHTT_ControllerTitle")
+    if panel.stockPage then return end
+    Theme.section(panel, 12, panel.equipmentY, panel.controlWidth - 24,
+        h * 4 + 22, h + 8, getText("UI_OMHTT_Equipment"))
+    local power = host.powered and "UI_OMHTT_ControllerPowerReady" or "UI_OMHTT_ControllerPowerEmpty"
+    local textX = panel.controlWidth / 2 + 10
+    panel:setStencilRect(textX, panel.equipmentY + h + 10, panel.controlWidth / 2 - 32, h * 3 + 8)
+    panel:drawText(getText(power), textX, panel.equipmentY + h + 10, .85, .85, .85, 1, UIFont.Small)
+    panel:drawText(getText("UI_OMHTT_ControllerRange"), textX, panel.equipmentY + h * 2 + 12, .7, .7, .7, 1, UIFont.Small)
     panel:clearStencilRect()
-    panel:drawRect(12, panel.equipmentY, panel.width - 24, h * 4 + 22, .9, .08, .09, .08)
-    panel:drawRect(12, panel.equipmentY, panel.width - 24, h + 8, 1, .12, .12, .12)
-    panel:drawText(getText("UI_OMHTT_Equipment"), 22, panel.equipmentY + 4, .75, .75, .75, 1, UIFont.Small)
-    local backup = tostring(math.floor(host.backup or 0)) .. "%"
-    local power = host.powered and "UI_OMHTT_ControllerPowered" or "UI_OMHTT_ControllerOffline"
-    panel:drawText(getText(power, backup), 22, panel.equipmentY + h + 8, .85, .85, .85, 1, UIFont.Small)
-    panel:drawProgressBar(22, panel.equipmentY + h * 2 + 14, panel.width / 2 - 48, 7,
-        math.max(0, math.min(1, (host.backup or 0) / 100)), {r = .55, g = .8, b = .5, a = 1})
-    panel:drawText(getText("UI_OMHTT_ControllerRange"), 22, panel.equipmentY + h * 3 + 8, .7, .7, .7, 1, UIFont.Small)
-    panel:drawText(getText("UI_OMHTT_StockWeight", string.format("%.1f", panel.stockWeight or 0)), panel.width / 2 + 10,
-        panel.equipmentY + h + 8, .85, .85, .85, 1, UIFont.Small)
-    panel:drawRect(12, panel.devicesY - h - 4, panel.detailX - 24, h + 4, 1, .12, .12, .12)
-    panel:drawText(getText("UI_OMHTT_Devices"), 12, panel.devicesY - h - 2, .75, .75, .75, 1, UIFont.Small)
+    panel:drawText(getText("UI_OMHTT_Devices"), 12, panel.devicesY - h - 2, .9, .75, .6, 1, UIFont.Small)
 end
 
 ---@param panel ISPanel Controller window

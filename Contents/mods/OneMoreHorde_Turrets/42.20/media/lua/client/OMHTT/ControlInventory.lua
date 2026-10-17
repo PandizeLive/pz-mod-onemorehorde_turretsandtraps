@@ -20,20 +20,10 @@ end
 ---@return nil
 function Inventory.open(owner, object)
     if not A.near(owner.player, object) or not controller(object:getContainer()) then return end
-    local index = owner.player:getPlayerNum()
-    local carried, loot = getPlayerInventory(index), getPlayerLoot(index)
-    if not carried or not loot then return end
-    if isClient() then
-        object:getContainer():requestSync()
+    local panel = require("OMHTT/ControlPanel").show(owner.player, object)
+    if panel then
+        panel:showStockpile()
     end
-    loot:refreshBackpacks()
-    loot:selectButtonForContainer(object:getContainer())
-    carried:setVisible(true)
-    loot:setVisible(true)
-    carried:setPinned()
-    loot:setPinned()
-    carried:bringToTop()
-    loot:bringToTop()
 end
 
 local nativeCanPutIn = ISInventoryPane.canPutIn

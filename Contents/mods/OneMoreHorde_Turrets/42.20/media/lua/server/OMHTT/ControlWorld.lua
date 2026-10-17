@@ -339,6 +339,7 @@ function W.power(object, elapsed)
         end
         return Battery.charge(battery) > 0
     end
+    state.batteryId = nil
     return false
 end
 
@@ -449,10 +450,11 @@ function W.tick()
                 state.powerDue = now + 1000
                 local elapsed = state.checkedHours and math.max(0, hours - state.checkedHours) or 0
                 state.checkedHours = hours
+                local previousBatteryId = state.batteryId
                 local powered = W.power(object, elapsed)
                 local battery = W.batteries[object]
                 local charge = battery and math.floor(Battery.charge(battery) * 1000) / 10 or 0
-                if powered ~= state.powered or charge ~= state.backup then
+                if powered ~= state.powered or charge ~= state.backup or previousBatteryId ~= state.batteryId then
                     state.powered, state.backup = powered, charge
                     W.publish(object)
                 end

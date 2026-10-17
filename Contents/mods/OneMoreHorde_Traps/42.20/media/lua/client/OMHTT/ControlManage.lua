@@ -20,6 +20,7 @@ function E.create(panel)
             end
         end)
         panel.sourceButton:initialise()
+        require("OMHTT/ControlTheme").button(panel.sourceButton)
         panel:addChild(panel.sourceButton)
     end
 end
@@ -33,7 +34,7 @@ function E.refresh(panel)
     end
     local writable = require("OMHTT/TurretAccess").near(panel.player, panel.object)
     panel.readOnly = not writable
-    panel.powerButton:setEnable(writable)
+    require("OMHTT/ControlTheme").power(panel.powerButton, require("OMHTT/Turret").isOn(require("OMHTT/Turret").state(panel.object)), writable)
     if not writable then
         for i = 1, #controls do
             local control = panel[controls[i]]

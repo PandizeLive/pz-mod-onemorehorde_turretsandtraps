@@ -1,5 +1,7 @@
 # Planning
 
+**C300 / 0.2.53.6 approved and implemented (2026-10-17).** Owner selects copper-orange and approves the C297–C299 corrective patch. [Implementation](PATCH_v0.2.53.6.md): red/white OMH titles, copper accents, separate action rows, attached native Stockpile, visible backup Battery and exact bidirectional transfers. [Verification/test](TEST_v0.2.53.6.md) passes 20,986 assertions, native write/read and all three package selections. Installation is next; rendered/connected acceptance remains pending. No new design decision; corrections remain before R4C2.
+
 **C299 / accent choice open:** [Family palette audit and 1A copper-orange / 1B violet / 1C steel proposals](CORRECTIONS_C297.md#c299--omh-family-palette-audit-and-tt-accent-proposals-2026-10-17). Recommend 1A for restrained T&T-specific accents, retaining red One More Horde / white menu titles and independent power/rarity semantics. No selected accent or patch approval; gameplay remains 0.2.53.5.
 
 **C298 / branding added to C297 scope:** [Exact red/white menu titles](CORRECTIONS_C297.md#c298--one-more-horde-title-branding-2026-10-17). Preview updated using established Horde Night red. No new design choice needed; final corrective-patch approval remains pending, matching the owner's "Once confirmed, we can approve." No gameplay/install change.

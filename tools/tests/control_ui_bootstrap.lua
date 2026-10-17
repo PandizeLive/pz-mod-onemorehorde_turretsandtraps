@@ -16,3 +16,20 @@ function ISTextEntryBox:unfocus() self.focused=false; if self.onLostFocus then s
 function ISTextEntryBox:setMaxTextLength(value) self.maxTextLength=value end
 function ISTextEntryBox:setPlaceholderText(value) self.placeholder=value end
 function ISTextEntryBox:setPlaceholderTextRGBA(r,g,b,a) self.placeholderColor={r,g,b,a} end
+
+LuaEventManager.AddEvent("OnContainerUpdate")
+local paneFunctions=ISInventoryPane
+ISInventoryPane=ISPanel:derive("NativePaneTestAdapter")
+for key,value in pairs(paneFunctions) do ISInventoryPane[key]=value end
+function ISInventoryPane:new(x,y,w,h,inventory,zoom)
+    local pane=ISPanel.new(self,x,y,w,h)
+    pane.inventory,pane.selected,pane.items=inventory,{},{}
+    pane.draggedItems={reset=function(self) self.resetCalled=true end}
+    return pane
+end
+function ISInventoryPane:hideButtons() end
+function ISInventoryPane:refreshContainer() self.refreshes=(self.refreshes or 0)+1 end
+function ISInventoryPane:update() end
+function ISPanel:bringToTop() self.raised=true end
+function ISPanel:isReallyVisible() return self.visible~=false end
+function ISInventoryPaneDraggedItems:getDropContainer() return nil end

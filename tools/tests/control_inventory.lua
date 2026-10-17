@@ -13,7 +13,7 @@ function host:hasModData() return true end
 function host:getModData() return self.data end
 function host:getContainer() return storage end
 function storage:getParent() return host end
-local source={contains=function() return true end,isRemoveItemAllowed=function() return true end,isInCharacterInventory=function() return true end}
+local source={getType=function() return "inventory" end,contains=function() return true end,isRemoveItemAllowed=function() return true end,isInCharacterInventory=function() return true end}
 local function item(weight)
     local value={weight=weight,favorite=false,fullType="Base.OMHTTModuleRange"}
     function value:getFullType() return self.fullType end
