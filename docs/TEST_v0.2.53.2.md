@@ -6,9 +6,9 @@ Full validator passed **20,897** assertions, 203 runtime/translation compilation
 
 UI regressions cover single-page sequencing, restored section bounds, variable-length Details,600px viewport scrolling, fixed title/footer,4/6/6 slots, equal Ammo/Void, nested stencil repaint using the native level/pixel model, pointer capture/release and child-consumed release recovery, contextual Controller spacing and readable list sizing. Native stockpile tests cover the existing inventory panes,500 display surviving native updates, admission above100, total batch budget, full capacity, favorites, proximity, private read/write and unchanged ordinary-container delegation. Prior native UI-name recursion regression remains.
 
-Native write/read pass (147.3s / 142.7s), including 167-item over100 Controller stockpile persistence and exact 5,000-round turret persistence. Traps-only (127.6s), Turrets-only (129.3s) and both (128.9s) startup pass. No players connected to these probes. Installation evidence: pending. No actual rendered-client or connected multiplayer pass claimed.
+Native write/read pass (147.3s / 142.7s), including 167-item over100 Controller stockpile persistence and exact 5,000-round turret persistence. Traps-only (127.6s), Turrets-only (129.3s) and both (128.9s) startup pass. No players connected to these probes. Installed through root OMH.cmd from immutable `test/v0.2.53.2` / `f093ac35b95c1f605722b854deadacc6286041ce`. All 282 source and 355 tagged/packaged/installed/archive files match; both 0.2.53.1 backups verify. [Release evidence](../diagnostics/v0.2.53.2/local-release.json). Archive SHA-256: `172a168fecf6deaa45ab5fcea15a8c6e744f6ce1406e7edb81437b476e43c22f`. No actual rendered-client or connected multiplayer pass claimed.
 
-## Test now — after installing0.2.53.2
+## Test now — 0.2.53.2 installed
 
 1. Restart and confirm**0.2.53.2**. Open Manage: one page, shaded headers, no overlapping sections. Expand/collapse**Details** and scroll to both ends.
 2. Drag Manage and Controller by their title bars; release over a button and outside the window. Both must stop immediately. Select Controller, a turret and a plate; labels/actions must stay readable.
