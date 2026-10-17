@@ -1,6 +1,6 @@
 # OMH: Turrets & Traps
 
-**C296 / 0.2.53.5 correction:** [Expanding Details/Module Stats, grouped Load Order and Controller interaction](docs/PATCH_v0.2.53.5.md). [Verification and four-step test](docs/TEST_v0.2.53.5.md). 20,989 assertions, native write/read and all three independent package selections pass. Installation is next. Rendered and connected acceptance remain pending.
+**C296 / 0.2.53.5 installed:** [Expanding Details/Module Stats, grouped Load Order and Controller interaction](docs/PATCH_v0.2.53.5.md). [Verification and four-step test](docs/TEST_v0.2.53.5.md). 20,989 assertions, native write/read and all three independent package selections pass. All 361 installed/tagged/package/archive files and both 0.2.53.4 backups verify. [Release evidence](diagnostics/v0.2.53.5/local-release.json). Rendered and connected acceptance remain pending.
 
 **C294 / approved corrections installed:** [0.2.53.4 stockpile, names, Controller performance, remote renewal and UI labels](docs/PATCH_v0.2.53.4.md). [Verification and short test](docs/TEST_v0.2.53.4.md). All 361 installed/tagged/package/archive files and both prior-package backups verify; rendered/connected acceptance remains pending. [Release evidence](diagnostics/v0.2.53.4/local-release.json).
 

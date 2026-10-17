@@ -2,7 +2,7 @@
 
 ## 0.2.53.5 / C296 — Manage and Controller corrections
 
-Owner-requested [patch](PATCH_v0.2.53.5.md); [verification and test](TEST_v0.2.53.5.md). Full validator passes 20,989 assertions and native write/read passes. All three independent package checks pass. Immutable tagging and local installation are next. No Workshop upload or cumulative-changelog reset; rendered/connected acceptance remains pending.
+Owner-requested [patch](PATCH_v0.2.53.5.md); [verification and test](TEST_v0.2.53.5.md). Full validator passes 20,989 assertions and native write/read passes. All three independent package checks pass. Installed from immutable `test/v0.2.53.5` / `6de361a8db328f1b75d9c32ee7a011e6b7a42504`. All 285 source and 361 tagged/packaged/installed/archive files match; both 0.2.53.4 backups verify. [Release evidence](../diagnostics/v0.2.53.5/local-release.json). No Workshop upload or cumulative-changelog reset; rendered/connected acceptance remains pending.
 
 ## 0.2.53.4 / C294 — stockpile and controller audit corrections
 

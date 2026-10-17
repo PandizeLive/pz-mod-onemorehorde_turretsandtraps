@@ -9,7 +9,7 @@ C296, 2026-10-17. Owner reports 0.2.53.4 launch slowdown solved, but Manage Deta
 - Static package closure passes: Traps/Turrets stay independent, 160 combined sandbox options and 66 identical shared files. No shipped pcall/xpcall.
 - Owner console reviewed through its 0.2.53.4 shutdown at frame 56322: no T&T exception/stack overflow. Existing world metadata, missing vegetation tiles and another mod's skeleton warning do not prove this UI symptom's cause.
 
-Rendered SP and connected dedicated/listen acceptance remain pending. Installation evidence follows after the immutable test tag is created.
+Rendered SP and connected dedicated/listen acceptance remain pending. Installed from immutable `test/v0.2.53.5` / `6de361a8db328f1b75d9c32ee7a011e6b7a42504`. All 285 source and 361 tagged/packaged/installed/archive files match; both 0.2.53.4 backups verify. [Release evidence](../diagnostics/v0.2.53.5/local-release.json).
 
 ## Short test
 
