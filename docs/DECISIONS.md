@@ -1,5 +1,9 @@
 # Decision register
 
+## C303 — future empty-slot silhouettes discussion, 2026-10-17
+
+Owner: "Once we add icons and art for the other assets, can we add silhouettes to the other empty slots too, like the head, ammo, magazine, and expansion slots, so players know what goes where? Discuss." [Proposed mapping, compatibility exceptions and1A/1B choice](UI_EMPTY_SLOT_HINTS_C303.md). Recommend context-aware faded icons with supplied/native art, preserving labels and non-insertable/locked states. Discussion is not implementation approval or a new acceptance result.0.2.53.8 remains installed; no Source/Contents, test evidence, Workshop changelog or version change.
+
 ## C302 — Controller battery silhouette and multiple small batteries, 2026-10-17
 
 Owner: "The battery section makes me unsure of which battery to add... add a sillouhette of the item... allow multiple batteries to be stored, since they're so small." Direct implementation request, scoped to the Controller's ordinary Battery. [Contract and implementation](PATCH_v0.2.53.8.md): faded native item icon, stored count and multi-item drop through existing authority. No separate inventory, car-battery expansion or capacity/drain change. Findings explained before implementation: storage and charged-spare selection already exist; the old UI showed only one and stopped after the first dropped battery. C301 grey choice is retained. Validation/delivery/acceptance tracked separately.
