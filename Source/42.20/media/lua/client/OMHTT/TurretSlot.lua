@@ -133,12 +133,13 @@ function Slot:prerender()
     if self.missing then self:drawRectBorder(0, 0, self.width, self.height, 1, 1, 0.3, 0.3) end
     if self.summary then
         local right = self.textInsetRight or 0
-        self:setStencilRect(8, h + 3, self.width - 16 - right, self.height - h - 5)
+        local clipX, clipY, clipW, clipH = self:clampStencilRectToParent(8, h + 3, self.width - 16 - right, self.height - h - 5)
         self:drawText(self.summary, 8, h + 4, 1, 1, 1, 1, UIFont.Small)
         if self.subtext then
             self:drawText(self.subtext, 8, h * 2 + 6, .75, .75, .75, 1, UIFont.Small)
         end
         self:clearStencilRect()
+        self:repaintStencilRect(clipX, clipY, clipW, clipH)
         if self.disabled and self.kind ~= "magazine" then
             self:drawRect(0, 0, self.width, self.height, .4, 0, 0, 0)
         end
@@ -167,9 +168,10 @@ function Slot:prerender()
     end
     local textX, textY = self.kind == "void" and 8 or 44, h + 8
     if self.kind == "module" then textX, textY = 4, math.min(h + 20, self.height - h - 2) end
-    self:setStencilRect(textX, textY, self.width - textX - 4, h + 4)
+    local clipX, clipY, clipW, clipH = self:clampStencilRectToParent(textX, textY, self.width - textX - 4, h + 4)
     self:drawText(name, textX, textY, color and color.tr or 1, color and color.tg or 1, color and color.tb or 1, 1, UIFont.Small)
     self:clearStencilRect()
+    self:repaintStencilRect(clipX, clipY, clipW, clipH)
     if self.disabled then self:drawRect(0, 0, self.width, self.height, 0.4, 0, 0, 0) end
     if self:isMouseOver() and ISMouseDrag.dragging and ISMouseDrag.draggingFocus ~= self then
         self:drawRectBorder(0, 0, self.width, self.height, 1, 0.8, 0.8, 0.8)

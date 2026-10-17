@@ -67,13 +67,4 @@ function E.refresh(panel)
     end
 end
 
----@param panel ISPanel Manage window
----@return nil
-function E.close(panel)
-    if panel.storage then
-        panel.storage:close()
-        panel.storage = nil
-    end
-end
-
 return E

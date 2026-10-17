@@ -1,7 +1,21 @@
 require("TimedActions/ISBaseTimedAction")
+require("TimedActions/ISTransferAction")
 local A = require("OMHTT/ControlAccess")
 OMHTTControlTransferAction = ISBaseTimedAction:derive("OMHTTControlTransferAction")
 local Action = OMHTTControlTransferAction
+
+---@param character IsoPlayer Operator
+---@param object IsoObject Controller
+---@param item InventoryItem Exact carried item
+---@return boolean allowed
+function Action.canStore(character, object, item)
+    local state = A.state(object)
+    local source = item and item:getContainer()
+    return state ~= nil and state.kind == "Controller" and A.near(character, object) and A.write(character, state)
+        and source ~= nil and source:contains(item) and source:isRemoveItemAllowed(item)
+        and source:isInCharacterInventory(character) and not item:isFavorite()
+        and object:getContainer():getCapacityWeight() + item:getUnequippedWeight() <= 500
+end
 
 ---@return boolean valid
 function Action:isValid()
@@ -11,8 +25,7 @@ function Action:isValid()
     local source, storage = self.item:getContainer(), self.object:getContainer()
     if not source or not source:contains(self.item) or not source:isRemoveItemAllowed(self.item) then return false end
     if self.incoming then
-        return source:isInCharacterInventory(self.character) and not self.item:isFavorite()
-            and storage:getCapacityWeight() + self.item:getUnequippedWeight() <= 500
+        return Action.canStore(self.character, self.object, self.item)
     end
     return source == storage and self.character:getInventory():hasRoomFor(self.character, self.item)
 end
@@ -28,7 +41,9 @@ function Action:complete()
         source:AddItem(self.item)
         return false
     end
-    self.character:removeFromHands(self.item)
+    if self.incoming then
+        ISTransferAction:removeItemOnCharacter(self.character, self.item)
+    end
     if self.incoming and self.item:getFullType() == "Base.Battery" then
         local world = require("OMHTT/ControlWorld")
         world.batteries[self.object] = self.item

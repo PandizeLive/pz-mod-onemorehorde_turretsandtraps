@@ -1,5 +1,9 @@
 # Decision register
 
+## C290: single-page Manage, Controller cleanup and native inventory (2026-10-17)
+
+Owner: “Let's switch to the1 tab view instead” and “Please clean everything up. The inventory can use the native zomboid inventory system, not this invented thing.” Supersedes C288's two-tab choice. Authorizes implementation of the reported header/Details/Controller layering defects, reliable window dragging and removal of the custom stockpile browser. Preserve equipment/ammunition layout, module4/6/6, full remote Manage,500 stockpile capacity, read/write access and exact-item server authority. Native inventory lifetime belongs to the player; closing Controller no longer closes a custom child inventory. No balance change or acceptance inferred. [Patch and diagnosis](PATCH_v0.2.53.2.md).
+
 ## C289: approved corrective patch (2026-10-17)
 
 Owner: “Approved.” Authorizes implementing the selected C288 two-tab Manage and Controller cleanup, including C286 recursion/window-lifecycle fixes, validation, installation and the standing C108 GitHub mirror. Preserve gameplay, remote authority and exact-item accounting. [Implementation](PATCH_v0.2.53.1.md) | [Checks and short test](TEST_v0.2.53.1.md). Approval does not establish rendered or connected multiplayer acceptance.

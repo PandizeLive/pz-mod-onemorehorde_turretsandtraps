@@ -1,5 +1,9 @@
 # 0.2.53.1 verification and short test
 
+## C290 owner findings — correction required (2026-10-17)
+
+Owner reports missing Manage section backgrounds/layering, Details interfering with category text, continued Controller clipping and dragging that remains stuck. Owner requests single-page Manage and native stockpile inventory. These paths failed visual/usability acceptance; the prior automated pass did not establish rendered correctness. Capture:`diagnostics/captures/20261017-030256-2174` (console SHA-256`52147cfca4abbd0d63a13f883fae82c4ca8c93a4aa8b36d008b27fcf62813b54`) confirms SP0.2.53.1. No recurring Controller stack overflow or T&T Lua exception found in this capture. It does contain a premature`ISBuildIsoEntity` require warning and unrelated Firearms/native translation/map warnings. Later screenshot also shows undersized custom stockpile rows and unsupported device-prefix glyphs. Screenshot evidence is visual, not an additional captured session. Corrective0.2.53.2 work is authorized; connected MP remains untested.
+
 ## Automated checks
 
 Full validator passes **20,856 assertions**, 199 Lua/runtime/translation compilations, 280 source files and 351 package files (131 Traps, 220 Turrets), with 302 literal translation keys.

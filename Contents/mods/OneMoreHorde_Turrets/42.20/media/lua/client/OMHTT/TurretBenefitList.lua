@@ -48,9 +48,10 @@ function List:prerender()
         local color = row.color
         local effectWidth = getTextManager():MeasureStringX(UIFont.Small, row.effect)
         if color then self:drawRect(1, y, self.width - 2, self.lineHeight, .14, color.r, color.g, color.b) end
-        self:setStencilRect(4, y, math.max(0, self.width - effectWidth - 16), self.lineHeight)
+        local clipX, clipY, clipW, clipH = self:clampStencilRectToParent(4, y, math.max(0, self.width - effectWidth - 16), self.lineHeight)
         self:drawText(row.title, 4, y, color and color.tr or shade, color and color.tg or shade, color and color.tb or shade, row.inactive and .5 or 1, UIFont.Small)
         self:clearStencilRect()
+        self:repaintStencilRect(clipX, clipY, clipW, clipH)
         self:drawTextRight(row.effect, self.width - 6, y, shade, shade, shade, 1, UIFont.Small)
     end
     if #self.rows > self.visibleRows then self:drawRect(self.width - 2, self.lineHeight, 2, self.height - self.lineHeight, .7, .5, .5, .5) end

@@ -20,12 +20,49 @@ function ISPanel:setWidth(width) self.width = width end
 function ISPanel:setVisible(value) self.visible = value end
 function ISPanel:prerender() end
 function ISPanel:isMouseOver() return false end
-function ISPanel:setStencilRect() end
-function ISPanel:clearStencilRect() end
+function ISPanel:getAbsoluteX() return self.x + (self.parent and self.parent:getAbsoluteX() or 0) end
+function ISPanel:getAbsoluteY()
+    return self.y + (self.parent and self.parent:getAbsoluteY() + (self.parent.scrollChildren and self.parent:getYScroll() or 0) or 0)
+end
+function ISPanel:setStencilRect(x,y,w,h)
+    if not testStencil then return end
+    local ax,ay = self:getAbsoluteX()+x,self:getAbsoluteY()+y
+    for i=1,#testStencil.points do
+        local p=testStencil.points[i]
+        if p.x>=ax and p.x<ax+w and p.y>=ay and p.y<ay+h and p.level==testStencil.level then p.level=p.level+1 end
+    end
+    testStencil.level=testStencil.level+1
+end
+function ISPanel:clampStencilRectToParent(x,y,w,h)
+    if self.parent then
+        local dx,dy=self:getAbsoluteX()-self.parent:getAbsoluteX(),self:getAbsoluteY()-self.parent:getAbsoluteY()
+        local x2,y2=math.min(x+w,self.parent.width-dx),math.min(y+h,self.parent.height-dy)
+        x,y=math.max(x,-dx),math.max(y,-dy)
+        w,h=math.max(0,x2-x),math.max(0,y2-y)
+    end
+    self:setStencilRect(x,y,w,h)
+    return x,y,w,h
+end
+function ISPanel:repaintStencilRect(x,y,w,h)
+    if not testStencil or testStencil.level==0 then return end
+    local ax,ay=self:getAbsoluteX()+x,self:getAbsoluteY()+y
+    for i=1,#testStencil.points do
+        local p=testStencil.points[i]
+        if p.x>=ax and p.x<ax+w and p.y>=ay and p.y<ay+h then p.level=testStencil.level end
+    end
+end
+function ISPanel:clearStencilRect()
+    if not testStencil then return end
+    testStencil.level=math.max(0,testStencil.level-1)
+    if testStencil.level==0 then for i=1,#testStencil.points do testStencil.points[i].level=0 end end
+end
 function ISPanel:drawRectBorder() end
 function ISPanel:drawRect() end
 function ISPanel:drawRectStatic() end
 function ISPanel:onMouseDown() self.moving = true end
+function ISPanel:setCapture(value) self.capture=value end
+function ISPanel:setFont(font, padding) self.font=font end
+function ISPanel:drawTextRight(text) check(type(text)=="string", "Right-aligned text resolves") end
 function ISPanel:drawProgressBar(x, y, width, height, value) check(x >= 0 and x + width <= self.width and value >= 0 and value <= 1, "Supply meter stays inside its slot") end
 function ISPanel:setY(y) self.y = y end
 function ISPanel:setHeight(height) self.height = height end
@@ -87,3 +124,10 @@ ISComboBox = {new = function(self, x, y, w, h, target, callback)
         addOption = function(self, value) self.options[#self.options + 1] = value end,
         target = target, callback = callback}
 end}
+
+ISInventoryPane.canPutIn=function() return "native-admission" end
+ISInventoryPaneDraggedItems={update=function(self) self.nativeUpdates=(self.nativeUpdates or 0)+1 end}
+ISInventoryPage={refreshBackpacks=function(self) self.nativeRefreshes=(self.nativeRefreshes or 0)+1 end,
+    update=function(self) self.capacity=100 end,canPutIn=function() return "native-page-admission" end}
+ISInventoryPaneContextMenu = ISInventoryPaneContextMenu or {}
+ISInventoryPaneContextMenu.hasRoomForAny=function() return "native-context-admission" end

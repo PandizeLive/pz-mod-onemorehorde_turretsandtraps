@@ -6,7 +6,11 @@ require("ISUI/ISTextEntryBox")
 local A = require("OMHTT/ControlAccess")
 local U = require("OMHTT/ControlClient")
 local Panel = ISPanel:derive("OMHTTControllerPanel")
-local Storage = ISPanel:derive("OMHTTControllerStorage")
+local Drag = require("OMHTT/ControlWindowDrag")
+Panel.onMouseDown = Drag.start
+Panel.onMouseUp = Drag.stop
+Panel.onMouseUpOutside = Drag.stop
+Panel.update = Drag.update
 local active = {}
 
 ---@param panel ISPanel Parent
@@ -38,8 +42,7 @@ function Panel:scan()
                 local object = self.scanResults[i]
                 local state = A.state(object)
                 if state then
-                    local prefix = object == self.object and "◆ " or (state.controller == host.id and "● " or "○ ")
-                    self.devices:addItem(prefix .. U.name(object), object)
+                    self.devices:addItem(U.name(object), object)
                     if object == self.selected then
                         self.devices.selected = #self.devices.items
                     end
@@ -87,9 +90,7 @@ function Panel:close()
         self.marker:remove()
         self.marker = nil
     end
-    if self.storage then
-        self.storage:close()
-    end
+    Drag.stop(self)
     if active[self.player:getPlayerNum()] == self then
         active[self.player:getPlayerNum()] = nil
     end
@@ -119,6 +120,7 @@ function Panel:prerender()
         end
         require("OMHTT/ControlPanelLayout").snapshot(self)
     end
+    require("OMHTT/ControlPanelLayout").refresh(self, state)
     require("OMHTT/ControlPanelLayout").draw(self, host, state)
     local writable = state and A.authorized(self.player, self.selected)
     local linkable = state and A.write(self.player, state) and self.linkSource
@@ -146,148 +148,10 @@ function Panel:prerender()
 
 end
 
----@return nil
-function Storage:close()
-    if ISMouseDrag.draggingFocus == self.left or ISMouseDrag.draggingFocus == self.right then
-        ISMouseDrag.dragging, ISMouseDrag.draggingFocus = nil, nil
-    end
-    if self.owner and self.owner.storage == self then
-        self.owner.storage = nil
-    end
-    self:removeFromUIManager()
-end
-
----@param x number Local x
----@param y number Local y
----@return boolean handled
-function Panel:onMouseDown(x, y)
-    if y < self.titleHeight then
-        ISPanel.onMouseDown(self, x, y)
-    end
-    return true
-end
-
----@return nil
-function Storage:refresh()
-    self.left:clear()
-    self.right:clear()
-    local sources = {self.player:getInventory(), self.object:getContainer()}
-    local lists = {self.left, self.right}
-    for j = 1, 2 do
-        local items = sources[j]:getItems()
-        local first = math.min(self.page or 0, math.max(0, items:size() - 1))
-        for i = first, math.min(first + 199, items:size() - 1) do
-            local item = items:get(i)
-            lists[j]:addItem(item:getDisplayName(), item)
-        end
-    end
-end
-
----@return nil
-function Storage:prerender()
-    if not A.state(self.object) or not A.near(self.player, self.object) then
-        self:close(); return
-    end
-    ISPanel.prerender(self)
-    self:drawText("Your inventory", 12, 12, 1, 1, 1, 1, UIFont.Medium)
-    self:drawText(string.format("Controller stockpile: %.1f / 500", self.object:getContainer():getCapacityWeight()), 340, 12, 1, 1, 1, 1, UIFont.Medium)
-    self:drawText("Drag items to store. Showing up to 200 items per page.", 12, 44, .8, .8, .8, 1, UIFont.Small)
-    if getTimestampMs() >= (self.refreshDue or 0) then
-        self.refreshDue = getTimestampMs() + 1000
-        local a, b = self.left.selected, self.right.selected
-        self:refresh()
-        self.left.selected, self.right.selected = a, b
-    end
-end
-
----@param x number X
----@param y number Y
----@return boolean handled
-function Storage:onMouseUp(x, y, incoming)
-    if not A.write(self.player, A.state(self.object)) then return false end
-    local selected = ISMouseDrag.dragging
-    if not selected then return false end
-    local destination = incoming == false and self.player:getInventory() or self.object:getContainer()
-    for i = 1, #selected do
-        local entry = selected[i]
-        local items = type(entry) == "table" and entry.items or {entry}
-        for j = 1, #items do
-            local item = items[j]
-            if instanceof(item, "InventoryItem") then
-                ISTimedActionQueue.add(ISInventoryTransferAction:new(self.player, item, item:getContainer(), destination))
-            end
-        end
-    end
-    ISMouseDrag.dragging, ISMouseDrag.draggingFocus = nil, nil
-    return true
-end
-
 ---@param object IsoObject? Stockpile controller
 ---@return nil
 function Panel:stockpile(object)
-    object = object or self.object
-    if not A.state(object) or A.state(object).kind ~= "Controller" or not A.near(self.player, object) then return end
-    if self.storage then
-        self.storage:close()
-    end
-    local pn = self.player:getPlayerNum()
-    local x = math.max(getPlayerScreenLeft(pn) + 12, math.min(self.x + 20, getPlayerScreenLeft(pn) + getPlayerScreenWidth(pn) - 692))
-    local y = math.max(getPlayerScreenTop(pn) + 12, math.min(self.y + 20, getPlayerScreenTop(pn) + getPlayerScreenHeight(pn) - 492))
-    local panel = Storage:new(x, y, 680, 480)
-    panel.player, panel.object, panel.owner = self.player, object, self
-    if isClient() then
-        object:getContainer():requestSync()
-    end
-    panel.backgroundColor = {r = .04, g = .04, b = .04, a = .98}
-    panel:initialise()
-    panel.moveWithMouse = true
-    panel.left = ISScrollingListBox:new(12, 76, 316, 344)
-    panel.right = ISScrollingListBox:new(340, 76, 328, 344)
-    for _, list in pairs({panel.left, panel.right}) do
-        list:initialise()
-        list.itemheight = 24
-        panel:addChild(list)
-        list.onMouseDown = function(self, x, y)
-            ISScrollingListBox.onMouseDown(self, x, y)
-            local row = self.items[self.selected]
-            if row then
-                ISMouseDrag.dragging, ISMouseDrag.draggingFocus = {row.item}, self
-            end
-        end
-        list.onMouseUp = function(self, x, y)
-            if ISMouseDrag.draggingFocus == self then
-                ISMouseDrag.dragging, ISMouseDrag.draggingFocus = nil, nil
-                return true
-            end
-            return Storage.onMouseUp(self.parent, x, y, self == self.parent.right)
-        end
-    end
-    local Transfer = require("OMHTT/ControlTransferAction")
-    button(panel, 12, 438, 200, "Store selected →", function(self)
-        local row = self.left.items[self.left.selected]
-        if row then
-            ISTimedActionQueue.add(Transfer:new(self.player, self.object, row.item, true))
-        end
-    end)
-    button(panel, 340, 438, 200, "← Take selected", function(self)
-        local row = self.right.items[self.right.selected]
-        if row then
-            ISTimedActionQueue.add(Transfer:new(self.player, self.object, row.item, false))
-        end
-    end)
-    button(panel, 550, 438, 118, getText("UI_OMHTT_Close"), Storage.close)
-    panel:refresh()
-    button(panel, 480, 40, 86, "Previous", function(self)
-        self.page = math.max(0, (self.page or 0) - 200)
-        self:refresh()
-    end)
-    button(panel, 576, 40, 92, "Next", function(self)
-        self.page = math.min(math.max(self.player:getInventory():getItems():size(), self.object:getContainer():getItems():size()) - 1, (self.page or 0) + 200)
-        self.page = math.max(0, self.page)
-        self:refresh()
-    end)
-    panel:addToUIManager()
-    self.storage = panel
+    require("OMHTT/ControlInventory").open(self, object or self.object)
 end
 
 ---@param player IsoPlayer Operator
@@ -368,7 +232,7 @@ function Panel.open(player, object)
     end)
     panel.closeButton = button(panel, panel.width - 40, 6, 28, "X", Panel.close)
     require("OMHTT/ControlPanelLayout").create(panel)
-    panel.devices:addItem("◆ " .. U.name(object), object)
+    panel.devices:addItem(U.name(object), object)
     panel.devices.selected = 1
     panel:scan()
     if A.state(object).kind == "Controller" then

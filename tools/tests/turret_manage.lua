@@ -101,24 +101,45 @@ require("OMHTT/TurretManageExtras").refresh(panel, {active = {Lure = 1}}, {headK
 check(panel.height + panel.y <= 600 and panel.body.scrollHeight == panel.body.contentHeight, "Constrained viewport scrolls the content, not the window controls")
 local Layout = require("OMHTT/TurretManageLayout")
 local titleY, footerY = panel.nameEntry.y, panel.fireButton.y
-check(panel.nameEntry.y >= panel.titleHeight and panel.body.y > panel.modulesTab.y + panel.modulesTab.height,
-    "Dedicated drag band and tabs are separate from the editable name and content")
-Layout.select(panel, "modules")
-check(panel.moduleSlots[1].visible and panel.benefitList.visible and not panel.headSlot.visible
-    and not panel.loadOrderButton.visible and not panel.powerButton.visible, "Modules page hides equipment controls")
+check(panel.nameEntry.y >= panel.titleHeight and panel.body.y >= panel.nameEntry.y + panel.nameEntry.height + 36
+    and not panel.equipmentTab and not panel.modulesTab, "Single-page content preserves the dedicated drag and name bands")
+check(panel.headSlot.parent==panel.body and panel.moduleSlots[1].parent==panel.body
+    and panel.moduleSlots[1].y>panel.magazineSlot.y+panel.magazineSlot.height, "Equipment, ammunition and modules share one sequential page")
+local closedHeight=panel.body.contentHeight
+panel.moduleLines="Line one\nLine two\nLine three\nLine four"
 panel.detailsButton.callback(panel)
+check(#panel.detailLines==4 and panel.body.contentHeight==closedHeight+panel.lineHeight*7+16,
+    "Expanded Details measures all wrapped lines plus the three stats rows")
 panel.body:onMouseWheel(20)
 check(panel.body:getYScroll() < 0 and panel.nameEntry.y == titleY and panel.fireButton.y == footerY,
-    "Expanded details scroll without moving the name, tabs or firing controls")
+    "Expanded details scroll without moving the name or firing controls")
 panel.body:prerender()
 panel.body:render()
-check(panel.benefitList.y >= panel.moduleSlots[16].y + panel.moduleSlots[16].height
-    and panel.detailsY >= panel.benefitList.y + panel.benefitList.height, "Modules, benefits and Details never overlap")
-Layout.select(panel, "equipment")
-check(panel.headSlot.visible and panel.loadOrderButton.visible and not panel.moduleSlots[1].visible
-    and panel.body:getYScroll() == 0, "Returning to Equipment resets content scroll and restores equipment")
-check(panel.detailsY >= panel.magazineSlot.y + panel.magazineSlot.height,
-    "Equipment details start after the magazine")
+check(panel.equipmentBottom<panel.ammunitionY and panel.ammunitionBottom<panel.modulesY
+    and panel.moduleGridBottom<panel.benefitList.y and panel.detailsY>=panel.benefitList.y+panel.benefitList.height,
+    "Section backgrounds, slots, benefits and Details have distinct bounds")
+panel.body:setYScroll(0)
+local slot=panel.headSlot
+local inside={x=slot:getAbsoluteX()+48,y=slot:getAbsoluteY()+panel.lineHeight+10,level=0}
+local outside={x=panel.body:getAbsoluteX()+12,y=panel.body:getAbsoluteY()-2,level=0}
+testStencil={level=0,points={inside,outside}}
+panel.body:prerender()
+slot:prerender()
+check(inside.level==1 and outside.level==0 and testStencil.level==1,
+    "Native-style stencil simulation restores the parent after a slot text clip without leaking above the viewport")
+panel.body:render()
+check(testStencil.level==0 and inside.level==0, "Body balances the native stencil after its children")
+testStencil=nil
+local originalMouse=isMouseButtonDown
+panel:onMouseDown(20,8)
+check(panel.moving and panel.capture, "Title dragging captures the pointer")
+isMouseButtonDown=function() return false end
+panel:update()
+check(not panel.moving and not panel.capture, "Release consumed by a child still ends dragging on update")
+panel:onMouseDown(20,8)
+panel:onMouseUpOutside(2000,2000)
+check(not panel.moving and not panel.capture, "Outside release ends dragging immediately")
+isMouseButtonDown=originalMouse
 for i = 1, #panel.slots do
     local slot = panel.slots[i]
     check(slot.x >= 8 and slot.x + slot.width <= panel.body.width - 20, "Content slots leave a clear scrollbar gutter")

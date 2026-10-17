@@ -1,13 +1,13 @@
 if isServer() then return end
 require("TimedActions/ISTimedActionQueue")
 require("TimedActions/ISBaseTimedAction")
-require("BuildingObjects/ISBuildIsoEntity")
 require("TimedActions/ISInventoryTransferAction")
 local A = require("OMHTT/ControlAccess")
 local Action = require("OMHTT/ControlAction")
 local Transfer = require("OMHTT/ControlTransferAction")
 local C = require("OMHTT/ControlDefinitions")
 local U = {}
+require("OMHTT/ControlInventory")
 local Open = ISBaseTimedAction:derive("OMHTTOpenControls")
 
 ---@return boolean valid
@@ -84,6 +84,7 @@ end
 ---@return ISBuildIsoEntity? cursor
 function U.place(item, player)
     if not U.carried(item, player) then return nil end
+    require("BuildingObjects/ISBuildIsoEntity")
     local kind
     for key, fullType in pairs(C.types) do
         if item:getFullType() == fullType then

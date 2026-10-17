@@ -9,8 +9,10 @@ A.near = function() return true end
 getWorldMarkers = function() return {addGridSquareMarker = function() return {setScaleCircleTexture = function() end, remove = function() end} end} end
 local square = makeSquare(1950, 1950, 0)
 local inventory = {getItems = function() return {size = function() return 0 end} end, getCapacityWeight = function() return 0 end, requestSync = function() end}
+function inventory:getType() return "OMHTTController" end
 local player = {getInventory = function() return inventory end, getUsername = function() return "ui-owner" end, isDead = function() return false end, getPlayerNum = function() return 0 end}
 local object = {data = {OMHTTControl = {id = "ui-controller", kind = "Controller", owner = "ui-owner", access = "Private", powered = true, links = {}}}}
+function inventory:getParent() return object end
 function object:getSquare() return square end
 function object:getX() return 1950 end
 function object:getY() return 1950 end
@@ -42,14 +44,28 @@ end
 for i = 1, #panel.detailBody.children do
     local child = panel.detailBody.children[i]
     check(child.x >= 0 and child.x + child.width <= panel.detailBody.width
-        and child.y >= 0 and child.y + child.height <= panel.detailBody.contentHeight,
+        and child.y >= 0 and (child.visible == false or child.y + child.height <= panel.detailBody.contentHeight),
         "Controller details fit their scrollable content")
 end
+local oldInventory,oldLoot=getPlayerInventory,getPlayerLoot
+local function nativePage()
+    return {inventoryPane={inventory=inventory},backpacks={{inventory=inventory,capacity=100}},refreshBackpacks=ISInventoryPage.refreshBackpacks,
+        selectButtonForContainer=function(self,c) self.selected=c end,setVisible=function(self,v) self.visible=v end,
+        setPinned=function(self) self.pinned=true end,bringToTop=function(self) self.raised=true end}
+end
+local carriedPage,lootPage=nativePage(),nativePage()
+getPlayerInventory=function() return carriedPage end
+getPlayerLoot=function() return lootPage end
 panel:stockpile()
-local firstStorage = panel.storage
 panel:stockpile()
-check(firstStorage.removed and panel.storage ~= firstStorage, "Reopening stockpile replaces the owned child window")
-local lastStorage = panel.storage
+check(lootPage.selected==inventory and lootPage.visible and carriedPage.visible and lootPage.capacity==500
+    and lootPage.backpacks[1].capacity==500 and not panel.storage, "Stockpile reuses the native inventory and loot panes with its 500-weight display")
+local previousMouse=isMouseButtonDown
+panel:onMouseDown(12,8)
+isMouseButtonDown=function() return false end
+panel:update()
+check(not panel.moving and not panel.capture, "Controller dragging releases even when a child consumes mouse-up")
+isMouseButtonDown=previousMouse
 local U = require("OMHTT/ControlClient")
 local oldCommand, oldFaction = U.command, Faction
 local requested
@@ -63,13 +79,11 @@ check(requested == "Faction", "Faction owner can select faction access")
 U.command, Faction = oldCommand, oldFaction
 panel:close()
 check(panel.removed and not require("OMHTT/ControlOverlay").panels[panel], "Controller closes its range/link overlay")
-check(lastStorage.removed and panel.storage == nil, "Closing Controller also closes its stockpile")
-local remoteManage = {x = 80, y = 40, player = player, controller = object}
-Panel.stockpile(remoteManage, object)
-local remoteStorage = remoteManage.storage
-check(remoteStorage.object == object and remoteStorage.owner == remoteManage, "Remote Manage owns a stockpile for the exact Controller")
-require("OMHTT/ControlManage").close(remoteManage)
-check(remoteStorage.removed and not remoteManage.storage, "Remote Manage cleanup closes its owned stockpile")
+check(lootPage.visible and carriedPage.visible, "Closing Controller leaves native inventory lifetime under player control")
+local remoteManage={player=player,controller=object}
+Panel.stockpile(remoteManage,object)
+check(lootPage.selected==inventory and not remoteManage.storage, "Remote Manage opens the same native stockpile")
+getPlayerInventory,getPlayerLoot=oldInventory,oldLoot
 local oldScreen, oldTextManager = getPlayerScreenHeight, getTextManager
 getPlayerScreenHeight = function() return 600 end
 getTextManager = function() return {getFontHeight = function() return 30 end} end

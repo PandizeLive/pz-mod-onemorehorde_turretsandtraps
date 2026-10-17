@@ -1,5 +1,9 @@
 # Release state and publication policy
 
+## 0.2.53.2 / C290 — single-page Manage and native stockpile
+
+Approved UI correction; full validator and native write/read plus all independent package startup checks pass. [Patch](PATCH_v0.2.53.2.md) | [Checks](TEST_v0.2.53.2.md). Packaging/install pending. Rendered and connected MP acceptance remain pending. No Workshop publication; cumulative draft retained.
+
 ## 0.2.53.1 / C289 — corrective menus, 2026-10-17
 
 **C289 / 0.2.53.1 installed (2026-10-17).** Approved two-tab Manage, dedicated drag bars, expandable Details, Controller layout/overview, native UI-name recursion correction and stockpile lifecycle cleanup are installed from immutable `test/v0.2.53.1` / `983dcf13217f7f2b20b96366e406d74bc8d3f0e8`. Full validator:20,856 assertions; native write/read and Traps-only/Turrets-only/both startup pass. All280 source and351 tagged/packaged/installed/archive files match; both0.2.53 backups verify. [Patch](PATCH_v0.2.53.1.md) | [Four-step test](TEST_v0.2.53.1.md) | [Release evidence](../diagnostics/v0.2.53.1/local-release.json). Rendered and connected MP acceptance remain pending. No gameplay/authority changes; R4C2 follows the corrective check. Development delivery uses the existing branch/draft PR; no Workshop publication.

@@ -48,6 +48,7 @@ function L.create(panel)
     local half = (width - 8) / 2
     place(panel.devices, 12, y, panel.detailX - 24)
     panel.devices:setHeight(panel.height - y - 14)
+    panel.devices:setFont(UIFont.Small, 8)
     panel.devices.itemheight = h + 10
     place(panel.nameEntry, x, y + 8, width - 84)
     place(panel.save, x + width - 76, y + 8, 76)
@@ -89,6 +90,63 @@ function L.create(panel)
     end
     body.contentHeight = panel.clearInputs.y + panel.clearInputs.height + 12
     body:setScrollHeight(body.contentHeight)
+    L.refresh(panel, A.state(panel.object))
+end
+
+---@param panel ISPanel Controller window
+---@param state table? Selected device
+---@return nil
+function L.refresh(panel, state)
+    local kind = state and state.kind or "Controller"
+    local assigned = panel.selected ~= panel.object and kind ~= "Controller"
+    if panel.layoutKind == kind and panel.layoutAssigned == assigned then return end
+    panel.layoutKind, panel.layoutAssigned = kind, assigned
+    local body, h = panel.detailBody, panel.lineHeight
+    local x, width = 10, body.width - 36
+    local half = (width - 8) / 2
+    local row = math.max(28, h + 6)
+    place(panel.nameEntry, x, 8, width - 84)
+    place(panel.save, x + width - 76, 8, 76)
+    panel.nameEntry:setHeight(row)
+    panel.save:setHeight(row)
+    local info = row + 18
+    panel.infoY = body.y + info
+    local actionY = info + h * 4 + 8
+    place(panel.manage, x, actionY, half)
+    place(panel.assign, x + half + 8, actionY, half)
+    local access = actionY + ((kind == "Turret" or assigned) and row + 12 or 0)
+    panel.accessY = body.y + access
+    place(panel.policy, x, access + h + 8, width)
+    panel.policy:setHeight(row)
+    panel.ownerY = access + h + row + 14
+    local connection = panel.ownerY + h + 14
+    panel.connectionY = body.y + connection
+    local controlsY = connection + h * 3 + 12
+    place(panel.source, x, controlsY, half)
+    place(panel.trigger, x + half + 8, controlsY, half)
+    place(panel.link, x, controlsY, half)
+    place(panel.unlink, x + half + 8, controlsY, half)
+    place(panel.clearInputs, x, controlsY + row + 8, width)
+    local controls = {panel.manage, panel.assign, panel.source, panel.trigger, panel.link, panel.unlink, panel.clearInputs}
+    for i = 1, #controls do
+        controls[i]:setHeight(row)
+    end
+    body.contentHeight = panel.clearInputs.y + row + 12
+    body:setScrollHeight(kind == "Controller" and controlsY + 8 or body.contentHeight)
+    body.contentHeight = kind == "Controller" and controlsY + 8 or body.contentHeight
+    body:setYScroll(math.max(math.min(0, body.height - body.contentHeight), body:getYScroll()))
+end
+
+---@param y number Content top
+---@param bottom number Content bottom
+---@param title string Section label
+---@return nil
+function Details:section(y, bottom, title)
+    local width = self.width - 24
+    self:drawRect(4, y, width, bottom - y, .95, .045, .045, .045)
+    self:drawRectBorder(4, y, width, bottom - y, .6, .25, .25, .25)
+    self:drawRect(4, y, width, self.owner.lineHeight + 4, 1, .12, .12, .12)
+    self:drawText(title, 10, y + 2, .9, .9, .9, 1, UIFont.Small)
 end
 
 ---@param panel ISPanel Controller window
@@ -115,6 +173,7 @@ function L.draw(panel, host, state)
     panel:drawText(U.name(panel.object), 12, 8, 1, 1, 1, 1, UIFont.Medium)
     panel:clearStencilRect()
     panel:drawRect(12, panel.equipmentY, panel.width - 24, h * 4 + 22, .9, .08, .09, .08)
+    panel:drawRect(12, panel.equipmentY, panel.width - 24, h + 8, 1, .12, .12, .12)
     panel:drawText(getText("UI_OMHTT_Equipment"), 22, panel.equipmentY + 4, .75, .75, .75, 1, UIFont.Small)
     local backup = tostring(math.floor(host.backup or 0)) .. "%"
     local power = host.powered and "UI_OMHTT_ControllerPowered" or "UI_OMHTT_ControllerOffline"
@@ -124,6 +183,7 @@ function L.draw(panel, host, state)
     panel:drawText(getText("UI_OMHTT_ControllerRange"), 22, panel.equipmentY + h * 3 + 8, .7, .7, .7, 1, UIFont.Small)
     panel:drawText(getText("UI_OMHTT_StockWeight", string.format("%.1f", panel.stockWeight or 0)), panel.width / 2 + 10,
         panel.equipmentY + h + 8, .85, .85, .85, 1, UIFont.Small)
+    panel:drawRect(12, panel.devicesY - h - 4, panel.detailX - 24, h + 4, 1, .12, .12, .12)
     panel:drawText(getText("UI_OMHTT_Devices"), 12, panel.devicesY - h - 2, .75, .75, .75, 1, UIFont.Small)
 end
 
@@ -134,9 +194,12 @@ end
 function L.drawDetails(panel, host, state)
     if not host or not state then return end
     local body, h, x = panel.detailBody, panel.lineHeight, 10
-    local width = body.width - 24
+    local width = body.width - 36
     local infoY, accessY, connectionY = panel.infoY - body.y, panel.accessY - body.y, panel.connectionY - body.y
-    body:setStencilRect(x, infoY, width, h * 4)
+    body:section(accessY, connectionY - 10, getText("UI_OMHTT_AccessTitle"))
+    body:section(connectionY, body.contentHeight - 4, getText("UI_OMHTT_Connections"))
+    local scroll = body:getYScroll()
+    body:setStencilRect(x, infoY + scroll, width, h * 4)
     local dx, dy = panel.selected:getX() - panel.object:getX(), panel.selected:getY() - panel.object:getY()
     body:drawText(getText("UI_OMHTT_DeviceDistance", string.format("%.1f", math.sqrt(dx * dx + dy * dy))), x, infoY, .75, .75, .75, 1, UIFont.Small)
     local status = state.active and "UI_OMHTT_InputOn" or "UI_OMHTT_InputOff"
@@ -155,17 +218,19 @@ function L.drawDetails(panel, host, state)
     body:drawText(panel.ammoSummary or info, x, infoY + h * 2, .75, .75, .75, 1, UIFont.Small)
     body:drawText(panel.ammoSummary and info or getText(assigned), x, infoY + h * 3, .75, .75, .75, 1, UIFont.Small)
     body:clearStencilRect()
-    body:drawText(getText("UI_OMHTT_AccessTitle"), x, accessY, .75, .75, .75, 1, UIFont.Small)
-    body:setStencilRect(x, accessY + h + 32, width, h)
-    body:drawText(getText("UI_OMHTT_ControlOwner", state.owner), x, accessY + h + 32, .65, .65, .65, 1, UIFont.Small)
+    body:repaintStencilRect(0, 0, body.width, body.height)
+    body:setStencilRect(x, panel.ownerY + scroll, width, h)
+    body:drawText(getText("UI_OMHTT_ControlOwner", state.owner), x, panel.ownerY, .65, .65, .65, 1, UIFont.Small)
     body:clearStencilRect()
-    body:drawText(getText("UI_OMHTT_Connections"), x, connectionY, .75, .75, .75, 1, UIFont.Small)
-    body:setStencilRect(x, connectionY + h, width, h * 2)
+    body:repaintStencilRect(0, 0, body.width, body.height)
+    body:setStencilRect(x, connectionY + h + 8 + scroll, width, h * 2)
     local hint = getText("UI_OMHTT_SelectInputHint")
-    if panel.linkSource then
+    if state.kind == "Controller" then
+        hint = getText("UI_OMHTT_ControllerRange")
+    elseif panel.linkSource then
         hint = getText("UI_OMHTT_SelectedInput", U.name(panel.linkSource))
     end
-    body:drawText(hint, x, connectionY + h, .8, .8, .8, 1, UIFont.Small)
+    body:drawText(hint, x, connectionY + h + 8, .8, .8, .8, 1, UIFont.Small)
     local count = getText("UI_OMHTT_OutputCount", #state.links)
     if state.kind == "Turret" then
         count = getText("UI_OMHTT_ReceiverHint")
@@ -173,8 +238,9 @@ function L.drawDetails(panel, host, state)
     if state.kind == "Controller" then
         count = getText("UI_OMHTT_ControllerLimits")
     end
-    body:drawText(count, x, connectionY + h * 2, .7, .7, .7, 1, UIFont.Small)
+    body:drawText(count, x, connectionY + h * 2 + 8, .7, .7, .7, 1, UIFont.Small)
     body:clearStencilRect()
+    body:repaintStencilRect(0, 0, body.width, body.height)
 end
 
 return L

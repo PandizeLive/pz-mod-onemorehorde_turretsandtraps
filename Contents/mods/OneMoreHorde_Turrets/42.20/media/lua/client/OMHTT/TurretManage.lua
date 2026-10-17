@@ -23,17 +23,22 @@ end
 local Panel = ISPanel:derive("OMHTTTurretPanel")
 local OpenAction = ISBaseTimedAction:derive("OMHTTTurretOpenAction")
 local active = {}
+local Drag = require("OMHTT/ControlWindowDrag")
+Panel.onMouseDown = Drag.start
+Panel.onMouseUp = Drag.stop
+Panel.onMouseUpOutside = Drag.stop
+Panel.update = Drag.update
 local Utilities = require("OMHTT/TurretUtilities")
 Panel.storeVoid = Utilities.store
 Panel.inspectVoid = Utilities.inspect
 
 ---@return nil
 function Panel:close()
+    Drag.stop(self)
     if self.orderPanel then
         self.orderPanel:close()
     end
     if self.voidList then self.voidList:onMouseDown() end
-    require("OMHTT/ControlManage").close(self)
     self.benefitList:hideTooltip()
     for i = 1, #self.slots do self.slots[i]:hideTooltip(); self.slots[i]:clearDrag() end
     if Range then
@@ -228,6 +233,11 @@ function Panel:refresh()
     self.priorityButton:setTitle(getText("UI_OMHTT_Priority", getText("UI_OMHTT_Priority" .. profile.priority)))
     self.priorityButton:setEnable(contents.active.Filter ~= nil)
     local active = {}
+local Drag = require("OMHTT/ControlWindowDrag")
+Panel.onMouseDown = Drag.start
+Panel.onMouseUp = Drag.stop
+Panel.onMouseUpOutside = Drag.stop
+Panel.update = Drag.update
     for name in pairs(M.CORE) do
         if contents.active[name] and name ~= "FiringImprovised" and name ~= "MotionDetectionImprovised" then
             active[#active + 1] = contents.active[name]
@@ -395,13 +405,6 @@ function Panel:onMouseWheel(delta)
     return self.body:onMouseWheel(delta)
 end
 
----@param x number Local X
----@param y number Local Y
----@return boolean handled
-function Panel:onMouseDown(x, y)
-    if y < self.titleHeight then ISPanel.onMouseDown(self, x, y) end
-    return true
-end
 
 ---@return nil
 function OpenAction:perform()
