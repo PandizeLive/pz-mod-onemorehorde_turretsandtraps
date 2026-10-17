@@ -2,7 +2,7 @@
 
 ## 0.2.53.7 / C301 — neutral grey theme
 
-Owner-requested [color correction](PATCH_v0.2.53.7.md); [verification](TEST_v0.2.53.7.md). Full validator passes 20,986 assertions; static closure, native save/restart and all three package selections pass. Installation is next. No Workshop upload or cumulative-changelog reset. Rendered/connected acceptance remains pending.
+Owner-requested [color correction](PATCH_v0.2.53.7.md); [verification](TEST_v0.2.53.7.md). Full validator passes 20,986 assertions; static closure, native save/restart and all three package selections pass. Installed from immutable `test/v0.2.53.7` / `487a24b3bccfd0404adc0ab438581cb248407035`. All 288 source and 367 tagged/packaged/installed/archive files match; both 0.2.53.6 backups verify. [Release evidence](../diagnostics/v0.2.53.7/local-release.json). No Workshop upload or cumulative-changelog reset. Rendered/connected acceptance remains pending.
 
 ## 0.2.53.6 / C300 — copper-orange menus and attached Stockpile
 
