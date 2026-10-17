@@ -1,5 +1,9 @@
 # Decision register
 
+## C293: stockpile clarification, capitalization and corrective proposals (2026-10-17)
+
+Owner asks why backpacks/clothing appeared in the audit, reaffirms turret/trap-only storage, requests a UI capitalization check, and asks to consider solutions to the listed findings. [Reviewed contract and recommended corrections](CORRECTIONS_C293.md). The backpack is a withdrawal destination; clothing describes legacy-item recovery, not admission. Keep the existing scope. Title-case actions/short labels and the five engineering corrections are recommended without a new gameplay decision. This is review/planning, not a new installation or test acceptance. Standing C108/C119 authorize recording and mirroring the findings.
+
 ## C292: deferred-test audit (2026-10-17)
 
 Owner: “Unable to test this moment. Audit and check for any issues.” Audit and reproduce current integration/performance defects; preserve the installed patch and pending acceptance. [Five confirmed findings](AUDIT_C292_v0.2.53.3.md). No new gameplay, balance, recipe, art, or feature approval inferred. C108 authorizes mirroring this audit/test record.

@@ -1,5 +1,7 @@
 # R4C1 — buttons, pressure plates and links
 
+**C293 corrective follow-up:** [Stockpile scope, capitalization and C292 solutions](../CORRECTIONS_C293.md). Defense-only admission remains; honor carried-bag withdrawal destinations, preserve native callbacks, invalidate automatic names, budget list finalization and bound remote renewal. Planning only; installed 0.2.53.3 unchanged and acceptance pending.
+
 ## C292 — deferred-test audit (2026-10-17)
 
 [Five reproduced integration findings](../AUDIT_C292_v0.2.53.3.md) remain before corrective acceptance: native stockpile destinations/callbacks, unassigned auto names, Controller list work budget and remote-session renewal queues. Owner requests audit while unavailable to test.0.2.53.3 remains installed; R4C2 does not supersede these findings.
