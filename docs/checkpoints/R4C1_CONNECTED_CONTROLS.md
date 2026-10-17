@@ -1,5 +1,15 @@
 # R4C1 — buttons, pressure plates and links
 
+## C283: storage route and full expansion progression approved, 2026-10-16
+
+Owner selects C282 **1A and2A**. Controlled over-capacity storage of real items is approved for turrets and the controller; preserve full contents weight, turret ammo-family/count limits and the controller's500-weight stockpile limit. Native two-handed pickup applies when ordinary pickup cannot fit. This supersedes the earlier controller five-compartment proposal while preserving ownership, direct player/controller transfers and exact-item persistence requirements.
+
+The entire C282 total-capacity table is now approved: potatoes100/250/500/750/1000; spears40/100/175/250/350; launchable bombs20/75/150/250/350; scrap20/200/400/650/900; ordinary firearm rounds250/1000/2500/3750/5000; shotgun shells250/400/600/800/1000, in no-kit/Makeshift/Small/Medium/Large order. Fixed balance values only, no day-length/RPM scaling. No-kit defaults and module-slot progression remain unchanged; retain saved Sandbox overrides with explicit compatibility handling.
+
+No further owner design selection remains for this storage/ammo scope or the settled R4C1 controls foundation. Authority, over-capacity native serialization/replication, exact-item pickup/drop/deploy, forced-drop lifecycle, concurrent transfers, cached/bounded inventory work and independent packages remain implementation checks. Do not claim native heavy carry or full storage support has been integrated solely from this selection. Do not wait for deferred owner gameplay tests before future authorized implementation.
+
+Void remains unchanged, all ammo remains real outside Void, no contents-weight reduction, no automatic resupply, no battery/durability rebalance. Poke Floor balance/recipe remains separate R4C2 work. Planning selections recorded; no gameplay/version/install/test changes this turn. Installed0.2.52 acceptance remains deferred.
+
 ## C282: remaining decisions scoped to storage and expansion progression, 2026-10-16
 
 Owner asks whether anything else needs deciding. No new implementation/storage selection is inferred from this question. R4C1 signal/access/recipes/controller range/power/naming choices remain settled; Poke Floor content remains a separate R4C2 discussion and does not block existing receivers. Save/load, concurrent MP transfers, native heavy pickup/drop, large-inventory performance and package independence are implementation verification, not extra owner design decisions.

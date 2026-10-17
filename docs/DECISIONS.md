@@ -1471,6 +1471,10 @@ Owner follow-up (2026-10-16): "I like the new design"; corrected C266 layout acc
 
 Owner says Firing requires a fire signal supplied by a pressure plate or Detection; an unpressed connected plate prevents firing while Detection continues aiming. Requests Detection-equipped turrets as signal sources for connected traps. Selects2A subject to this model and3A repeating Poke Floor strikes. [Confirmed semantics, recommended sensor output and remaining empty-target choice](checkpoints/R4C1_CONNECTED_CONTROLS.md#c269-fire-requests-and-firing-permission-2026-10-16). Do not interpret this as selection of C2681A/1B or an OR of all signal sources that lets Detection bypass an OFF plate. No implementation or test acceptance inferred.
 
+## C283 — storage route and all expansion tiers approved, 2026-10-16
+
+Owner selects1A/2A. [Approved complete contract](checkpoints/R4C1_CONNECTED_CONTROLS.md#c283-storage-route-and-full-expansion-progression-approved-2026-10-16): controlled over-capacity real-item storage and native two-hand pickup for turrets/controller, controller capped500, full C282 ammo progression. Replaces controller compartment proposal; full weight and existing ownership/source rules retained. No further scope decisions; technical verification remains. Planning approval recorded without gameplay/test implementation claim.
+
 ## C282 — remaining storage/progression choices presented, 2026-10-16
 
 Owner asks what else needs deciding. [Two proposals and complete fixed tier table](checkpoints/R4C1_CONNECTED_CONTROLS.md#c282-remaining-decisions-scoped-to-storage-and-expansion-progression-2026-10-16). Recommend1A controlled real-item storage/heavy pickup for turret/controller (controller retains500), and2A full expansion progression with unchanged no-kit defaults. No selections or new implementation authorization inferred. Established controls choices remain settled; technical verification is not another design gate.
