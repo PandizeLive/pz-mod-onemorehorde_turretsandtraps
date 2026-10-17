@@ -1,15 +1,18 @@
 if isServer() then return end
 require("ISUI/ISPanel")
 require("ISUI/ISInventoryPane")
+require("ISUI/ISInventoryItem")
 require("ISUI/ISToolTipInv")
 require("TimedActions/ISTimedActionQueue")
 local A = require("OMHTT/ControlAccess")
 local Transfer = require("OMHTT/ControlTransferAction")
 local Theme = require("OMHTT/ControlTheme")
+local Battery = require("OMHTT/TurretBattery")
 local Slot = ISPanel:derive("OMHTTControlBatterySlot")
 
 ---@return nil
 function Slot:cleanup()
+    self.pendingItems, self.pendingIndex, self.pendingAction = nil, nil, nil
     if self.tooltip then
         self.tooltip:removeFromUIManager()
         self.tooltip = nil
@@ -20,9 +23,81 @@ function Slot:cleanup()
 end
 
 ---@return nil
+function Slot:refreshCount()
+    local items = self.owner.object:getContainer():getItems()
+    local size = items:size()
+    if self.countSize ~= size then
+        self.countDirty = true
+    end
+    if self.countDirty then
+        self.countDirty, self.countSize = false, size
+        self.countIndex, self.countFound = 0, 0
+    end
+    if not self.countIndex then return end
+    local stop = math.min(size, self.countIndex + 64)
+    for index = self.countIndex, stop - 1 do
+        if items:get(index):getFullType() == "Base.Battery" then
+            self.countFound = self.countFound + 1
+        end
+    end
+    self.countIndex = stop
+    if stop >= size then
+        self.storedCount, self.countIndex = self.countFound, nil
+    end
+end
+
+---@param action OMHTTControlTransferAction Replicated completed transfer
+---@return nil
+function Slot:transferred(action)
+    self.countDirty = true
+    if self.pendingAction == action then
+        self.pendingAction = nil
+    end
+end
+
+---@return nil
+function Slot:transferNext()
+    if not self.pendingItems then return end
+    if not A.near(self.owner.player, self.owner.object) or not A.write(self.owner.player, A.state(self.owner.object))
+        or (self.pendingAction and self.pendingAction.cancelled) then
+        self.pendingItems, self.pendingIndex, self.pendingAction = nil, nil, nil
+        return
+    end
+    if self.pendingAction then
+        if not self.pendingAction.done then return end
+        self.pendingAction = nil
+        self.countDirty = true
+    end
+    local items = self.pendingItems
+    for step = 1, 16 do
+        local item = items[self.pendingIndex]
+        if not item then
+            self.pendingItems, self.pendingIndex = nil, nil
+            return
+        end
+        self.pendingIndex = self.pendingIndex + 1
+        if item:getFullType() == "Base.Battery" then
+            local stored = item:getContainer() == self.owner.object:getContainer()
+            local action = Transfer:new(self.owner.player, self.owner.object, item, true, nil, nil, stored)
+            if action:isValid() then
+                self.pendingAction = action
+                action:setOnComplete(Slot.transferred, self, action)
+                ISTimedActionQueue.add(action)
+                if stored then
+                    self.pendingItems, self.pendingIndex = nil, nil
+                end
+                return
+            end
+        end
+    end
+end
+
+---@return nil
 function Slot:update()
     local state = A.state(self.owner.object)
     if not state then self:cleanup(); return end
+    self:refreshCount()
+    self:transferNext()
     local id = state.batteryId
     local now = getTimestampMs()
     if self.batteryId ~= id or (id and not self.item and now >= (self.lookupDue or 0))
@@ -65,18 +140,9 @@ end
 function Slot:onMouseUp(x, y)
     local focus = ISMouseDrag.draggingFocus
     if focus and focus ~= self and ISMouseDrag.dragging then
-        local items = ISInventoryPane.getActualItems(ISMouseDrag.dragging)
-        for i = 1, #items do
-            local item = items[i]
-            if item:getFullType() == "Base.Battery" then
-                local stored = item:getContainer() == self.owner.object:getContainer()
-                local action = Transfer:new(self.owner.player, self.owner.object, item, true, nil, nil, stored)
-                if action:isValid() then
-                    ISTimedActionQueue.add(action)
-                    break
-                end
-            end
-        end
+        self.pendingItems = ISInventoryPane.getActualItems(ISMouseDrag.dragging)
+        self.pendingIndex, self.pendingAction = 1, nil
+        self:transferNext()
         focus:onMouseUp(0, 0)
     end
     ISMouseDrag.dragging, ISMouseDrag.draggingFocus = nil, nil
@@ -99,10 +165,10 @@ end
 function Slot:prerender()
     ISPanel.prerender(self)
     local h = self.owner.lineHeight
-    local label = getText("UI_OMHTT_ControllerBattery")
+    local label = getText("UI_OMHTT_ControllerBatteries", self.storedCount and tostring(self.storedCount) or "...")
     self:drawText(label, 8, 4, .85, .85, .85, 1, UIFont.Small)
     local start = 16 + getTextManager():MeasureStringX(UIFont.Small, label)
-    local charge = self.item and require("OMHTT/TurretBattery").charge(self.item) or 0
+    local charge = self.item and Battery.charge(self.item) or 0
     if self.width - start > 20 then
         self:drawProgressBar(start, 8, self.width - start - 8, 7, charge, Theme.accent)
     end
@@ -110,6 +176,8 @@ function Slot:prerender()
     if self.item then
         ISInventoryItem.renderItemIcon(self, self.item, 8, h + 6, 1, 28, 28)
         name = self.item:getDisplayName() .. " " .. tostring(math.floor(charge * 100)) .. "%"
+    elseif self.batteryScript then
+        ISInventoryItem.renderScriptItemIcon(self, self.batteryScript, 8, h + 6, .3, 28, 28)
     end
     self:setStencilRect(40, h + 6, self.width - 48, h + 4)
     self:drawText(name, 40, h + 6, 1, 1, 1, 1, UIFont.Small)
@@ -125,6 +193,8 @@ end
 function Slot.create(owner, x, y, width, height)
     local slot = Slot:new(x, y, width, height)
     slot.owner = owner
+    slot.batteryScript = getScriptManager():getItem("Base.Battery")
+    slot.countDirty = true
     slot.backgroundColor = {r = .06, g = .06, b = .06, a = 1}
     slot.borderColor = {r = .3, g = .3, b = .3, a = .6}
     slot:initialise()

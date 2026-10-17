@@ -30,6 +30,10 @@ local panel = Panel.open(player, object)
 check(panel and panel.scanIndex <= 64, "Opening controller scans at most 64 tiles")
 check(panel.name == nil and type(tostring(panel)) == "string" and type(tostring(panel.nameEntry)) == "string",
     "Native UI path formatting never recurses through the name-entry widget")
+panel.batterySlot:refreshCount()
+check(not panel.batterySlot.countDirty, "Initial battery count completes for empty native stockpile")
+triggerEvent("OnContainerUpdate")
+check(panel.batterySlot.countDirty, "Native content event invalidates battery count even when the item count is unchanged")
 check(panel.devices.items[1].item == object, "Controller itself remains selectable for ownership")
 for i = 1, 30 do panel:prerender() end
 check(not panel.scanIndex and #panel.devices.items == 1, "Incremental scan completes without duplicate controller")

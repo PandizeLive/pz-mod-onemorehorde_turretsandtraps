@@ -1,5 +1,9 @@
 # Decision register
 
+## C302 — Controller battery silhouette and multiple small batteries, 2026-10-17
+
+Owner: "The battery section makes me unsure of which battery to add... add a sillouhette of the item... allow multiple batteries to be stored, since they're so small." Direct implementation request, scoped to the Controller's ordinary Battery. [Contract and implementation](PATCH_v0.2.53.8.md): faded native item icon, stored count and multi-item drop through existing authority. No separate inventory, car-battery expansion or capacity/drain change. Findings explained before implementation: storage and charged-spare selection already exist; the old UI showed only one and stopped after the first dropped battery. C301 grey choice is retained. Validation/delivery/acceptance tracked separately.
+
 ## C301: grey replaces copper-orange (2026-10-17)
 
 Owner finds the copper build brown/bland and directly requests returning to grey. This authorizes a color-only correction, superseding C299/C300's accent choice. Use neutral charcoal/grey surfaces, borders, highlights and labels. Retain red/white OMH titles, green/red power states, rarity colors, separate action rows, attached native Stockpile, Battery slot and exact transfers. [0.2.53.7 patch](PATCH_v0.2.53.7.md) / [verification](TEST_v0.2.53.7.md). No general C300 gameplay acceptance is inferred from this aesthetic feedback.

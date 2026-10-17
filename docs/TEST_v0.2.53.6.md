@@ -26,3 +26,7 @@ Installed from immutable `test/v0.2.53.6` / `c84fb616dc4e5c2cc376f6b0ec5aeaa51d6
 4. Assign a turret a few tiles away, Open Manage through the powered Controller and repeat one transfer. Close both menus during/after a drag; reopen and check item counts. Report completion and any failure so **console.txt** can be checked.
 
 No new horde stress test is requested. Connected dedicated/listen acceptance stays deferred; native zero-client probes are not that test.
+
+## C302 battery affordance finding, 2026-10-17
+
+Owner is unsure which battery fits and requests an item silhouette plus storage for multiple small batteries. Reviewed current console remains0.2.53.6 (through frame15629), with no T&T Lua exception found; other-mod/native loading warnings remain separate. The Controller already supports ordinary Battery spares in its500-weight Stockpile. The empty slot had no icon/count and its drop loop stopped after one item. [0.2.53.8 correction and verification](TEST_v0.2.53.8.md) addresses that UI/drop gap. No general acceptance of this version or0.2.53.7 is inferred.

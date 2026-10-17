@@ -450,6 +450,8 @@ public final class KahluaCheck {
             {"_", "tools/tests/content_c247.lua"},
             {"_", "tools/tests/corrections_c262.lua"},
             {"_", "tools/tests/corrections_c300.lua"},
+            {"_", System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid") + "/media/lua/client/ISUI/ISInventoryItem.lua"},
+            {"_", "tools/tests/control_batteries.lua"},
             {"_", "tools/tests/native_stockpile_ui_setup.lua"},
             {"_", System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid") + "/media/lua/client/ISUI/ISInventoryPane.lua"},
             {"OMHTT/ControlStockpilePane", base + "client/OMHTT/ControlStockpilePane.lua"},

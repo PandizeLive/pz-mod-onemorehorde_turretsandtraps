@@ -1,5 +1,7 @@
 # R4C1 — buttons, pressure plates and links
 
+**C302, 2026-10-17:** [Controller battery clarification and multiple deposits](../PATCH_v0.2.53.8.md). Ordinary Battery spares stay in the existing Stockpile; UI adds a native empty-slot silhouette, stored count and checked sequential multi-drop. No parallel drain, additional battery capacity, signal change or R4C2 expansion. Grey styling retained; rendered/connected verification remains pending.
+
 **C294 / corrective build installed:** owner-approved C293 fixes are in [0.2.53.4](../PATCH_v0.2.53.4.md). Preserve defense-only storage, native inventory interaction and server authority; remote renewal no longer competes with item actions. Automated/native/release checks pass. [Evidence and held test](../TEST_v0.2.53.4.md); rendered/connected acceptance still pending.
 
 **C293 corrective follow-up:** [Stockpile scope, capitalization and C292 solutions](../CORRECTIONS_C293.md). Defense-only admission remains; honor carried-bag withdrawal destinations, preserve native callbacks, invalidate automatic names, budget list finalization and bound remote renewal. Planning only; installed 0.2.53.3 unchanged and acceptance pending.

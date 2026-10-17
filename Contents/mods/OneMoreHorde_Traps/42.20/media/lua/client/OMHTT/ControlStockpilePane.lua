@@ -153,6 +153,10 @@ end
 local function dirty()
     for pane in pairs(active) do
         pane.stockDirty = true
+        local slot = pane.inventoryPage.owner.batterySlot
+        if slot then
+            slot.countDirty = true
+        end
     end
 end
 
