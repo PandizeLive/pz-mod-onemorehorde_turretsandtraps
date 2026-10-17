@@ -372,3 +372,5 @@ function getCombatConfig()
         OPTIMAL_RANGE_DROP_OFF_TO_HIT_PENALTY_INCREMENT = 1, MINIMUM_TO_HIT_CHANCE = 0, MAXIMUM_TO_HIT_CHANCE = 100}
     return {get = function(self, key) return values[key] end}
 end
+
+function getActivatedMods() return {contains=function(_, id) return id=="OneMoreHorde_Turrets" end} end

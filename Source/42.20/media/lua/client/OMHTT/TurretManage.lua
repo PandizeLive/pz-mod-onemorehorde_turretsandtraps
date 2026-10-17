@@ -34,6 +34,7 @@ Panel.inspectVoid = Utilities.inspect
 
 ---@return nil
 function Panel:close()
+    self.nameEntry:commit()
     Drag.stop(self)
     if self.orderPanel then
         self.orderPanel:close()
@@ -418,7 +419,7 @@ function OpenAction:perform()
         local font = getTextManager()
         local lineHeight = font:getFontHeight(UIFont.Small) + (getPlayerScreenHeight(index) >= 800 and 3 or 0)
         local titleHeight = font:getFontHeight(UIFont.Medium) + 16
-        local width = math.min(getPlayerScreenWidth(index) - 24, math.max(640, lineHeight * 32))
+        local width = math.min(getPlayerScreenWidth(index) - 24, math.max(780, lineHeight * 38))
         local slotHeight = math.max(60, lineHeight * 3 + 12)
         local top, ammunitionY, ammoY, magazineY, modulesY, detailsY = 0, 0, 0, 0, 0, 0
         local moduleHeight = lineHeight * 2 + 16

@@ -77,6 +77,10 @@ def expected_files():
         info = f"name=OMH: {title}\nid={identifier}\nmodversion={version}\nversionMin=42.20\nicon=icon.png\ndescription={description} Part of OMH: Turrets & Traps. Fresh test world required for 0.2.41 item identities. Temporary developer artwork.\ntiledef={pack} {number}\npack={pack}\n"
         files = result[component]
         files["42.20/mod.info"] = info.encode()
+        if component == "turrets":
+            path = "42.20/media/scripts/OMHTT_Controls.txt"
+            for facing in range(4):
+                files[path] = files[path].replace(f"omhtt_barrier_01_{76 + facing}".encode(), f"omhtt_turret_01_{21 + facing}".encode())
         files["42.20/media/sandbox-options.txt"] = sandbox(component)
         tiles, texturepack = build_component(component)
         files[f"42.20/media/{pack}.tiles"] = tiles

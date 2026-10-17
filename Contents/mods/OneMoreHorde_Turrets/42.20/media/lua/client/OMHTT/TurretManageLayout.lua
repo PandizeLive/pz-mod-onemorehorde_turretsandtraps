@@ -43,25 +43,27 @@ function L.refresh(panel)
     panel.landingY = y
     panel.landingSlider:setY(y + 4)
     panel.body:setHeight(math.max(80, panel.rangeY - panel.body.y - 10))
-    panel.detailsY = panel.modulesBottom
+    panel.detailsY = panel.moduleGridBottom + 8
     panel.detailLines = string.split(panel.moduleLines or "", "\n")
-    panel.detailsButton:setY(panel.detailsY)
     panel.detailsButton:setTitle(getText(panel.detailsOpen and "UI_OMHTT_DetailsClose" or "UI_OMHTT_DetailsOpen"))
-    panel.body.contentHeight = panel.detailsY + row + (panel.detailsOpen and h * (#panel.detailLines + 3) + 16 or 0)
+    local detailsHeight = panel.detailsOpen and h * (#panel.detailLines + 3) + 16 or 0
+    panel.benefitList:setY(panel.detailsY + detailsHeight + 8)
+    panel.body.contentHeight = panel.benefitList.y + panel.benefitList.height + 8
     panel.body:setScrollHeight(panel.body.contentHeight)
     panel.body:setYScroll(math.max(math.min(0, panel.body.height - panel.body.contentHeight), panel.body:getYScroll()))
 end
 
+---@param x number Content left
+---@param width number Section width
 ---@param y number Content top
 ---@param bottom number Content bottom
 ---@param title string Section caption
 ---@return nil
-function Body:section(y, bottom, title)
-    local width = self.width - 20
-    self:drawRect(4, y, width, bottom - y, .95, .055, .055, .055)
-    self:drawRectBorder(4, y, width, bottom - y, .6, .25, .25, .25)
-    self:drawRect(4, y, width, self.owner.headerHeight, 1, .12, .12, .12)
-    self:drawText(title, 10, y + 4, .9, .9, .9, 1, UIFont.Small)
+function Body:section(x, width, y, bottom, title)
+    self:drawRect(x, y, width, bottom - y, .95, .055, .055, .055)
+    self:drawRectBorder(x, y, width, bottom - y, .6, .25, .25, .25)
+    self:drawRect(x, y, width, self.owner.headerHeight, 1, .12, .12, .12)
+    self:drawText(title, x + 6, y + 4, .9, .9, .9, 1, UIFont.Small)
 end
 
 ---@return nil
@@ -69,15 +71,15 @@ function Body:prerender()
     local p, h = self.owner, self.owner.lineHeight
     self:drawRectStatic(0, 0, self.width, self.height, .95, .025, .025, .025)
     self:setStencilRect(0, 0, self.width, self.height)
-    self:section(4, p.equipmentBottom, getText("UI_OMHTT_Equipment"))
-    self:section(p.ammunitionY, p.ammunitionBottom, getText("UI_OMHTT_Ammunition"))
-    self:section(p.modulesY, p.moduleGridBottom, p.moduleLabel)
+    self:section(4, p.equipmentWidth, 4, p.equipmentBottom, getText("UI_OMHTT_Equipment"))
+    self:section(p.ammunitionX, p.ammunitionWidth, 4, p.ammunitionBottom, getText("UI_OMHTT_Ammunition"))
+    self:section(4, self.width - 20, p.modulesY, p.moduleGridBottom, p.moduleLabel)
     self:drawText(getText(p.rows > 3 and "UI_OMHTT_ManageScroll" or "UI_OMHTT_ModuleDropHint"),
         10, p.modulesY + p.headerHeight + 4, .65, .65, .65, 1, UIFont.Small)
     if p.detailsOpen then
-        local y, stats = p.detailsY + math.max(32, h + 12) + 4, p.stats
-        self:drawRect(4, p.detailsY, self.width - 20, self.contentHeight - p.detailsY - 4, .95, .055, .055, .055)
-        self:drawRectBorder(4, p.detailsY, self.width - 20, self.contentHeight - p.detailsY - 4, .6, .25, .25, .25)
+        local y, stats = p.detailsY + 8, p.stats
+        self:drawRect(4, p.detailsY, self.width - 20, p.benefitList.y - p.detailsY - 8, .95, .055, .055, .055)
+        self:drawRectBorder(4, p.detailsY, self.width - 20, p.benefitList.y - p.detailsY - 8, .6, .25, .25, .25)
         for i = 1, #p.detailLines do
             self:drawText(p.detailLines[i], 10, y, .8, .8, .8, 1, UIFont.Small)
             y = y + h
@@ -112,54 +114,75 @@ function L.create(panel)
     panel:setScrollChildren(false)
     panel:setHeight(math.min(getPlayerScreenHeight(panel.player:getPlayerNum()) - 24, 240 + h * 26))
     panel.contentHeight = panel.height
-    panel.body = Body:new(6, panel.titleHeight + 72, width - 12, 200)
+    local nameBottom = panel.nameEntry.y + panel.nameEntry.height
+    if panel.sourceButton then
+        nameBottom = panel.sourceButton.y + panel.sourceButton.height
+    end
+    panel.body = Body:new(6, nameBottom + 8, width - 12, 200)
     panel.body.owner = panel
     panel.body:initialise()
     panel.body.background = false
+    panel:addChild(panel.body)
     panel.body:setScrollChildren(true)
     panel.body:addScrollBars(false)
-    panel:addChild(panel.body)
-    for i = 1, #panel.slots do adopt(panel, panel.slots[i]) end
+    for i = 1, #panel.slots do
+        adopt(panel, panel.slots[i])
+    end
     adopt(panel, panel.powerButton)
     adopt(panel, panel.reloadButton)
     adopt(panel, panel.loadOrderButton)
     adopt(panel, panel.benefitList)
     local rowWidth = panel.body.width - 28
-    local equipmentWidth = rowWidth - 78
-    local headWidth, expansionWidth = math.floor(equipmentWidth * .43), math.floor(equipmentWidth * .24)
+    panel.headerHeight = math.max(32, h + 10)
+    local slot = math.max(60, h * 3 + 12)
+    panel.slotHeight = slot
+    panel.equipmentWidth = math.floor((rowWidth - 8) * .40)
+    panel.ammunitionX = panel.equipmentWidth + 12
+    panel.ammunitionWidth = panel.body.width - 16 - panel.ammunitionX
+    local equipment = panel.equipmentWidth - 8
+    local ammoX, ammoWidth = panel.ammunitionX + 4, panel.ammunitionWidth - 8
+    local measure = getTextManager()
+    local reloadWidth = math.max(80, measure:MeasureStringX(UIFont.Small, getText("UI_OMHTT_Reload")) + 16)
+    local orderWidth = math.max(114, measure:MeasureStringX(UIFont.Small, getText("UI_OMHTT_LoadOrder")) + 16)
+    if measure:MeasureStringX(UIFont.Small, getText("UI_OMHTT_Ammunition")) + reloadWidth + orderWidth + 24 > ammoWidth then
+        panel.headerHeight = panel.headerHeight + h + 10
+    end
+    local top, second = 4 + panel.headerHeight + 6, 4 + panel.headerHeight + slot + 14
+    local headWidth = math.floor((equipment - 6) * .60)
     panel.headSlot:setX(8)
     panel.headSlot:setWidth(headWidth)
-    panel.capacitySlot:setX(16 + headWidth)
-    panel.capacitySlot:setWidth(expansionWidth)
-    panel.batterySlot:setX(24 + headWidth + expansionWidth)
-    panel.batterySlot:setWidth(equipmentWidth - headWidth - expansionWidth)
-    panel.powerButton:setX(8 + rowWidth - 54)
-    panel.ammoSlot:setX(8)
-    panel.ammoSlot:setWidth((rowWidth - 8) / 2)
-    panel.voidSlot:setX(16 + (rowWidth - 8) / 2)
-    panel.voidSlot:setWidth((rowWidth - 8) / 2)
-    panel.magazineSlot:setX(8)
-    panel.magazineSlot:setWidth(rowWidth)
-    panel.loadOrderButton:setX(8 + rowWidth - 114)
-    panel.reloadButton:setX(8 + rowWidth - 88)
-    panel.headerHeight = math.max(32, h + 10)
-    local top, slot = 4 + panel.headerHeight + 6, math.max(60, h * 3 + 12)
-    panel.slotHeight = slot
     panel.headSlot:setY(top)
+    panel.capacitySlot:setX(14 + headWidth)
+    panel.capacitySlot:setWidth(equipment - headWidth - 6)
     panel.capacitySlot:setY(top)
-    panel.batterySlot:setY(top)
-    panel.powerButton:setY(top)
-    panel.equipmentBottom = top + slot + 6
-    panel.ammunitionY = panel.equipmentBottom + 10
-    local ammoY = panel.ammunitionY + panel.headerHeight + 6
-    panel.ammoSlot:setY(ammoY)
-    panel.voidSlot:setY(ammoY)
-    panel.magazineSlot:setY(ammoY + slot + 8)
-    local equipment = {panel.headSlot, panel.capacitySlot, panel.batterySlot, panel.ammoSlot, panel.voidSlot, panel.magazineSlot, panel.powerButton}
-    for i = 1, #equipment do equipment[i]:setHeight(slot) end
-    panel.loadOrderButton:setY(panel.ammunitionY + (panel.headerHeight - panel.loadOrderButton.height) / 2)
-    panel.reloadButton:setY(panel.magazineSlot.y + (slot - 26) / 2)
-    panel.ammunitionBottom = panel.magazineSlot.y + slot + 6
+    panel.batterySlot:setX(8)
+    panel.batterySlot:setWidth(equipment - 60)
+    panel.batterySlot:setY(second)
+    panel.powerButton:setX(8 + equipment - 54)
+    panel.powerButton:setY(second)
+    panel.ammoSlot:setX(ammoX)
+    panel.ammoSlot:setWidth((ammoWidth - 8) / 2)
+    panel.ammoSlot:setY(top)
+    panel.voidSlot:setX(ammoX + (ammoWidth + 8) / 2)
+    panel.voidSlot:setWidth((ammoWidth - 8) / 2)
+    panel.voidSlot:setY(top)
+    panel.magazineSlot:setX(ammoX)
+    panel.magazineSlot:setWidth(ammoWidth)
+    panel.magazineSlot:setY(second)
+    panel.magazineSlot.textInsetRight = 0
+    local slots = {panel.headSlot, panel.capacitySlot, panel.batterySlot, panel.ammoSlot, panel.voidSlot, panel.magazineSlot, panel.powerButton}
+    for i = 1, #slots do
+        slots[i]:setHeight(slot)
+    end
+    local buttonY = 4 + panel.headerHeight - panel.reloadButton.height - 3
+    panel.loadOrderButton:setWidth(orderWidth)
+    panel.loadOrderButton:setX(ammoX + ammoWidth - orderWidth)
+    panel.loadOrderButton:setY(buttonY)
+    panel.reloadButton:setX(panel.loadOrderButton.x - reloadWidth - 6)
+    panel.reloadButton:setWidth(reloadWidth)
+    panel.reloadButton:setY(buttonY)
+    panel.equipmentBottom = second + slot + 6
+    panel.ammunitionY, panel.ammunitionBottom = 4, panel.equipmentBottom
     panel.modulesY = panel.ammunitionBottom + 10
     local moduleTop = panel.modulesY + panel.headerHeight + h + 10
     local moduleHeight = h * 2 + 16
@@ -179,8 +202,7 @@ function L.create(panel)
     panel.benefitList:setWidth(rowWidth)
     panel.benefitList:setHeight(h * 7)
     panel.benefitList.visibleRows = 6
-    panel.modulesBottom = panel.benefitList.y + panel.benefitList.height + 12
-    panel.detailsButton = ISButton:new(8, 0, rowWidth, math.max(28, h + 8), "", panel, function(self)
+    panel.detailsButton = ISButton:new(8 + rowWidth - 110, panel.modulesY + 2, 110, panel.headerHeight - 4, "", panel, function(self)
         self.detailsOpen = not self.detailsOpen
         L.refresh(self)
     end)
@@ -194,9 +216,7 @@ end
 function L.draw(panel)
     panel:drawRect(1, 1, panel.width - 2, panel.titleHeight - 2, 1, .13, .15, .13)
     panel:drawText(getText("UI_OMHTT_TurretTitle"), 12, 8, 1, 1, 1, 1, UIFont.Medium)
-    if not panel.controller then
-        panel:drawText(panel.weightLabel or "", 12, panel.titleHeight + 40, .75, .75, .75, 1, UIFont.Small)
-    end
+    panel:drawTextRight(panel.weightLabel or "", panel.width - 12, panel.titleHeight + 10, .75, .75, .75, 1, UIFont.Small)
     panel:drawText(getText("UI_OMHTT_EngagementRange", T.state(panel.object).engagementRange and string.format("%.1f", panel.engagementRange) or getText("UI_OMHTT_RangeMax")), 12, panel.rangeY + 4, 1, 1, 1, 1, UIFont.Small)
     require("OMHTT/TurretManageExtras").draw(panel)
     panel:setStencilRect(12, panel.feedbackY, panel.width - 24, panel.lineHeight * 2)

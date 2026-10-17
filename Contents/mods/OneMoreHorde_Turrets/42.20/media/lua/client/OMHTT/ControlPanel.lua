@@ -77,7 +77,7 @@ function Panel:select()
     if object == self.selected then return end
     self.selected = object
     self.renewDue = 0
-    self.nameEntry:setText(object and U.name(object) or "")
+    self.nameEntry:select(object)
     if object and object ~= self.object then
         U.remote(self.player, self.object, object)
     end
@@ -85,6 +85,7 @@ end
 
 ---@return nil
 function Panel:close()
+    self.nameEntry:commit()
     require("OMHTT/ControlOverlay").panels[self] = nil
     if self.marker then
         self.marker:remove()
@@ -125,7 +126,8 @@ function Panel:prerender()
     local writable = state and A.authorized(self.player, self.selected)
     local linkable = state and A.write(self.player, state) and self.linkSource
         and A.authorized(self.player, self.linkSource) and A.range(self.linkSource, self.selected)
-    self.save:setEnable(writable == true)
+    self.nameEntry:refresh()
+    self.nameEntry:setVisible(state ~= nil and state.kind ~= "Controller")
     self.policy:setEnable(writable and A.write(self.player, state, true) or false)
     self.manage:setEnable(state ~= nil and state.kind == "Turret" and host.powered == true and state.controller == host.id)
     self.assign:setEnable(state ~= nil and self.selected ~= self.object and host.kind == "Controller"
@@ -172,14 +174,7 @@ function Panel.open(player, object)
     panel.devices:initialise()
     panel.devices.itemheight = 30
     panel:addChild(panel.devices)
-    panel.nameEntry = ISTextEntryBox:new("", 274, 90, 366, 28)
-    panel.nameEntry:initialise()
-    panel:addChild(panel.nameEntry)
-    panel.save = button(panel, 650, 90, 140, "Save name", function(self)
-        if self.selected then
-            U.command(self.player, self.selected, "Name", self.nameEntry:getText())
-        end
-    end)
+    panel.nameEntry = require("OMHTT/ControlNameEntry").create(panel, nil, 274, 90, 366, 28)
     panel.manage = button(panel, 274, 246, 246, "Open full Manage", function(self)
         if U.remote(self.player, self.object, self.selected) then
             require("OMHTT/TurretManage")(self.selected, self.player, self.object)

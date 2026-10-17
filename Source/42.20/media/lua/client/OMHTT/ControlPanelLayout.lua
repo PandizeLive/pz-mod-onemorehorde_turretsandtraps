@@ -50,8 +50,7 @@ function L.create(panel)
     panel.devices:setHeight(panel.height - y - 14)
     panel.devices:setFont(UIFont.Small, 8)
     panel.devices.itemheight = h + 10
-    place(panel.nameEntry, x, y + 8, width - 84)
-    place(panel.save, x + width - 76, y + 8, 76)
+    place(panel.nameEntry, x, y + 8, width)
     panel.infoY = y + 46
     panel.actionY = panel.infoY + h * 4 + 8
     place(panel.manage, x, panel.actionY, half)
@@ -66,7 +65,6 @@ function L.create(panel)
     place(panel.clearInputs, x, panel.connectionY + h * 3 + 36, width)
     place(panel.stockButton, panel.width / 2 + 10, panel.equipmentY + h * 2 + 18, panel.width / 2 - 34)
     panel.manage:setTitle(getText("UI_OMHTT_OpenManage"))
-    panel.save:setTitle(getText("UI_OMHTT_SaveName"))
     panel.source:setTitle(getText("UI_OMHTT_SelectInput"))
     panel.link:setTitle(getText("UI_OMHTT_LinkInput"))
     panel.unlink:setTitle(getText("UI_OMHTT_UnlinkInput"))
@@ -77,10 +75,10 @@ function L.create(panel)
     body.owner = panel
     body:initialise()
     body.background = false
+    panel:addChild(body)
     body:setScrollChildren(true)
     body:addScrollBars(false)
-    panel:addChild(body)
-    local controls = {panel.nameEntry, panel.save, panel.manage, panel.assign, panel.policy, panel.source, panel.trigger, panel.link, panel.unlink, panel.clearInputs}
+    local controls = {panel.nameEntry, panel.manage, panel.assign, panel.policy, panel.source, panel.trigger, panel.link, panel.unlink, panel.clearInputs}
     for i = 1, #controls do
         local control = controls[i]
         panel:removeChild(control)
@@ -105,11 +103,9 @@ function L.refresh(panel, state)
     local x, width = 10, body.width - 36
     local half = (width - 8) / 2
     local row = math.max(28, h + 6)
-    place(panel.nameEntry, x, 8, width - 84)
-    place(panel.save, x + width - 76, 8, 76)
+    place(panel.nameEntry, x, 8, width)
     panel.nameEntry:setHeight(row)
-    panel.save:setHeight(row)
-    local info = row + 18
+    local info = kind == "Controller" and 10 or row + 18
     panel.infoY = body.y + info
     local actionY = info + h * 4 + 8
     place(panel.manage, x, actionY, half)

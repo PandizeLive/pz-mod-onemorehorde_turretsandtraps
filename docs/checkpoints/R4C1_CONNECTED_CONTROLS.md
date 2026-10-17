@@ -1,5 +1,9 @@
 # R4C1 — buttons, pressure plates and links
 
+## C291 — management and stockpile correction (2026-10-17)
+
+Owner authorizes the compact side-by-side management layout, working native child scrolling, accessible Details/Installed Modules, Enter/blur automatic naming, weight beside the name, removal of Controller naming, defense-supply stockpile admission and existing white-cube Controller presentation. [Patch/audit](../PATCH_v0.2.53.3.md) and [verification](../TEST_v0.2.53.3.md) supersede C290's failed rendered behavior. Preserve native inventory,500 stockpile limit, full contents weight, remote management and ownership/signal rules. R4C2 remains next after corrective acceptance.
+
 ## C285: implementation approved, 2026-10-16
 
 Owner: “Looks good. Approved to patch. Implement the controller, pressure plates, updated menus, and ammo capacity changes. Keep multiplayer in mind and push it to GitHub.” This explicitly authorizes the approved C283 storage/capacity contract and C284 menu direction. Implemented in 0.2.53 with 20,807 assertions, native write/read and independent package checks. [Patch record](../PATCH_v0.2.53.md) | [Verification and short test](../TEST_v0.2.53.md). Rendered/connected acceptance remains deferred; no owner-test gate blocks delivery. No publication or main merge is authorized.

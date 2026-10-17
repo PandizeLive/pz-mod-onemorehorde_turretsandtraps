@@ -4,7 +4,7 @@ module Base {
         ItemType = base:container,
         DisplayCategory = Electronics,
         Weight = 8,
-        Icon = HamRadio1,
+        Icon = OMHTT_TestCube,
         Tags = base:heavyitem,
         ConditionMax = 100,
         Capacity = 50,
@@ -19,10 +19,10 @@ module Base {
             isThumpable = true,
             OnIsValid = OMHTT_Controls.valid,
             OnCreate = OMHTT_Controls.created,
-            face E { layer { row = appliances_radio_01_16, } }
-            face N { layer { row = appliances_radio_01_17, } }
-            face W { layer { row = appliances_radio_01_18, } }
-            face S { layer { row = appliances_radio_01_19, } }
+            face E { layer { row = omhtt_barrier_01_76, } }
+            face N { layer { row = omhtt_barrier_01_77, } }
+            face W { layer { row = omhtt_barrier_01_78, } }
+            face S { layer { row = omhtt_barrier_01_79, } }
         }
         component CraftRecipe {
             timedAction = BuildLowNoTool,
@@ -52,7 +52,7 @@ module Base {
         }
         outputs { item 1 Base.OMHTTTrapController, }
     }
-    xuiSkin default { entity ES_OMHTTController { LuaWindowClass = ISEntityWindow, DisplayName = UI_OMHTT_ControlController, Icon = HamRadio1, } }
+    xuiSkin default { entity ES_OMHTTController { LuaWindowClass = ISEntityWindow, DisplayName = UI_OMHTT_ControlController, Icon = OMHTT_TestCube, } }
     item OMHTTTrapPressurePlate {
         DisplayName = Pressure Plate,
         ItemType = base:normal,

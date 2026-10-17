@@ -19,7 +19,7 @@ ISBaseTimedAction.perform = function() completed = true end
 luautils.walkAdjObject = function(player, object, diagonal) check(not diagonal, "Manage uses cardinal native adjacent path"); return reachable end
 ISTimedActionQueue.add = function(action) queued = action; actions[#actions + 1] = action end
 ISTimedActionQueue.getTimedActionQueue = function() return {queue = actions} end
-getTextManager = function() return {WrapText = function(self, font, text, width) return text end, MeasureStringX = function() return 300 end, getFontHeight = function() return 18 end} end
+getTextManager = function() return {WrapText = function(self, font, text, width) return text end, MeasureStringX = function(_, font, text) return #text * 9 end, getFontHeight = function() return 18 end} end
 function getPlayerScreenLeft() return 0 end
 function getPlayerScreenTop() return 0 end
 function getPlayerScreenWidth() return 1280 end
@@ -101,7 +101,7 @@ require("OMHTT/TurretManageExtras").refresh(panel, {active = {Lure = 1}}, {headK
 check(panel.height + panel.y <= 600 and panel.body.scrollHeight == panel.body.contentHeight, "Constrained viewport scrolls the content, not the window controls")
 local Layout = require("OMHTT/TurretManageLayout")
 local titleY, footerY = panel.nameEntry.y, panel.fireButton.y
-check(panel.nameEntry.y >= panel.titleHeight and panel.body.y >= panel.nameEntry.y + panel.nameEntry.height + 36
+check(panel.nameEntry.y >= panel.titleHeight and panel.body.y >= panel.nameEntry.y + panel.nameEntry.height + 4
     and not panel.equipmentTab and not panel.modulesTab, "Single-page content preserves the dedicated drag and name bands")
 check(panel.headSlot.parent==panel.body and panel.moduleSlots[1].parent==panel.body
     and panel.moduleSlots[1].y>panel.magazineSlot.y+panel.magazineSlot.height, "Equipment, ammunition and modules share one sequential page")
@@ -110,13 +110,17 @@ panel.moduleLines="Line one\nLine two\nLine three\nLine four"
 panel.detailsButton.callback(panel)
 check(#panel.detailLines==4 and panel.body.contentHeight==closedHeight+panel.lineHeight*7+16,
     "Expanded Details measures all wrapped lines plus the three stats rows")
+local beforeChildY=panel.headSlot:getAbsoluteY()
 panel.body:onMouseWheel(20)
+check(panel.headSlot:getAbsoluteY()==beforeChildY+panel.body:getYScroll(), "Actual native setScrollChildren function moves slots with section headers")
+check(panel.reloadButton.y==panel.loadOrderButton.y and panel.reloadButton.x+panel.reloadButton.width<panel.loadOrderButton.x,
+    "Reload and Load Order are adjacent outside magazine contents")
 check(panel.body:getYScroll() < 0 and panel.nameEntry.y == titleY and panel.fireButton.y == footerY,
     "Expanded details scroll without moving the name or firing controls")
 panel.body:prerender()
 panel.body:render()
-check(panel.equipmentBottom<panel.ammunitionY and panel.ammunitionBottom<panel.modulesY
-    and panel.moduleGridBottom<panel.benefitList.y and panel.detailsY>=panel.benefitList.y+panel.benefitList.height,
+check(panel.equipmentBottom==panel.ammunitionBottom and panel.headSlot.x+panel.headSlot.width<panel.ammoSlot.x and panel.ammunitionBottom<panel.modulesY
+    and panel.moduleGridBottom<panel.benefitList.y and panel.detailsButton.y>=panel.modulesY and panel.detailsButton.y+panel.detailsButton.height<=panel.modulesY+panel.headerHeight,
     "Section backgrounds, slots, benefits and Details have distinct bounds")
 panel.body:setYScroll(0)
 local slot=panel.headSlot

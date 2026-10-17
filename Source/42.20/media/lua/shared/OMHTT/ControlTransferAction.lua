@@ -12,6 +12,7 @@ function Action.canStore(character, object, item)
     local state = A.state(object)
     local source = item and item:getContainer()
     return state ~= nil and state.kind == "Controller" and A.near(character, object) and A.write(character, state)
+        and require("OMHTT/ControlDefinitions").storable(item)
         and source ~= nil and source:contains(item) and source:isRemoveItemAllowed(item)
         and source:isInCharacterInventory(character) and not item:isFavorite()
         and object:getContainer():getCapacityWeight() + item:getUnequippedWeight() <= 500

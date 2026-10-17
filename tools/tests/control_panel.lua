@@ -28,13 +28,14 @@ local panel = Panel.open(player, object)
 check(panel and panel.scanIndex <= 64, "Opening controller scans at most 64 tiles")
 check(panel.name == nil and type(tostring(panel)) == "string" and type(tostring(panel.nameEntry)) == "string",
     "Native UI path formatting never recurses through the name-entry widget")
-check(panel.devices.items[1].item == object, "Controller itself remains selectable for ownership/naming")
+check(panel.devices.items[1].item == object, "Controller itself remains selectable for ownership")
 for i = 1, 30 do panel:prerender() end
 check(not panel.scanIndex and #panel.devices.items == 1, "Incremental scan completes without duplicate controller")
-check(panel.save.enabled and panel.policy.enabled and not panel.manage.enabled, "Controller settings are editable without pretending controller is a turret")
+check(not panel.nameEntry.visible and not panel.save and panel.policy.enabled and not panel.manage.enabled, "Controller settings are editable without pretending controller is a turret")
 check(not panel.source.enabled and not panel.trigger.enabled, "Controller cannot masquerade as a pressure plate")
 check(not panel.source.visible and not panel.trigger.visible and not panel.manage.visible,
     "Controller selection hides irrelevant input and turret actions")
+check(panel.detailBody.scrollChildren, "Controller enables child scrolling after native instantiation")
 panel.detailBody:prerender()
 panel.detailBody:render()
 for i = 1, #panel.children do
@@ -76,6 +77,31 @@ check(requested == "Public", "Factionless owner can select public access")
 Faction = {getPlayerFaction = function() return {} end}
 panel.policy.callback(panel)
 check(requested == "Faction", "Faction owner can select faction access")
+local oldAuthorized=A.authorized
+local writes=0
+A.authorized=function() return true end
+U.command=function(player,device,command,value) writes=writes+1; requested=value end
+local named={hasModData=function() return true end,getModData=function() return {OMHTTControl={kind="Plate",id="plate-name",links={}}} end}
+panel.nameEntry:select(named)
+panel.nameEntry:refresh()
+check(panel.nameEntry:getText()=="" and panel.nameEntry.placeholder==getText("UI_OMHTT_ControlPlate")
+    and panel.nameEntry.placeholderColor[1]==.55, "Empty names use a gray native automatic placeholder")
+panel.nameEntry:setText("  Front gate  ")
+panel.nameEntry:onCommandEntered()
+check(requested=="Front gate" and writes==1, "Enter and its ensuing blur submit exactly one trimmed rename")
+panel.nameEntry:setText("Back gate")
+panel.nameEntry:onLostFocus()
+check(requested=="Back gate" and writes==2, "Click-away saves an edited name")
+panel.nameEntry:setText("")
+panel.nameEntry:onLostFocus()
+check(requested=="" and writes==3, "Clearing a name requests automatic naming without an Auto button")
+A.authorized=function() return false end
+panel.nameEntry:setText("Forbidden")
+panel.nameEntry:onLostFocus()
+check(writes==3, "Read-only clients cannot submit name edits")
+panel.nameEntry:setText("")
+panel.nameEntry:select(object)
+A.authorized=oldAuthorized
 U.command, Faction = oldCommand, oldFaction
 panel:close()
 check(panel.removed and not require("OMHTT/ControlOverlay").panels[panel], "Controller closes its range/link overlay")

@@ -63,6 +63,51 @@ function W.publish(object)
     end
 end
 
+---@param object IsoObject Controller
+---@param state table Private record
+---@return nil
+function W.controllerSprite(object, state)
+    if state.kind ~= "Controller" then return end
+    local turrets = getActivatedMods():contains("OneMoreHorde_Turrets")
+    local sheet, first = turrets and "omhtt_turret_01_" or "omhtt_barrier_01_", turrets and 21 or 76
+    local current = object:getSpriteName() or ""
+    local desired
+    for facing = 0, 3 do
+        if current == sheet .. (first + facing) then
+            desired = current
+            break
+        end
+    end
+    if not desired then
+        local facing = tonumber(string.match(current, "^appliances_radio_01_(%d+)$")) or 16
+        desired = sheet .. (first + math.max(0, math.min(3, facing - 16)))
+    end
+    local changed = current ~= desired
+    if changed then
+        local old = W.locations[state.location]
+        if old then
+            old[state.id] = nil
+        end
+        object:setSpriteFromName(desired)
+        state.sprite = desired
+        state.location = state.x .. ":" .. state.y .. ":" .. state.z .. ":" .. desired
+        W.locations[state.location] = W.locations[state.location] or {}
+        W.locations[state.location][state.id] = true
+    end
+    local config = object:getSpriteConfig()
+    if not config or not config:isValid() or config:getTileInfo():getSpriteName() ~= desired then
+        local info = SpriteConfigManager.GetObjectInfo("OMHTTDeployController")
+        if not info then error("[OMHTT] Missing Controller sprite definition") end
+        if config then
+            GameEntityFactory.RemoveComponentType(object, ComponentType.SpriteConfig)
+        end
+        GameEntityFactory.AddComponent(object, ComponentType.SpriteConfig:CreateComponentFromScript(info:getScript()))
+    end
+    if changed and isServer() then
+        object:transmitUpdatedSpriteToClients()
+    end
+end
+
 ---@param object IsoObject New device
 ---@param player IsoPlayer Placer
 ---@param kind string Device family
@@ -98,6 +143,7 @@ function W.register(object, player, kind, previous)
     if not W.indexed[id] then
         W.order[#W.order + 1], W.indexed[id] = id, true
     end
+    W.controllerSprite(object, state)
     W.indexPlate(object, state)
     W.publish(object)
     return state
@@ -132,6 +178,7 @@ function W.bind(object)
     if state.kind == "Controller" and object:getContainer() then
         object:getContainer():setAcceptItemFunction("OMHTTControlAccept")
     end
+    W.controllerSprite(object, state)
     W.indexPlate(object, state)
     W.publish(object)
 end

@@ -10,7 +10,17 @@ end
 function ISPanel:initialise() end
 function ISPanel:addToUIManager() testTurretPanel = self end
 function ISPanel:removeFromUIManager() self.removed = true end
-function ISPanel:addChild(child) self.children[#self.children + 1] = child; child.parent = self end
+function ISPanel:instantiate()
+    self.javaObject = {setScrollChildren=function(_, value) self.scrollChildren=value end}
+end
+function ISPanel:addChild(child)
+    if not self.javaObject then self:instantiate() end
+    if not child.javaObject then
+        if child.instantiate then child:instantiate() else child.javaObject={} end
+    end
+    self.children[#self.children + 1] = child; child.parent = self
+end
+function ISPanel:updateScrollbars() end
 function ISPanel:removeChild(child)
     for i = #self.children, 1, -1 do if self.children[i] == child then table.remove(self.children, i) end end
     child.parent = nil
@@ -66,7 +76,9 @@ function ISPanel:drawTextRight(text) check(type(text)=="string", "Right-aligned 
 function ISPanel:drawProgressBar(x, y, width, height, value) check(x >= 0 and x + width <= self.width and value >= 0 and value <= 1, "Supply meter stays inside its slot") end
 function ISPanel:setY(y) self.y = y end
 function ISPanel:setHeight(height) self.height = height end
-function ISPanel:setScrollChildren(value) self.scrollChildren = value end
+function ISPanel:setScrollChildren(value)
+    if self.javaObject then self.javaObject:setScrollChildren(value) end
+end
 function ISPanel:addScrollBars() end
 function ISPanel:setScrollHeight(value) self.scrollHeight = value end
 function ISPanel:getYScroll() return self.yScroll or 0 end

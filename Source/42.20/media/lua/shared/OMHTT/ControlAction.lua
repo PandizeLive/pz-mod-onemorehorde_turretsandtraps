@@ -16,7 +16,7 @@ function Action:isValid()
     end
     if not A.write(self.character, state) then return false end
     if self.command == "Name" then
-        return type(self.value) == "string" and #self.value <= 48 and not string.find(self.value, "[%c<>]")
+        return state.kind ~= "Controller" and type(self.value) == "string" and #self.value <= 48 and not string.find(self.value, "[%c<>]")
     elseif self.command == "Access" then
         return A.write(self.character, state, true)
             and (self.value == "Private" or self.value == "Faction" or self.value == "Public")

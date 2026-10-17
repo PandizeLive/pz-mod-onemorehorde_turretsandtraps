@@ -25,6 +25,9 @@ return function(player)
     local parts = {BodyPartType.ForeArm_L, BodyPartType.ForeArm_R, BodyPartType.LowerLeg_L, BodyPartType.LowerLeg_R}
     local before, after = 0, 0
     player:setGodMod(false)
+    -- Reused native save caches may restore the previous probe's recovery timer.
+    -- Start this isolated two-hit throttle check outside that saved timer.
+    E.injuryAt[player:getPlayerNum()] = nil
     for i = 1, #parts do before = before + player:getBodyDamage():getBodyPart(parts[i]):getHealth() end
     E.injure(player)
     E.injure(player)
@@ -34,6 +37,7 @@ return function(player)
         assert(not part:scratched() and not part:isCut() and not part:bleeding(), "Blunt injury added a wound")
     end
     assert(math.abs(before - after - 2) < .0001, "Native injury throttle or local body damage failed")
+    E.injuryAt[player:getPlayerNum()] = nil
     local shot = {stats = stats, damage = .1, managed = true}
     assert(V.reserve(shot), "Native admission rejected")
     local zombie = IsoZombie.new(getCell())

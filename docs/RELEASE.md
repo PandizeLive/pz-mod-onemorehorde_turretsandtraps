@@ -1,5 +1,9 @@
 # Release state and publication policy
 
+## 0.2.53.3 / C291 — compact management and stockpile correction
+
+Owner-authorized correction; [patch/audit](PATCH_v0.2.53.3.md) and [verification](TEST_v0.2.53.3.md). 20,909 assertions, native save/reload and all three independent package startup checks pass. Installation evidence follows. No Workshop upload or cumulative-changelog reset.
+
 ## 0.2.53.2 / C290 — single-page Manage and native stockpile
 
 Approved UI correction; full validator and native write/read plus all independent package startup checks pass. [Patch](PATCH_v0.2.53.2.md) | [Checks](TEST_v0.2.53.2.md). Installed through root OMH.cmd from immutable `test/v0.2.53.2` / `f093ac35b95c1f605722b854deadacc6286041ce`; all 282 source and 355 tagged/packaged/installed/archive files match, with both 0.2.53.1 backups verified. [Release evidence](../diagnostics/v0.2.53.2/local-release.json). Rendered and connected MP acceptance remain pending. No Workshop publication; cumulative draft retained.

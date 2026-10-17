@@ -15,13 +15,20 @@ function host:getContainer() return storage end
 function storage:getParent() return host end
 local source={contains=function() return true end,isRemoveItemAllowed=function() return true end,isInCharacterInventory=function() return true end}
 local function item(weight)
-    local value={weight=weight,favorite=false}
+    local value={weight=weight,favorite=false,fullType="Base.OMHTTModuleRange"}
+    function value:getFullType() return self.fullType end
+    function value:getDisplayCategory() return "Clothing" end
     function value:getContainer() return source end
     function value:isFavorite() return self.favorite end
     function value:getUnequippedWeight() return self.weight end
     return value
 end
 local one,two=item(200),item(200)
+local junk=item(1)
+junk.fullType="Base.Shirt_FormalWhite"
+check(not require("OMHTT/ControlTransferAction").canStore(player,host,junk), "Unrelated clothing cannot enter the stockpile")
+check(not require("OMHTT/ControlDefinitions").accept(storage,junk), "Native acceptance also rejects unrelated supplies")
+
 ISMouseDrag.dragging={one,two}
 ISInventoryPane.getActualItems=function(items) return items end
 local pane={inventory=storage,player=0}

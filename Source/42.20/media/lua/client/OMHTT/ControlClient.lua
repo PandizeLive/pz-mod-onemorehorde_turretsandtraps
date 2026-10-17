@@ -55,11 +55,12 @@ function U.remote(player, controller, target)
 end
 
 ---@param object IsoObject Device
+---@param automatic boolean? Ignore a custom name
 ---@return string name
-function U.name(object)
+function U.name(object, automatic)
     local state = A.state(object)
     if not state then return "" end
-    if state.name and state.name ~= "" then return state.name end
+    if state.kind ~= "Controller" and not automatic and state.name and state.name ~= "" then return state.name end
     if state.kind == "Turret" then
         local head = require("OMHTT/Turret").contents(object:getContainer()).head
         local name = head and head:getDisplayName() or getText("UI_OMHTT_TurretBase")

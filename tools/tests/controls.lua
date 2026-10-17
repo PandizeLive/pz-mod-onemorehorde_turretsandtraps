@@ -25,7 +25,10 @@ local function device(kind, x, y)
     local square = x == 1910 and y == 1910 and root or makeSquare(x, y, 0)
     local object = {square = square, data = {}, health = 100, index = 0, turret = {powered = false}}
     function object:getSquare() return self.square end
-    function object:getSpriteName() return "control-test-" .. kind end
+    function object:getSpriteName() return self.sprite or "control-test-" .. kind end
+    function object:setSpriteFromName(value) self.sprite=value end
+    function object:getSpriteConfig() return {isValid=function() return true end,getTileInfo=function() return {getSpriteName=function() return object:getSpriteName() end} end} end
+    function object:transmitUpdatedSpriteToClients() end
     function object:getX() return self.square:getX() end
     function object:getY() return self.square:getY() end
     function object:getZ() return self.square:getZ() end
@@ -51,6 +54,7 @@ W.fire = function(player, object, target, signal)
 end
 local controller, host = device("Controller", 1910, 1910)
 host.powered = true
+check(not Action:new(owner,controller,"Name","custom",nil,host.id):complete(), "Controllers cannot be renamed")
 local plate, input = device("Plate", 1910, 1910)
 local button, buttonState = device("Button", 1910, 1910)
 local target, output = device("Turret", 1915, 1910)

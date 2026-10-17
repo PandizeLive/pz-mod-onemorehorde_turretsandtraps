@@ -1,5 +1,9 @@
 # 0.2.53.2 verification and short test
 
+## C291 owner findings — rendered correction failed (2026-10-17)
+
+Owner GIF shows headers scrolling while child slots remain fixed. Details/module stats are inaccessible; stockpile accepts unrelated items. Owner requests the side-by-side layout, compact naming/weight, no Controller rename and a white-cube Controller. Console capture `diagnostics/captures/20261017-035730-5738` confirms loaded SP0.2.53.2; no recurring stack overflow, one cleared ControlAction queue warning of unidentified cause. Prior automated passes did not test native panel initialization and do not establish rendered acceptance. [Corrective implementation/audit](PATCH_v0.2.53.3.md).
+
 ## Automated checks
 
 Full validator passed **20,897** assertions, 203 runtime/translation compilations,282 source and355 package files (133 Traps,222 Turrets). Includes native42.21 translation/serialization/animation/asset/API checks. Final dependency-timing and native container-button/context-menu corrections are included.

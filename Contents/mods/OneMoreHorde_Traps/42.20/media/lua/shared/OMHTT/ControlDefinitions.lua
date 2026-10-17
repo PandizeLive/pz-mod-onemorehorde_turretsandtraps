@@ -12,11 +12,25 @@ function C.valid(params)
     return square ~= nil and square:TreatAsSolidFloor()
 end
 
+---@param item InventoryItem? Candidate defense supply
+---@return boolean allowed
+function C.storable(item)
+    if not item then return false end
+    local fullType = item:getFullType()
+    if string.find(fullType, "^Base%.OMHTTTrap") or string.find(fullType, "^Base%.OMHTTTurret")
+        or string.find(fullType, "^Base%.OMHTTModule") or string.find(fullType, "^Base%.OMHTTAmmo") then return true end
+    if fullType == "Base.Battery" or fullType == "Base.CarBattery1" or fullType == "Base.CarBattery2"
+        or fullType == "Base.CarBattery3" then return true end
+    if item:getDisplayCategory() == "Ammo" then return true end
+    local turret = rawget(_G, "OMHTT_Turret")
+    return turret ~= nil and turret.kind(item) ~= nil
+end
+
 ---@param container ItemContainer Controlled stockpile
 ---@param item InventoryItem Proposed native insertion
 ---@return boolean allowed
 function C.accept(container, item)
-    if isServer() or not item then return false end
+    if isServer() or not C.storable(item) then return false end
     return container:getCapacityWeight() + item:getUnequippedWeight() <= 500
 end
 

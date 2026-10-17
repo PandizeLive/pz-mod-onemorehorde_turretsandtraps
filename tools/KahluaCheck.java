@@ -46,6 +46,18 @@ public final class KahluaCheck {
             return 1;
         });
         set.invoke(env, "realMillis", realMillis);
+        Class<?> uiType = Class.forName("zombie.ui.UIElement");
+        Object uiParent = uiType.getConstructor().newInstance(), uiChild = uiType.getConstructor().newInstance();
+        uiType.getMethod("setY", double.class).invoke(uiParent, 20.0);
+        uiType.getMethod("setY", double.class).invoke(uiChild, 100.0);
+        uiType.getMethod("AddChild", uiType).invoke(uiParent, uiChild);
+        uiType.getMethod("setYScroll", double.class).invoke(uiParent, -30.0);
+        if (((Number)uiType.getMethod("getAbsoluteY").invoke(uiChild)).doubleValue() != 120.0)
+            throw new IllegalStateException("Unexpected native UI default scroll behavior");
+        uiType.getMethod("setScrollChildren", boolean.class).invoke(uiParent, true);
+        if (((Number)uiType.getMethod("getAbsoluteY").invoke(uiChild)).doubleValue() != 90.0)
+            throw new IllegalStateException("Native child geometry did not follow scroll offset");
+        System.out.println("Native UI: children follow scrolling only after the parent enables it");
         Path root = Path.of(args[0]);
         Class<?> animNodeType = Class.forName("zombie.core.skinnedmodel.advancedanimation.AnimNode");
         Object node = animNodeType.getMethod("Parse", String.class).invoke(null,
@@ -323,6 +335,7 @@ public final class KahluaCheck {
             {"OMHTT/ControlWindowDrag", base + "client/OMHTT/ControlWindowDrag.lua"},
             {"OMHTT/ControlInventory", base + "client/OMHTT/ControlInventory.lua"},
             {"OMHTT/ControlClient", base + "client/OMHTT/ControlClient.lua"},
+            {"OMHTT/ControlNameEntry", base + "client/OMHTT/ControlNameEntry.lua"},
             {"OMHTT/ControlManage", base + "client/OMHTT/ControlManage.lua"},
             {"OMHTT/ControlPanelLayout", base + "client/OMHTT/ControlPanelLayout.lua"},
             {"OMHTT/ControlPanel", base + "client/OMHTT/ControlPanel.lua"},
@@ -439,6 +452,14 @@ public final class KahluaCheck {
                     String source = nativeLua.substring(nativeLua.indexOf("function ISUIElement:drawLine("), nativeLua.indexOf("function ISUIElement:drawLineAbsolute("));
                     source = source.replace("function ISUIElement:drawLine(", "function testNativeDrawLine(self, ");
                     Object nativeChunk = compile.invoke(null, new java.io.StringReader(source), element.toString(), env);
+                    call.invoke(thread, nativeChunk, new Object[0]);
+                }
+                if (stage[1].equals("tools/tests/control_ui_bootstrap.lua")) {
+                    Path ui = Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/client/ISUI/ISUIElement.lua");
+                    String nativeLua = Files.readString(ui);
+                    String source = nativeLua.substring(nativeLua.indexOf("function ISUIElement:setScrollChildren(b)"), nativeLua.indexOf("function ISUIElement:getScrollChildren()"));
+                    source = source.replace("ISUIElement:", "ISPanel:");
+                    Object nativeChunk = compile.invoke(null, new java.io.StringReader(source), ui.toString(), env);
                     call.invoke(thread, nativeChunk, new Object[0]);
                 }
                 if (stage[1].equals("tools/tests/control_panel.lua")) {

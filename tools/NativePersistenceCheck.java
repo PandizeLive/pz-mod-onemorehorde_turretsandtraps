@@ -28,7 +28,8 @@ public final class NativePersistenceCheck {
         java.util.Set<String> pages = new java.util.HashSet<>();
         for (int index = 0; index < count; index++) {
             Object entry = map.get(prefix + index);
-            String expected = turrets ? (index == 20 ? "OMHTT_ProbeBase" : index >= 16 ? "OMHTT_TestCube" : "OMHTT_Aim" + index)
+            String expected = turrets ? (index >= 21 ? "OMHTT_ControllerTurrets" : index == 20 ? "OMHTT_ProbeBase" : index >= 16 ? "OMHTT_TestCube" : "OMHTT_Aim" + index)
+                : index >= 76 ? "OMHTT_ControllerTraps"
                 : index >= 72 ? "OMHTT_Wire"
                 : index >= 64 ? "OMHTT_BedSpikes"
                 : index >= 60 ? "OMHTT_Wire"
@@ -58,9 +59,9 @@ public final class NativePersistenceCheck {
         NativeBarbProbe.verify(directory, mode);
         NativeVaultProbe.verify();
         NativeTurretProbe.verify();
-        verifyTexturePack("OMHTT_Traps", "omhtt_barrier_01_", 76, false);
-        verifyTexturePack("OMHTT_Turrets", "omhtt_turret_01_", 21, true);
-        System.out.println("[OMHTT-Smoke] native-texturepacks traps=76 turrets=21 pages=31 png=valid");
+        verifyTexturePack("OMHTT_Traps", "omhtt_barrier_01_", 80, false);
+        verifyTexturePack("OMHTT_Turrets", "omhtt_turret_01_", 25, true);
+        System.out.println("[OMHTT-Smoke] native-texturepacks traps=80 turrets=25 pages=33 png=valid");
         Class<?> lua = Class.forName("zombie.Lua.LuaManager");
         Object env = lua.getField("env").get(null);
         Object fixtures = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeFixtures");
@@ -171,11 +172,11 @@ public final class NativePersistenceCheck {
         Object restored = Class.forName("zombie.inventory.InventoryItem").getMethod("loadItem", ByteBuffer.class, int.class).invoke(null, input, version);
         check(!input.hasRemaining(), "Heavy controller unread bytes");
         Object storage = get(restored, "getInventory");
-        check(((java.util.List<?>)get(storage, "getItems")).size() == 167, "Heavy stockpile count changed");
+        check(((java.util.List<?>)get(storage, "getItems")).size() == 250, "Heavy stockpile count changed");
         check(((Number)get(storage, "getCapacityWeight")).doubleValue() > 100, "Heavy stockpile weight was compressed");
         Object state = call(get(restored, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTControl");
         check("control-owner".equals(call(state, "rawget", new Class<?>[]{Object.class}, "owner")), "Heavy controller owner lost");
-        System.out.println("[OMHTT-Controls] persistence mode=" + mode + " items=167 weight=over100 owner=preserved");
+        System.out.println("[OMHTT-Controls] persistence mode=" + mode + " items=250 weight=over100 owner=preserved");
         Object ammo = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeLargeAmmo");
         Path ammoPath = directory.resolve("large-ammo.bin");
         if (mode.equals("write")) {

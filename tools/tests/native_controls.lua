@@ -68,11 +68,38 @@ return function(player)
         assert(C.state(object).owner == "control-owner" and not player:getInventory():contains(item), "Exact placement ownership failed")
         return object
     end
-    local controller = create("Controller", "appliances_radio_01_16")
+    local controller = create("Controller", "omhtt_turret_01_21")
     local plate = create("Plate", "floors_interior_tilesandwood_01_40")
     local button = create("Button", "appliances_radio_01_0")
     local host, input = C.state(controller), C.state(plate)
     assert(controller:getContainer():getType() == "OMHTTController", "Controller real stockpile absent")
+    assert(controller:getSpriteName() == "omhtt_turret_01_21", "Controller cube not applied to existing radio placeholder")
+    local junk = player:getInventory():AddItem("Base.Plank")
+    assert(not Transfer:new(player, controller, junk, true, host.id):complete() and player:getInventory():contains(junk), "Unrelated stockpile insertion accepted")
+    assert(controller:getSpriteConfig():isValid(), "New Controller sprite configuration invalid")
+    controller:setSpriteFromName("appliances_radio_01_17")
+    local location = host.location
+    host.sprite, host.location = "appliances_radio_01_17", "28:28:0:appliances_radio_01_17"
+    C.locations[location][host.id] = nil
+    C.locations[host.location] = {[host.id] = true}
+    C.controllerSprite(controller,host)
+    assert(controller:getSpriteName()=="omhtt_turret_01_22" and controller:getSpriteConfig():isValid()
+        and controller:getSpriteConfig():getTileInfo():getSpriteName()=="omhtt_turret_01_22",
+        "Legacy radio conversion must rebuild native facing metadata")
+    local supplies = require("OMHTT/ControlDefinitions")
+    for _, fullType in pairs({"Base.OMHTTModuleRange", "Base.OMHTTTrapPressurePlate", "Base.OMHTTTurretPotato",
+        "Base.CarBattery1", "Base.Bullets9mm", "Base.9mmClip", "Base.SpearCrafted", "Base.Potato", "Base.SweetPotato",
+        "Base.AluminumScrap", "Base.OMHTTAmmoMakeshiftBomb", "Base.PipeBomb", "Base.Pistol"}) do
+        local item = instanceItem(fullType)
+        assert(item and supplies.storable(item), "Allowed defense supply rejected: " .. fullType)
+    end
+    for _, fullType in pairs({"Base.Plank", "Base.Shirt_FormalWhite", "Base.Apple", "Base.Bag_Schoolbag"}) do
+        local item = instanceItem(fullType)
+        assert(item and not supplies.storable(item), "Unrelated supply allowed: " .. fullType)
+    end
+    player:getInventory():Remove(junk)
+    controller:getContainer():AddItem(junk)
+    assert(Transfer:new(player, controller, junk, false, host.id):complete(), "Previously stored unrelated item cannot be withdrawn")
     local battery = player:getInventory():AddItem("Base.Battery")
     assert(Transfer:new(player, controller, battery, true, host.id):complete(), "Native controller battery transfer failed")
     local B = require("OMHTT/TurretBattery")
@@ -136,16 +163,16 @@ return function(player)
     assert(not C.input(receiver, getTimestampMs()) and #input.links == 0, "Native clear-input recovery left stale links")
     assert(C.link(plate, receiver, true), "Native relink after recovery failed")
     local storage = controller:getContainer()
-    for i = 1, 166 do storage:AddItem("Base.Plank") end
+    for i = 1, 249 do storage:AddItem("Base.OMHTTTrapBarbedPanel") end
     assert(storage:getCapacityWeight() > 100, "Heavy fixture failed to exceed ordinary native limit")
     local savedBattery = C.batteries[controller]
     storage:Remove(savedBattery)
     storage:AddItem(savedBattery)
     C.batteries[controller], C.batteryScan[controller] = nil, 0
-    assert(C.power(controller, 0) and C.batteries[controller] == savedBattery, "Saved battery identity must restore immediately behind 166 stockpile items")
-    local extra = player:getInventory():AddItem("Base.Plank")
+    assert(C.power(controller, 0) and C.batteries[controller] == savedBattery, "Saved battery identity must restore immediately behind 249 stockpile items")
+    local extra = player:getInventory():AddItem("Base.OMHTTTrapBarbedPanel")
     assert(not Transfer:new(player, controller, extra, true, host.id):complete(), "Stockpile exceeded 500 real weight")
-    local first = storage:getFirstType("Base.Plank")
+    local first = storage:getFirstType("Base.OMHTTTrapBarbedPanel")
     local firstId, weight = first:getID(), storage:getCapacityWeight()
     assert(C.pickup(player, controller), "Loaded heavy controller pickup failed")
     local packed = first:getContainer():getContainingItem()
@@ -156,13 +183,13 @@ return function(player)
     packed:getModData().OMHTTControl = {owner = "stranger", access = "Public"}
     local consumed = ArrayList.new()
     consumed:add(packed)
-    local rebuilt = IsoThumpable.new(getCell(), square, "appliances_radio_01_16", false)
+    local rebuilt = IsoThumpable.new(getCell(), square, "omhtt_turret_01_21", false)
     square:getObjects():add(rebuilt)
     square:getSpecialObjects():add(rebuilt)
     GameEntityFactory.CreateIsoObjectEntity(rebuilt, SpriteConfigManager.GetObjectInfo("OMHTTDeployController"):getScript():getParent(), true)
     C.create({thumpable = rebuilt, character = player, craftRecipeData = {getAllConsumedItems = function() return consumed end}})
     assert(C.state(rebuilt).id == host.id and C.state(rebuilt).owner == "control-owner", "Redeployment trusted forged ownership")
-    assert(rebuilt:getContainer():contains(first) and rebuilt:getContainer():getItems():size() == 167, "Redeployment changed exact stockpile")
+    assert(rebuilt:getContainer():contains(first) and rebuilt:getContainer():getItems():size() == 250, "Redeployment changed exact stockpile")
     assert(C.pickup(player, rebuilt), "Second heavy pickup failed")
     OMHTT_NativeHeavyController = first:getContainer():getContainingItem()
     local allowance = require("OMHTT/TurretAmmoCapacity")
