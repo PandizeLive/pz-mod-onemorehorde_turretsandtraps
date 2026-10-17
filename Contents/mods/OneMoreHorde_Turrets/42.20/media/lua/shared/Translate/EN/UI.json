@@ -360,5 +360,13 @@
     "UI_OMHTT_OrderDown": "Down",
     "UI_OMHTT_OrderApply": "Apply",
     "UI_OMHTT_OrderCancel": "Cancel",
-    "UI_OMHTT_OrderLoading": "Reading stored ammunition..."
+    "UI_OMHTT_OrderLoading": "Reading stored ammunition...",
+    "UI_OMHTT_ControlController": "Controller",
+    "UI_OMHTT_ControlPlate": "Pressure Plate",
+    "UI_OMHTT_ControlButton": "Button",
+    "UI_OMHTT_ControlPlace": "Place device",
+    "UI_OMHTT_ControlManage": "Device controls",
+    "UI_OMHTT_ControlPress": "Press button",
+    "UI_OMHTT_ControlPickup": "Pick up",
+    "UI_OMHTT_ControlRepair": "Repair"
 }

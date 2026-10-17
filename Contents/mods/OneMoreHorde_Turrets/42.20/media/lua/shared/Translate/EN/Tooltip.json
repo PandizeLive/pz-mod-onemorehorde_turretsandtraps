@@ -23,7 +23,7 @@
     "Tooltip_OMHTT_Barbs": "Attach to a wall, fence, door or window. Door barbs follow the leaf; window barbs stay on the frame. Slows and damages zombies touching the exposed side. Walk safely; running risks scratches and sprinting risks a fall.",
     "Tooltip_OMHTT_MotionDetectionImprovised": "Tracks targets at 75%% range.",
     "Tooltip_OMHTT_FiringImprovised": "Automatic firing with a chance to misfire.",
-    "Tooltip_OMHTT_CapacityImprovised": "Adds 100 reserve rounds and 2 module slots.",
+    "Tooltip_OMHTT_CapacityImprovised": "Adds head-specific ammo storage and 2 module slots.",
     "Tooltip_OMHTT_ConcertinaWire": "Linked 1x2 freestanding wire. Slows and damages zombies during contact; overlapping wire and panels do not stack. 50 shared durability, one wear per damaging activation. Walk safely; running risks scratches and sprinting risks a fall.",
     "Tooltip_OMHTT_ModuleMagazine": "Enlarges the magazine.",
     "Tooltip_OMHTT_ModuleSplitter": "Adds side shots at 50%% damage.",

@@ -57,7 +57,8 @@ def main():
         assert all(isinstance(v, str) for v in values.values())
         assert not translations.keys() & values.keys(), "Duplicate translation keys"
         translations.update(values)
-    keys = set(re.findall(r'getText\("([A-Za-z0-9_]+)"', lua)) - {"UI_OMHTT_", "ContextMenu_OMHTT_Hybrid", "UI_OMHTT_Module", "UI_OMHTT_Effect", "UI_OMHTT_Rarity", "UI_OMHTT_Stack", "UI_OMHTT_HeadFeature"}
+    keys = set(re.findall(r'getText\("([A-Za-z0-9_]+)"', lua)) - {"UI_OMHTT_", "ContextMenu_OMHTT_Hybrid", "UI_OMHTT_Module", "UI_OMHTT_Effect", "UI_OMHTT_Rarity", "UI_OMHTT_Stack", "UI_OMHTT_HeadFeature", "UI_OMHTT_Control"}
+    keys.update("UI_OMHTT_Control" + key for key in ["Controller", "Plate", "Button"])
     keys.update("UI_OMHTT_Stack" + key for key in ["Magazine", "Rate", "Reload", "Range", "Velocity", "Chance", "Damage", "Threshold", "Radius", "Battery", "Uses", "Shots", "Piercing", "Suppression"])
     keys.update("UI_OMHTT_HeadFeature" + key for key in ["Potato", "Ballista", "Lobber", "Scrapshot", "RotaryBat", "RotaryBlades", "Firearm"])
     keys.update("UI_OMHTT_Rarity" + str(band) for band in range(1, 8))

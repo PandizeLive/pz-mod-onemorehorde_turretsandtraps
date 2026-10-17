@@ -57,14 +57,15 @@ end
 ---@param kind string Slot type
 ---@return nil
 function Panel:transfer(items, incoming, kind)
-    local count, reason = X.queue(self.player, self.object, items, incoming, kind)
+    local route = self.controller and require("OMHTT/TurretNetworkTransfers") or X
+    local count, reason = route.queue(self.player, self.object, items, incoming, kind, self.toStockpile)
     self:feedback(count, reason)
 end
 
 ---@param item InventoryItem? Insert this magazine, or eject when nil
 ---@return nil
 function Panel:magazine(item)
-    local count, reason = Magazine.queue(self.player, self.object, item)
+    local count, reason = Magazine.queue(self.player, self.object, item, self.toStockpile)
     self:feedback(count, reason)
 end
 
@@ -388,12 +389,13 @@ end
 
 ---@return nil
 function Panel:prerender()
-    if not Access.near(self.player, self.object, self.deviceId) then self:close(); return end
+    if not Access.near(self.player, self.object, self.deviceId, true) then self:close(); return end
     ISPanel.prerender(self)
     local now = getTimestampMs()
     if now >= self.nextRefresh then
         self.nextRefresh = now + 200
         self:refresh()
+        require("OMHTT/ControlManage").refresh(self)
     end
     local h, y = self.lineHeight, self.detailsY
     self:section(6, self.equipmentY, self.width - 12, self.ammunitionY - self.equipmentY - 6, getText("UI_OMHTT_Equipment"))
@@ -402,8 +404,9 @@ function Panel:prerender()
     self:section(6, y - h, self.width / 2 - 10, h * 9, getText("UI_OMHTT_Status"))
     self:drawRect(6, y + h * 8 + 2, self.width - 12, h + 10, .8, .08, .08, .08)
     self:drawRectBorder(6, y + h * 8 + 2, self.width - 12, h + 10, .7, .3, .3, .3)
-    self:drawText(getText("UI_OMHTT_Turret"), 12, 8, 1, 1, 1, 1, UIFont.Medium)
-    self:drawText(getText("UI_OMHTT_ManageHint"), 12, self.titleHeight, 0.8, 0.8, 0.8, 1, UIFont.Small)
+    if not self.controller then
+        self:drawText(self.weightLabel or getText("UI_OMHTT_ManageHint"), 12, self.titleHeight, 0.8, 0.8, 0.8, 1, UIFont.Small)
+    end
     local label = self.moduleLabel
     if self.rows > 3 then label = label .. " - " .. getText("UI_OMHTT_ManageScroll") end
     self:drawText(label, 12, self.modulesY, 1, 1, 1, 1, UIFont.Small)
@@ -451,7 +454,7 @@ end
 ---@return nil
 function OpenAction:perform()
     Rarity.refresh(SandboxVars.OMHTurretsTraps or {})
-    if Access.near(self.character, self.object) then
+    if Access.near(self.character, self.object, nil, true) then
         if isClient() then
             self.object:getContainer():requestSync()
         end
@@ -480,6 +483,7 @@ function OpenAction:perform()
         local y = getPlayerScreenTop(index) + math.max(12, (getPlayerScreenHeight(index) - height) / 2)
         local panel = Panel:new(x, y, width, height)
         panel.player, panel.object, panel.nextRefresh = self.character, self.object, 0
+        panel.controller = self.controller
         panel.deviceId, panel.slots, panel.moduleSlots = T.state(self.object).id, {}, {}
         panel.moduleRow, panel.rows = 0, 3
         panel.equipmentY, panel.ammunitionY = top - lineHeight, ammunitionY
@@ -540,6 +544,7 @@ function OpenAction:perform()
         require("OMHTT/TurretManageExtras").create(panel, rangeX)
         local buttons = {panel.fireButton, panel.powerButton, panel.priorityButton, panel.loadOrderButton, panel.reloadButton, close}
         for i = 1, #buttons do buttons[i]:initialise(); panel:addChild(buttons[i]) end
+        require("OMHTT/ControlManage").create(panel)
         panel:refresh()
         panel:addToUIManager()
         active[index] = panel
@@ -553,22 +558,27 @@ end
 
 ---@return boolean valid
 function OpenAction:isValid()
-    return Access.near(self.character, self.object)
+    return Access.near(self.character, self.object, nil, true)
 end
 
 ---@param player IsoPlayer Operator
 ---@param object IsoObject Exact turret
 ---@return table action
-function OpenAction:new(player, object)
+function OpenAction:new(player, object, controller)
     local action = ISBaseTimedAction.new(self, player)
     action.object, action.maxTime = object, 1
+    action.controller = controller
     return action
 end
 
 ---@param object IsoObject Exact turret
 ---@param player IsoPlayer Operator
 ---@return nil
-local function open(object, player)
+local function open(object, player, controller)
+    if controller then
+        ISTimedActionQueue.add(OpenAction:new(player, object, controller))
+        return
+    end
     if luautils.walkAdjObject(player, object, false) then ISTimedActionQueue.add(OpenAction:new(player, object)) end
 end
 

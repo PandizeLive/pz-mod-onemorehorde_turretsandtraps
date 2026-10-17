@@ -1,8 +1,11 @@
-v0.2.52
+v0.2.53
 Development test content
+- Added a 20-tile controller with full remote turret management, a 500-weight stockpile, editable names and Private/Faction/Public write access.
+- Added pressure plates and wall buttons with persistent links: plates switch turret power and supply fire while held; buttons request one cycle. Includes trigger filters and range/link previews.
+- Increased head-specific ammunition reserves and expansion progression; Large supports 1,000 potatoes, 350 spears/bombs, 900 scrap, 5,000 firearm rounds or 1,000 shotgun rounds. Loaded turret/controller pickup uses native two-handed heavy carrying when needed and retains full contents weight.
 - Added shared per-head Load Order with physical/Void counts and ammo bonuses, next-load/next-shot summaries and safe manual Reload. Current magazines keep one ammo type until reloaded; orders persist through pickup and saving.
-- Scrapshot accepts native metal/aluminum/copper/brass/iron/steel/gold/silver scrap with modest material damage bonuses. Physical reserve follows20/30/40/60/80 across expansion tiers, subject to native weight; Void remains weightless.
-- Fixed alternate spear/bomb loading, paused-transfer reload stalls, mislabeled ammunition tooltips and removable Expansion styling; physical ammo limits now reflect equipped weight.
+- Scrapshot accepts native metal/aluminum/copper/brass/iron/steel/gold/silver scrap with modest material damage bonuses. Expansion tiers support larger real-item reserves; Void remains weightless.
+- Fixed alternate spear/bomb loading, paused-transfer reload stalls, mislabeled ammunition tooltips and removable Expansion styling.
 - Added fixed-facing Firing-only shots and a separate Lobber landing-distance control; Scrapshot fires eight40-damage pellets. Coverage previews match rotary and Ballista sectors.
 - Added Grenade Lobber and Scrapshot heads with normal/improvised recipes, turret-only Makeshift Bomb ammunition, finite magazines and bounded module effects. Makeshift explosions use quieter firecracker audio; native bombs retain their sounds. Lobber has a 1.25-second landed fuse and 5.5-second base firing interval, with normal speed upgrades. Ballista, Lobber and Scrapshot have native reload cues.
 - Added Lure and Void Modules: adjustable manual/ten-second repeating attraction with dedicated range/Play/Loop controls and world feedback, and portable module-owned virtual ammunition with finite magazines, compatible-ammo summaries, exact-item storage and private multiplayer accounting. Includes LootLab entries.

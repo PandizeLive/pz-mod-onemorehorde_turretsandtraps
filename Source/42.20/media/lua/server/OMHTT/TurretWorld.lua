@@ -73,14 +73,7 @@ end
 ---@nodiscard
 function W.near(player, object)
     if not player or not W.valid(object) or player:isDead() then return false end
-    local square = object:getSquare()
-    if player:getZ() ~= square:getZ() then return false end
-    local origin = player:getSquare()
-    if not origin then return false end
-    if origin == square then return true end
-    if math.abs(origin:getX() - square:getX()) > 1 or math.abs(origin:getY() - square:getY()) > 1 then return false end
-    local dx, dy = player:getX() - square:getX() - 0.5, player:getY() - square:getY() - 0.5
-    return dx * dx + dy * dy <= 4 and origin:canReachTo(square)
+    return require("OMHTT/ControlAccess").authorized(player, object)
 end
 
 ---@param object IsoThumpable Device
@@ -90,6 +83,7 @@ function W.refresh(object)
     local state = T.state(object)
     if not state or not object:getContainer() then return end
     local contents = T.contents(object:getContainer())
+    require("OMHTT/ControlWorld").number(object, contents.head)
     if isServer() and contents.void then require("OMHTT/TurretItemState").publish(contents.void) end
     if contents.head and not feeders[object] then
         feeders[object] = true
@@ -155,8 +149,16 @@ end
 ---@param enabled boolean Switch value
 ---@return boolean changed
 function W.setPower(player, object, enabled)
-    if isClient() or type(enabled) ~= "boolean" then return false end
     if not W.near(player, object) then return false end
+    return W.applyPower(object, enabled, player)
+end
+
+---@param object IsoObject Turret
+---@param enabled boolean Actual power switch
+---@param player IsoPlayer? Operator; nil for authoritative signals
+---@return boolean changed
+function W.applyPower(object, enabled, player)
+    if isClient() or type(enabled) ~= "boolean" or not W.valid(object) then return false end
     local state = T.state(object)
     state.powered, state.automatic = enabled, nil
     if not enabled then state.lureRepeat = false end
@@ -252,6 +254,7 @@ function W.onCreate(params)
     local container = ItemContainer.new(T.CONTAINER, object:getSquare(), object)
     T.configure(container)
     object:setContainer(container)
+    require("OMHTT/ControlWorld").turret(object, player, source)
     T.moveContents(source:getInventory(), container)
     if source:getContainer() then
         local sourceContainer = source:getContainer()
@@ -296,6 +299,7 @@ end
 ---@return boolean applied
 function W.pickup(player, object, id)
     if not W.near(player, object) or T.state(object).id ~= id then return false end
+    if not require("OMHTT/ControlAccess").near(player, object) then return false end
     local item = instanceItem(T.BASE)
     if not item then return false end
     local state = T.state(object)
@@ -315,13 +319,11 @@ function W.pickup(player, object, id)
     item:setActualWeight(weight)
     local room = player:getInventory():hasRoomFor(player, item)
     item:setActualWeight(instanceItem(T.BASE):getActualWeight())
-    if not room then
-        player:setHaloNote(getText("UI_OMHTT_PickupNoRoom"), 255, 170, 80, 180)
-        return false
-    end
+    if not room then forceDropHeavyItems(player) end
     if player:getInventory():AddItem(item) ~= item then return false end
     state.lureRepeat = false
     T.moveContents(contents, item:getInventory())
+    require("OMHTT/ControlWorld").packTurret(object, item)
     if isServer() then
         Authority.retire(object, item)
     end
@@ -329,6 +331,11 @@ function W.pickup(player, object, id)
     object:getSquare():transmitRemoveItemFromSquare(object)
     if isServer() then
         sendAddItemToContainer(player:getInventory(), item)
+    end
+    if not room then
+        player:setPrimaryHandItem(item)
+        player:setSecondaryHandItem(item)
+        if isServer() then sendEquip(player) end
     end
     D.emit("turret-picked-up", {id = id, items = item:getInventory():getItems():size(), weight = weight,
         shots = copied.shots, nextShot = copied.nextShot})
@@ -343,6 +350,7 @@ function W.loaded(object)
         Authority.bind(object)
     end
     if T.state(object) and object:getContainer() then
+        require("OMHTT/ControlWorld").turret(object)
         W.clearBuildRefund(object)
         object:setBlockAllTheSquare(true)
         object:setCanPassThrough(true)
@@ -444,11 +452,11 @@ function W.fire(player, object, target, signal)
     end
     local contents = T.contents(object:getContainer())
     if not player and SandboxVars.OMHTurretsTraps.AutomationEnabled == false then return "Unavailable" end
-    local forward = not target and contents.active.Firing and not contents.active.MotionDetection
+    local forward = not target and contents.active.Firing and (signal or not contents.active.MotionDetection)
     if not player and ((not forward and not M.detects(T.state(object), contents)) or not contents.active.Firing) then return "Unavailable" end
     if contents.heads ~= 1 or contents.head:getCondition() <= 0 then return "NoHead" end
     if require("OMHTT/TurretHeads").get(contents.head) and T.cycleConfig(contents).rotary then
-        return require("OMHTT/TurretRotary").start(player, object)
+        return require("OMHTT/TurretRotary").start(player, object, signal)
     end
     if contents.ammo == 0 then return "Empty" end
     local stats = T.cycleConfig(contents)
@@ -494,7 +502,7 @@ function W.fire(player, object, target, signal)
     end
     ---@return boolean committed
     function options.commit()
-        if not W.valid(object) or not object:getContainer():contains(contents.head) then return false end
+        if not W.valid(object) or not T.isOn(T.state(object)) or not object:getContainer():contains(contents.head) then return false end
         if not G.profile(contents.head) and not cycle.virtual and not object:getContainer():contains(contents.round) then return false end
         if player and not W.near(player, object) then return false end
         if not player and ((not forward and not M.detects(state, contents)) or not contents.active.Firing) then return false end

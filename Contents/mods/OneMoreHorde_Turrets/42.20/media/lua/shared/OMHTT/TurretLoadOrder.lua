@@ -52,6 +52,7 @@ function L.rows(contents, state, totals, compact)
     ---@param fullType string Candidate identity
     ---@return table? row
     local function add(fullType)
+        if entries[fullType] then return entries[fullType] end
         if not Ammo.accepts(head, fullType) then return nil end
         if not entries[fullType] then
             entries[fullType] = {type = fullType, physical = 0, virtual = 0}
@@ -61,10 +62,19 @@ function L.rows(contents, state, totals, compact)
     end
     local preference = L.preference(state, head)
     for i = 1, #preference do add(preference[i]) end
-    for i = 1, #contents.rounds do
-        local row = add(contents.rounds[i]:getFullType())
-        if row then
-            row.physical = row.physical + 1
+    if contents.roundCounts then
+        for fullType, count in pairs(contents.roundCounts) do
+            local row = add(fullType)
+            if row then
+                row.physical = count
+            end
+        end
+    else
+        for i = 1, #contents.rounds do
+            local row = add(contents.rounds[i]:getFullType())
+            if row then
+                row.physical = row.physical + 1
+            end
         end
     end
     local data = Void.data(contents.void)

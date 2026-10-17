@@ -1,0 +1,161 @@
+module Base {
+    item OMHTTTrapController {
+        DisplayName = Controller,
+        ItemType = base:container,
+        DisplayCategory = Electronics,
+        Weight = 8,
+        Icon = HamRadio1,
+        Tags = base:heavyitem,
+        ConditionMax = 100,
+        Capacity = 50,
+        WeightReduction = 0,
+    }
+    entity OMHTTDeployController {
+        component UiConfig { xuiSkin = default, entityStyle = ES_OMHTTController, uiEnabled = false, }
+        component SpriteConfig {
+            health = 100,
+            skillBaseHealth = 0,
+            bonusHealth = 0,
+            isThumpable = true,
+            OnIsValid = OMHTT_Controls.valid,
+            OnCreate = OMHTT_Controls.created,
+            face E { layer { row = appliances_radio_01_16, } }
+            face N { layer { row = appliances_radio_01_17, } }
+            face W { layer { row = appliances_radio_01_18, } }
+            face S { layer { row = appliances_radio_01_19, } }
+        }
+        component CraftRecipe {
+            timedAction = BuildLowNoTool,
+            time = 100,
+            category = OMHControls,
+            needToBeLearn = false,
+            OnAddToMenu = OMHTT_ControlMenu,
+            inputs { item 1 [Base.OMHTTTrapController], }
+        }
+    }
+    craftRecipe OMHTTCraftController {
+        timedAction = BuildLowNoTool,
+        time = 100,
+        category = OMHControls,
+        Tags = InHandCraft,
+        needToBeLearn = false,
+        SkillRequired = Electricity:3,
+        xpAward = Electricity:20,
+        OnAddToMenu = OMHTT_ControlMenu,
+        inputs {
+                item 1 tags[base:screwdriver] mode:keep flags[Prop1;DontRecordInput;NoBrokenItems],
+                item 1 tags[base:pliers] mode:keep flags[DontRecordInput;NoBrokenItems],
+                item 2 [Base.SmallSheetMetal],
+                item 4 [Base.ElectronicsScrap],
+                item 2 [Base.ElectricWire],
+                item 4 [Base.Screws],
+        }
+        outputs { item 1 Base.OMHTTTrapController, }
+    }
+    xuiSkin default { entity ES_OMHTTController { LuaWindowClass = ISEntityWindow, DisplayName = UI_OMHTT_ControlController, Icon = HamRadio1, } }
+    item OMHTTTrapPressurePlate {
+        DisplayName = Pressure Plate,
+        ItemType = base:normal,
+        DisplayCategory = Electronics,
+        Weight = 1,
+        Icon = Plank,
+        Tags = base:heavyitem,
+        ConditionMax = 100,
+    }
+    entity OMHTTDeployPlate {
+        component UiConfig { xuiSkin = default, entityStyle = ES_OMHTTPlate, uiEnabled = false, }
+        component SpriteConfig {
+            health = 100,
+            skillBaseHealth = 0,
+            bonusHealth = 0,
+            isThumpable = true,
+            OnIsValid = OMHTT_Controls.valid,
+            OnCreate = OMHTT_Controls.created,
+            face E { layer { row = floors_interior_tilesandwood_01_40, } }
+            face N { layer { row = floors_interior_tilesandwood_01_41, } }
+            face W { layer { row = floors_interior_tilesandwood_01_42, } }
+            face S { layer { row = floors_interior_tilesandwood_01_43, } }
+        }
+        component CraftRecipe {
+            timedAction = BuildLowNoTool,
+            time = 100,
+            category = OMHControls,
+            needToBeLearn = false,
+            OnAddToMenu = OMHTT_ControlMenu,
+            inputs { item 1 [Base.OMHTTTrapPressurePlate], }
+        }
+    }
+    craftRecipe OMHTTCraftPlate {
+        timedAction = BuildLowNoTool,
+        time = 100,
+        category = OMHControls,
+        Tags = InHandCraft,
+        needToBeLearn = false,
+        SkillRequired = Woodwork:1;Electricity:1,
+        xpAward = Woodwork:5;Electricity:10,
+        OnAddToMenu = OMHTT_ControlMenu,
+        inputs {
+                item 1 tags[base:screwdriver] mode:keep flags[Prop1;DontRecordInput;NoBrokenItems],
+                item 1 tags[base:pliers] mode:keep flags[DontRecordInput;NoBrokenItems],
+                item 1 tags[base:hammer] mode:keep flags[DontRecordInput;NoBrokenItems],
+                item 1 [Base.Plank],
+                item 2 [Base.ElectronicsScrap],
+                item 1 [Base.ElectricWire],
+                item 4 [Base.Nails],
+        }
+        outputs { item 1 Base.OMHTTTrapPressurePlate, }
+    }
+    xuiSkin default { entity ES_OMHTTPlate { LuaWindowClass = ISEntityWindow, DisplayName = UI_OMHTT_ControlPlate, Icon = Plank, } }
+    item OMHTTTrapButton {
+        DisplayName = Button,
+        ItemType = base:normal,
+        DisplayCategory = Electronics,
+        Weight = 0.2,
+        Icon = ElectronicsScrap,
+        Tags = base:heavyitem,
+        ConditionMax = 100,
+    }
+    entity OMHTTDeployButton {
+        component UiConfig { xuiSkin = default, entityStyle = ES_OMHTTButton, uiEnabled = false, }
+        component SpriteConfig {
+            health = 100,
+            skillBaseHealth = 0,
+            bonusHealth = 0,
+            isThumpable = true,
+            OnIsValid = OMHTT_Controls.wall,
+            OnCreate = OMHTT_Controls.created,
+            face E { layer { row = appliances_radio_01_0, } }
+            face N { layer { row = appliances_radio_01_1, } }
+            face W { layer { row = appliances_radio_01_2, } }
+            face S { layer { row = appliances_radio_01_3, } }
+        }
+        component CraftRecipe {
+            timedAction = BuildLowNoTool,
+            time = 100,
+            category = OMHControls,
+            needToBeLearn = false,
+            OnAddToMenu = OMHTT_ControlMenu,
+            inputs { item 1 [Base.OMHTTTrapButton], }
+        }
+    }
+    craftRecipe OMHTTCraftButton {
+        timedAction = BuildLowNoTool,
+        time = 100,
+        category = OMHControls,
+        Tags = InHandCraft,
+        needToBeLearn = false,
+        SkillRequired = Electricity:1,
+        xpAward = Electricity:5,
+        OnAddToMenu = OMHTT_ControlMenu,
+        inputs {
+                item 1 tags[base:screwdriver] mode:keep flags[Prop1;DontRecordInput;NoBrokenItems],
+                item 1 tags[base:pliers] mode:keep flags[DontRecordInput;NoBrokenItems],
+                item 1 [Base.ElectronicsScrap],
+                item 1 [Base.ElectricWire],
+                item 2 [Base.Screws],
+        }
+        outputs { item 1 Base.OMHTTTrapButton, }
+    }
+    xuiSkin default { entity ES_OMHTTButton { LuaWindowClass = ISEntityWindow, DisplayName = UI_OMHTT_ControlButton, Icon = ElectronicsScrap, } }
+}
+

@@ -130,14 +130,21 @@ end
 ---@return table summary Actual inventory contents
 ---@nodiscard
 function T.contents(container)
-    local result = {reserve = 0, reserveAll = 0, rounds = {}, ammo = 0, modules = 0, powerLoad = 0, capacities = 0, heads = 0, batteries = 0, invalid = 0, moduleNames = {}, moduleDetails = {}, active = {}, moduleCounts = {}, weight = 0}
-    local items = container:getItems()
+    local result = {reserve = 0, reserveAll = 0, rounds = {}, roundCounts = {}, firstRounds = {}, ammo = 0, modules = 0, powerLoad = 0, capacities = 0, heads = 0, batteries = 0, invalid = 0, moduleNames = {}, moduleDetails = {}, active = {}, moduleCounts = {}, weight = 0}
+    local items, kinds = container:getItems(), {}
     for i = 0, items:size() - 1 do
         local item = items:get(i)
-        local kind = T.kind(item)
+        local fullType = item:getFullType()
+        local kind = kinds[fullType]
+        if kind == nil then
+            kind = T.kind(item) or false
+            kinds[fullType] = kind
+        end
         result.weight = result.weight + item:getActualWeight()
         if kind == "ammo" then
             result.rounds[#result.rounds + 1] = item
+            result.roundCounts[fullType] = (result.roundCounts[fullType] or 0) + 1
+            result.firstRounds[fullType] = result.firstRounds[fullType] or item
             result.reserveAll = result.reserveAll + 1
         elseif kind == "head" then
             result.heads = result.heads + 1
@@ -186,16 +193,15 @@ function T.contents(container)
     local ammoType = require("OMHTT/TurretFeed").select(result, container)
     if definition and definition.rotary then ammoType = "" end
     if G.profile(result.head) then ammoType = G.ammoType(result.head) end
-    for i = 1, #result.rounds do
-        local round = result.rounds[i]
-        if Ammo.accepts(result.head, round:getFullType()) then
-            if round:getFullType() == ammoType then
-                result.selectedCount = (result.selectedCount or 0) + 1
-                if not result.round then result.round = round end
+    for fullType, count in pairs(result.roundCounts) do
+        if Ammo.accepts(result.head, fullType) then
+            if fullType == ammoType then
+                result.selectedCount = count
+                result.round = result.firstRounds[fullType]
             end
-            result.reserve = result.reserve + 1
+            result.reserve = result.reserve + count
         else
-            result.invalid = result.invalid + 1
+            result.invalid = result.invalid + count
         end
     end
     result.payloadType = ammoType

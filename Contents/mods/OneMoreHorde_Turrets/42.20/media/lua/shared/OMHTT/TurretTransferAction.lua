@@ -11,6 +11,10 @@ local Action = OMHTTTurretTransferAction
 ---@nodiscard
 function Action:destination()
     if self.incoming then return self.object:getContainer() end
+    if self.stockpile then
+        local controller = require("OMHTT/ControlAccess").stockpile(self.character, self.object)
+        return controller and controller:getContainer()
+    end
     if self.destinationBag == nil then return self.character:getInventory() end
     if self.destinationBag == false then return nil end
     if not instanceof(self.destinationBag, "InventoryContainer") then return nil end
@@ -31,7 +35,9 @@ function Action:rejection(candidate, summary)
     local destination = self:destination()
     if not destination then return "TransferCarried" end
     if self.incoming then
-        if source == storage or not source:isInCharacterInventory(self.character) then return "TransferCarried" end
+        local controller = require("OMHTT/ControlAccess").stockpile(self.character, self.object)
+        local stockpile = controller and controller:getContainer()
+        if source == storage or (not source:isInCharacterInventory(self.character) and source ~= stockpile) then return "TransferCarried" end
         if candidate:isFavorite() then return "TransferFavorite" end
         if not T.accepts(storage, candidate, summary) then return "TransferFull" end
         destination = storage
@@ -40,10 +46,12 @@ function Action:rejection(candidate, summary)
     end
     if not T.canRemove(source, candidate) then return "CapacityFull" end
     if not source:isRemoveItemAllowed(candidate) then return "TransferWrongItem" end
-    if not self.incoming and not destination:isItemAllowed(candidate) then return "TransferWrongItem" end
+    if not self.incoming and not self.stockpile and not destination:isItemAllowed(candidate) then return "TransferWrongItem" end
     local room
     if self.incoming then
-        room = destination:hasRoomFor(self.character, candidate:getUnequippedWeight())
+        room = true
+    elseif self.stockpile then
+        room = destination:getCapacityWeight() + candidate:getUnequippedWeight() <= 500
     else
         room = destination:hasRoomFor(self.character, candidate)
     end
@@ -184,10 +192,11 @@ end
 ---@param ids table? At most twenty exact same-type light-ammo IDs
 ---@param destinationBag InventoryItem? Exact carried destination bag; nil means main inventory
 ---@return OMHTTTurretTransferAction action
-function Action:new(character, object, item, incoming, id, ids, destinationBag)
+function Action:new(character, object, item, incoming, id, ids, destinationBag, stockpile)
     local o = ISBaseTimedAction.new(self, character)
     o.object, o.item, o.incoming, o.id, o.ids = object, item, incoming, id, ids
     o.destinationBag = destinationBag
+    o.stockpile = stockpile == true
     o.done, o.stopOnWalk, o.stopOnRun = false, true, true
     o.maxTime = o:getDuration()
     return o

@@ -1,5 +1,9 @@
 # OMH: Turrets & Traps
 
+**C285 / 0.2.53 implemented and verified (2026-10-16).** Controller, plates/buttons, ownership, remote full Manage/stockpile, naming, heavy pickup and C283 ammo capacities are implemented. [Patch](docs/PATCH_v0.2.53.md) | [Verification and short test](docs/TEST_v0.2.53.md). Full validator passes 20,807 assertions; native write/read and all three independent package selections pass. Tagged installation and development mirror are the remaining delivery steps. Rendered/connected acceptance remains deferred. R4C1 implementation is complete for the approved turret receiver; R4C2 damaging receivers remain separate.
+
+Earlier entries below are historical checkpoints.
+
 Installed **0.2.52** from immutable `test/v0.2.52` / `9d4c5f5252158ab8eb6ba3bba81187b379407990`. All267 source and325 tagged/packaged/installed/archive files match; both0.2.51 backups verify. Full suite:20,510 assertions; native write/read and all three independent package selections pass. [Local release evidence](diagnostics/v0.2.52/local-release.json). Rendered/connected multiplayer acceptance remains pending; the C108 development mirror carries this release record. No Workshop publication.
 
 **C267 / 0.2.52 corrective patch (2026-10-16).** Owner explicitly approves the C263–C266 recap. Implemented the accepted Equipment/Ammunition layout, shared per-head Load Order, safe manual Reload, next-load/next-shot summaries, eight scrap types and bonuses,20/30/40/60/80 scrap limits, quieter Makeshift blasts,1.25-second Lobber fuse/5.5-second base interval, head reload audio and unwrapped white descriptions except rarity. [Patch](docs/PATCH_v0.2.52.md) | [Verification and short test](docs/TEST_v0.2.52.md). Automated/native checks are recorded separately from pending rendered/connected-client acceptance. R4C1 physical inputs/controller remain next. No Workshop publication or main merge.

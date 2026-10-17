@@ -1,5 +1,7 @@
 # Phases and checkpoints
 
+**C285 / 0.2.53 implemented and verified (2026-10-16).** Controller, plates/buttons, ownership, remote full Manage/stockpile, naming, heavy pickup and C283 ammo capacities are implemented. [Patch](PATCH_v0.2.53.md) | [Verification and short test](TEST_v0.2.53.md). Full validator passes 20,807 assertions; native write/read and all three independent package selections pass. Tagged installation and development mirror are the remaining delivery steps. Rendered/connected acceptance remains deferred. R4C1 implementation is complete for the approved turret receiver; R4C2 damaging receivers remain separate.
+
 **C284 / controller and turret Manage previews (2026-10-16).** [Paired mockups and browser evidence](checkpoints/R4C1_CONNECTED_CONTROLS.md#c284-paired-controller-and-turret-manage-mockups-2026-10-16). Full remote Manage, naming, source selection,500-capacity controller stockpile, heavy-carry feedback and approved panel structure represented with sample values. Browser interactions/layouts checked; not PZ/MP implementation or acceptance. C283 selections unchanged; installed0.2.52 unchanged.
 
 **C283 / storage and full expansion progression approved (2026-10-16).** Owner selects1A/2A: [confirmed storage/ammo contract](checkpoints/R4C1_CONNECTED_CONTROLS.md#c283-storage-route-and-full-expansion-progression-approved-2026-10-16). Controlled real-item over-capacity storage, native heavy pickup and the complete C282 tier table are selected; controller retains500 weight. Supersedes compartment proposal. No further design choice for this scope; implementation/MP/persistence/performance proof remains. Planning recorded; installed0.2.52 unchanged.
@@ -199,7 +201,7 @@ Shared combat scheduling and active-time clocks exist. Render/maintenance costs 
 | 3: R3C4-R3C6 modules/battery implementation | Implemented through 0.2.42 and later corrections/extensions, including Synergy/Tack/Martyrdom/Regulator | Not awaiting the original design choices; retain later rule overrides and current test evidence |
 | 3: R3C7 combined balance/endurance/lifecycle | Ongoing acceptance of the installed 0.2.50 roster; pack timing/completion changes implemented | New-head/module balance, battery endurance and exact ammo/Void lifecycle; preserve prior accepted results. Packed-weight work abandoned under C170 |
 | 3: R3C8 starter modules/expansion | C104 implemented, verified and installed in 0.2.34 | C106 tentative passes; 4/6/6 layout acceptance in 0.2.35; include maximum loadouts in future R3C7 endurance checks |
-| 4: R4C1-R4C4 signals/connected traps | C249-C261 specifications selected; C262 forward-fire receiver foundation implemented | Physical buttons/plates, links and controller next; damaging receiver details remain separate |
+| 4: R4C1-R4C4 signals/connected traps | R4C1 controller, plates/buttons, links and full turret receiver implemented in 0.2.53 | Focused rendered/connected acceptance; R4C2 Poke Floor/dart content next, then sensors/adapters |
 | 5: R5C1 MP | C246 authority plus C247 new-content integration installed in 0.2.50 | Connected dedicated/listen tests: concurrent services, ownership/reconnect, persistence, damage/effects and resources. Zero-client native probes are not acceptance |
 | 5: R5C2 Horde scoring | C246 coordinated /5, per-run opt-in and default-or-harder rules implemented in development | Matching core/score-validator deployment and end-to-end scoring acceptance remain; LootLab deployment does not certify scoring. Shared Trait Shop XP is separate future work |
 | 5: R5C3 release | No certification or publication | Preserve independent packages; coordinated score validators before official integration claims; separate publication authorization |
@@ -289,7 +291,7 @@ Authority design/testing begins with each device; R5C1 is integrated proof, not 
 - [x] R3C1: C193-C207 selected/approved Ballista, Rotary Bat and Rotary Blades. R3C2 rendered acceptance remains open.
 - [x] R3C4-R3C6 contracts and approved module implementation: completed in 0.2.40/0.2.42 and later extensions; current rules supersede earlier proposals.
 - [ ] R3C7: focused 0.2.51 corrective and balance/endurance/ammo/Void lifecycle acceptance. Pack timing and completion-owned rarity audio are implemented; C228 supersedes the earlier pre-completion sound trigger. No repeated historical pack checklist.
-- [ ] R4C1: implement approved buttons, pressure plates, bounded links and controller lifecycle next. C262 supplies forward projectile firing and Lobber landing control; device implementation is still outstanding. Do not reopen settled choices.
+- [x] R4C1: C285 / 0.2.53 implements buttons, plates, controller, scoped remote management, ownership and bounded links. Automated/native verification is distinct from pending rendered/connected acceptance. R4C2 damaging receivers remain next.
 - [ ] R5C1/R5C2: connected MP and coordinated end-to-end Horde scoring acceptance; shared Trait Shop XP remains a separate contract.
 - [ ] Capture an earlier log or live thread evidence if the Louisville hang recurs.
 

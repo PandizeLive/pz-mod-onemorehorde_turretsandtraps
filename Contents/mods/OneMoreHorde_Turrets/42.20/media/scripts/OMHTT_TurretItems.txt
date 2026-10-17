@@ -109,6 +109,7 @@ module Base {
     }
 
     item OMHTTTurretBase {
+        Tags = base:heavyitem,
         DisplayName = Turret Base,
         ItemType = base:container,
         DisplayCategory = Material,

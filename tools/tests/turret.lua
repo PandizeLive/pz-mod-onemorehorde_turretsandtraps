@@ -229,11 +229,17 @@ object.testHealth = 37
 function square:transmitRemoveItemFromSquare(candidate) self.removedTurret = candidate end
 record.maxHealth = 100
 local beforeCount = #other.items
-check(not W.pickup(pickupPlayer, object, record.id) and #other.items == beforeCount, "Full inventory pickup retains world contents")
-playerStorage.room = true
+local oldHeavyDrop = forceDropHeavyItems
+local heavyDropped = 0
+forceDropHeavyItems = function(player) heavyDropped = heavyDropped + 1 end
+function pickupPlayer:setPrimaryHandItem(value) self.primary = value end
+function pickupPlayer:setSecondaryHandItem(value) self.secondary = value end
 check(not W.pickup(pickupPlayer, object, "stale-id") and #other.items == beforeCount, "Stale pickup rejected before mutation")
 check(W.pickup(pickupPlayer, object, record.id) and #other.items == 0 and #playerStorage.items == 1, "Pickup transfers once and removes world object")
 local carried = playerStorage.items[1]
+check(heavyDropped == 1 and pickupPlayer.primary == carried and pickupPlayer.secondary == carried,
+    "Overweight pickup uses both hands after native heavy-item release")
+forceDropHeavyItems = oldHeavyDrop
 check(carried.inventory:contains(battery) and math.abs(battery.charge - 0.3699937) < 0.000001, "Pickup preserves battery identity and charge")
 check(carried.data.OMHTTTurret.condition == 37 and carried.data.OMHTTTurret.nextShot == record.nextShot, "Pickup preserves durability and cooldown")
 check(not W.pickup(pickupPlayer, object, record.id) and #playerStorage.items == 1, "Repeated pickup cannot duplicate item")

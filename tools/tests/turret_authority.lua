@@ -130,8 +130,8 @@ check(not Action:new(player, object, "Pickup", "old-id"):complete(), "Stale serv
 local a, b = item("Base.Potato"), item("Base.Potato")
 object.inventory:AddItem(a)
 object.inventory:AddItem(b)
-player.inventory.room = false
-check(not W.pickup(player, object, id) and object.inventory:contains(a), "No-room pickup preserves exact world contents")
+-- The no-room path now intentionally uses native two-hand heavy carry; covered
+-- by turret.lua and the real-item native capacity probe.
 player.inventory.room, player.inventory.failAdd = true, true
 check(not W.pickup(player, object, id) and T.state(object) ~= nil and object.inventory:contains(b), "Failed inventory insertion cannot retire or empty a turret")
 player.inventory.failAdd = false
@@ -216,7 +216,7 @@ testMode = "server"
 check(not Transfer:new(player, transferObject, head, true, "stale"):complete(), "Wrong turret identity rejects transfer")
 check(not Transfer:new(player, transferObject, head, true):complete(), "Missing serialized identity rejects transfer")
 target.room = false
-check(not transfer:complete() and inv:contains(head), "No-room transfer preserves item")
+check(transfer:isValid() and inv:contains(head), "Scoped turret admission bypasses native weight limits without moving items during validation")
 target.room, target.failAdd = true, true
 check(not transfer:complete() and inv:contains(head) and removes == 0, "Failed native insertion rolls back before synchronization")
 target.failAdd = false
@@ -273,7 +273,7 @@ end
 check(T.contents(target).reserve == 600, "All six hundred exact rounds arrive through thirty server actions")
 testMPTransfer = "items=600 batches=30 maxBatchMs=" .. maxBatch .. " elapsedMs=" .. (realMillis() - started)
 local oldBonus = SandboxVars.OMHTurretsTraps.CapacityLargeAmmoBonus
-SandboxVars.OMHTurretsTraps.CapacityLargeAmmoBonus = 105
+SandboxVars.OMHTurretsTraps.CapacityLargeAmmoBonus = 76
 local limited, limitedIds = {}, {}
 for i = 1, 20 do
     local round = component("Base.Potato")

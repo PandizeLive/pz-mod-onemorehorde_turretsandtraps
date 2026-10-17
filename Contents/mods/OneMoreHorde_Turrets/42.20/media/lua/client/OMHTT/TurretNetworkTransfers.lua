@@ -25,7 +25,7 @@ function ISInventoryTransferAction:new(character, item, srcContainer, destContai
             if not incoming and destContainer ~= character:getInventory() then
                 bag = destContainer:getContainingItem() or false
             end
-            local action = Action:new(character, object, item, incoming, state.id, nil, bag)
+            local action = Action:new(character, object, item, incoming, state.id, nil, bag, destContainer:getType() == "OMHTTController")
             action.srcContainer, action.destContainer = srcContainer, destContainer
             return action
         end
@@ -35,7 +35,7 @@ end
 
 ---@return nil
 function Action:begin()
-    if isClient() and not self.onCompleteFunc and self.item and T.kind(self.item) == "ammo" and self.item:getActualWeight() <= .1 then
+    if not self.onCompleteFunc and self.item and T.kind(self.item) == "ammo" and self.item:getActualWeight() <= .1 then
         local queue = ISTimedActionQueue.getTimedActionQueue(self.character)
         local position = queue:indexOf(self)
         if position > 0 then
@@ -44,7 +44,7 @@ function Action:begin()
                 local candidate = queue.queue[position + 1]
                 if not candidate or candidate.Type ~= self.Type or candidate.object ~= self.object
                     or candidate.incoming ~= self.incoming or candidate.id ~= self.id or candidate.ids
-                    or candidate.destinationBag ~= self.destinationBag
+                    or candidate.destinationBag ~= self.destinationBag or candidate.stockpile ~= self.stockpile
                     or candidate.onCompleteFunc or not candidate.item
                     or candidate.item:getContainer() ~= self.item:getContainer()
                     or candidate.item:getFullType() ~= self.item:getFullType() then break end
@@ -63,7 +63,7 @@ end
 ---@param kind string Slot family
 ---@return number queued
 ---@return string? reason
-function X.queue(player, object, items, incoming, kind)
+function X.queue(player, object, items, incoming, kind, stockpile)
     if not Access.near(player, object) then return 0, "TransferReach" end
     local state, queued, reason = T.state(object), 0, nil
     local pending = {}
@@ -87,9 +87,10 @@ function X.queue(player, object, items, incoming, kind)
             end
         end
     end
+    local prepared, batch = {}, nil
     for i = 1, #items do
         local item = items[i]
-        local action = Action:new(player, object, item, incoming, state.id)
+        local action = Action:new(player, object, item, incoming, state.id, nil, nil, stockpile)
         local rejection = action:rejection(item, summary)
         if pending[item:getID()] then
             rejection = "TransferPending"
@@ -100,12 +101,25 @@ function X.queue(player, object, items, incoming, kind)
             reason = rejection
         else
             pending[item:getID()] = true
-            ISTimedActionQueue.add(action)
+            local lightAmmo = kind == "ammo" and item:getActualWeight() <= .1
+            if lightAmmo and batch and #batch.ids < 20 and batch.item:getFullType() == item:getFullType()
+                and batch.item:getContainer() == item:getContainer() then
+                batch.ids[#batch.ids + 1] = item:getID()
+            else
+                batch = lightAmmo and action or nil
+                if batch then
+                    batch.ids = {item:getID()}
+                end
+                prepared[#prepared + 1] = action
+            end
             queued = queued + 1
             if summary then
                 summary.reserveAll = summary.reserveAll + 1
             end
         end
+    end
+    for i = 1, #prepared do
+        ISTimedActionQueue.add(prepared[i])
     end
     return queued, reason
 end

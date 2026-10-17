@@ -135,10 +135,9 @@ return function(player)
         local limit = Capacity.limit(box, current, T.cycleConfig(current))
         for _ = 1, limit do
             local round = instanceItem(pair[2])
-            assert(box:hasRoomFor(player, round), "Displayed physical allowance exceeds native weight limit")
             box:AddItem(round)
         end
-        assert(not T.accept(box, instanceItem(pair[2])) or not box:hasRoomFor(player, instanceItem(pair[2])),
+        assert(not T.accept(box, instanceItem(pair[2])),
             "Physical/count capacity audit left an unreported extra slot")
         print("[OMHTT-C262] native-capacity head=" .. pair[1] .. " physicalLimit=" .. tostring(limit))
     end

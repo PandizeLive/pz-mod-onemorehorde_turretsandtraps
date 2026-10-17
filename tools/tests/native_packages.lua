@@ -23,6 +23,8 @@ local function checkPackages()
     assert((OMHTT_Turret ~= nil) == expectedTurrets, "Turret runtime isolation")
     assert((OMHTT_BarbSections ~= nil) == expectedTraps, "Barb runtime isolation")
     assert((SpriteConfigManager.GetObjectInfo("OMHTTBarbs") ~= nil) == expectedTraps, "Barb recipe isolation")
+    assert(counts["Base.OMHTTTrapController"] == 1 and counts["Base.OMHTTTrapPressurePlate"] == 1 and counts["Base.OMHTTTrapButton"] == 1, "Shared control items must register once")
+    assert(OMHTT_ControlWorld and OMHTTControlAction and OMHTTControlTransferAction, "Shared control authority missing")
     local options, names = getSandboxOptions(), {}
     for i = 0, options:getNumOptions() - 1 do
         local name = options:getOptionByIndex(i):getName()

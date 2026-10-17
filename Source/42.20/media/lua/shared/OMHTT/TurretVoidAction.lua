@@ -7,6 +7,10 @@ local Action = OMHTTTurretVoidAction
 
 ---@return ItemContainer? source Authorized source container
 function Action:source()
+    if self.origin == "controller" then
+        local controller = require("OMHTT/ControlAccess").stockpile(self.character, self.object)
+        return controller and controller:getContainer()
+    end
     if self.origin == nil or self.origin == "turret" then return self.object:getContainer() end
     if self.origin == "inventory" and not self.bag then return self.character:getInventory() end
     if self.origin ~= "inventory" or not self.bag or not instanceof(self.bag, "InventoryContainer") then return nil end

@@ -23,7 +23,7 @@ def owner(path):
     if name == "icon.png" or "/Translate/" in relative:
         return set(IDS)
     if path.suffix == ".lua":
-        if path.stem in SHARED_LUA:
+        if path.stem in SHARED_LUA or path.stem.startswith("Control") or path.stem in {"TurretBattery", "TurretItemState"}:
             return set(IDS)
         if path.stem.startswith(("Barrier", "Bed", "Barb")) or path.stem in TRAP_LUA:
             return {"traps"}
@@ -31,6 +31,8 @@ def owner(path):
             return {"turrets"}
         raise ValueError("Unassigned Lua module: " + relative)
     if "/scripts/" in relative:
+        if name == "OMHTT_Controls.txt":
+            return set(IDS)
         return {"traps"} if name in TRAP_SCRIPTS else {"turrets"}
     if "/AnimSets/" in relative:
         return set(IDS)

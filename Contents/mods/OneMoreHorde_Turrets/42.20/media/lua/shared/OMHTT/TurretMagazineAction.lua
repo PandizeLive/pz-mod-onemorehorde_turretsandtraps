@@ -95,9 +95,9 @@ end
 ---@param gun HandWeapon? Expected exact mounted firearm
 ---@param id string? Expected turret identity
 ---@return table action
-function Action:new(character, object, magazine, gun, id)
+function Action:new(character, object, magazine, gun, id, stockpile)
     local action = ISBaseTimedAction.new(self, character)
-    action.object, action.magazine = object, magazine
+    action.object, action.magazine, action.stockpile = object, magazine, stockpile
     action.gun, action.id = gun, id
     if not isServer() then
         action.gun = gun or T.contents(object:getContainer()).head
@@ -116,9 +116,9 @@ end
 ---@param magazine InventoryItem? Insert, or eject when nil
 ---@return number queued
 ---@return string? reason
-function Action.queue(player, object, magazine)
+function Action.queue(player, object, magazine, stockpile)
     require("TimedActions/ISTimedActionQueue")
-    local action = Action:new(player, object, magazine)
+    local action = Action:new(player, object, magazine, nil, nil, stockpile)
     local reason = action:rejection()
     if reason then return 0, reason end
     local queue = ISTimedActionQueue.getTimedActionQueue(player).queue

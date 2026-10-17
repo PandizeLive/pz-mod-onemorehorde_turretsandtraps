@@ -1,0 +1,632 @@
+if isClient() then return end
+local existing = rawget(_G, "OMHTT_ControlWorld")
+if existing then return existing end
+local A = require("OMHTT/ControlAccess")
+local C = require("OMHTT/ControlDefinitions")
+local Battery = require("OMHTT/TurretBattery")
+local W = {objects = {}, bindings = setmetatable({}, {__mode = "k"}), cursor = 1, order = {}, indexed = {}, incoming = {}, batteries = {}, batteryScan = {}, locations = {}, plates = setmetatable({}, {__mode = "k"}), actorSquares = setmetatable({}, {__mode = "k"}), dirty = {}, dirtySet = {}}
+OMHTT_ControlWorld = W
+local store
+
+---@return table records
+function W.records()
+    if not store then
+        store = ModData.getOrCreate("OMHTTControlsV1")
+        if not store.records then
+            store.records, store.packed = {}, {}
+        end
+        for id, state in pairs(store.records) do
+            if state.placed and state.location then
+                W.locations[state.location] = W.locations[state.location] or {}
+                W.locations[state.location][id] = true
+            end
+            for i = 1, #(state.links or {}) do
+                local target = state.links[i]
+                W.incoming[target] = W.incoming[target] or {}
+                W.incoming[target][id] = true
+            end
+        end
+    end
+    return store
+end
+
+---@param source table State
+---@return table copy
+function W.copy(source)
+    local copy = {}
+    for key, value in pairs(source) do
+        if type(value) == "string" or type(value) == "number" or type(value) == "boolean" then
+            copy[key] = value
+        end
+    end
+    copy.links = {}
+    for i = 1, #(source.links or {}) do
+        copy.links[i] = source.links[i]
+    end
+    return copy
+end
+
+---@param object IsoObject Device
+---@return table? state
+function W.state(object)
+    return W.bindings[object]
+end
+
+---@param object IsoObject Device
+---@return nil
+function W.publish(object)
+    local state = W.state(object)
+    if not state then return end
+    object:getModData().OMHTTControl = W.copy(state)
+    if isServer() then
+        object:transmitModData()
+    end
+end
+
+---@param object IsoObject New device
+---@param player IsoPlayer Placer
+---@param kind string Device family
+---@param previous table? Preserved ownership
+---@return table state
+function W.register(object, player, kind, previous)
+    local records = W.records()
+    records.serial = (records.serial or 0) + 1
+    local id = previous and previous.id or "control-" .. records.serial
+    local state = previous and W.copy(previous) or {id = id, kind = kind, owner = player:getUsername(), access = "Private", links = {}}
+    state.x, state.y, state.z = object:getX(), object:getY(), object:getZ()
+    state.sprite = object:getSpriteName()
+    state.location = state.x .. ":" .. state.y .. ":" .. state.z .. ":" .. state.sprite
+    state.placed = true
+    if state.controller then
+        local host, count = records.records[state.controller], 0
+        for _, assigned in pairs(records.records) do
+            if assigned.id ~= state.id and assigned.placed and assigned.controller == state.controller
+                and (assigned.kind == "Turret") == (state.kind == "Turret") then
+                count = count + 1
+            end
+        end
+        if not host or not host.placed or host.z ~= state.z or (host.x - state.x) ^ 2 + (host.y - state.y) ^ 2 > 400 or count >= 32 then
+            state.controller = nil
+        end
+    end
+    W.locations[state.location] = W.locations[state.location] or {}
+    W.locations[state.location][id] = true
+    state.recoverAt = getTimestampMs() + 1000
+    state.active, state.powered = false, false
+    state.checkedHours, state.pulseHoldUntil = nil, nil
+    W.records().records[id], W.objects[id], W.bindings[object] = state, object, state
+    if not W.indexed[id] then
+        W.order[#W.order + 1], W.indexed[id] = id, true
+    end
+    W.indexPlate(object, state)
+    W.publish(object)
+    return state
+end
+
+---@param object IsoObject Loaded device
+---@return nil
+function W.bind(object)
+    if W.state(object) then return end
+    local records = W.records().records
+    local hint = object:hasModData() and object:getModData().OMHTTControl
+    local square = object:getSquare()
+    if not square then return end
+    local location = square:getX() .. ":" .. square:getY() .. ":" .. square:getZ() .. ":" .. tostring(object:getSpriteName())
+    local state = type(hint) == "table" and records[hint.id]
+    if not state or not state.placed or state.location ~= location then
+        state = nil
+        for id in pairs(W.locations[location] or {}) do
+            if state then return end
+            state = records[id]
+        end
+    end
+    if not state or not state.placed or state.location ~= location then return end
+    local other = W.objects[state.id]
+    if other and other ~= object and other:getObjectIndex() >= 0 then return end
+    W.objects[state.id], W.bindings[object] = object, state
+    state.active, state.recoverAt = false, getTimestampMs() + 1000
+    state.checkedHours, state.pulseHoldUntil = nil, nil
+    if not W.indexed[state.id] then
+        W.order[#W.order + 1], W.indexed[state.id] = state.id, true
+    end
+    if state.kind == "Controller" and object:getContainer() then
+        object:getContainer():setAcceptItemFunction("OMHTTControlAccept")
+    end
+    W.indexPlate(object, state)
+    W.publish(object)
+end
+
+---@param square IsoGridSquare Loaded square
+---@return nil
+function W.square(square)
+    local objects = square:getObjects()
+    for i = 0, objects:size() - 1 do
+        W.bind(objects:get(i))
+    end
+end
+
+---@param object IsoObject Loaded input
+---@param state table Private record
+---@return nil
+function W.indexPlate(object, state)
+    if state.kind ~= "Plate" then return end
+    local square = object:getSquare()
+    W.plates[square] = W.plates[square] or {}
+    W.plates[square][object] = true
+end
+
+---@param object IsoObject Pressure plate
+---@param now number Timestamp
+---@return nil
+function W.updatePlate(object, now)
+    local state = W.state(object)
+    if not state then return end
+    local active = now >= state.recoverAt and W.occupied(object)
+    if active == state.active then return end
+    state.active = active
+    W.publish(object)
+    for i = 1, #state.links do
+        local id = state.links[i]
+        if not W.dirtySet[id] then
+            W.dirtySet[id] = true
+            W.dirty[#W.dirty + 1] = id
+        end
+    end
+end
+
+---@param actor IsoGameCharacter Moving player or zombie
+---@return nil
+function W.actor(actor)
+    local previous = W.actorSquares[actor]
+    local square = actor:getSquare()
+    if actor:isDead() then
+        square = nil
+    end
+    if square == previous then return end
+    local current = square and W.plates[square]
+    if not previous and not current then return end
+    W.actorSquares[actor] = current and square or nil
+    local now = getTimestampMs()
+    for object in pairs(previous and W.plates[previous] or {}) do
+        W.updatePlate(object, now)
+    end
+    for object in pairs(current or {}) do
+        W.updatePlate(object, now)
+    end
+end
+
+---@param params table Native construction transaction
+---@return table? result
+function W.create(params)
+    local object, player = params.thumpable, params.character
+    local consumed = params.craftRecipeData and params.craftRecipeData:getAllConsumedItems()
+    local source, kind
+    if consumed then
+        for i = 0, consumed:size() - 1 do
+            for key, fullType in pairs(C.types) do
+                if consumed:get(i):getFullType() == fullType then
+                    source, kind = consumed:get(i), key
+                end
+            end
+        end
+    end
+    if not source or W.records().packed[tostring(source:getID())] == false then
+        object:getSquare():transmitRemoveItemFromSquare(object)
+        return {objectAlreadyTransmitted = true}
+    end
+    local previous = W.records().packed[tostring(source:getID())]
+    local state = W.register(object, player, kind, previous)
+    W.records().packed[tostring(source:getID())] = false
+    state.itemType = source:getFullType()
+    object:setName(getText("UI_OMHTT_Control" .. kind))
+    object:setMaxHealth(100)
+    object:setHealth(math.max(1, source:getCondition() / source:getConditionMax() * 100))
+    object:setCanPassThrough(true)
+    object:setBlockAllTheSquare(false)
+    if kind == "Controller" then
+        local container = ItemContainer.new("OMHTTController", object:getSquare(), object)
+        container:setCapacity(100)
+        container:setAcceptItemFunction("OMHTTControlAccept")
+        container:setExplored(true)
+        object:setContainer(container)
+        local inventory = source:getInventory()
+        while inventory:getItems():size() > 0 do
+            local item = inventory:getItems():get(0)
+            inventory:Remove(item)
+            container:AddItem(item)
+        end
+    end
+    local parent = source:getContainer()
+    if parent then
+        player:removeFromHands(source)
+        parent:Remove(source)
+        if isServer() then
+            sendRemoveItemFromContainer(parent, source)
+        end
+    end
+    for key in pairs(object:getBuildMaterials()) do
+        object:getBuildMaterials()[key] = nil
+    end
+    W.publish(object)
+end
+
+---@param object IsoObject Controller
+---@param elapsed number In-game hours
+---@return boolean powered
+function W.power(object, elapsed)
+    local square = object:getSquare()
+    if square:haveElectricity() or (square:hasGridPower() and square:getRoom()) then return true end
+    local storage = object:getContainer()
+    if not storage then return false end
+    local state = W.state(object)
+    local battery = W.batteries[object]
+    if not battery and state.batteryId then
+        battery = storage:getItemWithID(state.batteryId)
+        state.batteryId = nil
+    end
+    if not battery or battery:getFullType() ~= "Base.Battery" or battery:getContainer() ~= storage
+        or battery:getCondition() <= 0 or Battery.charge(battery) <= 0 then
+        battery = nil
+        local items = storage:getItems()
+        local index = W.batteryScan[object] or 0
+        for i = 1, math.min(64, items:size()) do
+            if index >= items:size() then
+                index = 0
+            end
+            local candidate = items:get(index)
+            index = index + 1
+            if candidate:getFullType() == "Base.Battery" and candidate:getCondition() > 0 and Battery.charge(candidate) > 0 then
+                battery = candidate
+                break
+            end
+        end
+        W.batteryScan[object] = index
+        W.batteries[object] = battery
+    end
+    if battery then
+        W.batteries[object], state.batteryId = battery, battery:getID()
+        Battery.spend(battery, elapsed / 48)
+        if isServer() and elapsed > 0 then
+            sendItemStats(battery)
+            require("OMHTT/TurretItemState").publish(battery)
+        end
+        return Battery.charge(battery) > 0
+    end
+    return false
+end
+
+---@param object IsoObject Pressure plate
+---@return boolean occupied
+function W.occupied(object)
+    local moving = object:getSquare():getMovingObjects()
+    local state = W.state(object)
+    local trigger = state and state.trigger or "Both"
+    for i = 0, moving:size() - 1 do
+        local actor = moving:get(i)
+        local eligible = (trigger ~= "Zombies" and instanceof(actor, "IsoPlayer"))
+            or (trigger ~= "Players" and instanceof(actor, "IsoZombie"))
+        if eligible and not actor:isDead() then return true end
+    end
+    return false
+end
+
+---@param target IsoObject Receiver
+---@param now number Active wall-clock milliseconds
+---@return boolean linked
+---@return boolean on
+function W.input(target, now)
+    local targetState = W.state(target)
+    if not targetState then return false, false end
+    local linked, on = false, false
+    for id in pairs(W.incoming[targetState.id] or {}) do
+        linked = true
+        local source, state = W.objects[id], W.records().records[id]
+        if source and source:getObjectIndex() >= 0 and A.range(source, target) and source:getHealth() > 0 and now >= state.recoverAt then
+            on = on or state.active == true
+        end
+    end
+    return linked, on
+end
+
+---@param object IsoObject Removed device
+---@return nil
+function W.removed(object)
+    local state = W.state(object)
+    if not state then return end
+    local plates = W.plates[object:getSquare()]
+    if plates then
+        plates[object] = nil
+        local occupied = false
+        for _ in pairs(plates) do
+            occupied = true
+            break
+        end
+        if not occupied then
+            W.plates[object:getSquare()] = nil
+        end
+    end
+    state.active, state.pulseUntil = false, nil
+    W.objects[state.id], W.bindings[object] = nil, nil
+    W.batteries[object], W.batteryScan[object] = nil, nil
+end
+
+---@param object IsoObject Permanently removed or packed device
+---@return nil
+function W.retire(object)
+    local state = W.state(object)
+    if not state then return end
+    state.placed = false
+    local locations = W.locations[state.location]
+    if locations then
+        locations[state.id] = nil
+    end
+end
+
+---@param object IsoObject Native removal event
+---@return nil
+function W.deleted(object)
+    W.retire(object)
+    W.removed(object)
+end
+
+---@return nil
+function W.tick()
+    if GameTime.isGamePaused() then return end
+    local now = getTimestampMs()
+    if W.due and now < W.due then return end
+    W.due = now + 100
+    local deadline = now + 2
+    local hours = getGameTime():getWorldAgeHours()
+    for i = #W.dirty, 1, -1 do
+        if getTimestampMs() >= deadline then break end
+        local id = W.dirty[i]
+        W.dirty[i], W.dirtySet[id] = nil, nil
+        local receiver = W.objects[id]
+        if receiver then
+            W.receiver(receiver, now)
+        end
+    end
+    for iteration = 1, math.min(64, #W.order) do
+        if #W.order == 0 then break end
+        if getTimestampMs() >= deadline then break end
+        if W.cursor > #W.order then
+            W.cursor = 1
+        end
+        local id = W.order[W.cursor]
+        W.cursor = W.cursor + 1
+        local object, state = W.objects[id], W.records().records[id]
+        local square = object and object:getSquare()
+        local loaded = state and square and getCell():getGridSquare(state.x, state.y, state.z) == square
+        if loaded and state and object:getObjectIndex() >= 0 and object:getHealth() > 0 then
+            if state.kind == "Controller" and (not state.powerDue or now >= state.powerDue) then
+                state.powerDue = now + 1000
+                local elapsed = state.checkedHours and math.max(0, hours - state.checkedHours) or 0
+                state.checkedHours = hours
+                local powered = W.power(object, elapsed)
+                local battery = W.batteries[object]
+                local charge = battery and math.floor(Battery.charge(battery) * 1000) / 10 or 0
+                if powered ~= state.powered or charge ~= state.backup then
+                    state.powered, state.backup = powered, charge
+                    W.publish(object)
+                end
+            elseif state.kind == "Plate" then
+                W.updatePlate(object, now)
+            elseif state.kind == "Turret" then
+                W.receiver(object, now)
+            end
+        else
+            if object then
+                W.removed(object)
+            end
+            W.indexed[id] = nil
+            table.remove(W.order, W.cursor - 1)
+            W.cursor = W.cursor - 1
+        end
+    end
+end
+
+---@param object IsoObject Loaded turret
+---@param player IsoPlayer? Placer
+---@return nil
+function W.turret(object, player, packed)
+    W.bind(object)
+    if not W.state(object) and player then
+        local previous = packed and W.records().packed[tostring(packed:getID())]
+        W.register(object, player, "Turret", type(previous) == "table" and previous or nil)
+        if packed then
+            W.records().packed[tostring(packed:getID())] = false
+        end
+    end
+end
+
+---@param object IsoObject Placed turret
+---@param item InventoryItem Recovered exact container
+---@return nil
+function W.packTurret(object, item)
+    local state = W.state(object)
+    if not state then return end
+    W.retire(object)
+    W.records().packed[tostring(item:getID())] = W.copy(state)
+    item:getModData().OMHTTControl = W.copy(state)
+    W.removed(object)
+end
+
+---@param object IsoObject Assigned turret
+---@return nil
+function W.number(object, headItem)
+    local state = W.state(object)
+    if not state or not state.controller then return end
+    local head = headItem and headItem:getFullType() or "Base"
+    if state.numberHead == head and state.numberController == state.controller then return end
+    local maximum = 0
+    for _, other in pairs(W.records().records) do
+        if other.controller == state.controller and other.numberHead == head then
+            maximum = math.max(maximum, other.number or 0)
+        end
+    end
+    state.number, state.numberHead, state.numberController = maximum + 1, head, state.controller
+    W.publish(object)
+end
+
+---@param object IsoObject Linked turret
+---@param now number Timestamp
+---@return nil
+function W.receiver(object, now)
+    local linked, on = W.input(object, now)
+    if not linked then return end
+    local T = require("OMHTT/Turret")
+    local state = T.state(object)
+    if not state then return end
+    local control = W.state(object)
+    local powered = on or (control.pulseHoldUntil and now < control.pulseHoldUntil) == true
+    if T.isOn(state) ~= powered then
+        require("OMHTT/TurretWorld").applyPower(object, powered)
+    end
+    if on then
+        local control = W.state(object)
+        if now >= (control.fireDue or 0) then
+            control.fireDue = now + 100
+            W.fireSignal(object)
+        end
+    end
+end
+
+---@param object IsoObject Authorized linked receiver
+---@return string result
+function W.fireSignal(object)
+    local auto = require("OMHTT/TurretAutomation").entries[object]
+    local target = auto and auto.target
+    if target and target:isDead() then
+        target = nil
+    end
+    return require("OMHTT/TurretWorld").fire(nil, object, target, true)
+end
+
+---@param object IsoObject Button's linked output
+---@return nil
+function W.pulse(object)
+    local control = W.state(object)
+    if not control or control.kind ~= "Turret" or getTimestampMs() < control.recoverAt then return end
+    local T = require("OMHTT/Turret")
+    local stats = T.cycleConfig(T.contents(object:getContainer()))
+    local duration = stats.rotary and 90000 / stats.motorSpeed or 1
+    control.pulseHoldUntil = getTimestampMs() + duration
+    local world = require("OMHTT/TurretWorld")
+    if not T.isOn(T.state(object)) then
+        world.applyPower(object, true)
+    end
+    W.fireSignal(object)
+end
+
+---@param player IsoPlayer Operator
+---@param object IsoObject Controller, plate or button
+---@return boolean pickedUp
+function W.pickup(player, object)
+    local state = W.state(object)
+    if not state or not A.near(player, object) or not A.write(player, state) or not state.itemType then return false end
+    local item = instanceItem(state.itemType)
+    if not item then return false end
+    item:setCondition(math.max(1, math.floor(object:getHealth() / 100 * item:getConditionMax())))
+    local storage = object:getContainer()
+    if storage then
+        local destination = item:getInventory()
+        while storage:getItems():size() > 0 do
+            local child = storage:getItems():get(0)
+            storage:Remove(child)
+            destination:AddItem(child)
+        end
+    end
+    local heavy = not player:getInventory():hasRoomFor(player, item)
+    if heavy then
+        forceDropHeavyItems(player)
+    end
+    if player:getInventory():AddItem(item) ~= item then
+        if storage then
+            local destination = item:getInventory()
+            while destination:getItems():size() > 0 do
+                local child = destination:getItems():get(0)
+                destination:Remove(child)
+                storage:AddItem(child)
+            end
+        end
+        return false
+    end
+    W.retire(object)
+    W.records().packed[tostring(item:getID())] = W.copy(state)
+    item:getModData().OMHTTControl = W.copy(state)
+    W.removed(object)
+    object:getSquare():transmitRemoveItemFromSquare(object)
+    if isServer() then
+        sendAddItemToContainer(player:getInventory(), item)
+    end
+    if heavy then
+        player:setPrimaryHandItem(item)
+        player:setSecondaryHandItem(item)
+        if isServer() then
+            sendEquip(player)
+        end
+    end
+    return true
+end
+
+---@param object IsoObject Authorized receiver
+---@return nil
+function W.clearInputs(object)
+    local state = W.state(object)
+    for id in pairs(W.incoming[state.id] or {}) do
+        local source = W.records().records[id]
+        if source then
+            for i = #source.links, 1, -1 do
+                if source.links[i] == state.id then
+                    table.remove(source.links, i)
+                end
+            end
+            if W.objects[id] then
+                W.publish(W.objects[id])
+            end
+        end
+    end
+    W.incoming[state.id] = nil
+    state.pulseHoldUntil = nil
+    local T = require("OMHTT/Turret")
+    if T.state(object) then
+        require("OMHTT/TurretWorld").applyPower(object, false)
+    end
+end
+
+---@param source IsoObject Input
+---@param target IsoObject Receiver
+---@param enabled boolean Add or remove
+---@return boolean changed
+function W.link(source, target, enabled)
+    local from, to = W.state(source), W.state(target)
+    if not from or not to or not A.range(source, target) or to.kind ~= "Turret"
+        or (from.kind ~= "Plate" and from.kind ~= "Button") then return false end
+    local incoming, index, count = W.incoming[to.id] or {}, nil, 0
+    for _ in pairs(incoming) do count = count + 1 end
+    for i = 1, #from.links do
+        if from.links[i] == to.id then
+            index = i
+        end
+    end
+    if enabled then
+        if index then return true end
+        if #from.links >= 32 or count >= 32 then return false end
+        from.links[#from.links + 1], incoming[from.id] = to.id, true
+    elseif index then
+        table.remove(from.links, index)
+        incoming[from.id] = nil
+    end
+    W.incoming[to.id] = incoming
+    W.publish(source)
+    W.receiver(target, getTimestampMs())
+    return true
+end
+
+Events.LoadGridsquare.Add(W.square)
+Events.OnObjectAdded.Add(W.bind)
+Events.OnObjectAboutToBeRemoved.Add(W.deleted)
+Events.OnTick.Add(W.tick)
+Events.OnZombieUpdate.Add(W.actor)
+Events.OnPlayerUpdate.Add(W.actor)
+return W

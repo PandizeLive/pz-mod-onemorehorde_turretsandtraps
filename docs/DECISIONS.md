@@ -1,5 +1,9 @@
 # Decision register
 
+## C285: implement the approved connected-controls patch (2026-10-16)
+
+Owner: "Looks good. Approved to patch. Implement the controller, pressure plates, updated menus, and ammo capacity changes. Keep multiplayer in mind and push it to GitHub." This approves C283 storage/capacity rules and C284 menu direction for local implementation, native verification, installation and the standing development mirror. [Implementation](PATCH_v0.2.53.md) | [Tests](TEST_v0.2.53.md). No new approval or owner-test gate; connected/rendered acceptance remains deferred, and no Workshop/main publication is authorized.
+
 ## C100: 0.2.31 findings, presentation cleanup and movement revisions (2026-10-07)
 
 Owner requests consolidated Traps settings, consistent naming with **Barbed Panel**, fewer reusable bed/panel textures, fence-side bed placement, bush-like player traversal with sprint-trip/fall injury, recovery for zombies stuck down, increased bed-trip chance, and **40% potato knockdown**. Owner also asks whether to replace Building with crafting plus inventory installation and authorizes a quick live stress-log inspection. [Findings and concrete next-patch scope](TEST_FINDINGS_v0.2.31.md) distinguish direct requests, proposed defaults and verified defects. Craft-only flow, the exact increased bed-trip percentage and player fall-injury defaults remain pending answers; do not infer their approval. Installed gameplay remains 0.2.31 during the active test. No publication is requested.

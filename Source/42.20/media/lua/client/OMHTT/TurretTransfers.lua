@@ -86,7 +86,7 @@ function X.rejection(player, item, source, destination)
         if not T.accept(destination, item) then return "TransferFull" end
     end
     if not source:isRemoveItemAllowed(item) or not destination:isItemAllowed(item) then return "TransferWrongItem" end
-    if not destination:hasRoomFor(player, item) then return "TransferFull" end
+    if not T.isContainer(destination) and not destination:hasRoomFor(player, item) then return "TransferFull" end
     return nil
 end
 
@@ -101,6 +101,10 @@ function ISInventoryTransferAction:isValid()
             end
             return false
         end
+    end
+    if self.item and T.isContainer(self.destContainer) and T.state(self.destContainer:getParent()) then
+        return not self.item:getIsCraftingConsumed() and self.srcContainer:isExistYet()
+            and not self.destContainer:isInside(self.item)
     end
     return nativeValid(self)
 end

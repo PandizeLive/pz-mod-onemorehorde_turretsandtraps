@@ -33,6 +33,7 @@ def main():
     turret_probe.write_text((ROOT / "tools/tests/native_turret_smoke.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativeHeads.lua").write_text((ROOT / "tools/tests/native_heads.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativeContentC247.lua").write_text((ROOT / "tools/tests/native_content_c247.lua").read_text(encoding="utf-8"), encoding="utf-8")
+    (turret_probe.parent / "OMHTT/NativeControls.lua").write_text((ROOT / "tools/tests/native_controls.lua").read_text(encoding="utf-8").replace("EXPECT_READ", "true" if os.environ.get("OMHTT_PROBE_MODE") == "read" else "false"), encoding="utf-8")
     bulk_probe = turret_probe.parent / "OMHTT/NativeBulkTransfer.lua"
     bulk_probe.write_text((ROOT / "tools/tests/native_bulk_transfer.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativeTurretAuthority.lua").write_text((ROOT / "tools/tests/native_turret_authority.lua").read_text(encoding="utf-8"), encoding="utf-8")
@@ -91,6 +92,7 @@ def main():
     text = transcript.read_text(encoding="utf-8", errors="replace")
     mod_errors = [line for line in text.splitlines() if "MOD:OMH:" in line and "Exception thrown" in line]
     assert not mod_errors, f"Native mod callbacks threw despite completion markers: {mod_errors}"
+    assert "[OMHTT-Controls] native devices=3" in text, "Native control-device proof missing"
     assert "[OMHTT-Heads] native recipes=3" in text, "Native head recipe/metadata proof failed"
     assert "[OMHTT-C247] recipes=5 drainableUses=8/2 tools=retained sounds=4 virtualNativeGun=no-materialized-rounds exactModule=preserved" in text, "Native content and virtual ammunition proof failed"
     assert "[OMHTT-Smoke] native-distance-parity samples=16 passed=true" in text, "Native accuracy parity failed"

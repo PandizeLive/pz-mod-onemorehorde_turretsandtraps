@@ -33,5 +33,11 @@
     "Recipe_OMHTTCraftLobberImprovised": "Craft Improvised Grenade Lobber Head",
     "Recipe_OMHTTCraftScrapshot": "Craft Scrapshot Head",
     "Recipe_OMHTTCraftScrapshotImprovised": "Craft Improvised Scrapshot Head",
-    "Recipes_OMHTTCraftMakeshiftBomb": "Makeshift Bomb"
+    "Recipes_OMHTTCraftMakeshiftBomb": "Makeshift Bomb",
+    "Recipe_OMHTTCraftController": "Craft Controller",
+    "Recipe_OMHTTDeployController": "Place Controller",
+    "Recipe_OMHTTCraftPlate": "Craft Pressure Plate",
+    "Recipe_OMHTTDeployPlate": "Place Pressure Plate",
+    "Recipe_OMHTTCraftButton": "Craft Button",
+    "Recipe_OMHTTDeployButton": "Place Button"
 }

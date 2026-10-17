@@ -83,7 +83,7 @@ stats = S.resolve(contents)
 check(stats.ammo == 20 and stats.magazine == 3 and stats.minimumRange == 6 and stats.range == 18,
     "Lobber has shared twenty-bomb cap, three-round feed and six-to-eighteen range")
 contents.active.CapacityLarge = 1
-check(S.resolve(contents).ammo == 20 and S.resolve(contents).modules == 16, "Expansion adds module slots without expanding bomb allowance")
+check(S.resolve(contents).ammo == 350 and S.resolve(contents).modules == 16, "Large Expansion adds module slots and the approved 350-bomb allowance")
 local savedJobs, savedReserve, savedSerial = O.jobs, O.reserved, O.serial
 O.jobs, O.reserved = {}, 0
 for x = 1699, 1712 do for y = 1698, 1702 do makeSquare(x, y, 0) end end
@@ -233,7 +233,7 @@ check(copied.ammoOrders ~= record.ammoOrders and Order.saved(nativeRoundTrip(cop
 for kind, bonus in pairs(Ammo.scraps) do
     check(Ammo.accepts(scrapHead, kind) and Ammo.describe(item(kind)).multiplier == 1 + bonus, "Each native scrap has its approved damage bonus")
 end
-for _, pair in pairs({{"", 20}, {"CapacityImprovised", 30}, {"CapacitySmall", 40}, {"Capacity", 60}, {"CapacityLarge", 80}}) do
+for _, pair in pairs({{"", 20}, {"CapacityImprovised", 200}, {"CapacitySmall", 400}, {"Capacity", 650}, {"CapacityLarge", 900}}) do
     local active = {}
     if pair[1] ~= "" then active[pair[1]] = 1 end
     check(S.resolve({head = scrapHead, active = active}).ammo == pair[2], "Scrap reserve follows the safe expansion progression")

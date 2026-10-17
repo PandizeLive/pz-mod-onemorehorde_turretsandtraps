@@ -105,24 +105,20 @@ function S.resolve(contents)
         remaining = (1 - S.option("SuppressionFirstReduction", 60, 0, 99) / 100)
             / (1 + S.option("SuppressionDiminishing", .6, 0, 10) * (active.Suppression - 1))
     end
-    local extraAmmo, extraModules = 0, 0
+    local extraModules = 0
     for i = 1, #kits do
         local kit = kits[i]
         if active[kit[1]] then
-            extraAmmo = math.max(extraAmmo, S.option("Capacity" .. kit[2] .. "AmmoBonus", kit[3], 0, 2000))
             extraModules = math.max(extraModules, S.option("Capacity" .. kit[2] .. "ModuleBonus", kit[4], 0, 20))
         end
     end
-    if head and head.ammoCapacity then extraAmmo = 0 end
-    if head and head.key == "Scrapshot" then
-        ammoCapacity, extraAmmo = 20, 0
-        local limits = {30, 40, 60, 80}
-        for i = 1, #kits do
-            if active[kits[i][1]] then
-                ammoCapacity = math.max(ammoCapacity, limits[i])
-            end
-        end
+    local ammoFamily = head and head.key or "Potato"
+    if firearm then
+        ammoFamily = gun:getProjectileCount() > 1 and "Shotgun" or "Firearm"
+    elseif head and head.key == "Scrapshot" then
+        ammoCapacity = 20
     end
+    ammoCapacity = require("OMHTT/TurretAmmoCapacity").resolve(ammoFamily, active, ammoCapacity)
     local rapid = S.bonus(active, "RapidFire", 25, 200)
     local loading = S.bonus(active, "Reload", 25, 200)
     cooldown = math.min(cooldown, math.max(math.min(cooldown, S.option("RapidFireMinimum", 0.25, 0.1, 10)), cooldown / (1 + rapid / 100)))
@@ -159,7 +155,7 @@ function S.resolve(contents)
         damage = damage * (1 + S.bonus(active, "Velocity", 20, 100) / 100),
         knockdown = math.min(100, knockdown + knockBonus),
         range = math.min(firearm and 50 or 30, range + S.bonus(active, "Range", 2, 10)),
-        ammo = math.floor(ammoCapacity + extraAmmo),
+        ammo = math.floor(ammoCapacity),
         modules = math.floor(S.option("PotatoModuleCapacity", 2, 0, 20) + extraModules),
         conservation = 1 + (active.Conservation or 0),
         synergy = active.Synergy ~= nil,

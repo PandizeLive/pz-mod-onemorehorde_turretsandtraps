@@ -1,5 +1,9 @@
 # Release state and publication policy
 
+## 0.2.53 / C285 — connected controls, 2026-10-16
+
+**C285 / 0.2.53 implemented and verified (2026-10-16).** Controller, plates/buttons, ownership, remote full Manage/stockpile, naming, heavy pickup and C283 ammo capacities are implemented. [Patch](PATCH_v0.2.53.md) | [Verification and short test](TEST_v0.2.53.md). Full validator passes 20,807 assertions; native write/read and all three independent package selections pass. Tagged installation and development mirror are the remaining delivery steps. Rendered/connected acceptance remains deferred. R4C1 implementation is complete for the approved turret receiver; R4C2 damaging receivers remain separate.
+
 ## 0.2.52 / C267 — Manage and ammunition correction patch, 2026-10-16
 
 Approved C263–C266 implementation. [Patch](PATCH_v0.2.52.md) | [Verification](TEST_v0.2.52.md). Installed **0.2.52** from immutable `test/v0.2.52` / `9d4c5f5252158ab8eb6ba3bba81187b379407990`. All267 source and325 tagged/packaged/installed/archive files match; both0.2.51 backups verify. Full suite:20,510 assertions; native write/read and all three independent package selections pass. [Local release evidence](../diagnostics/v0.2.52/local-release.json). Rendered/connected multiplayer acceptance remains pending; the C108 development mirror carries this release record. No Workshop publication. No Workshop upload; all pending player notes remain in the cumulative draft.

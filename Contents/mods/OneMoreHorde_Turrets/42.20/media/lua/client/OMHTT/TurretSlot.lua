@@ -23,6 +23,7 @@ end
 ---@return boolean handled
 function Slot:onMouseDown(x, y)
     if self.kind == "void" then self.owner:inspectVoid(); return true end
+    if self.owner.readOnly then return false end
     if self.kind == "magazine" then
         if #self.items > 0 then self.owner:feedback(0, "EjectMagazine") end
         return true
@@ -42,6 +43,7 @@ end
 ---@param y number Local mouse Y
 ---@return boolean handled
 function Slot:onMouseUp(x, y)
+    if self.owner.readOnly then return false end
     if ISMouseDrag.dragging and ISMouseDrag.draggingFocus ~= self then
         local items = ISInventoryPane.getActualItems(ISMouseDrag.dragging)
         if self.disabled then
@@ -66,6 +68,7 @@ end
 ---@param y number Local mouse Y
 ---@return boolean handled
 function Slot:onRightMouseUp(x, y)
+    if self.owner.readOnly then return false end
     if self.kind == "void" then require("OMHTT/TurretUtilities").menu(self.owner, "void"); return true end
     if self.kind == "magazine" then
         self.owner:magazine(nil)

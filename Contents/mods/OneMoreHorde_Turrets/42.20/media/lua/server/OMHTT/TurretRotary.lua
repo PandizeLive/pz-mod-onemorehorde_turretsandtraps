@@ -13,9 +13,9 @@ local parts
 ---@param player IsoPlayer Operator
 ---@param object IsoObject Base
 ---@return string status
-function R.start(player, object)
+function R.start(player, object, signal)
     local W = require("OMHTT/TurretWorld")
-    if not player or not W.near(player, object) then return "Unavailable" end
+    if (player and not W.near(player, object)) or (not player and not signal) then return "Unavailable" end
     local contents = W.contents(object)
     local stats = T.cycleConfig(contents)
     if not W.power(object, contents, stats) then return "NoPower" end

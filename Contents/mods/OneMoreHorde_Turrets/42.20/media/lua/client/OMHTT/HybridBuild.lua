@@ -11,11 +11,14 @@ H.definitions = {
     {item = "Base.OMHTTTrapConcertinaWire", craft = "OMHTTCraftConcertinaWire", deploy = "OMHTTDeployConcertinaWire"},
     {item = "Base.OMHTTTrapBarbedPanel", craft = "OMHTTCraftBarbs", deploy = "OMHTTBarbs"},
     {item = "Base.OMHTTTurretBase", craft = "OMHTTCraftTurretBase", deploy = "OMHTTDeployTurret", turret = true},
+    {item = "Base.OMHTTTrapController", craft = "OMHTTCraftController", deploy = "OMHTTDeployController", control = true},
+    {item = "Base.OMHTTTrapPressurePlate", craft = "OMHTTCraftPlate", deploy = "OMHTTDeployPlate", control = true},
+    {item = "Base.OMHTTTrapButton", craft = "OMHTTCraftButton", deploy = "OMHTTDeployButton", control = true},
 }
 local byRecipe = {}
 for i = 1, #H.definitions do
     local definition = H.definitions[i]
-    definition.adapter = definition.turret and "OMHTT/TurretInstall" or "OMHTT/BarrierPlacement"
+    definition.adapter = definition.control and "OMHTT/ControlClient" or (definition.turret and "OMHTT/TurretInstall" or "OMHTT/BarrierPlacement")
     byRecipe[definition.craft], byRecipe[definition.deploy] = definition, definition
     if string.find(definition.deploy, "BedSpikes", 1, true) then byRecipe[definition.deploy .. "Single"] = definition end
 end
@@ -30,7 +33,7 @@ end
 ---@param context table Player and definition
 ---@return boolean usable
 local function carried(item, context)
-    if context.definition.turret then
+    if context.definition.turret or context.definition.control then
         return require(context.definition.adapter).carried(item, context.player)
     end
     return require(context.definition.adapter).carried(item, context.player) ~= nil
@@ -345,3 +348,4 @@ function H.start(panel, definition, ready, cancelled)
 end
 
 return H
+

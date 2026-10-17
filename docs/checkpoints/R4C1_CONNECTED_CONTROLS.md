@@ -1,5 +1,9 @@
 # R4C1 — buttons, pressure plates and links
 
+## C285: implementation approved, 2026-10-16
+
+Owner: “Looks good. Approved to patch. Implement the controller, pressure plates, updated menus, and ammo capacity changes. Keep multiplayer in mind and push it to GitHub.” This explicitly authorizes the approved C283 storage/capacity contract and C284 menu direction. Implemented in 0.2.53 with 20,807 assertions, native write/read and independent package checks. [Patch record](../PATCH_v0.2.53.md) | [Verification and short test](../TEST_v0.2.53.md). Rendered/connected acceptance remains deferred; no owner-test gate blocks delivery. No publication or main merge is authorized.
+
 ## C284: paired controller and turret Manage mockups, 2026-10-16
 
 Owner requests controller and turret Manage mockups. Created a connected, responsive conversation preview and static screenshots, preserving the selected inset panels/shared ammunition header and C283 storage/ammo plan. No new design choices or gameplay implementation are inferred from the mockup request.

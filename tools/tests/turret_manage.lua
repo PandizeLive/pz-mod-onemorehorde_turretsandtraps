@@ -41,6 +41,7 @@ local function item(fullType)
     function result:getActualWeight() return 1 end
     function result:getWeight() return self.weight or 1 end
     function result:getContainer() return self.container end
+    function result:getIsCraftingConsumed() return false end
     function result:isFavorite() return self.favorite == true end
     return result
 end
@@ -50,6 +51,8 @@ local function container(carried)
     function result:getType() return self.kind end
     function result:getContainingItem() return nil end
     function result:getParent() return self.parent end
+    function result:isExistYet() return true end
+    function result:isInside() return false end
     function result:isInCharacterInventory() return self.carried end
     function result:contains(item)
         for i = 1, #self.items do if self.items[i] == item then return true end end
@@ -74,7 +77,7 @@ end
 local carried, storage = container(true), container(false)
 local player = {getPlayerNum = function() return 0 end, getInventory = function() return carried end}
 local controlState = {OMHTTTurret = {schema = 1, id = "manage-test"}}
-local object = {getContainer = function() return storage end, hasModData = function() return true end,
+local object = {getObjectIndex = function() return 0 end, getSquare = function() return {} end, getContainer = function() return storage end, hasModData = function() return true end,
     getHealth = function() return 100 end, getMaxHealth = function() return 100 end,
     getModData = function() return controlState end}
 storage.parent = object
@@ -248,7 +251,7 @@ count = X.queue(player, object, {expansion}, true, "capacity")
 check(count == 1, "Dedicated capacity slot works when ordinary module slots are full")
 actions[1]:transferItem(expansion)
 panel:refresh()
-check(panel.capacitySlot.items[1] == expansion and panel.stats.modules == 8 and panel.stats.ammo == 402,
+check(panel.capacitySlot.items[1] == expansion and panel.stats.modules == 8 and panel.stats.ammo == 652,
     "Capacity slot displays exact component and expanded limits")
 check(panel.capacitySlot.disabled, "Expansion is dim only when its excess contents block removal")
 check(X.rejection(player, expansion, storage, carried) == "CapacityFull", "Expanded modules block capacity removal with useful reason")
@@ -286,6 +289,7 @@ function pistol:getMaxAmmo() return 15 end
 function pistol:getMinDamage() return .6 end
 function pistol:getMaxDamage() return 1 end
 function pistol:isTwoHandWeapon() return false end
+function pistol:getProjectileCount() return 1 end
 function pistol:getMaxRange() return 15 end
 function pistol:getFireMode() return "Single" end
 function pistol:getRecoilDelay() return 12 end

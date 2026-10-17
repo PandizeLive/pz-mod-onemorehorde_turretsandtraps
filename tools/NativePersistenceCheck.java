@@ -49,6 +49,7 @@ public final class NativePersistenceCheck {
 
     private static void verify(Path directory, String mode) throws Exception {
         verifyTurret(directory, mode);
+        verifyHeavyController(directory, mode);
         verifyModulePack(directory, mode);
         verifyFirearms(directory, mode);
         verifyHybrid(directory, mode);
@@ -153,6 +154,40 @@ public final class NativePersistenceCheck {
             check(Double.valueOf(.5).equals(call(get(restored, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTFixtureDebt")), "New head mod data lost");
         }
         System.out.println("[OMHTT-Heads] persistence mode=" + mode + " heads=3 identity=condition=modData=preserved");
+    }
+
+    private static void verifyHeavyController(Path directory, String mode) throws Exception {
+        Object env = Class.forName("zombie.Lua.LuaManager").getField("env").get(null);
+        Object source = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeHeavyController");
+        check(source != null, "Heavy controller fixture missing");
+        Path path = directory.resolve("heavy-controller.bin");
+        if (mode.equals("write")) {
+            ByteBuffer output = ByteBuffer.allocate(1048576);
+            call(source, "saveWithSize", new Class<?>[]{ByteBuffer.class, boolean.class}, output, false);
+            Files.write(path, Arrays.copyOf(output.array(), output.position()));
+        }
+        int version = ((Number)Class.forName("zombie.iso.IsoWorld").getMethod("getWorldVersion").invoke(null)).intValue();
+        ByteBuffer input = ByteBuffer.wrap(Files.readAllBytes(path));
+        Object restored = Class.forName("zombie.inventory.InventoryItem").getMethod("loadItem", ByteBuffer.class, int.class).invoke(null, input, version);
+        check(!input.hasRemaining(), "Heavy controller unread bytes");
+        Object storage = get(restored, "getInventory");
+        check(((java.util.List<?>)get(storage, "getItems")).size() == 167, "Heavy stockpile count changed");
+        check(((Number)get(storage, "getCapacityWeight")).doubleValue() > 100, "Heavy stockpile weight was compressed");
+        Object state = call(get(restored, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTControl");
+        check("control-owner".equals(call(state, "rawget", new Class<?>[]{Object.class}, "owner")), "Heavy controller owner lost");
+        System.out.println("[OMHTT-Controls] persistence mode=" + mode + " items=167 weight=over100 owner=preserved");
+        Object ammo = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeLargeAmmo");
+        Path ammoPath = directory.resolve("large-ammo.bin");
+        if (mode.equals("write")) {
+            ByteBuffer output = ByteBuffer.allocate(4194304);
+            call(ammo, "saveWithSize", new Class<?>[]{ByteBuffer.class, boolean.class}, output, false);
+            Files.write(ammoPath, Arrays.copyOf(output.array(), output.position()));
+        }
+        ByteBuffer ammoInput = ByteBuffer.wrap(Files.readAllBytes(ammoPath));
+        Object ammoRestored = Class.forName("zombie.inventory.InventoryItem").getMethod("loadItem", ByteBuffer.class, int.class).invoke(null, ammoInput, version);
+        check(!ammoInput.hasRemaining(), "Large ammunition unread bytes");
+        check(((java.util.List<?>)get(get(ammoRestored, "getInventory"), "getItems")).size() == 5002, "Five-thousand-round reserve lost items");
+        System.out.println("[OMHTT-Controls] ammunition-persistence mode=" + mode + " rounds=5000 items=5002 exact=true");
     }
 
     private static void verifyModulePack(Path directory, String mode) throws Exception {

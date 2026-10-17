@@ -22,10 +22,12 @@ function U.store(panel, items)
     local contents = T.contents(panel.object:getContainer())
     if not contents.void then return end
     local groups = {}
+    local controller = require("OMHTT/ControlAccess").stockpile(panel.player, panel.object)
+    local stockpile = controller and controller:getContainer()
     for i = 1, #items do
         local item, source = items[i], items[i]:getContainer()
         if source and not item:isFavorite() and require("OMHTT/TurretAmmo").family(item:getFullType())
-            and (source == panel.object:getContainer() or source:isInCharacterInventory(panel.player)) then
+            and (source == panel.object:getContainer() or source:isInCharacterInventory(panel.player) or source == stockpile) then
             local ids = groups[source]
             if not ids then
                 ids = {}
@@ -39,6 +41,7 @@ function U.store(panel, items)
             local batch = {}
             for i = first, math.min(first + 19, #ids) do batch[#batch + 1] = ids[i] end
             local origin = source == panel.object:getContainer() and "turret" or "inventory"
+            if source == stockpile then origin = "controller" end
             ISTimedActionQueue.add(Action:new(panel.player, panel.object, panel.deviceId, contents.void,
                 batch, origin, origin == "inventory" and source:getContainingItem() or nil))
         end

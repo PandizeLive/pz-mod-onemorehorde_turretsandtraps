@@ -157,12 +157,16 @@ local function verifyTurrets()
     largeStorage:AddItem(largeGun)
     largeStorage:AddItem(T.TYPES.CapacityLarge)
     local largeStats = T.cycleConfig(T.contents(largeStorage))
-    assert(largeStats.ammo == 900, "Large expansion must add 650 rounds to the default 250")
+    assert(largeStats.ammo == 5000, "Large expansion must reach the approved 5000 firearm rounds")
+    assert(T.accept(largeStorage, instanceItem(largeAmmo)), "Expanded storage must admit matching ammo")
     for i = 1, largeStats.ammo do
         local round = instanceItem(largeAmmo)
-        assert(T.accept(largeStorage, round) and largeStorage:hasRoomFor(nil, round), "Expanded native storage ran out of room at " .. i)
         largeStorage:AddItem(round)
     end
+    local summaryStarted = getTimestampMs()
+    assert(T.contents(largeStorage).reserveAll == 5000, "Large summary count drift")
+    print("[OMHTT-Controls] native-summary rounds=5000 milliseconds=" .. (getTimestampMs() - summaryStarted))
+    OMHTT_NativeLargeAmmo = largeStorage:getContainingItem()
     assert(not T.accept(largeStorage, instanceItem(largeAmmo)), "Large ammo limit must still reject overflow")
     local heavyStorage = instanceItem(T.BASE):getInventory()
     T.configure(heavyStorage)
@@ -178,7 +182,7 @@ local function verifyTurrets()
     end
     assert(loaded > 0 and loaded < 750 and heavyStorage:getCapacity() == 44 and not heavyStorage:hasRoomFor(nil, instanceItem("Base.Potato")), "Native bag weight limit must include the base weight")
     print("[OMHTT-Smoke] native-heavy-expansion potatoes=" .. loaded .. " countAllowance=750 nativeWeightLimit=44")
-    print("[OMHTT-Smoke] native-large-expansion rounds=900 weight=real overflow=blocked")
+    print("[OMHTT-Smoke] native-large-expansion rounds=5000 weight=real overflow=blocked")
     print("[OMHTT-Smoke] native-component-list visible=23 hidden=0 duplicates=0 legacy=removed")
     local nativeContents = {active = {Detection360 = 1, Filter = 1}}
     local profile = Modules.profile({baseFacing = 4, facing = 12, priority = "Toughest"}, nativeContents)
@@ -290,7 +294,7 @@ local function verifyTurrets()
     inventory:AddItem("Base.OMHTTModuleReload")
     local velocity = inventory:AddItem("Base.OMHTTModuleVelocity")
     local stats = T.cycleConfig(T.contents(inventory))
-    assert(stats.modules == baseStats.modules + 10 and stats.ammo == baseStats.ammo + 400 and math.abs(stats.cooldown - baseStats.cooldown / 1.5) < 0.001
+    assert(stats.modules == baseStats.modules + 10 and stats.ammo == baseStats.ammo + 650 and math.abs(stats.cooldown - baseStats.cooldown / 1.5) < 0.001
         and math.abs(stats.reload - baseStats.reload / 1.5) < 0.001 and math.abs(stats.damage - baseStats.damage * 1.2) < 0.001, "Native effective module stats failed")
     assert(not T.canRemove(inventory, expansion), "Native capacity removal lost module limit")
     assert(not inventory:isItemAllowed(instanceItem("Base.OMHTTModuleExpansionMedium")), "Native duplicate capacity accepted")
@@ -388,7 +392,7 @@ local function verifyTurrets()
         starter:getModData()[component] = item:getID()
     end
     local starterContents = T.contents(starterStorage)
-    assert(T.cycleConfig(starterContents).modules == 4 and T.cycleConfig(starterContents).ammo == 200,
+    assert(T.cycleConfig(starterContents).modules == 4 and T.cycleConfig(starterContents).ammo == 250,
         "Improvised native expansion has wrong defaults")
     starterContents.head:getModData().OMHTTCycle = {schema = 1, loaded = 1, nextShot = 123456789, cooldownDuration = 2000}
     OMHTT_NativeImprovised = starter
@@ -688,6 +692,7 @@ local function verifyTurrets()
     print("[OMHTT-Smoke] native-turret recipes=6 loadedDeploy=exact contents=preserved weight=exact filters=valid cooldown=preserved")
     isServer, isClient = serverFunction, clientFunction
     require("OMHTT/NativeTurretAuthority")(IsoPlayer.new(getCell()))
+    require("OMHTT/NativeControls")(IsoPlayer.new(getCell()))
 end
 
 Events.OnServerStarted.Add(verifyTurrets)

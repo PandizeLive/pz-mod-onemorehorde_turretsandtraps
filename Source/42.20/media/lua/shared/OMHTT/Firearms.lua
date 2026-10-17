@@ -242,7 +242,11 @@ function G.magazineRejection(player, storage, gun, magazine, token)
     if G.servicing[gun] and G.servicing[gun] ~= token then return "TransferPending" end
     if magazine then
         local source = magazine:getContainer()
-        if not source or not source:isInCharacterInventory(player) or not source:contains(magazine) then return "TransferCarried" end
+        if not source or not source:contains(magazine) then return "TransferCarried" end
+        if not source:isInCharacterInventory(player) then
+            local controller = require("OMHTT/ControlAccess").stockpile(player, storage:getParent())
+            if not controller or source ~= controller:getContainer() then return "TransferCarried" end
+        end
         if magazine:getFullType() ~= gun:getMagazineType() then return "WrongMagazine" end
         if gun:isContainsClip() then return "MagazineFull" end
         if magazine:isFavorite() then return "TransferFavorite" end
@@ -278,7 +282,14 @@ function G.transferMagazine(player, storage, gun, magazine, token)
         if not magazine then return nil end
         magazine:setCurrentAmmoCount(gun:getCurrentAmmoCount())
         local inventory = player:getInventory()
-        if not inventory:hasRoomFor(player, magazine) then return nil end
+        if token and token.stockpile then
+            local controller = require("OMHTT/ControlAccess").stockpile(player, storage:getParent())
+            if not controller then return nil end
+            inventory = controller:getContainer()
+            if inventory:getCapacityWeight() + magazine:getUnequippedWeight() > 500 then return nil end
+        elseif not inventory:hasRoomFor(player, magazine) then
+            return nil
+        end
         if inventory:AddItem(magazine) ~= magazine then return nil end
         Feed.restore(gun, gun:getMaxAmmo(), player, true)
         gun:setContainsClip(false)
