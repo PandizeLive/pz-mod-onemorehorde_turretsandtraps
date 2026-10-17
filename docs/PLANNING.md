@@ -1,5 +1,7 @@
 # Planning
 
+**C288 / two-tab Manage selected (2026-10-17).** Owner chooses1B and requests the update recap. [Selected corrective scope](TEST_FINDINGS_v0.2.53.md#c288--two-tab-manage-selected-update-recap-2026-10-17): Equipment & Ammo / Modules tabs, dedicated drag bars, panel cleanup, expandable stats, approved Controller layout and crash/window-lifecycle corrections. Selection recorded; implementation and verification remain next, before R4C2. Installed0.2.53 unchanged.
+
 **C287 / Manage alternatives previewed (2026-10-17).** Owner requests both designs. [Compact page and Two tabs comparison](TEST_FINDINGS_v0.2.53.md#c287--both-manage-designs-previewed-2026-10-17) preserves the approved equipment/ammo arrangement and adds a separate title bar. Browser interactions and narrow bounds checked; no option selected or gameplay patch installed. C286 corrections remain next.
 
 **C286 / 0.2.53 UI failures investigated (2026-10-17).** Owner reports overlapping Manage panels, blocked dragging, Controller preview mismatch and a black screen. Console confirms recurring stack overflow; isolated native UI formatting reproduces the Controller name-widget recursion. Geometry overlap and title obstruction are confirmed. [Findings, evidence and compact-layout choice](TEST_FINDINGS_v0.2.53.md). Corrective work precedes R4C2; recommend compact single page with expandable detailed stats, versus two tabs. No simplification selection, gameplay edit or install this turn; installed0.2.53 remains unaccepted for these paths. Connected acceptance remains pending.

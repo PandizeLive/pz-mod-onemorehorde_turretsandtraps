@@ -1,5 +1,9 @@
 # Decision register
 
+## C288: two-tab Manage selected (2026-10-17)
+
+Owner: "1B / Recap the update." Selects the two-tab design from C287, superseding the compact-page recommendation. [Final corrective scope](TEST_FINDINGS_v0.2.53.md#c288--two-tab-manage-selected-update-recap-2026-10-17). Record the choice and recap; no implementation/install/test acceptance is claimed in this discussion turn. Preserve C286 crash correction, approved Controller hierarchy and multiplayer authority.
+
 ## C287: preview both proposed Manage layouts (2026-10-17)
 
 Owner: "Show the designs for both options." [Comparison and browser verification](TEST_FINDINGS_v0.2.53.md#c287--both-manage-designs-previewed-2026-10-17). This authorizes design previews, not selection of1A/1B or a new implementation. Preserve C286 corrections, the accepted Controller direction and pending native/connected acceptance. No balance, authority, installed version or Workshop changes.

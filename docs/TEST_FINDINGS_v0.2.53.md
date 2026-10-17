@@ -43,3 +43,11 @@ Owner requests seeing both options, without selecting either or approving implem
 Both preserve Equipment expansion/battery/power, shared Load Order, equal Ammo/Void panels, Magazine below, 4/6/6 desktop module slots, rarity colors and left-name/right-benefit alignment. Small-screen preview reflows the module grid for readability, not as a selected PZ layout change. Compact remains the recommended no-tab workflow; the tabbed alternative is materially shorter. The dedicated drag band is separate from name editing in both.
 
 Browser checks verified the Details disclosure and both Equipment/Modules tab states, with no captured JavaScript error. Narrow preview at360 viewport width had no child extending beyond the product window; the final spacing pass reduced the compact desktop window to about915px high at640px width. This is a browser design preview, not native PZ rendering, mobile-host certification or multiplayer verification. C286 crash/layout corrections remain pending; installed0.2.53 is unchanged. No Controller design re-selection is requested.
+
+## C288 — two-tab Manage selected; update recap, 2026-10-17
+
+Owner selects **1B** and requests a recap. The corrective design is now settled on two tabs: **Equipment & Ammo**, and **Modules** with the Installed Modules benefit list. Retain the separate title/drag bar, name editing below it, expandable Details and shared targeting/Lure controls shown in the preview. The 1A recommendation is superseded by this selection.
+
+Planned update: Controller crash correction; two-tab Turret Manage; dedicated window drag bars; consistent panel spacing/backgrounds; expandable combat details; Controller layout aligned with the approved preview; child-window lifecycle cleanup. Preserve equipment/ammo grouping, rarity colors, remote multiplayer permissions and exact-item transactions. No gameplay or balance additions are inferred.
+
+This turn records the selection and requested recap, not an implementation, installed build or successful crash retest. C286 corrections remain the next work before R4C2 content; installed0.2.53 remains unchanged.
