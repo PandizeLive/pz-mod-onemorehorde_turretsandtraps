@@ -11,6 +11,8 @@ C285 implements the owner's explicit approval of C283/C284, including multiplaye
 - Native two-handed heavy pickup
 - Controller range and connection overlays
 
+Installed through root OMH.cmd from immutable `test/v0.2.53`; [release evidence](../diagnostics/v0.2.53/local-release.json) verifies both packages, exact tag/archive bytes and previous-package backups.
+
 ## Behavior
 
 Controllers cover 20 tiles on the same floor, with 32 assigned inputs and 32 turrets. Assign devices explicitly, choose an input, then link its receiver. Plates offer Players/Zombies/Both. A held plate switches the existing turret power ON and supplies fire; release switches it OFF, including aiming. Multiple inputs combine with OR. Clear input links removes stale/destroyed inputs from an authorized receiver and leaves it OFF for deliberate manual reactivation. Buttons request one ordinary firing cycle; busy shots are not queued. Firing actuates; Detection supplies powered aiming/automatic targeting. Firing-only linked turrets shoot forward. Passive barriers, wire and beds are not signal receivers; Poke Floor remains R4C2.
