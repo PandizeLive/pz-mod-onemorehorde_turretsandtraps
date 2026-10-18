@@ -1,6 +1,6 @@
 local function trace(root)
     local base = testControlPanelBase
-    local names = {"drawRect", "drawRectStatic", "drawRectBorder", "drawText", "drawTextRight", "drawTextCentre", "drawLine2", "drawProgressBar"}
+    local names = {"drawRect", "drawRectStatic", "drawRectBorder", "drawText", "drawTextRight", "drawTextCentre", "drawLine2", "drawLine", "drawProgressBar"}
     local previous, svg, serial = {}, {}, 0
     local function escape(value)
         return string.gsub(string.gsub(string.gsub(tostring(value), "&", "&amp;"), "<", "&lt;"), ">", "&gt;")
@@ -28,6 +28,7 @@ local function trace(root)
         x1,y1=xy(self,x1,y1); x2,y2=xy(self,x2,y2)
         svg[#svg+1]=string.format('<line x1="%f" y1="%f" x2="%f" y2="%f" opacity="%f" stroke="%s"/>',x1,y1,x2,y2,a,color(r,g,b))
     end
+    base.drawLine=function(self,texture,x1,y1,x2,y2,thickness,a,r,g,b) base.drawLine2(self,x1,y1,x2,y2,a,r,g,b) end
     base.drawProgressBar=function(self,x,y,w,h,value) rect(self,x,y,w,h,1,.18,.18,.18); rect(self,x,y,w*value,h,1,.5,.8,.5) end
     local function visit(widget)
         if widget.visible==false then return end

@@ -7,6 +7,18 @@ local Pane = ISInventoryPane:derive("OMHTTStockpilePane")
 local Wing = ISPanel:derive("OMHTTStockpileWing")
 local active = setmetatable({}, {__mode = "k"})
 
+---@return nil
+function Pane:createChildren()
+    ISInventoryPane.createChildren(self)
+    Theme.scrollbar(self)
+end
+
+---@return nil
+function Pane:onResize()
+    ISInventoryPane.onResize(self)
+    Theme.scrollbar(self)
+end
+
 ---@return boolean down
 function Wing:isCycleContainerKeyDown()
     return false

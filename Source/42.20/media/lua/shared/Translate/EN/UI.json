@@ -470,5 +470,12 @@
     "UI_OMHTT_Defenses": "Defenses",
     "UI_OMHTT_ViewConnectionsTip": "Focus this defense and its connections in the list.",
     "UI_OMHTT_MapNativeTip": "In-game map. Drag empty space to pan; scroll to zoom. Drag a trigger to a defense to connect. Only visited terrain is shown.",
-    "UI_OMHTT_MapUnavailable": "In-game map is unavailable for this world. Device positions and connections remain available."
+    "UI_OMHTT_MapUnavailable": "In-game map is unavailable for this world. Device positions and connections remain available.",
+    "UI_OMHTT_DisconnectNamed": "Disconnect %1",
+    "UI_OMHTT_GraphAmmoPending": "Ammo: ...",
+    "UI_OMHTT_GraphAmmo": "Ammo: %1",
+    "UI_OMHTT_GraphAmmoNone": "Ammo: —",
+    "UI_OMHTT_GraphLinkHelp": "Drag a trigger onto a defense, or click their connection handles. Click a connected defense handle to disconnect. Ammo includes the magazine, compatible reserve and Void.",
+    "UI_OMHTT_GraphConnectHint": "Drag a trigger to a defense, or use the handles.",
+    "UI_OMHTT_GraphDisconnectHint": "Use the defense handle to disconnect an input."
 }

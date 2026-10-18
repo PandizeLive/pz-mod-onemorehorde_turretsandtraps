@@ -54,7 +54,7 @@ function L.create(panel)
     body:setScrollChildren(true)
     body:addScrollBars(false)
     Theme.scrollbar(body)
-    local controls = {panel.nameEntry, panel.manage, panel.assign, panel.setFacing, panel.policy, panel.source, panel.trigger, panel.link, panel.clearInputs}
+    local controls = {panel.nameEntry, panel.manage, panel.assign, panel.setFacing, panel.policy, panel.trigger}
     for i = 1, #controls do
         local control = controls[i]
         panel:removeChild(control)
@@ -62,20 +62,8 @@ function L.create(panel)
         control:setY(control.y - body.y)
         body:addChild(control)
     end
-    body.contentHeight = panel.clearInputs.y + panel.clearInputs.height + 12
-    body:setScrollHeight(body.contentHeight)
-    panel.inputs = require("OMHTT/ControlConnectionList").create(panel)
     panel.graph = require("OMHTT/ControlGraph").create(panel)
     panel.mapView = require("OMHTT/ControlMap").create(panel)
-    panel.viewConnections = ISButton:new(10, 0, 150, 28, getText("UI_OMHTT_ViewConnections"), panel, function(self)
-        require("OMHTT/ControlGraph").focus(self)
-        self.inputs:setYScroll(0)
-        self.inputs.due = 0
-    end)
-    panel.viewConnections:initialise()
-    panel.viewConnections.tooltip = getText("UI_OMHTT_ViewConnectionsTip")
-    Theme.button(panel.viewConnections)
-    body:addChild(panel.viewConnections)
     panel.devices:setVisible(false)
     L.arrange(panel)
     L.refresh(panel, A.state(panel.object))
@@ -100,7 +88,7 @@ function L.arrange(panel)
     panel.graph:setHeight(bottom - y)
     Theme.scrollbar(panel.graph)
     local toolbar = h + 10
-    local mapHeight = math.max(64, math.min(math.floor((bottom - y) * .40), bottom - y - toolbar - 96))
+    local mapHeight = math.max(64, math.min(math.floor((bottom - y) * .28), bottom - y - toolbar - 96))
     panel.mapY = y
     local mapTop = y + toolbar
     place(panel.mapView, panel.detailX, mapTop, centerWidth)
@@ -126,6 +114,7 @@ function L.arrange(panel)
         local pane = wing.inventoryPane
         pane:setWidth(wing.width - 12)
         pane:setHeight(wing.height - pane.y - 6)
+        Theme.scrollbar(pane)
         wing:setVisible(not panel.stockCompact)
         if pane.nameHeader then
             pane.column3 = math.max(pane.column2 + 60, pane.width - 90)
@@ -172,31 +161,14 @@ function L.refresh(panel, state)
     place(panel.setFacing, x + half + 8, actionY, half)
     local connection = actionY + (kind == "Turret" and row + 14 or 0)
     panel.connectionY = body.y + connection
-    place(panel.viewConnections, x, connection + h + 12, width)
-    panel.viewConnections:setVisible(kind == "Turret")
-    local controlsY = connection + h * 3 + 20 + (kind == "Turret" and row + 8 or 0)
-    place(panel.source, x, controlsY, half)
-    place(panel.trigger, x + half + 8, controlsY, half)
-    place(panel.link, x, controlsY, width)
-    local bottom = controlsY + row + 12
-    place(panel.inputs, x, bottom, width)
-    panel.inputs:setHeight(math.max(90, panel.inputs.itemheight * 3))
-    Theme.scrollbar(panel.inputs)
-    if kind == "Turret" then
-        bottom = bottom + panel.inputs.height + 8
-    end
-    place(panel.clearInputs, x, bottom, width)
-    if kind == "Turret" then
-        bottom = bottom + row + 12
-    end
-    if kind == "Controller" then
-        bottom = controlsY
-    end
+    local controlsY = connection + h * 3 + 16
+    place(panel.trigger, x, controlsY, width)
+    local bottom = controlsY + (kind == "Plate" and row + 12 or 6)
     panel.accessY = body.y + bottom
     place(panel.policy, x, bottom + h + 12, assigned and half or width)
     place(panel.assign, x + half + 8, bottom + h + 12, half)
     panel.ownerY = bottom + h + row + 20
-    local controls = {panel.policy, panel.manage, panel.assign, panel.setFacing, panel.source, panel.trigger, panel.link, panel.clearInputs}
+    local controls = {panel.policy, panel.manage, panel.assign, panel.setFacing, panel.trigger}
     for i = 1, #controls do
         controls[i]:setHeight(row)
     end
@@ -222,8 +194,8 @@ function L.snapshot(panel)
     panel.ammoSummary = nil
     local state = A.state(panel.selected)
     if state and state.kind == "Turret" then
-        local contents = require("OMHTT/Turret").contents(panel.selected:getContainer())
-        panel.ammoSummary = getText("UI_OMHTT_ControllerAmmo", contents.reserveAll, contents.virtualAmmo)
+        local stats = panel.graph.stats[panel.selected]
+        panel.ammoSummary = stats and stats.label or getText("UI_OMHTT_GraphAmmoPending")
     end
 end
 
@@ -287,9 +259,9 @@ function L.drawDetails(panel, host, state)
     body:drawText(getText("UI_OMHTT_ControlOwner", state.owner), x, panel.ownerY, .65, .65, .65, 1, UIFont.Small)
     body:clearStencilRect()
     body:repaintStencilRect(0, 0, body.width, body.height)
-    local hintY = connectionY + h + 8 + (state.kind == "Turret" and math.max(28, h + 6) + 12 or 0)
+    local hintY = connectionY + h + 8
     body:setStencilRect(x, hintY + scroll, width, h * 2)
-    local hint = getText("UI_OMHTT_SelectInputHint")
+    local hint = getText("UI_OMHTT_GraphConnectHint")
     if state.kind == "Controller" then
         hint = getText("UI_OMHTT_ControllerRange")
     elseif panel.linkSource then
@@ -300,7 +272,7 @@ function L.drawDetails(panel, host, state)
     if state.kind == "Turret" then
         local source = A.state(panel.linkSource)
         count = getText(source and (require("OMHTT/ControlDefinitions").linked(source, state)
-            and "UI_OMHTT_InputConnected" or "UI_OMHTT_InputNotConnected") or (#panel.inputs.items == 0 and "UI_OMHTT_NoInputs" or "UI_OMHTT_DisconnectHelp"))
+            and "UI_OMHTT_InputConnected" or "UI_OMHTT_InputNotConnected") or "UI_OMHTT_GraphDisconnectHint")
     end
     if panel.linkSource == panel.selected and state.kind ~= "Turret" then
         count = getText("UI_OMHTT_SelectReceiverHint")

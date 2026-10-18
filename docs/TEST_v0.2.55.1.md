@@ -8,6 +8,8 @@ The local raw console is preserved under `diagnostics/v0.2.55.1/owner-console-0.
 
 ## Corrective evidence
 
+Owner follow-up (2026-10-18): Controller links/gestures, resizing, Stockpile scrollbar and presentation remain unsatisfactory. [C325 findings and corrective test](TEST_v0.2.55.2.md) supersede the pending visual handoff; this version is not fully accepted. The inspected later SP console still identifies 0.2.55.1 and does not repeat the old `refreshDue` exception.
+
 - Installed Build 42.21 stock-JAR-first validation: **21,849 assertions**, 231 compiled Lua/translation files, 298 source / 383 packaged files. Shipped Lua retains the banned-call gate: no `pcall`, `xpcall`, `ipairs` or bare `next`.
 - The new regression drives 600 recursive child-widget updates with native dispatch semantics, rather than only invoking Controller refresh helpers. This catches the original method-name collision. No update errors or gameplay/remote-session commands occur.
 - Native `UIElement.update` bytecode confirms it retrieves `update` through the widget table and passes that same widget as `self`, including hidden child elements. The corrected `Graph.refreshForPanel` does not occupy that callback name.

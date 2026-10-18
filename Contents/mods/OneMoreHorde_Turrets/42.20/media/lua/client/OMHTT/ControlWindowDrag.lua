@@ -35,6 +35,10 @@ function Drag.update(panel)
         Drag.stop(panel)
     end
     if not isMouseButtonDown(0) then
+        if not panel.releaseDue then
+            panel.releaseDue = getTimestampMs() + 100
+        end
+        if getTimestampMs() < panel.releaseDue then return end
         if panel.resizeGrip and panel.resizeGrip.resizing then
             panel.resizeGrip.resizing = false
             panel.resizeGrip:setCapture(false)
@@ -46,6 +50,8 @@ function Drag.update(panel)
         if panel.mapView and (panel.mapView.panning or panel.mapView.dragObject) then
             panel.mapView:onMouseUpOutside()
         end
+    else
+        panel.releaseDue = nil
     end
 end
 

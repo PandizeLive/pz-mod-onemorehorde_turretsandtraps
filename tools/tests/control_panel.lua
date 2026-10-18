@@ -38,8 +38,8 @@ check(panel.devices.items[1].item == object, "Controller itself remains selectab
 for i = 1, 30 do panel:prerender() end
 check(not panel.scanIndex and #panel.devices.items == 1, "Incremental scan completes without duplicate controller")
 check(not panel.nameEntry.visible and not panel.save and panel.policy.enabled and not panel.manage.enabled, "Controller settings are editable without pretending controller is a turret")
-check(not panel.source.enabled and not panel.trigger.enabled, "Controller cannot masquerade as a pressure plate")
-check(not panel.source.visible and not panel.trigger.visible and not panel.manage.visible,
+check(panel.source == nil and not panel.trigger.enabled, "Controller cannot masquerade as a pressure plate")
+check(panel.source == nil and not panel.trigger.visible and not panel.manage.visible,
     "Controller selection hides irrelevant input and turret actions")
 check(panel.detailBody.scrollChildren, "Controller enables child scrolling after native instantiation")
 panel.detailBody:prerender()
@@ -74,15 +74,15 @@ turret.data.OMHTTControl.controller=object.data.OMHTTControl.id
 panel:prerender()
 check(panel.setFacing.enabled and panel.setFacing.visible,"Assigned writable turret exposes Set Facing")
 check(panel.setFacing.y == panel.manage.y and panel.setFacing.x >= panel.manage.x + panel.manage.width
-    and panel.policy.y > panel.inputs.y + panel.inputs.height,"Manage and Set Aim share a row; Access follows Connections")
+    and panel.policy.y > panel.connectionY - panel.detailBody.y,"Manage and Set Aim share a row; Access follows Connections")
 local source=setmetatable({data={OMHTTControl={id="ui-input",kind="Plate",owner="ui-owner",links={}}}}, {__index=object})
 panel.linkSource=source
 A.near=function() return true end
 panel:prerender()
-check(panel.link.visible and panel.link.title==getText("UI_OMHTT_ConnectInput") and not panel.unlink,"Unlinked receiver has one Connect action")
+check(panel.link == nil and panel.source == nil,"Graph handles replace duplicate Connect buttons")
 source.data.OMHTTControl.links={"ui-turret"}
 panel:prerender()
-check(panel.link.title==getText("UI_OMHTT_DisconnectInput"),"Existing connection changes the same action to Disconnect")
+check(panel.link == nil,"Connected receiver does not restore obsolete Connect controls")
 panel.linkSource=nil
 panel.devices.selected=1
 panel:prerender()

@@ -452,6 +452,7 @@ public final class KahluaCheck {
             {"_", "tools/tests/controls.lua"},
             {"OMHTT/ControlOverlay", base + "client/OMHTT/ControlOverlay.lua"},
             {"tests/ControllerMap", "tools/tests/controller_map.lua"},
+            {"OMHTT/ControlGraphStats", base + "client/OMHTT/ControlGraphStats.lua"},
             {"_", "tools/tests/control_panel.lua"},
             {"_", "tools/tests/control_inventory.lua"},
             {"_", "tools/tests/control_corrections.lua"},

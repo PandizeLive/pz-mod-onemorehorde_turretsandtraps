@@ -29,6 +29,27 @@ public final class NativeControllerMapCheck {
     public static void main(String[] args) throws Exception {
         scrollbarResize(true);
         scrollbarResize(false);
+        Class<?> ui = Class.forName("zombie.ui.UIElement");
+        Object window = ui.getConstructor().newInstance();
+        Object grip = ui.getConstructor().newInstance();
+        ui.getMethod("setAnchorRight", boolean.class).invoke(grip, false);
+        ui.getMethod("setAnchorBottom", boolean.class).invoke(grip, false);
+        ui.getMethod("setAnchorLeft", boolean.class).invoke(grip, false);
+        ui.getMethod("setAnchorTop", boolean.class).invoke(grip, false);
+        ui.getMethod("AddChild", ui).invoke(window, grip);
+        for (int size : new int[] {1000, 850, 1250, 900}) {
+            ui.getMethod("setWidth", double.class).invoke(window, (double)size);
+            ui.getMethod("setHeight", double.class).invoke(window, size - 200.0);
+            ui.getMethod("setX", double.class).invoke(grip, size - 18.0);
+            ui.getMethod("setY", double.class).invoke(grip, size - 218.0);
+            ui.getMethod("setWidth", double.class).invoke(grip, 18.0);
+            ui.getMethod("setHeight", double.class).invoke(grip, 18.0);
+            for (int tick = 0; tick < 10; tick++) ui.getMethod("update").invoke(window);
+            if (((Number)ui.getMethod("getX").invoke(grip)).doubleValue() != size - 18.0
+                || ((Number)ui.getMethod("getY").invoke(grip)).doubleValue() != size - 218.0)
+                throw new IllegalStateException("Native resize grip drifted after explicit layout");
+        }
+        System.out.println("Native resize grip: repeated deferred updates preserve bottom-right position");
         System.out.println("Native deferred resize: explicitly positioned scrollbars stay within each panel");
         Class<?> table = Class.forName("se.krka.kahlua.vm.KahluaTable");
         Class<?> platform = Class.forName("se.krka.kahlua.j2se.J2SEPlatform");

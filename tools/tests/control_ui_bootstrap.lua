@@ -27,6 +27,8 @@ function ISInventoryPane:new(x,y,w,h,inventory,zoom)
     pane.draggedItems={reset=function(self) self.resetCalled=true end}
     return pane
 end
+function ISInventoryPane:createChildren() self:addScrollBars() end
+function ISInventoryPane:onResize() end
 function ISInventoryPane:hideButtons() end
 function ISInventoryPane:refreshContainer() self.refreshes=(self.refreshes or 0)+1 end
 function ISInventoryPane:update() end

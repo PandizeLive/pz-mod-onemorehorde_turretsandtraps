@@ -186,7 +186,7 @@ function Map:render()
     for i = 1, 64 do
         local angle = i * math.pi / 32
         local x, y = self:point(cx + math.cos(angle) * 20, cy + math.sin(angle) * 20)
-        self:drawLine2(previousX, previousY, x, y, .65, .65, .7, .65)
+        self:drawLine(nil, previousX, previousY, x, y, 1, .65, .65, .7, .65)
         previousX, previousY = x, y
     end
     local graph = self.owner.graph
@@ -203,12 +203,12 @@ function Map:render()
             local selected = source.object == self.owner.selected or target.object == self.owner.selected
             local state = A.state(source.object)
             local active = state and state.active == true
-            self:drawLine2(x1, y1, x2, y2, selected and 1 or .5, active and .4 or .7, active and .9 or .7, active and .4 or .7)
+            self:drawLine(nil, x1, y1, x2, y2, 2, selected and 1 or .5, active and .4 or .7, active and .9 or .7, active and .4 or .7)
         end
     end
     if self.dragObject then
         local x, y = self:point(self.dragObject:getX() + .5, self.dragObject:getY() + .5)
-        self:drawLine2(x, y, self:getMouseX(), self:getMouseY(), .9, .8, .9, .8)
+        self:drawLine(nil, x, y, self:getMouseX(), self:getMouseY(), 2, .9, .8, .9, .8)
     end
     for i = 1, #graph.markers do
         local marker = graph.markers[i]

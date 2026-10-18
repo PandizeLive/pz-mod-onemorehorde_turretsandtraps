@@ -77,6 +77,7 @@ function ISPanel:drawTextRight(text) check(type(text)=="string", "Right-aligned 
 function ISPanel:drawProgressBar(x, y, width, height, value) check(x >= 0 and x + width <= self.width and value >= 0 and value <= 1, "Supply meter stays inside its slot") end
 function ISPanel:setY(y) self.y = y end
 function ISPanel:setHeight(height) self.height = height end
+function ISPanel:onResize() end
 function ISPanel:setScrollChildren(value)
     if self.javaObject then self.javaObject:setScrollChildren(value) end
 end
@@ -158,4 +159,7 @@ function ISPanel:getY() return self.y end
 function ISPanel:getWidth() return self.width end
 function ISPanel:getHeight() return self.height end
 function ISPanel:drawLine2() end
+function ISPanel:drawLine(texture, x1, y1, x2, y2, thickness, a, r, g, b)
+    check(texture == nil and thickness > 0 and b ~= nil, "Native line receives width and complete RGBA")
+end
 function ISPanel:drawTextCentre() end

@@ -5,7 +5,6 @@ require("ISUI/ISScrollingListBox")
 require("ISUI/ISTextEntryBox")
 local A = require("OMHTT/ControlAccess")
 local U = require("OMHTT/ControlClient")
-local C = require("OMHTT/ControlDefinitions")
 local Panel = ISPanel:derive("OMHTTControllerPanel")
 local Drag = require("OMHTT/ControlWindowDrag")
 local Theme = require("OMHTT/ControlTheme")
@@ -139,12 +138,8 @@ function Panel:prerender()
         require("OMHTT/ControlPanelLayout").snapshot(self)
     end
     require("OMHTT/ControlPanelLayout").refresh(self, state)
-    self.inputs:refresh()
-    self.inputs:setVisible(state ~= nil and state.kind == "Turret")
     require("OMHTT/ControlPanelLayout").draw(self, host, state)
     local writable = state and A.authorized(self.player, self.selected)
-    local linkable = state and A.write(self.player, state) and self.linkSource
-        and A.authorized(self.player, self.linkSource) and A.range(self.linkSource, self.selected)
     self.nameEntry:refresh()
     self.nameEntry:setVisible(state ~= nil and state.kind ~= "Controller")
     self.policy:setEnable(writable and A.write(self.player, state, true) or false)
@@ -152,23 +147,14 @@ function Panel:prerender()
         and (A.near(self.player, self.selected) or (host.powered == true and state.controller == host.id)))
     self.assign:setEnable(state ~= nil and self.selected ~= self.object and host.kind == "Controller"
         and host.powered == true and A.write(self.player, host) and A.write(self.player, state))
-    self.link:setEnable(linkable == true)
     self.setFacing:setEnable(state ~= nil and state.kind == "Turret"
         and A.write(self.player, host) and A.write(self.player, state)
         and require("OMHTT/ControlRemote").valid(self.player, self.object, self.selected))
-    self.link:setTitle(getText(C.linked(A.state(self.linkSource), state)
-        and "UI_OMHTT_DisconnectInput" or "UI_OMHTT_ConnectInput"))
-    self.source:setTitle(getText(self.linkSource == self.selected and "UI_OMHTT_InputSelected" or "UI_OMHTT_SelectInput"))
-    self.source:setEnable(writable == true and (state.kind == "Plate" or state.kind == "Button"))
     self.trigger:setEnable(writable == true and state.kind == "Plate")
-    self.clearInputs:setEnable(writable == true and state.kind == "Turret")
     self.trigger:setTitle(state and state.kind == "Plate" and "Trigger: " .. (state.trigger or "Both") or "Trigger: —")
-    self.source:setVisible(state ~= nil and (state.kind == "Plate" or state.kind == "Button"))
     self.trigger:setVisible(state ~= nil and state.kind == "Plate")
-    self.clearInputs:setVisible(state ~= nil and state.kind == "Turret")
     self.manage:setVisible(state ~= nil and state.kind == "Turret")
     self.assign:setVisible(state ~= nil and self.selected ~= self.object and host.kind == "Controller")
-    self.link:setVisible(state ~= nil and state.kind == "Turret" and self.linkSource ~= nil)
     self.setFacing:setVisible(state ~= nil and state.kind == "Turret" and host.kind == "Controller")
     local remoteReason
     if host.powered ~= true then
@@ -193,17 +179,8 @@ function Panel:prerender()
     if not self.policy.enable then
         self.policy.tooltip = A.write(self.player, state, true) and remoteReason or getText("UI_OMHTT_ControllerAccessNeeded")
     end
-    self.clearInputs.tooltip = self.clearInputs.enable and getText("UI_OMHTT_ClearInputsHelp") or remoteReason
-    self.source.tooltip = remoteReason
-    self.link.tooltip = self.source.tooltip
     self.trigger.tooltip = self.trigger.enable and getText("UI_OMHTT_TriggerHelp") or remoteReason
     self.setFacing.tooltip = self.setFacing.enable and getText("UI_OMHTT_SetFacingTooltip") or remoteReason
-    if self.link.enable then
-        self.link.tooltip = getText("UI_OMHTT_LinkPowerHint")
-    end
-    if self.source.enable then
-        self.source.tooltip = getText("UI_OMHTT_SelectReceiverHint")
-    end
     self.policy:setTitle(getText("UI_OMHTT_Access", state and state.access or "—"))
     self.assign:setTitle(getText(state and state.controller == host.id and "UI_OMHTT_Unassign" or "UI_OMHTT_Assign"))
 
@@ -225,7 +202,7 @@ function Panel.open(player, object)
     if old then old:close() end
     local pn = player:getPlayerNum()
     local panel = Panel:new(getPlayerScreenLeft(pn) + 12, getPlayerScreenTop(pn) + 12,
-        math.min(A.state(object).kind == "Controller" and 1220 or 860, getPlayerScreenWidth(pn) - 24), math.min(720, getPlayerScreenHeight(pn) - 24))
+        math.min(A.state(object).kind == "Controller" and 1220 or 860, getPlayerScreenWidth(pn) - 24), math.min(1000, getPlayerScreenHeight(pn) - 24))
     panel.player, panel.object, panel.scanDue = player, object, 0
     panel.backgroundColor = {r = .04, g = .04, b = .04, a = .97}
     panel:initialise()
@@ -253,17 +230,6 @@ function Panel.open(player, object)
     panel.setFacing = button(panel, 274, 282, 246, getText("UI_OMHTT_SetFacing"), function(self)
         require("OMHTT/TurretFacingCursor").start(self)
     end)
-    panel.source = button(panel, 274, 292, 166, getText("UI_OMHTT_SelectInput"), function(self)
-        self.linkSource = self.selected
-        U.remote(self.player, self.object, self.linkSource)
-    end)
-    panel.link = button(panel, 450, 292, 166, getText("UI_OMHTT_ConnectInput"), function(self)
-        if self.linkSource and self.selected then
-            U.remote(self.player, self.object, self.linkSource)
-            local linked = C.linked(A.state(self.linkSource), A.state(self.selected))
-            U.command(self.player, self.linkSource, "Link", not linked, self.selected)
-        end
-    end)
     panel.policy = button(panel, 274, 386, 246, "Private / Faction / Public", function(self)
         local state = A.state(self.selected)
         if state then
@@ -278,11 +244,6 @@ function Panel.open(player, object)
     local stock = button(panel, 532, 386, 258, getText("UI_OMHTT_OpenStockpile"), function(self) self:showStockpile(not self.stockPage) end)
     panel.stockButton = stock
     stock:setEnable(A.state(object).kind == "Controller")
-    panel.clearInputs = button(panel, 274, 430, 246, getText("UI_OMHTT_ClearInputs"), function(self)
-        if self.selected then
-            U.command(self.player, self.selected, "ClearInputs")
-        end
-    end)
     panel.trigger = button(panel, 532, 430, 258, "Trigger: Both", function(self)
         local state = A.state(self.selected)
         if not state then return end

@@ -149,7 +149,7 @@ return function(player)
         local item = instanceItem(fullType)
         assert(item and supplies.storable(item), "Allowed defense supply rejected: " .. fullType)
     end
-    for _, fullType in pairs({"Base.Plank", "Base.Shirt_FormalWhite", "Base.Apple", "Base.Bag_Schoolbag"}) do
+    for _, fullType in pairs({"Base.Plank", "Base.Shirt_FormalWhite", "Base.Apple", "Base.Bag_Schoolbag", "Base.IDcard"}) do
         local item = instanceItem(fullType)
         assert(item and not supplies.storable(item), "Unrelated supply allowed: " .. fullType)
     end

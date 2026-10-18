@@ -16,6 +16,14 @@ check(pane.player==0 and pane.inventory==storage and pane.inventoryPage==wing an
 check(pane.nameHeader and pane.typeHeader and pane.contextButton1 and pane.draggedItems and pane.headerHgt,
     "Installed native createChildren supplies real Type/Category headers, contextual controls and drag tracking")
 pane:refreshContainer()
+for _, width in pairs({280,800,240,720}) do
+    pane:setWidth(width)
+    pane:setHeight(420)
+    pane:onResize()
+    check(pane.vscroll.x == width - 17 and pane.vscroll.height == 420
+        and pane.vscroll.anchorRight == false and pane.vscroll.anchorBottom == false,
+        "Native Stockpile scrollbar follows compact-page and side-pane resizing")
+end
 check(#pane.itemslist==0 and pane.collapsed and pane.itemindex and storage.dirty==false,
     "Installed native inventory refresh/sort/selection initializes without borrowing the HUD")
 wing:prerender()

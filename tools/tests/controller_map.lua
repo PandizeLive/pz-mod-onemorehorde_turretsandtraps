@@ -62,7 +62,7 @@ local function run(panel, player, controller)
         check(panel.graph.x + panel.graph.width < panel.mapView.x
             and panel.mapView.y + panel.mapView.height < panel.detailBody.y,
             "Resized Connections, Map and Selected Device occupy separate regions")
-        for _, section in pairs({panel.graph, panel.detailBody, panel.inputs}) do
+        for _, section in pairs({panel.graph, panel.detailBody}) do
             local bar = section.vscroll
             check(bar.x + bar.width == section.width and bar.y == 0 and bar.height == section.height
                 and bar.anchorRight == false and bar.anchorBottom == false and bar.doSetStencil == false,
@@ -101,6 +101,27 @@ local function run(panel, player, controller)
     panel.resizeGrip:setCapture(true)
     panel.resizeGrip:onMouseUpOutside(9999, 9999)
     check(not panel.resizeGrip.resizing and not panel.resizeGrip.capture, "Installed native resize grip releases outside window")
+    local mouseX, mouseY = getMouseX, getMouseY
+    local mx, my = 100, 100
+    getMouseX, getMouseY = function() return mx end, function() return my end
+    local grip = panel.resizeGrip
+    local originalX, originalY, originalWidth, originalHeight = panel.x, panel.y, panel.width, panel.height
+    grip:onMouseDown(9, 9)
+    mx, my = 20, 60
+    grip:onMouseMove(-80, -40)
+    local shrunkWidth, shrunkHeight = panel.width, panel.height
+    for i = 1, 20 do grip:onMouseMove(0, 0) end
+    check(panel.width == shrunkWidth and panel.height == shrunkHeight and panel.x == originalX and panel.y == originalY,
+        "Stationary resize pointer cannot accumulate size or move the window")
+    mx, my = 9999, 9999
+    grip:onMouseMoveOutside(9979, 9939)
+    check(panel.x == originalX and panel.y == originalY and panel.x + panel.width <= getPlayerScreenWidth(0) - 8,
+        "Resize past screen edge stays anchored at original top-left")
+    check(grip.anchorRight == false and grip.anchorBottom == false and grip.x == panel.width - 18 and grip.y == panel.height - 18,
+        "Resize handle uses explicit placement without native deferred anchors")
+    grip:onMouseUpOutside(0, 0)
+    G.resize(panel, originalWidth, originalHeight)
+    getMouseX, getMouseY = mouseX, mouseY
 
     local function device(kind, id, dx)
         local object = setmetatable({data = {OMHTTControl = {id = id, kind = kind, owner = "ui-owner", access = "Private",
@@ -170,6 +191,68 @@ local function run(panel, player, controller)
     Graph.refreshForPanel(panel)
     check(commands == 1, "Read-only drag cannot submit a Link")
     A.write = priorWrite
+    local graph = panel.graph
+    local half, y = (graph.width - 40) / 2, graph.headerHeight + graph.rowHeight / 2
+    local before, value = commands, nil
+    U.command = function(actor, source, command, enabled, target)
+        check(actor == player and source == input and target == output and command == "Link", "Graph uses exact authoritative endpoints")
+        commands, value = commands + 1, enabled
+    end
+    graph:onMouseDown(12, y)
+    graph:onMouseUp(half + 60, y)
+    Graph.refreshForPanel(panel)
+    check(commands == before + 1 and value == true, "Dragging entire trigger row connects once")
+    graph:onMouseDown(half - 13, y)
+    graph:onMouseUp(half - 13, y)
+    check(panel.linkSource == input, "Trigger handle click arms connection")
+    graph:onMouseDown(half + 38, y)
+    graph:onMouseUp(half + 38, y)
+    Graph.refreshForPanel(panel)
+    check(commands == before + 2 and value == true and panel.linkSource == nil, "Two handle clicks connect and consume armed source")
+    input.data.OMHTTControl.links = {"map-output"}
+    graph.refreshDue = 0
+    Graph.refreshForPanel(panel)
+    graph:onMouseDown(half + 38, y)
+    graph:onMouseUp(half + 38, y)
+    Graph.refreshForPanel(panel)
+    check(commands == before + 3 and value == false, "Connected defense handle removes its single link")
+    graph:onMouseDown(half - 13, y)
+    graph:onMouseUp(half - 13, y)
+    graph:onMouseDown(half + 38, y)
+    graph:onMouseUp(half + 38, y)
+    Graph.refreshForPanel(panel)
+    check(commands == before + 3, "Armed source never removes an already linked pair")
+    local extra = device("Plate", "second-input", 3)
+    extra.data.OMHTTControl.links = {"map-output"}
+    panel.devices.items[#panel.devices.items + 1] = {item=extra}
+    graph.refreshDue = 0
+    Graph.refreshForPanel(panel)
+    local previousMenu, choices = ISContextMenu, {}
+    ISContextMenu = {get=function() return {addOption=function(self,title,owner,callback,source,target)
+        choices[#choices+1]={title=title,owner=owner,callback=callback,source=source,target=target}
+    end} end}
+    local previousX, previousY = getMouseX, getMouseY
+    getMouseX, getMouseY = function() return 100 end, function() return 100 end
+    Graph.outputPort(panel, output)
+    check(#choices == 2 and commands == before + 3, "Multiple incoming links require choosing one rather than deleting all")
+    choices[1].callback(choices[1].owner, choices[1].source, choices[1].target)
+    Graph.refreshForPanel(panel)
+    check(commands == before + 4 and value == false, "Chosen incoming connection alone is removed")
+    ISContextMenu, getMouseX, getMouseY = previousMenu, previousX, previousY
+    U.command = function() commands = commands + 1 end
+
+    local stats = require("OMHTT/ControlGraphStats")
+    local oldContainer, reads = output.getContainer, 0
+    local round = {getFullType=function() return "Base.Bullets9mm" end}
+    local rounds = {size=function() return 2048 end,get=function() reads=reads+1; return round end}
+    local storage = {getItems=function() return rounds end}
+    output.getContainer = function() return storage end
+    local sampler = {defenses={{object=output}},stats={},statsIndex=1,statsDue=0}
+    stats.step(sampler)
+    check(reads <= 128 and sampler.statsJob ~= nil and sampler.stats[output] == nil, "Large ammo scan yields after at most 128 item reads")
+    for i=1,16 do stats.step(sampler) end
+    check(sampler.stats[output] ~= nil and sampler.statsJob == nil, "Bounded ammo scan completes across frames")
+    output.getContainer = oldContainer
     panel.devices.items = {{item = controller}}
     for i = 1, 32 do
         panel.devices.items[#panel.devices.items + 1] = {item = device("Plate", "input-" .. i, 1)}
@@ -208,7 +291,14 @@ local function run(panel, player, controller)
     panel.graph.refreshDue = 0
     panel.scanIndex, panel.scanDue = nil, testMillis + 5000
     panel:prerender()
+    local previousHeight = getPlayerScreenHeight
+    getPlayerScreenHeight = function() return 1080 end
+    G.resize(panel, 1220, 1000)
+    panel:prerender()
+    check(panel.detailBody.contentHeight <= panel.detailBody.height, "Default tall Controller shows Selected Device without scrolling")
     testControllerSvg = require("tests/UITrace")(panel)
+    getPlayerScreenHeight = previousHeight
+    G.resize(panel, 1220, 690)
     panel.devices.selected = 1
     panel:select()
     U.command, U.remote = savedCommand, savedRemote

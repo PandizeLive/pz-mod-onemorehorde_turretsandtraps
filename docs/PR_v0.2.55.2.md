@@ -1,0 +1,7 @@
+Controller links now support dragging a trigger row onto a defense, clicking the two connection handles, and dragging between map markers. Persistent native lines show the links. An unarmed defense handle disconnects its single input or offers a choice when several are linked; an armed trigger always adds. The duplicate connection buttons/list have been removed.
+
+Resizing uses stable absolute-pointer deltas and one explicit layout path, fixing the competing native anchors on the resize grips and Stockpile scrollbar. Both management windows show corner grips. The Controller starts taller, with dark inset device rows, condition bars and ammo totals sampled in bounded slices while open. Existing server-authorized connection commands, inventory access and combat behavior are preserved.
+
+Validation passes 23,252 assertions, native map/resize/Stockpile geometry checks and fresh-process save/reload. Traps-only, Turrets-only and combined startup checks also pass. Tagged installation evidence will be completed before delivery. See [the version test record](docs/TEST_v0.2.55.2.md). The code-driven layout trace verifies geometry only; rendered and connected-client acceptance remain pending. This patch does not claim to resolve the separate main-menu system slowdown.
+
+This draft continues the cumulative development branch into `dev`; no Workshop upload or merge is requested. [Current status](docs/CURRENT_STATUS.md) · [Planning](docs/PLANNING.md) · [C325 contract](docs/CONTROLLER_MAP_C316.md#c325--connection-gestures-and-controller-polish-2026-10-18).
