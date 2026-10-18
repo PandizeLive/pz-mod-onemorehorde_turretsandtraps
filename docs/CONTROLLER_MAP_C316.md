@@ -1,5 +1,19 @@
 # C316 — Controller map and connection-view discussion
 
+## C319 — Right-column details and restored action groups (2026-10-18)
+
+Owner asks to move/extend Selected Device to the right beneath Stockpile, extend Connections downward to the bottom, and allow a taller menu. Owner reiterates the accepted Grouped design: Open Manage and Set Aim must not share one action row with View Connections and Unassign. This correction supersedes C317/C318's below-map details placement and mixed action row, not the selected Triggers / Defenses names, simultaneous map/lists, head subtitles, grey theme or existing Stockpile implementation.
+
+The updated preview places Stockpile above Selected Device in a wider right column. Connections and Map fill the left area down to the Selected Device bottom edge. Details contain Name/head identification followed by separated **Controls**, **Connections**, and **Access & Assignment** groups; Open Manage/Set Aim, View Connections and Unassign occupy their corresponding groups. Enabled controls retain explanatory tooltips. The submitted list-width tweak of **43%** is retained, subject to a readable minimum width. On narrow preview widths regions stack; Selected Device stays below Stockpile.
+
+Stockpile keeps its familiar inventory styling and a bounded independently scrolling inventory list on desktop; the surrounding menu is taller. This represents the existing native-backed inventory widget, not approval for a replacement storage system. Actual game dimensions must fit the available screen/UI scale rather than copy browser pixels literally. The map drawing is positioned independently of intrinsic SVG size to avoid the preview increasing its own height during layout refreshes.
+
+Verified in the browser: right-column placement beneath Stockpile, matching bottom edges, exact action-group membership, retained head subtitles, selection, Grid/Native Map, mouse drag/tap connection, disconnection, Manage handoff, real mobile touch, and no horizontal overflow at 1040/736/390/320 viewport widths. [Checks](../diagnostics/controller-c319/checks.json) and [editable preview source snapshot](../diagnostics/controller-c319/preview-source.html). The sample map remains schematic; no native rendering or connected multiplayer acceptance is claimed. C318's naming/Button fixes remain required and unimplemented in installed 0.2.54.1.
+
+![Taller Controller with Selected Device below Stockpile and separate action groups](../diagnostics/controller-c319/inline.png)
+
+Planning/preview changes only, mirrored through the existing development PR. No gameplay version/install, Workshop upload or merge. **Wait for a patch.**
+
 ## C318 — Visual approved; identity and Button corrections (2026-10-18)
 
 Owner approves the visual, requests more compact Connections with the equipped head below each defense name, and asks to confirm unique names, duplicate numbering, first Button #1 and left-click activation. Owner also authorizes a temporary native light-switch graphic. This settles the visual review requested in C317. The requests are recorded for the next gameplay patch; this checkpoint audits source and updates the preview, without changing the installed build or claiming the missing behavior already works.

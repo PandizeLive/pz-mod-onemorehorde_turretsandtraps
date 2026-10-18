@@ -1680,3 +1680,7 @@ Owner selects 1B / 2B / 3A: Triggers / Defenses, simultaneous lists beside the m
 ## C318 — Visual approved; unique names and Button interaction required
 
 Owner: “I approve the visual,” with compact Connections and head subtitles. Also requests unique turret/trap names, duplicate numbering, first Button #1, left-click activation and a temporary light-switch graphic. [Approval, source audit and next-patch requirements](CONTROLLER_MAP_C316.md#c318--visual-approved-identity-and-button-corrections-2026-10-18). Preview refined and verified; installed 0.2.54.1 remains unchanged. Current source does not yet meet the requested numbering/activation rules. No additional visual approval requested; no native or connected multiplayer test of unimplemented corrections claimed.
+
+## C319 — Taller Controller; right-column details and separated actions
+
+Owner requests Selected Device beneath Stockpile and Connections extended to the bottom, permits additional height, and corrects the mixed Open Manage/Set Aim/View Connections/Unassign row. Restore Controls, Connections, and Access & Assignment groups from the accepted Grouped design. Matching preview input sets list width to 43%. [Updated layout and verification](CONTROLLER_MAP_C316.md#c319--right-column-details-and-restored-action-groups-2026-10-18). Preview and planning only; C318 gameplay corrections remain pending.
