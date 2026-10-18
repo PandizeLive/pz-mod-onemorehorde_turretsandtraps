@@ -1,5 +1,35 @@
 # C316 — Controller map and connection-view discussion
 
+## C318 — Visual approved; identity and Button corrections (2026-10-18)
+
+Owner approves the visual, requests more compact Connections with the equipped head below each defense name, and asks to confirm unique names, duplicate numbering, first Button #1 and left-click activation. Owner also authorizes a temporary native light-switch graphic. This settles the visual review requested in C317. The requests are recorded for the next gameplay patch; this checkpoint audits source and updates the preview, without changing the installed build or claiming the missing behavior already works.
+
+### Verified current gaps
+
+- `ControlClient.name` (line 57) returns custom names unchanged. Automatic turrets append `state.number` without a #; Button and Plate return their generic translated kind. A new Button currently displays **Button**, not Button #1.
+- `ControlWorld.number` (line 618) only allocates a number after Controller assignment, within that Controller and head family. Separate Controllers, unassigned turrets, renamed devices and head/assignment changes do not satisfy world-wide unique display naming. `ControlAction` validates name length/control characters but does not resolve duplicates.
+- `ControlWorld.register` already assigns independent `control-<serial>` keys and preserves a recovered control ID; links use these keys. Bed, barrier and barbed records have separate private IDs. These identifiers must remain distinct from editable display names. Passive trap menus currently show type/facing or local selection numbers rather than persistent unique labels.
+- `ControlClient.world` queues `Pulse` through **right-click / Press**. No Button left-click hook is registered there; the existing `OnObjectLeftMouseButtonDown` callback in `TurretRange` selects turret ranges. Therefore left-click Button activation cannot be confirmed in 0.2.54.1.
+- `OMHTT_Controls.txt` currently uses radio sprites for Button. Installed 42.21 `newtiledefinitions.tiles.txt` defines **lighting_indoor_01_0 through _3** as Light Switch, attached N/W/E/S respectively. This is grounded asset evidence, not rendered acceptance or proof that swapping a sprite cannot inherit native light-switch interaction.
+
+### Required next-patch behavior
+
+- Give every placed turret, trap and trigger an unambiguous display label independent of Controller membership. The first newly created Button in a fresh world is **Button #1**, subsequent Buttons #2, #3, etc. Other families likewise receive numbers; numbering must not restart at each Controller or collide with unloaded devices.
+- Keep actual connection/network IDs unchanged. Store display identity authoritatively; preserve it across save/reload and pickup/replacement. Turret automatic names use their equipped head with the turret's reserved number; changing a head does not change its underlying ID. Controllers retain their existing generic menu title and do not gain a rename requirement.
+- Resolve duplicate custom names with a numbered suffix, treating surrounding whitespace/case as equivalent for conflict checking. Do not rename the original to accommodate a later duplicate. Resolve pre-existing duplicates deterministically once, not whenever a menu opens; retain reservations for packed devices. Naming indexes are updated on placement/rename/head change, with no per-frame world scan.
+- Left-click the **world Button** to queue one existing authoritative Pulse with native approach/reach validation. Retain right-click Press as a fallback. UI marker clicks select a device and must not fire it. Do not bypass permissions or send both native-light and OMHTT actions from one click.
+- Use the native light-switch graphic only as a temporary Button appearance; retain the momentary fire signal. Verify wall orientation, object picking, non-obstruction and interaction behavior in the installed engine before packaging. It must not become a permanent on/off switch or operate room lighting.
+- Compact Connections rows and spacing; show defense name followed by the equipped head in smaller muted text. The preview reduces the desktop row minimum from 64 to 52 px and the workspace minimum from 346 to 306 px. Retain usable link handles and touch targets; long head names can wrap rather than disappear. Preserve the existing Stockpile and selection/details behavior.
+- Passive traps receive identity labels without silently gaining controller receiver behavior. Implement through each family's existing authoritative persistence path, not by turning every trap into a ControlWorld turret.
+
+### Verification and delivery boundary
+
+Revised preview checks pass: all three head subtitles, shorter desktop rows, selection/focus, map background toggle, mouse drag and click/tap linking, disconnection, Manage handoff, real mobile touch and no horizontal overflow at 1040/736/390/320 widths. [Check evidence](../diagnostics/controller-c318/checks.json). Source findings above are a static audit, not an in-game Button test. No shipped Lua changed, so no new Lua/native runtime pass or connected-MP claim is made. Before gameplay delivery, test duplicate placement/rename, head swap, reassignment, pickup/reload, simultaneous MP requests and exactly one Pulse per click.
+
+![Compact Connections with equipped head subtitles](../diagnostics/controller-c318/inline.png)
+
+Current 0.2.54.1/tag/archive remains the saved baseline. No Workshop upload, merge or package/version change in this planning checkpoint. **Wait for a patch.** No additional design approval is requested for the already-approved visual.
+
 ## C317 — Direction selected and interactive layout prepared (2026-10-18)
 
 Owner selects **1B, 2B, 3A**: **Triggers / Defenses** names; **both connected lists beside the map simultaneously**; **Grid / Native Map** background toggle. These selections supersede the earlier recommendations for Inputs/Outputs and mutually exclusive Map/Connections views. Do not quietly restore those rejected recommendations.

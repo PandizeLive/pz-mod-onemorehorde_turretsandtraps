@@ -1675,4 +1675,8 @@ Owner requests preserving the current menu/Stockpile and discussing map-based co
 
 ## C317 — Controller layout direction selected
 
-Owner selects 1B / 2B / 3A: Triggers / Defenses, simultaneous lists beside the map, Grid / Native Map toggle. Stockpile and existing 0.2.54.1 baseline stay preserved. [Contract and concrete preview](CONTROLLER_MAP_C316.md#c317--direction-selected-and-interactive-layout-prepared-2026-10-18). Production implementation is not yet approved.
+Owner selects 1B / 2B / 3A: Triggers / Defenses, simultaneous lists beside the map, Grid / Native Map toggle. Stockpile and existing 0.2.54.1 baseline stay preserved. [Contract and concrete preview](CONTROLLER_MAP_C316.md#c317--direction-selected-and-interactive-layout-prepared-2026-10-18). Production implementation is not yet approved at this checkpoint.
+
+## C318 — Visual approved; unique names and Button interaction required
+
+Owner: “I approve the visual,” with compact Connections and head subtitles. Also requests unique turret/trap names, duplicate numbering, first Button #1, left-click activation and a temporary light-switch graphic. [Approval, source audit and next-patch requirements](CONTROLLER_MAP_C316.md#c318--visual-approved-identity-and-button-corrections-2026-10-18). Preview refined and verified; installed 0.2.54.1 remains unchanged. Current source does not yet meet the requested numbering/activation rules. No additional visual approval requested; no native or connected multiplayer test of unimplemented corrections claimed.
