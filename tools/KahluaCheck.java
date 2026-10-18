@@ -311,6 +311,7 @@ public final class KahluaCheck {
             {"OMHTT/TurretNetworkView", base + "client/OMHTT/TurretNetworkView.lua"},
             {"OMHTT/TurretMagazineAction", base + "shared/OMHTT/TurretMagazineAction.lua"},
             {"OMHTT/ControlTheme", base + "client/OMHTT/ControlTheme.lua"},
+            {"OMHTT/SlotHint", base + "client/OMHTT/SlotHint.lua"},
             {"OMHTT/TurretSlot", base + "client/OMHTT/TurretSlot.lua"},
             {"OMHTT/TurretAim", base + "shared/OMHTT/TurretAim.lua"},
             {"OMHTT/TurretRenderer", base + "client/OMHTT/TurretRenderer.lua"},
@@ -452,6 +453,7 @@ public final class KahluaCheck {
             {"_", "tools/tests/corrections_c300.lua"},
             {"_", System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid") + "/media/lua/client/ISUI/ISInventoryItem.lua"},
             {"_", "tools/tests/control_batteries.lua"},
+            {"_", "tools/tests/slot_hints.lua"},
             {"_", "tools/tests/native_stockpile_ui_setup.lua"},
             {"_", System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid") + "/media/lua/client/ISUI/ISInventoryPane.lua"},
             {"OMHTT/ControlStockpilePane", base + "client/OMHTT/ControlStockpilePane.lua"},
@@ -477,6 +479,14 @@ public final class KahluaCheck {
                     String nativeLua = Files.readString(ui);
                     String source = nativeLua.substring(nativeLua.indexOf("function ISUIElement:setScrollChildren(b)"), nativeLua.indexOf("function ISUIElement:getScrollChildren()"));
                     source = source.replace("ISUIElement:", "ISPanel:");
+                    Object nativeChunk = compile.invoke(null, new java.io.StringReader(source), ui.toString(), env);
+                    call.invoke(thread, nativeChunk, new Object[0]);
+                }
+                if (stage[1].equals("tools/tests/slot_hints.lua")) {
+                    Path ui = Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/client/ISUI/ISUIElement.lua");
+                    String nativeLua = Files.readString(ui);
+                    String source = nativeLua.substring(nativeLua.indexOf("function ISUIElement:drawTextureScaledAspect("), nativeLua.indexOf("function ISUIElement:drawTextureScaledAspect2("));
+                    source = source.replace("function ISUIElement:drawTextureScaledAspect(", "function testNativeHintDraw(self, ");
                     Object nativeChunk = compile.invoke(null, new java.io.StringReader(source), ui.toString(), env);
                     call.invoke(thread, nativeChunk, new Object[0]);
                 }

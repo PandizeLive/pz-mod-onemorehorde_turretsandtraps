@@ -14,8 +14,9 @@ local function item(kind,stored)
     return {getFullType=function() return kind end,getContainer=function() return stored and container or {} end}
 end
 local slot=Slot.create(owner,0,0,340,64)
-slot.drawScriptItemIcon=function(_,value,x,y,alpha,w,h)
-    check(value==script and alpha==.3 and w==28 and h==28,"Empty slot uses faded native battery icon, without creating an inventory item")
+slot.drawTextureScaledAspect=function(_,texture,x,y,w,h,alpha,r,g,b)
+    check(texture==slot.hintTexture and alpha==.85 and r==0 and g==0 and b==0 and w==28 and h==28,
+        "Controller empty slot uses normal Battery texture tinted black, without creating an item")
 end
 slot:refreshCount()
 slot:prerender()

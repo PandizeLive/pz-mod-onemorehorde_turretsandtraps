@@ -1,5 +1,9 @@
 # Decision register
 
+## C305 — Implement context-aware empty-slot silhouettes (2026-10-17)
+
+Owner says "Patch" after selecting C304/1A. This authorizes immediate implementation using existing normal icons tinted black, overriding the earlier future-art scheduling. Preserve native texture alpha, category labels, current-head ammo/removable-magazine matching, built-in/locked/not-needed distinctions and empty Void requirements. Ordinary filled slots retain real items and color. Use cached texture references and native drawing; no extra PNGs, dummy hint items, per-frame lookup/scan or multiplayer messages. Keep the grey theme, existing multiple Controller batteries and capacity rules. Placeholder custom icons remain until owner art replaces them. [Patch](PATCH_v0.2.53.9.md) and [test/evidence](TEST_v0.2.53.9.md) distinguish automated verification from pending visual/connected acceptance.
+
 ## C304 — context-aware silhouettes from normal icons, 2026-10-17
 
 Owner: "1A if it can be done by taking normal icons and blacking them out." Select1A with black tint applied to existing icon textures, preserving alpha and original artwork. [Native feasibility evidence and contract](UI_EMPTY_SLOT_HINTS_C303.md#c304--normal-icons-blacked-out-2026-10-17). No extra silhouette files, generated art, inventory items or per-frame image processing. Retain the original future icon/art-pass timing and compatibility exceptions. Native API feasibility is confirmed; rendered readability still needs checking after implementation. No new patch or gameplay acceptance is inferred.

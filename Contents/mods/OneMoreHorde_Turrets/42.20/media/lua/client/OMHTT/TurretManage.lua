@@ -12,6 +12,7 @@ local View = require("OMHTT/TurretNetworkView")
 local G = require("OMHTT/Firearms")
 local Magazine = require("OMHTT/TurretMagazineAction")
 local Slot = require("OMHTT/TurretSlot")
+local Hint = require("OMHTT/SlotHint")
 local Range = require("OMHTT/TurretRange")
 local Benefits = require("OMHTT/TurretBenefits")
 local BenefitList = require("OMHTT/TurretBenefitList")
@@ -281,7 +282,7 @@ function Panel:refresh()
     local loaded = stats.firearm and G.loaded(contents.head) or 0
     local physicalLimit, freeWeight = require("OMHTT/TurretCapacity").limit(storage, contents, stats)
     self.ammoSlot.detailText = getText("UI_OMHTT_AmmoPhysical", stats.ammo, physicalLimit, string.format("%.1f", freeWeight))
-    self.headSlot.detailText = contents.head and require("OMHTT/TurretHeadDescription").get(contents.head, true, stats) or nil
+    self.headSlot.detailText = contents.head and require("OMHTT/TurretHeadDescription").get(contents.head, true, stats) or getText("UI_OMHTT_EmptyHeadHint")
     self.ammoSlot.label = getText("UI_OMHTT_ManageReserve", contents.reserveAll, physicalLimit)
     local gun = stats.firearm and contents.head or nil
     local magazineType = gun and gun:getMagazineType()
@@ -332,6 +333,23 @@ function Panel:refresh()
     self.voidSlot.subtext = getText("UI_OMHTT_AmmoTypes", voidTypes)
     local nextShot = cycle and cycle.loaded and cycle.loaded > 0 and (cycle.payload or contents.payloadType)
     self.magazineSlot.summary = getText("UI_OMHTT_NextShot", label(nextShot))
+    self.magazineSlot.subtext = nil
+    local ammoHint = contents.head and not stats.rotary and contents.payloadType or nil
+    if stats.headKind == "Lobber" and not require("OMHTT/TurretAmmo").bombs[ammoHint] then
+        ammoHint = require("OMHTT/TurretFeed").BOMBS[1]
+    end
+    Hint.set(self.ammoSlot, not firstAmmo and ammoHint or nil)
+    Hint.set(self.voidSlot, contents.void and not firstVoid and ammoHint or nil)
+    Hint.set(self.magazineSlot, magazineType and not gun:isContainsClip() and magazineType or nil)
+    if not contents.head then
+        self.ammoSlot.summary = getText("UI_OMHTT_ManageNoHead")
+    elseif not magazineType and not stats.rotary then
+        self.magazineSlot.subtext = getText("UI_OMHTT_ManageInternal")
+    end
+    if not contents.void then
+        self.voidSlot.summary = getText("UI_OMHTT_VoidRequired")
+        self.voidSlot.subtext = nil
+    end
     self.loadOrderButton:setEnable(true)
     self.reloadButton:setEnable(power ~= nil and T.isOn(state) and require("OMHTT/TurretReload").allowed(contents, stats))
     self.voidSlot.detailText = require("OMHTT/TurretVoid").description(contents.void, contents.head, true)

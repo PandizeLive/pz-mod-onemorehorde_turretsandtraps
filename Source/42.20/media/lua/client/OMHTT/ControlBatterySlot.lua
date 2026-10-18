@@ -8,6 +8,7 @@ local A = require("OMHTT/ControlAccess")
 local Transfer = require("OMHTT/ControlTransferAction")
 local Theme = require("OMHTT/ControlTheme")
 local Battery = require("OMHTT/TurretBattery")
+local Hint = require("OMHTT/SlotHint")
 local Slot = ISPanel:derive("OMHTTControlBatterySlot")
 
 ---@return nil
@@ -176,8 +177,8 @@ function Slot:prerender()
     if self.item then
         ISInventoryItem.renderItemIcon(self, self.item, 8, h + 6, 1, 28, 28)
         name = self.item:getDisplayName() .. " " .. tostring(math.floor(charge * 100)) .. "%"
-    elseif self.batteryScript then
-        ISInventoryItem.renderScriptItemIcon(self, self.batteryScript, 8, h + 6, .3, 28, 28)
+    else
+        Hint.draw(self, 8, h + 6, 28)
     end
     self:setStencilRect(40, h + 6, self.width - 48, h + 4)
     self:drawText(name, 40, h + 6, 1, 1, 1, 1, UIFont.Small)
@@ -193,7 +194,7 @@ end
 function Slot.create(owner, x, y, width, height)
     local slot = Slot:new(x, y, width, height)
     slot.owner = owner
-    slot.batteryScript = getScriptManager():getItem("Base.Battery")
+    Hint.set(slot, "Base.Battery")
     slot.countDirty = true
     slot.backgroundColor = {r = .06, g = .06, b = .06, a = 1}
     slot.borderColor = {r = .3, g = .3, b = .3, a = .6}

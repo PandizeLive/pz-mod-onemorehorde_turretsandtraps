@@ -1,5 +1,7 @@
 # Empty-slot item hints — C303 / C304
 
+**C305 update:** Owner subsequently says "Patch", superseding the future-art timing below. Implement now using existing normal icons; final art remains owner-sourced. See [0.2.53.9](PATCH_v0.2.53.9.md) for delivery and verification. Earlier discussion below is historical provenance.
+
 2026-10-17. Owner asks to discuss extending silhouettes to Head, Ammo, Magazine, Expansion and other empty slots once icons/art are supplied. C303 opened the future UI proposal; C304 below selects its approach for the future icon/art pass. Based on `codex/performance-barbed-audit` at `fa54716b9ed2a7734bc52307d1d5efc48531d2d6`; fetched origin/dev and reviewed open PR1. Installed0.2.53.8 remains unchanged and its acceptance remains pending.
 
 ## Selected approach and alternative

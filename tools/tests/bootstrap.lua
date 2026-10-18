@@ -359,6 +359,8 @@ function getScriptManager()
         getItem = function(_, fullType)
             if fullType == "Base.SpearCrafted" then
                 return {containsWeaponCategory = function() return true end,
+                    getNormalTexture = function() return nil end, getIconsForTexture = function() return nil end,
+                    getDisplayName = function() return "Wooden Spear" end,
                     getMinDamage = function() return 1 end, getMaxDamage = function() return 1 end}
             end
         end}

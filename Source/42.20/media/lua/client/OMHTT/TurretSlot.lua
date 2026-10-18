@@ -4,6 +4,7 @@ require("ISUI/ISInventoryPane")
 require("ISUI/ISToolTipInv")
 require("ISUI/ISToolTip")
 local T = require("OMHTT/Turret")
+local Hint = require("OMHTT/SlotHint")
 local Slot = ISPanel:derive("OMHTTTurretSlot")
 
 ---@return nil
@@ -139,10 +140,14 @@ function Slot:prerender()
     if self.missing then self:drawRectBorder(0, 0, self.width, self.height, 1, 1, 0.3, 0.3) end
     if self.summary then
         local right = self.textInsetRight or 0
+        if self.hintTexture and not self.disabled then
+            Hint.draw(self, self.width - right - 36, h + 6, 28)
+            right = right + 36
+        end
         local clipX, clipY, clipW, clipH = self:clampStencilRectToParent(8, h + 3, self.width - 16 - right, self.height - h - 5)
         self:drawText(self.summary, 8, h + 4, 1, 1, 1, 1, UIFont.Small)
         if self.subtext then
-            self:drawText(self.subtext, 8, h * 2 + 6, .75, .75, .75, 1, UIFont.Small)
+            self:drawText(self.subtext, 8, h * 2 + 4, .75, .75, .75, 1, UIFont.Small)
         end
         self:clearStencilRect()
         self:repaintStencilRect(clipX, clipY, clipW, clipH)
@@ -171,6 +176,12 @@ function Slot:prerender()
             if key then name = getText("UI_OMHTT_Module" .. key) end
         end
         if #self.items > 1 then name = tostring(#self.items) .. " x " .. name end
+    elseif not self.disabled then
+        if self.kind == "module" then
+            Hint.draw(self, narrowModule and 4 or self.width / 2 - 8, narrowModule and 5 or (self.compact and 6 or h + 2), 16)
+        else
+            Hint.draw(self, 8, h + 8, 32)
+        end
     end
     local textX, textY = self.kind == "void" and 8 or 44, h + 8
     if self.kind == "module" then textX, textY = 4, math.min(h + 20, self.height - h - 2) end
@@ -215,6 +226,15 @@ function Slot:new(owner, kind, label, x, y, width, height)
     slot.owner, slot.kind, slot.label, slot.items = owner, kind, label, {}
     slot.borderColor = {r = .22, g = .22, b = .22, a = .5}
     slot.backgroundColor = {r = 0.08, g = 0.08, b = 0.08, a = 1}
+    if kind == "head" then
+        Hint.set(slot, T.HEAD)
+    elseif kind == "battery" then
+        Hint.set(slot, "Base.CarBattery1")
+    elseif kind == "capacity" then
+        Hint.set(slot, T.TYPES.CapacitySmall)
+    elseif kind == "module" then
+        Hint.set(slot, T.TYPES.Firing)
+    end
     return slot
 end
 

@@ -88,6 +88,12 @@ check(completed and not inventory.visible and not inventory.pinned, "Manage leav
 local panel = testTurretPanel
 panel:prerender()
 check(not panel.fireButton.enabled and panel.status == "NoHead", "Empty base cannot fire")
+check(panel.headSlot.hintType==T.HEAD and panel.batterySlot.hintType=="Base.CarBattery1"
+    and panel.capacitySlot.hintType==T.TYPES.CapacitySmall and panel.moduleSlots[1].hintType==T.TYPES.Firing,
+    "Empty equipment hints resolve existing category icons")
+check(not panel.ammoSlot.hintType and not panel.magazineSlot.hintType and not panel.voidSlot.hintType
+    and panel.ammoSlot.summary==getText("UI_OMHTT_ManageNoHead")
+    and panel.voidSlot.summary==getText("UI_OMHTT_VoidRequired"), "Headless/absent Void slots explain requirements without false drop hints")
 check(#panel.slots == 22 and panel.height <= 720 and panel.x >= 0, "Sixteen module slots, Void storage and controls fit 1280x720")
 require("OMHTT/TurretManageExtras").refresh(panel, {active = {Lure = 1}}, {headKind = "Lobber", minimumRange = 6, range = 18})
 check(panel.height + panel.y <= 720 and panel.lureSlider.visible and panel.landingSlider.visible,
@@ -222,6 +228,8 @@ panel:refresh()
 check(#panel.ammoSlot.items == 2 and panel.batterySlot.items[1] == battery, "Slots expose actual container items")
 check(not panel.headSlot.missing and not panel.batterySlot.missing and not panel.modulesMissing, "Manual turret without automation modules has no missing-module warning")
 check(panel.magazineSlot.disabled and not panel.magazineSlot.missing, "Potato uses an internal magazine")
+check(not panel.ammoSlot.hintType and not panel.magazineSlot.hintType
+    and panel.magazineSlot.subtext==getText("UI_OMHTT_ManageInternal"), "Populated reserve and built-in magazine do not advertise empty insert slots")
 W.power = function() return nil end
 panel:refresh()
 check(panel.batterySlot.missing, "No usable power highlights the battery")
@@ -247,6 +255,20 @@ carried.room = false
 check(X.rejection(player, head, storage, carried) == "TransferFull", "Full player inventory blocks removal")
 carried.room = true
 panel:refresh()
+check(panel.ammoSlot.hintType=="Base.Potato", "Empty potato reserve resolves the accepted ammo icon")
+local hintHeads={"Base.OMHTTTurretBallista","Base.OMHTTTurretScrapshot","Base.OMHTTTurretLobber","Base.OMHTTTurretRotaryBat","Base.OMHTTTurretRotaryBlades"}
+local hintAmmo={"Base.SpearCrafted","Base.ScrapMetal","Base.OMHTTAmmoMakeshiftBomb",false,false}
+for i=1,#hintHeads do
+    head.fullType=hintHeads[i];panel:refresh()
+    check((panel.ammoSlot.hintType or false)==hintAmmo[i] and not panel.magazineSlot.hintType,
+        "Head swap refreshes ammo family without pretending built-in magazines are removable: "..hintHeads[i])
+end
+head.fullType=T.HEAD;panel:refresh()
+local voidHintItem=item(T.TYPES.Void)
+storage:AddItem(voidHintItem);panel:refresh()
+check(panel.voidSlot.hintType=="Base.Potato" and not panel.voidSlot.disabled, "Installed empty Void hints current-head ammunition, not a module")
+storage:Remove(voidHintItem);panel:refresh()
+check(not panel.voidSlot.hintType and panel.voidSlot.disabled, "Removing Void clears its ammo hint immediately")
 panel.batterySlot:onMouseDown(1, 1)
 check(ISMouseDrag.dragging[1] == battery and ISMouseDrag.draggingFocus == panel.batterySlot, "Drag out exposes exact battery to native inventory")
 local oldSpecific, oldCore, oldShift, oldControl = getSpecificPlayer, getCore, isShiftKeyDown, isCtrlKeyDown
@@ -365,6 +387,8 @@ function pistol:getAimingPerkHitChanceModifier() return 4 end
 storage:Remove(head); storage:AddItem(pistol)
 panel:refresh()
 check(panel.magazineSlot.missing and not panel.magazineSlot.disabled and panel.status == "NoMagazine", "Pistol exposes missing detachable magazine")
+check(panel.magazineSlot.hintType=="Base.9mmClip" and panel.ammoSlot.hintType=="Base.Bullets9mm",
+    "Firearm hints resolve exact magazine and calibre even with leftover incompatible ammo")
 local magazine = item("Base.9mmClip")
 function magazine:getCurrentAmmoCount() return 7 end
 function magazine:setCurrentAmmoCount(value) self.rounds = value end
