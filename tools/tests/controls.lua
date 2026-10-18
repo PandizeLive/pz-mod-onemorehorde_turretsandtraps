@@ -23,7 +23,10 @@ local stranger = setmetatable({name = "outsider"}, {__index = owner})
 local made = {}
 local function device(kind, x, y)
     local square = x == 1910 and y == 1910 and root or makeSquare(x, y, 0)
-    local object = {square = square, data = {}, health = 100, index = 0, turret = {powered = false}}
+    local object = {kind = "IsoThumpable", square = square, data = {}, health = 100, index = 0, turret = {powered = false}}
+    function object:setCanPassThrough(value) self.passThrough = value end
+    function object:setBlockAllTheSquare(value) self.blockAll = value end
+    function object:setIsThumpable(value) self.thumpable = value end
     function object:getSquare() return self.square end
     function object:getSpriteName() return self.sprite or "control-test-" .. kind end
     function object:setSpriteFromName(value) self.sprite=value end
@@ -97,6 +100,17 @@ check(pulse:complete() and not pulse:complete() and target.shots == 2, "Anyone p
 testMillis = testMillis + 100
 C.receiver(target, testMillis)
 check(not target.turret.powered and target.shots == 2, "Pulse ends without repeated or queued firing")
+target.turret.facingPending = true
+C.pulse(target)
+check(target.turret.powered and target.shots == 2 and output.facingPulse, "Button holds one explicit shot through a pending direction turn")
+target.turret.facingPending = nil
+testMillis = testMillis + 100
+C.receiver(target, testMillis)
+check(target.shots == 3 and not output.facingPulse and output.pulseHoldUntil == testMillis + 1, "Aligned button fires once and ends temporary turning power")
+testMillis = testMillis + 100
+C.receiver(target, testMillis)
+check(not target.turret.powered and target.shots == 3, "Pending turn cannot leave automatic fire powered")
+target.shots = 2
 input.active, input.recoverAt = true, testMillis + 1000
 local linked, active = C.input(target, testMillis)
 check(linked and not active, "One-second recovery prevents stale activation")
@@ -104,6 +118,9 @@ input.recoverAt = testMillis - 1
 C.removed(plate)
 linked, active = C.input(target, testMillis)
 check(linked and not active, "Unloaded input fails off")
+local sameSpriteFloor = setmetatable({kind="IsoObject"},{__index=plate})
+C.bind(sameSpriteFloor)
+check(C.state(sameSpriteFloor)==nil,"Ordinary floor sharing the plate sprite cannot inherit its saved identity")
 C.bind(plate)
 check(not C.state(plate).active and C.state(plate).recoverAt > testMillis, "Reload reconstructs occupancy after grace period")
 local limited, limitedState = device("Plate", 1910, 1910)

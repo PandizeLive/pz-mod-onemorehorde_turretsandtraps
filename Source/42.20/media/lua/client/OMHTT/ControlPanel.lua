@@ -5,6 +5,7 @@ require("ISUI/ISScrollingListBox")
 require("ISUI/ISTextEntryBox")
 local A = require("OMHTT/ControlAccess")
 local U = require("OMHTT/ControlClient")
+local C = require("OMHTT/ControlDefinitions")
 local Panel = ISPanel:derive("OMHTTControllerPanel")
 local Drag = require("OMHTT/ControlWindowDrag")
 local Theme = require("OMHTT/ControlTheme")
@@ -83,6 +84,10 @@ end
 
 ---@return nil
 function Panel:close()
+    self.closed = true
+    if self.cursor and getCell():getDrag(self.player:getPlayerNum()) == self.cursor then
+        getCell():setDrag(nil, self.player:getPlayerNum())
+    end
     self.nameEntry:commit()
     if self.stockWing then
         self.stockWing:close()
@@ -123,6 +128,9 @@ function Panel:prerender()
         if state and self.selected ~= self.object then
             U.remote(self.player, self.object, self.selected)
         end
+        if self.linkSource and self.linkSource ~= self.selected then
+            U.remote(self.player, self.object, self.linkSource)
+        end
         require("OMHTT/ControlPanelLayout").snapshot(self)
     end
     require("OMHTT/ControlPanelLayout").refresh(self, state)
@@ -138,7 +146,12 @@ function Panel:prerender()
     self.assign:setEnable(state ~= nil and self.selected ~= self.object and host.kind == "Controller"
         and host.powered == true and A.write(self.player, host) and A.write(self.player, state))
     self.link:setEnable(linkable == true)
-    self.unlink:setEnable(linkable == true)
+    self.setFacing:setEnable(state ~= nil and state.kind == "Turret"
+        and A.write(self.player, host) and A.write(self.player, state)
+        and require("OMHTT/ControlRemote").valid(self.player, self.object, self.selected))
+    self.link:setTitle(getText(C.linked(A.state(self.linkSource), state)
+        and "UI_OMHTT_DisconnectInput" or "UI_OMHTT_ConnectInput"))
+    self.source:setTitle(getText(self.linkSource == self.selected and "UI_OMHTT_InputSelected" or "UI_OMHTT_SelectInput"))
     self.source:setEnable(writable == true and (state.kind == "Plate" or state.kind == "Button"))
     self.trigger:setEnable(writable == true and state.kind == "Plate")
     self.clearInputs:setEnable(writable == true and state.kind == "Turret")
@@ -149,7 +162,7 @@ function Panel:prerender()
     self.manage:setVisible(state ~= nil and state.kind == "Turret")
     self.assign:setVisible(state ~= nil and self.selected ~= self.object and host.kind == "Controller")
     self.link:setVisible(state ~= nil and state.kind == "Turret" and self.linkSource ~= nil)
-    self.unlink:setVisible(state ~= nil and state.kind == "Turret" and self.linkSource ~= nil)
+    self.setFacing:setVisible(state ~= nil and state.kind == "Turret" and host.kind == "Controller")
     local remoteReason
     if host.powered ~= true then
         remoteReason = getText("UI_OMHTT_ControllerPowerNeeded")
@@ -175,7 +188,13 @@ function Panel:prerender()
     self.clearInputs.tooltip = getText("UI_OMHTT_ControllerReachNeeded")
     self.source.tooltip = self.clearInputs.tooltip
     self.link.tooltip = self.clearInputs.tooltip
-    self.unlink.tooltip = self.link.tooltip
+    self.setFacing.tooltip = self.setFacing.enable and getText("UI_OMHTT_SetFacingTooltip") or remoteReason
+    if self.link.enable then
+        self.link.tooltip = getText("UI_OMHTT_LinkPowerHint")
+    end
+    if self.source.enable then
+        self.source.tooltip = getText("UI_OMHTT_SelectReceiverHint")
+    end
     self.policy:setTitle(getText("UI_OMHTT_Access", state and state.access or "—"))
     self.assign:setTitle(getText(state and state.controller == host.id and "UI_OMHTT_Unassign" or "UI_OMHTT_Assign"))
 
@@ -221,17 +240,18 @@ function Panel.open(player, object)
         end
         self.scanDue = 0
     end)
-    panel.source = button(panel, 274, 292, 166, getText("UI_OMHTT_SelectInput"), function(self) self.linkSource = self.selected end)
-    panel.link = button(panel, 450, 292, 166, getText("UI_OMHTT_LinkInput"), function(self)
-        if self.linkSource and self.selected then
-            U.remote(self.player, self.object, self.linkSource)
-            U.command(self.player, self.linkSource, "Link", true, self.selected)
-        end
+    panel.setFacing = button(panel, 274, 282, 246, getText("UI_OMHTT_SetFacing"), function(self)
+        require("OMHTT/TurretFacingCursor").start(self)
     end)
-    panel.unlink = button(panel, 626, 292, 164, getText("UI_OMHTT_UnlinkInput"), function(self)
+    panel.source = button(panel, 274, 292, 166, getText("UI_OMHTT_SelectInput"), function(self)
+        self.linkSource = self.selected
+        U.remote(self.player, self.object, self.linkSource)
+    end)
+    panel.link = button(panel, 450, 292, 166, getText("UI_OMHTT_ConnectInput"), function(self)
         if self.linkSource and self.selected then
             U.remote(self.player, self.object, self.linkSource)
-            U.command(self.player, self.linkSource, "Link", false, self.selected)
+            local linked = C.linked(A.state(self.linkSource), A.state(self.selected))
+            U.command(self.player, self.linkSource, "Link", not linked, self.selected)
         end
     end)
     panel.policy = button(panel, 274, 386, 246, "Private / Faction / Public", function(self)

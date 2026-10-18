@@ -2,6 +2,8 @@
 
 2026-10-17. Owner says the current patch appears to work and confirms pressure-plate activation. Linking was confusing; zombies thumped the plates. Owner requests a Controller action to select a turret, click a world point and aim toward it. Include these in the next patch; this turn records findings and design, without installing another build.
 
+**C308:** Owner subsequently says "Patch". Implemented in [0.2.53.10](PATCH_v0.2.53.10.md); [verification/delivery](TEST_v0.2.53.10.md) tracks acceptance separately.
+
 ## Findings and scope
 
 - **Pressure plates:** apply native pass-through, non-thumpable behavior to new and already-placed plates, including registration/reload and multiplayer replication. Use this as the rule for future passive beam/laser and other sensors. This does not change Controller durability or make every defense invulnerable. Preserve occupancy, signals, player pickup/repair and exact persisted identity. `ControlWorld.create` currently sets `setCanPassThrough(true)` and `setBlockAllTheSquare(false)`, but never `setIsThumpable(false)`. Installed 42.21 `media/lua/server/Traps/BuildingObjects/TrapBO.lua:19` uses that third setting for native pass-through snares. This supports the proposed correction; persistence/client application still need implementation checks.

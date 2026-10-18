@@ -153,6 +153,27 @@ function W.setPower(player, object, enabled)
     return W.applyPower(object, enabled, player)
 end
 
+---@param object IsoObject Authorized turret
+---@param degrees number Validated world heading
+---@return boolean changed
+function W.setFacing(object, degrees)
+    if not W.valid(object) or type(degrees) ~= "number" or not (degrees >= 0 and degrees < 360) then return false end
+    local state = T.state(object)
+    state.facingDegrees, state.facingPending = degrees, true
+    local control = require("OMHTT/ControlWorld").state(object)
+    if control and control.facingPulse then
+        control.facingPulse, control.facingPulseTail, control.pulseHoldUntil = nil, nil, nil
+    end
+    require("OMHTT/TurretAim").entries[object] = nil
+    local search = require("OMHTT/TurretSearch").pending[object]
+    if search then
+        search.cancelled = true
+    end
+    W.refresh(object)
+    Authority.publish(object)
+    return true
+end
+
 ---@param object IsoObject Turret
 ---@param enabled boolean Actual power switch
 ---@param player IsoPlayer? Operator; nil for authoritative signals
@@ -247,6 +268,7 @@ function W.onCreate(params)
     object:setMaxHealth(state.maxHealth)
     object:setHealth(state.condition)
     state.baseFacing = state.facing
+    state.facingDegrees, state.facingPending = nil, nil
     state.aimDegrees = state.baseFacing * 22.5
     object:setBlockAllTheSquare(true)
     object:setCanPassThrough(true)
@@ -445,6 +467,7 @@ function W.fire(player, object, target, signal)
     if isClient() then return "Unavailable" end
     local started = getTimestampMs()
     if not T.isOn(T.state(object)) then return "Off" end
+    if T.state(object).facingPending then return "Turning" end
     if player then
         if not W.near(player, object) then return "Unavailable" end
     elseif (not target and not signal) or not W.valid(object) then
@@ -619,6 +642,9 @@ function W.feedTick()
                 if contents.head then
                     local stats = T.cycleConfig(contents)
                     if W.valid(object) and T.isOn(state) and W.power(object, contents, stats) then
+                        if state.facingPending then
+                            require("OMHTT/TurretAim").face(object, contents)
+                        end
                         local cycle, status
                         if G.profile(contents.head) then
                             cycle, status = require("OMHTT/TurretFeed").update(contents, stats, now, true)

@@ -70,7 +70,20 @@ object.data.OMHTTControl.powered=true
 panel:prerender()
 check(panel.assign.enabled and not panel.manage.enabled and panel.manage.tooltip==getText("UI_OMHTT_ControllerAssignNeeded"),
     "Powered Controller exposes Assign before remote Manage")
+turret.data.OMHTTControl.controller=object.data.OMHTTControl.id
+panel:prerender()
+check(panel.setFacing.enabled and panel.setFacing.visible,"Assigned writable turret exposes Set Facing")
+check(panel.setFacing.y >= panel.manage.y + panel.manage.height
+    and panel.policy.y > panel.setFacing.y + panel.setFacing.height,"Facing button has its own row without section overlap")
+local source=setmetatable({data={OMHTTControl={id="ui-input",kind="Plate",owner="ui-owner",links={}}}}, {__index=object})
+panel.linkSource=source
 A.near=function() return true end
+panel:prerender()
+check(panel.link.visible and panel.link.title==getText("UI_OMHTT_ConnectInput") and not panel.unlink,"Unlinked receiver has one Connect action")
+source.data.OMHTTControl.links={"ui-turret"}
+panel:prerender()
+check(panel.link.title==getText("UI_OMHTT_DisconnectInput"),"Existing connection changes the same action to Disconnect")
+panel.linkSource=nil
 panel.devices.selected=1
 panel:prerender()
 local oldInventory,oldLoot=getPlayerInventory,getPlayerLoot

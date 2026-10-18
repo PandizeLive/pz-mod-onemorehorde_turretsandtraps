@@ -1,9 +1,32 @@
 local C = {}
+C.passiveKinds = {Plate = true}
 C.types = {
     Controller = "Base.OMHTTTrapController",
     Plate = "Base.OMHTTTrapPressurePlate",
     Button = "Base.OMHTTTrapButton",
 }
+
+---@param object IsoThumpable Passive sensor
+---@param kind string Device family
+---@return nil
+function C.passive(object, kind)
+    if not C.passiveKinds[kind] then return end
+    object:setCanPassThrough(true)
+    object:setBlockAllTheSquare(false)
+    object:setIsThumpable(false)
+end
+
+---@param source table? Input state
+---@param target table? Receiver state
+---@return boolean linked
+---@nodiscard
+function C.linked(source, target)
+    if not source or not target then return false end
+    for i = 1, #source.links do
+        if source.links[i] == target.id then return true end
+    end
+    return false
+end
 
 ---@param params table Native construction context
 ---@return boolean valid

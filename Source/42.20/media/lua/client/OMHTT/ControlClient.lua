@@ -206,6 +206,30 @@ function ISInventoryTransferAction:new(player, item, source, destination, time)
     return nativeTransfer(self, player, item, source, destination, time)
 end
 
+---@param object IsoObject Replicated or loaded sensor
+---@return nil
+function U.passive(object)
+    if not isClient() or not instanceof(object, "IsoThumpable") then return end
+    local state = A.state(object)
+    if state then
+        C.passive(object, state.kind)
+    end
+end
+
+---@param square IsoGridSquare Loaded square
+---@return nil
+function U.loaded(square)
+    if not isClient() then return end
+    local objects = square:getObjects()
+    for i = 0, objects:size() - 1 do
+        U.passive(objects:get(i))
+    end
+end
+
+if isClient() then
+    Events.LoadGridsquare.Add(U.loaded)
+    Events.OnObjectAdded.Add(U.passive)
+end
 Events.OnFillInventoryObjectContextMenu.Add(U.inventory)
 Events.OnFillWorldObjectContextMenu.Add(U.world)
 return U

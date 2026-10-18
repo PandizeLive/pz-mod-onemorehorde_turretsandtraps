@@ -65,13 +65,11 @@ function L.create(panel)
     place(panel.source, x, panel.connectionY + h * 3, half)
     place(panel.trigger, x + half + 8, panel.connectionY + h * 3, half)
     place(panel.link, x, panel.connectionY + h * 3, half)
-    place(panel.unlink, x + half + 8, panel.connectionY + h * 3, half)
     place(panel.clearInputs, x, panel.connectionY + h * 3 + 36, width)
     place(panel.stockButton, panel.controlWidth / 2 + 10, panel.equipmentY + h * 3 + 12, panel.controlWidth / 2 - 34)
     panel.manage:setTitle(getText("UI_OMHTT_OpenManage"))
     panel.source:setTitle(getText("UI_OMHTT_SelectInput"))
     panel.link:setTitle(getText("UI_OMHTT_LinkInput"))
-    panel.unlink:setTitle(getText("UI_OMHTT_UnlinkInput"))
     panel.clearInputs:setTitle(getText("UI_OMHTT_ClearInputs"))
     Theme.button(panel.manage)
     panel.stockButtonY = panel.stockButton.y
@@ -84,7 +82,7 @@ function L.create(panel)
     panel:addChild(body)
     body:setScrollChildren(true)
     body:addScrollBars(false)
-    local controls = {panel.nameEntry, panel.manage, panel.assign, panel.policy, panel.source, panel.trigger, panel.link, panel.unlink, panel.clearInputs}
+    local controls = {panel.nameEntry, panel.manage, panel.assign, panel.setFacing, panel.policy, panel.source, panel.trigger, panel.link, panel.clearInputs}
     for i = 1, #controls do
         local control = controls[i]
         panel:removeChild(control)
@@ -117,6 +115,10 @@ function L.refresh(panel, state)
     place(panel.manage, x, actionY, half)
     place(panel.assign, x + half + 8, actionY, half)
     local access = actionY + ((kind == "Turret" or assigned) and row + 12 or 0)
+    place(panel.setFacing, x, access, width)
+    if kind == "Turret" and A.state(panel.object).kind == "Controller" then
+        access = access + row + 12
+    end
     panel.accessY = body.y + access
     place(panel.policy, x, access + h + 8, width)
     panel.policy:setHeight(row)
@@ -126,10 +128,9 @@ function L.refresh(panel, state)
     local controlsY = connection + h * 3 + 12
     place(panel.source, x, controlsY, half)
     place(panel.trigger, x + half + 8, controlsY, half)
-    place(panel.link, x, controlsY, half)
-    place(panel.unlink, x + half + 8, controlsY, half)
+    place(panel.link, x, controlsY, width)
     place(panel.clearInputs, x, controlsY + row + 8, width)
-    local controls = {panel.manage, panel.assign, panel.source, panel.trigger, panel.link, panel.unlink, panel.clearInputs}
+    local controls = {panel.manage, panel.assign, panel.setFacing, panel.source, panel.trigger, panel.link, panel.clearInputs}
     for i = 1, #controls do
         controls[i]:setHeight(row)
     end
@@ -226,7 +227,12 @@ function L.drawDetails(panel, host, state)
     body:drawText(hint, x, connectionY + h + 8, .8, .8, .8, 1, UIFont.Small)
     local count = getText("UI_OMHTT_OutputCount", #state.links)
     if state.kind == "Turret" then
-        count = getText("UI_OMHTT_ReceiverHint")
+        local source = A.state(panel.linkSource)
+        count = getText(source and (require("OMHTT/ControlDefinitions").linked(source, state)
+            and "UI_OMHTT_InputConnected" or "UI_OMHTT_InputNotConnected") or "UI_OMHTT_SelectInputHint")
+    end
+    if panel.linkSource == panel.selected and state.kind ~= "Turret" then
+        count = getText("UI_OMHTT_SelectReceiverHint")
     end
     if state.kind == "Controller" then
         count = getText("UI_OMHTT_ControllerLimits")

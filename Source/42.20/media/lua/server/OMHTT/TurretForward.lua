@@ -12,7 +12,7 @@ local B = {}
 function B.fire(record, object, player, options)
     local stats, origin = options.stats, object:getSquare()
     local x, y = origin:getX() + .5, origin:getY() + .5
-    local heading = (record.baseFacing or record.facing or 0) * 22.5
+    local heading = require("OMHTT/TurretModules").heading(record)
     local angle = -math.rad(heading)
     local distance = options.range
     if stats.headKind == "Lobber" then
@@ -26,7 +26,8 @@ function B.fire(record, object, player, options)
     end
     options.critical = ZombRand(10000) < options.critChance * 100
     options.effectWeapon = options.weapon
-    record.aimDegrees, record.facing = heading, record.baseFacing or record.facing or 0
+    record.aimDegrees = heading
+    record.facing = require("OMHTT/Foundation").normalizeFacing(math.floor(heading / 22.5 + .5))
     record.ammo = record.ammo - options.ammoCost
     record.shots = record.shots + 1
     record.nextShot = Clock.now() + options.interval

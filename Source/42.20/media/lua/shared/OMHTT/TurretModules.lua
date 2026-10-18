@@ -18,6 +18,13 @@ function M.option(key, fallback, minimum, maximum)
 end
 
 ---@param state table Device state
+---@return number degrees
+---@nodiscard
+function M.heading(state)
+    return state.facingDegrees or (state.baseFacing or state.facing or 0) * 22.5
+end
+
+---@param state table Device state
 ---@param contents table Inventory summary
 ---@param automatic boolean? Apply automatic detection limits
 ---@return table profile
@@ -48,7 +55,7 @@ function M.profile(state, contents, automatic, resolved)
     end
     local range = stats.range
     if automatic and active.MotionDetectionImprovised then range = range * 0.75 end
-    return {rotary = stats.rotary, stats = stats, heading = (state.baseFacing or state.facing or 0) * 22.5, cone = cone, omni = active.Detection360 ~= nil,
+    return {rotary = stats.rotary, stats = stats, heading = M.heading(state), cone = cone, omni = active.Detection360 ~= nil,
         range = stats.rotary and not automatic and stats.range or math.min(range, state.engagementRange or 100000), priority = priority}
 end
 

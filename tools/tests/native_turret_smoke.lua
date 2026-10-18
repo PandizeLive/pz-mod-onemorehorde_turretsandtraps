@@ -379,6 +379,7 @@ local function verifyTurrets()
     T.state(object).automatic = false
     T.state(object).priority = "Toughest"
     T.state(object).baseFacing = 4
+    T.state(object).facingDegrees, T.state(object).facingPending = 234.5, true
     T.state(object).condition = 37
     T.state(object).fixtureBatteryId = battery:getID()
     T.state(object).fixtureAmmoId = potato:getID()

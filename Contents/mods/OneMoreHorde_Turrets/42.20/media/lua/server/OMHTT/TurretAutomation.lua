@@ -101,6 +101,7 @@ function A.step(entry, deadline)
     if not square or not state or object:getObjectIndex() < 0
         or getCell():getGridSquare(square:getX(), square:getY(), square:getZ()) ~= square then return false end
     local now = Clock.now()
+    if state.facingPending then return true end
     if entry.rotaryKind then
         return require("OMHTT/TurretRotary").step(entry, deadline)
     end

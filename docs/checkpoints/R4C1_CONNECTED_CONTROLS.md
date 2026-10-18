@@ -1,5 +1,7 @@
 # R4C1 — buttons, pressure plates and links
 
+**C308 / 0.2.53.10:** [Implemented corrections](../PATCH_v0.2.53.10.md): non-thumpable new/existing plates, contextual linking and Controller Set Facing. [Verification](../TEST_v0.2.53.10.md) separates automated/native checks from pending rendered/connected acceptance. R4C2 Poke Floor remains next content.
+
 **C306/C307 update (2026-10-17):** SP plate activation is owner-confirmed. [Next-patch corrections and confirmed Controller Set Facing](../CORRECTIONS_C306.md) cover non-thumpable plates/future sensors, clearer linking and world-click direction. Owner selects 1A Set Facing with matching firing/detection sector and normal Detection tracking; Manual Aim Lock is not selected. Direction selection does not fire, and an OFF turret does not physically turn. Planning only; implementation remains queued. R4C2 Poke Floor remains next content.
 
 **C302, 2026-10-17:** [Controller battery clarification and multiple deposits](../PATCH_v0.2.53.8.md). Ordinary Battery spares stay in the existing Stockpile; UI adds a native empty-slot silhouette, stored count and checked sequential multi-drop. No parallel drain, additional battery capacity, signal change or R4C2 expansion. Grey styling retained; rendered/connected verification remains pending.

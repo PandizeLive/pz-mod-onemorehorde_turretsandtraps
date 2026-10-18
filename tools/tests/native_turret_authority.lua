@@ -36,6 +36,17 @@ return function(player)
     local repair = Action:new(player, object, "Repair", id)
     assert(repair:getDuration() == 500 and repair:complete(), "Native server repair failed")
     assert(object:getHealth() == object:getMaxHealth() and not repair:complete(), "Native repair replay was accepted")
+    local previousAngle, previousPower = T.state(object).aimDegrees, T.state(object).powered
+    T.state(object).powered = false
+    assert(W.setFacing(object, 123.45), "Native facing operation rejected")
+    assert(T.state(object).facingDegrees == 123.45 and T.state(object).aimDegrees == previousAngle,
+        "Native OFF turret changed physical heading")
+    assert(object:getModData().OMHTTTurret.facingDegrees == 123.45, "Authoritative facing did not reach published snapshot")
+    assert(require("OMHTT/TurretModules").profile(T.state(object), T.contents(object:getContainer())).heading == 123.45,
+        "Native firing sector ignored Controller heading")
+    print("[OMHTT-C308] native-facing angle=123.45 powerOff=stationary publication=authoritative")
+    T.state(object).powered = previousPower
+    W.refresh(object)
     local pickup = Action:new(player, object, "Pickup", id)
     T.state(object).ammoOrders = {[T.HEAD] = "Base.SweetPotato|Base.Potato", ["@potato"] = "Base.Potato|Base.SweetPotato"}
     A.publish(object)
@@ -57,6 +68,8 @@ return function(player)
     W.onCreate({thumpable = rebuilt, character = player, facing = "n",
         craftRecipeData = {getAllConsumedItems = function() return nextConsumed end}})
     assert(T.state(rebuilt).shots == 0 and T.state(rebuilt).maxHealth == 100 and T.state(rebuilt).facing == 4, "Redeployment imported forged packed controls")
+    assert(T.state(rebuilt).facingDegrees == nil and not T.state(rebuilt).facingPending,
+        "New placement must follow its selected direction rather than old Controller facing")
     assert(rebuilt:getContainer():contains(battery) and A.packed(packed) == nil, "Redeployment failed to consume trusted packed state")
     assert(T.state(rebuilt).ammoOrders[T.HEAD] == "Base.SweetPotato|Base.Potato", "Native pickup/redeploy dropped saved load order")
     assert(T.state(rebuilt).ammoOrders["@potato"] == "Base.Potato|Base.SweetPotato", "Native pickup/redeploy dropped platform order")

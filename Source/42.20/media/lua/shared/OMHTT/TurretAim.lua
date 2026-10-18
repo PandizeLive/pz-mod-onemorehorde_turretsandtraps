@@ -53,6 +53,50 @@ function Aim.request(object, target, player)
     return false
 end
 
+---@param object IsoObject Powered turret
+---@param contents table Current inventory summary
+---@return nil
+function Aim.face(object, contents)
+    if Aim.entries[object] then return end
+    local state = T.state(object)
+    if not state or not state.facingPending then return end
+    if not Aim.queued[object] then
+        Aim.order[#Aim.order + 1] = object
+        Aim.queued[object] = true
+    end
+    Aim.entries[object] = {direction = true, last = Clock.now(), speed = T.turnSpeed(contents.head, contents.active)}
+end
+
+---@param object IsoObject Turret
+---@param entry table Bounded direction turn
+---@param now number Active time
+---@return nil
+function Aim.turnFacing(object, entry, now)
+    local W = require("OMHTT/TurretWorld")
+    local state = T.state(object)
+    if not state or not state.facingPending or not T.isOn(state) or not W.valid(object) then
+        Aim.entries[object] = nil
+        return
+    end
+    local contents = W.contents(object)
+    if not contents.head or contents.head:getCondition() <= 0 or not W.power(object, contents) then
+        Aim.entries[object] = nil
+        return
+    end
+    entry.speed = T.turnSpeed(contents.head, contents.active)
+    local elapsed = math.min(100, math.max(0, now - entry.last)) / 1000
+    entry.last = now
+    local desired = M.heading(state)
+    state.aimDegrees = Aim.move(state.aimDegrees or (state.facing or 0) * 22.5, desired, elapsed * entry.speed)
+    if math.abs((desired - state.aimDegrees + 540) % 360 - 180) <= 1 then
+        state.aimDegrees, state.facingPending = desired, nil
+        state.facing = require("OMHTT/Foundation").normalizeFacing(math.floor(desired / 22.5 + .5))
+        Aim.entries[object] = nil
+        W.refresh(object)
+        require("OMHTT/TurretAuthority").publish(object)
+    end
+end
+
 ---@return nil
 function Aim.tick()
     if isClient() then return end
@@ -68,6 +112,9 @@ function Aim.tick()
         if not entry then
             table.remove(Aim.order, Aim.cursor)
             Aim.queued[object] = nil
+        elseif entry.direction then
+            Aim.cursor = Aim.cursor + 1
+            Aim.turnFacing(object, entry, now)
         else
             Aim.cursor = Aim.cursor + 1
             local state = T.state(object)

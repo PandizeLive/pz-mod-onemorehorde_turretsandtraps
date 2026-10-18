@@ -138,7 +138,7 @@ function W.register(object, player, kind, previous)
     W.locations[state.location][id] = true
     state.recoverAt = getTimestampMs() + 1000
     state.active, state.powered = false, false
-    state.checkedHours, state.pulseHoldUntil = nil, nil
+    state.checkedHours, state.pulseHoldUntil, state.facingPulse = nil, nil, nil
     W.records().records[id], W.objects[id], W.bindings[object] = state, object, state
     if not W.indexed[id] then
         W.order[#W.order + 1], W.indexed[id] = id, true
@@ -152,7 +152,7 @@ end
 ---@param object IsoObject Loaded device
 ---@return nil
 function W.bind(object)
-    if W.state(object) then return end
+    if not instanceof(object, "IsoThumpable") or W.state(object) then return end
     local records = W.records().records
     local hint = object:hasModData() and object:getModData().OMHTTControl
     local square = object:getSquare()
@@ -171,7 +171,7 @@ function W.bind(object)
     if other and other ~= object and other:getObjectIndex() >= 0 then return end
     W.objects[state.id], W.bindings[object] = object, state
     state.active, state.recoverAt = false, getTimestampMs() + 1000
-    state.checkedHours, state.pulseHoldUntil = nil, nil
+    state.checkedHours, state.pulseHoldUntil, state.facingPulse = nil, nil, nil
     if not W.indexed[state.id] then
         W.order[#W.order + 1], W.indexed[state.id] = state.id, true
     end
@@ -196,6 +196,7 @@ end
 ---@param state table Private record
 ---@return nil
 function W.indexPlate(object, state)
+    C.passive(object, state.kind)
     if state.kind ~= "Plate" then return end
     local square = object:getSquare()
     W.plates[square] = W.plates[square] or {}
@@ -539,6 +540,17 @@ function W.receiver(object, now)
     if T.isOn(state) ~= powered then
         require("OMHTT/TurretWorld").applyPower(object, powered)
     end
+    if control.facingPulse and not state.facingPending then
+        control.facingPulse = nil
+        if powered then
+            control.pulseHoldUntil = now + control.facingPulseTail
+            control.facingPulseTail = nil
+            control.fireDue = now + 100
+            W.fireSignal(object)
+        end
+    elseif not powered then
+        control.facingPulse = nil
+    end
     if on then
         local control = W.state(object)
         if now >= (control.fireDue or 0) then
@@ -567,12 +579,21 @@ function W.pulse(object)
     local T = require("OMHTT/Turret")
     local stats = T.cycleConfig(T.contents(object:getContainer()))
     local duration = stats.rotary and 90000 / stats.motorSpeed or 1
+    local facing = T.state(object).facingPending
+    if facing then
+        control.facingPulseTail = duration
+        local contents = T.contents(object:getContainer())
+        duration = duration + 360000 / T.turnSpeed(contents.head, contents.active) + 1000
+    end
+    control.facingPulse = facing == true
     control.pulseHoldUntil = getTimestampMs() + duration
     local world = require("OMHTT/TurretWorld")
     if not T.isOn(T.state(object)) then
         world.applyPower(object, true)
     end
-    W.fireSignal(object)
+    if not facing then
+        W.fireSignal(object)
+    end
 end
 
 ---@param player IsoPlayer Operator
@@ -644,7 +665,7 @@ function W.clearInputs(object)
         end
     end
     W.incoming[state.id] = nil
-    state.pulseHoldUntil = nil
+    state.pulseHoldUntil, state.facingPulse = nil, nil
     local T = require("OMHTT/Turret")
     if T.state(object) then
         require("OMHTT/TurretWorld").applyPower(object, false)

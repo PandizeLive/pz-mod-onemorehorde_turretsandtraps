@@ -1,5 +1,9 @@
 # Decision register
 
+## C308 — Implement plate, linking and Set Facing corrections (2026-10-17)
+
+Owner says "Patch", authorizing implementation, verification, local installation and development mirroring of C306/C307. Preserve 1A Set Facing with normal Detection, matching FoV and no implicit shot; existing plates and future passive sensors use native non-thumpable behavior. Keep current control permissions, package independence and power semantics. [Patch](PATCH_v0.2.53.10.md), [tests/delivery](TEST_v0.2.53.10.md). No new trap content, recipes, Manual Aim Lock, merge or Workshop publication. R4C2 Poke Floor stays next; rendered/connected acceptance is pending.
+
 ## C307 — Controller Set Facing selected (2026-10-17)
 
 Owner replies "1A" to C306: save normal facing and rotate its firing/detection sector together, retaining normal Detection tracking and 360 coverage. Direction selection does not shoot. Preserve power/access/range/identity checks and no physical turning while OFF. Manual Aim Lock is not selected. [Confirmed next-patch contract](CORRECTIONS_C306.md#c307--confirmed-aiming-behavior). Record alongside non-thumpable plates and clearer linking; no gameplay/version/install change in this planning turn. R4C1 corrections precede R4C2 Poke Floor; connected acceptance remains pending.

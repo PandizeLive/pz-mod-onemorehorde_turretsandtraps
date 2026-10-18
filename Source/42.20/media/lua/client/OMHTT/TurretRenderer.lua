@@ -109,7 +109,7 @@ function R.animate(now)
                 entry.visualHeading = Aim.move(entry.visualHeading or desired, desired, elapsed * 720)
             elseif entry.profile.stats.rotary then
                 entry.visualHeading = state.aimDegrees
-            elseif automatic and automatic.status == "no-target" and not Aim.entries[object] and entry.head and speed > 0 then
+            elseif T.isOn(state) and not state.facingPending and automatic and automatic.status == "no-target" and not Aim.entries[object] and entry.head and speed > 0 then
                 local profile = entry.profile
                 local cone = configuredCone
                 if profile.omni then

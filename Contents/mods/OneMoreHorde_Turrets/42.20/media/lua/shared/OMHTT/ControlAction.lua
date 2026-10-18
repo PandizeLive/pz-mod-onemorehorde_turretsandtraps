@@ -20,6 +20,12 @@ function Action:isValid()
         return target and target.id == self.targetId and A.write(self.character, target)
             and A.range(self.object, self.target) and type(self.value) == "boolean"
             and (self.command ~= "Assign" or (state.kind == "Controller" and state.powered == true))
+    elseif self.command == "SetFacing" then
+        local target = A.state(self.target)
+        return target ~= nil and target.kind == "Turret" and target.id == self.targetId
+            and type(self.value) == "number" and self.value >= 0 and self.value < 360
+            and A.write(self.character, target)
+            and require("OMHTT/ControlRemote").valid(self.character, self.object, self.target)
     elseif self.command == "ClearInputs" then
         return state.kind == "Turret"
     elseif self.command == "Trigger" then
@@ -72,6 +78,8 @@ function Action:complete()
             W.number(self.target, require("OMHTT/Turret").contents(self.target:getContainer()).head)
         end
         W.publish(self.target)
+    elseif self.command == "SetFacing" then
+        return require("OMHTT/TurretWorld").setFacing(self.target, self.value)
     elseif self.command == "Link" then
         return W.link(self.object, self.target, self.value)
     elseif self.command == "ClearInputs" then

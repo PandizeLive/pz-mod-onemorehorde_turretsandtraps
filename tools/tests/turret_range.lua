@@ -82,6 +82,16 @@ square.visible = true; player.z = 1; O.render()
 check(#strokes == 0, "Other floors do not reveal range")
 player.z = 2; SandboxVars.OMHTurretsTraps.ShowTurretRange = false; O.render()
 check(#strokes == 0, "Sandbox toggle disables range")
+O.focus(0,"facing",object,true)
+O.preview[0]={object=object,heading=123.25}
+strokes={};O.render()
+check(#strokes>0 and entry.overlays.coverage.heading==123.25
+    and legend==getText("UI_OMHTT_SetFacingHint"),"Explicit direction picker previews FoV even when passive overlays are disabled")
+check(entry.profile.heading~=123.25,"Cursor preview does not mutate normal targeting profile")
+O.preview[0]=nil
+O.focus(0,"facing",object,false)
+strokes={};O.render()
+check(#strokes==0,"Cancel restores passive overlay preference")
 SandboxVars.OMHTurretsTraps.ShowTurretRange = true
 R.entries[object].head = nil; O.render()
 check(#strokes == 0, "Empty base has no weapon range")

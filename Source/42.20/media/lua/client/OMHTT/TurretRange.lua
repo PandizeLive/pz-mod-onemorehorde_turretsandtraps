@@ -5,7 +5,7 @@ local R = require("OMHTT/TurretRenderer")
 local M = require("OMHTT/TurretModules")
 local Selection = require("OMHTT/WorldHighlight")
 local D = require("OMHTT/Diagnostics")
-local O = {selected = {}}
+local O = {selected = {}, preview = {}}
 local Options = require("OMHTT/ClientOptions")
 local Stats = require("OMHTT/TurretStats")
 local canvas = nil
@@ -145,17 +145,18 @@ end
 
 ---@return nil
 function O.render()
-    if not T.enabled() or SandboxVars.OMHTurretsTraps.ShowTurretRange == false then return end
+    if not T.enabled() then return end
     local started = D.enabled("turrets") and getTimestampMs()
     for index, entries in pairs(O.selected) do
-        local object = entries.hover or entries.manage or entries.click
+        local object = entries.facing or entries.hover or entries.manage or entries.click
         local player = getSpecificPlayer(index)
         local state = T.state(object)
         local square = object and object:getSquare()
         if not player or player:isDead() or not state or not square or object:getObjectIndex() < 0
             or getCell():getGridSquare(square:getX(), square:getY(), square:getZ()) ~= square then
             O.selected[index] = nil
-        elseif math.floor(player:getZ()) == square:getZ() and square:isCanSee(index)
+        elseif (entries.facing or SandboxVars.OMHTurretsTraps.ShowTurretRange ~= false)
+            and math.floor(player:getZ()) == square:getZ() and square:isCanSee(index)
             and (player:getX() - square:getX()) ^ 2 + (player:getY() - square:getY()) ^ 2 <= 30 ^ 2 then
             local render = R.entries[object]
             if render and render.head then
@@ -163,15 +164,17 @@ function O.render()
                     canvas = ISUIElement:new(0, 0, getCore():getScreenWidth(), getCore():getScreenHeight())
                     canvas:instantiate()
                 end
-                local heading = R.heading(object)
+                local preview = O.preview[index]
                 local profile = render.profile
+                local sector = preview and preview.object == object and preview.heading or profile.heading
+                local heading = preview and preview.object == object and preview.heading or R.heading(object)
                 local cone = profile.cone
                 if profile.omni then
                     cone = 360
                 end
                 local x, y, z = square:getX() + .5, square:getY() + .5, square:getZ()
                 local coverage = render.hasDetector and render.automatic or profile
-                local lines = O.geometry(render, "coverage", x, y, coverage.range, profile.heading, cone, heading)
+                local lines = O.geometry(render, "coverage", x, y, coverage.range, sector, cone, heading)
                 local left, top = getPlayerScreenLeft(index), getPlayerScreenTop(index)
                 view.left, view.top, view.zoom = left, top, getCore():getZoom(index)
                 view.offX, view.offY = IsoCamera.getOffX(index), IsoCamera.getOffY(index)
@@ -182,7 +185,7 @@ function O.render()
                 if render.hasDetector then
                     O.draw(lines, #lines, z, index, .25, .85, 1)
                     if coverage.range < profile.range then
-                        local manual = O.geometry(render, "manual", x, y, profile.range, profile.heading, cone, heading)
+                        local manual = O.geometry(render, "manual", x, y, profile.range, sector, cone, heading)
                         O.draw(manual, #manual - 3, z, index, .65, .65, .65)
                         if refreshLegend then legend = getText("UI_OMHTT_RangeLegend", string.format("%.1f", coverage.range), string.format("%.1f", profile.range)) end
                     else
@@ -193,10 +196,13 @@ function O.render()
                     if refreshLegend then legend = getText("UI_OMHTT_RangeManualLegend", string.format("%.1f", profile.range)) end
                 end
                 if profile.rotary and not profile.omni then
-                    local rear = O.geometry(render, "rear", x, y, coverage.range, profile.heading + 180, cone, heading + 180)
+                    local rear = O.geometry(render, "rear", x, y, coverage.range, sector + 180, cone, heading + 180)
                     O.draw(rear, #rear, z, index, .25, .85, 1)
                 end
                 render.rangeLegend, render.legendAutomatic, render.legendManual, render.legendDetector = legend, coverage.range, profile.range, render.hasDetector
+                if entries.facing then
+                    legend = getText("UI_OMHTT_SetFacingHint")
+                end
                 canvas:drawText(legend, left + 12, top + 12, 1, 1, 1, 1, UIFont.Small)
                 if Options.noiseVisible() then
                     local radius = Stats.hearingRadius(render.head, profile.stats)

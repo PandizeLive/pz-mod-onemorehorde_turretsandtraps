@@ -320,6 +320,9 @@ public final class NativePersistenceCheck {
         check(Boolean.FALSE.equals(call(state, "rawget", new Class<?>[]{Object.class}, "automatic")), "Automatic switch lost");
         check("Toughest".equals(call(state, "rawget", new Class<?>[]{Object.class}, "priority")), "Target priority lost");
         check(((Number)call(state, "rawget", new Class<?>[]{Object.class}, "baseFacing")).intValue() == 4, "Placement cone orientation lost");
+        check(Double.valueOf(234.5).equals(call(state, "rawget", new Class<?>[]{Object.class}, "facingDegrees")), "Controller facing angle lost");
+        check(Boolean.TRUE.equals(call(state, "rawget", new Class<?>[]{Object.class}, "facingPending")), "Pending powered turn lost");
+        System.out.println("[OMHTT-C308] native-facing-persistence mode=" + mode + " angle=234.5 pending=retained");
         check(((Number)call(state, "rawget", new Class<?>[]{Object.class}, "engagementRange")).intValue() == 3, "Engagement range lost");
         check(Double.valueOf(123456789).equals(call(state, "rawget", new Class<?>[]{Object.class}, "nextShot")), "Turret cooldown lost");
         List<?> items = (List<?>)get(get(restored, "getContainer"), "getItems");
