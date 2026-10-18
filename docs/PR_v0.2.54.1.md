@@ -9,3 +9,5 @@ Siphon is corrected to Legendary loaded weight 3. The live LootLab catalog now i
 21,655 assertions, native save/reload, all three independent package startup and LootLab desktop/mobile checks pass; 86 backend tests pass. Headless native checks do not establish connected multiplayer or rendered acceptance. No Workshop upload or merge.
 
 Installed from immutable `test/v0.2.54.1` / `0a65f67ad2cd3a3eb0ff417ec7eae255e9b5ae1f`. All 293 source and 374 tagged/packaged/installed/archive files match; both 0.2.54 backups verify. [Release evidence](../diagnostics/v0.2.54.1/local-release.json). Development delivery uses the existing branch and draft PR #1 under C108.
+
+Planning: [C316 Controller map and connection views](CONTROLLER_MAP_C316.md) is discussion only. Current menu is preserved; layout/background choices and any prototype remain unapproved.

@@ -1666,3 +1666,8 @@ Owner: “Approved to patch.” Authorizes implementation, verification, local i
 ## C315 — Siphon rarity and remote input assignment
 
 Owner-approved correction: Legendary Siphon at loaded weight 3; automatic placement assignment of buttons/plates to a writable Controller in range, retaining explicit receiver links and authoritative access rules. [Contract and provenance](CORRECTIONS_C310.md#c315--siphon-rarity-and-automatic-input-assignment-2026-10-18). Official Cloudflare setup and beta cf installation were also explicitly requested.
+
+
+## C316 — Controller map and connection views under discussion
+
+Owner requests preserving the current menu/Stockpile and discussing map-based connections and a clickable hierarchy, then proposes Inputs/Outputs lists. No implementation approved. [Preserved baseline, native evidence and numbered options](CONTROLLER_MAP_C316.md). Current installed build remains 0.2.54.1.
