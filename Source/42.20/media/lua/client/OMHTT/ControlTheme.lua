@@ -9,6 +9,22 @@ local Theme = {
     offHover = {r = .65, g = .12, b = .12, a = 1},
 }
 
+---@param panel ISPanel Scrollable section
+---@return nil
+function Theme.scrollbar(panel)
+    local bar = panel.vscroll
+    -- These panels reflow explicitly. Native deferred anchors must not move the
+    -- scrollbar again after its new coordinates have already been assigned.
+    bar:setAnchorRight(false)
+    bar:setAnchorBottom(false)
+    bar:setX(panel.width - 17)
+    bar:setY(0)
+    bar:setWidth(17)
+    bar:setHeight(panel.height)
+    -- Keep the enclosing Details stencil, including for its nested input list.
+    bar.doSetStencil = false
+end
+
 ---@param button ISButton Control
 ---@return nil
 function Theme.button(button)

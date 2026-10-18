@@ -1,5 +1,7 @@
 # 0.2.55 verification — C323
 
+**Owner test failed (2026-10-18):** reported freeze/exit and displaced scrollbar. Console confirms a repeated Controller graph callback exception. Prior automated results below remain historical; they did not exercise the missed native child-update callback. See [0.2.55.1 corrective evidence](TEST_v0.2.55.1.md).
+
 ## Implemented
 
 Controller now combines Triggers/Defenses and their links, Grid/Native Map, separate selected-device action groups and the retained native Stockpile. Its existing 64-object / 2 ms incremental scan and five-second rescan remain. Graph text/anchors refresh on geometry/data change or at 500 ms, and draw only visible rows; map marker labels/widths are cached with the graph. Accepted drops use the existing server-authorized Link timed action. Selection/panning/resizing do not fire weapons or mutate inventory.

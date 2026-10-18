@@ -163,3 +163,7 @@ Implemented as 0.2.55; see [patch](PATCH_v0.2.55.md) and [verification](TEST_v0.
 
 
 0.2.55 is installed from `test/v0.2.55` / `97d04a8812a30455b278a650fa4da179255a72b7`. [Validated local release](../diagnostics/v0.2.55/local-release.json). **Test now** using the focused [owner checklist](TEST_v0.2.55.md#short-owner-test).
+
+## C324 — Controller error storm, scrollbar correction and in-game map (2026-10-18)
+
+Owner reports freezing/exiting with many errors and a scrollbar in the screen interior, accepts the in-game map as the default/only normal view, then suspects one overloaded CPU core. Continue the approved corrective work without another approval gate. The captured 0.2.55 console contains 454 identical `ControlGraph.update` failures; native dispatch passes the graph itself to a helper expecting its Controller parent. CPU utilization was not captured and the final exit cause is not established. Native deferred-anchor testing also reproduces scrollbar displacement during explicit reflow. Rename the helper, keep section scrollbars in their panels, and remove the Grid toggle/drawing. Preserve existing server-authorized actions and native Stockpile. [Patch](PATCH_v0.2.55.1.md) · [Evidence and acceptance](TEST_v0.2.55.1.md). Record the failed owner test separately from prior automated passes.

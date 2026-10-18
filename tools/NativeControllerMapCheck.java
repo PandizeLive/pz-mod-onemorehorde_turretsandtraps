@@ -1,5 +1,35 @@
 public final class NativeControllerMapCheck {
+    private static void scrollbarResize(boolean anchored) throws Exception {
+        Class<?> ui = Class.forName("zombie.ui.UIElement");
+        Object parent = ui.getConstructor().newInstance();
+        Object bar = ui.getConstructor().newInstance();
+        ui.getMethod("setWidth", double.class).invoke(parent, 400.0);
+        ui.getMethod("setHeight", double.class).invoke(parent, 300.0);
+        ui.getMethod("setAnchorLeft", boolean.class).invoke(bar, false);
+        ui.getMethod("setAnchorRight", boolean.class).invoke(bar, anchored);
+        ui.getMethod("setAnchorBottom", boolean.class).invoke(bar, anchored);
+        ui.getMethod("AddChild", ui).invoke(parent, bar);
+        for (int width : new int[] {400, 270, 540, 310}) {
+            ui.getMethod("setWidth", double.class).invoke(parent, (double)width);
+            ui.getMethod("setHeight", double.class).invoke(parent, (double)width);
+            ui.getMethod("setX", double.class).invoke(bar, width - 17.0);
+            ui.getMethod("setY", double.class).invoke(bar, 0.0);
+            ui.getMethod("setWidth", double.class).invoke(bar, 17.0);
+            ui.getMethod("setHeight", double.class).invoke(bar, (double)width);
+            ui.getMethod("update").invoke(parent);
+            double x = ((Number)ui.getMethod("getX").invoke(bar)).doubleValue();
+            double height = ((Number)ui.getMethod("getHeight").invoke(bar)).doubleValue();
+            if (anchored) {
+                System.out.println("Native anchored scrollbar after explicit reflow: width=" + width + " x=" + x + " height=" + height);
+            } else if (x != width - 17.0 || height != width) {
+                throw new IllegalStateException("Explicit scrollbar escaped its panel after deferred resize");
+            }
+        }
+    }
     public static void main(String[] args) throws Exception {
+        scrollbarResize(true);
+        scrollbarResize(false);
+        System.out.println("Native deferred resize: explicitly positioned scrollbars stay within each panel");
         Class<?> table = Class.forName("se.krka.kahlua.vm.KahluaTable");
         Class<?> platform = Class.forName("se.krka.kahlua.j2se.J2SEPlatform");
         Object instance = platform.getMethod("getInstance").invoke(null);

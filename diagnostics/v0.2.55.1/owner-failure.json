@@ -1,0 +1,19 @@
+{
+  "testedVersion": "0.2.55",
+  "ownerResult": "failed: freeze/exit and displaced scrollbar",
+  "consoleSHA256": "63b69f01fb07ce1ea06f9d0625226fad5f037b795b6a42efdc989c17bf7fe040",
+  "consoleBytes": 1443501,
+  "confirmedException": "attempted index: refreshDue of non-table: null",
+  "exceptionCount": 454,
+  "source": "ControlGraph.lua:65",
+  "firstExceptionFrame": "307",
+  "lastExceptionFrame": "1178",
+  "finalLinesInclude": [
+    "Saving worldgen params",
+    "Saving GlobalModData",
+    "GameThread exited."
+  ],
+  "cpuSaturation": "owner hypothesis; not measured",
+  "nativeCrashReport": "no fresh hs_err_pid log in checked game/user roots",
+  "correctiveVersion": "0.2.55.1"
+}

@@ -8,12 +8,66 @@ local function run(panel, player, controller)
     U.command = function() commands = commands + 1 end
     U.remote = function() renewals = renewals + 1; return true end
     local inventory = panel.stockWing.inventoryPane.inventory
+    -- UIElement.update dispatches every child's update with that child's table.
+    -- Calling only Graph's owner-side helper missed the 0.2.55 callback collision.
+    local function uiTick(widget)
+        if widget.update then widget:update() end
+        for i = 1, #(widget.children or {}) do uiTick(widget.children[i]) end
+    end
+    for i = 1, 600 do uiTick(panel) end
+    check(commands == 0 and renewals == 0, "600 native-style recursive UI updates complete without errors or commands")
+    local savedMap = {rules=SandboxVars.Map, native=UIWorldMap, item=MapItem, utils=MapUtils,
+        dirs=getLotDirectories, exists=fileExists}
+    local opens, files = 0, 0
+    SandboxVars.Map = {AllowWorldMap=true}
+    getLotDirectories = function() return {size=function() return 1 end,get=function() return "test-map" end} end
+    fileExists = function() files=files+1; return true end
+    MapItem = {getSingleton=function() return {} end}
+    MapUtils = {initDefaultStyleV1=function() end}
+    local api = {data=0,images=0,options={}}
+    function api:setMapItem(item) self.item=item end
+    function api:addData(path) self.data=self.data+1 end
+    function api:endDirectoryData() end
+    function api:addImages(path) self.images=self.images+1 end
+    function api:getDataCount() return self.data end
+    function api:getImagesCount() return self.images end
+    function api:setBoundsFromWorld() end
+    function api:setMaxZoom(value) self.maxZoom=value end
+    function api:setZoom(value) self.zoom=value end
+    function api:setBoolean(key,value) self.options[key]=value end
+    function api:centerOn(x,y) self.x,self.y=x,y end
+    UIWorldMap = {new=function()
+        opens=opens+1
+        return {getAPIv3=function() return api end,setX=function() end,setY=function() end,
+            setWidth=function() end,setHeight=function() end,setConsumeMouseEvents=function() end}
+    end}
+    local Map = require("OMHTT/ControlMap")
+    local native = Map.create(panel)
+    for i=1,100 do native:loadNative(); native:prerender() end
+    check(native.nativeMode and opens==1 and files==1 and api.data==1 and api.images==1,
+        "In-game map opens by default and loads its data once, never during repeated UI draws")
+    check(api.options.HideUnvisited==true and api.options.ImagePyramid==false,
+        "Default map preserves visited-area visibility without satellite images")
+    panel:removeChild(native)
+    SandboxVars.Map = {AllowWorldMap=false}
+    local unavailable = Map.create(panel)
+    check(not unavailable.nativeMode and opens==1 and unavailable.tooltip==getText("UI_OMHTT_MapUnavailable"),
+        "Disabled world maps keep device connections without repeatedly attempting map creation")
+    panel:removeChild(unavailable)
+    SandboxVars.Map,UIWorldMap,MapItem,MapUtils = savedMap.rules,savedMap.native,savedMap.item,savedMap.utils
+    getLotDirectories,fileExists = savedMap.dirs,savedMap.exists
     for _, width in pairs({900, 1050, 1220}) do
         G.resize(panel, width, 690)
         check(panel.stockWing.inventoryPane.inventory == inventory, "Resize retains exact native Stockpile container")
         check(panel.graph.x + panel.graph.width < panel.mapView.x
             and panel.mapView.y + panel.mapView.height < panel.detailBody.y,
             "Resized Connections, Map and Selected Device occupy separate regions")
+        for _, section in pairs({panel.graph, panel.detailBody, panel.inputs}) do
+            local bar = section.vscroll
+            check(bar.x + bar.width == section.width and bar.y == 0 and bar.height == section.height
+                and bar.anchorRight == false and bar.anchorBottom == false and bar.doSetStencil == false,
+                "Scrollbar stays at its section edge without deferred anchoring or escaping its parent stencil")
+        end
         for i = 1, #panel.children do
             local child = panel.children[i]
             check(child.visible == false or (child.x >= 0 and child.y >= 0 and child.x + child.width <= panel.width
@@ -63,7 +117,7 @@ local function run(panel, player, controller)
     panel.devices.selected = 1
     panel:select()
     panel.graph.refreshDue = 0
-    Graph.update(panel)
+    Graph.refreshForPanel(panel)
     check(#panel.graph.triggers == 1 and #panel.graph.defenses == 1
         and panel.graph.defenses[1].subtitle == getItemNameFromFullType(output.data.OMHTTControl.headType),
         "Connections separates inputs from receivers and preserves head subtitle")
@@ -78,16 +132,16 @@ local function run(panel, player, controller)
     map:focus(controller)
     map:onMouseDown(ix, iy)
     map:onMouseUp(ox, oy)
-    Graph.update(panel)
+    Graph.refreshForPanel(panel)
     check(commands == 1 and renewals >= 2 and panel.selected == output, "Map drag queues one existing authorized Link action")
-    Graph.update(panel)
+    Graph.refreshForPanel(panel)
     check(commands == 1, "Subsequent refresh does not replay drag command")
     input.data.OMHTTControl.links = {"map-output"}
     Graph.connect(panel, input, output)
-    Graph.update(panel)
+    Graph.refreshForPanel(panel)
     check(commands == 1, "Dropping an already connected pair does not toggle or duplicate its link")
     panel.graph.refreshDue = 0
-    Graph.update(panel)
+    Graph.refreshForPanel(panel)
     check(#panel.graph.edges == 1, "Published links appear in graph without a new world scan")
     map:focus(controller)
     map:onMouseDown(ix, iy)
@@ -113,7 +167,7 @@ local function run(panel, player, controller)
     A.write = function() return false end
     input.data.OMHTTControl.links = {}
     Graph.connect(panel, input, output)
-    Graph.update(panel)
+    Graph.refreshForPanel(panel)
     check(commands == 1, "Read-only drag cannot submit a Link")
     A.write = priorWrite
     panel.devices.items = {{item = controller}}
@@ -124,12 +178,12 @@ local function run(panel, player, controller)
         for j = 1, 32 do source.links[j] = "output-" .. j end
     end
     panel.graph.refreshDue = 0
-    Graph.update(panel)
+    Graph.refreshForPanel(panel)
     panel.graph:onMouseWheel(100)
     check(panel.graph:getYScroll() < 0 and #panel.graph.triggers == 32 and #panel.graph.defenses == 32,
         "Full 32-input / 32-output lists scroll together within their bounded view")
     local graphItems = panel.graph.triggers
-    Graph.update(panel)
+    Graph.refreshForPanel(panel)
     check(panel.graph.triggers == graphItems, "Unchanged frames reuse connection row and wrapped-text cache")
     local point, projections = map.point, 0
     map.point = function(self, x, y) projections = projections + 1; return point(self, x, y) end
@@ -145,7 +199,7 @@ local function run(panel, player, controller)
     panel.devices.selected = 1
     panel:select()
     panel.graph.refreshDue = 0
-    Graph.update(panel)
+    Graph.refreshForPanel(panel)
     panel.devices.items = {{item=controller},{item=input},{item=output}}
     input.data.OMHTTControl.links = {"map-output"}
     panel.devices.selected = 3

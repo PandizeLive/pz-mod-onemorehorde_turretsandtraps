@@ -8,6 +8,7 @@ function ISPanel:new(x, y, width, height)
     return setmetatable({x = x, y = y, width = width, height = height, children = {}}, {__index = self})
 end
 function ISPanel:initialise() end
+function ISPanel:createChildren() end
 function ISPanel:addToUIManager() testTurretPanel = self end
 function ISPanel:removeFromUIManager() self.removed = true end
 function ISPanel:instantiate()
@@ -79,7 +80,12 @@ function ISPanel:setHeight(height) self.height = height end
 function ISPanel:setScrollChildren(value)
     if self.javaObject then self.javaObject:setScrollChildren(value) end
 end
-function ISPanel:addScrollBars() end
+function ISPanel:addScrollBars()
+    self.vscroll = ISPanel:new(self.width - 17, 0, 17, self.height)
+    self:addChild(self.vscroll)
+end
+function ISPanel:setAnchorRight(value) self.anchorRight = value end
+function ISPanel:setAnchorBottom(value) self.anchorBottom = value end
 function ISPanel:setScrollHeight(value) self.scrollHeight = value end
 function ISPanel:getYScroll() return self.yScroll or 0 end
 function ISPanel:setYScroll(value) self.yScroll = value end
@@ -90,6 +96,7 @@ ISButton = {new = function(self, x, y, w, h, title, target, callback)
 end}
 ISMouseDrag = {}
 ISScrollingListBox = ISPanel:derive("TestScrollingList")
+function ISScrollingListBox:initialise() self:addScrollBars() end
 function ISScrollingListBox:clear() self.items, self.selected = {}, 0 end
 function ISScrollingListBox:addItem(name, value)
     self.items = self.items or {}

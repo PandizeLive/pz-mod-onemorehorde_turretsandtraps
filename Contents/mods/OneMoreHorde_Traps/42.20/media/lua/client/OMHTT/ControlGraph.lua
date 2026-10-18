@@ -50,7 +50,7 @@ end
 
 ---@param panel ISPanel Controller
 ---@return nil
-function Graph.update(panel)
+function Graph.refreshForPanel(panel)
     local pending = panel.pendingGraphLink
     if pending then
         local source, target = A.state(pending.source), A.state(pending.target)
@@ -228,6 +228,7 @@ function Graph.create(owner)
     graph:initialise()
     graph:setScrollChildren(false)
     graph:addScrollBars(false)
+    Theme.scrollbar(graph)
     owner:addChild(graph)
     return graph
 end

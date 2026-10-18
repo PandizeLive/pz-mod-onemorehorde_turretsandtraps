@@ -18,14 +18,13 @@ function Native:instantiate()
     self:createChildren()
 end
 
----@param enabled boolean Native map background
 ---@return nil
-function Map:setNative(enabled)
-    if enabled and (not SandboxVars.Map or SandboxVars.Map.AllowWorldMap ~= true) then
-        self.owner.nativeMapButton.tooltip = getText("UI_OMHTT_MapUnavailable")
-        return
-    end
-    if enabled and not self.nativeMap then
+function Map:loadNative()
+    if self.mapAttempted then return end
+    self.mapAttempted = true
+    self.tooltip = getText("UI_OMHTT_MapUnavailable")
+    if not SandboxVars.Map or SandboxVars.Map.AllowWorldMap ~= true then return end
+    if not self.nativeMap then
         require("ISUI/Maps/ISMapDefinitions")
         local map = Native:new(0, 0, self.width, self.height)
         map:initialise()
@@ -42,8 +41,6 @@ function Map:setNative(enabled)
             api:addImages(path)
         end
         if api:getDataCount() == 0 and api:getImagesCount() == 0 then
-            self.owner.nativeMapButton:setEnable(false)
-            self.owner.nativeMapButton.tooltip = getText("UI_OMHTT_MapUnavailable")
             return
         end
         api:setBoundsFromWorld()
@@ -59,11 +56,9 @@ function Map:setNative(enabled)
         api:centerOn(self.centerX, self.centerY)
         self:addChild(map)
         self.nativeMap = map
+        self.tooltip = getText("UI_OMHTT_MapNativeTip")
     end
-    self.nativeMode = enabled
-    if self.nativeMap then
-        self.nativeMap:setVisible(enabled)
-    end
+    self.nativeMode = true
 end
 
 ---@param object IsoObject Focus
@@ -180,15 +175,6 @@ function Map:prerender()
         self.nativeMap:setHeight(self.height)
     end
     self:setStencilRect(0, 0, self.width, self.height)
-    if not self.nativeMode then
-        local scale = math.min(self.width, self.height) / self.span
-        local startX, startY = self:point(math.floor(self.centerX - self.span), math.floor(self.centerY - self.span))
-        for i = 0, math.ceil(self.span * 2) do
-            local x, y = startX + i * scale, startY + i * scale
-            self:drawLine2(x, 0, x, self.height, .3, .35, .35, .35)
-            self:drawLine2(0, y, self.width, y, .3, .35, .35, .35)
-        end
-    end
 end
 
 ---@return nil
@@ -248,6 +234,7 @@ function Map.create(owner)
     map:initialise()
     map:focus(owner.object)
     owner:addChild(map)
+    map:loadNative()
     return map
 end
 

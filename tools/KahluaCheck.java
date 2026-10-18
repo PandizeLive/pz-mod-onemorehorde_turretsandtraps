@@ -546,9 +546,13 @@ public final class KahluaCheck {
                 throw new IllegalStateException("Failed stage: " + stage[1], error.getCause());
             }
         }
+        String version = Files.readString(root.resolve("Source/42.20/mod.info")).lines()
+            .filter(line -> line.startsWith("modversion=")).findFirst().orElseThrow().substring(11).trim();
+        Path traceDirectory = root.resolve("diagnostics/v" + version);
+        Files.createDirectories(traceDirectory);
         for (String view : new String[] {"Manage", "Controller"}) {
             Object svg = get.invoke(env, "test" + view + "Svg");
-            if (svg instanceof String) Files.writeString(root.resolve("diagnostics/v0.2.55/" + view.toLowerCase() + "-layout.svg"), (String)svg);
+            if (svg instanceof String) Files.writeString(traceDirectory.resolve(view.toLowerCase() + "-layout.svg"), (String)svg);
         }
         if (args.length > 1) {
             Path audit = root.resolve(args[1]);

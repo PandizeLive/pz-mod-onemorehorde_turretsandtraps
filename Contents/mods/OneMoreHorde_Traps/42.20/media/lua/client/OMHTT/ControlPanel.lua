@@ -120,7 +120,7 @@ function Panel:prerender()
         self:scan()
     end
     self:select()
-    require("OMHTT/ControlGraph").update(self)
+    require("OMHTT/ControlGraph").refreshForPanel(self)
     if self.linkSource and (self.linkSource:getObjectIndex() < 0 or not A.state(self.linkSource)) then
         self.linkSource = nil
     end
@@ -330,8 +330,6 @@ function Panel:showStockpile(visible)
     self.devices:setVisible(false)
     self.graph:setVisible(not self.stockPage)
     self.mapView:setVisible(not self.stockPage)
-    self.gridButton:setVisible(not self.stockPage)
-    self.nativeMapButton:setVisible(not self.stockPage)
     self.batterySlot:setVisible(not self.stockPage)
     self.stockButton:setTitle(getText(self.stockPage and "UI_OMHTT_StockpileBack" or "UI_OMHTT_OpenStockpile"))
     self.stockButton:setY(self.stockPage and self.height - 42 or self.stockButtonY)

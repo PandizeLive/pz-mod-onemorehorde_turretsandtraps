@@ -1703,3 +1703,7 @@ Owner explicitly approves C318-C322. See [approved scope](CONTROLLER_MAP_C316.md
 
 
 C323 implementation note (2026-10-18): 0.2.55 implements the approved map/layout/resize/naming/Button scope. Native Map uses visited-world map data, not live satellite imagery. Compact Controller widths retain the existing attached Stockpile page. Passive traps receive names without adding a signal-receiver contract. Validation/release evidence: [TEST_v0.2.55.md](TEST_v0.2.55.md).
+
+## C324 — Controller error storm, scrollbar correction and in-game map (2026-10-18)
+
+Owner reports freezing/exiting with many errors and a scrollbar in the screen interior, accepts the in-game map as the default/only normal view, then suspects one overloaded CPU core. Continue the approved corrective work without another approval gate. The captured 0.2.55 console contains 454 identical `ControlGraph.update` failures; native dispatch passes the graph itself to a helper expecting its Controller parent. CPU utilization was not captured and the final exit cause is not established. Native deferred-anchor testing also reproduces scrollbar displacement during explicit reflow. Rename the helper, keep section scrollbars in their panels, and remove the Grid toggle/drawing. Preserve existing server-authorized actions and native Stockpile. [Patch](PATCH_v0.2.55.1.md) · [Evidence and acceptance](TEST_v0.2.55.1.md). Record the failed owner test separately from prior automated passes.

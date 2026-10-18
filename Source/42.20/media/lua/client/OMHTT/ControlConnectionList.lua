@@ -102,6 +102,7 @@ function List.create(panel)
     list.borderColor = {r = .25, g = .25, b = .25, a = 1}
     list.tooltip = getText("UI_OMHTT_DisconnectHelp")
     panel.detailBody:addChild(list)
+    require("OMHTT/ControlTheme").scrollbar(list)
     return list
 end
 

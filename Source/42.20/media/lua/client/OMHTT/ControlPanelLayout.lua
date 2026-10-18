@@ -53,6 +53,7 @@ function L.create(panel)
     panel:addChild(body)
     body:setScrollChildren(true)
     body:addScrollBars(false)
+    Theme.scrollbar(body)
     local controls = {panel.nameEntry, panel.manage, panel.assign, panel.setFacing, panel.policy, panel.source, panel.trigger, panel.link, panel.clearInputs}
     for i = 1, #controls do
         local control = controls[i]
@@ -66,12 +67,6 @@ function L.create(panel)
     panel.inputs = require("OMHTT/ControlConnectionList").create(panel)
     panel.graph = require("OMHTT/ControlGraph").create(panel)
     panel.mapView = require("OMHTT/ControlMap").create(panel)
-    panel.gridButton = ISButton:new(0, 0, 90, 28, getText("UI_OMHTT_MapGrid"), panel, function(self)
-        self.mapView:setNative(false)
-    end)
-    panel.nativeMapButton = ISButton:new(0, 0, 90, 28, getText("UI_OMHTT_MapNative"), panel, function(self)
-        self.mapView:setNative(true)
-    end)
     panel.viewConnections = ISButton:new(10, 0, 150, 28, getText("UI_OMHTT_ViewConnections"), panel, function(self)
         require("OMHTT/ControlGraph").focus(self)
         self.inputs:setYScroll(0)
@@ -81,14 +76,6 @@ function L.create(panel)
     panel.viewConnections.tooltip = getText("UI_OMHTT_ViewConnectionsTip")
     Theme.button(panel.viewConnections)
     body:addChild(panel.viewConnections)
-    local mapButtons = {panel.gridButton, panel.nativeMapButton}
-    panel.gridButton.tooltip = getText("UI_OMHTT_MapGridTip")
-    panel.nativeMapButton.tooltip = getText("UI_OMHTT_MapNativeTip")
-    for i = 1, #mapButtons do
-        mapButtons[i]:initialise()
-        Theme.button(mapButtons[i])
-        panel:addChild(mapButtons[i])
-    end
     panel.devices:setVisible(false)
     L.arrange(panel)
     L.refresh(panel, A.state(panel.object))
@@ -111,17 +98,17 @@ function L.arrange(panel)
     local centerWidth = panel.controlWidth - panel.detailX - 8
     place(panel.graph, 12, y, graphWidth)
     panel.graph:setHeight(bottom - y)
-    local toolbar = h + 10 + panel.gridButton.height + 6
+    Theme.scrollbar(panel.graph)
+    local toolbar = h + 10
     local mapHeight = math.max(64, math.min(math.floor((bottom - y) * .40), bottom - y - toolbar - 96))
-    place(panel.gridButton, panel.detailX + 6, y + h + 10, (centerWidth - 18) / 2)
-    place(panel.nativeMapButton, panel.gridButton.x + panel.gridButton.width + 6, panel.gridButton.y, panel.gridButton.width)
     panel.mapY = y
-    local mapTop = panel.gridButton.y + panel.gridButton.height + 6
+    local mapTop = y + toolbar
     place(panel.mapView, panel.detailX, mapTop, centerWidth)
     panel.mapView:setHeight(mapHeight)
     local detailsY = mapTop + mapHeight + 8
     place(panel.detailBody, panel.detailX, detailsY, centerWidth)
     panel.detailBody:setHeight(math.max(80, bottom - detailsY))
+    Theme.scrollbar(panel.detailBody)
     panel.layoutKind = nil
     panel.closeButton:setX(panel.width - 40)
     panel.stockButtonY = panel.equipmentY + h * 3 + 12
@@ -156,8 +143,6 @@ function L.arrange(panel)
         panel.stockPage = false
         panel.graph:setVisible(true)
         panel.mapView:setVisible(true)
-        panel.gridButton:setVisible(true)
-        panel.nativeMapButton:setVisible(true)
         panel.detailBody:setVisible(true)
         if panel.batterySlot then
             panel.batterySlot:setVisible(true)
@@ -196,6 +181,7 @@ function L.refresh(panel, state)
     local bottom = controlsY + row + 12
     place(panel.inputs, x, bottom, width)
     panel.inputs:setHeight(math.max(90, panel.inputs.itemheight * 3))
+    Theme.scrollbar(panel.inputs)
     if kind == "Turret" then
         bottom = bottom + panel.inputs.height + 8
     end
