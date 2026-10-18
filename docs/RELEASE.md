@@ -2,7 +2,7 @@
 
 ## 0.2.53.11 / C309 - Pressure-plate visual feedback
 
-[Patch](PATCH_v0.2.53.11.md) and [verification](TEST_v0.2.53.11.md). 21,600 assertions, native pressed-state save/reload and all three independent package checks pass. Local installation and hash verification follow. No Workshop upload or cumulative-changelog reset.
+[Patch](PATCH_v0.2.53.11.md) and [verification](TEST_v0.2.53.11.md). 21,600 assertions, native pressed-state save/reload and all three independent package checks pass. Installed from immutable `test/v0.2.53.11` / `0f54e646c94a9e244214afc08821397c19b264fe`. All 290 source and 370 tagged/packaged/installed/archive files match; both 0.2.53.10 backups verify. [Release evidence](../diagnostics/v0.2.53.11/local-release.json). Rendered and connected acceptance remain pending. No Workshop upload or cumulative-changelog reset.
 
 ## 0.2.53.10 / C308 — Pressure plates and Controller facing
 

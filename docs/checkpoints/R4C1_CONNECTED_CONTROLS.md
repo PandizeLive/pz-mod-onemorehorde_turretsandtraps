@@ -1,6 +1,6 @@
 # R4C1 — buttons, pressure plates and links
 
-**C309 / 0.2.53.11:** [Inset pressure plates with press/release feedback](../PATCH_v0.2.53.11.md). Existing full-tile occupancy, filters, signals and passive collision remain. [Verification](../TEST_v0.2.53.11.md); R4C2 remains next content.
+**C309 / 0.2.53.11 installed:** [Inset pressure plates with press/release feedback](../PATCH_v0.2.53.11.md). Existing full-tile occupancy, filters, signals and passive collision remain. [Verification](../TEST_v0.2.53.11.md); R4C2 remains next content.
 
 **C308 / 0.2.53.10 installed:** [Implemented corrections](../PATCH_v0.2.53.10.md): non-thumpable new/existing plates, contextual linking and Controller Set Facing. [Verification](../TEST_v0.2.53.10.md) separates automated/native checks from pending rendered/connected acceptance. R4C2 Poke Floor remains next content.
 

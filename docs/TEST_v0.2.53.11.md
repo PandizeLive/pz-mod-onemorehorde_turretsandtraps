@@ -17,4 +17,4 @@ Initial native startup rejected reuse of one sprite identity for all four placem
 
 ## Delivery
 
-All required automated/native checks pass. Pending immutable test tag, local installation and hash verification. No Workshop upload or official release.
+Installed from immutable `test/v0.2.53.11` / `0f54e646c94a9e244214afc08821397c19b264fe` through `OMH.cmd -Action Install`. All 290 source and 370 package/tag/install/archive files match; both 0.2.53.10 backups verify. [Release evidence](../diagnostics/v0.2.53.11/local-release.json) records hashes and the managed backup. Initial automatic installation review timed out before execution; the permitted retry installed and verified successfully. Development delivery uses the existing branch/draft PR under C108. No Workshop upload or official release; rendered and connected acceptance remain pending.
