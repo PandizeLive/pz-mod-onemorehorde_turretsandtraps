@@ -1,5 +1,38 @@
 # C316 — Controller map and connection-view discussion
 
+## C322 — Resizable Controller and Turret Manage menus (2026-10-18)
+
+Owner asks to add resizing to both menus, allowing compact and expanded layouts without cropping or breaking controls, with module slots able to shrink. Owner requests agreement and the next-update recap. Add this to the planned patch; this turn records feasibility and behavior, not a gameplay implementation or new test build. C321 remains the expanded Controller arrangement.
+
+### Resize behavior
+
+- Give both menus a visible native-style bottom-right resize grip and retain their separate title-bar dragging area. Bound the size to the player's available viewport and a content/font-aware minimum. Reflow sections and wrap readable labels; do not uniformly scale text or allow controls to overlap. Check both horizontal and vertical bounds, including split-screen viewports and larger UI fonts.
+- Manage: module tiles and icons shrink/grow within usable limits, then reflow into a suitable number of columns while preserving slot order, identity, rarity styling, tooltips and drag/drop targets. All slots remain reachable. Equipment/Ammunition can rearrange at compact widths; Load Order, Reload, power, range and Lure controls remain usable. Layout resizing never changes installed items or capacities.
+- Keep Manage's existing no-whole-menu-scroll direction. Details grows the menu only when needed and space permits; at tighter sizes retain the existing dedicated Details page fallback. Load Order remains its full-menu page. User-selected size is not overwritten by routine state refreshes; expanding/collapsing details must not create cumulative height drift.
+- Controller: preserve Connections on the left, wider Map above Selected Device, and full-height Stockpile on the far right when space permits. Compact widths rearrange these sections with a usable minimum size; do not hide essential actions. Keep Connections and Stockpile independently scrollable and reuse the existing native-backed Stockpile widget. Controls, Connections, and Access & Assignment remain separate groups.
+- Remember geometry separately for Controller and Manage on the local client using native layout persistence, with player-specific keys and screen bounds checked on restore. Restore size/position only after a valid menu open, not visibility or a stale world object. Resizing must not recreate inventory panels, lose selection, change map focus/zoom or issue gameplay/network commands. A changed viewport safely reclamps the saved geometry.
+- Recalculate layout when dimensions/font/content mode change, coalescing drag updates; retain cached map/device/inventory data. Recompute hit regions and connection anchors with geometry. Do not add per-tick world scans, inventory enumeration, or disk writes during dragging. Mouse release outside the window, closure and interrupted gestures must release capture cleanly.
+
+### Source evidence and acceptance
+
+Installed Build 42.21 `ISUI/ISResizeWidget.lua` (`resize`, `onMouseUpOutside`, `new`) supplies a native resize control, minimum dimensions, a custom resize callback and capture release. Its built-in clamp only handles the global screen's lower edge: our callback must additionally account for viewport width, player bounds and layout minima. `ISUI/ISLayoutManager.lua` (`RegisterWindow`, `DefaultSaveWindow`, `DefaultRestoreWindow`, `TryRestore`) supports geometry persisted in `layout.ini` by screen resolution; use custom save/restore callbacks to avoid restoring menu visibility or stale device references.
+
+Current `TurretManageLayout.create` computes widths and a fixed module grid at creation; `refresh` keys its layout cache on screen height/content and sets menu height automatically. `ControlPanelLayout.create` similarly initializes dimensions, while `refresh` only keys on selected kind/assignment. Both need a geometry-aware layout pass; attaching a grip alone would leave children at stale sizes. This is static source verification only. No new Lua/native/connected-MP test was run for the unimplemented feature.
+
+Before packaging, verify compact/normal/expanded bounds, all 16 module slots, large fonts, Details/Load Order/Lure modes, long names, full Connections/Stockpile, resize during selection/drag, release outside, reopen and restart persistence, changed resolution/player viewport, and remote Manage inventory/authorization behavior. Resize should generate no gameplay packets or extra state scans. Preserve the no-pcall gate and all existing server-authoritative actions.
+
+### Next patch recap
+
+- Controller Map and Connections redesign
+- Grid / Native Map toggle
+- Drag-to-connect controls
+- Resizable Controller and Turret Manage menus
+- Adaptive module grid and saved window sizes
+- Unique device names and numbering
+- Left-click Buttons and temporary light-switch graphics
+
+No unresolved design choice is needed for this resize addition. Full integration still requires native layout and connected-MP validation; no gameplay acceptance is inferred from the earlier browser mockups. Installed 0.2.54.1 is unchanged. **Wait for a patch.**
+
 ## C321 — Full-height Stockpile on the right; wider Map (2026-10-18)
 
 Owner requests: “Let's move Stockpile over to the right, and open the map to fill the space where stockpile used to be. Stockpile will extend down, next to the Selected Defense, similar to before.” This supersedes C320's Stockpile placement: **Connections fills the left column; the wider Map sits above Selected Device in the center; Stockpile fills the far-right column beside both.** All three columns share their outer top/bottom edges. Retain separated Controls, Connections, and Access & Assignment groups, head subtitles, grey styling and Grid / Native Map.

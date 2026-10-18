@@ -1692,3 +1692,7 @@ Owner clarifies that Selected Defense must extend beneath the Map as well as Sto
 ## C321 — Stockpile to the far right; Map expands above details
 
 Owner moves Stockpile into a full-height right column beside Selected Defense and asks the Map to fill Stockpile's former upper-row space. Connections remains left with its scrollbar; details sit beneath the expanded Map. Preserve separated action groups and all gameplay requirements. [Updated preview and verification](CONTROLLER_MAP_C316.md#c321--full-height-stockpile-on-the-right-wider-map-2026-10-18). Planning only; installed build unchanged.
+
+## C322 — Add resizing to both menus; recap the upcoming patch
+
+Owner requests adjustable Controller and Manage menus that compact/expand safely, including smaller module tiles, then asks for agreement and a recap. Native resize and layout persistence mechanisms are verified in installed source; current menu layouts need geometry-aware reflow. Record readable minima, responsive sections, saved client geometry, retained controls/slots, bounded list scrolling and no per-tick scans. [Contract, evidence and recap](CONTROLLER_MAP_C316.md#c322--resizable-controller-and-turret-manage-menus-2026-10-18). This is a requested patch requirement; no gameplay implementation or runtime acceptance is claimed this turn.
