@@ -32,3 +32,8 @@ Static review confirms eight-pixel frame mismatch, no ControlAction pickup anima
 ## C311 — Planning follow-up, no new test (2026-10-18)
 
 Owner selects Grouped Controller, per-kill Leech with Synergy-gated secondary kills, one additional half-damage Martyrdom generation and rotary attack-energy accounting. Static compatibility review confirms that current rotary heads exclude Synergy while supporting Martyrdom/Tack; choice 5A/5B remains in the [contract](CORRECTIONS_C310.md#c311--confirmed-selections-and-rotary-compatibility). This is a design selection, not another owner test or acceptance of the open C310 findings. Installed 0.2.53.11 and previous evidence remain unchanged.
+
+
+## C312 — Compatibility selection and naming discussion (2026-10-18)
+
+Owner selects 5A rotary Synergy support and asks about Sap versus Leech naming. The [contract](CORRECTIONS_C310.md#c312--rotary-synergy-approved-battery-refund-naming) records confirmed compatibility and pending 6A Siphon / 6B Sap naming. No new owner test, code/package/install change or acceptance claim. Prior C310 findings remain open.
