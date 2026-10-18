@@ -2,7 +2,7 @@
 
 ## 0.2.54.1 / C315 — Automatic input assignment and Legendary Siphon
 
-[Patch](PATCH_v0.2.54.1.md) and [verification](TEST_v0.2.54.1.md). Live LootLab is published and verified; [hosted evidence](../diagnostics/v0.2.54.1/lootlab-release.json). Local installation and immutable source tag are recorded on completion. No Workshop content upload; cumulative pending notes are preserved.
+[Patch](PATCH_v0.2.54.1.md) and [verification](TEST_v0.2.54.1.md). Live LootLab is published and verified; [hosted evidence](../diagnostics/v0.2.54.1/lootlab-release.json). Installed from immutable `test/v0.2.54.1` / `0a65f67ad2cd3a3eb0ff417ec7eae255e9b5ae1f`. All 293 source and 374 tagged/packaged/installed/archive files match; both 0.2.54 backups verify. [Release evidence](../diagnostics/v0.2.54.1/local-release.json). Development delivery uses the existing branch and draft PR #1 under C108. No Workshop content upload; cumulative pending notes are preserved.
 
 ## 0.2.54 / C314 - Controller corrections and Siphon
 

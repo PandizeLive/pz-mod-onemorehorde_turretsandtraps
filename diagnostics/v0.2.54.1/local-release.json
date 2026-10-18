@@ -1,0 +1,113 @@
+{
+  "version": "0.2.54.1",
+  "sourceCommit": "0a65f67ad2cd3a3eb0ff417ec7eae255e9b5ae1f",
+  "tag": "test/v0.2.54.1",
+  "installed": "C:\\Users\\bandi\\Zomboid\\mods",
+  "packages": {
+    "OneMoreHorde_Traps": 141,
+    "OneMoreHorde_Turrets": 233
+  },
+  "filesVerified": 374,
+  "sourceFilesVerified": 293,
+  "backup": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\p1c1\\install-backups\\20261018-131046-2083",
+  "backupsVerified": [
+    {
+      "package": "OneMoreHorde_Traps",
+      "version": "0.2.54",
+      "filesVerified": 141
+    },
+    {
+      "package": "OneMoreHorde_Turrets",
+      "version": "0.2.54",
+      "filesVerified": 233
+    }
+  ],
+  "archive": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\artifacts\\OMHTT-0.2.54.1.zip",
+  "archiveSHA256": "c6369b68d80e1c465613c79b91e8fe809b20a47fd8ed4543b7a027b71650216a",
+  "kahluaAssertions": 21655,
+  "nativeWrite": "passed",
+  "nativeRead": "passed",
+  "nativeSelections": [
+    "traps",
+    "turrets",
+    "both"
+  ],
+  "clientAcceptance": "pending focused owner test",
+  "savePolicy": "fresh worlds",
+  "publication": "none",
+  "hostedLootLab": {
+    "version": "0.2.54.1",
+    "worker": "omh-leaderboard-api",
+    "deployment": "e4c47e3b-94ad-45e2-ac0b-9b4d9e22d0df",
+    "url": "https://admin.onemorehorde.com/admin/LootLab/",
+    "beforeSha256": "7480ef7f2358ca923206425d9ef48fa36a1993fd4771cf6f8aa8eb76c14a28fa",
+    "afterSha256": "e0a6c2e9d1a1a376416b1c2b6a0bfef00747e1518293a8f7c174b82b7b7fc205",
+    "productionBundleMatches": true,
+    "protectedAdminRoutes": 13,
+    "publicEndpoints": {
+      "https://api.onemorehorde.com/v1/leaderboard?limit=1": 200,
+      "https://api.onemorehorde.com/v1/workshop-snapshots/latest": 200
+    },
+    "backendTests": 86,
+    "catalogControls": 32,
+    "siphonLoadedWeight": 3,
+    "defaultRarity": "Legendary",
+    "databaseWrites": false,
+    "savedTuningPreserved": true,
+    "assetManifest": {
+      "baseline": "T&T 0.2.54.1",
+      "files": [
+        {
+          "name": "app.js",
+          "bytes": 24701,
+          "sha256": "94c96485ebb950e773ab7e544fc021becc06f114dbed0f1286693ff0afa7ccd4"
+        },
+        {
+          "name": "data.js",
+          "bytes": 4363586,
+          "sha256": "85464429979fc2316bdb1f45c0ddae001e93839492876f779f55f6808ab2c530"
+        },
+        {
+          "name": "index.html",
+          "bytes": 10226,
+          "sha256": "1d1b3eba0882a069dcfbb1ff8037cc9a5dd5401629c5e34c7f8f74d5eace67b1"
+        },
+        {
+          "name": "map-controls.js",
+          "bytes": 2419,
+          "sha256": "57a21b7d58799404b22e0a8dfe3cf7580f264ea6bd0a766c661384a5cbf53c03"
+        },
+        {
+          "name": "model.js",
+          "bytes": 13075,
+          "sha256": "89d10009f35cf3f773bd06dafa3e2cba5c0b9c8dccff7cb57a6a31f040bc3a6d"
+        },
+        {
+          "name": "provenance.json",
+          "bytes": 4897,
+          "sha256": "c9df3c3bc2bdf6a7a5d25d3bc681f5215dae0989c36eaafaf7f7a37e0c54ab6e"
+        },
+        {
+          "name": "README.md",
+          "bytes": 330,
+          "sha256": "010931b64f4b451b84a826dbccf273791e3c7ae1c6ff1eae4231e3642d0a29ed"
+        },
+        {
+          "name": "settings-sync.js",
+          "bytes": 4630,
+          "sha256": "bf2b585cd5cfedb6315f9eb057ba69a81763fd6ed2b38147b6c08eed68180624"
+        },
+        {
+          "name": "style.css",
+          "bytes": 12211,
+          "sha256": "74b5059d8dcef09bcc866dd272df10ca15a1ff7940de01e5c56708c9fa1b0bbb"
+        },
+        {
+          "name": "tier-list.js",
+          "bytes": 10101,
+          "sha256": "709ccb48324b052e6cfafad6abdcb745b6db8a3767929e3ce3b17557e5913002"
+        }
+      ]
+    }
+  }
+}

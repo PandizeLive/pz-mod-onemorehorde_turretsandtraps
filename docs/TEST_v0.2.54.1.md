@@ -13,9 +13,9 @@ The first native fixture used the already-migrated plate visual before native en
 
 ## Delivery and limits
 
-Independent Traps, Turrets and both-package startup checks pass (62.2 / 61.8 / 53.6 seconds). Installation and GitHub evidence are recorded after verification. Native probes use **zero connected clients**; live client convergence, rendered layout and owner acceptance remain pending. No Workshop upload or merge.
+Independent Traps, Turrets and both-package startup checks pass (62.2 / 61.8 / 53.6 seconds). Installed from immutable `test/v0.2.54.1` / `0a65f67ad2cd3a3eb0ff417ec7eae255e9b5ae1f`. All 293 source and 374 tagged/packaged/installed/archive files match; both 0.2.54 backups verify. [Release evidence](../diagnostics/v0.2.54.1/local-release.json). Development delivery uses the existing branch and draft PR #1 under C108. Native probes use **zero connected clients**; live client convergence, rendered layout and owner acceptance remain pending. No Workshop upload or merge.
 
-[Validator](../diagnostics/v0.2.54.1/validation.log) · [native evidence](../diagnostics/v0.2.54.1/native-evidence.txt) · [LootLab tests](../diagnostics/v0.2.54.1/loot-tests.txt) · [desktop/mobile](../diagnostics/v0.2.54.1/loot-browser.txt) · [tiers](../diagnostics/v0.2.54.1/loot-tiers-browser.txt) · [hosted release](../diagnostics/v0.2.54.1/lootlab-release.json).
+[Validator](../diagnostics/v0.2.54.1/validation.log) · [native evidence](../diagnostics/v0.2.54.1/native-evidence.txt) · [LootLab tests](../diagnostics/v0.2.54.1/loot-tests.txt) · [desktop/mobile](../diagnostics/v0.2.54.1/loot-browser.txt) · [tiers](../diagnostics/v0.2.54.1/loot-tiers-browser.txt) · [hosted release](../diagnostics/v0.2.54.1/lootlab-release.json) · [86 backend tests](../diagnostics/v0.2.54.1/loot-api-tests.txt).
 
 ## Short owner test
 
