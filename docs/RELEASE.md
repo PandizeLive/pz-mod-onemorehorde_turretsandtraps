@@ -2,7 +2,7 @@
 
 ## 0.2.54 / C314 - Controller corrections and Siphon
 
-[Patch](PATCH_v0.2.54.md) and [verification](TEST_v0.2.54.md). The approved C310-C313 scope passes 21,643 assertions, native save/reload and independent Traps/Turrets/both startup checks. Installation/tag evidence is being recorded. Local LootLab is updated; hosted publication requires renewed Cloudflare login. Rendered and connected acceptance remain pending. No Workshop upload or cumulative-changelog reset.
+[Patch](PATCH_v0.2.54.md) and [verification](TEST_v0.2.54.md). The approved C310-C313 scope passes 21,643 assertions, native save/reload and independent Traps/Turrets/both startup checks. Installed from immutable `test/v0.2.54` / `d809cdbf135a28d782ba5a9538e6452aaa9688f9`. All 293 source and 374 tagged/packaged/installed/archive files match; both 0.2.53.11 backups verify. [Release evidence](../diagnostics/v0.2.54/local-release.json). Local LootLab is updated; hosted publication requires renewed Cloudflare login. Rendered and connected acceptance remain pending. No Workshop upload or cumulative-changelog reset.
 
 ## 0.2.53.11 / C309 - Pressure-plate visual feedback
 

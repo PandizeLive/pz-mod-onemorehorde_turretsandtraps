@@ -20,7 +20,7 @@ The native scrolling list does not reset its accumulated scroll height on `clear
 
 ## Delivery and limitations
 
-All automated checks are complete; installation/tag/hash evidence is being recorded. Native server probes use installed Build 42.21 with **zero connected clients**. They establish engine API, serialization and server behavior, not live network convergence or GPU layout. Owner-reported acceptance is pending.
+Installed from immutable `test/v0.2.54` / `d809cdbf135a28d782ba5a9538e6452aaa9688f9`. All 293 source and 374 tagged/packaged/installed/archive files match; both 0.2.53.11 backups verify. [Machine-readable release evidence](../diagnostics/v0.2.54/local-release.json). Native server probes use installed Build 42.21 with **zero connected clients**. They establish engine API, serialization and server behavior, not live network convergence or GPU layout. Owner-reported acceptance is pending.
 
 Hosted LootLab was **not deployed**: the existing Cloudflare login is expired and the noninteractive deployment query could not authenticate. The local catalog and a matching tested account-settings helper are prepared under `tools/loot_site/cloud/`; a fresh authenticated live-source comparison is required before publishing. No account settings or production database were changed. Do not deploy the stale website checkout.
 

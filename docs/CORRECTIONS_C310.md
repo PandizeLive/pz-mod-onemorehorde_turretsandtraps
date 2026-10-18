@@ -135,3 +135,5 @@ Owner: **“Approved to patch.”** Implements the entire C310–C313 settled sc
 - Local LootLab catalog, color/shape, pack/Sandbox eligibility and old-scenario compatibility include Siphon. The hosted update requires renewed Cloudflare login; local/browser and server catalog changes are prepared, not deployed. No account weights were rewritten.
 
 [Patch](PATCH_v0.2.54.md) and [verification / owner test](TEST_v0.2.54.md). Rendered GPU, audio and connected multiplayer acceptance remain owner checks. Next new content stays R4C2 Poke Floor; R4C3 beam sensors are outside this patch.
+
+Delivery: Installed from immutable `test/v0.2.54` / `d809cdbf135a28d782ba5a9538e6452aaa9688f9`. All 293 source and 374 tagged/packaged/installed/archive files match; both 0.2.53.11 backups verify. [Release evidence](../diagnostics/v0.2.54/local-release.json). Test findings and source are included in the standing GitHub development mirror; no Workshop publication.
