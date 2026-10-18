@@ -1671,3 +1671,8 @@ Owner-approved correction: Legendary Siphon at loaded weight 3; automatic placem
 ## C316 — Controller map and connection views under discussion
 
 Owner requests preserving the current menu/Stockpile and discussing map-based connections and a clickable hierarchy, then proposes Inputs/Outputs lists. No implementation approved. [Preserved baseline, native evidence and numbered options](CONTROLLER_MAP_C316.md). Current installed build remains 0.2.54.1.
+
+
+## C317 — Controller layout direction selected
+
+Owner selects 1B / 2B / 3A: Triggers / Defenses, simultaneous lists beside the map, Grid / Native Map toggle. Stockpile and existing 0.2.54.1 baseline stay preserved. [Contract and concrete preview](CONTROLLER_MAP_C316.md#c317--direction-selected-and-interactive-layout-prepared-2026-10-18). Production implementation is not yet approved.

@@ -10,4 +10,4 @@ Siphon is corrected to Legendary loaded weight 3. The live LootLab catalog now i
 
 Installed from immutable `test/v0.2.54.1` / `0a65f67ad2cd3a3eb0ff417ec7eae255e9b5ae1f`. All 293 source and 374 tagged/packaged/installed/archive files match; both 0.2.54 backups verify. [Release evidence](../diagnostics/v0.2.54.1/local-release.json). Development delivery uses the existing branch and draft PR #1 under C108.
 
-Planning: [C316 Controller map and connection views](CONTROLLER_MAP_C316.md) is discussion only. Current menu is preserved; layout/background choices and any prototype remain unapproved.
+Planning: [C317 selected Controller layout and preview](CONTROLLER_MAP_C316.md#c317--direction-selected-and-interactive-layout-prepared-2026-10-18): Triggers / Defenses, both lists beside the map, Grid / Native Map toggle. Preview interaction and responsive checks pass; current 0.2.54.1 menu is preserved. Production patch approval remains pending.

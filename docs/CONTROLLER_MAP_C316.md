@@ -1,5 +1,22 @@
 # C316 — Controller map and connection-view discussion
 
+## C317 — Direction selected and interactive layout prepared (2026-10-18)
+
+Owner selects **1B, 2B, 3A**: **Triggers / Defenses** names; **both connected lists beside the map simultaneously**; **Grid / Native Map** background toggle. These selections supersede the earlier recommendations for Inputs/Outputs and mutually exclusive Map/Connections views. Do not quietly restore those rejected recommendations.
+
+The preview places the two connected lists together at the left, the map beside them, and the existing-style Stockpile at the right. Selected-device details occupy the area beneath lists/map instead of a fourth permanent column. On a narrow browser preview the regions stack while staying present; this is preview readability, not an approved change to the desktop game's layout. The Stockpile remains the existing native-backed implementation when production work is approved.
+
+The interactive preview supports list/map selection, focus highlighting, Grid/Native Map background switching, mouse-drag and two-tap connections, selected-link disconnection, name/access controls, assignment intent, and a Manage handoff illustration. Set Aim represents the existing world-aim workflow. Sample devices, inventory and schematic map buildings are illustrative, not a capture of the user's save or proof of native rendering. Stockpile transfers and the real Manage menu are not reimplemented in this mockup.
+
+The current 0.2.54.1 menu/tag/archive remain intact. The owner has chosen the design direction, not approved a gameplay patch. **Decision needed: review the concrete layout before production implementation.** No native game or connected multiplayer result is claimed by these preview checks.
+
+Preview checked in headless Edge: selection/focus, background switching, click/tap and drag connections, Disconnect, Manage handoff and actual touch events passed. No script errors or horizontal overflow at 1040, 736, 390 and 320 browser widths. Native integration and in-game rendering remain future work. [Preview checks](../diagnostics/controller-c317/checks.json).
+
+![Controller layout preview: Triggers and Defenses lists beside map, Stockpile at right](../diagnostics/controller-c317/inline.png)
+
+Local editable conversation preview: `C:/Users/bandi/.codex/visualizations/2026/10/06/01a11283-2701-7630-a9bf-aac054c7bf3c/controller-map-and-lists.html`.
+
+
 ## Status and preservation
 
 Owner asks to consider a Controller Menu rework, explicitly follows with “Let's discuss,” and wants the current menu saved because it is good. Existing Stockpile appearance/behavior must be retained. This is planning only: no gameplay/UI implementation, new version, install, or new acceptance claim.
