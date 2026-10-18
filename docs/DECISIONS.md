@@ -1,5 +1,9 @@
 # Decision register
 
+## C310 — Owner test findings, Controller alternatives and module discussion (2026-10-18)
+
+Owner reports plate/player ordering, missing pickup animation, Controller access from turrets, invisible incoming links, eight-pixel Manage inset, module replacement/pulse needs and Set Facing errors. Requests **Set Aim**, explanatory Open Manage/Unassign tooltips, then adds missing **To Stockpile / To Inventory** tooltips. Owner asks for three Controller redesigns and **A/B/C = designs, D = original, E = another three**. New proposed module refunds 2x paid shot power on kill, +1x per stack; Synergy should permit one self-chain at 50% damage. [C310 evidence, mockups and open decisions](CORRECTIONS_C310.md) records exact causes, semantic tradeoffs and recommendations. No redesign/module-default choice or gameplay patch approval inferred. SP 0.2.53.11 findings supersede its pending rendered acceptance; immutable tags remain unchanged. Standing C108 requires this planning/test-evidence mirror.
+
 ## C309 — Inset pressure plate with activation feedback (2026-10-18)
 
 Owner asks to make the plate visually slightly smaller than one tile and press down while activated, like Minecraft. This is implementation authorization. Use two native sprite states with about 85% width, six-pixel released height and one-pixel pressed height in the existing neutral technical placeholder style. Keep full-tile occupancy, filtering, power/signals, durability and non-thumpability. Existing plates convert when bound; server owns state and publishes native sprite changes only on transitions. No new gameplay/recipes, art direction, per-frame animation or sensors. [Patch](PATCH_v0.2.53.11.md) and [verification](TEST_v0.2.53.11.md). R4C2 remains next.

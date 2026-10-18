@@ -18,3 +18,12 @@ Initial native startup rejected reuse of one sprite identity for all four placem
 ## Delivery
 
 Installed from immutable `test/v0.2.53.11` / `0f54e646c94a9e244214afc08821397c19b264fe` through `OMH.cmd -Action Install`. All 290 source and 370 package/tag/install/archive files match; both 0.2.53.10 backups verify. [Release evidence](../diagnostics/v0.2.53.11/local-release.json) records hashes and the managed backup. Initial automatic installation review timed out before execution; the permitted retry installed and verified successfully. Development delivery uses the existing branch/draft PR under C108. No Workshop upload or official release; rendered and connected acceptance remain pending.
+
+
+## C310 — Owner findings and read-only audit (2026-10-18)
+
+Owner supplies three screenshots and reports plate/player drawing order, absent low pickup animation, Controller entry from turrets, missing incoming connection list, module replacement/feedback gaps, Ammunition's right inset, Set Facing exceptions and unexplained Controller/destination buttons. These remain open; this report does not accept rendering or multiplayer. [Complete diagnosis and proposed fixes](CORRECTIONS_C310.md). New Leech/Synergy proposals and Controller A–E choices are separate from test findings.
+
+Captured console SHA-256: `85b8c570249996bd71ed15e65b5c7283dc8e496aa863d74be7bb7e04bfde96c2`; explicit diagnostic version 0.2.53.11, side SP. Two cursor load exceptions report missing native ISBuildingObject at client startup; three Set Facing clicks fail on the resulting missing module. The dependency is present under the native server Lua tree, so this is lifecycle initialization, not a missing game installation. Prior native dedicated checks had no client UI; `facing_cursor_setup.lua` supplied a stand-in parent. Those checks did not cover this failing startup path. No claim that their previous passes validate the live cursor.
+
+Static review confirms eight-pixel frame mismatch, no ControlAction pickup animation, ControlPanel opener without Controller-kind restriction, selected-input-only UI, and no enabled Open Manage/Unassign or destination tooltips. Current installed bytecode supports RenderLayer=Floor independently of solidfloor; floor-render correction still requires owner pixel acceptance. No game code/package/install/version change or new full gameplay test run. Desktop/mobile HTML layout checks and inspected mockups are planning evidence only.
