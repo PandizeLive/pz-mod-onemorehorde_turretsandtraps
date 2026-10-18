@@ -160,3 +160,6 @@ Owner: "Approved." This authorizes the complete C318-C322 recap: native resize g
 ### C323 implementation and verification
 
 Implemented as 0.2.55; see [patch](PATCH_v0.2.55.md) and [verification](TEST_v0.2.55.md). Compact Controller widths retain the attached native Stockpile page, while normal widths use the accepted three-region arrangement. Selection, map focus and inventory widgets survive geometry changes. Legacy Button sprite definitions remain available for loading before migration. The prior 0.2.54.1 test tag/archive remains the rollback snapshot. Rendered and connected-client acceptance is still pending.
+
+
+0.2.55 is installed from `test/v0.2.55` / `97d04a8812a30455b278a650fa4da179255a72b7`. [Validated local release](../diagnostics/v0.2.55/local-release.json). **Test now** using the focused [owner checklist](TEST_v0.2.55.md#short-owner-test).

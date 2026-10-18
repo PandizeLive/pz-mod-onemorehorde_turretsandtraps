@@ -40,3 +40,8 @@ Traps-only, Turrets-only and both-package native startup pass in 133.9 / 130.2 /
 ## Native save/reload result
 
 The final write and fresh-process read runs pass. The read run confirms the normal-save display name, reserved number and private registry entry before creating new fixtures. Both runs retain device ownership/links, exact stockpile/ammunition contents, legacy Button migration and trap object identities. The late-shutdown barb fixture now restores its matching naming snapshot; its field comparisons pass. These are isolated zero-client probes.
+
+
+## Delivery
+
+Installed from immutable `test/v0.2.55` / `97d04a8812a30455b278a650fa4da179255a72b7`. All 298 source and 383 tagged/packaged/installed/archive files match. Both 0.2.54.1 managed backups verify. [Release evidence](../diagnostics/v0.2.55/local-release.json). Existing development branch/draft PR #1 remains the C108 mirror route; no merge or Workshop upload. Cumulative Workshop notes retain all unuploaded changes.

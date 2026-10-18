@@ -1,5 +1,9 @@
 # Release state and publication policy
 
+## 0.2.55 / C323 — Controller Map and resizing
+
+[Patch](PATCH_v0.2.55.md) · [Verification](TEST_v0.2.55.md). Installed from immutable `test/v0.2.55` / `97d04a8812a30455b278a650fa4da179255a72b7`. All 298 source and 383 tagged/packaged/installed/archive files match. Both 0.2.54.1 managed backups verify. [Release evidence](../diagnostics/v0.2.55/local-release.json). Existing development branch/draft PR #1 remains the C108 mirror route; no merge or Workshop upload. Cumulative Workshop notes retain all unuploaded changes.
+
 ## 0.2.54.1 / C315 — Automatic input assignment and Legendary Siphon
 
 [Patch](PATCH_v0.2.54.1.md) and [verification](TEST_v0.2.54.1.md). Live LootLab is published and verified; [hosted evidence](../diagnostics/v0.2.54.1/lootlab-release.json). Installed from immutable `test/v0.2.54.1` / `0a65f67ad2cd3a3eb0ff417ec7eae255e9b5ae1f`. All 293 source and 374 tagged/packaged/installed/archive files match; both 0.2.54 backups verify. [Release evidence](../diagnostics/v0.2.54.1/local-release.json). Development delivery uses the existing branch and draft PR #1 under C108. No Workshop content upload; cumulative pending notes are preserved.
