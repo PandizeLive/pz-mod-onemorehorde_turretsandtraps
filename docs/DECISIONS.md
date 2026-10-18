@@ -1684,3 +1684,7 @@ Owner: “I approve the visual,” with compact Connections and head subtitles. 
 ## C319 — Taller Controller; right-column details and separated actions
 
 Owner requests Selected Device beneath Stockpile and Connections extended to the bottom, permits additional height, and corrects the mixed Open Manage/Set Aim/View Connections/Unassign row. Restore Controls, Connections, and Access & Assignment groups from the accepted Grouped design. Matching preview input sets list width to 43%. [Updated layout and verification](CONTROLLER_MAP_C316.md#c319--right-column-details-and-restored-action-groups-2026-10-18). Preview and planning only; C318 gameplay corrections remain pending.
+
+## C320 — Details span beneath Map and Stockpile; Connections scrollbar
+
+Owner clarifies that Selected Defense must extend beneath the Map as well as Stockpile, and requests a Connections scrollbar similar to Stockpile. Matching preview input sets list width to 40%. [Corrected layout and scrolling verification](CONTROLLER_MAP_C316.md#c320--details-beneath-map-and-stockpile-scrollable-connections-2026-10-18). Preserve separated groups and all prior gameplay requirements; installed build unchanged.

@@ -1,5 +1,17 @@
 # C316 — Controller map and connection-view discussion
 
+## C320 — Details beneath Map and Stockpile; scrollable Connections (2026-10-18)
+
+Owner clarifies: “I meant have selected defense go under the map as well. We'll give Connections a scroll bar, similar to the stockpile.” This corrects C319's interpretation: **Connections fills the left column; Map and Stockpile share the upper-right row; Selected Device spans the full width beneath both Map and Stockpile.** Retain Controls, Connections, and Access & Assignment as separate groups. The matching preview input changes list width to **40%**.
+
+Connections has one bounded vertical scroll area for both Triggers and Defenses and their connecting lines. Column labels stay visible while scrolling. Its scrollbar uses the same styling as Stockpile; with only the three sample rows it has no overflow to traverse. Long lists must not stretch the menu or move the right panels, and the lines must remain attached to their row ports. Desktop Connections extends to the details panel's bottom edge; on narrow previews the regions stack while preserving Map/Stockpile before details. Native game integration must preserve the existing authoritative actions and Stockpile implementation.
+
+Verified the corrected panel bounds, separate action groups, head subtitles, long-list overflow with fixed right-panel position and aligned wires, mouse/tap linking, selection, disconnection, map toggle, Manage handoff, real mobile touch and no horizontal overflow at 1040/736/390/320 widths. An initial overflow test caught content stretching the menu; size containment fixed it. One subsequent browser run reported an intermittent `detectOverflow` error; a fresh run with stack capture passed without recurrence. Do not treat preview checks as native game or connected-MP acceptance. [Final checks](../diagnostics/controller-c320/checks.json) and [preview source](../diagnostics/controller-c320/preview-source.html).
+
+![Selected Device beneath both Map and Stockpile with scrollable Connections](../diagnostics/controller-c320/inline.png)
+
+No gameplay/install/version changes. C318 naming and Button corrections remain pending. Save and mirror this clarified layout without asking the owner to reapprove the same direction. **Wait for a patch.**
+
 ## C319 — Right-column details and restored action groups (2026-10-18)
 
 Owner asks to move/extend Selected Device to the right beneath Stockpile, extend Connections downward to the bottom, and allow a taller menu. Owner reiterates the accepted Grouped design: Open Manage and Set Aim must not share one action row with View Connections and Unassign. This correction supersedes C317/C318's below-map details placement and mixed action row, not the selected Triggers / Defenses names, simultaneous map/lists, head subtitles, grey theme or existing Stockpile implementation.
