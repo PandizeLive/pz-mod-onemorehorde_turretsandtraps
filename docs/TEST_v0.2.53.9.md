@@ -15,4 +15,4 @@ Full validation passes 21,529 assertions, 217 compiled Lua/translation inputs an
 
 ## Delivery
 
-Automated/native validation passed. Immutable tag, verified local installation and GitHub development mirror are next. No Workshop publication or connected multiplayer acceptance is claimed.
+Installed from immutable `test/v0.2.53.9` / `1c0aabbd367725329b9162acbe601b153842059f`. All 289 source and 369 tagged/packaged/installed/archive files match; both 0.2.53.8 backups verify. [Release evidence](../diagnostics/v0.2.53.9/local-release.json). Development delivery uses the existing branch/draft PR under C108; no merge or Workshop upload. Rendered and connected multiplayer acceptance remain pending.

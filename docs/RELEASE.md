@@ -2,7 +2,7 @@
 
 ## 0.2.53.9 / C305 — Context-aware empty-slot silhouettes
 
-[Patch](PATCH_v0.2.53.9.md) and [verification](TEST_v0.2.53.9.md). Full validation passes 21,529 assertions; independent package closure passes. Native save/reload and all three independent package startup checks also pass. Immutable source tag, verified installation and development mirror are next. No Workshop upload or cumulative-changelog reset. Rendered/connected acceptance remains pending.
+[Patch](PATCH_v0.2.53.9.md) and [verification](TEST_v0.2.53.9.md). Full validation passes 21,529 assertions; independent package closure passes. Native save/reload and all three independent package startup checks also pass. Installed from immutable `test/v0.2.53.9` / `1c0aabbd367725329b9162acbe601b153842059f`. All 289 source and 369 tagged/packaged/installed/archive files match; both 0.2.53.8 backups verify. [Release evidence](../diagnostics/v0.2.53.9/local-release.json). Development delivery uses the existing branch/draft PR under C108; no merge or Workshop upload. No Workshop upload or cumulative-changelog reset. Rendered/connected acceptance remains pending.
 
 ## 0.2.53.8 / C302 — Controller battery clarity
 
