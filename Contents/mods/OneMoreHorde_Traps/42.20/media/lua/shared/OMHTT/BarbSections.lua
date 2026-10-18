@@ -20,6 +20,9 @@ local panelRemovals = {}
 ---@param record table Private persistent panel
 ---@return nil
 local function bindPanel(frame, record)
+    if not record.displayIdentity and not isClient() then
+        require("OMHTT/DefenseNames").ensure(record, "Panel", getText("UI_OMHTT_Barbs"))
+    end
     panelBindings[frame] = record
     local view = {}
     for key, value in pairs(record) do
@@ -43,6 +46,9 @@ end
 ---@return nil
 local function bindWire(object, record)
     record.revision = record.revision or 1
+    if not record.displayIdentity and not isClient() then
+        require("OMHTT/DefenseNames").ensure(record, "Wire", getText("UI_OMHTT_ConcertinaWire"))
+    end
     wireBindings[object] = record
     wireTiles[wireKey(record, 0)], wireTiles[wireKey(record, 1)] = record.id, record.id
     local view = {}
@@ -223,6 +229,9 @@ end
 ---@param record table Changed authoritative wire
 ---@return nil
 function B.publishWire(record)
+    if not isClient() and not record.displayName then
+        require("OMHTT/DefenseNames").ensure(record, "Wire", getText("UI_OMHTT_ConcertinaWire"))
+    end
     if not isServer() or not record.paired or B.store.wires[record.id] ~= record then return end
     record.revision = (record.revision or 1) + 1
     for part = 0, 1 do
@@ -335,6 +344,9 @@ end
 ---@return nil
 function B.visual(record, frame, host)
     if record.kind == "wire" then return end
+    if not isClient() and not record.displayName then
+        require("OMHTT/DefenseNames").ensure(record, "Panel", getText("UI_OMHTT_Barbs"))
+    end
     if not S.edge(host, record.north, record.side, geometry) then return end
     local index = geometry.north and 52 or 54
     if geometry.x > record.x then
@@ -501,6 +513,7 @@ function B.onCreate(params)
     if not host or not S.bind(host, north, side, id, B.policy) then error("[OMHTT] Barb backing changed before construction") end
     B.store.nextId = B.store.nextId + 1
     local record = {id = id, x = x, y = y, z = square:getZ(), north = north, side = side}
+    require("OMHTT/DefenseNames").restore(record, params.craftRecipeData and params.craftRecipeData:getAllConsumedItems())
     local frame = IsoThumpable.new(square:getCell(), square, "omhtt_barrier_01_52", north)
     frame:getModData().OMHTTBarbFrame = record
     original:getModData().OMHTTBarbFrame = record
@@ -576,6 +589,9 @@ function B.onWireCreate(params)
         record = {id = "barb-" .. B.store.nextId, kind = "wire", x = x, y = y,
             z = square:getZ(), health = 50, shared = false, paired = true, facing = facing, revision = 1}
         B.store.nextId = B.store.nextId + 1
+        local names = require("OMHTT/DefenseNames")
+        names.restore(record, params.craftRecipeData and params.craftRecipeData:getAllConsumedItems())
+        names.ensure(record, "Wire", getText("UI_OMHTT_ConcertinaWire"))
         B.store.wires[record.id] = record
     end
     object:getModData().OMHTTBarbFrame = {id = record.id, kind = "wire", paired = true}

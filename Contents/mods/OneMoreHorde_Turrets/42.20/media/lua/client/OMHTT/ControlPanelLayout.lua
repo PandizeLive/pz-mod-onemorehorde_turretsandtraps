@@ -1,5 +1,6 @@
 if isServer() then return end
 require("ISUI/ISPanel")
+require("ISUI/ISButton")
 local L = {}
 local Theme = require("OMHTT/ControlTheme")
 local U = require("OMHTT/ControlClient")
@@ -42,39 +43,9 @@ function L.create(panel)
     local h = getTextManager():getFontHeight(UIFont.Small) + 4
     panel.lineHeight = h
     panel.titleHeight = getTextManager():getFontHeight(UIFont.Medium) + 16
-    local stock = A.state(panel.object).kind == "Controller"
-    panel.stockCompact = stock and panel.width < 980
-    panel.controlWidth = stock and not panel.stockCompact and math.floor(panel.width * .62) or panel.width
-    panel.equipmentY = panel.titleHeight + 10
-    panel.devicesY = panel.equipmentY + h * 5 + 34
-    panel.detailX = math.floor(panel.controlWidth * .29)
-    local x, y, width = panel.detailX + 10, panel.devicesY, panel.controlWidth - panel.detailX - 24
-    local half = (width - 8) / 2
-    place(panel.devices, 12, y, panel.detailX - 24)
-    panel.devices:setHeight(panel.height - y - 14)
     panel.devices:setFont(UIFont.Small, 8)
     panel.devices.itemheight = h + 10
-    place(panel.nameEntry, x, y + 8, width)
-    panel.infoY = y + 46
-    panel.actionY = panel.infoY + h * 4 + 8
-    place(panel.manage, x, panel.actionY, half)
-    place(panel.assign, x + half + 8, panel.actionY, half)
-    panel.accessY = panel.actionY + 40
-    place(panel.policy, x, panel.accessY + h, width)
-    panel.connectionY = panel.accessY + h * 2 + 42
-    place(panel.source, x, panel.connectionY + h * 3, half)
-    place(panel.trigger, x + half + 8, panel.connectionY + h * 3, half)
-    place(panel.link, x, panel.connectionY + h * 3, half)
-    place(panel.clearInputs, x, panel.connectionY + h * 3 + 36, width)
-    place(panel.stockButton, panel.controlWidth / 2 + 10, panel.equipmentY + h * 3 + 12, panel.controlWidth / 2 - 34)
-    panel.manage:setTitle(getText("UI_OMHTT_OpenManage"))
-    panel.source:setTitle(getText("UI_OMHTT_SelectInput"))
-    panel.link:setTitle(getText("UI_OMHTT_LinkInput"))
-    panel.clearInputs:setTitle(getText("UI_OMHTT_ClearInputs"))
-    Theme.button(panel.manage)
-    panel.stockButtonY = panel.stockButton.y
-    panel.stockButton:setVisible(panel.stockCompact == true)
-    panel.detailBody = Details:new(panel.detailX, y, panel.controlWidth - panel.detailX - 12, panel.height - y - 14)
+    panel.detailBody = Details:new(12, 180, 400, 300)
     local body = panel.detailBody
     body.owner = panel
     body:initialise()
@@ -93,7 +64,105 @@ function L.create(panel)
     body.contentHeight = panel.clearInputs.y + panel.clearInputs.height + 12
     body:setScrollHeight(body.contentHeight)
     panel.inputs = require("OMHTT/ControlConnectionList").create(panel)
+    panel.graph = require("OMHTT/ControlGraph").create(panel)
+    panel.mapView = require("OMHTT/ControlMap").create(panel)
+    panel.gridButton = ISButton:new(0, 0, 90, 28, getText("UI_OMHTT_MapGrid"), panel, function(self)
+        self.mapView:setNative(false)
+    end)
+    panel.nativeMapButton = ISButton:new(0, 0, 90, 28, getText("UI_OMHTT_MapNative"), panel, function(self)
+        self.mapView:setNative(true)
+    end)
+    panel.viewConnections = ISButton:new(10, 0, 150, 28, getText("UI_OMHTT_ViewConnections"), panel, function(self)
+        require("OMHTT/ControlGraph").focus(self)
+        self.inputs:setYScroll(0)
+        self.inputs.due = 0
+    end)
+    panel.viewConnections:initialise()
+    panel.viewConnections.tooltip = getText("UI_OMHTT_ViewConnectionsTip")
+    Theme.button(panel.viewConnections)
+    body:addChild(panel.viewConnections)
+    local mapButtons = {panel.gridButton, panel.nativeMapButton}
+    panel.gridButton.tooltip = getText("UI_OMHTT_MapGridTip")
+    panel.nativeMapButton.tooltip = getText("UI_OMHTT_MapNativeTip")
+    for i = 1, #mapButtons do
+        mapButtons[i]:initialise()
+        Theme.button(mapButtons[i])
+        panel:addChild(mapButtons[i])
+    end
+    panel.devices:setVisible(false)
+    L.arrange(panel)
     L.refresh(panel, A.state(panel.object))
+end
+
+---@param panel ISPanel Controller window
+---@return nil
+function L.arrange(panel)
+    if panel.geometryWidth == panel.width and panel.geometryHeight == panel.height then return end
+    panel.geometryWidth, panel.geometryHeight = panel.width, panel.height
+    local h = panel.lineHeight
+    local stock = math.max(240, math.floor(panel.width * .25))
+    panel.stockCompact = panel.width < 1000
+    panel.controlWidth = panel.stockCompact and panel.width or panel.width - stock - 8
+    panel.equipmentY = panel.titleHeight + 8
+    panel.devicesY = panel.equipmentY + h * (panel.stockCompact and 5 or 4) + 34
+    local y, bottom = panel.devicesY, panel.height - 24
+    local graphWidth = math.max(260, math.floor((panel.controlWidth - 24) * .40))
+    panel.detailX = 12 + graphWidth + 8
+    local centerWidth = panel.controlWidth - panel.detailX - 8
+    place(panel.graph, 12, y, graphWidth)
+    panel.graph:setHeight(bottom - y)
+    local toolbar = h + 10 + panel.gridButton.height + 6
+    local mapHeight = math.max(64, math.min(math.floor((bottom - y) * .40), bottom - y - toolbar - 96))
+    place(panel.gridButton, panel.detailX + 6, y + h + 10, (centerWidth - 18) / 2)
+    place(panel.nativeMapButton, panel.gridButton.x + panel.gridButton.width + 6, panel.gridButton.y, panel.gridButton.width)
+    panel.mapY = y
+    local mapTop = panel.gridButton.y + panel.gridButton.height + 6
+    place(panel.mapView, panel.detailX, mapTop, centerWidth)
+    panel.mapView:setHeight(mapHeight)
+    local detailsY = mapTop + mapHeight + 8
+    place(panel.detailBody, panel.detailX, detailsY, centerWidth)
+    panel.detailBody:setHeight(math.max(80, bottom - detailsY))
+    panel.layoutKind = nil
+    panel.closeButton:setX(panel.width - 40)
+    panel.stockButtonY = panel.equipmentY + h * 3 + 12
+    place(panel.stockButton, panel.controlWidth / 2 + 10, panel.stockButtonY, panel.controlWidth / 2 - 34)
+    panel.stockButton:setVisible(panel.stockCompact)
+    if panel.batterySlot then
+        place(panel.batterySlot, 22, panel.equipmentY + h + 12, math.floor(panel.controlWidth / 2) - 30)
+    end
+    if panel.stockWing then
+        local wing = panel.stockWing
+        place(wing, panel.stockCompact and 12 or panel.controlWidth + 8,
+            panel.stockCompact and panel.titleHeight + 10 or panel.equipmentY,
+            panel.stockCompact and panel.width - 24 or stock - 20)
+        wing:setHeight(panel.stockCompact and panel.height - wing.y - 54 or bottom - wing.y)
+        local pane = wing.inventoryPane
+        pane:setWidth(wing.width - 12)
+        pane:setHeight(wing.height - pane.y - 6)
+        wing:setVisible(not panel.stockCompact)
+        if pane.nameHeader then
+            pane.column3 = math.max(pane.column2 + 60, pane.width - 90)
+            pane.nameHeader:setWidth(pane.column3 - pane.column2)
+            pane.typeHeader:setX(pane.column3 - 1)
+            pane.typeHeader:setWidth(pane.width - pane.typeHeader.x)
+            pane.column4 = pane.width
+        end
+    end
+    panel.devices:setVisible(false)
+    L.refresh(panel, A.state(panel.selected))
+    if panel.stockCompact then
+        panel:showStockpile(panel.stockPage == true)
+    else
+        panel.stockPage = false
+        panel.graph:setVisible(true)
+        panel.mapView:setVisible(true)
+        panel.gridButton:setVisible(true)
+        panel.nativeMapButton:setVisible(true)
+        panel.detailBody:setVisible(true)
+        if panel.batterySlot then
+            panel.batterySlot:setVisible(true)
+        end
+    end
 end
 
 ---@param panel ISPanel Controller window
@@ -108,16 +177,19 @@ function L.refresh(panel, state)
     local x, width = 10, body.width - 36
     local half = (width - 8) / 2
     local row = math.max(28, h + 6)
-    place(panel.nameEntry, x, 8, width)
+    place(panel.nameEntry, x, h + 14, width)
     panel.nameEntry:setHeight(row)
-    local info = kind == "Controller" and 10 or row + 18
+    local info = kind == "Controller" and h + 14 or h + row + 24
     panel.infoY = body.y + info
-    local actionY = info + h * 4 + 8
+    panel.controlsY = info + h * 4 + 8
+    local actionY = panel.controlsY + h + 12
     place(panel.manage, x, actionY, half)
     place(panel.setFacing, x + half + 8, actionY, half)
     local connection = actionY + (kind == "Turret" and row + 14 or 0)
     panel.connectionY = body.y + connection
-    local controlsY = connection + h * 3 + 12
+    place(panel.viewConnections, x, connection + h + 12, width)
+    panel.viewConnections:setVisible(kind == "Turret")
+    local controlsY = connection + h * 3 + 20 + (kind == "Turret" and row + 8 or 0)
     place(panel.source, x, controlsY, half)
     place(panel.trigger, x + half + 8, controlsY, half)
     place(panel.link, x, controlsY, width)
@@ -178,14 +250,15 @@ function L.draw(panel, host, state)
     Theme.title(panel, "UI_OMHTT_ControllerTitle")
     if panel.stockPage then return end
     Theme.section(panel, 12, panel.equipmentY, panel.controlWidth - 24,
-        h * 4 + 22, h + 8, getText("UI_OMHTT_Equipment"))
+        panel.devicesY - panel.equipmentY - 10, h + 8, getText("UI_OMHTT_Equipment"))
     local power = host.powered and "UI_OMHTT_ControllerPowerReady" or "UI_OMHTT_ControllerPowerEmpty"
     local textX = panel.controlWidth / 2 + 10
     panel:setStencilRect(textX, panel.equipmentY + h + 10, panel.controlWidth / 2 - 32, h * 3 + 8)
     panel:drawText(getText(power), textX, panel.equipmentY + h + 10, .85, .85, .85, 1, UIFont.Small)
     panel:drawText(getText("UI_OMHTT_ControllerRange"), textX, panel.equipmentY + h * 2 + 12, .7, .7, .7, 1, UIFont.Small)
     panel:clearStencilRect()
-    panel:drawText(getText("UI_OMHTT_Devices"), 12, panel.devicesY - h - 2, .9, .9, .9, 1, UIFont.Small)
+    Theme.section(panel, panel.detailX, panel.mapY, panel.mapView.width,
+        panel.mapView.y + panel.mapView.height - panel.mapY, h + 8, getText("UI_OMHTT_Map"))
 end
 
 ---@param panel ISPanel Controller window
@@ -197,6 +270,10 @@ function L.drawDetails(panel, host, state)
     local body, h, x = panel.detailBody, panel.lineHeight, 10
     local width = body.width - 36
     local infoY, accessY, connectionY = panel.infoY - body.y, panel.accessY - body.y, panel.connectionY - body.y
+    body:section(4, panel.controlsY - 4, getText("UI_OMHTT_SelectedDevice"))
+    if state.kind == "Turret" then
+        body:section(panel.controlsY, connectionY - 8, getText("UI_OMHTT_Controls"))
+    end
     body:section(accessY, body.contentHeight - 4, getText("UI_OMHTT_AccessAssignment"))
     body:section(connectionY, accessY - 10, getText("UI_OMHTT_Connections"))
     local scroll = body:getYScroll()
@@ -224,14 +301,15 @@ function L.drawDetails(panel, host, state)
     body:drawText(getText("UI_OMHTT_ControlOwner", state.owner), x, panel.ownerY, .65, .65, .65, 1, UIFont.Small)
     body:clearStencilRect()
     body:repaintStencilRect(0, 0, body.width, body.height)
-    body:setStencilRect(x, connectionY + h + 8 + scroll, width, h * 2)
+    local hintY = connectionY + h + 8 + (state.kind == "Turret" and math.max(28, h + 6) + 12 or 0)
+    body:setStencilRect(x, hintY + scroll, width, h * 2)
     local hint = getText("UI_OMHTT_SelectInputHint")
     if state.kind == "Controller" then
         hint = getText("UI_OMHTT_ControllerRange")
     elseif panel.linkSource then
         hint = getText("UI_OMHTT_SelectedInput", U.name(panel.linkSource))
     end
-    body:drawText(hint, x, connectionY + h + 8, .8, .8, .8, 1, UIFont.Small)
+    body:drawText(hint, x, hintY, .8, .8, .8, 1, UIFont.Small)
     local count = getText("UI_OMHTT_OutputCount", #state.links)
     if state.kind == "Turret" then
         local source = A.state(panel.linkSource)
@@ -244,7 +322,7 @@ function L.drawDetails(panel, host, state)
     if state.kind == "Controller" then
         count = getText("UI_OMHTT_ControllerLimits")
     end
-    body:drawText(count, x, connectionY + h * 2 + 8, .7, .7, .7, 1, UIFont.Small)
+    body:drawText(count, x, hintY + h, .7, .7, .7, 1, UIFont.Small)
     body:clearStencilRect()
     body:repaintStencilRect(0, 0, body.width, body.height)
 end

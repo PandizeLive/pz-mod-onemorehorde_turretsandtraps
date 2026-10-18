@@ -35,6 +35,7 @@ Panel.inspectVoid = Utilities.inspect
 
 ---@return nil
 function Panel:close()
+    require("OMHTT/WindowGeometry").close(self)
     self.nameEntry:commit()
     Drag.stop(self)
     if self.orderPanel then
@@ -471,7 +472,7 @@ function OpenAction:perform()
         local font = getTextManager()
         local lineHeight = font:getFontHeight(UIFont.Small) + (getPlayerScreenHeight(index) >= 800 and 3 or 0)
         local titleHeight = font:getFontHeight(UIFont.Medium) + 16
-        local width = math.min(getPlayerScreenWidth(index) - 24, math.max(780, lineHeight * 38))
+        local width = math.min(getPlayerScreenWidth(index) - 24, math.max(900, lineHeight * 48))
         local slotHeight = math.max(60, lineHeight * 3 + 12)
         local top, ammunitionY, ammoY, magazineY, modulesY, detailsY = 0, 0, 0, 0, 0, 0
         local moduleHeight = lineHeight * 2 + 16
@@ -536,6 +537,7 @@ function OpenAction:perform()
         panel.priorityButton = ISButton:new(130, height - 38, width - 142, 28, "", panel, Panel.changePriority)
         panel.fireButton = ISButton:new(12, height - 38, 110, 28, getText("UI_OMHTT_ManageFire"), panel, Panel.fire)
         local close = ISButton:new(width - 34, 6, 26, 24, "X", panel, Panel.close)
+        panel.closeButton = close
         require("OMHTT/TurretManageExtras").create(panel, rangeX)
         local buttons = {panel.fireButton, panel.powerButton, panel.priorityButton, panel.loadOrderButton, panel.reloadButton, close}
         for i = 1, #buttons do buttons[i]:initialise(); panel:addChild(buttons[i]) end
@@ -543,6 +545,8 @@ function OpenAction:perform()
         require("OMHTT/TurretManageLayout").create(panel)
         panel:refresh()
         require("OMHTT/ControlManage").refresh(panel)
+        require("OMHTT/WindowGeometry").install(panel, "Manage", math.max(900, lineHeight * 48), 540,
+            require("OMHTT/TurretManageLayout").refresh)
         panel:addToUIManager()
         active[index] = panel
         if Range then

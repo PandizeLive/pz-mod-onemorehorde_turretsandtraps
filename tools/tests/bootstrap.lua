@@ -32,6 +32,7 @@ testDialogs = 0
 function print(value) testLogs[#testLogs + 1] = tostring(value) end
 function getTimestampMs() return testMillis end
 WeaponCategory = {SPEAR = "spear"}
+function getItemNameFromFullType(value) return value end
 function getScriptManager()
     return {getItem = function(_, fullType)
         if fullType == "Base.SpearCrafted" then
@@ -104,7 +105,10 @@ function triggerEvent(name, ...)
     for i = 1, #handlers do handlers[i](...) end
 end
 
+local namesRegistry, controlsRegistry = {}, {}
 ModData = {getOrCreate = function(key)
+    if key == "OMHTTDefenseNamesV1" then return namesRegistry end
+    if key == "OMHTTControlsV1" then return controlsRegistry end
     if testData == nil then testData = {} end
     return testData
 end}

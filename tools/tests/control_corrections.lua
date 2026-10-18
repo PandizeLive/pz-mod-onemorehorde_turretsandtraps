@@ -135,7 +135,7 @@ check(entry:getText()=="West Gate" and U.name(turret)=="West Gate","Head changes
 turret.state.headType="Base"; turret.state.name=nil; entry:refresh()
 check(entry.placeholder==getText("UI_OMHTT_TurretBase") and entry:getText()=="","Empty head and cleared custom name use gray automatic fallback")
 turret.state.headType="Base.OMHTTTurretBallista"; turret.state.number=3; entry:refresh()
-check(entry.placeholder=="Name:Base.OMHTTTurretBallista 3","Controller numbering changes refresh placeholder")
+check(entry.placeholder=="Name:Base.OMHTTTurretBallista #3","Controller numbering changes refresh placeholder")
 
 local square=makeSquare(2010,2010,0)
 controller.getSquare=function() return square end

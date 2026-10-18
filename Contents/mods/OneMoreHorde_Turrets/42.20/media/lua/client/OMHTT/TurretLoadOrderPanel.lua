@@ -9,6 +9,20 @@ local Access = require("OMHTT/TurretAccess")
 local P = ISPanel:derive("OMHTTLoadOrderPanel")
 
 ---@return nil
+function P:reflow()
+    self:setWidth(self.owner.width - 12)
+    self:setHeight(self.owner.height - self.owner.titleHeight - 24)
+    self.list:setWidth(self.width - 24)
+    self.list:setHeight(self.height - 114)
+    self.upButton:setY(self.height - 40)
+    self.downButton:setY(self.height - 40)
+    self.backButton:setY(self.height - 40)
+    self.backButton:setX(self.width - 164)
+    self.applyButton:setY(self.height - 40)
+    self.applyButton:setX(self.width - 88)
+end
+
+---@return nil
 function P:close()
     self.closed = true
     self.owner.orderPanel = nil
@@ -201,6 +215,7 @@ function P.open(owner)
     up.step, down.step = -1, 1
     panel.upButton, panel.downButton = up, down
     local cancel = ISButton:new(width - 164, height - 40, 70, 28, getText("UI_OMHTT_OrderBack"), panel, P.close)
+    panel.backButton = cancel
     panel.applyButton = ISButton:new(width - 88, height - 40, 76, 28, getText("UI_OMHTT_OrderApply"), panel, P.apply)
     local buttons = {up, down, cancel, panel.applyButton}
     for i = 1, #buttons do buttons[i]:initialise(); panel:addChild(buttons[i]) end

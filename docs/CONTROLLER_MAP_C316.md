@@ -151,3 +151,12 @@ Reuse the existing device IDs, synchronized state, remote authorization and nati
 Receiver links, Controller assignment and access are distinct; the UI must label these clearly. View changes must preserve selected device and the Stockpile widget, not open a second independent inventory system. Do not add live zombie tracking, multi-floor control, passive-trap powering or new logic gates under this redesign.
 
 Once the owner selects the layout/background direction, prepare a focused interactive mockup before approving production code. For a later implementation, high reasoning is appropriate for native map input/MP/UI integration; use Fast if the planned implementation exceeds 25 minutes. No model setting was changed.
+
+## C323 - Implementation approved (2026-10-18)
+
+Owner: "Approved." This authorizes the complete C318-C322 recap: native resize grips, responsive layouts, local geometry persistence, selected Controller map/list/Stockpile arrangement, unique display names and Button corrections. Existing server-authorized actions and native inventory integration are retained. Verification, immutable packaging, installation and the standing C108 development mirror are required. Rendered and connected-client acceptance remain distinct from automated evidence.
+
+
+### C323 implementation and verification
+
+Implemented as 0.2.55; see [patch](PATCH_v0.2.55.md) and [verification](TEST_v0.2.55.md). Compact Controller widths retain the attached native Stockpile page, while normal widths use the accepted three-region arrangement. Selection, map focus and inventory widgets survive geometry changes. Legacy Button sprite definitions remain available for loading before migration. The prior 0.2.54.1 test tag/archive remains the rollback snapshot. Rendered and connected-client acceptance is still pending.

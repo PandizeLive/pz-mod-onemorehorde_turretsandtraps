@@ -144,6 +144,10 @@ end
 ---@param object IsoThumpable Loaded part
 ---@return nil
 function B.configure(record, object)
+    if not isClient() and (not record.displayName or record.displayTier ~= record.tier) then
+        require("OMHTT/DefenseNames").ensure(record, "Bed", getText(record.tier == "reinforced" and "UI_OMHTT_ReinforcedBedSpikes" or "UI_OMHTT_BedSpikes"))
+        record.displayTier = record.tier
+    end
     if isClient() then return end
     if isServer() then
         bindings[object] = record
@@ -317,6 +321,7 @@ function B.onCreate(params)
     local record = {id = "bed-" .. B.store.nextId, x = x, y = y, z = square:getZ(), facing = facing,
         tier = index >= 44 and "reinforced" or "basic", deployed = index >= 36, single = single, part = part}
     B.store.nextId = B.store.nextId + 1
+    require("OMHTT/DefenseNames").restore(record, params.craftRecipeData and params.craftRecipeData:getAllConsumedItems())
     record.maxHealth = B.maxHealth(record)
     record.health = record.maxHealth
     B.store.records[record.id] = record

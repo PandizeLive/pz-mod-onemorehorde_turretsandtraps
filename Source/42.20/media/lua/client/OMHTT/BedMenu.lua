@@ -52,7 +52,7 @@ local function menu(playerIndex, context, objects, test)
         return
     end
     local title = record.tier == "reinforced" and "UI_OMHTT_ReinforcedBedSpikes" or "UI_OMHTT_BedSpikes"
-    local option = context:addOption(getText(title), nil, nil)
+    local option = context:addOption(record.displayName or getText(title), nil, nil)
     option.onHighlight, option.onHighlightParams = Highlight.highlight, {parts}
     local submenu = ISContextMenu:getNew(context)
     context:addSubMenu(option, submenu)

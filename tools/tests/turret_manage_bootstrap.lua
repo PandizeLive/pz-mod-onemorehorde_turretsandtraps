@@ -125,7 +125,7 @@ PZAPI = {ModOptions = {getOptions = function() return nil end, create = function
     return {addTickBox = function() end, getOption = function() return option end}
 end}}
 ISSliderPanel = {new = function(self, x, y, w, h, target, callback)
-    return {x=x, y=y, width=w, height=h, setWidth = function(self, w) self.width = w end, setY = function(self, y) self.y = y end, setVisible = function(self, v) self.visible = v end, currentValue = 1, initialise = function() end,
+    return {x=x, y=y, width=w, height=h, setX = function(self, x) self.x=x end, setWidth = function(self, w) self.width = w end, setY = function(self, y) self.y = y end, setVisible = function(self, v) self.visible = v end, currentValue = 1, initialise = function() end,
         setValues = function(self, low, high) self.minValue, self.maxValue = low, high end,
         setCurrentValue = function(self, value) self.currentValue = value end,
         getCurrentValue = function(self) return self.currentValue end}
@@ -143,3 +143,12 @@ ISInventoryPage={refreshBackpacks=function(self) self.nativeRefreshes=(self.nati
     update=function(self) self.capacity=100 end,canPutIn=function() return "native-page-admission" end}
 ISInventoryPaneContextMenu = ISInventoryPaneContextMenu or {}
 ISInventoryPaneContextMenu.hasRoomForAny=function() return "native-context-admission" end
+
+function ISPanel:getScrollHeight() return self.scrollHeight or self.height end
+function ISPanel:getIsVisible() return self.visible~=false end
+function ISPanel:getX() return self.x end
+function ISPanel:getY() return self.y end
+function ISPanel:getWidth() return self.width end
+function ISPanel:getHeight() return self.height end
+function ISPanel:drawLine2() end
+function ISPanel:drawTextCentre() end

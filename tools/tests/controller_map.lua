@@ -1,0 +1,163 @@
+local function run(panel, player, controller)
+    local G = require("OMHTT/WindowGeometry")
+    local Graph = require("OMHTT/ControlGraph")
+    local U = require("OMHTT/ControlClient")
+    local A = require("OMHTT/ControlAccess")
+    local savedCommand, savedRemote = U.command, U.remote
+    local commands, renewals = 0, 0
+    U.command = function() commands = commands + 1 end
+    U.remote = function() renewals = renewals + 1; return true end
+    local inventory = panel.stockWing.inventoryPane.inventory
+    for _, width in pairs({900, 1050, 1220}) do
+        G.resize(panel, width, 690)
+        check(panel.stockWing.inventoryPane.inventory == inventory, "Resize retains exact native Stockpile container")
+        check(panel.graph.x + panel.graph.width < panel.mapView.x
+            and panel.mapView.y + panel.mapView.height < panel.detailBody.y,
+            "Resized Connections, Map and Selected Device occupy separate regions")
+        for i = 1, #panel.children do
+            local child = panel.children[i]
+            check(child.visible == false or (child.x >= 0 and child.y >= 0 and child.x + child.width <= panel.width
+                and child.y + child.height <= panel.height), "Visible resized Controller children remain inside window")
+        end
+        if not panel.stockCompact then
+            check(panel.stockWing.x > panel.mapView.x + panel.mapView.width
+                and panel.stockWing.y < panel.mapView.y
+                and panel.stockWing.y + panel.stockWing.height >= panel.detailBody.y + panel.detailBody.height,
+                "Desktop Stockpile extends alongside Map and Selected Device")
+        end
+    end
+    check(commands == 0 and renewals == 0, "Resizing sends no gameplay or remote-session commands")
+    local screenWidth, screenLeft = getPlayerScreenWidth, getPlayerScreenLeft
+    getPlayerScreenWidth = function() return 960 end
+    getPlayerScreenLeft = function() return 1280 end
+    G.checkViewport(panel)
+    check(panel.x >= 1288 and panel.x + panel.width <= 2232 and panel.width <= 944,
+        "Live viewport change clamps existing window to its player's bounds")
+    check(commands == 0 and renewals == 0, "Viewport clamp sends no commands")
+    getPlayerScreenWidth, getPlayerScreenLeft = screenWidth, screenLeft
+    G.checkViewport(panel)
+    G.resize(panel, 1220, 690)
+    local stored = {}
+    G.save(panel, "test", stored)
+    G.resize(panel, 1050, 660)
+    G.restore(panel, "test", stored)
+    check(panel.width == stored.width and panel.height == stored.height and stored.object == nil,
+        "Saved geometry restores dimensions without retaining device identity")
+    panel.resizeGrip.resizing = true
+    panel.resizeGrip:setCapture(true)
+    panel.resizeGrip:onMouseUpOutside(9999, 9999)
+    check(not panel.resizeGrip.resizing and not panel.resizeGrip.capture, "Installed native resize grip releases outside window")
+
+    local function device(kind, id, dx)
+        local object = setmetatable({data = {OMHTTControl = {id = id, kind = kind, owner = "ui-owner", access = "Private",
+            controller = controller.data.OMHTTControl.id, links = {}, displayName = kind .. " #" .. id}},
+            square = makeSquare(1950 + dx, 1950, 0)}, {__index = controller})
+        function object:getSquare() return self.square end
+        function object:getX() return self.square:getX() end
+        return object
+    end
+    local input, output = device("Button", "map-input", 2), device("Turret", "map-output", 8)
+    output.data.OMHTTControl.headType = "Base.OMHTTTurretBallista"
+    output.data.OMHTTTurret = {schema = 1, id = "map-output", powered = false}
+    panel.devices.items = {{item = controller}, {item = input}, {item = output}}
+    panel.devices.selected = 1
+    panel:select()
+    panel.graph.refreshDue = 0
+    Graph.update(panel)
+    check(#panel.graph.triggers == 1 and #panel.graph.defenses == 1
+        and panel.graph.defenses[1].subtitle == getItemNameFromFullType(output.data.OMHTTControl.headType),
+        "Connections separates inputs from receivers and preserves head subtitle")
+    local map = panel.mapView
+    map:focus(controller)
+    local ix, iy = map:point(input:getX() + .5, input:getY() + .5)
+    local ox, oy = map:point(output:getX() + .5, output:getY() + .5)
+    check(ox > ix and oy == iy, "Map projection preserves world direction and aligned tiles")
+    map:onMouseDown(ix, iy)
+    map:onMouseUp(ix, iy)
+    check(panel.selected == input and commands == 0, "Clicking map Button selects without activating its pulse")
+    map:focus(controller)
+    map:onMouseDown(ix, iy)
+    map:onMouseUp(ox, oy)
+    Graph.update(panel)
+    check(commands == 1 and renewals >= 2 and panel.selected == output, "Map drag queues one existing authorized Link action")
+    Graph.update(panel)
+    check(commands == 1, "Subsequent refresh does not replay drag command")
+    input.data.OMHTTControl.links = {"map-output"}
+    Graph.connect(panel, input, output)
+    Graph.update(panel)
+    check(commands == 1, "Dropping an already connected pair does not toggle or duplicate its link")
+    panel.graph.refreshDue = 0
+    Graph.update(panel)
+    check(#panel.graph.edges == 1, "Published links appear in graph without a new world scan")
+    map:focus(controller)
+    map:onMouseDown(ix, iy)
+    map:onMouseUpOutside(-100, -100)
+    check(not map.dragObject and not map.capture and commands == 1, "Map outside release cancels drag")
+    local oldPlayer, oldWalk, oldCell = getSpecificPlayer, luautils.walkAdjObject, getCell
+    local pulses = 0
+    getSpecificPlayer = function() return player end
+    getCell = function() return {getDrag = function() return nil end} end
+    luautils.walkAdjObject = function() return true end
+    U.command = function(actor, device, command)
+        check(actor == player and device == input and command == "Pulse", "World Button uses existing authoritative Pulse")
+        pulses = pulses + 1
+    end
+    U.clicked(input)
+    U.clicked(controller)
+    luautils.walkAdjObject = function() return false end
+    U.clicked(input)
+    check(pulses == 1, "World Button click queues once; non-buttons and failed approach do not pulse")
+    getSpecificPlayer, luautils.walkAdjObject, getCell = oldPlayer, oldWalk, oldCell
+    U.command = function() commands = commands + 1 end
+    local priorWrite = A.write
+    A.write = function() return false end
+    input.data.OMHTTControl.links = {}
+    Graph.connect(panel, input, output)
+    Graph.update(panel)
+    check(commands == 1, "Read-only drag cannot submit a Link")
+    A.write = priorWrite
+    panel.devices.items = {{item = controller}}
+    for i = 1, 32 do
+        panel.devices.items[#panel.devices.items + 1] = {item = device("Plate", "input-" .. i, 1)}
+        panel.devices.items[#panel.devices.items + 1] = {item = device("Turret", "output-" .. i, 2)}
+        local source = panel.devices.items[#panel.devices.items - 1].item.data.OMHTTControl
+        for j = 1, 32 do source.links[j] = "output-" .. j end
+    end
+    panel.graph.refreshDue = 0
+    Graph.update(panel)
+    panel.graph:onMouseWheel(100)
+    check(panel.graph:getYScroll() < 0 and #panel.graph.triggers == 32 and #panel.graph.defenses == 32,
+        "Full 32-input / 32-output lists scroll together within their bounded view")
+    local graphItems = panel.graph.triggers
+    Graph.update(panel)
+    check(panel.graph.triggers == graphItems, "Unchanged frames reuse connection row and wrapped-text cache")
+    local point, projections = map.point, 0
+    map.point = function(self, x, y) projections = projections + 1; return point(self, x, y) end
+    map:render()
+    map.point = point
+    check(#panel.graph.edges == 1024 and projections <= 140,
+        "Fully linked 32-by-32 graph projects each marker once rather than once per edge")
+    panel.graph:prerender()
+    panel.graph:onMouseDown(-1, 20)
+    panel.graph:onMouseUpOutside(-1, -1)
+    check(not panel.graph.capture, "Connections releases pointer outside its bounds")
+    panel.devices.items = {{item = controller}}
+    panel.devices.selected = 1
+    panel:select()
+    panel.graph.refreshDue = 0
+    Graph.update(panel)
+    panel.devices.items = {{item=controller},{item=input},{item=output}}
+    input.data.OMHTTControl.links = {"map-output"}
+    panel.devices.selected = 3
+    panel:select()
+    panel.graph:setYScroll(0)
+    panel.graph.refreshDue = 0
+    panel.scanIndex, panel.scanDue = nil, testMillis + 5000
+    panel:prerender()
+    testControllerSvg = require("tests/UITrace")(panel)
+    panel.devices.selected = 1
+    panel:select()
+    U.command, U.remote = savedCommand, savedRemote
+end
+
+return run

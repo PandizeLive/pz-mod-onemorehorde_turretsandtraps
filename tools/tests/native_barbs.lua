@@ -3,6 +3,14 @@ local nativeServer, nativeClient, nativeCell = nil, nil, nil
 ---@param squares ArrayList Native isolated squares with real chunks
 ---@return ArrayList fixtures
 function OMHTT_NativeBarbCheck(squares)
+    -- This fixture runs in the Java shutdown hook, after the real GlobalModData save.
+    -- Its object binaries and naming registry therefore share an explicit late snapshot.
+    local names = ModData.getOrCreate("OMHTTDefenseNamesV1")
+    if OMHTT_NativeBarbNames then
+        names.entries, names.labels = OMHTT_NativeBarbNames.entries, OMHTT_NativeBarbNames.labels
+        names.counters, names.packed = OMHTT_NativeBarbNames.counters, OMHTT_NativeBarbNames.packed
+    end
+    OMHTT_NativeBarbNames = names
     assert(GameSounds.getSound("ZombieClawChainlinkFence") ~= nil, "Missing native barb contact cue")
     local B = require("OMHTT/BarbSections")
     local S = require("OMHTT/BarbSupport")

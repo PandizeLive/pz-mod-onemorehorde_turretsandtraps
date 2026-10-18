@@ -12,6 +12,18 @@ public final class NativeBarbProbe {
     private static Object get(Object object, String name) throws Exception { return call(object, name, new Class<?>[0]); }
     private static void check(boolean valid, String message) { if (!valid) throw new IllegalStateException(message); }
 
+    private static Object snapshot(Object value) throws Exception {
+        Class<?> table = Class.forName("se.krka.kahlua.vm.KahluaTable");
+        if (!table.isInstance(value)) return value;
+        Class<?> iteratorType = Class.forName("se.krka.kahlua.vm.KahluaTableIterator");
+        Object iterator = table.getMethod("iterator").invoke(value);
+        java.util.Map<Object, Object> fields = new java.util.LinkedHashMap<>();
+        while (Boolean.TRUE.equals(iteratorType.getMethod("advance").invoke(iterator))) {
+            fields.put(iteratorType.getMethod("getKey").invoke(iterator), snapshot(iteratorType.getMethod("getValue").invoke(iterator)));
+        }
+        return fields;
+    }
+
     public static void verify(Path directory, String mode) throws Exception {
         Class<?> cellType = Class.forName("zombie.iso.IsoCell"), squareType = Class.forName("zombie.iso.IsoGridSquare");
         Class<?> chunkType = Class.forName("zombie.iso.IsoChunk"), iso = Class.forName("zombie.iso.IsoObject");
@@ -30,6 +42,15 @@ public final class NativeBarbProbe {
         }
         Class<?> platformType = Class.forName("se.krka.kahlua.vm.Platform"), threadType = Class.forName("se.krka.kahlua.vm.KahluaThread");
         Object platform = Class.forName("se.krka.kahlua.j2se.J2SEPlatform").getMethod("getInstance").invoke(null);
+        int version = ((Number)world.getMethod("getWorldVersion").invoke(null)).intValue();
+        Path namesFile = directory.resolve("barb-name-registry.bin");
+        if (mode.equals("read")) {
+            Object names = platformType.getMethod("newTable").invoke(platform);
+            ByteBuffer input = ByteBuffer.wrap(Files.readAllBytes(namesFile));
+            call(names, "load", new Class<?>[]{ByteBuffer.class, int.class}, input, version);
+            check(!input.hasRemaining(), "Unread barb naming fixture registry");
+            call(env, "rawset", new Class<?>[]{Object.class, Object.class}, "OMHTT_NativeBarbNames", names);
+        }
         Object thread = threadType.getConstructor(platformType, table).newInstance(platform, env);
         threadType.getField("debugOwnerThread").set(thread, Thread.currentThread());
         Object function = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeBarbCheck");
@@ -48,8 +69,13 @@ public final class NativeBarbProbe {
         check(result instanceof List<?>, "Barb native fixture creation failed");
         @SuppressWarnings("unchecked") List<Object> fixtures = (List<Object>)result;
         check(fixtures.size() == 18, "Expected eight frame/support pairs and two linked wire halves");
-        int version = ((Number)world.getMethod("getWorldVersion").invoke(null)).intValue();
         Files.createDirectories(directory);
+        if (mode.equals("write")) {
+            Object names = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeBarbNames");
+            ByteBuffer output = ByteBuffer.allocate(1048576);
+            call(names, "save", new Class<?>[]{ByteBuffer.class}, output);
+            Files.write(namesFile, Arrays.copyOf(output.array(), output.position()));
+        }
         Object module = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_BarbSections");
         Object store = call(module, "rawget", new Class<?>[]{Object.class}, "store");
         Object wires = call(store, "rawget", new Class<?>[]{Object.class}, "wires");
@@ -87,11 +113,8 @@ public final class NativeBarbProbe {
             Object expected = call(get(source, "getModData"), "rawget", new Class<?>[]{Object.class}, key);
             Object actual = call(get(restored, "getModData"), "rawget", new Class<?>[]{Object.class}, key);
             check(expected != null && actual != null, "Barb metadata missing on reload");
-            ByteBuffer a = ByteBuffer.allocate(65536), b = ByteBuffer.allocate(65536);
-            call(expected, "save", new Class<?>[]{ByteBuffer.class}, a);
-            call(actual, "save", new Class<?>[]{ByteBuffer.class}, b);
-            a.flip(); b.flip();
-            check(a.equals(b), "Barb identity/durability changed on reload");
+            Object expectedFields = snapshot(expected), actualFields = snapshot(actual);
+            check(expectedFields.equals(actualFields), "Barb identity/durability changed on reload: expected=" + expectedFields + " actual=" + actualFields);
             @SuppressWarnings("unchecked") List<Object> objects = (List<Object>)get(square, "getObjects");
             @SuppressWarnings("unchecked") List<Object> special = (List<Object>)get(square, "getSpecialObjects");
             objects.remove(source); special.remove(source);

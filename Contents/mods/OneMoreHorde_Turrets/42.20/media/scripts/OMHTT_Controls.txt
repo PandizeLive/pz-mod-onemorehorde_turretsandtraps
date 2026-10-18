@@ -136,12 +136,25 @@ module Base {
             skillBaseHealth = 0,
             bonusHealth = 0,
             isThumpable = true,
+            face E { layer { row = appliances_radio_01_2, } }
+            face N { layer { row = appliances_radio_01_0, } }
+            face W { layer { row = appliances_radio_01_1, } }
+            face S { layer { row = appliances_radio_01_3, } }
+        }
+    }
+    entity OMHTTDeploySwitchButton {
+        component UiConfig { xuiSkin = default, entityStyle = ES_OMHTTButton, uiEnabled = false, }
+        component SpriteConfig {
+            health = 100,
+            skillBaseHealth = 0,
+            bonusHealth = 0,
+            isThumpable = true,
             OnIsValid = OMHTT_Controls.wall,
             OnCreate = OMHTT_Controls.created,
-            face E { layer { row = appliances_radio_01_0, } }
-            face N { layer { row = appliances_radio_01_1, } }
-            face W { layer { row = appliances_radio_01_2, } }
-            face S { layer { row = appliances_radio_01_3, } }
+            face E { layer { row = lighting_indoor_01_2, } }
+            face N { layer { row = lighting_indoor_01_0, } }
+            face W { layer { row = lighting_indoor_01_1, } }
+            face S { layer { row = lighting_indoor_01_3, } }
         }
         component CraftRecipe {
             timedAction = BuildLowNoTool,

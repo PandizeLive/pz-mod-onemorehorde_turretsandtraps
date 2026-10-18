@@ -9,9 +9,16 @@ return function(player)
     if EXPECT_READ then
         local fixture = ModData.getOrCreate("OMHTTNativeControls")
         local saved = fixture.plate and C.records().records[fixture.plate]
-        assert(saved and saved.name == "Gate plate" and saved.owner == "control-owner"
+        assert(saved and saved.name == fixture.label and saved.owner == "control-owner"
             and saved.trigger == "Zombies", "Fresh process lost exact private device/access configuration")
         assert(#saved.links == 1 and saved.links[1] == fixture.receiver, "Saved private link was lost")
+        assert(saved.displayName == fixture.displayName and saved.displayNumber == fixture.displayNumber,
+            "Fresh process lost the device's display identity")
+        local names = ModData.getOrCreate("OMHTTDefenseNamesV1")
+        local entry = names.entries[saved.displayIdentity]
+        assert(entry and entry.label == saved.displayName and entry.number == saved.displayNumber,
+            "Fresh process lost the private naming reservation")
+        print("[OMHTT-C323] native-names fresh-process=preserved private-reservation=preserved")
     end
     player:setUsername("control-owner")
     local recipes = {
@@ -109,7 +116,17 @@ return function(player)
     standing:setCrawler(true)
     assert(plate:getThumpableFor(standing) == nil, "Crawler may not target plate for thumping")
     print("[OMHTT-C308] native-plate standing=nonthumpable crawler=nonthumpable")
+    local nameRegistry = ModData.getOrCreate("OMHTTDefenseNamesV1")
+    local nextButton = ((nameRegistry.counters and nameRegistry.counters.Button) or 0) + 1
     local button = create("Button", "appliances_radio_01_0")
+    assert(button:getSpriteName() == "lighting_indoor_01_0" and instanceof(button, "IsoThumpable")
+        and not instanceof(button, "IsoLightSwitch"), "Button must retain momentary device type with native switch art")
+    assert(button:getSpriteConfig():isValid() and button:getSpriteConfig():getTileInfo():getSpriteName() == "lighting_indoor_01_0",
+        "Existing Button sprite component migration failed")
+    if not EXPECT_READ then
+        assert(C.state(button).displayName == "Button #" .. nextButton, "Button numbering must advance from one without reuse")
+    end
+    print("[OMHTT-C323] native-button sprite=lightswitch device=momentary identity=numbered")
     local host, input = C.state(controller), C.state(plate)
     assert(controller:getContainer():getType() == "OMHTTController", "Controller real stockpile absent")
     assert(controller:getSpriteName() == "omhtt_turret_01_21", "Controller cube not applied to existing radio placeholder")
@@ -180,7 +197,7 @@ return function(player)
     host.powered = true
     local assign = Action:new(player, controller, "Assign", true, plate, host.id, input.id)
     assert(assign:complete() and not assign:complete() and input.controller == host.id, "Assignment/replay check failed")
-    assert(Action:new(player, plate, "Name", "Gate plate", nil, input.id):complete() and input.name == "Gate plate", "Name save failed")
+    assert(Action:new(player, plate, "Name", "Gate plate", nil, input.id):complete() and string.find(input.name, "Gate plate", 1, true), "Name save failed")
     assert(not Action:new(player, plate, "Name", "<bad>", nil, input.id):complete(), "Markup name accepted")
     assert(Action:new(player, plate, "Trigger", "Zombies", nil, input.id):complete(), "Plate filter failed")
     local stranger = IsoPlayer.new(getCell())
@@ -236,7 +253,7 @@ return function(player)
     receiver:setHealth(100)
     local output = C.register(receiver, player, "Turret")
     C.number(receiver, instanceItem("Base.OMHTTTurretBallista"))
-    assert(output.headType == "Base.OMHTTTurretBallista" and not output.number, "Unassigned head metadata did not refresh")
+    assert(output.headType == "Base.OMHTTTurretBallista" and output.number and output.displayName, "Unassigned turret must retain numbered head metadata")
     output.controller = host.id
     require("OMHTT/ControlRemote").command("OMHTT_ControlRemote", "Renew", player, {controller = host.id, target = output.id, serial = 1, player = 0})
     assert(A.authorized(player, receiver) and A.stockpile(player, receiver) == controller, "Remote write/storage scope missing")
@@ -331,6 +348,8 @@ return function(player)
     end
     SandboxVars.OMHTurretsTraps = saved
     local fixture = ModData.getOrCreate("OMHTTNativeControls")
+    fixture.label = input.name
+    fixture.displayName, fixture.displayNumber = input.displayName, input.displayNumber
     fixture.plate, fixture.receiver = input.id, output.id
     print("[OMHTT-Controls] native devices=3 ownership=private read=public replay=blocked remote=power-scoped plate=recovery-safe backup=48h heavy=exact capacities=30")
 end

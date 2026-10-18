@@ -84,6 +84,7 @@ end
 
 ---@return nil
 function Panel:close()
+    require("OMHTT/WindowGeometry").close(self)
     self.closed = true
     if self.cursor and getCell():getDrag(self.player:getPlayerNum()) == self.cursor then
         getCell():setDrag(nil, self.player:getPlayerNum())
@@ -113,11 +114,13 @@ function Panel:prerender()
         self:close(); return
     end
     ISPanel.prerender(self)
+    require("OMHTT/ControlPanelLayout").arrange(self)
     local now = getTimestampMs()
     if self.scanIndex or now >= self.scanDue then
         self:scan()
     end
     self:select()
+    require("OMHTT/ControlGraph").update(self)
     if self.linkSource and (self.linkSource:getObjectIndex() < 0 or not A.state(self.linkSource)) then
         self.linkSource = nil
     end
@@ -301,6 +304,10 @@ function Panel.open(player, object)
     panel.devices:addItem(U.name(object), object)
     panel.devices.selected = 1
     panel:scan()
+    panel.geometryWidth = nil
+    require("OMHTT/ControlPanelLayout").arrange(panel)
+    require("OMHTT/WindowGeometry").install(panel, "Controller", math.max(840, panel.lineHeight * 42), 620,
+        require("OMHTT/ControlPanelLayout").arrange)
     if A.state(object).kind == "Controller" then
         panel.marker = getWorldMarkers():addGridSquareMarker(object:getSquare(), Theme.accent.r, Theme.accent.g, Theme.accent.b, false, 40)
         panel.marker:setScaleCircleTexture(true)
@@ -320,7 +327,11 @@ function Panel:showStockpile(visible)
     self.stockPage = visible ~= false
     self.stockWing:setVisible(self.stockPage)
     self.detailBody:setVisible(not self.stockPage)
-    self.devices:setVisible(not self.stockPage)
+    self.devices:setVisible(false)
+    self.graph:setVisible(not self.stockPage)
+    self.mapView:setVisible(not self.stockPage)
+    self.gridButton:setVisible(not self.stockPage)
+    self.nativeMapButton:setVisible(not self.stockPage)
     self.batterySlot:setVisible(not self.stockPage)
     self.stockButton:setTitle(getText(self.stockPage and "UI_OMHTT_StockpileBack" or "UI_OMHTT_OpenStockpile"))
     self.stockButton:setY(self.stockPage and self.height - 42 or self.stockButtonY)

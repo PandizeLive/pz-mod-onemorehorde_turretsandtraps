@@ -30,8 +30,22 @@ end
 ---@param panel ISPanel Window
 ---@return nil
 function Drag.update(panel)
+    require("OMHTT/WindowGeometry").checkViewport(panel)
     if panel.moving and not isMouseButtonDown(0) then
         Drag.stop(panel)
+    end
+    if not isMouseButtonDown(0) then
+        if panel.resizeGrip and panel.resizeGrip.resizing then
+            panel.resizeGrip.resizing = false
+            panel.resizeGrip:setCapture(false)
+        end
+        if panel.graph and panel.graph.dragSource then
+            panel.graph.dragSource = nil
+            panel.graph:setCapture(false)
+        end
+        if panel.mapView and (panel.mapView.panning or panel.mapView.dragObject) then
+            panel.mapView:onMouseUpOutside()
+        end
     end
 end
 

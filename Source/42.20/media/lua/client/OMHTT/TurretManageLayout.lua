@@ -16,36 +16,46 @@ end
 ---@param panel ISPanel Window
 ---@return nil
 function L.refresh(panel)
-    if not panel.body or panel.orderPanel then return end
+    if not panel.body then return end
+    local geometryChanged = require("OMHTT/TurretManageGeometry").apply(panel)
+    if panel.orderPanel then
+        panel.orderPanel:reflow()
+        return
+    end
     local screen = getPlayerScreenHeight(panel.player:getPlayerNum())
-    if screen == panel.layoutScreen and panel.detailsOpen == panel.layoutDetails and panel.moduleLines == panel.layoutLines
+    if not geometryChanged and screen == panel.layoutScreen and panel.detailsOpen == panel.layoutDetails and panel.moduleLines == panel.layoutLines
         and panel.hasLure == panel.layoutLure and panel.hasLanding == panel.layoutLanding then return end
-    local resized = screen ~= panel.layoutScreen
+    local detailsChanged = panel.layoutDetails ~= panel.detailsOpen
     panel.layoutScreen, panel.layoutDetails, panel.layoutLines = screen, panel.detailsOpen, panel.moduleLines
     panel.layoutLure, panel.layoutLanding = panel.hasLure, panel.hasLanding
     local h = panel.lineHeight
-    local compact = screen < 720
+    local compact = screen < 720 or (panel.userSized and panel.height + 24 < 720)
     local row = math.max(compact and 22 or 28, h + (compact and 2 or 8))
     panel.compactFooter = compact
     panel.detailsButton:setHeight(row)
     panel.detailLines = string.split(getTextManager():WrapText(UIFont.Small, panel.moduleLines or "", math.floor(panel.body.width / 2) - 28), "\n")
     panel.detailsButton:setTitle(getText(panel.detailsOpen and "UI_OMHTT_DetailsClose" or "UI_OMHTT_DetailsOpen"))
-    if resized then
-        local moduleHeight = screen >= 900 and h * 2 + 16 or h + 8
-        local moduleTop = panel.modulesY + panel.headerHeight + 6
-        for i = 1, 16 do
-            local gridRow = i <= 4 and 0 or 1 + math.floor((i - 5) / 6)
-            panel.moduleSlots[i]:setY(moduleTop + gridRow * (moduleHeight + 4))
-            panel.moduleSlots[i]:setHeight(moduleHeight)
-        end
-        panel.moduleGridBottom = moduleTop + 3 * (moduleHeight + 4)
-    end
     panel.modulesBottom = panel.moduleGridBottom + row + 6
     local detailsHeight = math.max(h * (#panel.detailLines + 3) + 16, h * 7 + 16)
     local footer = (compact and 40 or 48) + h * (compact and 1 or 2) + (compact and 8 or 14) + row * (1 + (panel.hasLure and 1 or 0) + (panel.hasLanding and 1 or 0))
     local bodyHeight = panel.modulesBottom + 8
     local desired = panel.body.y + bodyHeight + footer + (panel.detailsOpen and detailsHeight + 8 or 0)
-    panel:setHeight(math.min(screen - 24, desired))
+    panel.minimumHeight = math.min(screen - 24, panel.body.y + panel.minimumGridBottom + row + 14 + footer)
+    if panel.userSized then
+        if detailsChanged and panel.detailsOpen then
+            panel.collapsedHeight = panel.height
+            panel:setHeight(math.min(screen - 24, math.max(panel.height, desired)))
+        elseif detailsChanged and panel.collapsedHeight then
+            panel:setHeight(panel.collapsedHeight)
+            panel.collapsedHeight = nil
+        end
+        panel:setHeight(math.min(screen - 24, math.max(panel.minimumHeight, panel.height)))
+    else
+        panel:setHeight(math.min(screen - 24, desired))
+    end
+    if panel.resizeGrip then
+        panel.resizeGrip:setY(panel.height - 18)
+    end
     local top = getPlayerScreenTop(panel.player:getPlayerNum())
     panel:setY(math.max(top + 12, math.min(panel.y, top + screen - panel.height - 12)))
     local bottom = panel.height - (compact and 40 or 48)
@@ -66,7 +76,7 @@ function L.refresh(panel)
     panel.landingY = y
     panel.landingSlider:setY(y + 4)
     panel.body:setHeight(math.max(80, panel.rangeY - panel.body.y - 6))
-    panel.detailsPage = panel.detailsOpen and desired > screen - 24
+    panel.detailsPage = panel.detailsOpen and desired > panel.height
     panel.detailsY = panel.detailsPage and panel.headerHeight + row + 16 or panel.modulesBottom + 8
     panel.detailsButton:setY(panel.detailsPage and panel.headerHeight + 8 or panel.moduleGridBottom + 2)
     panel.benefitList:setY(panel.detailsY)

@@ -222,7 +222,7 @@ function Construction.onCreate(params)
     end
     local Footprint = require("OMHTT/BarrierFootprint")
     local entity = object:getSpriteConfig():getObjectInfo():getName()
-    Footprint.adoptBuild(object, player, x, y, facing, entity)
+    Footprint.adoptBuild(object, player, x, y, facing, entity, params.craftRecipeData and params.craftRecipeData:getAllConsumedItems())
     Diagnostics.object(object, "native-construction")
 end
 

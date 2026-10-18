@@ -42,6 +42,7 @@ function S.apply(player, object, id, operation)
             return false
         end
         if player:getInventory():AddItem(item) ~= item then return false end
+        require("OMHTT/DefenseNames").pack(record, item)
         B.retire(record)
         if isServer() then
             sendAddItemToContainer(player:getInventory(), item)

@@ -4,6 +4,7 @@ if existing then return existing end
 local A = require("OMHTT/ControlAccess")
 local C = require("OMHTT/ControlDefinitions")
 local Battery = require("OMHTT/TurretBattery")
+local Names = require("OMHTT/DefenseNames")
 local W = {objects = {}, bindings = setmetatable({}, {__mode = "k"}), cursor = 1, order = {}, indexed = {}, incoming = {}, batteries = {}, batteryScan = {}, locations = {}, plates = setmetatable({}, {__mode = "k"}), actorSquares = setmetatable({}, {__mode = "k"}), dirty = {}, dirtySet = {}}
 OMHTT_ControlWorld = W
 local store
@@ -14,6 +15,14 @@ function W.records()
         store = ModData.getOrCreate("OMHTTControlsV1")
         if not store.records then
             store.records, store.packed = {}, {}
+        end
+        local ids = {}
+        for id in pairs(store.records) do
+            ids[#ids + 1] = id
+        end
+        table.sort(ids)
+        for i = 1, #ids do
+            W.name(store.records[ids[i]])
         end
         for id, state in pairs(store.records) do
             if state.placed and state.location then
@@ -28,6 +37,20 @@ function W.records()
         end
     end
     return store
+end
+
+---@param state table Private control state
+---@return nil
+function W.name(state)
+    if state.kind == "Controller" then return end
+    local base
+    if state.kind == "Turret" then
+        base = state.headType and state.headType ~= "Base" and getItemNameFromFullType(state.headType) or getText("UI_OMHTT_TurretBase")
+    else
+        base = getText("UI_OMHTT_Control" .. state.kind)
+    end
+    Names.ensure(state, state.kind, base)
+    state.number = state.displayNumber
 end
 
 ---@param source table State
@@ -63,7 +86,7 @@ function W.publish(object)
         for id in pairs(W.incoming[state.id] or {}) do
             local source = W.records().records[id]
             if source and source.placed then
-                view.inputs[#view.inputs + 1] = {id = id, name = source.name, kind = source.kind,
+                view.inputs[#view.inputs + 1] = {id = id, name = source.displayName or source.name, kind = source.kind,
                     x = source.x, y = source.y, z = source.z}
             end
         end
@@ -120,6 +143,35 @@ function W.controllerSprite(object, state)
     end
 end
 
+---@param object IsoThumpable Momentary Button
+---@param state table Private record
+---@return nil
+function W.buttonSprite(object, state)
+    if state.kind ~= "Button" then return end
+    local current = object:getSpriteName() or ""
+    local facing = tonumber(string.match(current, "^appliances_radio_01_(%d+)$"))
+    if not facing or facing < 0 or facing > 3 then return end
+    local desired = "lighting_indoor_01_" .. facing
+    local old = W.locations[state.location]
+    if old then
+        old[state.id] = nil
+    end
+    object:setSpriteFromName(desired)
+    state.sprite = desired
+    state.location = state.x .. ":" .. state.y .. ":" .. state.z .. ":" .. desired
+    W.locations[state.location] = W.locations[state.location] or {}
+    W.locations[state.location][state.id] = true
+    local info = SpriteConfigManager.GetObjectInfo("OMHTTDeploySwitchButton")
+    if not info then error("[OMHTT] Missing Button sprite definition") end
+    if object:getSpriteConfig() then
+        GameEntityFactory.RemoveComponentType(object, ComponentType.SpriteConfig)
+    end
+    GameEntityFactory.AddComponent(object, ComponentType.SpriteConfig:CreateComponentFromScript(info:getScript()))
+    if isServer() then
+        object:transmitUpdatedSpriteToClients()
+    end
+end
+
 ---@param object IsoObject New device
 ---@param player IsoPlayer Placer
 ---@param kind string Device family
@@ -134,6 +186,7 @@ function W.register(object, player, kind, previous)
     state.sprite = object:getSpriteName()
     state.location = state.x .. ":" .. state.y .. ":" .. state.z .. ":" .. state.sprite
     state.placed = true
+    W.name(state)
     if state.controller then
         local host, count = records.records[state.controller], 0
         for _, assigned in pairs(records.records) do
@@ -156,6 +209,7 @@ function W.register(object, player, kind, previous)
         W.order[#W.order + 1], W.indexed[id] = id, true
     end
     W.controllerSprite(object, state)
+    W.buttonSprite(object, state)
     W.indexPlate(object, state)
     W.publish(object)
     return state
@@ -191,6 +245,7 @@ function W.bind(object)
         object:getContainer():setAcceptItemFunction("OMHTTControlAccept")
     end
     W.controllerSprite(object, state)
+    W.buttonSprite(object, state)
     W.indexPlate(object, state)
     W.publish(object)
 end
@@ -619,21 +674,9 @@ function W.number(object, headItem)
     local state = W.state(object)
     if not state then return end
     local head = headItem and headItem:getFullType() or "Base"
-    local changed = state.headType ~= head
+    if state.headType == head and state.displayNumber then return end
     state.headType = head
-    if not state.controller or (state.numberHead == head and state.numberController == state.controller) then
-        if changed then
-            W.publish(object)
-        end
-        return
-    end
-    local maximum = 0
-    for _, other in pairs(W.records().records) do
-        if other.controller == state.controller and other.numberHead == head then
-            maximum = math.max(maximum, other.number or 0)
-        end
-    end
-    state.number, state.numberHead, state.numberController = maximum + 1, head, state.controller
+    W.name(state)
     W.publish(object)
 end
 

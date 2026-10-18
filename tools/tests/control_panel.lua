@@ -2,7 +2,7 @@ local A = require("OMHTT/ControlAccess")
 local Panel = require("OMHTT/ControlPanel")
 local oldMode, oldNear = testMode, A.near
 local managerBefore=getTextManager
-getTextManager=function() return {getFontHeight=function() return 18 end,MeasureStringX=function(_,font,text) return #text*9 end} end
+getTextManager=function() return {getFontHeight=function() return 18 end,MeasureStringX=function(_,font,text) return #text*9 end,WrapText=function(_,font,text,width) return text end} end
 local oldPanel, oldList, oldButton, oldText = ISPanel, ISScrollingListBox, ISButton, ISTextEntryBox
 local oldMarkers = getWorldMarkers
 ISPanel, ISScrollingListBox, ISButton, ISTextEntryBox = testControlPanelBase, testControlListBase, testControlButtonBase, testControlTextBase
@@ -142,6 +142,7 @@ panel.nameEntry:setText("")
 panel.nameEntry:select(object)
 A.authorized=oldAuthorized
 U.command, Faction = oldCommand, oldFaction
+require("tests/ControllerMap")(panel, player, object)
 panel:close()
 check(panel.removed and not require("OMHTT/ControlOverlay").panels[panel], "Controller closes its range/link overlay")
 check(not lootPage.visible and not carriedPage.visible and panel.stockWing.visible==false,
@@ -173,7 +174,7 @@ check(compact.stockWing.visible and not compact.devices.visible and not compact.
     and not compact.batterySlot.visible and compact.stockButton.y + compact.stockButton.height <= compact.height,
     "Compact Stockpile page hides covered controls and keeps Back within the window")
 compact:showStockpile(false)
-check(not compact.stockWing.visible and compact.devices.visible and compact.detailBody.visible
+check(not compact.stockWing.visible and compact.graph.visible and compact.mapView.visible and compact.detailBody.visible
     and compact.batterySlot.visible and compact.stockButton.y == compact.stockButtonY,
     "Returning from Stockpile restores controller controls at their original positions")
 compact:close()

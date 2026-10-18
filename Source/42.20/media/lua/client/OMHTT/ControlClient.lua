@@ -57,13 +57,14 @@ end
 function U.name(object, automatic)
     local state = A.state(object)
     if not state then return "" end
+    if not automatic and state.displayName then return state.displayName end
     if state.kind ~= "Controller" and not automatic and state.name and state.name ~= "" then return state.name end
     if state.kind == "Turret" then
         local head = state.headType
         local name = head and head ~= "Base" and getItemNameFromFullType(head) or getText("UI_OMHTT_TurretBase")
-        return name .. (state.number and " " .. state.number or "")
+        return name .. (state.number and " #" .. state.number or "")
     end
-    return getText("UI_OMHTT_Control" .. state.kind)
+    return getText("UI_OMHTT_Control" .. state.kind) .. (state.number and " #" .. state.number or "")
 end
 
 ---@param item InventoryItem Device
@@ -89,7 +90,11 @@ function U.place(item, player)
             kind = key
         end
     end
-    local info = SpriteConfigManager.GetObjectInfo(kind == "Plate" and "OMHTTDeployInsetPlate" or "OMHTTDeploy" .. kind)
+    local entity = kind == "Plate" and "OMHTTDeployInsetPlate" or "OMHTTDeploy" .. kind
+    if kind == "Button" then
+        entity = "OMHTTDeploySwitchButton"
+    end
+    local info = SpriteConfigManager.GetObjectInfo(entity)
     if not info then return nil end
     local containers = ArrayList.new()
     containers:add(item:getContainer())
@@ -233,6 +238,18 @@ if isClient() then
     Events.OnObjectAdded.Add(U.passive)
 end
 Events.OnFillInventoryObjectContextMenu.Add(U.inventory)
+---@param object IsoObject Native world pick
+---@return nil
+function U.clicked(object)
+    local state = A.state(object)
+    if not state or state.kind ~= "Button" then return end
+    local player = getSpecificPlayer(0)
+    if not player or player:isDead() or getCell():getDrag(0) then return end
+    if luautils.walkAdjObject(player, object, false) then
+        U.command(player, object, "Pulse")
+    end
+end
+Events.OnObjectLeftMouseButtonDown.Add(U.clicked)
 Events.OnFillWorldObjectContextMenu.Add(U.world)
 return U
 

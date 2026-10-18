@@ -181,6 +181,7 @@ public final class KahluaCheck {
         String[][] stages = {
             {"_", "tools/tests/bootstrap.lua"},
             {"OMHTT/ActiveTime", base + "shared/OMHTT/ActiveTime.lua"},
+            {"OMHTT/DefenseNames", base + "shared/OMHTT/DefenseNames.lua"},
             {"OMHTT/Foundation", base + "shared/OMHTT/Foundation.lua"},
             {"OMHTT/Diagnostics", base + "shared/OMHTT/Diagnostics.lua"},
             {"OMHTT/BarrierGeometry", base + "shared/OMHTT/BarrierGeometry.lua"},
@@ -336,6 +337,8 @@ public final class KahluaCheck {
             {"OMHTT/ControlAction", base + "shared/OMHTT/ControlAction.lua"},
             {"OMHTT/ControlTransferAction", base + "shared/OMHTT/ControlTransferAction.lua"},
             {"_", "tools/tests/control_ui_bootstrap.lua"},
+            {"ISUI/ISResizeWidget", System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid") + "/media/lua/client/ISUI/ISResizeWidget.lua"},
+            {"OMHTT/WindowGeometry", base + "client/OMHTT/WindowGeometry.lua"},
             {"OMHTT/ControlBatterySlot", base + "client/OMHTT/ControlBatterySlot.lua"},
             {"OMHTT/ControlStockpilePane", base + "client/OMHTT/ControlStockpilePane.lua"},
             {"OMHTT/ControlWindowDrag", base + "client/OMHTT/ControlWindowDrag.lua"},
@@ -346,8 +349,11 @@ public final class KahluaCheck {
             {"OMHTT/ControlNameEntry", base + "client/OMHTT/ControlNameEntry.lua"},
             {"OMHTT/ControlManage", base + "client/OMHTT/ControlManage.lua"},
             {"OMHTT/ControlConnectionList", base + "client/OMHTT/ControlConnectionList.lua"},
+            {"OMHTT/ControlGraph", base + "client/OMHTT/ControlGraph.lua"},
+            {"OMHTT/ControlMap", base + "client/OMHTT/ControlMap.lua"},
             {"OMHTT/ControlPanelLayout", base + "client/OMHTT/ControlPanelLayout.lua"},
             {"OMHTT/ControlPanel", base + "client/OMHTT/ControlPanel.lua"},
+            {"OMHTT/TurretManageGeometry", base + "client/OMHTT/TurretManageGeometry.lua"},
             {"OMHTT/TurretManageLayout", base + "client/OMHTT/TurretManageLayout.lua"},
             {"OMHTT/TurretManage", base + "client/OMHTT/TurretManage.lua"},
             {"_", "tools/tests/turret_manage_load_order.lua"},
@@ -378,6 +384,7 @@ public final class KahluaCheck {
             {"OMHTT/TurretModulePack", base + "shared/OMHTT/TurretModulePack.lua"},
             {"OMHTT/ModuleLoot", base + "server/OMHTT/ModuleLoot.lua"},
             {"_", "tools/tests/module_loot.lua"},
+            {"tests/UITrace", "tools/tests/ui_layout_trace.lua"},
             {"_", "tools/tests/turret_manage.lua"},
             {"_", "tools/tests/turret_preview_bootstrap.lua"},
             {"_", base + "client/OMHTT/TurretMenu.lua"},
@@ -441,8 +448,10 @@ public final class KahluaCheck {
             {"OMHTT/TurretNetworkTransfers", base + "client/OMHTT/TurretNetworkTransfers.lua"},
             {"OMHTT/TurretVoidAction", base + "shared/OMHTT/TurretVoidAction.lua"},
             {"_", "tools/tests/turret_authority.lua"},
+            {"_", "tools/tests/defense_names.lua"},
             {"_", "tools/tests/controls.lua"},
             {"OMHTT/ControlOverlay", base + "client/OMHTT/ControlOverlay.lua"},
+            {"tests/ControllerMap", "tools/tests/controller_map.lua"},
             {"_", "tools/tests/control_panel.lua"},
             {"_", "tools/tests/control_inventory.lua"},
             {"_", "tools/tests/control_corrections.lua"},
@@ -467,6 +476,9 @@ public final class KahluaCheck {
             {"_", System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid") + "/media/lua/client/ISUI/ISInventoryPane.lua"},
             {"OMHTT/ControlStockpilePane", base + "client/OMHTT/ControlStockpilePane.lua"},
             {"_", "tools/tests/native_stockpile_ui.lua"},
+            {"_", "tools/tests/native_window_layout_setup.lua"},
+            {"_", System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid") + "/media/lua/client/ISUI/ISLayoutManager.lua"},
+            {"_", "tools/tests/native_window_layout.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {
@@ -533,6 +545,10 @@ public final class KahluaCheck {
                 System.err.println(coroutine.getClass().getField("stackTrace").get(coroutine));
                 throw new IllegalStateException("Failed stage: " + stage[1], error.getCause());
             }
+        }
+        for (String view : new String[] {"Manage", "Controller"}) {
+            Object svg = get.invoke(env, "test" + view + "Svg");
+            if (svg instanceof String) Files.writeString(root.resolve("diagnostics/v0.2.55/" + view.toLowerCase() + "-layout.svg"), (String)svg);
         }
         if (args.length > 1) {
             Path audit = root.resolve(args[1]);

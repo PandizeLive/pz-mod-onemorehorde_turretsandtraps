@@ -126,6 +126,7 @@ def main():
     assert "Set pitch for" not in pitch_log, "Runtime pitch setter logging returned"
     (OUTPUT / "native-pitch.log").write_text(pitch_log, encoding="utf-8")
     run([javac, "-d", classes, ROOT / "tools/KahluaCheck.java"])
+    run([javac, "-d", classes, ROOT / "tools/NativeControllerMapCheck.java"])
     run([javac, "-cp", GAME / "projectzomboid.jar", "-d", classes, ROOT / "tools/HybridAssetCheck.java"])
     model_log = run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED",
         "-Djava.library.path=" + str(GAME), "-cp", os.pathsep.join([str(classes), str(GAME / "projectzomboid.jar")]),
@@ -145,6 +146,9 @@ def main():
                      "OMHTurretsTraps_AutomationPage", "OMHTurretsTraps_StatModulesPage", "OMHTurretsTraps_ModuleLootPage", "OMHTurretsTraps_Debug"]
     stock = os.environ.get("OMHTT_STOCK_CLASSES") == "1"
     classpath = os.pathsep.join(str(path) for path in ([classes, GAME / "projectzomboid.jar", GAME] if stock else [classes, GAME, GAME / "projectzomboid.jar"]))
+    map_log = run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED", "-Djava.awt.headless=true",
+        "-Duser.home=" + str(OUTPUT / "native-home"), "-cp", classpath, "NativeControllerMapCheck"], cwd=GAME)
+    (OUTPUT / "native-controller-map.log").write_text(map_log, encoding="utf-8")
     log = run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED", "-Djava.awt.headless=true",
         "-Duser.home=" + str(OUTPUT / "native-home"), "-cp", classpath, "KahluaCheck", ROOT, "tools/tests/module_pack_audit.lua"], cwd=GAME)
     (OUTPUT / "validation.log").write_text(log, encoding="utf-8")

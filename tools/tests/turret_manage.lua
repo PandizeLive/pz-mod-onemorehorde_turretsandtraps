@@ -95,12 +95,35 @@ check(not panel.ammoSlot.hintType and not panel.magazineSlot.hintType and not pa
     and panel.ammoSlot.summary==getText("UI_OMHTT_ManageNoHead")
     and panel.voidSlot.summary==getText("UI_OMHTT_VoidRequired"), "Headless/absent Void slots explain requirements without false drop hints")
 check(#panel.slots == 22 and panel.height <= 720 and panel.x >= 0, "Sixteen module slots, Void storage and controls fit 1280x720")
+local Geometry = require("OMHTT/WindowGeometry")
+local identity = panel.moduleSlots[1]
+for _, size in pairs({{900, 580}, {1100, 650}, {1256, 696}}) do
+    Geometry.resize(panel, size[1], size[2])
+    Layout = require("OMHTT/TurretManageLayout")
+    Layout.refresh(panel)
+    check(panel.moduleSlots[1] == identity and panel.moduleSlots[16].visible ~= false,
+        "Resizing preserves all sixteen exact module slot objects")
+    check(panel.modulesBottom <= panel.body.height and panel.body.y + panel.body.height < panel.rangeY,
+        "Resized module grid clears footer without outer scrolling")
+    check(panel.ammoSlot.width == panel.voidSlot.width and panel.ammoSlot.x + panel.ammoSlot.width < panel.voidSlot.x,
+        "Resized Ammo and Void remain equal and separate")
+    for i = 1, 16 do
+        local slot = panel.moduleSlots[i]
+        check(slot.x >= 8 and slot.x + slot.width <= panel.body.width - 8 and slot.height >= panel.lineHeight + 8,
+            "Resized module targets stay inside the panel at readable height")
+    end
+end
+panel.userSized = false
+panel:setWidth(900)
+panel.geometryWidth = nil
+require("OMHTT/TurretManageLayout").refresh(panel)
 require("OMHTT/TurretManageExtras").refresh(panel, {active = {Lure = 1}}, {headKind = "Lobber", minimumRange = 6, range = 18})
 check(panel.height + panel.y <= 720 and panel.lureSlider.visible and panel.landingSlider.visible,
     "Lure and Landing Distance remain inside a 720p viewport together")
 panel:refresh()
 check(panel.ammoSlot.width == panel.voidSlot.width and panel.magazineSlot.y > panel.ammoSlot.y
     and panel.capacitySlot.y == panel.headSlot.y, "Accepted layout keeps equal reserves, Magazine below and Expansion in Equipment")
+testManageSvg = require("tests/UITrace")(panel)
 local originalScreenHeight = getPlayerScreenHeight
 getPlayerScreenHeight = function() return 600 end
 require("OMHTT/TurretManageExtras").refresh(panel, {active = {Lure = 1}}, {headKind = "Lobber", minimumRange = 6, range = 18})
@@ -177,10 +200,10 @@ for i = 1, 16 do
     local slot = panel.moduleSlots[i]
     moduleRows[slot.y] = (moduleRows[slot.y] or 0) + 1
 end
-check(moduleRows[panel.moduleSlots[1].y] == 4 and moduleRows[panel.moduleSlots[5].y] == 6
-    and moduleRows[panel.moduleSlots[11].y] == 6, "Module geometry is exactly four/six/six")
-check(panel.moduleSlots[1].x > panel.moduleSlots[5].x and panel.moduleSlots[4].x < panel.moduleSlots[10].x,
-    "Four-slot first row is centered above the six-slot rows")
+check(moduleRows[panel.moduleSlots[1].y] >= 4 and moduleRows[panel.moduleSlots[1].y] <= 8,
+    "Responsive module rows use four to eight readable columns")
+check(panel.moduleSlots[1].x == panel.moduleSlots[1 + moduleRows[panel.moduleSlots[1].y]].x,
+    "Responsive rows keep consistent left alignment")
 check(panel.headSlot.missing and panel.magazineSlot.disabled and not panel.magazineSlot.missing, "Empty base highlights head without inventing a magazine requirement")
 for i = 1, #panel.slots do panel.slots[i]:prerender() end
 panel:fire()

@@ -94,6 +94,9 @@ function Service.apply(player, object, id, operation)
         end
     end
     if recovered and player:getInventory():AddItem(recovered) ~= recovered then return false end
+    if recovered then
+        require("OMHTT/DefenseNames").pack(record, recovered)
+    end
     B.retire(record)
     if recovered and isServer() then
         sendAddItemToContainer(player:getInventory(), recovered)

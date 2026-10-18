@@ -462,5 +462,16 @@
     "UI_OMHTT_AccessHelp": "Choose who may change this device: Private, Faction or Public.",
     "UI_OMHTT_TriggerHelp": "Choose which occupants activate this pressure plate.",
     "UI_OMHTT_ManageSwapFailed": "The modules could not be exchanged. Check space, compatibility and access.",
-    "UI_OMHTT_EffectSiphon": "%1× Battery Refund"
+    "UI_OMHTT_EffectSiphon": "%1× Battery Refund",
+    "UI_OMHTT_MapGrid": "Grid",
+    "UI_OMHTT_MapNative": "Native Map",
+    "UI_OMHTT_Map": "Map",
+    "UI_OMHTT_ViewConnections": "View Connections",
+    "UI_OMHTT_SelectedDevice": "Selected Device",
+    "UI_OMHTT_Triggers": "Triggers",
+    "UI_OMHTT_Defenses": "Defenses",
+    "UI_OMHTT_ViewConnectionsTip": "Focus this defense and its connections in the list.",
+    "UI_OMHTT_MapGridTip": "Tile grid. Drag empty space to pan; scroll to zoom. Drag a trigger to a defense to connect.",
+    "UI_OMHTT_MapNativeTip": "Use the native map background with visited-area visibility. Device clicks select; they do not fire.",
+    "UI_OMHTT_MapUnavailable": "Native Map is unavailable for this world. Grid connections remain available."
 }

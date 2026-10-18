@@ -33,3 +33,6 @@ function ISInventoryPane:update() end
 function ISPanel:bringToTop() self.raised=true end
 function ISPanel:isReallyVisible() return self.visible~=false end
 function ISInventoryPaneDraggedItems:getDropContainer() return nil end
+
+ISUIElement=ISPanel
+ISLayoutManager={windows={},RegisterWindow=function(key, funcs, target) ISLayoutManager.windows[key]={funcs=funcs,target=target} end,OnPostSave=function() end}

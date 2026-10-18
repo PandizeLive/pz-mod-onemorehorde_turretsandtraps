@@ -75,6 +75,7 @@ function Action:complete()
         end
     elseif self.command == "Name" then
         state.name = self.value ~= "" and self.value or nil
+        W.name(state)
         for i = 1, #state.links do
             local target = W.objects[state.links[i]]
             if target then

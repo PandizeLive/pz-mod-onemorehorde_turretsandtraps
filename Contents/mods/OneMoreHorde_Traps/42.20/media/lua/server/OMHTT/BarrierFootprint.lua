@@ -9,6 +9,15 @@ local store, keys = nil, nil
 local migrationWarnings = {}
 
 ---@param record table Barrier state
+---@return nil
+local function name(record)
+    if record.displayIdentity and record.displayTier == record.tier then return end
+    local fullType = record.tier == "reinforced" and "Base.OMHTTTrapSpikeBarrierReinforced" or "Base.OMHTTTrapSpikeBarrier"
+    require("OMHTT/DefenseNames").ensure(record, "Barrier", getItemNameFromFullType(fullType))
+    record.displayTier = record.tier
+end
+
+---@param record table Barrier state
 ---@param square IsoGridSquare Part location
 ---@return string name Sprite identity
 local function partSprite(record, square)
@@ -290,8 +299,9 @@ end
 ---@param y number Primary tile Y
 ---@param facing number Cardinal heading
 ---@param entity string Native construction recipe identity
+---@param consumed ArrayList? Exact native recipe inputs
 ---@return table record Persistent shared state
-function Footprint.adoptBuild(object, player, x, y, facing, entity)
+function Footprint.adoptBuild(object, player, x, y, facing, entity, consumed)
     local square = object:getSquare()
     local z = square:getZ()
     local anchor = Footprint.edgeKey(x, y, z, facing)
@@ -310,11 +320,16 @@ function Footprint.adoptBuild(object, player, x, y, facing, entity)
         store.nextId = store.nextId + 1
     end
     local record = slot.device
+    if not record.displayIdentity then
+        local names = require("OMHTT/DefenseNames")
+        names.restore(record, consumed)
+    end
     if entity == "OMHTTDeployReinforcedBarrier" and not record.tier then
         record.tier = "reinforced"
         record.maxHealth = F.barrierHealth(record)
         record.condition = record.maxHealth
     end
+    name(record)
     if record.kind ~= "barrier" or record.placementSource ~= "construction" or record.facing ~= facing
         or record.builderUsername ~= player:getUsername() or Sprites.entity(record) ~= entity then
         error("[OMHTT] Native construction callback conflicts with existing device at " .. anchor)
@@ -467,6 +482,7 @@ end
 ---@return boolean complete All parts loaded and unambiguous
 function Footprint.sync(slot, reason)
     local record = slot.device
+    name(record)
     local parts = Footprint.parts(record)
     if not parts then return false end
     if record.collisionModel == "edge-v1" then
@@ -541,7 +557,7 @@ function Footprint.sync(slot, reason)
             object:setHealth(record.condition)
         end
         if marker.revision ~= record.revision or marker.condition ~= record.condition or marker.width ~= record.width
-            or marker.facing ~= record.facing then
+            or marker.facing ~= record.facing or marker.displayName ~= record.displayName then
             F.writeMarker(object, record)
             object:transmitModData()
         end

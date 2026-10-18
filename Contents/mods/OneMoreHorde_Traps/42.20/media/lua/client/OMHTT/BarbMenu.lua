@@ -40,7 +40,7 @@ local function menu(playerIndex, context, objects, test)
                     seen[record.id] = true
                     local _, host, attachment, status = B.resolve(record)
                     if status == "active" and B.enabled(record.kind) then
-                        local option = context:addOption(getText(record.kind == "wire" and "UI_OMHTT_ConcertinaWire" or "UI_OMHTT_Barbs"), nil, nil)
+                        local option = context:addOption(record.displayName or getText(record.kind == "wire" and "UI_OMHTT_ConcertinaWire" or "UI_OMHTT_Barbs"), nil, nil)
                         local highlighted = {frame}
                         if record.paired then highlighted = {B.wirePart(record, 0), B.wirePart(record, 1)} end
                         option.onHighlight, option.onHighlightParams = Highlight.highlight, {highlighted}

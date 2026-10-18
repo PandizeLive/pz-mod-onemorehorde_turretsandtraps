@@ -4,7 +4,11 @@ testInventory = {room = true, items = {}}
 function testInventory:hasRoomFor() return self.room end
 function testInventory:AddItem(item) self.items[#self.items + 1] = item; return item end
 function testPlayer:getInventory() return testInventory end
-function instanceItem(kind) return {kind = kind, condition = 100} end
+local nextItemId=600000
+function instanceItem(kind)
+    nextItemId=nextItemId+1
+    return {kind=kind,condition=100,id=nextItemId,data={},getID=function(self) return self.id end,getModData=function(self) return self.data end}
+end
 function getGameTime() return {getMinutesPerDay = function() return 60 end, getRealworldSecondsSinceLastUpdate = function() return 0.1 end} end
 
 function testPlayer:setIsFarming() end

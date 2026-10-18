@@ -1696,3 +1696,10 @@ Owner moves Stockpile into a full-height right column beside Selected Defense an
 ## C322 — Add resizing to both menus; recap the upcoming patch
 
 Owner requests adjustable Controller and Manage menus that compact/expand safely, including smaller module tiles, then asks for agreement and a recap. Native resize and layout persistence mechanisms are verified in installed source; current menu layouts need geometry-aware reflow. Record readable minima, responsive sections, saved client geometry, retained controls/slots, bounded list scrolling and no per-tick scans. [Contract, evidence and recap](CONTROLLER_MAP_C316.md#c322--resizable-controller-and-turret-manage-menus-2026-10-18). This is a requested patch requirement; no gameplay implementation or runtime acceptance is claimed this turn.
+
+### C323 - Controller map and resizable menus approved (2026-10-18)
+
+Owner explicitly approves C318-C322. See [approved scope](CONTROLLER_MAP_C316.md#c323--implementation-approved-2026-10-18). Installed 0.2.54.1 remains the rollback baseline; approval is not a test result.
+
+
+C323 implementation note (2026-10-18): 0.2.55 implements the approved map/layout/resize/naming/Button scope. Native Map uses visited-world map data, not live satellite imagery. Compact Controller widths retain the existing attached Stockpile page. Passive traps receive names without adding a signal-receiver contract. Validation/release evidence: [TEST_v0.2.55.md](TEST_v0.2.55.md).
