@@ -45,7 +45,7 @@
   const tierNames=['Abundant','Common','Uncommon','Rare','Epic','Legendary','Mythic'];
   function defaults(data) { return {version:1,baseline:data.meta.baseline,seed:24601,tierWeights:Object.fromEntries(tierNames.map(name=>[name,data.defaults?.tierWeights?.[name]??null])),global:data.defaults?.global??1,material:.6,rolls:1,retention:1,selected:'all',overlay:'spawns',visible:Object.fromEntries(data.modules.map(m=>[m.id,true])),items:Object.fromEntries(data.modules.map(m=>[m.id,data.defaults?.items?.[m.id]??1]))}; }
   function migrateValue(path,value,baseline) {
-    if(/^T&T 0\.2\.(2[6-9]|[3-4][0-9]|5[0-3])$/.test(baseline))return value;
+    if(/^T&T 0\.2\.(2[6-9]|[3-4][0-9]|5[0-4])$/.test(baseline))return value;
     if(path==='global')return value/4.5;
     if(path.startsWith('items.')) {
       const id=path.slice(6);

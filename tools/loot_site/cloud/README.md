@@ -1,7 +1,7 @@
-# Pending LootLab server catalog
+# LootLab server catalog
 
-The 0.2.54 catalog helper is based on the last verified 0.2.50 deployment's settings helper. It adds Siphon and upgrades existing 0.2.50–0.2.53 scenarios without changing their saved weights or tiers. GET upgrades are in-memory; no database rewrite is required. Authentication and database access behavior are unchanged.
+The 0.2.54.1 helper includes Siphon and upgrades prior catalogs without changing saved account weights or tiers. Missing Siphon defaults to multiplier 1 against base weight 3, matching the default Legendary anchor. GET upgrades happen in memory; no production database rewrite is needed.
 
-Cloudflare authentication expired, so this helper and the local assets have **not been deployed**. Before deployment, retrieve/compare the current live Worker, reconcile any intervening changes, replace only its `src/loot-lab-settings.ts` catalog helper, and copy the whitelisted LootLab assets including `tier-list.js`. Preserve all other live routes, bindings, configuration and account data. Run the host API suite and verify protected admin routes and unchanged public endpoints before and after deployment. Do not deploy the stale sibling Website checkout or blindly replace the current Worker with this historical snapshot.
+Published and verified as Worker version `e4c47e3b-94ad-45e2-ac0b-9b4d9e22d0df`. The release used freshly fetched production code, changed only the catalog section, preserved live configuration/bindings and copied ten whitelisted/sanitized LootLab assets. 86 backend checks, local catalog and desktop/mobile browser checks passed. All 13 protected admin routes and both public endpoint checks passed before/after deployment. See `diagnostics/v0.2.54.1/lootlab-release.json`.
 
-Focused local catalog checks: `node --experimental-strip-types --test tools/loot_site/cloud/catalog.test.mjs`.
+Future releases must fetch/compare current live code; do not deploy a stale sibling Website checkout. Run `node --experimental-strip-types --test tools/loot_site/cloud/catalog.test.mjs` for focused catalog checks.

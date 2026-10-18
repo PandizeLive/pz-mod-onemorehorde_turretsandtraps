@@ -25,3 +25,12 @@ test('catalog rejects malformed new weights and unknown component IDs',()=>{
  assert.throws(()=>validateScenario({...fresh,items:{...fresh.items,Siphon:-1}}));
  assert.throws(()=>validateScenario({...fresh,items:{...fresh.items,Invented:1}}));
 });
+test('Siphon loads at Legendary weight 3 in fresh and upgraded accounts',()=>{
+ const tiers=require('../../../art/loot-tuner/tier-list.js');
+ const weights=Object.fromEntries(data.modules.map(m=>[m.id,m.weight*fresh.items[m.id]]));
+ assert.equal(weights.Siphon,3);
+ assert.equal(tiers.bands(data.modules,weights,Object.values(fresh.tierWeights)).Siphon,5);
+ const prior=structuredClone(fresh);prior.baseline='T&T 0.2.54';
+ assert.deepEqual(upgradeScenario(prior),fresh);
+ assert.deepEqual(model.validate(prior,data),fresh);
+});

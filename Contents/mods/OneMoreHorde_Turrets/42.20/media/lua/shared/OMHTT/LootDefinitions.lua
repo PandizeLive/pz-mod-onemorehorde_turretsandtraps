@@ -2,7 +2,7 @@ local L = {}
 L.POOLS = {"ElectronicStoreMisc", "CrateElectronics", "MechanicShelfElectric", "ArmyStorageElectronics",
     "ElectricianTools", "GunStoreAccessories", "ToolCabinetMechanics", "GarageTools", "CrateTools", "ToolStoreTools", "ToolStoreMisc", "MechanicShelfTools",
     "GarageMechanics", "CrateMechanics", "ElectronicStoreComputers", "ElectronicStoreHAMRadio"}
-L.WEIGHTS = {Siphon = 1, Lure = 14, Void = 1, Regulator = 5.5, Synergy = 1, Martyrdom = 1.5, Tack = 1.5, Conservation = 2.5, Piercing = 2.5, InitialBlow = 2.5, Execute = 2.5, Impact = 2.5, FiringEnhanced = 1.5, MotionDetectionEnhanced = 1.5, Magazine = 5, Splitter = 2.5, Fragment = 2.5, Firing = 30, MotionDetection = 30, Filter = 5, Detection360 = 2.5,
+L.WEIGHTS = {Siphon = 3, Lure = 14, Void = 1, Regulator = 5.5, Synergy = 1, Martyrdom = 1.5, Tack = 1.5, Conservation = 2.5, Piercing = 2.5, InitialBlow = 2.5, Execute = 2.5, Impact = 2.5, FiringEnhanced = 1.5, MotionDetectionEnhanced = 1.5, Magazine = 5, Splitter = 2.5, Fragment = 2.5, Firing = 30, MotionDetection = 30, Filter = 5, Detection360 = 2.5,
     Suppression = 2.5, Critical = 2.5, Accuracy = 5, RapidFire = 5, Reload = 5,
     Velocity = 5, Range = 5, CapacitySmall = 7.5, Capacity = 2.5, CapacityLarge = 1.5, Autoloader = 1.5}
 L.SUBSETS = {

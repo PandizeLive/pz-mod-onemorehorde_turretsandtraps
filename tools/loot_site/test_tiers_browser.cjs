@@ -49,7 +49,7 @@ await page.getByLabel('Mythic tier weight',{exact:true}).fill('1');await page.ge
 await page.screenshot({path:path.join(out,'tiers-desktop.png')});
 await page.setViewportSize({width:390,height:844});await page.screenshot({path:path.join(out,'tiers-mobile.png')});
 assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
-await page.goto(pathToFileURL(path.join(root,'art/PACK_AUDIO.html')).href);await page.locator('audio').first().evaluate(a=>a.play());await page.waitForTimeout(150);
+await page.goto(pathToFileURL(path.join(root,'art/PACK_AUDIO.html')).href);await page.locator('audio').first().evaluate(a=>a.play());await page.waitForFunction(()=>document.querySelector('audio').currentTime>0,null,{timeout:5000});
 assert(await page.locator('audio').first().evaluate(a=>a.currentTime>0));await page.getByRole('button',{name:'Preview four-second rarity pulse'}).click();
 await page.setViewportSize({width:1200,height:900});await page.screenshot({path:path.join(out,'sounds.png')});assert.deepEqual(errors,[]);
 console.log('PASS tier drag/drop, keyboard assignment, custom weight, explicit confirm, cancel, mobile bounds, native audition playback; zero page errors');

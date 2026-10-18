@@ -1661,3 +1661,8 @@ Preserve one ammo type per magazine, normal speed upgrades without a detonation 
 ## C314 — Approved Controller corrections and Siphon patch (2026-10-18)
 
 Owner: “Approved to patch.” Authorizes implementation, verification, local installation and the standing development mirror for all settled C310–C313 changes. [Implemented contract](CORRECTIONS_C310.md#c314--patch-approved-and-implemented-2026-10-18). Version 0.2.54 includes Siphon with the exact “shot’s” wording, Synergy-gated secondary refunds, actual rotary pass energy, one half-damage Martyrdom follow-up generation, Grouped Controller, plate/UI/aim/link/swap fixes and LootLab catalog integration. No Workshop upload or merge authorized. Hosted LootLab deployment is pending Cloudflare authentication; playable build verification and installation are independent. See [test record](TEST_v0.2.54.md) for actual evidence and acceptance limits.
+
+
+## C315 — Siphon rarity and remote input assignment
+
+Owner-approved correction: Legendary Siphon at loaded weight 3; automatic placement assignment of buttons/plates to a writable Controller in range, retaining explicit receiver links and authoritative access rules. [Contract and provenance](CORRECTIONS_C310.md#c315--siphon-rarity-and-automatic-input-assignment-2026-10-18). Official Cloudflare setup and beta cf installation were also explicitly requested.

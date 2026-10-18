@@ -171,6 +171,37 @@ C.removed(target)
 replacementState.placed = false
 local redeployed = C.register(target, owner, "Turret", output)
 check(redeployed.controller == nil and redeployed.owner == owner.name, "Redeployment clears destroyed controller assignment without losing ownership")
+host.powered = true
+local remoteButton, remoteState = device("Button", 1920, 1910)
+check(C.autoAssign(remoteButton, owner) and remoteState.controller == host.id and #remoteState.links == 0,
+    "Placed inputs join the accessible Controller without inventing receiver links")
+check(not A.near(owner, remoteButton) and require("OMHTT/ControlRemote").request(owner, controller, remoteButton),
+    "Controller issues a remote session without standing beside the input")
+check(Action:new(owner,remoteButton,"Link",true,target,remoteState.id,redeployed.id):complete(),
+    "Assigned input links to a receiver through server-authorized remote control")
+host.powered = false
+check(not Action:new(owner,remoteButton,"Link",false,target,remoteState.id,redeployed.id):complete(),
+    "Controller power loss revokes remote link changes")
+host.powered = true
+local restricted, restrictedState = device("Controller", 1919, 1910)
+restrictedState.owner = "other-owner"
+local nextInput, nextState = device("Plate", 1920, 1910)
+check(C.autoAssign(nextInput,owner) and nextState.controller == host.id, "Auto-assignment skips a closer private Controller")
+restrictedState.access = "Public"
+local nearestInput, nearestState = device("Button",1920,1910)
+check(C.autoAssign(nearestInput,owner) and nearestState.controller == restrictedState.id,
+    "Auto-assignment chooses the nearest permitted Controller even before its power is available")
+check(not C.autoAssign(remoteButton,owner) and remoteState.controller == host.id,
+    "Automatic assignment preserves an existing Controller selection")
+restrictedState.placed = false
+local outOfRange, outOfRangeState = device("Plate",1931,1910)
+check(not C.autoAssign(outOfRange,owner) and not outOfRangeState.controller, "Auto-assignment keeps the 20-tile boundary")
+local denied, deniedState = device("Button",1920,1910)
+check(not C.autoAssign(denied,stranger) and not deniedState.controller, "Auto-assignment cannot claim another player's device")
+local records = C.records().records
+for i = 1, 30 do records["c315-fill-"..i] = {id="c315-fill-"..i,placed=true,kind="Plate",controller=host.id} end
+check(not C.autoAssign(denied,owner), "Auto-assignment honors the 32-input limit")
+for i = 1, 30 do records["c315-fill-"..i] = nil end
 for i = 1, #made do C.removed(made[i]) end
 T.state, T.contents, T.cycleConfig = oldState, oldContents, oldConfig
 W.applyPower, W.fire = oldPower, oldFire

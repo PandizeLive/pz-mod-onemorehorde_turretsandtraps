@@ -31,4 +31,10 @@ for i = 1, #R.names do settings["RarityWeight" .. R.names[i]] = 0 end
 settings.LootRateRange = nil
 R.refresh(settings)
 check(R.anchorError == nil and R.get("Range").band == expected, "Unset anchors retain old automatic rarity")
+local approved = {20,18,14,10,6,3,1}
+local defaults = {}
+for i = 1, #R.names do defaults["RarityWeight"..R.names[i]] = approved[i] end
+R.refresh(defaults)
+check(R.get("Siphon").weight == 3 and R.get("Siphon").band == 6, "Siphon uses approved Legendary weight 3")
+check(R.get("Siphon").surcharge == .8, "Legendary Siphon follows shared rarity battery drain")
 R.refresh(SandboxVars.OMHTurretsTraps or {})

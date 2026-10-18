@@ -86,27 +86,7 @@ function Action:complete()
         if self.value == "Faction" and not faction then return false end
         state.access, state.faction = self.value, faction and faction:getName() or nil
     elseif self.command == "Assign" then
-        local target = W.state(self.target)
-        if not self.value and target.controller ~= state.id then return false end
-        if self.value then
-            local inputs, outputs = 0, 0
-            for _, assigned in pairs(W.records().records) do
-                if assigned.placed and assigned.controller == state.id and assigned.id ~= target.id then
-                    if assigned.kind == "Turret" then
-                        outputs = outputs + 1
-                    else
-                        inputs = inputs + 1
-                    end
-                end
-            end
-            if (target.kind == "Turret" and outputs >= 32) or (target.kind ~= "Turret" and inputs >= 32) then return false end
-            if target.kind == "Controller" then return false end
-        end
-        target.controller = self.value and state.id or nil
-        if self.value and target.kind == "Turret" then
-            W.number(self.target, require("OMHTT/Turret").contents(self.target:getContainer()).head)
-        end
-        W.publish(self.target)
+        return W.assign(self.object, self.target, self.character, self.value)
     elseif self.command == "SetFacing" then
         return require("OMHTT/TurretWorld").setFacing(self.target, self.value)
     elseif self.command == "Link" then

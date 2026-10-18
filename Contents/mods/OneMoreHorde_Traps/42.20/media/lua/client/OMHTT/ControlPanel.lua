@@ -123,8 +123,10 @@ function Panel:prerender()
     end
     local host = A.state(self.object)
     local state = A.state(self.selected)
-    if now >= (self.renewDue or 0) then
+    if now >= (self.renewDue or 0) or self.renewTarget ~= self.selected
+        or self.renewController ~= (state and state.controller) or self.renewPowered ~= host.powered then
         self.renewDue = now + 5000
+        self.renewTarget, self.renewController, self.renewPowered = self.selected, state and state.controller, host.powered
         if state and self.selected ~= self.object then
             U.remote(self.player, self.object, self.selected)
         end
@@ -168,6 +170,8 @@ function Panel:prerender()
     local remoteReason
     if host.powered ~= true then
         remoteReason = getText("UI_OMHTT_ControllerPowerNeeded")
+    elseif not A.write(self.player, host) or (state and not A.write(self.player, state)) then
+        remoteReason = getText("UI_OMHTT_ControllerAccessNeeded")
     elseif state and state.controller ~= host.id then
         remoteReason = getText("UI_OMHTT_ControllerAssignNeeded")
     else
@@ -184,13 +188,12 @@ function Panel:prerender()
     end
     self.policy.tooltip = getText("UI_OMHTT_AccessHelp")
     if not self.policy.enable then
-        self.policy.tooltip = getText(A.write(self.player, state, true)
-            and "UI_OMHTT_ControllerReachNeeded" or "UI_OMHTT_ControllerAccessNeeded")
+        self.policy.tooltip = A.write(self.player, state, true) and remoteReason or getText("UI_OMHTT_ControllerAccessNeeded")
     end
-    self.clearInputs.tooltip = getText(self.clearInputs.enable and "UI_OMHTT_ClearInputsHelp" or "UI_OMHTT_ControllerReachNeeded")
-    self.source.tooltip = getText("UI_OMHTT_ControllerReachNeeded")
+    self.clearInputs.tooltip = self.clearInputs.enable and getText("UI_OMHTT_ClearInputsHelp") or remoteReason
+    self.source.tooltip = remoteReason
     self.link.tooltip = self.source.tooltip
-    self.trigger.tooltip = getText(self.trigger.enable and "UI_OMHTT_TriggerHelp" or "UI_OMHTT_ControllerReachNeeded")
+    self.trigger.tooltip = self.trigger.enable and getText("UI_OMHTT_TriggerHelp") or remoteReason
     self.setFacing.tooltip = self.setFacing.enable and getText("UI_OMHTT_SetFacingTooltip") or remoteReason
     if self.link.enable then
         self.link.tooltip = getText("UI_OMHTT_LinkPowerHint")

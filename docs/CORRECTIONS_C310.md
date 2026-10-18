@@ -137,3 +137,20 @@ Owner: **“Approved to patch.”** Implements the entire C310–C313 settled sc
 [Patch](PATCH_v0.2.54.md) and [verification / owner test](TEST_v0.2.54.md). Rendered GPU, audio and connected multiplayer acceptance remain owner checks. Next new content stays R4C2 Poke Floor; R4C3 beam sensors are outside this patch.
 
 Delivery: Installed from immutable `test/v0.2.54` / `d809cdbf135a28d782ba5a9538e6452aaa9688f9`. All 293 source and 374 tagged/packaged/installed/archive files match; both 0.2.53.11 backups verify. [Release evidence](../diagnostics/v0.2.54/local-release.json). Test findings and source are included in the standing GitHub development mirror; no Workshop publication.
+
+
+## C315 — Siphon rarity and automatic input assignment (2026-10-18)
+
+Owner corrections: “This is a Legendary at 3 weight” and “Upon placing the button or trigger, it should be linked to the controller, allowing for remote control.” These authorize the corrective patch and live LootLab publication already pending authentication. Owner also explicitly requested official Cloudflare setup and installation of the beta cf CLI.
+
+Siphon's base loot weight is 3; its default multiplier stays 1, so the loaded default weight is 3 and the existing Legendary anchor applies. All other weights, account tiers and per-item tuning remain unchanged. Local and hosted catalogs now include all 32 module/expansion controls. Older scenarios acquire the missing Siphon entry in memory; no production database rewrite occurs. Custom rarity anchors and explicit item tuning remain respected.
+
+Placement assigns each new Button/Plate to the nearest loaded, placed, writable Controller within the existing 20-tile same-floor radius that has an available input slot. Equal-distance candidates use stable ID ordering. A private/inaccessible or full Controller is skipped; no suitable Controller leaves the input unassigned. Existing valid assignments are retained. This assigns the input to Controller management, not to every turret: players still select receiver links. Existing inputs can be assigned from the Controller. Remote writes retain Controller proximity, power, ownership/faction/public permissions, server-issued sessions and the 32-input/32-output limits. No new tick loop or wire protocol is introduced.
+
+Remote session renewal reacts immediately to device selection, assignment and Controller power changes. Disabled controls distinguish missing power, assignment, access and pending session instead of incorrectly saying to stand beside the remote input.
+
+Prevention: every new loot item must have an explicit owner-approved loaded weight and rarity recorded before implementation. Completion must state local catalog and hosted publication separately; passing local tests is not proof of live delivery.
+
+Cloudflare setup completed: official skills refreshed with backups, authenticated MCP configured, beta cf CLI installed/authenticated, and Wrangler login renewed. Existing configured projects continue using Wrangler; use cf for projects without Wrangler configuration. Restarting Codex loads new MCP tools. No credentials are committed.
+
+[Patch](PATCH_v0.2.54.1.md), [test findings](TEST_v0.2.54.1.md), and [live LootLab evidence](../diagnostics/v0.2.54.1/lootlab-release.json).

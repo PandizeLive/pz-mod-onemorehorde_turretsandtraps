@@ -293,6 +293,60 @@ function W.actor(actor)
     end
 end
 
+---@param controller IsoObject Controller
+---@param object IsoObject Device
+---@param player IsoPlayer Authorized operator
+---@param enabled boolean Assign or release
+---@return boolean assigned
+function W.assign(controller, object, player, enabled)
+    local host, state = W.state(controller), W.state(object)
+    if not host or host.kind ~= "Controller" or not state or state.kind == "Controller"
+        or controller:getHealth() <= 0 or object:getHealth() <= 0 or not A.range(controller, object)
+        or not A.write(player, host) or not A.write(player, state) then return false end
+    if not enabled and state.controller ~= host.id then return false end
+    if enabled then
+        local count = 0
+        for _, other in pairs(W.records().records) do
+            if other.placed and other.id ~= state.id and other.controller == host.id
+                and (other.kind == "Turret") == (state.kind == "Turret") then
+                count = count + 1
+            end
+        end
+        if count >= 32 then return false end
+    end
+    state.controller = enabled and host.id or nil
+    if enabled and state.kind == "Turret" then
+        W.number(object, require("OMHTT/Turret").contents(object:getContainer()).head)
+    end
+    W.publish(object)
+    return true
+end
+
+---@param object IsoObject Newly placed input
+---@param player IsoPlayer Placer
+---@return boolean assigned
+function W.autoAssign(object, player)
+    local state = W.state(object)
+    if not state or state.controller or state.kind == "Controller" or not C.types[state.kind] then return false end
+    local candidates = {}
+    for id, controller in pairs(W.objects) do
+        local host = W.state(controller)
+        if host and host.kind == "Controller" and host.placed and controller:getHealth() > 0
+            and A.range(controller, object) and A.write(player, host) then
+            candidates[#candidates + 1] = {object = controller, id = id,
+                distance = (host.x - state.x) ^ 2 + (host.y - state.y) ^ 2}
+        end
+    end
+    table.sort(candidates, function(a, b)
+        if a.distance == b.distance then return a.id < b.id end
+        return a.distance < b.distance
+    end)
+    for i = 1, #candidates do
+        if W.assign(candidates[i].object, object, player, true) then return true end
+    end
+    return false
+end
+
 ---@param params table Native construction transaction
 ---@return table? result
 function W.create(params)
@@ -345,6 +399,7 @@ function W.create(params)
     for key in pairs(object:getBuildMaterials()) do
         object:getBuildMaterials()[key] = nil
     end
+    W.autoAssign(object, player)
     W.publish(object)
 end
 

@@ -1,5 +1,9 @@
 # Release state and publication policy
 
+## 0.2.54.1 / C315 — Automatic input assignment and Legendary Siphon
+
+[Patch](PATCH_v0.2.54.1.md) and [verification](TEST_v0.2.54.1.md). Live LootLab is published and verified; [hosted evidence](../diagnostics/v0.2.54.1/lootlab-release.json). Local installation and immutable source tag are recorded on completion. No Workshop content upload; cumulative pending notes are preserved.
+
 ## 0.2.54 / C314 - Controller corrections and Siphon
 
 [Patch](PATCH_v0.2.54.md) and [verification](TEST_v0.2.54.md). The approved C310-C313 scope passes 21,643 assertions, native save/reload and independent Traps/Turrets/both startup checks. Installed from immutable `test/v0.2.54` / `d809cdbf135a28d782ba5a9538e6452aaa9688f9`. All 293 source and 374 tagged/packaged/installed/archive files match; both 0.2.53.11 backups verify. [Release evidence](../diagnostics/v0.2.54/local-release.json). Local LootLab is updated; hosted publication requires renewed Cloudflare login. Rendered and connected acceptance remain pending. No Workshop upload or cumulative-changelog reset.
