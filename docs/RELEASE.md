@@ -1,5 +1,9 @@
 # Release state and publication policy
 
+## 0.2.55.2 / C325 — Controller connections and resize correction
+
+[Patch](PATCH_v0.2.55.2.md) · [Verification](TEST_v0.2.55.2.md). Installed from immutable `test/v0.2.55.2` / `b7edb8d792c79e9f19f6e87b8fba26887b6ce800`. All 299 source and 385 tagged/packaged/installed/archive files match; both 0.2.55.1 managed backups verify. [Release evidence](../diagnostics/v0.2.55.2/local-release.json). 23,252 assertions, native geometry, save/reload and three independent-package startup checks pass. Rendered and connected-client acceptance remain pending. Existing development branch/draft PR #1 is the C108 delivery route; no merge or Workshop upload. Cumulative pending Workshop notes are preserved.
+
 ## 0.2.55.1 / C324 — Controller UI error and scrollbar correction
 
 [Patch](PATCH_v0.2.55.1.md) · [Verification](TEST_v0.2.55.1.md). Installed from immutable `test/v0.2.55.1` / `397d8e1449e8940cfcf65ceb77d99e31d1464d40`. All 298 source and 383 tagged/packaged/installed/archive files match; both 0.2.55 managed backups verify. [Release evidence](../diagnostics/v0.2.55.1/local-release.json). 21,849 assertions, native map/resize, write/read and independent-package checks pass. The 0.2.55 owner test failed and remains recorded as such. Rendered/connected acceptance remains pending. Existing development branch/draft PR #1 is the C108 mirror route; no merge or Workshop upload. Cumulative pending Workshop notes are preserved.

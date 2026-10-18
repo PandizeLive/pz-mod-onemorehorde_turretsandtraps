@@ -2,7 +2,7 @@
 
 ## C325 — Controller corrective interaction and polish (2026-10-18)
 
-Owner directly requests three connection gestures, defense disconnect handles, visible links, condition/ammo rows, darker inset lists, taller initial height, stable resizing with /// corners and a right-edge native Stockpile scrollbar. Remove redundant Connect controls after gesture support. [Contract](CONTROLLER_MAP_C316.md#c325--connection-gestures-and-controller-polish-2026-10-18). Multiple-input removal offers a choice of the individual connection; no blanket disconnect or new signal semantics. Implementation proceeds as 0.2.55.2; rendered and connected acceptance remain pending.
+Owner directly requests three connection gestures, defense disconnect handles, visible links, condition/ammo rows, darker inset lists, taller initial height, stable resizing with /// corners and a right-edge native Stockpile scrollbar. Remove redundant Connect controls after gesture support. [Contract](CONTROLLER_MAP_C316.md#c325--connection-gestures-and-controller-polish-2026-10-18). Multiple-input removal offers a choice of the individual connection; no blanket disconnect or new signal semantics. Implemented, validated and installed as [0.2.55.2](TEST_v0.2.55.2.md); rendered and connected acceptance remain pending.
 
 ## C313 — Siphon Module name and final wording (2026-10-18)
 

@@ -10,7 +10,7 @@ Native `ISResizeWidget:new` enables right/bottom anchoring while the previous `W
 
 Kahlua/adapter validation passes **23,252 assertions**, 233 runtime/translation inputs and 1,042 translation keys; native map/resize checks pass. The package manifest contains 299 source and 385 packaged files. Focused coverage includes whole-row dragging, two-handle clicking, map dragging, duplicate-link no-op, one-link removal, explicit selection among multiple inputs, read-only rejection, stationary resize-pointer stability, viewport limits, outside release, native anchor updates, Stockpile width changes, bounded ammo sampling and tall-window details geometry. Existing 32-by-32 graph and client/server authority checks remain included.
 
-The local layout trace is a code-driven geometry artifact with test data, not a gameplay screenshot. Fresh-process native save/reload passes, including the new ID card classification rejection. Traps-only, Turrets-only and combined startup checks pass. Tagged installation verification is next. No connected-player test is claimed.
+The local layout trace is a code-driven geometry artifact with test data, not a gameplay screenshot. Fresh-process native save/reload passes, including the new ID card classification rejection. Traps-only, Turrets-only and combined startup checks pass. Installed from immutable `test/v0.2.55.2` / `b7edb8d792c79e9f19f6e87b8fba26887b6ce800`. All 299 source and 385 tagged/packaged/installed/archive files match; both 0.2.55.1 managed backups verify. [Release evidence](../diagnostics/v0.2.55.2/local-release.json). No connected-player test is claimed.
 
 ## Short owner test
 
