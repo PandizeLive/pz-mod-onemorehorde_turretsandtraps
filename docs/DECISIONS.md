@@ -1,5 +1,9 @@
 # Decision register
 
+## C313 — Siphon Module name and final wording (2026-10-18)
+
+Owner: **“6A - instead of ‘the attack’s’ we’ll use ‘the shot’s’.”** Select **Siphon Module** with **“Feature: Kills restore 2× the shot’s battery cost.”** and **“Stackable: +1× refunded per module.”** [Final contract](CORRECTIONS_C310.md#c313--siphon-module-name-and-final-wording). This settles the remaining naming choice without altering per-kill eligibility, Synergy requirements or actual paid rotary swing/pass accounting. All C310–C312 corrective scope remains queued; no gameplay/version/install change or new test claim. Standing C108/C119 covers the documentation mirror.
+
 ## C312 — Rotary Synergy selected; Sap naming question (2026-10-18)
 
 Owner explicitly selects **5A**, approving Synergy on rotary heads for supported effects while retaining unrelated module exclusions. Owner asks whether **Sap Module** better describes the energy-refund feature than Leech, whose health/repair association is misleading. [Comparison and proposed wording](CORRECTIONS_C310.md#c312--rotary-synergy-approved-battery-refund-naming): recommend **6A Siphon Module**, with **6B Sap Module** as an alternative; neither new name is selected yet. No formula/eligibility change and no additional gameplay decision. All C310/C311 corrective scope remains recorded. Planning only, installed 0.2.53.11 unchanged; standing C108 mirror applies.

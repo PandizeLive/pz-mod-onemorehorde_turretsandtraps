@@ -6,6 +6,8 @@
 
 **C312 update (2026-10-18):** owner selects **5A**, allowing rotary Synergy for supported effects. Gameplay/layout decisions are settled. Owner asks whether **Sap Module** would describe the battery-refund effect better than Leech. Naming remains discussion: recommend **6A Siphon Module**, with **6B Sap Module** as the shorter alternative. No name selection or new gameplay patch is inferred from this question.
 
+**C313 update (2026-10-18):** owner selects **6A Siphon Module**, explicitly replacing “the attack’s” with **“the shot’s”** in the tooltip. All presented design choices are now settled. The final wording below supersedes the historical naming proposals; the gameplay formula and rotary accounting are unchanged. This remains a planning checkpoint, not an installed patch.
+
 ## Current evidence
 
 Inspected branch `codex/performance-barbed-audit`, starting HEAD `1c612b47cd04a27002b75dd06b0233058277c887`. Fetched `origin/dev`: no commits absent locally. Only open PR is existing draft #1. Captured console through `OMH.cmd -Action Capture`; capture SHA-256 `85b8c570249996bd71ed15e65b5c7283dc8e496aa863d74be7bb7e04bfde96c2`, local folder `diagnostics/captures/20261018-005429-2250`. Trace explicitly reports `version=0.2.53.11 side=sp`. This is owner SP feedback, not connected multiplayer acceptance.
@@ -70,7 +72,7 @@ Enable only with Synergy. Carry an explicit generation and root identity through
 
 ## Next patch gates and acceptance
 
-Layout A and module decisions 2B/3A/4A are confirmed by C311; C312 confirms 5A rotary Synergy compatibility. All owner findings above remain in scope, including later destination-tooltips feedback. The module display name is the only current design discussion before final patch approval. Keep correction work within R4C1; next content remains R4C2 Poke Floor, then fixed dart emitter; R4C3 beam sensors are not part of this patch.
+Layout A and module decisions 2B/3A/4A are confirmed by C311; C312 confirms 5A rotary Synergy compatibility; C313 confirms 6A Siphon Module and final wording. All owner findings above remain in scope, including later destination-tooltips feedback. No presented design decision remains open; the corrective patch is ready for final implementation approval. Keep correction work within R4C1; next content remains R4C2 Poke Floor, then fixed dart emitter; R4C3 beam sensors are not part of this patch.
 
 After approval, implement atomic swap/death-refund authority and bounded effects, verify current native initialization and floor rendering metadata, test multiplayer message duplication/reconnect/pickup/cancel/permissions, and run appropriate package/native checks. The prior C308 cursor double hid a real initialization defect; add a real lifecycle check. Owner GPU and connected sessions remain separate acceptance gates, not a reason to stop approved implementation.
 
@@ -108,4 +110,15 @@ Proposed short text for either name:
 > Feature: Kills restore 2x the attack's battery cost.
 > Stackable: +1x refunded per module.
 
-Battery Drain and Rarity retain the established calculated fields. Secondary-kill eligibility remains Synergy-gated. Update Synergy wording during the patch to cover supported secondary damage and the approved chain behavior, rather than retaining the current projectile-only wording on rotary heads. Do not rename the feature or create item/script IDs until the owner chooses. No additional gameplay decision is introduced by naming.
+Battery Drain and Rarity retain the established calculated fields. Secondary-kill eligibility remains Synergy-gated. Update Synergy wording during the patch to cover supported secondary damage and the approved chain behavior, rather than retaining the current projectile-only wording on rotary heads. C313 below resolves the name and wording; item/script IDs remain part of implementation. No additional gameplay decision is introduced by naming.
+
+## C313 — Siphon Module name and final wording
+
+Owner: **“6A - instead of ‘the attack’s’ we’ll use ‘the shot’s’.”** The module is **Siphon Module**, replacing the planning name Leech. Use this exact player-facing text:
+
+> Feature: Kills restore 2× the shot’s battery cost.
+> Stackable: +1× refunded per module.
+
+The requested uniform “shot’s” wording does not change rotary support: refunds still use actual paid battery energy for the complete swing/pass, with only already-paid energy settled on interruption. Preserve per-kill refunds, the Synergy requirement for module-generated secondary kills, original battery identity and charge cap, and all confirmed C311/C312 rules. Battery Drain and Rarity remain calculated fields. No health repair or weakening effect is added by the name.
+
+All presented design choices are settled. All C310 findings and the selected Grouped Controller redesign remain queued for the corrective patch; no Source/Contents/version/install or Workshop change, new gameplay test, or owner/connected acceptance is claimed by this documentation update.
