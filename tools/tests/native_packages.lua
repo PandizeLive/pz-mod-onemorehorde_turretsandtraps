@@ -25,6 +25,20 @@ local function checkPackages()
     assert((SpriteConfigManager.GetObjectInfo("OMHTTBarbs") ~= nil) == expectedTraps, "Barb recipe isolation")
     assert(counts["Base.OMHTTTrapController"] == 1 and counts["Base.OMHTTTrapPressurePlate"] == 1 and counts["Base.OMHTTTrapButton"] == 1, "Shared control items must register once")
     assert(OMHTT_ControlWorld and OMHTTControlAction and OMHTTControlTransferAction, "Shared control authority missing")
+    local plateInfo = SpriteConfigManager.GetObjectInfo("OMHTTDeployInsetPlate")
+    assert(plateInfo and plateInfo:getScript(), "Independent package missing inset plate placement")
+    local plateSquare = IsoGridSquare.new(getCell(), nil, 26, 26, 0)
+    local plate = IsoThumpable.new(getCell(), plateSquare, "floors_interior_tilesandwood_01_40", false)
+    plateSquare:getObjects():add(plate)
+    GameEntityFactory.CreateIsoObjectEntity(plate, SpriteConfigManager.GetObjectInfo("OMHTTDeployPlate"):getScript():getParent(), true)
+    local plateState = OMHTT_ControlWorld.register(plate, {getUsername=function() return "package-probe" end}, "Plate")
+    local platePrefix = expectedTurrets and "omhtt_turret_01_" or "omhtt_barrier_01_"
+    local plateFirst = expectedTurrets and 25 or 80
+    assert(plate:getSpriteName() == platePrefix .. plateFirst and not plate:isThumpable(), "Independent plate visual/passive migration failed")
+    plateState.active = true
+    OMHTT_ControlWorld.plateSprite(plate, plateState, false)
+    assert(plate:getSpriteName() == platePrefix .. (plateFirst + 4), "Independent package missing pressed plate state")
+    OMHTT_ControlWorld.removed(plate)
     local options, names = getSandboxOptions(), {}
     for i = 0, options:getNumOptions() - 1 do
         local name = options:getOptionByIndex(i):getName()

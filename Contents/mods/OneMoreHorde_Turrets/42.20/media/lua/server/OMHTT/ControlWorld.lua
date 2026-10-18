@@ -196,11 +196,48 @@ end
 ---@param state table Private record
 ---@return nil
 function W.indexPlate(object, state)
+    if state.kind == "Plate" then
+        W.plateSprite(object, state, true)
+    end
     C.passive(object, state.kind)
     if state.kind ~= "Plate" then return end
     local square = object:getSquare()
     W.plates[square] = W.plates[square] or {}
     W.plates[square][object] = true
+end
+
+---@param object IsoThumpable Pressure plate
+---@param state table Authoritative plate state
+---@param configure boolean Refresh placement component on load
+---@return nil
+function W.plateSprite(object, state, configure)
+    local turrets = getActivatedMods():contains("OneMoreHorde_Turrets")
+    local sheet, first = turrets and "omhtt_turret_01_" or "omhtt_barrier_01_", turrets and 25 or 80
+    local desired = sheet .. (first + (state.active and 4 or 0))
+    if object:getSpriteName() ~= desired then
+        local old = W.locations[state.location]
+        if old then
+            old[state.id] = nil
+        end
+        object:setSpriteFromName(desired)
+        state.sprite = desired
+        state.location = state.x .. ":" .. state.y .. ":" .. state.z .. ":" .. desired
+        W.locations[state.location] = W.locations[state.location] or {}
+        W.locations[state.location][state.id] = true
+        if isServer() then
+            object:transmitUpdatedSpriteToClients()
+        end
+    end
+    if not configure then return end
+    local config = object:getSpriteConfig()
+    if not config or not config:isValid() or config:getTileInfo():getSpriteName() ~= sheet .. first then
+        local info = SpriteConfigManager.GetObjectInfo("OMHTTDeployInsetPlate")
+        if not info then error("[OMHTT] Missing pressure plate sprite definition") end
+        if config then
+            GameEntityFactory.RemoveComponentType(object, ComponentType.SpriteConfig)
+        end
+        GameEntityFactory.AddComponent(object, ComponentType.SpriteConfig:CreateComponentFromScript(info:getScript()))
+    end
 end
 
 ---@param object IsoObject Pressure plate
@@ -212,6 +249,7 @@ function W.updatePlate(object, now)
     local active = now >= state.recoverAt and W.occupied(object)
     if active == state.active then return end
     state.active = active
+    W.plateSprite(object, state, false)
     W.publish(object)
     for i = 1, #state.links do
         local id = state.links[i]

@@ -1,5 +1,7 @@
 # R4C1 — buttons, pressure plates and links
 
+**C309 / 0.2.53.11:** [Inset pressure plates with press/release feedback](../PATCH_v0.2.53.11.md). Existing full-tile occupancy, filters, signals and passive collision remain. [Verification](../TEST_v0.2.53.11.md); R4C2 remains next content.
+
 **C308 / 0.2.53.10 installed:** [Implemented corrections](../PATCH_v0.2.53.10.md): non-thumpable new/existing plates, contextual linking and Controller Set Facing. [Verification](../TEST_v0.2.53.10.md) separates automated/native checks from pending rendered/connected acceptance. R4C2 Poke Floor remains next content.
 
 **C306/C307 update (2026-10-17):** SP plate activation is owner-confirmed. [Next-patch corrections and confirmed Controller Set Facing](../CORRECTIONS_C306.md) cover non-thumpable plates/future sensors, clearer linking and world-click direction. Owner selects 1A Set Facing with matching firing/detection sector and normal Detection tracking; Manual Aim Lock is not selected. Direction selection does not fire, and an OFF turret does not physically turn. Planning only; implementation remains queued. R4C2 Poke Floor remains next content.

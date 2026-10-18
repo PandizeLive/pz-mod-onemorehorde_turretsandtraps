@@ -81,6 +81,8 @@ def expected_files():
             path = "42.20/media/scripts/OMHTT_Controls.txt"
             for facing in range(4):
                 files[path] = files[path].replace(f"omhtt_barrier_01_{76 + facing}".encode(), f"omhtt_turret_01_{21 + facing}".encode())
+            for facing in range(5):
+                files[path] = files[path].replace(f"omhtt_barrier_01_{80 + facing}".encode(), f"omhtt_turret_01_{25 + facing}".encode())
         files["42.20/media/sandbox-options.txt"] = sandbox(component)
         tiles, texturepack = build_component(component)
         files[f"42.20/media/{pack}.tiles"] = tiles

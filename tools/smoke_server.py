@@ -110,7 +110,7 @@ def main():
     assert "Saving GlobalModData" in text, "No native global state save"
     assert "Invalid SpriteConfig object! scripted object = OMHTT" not in text, "Invalid native barrier identity"
     assert "[OMHTT-Smoke] native-sandbox damage=10 maxHealth=100 tooltip=formatted" in text, "Native Sandbox options/tooltip invalid"
-    assert "[OMHTT-Smoke] native-texturepacks traps=80 turrets=25 pages=33 png=valid" in text, "Native texture packs invalid"
+    assert "[OMHTT-Smoke] native-texturepacks traps=85 turrets=30 pages=37 png=valid" in text, "Native texture packs invalid"
     assert "[OMHTT-Beds] PASS" in text, "Native bed content invalid"
     assert "[OMHTT-HybridBuild] native-original-recipe=true" in text, "Native hybrid crafting/building proof missing"
     assert "[OMHTT-Beds] controlled-native-recovery forwardLanding=true getUpTransition=passed getUpExit=cleared" in text, "Native forward trip recovery failed"

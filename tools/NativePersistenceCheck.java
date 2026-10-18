@@ -28,7 +28,8 @@ public final class NativePersistenceCheck {
         java.util.Set<String> pages = new java.util.HashSet<>();
         for (int index = 0; index < count; index++) {
             Object entry = map.get(prefix + index);
-            String expected = turrets ? (index >= 21 ? "OMHTT_ControllerTurrets" : index == 20 ? "OMHTT_ProbeBase" : index >= 16 ? "OMHTT_TestCube" : "OMHTT_Aim" + index)
+            String expected = turrets ? (index >= 25 ? "OMHTT_PlateTurrets" + (index == 29 ? 1 : 0) : index >= 21 ? "OMHTT_ControllerTurrets" : index == 20 ? "OMHTT_ProbeBase" : index >= 16 ? "OMHTT_TestCube" : "OMHTT_Aim" + index)
+                : index >= 80 ? "OMHTT_PlateTraps" + (index == 84 ? 1 : 0)
                 : index >= 76 ? "OMHTT_ControllerTraps"
                 : index >= 72 ? "OMHTT_Wire"
                 : index >= 64 ? "OMHTT_BedSpikes"
@@ -51,6 +52,7 @@ public final class NativePersistenceCheck {
     private static void verify(Path directory, String mode) throws Exception {
         verifyTurret(directory, mode);
         verifyHeavyController(directory, mode);
+        verifyPressurePlate(directory, mode);
         verifyModulePack(directory, mode);
         verifyFirearms(directory, mode);
         verifyHybrid(directory, mode);
@@ -59,9 +61,9 @@ public final class NativePersistenceCheck {
         NativeBarbProbe.verify(directory, mode);
         NativeVaultProbe.verify();
         NativeTurretProbe.verify();
-        verifyTexturePack("OMHTT_Traps", "omhtt_barrier_01_", 80, false);
-        verifyTexturePack("OMHTT_Turrets", "omhtt_turret_01_", 25, true);
-        System.out.println("[OMHTT-Smoke] native-texturepacks traps=80 turrets=25 pages=33 png=valid");
+        verifyTexturePack("OMHTT_Traps", "omhtt_barrier_01_", 85, false);
+        verifyTexturePack("OMHTT_Turrets", "omhtt_turret_01_", 30, true);
+        System.out.println("[OMHTT-Smoke] native-texturepacks traps=85 turrets=30 pages=37 png=valid");
         Class<?> lua = Class.forName("zombie.Lua.LuaManager");
         Object env = lua.getField("env").get(null);
         Object fixtures = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeFixtures");
@@ -155,6 +157,42 @@ public final class NativePersistenceCheck {
             check(Double.valueOf(.5).equals(call(get(restored, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTFixtureDebt")), "New head mod data lost");
         }
         System.out.println("[OMHTT-Heads] persistence mode=" + mode + " heads=3 identity=condition=modData=preserved");
+    }
+
+    private static void verifyPressurePlate(Path directory, String mode) throws Exception {
+        Object env = Class.forName("zombie.Lua.LuaManager").getField("env").get(null);
+        Object source = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativePlate");
+        check(source != null, "Native pressure plate fixture missing");
+        Object state = call(get(source, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTControl");
+        Path path = directory.resolve("pressed-plate.bin");
+        if (mode.equals("write")) {
+            Object previous = call(state, "rawget", new Class<?>[]{Object.class}, "active");
+            String sprite = (String)get(source, "getSpriteName");
+            call(state, "rawset", new Class<?>[]{Object.class, Object.class}, "active", true);
+            call(source, "setSpriteFromName", new Class<?>[]{String.class}, "omhtt_turret_01_29");
+            ByteBuffer output = ByteBuffer.allocate(65536);
+            call(source, "save", new Class<?>[]{ByteBuffer.class}, output);
+            Files.write(path, Arrays.copyOf(output.array(), output.position()));
+            call(source, "setSpriteFromName", new Class<?>[]{String.class}, sprite);
+            call(state, "rawset", new Class<?>[]{Object.class, Object.class}, "active", previous);
+        }
+        Class<?> iso = Class.forName("zombie.iso.IsoObject");
+        Class<?> cellType = Class.forName("zombie.iso.IsoCell");
+        Class<?> squareType = Class.forName("zombie.iso.IsoGridSquare");
+        Class<?> worldType = Class.forName("zombie.iso.IsoWorld");
+        Object cell = worldType.getField("currentCell").get(worldType.getField("instance").get(null));
+        int version = ((Number)worldType.getMethod("getWorldVersion").invoke(null)).intValue();
+        ByteBuffer input = ByteBuffer.wrap(Files.readAllBytes(path));
+        Object restored = iso.getMethod("factoryFromFileInput", cellType, ByteBuffer.class).invoke(null, cell, input);
+        iso.getMethod("setSquare", squareType).invoke(restored, get(source, "getSquare"));
+        iso.getMethod("load", ByteBuffer.class, int.class).invoke(restored, input, version);
+        check(!input.hasRemaining(), "Unread pressure plate bytes");
+        check("omhtt_turret_01_29".equals(get(restored, "getSpriteName")), "Pressed plate sprite lost");
+        check(Boolean.TRUE.equals(get(get(restored, "getSpriteConfig"), "isValid")), "Pressed plate invalid after reload");
+        check(Boolean.FALSE.equals(get(restored, "isThumpable")), "Loaded plate became thumpable");
+        Object loadedState = call(get(restored, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTControl");
+        check(Boolean.TRUE.equals(call(loadedState, "rawget", new Class<?>[]{Object.class}, "active")), "Pressed state lost");
+        System.out.println("[OMHTT-C309] native-plate-persistence mode=" + mode + " pressed=preserved config=valid passive=preserved");
     }
 
     private static void verifyHeavyController(Path directory, String mode) throws Exception {

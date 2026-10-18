@@ -31,7 +31,7 @@ local function device(kind, x, y)
     function object:getSpriteName() return self.sprite or "control-test-" .. kind end
     function object:setSpriteFromName(value) self.sprite=value end
     function object:getSpriteConfig() return {isValid=function() return true end,getTileInfo=function() return {getSpriteName=function() return object:getSpriteName() end} end} end
-    function object:transmitUpdatedSpriteToClients() end
+    function object:transmitUpdatedSpriteToClients() self.spriteSends=(self.spriteSends or 0)+1 end
     function object:getX() return self.square:getX() end
     function object:getY() return self.square:getY() end
     function object:getZ() return self.square:getZ() end
@@ -59,6 +59,20 @@ local controller, host = device("Controller", 1910, 1910)
 host.powered = true
 check(not Action:new(owner,controller,"Name","custom",nil,host.id):complete(), "Controllers cannot be renamed")
 local plate, input = device("Plate", 1910, 1910)
+local oldOccupied = C.occupied
+local raised, raisedLocation = plate:getSpriteName(), input.location
+local occupied = true
+C.occupied = function() return occupied end
+C.updatePlate(plate, testMillis)
+local pressed, sends = plate:getSpriteName(), plate.spriteSends
+check(input.active and raised ~= pressed and C.locations[input.location][input.id], "Pressed plate changes native sprite and private location index")
+check(not C.locations[raisedLocation][input.id], "Old plate appearance no longer binds identity")
+C.updatePlate(plate, testMillis)
+check(plate.spriteSends == sends, "Held plate sends no repeated sprite updates")
+occupied = false
+C.updatePlate(plate, testMillis)
+check(not input.active and plate:getSpriteName() == raised and plate.spriteSends == sends + 1, "Plate rises with one release update")
+C.occupied = oldOccupied
 local button, buttonState = device("Button", 1910, 1910)
 local target, output = device("Turret", 1915, 1910)
 check(not A.authorized(stranger, plate) and A.authorized(stranger, plate, true), "Private write/public read")

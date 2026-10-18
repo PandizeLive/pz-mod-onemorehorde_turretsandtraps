@@ -89,6 +89,21 @@ return function(player)
     player:setY(28.5)
     print("[OMHTT-Controls] adjacent-native-access directions=6 policy=valid")
     local plate = create("Plate", "floors_interior_tilesandwood_01_40")
+    OMHTT_NativePlate = plate
+    assert(plate:getSpriteName() == "omhtt_turret_01_25", "Existing plate did not adopt inset sprite")
+    assert(plate:getSpriteConfig():getTileInfo():getSpriteName() == "omhtt_turret_01_25", "Existing plate placement component was not migrated")
+    local plateState = C.state(plate)
+    plateState.recoverAt = getTimestampMs() - 1
+    local moving = square:getMovingObjects()
+    local alreadyPresent = moving:contains(player)
+    if not alreadyPresent then moving:add(player) end
+    C.updatePlate(plate, getTimestampMs())
+    assert(plateState.active and plate:getSpriteName() == "omhtt_turret_01_29", "Native occupied plate failed to press")
+    moving:remove(player)
+    C.updatePlate(plate, getTimestampMs())
+    assert(not plateState.active and plate:getSpriteName() == "omhtt_turret_01_25", "Native released plate failed to rise")
+    if alreadyPresent then moving:add(player) end
+    print("[OMHTT-C309] native-plate migration=passed pressed=29 released=25 state=authoritative")
     assert(not plate:isThumpable() and plate:isCanPassThrough() and not plate:isBlockAllTheSquare(), "Native plate must be pass-through and non-thumpable")
     assert(plate:getThumpableFor(player) == nil, "Native thump target must reject a passive plate")
     local standing = IsoZombie.new(getCell())

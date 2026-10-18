@@ -1,5 +1,9 @@
 # Decision register
 
+## C309 — Inset pressure plate with activation feedback (2026-10-18)
+
+Owner asks to make the plate visually slightly smaller than one tile and press down while activated, like Minecraft. This is implementation authorization. Use two native sprite states with about 85% width, six-pixel released height and one-pixel pressed height in the existing neutral technical placeholder style. Keep full-tile occupancy, filtering, power/signals, durability and non-thumpability. Existing plates convert when bound; server owns state and publishes native sprite changes only on transitions. No new gameplay/recipes, art direction, per-frame animation or sensors. [Patch](PATCH_v0.2.53.11.md) and [verification](TEST_v0.2.53.11.md). R4C2 remains next.
+
 ## C308 — Implement plate, linking and Set Facing corrections (2026-10-17)
 
 Owner says "Patch", authorizing implementation, verification, local installation and development mirroring of C306/C307. Preserve 1A Set Facing with normal Detection, matching FoV and no implicit shot; existing plates and future passive sensors use native non-thumpable behavior. Keep current control permissions, package independence and power semantics. [Patch](PATCH_v0.2.53.10.md), [tests/delivery](TEST_v0.2.53.10.md). No new trap content, recipes, Manual Aim Lock, merge or Workshop publication. R4C2 Poke Floor stays next; rendered/connected acceptance is pending.

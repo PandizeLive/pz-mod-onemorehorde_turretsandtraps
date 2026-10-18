@@ -71,11 +71,23 @@ def build():
     return tiles, pack
 
 
+def plate_image(pressed):
+    image = Image.new("RGBA", (128, 256))
+    draw = ImageDraw.Draw(image)
+    height = 1 if pressed else 6
+    ground = [(64, 197), (118, 224), (64, 251), (10, 224)]
+    top = [(x, y - height) for x, y in ground]
+    draw.polygon([top[1], top[2], ground[2], ground[1]], fill=(150, 150, 150), outline=(100, 100, 100))
+    draw.polygon([top[2], top[3], ground[3], ground[2]], fill=(185, 185, 185), outline=(100, 100, 100))
+    draw.polygon(top, fill=(225, 225, 225), outline=(110, 110, 110))
+    return image
+
+
 def build_component(component):
     _, original = build()
     trap = component == "traps"
     sheet = "omhtt_barrier_01" if trap else "omhtt_turret_01"
-    count = 80 if trap else 25
+    count = 85 if trap else 30
     tiles = b"tdef" + integer(1) + integer(1)
     tiles += (sheet + "\nOMHTT_" + component.title() + ".png\n").encode("ascii")
     tiles += integer(4) + integer((count + 3) // 4) + integer(1) + integer(count) + integer(0) * count
@@ -143,6 +155,14 @@ def build_component(component):
     png = (MEDIA / "textures/OMHTT_ProbeBase.png").read_bytes()
     entry = b"".join(pack_string(sheet + "_" + str(first + facing)) + struct.pack("<8i", 0, 0, 128, 256, 0, 0, 128, 256) for facing in range(4))
     pages.append(pack_string("OMHTT_Controller" + component.title()) + integer(4) + integer(1) + entry + integer(len(png)) + png)
+    first = 80 if trap else 25
+    for pressed in range(2):
+        stream = io.BytesIO()
+        plate_image(pressed).save(stream, format="PNG")
+        png = stream.getvalue()
+        indices = [4] if pressed else range(4)
+        entry = b"".join(pack_string(sheet + "_" + str(first + index)) + struct.pack("<8i", 0, 0, 128, 256, 0, 0, 128, 256) for index in indices)
+        pages.append(pack_string("OMHTT_Plate" + component.title() + str(pressed)) + integer(len(indices)) + integer(1) + entry + integer(len(png)) + png)
     return tiles, b"PZPK" + integer(1) + integer(len(pages)) + b"".join(pages)
 
 

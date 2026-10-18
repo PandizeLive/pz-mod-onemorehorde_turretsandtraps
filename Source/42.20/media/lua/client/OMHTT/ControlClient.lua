@@ -89,7 +89,7 @@ function U.place(item, player)
             kind = key
         end
     end
-    local info = SpriteConfigManager.GetObjectInfo("OMHTTDeploy" .. kind)
+    local info = SpriteConfigManager.GetObjectInfo(kind == "Plate" and "OMHTTDeployInsetPlate" or "OMHTTDeploy" .. kind)
     if not info then return nil end
     local containers = ArrayList.new()
     containers:add(item:getContainer())

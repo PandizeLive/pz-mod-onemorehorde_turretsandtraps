@@ -68,13 +68,27 @@ module Base {
             health = 100,
             skillBaseHealth = 0,
             bonusHealth = 0,
-            isThumpable = true,
-            OnIsValid = OMHTT_Controls.valid,
-            OnCreate = OMHTT_Controls.created,
+            isThumpable = false,
             face E { layer { row = floors_interior_tilesandwood_01_40, } }
             face N { layer { row = floors_interior_tilesandwood_01_41, } }
             face W { layer { row = floors_interior_tilesandwood_01_42, } }
             face S { layer { row = floors_interior_tilesandwood_01_43, } }
+        }
+    }
+    entity OMHTTDeployInsetPlate {
+        component UiConfig { xuiSkin = default, entityStyle = ES_OMHTTPlate, uiEnabled = false, }
+        component SpriteConfig {
+            health = 100,
+            skillBaseHealth = 0,
+            bonusHealth = 0,
+            isThumpable = true,
+            OnIsValid = OMHTT_Controls.valid,
+            OnCreate = OMHTT_Controls.created,
+            face E { layer { row = omhtt_turret_01_25, } }
+            face N { layer { row = omhtt_turret_01_26, } }
+            face W { layer { row = omhtt_turret_01_27, } }
+            face S { layer { row = omhtt_turret_01_28, } }
+            face N_open { layer { row = omhtt_turret_01_29, } }
         }
         component CraftRecipe {
             timedAction = BuildLowNoTool,
