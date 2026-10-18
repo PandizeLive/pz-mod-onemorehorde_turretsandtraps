@@ -1,5 +1,9 @@
 # Release state and publication policy
 
+## 0.2.55.1 / C324 — Controller UI error and scrollbar correction
+
+[Patch](PATCH_v0.2.55.1.md) · [Verification](TEST_v0.2.55.1.md). Installed from immutable `test/v0.2.55.1` / `397d8e1449e8940cfcf65ceb77d99e31d1464d40`. All 298 source and 383 tagged/packaged/installed/archive files match; both 0.2.55 managed backups verify. [Release evidence](../diagnostics/v0.2.55.1/local-release.json). 21,849 assertions, native map/resize, write/read and independent-package checks pass. The 0.2.55 owner test failed and remains recorded as such. Rendered/connected acceptance remains pending. Existing development branch/draft PR #1 is the C108 mirror route; no merge or Workshop upload. Cumulative pending Workshop notes are preserved.
+
 ## 0.2.55 / C323 — Controller Map and resizing
 
 [Patch](PATCH_v0.2.55.md) · [Verification](TEST_v0.2.55.md). Installed from immutable `test/v0.2.55` / `97d04a8812a30455b278a650fa4da179255a72b7`. All 298 source and 383 tagged/packaged/installed/archive files match. Both 0.2.54.1 managed backups verify. [Release evidence](../diagnostics/v0.2.55/local-release.json). Existing development branch/draft PR #1 remains the C108 mirror route; no merge or Workshop upload. Cumulative Workshop notes retain all unuploaded changes.

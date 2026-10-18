@@ -2,6 +2,8 @@ The new Controller Connections widget used `update` for a helper that expected i
 
 Controller section scrollbars now use explicit bounds without deferred native anchoring. The in-game map opens by default, and the Grid toggle is removed. Existing server-authorized links, inventory transfers and combat behavior are preserved.
 
-Validation passes 21,849 assertions plus native map and deferred-scrollbar-resize probes. Native save/reload and all three independent-package checks also pass. Installation evidence is tracked in [the version test record](docs/TEST_v0.2.55.1.md). Rendered and connected-client acceptance remain pending. The error storm is verified; single-core saturation and the final process-exit cause are not measured.
+Validation passes 21,849 assertions plus native map and deferred-scrollbar-resize probes. Native save/reload and all three independent-package checks also pass. The installed test/v0.2.55.1 build matches all 298 source and 383 packaged files; both previous-version backups verify. See [the version test record](docs/TEST_v0.2.55.1.md) and [release evidence](diagnostics/v0.2.55.1/local-release.json). Rendered and connected-client acceptance remain pending. The error storm is verified; single-core saturation and the final process-exit cause are not measured.
 
 This draft continues the existing cumulative development branch into `dev`; no Workshop upload or merge is requested.
+
+Planning and acceptance: [Current status](docs/CURRENT_STATUS.md), [Planning](docs/PLANNING.md), [C324 correction](docs/CONTROLLER_MAP_C316.md#c324--controller-error-storm-scrollbar-correction-and-in-game-map-2026-10-18).

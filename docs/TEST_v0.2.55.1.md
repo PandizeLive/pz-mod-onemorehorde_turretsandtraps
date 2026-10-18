@@ -15,7 +15,7 @@ The local raw console is preserved under `diagnostics/v0.2.55.1/owner-console-0.
 - Native UIWorldMap v3 construction/signature checks pass. Adapter tests verify automatic map selection, visited-area settings, single data initialization over 100 draws, and safe map-disabled behavior. The renderer itself is not executed by this probe.
 - Existing resize, persistence, exact-stockpile, drag-link permission and 32-by-32 connection tests remain passing. Geometry traces are development render adapters, not live gameplay screenshots.
 
-Native write/read pass in 146.7 / 126.1 seconds with no connected client. Traps-only, Turrets-only and both startup checks pass in 127.1 / 115.5 / 110.4 seconds. Installation evidence is next. Rendered owner acceptance, connected multiplayer acceptance and actual gameplay CPU/frame measurements remain pending.
+Native write/read pass in 146.7 / 126.1 seconds with no connected client. Traps-only, Turrets-only and both startup checks pass in 127.1 / 115.5 / 110.4 seconds. Installed from immutable `test/v0.2.55.1` / `397d8e1449e8940cfcf65ceb77d99e31d1464d40`. All 298 source and 383 tagged/packaged/installed/archive files match; both 0.2.55 backups verify. [Release evidence](../diagnostics/v0.2.55.1/local-release.json). Rendered owner acceptance, connected multiplayer acceptance and actual gameplay CPU/frame measurements remain pending.
 
 ## Short owner test
 
