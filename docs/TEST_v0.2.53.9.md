@@ -1,6 +1,6 @@
 # 0.2.53.9 — Verification and short test
 
-C305, 2026-10-17. Approved context-aware silhouettes using ordinary icons drawn black. No new owner test result is claimed.
+C305, 2026-10-17. Approved context-aware silhouettes using ordinary icons drawn black. C306 below records the subsequent owner feedback; it is not blanket acceptance.
 
 ## Automated verification
 
@@ -16,3 +16,9 @@ Full validation passes 21,529 assertions, 217 compiled Lua/translation inputs an
 ## Delivery
 
 Installed from immutable `test/v0.2.53.9` / `1c0aabbd367725329b9162acbe601b153842059f`. All 289 source and 369 tagged/packaged/installed/archive files match; both 0.2.53.8 backups verify. [Release evidence](../diagnostics/v0.2.53.9/local-release.json). Development delivery uses the existing branch/draft PR under C108; no merge or Workshop upload. Rendered and connected multiplayer acceptance remain pending.
+
+## C306 owner feedback, 2026-10-17
+
+Owner: "I think this is working!" Confirms pressure-plate activation, reports confusing linking and zombies thumping plates, and requests Controller world-click aiming for the next patch. Treat silhouettes/menu behavior as tentative positive feedback; do not claim every checklist state or connected multiplayer passed. R4C1 remains open for the plate correction and usability/aiming work.
+
+Captured the current SP **0.2.53.9** console: 2,254,783 bytes, 10,047 lines, SHA-256 `7118cfb14b878abc234240888522c74e378c9a720b2ba4f28cb24f9be218c4fc`; last T&T diagnostic frame97167, sequence7287. No T&T Lua exception found. Present errors concern native fonts/tiles/map data, other script/assets and Firearms translation formatting. Logs do not independently prove the thumping behavior or rule out gameplay defects. [Review metadata](../diagnostics/v0.2.53.9/owner-review-20261017.json); full snapshot retained locally in diagnostics. [Next-patch contract and decision](CORRECTIONS_C306.md). Installed0.2.53.9 remains unchanged.

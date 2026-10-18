@@ -1,5 +1,9 @@
 # Decision register
 
+## C306 — Pressure-plate feedback, Controller aiming and checkpoint reconciliation (2026-10-17)
+
+Owner reports tentative success, functional pressure-plate activation, confusing linking and zombie thumping. Requires non-thumpable plates and the same rule for future sensors; requests selecting a Controller turret then clicking a world direction to aim. Queue for the next patch. [Contract and remaining choice](CORRECTIONS_C306.md): recommend1A saved facing plus sector rotation with normal Detection;1B manual aim lock is the alternative. No aim-mode choice is assumed. R4C1 remains corrective work; R4C2 Poke Floor is the next selected content, followed by fixed dart emitter and R4C3 beam sensors. Record the actual0.2.53.9 SP console and owner evidence separately from connected MP acceptance; no gameplay patch in this discussion turn.
+
 ## C305 — Implement context-aware empty-slot silhouettes (2026-10-17)
 
 Owner says "Patch" after selecting C304/1A. This authorizes immediate implementation using existing normal icons tinted black, overriding the earlier future-art scheduling. Preserve native texture alpha, category labels, current-head ammo/removable-magazine matching, built-in/locked/not-needed distinctions and empty Void requirements. Ordinary filled slots retain real items and color. Use cached texture references and native drawing; no extra PNGs, dummy hint items, per-frame lookup/scan or multiplayer messages. Keep the grey theme, existing multiple Controller batteries and capacity rules. Placeholder custom icons remain until owner art replaces them. [Patch](PATCH_v0.2.53.9.md) and [test/evidence](TEST_v0.2.53.9.md) distinguish automated verification from pending visual/connected acceptance.
