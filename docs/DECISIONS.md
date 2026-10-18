@@ -1,5 +1,9 @@
 # Decision register
 
+## C304 — context-aware silhouettes from normal icons, 2026-10-17
+
+Owner: "1A if it can be done by taking normal icons and blacking them out." Select1A with black tint applied to existing icon textures, preserving alpha and original artwork. [Native feasibility evidence and contract](UI_EMPTY_SLOT_HINTS_C303.md#c304--normal-icons-blacked-out-2026-10-17). No extra silhouette files, generated art, inventory items or per-frame image processing. Retain the original future icon/art-pass timing and compatibility exceptions. Native API feasibility is confirmed; rendered readability still needs checking after implementation. No new patch or gameplay acceptance is inferred.
+
 ## C303 — future empty-slot silhouettes discussion, 2026-10-17
 
 Owner: "Once we add icons and art for the other assets, can we add silhouettes to the other empty slots too, like the head, ammo, magazine, and expansion slots, so players know what goes where? Discuss." [Proposed mapping, compatibility exceptions and1A/1B choice](UI_EMPTY_SLOT_HINTS_C303.md). Recommend context-aware faded icons with supplied/native art, preserving labels and non-insertable/locked states. Discussion is not implementation approval or a new acceptance result.0.2.53.8 remains installed; no Source/Contents, test evidence, Workshop changelog or version change.
