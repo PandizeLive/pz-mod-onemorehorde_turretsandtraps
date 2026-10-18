@@ -1,5 +1,9 @@
 # Decision register
 
+## C311 — Grouped Controller and Leech/Synergy selections (2026-10-18)
+
+Owner selects **1A, 2B, 3A, 4A**, explicitly requiring Synergy for Leech refunds from Splitter, Fragment, Martyrdom and other secondary effects. Confirm Grouped layout, per-kill 2x/+1x stacking refunds (not once per shot), one additional 50%-damage Martyrdom generation, and rotary refunds based on actual paid swing/pass energy. [Contract](CORRECTIONS_C310.md#c311--confirmed-selections-and-rotary-compatibility). Source review identifies the existing rotary Synergy exclusion alongside supported Martyrdom/Tack. Present **5A enable Synergy for supported rotary effects (recommended)** versus **5B retain exclusion/direct-kill-only rotary Leech**. This interaction is not silently settled by 4A. No gameplay/version/install change; preserve all C310 findings and deferred acceptance. Standing C108 covers this planning mirror.
+
 ## C310 — Owner test findings, Controller alternatives and module discussion (2026-10-18)
 
 Owner reports plate/player ordering, missing pickup animation, Controller access from turrets, invisible incoming links, eight-pixel Manage inset, module replacement/pulse needs and Set Facing errors. Requests **Set Aim**, explanatory Open Manage/Unassign tooltips, then adds missing **To Stockpile / To Inventory** tooltips. Owner asks for three Controller redesigns and **A/B/C = designs, D = original, E = another three**. New proposed module refunds 2x paid shot power on kill, +1x per stack; Synergy should permit one self-chain at 50% damage. [C310 evidence, mockups and open decisions](CORRECTIONS_C310.md) records exact causes, semantic tradeoffs and recommendations. No redesign/module-default choice or gameplay patch approval inferred. SP 0.2.53.11 findings supersede its pending rendered acceptance; immutable tags remain unchanged. Standing C108 requires this planning/test-evidence mirror.

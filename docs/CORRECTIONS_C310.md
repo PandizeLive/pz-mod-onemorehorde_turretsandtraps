@@ -2,6 +2,8 @@
 
 2026-10-18. Owner reports findings from installed 0.2.53.11, supplies three screenshots and asks for three Controller redesigns before choosing A–E. Follow-up adds missing **To Stockpile / To Inventory** tooltips. This checkpoint is investigation, design and planning, not approval to install a gameplay patch. No Source/Contents/version/Workshop changes.
 
+**C311 update (2026-10-18):** owner selects **1A / 2B / 3A / 4A**. Grouped Controller layout, per-kill Leech refunds, one additional half-damage Martyrdom generation and rotary Leech support are confirmed. Owner explicitly excludes Splitter, Fragment, Martyrdom and other secondary-effect kills from Leech unless Synergy is installed. The compatibility review below identifies one remaining choice: whether to enable Synergy on rotary heads, which currently reject it. Historical options below are retained as provenance; they are no longer all open.
+
 ## Current evidence
 
 Inspected branch `codex/performance-barbed-audit`, starting HEAD `1c612b47cd04a27002b75dd06b0233058277c887`. Fetched `origin/dev`: no commits absent locally. Only open PR is existing draft #1. Captured console through `OMH.cmd -Action Capture`; capture SHA-256 `85b8c570249996bd71ed15e65b5c7283dc8e496aa863d74be7bb7e04bfde96c2`, local folder `diagnostics/captures/20261018-005429-2250`. Trace explicitly reports `version=0.2.53.11 side=sp`. This is owner SP feedback, not connected multiplayer acceptance.
@@ -66,6 +68,26 @@ Enable only with Synergy. Carry an explicit generation and root identity through
 
 ## Next patch gates and acceptance
 
-Await layout A–E and module decisions 2–4 before implementation. All owner findings above are captured, including later destination-tooltips feedback. Keep correction work within R4C1; next content remains R4C2 Poke Floor, then fixed dart emitter; R4C3 beam sensors are not part of this patch.
+Layout A and module decisions 2B/3A/4A are now confirmed by C311. All owner findings above remain in scope, including later destination-tooltips feedback. Settle the rotary/Synergy compatibility choice below before final patch approval. Keep correction work within R4C1; next content remains R4C2 Poke Floor, then fixed dart emitter; R4C3 beam sensors are not part of this patch.
 
 After approval, implement atomic swap/death-refund authority and bounded effects, verify current native initialization and floor rendering metadata, test multiplayer message duplication/reconnect/pickup/cancel/permissions, and run appropriate package/native checks. The prior C308 cursor double hid a real initialization defect; add a real lifecycle check. Owner GPU and connected sessions remain separate acceptance gates, not a reason to stop approved implementation.
+
+## C311 — Confirmed selections and rotary compatibility
+
+Owner reply: **“1A / 2B - however, it won’t count kills from splitter, fragment, martyrdom, etc.. unless Synergy Module is installed. / 3A / 4A.”** These choices settle the four presented design decisions, with the explicit secondary-kill qualification overriding any broader interpretation of per-kill refunds.
+
+- **Controller:** Grouped design. Preserve the recorded fixes/tooltips, grey theme, native Stockpile and separate action/assignment groups.
+- **Leech:** each eligible confirmed zombie death refunds `(installed Leech count + 1) × actual paid attack battery cost`: 2x, 3x, 4x, and so on. No once-per-shot refund limit. Deduplicate a death across local/remote acknowledgements and overlapping effects; multiple victims remain independently eligible.
+- **Secondary kills:** Splitter, Fragment, Martyrdom and other module-created damage descendants require Synergy. Track the actual lethal damage path, not merely whether the zombie was earlier hit by a primary projectile. Preserve head-native attacks as the primary damage family; innate rotary multi-contact is not a Splitter/Piercing module effect. Do not infer that every additional victim is a secondary effect.
+- **Synergy:** one extra Martyrdom generation. Each initial-burst victim may create a burst at 50% damage; deaths caused by those reduced bursts cannot restart Martyrdom. With Synergy, those confirmed deaths may still independently refund Leech; suppressing another explosion is not suppressing the kill's refund.
+- **Rotary Leech:** actual battery debit accumulated over a swing/pass, independent of tick rate, qualifies per killed victim. Both arms share the paid motion window; do not synthesize firearm shot cost or reuse just one update's debit. Closing/interruption of a motion window must settle only already-paid energy, with no credit for future movement. Direct rotary kills do not require Synergy.
+- **Other presented defaults:** Leech name, battery-only refunds capped at 100%, loot-only/0.2 weight and Synergy-equivalent loaded loot weight, plus existing rarity-linked drain. Extend module packs, LootLab, Sandbox, descriptions and installed benefits together during implementation. Preserve source identity/paid-cost snapshots and multiplayer/Horde Night authority from the C310 contract.
+
+### Remaining choice 5 — Synergy on rotary heads
+
+Static source review finds a real compatibility mismatch: `shared/OMHTT/TurretHeads.lua` lists `Synergy = true` in `H.excluded`, while Martyrdom and Tack are supported. `server/OMHTT/TurretRotary.lua:R.contact` already calls `TurretProc.hit` after successful damage. Thus selected 4A makes direct rotary kills eligible for Leech, but their Martyrdom/Tack kills can never meet the new Synergy condition under current compatibility rules. This is not a technical impossibility; it is an existing exclusion needing an explicit design choice.
+
+- **5A (recommended):** allow Synergy on rotary heads for supported effects, including Martyrdom/Tack and Leech secondary-kill eligibility. Preserve Splitter, Fragment, module Piercing and other independently unsupported rotary modules as excluded; enabling Synergy does not enable every module.
+- **5B:** retain rotary Synergy exclusion. Leech works on direct rotary kills only; Martyrdom/Tack damage remains unable to earn refunds or self-chain through Synergy on those heads.
+
+No option 5 selection is inferred from 4A. Everything else in choices 1–4 is settled; do not reopen it or silently substitute 2A. No gameplay/version/install change or new owner/connected acceptance in this planning update.
