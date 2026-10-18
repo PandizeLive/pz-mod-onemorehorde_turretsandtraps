@@ -1,5 +1,17 @@
 # C316 — Controller map and connection-view discussion
 
+## C321 — Full-height Stockpile on the right; wider Map (2026-10-18)
+
+Owner requests: “Let's move Stockpile over to the right, and open the map to fill the space where stockpile used to be. Stockpile will extend down, next to the Selected Defense, similar to before.” This supersedes C320's Stockpile placement: **Connections fills the left column; the wider Map sits above Selected Device in the center; Stockpile fills the far-right column beside both.** All three columns share their outer top/bottom edges. Retain separated Controls, Connections, and Access & Assignment groups, head subtitles, grey styling and Grid / Native Map.
+
+Connections and Stockpile each scroll independently without expanding the menu or shifting details. Keep the 40% list-width preference within the Map/Connections area with a readable minimum; narrow previews stack the regions. The existing native-backed Stockpile remains the implementation target, not a replacement inventory system.
+
+Browser checks pass for the requested geometry, increased Map width, bounded overflow in both lists, wire alignment during scrolling, action groups, selection, linking/disconnection, Manage handoff, responsive widths 1040/736/390/320 and real touch events. Visual review caught an awkward split in a device name at inline width; a modest minimum-width increase corrected it before final checks. No page errors. [Checks](../diagnostics/controller-c321/checks.json) and [preview source](../diagnostics/controller-c321/preview-source.html).
+
+![Stockpile beside the wider Map and Selected Defense](../diagnostics/controller-c321/inline.png)
+
+Planning/preview only. Installed 0.2.54.1 and all pending C318 gameplay requirements remain unchanged. No native-game or connected-MP acceptance claimed. **Wait for a patch.**
+
 ## C320 — Details beneath Map and Stockpile; scrollable Connections (2026-10-18)
 
 Owner clarifies: “I meant have selected defense go under the map as well. We'll give Connections a scroll bar, similar to the stockpile.” This corrects C319's interpretation: **Connections fills the left column; Map and Stockpile share the upper-right row; Selected Device spans the full width beneath both Map and Stockpile.** Retain Controls, Connections, and Access & Assignment as separate groups. The matching preview input changes list width to **40%**.

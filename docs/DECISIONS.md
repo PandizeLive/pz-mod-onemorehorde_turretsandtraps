@@ -1688,3 +1688,7 @@ Owner requests Selected Device beneath Stockpile and Connections extended to the
 ## C320 — Details span beneath Map and Stockpile; Connections scrollbar
 
 Owner clarifies that Selected Defense must extend beneath the Map as well as Stockpile, and requests a Connections scrollbar similar to Stockpile. Matching preview input sets list width to 40%. [Corrected layout and scrolling verification](CONTROLLER_MAP_C316.md#c320--details-beneath-map-and-stockpile-scrollable-connections-2026-10-18). Preserve separated groups and all prior gameplay requirements; installed build unchanged.
+
+## C321 — Stockpile to the far right; Map expands above details
+
+Owner moves Stockpile into a full-height right column beside Selected Defense and asks the Map to fill Stockpile's former upper-row space. Connections remains left with its scrollbar; details sit beneath the expanded Map. Preserve separated action groups and all gameplay requirements. [Updated preview and verification](CONTROLLER_MAP_C316.md#c321--full-height-stockpile-on-the-right-wider-map-2026-10-18). Planning only; installed build unchanged.
