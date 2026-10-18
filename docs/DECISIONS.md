@@ -1,8 +1,12 @@
 # Decision register
 
+## C307 — Controller Set Facing selected (2026-10-17)
+
+Owner replies "1A" to C306: save normal facing and rotate its firing/detection sector together, retaining normal Detection tracking and 360 coverage. Direction selection does not shoot. Preserve power/access/range/identity checks and no physical turning while OFF. Manual Aim Lock is not selected. [Confirmed next-patch contract](CORRECTIONS_C306.md#c307--confirmed-aiming-behavior). Record alongside non-thumpable plates and clearer linking; no gameplay/version/install change in this planning turn. R4C1 corrections precede R4C2 Poke Floor; connected acceptance remains pending.
+
 ## C306 — Pressure-plate feedback, Controller aiming and checkpoint reconciliation (2026-10-17)
 
-Owner reports tentative success, functional pressure-plate activation, confusing linking and zombie thumping. Requires non-thumpable plates and the same rule for future sensors; requests selecting a Controller turret then clicking a world direction to aim. Queue for the next patch. [Contract and remaining choice](CORRECTIONS_C306.md): recommend1A saved facing plus sector rotation with normal Detection;1B manual aim lock is the alternative. No aim-mode choice is assumed. R4C1 remains corrective work; R4C2 Poke Floor is the next selected content, followed by fixed dart emitter and R4C3 beam sensors. Record the actual0.2.53.9 SP console and owner evidence separately from connected MP acceptance; no gameplay patch in this discussion turn.
+Owner reports tentative success, functional pressure-plate activation, confusing linking and zombie thumping. Requires non-thumpable plates and the same rule for future sensors; requests selecting a Controller turret then clicking a world direction to aim. Queue for the next patch. [Contract and subsequent selection](CORRECTIONS_C306.md): recommend1A saved facing plus sector rotation with normal Detection;1B manual aim lock is the alternative. The subsequent C307 reply selects 1A. R4C1 remains corrective work; R4C2 Poke Floor is the next selected content, followed by fixed dart emitter and R4C3 beam sensors. Record the actual0.2.53.9 SP console and owner evidence separately from connected MP acceptance; no gameplay patch in this discussion turn.
 
 ## C305 — Implement context-aware empty-slot silhouettes (2026-10-17)
 

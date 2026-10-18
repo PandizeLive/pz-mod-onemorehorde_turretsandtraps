@@ -8,13 +8,15 @@
 - **Linking clarity:** retain the existing source-to-receiver flow, with an obvious selected source, explicit next step, and confirmed linked/unlinked state. Recommend contextual Connect/Disconnect rather than equally enabled contradictory actions. This is a UI recommendation responding to the reported confusion; no circuit model redesign or additional setup cost.
 - **Controller aiming:** add a world-direction picker for the selected authorized turret, with a directional/FOV preview and cancel. Clicking chooses direction only; it must not shoot or manufacture a target. Validate Controller access/range and exact device identity on the server. Reuse bounded turning/presentation and publish changed direction; no permanent cursor scans or client authority. Preserve the power rule: an OFF turret does not physically turn. A saved direction can take effect when it is powered.
 
-## One material aiming choice
+## C307 — confirmed aiming behavior
 
-**1A — Set Facing (recommended):** save a new normal firing direction and rotate its firing/detection sector with it. Detection continues acquiring targets within that sector; Firing-only shots follow the new forward direction. A 360 module keeps full coverage. This is useful for trigger-based installations without another aim-mode toggle.
+Owner selects **1A** on 2026-10-17 for the next patch. This resolves the aiming choice; it does not install a new build.
 
-**1B — Manual Aim Lock:** hold the selected direction and suspend automatic target tracking until the player explicitly restores automatic aiming. Adds another state/control and must explain why Detection is not tracking.
+**1A — Set Facing (selected):** save a new normal firing direction and rotate its firing/detection sector with it. Detection continues acquiring targets within that sector; Firing-only shots follow the new forward direction. A 360 module keeps full coverage. This is useful for trigger-based installations without another aim-mode toggle.
 
-No selection is inferred yet. Current `TurretModules.profile` derives sector heading from `baseFacing/facing`, whereas `TurretAim` animates `aimDegrees`. Merely setting the visual head angle would leave fixed-facing fire/FOV pointed elsewhere. The implementation must make gameplay direction, aiming and world preview agree. Current aim requests take zombie targets and may fire on arrival for manual requests; do not reuse that firing callback for a direction-only picker.
+**1B — Manual Aim Lock (not selected):** hold the selected direction and suspend automatic target tracking until the player explicitly restores automatic aiming. Adds another state/control and must explain why Detection is not tracking.
+
+Implementation checks for the selected behavior: current `TurretModules.profile` derives sector heading from `baseFacing/facing`, whereas `TurretAim` animates `aimDegrees`. Merely setting the visual head angle would leave fixed-facing fire/FOV pointed elsewhere. The implementation must make gameplay direction, aiming and world preview agree. Current aim requests take zombie targets and may fire on arrival for manual requests; do not reuse that firing callback for a direction-only picker.
 
 ## Checkpoint reconciliation
 
