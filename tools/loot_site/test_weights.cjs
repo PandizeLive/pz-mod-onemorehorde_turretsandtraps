@@ -22,4 +22,4 @@ for(const m of D.modules){
 const regulator=D.modules.find(m=>m.id==='Regulator');
 assert.equal(M.weightMultiplier(regulator,11),2);
 assert.equal(M.lootWeight(regulator,M.weightMultiplier(regulator,0)),0);
-console.log('PASS: direct weights for 31 modules, exact seeded-world preservation, fractional/zero/max inputs, invalid input rejection and Sandbox multiplier conversion.');
+console.log('PASS: direct weights for 32 modules, exact seeded-world preservation, fractional/zero/max inputs, invalid input rejection and Sandbox multiplier conversion.');

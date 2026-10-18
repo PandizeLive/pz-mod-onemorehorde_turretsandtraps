@@ -50,6 +50,10 @@ function E.refresh(panel)
     if panel.sourceButton then
         panel.sourceButton:setTitle(panel.toStockpile and getText("UI_OMHTT_ToStockpile") or getText("UI_OMHTT_ToInventory"))
         panel.sourceButton:setEnable(writable)
+        panel.sourceButton.tooltip = getText(panel.toStockpile and "UI_OMHTT_RemoveStockpileHelp" or "UI_OMHTT_RemoveInventoryHelp")
+        if not writable then
+            panel.sourceButton.tooltip = panel.sourceButton.tooltip .. " <LINE> " .. getText("UI_OMHTT_ControllerAccessNeeded")
+        end
     end
 end
 

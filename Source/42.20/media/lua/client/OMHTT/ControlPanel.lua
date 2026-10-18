@@ -134,6 +134,8 @@ function Panel:prerender()
         require("OMHTT/ControlPanelLayout").snapshot(self)
     end
     require("OMHTT/ControlPanelLayout").refresh(self, state)
+    self.inputs:refresh()
+    self.inputs:setVisible(state ~= nil and state.kind == "Turret")
     require("OMHTT/ControlPanelLayout").draw(self, host, state)
     local writable = state and A.authorized(self.player, self.selected)
     local linkable = state and A.write(self.player, state) and self.linkSource
@@ -171,23 +173,24 @@ function Panel:prerender()
     else
         remoteReason = getText("UI_OMHTT_ControllerSessionPending")
     end
-    self.manage.tooltip = nil
+    self.manage.tooltip = getText("UI_OMHTT_OpenManageHelp")
     if not self.manage.enable then
         self.manage.tooltip = remoteReason
     end
-    self.assign.tooltip = nil
+    self.assign.tooltip = getText(state and state.controller == host.id and "UI_OMHTT_UnassignHelp" or "UI_OMHTT_AssignHelp")
     if not self.assign.enable then
         self.assign.tooltip = host.powered ~= true and getText("UI_OMHTT_ControllerPowerNeeded")
             or getText("UI_OMHTT_ControllerAccessNeeded")
     end
-    self.policy.tooltip = nil
+    self.policy.tooltip = getText("UI_OMHTT_AccessHelp")
     if not self.policy.enable then
         self.policy.tooltip = getText(A.write(self.player, state, true)
             and "UI_OMHTT_ControllerReachNeeded" or "UI_OMHTT_ControllerAccessNeeded")
     end
-    self.clearInputs.tooltip = getText("UI_OMHTT_ControllerReachNeeded")
-    self.source.tooltip = self.clearInputs.tooltip
-    self.link.tooltip = self.clearInputs.tooltip
+    self.clearInputs.tooltip = getText(self.clearInputs.enable and "UI_OMHTT_ClearInputsHelp" or "UI_OMHTT_ControllerReachNeeded")
+    self.source.tooltip = getText("UI_OMHTT_ControllerReachNeeded")
+    self.link.tooltip = self.source.tooltip
+    self.trigger.tooltip = getText(self.trigger.enable and "UI_OMHTT_TriggerHelp" or "UI_OMHTT_ControllerReachNeeded")
     self.setFacing.tooltip = self.setFacing.enable and getText("UI_OMHTT_SetFacingTooltip") or remoteReason
     if self.link.enable then
         self.link.tooltip = getText("UI_OMHTT_LinkPowerHint")
@@ -210,7 +213,8 @@ end
 ---@param object IsoObject Controller or local device
 ---@return ISPanel? panel
 function Panel.open(player, object)
-    if not A.near(player, object) then return nil end
+    local state = A.state(object)
+    if not state or state.kind ~= "Controller" or not A.near(player, object) then return nil end
     local old = active[player:getPlayerNum()]
     if old then old:close() end
     local pn = player:getPlayerNum()

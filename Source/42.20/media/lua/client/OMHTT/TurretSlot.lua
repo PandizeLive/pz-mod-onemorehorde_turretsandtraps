@@ -54,7 +54,7 @@ function Slot:onMouseUp(x, y)
         elseif self.kind == "magazine" then
             self.owner:magazine(items[1])
         else
-            self.owner:transfer(items, true, self.kind)
+            self.owner:transfer(items, true, self.kind, self.kind == "module" and self.items[1] or nil)
         end
         local focus = ISMouseDrag.draggingFocus
         if focus then focus:onMouseUp(0, 0) end
@@ -207,6 +207,14 @@ end
 
 ---@return nil
 function Slot:render()
+    if self.pulseUntil then
+        local remaining = self.pulseUntil - getTimestampMs()
+        if remaining > 0 then
+            self:drawRectBorder(0, 0, self.width, self.height, remaining / 250, .85, .95, 1)
+        else
+            self.pulseUntil = nil
+        end
+    end
     if ISMouseDrag.draggingFocus == self and self.items[1] then
         ISInventoryItem.renderItemIcon(self, self.items[1], getMouseX() - self:getAbsoluteX() + 12,
             getMouseY() - self:getAbsoluteY() + 12, 1, 32, 32)

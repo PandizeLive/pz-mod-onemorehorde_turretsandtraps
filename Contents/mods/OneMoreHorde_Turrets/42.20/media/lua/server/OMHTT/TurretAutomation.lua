@@ -18,6 +18,7 @@ function A.changed(object, head)
         A.entries[object] = entry
         A.order[#A.order + 1] = entry
     end
+    require("OMHTT/TurretSiphon").stop(entry)
     local definition = require("OMHTT/TurretHeads").get(head)
     entry.rotaryKind = definition and definition.rotary == true
     local state = T.state(object)
@@ -205,6 +206,7 @@ function A.tick()
         if A.step(entry, deadline) then
             A.cursor = A.cursor + 1
         else
+            require("OMHTT/TurretSiphon").stop(entry)
             A.entries[entry.object] = nil
             table.remove(A.order, A.cursor)
         end

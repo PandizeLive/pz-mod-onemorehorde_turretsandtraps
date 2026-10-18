@@ -154,7 +154,7 @@ check(not panel.moving and not panel.capture, "Outside release ends dragging imm
 isMouseButtonDown=originalMouse
 for i = 1, #panel.slots do
     local slot = panel.slots[i]
-    check(slot.x >= 8 and slot.x + slot.width <= panel.body.width - 20, "Content slots leave a clear scrollbar gutter")
+    check(slot.x >= 8 and slot.x + slot.width <= panel.body.width - 12, "Content slots fit the non-scrolling body with the same right inset")
 end
 panel.body:prerender()
 panel.body:render()

@@ -1,4 +1,4 @@
-Current catalog: T&T 0.2.50, including Lure and Void. Existing account weights and tier anchors are preserved.
+Current catalog: T&T 0.2.54, including Siphon. Existing account weights and tier anchors are preserved.
 
 # Knox Country Loot Lab
 
@@ -16,11 +16,11 @@ This is a personal, offline balancing tool for **new-world estimates**. It does 
 4. Toggle individual components, or Show all / Hide all. Visibility never rerolls loot or changes rates. Select a town, zoom and hover dots for coordinates, floor, chances and generated quantities.
 5. Compare countywide and nearest-town estimates. Save/load scenario JSON to compare settings; export the Sandbox excerpt when satisfied. Apply settings yourself only after reviewing the excerpt.
 
-The baseline is **T&T 0.2.47** and **Project Zomboid 42.21.0**, including Critical/Accuracy and the reduced Suppression loot weight. The owner approved this gameplay patch and site update together. Gameplay installation is tracked separately in `docs/RELEASE.md`.
+The baseline is **T&T 0.2.54** and **Project Zomboid 42.21.0**, including Critical/Accuracy and the reduced Suppression loot weight. The owner approved this gameplay patch and site update together. Gameplay installation is tracked separately in `docs/RELEASE.md`.
 
 ## What the numbers mean
 
-The map contains 18,514 eligible **container-sprite candidates**, extracted from native lot headers/packs, with 75 eligible procedural routing rules. Real map geometry and town labels come from the installed map. All floors are included; a dot is a possible container, not a promised module.
+The map contains 18,630 eligible **container-sprite candidates**, extracted from native lot headers/packs, with 79 eligible procedural routing rules. Real map geometry and town labels come from the installed map. All floors are included; a dot is a possible container, not a promised module.
 
 The generated overlay first selects one pool per candidate using shared room quotas, then samples each component in that pool with an independent, stable per-container seed. The same seed/settings reproduce the same result; changing one component does not reroll others. Co-located components have small screen-space offsets for readability, without changing their world coordinates. Scenario JSON also retains visibility and overlay choice.
 

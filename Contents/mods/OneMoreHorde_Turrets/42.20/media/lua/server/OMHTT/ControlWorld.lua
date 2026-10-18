@@ -57,7 +57,19 @@ end
 function W.publish(object)
     local state = W.state(object)
     if not state then return end
-    object:getModData().OMHTTControl = W.copy(state)
+    local view = W.copy(state)
+    if state.kind == "Turret" then
+        view.inputs = {}
+        for id in pairs(W.incoming[state.id] or {}) do
+            local source = W.records().records[id]
+            if source and source.placed then
+                view.inputs[#view.inputs + 1] = {id = id, name = source.name, kind = source.kind,
+                    x = source.x, y = source.y, z = source.z}
+            end
+        end
+        table.sort(view.inputs, function(a, b) return a.id < b.id end)
+    end
+    object:getModData().OMHTTControl = view
     if isServer() then
         object:transmitModData()
     end
@@ -443,6 +455,12 @@ function W.retire(object)
     local state = W.state(object)
     if not state then return end
     state.placed = false
+    for i = 1, #state.links do
+        local target = W.objects[state.links[i]]
+        if target then
+            W.publish(target)
+        end
+    end
     local locations = W.locations[state.location]
     if locations then
         locations[state.id] = nil
@@ -703,6 +721,7 @@ function W.clearInputs(object)
         end
     end
     W.incoming[state.id] = nil
+    W.publish(object)
     state.pulseHoldUntil, state.facingPulse = nil, nil
     local T = require("OMHTT/Turret")
     if T.state(object) then
@@ -736,6 +755,7 @@ function W.link(source, target, enabled)
     W.incoming[to.id] = incoming
     W.publish(source)
     W.receiver(target, getTimestampMs())
+    W.publish(target)
     return true
 end
 

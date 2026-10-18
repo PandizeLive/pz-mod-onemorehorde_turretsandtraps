@@ -73,8 +73,8 @@ check(panel.assign.enabled and not panel.manage.enabled and panel.manage.tooltip
 turret.data.OMHTTControl.controller=object.data.OMHTTControl.id
 panel:prerender()
 check(panel.setFacing.enabled and panel.setFacing.visible,"Assigned writable turret exposes Set Facing")
-check(panel.setFacing.y >= panel.manage.y + panel.manage.height
-    and panel.policy.y > panel.setFacing.y + panel.setFacing.height,"Facing button has its own row without section overlap")
+check(panel.setFacing.y == panel.manage.y and panel.setFacing.x >= panel.manage.x + panel.manage.width
+    and panel.policy.y > panel.inputs.y + panel.inputs.height,"Manage and Set Aim share a row; Access follows Connections")
 local source=setmetatable({data={OMHTTControl={id="ui-input",kind="Plate",owner="ui-owner",links={}}}}, {__index=object})
 panel.linkSource=source
 A.near=function() return true end

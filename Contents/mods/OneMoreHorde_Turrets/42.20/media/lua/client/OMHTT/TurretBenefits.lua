@@ -61,6 +61,7 @@ function B.rows(contents, stats)
         local count = contents.active[name] or 0
         local label, value = "Active", nil
         if name == "Regulator" then label, value = "Battery", (1 - 1 / stats.regulator) * 100
+        elseif name == "Siphon" then label, value = "Siphon", stats.siphon
         elseif name == "Synergy" then label = "Synergy"
         elseif name == "Martyrdom" then label, value = "Radius", stats.martyrdom
         elseif name == "Tack" then label, value = "Radius", stats.tack

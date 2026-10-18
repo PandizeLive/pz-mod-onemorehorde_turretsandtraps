@@ -1,4 +1,6 @@
 testFacingBuilding = ISBuildingObject
-ISBuildingObject = testControlPanelBase:derive("TestFacingBuilding")
-function ISBuildingObject:init() end
-function ISBuildingObject:getFloorCursorSprite() return {RenderGhostTileColor=function() end} end
+ISBuildingObject = nil
+LuaEventManager.AddEvent("OnDoTileBuilding2")
+LuaEventManager.AddEvent("OnDoTileBuilding3")
+LuaEventManager.AddEvent("OnKeyPressed")
+LuaEventManager.AddEvent("OnDestroyIsoThumpable")

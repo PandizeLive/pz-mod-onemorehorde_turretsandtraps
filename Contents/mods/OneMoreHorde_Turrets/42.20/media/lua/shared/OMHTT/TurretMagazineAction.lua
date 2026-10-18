@@ -49,6 +49,8 @@ end
 function Action:stop()
     self.done = true
     self:release()
+    local state = T.state(self.object)
+    state.transferRevision = (state.transferRevision or 0) + 1
     ISBaseTimedAction.stop(self)
 end
 

@@ -8,6 +8,15 @@ module Base {
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_ModulePack,
     }
+    item OMHTTModuleSiphon {
+        DisplayName = Siphon Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.2,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleSiphon,
+    }
     item OMHTTModuleRegulator {
         DisplayName = Regulator Module,
         ItemType = base:normal,

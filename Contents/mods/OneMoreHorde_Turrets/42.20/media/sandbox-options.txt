@@ -1017,6 +1017,15 @@ option OMHTurretsTraps.LootRateSynergy {
     translation = OMHTurretsTraps_LootRateSynergy,
 }
 
+option OMHTurretsTraps.LootRateSiphon {
+    type = double,
+    default = 1,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootRateSiphon,
+}
+
 option OMHTurretsTraps.LootRateMartyrdom {
     type = double,
     default = 2,

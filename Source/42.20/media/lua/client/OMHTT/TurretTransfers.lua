@@ -137,6 +137,17 @@ function ISInventoryTransferAction:transferItem(item)
     end
     if G.profile(item) then G.cancelLoading(item) end
     nativeTransfer(self, item)
+    if item:getContainer() == destination then
+        if T.isContainer(source) and T.kind(item) == "battery" then
+            require("OMHTT/TurretBattery").detach(item)
+        end
+        for _, container in pairs({source, destination}) do
+            local state = T.state(container:getParent())
+            if state then
+                state.transferRevision = (state.transferRevision or 0) + 1
+            end
+        end
+    end
     if T.transferSnapshots then
         if T.kind(item) == "ammo" and item:getContainer() == destination then
             for container, summary in pairs(T.transferSnapshots) do

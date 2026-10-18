@@ -24,6 +24,7 @@ function R.request(player, controller, target)
     if not R.valid(player, controller, target) then return false end
     if not isClient() then
         A.session(player, controller, target)
+        require("OMHTT/ControlWorld").publish(target)
         return true
     end
     local entries = R.requests[player]
@@ -79,6 +80,7 @@ function R.command(module, command, player, args)
         and A.state(controller).id == args.controller and A.state(target).id == args.target
     if granted then
         A.session(player, controller, target)
+        world.publish(target)
     end
     sendServerCommand(player, R.MODULE, "Renewed", {controller = args.controller, target = args.target,
         serial = args.serial, player = args.player, granted = granted})

@@ -82,6 +82,9 @@ function S.hit(ray, victim)
     owner.scrapPending[victim] = true
     if owner.pending then owner.pending = owner.pending + 1 end
     return require("OMHTT/Damage").resolve(victim, amount, ray.id, "scrapshot", function(lost)
+        if lost > 0 then
+            require("OMHTT/TurretSiphon").hit(victim, owner.siphon, not group.primary or group.penetrated == true)
+        end
         if lost > 0 and eligible and not owner.scrapEffects[victim] then
             owner.scrapEffects[victim] = true
             mark.effects = true

@@ -360,5 +360,7 @@
     "Sandbox_OMHTurretsTraps_LootRateLure": "Lure Module",
     "Sandbox_OMHTurretsTraps_LootRateVoid": "Void Module",
     "Sandbox_OMHTurretsTraps_LootRateLure_tooltip": "Loot weight multiplier. Zero disables this module.",
-    "Sandbox_OMHTurretsTraps_LootRateVoid_tooltip": "Loot weight multiplier. Zero disables this module."
+    "Sandbox_OMHTurretsTraps_LootRateVoid_tooltip": "Loot weight multiplier. Zero disables this module.",
+    "Sandbox_OMHTurretsTraps_LootRateSiphon": "Siphon Module",
+    "Sandbox_OMHTurretsTraps_LootRateSiphon_tooltip": "Loot weight multiplier for Siphon Modules."
 }

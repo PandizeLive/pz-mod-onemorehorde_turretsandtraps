@@ -163,6 +163,8 @@ public final class NativePersistenceCheck {
         Object env = Class.forName("zombie.Lua.LuaManager").getField("env").get(null);
         Object source = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativePlate");
         check(source != null, "Native pressure plate fixture missing");
+        Object plateSprite = get(source, "getSprite");
+        check(plateSprite.getClass().getField("renderLayer").getByte(plateSprite) == 1, "Pressure plate must use the native floor render layer");
         Object state = call(get(source, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTControl");
         Path path = directory.resolve("pressed-plate.bin");
         if (mode.equals("write")) {
@@ -188,6 +190,8 @@ public final class NativePersistenceCheck {
         iso.getMethod("load", ByteBuffer.class, int.class).invoke(restored, input, version);
         check(!input.hasRemaining(), "Unread pressure plate bytes");
         check("omhtt_turret_01_29".equals(get(restored, "getSpriteName")), "Pressed plate sprite lost");
+        Object restoredSprite = get(restored, "getSprite");
+        check(restoredSprite.getClass().getField("renderLayer").getByte(restoredSprite) == 1, "Pressed plate lost floor rendering after restore");
         check(Boolean.TRUE.equals(get(get(restored, "getSpriteConfig"), "isValid")), "Pressed plate invalid after reload");
         check(Boolean.FALSE.equals(get(restored, "isThumpable")), "Loaded plate became thumpable");
         Object loadedState = call(get(restored, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTControl");

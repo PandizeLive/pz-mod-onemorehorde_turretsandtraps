@@ -1,9 +1,8 @@
 if isServer() then return end
-require("BuildingObjects/ISBuildingObject")
 local A = require("OMHTT/ControlAccess")
 local U = require("OMHTT/ControlClient")
 local Range = require("OMHTT/TurretRange")
-local Cursor = ISBuildingObject:derive("OMHTTTurretFacingCursor")
+local Cursor = {}
 
 ---@param square IsoGridSquare? Selected world tile
 ---@return boolean valid
@@ -79,7 +78,11 @@ function Cursor.start(panel)
     if not target or target.kind ~= "Turret" or not host
         or not A.write(panel.player, host) or not A.write(panel.player, target)
         or not require("OMHTT/ControlRemote").valid(panel.player, panel.object, panel.selected) then return nil end
-    local cursor = Cursor:derive("OMHTTTurretFacingSelection")
+    require("BuildingObjects/ISBuildingObject")
+    local cursor = ISBuildingObject:derive("OMHTTTurretFacingSelection")
+    for key, value in pairs(Cursor) do
+        cursor[key] = value
+    end
     cursor:init()
     cursor.owner, cursor.host, cursor.target = panel, panel.object, panel.selected
     cursor.hostId, cursor.targetId = host.id, target.id

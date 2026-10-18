@@ -25,6 +25,8 @@ getCell=function() return {
 U.command=function(p,h,command,value,target) requested={command=command,value=value,target=target} end
 local cursor=Cursor.start(panel)
 check(cursor==drag and panel.visible==false and focusCount==1,"Facing cursor hides menu and selects exact turret")
+check(cursor.nSprite==1 and cursor.isThumpable==true and cursor.isFloor==false,"Native building cursor init/reset executes after deferred class load")
+function cursor:getFloorCursorSprite() return {RenderGhostTileColor=function() end} end
 cursor:render(2201,2199,0,selected)
 check(Range.preview[0].heading==45,"World preview follows selected 45-degree direction")
 cursor:create(2201,2199,0,false,nil)

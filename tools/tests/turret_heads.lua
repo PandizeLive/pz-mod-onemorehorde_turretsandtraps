@@ -37,6 +37,8 @@ end
 local a, pass = H.crossing(0, 0, 45, false)
 check(a == 1 and pass == 0, "Forward arm crosses sector center")
 check(H.crossing(0, 45, 60, false) == nil, "Crossing endpoint cannot hit twice")
+local edgeArm, edgePass = H.crossing(45, 89, 90, false)
+check(edgeArm == 1 and edgePass == 0, "Stroke endpoint belongs to the completed paid pass")
 check(H.crossing(180, 0, 45, false) == 2, "Rear arm is independently physical")
 check(H.crossing(90, 0, 90, false) == nil and H.crossing(90, 0, 90, true) == 1, "Only 360 permits side contact")
 check(H.motion(90, false) == 45 and H.motion(180, false) == -45, "Oscillation reverses at agreed endpoints")

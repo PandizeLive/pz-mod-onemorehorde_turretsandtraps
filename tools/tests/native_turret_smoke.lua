@@ -83,7 +83,7 @@ local function verifyTurrets()
         end
         assert(packs == 1, "Native pack pool must contain exactly one pack entry")
     end
-    assert(count == 227, "Expected 227 component entries across sixteen native loot pools")
+    assert(count == 233, "Expected 233 component entries across sixteen native loot pools")
     for kind in pairs(Loot.WEIGHTS) do
         local script = getScriptManager():getItem(T.TYPES[kind])
         assert(script and script:getDisplayName() ~= "", "Pack script display metadata unavailable")
@@ -110,7 +110,7 @@ local function verifyTurrets()
     for i = 1, #restored do
         player:getInventory():Remove(restored[i])
     end
-    print("[OMHTT-Smoke] native-pack-correction scriptMetadata=31 emptyPoolInjection=blocked carriedPack=preserved eligibilityRestore=pass")
+    print("[OMHTT-Smoke] native-pack-correction scriptMetadata=32 emptyPoolInjection=blocked carriedPack=preserved eligibilityRestore=pass")
     local retired = {"OMHTTModuleCapacitySmall", "OMHTTModuleCapacity", "OMHTTModuleCapacityLarge",
         "OMHTTModuleMotionDetection", "OMHTTModuleDetection360"}
     for i = 1, #retired do
@@ -149,7 +149,7 @@ local function verifyTurrets()
     end
     assert(auditAccepted >= 20 and auditRejected >= 2, "Expected conventional guns and cap-gun rejections")
     print("[OMHTT-Smoke] native-firearm-audit accepted=" .. auditAccepted .. " rejected=" .. auditRejected)
-    assert(visibleCount == 34, "Expected thirty-four canonical components")
+    assert(visibleCount == 35, "Expected thirty-five canonical components")
     local largeStorage = instanceItem(T.BASE):getInventory()
     T.configure(largeStorage)
     local largeGun = instanceItem("Base.Pistol")
@@ -207,7 +207,7 @@ local function verifyTurrets()
     assert(T.contents(live).active.MotionDetection == 1, "Native module condition defaults are not active")
     detector:setCondition(0)
     assert(T.contents(live).active.MotionDetection == nil, "Broken native module remains active")
-    print("[OMHTT-Smoke] native-modules loot=227 profiles=valid condition=checked")
+    print("[OMHTT-Smoke] native-modules loot=233 profiles=valid condition=checked")
     assert(GameSounds.getSound("OMHTTTriggerClick") ~= nil, "Native click sound is unregistered")
     local resources = ArrayList.new()
     local tools = {"Base.Screwdriver", "Base.Wrench"}

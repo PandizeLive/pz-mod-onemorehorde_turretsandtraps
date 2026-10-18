@@ -11,7 +11,7 @@ T.BASE = "Base.OMHTTTurretBase"
 T.HEAD = "Base.OMHTTTurretPotato"
 T.HEAD_VISUAL = {height = 0.4 - 16 / 192, scale = 0.512, muzzle = 0.55}
 T.CONTAINER = "OMHTTTurret"
-T.MODULES = {Lure = true, Void = true, Regulator = true, Synergy = true, Martyrdom = true, Tack = true, Conservation = true, Piercing = true, InitialBlow = true, Execute = true, Impact = true, FiringEnhanced = true, MotionDetectionEnhanced = true, Magazine = true, Splitter = true, Fragment = true, FiringImprovised = true, MotionDetectionImprovised = true, CapacityImprovised = true, Firing = true, MotionDetection = true, Filter = true, RapidFire = true, Velocity = true,
+T.MODULES = {Siphon = true, Lure = true, Void = true, Regulator = true, Synergy = true, Martyrdom = true, Tack = true, Conservation = true, Piercing = true, InitialBlow = true, Execute = true, Impact = true, FiringEnhanced = true, MotionDetectionEnhanced = true, Magazine = true, Splitter = true, Fragment = true, FiringImprovised = true, MotionDetectionImprovised = true, CapacityImprovised = true, Firing = true, MotionDetection = true, Filter = true, RapidFire = true, Velocity = true,
     Range = true, Critical = true, Accuracy = true, Suppression = true, Capacity = true, CapacitySmall = true, CapacityLarge = true, Detection360 = true, Reload = true, Autoloader = true}
 T.SINGLE = {Lure = true, Void = true, Synergy = true, Firing = true, MotionDetection = true, Filter = true, Detection360 = true, Autoloader = true}
 T.TYPES = {}

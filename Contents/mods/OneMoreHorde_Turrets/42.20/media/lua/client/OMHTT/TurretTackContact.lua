@@ -30,7 +30,11 @@ local function zombieUpdate(zombie)
     local now, identity = Clock.now(), session
     if P.barbs then now, identity = P.barbs.time, P.barbs.session end
     if Contact.step(data.OMHTTBarbContact, now, identity, true, 2000) then
-        Damage.apply(zombie, field.damage / 100, field.source, "tack", nil, nil)
+        Damage.resolve(zombie, field.damage / 100, field.source, "tack", function(lost)
+            if lost > 0 then
+                require("OMHTT/TurretSiphon").hit(zombie, field.siphon, true)
+            end
+        end)
     end
 end
 

@@ -4,7 +4,7 @@ const site=path.resolve(__dirname,'../../art/loot-tuner');
 global.window={};require(path.join(site,'data.js'));
 const D=window.LOOT_DATA,M=require(path.join(site,'model.js'));
 async function run(){
-  assert.equal(D.containers.length,18630);assert.equal(D.routes.length,79);assert.equal(D.modules.length,31);
+  assert.equal(D.containers.length,18630);assert.equal(D.routes.length,79);assert.equal(D.modules.length,32);
   for(const [id,weight] of [['Regulator',5.5],['Synergy',1],['Martyrdom',1.5],['Tack',1.5]])assert.equal(D.modules.find(m=>m.id===id).weight,weight);
   assert.equal(D.modules.find(m=>m.id==='Suppression').weight,2.5);
   assert(D.modules.some(m=>m.id==='Critical')&&D.modules.some(m=>m.id==='Accuracy'));
@@ -34,7 +34,7 @@ async function run(){
   assert(M.markerRadius('spawns',5,0)>M.markerRadius('spawns',4,0));
   assert(M.markerRadius('chances',0,.5)>M.markerRadius('chances',0,.01));
   const s=M.defaults(D);assert.deepEqual(M.validate(s,D),s);assert.equal(s.global,1.011111111111111);assert.equal(s.items.Firing,14/30);assert.equal(s.items.Filter,3.6);
-  const added=['Magazine','Splitter','Fragment','FiringEnhanced','MotionDetectionEnhanced','Piercing','InitialBlow','Execute','Impact','Conservation','Synergy','Martyrdom','Tack','Regulator'];
+  const added=['Magazine','Splitter','Fragment','FiringEnhanced','MotionDetectionEnhanced','Piercing','InitialBlow','Execute','Impact','Conservation','Synergy','Martyrdom','Tack','Regulator','Lure','Void','Siphon'];
   const factors=Object.fromEntries(D.modules.map(m=>[m.id,added.includes(m.id)?1:['Firing','MotionDetection','CapacitySmall','CapacityLarge','Autoloader'].includes(m.id)?3:2]));
   const saved={...s,baseline:'T&T 0.2.28',global:2.7,seed:348,items:{...s.items,Firing:0},visible:{...s.visible,Range:false}};
   for(const id of added){delete saved.items[id];delete saved.visible[id];}

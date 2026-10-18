@@ -45,11 +45,11 @@
   const tierNames=['Abundant','Common','Uncommon','Rare','Epic','Legendary','Mythic'];
   function defaults(data) { return {version:1,baseline:data.meta.baseline,seed:24601,tierWeights:Object.fromEntries(tierNames.map(name=>[name,data.defaults?.tierWeights?.[name]??null])),global:data.defaults?.global??1,material:.6,rolls:1,retention:1,selected:'all',overlay:'spawns',visible:Object.fromEntries(data.modules.map(m=>[m.id,true])),items:Object.fromEntries(data.modules.map(m=>[m.id,data.defaults?.items?.[m.id]??1]))}; }
   function migrateValue(path,value,baseline) {
-    if(/^T&T 0\.2\.(2[6-9]|3[0-9]|4[0-7])$/.test(baseline))return value;
+    if(/^T&T 0\.2\.(2[6-9]|[3-4][0-9]|5[0-3])$/.test(baseline))return value;
     if(path==='global')return value/4.5;
     if(path.startsWith('items.')) {
       const id=path.slice(6);
-      if(['Magazine','Splitter','Fragment','FiringEnhanced','MotionDetectionEnhanced','Piercing','InitialBlow','Execute','Impact','Conservation','Synergy','Martyrdom','Tack','Regulator'].includes(id))return value;
+      if(['Magazine','Splitter','Fragment','FiringEnhanced','MotionDetectionEnhanced','Piercing','InitialBlow','Execute','Impact','Conservation','Synergy','Martyrdom','Tack','Regulator','Lure','Void','Siphon'].includes(id))return value;
       const factor=['Firing','MotionDetection','CapacitySmall','CapacityLarge','Autoloader'].includes(id)?3:2;
       return value/(baseline==='Installed 0.2.22'&&id==='Suppression'?1:factor);
     }
@@ -72,7 +72,7 @@
       for(const name of tierNames){const n=tiers[name];if(n!==null&&(typeof n!=='number'||!Number.isFinite(n)||n<0||n>1000000))throw Error('Invalid '+name+' tier weight.');s.tierWeights[name]=n;}
     }
     for(const m of data.modules) {
-      const added=legacy&&['Magazine','Splitter','Fragment','FiringEnhanced','MotionDetectionEnhanced','Piercing','InitialBlow','Execute','Impact','Conservation','Synergy','Martyrdom','Tack','Regulator'].includes(m.id)&&input.items?.[m.id]===undefined;
+      const added=legacy&&['Magazine','Splitter','Fragment','FiringEnhanced','MotionDetectionEnhanced','Piercing','InitialBlow','Execute','Impact','Conservation','Synergy','Martyrdom','Tack','Regulator','Lure','Void','Siphon'].includes(m.id)&&input.items?.[m.id]===undefined;
       const value=added?1:legacy&&['Critical','Accuracy'].includes(m.id)&&input.items?.[m.id]===undefined?1:input.items?.[m.id];
       if(typeof value!=='number' || !Number.isFinite(value) || value<0 || value>20) throw Error('Invalid '+m.name+' multiplier.');
       s.items[m.id]=legacy&&!added?migrateValue("items."+m.id,value,input.baseline):value;

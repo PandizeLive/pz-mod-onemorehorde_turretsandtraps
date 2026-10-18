@@ -344,6 +344,10 @@ function W.pickup(player, object, id)
     if not room then forceDropHeavyItems(player) end
     if player:getInventory():AddItem(item) ~= item then return false end
     state.lureRepeat = false
+    local battery = T.contents(contents).battery
+    if battery then
+        require("OMHTT/TurretBattery").detach(battery)
+    end
     T.moveContents(contents, item:getInventory())
     require("OMHTT/ControlWorld").packTurret(object, item)
     if isServer() then
@@ -549,7 +553,8 @@ function W.fire(player, object, target, signal)
         if not committed then return false end
         options.ammoCost = charged
         if power.kind == "battery" then
-            require("OMHTT/TurretBattery").spend(power.battery, power.cost)
+            local spent = require("OMHTT/TurretBattery").spend(power.battery, power.cost)
+            options.siphon = require("OMHTT/TurretSiphon").capture(object, power, stats, spent)
         elseif power.kind == "generator" then
             power.generator:setFuel(math.max(0, power.generator:getFuel() - power.cost))
             require("OMHTT/TurretPowerSync").changed(power.generator)

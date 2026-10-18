@@ -70,8 +70,18 @@ end
 ---@param items table Exact items
 ---@param incoming boolean Into turret
 ---@param kind string Slot type
+---@param replaced InventoryItem? Exact occupied module slot
 ---@return nil
-function Panel:transfer(items, incoming, kind)
+function Panel:transfer(items, incoming, kind, replaced)
+    if incoming and kind == "module" and replaced then
+        if #items ~= 1 then self:feedback(0, "SwapFailed"); return end
+        local Swap = require("OMHTT/TurretModuleSwap")
+        local action = Swap:new(self.player, self.object, items[1], replaced, self.deviceId, self.controller)
+        if not action:isValid() then self:feedback(0, "SwapFailed"); return end
+        ISTimedActionQueue.add(action)
+        self:feedback(1)
+        return
+    end
     local route = self.controller and require("OMHTT/TurretNetworkTransfers") or X
     local count, reason = route.queue(self.player, self.object, items, incoming, kind, self.toStockpile, self.controller)
     self:feedback(count, reason)
@@ -279,6 +289,13 @@ function Panel:refresh()
             if kind == "module" or kind == "capacity" then slot.rarity = Rarity.get(T.component(item:getFullType())) end
         end
     end
+    local ordered = require("OMHTT/TurretModuleSwap").modules(self.object)
+    for i = 1, #self.moduleSlots do
+        local slot = self.moduleSlots[i]
+        local item = ordered[self.moduleRow * 6 + i]
+        slot.items = item and {item} or {}
+        slot.rarity = item and Rarity.get(T.component(item:getFullType())) or nil
+    end
     local loaded = stats.firearm and G.loaded(contents.head) or 0
     local physicalLimit, freeWeight = require("OMHTT/TurretCapacity").limit(storage, contents, stats)
     self.ammoSlot.detailText = getText("UI_OMHTT_AmmoPhysical", stats.ammo, physicalLimit, string.format("%.1f", freeWeight))
@@ -365,6 +382,22 @@ function Panel:refresh()
         self.ammoSlot.label = getText("UI_OMHTT_ManageNotNeeded")
         self.magazineSlot.label = getText("UI_OMHTT_ManageNotNeeded")
     end
+    local revision = state.transferRevision or 0
+    local changed = self.transferRevision ~= nil and self.transferRevision ~= revision
+    for i = 1, #self.slots do
+        local slot = self.slots[i]
+        local key = tostring(slot.items[1] and slot.items[1]:getID() or 0) .. ":" .. #slot.items
+        if slot == self.voidSlot then
+            key = tostring(contents.virtualAmmo)
+        elseif slot == self.magazineSlot then
+            key = key .. ":" .. tostring(cycle and cycle.loaded or 0)
+        end
+        if changed and slot.itemKey ~= key then
+            slot.pulseUntil = getTimestampMs() + 250
+        end
+        slot.itemKey = key
+    end
+    self.transferRevision = revision
     self.magazineSlot.missing = magazineType ~= nil and not gun:isContainsClip()
     self.modulesMissing = false
     if contents.active.Firing and not contents.active.MotionDetection then

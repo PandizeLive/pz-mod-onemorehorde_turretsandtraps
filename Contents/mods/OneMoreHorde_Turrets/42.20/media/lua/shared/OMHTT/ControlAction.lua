@@ -3,6 +3,29 @@ local A = require("OMHTT/ControlAccess")
 OMHTTControlAction = ISBaseTimedAction:derive("OMHTTControlAction")
 local Action = OMHTTControlAction
 
+---@return boolean turning
+function Action:waitToStart()
+    if self.command ~= "Pickup" then return false end
+    self.character:faceThisObject(self.object)
+    return self.character:shouldBeTurning()
+end
+
+---@return nil
+function Action:start()
+    local state = A.state(self.object)
+    if self.command ~= "Pickup" or not state or state.kind ~= "Plate" then return end
+    self:setActionAnim("Loot")
+    self:setAnimVariable("LootPosition", "Low")
+    self:setOverrideHandModels(nil, nil)
+end
+
+---@return nil
+function Action:update()
+    if self.command == "Pickup" then
+        self.character:faceThisObject(self.object)
+    end
+end
+
 ---@return boolean valid
 function Action:isValid()
     local state = A.state(self.object)
@@ -52,6 +75,12 @@ function Action:complete()
         end
     elseif self.command == "Name" then
         state.name = self.value ~= "" and self.value or nil
+        for i = 1, #state.links do
+            local target = W.objects[state.links[i]]
+            if target then
+                W.publish(target)
+            end
+        end
     elseif self.command == "Access" then
         local faction = self.value == "Faction" and Faction.getPlayerFaction(self.character)
         if self.value == "Faction" and not faction then return false end

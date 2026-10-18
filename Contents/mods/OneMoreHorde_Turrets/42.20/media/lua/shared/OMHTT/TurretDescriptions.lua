@@ -9,7 +9,7 @@ local stacks = {
     Accuracy = {"Chance", 5, "AccuracyBonus", 100}, InitialBlow = {"Damage", 25, "InitialBlowBonus", 200},
     Execute = {"Threshold", 2, "ExecuteBonus", 100}, Impact = {"Chance", 2, "ImpactBonus", 100},
     Fragment = {"Damage", 5, "FragmentBonus", 100}, Martyrdom = {"Radius", .25}, Tack = {"Radius", .25},
-    Regulator = {"Battery", 25}, Conservation = {"Uses", 1}, Splitter = {"Shots", 1}, Piercing = {"Piercing", 1},
+    Siphon = {"Siphon", 1}, Regulator = {"Battery", 25}, Conservation = {"Uses", 1}, Splitter = {"Shots", 1}, Piercing = {"Piercing", 1},
     Suppression = {"Suppression", .6, "SuppressionDiminishing", 10},
 }
 

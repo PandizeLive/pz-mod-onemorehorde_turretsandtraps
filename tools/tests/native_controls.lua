@@ -7,14 +7,11 @@ local T = require("OMHTT/Turret")
 return function(player)
     assert(isServer() and not isClient(), "Controls probe requires actual server mode")
     if EXPECT_READ then
-        local found = false
-        for _, saved in pairs(C.records().records) do
-            if saved.name == "Gate plate" and saved.owner == "control-owner" and saved.trigger == "Zombies" then
-                assert(#saved.links == 1, "Saved private link was lost")
-                found = true
-            end
-        end
-        assert(found, "Fresh process lost private device/access configuration")
+        local fixture = ModData.getOrCreate("OMHTTNativeControls")
+        local saved = fixture.plate and C.records().records[fixture.plate]
+        assert(saved and saved.name == "Gate plate" and saved.owner == "control-owner"
+            and saved.trigger == "Zombies", "Fresh process lost exact private device/access configuration")
+        assert(#saved.links == 1 and saved.links[1] == fixture.receiver, "Saved private link was lost")
     end
     player:setUsername("control-owner")
     local recipes = {
@@ -203,6 +200,8 @@ return function(player)
     C.publish(plate)
     local base = player:getInventory():AddItem(T.BASE)
     T.configure(base:getInventory())
+    -- Recover an isolated fixture tile left by a prior failed probe, as normal chunk load does.
+    require("OMHTT/TurretAuthority").reconcile(square)
     local consumedBase = ArrayList.new()
     consumedBase:add(base)
     local localTurret = IsoThumpable.new(getCell(), square, "omhtt_turret_01_16", false)
@@ -226,6 +225,7 @@ return function(player)
         and head:getContainer() == controller:getContainer(), "Native installed-head drop to exact stockpile failed")
     assert(not TurretTransfer:new(stranger,localTurret,head,true,turretId,nil,nil,false,controller):complete(), "Private stockpile theft accepted")
     assert(Transfer:new(player,controller,head,false,host.id):complete(), "Head cleanup withdrawal failed")
+    require("OMHTT/NativeC314")(player, controller, localTurret)
     assert(require("OMHTT/TurretPickupAction"):new(player,localTurret,"Pickup",turretId):complete(), "Empty native test turret cleanup failed")
     host.powered = true
     print("[OMHTT-C300] native-stockpile-head=bidirectional exact-item=yes offline-nearby=yes theft=blocked net-action=constructed")
@@ -248,6 +248,11 @@ return function(player)
     local clock = getTimestampMs()
     input.recoverAt, input.active = clock - 1, true
     assert(C.link(plate, receiver, true), "Native direct link failed")
+    assert(C.link(button, receiver, true), "Native second input link failed")
+    C.publish(receiver)
+    assert(#receiver:getModData().OMHTTControl.inputs == 2, "Receiver did not publish both incoming sources")
+    assert(C.link(button, receiver, false), "Individual disconnect failed")
+    assert(#receiver:getModData().OMHTTControl.inputs == 1, "Disconnect left stale incoming source")
     local linked, on = C.input(receiver, clock)
     assert(linked and on, "Occupied plate did not power receiver")
     input.active = false
@@ -307,5 +312,7 @@ return function(player)
         end
     end
     SandboxVars.OMHTurretsTraps = saved
+    local fixture = ModData.getOrCreate("OMHTTNativeControls")
+    fixture.plate, fixture.receiver = input.id, output.id
     print("[OMHTT-Controls] native devices=3 ownership=private read=public replay=blocked remote=power-scoped plate=recovery-safe backup=48h heavy=exact capacities=30")
 end

@@ -90,7 +90,10 @@ def build_component(component):
     count = 85 if trap else 30
     tiles = b"tdef" + integer(1) + integer(1)
     tiles += (sheet + "\nOMHTT_" + component.title() + ".png\n").encode("ascii")
-    tiles += integer(4) + integer((count + 3) // 4) + integer(1) + integer(count) + integer(0) * count
+    tiles += integer(4) + integer((count + 3) // 4) + integer(1) + integer(count)
+    plate_first = 80 if trap else 25
+    for index in range(count):
+        tiles += integer(1) + b"RenderLayer\nFloor\n" if index >= plate_first else integer(0)
     position = 12
 
     def read_int():

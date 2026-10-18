@@ -158,11 +158,16 @@ function Action:complete()
             end
         end
         moved = moved + 1
+        if not self.incoming and T.kind(candidate) == "battery" then
+            require("OMHTT/TurretBattery").detach(candidate)
+        end
         if summary then
             summary.reserveAll, summary.reserve, summary.ammo = summary.reserveAll + 1, summary.reserve + 1, summary.ammo + 1
         end
     end
     if moved == 0 then return false end
+    local state = T.state(self.object)
+    state.transferRevision = (state.transferRevision or 0) + 1
     local contents = T.contents(storage)
     if G.profile(contents.head) then
         Feed.restore(contents.head, T.cycleConfig(contents).magazine, self.character, false)

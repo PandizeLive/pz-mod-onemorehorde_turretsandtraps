@@ -109,6 +109,7 @@ end
 ---@return nil
 function E.hit(zombie, alive, x, y, z, record, player, options)
     if not alive or not options.procJobs then return end
+    require("OMHTT/TurretSiphon").hit(zombie, options.siphon, false)
     local stats, now = options.stats, Clock.now()
     if stats.tack > 0 then
         local data = require("OMHTT/DefenseActorState").get(zombie)
@@ -118,7 +119,7 @@ function E.hit(zombie, alive, x, y, z, record, player, options)
             options.procFields, E.reservedFields = options.procFields - 1, E.reservedFields - 1
             E.serial = E.serial + 1
             local field = {id = tostring(E.serial), x = x, y = y, z = z, radius = stats.tack,
-                damage = stats.tackDamage, starts = now + 500, expires = now + 500 + stats.tackLifetime, source = record.id}
+                damage = stats.tackDamage, starts = now + 500, expires = now + 500 + stats.tackLifetime, source = record.id, siphon = options.siphon}
             E.fields[field.id], data.OMHTTTackField = field, field.id
             E.fieldOrder[#E.fieldOrder + 1] = field
             E.fieldCount = E.fieldCount + 1
@@ -132,6 +133,7 @@ function E.hit(zombie, alive, x, y, z, record, player, options)
         E.serial = E.serial + 1
         E.jobs[#E.jobs + 1] = {id = tostring(E.serial), x = x, y = y, z = z, radius = stats.martyrdom, damage = stats.martyrdomDamage,
             source = record.id, player = player, weapon = options.effectWeapon, seen = {}, queuedAt = now, due = now + 750, audioDue = now + 550,
+            generation = 0, synergy = stats.synergy, siphon = options.siphon,
             dx = -math.ceil(stats.martyrdom), dy = -math.ceil(stats.martyrdom), index = 0}
 
     end
@@ -196,7 +198,21 @@ function E.step(job)
             if instanceof(actor, "IsoPlayer") then
                 E.injure(actor)
             else
-                Damage.resolve(actor, job.damage / 100, job.source, "martyrdom")
+                local x, y = actor:getX(), actor:getY()
+                Damage.resolve(actor, job.damage / 100, job.source, "martyrdom", function(lost)
+                    if lost <= 0 then return end
+                    require("OMHTT/TurretSiphon").hit(actor, job.siphon, true)
+                    if job.synergy and (job.generation or 0) == 0 and actor:isDead()
+                        and #E.jobs + E.reservedJobs < 512 then
+                        E.serial = E.serial + 1
+                        local due = Clock.now()
+                        E.jobs[#E.jobs + 1] = {id = tostring(E.serial), x = x, y = y, z = job.z,
+                            radius = job.radius, damage = job.damage * .5, source = job.source,
+                            generation = 1, synergy = true, siphon = job.siphon, seen = {}, queuedAt = due,
+                            due = due + 750, audioDue = due + 550,
+                            dx = -math.ceil(job.radius), dy = -math.ceil(job.radius), index = 0}
+                    end
+                end)
             end
         end
         if job.index > moving:size() or moving:get(job.index - 1) ~= actor then job.index = job.index - 1 end
@@ -252,7 +268,7 @@ function E.save()
     for _, field in pairs(E.fields) do
         if field.expires > now then
             data.fields[#data.fields + 1] = {id = field.id, x = field.x, y = field.y, z = field.z,
-                radius = field.radius, damage = field.damage, remaining = field.expires - now, source = field.source,
+                radius = field.radius, damage = field.damage, remaining = field.expires - now, source = field.source, siphon = field.siphon,
                 startRemaining = math.max(0, field.starts - now), sounded = field.sounded}
         end
     end
@@ -260,7 +276,8 @@ function E.save()
     for i = 1, #E.jobs do
         local job = E.jobs[i]
         data.jobs[i] = {id = job.id, x = job.x, y = job.y, z = job.z, radius = job.radius,
-            damage = job.damage, source = job.source, remaining = math.max(0, (job.due or now) - now),
+            damage = job.damage, source = job.source, siphon = job.siphon, generation = job.generation, synergy = job.synergy,
+            remaining = math.max(0, (job.due or now) - now),
             audioRemaining = math.max(0, (job.audioDue or now) - now), sounded = job.sounded, started = job.started,
             dx = job.dx, dy = job.dy, index = job.index}
     end

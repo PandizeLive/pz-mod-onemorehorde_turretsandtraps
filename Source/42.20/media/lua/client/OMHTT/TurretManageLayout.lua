@@ -181,7 +181,7 @@ function L.create(panel)
     panel.slotHeight = slot
     panel.equipmentWidth = math.floor((rowWidth - 8) * .40)
     panel.ammunitionX = panel.equipmentWidth + 12
-    panel.ammunitionWidth = panel.body.width - 16 - panel.ammunitionX
+    panel.ammunitionWidth = panel.body.width - 8 - panel.ammunitionX
     local equipment = panel.equipmentWidth - 8
     local ammoX, ammoWidth = panel.ammunitionX + 4, panel.ammunitionWidth - 8
     local measure = getTextManager()

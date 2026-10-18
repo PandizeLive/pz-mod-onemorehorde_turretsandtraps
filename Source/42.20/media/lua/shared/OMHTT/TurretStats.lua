@@ -159,6 +159,7 @@ function S.resolve(contents)
         modules = math.floor(S.option("PotatoModuleCapacity", 2, 0, 20) + extraModules),
         conservation = 1 + (active.Conservation or 0),
         synergy = active.Synergy ~= nil,
+        siphon = (active.Siphon or 0) > 0 and active.Siphon + 1 or 0,
         martyrdom = active.Martyrdom and S.option("MartyrdomRadius", 1.5, .25, 10) + (active.Martyrdom - 1) * .25 or 0,
         martyrdomDamage = S.option("MartyrdomDamage", 20, 0, 1000),
         tack = active.Tack and S.option("TackRadius", 1, .25, 10) + (active.Tack - 1) * .25 or 0,

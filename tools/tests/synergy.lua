@@ -92,10 +92,15 @@ a.health = 0
 E.hit(a, true, a:getX(), a:getY(), 0, record, nil, shot)
 V.cancel(shot)
 local near = makeZombie(testSquares["2002:2000:0"], .1)
+local terminal = makeZombie(testSquares["2003:2000:0"], .05)
 local fieldsBefore = E.fieldCount
 now = now + 750
 for _ = 1, 200 do if #E.jobs > 0 then E.tick() end end
-check(near:isDead() and #E.jobs == 0 and E.fieldCount == fieldsBefore, "Martyrdom terminal kill creates no recursive burst or Tack field")
+check(near:isDead() and #E.jobs == 1 and E.jobs[1].generation == 1 and E.jobs[1].damage == 10
+    and E.fieldCount == fieldsBefore, "Synergy queues one half-damage Martyrdom child without Tack recursion")
+now = now + 750
+for _ = 1, 200 do if #E.jobs > 0 then E.tick() end end
+check(terminal:isDead() and #E.jobs == 0, "Reduced Martyrdom lethal generation drains without recursive growth")
 a.getEmitter = oldEmitter
 
 E.load(); V.reset()

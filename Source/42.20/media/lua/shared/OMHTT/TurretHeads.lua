@@ -7,7 +7,7 @@ H.definitions = {
     ["Base.OMHTTTurretRotaryBlades"] = {key = "RotaryBlades", rotary = true, damage = 40, range = 2, shove = 10, weight = 6},
 }
 H.excluded = {Filter = true, Splitter = true, Piercing = true, Conservation = true, Magazine = true, Reload = true,
-    Autoloader = true, Impact = true, Fragment = true, Synergy = true, Range = true, Accuracy = true, Void = true}
+    Autoloader = true, Impact = true, Fragment = true, Range = true, Accuracy = true, Void = true}
 
 ---@param item InventoryItem? Head
 ---@return table? definition
@@ -75,7 +75,7 @@ function H.crossing(bearing, before, after, omni)
                     phase = 90 - phase
                 end
                 local crossing = stroke * 90 + phase
-                if crossing > before and crossing <= after then return arm + 1, math.floor(crossing / 90) end
+                if crossing > before and crossing <= after then return arm + 1, stroke end
             end
         end
     end

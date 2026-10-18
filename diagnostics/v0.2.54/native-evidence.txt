@@ -1,0 +1,24 @@
+PROBE write
+LOG  : Lua          f:0 st:369,543,480> [OMHTT] packages-ready version=0.2.54 traps=true turrets=true game=42.21
+LOG  : Lua          f:0 st:369,548,171> [OMHTT-Controls] native-summary rounds=5000 milliseconds=6
+LOG  : Lua          f:0 st:369,548,908> [OMHTT-Controls] native-platform-order other-head=valid stale=rejected cross-family=rejected publication=retained pickup=retained
+LOG  : Lua          f:0 st:369,549,065> [OMHTT-Controls] adjacent-native-access directions=6 policy=valid
+LOG  : Lua          f:0 st:369,549,076> [OMHTT-C314] native swap=exact reorder=passed exclusive=blocked replay=blocked action=serialized siphon=fractional duplicate-death=blocked detach=blocked
+LOG  : Lua          f:0 st:369,549,082> [OMHTT-Controls] native devices=3 ownership=private read=public replay=blocked remote=power-scoped plate=recovery-safe backup=48h heavy=exact capacities=30
+LOG  : General      f:0 st:369,553,113> [OMHTT-Controls] persistence mode=write items=250 weight=over100 owner=preserved
+LOG  : General      f:0 st:369,553,117> [OMHTT-Controls] native-stock-transfer selectedBag=exact removedBag=rejected constructorArgs=retained bytes=137
+LOG  : General      f:0 st:369,553,161> [OMHTT-Controls] ammunition-persistence mode=write rounds=5000 items=5002 exact=true
+LOG  : General      f:0 st:369,553,471> [OMHTT-Smoke] native-persistence mode=write parts=28 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved legacy=8 edges=8 outline=4 reinforced=8 orientation=preserved
+LOG  : General      f:0 st:369,563,555> Shutdown handling finished
+PROBE read
+LOG  : Lua          f:0 st:369,599,626> [OMHTT] packages-ready version=0.2.54 traps=true turrets=true game=42.21
+LOG  : Lua          f:0 st:369,604,314> [OMHTT-Controls] native-summary rounds=5000 milliseconds=8
+LOG  : Lua          f:0 st:369,605,016> [OMHTT-Controls] native-platform-order other-head=valid stale=rejected cross-family=rejected publication=retained pickup=retained
+LOG  : Lua          f:0 st:369,605,076> [OMHTT-Controls] adjacent-native-access directions=6 policy=valid
+LOG  : Lua          f:0 st:369,605,087> [OMHTT-C314] native swap=exact reorder=passed exclusive=blocked replay=blocked action=serialized siphon=fractional duplicate-death=blocked detach=blocked
+LOG  : Lua          f:0 st:369,605,094> [OMHTT-Controls] native devices=3 ownership=private read=public replay=blocked remote=power-scoped plate=recovery-safe backup=48h heavy=exact capacities=30
+LOG  : General      f:0 st:369,610,658> [OMHTT-Controls] persistence mode=read items=250 weight=over100 owner=preserved
+LOG  : General      f:0 st:369,610,662> [OMHTT-Controls] native-stock-transfer selectedBag=exact removedBag=rejected constructorArgs=retained bytes=137
+LOG  : General      f:0 st:369,610,680> [OMHTT-Controls] ammunition-persistence mode=read rounds=5000 items=5002 exact=true
+LOG  : General      f:0 st:369,611,002> [OMHTT-Smoke] native-persistence mode=read parts=28 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved legacy=8 edges=8 outline=4 reinforced=8 orientation=preserved
+LOG  : General      f:0 st:369,621,198> Shutdown handling finished

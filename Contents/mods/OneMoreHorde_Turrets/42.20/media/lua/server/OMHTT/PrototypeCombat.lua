@@ -234,7 +234,11 @@ function Combat.splash(record, target, impactSquare, tx, ty, options)
             local dy = zombie:getY() - ty
             if options.splash > 0 and dx * dx + dy * dy <= options.radius * options.radius
                 and Combat.clearLane(impactSquare, zombie:getSquare(), options.range) then
-                Damage.resolve(zombie, options.splash, record.id, "splash")
+                Damage.resolve(zombie, options.splash, record.id, "splash", function(lost)
+                    if lost > 0 then
+                        require("OMHTT/TurretSiphon").hit(zombie, options.siphon, options.secondary == true)
+                    end
+                end)
                 splash = splash + 1
             end
         end

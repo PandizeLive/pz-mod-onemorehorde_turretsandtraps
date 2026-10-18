@@ -24,6 +24,9 @@ end
 ---@return nil
 function A.created(actor)
     states[actor] = nil
+    if not isServer() and actor:hasModData() then
+        actor:getModData().OMHTTSiphonClaimed = nil
+    end
 end
 
 Events.OnZombieCreate.Add(A.created)

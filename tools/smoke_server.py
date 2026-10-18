@@ -34,6 +34,7 @@ def main():
     (turret_probe.parent / "OMHTT/NativeHeads.lua").write_text((ROOT / "tools/tests/native_heads.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativeContentC247.lua").write_text((ROOT / "tools/tests/native_content_c247.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativeControls.lua").write_text((ROOT / "tools/tests/native_controls.lua").read_text(encoding="utf-8").replace("EXPECT_READ", "true" if os.environ.get("OMHTT_PROBE_MODE") == "read" else "false"), encoding="utf-8")
+    (turret_probe.parent / "OMHTT/NativeC314.lua").write_text((ROOT / "tools/tests/native_c314.lua").read_text(encoding="utf-8"), encoding="utf-8")
     bulk_probe = turret_probe.parent / "OMHTT/NativeBulkTransfer.lua"
     bulk_probe.write_text((ROOT / "tools/tests/native_bulk_transfer.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativeTurretAuthority.lua").write_text((ROOT / "tools/tests/native_turret_authority.lua").read_text(encoding="utf-8"), encoding="utf-8")
@@ -122,9 +123,9 @@ def main():
     assert "[OMHTT-Smoke] native-module-pack rewards=3 duplicates=distinct expansion=valid repeat=blocked corpse=once" in text, "Native pack proof missing"
     assert "[OMHTT-Smoke] native-module-pack-persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Native pack persistence proof missing"
     assert "[OMHTT-Smoke] native-pack-loot-parser pools=16 packs=16 weights=positive" in text, "Native pack loot parse failed"
-    assert "[OMHTT-Smoke] native-module-loot-parser pools=16 items=227 weights=positive" in text, "Native module loot parse failed"
+    assert "[OMHTT-Smoke] native-module-loot-parser pools=16 items=233 weights=positive" in text, "Native module loot parse failed"
     assert "native-power modules=16 aliases=once m9=0.00639 rifleShots=6776 generator=matched conditionals=valid" in text, "Native power/conditional integration failed"
-    assert "[OMHTT-Smoke] native-modules loot=227 profiles=valid condition=checked" in text, "Native module rules failed"
+    assert "[OMHTT-Smoke] native-modules loot=233 profiles=valid condition=checked" in text, "Native module rules failed"
     assert "[OMHTT-Smoke] native-install exact=selected decoy=preserved preview=nonconsuming" in text, "Native Install selection failed"
     assert "[OMHTT-Smoke] native-turret-persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Turret world persistence failed"
     assert "[OMHTT-Smoke] native-improvised mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Improvised exact-item persistence failed"

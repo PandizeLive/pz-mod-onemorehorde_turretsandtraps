@@ -1,7 +1,7 @@
 {
   "gameVersion": "42.21.0",
-  "modBaseline": "T&T 0.2.50",
-  "scope": "New-world SP estimates matching T&T 0.2.50",
+  "modBaseline": "T&T 0.2.54",
+  "scope": "New-world SP estimates matching T&T 0.2.54",
   "sources": [
     {
       "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\ProjectZomboid\\media\\maps\\Muldraugh, KY\\worldmap.xml",
@@ -15,13 +15,13 @@
     },
     {
       "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\Contents\\mods\\OneMoreHorde_Turrets\\42.20\\media\\lua\\shared\\OMHTT\\LootDefinitions.lua",
-      "sha256": "9576a26085f07e2c82ed2241d601d0c6b503dbb2213171bd107fea023070c996",
-      "bytes": 3764
+      "sha256": "737072662088424b2156233dc2fa9db8dfe57df4e4d2244655e67cab5af569b4",
+      "bytes": 3742
     },
     {
       "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\loot-site\\cache\\Lua\\loot-routes.json",
-      "sha256": "f0a4ecc00de1dfbca0794432b2b7191fc49c921e93a39fc1d9c2bbd7e4b230fd",
-      "bytes": 134611
+      "sha256": "9d67face02a3ae0249e67a8a7a13ac528854c1489f3c530f7b3ebabb1e85d655",
+      "bytes": 134987
     },
     {
       "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\loot-site\\cache\\Lua\\loot-tile-properties.txt",
@@ -35,17 +35,17 @@
     },
     {
       "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\Contents\\mods\\OneMoreHorde_Turrets\\42.20\\media\\sandbox-options.txt",
-      "sha256": "7ed9298199efdb8d73b7f3c9ff14cf1c79e34b2678ef9c1f2356b685c176bad3",
-      "bytes": 27639
+      "sha256": "b403fc7323694725cad19208c2a36ed77aa6d7821f35a0781a071b56f7d5025a",
+      "bytes": 27838
     }
   ],
   "dataset": {
-    "sha256": "72370d0e54693780c17f449c281053df5c27fb2cb7e802e259876ca07e3de3a7",
-    "bytes": 4363396
+    "sha256": "835d6004bb110715c9a0413bd7ebdf98c15ec61738c06705e1cc5d436a0c69e3",
+    "bytes": 4363570
   },
   "extraction": {
     "game": "42.21.0",
-    "baseline": "T&T 0.2.46",
+    "baseline": "T&T 0.2.54",
     "previousBaselines": [
       "Installed 0.2.22",
       "T&T 0.2.23",

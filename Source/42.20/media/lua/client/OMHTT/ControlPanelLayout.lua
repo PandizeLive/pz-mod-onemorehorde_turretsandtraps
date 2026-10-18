@@ -92,6 +92,7 @@ function L.create(panel)
     end
     body.contentHeight = panel.clearInputs.y + panel.clearInputs.height + 12
     body:setScrollHeight(body.contentHeight)
+    panel.inputs = require("OMHTT/ControlConnectionList").create(panel)
     L.refresh(panel, A.state(panel.object))
 end
 
@@ -113,30 +114,36 @@ function L.refresh(panel, state)
     panel.infoY = body.y + info
     local actionY = info + h * 4 + 8
     place(panel.manage, x, actionY, half)
-    place(panel.assign, x + half + 8, actionY, half)
-    local access = actionY + ((kind == "Turret" or assigned) and row + 12 or 0)
-    place(panel.setFacing, x, access, width)
-    if kind == "Turret" and A.state(panel.object).kind == "Controller" then
-        access = access + row + 12
-    end
-    panel.accessY = body.y + access
-    place(panel.policy, x, access + h + 8, width)
-    panel.policy:setHeight(row)
-    panel.ownerY = access + h + row + 14
-    local connection = panel.ownerY + h + 14
+    place(panel.setFacing, x + half + 8, actionY, half)
+    local connection = actionY + (kind == "Turret" and row + 14 or 0)
     panel.connectionY = body.y + connection
     local controlsY = connection + h * 3 + 12
     place(panel.source, x, controlsY, half)
     place(panel.trigger, x + half + 8, controlsY, half)
     place(panel.link, x, controlsY, width)
-    place(panel.clearInputs, x, controlsY + row + 8, width)
-    local controls = {panel.manage, panel.assign, panel.setFacing, panel.source, panel.trigger, panel.link, panel.clearInputs}
+    local bottom = controlsY + row + 12
+    place(panel.inputs, x, bottom, width)
+    panel.inputs:setHeight(math.max(90, panel.inputs.itemheight * 3))
+    if kind == "Turret" then
+        bottom = bottom + panel.inputs.height + 8
+    end
+    place(panel.clearInputs, x, bottom, width)
+    if kind == "Turret" then
+        bottom = bottom + row + 12
+    end
+    if kind == "Controller" then
+        bottom = controlsY
+    end
+    panel.accessY = body.y + bottom
+    place(panel.policy, x, bottom + h + 12, assigned and half or width)
+    place(panel.assign, x + half + 8, bottom + h + 12, half)
+    panel.ownerY = bottom + h + row + 20
+    local controls = {panel.policy, panel.manage, panel.assign, panel.setFacing, panel.source, panel.trigger, panel.link, panel.clearInputs}
     for i = 1, #controls do
         controls[i]:setHeight(row)
     end
-    body.contentHeight = panel.clearInputs.y + row + 12
-    body:setScrollHeight(kind == "Controller" and controlsY + 8 or body.contentHeight)
-    body.contentHeight = kind == "Controller" and controlsY + 8 or body.contentHeight
+    body.contentHeight = panel.ownerY + h + 14
+    body:setScrollHeight(body.contentHeight)
     body:setYScroll(math.max(math.min(0, body.height - body.contentHeight), body:getYScroll()))
 end
 
@@ -190,8 +197,8 @@ function L.drawDetails(panel, host, state)
     local body, h, x = panel.detailBody, panel.lineHeight, 10
     local width = body.width - 36
     local infoY, accessY, connectionY = panel.infoY - body.y, panel.accessY - body.y, panel.connectionY - body.y
-    body:section(accessY, connectionY - 10, getText("UI_OMHTT_AccessTitle"))
-    body:section(connectionY, body.contentHeight - 4, getText("UI_OMHTT_Connections"))
+    body:section(accessY, body.contentHeight - 4, getText("UI_OMHTT_AccessAssignment"))
+    body:section(connectionY, accessY - 10, getText("UI_OMHTT_Connections"))
     local scroll = body:getYScroll()
     body:setStencilRect(x, infoY + scroll, width, h * 4)
     local dx, dy = panel.selected:getX() - panel.object:getX(), panel.selected:getY() - panel.object:getY()
@@ -229,7 +236,7 @@ function L.drawDetails(panel, host, state)
     if state.kind == "Turret" then
         local source = A.state(panel.linkSource)
         count = getText(source and (require("OMHTT/ControlDefinitions").linked(source, state)
-            and "UI_OMHTT_InputConnected" or "UI_OMHTT_InputNotConnected") or "UI_OMHTT_SelectInputHint")
+            and "UI_OMHTT_InputConnected" or "UI_OMHTT_InputNotConnected") or (#panel.inputs.items == 0 and "UI_OMHTT_NoInputs" or "UI_OMHTT_DisconnectHelp"))
     end
     if panel.linkSource == panel.selected and state.kind ~= "Turret" then
         count = getText("UI_OMHTT_SelectReceiverHint")

@@ -122,3 +122,16 @@ Owner: **“6A - instead of ‘the attack’s’ we’ll use ‘the shot’s’.
 The requested uniform “shot’s” wording does not change rotary support: refunds still use actual paid battery energy for the complete swing/pass, with only already-paid energy settled on interruption. Preserve per-kill refunds, the Synergy requirement for module-generated secondary kills, original battery identity and charge cap, and all confirmed C311/C312 rules. Battery Drain and Rarity remain calculated fields. No health repair or weakening effect is added by the name.
 
 All presented design choices are settled. All C310 findings and the selected Grouped Controller redesign remain queued for the corrective patch; no Source/Contents/version/install or Workshop change, new gameplay test, or owner/connected acceptance is claimed by this documentation update.
+
+
+## C314 — Patch approved and implemented (2026-10-18)
+
+Owner: **“Approved to patch.”** Implements the entire C310–C313 settled scope in **0.2.54**, with multiplayer authority retained. No recipe or additional gameplay decision is introduced. The earlier “ready for final approval” paragraphs are historical; this is the implementation approval.
+
+- Siphon uses server-confirmed deaths and actual paid battery debits. Original battery generation guards reject delayed refunds after removal/reinstallation. Both rotary arms share the actual-cost stroke/revolution record; interruption closes already-paid energy. An endpoint belongs to its completed stroke. No global scanner or new tick subscription is added.
+- Synergy enables compatible rotary effects and one additional Martyrdom generation at half damage. Existing bounded schedulers and the 512-job ceiling remain. Follow-up bursts are admitted only while capacity is available; they never delay death or reset generation.
+- Grouped Controller actions, authoritative incoming inputs/individual Disconnect, Controller-only entry, Set Aim deferred native cursor initialization, floor-layer plate metadata and low pickup animation.
+- Exact occupied-module replacement/reordering, destination tooltips, 250-ms successful-transfer border feedback and corrected Ammunition inset. Atomic server swaps use the existing defense whitelist/capacity rules, not the native Stockpile callback that intentionally rejects server insertions.
+- Local LootLab catalog, color/shape, pack/Sandbox eligibility and old-scenario compatibility include Siphon. The hosted update requires renewed Cloudflare login; local/browser and server catalog changes are prepared, not deployed. No account weights were rewritten.
+
+[Patch](PATCH_v0.2.54.md) and [verification / owner test](TEST_v0.2.54.md). Rendered GPU, audio and connected multiplayer acceptance remain owner checks. Next new content stays R4C2 Poke Floor; R4C3 beam sensors are outside this patch.

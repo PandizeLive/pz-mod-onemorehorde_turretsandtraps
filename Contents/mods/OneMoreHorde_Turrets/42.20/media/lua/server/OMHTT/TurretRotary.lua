@@ -6,6 +6,7 @@ local M = require("OMHTT/TurretModules")
 local Clock = require("OMHTT/TurretClock")
 local Conditional = require("OMHTT/TurretConditionalHit")
 local Damage = require("OMHTT/Damage")
+local Siphon = require("OMHTT/TurretSiphon")
 local R = {}
 local weapon
 local parts
@@ -86,7 +87,7 @@ function R.contact(entry, actor, job)
     if entry.hits[arm][actor] == pass then return end
     local Proc = require("OMHTT/TurretProc")
     if not Proc.available(job.stats) then return end
-    local proc = {stats = job.stats}
+    local proc = {stats = job.stats, siphon = job.energy and job.energy[pass]}
     Proc.reserve(proc)
     local hitX, hitY = actor:getX(), actor:getY()
     entry.hits[arm][actor] = pass
@@ -129,8 +130,12 @@ function R.step(entry, deadline)
     end
     local stats = entry.rotaryStats
     local head = contents.head
-    if not state or not stats.rotary then return false end
+    if not state or not stats.rotary then
+        Siphon.stop(entry)
+        return false
+    end
     if entry.rotaryHead ~= head then
+        Siphon.stop(entry)
         entry.rotaryHead, entry.rotaryAt, entry.rotaryJob = head, now, nil
         entry.gameAt = getGameTime():getWorldAgeHours()
         entry.travel, entry.checkedTravel, entry.hits = 0, 0, {setmetatable({}, {__mode = "k"}), setmetatable({}, {__mode = "k"})}
@@ -146,6 +151,7 @@ function R.step(entry, deadline)
         entry.rotaryJob.moving = false
     end
     if not powered then
+        Siphon.stop(entry)
         state.rotaryMoving, state.rotaryManual = false, nil
         entry.rotaryJob, entry.hasTarget = nil, false
         return true
@@ -190,6 +196,7 @@ function R.step(entry, deadline)
         local transaction = {batteryPercent = cost, generatorFuel = stats.generatorFuel * seconds}
         local power = W.power(object, contents, transaction)
         if not power then
+            Siphon.stop(entry)
             if contents.battery and require("OMHTT/TurretBattery").charge(contents.battery) > 0 then
                 require("OMHTT/TurretBattery").spend(contents.battery, 1)
             end
@@ -198,13 +205,15 @@ function R.step(entry, deadline)
             entry.rotaryJob = nil
             entry.checkedTravel = entry.travel
         else
+            local spent = 0
             if power.kind == "battery" then
-                require("OMHTT/TurretBattery").spend(power.battery, power.cost)
+                spent = require("OMHTT/TurretBattery").spend(power.battery, power.cost)
             elseif power.kind == "generator" then
                 power.generator:setFuel(math.max(0, power.generator:getFuel() - power.cost))
                 require("OMHTT/TurretPowerSync").changed(power.generator)
             end
             entry.travel = before + travel
+            entry.siphonEnergy = Siphon.motor(entry, power, stats, spent, before, entry.travel, profile.omni)
         end
         if entry.stopAt and entry.travel >= entry.stopAt then
             moving = false
@@ -216,13 +225,17 @@ function R.step(entry, deadline)
     if not entry.rotaryJob then
         if not moving and not manual and (not automatic or now < (entry.rotaryScanAt or 0)) then return true end
         entry.rotaryJob = {at = now, x = -2, y = -2, index = 0, profile = M.profile(state, contents, false, stats), detection = profile, stats = stats,
-            moving = entry.travel > entry.checkedTravel, before = math.max(entry.checkedTravel, entry.travel - stats.motorSpeed * .1), after = entry.travel}
+            moving = entry.travel > entry.checkedTravel, before = math.max(entry.checkedTravel, entry.travel - stats.motorSpeed * .1), after = entry.travel,
+            energy = entry.siphonEnergy}
         entry.checkedTravel = entry.travel
     end
     local job = entry.rotaryJob
     for i = 1, 48 do
         if getTimestampMs() >= deadline then return true end
         if job.y > 2 then
+            if not moving then
+                Siphon.stop(entry)
+            end
             entry.hasTarget = job.target == true
             local interval = M.option("DetectionInterval", .25, .1, 5)
             if contents.active.MotionDetectionEnhanced then

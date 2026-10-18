@@ -139,11 +139,13 @@ function U.world(index, context, objects, test)
                 local state = A.state(object)
                 if state and not seen[object] then
                     seen[object] = true
-                    context:addOption(getText("UI_OMHTT_ControlManage"), object, function(device)
-                        if luautils.walkAdjObject(player, device, false) then
-                            ISTimedActionQueue.add(Open:new(player, device))
-                        end
-                    end)
+                    if state.kind == "Controller" then
+                        context:addOption(getText("UI_OMHTT_ControlManage"), object, function(device)
+                            if luautils.walkAdjObject(player, device, false) then
+                                ISTimedActionQueue.add(Open:new(player, device))
+                            end
+                        end)
+                    end
                     if state.kind == "Button" then
                         context:addOption(getText("UI_OMHTT_ControlPress"), object, function(device)
                             if luautils.walkAdjObject(player, device, false) then

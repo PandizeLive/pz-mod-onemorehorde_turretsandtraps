@@ -246,7 +246,7 @@ function V.finish(ray)
                     local combat = require("OMHTT/PrototypeCombat")
                     local record = {id = ray.id, shots = ray.shot}
                     combat.splash(record, victim, square, x, y, {splash = ray.damage * (owner.splash or 0) / math.max(.000001, owner.damage),
-                        radius = owner.radius or 0, range = group.stats.range})
+                        radius = owner.radius or 0, range = group.stats.range, siphon = owner.siphon, secondary = not primary})
                     local state = require("OMHTT/DefenseActorState").get(victim)
                     if not victim:isDead() and not victim:isOnFloor() and not victim:isKnockedDown()
                         and (not state.OMHTTKnockdownUntilMs or state.OMHTTKnockdownUntilMs <= getTimestampMs())
@@ -447,7 +447,7 @@ function V.save()
             end
             data.owners[owners[owner]] = {stats = owner.stats, rayBudget = owner.rayBudget, procJobs = owner.procJobs,
                 procFields = owner.procFields, impactReady = owner.impactReady, scrapId = owner.scrapId, savedScrap = savedScrap,
-                damage = owner.damage, splash = owner.splash, radius = owner.radius, source = owner.source}
+                damage = owner.damage, splash = owner.splash, radius = owner.radius, source = owner.source, siphon = owner.siphon}
         end
         if not groups[group] then
             groups[group] = #data.groups + 1
