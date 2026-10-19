@@ -1,5 +1,9 @@
 # 0.2.55.2 verification — C325
 
+## Owner follow-up — C326
+
+Console confirms loaded 0.2.55.2 on 42.21. Owner reports weak interaction feedback, disconnect menu behind Controller, module centering/row regression, parent turret tooltip blocking its submenu, and Stockpile column overflow when narrowed. These are unresolved findings, not acceptance. Additional organization/Manage/LootLab requests and proposed fixes are recorded in [C326](CORRECTIONS_C326.md). No gameplay changes or new native acceptance test in this discussion.
+
 ## Owner findings and diagnosis
 
 Owner's screenshots show missing links, bright trigger rows, a Stockpile scrollbar in the list interior and awkward Selected Device scrolling. Owner also reports unstable resizing and requests all three link gestures, disconnect handles, visible resize corners and defense condition/ammo feedback. Inspected console confirms SP 0.2.55.1; the prior repeating ControlGraph child-update exception is not recurring. This is a new corrective test failure, not blanket acceptance of 0.2.55.1 or evidence that its earlier exception returned.
