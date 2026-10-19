@@ -1,5 +1,7 @@
 # R4C2 — Poke Floor
 
+**Current correction — C334:** Poke Floor triggers itself through contact, with no external Button/Plate or manual firing. Earlier external-trigger proposals below are superseded. Tire Pump/improvised crafting and local-battery-first priority are selected. Zombie occupancy repetition remains the presented choice.
+
 ## C332 — Initial content choices proposed (2026-10-19)
 
 Owner asks: "Anything need to be discussed with poke floor?" This authorizes discussion, not implementation. Inspected active branch e93f7dc, fetched origin/dev and confirmed the existing draft PR #1 is the only open PR. Installed 0.2.56.1 and its deferred owner test remain unchanged.
@@ -70,3 +72,27 @@ Siphon: the Controller must never receive a refund. Recommended exact-source int
 **3 — Battery priority.** Electricity/generator first in both cases. 3A recommended: device's installed battery, then assigned Controller's battery as fallback. 3B: Controller battery, preserving the device's battery as the last reserve. A follows the ordinary meaning of fallback and lets local Siphon remain useful; B centralizes routine servicing. Only battery priority is undecided, not whether shared fallback exists.
 
 No source/package/version changes are made in this planning turn. Inspected active branch f7d5d5a, fetched origin/dev and confirmed draft PR #1 remains the only open PR. The installed 0.2.56.1 owner test stays deferred; selected choices are not rendered or connected acceptance.
+
+## C334 — Self-triggering Poke Floor; recipe and power order selected (2026-10-19)
+
+Owner selects C333 1A and 3A and corrects activation: Pokes are triggered by the trap itself, need no external trigger, and external/manual activation should do nothing.
+
+Confirmed: standard recipe uses one Tire Pump; improvised uses two Metal Pipes. Keep equal output performance and the C333 common materials, tools, skills, time and XP. Power priority is local electricity/generator, then the device battery, then its assigned Controller battery bank. Stored spares, exact shared debits, 500-weight capacity and Controller Siphon exclusion remain in scope.
+
+Poke Floor is a self-triggering contact trap, not an external signal receiver. Do not offer Button/Plate links or manual Fire/Poke actions. Hide incompatible input ports/actions on Map and Connections, and reject unsupported linking/activation on the server. Controller assignment remains useful for management and fallback power, not firing. Ordinary disarming/service is distinct from a manual strike. This does not change turret signal behavior or preselect the future dart emitter's rules.
+
+The owner's Bed Spikes-style careful traversal and would-scratch -> actual stroke -> wound sequence remains. Do not restore the rejected generic per-strike roll or hypothetical external-trigger injury rule. Failed/unpowered activation cannot injure invisibly; deduplicate the contact request and the resulting strike. Existing power, operational state, safe retraction and 50 damage / 1.5-second cadence remain. Traps have no modules.
+
+This explicitly supersedes all earlier Poke Floor Button-single-cycle and held-Plate-repetition rules. The original activation source is no longer valid; safe cycle completion and no backlog remain requirements.
+
+### Remaining choice — zombies staying on the tile
+
+The existing Bed Spikes code uses movement to offer a trip and a new fall to cause damage; it is not a persistent occupancy actuator. Do not silently inherit it as the new zombie activation policy.
+
+**1A recommended:** eligible zombie contact starts a cycle and continued occupancy repeats at most once per 1.5 seconds. Stop scheduling when clear and complete safe retraction. Include standing, crawling and prone eligible zombies; preserve one hit per victim per strike and Horde Night consent. Stationary zombies cannot bypass the trap.
+
+**1B:** one cycle on first entry, then rearm only after all eligible zombies leave. The 1.5-second minimum still applies; rapid entries never queue a backlog. This reduces upkeep/output but leaves a stationary crowd untouched after the first cycle.
+
+This choice concerns zombies only. Player movement/injury eligibility is already owner-directed and must not become automatic activation for every careful walker.
+
+Planning only. Inspected bd7795f, fetched origin/dev and confirmed draft PR #1 is the only open PR. No gameplay/package/version/install change or new test. Installed 0.2.56.1 owner and connected acceptance remain deferred.

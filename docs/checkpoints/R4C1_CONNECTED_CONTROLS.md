@@ -535,3 +535,7 @@ Owner asks what follows and cannot test 0.2.56.1 now. Confirm the existing R4C2 
 ## C333 — Controller car batteries and shared receiver fallback (2026-10-19)
 
 Owner requests replacing ordinary Controller batteries with car batteries, automatic sequential spare use, and assigned turret/trap fallback to the Controller's battery. Siphon excludes the Controller. [C333 design and remaining priority choice](R4C2_POKE_FLOOR.md#c333--owner-selections-and-shared-fallback-power-2026-10-19) supersedes the old ordinary-battery-only power source contract. Keep existing stockpile capacity, identity/access/range and independent-package requirements. Existing automatic ordinary-battery switching is implemented, but shared car-battery operation debits are new work and are not yet claimed delivered.
+
+## C334 — Poke Floor is not an external signal receiver (2026-10-19)
+
+Owner explicitly rejects external/manual Poke Floor activation. The [current Poke Floor contract](R4C2_POKE_FLOOR.md#c334--self-triggering-poke-floor-recipe-and-power-order-selected-2026-10-19) supersedes earlier Button/Plate rules for that trap. Controller assignment remains for management and fallback battery power. Existing turret signals are unchanged.

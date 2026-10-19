@@ -1745,3 +1745,7 @@ Owner: "Anything need to be discussed with poke floor?" [R4C2 proposal](checkpoi
 ## C333 — Poke Floor selections; Controller car-battery fallback (2026-10-19)
 
 Owner selects C332 1A/2B/3A/5A/6B, requests an improvised recipe and evaluates Tire Pump substitution. Bed Spikes-style traversal/scratch eligibility must request visible activation before the actual injury. Traps have no modules. Owner adds Controller car batteries, sequential spares and connected-device fallback; Siphon cannot affect the Controller. [Detailed provenance, source findings and remaining choices](checkpoints/R4C2_POKE_FLOOR.md#c333--owner-selections-and-shared-fallback-power-2026-10-19). Do not infer a second injury roll, unlimited stockpile, shared mains coverage or Controller-energy Siphon refund. No new gameplay version or implementation/owner acceptance claim.
+
+## C334 — Self-triggering Poke Floor supersedes external activation (2026-10-19)
+
+Owner selects C333 1A Tire Pump/improvised recipe and 3A local-before-Controller battery priority. Explicitly rejects external/manual Poke Floor activation: it triggers itself. [Updated contract and remaining zombie occupancy choice](checkpoints/R4C2_POKE_FLOOR.md#c334--self-triggering-poke-floor-recipe-and-power-order-selected-2026-10-19). No gameplay implementation or acceptance claim; other signal receivers are unchanged.
