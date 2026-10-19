@@ -51,11 +51,17 @@ end
 ---@param key string Localized title suffix
 ---@return nil
 function Theme.title(panel, key)
-    panel:drawRect(1, 1, panel.width - 2, panel.titleHeight - 2, 1, .13, .13, .13)
-    panel:setStencilRect(12, 4, panel.width - 60, panel.titleHeight - 4)
+    require("OMHTT/ControlWindowChrome").arrange(panel)
+    if panel.titleTexture then
+        panel:drawTextureScaled(panel.titleTexture, 2, 1, panel.width - 4, panel.titleHeight - 2, 1, 1, 1, 1)
+    else
+        panel:drawRect(1, 1, panel.width - 2, panel.titleHeight - 2, .85, .13, .13, .13)
+    end
+    local left = panel.lockButton and panel.titleHeight + 4 or 12
+    panel:setStencilRect(left, 4, panel.width - left - (panel.lockButton and panel.titleHeight * 2 or 48), panel.titleHeight - 4)
     local brand = getText("UI_OMHTT_Brand")
-    panel:drawText(brand, 12, 8, .85, .25, .25, 1, UIFont.Medium)
-    local x = 12 + getTextManager():MeasureStringX(UIFont.Medium, brand)
+    panel:drawText(brand, left, 8, .85, .25, .25, 1, UIFont.Medium)
+    local x = left + getTextManager():MeasureStringX(UIFont.Medium, brand)
     panel:drawText(" - " .. getText(key), x, 8, 1, 1, 1, 1, UIFont.Medium)
     panel:clearStencilRect()
 end
@@ -69,9 +75,9 @@ end
 ---@param title string Caption
 ---@return nil
 function Theme.section(panel, x, y, width, height, header, title)
-    panel:drawRect(x, y, width, height, .98, .055, .055, .055)
+    panel:drawRect(x, y, width, height, .22, .055, .055, .055)
     panel:drawRectBorder(x, y, width, height, .65, .30, .30, .30)
-    panel:drawRect(x, y, width, header, 1, Theme.surface.r, Theme.surface.g, Theme.surface.b)
+    panel:drawRect(x, y, width, header, .8, Theme.surface.r, Theme.surface.g, Theme.surface.b)
     panel:drawRect(x, y, 2, header, 1, Theme.accent.r, Theme.accent.g, Theme.accent.b)
     panel:drawText(title, x + 8, y + 4, .95, .95, .95, 1, UIFont.Small)
 end

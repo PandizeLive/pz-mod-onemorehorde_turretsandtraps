@@ -123,6 +123,10 @@ end
 function Slot:prerender()
     ISPanel.prerender(self)
     local h = self.owner.lineHeight
+    if self.kind == "module" and self.disabled and not self.items[1] then
+        self:drawTextCentre(getText("UI_OMHTT_ManageLocked"), self.width / 2, (self.height - h) / 2, .5, .5, .5, 1, UIFont.Small)
+        return
+    end
     local color = self.rarity
     if color then self:drawRect(1, 1, self.width - 2, self.height - 2, .18, color.r, color.g, color.b) end
     local red, green = self.missing and 1 or 0.8, self.missing and 0.3 or 0.8
@@ -201,7 +205,7 @@ end
 ---@param delta number Wheel direction
 ---@return boolean handled
 function Slot:onMouseWheel(delta)
-    if self.kind == "module" and self.owner.rows > 3 then return self.owner:scrollModules(delta) end
+    if self.kind == "module" and self.owner.rows > 4 then return self.owner:scrollModules(delta) end
     return self.owner:onMouseWheel(delta)
 end
 

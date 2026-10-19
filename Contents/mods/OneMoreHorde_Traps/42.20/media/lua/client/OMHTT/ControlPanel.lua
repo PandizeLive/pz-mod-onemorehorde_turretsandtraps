@@ -109,10 +109,14 @@ end
 
 ---@return nil
 function Panel:prerender()
-    if not A.state(self.object) or not A.near(self.player, self.object) then
+    if not A.state(self.object) or self.object:getObjectIndex() < 0 or (not A.near(self.player, self.object) and not self.keepOpen) then
         self:close(); return
     end
     ISPanel.prerender(self)
+    if self.chromeCollapsed then
+        Theme.title(self, "UI_OMHTT_ControllerTitle")
+        return
+    end
     require("OMHTT/ControlPanelLayout").arrange(self)
     local now = getTimestampMs()
     if self.scanIndex or now >= self.scanDue then
@@ -181,6 +185,12 @@ function Panel:prerender()
 
     self.policy:setTitle(getText("UI_OMHTT_Access", state and state.access or "—"))
     self.assign:setTitle(getText(state and state.controller == host.id and "UI_OMHTT_Unassign" or "UI_OMHTT_Assign"))
+    if not A.near(self.player, self.object) then
+        self.manage:setEnable(false)
+        self.assign:setEnable(false)
+        self.policy:setEnable(false)
+        self.trigger:setEnable(false)
+    end
 
 end
 
@@ -268,6 +278,7 @@ function Panel.open(player, object)
         panel.marker = getWorldMarkers():addGridSquareMarker(object:getSquare(), Theme.accent.r, Theme.accent.g, Theme.accent.b, false, 40)
         panel.marker:setScaleCircleTexture(true)
     end
+    require("OMHTT/ControlWindowChrome").install(panel)
     panel:addToUIManager()
     active[player:getPlayerNum()] = panel
     require("OMHTT/ControlOverlay").panels[panel] = true

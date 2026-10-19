@@ -48,6 +48,12 @@ local function run(panel, player, controller)
         "In-game map opens by default and loads its data once, never during repeated UI draws")
     check(api.options.HideUnvisited==true and api.options.ImagePyramid==false,
         "Default map preserves visited-area visibility without satellite images")
+    local menuBefore, hitBefore, routed = Graph.menu, native.hit, 0
+    Graph.menu = function(owner, object) check(owner==panel and object==controller, "Map forwards the exact selected device"); routed=routed+1 end
+    native.hit = function() return controller end
+    check(native.nativeMap:onRightMouseDown(5,5) and native.nativeMap:onRightMouseUp(5,5)
+        and routed==1, "Native child right-button callbacks route one disconnect menu")
+    Graph.menu, native.hit = menuBefore, hitBefore
     panel:removeChild(native)
     SandboxVars.Map = {AllowWorldMap=false}
     local unavailable = Map.create(panel)
@@ -262,6 +268,13 @@ local function run(panel, player, controller)
     getMouseX, getMouseY = function() return 100 end, function() return 100 end
     Graph.outputPort(panel, output)
     check(#choices == 3 and commands == before + 2, "Multiple incoming links require choosing one rather than deleting all")
+    choices = {}
+    local hitBefore = panel.mapView.hit
+    panel.mapView.hit = function() return output end
+    panel.mapView:onRightMouseDown(10,10)
+    panel.mapView:onRightMouseUp(10,10)
+    check(#choices==3 and choices[1].title==getText("UI_OMHTT_All"), "Map receiver exposes the same All and individual disconnections")
+    panel.mapView.hit = hitBefore
     choices[2].callback(choices[2].owner, choices[2].source, choices[2].target)
     Graph.refreshForPanel(panel)
     check(commands == before + 3 and value == false, "Chosen incoming connection alone is removed")

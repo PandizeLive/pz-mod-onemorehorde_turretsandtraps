@@ -31,6 +31,7 @@ end
 ---@return nil
 function Drag.update(panel)
     require("OMHTT/WindowGeometry").checkViewport(panel)
+    require("OMHTT/ControlWindowChrome").update(panel)
     if panel.moving and not isMouseButtonDown(0) then
         Drag.stop(panel)
     end

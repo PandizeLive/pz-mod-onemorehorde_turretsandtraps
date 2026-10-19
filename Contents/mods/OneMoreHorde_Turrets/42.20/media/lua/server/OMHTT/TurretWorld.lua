@@ -150,6 +150,9 @@ end
 ---@return boolean changed
 function W.setPower(player, object, enabled)
     if not W.near(player, object) then return false end
+    if not enabled then
+        require("OMHTT/ControlCycle").manualOff(object)
+    end
     return W.applyPower(object, enabled, player)
 end
 
@@ -182,7 +185,10 @@ function W.applyPower(object, enabled, player)
     if isClient() or type(enabled) ~= "boolean" or not W.valid(object) then return false end
     local state = T.state(object)
     state.powered, state.automatic = enabled, nil
-    if not enabled then state.lureRepeat = false end
+    if not enabled then
+        state.lureRepeat = false
+        require("OMHTT/ControlCycle").cancel(object)
+    end
     state.rotaryManual, state.rotaryMoving = nil, false
     require("OMHTT/TurretAim").entries[object] = nil
     local search = require("OMHTT/TurretSearch").pending[object]
@@ -470,6 +476,7 @@ end
 function W.fire(player, object, target, signal)
     if isClient() then return "Unavailable" end
     local started = getTimestampMs()
+    if not player and not require("OMHTT/ControlCycle").canFire(object) then return "Off" end
     if not T.isOn(T.state(object)) then return "Off" end
     if T.state(object).facingPending then return "Turning" end
     if player then
@@ -610,6 +617,9 @@ function W.fire(player, object, target, signal)
         loaded = cycle.loaded, reloadReady = cycle.reloadReady, nextShot = cycle.nextShot, fireMs = effectsAt - started,
         prepareMs = fireStarted - started, combatMs = committedAt - fireStarted,
         refreshMs = refreshedAt - committedAt, effectsMs = effectsAt - refreshedAt})
+    if result == "Fired" or result == "Misfire" then
+        require("OMHTT/ControlCycle").fired(object)
+    end
     return result
 end
 

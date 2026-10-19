@@ -264,6 +264,40 @@ return function(player)
     assert(not TurretTransfer:new(stranger,localTurret,head,true,turretId,nil,nil,false,controller):complete(), "Private stockpile theft accepted")
     assert(Transfer:new(player,controller,head,false,host.id):complete(), "Head cleanup withdrawal failed")
     require("OMHTT/NativeC314")(player, controller, localTurret)
+    local Cycle = require("OMHTT/ControlCycle")
+    local World = require("OMHTT/TurretWorld")
+    local Clock = require("OMHTT/TurretClock")
+    local storage = localTurret:getContainer()
+    local pulseHead = storage:AddItem("Base.OMHTTTurretPotato")
+    storage:AddItem("Base.OMHTTModuleFiring")
+    local battery = storage:AddItem("Base.CarBattery1")
+    battery:setCurrentUsesFloat(1)
+    for i = 1, 5 do storage:AddItem("Base.Potato") end
+    World.refresh(localTurret)
+    C.state(button).recoverAt, C.state(localTurret).recoverAt = 0, 0
+    assert(C.link(button,localTurret,true), "Native cycle input link failed")
+    local clockNow = Clock.now
+    local activeNow = clockNow()
+    Clock.now = function() return activeNow end
+    T.state(localTurret).facingPending = true
+    C.pulse(localTurret)
+    local request = Cycle.pending[localTurret]
+    assert(request and T.isOn(T.state(localTurret)), "Native button did not retain pending turn")
+    for i=1,20 do C.pulse(localTurret) end
+    assert(Cycle.pending[localTurret] == request, "Native repeated press replaced current cycle")
+    T.state(localTurret).facingPending = nil
+    C.receiver(localTurret,getTimestampMs())
+    assert(Cycle.pending[localTurret] and T.isOn(T.state(localTurret)), "Native pending turn did not continue through reload")
+    activeNow = activeNow + T.cycleConfig(T.contents(storage)).reload + 100
+    C.receiver(localTurret,getTimestampMs())
+    assert(not Cycle.pending[localTurret] and not T.isOn(T.state(localTurret)), "Native completed shot did not release temporary power")
+    assert(T.contents(storage).ammo == 4, "Native pulse did not consume exactly one real potato")
+    Clock.now = clockNow
+    C.clearInputs(localTurret)
+    while storage:getItems():size() > 0 do storage:Remove(storage:getItems():get(0)) end
+    World.refresh(localTurret)
+    print("[OMHTT-C330] native-cycle turn/reload/shot=pass rapid-press=no-backlog real-ammo=one power=off")
+
     assert(require("OMHTT/TurretPickupAction"):new(player,localTurret,"Pickup",turretId):complete(), "Empty native test turret cleanup failed")
     host.powered = true
     print("[OMHTT-C300] native-stockpile-head=bidirectional exact-item=yes offline-nearby=yes theft=blocked net-action=constructed")

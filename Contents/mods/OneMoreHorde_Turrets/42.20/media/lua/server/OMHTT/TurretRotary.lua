@@ -157,7 +157,7 @@ function R.step(entry, deadline)
         return true
     end
     local profile = M.profile(state, contents, true, stats)
-    local automatic = M.detects(state, contents) and contents.active.Firing
+    local automatic = M.detects(state, contents) and contents.active.Firing and not require("OMHTT/ControlCycle").managed(object)
     local manual = state.rotaryManual and now < state.rotaryManual
     local wants = manual or (automatic and entry.hasTarget)
     local moving = state.rotaryMoving == true

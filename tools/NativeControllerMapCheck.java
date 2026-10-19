@@ -26,7 +26,54 @@ public final class NativeControllerMapCheck {
             }
         }
     }
+    private static void rightClickDispatch() throws Exception {
+        Class<?> platformType = Class.forName("se.krka.kahlua.vm.Platform");
+        Class<?> platformImpl = Class.forName("se.krka.kahlua.j2se.J2SEPlatform");
+        Class<?> tableType = Class.forName("se.krka.kahlua.vm.KahluaTable");
+        Class<?> threadType = Class.forName("se.krka.kahlua.vm.KahluaThread");
+        Object platform = platformImpl.getMethod("getInstance").invoke(null);
+        Object environment = platformImpl.getMethod("newTable").invoke(platform);
+        Object thread = threadType.getConstructor(platformType, tableType).newInstance(platform, environment);
+        threadType.getField("debugOwnerThread").set(thread, Thread.currentThread());
+        Class<?> manager = Class.forName("zombie.Lua.LuaManager");
+        manager.getField("thread").set(null, thread);
+        Class.forName("zombie.ui.UIManager").getField("defaultthread").set(null, thread);
+        Class<?> converters = Class.forName("se.krka.kahlua.converter.KahluaConverterManager");
+        manager.getField("caller").set(null, Class.forName("se.krka.kahlua.integration.LuaCaller")
+            .getConstructor(converters).newInstance(converters.getConstructor().newInstance()));
+        Object parentTable = platformImpl.getMethod("newTable").invoke(platform);
+        Object childTable = platformImpl.getMethod("newTable").invoke(platform);
+        Class<?> functionType = Class.forName("se.krka.kahlua.vm.JavaFunction");
+        int[] calls = new int[2];
+        for (int side=0; side<2; side++) {
+            final int index = side;
+            Object callback = java.lang.reflect.Proxy.newProxyInstance(functionType.getClassLoader(), new Class<?>[]{functionType}, (proxy, method, values) -> {
+                if (!method.getName().equals("call")) return null;
+                calls[index]++;
+                values[0].getClass().getMethod("push", Object.class).invoke(values[0], true);
+                return 1;
+            });
+            for (String event : new String[]{"onRightMouseDown", "onRightMouseUp"})
+                tableType.getMethod("rawset", Object.class, Object.class).invoke(side==0 ? parentTable : childTable, event, callback);
+        }
+        Class<?> ui = Class.forName("zombie.ui.UIElement");
+        Object parent = ui.getConstructor(tableType).newInstance(parentTable);
+        Object child = Class.forName("zombie.worldMap.UIWorldMap").getConstructor(tableType).newInstance(childTable);
+        ui.getMethod("setWidth", double.class).invoke(parent, 500.0);
+        ui.getMethod("setHeight", double.class).invoke(parent, 300.0);
+        ui.getMethod("setWidth", double.class).invoke(child, 400.0);
+        ui.getMethod("setHeight", double.class).invoke(child, 200.0);
+        ui.getMethod("setConsumeMouseEvents", boolean.class).invoke(child, false);
+        ui.getMethod("AddChild", ui).invoke(parent, child);
+        for (String event : new String[]{"onRightMouseDown", "onRightMouseUp"}) {
+            Object handled = ui.getMethod(event, double.class, double.class).invoke(parent, 30.0, 30.0);
+            if (!Boolean.TRUE.equals(handled)) throw new IllegalStateException("Native map did not consume " + event);
+        }
+        if (calls[0] != 0 || calls[1] != 2) throw new IllegalStateException("Right click leaked or dispatched twice: " + calls[0] + "/" + calls[1]);
+        System.out.println("Native UIWorldMap right-button pair: child handlers consume exactly once without parent click-through");
+    }
     public static void main(String[] args) throws Exception {
+        rightClickDispatch();
         scrollbarResize(true);
         scrollbarResize(false);
         Class<?> ui = Class.forName("zombie.ui.UIElement");

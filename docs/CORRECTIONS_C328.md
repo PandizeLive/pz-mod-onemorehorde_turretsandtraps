@@ -35,3 +35,7 @@ The owner replaces the 4/8/4 layout with **4/4/4/4** and selects **2B**, native-
 Use the native-style keep-open lock with separate pin/collapse semantics and clear tooltips. Keeping a menu open never grants remote reach or bypasses ownership, access or server validation. Position locking is not selected.
 
 The remaining C328 correction scope is retained. These are design selections; no new implementation, package, version or installation occurred in this planning turn. Ready for patch approval; no further design decisions required.
+
+## C330 — implementation approved (2026-10-19)
+
+Owner explicitly says "Approved" after C329. Implement the complete retained correction scope with 4/4/4/4 geometry and native keep-open locking. Version 0.2.56.1 is the corrective candidate; automated, native, installed and owner acceptance are tracked separately in its patch/test records. No new approval gate is required for implementation, verification, local installation or the standing development mirror.

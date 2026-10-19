@@ -5,7 +5,7 @@ local T = require("OMHTT/Turret")
 local W = require("OMHTT/TurretWorld")
 local savedMode, savedFaction = testMode, Faction
 local oldState, oldContents, oldConfig = T.state, T.contents, T.cycleConfig
-local oldPower, oldFire = W.applyPower, W.fire
+local oldPower, oldFire, oldWorldContents, oldWorldPower = W.applyPower, W.fire, W.contents, W.power
 local oldTime = testMillis
 local auto = require("OMHTT/TurretAutomation")
 testMode = "server"
@@ -47,7 +47,10 @@ local function device(kind, x, y)
     return object, state
 end
 T.state = function(object) return object and object.turret end
-T.contents = function() return {head = {getFullType = function() return T.HEAD end}, active = {Firing = 1}} end
+local testHead = {getFullType = function() return T.HEAD end, getCondition = function() return 10 end}
+T.contents = function() return {head = testHead, heads = 1, ammo = 20, active = {Firing = 1}} end
+W.contents = T.contents
+W.power = function() return {kind="test"} end
 T.cycleConfig = function() return {rotary = false} end
 W.applyPower = function(object, value) object.turret.powered = value; return true end
 W.fire = function(player, object, target, signal)
@@ -117,14 +120,92 @@ C.receiver(target, testMillis)
 check(not target.turret.powered and target.shots == 2, "Pulse ends without repeated or queued firing")
 target.turret.facingPending = true
 C.pulse(target)
-check(target.turret.powered and target.shots == 2 and output.facingPulse, "Button holds one explicit shot through a pending direction turn")
+check(target.turret.powered and target.shots == 2 and require("OMHTT/ControlCycle").pending[target], "Button holds one explicit shot through a pending direction turn")
 target.turret.facingPending = nil
 testMillis = testMillis + 100
 C.receiver(target, testMillis)
-check(target.shots == 3 and not output.facingPulse and output.pulseHoldUntil == testMillis + 1, "Aligned button fires once and ends temporary turning power")
+check(target.shots == 3 and not require("OMHTT/ControlCycle").pending[target] and not target.turret.powered, "Aligned button fires once and ends temporary turning power")
 testMillis = testMillis + 100
 C.receiver(target, testMillis)
 check(not target.turret.powered and target.shots == 3, "Pending turn cannot leave automatic fire powered")
+local Cycles = require("OMHTT/ControlCycle")
+local Clock = require("OMHTT/TurretClock")
+local clockBefore, fireBefore = Clock.now, W.fire
+local activeTime = testMillis
+Clock.now = function() return activeTime end
+for _, mode in pairs({"sp", "server"}) do
+    testMode = mode
+    local outcome, attempts, committed = "Reloading", 0, 0
+    W.fire = function()
+        attempts = attempts + 1
+        if outcome == "Fired" then committed = committed + 1 end
+        return outcome
+    end
+    C.pulse(target)
+    local request = Cycles.pending[target]
+    check(request and target.turret.powered, "Pulse retains a reload in "..mode)
+    for i=1,100 do C.pulse(target) end
+    check(Cycles.pending[target] == request and attempts == 1, "Repeated pulses cannot grow or reset pending work in "..mode)
+    activeTime, testMillis = activeTime + 500, testMillis + 500
+    outcome = "Aiming"
+    C.receiver(target,testMillis)
+    check(Cycles.pending[target] == request and target.turret.powered, "Reload-to-aim transition retains power in "..mode)
+    outcome = "Fired"
+    C.receiver(target,testMillis)
+    C.receiver(target,testMillis+100)
+    check(committed == 1 and not Cycles.pending[target] and not target.turret.powered, "Completed pulse commits once then powers off in "..mode)
+    testMillis = testMillis + 200
+    outcome, input.active = "Reloading", true
+    C.receiver(target,testMillis)
+    input.active = false
+    C.receiver(target,testMillis+100)
+    check(Cycles.pending[target] and target.turret.powered, "Plate release retains the current reload in "..mode)
+    outcome = "Fired"
+    C.receiver(target,testMillis+200)
+    check(committed == 2 and not target.turret.powered, "Released plate finishes exactly one cycle in "..mode)
+    C.pulse(target)
+    outcome = "Reloading"
+    C.pulse(target)
+    Cycles.manualOff(target)
+    W.applyPower(target,false)
+    input.active = true
+    C.receiver(target,testMillis+300)
+    check(not Cycles.pending[target] and not target.turret.powered, "Manual Off cancels and suppresses a held input in "..mode)
+    input.active = false
+    C.receiver(target,testMillis+400)
+    C.pulse(target)
+    check(Cycles.pending[target] ~= nil, "A fresh press can rearm after manual Off in "..mode)
+    outcome = "Empty"
+    C.receiver(target,testMillis+500)
+    check(not Cycles.pending[target] and not target.turret.powered, "Empty supply safely cancels in "..mode)
+    outcome = "Reloading"
+    C.pulse(target)
+    activeTime = Cycles.pending[target].expires + 1
+    C.receiver(target,testMillis+600)
+    check(not Cycles.pending[target] and not target.turret.powered, "Stalled requests have a bounded lifetime in "..mode)
+    C.pulse(target)
+    C.link(plate, target, false)
+    C.link(button, target, false)
+    C.receiver(target,testMillis+700)
+    check(not Cycles.pending[target] and not target.turret.powered, "Removing the final link cancels pending work in "..mode)
+    C.link(plate, target, true)
+    C.link(button, target, true)
+    local normalConfig = T.cycleConfig
+    T.cycleConfig = function() return {rotary = true} end
+    outcome = "Fired"
+    target.turret.rotaryMoving, target.turret.rotaryManual = true, activeTime + 500
+    C.pulse(target)
+    check(Cycles.pending[target] and Cycles.pending[target].finishing and target.turret.powered, "Rotary retains power during its accepted pass in "..mode)
+    local rotaryShots = committed
+    C.receiver(target,testMillis+800)
+    check(committed == rotaryShots and target.turret.powered, "Rotary completion cannot schedule another shot in "..mode)
+    target.turret.rotaryMoving = false
+    activeTime = activeTime + 501
+    C.receiver(target,testMillis+900)
+    check(not Cycles.pending[target] and not target.turret.powered, "Rotary stops after its current pass in "..mode)
+    T.cycleConfig = normalConfig
+end
+Clock.now, W.fire, testMode = clockBefore, fireBefore, "server"
 target.shots = 2
 input.active, input.recoverAt = true, testMillis + 1000
 local linked, active = C.input(target, testMillis)
@@ -205,5 +286,5 @@ check(not C.autoAssign(denied,owner), "Auto-assignment honors the 32-input limit
 for i = 1, 30 do records["c315-fill-"..i] = nil end
 for i = 1, #made do C.removed(made[i]) end
 T.state, T.contents, T.cycleConfig = oldState, oldContents, oldConfig
-W.applyPower, W.fire = oldPower, oldFire
+W.applyPower, W.fire, W.contents, W.power = oldPower, oldFire, oldWorldContents, oldWorldPower
 Faction, testMode, testMillis = savedFaction, savedMode, oldTime

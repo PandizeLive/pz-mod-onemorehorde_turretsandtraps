@@ -1729,3 +1729,7 @@ Owner requests strict module ordering, one centered Unavailable label with Expan
 ## C329 — four-column modules and native keep-open lock (2026-10-19)
 
 Owner response to C328: rejects the 4/8/4 appearance in favor of 4/4/4/4 and chooses 2B. Adopt four centered, aligned rows of four; retain saved module order rather than inventing automatic sorting. Use native-style keep-open locking, distinct from pin/collapse and without overriding reach/access authority. Remaining corrective scope stays in [C328](CORRECTIONS_C328.md). Planning selections only; installed 0.2.56 unchanged. No further design choices required before patch approval.
+
+## C330 — Approved corrective implementation (2026-10-19)
+
+Owner: "Approved." Authorizes C328/C329 fixes, 4/4/4/4 saved-order geometry and native keep-open locking. Implemented as 0.2.56.1; see [patch](PATCH_v0.2.56.1.md) and [test/evidence](TEST_v0.2.56.1.md). No new recipe, loot, damage or permission decision. Installation and standing C108 development mirror follow verification; owner/rendered/connected acceptance stays pending.

@@ -1,5 +1,6 @@
 if isServer() then return end
 require("ISUI/ISPanel")
+require("ISUI/ISButton")
 require("ISUI/ISContextMenu")
 local A = require("OMHTT/ControlAccess")
 local U = require("OMHTT/ControlClient")
@@ -239,10 +240,6 @@ end
 ---@param y number Local Y
 ---@return boolean handled
 function Graph:onMouseDown(x, y)
-    if y < self.headerHeight and x > self.width - 110 then
-        Groups.rename(self.owner)
-        return true
-    end
     local row, port = self:hit(x, y)
     local group = Groups.at(self, y)
     self.downX, self.downY = x, y
@@ -322,6 +319,9 @@ end
 ---@return nil
 function Graph:prerender()
     local header, rowHeight = self.headerHeight, self.rowHeight
+    self.addGroup:setX(self.width - self.addGroup.width - 18)
+    self.addGroup:setY(self.owner.lineHeight + 12 - self:getYScroll())
+    self.addGroup:setEnable(A.authorized(self.owner.player, self.owner.object))
     self:setStencilRect(0, header, self.width - 12, math.max(0, self.height - header))
     self:drawRectStatic(0, header, self.width, self.height - header, 1, .055, .055, .055)
     local half = (self.width - 88) / 2
@@ -406,13 +406,11 @@ function Graph:prerender()
     self:clearStencilRect()
     local scroll = self:getYScroll()
     Theme.section(self, 0, -scroll, self.width, header, header, getText("UI_OMHTT_Connections"))
-    self:drawRectBorder(self.width - 110, 1 - scroll, 94, self.owner.lineHeight + 5, 1, .4, .4, .4)
-    self:drawTextRight(getText("UI_OMHTT_GroupAdd"), self.width - 22, 3 - scroll, .9, .9, .9, 1, UIFont.Small)
     if self.flashUntil and getTimestampMs() < self.flashUntil then
         self:drawRectBorder(1, -scroll, self.width - 16, self.height, .9, .7, .95, .7)
     end
-    self:drawText(getText("UI_OMHTT_Triggers"), 8, self.owner.lineHeight + 10 - scroll, .75, .75, .75, 1, UIFont.Small)
-    self:drawText(getText("UI_OMHTT_Defenses"), half + 78, self.owner.lineHeight + 10 - scroll, .75, .75, .75, 1, UIFont.Small)
+    self:drawText(getText("UI_OMHTT_Triggers"), 8, header - self.owner.lineHeight - 4 - scroll, .75, .75, .75, 1, UIFont.Small)
+    self:drawText(getText("UI_OMHTT_Defenses"), half + 78, header - self.owner.lineHeight - 4 - scroll, .75, .75, .75, 1, UIFont.Small)
 end
 
 ---@param owner ISPanel Controller
@@ -427,9 +425,17 @@ function Graph.create(owner)
     graph.stats = setmetatable({}, {__mode = "k"})
     graph.statsIndex, graph.statsDue = 1, 0
     graph.tooltip = getText("UI_OMHTT_GraphLinkHelp")
-    graph.headerHeight, graph.rowHeight = owner.lineHeight * 2 + 16, owner.lineHeight * 3 + 12
+    graph.headerHeight, graph.rowHeight = owner.lineHeight * 3 + 32, owner.lineHeight * 3 + 12
     graph:initialise()
     graph:setScrollChildren(false)
+    local caption = getText("UI_OMHTT_GroupAdd")
+    graph.addGroup = ISButton:new(0, owner.lineHeight + 12, math.max(94, getTextManager():MeasureStringX(UIFont.Small, caption) + 20), math.max(28, owner.lineHeight + 8), caption, owner, function(panel)
+        Groups.rename(panel)
+    end)
+    graph.addGroup:initialise()
+    Theme.button(graph.addGroup)
+    graph.addGroup.tooltip = getText("UI_OMHTT_GroupAddHelp")
+    graph:addChild(graph.addGroup)
     graph:addScrollBars(false)
     Theme.scrollbar(graph)
     owner:addChild(graph)

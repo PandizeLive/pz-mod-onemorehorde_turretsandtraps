@@ -16,7 +16,7 @@ end
 
 ---@return nil
 function Details:prerender()
-    self:drawRectStatic(0, 0, self.width, self.height, .95, .045, .045, .045)
+    self:drawRectStatic(0, 0, self.width, self.height, .12, .045, .045, .045)
     self:setStencilRect(0, 0, self.width, self.height)
     L.drawDetails(self.owner, A.state(self.owner.object), A.state(self.owner.selected))
 end
@@ -99,7 +99,6 @@ function L.arrange(panel)
     panel.detailBody:setHeight(math.max(80, bottom - detailsY))
     Theme.scrollbar(panel.detailBody)
     panel.layoutKind = nil
-    panel.closeButton:setX(panel.width - 40)
     panel.stockButtonY = panel.equipmentY + h * 3 + 12
     place(panel.stockButton, panel.controlWidth / 2 + 10, panel.stockButtonY, panel.controlWidth / 2 - 34)
     panel.stockButton:setVisible(panel.stockCompact)

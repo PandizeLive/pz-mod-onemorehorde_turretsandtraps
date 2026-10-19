@@ -18,6 +18,21 @@ function Native:instantiate()
     self:createChildren()
 end
 
+-- Consume the native child event before it reaches the world menu.
+---@param x number Local X
+---@param y number Local Y
+---@return boolean handled
+function Native:onRightMouseDown(x, y)
+    return self.parent:onRightMouseDown(x + self.x, y + self.y)
+end
+
+---@param x number Local X
+---@param y number Local Y
+---@return boolean handled
+function Native:onRightMouseUp(x, y)
+    return self.parent:onRightMouseUp(x + self.x, y + self.y)
+end
+
 ---@return nil
 function Map:loadNative()
     if self.mapAttempted then return end
@@ -155,6 +170,14 @@ end
 function Map:onMouseUpOutside()
     self.dragObject, self.panning = nil, false
     self:setCapture(false)
+    return true
+end
+
+---@param x number Local X
+---@param y number Local Y
+---@return boolean handled
+function Map:onRightMouseDown(x, y)
+    self:onMouseUpOutside()
     return true
 end
 

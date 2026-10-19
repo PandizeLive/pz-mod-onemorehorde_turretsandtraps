@@ -161,7 +161,7 @@ end
 ---@param delta number Wheel direction
 ---@return boolean handled
 function Panel:scrollModules(delta)
-    self.moduleRow = math.max(0, math.min(self.rows - 3, self.moduleRow + (delta > 0 and 1 or -1)))
+    self.moduleRow = math.max(0, math.min(self.rows - 4, self.moduleRow + (delta > 0 and 1 or -1)))
     self.nextRefresh = 0
     return true
 end
@@ -267,11 +267,12 @@ function Panel:refresh()
     end
     self.fireButton:setEnable(status == "Ready")
     local capacity = stats.modules
-    self.rows = 3 + math.ceil(math.max(0, math.max(contents.modules, capacity) - 16) / 6)
-    self.moduleRow = math.min(self.moduleRow, self.rows - 3)
+    self.rows = math.max(4, math.ceil(math.max(contents.modules, capacity) / 4))
+    self.hasLockedSlots = capacity < 16
+    self.moduleRow = math.min(self.moduleRow, self.rows - 4)
     for i = 1, #self.slots do self.slots[i].items, self.slots[i].rarity = {}, nil end
     for i = 1, 16 do
-        local number = self.moduleRow * 6 + i
+        local number = self.moduleRow * 4 + i
         local slot = self.moduleSlots[i]
         slot.disabled = number > capacity
         slot.label = ""
@@ -287,7 +288,7 @@ function Panel:refresh()
         if kind == "capacity" then slot = self.capacitySlot end
         if kind == "module" then
             modules = modules + 1
-            slot = self.moduleSlots[modules - self.moduleRow * 6]
+            slot = self.moduleSlots[modules - self.moduleRow * 4]
         end
         if kind and slot then
             slot.items[#slot.items + 1] = item
@@ -297,7 +298,7 @@ function Panel:refresh()
     local ordered = require("OMHTT/TurretModuleSwap").modules(self.object)
     for i = 1, #self.moduleSlots do
         local slot = self.moduleSlots[i]
-        local item = ordered[self.moduleRow * 6 + i]
+        local item = ordered[self.moduleRow * 4 + i]
         slot.items = item and {item} or {}
         slot.rarity = item and Rarity.get(T.component(item:getFullType())) or nil
     end
@@ -444,14 +445,21 @@ end
 
 ---@return nil
 function Panel:prerender()
-    if not Access.near(self.player, self.object, self.deviceId, true) then self:close(); return end
+    local reachable = Access.near(self.player, self.object, self.deviceId, true)
+    if not T.state(self.object) or self.object:getObjectIndex() < 0 or (not reachable and not self.keepOpen) then self:close(); return end
+    if self.chromeCollapsed then
+        ISPanel.prerender(self)
+        require("OMHTT/ControlTheme").title(self, "UI_OMHTT_TurretTitle")
+        return
+    end
     ISPanel.prerender(self)
     local now = getTimestampMs()
-    if now >= self.nextRefresh then
+    if reachable and now >= self.nextRefresh then
         self.nextRefresh = now + 200
         self:refresh()
         require("OMHTT/ControlManage").refresh(self)
     end
+    require("OMHTT/ControlManage").refresh(self)
     require("OMHTT/TurretManageLayout").refresh(self)
     require("OMHTT/TurretManageLayout").page(self)
     require("OMHTT/TurretManageLayout").draw(self)
@@ -487,7 +495,7 @@ function OpenAction:perform()
         panel.player, panel.object, panel.nextRefresh = self.character, self.object, 0
         panel.controller = self.controller
         panel.deviceId, panel.slots, panel.moduleSlots = T.state(self.object).id, {}, {}
-        panel.moduleRow, panel.rows = 0, 3
+        panel.moduleRow, panel.rows = 0, 4
         panel.equipmentY, panel.ammunitionY = top - lineHeight, ammunitionY
         panel.lineHeight, panel.titleHeight, panel.slotHeight = lineHeight, titleHeight, slotHeight
         panel.modulesY, panel.detailsY, panel.result, panel.reason = modulesY, detailsY, "", ""
@@ -530,10 +538,10 @@ function OpenAction:perform()
                 Utilities.control(self, "Reload", contents.head:getID())
             end
         end)
-        local moduleWidth = (width - 54) / 6
+        local moduleWidth = (width - 42) / 4
         for i = 1, 16 do
-            local row = i <= 4 and 0 or 1 + math.floor((i - 5) / 6)
-            local column = i <= 4 and i or (i - 5) % 6
+            local row = math.floor((i - 1) / 4)
+            local column = (i - 1) % 4
             panel.moduleSlots[i] = panel:addSlot("module", "", 12 + column * (moduleWidth + 6),
                 modulesY + lineHeight + row * (moduleHeight + 6), moduleWidth)
             panel.moduleSlots[i]:setHeight(moduleHeight)
@@ -551,6 +559,7 @@ function OpenAction:perform()
         require("OMHTT/ControlManage").refresh(panel)
         require("OMHTT/WindowGeometry").install(panel, "Manage", math.max(900, lineHeight * 48), 540,
             require("OMHTT/TurretManageLayout").refresh)
+        require("OMHTT/ControlWindowChrome").install(panel)
         panel:addToUIManager()
         active[index] = panel
         if Range then

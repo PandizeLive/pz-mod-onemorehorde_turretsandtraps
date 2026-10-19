@@ -35,7 +35,7 @@ function L.refresh(panel)
     panel.detailsButton:setHeight(row)
     panel.detailLines = string.split(getTextManager():WrapText(UIFont.Small, panel.moduleLines or "", math.floor(panel.body.width / 2) - 28), "\n")
     panel.detailsButton:setTitle(getText(panel.detailsOpen and "UI_OMHTT_DetailsClose" or "UI_OMHTT_DetailsOpen"))
-    panel.modulesBottom = panel.moduleGridBottom + row + 6
+    panel.modulesBottom = panel.moduleGridBottom + (panel.compactModuleActions and 4 or row + 6)
     local detailsHeight = math.max(h * (#panel.detailLines + 3) + 16, h * 7 + 16)
     local footer = (compact and 40 or 48) + h * (compact and 1 or 2) + (compact and 8 or 14) + row * (1 + (panel.hasLure and 1 or 0) + (panel.hasLanding and 1 or 0))
     local bodyHeight = panel.modulesBottom + 8
@@ -78,7 +78,7 @@ function L.refresh(panel)
     panel.body:setHeight(math.max(80, panel.rangeY - panel.body.y - 6))
     panel.detailsPage = panel.detailsOpen and desired > panel.height
     panel.detailsY = panel.detailsPage and panel.headerHeight + row + 16 or panel.modulesBottom + 8
-    panel.detailsButton:setY(panel.detailsPage and panel.headerHeight + 8 or panel.moduleGridBottom + 2)
+    panel.detailsButton:setY(panel.detailsPage and panel.headerHeight + 8 or (panel.compactModuleActions and panel.modulesY + panel.headerHeight + 2 or panel.moduleGridBottom + 2))
     panel.benefitList:setY(panel.detailsY)
     panel.benefitList:setX(math.floor(panel.body.width / 2) + 4)
     panel.benefitList:setWidth(panel.body.width - panel.benefitList.x - 8)
@@ -119,12 +119,15 @@ end
 ---@return nil
 function Body:prerender()
     local p, h = self.owner, self.owner.lineHeight
-    self:drawRectStatic(0, 0, self.width, self.height, .95, .025, .025, .025)
+    self:drawRectStatic(0, 0, self.width, self.height, .12, 0, 0, 0)
     self:setStencilRect(0, 0, self.width, self.height)
     if not p.detailsPage then
         self:section(4, p.equipmentWidth, 4, p.equipmentBottom, getText("UI_OMHTT_Equipment"))
         self:section(p.ammunitionX, p.ammunitionWidth, 4, p.ammunitionBottom, getText("UI_OMHTT_Ammunition"))
         self:section(4, self.width - 12, p.modulesY, p.modulesBottom, p.moduleLabel)
+        if p.hasLockedSlots then
+            self:drawText(getText("UI_OMHTT_ExpansionHint"), 12, p.modulesY + p.headerHeight + 4, .75, .75, .75, 1, UIFont.Small)
+        end
     else
         self:section(4, self.width - 12, 4, self.height - 4, getText("UI_OMHTT_DetailsOpen"))
     end
@@ -242,20 +245,11 @@ function L.create(panel)
     end
     panel.ammunitionY, panel.ammunitionBottom = 4, panel.equipmentBottom
     panel.modulesY = panel.ammunitionBottom + 10
-    local moduleTop = panel.modulesY + panel.headerHeight + 6
-    local moduleHeight = getPlayerScreenHeight(panel.player:getPlayerNum()) >= 900 and h * 2 + 16 or h + 8
-    local moduleWidth = (rowWidth - 30) / 6
     for i = 1, 16 do
-        local row = i <= 4 and 0 or 1 + math.floor((i - 5) / 6)
-        local column = i <= 4 and i or (i - 5) % 6
-        panel.moduleSlots[i]:setX(8 + column * (moduleWidth + 6))
-        panel.moduleSlots[i]:setWidth(moduleWidth)
-        panel.moduleSlots[i]:setY(moduleTop + row * (moduleHeight + 4))
-        panel.moduleSlots[i]:setHeight(moduleHeight)
         panel.moduleSlots[i].compact = true
     end
+    panel.moduleGridBottom = panel.modulesY + panel.headerHeight + h + 10 + 4 * (h * 2 + 20)
     panel.benefitList:setX(8)
-    panel.moduleGridBottom = moduleTop + 3 * (moduleHeight + 4)
     panel.benefitList:setY(panel.moduleGridBottom + 10)
     panel.benefitList:setWidth(rowWidth)
     panel.benefitList:setHeight(h * 7)

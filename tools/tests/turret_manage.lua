@@ -87,6 +87,32 @@ queued:perform()
 check(completed and not inventory.visible and not inventory.pinned, "Manage leaves both inventory windows untouched")
 local panel = testTurretPanel
 panel:prerender()
+local chrome = require("OMHTT/ControlWindowChrome")
+local initialTime = testMillis
+panel.lockButton.callback(panel)
+reachable = false
+panel:prerender()
+check(not panel.closed and panel.keepOpen and not panel.powerButton.enabled, "Keep-open retains the window without granting out-of-reach writes")
+reachable = true
+panel.lockButton.callback(panel)
+panel.pinButton.callback(panel)
+chrome.update(panel)
+testMillis = testMillis + 800
+chrome.update(panel)
+check(panel.chromeCollapsed and panel.maxDrawHeight == panel.titleHeight, "Unpinned window collapses to native draw-height bound")
+panel.pinButton.callback(panel)
+check(not panel.chromeCollapsed and not panel.maxDrawHeight, "Pin restores the full body")
+testMillis = initialTime
+panel:prerender()
+local locked = panel.moduleSlots[16]
+local labels, labelY = 0, nil
+local oldText, oldCentre = locked.drawText, locked.drawTextCentre
+locked.drawText = function(self,text) if text == getText("UI_OMHTT_ManageLocked") then labels=labels+1 end end
+locked.drawTextCentre = function(self,text,x,y) if text == getText("UI_OMHTT_ManageLocked") then labels=labels+1; labelY=y end end
+locked:prerender()
+check(labels == 1 and labelY == (locked.height-panel.lineHeight)/2 and panel.hasLockedSlots,
+    "Locked module draws one centered label with section expansion guidance")
+locked.drawText, locked.drawTextCentre = oldText, oldCentre
 check(not panel.fireButton.enabled and panel.status == "NoHead", "Empty base cannot fire")
 check(panel.headSlot.hintType==T.HEAD and panel.batterySlot.hintType=="Base.CarBattery1"
     and panel.capacitySlot.hintType==T.TYPES.CapacitySmall and panel.moduleSlots[1].hintType==T.TYPES.Firing,
@@ -200,10 +226,10 @@ for i = 1, 16 do
     local slot = panel.moduleSlots[i]
     moduleRows[slot.y] = (moduleRows[slot.y] or 0) + 1
 end
-check(moduleRows[panel.moduleSlots[1].y] == 4 and moduleRows[panel.moduleSlots[5].y] == 8
-    and moduleRows[panel.moduleSlots[13].y] == 4, "Modules retain 4/8/4 rows")
+check(moduleRows[panel.moduleSlots[1].y] == 4 and moduleRows[panel.moduleSlots[5].y] == 4 and moduleRows[panel.moduleSlots[9].y] == 4
+    and moduleRows[panel.moduleSlots[13].y] == 4, "Modules retain four aligned rows of four")
 check(math.abs(panel.moduleSlots[1].x + panel.moduleSlots[4].x + panel.moduleSlots[4].width
-    - panel.moduleSlots[5].x - panel.moduleSlots[12].x - panel.moduleSlots[12].width) < 1,
+    - panel.moduleSlots[5].x - panel.moduleSlots[8].x - panel.moduleSlots[8].width) < 1,
     "Module rows share the same horizontal center")
 check(panel.setAimButton and panel.sourceButton.width == panel.setAimButton.width,
     "Manage places Set Aim beside the equally sized removal destination")
@@ -347,12 +373,12 @@ local oldModules = SandboxVars.OMHTurretsTraps.PotatoModuleCapacity
 SandboxVars.OMHTurretsTraps.PotatoModuleCapacity = 20
 for i = 1, 20 do storage:AddItem(item("Base.OMHTTModuleRange")) end
 panel:refresh()
-check(panel.rows == 4, "High capacity uses additional scrollable rows")
+check(panel.rows == 5, "High capacity uses additional scrollable rows")
 panel:scrollModules(1); panel:scrollModules(1); panel:refresh()
-check(#panel.moduleSlots[14].items == 1 and panel.moduleRow == 1, "Twentieth module stays accessible")
+check(#panel.moduleSlots[16].items == 1 and panel.moduleRow == 1, "Twentieth module stays accessible")
 SandboxVars.OMHTurretsTraps.PotatoModuleCapacity = 4
 panel:refresh()
-check(panel.rows == 4, "Lowered capacity preserves access to stored modules")
+check(panel.rows == 5, "Lowered capacity preserves access to stored modules")
 check(panel.moduleSlots[4].disabled, "Over-capacity slots still allow recovery but not deposits")
 ISMouseDrag.dragging, ISMouseDrag.draggingFocus = {invalid}, {onMouseUp = function() end}
 panel.moduleSlots[4]:onMouseUp(1, 1)

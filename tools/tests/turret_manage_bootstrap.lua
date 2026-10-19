@@ -93,7 +93,7 @@ function ISPanel:setYScroll(value) self.yScroll = value end
 function ISPanel:drawText(text) check(type(text) == "string", "Manage draws resolved status text") end
 ISButton = {new = function(self, x, y, w, h, title, target, callback)
     return {setX = function(self, x) self.x = x end, setHeight = function(self, h) self.height = h end, initialise = function() end, setWidth = function(self, w) self.width = w end, setY = function(self, y) self.y = y end, setVisible = function(self, visible) self.visible = visible end, setEnable = function(self, enabled) self.enabled = enabled; self.enable = enabled end,
-        x=x, y=y, width=w, height=h, title=title, target = target, callback = callback, setTitle = function(self, title) self.title = title end}
+        setImage=function(self,image) self.image=image end, x=x, y=y, width=w, height=h, title=title, target = target, callback = callback, setTitle = function(self, title) self.title = title end}
 end}
 ISMouseDrag = {}
 ISScrollingListBox = ISPanel:derive("TestScrollingList")
@@ -166,3 +166,10 @@ function ISPanel:drawTextCentre() end
 
 function ISPanel:getMouseX() return 0 end
 function ISPanel:getMouseY() return 0 end
+
+function getTexture(path) return {path=path,getWidth=function() return 16 end,getHeight=function() return 16 end} end
+function ISPanel:setImage(value) self.image=value end
+function ISPanel:setMaxDrawHeight(value) self.maxDrawHeight=value end
+function ISPanel:clearMaxDrawHeight() self.maxDrawHeight=nil end
+function ISButton:setImage(value) self.image=value end
+function ISPanel:drawTextureScaled(texture,x,y,w,h) end

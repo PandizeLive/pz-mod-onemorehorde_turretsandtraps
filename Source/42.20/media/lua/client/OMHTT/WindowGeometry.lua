@@ -34,9 +34,7 @@ Grip.onMouseMoveOutside = Grip.onMouseMove
 
 ---@return nil
 function Grip:render()
-    for i = 1, 3 do
-        self:drawLine(nil, 18 - i * 5, 16, 16, 18 - i * 5, 2, 1, .8, .8, .8)
-    end
+    self:drawTextureScaled(self.resizeimage, 0, 0, 18, 18, 1, 1, 1, 1)
 end
 
 ---@param panel ISPanel Window
@@ -79,6 +77,7 @@ function G.resize(panel, width, height)
     panel.resizeGrip:setX(width - 18)
     panel.resizeGrip:setY(height - 18)
     panel.reflow(panel)
+    require("OMHTT/ControlWindowChrome").arrange(panel)
 end
 
 ---@param panel ISPanel Window
@@ -143,6 +142,7 @@ function G.install(panel, key, minWidth, minHeight, reflow)
     panel.viewportWidth, panel.viewportHeight = getPlayerScreenWidth(pn), getPlayerScreenHeight(pn)
     local grip = Grip:new(panel.width - 18, panel.height - 18, 18, 18, panel)
     grip.resizeFunction = G.resize
+    grip.resizeimage = getTexture("media/ui/ResizeIcon.png")
     grip:initialise()
     grip:setAnchorRight(false)
     grip:setAnchorBottom(false)

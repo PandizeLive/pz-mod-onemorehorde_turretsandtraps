@@ -529,15 +529,16 @@ end
 function W.input(target, now)
     local targetState = W.state(target)
     if not targetState then return false, false end
-    local linked, on = false, false
+    local linked, on, valid = false, false, false
     for id in pairs(W.incoming[targetState.id] or {}) do
         linked = true
         local source, state = W.objects[id], W.records().records[id]
         if source and source:getObjectIndex() >= 0 and A.range(source, target) and source:getHealth() > 0 and now >= state.recoverAt then
+            valid = true
             on = on or state.active == true
         end
     end
-    return linked, on
+    return linked, on, valid
 end
 
 ---@param object IsoObject Removed device
@@ -557,6 +558,8 @@ function W.removed(object)
             W.plates[object:getSquare()] = nil
         end
     end
+    require("OMHTT/ControlCycle").cancel(object)
+    require("OMHTT/ControlCycle").blocked[object] = nil
     state.active, state.pulseUntil = false, nil
     W.objects[state.id], W.bindings[object] = nil, nil
     W.batteries[object], W.batteryScan[object] = nil, nil
@@ -687,34 +690,17 @@ end
 ---@param now number Timestamp
 ---@return nil
 function W.receiver(object, now)
-    local linked, on = W.input(object, now)
-    if not linked then return end
-    local T = require("OMHTT/Turret")
-    local state = T.state(object)
-    if not state then return end
-    local control = W.state(object)
-    local powered = on or (control.pulseHoldUntil and now < control.pulseHoldUntil) == true
-    if T.isOn(state) ~= powered then
-        require("OMHTT/TurretWorld").applyPower(object, powered)
-    end
-    if control.facingPulse and not state.facingPending then
-        control.facingPulse = nil
-        if powered then
-            control.pulseHoldUntil = now + control.facingPulseTail
-            control.facingPulseTail = nil
-            control.fireDue = now + 100
-            W.fireSignal(object)
+    local linked, on, valid = W.input(object, now)
+    local cycle = require("OMHTT/ControlCycle")
+    if not linked then
+        if cycle.pending[object] then
+            cycle.cancel(object)
+            require("OMHTT/TurretWorld").applyPower(object, false)
         end
-    elseif not powered then
-        control.facingPulse = nil
+        return
     end
-    if on then
-        local control = W.state(object)
-        if now >= (control.fireDue or 0) then
-            control.fireDue = now + 100
-            W.fireSignal(object)
-        end
-    end
+    cycle.step(object, on, valid)
+
 end
 
 ---@param object IsoObject Authorized linked receiver
@@ -733,24 +719,13 @@ end
 function W.pulse(object)
     local control = W.state(object)
     if not control or control.kind ~= "Turret" or getTimestampMs() < control.recoverAt then return end
-    local T = require("OMHTT/Turret")
-    local stats = T.cycleConfig(T.contents(object:getContainer()))
-    local duration = stats.rotary and 90000 / stats.motorSpeed or 1
-    local facing = T.state(object).facingPending
-    if facing then
-        control.facingPulseTail = duration
-        local contents = T.contents(object:getContainer())
-        duration = duration + 360000 / T.turnSpeed(contents.head, contents.active) + 1000
+    local cycle = require("OMHTT/ControlCycle")
+    cycle.blocked[object] = nil
+    if cycle.request(object) then
+        local _, on, valid = W.input(object, getTimestampMs())
+        cycle.step(object, on, valid)
     end
-    control.facingPulse = facing == true
-    control.pulseHoldUntil = getTimestampMs() + duration
-    local world = require("OMHTT/TurretWorld")
-    if not T.isOn(T.state(object)) then
-        world.applyPower(object, true)
-    end
-    if not facing then
-        W.fireSignal(object)
-    end
+
 end
 
 ---@param player IsoPlayer Operator
@@ -823,6 +798,7 @@ function W.clearInputs(object)
     end
     W.incoming[state.id] = nil
     W.publish(object)
+    require("OMHTT/ControlCycle").cancel(object)
     state.pulseHoldUntil, state.facingPulse = nil, nil
     local T = require("OMHTT/Turret")
     if T.state(object) then

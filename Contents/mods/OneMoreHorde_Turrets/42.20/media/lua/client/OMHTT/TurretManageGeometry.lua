@@ -23,16 +23,19 @@ function G.apply(panel)
     local h, width = panel.lineHeight, panel.width
     panel.body:setWidth(width - 12)
     panel.nameEntry:setWidth(width - math.max(156, getTextManager():MeasureStringX(UIFont.Small, "Weight: 9999.9 !") + 16) - 24)
-    if panel.closeButton then
-        panel.closeButton:setX(width - 34)
-    end
     local rowWidth = panel.body.width - 12
     panel.equipmentWidth = math.floor((rowWidth - 8) * .40)
     panel.ammunitionX = panel.equipmentWidth + 12
     panel.ammunitionWidth = panel.body.width - 8 - panel.ammunitionX
     local equipment = panel.equipmentWidth - 8
     local ammoX, ammoWidth = panel.ammunitionX + 4, panel.ammunitionWidth - 8
-    local slot = math.max(54, h * 3 + 6)
+    local compact = screen < 720
+    panel.compactModuleActions = compact
+    local slot = math.max(54, h * 3 + (compact and 0 or 6))
+    local equipmentSlots = {panel.headSlot, panel.capacitySlot, panel.batterySlot, panel.ammoSlot, panel.voidSlot, panel.magazineSlot, panel.powerButton}
+    for i = 1, #equipmentSlots do
+        equipmentSlots[i]:setHeight(slot)
+    end
     local top, second = 4 + panel.headerHeight + 6, 4 + panel.headerHeight + slot + 14
     local head = math.floor((equipment - 6) * .60)
     place(panel.headSlot, 8, top, head)
@@ -52,21 +55,22 @@ function G.apply(panel)
     panel.equipmentBottom = buttonY + panel.reloadButton.height + 6
     panel.ammunitionBottom = panel.equipmentBottom
     panel.modulesY = panel.equipmentBottom + 10
-    local columns, rows = 8, 3
-    local moduleWidth = (rowWidth - 50) / columns
-    local moduleTop = panel.modulesY + panel.headerHeight + 6
+    local columns, rows = 4, 4
+    local moduleWidth = (rowWidth - 26) / columns
+    local moduleTop = panel.modulesY + panel.headerHeight + h + 10
     local available = (panel.userSized and panel.height or screen - 24) - panel.body.y - moduleTop - h * 3 - 140
-    local moduleHeight = math.max(h + 8, math.min(h * 2 + 16, math.floor(available / rows) - 4))
+    local minimum = h + (compact and 4 or 8)
+    local moduleHeight = math.max(minimum, math.min(h * 2 + 16, math.floor(available / rows) - 4))
     if panel.detailsOpen and panel.normalModuleHeight then
         moduleHeight = panel.normalModuleHeight
     else
         panel.normalModuleHeight = moduleHeight
     end
-    panel.minimumGridBottom = moduleTop + rows * (h + 12)
+    panel.minimumGridBottom = moduleTop + rows * (minimum + 4)
     for i = 1, 16 do
-        local row = i <= 4 and 0 or 1 + math.floor((i - 5) / columns)
-        local column = i <= 4 and i - 1 or (i - 5) % columns
-        local count = row == 1 and 8 or 4
+        local row = math.floor((i - 1) / columns)
+        local column = (i - 1) % columns
+        local count = columns
         local inset = (rowWidth - (count * moduleWidth + (count - 1) * 6)) / 2
         place(panel.moduleSlots[i], 4 + inset + column * (moduleWidth + 6), moduleTop + row * (moduleHeight + 4), moduleWidth)
         panel.moduleSlots[i]:setHeight(moduleHeight)

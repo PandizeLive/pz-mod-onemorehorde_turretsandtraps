@@ -28,14 +28,6 @@ local function repair(object, player)
     end
 end
 
----@param object IsoThumpable Selected turret
----@param player IsoPlayer Operator
----@return nil
-local function fire(object, player)
-    local result = require("OMHTT/TurretWorld").fire(player, object)
-    player:setHaloNote(getText("UI_OMHTT_Manage" .. result), 255, 255, 255, 120)
-end
-
 ---@param playerIndex number Local player
 ---@param context ISContextMenu Menu
 ---@param worldobjects table Native picked objects
@@ -86,7 +78,6 @@ local function fillMenu(playerIndex, context, worldobjects, test)
             Range.bind(repairOption, {object})
             local condition = menu:addOption(getText("ContextMenu_OMHTT_BarrierCondition", object:getHealth(), object:getMaxHealth()), nil, nil)
             condition.notAvailable = true
-            Range.bind(shot, {object})
             Range.bind(recovery, {object})
             D.emit("turret-menu", {id = T.state(object).id, ammo = contents.ammo, modules = contents.modules,
                 battery = contents.battery ~= nil, head = contents.head ~= nil})
