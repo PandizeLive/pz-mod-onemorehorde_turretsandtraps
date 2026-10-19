@@ -1753,3 +1753,7 @@ Owner selects C333 1A Tire Pump/improvised recipe and 3A local-before-Controller
 ## C335 — Poke Floor repeated occupancy selected; turret power idea (2026-10-19)
 
 Owner selects C334 1A repeated zombie occupancy, then tentatively considers requiring turret car batteries rather than building electricity. Repetition is selected; battery-only turret operation is not yet selected or implemented. [Source-backed recommendation, tradeoff and choices](checkpoints/R4C2_POKE_FLOOR.md#c335--repeating-zombie-contact-selected-battery-only-turrets-proposed). Retain Controller fallback, local-before-bank ordering and no Controller Siphon refund. No automatic charging or new power balance is inferred.
+
+## C336 — Optional grid connection module proposed (2026-10-19)
+
+Owner asks whether a module could enable grid connection. [Proposal and choices](checkpoints/R4C2_POKE_FLOOR.md#c336--grid-module-proposal-2026-10-19) combine battery-default turrets with an optional one-slot supply upgrade. Supply scope and rarity/loaded weight remain unselected; no charging, trap module slots, Controller Siphon refund or implementation approval is inferred. Installed 0.2.56.1 remains unchanged.

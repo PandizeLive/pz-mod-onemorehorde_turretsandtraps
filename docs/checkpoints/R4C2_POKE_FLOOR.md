@@ -112,3 +112,20 @@ Alternative **1B:** retain hybrid turret operation (local electricity/generator,
 This proposed change is scoped to turrets. Poke Floor and Controller retain their already selected electricity/battery rules unless the owner explicitly broadens it. Controller electricity does not become a hidden conduit for free turret power: fallback draws actual bank charge even when the Controller itself is on electricity. No extra wire/power-network feature is implied. If 1A is selected, update resource resolution, rotary operations, power-source labels/tooltips, estimates and relevant Sandbox descriptions together; preserve server-authoritative exact debits and independent packages.
 
 Inspected a9fc211, fetched origin/dev and confirmed draft PR #1 remains the only open PR. Documentation only; installed 0.2.56.1 and its deferred owner test are unchanged. Decision needed: turret power 1A or 1B. No gameplay implementation approval is inferred from tentative wording.
+
+
+## C336 — Grid Module proposal (2026-10-19)
+
+Owner asks: "What if we create a module that allows connection to the grid?" This proposes an optional exception to C335's tentative battery-only turret design; it is not implementation approval or a selected rarity/weight.
+
+Recommend a nonstackable **Grid Module**, occupying one ordinary module slot and compatible with all turret heads. Without it, use the turret's car battery then its eligible assigned Controller bank. With it, prefer eligible local mains/generator power, then local car battery, then Controller bank. Missing/depleted local batteries do not block eligible alternatives. Loss of electricity or removing the module resolves to the remaining valid source, without restoring charge or interrupting already-paid safe action completion. Preserve existing explicit Sandbox power-disable override. Traps still have no modules; Poke Floor and Controller electricity rules are unchanged. Controller electricity is not a free conduit to battery-only turrets.
+
+Tradeoff: stable-base operation can avoid battery upkeep, at the cost of a module slot, loot acquisition and location/generator dependence. Mains operation bypasses battery-specific benefits; generator operation retains configured fuel debit. No automatic battery charging, new wire network or power-cost rebalance is included. Siphon refunds only actual cost paid by the same turret-local battery; mains, generator and Controller-funded actions produce no refund. Retain existing rarity-based module power load unless separately changed, including during battery fallback.
+
+**1 — Supply scope:** 1A recommended, local mains plus an eligible powering generator; 1B mains only. B makes the module largely temporary after the utility shutdown. Both proposals make ordinary turrets battery-powered by default and preserve automatic battery fallback.
+
+**2 — Rarity / loaded loot weight:** 2A recommended, Epic / 6; 2B Rare / 10. These match current packaged default tier anchors, not a claim about the owner's live saved LootLab tuning. The owner must approve rarity and loaded weight before implementation (C315). Include game loot, Module Packs, Sandbox and LootLab together; preserve saved tuning and separately verify hosted publication. Physical item weight is distinct from this loot-weight choice. No recipe is proposed or authorized.
+
+Source basis: current TurretWorld.power already resolves indoor grid, eligible generator and local battery; TurretStats includes rarity-based power load and distinct generator fuel/battery costs; TurretSiphon captures the actual local battery source. Future implementation must gate both projectile and rotary electrical paths, show the actual power source, and preserve server-authoritative debits, source identity and independent package support. Do not add a per-frame scan to detect this module; use the existing module/configuration cache.
+
+Fetched origin/dev and inspected open PRs: existing draft PR #1 remains the only open PR. Documentation only; installed 0.2.56.1 and deferred rendered/connected acceptance remain unchanged. Decision needed on supply scope and rarity/weight, followed by explicit patch approval.

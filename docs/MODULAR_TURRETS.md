@@ -1,5 +1,7 @@
 # Turret inventory and module plan
 
+**C336 planning update (2026-10-19):** [Optional Grid Module proposal](checkpoints/R4C2_POKE_FLOOR.md#c336--grid-module-proposal-2026-10-19) would make mains/generator access an upgrade for otherwise battery-powered turrets. One ordinary slot, nonstackable, no charging; supply scope and rarity/loaded loot weight remain owner decisions. Not implemented.
+
 Current implementation: **0.2.34**, synchronized 2026-10-08. Improvised Detection/Firing/Expansion crafting and the expanded Manage grid are implemented under C104; standard module crafting remains deferred. [Decisions](DECISIONS.md) and versioned patches preserve historical proposals/approvals. Current defaults are defined in packaged Sandbox options and the shared stat resolver; saved settings may differ. [Roadmap status](ROADMAP.md#current-checkpoint-status-and-next-work) defines the remaining checkpoints.
 
 ## Current inventory and operation
