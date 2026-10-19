@@ -539,3 +539,7 @@ Owner requests replacing ordinary Controller batteries with car batteries, autom
 ## C334 — Poke Floor is not an external signal receiver (2026-10-19)
 
 Owner explicitly rejects external/manual Poke Floor activation. The [current Poke Floor contract](R4C2_POKE_FLOOR.md#c334--self-triggering-poke-floor-recipe-and-power-order-selected-2026-10-19) supersedes earlier Button/Plate rules for that trap. Controller assignment remains for management and fallback battery power. Existing turret signals are unchanged.
+
+## C335 — Turret-only power proposal (2026-10-19)
+
+Poke Floor repeated contact is selected. [Battery-only turret discussion](R4C2_POKE_FLOOR.md#c335--repeating-zombie-contact-selected-battery-only-turrets-proposed) proposes removing direct grid/generator operation from turrets while retaining local battery then Controller battery fallback. This restriction is not yet selected and does not change the Controller or Poke Floor's chosen electricity availability. Shared-bank operation always consumes real bank charge; Controller mains cannot bypass that cost.

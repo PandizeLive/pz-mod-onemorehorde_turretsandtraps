@@ -1749,3 +1749,7 @@ Owner selects C332 1A/2B/3A/5A/6B, requests an improvised recipe and evaluates T
 ## C334 — Self-triggering Poke Floor supersedes external activation (2026-10-19)
 
 Owner selects C333 1A Tire Pump/improvised recipe and 3A local-before-Controller battery priority. Explicitly rejects external/manual Poke Floor activation: it triggers itself. [Updated contract and remaining zombie occupancy choice](checkpoints/R4C2_POKE_FLOOR.md#c334--self-triggering-poke-floor-recipe-and-power-order-selected-2026-10-19). No gameplay implementation or acceptance claim; other signal receivers are unchanged.
+
+## C335 — Poke Floor repeated occupancy selected; turret power idea (2026-10-19)
+
+Owner selects C334 1A repeated zombie occupancy, then tentatively considers requiring turret car batteries rather than building electricity. Repetition is selected; battery-only turret operation is not yet selected or implemented. [Source-backed recommendation, tradeoff and choices](checkpoints/R4C2_POKE_FLOOR.md#c335--repeating-zombie-contact-selected-battery-only-turrets-proposed). Retain Controller fallback, local-before-bank ordering and no Controller Siphon refund. No automatic charging or new power balance is inferred.

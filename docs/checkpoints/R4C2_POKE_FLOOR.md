@@ -1,6 +1,6 @@
 # R4C2 — Poke Floor
 
-**Current correction — C334:** Poke Floor triggers itself through contact, with no external Button/Plate or manual firing. Earlier external-trigger proposals below are superseded. Tire Pump/improvised crafting and local-battery-first priority are selected. Zombie occupancy repetition remains the presented choice.
+**Current correction — C334:** Poke Floor triggers itself through contact, with no external Button/Plate or manual firing. Earlier external-trigger proposals below are superseded. Tire Pump/improvised crafting and local-battery-first priority are selected. C335 selects repeated cycles while eligible zombies occupy the tile; the new turret-only battery-power idea is still a proposal.
 
 ## C332 — Initial content choices proposed (2026-10-19)
 
@@ -96,3 +96,19 @@ The existing Bed Spikes code uses movement to offer a trip and a new fall to cau
 This choice concerns zombies only. Player movement/injury eligibility is already owner-directed and must not become automatic activation for every careful walker.
 
 Planning only. Inspected bd7795f, fetched origin/dev and confirmed draft PR #1 is the only open PR. No gameplay/package/version/install change or new test. Installed 0.2.56.1 owner and connected acceptance remain deferred.
+
+## C335 — Repeating zombie contact selected; battery-only turrets proposed (2026-10-19)
+
+Owner selects C334 1A, then says: "I kind of like the idea of requiring the Turret to use the car battery rather than the electricity of a building."
+
+**Selected:** Poke Floor automatically starts on eligible zombie contact and repeats no faster than every 1.5 seconds while eligible zombies remain. Stop new cycles when clear and complete safe retraction. Preserve the player's selected careful traversal/scratch-request rules, no external/manual firing, per-victim deduplication, actual power/wear and Horde Night consent. Do not reopen occupancy as an outstanding decision.
+
+**Proposal, not yet selected:** battery-only turret operation. Current `TurretWorld.power` prioritizes indoor grid (zero per-shot battery debit), then an eligible powering generator (configured fuel cost), then the turret's battery. `TurretBenefits.battery` estimates the local battery, so the upcoming bank work must distinguish actual source and finite supply in the UI. Existing no-power Sandbox mode is a separate explicit override, not evidence that normal turrets require no energy.
+
+Recommend **1A:** turret's installed car battery first, then its assigned Controller's eligible car-battery bank. Building/grid/generator availability cannot directly pay for turret shots or rotary operation. A missing/depleted local battery may use the approved Controller fallback; no dummy local battery requirement. This makes battery consumption, Regulator and local-source Siphon relevant regardless of location, with the tradeoff of more charging/spare-battery upkeep. Controller-funded operations must not refund the bank or credit a local battery through Siphon. No new automatic charger, passive self-recharge or power-balance increase is included. Preserve current configured head/module costs pending measured balancing; battery-only does not itself promise eight hours of runtime. Preserve the existing explicit Sandbox power-disable override rather than silently removing it.
+
+Alternative **1B:** retain hybrid turret operation (local electricity/generator, then local battery, then Controller battery). Less battery servicing, but grid operation bypasses battery consumption and battery-specific module benefits.
+
+This proposed change is scoped to turrets. Poke Floor and Controller retain their already selected electricity/battery rules unless the owner explicitly broadens it. Controller electricity does not become a hidden conduit for free turret power: fallback draws actual bank charge even when the Controller itself is on electricity. No extra wire/power-network feature is implied. If 1A is selected, update resource resolution, rotary operations, power-source labels/tooltips, estimates and relevant Sandbox descriptions together; preserve server-authoritative exact debits and independent packages.
+
+Inspected a9fc211, fetched origin/dev and confirmed draft PR #1 remains the only open PR. Documentation only; installed 0.2.56.1 and its deferred owner test are unchanged. Decision needed: turret power 1A or 1B. No gameplay implementation approval is inferred from tentative wording.
