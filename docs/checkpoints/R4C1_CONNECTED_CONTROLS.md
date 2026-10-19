@@ -523,3 +523,7 @@ C298 adds the confirmed red **One More Horde** / white **- Turret Management Men
 ## C300 — approved menu and Stockpile corrections (2026-10-17)
 
 The owner approves C297–C299 with copper-orange accents. [0.2.53.6](../PATCH_v0.2.53.6.md) adds the attached native Stockpile, a visible ordinary Battery slot, separated actions and exact Controller-context transfers. Local physically reachable servicing does not need remote power/assignment; distant servicing retains the powered assigned session and shared authority checks. Controller admission remains defense-only/500 weight. No signal, ownership or combat-policy change. [Verification](../TEST_v0.2.53.6.md) tracks native versus rendered/connected acceptance. R4C2 remains the next content checkpoint after corrective acceptance.
+
+## C331 — Next checkpoint confirmed while testing is deferred (2026-10-19)
+
+Owner asks what follows and cannot test 0.2.56.1 now. Confirm the existing R4C2 sequence: Poke Floor first, fixed dart emitter separately afterward, then R4C3 beam sensors. Retain the already selected single Button cycle / repeated held-signal cycles; do not reopen that choice or inherit Bed Spikes balance. This is a status handoff, not new numerical design or implementation approval. Rendered and connected acceptance remain deferred. Inspected active branch at 390b0fb, fetched origin/dev, and confirmed draft PR #1 is the only open PR.

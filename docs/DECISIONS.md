@@ -1733,3 +1733,7 @@ Owner response to C328: rejects the 4/8/4 appearance in favor of 4/4/4/4 and cho
 ## C330 — Approved corrective implementation (2026-10-19)
 
 Owner: "Approved." Authorizes C328/C329 fixes, 4/4/4/4 saved-order geometry and native keep-open locking. Implemented as 0.2.56.1; see [patch](PATCH_v0.2.56.1.md) and [test/evidence](TEST_v0.2.56.1.md). No new recipe, loot, damage or permission decision. Installation and standing C108 development mirror follow verification; owner/rendered/connected acceptance stays pending.
+
+## C331 — Testing deferred; existing next checkpoint retained (2026-10-19)
+
+Owner: "Unable to test, what’s the next checkpoint?" No test result or gameplay approval. R4C2 Poke Floor remains next, followed by the separate dart emitter slice. [Status handoff](checkpoints/R4C1_CONNECTED_CONTROLS.md#c331--next-checkpoint-confirmed-while-testing-is-deferred-2026-10-19).
