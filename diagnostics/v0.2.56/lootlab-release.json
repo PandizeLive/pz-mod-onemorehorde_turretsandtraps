@@ -89,5 +89,6 @@
       "status": 200
     }
   ],
-  "publication": "Hosted assets deployed; anonymous protected routes remain protected; authenticated rendered acceptance pending"
+  "publication": "Hosted assets deployed; anonymous protected routes remain protected; authenticated rendered acceptance pending",
+  "productionSettingsUnchangedExceptReleaseMetadata": true
 }
