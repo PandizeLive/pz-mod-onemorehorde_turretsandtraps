@@ -1761,3 +1761,7 @@ Owner asks whether a module could enable grid connection. [Proposal and choices]
 ## C337 — Grid Module mains/generator support and Mythic rarity (2026-10-19)
 
 Owner selects C336 1A and replaces the proposed Epic/Rare rarity with Mythic due to reduced upkeep. [Confirmed design and remaining loaded-weight choice](checkpoints/R4C2_POKE_FLOOR.md#c337--grid-module-mythic-rarity-selected-2026-10-19). Recommend weight 1, not yet numerically approved. No gameplay implementation approval inferred; installed 0.2.56.1 unchanged.
+
+## C338 — Inherit assigned rarity weight; preserve LootLab overrides (2026-10-19)
+
+Owner confirms Grid Module weight 1 and rejects redundant weight decisions. Rarity selection automatically authorizes its assigned weight, unless the owner changes it in LootLab. Preserve those tier/item overrides. [Contract](checkpoints/R4C2_POKE_FLOOR.md#c338--assigned-rarity-weights-confirmed-2026-10-19). Updates C315 process, not gameplay; Grid Module is settled as Mythic / 1.

@@ -137,3 +137,11 @@ Owner: "1A / 2 - Mythic as it removes a lot of work" in response to C336. Confir
 Mythic is justified by substantially reducing sustained-base battery servicing; the one-slot/location/fuel tradeoffs remain. Owner selected rarity, but did not state a numerical loaded loot weight. Recommend **1A weight 1**, matching current packaged RarityWeightMythic default; **1B another owner-specified weight**. This is a loot probability weight, not physical mass or a claim about live saved LootLab settings. Do not silently treat the proposed number as owner-approved. Include game loot, packs, Sandbox and LootLab together after C315 weight confirmation and patch authorization; preserve saved tuning.
 
 Fetched origin/dev and confirmed the existing draft PR #1 is still the only open PR. Documentation only, no gameplay/source, version, installation, hosted publication or test-result changes. Installed 0.2.56.1 owner/connected acceptance stays deferred.
+
+## C338 — Assigned rarity weights confirmed (2026-10-19)
+
+Owner selects C337 1A and corrects the process: "this was a pointless decision. Stick to the assigned weights, unless I personally change them in lootlab". Grid Module is therefore **Mythic / loaded loot weight 1**, with C337 mains/generator support and the retained battery-fallback contract. No further Grid Module design choice remains.
+
+Standing rule: selecting a rarity authorizes its assigned weight automatically. Do not request a redundant numerical approval. Preserve the owner's LootLab tier settings and individual item overrides as the authoritative tuning when changed; do not overwrite them with packaged defaults. This supersedes the separate confirmation interpretation of C315 and the outstanding-weight language in C336/C337. Keep game, packs, Sandbox and LootLab coverage and verified local/hosted distinctions. AGENTS.md is updated so future turns follow this rule.
+
+Documentation/process update only; no gameplay implementation, publication, new test or installation claim. Installed 0.2.56.1 and deferred acceptance remain unchanged. Fetched origin/dev; existing draft PR #1 remains the only open PR.
