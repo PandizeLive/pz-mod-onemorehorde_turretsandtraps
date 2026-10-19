@@ -22,3 +22,7 @@ Rendered appearance, connected-client input/combat replication and owner accepta
 6. Repeat with a rotary head, then manually turn Off during an action. The normal release finishes its pass; manual Off stops immediately. Send console.txt and any screenshots if behavior differs.
 
 Fresh worlds remain the supported test policy. Keep the immutable 0.2.56 rollback snapshot; do not claim successful Workshop publication.
+
+## Local installation
+
+Installed 2026-10-19 from immutable `test/v0.2.56.1` / `9b43b46f8db940360edaba9980d3d3866ebc640f`. All 303 source and 393 tagged/package/install/archive hashes match. Both 0.2.56 backups verify. [Release record](../diagnostics/v0.2.56.1/local-release.json). No Workshop publication; owner and connected acceptance remain pending.

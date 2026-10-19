@@ -1,5 +1,9 @@
 # Release state and publication policy
 
+## 0.2.56.1 / C330 — management and trigger corrections
+
+**0.2.56.1 / C330 installed (2026-10-19).** Approved corrections deliver 4/4/4/4 modules with saved ordering, single locked labels, expansion guidance, native-style window controls, separate Add Group placement, map disconnection, the stale Fire callback fix and finish-current-action trigger power. **23,751 assertions**, native real-item firing/save/restart and all three independent package selections pass. Installed from immutable `test/v0.2.56.1` / `9b43b46f8db940360edaba9980d3d3866ebc640f`; all **303 source and 393 packaged/installed/archive files** match, and both 0.2.56 backups verify. [Patch](PATCH_v0.2.56.1.md) · [Tests](TEST_v0.2.56.1.md) · [Release evidence](../diagnostics/v0.2.56.1/local-release.json). **Test now.** Rendered/connected acceptance and the separate main-menu slowdown remain open. Standing C108 delivery uses the existing draft PR; no merge or Workshop upload. R4C2 Poke Floor remains next content.
+
 ## 0.2.56 / C327 — shared Controller organization and UI corrections
 
 [Patch](PATCH_v0.2.56.md) · [Verification](TEST_v0.2.56.md). 23,775 assertions, native group serialization/permissions/save-restart, browser tier workflows and Traps-only/Turrets-only/both startup checks pass. LootLab's two layout assets are deployed as Worker version `aad919e4-cf26-47b1-ba68-a84766afe388`; production Worker bytes and saved tuning are preserved. [Hosted evidence](../diagnostics/v0.2.56/lootlab-release.json). Installed from immutable `test/v0.2.56` / `762430706a17d18360622379c90c30ccef998d93`. All 301 source and 389 tagged/packaged/installed/archive files match; both 0.2.55.2 backups verify. [Local release evidence](../diagnostics/v0.2.56/local-release.json). Rendered and connected-client acceptance remain pending; no Workshop upload or merge.
