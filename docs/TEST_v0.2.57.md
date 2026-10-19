@@ -21,3 +21,7 @@
 6. Open LootLab: Grid should be present at default Mythic weight 1, with your existing weights and tiers unchanged. Send console.txt and screenshots for any mismatch; repeat connected-player behavior when available.
 
 Fresh test worlds remain the supported policy. Owner testing is deferred until available; this is not a failure or acceptance. Rendered/connected results remain pending. Retain the immutable 0.2.56.1 rollback snapshot.
+
+## Local installation
+
+Installed 2026-10-19 from immutable `test/v0.2.57` / `f9934476ec52ebd8ae5d52b077f03981ea541659`. All 308 source and 402 tagged/package/installed/archive files match; both 0.2.56.1 backups verify. [Release record](../diagnostics/v0.2.57/local-release.json). Connected and rendered owner acceptance remain pending.
