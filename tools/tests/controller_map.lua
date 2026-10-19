@@ -192,52 +192,79 @@ local function run(panel, player, controller)
     check(commands == 1, "Read-only drag cannot submit a Link")
     A.write = priorWrite
     local graph = panel.graph
-    local half, y = (graph.width - 40) / 2, graph.headerHeight + graph.rowHeight / 2
+    local half, y = (graph.width - 88) / 2, graph.triggers[1].y + graph.rowHeight / 2
     local before, value = commands, nil
     U.command = function(actor, source, command, enabled, target)
         check(actor == player and source == input and target == output and command == "Link", "Graph uses exact authoritative endpoints")
         commands, value = commands + 1, enabled
     end
     graph:onMouseDown(12, y)
-    graph:onMouseUp(half + 60, y)
+    graph:onMouseUp(half + 110, y)
     Graph.refreshForPanel(panel)
-    check(commands == before + 1 and value == true, "Dragging entire trigger row connects once")
+    check(commands == before, "Row dragging no longer creates connections")
     graph:onMouseDown(half - 13, y)
     graph:onMouseUp(half - 13, y)
     check(panel.linkSource == input, "Trigger handle click arms connection")
-    graph:onMouseDown(half + 38, y)
-    graph:onMouseUp(half + 38, y)
+    graph:onMouseDown(half + 86, y)
+    graph:onMouseUp(half + 86, y)
     Graph.refreshForPanel(panel)
-    check(commands == before + 2 and value == true and panel.linkSource == nil, "Two handle clicks connect and consume armed source")
+    check(commands == before + 1 and value == true and panel.linkSource == nil, "Two handle clicks connect and consume armed source")
     input.data.OMHTTControl.links = {"map-output"}
     graph.refreshDue = 0
     Graph.refreshForPanel(panel)
-    graph:onMouseDown(half + 38, y)
-    graph:onMouseUp(half + 38, y)
+    graph:onMouseDown(half + 86, y)
+    graph:onMouseUp(half + 86, y)
     Graph.refreshForPanel(panel)
-    check(commands == before + 3 and value == false, "Connected defense handle removes its single link")
+    check(commands == before + 2 and value == false, "Connected defense handle removes its single link")
     graph:onMouseDown(half - 13, y)
     graph:onMouseUp(half - 13, y)
-    graph:onMouseDown(half + 38, y)
-    graph:onMouseUp(half + 38, y)
+    graph:onMouseDown(half + 86, y)
+    graph:onMouseUp(half + 86, y)
     Graph.refreshForPanel(panel)
-    check(commands == before + 3, "Armed source never removes an already linked pair")
+    check(commands == before + 2, "Armed source never removes an already linked pair")
+    input.data.OMHTTControl.links = {}
+    Graph.refreshForPanel(panel)
+    panel.linkSource = nil
+    input.data.OMHTTControl.links = {"map-output"}
+    local Groups = require("OMHTT/ControlGroupUI")
+    local hostState = A.state(controller)
+    local savedOrganization = hostState.organization
+    hostState.organization = {revision=1,serial=2,groups={{id="1",name="Front"},{id="2",name="Rear"}},
+        members={["map-input"]="1",["map-output"]="2"},order={"map-output","map-input"}}
+    graph.refreshDue = 0
+    Graph.refreshForPanel(panel)
+    check(graph.triggers[1].group == "1" and graph.defenses[1].group == "2" and #graph.edges == 1,
+        "Shared groups lay out both columns without removing cross-group links")
+    graph.collapsed["1"] = true
+    Groups.layout(graph)
+    check(graph.triggers[1].collapsed and graph.positions["map-input"] == 1,
+        "Collapsed groups retain connection endpoints")
+    local proposed = {revision=2,serial=2,groups={{id="1",name="New Front"},{id="2",name="Rear"}},members={},order={}}
+    check(Groups.applied({expected=proposed},proposed), "Matching group confirmation succeeds")
+    check(not Groups.applied({expected=proposed},hostState.organization), "Concurrent differing group update is not reported as success")
+    hostState.organization.members["map-input"] = "deleted"
+    Groups.layout(graph)
+    check(graph.triggers[1].group == "", "Stale group membership falls back to Ungrouped")
+    hostState.organization = savedOrganization
+    graph.collapsed = {}
+    graph.refreshDue = 0
+    Graph.refreshForPanel(panel)
     local extra = device("Plate", "second-input", 3)
     extra.data.OMHTTControl.links = {"map-output"}
     panel.devices.items[#panel.devices.items + 1] = {item=extra}
     graph.refreshDue = 0
     Graph.refreshForPanel(panel)
     local previousMenu, choices = ISContextMenu, {}
-    ISContextMenu = {get=function() return {addOption=function(self,title,owner,callback,source,target)
+    ISContextMenu = {get=function() return {bringToTop=function() end,addOption=function(self,title,owner,callback,source,target)
         choices[#choices+1]={title=title,owner=owner,callback=callback,source=source,target=target}
     end} end}
     local previousX, previousY = getMouseX, getMouseY
     getMouseX, getMouseY = function() return 100 end, function() return 100 end
     Graph.outputPort(panel, output)
-    check(#choices == 2 and commands == before + 3, "Multiple incoming links require choosing one rather than deleting all")
-    choices[1].callback(choices[1].owner, choices[1].source, choices[1].target)
+    check(#choices == 3 and commands == before + 2, "Multiple incoming links require choosing one rather than deleting all")
+    choices[2].callback(choices[2].owner, choices[2].source, choices[2].target)
     Graph.refreshForPanel(panel)
-    check(commands == before + 4 and value == false, "Chosen incoming connection alone is removed")
+    check(commands == before + 3 and value == false, "Chosen incoming connection alone is removed")
     ISContextMenu, getMouseX, getMouseY = previousMenu, previousX, previousY
     U.command = function() commands = commands + 1 end
 

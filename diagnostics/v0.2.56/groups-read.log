@@ -1,0 +1,3 @@
+LOG  : Lua          f:0 st:7,223,963> [OMHTT-C327] native groups fresh-process=preserved
+LOG  : Lua          f:0 st:7,223,969> [OMHTT-C327] native groups=create/reorder/rename stale=rejected snapshot=detached
+LOG  : Lua          f:0 st:7,223,998> [OMHTT-C327] native groups device-move=serialized delete=ungroup-only cross-group-links=preserved permissions=checked replay=blocked

@@ -1715,3 +1715,8 @@ C323 implementation note (2026-10-18): 0.2.55 implements the approved map/layout
 ## C324 — Controller error storm, scrollbar correction and in-game map (2026-10-18)
 
 Owner reports freezing/exiting with many errors and a scrollbar in the screen interior, accepts the in-game map as the default/only normal view, then suspects one overloaded CPU core. Continue the approved corrective work without another approval gate. The captured 0.2.55 console contains 454 identical `ControlGraph.update` failures; native dispatch passes the graph itself to a helper expecting its Controller parent. CPU utilization was not captured and the final exit cause is not established. Native deferred-anchor testing also reproduces scrollbar displacement during explicit reflow. Rename the helper, keep section scrollbars in their panels, and remove the Grid toggle/drawing. Preserve existing server-authorized actions and native Stockpile. [Patch](PATCH_v0.2.55.1.md) · [Evidence and acceptance](TEST_v0.2.55.1.md). Record the failed owner test separately from prior automated passes.
+
+
+## C327 — shared Controller organization approved (2026-10-18)
+
+Owner selects 1A and approves the C326 patch. Shared named groups and device ordering persist per Controller; collapse state stays local. Server checks permissions, identity and revision; stale edits fail instead of overwriting. Row dragging sorts; port/map gestures connect. Full implementation and delivery are documented in [0.2.56](PATCH_v0.2.56.md).

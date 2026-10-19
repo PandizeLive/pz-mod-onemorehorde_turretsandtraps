@@ -94,6 +94,7 @@ function L.refresh(panel)
     panel.powerButton:setVisible(not panel.detailsPage)
     if panel.sourceButton then
         panel.sourceButton:setVisible(not panel.detailsPage)
+        panel.setAimButton:setVisible(not panel.detailsPage)
     end
     panel.reloadButton:setVisible(not panel.detailsPage)
     panel.loadOrderButton:setVisible(not panel.detailsPage)
@@ -178,6 +179,7 @@ function L.create(panel)
     for i = 1, #panel.slots do
         adopt(panel, panel.slots[i])
     end
+    adopt(panel, panel.setAimButton)
     adopt(panel, panel.powerButton)
     adopt(panel, panel.reloadButton)
     adopt(panel, panel.loadOrderButton)
@@ -308,6 +310,7 @@ function L.page(panel)
     panel.nameEntry:setVisible(visible)
     if panel.sourceButton then
         panel.sourceButton:setVisible(visible and not panel.detailsPage)
+        panel.setAimButton:setVisible(visible and not panel.detailsPage)
     end
     panel.rangeSlider:setVisible(visible)
     panel.fireButton:setVisible(visible)

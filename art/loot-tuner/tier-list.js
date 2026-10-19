@@ -79,7 +79,7 @@ function mount({element,modules,read,readTiers,apply}){
     names.forEach((name,i)=>{const badge=el('span','tier-badge',name+' '+counts[i]);badge.style.setProperty('--tier-color',colors[i]);preview.append(badge);});
     body.append(description,preview,el('p','hint','Rarity changes at proportional midpoints between tier weights. Personal overrides use the same rule. Export Sandbox settings for mod 0.2.47.4 or newer to apply these tiers in-game. Disabled items have no loot chance.'));
     const lanes=[];
-    for(let tier=-1;tier<7;tier++){
+    for(const tier of [6,5,4,3,2,1,0,-1]){
       const lane=el('section','tier-lane');lane.dataset.tier=tier;lane.setAttribute('aria-label',tier<0?'Unassigned':names[tier]);lane.style.setProperty('--tier-color',tier<0?'#82928a':colors[tier]);
       const heading=el('div','tier-heading'),list=el('div','tier-cards');heading.append(el('h3','',tier<0?'Unassigned':names[tier]));
       if(tier>=0){const label=el('label','','Tier weight'),input=el('input');input.type='number';input.min=0;input.max=1000000;input.step='any';input.value=Number(draft.tiers[tier].toPrecision(12));input.setAttribute('aria-label',names[tier]+' tier weight');label.append(input);heading.append(label);
@@ -87,7 +87,7 @@ function mount({element,modules,read,readTiers,apply}){
           if(!Number.isFinite(value)||value<0||value>1000000||members.some(m=>value>m.weight*20)){status.textContent='That tier weight is outside a member’s allowed range.';input.value=Number(draft.tiers[tier].toPrecision(12));return;}
           draft.tiers[tier]=value;for(const m of members)draft.weights[m.id]=value;render();};
       }else heading.append(el('small','','Keeps current weights'));
-      lane.append(heading,list);lanes.push(list);body.append(lane);
+      lane.append(heading,list);lanes[tier+1]=list;body.append(lane);
       lane.ondragover=e=>{e.preventDefault();e.dataTransfer.dropEffect='move';};
       lane.ondrop=e=>{e.preventDefault();const id=dragged||e.dataTransfer.getData('text/plain'),m=modules.find(m=>m.id===id);if(!m)return;if(!assign(draft,m,tier)){status.textContent='Tier weight exceeds '+m.name+'’s maximum ('+(m.weight*20)+').';return;}dragged=null;render();};
     }

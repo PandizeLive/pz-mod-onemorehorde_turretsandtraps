@@ -200,10 +200,13 @@ for i = 1, 16 do
     local slot = panel.moduleSlots[i]
     moduleRows[slot.y] = (moduleRows[slot.y] or 0) + 1
 end
-check(moduleRows[panel.moduleSlots[1].y] >= 4 and moduleRows[panel.moduleSlots[1].y] <= 8,
-    "Responsive module rows use four to eight readable columns")
-check(panel.moduleSlots[1].x == panel.moduleSlots[1 + moduleRows[panel.moduleSlots[1].y]].x,
-    "Responsive rows keep consistent left alignment")
+check(moduleRows[panel.moduleSlots[1].y] == 4 and moduleRows[panel.moduleSlots[5].y] == 8
+    and moduleRows[panel.moduleSlots[13].y] == 4, "Modules retain 4/8/4 rows")
+check(math.abs(panel.moduleSlots[1].x + panel.moduleSlots[4].x + panel.moduleSlots[4].width
+    - panel.moduleSlots[5].x - panel.moduleSlots[12].x - panel.moduleSlots[12].width) < 1,
+    "Module rows share the same horizontal center")
+check(panel.setAimButton and panel.sourceButton.width == panel.setAimButton.width,
+    "Manage places Set Aim beside the equally sized removal destination")
 check(panel.headSlot.missing and panel.magazineSlot.disabled and not panel.magazineSlot.missing, "Empty base highlights head without inventing a magazine requirement")
 for i = 1, #panel.slots do panel.slots[i]:prerender() end
 panel:fire()

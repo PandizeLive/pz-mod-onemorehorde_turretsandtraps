@@ -35,6 +35,10 @@ Panel.inspectVoid = Utilities.inspect
 
 ---@return nil
 function Panel:close()
+    self.closed = true
+    if self.cursor then
+        getCell():setDrag(nil, self.player:getPlayerNum())
+    end
     require("OMHTT/WindowGeometry").close(self)
     self.nameEntry:commit()
     Drag.stop(self)

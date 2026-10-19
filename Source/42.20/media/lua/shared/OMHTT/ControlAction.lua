@@ -32,6 +32,10 @@ function Action:isValid()
     if self.done or not state or state.id ~= self.id or not A.authorized(self.character, self.object, self.command == "Pulse")
         or self.object:getHealth() <= 0 then return false end
     if self.command == "Pulse" then return state.kind == "Button" end
+    if self.command == "GroupAdd" or self.command == "GroupName" or self.command == "GroupMove"
+        or self.command == "GroupDelete" or self.command == "DeviceMove" then
+        return require("OMHTT/ControlGroups").propose(self) ~= nil
+    end
     if not A.write(self.character, state) then return false end
     if self.command == "Name" then
         return state.kind ~= "Controller" and type(self.value) == "string" and #self.value <= 48 and not string.find(self.value, "[%c<>]")
@@ -48,7 +52,8 @@ function Action:isValid()
         return target ~= nil and target.kind == "Turret" and target.id == self.targetId
             and type(self.value) == "number" and self.value >= 0 and self.value < 360
             and A.write(self.character, target)
-            and require("OMHTT/ControlRemote").valid(self.character, self.object, self.target)
+            and ((self.object == self.target and A.near(self.character, self.target))
+                or require("OMHTT/ControlRemote").valid(self.character, self.object, self.target))
     elseif self.command == "ClearInputs" then
         return state.kind == "Turret"
     elseif self.command == "Trigger" then
@@ -65,7 +70,10 @@ function Action:complete()
     self.done = true
     local W = require("OMHTT/ControlWorld")
     local state = W.state(self.object)
-    if self.command == "Pulse" then
+    if self.command == "GroupAdd" or self.command == "GroupName" or self.command == "GroupMove"
+        or self.command == "GroupDelete" or self.command == "DeviceMove" then
+        state.organization = require("OMHTT/ControlGroups").propose(self)
+    elseif self.command == "Pulse" then
         state.pulseUntil = getTimestampMs() + 1
         for i = 1, #state.links do
             local target = W.objects[state.links[i]]

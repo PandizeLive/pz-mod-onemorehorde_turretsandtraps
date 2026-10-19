@@ -11,7 +11,8 @@ function Cursor:isValid(square)
     return not self.owner.closed and host ~= nil and target ~= nil
         and host.id == self.hostId and target.id == self.targetId
         and A.write(self.character, host) and A.write(self.character, target)
-        and require("OMHTT/ControlRemote").valid(self.character, self.host, self.target)
+        and ((self.host == self.target and A.near(self.character, self.target))
+            or require("OMHTT/ControlRemote").valid(self.character, self.host, self.target))
         and square ~= nil and square:getZ() == self.target:getZ()
         and (square:getX() ~= self.target:getX() or square:getY() ~= self.target:getY())
 end
@@ -74,17 +75,23 @@ end
 ---@param panel ISPanel Controller menu
 ---@return ISBuildingObject? cursor
 function Cursor.start(panel)
-    local target, host = A.state(panel.selected), A.state(panel.object)
+    local targetObject = panel.deviceId and panel.object or panel.selected
+    local hostObject = panel.deviceId and (panel.controller or panel.object) or panel.object
+    if panel.deviceId and A.near(panel.player, targetObject) then
+        hostObject = targetObject
+    end
+    local target, host = A.state(targetObject), A.state(hostObject)
     if not target or target.kind ~= "Turret" or not host
         or not A.write(panel.player, host) or not A.write(panel.player, target)
-        or not require("OMHTT/ControlRemote").valid(panel.player, panel.object, panel.selected) then return nil end
+        or not ((hostObject == targetObject and A.near(panel.player, targetObject))
+            or require("OMHTT/ControlRemote").valid(panel.player, hostObject, targetObject)) then return nil end
     require("BuildingObjects/ISBuildingObject")
     local cursor = ISBuildingObject:derive("OMHTTTurretFacingSelection")
     for key, value in pairs(Cursor) do
         cursor[key] = value
     end
     cursor:init()
-    cursor.owner, cursor.host, cursor.target = panel, panel.object, panel.selected
+    cursor.owner, cursor.host, cursor.target = panel, hostObject, targetObject
     cursor.hostId, cursor.targetId = host.id, target.id
     cursor.character, cursor.player = panel.player, panel.player:getPlayerNum()
     cursor.noNeedHammer, cursor.skipBuildAction = true, true

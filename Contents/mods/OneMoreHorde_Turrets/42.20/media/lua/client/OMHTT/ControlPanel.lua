@@ -147,15 +147,13 @@ function Panel:prerender()
         and (A.near(self.player, self.selected) or (host.powered == true and state.controller == host.id)))
     self.assign:setEnable(state ~= nil and self.selected ~= self.object and host.kind == "Controller"
         and host.powered == true and A.write(self.player, host) and A.write(self.player, state))
-    self.setFacing:setEnable(state ~= nil and state.kind == "Turret"
-        and A.write(self.player, host) and A.write(self.player, state)
-        and require("OMHTT/ControlRemote").valid(self.player, self.object, self.selected))
+
     self.trigger:setEnable(writable == true and state.kind == "Plate")
     self.trigger:setTitle(state and state.kind == "Plate" and "Trigger: " .. (state.trigger or "Both") or "Trigger: —")
     self.trigger:setVisible(state ~= nil and state.kind == "Plate")
     self.manage:setVisible(state ~= nil and state.kind == "Turret")
     self.assign:setVisible(state ~= nil and self.selected ~= self.object and host.kind == "Controller")
-    self.setFacing:setVisible(state ~= nil and state.kind == "Turret" and host.kind == "Controller")
+
     local remoteReason
     if host.powered ~= true then
         remoteReason = getText("UI_OMHTT_ControllerPowerNeeded")
@@ -180,7 +178,7 @@ function Panel:prerender()
         self.policy.tooltip = A.write(self.player, state, true) and remoteReason or getText("UI_OMHTT_ControllerAccessNeeded")
     end
     self.trigger.tooltip = self.trigger.enable and getText("UI_OMHTT_TriggerHelp") or remoteReason
-    self.setFacing.tooltip = self.setFacing.enable and getText("UI_OMHTT_SetFacingTooltip") or remoteReason
+
     self.policy:setTitle(getText("UI_OMHTT_Access", state and state.access or "—"))
     self.assign:setTitle(getText(state and state.controller == host.id and "UI_OMHTT_Unassign" or "UI_OMHTT_Assign"))
 
@@ -226,9 +224,6 @@ function Panel.open(player, object)
             U.command(self.player, self.object, "Assign", state.controller ~= A.state(self.object).id, self.selected)
         end
         self.scanDue = 0
-    end)
-    panel.setFacing = button(panel, 274, 282, 246, getText("UI_OMHTT_SetFacing"), function(self)
-        require("OMHTT/TurretFacingCursor").start(self)
     end)
     panel.policy = button(panel, 274, 386, 246, "Private / Faction / Public", function(self)
         local state = A.state(self.selected)
@@ -283,7 +278,6 @@ end
 ---@return nil
 function Panel:showStockpile(visible)
     if not self.stockWing then return end
-    self:bringToTop()
     if not self.stockCompact then return end
     self.stockPage = visible ~= false
     self.stockWing:setVisible(self.stockPage)

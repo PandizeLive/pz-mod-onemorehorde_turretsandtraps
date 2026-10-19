@@ -6,10 +6,13 @@ const page=await browser.newPage({viewport:{width:1360,height:900}}),errors=[];p
 await page.goto(pathToFileURL(path.join(root,'art/loot-tuner/index.html')).href);await page.waitForFunction(()=>document.querySelector('#loading').hidden,{timeout:60000});
 const before=await page.locator('#item-Regulator').inputValue();
 await page.getByRole('button',{name:'Plan with tiers'}).click();assert.equal(await page.locator('[data-tier="2"] [data-module="Firing"]').count(),1);assert.equal(await page.locator('[data-tier="6"] [data-module="Synergy"]').count(),1);
-const source=page.locator('[data-module="Regulator"] strong');await source.scrollIntoViewIfNeeded();const box=await source.boundingBox();
-await page.mouse.move(box.x+10,box.y+6);await page.mouse.down();await page.mouse.move(box.x+35,box.y+12,{steps:10});
-const target=page.locator('[data-tier="3"] .tier-heading');await target.scrollIntoViewIfNeeded();const dest=await target.boundingBox();
-await page.mouse.move(dest.x+20,dest.y+20,{steps:10});await page.mouse.up();
+assert.deepEqual(await page.locator('.tier-lane').evaluateAll(rows=>rows.map(r=>r.dataset.tier)),['6','5','4','3','2','1','0','-1']);
+const source=page.locator('[data-module="Regulator"]');
+await source.scrollIntoViewIfNeeded();const from=await source.boundingBox();
+await page.mouse.move(from.x+5,from.y+5);await page.mouse.down();await page.mouse.move(from.x+15,from.y+10,{steps:5});
+await page.locator('[data-tier="3"]').evaluate(e=>e.scrollIntoView({block:'center'}));
+const to=await page.locator('[data-tier="3"] .tier-heading').boundingBox();
+await page.mouse.move(to.x+20,to.y+20,{steps:15});await page.mouse.move(to.x+22,to.y+22);await page.mouse.up();
 assert.equal(await page.locator('[data-tier="3"] [data-module="Regulator"]').count(),1);
 assert.equal(await page.locator('#item-Regulator').inputValue(),before);
 assert.equal(await page.locator('[data-module="Regulator"] .tier-actual').textContent(),'Rare');

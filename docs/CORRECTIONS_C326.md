@@ -29,3 +29,12 @@ No nested folders or speculative extra gameplay controls are proposed. The owner
 The conversation preview shows Controller grouping, bottom details, compact cards/wide gutter, the Manage button split and centered module rows, and compact descending LootLab tiers. Example tier contents are illustrative; live saved tuning is not read or changed. Preview controls demonstrate screen navigation, device selection, adding/collapsing/renaming groups, not native gameplay or finished drag behavior.
 
 Before delivery, verify stacking with actual native context menus, all gesture/drop states, disconnect All authorization and partial rejection, reconnect/save persistence, group concurrency if shared, 4/8/4 layout at supported sizes/fonts, stockpile clipping/columns in side and full-page modes, and tier presentation without weight changes. Existing installed 0.2.55.2 remains available; R4C2 content stays deferred behind these corrections. Rendered/connected acceptance is not claimed.
+
+## C327 — implementation approved
+
+Owner selects **1A** and says **Approved for patch**. Shared per-Controller groups and the full C326 corrective scope are authorized. Implement as 0.2.56, preserving server authority, existing links and saved LootLab weights.
+
+
+## C327 delivery evidence
+
+Implemented in [0.2.56](PATCH_v0.2.56.md). [Validation and owner test](TEST_v0.2.56.md) distinguish native server/browser evidence from pending rendered and connected acceptance. Current modules remain bounded at 16, rendered as 4/8/4; no new Sandbox capacity is invented. Shared edits reject stale revisions; collapse is local. LootLab two-asset publication preserves Worker code and saved settings.

@@ -11,9 +11,9 @@ function E.create(panel)
     local row = math.max(28, panel.lineHeight + 8)
     panel.nameEntry = require("OMHTT/ControlNameEntry").create(panel, panel.object, 12,
         panel.titleHeight + 4, panel.width - weightWidth - 24, row)
-    if panel.controller then
+    do
         panel.sourceButton = ISButton:new(12, panel.nameEntry.y + row + 6, panel.width - 24, row, getText("UI_OMHTT_ToInventory"), panel, function(self)
-            self.toStockpile = not self.toStockpile
+            self.toStockpile = self.controller and not self.toStockpile or false
             self.sourceButton:setTitle(self.toStockpile and getText("UI_OMHTT_ToStockpile") or getText("UI_OMHTT_ToInventory"))
             if self.toStockpile then
                 require("OMHTT/ControlPanel").stockpile(self, self.controller)
@@ -23,6 +23,12 @@ function E.create(panel)
         require("OMHTT/ControlTheme").button(panel.sourceButton)
         panel:addChild(panel.sourceButton)
     end
+    panel.setAimButton = ISButton:new(12, 12, 100, row, getText("UI_OMHTT_SetFacing"), panel, function(self)
+        require("OMHTT/TurretFacingCursor").start(self)
+    end)
+    panel.setAimButton:initialise()
+    require("OMHTT/ControlTheme").button(panel.setAimButton)
+    panel:addChild(panel.setAimButton)
 end
 
 ---@param panel ISPanel Turret Manage
@@ -34,6 +40,8 @@ function E.refresh(panel)
     end
     local writable = require("OMHTT/TurretAccess").near(panel.player, panel.object)
     panel.readOnly = not writable
+    panel.setAimButton:setEnable(writable)
+    panel.setAimButton.tooltip = getText("UI_OMHTT_SetFacingTooltip")
     require("OMHTT/ControlTheme").power(panel.powerButton, require("OMHTT/Turret").isOn(require("OMHTT/Turret").state(panel.object)), writable)
     if not writable then
         for i = 1, #controls do

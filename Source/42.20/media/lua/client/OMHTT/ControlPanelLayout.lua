@@ -54,7 +54,7 @@ function L.create(panel)
     body:setScrollChildren(true)
     body:addScrollBars(false)
     Theme.scrollbar(body)
-    local controls = {panel.nameEntry, panel.manage, panel.assign, panel.setFacing, panel.policy, panel.trigger}
+    local controls = {panel.nameEntry, panel.manage, panel.assign, panel.policy, panel.trigger}
     for i = 1, #controls do
         local control = controls[i]
         panel:removeChild(control)
@@ -75,8 +75,8 @@ function L.arrange(panel)
     if panel.geometryWidth == panel.width and panel.geometryHeight == panel.height then return end
     panel.geometryWidth, panel.geometryHeight = panel.width, panel.height
     local h = panel.lineHeight
-    local stock = math.max(240, math.floor(panel.width * .25))
-    panel.stockCompact = panel.width < 1000
+    local stock = math.max(320, math.floor(panel.width * .28))
+    panel.stockCompact = panel.width < 1160
     panel.controlWidth = panel.stockCompact and panel.width or panel.width - stock - 8
     panel.equipmentY = panel.titleHeight + 8
     panel.devicesY = panel.equipmentY + h * (panel.stockCompact and 5 or 4) + 34
@@ -88,7 +88,8 @@ function L.arrange(panel)
     panel.graph:setHeight(bottom - y)
     Theme.scrollbar(panel.graph)
     local toolbar = h + 10
-    local mapHeight = math.max(64, math.min(math.floor((bottom - y) * .28), bottom - y - toolbar - 96))
+    local detailHeight = math.min(h * 15 + 158, math.max(100, bottom - y - toolbar - 100))
+    local mapHeight = math.max(64, bottom - y - toolbar - detailHeight - 8)
     panel.mapY = y
     local mapTop = y + toolbar
     place(panel.mapView, panel.detailX, mapTop, centerWidth)
@@ -120,8 +121,8 @@ function L.arrange(panel)
             pane.column3 = math.max(pane.column2 + 60, pane.width - 90)
             pane.nameHeader:setWidth(pane.column3 - pane.column2)
             pane.typeHeader:setX(pane.column3 - 1)
-            pane.typeHeader:setWidth(pane.width - pane.typeHeader.x)
-            pane.column4 = pane.width
+            pane.typeHeader:setWidth(pane.width - 18 - pane.typeHeader.x)
+            pane.column4 = pane.width - 18
         end
     end
     panel.devices:setVisible(false)
@@ -157,8 +158,7 @@ function L.refresh(panel, state)
     panel.infoY = body.y + info
     panel.controlsY = info + h * 4 + 8
     local actionY = panel.controlsY + h + 12
-    place(panel.manage, x, actionY, half)
-    place(panel.setFacing, x + half + 8, actionY, half)
+    place(panel.manage, x, actionY, width)
     local connection = actionY + (kind == "Turret" and row + 14 or 0)
     panel.connectionY = body.y + connection
     local controlsY = connection + h * 3 + 16
@@ -168,11 +168,19 @@ function L.refresh(panel, state)
     place(panel.policy, x, bottom + h + 12, assigned and half or width)
     place(panel.assign, x + half + 8, bottom + h + 12, half)
     panel.ownerY = bottom + h + row + 20
-    local controls = {panel.policy, panel.manage, panel.assign, panel.setFacing, panel.trigger}
+    local controls = {panel.policy, panel.manage, panel.assign, panel.trigger}
     for i = 1, #controls do
         controls[i]:setHeight(row)
     end
     body.contentHeight = panel.ownerY + h + 14
+    local height = math.min(body.contentHeight, math.max(100, panel.height - 24 - panel.mapView.y - 108))
+    local y = panel.height - 24 - height
+    local delta = y - body.y
+    panel.infoY, panel.connectionY, panel.accessY = panel.infoY + delta, panel.connectionY + delta, panel.accessY + delta
+    body:setY(y)
+    body:setHeight(height)
+    panel.mapView:setHeight(math.max(64, y - panel.mapView.y - 8))
+    Theme.scrollbar(body)
     body:setScrollHeight(body.contentHeight)
     body:setYScroll(math.max(math.min(0, body.height - body.contentHeight), body:getYScroll()))
 end
@@ -261,8 +269,8 @@ function L.drawDetails(panel, host, state)
     body:repaintStencilRect(0, 0, body.width, body.height)
     local hintY = connectionY + h + 8
     body:setStencilRect(x, hintY + scroll, width, h * 2)
-    local hint = getText("UI_OMHTT_GraphConnectHint")
-    if state.kind == "Controller" then
+    local hint = getText(panel.graph.notice or "UI_OMHTT_GraphConnectHint")
+    if not panel.graph.notice and state.kind == "Controller" then
         hint = getText("UI_OMHTT_ControllerRange")
     elseif panel.linkSource then
         hint = getText("UI_OMHTT_SelectedInput", U.name(panel.linkSource))

@@ -163,3 +163,6 @@ function ISPanel:drawLine(texture, x1, y1, x2, y2, thickness, a, r, g, b)
     check(texture == nil and thickness > 0 and b ~= nil, "Native line receives width and complete RGBA")
 end
 function ISPanel:drawTextCentre() end
+
+function ISPanel:getMouseX() return 0 end
+function ISPanel:getMouseY() return 0 end

@@ -62,6 +62,9 @@ function W.copy(source)
             copy[key] = value
         end
     end
+    if source.organization then
+        copy.organization = require("OMHTT/ControlGroups").copy(source)
+    end
     copy.links = {}
     for i = 1, #(source.links or {}) do
         copy.links[i] = source.links[i]

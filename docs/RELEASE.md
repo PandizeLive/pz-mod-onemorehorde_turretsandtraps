@@ -1,5 +1,9 @@
 # Release state and publication policy
 
+## 0.2.56 / C327 — shared Controller organization and UI corrections
+
+[Patch](PATCH_v0.2.56.md) · [Verification](TEST_v0.2.56.md). 23,775 assertions, native group serialization/permissions/save-restart, browser tier workflows and Traps-only/Turrets-only/both startup checks pass. LootLab's two layout assets are deployed as Worker version `aad919e4-cf26-47b1-ba68-a84766afe388`; production Worker bytes and saved tuning are preserved. [Hosted evidence](../diagnostics/v0.2.56/lootlab-release.json). Local immutable tag, install and backup evidence is recorded after the approved installation. Rendered and connected-client acceptance remain pending; no Workshop upload or merge.
+
 ## 0.2.55.2 / C325 — Controller connections and resize correction
 
 [Patch](PATCH_v0.2.55.2.md) · [Verification](TEST_v0.2.55.2.md). Installed from immutable `test/v0.2.55.2` / `b7edb8d792c79e9f19f6e87b8fba26887b6ce800`. All 299 source and 385 tagged/packaged/installed/archive files match; both 0.2.55.1 managed backups verify. [Release evidence](../diagnostics/v0.2.55.2/local-release.json). 23,252 assertions, native geometry, save/reload and three independent-package startup checks pass. Rendered and connected-client acceptance remain pending. Existing development branch/draft PR #1 is the C108 delivery route; no merge or Workshop upload. Cumulative pending Workshop notes are preserved.

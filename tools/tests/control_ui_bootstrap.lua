@@ -38,3 +38,5 @@ function ISInventoryPaneDraggedItems:getDropContainer() return nil end
 
 ISUIElement=ISPanel
 ISLayoutManager={windows={},RegisterWindow=function(key, funcs, target) ISLayoutManager.windows[key]={funcs=funcs,target=target} end,OnPostSave=function() end}
+
+getSoundManager = function() return {playUISound=function() end} end

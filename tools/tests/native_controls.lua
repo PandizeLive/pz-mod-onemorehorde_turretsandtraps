@@ -7,6 +7,11 @@ local T = require("OMHTT/Turret")
 return function(player)
     assert(isServer() and not isClient(), "Controls probe requires actual server mode")
     if EXPECT_READ then
+        local groupFixture = ModData.getOrCreate("OMHTTNativeGroups")
+        local groupHost = C.records().records[groupFixture.controller]
+        assert(groupHost and groupHost.organization.revision == 8
+            and groupHost.organization.groups[1].name == "Inside Defenses", "Fresh process lost Controller groups")
+        print("[OMHTT-C327] native groups fresh-process=preserved")
         local fixture = ModData.getOrCreate("OMHTTNativeControls")
         local saved = fixture.plate and C.records().records[fixture.plate]
         assert(saved and saved.name == fixture.label and saved.owner == "control-owner"
@@ -74,6 +79,21 @@ return function(player)
         return object
     end
     local controller = create("Controller", "omhtt_turret_01_21")
+    local layoutHost = C.state(controller)
+    local add = Action:new(player, controller, "GroupAdd", "0|||Base Front", nil, layoutHost.id)
+    assert(add:complete() and layoutHost.organization.groups[1].name == "Base Front", "Native group creation failed")
+    assert(not add:complete(), "Group action replay succeeded")
+    assert(not Action:new(player, controller, "GroupAdd", "0|||Stale", nil, layoutHost.id):complete(), "Stale group revision accepted")
+    local view = C.copy(layoutHost)
+    view.organization.groups[1].name = "Client mutation"
+    assert(layoutHost.organization.groups[1].name == "Base Front", "Published groups alias authoritative state")
+    assert(Action:new(player, controller, "GroupAdd", "1|||Base Rear", nil, layoutHost.id):complete(), "Second group failed")
+    assert(Action:new(player, controller, "GroupMove", "2|2|1|", nil, layoutHost.id):complete(), "Group reordering failed")
+    assert(layoutHost.organization.groups[1].id == "2", "Group order not persisted")
+    assert(Action:new(player, controller, "GroupName", "3|2||Inside Defenses", nil, layoutHost.id):complete(), "Group rename failed")
+    local groupFixture = ModData.getOrCreate("OMHTTNativeGroups")
+    groupFixture.controller = layoutHost.id
+    print("[OMHTT-C327] native groups=create/reorder/rename stale=rejected snapshot=detached")
     for _, offset in pairs({{0,-1},{1,0},{0,1},{-1,0},{1,1},{-1,-1}}) do
         local adjacent = IsoGridSquare.new(getCell(), nil, 28 + offset[1], 28 + offset[2], 0)
         player:setCurrent(adjacent)
@@ -284,6 +304,31 @@ return function(player)
     input.recoverAt, input.active = clock - 1, true
     assert(C.link(plate, receiver, true), "Native direct link failed")
     assert(C.link(button, receiver, true), "Native second input link failed")
+    local moveGroup = Action:new(player, controller, "DeviceMove", "4|1||", plate, host.id, input.id)
+    local groupNetwork = NetTimedAction.new()
+    groupNetwork:set(player, moveGroup)
+    assert(moveGroup:complete() and not moveGroup:complete(), "Native group move/replay failed")
+    assert(host.organization.members[input.id] == "1", "Group membership missing")
+    assert(Action:new(player, controller, "DeviceMove", "5|2|" .. input.id .. "|", receiver, host.id, output.id):complete(), "Remote defense group move failed")
+    local beforeIndex, afterIndex
+    for i = 1, #host.organization.order do
+        if host.organization.order[i] == output.id then beforeIndex = i end
+        if host.organization.order[i] == input.id then afterIndex = i end
+    end
+    assert(beforeIndex and afterIndex == beforeIndex + 1, "Device ordering failed")
+    assert(not Action:new(stranger, controller, "GroupName", "6|2||Stolen", nil, host.id):complete(), "Private Controller organization writable by stranger")
+    assert(not Action:new(player, controller, "GroupName", "6|2||<bad>", nil, host.id):complete(), "Group markup accepted")
+    assert(not Action:new(player, controller, "GroupDelete", "5|1||", nil, host.id):complete(), "Stale group deletion accepted")
+    assert(Action:new(player, controller, "GroupDelete", "6|1||", nil, host.id):complete(), "Group deletion failed")
+    assert(not host.organization.members[input.id] and #input.links == 1 and input.links[1] == output.id, "Ungrouping disconnected device")
+    assert(Action:new(player, controller, "DeviceMove", "7|2|" .. output.id .. "|", plate, host.id, input.id):complete(), "Device reordering failed")
+    for i = 1, #host.organization.order do
+        if host.organization.order[i] == input.id then beforeIndex = i end
+        if host.organization.order[i] == output.id then afterIndex = i end
+    end
+    assert(afterIndex == beforeIndex + 1 and #input.links == 1, "Reordering lost links")
+    print("[OMHTT-C327] native groups device-move=serialized delete=ungroup-only cross-group-links=preserved permissions=checked replay=blocked")
+
     C.publish(receiver)
     assert(#receiver:getModData().OMHTTControl.inputs == 2, "Receiver did not publish both incoming sources")
     assert(C.link(button, receiver, false), "Individual disconnect failed")

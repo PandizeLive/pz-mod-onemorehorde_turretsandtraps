@@ -116,6 +116,7 @@ end
 ---@param dy number Mouse movement Y
 ---@return boolean handled
 function Map:onMouseMove(dx, dy)
+    self.hoverObject = self:hit(self:getMouseX(), self:getMouseY())
     if self.panning then
         local x, y = self:getMouseX(), self:getMouseY()
         if self.nativeMode then
@@ -144,6 +145,7 @@ function Map:onMouseUp(x, y)
     if source and target and source ~= target then
         Graph.connect(self.owner, source, target)
     elseif target then
+        getSoundManager():playUISound("UIActivateButton")
         Graph.select(self.owner, target)
     end
     return true
@@ -153,6 +155,17 @@ end
 function Map:onMouseUpOutside()
     self.dragObject, self.panning = nil, false
     self:setCapture(false)
+    return true
+end
+
+---@param x number Local X
+---@param y number Local Y
+---@return boolean handled
+function Map:onRightMouseUp(x, y)
+    local object = self:hit(x, y)
+    if object then
+        Graph.menu(self.owner, object)
+    end
     return true
 end
 
@@ -216,10 +229,27 @@ function Map:render()
         local state = A.state(object)
         if state then
             local x, y = marker.x, marker.y
-            local selected = self.owner.selected == object
+            local selected = self.owner.selected == object or self.hoverObject == object
             local half = marker.halfWidth
-            self:drawRect(x - half, y - 11, half * 2, 22, 1, selected and .35 or .12, selected and .35 or .12, selected and .35 or .12)
-            self:drawRectBorder(x - half, y - 11, half * 2, 22, 1, .85, .85, .85)
+            local shade = selected and .35 or .12
+            if state.kind == "Turret" then
+                self:drawRect(x - half, y - 11, half * 2, 22, 1, shade, shade, shade)
+                self:drawRectBorder(x - half, y - 11, half * 2, 22, 1, .85, .85, .85)
+            else
+                for scan = -11, 11 do
+                    local fraction = math.abs(scan) / 12
+                    local width = half * (state.kind == "Controller" and (1 - fraction) or math.sqrt(1 - fraction * fraction))
+                    self:drawRect(x - width, y + scan, width * 2, 1, 1, shade, shade, shade)
+                end
+                local segments = state.kind == "Controller" and 4 or 16
+                local px, py = x + half, y
+                for j = 1, segments do
+                    local angle = j * math.pi * 2 / segments
+                    local nx, ny = x + math.cos(angle) * half, y + math.sin(angle) * 12
+                    self:drawLine(nil, px, py, nx, ny, 2, 1, .85, .85, .85)
+                    px, py = nx, ny
+                end
+            end
             self:drawTextCentre(marker.label, x, y - 8, 1, 1, 1, 1, UIFont.Small)
         end
     end

@@ -72,9 +72,8 @@ check(panel.assign.enabled and not panel.manage.enabled and panel.manage.tooltip
     "Powered Controller exposes Assign before remote Manage")
 turret.data.OMHTTControl.controller=object.data.OMHTTControl.id
 panel:prerender()
-check(panel.setFacing.enabled and panel.setFacing.visible,"Assigned writable turret exposes Set Facing")
-check(panel.setFacing.y == panel.manage.y and panel.setFacing.x >= panel.manage.x + panel.manage.width
-    and panel.policy.y > panel.connectionY - panel.detailBody.y,"Manage and Set Aim share a row; Access follows Connections")
+check(panel.setFacing == nil and panel.manage.enabled, "Controller opens Manage; Set Aim is in Manage")
+check(panel.policy.y > panel.connectionY - panel.detailBody.y, "Access follows Connections")
 local source=setmetatable({data={OMHTTControl={id="ui-input",kind="Plate",owner="ui-owner",links={}}}}, {__index=object})
 panel.linkSource=source
 A.near=function() return true end

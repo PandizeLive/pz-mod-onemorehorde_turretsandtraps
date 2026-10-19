@@ -42,6 +42,17 @@ cursor:create(2201,2199,0,false,nil)
 check(not requested,"Replaced controller cannot receive stale picker command")
 player.denied=true
 check(not Cursor.start(panel),"Read-only access cannot start direction picker")
+player.denied = false
+local originalNear = A.near
+A.near = function() return true end
+panel.deviceId, panel.object, panel.controller = turret.state.id, turret, host
+host.offline = true
+cursor = Cursor.start(panel)
+check(cursor and cursor.host == turret, "Nearby Manage Set Aim works without Controller power")
+getCell():setDrag(nil, 0)
+A.near = function() return false end
+check(not Cursor.start(panel), "Remote Manage still requires powered Controller authorization")
+A.near = originalNear
 A.state,A.write,R.valid,getCell,U.command,Range.focus=saved.state,saved.write,saved.valid,saved.cell,saved.command,saved.focus
 ISBuildingObject=testFacingBuilding
 testFacingBuilding=nil

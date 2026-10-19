@@ -46,21 +46,14 @@ function G.apply(panel)
     place(panel.loadOrderButton, ammoX + ammoWidth - panel.loadOrderButton.width, buttonY, panel.loadOrderButton.width)
     place(panel.reloadButton, panel.loadOrderButton.x - panel.reloadButton.width - 6, buttonY, panel.reloadButton.width)
     if panel.sourceButton then
-        place(panel.sourceButton, 8, buttonY, equipment)
+        place(panel.sourceButton, 8, buttonY, (equipment - 6) / 2)
+        place(panel.setAimButton, 8 + (equipment + 6) / 2, buttonY, (equipment - 6) / 2)
     end
     panel.equipmentBottom = buttonY + panel.reloadButton.height + 6
     panel.ammunitionBottom = panel.equipmentBottom
     panel.modulesY = panel.equipmentBottom + 10
-    if not panel.minimumModuleWidth then
-        panel.minimumModuleWidth = 112
-        for name in pairs(T.MODULES) do
-            panel.minimumModuleWidth = math.max(panel.minimumModuleWidth,
-                getTextManager():MeasureStringX(UIFont.Small, getText("UI_OMHTT_Module" .. name)) + 32)
-        end
-    end
-    local columns = math.max(4, math.min(8, math.floor(rowWidth / panel.minimumModuleWidth)))
-    local rows = math.ceil(16 / columns)
-    local moduleWidth = (rowWidth - (columns - 1) * 6 - 8) / columns
+    local columns, rows = 8, 3
+    local moduleWidth = (rowWidth - 50) / columns
     local moduleTop = panel.modulesY + panel.headerHeight + 6
     local available = (panel.userSized and panel.height or screen - 24) - panel.body.y - moduleTop - h * 3 - 140
     local moduleHeight = math.max(h + 8, math.min(h * 2 + 16, math.floor(available / rows) - 4))
@@ -71,8 +64,11 @@ function G.apply(panel)
     end
     panel.minimumGridBottom = moduleTop + rows * (h + 12)
     for i = 1, 16 do
-        local row, column = math.floor((i - 1) / columns), (i - 1) % columns
-        place(panel.moduleSlots[i], 8 + column * (moduleWidth + 6), moduleTop + row * (moduleHeight + 4), moduleWidth)
+        local row = i <= 4 and 0 or 1 + math.floor((i - 5) / columns)
+        local column = i <= 4 and i - 1 or (i - 5) % columns
+        local count = row == 1 and 8 or 4
+        local inset = (rowWidth - (count * moduleWidth + (count - 1) * 6)) / 2
+        place(panel.moduleSlots[i], 4 + inset + column * (moduleWidth + 6), moduleTop + row * (moduleHeight + 4), moduleWidth)
         panel.moduleSlots[i]:setHeight(moduleHeight)
     end
     panel.moduleGridBottom = moduleTop + rows * (moduleHeight + 4)
