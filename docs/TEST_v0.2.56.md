@@ -1,5 +1,9 @@
 # 0.2.56 verification — C327
 
+## Owner test follow-up — C328
+
+Owner reports UI defects and incomplete trigger cycles; rendered acceptance has **not passed**. Console confirms SP0.2.56/game42.21 and 16 stale Fire-hover callback exception records. [Full audit/next scope](CORRECTIONS_C328.md) · [Sanitized console evidence](../diagnostics/v0.2.56/c328-owner-audit.json). Automated checks previously passed but did not cover the removed world-menu option or native right-click routing. No patch/install is performed in this audit turn.
+
 Owner selected 1A shared per-Controller groups and explicitly approved the full C326 patch. Automated checks are separate from rendered and connected-client acceptance.
 
 ## Automated evidence

@@ -1720,3 +1720,8 @@ Owner reports freezing/exiting with many errors and a scrollbar in the screen in
 ## C327 — shared Controller organization approved (2026-10-18)
 
 Owner selects 1A and approves the C326 patch. Shared named groups and device ordering persist per Controller; collapse state stays local. Server checks permissions, identity and revision; stale edits fail instead of overwriting. Row dragging sorts; port/map gestures connect. Full implementation and delivery are documented in [0.2.56](PATCH_v0.2.56.md).
+
+
+## C328 — owner test and corrective discussion (2026-10-18)
+
+Owner requests strict module ordering, one centered Unavailable label with Expansion guidance, menu alignment/native chrome, map disconnection and finishing a triggered action before automatic power-down. [Audit](CORRECTIONS_C328.md) records confirmed bugs and proposed behavior. Module sorting and lock semantics remain open; no gameplay implementation is claimed or approved by the audit.
