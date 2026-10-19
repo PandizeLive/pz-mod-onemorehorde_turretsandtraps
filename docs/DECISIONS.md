@@ -1725,3 +1725,7 @@ Owner selects 1A and approves the C326 patch. Shared named groups and device ord
 ## C328 — owner test and corrective discussion (2026-10-18)
 
 Owner requests strict module ordering, one centered Unavailable label with Expansion guidance, menu alignment/native chrome, map disconnection and finishing a triggered action before automatic power-down. [Audit](CORRECTIONS_C328.md) records confirmed bugs and proposed behavior. Module sorting and lock semantics remain open; no gameplay implementation is claimed or approved by the audit.
+
+## C329 — four-column modules and native keep-open lock (2026-10-19)
+
+Owner response to C328: rejects the 4/8/4 appearance in favor of 4/4/4/4 and chooses 2B. Adopt four centered, aligned rows of four; retain saved module order rather than inventing automatic sorting. Use native-style keep-open locking, distinct from pin/collapse and without overriding reach/access authority. Remaining corrective scope stays in [C328](CORRECTIONS_C328.md). Planning selections only; installed 0.2.56 unchanged. No further design choices required before patch approval.
