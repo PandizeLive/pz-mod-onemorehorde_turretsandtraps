@@ -1737,3 +1737,7 @@ Owner: "Approved." Authorizes C328/C329 fixes, 4/4/4/4 saved-order geometry and 
 ## C331 — Testing deferred; existing next checkpoint retained (2026-10-19)
 
 Owner: "Unable to test, what’s the next checkpoint?" No test result or gameplay approval. R4C2 Poke Floor remains next, followed by the separate dart emitter slice. [Status handoff](checkpoints/R4C1_CONNECTED_CONTROLS.md#c331--next-checkpoint-confirmed-while-testing-is-deferred-2026-10-19).
+
+## C332 — Poke Floor content choices requested (2026-10-19)
+
+Owner: "Anything need to be discussed with poke floor?" [R4C2 proposal](checkpoints/R4C2_POKE_FLOOR.md) records seven choices and recommendations. This is discussion authorization only. No new numerical balance, recipe, module host or gameplay implementation is approved; existing pulse/held behavior remains selected.

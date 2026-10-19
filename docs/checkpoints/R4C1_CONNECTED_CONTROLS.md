@@ -527,3 +527,7 @@ The owner approves C297–C299 with copper-orange accents. [0.2.53.6](../PATCH_v
 ## C331 — Next checkpoint confirmed while testing is deferred (2026-10-19)
 
 Owner asks what follows and cannot test 0.2.56.1 now. Confirm the existing R4C2 sequence: Poke Floor first, fixed dart emitter separately afterward, then R4C3 beam sensors. Retain the already selected single Button cycle / repeated held-signal cycles; do not reopen that choice or inherit Bed Spikes balance. This is a status handoff, not new numerical design or implementation approval. Rendered and connected acceptance remain deferred. Inspected active branch at 390b0fb, fetched origin/dev, and confirmed draft PR #1 is the only open PR.
+
+## C332 — Poke Floor content discussion (2026-10-19)
+
+[The R4C2 content contract](R4C2_POKE_FLOOR.md) now contains the seven proposed choices, recommended values, recipe/XP, service and implementation evidence boundaries. Trigger pulse/held/retraction behavior stays settled. No gameplay implementation approval or owner acceptance is inferred.

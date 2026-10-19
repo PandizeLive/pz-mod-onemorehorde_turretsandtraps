@@ -332,7 +332,7 @@ The generic gun mount already exists; a newly compatible gun is not a new custom
 | ID | Deliverable | Completion evidence |
 | --- | --- | --- |
 | R4C1 | Button, pressure plate, links and bounded signal contract | Implemented signal/OR/link-limit contract; retain no backlog bursts, occupancy restoration and identity/access/power checks. C308 implements plate/linking/Set Facing corrections; rendered/connected acceptance pending |
-| R4C2 | Poke Floor and fixed dart emitter, as separate implementation slices | One bounded strike/cycle, legal cadence, safe retraction, actual ammo/wear and no double damage/reward. Traps-only remains functional |
+| R4C2 | [Poke Floor content discussion](checkpoints/R4C2_POKE_FLOOR.md), then fixed dart emitter as a separate slice | One bounded strike/cycle, legal cadence, safe retraction, actual ammo/wear and no double damage/reward. Traps-only remains functional |
 | R4C3 | Beam sensor and further control extensions; Controller foundation already delivered | Power/alignment/obstruction proof; individual/all-compatible-linked control; passive hazards ignore filters. Decide player/faction/collateral policy before enabling it |
 | R4C4 | Optional cross-package turret signal receiver; foundation already integrated with R4C1 | Retain independent-package and connected acceptance for new receivers/adapters. Signals cannot bypass aim/ammo/power/cooldown |
 
