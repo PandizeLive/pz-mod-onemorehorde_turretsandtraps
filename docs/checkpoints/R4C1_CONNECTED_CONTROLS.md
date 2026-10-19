@@ -531,3 +531,7 @@ Owner asks what follows and cannot test 0.2.56.1 now. Confirm the existing R4C2 
 ## C332 — Poke Floor content discussion (2026-10-19)
 
 [The R4C2 content contract](R4C2_POKE_FLOOR.md) now contains the seven proposed choices, recommended values, recipe/XP, service and implementation evidence boundaries. Trigger pulse/held/retraction behavior stays settled. No gameplay implementation approval or owner acceptance is inferred.
+
+## C333 — Controller car batteries and shared receiver fallback (2026-10-19)
+
+Owner requests replacing ordinary Controller batteries with car batteries, automatic sequential spare use, and assigned turret/trap fallback to the Controller's battery. Siphon excludes the Controller. [C333 design and remaining priority choice](R4C2_POKE_FLOOR.md#c333--owner-selections-and-shared-fallback-power-2026-10-19) supersedes the old ordinary-battery-only power source contract. Keep existing stockpile capacity, identity/access/range and independent-package requirements. Existing automatic ordinary-battery switching is implemented, but shared car-battery operation debits are new work and are not yet claimed delivered.

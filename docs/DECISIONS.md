@@ -1741,3 +1741,7 @@ Owner: "Unable to test, what’s the next checkpoint?" No test result or gamepla
 ## C332 — Poke Floor content choices requested (2026-10-19)
 
 Owner: "Anything need to be discussed with poke floor?" [R4C2 proposal](checkpoints/R4C2_POKE_FLOOR.md) records seven choices and recommendations. This is discussion authorization only. No new numerical balance, recipe, module host or gameplay implementation is approved; existing pulse/held behavior remains selected.
+
+## C333 — Poke Floor selections; Controller car-battery fallback (2026-10-19)
+
+Owner selects C332 1A/2B/3A/5A/6B, requests an improvised recipe and evaluates Tire Pump substitution. Bed Spikes-style traversal/scratch eligibility must request visible activation before the actual injury. Traps have no modules. Owner adds Controller car batteries, sequential spares and connected-device fallback; Siphon cannot affect the Controller. [Detailed provenance, source findings and remaining choices](checkpoints/R4C2_POKE_FLOOR.md#c333--owner-selections-and-shared-fallback-power-2026-10-19). Do not infer a second injury roll, unlimited stockpile, shared mains coverage or Controller-energy Siphon refund. No new gameplay version or implementation/owner acceptance claim.
