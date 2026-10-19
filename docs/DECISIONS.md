@@ -1757,3 +1757,7 @@ Owner selects C334 1A repeated zombie occupancy, then tentatively considers requ
 ## C336 — Optional grid connection module proposed (2026-10-19)
 
 Owner asks whether a module could enable grid connection. [Proposal and choices](checkpoints/R4C2_POKE_FLOOR.md#c336--grid-module-proposal-2026-10-19) combine battery-default turrets with an optional one-slot supply upgrade. Supply scope and rarity/loaded weight remain unselected; no charging, trap module slots, Controller Siphon refund or implementation approval is inferred. Installed 0.2.56.1 remains unchanged.
+
+## C337 — Grid Module mains/generator support and Mythic rarity (2026-10-19)
+
+Owner selects C336 1A and replaces the proposed Epic/Rare rarity with Mythic due to reduced upkeep. [Confirmed design and remaining loaded-weight choice](checkpoints/R4C2_POKE_FLOOR.md#c337--grid-module-mythic-rarity-selected-2026-10-19). Recommend weight 1, not yet numerically approved. No gameplay implementation approval inferred; installed 0.2.56.1 unchanged.
