@@ -29,6 +29,7 @@ public final class NativePersistenceCheck {
         for (int index = 0; index < count; index++) {
             Object entry = map.get(prefix + index);
             String expected = turrets ? (index >= 25 ? "OMHTT_PlateTurrets" + (index == 29 ? 1 : 0) : index >= 21 ? "OMHTT_ControllerTurrets" : index == 20 ? "OMHTT_ProbeBase" : index >= 16 ? "OMHTT_TestCube" : "OMHTT_Aim" + index)
+                : index >= 85 ? "OMHTT_Poke" + (index == 89 ? 1 : 0)
                 : index >= 80 ? "OMHTT_PlateTraps" + (index == 84 ? 1 : 0)
                 : index >= 76 ? "OMHTT_ControllerTraps"
                 : index >= 72 ? "OMHTT_Wire"
@@ -61,9 +62,9 @@ public final class NativePersistenceCheck {
         NativeBarbProbe.verify(directory, mode);
         NativeVaultProbe.verify();
         NativeTurretProbe.verify();
-        verifyTexturePack("OMHTT_Traps", "omhtt_barrier_01_", 85, false);
+        verifyTexturePack("OMHTT_Traps", "omhtt_barrier_01_", 90, false);
         verifyTexturePack("OMHTT_Turrets", "omhtt_turret_01_", 30, true);
-        System.out.println("[OMHTT-Smoke] native-texturepacks traps=85 turrets=30 pages=37 png=valid");
+        System.out.println("[OMHTT-Smoke] native-texturepacks traps=90 turrets=30 pages=39 png=valid");
         Class<?> lua = Class.forName("zombie.Lua.LuaManager");
         Object env = lua.getField("env").get(null);
         Object fixtures = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeFixtures");
@@ -199,7 +200,32 @@ public final class NativePersistenceCheck {
         System.out.println("[OMHTT-C309] native-plate-persistence mode=" + mode + " pressed=preserved config=valid passive=preserved");
     }
 
+    private static void verifyPoke(Path directory, String mode) throws Exception {
+        Object env = Class.forName("zombie.Lua.LuaManager").getField("env").get(null);
+        Object source = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativePackedPoke");
+        check(source != null, "Packed Poke fixture missing");
+        Path path = directory.resolve("poke-floor.bin");
+        if (mode.equals("write")) {
+            ByteBuffer output = ByteBuffer.allocate(65536);
+            call(source, "saveWithSize", new Class<?>[]{ByteBuffer.class, boolean.class}, output, false);
+            Files.write(path, Arrays.copyOf(output.array(), output.position()));
+        }
+        int version = ((Number)Class.forName("zombie.iso.IsoWorld").getMethod("getWorldVersion").invoke(null)).intValue();
+        ByteBuffer input = ByteBuffer.wrap(Files.readAllBytes(path));
+        Object restored = Class.forName("zombie.inventory.InventoryItem").getMethod("loadItem", ByteBuffer.class, int.class).invoke(null, input, version);
+        check(!input.hasRemaining(), "Poke unread bytes");
+        check(((Number)get(restored, "getCondition")).intValue() == 123, "Poke condition changed");
+        java.util.List<?> items = (java.util.List<?>)get(get(restored, "getInventory"), "getItems");
+        check(items.size() == 1 && "Base.CarBattery2".equals(get(items.get(0), "getFullType")), "Poke battery lost");
+        Object debtState = call(get(items.get(0), "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTBatteryDrain");
+        double debt = ((Number)call(debtState, "rawget", new Class<?>[]{Object.class}, "debt")).doubleValue();
+        double charge = ((Number)get(items.get(0), "getCurrentUsesFloat")).doubleValue() - debt;
+        check(Math.abs(charge - .876544) < .000001, "Poke fractional battery charge changed");
+        System.out.println("[OMHTT-C339] poke persistence mode=" + mode + " condition=123 battery=exact charge=exact");
+    }
+
     private static void verifyHeavyController(Path directory, String mode) throws Exception {
+        verifyPoke(directory, mode);
         Object env = Class.forName("zombie.Lua.LuaManager").getField("env").get(null);
         Object source = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeHeavyController");
         check(source != null, "Heavy controller fixture missing");

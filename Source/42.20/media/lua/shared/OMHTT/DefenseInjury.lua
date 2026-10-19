@@ -42,7 +42,9 @@ local function apply(player, kind)
         parts = {BodyPartType.ForeArm_L, BodyPartType.ForeArm_R, BodyPartType.LowerLeg_L, BodyPartType.LowerLeg_R}
     end
     local part = player:getBodyDamage():getBodyPart(parts[ZombRand(#parts) + 1])
-    if kind == "cut" then
+    if kind == "scratch" then
+        player:getBodyDamage():getBodyPart(ZombRand(2) == 0 and BodyPartType.LowerLeg_L or BodyPartType.LowerLeg_R):setScratched(true, true)
+    elseif kind == "cut" then
         part:setCut(true, true)
     else
         part:AddDamage(2)
@@ -66,12 +68,22 @@ function I.request(player, kind, interval)
     sendServerCommand(player, "OMHTT_InjuryV1", kind, {id = player:getOnlineID(), serial = serial})
 end
 
+function I.poke(player, kind)
+    if isClient() or player:isDead() or player:isGodMod() or player:isNoClip() or player:isGhostMode() then return end
+    if isServer() then
+        serial = serial + 1
+        sendServerCommand(player, "OMHTT_InjuryV1", kind, {id = player:getOnlineID(), serial = serial})
+    else
+        apply(player, kind)
+    end
+end
+
 ---@param module string Server namespace
 ---@param command string Injury kind
 ---@param message table Server-selected victim and event
 ---@return nil
 function I.receive(module, command, message)
-    if not isClient() or module ~= "OMHTT_InjuryV1" or (command ~= "bruise" and command ~= "cut" and command ~= "rotaryBruise" and command ~= "blast")
+    if not isClient() or module ~= "OMHTT_InjuryV1" or (command ~= "bruise" and command ~= "scratch" and command ~= "cut" and command ~= "rotaryBruise" and command ~= "blast")
         or type(message) ~= "table" or not P.identity(message.id) or not P.number(message.serial, 1, 1000000000000) then return end
     if command == "blast" and (not P.number(message.amount, 0, 10) or not P.number(message.chance, 0, .5)) then return end
     for index = 0, 3 do

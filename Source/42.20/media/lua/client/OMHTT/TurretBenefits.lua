@@ -78,6 +78,7 @@ function B.rows(contents, stats)
             label, value = "Piercing", stats.piercing
             if stats.piercing == 0 then label = "Inactive" end
         elseif name == "Void" then label, value = "Void", nil
+        elseif name == "Grid" then label, value = "Grid", nil
         elseif name == "Lure" then label, value = "Lure", nil
         elseif name == "Fragment" then
             label, value = "Damage", stats.fragmentDamage * 100

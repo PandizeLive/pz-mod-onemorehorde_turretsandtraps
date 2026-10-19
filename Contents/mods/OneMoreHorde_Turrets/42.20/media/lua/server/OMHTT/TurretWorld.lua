@@ -31,9 +31,12 @@ function W.publishRuntime(object, state, contents, now)
     end
     if now >= view.due then
         view.due = now + 250
+        local source = W.power(object, contents)
+        state.powerSource = source and source.kind or "none"
         local heading = math.floor((state.aimDegrees or 0) / 2)
         if view.heading ~= heading or view.shots ~= state.shots or view.moving ~= state.rotaryMoving
-            or view.status ~= state.feedStatus or view.loaded ~= state.feedLoaded then
+            or view.status ~= state.feedStatus or view.loaded ~= state.feedLoaded or view.powerSource ~= state.powerSource then
+            view.powerSource = state.powerSource
             view.heading, view.shots, view.moving = heading, state.shots, state.rotaryMoving
             view.status, view.loaded = state.feedStatus, state.feedLoaded
             Authority.publish(object)
@@ -447,8 +450,8 @@ function W.power(object, contents, resolved)
     if SandboxVars.OMHTurretsTraps.PotatoRequirePower == false then return {kind = "disabled", cost = 0} end
     local square = object:getSquare()
     local stats = resolved or T.cycleConfig(contents)
-    if square:hasGridPower() and square:getRoom() then return {kind = "grid", cost = 0} end
-    if square:haveElectricity() then
+    if contents.active.Grid and square:hasGridPower() and square:getRoom() then return {kind = "grid", cost = 0} end
+    if contents.active.Grid and square:haveElectricity() then
         local cost = stats.generatorFuel
         for generator in pairs(generators) do
             local origin = generator:getSquare()
@@ -466,7 +469,7 @@ function W.power(object, contents, resolved)
         and require("OMHTT/TurretBattery").charge(battery) + 0.0000001 >= cost then
         return {kind = "battery", battery = battery, cost = cost}
     end
-    return nil
+    return require("OMHTT/ControlPower").fallback(object, cost)
 end
 
 ---@param player IsoPlayer Operator
@@ -554,6 +557,8 @@ function W.fire(player, object, target, signal)
                 x = square:getX() + .5, y = square:getY() + .5, z = square:getZ()})
             return false
         end
+        power = W.power(object, contents, stats)
+        if not power then return false end
         options.ammoCost = math.min(cycle.loaded, 1 + stats.splitter)
         options.impactReady = cycle.impactReady == true
         local committed, charged = require("OMHTT/TurretFeed").consume(contents, stats, cycle, Clock.now())
@@ -562,6 +567,8 @@ function W.fire(player, object, target, signal)
         if power.kind == "battery" then
             local spent = require("OMHTT/TurretBattery").spend(power.battery, power.cost)
             options.siphon = require("OMHTT/TurretSiphon").capture(object, power, stats, spent)
+        elseif power.kind == "controller" then
+            require("OMHTT/ControlPower").spend(power)
         elseif power.kind == "generator" then
             power.generator:setFuel(math.max(0, power.generator:getFuel() - power.cost))
             require("OMHTT/TurretPowerSync").changed(power.generator)

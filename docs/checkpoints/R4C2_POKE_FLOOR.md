@@ -145,3 +145,7 @@ Owner selects C337 1A and corrects the process: "this was a pointless decision. 
 Standing rule: selecting a rarity authorizes its assigned weight automatically. Do not request a redundant numerical approval. Preserve the owner's LootLab tier settings and individual item overrides as the authoritative tuning when changed; do not overwrite them with packaged defaults. This supersedes the separate confirmation interpretation of C315 and the outstanding-weight language in C336/C337. Keep game, packs, Sandbox and LootLab coverage and verified local/hosted distinctions. AGENTS.md is updated so future turns follow this rule.
 
 Documentation/process update only; no gameplay implementation, publication, new test or installation claim. Installed 0.2.56.1 and deferred acceptance remain unchanged. Fetched origin/dev; existing draft PR #1 remains the only open PR.
+
+## C339 — Implementation approved (2026-10-19)
+
+Owner says "Approved" after the settled recap. Implement the C333–C338 final scope in 0.2.57, including assigned Mythic weight 1 and existing LootLab overrides. Native and connected acceptance are separate; no Workshop publication or merge is inferred.

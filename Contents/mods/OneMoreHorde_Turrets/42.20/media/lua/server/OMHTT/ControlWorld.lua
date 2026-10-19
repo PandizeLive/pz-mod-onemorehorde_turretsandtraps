@@ -194,7 +194,7 @@ function W.register(object, player, kind, previous)
         local host, count = records.records[state.controller], 0
         for _, assigned in pairs(records.records) do
             if assigned.id ~= state.id and assigned.placed and assigned.controller == state.controller
-                and (assigned.kind == "Turret") == (state.kind == "Turret") then
+                and C.defense(assigned.kind) == C.defense(state.kind) then
                 count = count + 1
             end
         end
@@ -366,7 +366,7 @@ function W.assign(controller, object, player, enabled)
         local count = 0
         for _, other in pairs(W.records().records) do
             if other.placed and other.id ~= state.id and other.controller == host.id
-                and (other.kind == "Turret") == (state.kind == "Turret") then
+                and C.defense(other.kind) == C.defense(state.kind) then
                 count = count + 1
             end
         end
@@ -429,14 +429,16 @@ function W.create(params)
     W.records().packed[tostring(source:getID())] = false
     state.itemType = source:getFullType()
     object:setName(getText("UI_OMHTT_Control" .. kind))
-    object:setMaxHealth(100)
-    object:setHealth(math.max(1, source:getCondition() / source:getConditionMax() * 100))
+    local health = kind == "Poke" and require("OMHTT/ControlPoke").option("Health", 200, 1, 10000) or 100
+    state.maxHealth = health
+    object:setMaxHealth(health)
+    object:setHealth(math.max(0, source:getCondition() / source:getConditionMax() * health))
     object:setCanPassThrough(true)
     object:setBlockAllTheSquare(false)
-    if kind == "Controller" then
-        local container = ItemContainer.new("OMHTTController", object:getSquare(), object)
+    if kind == "Controller" or kind == "Poke" then
+        local container = ItemContainer.new(kind == "Poke" and "OMHTTPoke" or "OMHTTController", object:getSquare(), object)
         container:setCapacity(100)
-        container:setAcceptItemFunction("OMHTTControlAccept")
+        container:setAcceptItemFunction(kind == "Poke" and "OMHTTPokeReject" or "OMHTTControlAccept")
         container:setExplored(true)
         object:setContainer(container)
         local inventory = source:getInventory()
@@ -465,46 +467,7 @@ end
 ---@param elapsed number In-game hours
 ---@return boolean powered
 function W.power(object, elapsed)
-    local square = object:getSquare()
-    if square:haveElectricity() or (square:hasGridPower() and square:getRoom()) then return true end
-    local storage = object:getContainer()
-    if not storage then return false end
-    local state = W.state(object)
-    local battery = W.batteries[object]
-    if not battery and state.batteryId then
-        battery = storage:getItemWithID(state.batteryId)
-        state.batteryId = nil
-    end
-    if not battery or battery:getFullType() ~= "Base.Battery" or battery:getContainer() ~= storage
-        or battery:getCondition() <= 0 or Battery.charge(battery) <= 0 then
-        battery = nil
-        local items = storage:getItems()
-        local index = W.batteryScan[object] or 0
-        for i = 1, math.min(64, items:size()) do
-            if index >= items:size() then
-                index = 0
-            end
-            local candidate = items:get(index)
-            index = index + 1
-            if candidate:getFullType() == "Base.Battery" and candidate:getCondition() > 0 and Battery.charge(candidate) > 0 then
-                battery = candidate
-                break
-            end
-        end
-        W.batteryScan[object] = index
-        W.batteries[object] = battery
-    end
-    if battery then
-        W.batteries[object], state.batteryId = battery, battery:getID()
-        Battery.spend(battery, elapsed / 48)
-        if isServer() and elapsed > 0 then
-            sendItemStats(battery)
-            require("OMHTT/TurretItemState").publish(battery)
-        end
-        return Battery.charge(battery) > 0
-    end
-    state.batteryId = nil
-    return false
+    return require("OMHTT/ControlPower").idle(object, elapsed)
 end
 
 ---@param object IsoObject Pressure plate
@@ -544,6 +507,7 @@ end
 ---@param object IsoObject Removed device
 ---@return nil
 function W.removed(object)
+    require("OMHTT/ControlPoke").entries[object] = nil
     local state = W.state(object)
     if not state then return end
     local plates = W.plates[object:getSquare()]
@@ -592,10 +556,12 @@ end
 
 ---@return nil
 function W.tick()
+    require("OMHTT/ControlPoke").advance()
     if GameTime.isGamePaused() then return end
     local now = getTimestampMs()
     if W.due and now < W.due then return end
     W.due = now + 100
+    require("OMHTT/ControlPower").flush()
     local deadline = now + 2
     local hours = getGameTime():getWorldAgeHours()
     for i = #W.dirty, 1, -1 do
@@ -618,7 +584,7 @@ function W.tick()
         local object, state = W.objects[id], W.records().records[id]
         local square = object and object:getSquare()
         local loaded = state and square and getCell():getGridSquare(state.x, state.y, state.z) == square
-        if loaded and state and object:getObjectIndex() >= 0 and object:getHealth() > 0 then
+        if loaded and state and object:getObjectIndex() >= 0 and (object:getHealth() > 0 or state.kind == "Poke") then
             if state.kind == "Controller" and (not state.powerDue or now >= state.powerDue) then
                 state.powerDue = now + 1000
                 local elapsed = state.checkedHours and math.max(0, hours - state.checkedHours) or 0
@@ -631,6 +597,8 @@ function W.tick()
                     state.powered, state.backup = powered, charge
                     W.publish(object)
                 end
+            elseif state.kind == "Poke" then
+                require("OMHTT/ControlPoke").step(object, state)
             elseif state.kind == "Plate" then
                 W.updatePlate(object, now)
             elseif state.kind == "Turret" then
@@ -736,7 +704,7 @@ function W.pickup(player, object)
     if not state or not A.near(player, object) or not A.write(player, state) or not state.itemType then return false end
     local item = instanceItem(state.itemType)
     if not item then return false end
-    item:setCondition(math.max(1, math.floor(object:getHealth() / 100 * item:getConditionMax())))
+    item:setCondition(math.max(0, math.floor(object:getHealth() / (state.maxHealth or 100) * item:getConditionMax())))
     local storage = object:getContainer()
     if storage then
         local destination = item:getInventory()

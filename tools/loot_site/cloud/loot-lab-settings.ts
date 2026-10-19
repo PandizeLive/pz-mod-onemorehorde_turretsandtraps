@@ -1,8 +1,8 @@
 // Account identity comes exclusively from the existing Access/allowlist gate.
-export const MODULES = ["Firing","MotionDetection","Filter","Detection360","Suppression","RapidFire","Reload","Velocity","Range","CapacitySmall","Capacity","CapacityLarge","Autoloader","Critical","Accuracy","Magazine","Splitter","Fragment","FiringEnhanced","MotionDetectionEnhanced","Piercing","InitialBlow","Execute","Impact","Conservation","Synergy","Martyrdom","Tack","Regulator","Siphon","Lure","Void"];
+export const MODULES = ["Firing","MotionDetection","Filter","Detection360","Suppression","RapidFire","Reload","Velocity","Range","CapacitySmall","Capacity","CapacityLarge","Autoloader","Critical","Accuracy","Magazine","Splitter","Fragment","FiringEnhanced","MotionDetectionEnhanced","Piercing","InitialBlow","Execute","Impact","Conservation","Synergy","Martyrdom","Tack","Regulator","Siphon","Lure","Void","Grid"];
 const TIERS = ['Abundant','Common','Uncommon','Rare','Epic','Legendary','Mythic'];
-const BASELINE = 'T&T 0.2.54.1';
-const NEW_MODULES = ['Magazine','Splitter','Fragment','FiringEnhanced','MotionDetectionEnhanced','Piercing','InitialBlow','Execute','Impact','Conservation','Synergy','Martyrdom','Tack','Regulator','Lure','Void','Siphon'];
+const BASELINE = 'T&T 0.2.57';
+const NEW_MODULES = ['Magazine','Splitter','Fragment','FiringEnhanced','MotionDetectionEnhanced','Piercing','InitialBlow','Execute','Impact','Conservation','Synergy','Martyrdom','Tack','Regulator','Lure','Void','Siphon','Grid'];
 type Scenario = Record<string, unknown>;
 function object(value: unknown): value is Record<string, unknown> { return !!value && typeof value === 'object' && !Array.isArray(value); }
 export function validateScenario(value: unknown): Scenario {
@@ -42,7 +42,7 @@ export function validateScenario(value: unknown): Scenario {
 }
 export function upgradeScenario(value: unknown): Scenario {
   if (!object(value) || !object(value.items) || !object(value.visible)) return validateScenario(value);
-  const normalized = /^T&T 0\.2\.(2[6-9]|[3-4][0-9]|5[0-4])$/.test(value.baseline as string);
+  const normalized = /^T&T 0\.2\.(2[6-9]|[3-4][0-9]|5[0-7])(?:\.\d+)?$/.test(value.baseline as string);
   const old = ['Installed 0.2.22','T&T 0.2.23','T&T 0.2.24','T&T 0.2.25'].includes(value.baseline as string);
   if (!normalized && !old) return validateScenario(value);
   const items: Record<string, unknown> = old ? {Critical:1,Accuracy:1,...value.items} : {...value.items};

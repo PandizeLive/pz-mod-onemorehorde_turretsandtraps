@@ -37,7 +37,7 @@ function Slot:refreshCount()
     if not self.countIndex then return end
     local stop = math.min(size, self.countIndex + 64)
     for index = self.countIndex, stop - 1 do
-        if items:get(index):getFullType() == "Base.Battery" then
+        if Battery.car(items:get(index)) then
             self.countFound = self.countFound + 1
         end
     end
@@ -77,7 +77,7 @@ function Slot:transferNext()
             return
         end
         self.pendingIndex = self.pendingIndex + 1
-        if item:getFullType() == "Base.Battery" then
+        if Battery.car(item) then
             local stored = item:getContainer() == self.owner.object:getContainer()
             local action = Transfer:new(self.owner.player, self.owner.object, item, true, nil, nil, stored)
             if action:isValid() then
@@ -194,7 +194,7 @@ end
 function Slot.create(owner, x, y, width, height)
     local slot = Slot:new(x, y, width, height)
     slot.owner = owner
-    Hint.set(slot, "Base.Battery")
+    Hint.set(slot, "Base.CarBattery1")
     slot.countDirty = true
     slot.backgroundColor = {r = .06, g = .06, b = .06, a = 1}
     slot.borderColor = {r = .3, g = .3, b = .3, a = .6}

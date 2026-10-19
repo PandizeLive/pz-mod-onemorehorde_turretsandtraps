@@ -48,5 +48,6 @@
     "Tooltip_OMHTT_MakeshiftBomb": "Ammunition for the Grenade Lobber.",
     "Tooltip_OMHTT_ModuleLure": "Attracts zombies with an adjustable sound.",
     "Tooltip_OMHTT_ModuleVoid": "Stores ammunition without weight. Stored ammunition cannot be withdrawn.",
-    "Tooltip_OMHTT_ModuleSiphon": "Kills restore 2× the shot’s battery cost."
+    "Tooltip_OMHTT_ModuleSiphon": "Kills restore 2× the shot’s battery cost.",
+    "Tooltip_OMHTT_ModuleGrid": "Enables mains and generator power. Falls back to batteries. Does not recharge batteries."
 }

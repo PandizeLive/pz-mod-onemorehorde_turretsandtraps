@@ -1,6 +1,12 @@
 local State = require("OMHTT/TurretItemState")
 local B = {}
 
+function B.car(item)
+    if not item then return false end
+    local name = item:getFullType()
+    return name == "Base.CarBattery1" or name == "Base.CarBattery2" or name == "Base.CarBattery3"
+end
+
 ---@param battery DrainableComboItem Battery retaining its native whole-use charge
 ---@return number charge Charge including its persisted fractional remainder
 function B.charge(battery)

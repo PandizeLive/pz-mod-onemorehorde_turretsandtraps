@@ -1,7 +1,7 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('node:url');
 const {chromium}=require('C:/Users/bandi/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
-const root=path.resolve(__dirname,'../..'),site=path.join(root,'art/loot-tuner'),out=path.join(root,'diagnostics/v0.2.48/loot-browser');
+const root=path.resolve(__dirname,'../..'),site=path.join(root,'art/loot-tuner'),out=path.join(root,'diagnostics/v0.2.57/loot-browser');
 global.window={};require(path.join(site,'data.js'));const D=window.LOOT_DATA,M=require(path.join(site,'model.js'));
 (async()=>{
   fs.mkdirSync(out,{recursive:true});
@@ -14,6 +14,7 @@ global.window={};require(path.join(site,'data.js'));const D=window.LOOT_DATA,M=r
     await page.goto(pathToFileURL(path.join(site,'index.html')).href);
     await page.waitForFunction(()=>document.querySelector('#loading').hidden,{timeout:60000});
     const input=page.locator('#item-Regulator');
+    assert.equal(await page.locator('#item-Grid').inputValue(),'1');
     assert.match(await input.getAttribute('aria-label'),/Regulator.* loot weight$/);
     assert.equal(await input.inputValue(),'8.25');
     assert.deepEqual(await page.evaluate(()=>JSON.parse(localStorage.getItem('omh-lootlab-local'))),saved);
@@ -29,7 +30,7 @@ global.window={};require(path.join(site,'data.js'));const D=window.LOOT_DATA,M=r
     await page.waitForFunction(()=>document.querySelector('#item-Regulator').value==='2.75');
     await page.locator('#reset').click();await page.waitForFunction(()=>document.querySelector('#item-Regulator').value==='20');
     await input.scrollIntoViewIfNeeded();await page.screenshot({path:path.join(out,'desktop.png')});
-    await page.locator('#hideAll').click();assert.equal(await page.locator('.component.is-hidden').count(),32);
+    await page.locator('#hideAll').click();assert.equal(await page.locator('.component.is-hidden').count(),D.modules.length);
     await page.locator('#showAll').click();assert.equal(await page.locator('.component.is-hidden').count(),0);
     await page.setViewportSize({width:390,height:844});await input.scrollIntoViewIfNeeded();
     const bounds=await input.boundingBox();assert(bounds.x>=0&&bounds.x+bounds.width<=391);

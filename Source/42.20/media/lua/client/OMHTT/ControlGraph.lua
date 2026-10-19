@@ -32,7 +32,7 @@ function Graph.focus(panel)
     local graph, state = panel.graph, A.state(panel.selected)
     local index = state and graph.positions[state.id]
     if not index then return end
-    local rows = state.kind == "Turret" and graph.defenses or graph.triggers
+    local rows = C.defense(state.kind) and graph.defenses or graph.triggers
     local y = rows[index].y
     graph:setYScroll(math.max(math.min(0, graph.height - graph:getScrollHeight()), math.min(0, -y)))
 end
@@ -177,8 +177,8 @@ function Graph.refreshForPanel(panel)
                 halfWidth = math.max(11, math.ceil(getTextManager():MeasureStringX(UIFont.Small, label) / 2) + 4)}
             graph.markerByObject[object] = graph.markers[#graph.markers]
         end
-        if state and (state.kind == "Turret" or state.kind == "Plate" or state.kind == "Button") then
-            local rows = state.kind == "Turret" and graph.defenses or graph.triggers
+        if state and (C.defense(state.kind) or state.kind == "Plate" or state.kind == "Button") then
+            local rows = C.defense(state.kind) and graph.defenses or graph.triggers
             local row = {object = object, state = state, title = U.name(object)}
             if state.kind == "Turret" then
                 row.subtitle = state.headType and state.headType ~= "Base" and getItemNameFromFullType(state.headType) or getText("UI_OMHTT_TurretBase")
@@ -231,7 +231,7 @@ function Graph:hit(x, y)
     for i = 1, #rows do
         local row = rows[i]
         local top = row.y + self:getYScroll()
-        if not row.collapsed and y >= top and y < top + self.rowHeight then return row, port end
+        if not row.collapsed and y >= top and y < top + self.rowHeight then return row, port and row.state.kind ~= "Poke" end
     end
     return nil, false
 end
@@ -274,7 +274,7 @@ function Graph:onMouseUp(x, y)
     local moved = self.downX and math.abs(x - self.downX) + math.abs(y - self.downY) > 6
     if group and self.dragSource and moved and (not row or row.object ~= self.dragSource) then
         local state = A.state(self.dragSource)
-        if not row or (state.kind == "Turret") == (row.state.kind == "Turret") then
+        if not row or C.defense(state.kind) == C.defense(row.state.kind) then
             Groups.request(self.owner, "DeviceMove", group.id, row and row.state.id, nil, self.dragSource)
         end
     elseif self.dragGroup and group then
@@ -348,7 +348,7 @@ function Graph:prerender()
                 self:drawRectBorder(x, y + 3, half - 4, rowHeight - 6, 1, selected and .65 or .25, selected and .65 or .25, selected and .65 or .25)
                 if row == hovered and self.dragSource then
                     local moving = A.state(self.dragSource)
-                    local valid = moving and (moving.kind == "Turret") == (row.state.kind == "Turret")
+                    local valid = moving and C.defense(moving.kind) == C.defense(row.state.kind)
                     self:drawRectBorder(x, y + 3, half - 4, rowHeight - 6, 1, valid and .4 or 1, valid and .9 or .3, .3)
                 end
                 local textX = side == 1 and x + 5 or x + 27
@@ -363,9 +363,11 @@ function Graph:prerender()
                 end
                 local portX, portY = side == 1 and half - 23 or x + 2, y + rowHeight / 2 - 10
                 local armed = self.owner.linkSource == row.object
+                if row.state.kind ~= "Poke" then
                 self:drawRect(portX, portY, 20, 20, 1, armed and .2 or .08, armed and .4 or .08, armed and .2 or .08)
                 self:drawRectBorder(portX, portY, 20, 20, 1, .65, .65, .65)
                 self:drawTextCentre(side == 1 and ">" or (row.connected and not self.owner.linkSource and "-" or "+"), portX + 10, portY + 1, .9, .9, .9, 1, UIFont.Small)
+                end
                 if side == 2 then
                     local stats = self.stats[row.object]
                     local health, maximum = row.object:getHealth(), row.object:getMaxHealth()

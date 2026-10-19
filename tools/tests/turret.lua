@@ -91,7 +91,9 @@ contents = T.contents(other)
 local power = W.power(object, contents)
 check(power.kind == "battery" and math.abs(power.cost - 0.0000063) < 0.000001, "Four Range modules give 0.00063 percent with automatic rarity battery cost")
 square.grid, square.room = true, {}
-check(W.power(object, contents).kind == "grid", "External grid preferred over battery")
+check(W.power(object, contents).kind == "battery", "Ordinary turret ignores mains without Grid Module")
+contents.active.Grid = 1
+check(W.power(object, contents).kind == "grid", "Grid Module prefers external power over battery")
 square.room = nil
 check(W.power(object, contents).kind == "battery", "Outdoor tile does not invent mains power")
 battery.charge = 0
@@ -171,6 +173,8 @@ function generator:setFuel(value) self.fuel = value end
 IsoGenerator = {isPoweringSquare = function() return true end}
 W.loaded(generator)
 square.generatorPower = true
+local savedGridContents = T.contents
+T.contents = function(storage) local contents = savedGridContents(storage); contents.active.Grid = 1; return contents end
 check(W.power(object, T.contents(other)).kind == "generator", "Connected generator preferred over battery")
 generator.active = false
 check(W.power(object, T.contents(other)).kind == "battery", "Stopped generator falls back to battery")
@@ -276,3 +280,5 @@ W.clearBuildRefund(object)
 local materialCount = 0
 for _ in pairs(object.materials) do materialCount = materialCount + 1 end
 check(materialCount == 0, "Construction refunds cannot return a working base")
+
+T.contents = savedGridContents

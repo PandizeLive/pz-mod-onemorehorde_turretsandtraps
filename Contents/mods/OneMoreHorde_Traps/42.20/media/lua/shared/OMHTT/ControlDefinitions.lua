@@ -1,10 +1,15 @@
 local C = {}
-C.passiveKinds = {Plate = true}
+C.passiveKinds = {Plate = true, Poke = true}
 C.types = {
     Controller = "Base.OMHTTTrapController",
     Plate = "Base.OMHTTTrapPressurePlate",
     Button = "Base.OMHTTTrapButton",
+    Poke = "Base.OMHTTTrapPokeFloor",
 }
+
+function C.defense(kind)
+    return kind == "Turret" or kind == "Poke"
+end
 
 ---@param object IsoThumpable Passive sensor
 ---@param kind string Device family
@@ -76,6 +81,10 @@ end
 ---@return boolean enabled
 function OMHTT_ControlMenu(params)
     return true
+end
+
+function OMHTTPokeReject(container, item)
+    return false
 end
 
 OMHTTControlAccept = C.accept

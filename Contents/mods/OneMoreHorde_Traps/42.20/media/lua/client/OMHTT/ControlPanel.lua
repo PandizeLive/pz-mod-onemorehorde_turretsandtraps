@@ -147,7 +147,7 @@ function Panel:prerender()
     self.nameEntry:refresh()
     self.nameEntry:setVisible(state ~= nil and state.kind ~= "Controller")
     self.policy:setEnable(writable and A.write(self.player, state, true) or false)
-    self.manage:setEnable(state ~= nil and state.kind == "Turret"
+    self.manage:setEnable(state ~= nil and require("OMHTT/ControlDefinitions").defense(state.kind)
         and (A.near(self.player, self.selected) or (host.powered == true and state.controller == host.id)))
     self.assign:setEnable(state ~= nil and self.selected ~= self.object and host.kind == "Controller"
         and host.powered == true and A.write(self.player, host) and A.write(self.player, state))
@@ -155,7 +155,7 @@ function Panel:prerender()
     self.trigger:setEnable(writable == true and state.kind == "Plate")
     self.trigger:setTitle(state and state.kind == "Plate" and "Trigger: " .. (state.trigger or "Both") or "Trigger: —")
     self.trigger:setVisible(state ~= nil and state.kind == "Plate")
-    self.manage:setVisible(state ~= nil and state.kind == "Turret")
+    self.manage:setVisible(state ~= nil and require("OMHTT/ControlDefinitions").defense(state.kind))
     self.assign:setVisible(state ~= nil and self.selected ~= self.object and host.kind == "Controller")
 
     local remoteReason
@@ -225,7 +225,11 @@ function Panel.open(player, object)
         local requested = U.remote(self.player, self.object, self.selected)
         if A.near(self.player, self.selected) or requested then
             local host = A.state(self.object)
-            require("OMHTT/TurretManage")(self.selected, self.player, host.kind == "Controller" and self.object or nil)
+            if A.state(self.selected).kind == "Poke" then
+                require("OMHTT/ControlPokeMenu").open(self.player, self.selected)
+            else
+                require("OMHTT/TurretManage")(self.selected, self.player, host.kind == "Controller" and self.object or nil)
+            end
         end
     end)
     panel.assign = button(panel, 532, 246, 258, getText("UI_OMHTT_Assign"), function(self)

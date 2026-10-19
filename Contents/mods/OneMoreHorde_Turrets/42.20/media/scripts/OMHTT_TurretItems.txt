@@ -1,4 +1,13 @@
 module Base {
+    item OMHTTModuleGrid {
+        DisplayName = Grid Module,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.2,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleGrid,
+    }
     item OMHTTModulePack {
         DisplayName = Module Pack,
         ItemType = base:normal,

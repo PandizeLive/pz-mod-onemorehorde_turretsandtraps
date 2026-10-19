@@ -87,7 +87,7 @@ def build_component(component):
     _, original = build()
     trap = component == "traps"
     sheet = "omhtt_barrier_01" if trap else "omhtt_turret_01"
-    count = 85 if trap else 30
+    count = 90 if trap else 30
     tiles = b"tdef" + integer(1) + integer(1)
     tiles += (sheet + "\nOMHTT_" + component.title() + ".png\n").encode("ascii")
     tiles += integer(4) + integer((count + 3) // 4) + integer(1) + integer(count)
@@ -166,6 +166,17 @@ def build_component(component):
         indices = [4] if pressed else range(4)
         entry = b"".join(pack_string(sheet + "_" + str(first + index)) + struct.pack("<8i", 0, 0, 128, 256, 0, 0, 128, 256) for index in indices)
         pages.append(pack_string("OMHTT_Plate" + component.title() + str(pressed)) + integer(len(indices)) + integer(1) + entry + integer(len(png)) + png)
+    if trap:
+        for raised in range(2):
+            stream = io.BytesIO()
+            marker = plate_image(False)
+            if raised:
+                marker = marker.transform(marker.size, Image.Transform.AFFINE, (1, 0, 0, 0, 1, 12))
+            marker.save(stream, format="PNG")
+            png = stream.getvalue()
+            indices = [89] if raised else range(85, 89)
+            entry = b"".join(pack_string(sheet + "_" + str(index)) + struct.pack("<8i", 0, 0, 128, 256, 0, 0, 128, 256) for index in indices)
+            pages.append(pack_string("OMHTT_Poke" + str(raised)) + integer(len(indices)) + integer(1) + entry + integer(len(png)) + png)
     return tiles, b"PZPK" + integer(1) + integer(len(pages)) + b"".join(pages)
 
 

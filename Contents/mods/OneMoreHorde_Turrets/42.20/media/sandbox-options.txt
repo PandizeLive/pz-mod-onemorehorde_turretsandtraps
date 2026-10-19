@@ -1201,3 +1201,12 @@ option OMHTurretsTraps.LootRateVoid {
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRateVoid,
 }
+
+option OMHTurretsTraps.LootRateGrid {
+    type = double,
+    default = 1,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootRateGrid,
+}

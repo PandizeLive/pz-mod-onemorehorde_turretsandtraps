@@ -77,8 +77,8 @@ public final class NativeTurretProbe {
             }
             check(poolPacks == 1, "Expected exactly one pack entry per native pool: " + name);
         }
-        check(modules == 233, "Native loot parser did not retain all module entries");
-        System.out.println("[OMHTT-Smoke] native-module-loot-parser pools=16 items=233 weights=positive");
+        check(modules == 246, "Native loot parser did not retain all module entries");
+        System.out.println("[OMHTT-Smoke] native-module-loot-parser pools=16 items=246 weights=positive");
         check(packs == 16, "Native loot parser did not retain all pack entries");
         System.out.println("[OMHTT-Smoke] native-pack-loot-parser pools=16 packs=16 weights=positive");
         Class<?> squareType = Class.forName("zombie.iso.IsoGridSquare");

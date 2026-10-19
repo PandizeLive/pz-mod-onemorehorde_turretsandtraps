@@ -51,9 +51,14 @@ end
 ---@nodiscard
 function V.power(object, contents, stats)
     if SandboxVars.OMHTurretsTraps.PotatoRequirePower == false then return {kind = "disabled"} end
+    local state = T.state(object)
+    if state and state.powerSource then
+        if state.powerSource == "none" then return nil end
+        return {kind = state.powerSource}
+    end
     local square = object:getSquare()
-    if square:hasGridPower() and square:getRoom() then return {kind = "grid"} end
-    if square:haveElectricity() then return {kind = "generator"} end
+    if contents.active.Grid and square:hasGridPower() and square:getRoom() then return {kind = "grid"} end
+    if contents.active.Grid and square:haveElectricity() then return {kind = "generator"} end
     local battery = contents.battery
     if battery and battery:getCondition() > 0 and require("OMHTT/TurretBattery").charge(battery) > 0
         and require("OMHTT/TurretBattery").charge(battery) + .0000001 >= stats.batteryPercent / 100 then return {kind = "battery"} end

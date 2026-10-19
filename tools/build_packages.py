@@ -11,7 +11,7 @@ PACKAGES = ROOT / "Contents/mods"
 IDS = {"traps": "OneMoreHorde_Traps", "turrets": "OneMoreHorde_Turrets"}
 SHARED_LUA = {"WindowGeometry", "DefenseNames", "SlotHint", "DefenseAuthority", "DefenseActorState", "DefenseLine", "DefenseInjury", "DefenseEffects", "DefenseMotion", "DefenseCombatProtocol", "DefenseCombatServer", "DefenseCombatClient", "DefenseHorde", "ContactPlayer", "BarbMovement", "BarbContact", "ActiveTime", "Foundation", "Diagnostics", "Damage", "DamagePresentation", "ConstructionMenu", "CraftingMenu", "CraftingGroups", "HybridBuild", "SandboxUI", "WorldHighlight", "PackageInfo", "PlacementTiming"}
 TRAP_LUA = {"FoundationServer", "FoundationClient", "DevMarkers", "Construction", "DefenseMaterials"}
-TRAP_SCRIPTS = {"OMHTT_Items.txt", "OMHTT_PortableBarrier.txt", "OMHTT_construction.txt", "OMHTT_construction_ui.txt", "OMHTT_BedSpikes.txt", "OMHTT_Barbs.txt"}
+TRAP_SCRIPTS = {"OMHTT_Items.txt", "OMHTT_PortableBarrier.txt", "OMHTT_construction.txt", "OMHTT_construction_ui.txt", "OMHTT_BedSpikes.txt", "OMHTT_Barbs.txt", "OMHTT_PokeFloor.txt"}
 TRAP_OPTIONS = {"Enabled", "FoundationTestControls", "DiagnosticLogging", "ShowCollision", "DetailedLogging"}
 
 
@@ -51,7 +51,7 @@ def sandbox(component):
     result = ["VERSION = 1,\n"]
     for match in re.finditer(r"option OMHTurretsTraps\.(\w+)\s*\{[^}]+\}", content):
         key = match[1]
-        trap = key in TRAP_OPTIONS or "Barrier" in key or key.startswith(("Bed", "Barb"))
+        trap = key in TRAP_OPTIONS or "Barrier" in key or key.startswith(("Bed", "Barb", "Poke"))
         if trap == (component == "traps"):
             result.append(match[0] + "\n")
     assert blocks and len(result) > 1

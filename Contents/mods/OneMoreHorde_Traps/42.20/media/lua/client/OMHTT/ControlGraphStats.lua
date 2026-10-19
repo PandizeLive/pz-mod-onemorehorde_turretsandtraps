@@ -15,6 +15,11 @@ function S.step(graph)
         local container = object:getObjectIndex() >= 0 and object:getContainer()
         graph.statsIndex = graph.statsIndex + 1
         if not container then return end
+        local state = require("OMHTT/ControlAccess").state(object)
+        if state and state.kind == "Poke" then
+            graph.stats[object] = {label = getText(state.enabled == false and "UI_OMHTT_PokeDisabled" or "UI_OMHTT_PokeContact")}
+            return
+        end
         job = {object = object, container = container, index = 0, count = container:getItems():size(), rounds = {}, kinds = {}}
         graph.statsJob = job
     end

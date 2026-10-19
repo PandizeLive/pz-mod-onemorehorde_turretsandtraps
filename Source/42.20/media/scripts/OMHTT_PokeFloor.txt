@@ -1,0 +1,80 @@
+module Base {
+    item OMHTTTrapPokeFloor {
+        DisplayName = Poke Floor,
+        ItemType = base:container,
+        DisplayCategory = Electronics,
+        Weight = 8,
+        Icon = OMHTT_TestCube,
+        Tags = base:heavyitem,
+        ConditionMax = 200,
+        Capacity = 15,
+        WeightReduction = 0,
+    }
+    entity OMHTTDeployPoke {
+        component UiConfig { xuiSkin = default, entityStyle = ES_OMHTTPoke, uiEnabled = false, }
+        component SpriteConfig {
+            health = 200,
+            skillBaseHealth = 0,
+            bonusHealth = 0,
+            isThumpable = true,
+            OnIsValid = OMHTT_Controls.valid,
+            OnCreate = OMHTT_Controls.created,
+            face E { layer { row = omhtt_barrier_01_85, } }
+            face N { layer { row = omhtt_barrier_01_86, } }
+            face W { layer { row = omhtt_barrier_01_87, } }
+            face S { layer { row = omhtt_barrier_01_88, } }
+            face N_open { layer { row = omhtt_barrier_01_89, } }
+        }
+        component CraftRecipe {
+            timedAction = BuildLowNoTool,
+            time = 100,
+            category = OMHTraps,
+            needToBeLearn = false,
+            OnAddToMenu = OMHTT_ControlMenu,
+            inputs { item 1 [Base.OMHTTTrapPokeFloor], }
+        }
+    }
+    xuiSkin default { entity ES_OMHTTPoke { LuaWindowClass = ISEntityWindow, DisplayName = UI_OMHTT_ControlPoke, Icon = OMHTT_TestCube, } }
+    craftRecipe OMHTTCraftPoke {
+        timedAction = BuildLowNoTool,
+        time = 288,
+        category = OMHTraps,
+        Tags = InHandCraft,
+        needToBeLearn = false,
+        SkillRequired = Mechanics:1;Electricity:2,
+        xpAward = Mechanics:20;Electricity:10,
+        OnAddToMenu = OMHTT_ControlMenu,
+        inputs {
+            item 1 tags[base:screwdriver] mode:keep flags[Prop1;DontRecordInput;NoBrokenItems],
+            item 1 [Base.Wrench;Base.PipeWrench] mode:keep flags[DontRecordInput;NoBrokenItems],
+            item 1 [Base.TirePump],
+            item 4 [Base.MetalBar],
+            item 2 [Base.SmallSheetMetal],
+            item 4 [Base.ElectronicsScrap],
+            item 2 [Base.ElectricWire],
+            item 8 [Base.Screws],
+        }
+        outputs { item 1 Base.OMHTTTrapPokeFloor, }
+    }
+    craftRecipe OMHTTCraftPokeImprovised {
+        timedAction = BuildLowNoTool,
+        time = 288,
+        category = OMHTraps,
+        Tags = InHandCraft,
+        needToBeLearn = false,
+        SkillRequired = Mechanics:2;Electricity:2,
+        xpAward = Mechanics:20;Electricity:10,
+        OnAddToMenu = OMHTT_ControlMenu,
+        inputs {
+            item 1 tags[base:screwdriver] mode:keep flags[Prop1;DontRecordInput;NoBrokenItems],
+            item 1 [Base.Wrench;Base.PipeWrench] mode:keep flags[DontRecordInput;NoBrokenItems],
+            item 2 [Base.MetalPipe],
+            item 4 [Base.MetalBar],
+            item 2 [Base.SmallSheetMetal],
+            item 4 [Base.ElectronicsScrap],
+            item 2 [Base.ElectricWire],
+            item 8 [Base.Screws],
+        }
+        outputs { item 1 Base.OMHTTTrapPokeFloor, }
+    }
+}

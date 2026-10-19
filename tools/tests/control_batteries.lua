@@ -6,7 +6,7 @@ local saved = {panel=ISPanel,script=getScriptManager,manager=getTextManager,queu
 ISPanel=testControlPanelBase
 getTextManager=function() return {MeasureStringX=function(_,font,text) return #text*6 end} end
 local script={getNormalTexture=function() return {} end,getIconsForTexture=function() return nil end}
-getScriptManager=function() return {getItem=function(_,name) check(name=="Base.Battery","Ghost resolves the native small battery script");return script end} end
+getScriptManager=function() return {getItem=function(_,name) check(name=="Base.CarBattery1","Ghost resolves the native car battery script");return script end} end
 local items,reads={},0
 local container={getItems=function() return {size=function() return #items end,get=function(_,i) reads=reads+1;return items[i+1] end} end}
 local owner={object={getContainer=function() return container end},player={},lineHeight=22,addChild=function() end}
@@ -21,15 +21,15 @@ end
 slot:refreshCount()
 slot:prerender()
 check(slot.storedCount==0,"Empty stockpile reports no stored batteries")
-for i=1,160 do items[i]=item(i%2==0 and "Base.Battery" or "Base.CarBattery1") end
+for i=1,160 do items[i]=item(i%2==0 and "Base.CarBattery1" or "Base.Battery") end
 slot:refreshCount()
 check(reads==64 and slot.countIndex==64,"Large Stockpile count examines at most 64 entries per update")
 slot:refreshCount();slot:refreshCount()
-check(slot.storedCount==80 and not slot.countIndex,"Stored count distinguishes small batteries from car batteries")
+check(slot.storedCount==80 and not slot.countIndex,"Stored count distinguishes car batteries from ordinary batteries")
 local completedReads=reads
 for i=1,100 do slot:refreshCount() end
 check(reads==completedReads,"Idle updates do not rescan Stockpile contents")
-items[1]=item("Base.Battery")
+items[1]=item("Base.CarBattery1")
 slot.countDirty=true
 slot:refreshCount();slot:refreshCount();slot:refreshCount()
 check(slot.storedCount==81,"Same-size content changes invalidate cached count")
@@ -47,8 +47,8 @@ end
 ISTimedActionQueue.add=function(action) queued[#queued+1]=action end
 ISInventoryPane.getActualItems=function(values) return values end
 local focus={onMouseUp=function() end}
-local first,second=item("Base.Battery"),item("Base.Battery")
-ISMouseDrag.dragging,ISMouseDrag.draggingFocus={first,item("Base.CarBattery1"),second},focus
+local first,second=item("Base.CarBattery1"),item("Base.CarBattery1")
+ISMouseDrag.dragging,ISMouseDrag.draggingFocus={first,item("Base.Battery"),second},focus
 slot:onMouseUp(0,0)
 check(#queued==1 and queued[1].item==first and not ISMouseDrag.dragging,"Stack drop starts one exact-item transfer and ends drag")
 slot:transferNext()
@@ -58,7 +58,7 @@ check(#queued==2 and queued[2].item==second,"SP completion advances to next batt
 queued[2]:finish();slot:transferNext()
 check(not slot.pendingItems,"Finished batch releases selected items")
 slot.pendingItems={}
-for i=1,100 do slot.pendingItems[i]=item("Base.CarBattery1") end
+for i=1,100 do slot.pendingItems[i]=item("Base.Battery") end
 slot.pendingIndex=1
 slot:transferNext()
 check(slot.pendingIndex==17 and #queued==2,"Rejected bulk selection is examined in bounded slices")
@@ -72,7 +72,7 @@ allowed=true
 slot.pendingItems,slot.pendingIndex={first,second},1
 slot:transferNext();slot:cleanup();queued[4]:finish();slot:transferNext()
 check(not slot.pendingItems and #queued==4,"Closing window cannot revive a pending stack via late completion")
-slot.pendingItems,slot.pendingIndex={item("Base.Battery",true),item("Base.Battery",true)},1
+slot.pendingItems,slot.pendingIndex={item("Base.CarBattery1",true),item("Base.CarBattery1",true)},1
 slot:transferNext()
 check(queued[5].stored and not slot.pendingItems,"Dropping existing spares selects one without re-transferring the stockpile")
 slot:cleanup()

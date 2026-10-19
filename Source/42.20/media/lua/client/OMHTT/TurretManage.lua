@@ -426,6 +426,7 @@ function Panel:refresh()
     if power then
         self.powerLabel = getText("UI_OMHTT_ManagePowerExternal")
         if power.kind == "battery" then self.powerLabel = getText("UI_OMHTT_ManagePowerBattery") end
+        if power.kind == "controller" then self.powerLabel = getText("UI_OMHTT_ManagePowerController") end
         if power.kind == "disabled" then self.powerLabel = getText("UI_OMHTT_ManagePowerDisabled") end
     end
 

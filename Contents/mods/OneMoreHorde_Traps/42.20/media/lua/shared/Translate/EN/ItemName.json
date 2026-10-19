@@ -54,5 +54,7 @@
     "ItemName_Base.OMHTTTrapController": "Controller",
     "ItemName_Base.OMHTTTrapPressurePlate": "Pressure Plate",
     "ItemName_Base.OMHTTTrapButton": "Button",
-    "ItemName_Base.OMHTTModuleSiphon": "Siphon Module"
+    "ItemName_Base.OMHTTModuleSiphon": "Siphon Module",
+    "ItemName_Base.OMHTTModuleGrid": "Grid Module",
+    "ItemName_Base.OMHTTTrapPokeFloor": "Poke Floor"
 }

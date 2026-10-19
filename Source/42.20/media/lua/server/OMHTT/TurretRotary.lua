@@ -208,6 +208,8 @@ function R.step(entry, deadline)
             local spent = 0
             if power.kind == "battery" then
                 spent = require("OMHTT/TurretBattery").spend(power.battery, power.cost)
+            elseif power.kind == "controller" then
+                require("OMHTT/ControlPower").spend(power)
             elseif power.kind == "generator" then
                 power.generator:setFuel(math.max(0, power.generator:getFuel() - power.cost))
                 require("OMHTT/TurretPowerSync").changed(power.generator)

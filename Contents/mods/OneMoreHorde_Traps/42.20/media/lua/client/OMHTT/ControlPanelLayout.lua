@@ -158,7 +158,7 @@ function L.refresh(panel, state)
     panel.controlsY = info + h * 4 + 8
     local actionY = panel.controlsY + h + 12
     place(panel.manage, x, actionY, width)
-    local connection = actionY + (kind == "Turret" and row + 14 or 0)
+    local connection = actionY + (require("OMHTT/ControlDefinitions").defense(kind) and row + 14 or 0)
     panel.connectionY = body.y + connection
     local controlsY = connection + h * 3 + 16
     place(panel.trigger, x, controlsY, width)
@@ -236,7 +236,7 @@ function L.drawDetails(panel, host, state)
     local width = body.width - 36
     local infoY, accessY, connectionY = panel.infoY - body.y, panel.accessY - body.y, panel.connectionY - body.y
     body:section(4, panel.controlsY - 4, getText("UI_OMHTT_SelectedDevice"))
-    if state.kind == "Turret" then
+    if require("OMHTT/ControlDefinitions").defense(state.kind) then
         body:section(panel.controlsY, connectionY - 8, getText("UI_OMHTT_Controls"))
     end
     body:section(accessY, body.contentHeight - 4, getText("UI_OMHTT_AccessAssignment"))
@@ -251,6 +251,8 @@ function L.drawDetails(panel, host, state)
         status = T.isOn(T.state(panel.selected)) and "UI_OMHTT_PowerOn" or "UI_OMHTT_PowerOff"
     elseif state.kind == "Controller" then
         status = state.powered and "UI_OMHTT_PowerOn" or "UI_OMHTT_PowerOff"
+    elseif state.kind == "Poke" then
+        status = state.enabled == false and "UI_OMHTT_PokeDisabled" or "UI_OMHTT_PokeContact"
     end
     body:drawText(getText(status), x, infoY + h, .85, .85, .85, 1, UIFont.Small)
     local assigned = state.controller == host.id and "UI_OMHTT_DeviceAssigned" or "UI_OMHTT_DeviceUnassigned"
@@ -274,6 +276,7 @@ function L.drawDetails(panel, host, state)
     elseif panel.linkSource then
         hint = getText("UI_OMHTT_SelectedInput", U.name(panel.linkSource))
     end
+    if state.kind == "Poke" then hint = getText("UI_OMHTT_PokeContact") end
     body:drawText(hint, x, hintY, .8, .8, .8, 1, UIFont.Small)
     local count = getText("UI_OMHTT_OutputCount", #state.links)
     if state.kind == "Turret" then
@@ -287,6 +290,7 @@ function L.drawDetails(panel, host, state)
     if state.kind == "Controller" then
         count = getText("UI_OMHTT_ControllerLimits")
     end
+    if state.kind == "Poke" then count = getText("UI_OMHTT_PokeNoInputs") end
     body:drawText(count, x, hintY + h, .7, .7, .7, 1, UIFont.Small)
     body:clearStencilRect()
     body:repaintStencilRect(0, 0, body.width, body.height)

@@ -7,6 +7,11 @@ local T = require("OMHTT/Turret")
 return function(player)
     assert(isServer() and not isClient(), "Controls probe requires actual server mode")
     if EXPECT_READ then
+        local pokeFixture = ModData.getOrCreate("OMHTTNativePoke")
+        local pokeRecord = C.records().packed[pokeFixture.item]
+        assert(pokeRecord and pokeRecord.id == pokeFixture.id and pokeRecord.enabled == false,
+            "Fresh process lost private packed Poke ownership/disabled state")
+        print("[OMHTT-C339] private-poke fresh-process=preserved")
         local groupFixture = ModData.getOrCreate("OMHTTNativeGroups")
         local groupHost = C.records().records[groupFixture.controller]
         assert(groupHost and groupHost.organization.revision == 8
@@ -30,13 +35,19 @@ return function(player)
         {"Controller", {SmallSheetMetal = 2, ElectronicsScrap = 4, ElectricWire = 2, Screws = 4}},
         {"Plate", {Plank = 1, ElectronicsScrap = 2, ElectricWire = 1, Nails = 4}},
         {"Button", {ElectronicsScrap = 1, ElectricWire = 1, Screws = 2}},
+        {"Poke", {TirePump = 1, MetalBar = 4, SmallSheetMetal = 2, ElectronicsScrap = 4, ElectricWire = 2, Screws = 8}},
+        {"Poke", {MetalPipe = 2, MetalBar = 4, SmallSheetMetal = 2, ElectronicsScrap = 4, ElectricWire = 2, Screws = 8}, "PokeImprovised"},
     }
     for n = 1, #recipes do
         local case = recipes[n]
-        local recipe = getScriptManager():getCraftRecipe("Base.OMHTTCraft" .. case[1])
+        local recipe = getScriptManager():getCraftRecipe("Base.OMHTTCraft" .. (case[3] or case[1]))
         assert(recipe, "Control craft missing")
+        if case[1] == "Poke" then
+            assert(math.abs(recipe:getTime() * 5 - 30 * getGameTime():getMultiplierFromTimeDelta(1)) < .001,
+                "Poke recipe must take thirty real seconds at normal speed")
+        end
         local inputs, resources, kept = ArrayList.new(), ArrayList.new(), {}
-        for _, name in pairs({"Screwdriver", "Pliers", "Hammer"}) do
+        for _, name in pairs({"Screwdriver", "Pliers", "Hammer", "Wrench"}) do
             local item = instanceItem("Base." .. name)
             inputs:add(item)
             kept[#kept + 1] = item
@@ -164,7 +175,7 @@ return function(player)
         "Legacy radio conversion must rebuild native facing metadata")
     local supplies = require("OMHTT/ControlDefinitions")
     for _, fullType in pairs({"Base.OMHTTModuleRange", "Base.OMHTTTrapPressurePlate", "Base.OMHTTTurretPotato",
-        "Base.CarBattery1", "Base.Bullets9mm", "Base.9mmClip", "Base.SpearCrafted", "Base.Potato", "Base.SweetPotato",
+        "Base.Battery", "Base.Bullets9mm", "Base.9mmClip", "Base.SpearCrafted", "Base.Potato", "Base.SweetPotato",
         "Base.AluminumScrap", "Base.OMHTTAmmoMakeshiftBomb", "Base.PipeBomb", "Base.Pistol"}) do
         local item = instanceItem(fullType)
         assert(item and supplies.storable(item), "Allowed defense supply rejected: " .. fullType)
@@ -191,13 +202,13 @@ return function(player)
     assert(not OMHTT_NativeStockTransfer:complete() and module:getContainer() == controller:getContainer(), "Removed bag accepted")
     player:getInventory():AddItem(bag)
     assert(OMHTT_NativeStockTransfer:complete() and module:getContainer() == bag:getInventory(), "Restored bag transfer failed")
-    local battery = player:getInventory():AddItem("Base.Battery")
+    local battery = player:getInventory():AddItem("Base.CarBattery1")
     assert(Transfer:new(player, controller, battery, true, host.id):complete(), "Native controller battery transfer failed")
     local B = require("OMHTT/TurretBattery")
     local before = B.charge(battery)
     assert(C.power(controller, .01) and math.abs(B.charge(battery) - before + .01 / 48) < .000001, "Backup fractional charge incorrect")
     assert(C.power(controller, 24) and math.abs(B.charge(battery) - before + 24.01 / 48) < .00001, "Backup 48-hour baseline incorrect")
-    local spare = player:getInventory():AddItem("Base.Battery")
+    local spare = player:getInventory():AddItem("Base.CarBattery1")
     assert(Transfer:new(player, controller, spare, true, host.id):complete(), "Second backup battery deposit failed")
     local select = Transfer:new(player, controller, spare, true, host.id, nil, true)
     local count = controller:getContainer():getItems():size()
@@ -210,6 +221,48 @@ return function(player)
     battery:setCurrentUsesFloat(1)
     assert(Transfer:new(player, controller, battery, true, host.id, nil, true):complete(), "Restoring original backup selection failed")
     print("[OMHTT-C302] multiple-batteries=exact depleted-spare=selected count=preserved")
+    local poke = create("Poke", "omhtt_barrier_01_85")
+    local pokeState = C.state(poke)
+    local PokeAction = require("OMHTT/ControlPokeAction")
+    assert(poke:getMaxHealth() == 200 and poke:getHealth() == 200, "Poke Floor condition")
+    assert(not poke:isThumpable(), "Poke Floor must be non-thumpable")
+    assert(not C.link(plate, poke, true) and not C.link(poke, plate, true), "Poke Floor accepts no external signals")
+    assert(not Action:new(player, poke, "Repair", nil, nil, pokeState.id):complete(), "Generic free repair must not bypass Poke Floor cost")
+    assert(PokeAction:new(player, poke, "Power", false, nil, pokeState.id):complete(), "Poke Floor disable")
+    local pokeBattery = player:getInventory():AddItem("Base.CarBattery2")
+    B.spend(pokeBattery, .123456)
+    local exact = B.charge(pokeBattery)
+    assert(PokeAction:new(player, poke, "Battery", true, pokeBattery, pokeState.id):complete(), "Native Poke battery transfer")
+    assert(poke:getContainer():contains(pokeBattery), "Poke Floor exact battery identity")
+    assert(C.assign(controller, poke, player, true), "Poke Floor Controller assignment")
+    local Power = require("OMHTT/ControlPower")
+    local source = {kind = "controller", controller = controller, battery = Power.battery(controller, .001), cost = .001}
+    assert(source.battery, "Native Controller bank selection")
+    local sourceCharge = B.charge(source.battery)
+    assert(math.abs(Power.spend(source) - .001) < .000001 and math.abs(B.charge(source.battery) - sourceCharge + .001) < .000001, "Native shared debit exact")
+    poke:setHealth(123)
+    assert(C.pickup(player, poke), "Native Poke Floor pickup")
+    local packedPoke = pokeBattery:getContainer():getContainingItem()
+    assert(packedPoke and packedPoke:getFullType() == "Base.OMHTTTrapPokeFloor" and packedPoke:getCondition() == 123, "Poke pickup retains wear")
+    assert(math.abs(B.charge(pokeBattery) - exact) < .000001, "Poke pickup preserves exact battery charge")
+    local pokeItems = ArrayList.new()
+    pokeItems:add(packedPoke)
+    local installedPoke = IsoThumpable.new(getCell(), square, "omhtt_barrier_01_85", false)
+    square:getObjects():add(installedPoke)
+    square:getSpecialObjects():add(installedPoke)
+    GameEntityFactory.CreateIsoObjectEntity(installedPoke, SpriteConfigManager.GetObjectInfo("OMHTTDeployPoke"):getScript():getParent(), true)
+    C.create({thumpable = installedPoke, character = player, craftRecipeData = {getAllConsumedItems = function() return pokeItems end}})
+    assert(installedPoke:getHealth() == 123 and installedPoke:getContainer():contains(pokeBattery), "Poke redeploy retains condition and exact battery")
+    assert(C.state(installedPoke).id == pokeState.id and C.state(installedPoke).enabled == false, "Poke redeploy preserves identity and disabled state")
+    assert(C.pickup(player, installedPoke), "Poke persistence fixture pickup")
+    OMHTT_NativePackedPoke = pokeBattery:getContainer():getContainingItem()
+    local pokeFixture = ModData.getOrCreate("OMHTTNativePoke")
+    pokeFixture.id = pokeState.id
+    pokeFixture.item = tostring(OMHTT_NativePackedPoke:getID())
+    assert(require("OMHTT/Turret").TYPES.Grid == "Base.OMHTTModuleGrid", "Grid Module registered")
+    assert(require("OMHTT/TurretRarity").get("Grid").band == 7, "Grid Module must be Mythic")
+    print("[OMHTT-C339] native poke=placed pickup=exact redeploy=exact bank=atomic grid=mythic")
+
     assert(Transfer:new(player, controller, spare, false, host.id):complete() and spare:getContainer() == player:getInventory(), "Battery removal failed")
     assert(not Transfer:new(player, controller, spare, true, host.id, nil, true):complete(), "Selecting a non-stockpile battery accepted")
     player:getInventory():Remove(spare)

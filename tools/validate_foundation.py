@@ -143,7 +143,7 @@ def main():
     (OUTPUT / "base-depth.log").write_text(depth_log, encoding="utf-8")
     pages = list(dict.fromkeys(re.findall(r"page\s*=\s*(\w+)", sandbox)))
     assert pages == ["OMHTurretsTraps_General", "OMHTurretsTraps_BarrierPage", "OMHTurretsTraps_PotatoPage",
-                     "OMHTurretsTraps_AutomationPage", "OMHTurretsTraps_StatModulesPage", "OMHTurretsTraps_ModuleLootPage", "OMHTurretsTraps_Debug"]
+                     "OMHTurretsTraps_AutomationPage", "OMHTurretsTraps_StatModulesPage", "OMHTurretsTraps_ModuleLootPage", "OMHTurretsTraps_Debug", "OMHTurretsTraps_PokePage"]
     stock = os.environ.get("OMHTT_STOCK_CLASSES") == "1"
     classpath = os.pathsep.join(str(path) for path in ([classes, GAME / "projectzomboid.jar", GAME] if stock else [classes, GAME, GAME / "projectzomboid.jar"]))
     map_log = run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED", "-Djava.awt.headless=true",

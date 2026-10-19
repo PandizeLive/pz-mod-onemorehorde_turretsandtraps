@@ -43,7 +43,7 @@ function Action:isValid()
     local source, storage = self.item:getContainer(), self.object:getContainer()
     if not source or not source:contains(self.item) or not source:isRemoveItemAllowed(self.item) then return false end
     if self.selectBattery then
-        return self.incoming and source == storage and self.item:getFullType() == "Base.Battery"
+        return self.incoming and source == storage and require("OMHTT/TurretBattery").car(self.item)
             and self.item:getCondition() > 0 and require("OMHTT/TurretBattery").charge(self.item) > 0
     end
     if self.incoming then
@@ -76,7 +76,7 @@ function Action:complete()
     if self.incoming then
         ISTransferAction:removeItemOnCharacter(self.character, self.item)
     end
-    if self.incoming and self.item:getFullType() == "Base.Battery" then
+    if self.incoming and require("OMHTT/TurretBattery").car(self.item) then
         local world = require("OMHTT/ControlWorld")
         world.batteries[self.object] = self.item
         world.state(self.object).batteryId = self.item:getID()

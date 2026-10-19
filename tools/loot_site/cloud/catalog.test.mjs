@@ -7,7 +7,7 @@ const require=createRequire(import.meta.url);
 const model=require('../../../art/loot-tuner/model.js');
 const data=JSON.parse(readFileSync(new URL('../../../art/loot-tuner/data.js',import.meta.url),'utf8').replace(/^window.LOOT_DATA=/,'').trim().replace(/;$/,''));
 const fresh=model.defaults(data);
-test('cloud schema matches all 32 local module controls',()=>{
+test('cloud schema matches all 33 local module controls',()=>{
  assert.deepEqual(MODULES,Object.keys(fresh.items));
  assert.deepEqual(validateScenario(fresh),fresh);
 });
@@ -33,4 +33,18 @@ test('Siphon loads at Legendary weight 3 in fresh and upgraded accounts',()=>{
  const prior=structuredClone(fresh);prior.baseline='T&T 0.2.54';
  assert.deepEqual(upgradeScenario(prior),fresh);
  assert.deepEqual(model.validate(prior,data),fresh);
+});
+
+test('Grid upgrades prior patch versions without changing any saved weights or tiers',()=>{
+ for(const baseline of ['T&T 0.2.54.1','T&T 0.2.56','T&T 0.2.56.1']){
+  const old=structuredClone(fresh);old.baseline=baseline;delete old.items.Grid;delete old.visible.Grid;
+  old.items.Siphon=.234;old.items.Void=.17;old.tierWeights.Mythic=.75;
+  const serialized=JSON.stringify(old),next=upgradeScenario(old);
+  assert.equal(JSON.stringify(old),serialized);assert.equal(next.items.Grid,1);assert.equal(next.visible.Grid,true);
+  for(const [id,value] of Object.entries(old.items))assert.equal(next.items[id],value);
+  assert.deepEqual(next.tierWeights,old.tierWeights);
+  assert.equal(data.modules.find(m=>m.id==='Grid').weight,1);
+  assert.equal(Object.values(data.pools).filter(p=>p.modules.includes('Grid')).length,13);
+ }
+ const custom=structuredClone(fresh);custom.items.Grid=.625;assert.equal(upgradeScenario(custom).items.Grid,.625);
 });

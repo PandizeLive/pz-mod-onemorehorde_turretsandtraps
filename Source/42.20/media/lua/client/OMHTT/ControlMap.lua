@@ -3,6 +3,7 @@ require("ISUI/ISPanel")
 require("ISUI/ISUIElement")
 local Graph = require("OMHTT/ControlGraph")
 local A = require("OMHTT/ControlAccess")
+local C = require("OMHTT/ControlDefinitions")
 local Map = ISPanel:derive("OMHTTControlMap")
 local Native = ISUIElement:derive("OMHTTControlNativeMap")
 
@@ -255,7 +256,7 @@ function Map:render()
             local selected = self.owner.selected == object or self.hoverObject == object
             local half = marker.halfWidth
             local shade = selected and .35 or .12
-            if state.kind == "Turret" then
+            if C.defense(state.kind) then
                 self:drawRect(x - half, y - 11, half * 2, 22, 1, shade, shade, shade)
                 self:drawRectBorder(x - half, y - 11, half * 2, 22, 1, .85, .85, .85)
             else

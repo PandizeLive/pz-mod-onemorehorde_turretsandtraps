@@ -19,8 +19,16 @@ function B.player(player)
     local barb = Barbs.contact(player)
     local divisor = Barbs.option("MovementDivisor", 2, 1, 10)
     if not barb and P.tackContact then barb, divisor = P.tackContact(player), 2 end
+    local poke
+    if square then
+        local objects = square:getSpecialObjects()
+        for i = 0, objects:size() - 1 do
+            local state = require("OMHTT/ControlAccess").state(objects:get(i))
+            if state and state.kind == "Poke" then poke = state.id; break end
+        end
+    end
     P.update(player, id, barb, divisor,
-        B.option("SprintTripChance", 20, 0, 100), B.option("ScratchChance", 20, 0, 100))
+        B.option("SprintTripChance", 20, 0, 100), B.option("ScratchChance", 20, 0, 100), poke)
 end
 
 Events.OnPlayerUpdate.Add(B.player)

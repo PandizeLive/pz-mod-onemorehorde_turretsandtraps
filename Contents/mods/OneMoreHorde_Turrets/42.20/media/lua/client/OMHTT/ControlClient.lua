@@ -158,7 +158,10 @@ function U.world(index, context, objects, test)
                             end
                         end)
                     end
-                    if state.kind ~= "Turret" and A.write(player, state) then
+                    if state.kind == "Poke" then
+                        require("OMHTT/ControlPokeMenu").add(context, player, object)
+                    end
+                    if state.kind ~= "Turret" and state.kind ~= "Poke" and A.write(player, state) then
                         context:addOption(getText("UI_OMHTT_ControlPickup"), object, function(device)
                             if luautils.walkAdjObject(player, device, false) then
                                 U.command(player, device, "Pickup")
@@ -186,6 +189,24 @@ local nativeTransfer = ISInventoryTransferAction.new
 ---@param time number? Duration
 ---@return table action
 function ISInventoryTransferAction:new(player, item, source, destination, time)
+    local pokeIn = destination and destination:getType() == "OMHTTPoke"
+    local pokeStorage = pokeIn and destination or source
+    if pokeStorage and pokeStorage:getType() == "OMHTTPoke" then
+        local actionType = require("OMHTT/ControlPokeAction")
+        actionType.setOnComplete = ISInventoryTransferAction.setOnComplete
+        local host, bag
+        if not pokeIn and destination ~= player:getInventory() then
+            if destination and destination:getType() == "OMHTTController" then
+                host = destination:getParent()
+            else
+                bag = destination and destination:getContainingItem()
+                if not bag then return nativeTransfer(self, player, item, source, destination, time) end
+            end
+        end
+        local action = actionType:new(player, pokeStorage:getParent(), "Battery", pokeIn == true, item, nil, host, bag)
+        action.srcContainer, action.destContainer = source, destination
+        return action
+    end
     local incoming = destination and destination:getType() == "OMHTTController"
     local storage = incoming and destination or source
     local object = storage and storage:getParent()

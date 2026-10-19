@@ -18,6 +18,8 @@ local function checkPackages()
     assert((counts["Base.OMHTTTrapBedSpikes"] == 1) == expectedTraps, "Bed Spikes item registration")
     assert((counts["Base.OMHTTTrapBedSpikesReinforced"] == 1) == expectedTraps, "Reinforced Bed Spikes item registration")
     assert((counts["Base.OMHTTTurretBase"] == 1) == expectedTurrets, "Turret item registration")
+    assert((counts["Base.OMHTTTrapPokeFloor"] == 1) == expectedTraps, "Poke Floor package isolation")
+    assert((counts["Base.OMHTTModuleGrid"] == 1) == expectedTurrets, "Grid Module package isolation")
     assert((counts["Base.OMHTTModuleFiring"] == 1) == expectedTurrets, "Module item registration")
     assert((counts["Base.OMHTTModulePack"] == 1) == expectedTurrets, "Module pack item isolation")
     assert((OMHTT_Turret ~= nil) == expectedTurrets, "Turret runtime isolation")
@@ -79,7 +81,7 @@ local function checkPackages()
             end
         end
     end
-    assert(lootCount == (expectedTurrets and 233 or 0), "Wrong component loot count " .. lootCount)
+    assert(lootCount == (expectedTurrets and 246 or 0), "Wrong component loot count " .. lootCount)
     assert(packCount == (expectedTurrets and 16 or 0), "Wrong pack loot count " .. packCount)
     isServer, isClient = oldServer, oldClient
     print("[OMHTT-Packages] PASS traps=" .. tostring(expectedTraps) .. " turrets=" .. tostring(expectedTurrets)

@@ -1,5 +1,9 @@
 # Decision register
 
+## C339 — Poke Floor and power patch approved (2026-10-19)
+
+Owner approves the final C333–C338 recap. Implement contact-only Poke Floor, car-battery Controller bank, assigned fallback, battery-default turrets and Mythic Grid Module at assigned weight 1; preserve owner LootLab overrides. [Implementation](PATCH_v0.2.57.md) and [verification](TEST_v0.2.57.md). No Workshop upload or merge.
+
 ## C326 — Controller organization and feedback follow-up (2026-10-18)
 
 Owner requests confirmation/mockups for UI feedback, connection grouping/reordering, Manage/context corrections, LootLab ordering/density and native Stockpile overflow. [Contract and 1A shared / 1B personal organization choice](CORRECTIONS_C326.md). Planning only; no new gameplay approval or version bump inferred.

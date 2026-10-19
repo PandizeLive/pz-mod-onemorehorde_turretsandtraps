@@ -238,6 +238,8 @@ public final class KahluaCheck {
             {"OMHTT/ControlAccess", base + "shared/OMHTT/ControlAccess.lua"},
             {"OMHTT/ControlGroups", base + "shared/OMHTT/ControlGroups.lua"},
             {"OMHTT/ControlDefinitions", base + "shared/OMHTT/ControlDefinitions.lua"},
+            {"OMHTT/ControlPower", base + "server/OMHTT/ControlPower.lua"},
+            {"OMHTT/ControlPoke", base + "server/OMHTT/ControlPoke.lua"},
             {"OMHTT/ControlWorld", base + "server/OMHTT/ControlWorld.lua"},
             {"OMHTT/ControlCycle", base + "server/OMHTT/ControlCycle.lua"},
             {"OMHTT/TurretStats", base + "shared/OMHTT/TurretStats.lua"},
@@ -485,6 +487,7 @@ public final class KahluaCheck {
             {"_", "tools/tests/native_window_layout_setup.lua"},
             {"_", System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid") + "/media/lua/client/ISUI/ISLayoutManager.lua"},
             {"_", "tools/tests/native_window_layout.lua"},
+            {"_", "tools/tests/poke_power.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {
