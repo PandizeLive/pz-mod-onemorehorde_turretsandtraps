@@ -1,5 +1,9 @@
 # Decision register
 
+## C342 — Native compact Manage layout selected (2026-10-19)
+
+Owner answers 1A / 2A / 3A to C341: native compact chrome, narrower balanced Manage, inline Details with a content-aware minimum height. [Selected contract](UI_AUDIT_C341.md#c342--owner-selections-2026-10-19). Layout decisions are settled; implementation approval remains pending. No gameplay/package/install change in this selection turn.
+
 ## C341 — UI owner test and choices requested (2026-10-19)
 
 Owner reports 0.2.57.1 title-bar mismatch, apparently unlinked trigger requirement, blank module margins and disappearing controls on Details resize. Explicitly requests discussion/options before patching. [Source-backed audit, proposals and recommendations](UI_AUDIT_C341.md). None of the new layout options is selected yet; no gameplay edits authorized by this discussion.

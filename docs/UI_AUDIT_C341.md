@@ -43,3 +43,9 @@ No new requirement for external triggers is proposed. A turret with no real inpu
 After the owner selects the layout options: compare title/footer/close dimensions directly against installed vanilla at the owner's 16px setting; exercise wide/narrow and tall/short windows with Details both ways, including long module names and Lure/Lobber controls. Add assertions that the chosen policy keeps equipment/modules visible. Test both public input lists and authoritative power after link removal/unload/restart. Rendered owner acceptance remains required; the previous geometry tests passing did not prove the rejected details-page behavior was appropriate.
 
 Exact five-second native multiplayer placement remains a separate open item from 0.2.57.1. No new version, local install, LootLab change, merge or Workshop publication in this discussion.
+
+## C342 — Owner selections (2026-10-19)
+
+Owner selects **1A, 2A, 3A**. These supersede the alternatives above: native compact chrome with red/white OMH branding and no locking/pinning; narrower, font-aware Manage layout with balanced Equipment/Ammunition and compact 4/4/4/4 modules; inline Details with a minimum height that keeps main controls visible. The 720–760 pixel target remains subject to text-fit verification rather than a rigid width promise. No automatic details-only fallback or main-content scrollbar is selected.
+
+All three layout choices are settled. This selection turn records the design; implementation approval remains pending following the owner-requested discussion gate. Installed 0.2.57.1 remains unchanged. The proposed trigger-state reconciliation and multiplayer verification requirements remain as described above; no new gameplay requirement or automatic Controller-link deletion is inferred. **Wait for a patch.**
