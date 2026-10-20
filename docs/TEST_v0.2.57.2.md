@@ -20,3 +20,7 @@ The first native write attempt stopped in the existing 5,000-round fixture becau
 ## Remaining acceptance
 
 Rendered client/UI/audio and connected-player acceptance are pending. Exact five-second native multiplayer placement remains separate and unresolved. This patch does not establish a cause or cure for the earlier whole-PC main-menu slowdown. No Workshop publication or merge.
+
+## Owner follow-up and read-only audit — C345 (2026-10-19)
+
+Owner says the build seems functional and reports Poke Floor absent from Building. Latest console confirms 0.2.57.2 SP, six Poke Floor damage applications, and 88 missing OMHTTPoke inventory-title warnings; no OMHTT-associated exception block was found in the inspected log. The hybrid Building registry omits Poke Floor even though its deployment/crafting scripts exist, so previous native registration checks were insufficient for actual menu visibility. [Diagnosis, requested pressure operation and recipe options](checkpoints/R4C2_POKE_FLOOR.md#c345--building-audit-and-pressure-driven-poke-floor-2026-10-19). This is partial functional feedback, not approval of every UI case or connected multiplayer. No new build/install/test pass is claimed.

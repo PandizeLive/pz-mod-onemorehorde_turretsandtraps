@@ -1,5 +1,7 @@
 # R4C2 — Poke Floor
 
+**Current direction: C345** supersedes the electrical Poke Floor rules below. Pressure-driven operation and Building/category corrections are selected; mechanical recipe cleanup awaits 1A/1B. [Audit and choices](#c345--building-audit-and-pressure-driven-poke-floor-2026-10-19).
+
 **C340 corrective build:** 0.2.57.1 addresses the owner test of Poke Floor/power and management UI. See [patch scope](../PATCH_v0.2.57.1.md) and [verification](../TEST_v0.2.57.1.md). Exact five-second native multiplayer placement remains open. No additional content selection is required.
 
 **Current correction — C334:** Poke Floor triggers itself through contact, with no external Button/Plate or manual firing. Earlier external-trigger proposals below are superseded. Tire Pump/improvised crafting and local-battery-first priority are selected. C335 selects repeated cycles while eligible zombies occupy the tile; the new turret-only battery-power idea is still a proposal.
@@ -155,3 +157,30 @@ Owner says "Approved" after the settled recap. Implement the C333–C338 final s
 ### C339 implementation evidence
 
 Implemented and locally installed as 0.2.57. [Patch](../PATCH_v0.2.57.md) and [tests](../TEST_v0.2.57.md) record 23,802 assertions, native crafting/condition/battery persistence and independent package startup. Grid is verified in hosted LootLab with saved tuning preserved. No Workshop upload or merge. Rendered/connected acceptance remains pending; fixed dart emitter remains the next separate content slice.
+
+## C345 — Building audit and pressure-driven Poke Floor (2026-10-19)
+
+Owner reports 0.2.57.2 seems functional, cannot find Poke Floor in Building, requests **OMH: Triggers** instead of **OMH: Controls**, and removes the Poke Floor car-battery requirement because zombie pressure drives it. This is qualified owner functional feedback, not blanket rendered/MP acceptance.
+
+### Verified audit
+
+- Installed 42.21 `ISBuildPanel:refreshList` passes through `getAllBuildableRecipes`. Our `ConstructionMenu.lua:16-40` replaces that list: it drops all OMHTT-native entries, then adds only `HybridBuild.definitions`.
+- `HybridBuild.lua:6-17` includes the current barriers, beds, wire, panel, turret, Controller, Plate and Button, but omits Poke Floor. `OMHTT_PokeFloor.txt` defines deployment plus standard/improvised crafting and uses the OMHTraps category. The unconditional `OMHTT_ControlMenu` callback is not the hiding cause. The missing hybrid registry entry is a confirmed visibility/routing defect, independent of texture quality.
+- Both Poke recipes need explicit hybrid routing. Keep one carried-item placement entry, and avoid duplicate placement rows when both crafting routes resolve to the same finished item. Add actual Building-list coverage, not only script-registration assertions.
+- `IG_UI.json` maps OMHControls to OMH: Controls; the owner-selected displayed label is now OMH: Triggers. Preserve internal category/item IDs. Controller is a management device, not a signal trigger; keeping it in this small category is a grouping convenience, not new activation behavior. Poke Floor belongs under OMH: Traps.
+- Latest console inspected 2026-10-19 confirms 0.2.57.2 SP, six Poke Floor damage applications and **88** missing `IGUI_ContainerTitle_OMHTTPoke` warnings. Add the missing localized inventory title. No OMHTT-associated exception block was found in this inspected log; that does not establish connected-client acceptance or complete Building coverage.
+
+### Selected correction scope
+
+Poke Floor becomes pressure/mechanically driven: no local battery requirement/debit, Controller-bank fallback or grid/generator dependency. Retain its existing 50 damage, 1.5-second bounded contact cadence, health/wear/repair, player careful-walk/scratch/strike injury rules, arm/disarm behavior, no trap modules and no external/manual strike. This does not change Controller or turret power. Controller assignment remains for remote management; the Controller itself still requires its normal power to manage remotely.
+
+Remove battery-install affordances and obsolete energy settings/help. Preserve removal of previously installed batteries so exact items are not deleted or stranded. Label arm/disarm and pressure operation clearly instead of claiming electrical power. Keep existing technical placeholder art; final artist work is not a prerequisite for correct Building entries and readable names.
+
+### One remaining recipe choice
+
+The existing recipes still consume Electronics Scrap and Electric Wire, require Electrical 2 and award Electrical XP. Neither recipe currently consumes a car battery: it is installed afterward. The project agreement requires explicit review of changed ingredients/skills/XP.
+
+- **1A — Mechanical recipe cleanup (recommended):** remove 4 Electronics Scrap, 2 Electric Wire, Electrical 2 and 10 Electrical XP from both recipes. Keep the standard 1 Tire Pump or improvised 2 Metal Pipes; each retains 4 Metal Bars, 2 Small Metal Sheets and 8 Screws. Keep screwdriver plus wrench/pipe wrench, Mechanics 1/2 respectively, 20 Mechanics XP, existing craft duration, weight and performance.
+- **1B — Power change only:** retain current crafting ingredients/skills/XP while removing operational energy use. Smaller balance change, but the electrical requirements no longer explain the mechanism well.
+
+This turn audits and records the selected correction and recipe options; no gameplay, package version or installation changes. Recipe changes remain proposed. Next content after this correction is the **fixed dart emitter**, the remaining R4C2 slice; discuss ammunition, directional coverage, damage/cadence, reload, trigger response and crafting before implementation. **R4C3 beam sensors** follows. Exact five-second native MP placement and connected-client acceptance remain separate open work. C343 module-category choices remain undecided.

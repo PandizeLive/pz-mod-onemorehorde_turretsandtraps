@@ -1,5 +1,9 @@
 # Decision register
 
+## C345 — Building visibility, Triggers naming and mechanical Poke Floor
+
+**C345 / Building audit and pressure-driven Poke Floor (2026-10-19).** Owner reports 0.2.57.2 seems functional. Confirmed missing Poke Floor hybrid Building registration and 88 missing inventory-title warnings. Owner requests OMH: Triggers and mechanically pressure-driven Poke Floor with no battery/grid/Controller energy. [Audit and recipe choices](checkpoints/R4C2_POKE_FLOOR.md#c345--building-audit-and-pressure-driven-poke-floor-2026-10-19): **1A remove electrical materials/skill/XP (recommended)**; **1B retain recipes, remove operational power only**. No gameplay/install change this audit turn. Next content: fixed dart emitter (R4C2), then beam sensors (R4C3). **Decision needed: recipe scope.**
+
 ## C343 - Fewer module categories requested (2026-10-19)
 
 Owner requests tighter grouping than seven categories: direct numerical upgrades together, with 360/Filter under Automation. [Four-category recommendation and three-category alternative](MODULAR_TURRETS.md#c343---compact-category-options-2026-10-19). Names and exact classification remain proposals; no sorting/gameplay implementation approval. C342 layout selections remain separate and unchanged.
