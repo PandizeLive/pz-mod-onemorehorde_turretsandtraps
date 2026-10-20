@@ -1,5 +1,20 @@
 # Turret inventory and module plan
 
+## C343 - Compact category options (2026-10-19)
+
+Owner rejects the earlier seven-category suggestion as too fragmented and requests tighter options: combine direct numerical upgrades (Critical, Velocity, Magazine, Accuracy, Range, etc.) and include 360/Filter with Automation. This is category discussion, not approval to implement sorting, alter slots or change gameplay.
+
+- **1A - Four categories (recommended):** Stats, Automation, Effects, Utility.
+  - Stats: Critical, Velocity, Magazine, Accuracy, Range, Rapid-Fire, Reload, Autoloader, Suppression, Regulator, Conservation. These directly improve performance/resource numbers; Autoloader is the zero-reload endpoint and Conservation improves ammunition efficiency.
+  - Automation: Firing and Detection (normal, Makeshift and Enhanced variants), 360, Filter.
+  - Effects: Splitter, Fragment, Piercing, Initial Blow, Execute, Impact, Martyrdom, Tack, Synergy. These introduce attack behavior or conditional benefits rather than simply changing a baseline stat.
+  - Utility: Grid, Siphon, Void, Lure. These provide power supply/recovery, special ammunition storage or attraction. Siphon has a kill trigger but is placed by its power-management purpose.
+- **1B - Three categories:** Stats, Automation, Special. Keep Stats/Automation as above and merge Effects/Utility into Special. Fewer groups, but the last group becomes broader and less descriptive.
+
+Naming alternatives: Turret Stats or Performance for Stats; Control for Automation; Special Effects for Effects. Expansion Kits remain in their dedicated expansion socket/family; a Module Pack is a reward container, not an installable module. Category membership does not imply every turret head accepts every module.
+
+No option is selected. Preserve installed 0.2.57.1, saved module ordering and the separately settled C342 layout choices. Source tooltip/catalog inspection supports this classification; no runtime test or implementation is claimed.
+
 **C337 selection (2026-10-19):** Grid Module enables mains and generator supply and is Mythic. [Contract and remaining loot-weight confirmation](checkpoints/R4C2_POKE_FLOOR.md#c337--grid-module-mythic-rarity-selected-2026-10-19). C338 confirms weight 1 and automatic inheritance of assigned rarity weights, with owner LootLab overrides taking precedence. Planning only.
 
 **C336 planning update (2026-10-19):** [Optional Grid Module proposal](checkpoints/R4C2_POKE_FLOOR.md#c336--grid-module-proposal-2026-10-19) would make mains/generator access an upgrade for otherwise battery-powered turrets. One ordinary slot, nonstackable, no charging; supply scope and rarity/loaded loot weight remain owner decisions. Not implemented.

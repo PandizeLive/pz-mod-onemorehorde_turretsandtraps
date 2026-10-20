@@ -1,5 +1,9 @@
 # Decision register
 
+## C343 - Fewer module categories requested (2026-10-19)
+
+Owner requests tighter grouping than seven categories: direct numerical upgrades together, with 360/Filter under Automation. [Four-category recommendation and three-category alternative](MODULAR_TURRETS.md#c343---compact-category-options-2026-10-19). Names and exact classification remain proposals; no sorting/gameplay implementation approval. C342 layout selections remain separate and unchanged.
+
 ## C342 — Native compact Manage layout selected (2026-10-19)
 
 Owner answers 1A / 2A / 3A to C341: native compact chrome, narrower balanced Manage, inline Details with a content-aware minimum height. [Selected contract](UI_AUDIT_C341.md#c342--owner-selections-2026-10-19). Layout decisions are settled; implementation approval remains pending. No gameplay/package/install change in this selection turn.
