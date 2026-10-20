@@ -1,5 +1,36 @@
 # C349 — Saved M4 battery baseline and Siphon balance
 
+## C352 — Gentler hybrid balance and consumption labels (2026-10-19)
+
+Owner rejects the strength of C351's x3 firearm / x2.5 Scrapshot proposal, accepts deliberate differences in DPS/immediate effect, and selects the direction of smaller head-family adjustments followed by a small high-tier module increase. Owner requests Low/Medium/High battery-consumption tooltip labels with appropriate colors and a recap. This is not approval of invented exact multipliers.
+
+Clarification: firearms currently share a stat-derived head-cost formula; named M4/M9 overrides are unnecessary. Apply a separate firearm-family factor so Potato's shared base setting is not accidentally increased. Ballista and Scrapshot already have separate head rules. Module surcharges follow loaded rarity, independently of head families. Do not equalize all heads' endurance or change their damage, ammunition or cadence.
+
+**Revised concrete proposal, pending numerical confirmation:** firearm head costs x1.5 (+50%), Scrapshot x1.25 (+25%), Ballista unchanged; increase only Epic/Legendary/Mythic module surcharges by 10% relative (0.6 -> 0.66, 0.8 -> 0.88, 1 -> 1.1). Lower-tier surcharges remain unchanged. Regulator retains its existing no-surcharge exception and 25%-per-module divisor. Preserve loaded rarity assignments, all loot weights, and the selected Siphon 45% / 2x / +1x behavior.
+
+For C351's reference fourteen-module loadout, high-tier surcharge subtotal is 8.4 and lower-tier subtotal 1.2, so the combined multiplier rises from 10.6 to 11.44, approximately 7.9% more total draw from the module change. Including both adjustments gives approximately M9 120, M4 37, Ballista 28 and Scrapshot 64 real unpaused minutes from full. Ballista's head cost stays unchanged; its smaller runtime comes only from the high-tier modules. These are calculated estimates with the previous continuous-target/reload/ammo assumptions and Siphon/Regulator removed.
+
+**New confirmation 1A (recommended):** use those revised values. **1B:** smaller head changes, firearms x1.25 and Scrapshot x1.1, retaining the same 10% high-tier surcharge adjustment and unchanged Ballista head cost. Owner-selected hybrid direction is settled; precise values are not.
+
+### Head tooltip
+
+Selected feature: a clearly labeled Battery Consumption line with Low/Medium/High. Recommend green Low, amber Medium, red High; retain the actual word so color is not the only cue. Color only the rating and restore normal text color afterwards; this is an explicit head-rating exception to the earlier white module-description preference, not a global tooltip recolor.
+
+Recommend rating the head's estimated sustained base consumption, including normal firing/reload cadence, standard ammo and no installed turret modules or Siphon refunds. A brief head-only qualifier prevents confusing it with installed final draw. Per-cycle cost alone exaggerates slow heads, so it should not determine the rating. Use one consistent reference calculation for inventory and Manage head tooltips, respect saved Sandbox tuning and supported firearm stats, and retain numeric effective draw where available. TurretHeadDescription.get currently accepts optional effective stats in Manage but builds bare-head stats in inventory; do not accidentally produce inconsistent base labels between those callers. Determine/document shared thresholds against the complete head roster, including rotary/payload cases, before claiming final rating assignments.
+
+### Pending-update recap
+
+- Siphon proc chance
+- Gentler head-family consumption
+- Higher-tier module consumption
+- Colored head consumption rating
+- Mechanical Poke Floor
+- Building menu corrections
+- Lever trigger
+- Wall-mounted dart emitter
+
+Siphon 45%/2x/+1x and mechanical Poke/Building correction scope are settled; the hybrid direction and tooltip feature are selected, with numerical proposal above awaiting confirmation. Lever and emitter remain planning scope under their respective contracts; no unreviewed recipes, dart targeting policy or remaining interaction choices become approved by this recap. Multiplayer authority, local-battery Siphon restriction, independent packages, no trap modules and existing saved tuning remain requirements. No gameplay or install change.
+
 ## C351 — Siphon selected; head-versus-module comparison (2026-10-19)
 
 Owner selects C349 **1A: 45% proc chance, 2x first refund, +1x per additional Siphon**, then asks whether to raise high-tier module costs or head costs, including Ballista, Scrapshot, modded M4 and a cheap pistol. This settles Siphon for the pending patch; the head rebalance below is a proposal, not approved implementation.

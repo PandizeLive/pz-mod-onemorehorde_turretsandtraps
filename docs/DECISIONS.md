@@ -1,5 +1,9 @@
 # Decision register
 
+## C352 — Gentler combined balance, colored head rating and recap
+
+Owner wants smaller family-level head increases and then a modest higher-tier module increase, explicitly retaining purposeful DPS/effect differences. Adds colored Low/Medium/High head battery consumption tooltip. [Selected direction, proposed exact values and recap](BATTERY_BALANCE_C349.md#c352--gentler-hybrid-balance-and-consumption-labels-2026-10-19). C351 aggressive values are superseded proposals, not approved tuning. New 1A/1B numbers need confirmation; no code/install or unreviewed recipe change.
+
 ## C351 — Siphon selection and head consumption comparison
 
 Owner selects the prior 1A (45% / 2x, +1x per additional module), then requests comparison of higher-tier module penalties versus head consumption, including Ballista, Scrapshot, modded M4 and a cheap pistol. [Audit and proposed drain choices](BATTERY_BALANCE_C349.md#c351--siphon-selected-head-versus-module-comparison-2026-10-19). Siphon is selected for pending patch; proposed firearm x3/Scrapshot x2.5 costs are not selected. No code, save, installed package, loot tuning or publication change.
