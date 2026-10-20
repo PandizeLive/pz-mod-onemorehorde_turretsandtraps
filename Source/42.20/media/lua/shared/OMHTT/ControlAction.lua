@@ -24,6 +24,10 @@ function Action:update()
     if self.command == "Pickup" then
         self.character:faceThisObject(self.object)
     end
+    if isClient() or isServer() or self.seconds == 0 then return end
+    self.elapsed = self.elapsed + getGameTime():getMultiplier() / getGameTime():getMultiplierFromTimeDelta(1)
+    self:setJobDelta(math.min(self.elapsed / self.seconds, .999))
+    if self.elapsed >= self.seconds then self:forceComplete() end
 end
 
 ---@return boolean valid
@@ -67,6 +71,7 @@ end
 ---@return boolean complete
 function Action:complete()
     if isClient() or not self:isValid() then return false end
+    if not isServer() and self.elapsed < self.seconds then return false end
     self.done = true
     local W = require("OMHTT/ControlWorld")
     local state = W.state(self.object)
@@ -118,13 +123,16 @@ end
 
 ---@return number duration
 function Action:getDuration()
-    if self.command == "Pickup" then return 250 end
-    if self.command == "Repair" then return 500 end
-    return 1
+    if self.seconds == 0 then return 1 end
+    if isClient() or isServer() then return self.seconds * 50 end
+    return 480
 end
 
 ---@return nil
 function Action:perform()
+    if self.command == "Pulse" and not isServer() then
+        self.object:getSquare():playSound("LightSwitch")
+    end
     ISBaseTimedAction.perform(self)
 end
 
@@ -145,6 +153,8 @@ function Action:new(character, object, command, value, target, id, targetId)
         action.targetId = targetId or (A.state(target) and A.state(target).id)
     end
     action.stopOnWalk, action.stopOnRun, action.done = true, true, false
+    action.seconds = command == "Pickup" and 5 or (command == "Repair" and 10 or 0)
+    action.elapsed = 0
     action.maxTime = action:getDuration()
     return action
 end

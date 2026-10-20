@@ -109,14 +109,10 @@ end
 
 ---@return nil
 function Panel:prerender()
-    if not A.state(self.object) or self.object:getObjectIndex() < 0 or (not A.near(self.player, self.object) and not self.keepOpen) then
+    if not A.state(self.object) or self.object:getObjectIndex() < 0 or (not A.near(self.player, self.object)) then
         self:close(); return
     end
     ISPanel.prerender(self)
-    if self.chromeCollapsed then
-        Theme.title(self, "UI_OMHTT_ControllerTitle")
-        return
-    end
     require("OMHTT/ControlPanelLayout").arrange(self)
     local now = getTimestampMs()
     if self.scanIndex or now >= self.scanDue then

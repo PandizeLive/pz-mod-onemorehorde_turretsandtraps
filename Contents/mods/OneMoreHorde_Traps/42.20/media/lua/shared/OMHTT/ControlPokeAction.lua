@@ -107,7 +107,7 @@ end
 
 function Action:update()
     if isClient() or isServer() or self.seconds == 0 then return end
-    self.elapsed = self.elapsed + math.min(getGameTime():getRealworldSecondsSinceLastUpdate(), .25)
+    self.elapsed = self.elapsed + getGameTime():getMultiplier() / getGameTime():getMultiplierFromTimeDelta(1)
     self:setJobDelta(math.min(self.elapsed / self.seconds, .999))
     if self.elapsed >= self.seconds then self:forceComplete() end
 end
@@ -118,7 +118,7 @@ end
 
 function Action:getDuration()
     if self.seconds == 0 then return 1 end
-    if isClient() or isServer() then return self.seconds * getGameTime():getMultiplierFromTimeDelta(1) end
+    if isClient() or isServer() then return self.seconds * 50 end
     return 480
 end
 
@@ -127,7 +127,7 @@ function Action:new(character, object, operation, value, item, id, targetObject,
     o.object, o.operation, o.value, o.item, o.id = object, operation, value, item, id
     o.targetObject, o.bag = targetObject, bag
     if not isServer() then o.id = id or (Access.state(object) and Access.state(object).id) end
-    o.seconds = (operation == "Pickup" or operation == "Repair") and 10 or 0
+    o.seconds = operation == "Pickup" and 5 or (operation == "Repair" and 10 or 0)
     o.elapsed, o.done, o.stopOnWalk, o.stopOnRun = 0, false, true, true
     o.maxTime = o:getDuration()
     return o

@@ -169,7 +169,10 @@ def build_component(component):
     if trap:
         for raised in range(2):
             stream = io.BytesIO()
-            marker = plate_image(False)
+            marker = Image.new("RGBA", (128, 256))
+            draw = ImageDraw.Draw(marker)
+            draw.polygon([(64, 197), (118, 224), (64, 251), (10, 224)], outline="white", width=3)
+            draw.text((51, 219), "POKE", fill="white")
             if raised:
                 marker = marker.transform(marker.size, Image.Transform.AFFINE, (1, 0, 0, 0, 1, 12))
             marker.save(stream, format="PNG")

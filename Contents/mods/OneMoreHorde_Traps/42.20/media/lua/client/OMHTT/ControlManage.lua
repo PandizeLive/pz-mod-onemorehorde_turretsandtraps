@@ -43,6 +43,13 @@ function E.refresh(panel)
     panel.setAimButton:setEnable(writable)
     panel.setAimButton.tooltip = getText("UI_OMHTT_SetFacingTooltip")
     require("OMHTT/ControlTheme").power(panel.powerButton, require("OMHTT/Turret").isOn(require("OMHTT/Turret").state(panel.object)), writable)
+    local view = panel.object:hasModData() and panel.object:getModData().OMHTTControl
+    if view and view.inputs and #view.inputs > 0 then
+        panel.powerButton.tooltip = getText("UI_OMHTT_TriggerPowerHelp")
+        if not require("OMHTT/Turret").isOn(require("OMHTT/Turret").state(panel.object)) then
+            panel.powerButton:setEnable(false)
+        end
+    end
     if not writable then
         for i = 1, #controls do
             local control = panel[controls[i]]

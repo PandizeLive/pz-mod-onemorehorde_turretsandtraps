@@ -1,4 +1,6 @@
 {
+    "UI_OMHTT_PickupDuration": "5 seconds at normal game speed.",
+    "UI_OMHTT_TriggerPowerHelp": "Linked triggers supply power. Press a Button or hold a Pressure Plate to activate this turret. Disconnect its inputs for manual power. You can still switch it off while active.",
     "UI_OMHTT_ManageTransferDestination": "Drop into your inventory or an accessible Controller Stockpile.",
     "UI_OMHTT_Brand": "One More Horde",
     "UI_OMHTT_ControllerTitle": "Controller Menu",
@@ -474,7 +476,7 @@
     "UI_OMHTT_DisconnectNamed": "Disconnect %1",
     "UI_OMHTT_GraphAmmoPending": "Ammo: ...",
     "UI_OMHTT_GraphAmmo": "Ammo: %1",
-    "UI_OMHTT_GraphAmmoNone": "Ammo: â€”",
+    "UI_OMHTT_GraphAmmoNone": "Ammo: --",
     "UI_OMHTT_GraphLinkHelp": "Drag rows to sort or move groups. Use handles or drag map markers to connect. Right-click a device to disconnect. Ammo includes its magazine, compatible reserve and Void supply.",
     "UI_OMHTT_GraphConnectHint": "Use the handles or map markers to connect.",
     "UI_OMHTT_GraphDisconnectHint": "Use the defense handle to disconnect an input.",

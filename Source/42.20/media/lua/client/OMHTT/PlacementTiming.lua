@@ -20,7 +20,7 @@ function P.apply(cursor)
         ---@return nil
         action.update = function(timed)
             update(timed)
-            timed.OMHTTElapsed = timed.OMHTTElapsed + math.min(getGameTime():getRealworldSecondsSinceLastUpdate(), .25)
+            timed.OMHTTElapsed = timed.OMHTTElapsed + getGameTime():getMultiplier() / getGameTime():getMultiplierFromTimeDelta(1)
             timed:setJobDelta(math.min(timed.OMHTTElapsed / 5, .999))
             if timed.OMHTTElapsed >= 5 then timed.action:forceComplete() end
         end

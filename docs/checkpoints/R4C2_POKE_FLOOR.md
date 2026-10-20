@@ -1,5 +1,7 @@
 # R4C2 — Poke Floor
 
+**C340 corrective build:** 0.2.57.1 addresses the owner test of Poke Floor/power and management UI. See [patch scope](../PATCH_v0.2.57.1.md) and [verification](../TEST_v0.2.57.1.md). Exact five-second native multiplayer placement remains open. No additional content selection is required.
+
 **Current correction — C334:** Poke Floor triggers itself through contact, with no external Button/Plate or manual firing. Earlier external-trigger proposals below are superseded. Tire Pump/improvised crafting and local-battery-first priority are selected. C335 selects repeated cycles while eligible zombies occupy the tile; the new turret-only battery-power idea is still a proposal.
 
 ## C332 — Initial content choices proposed (2026-10-19)

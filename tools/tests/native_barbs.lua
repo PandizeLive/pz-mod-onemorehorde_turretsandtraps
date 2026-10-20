@@ -139,6 +139,30 @@ function OMHTT_NativeBarbCheck(squares)
     assert(placement:getInputs():size() == 3 and placement:getXPAwardCount() == 0
         and placement:getRequiredSkillCount() == 0, "Attachment must consume only panel plus retained tools without repeating skill/XP")
     local faces, fixtures = {"e", "n", "w", "s"}, ArrayList.new()
+    for level = 1, 3 do
+        local wallInfo = SpriteConfigManager.GetObjectInfo("WoodenWallLvl" .. level)
+        assert(wallInfo, "Missing native wooden-wall definition")
+        for i = 0, 3 do
+            local facing = faces[i + 1]
+            local x, y, north = C.edge(1000 + i * 4, 1000, facing)
+            local square = lookup[x .. ":" .. y .. ":0"]
+            local sprite = wallInfo:getFace(north and "n" or "w"):getTileInfo(0, 0, 0):getSpriteName()
+            local host = IsoThumpable.new(cell, square, sprite, false)
+            GameEntityFactory.CreateIsoObjectEntity(host, wallInfo:getScript():getParent(), true)
+            host:setMaxHealth(450)
+            host:setHealth(137)
+            host:setIsThumpable(true)
+            square:getObjects():add(host)
+            square:getSpecialObjects():add(host)
+            assert(S.kind(host, north) == "constructed-wall", "Player-built wall edge not recognized: " .. sprite)
+            assert(not S.kind(host, not north), "Wrong wall edge must not accept a panel")
+            local floor = lookup[(1000 + i * 4) .. ":1000:0"]
+            assert(B.onIsValid({square = floor, facing = facing}), "Native player-built wall rejects panel placement")
+            square:getSpecialObjects():remove(host)
+            square:getObjects():remove(host)
+        end
+    end
+    print("[OMHTT-C340] built-wall supports=12 orientations=4 tiers=3 health=unchanged")
     for i = 0, 7 do
         local facing = faces[i % 4 + 1]
         local x, y, north = C.edge(1000 + i * 4, 1000, facing)

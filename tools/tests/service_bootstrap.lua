@@ -9,7 +9,7 @@ function instanceItem(kind)
     nextItemId=nextItemId+1
     return {kind=kind,condition=100,id=nextItemId,data={},getID=function(self) return self.id end,getModData=function(self) return self.data end}
 end
-function getGameTime() return {getMinutesPerDay = function() return 60 end, getRealworldSecondsSinceLastUpdate = function() return 0.1 end} end
+function getGameTime() return {getMinutesPerDay = function() return 60 end, getMultiplier = function() return (0.1) * 48 end, getMultiplierFromTimeDelta = function() return 48 end} end
 
 function testPlayer:setIsFarming() end
 ISTimedActionQueue = {getTimedActionQueue = function() return {resetQueue = function() end} end}

@@ -89,19 +89,11 @@ local panel = testTurretPanel
 panel:prerender()
 local chrome = require("OMHTT/ControlWindowChrome")
 local initialTime = testMillis
-panel.lockButton.callback(panel)
-reachable = false
-panel:prerender()
-check(not panel.closed and panel.keepOpen and not panel.powerButton.enabled, "Keep-open retains the window without granting out-of-reach writes")
-reachable = true
-panel.lockButton.callback(panel)
-panel.pinButton.callback(panel)
+check(not panel.lockButton and not panel.pinButton, "Management windows have no lock/collapse controls")
 chrome.update(panel)
 testMillis = testMillis + 800
 chrome.update(panel)
-check(panel.chromeCollapsed and panel.maxDrawHeight == panel.titleHeight, "Unpinned window collapses to native draw-height bound")
-panel.pinButton.callback(panel)
-check(not panel.chromeCollapsed and not panel.maxDrawHeight, "Pin restores the full body")
+check(not panel.chromeCollapsed and not panel.maxDrawHeight, "Leaving the header never hides the body")
 testMillis = initialTime
 panel:prerender()
 local locked = panel.moduleSlots[16]
@@ -231,8 +223,11 @@ check(moduleRows[panel.moduleSlots[1].y] == 4 and moduleRows[panel.moduleSlots[5
 check(math.abs(panel.moduleSlots[1].x + panel.moduleSlots[4].x + panel.moduleSlots[4].width
     - panel.moduleSlots[5].x - panel.moduleSlots[8].x - panel.moduleSlots[8].width) < 1,
     "Module rows share the same horizontal center")
-check(panel.setAimButton and panel.sourceButton.width == panel.setAimButton.width,
+check(panel.setAimButton and panel.sourceButton.width == panel.setAimButton.width
+    and panel.sourceButton.height == panel.setAimButton.height and panel.sourceButton.y == panel.setAimButton.y,
     "Manage places Set Aim beside the equally sized removal destination")
+check(panel.moduleSlots[1].width <= 108 and panel.moduleSlots[1].width >= panel.moduleSlots[1].height,
+    "Four-column module tiles remain compact without becoming narrower than squares")
 check(panel.headSlot.missing and panel.magazineSlot.disabled and not panel.magazineSlot.missing, "Empty base highlights head without inventing a magazine requirement")
 for i = 1, #panel.slots do panel.slots[i]:prerender() end
 panel:fire()

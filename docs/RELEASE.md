@@ -1,5 +1,7 @@
 # Release state and publication policy
 
+**0.2.57.1 / C340 prepared (2026-10-19).** Owner-test corrections cover Controller fractional power, linked trigger startup, compact 4/4/4/4 modules, simplified window controls and framing, Connections contrast, player-built wall supports, Poke Floor technical art and button audio. SP pickup/portable placement now follows game speed at five seconds; multiplayer native placement remains skill-dependent and is an explicit open item. [Patch](PATCH_v0.2.57.1.md) / [Tests](TEST_v0.2.57.1.md). Verification and installation in progress; rendered and connected acceptance pending. **Wait for a patch.**
+
 **0.2.57 / C339 installed (2026-10-19).** Poke Floor, Controller car-battery bank with assigned-device fallback, battery-default turrets and Mythic Grid Module (weight 1) are implemented. Full validation passes **23,802 assertions**; native crafting, exact item/charge persistence and independent package checks pass. Grid is published to LootLab with saved tuning preserved. [Patch](PATCH_v0.2.57.md) · [Tests](TEST_v0.2.57.md). Installed from immutable `test/v0.2.57` / `f9934476ec52ebd8ae5d52b077f03981ea541659`. All 308 source and 402 tagged/package/install/archive files match; both 0.2.56.1 backups verify. [Release evidence](../diagnostics/v0.2.57/local-release.json). **Test now when available.** Rendered and connected-player acceptance remain pending. Next content is the separate fixed dart emitter slice, then beam sensors. No Workshop upload or merge.
 
 ## 0.2.56.1 / C330 — management and trigger corrections

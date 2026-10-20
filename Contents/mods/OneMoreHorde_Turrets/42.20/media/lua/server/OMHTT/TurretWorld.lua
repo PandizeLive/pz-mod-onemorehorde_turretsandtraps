@@ -153,6 +153,15 @@ end
 ---@return boolean changed
 function W.setPower(player, object, enabled)
     if not W.near(player, object) then return false end
+    if enabled then
+        local linked, on = require("OMHTT/ControlWorld").input(object, getTimestampMs())
+        if linked then
+            if not on then return false end
+            local cycle = require("OMHTT/ControlCycle")
+            cycle.blocked[object] = nil
+            return cycle.request(object) or T.isOn(T.state(object))
+        end
+    end
     if not enabled then
         require("OMHTT/ControlCycle").manualOff(object)
     end

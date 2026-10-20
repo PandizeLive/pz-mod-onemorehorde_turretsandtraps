@@ -1,7 +1,7 @@
 local P = require("OMHTT/PlacementTiming")
 local oldTime = getGameTime
 local delta, started, updated, completed = .1, 0, 0, false
-getGameTime = function() return {getRealworldSecondsSinceLastUpdate = function() return delta end} end
+getGameTime = function() return {getMultiplier = function() return (delta) * 48 end, getMultiplierFromTimeDelta = function() return 48 end} end
 local cursor = {onTimedActionStart = function() started = started + 1 end}
 P.apply(cursor)
 local action = {character = {isTimedActionInstant = function() return false end},
@@ -16,11 +16,20 @@ check(not completed and started == 1 and updated == 49, "Native placement animat
 action:update(); action:update()
 check(completed, "Placement completes after five active seconds")
 completed = false
+action.update = function() updated = updated + 1 end
 cursor:onTimedActionStart(action)
 delta = 60
 action:update()
-check(not completed and action.OMHTTElapsed <= .5, "Long frame cannot immediately finish placement")
+check(completed, "Native game-time progress completes after an elapsed fast-forward interval")
 local instant = {character = {isTimedActionInstant = function() return true end}}
+completed = false
+action.update = function() updated = updated + 1 end
+cursor:onTimedActionStart(action)
+delta = .5
+for i = 1, 9 do action:update() end
+check(not completed, "Fast-forward placement still requires five game-speed-adjusted seconds")
+action:update()
+check(completed, "Fast-forward placement completes in ten half-second simulation steps")
 cursor:onTimedActionStart(instant)
 check(instant.update == nil, "Instant-action debug cheat retains native behavior")
 getGameTime = oldTime

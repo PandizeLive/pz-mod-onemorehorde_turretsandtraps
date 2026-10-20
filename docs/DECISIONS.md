@@ -1,5 +1,9 @@
 # Decision register
 
+## C340 — Owner-test corrections requested (2026-10-19)
+
+Owner requests removal of locking/pinning, corrected window framing and compact 4/4/4/4 modules, equal action buttons, power investigation, Poke Floor technical texture, player-built wall support, game-speed-aware five-second pickup/placement, consistent Connections formatting and light-switch audio. Implemented correction scope and the unresolved native multiplayer placement duration are recorded in [0.2.57.1](PATCH_v0.2.57.1.md). Standing C108 covers local installation and GitHub mirror; no merge or Workshop upload.
+
 ## C339 — Poke Floor and power patch approved (2026-10-19)
 
 Owner approves the final C333–C338 recap. Implement contact-only Poke Floor, car-battery Controller bank, assigned fallback, battery-default turrets and Mythic Grid Module at assigned weight 1; preserve owner LootLab overrides. [Implementation](PATCH_v0.2.57.md) and [verification](TEST_v0.2.57.md). No Workshop upload or merge.

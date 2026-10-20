@@ -38,6 +38,7 @@ return function(player)
         {"Poke", {TirePump = 1, MetalBar = 4, SmallSheetMetal = 2, ElectronicsScrap = 4, ElectricWire = 2, Screws = 8}},
         {"Poke", {MetalPipe = 2, MetalBar = 4, SmallSheetMetal = 2, ElectronicsScrap = 4, ElectricWire = 2, Screws = 8}, "PokeImprovised"},
     }
+    assert(GameSounds.getSound("LightSwitch"), "Native Button cue must exist")
     for n = 1, #recipes do
         local case = recipes[n]
         local recipe = getScriptManager():getCraftRecipe("Base.OMHTTCraft" .. (case[3] or case[1]))
@@ -221,6 +222,10 @@ return function(player)
     battery:setCurrentUsesFloat(1)
     assert(Transfer:new(player, controller, battery, true, host.id, nil, true):complete(), "Restoring original backup selection failed")
     print("[OMHTT-C302] multiple-batteries=exact depleted-spare=selected count=preserved")
+    for i = 1, 2000 do
+        assert(C.power(controller, .0001 + (i % 11) * .0000003), "Native fractional Controller debit flickered offline")
+    end
+    print("[OMHTT-C340] native Controller fractional-debits=2000 stable=passed switch-sound=present")
     local poke = create("Poke", "omhtt_barrier_01_85")
     local pokeState = C.state(poke)
     local PokeAction = require("OMHTT/ControlPokeAction")

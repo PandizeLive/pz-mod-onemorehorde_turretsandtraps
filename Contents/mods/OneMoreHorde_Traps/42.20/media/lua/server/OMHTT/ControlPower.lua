@@ -80,7 +80,8 @@ function P.idle(object, elapsed)
         end
         if remaining <= 0 then state.powerDebt = nil; return true end
         local cost = math.min(remaining, Battery.charge(battery))
-        remaining = math.max(0, remaining - P.spend({battery = battery, controller = object, cost = cost}))
+        if not P.spend({battery = battery, controller = object, cost = cost}) then return false end
+        remaining = math.max(0, remaining - cost)
     end
     state.powerDebt = remaining
     return remaining == 0 and P.battery(object, 0) ~= nil

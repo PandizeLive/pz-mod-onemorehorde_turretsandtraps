@@ -49,6 +49,8 @@ function G.apply(panel)
     place(panel.loadOrderButton, ammoX + ammoWidth - panel.loadOrderButton.width, buttonY, panel.loadOrderButton.width)
     place(panel.reloadButton, panel.loadOrderButton.x - panel.reloadButton.width - 6, buttonY, panel.reloadButton.width)
     if panel.sourceButton then
+        panel.sourceButton:setHeight(panel.reloadButton.height)
+        panel.setAimButton:setHeight(panel.reloadButton.height)
         place(panel.sourceButton, 8, buttonY, (equipment - 6) / 2)
         place(panel.setAimButton, 8 + (equipment + 6) / 2, buttonY, (equipment - 6) / 2)
     end
@@ -56,7 +58,6 @@ function G.apply(panel)
     panel.ammunitionBottom = panel.equipmentBottom
     panel.modulesY = panel.equipmentBottom + 10
     local columns, rows = 4, 4
-    local moduleWidth = (rowWidth - 26) / columns
     local moduleTop = panel.modulesY + panel.headerHeight + h + 10
     local available = (panel.userSized and panel.height or screen - 24) - panel.body.y - moduleTop - h * 3 - 140
     local minimum = h + (compact and 4 or 8)
@@ -67,6 +68,7 @@ function G.apply(panel)
         panel.normalModuleHeight = moduleHeight
     end
     panel.minimumGridBottom = moduleTop + rows * (minimum + 4)
+    local moduleWidth = math.min(108, math.max(moduleHeight, math.floor((rowWidth - 440) / columns)))
     for i = 1, 16 do
         local row = math.floor((i - 1) / columns)
         local column = (i - 1) % columns

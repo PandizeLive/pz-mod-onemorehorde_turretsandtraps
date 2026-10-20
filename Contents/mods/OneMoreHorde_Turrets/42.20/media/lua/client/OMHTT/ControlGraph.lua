@@ -320,12 +320,14 @@ end
 function Graph:prerender()
     local header, rowHeight = self.headerHeight, self.rowHeight
     self.addGroup:setX(self.width - self.addGroup.width - 18)
-    self.addGroup:setY(self.owner.lineHeight + 12 - self:getYScroll())
+    self.addGroup:setY(5 - self:getYScroll())
     self.addGroup:setEnable(A.authorized(self.owner.player, self.owner.object))
     self:setStencilRect(0, header, self.width - 12, math.max(0, self.height - header))
     self:drawRectStatic(0, header, self.width, self.height - header, 1, .055, .055, .055)
     local half = (self.width - 88) / 2
     local mouseY, now = self:getMouseY(), getTimestampMs()
+    self:drawRectStatic(4, header, half - 4, self.height - header, 1, .035, .035, .035)
+    self:drawRectStatic(half + 74, header, half - 4, self.height - header, 1, .035, .035, .035)
     if (self.dragSource or self.dragGroup) and now >= (self.scrollAt or 0) then
         if mouseY < header + 20 then
             self:onMouseWheel(-.2)
@@ -382,7 +384,8 @@ function Graph:prerender()
     end
     for i = 1, #self.groups do
         local group = self.groups[i]
-        self:drawRect(4, group.y, self.width - 22, group.header - 2, 1, .13, .13, .13)
+        self:drawRect(4, group.y, self.width - 22, group.header - 2, 1, .18, .18, .18)
+        self:drawRectBorder(4, group.y, self.width - 22, group.header - 2, 1, .32, .32, .32)
         self:drawText((self.collapsed[group.id] and "> " or "v ") .. group.name, 9, group.y + 3, .9, .9, .9, 1, UIFont.Small)
     end
     for i = 1, #self.edges do
@@ -407,7 +410,10 @@ function Graph:prerender()
     end
     self:clearStencilRect()
     local scroll = self:getYScroll()
-    Theme.section(self, 0, -scroll, self.width, header, header, getText("UI_OMHTT_Connections"))
+    self:drawRectBorder(0, -scroll, self.width - 16, self.height, 1, .3, .3, .3)
+    Theme.section(self, 0, -scroll, self.width, header, self.owner.lineHeight + 18, getText("UI_OMHTT_Connections"))
+    self:drawRect(4, header - self.owner.lineHeight - 8 - scroll, self.width - 22, self.owner.lineHeight + 8, 1, .10, .10, .10)
+    self:drawRectBorder(4, header - self.owner.lineHeight - 8 - scroll, self.width - 22, self.owner.lineHeight + 8, .8, .3, .3, .3)
     if self.flashUntil and getTimestampMs() < self.flashUntil then
         self:drawRectBorder(1, -scroll, self.width - 16, self.height, .9, .7, .95, .7)
     end
@@ -427,11 +433,11 @@ function Graph.create(owner)
     graph.stats = setmetatable({}, {__mode = "k"})
     graph.statsIndex, graph.statsDue = 1, 0
     graph.tooltip = getText("UI_OMHTT_GraphLinkHelp")
-    graph.headerHeight, graph.rowHeight = owner.lineHeight * 3 + 32, owner.lineHeight * 3 + 12
+    graph.headerHeight, graph.rowHeight = owner.lineHeight * 2 + 24, owner.lineHeight * 3 + 12
     graph:initialise()
     graph:setScrollChildren(false)
     local caption = getText("UI_OMHTT_GroupAdd")
-    graph.addGroup = ISButton:new(0, owner.lineHeight + 12, math.max(94, getTextManager():MeasureStringX(UIFont.Small, caption) + 20), math.max(28, owner.lineHeight + 8), caption, owner, function(panel)
+    graph.addGroup = ISButton:new(0, 5, math.max(94, getTextManager():MeasureStringX(UIFont.Small, caption) + 20), math.max(28, owner.lineHeight + 8), caption, owner, function(panel)
         Groups.rename(panel)
     end)
     graph.addGroup:initialise()

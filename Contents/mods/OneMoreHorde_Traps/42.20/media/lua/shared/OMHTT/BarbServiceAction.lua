@@ -28,7 +28,7 @@ end
 function OMHTTBarbServiceAction:update()
     self.character:faceThisObject(self.object)
     if isClient() or isServer() then return end
-    self.elapsed = self.elapsed + math.min(getGameTime():getRealworldSecondsSinceLastUpdate(), .25)
+    self.elapsed = self.elapsed + getGameTime():getMultiplier() / getGameTime():getMultiplierFromTimeDelta(1)
     self:setJobDelta(math.min(self.elapsed / self.seconds, .999))
     if self.elapsed >= self.seconds then
         self:forceComplete()

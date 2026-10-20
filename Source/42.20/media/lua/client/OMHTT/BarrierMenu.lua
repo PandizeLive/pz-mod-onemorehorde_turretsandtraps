@@ -81,7 +81,9 @@ local function fillMenu(playerIndex, context, worldobjects, test)
             local repair = menu:addOption(getText("ContextMenu_OMHTT_RepairBarrier"), object, queueService, player, record.id, "Repair")
             local tooltip = ISWorldObjectContextMenu.addToolTip()
             tooltip.description = getText("UI_OMHTT_ServiceDuration")
-            pickup.toolTip, repair.toolTip = tooltip, tooltip
+            repair.toolTip = tooltip
+            pickup.toolTip = ISWorldObjectContextMenu.addToolTip()
+            pickup.toolTip.description = getText("UI_OMHTT_PickupDuration")
             Selection.bindHighlight(pickup, parts)
             Selection.bindHighlight(repair, parts)
             repair.notAvailable = record.condition >= record.maxHealth

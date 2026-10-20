@@ -101,6 +101,23 @@ testMode="server"
 local source={links={"facing-target"}}
 check(C.linked(source,turret.state) and not C.linked(source,{id="other"}),"Link action follows actual selected receiver membership")
 check(not C.linked(nil,turret.state),"No source is never a link")
+local controlWorld = require("OMHTT/ControlWorld")
+local cycle = require("OMHTT/ControlCycle")
+local oldInput, oldNear, oldRequest = controlWorld.input, W.near, cycle.request
+local requested = 0
+W.near = function() return true end
+controlWorld.input = function() return true, false end
+cycle.request = function() requested = requested + 1 return true end
+turret.record.powered = false
+check(not W.setPower(player,turret,true) and requested == 0 and not turret.record.powered,
+    "Released linked trigger cannot briefly start turret power")
+controlWorld.input = function() return true, true end
+cycle.blocked[turret] = true
+check(W.setPower(player,turret,true) and requested == 1 and not cycle.blocked[turret],
+    "Active linked signal resumes through the authoritative cycle")
+W.near = function() return false end
+check(not W.setPower(player,turret,true) and requested == 1,"Signal resume cannot bypass access")
+controlWorld.input, W.near, cycle.request = oldInput, oldNear, oldRequest
 A.state,A.near,A.range,T.state=saved.state,saved.near,saved.range,saved.tstate
 W.valid,W.refresh,W.contents,W.power,Authority.publish=saved.valid,saved.refresh,saved.contents,saved.power,saved.publish
 Aim.entries[turret],Aim.queued[turret]=nil,nil

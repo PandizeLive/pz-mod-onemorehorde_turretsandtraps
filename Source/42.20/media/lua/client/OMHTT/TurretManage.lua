@@ -447,12 +447,7 @@ end
 ---@return nil
 function Panel:prerender()
     local reachable = Access.near(self.player, self.object, self.deviceId, true)
-    if not T.state(self.object) or self.object:getObjectIndex() < 0 or (not reachable and not self.keepOpen) then self:close(); return end
-    if self.chromeCollapsed then
-        ISPanel.prerender(self)
-        require("OMHTT/ControlTheme").title(self, "UI_OMHTT_TurretTitle")
-        return
-    end
+    if not T.state(self.object) or self.object:getObjectIndex() < 0 or (not reachable) then self:close(); return end
     ISPanel.prerender(self)
     local now = getTimestampMs()
     if reachable and now >= self.nextRefresh then

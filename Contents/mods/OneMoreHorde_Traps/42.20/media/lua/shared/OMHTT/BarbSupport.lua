@@ -67,11 +67,11 @@ function S.kind(object, north, nativeOnly)
     end
     local properties = object:getProperties()
     if instanceof(object, "IsoThumpable") then
-        if object:getNorth() ~= north then return nil end
-        if object:isDoor() then return "constructed-door" end
-        if object:isWindow() then return "constructed-window" end
-        if object:isHoppable() or object:isTallHoppable() then return "constructed-fence" end
-        if properties and properties:has(north and IsoFlagType.collideN or IsoFlagType.collideW) then
+        if object:isDoor() then return object:getNorth() == north and "constructed-door" or nil end
+        if object:isWindow() then return object:getNorth() == north and "constructed-window" or nil end
+        if object:isHoppable() or object:isTallHoppable() then return object:getNorth() == north and "constructed-fence" or nil end
+        if properties and (properties:has(north and IsoFlagType.collideN or IsoFlagType.collideW)
+            or properties:has(north and IsoFlagType.WallN or IsoFlagType.WallW)) then
             return "constructed-wall"
         end
         return nil

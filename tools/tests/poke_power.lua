@@ -149,6 +149,16 @@ first.charge, second.charge = .1, .8
 W.batteries[controller], states[controller].batteryId = first, first.id
 check(Power.idle(controller, 24) and math.abs(second.charge - .4) < .00000001 and first.charge == 0,
     "Idle debt crosses exact car-battery boundaries without discarding charge")
+first.charge, second.charge = 1, 1
+W.batteries[controller], states[controller].batteryId = first, first.id
+B.spend = function(item, amount)
+    local before = item.charge
+    item.charge = math.max(0, before - amount)
+    return before - item.charge
+end
+for i = 1, 2000 do
+    check(Power.idle(controller, .0001 + (i % 11) * .0000003), "Rounding remainder must not flicker a charged Controller offline")
+end
 Injury.poke, ZombRand = oldPokeInjury, oldRand
 Poke.entries[poke] = nil
 W.batteries[controller], W.batteryScan[controller] = nil, nil

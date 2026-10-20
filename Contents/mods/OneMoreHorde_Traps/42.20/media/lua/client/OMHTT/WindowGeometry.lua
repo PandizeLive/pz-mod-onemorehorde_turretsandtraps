@@ -34,7 +34,10 @@ Grip.onMouseMoveOutside = Grip.onMouseMove
 
 ---@return nil
 function Grip:render()
-    self:drawTextureScaled(self.resizeimage, 0, 0, 18, 18, 1, 1, 1, 1)
+    for i = 1, 3 do
+        local offset = i * 4
+        self:drawLine(nil, 17 - offset, 17, 17, 17 - offset, 1, 1, .75, .75, .75)
+    end
 end
 
 ---@param panel ISPanel Window

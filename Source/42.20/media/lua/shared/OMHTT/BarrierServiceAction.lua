@@ -57,7 +57,7 @@ end
 function OMHTTBarrierServiceAction:update()
     self.character:faceThisObject(self.object)
     if isClient() or isServer() then return end
-    self.elapsed = self.elapsed + math.min(getGameTime():getRealworldSecondsSinceLastUpdate(), 0.25)
+    self.elapsed = self.elapsed + getGameTime():getMultiplier() / getGameTime():getMultiplierFromTimeDelta(1)
     self:setJobDelta(math.min(self.elapsed / self.seconds, 0.999))
     if self.elapsed >= self.seconds then
         self:forceComplete()
@@ -86,7 +86,7 @@ function OMHTTBarrierServiceAction:complete()
     return Service.apply(self.character, self.object, self.id, self.operation)
 end
 
----@return number duration Native progress range; completion uses active real seconds
+---@return number duration Native progress range; completion follows game-speed-adjusted seconds
 ---@nodiscard
 function OMHTTBarrierServiceAction:getDuration()
     if isClient() or isServer() then return self.seconds * 50 end
