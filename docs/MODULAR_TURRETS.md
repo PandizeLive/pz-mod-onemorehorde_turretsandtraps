@@ -1,5 +1,21 @@
 # Turret inventory and module plan
 
+## C348 — Siphon proc chance and sustain balance (2026-10-19)
+
+Owner requests a **60% proc chance** so Siphon sometimes fails, with one module extending battery life and stacked modules capable of sustaining charge. Record the chance as selected for the pending patch; no gameplay change is installed yet.
+
+Source audit: `TurretStats` assigns N+1 refund multiplier for N installed Siphons. `TurretSiphon.hit` currently claims each eligible killed actor once and `settle` refunds the originating shot's actual turret-local battery debit times that multiplier per eligible kill. Secondary kills require Synergy. Keep exact-source/generation checks, no Controller/grid refund, Legendary rarity and loaded loot weight 3 unchanged.
+
+Recommended chance semantics: one authoritative 60% roll per eligible kill, shared by the installed Siphon stack; stacking increases refund amount, not probability. Claim the kill even when the roll fails so duplicate callbacks cannot reroll. Retain Synergy eligibility and exact-source checks.
+
+Balance finding: retaining the current 2x first-module multiplier yields 0.6 * 2 = 1.2 times the shot's cost returned on average at one eligible kill per shot. Thus chance alone does not ensure one module is battery-negative. Multiple eligible kills can increase returns further.
+
+**1A (recommended):** keep selected 60% chance, reduce first-module refund to 1x and retain +1x for each additional module. One/two/three modules return 60%/120%/180% of shot cost on average at one eligible kill per shot. This supports the intended stacking threshold but is not a strict guarantee against single-module sustain during multi-kills. No unrequested per-shot refund cap.
+
+**1B:** change only chance to 60%, preserving 2x/+1x. One module can already sustain under efficient killing; owner accepts that tradeoff.
+
+Multiplier choice remains pending; do not implement 1A as approved. Future implementation needs deterministic success/failure/boundary, duplicate callback, stack, secondary eligibility, exact source and rotary-pass coverage, plus updated player-facing descriptions. Installed 0.2.57.2 remains unchanged.
+
 ## C343 - Compact category options (2026-10-19)
 
 Owner rejects the earlier seven-category suggestion as too fragmented and requests tighter options: combine direct numerical upgrades (Critical, Velocity, Magazine, Accuracy, Range, etc.) and include 360/Filter with Automation. This is category discussion, not approval to implement sorting, alter slots or change gameplay.

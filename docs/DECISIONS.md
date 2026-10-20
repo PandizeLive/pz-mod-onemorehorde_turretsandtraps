@@ -1,5 +1,13 @@
 # Decision register
 
+## C348 — Siphon 60% proc requested; multiplier tradeoff pending
+
+Owner requests a 60% chance and stacking that enables sustained power. The current 2x first refund can still sustain at that chance. Recommend 1x first/+1x per additional module, with one shared roll per eligible kill; owner selection of the multiplier is pending. Preserve Synergy gating, turret-local source restriction and loot tuning. [Contract and exact choices](MODULAR_TURRETS.md#c348--siphon-proc-chance-and-sustain-balance-2026-10-19). Planning only.
+
+## C347 — Wall-only, nail-fed, autonomous dart emitter
+
+Owner selects C346 1B/2B/3B and explicitly requires built-in forward detection without batteries or mandatory external triggers. Optional trigger support remains; camera flavor is tentative. [Selected contract and remaining design](checkpoints/R4C2_DART_EMITTER.md#c347--wall-only-autonomous-emitter-selected-2026-10-19). No gameplay patch this turn; mechanical Poke correction remains queued.
+
 ## C346 — Poke recipe 1A selected; dart emitter foundation proposed
 
 **C346 / Mechanical Poke Floor recipe selected; dart emitter discussion (2026-10-19).** Owner selects C345 **1A**; Poke Floor correction scope is settled and pending implementation. [Dart emitter choices](checkpoints/R4C2_DART_EMITTER.md): **1A floor-mounted / 1B wall-mounted; 2A crafted metal darts / 2B nails; 3A local car battery then Controller bank / 3B no electrical consumption**. Recommend A for each; these are proposals, not selected balance or implementation approval. Retain the existing single-Button/held-input cycle model and no trap modules. Installed 0.2.57.2 remains unchanged; R4C3 sensors follows. **Decision needed: emitter foundation.**

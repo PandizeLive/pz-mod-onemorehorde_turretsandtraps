@@ -1,5 +1,13 @@
 # R4C2 — Fixed dart emitter
 
+## C347 — Wall-only autonomous emitter selected (2026-10-19)
+
+Owner selects C346 **1B / 2B / 3B**: wall-mounted only, ordinary nails, and no electrical consumption. Native and player-built walls must both be supported. Owner explicitly corrects the suggested trigger-only behavior: built-in forward target sensing allows autonomous operation without a pressure plate or any external trigger. External triggers remain optional. No local battery, Controller energy debit or grid/generator prerequisite; traps retain no modules.
+
+The suggested camera is tentative flavor, not a selected ingredient or new item. Fixed placement facing remains the proposed firing model; recommend sensing only the unobstructed firing lane rather than detecting targets outside the emitter's ability to hit. This supersedes C346's proposed absence of scanning, not the no-tracking/no-automatic-aim recommendation. Use bounded server-side sensing, not per-frame whole-world scans.
+
+Still to settle: optional trigger interaction with autonomous operation, lane/range/cadence/damage/capacity, player recognition and collateral rules, and the mechanical recipe/tools/skills/XP. Do not silently make a connection disable autonomy or assume a camera grants zombie-only recognition. C346's first choices below are historical and now resolved. The mechanical Poke Floor correction remains queued. No gameplay implementation or installation this discussion.
+
 ## C346 — Design discussion opened (2026-10-19)
 
 Owner selects C345 **1A mechanical recipe cleanup** and asks to move to the dart emitter. The Poke Floor correction is settled and retained for the next patch: remove electrical materials/skill/XP, operational energy, repair Building visibility and rename OMH: Controls to OMH: Triggers. No new build/install is claimed by this discussion.
