@@ -1,5 +1,9 @@
 # R4C2 — Fixed dart emitter
 
+## C361 — Scripted prototype selected and implemented (2026-10-20)
+
+Owner selects C360 **1A**, approving the scripted prototype. The isolated `tools/prototypes/tether` package now implements authoritative first-hit launch/retract/reset, corrected default-detection/input override and interpolated client tether visuals. No native vehicle workaround, health damage, recipe, final stats or knockdown. [Scope, native tests and pending rendered/connected checkpoint](../TETHER_PROTOTYPE_C361.md): 41 assertions pass; client renderer compiles; exact-source preview ZIP prepared. This is not a gameplay release or proof of GPU/live multiplayer acceptance. Installed 0.2.58 unchanged. **Wait for a patch.**
+
 ## C360 — Physical tether investigated (2026-10-20)
 
 Owner selects C359 **1B**, asks us to investigate directly, and conditionally authorizes the physical implementation if feasible. The nail-as-hitched-vehicle suggestion is a hypothesis, not an accepted implementation. [Current-bytecode and isolated-runtime findings](../TETHER_FEASIBILITY_C360.md) verify access to vehicle towing but do not establish a maintainable retractable trap. The ordinary Lua surface lacks direct Bullet access and no winch setter was found; both endpoints are vehicles with vehicle persistence/collision/simulation ownership. A physical swing, rendered nail or connected-client tether has not been tested.
