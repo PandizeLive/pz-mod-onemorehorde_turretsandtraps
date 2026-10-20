@@ -1,5 +1,11 @@
 # Turret inventory and module plan
 
+## C349 — Saved M4 baseline; chance discussion reopened (2026-10-19)
+
+Owner considers 75%/1.5x, leans toward prior 1B and asks for current-save drain without Siphon/Regulator. [Read-only audit, calculations and comparison choices](BATTERY_BALANCE_C349.md) finds approximately 0.00943% per firing cycle, 10,607 cycles from full, and 60–61 real unpaused minutes including normal reload/chambering under continuous-fire assumptions (about 16 game hours at the save's 90-minute day). This is calculated, not a measured endurance run or remaining-runtime claim.
+
+75%/1.5x returns 112.5% on average at one eligible kill per paid cycle; exact first-module break-even requires 50%/2x or 66 2/3%/1.5x under the same kill assumption. Recommend new **1A 45%/2x**, **1B 50%/2x** for theoretical break-even, or **1C retain earlier 60%/2x**. Preserve +1x per extra module. Latest discussion reopens chance; no new value is selected or implemented. Owner's “looking at 1B” is a preference, not final selection. Current installed Siphon is still the earlier guaranteed eligible-kill refund.
+
 ## C348 — Siphon proc chance and sustain balance (2026-10-19)
 
 Owner requests a **60% proc chance** so Siphon sometimes fails, with one module extending battery life and stacked modules capable of sustaining charge. Record the chance as selected for the pending patch; no gameplay change is installed yet.

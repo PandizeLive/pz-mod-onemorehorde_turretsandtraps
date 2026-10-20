@@ -1,5 +1,17 @@
 # R4C1 — buttons, pressure plates and links
 
+## C350 — Lever trigger requested (2026-10-19)
+
+Owner requests a Lever as a toggleable power-switch trigger, then asks to confirm Detection still supplies the actual firing condition. Selected feature: click once to latch its output ON, click again to turn that output OFF. Reuse the Controller input/link/access model and Triggers category; no trap modules.
+
+Clarified intended behavior: with a working Detection Module, Lever ON powers/enables the turret, but it fires only when detection supplies a valid target. Without Detection, ON supplies ordinary straight-ahead fire cycles. Both need Firing and actual ammunition/energy. A signal is not free battery power. Lever OFF withdraws this input; retain finish-current-action behavior without starting another, subject to existing fault/cancellation safety. Multiple inputs keep the current OR rule: another active linked input can keep the receiver on.
+
+Recommend initial OFF, persist the latch across save/load, use authoritative multiplayer toggles and normal switch sound/clear ON/OFF feedback. Reuse automatic Controller assignment on placement, explicit receiver links, stockpile handling and unique Lever numbering. These integration details are recommendations for the recap, not implemented behavior. Wall-only placement matching the current Button is recommended; placement, recipe/tools/skills/XP and pickup/redeploy latch reset need explicit review before implementation. No final-art direction.
+
+Source audit: ControlWorld.input combines loaded eligible inputs with OR; ControlCycle.step gates ordinary projectile calls on detection/target presence. Its current rotary shortcut bypasses that gate, so do not claim universal current-runtime compliance with the Lever detection rule. The new Lever patch must review that branch and verify the intended behavior for supported heads before delivery, plus state persistence, MP authority, no-target idle, link removal, and OFF during reload/turning. The built-in detector of the proposed dart emitter has a separate unresolved optional-input contract; Poke Floor remains pressure-triggered and cannot be externally fired.
+
+Planning only; no Lever item, recipe or installed gameplay build yet.
+
 **C309 / 0.2.53.11 installed:** [Inset pressure plates with press/release feedback](../PATCH_v0.2.53.11.md). Existing full-tile occupancy, filters, signals and passive collision remain. [Verification](../TEST_v0.2.53.11.md); R4C2 remains next content.
 
 **C308 / 0.2.53.10 installed:** [Implemented corrections](../PATCH_v0.2.53.10.md): non-thumpable new/existing plates, contextual linking and Controller Set Facing. [Verification](../TEST_v0.2.53.10.md) separates automated/native checks from pending rendered/connected acceptance. R4C2 Poke Floor remains next content.

@@ -1,5 +1,13 @@
 # Decision register
 
+## C350 — Lever requested; Detection firing condition clarified
+
+Owner requests a latched power-switch trigger and confirms that Detection-equipped turrets wait for detection to provide a target. [Lever contract and current rotary exception](checkpoints/R4C1_CONNECTED_CONTROLS.md#c350--lever-trigger-requested-2026-10-19). No implementation claim or unreviewed recipe selection.
+
+## C349 — Saved M4 drain audit and Siphon alternatives
+
+Owner asks about 75%/1.5x, leans toward earlier 1B, requests a saved-turret battery baseline without Siphon/Regulator and clarifies real versus game time. [Evidence, calculation and comparison choices](BATTERY_BALANCE_C349.md). Result is approximately one real unpaused hour from full under continuous-fire assumptions, around 16 game hours at the saved day length. No measured endurance claim. Chance discussion reopened; no new value selected. No gameplay or save mutation.
+
 ## C348 — Siphon 60% proc requested; multiplier tradeoff pending
 
 Owner requests a 60% chance and stacking that enables sustained power. The current 2x first refund can still sustain at that chance. Recommend 1x first/+1x per additional module, with one shared roll per eligible kill; owner selection of the multiplier is pending. Preserve Synergy gating, turret-local source restriction and loot tuning. [Contract and exact choices](MODULAR_TURRETS.md#c348--siphon-proc-chance-and-sustain-balance-2026-10-19). Planning only.
