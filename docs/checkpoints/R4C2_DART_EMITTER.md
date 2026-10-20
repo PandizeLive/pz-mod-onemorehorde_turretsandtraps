@@ -1,5 +1,18 @@
 # R4C2 — Fixed dart emitter
 
+## C363 — Next checkpoint and combat choices (2026-10-20)
+
+Owner asks what comes next after the isolated prototype installation. Recommend continuing R4C2 into a real wall-mounted retractable trap: native/player-built wall placement, Controller receiver integration, persistence, and a complete launch/first-hit/return/reset cycle. Lever remains queued; beam sensors follow the emitter. No new implementation is authorized by this question. Prototype rendered/occlusion and live connected-client checks remain pending; deferred owner testing does not block approved independent work. The main installed build remains 0.2.58 and the separate debug prototype remains 0.0.1.
+
+Settle these two combat rules first; neither is selected:
+
+- **1A (recommended):** one 25% knockdown roll on the struck, still-valid living zombie when retraction starts, with five-second protection from another emitter knockdown. No return damage or zombie dragging. Proposed tuning, not a tested balance result; reuse/verify authoritative reaction routing before shipping.
+- **1B:** damage only, no retraction knockdown for the initial integrated trap.
+- **2A (recommended):** autonomous sensing detects zombies, but a player crossing the outbound nail can be the first collision and receive the existing trap-style injury treatment. The nail stops there; no player knockdown. Detection does not grant a projectile the ability to pass through a player. Clearly communicate the firing lane. Exact injury integration must be verified in both packages/MP.
+- **2B:** zombies-only collision/damage; players neither activate autonomous sensing nor obstruct the nail. Safer around base traffic, less consistent with physical first-hit behavior.
+
+The proposed 25%/five-second values are new suggestions, not inherited fixture settings or approval. These choices do not authorize recipes or silently select the remaining damage/range/cycle/wear tuning. Keep the existing requirement to review the full combat and crafting package before gameplay implementation. No code, tests, installed files, version or changelog changed. **Decision needed: 1A/B and 2A/B.**
+
 ## C362 — Prototype installation approved and verified (2026-10-20)
 
 Owner approves local installation. The separate no-damage debug prototype 0.0.1 is installed; six file hashes match the C361 native-tested source. No existing gameplay packages or saves changed, and save activation remains manual. [Install evidence and five-step owner test](../TETHER_PROTOTYPE_C361.md#c362--owner-approved-local-installation-2026-10-20). This is not full R4C2 integration or rendered/multiplayer acceptance. **Test now.**
