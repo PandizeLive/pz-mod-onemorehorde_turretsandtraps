@@ -1,5 +1,9 @@
 # Decision register
 
+## C341 — UI owner test and choices requested (2026-10-19)
+
+Owner reports 0.2.57.1 title-bar mismatch, apparently unlinked trigger requirement, blank module margins and disappearing controls on Details resize. Explicitly requests discussion/options before patching. [Source-backed audit, proposals and recommendations](UI_AUDIT_C341.md). None of the new layout options is selected yet; no gameplay edits authorized by this discussion.
+
 ## C340 — Owner-test corrections requested (2026-10-19)
 
 Owner requests removal of locking/pinning, corrected window framing and compact 4/4/4/4 modules, equal action buttons, power investigation, Poke Floor technical texture, player-built wall support, game-speed-aware five-second pickup/placement, consistent Connections formatting and light-switch audio. Implemented correction scope and the unresolved native multiplayer placement duration are recorded in [0.2.57.1](PATCH_v0.2.57.1.md). Standing C108 covers local installation and GitHub mirror; no merge or Workshop upload.

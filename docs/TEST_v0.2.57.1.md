@@ -27,3 +27,7 @@ Verification caught an obsolete placement test that reused an already-wrapped ac
 ## Installation and rollback
 
 Installed 2026-10-19 from immutable `test/v0.2.57.1` / `69fa39088f589a140bcd81a286b73a99afa20daa`. All 308 source and 402 tagged/package/installed/archive files match; both 0.2.57 package backups verify. [Release record](../diagnostics/v0.2.57.1/local-release.json), [native write excerpts](../diagnostics/v0.2.57.1/corrections-write.log), [native read excerpts](../diagnostics/v0.2.57.1/corrections-read.log), [validator](../diagnostics/v0.2.57.1/validation.log). Full native logs remain local. No Workshop upload or merge.
+
+## Owner test — C341 (2026-10-19)
+
+Loaded 0.2.57.1 confirmed in console.txt. Owner reports oversized top bar versus native Building UI at 16px font, an apparently unconnected turret requesting a trigger, large empty module margins, and equipment/modules disappearing when shortening with Details open. These UI/state issues are **not accepted**. [Audit and next decisions](UI_AUDIT_C341.md) distinguish confirmed code mismatches from the unproven exact trigger case. No new OMHTT exception trace was identified; unrelated startup translation warnings remain outside this diagnosis. Native tests remain valid for the covered cases; they did not establish satisfactory rendered layout. No gameplay edits or installation changes during this discussion.
