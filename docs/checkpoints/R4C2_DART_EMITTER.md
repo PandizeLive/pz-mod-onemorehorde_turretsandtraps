@@ -1,5 +1,24 @@
 # R4C2 — Fixed dart emitter
 
+## C357 — Retractable trap replaces consumable darts (2026-10-20)
+
+Owner selects C356 **1A**: autonomous forward sensing without linked inputs; linked Buttons request one detected-target cycle and held inputs enable detected-target cycles. No target means no new shot. Ordinary cadence, finish-current-action, no queued input backlog and no electrical consumption remain the intended rules.
+
+Owner changes the device into a reeling/retractable dart trap: launch long nails, retrieve them to the trap, reload the mechanism and only then fire again. This supersedes ordinary nails as consumed ammunition, ammunition storage/capacity and player refilling. Treat the reusable nails as built-in equipment; neither crafting quantities nor a new loot item is selected. Wall-only placement, no turret modules, no batteries and no dependence on a pressure plate remain settled. Nails do not pierce enemies. A knockdown when retraction starts is explicitly **TBD**, not approved or guaranteed.
+
+Proposed cycle for review: Ready -> Launch -> first impact or maximum extension -> Retract -> Reset -> Ready. Each nail stops at its first victim; recommend solid-obstruction stops, one outbound damage event and no extra damage during return. Trigger release should finish retrieval/reset but start no next attack. Misses still return; death/unload/removal must not leave a trap permanently busy or allow a late duplicate damage event. This represents nail retrieval, not a selected mechanic for dragging a zombie toward the trap. Exact timings, range, damage and player/collateral behavior remain unset.
+
+Recommendation: use cycle time and condition/repair wear to balance reusable attacks rather than adding replacement ammunition. Guaranteed knockdown with unlimited firing could repeatedly lock down a victim, so keep the effect deferred until the basic cycle is tested; prefer a chance-based reaction on the struck, still-valid living zombie if added. No chance value or wear cost is selected.
+
+**1 — Firing pattern**
+
+- **1A — One long tethered nail per cycle (recommended).** Clear first-hit behavior, readable retraction, and a smaller implementation/MP synchronization surface.
+- **1B — Three tethered nails fired together.** Each stops independently at its first collision; all must return/reset before the next volley. Wider coverage and potential multi-hit damage require separate balance and collision testing.
+
+These new 1A/1B labels concern firing pattern, not the already-selected C356 input behavior. Neither is selected. After this choice, propose the complete combat and mechanical crafting package, including ingredients/tools/skills/XP, for review before implementing. No camera ingredient, final art, recipe quantity or replacement-ammo system is implied.
+
+Read-only implementation review: shared `DefenseLine.clear` provides existing bounded same-floor obstruction checks, and `DefenseMotion.request` routes authorized knockdown to the actor's simulator in multiplayer. These are reusable foundations, not proof of tether physics, return visuals or a complete emitter. The reusable launch/retract state and first-collision presentation still need native/Traps-only/persistence/connected checks. Temporary technical art only. Planning only; installed 0.2.58 and its pending owner acceptance are unchanged. **Decision needed: firing pattern 1A or 1B; knockdown remains TBD.**
+
 ## C356 — Next checkpoint and optional-input decision (2026-10-20)
 
 Owner asks “What’s next” after 0.2.58 delivery. The next content checkpoint remains R4C2 Dart Emitter; Lever remains queued and beam sensors follow the emitter checkpoint. 0.2.58 rendered/connected acceptance stays pending, but unavailable testing does not block design discussion.
