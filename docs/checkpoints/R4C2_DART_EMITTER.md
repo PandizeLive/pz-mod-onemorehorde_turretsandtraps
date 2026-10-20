@@ -1,5 +1,9 @@
 # R4C2 — Tether Dart Trap
 
+## C368 — Trap service timing supersedes earlier five-second service
+
+Owner selects **2-second placement/pickup and 4-second repair** for traps, including Tether, and exact condition retention through moving/redeployment. One repair material remains selected; only one retained tool is permitted, replacing the earlier three-tool service set. The crafting recipe tools are unchanged. [Proposed repair mapping](../SERVICE_RULES_C368.md) recommends one Scrap Metal and Pliers for Tether; tool identity awaits confirmation. C367 impact/hold/pull and crafting selections remain intact. No new Tether gameplay implementation this discussion.
+
 ## C367 — Impact, hold and pull selected (2026-10-20)
 
 Owner replaces 35 impact damage with **30 impact + 15 on pull**, with **0.75 seconds embedded in the target** before retraction, and selects C366 repair **1A: one Scrap Metal**. Retain five-second repair and selected retained tools, recipe, range, travel speeds, reset, wear and weight. Poke Floor is lowered to **45 damage**. [Repair audit and updated DPS](../REPAIR_AUDIT_C367.md) records the uniform repair UI implementation and all current costs. Repair decision is settled; earlier free-repair choice below is superseded.

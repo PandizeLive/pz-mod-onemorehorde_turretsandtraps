@@ -1,5 +1,7 @@
 # C367 — Repair requirements and presentation audit (2026-10-20)
 
+**C368 update:** The costs/times below document the audited implementation, not the new selected rules. [Category service rules and condition audit](SERVICE_RULES_C368.md) supersede them for the next patch: traps 2/2/4 seconds, triggers 1/1/2, turrets 5/5/10, one material except tool-only triggers, one retained tool. Material/tool identities and Controller classification await the listed choices.
+
 Owner selects C366 repair **1A** (one Scrap Metal for Tether), revises Tether to 30 impact damage plus 15 pull damage after a 0.75-second hold, lowers Poke Floor to 45 damage, and requests a complete repair audit with uniform requirements presentation. This is not approval to replace every existing free repair with a material cost.
 
 ## Actual repair paths
