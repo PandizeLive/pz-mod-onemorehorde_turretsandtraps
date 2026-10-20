@@ -1,5 +1,9 @@
 # Decision register
 
+## C351 — Siphon selection and head consumption comparison
+
+Owner selects the prior 1A (45% / 2x, +1x per additional module), then requests comparison of higher-tier module penalties versus head consumption, including Ballista, Scrapshot, modded M4 and a cheap pistol. [Audit and proposed drain choices](BATTERY_BALANCE_C349.md#c351--siphon-selected-head-versus-module-comparison-2026-10-19). Siphon is selected for pending patch; proposed firearm x3/Scrapshot x2.5 costs are not selected. No code, save, installed package, loot tuning or publication change.
+
 ## C350 — Lever requested; Detection firing condition clarified
 
 Owner requests a latched power-switch trigger and confirms that Detection-equipped turrets wait for detection to provide a target. [Lever contract and current rotary exception](checkpoints/R4C1_CONNECTED_CONTROLS.md#c350--lever-trigger-requested-2026-10-19). No implementation claim or unreviewed recipe selection.

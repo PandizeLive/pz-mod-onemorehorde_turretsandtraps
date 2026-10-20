@@ -1,5 +1,11 @@
 # Turret inventory and module plan
 
+## C351 — Siphon 45% / 2x selected (2026-10-19)
+
+Owner selects C349 1A: one 45% roll per eligible kill, 2x the shot's actual local-battery cost on success, +1x multiplier per additional Siphon; stacking does not increase proc chance. Preserve Synergy-gated secondary kills, same-battery identity/generation and no Controller refund. Legendary rarity/loaded weight 3 remain unchanged. Selected for pending patch, not installed.
+
+Owner also requests head-versus-module drain balancing and adds a cheap pistol to the comparison. [C351 comparison and proposed drain choices](BATTERY_BALANCE_C349.md#c351--siphon-selected-head-versus-module-comparison-2026-10-19) recommends adjusting firearms/Scrapshot costs first, leaving existing rarity surcharges and Ballista intact. No drain increase selected yet.
+
 ## C349 — Saved M4 baseline; chance discussion reopened (2026-10-19)
 
 Owner considers 75%/1.5x, leans toward prior 1B and asks for current-save drain without Siphon/Regulator. [Read-only audit, calculations and comparison choices](BATTERY_BALANCE_C349.md) finds approximately 0.00943% per firing cycle, 10,607 cycles from full, and 60–61 real unpaused minutes including normal reload/chambering under continuous-fire assumptions (about 16 game hours at the save's 90-minute day). This is calculated, not a measured endurance run or remaining-runtime claim.
