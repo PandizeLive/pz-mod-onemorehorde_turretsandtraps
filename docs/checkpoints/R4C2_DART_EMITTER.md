@@ -1,5 +1,18 @@
 # R4C2 — Fixed dart emitter
 
+## C356 — Next checkpoint and optional-input decision (2026-10-20)
+
+Owner asks “What’s next” after 0.2.58 delivery. The next content checkpoint remains R4C2 Dart Emitter; Lever remains queued and beam sensors follow the emitter checkpoint. 0.2.58 rendered/connected acceptance stays pending, but unavailable testing does not block design discussion.
+
+Retain C347: walls only (native and player-built), ordinary nails, built-in forward sensing, no battery/grid/Controller energy, optional inputs and no modules. No new gameplay is authorized by this status question.
+
+First unresolved decision: what connecting an external trigger does.
+
+- **1A — Linked triggers arm the emitter (recommended).** With no inputs, use autonomous forward sensing. With inputs, a Button requests one detected-target shot and a held Plate/Lever enables detected-target shots at ordinary cadence. No target means no shot. A connection intentionally changes the operating mode; make that mode explicit in management. Preserve finish-current-action, fault safety and no pulse backlog. The trigger supplies permission to operate, not electrical consumption or a victim.
+- **1B — Keep autonomous firing with manual shots.** Forward sensing stays active even with inputs connected; input requests can fire straight ahead without a detected target, at the same ordinary cadence. Releasing a linked input does not disable autonomous shots. This offers manual lane suppression but makes a connected Lever unsuitable as a master on/off switch.
+
+These are proposals, not selections or engine verification. After selection, propose one complete combat/crafting package, including target/collateral policy, range/damage/cadence/capacity, service/wear and ingredients/tools/skills/XP, before implementing. No tentative camera ingredient is settled. The existing turret rotary detection shortcut remains a separate Lever integration check. Installed 0.2.58 is unchanged. **Decision needed: 1A or 1B.**
+
 ## C347 — Wall-only autonomous emitter selected (2026-10-19)
 
 Owner selects C346 **1B / 2B / 3B**: wall-mounted only, ordinary nails, and no electrical consumption. Native and player-built walls must both be supported. Owner explicitly corrects the suggested trigger-only behavior: built-in forward target sensing allows autonomous operation without a pressure plate or any external trigger. External triggers remain optional. No local battery, Controller energy debit or grid/generator prerequisite; traps retain no modules.
