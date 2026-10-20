@@ -1,5 +1,18 @@
 # R4C2 — Fixed dart emitter
 
+## C358 — Single nail and trigger override (2026-10-20)
+
+Owner selects C357 **1A: one long tethered nail per cycle**. It stops at its first enemy, cannot pierce enemies, and must return fully and reset before another shot. Retraction knockdown remains explicitly TBD.
+
+Owner correction: "Detection is on by default. Connecting to a trigger disables detection and requires an input." This supersedes the C356/C357 requirement for a detected target while linked. Scope is this retractable dart trap; it does not redefine turret Detection Modules or passive mechanical traps.
+
+- No linked triggers: default forward detection starts the normal cycle.
+- One or more linked triggers: autonomous detection is disabled. Input requests a straight-ahead cycle even when no zombie is detected; an idle input does not permit automatic firing.
+- Button requests one complete cycle. A held Pressure Plate or Lever may repeat only after full retrieval/reset, at the ordinary cycle rate. Input release finishes the current cycle and starts no next one; no queued backlog.
+- Removing the last trigger link restores the default autonomous detection mode. Controller assignment alone is not a trigger link.
+
+Keep wall-only placement, no consumable ammunition, no batteries and no turret modules. No new recipe, damage/range/timing values, knockdown behavior or gameplay implementation is approved by this selection. Earlier proposals below remain historical wherever superseded here. Installed 0.2.58 and its pending rendered/connected acceptance are unchanged.
+
 ## C357 — Retractable trap replaces consumable darts (2026-10-20)
 
 Owner selects C356 **1A**: autonomous forward sensing without linked inputs; linked Buttons request one detected-target cycle and held inputs enable detected-target cycles. No target means no new shot. Ordinary cadence, finish-current-action, no queued input backlog and no electrical consumption remain the intended rules.
