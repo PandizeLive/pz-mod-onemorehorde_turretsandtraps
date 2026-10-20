@@ -1785,3 +1785,7 @@ Owner selects C336 1A and replaces the proposed Epic/Rare rarity with Mythic due
 ## C338 — Inherit assigned rarity weight; preserve LootLab overrides (2026-10-19)
 
 Owner confirms Grid Module weight 1 and rejects redundant weight decisions. Rarity selection automatically authorizes its assigned weight, unless the owner changes it in LootLab. Preserve those tier/item overrides. [Contract](checkpoints/R4C2_POKE_FLOOR.md#c338--assigned-rarity-weights-confirmed-2026-10-19). Updates C315 process, not gameplay; Grid Module is settled as Mythic / 1.
+
+## C344 — Compact management correction approved and implemented (2026-10-19)
+
+Owner explicitly approves the C342 1A/2A/3A selections and proposed retired-trigger reconciliation. 0.2.57.2 implements native Small-font chrome, narrower balanced Manage, inline Details with a visible-content height minimum, and authoritative removal/restart cleanup without dropping temporarily unloaded links. If the viewport cannot fit Details at all, opening it is refused with an explanatory status; the main controls stay visible. C343 module categories remain a separate undecided proposal. [Patch](PATCH_v0.2.57.2.md) / [tests](TEST_v0.2.57.2.md). Native/install evidence follows before delivery; no Workshop or merge authorization is inferred. Exact five-second native MP placement remains open.

@@ -284,6 +284,29 @@ local records = C.records().records
 for i = 1, 30 do records["c315-fill-"..i] = {id="c315-fill-"..i,placed=true,kind="Plate",controller=host.id} end
 check(not C.autoAssign(denied,owner), "Auto-assignment honors the 32-input limit")
 for i = 1, 30 do records["c315-fill-"..i] = nil end
+local retired, retiredState = device("Button", 1911, 1910)
+local retirementTarget, retirementState = device("Turret", 1912, 1910)
+check(C.link(retired, retirementTarget, true), "Retirement fixture connects")
+C.removed(retired)
+C.publish(retirementTarget)
+check(C.input(retirementTarget,testMillis) and #retirementTarget:getModData().OMHTTControl.inputs == 1,
+    "Temporary unload preserves the named inactive input")
+C.bind(retired)
+C.retire(retired)
+C.removed(retired)
+check(not C.input(retirementTarget,testMillis) and #retirementTarget:getModData().OMHTTControl.inputs == 0 and #retiredState.links == 0,
+    "Permanently retired trigger clears authority and published input together")
+retiredState.placed = true
+C.bind(retired)
+check(not C.input(retirementTarget,testMillis), "Replaced trigger does not silently restore retired links")
+check(C.link(retired, retirementTarget, true), "Fresh relink remains available")
+C.retire(retirementTarget)
+check(#retiredState.links == 0, "Packing a receiver clears the source endpoint too")
+local unlinkedTarget, unlinkedState = device("Turret", 1913, 1910)
+C.incoming[unlinkedState.id] = {}
+unlinkedTarget.turret.powered = true
+C.retire(unlinkedTarget)
+check(unlinkedTarget.turret.powered, "Empty incoming index does not change an unlinked turret's packed power state")
 for i = 1, #made do C.removed(made[i]) end
 T.state, T.contents, T.cycleConfig = oldState, oldContents, oldConfig
 W.applyPower, W.fire, W.contents, W.power = oldPower, oldFire, oldWorldContents, oldWorldPower

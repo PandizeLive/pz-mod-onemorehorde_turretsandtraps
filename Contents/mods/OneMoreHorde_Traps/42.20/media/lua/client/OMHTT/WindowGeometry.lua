@@ -35,8 +35,8 @@ Grip.onMouseMoveOutside = Grip.onMouseMove
 ---@return nil
 function Grip:render()
     for i = 1, 3 do
-        local offset = i * 4
-        self:drawLine(nil, 17 - offset, 17, 17, 17 - offset, 1, 1, .75, .75, .75)
+        local offset = i * math.max(2, math.floor((self.width - 2) / 3))
+        self:drawLine(nil, self.width - 1 - offset, self.height - 1, self.width - 1, self.height - 1 - offset, 1, 1, .75, .75, .75)
     end
 end
 
@@ -77,8 +77,8 @@ function G.resize(panel, width, height)
     panel:setHeight(height)
     panel.userSized = true
     panel.geometryWidth, panel.geometryHeight = nil, nil
-    panel.resizeGrip:setX(width - 18)
-    panel.resizeGrip:setY(height - 18)
+    panel.resizeGrip:setX(width - panel.resizeGrip.width)
+    panel.resizeGrip:setY(height - panel.resizeGrip.height)
     panel.reflow(panel)
     require("OMHTT/ControlWindowChrome").arrange(panel)
 end
@@ -89,7 +89,7 @@ end
 ---@return nil
 function G.save(panel, name, data)
     data.x, data.y, data.width, data.height = panel.x, panel.y, panel.width, panel.height
-    data.layout = 1
+    data.layout = 2
 end
 
 ---@param panel ISPanel Window
@@ -99,8 +99,11 @@ end
 function G.restore(panel, name, data)
     local x, y, width, height = tonumber(data.x), tonumber(data.y), tonumber(data.width), tonumber(data.height)
     if not x or not y or not width or not height then return end
-    if string.find(name, "OMHTT_Controller_", 1, true) and tonumber(data.layout) ~= 1 then
+    if string.find(name, "OMHTT_Controller_", 1, true) and tonumber(data.layout) ~= 2 then
         height = math.max(height, panel.height)
+    end
+    if string.find(name, "OMHTT_Manage_", 1, true) and tonumber(data.layout) ~= 2 then
+        width = math.min(width, panel.width)
     end
     panel:setX(x)
     panel:setY(y)
@@ -143,7 +146,9 @@ function G.install(panel, key, minWidth, minHeight, reflow)
     local pn = panel.player:getPlayerNum()
     panel.viewportLeft, panel.viewportTop = getPlayerScreenLeft(pn), getPlayerScreenTop(pn)
     panel.viewportWidth, panel.viewportHeight = getPlayerScreenWidth(pn), getPlayerScreenHeight(pn)
-    local grip = Grip:new(panel.width - 18, panel.height - 18, 18, 18, panel)
+    panel.footerHeight = (getTextManager():getFontHeight(UIFont.Small) + 6) / 2 + 2
+    local size = panel.footerHeight
+    local grip = Grip:new(panel.width - size, panel.height - size, size, size, panel)
     grip.resizeFunction = G.resize
     grip.resizeimage = getTexture("media/ui/ResizeIcon.png")
     grip:initialise()

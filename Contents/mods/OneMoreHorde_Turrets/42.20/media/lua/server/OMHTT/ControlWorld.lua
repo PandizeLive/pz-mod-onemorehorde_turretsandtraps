@@ -29,10 +29,15 @@ function W.records()
                 W.locations[state.location] = W.locations[state.location] or {}
                 W.locations[state.location][id] = true
             end
-            for i = 1, #(state.links or {}) do
+            for i = #(state.links or {}), 1, -1 do
                 local target = state.links[i]
-                W.incoming[target] = W.incoming[target] or {}
-                W.incoming[target][id] = true
+                local receiver = store.records[target]
+                if state.placed and receiver and receiver.placed then
+                    W.incoming[target] = W.incoming[target] or {}
+                    W.incoming[target][id] = true
+                else
+                    table.remove(state.links, i)
+                end
             end
         end
     end
@@ -185,6 +190,7 @@ function W.register(object, player, kind, previous)
     records.serial = (records.serial or 0) + 1
     local id = previous and previous.id or "control-" .. records.serial
     local state = previous and W.copy(previous) or {id = id, kind = kind, owner = player:getUsername(), access = "Private", links = {}}
+    state.links = {}
     state.x, state.y, state.z = object:getX(), object:getY(), object:getZ()
     state.sprite = object:getSpriteName()
     state.location = state.x .. ":" .. state.y .. ":" .. state.z .. ":" .. state.sprite
@@ -494,11 +500,13 @@ function W.input(target, now)
     if not targetState then return false, false end
     local linked, on, valid = false, false, false
     for id in pairs(W.incoming[targetState.id] or {}) do
-        linked = true
         local source, state = W.objects[id], W.records().records[id]
-        if source and source:getObjectIndex() >= 0 and A.range(source, target) and source:getHealth() > 0 and now >= state.recoverAt then
-            valid = true
-            on = on or state.active == true
+        if state and state.placed then
+            linked = true
+            if source and source:getObjectIndex() >= 0 and A.range(source, target) and source:getHealth() > 0 and now >= state.recoverAt then
+                valid = true
+                on = on or state.active == true
+            end
         end
     end
     return linked, on, valid
@@ -535,12 +543,27 @@ function W.retire(object)
     local state = W.state(object)
     if not state then return end
     state.placed = false
+    if state.kind == "Turret" and W.input(object, getTimestampMs()) then
+        W.clearInputs(object)
+    end
     for i = 1, #state.links do
-        local target = W.objects[state.links[i]]
+        local id = state.links[i]
+        if W.incoming[id] then
+            W.incoming[id][state.id] = nil
+        end
+        local target = W.objects[id]
         if target then
+            local linked = W.input(target, getTimestampMs())
+            if not linked then
+                require("OMHTT/ControlCycle").cancel(target)
+                require("OMHTT/TurretWorld").applyPower(target, false)
+            else
+                W.receiver(target, getTimestampMs())
+            end
             W.publish(target)
         end
     end
+    state.links = {}
     local locations = W.locations[state.location]
     if locations then
         locations[state.id] = nil

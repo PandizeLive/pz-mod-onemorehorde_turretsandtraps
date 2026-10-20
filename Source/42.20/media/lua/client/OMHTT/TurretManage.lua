@@ -479,8 +479,8 @@ function OpenAction:perform()
         if active[index] then active[index]:close() end
         local font = getTextManager()
         local lineHeight = font:getFontHeight(UIFont.Small) + (getPlayerScreenHeight(index) >= 800 and 3 or 0)
-        local titleHeight = font:getFontHeight(UIFont.Medium) + 16
-        local width = math.min(getPlayerScreenWidth(index) - 24, math.max(900, lineHeight * 48))
+        local titleHeight = math.max(16, font:getFontHeight(UIFont.Small) + 1)
+        local width = math.min(getPlayerScreenWidth(index) - 24, math.max(760, lineHeight * 38))
         local slotHeight = math.max(60, lineHeight * 3 + 12)
         local top, ammunitionY, ammoY, magazineY, modulesY, detailsY = 0, 0, 0, 0, 0, 0
         local moduleHeight = lineHeight * 2 + 16
@@ -553,7 +553,7 @@ function OpenAction:perform()
         require("OMHTT/TurretManageLayout").create(panel)
         panel:refresh()
         require("OMHTT/ControlManage").refresh(panel)
-        require("OMHTT/WindowGeometry").install(panel, "Manage", math.max(900, lineHeight * 48), 540,
+        require("OMHTT/WindowGeometry").install(panel, "Manage", math.max(640, lineHeight * 32), 540,
             require("OMHTT/TurretManageLayout").refresh)
         require("OMHTT/ControlWindowChrome").install(panel)
         panel:addToUIManager()

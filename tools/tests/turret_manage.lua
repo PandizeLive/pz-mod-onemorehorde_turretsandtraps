@@ -87,6 +87,10 @@ queued:perform()
 check(completed and not inventory.visible and not inventory.pinned, "Manage leaves both inventory windows untouched")
 local panel = testTurretPanel
 panel:prerender()
+check(panel.width == 760 and panel.titleHeight == 19 and panel.footerHeight == 14,
+    "Default Manage width and native Small-font title/footer formulas match at 18px")
+check(panel.closeButton.height == panel.titleHeight - 2,
+    "Native close image is bounded by the title strip")
 local chrome = require("OMHTT/ControlWindowChrome")
 local initialTime = testMillis
 check(not panel.lockButton and not panel.pinButton, "Management windows have no lock/collapse controls")
@@ -156,8 +160,10 @@ check(panel.modulesBottom <= panel.body.height, "All sixteen module slots fit th
 local closedHeight=panel.body.contentHeight
 panel.moduleLines="Line one\nLine two\nLine three\nLine four"
 panel.detailsButton.callback(panel)
-check(#panel.detailLines==4 and panel.detailsPage and panel.benefitList.visible,
-    "Small viewport shows all Details in an in-menu page, including Module Stats")
+check(not panel.detailsPage and panel.headSlot.visible and panel.moduleSlots[16].visible,
+    "Short viewport never replaces the main controls with a Details page")
+check(panel.detailsOpen or panel.result == getText("UI_OMHTT_DetailsNeedsSpace"),
+    "Insufficient screen height is explained without hiding main content")
 local beforeChildY=panel.headSlot:getAbsoluteY()
 panel.body:onMouseWheel(20)
 check(panel.headSlot:getAbsoluteY()==beforeChildY+panel.body:getYScroll(), "Actual native setScrollChildren function moves slots with section headers")
@@ -209,8 +215,18 @@ check(panel.height > collapsedHeight and not panel.detailsPage and panel.benefit
     "Details grows the window vertically on a sufficient viewport")
 check(panel.benefitList.y + panel.benefitList.height <= panel.body.height,
     "Expanded Module Stats stays within the body")
-panel.detailsButton.callback(panel)
-check(not panel.benefitList.visible and panel.height == collapsedHeight, "Collapsing Details hides Module Stats and shrinks window")
+local Geometry = require("OMHTT/WindowGeometry")
+for _, width in pairs({640, 760, 900}) do
+    Geometry.resize(panel, width, 300)
+    check(panel.detailsOpen and not panel.detailsPage and panel.headSlot.visible and panel.moduleSlots[16].visible,
+        "Minimum resize preserves inline Details and every main section")
+    check(panel.modulesBottom <= panel.detailsY and panel.benefitList.y + panel.benefitList.height <= panel.body.height,
+        "Details and module sections remain ordered and contained after vertical shrink")
+end
+Geometry.resize(panel, 760, panel.minimumHeight)
+testManageSvg = require("tests/UITrace")(panel)
+if panel.detailsOpen then panel.detailsButton.callback(panel) end
+check(not panel.benefitList.visible and panel.headSlot.visible, "Collapsing Details hides Module Stats and retains the main controls")
 getPlayerScreenHeight = originalScreenHeight
 Layout.refresh(panel)
 local moduleRows = {}

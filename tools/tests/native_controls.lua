@@ -22,6 +22,10 @@ return function(player)
         assert(saved and saved.name == fixture.label and saved.owner == "control-owner"
             and saved.trigger == "Zombies", "Fresh process lost exact private device/access configuration")
         assert(#saved.links == 1 and saved.links[1] == fixture.receiver, "Saved private link was lost")
+        local retired = C.records().records[fixture.retired]
+        assert(retired and not retired.placed and #retired.links == 0
+            and not C.incoming[fixture.receiver][fixture.retired], "Restart retained a legacy retired input")
+        print("[OMHTT-C344] fresh-process live-link=preserved retired-link=removed")
         assert(saved.displayName == fixture.displayName and saved.displayNumber == fixture.displayNumber,
             "Fresh process lost the device's display identity")
         local names = ModData.getOrCreate("OMHTTDefenseNamesV1")
@@ -443,6 +447,17 @@ return function(player)
     assert(C.state(plate) == input and not input.active, "Reload failed private identity/recovery")
     C.clearInputs(receiver)
     assert(not C.input(receiver, getTimestampMs()) and #input.links == 0, "Native clear-input recovery left stale links")
+    assert(C.link(button, receiver, true), "Native retired-input fixture link failed")
+    C.removed(button)
+    C.publish(receiver)
+    assert(C.input(receiver, getTimestampMs()) and #receiver:getModData().OMHTTControl.inputs == 1,
+        "Native unload must retain a named inactive connection")
+    C.bind(button)
+    C.retire(button)
+    C.removed(button)
+    assert(not C.input(receiver, getTimestampMs()) and #receiver:getModData().OMHTTControl.inputs == 0,
+        "Native retirement left an invisible power-controlling connection")
+    print("[OMHTT-C344] native input-unload=retained retired-input=disconnected public-authority=matched")
     assert(C.link(plate, receiver, true), "Native relink after recovery failed")
     local storage = controller:getContainer()
     for i = 1, 249 do storage:AddItem("Base.OMHTTTrapBarbedPanel") end
@@ -488,5 +503,7 @@ return function(player)
     fixture.label = input.name
     fixture.displayName, fixture.displayNumber = input.displayName, input.displayNumber
     fixture.plate, fixture.receiver = input.id, output.id
+    fixture.retired = C.records().records[button:getModData().OMHTTControl.id].id
+    C.records().records[fixture.retired].links = {output.id}
     print("[OMHTT-Controls] native devices=3 ownership=private read=public replay=blocked remote=power-scoped plate=recovery-safe backup=48h heavy=exact capacities=30")
 end

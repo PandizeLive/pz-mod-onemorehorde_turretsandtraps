@@ -42,7 +42,7 @@ end
 function L.create(panel)
     local h = getTextManager():getFontHeight(UIFont.Small) + 4
     panel.lineHeight = h
-    panel.titleHeight = getTextManager():getFontHeight(UIFont.Medium) + 16
+    panel.titleHeight = math.max(16, getTextManager():getFontHeight(UIFont.Small) + 1)
     panel.devices:setFont(UIFont.Small, 8)
     panel.devices.itemheight = h + 10
     panel.detailBody = Details:new(12, 180, 400, 300)
@@ -80,7 +80,7 @@ function L.arrange(panel)
     panel.controlWidth = panel.stockCompact and panel.width or panel.width - stock - 8
     panel.equipmentY = panel.titleHeight + 8
     panel.devicesY = panel.equipmentY + h * (panel.stockCompact and 5 or 4) + 34
-    local y, bottom = panel.devicesY, panel.height - 24
+    local y, bottom = panel.devicesY, panel.height - (panel.footerHeight or 14) - 6
     local graphWidth = math.max(260, math.floor((panel.controlWidth - 24) * .40))
     panel.detailX = 12 + graphWidth + 8
     local centerWidth = panel.controlWidth - panel.detailX - 8

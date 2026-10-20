@@ -5,14 +5,14 @@ local C = {}
 ---@return nil
 function C.arrange(panel)
     if not panel.closeButton then return end
-    local size = math.min(24, panel.titleHeight - 8)
-    panel.closeButton:setX(4)
+    local size = panel.titleHeight - 2
+    panel.closeButton:setX(1)
     panel.closeButton:setY((panel.titleHeight - size) / 2)
     panel.closeButton:setWidth(size)
     panel.closeButton:setHeight(size)
     if panel.resizeGrip then
-        panel.resizeGrip:setX(panel.width - 18)
-        panel.resizeGrip:setY(panel.height - 18)
+        panel.resizeGrip:setX(panel.width - panel.resizeGrip.width)
+        panel.resizeGrip:setY(panel.height - panel.resizeGrip.height)
     end
 end
 
@@ -25,6 +25,7 @@ end
 ---@param panel ISPanel Managed window
 ---@return nil
 function C.install(panel)
+    panel.titlebarbkg = getTexture("media/ui/Panel_TitleBar.png")
     panel.backgroundColor = {r = 0, g = 0, b = 0, a = .9}
     panel.borderColor = {r = .4, g = .4, b = .4, a = 1}
     panel.closeButton:setTitle("")

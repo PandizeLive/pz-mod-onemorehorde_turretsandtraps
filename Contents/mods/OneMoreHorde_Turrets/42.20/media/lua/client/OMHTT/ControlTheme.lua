@@ -52,16 +52,17 @@ end
 ---@return nil
 function Theme.title(panel, key)
     require("OMHTT/ControlWindowChrome").arrange(panel)
-    panel:drawRect(1, 1, panel.width - 2, panel.titleHeight - 2, .98, .10, .10, .10)
+    panel:drawTextureScaled(panel.titlebarbkg, 2, 1, panel.width - 4, panel.titleHeight - 2, 1, 1, 1, 1)
     panel:drawRect(1, panel.titleHeight - 1, panel.width - 2, 1, 1, .35, .35, .35)
-    panel:drawRect(1, panel.height - 19, panel.width - 2, 18, .95, .08, .08, .08)
-    panel:drawRect(1, panel.height - 20, panel.width - 2, 1, 1, .3, .3, .3)
-    local left = panel.closeButton.x + panel.closeButton.width + 10
-    panel:setStencilRect(left, 4, panel.width - left - 8, panel.titleHeight - 4)
+    local footer = panel.footerHeight
+    panel:drawRect(1, panel.height - footer, panel.width - 2, footer - 1, .95, .08, .08, .08)
+    panel:drawRect(1, panel.height - footer, panel.width - 2, 1, 1, .3, .3, .3)
+    local left = panel.closeButton.x + panel.closeButton.width + 6
+    panel:setStencilRect(left, 1, panel.width - left - 8, panel.titleHeight - 2)
     local brand = getText("UI_OMHTT_Brand")
-    panel:drawText(brand, left, 8, .85, .25, .25, 1, UIFont.Medium)
-    local x = left + getTextManager():MeasureStringX(UIFont.Medium, brand)
-    panel:drawText(" - " .. getText(key), x, 8, 1, 1, 1, 1, UIFont.Medium)
+    panel:drawText(brand, left, 1, .85, .25, .25, 1, UIFont.Small)
+    local x = left + getTextManager():MeasureStringX(UIFont.Small, brand)
+    panel:drawText(" - " .. getText(key), x, 1, 1, 1, 1, 1, UIFont.Small)
     panel:clearStencilRect()
 end
 

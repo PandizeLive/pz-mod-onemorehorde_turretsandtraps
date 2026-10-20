@@ -123,7 +123,7 @@ local function run(panel, player, controller)
     grip:onMouseMoveOutside(9979, 9939)
     check(panel.x == originalX and panel.y == originalY and panel.x + panel.width <= getPlayerScreenWidth(0) - 8,
         "Resize past screen edge stays anchored at original top-left")
-    check(grip.anchorRight == false and grip.anchorBottom == false and grip.x == panel.width - 18 and grip.y == panel.height - 18,
+    check(grip.anchorRight == false and grip.anchorBottom == false and grip.x == panel.width - grip.width and grip.y == panel.height - grip.height,
         "Resize handle uses explicit placement without native deferred anchors")
     grip:onMouseUpOutside(0, 0)
     G.resize(panel, originalWidth, originalHeight)

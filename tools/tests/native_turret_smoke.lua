@@ -161,6 +161,7 @@ local function verifyTurrets()
     assert(T.accept(largeStorage, instanceItem(largeAmmo)), "Expanded storage must admit matching ammo")
     for i = 1, largeStats.ammo do
         local round = instanceItem(largeAmmo)
+        round:setID(1000000000 + i)
         largeStorage:AddItem(round)
     end
     local summaryStarted = getTimestampMs()

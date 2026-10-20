@@ -45,7 +45,15 @@ function E.refresh(panel)
     require("OMHTT/ControlTheme").power(panel.powerButton, require("OMHTT/Turret").isOn(require("OMHTT/Turret").state(panel.object)), writable)
     local view = panel.object:hasModData() and panel.object:getModData().OMHTTControl
     if view and view.inputs and #view.inputs > 0 then
-        panel.powerButton.tooltip = getText("UI_OMHTT_TriggerPowerHelp")
+        if panel.powerTooltipInputs ~= view.inputs then
+            local names = {}
+            for i = 1, #view.inputs do
+                names[i] = view.inputs[i].name or view.inputs[i].id
+            end
+            panel.powerTooltipInputs = view.inputs
+            panel.inputPowerTooltip = getText("UI_OMHTT_TriggerPowerHelp") .. " <LINE> " .. getText("UI_OMHTT_ConnectedInputs", table.concat(names, ", "))
+        end
+        panel.powerButton.tooltip = panel.inputPowerTooltip
         if not require("OMHTT/Turret").isOn(require("OMHTT/Turret").state(panel.object)) then
             panel.powerButton:setEnable(false)
         end
