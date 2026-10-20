@@ -4,11 +4,11 @@
 
 Installed-game Kahlua/foundation validation passes **25,906 assertions**: approved tier values, isolated firearm/Scrapshot factors, custom tuning, Regulator and excluded-module behavior, Siphon 44-success/45-failure boundaries and duplicate-failure protection, secondary eligibility and Controller exclusion, mechanical contact/wear/injury, and actual hybrid Building rows with both crafting routes and one carried deployment.
 
-Final native write/fresh-process read probes pass in 48.3 / 51.9 seconds. Both mechanical recipes consume real inputs, retain tools and produce one exact item. Native Poke battery insertion is rejected; legacy withdrawal, fractional charge, pickup and redeployment preserve identity and contents. Actual server Siphon settlement checks both possible RNG outcomes and prevents duplicate refunds. World/player/UI fixtures in the foundation suite are test doubles; native server tests use real installed game objects with zero connected clients.
+Final native write/fresh-process read probes pass in 48.3 / 51.9 seconds. Both mechanical recipes consume real inputs, retain tools and produce one exact item. Native Poke battery insertion is rejected; legacy withdrawal, fractional charge, pickup and redeployment preserve identity and contents. Actual server Siphon settlement validates its RNG outcome and prevents duplicate refunds; deterministic foundation checks exercise both success and failure. World/player/UI fixtures in the foundation suite are test doubles; native server tests use real installed game objects with zero connected clients.
 
 Traps-only, Turrets-only and combined startup pass in 51.9 / 49.2 / 47.0 seconds. Final source validation checks 308 source and 402 packaged files. Native pistol/shotgun/rifle tooltip calculations include magazine versus per-round reload timing. An inventory drawing trace verifies only the rating value is colored and the following explanation stays white.
 
-Local tagged installation and GitHub mirror are being completed. No owner acceptance is inferred.
+Installed from immutable `test/v0.2.58` / `befd7291a328e0edb5fb7c2f214ee063a029ad44`. All 308 source and 402 tagged/package/install/archive files match; both prior 0.2.57.2 backups verify. [Release evidence](../diagnostics/v0.2.58/local-release.json). Development mirror follows standing C108 authorization; no owner acceptance, merge or Workshop publication is inferred.
 
 ## Focused owner test
 
