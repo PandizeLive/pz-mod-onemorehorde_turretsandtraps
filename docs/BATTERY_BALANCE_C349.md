@@ -1,5 +1,29 @@
 # C349 — Saved M4 battery baseline and Siphon balance
 
+## C353 — Gentler values selected; per-module surcharge audit
+
+Owner selects C352 **1A** and asks for battery multipliers for each module. Exact pending tuning is now settled: firearms x1.5, Scrapshot x1.25, Ballista head cost unchanged; Epic/Legendary/Mythic surcharges rise by 10% relative. This selects balance, not implementation of unresolved Lever/emitter recipes. Installed 0.2.57.2 is unchanged.
+
+The direct module component is additive: `1 + sum(surcharges) * ModulePowerBonus / 5`. The latest owner session has ModulePowerBonus=5. Add the surcharge once per working, head-supported physical module; alias roles do not double-charge. The table uses the latest logged save settings and current LootDefinitions weights with TurretRarity's geometric anchor boundaries, not a blanket claim about every save or future LootLab assignment.
+
+| Rarity | Current addition to head base | Selected addition | Modules at the saved settings |
+| --- | ---: | ---: | --- |
+| Abundant | +10% | +10% | Accuracy, Reload |
+| Common | +15% | +15% | Filter, Magazine, Range, Rapid-Fire |
+| Uncommon | +25% | +25% | Firing, Detection, Lure |
+| Rare | +40% | +40% | Critical, 360, Piercing, Suppression, Velocity |
+| Epic | +60% | +66% | Conservation, Impact, Initial Blow, Splitter |
+| Legendary | +80% | +88% | Execute, Fragment, Martyrdom, Siphon, Tack |
+| Mythic | +100% | +110% | Autoloader, Enhanced Firing, Enhanced Detection, Grid, Synergy, Void |
+
+Example after the selected patch: one Legendary plus one Mythic means `1 + .88 + 1.10 = 2.98x` base head cost. Do not multiply 1.88 by 2.10. Each additional installed copy contributes its surcharge again where stacking is supported.
+
+Exceptions: all Expansion Kits add zero direct surcharge. Regulator adds zero and divides draw by `1 + .25 * count`: one gives x0.8, two x0.6667, three x0.5714, four x0.5. Makeshift Firing/Detection are absent from loot weights and currently use the neutral Abundant +10% fallback, not inferred loot rarity assignments. Broken or head-unsupported modules do not contribute. Grid's surcharge still matters during battery fallback; eligible mains use does not debit a battery.
+
+This table covers direct module surcharges, not every effect on endurance. Rapid-Fire/Enhanced Firing and reload/magazine changes alter shots per time; rotary speed alters motor draw. Scrapshot/Lobber also multiply shot cost by `1 + .5 * Splitter count`, plus their existing Velocity/Range factors, in addition to the direct surcharge. Ordinary firearm and Ballista formulas do not add that Splitter-specific factor. Siphon refunds occur after eligible kills and do not remove its own surcharge; the selected 45%/2x/+1x rule and Controller exclusion remain.
+
+Keep tooltip numbers, effective stats and Sandbox behavior aligned when implementing. Do not modify the owner's rarity anchors, loot weights or assignments to obtain these battery changes. Planning recorded/mirrored; no code, package, save or Workshop mutation.
+
 ## C352 — Gentler hybrid balance and consumption labels (2026-10-19)
 
 Owner rejects the strength of C351's x3 firearm / x2.5 Scrapshot proposal, accepts deliberate differences in DPS/immediate effect, and selects the direction of smaller head-family adjustments followed by a small high-tier module increase. Owner requests Low/Medium/High battery-consumption tooltip labels with appropriate colors and a recap. This is not approval of invented exact multipliers.

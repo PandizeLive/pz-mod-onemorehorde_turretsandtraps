@@ -1,5 +1,9 @@
 # Turret inventory and module plan
 
+## C353 — Head and tier consumption values selected
+
+Owner selects C352 1A: firearms +50%, Scrapshot +25%, Ballista head cost unchanged, with Epic/Legendary/Mythic direct module surcharges +10% relative (0.66/0.88/1.10). Lower tiers, Regulator exception and loot tuning remain unchanged. [Per-module mapping and additive formula](BATTERY_BALANCE_C349.md#c353--gentler-values-selected-per-module-surcharge-audit). Values are selected for the pending patch, not installed. Siphon remains 45% / 2x / +1x. Colored head consumption tooltip remains selected.
+
 ## C351 — Siphon 45% / 2x selected (2026-10-19)
 
 Owner selects C349 1A: one 45% roll per eligible kill, 2x the shot's actual local-battery cost on success, +1x multiplier per additional Siphon; stacking does not increase proc chance. Preserve Synergy-gated secondary kills, same-battery identity/generation and no Controller refund. Legendary rarity/loaded weight 3 remain unchanged. Selected for pending patch, not installed.

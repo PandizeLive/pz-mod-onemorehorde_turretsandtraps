@@ -1,5 +1,9 @@
 # Decision register
 
+## C353 — Gentler head and tier values confirmed
+
+Owner selects C352 1A and requests per-module battery multipliers. [Selected exact values and source-backed surcharge table](BATTERY_BALANCE_C349.md#c353--gentler-values-selected-per-module-surcharge-audit). Head balance and tier adjustments are settled for the pending patch. No code/install or unresolved recipe approval inferred from this informational follow-up.
+
 ## C352 — Gentler combined balance, colored head rating and recap
 
 Owner wants smaller family-level head increases and then a modest higher-tier module increase, explicitly retaining purposeful DPS/effect differences. Adds colored Low/Medium/High head battery consumption tooltip. [Selected direction, proposed exact values and recap](BATTERY_BALANCE_C349.md#c352--gentler-hybrid-balance-and-consumption-labels-2026-10-19). C351 aggressive values are superseded proposals, not approved tuning. New 1A/1B numbers need confirmation; no code/install or unreviewed recipe change.
