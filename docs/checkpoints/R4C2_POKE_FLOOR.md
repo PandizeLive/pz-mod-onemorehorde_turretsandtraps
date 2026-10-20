@@ -1,6 +1,6 @@
 # R4C2 — Poke Floor
 
-**Current direction: C345** supersedes the electrical Poke Floor rules below. Pressure-driven operation and Building/category corrections are selected; mechanical recipe cleanup awaits 1A/1B. [Audit and choices](#c345--building-audit-and-pressure-driven-poke-floor-2026-10-19).
+**Current direction: C345** supersedes the electrical Poke Floor rules below. Pressure-driven operation and Building/category corrections are selected; C346 selects 1A mechanical recipe cleanup. Implementation remains pending. [Audit and choices](#c345--building-audit-and-pressure-driven-poke-floor-2026-10-19).
 
 **C340 corrective build:** 0.2.57.1 addresses the owner test of Poke Floor/power and management UI. See [patch scope](../PATCH_v0.2.57.1.md) and [verification](../TEST_v0.2.57.1.md). Exact five-second native multiplayer placement remains open. No additional content selection is required.
 
@@ -184,3 +184,7 @@ The existing recipes still consume Electronics Scrap and Electric Wire, require 
 - **1B — Power change only:** retain current crafting ingredients/skills/XP while removing operational energy use. Smaller balance change, but the electrical requirements no longer explain the mechanism well.
 
 This turn audits and records the selected correction and recipe options; no gameplay, package version or installation changes. Recipe changes remain proposed. Next content after this correction is the **fixed dart emitter**, the remaining R4C2 slice; discuss ammunition, directional coverage, damage/cadence, reload, trigger response and crafting before implementation. **R4C3 beam sensors** follows. Exact five-second native MP placement and connected-client acceptance remain separate open work. C343 module-category choices remain undecided.
+
+## C346 — Mechanical recipe cleanup selected (2026-10-19)
+
+Owner selects C345 1A. Remove Electronics Scrap, Electric Wire, Electrical 2 and Electrical XP from both Poke Floor recipes; retain the exact mechanical ingredients/tools, Mechanics requirements/XP, craft duration, weight and performance listed in 1A. Pressure operation and Building/category corrections stay in the next-patch scope. No further Poke Floor recipe decision remains. Owner opens [dart emitter design](R4C2_DART_EMITTER.md); no implementation/install claim is inferred from this discussion.
