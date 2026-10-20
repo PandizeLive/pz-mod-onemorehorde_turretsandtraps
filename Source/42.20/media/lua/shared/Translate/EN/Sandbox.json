@@ -369,13 +369,15 @@
     "Sandbox_OMHTurretsTraps_PokeDamage": "Strike Damage",
     "Sandbox_OMHTurretsTraps_PokeCycleSeconds": "Cycle Duration (Seconds)",
     "Sandbox_OMHTurretsTraps_PokeHealth": "Condition",
-    "Sandbox_OMHTurretsTraps_PokeBatteryPercent": "Battery Use Per Cycle (Percent)",
     "Sandbox_OMHTurretsTraps_PokeWear": "Wear Per Successful Cycle",
     "Sandbox_OMHTurretsTraps_PokeScratchChance": "Running Scratch Chance (Percent)",
     "Sandbox_OMHTurretsTraps_PokeDamage_tooltip": "Damage dealt to each zombie on the tile during a strike.",
     "Sandbox_OMHTurretsTraps_PokeCycleSeconds_tooltip": "Minimum time for a complete extension and retraction cycle.",
     "Sandbox_OMHTurretsTraps_PokeHealth_tooltip": "Maximum Poke Floor condition.",
-    "Sandbox_OMHTurretsTraps_PokeBatteryPercent_tooltip": "Percentage points of battery charge used per complete cycle, including misses.",
     "Sandbox_OMHTurretsTraps_PokeWear_tooltip": "Condition lost once per cycle that damages at least one victim.",
-    "Sandbox_OMHTurretsTraps_PokeScratchChance_tooltip": "Chance for running contact to trigger an actual strike and scratch."
+    "Sandbox_OMHTurretsTraps_PokeScratchChance_tooltip": "Chance for running contact to trigger an actual strike and scratch.",
+    "Sandbox_OMHTurretsTraps_FirearmBatteryMultiplier": "Firearm Battery Multiplier",
+    "Sandbox_OMHTurretsTraps_FirearmBatteryMultiplier_tooltip": "Multiplies firearm-head battery use. Does not change Potato or other heads.",
+    "Sandbox_OMHTurretsTraps_ScrapshotBatteryPercent": "Scrapshot Battery Use (Percent)",
+    "Sandbox_OMHTurretsTraps_ScrapshotBatteryPercent_tooltip": "Base percentage points of battery charge per Scrapshot cycle, before modules."
 }

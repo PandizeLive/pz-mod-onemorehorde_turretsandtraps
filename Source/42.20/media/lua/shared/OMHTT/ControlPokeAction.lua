@@ -45,11 +45,8 @@ function Action:isValid()
         local source = self.item and self.item:getContainer()
         if not source or not source:contains(self.item) or not source:isRemoveItemAllowed(self.item)
             or not Battery.car(self.item) or self.item:isFavorite() then return false end
-        if self.value == true then
-            local controller = Access.stockpile(self.character, self.object)
-            return storage:getItems():size() == 0 and (source:isInCharacterInventory(self.character)
-                or (controller and source == controller:getContainer()))
-        end
+        -- Legacy batteries remain removable; mechanical traps accept no new batteries.
+        if self.value ~= false then return false end
         local target = self:destination()
         return self.value == false and source == storage and target ~= nil and target:hasRoomFor(self.character, self.item)
     end

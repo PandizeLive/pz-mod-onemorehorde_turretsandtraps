@@ -1,6 +1,4 @@
 if isClient() then return end
-local Battery = require("OMHTT/TurretBattery")
-local Power = require("OMHTT/ControlPower")
 local Horde = require("OMHTT/DefenseHorde")
 local Active = require("OMHTT/ActiveTime")
 local P = {entries = setmetatable({}, {__mode = "k"}), clock = Active.new(), time = 0}
@@ -25,17 +23,6 @@ function P.visual(object, state, raised)
     end
     state.active = raised
     W.publish(object)
-end
-
-function P.power(object)
-    local square = object:getSquare()
-    if square:haveElectricity() or (square:hasGridPower() and square:getRoom()) then return {kind = "grid", cost = 0} end
-    local cost = P.option("BatteryPercent", .05, 0, 100) / 100
-    local storage = object:getContainer()
-    local battery = storage and storage:getItems():size() > 0 and storage:getItems():get(0)
-    if Battery.car(battery) and battery:getCondition() > 0 and Battery.charge(battery) > 0
-        and Battery.charge(battery) + .0000000001 >= cost then return {kind = "battery", battery = battery, cost = cost} end
-    return Power.fallback(object, cost)
 end
 
 function P.step(object, state)
@@ -75,14 +62,11 @@ function P.step(object, state)
     local enabled = state.enabled ~= false and object:getHealth() > 0
         and SandboxVars.OMHTurretsTraps.Enabled ~= false
     if not entry.finish and now >= entry.due and enabled and eligible then
-        local source = P.power(object)
-        if source and (source.kind == "grid" or Power.spend(source) ~= nil) then
-            local duration = P.option("CycleSeconds", 1.5, .3, 60) * 1000
-            entry.finish, entry.strike, entry.due = now + duration, now + math.min(150, duration / 3), now + duration
-            entry.victims = requests
-            state.powerSource = source.kind
-            P.visual(object, state, true)
-        end
+        local duration = P.option("CycleSeconds", 1.5, .3, 60) * 1000
+        entry.finish, entry.strike, entry.due = now + duration, now + math.min(150, duration / 3), now + duration
+        entry.victims = requests
+        state.powerSource = nil
+        P.visual(object, state, true)
     end
     if not entry.strike or now < entry.strike then return end
     entry.strike = nil

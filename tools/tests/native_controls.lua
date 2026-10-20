@@ -230,6 +230,42 @@ return function(player)
         assert(C.power(controller, .0001 + (i % 11) * .0000003), "Native fractional Controller debit flickered offline")
     end
     print("[OMHTT-C340] native Controller fractional-debits=2000 stable=passed switch-sound=present")
+    for _, route in pairs({"Poke", "PokeImprovised"}) do
+        local recipe = getScriptManager():getCraftRecipe("Base.OMHTTCraft" .. route)
+        assert(recipe and recipe:getInputs():size() == 6, "Mechanical Poke recipe input count")
+        assert(recipe:getXPAwardCount() == 1 and recipe:getXPAward(0):getPerk() == Perks.Mechanics,
+            "Mechanical Poke awards only Mechanics XP")
+        local inputs, resources = ArrayList.new(), ArrayList.new()
+        local costs = {Screwdriver = 1, Wrench = 1, MetalBar = 4, SmallSheetMetal = 2, Screws = 8}
+        costs[route == "Poke" and "TirePump" or "MetalPipe"] = route == "Poke" and 1 or 2
+        for name, count in pairs(costs) do
+            for i = 1, count do inputs:add(instanceItem("Base." .. name)) end
+        end
+        local data = CraftRecipeData.new(CraftMode.Handcraft, false, true, false, true)
+        data:setRecipe(recipe)
+        assert(data:canConsumeInputs(resources, inputs, true, true), "Mechanical inputs rejected: " .. route)
+        for i = 0, inputs:size() - 1 do
+            local material = inputs:get(i)
+            player:getInventory():AddItem(material)
+            for j = 0, recipe:getInputs():size() - 1 do data:offerInputItem(recipe:getInputs():get(j), material) end
+        end
+        assert(data:consumeInputs(resources) and data:createOutputs(resources, player), "Mechanical Poke craft transaction")
+        data:luaCallOnCreate(player)
+        data:processDestroyAndUsedItems(player)
+        local output = data:getFirstCreatedItem()
+        assert(output and output:getFullType() == "Base.OMHTTTrapPokeFloor" and data:getAllCreatedItems():size() == 1,
+            "Mechanical Poke output identity/count")
+        for i = 0, inputs:size() - 1 do
+            local material = inputs:get(i)
+            local tool = material:getFullType() == "Base.Screwdriver" or material:getFullType() == "Base.Wrench"
+            assert((material:getContainer() == player:getInventory()) == tool, "Poke tool retention/material consumption")
+            if tool then player:getInventory():Remove(material) end
+        end
+        player:getInventory():Remove(output)
+    end
+    assert(getText("IGUI_CraftingCategories_OMHControls") == "OMH: Triggers"
+        and getText("IGUI_ContainerTitle_OMHTTPoke") == "Poke Floor", "Native trigger/Poke translations")
+    print("[OMHTT-C355] mechanical-recipes=2 inputs=consumed tools=retained output=exact translations=passed")
     local poke = create("Poke", "omhtt_barrier_01_85")
     local pokeState = C.state(poke)
     local PokeAction = require("OMHTT/ControlPokeAction")
@@ -241,9 +277,18 @@ return function(player)
     local pokeBattery = player:getInventory():AddItem("Base.CarBattery2")
     B.spend(pokeBattery, .123456)
     local exact = B.charge(pokeBattery)
-    assert(PokeAction:new(player, poke, "Battery", true, pokeBattery, pokeState.id):complete(), "Native Poke battery transfer")
+    assert(not PokeAction:new(player, poke, "Battery", true, pokeBattery, pokeState.id):complete(), "Mechanical Poke rejects battery installation")
+    -- Seed a pre-patch battery to exercise safe withdrawal and packed-item persistence.
+    player:getInventory():Remove(pokeBattery)
+    poke:getContainer():AddItem(pokeBattery)
+    assert(PokeAction:new(player, poke, "Battery", false, pokeBattery, pokeState.id):complete(), "Legacy battery withdrawal")
+    assert(pokeBattery:getContainer() == player:getInventory() and math.abs(B.charge(pokeBattery) - exact) < .000001,
+        "Legacy withdrawal changes neither identity nor fractional charge")
+    player:getInventory():Remove(pokeBattery)
+    poke:getContainer():AddItem(pokeBattery)
     assert(poke:getContainer():contains(pokeBattery), "Poke Floor exact battery identity")
     assert(C.assign(controller, poke, player, true), "Poke Floor Controller assignment")
+    assert(not require("OMHTT/ControlPower").fallback(poke, .001), "Mechanical Poke cannot consume Controller charge")
     local Power = require("OMHTT/ControlPower")
     local source = {kind = "controller", controller = controller, battery = Power.battery(controller, .001), cost = .001}
     assert(source.battery, "Native Controller bank selection")

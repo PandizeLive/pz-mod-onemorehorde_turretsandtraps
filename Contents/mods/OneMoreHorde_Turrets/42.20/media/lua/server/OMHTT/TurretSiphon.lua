@@ -48,6 +48,8 @@ function S.hit(zombie, energy, secondary)
     local guard = ActorState.get(zombie)
     if guard.OMHTTSiphonClaimed then return end
     guard.OMHTTSiphonClaimed = true
+    -- Claim failures too: duplicate death callbacks must never reroll a missed proc.
+    if ZombRand(100) >= 45 then return end
     energy.kills = energy.kills + 1
     S.settle(energy)
 end

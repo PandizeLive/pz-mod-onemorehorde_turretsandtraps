@@ -93,7 +93,7 @@ panel.logic = {getRecipe = function() return selected end, getAllBuildableRecipe
 panel.ReselectRecipeOrFirst = function(_, value) selected = value end
 setmetatable(panel, {__index = ISBuildPanel})
 panel:refreshList()
-check(panel.logic.list:size() == 11 and panel.logic.list:get(0) == native,
+check(panel.logic.list:size() == 13 and panel.logic.list:get(0) == native,
     "Building keeps vanilla entries and exactly one route per defense, excluding old prototypes and packs")
 selected = recipes["Base." .. definition.craft]
 inventory.items = {carried}
@@ -102,12 +102,13 @@ check(selected == recipes["Base." .. definition.deploy], "Inventory changes swit
 inventory.items = {}
 recipes["Base.OMHTTCraftTurretBase"] = nil
 panel:refreshList()
-check(panel.logic.list:size() == 10, "Absent Turrets content is omitted without loading its placement module")
+check(panel.logic.list:size() == 12, "Absent Turrets content is omitted without loading its placement module")
 local before = #queue
 panel:createBuildIsoEntity(true)
 check(#queue == before, "Passive native refresh never starts crafting")
 local priorMode, priorClock, fromLogic = testMode, getTimestampMs, ISHandcraftAction.FromLogic
 local now, nativeCompletions = 1000, 0
+local buildLogic = panel.logic
 panel.logic = nil
 testMode = "client"
 getTimestampMs = function() return now end
@@ -150,6 +151,28 @@ now = now + 10001
 H.poll(panel)
 check(not placed and not panel.omhttPending and cancelled == 2,
     "Missing or ground-dropped output times out without inventing items or repeating the recipe")
+local oldItem = H.item
+panel.logic = buildLogic
+H.item = function() return nil end
+panel:refreshList()
+local function countRecipe(name)
+    local count = 0
+    for i = 0, panel.logic.list:size() - 1 do
+        if panel.logic.list:get(i):getName() == name then count = count + 1 end
+    end
+    return count
+end
+check(countRecipe("OMHTTCraftPoke") == 1 and countRecipe("OMHTTCraftPokeImprovised") == 1,
+    "Building exposes both distinct mechanical crafting routes")
+H.item = function(_, route)
+    if route.item == "Base.OMHTTTrapPokeFloor" then return {carried = true} end
+end
+selected = recipes["Base.OMHTTCraftPokeImprovised"]
+panel:refreshList()
+check(countRecipe("OMHTTDeployPoke") == 1 and countRecipe("OMHTTCraftPokeImprovised") == 0
+    and countRecipe("OMHTTCraftPoke") == 0, "Carried Poke replaces both craft rows with one deployment")
+check(selected == recipes["Base.OMHTTDeployPoke"], "Improvised selection follows the shared exact-item deployment")
+H.item = oldItem
 testMode, getTimestampMs, ISHandcraftAction.FromLogic = priorMode, priorClock, fromLogic
 P.carried, H.place = oldCarried, oldPlace
 ScriptManager, HandcraftLogic, ISHandcraftAction = oldScript, oldHandcraft, oldAction

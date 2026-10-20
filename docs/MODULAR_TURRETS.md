@@ -1,5 +1,7 @@
 # Turret inventory and module plan
 
+**C355 / Implementation approved (2026-10-20).** Owner approved the settled battery/Siphon and mechanical Poke/Building scope. Implemented in [0.2.58](PATCH_v0.2.58.md); tests and delivery are being completed. Lever/emitter content remains separate. No new loot weights or unselected recipes.
+
 ## C354 — Tier surcharge schedule replaced
 
 Owner selects Abundant/Common/Uncommon/Rare/Epic/Legendary/Mythic additions of **10/15/25/50/75/100/150 percent**. This replaces the earlier +10%-relative high-tier adjustment; preserve selected head factors, Siphon rules and Regulator/Expansion exceptions. [Exact selected contract](BATTERY_BALANCE_C349.md#c354--owner-replaces-the-tier-surcharge-schedule). Not installed yet.

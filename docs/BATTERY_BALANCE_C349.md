@@ -1,5 +1,9 @@
 # C349 — Saved M4 battery baseline and Siphon balance
 
+**C355 / Implementation approved (2026-10-20).** Owner approved the settled battery/Siphon and mechanical Poke/Building scope. Implemented in [0.2.58](PATCH_v0.2.58.md); tests and delivery are being completed. Lever/emitter content remains separate. No new loot weights or unselected recipes.
+
+**C355 / Implementation approved (2026-10-20).** Owner approved the settled battery/Siphon and mechanical Poke/Building scope. Implemented in [0.2.58](PATCH_v0.2.58.md); tests and delivery are being completed. Lever/emitter content remains separate. No new loot weights or unselected recipes.
+
 ## C354 — Owner replaces the tier surcharge schedule
 
 Owner supplies seven percentages in the order of the preceding Abundant-to-Mythic table. Selected direct additions are **Abundant +10%, Common +15%, Uncommon +25%, Rare +50%, Epic +75%, Legendary +100%, Mythic +150%**. These replace C353's selected tier values; they are not an extra multiplier on top of that schedule. Retain additive stacking, the current ModulePowerBonus scaling, zero direct surcharge for Expansion Kits and Regulator, and the existing Regulator reduction formula. Preserve actual loot weights, rarity anchors and assignments.

@@ -1,5 +1,7 @@
 # Decision register
 
+**C355 / Patch approved (2026-10-20).** Owner approves implementing settled C354 battery balance, C351 Siphon chance, head-only consumption labels, and C345–C346 mechanical Poke Floor/Building corrections as 0.2.58. Lever and Dart Emitter remain planned with unresolved content details; no recipes or stats are invented. Implemented as 0.2.58; 25,906 assertions, native write/read and all independent package selections pass. Tagged installation is next; 0.2.57.2 remains the rollback baseline. Rendered/connected acceptance is pending. No Workshop upload or merge.
+
 ## C354 — Explicit tier surcharge replacement
 
 Owner supplies 10%, 15%, 25%, 50%, 75%, 100%, 150% in the preceding rarity-table order. [Selected replacement schedule](BATTERY_BALANCE_C349.md#c354--owner-replaces-the-tier-surcharge-schedule) supersedes C353 tier values without changing head factors, loot tuning, Siphon or exceptions. Planning persisted; no installed gameplay change.

@@ -49,9 +49,11 @@ return function(player, controller, turret)
     local victim = IsoZombie.new(getCell())
     victim:setHealth(0)
     S.hit(victim,energy,false)
+    local kills = energy.kills
     S.hit(victim,energy,false)
-    assert(energy.kills == 1 and math.abs(B.charge(battery) - before - spent) < .0000001,
-        "Native fractional refund or server duplicate-death guard failed")
+    assert((kills == 0 or kills == 1) and energy.kills == kills
+        and math.abs(B.charge(battery) - (before - spent + spent * 2 * kills)) < .0000001,
+        "Native fractional chance outcome or duplicate-death guard failed")
     local persisted = require("OMHTT/TurretItemState").get(battery,"battery")
     assert(persisted and battery:getModData().OMHTTBatteryDrain.debt == persisted.debt, "Refund left replicated fractional charge stale")
     before = B.charge(battery)

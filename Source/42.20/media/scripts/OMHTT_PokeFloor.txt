@@ -2,7 +2,7 @@ module Base {
     item OMHTTTrapPokeFloor {
         DisplayName = Poke Floor,
         ItemType = base:container,
-        DisplayCategory = Electronics,
+        DisplayCategory = Material,
         Weight = 8,
         Icon = OMHTT_TestCube,
         Tags = base:heavyitem,
@@ -41,8 +41,8 @@ module Base {
         category = OMHTraps,
         Tags = InHandCraft,
         needToBeLearn = false,
-        SkillRequired = Mechanics:1;Electricity:2,
-        xpAward = Mechanics:20;Electricity:10,
+        SkillRequired = Mechanics:1,
+        xpAward = Mechanics:20,
         OnAddToMenu = OMHTT_ControlMenu,
         inputs {
             item 1 tags[base:screwdriver] mode:keep flags[Prop1;DontRecordInput;NoBrokenItems],
@@ -50,8 +50,6 @@ module Base {
             item 1 [Base.TirePump],
             item 4 [Base.MetalBar],
             item 2 [Base.SmallSheetMetal],
-            item 4 [Base.ElectronicsScrap],
-            item 2 [Base.ElectricWire],
             item 8 [Base.Screws],
         }
         outputs { item 1 Base.OMHTTTrapPokeFloor, }
@@ -62,8 +60,8 @@ module Base {
         category = OMHTraps,
         Tags = InHandCraft,
         needToBeLearn = false,
-        SkillRequired = Mechanics:2;Electricity:2,
-        xpAward = Mechanics:20;Electricity:10,
+        SkillRequired = Mechanics:2,
+        xpAward = Mechanics:20,
         OnAddToMenu = OMHTT_ControlMenu,
         inputs {
             item 1 tags[base:screwdriver] mode:keep flags[Prop1;DontRecordInput;NoBrokenItems],
@@ -71,8 +69,6 @@ module Base {
             item 2 [Base.MetalPipe],
             item 4 [Base.MetalBar],
             item 2 [Base.SmallSheetMetal],
-            item 4 [Base.ElectronicsScrap],
-            item 2 [Base.ElectricWire],
             item 8 [Base.Screws],
         }
         outputs { item 1 Base.OMHTTTrapPokeFloor, }

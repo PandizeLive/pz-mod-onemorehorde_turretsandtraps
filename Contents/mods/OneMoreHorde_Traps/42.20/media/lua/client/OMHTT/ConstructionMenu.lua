@@ -22,6 +22,7 @@ function ISBuildPanel:refreshList()
         local recipe = source:get(i)
         if string.sub(recipe:getName(), 1, 5) ~= "OMHTT" then visible:add(recipe) end
     end
+    local deployments = {}
     for i = 1, #H.definitions do
         local definition = H.definitions[i]
         local recipe = H.recipe(self.player, definition)
@@ -31,10 +32,11 @@ function ISBuildPanel:refreshList()
                 local info = H.info(self.player, definition, item)
                 recipe = info and info:getRecipe():getCraftRecipe()
             end
-            if recipe then
+            if recipe and not (item and deployments[definition.deploy]) then
+                if item then deployments[definition.deploy] = true end
                 recipe:overrideTranslationName(getRecipeDisplayName(recipe:getName()))
                 visible:add(recipe)
-                if selection == definition then selected = recipe end
+                if selection == definition or (item and selection and selection.deploy == definition.deploy) then selected = recipe end
             end
         end
     end

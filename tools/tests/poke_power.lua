@@ -45,7 +45,7 @@ W.locations, W.objects = {}, {}
 getCell = function() return {getGridSquare = function() return square end} end
 B.charge = function(item) return item.charge end
 B.spend = function(item, amount) local spent = math.min(item.charge, amount); item.charge = item.charge - spent; return spent end
-local controller, poke = device("Controller", "bank"), device("Poke", "poke")
+local controller, poke = device("Controller", "bank"), device("Turret", "poke")
 W.objects.bank = controller
 states[poke].controller = "bank"
 local ordinary = battery(controller.box, 1, 1, "Base.Battery")
@@ -71,11 +71,12 @@ second.box = nil
 check(Power.spend(source) == nil, "Withdrawn battery invalidates a prepared debit")
 second.box = controller.box
 local localBattery = battery(poke.box, 4, .1)
-check(Poke.power(poke).battery == localBattery, "Poke Floor prefers its own battery")
+states[poke].kind = "Poke"
+check(Power.fallback(poke, .001) == nil, "Mechanical Poke cannot draw from Controller")
 localBattery.charge = 0
-check(Poke.power(poke).kind == "controller", "Poke Floor falls back to Controller")
+
 square.haveElectricity = function() return true end
-check(Poke.power(poke).kind == "grid", "Poke Floor retains direct electricity without modules")
+
 square.haveElectricity = function() return false end
 localBattery.charge = 1
 local hits, allowed = 0, true
@@ -87,8 +88,8 @@ Poke.time = 0
 Poke.step(poke, states[poke])
 Poke.time = 1000
 Poke.step(poke, states[poke])
-check(states[poke].active and hits == 0 and math.abs(localBattery.charge - .9995) < .00000001,
-    "Cycle reserves energy before visible strike; no immediate damage")
+check(states[poke].active and hits == 0 and localBattery.charge == 1 and second.charge == .5,
+    "Pressure cycle spends no local or Controller charge; no immediate damage")
 Poke.time = 1150
 Poke.step(poke, states[poke])
 check(hits == 2 and poke.health == 199, "Strike hits every eligible zombie once but wears once")
@@ -144,7 +145,7 @@ actors = {}; Poke.step(poke, states[poke])
 localBattery.charge, first.charge, second.charge = 0, 0, 0
 actors = {runner}; Poke.time = 11000; Poke.step(poke, states[poke])
 Poke.time = 11150; Poke.step(poke, states[poke])
-check(injuries == 1 and not states[poke].active, "Unpowered player contact never causes invisible damage")
+check(injuries == 2 and states[poke].active, "Empty batteries do not block mechanical pressure strike")
 first.charge, second.charge = .1, .8
 W.batteries[controller], states[controller].batteryId = first, first.id
 check(Power.idle(controller, 24) and math.abs(second.charge - .4) < .00000001 and first.charge == 0,

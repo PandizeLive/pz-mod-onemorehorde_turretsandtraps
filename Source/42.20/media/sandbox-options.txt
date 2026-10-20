@@ -1456,15 +1456,6 @@ option OMHTurretsTraps.PokeHealth {
     translation = OMHTurretsTraps_PokeHealth,
 }
 
-option OMHTurretsTraps.PokeBatteryPercent {
-    type = double,
-    default = 0.05,
-    min = 0,
-    max = 100,
-    page = OMHTurretsTraps_PokePage,
-    translation = OMHTurretsTraps_PokeBatteryPercent,
-}
-
 option OMHTurretsTraps.PokeWear {
     type = double,
     default = 1,
@@ -1481,4 +1472,22 @@ option OMHTurretsTraps.PokeScratchChance {
     max = 100,
     page = OMHTurretsTraps_PokePage,
     translation = OMHTurretsTraps_PokeScratchChance,
+}
+
+option OMHTurretsTraps.FirearmBatteryMultiplier {
+    type = double,
+    default = 1.5,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_FirearmBatteryMultiplier,
+}
+
+option OMHTurretsTraps.ScrapshotBatteryPercent {
+    type = double,
+    default = 0.0025,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_ScrapshotBatteryPercent,
 }

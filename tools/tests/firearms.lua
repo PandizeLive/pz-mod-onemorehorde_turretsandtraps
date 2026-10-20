@@ -81,6 +81,15 @@ function generic:getFireMode() return "Auto" end
 function generic:getCyclicRateMultiplier() return 1 end
 function generic:isRackAfterShoot() return false end
 local auto = Stats.resolve({head = generic, active = {}})
+SandboxVars.OMHTurretsTraps.FirearmBatteryMultiplier = 1
+local oldDraw = Stats.resolve({head = generic, active = {}})
+check(math.abs(auto.batteryPercent - oldDraw.batteryPercent * 1.5) < .000000001,
+    "New default multiplies every supported firearm by 1.5")
+check(auto.generatorFuel == oldDraw.generatorFuel, "Firearm battery factor leaves generator fuel unchanged")
+SandboxVars.OMHTurretsTraps.FirearmBatteryMultiplier = 2
+check(math.abs(Stats.resolve({head = generic, active = {}}).batteryPercent - oldDraw.batteryPercent * 2) < .000000001,
+    "Custom firearm battery factor remains effective")
+SandboxVars.OMHTurretsTraps.FirearmBatteryMultiplier = nil
 check(math.abs(auto.cooldown - 1000 / 3 / 1.5 / .75) < .001, "Automatic cadence uses clip/speed rather than recoil delay")
 function generic:getFireMode() return "Single" end
 function generic:getFireModePossibilities() return {size = function() return 2 end, get = function(_, i) return i == 0 and "Single" or "Auto" end} end
@@ -334,7 +343,7 @@ Volley.reset()
 check(W.fire(operator, object, victim) == "Fired" and T.contents(extended).ammo == beforeVolley - 4,
     "Integrated multi-pellet volley spends the combined cost once")
 check(#Volley.queue == 8 and Volley.reserved == 1, "Multi-pellet primary makes one five-fragment burst plus three side rays")
-check(math.abs(battery.charge - (1 - .0000045 * (1 + T.contents(extended).powerLoad))) < .000001, "Physical modules add rarity surcharges once per shot")
+check(math.abs(battery.charge - (1 - .0000045 * 1.5 * (1 + T.contents(extended).powerLoad))) < .000001, "Physical modules add rarity surcharges once per shot")
 Volley.reset()
 gun.ammo, gun.chamber, gun.data = 0, true, {}
 victim.health = .0001
@@ -357,26 +366,26 @@ local brokenModule = item(T.TYPES.Execute)
 brokenModule.condition = 0
 powerItems:AddItem(brokenModule)
 local powerContents = T.contents(powerItems)
-check(math.abs(powerContents.powerLoad - 1.1) < .000001 and powerContents.active.Firing == 1 and powerContents.active.FiringEnhanced == 1,
+check(math.abs(powerContents.powerLoad - 1.6) < .000001 and powerContents.active.Firing == 1 and powerContents.active.FiringEnhanced == 1,
     "Enhanced aliases count once, separate expansion and broken modules cost nothing")
 local powerStats = Stats.resolve(powerContents)
-check(math.abs(powerStats.batteryPercent - .000945) < .0000001 and powerStats.weaponPower == 1,
+check(math.abs(powerStats.batteryPercent - .00117) < .0000001 and powerStats.weaponPower == 1,
     "Two working modules and potato floor match approved battery cost")
 for _, name in pairs({"Piercing", "InitialBlow", "Execute", "Impact"}) do
-    check(T.kind(item(T.TYPES[name])) == "module" and require("OMHTT/TurretRarity").get(name).surcharge == ({Piercing = .15, InitialBlow = .25, Execute = .6, Impact = .25})[name],
+    check(T.kind(item(T.TYPES[name])) == "module" and require("OMHTT/TurretRarity").get(name).surcharge == ({Piercing = .15, InitialBlow = .25, Execute = .75, Impact = .25})[name],
         "Offensive modules use their loaded rarity surcharge")
 end
 local reference = item("Base.Pistol")
 function reference:getMaxAmmo() return 15 end
 function reference:isRackAfterShoot() return false end
 local m9 = Stats.resolve({head = reference, active = {}, powerLoad = 16})
-check(math.abs(m9.batteryPercent - .00765) < .0000001 and math.abs(m9.generatorFuel - .0017) < .0000001,
+check(math.abs(m9.batteryPercent - .011475) < .0000001 and math.abs(m9.generatorFuel - .0017) < .0000001,
     "Sixteen-module M9 battery and generator cost match approved references")
 function reference:getMinDamage() return 1.2 end
 function reference:getMaxDamage() return 2 end
 function reference:getMaxRange() return 40 end
 local rifle = Stats.resolve({head = reference, active = {}, powerLoad = 16})
-check(math.abs(rifle.weaponPower - math.sqrt(16 / 3)) < .0000001 and math.floor(100 / rifle.batteryPercent) == 5660,
+check(math.abs(rifle.weaponPower - math.sqrt(16 / 3)) < .0000001 and math.floor(100 / rifle.batteryPercent) == 3773,
     "MSR788-equivalent stats resolve expected weapon factor and endurance")
 local boosted = Stats.resolve({head = reference, active = {Velocity = 16, Range = 16, InitialBlow = 16, Execute = 16}, powerLoad = 16})
 check(boosted.damage > rifle.damage and boosted.range > rifle.range and boosted.batteryPercent == rifle.batteryPercent,

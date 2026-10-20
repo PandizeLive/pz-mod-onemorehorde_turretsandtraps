@@ -488,6 +488,7 @@ public final class KahluaCheck {
             {"_", System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid") + "/media/lua/client/ISUI/ISLayoutManager.lua"},
             {"_", "tools/tests/native_window_layout.lua"},
             {"_", "tools/tests/poke_power.lua"},
+            {"_", "tools/tests/balance_c355.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

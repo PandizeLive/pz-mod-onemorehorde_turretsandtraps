@@ -10,6 +10,8 @@ H.definitions = {
     {item = "Base.OMHTTTrapBedSpikesReinforced", craft = "OMHTTReinforceBedSpikes", deploy = "OMHTTDeployReinforcedBedSpikes"},
     {item = "Base.OMHTTTrapConcertinaWire", craft = "OMHTTCraftConcertinaWire", deploy = "OMHTTDeployConcertinaWire"},
     {item = "Base.OMHTTTrapBarbedPanel", craft = "OMHTTCraftBarbs", deploy = "OMHTTBarbs"},
+    {item = "Base.OMHTTTrapPokeFloor", craft = "OMHTTCraftPoke", deploy = "OMHTTDeployPoke", control = true},
+    {item = "Base.OMHTTTrapPokeFloor", craft = "OMHTTCraftPokeImprovised", deploy = "OMHTTDeployPoke", control = true},
     {item = "Base.OMHTTTurretBase", craft = "OMHTTCraftTurretBase", deploy = "OMHTTDeployTurret", turret = true},
     {item = "Base.OMHTTTrapController", craft = "OMHTTCraftController", deploy = "OMHTTDeployController", control = true},
     {item = "Base.OMHTTTrapPressurePlate", craft = "OMHTTCraftPlate", deploy = "OMHTTDeployInsetPlate", control = true},
@@ -19,7 +21,8 @@ local byRecipe = {}
 for i = 1, #H.definitions do
     local definition = H.definitions[i]
     definition.adapter = definition.control and "OMHTT/ControlClient" or (definition.turret and "OMHTT/TurretInstall" or "OMHTT/BarrierPlacement")
-    byRecipe[definition.craft], byRecipe[definition.deploy] = definition, definition
+    byRecipe[definition.craft] = definition
+    byRecipe[definition.deploy] = byRecipe[definition.deploy] or definition
     if string.find(definition.deploy, "BedSpikes", 1, true) then byRecipe[definition.deploy .. "Single"] = definition end
 end
 

@@ -248,6 +248,24 @@ check(tooltip.OMHTTFooterLayout ~= cachedLayout, "Tooltip font invalidates measu
 cachedLayout = tooltip.OMHTTFooterLayout
 U.footer(tooltip, "Firing")
 check(tooltip.OMHTTFooterLayout ~= cachedLayout and wraps == 0, "Tooltip description invalidates measured lines without wrapping")
+local rows = {}
+tooltip.item.getFullType = function() return "Base.OMHTTTurretScrapshot" end
+tooltip.drawText = function(_, text, x, y, r, g, b)
+    rows[#rows + 1] = {text = text, x = x, y = y, r = r, g = g, b = b}
+end
+U.footer(tooltip)
+local prefix = getText("UI_OMHTT_HeadBattery", "")
+local found = false
+for i = 1, #rows - 2 do
+    if rows[i].text == prefix then
+        local label, value, hint = rows[i], rows[i + 1], rows[i + 2]
+        check(label.r == 1 and label.g == 1 and value.g > value.r and value.x > label.x and value.y == label.y,
+            "Native head consumption colors only the value on the same line")
+        check(hint.r == 1 and hint.g == 1 and hint.b == 1, "Native head explanation stays white")
+        found = true
+    end
+end
+check(found, "Native inventory footer includes consumption value")
 testPackAudit = "deaths=10000 repeats=10000 packs=1500 emptyPoolCorpseDrop=false mockDeathBatchMs=" .. deathMs
     .. " partialGrantRollback=pass removeRollback=pass revealCreateItems=" .. openCreates
     .. " revealFrames=500 newFrameItems=0 newFrameWraps=0 mockRenderBatchMs=" .. renderMs

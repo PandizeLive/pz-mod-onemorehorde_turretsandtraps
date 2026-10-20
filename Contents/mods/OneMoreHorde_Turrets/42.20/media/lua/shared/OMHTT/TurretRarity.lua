@@ -1,6 +1,6 @@
 local L = require("OMHTT/LootDefinitions")
 local R = {cache = {}}
-R.surcharges = {.1, .15, .25, .4, .6, .8, 1}
+R.surcharges = {.1, .15, .25, .5, .75, 1, 1.5}
 R.stops = {{130,174,255}, {115,204,255}, {89,230,102}, {255,250,77}, {255,148,51}, {255,46,46}, {66,13,130}}
 R.names = {"Abundant", "Common", "Uncommon", "Rare", "Epic", "Legendary", "Mythic"}
 

@@ -5,7 +5,7 @@ local saved = SandboxVars.OMHTurretsTraps
 SandboxVars.OMHTurretsTraps = {}
 R.refresh({})
 local baseline = S.resolve({active = {}, powerLoad = 16})
-check(math.abs(baseline.batteryPercent - .00765) < .00000001, "Approved .00045 base and sixteen maximum surcharges resolve exactly")
+check(math.abs(baseline.batteryPercent - .00765) < .00000001, "Approved .00045 base and sixteen units of additive load resolve exactly")
 for _, copies in pairs({1, 2, 4, 16}) do
     local stats = S.resolve({active = {Regulator = copies}, powerLoad = 16})
     check(math.abs(stats.batteryPercent * (1 + .25 * copies) - baseline.batteryPercent) < .00000001,
@@ -21,7 +21,7 @@ local items = {size = function() return #modules end, get = function(self, i) re
 local contents = T.contents({getItems = function() return items end})
 check(contents.modules == 3 and contents.active.Regulator == 2 and contents.powerLoad == 0,
     "Regulator occupies slots, broken copies do not work, no self-surcharge")
-check(R.get("Regulator").band == 1 and R.get("Synergy").surcharge == 1, "Owner weight makes Regulator Abundant; Synergy retains maximum surcharge")
+check(R.get("Regulator").band == 1 and R.get("Synergy").surcharge == 1.5, "Owner weight makes Regulator Abundant; Synergy retains maximum surcharge")
 local description = require("OMHTT/TurretDescriptions").get("Regulator", false)
 check(string.find(description, "Battery Drain: +0x", 1, true) and string.find(description, "Rarity: Abundant"), "Regulator tooltip reports its actual exception")
 SandboxVars.OMHTurretsTraps.PotatoBatteryPercentPerShot = .1

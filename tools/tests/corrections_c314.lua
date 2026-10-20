@@ -4,6 +4,8 @@ local T = require("OMHTT/Turret")
 local C = require("OMHTT/ControlWorld")
 local old = {mode=testMode, state=T.state, control=C.state}
 testMode="sp"
+local savedRand = ZombRand
+ZombRand = function() return 0 end
 local battery={id=314001,charge=.5,data={}}
 function battery:getID() return self.id end
 function battery:getFullType() return "Base.CarBattery1" end
@@ -90,5 +92,21 @@ local blade={getFullType=function() return "Base.OMHTTTurretRotaryBlades" end}
 check(Heads.supports(blade,"Synergy") and Heads.supports(blade,"Siphon")
     and not Heads.supports(blade,"Splitter") and not Heads.supports(blade,"Fragment"),
     "Rotary Synergy and Siphon do not unlock projectile-only modules")
+-- Deterministic boundaries: one roll for all copies and no reroll after failure.
+reset()
+shot=S.capture(object,power,{siphon=4,synergy=false},.01)
+local rolls=0
+ZombRand=function(limit) check(limit==100,"Siphon uses percentage roll"); rolls=rolls+1; return 45 end
+dead=victim()
+S.hit(dead,shot,false)
+S.hit(dead,shot,false)
+check(rolls==1 and shot.kills==0 and B.charge(battery)==.5,"45 fails once; duplicate callback cannot reroll")
+ZombRand=function() rolls=rolls+1; return 44 end
+S.hit(victim(),shot,false)
+check(rolls==2 and shot.kills==1 and math.abs(B.charge(battery)-.54)<.0000001,"44 succeeds once for the whole four-times stack")
+S.hit(victim(),shot,true)
+check(rolls==2,"Ineligible secondary kills do not roll")
+check(not S.capture(object,{kind="controller",battery=battery},stats,.1),"Controller charge is never refundable")
+ZombRand=savedRand
 C.objects.siphon314=nil
 T.state,C.state,testMode=old.state,old.control,old.mode

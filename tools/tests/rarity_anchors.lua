@@ -36,5 +36,5 @@ local defaults = {}
 for i = 1, #R.names do defaults["RarityWeight"..R.names[i]] = approved[i] end
 R.refresh(defaults)
 check(R.get("Siphon").weight == 3 and R.get("Siphon").band == 6, "Siphon uses approved Legendary weight 3")
-check(R.get("Siphon").surcharge == .8, "Legendary Siphon follows shared rarity battery drain")
+check(R.get("Siphon").surcharge == 1, "Legendary Siphon follows shared rarity battery drain")
 R.refresh(SandboxVars.OMHTurretsTraps or {})

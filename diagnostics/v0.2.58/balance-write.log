@@ -1,0 +1,7 @@
+LOG  : Lua          f:0 st:137,203,993> [OMHTT-Smoke] native-power modules=16 aliases=once m9=0.01215 rifleShots=3563 generator=matched conditionals=valid
+LOG  : Lua          f:0 st:137,204,122> [OMHTT-C355] mechanical-recipes=2 inputs=consumed tools=retained output=exact translations=passed
+LOG  : Lua          f:0 st:137,204,123> [OMHTT-C339] native poke=placed pickup=exact redeploy=exact bank=atomic grid=mythic
+LOG  : Lua          f:0 st:137,204,134> [OMHTT-C314] native swap=exact reorder=passed exclusive=blocked replay=blocked action=serialized siphon=fractional duplicate-death=blocked detach=blocked
+LOG  : General      f:0 st:137,207,549> [OMHTT-Smoke] native-turret-persistence mode=write items=8 charge=0.37 health=37 cooldown=preserved identity=exact sprite=valid
+LOG  : General      f:0 st:137,207,550> [OMHTT-C339] poke persistence mode=write condition=123 battery=exact charge=exact
+LOG  : General      f:0 st:137,217,843> Shutdown handling finished

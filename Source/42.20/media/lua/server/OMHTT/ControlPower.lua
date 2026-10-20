@@ -32,6 +32,7 @@ end
 function P.fallback(object, cost)
     local W = require("OMHTT/ControlWorld")
     local state = W.state(object)
+    if state and state.kind == "Poke" then return nil end
     local controller = state and state.controller and W.objects[state.controller]
     local host = controller and W.state(controller)
     if not host or host.kind ~= "Controller" or not host.placed or controller:getHealth() <= 0

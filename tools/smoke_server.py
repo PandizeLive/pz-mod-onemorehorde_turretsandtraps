@@ -93,6 +93,7 @@ def main():
     text = transcript.read_text(encoding="utf-8", errors="replace")
     mod_errors = [line for line in text.splitlines() if "MOD:OMH:" in line and "Exception thrown" in line]
     assert not mod_errors, f"Native mod callbacks threw despite completion markers: {mod_errors}"
+    assert "[OMHTT-C355] mechanical-recipes=2 inputs=consumed tools=retained output=exact translations=passed" in text, "Mechanical recipe proof missing"
     assert "[OMHTT-Controls] native devices=3" in text, "Native control-device proof missing"
     assert "[OMHTT-Controls] native-stock-transfer selectedBag=exact removedBag=rejected constructorArgs=retained" in text, "Native stockpile transfer proof missing"
     assert "[OMHTT-Heads] native recipes=3" in text, "Native head recipe/metadata proof failed"
@@ -124,7 +125,7 @@ def main():
     assert "[OMHTT-Smoke] native-module-pack-persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Native pack persistence proof missing"
     assert "[OMHTT-Smoke] native-pack-loot-parser pools=16 packs=16 weights=positive" in text, "Native pack loot parse failed"
     assert "[OMHTT-Smoke] native-module-loot-parser pools=16 items=246 weights=positive" in text, "Native module loot parse failed"
-    assert "native-power modules=16 aliases=once m9=0.00639 rifleShots=6776 generator=matched conditionals=valid" in text, "Native power/conditional integration failed"
+    assert "native-power modules=16 aliases=once m9=0.01215 rifleShots=3563 generator=matched conditionals=valid" in text, "Native power/conditional integration failed"
     assert "[OMHTT-Smoke] native-modules loot=246 profiles=valid condition=checked" in text, "Native module rules failed"
     assert "[OMHTT-Smoke] native-install exact=selected decoy=preserved preview=nonconsuming" in text, "Native Install selection failed"
     assert "[OMHTT-Smoke] native-turret-persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Turret world persistence failed"

@@ -1,5 +1,7 @@
 # R4C2 — Poke Floor
 
+**C355 / Implementation approved (2026-10-20).** Owner approved the settled battery/Siphon and mechanical Poke/Building scope. Implemented in [0.2.58](../PATCH_v0.2.58.md); tests and delivery are being completed. Lever/emitter content remains separate. No new loot weights or unselected recipes.
+
 **Current direction: C345** supersedes the electrical Poke Floor rules below. Pressure-driven operation and Building/category corrections are selected; C346 selects 1A mechanical recipe cleanup. Implementation remains pending. [Audit and choices](#c345--building-audit-and-pressure-driven-poke-floor-2026-10-19).
 
 **C340 corrective build:** 0.2.57.1 addresses the owner test of Poke Floor/power and management UI. See [patch scope](../PATCH_v0.2.57.1.md) and [verification](../TEST_v0.2.57.1.md). Exact five-second native multiplayer placement remains open. No additional content selection is required.

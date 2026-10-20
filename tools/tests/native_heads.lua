@@ -2,6 +2,17 @@ return function(player)
     local T = require("OMHTT/Turret")
     local S = require("OMHTT/TurretStats")
     local Heads = require("OMHTT/TurretHeads")
+    local descriptions = require("OMHTT/TurretHeadDescription")
+    for _, name in pairs({"Base.Pistol", "Base.Shotgun", "Base.HuntingRifle"}) do
+        local gun = instanceItem(name)
+        local stats = S.resolve({head = gun, active = {}, powerLoad = 0})
+        local rating, drain = descriptions.rating(gun)
+        local reload = stats.reload * (gun:getMagazineType() and 1 or stats.magazine)
+        local seconds = (stats.magazine * stats.cooldown + reload + (gun:haveChamber() and stats.rack or 0)) / 1000
+        assert(rating and math.abs(drain - stats.batteryPercent * stats.magazine * 3600 / seconds) < .0000001,
+            "Native head rating must include magazine/per-round loading and chamber timing")
+        assert(string.find(descriptions.get(gun, true), "<RGB:1,1,1>", 1, true), "Native rich head rating")
+    end
     local shared = {MetalPipe = 1, SmallSheetMetal = 1, ScrapMetal = 2, ElectronicsScrap = 2, ElectricWire = 1, Screws = 8}
     local cases = {
         {"Ballista", {Plank = 4, MetalBar = 2, Rope = 1, Nails = 8}, {"Hammer", "Saw"}, 90},

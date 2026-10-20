@@ -1210,3 +1210,21 @@ option OMHTurretsTraps.LootRateGrid {
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRateGrid,
 }
+
+option OMHTurretsTraps.FirearmBatteryMultiplier {
+    type = double,
+    default = 1.5,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_FirearmBatteryMultiplier,
+}
+
+option OMHTurretsTraps.ScrapshotBatteryPercent {
+    type = double,
+    default = 0.0025,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_ScrapshotBatteryPercent,
+}
