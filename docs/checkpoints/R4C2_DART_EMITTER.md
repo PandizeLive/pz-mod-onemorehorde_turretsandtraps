@@ -1,5 +1,17 @@
 # R4C2 — Fixed dart emitter
 
+## C359 — Tether feasibility review (2026-10-20)
+
+Owner asks whether the tethered nail is physically possible in Zomboid. Read-only source/API evidence supports a scripted launch/impact/retraction mechanic as a feasible implementation approach, not a tested finished tether. Do not promise native rope physics or claim the engine has no rope constraints.
+
+Verified against the installed projectzomboid.jar using JDK 17 javap: zombie.core.physics.Bullet declares addRopeConstraint(int,int,float,float,float,float,float,float,float); BaseVehicle bytecode calls it and stores constraintTowing. The matching historical 42.20.2 BaseVehicle.java (~10124) shows vehicle IDs and towing attachment points. This verifies vehicle towing support, not a supported Lua API for attaching an arbitrary trap/nail to a living zombie. No Bullet class entry was found in the inspected LuaManager$Exposer bytecode; this is a scoped negative finding, not proof all access is impossible. Public Bullet Javadocs returned 404, so local installed bytecode is the primary evidence.
+
+Existing Source/42.20/media/lua/client/OMHTT/PrototypeEffects.lua (~162-180) interpolates projectile travel and draws a spear/shot line. shared/OMHTT/DefenseLine.lua checks bounded same-floor obstruction; shared/OMHTT/DefenseMotion.lua has authority-routed knockdown. These provide foundations, not full first-hit collision, cable occlusion, tether attachment or new multiplayer acceptance.
+
+Recommendation: server decides the first hit and cycle state; clients animate one nail and a cosmetic cable from emitter to nail, then shorten it as the nail returns. A small visual sag is possible without simulating rope segments. Do not add physics-based zombie dragging, wrapping around corners or snagging. If knockdown is later selected, make it an explicit reaction at retraction, not a force calculated from cable tension. Prototype wall/player occlusion, moving targets, zoom, missed shots and synchronized return before claiming the presentation works. Bound active effects and synchronization to avoid per-frame rope physics or network broadcasts.
+
+**1A (recommended):** approve a small scripted-tether feasibility prototype; report rendered and multiplayer evidence before full implementation. **1B:** investigate true physical tethering first, with no guarantee of supported Lua/native access or acceptable compatibility/performance. Neither approach is newly approved by this question. Existing single-nail, default detection/input override, no-ammo/no-battery/no-modules decisions remain. No gameplay edits, install, version bump or tests claimed; 0.2.58 unchanged. **Decision needed.**
+
 ## C358 — Single nail and trigger override (2026-10-20)
 
 Owner selects C357 **1A: one long tethered nail per cycle**. It stops at its first enemy, cannot pierce enemies, and must return fully and reset before another shot. Retraction knockdown remains explicitly TBD.
