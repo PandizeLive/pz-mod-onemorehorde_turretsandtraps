@@ -1,5 +1,21 @@
 # C361 — Scripted tether prototype
 
+## C362 — Owner-approved local installation (2026-10-20)
+
+After asking whether the prototype was installed, the owner approved proceeding. Installed the clean, separate **OMH Tether Prototype (Debug Only)** / `OMHTT_TetherPrototype` **0.0.1** into `C:/Users/bandi/Zomboid/mods/OMHTT_TetherPrototype`. All six installed files match the native-tested C361 package and source commit `8837d50e61ac8e30e3a9b5c0ccfff0daa3ed7c1c` by SHA-256. The target did not previously exist; no existing mod or save files were replaced. The existing gameplay release remains 0.2.58. Local evidence: `diagnostics/tether-cycle/install.json`.
+
+The prototype is installed but **not automatically enabled in any save**. Enable it for a fresh test world and run SP with `-debug`; MP use requires the same package on server/clients and admin access. The 41 native assertions remain the source validation, not rendered or connected acceptance. No new gameplay balance, recipe, knockdown or Workshop publication is implied.
+
+### Owner test (no damage)
+
+1. Enable **OMH Tether Prototype (Debug Only)** in a fresh test world and launch with `-debug`. Its controls appear in the world right-click menu, not Building.
+2. Face a clear lane and right-click ground within four tiles, then choose **Tether Prototype: Place**. A white marker should automatically fire toward standing zombies ahead and retrieve its nail fully.
+3. Choose **Link and Pulse Input** in an empty lane. It should fire once without a target. Try **Toggle Held Input**, switch it off mid-cycle, then **Unlink Inputs / Automatic**; finish-current-cycle and restored detection should work.
+4. Test two zombies in line, then a wall/window and a moving zombie. Only the first collision should end outbound travel; nothing should lose health. Check cable/nail placement at different zoom levels and behind characters/walls.
+5. Remove the marker or wait 60 seconds. It should disappear without lingering cable or extra shots. Report any clipping or errors; inspect console.txt after the owner reports the test.
+
+**Test now.** This installation supersedes the earlier developer-only/no-install handoff below. Live multiplayer and rendered acceptance remain pending until tested.
+
 Owner selected C360 **1A**, authorizing the scripted launch/retract prototype. This supersedes the native-vehicle investigation as the active approach. It does not authorize final crafting, balance, knockdown, or a gameplay release.
 
 ## Implemented scope

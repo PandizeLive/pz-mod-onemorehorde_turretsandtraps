@@ -1,5 +1,9 @@
 # R4C2 — Fixed dart emitter
 
+## C362 — Prototype installation approved and verified (2026-10-20)
+
+Owner approves local installation. The separate no-damage debug prototype 0.0.1 is installed; six file hashes match the C361 native-tested source. No existing gameplay packages or saves changed, and save activation remains manual. [Install evidence and five-step owner test](../TETHER_PROTOTYPE_C361.md#c362--owner-approved-local-installation-2026-10-20). This is not full R4C2 integration or rendered/multiplayer acceptance. **Test now.**
+
 ## C361 — Scripted prototype selected and implemented (2026-10-20)
 
 Owner selects C360 **1A**, approving the scripted prototype. The isolated `tools/prototypes/tether` package now implements authoritative first-hit launch/retract/reset, corrected default-detection/input override and interpolated client tether visuals. No native vehicle workaround, health damage, recipe, final stats or knockdown. [Scope, native tests and pending rendered/connected checkpoint](../TETHER_PROTOTYPE_C361.md): 41 assertions pass; client renderer compiles; exact-source preview ZIP prepared. This is not a gameplay release or proof of GPU/live multiplayer acceptance. Installed 0.2.58 unchanged. **Wait for a patch.**
