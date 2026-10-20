@@ -81,7 +81,7 @@ square.haveElectricity = function() return false end
 localBattery.charge = 1
 local hits, allowed = 0, true
 H.allowed = function() return allowed end
-D.resolve = function(_, amount, _, _, callback) hits = hits + 1; check(amount == .5, "Poke damage is 50 points"); callback(amount); return true end
+D.resolve = function(_, amount, _, _, callback) hits = hits + 1; check(amount == .45, "Poke damage is 45 points"); callback(amount); return true end
 actors[1] = {kind = "IsoZombie", isDead = function() return false end}
 actors[2] = {kind = "IsoZombie", isDead = function() return false end}
 Poke.time = 0

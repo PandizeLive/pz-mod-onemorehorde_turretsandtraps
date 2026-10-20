@@ -88,7 +88,7 @@ function OMHTTTurretPickupAction:new(character, object, operation, id)
     o.elapsed, o.done = 0, false
     o.operation = operation or "Pickup"
     o.stopOnWalk, o.stopOnRun = true, true
-    o.seconds = o.operation == "Pickup" and 5 or 10
+    o.seconds = o.operation == "Pickup" and 5 or require("OMHTT/ControlRepair").profiles.Turret.seconds
     o.maxTime = o:getDuration()
     return o
 end

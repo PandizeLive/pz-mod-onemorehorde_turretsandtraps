@@ -51,6 +51,7 @@ function N.menu(index, context, objects, test)
             pickup.toolTip.description = getText("UI_OMHTT_PickupDuration")
             local repair = menu:addOption(getText("ContextMenu_OMHTT_RepairTurret"), object, N.queue, player, "Repair")
             repair.notAvailable = object:getHealth() >= object:getMaxHealth()
+            require("OMHTT/ControlRepairTooltip").bind(repair, "Turret", player)
             Range.bind(repair, {object})
             local condition = menu:addOption(getText("ContextMenu_OMHTT_BarrierCondition", object:getHealth(), object:getMaxHealth()), nil, nil)
             condition.notAvailable = true

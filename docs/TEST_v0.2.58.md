@@ -1,5 +1,9 @@
 # Test 0.2.58
 
+## C367 development follow-up (not installed)
+
+[Repair audit](REPAIR_AUDIT_C367.md): 25,945 assertions validate the development repair requirements and 45-damage Poke default. This does not alter the immutable installed release evidence below. Rendered repair UI and connected acceptance are pending; Tether hold/pull integration is not delivered.
+
 ## C365 follow-up (not installed)
 
 Owner reports most behavior seems good, but redundant head text and M4 consumption spacing need correction. Both are fixed in the development source; see [C365 verification](TOOLTIP_C365.md). The 25,918-assertion follow-up is not an alteration of the immutable installed release evidence below. No blanket owner or multiplayer acceptance is inferred.

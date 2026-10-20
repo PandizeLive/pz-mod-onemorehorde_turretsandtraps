@@ -1,5 +1,11 @@
 # R4C2 — Tether Dart Trap
 
+## C367 — Impact, hold and pull selected (2026-10-20)
+
+Owner replaces 35 impact damage with **30 impact + 15 on pull**, with **0.75 seconds embedded in the target** before retraction, and selects C366 repair **1A: one Scrap Metal**. Retain five-second repair and selected retained tools, recipe, range, travel speeds, reset, wear and weight. Poke Floor is lowered to **45 damage**. [Repair audit and updated DPS](../REPAIR_AUDIT_C367.md) records the uniform repair UI implementation and all current costs. Repair decision is settled; earlier free-repair choice below is superseded.
+
+The extra pull hit applies once to the original still-valid living zombie, never a new return-path victim; dead/missing victims receive no extra damage or kill credit. No immobilization, knockdown, splash or piercing is added. Preserve the existing single player trap injury. Successful full-range cycle is about 3.15 seconds (~14.3 ideal DPS); misses have no target hold. These are selected design/calculated rates, not integrated runtime acceptance. Tether still needs playable item/lifecycle/Controller/damage/presentation/network integration. Source Poke/repair UI corrections pass 25,945 assertions; installed 0.2.58 remains unchanged. **Wait for a patch.**
+
 ## C366 — Tuning and recipe selected; Poke Floor comparison (2026-10-20)
 
 Owner selects C364 **1A / 2A**, asking that balance account for Poke Floor's crafting cost, range, damage/DPS and AoE potential. Record the selected 35 damage, six-tile range, tested 12-out/4-return speeds, 0.4-second reset, 100 condition, one wear per completed cycle including misses, four weight and five-second service. The selected crafting package is two Small Metal Sheets, one Metal Bar, one Rope, four Screws and two uses of Wire, retained Screwdriver/Pliers/Wrench-or-Pipe-Wrench, Mechanics 2 and 20 crafting XP, one trap per 30-second craft. No new rarity; crafted-only. Earlier integration authorization remains active. This selection is not an installed release.

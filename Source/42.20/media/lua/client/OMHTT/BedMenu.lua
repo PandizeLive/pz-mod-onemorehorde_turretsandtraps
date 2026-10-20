@@ -58,7 +58,9 @@ local function menu(playerIndex, context, objects, test)
     context:addSubMenu(option, submenu)
     submenu:addOption(getText("ContextMenu_OMHTT_BarrierCondition", record.health, record.maxHealth), nil, nil).notAvailable = true
     submenu:addOption(getText("ContextMenu_OMHTT_PickupBarrier"), parts[1], queue, player, record.id, "Pickup")
-    submenu:addOption(getText("ContextMenu_OMHTT_RepairBarrier"), parts[1], queue, player, record.id, "Repair").notAvailable = record.health >= record.maxHealth
+    local repair = submenu:addOption(getText("ContextMenu_OMHTT_RepairBarrier"), parts[1], queue, player, record.id, "Repair")
+    repair.notAvailable = record.health >= record.maxHealth
+    require("OMHTT/ControlRepairTooltip").bind(repair, "Bed", player)
     if record.tier ~= "reinforced" then
         local upgrade = submenu:addOption(getText("ContextMenu_OMHTT_Reinforce"), parts[1], queue, player, record.id, "Reinforce")
         upgrade.notAvailable = require("OMHTT/BedService").materials(player, record) == nil

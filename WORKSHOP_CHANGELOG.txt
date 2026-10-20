@@ -1,10 +1,11 @@
 v0.2.58
 Development test content
+- Repair entries consistently show consumed materials, retained tools, skill requirements, duration and repair result. Poke Floor shows available scrap and disarm requirements; turret repair explains base-only restoration.
 - Renamed the Building category to OMH: Triggers and fixed the Poke Floor inventory title.
 - Fixed false Controller power loss from fractional battery debits and misleading manual startup while a linked trigger is released.
 - Barbed panels now accept player-built wall flags across native wall tiers.
 - Single-player pickup and portable placement take five seconds at normal speed and follow fast-forward; multiplayer Poke Floor pickup uses the same five-second service duration.
-- Added contact-activated Poke Floor with standard Tire Pump and improvised recipes, a white outlined technical marker, mechanical pressure-driven strike/retraction, hit-cycle wear and condition-preserving service. Both routes appear in Building; carried traps use one placement row. No electrical ingredients, skill or battery are needed, and legacy batteries remain removable.
+- Added contact-activated Poke Floor with standard Tire Pump and improvised recipes, a white outlined technical marker, mechanical pressure-driven strike/retraction with 45 default damage, hit-cycle wear and condition-preserving service. Both routes appear in Building; carried traps use one placement row. No electrical ingredients, skill or battery are needed, and legacy batteries remain removable.
 - Added Mythic Grid Module (loot weight 1), enabling mains/generator supply on otherwise battery-powered turrets, with local and assigned Controller battery fallback. Included in game loot, Module Packs, Sandbox and LootLab.
 - Controller backup now uses multiple Car Batteries, automatically selects charged spares and shares paid fallback power with assigned devices. Siphon refunds only turret-local battery consumption.
 - Fixed a turret right-click error left by the removed Fire option. Locked module slots show one centered Unavailable label and expansion guidance; Add Group has a separate aligned action row.

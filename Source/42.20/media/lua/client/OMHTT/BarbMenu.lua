@@ -52,7 +52,10 @@ local function menu(playerIndex, context, objects, test)
                             submenu:addOption(getText("UI_OMHTT_BarbSharedHealth", health), nil, nil).notAvailable = true
                         else
                             submenu:addOption(getText("ContextMenu_OMHTT_BarrierCondition", health, 50), nil, nil).notAvailable = true
-                            submenu:addOption(getText("ContextMenu_OMHTT_RepairBarrier"), frame, queue, player, record.id, "Repair").notAvailable = health >= 50 or not S.tools(player, record)
+                            local repair = submenu:addOption(getText("ContextMenu_OMHTT_RepairBarrier"), frame, queue, player, record.id, "Repair")
+                            local toolsReady = S.tools(player, record)
+                            repair.notAvailable = health >= 50 or not toolsReady
+                            require("OMHTT/ControlRepairTooltip").bind(repair, record.kind == "wire" and "Wire" or "Barb", player, toolsReady)
                         end
                         local remove = submenu:addOption(getText(record.kind == "wire" and "ContextMenu_OMHTT_PickupBarrier" or "ContextMenu_OMHTT_RemoveBarbs"), frame, queue, player, record.id, "Remove")
                         remove.notAvailable = not S.tools(player, record)

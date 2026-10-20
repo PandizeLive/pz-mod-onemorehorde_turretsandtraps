@@ -168,11 +168,12 @@ function U.world(index, context, objects, test)
                             end
                         end)
                         if object:getHealth() < 100 then
-                            context:addOption(getText("UI_OMHTT_ControlRepair"), object, function(device)
+                            local repair = context:addOption(getText("UI_OMHTT_ControlRepair"), object, function(device)
                                 if luautils.walkAdjObject(player, device, false) then
                                     U.command(player, device, "Repair")
                                 end
                             end)
+                            require("OMHTT/ControlRepairTooltip").bind(repair, state.kind, player)
                         end
                     end
                 end

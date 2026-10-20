@@ -153,7 +153,7 @@ function Action:new(character, object, command, value, target, id, targetId)
         action.targetId = targetId or (A.state(target) and A.state(target).id)
     end
     action.stopOnWalk, action.stopOnRun, action.done = true, true, false
-    action.seconds = command == "Pickup" and 5 or (command == "Repair" and 10 or 0)
+    action.seconds = command == "Pickup" and 5 or (command == "Repair" and require("OMHTT/ControlRepair").profiles.Controller.seconds or 0)
     action.elapsed = 0
     action.maxTime = action:getDuration()
     return action

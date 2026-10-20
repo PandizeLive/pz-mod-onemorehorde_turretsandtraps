@@ -18,15 +18,9 @@ function Action:destination()
 end
 
 function Action:materials()
-    local items = self.character:getInventory():getItems()
-    local result = {}
-    for i = 0, items:size() - 1 do
-        local item = items:get(i)
-        if item:getFullType() == "Base.ScrapMetal" and not item:isFavorite() then
-            result[#result + 1] = item
-            if #result == 2 then return result end
-        end
-    end
+    local repair = require("OMHTT/ControlRepair")
+    local items = repair.materials(self.character, "Poke")
+    if #items == repair.profiles.Poke.scrap then return items end
 end
 
 function Action:isValid()
@@ -124,7 +118,7 @@ function Action:new(character, object, operation, value, item, id, targetObject,
     o.object, o.operation, o.value, o.item, o.id = object, operation, value, item, id
     o.targetObject, o.bag = targetObject, bag
     if not isServer() then o.id = id or (Access.state(object) and Access.state(object).id) end
-    o.seconds = operation == "Pickup" and 5 or (operation == "Repair" and 10 or 0)
+    o.seconds = operation == "Pickup" and 5 or (operation == "Repair" and require("OMHTT/ControlRepair").profiles.Poke.seconds or 0)
     o.elapsed, o.done, o.stopOnWalk, o.stopOnRun = 0, false, true, true
     o.maxTime = o:getDuration()
     return o

@@ -180,6 +180,8 @@ public final class KahluaCheck {
         String base = "Source/42.20/media/lua/";
         String[][] stages = {
             {"_", "tools/tests/bootstrap.lua"},
+            {"OMHTT/ControlRepair", base + "shared/OMHTT/ControlRepair.lua"},
+            {"OMHTT/ControlRepairTooltip", base + "client/OMHTT/ControlRepairTooltip.lua"},
             {"OMHTT/ActiveTime", base + "shared/OMHTT/ActiveTime.lua"},
             {"OMHTT/DefenseNames", base + "shared/OMHTT/DefenseNames.lua"},
             {"OMHTT/Foundation", base + "shared/OMHTT/Foundation.lua"},
@@ -489,6 +491,8 @@ public final class KahluaCheck {
             {"_", "tools/tests/native_window_layout.lua"},
             {"_", "tools/tests/poke_power.lua"},
             {"_", "tools/tests/balance_c355.lua"},
+            {"OMHTT/ControlPokeAction", base + "shared/OMHTT/ControlPokeAction.lua"},
+            {"_", "tools/tests/repair_c367.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

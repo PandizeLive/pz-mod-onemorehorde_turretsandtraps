@@ -80,7 +80,7 @@ function P.step(object, state)
     for i = 0, moving:size() - 1 do
         local actor = moving:get(i)
         if instanceof(actor, "IsoZombie") and not actor:isDead() and Horde.allowed(actor) then
-            require("OMHTT/Damage").resolve(actor, P.option("Damage", 50, 0, 2500) / 100, state.id, "poke-floor", wear)
+            require("OMHTT/Damage").resolve(actor, P.option("Damage", 45, 0, 2500) / 100, state.id, "poke-floor", wear)
         elseif entry.victims[actor] and not actor:isDead() and not actor:isGodMod()
             and not actor:isNoClip() and not actor:isGhostMode() then
             wear(1)

@@ -102,7 +102,7 @@ function OMHTTBarrierServiceAction:new(character, object, id, operation)
     local o = ISBaseTimedAction.new(self, character)
     o.object, o.id, o.operation = object, id, operation
     o.elapsed, o.done = 0, false
-    o.seconds = o.operation == "Pickup" and 5 or 10
+    o.seconds = o.operation == "Pickup" and 5 or require("OMHTT/ControlRepair").profiles.Barrier.seconds
     o.stopOnWalk, o.stopOnRun = true, true
     o.maxTime = o:getDuration()
     return o

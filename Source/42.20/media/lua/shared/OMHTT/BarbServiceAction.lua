@@ -70,7 +70,7 @@ end
 function OMHTTBarbServiceAction:new(character, object, id, operation)
     local o = ISBaseTimedAction.new(self, character)
     o.object, o.id, o.operation = object, id, operation
-    o.seconds = o.operation == "Remove" and 5 or 10
+    o.seconds = o.operation == "Remove" and 5 or require("OMHTT/ControlRepair").profiles.Barb.seconds
     o.elapsed, o.done = 0, false
     o.stopOnWalk, o.stopOnRun = true, true
     o.maxTime = o:getDuration()

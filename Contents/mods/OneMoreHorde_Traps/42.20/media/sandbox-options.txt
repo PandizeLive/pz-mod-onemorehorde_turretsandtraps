@@ -218,7 +218,7 @@ option OMHTurretsTraps.BarbMovementDivisor {
 
 option OMHTurretsTraps.PokeDamage {
     type = double,
-    default = 50,
+    default = 45,
     min = 0,
     max = 2500,
     page = OMHTurretsTraps_PokePage,

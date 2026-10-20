@@ -13,6 +13,9 @@ function M.add(menu, player, object)
         local action = Action:new(player, object, operation, value, item)
         local option = menu:addOption(label, action, function(selected) ISTimedActionQueue.add(selected) end)
         option.notAvailable = not action:isValid()
+        if operation == "Repair" then
+            require("OMHTT/ControlRepairTooltip").bind(option, "Poke", player)
+        end
     end
     add(getText(state.enabled == false and "UI_OMHTT_PokeEnable" or "UI_OMHTT_PokeDisable"), "Power", state.enabled == false)
     local storage = object:getContainer()
@@ -20,7 +23,7 @@ function M.add(menu, player, object)
     if battery then
         add(getText("UI_OMHTT_PokeRemoveBattery", math.floor(Battery.charge(battery) * 100)), "Battery", false, battery)
     end
-    add(getText("UI_OMHTT_PokeRepair"), "Repair")
+    add(getText("UI_OMHTT_ControlRepair"), "Repair")
     add(getText("UI_OMHTT_ControlPickup"), "Pickup")
 end
 
