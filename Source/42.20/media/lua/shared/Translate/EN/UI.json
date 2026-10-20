@@ -511,6 +511,5 @@
     "UI_OMHTT_HeadBattery": "Battery Consumption: %1",
     "UI_OMHTT_HeadBatteryLow": "Low",
     "UI_OMHTT_HeadBatteryMedium": "Medium",
-    "UI_OMHTT_HeadBatteryHigh": "High",
-    "UI_OMHTT_HeadBatteryBasis": "Head only; standard ammo and reloads."
+    "UI_OMHTT_HeadBatteryHigh": "High"
 }

@@ -75,7 +75,7 @@ function D.get(item, rich, resolved)
         getText("UI_OMHTT_ModuleFeature", getText("UI_OMHTT_HeadFeature" .. kind)),
         getText("UI_OMHTT_HeadAmmo", ammo), getText("UI_OMHTT_HeadDamage", damage),
         getText("UI_OMHTT_HeadRange", string.format("%.1f", stats.range)), getText("UI_OMHTT_HeadFirerate", rate),
-        D.battery(item, rich, rating), getText("UI_OMHTT_HeadBatteryBasis"),
+        D.battery(item, rich, rating),
     }
     return table.concat(lines, rich and " <LINE> " or "\n"), rating
 end

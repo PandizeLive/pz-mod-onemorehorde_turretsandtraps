@@ -1,5 +1,9 @@
 # Test 0.2.58
 
+## C365 follow-up (not installed)
+
+Owner reports most behavior seems good, but redundant head text and M4 consumption spacing need correction. Both are fixed in the development source; see [C365 verification](TOOLTIP_C365.md). The 25,918-assertion follow-up is not an alteration of the immutable installed release evidence below. No blanket owner or multiplayer acceptance is inferred.
+
 ## C364 — Prototype owner report alongside this build (2026-10-20)
 
 Owner reports the separate tether prototype worked; captured console loads it alongside 0.2.58 and records 13 zombie impacts. This is prototype feedback, not acceptance of all 0.2.58 checks or connected multiplayer. The requested debug-mod removal is verified; installed gameplay remains unchanged. [Scoped evidence and integration status](checkpoints/R4C2_DART_EMITTER.md#c364--tether-dart-trap-selected-prototype-retired-2026-10-20).

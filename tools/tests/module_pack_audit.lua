@@ -256,16 +256,41 @@ end
 U.footer(tooltip)
 local prefix = getText("UI_OMHTT_HeadBattery", "")
 local found = false
-for i = 1, #rows - 2 do
+for i = 1, #rows - 1 do
     if rows[i].text == prefix then
-        local label, value, hint = rows[i], rows[i + 1], rows[i + 2]
+        local label, value = rows[i], rows[i + 1]
         check(label.r == 1 and label.g == 1 and value.g > value.r and value.x > label.x and value.y == label.y,
             "Native head consumption colors only the value on the same line")
-        check(hint.r == 1 and hint.g == 1 and hint.b == 1, "Native head explanation stays white")
         found = true
     end
 end
 check(found, "Native inventory footer includes consumption value")
+local D = require("OMHTT/TurretHeadDescription")
+check(not string.find(D.get(tooltip.item), "Head only", 1, true), "Redundant head-only explanation is removed")
+local oldDescription, oldTextManager = D.get, getTextManager
+local measured, advance = 0, 7
+getTextManager = function()
+    return {MeasureStringX = function(_, font, text)
+        measured = measured + 1
+        -- AngelCodeFont uses final-glyph width, so trailing whitespace has no advance.
+        return (#text - (string.sub(text, -1) == " " and 1 or 0)) * advance
+    end}
+end
+for _, value in ipairs({"Low", "Medium", "High"}) do
+    for _, size in ipairs({7, 11}) do
+        advance = size
+        D.get = function() return prefix .. value, {r = 1, g = 0.6, b = 0.2} end
+        tooltip.OMHTTFooterLayout = nil
+        rows = {}
+        U.footer(tooltip)
+        check(rows[2].x == 5 + #prefix * advance and rows[2].y == rows[1].y,
+            "Battery rating retains interior space at each font advance: " .. value)
+        local count = measured
+        U.footer(tooltip)
+        check(measured == count, "Cached battery footer does not remeasure each frame")
+    end
+end
+D.get, getTextManager = oldDescription, oldTextManager
 testPackAudit = "deaths=10000 repeats=10000 packs=1500 emptyPoolCorpseDrop=false mockDeathBatchMs=" .. deathMs
     .. " partialGrantRollback=pass removeRollback=pass revealCreateItems=" .. openCreates
     .. " revealFrames=500 newFrameItems=0 newFrameWraps=0 mockRenderBatchMs=" .. renderMs

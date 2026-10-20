@@ -17,11 +17,20 @@ function U.footer(panel, component)
         description, headRating = require("OMHTT/TurretHeadDescription").get(panel.item)
     end
     local font, originalWidth = tip:getFont(), panel:getWidth()
+    local batteryPrefix = getText("UI_OMHTT_HeadBattery", "")
     local layout = panel.OMHTTFooterLayout
     if not layout or layout.description ~= description or layout.font ~= font then
         layout = {description = description, font = font, width = 0, lines = string.split(description, "\n")}
         for i = 1, #layout.lines do
-            layout.width = math.max(layout.width, getTextManager():MeasureStringX(font, layout.lines[i]) + 12)
+            local line = layout.lines[i]
+            local width = getTextManager():MeasureStringX(font, line)
+            layout.width = math.max(layout.width, width + 12)
+            if headRating and string.sub(line, 1, #batteryPrefix) == batteryPrefix then
+                layout.batteryLine = i
+                layout.batteryValue = string.sub(line, #batteryPrefix + 1)
+                -- Native final-glyph bounds omit trailing-space advance in the prefix alone.
+                layout.batteryOffset = width - getTextManager():MeasureStringX(font, layout.batteryValue)
+            end
         end
         panel.OMHTTFooterLayout = layout
     end
@@ -42,13 +51,12 @@ function U.footer(panel, component)
     panel:drawRect(0, height, panel:getWidth(), spacing * #lines + 8, panel.backgroundColor.a, panel.backgroundColor.r, panel.backgroundColor.g, panel.backgroundColor.b)
     panel:drawRectBorder(0, 0, panel:getWidth(), total, panel.borderColor.a, panel.borderColor.r, panel.borderColor.g, panel.borderColor.b)
     local rarity = component and R.get(component)
-    local batteryPrefix = getText("UI_OMHTT_HeadBattery", "")
     for i = 1, #lines do
         local colored = rarity and string.find(lines[i], getText("UI_OMHTT_ModuleRarity", ""), 1, true) ~= nil
         local y = height + 4 + (i - 1) * spacing
-        if headRating and string.sub(lines[i], 1, #batteryPrefix) == batteryPrefix then
+        if headRating and layout.batteryLine == i then
             panel:drawText(batteryPrefix, 5, y, 1, 1, 1, 1, font)
-            panel:drawText(string.sub(lines[i], #batteryPrefix + 1), 5 + getTextManager():MeasureStringX(font, batteryPrefix),
+            panel:drawText(layout.batteryValue, 5 + layout.batteryOffset,
                 y, headRating.r, headRating.g, headRating.b, 1, font)
         else
             panel:drawText(lines[i], 5, y,
