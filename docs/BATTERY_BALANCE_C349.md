@@ -1,5 +1,15 @@
 # C349 — Saved M4 battery baseline and Siphon balance
 
+## C354 — Owner replaces the tier surcharge schedule
+
+Owner supplies seven percentages in the order of the preceding Abundant-to-Mythic table. Selected direct additions are **Abundant +10%, Common +15%, Uncommon +25%, Rare +50%, Epic +75%, Legendary +100%, Mythic +150%**. These replace C353's selected tier values; they are not an extra multiplier on top of that schedule. Retain additive stacking, the current ModulePowerBonus scaling, zero direct surcharge for Expansion Kits and Regulator, and the existing Regulator reduction formula. Preserve actual loot weights, rarity anchors and assignments.
+
+Head adjustments remain firearms x1.5, Scrapshot x1.25, Ballista unchanged. Siphon remains 45% proc / 2x first refund / +1x per additional module, with the same source and Synergy restrictions. Head consumption labels remain selected.
+
+Reference-loadout consequence: after removing Siphon/Regulator, four Mythic, four Legendary, two Epic, two Rare, one Common and one Uncommon module give 1 + 4*1.5 + 4*1 + 2*.75 + 2*.5 + .15 + .25 = **13.9x** head base cost, replacing the earlier proposed 11.44x (current installed 10.6x). With the retained head factors, the earlier model estimates become M9 ~98, M4 ~31, Ballista ~23 and Scrapshot ~52 real unpaused minutes. These supersede older proposed endurance figures and remain calculations, not gameplay tests.
+
+No further confirmation needed for this explicit numerical replacement. Selected for pending patch; no gameplay, version, save, installation or Workshop change this turn.
+
 ## C353 — Gentler values selected; per-module surcharge audit
 
 Owner selects C352 **1A** and asks for battery multipliers for each module. Exact pending tuning is now settled: firearms x1.5, Scrapshot x1.25, Ballista head cost unchanged; Epic/Legendary/Mythic surcharges rise by 10% relative. This selects balance, not implementation of unresolved Lever/emitter recipes. Installed 0.2.57.2 is unchanged.

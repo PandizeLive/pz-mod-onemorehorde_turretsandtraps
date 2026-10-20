@@ -1,5 +1,9 @@
 # Turret inventory and module plan
 
+## C354 — Tier surcharge schedule replaced
+
+Owner selects Abundant/Common/Uncommon/Rare/Epic/Legendary/Mythic additions of **10/15/25/50/75/100/150 percent**. This replaces the earlier +10%-relative high-tier adjustment; preserve selected head factors, Siphon rules and Regulator/Expansion exceptions. [Exact selected contract](BATTERY_BALANCE_C349.md#c354--owner-replaces-the-tier-surcharge-schedule). Not installed yet.
+
 ## C353 — Head and tier consumption values selected
 
 Owner selects C352 1A: firearms +50%, Scrapshot +25%, Ballista head cost unchanged, with Epic/Legendary/Mythic direct module surcharges +10% relative (0.66/0.88/1.10). Lower tiers, Regulator exception and loot tuning remain unchanged. [Per-module mapping and additive formula](BATTERY_BALANCE_C349.md#c353--gentler-values-selected-per-module-surcharge-audit). Values are selected for the pending patch, not installed. Siphon remains 45% / 2x / +1x. Colored head consumption tooltip remains selected.

@@ -1,5 +1,9 @@
 # Decision register
 
+## C354 — Explicit tier surcharge replacement
+
+Owner supplies 10%, 15%, 25%, 50%, 75%, 100%, 150% in the preceding rarity-table order. [Selected replacement schedule](BATTERY_BALANCE_C349.md#c354--owner-replaces-the-tier-surcharge-schedule) supersedes C353 tier values without changing head factors, loot tuning, Siphon or exceptions. Planning persisted; no installed gameplay change.
+
 ## C353 — Gentler head and tier values confirmed
 
 Owner selects C352 1A and requests per-module battery multipliers. [Selected exact values and source-backed surcharge table](BATTERY_BALANCE_C349.md#c353--gentler-values-selected-per-module-surcharge-audit). Head balance and tier adjustments are settled for the pending patch. No code/install or unresolved recipe approval inferred from this informational follow-up.
