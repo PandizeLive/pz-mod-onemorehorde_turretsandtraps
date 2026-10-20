@@ -1,5 +1,35 @@
 # R4C2 — Tether Dart Trap
 
+## C366 — Tuning and recipe selected; Poke Floor comparison (2026-10-20)
+
+Owner selects C364 **1A / 2A**, asking that balance account for Poke Floor's crafting cost, range, damage/DPS and AoE potential. Record the selected 35 damage, six-tile range, tested 12-out/4-return speeds, 0.4-second reset, 100 condition, one wear per completed cycle including misses, four weight and five-second service. The selected crafting package is two Small Metal Sheets, one Metal Bar, one Rope, four Screws and two uses of Wire, retained Screwdriver/Pliers/Wrench-or-Pipe-Wrench, Mechanics 2 and 20 crafting XP, one trap per 30-second craft. No new rarity; crafted-only. Earlier integration authorization remains active. This selection is not an installed release.
+
+Read the actual source rather than treating Poke Floor as a single-target trap:
+
+| Default | Poke Floor, implemented | Tether Dart Trap, selected |
+| --- | --- | --- |
+| Damage per strike | 50 to every eligible zombie on its tile | 35 to first outbound victim only |
+| Reach | Occupied floor tile | Straight unobstructed lane, up to six tiles from muzzle |
+| Cycle | 1.5 active seconds | About `0.4 + distance / 12 + distance / 4` active seconds |
+| Ideal continuous damage | About 33.3 DPS per zombie; about 100 total with three continuously present | About 47.7 / 25 / 14.6 DPS at 1 / 3 / 6 tiles of nail travel |
+| Condition / wear | 200 / one per damaging cycle, shared across victims | 100 / one per completed cycle, including misses |
+| Repair | Two Scrap Metal; ten-second action | Previously selected free tool-assisted repair; five seconds |
+| Materials | Four Metal Bars, two Small Metal Sheets, eight Screws, plus a Tire Pump or two Metal Pipes | One Metal Bar, two Small Metal Sheets, four Screws, one Rope, two Wire uses |
+| Skill | Mechanics 1 with pump or 2 improvised; 20 XP | Mechanics 2; 20 XP |
+
+Sources: `Source/42.20/media/scripts/OMHTT_PokeFloor.txt`, server `ControlPoke.lua`, shared `ControlPokeAction.lua`, `TetherCycle.lua`, `TetherLane.lua`, and Poke Sandbox defaults. Poke strikes iterate all eligible living zombies present at strike time; there is no splash beyond that tile. Tether's six-tile reach is not six-tile AoE. Both avoid ammunition and energy costs. Wall placement, obstruction and player first-hit collateral remain Tether constraints. Poke default endurance is 200 damaging cycles; Tether's selected endurance is 100 completed cycles, before external damage/repair.
+
+DPS figures are analytical ideal sustained rates in unpaused real seconds, not game-world hours or measured gameplay. Travel distance is the first contact point rather than actor-center distance. Discrete steps, first-cycle startup, detection scheduling, targets leaving/dying, misses, collision and actual health lost reduce/change results. Close contact can exceed Poke's per-zombie rate; do not describe Tether as universally lower DPS. Poke crowd totals assume every target remains on that tile through each strike and are not guaranteed.
+
+Recommendation: retain the selected 35 damage and crafting package. Lower metal cost, wall safety and ranged coverage offset weaker distant single-target throughput and half the condition; Poke retains the crowd-damage role. No new piercing, splash, knockdown or automatic upgrade scaling is authorized. Rope/Wire availability is an additional cost, not a numeric scrap-equivalent claim.
+
+One material correction to the earlier recommendation remains to discuss: free repairs make Tether upkeep indefinitely material-free while Poke repairs consume scrap. The owner has not approved replacing the selected free repair yet.
+
+- **1A (recommended):** consume one Scrap Metal for a full 100-condition Tether repair, retaining the selected tools and five-second duration. This matches Poke's one Scrap Metal per 100 restored maximum condition and halves its repair time/materials together. Actual partial-repair efficiency depends on condition at service.
+- **1B:** retain the selected free tool-assisted repair, accepting its long-term upkeep advantage. Do not silently alter Poke Floor.
+
+This turn records approval and source-based balance review only. No gameplay version, installation, testing claim or Workshop note changes. C365 tooltip source fixes remain ready for the integrated patch. **Decision needed: repair adjustment 1A or retain 1B.**
+
 ## C364 — Tether Dart Trap selected; prototype retired (2026-10-20)
 
 Owner selects C363 **1B / 2A**: damage only, no retraction knockdown; zombie-only autonomous sensing with first-hit player collateral. Owner names the device **Tether Dart Trap**, specifies a placed wall panel with four cardinal placement directions, reports the prototype worked, requests removing the separate debug mod and using its tether mechanic in the actual trap. This authorizes integration; it does not choose the still-unset tuning or crafting costs. One placement shoots one nail away from its supporting wall, not four simultaneous shots. Native and player-built walls remain required. Existing no-ammo/no-battery/no-modules and trigger override rules are unchanged.
