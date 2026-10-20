@@ -1,5 +1,9 @@
 # C361 — Scripted tether prototype
 
+## C364 — Owner reports success; separate mod removed (2026-10-20)
+
+Owner reports the prototype worked and requests using its mechanic in **Tether Dart Trap**. Console inspection confirms the exact debug mod loaded and 13 zombie impact events, alongside gameplay 0.2.58; connected multiplayer remains unverified. The six installed files match C362 hashes and were moved out of Zomboid/mods into local project diagnostics. **The earlier Test now/installed instructions below are historical; the debug mod is no longer installed.** Save activation settings were not edited. [Integration scope, retirement evidence and remaining decisions](checkpoints/R4C2_DART_EMITTER.md#c364--tether-dart-trap-selected-prototype-retired-2026-10-20).
+
 ## C362 — Owner-approved local installation (2026-10-20)
 
 After asking whether the prototype was installed, the owner approved proceeding. Installed the clean, separate **OMH Tether Prototype (Debug Only)** / `OMHTT_TetherPrototype` **0.0.1** into `C:/Users/bandi/Zomboid/mods/OMHTT_TetherPrototype`. All six installed files match the native-tested C361 package and source commit `8837d50e61ac8e30e3a9b5c0ccfff0daa3ed7c1c` by SHA-256. The target did not previously exist; no existing mod or save files were replaced. The existing gameplay release remains 0.2.58. Local evidence: `diagnostics/tether-cycle/install.json`.

@@ -1,4 +1,43 @@
-# R4C2 — Fixed dart emitter
+# R4C2 — Tether Dart Trap
+
+## C364 — Tether Dart Trap selected; prototype retired (2026-10-20)
+
+Owner selects C363 **1B / 2A**: damage only, no retraction knockdown; zombie-only autonomous sensing with first-hit player collateral. Owner names the device **Tether Dart Trap**, specifies a placed wall panel with four cardinal placement directions, reports the prototype worked, requests removing the separate debug mod and using its tether mechanic in the actual trap. This authorizes integration; it does not choose the still-unset tuning or crafting costs. One placement shoots one nail away from its supporting wall, not four simultaneous shots. Native and player-built walls remain required. Existing no-ammo/no-battery/no-modules and trigger override rules are unchanged.
+
+### Owner test and cleanup
+
+The captured console loads `OMHTT_TetherPrototype`, runs alongside 0.2.58, and records 13 zombie impact events. Owner reports success; do not infer specific occlusion, every zoom level, or connected multiplayer acceptance. No tether exception is present in the inspected console; unrelated Firearms translation and stock map warnings remain. Raw capture stays local at `diagnostics/tether-trap-C364/owner-console.txt`; its digest and scoped findings are in `diagnostics/tether-trap-C364/owner-test.json`.
+
+The installed directory `C:/Users/bandi/Zomboid/mods/OMHTT_TetherPrototype` was resolved and all six files verified against C362 install hashes, then moved outside the game's mods directory to project-local `diagnostics/tether-cycle/retired-installed-C364`. Removal verified; retirement evidence is `diagnostics/tether-cycle/retirement-C364.json`. No existing gameplay mod or save was modified. A save that still lists the debug mod must have that entry disabled before loading; loaded Lua does not disappear from an already-running session. Frozen prototype source remains solely as regression/reference tooling, not an installed selectable mod.
+
+### Implemented preparatory integration, not a playable release
+
+- `Source/.../shared/OMHTT/TetherCycle.lua` ports the tested launch/retract/reset engine into Traps, requires explicit tuning instead of promoting fixture defaults, and validates cardinal directions and persistent Controller-style IDs in ordered network snapshots.
+- `TetherLane.lua` adds first-hit native player collision, excludes protected/dead/floor actors, and keeps autonomous detection zombie-only. It selects a collision; actual injury settlement is not yet wired.
+- `TetherMount.lua` resolves all four native build faces through existing wall geometry, requires a real map/player-built wall, and derives the muzzle on the outward side. Floors alone, missing supports and destroyed constructed walls are rejected. This is the checked geometry adapter, not a newly playable Building entry.
+- Generated Traps content contains the three modules; Turrets contains none. No event hooks, craft/loot items, damage application, live Controller receiver registration or placement route are activated. Actual world-item lifecycle, Controller wiring, damage/injury settlement and visual bootstrap remain implementation work for the integrated patch. Main installed build remains 0.2.58; no new gameplay tag/install or Workshop changes.
+
+Native 42.21 run: **32 new assertions plus 41 existing prototype assertions pass**, 48.2 seconds, zero connected clients. Real IsoPlayer/IsoZombie/IsoObject/IsoThumpable/IsoGridSquare fixtures verify collateral and four wall faces; cell lookup is isolated. Existing renderer compiles; this does not prove a newly integrated renderer or connected authority. Report and exact source hashes: `diagnostics/tether-trap-C364/result.json`. First attempts exposed fixture mistakes (God-mode capability gate and lowercase native PropertyContainer.set); corrected using current API signatures and rerun successfully. No production error is inferred from those fixture failures.
+
+Package closure/independence verification passes after updating its stale optional turret-only call-site inventory and pressure-plate sprite normalization. These changes repair the test's expectations, not gameplay. Report: `diagnostics/tether-trap-C364/package-static.json`. Generated/source modules match; banned-call/style and no-auto-activation checks pass. Full gameplay/persistence/connected acceptance is still pending.
+
+### Remaining content choices — proposals only
+
+Review before packaging the gameplay integration. The project's crafting rule requires explicit ingredients/tools/skills/XP review. No second approval of the selected name, tether mechanic, wall-facing behavior or collateral policy is requested.
+
+**1 — Starting tuning**
+
+- **1A (recommended):** 35 zombie damage, six-tile maximum reach; preserve the tested travel speeds (12 tiles/second outbound, four returning) and 0.4-second reset, giving about 2.4 active seconds for a maximum-distance miss and faster cycles for nearer impacts. 100 condition, one wear per completed cycle including misses, four weight. Normal trap scratch treatment for a player hit, never knockdown or return damage. Five-second placement/pickup and five-second tool-assisted full repair with no consumed repair materials. These are proposed gameplay defaults, not accepted values from the no-damage fixture.
+- **1B:** the same package with 50 zombie damage, making reusable ranged coverage stronger. No second item/variant.
+
+**2 — Mechanical crafting**
+
+Common proposed recipe: two Small Metal Sheets, one Metal Bar for the reusable dart, one Rope, four Screws and two uses of Wire; retain Screwdriver, Pliers and Wrench/Pipe Wrench. One crafted trap, 30 active seconds; no camera, electrical skill, battery, consumable ammo or loot rarity. Assembly/repair tools are the same retained tools. This remains a mechanical abstraction, not a claim that the recipe models a working physical winch.
+
+- **2A (recommended):** Mechanics 2; award 20 Mechanics XP on crafting only.
+- **2B:** Mechanics 1; award 10 Mechanics XP, with the same materials/tools.
+
+Crafted-only proposal avoids inventing a loot rarity/weight; future loot inclusion requires owner rarity selection. Tuning and recipe choices remain unselected. The geometry/collision/cycle port and requested debug cleanup are completed; the gameplay release is not. **Decision needed: new 1A/B and 2A/B choices.**
 
 ## C363 — Next checkpoint and combat choices (2026-10-20)
 

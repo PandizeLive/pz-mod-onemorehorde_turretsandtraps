@@ -25,7 +25,7 @@ def owner(path):
     if path.suffix == ".lua":
         if path.stem in SHARED_LUA or path.stem.startswith("Control") or path.stem in {"TurretBattery", "TurretItemState"}:
             return set(IDS)
-        if path.stem.startswith(("Barrier", "Bed", "Barb")) or path.stem in TRAP_LUA:
+        if path.stem.startswith(("Barrier", "Bed", "Barb", "Tether")) or path.stem in TRAP_LUA:
             return {"traps"}
         if path.stem.startswith(("Turret", "Firearm", "Hybrid", "Prototype")) or path.stem in {"ModuleLoot", "LootDefinitions", "TargetHealth", "ClientOptions"}:
             return {"turrets"}

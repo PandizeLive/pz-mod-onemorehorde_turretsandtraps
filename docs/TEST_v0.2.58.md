@@ -1,5 +1,9 @@
 # Test 0.2.58
 
+## C364 — Prototype owner report alongside this build (2026-10-20)
+
+Owner reports the separate tether prototype worked; captured console loads it alongside 0.2.58 and records 13 zombie impacts. This is prototype feedback, not acceptance of all 0.2.58 checks or connected multiplayer. The requested debug-mod removal is verified; installed gameplay remains unchanged. [Scoped evidence and integration status](checkpoints/R4C2_DART_EMITTER.md#c364--tether-dart-trap-selected-prototype-retired-2026-10-20).
+
 ## Automated evidence
 
 Installed-game Kahlua/foundation validation passes **25,906 assertions**: approved tier values, isolated firearm/Scrapshot factors, custom tuning, Regulator and excluded-module behavior, Siphon 44-success/45-failure boundaries and duplicate-failure protection, secondary eligibility and Controller exclusion, mechanical contact/wear/injury, and actual hybrid Building rows with both crafting routes and one carried deployment.

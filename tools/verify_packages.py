@@ -7,13 +7,18 @@ from build_packages import IDS, ROOT, build
 OPTIONAL_TRAPS = {
     "OMHTT/ControlClient": {"OMHTT/Turret", "OMHTT/TurretTransferAction"},
     # Manage callbacks are invoked only by the Turrets-only management window.
-    "OMHTT/ControlManage": {"OMHTT/TurretAccess", "OMHTT/Turret"},
+    "OMHTT/ControlManage": {"OMHTT/TurretAccess", "OMHTT/Turret", "OMHTT/TurretFacingCursor"},
+    # Poke rows return before the turret-only inventory job.
+    "OMHTT/ControlGraphStats": {"OMHTT/Turret", "OMHTT/TurretAmmo", "OMHTT/Firearms",
+                              "OMHTT/FirearmFeed", "OMHTT/TurretVoid", "OMHTT/TurretHeads"},
+    # Invoked by ControlWorld only for turret receivers.
+    "OMHTT/ControlCycle": {"OMHTT/Turret", "OMHTT/TurretClock", "OMHTT/TurretWorld", "OMHTT/TurretAutomation"},
     # This branch requires an existing OMHTTTurret source container.
     "OMHTT/ControlTransferAction": {"OMHTT/Turret", "OMHTT/TurretTransferAction"},
     "OMHTT/ControlPanel": {"OMHTT/TurretManage"},
     "OMHTT/ControlPanelLayout": {"OMHTT/Turret"},
     "OMHTT/ControlWorld": {"OMHTT/Turret", "OMHTT/TurretAutomation", "OMHTT/TurretWorld"},
-    "OMHTT/ControlAction": {"OMHTT/Turret"},
+    "OMHTT/ControlAction": {"OMHTT/Turret", "OMHTT/TurretWorld"},
     "OMHTT/TurretItemState": {"OMHTT/TurretVoid"},
 }
 
@@ -32,6 +37,8 @@ def main():
                     assert component == 'traps' and dependency in OPTIONAL_TRAPS.get(name, set()) and line.startswith('    '), f"{component}: {name} requires absent {dependency}"
         adapter = "OMHTT/BarrierPlacement" if component == "traps" else "OMHTT/TurretInstall"
         assert adapter in lua and "OMHTT/HybridBuild" in lua, "Missing component Building adapter"
+        for module in ["TetherCycle", "TetherLane", "TetherMount"]:
+            assert ("OMHTT/" + module in lua) == (component == "traps"), "Tether mechanics belong only to Traps"
         options = re.findall(r"option\s+(\w+\.\w+)\s*\{", files["42.20/media/sandbox-options.txt"].decode())
         assert len(options) == len(set(options)), component + " has duplicate options"
         option_sets[component] = set(options)
@@ -59,6 +66,8 @@ def main():
     normalized = packages['turrets'][control_script]
     for facing in range(4):
         normalized = normalized.replace(f'omhtt_turret_01_{21 + facing}'.encode(), f'omhtt_barrier_01_{76 + facing}'.encode())
+    for facing in range(5):
+        normalized = normalized.replace(f'omhtt_turret_01_{25 + facing}'.encode(), f'omhtt_barrier_01_{80 + facing}'.encode())
     assert normalized == packages['traps'][control_script], 'Controller scripts differ beyond independent sprite identities'
     virtual_overrides = {"42.20/mod.info", "42.20/media/sandbox-options.txt", control_script}
     for name in common - virtual_overrides:

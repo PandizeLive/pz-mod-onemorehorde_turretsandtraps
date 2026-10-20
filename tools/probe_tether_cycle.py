@@ -1,3 +1,4 @@
+import argparse
 import hashlib
 import json
 import os
@@ -29,6 +30,13 @@ def package_preview():
 
 
 def main():
+    global OUTPUT
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--trap", action="store_true")
+    args = parser.parse_args()
+    if args.trap:
+        OUTPUT = ROOT / "diagnostics/tether-trap-C364"
+        OUTPUT.mkdir(parents=True, exist_ok=True)
     source = ROOT / "tools/prototypes/tether"
     for path in source.rglob("*.lua"):
         text = path.read_text(encoding="utf-8")
@@ -36,7 +44,8 @@ def main():
         assert "\t" not in text and not text.startswith("\ufeff"), path
     for path in source.rglob("*.json"):
         json.loads(path.read_text(encoding="utf-8"))
-    package_preview()
+    if not args.trap:
+        package_preview()
     cache = OUTPUT / "cache"
     package = cache / "mods/OMHTT_TetherPrototype"
     shutil.copytree(source, package, dirs_exist_ok=True)
@@ -45,6 +54,20 @@ def main():
             (package / layer / "media" / directory).mkdir(parents=True, exist_ok=True)
     shutil.copyfile(ROOT / "tools/tests/tether_prototype.lua",
                     package / "42.20/media/lua/server/TetherCycleCheck.lua")
+    trap_sources = []
+    if args.trap:
+        folder = ROOT / "Source/42.20/media/lua/shared/OMHTT"
+        for name in ["TetherCycle", "TetherLane", "TetherMount", "BarbContact", "BarbSupport"]:
+            path = folder / (name + ".lua")
+            text = path.read_text(encoding="utf-8")
+            assert not re.search(r"\b(?:pcall|xpcall|ipairs|next)\s*\(", text), path
+            assert "\t" not in text and not text.startswith("\ufeff"), path
+            destination = package / "42.20/media/lua/shared/OMHTT" / path.name
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(path, destination)
+            trap_sources.append(path)
+        shutil.copyfile(ROOT / "tools/tests/tether_trap.lua",
+                        package / "42.20/media/lua/server/TetherTrapCheck.lua")
     client = (source / "42.20/media/lua/client/OMHTTTether/View.lua").read_text(encoding="utf-8")
     assert "]====]" not in client
     (package / "42.20/media/lua/server/TetherClientSyntax.lua").write_text(
@@ -70,13 +93,17 @@ def main():
         try:
             while process.poll() is None and time.monotonic() - started < 150:
                 output = transcript.read_text(encoding="utf-8", errors="replace")
-                if MARKER + " completed=true" in output:
+                if MARKER + " completed=true" in output and (
+                    not args.trap or "[OMHTT-TetherTrap] completed=true" in output
+                ):
                     process.stdin.write("quit\n")
                     process.stdin.flush()
                     process.wait(timeout=40)
                     break
                 if 'Exception in thread "main"' in output or "java.lang.RuntimeException:" in output:
                     raise RuntimeError("Native test failed: " + str(transcript))
+                if args.trap and "TetherTrapCheck.lua:" in output:
+                    raise RuntimeError("Trap assertion failed: " + str(transcript))
                 time.sleep(.25)
             else:
                 raise RuntimeError("No completed test marker: " + str(transcript))
@@ -93,6 +120,10 @@ def main():
         "reports": [line[line.index(MARKER):] for line in output.splitlines() if MARKER in line],
         "prototypeHashes": {p.relative_to(source).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
                             for p in sorted(source.rglob("*")) if p.is_file()},
+        "trapHashes": {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
+                      for p in trap_sources},
+        "trapReports": [line[line.index("[OMHTT-TetherTrap]"):] for line in output.splitlines()
+                        if "[OMHTT-TetherTrap]" in line],
         "limitations": "No connected clients or rendered-world test; synthetic wall/cell lookup with native actor/square.",
     }
     (OUTPUT / "result.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
