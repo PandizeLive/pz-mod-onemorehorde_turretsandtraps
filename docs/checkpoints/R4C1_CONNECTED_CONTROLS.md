@@ -590,3 +590,8 @@ Design selections are settled. This records choices for the next patch, not a cl
 ## C378 - Broader trigger-power rule under discussion (2026-10-21)
 
 Owner selects Controller supply for the laser and suggests reviewing that requirement for all triggers. [C378 tradeoffs and pending scope choice](R4C3_BEAM_SENSOR.md#c378--controller-supply-and-range-selected-2026-10-21) distinguishes all-trigger Controller dependence from retaining independent Button/Plate/Lever signaling. Existing independence is not superseded yet; Lever C375 choices remain. Mechanical Poke Floor is excluded. No new implementation approval or gameplay changes.
+
+
+## C379 - All triggers require Controller supply (2026-10-21)
+
+Owner selects C378 1A and requires very low active consumption for mechanical triggers. Buttons, Plates and Lever therefore now join laser sensors in requiring powered assigned Controllers; inactive mechanical inputs add no draw beyond Controller idle. This supersedes prior independent input operation, not the signal/Firing/Detection/OR model. [Proposed numerical rates and remaining sensor package](R4C3_BEAM_SENSOR.md#c379--shared-power-and-obstruction-selected-2026-10-21). Poke Floor/passive hazards remain independent. Preserve links and stored Lever position through power loss, extinguish powered indicators, reconcile held state on restoration and never replay Button presses. Exact rates/new sensor recipe are unselected; no gameplay patch is claimed.

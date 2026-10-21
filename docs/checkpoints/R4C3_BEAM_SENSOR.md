@@ -69,3 +69,33 @@ Mechanical Poke Floor and passive traps are not triggers and are excluded from t
 **3A (recommended): walls/closed doors shorten the monitored beam; no signal from the door alone.** Actors in the visible segment supply ON. **3B: closed doors also hold ON**, potentially sustaining receiver operation while shut. This was not answered by the range selection; do not infer it.
 
 Crafting and exact sensor load remain to settle after these choices. No gameplay patch or new verification result this discussion. Installed 0.2.59.1 remains deferred, and Lever C375 stays selected without implementation approval.
+
+
+## C379 — Shared power and obstruction selected (2026-10-21)
+
+Owner selects C378 1A with "the non electrical will consume very low electricity when active", and 3A. Every trigger (Button, Pressure Plate, Lever, laser) requires a valid powered assigned Controller. This supersedes independent basic-input activation. Mechanical inputs consume very little while active; their incremental inactive draw is zero, separate from existing Controller overhead. Poke Floor and passive hazards are not triggers and remain independent. Receiving turrets still pay their own real ammunition/energy costs; Siphon never refunds Controller charge.
+
+Walls/closed doors shorten the laser's visible/monitored line without generating ON by themselves. Actor crossings/occupancy within that segment hold ON, clear returns OFF. Preserve unpowered/invalid-source OFF, existing link identity, OR inputs and admitted-action rules. Controller power loss extinguishes the laser and Lever green indicator, but retains the Lever's stored switch position; power restoration reconciles current held states without replaying historical Button presses. Do not remove failed source links and thereby restore Tether autonomous sensing.
+
+### Proposed final balance, common to both recipe choices
+
+Battery costs below are **percentage points of one full Controller car battery**, additive to Controller idle and receiver operation. Time uses **in-game hours**, unlike the earlier real-hour head comparison.
+
+| Input | Proposed incremental draw |
+| --- | --- |
+| Button | 0.0001% per accepted press, charged once per source event rather than per linked receiver |
+| Pressure Plate | 0.01% per game hour while occupied/actively supplying signal |
+| Lever | 0.01% per game hour while ON and powered |
+| Laser | 0.10% per game hour while scanning/powered, whether interrupted or clear |
+
+For scale, a continuously ON mechanical input adds 0.24% per 24 game hours; one laser adds 2.4%; 10,000 Button presses add 1%. These are proposed arithmetic rates, not endurance measurements. Existing Controller battery-only overhead is 100/48 percentage points per game hour; do not mistake incremental rates for whole-base endurance. Controller mains/generator availability uses its existing supply priority and avoids bank debit; native incremental generator-load accounting is not established by this proposal. No separate batteries on inputs. Preserve fractional debits, authority, spare-bank selection, bounded accumulation and pause/fast-forward consistency; do not round away tiny costs or allocate separate per-trigger frame scans. Expose meaningful Sandbox tuning.
+
+### Remaining package choice - Sensor crafting
+
+**1A (recommended): craft from raw components:** two Electronics Scrap, one Electric Wire, one Small Sheet Metal and two Screws. No existing Button is consumed.
+
+**1B: upgrade one Button:** one Button, one Electronics Scrap and one Small Sheet Metal. Its raw-material total is equivalent to A given the existing Button recipe; transfer Button condition instead of granting a free repair. Retire the consumed Button's identity/links and create a newly assigned sensor identity, never carry old Button pulses.
+
+Both propose the above balance plus retained Screwdriver/Pliers, Electricity 2, ten Electricity XP, 20-second crafting, 0.5 item weight and 100 condition. Crafted-only; no new loot rarity/weight. Standard trigger service: 1s place/pickup and 2s repair, retained Screwdriver, no repair material; preserve condition on pickup. Reuse OMH: Triggers, unique names, Controller assignment/permissions/links and Stockpile admission. Functional temporary beam presentation stays within the existing authorized developer-marker style; no generated final art or artist-direction change.
+
+These exact rates, recipe and new sensor values remain proposed pending package selection; owner has selected the shared supply principle and obstruction rule only. Lever recipe/service/latch remain C375 with its new Controller-power prerequisite. No gameplay edits, tests, installed-version change, merge or publication this turn. 0.2.59.1 owner testing remains deferred. A final combined recap/implementation approval follows the remaining package decision.
