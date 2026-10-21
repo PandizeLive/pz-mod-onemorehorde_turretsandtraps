@@ -79,3 +79,24 @@ Player direct damage does not inherit critical/Execute bonuses, and turret playe
 These are starting proposals, not tested balance. Even low per-hit damage can stack across rapid-fire turrets; no immunity window or universal damage cap is proposed. New Sandbox tuning should expose player-damage and wound-chance multipliers after the package is selected, keeping zombie values separate. Native attack integration, UI and connected-player verification remain unfinished. The selected custom path is not a new request to pause all approved work; the specific numerical package is the remaining material input.
 
 No code, generated package, release tag, installation or new test result this turn. Reviewed ad83cccd83fbaabf555c6847341ff863b8d62cb1; origin fetched with no newer dev commits, draft PR #1 remains the active handoff. Persist/mirror this decision under C108/C119. **Decision needed: 1A or 1B numeric package.**
+
+
+## C388 -- Stronger 1C requested (2026-10-21)
+
+Owner: "1C even larger". In context, interpret this as stronger player damage/wound chance than the previous 1B, not a larger reduction. The exact magnitude was not provided. Custom player balance remains selected; propose 1C at **2x C387 1A damage / 3x its wound chances**. Compared with 1B, that is one-third more damage and 50% higher wound chances. These multipliers are recommendations requiring confirmation, not previously approved values.
+
+| Head | Proposed 1C player damage | Wound chance |
+| --- | --- | --- |
+| Potato | 2 per direct hit | 0% |
+| Firearm | 4 per bullet; shotgun maximum 8 per shell | 6% |
+| Ballista | 10 per spear hit | 15% |
+| Scrapshot | 8 maximum per volley, proportional to landed pellets | 9% |
+| Rotary Bat | 2 per eligible contact | 0% |
+| Rotary Blades | 4 per eligible contact | 15% cut |
+| Lobber | 10 at center, retaining blast falloff | 15% at center, retaining falloff |
+
+Retain all proposed C387 protections and scope: one nonzero wound roll per player per real second across turrets; no per-pellet rolls; no player critical/Execute/forced knockdown or guaranteed embedded bullets/deep wounds; fixed direct player damage; no head/neck multiplier; armor and server protections; same profile for collateral. Multiple hits/defenses still stack ordinary damage. Keep zombie balance and passive/Poke/Tether injuries unchanged. The rotary recovery interval remains. These protections are still part of the proposed package, not separately implemented or tested.
+
+Recommend this as the next starting point rather than continuing upward without a connected PvP test. Automatic fire and multiple turrets can accumulate damage rapidly. Do not infer a precise time to kill from body-part damage or claim a uniform percentage reduction versus handheld weapons. No new game/runtime evidence is obtained this turn.
+
+Planning only. Inspected clean 76a7567e9350938aa3bd990d75e6f00bae89fa3b, fetched origin with no newer dev commits. Installed 0.2.60 and the C386 staged policy foundation are unchanged. No source/package edit, release tag, test acceptance or install. Full targeting patch remains authorized, pending this numeric selection and unfinished integration. **Decision needed: confirm 1C values.**

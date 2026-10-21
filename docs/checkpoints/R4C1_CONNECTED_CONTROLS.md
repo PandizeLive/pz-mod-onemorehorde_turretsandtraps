@@ -670,3 +670,8 @@ Proposed 1A reuses native gun/spear wounds and the existing two-damage/five-pain
 ## C387 -- Reduced custom turret PvP selected (2026-10-21)
 
 Owner selects C386 1B and requests significantly reduced player damage and wound chance because automated defenses should not dominate PvP. Native gun/spear wounds are no longer the recommended delivery path. Exact values are not yet approved. [Proposed cautious versus stronger numeric packages](../TARGETING_AUDIT_C386.md#c387--custom-reduced-player-injuries-selected-2026-10-21) cover head damage, wound probabilities, repeated-roll safeguards and module/collateral boundaries. Recommend 1A; 1B multiplies those damage values by 1.5 and doubles wound chances. These are proposals, not measured balance or implementation. Preserve the approved Controller target modes, current-owner factions, inheritance/overrides, zombie combat and trigger behavior. Full targeting implementation remains approved but unfinished; installed 0.2.60 is unchanged. No new tests or gameplay build. Decision needed: numeric package.
+
+
+## C388 -- Stronger PvP 1C requested (2026-10-21)
+
+Owner requests "1C even larger" following C387's cautious/stronger player-injury proposals. Interpret as higher damage and wound chances than 1B. [Concrete 1C proposal](../TARGETING_AUDIT_C386.md#c388--stronger-1c-requested-2026-10-21): twice original 1A damage and three times its wound chances, retaining the proposed repeated-roll and anti-instant-kill protections. Exact numbers are newly proposed, not silently accepted. No gameplay/build/install change; full targeting remains authorized and unfinished. Decision needed: numeric 1C confirmation.
