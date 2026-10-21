@@ -184,13 +184,20 @@ def build_component(component):
         for facing in range(4):
             marker = Image.new("RGBA", (128, 256))
             draw = ImageDraw.Draw(marker)
-            points = [(64, 174), (92, 188), (92, 214), (64, 200)] if facing % 2 == 0 else [(36, 188), (64, 174), (64, 200), (36, 214)]
+            # Native 2x tile projection: texture (64,192) is the tile origin.
+            # E/N/W/S launch from west/south/east/north backing edges, respectively.
+            cx, cy = [(0, .5), (.5, 1), (1, .5), (.5, 0)][facing]
+            along_x, along_y = (0, 1) if facing % 2 == 0 else (1, 0)
+            points = []
+            for along, height in [(-.22, .37), (.22, .37), (.22, .23), (-.22, .23)]:
+                x, y = cx + along * along_x, cy + along * along_y
+                points.append((round(64 + 64 * (x - y)), round(192 + 32 * (x + y) - 192 * height)))
             draw.polygon(points, fill="white", outline=(100, 100, 100))
-            draw.text((47, 157), "DART", fill="white")
+            draw.text((round(64 + 64 * (cx - cy) - 12), min(y for x, y in points) - 13), "DART", fill="white")
             stream = io.BytesIO()
             marker.save(stream, format="PNG")
             png = stream.getvalue()
-            dx, dy = [(63, 32), (-63, 32), (0, 0), (0, 0)][facing]
+            dx, dy = 0, 0
             entry = pack_string(sheet + "_" + str(90 + facing)) + struct.pack("<8i", 0, 0, 128, 256, dx, dy, 128, 256)
             pages.append(pack_string("OMHTT_Tether" + str(facing)) + integer(1) + integer(1) + entry + integer(len(png)) + png)
     return tiles, b"PZPK" + integer(1) + integer(len(pages)) + b"".join(pages)

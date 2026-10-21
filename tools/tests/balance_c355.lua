@@ -23,7 +23,7 @@ local potato = S.resolve({active = {}})
 SandboxVars.OMHTurretsTraps.FirearmBatteryMultiplier = 100
 check(S.resolve({active = {}}).batteryPercent == potato.batteryPercent, "Firearm change excludes Potato")
 SandboxVars.OMHTurretsTraps.FirearmBatteryMultiplier = nil
-local cases = {{"Ballista", "High"}, {"Scrapshot", "Low"}, {"RotaryBat", "High"}, {"RotaryBlades", "High"}, {"Lobber", "Medium"}}
+local cases = {{"Ballista", "High"}, {"Scrapshot", "Low"}, {"RotaryBat", "High"}, {"RotaryBlades", "VeryHigh"}, {"Lobber", "High"}}
 for i = 1, #cases do
     local item = head(cases[i][1])
     local rating, drain = D.rating(item)
@@ -34,5 +34,19 @@ for i = 1, #cases do
         "Installed buffs cannot change the head-only rating")
     check(string.find(rich, "<RGB:1,1,1>", 1, true) ~= nil, "Rich rating restores white text")
 end
+local blades, bat, lobber = head("RotaryBlades"), head("RotaryBat"), head("Lobber")
+check(math.abs(S.resolve({head = blades}).motorPower - 100 / 3) < .000001, "Blades doubles default draw")
+check(math.abs(S.resolve({head = bat}).motorPower - 100 / 6) < .000001, "Bat remains unchanged")
+check(math.abs(S.resolve({head = lobber}).batteryPercent - .03) < .000001, "Lobber increases 50 percent")
+check(math.abs(S.resolve({head = lobber, payloadType = "Base.PipeBomb"}).batteryPercent - .06) < .000001, "Lobber factor applies to actual payload")
+for _, sample in pairs({{0,"None"},{.9,"Minimal"},{1,"VeryLow"},{2.5,"Low"},{5,"Medium"},{15,"High"},{30,"VeryHigh"},{60,"Extreme"}}) do
+    SandboxVars.OMHTurretsTraps.RotaryBladesBatteryMultiplier = sample[1] / (100 / 6)
+    check(D.rating(blades).key == "UI_OMHTT_HeadBattery" .. sample[2], "Absolute band boundary " .. sample[2])
+end
+SandboxVars.OMHTurretsTraps.RotaryBladesBatteryMultiplier = 3
+SandboxVars.OMHTurretsTraps.RotaryBatteryHours = 10
+check(math.abs(S.resolve({head = blades}).motorPower - 30) < .000001, "Saved rotary hours and new head factor combine")
+SandboxVars.OMHTurretsTraps.LobberBatteryMultiplier = 0
+check(D.rating(lobber).key == "UI_OMHTT_HeadBatteryNone", "Zero Lobber consumption is None")
 SandboxVars.OMHTurretsTraps = saved
 print("C355 balance: tier schedule, family isolation, saved tuning and head-only ratings passed")

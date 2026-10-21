@@ -37,6 +37,7 @@ def main():
     (turret_probe.parent / "OMHTT/NativeTether.lua").write_text((ROOT / "tools/tests/tether_trap.lua").read_text(encoding="utf-8").replace("Events.OnServerStarted.Add(run)", "return run"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativeTetherService.lua").write_text((ROOT / "tools/tests/native_tether_service.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativePlacement.lua").write_text((ROOT / "tools/tests/native_placement.lua").read_text(encoding="utf-8"), encoding="utf-8")
+    (turret_probe.parent / "OMHTT/NativePlacementComplete.lua").write_text((ROOT / "tools/tests/native_placement_complete.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativeC314.lua").write_text((ROOT / "tools/tests/native_c314.lua").read_text(encoding="utf-8"), encoding="utf-8")
     bulk_probe = turret_probe.parent / "OMHTT/NativeBulkTransfer.lua"
     bulk_probe.write_text((ROOT / "tools/tests/native_bulk_transfer.lua").read_text(encoding="utf-8"), encoding="utf-8")
@@ -94,6 +95,8 @@ def main():
             barb_probe.unlink(missing_ok=True)
             turret_probe.unlink(missing_ok=True)
     text = transcript.read_text(encoding="utf-8", errors="replace")
+    assert "[OMHTT-C373] native-placement-complete cases=84" in text, "Full native placement matrix missing"
+    assert "[OMHTT-C373] native-performance-icons=11 category=Performance" in text, "Native module icon/category proof missing"
     mod_errors = [line for line in text.splitlines() if "MOD:OMH:" in line and "Exception thrown" in line]
     assert not mod_errors, f"Native mod callbacks threw despite completion markers: {mod_errors}"
     assert "[OMHTT-C355] mechanical-recipes=2 inputs=consumed tools=retained output=exact translations=passed" in text, "Mechanical recipe proof missing"

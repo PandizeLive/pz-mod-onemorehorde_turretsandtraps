@@ -42,3 +42,8 @@ Zero drain displays neutral `None`. Fixed thresholds allow applied Sandbox consu
 - **1B:** correct placement/alignment first; defer the battery-spectrum expansion.
 
 Neither option selected yet. No gameplay edits, version bump, installed-package changes, new validation-pass claim or Workshop upload this audit. Update the failed owner-test record and mirror documentation under C108/C119. Decision needed.
+
+
+## C373 - approved corrective build (2026-10-20)
+
+**C373 / Corrective patch approved (2026-10-20).** Owner selects C372 **1B**, approves the placement correction and seven-band consumption display, emphasizes wall alignment, and confirms the supplied artwork is for **Performance module icons**. Implementing **0.2.59.1**: exact portable deployment, four-face wall projection, Rotary Blades x2 / Lobber x1.5 and five native module categories. Existing slot order, owner loot tuning and other head/module costs stay unchanged. [Patch](PATCH_v0.2.59.1.md) / [Verification](TEST_v0.2.59.1.md). General regression passes 26,133 assertions; 84 native full-construction cases pass. Restart/package checks and tagged installation are in progress. Rendered/connected acceptance remains pending. **Wait for a patch.**

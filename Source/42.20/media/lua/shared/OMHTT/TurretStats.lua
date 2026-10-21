@@ -139,9 +139,13 @@ function S.resolve(contents)
     if firearm then shotPower = shotPower * S.option("FirearmBatteryMultiplier", 1.5, 0, 100) end
     local motorSpeed = 150 * (1 + rapid / 100) * enhancement
     local motorPower = 100 / S.option("RotaryBatteryHours", 6, .1, 100) * modulePower / regulator * motorSpeed / 150
+    if head and head.key == "RotaryBlades" then
+        motorPower = motorPower * S.option("RotaryBladesBatteryMultiplier", 2, 0, 100)
+    end
     if head and head.key == "Lobber" then
         local payload = require("OMHTT/TurretAmmo").bombs[contents.payloadType]
         shotPower = (payload and payload.power or .02) * modulePower / regulator * (1 + S.bonus(active, "Velocity", 20, 100) / 100)
+        shotPower = shotPower * S.option("LobberBatteryMultiplier", 1.5, 0, 100)
         shotPower = shotPower * math.max(1, (range + S.bonus(active, "Range", 2, 10)) / head.range) * (1 + splitter * .5)
     elseif head and head.key == "Scrapshot" then
         shotPower = S.option("ScrapshotBatteryPercent", .0025, 0, 100) * modulePower / regulator * (1 + S.bonus(active, "Velocity", 20, 100) / 100) * (1 + splitter * .5)

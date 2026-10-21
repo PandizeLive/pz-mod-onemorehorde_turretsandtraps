@@ -47,6 +47,18 @@ public final class NativePersistenceCheck {
             try (var stream = (java.io.InputStream)call(pack, "createStream", new Class<?>[]{String.class, java.io.InputStream.class}, page, null)) {
                 var image = javax.imageio.ImageIO.read(stream);
                 check(image != null && image.getWidth() == (page.equals("OMHTT_Edges") ? 256 : 128) && image.getHeight() == 256, "Native texture page unreadable: " + page);
+                if (page.startsWith("OMHTT_Tether")) {
+                    int facing = Integer.parseInt(page.substring("OMHTT_Tether".length()));
+                    float[][] anchors = {{0f,.5f},{.5f,1f},{1f,.5f},{.5f,0f}};
+                    Class<?> iso = Class.forName("zombie.iso.IsoUtils");
+                    float x = anchors[facing][0], y = anchors[facing][1];
+                    int px = 64 + Math.round(((Number)iso.getMethod("XToScreen", float.class,float.class,float.class,int.class).invoke(null,x,y,.3f,0)).floatValue());
+                    int py = 192 + Math.round(((Number)iso.getMethod("YToScreen", float.class,float.class,float.class,int.class).invoke(null,x,y,.3f,0)).floatValue());
+                    check((image.getRGB(px,py) & 0x00ffffff) == 0x00ffffff && (image.getRGB(px,py) >>> 24) == 255, "Tether panel misses native projected wall anchor: " + page);
+                    Object entry = map.get(prefix + (90 + facing));
+                    Object info = entry.getClass().getField("info").get(entry);
+                    check(info.getClass().getField("ox").getInt(info) == 0 && info.getClass().getField("oy").getInt(info) == 0, "Tether has extra texture displacement");
+                }
             }
         }
     }

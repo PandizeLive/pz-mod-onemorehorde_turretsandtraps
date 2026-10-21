@@ -379,5 +379,9 @@
     "Sandbox_OMHTurretsTraps_FirearmBatteryMultiplier": "Firearm Battery Multiplier",
     "Sandbox_OMHTurretsTraps_FirearmBatteryMultiplier_tooltip": "Multiplies firearm-head battery use. Does not change Potato or other heads.",
     "Sandbox_OMHTurretsTraps_ScrapshotBatteryPercent": "Scrapshot Battery Use (Percent)",
-    "Sandbox_OMHTurretsTraps_ScrapshotBatteryPercent_tooltip": "Base percentage points of battery charge per Scrapshot cycle, before modules."
+    "Sandbox_OMHTurretsTraps_ScrapshotBatteryPercent_tooltip": "Base percentage points of battery charge per Scrapshot cycle, before modules.",
+    "Sandbox_OMHTurretsTraps_RotaryBladesBatteryMultiplier": "Rotary Blades Battery Multiplier",
+    "Sandbox_OMHTurretsTraps_RotaryBladesBatteryMultiplier_tooltip": "Multiplies Rotary Blades consumption. Does not affect Rotary Bat. Default: 2. Zero disables its battery drain.",
+    "Sandbox_OMHTurretsTraps_LobberBatteryMultiplier": "Grenade Lobber Battery Multiplier",
+    "Sandbox_OMHTurretsTraps_LobberBatteryMultiplier_tooltip": "Multiplies battery consumption for all Lobber payloads. Default: 1.5. Zero disables its battery drain."
 }

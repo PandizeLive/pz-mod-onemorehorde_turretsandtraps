@@ -34,6 +34,7 @@ function A:prepare()
     if self.companion and self.companion:getContainer() ~= self.item:getContainer()
         and self.companion:getContainer() ~= self.character:getInventory() then containers:add(self.companion:getContainer()) end
     local cursor = ISBuildIsoEntity:new(self.character, info, self.rotation, containers)
+    cursor.player = self.character:getPlayerNum()
     local logic = cursor.buildPanelLogic
     logic:setManualSelectInputs(true)
     logic:clearManualInputs()
@@ -108,8 +109,7 @@ function A:complete()
     if isClient() or (not isServer() and self.elapsed < self.seconds) or not self:isValid() then return false end
     self.done = true
     local cursor = self.cursor
-    if not isServer() then cursor.buildPanelLogic:startCraftAction(nil) end
-    cursor:create(self.x, self.y, self.z, cursor.north, cursor:getSprite())
+    require("OMHTT/PlacementBuild").create(cursor, self.item, self.companion, self.x, self.y, self.z)
     cursor.buildPanelLogic:stopCraftAction()
     local square = getCell():getGridSquare(self.x, self.y, self.z)
     square:RecalcAllWithNeighbours(true)

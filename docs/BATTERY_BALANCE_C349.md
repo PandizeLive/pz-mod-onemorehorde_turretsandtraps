@@ -164,3 +164,8 @@ Best candidates: Rotary Blades currently shares Bat consumption despite 40 versu
 Lobber payload-specific costs are .02/.03/.04 for Makeshift/Aerosol/Pipe Bomb. At x1.5, actual module-free payload draw would be 19.636/29.455/39.273% per hour, respectively. The inventory head rating deliberately uses the Makeshift baseline, so a loaded Pipe Bomb does not turn that head tooltip into Very High. Do not silently change the head label to installed/payload-specific consumption. No automatic increase to all firearm costs, module tiers, loot weights, damage, cadence or Siphon rules. Raising shot cost also raises absolute eligible Siphon refund; it does not change the expected refund fraction.
 
 C371 placement correction and seven-band proposal remain unapproved, and its numerical thresholds remain proposed. This does not accept or alter installed 0.2.59. Planning only, mirrored under C108/C119. Decision needed.
+
+
+## C373 - approved corrective build (2026-10-20)
+
+**C373 / Corrective patch approved (2026-10-20).** Owner selects C372 **1B**, approves the placement correction and seven-band consumption display, emphasizes wall alignment, and confirms the supplied artwork is for **Performance module icons**. Implementing **0.2.59.1**: exact portable deployment, four-face wall projection, Rotary Blades x2 / Lobber x1.5 and five native module categories. Existing slot order, owner loot tuning and other head/module costs stay unchanged. [Patch](PATCH_v0.2.59.1.md) / [Verification](TEST_v0.2.59.1.md). General regression passes 26,133 assertions; 84 native full-construction cases pass. Restart/package checks and tagged installation are in progress. Rendered/connected acceptance remains pending. **Wait for a patch.**

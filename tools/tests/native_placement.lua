@@ -28,5 +28,6 @@ return function(player)
         logic:stopCraftAction()
         assert(not action:inputsValid(), "Consumed input replay accepted")
     end
+    require("OMHTT/NativePlacementComplete")(player)
     print("[OMHTT-C370] native-placement exact-inputs=passed recipes=14 timing=server-derived")
 end

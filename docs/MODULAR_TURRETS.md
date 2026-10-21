@@ -131,3 +131,8 @@ Do not add new module recipes, unsupported gun mechanisms, extra turret models o
 ## C136 implemented module slice (0.2.40)
 
 Magazine, Splitter and Fragment are now implemented under the approved C129-C136 rules. See [patch](PATCH_v0.2.40.md) and [verification/combined test](TEST_v0.2.40.md). This supersedes historical statements above that these three remain unimplemented. R3C6 effects and R3C7 combined endurance remain later work.
+
+
+## C373 - approved corrective build (2026-10-20)
+
+**C373 / Corrective patch approved (2026-10-20).** Owner selects C372 **1B**, approves the placement correction and seven-band consumption display, emphasizes wall alignment, and confirms the supplied artwork is for **Performance module icons**. Implementing **0.2.59.1**: exact portable deployment, four-face wall projection, Rotary Blades x2 / Lobber x1.5 and five native module categories. Existing slot order, owner loot tuning and other head/module costs stay unchanged. [Patch](PATCH_v0.2.59.1.md) / [Verification](TEST_v0.2.59.1.md). General regression passes 26,133 assertions; 84 native full-construction cases pass. Restart/package checks and tagged installation are in progress. Rendered/connected acceptance remains pending. **Wait for a patch.**

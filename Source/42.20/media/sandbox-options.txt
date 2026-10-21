@@ -1491,3 +1491,21 @@ option OMHTurretsTraps.ScrapshotBatteryPercent {
     page = OMHTurretsTraps_PotatoPage,
     translation = OMHTurretsTraps_ScrapshotBatteryPercent,
 }
+
+option OMHTurretsTraps.RotaryBladesBatteryMultiplier {
+    type = double,
+    default = 2,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_RotaryBladesBatteryMultiplier,
+}
+
+option OMHTurretsTraps.LobberBatteryMultiplier {
+    type = double,
+    default = 1.5,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_LobberBatteryMultiplier,
+}

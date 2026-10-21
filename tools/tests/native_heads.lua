@@ -1,4 +1,13 @@
 return function(player)
+    local count = 0
+    for _, suffix in pairs({"Critical", "Velocity", "Magazine", "Accuracy", "Range", "RapidFire", "Reload", "Autoloader", "Suppression", "Regulator", "Conservation"}) do
+        local item = instanceItem("Base.OMHTTModule" .. suffix)
+        assert(item and item:getScriptItem():getIcon() == "OMHTT_ModulePerformance", "Performance icon missing: " .. suffix)
+        assert(item:getDisplayCategory() == "OMHTTPerformance", "Performance category missing: " .. suffix)
+        count = count + 1
+    end
+    assert(count == 11, "Performance module coverage")
+    print("[OMHTT-C373] native-performance-icons=11 category=Performance")
     local T = require("OMHTT/Turret")
     local S = require("OMHTT/TurretStats")
     local Heads = require("OMHTT/TurretHeads")

@@ -535,5 +535,10 @@
     "UI_OMHTT_TetherMode": "Trigger links override automatic sensing.",
     "UI_OMHTT_TetherEnable": "Enable Tether Dart Trap",
     "UI_OMHTT_TetherDisable": "Disable Tether Dart Trap",
-  "UI_OMHTT_TetherAmmo": "Reusable Nail"
+    "UI_OMHTT_TetherAmmo": "Reusable Nail",
+    "UI_OMHTT_HeadBatteryNone": "None",
+    "UI_OMHTT_HeadBatteryMinimal": "Minimal",
+    "UI_OMHTT_HeadBatteryVeryLow": "Very Low",
+    "UI_OMHTT_HeadBatteryVeryHigh": "Very High",
+    "UI_OMHTT_HeadBatteryExtreme": "Extreme"
 }

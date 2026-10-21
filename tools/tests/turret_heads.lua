@@ -19,7 +19,7 @@ check(stats.conservation == 3 and stats.splitter == 2 and stats.piercing == 2 an
 check(math.abs(stats.batteryPercent - .1) < .000001, "Ballista additive module power")
 for _, item in pairs({bat, blades}) do
     stats = S.resolve({head = item, active = {}, powerLoad = 0})
-    check(stats.rotary and stats.magazine == 0 and stats.motorSpeed == 150 and math.abs(100 / stats.motorPower - 6) < .0001, "Rotary 25RPM and six motor hours")
+    check(stats.rotary and stats.magazine == 0 and stats.motorSpeed == 150 and math.abs(100 / stats.motorPower - (item == blades and 3 or 6)) < .0001, "Rotary 25RPM: Bat six hours, Blades three hours")
     check(not H.supports(item, "Splitter") and not H.supports(item, "Accuracy") and not H.supports(item, "Filter"), "Physical heads reject meaningless projectile/priority effects")
     check(H.supports(item, "Regulator") and H.supports(item, "Detection360"), "Physical heads retain useful modules")
 end

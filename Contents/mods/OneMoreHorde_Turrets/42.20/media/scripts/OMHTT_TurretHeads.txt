@@ -264,7 +264,7 @@ module Base {
     item OMHTTModuleLure {
         DisplayName = Lure Module,
         ItemType = base:normal,
-        DisplayCategory = Material,
+        DisplayCategory = OMHTTUtility,
         WorldStaticModel = OMHTTTurretProbe,
         Weight = 0.2,
         Icon = OMHTT_TestCube,
@@ -274,7 +274,7 @@ module Base {
     item OMHTTModuleVoid {
         DisplayName = Void Module,
         ItemType = base:normal,
-        DisplayCategory = Material,
+        DisplayCategory = OMHTTUtility,
         WorldStaticModel = OMHTTTurretProbe,
         Weight = 0.2,
         Icon = OMHTT_TestCube,

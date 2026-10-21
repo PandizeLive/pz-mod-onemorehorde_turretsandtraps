@@ -10,5 +10,10 @@
     "IGUI_CraftingCategories_OMHHeads": "Heads",
     "IGUI_CraftingCategories_OMHModules": "Modules",
     "IGUI_CraftingCategories_OMHControls": "OMH: Triggers",
-    "IGUI_ContainerTitle_OMHTTPoke": "Poke Floor"
+    "IGUI_ContainerTitle_OMHTTPoke": "Poke Floor",
+    "IGUI_ItemCat_OMHTTPerformance": "Performance",
+    "IGUI_ItemCat_OMHTTAutomation": "Automation",
+    "IGUI_ItemCat_OMHTTEffects": "Effects",
+    "IGUI_ItemCat_OMHTTUtility": "Utility",
+    "IGUI_ItemCat_OMHTTExpansion": "Expansion Kits"
 }
