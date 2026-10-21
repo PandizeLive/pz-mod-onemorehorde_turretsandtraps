@@ -18,3 +18,8 @@ Independent native startup passes: Traps-only 47.2s, Turrets-only 45.3s, both 44
 6. Save/reload with Lever ON and a custom Laser range. Check persistence, then damage/pick up/redeploy them: condition remains, links clear and Lever starts OFF. Repair uses only a Screwdriver and takes two seconds.
 7. Inspect trigger inventory, world-action and Controller tooltips. Confirm rates, Minimal basic triggers/Very Low Laser at a 60-minute day, no duplicate labels and no clipping at your UI scale.
 8. If multiplayer is available, repeat remote linking/toggle/range and pickup from a second client with appropriate access; confirm both clients agree and unauthorized actions fail. This is an outstanding acceptance test.
+
+
+## Tagged installation
+
+Installed from immutable `test/v0.2.60` / `362b30fcee7ac347e5986d2ce3700712f4f2f6ac`. All 330 source and 438 tagged/package/install/archive files match SHA-256; both 0.2.59.1 backups verify. [Local release record](../diagnostics/v0.2.60/local-release.json). The final client-only world-exit guard passed compilation/regression validation; dedicated startup tests do not execute client rendering. **Test now** after restart. Connected and rendered acceptance remains pending.
