@@ -23,3 +23,8 @@ Independent native startup passes: Traps-only 47.2s, Turrets-only 45.3s, both 44
 ## Tagged installation
 
 Installed from immutable `test/v0.2.60` / `362b30fcee7ac347e5986d2ce3700712f4f2f6ac`. All 330 source and 438 tagged/package/install/archive files match SHA-256; both 0.2.59.1 backups verify. [Local release record](../diagnostics/v0.2.60/local-release.json). The final client-only world-exit guard passed compilation/regression validation; dedicated startup tests do not execute client rendering. **Test now** after restart. Connected and rendered acceptance remains pending.
+
+
+## Owner availability - 2026-10-21 (C382)
+
+Owner postpones testing again and requests the next-checkpoint discussion. Installed 0.2.60 and automated/native evidence are unchanged. No new console review or gameplay result is claimed; rendered and connected-player acceptance remains deferred. Keep the complete test above for when the owner is available.

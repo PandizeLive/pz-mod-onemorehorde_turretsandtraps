@@ -600,3 +600,18 @@ Owner selects C378 1A and requires very low active consumption for mechanical tr
 ## C381 -- 0.2.60 implementation (2026-10-21)
 
 Settled C375-C380 behavior is implemented in the combined build. See [patch](../PATCH_v0.2.60.md) and [verification](../TEST_v0.2.60.md) for exact behavior, native evidence and remaining rendered/connected-player acceptance. The approved indicator is a faint local green glow; Laser retains the white functional development panel. Native headless construction and persistence are verified, not rendered acceptance. Publication remains separate.
+
+
+## C382 -- Post-sensor Controller targeting discussion (2026-10-21)
+
+Owner postpones the 0.2.60 test again and requests discussion of next work. Starting branch codex/performance-barbed-audit at e1b8b97; fetched origin, no newer origin/dev commits, only existing draft PR #1. No gameplay changes or new owner/runtime acceptance.
+
+Poke Floor, Tether Dart Trap, Lever and Laser Sensor are implemented. The old roadmap wording that schedules them as future work is superseded. Controller receiver integration already exists; do not propose implementing it again. R4C3/R4C4 still include the original compatible-defense targeting requirement. C252 selected Controller defaults with local overrides; this rule is settled, not a new choice. Passive traps remain physically dangerous regardless of targeting settings, and trap modules remain prohibited.
+
+Read-only source evidence: ControlAction exposes access modes and Plate Players/Zombies/Both, but no Controller target-default/override operation. ControlPanel exposes Private/Faction/Public management access, which is not victim selection. TurretAutomation/TurretVolley primary acquisition is zombie-oriented; existing player collateral does not establish intentional player/faction targeting. Full PvP therefore needs acquisition, per-head hit/damage eligibility and server-rule verification, not just a UI toggle. No PvP compatibility or immunity behavior is claimed.
+
+**1 - Next focus.** 1A (recommended): finish Controller target management for compatible smart defenses. 1B: discuss roster crafting, wear, damage and battery/endurance balance. 1C: choose another head/trap before closing the Controller gap. A completes an already requested workflow; B is useful but final tuning still benefits from combat evidence; C adds more untested content. None is selected yet.
+
+**2 - Targeting delivery scope, if A.** 2A (recommended): first deliver Zombies / No One through Controller defaults and explicit per-defense overrides, then a separately reviewed player/faction slice. 2B: include deliberate player/faction targeting in the first slice, with a larger native/authority compatibility investigation. A is an explicit proposed staging of the original requirement, not removal of PvP/faction plans. Exact interaction with input signals, manual fire, in-progress actions and collateral must be reviewed before implementation; do not equate No One with an electrical power switch or passive-trap safety.
+
+R1C3 mixed-defense performance, R3C7 endurance/balance, R5C1 connected dedicated/listen acceptance, R5C2 coordinated integrations and owner assets remain separate. No further signal-programming, automatic resupply, recipe, rarity, publication or new device scope is authorized here.
