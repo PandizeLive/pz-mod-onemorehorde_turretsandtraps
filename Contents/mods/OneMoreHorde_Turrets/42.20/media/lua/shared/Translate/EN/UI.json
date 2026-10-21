@@ -529,5 +529,11 @@
     "UI_OMHTT_RepairResult": "Restores full condition.",
     "UI_OMHTT_RepairBaseResult": "Restores turret base condition; does not repair the installed head.",
     "UI_OMHTT_RepairPokeAccess": "Disarm and wait for retraction. Stand next to the trap with access permission.",
-    "UI_OMHTT_RepairMaterialSource": "Repair material must be in your main inventory and not favorited."
+    "UI_OMHTT_RepairMaterialSource": "Repair material must be in your main inventory and not favorited.",
+    "UI_OMHTT_ControlTether": "Tether Dart Trap",
+    "UI_OMHTT_TetherStats": "30 Hit + 15 Pull | 6 Tiles",
+    "UI_OMHTT_TetherMode": "Trigger links override automatic sensing.",
+    "UI_OMHTT_TetherEnable": "Enable Tether Dart Trap",
+    "UI_OMHTT_TetherDisable": "Disable Tether Dart Trap",
+  "UI_OMHTT_TetherAmmo": "Reusable Nail"
 }

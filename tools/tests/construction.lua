@@ -10,6 +10,9 @@ SandboxVars.OMHTurretsTraps.SpikeBarrier = true
 SandboxVars.OMHTurretsTraps.FoundationTestControls = false
 S.initialize()
 check(C.onAddToMenu({}), "native construction does not require debug controls")
+for _, condition in pairs({1, 17, 100}) do
+    check(C.deploymentInputAllowed({getFullType=function() return "Base.OMHTTTrapSpikeBarrier" end, getCondition=function() return condition end}), "Worn portable barrier can redeploy without healing")
+end
 for _, mode in pairs({"client", "server"}) do
     testMode = mode
     check(C.onAddToMenu({}), "Native construction is available with server completion on " .. mode)

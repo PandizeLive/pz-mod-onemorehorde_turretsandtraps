@@ -99,7 +99,7 @@ module Base {
             Tags = Carpentry,
             needToBeLearn = false,
             OnAddToMenu = OMHTT_PlacementMenu,
-            OnTest = OMHTT_Construction.portableInputAllowed,
+            OnTest = OMHTT_Construction.deploymentInputAllowed,
             inputs {
                 item 1 [Base.OMHTTTrapSpikeBarrier],
             }
@@ -150,7 +150,7 @@ module Base {
             Tags = Carpentry,
             needToBeLearn = false,
             OnAddToMenu = OMHTT_PlacementMenu,
-            OnTest = OMHTT_Construction.portableInputAllowed,
+            OnTest = OMHTT_Construction.deploymentInputAllowed,
             inputs {
                 item 1 [Base.OMHTTTrapSpikeBarrierReinforced],
             }

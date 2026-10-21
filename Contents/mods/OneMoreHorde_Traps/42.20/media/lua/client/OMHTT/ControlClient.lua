@@ -158,10 +158,13 @@ function U.world(index, context, objects, test)
                             end
                         end)
                     end
+                    if state.kind == "Tether" then
+                        require("OMHTT/ControlTetherMenu").add(context, player, object)
+                    end
                     if state.kind == "Poke" then
                         require("OMHTT/ControlPokeMenu").add(context, player, object)
                     end
-                    if state.kind ~= "Turret" and state.kind ~= "Poke" and A.write(player, state) then
+                    if state.kind ~= "Turret" and state.kind ~= "Poke" and state.kind ~= "Tether" and A.write(player, state) then
                         context:addOption(getText("UI_OMHTT_ControlPickup"), object, function(device)
                             if luautils.walkAdjObject(player, device, false) then
                                 U.command(player, device, "Pickup")

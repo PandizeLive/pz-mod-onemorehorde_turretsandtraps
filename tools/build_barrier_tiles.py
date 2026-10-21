@@ -87,13 +87,13 @@ def build_component(component):
     _, original = build()
     trap = component == "traps"
     sheet = "omhtt_barrier_01" if trap else "omhtt_turret_01"
-    count = 90 if trap else 30
+    count = 94 if trap else 30
     tiles = b"tdef" + integer(1) + integer(1)
     tiles += (sheet + "\nOMHTT_" + component.title() + ".png\n").encode("ascii")
     tiles += integer(4) + integer((count + 3) // 4) + integer(1) + integer(count)
     plate_first = 80 if trap else 25
     for index in range(count):
-        tiles += integer(1) + b"RenderLayer\nFloor\n" if index >= plate_first else integer(0)
+        tiles += integer(1) + b"RenderLayer\nFloor\n" if plate_first <= index < (90 if trap else 30) else integer(0)
     position = 12
 
     def read_int():
@@ -180,6 +180,19 @@ def build_component(component):
             indices = [89] if raised else range(85, 89)
             entry = b"".join(pack_string(sheet + "_" + str(index)) + struct.pack("<8i", 0, 0, 128, 256, 0, 0, 128, 256) for index in indices)
             pages.append(pack_string("OMHTT_Poke" + str(raised)) + integer(len(indices)) + integer(1) + entry + integer(len(png)) + png)
+    if trap:
+        for facing in range(4):
+            marker = Image.new("RGBA", (128, 256))
+            draw = ImageDraw.Draw(marker)
+            points = [(64, 174), (92, 188), (92, 214), (64, 200)] if facing % 2 == 0 else [(36, 188), (64, 174), (64, 200), (36, 214)]
+            draw.polygon(points, fill="white", outline=(100, 100, 100))
+            draw.text((47, 157), "DART", fill="white")
+            stream = io.BytesIO()
+            marker.save(stream, format="PNG")
+            png = stream.getvalue()
+            dx, dy = [(63, 32), (-63, 32), (0, 0), (0, 0)][facing]
+            entry = pack_string(sheet + "_" + str(90 + facing)) + struct.pack("<8i", 0, 0, 128, 256, dx, dy, 128, 256)
+            pages.append(pack_string("OMHTT_Tether" + str(facing)) + integer(1) + integer(1) + entry + integer(len(png)) + png)
     return tiles, b"PZPK" + integer(1) + integer(len(pages)) + b"".join(pages)
 
 

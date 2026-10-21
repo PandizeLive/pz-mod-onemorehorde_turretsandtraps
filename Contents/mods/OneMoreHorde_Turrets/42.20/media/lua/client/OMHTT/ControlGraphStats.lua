@@ -14,8 +14,12 @@ function S.step(graph)
         local object = graph.defenses[graph.statsIndex].object
         local container = object:getObjectIndex() >= 0 and object:getContainer()
         graph.statsIndex = graph.statsIndex + 1
-        if not container then return end
         local state = require("OMHTT/ControlAccess").state(object)
+        if state and state.kind == "Tether" then
+            graph.stats[object] = {label = getText("UI_OMHTT_TetherAmmo")}
+            return
+        end
+        if not container then return end
         if state and state.kind == "Poke" then
             graph.stats[object] = {label = getText(state.enabled == false and "UI_OMHTT_PokeDisabled" or "UI_OMHTT_PokeContact")}
             return

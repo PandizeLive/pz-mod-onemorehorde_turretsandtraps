@@ -202,3 +202,9 @@ Recommend **3A local car battery, then assigned Controller bank**, keeping an au
 After these choices, present one coherent proposed damage/range/cadence/storage, service/durability, player injury and ingredient/skill/XP contract before implementation. Avoid treating suggested defaults as settled. Beam sensors remain R4C3, after the emitter slice. C343 category choices, exact five-second native MP placement and connected-client acceptance remain separate open work.
 
 Status: design discussion only; installed 0.2.57.2 unchanged. **Decision needed: 1A/B, 2A/B, 3A/B.**
+
+## C370 — gameplay integration (2026-10-20)
+
+Owner approves the next build with the settled C366–C369 rules. [0.2.59](../PATCH_v0.2.59.md) adds the actual crafted item, four wall orientations, temporary white panel tiles, default sensing/input override, Controller connections, shared service rules and client tether presentation. Authority owns first impact, the 0.75-second hold, 15-damage pull and one condition per completed cycle. No physical pulling/knockdown or ammunition/power/module system is added.
+
+Native fixtures verify 30 impact + 15 pull, no early/duplicate pull, link override, last-unlink autonomy, wear, pickup condition 37, and actual crafting output with retained tools/two Wire uses. Existing native geometry checks cover four native and constructed-wall orientations. Server state snapshots are bounded to nearby players and client visuals expire; unloading cancels active cycles without late damage. Rendered integration and connected-client acceptance remain pending. Lever stays separate pending its recipe/placement discussion.

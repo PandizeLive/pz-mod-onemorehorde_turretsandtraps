@@ -34,6 +34,9 @@ def main():
     (turret_probe.parent / "OMHTT/NativeHeads.lua").write_text((ROOT / "tools/tests/native_heads.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativeContentC247.lua").write_text((ROOT / "tools/tests/native_content_c247.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativeControls.lua").write_text((ROOT / "tools/tests/native_controls.lua").read_text(encoding="utf-8").replace("EXPECT_READ", "true" if os.environ.get("OMHTT_PROBE_MODE") == "read" else "false"), encoding="utf-8")
+    (turret_probe.parent / "OMHTT/NativeTether.lua").write_text((ROOT / "tools/tests/tether_trap.lua").read_text(encoding="utf-8").replace("Events.OnServerStarted.Add(run)", "return run"), encoding="utf-8")
+    (turret_probe.parent / "OMHTT/NativeTetherService.lua").write_text((ROOT / "tools/tests/native_tether_service.lua").read_text(encoding="utf-8"), encoding="utf-8")
+    (turret_probe.parent / "OMHTT/NativePlacement.lua").write_text((ROOT / "tools/tests/native_placement.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativeC314.lua").write_text((ROOT / "tools/tests/native_c314.lua").read_text(encoding="utf-8"), encoding="utf-8")
     bulk_probe = turret_probe.parent / "OMHTT/NativeBulkTransfer.lua"
     bulk_probe.write_text((ROOT / "tools/tests/native_bulk_transfer.lua").read_text(encoding="utf-8"), encoding="utf-8")
@@ -115,7 +118,7 @@ def main():
     assert "Saving GlobalModData" in text, "No native global state save"
     assert "Invalid SpriteConfig object! scripted object = OMHTT" not in text, "Invalid native barrier identity"
     assert "[OMHTT-Smoke] native-sandbox damage=10 maxHealth=100 tooltip=formatted" in text, "Native Sandbox options/tooltip invalid"
-    assert "[OMHTT-Smoke] native-texturepacks traps=90 turrets=30 pages=39 png=valid" in text, "Native texture packs invalid"
+    assert "[OMHTT-Smoke] native-texturepacks traps=94 turrets=30 pages=43 png=valid" in text, "Native texture packs invalid"
     assert "[OMHTT-Beds] PASS" in text, "Native bed content invalid"
     assert "[OMHTT-HybridBuild] native-original-recipe=true" in text, "Native hybrid crafting/building proof missing"
     assert "[OMHTT-Beds] controlled-native-recovery forwardLanding=true getUpTransition=passed getUpExit=cleared" in text, "Native forward trip recovery failed"

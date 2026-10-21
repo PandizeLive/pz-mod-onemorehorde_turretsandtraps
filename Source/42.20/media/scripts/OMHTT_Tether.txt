@@ -1,0 +1,55 @@
+module Base {
+    item OMHTTTrapTetherDart {
+        DisplayName = Tether Dart Trap,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 4,
+        Icon = OMHTT_TestCube,
+        ConditionMax = 100,
+    }
+    entity OMHTTDeployTether {
+        component UiConfig { xuiSkin = default, entityStyle = ES_OMHTTTether, uiEnabled = false, }
+        component SpriteConfig {
+            health = 100,
+            skillBaseHealth = 0,
+            bonusHealth = 0,
+            isThumpable = false,
+            OnIsValid = OMHTT_Tether.valid,
+            OnCreate = OMHTT_Tether.created,
+            face E { layer { row = omhtt_barrier_01_90, } }
+            face N { layer { row = omhtt_barrier_01_91, } }
+            face W { layer { row = omhtt_barrier_01_92, } }
+            face S { layer { row = omhtt_barrier_01_93, } }
+        }
+        component CraftRecipe {
+            timedAction = BuildLowNoTool,
+            time = 100,
+            category = OMHTraps,
+            needToBeLearn = false,
+            OnAddToMenu = OMHTT_ControlMenu,
+            inputs { item 1 [Base.OMHTTTrapTetherDart], }
+        }
+    }
+    craftRecipe OMHTTCraftTether {
+        timedAction = BuildLowNoTool,
+        time = 288,
+        category = OMHTraps,
+        Tags = InHandCraft,
+        needToBeLearn = false,
+        SkillRequired = Mechanics:2,
+        xpAward = Mechanics:20,
+        OnAddToMenu = OMHTT_ControlMenu,
+        inputs {
+            item 1 tags[base:screwdriver] mode:keep flags[Prop1;DontRecordInput;NoBrokenItems],
+            item 1 tags[base:pliers] mode:keep flags[DontRecordInput;NoBrokenItems],
+            item 1 [Base.Wrench;Base.PipeWrench] mode:keep flags[DontRecordInput;NoBrokenItems],
+            item 2 [Base.SmallSheetMetal],
+            item 1 [Base.MetalBar],
+            item 1 [Base.Rope],
+            item 4 [Base.Screws],
+            item 2 [Base.Wire],
+        }
+        outputs { item 1 Base.OMHTTTrapTetherDart, }
+    }
+    xuiSkin default { entity ES_OMHTTTether { LuaWindowClass = ISEntityWindow, DisplayName = UI_OMHTT_ControlTether, Icon = OMHTT_TestCube, } }
+}

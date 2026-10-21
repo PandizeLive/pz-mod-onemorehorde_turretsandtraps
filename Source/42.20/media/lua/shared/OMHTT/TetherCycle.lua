@@ -23,7 +23,7 @@ function C.new(x, y, z, dx, dy, tuning)
         or not C.finite(tuning.resetTime) or tuning.resetTime < 0 or tuning.resetTime > 60 then return nil end
     return {x = x, y = y, z = z, dx = dx, dy = dy, distance = 0, phase = "idle",
         sequence = 0, revision = 0, range = tuning.range, speed = tuning.speed, returnSpeed = tuning.returnSpeed,
-        resetTime = tuning.resetTime, resetLeft = 0, links = 0, held = false, debt = 0}
+        resetTime = tuning.resetTime, holdTime = tuning.holdTime or 0, holdLeft = 0, resetLeft = 0, links = 0, held = false, debt = 0}
 end
 
 ---@param state table Cycle
@@ -54,8 +54,9 @@ end
 ---@param elapsed number Simulation seconds
 ---@param cast function Swept first-hit query returning fraction, victim, reason
 ---@param hit function Authoritative impact callback
+---@param pull function? Authoritative retraction callback
 ---@return nil
-function C.step(state, elapsed, cast, hit)
+function C.step(state, elapsed, cast, hit, pull)
     if not C.finite(elapsed) or elapsed < 0 or elapsed > 2 then
         C.cancel(state)
         return
@@ -75,7 +76,8 @@ function C.step(state, elapsed, cast, hit)
             local fraction, victim, reason = cast(state, state.distance, destination)
             if fraction then
                 state.distance = state.distance + (destination - state.distance) * fraction
-                state.phase = "back"
+                state.holdLeft = victim and state.holdTime or 0
+                state.phase = state.holdLeft > 0 and "hold" or "back"
                 state.revision = state.revision + 1
                 hit(state, victim, reason)
             else
@@ -84,6 +86,13 @@ function C.step(state, elapsed, cast, hit)
                     state.phase = "back"
                     state.revision = state.revision + 1
                 end
+            end
+        elseif state.phase == "hold" then
+            state.holdLeft = math.max(0, state.holdLeft - dt)
+            if state.holdLeft <= .000001 then
+                state.phase = "back"
+                state.revision = state.revision + 1
+                if pull then pull(state) end
             end
         elseif state.phase == "back" then
             state.distance = math.max(0, state.distance - state.returnSpeed * dt)
@@ -153,7 +162,7 @@ function C.accept(previous, message)
         or message.z ~= math.floor(message.z)
         or message.dx ~= math.floor(message.dx) or message.dy ~= math.floor(message.dy)
         or math.abs(message.dx) + math.abs(message.dy) ~= 1 then return false end
-    if message.phase ~= "out" and message.phase ~= "back" and message.phase ~= "reset" and message.phase ~= "idle" then return false end
+    if message.phase ~= "out" and message.phase ~= "back" and message.phase ~= "reset" and message.phase ~= "idle" and message.phase ~= "hold" then return false end
     if previous and message.id ~= previous.id then return false end
     if previous and message.session ~= previous.session then
         return tonumber(message.session) > tonumber(previous.session)

@@ -251,6 +251,8 @@ function L.drawDetails(panel, host, state)
         status = T.isOn(T.state(panel.selected)) and "UI_OMHTT_PowerOn" or "UI_OMHTT_PowerOff"
     elseif state.kind == "Controller" then
         status = state.powered and "UI_OMHTT_PowerOn" or "UI_OMHTT_PowerOff"
+    elseif state.kind == "Tether" then
+        status = "UI_OMHTT_TetherStats"
     elseif state.kind == "Poke" then
         status = state.enabled == false and "UI_OMHTT_PokeDisabled" or "UI_OMHTT_PokeContact"
     end
@@ -276,15 +278,16 @@ function L.drawDetails(panel, host, state)
     elseif panel.linkSource then
         hint = getText("UI_OMHTT_SelectedInput", U.name(panel.linkSource))
     end
+    if state.kind == "Tether" then hint = getText("UI_OMHTT_TetherMode") end
     if state.kind == "Poke" then hint = getText("UI_OMHTT_PokeContact") end
     body:drawText(hint, x, hintY, .8, .8, .8, 1, UIFont.Small)
     local count = getText("UI_OMHTT_OutputCount", #state.links)
-    if state.kind == "Turret" then
+    if state.kind == "Turret" or state.kind == "Tether" then
         local source = A.state(panel.linkSource)
         count = getText(source and (require("OMHTT/ControlDefinitions").linked(source, state)
             and "UI_OMHTT_InputConnected" or "UI_OMHTT_InputNotConnected") or "UI_OMHTT_GraphDisconnectHint")
     end
-    if panel.linkSource == panel.selected and state.kind ~= "Turret" then
+    if panel.linkSource == panel.selected and not require("OMHTT/ControlDefinitions").defense(state.kind) then
         count = getText("UI_OMHTT_SelectReceiverHint")
     end
     if state.kind == "Controller" then

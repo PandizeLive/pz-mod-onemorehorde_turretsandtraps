@@ -89,7 +89,7 @@ function W.publish(object)
     local state = W.state(object)
     if not state then return end
     local view = W.copy(state)
-    if state.kind == "Turret" then
+    if state.kind == "Turret" or state.kind == "Tether" then
         view.inputs = {}
         for id in pairs(W.incoming[state.id] or {}) do
             local source = W.records().records[id]
@@ -522,6 +522,9 @@ end
 function W.removed(object)
     require("OMHTT/ControlPoke").entries[object] = nil
     local state = W.state(object)
+    if state and state.kind == "Tether" then
+        require("OMHTT/TetherServer").cancel(object)
+    end
     if not state then return end
     local plates = W.plates[object:getSquare()]
     if plates then
@@ -548,7 +551,7 @@ function W.retire(object)
     local state = W.state(object)
     if not state then return end
     state.placed = false
-    if state.kind == "Turret" and W.input(object, getTimestampMs()) then
+    if (state.kind == "Turret" or state.kind == "Tether") and W.input(object, getTimestampMs()) then
         W.clearInputs(object)
     end
     for i = 1, #state.links do
@@ -612,7 +615,7 @@ function W.tick()
         local object, state = W.objects[id], W.records().records[id]
         local square = object and object:getSquare()
         local loaded = state and square and getCell():getGridSquare(state.x, state.y, state.z) == square
-        if loaded and state and object:getObjectIndex() >= 0 and (object:getHealth() > 0 or state.kind == "Poke") then
+        if loaded and state and object:getObjectIndex() >= 0 and (object:getHealth() > 0 or state.kind == "Poke" or state.kind == "Tether") then
             if state.kind == "Controller" and (not state.powerDue or now >= state.powerDue) then
                 state.powerDue = now + 1000
                 local elapsed = state.checkedHours and math.max(0, hours - state.checkedHours) or 0
@@ -629,7 +632,7 @@ function W.tick()
                 require("OMHTT/ControlPoke").step(object, state)
             elseif state.kind == "Plate" then
                 W.updatePlate(object, now)
-            elseif state.kind == "Turret" then
+            elseif state.kind == "Turret" or state.kind == "Tether" then
                 W.receiver(object, now)
             end
         else
@@ -686,6 +689,11 @@ end
 ---@param now number Timestamp
 ---@return nil
 function W.receiver(object, now)
+    local state = W.state(object)
+    if state and state.kind == "Tether" then
+        require("OMHTT/TetherServer").step(object, state)
+        return
+    end
     local linked, on, valid = W.input(object, now)
     local cycle = require("OMHTT/ControlCycle")
     if not linked then
@@ -714,6 +722,10 @@ end
 ---@return nil
 function W.pulse(object)
     local control = W.state(object)
+    if control and control.kind == "Tether" then
+        require("OMHTT/TetherServer").step(object, control, true)
+        return
+    end
     if not control or control.kind ~= "Turret" or getTimestampMs() < control.recoverAt then return end
     local cycle = require("OMHTT/ControlCycle")
     cycle.blocked[object] = nil
@@ -795,6 +807,7 @@ function W.clearInputs(object)
     end
     W.incoming[state.id] = nil
     W.publish(object)
+    if state.kind == "Tether" then return end
     require("OMHTT/ControlCycle").cancel(object)
     state.pulseHoldUntil, state.facingPulse = nil, nil
     local T = require("OMHTT/Turret")
@@ -809,7 +822,7 @@ end
 ---@return boolean changed
 function W.link(source, target, enabled)
     local from, to = W.state(source), W.state(target)
-    if not from or not to or not A.range(source, target) or to.kind ~= "Turret"
+    if not from or not to or not A.range(source, target) or (to.kind ~= "Turret" and to.kind ~= "Tether")
         or (from.kind ~= "Plate" and from.kind ~= "Button") then return false end
     local incoming, index, count = W.incoming[to.id] or {}, nil, 0
     for _ in pairs(incoming) do count = count + 1 end

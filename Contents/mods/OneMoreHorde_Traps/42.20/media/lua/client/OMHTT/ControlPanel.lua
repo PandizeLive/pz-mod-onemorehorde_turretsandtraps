@@ -221,7 +221,9 @@ function Panel.open(player, object)
         local requested = U.remote(self.player, self.object, self.selected)
         if A.near(self.player, self.selected) or requested then
             local host = A.state(self.object)
-            if A.state(self.selected).kind == "Poke" then
+            if A.state(self.selected).kind == "Tether" then
+                require("OMHTT/ControlTetherMenu").open(self.player, self.selected)
+            elseif A.state(self.selected).kind == "Poke" then
                 require("OMHTT/ControlPokeMenu").open(self.player, self.selected)
             else
                 require("OMHTT/TurretManage")(self.selected, self.player, host.kind == "Controller" and self.object or nil)

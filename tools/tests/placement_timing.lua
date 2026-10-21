@@ -1,52 +1,41 @@
-local P = require("OMHTT/PlacementTiming")
-local oldTime = getGameTime
-local delta, started, updated, completed = .1, 0, 0, false
-getGameTime = function() return {getMultiplier = function() return (delta) * 48 end, getMultiplierFromTimeDelta = function() return 48 end} end
-local cursor = {onTimedActionStart = function() started = started + 1 end}
-P.apply(cursor)
-local action = {character = {isTimedActionInstant = function() return false end},
-    action = {setTime = function(_, value) check(value == 480, "Placement resets trait-scaled native duration") end,
-        setWaitForFinished = function(_, value) check(value, "Native progress cannot complete placement before the active timer") end,
-        forceComplete = function() completed = true end},
-    update = function() updated = updated + 1 end,
-    setJobDelta = function() end, forceComplete = function() error("BuildLogic must not stop before native perform consumes the selected input") end}
-cursor:onTimedActionStart(action)
-for i = 1, 49 do action:update() end
-check(not completed and started == 1 and updated == 49, "Native placement animation/update survives and cannot finish before five seconds")
-action:update(); action:update()
-check(completed, "Placement completes after five active seconds")
-completed = false
-action.update = function() updated = updated + 1 end
-cursor:onTimedActionStart(action)
-delta = 60
-action:update()
-check(completed, "Native game-time progress completes after an elapsed fast-forward interval")
-local instant = {character = {isTimedActionInstant = function() return true end}}
-completed = false
-action.update = function() updated = updated + 1 end
-cursor:onTimedActionStart(action)
-delta = .5
-for i = 1, 9 do action:update() end
-check(not completed, "Fast-forward placement still requires five game-speed-adjusted seconds")
-action:update()
-check(completed, "Fast-forward placement completes in ten half-second simulation steps")
-cursor:onTimedActionStart(instant)
-check(instant.update == nil, "Instant-action debug cheat retains native behavior")
-getGameTime = oldTime
-
-for _, seconds in pairs({1, 2, 5}) do
+local Rules = require("OMHTT/PlacementRules")
+local Action = require("OMHTT/PlacementAction")
+local oldTime, oldClient, oldServer = getGameTime, isClient, isServer
+local player = {faceLocation = function() end}
+isClient = function() return false end
+isServer = function() return false end
+for route, profile in pairs(Rules.routes) do
     for _, speed in pairs({1, 5, 30}) do
-        completed = false
-        delta = speed / 60
+        local delta = speed / 60
         getGameTime = function() return {getMultiplier = function() return delta * 48 end, getMultiplierFromTimeDelta = function() return 48 end} end
-        local category = {onTimedActionStart = function() end}
-        P.apply(category, seconds)
-        action.update = function() end
-        category:onTimedActionStart(action)
-        local ticks = 0
-        while not completed and ticks < 400 do action:update(); ticks = ticks + 1 end
-        check(math.abs(ticks * delta - seconds) <= delta + .001,
-            "Category placement duration follows simulation speed: " .. seconds .. "s at " .. speed .. "x")
+        local action = Action:new(player, nil, nil, route, 1, 10, 10, 0)
+        local finished, ticks = false, 0
+        action.forceComplete = function() finished = true end
+        action.setJobDelta = function() end
+        while not finished and ticks < 400 do action:update(); ticks = ticks + 1 end
+        check(math.abs(ticks * delta - profile[2]) <= delta + .001, "Placement duration follows simulation speed: " .. route .. " at " .. speed .. "x")
+        isServer = function() return true end
+        local server = Action:new(player, nil, nil, route, 1, 10, 10, 0)
+        check(server:getDuration() == profile[2] * 50, "Server derives duration from allowlisted family")
+        isServer = function() return false end
     end
 end
-getGameTime = oldTime
+local item = {getContainer = function() return nil end}
+check(not Rules.carried(item, player, "Base.OMHTTTrapButton"), "Removed input rejected")
+check(not Action:new(player, item, nil, "VanillaRecipe", 1, 10, 10, 0):inputsValid(), "Arbitrary construction route rejected")
+local container = {isInCharacterInventory = function() return true end, contains = function() return true end}
+item.getContainer = function() return container end
+item.getFullType = function() return "Base.OMHTTTrapBedSpikes" end
+item.getCondition = function() return 20 end
+check(not Action:new(player, item, item, "OMHTTDeployBedSpikes", 1, 10, 10, 0):inputsValid(), "Same item cannot satisfy both Bed tiles")
+check(not Action:new(player, item, nil, "OMHTTDeployBedSpikes", 1, 10, 10, 0):inputsValid(), "Paired Bed requires exact companion")
+check(Action:new(player, item, nil, "OMHTTDeployBedSpikesSingle", 1, 10, 10, 0):inputsValid(), "Single worn Bed remains placeable")
+item.getFullType = function() return "Base.OMHTTTrapBarbedPanel" end
+player.isBuildCheat = function() return true end
+check(Action:new(player, item, nil, "OMHTTBarbs", 1, 10, 10, 0):inputsValid(), "Native Build Cheat retains tool-free panel placement")
+player.isBuildCheat = function() return false end
+player.getInventory = function() return {getFirstTagEvalRecurse = function() return nil end} end
+check(not Action:new(player, item, nil, "OMHTTBarbs", 1, 10, 10, 0):inputsValid(), "Ordinary panel placement requires tools")
+isClient = function() return true end
+check(not Action:new(player, item, nil, "OMHTTDeployBedSpikesSingle", 1, 10, 10, 0):complete(), "Client cannot mutate placement")
+getGameTime, isClient, isServer = oldTime, oldClient, oldServer

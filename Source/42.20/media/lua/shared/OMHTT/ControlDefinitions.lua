@@ -8,7 +8,7 @@ C.types = {
 }
 
 function C.defense(kind)
-    return kind == "Turret" or kind == "Poke"
+    return kind == "Turret" or kind == "Poke" or kind == "Tether"
 end
 
 ---@param object IsoThumpable Passive sensor

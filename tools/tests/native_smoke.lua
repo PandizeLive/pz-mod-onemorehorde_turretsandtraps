@@ -408,7 +408,7 @@ local function checkNativeConstruction()
     oneReinforced:add(instanceItem("Base.OMHTTTrapSpikeBarrierReinforced"))
     assert(deploymentData:canConsumeInputs(resources, oneReinforced, true, true), "Reinforced deployment rejects item")
     oneReinforced:get(0):setCondition(20)
-    assert(not reinforcedDeploy:OnTestItem(oneReinforced:get(0), player), "Damaged reinforced input incorrectly accepted")
+    assert(reinforcedDeploy:OnTestItem(oneReinforced:get(0), player), "Worn reinforced input must remain placeable")
     local inventory = player:getInventory()
     local hammer = inventory:AddItem("Base.Hammer")
     for i = 1, 2 do inventory:AddItem("Base.Plank") end
@@ -425,13 +425,13 @@ local function checkNativeConstruction()
     assert(Sprites.ensure(upgraded, record, "restore-fixture"), "Could not restore basic fixture")
     print("[OMHTT-Smoke] native-reinforced deploy=1 pack=5to1 unpack=1to5 mixed=blocked materials=10 hammer=retained")
     item:setCondition(20)
-    assert(not deploy:OnTestItem(item, player), "Damaged portable input would reset condition")
+    assert(deploy:OnTestItem(item, player), "Worn portable input must remain placeable with retained condition")
     SandboxVars.OMHTurretsTraps.SpikeBarrier = false
     assert(not craft:OnTestItem(instanceItem("Base.Plank"), player), "Disabled portable crafting allowed")
     isServer, isClient = serverFunction, clientFunction
     SandboxVars.OMHTurretsTraps.Enabled, SandboxVars.OMHTurretsTraps.SpikeBarrier = enabled, barrierEnabled
     assert(craft:OnTestItem(instanceItem("Base.Plank"), player), "Server portable crafting rejected")
-    print("[OMHTT-Smoke] native-portable recipe=registered mixes=75 crafted=1 tool=retained deployInputs=1 deployXP=0 missing=blocked damaged=blocked toggles=blocked serverInput=allowed")
+    print("[OMHTT-Smoke] native-portable recipe=registered mixes=75 crafted=1 tool=retained deployInputs=1 deployXP=0 missing=blocked worn=allowed toggles=blocked serverInput=allowed")
 end
 
 Events.OnServerStarted.Add(checkNativeConstruction)

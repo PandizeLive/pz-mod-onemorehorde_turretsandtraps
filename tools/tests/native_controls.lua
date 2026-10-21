@@ -42,6 +42,9 @@ return function(player)
         {"Poke", {TirePump = 1, MetalBar = 4, SmallSheetMetal = 2, ElectronicsScrap = 4, ElectricWire = 2, Screws = 8}},
         {"Poke", {MetalPipe = 2, MetalBar = 4, SmallSheetMetal = 2, ElectronicsScrap = 4, ElectricWire = 2, Screws = 8}, "PokeImprovised"},
     }
+    require("OMHTT/NativeTether")()
+    require("OMHTT/NativePlacement")(player)
+    require("OMHTT/NativeTetherService")(player)
     assert(GameSounds.getSound("LightSwitch"), "Native Button cue must exist")
     for n = 1, #recipes do
         local case = recipes[n]

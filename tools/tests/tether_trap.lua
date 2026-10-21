@@ -121,6 +121,21 @@ local function run()
     check(M.resolve(100, 100, 0, "invalid", world) == nil, "Invalid facing rejected")
     check(M.resolve(99, 99, 0, "e", world) == nil, "Floor alone cannot support wall panel")
     check(M.resolve(100, 100, 1, "e", world) == nil, "Unloaded floor rejected")
+    local embedded = C.new(0, 0, 0, 1, 0, {range=6, speed=12, returnSpeed=4, resetTime=.4, holdTime=.75})
+    embedded.links = 1
+    C.start(embedded, false, true)
+    local impacts, pulls = 0, 0
+    local function immediate() return 0, "victim", "zombie" end
+    local function impact() impacts = impacts + 1 end
+    local function pull() pulls = pulls + 1 end
+    C.step(embedded, .05, immediate, impact, pull)
+    check(embedded.phase == "hold" and impacts == 1 and pulls == 0, "Impact embeds exactly once")
+    for i=1,14 do C.step(embedded,.05,immediate,impact,pull) end
+    check(embedded.phase == "hold" and pulls == 0, "Pull cannot precede 0.75 second hold")
+    C.step(embedded,.05,immediate,impact,pull)
+    check(embedded.phase == "back" and pulls == 1, "Hold completes with one pull")
+    for i=1,40 do C.step(embedded,.05,immediate,impact,pull) end
+    check(impacts == 1 and pulls == 1 and embedded.phase == "idle", "No return damage or queued shots")
     print("[OMHTT-TetherTrap] assertions=" .. count .. " nativePlayer=true nativeWalls=true connectedClients=0 rendered=false")
     print("[OMHTT-TetherTrap] completed=true")
 end

@@ -93,7 +93,7 @@ panel.logic = {getRecipe = function() return selected end, getAllBuildableRecipe
 panel.ReselectRecipeOrFirst = function(_, value) selected = value end
 setmetatable(panel, {__index = ISBuildPanel})
 panel:refreshList()
-check(panel.logic.list:size() == 13 and panel.logic.list:get(0) == native,
+check(panel.logic.list:size() == 14 and panel.logic.list:get(0) == native,
     "Building keeps vanilla entries and exactly one route per defense, excluding old prototypes and packs")
 selected = recipes["Base." .. definition.craft]
 inventory.items = {carried}
@@ -102,7 +102,7 @@ check(selected == recipes["Base." .. definition.deploy], "Inventory changes swit
 inventory.items = {}
 recipes["Base.OMHTTCraftTurretBase"] = nil
 panel:refreshList()
-check(panel.logic.list:size() == 12, "Absent Turrets content is omitted without loading its placement module")
+check(panel.logic.list:size() == 13, "Absent Turrets content is omitted without loading its placement module")
 local before = #queue
 panel:createBuildIsoEntity(true)
 check(#queue == before, "Passive native refresh never starts crafting")

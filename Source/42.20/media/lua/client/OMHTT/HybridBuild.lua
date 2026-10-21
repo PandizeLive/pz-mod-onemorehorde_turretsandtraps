@@ -10,6 +10,7 @@ H.definitions = {
     {item = "Base.OMHTTTrapBedSpikesReinforced", craft = "OMHTTReinforceBedSpikes", deploy = "OMHTTDeployReinforcedBedSpikes"},
     {item = "Base.OMHTTTrapConcertinaWire", craft = "OMHTTCraftConcertinaWire", deploy = "OMHTTDeployConcertinaWire"},
     {item = "Base.OMHTTTrapBarbedPanel", craft = "OMHTTCraftBarbs", deploy = "OMHTTBarbs"},
+    {item = "Base.OMHTTTrapTetherDart", craft = "OMHTTCraftTether", deploy = "OMHTTDeployTether", control = true},
     {item = "Base.OMHTTTrapPokeFloor", craft = "OMHTTCraftPoke", deploy = "OMHTTDeployPoke", control = true},
     {item = "Base.OMHTTTrapPokeFloor", craft = "OMHTTCraftPokeImprovised", deploy = "OMHTTDeployPoke", control = true},
     {item = "Base.OMHTTTurretBase", craft = "OMHTTCraftTurretBase", deploy = "OMHTTDeployTurret", turret = true},

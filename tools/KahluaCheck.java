@@ -384,6 +384,8 @@ public final class KahluaCheck {
             {"_", "tools/tests/turret_automation.lua"},
             {"_", "tools/tests/turret_install_setup.lua"},
             {"OMHTT/PlacementTiming", base + "client/OMHTT/PlacementTiming.lua"},
+            {"OMHTT/PlacementRules", "Source/42.20/media/lua/shared/OMHTT/PlacementRules.lua"},
+            {"OMHTT/PlacementAction", "Source/42.20/media/lua/shared/OMHTT/PlacementAction.lua"},
             {"_", "tools/tests/placement_timing.lua"},
             {"OMHTT/TurretInstall", base + "client/OMHTT/TurretInstall.lua"},
             {"_", "tools/tests/turret_install.lua"},

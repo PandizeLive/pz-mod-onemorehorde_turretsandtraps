@@ -23,6 +23,9 @@ OPTIONAL_TRAPS = {
 }
 
 
+OPTIONAL_TURRETS = {"OMHTT/ControlWorld": {"OMHTT/TetherServer"}}
+
+
 def main():
     version, packages = build(check=True)
     option_sets = {}
@@ -34,7 +37,7 @@ def main():
                 dependency = match[1]
                 if dependency not in lua:
                     line = text[text.rfind('\n', 0, match.start()) + 1:match.start()]
-                    assert component == 'traps' and dependency in OPTIONAL_TRAPS.get(name, set()) and line.startswith('    '), f"{component}: {name} requires absent {dependency}"
+                    assert dependency in (OPTIONAL_TRAPS if component == 'traps' else OPTIONAL_TURRETS).get(name, set()) and line.startswith('    '), f"{component}: {name} requires absent {dependency}"
         adapter = "OMHTT/BarrierPlacement" if component == "traps" else "OMHTT/TurretInstall"
         assert adapter in lua and "OMHTT/HybridBuild" in lua, "Missing component Building adapter"
         for module in ["TetherCycle", "TetherLane", "TetherMount"]:

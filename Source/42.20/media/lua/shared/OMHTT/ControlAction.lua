@@ -34,7 +34,7 @@ end
 function Action:isValid()
     local state = A.state(self.object)
     if self.done or not state or state.id ~= self.id or not A.authorized(self.character, self.object, self.command == "Pulse")
-        or (self.object:getHealth() <= 0 and state.kind ~= "Poke") then return false end
+        or (self.object:getHealth() <= 0 and state.kind ~= "Poke" and state.kind ~= "Tether") then return false end
     if self.command == "Pulse" then return state.kind == "Button" end
     if self.command == "GroupAdd" or self.command == "GroupName" or self.command == "GroupMove"
         or self.command == "GroupDelete" or self.command == "DeviceMove" then
@@ -58,12 +58,15 @@ function Action:isValid()
             and A.write(self.character, target)
             and ((self.object == self.target and A.near(self.character, self.target))
                 or require("OMHTT/ControlRemote").valid(self.character, self.object, self.target))
+    elseif self.command == "TetherEnabled" then
+        return state.kind == "Tether" and type(self.value) == "boolean"
     elseif self.command == "ClearInputs" then
-        return state.kind == "Turret"
+        return state.kind == "Turret" or state.kind == "Tether"
     elseif self.command == "Trigger" then
         return state.kind == "Plate" and (self.value == "Both" or self.value == "Players" or self.value == "Zombies")
     elseif self.command == "Pickup" or self.command == "Repair" then
         return state.kind ~= "Turret" and state.kind ~= "Poke"
+            and (state.kind ~= "Tether" or (state.enabled == false and not state.active and A.near(self.character, self.object)))
             and (self.command ~= "Repair" or (self.object:getHealth() < self.object:getMaxHealth()
                 and require("OMHTT/ControlRepair").ready(self.character, state.kind)))
     end
@@ -107,6 +110,8 @@ function Action:complete()
         return require("OMHTT/TurretWorld").setFacing(self.target, self.value)
     elseif self.command == "Link" then
         return W.link(self.object, self.target, self.value)
+    elseif self.command == "TetherEnabled" then
+        state.enabled = self.value
     elseif self.command == "ClearInputs" then
         W.clearInputs(self.object)
     elseif self.command == "Trigger" then

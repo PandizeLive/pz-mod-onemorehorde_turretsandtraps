@@ -29,6 +29,7 @@ public final class NativePersistenceCheck {
         for (int index = 0; index < count; index++) {
             Object entry = map.get(prefix + index);
             String expected = turrets ? (index >= 25 ? "OMHTT_PlateTurrets" + (index == 29 ? 1 : 0) : index >= 21 ? "OMHTT_ControllerTurrets" : index == 20 ? "OMHTT_ProbeBase" : index >= 16 ? "OMHTT_TestCube" : "OMHTT_Aim" + index)
+                : index >= 90 ? "OMHTT_Tether" + (index - 90)
                 : index >= 85 ? "OMHTT_Poke" + (index == 89 ? 1 : 0)
                 : index >= 80 ? "OMHTT_PlateTraps" + (index == 84 ? 1 : 0)
                 : index >= 76 ? "OMHTT_ControllerTraps"
@@ -50,7 +51,37 @@ public final class NativePersistenceCheck {
         }
     }
 
+    private static void verifyPlacement() throws Exception {
+        Object env = Class.forName("zombie.Lua.LuaManager").getField("env").get(null);
+        Object samples = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativePlacement");
+        int count = ((Number)get(samples, "len")).intValue();
+        check(count == 14, "Missing portable placement families");
+        for (int i = 1; i <= count; i++) {
+            Object row = call(samples, "rawget", new Class<?>[]{Object.class}, Double.valueOf(i));
+            Object network = call(row, "rawget", new Class<?>[]{Object.class}, "network");
+            Object action = call(row, "rawget", new Class<?>[]{Object.class}, "action");
+            double seconds = ((Number)call(row, "rawget", new Class<?>[]{Object.class}, "seconds")).doubleValue();
+            var durationField = network.getClass().getField("duration");
+            durationField.setAccessible(true);
+            long duration = durationField.getLong(network);
+            check(duration == Math.round(seconds * 1000), "Wrong native server duration: " + duration);
+            var field = network.getClass().getDeclaredField("actionArgs");
+            field.setAccessible(true);
+            Object arguments = field.get(network);
+            for (String key : new String[]{"character", "item", "companion", "route", "rotation", "x", "y", "z"}) {
+                Object expected = call(action, "rawget", new Class<?>[]{Object.class}, key);
+                Object actual = call(arguments, "rawget", new Class<?>[]{Object.class}, key);
+                check(java.util.Objects.equals(expected, actual) || (expected == null && actual != null && actual.getClass().getSimpleName().equals("PZNetKahluaNull")), "Native placement argument lost: " + key);
+            }
+            ByteBuffer encoded = ByteBuffer.allocate(16384);
+            call(arguments, "save", new Class<?>[]{ByteBuffer.class}, encoded);
+            check(encoded.position() > 0, "Placement arguments did not serialize");
+        }
+        System.out.println("[OMHTT-C370] native-placement durations=1000/2000/5000 constructorArgs=exact serialized=true");
+    }
+
     private static void verify(Path directory, String mode) throws Exception {
+        verifyPlacement();
         verifyTurret(directory, mode);
         verifyHeavyController(directory, mode);
         verifyPressurePlate(directory, mode);
@@ -62,9 +93,9 @@ public final class NativePersistenceCheck {
         NativeBarbProbe.verify(directory, mode);
         NativeVaultProbe.verify();
         NativeTurretProbe.verify();
-        verifyTexturePack("OMHTT_Traps", "omhtt_barrier_01_", 90, false);
+        verifyTexturePack("OMHTT_Traps", "omhtt_barrier_01_", 94, false);
         verifyTexturePack("OMHTT_Turrets", "omhtt_turret_01_", 30, true);
-        System.out.println("[OMHTT-Smoke] native-texturepacks traps=90 turrets=30 pages=39 png=valid");
+        System.out.println("[OMHTT-Smoke] native-texturepacks traps=94 turrets=30 pages=43 png=valid");
         Class<?> lua = Class.forName("zombie.Lua.LuaManager");
         Object env = lua.getField("env").get(null);
         Object fixtures = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeFixtures");

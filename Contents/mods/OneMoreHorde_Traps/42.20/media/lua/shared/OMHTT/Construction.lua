@@ -114,6 +114,13 @@ function Construction.portableInputAllowed(item, player)
     return true
 end
 
+---@param item InventoryItem Portable barrier
+---@param player IsoPlayer Builder
+---@return boolean allowed
+function Construction.deploymentInputAllowed(item, player)
+    return F.barrierEnabled() and item:getCondition() > 0
+end
+
 ---@param data CraftRecipeData Completed recipe
 ---@param player IsoGameCharacter Crafter
 ---@return nil
