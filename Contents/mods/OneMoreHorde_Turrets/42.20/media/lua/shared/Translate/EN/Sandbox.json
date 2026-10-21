@@ -392,5 +392,9 @@
     "Sandbox_OMHTurretsTraps_TriggerLeverConsumption": "Lever Battery Consumption",
     "Sandbox_OMHTurretsTraps_TriggerLeverConsumption_tooltip": "Percentage of one full Controller car battery per game hour while active. Additional to Controller idle. Zero disables this extra draw; Controller power is still required.",
     "Sandbox_OMHTurretsTraps_TriggerLaserConsumption": "Laser Battery Consumption",
-    "Sandbox_OMHTurretsTraps_TriggerLaserConsumption_tooltip": "Percentage of one full Controller car battery per game hour while scanning. Additional to Controller idle. Zero disables this extra draw; Controller power is still required."
+    "Sandbox_OMHTurretsTraps_TriggerLaserConsumption_tooltip": "Percentage of one full Controller car battery per game hour while scanning. Additional to Controller idle. Zero disables this extra draw; Controller power is still required.",
+    "Sandbox_OMHTurretsTraps_TurretPlayerDamageMultiplier": "Turret Player Damage Multiplier",
+    "Sandbox_OMHTurretsTraps_TurretPlayerDamageMultiplier_tooltip": "Scales fixed turret damage to player limbs after targeting, before clothing. Includes collateral; does not change zombie or trap damage. Default 1.",
+    "Sandbox_OMHTurretsTraps_TurretPlayerWoundMultiplier": "Turret Player Wound Chance Multiplier",
+    "Sandbox_OMHTurretsTraps_TurretPlayerWoundMultiplier_tooltip": "Scales turret scratch/cut chances. At most one wound roll per player per real second. Does not change zombie or trap damage. Default 1."
 }

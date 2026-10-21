@@ -238,6 +238,8 @@ public final class KahluaCheck {
             {"OMHTT/TurretHeads", base + "shared/OMHTT/TurretHeads.lua"},
             {"OMHTT/TurretAmmoCapacity", base + "shared/OMHTT/TurretAmmoCapacity.lua"},
             {"OMHTT/ControlTargeting", base + "shared/OMHTT/ControlTargeting.lua"},
+            {"OMHTT/ControlCombat", base + "shared/OMHTT/ControlCombat.lua"},
+            {"OMHTT/TurretPlayerHit", base + "server/OMHTT/TurretPlayerHit.lua"},
             {"OMHTT/ControlAccess", base + "shared/OMHTT/ControlAccess.lua"},
             {"OMHTT/ControlGroups", base + "shared/OMHTT/ControlGroups.lua"},
             {"OMHTT/ControlMount", base + "shared/OMHTT/ControlMount.lua"},
@@ -316,6 +318,7 @@ public final class KahluaCheck {
             {"_", "tools/tests/turret_stats.lua"},
             {"_", "tools/tests/turret_audio.lua"},
             {"_", "tools/tests/turret_manage_bootstrap.lua"},
+            {"OMHTT/ControlTargetingUI", base + "client/OMHTT/ControlTargetingUI.lua"},
             {"OMHTT/TurretAccess", base + "shared/OMHTT/TurretAccess.lua"},
             {"OMHTT/TurretControlAction", base + "shared/OMHTT/TurretControlAction.lua"},
             {"OMHTT/TurretTransferAction", base + "shared/OMHTT/TurretTransferAction.lua"},
@@ -502,6 +505,7 @@ public final class KahluaCheck {
             {"_", "tools/tests/repair_c367.lua"},
             {"_", "tools/tests/trigger_power.lua"},
             {"_", "tools/tests/targeting_policy.lua"},
+            {"_", "tools/tests/targeting_combat.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

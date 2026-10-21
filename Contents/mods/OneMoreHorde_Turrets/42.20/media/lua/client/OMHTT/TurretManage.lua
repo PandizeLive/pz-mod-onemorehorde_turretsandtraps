@@ -252,6 +252,7 @@ function Panel:refresh()
     self.powerButton:setTitle("")
     self.powerButton.tooltip = getText(powered and "UI_OMHTT_PowerOn" or "UI_OMHTT_PowerOff")
     require("OMHTT/ControlTheme").power(self.powerButton, powered, not self.readOnly)
+    require("OMHTT/ControlTargetingUI").refresh(self.targetingButton, self.player, self.object)
     self.priorityButton:setTitle(getText("UI_OMHTT_Priority", getText("UI_OMHTT_Priority" .. profile.priority)))
     self.priorityButton:setEnable(contents.active.Filter ~= nil)
     local active = {}
@@ -542,12 +543,15 @@ function OpenAction:perform()
                 modulesY + lineHeight + row * (moduleHeight + 6), moduleWidth)
             panel.moduleSlots[i]:setHeight(moduleHeight)
         end
+        panel.targetingButton = ISButton:new(380, height - 38, 240, 28, "", panel, function(self)
+            require("OMHTT/ControlTargetingUI").open(self.player, self.object)
+        end)
         panel.priorityButton = ISButton:new(130, height - 38, width - 142, 28, "", panel, Panel.changePriority)
         panel.fireButton = ISButton:new(12, height - 38, 110, 28, getText("UI_OMHTT_ManageFire"), panel, Panel.fire)
         local close = ISButton:new(width - 34, 6, 26, 24, "X", panel, Panel.close)
         panel.closeButton = close
         require("OMHTT/TurretManageExtras").create(panel, rangeX)
-        local buttons = {panel.fireButton, panel.powerButton, panel.priorityButton, panel.loadOrderButton, panel.reloadButton, close}
+        local buttons = {panel.fireButton, panel.powerButton, panel.priorityButton, panel.targetingButton, panel.loadOrderButton, panel.reloadButton, close}
         for i = 1, #buttons do buttons[i]:initialise(); panel:addChild(buttons[i]) end
         require("OMHTT/ControlManage").create(panel)
         require("OMHTT/TurretManageLayout").create(panel)

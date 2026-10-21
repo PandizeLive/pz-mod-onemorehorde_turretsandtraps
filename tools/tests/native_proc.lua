@@ -22,15 +22,19 @@ return function(player)
     assert(regulated.generatorFuel == stats.generatorFuel, "Regulator changed generator consumption")
     regulator:setCondition(0)
     assert(Stats.resolve(T.contents(store)).batteryPercent == beforeRegulator, "Broken Regulator still works")
-    local parts = {BodyPartType.ForeArm_L, BodyPartType.ForeArm_R, BodyPartType.LowerLeg_L, BodyPartType.LowerLeg_R}
+    local parts = {BodyPartType.ForeArm_L, BodyPartType.ForeArm_R, BodyPartType.UpperLeg_L, BodyPartType.UpperLeg_R}
     local before, after = 0, 0
     player:setGodMod(false)
     -- Reused native save caches may restore the previous probe's recovery timer.
     -- Start this isolated two-hit throttle check outside that saved timer.
     E.injuryAt[player:getPlayerNum()] = nil
     for i = 1, #parts do before = before + player:getBodyDamage():getBodyPart(parts[i]):getHealth() end
-    E.injure(player)
-    E.injure(player)
+    local nativeServer = isServer
+    isServer = function() return false end
+    local injury = {}
+    E.injure(player, injury)
+    E.injure(player, injury)
+    isServer = nativeServer
     for i = 1, #parts do
         local part = player:getBodyDamage():getBodyPart(parts[i])
         after = after + part:getHealth()
@@ -52,5 +56,5 @@ return function(player)
     V.reset()
     E.fields, E.fieldOrder, E.buckets, E.fieldCount = {}, {}, {}, 0
     E.save()
-    print("[OMHTT-Proc] native modules=3 damage=2 pain=5 injuryGuard=passed fieldSave=passed")
+    print("[OMHTT-Proc] native modules=3 damage=2 wounds=none injuryGuard=passed fieldSave=passed")
 end

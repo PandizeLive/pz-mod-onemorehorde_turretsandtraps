@@ -1,7 +1,9 @@
-v0.2.60
+v0.2.61
 
 Development test content
 
+- Added Controller target defaults and individual turret/Tether overrides: Zombies Only or Other Factions, including factionless outsiders. Owner/faction exclusions apply to deliberate targeting; server PvP, safety and non-PvP protections apply.
+- Added reduced, fixed turret player damage with limb wounds, armor checks, shared volley limits and bounded wound rolls; separate player damage/wound Sandbox multipliers leave zombie balance unchanged.
 - Added the wall-mounted Tether Dart Trap: one reusable nail deals 30 impact damage and 15 pull damage after a 0.75-second hold, with six-tile reach. It senses zombies automatically until linked to a trigger, requires no ammunition or power, and supports Controller connections.
 - Standardized repair requirements and service times: traps take two seconds to place/pick up and four to repair; triggers take one second to place/pick up and two to repair; turrets and Controllers take five seconds to place/pick up and ten to repair. Repairs use one material and one tool, except tool-only triggers. Moving defenses preserves their condition.
 - Repair entries consistently show material availability, the one retained tool, skill requirements, duration and repair result. Wooden barriers/spikes consume one Plank with a Hammer; wire/panels consume one Scrap Metal with Pliers; Poke Floor/turrets use one Scrap Metal with a Wrench; Controllers use one Scrap Metal with a Screwdriver. Buttons and Pressure Plates need only a Screwdriver. Poke Floor shows disarm requirements; turret repair restores only the base.

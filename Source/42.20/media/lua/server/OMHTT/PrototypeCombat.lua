@@ -149,7 +149,7 @@ function Combat.fire(record, object, player, options)
     end
     if options.target then
         local inside = Modules.inside(origin, options.target, options.profile)
-        if inside and Horde.allowed(options.target) and Combat.clearLane(origin, options.target:getSquare(), options.range) then
+        if inside and require("OMHTT/ControlCombat").eligible(object, options.target) and Combat.clearLane(origin, options.target:getSquare(), options.range) then
             target = options.target
         else
             target = nil
@@ -247,6 +247,16 @@ function Combat.splash(record, target, impactSquare, tx, ty, options)
 end
 
 function Combat.hit(record, origin, target, player, options)
+    if instanceof(target, "IsoPlayer") then
+        local hit = require("OMHTT/TurretPlayerHit").hit(target, options, "Potato")
+        local volley = require("OMHTT/TurretVolley")
+        if not volley.pierce(record, origin, target, player, options, target:getSquare(), target:getX(), target:getY()) then
+            volley.fragment(record, target:getX(), target:getY(), origin:getZ(), target, player, options)
+        end
+        Combat.splash(record, target, target:getSquare(), target:getX(), target:getY(), options)
+        volley.release(options)
+        return {id = record.id, shot = record.shots, x = target:getX(), y = target:getY(), z = target:getZ(), missed = not hit}
+    end
     if not Horde.allowed(target) then
         require("OMHTT/TurretVolley").release(options)
         return {id = record.id, shot = record.shots, x = target:getX(), y = target:getY(), z = target:getZ(), missed = true}
@@ -299,7 +309,7 @@ function Combat.arrive(shot)
     local target, origin, options = shot.target, shot.origin, shot.options
     local square = target:getSquare()
     local dx, dy = target:getX() - shot.facts.x, target:getY() - shot.facts.y
-    if not target:isDead() and square and target:getZ() == origin:getZ() and dx * dx + dy * dy <= 4
+    if require("OMHTT/ControlCombat").eligible(options.object, target) and not target:isDead() and square and target:getZ() == origin:getZ() and dx * dx + dy * dy <= 4
         and getCell():getGridSquare(square:getX(), square:getY(), square:getZ()) == square
         and getCell():getGridSquare(origin:getX(), origin:getY(), origin:getZ()) == origin
         and Combat.clearLane(origin, square, options.range) then

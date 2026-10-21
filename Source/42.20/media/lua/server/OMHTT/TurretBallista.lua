@@ -23,14 +23,18 @@ function B.hit(record, origin, target, player, options)
     local x, y, square = target:getX(), target:getY(), target:getSquare()
     local dx, dy = x - origin:getX() - .5, y - origin:getY() - .5
     local hit = ZombRand(10000) < Heads.accuracy(stats, math.sqrt(dx * dx + dy * dy)) * 100
-    hit = hit and Horde.allowed(target)
+    hit = hit and require("OMHTT/ControlCombat").eligible(options.object, target)
     if hit then
-        local amount = options.damage * (options.critical and stats.critMultiplier or 1)
-        amount = Conditional.damage(target, amount, Conditional.snapshot(target, stats))
-        require("OMHTT/TurretHit").resolve(target, amount, record.id, "ballista", options, function()
-            Proc.hit(target, true, x, y, origin:getZ(), record, player, options)
-            Conditional.impact(target, square, options)
-        end)
+        if instanceof(target, "IsoPlayer") then
+            hit = require("OMHTT/TurretPlayerHit").hit(target, options, "Ballista")
+        else
+            local amount = options.damage * (options.critical and stats.critMultiplier or 1)
+            amount = Conditional.damage(target, amount, Conditional.snapshot(target, stats))
+            require("OMHTT/TurretHit").resolve(target, amount, record.id, "ballista", options, function()
+                Proc.hit(target, true, x, y, origin:getZ(), record, player, options)
+                Conditional.impact(target, square, options)
+            end)
+        end
         if not Volley.pierce(record, origin, target, player, options, square, x, y) then
             Volley.fragment(record, x, y, origin:getZ(), target, player, options)
         end

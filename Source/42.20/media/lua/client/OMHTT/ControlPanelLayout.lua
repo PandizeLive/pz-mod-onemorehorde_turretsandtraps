@@ -54,7 +54,7 @@ function L.create(panel)
     body:setScrollChildren(true)
     body:addScrollBars(false)
     Theme.scrollbar(body)
-    local controls = {panel.nameEntry, panel.manage, panel.assign, panel.policy, panel.trigger}
+    local controls = {panel.nameEntry, panel.manage, panel.assign, panel.policy, panel.trigger, panel.targeting}
     for i = 1, #controls do
         local control = controls[i]
         panel:removeChild(control)
@@ -159,6 +159,11 @@ function L.refresh(panel, state)
     local actionY = panel.controlsY + h + 12
     place(panel.manage, x, actionY, width)
     local connection = actionY + (require("OMHTT/ControlDefinitions").defense(kind) and row + 14 or 0)
+    if require("OMHTT/ControlTargeting").supported(kind) then
+        place(panel.targeting, x, connection, width)
+        panel.targeting:setHeight(row)
+        connection = connection + row + 10
+    end
     panel.connectionY = body.y + connection
     local controlsY = connection + h * 3 + 16
     place(panel.trigger, x, controlsY, width)
@@ -236,7 +241,7 @@ function L.drawDetails(panel, host, state)
     local width = body.width - 36
     local infoY, accessY, connectionY = panel.infoY - body.y, panel.accessY - body.y, panel.connectionY - body.y
     body:section(4, panel.controlsY - 4, getText("UI_OMHTT_SelectedDevice"))
-    if require("OMHTT/ControlDefinitions").defense(state.kind) then
+    if require("OMHTT/ControlDefinitions").defense(state.kind) or state.kind == "Controller" then
         body:section(panel.controlsY, connectionY - 8, getText("UI_OMHTT_Controls"))
     end
     body:section(accessY, body.contentHeight - 4, getText("UI_OMHTT_AccessAssignment"))

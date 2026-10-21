@@ -1909,3 +1909,9 @@ Owner reports failed Tether placement/non-flush preview and requests the full OM
 ## C372 — Room for targeted battery increases (2026-10-20)
 
 Owner asks whether higher consumption is justified for any heads. [Source-based comparison and concrete choices](BATTERY_BALANCE_C349.md#c372--targeted-head-increases-discussed-2026-10-20) recommends 1A Blades/Lobber x1.5; 1B Blades x2 and Lobber x1.5 is the stronger alternative. Other heads, surcharges and saved tuning remain unchanged. Neither selected; C371 scope remains pending. Planning only.
+
+## C389 -- Approval and implementation (2026-10-21)
+
+**C389 / Full targeting and 1C approved (2026-10-21).** Owner confirms "Yea": C388 values and C387 safeguards are approved. Implementing Controller defaults/defense overrides, deliberate player acquisition, shared reduced turret injuries and independent Sandbox multipliers. No further design decision remains. Installed 0.2.60 stays unchanged until verification and tagged installation; connected/rendered acceptance remains pending. [Contract](TARGETING_AUDIT_C386.md#c389--approval-and-implementation-2026-10-21). **Wait for a patch.**
+
+C389 verification: the full approved implementation passes 26,293 assertions, native write/restart and all three independent package startup selections. [0.2.61](PATCH_v0.2.61.md) retains the selected numbers, state persistence and server protection rules. No connected/client-rendered acceptance is claimed. Tagged installation and the C108 mirror follow; no Workshop publication or merge.

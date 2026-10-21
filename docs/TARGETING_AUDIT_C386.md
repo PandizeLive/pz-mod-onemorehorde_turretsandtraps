@@ -100,3 +100,10 @@ Retain all proposed C387 protections and scope: one nonzero wound roll per playe
 Recommend this as the next starting point rather than continuing upward without a connected PvP test. Automatic fire and multiple turrets can accumulate damage rapidly. Do not infer a precise time to kill from body-part damage or claim a uniform percentage reduction versus handheld weapons. No new game/runtime evidence is obtained this turn.
 
 Planning only. Inspected clean 76a7567e9350938aa3bd990d75e6f00bae89fa3b, fetched origin with no newer dev commits. Installed 0.2.60 and the C386 staged policy foundation are unchanged. No source/package edit, release tag, test acceptance or install. Full targeting patch remains authorized, pending this numeric selection and unfinished integration. **Decision needed: confirm 1C values.**
+
+## C389 -- Approval and implementation (2026-10-21)
+
+**C389 / Full targeting and 1C approved (2026-10-21).** Owner confirms "Yea": C388 values and C387 safeguards are approved. Implementing Controller defaults/defense overrides, deliberate player acquisition, shared reduced turret injuries and independent Sandbox multipliers. No further design decision remains. Installed 0.2.60 stays unchanged until verification and tagged installation; connected/rendered acceptance remains pending. [Contract](TARGETING_AUDIT_C386.md#c389--approval-and-implementation-2026-10-21). **Wait for a patch.**
+
+
+Implementation contract and exact 1C behavior: [0.2.61 patch](PATCH_v0.2.61.md). Targeting is no longer only a foundation: UI, acquisition, aiming, impact validation and player injury handling are wired. See the versioned test record for actual checks and remaining connected/rendered acceptance.

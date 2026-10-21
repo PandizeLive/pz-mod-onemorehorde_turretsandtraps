@@ -1,5 +1,5 @@
 local M = require("OMHTT/TurretModules")
-local Horde = require("OMHTT/DefenseHorde")
+local CombatPolicy = require("OMHTT/ControlCombat")
 local R = {}
 
 ---@param round table Round snapshot
@@ -22,7 +22,7 @@ function R.select(round, origin, profile, heading, deadline)
         local zombie = round.members[index]
         if not round.used[zombie] then
             local inside, distance = M.inside(origin, zombie, profile)
-            if inside and Horde.allowed(zombie) and Combat.clearLane(origin, zombie:getSquare(), profile.range) then
+            if inside and CombatPolicy.eligible(profile.object, zombie) and Combat.clearLane(origin, zombie:getSquare(), profile.range) then
                 local angle = math.deg(math.atan2(-(zombie:getY() - origin:getY() - .5), zombie:getX() - origin:getX() - .5))
                 local turn = math.abs((angle - heading + 180) % 360 - 180)
                 if not round.started then turn = 0 end

@@ -29,30 +29,9 @@ end
 ---@param blades boolean Cutting head
 ---@param now number Active milliseconds
 ---@return nil
-function R.injure(player, blades, now)
-    if isServer() then
-        require("OMHTT/DefenseInjury").request(player, blades and "cut" or "rotaryBruise", 2000)
-        return
-    end
-    if player:isDead() or player:isGodMod() or player:isNoClip() or player:isGhostMode() then return end
-    local data = player:getModData()
-    if not data.OMHTTRotaryInjury then
-        data.OMHTTRotaryInjury = {}
-    end
-    local guard = data.OMHTTRotaryInjury
-    Clock.restore(guard, now)
-    if guard.nextShot and now < guard.nextShot then return end
-    guard.nextShot = now + 2000
-    if not parts then
-        parts = {BodyPartType.ForeArm_L, BodyPartType.ForeArm_R, BodyPartType.UpperLeg_L, BodyPartType.UpperLeg_R}
-    end
-    local part = player:getBodyDamage():getBodyPart(parts[ZombRand(#parts) + 1])
-    if blades then
-        part:setCut(true, true)
-    else
-        part:AddDamage(2)
-        part:setAdditionalPain(math.min(100, part:getAdditionalPain() + 5))
-    end
+function R.injure(player, blades, now, object)
+    require("OMHTT/TurretPlayerHit").hit(player,
+        {playerSource = require("OMHTT/ControlCombat").source(object)}, blades and "RotaryBlades" or "RotaryBat")
 end
 
 ---@param entry table Active turret job
@@ -73,7 +52,7 @@ function R.contact(entry, actor, job)
     local relative = (bearing + 540) % 360 - 180
     if not job.profile.omni and math.abs(relative) > 45 and math.abs(relative) < 135 then return end
     if not require("OMHTT/PrototypeCombat").clearLane(origin, square, 2) then return end
-    if zombie and M.inside(origin, actor, job.detection) then
+    if require("OMHTT/ControlCombat").eligible(entry.object, actor) and M.inside(origin, actor, job.detection) then
         job.target = true
     end
     if not job.moving or not T.isOn(T.state(entry.object)) then return end
@@ -81,13 +60,13 @@ function R.contact(entry, actor, job)
     local arm, pass = Heads.crossing(bearing, job.before, job.after, job.profile.omni)
     if not arm then return end
     if player then
-        R.injure(actor, job.stats.headKind == "RotaryBlades", Clock.now())
+        R.injure(actor, job.stats.headKind == "RotaryBlades", Clock.now(), entry.object)
         return
     end
     if entry.hits[arm][actor] == pass then return end
     local Proc = require("OMHTT/TurretProc")
     if not Proc.available(job.stats) then return end
-    local proc = {stats = job.stats, siphon = job.energy and job.energy[pass]}
+    local proc = {playerSource = require("OMHTT/ControlCombat").source(entry.object), stats = job.stats, siphon = job.energy and job.energy[pass]}
     Proc.reserve(proc)
     local hitX, hitY = actor:getX(), actor:getY()
     entry.hits[arm][actor] = pass

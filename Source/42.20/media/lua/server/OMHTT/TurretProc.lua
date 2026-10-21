@@ -133,7 +133,7 @@ function E.hit(zombie, alive, x, y, z, record, player, options)
         E.serial = E.serial + 1
         E.jobs[#E.jobs + 1] = {id = tostring(E.serial), x = x, y = y, z = z, radius = stats.martyrdom, damage = stats.martyrdomDamage,
             source = record.id, player = player, weapon = options.effectWeapon, seen = {}, queuedAt = now, due = now + 750, audioDue = now + 550,
-            generation = 0, synergy = stats.synergy, siphon = options.siphon,
+            generation = 0, synergy = stats.synergy, siphon = options.siphon, playerSource = options.playerSource, playerBudget = options.playerBudget, playerEvent = options.playerEvent,
             dx = -math.ceil(stats.martyrdom), dy = -math.ceil(stats.martyrdom), index = 0}
 
     end
@@ -151,19 +151,8 @@ end
 
 ---@param player IsoPlayer Nearby player
 ---@return nil
-function E.injure(player)
-    if isServer() then
-        require("OMHTT/DefenseInjury").request(player, "bruise", 1000)
-        return
-    end
-    if player:isDead() or player:isGodMod() or player:isNoClip() or player:isGhostMode() then return end
-    local index, now = player:getPlayerNum(), Clock.now()
-    if E.injuryAt[index] and now < E.injuryAt[index] then return end
-    E.injuryAt[index] = now + 1000
-    local limbs = {BodyPartType.ForeArm_L, BodyPartType.ForeArm_R, BodyPartType.LowerLeg_L, BodyPartType.LowerLeg_R}
-    local part = player:getBodyDamage():getBodyPart(limbs[ZombRand(4) + 1])
-    part:AddDamage(2)
-    part:setAdditionalPain(math.min(100, part:getAdditionalPain() + 5))
+function E.injure(player, options)
+    require("OMHTT/TurretPlayerHit").hit(player, options, "Burst")
 end
 
 ---@param job table Incremental terminal burst
@@ -196,7 +185,7 @@ function E.step(job)
             job.seen[actor] = true
             actor:getModData().OMHTTBurstSeen = job.id
             if instanceof(actor, "IsoPlayer") then
-                E.injure(actor)
+                E.injure(actor, job)
             else
                 local x, y = actor:getX(), actor:getY()
                 Damage.resolve(actor, job.damage / 100, job.source, "martyrdom", function(lost)
@@ -208,7 +197,7 @@ function E.step(job)
                         local due = Clock.now()
                         E.jobs[#E.jobs + 1] = {id = tostring(E.serial), x = x, y = y, z = job.z,
                             radius = job.radius, damage = job.damage * .5, source = job.source,
-                            generation = 1, synergy = true, siphon = job.siphon, seen = {}, queuedAt = due,
+                            generation = 1, synergy = true, siphon = job.siphon, playerSource = job.playerSource, playerBudget = job.playerBudget, playerEvent = job.playerEvent, seen = {}, queuedAt = due,
                             due = due + 750, audioDue = due + 550,
                             dx = -math.ceil(job.radius), dy = -math.ceil(job.radius), index = 0}
                     end
@@ -276,7 +265,7 @@ function E.save()
     for i = 1, #E.jobs do
         local job = E.jobs[i]
         data.jobs[i] = {id = job.id, x = job.x, y = job.y, z = job.z, radius = job.radius,
-            damage = job.damage, source = job.source, siphon = job.siphon, generation = job.generation, synergy = job.synergy,
+            damage = job.damage, source = job.source, siphon = job.siphon, playerSource = job.playerSource, playerBudget = job.playerBudget, playerEvent = job.playerEvent, generation = job.generation, synergy = job.synergy,
             remaining = math.max(0, (job.due or now) - now),
             audioRemaining = math.max(0, (job.audioDue or now) - now), sounded = job.sounded, started = job.started,
             dx = job.dx, dy = job.dy, index = job.index}

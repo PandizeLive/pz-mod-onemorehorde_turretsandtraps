@@ -1,6 +1,13 @@
 local H = {}
 local baselines = setmetatable({}, {__mode = "k"})
 
+---@param actor IsoGameCharacter Candidate
+---@return number health Comparable current health
+function H.current(actor)
+    if instanceof(actor, "IsoPlayer") then return actor:getBodyDamage():getOverallBodyHealth() / 100 end
+    return actor:getHealth()
+end
+
 ---@param zombie IsoZombie Newly created zombie
 ---@return nil
 function H.created(zombie)
@@ -13,6 +20,7 @@ end
 ---@param zombie IsoZombie Candidate
 ---@return number health Recorded baseline, zero when unknown
 function H.maximum(zombie)
+    if instanceof(zombie, "IsoPlayer") then return 1 end
     if isServer() then
         local maximum = math.max(baselines[zombie] or 0, zombie:getHealth())
         baselines[zombie] = maximum

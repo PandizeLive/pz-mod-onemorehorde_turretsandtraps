@@ -219,7 +219,7 @@ function V.finish(ray)
         return true
     end
     local hit = false
-    if victim and not victim:isDead() and ((group.kind == "scrapshot" and instanceof(victim, "IsoPlayer")) or Horde.allowed(victim)) and victim:getSquare() == ray.square
+    if victim and not victim:isDead() and ((group.kind ~= "fragment" and instanceof(victim, "IsoPlayer")) or Horde.allowed(victim)) and victim:getSquare() == ray.square
         and getCell():getGridSquare(ray.square:getX(), ray.square:getY(), ray.z) == ray.square
         and math.abs((victim:getX() - ray.x) * ray.dy - (victim:getY() - ray.y) * ray.dx) <= math.max(.2, victim:getWidth())
         and (victim:getX() - ray.x) * ray.dx + (victim:getY() - ray.y) * ray.dy >= 0
@@ -235,6 +235,8 @@ function V.finish(ray)
             if group.kind ~= "splitter" then group.hits[victim] = true end
             if group.kind == "scrapshot" then
                 hit = require("OMHTT/TurretScrapshot").hit(ray, victim)
+            elseif instanceof(victim, "IsoPlayer") then
+                hit = require("OMHTT/TurretPlayerHit").hit(victim, group.options)
             else
             local owner = group.options
             local x, y, square = victim:getX(), victim:getY(), victim:getSquare()
@@ -324,7 +326,7 @@ function V.step(ray)
         if ray.objectIndex < objects:size() then
             local candidate = objects:get(ray.objectIndex)
             ray.objectIndex = ray.objectIndex + 1
-            if ray.group.kind ~= "terminal" and (instanceof(candidate, "IsoZombie") or (ray.group.kind == "scrapshot" and instanceof(candidate, "IsoPlayer"))) and not candidate:isDead() and candidate:getSquare() == ray.square
+            if ray.group.kind ~= "terminal" and (instanceof(candidate, "IsoZombie") or (ray.group.kind ~= "fragment" and instanceof(candidate, "IsoPlayer"))) and not candidate:isDead() and candidate:getSquare() == ray.square
                 and (ray.group.kind == "splitter" or not V.seen(ray.group, candidate)) then
                 local x, y = candidate:getX() - ray.x, candidate:getY() - ray.y
                 local along = x * ray.dx + y * ray.dy
@@ -447,6 +449,7 @@ function V.save()
             end
             data.owners[owners[owner]] = {stats = owner.stats, rayBudget = owner.rayBudget, procJobs = owner.procJobs,
                 procFields = owner.procFields, impactReady = owner.impactReady, scrapId = owner.scrapId, savedScrap = savedScrap,
+                playerSource = owner.playerSource, playerBudget = owner.playerBudget, playerEvent = owner.playerEvent, playerKind = owner.playerKind,
                 damage = owner.damage, splash = owner.splash, radius = owner.radius, source = owner.source, siphon = owner.siphon}
         end
         if not groups[group] then

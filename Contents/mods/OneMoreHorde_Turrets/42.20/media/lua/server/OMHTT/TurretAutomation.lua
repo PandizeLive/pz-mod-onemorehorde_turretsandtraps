@@ -3,7 +3,7 @@ local Clock = require("OMHTT/TurretClock")
 if isClient() then return end
 local T = require("OMHTT/Turret")
 local M = require("OMHTT/TurretModules")
-local Horde = require("OMHTT/DefenseHorde")
+local CombatPolicy = require("OMHTT/ControlCombat")
 local D = require("OMHTT/Diagnostics")
 local F = require("OMHTT/Foundation")
 local A = {entries = {}, order = {}, cursor = 1}
@@ -54,7 +54,7 @@ function A.advance(job, budget, deadline)
             local zombie = objects:get(job.index)
             job.index = job.index + 1
             job.visited = job.visited + 1
-            if instanceof(zombie, "IsoZombie") and Horde.allowed(zombie) then
+            if CombatPolicy.eligible(job.profile.object, zombie) then
                 local inside, distance = M.inside(job.origin, zombie, job.profile)
                 local select = inside and (job.profile.priority == "OnceEach" or job.profile.priority == "Random"
                     or M.better(zombie, distance, job.best, job.bestDistance, job.profile.priority))
@@ -120,13 +120,14 @@ function A.step(entry, deadline)
         return true
     end
     local profile = M.profile(state, contents, true, stats)
+    profile.object = object
     local key = profile.heading .. ":" .. profile.cone .. ":" .. profile.range .. ":" .. profile.priority
     if entry.key ~= key then entry.job, entry.target, entry.round = nil, nil, nil end
     entry.key = key
     local Combat = require("OMHTT/PrototypeCombat")
     local target = entry.target
     local sticky = profile.priority == "Random" or profile.priority == "Toughest"
-    local retained = target and Horde.allowed(target) and M.inside(square, target, profile)
+    local retained = target and CombatPolicy.eligible(object, target) and M.inside(square, target, profile)
         and Combat.clearLane(square, target:getSquare(), profile.range)
     local job = {visited = 0}
     if profile.priority == "OnceEach" then
@@ -160,7 +161,7 @@ function A.step(entry, deadline)
     elseif now >= entry.due then
         entry.due = now + interval
     end
-    if not target or not Horde.allowed(target) or (not retained and (not M.inside(square, target, profile)
+    if not target or not CombatPolicy.eligible(object, target) or (not retained and (not M.inside(square, target, profile)
         or not Combat.clearLane(square, target:getSquare(), profile.range))) then
         entry.target = nil
         if entry.status ~= "no-target" then

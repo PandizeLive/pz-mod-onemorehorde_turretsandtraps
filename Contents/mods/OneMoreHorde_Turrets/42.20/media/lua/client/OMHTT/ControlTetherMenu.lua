@@ -25,6 +25,10 @@ function M.add(menu, player, object)
         end
     end
     add(getText(state.enabled == false and "UI_OMHTT_TetherEnable" or "UI_OMHTT_TetherDisable"), "TetherEnabled", state.enabled == false)
+    local targeting = menu:addOption(getText("UI_OMHTT_TargetingLabel"), nil, nil)
+    local submenu = ISContextMenu:getNew(menu)
+    menu:addSubMenu(targeting, submenu)
+    require("OMHTT/ControlTargetingUI").populate(submenu, player, object)
     add(getText("UI_OMHTT_ControlRepair"), "Repair")
     add(getText("UI_OMHTT_ControlPickup"), "Pickup")
 end

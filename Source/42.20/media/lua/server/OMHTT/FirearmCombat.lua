@@ -41,26 +41,35 @@ function C.hit(record, origin, target, player, options)
     local aimHit = ZombRand(10000) < Accuracy.chance(gun, stats, math.sqrt(dx * dx + dy * dy), target:isProne()) * 100
     local firstHit
     local eligibility = {}
-    for i = 1, #targets do eligibility[targets[i]] = Conditional.snapshot(targets[i], stats) end
+    for i = 1, #targets do
+        if instanceof(targets[i], "IsoZombie") then
+            eligibility[targets[i]] = Conditional.snapshot(targets[i], stats)
+        end
+    end
     for i = 1, #targets do
         local victim = targets[i]
         local allocated = math.floor((pellets - i) / #targets) + 1
-        if allocated > 0 and aimHit and not victim:isDead() and Horde.allowed(victim) then
+        if allocated > 0 and aimHit and not victim:isDead() and require("OMHTT/ControlCombat").eligible(options.object, victim) then
             local hitX, hitY, hitSquare = victim:getX(), victim:getY(), victim:getSquare()
-            local amount = Conditional.damage(victim, stats.damage * multiplier / 100 / pellets * allocated, eligibility[victim])
-            local admitted = require("OMHTT/TurretHit").resolve(victim, amount, record.id, "firearm", options, function(actual)
-                lost = lost + actual
-                require("OMHTT/TurretProc").hit(victim, true, hitX, hitY, origin:getZ(), record, player, options)
-                local guard = require("OMHTT/DefenseActorState").get(victim).OMHTTKnockdownUntilMs
-                local chance = 1 - (1 - stats.knockdown / 100) ^ allocated
-                if not victim:isDead() and not victim:isOnFloor() and not victim:isKnockedDown()
-                    and (not guard or guard < getTimestampMs()) and ZombRand(10000) < chance * 10000 then
-                    if require("OMHTT/DefenseMotion").request(victim, "knock", record.id) then
-                        require("OMHTT/DefenseActorState").get(victim).OMHTTKnockdownUntilMs = getTimestampMs() + Combat.KNOCKDOWN_GUARD_MS
+            local admitted
+            if instanceof(victim, "IsoPlayer") then
+                admitted = require("OMHTT/TurretPlayerHit").hit(victim, options, pellets > 1 and "Shotgun" or "Firearm", allocated / pellets)
+            else
+                local amount = Conditional.damage(victim, stats.damage * multiplier / 100 / pellets * allocated, eligibility[victim])
+                admitted = require("OMHTT/TurretHit").resolve(victim, amount, record.id, "firearm", options, function(actual)
+                    lost = lost + actual
+                    require("OMHTT/TurretProc").hit(victim, true, hitX, hitY, origin:getZ(), record, player, options)
+                    local guard = require("OMHTT/DefenseActorState").get(victim).OMHTTKnockdownUntilMs
+                    local chance = 1 - (1 - stats.knockdown / 100) ^ allocated
+                    if not victim:isDead() and not victim:isOnFloor() and not victim:isKnockedDown()
+                        and (not guard or guard < getTimestampMs()) and ZombRand(10000) < chance * 10000 then
+                        if require("OMHTT/DefenseMotion").request(victim, "knock", record.id) then
+                            require("OMHTT/DefenseActorState").get(victim).OMHTTKnockdownUntilMs = getTimestampMs() + Combat.KNOCKDOWN_GUARD_MS
+                        end
                     end
-                end
-                Conditional.impact(victim, origin, options)
-            end)
+                    Conditional.impact(victim, origin, options)
+                end)
+            end
             if admitted then
                 if not firstHit then firstHit = {victim = victim, x = hitX, y = hitY, square = hitSquare} end
                 hits = hits + allocated

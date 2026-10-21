@@ -2,7 +2,7 @@ local Budget = require("OMHTT/TurretScheduler")
 local Clock = require("OMHTT/TurretClock")
 local T = require("OMHTT/Turret")
 local M = require("OMHTT/TurretModules")
-local Horde = require("OMHTT/DefenseHorde")
+local CombatPolicy = require("OMHTT/ControlCombat")
 local D = require("OMHTT/Diagnostics")
 local S = {targets = setmetatable({}, {__mode = "k"}), pending = {}, order = {}, cursor = 1, results = setmetatable({}, {__mode = "k"})}
 
@@ -15,10 +15,11 @@ function S.request(player, object)
     local aim = require("OMHTT/TurretAim").entries[object]
     if aim and aim.player then return "Aiming" end
     local profile = M.profile(T.state(object), T.contents(object:getContainer()))
+    profile.object = object
     local held = S.targets[object]
     local Combat = require("OMHTT/PrototypeCombat")
     if held and held.priority == profile.priority and (profile.priority == "Random" or profile.priority == "Toughest")
-        and Horde.allowed(held.target) and M.inside(object:getSquare(), held.target, profile)
+        and CombatPolicy.eligible(object, held.target) and M.inside(object:getSquare(), held.target, profile)
         and Combat.clearLane(object:getSquare(), held.target:getSquare(), profile.range) then
         return require("OMHTT/TurretWorld").fire(player, object, held.target)
     end
@@ -58,6 +59,7 @@ function S.step(entry, deadline)
     local contents = T.contents(object:getContainer())
     if not W.power(object, contents) then S.finish(entry, "NoPower"); return true end
     local profile = M.profile(T.state(object), contents)
+    profile.object = object
     local old = entry.job.profile
     if profile.range ~= old.range or profile.cone ~= old.cone or profile.priority ~= old.priority or profile.heading ~= old.heading then
         S.finish(entry, "Unavailable")

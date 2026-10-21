@@ -2,7 +2,7 @@ local Budget = require("OMHTT/TurretScheduler")
 local Clock = require("OMHTT/TurretClock")
 local T = require("OMHTT/Turret")
 local M = require("OMHTT/TurretModules")
-local Horde = require("OMHTT/DefenseHorde")
+local CombatPolicy = require("OMHTT/ControlCombat")
 local Aim = {entries = {}, order = {}, queued = {}, cursor = 1}
 
 ---@param current number Actual degrees
@@ -29,7 +29,7 @@ end
 ---@param player IsoPlayer? Manual operator
 ---@return boolean aligned
 function Aim.request(object, target, player)
-    if not Horde.allowed(target) then return false end
+    if not CombatPolicy.eligible(object, target) then return false end
     local state = T.state(object)
     local desired = Aim.angle(object, target)
     local current = state.aimDegrees or (state.facing or 0) * 22.5
@@ -118,7 +118,7 @@ function Aim.tick()
         else
             Aim.cursor = Aim.cursor + 1
             local state = T.state(object)
-            local valid = state and T.isOn(state) and W.valid(object) and now <= entry.expires and Horde.allowed(entry.target)
+            local valid = state and T.isOn(state) and W.valid(object) and now <= entry.expires and CombatPolicy.eligible(object, entry.target)
             if valid and now >= entry.checkAt then
                 local contents = W.contents(object)
                 local stats = T.cycleConfig(contents)

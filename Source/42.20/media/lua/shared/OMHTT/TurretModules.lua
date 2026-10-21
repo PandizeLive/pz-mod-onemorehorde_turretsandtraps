@@ -89,7 +89,7 @@ end
 ---@nodiscard
 function M.better(candidate, distance, best, bestDistance, priority)
     if not best then return true end
-    if priority == "Weakest" and candidate:getHealth() ~= best:getHealth() then return candidate:getHealth() < best:getHealth() end
+    if priority == "Weakest" and Health.current(candidate) ~= Health.current(best) then return Health.current(candidate) < Health.current(best) end
     if priority == "Toughest" and Health.maximum(candidate) ~= Health.maximum(best) then return Health.maximum(candidate) > Health.maximum(best) end
     if priority == "Furthest" then return distance > bestDistance end
     return distance < bestDistance

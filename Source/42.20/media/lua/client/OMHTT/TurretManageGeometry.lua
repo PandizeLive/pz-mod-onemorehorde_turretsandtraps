@@ -87,7 +87,10 @@ function G.apply(panel)
     place(panel.lureSlider, sliderX, panel.lureSlider.y, width - sliderX - 168)
     panel.lurePlay:setX(width - 156)
     panel.lureLoop:setX(width - 86)
-    panel.priorityButton:setWidth(width - panel.priorityButton.x - 12)
+    local remaining = width - panel.priorityButton.x - 20
+    panel.priorityButton:setWidth(math.floor(remaining / 2))
+    place(panel.targetingButton, panel.priorityButton.x + panel.priorityButton.width + 8, panel.priorityButton.y,
+        remaining - panel.priorityButton.width)
     return true
 end
 

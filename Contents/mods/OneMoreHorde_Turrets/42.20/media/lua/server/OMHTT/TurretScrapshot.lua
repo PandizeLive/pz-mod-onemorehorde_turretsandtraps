@@ -54,13 +54,8 @@ function S.hit(ray, victim)
     local mark = {id = owner.scrapId}
     actorState.OMHTTScrapShot = mark
     if instanceof(victim, "IsoPlayer") then
-        local used = owner.scrapInjury[victim] or 0
-        if used < 10 then
-            require("OMHTT/DefenseInjury").blast(victim, math.min(2, 10 - used), used == 0 and .25 or 0)
-            owner.scrapInjury[victim] = used + 2
-            mark.injury = used + 2
-        end
-        return true
+        local hit = require("OMHTT/TurretPlayerHit").hit(victim, owner, "Scrapshot", 1 / 8)
+        return hit
     end
     local eligible = (group.primary and not group.penetrated) or group.stats.synergy
     local eligibility = owner.scrapEligibility[victim]

@@ -36,6 +36,7 @@ def main():
     turret_probe.write_text((ROOT / "tools/tests/native_turret_smoke.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativeHeads.lua").write_text((ROOT / "tools/tests/native_heads.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativeContentC247.lua").write_text((ROOT / "tools/tests/native_content_c247.lua").read_text(encoding="utf-8"), encoding="utf-8")
+    (turret_probe.parent / "OMHTT/NativeTargeting.lua").write_text((ROOT / "tools/tests/native_targeting.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativeTriggers.lua").write_text((ROOT / "tools/tests/native_triggers.lua").read_text(encoding="utf-8").replace("EXPECT_READ", "true" if os.environ.get("OMHTT_PROBE_MODE") == "read" else "false"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativeControls.lua").write_text((ROOT / "tools/tests/native_controls.lua").read_text(encoding="utf-8").replace("EXPECT_READ", "true" if os.environ.get("OMHTT_PROBE_MODE") == "read" else "false"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativeTether.lua").write_text((ROOT / "tools/tests/tether_trap.lua").read_text(encoding="utf-8").replace("Events.OnServerStarted.Add(run)", "return run"), encoding="utf-8")
@@ -126,6 +127,7 @@ def main():
     assert "Invalid SpriteConfig object! scripted object = OMHTT" not in text, "Invalid native barrier identity"
     assert "[OMHTT-Smoke] native-sandbox damage=10 maxHealth=100 tooltip=formatted" in text, "Native Sandbox options/tooltip invalid"
     assert "[OMHTT-Smoke] native-texturepacks traps=102 turrets=38 pages=59 png=valid" in text, "Native texture packs invalid"
+    assert "[OMHTT-C389] native-player targeting=passed pvp=passed safety=passed clothing=passed limb-damage=passed volley-cap=passed connected-clients=0" in text, "Native targeting/player injury proof missing"
     assert "[OMHTT-Beds] PASS" in text, "Native bed content invalid"
     assert "[OMHTT-HybridBuild] native-original-recipe=true" in text, "Native hybrid crafting/building proof missing"
     assert "[OMHTT-Beds] controlled-native-recovery forwardLanding=true getUpTransition=passed getUpExit=cleared" in text, "Native forward trip recovery failed"

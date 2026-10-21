@@ -37,7 +37,7 @@ local function hit(cycle, victim, reason)
     if reason == "zombie" and Horde.allowed(victim) then
         entry.victim = victim
         require("OMHTT/Damage").resolve(victim, .3, entry.state.id, "tether-dart")
-    elseif reason == "player" then
+    elseif reason == "player" and require("OMHTT/ControlCombat").protected(require("OMHTT/ControlCombat").source(entry.object), victim) then
         require("OMHTT/DefenseInjury").poke(victim, "scratch")
     end
 end
@@ -117,8 +117,8 @@ function S.step(object, state, pulse)
         local detected = false
         if not linked and S.time >= entry.scan then
             entry.scan = S.time + 200
-            local victim = Lane.detect(cycle)
-            detected = victim ~= nil and Horde.allowed(victim)
+            local fraction, victim = Lane.cast(cycle, 0, cycle.range)
+            detected = fraction ~= nil and require("OMHTT/ControlCombat").eligible(object, victim)
         end
         C.start(cycle, detected, pulse == true)
     end

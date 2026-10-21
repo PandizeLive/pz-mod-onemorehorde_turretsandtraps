@@ -132,11 +132,19 @@ contents.active.FiringImprovised = nil
 SandboxVars.OMHTurretsTraps.ImprovisedFiringFailure = nil
 state.powered = false
 R.step(entry, getTimestampMs() + 100)
+local oldTime, oldParts = getTimestampMs, BodyPartType
+ZombRand = function() return 0 end
+getTimestampMs = function() return now end
+BodyPartType = {ForeArm_L = 2, ForeArm_R = 3, UpperLeg_L = 11, UpperLeg_R = 12,
+    ToIndex = function(value) return value end, FromIndex = function(value) return value end}
 local injuryData, damage, pain, cuts = {}, 0, 0, 0
 local part = {AddDamage = function(_, n) damage = damage + n end,
     getAdditionalPain = function() return pain end, setAdditionalPain = function(_, n) pain = n end,
     setCut = function() cuts = cuts + 1 end}
 local player = {god = false, noclip = false, ghost = false, dead = false}
+function player:getUsername() return "rotary-victim" end
+function player:getPlayerNum() return 0 end
+function player:getBodyPartClothingDefense() return 0 end
 function player:isGodMod() return self.god end
 function player:isNoClip() return self.noclip end
 function player:isGhostMode() return self.ghost end
@@ -150,10 +158,13 @@ for _, flag in pairs({"god", "noclip", "ghost", "dead"}) do
 end
 check(damage == 0 and cuts == 0, "Rotary injury exempts dead and protected players")
 R.injure(player, false, now)
-R.injure(player, true, now + 1000)
-check(damage == 2 and pain == 5 and cuts == 0, "Bat injury and cross-head guard")
-R.injure(player, true, now + 2000)
-check(cuts == 1 and damage == 2, "Blade laceration resumes after shared injury guard")
+now = now + 1000
+R.injure(player, true, now)
+check(damage == 2 and pain == 0 and cuts == 0, "Bat injury and cross-head guard")
+now = now + 1000
+R.injure(player, true, now)
+check(cuts == 1 and damage == 6, "Reduced blade damage and rolled cut resume after shared injury guard")
+getTimestampMs, BodyPartType = oldTime, oldParts
 W.valid, W.contents, W.near = oldValid, oldContents, oldNear
 getCell, getGameTime, Clock.now, Combat.clearLane, Effects.sound = oldCell, oldGameTime, oldClock, oldLane, oldSound
 instanceof, ZombRand = oldInstance, oldRandom

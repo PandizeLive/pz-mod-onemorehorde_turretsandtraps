@@ -66,7 +66,7 @@ function O.launch(record, origin, target, player, options)
     dx, dy = aimX - x, aimY - y
     distance = math.min(stats.range, math.sqrt(dx * dx + dy * dy))
     local angle = math.atan2(dy, dx)
-    local shared = {stats = stats, siphon = options.siphon, impactReady = options.impactReady, source = record.id, x = aimX, y = aimY, z = origin:getZ(), pending = 0}
+    local shared = {playerSource = options.playerSource, playerBudget = options.playerBudget, playerEvent = options.playerEvent, stats = stats, siphon = options.siphon, impactReady = options.impactReady, source = record.id, x = aimX, y = aimY, z = origin:getZ(), pending = 0}
     local fragments = stats.fragment > 0 and 5 or 0
     for i = 0, stats.splitter do
         local a = angle
@@ -198,9 +198,9 @@ function O.step(job)
     local fraction = math.max(0, 1 - math.sqrt(dx * dx + dy * dy) / job.radius)
     if instanceof(actor, "IsoPlayer") then
         local scale = job.injuryScale or 1
-        require("OMHTT/DefenseInjury").blast(actor, 10 * fraction * scale, .5 * fraction * scale)
+        require("OMHTT/TurretPlayerHit").hit(actor, job.shared, "Lobber", fraction * scale)
     elseif Horde.allowed(actor) then
-        local options = {stats = job.stats, siphon = job.shared.siphon}
+        local options = {stats = job.stats, siphon = job.shared.siphon, playerSource = job.shared.playerSource, playerBudget = job.shared.playerBudget, playerEvent = job.shared.playerEvent}
         if job.eligible then
             Proc.reserve(options)
         end

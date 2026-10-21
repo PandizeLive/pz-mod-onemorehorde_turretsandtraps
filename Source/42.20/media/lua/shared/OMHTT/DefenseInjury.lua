@@ -78,19 +78,61 @@ function I.poke(player, kind)
     end
 end
 
+---@param player IsoPlayer Local victim
+---@param partIndex number Selected limb index
+---@param amount number Server-validated damage after armor
+---@param wound string none, scratch or cut
+---@return nil
+local function turretInjury(player, partIndex, amount, wound)
+    if player:isDead() or player:isGodMod() or player:isNoClip() or player:isGhostMode() then return end
+    local part = player:getBodyDamage():getBodyPart(BodyPartType.FromIndex(partIndex))
+    part:AddDamage(amount)
+    if wound == "scratch" then
+        part:setScratched(true, true)
+    elseif wound == "cut" then
+        part:setCut(true, true)
+    end
+end
+
+---@param player IsoPlayer Server-selected victim
+---@param part number Limb index
+---@param amount number Fixed injury after armor
+---@param wound string Server-selected injury
+---@return nil
+function I.turret(player, part, amount, wound)
+    if isClient() then return end
+    if isServer() then
+        serial = serial + 1
+        sendServerCommand(player, "OMHTT_InjuryV1", "turret", {id = player:getOnlineID(), serial = serial,
+            part = part, amount = amount, wound = wound})
+    else
+        turretInjury(player, part, amount, wound)
+    end
+end
+
 ---@param module string Server namespace
 ---@param command string Injury kind
 ---@param message table Server-selected victim and event
 ---@return nil
 function I.receive(module, command, message)
-    if not isClient() or module ~= "OMHTT_InjuryV1" or (command ~= "bruise" and command ~= "scratch" and command ~= "cut" and command ~= "rotaryBruise" and command ~= "blast")
+    if not isClient() or module ~= "OMHTT_InjuryV1" or (command ~= "bruise" and command ~= "scratch" and command ~= "cut" and command ~= "rotaryBruise" and command ~= "blast" and command ~= "turret")
         or type(message) ~= "table" or not P.identity(message.id) or not P.number(message.serial, 1, 1000000000000) then return end
     if command == "blast" and (not P.number(message.amount, 0, 10) or not P.number(message.chance, 0, .5)) then return end
+    if command == "turret" then
+        if not P.number(message.amount, 0, 50) or not P.number(message.part, 0, 16)
+            or message.part ~= math.floor(message.part)
+            or (message.wound ~= "none" and message.wound ~= "scratch" and message.wound ~= "cut") then return end
+        local part = BodyPartType.FromIndex(message.part)
+        if part ~= BodyPartType.ForeArm_L and part ~= BodyPartType.ForeArm_R
+            and part ~= BodyPartType.UpperLeg_L and part ~= BodyPartType.UpperLeg_R then return end
+    end
     for index = 0, 3 do
         local player = getSpecificPlayer(index)
         if player and player:getOnlineID() == message.id and message.serial > (received[index] or 0) then
             received[index] = message.serial
-            if command == "blast" then
+            if command == "turret" then
+                turretInjury(player, message.part, message.amount, message.wound)
+            elseif command == "blast" then
                 blastInjury(player, message.amount, message.chance)
             else
                 apply(player, command)

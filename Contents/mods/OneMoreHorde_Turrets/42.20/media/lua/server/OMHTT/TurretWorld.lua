@@ -518,7 +518,7 @@ function W.fire(player, object, target, signal)
     local Volley = require("OMHTT/TurretVolley")
     if not Volley.available(stats) then return "Unavailable" end
     local fireStarted = getTimestampMs()
-    local options = {source = state.id, stats = stats, weapon = contents.head, range = stats.range, interval = stats.cooldown,
+    local options = {object = object, playerSource = require("OMHTT/ControlCombat").source(object), source = state.id, stats = stats, weapon = contents.head, range = stats.range, interval = stats.cooldown,
         damage = stats.damage / 100, knockdown = stats.knockdown, critChance = stats.critChance, critMultiplier = stats.critMultiplier,
         splash = stats.damage * T.option("SplashPercent", 25, 0, 100) / 10000, radius = T.option("SplashRadius", 1.5, 0, 3), managed = true,
         profile = M.profile(state, contents, player == nil, stats), target = target, forward = forward, projectileSpeed = T.option("ProjectileSpeed", 20, 5, 100)}
@@ -537,6 +537,9 @@ function W.fire(player, object, target, signal)
         options.resolve = require("OMHTT/TurretOrdnance").launch
         if not require("OMHTT/TurretOrdnance").available(stats) then return "Unavailable" end
     end
+    options.playerKind = require("OMHTT/TurretPlayerHit").kind(options)
+    options.playerBudget = {}
+    options.playerEvent = state.id .. ":" .. tostring(state.shots + 1)
     local descriptor = require("OMHTT/TurretFeed").descriptor(contents, cycle)
     if descriptor then
         options.ammoDescriptor = descriptor

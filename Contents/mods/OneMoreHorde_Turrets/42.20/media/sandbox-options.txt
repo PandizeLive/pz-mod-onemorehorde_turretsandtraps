@@ -1282,3 +1282,21 @@ option OMHTurretsTraps.TriggerLaserConsumption {
     page = OMHTurretsTraps_TriggersPage,
     translation = OMHTurretsTraps_TriggerLaserConsumption,
 }
+
+option OMHTurretsTraps.TurretPlayerDamageMultiplier {
+    type = double,
+    min = 0,
+    max = 5,
+    default = 1,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_TurretPlayerDamageMultiplier,
+}
+
+option OMHTurretsTraps.TurretPlayerWoundMultiplier {
+    type = double,
+    min = 0,
+    max = 5,
+    default = 1,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_TurretPlayerWoundMultiplier,
+}
