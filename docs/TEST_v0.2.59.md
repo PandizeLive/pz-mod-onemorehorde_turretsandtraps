@@ -27,3 +27,7 @@ These tests use native objects with synthetic square/actor fixtures and test dou
 ## Release status
 
 Installed from immutable `test/v0.2.59` / `c376cbb6c912e9aee6c367ac41eac386673161f2`. All 320 source and 419 tagged/package/install/archive files match. Both managed 0.2.58 backups verify. [Release record](../diagnostics/v0.2.59/local-release.json). C108 GitHub mirror follows through the existing branch/draft PR; no Workshop upload or merge. **Test now** after restart.
+
+## C371 — Owner result: placement failed (2026-10-20)
+
+The owner completed a test and reports failed Tether placement and non-flush wall preview. Captured console confirms loaded 0.2.59 / game 42.21 and two failing completions (frames 1609/2568), both with BuildCheat active. Shared PlacementAction calls native setInfo without the local player binding. [Audit/evidence and proposed correction](TETHER_PLACEMENT_C371.md). Prior assertions did not execute the full SP construction transaction; they do not establish successful placement. Visual alignment and downstream combat/service checks are not accepted. No connected-player acceptance is claimed. Do not request another run of the unchanged failing scenario. Installed 0.2.59 remains unchanged; decision on corrective patch pending.

@@ -144,3 +144,7 @@ Expected refund fraction of paid energy is `proc probability * refund multiplier
 Recommend **1A: 2x at 45%, +1x per additional module**, preserving the owner's preferred 2x refund and producing 90%/135% expected return for one/two modules at one eligible kill per cycle. **1B: 2x at 50%** gives mathematical first-module break-even under that same assumption. **1C: retain earlier 2x at 60%**, accepting first-module positive return in efficient combat. These are new comparison choices, not retrospective relabeling of C348. The latest 75% proposal reopens chance selection; neither it nor a changed multiplier is selected.
 
 No proc-per-kill tuning can guarantee a single module never sustains across every kill rate without an additional cap/change to reward eligibility; no such cap is authorized. Keep the roll shared across the stack, +1x amount stacking, Synergy gate, same-local-battery rule, Controller exclusion and loaded loot tuning. No gameplay, save, installed package or Workshop changes.
+
+## C371 — Full consumption spectrum requested (2026-10-20)
+
+Owner requests the complete OMH palette, with higher bands allowed to remain unused until Sandbox changes. [Seven-band fixed-threshold proposal](TETHER_PLACEMENT_C371.md#battery-spectrum-proposal) preserves the module-free head estimate and existing 5/15 percentage-points-per-real-hour boundaries. Current code already reads loaded Sandbox settings. No consumption, rarity, loot weight or surcharge changes are proposed. New labels/cutoffs await selection and patch approval.
