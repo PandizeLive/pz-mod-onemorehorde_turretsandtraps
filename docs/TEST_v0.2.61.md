@@ -1,6 +1,6 @@
 # 0.2.61 verification - C389
 
-General validation passes **26,293 assertions**, 290 runtime/translation compilation checks and 1,177 native translation checks. Source/package comparison covers 334 source and 445 generated files. Final native write (52.5s) and fresh-process restart (54.9s) pass. Tagged installation is recorded below when complete. Traps-only (51.0s), Turrets-only (51.8s) and combined (59.5s) native startup all pass. No connected-player or rendered acceptance is claimed.
+General validation passes **26,293 assertions**, 290 runtime/translation compilation checks and 1,177 native translation checks. Source/package comparison covers 334 source and 445 generated files. Final native write (52.5s) and fresh-process restart (54.9s) pass. Tagged installation is verified below. Traps-only (51.0s), Turrets-only (51.8s) and combined (59.5s) native startup all pass. No connected-player or rendered acceptance is claimed.
 
 ## Focused owner test
 
@@ -23,3 +23,7 @@ Focused regression cases exercise real incremental player acquisition, inheritan
 Native 42.21 fixtures verify the current faction/username/safety/non-PvP/clothing/BodyPartType APIs, local limb damage and server-selected capped injury envelopes. Injury envelopes are captured by the fixture; no remote client was connected. The fresh-process policy fixture checks packed Controller exclusion and restored inheritance on redeployment. These are native object tests, not proof of rendered UI, live client injury synchronization or gameplay balance. The wider R1C3/R3C7/R5C1 acceptance work remains open.
 
 An additional audit corrected armor-blocked rotary contact recovery. Its new regression passes without consuming a wound roll. Source edits preserve existing line endings, and the cumulative Workshop draft retains unrelated pending changes.
+
+## Tagged installation
+
+Installed from immutable `test/v0.2.61` / `1cf3889e8bf96987627de66a4ed865977927012c`. All 334 source and 445 tagged/package/install/archive files match SHA-256; both prior 0.2.60 package backups verify. [Local release record](../diagnostics/v0.2.61/local-release.json). The final formatting-only cleanup also passed compilation/regression validation. **Test now** after restarting; the installed manifest does not establish which version an already-running client loaded. Rendered/connected acceptance remains pending.
