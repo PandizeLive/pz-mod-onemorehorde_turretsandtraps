@@ -585,3 +585,8 @@ The ON state has a faint green light at the Lever; OFF has no light, not a red r
 Preserve C350 receiver semantics: Detection-equipped turrets wait for eligible targets; Firing-only turrets use ordinary straight-ahead cycles, with real ammo/power and cooldowns. OFF withdraws only this input, permits the admitted action to finish and does not defeat another active OR-linked input. Tether's linked-input mode and Poke's contact-only activation remain distinct. The rotary Detection exception remains part of the implementation audit/correction. Reuse Controller assignment, explicit links, permissions, Stockpile handling, unique names and native switch audio.
 
 Design selections are settled. This records choices for the next patch, not a claim that a Lever has been installed or a new implementation approval. Installed 0.2.59.1 and deferred owner testing remain unchanged. No merge or Workshop publication. Medium reasoning is recommended for implementation.
+
+
+## C378 - Broader trigger-power rule under discussion (2026-10-21)
+
+Owner selects Controller supply for the laser and suggests reviewing that requirement for all triggers. [C378 tradeoffs and pending scope choice](R4C3_BEAM_SENSOR.md#c378--controller-supply-and-range-selected-2026-10-21) distinguishes all-trigger Controller dependence from retaining independent Button/Plate/Lever signaling. Existing independence is not superseded yet; Lever C375 choices remain. Mechanical Poke Floor is excluded. No new implementation approval or gameplay changes.
