@@ -10,11 +10,11 @@ local U = {}
 function U.description(kind, player, toolsReady)
     local profile = R.profiles[kind]
     local materials = getText("UI_OMHTT_RepairNone")
-    if profile.scrap > 0 then
-        materials = getText("UI_OMHTT_RepairScrap", #R.materials(player, kind), profile.scrap)
+    if profile.material then
+        materials = getText("UI_OMHTT_RepairMaterial", getItemNameFromFullType(profile.material), #R.materials(player, kind))
     end
     local tools = getText(profile.tools)
-    if toolsReady == false then
+    if toolsReady == false or not R.tools(player, kind) then
         tools = tools .. " - " .. getText("UI_OMHTT_RepairToolsMissing")
     end
     local lines = {
@@ -26,6 +26,8 @@ function U.description(kind, player, toolsReady)
     }
     if kind == "Poke" then
         lines[#lines + 1] = getText("UI_OMHTT_RepairPokeAccess")
+    end
+    if profile.material then
         lines[#lines + 1] = getText("UI_OMHTT_RepairMaterialSource")
     end
     return table.concat(lines, " <LINE> ")

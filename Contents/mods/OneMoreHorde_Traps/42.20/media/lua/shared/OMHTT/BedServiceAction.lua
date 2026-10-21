@@ -4,6 +4,7 @@ OMHTTBedServiceAction = ISBaseTimedAction:derive("OMHTTBedServiceAction")
 ---@return boolean valid
 ---@nodiscard
 function OMHTTBedServiceAction:isValid()
+    if self.operation == "Repair" and not require("OMHTT/ControlRepair").ready(self.character, "Bed") then return false end
     if self.done or type(self.id) ~= "string" then return false end
     local S = require("OMHTT/BedService")
     local record = S.resolve(self.character, self.object, self.id)
@@ -62,8 +63,8 @@ end
 
 ---@return boolean applied
 function OMHTTBedServiceAction:complete()
-    if isClient() then return false end
     if not isServer() and self.elapsed < self.seconds then return false end
+    if isClient() then return false end
     if not self:isValid() then return false end
     self.done = true
     return require("OMHTT/BedService").apply(self.character, self.object, self.id, self.operation)
@@ -84,7 +85,8 @@ end
 function OMHTTBedServiceAction:new(character, object, id, operation)
     local o = ISBaseTimedAction.new(self, character)
     o.object, o.id, o.operation = object, id, operation
-    o.seconds = o.operation == "Pickup" and 5 or require("OMHTT/ControlRepair").profiles.Bed.seconds
+    local profile = require("OMHTT/ControlRepair").profiles.Bed
+    o.seconds = o.operation == "Pickup" and profile.pickup or (o.operation == "Repair" and profile.seconds or 10)
     o.elapsed, o.done = 0, false
     o.stopOnWalk, o.stopOnRun = true, true
     o.maxTime = o:getDuration()

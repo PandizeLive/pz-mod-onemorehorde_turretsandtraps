@@ -7,6 +7,7 @@ OMHTTBarrierServiceAction = ISBaseTimedAction:derive("OMHTTBarrierServiceAction"
 ---@return boolean valid
 ---@nodiscard
 function OMHTTBarrierServiceAction:isValid()
+    if self.operation == "Repair" and not require("OMHTT/ControlRepair").ready(self.character, "Barrier") then return false end
     if self.done or type(self.id) ~= "string" then return false end
     if isClient() then
         if not F.barrierEnabled() or self.character:isDead() or not self.object or self.object:getObjectIndex() < 0 then return false end
@@ -78,8 +79,8 @@ end
 
 ---@return boolean applied
 function OMHTTBarrierServiceAction:complete()
-    if isClient() then return false end
     if not isServer() and self.elapsed < self.seconds then return false end
+    if isClient() then return false end
     if not self:isValid() then return false end
     self.done = true
     local Service = require("OMHTT/BarrierService")
@@ -102,7 +103,8 @@ function OMHTTBarrierServiceAction:new(character, object, id, operation)
     local o = ISBaseTimedAction.new(self, character)
     o.object, o.id, o.operation = object, id, operation
     o.elapsed, o.done = 0, false
-    o.seconds = o.operation == "Pickup" and 5 or require("OMHTT/ControlRepair").profiles.Barrier.seconds
+    local profile = require("OMHTT/ControlRepair").profiles.Barrier
+    o.seconds = o.operation == "Pickup" and profile.pickup or (o.operation == "Repair" and profile.seconds or 10)
     o.stopOnWalk, o.stopOnRun = true, true
     o.maxTime = o:getDuration()
     return o

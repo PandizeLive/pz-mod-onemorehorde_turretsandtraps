@@ -438,7 +438,12 @@ function W.create(params)
     local health = kind == "Poke" and require("OMHTT/ControlPoke").option("Health", 200, 1, 10000) or 100
     state.maxHealth = health
     object:setMaxHealth(health)
-    object:setHealth(math.max(0, source:getCondition() / source:getConditionMax() * health))
+    local restoredHealth = previous and previous.carriedHealth
+    if restoredHealth == nil then
+        restoredHealth = source:getCondition() / source:getConditionMax() * health
+    end
+    object:setHealth(math.max(0, math.min(health, restoredHealth)))
+    state.carriedHealth = nil
     object:setCanPassThrough(true)
     object:setBlockAllTheSquare(false)
     if kind == "Controller" or kind == "Poke" then
@@ -727,7 +732,8 @@ function W.pickup(player, object)
     if not state or not A.near(player, object) or not A.write(player, state) or not state.itemType then return false end
     local item = instanceItem(state.itemType)
     if not item then return false end
-    item:setCondition(math.max(0, math.floor(object:getHealth() / (state.maxHealth or 100) * item:getConditionMax())))
+    state.carriedHealth = object:getHealth()
+    item:setCondition(state.carriedHealth > 0 and math.max(1, math.floor(state.carriedHealth / (state.maxHealth or 100) * item:getConditionMax())) or 0)
     local storage = object:getContainer()
     if storage then
         local destination = item:getInventory()

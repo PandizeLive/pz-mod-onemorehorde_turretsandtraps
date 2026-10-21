@@ -81,10 +81,10 @@ local function fillMenu(playerIndex, context, worldobjects, test)
             local repair = menu:addOption(getText("ContextMenu_OMHTT_RepairBarrier"), object, queueService, player, record.id, "Repair")
             require("OMHTT/ControlRepairTooltip").bind(repair, "Barrier", player)
             pickup.toolTip = ISWorldObjectContextMenu.addToolTip()
-            pickup.toolTip.description = getText("UI_OMHTT_PickupDuration")
+            pickup.toolTip.description = getText("UI_OMHTT_TrapPickupDuration")
             Selection.bindHighlight(pickup, parts)
             Selection.bindHighlight(repair, parts)
-            repair.notAvailable = record.condition >= record.maxHealth
+            repair.notAvailable = record.condition >= record.maxHealth or not require("OMHTT/ControlRepair").ready(player, "Barrier")
             if record.tier ~= "reinforced" then
                 local upgrade = menu:addOption(getText("ContextMenu_OMHTT_Reinforce"), object, queueService, player, record.id, "Reinforce")
                 Selection.bindHighlight(upgrade, parts)

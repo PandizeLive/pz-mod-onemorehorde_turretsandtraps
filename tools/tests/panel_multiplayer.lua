@@ -36,6 +36,7 @@ for i, face in pairs({"e", "n", "w", "s"}) do
     check(select(4, B.resolve(record)) == "active", "Open smashed window keeps independent panel health")
     attachment.health = 12
     local player = {}
+    function player:getInventory() return testInventory end
     function player:isBuildCheat() return true end
     function player:isDead() return false end
     function player:getZ() return 0 end
@@ -48,6 +49,7 @@ for i, face in pairs({"e", "n", "w", "s"}) do
     end
     player.square = testSquares[F.key(ax, ay, 0)] or makeSquare(ax, ay, 0)
     function player.square:isSomethingTo() return false end
+    testRepairSupply(player, "Wire")
     local repair = OMHTTBarbServiceAction:new(player, frame, record.id, "Repair")
     check(repair:complete() and not repair:complete() and attachment.health == 50 and host.health == 0,
         "Server panel repair is repeat-safe and leaves broken glass alone")

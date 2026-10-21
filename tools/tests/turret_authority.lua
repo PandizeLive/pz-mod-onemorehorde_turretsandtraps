@@ -115,13 +115,17 @@ sendAddItemToContainer = function(container, added)
     check(container:contains(added), "Only a committed native inventory item is synchronized")
     sent[#sent + 1] = added
 end
-sendRemoveItemFromContainer = function() error("Pickup must not separately synchronize nested contents") end
+sendRemoveItemFromContainer = function(_, candidate)
+    check(candidate:getFullType() == "Base.ScrapMetal", "Repair synchronizes only its consumed material")
+end
 local id = T.state(object).id
 check(W.fire(player, object) == "Off", "Server firing obeys private power state despite forged public metadata")
+testRepairSupply(player, "Turret")
 local repair = Action:new(player, object, "Repair", id)
 check(repair.maxTime == 500 and repair.elapsed == 0, "Server reconstructs ten-second repair without client elapsed state")
 check(repair:complete() and object.health == 100 and object.healthSynced, "Server completion repairs and synchronizes native health")
 check(not repair:complete(), "Repair action completes at most once")
+sendRemoveItemFromContainer = function() error("Pickup must not separately synchronize nested contents") end
 check(not Action:new(player, object, "Repair", id):complete(), "Concurrent stale repair cannot repeat a completed repair")
 object.health = 50
 check(not Action:new(player, object, "Repair"):complete(), "Missing serialized identity cannot be reconstructed into authorization")

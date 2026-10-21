@@ -5,19 +5,22 @@ local object = {hasModData = function() return true end,
     getModData = function() return {OMHTTTurret = {schema = 1, id = "timing"}} end}
 local turret = require("OMHTT/TurretPickupAction")
 local control = require("OMHTT/ControlAction")
+local oldState = require("OMHTT/ControlAccess").state
+require("OMHTT/ControlAccess").state = function() return {kind = "Controller", id = "timing"} end
 local actions = {
     {control:new(player, object, "Pickup", nil, nil, "timing"), 5},
     {control:new(player, object, "Repair", nil, nil, "timing"), 10},
     {turret:new(player, object, "Pickup"), 5}, {turret:new(player, object, "Repair"), 10},
-    {OMHTTBarrierServiceAction:new(player, object, "timing", "Pickup"), 5},
-    {OMHTTBarrierServiceAction:new(player, object, "timing", "Repair"), 10},
+    {OMHTTBarrierServiceAction:new(player, object, "timing", "Pickup"), 2},
+    {OMHTTBarrierServiceAction:new(player, object, "timing", "Repair"), 4},
     {OMHTTBarrierServiceAction:new(player, object, "timing", "Reinforce"), 10},
-    {OMHTTBedServiceAction:new(player, object, "timing", "Pickup"), 5},
-    {OMHTTBedServiceAction:new(player, object, "timing", "Repair"), 10},
+    {OMHTTBedServiceAction:new(player, object, "timing", "Pickup"), 2},
+    {OMHTTBedServiceAction:new(player, object, "timing", "Repair"), 4},
     {OMHTTBedServiceAction:new(player, object, "timing", "Reinforce"), 10},
-    {OMHTTBarbServiceAction:new(player, object, "timing", "Remove"), 5},
-    {OMHTTBarbServiceAction:new(player, object, "timing", "Repair"), 10},
+    {OMHTTBarbServiceAction:new(player, object, "timing", "Remove"), 2},
+    {OMHTTBarbServiceAction:new(player, object, "timing", "Repair"), 4},
 }
+require("OMHTT/ControlAccess").state = oldState
 for i = 1, #actions do
     local action, duration = actions[i][1], actions[i][2]
     action.action = {setJobDelta = function() end, forceComplete = function() action.forced = true end}

@@ -64,14 +64,16 @@ function Action:isValid()
         return state.kind == "Plate" and (self.value == "Both" or self.value == "Players" or self.value == "Zombies")
     elseif self.command == "Pickup" or self.command == "Repair" then
         return state.kind ~= "Turret" and state.kind ~= "Poke"
+            and (self.command ~= "Repair" or (self.object:getHealth() < self.object:getMaxHealth()
+                and require("OMHTT/ControlRepair").ready(self.character, state.kind)))
     end
     return false
 end
 
 ---@return boolean complete
 function Action:complete()
-    if isClient() or not self:isValid() then return false end
     if not isServer() and self.elapsed < self.seconds then return false end
+    if isClient() or not self:isValid() then return false end
     self.done = true
     local W = require("OMHTT/ControlWorld")
     local state = W.state(self.object)
@@ -110,7 +112,8 @@ function Action:complete()
     elseif self.command == "Trigger" then
         state.trigger = self.value
     elseif self.command == "Repair" then
-        self.object:setHealth(100)
+        if not require("OMHTT/ControlRepair").consume(self.character, state.kind) then return false end
+        self.object:setHealth(self.object:getMaxHealth())
         if isServer() then
             self.object:sync()
         end
@@ -153,7 +156,12 @@ function Action:new(character, object, command, value, target, id, targetId)
         action.targetId = targetId or (A.state(target) and A.state(target).id)
     end
     action.stopOnWalk, action.stopOnRun, action.done = true, true, false
-    action.seconds = command == "Pickup" and 5 or (command == "Repair" and require("OMHTT/ControlRepair").profiles.Controller.seconds or 0)
+    local state = A.state(object)
+    local profile = state and require("OMHTT/ControlRepair").profiles[state.kind]
+    action.seconds = 0
+    if profile then
+        action.seconds = command == "Pickup" and profile.pickup or (command == "Repair" and profile.seconds or 0)
+    end
     action.elapsed = 0
     action.maxTime = action:getDuration()
     return action

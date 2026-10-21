@@ -6,7 +6,7 @@ OMHTTBarbServiceAction = ISBaseTimedAction:derive("OMHTTBarbServiceAction")
 ---@nodiscard
 function OMHTTBarbServiceAction:isValid()
     if self.done or type(self.id) ~= "string" then return false end
-    local attachment = S.resolve(self.character, self.object, self.id)
+    local attachment = S.resolve(self.character, self.object, self.id, self.operation)
     return attachment ~= nil and (self.operation == "Remove"
         or (self.operation == "Repair" and not attachment.shared and attachment.health < 50))
 end
@@ -48,8 +48,8 @@ end
 
 ---@return boolean applied
 function OMHTTBarbServiceAction:complete()
-    if isClient() then return false end
     if not isServer() and self.elapsed < self.seconds then return false end
+    if isClient() then return false end
     if not self:isValid() then return false end
     self.done = true
     return S.apply(self.character, self.object, self.id, self.operation)
@@ -70,7 +70,7 @@ end
 function OMHTTBarbServiceAction:new(character, object, id, operation)
     local o = ISBaseTimedAction.new(self, character)
     o.object, o.id, o.operation = object, id, operation
-    o.seconds = o.operation == "Remove" and 5 or require("OMHTT/ControlRepair").profiles.Barb.seconds
+    o.seconds = o.operation == "Remove" and 2 or require("OMHTT/ControlRepair").profiles.Barb.seconds
     o.elapsed, o.done = 0, false
     o.stopOnWalk, o.stopOnRun = true, true
     o.maxTime = o:getDuration()

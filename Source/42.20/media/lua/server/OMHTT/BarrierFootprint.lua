@@ -329,6 +329,9 @@ function Footprint.adoptBuild(object, player, x, y, facing, entity, consumed)
         record.maxHealth = F.barrierHealth(record)
         record.condition = record.maxHealth
     end
+    if record.recoveredHealth ~= nil then
+        record.condition = require("OMHTT/DefenseNames").health(record, record.maxHealth)
+    end
     name(record)
     if record.kind ~= "barrier" or record.placementSource ~= "construction" or record.facing ~= facing
         or record.builderUsername ~= player:getUsername() or Sprites.entity(record) ~= entity then

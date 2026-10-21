@@ -83,7 +83,8 @@ for facing = 0, 12, 4 do
     check(first.condition == 73 and restored.condition == 100, "collider damage affects only its own barrier")
     local part = P.parts(first)[1]
     testPlayer.x, testPlayer.y = first.x + 0.5, first.y + 0.5
-    check(Service.apply(testPlayer, part, first.id, "Repair") and collider:getHealth() == 100,
+    testRepairSupply(testPlayer, "Barrier")
+check(Service.apply(testPlayer, part, first.id, "Repair") and collider:getHealth() == 100,
         "repair restores outline and visible parts without damage replay")
     for i = 1, #O.objects(first) do
         local edge = O.objects(first)[i]

@@ -34,3 +34,16 @@ Installed from immutable `test/v0.2.58` / `befd7291a328e0edb5fb7c2f214ee063a029a
 ## Remaining acceptance
 
 Rendered UI/combat and connected-player multiplayer are pending. Calculated lifespan is not a measured endurance test. Exact five-second native multiplayer placement remains separately open. Lever and Dart Emitter content is not included. No Workshop publication or merge.
+
+
+## C369 development service checkpoint — 2026-10-20
+
+This is newer source than installed/tagged 0.2.58; the original release evidence is unchanged. Owner selected repair mapping 1A and Controller timing 2A. [Contract and remaining MP placement work](SERVICE_RULES_C368.md#c369--approved-mapping-and-implementation-2026-10-20).
+
+- Automated Kahlua/native-JAR fixtures: **26,069 assertions**, 256 files, 1,117 translation keys, 27 packet fixtures. `diagnostics/service-C369.log`.
+- Package generation/dependency check: Traps 160 Lua files, Turrets 249; 86 shared files identical, 169 Sandbox options, independent required dependencies closed.
+- Native server write and fresh-process read **passed**: exact private carried health, reversed mixed Bed callbacks, Controller/Poke recovery and native inventory/state persistence. Logs: `diagnostics/service-C369-native-write.txt` and `service-C369-native-read.txt`. The first read attempt found a duplicate-location test-fixture error; cleanup/order were corrected and the retry passed. Real native items/server actions use synthetic squares and zero connected players; no rendered or end-to-end network acceptance is claimed.
+- Exact MP portable-placement duration remains open. SP placement and custom pickup/repair timings are separate verified paths; do not combine their claims.
+- Tether/Lever profiles do not establish playable integration. No installation or owner acceptance occurred.
+
+Full validator also passed 313 source / 409 packaged files. C369 manifest/validation are retained separately; tracked installed-release evidence was restored unchanged. Native moodle/injury penalties remain native MP service behavior; timing checks describe base durations.

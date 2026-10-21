@@ -319,7 +319,8 @@ end
 ---@return boolean repaired
 function W.repair(player, object, id)
     if not W.near(player, object) or T.state(object).id ~= id then return false end
-    if object:getHealth() >= object:getMaxHealth() then return false end
+    if object:getHealth() >= object:getMaxHealth()
+        or not require("OMHTT/ControlRepair").consume(player, "Turret") then return false end
     object:setHealth(object:getMaxHealth())
     local state = T.state(object)
     state.condition = object:getHealth()

@@ -8,7 +8,9 @@ T.contents=function() return {ammo=0,modules=0} end
 T.enabled=function() return true end
 W.valid=function(value) return value==object end
 W.refresh=function() end
-getSpecificPlayer=function() return {isDead=function() return false end,getZ=function() return 0 end} end
+getSpecificPlayer=function() return {isDead=function() return false end,getZ=function() return 0 end,
+    getInventory=function() return {getItems=function() return {size=function() return 0 end} end,
+        getFirstTagEvalRecurse=function() return nil end} end} end
 getCell=function() return {getGridSquare=function() return nil end} end
 IsoUtils={XToIso=function() return 0 end,YToIso=function() return 0 end}
 getMouseXScaled,getMouseYScaled=function() return 0 end,function() return 0 end

@@ -1,5 +1,7 @@
 # R4C2 — Tether Dart Trap
 
+**C369:** Owner selects one Scrap Metal plus retained Pliers for Tether repair (1A); trap service is 2s placement/pickup and 4s repair. Recipe tool set and crafting duration stay separate. Shared service profile exists; playable Tether integration remains unfinished. See [service contract](../SERVICE_RULES_C368.md#c369--approved-mapping-and-implementation-2026-10-20).
+
 ## C368 — Trap service timing supersedes earlier five-second service
 
 Owner selects **2-second placement/pickup and 4-second repair** for traps, including Tether, and exact condition retention through moving/redeployment. One repair material remains selected; only one retained tool is permitted, replacing the earlier three-tool service set. The crafting recipe tools are unchanged. [Proposed repair mapping](../SERVICE_RULES_C368.md) recommends one Scrap Metal and Pliers for Tether; tool identity awaits confirmation. C367 impact/hold/pull and crafting selections remain intact. No new Tether gameplay implementation this discussion.

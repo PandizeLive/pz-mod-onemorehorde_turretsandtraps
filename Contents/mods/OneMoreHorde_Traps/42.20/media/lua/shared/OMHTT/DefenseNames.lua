@@ -58,32 +58,68 @@ end
 ---@param item InventoryItem Recovered item
 ---@return nil
 function N.pack(record, item)
-    if isClient() or not record.displayIdentity then return end
-    registry().packed[tostring(item:getID())] = {identity = record.displayIdentity, name = record.name}
+    if isClient() then return end
+    local health = record.condition or record.health
+    local maximum = record.maxHealth or (record.kind == "wire" and 50)
+    registry().packed[tostring(item:getID())] = {identity = record.displayIdentity, name = record.name,
+        health = health, maxHealth = maximum, itemType = item:getFullType()}
+    if health and maximum then
+        item:setCondition(health > 0 and math.max(1, math.floor(health / maximum * item:getConditionMax())) or 0)
+    end
     item:getModData().OMHTTDisplayName = record.displayName
 end
 
 ---@param record table New private state
 ---@param items ArrayList? Native recipe inputs
+---@param ordinal number? Exact portable input position for independent Bed tiles
+---@param fullType string? Portable item family
 ---@return nil
-function N.restore(record, items)
+function N.restore(record, items, ordinal, fullType)
     if isClient() or not items then return end
     local data = registry()
+    local count = 0
     for i = 0, items:size() - 1 do
+        local item = items:get(i)
+        if fullType and item:getFullType() == fullType then
+            count = count + 1
+        end
         local key = tostring(items:get(i):getID())
         local packed = data.packed[key]
-        if packed then
+        local selected = not fullType or (item:getFullType() == fullType and count == ordinal)
+        if selected and packed then
             if type(packed) == "string" then
                 packed = {identity = packed}
             end
-            local entry = data.entries[packed.identity]
-            record.displayIdentity = packed.identity
-            record.displayNumber, record.displayName = entry.number, entry.label
-            record.name = packed.name
+            if packed.itemType and packed.itemType ~= items:get(i):getFullType() then return end
+            local entry = packed.identity and data.entries[packed.identity]
+            if entry then
+                record.displayIdentity = packed.identity
+                record.displayNumber, record.displayName = entry.number, entry.label
+                record.name = packed.name
+            end
+            record.recoveredHealth = packed.health
             data.packed[key] = nil
             return
         end
+        if fullType and selected then
+            record.recoveredFraction = item:getCondition() / item:getConditionMax()
+            return
+        end
     end
+end
+
+---@param record table Newly deployed authoritative record
+---@param maximum number Deployment maximum
+---@return number health Exact carried health, clamped only if the maximum changed
+function N.health(record, maximum)
+    local health = record.recoveredHealth
+    if health == nil and record.recoveredFraction ~= nil then
+        health = record.recoveredFraction * maximum
+    end
+    record.recoveredHealth = nil
+    record.recoveredFraction = nil
+    if health == nil then return maximum end
+    return math.max(0, math.min(maximum, health))
 end
 
 return N

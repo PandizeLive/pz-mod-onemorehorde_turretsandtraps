@@ -514,6 +514,12 @@
     "UI_OMHTT_HeadBatteryHigh": "High",
     "UI_OMHTT_RepairNone": "None",
     "UI_OMHTT_RepairMaterials": "Materials consumed: %1",
+    "UI_OMHTT_RepairMaterial": "%1 %2 / 1 available",
+    "UI_OMHTT_RepairHammer": "Hammer",
+    "UI_OMHTT_RepairPliers": "Pliers",
+    "UI_OMHTT_RepairWrench": "Wrench",
+    "UI_OMHTT_RepairScrewdriver": "Screwdriver",
+    "UI_OMHTT_TrapPickupDuration": "2 seconds at normal game speed. Retains condition.",
     "UI_OMHTT_RepairScrap": "Scrap Metal %1 / %2 available",
     "UI_OMHTT_RepairTools": "Tools kept: %1",
     "UI_OMHTT_RepairBarbTools": "Hammer and Pliers",
@@ -523,5 +529,5 @@
     "UI_OMHTT_RepairResult": "Restores full condition.",
     "UI_OMHTT_RepairBaseResult": "Restores turret base condition; does not repair the installed head.",
     "UI_OMHTT_RepairPokeAccess": "Disarm and wait for retraction. Stand next to the trap with access permission.",
-    "UI_OMHTT_RepairMaterialSource": "Scrap must be in your main inventory and not favorited."
+    "UI_OMHTT_RepairMaterialSource": "Repair material must be in your main inventory and not favorited."
 }

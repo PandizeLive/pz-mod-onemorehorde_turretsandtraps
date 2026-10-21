@@ -47,13 +47,19 @@ end
 ---@param player IsoPlayer Acting player
 ---@param object IsoObject Expected frame
 ---@param id string Expected identity
+---@param operation string? Repair uses its own single-tool requirements
 ---@return table? attachment
 ---@return table? record
 ---@nodiscard
-function Service.resolve(player, object, id)
+function Service.resolve(player, object, id, operation)
     if not player then return nil end
     local record = B.record(object)
-    if not record or record.id ~= id or not B.enabled(record.kind) or player:isDead() or not Service.tools(player, record) then return nil end
+    if not record or record.id ~= id or not B.enabled(record.kind) or player:isDead() then return nil end
+    if operation == "Repair" then
+        if not require("OMHTT/ControlRepair").ready(player, record.kind == "wire" and "Wire" or "Barb") then return nil end
+    elseif not Service.tools(player, record) then
+        return nil
+    end
     local frame, _, attachment, status = B.resolve(record)
     if status ~= "active" then return nil end
     if frame ~= object and (not record.paired or B.wirePart(record, 1) ~= object) then return nil end
@@ -71,9 +77,11 @@ end
 ---@return boolean applied
 function Service.apply(player, object, id, operation)
     if isClient() then return false end
-    local attachment, record = Service.resolve(player, object, id)
+    local attachment, record = Service.resolve(player, object, id, operation)
     if not attachment then return false end
     if operation == "Repair" then
+        if attachment.shared or attachment.health <= 0 or attachment.health >= 50 then return false end
+        if not require("OMHTT/ControlRepair").consume(player, record.kind == "wire" and "Wire" or "Barb") then return false end
         if not S.repair(attachment) then return false end
         B.publishWire(record)
         if isServer() and not record.paired then

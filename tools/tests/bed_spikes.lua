@@ -237,8 +237,9 @@ B.player(player)
 
 local S = require("OMHTT/BedService")
 record.health = 40
+testRepairSupply(player, "Bed")
 check(S.apply(player, a, record.id, "Repair") and record.health == 50 and a.health == 50 and b.health == 50,
-    "Free repair restores only the selected tile")
+    "One-plank repair restores only the selected tile")
 SandboxVars.OMHTurretsTraps.SpikeBarrier = false
 check(S.apply(player, a, record.id, "Reinforce") and record.health == 100 and record.tier == "reinforced",
     "Bed reinforcement works independently of the Spike Barrier switch")
@@ -271,13 +272,14 @@ local oldQueue = ISTimedActionQueue
 ISTimedActionQueue = {getTimedActionQueue = function() return {resetQueue = function() end} end}
 getGameTime = function() return {getMultiplier = function() return (.1) * 48 end, getMultiplierFromTimeDelta = function() return 48 end} end
 record.health = 80
+testRepairSupply(player, "Bed")
 local action = OMHTTBedServiceAction:new(player, a, record.id, "Repair")
 action.action = {setActionAnim = function() end, setAnimVariable = function() end,
     setOverrideHandModelsObject = function() end, setJobDelta = function() end,
     forceComplete = function() action.forced = true end}
 action:start()
-for i = 1, 99 do action:update() end
-check(not action.forced and not action:complete() and record.health == 80, "Bed service cannot finish before ten active seconds")
+for i = 1, 39 do action:update() end
+check(not action.forced and not action:complete() and record.health == 80, "Bed service cannot finish before four active seconds")
 action:update(); action:update()
 check(action.forced and action:complete() and record.health == 100 and not action:complete(), "Bed timed repair restores the selected tile exactly once")
 action = OMHTTBedServiceAction:new(player, a, record.id, "Pickup")

@@ -67,7 +67,7 @@ function P.place(item, player)
     end
     local cursor = ISBuildIsoEntity:new(player, info, 1, containers)
     cursor.omhttInputs = companion and {item, companion} or {item}
-    require("OMHTT/PlacementTiming").apply(cursor)
+    require("OMHTT/PlacementTiming").apply(cursor, 2)
     local logic = cursor.buildPanelLogic
     logic:setManualSelectInputs(true)
     logic:clearManualInputs()

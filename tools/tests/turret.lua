@@ -226,6 +226,7 @@ function object:getMaxHealth() return 100 end
 function object:setHealth(value) self.testHealth = value end
 local savedHeadCondition, savedCharge = head.condition, battery.charge
 check(not W.repair(pickupPlayer, object, "stale"), "Repair rejects wrong identity")
+testRepairSupply(pickupPlayer, "Turret")
 check(W.repair(pickupPlayer, object, record.id), "Damaged base can be repaired")
 check(object:getHealth() == 100 and head.condition == savedHeadCondition and battery.charge == savedCharge, "Repair changes only base condition")
 check(not W.repair(pickupPlayer, object, record.id), "Full condition repair rejected")

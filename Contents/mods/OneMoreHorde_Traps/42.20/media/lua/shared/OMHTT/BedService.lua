@@ -65,7 +65,8 @@ function S.apply(player, object, id, operation)
         if not materials.cheat then
             addXp(player, Perks.Woodwork, 15)
         end
-    elseif operation ~= "Repair" or record.health >= record.maxHealth then
+    elseif operation ~= "Repair" or record.health >= record.maxHealth
+        or not require("OMHTT/ControlRepair").consume(player, "Bed") then
         return false
     end
     record.health = record.maxHealth

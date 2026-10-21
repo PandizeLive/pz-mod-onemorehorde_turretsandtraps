@@ -25,8 +25,9 @@ check(record.condition == 300 and record.maxHealth == 400 and parts[1]:getHealth
     "collect outstanding damage on both halves before preserving percentage at new maximum")
 P.sync(slot)
 check(record.condition == 300, "repeated settings reconciliation cannot heal or double damage")
+testRepairSupply(testPlayer, "Barrier")
 check(Service.apply(testPlayer, parts[1], record.id, "Repair") and record.condition == 400 and parts[2]:getHealth() == 400,
-    "free repair restores configured maximum on both parts")
+    "one-plank repair restores configured maximum on both parts")
 parts[1]:setHealth(148); P.sync(slot)
 testData = nativeRoundTrip(testData); S.initialize()
 record = testData.tiles[F.key(400, 400, 0)].device

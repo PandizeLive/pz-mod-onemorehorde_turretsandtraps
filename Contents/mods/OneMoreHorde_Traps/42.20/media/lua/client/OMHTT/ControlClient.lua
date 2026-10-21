@@ -103,7 +103,7 @@ function U.place(item, player)
     cursor.buildPanelLogic:setManualSelectInputs(true)
     cursor.buildPanelLogic:clearManualInputs()
     cursor.buildPanelLogic:offerInputItem(item)
-    require("OMHTT/PlacementTiming").apply(cursor)
+    require("OMHTT/PlacementTiming").apply(cursor, require("OMHTT/ControlRepair").profiles[kind].pickup)
     cursor.dragNilAfterPlace = true
     getCell():setDrag(cursor, player:getPlayerNum())
     return cursor
@@ -173,6 +173,7 @@ function U.world(index, context, objects, test)
                                     U.command(player, device, "Repair")
                                 end
                             end)
+                            repair.notAvailable = not require("OMHTT/ControlRepair").ready(player, state.kind)
                             require("OMHTT/ControlRepairTooltip").bind(repair, state.kind, player)
                         end
                     end

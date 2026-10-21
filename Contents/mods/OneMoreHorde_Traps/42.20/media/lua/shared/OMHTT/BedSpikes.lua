@@ -321,9 +321,11 @@ function B.onCreate(params)
     local record = {id = "bed-" .. B.store.nextId, x = x, y = y, z = square:getZ(), facing = facing,
         tier = index >= 44 and "reinforced" or "basic", deployed = index >= 36, single = single, part = part}
     B.store.nextId = B.store.nextId + 1
-    require("OMHTT/DefenseNames").restore(record, params.craftRecipeData and params.craftRecipeData:getAllConsumedItems())
+    local portableType = record.tier == "reinforced" and "Base.OMHTTTrapBedSpikesReinforced" or "Base.OMHTTTrapBedSpikes"
+    require("OMHTT/DefenseNames").restore(record, params.craftRecipeData and params.craftRecipeData:getAllConsumedItems(),
+        single and 1 or part + 1, portableType)
     record.maxHealth = B.maxHealth(record)
-    record.health = record.maxHealth
+    record.health = require("OMHTT/DefenseNames").health(record, record.maxHealth)
     B.store.records[record.id] = record
     object:getModData().OMHTTBed = {id = record.id, part = part}
     B.configure(record, object)

@@ -16,7 +16,8 @@ function OMHTTTurretPickupAction:isValid()
     local dx, dy = self.character:getX() - square:getX() - .5, self.character:getY() - square:getY() - .5
     if math.abs(origin:getX() - square:getX()) > 1 or math.abs(origin:getY() - square:getY()) > 1
         or dx * dx + dy * dy > 4 or (origin ~= square and not origin:canReachTo(square)) then return false end
-    return self.operation ~= "Repair" or self.object:getHealth() < self.object:getMaxHealth()
+    return self.operation ~= "Repair" or (self.object:getHealth() < self.object:getMaxHealth()
+        and require("OMHTT/ControlRepair").ready(self.character, "Turret"))
 end
 
 ---@return boolean turning
@@ -56,8 +57,8 @@ end
 
 ---@return boolean completed
 function OMHTTTurretPickupAction:complete()
-    if isClient() then return false end
     if not isServer() and self.elapsed < self.seconds then return false end
+    if isClient() then return false end
     if not self:isValid() then return false end
     self.done = true
     local W = require("OMHTT/TurretWorld")

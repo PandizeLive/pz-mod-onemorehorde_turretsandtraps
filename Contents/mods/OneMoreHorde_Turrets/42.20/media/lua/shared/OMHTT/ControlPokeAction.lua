@@ -20,7 +20,7 @@ end
 function Action:materials()
     local repair = require("OMHTT/ControlRepair")
     local items = repair.materials(self.character, "Poke")
-    if #items == repair.profiles.Poke.scrap then return items end
+    if #items == 1 and repair.tools(self.character, "Poke") then return items end
 end
 
 function Action:isValid()
@@ -48,8 +48,8 @@ function Action:isValid()
 end
 
 function Action:complete()
-    if isClient() or not self:isValid() then return false end
     if not isServer() and self.elapsed < self.seconds then return false end
+    if isClient() or not self:isValid() then return false end
     local W = require("OMHTT/ControlWorld")
     local state = W.state(self.object)
     if self.operation == "Power" then
@@ -58,12 +58,7 @@ function Action:complete()
         self.done = true
         return W.pickup(self.character, self.object)
     elseif self.operation == "Repair" then
-        local items = self:materials()
-        for i = 1, #items do
-            local source = items[i]:getContainer()
-            source:Remove(items[i])
-            if isServer() then sendRemoveItemFromContainer(source, items[i]) end
-        end
+        if not require("OMHTT/ControlRepair").consume(self.character, "Poke") then return false end
         self.object:setHealth(state.maxHealth or 200)
         if isServer() then self.object:sync() end
     elseif self.operation == "Battery" then
@@ -118,7 +113,7 @@ function Action:new(character, object, operation, value, item, id, targetObject,
     o.object, o.operation, o.value, o.item, o.id = object, operation, value, item, id
     o.targetObject, o.bag = targetObject, bag
     if not isServer() then o.id = id or (Access.state(object) and Access.state(object).id) end
-    o.seconds = operation == "Pickup" and 5 or (operation == "Repair" and require("OMHTT/ControlRepair").profiles.Poke.seconds or 0)
+    o.seconds = operation == "Pickup" and 2 or (operation == "Repair" and require("OMHTT/ControlRepair").profiles.Poke.seconds or 0)
     o.elapsed, o.done, o.stopOnWalk, o.stopOnRun = 0, false, true, true
     o.maxTime = o:getDuration()
     return o

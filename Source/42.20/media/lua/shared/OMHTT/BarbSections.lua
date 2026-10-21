@@ -591,6 +591,7 @@ function B.onWireCreate(params)
         B.store.nextId = B.store.nextId + 1
         local names = require("OMHTT/DefenseNames")
         names.restore(record, params.craftRecipeData and params.craftRecipeData:getAllConsumedItems())
+        record.health = names.health(record, 50)
         names.ensure(record, "Wire", getText("UI_OMHTT_ConcertinaWire"))
         B.store.wires[record.id] = record
     end

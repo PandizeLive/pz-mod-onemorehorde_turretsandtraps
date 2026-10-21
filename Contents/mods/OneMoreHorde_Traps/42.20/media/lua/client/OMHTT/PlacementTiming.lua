@@ -1,8 +1,10 @@
 local P = {}
 
 ---@param cursor ISBuildIsoEntity Exact portable-item cursor
+---@param seconds number? Selected category duration; defaults to turret timing
 ---@return nil
-function P.apply(cursor)
+function P.apply(cursor, seconds)
+    seconds = seconds or 5
     if isClient() then return end
     local start = cursor.onTimedActionStart
     ---@param self ISBuildIsoEntity Copied build cursor
@@ -21,8 +23,8 @@ function P.apply(cursor)
         action.update = function(timed)
             update(timed)
             timed.OMHTTElapsed = timed.OMHTTElapsed + getGameTime():getMultiplier() / getGameTime():getMultiplierFromTimeDelta(1)
-            timed:setJobDelta(math.min(timed.OMHTTElapsed / 5, .999))
-            if timed.OMHTTElapsed >= 5 then timed.action:forceComplete() end
+            timed:setJobDelta(math.min(timed.OMHTTElapsed / seconds, .999))
+            if timed.OMHTTElapsed >= seconds then timed.action:forceComplete() end
         end
     end
 end

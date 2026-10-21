@@ -89,7 +89,9 @@ function player:getZ() return self.z end
 player.square, player.x, player.y, player.z = host.square, record.x + .5, record.y + .5, 0
 function player:getSquare() return self.square end
 function player:isBuildCheat() return true end
+function player:getInventory() return testInventory end
 function host.square:isSomethingTo() return false end
+testRepairSupply(player, "Barb")
 check(Service.apply(player, frame, record.id, "Repair") and attachment.health == 50 and host.health == 0, "Barb repair cannot repair glass")
 local oldGameTime, oldQueue = getGameTime, ISTimedActionQueue
 getGameTime = function() return {getMultiplier = function() return (.1) * 48 end, getMultiplierFromTimeDelta = function() return 48 end} end
@@ -98,13 +100,14 @@ function player:faceThisObject() end
 function player:shouldBeTurning() return false end
 function player:setIsFarming() end
 attachment.health = 20
+testRepairSupply(player, "Barb")
 local action = OMHTTBarbServiceAction:new(player, frame, record.id, "Repair")
 action.action = {setActionAnim = function() end, setAnimVariable = function() end,
     setOverrideHandModelsObject = function() end, setJobDelta = function() end,
     forceComplete = function() action.forced = true end}
 action:start()
-for i = 1, 99 do action:update() end
-check(not action:complete() and attachment.health == 20, "Barb repair cannot finish before ten active seconds")
+for i = 1, 39 do action:update() end
+check(not action:complete() and attachment.health == 20, "Barb repair cannot finish before four active seconds")
 action:update(); action:update()
 check(action.forced and action:complete() and attachment.health == 50 and not action:complete(), "Timed repair completes exactly once")
 local cancelled = OMHTTBarbServiceAction:new(player, frame, record.id, "Remove")

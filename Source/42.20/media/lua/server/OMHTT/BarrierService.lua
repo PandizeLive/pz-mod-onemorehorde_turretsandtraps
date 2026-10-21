@@ -61,7 +61,7 @@ function Service.apply(player, object, id, operation)
             sendAddItemToContainer(player:getInventory(), item)
         end
     elseif operation == "Repair" then
-        if before >= record.maxHealth then return false end
+        if before >= record.maxHealth or not require("OMHTT/ControlRepair").consume(player, "Barrier") then return false end
         local parts = Footprint.healthObjects(record)
         for i = 1, #parts do
             parts[i]:setHealth(record.maxHealth)

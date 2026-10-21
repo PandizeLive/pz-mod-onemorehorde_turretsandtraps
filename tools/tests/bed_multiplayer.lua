@@ -46,7 +46,7 @@ sendAddItemToContainer = function(destination, item)
     grants = grants + 1
 end
 local action = OMHTTBedServiceAction:new(player, object, record.id, "Pickup")
-check(action.maxTime == 250 and action.elapsed == 0, "Native server pickup uses five seconds without client start state")
+check(action.maxTime == 100 and action.elapsed == 0, "Native server pickup uses two seconds without client start state")
 inventory.fail = true
 check(not action:complete() and B.record(object) == record and grants == 0, "Failed insertion preserves trap and grants nothing")
 inventory.fail = false

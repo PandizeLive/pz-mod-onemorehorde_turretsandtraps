@@ -33,3 +33,20 @@ check(completed, "Fast-forward placement completes in ten half-second simulation
 cursor:onTimedActionStart(instant)
 check(instant.update == nil, "Instant-action debug cheat retains native behavior")
 getGameTime = oldTime
+
+for _, seconds in pairs({1, 2, 5}) do
+    for _, speed in pairs({1, 5, 30}) do
+        completed = false
+        delta = speed / 60
+        getGameTime = function() return {getMultiplier = function() return delta * 48 end, getMultiplierFromTimeDelta = function() return 48 end} end
+        local category = {onTimedActionStart = function() end}
+        P.apply(category, seconds)
+        action.update = function() end
+        category:onTimedActionStart(action)
+        local ticks = 0
+        while not completed and ticks < 400 do action:update(); ticks = ticks + 1 end
+        check(math.abs(ticks * delta - seconds) <= delta + .001,
+            "Category placement duration follows simulation speed: " .. seconds .. "s at " .. speed .. "x")
+    end
+end
+getGameTime = oldTime

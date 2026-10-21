@@ -128,7 +128,8 @@ function player:isBuildCheat() return false end
 function player:setHaloNote() end
 function second:isSomethingTo() return false end
 other.health = 12
-check(Service.apply(player, adjacent, other.id, "Repair") and other.health == 50, "Wire repair is free and tool-free")
+testRepairSupply(player, "Wire")
+check(Service.apply(player, adjacent, other.id, "Repair") and other.health == 50, "Wire repair consumes one scrap with retained Pliers")
 inventory.room = false
 check(not Service.apply(player, adjacent, other.id, "Remove") and B.record(adjacent), "Full inventory blocks recovery without losing wire")
 inventory.room = true
@@ -174,7 +175,8 @@ for facing = 0, 3 do
     check(unloadedStatus == "unloaded" and B.store.wires[pair.id] == pair, "Unloaded partner preserves shared durability")
     testSquares[tailKey] = tailFloor
     player.square, player.god = tailFloor, false
-    check(Service.apply(player, tail, pair.id, "Repair") and pair.health == 50, "Either half repairs the whole trap")
+    testRepairSupply(player, "Wire")
+check(Service.apply(player, tail, pair.id, "Repair") and pair.health == 50, "Either half repairs the whole trap")
     local count = #inventory.items
     check(Service.apply(player, tail, pair.id, "Remove") and head.removed and tail.removed and #inventory.items == count + 1,
         "Pickup from the second half removes both and yields one item")

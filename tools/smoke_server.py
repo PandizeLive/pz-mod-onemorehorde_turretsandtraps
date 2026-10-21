@@ -38,7 +38,7 @@ def main():
     bulk_probe = turret_probe.parent / "OMHTT/NativeBulkTransfer.lua"
     bulk_probe.write_text((ROOT / "tools/tests/native_bulk_transfer.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativeTurretAuthority.lua").write_text((ROOT / "tools/tests/native_turret_authority.lua").read_text(encoding="utf-8"), encoding="utf-8")
-    (turret_probe.parent / "OMHTT/NativeTrapServices.lua").write_text((ROOT / "tools/tests/native_trap_services.lua").read_text(encoding="utf-8"), encoding="utf-8")
+    (turret_probe.parent / "OMHTT/NativeTrapServices.lua").write_text((ROOT / "tools/tests/native_trap_services.lua").read_text(encoding="utf-8").replace("EXPECT_READ", "true" if os.environ.get("OMHTT_PROBE_MODE") == "read" else "false"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativeProc.lua").write_text((ROOT / "tools/tests/native_proc.lua").read_text(encoding="utf-8"), encoding="utf-8")
     for name in ['TurretProc', 'TurretVolley']:
         core = (ROOT / ('Source/42.20/media/lua/server/OMHTT/' + name + '.lua')).read_text(encoding='utf-8')
@@ -95,6 +95,9 @@ def main():
     assert not mod_errors, f"Native mod callbacks threw despite completion markers: {mod_errors}"
     assert "[OMHTT-C355] mechanical-recipes=2 inputs=consumed tools=retained output=exact translations=passed" in text, "Mechanical recipe proof missing"
     assert "[OMHTT-Controls] native devices=3" in text, "Native control-device proof missing"
+    assert "[OMHTT-C369] native mixed-bed=exact callback-order=reverse private-condition=written" in text, "Native mixed-condition Bed proof missing"
+    if os.environ.get("OMHTT_PROBE_MODE") == "read":
+        assert "[OMHTT-C369] private-condition fresh-process=preserved" in text, "Private condition restart proof missing"
     assert "[OMHTT-Controls] native-stock-transfer selectedBag=exact removedBag=rejected constructorArgs=retained" in text, "Native stockpile transfer proof missing"
     assert "[OMHTT-Heads] native recipes=3" in text, "Native head recipe/metadata proof failed"
     assert "[OMHTT-C247] recipes=5 drainableUses=8/2 tools=retained sounds=4 virtualNativeGun=no-materialized-rounds exactModule=preserved" in text, "Native content and virtual ammunition proof failed"

@@ -46,8 +46,9 @@ for facing = 0, 3 do
         grants = grants + 1
     end
     record.health = 12
+    testRepairSupply(player, "Wire")
     local repair = OMHTTBarbServiceAction:new(player, last, record.id, "Repair")
-    check(repair.maxTime == 500 and repair:complete() and not repair:complete(), "Server wire repair works without client start and rejects replay")
+    check(repair.maxTime == 200 and repair:complete() and not repair:complete(), "Server wire repair works without client start and rejects replay")
     check(record.health == 50 and first:getModData().OMHTTBarbFrame.view.health == 50
         and last:getModData().OMHTTBarbFrame.view.health == 50, "Both wire half snapshots receive the repaired health")
     inventory.fail = true
@@ -55,7 +56,7 @@ for facing = 0, 3 do
     check(not failed:complete() and B.record(last) == record, "Failed inventory insertion cannot retire a wire pair")
     inventory.fail = false
     local removal = OMHTTBarbServiceAction:new(player, last, record.id, "Remove")
-    check(removal.maxTime == 250 and removal:complete() and not removal:complete(), "Pickup from either end is five seconds and commits once")
+    check(removal.maxTime == 100 and removal:complete() and not removal:complete(), "Pickup from either end is two seconds and commits once")
     check(first.removed and last.removed and #inventory.items == 1, "Paired wire pickup removes both halves and returns one item")
 end
 check(grants == 4, "Four independent wires grant exactly four coils")

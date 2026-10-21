@@ -369,6 +369,8 @@ local function verifyTurrets()
     local nativeNear = W.near
     W.near = function(candidate, device) return candidate == player and device == object and W.valid(device) end
     local headCondition, batteryCharge = contents.head:getCondition(), battery:getCurrentUsesFloat()
+    player:getInventory():AddItem("Base.ScrapMetal")
+    player:getInventory():AddItem("Base.Wrench")
     assert(W.repair(player, object, T.state(object).id), "Native base repair failed")
     assert(object:getHealth() == object:getMaxHealth() and contents.head:getCondition() == headCondition
         and battery:getCurrentUsesFloat() == batteryCharge, "Repair changed gun or battery")
