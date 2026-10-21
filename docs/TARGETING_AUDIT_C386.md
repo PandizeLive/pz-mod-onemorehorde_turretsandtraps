@@ -48,3 +48,34 @@ Neither is selected by the previous approval: C385 explicitly reserved a concret
 Initial fixture failure was a missing module in the explicit Kahlua test loader; registering it before ControlWorld fixed the fixture and the full validation then passed. The first restart assertion incorrectly expected inheritance from a Controller that the existing heavy-pickup fixture intentionally packed; it was corrected to assert preserved configuration and inactive inheritance while packed, plus restored inheritance on native redeployment. The repeat fresh-process run passes. No error masking was added. Native logs contain existing vanilla map/property diagnostics; success is limited to the named probe assertions, not an assertion of a warning-free game.
 
 Next: settle 1A/1B, complete UI/acquisition/impact/server-protection integration, validate all heads and persistence, then version/tag/install/mirror the finished patch. **Decision needed.**
+
+
+## C387 -- Custom reduced player injuries selected (2026-10-21)
+
+Owner selects **1B**: automated turrets should deal substantially reduced player damage and wound chance because ordinary weapon lethality would be overpowered in PvP. This settles custom player balance rather than C386's native gun/spear proposal. It does not select exact damage, wound probabilities, module scaling or a new injury cap. The whole targeting patch remains approved; the policy foundation is staged and installed 0.2.60 remains unchanged.
+
+Read-only follow-up reconfirms the existing DefenseInjury path: blast injuries operate on a chosen body part and scratch probability; other profiles currently apply an unconditional cut/scratch or a two-damage/five-pain bruise. Scrapshot caps player damage at ten per volley, and Lobber uses a bounded blast profile. Therefore a universal percentage of zombie health is not a meaningful existing player-damage setting. A lowered wound chance must also account for repeated firing and multiple pellet/effect callbacks.
+
+### Proposed numeric package, not yet selected
+
+**1A (recommended):** fixed player injury values below, independent of zombie damage. Damage is body-part health loss before clothing protection, not a promise of global-health loss or time to kill. Retain limb targeting rather than introducing head/neck multipliers. No guaranteed embedded bullet, deep wound or fracture is introduced. Wounds are scratches except Rotary Blades' existing cut type.
+
+| Head | Player damage | Wound chance |
+| --- | --- | --- |
+| Potato | 1 per direct hit | 0% |
+| Firearm | 2 per bullet; shotgun capped at 4 per shell | 2% |
+| Ballista | 5 per spear hit | 5% |
+| Scrapshot | 4 maximum per volley, proportional to pellets that land | 3% |
+| Rotary Bat | 1 per eligible contact | 0% |
+| Rotary Blades | 2 per eligible contact | 5% cut |
+| Lobber | 5 at blast center, retaining distance falloff | 5% at center, retaining falloff |
+
+Preserve the rotary recovery interval. A shotgun/scrap volley or one explosion rolls for injury once per victim, not once per pellet. Additionally, allow at most one nonzero wound roll per player per real second across turrets; ordinary direct damage still accumulates from multiple hits/turrets. Armor-blocked hits and zero-chance blunt hits do not consume the wound-roll opportunity. This limits repeated wound lotteries, not aggregate damage or the usefulness of multiple defenses. Server protection checks and clothing protection must be validated before delivery; they are not proven by this numerical proposal.
+
+Player direct damage does not inherit critical/Execute bonuses, and turret player hits do not force knockdowns. Existing range/accuracy/firing/reload improvements still function, so modules remain useful; separate damage and secondary-effect tuning for players is deferred rather than silently inheriting zombie proc formulas. Splitter pellets share the originating attack's relevant shell/volley cap. Existing player collateral effects must use the same reduced profile and budget as deliberate attacks, preventing spillover from bypassing PvP tuning. This deliberately proposes superseding C384's exact turret injury numbers while retaining its physical hit eligibility; the owner has now requested reduced turret player injuries. Apply the same turret player profiles in SP and MP. Passive traps, Poke and Tether injuries remain outside this turret-only balance request; their existing player rules are unchanged.
+
+**1B:** the same complete package with damage multiplied by 1.5 and wound chances doubled. No rounding requirement for fractional body-part damage. More threatening automated PvP; still custom rather than native weapon wounds.
+
+These are starting proposals, not tested balance. Even low per-hit damage can stack across rapid-fire turrets; no immunity window or universal damage cap is proposed. New Sandbox tuning should expose player-damage and wound-chance multipliers after the package is selected, keeping zombie values separate. Native attack integration, UI and connected-player verification remain unfinished. The selected custom path is not a new request to pause all approved work; the specific numerical package is the remaining material input.
+
+No code, generated package, release tag, installation or new test result this turn. Reviewed ad83cccd83fbaabf555c6847341ff863b8d62cb1; origin fetched with no newer dev commits, draft PR #1 remains the active handoff. Persist/mirror this decision under C108/C119. **Decision needed: 1A or 1B numeric package.**
