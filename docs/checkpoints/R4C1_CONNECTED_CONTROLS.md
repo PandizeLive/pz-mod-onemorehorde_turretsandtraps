@@ -555,3 +555,20 @@ Owner explicitly rejects external/manual Poke Floor activation. The [current Pok
 ## C335 — Turret-only power proposal (2026-10-19)
 
 Poke Floor repeated contact is selected. [Battery-only turret discussion](R4C2_POKE_FLOOR.md#c335--repeating-zombie-contact-selected-battery-only-turrets-proposed) proposes removing direct grid/generator operation from turrets while retaining local battery then Controller battery fallback. This restriction is not yet selected and does not change the Controller or Poke Floor's chosen electricity availability. Shared-bank operation always consumes real bank charge; Controller mains cannot bypass that cost.
+
+
+## C374 — Lever content choices (2026-10-21)
+
+Owner cannot test the installed 0.2.59.1 build and requests continuation. Keep its rendered/connected acceptance pending; no failure or acceptance is inferred. Recommend finishing the requested Lever before beam sensors. This is discussion, not permission to invent remaining recipes or patch new gameplay.
+
+Settled behavior stays C350: latched input, Detection-equipped turrets wait for eligible targets; Firing-only turrets use ordinary straight-ahead cycles; real battery/ammo requirements remain. OFF removes only this input, preserves existing OR semantics and finishes admitted work without beginning another cycle. Tether linked inputs override built-in detection; Poke remains self-activated and is not an external receiver.
+
+**1 — Mounting.** 1A wall-only, like Button (recommended); 1B wall or floor. A reuses the small existing wall interaction; B needs an additional floor representation and placement/interaction coverage. Reuse temporary native switch art and clear Lever naming/state, without inventing final artwork.
+
+**2 — Crafting.** 2A same cost as Button: one Electronics Scrap, one Electric Wire, two Screws; retained Screwdriver and Pliers, Electricity 1 and five Electricity XP, same crafting time (recommended). 2B conversion: one existing Button plus one Scrap Metal, with the same tools/skill/XP/time; transfer the Button's condition rather than repairing it through conversion. Both propose Button-equivalent 0.2 weight/100 condition, crafted-only availability and existing trigger service rules: 1s placement/pickup, 2s repair, Screwdriver only, no repair material. No loot-tier/weight change is proposed.
+
+**3 — Latch retention.** Both start newly crafted devices OFF and retain placed ON/OFF through save/restart, reconciling only current eligible loaded signals. 3A pickup clears links and resets OFF before redeployment (recommended, avoids unexpected activation at a new location); 3B clears links but carries its latch setting through pickup/redeployment. Neither restores obsolete links or historical pulses.
+
+Proposed integration reuses automatic Controller assignment, explicit receiver links, access rules, Stockpile admission, unique Lever numbering, switch audio and ON/OFF feedback. Server-authoritative toggles and bounded change-driven propagation remain required. Current ControlCycle.step still contains the rotary bypass at line 103; implementing the Lever requires verifying/correcting Detection gating for rotary heads as well as projectile heads. No gameplay edit or new live test is claimed this turn.
+
+Reviewed current status/roadmap/C350 and native item scripts. Fetched origin: dev remains 5fc6446; the unmerged planning/lobber-ammunition branch ends at historical C221 (2026-10-13), older than the local reconciled C222+ contracts. No planning branch was merged. C373 build remains installed. Recommend medium reasoning for the eventual Lever patch; current work is documentation only. Decisions 1/2/3 remain unselected.

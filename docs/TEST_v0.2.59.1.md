@@ -14,3 +14,8 @@ Earlier fixture iterations corrected missing wall fixtures, cursor rotation orde
 6. Check Blades/Lobber battery tooltips and consumption; if testing Sandbox overrides, restore your preferred values afterward.
 
 Installed from immutable `test/v0.2.59.1` / `810c5768f09c93edb696435a91e78f290f881fb5`. All 322 source and 422 tagged/package/install/archive files match; both 0.2.59 backups verify. [Release evidence](../diagnostics/v0.2.59.1/local-release.json). **Test now** after restart. Rendered appearance and connected-client action/synchronization remain pending.
+
+
+## Owner availability - 2026-10-21
+
+Owner is unable to test and asks to continue planning. The installed build remains unchanged. Rendered and connected-player acceptance is deferred, not passed or failed; the complete test sequence above remains available when the owner can test.
