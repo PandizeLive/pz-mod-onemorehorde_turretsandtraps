@@ -1865,3 +1865,5 @@ Owner explicitly approves the C342 1A/2A/3A selections and proposed retired-trig
 ## C370 — next build approved (2026-10-20)
 
 Owner: “Approved” after clarifying that update/patch approval was the intended checkpoint and no further decisions remained. Proceed with settled Tether, service/condition/timing, Poke 45 and tooltip scope. Lever content details remain unselected and are explicitly excluded rather than invented. [Build contract](PATCH_v0.2.59.md). Implementation/native verification are in progress; installed 0.2.58 remains the rollback baseline until verified tagged installation. No Workshop publication or merge authorized.
+
+C370 delivery: 0.2.59 is implemented and installed from immutable test/v0.2.59 / c376cbb6c912e9aee6c367ac41eac386673161f2. 26,119 assertions, native write/read and all package selections pass; 320 source and 419 installed/archive files match and both prior backups verify. [Release evidence](../diagnostics/v0.2.59/local-release.json). Rendered/connected acceptance is pending. The development mirror follows C108; no merge or Workshop upload.

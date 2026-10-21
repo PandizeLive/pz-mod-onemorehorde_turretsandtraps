@@ -7,7 +7,7 @@
 - Fourteen portable routes retain and consume the exact selected items. Native NetTimedAction extracts and serializes all constructor arguments and derives exactly **1,000 / 2,000 / 5,000 ms** from the server's allowlisted family. SP tests cover 1x/5x/30x game speed, missing/duplicate inputs and client mutation refusal.
 - Native Tether service fixture confirms **30 impact + 15 pull**, **0.75-second hold**, no early/repeated pull, linked sensing override, last-unlink automatic sensing, one wear per completed cycle and pickup at exactly 37 condition. Actual crafting creates one item, retains the three tools and consumes two Wire uses.
 - Existing native Tether geometry/player fixture passes **36 assertions**, including four wall orientations and constructed-wall support. Native pack parsing verifies 94 trap tiles, 30 turret tiles and 43 valid PNG pages.
-- Generated packages close required dependencies; 89 shared files match; 169 Sandbox options remain unique. Traps-only, Turrets-only and combined startup pass in 95.3 / 105.6 / 99.1 seconds. Tagged installation is next.
+- Generated packages close required dependencies; 89 shared files match; 169 Sandbox options remain unique. Traps-only, Turrets-only and combined startup pass in 95.3 / 105.6 / 99.1 seconds. Tagged installation is verified below.
 
 [Write evidence](../diagnostics/v0.2.59/build-write.log) · [Read evidence](../diagnostics/v0.2.59/build-read.log) · [Validation](../diagnostics/v0.2.59/validation.log)
 
@@ -26,4 +26,4 @@ These tests use native objects with synthetic square/actor fixtures and test dou
 
 ## Release status
 
-All automated/native/package checks pass. Awaiting immutable tagged installation. No Workshop upload or merge.
+Installed from immutable `test/v0.2.59` / `c376cbb6c912e9aee6c367ac41eac386673161f2`. All 320 source and 419 tagged/package/install/archive files match. Both managed 0.2.58 backups verify. [Release record](../diagnostics/v0.2.59/local-release.json). C108 GitHub mirror follows through the existing branch/draft PR; no Workshop upload or merge. **Test now** after restart.
