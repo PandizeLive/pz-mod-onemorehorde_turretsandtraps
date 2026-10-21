@@ -237,6 +237,7 @@ public final class KahluaCheck {
             {"OMHTT/TurretRarity", base + "shared/OMHTT/TurretRarity.lua"},
             {"OMHTT/TurretHeads", base + "shared/OMHTT/TurretHeads.lua"},
             {"OMHTT/TurretAmmoCapacity", base + "shared/OMHTT/TurretAmmoCapacity.lua"},
+            {"OMHTT/ControlTargeting", base + "shared/OMHTT/ControlTargeting.lua"},
             {"OMHTT/ControlAccess", base + "shared/OMHTT/ControlAccess.lua"},
             {"OMHTT/ControlGroups", base + "shared/OMHTT/ControlGroups.lua"},
             {"OMHTT/ControlMount", base + "shared/OMHTT/ControlMount.lua"},
@@ -500,6 +501,7 @@ public final class KahluaCheck {
             {"OMHTT/ControlPokeAction", base + "shared/OMHTT/ControlPokeAction.lua"},
             {"_", "tools/tests/repair_c367.lua"},
             {"_", "tools/tests/trigger_power.lua"},
+            {"_", "tools/tests/targeting_policy.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

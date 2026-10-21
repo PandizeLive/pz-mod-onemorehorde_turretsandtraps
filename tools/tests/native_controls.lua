@@ -12,6 +12,13 @@ return function(player)
     require("OMHTT/ControlPower").trigger = function() return true end
     assert(isServer() and not isClient(), "Controls probe requires actual server mode")
     if EXPECT_READ then
+        local targetingFixture = ModData.getOrCreate("OMHTTNativeTargeting")
+        local targetingHost = C.records().records[targetingFixture.controller]
+        assert(targetingHost and targetingHost.targeting == "OtherFactions", "Fresh process lost Controller target default")
+        local targeting = require("OMHTT/ControlTargeting")
+        assert(not targetingHost.placed and targeting.resolve({kind = "Turret", controller = targetingHost.id}, targetingHost) == "Zombies",
+            "Packed Controller must not supply inherited targeting after restart")
+        print("[OMHTT-C386] targeting fresh-process=preserved packed-host=excluded")
         local pokeFixture = ModData.getOrCreate("OMHTTNativePoke")
         local pokeRecord = C.records().packed[pokeFixture.item]
         assert(pokeRecord and pokeRecord.id == pokeFixture.id and pokeRecord.enabled == false and pokeRecord.carriedHealth == 123,
@@ -107,6 +114,14 @@ return function(player)
     end
     local controller = create("Controller", "omhtt_turret_01_21")
     local layoutHost = C.state(controller)
+    local targeting = require("OMHTT/ControlTargeting")
+    local targetingAction = Action:new(player, controller, "Targeting", "OtherFactions", nil, layoutHost.id)
+    assert(targetingAction:complete() and not targetingAction:complete(), "Native targeting action/replay failed")
+    assert(controller:getModData().OMHTTControl.targetingEffective == "OtherFactions", "Native targeting snapshot failed")
+    ModData.getOrCreate("OMHTTNativeTargeting").controller = layoutHost.id
+    assert(not targeting.outsider(layoutHost, player), "Native owner exclusion failed")
+    assert(Faction.getPlayerFaction(player:getUsername()) == Faction.getPlayerFaction(player), "Native faction string lookup differs")
+    print("[OMHTT-C386] targeting command=passed snapshot=passed owner-exclusion=passed faction-string=passed")
     local add = Action:new(player, controller, "GroupAdd", "0|||Base Front", nil, layoutHost.id)
     assert(add:complete() and layoutHost.organization.groups[1].name == "Base Front", "Native group creation failed")
     assert(not add:complete(), "Group action replay succeeded")
@@ -543,6 +558,9 @@ return function(player)
     GameEntityFactory.CreateIsoObjectEntity(rebuilt, SpriteConfigManager.GetObjectInfo("OMHTTDeployController"):getScript():getParent(), true)
     C.create({thumpable = rebuilt, character = player, craftRecipeData = {getAllConsumedItems = function() return consumed end}})
     assert(C.state(rebuilt).id == host.id and C.state(rebuilt).owner == "control-owner", "Redeployment trusted forged ownership")
+    assert(C.state(rebuilt).targeting == "OtherFactions", "Redeployment lost private targeting default")
+    assert(targeting.resolve({kind = "Turret", controller = host.id}, C.state(rebuilt)) == "OtherFactions",
+        "Redeployed Controller did not restore inherited targeting")
     assert(rebuilt:getHealth() == 37, "Controller condition trusted forged presentation or healed on redeploy")
     assert(rebuilt:getContainer():contains(first) and rebuilt:getContainer():getItems():size() == 250, "Redeployment changed exact stockpile")
     assert(C.pickup(player, rebuilt), "Second heavy pickup failed")

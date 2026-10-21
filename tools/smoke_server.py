@@ -9,7 +9,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 GAME = Path(os.environ.get("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"))
 VERSION = re.search(r"^modversion=(.+)$", (ROOT / "Source/42.20/mod.info").read_text(), re.MULTILINE).group(1).strip()
-OUTPUT = ROOT / "diagnostics" / ("vault-prototype" if os.environ.get("OMHTT_VAULT_PROBE") == "1" else "v" + VERSION)
+LABEL = os.environ.get("OMHTT_PROBE_LABEL", "vault-prototype" if os.environ.get("OMHTT_VAULT_PROBE") == "1" else "v" + VERSION)
+if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", LABEL):
+    raise ValueError("OMHTT_PROBE_LABEL must be a diagnostic directory name")
+OUTPUT = ROOT / "diagnostics" / LABEL
 CACHE = OUTPUT / "server-cache"
 
 

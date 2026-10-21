@@ -5,6 +5,7 @@ local A = require("OMHTT/ControlAccess")
 local C = require("OMHTT/ControlDefinitions")
 local Battery = require("OMHTT/TurretBattery")
 local Names = require("OMHTT/DefenseNames")
+local Targeting = require("OMHTT/ControlTargeting")
 local W = {objects = {}, bindings = setmetatable({}, {__mode = "k"}), cursor = 1, order = {}, indexed = {}, incoming = {}, batteries = {}, batteryScan = {}, locations = {}, plates = setmetatable({}, {__mode = "k"}), actorSquares = setmetatable({}, {__mode = "k"}), dirty = {}, dirtySet = {}}
 OMHTT_ControlWorld = W
 local store
@@ -89,6 +90,10 @@ function W.publish(object)
     local state = W.state(object)
     if not state then return end
     local view = W.copy(state)
+    if Targeting.supported(state.kind) then
+        local host = state.controller and W.records().records[state.controller]
+        view.targetingEffective = Targeting.resolve(state, host)
+    end
     if state.kind == "Turret" or state.kind == "Tether" then
         view.inputs = {}
         for id in pairs(W.incoming[state.id] or {}) do

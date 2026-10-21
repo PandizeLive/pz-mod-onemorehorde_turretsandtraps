@@ -1,5 +1,6 @@
 require("TimedActions/ISBaseTimedAction")
 local A = require("OMHTT/ControlAccess")
+local Targeting = require("OMHTT/ControlTargeting")
 OMHTTControlAction = ISBaseTimedAction:derive("OMHTTControlAction")
 local Action = OMHTTControlAction
 
@@ -47,6 +48,8 @@ function Action:isValid()
     elseif self.command == "Access" then
         return A.write(self.character, state, true)
             and (self.value == "Private" or self.value == "Faction" or self.value == "Public")
+    elseif self.command == "Targeting" then
+        return Targeting.valid(state, self.value)
     elseif self.command == "Assign" or self.command == "Link" then
         local target = A.state(self.target)
         return target and target.id == self.targetId and A.write(self.character, target)
@@ -112,6 +115,21 @@ function Action:complete()
         local faction = self.value == "Faction" and Faction.getPlayerFaction(self.character)
         if self.value == "Faction" and not faction then return false end
         state.access, state.faction = self.value, faction and faction:getName() or nil
+    elseif self.command == "Targeting" then
+        if self.value == "Inherit" then
+            state.targeting = nil
+        else
+            state.targeting = self.value
+        end
+        if state.kind == "Controller" then
+            for _, object in pairs(W.objects) do
+                local assigned = W.state(object)
+                if assigned and assigned.controller == state.id
+                    and Targeting.supported(assigned.kind) then
+                    W.publish(object)
+                end
+            end
+        end
     elseif self.command == "Assign" then
         return W.assign(self.object, self.target, self.character, self.value)
     elseif self.command == "SetFacing" then
