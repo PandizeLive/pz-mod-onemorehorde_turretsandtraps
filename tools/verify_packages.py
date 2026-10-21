@@ -61,9 +61,10 @@ def main():
             assert "OMHTT/FoundationServer" not in lua and "OMHTT/Construction" not in lua
             assert "item OMHTTTrapSpikeBarrier" not in scripts
             assert "OMHTurretsTraps.SpikeBarrier" not in options
-    assert not option_sets["traps"] & option_sets["turrets"], "Sandbox controls overlap"
+    assert not option_sets["traps"] & option_sets["turrets"], "Duplicate native Sandbox identities"
     all_options = set(re.findall(r"option\s+(\w+\.\w+)\s*\{", (ROOT / "Source/42.20/media/sandbox-options.txt").read_text()))
-    assert all_options == option_sets["traps"] | option_sets["turrets"], "Sandbox options lost during split"
+    normalized_options = {name.replace(".TrapsTrigger", ".Trigger") for name in option_sets["traps"] | option_sets["turrets"]}
+    assert all_options == normalized_options, "Sandbox options lost during split"
     common = packages["traps"].keys() & packages["turrets"].keys()
     control_script = "42.20/media/scripts/OMHTT_Controls.txt"
     normalized = packages['turrets'][control_script]
@@ -71,6 +72,8 @@ def main():
         normalized = normalized.replace(f'omhtt_turret_01_{21 + facing}'.encode(), f'omhtt_barrier_01_{76 + facing}'.encode())
     for facing in range(5):
         normalized = normalized.replace(f'omhtt_turret_01_{25 + facing}'.encode(), f'omhtt_barrier_01_{80 + facing}'.encode())
+    for facing in range(8):
+        normalized = normalized.replace(f'omhtt_turret_01_{30 + facing}'.encode(), f'omhtt_barrier_01_{94 + facing}'.encode())
     assert normalized == packages['traps'][control_script], 'Controller scripts differ beyond independent sprite identities'
     virtual_overrides = {"42.20/mod.info", "42.20/media/sandbox-options.txt", control_script}
     for name in common - virtual_overrides:

@@ -7,6 +7,9 @@ local savedMode, savedFaction = testMode, Faction
 local oldState, oldContents, oldConfig = T.state, T.contents, T.cycleConfig
 local oldPower, oldFire, oldWorldContents, oldWorldPower = W.applyPower, W.fire, W.contents, W.power
 local oldTime = testMillis
+local Power = require("OMHTT/ControlPower")
+local oldTriggerPower = Power.trigger
+Power.trigger = function() return true end
 local auto = require("OMHTT/TurretAutomation")
 testMode = "server"
 Faction = {getPlayerFaction = function(player) return player.faction end}
@@ -311,3 +314,5 @@ for i = 1, #made do C.removed(made[i]) end
 T.state, T.contents, T.cycleConfig = oldState, oldContents, oldConfig
 W.applyPower, W.fire, W.contents, W.power = oldPower, oldFire, oldWorldContents, oldWorldPower
 Faction, testMode, testMillis = savedFaction, savedMode, oldTime
+
+Power.trigger = oldTriggerPower

@@ -52,8 +52,11 @@ def sandbox(component):
     for match in re.finditer(r"option OMHTurretsTraps\.(\w+)\s*\{[^}]+\}", content):
         key = match[1]
         trap = key in TRAP_OPTIONS or "Barrier" in key or key.startswith(("Bed", "Barb", "Poke"))
-        if trap == (component == "traps"):
-            result.append(match[0] + "\n")
+        if key.startswith("Trigger") or trap == (component == "traps"):
+            block = match[0]
+            if component == "traps" and key.startswith("Trigger"):
+                block = block.replace("option OMHTurretsTraps.Trigger", "option OMHTurretsTraps.TrapsTrigger", 1)
+            result.append(block + "\n")
     assert blocks and len(result) > 1
     return ("\n".join(result)).encode()
 
@@ -83,6 +86,9 @@ def expected_files():
                 files[path] = files[path].replace(f"omhtt_barrier_01_{76 + facing}".encode(), f"omhtt_turret_01_{21 + facing}".encode())
             for facing in range(5):
                 files[path] = files[path].replace(f"omhtt_barrier_01_{80 + facing}".encode(), f"omhtt_turret_01_{25 + facing}".encode())
+        if component == "turrets":
+            for facing in range(8):
+                files[path] = files[path].replace(f"omhtt_barrier_01_{94 + facing}".encode(), f"omhtt_turret_01_{30 + facing}".encode())
         files["42.20/media/sandbox-options.txt"] = sandbox(component)
         tiles, texturepack = build_component(component)
         files[f"42.20/media/{pack}.tiles"] = tiles

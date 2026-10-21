@@ -45,7 +45,7 @@ end
 function Graph.connect(panel, source, target, enabled)
     if panel.pendingGraphLink then return end
     local input, output = A.state(source), A.state(target)
-    if not input or not output or (output.kind ~= "Turret" and output.kind ~= "Tether") or (input.kind ~= "Plate" and input.kind ~= "Button") then return end
+    if not input or not output or (output.kind ~= "Turret" and output.kind ~= "Tether") or not C.inputs[input.kind] then return end
     enabled = enabled ~= false
     panel.linkSource = nil
     getSoundManager():playUISound("UIActivateButton")
@@ -171,13 +171,13 @@ function Graph.refreshForPanel(panel)
         local object = graph.items[i].item
         local state = A.state(object)
         if state then
-            local prefix = state.kind == "Tether" and "D" or state.kind == "Turret" and "T" or (state.kind == "Controller" and "C" or (state.kind == "Button" and "B" or "P"))
+            local prefix = state.kind == "Tether" and "D" or state.kind == "Turret" and "T" or (state.kind == "Controller" and "C" or (state.kind == "Button" and "B" or state.kind == "Lever" and "L" or state.kind == "Laser" and "S" or "P"))
             local label = prefix .. (state.number or "")
             graph.markers[#graph.markers + 1] = {object = object, label = label,
                 halfWidth = math.max(11, math.ceil(getTextManager():MeasureStringX(UIFont.Small, label) / 2) + 4)}
             graph.markerByObject[object] = graph.markers[#graph.markers]
         end
-        if state and (C.defense(state.kind) or state.kind == "Plate" or state.kind == "Button") then
+        if state and (C.defense(state.kind) or C.inputs[state.kind]) then
             local rows = C.defense(state.kind) and graph.defenses or graph.triggers
             local row = {object = object, state = state, title = U.name(object)}
             if state.kind == "Turret" then

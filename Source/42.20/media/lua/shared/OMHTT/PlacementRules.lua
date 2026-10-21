@@ -12,6 +12,8 @@ P.routes = {
     OMHTTDeployController = {"Base.OMHTTTrapController", 5},
     OMHTTDeployInsetPlate = {"Base.OMHTTTrapPressurePlate", 1},
     OMHTTDeploySwitchButton = {"Base.OMHTTTrapButton", 1},
+    OMHTTDeployLever = {"Base.OMHTTTrapLever", 1},
+    OMHTTDeployLaser = {"Base.OMHTTTrapLaser", 1},
     OMHTTDeployPoke = {"Base.OMHTTTrapPokeFloor", 2},
 }
 

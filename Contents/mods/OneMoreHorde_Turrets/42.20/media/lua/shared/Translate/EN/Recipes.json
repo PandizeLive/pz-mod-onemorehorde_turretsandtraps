@@ -41,5 +41,9 @@
     "Recipe_OMHTTCraftButton": "Craft Button",
     "Recipe_OMHTTDeployButton": "Place Button",
     "Recipes_OMHTTCraftPoke": "Poke Floor",
-    "Recipes_OMHTTCraftPokeImprovised": "Poke Floor (Improvised)"
+    "Recipes_OMHTTCraftPokeImprovised": "Poke Floor (Improvised)",
+    "Recipe_OMHTTCraftLever": "Lever",
+    "Recipe_OMHTTDeployLever": "Place Lever",
+    "Recipe_OMHTTCraftLaser": "Laser Sensor",
+    "Recipe_OMHTTDeployLaser": "Place Laser Sensor"
 }

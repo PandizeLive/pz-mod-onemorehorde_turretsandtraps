@@ -4,7 +4,10 @@ return function(player)
     local savedCell, savedServer, savedPlayer, savedThumpable = getCell, isServer, getSpecificPlayer, IsoThumpable
     local cell, lookup = getCell(), {}
     local sequence, completed = 0, 0
-    local fixtureX = 10000 + (math.floor(getTimestampMs() / 1000) % 10000) * 1000
+    local fixtureX = 12000
+    local generation = ModData.getOrCreate("OMHTTPlacementProbeV1")
+    generation.index = (generation.index or 0) + 1
+    local fixtureY = 10000 + generation.index * 10
     local oldX, oldY, oldZ, oldSquare = player:getX(), player:getY(), player:getZ(), player:getSquare()
     local oldCheat = player:isBuildCheat()
     -- Real native squares, objects, inventory and setInfo; synthetic lookup only.
@@ -20,10 +23,10 @@ return function(player)
         for _, cheat in pairs({false, true}) do
             player:setBuildCheat(cheat)
             for route, profile in pairs(Rules.routes) do
-              for variant = 1, (route == "OMHTTDeployTether" and 8 or 1) do
-                local rotation = route == "OMHTTDeployTether" and ((variant - 1) % 4 + 1) or 2
+              for variant = 1, ((route == "OMHTTDeployTether" or route == "OMHTTDeployLever" or route == "OMHTTDeployLaser") and 8 or 1) do
+                local rotation = (route == "OMHTTDeployTether" or route == "OMHTTDeployLever" or route == "OMHTTDeployLaser") and ((variant - 1) % 4 + 1) or 2
                 sequence = sequence + 1
-                local x, y = fixtureX + sequence * 10, 10000
+                local x, y = fixtureX + sequence * 10, fixtureY
                 local chunk = IsoChunk.new(cell)
                 chunk:assignLoadID()
                 for dx = -2, 3 do
@@ -37,10 +40,10 @@ return function(player)
                 end
                 local square = lookup[x .. ":" .. y .. ":0"]
                 player:setX(x + .5); player:setY(y + .5); player:setZ(0); player:setCurrent(square)
-                if route == "OMHTTDeployTether" or route == "OMHTTBarbs" or route == "OMHTTDeploySwitchButton" then
+                if (route == "OMHTTDeployTether" or route == "OMHTTDeployLever" or route == "OMHTTDeployLaser") or route == "OMHTTBarbs" or route == "OMHTTDeploySwitchButton" then
                     local wx, wy, north = x, y + 1, true
                     if route == "OMHTTDeploySwitchButton" then wy = y end
-                    if route == "OMHTTDeployTether" then
+                    if (route == "OMHTTDeployTether" or route == "OMHTTDeployLever" or route == "OMHTTDeployLaser") then
                         wx, wy = x + (rotation == 1 and 1 or 0), y + (rotation == 2 and 1 or 0)
                         north = rotation == 2 or rotation == 4
                     end
@@ -48,7 +51,7 @@ return function(player)
                     local info = SpriteConfigManager.GetObjectInfo("WoodenWallLvl1")
                     local sprite = info:getFace(north and "n" or "w"):getTileInfo(0, 0, 0):getSpriteName()
                     local wall
-                    if route == "OMHTTDeployTether" and variant > 4 then
+                    if (route == "OMHTTDeployTether" or route == "OMHTTDeployLever" or route == "OMHTTDeployLaser") and variant > 4 then
                         wall = IsoObject.new(backing, sprite, "wall")
                     else
                         wall = savedThumpable.new(cell, backing, sprite, north)
@@ -73,14 +76,14 @@ return function(player)
                 if route ~= "OMHTTBarbs" then
                     assert(square:getSpecialObjects():size() > 0, "No native object survived completion: " .. route)
                 end
-                if route == "OMHTTDeployTether" then
+                if (route == "OMHTTDeployTether" or route == "OMHTTDeployLever" or route == "OMHTTDeployLaser") then
                     local found = false
                     for n=0,square:getSpecialObjects():size()-1 do
                         local object = square:getSpecialObjects():get(n)
                         local state = require("OMHTT/ControlWorld").state(object)
-                        if state and state.kind == "Tether" then
+                        if state and (state.kind == "Tether" or state.kind == "Lever" or state.kind == "Laser") then
                             assert(object:getHealth() == 37, "Tether condition lost")
-                            assert(require("OMHTT/TetherMount").resolve(x, y, 0, state.facing), "Placed Tether lost backing wall")
+                            assert(require(state.kind == "Tether" and "OMHTT/TetherMount" or "OMHTT/ControlMount").resolve(x, y, 0, state.facing), "Placed Tether lost backing wall")
                             found = true
                         end
                     end
@@ -95,6 +98,6 @@ return function(player)
     getCell, isServer, getSpecificPlayer, IsoThumpable = savedCell, savedServer, savedPlayer, savedThumpable
     player:setBuildCheat(oldCheat)
     player:setX(oldX); player:setY(oldY); player:setZ(oldZ); player:setCurrent(oldSquare)
-    assert(completed == 84, "Missing placement execution cases")
-    print("[OMHTT-C373] native-placement-complete cases=84 branches=sp/server cheat=on/off exact-items=retained condition=37 replay=blocked")
+    assert(completed == 148, "Missing placement execution cases")
+    print("[OMHTT-C373] native-placement-complete cases=148 branches=sp/server cheat=on/off exact-items=retained condition=37 replay=blocked")
 end

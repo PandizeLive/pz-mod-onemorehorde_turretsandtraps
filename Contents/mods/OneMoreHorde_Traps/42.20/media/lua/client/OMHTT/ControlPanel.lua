@@ -148,9 +148,14 @@ function Panel:prerender()
     self.assign:setEnable(state ~= nil and self.selected ~= self.object and host.kind == "Controller"
         and host.powered == true and A.write(self.player, host) and A.write(self.player, state))
 
-    self.trigger:setEnable(writable == true and state.kind == "Plate")
-    self.trigger:setTitle(state and state.kind == "Plate" and "Trigger: " .. (state.trigger or "Both") or "Trigger: —")
-    self.trigger:setVisible(state ~= nil and state.kind == "Plate")
+    local input = state and require("OMHTT/ControlDefinitions").inputs[state.kind]
+    self.trigger:setEnable(writable == true and input == true)
+    local caption = "UI_OMHTT_ControlPress"
+    if state and state.kind == "Plate" then caption = "UI_OMHTT_TriggerMode"
+    elseif state and state.kind == "Lever" then caption = state.latched and "UI_OMHTT_LeverOff" or "UI_OMHTT_LeverOn"
+    elseif state and state.kind == "Laser" then caption = "UI_OMHTT_BeamRange" end
+    self.trigger:setTitle(getText(caption, state and (state.kind == "Laser" and (state.beamRange or 10) or (state.trigger or "Both"))))
+    self.trigger:setVisible(input == true)
     self.manage:setVisible(state ~= nil and require("OMHTT/ControlDefinitions").defense(state.kind))
     self.assign:setVisible(state ~= nil and self.selected ~= self.object and host.kind == "Controller")
 
@@ -177,7 +182,8 @@ function Panel:prerender()
     if not self.policy.enable then
         self.policy.tooltip = A.write(self.player, state, true) and remoteReason or getText("UI_OMHTT_ControllerAccessNeeded")
     end
-    self.trigger.tooltip = self.trigger.enable and getText("UI_OMHTT_TriggerHelp") or remoteReason
+    self.trigger.tooltip = input and require("OMHTT/ControlConsumption").description(state.kind, true) or remoteReason
+    if input and state.powered ~= true then self.trigger.tooltip = self.trigger.tooltip .. " <LINE> " .. getText("UI_OMHTT_TriggerUnpowered") end
 
     self.policy:setTitle(getText("UI_OMHTT_Access", state and state.access or "—"))
     self.assign:setTitle(getText(state and state.controller == host.id and "UI_OMHTT_Unassign" or "UI_OMHTT_Assign"))
@@ -254,8 +260,7 @@ function Panel.open(player, object)
     panel.trigger = button(panel, 532, 430, 258, "Trigger: Both", function(self)
         local state = A.state(self.selected)
         if not state then return end
-        local modes = {Both = "Players", Players = "Zombies", Zombies = "Both"}
-        U.command(self.player, self.selected, "Trigger", modes[state.trigger or "Both"])
+        require("OMHTT/ControlTriggerUI").activate(self.player, self.selected)
     end)
     panel.closeButton = button(panel, panel.width - 40, 6, 28, "X", Panel.close)
     require("OMHTT/ControlPanelLayout").create(panel)

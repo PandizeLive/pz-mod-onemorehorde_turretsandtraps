@@ -184,5 +184,108 @@ module Base {
         outputs { item 1 Base.OMHTTTrapButton, }
     }
     xuiSkin default { entity ES_OMHTTButton { LuaWindowClass = ISEntityWindow, DisplayName = UI_OMHTT_ControlButton, Icon = ElectronicsScrap, } }
+    item OMHTTTrapLever {
+        DisplayName = Lever,
+        ItemType = base:normal,
+        DisplayCategory = Electronics,
+        Weight = 0.2,
+        Icon = ElectronicsScrap,
+        Tags = base:heavyitem,
+        ConditionMax = 100,
+    }
+    entity OMHTTDeployLever {
+        component UiConfig { xuiSkin = default, entityStyle = ES_OMHTTLever, uiEnabled = false, }
+        component SpriteConfig {
+            health = 100,
+            skillBaseHealth = 0,
+            bonusHealth = 0,
+            isThumpable = false,
+            OnIsValid = OMHTT_Controls.mount,
+            OnCreate = OMHTT_Controls.created,
+            face E { layer { row = omhtt_barrier_01_98, } }
+            face N { layer { row = omhtt_barrier_01_99, } }
+            face W { layer { row = omhtt_barrier_01_100, } }
+            face S { layer { row = omhtt_barrier_01_101, } }
+        }
+        component CraftRecipe {
+            timedAction = BuildLowNoTool,
+            time = 100,
+            category = OMHControls,
+            needToBeLearn = false,
+            OnAddToMenu = OMHTT_ControlMenu,
+            inputs { item 1 [Base.OMHTTTrapLever], }
+        }
+    }
+    craftRecipe OMHTTCraftLever {
+        timedAction = BuildLowNoTool,
+        time = 100,
+        category = OMHControls,
+        Tags = InHandCraft,
+        needToBeLearn = false,
+        SkillRequired = Electricity:1,
+        xpAward = Electricity:5,
+        OnAddToMenu = OMHTT_ControlMenu,
+        inputs {
+                item 1 tags[base:screwdriver] mode:keep flags[Prop1;DontRecordInput;NoBrokenItems],
+                item 1 tags[base:pliers] mode:keep flags[DontRecordInput;NoBrokenItems],
+                item 1 [Base.ElectronicsScrap],
+                item 1 [Base.ElectricWire],
+                item 2 [Base.Screws],
+        }
+        outputs { item 1 Base.OMHTTTrapLever, }
+    }
+    xuiSkin default { entity ES_OMHTTLever { LuaWindowClass = ISEntityWindow, DisplayName = UI_OMHTT_ControlLever, Icon = ElectronicsScrap, } }
+    item OMHTTTrapLaser {
+        DisplayName = Laser Sensor,
+        ItemType = base:normal,
+        DisplayCategory = Electronics,
+        Weight = 0.5,
+        Icon = ElectronicsScrap,
+        Tags = base:heavyitem,
+        ConditionMax = 100,
+    }
+    entity OMHTTDeployLaser {
+        component UiConfig { xuiSkin = default, entityStyle = ES_OMHTTLaser, uiEnabled = false, }
+        component SpriteConfig {
+            health = 100,
+            skillBaseHealth = 0,
+            bonusHealth = 0,
+            isThumpable = false,
+            OnIsValid = OMHTT_Controls.mount,
+            OnCreate = OMHTT_Controls.created,
+            face E { layer { row = omhtt_barrier_01_94, } }
+            face N { layer { row = omhtt_barrier_01_95, } }
+            face W { layer { row = omhtt_barrier_01_96, } }
+            face S { layer { row = omhtt_barrier_01_97, } }
+        }
+        component CraftRecipe {
+            timedAction = BuildLowNoTool,
+            time = 100,
+            category = OMHControls,
+            needToBeLearn = false,
+            OnAddToMenu = OMHTT_ControlMenu,
+            inputs { item 1 [Base.OMHTTTrapLaser], }
+        }
+    }
+    craftRecipe OMHTTCraftLaser {
+        timedAction = BuildLowNoTool,
+        time = 192,
+        category = OMHControls,
+        Tags = InHandCraft,
+        needToBeLearn = false,
+        SkillRequired = Electricity:2,
+        xpAward = Electricity:10,
+        OnAddToMenu = OMHTT_ControlMenu,
+        inputs {
+                item 1 tags[base:screwdriver] mode:keep flags[Prop1;DontRecordInput;NoBrokenItems],
+                item 1 tags[base:pliers] mode:keep flags[DontRecordInput;NoBrokenItems],
+                item 2 [Base.ElectronicsScrap],
+                item 1 [Base.SmallSheetMetal],
+                item 1 [Base.ElectricWire],
+                item 2 [Base.Screws],
+        }
+        outputs { item 1 Base.OMHTTTrapLaser, }
+    }
+    xuiSkin default { entity ES_OMHTTLaser { LuaWindowClass = ISEntityWindow, DisplayName = UI_OMHTT_ControlLaser, Icon = ElectronicsScrap, } }
 }
 

@@ -87,7 +87,7 @@ def build_component(component):
     _, original = build()
     trap = component == "traps"
     sheet = "omhtt_barrier_01" if trap else "omhtt_turret_01"
-    count = 94 if trap else 30
+    count = 102 if trap else 38
     tiles = b"tdef" + integer(1) + integer(1)
     tiles += (sheet + "\nOMHTT_" + component.title() + ".png\n").encode("ascii")
     tiles += integer(4) + integer((count + 3) // 4) + integer(1) + integer(count)
@@ -200,6 +200,22 @@ def build_component(component):
             dx, dy = 0, 0
             entry = pack_string(sheet + "_" + str(90 + facing)) + struct.pack("<8i", 0, 0, 128, 256, dx, dy, 128, 256)
             pages.append(pack_string("OMHTT_Tether" + str(facing)) + integer(1) + integer(1) + entry + integer(len(png)) + png)
+    # Authorized white developer wall marker, anchored like the tested Tether panel.
+    for marker_index in range(8):
+        facing=marker_index % 4
+        label="LASER" if marker_index < 4 else "LEVER"
+        marker = Image.new("RGBA", (128, 256))
+        draw = ImageDraw.Draw(marker)
+        cx, cy = [(0, .5), (.5, 1), (1, .5), (.5, 0)][facing]
+        ux, uy = (0, 1) if facing % 2 == 0 else (1, 0)
+        points = [(round(64+64*(cx+a*ux-cy-a*uy)), round(192+32*(cx+a*ux+cy+a*uy)-192*h))
+                  for a,h in [(-.12,.4),(.12,.4),(.12,.25),(-.12,.25)]]
+        draw.polygon(points, fill="white", outline=(100,100,100))
+        draw.text((round(64+64*(cx-cy)-15),min(y for x,y in points)-13),label,fill="white")
+        stream=io.BytesIO(); marker.save(stream,format="PNG"); png=stream.getvalue()
+        index=(94 if trap else 30)+marker_index
+        entry=pack_string(sheet+"_"+str(index))+struct.pack("<8i",0,0,128,256,0,0,128,256)
+        pages.append(pack_string("OMHTT_"+label.title()+str(facing))+integer(1)+integer(1)+entry+integer(len(png))+png)
     return tiles, b"PZPK" + integer(1) + integer(len(pages)) + b"".join(pages)
 
 

@@ -112,3 +112,13 @@ Recommend Button 'Minimal (per press)' as an explicitly qualitative per-use desc
 Tooltip contents should include the OMH-colored consumption label, exact incremental cost and basis, active condition, and 'Power source: Assigned Controller'. Button: per accepted press. Plate: while occupied. Lever: while ON and powered. Laser: while scanning, including a clear beam. Explain that these costs exclude Controller idle and connected defenses, and that bank debit applies while the Controller is using batteries. No unverified incremental generator-fuel behavior is promised. Keep item and Manage/Controller device descriptions consistent without duplicating balance constants.
 
 Planning only: no source/package edits, new gameplay tests, version bump, install, merge or Workshop upload. Installed 0.2.59.1 remains awaiting owner testing. Combined Lever/laser/all-trigger power implementation still awaits final build approval.
+
+
+## C381 -- Combined build approved (2026-10-21)
+
+Owner: "Approved" after C380 tooltip/rating clarification and combined-build approval handoff. Authorizes implementing the settled Lever, laser, shared Controller power and tooltip package, including the recommended Minimal basic triggers / Very Low laser at 60-minute days and hourly conversion; Button per-use qualifier remains explicit. Native tests and release evidence follow; approval is not acceptance.
+
+
+## C381 -- 0.2.60 implementation (2026-10-21)
+
+Settled C375-C380 behavior is implemented in the combined build. See [patch](../PATCH_v0.2.60.md) and [verification](../TEST_v0.2.60.md) for exact behavior, native evidence and remaining rendered/connected-player acceptance. The approved indicator is a faint local green glow; Laser retains the white functional development panel. Native headless construction and persistence are verified, not rendered acceptance. Publication remains separate.

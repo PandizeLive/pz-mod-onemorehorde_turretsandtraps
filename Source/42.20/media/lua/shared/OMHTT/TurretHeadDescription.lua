@@ -1,15 +1,7 @@
 local H = require("OMHTT/TurretHeads")
 local Stats = require("OMHTT/TurretStats")
 local D = {}
-local R = require("OMHTT/TurretRarity")
-local names = {"Minimal", "VeryLow", "Low", "Medium", "High", "VeryHigh", "Extreme"}
-local thresholds = {1, 2.5, 5, 15, 30, 60}
-local ratings = {}
-for i = 1, #names do
-    local color = R.stops[i]
-    ratings[i] = {key = "UI_OMHTT_HeadBattery" .. names[i], r = .55 + color[1] / 255 * .45, g = .55 + color[2] / 255 * .45, b = .55 + color[3] / 255 * .45}
-end
-local none = {key = "UI_OMHTT_HeadBatteryNone", r = .8, g = .8, b = .8}
+local Consumption = require("OMHTT/ControlConsumption")
 
 ---@param item InventoryItem Head without installed turret modules
 ---@return table rating Shared label and color
@@ -32,12 +24,7 @@ function D.rating(item)
         local duration = (magazine - 1) * stats.cooldown + gap
         drain = stats.batteryPercent * magazine * 3600000 / math.max(1, duration)
     end
-    if drain <= 0 then return none, drain, stats end
-    local band = 1
-    while band <= #thresholds and drain >= thresholds[band] do
-        band = band + 1
-    end
-    return ratings[band], drain, stats
+    return Consumption.band(drain), drain, stats
 end
 
 ---@param item InventoryItem Head

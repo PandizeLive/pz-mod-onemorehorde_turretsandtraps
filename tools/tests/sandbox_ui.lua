@@ -1,4 +1,9 @@
 local UI = require("OMHTT/SandboxUI")
+local sharedPage={settings={{name="OMHTurretsTraps.TriggerLaserConsumption"},{name="OMHTurretsTraps.TrapsTriggerLaserConsumption"},{name="OtherMod.Setting"}}}
+UI.triggerSettings(sharedPage)
+check(#sharedPage.settings==2 and sharedPage.settings[2].name=="OtherMod.Setting", "Combined trigger page shows one effective control and preserves other mods")
+local singlePage={settings={{name="OMHTurretsTraps.TrapsTriggerLaserConsumption"}}}
+check(#UI.triggerSettings(singlePage).settings==1,"Traps-only trigger controls remain visible")
 local oldTextManager = getTextManager
 function getTextManager() return {getFontHeight = function() return 20 end} end
 local names = {"PotatoRequirePower", "PotatoDamage", "PotatoAmmoCapacity", "PotatoTurret"}

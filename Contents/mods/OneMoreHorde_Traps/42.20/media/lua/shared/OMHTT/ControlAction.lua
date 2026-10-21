@@ -33,9 +33,10 @@ end
 ---@return boolean valid
 function Action:isValid()
     local state = A.state(self.object)
-    if self.done or not state or state.id ~= self.id or not A.authorized(self.character, self.object, self.command == "Pulse")
+    if self.done or not state or state.id ~= self.id or not A.authorized(self.character, self.object, (self.command == "Pulse" or self.command == "Toggle"))
         or (self.object:getHealth() <= 0 and state.kind ~= "Poke" and state.kind ~= "Tether") then return false end
     if self.command == "Pulse" then return state.kind == "Button" end
+    if self.command == "Toggle" then return state.kind == "Lever" end
     if self.command == "GroupAdd" or self.command == "GroupName" or self.command == "GroupMove"
         or self.command == "GroupDelete" or self.command == "DeviceMove" then
         return require("OMHTT/ControlGroups").propose(self) ~= nil
@@ -58,6 +59,8 @@ function Action:isValid()
             and A.write(self.character, target)
             and ((self.object == self.target and A.near(self.character, self.target))
                 or require("OMHTT/ControlRemote").valid(self.character, self.object, self.target))
+    elseif self.command == "BeamRange" then
+        return state.kind == "Laser" and type(self.value) == "number" and self.value == math.floor(self.value) and self.value >= 1 and self.value <= 10
     elseif self.command == "TetherEnabled" then
         return state.kind == "Tether" and type(self.value) == "boolean"
     elseif self.command == "ClearInputs" then
@@ -83,7 +86,12 @@ function Action:complete()
     if self.command == "GroupAdd" or self.command == "GroupName" or self.command == "GroupMove"
         or self.command == "GroupDelete" or self.command == "DeviceMove" then
         state.organization = require("OMHTT/ControlGroups").propose(self)
+    elseif self.command == "Toggle" then
+        require("OMHTT/ControlPower").trigger(self.object)
+        state.latched = not state.latched
+        W.updateInput(self.object, state.latched)
     elseif self.command == "Pulse" then
+        if not require("OMHTT/ControlPower").trigger(self.object, require("OMHTT/ControlConsumption").rate("Button") / 100) then return false end
         state.pulseUntil = getTimestampMs() + 1
         for i = 1, #state.links do
             local target = W.objects[state.links[i]]
@@ -110,6 +118,9 @@ function Action:complete()
         return require("OMHTT/TurretWorld").setFacing(self.target, self.value)
     elseif self.command == "Link" then
         return W.link(self.object, self.target, self.value)
+    elseif self.command == "BeamRange" then
+        state.beamRange = self.value
+        require("OMHTT/ControlSensor").step(self.object, state)
     elseif self.command == "TetherEnabled" then
         state.enabled = self.value
     elseif self.command == "ClearInputs" then
@@ -138,7 +149,7 @@ end
 
 ---@return nil
 function Action:perform()
-    if self.command == "Pulse" and not isServer() then
+    if (self.command == "Pulse" or self.command == "Toggle") and not isServer() then
         self.object:getSquare():playSound("LightSwitch")
     end
     ISBaseTimedAction.perform(self)

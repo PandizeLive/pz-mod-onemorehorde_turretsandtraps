@@ -29,6 +29,8 @@ local function checkPackages()
     assert((OMHTT_BarbSections ~= nil) == expectedTraps, "Barb runtime isolation")
     assert((SpriteConfigManager.GetObjectInfo("OMHTTBarbs") ~= nil) == expectedTraps, "Barb recipe isolation")
     assert(counts["Base.OMHTTTrapController"] == 1 and counts["Base.OMHTTTrapPressurePlate"] == 1 and counts["Base.OMHTTTrapButton"] == 1, "Shared control items must register once")
+    assert(counts["Base.OMHTTTrapLever"] == 1 and counts["Base.OMHTTTrapLaser"] == 1, "New shared triggers must register exactly once")
+    assert(SpriteConfigManager.GetObjectInfo("OMHTTDeployLever") and SpriteConfigManager.GetObjectInfo("OMHTTDeployLaser"), "New trigger placements missing")
     assert(OMHTT_ControlWorld and OMHTTControlAction and OMHTTControlTransferAction, "Shared control authority missing")
     local plateInfo = SpriteConfigManager.GetObjectInfo("OMHTTDeployInsetPlate")
     assert(plateInfo and plateInfo:getScript(), "Independent package missing inset plate placement")
@@ -42,9 +44,9 @@ local function checkPackages()
     local platePrefix = expectedTurrets and "omhtt_turret_01_" or "omhtt_barrier_01_"
     local plateFirst = expectedTurrets and 25 or 80
     assert(plate:getSpriteName() == platePrefix .. plateFirst and not plate:isThumpable(), "Independent plate visual/passive migration failed")
-    plateState.active = true
+    plateState.pressed, plateState.active = true, false
     OMHTT_ControlWorld.plateSprite(plate, plateState, false)
-    assert(plate:getSpriteName() == platePrefix .. (plateFirst + 4), "Independent package missing pressed plate state")
+    assert(plate:getSpriteName() == platePrefix .. (plateFirst + 4), "Unpowered physical plate must still appear pressed")
     OMHTT_ControlWorld.removed(plate)
     local options, names = getSandboxOptions(), {}
     for i = 0, options:getNumOptions() - 1 do
@@ -60,6 +62,12 @@ local function checkPackages()
     assert((names["OMHTurretsTraps.PotatoTurret"] == true) == expectedTurrets, "Turret settings isolation")
     assert((names["OMHTurretsTraps.ModuleLootRate"] == true) == expectedTurrets, "Loot settings isolation")
     assert((names["OMHTurretsTraps.PackZombieChance"] == true) == expectedTurrets, "Pack settings isolation")
+    for _,kind in pairs({"Button","Plate","Lever","Laser"}) do
+        local prefix=expectedTurrets and "Trigger" or "TrapsTrigger"
+        local name="OMHTurretsTraps." .. prefix .. kind .. "Consumption"
+        assert(names[name], "Shared trigger setting missing: " .. kind)
+        assert(require("OMHTT/ControlConsumption").rate(kind)==options:getOptionByName(name):getValue(), "Wrong effective trigger setting")
+    end
     local oldServer, oldClient = isServer, isClient
     isServer = function() return false end
     isClient = function() return false end

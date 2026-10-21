@@ -162,7 +162,7 @@ function L.refresh(panel, state)
     panel.connectionY = body.y + connection
     local controlsY = connection + h * 3 + 16
     place(panel.trigger, x, controlsY, width)
-    local bottom = controlsY + (kind == "Plate" and row + 12 or 6)
+    local bottom = controlsY + (require("OMHTT/ControlDefinitions").inputs[kind] and row + 12 or 6)
     panel.accessY = body.y + bottom
     place(panel.policy, x, bottom + h + 12, assigned and half or width)
     place(panel.assign, x + half + 8, bottom + h + 12, half)
@@ -256,6 +256,7 @@ function L.drawDetails(panel, host, state)
     elseif state.kind == "Poke" then
         status = state.enabled == false and "UI_OMHTT_PokeDisabled" or "UI_OMHTT_PokeContact"
     end
+    if require("OMHTT/ControlDefinitions").inputs[state.kind] and state.powered ~= true then status = "UI_OMHTT_TriggerUnpowered" end
     body:drawText(getText(status), x, infoY + h, .85, .85, .85, 1, UIFont.Small)
     local assigned = state.controller == host.id and "UI_OMHTT_DeviceAssigned" or "UI_OMHTT_DeviceUnassigned"
     if panel.selected == panel.object then

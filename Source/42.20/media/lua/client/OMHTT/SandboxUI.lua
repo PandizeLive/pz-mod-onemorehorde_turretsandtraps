@@ -4,6 +4,20 @@ require("ISUI/AdminPanel/ISServerSandboxOptionsUI")
 require("OptionScreens/ServerSettingsScreen")
 require("ISUI/ISLabel")
 local UI = {}
+-- Filter only the duplicate *presentation*, before native controls are created.
+-- Distinct native option IDs preserve both packages' saved values independently.
+function UI.triggerSettings(page)
+    local settings = page.settings
+    if not settings then return page end
+    local primary = {}
+    for i=1,#settings do primary[settings[i].name]=true end
+    for i=#settings,1,-1 do
+        local name=settings[i].name
+        local common=name and name:gsub("^OMHTurretsTraps%.TrapsTrigger", "OMHTurretsTraps.Trigger")
+        if common~=name and primary[common] then table.remove(settings,i) end
+    end
+    return page
+end
 local groups = {
     {"Sandbox_Title_OMHTurretsTraps_Operation", {"PotatoTurret", "PotatoHealth", "IdleSweepSpeed"}},
     {"Sandbox_Title_OMHTurretsTraps_Storage", {"PotatoAmmoCapacity", "PotatoModuleCapacity", "PotatoMagazineCapacity"}},
@@ -124,14 +138,14 @@ local originalPanel = SandboxOptionsScreen.createPanel
 ---@param page table Page
 ---@return ISPanel panel
 function SandboxOptionsScreen:createPanel(page)
-    return UI.attach(originalPanel(self, page))
+    return UI.attach(originalPanel(self, UI.triggerSettings(page)))
 end
 local originalAdmin = ISServerSandboxOptionsUI.createPanel
 ---@param self ISServerSandboxOptionsUI Screen
 ---@param page table Page
 ---@return ISPanel panel
 function ISServerSandboxOptionsUI:createPanel(page)
-    return UI.attach(originalAdmin(self, page))
+    return UI.attach(originalAdmin(self, UI.triggerSettings(page)))
 end
 local originalCreate = ServerSettingsScreen.create
 ---@param self ServerSettingsScreen Screen
@@ -144,7 +158,7 @@ function ServerSettingsScreen:create()
     ---@param settings table Settings
     ---@return ISPanel panel
     self.pageEdit.createPanel = function(page, category, settings)
-        return UI.attach(original(page, category, settings))
+        return UI.attach(original(page, UI.triggerSettings(category), settings))
     end
 end
 return UI

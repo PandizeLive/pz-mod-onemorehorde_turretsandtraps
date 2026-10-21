@@ -100,7 +100,7 @@ function C.step(object, on, valid)
             end
         elseif not state.facingPending then
             local auto = require("OMHTT/TurretAutomation").entries[object]
-            if not contents.active.MotionDetection or (auto and auto.target) or cycle.rotary then
+            if not contents.active.MotionDetection or (auto and (auto.target or (cycle.rotary and auto.hasTarget))) then
                 local result = require("OMHTT/ControlWorld").fireSignal(object)
                 if result == "Fired" or result == "Misfire" then
                     C.fired(object)

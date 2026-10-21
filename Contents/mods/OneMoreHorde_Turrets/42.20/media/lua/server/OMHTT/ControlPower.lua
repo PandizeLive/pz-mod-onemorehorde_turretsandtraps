@@ -67,12 +67,12 @@ function P.flush()
     end
 end
 
-function P.idle(object, elapsed)
+function P.idle(object, elapsed, extra)
     local square = object:getSquare()
     if square:haveElectricity() or (square:hasGridPower() and square:getRoom()) then return true end
     local W = require("OMHTT/ControlWorld")
     local state = W.state(object)
-    local remaining = math.max(0, elapsed / 48) + (state.powerDebt or 0)
+    local remaining = math.max(0, elapsed / 48) + math.max(0, extra or 0) + (state.powerDebt or 0)
     for i = 1, 64 do
         local battery = P.battery(object, 0)
         if not battery then
@@ -86,6 +86,43 @@ function P.idle(object, elapsed)
     end
     state.powerDebt = remaining
     return remaining == 0 and P.battery(object, 0) ~= nil
+end
+
+-- Refresh idle exactly once for each elapsed game-hour interval, including interactions
+-- between scheduled Controller ticks. The battery ledger preserves sub-use charge.
+function P.refresh(controller, extra)
+    local W = require("OMHTT/ControlWorld")
+    local state = W.state(controller)
+    if not state or not state.placed or state.kind ~= "Controller" or controller:getHealth() <= 0
+        or controller:getObjectIndex() < 0 or getCell():getGridSquare(state.x,state.y,state.z) ~= controller:getSquare() then return false end
+    local hours = getGameTime():getWorldAgeHours()
+    local elapsed = state.checkedHours and math.max(0,hours-state.checkedHours) or 0
+    state.checkedHours = hours
+    local oldId = state.batteryId
+    local powered = P.idle(controller, elapsed, extra)
+    local battery = W.batteries[controller]
+    local charge = battery and math.floor(Battery.charge(battery)*1000)/10 or 0
+    if state.powered ~= powered or state.backup ~= charge or oldId ~= state.batteryId then
+        state.powered, state.backup = powered, charge
+        W.publish(controller)
+    end
+    return powered
+end
+
+function P.trigger(object, extra)
+    local W = require("OMHTT/ControlWorld")
+    local state = W.state(object)
+    if not state or not require("OMHTT/ControlDefinitions").inputs[state.kind] then return false end
+    local hours = getGameTime():getWorldAgeHours()
+    local elapsed = state.triggerHours and math.max(0,hours-state.triggerHours) or 0
+    state.triggerHours = hours
+    local controller = state.controller and W.objects[state.controller]
+    if not controller or not Access.range(controller, object) then return false end
+    local cost = extra or 0
+    if state.powered and (state.kind == "Laser" or state.active) then
+        cost = cost + elapsed * require("OMHTT/ControlConsumption").rate(state.kind) / 100
+    end
+    return P.refresh(controller, cost)
 end
 
 return P

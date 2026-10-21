@@ -9,7 +9,8 @@ local R = {profiles = {
     Controller = {seconds = 10, pickup = 5, material = "Base.ScrapMetal", tag = "SCREWDRIVER", tools = "UI_OMHTT_RepairScrewdriver"},
     Button = {seconds = 2, pickup = 1, tag = "SCREWDRIVER", tools = "UI_OMHTT_RepairScrewdriver"},
     Plate = {seconds = 2, pickup = 1, tag = "SCREWDRIVER", tools = "UI_OMHTT_RepairScrewdriver"},
-    Lever = {seconds = 2, pickup = 1, tag = "WRENCH", tools = "UI_OMHTT_RepairWrench"},
+    Lever = {seconds = 2, pickup = 1, tag = "SCREWDRIVER", tools = "UI_OMHTT_RepairScrewdriver"},
+    Laser = {seconds = 2, pickup = 1, tag = "SCREWDRIVER", tools = "UI_OMHTT_RepairScrewdriver"},
 }}
 
 ---@param item InventoryItem Retained tool

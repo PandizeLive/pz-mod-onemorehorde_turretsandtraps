@@ -260,3 +260,39 @@ option OMHTurretsTraps.PokeScratchChance {
     page = OMHTurretsTraps_PokePage,
     translation = OMHTurretsTraps_PokeScratchChance,
 }
+
+option OMHTurretsTraps.TrapsTriggerButtonConsumption {
+    type = double,
+    default = 0.0001,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_TriggersPage,
+    translation = OMHTurretsTraps_TriggerButtonConsumption,
+}
+
+option OMHTurretsTraps.TrapsTriggerPlateConsumption {
+    type = double,
+    default = 0.0100,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_TriggersPage,
+    translation = OMHTurretsTraps_TriggerPlateConsumption,
+}
+
+option OMHTurretsTraps.TrapsTriggerLeverConsumption {
+    type = double,
+    default = 0.0100,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_TriggersPage,
+    translation = OMHTurretsTraps_TriggerLeverConsumption,
+}
+
+option OMHTurretsTraps.TrapsTriggerLaserConsumption {
+    type = double,
+    default = 0.1000,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_TriggersPage,
+    translation = OMHTurretsTraps_TriggerLaserConsumption,
+}

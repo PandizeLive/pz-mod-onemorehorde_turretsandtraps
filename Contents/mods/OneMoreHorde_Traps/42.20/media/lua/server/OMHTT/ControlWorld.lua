@@ -211,7 +211,9 @@ function W.register(object, player, kind, previous)
     W.locations[state.location] = W.locations[state.location] or {}
     W.locations[state.location][id] = true
     state.recoverAt = getTimestampMs() + 1000
-    state.active, state.powered = false, false
+    state.active, state.powered, state.triggerHours = false, false, nil
+    if kind == "Lever" then state.latched = false end
+    if kind == "Laser" then state.beamRange, state.beamLength = state.beamRange or 10, 0 end
     state.checkedHours, state.pulseHoldUntil, state.facingPulse = nil, nil, nil
     W.records().records[id], W.objects[id], W.bindings[object] = state, object, state
     if not W.indexed[id] then
@@ -245,7 +247,8 @@ function W.bind(object)
     local other = W.objects[state.id]
     if other and other ~= object and other:getObjectIndex() >= 0 then return end
     W.objects[state.id], W.bindings[object] = object, state
-    state.active, state.recoverAt = false, getTimestampMs() + 1000
+    state.active, state.powered, state.triggerHours, state.beamLength = false, false, nil, 0
+    state.recoverAt = getTimestampMs() + 1000
     state.checkedHours, state.pulseHoldUntil, state.facingPulse = nil, nil, nil
     if not W.indexed[state.id] then
         W.order[#W.order + 1], W.indexed[state.id] = state.id, true
@@ -289,7 +292,7 @@ end
 function W.plateSprite(object, state, configure)
     local turrets = getActivatedMods():contains("OneMoreHorde_Turrets")
     local sheet, first = turrets and "omhtt_turret_01_" or "omhtt_barrier_01_", turrets and 25 or 80
-    local desired = sheet .. (first + (state.active and 4 or 0))
+    local desired = sheet .. (first + (state.pressed and 4 or 0))
     if object:getSpriteName() ~= desired then
         local old = W.locations[state.location]
         if old then
@@ -319,26 +322,35 @@ end
 ---@param object IsoObject Pressure plate
 ---@param now number Timestamp
 ---@return nil
-function W.updatePlate(object, now)
+function W.updateInput(object, desired, available)
     local state = W.state(object)
     if not state then return end
-    local active = now >= state.recoverAt and W.occupied(object)
-    if active == state.active then return end
-    state.active = active
-    W.plateSprite(object, state, false)
+    local powered = require("OMHTT/ControlPower").trigger(object) and available ~= false
+    local active = powered and desired == true and getTimestampMs() >= state.recoverAt
+    if active == state.active and powered == state.powered then return end
+    state.active, state.powered = active, powered
     W.publish(object)
     for i = 1, #state.links do
         local id = state.links[i]
-        if not W.dirtySet[id] then
-            W.dirtySet[id] = true
-            W.dirty[#W.dirty + 1] = id
-        end
+        if not W.dirtySet[id] then W.dirtySet[id] = true; W.dirty[#W.dirty+1] = id end
     end
+end
+
+function W.updatePlate(object, now)
+    local state = W.state(object)
+    if not state then return end
+    local pressed = now >= state.recoverAt and W.occupied(object)
+    if pressed ~= state.pressed then
+        state.pressed = pressed
+        W.plateSprite(object, state, false)
+    end
+    W.updateInput(object, pressed)
 end
 
 ---@param actor IsoGameCharacter Moving player or zombie
 ---@return nil
 function W.actor(actor)
+    require("OMHTT/ControlSensor").actor(actor)
     local previous = W.actorSquares[actor]
     local square = actor:getSquare()
     if actor:isDead() then
@@ -378,7 +390,9 @@ function W.assign(controller, object, player, enabled)
         end
         if count >= 32 then return false end
     end
+    if C.inputs[state.kind] then require("OMHTT/ControlPower").trigger(object) end
     state.controller = enabled and host.id or nil
+    if C.inputs[state.kind] then W.updateInput(object, state.kind == "Lever" and state.latched or false) end
     if enabled and state.kind == "Turret" then
         W.number(object, require("OMHTT/Turret").contents(object:getContainer()).head)
     end
@@ -434,6 +448,7 @@ function W.create(params)
     local state = W.register(object, player, kind, previous)
     W.records().packed[tostring(source:getID())] = false
     state.itemType = source:getFullType()
+    if kind == "Lever" or kind == "Laser" then state.facing = params.facing end
     object:setName(getText("UI_OMHTT_Control" .. kind))
     local health = kind == "Poke" and require("OMHTT/ControlPoke").option("Health", 200, 1, 10000) or 100
     state.maxHealth = health
@@ -510,7 +525,7 @@ function W.input(target, now)
             linked = true
             if source and source:getObjectIndex() >= 0 and A.range(source, target) and source:getHealth() > 0 and now >= state.recoverAt then
                 valid = true
-                on = on or state.active == true
+                on = on or (state.active == true and require("OMHTT/ControlPower").trigger(source))
             end
         end
     end
@@ -520,6 +535,7 @@ end
 ---@param object IsoObject Removed device
 ---@return nil
 function W.removed(object)
+    require("OMHTT/ControlSensor").remove(object)
     require("OMHTT/ControlPoke").entries[object] = nil
     local state = W.state(object)
     if state and state.kind == "Tether" then
@@ -540,7 +556,7 @@ function W.removed(object)
     end
     require("OMHTT/ControlCycle").cancel(object)
     require("OMHTT/ControlCycle").blocked[object] = nil
-    state.active, state.pulseUntil = false, nil
+    state.active, state.powered, state.triggerHours, state.pulseUntil = false, false, nil, nil
     W.objects[state.id], W.bindings[object] = nil, nil
     W.batteries[object], W.batteryScan[object] = nil, nil
 end
@@ -562,7 +578,9 @@ function W.retire(object)
         local target = W.objects[id]
         if target then
             local linked = W.input(target, getTimestampMs())
-            if not linked then
+            if not linked and W.state(target).kind == "Tether" then
+                W.receiver(target, getTimestampMs())
+            elseif not linked then
                 require("OMHTT/ControlCycle").cancel(target)
                 require("OMHTT/TurretWorld").applyPower(target, false)
             else
@@ -618,20 +636,17 @@ function W.tick()
         if loaded and state and object:getObjectIndex() >= 0 and (object:getHealth() > 0 or state.kind == "Poke" or state.kind == "Tether") then
             if state.kind == "Controller" and (not state.powerDue or now >= state.powerDue) then
                 state.powerDue = now + 1000
-                local elapsed = state.checkedHours and math.max(0, hours - state.checkedHours) or 0
-                state.checkedHours = hours
-                local previousBatteryId = state.batteryId
-                local powered = W.power(object, elapsed)
-                local battery = W.batteries[object]
-                local charge = battery and math.floor(Battery.charge(battery) * 1000) / 10 or 0
-                if powered ~= state.powered or charge ~= state.backup or previousBatteryId ~= state.batteryId then
-                    state.powered, state.backup = powered, charge
-                    W.publish(object)
-                end
+                require("OMHTT/ControlPower").refresh(object)
             elseif state.kind == "Poke" then
                 require("OMHTT/ControlPoke").step(object, state)
             elseif state.kind == "Plate" then
                 W.updatePlate(object, now)
+            elseif state.kind == "Lever" then
+                W.updateInput(object, state.latched, require("OMHTT/ControlMount").resolve(state.x, state.y, state.z, state.facing) ~= nil)
+            elseif state.kind == "Laser" then
+                require("OMHTT/ControlSensor").step(object, state)
+            elseif state.kind == "Button" then
+                W.updateInput(object, false)
             elseif state.kind == "Turret" or state.kind == "Tether" then
                 W.receiver(object, now)
             end
@@ -823,7 +838,7 @@ end
 function W.link(source, target, enabled)
     local from, to = W.state(source), W.state(target)
     if not from or not to or not A.range(source, target) or (to.kind ~= "Turret" and to.kind ~= "Tether")
-        or (from.kind ~= "Plate" and from.kind ~= "Button") then return false end
+        or not C.inputs[from.kind] then return false end
     local incoming, index, count = W.incoming[to.id] or {}, nil, 0
     for _ in pairs(incoming) do count = count + 1 end
     for i = 1, #from.links do

@@ -151,12 +151,16 @@ function U.world(index, context, objects, test)
                             end
                         end)
                     end
-                    if state.kind == "Button" then
-                        context:addOption(getText("UI_OMHTT_ControlPress"), object, function(device)
+                    local triggerOption
+                    if state.kind == "Button" or state.kind == "Lever" then
+                        triggerOption = context:addOption(getText(state.kind == "Lever" and "UI_OMHTT_ControlToggle" or "UI_OMHTT_ControlPress"), object, function(device)
                             if luautils.walkAdjObject(player, device, false) then
-                                U.command(player, device, "Pulse")
+                                U.command(player, device, state.kind == "Lever" and "Toggle" or "Pulse")
                             end
                         end)
+                    end
+                    if C.inputs[state.kind] then
+                        require("OMHTT/ControlTriggerUI").world(context, player, object, triggerOption)
                     end
                     if state.kind == "Tether" then
                         require("OMHTT/ControlTetherMenu").add(context, player, object)
@@ -268,11 +272,11 @@ Events.OnFillInventoryObjectContextMenu.Add(U.inventory)
 ---@return nil
 function U.clicked(object)
     local state = A.state(object)
-    if not state or state.kind ~= "Button" then return end
+    if not state or (state.kind ~= "Button" and state.kind ~= "Lever") then return end
     local player = getSpecificPlayer(0)
     if not player or player:isDead() or getCell():getDrag(0) then return end
     if luautils.walkAdjObject(player, object, false) then
-        U.command(player, object, "Pulse")
+        U.command(player, object, state.kind == "Lever" and "Toggle" or "Pulse")
     end
 end
 Events.OnObjectLeftMouseButtonDown.Add(U.clicked)

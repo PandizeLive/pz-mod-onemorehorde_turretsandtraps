@@ -56,5 +56,7 @@
     "ItemName_Base.OMHTTTrapButton": "Button",
     "ItemName_Base.OMHTTModuleSiphon": "Siphon Module",
     "ItemName_Base.OMHTTModuleGrid": "Grid Module",
-    "ItemName_Base.OMHTTTrapPokeFloor": "Poke Floor"
+    "ItemName_Base.OMHTTTrapPokeFloor": "Poke Floor",
+    "ItemName_Base.OMHTTTrapLever": "Lever",
+    "ItemName_Base.OMHTTTrapLaser": "Laser Sensor"
 }

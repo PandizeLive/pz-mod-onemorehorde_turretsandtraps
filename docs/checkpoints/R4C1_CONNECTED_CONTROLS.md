@@ -595,3 +595,8 @@ Owner selects Controller supply for the laser and suggests reviewing that requir
 ## C379 - All triggers require Controller supply (2026-10-21)
 
 Owner selects C378 1A and requires very low active consumption for mechanical triggers. Buttons, Plates and Lever therefore now join laser sensors in requiring powered assigned Controllers; inactive mechanical inputs add no draw beyond Controller idle. This supersedes prior independent input operation, not the signal/Firing/Detection/OR model. [Proposed numerical rates and remaining sensor package](R4C3_BEAM_SENSOR.md#c379--shared-power-and-obstruction-selected-2026-10-21). Poke Floor/passive hazards remain independent. Preserve links and stored Lever position through power loss, extinguish powered indicators, reconcile held state on restoration and never replay Button presses. Exact rates/new sensor recipe are unselected; no gameplay patch is claimed.
+
+
+## C381 -- 0.2.60 implementation (2026-10-21)
+
+Settled C375-C380 behavior is implemented in the combined build. See [patch](../PATCH_v0.2.60.md) and [verification](../TEST_v0.2.60.md) for exact behavior, native evidence and remaining rendered/connected-player acceptance. The approved indicator is a faint local green glow; Laser retains the white functional development panel. Native headless construction and persistence are verified, not rendered acceptance. Publication remains separate.

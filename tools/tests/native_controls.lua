@@ -5,6 +5,11 @@ local Transfer = require("OMHTT/ControlTransferAction")
 local T = require("OMHTT/Turret")
 
 return function(player)
+    require("OMHTT/NativeTriggers")(player)
+    -- Legacy ownership/receiver fixture uses synthetic, non-loaded squares. Shared
+    -- supply is exercised with actual batteries and native objects in NativeTriggers.
+    local triggerPower = require("OMHTT/ControlPower").trigger
+    require("OMHTT/ControlPower").trigger = function() return true end
     assert(isServer() and not isClient(), "Controls probe requires actual server mode")
     if EXPECT_READ then
         local pokeFixture = ModData.getOrCreate("OMHTTNativePoke")
@@ -39,6 +44,8 @@ return function(player)
         {"Controller", {SmallSheetMetal = 2, ElectronicsScrap = 4, ElectricWire = 2, Screws = 4}},
         {"Plate", {Plank = 1, ElectronicsScrap = 2, ElectricWire = 1, Nails = 4}},
         {"Button", {ElectronicsScrap = 1, ElectricWire = 1, Screws = 2}},
+        {"Lever", {ElectronicsScrap = 1, ElectricWire = 1, Screws = 2}},
+        {"Laser", {ElectronicsScrap = 2, ElectricWire = 1, SmallSheetMetal = 1, Screws = 2}},
         {"Poke", {TirePump = 1, MetalBar = 4, SmallSheetMetal = 2, ElectronicsScrap = 4, ElectricWire = 2, Screws = 8}},
         {"Poke", {MetalPipe = 2, MetalBar = 4, SmallSheetMetal = 2, ElectronicsScrap = 4, ElectricWire = 2, Screws = 8}, "PokeImprovised"},
     }
@@ -74,7 +81,8 @@ return function(player)
         assert(data:consumeInputs(resources) and data:createOutputs(resources, player), "Control craft transaction failed")
         data:processDestroyAndUsedItems(player)
         assert(data:getFirstCreatedItem():getFullType() == require("OMHTT/ControlDefinitions").types[case[1]], "Control craft output mismatch")
-        for i = 1, #kept do assert(player:getInventory():contains(kept[i]), "Control craft consumed tool") end
+        for i = 1, #kept do assert(player:getInventory():contains(kept[i]), "Control craft consumed tool"); player:getInventory():Remove(kept[i]) end
+        player:getInventory():Remove(data:getFirstCreatedItem())
     end
     local square = IsoGridSquare.new(getCell(), nil, 28, 28, 0)
     player:setCurrent(square)
@@ -556,4 +564,5 @@ return function(player)
     fixture.retired = C.records().records[button:getModData().OMHTTControl.id].id
     C.records().records[fixture.retired].links = {output.id}
     print("[OMHTT-Controls] native devices=3 ownership=private read=public replay=blocked remote=power-scoped plate=recovery-safe backup=48h heavy=exact capacities=30")
+    require("OMHTT/ControlPower").trigger = triggerPower
 end

@@ -33,6 +33,7 @@ def main():
     turret_probe.write_text((ROOT / "tools/tests/native_turret_smoke.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativeHeads.lua").write_text((ROOT / "tools/tests/native_heads.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativeContentC247.lua").write_text((ROOT / "tools/tests/native_content_c247.lua").read_text(encoding="utf-8"), encoding="utf-8")
+    (turret_probe.parent / "OMHTT/NativeTriggers.lua").write_text((ROOT / "tools/tests/native_triggers.lua").read_text(encoding="utf-8").replace("EXPECT_READ", "true" if os.environ.get("OMHTT_PROBE_MODE") == "read" else "false"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativeControls.lua").write_text((ROOT / "tools/tests/native_controls.lua").read_text(encoding="utf-8").replace("EXPECT_READ", "true" if os.environ.get("OMHTT_PROBE_MODE") == "read" else "false"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativeTether.lua").write_text((ROOT / "tools/tests/tether_trap.lua").read_text(encoding="utf-8").replace("Events.OnServerStarted.Add(run)", "return run"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativeTetherService.lua").write_text((ROOT / "tools/tests/native_tether_service.lua").read_text(encoding="utf-8"), encoding="utf-8")
@@ -95,7 +96,7 @@ def main():
             barb_probe.unlink(missing_ok=True)
             turret_probe.unlink(missing_ok=True)
     text = transcript.read_text(encoding="utf-8", errors="replace")
-    assert "[OMHTT-C373] native-placement-complete cases=84" in text, "Full native placement matrix missing"
+    assert "[OMHTT-C373] native-placement-complete cases=148" in text, "Full native placement matrix missing"
     assert "[OMHTT-C373] native-performance-icons=11 category=Performance" in text, "Native module icon/category proof missing"
     mod_errors = [line for line in text.splitlines() if "MOD:OMH:" in line and "Exception thrown" in line]
     assert not mod_errors, f"Native mod callbacks threw despite completion markers: {mod_errors}"
@@ -121,7 +122,7 @@ def main():
     assert "Saving GlobalModData" in text, "No native global state save"
     assert "Invalid SpriteConfig object! scripted object = OMHTT" not in text, "Invalid native barrier identity"
     assert "[OMHTT-Smoke] native-sandbox damage=10 maxHealth=100 tooltip=formatted" in text, "Native Sandbox options/tooltip invalid"
-    assert "[OMHTT-Smoke] native-texturepacks traps=94 turrets=30 pages=43 png=valid" in text, "Native texture packs invalid"
+    assert "[OMHTT-Smoke] native-texturepacks traps=102 turrets=38 pages=59 png=valid" in text, "Native texture packs invalid"
     assert "[OMHTT-Beds] PASS" in text, "Native bed content invalid"
     assert "[OMHTT-HybridBuild] native-original-recipe=true" in text, "Native hybrid crafting/building proof missing"
     assert "[OMHTT-Beds] controlled-native-recovery forwardLanding=true getUpTransition=passed getUpExit=cleared" in text, "Native forward trip recovery failed"

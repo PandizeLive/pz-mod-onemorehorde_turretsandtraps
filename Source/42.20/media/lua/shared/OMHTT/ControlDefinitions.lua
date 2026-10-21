@@ -1,9 +1,12 @@
 local C = {}
-C.passiveKinds = {Plate = true, Poke = true}
+C.passiveKinds = {Plate = true, Poke = true, Button = true, Lever = true, Laser = true}
+C.inputs = {Button = true, Plate = true, Lever = true, Laser = true}
 C.types = {
     Controller = "Base.OMHTTTrapController",
     Plate = "Base.OMHTTTrapPressurePlate",
     Button = "Base.OMHTTTrapButton",
+    Lever = "Base.OMHTTTrapLever",
+    Laser = "Base.OMHTTTrapLaser",
     Poke = "Base.OMHTTTrapPokeFloor",
 }
 
@@ -87,6 +90,7 @@ function OMHTTPokeReject(container, item)
     return false
 end
 
+C.mount = require("OMHTT/ControlMount").valid
 OMHTTControlAccept = C.accept
 OMHTT_Controls = C
 return C

@@ -540,5 +540,20 @@
     "UI_OMHTT_HeadBatteryMinimal": "Minimal",
     "UI_OMHTT_HeadBatteryVeryLow": "Very Low",
     "UI_OMHTT_HeadBatteryVeryHigh": "Very High",
-    "UI_OMHTT_HeadBatteryExtreme": "Extreme"
+    "UI_OMHTT_HeadBatteryExtreme": "Extreme",
+    "UI_OMHTT_ControlLever": "Lever",
+    "UI_OMHTT_ControlLaser": "Laser Sensor",
+    "UI_OMHTT_ControlToggle": "Toggle Lever",
+    "UI_OMHTT_LeverOff": "Switch Lever OFF",
+    "UI_OMHTT_LeverOn": "Switch Lever ON",
+    "UI_OMHTT_BeamRange": "Beam Range: %1 tiles",
+    "UI_OMHTT_TriggerMode": "Trigger: %1",
+    "UI_OMHTT_TriggerInfo": "Trigger Power",
+    "UI_OMHTT_TriggerUnpowered": "Needs a powered assigned Controller",
+    "UI_OMHTT_TriggerSupply": "Power source: Assigned Controller",
+    "UI_OMHTT_TriggerOverhead": "Additional draw; excludes Controller idle and defense operation.",
+    "UI_OMHTT_TriggerCostButton": "%1%% per accepted press (per-use rating).",
+    "UI_OMHTT_TriggerCostPlate": "%1%% per game hour while occupied.",
+    "UI_OMHTT_TriggerCostLever": "%1%% per game hour while ON and powered.",
+    "UI_OMHTT_TriggerCostLaser": "%1%% per game hour while scanning, even when clear."
 }

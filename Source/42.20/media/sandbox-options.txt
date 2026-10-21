@@ -1509,3 +1509,39 @@ option OMHTurretsTraps.LobberBatteryMultiplier {
     page = OMHTurretsTraps_PotatoPage,
     translation = OMHTurretsTraps_LobberBatteryMultiplier,
 }
+
+option OMHTurretsTraps.TriggerButtonConsumption {
+    type = double,
+    default = 0.0001,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_TriggersPage,
+    translation = OMHTurretsTraps_TriggerButtonConsumption,
+}
+
+option OMHTurretsTraps.TriggerPlateConsumption {
+    type = double,
+    default = 0.0100,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_TriggersPage,
+    translation = OMHTurretsTraps_TriggerPlateConsumption,
+}
+
+option OMHTurretsTraps.TriggerLeverConsumption {
+    type = double,
+    default = 0.0100,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_TriggersPage,
+    translation = OMHTurretsTraps_TriggerLeverConsumption,
+}
+
+option OMHTurretsTraps.TriggerLaserConsumption {
+    type = double,
+    default = 0.1000,
+    min = 0,
+    max = 100,
+    page = OMHTurretsTraps_TriggersPage,
+    translation = OMHTurretsTraps_TriggerLaserConsumption,
+}

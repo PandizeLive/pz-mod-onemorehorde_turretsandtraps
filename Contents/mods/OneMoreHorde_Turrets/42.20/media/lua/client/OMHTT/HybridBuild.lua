@@ -16,6 +16,8 @@ H.definitions = {
     {item = "Base.OMHTTTurretBase", craft = "OMHTTCraftTurretBase", deploy = "OMHTTDeployTurret", turret = true},
     {item = "Base.OMHTTTrapController", craft = "OMHTTCraftController", deploy = "OMHTTDeployController", control = true},
     {item = "Base.OMHTTTrapPressurePlate", craft = "OMHTTCraftPlate", deploy = "OMHTTDeployInsetPlate", control = true},
+    {item = "Base.OMHTTTrapLever", craft = "OMHTTCraftLever", deploy = "OMHTTDeployLever", control = true},
+    {item = "Base.OMHTTTrapLaser", craft = "OMHTTCraftLaser", deploy = "OMHTTDeployLaser", control = true},
     {item = "Base.OMHTTTrapButton", craft = "OMHTTCraftButton", deploy = "OMHTTDeploySwitchButton", control = true},
 }
 local byRecipe = {}

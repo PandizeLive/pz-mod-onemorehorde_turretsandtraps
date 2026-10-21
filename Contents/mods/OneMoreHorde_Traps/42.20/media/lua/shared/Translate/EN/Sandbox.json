@@ -383,5 +383,14 @@
     "Sandbox_OMHTurretsTraps_RotaryBladesBatteryMultiplier": "Rotary Blades Battery Multiplier",
     "Sandbox_OMHTurretsTraps_RotaryBladesBatteryMultiplier_tooltip": "Multiplies Rotary Blades consumption. Does not affect Rotary Bat. Default: 2. Zero disables its battery drain.",
     "Sandbox_OMHTurretsTraps_LobberBatteryMultiplier": "Grenade Lobber Battery Multiplier",
-    "Sandbox_OMHTurretsTraps_LobberBatteryMultiplier_tooltip": "Multiplies battery consumption for all Lobber payloads. Default: 1.5. Zero disables its battery drain."
+    "Sandbox_OMHTurretsTraps_LobberBatteryMultiplier_tooltip": "Multiplies battery consumption for all Lobber payloads. Default: 1.5. Zero disables its battery drain.",
+    "Sandbox_OMHTurretsTraps_TriggersPage": "OMH: T&T - Triggers",
+    "Sandbox_OMHTurretsTraps_TriggerButtonConsumption": "Button Battery Consumption",
+    "Sandbox_OMHTurretsTraps_TriggerButtonConsumption_tooltip": "Percentage of one full Controller car battery per accepted press. Additional to Controller idle. Zero disables this extra draw; Controller power is still required.",
+    "Sandbox_OMHTurretsTraps_TriggerPlateConsumption": "Plate Battery Consumption",
+    "Sandbox_OMHTurretsTraps_TriggerPlateConsumption_tooltip": "Percentage of one full Controller car battery per game hour while active. Additional to Controller idle. Zero disables this extra draw; Controller power is still required.",
+    "Sandbox_OMHTurretsTraps_TriggerLeverConsumption": "Lever Battery Consumption",
+    "Sandbox_OMHTurretsTraps_TriggerLeverConsumption_tooltip": "Percentage of one full Controller car battery per game hour while active. Additional to Controller idle. Zero disables this extra draw; Controller power is still required.",
+    "Sandbox_OMHTurretsTraps_TriggerLaserConsumption": "Laser Battery Consumption",
+    "Sandbox_OMHTurretsTraps_TriggerLaserConsumption_tooltip": "Percentage of one full Controller car battery per game hour while scanning. Additional to Controller idle. Zero disables this extra draw; Controller power is still required."
 }
