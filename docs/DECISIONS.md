@@ -1871,3 +1871,7 @@ C370 delivery: 0.2.59 is implemented and installed from immutable test/v0.2.59 /
 ## C371 — Owner test failure and consumption spectrum proposed (2026-10-20)
 
 Owner reports failed Tether placement/non-flush preview and requests the full OMH consumption spectrum. Read-only native inspection confirms missing local player binding in shared PlacementAction. [Diagnosis, verification gap and actual choices](TETHER_PLACEMENT_C371.md): 1A fixes plus seven fixed bands recommended; 1B placement/alignment first. Labels/cutoffs remain proposed. Test Complete does not approve the next patch; no gameplay/install changes.
+
+## C372 — Room for targeted battery increases (2026-10-20)
+
+Owner asks whether higher consumption is justified for any heads. [Source-based comparison and concrete choices](BATTERY_BALANCE_C349.md#c372--targeted-head-increases-discussed-2026-10-20) recommends 1A Blades/Lobber x1.5; 1B Blades x2 and Lobber x1.5 is the stronger alternative. Other heads, surcharges and saved tuning remain unchanged. Neither selected; C371 scope remains pending. Planning only.

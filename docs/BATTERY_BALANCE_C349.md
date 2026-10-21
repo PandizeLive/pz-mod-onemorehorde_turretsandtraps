@@ -148,3 +148,19 @@ No proc-per-kill tuning can guarantee a single module never sustains across ever
 ## C371 — Full consumption spectrum requested (2026-10-20)
 
 Owner requests the complete OMH palette, with higher bands allowed to remain unused until Sandbox changes. [Seven-band fixed-threshold proposal](TETHER_PLACEMENT_C371.md#battery-spectrum-proposal) preserves the module-free head estimate and existing 5/15 percentage-points-per-real-hour boundaries. Current code already reads loaded Sandbox settings. No consumption, rarity, loot weight or surcharge changes are proposed. New labels/cutoffs await selection and patch approval.
+
+## C372 — Targeted head increases discussed (2026-10-20)
+
+Owner asks whether any heads have room for increased drain to use the proposed spectrum. This is discussion, not selection or gameplay approval. Reviewed current TurretHeads, TurretStats, TurretAmmo and TurretHeadDescription. Local arithmetic reproduces baseline rating formulas; no game/session endurance test was run.
+
+At default settings without modules, continuous consumption is Potato 0.81, Scrapshot 4.286, Ballista 15, standard Makeshift Lobber 13.091, and both rotary heads 16.667 percentage points per real unpaused hour. These are module-free comparison values, not the owner's upgraded turret or remaining battery estimates. Runtime excludes idle time and assumes unlimited ammunition/targets and functioning equipment. Bare-head firing is a comparison baseline; practical automatic setups require their modules and therefore draw more.
+
+Best candidates: Rotary Blades currently shares Bat consumption despite 40 versus 20 hit damage; Bat retains stronger shove (40 versus 10), so damage alone does not prove twice the overall value. Lobber provides area damage and can justify a modest additional energy tradeoff, but already spends crafted/explosive ammunition. Preserve cheap Potato/pistol roles. Leave Scrapshot, Ballista and firearms unchanged after the recent C354 increases; reference upgraded M4/Ballista endurance is already approximately 31/23 real minutes without Siphon/Regulator.
+
+**1A (recommended):** Rotary Blades consumption x1.5 and Lobber consumption x1.5; every other head and module surcharge unchanged. Blades becomes 25%/hour (four continuous real hours instead of six), still High under proposed C371 bands. Makeshift Lobber becomes 19.636%/hour (about 5.09 hours instead of 7.64), moving Medium to High. Use separate configurable head factors; changing RotaryBatteryHours alone would also penalize the Bat and is not this proposal. Preserve saved Sandbox values and apply the factors consistently to payment and head-rating calculations.
+
+**1B:** Rotary Blades x2, Lobber x1.5. Blades becomes 33.333%/hour (three hours), reaching Very High; the larger increase needs stronger justification/testing than color coverage alone. Other heads unchanged. Neither option selected. Leaving consumption unchanged is also viable; the spectrum does not need every band populated at defaults.
+
+Lobber payload-specific costs are .02/.03/.04 for Makeshift/Aerosol/Pipe Bomb. At x1.5, actual module-free payload draw would be 19.636/29.455/39.273% per hour, respectively. The inventory head rating deliberately uses the Makeshift baseline, so a loaded Pipe Bomb does not turn that head tooltip into Very High. Do not silently change the head label to installed/payload-specific consumption. No automatic increase to all firearm costs, module tiers, loot weights, damage, cadence or Siphon rules. Raising shot cost also raises absolute eligible Siphon refund; it does not change the expected refund fraction.
+
+C371 placement correction and seven-band proposal remain unapproved, and its numerical thresholds remain proposed. This does not accept or alter installed 0.2.59. Planning only, mirrored under C108/C119. Decision needed.
