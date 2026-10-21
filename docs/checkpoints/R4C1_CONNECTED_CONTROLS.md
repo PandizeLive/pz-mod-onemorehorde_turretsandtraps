@@ -572,3 +572,16 @@ Settled behavior stays C350: latched input, Detection-equipped turrets wait for 
 Proposed integration reuses automatic Controller assignment, explicit receiver links, access rules, Stockpile admission, unique Lever numbering, switch audio and ON/OFF feedback. Server-authoritative toggles and bounded change-driven propagation remain required. Current ControlCycle.step still contains the rotary bypass at line 103; implementing the Lever requires verifying/correcting Detection gating for rotary heads as well as projectile heads. No gameplay edit or new live test is claimed this turn.
 
 Reviewed current status/roadmap/C350 and native item scripts. Fetched origin: dev remains 5fc6446; the unmerged planning/lobber-ammunition branch ends at historical C221 (2026-10-13), older than the local reconciled C222+ contracts. No planning branch was merged. C373 build remains installed. Recommend medium reasoning for the eventual Lever patch; current work is documentation only. Decisions 1/2/3 remain unselected.
+
+
+## C375 — Lever selections and ON light (2026-10-21)
+
+Owner selects 1A / 2A / 3A and adds: "We'll give it a faint green light when on. No light when it's off."
+
+Selected: wall-only; one Electronics Scrap, one Electric Wire and two Screws; retained Screwdriver/Pliers; Electricity 1, five Electricity XP and Button-equivalent crafting time/0.2 weight/100 condition. Crafted-only. Trigger placement/pickup remains 1s and repair 2s with retained Screwdriver, no consumed repair material. Condition survives moving. Newly crafted and redeployed Levers start OFF; placed latch state survives save/load; pickup clears links and resets OFF.
+
+The ON state has a faint green light at the Lever; OFF has no light, not a red replacement. Treat this as local switch-state feedback, not room illumination or an added power system. No final asset is generated. During implementation, verify suitable current native light/presentation APIs, authoritative state replication, late join/reload behavior, and cleanup on OFF, pickup, destruction and unload. Prefer updating presentation on state changes rather than allocating lights every frame. Do not claim rendered feasibility/appearance or a live test before evidence.
+
+Preserve C350 receiver semantics: Detection-equipped turrets wait for eligible targets; Firing-only turrets use ordinary straight-ahead cycles, with real ammo/power and cooldowns. OFF withdraws only this input, permits the admitted action to finish and does not defeat another active OR-linked input. Tether's linked-input mode and Poke's contact-only activation remain distinct. The rotary Detection exception remains part of the implementation audit/correction. Reuse Controller assignment, explicit links, permissions, Stockpile handling, unique names and native switch audio.
+
+Design selections are settled. This records choices for the next patch, not a claim that a Lever has been installed or a new implementation approval. Installed 0.2.59.1 and deferred owner testing remain unchanged. No merge or Workshop publication. Medium reasoning is recommended for implementation.
