@@ -33,4 +33,4 @@ Module Pack remains a reward container. Other category icons retain existing art
 
 ## Verification boundary
 
-See TEST_v0.2.59.1.md. Headless construction fixtures cover SP/server Lua branches using real game objects and inventory with synthetic square lookup. This is not a launched SP client or connected multiplayer test. Final installation/mirror evidence follows verification.
+See TEST_v0.2.59.1.md. Headless construction fixtures cover SP/server Lua branches using real game objects and inventory with synthetic square lookup. This is not a launched SP client or connected multiplayer test. Installed from immutable test/v0.2.59.1; 322 source and 422 packaged/install/archive files match, with both 0.2.59 backups verified. C108 mirror carries this build and its evidence through the existing draft PR.
