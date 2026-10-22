@@ -2031,3 +2031,8 @@ Owner challenges prior Wait for a patch message. No Arc patch is underway; remai
 ## C413 - Compare Arc cost before selection (2026-10-22)
 
 Owner requests current most-expensive comparison. [Stock-head calculations](TURRET_HEAD_PROPOSALS.md#c413---existing-high-cost-heads-versus-proposed-arc-power-2026-10-22) identify Pipe Bomb Lobber at .06% per shot and distinguish per-shot from cooldown-only per-minute drain. Revise recommendation to existing 1B .05%; no owner selection inferred. Saved overrides/modded-firearm extrema and actual endurance are not claimed verified.
+
+
+## C414 - Attack-speed rating concern audited (2026-10-22)
+
+Owner raises misleading per-shot versus sustained consumption labels. [Read-only findings](TURRET_HEAD_PROPOSALS.md#c414---consumption-rating-already-includes-speed-consistency-audit-proposed-2026-10-22) establish existing speed/reload-aware ratings, Extreme projection for proposed Arc and baseline/effective/formula consistency gaps. Recommend rating audit/numeric display without silently changing energy balance; no implementation authorization inferred.
