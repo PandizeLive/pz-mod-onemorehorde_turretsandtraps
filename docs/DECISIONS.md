@@ -2011,3 +2011,8 @@ Owner asks for damage that retains strong but risky Siphon. [Comparison](TURRET_
 ## C409 - Six-chain at 20 damage evaluated (2026-10-22)
 
 Owner asks about six chain at 20 damage. [Comparison](TURRET_HEAD_PROPOSALS.md#c409---six-target-20-damage-comparison-2026-10-22) distinguishes six total targets from six additional jumps: 108% versus 126% expected firing-cost recovery in the existing illustrative baseline. Recommend six total as a slight-sustain compromise, five total if baseline net drain is desired. Count clarification pending; no patch approval inferred.
+
+
+## C410 - Six total targets at 20 damage selected (2026-10-22)
+
+Owner selects C409 1A, citing incomplete crowds, and asks for remaining discussion. Confirm initial plus five jumps at 20 base damage. [Remaining choices](TURRET_HEAD_PROPOSALS.md#c410---six-targets-at-20-confirmed-remaining-arc-decisions-2026-10-22) separate recommendations from settled Siphon/Splitter rules and remaining recipe/module/power/audio work. No gameplay patch approval or numerical defaults inferred beyond the selected damage/target count.
