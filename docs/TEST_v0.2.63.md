@@ -1,6 +1,6 @@
 # 0.2.63 - C397 verification
 
-Status: automated verification passed; tagged installation pending. Owner/rendered and connected multiplayer acceptance pending.
+Status: 0.2.63 installed and verified, 2026-10-22. Owner/rendered and connected multiplayer acceptance pending.
 
 ## Owner checklist
 
@@ -34,3 +34,7 @@ Lever/Laser marker projection and mount positions use a .015-tile face inset, re
 Native fade inspection identifies container occlusion as a plausible cause of transparent bases. No explicit turret alpha mutation was found. Rendered reproduction and acceptance remain pending; no global fade override was added.
 
 All server probes use isolated caches and zero connected players. They establish native loading, action and persistence behavior, not live multiplayer acceptance. No player saves are modified.
+
+## Installation evidence
+
+Immutable `test/v0.2.63` points to `0865b40e62c4bf5134ce6d62a7ff9c14178cbd4e`. All 378 source and 525 package/tag/install/archive files match. Both previous 0.2.62 managed-package backups verify. Local record: `diagnostics/v0.2.63/local-release.json`. Archive SHA-256: `b8b9dd6eb55c0ba0dce659754550f8f0a2cee235dd0081bb4a5b275d540c6aa9`. Installed files do not prove that an already-running client has reloaded them. Restart before testing.

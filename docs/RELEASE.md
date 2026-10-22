@@ -582,3 +582,8 @@ Immutable `test/v0.2.41` / `9ccc8bce4fc96456da0241f01fb99c40b87d8cce` installed 
 ### 0.2.41 owner round completed - C138 / 2026-10-11
 
 Owner: "Test Complete," no new issue. Console confirms live 0.2.41 and no OMHTT exception; [findings](TEST_v0.2.41.md#c138---owner-test-complete-and-console-review-2026-10-11) and [capture summary](../diagnostics/v0.2.41/owner-test-20261011.json) retain evidence limits and an unattributed 331-ms update gap. No repeat requested. Initial install/native evidence unchanged; no package/version/tag/Workshop changes. R3C6 discussion is next, without patch authorization.
+
+
+## C397 / 0.2.63 local delivery (2026-10-22)
+
+**0.2.63 / C397 installed (2026-10-22).** Approved Controller expansion and corrective scope are installed. **26,794 assertions**, native write/restart and all three independent-package startup checks pass. Immutable `test/v0.2.63` / `0865b40e62c4bf5134ce6d62a7ff9c14178cbd4e`; all **378 source and 525 tagged/package/install/archive files** match, with both 0.2.62 backups verified. [Patch](PATCH_v0.2.63.md) / [short owner checklist](TEST_v0.2.63.md). Wall alignment, tether depth, standby appearance and connected-player acceptance remain pending. Base fading is consistent with native container occlusion, not a confirmed rendered diagnosis. No Workshop upload, merge or hosted LootLab deployment. C108 development mirror follows. **Test now** after restart.

@@ -1947,3 +1947,8 @@ Owner supplies new Performance/Expansion rarity art and requests automatic consi
 ## C397 - Corrective build verification (2026-10-22)
 
 **C397 / 0.2.63 verified, installation pending (2026-10-22).** Approved corrective scope is implemented. [Patch](PATCH_v0.2.63.md) / [test record](TEST_v0.2.63.md): 26,794 assertions, native write/fresh-process read and all three package combinations passed. Existing-kit Controller expansion, progressive discovery, 45-degree standby pitch/post-alert delay, local options and tooltip/Sandbox cleanup are ready for tagged installation. Native container limits use the existing Controller-specific allowance; no global override. Wall/tether/rendered acceptance and connected MP remain pending; base fading matches a native occlusion path but is not visually reproduced. Installed 0.2.62 stays current until installation succeeds. **Wait for a patch.**
+
+
+## C397 / 0.2.63 local delivery (2026-10-22)
+
+**0.2.63 / C397 installed (2026-10-22).** Approved Controller expansion and corrective scope are installed. **26,794 assertions**, native write/restart and all three independent-package startup checks pass. Immutable `test/v0.2.63` / `0865b40e62c4bf5134ce6d62a7ff9c14178cbd4e`; all **378 source and 525 tagged/package/install/archive files** match, with both 0.2.62 backups verified. [Patch](PATCH_v0.2.63.md) / [short owner checklist](TEST_v0.2.63.md). Wall alignment, tether depth, standby appearance and connected-player acceptance remain pending. Base fading is consistent with native container occlusion, not a confirmed rendered diagnosis. No Workshop upload, merge or hosted LootLab deployment. C108 development mirror follows. **Test now** after restart.
