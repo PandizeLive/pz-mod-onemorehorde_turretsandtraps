@@ -2056,3 +2056,8 @@ Owner agrees to .02 following C416. [Contract](TURRET_HEAD_PROPOSALS.md#c417---a
 ## C418 - Craftable Arc acquisition approved (2026-10-22)
 
 Owner selects C417 1A. Record craftable acquisition without loot addition. [Recipe proposal](TURRET_HEAD_PROPOSALS.md#c418---craftable-acquisition-selected-recipe-proposal-2026-10-22) remains unapproved; ingredients/tools/skills/time/XP are proposed explicitly. No implementation or patch approval inferred.
+
+
+## C419 - Recipe approved; consolidated remaining decisions requested (2026-10-22)
+
+Owner selects C418 1A and asks for remaining decisions. Record recipe/skills selected. [Consolidated review](TURRET_HEAD_PROPOSALS.md#c419---recipe-selected-and-consolidated-remaining-review-2026-10-22) presents six remaining groups with recommendations and separates subsequent native audio selection/final patch approval from engineering work. No new choices silently approved.
