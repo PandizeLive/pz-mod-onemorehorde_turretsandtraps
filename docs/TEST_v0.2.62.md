@@ -1,6 +1,6 @@
 # 0.2.62 owner test and evidence
 
-Status: automated/native validation passed; tagged installation pending. Owner rendered/live multiplayer acceptance is pending.
+Status: **installed and byte-verified** from immutable `test/v0.2.62` / `01fa9fb4648f8bb528ec296284267c26d3cd4f86`. Owner rendered/live multiplayer acceptance is pending. **Test now** after restart.
 
 1. Restart and confirm **0.2.62** in the developer menu. Check Sandbox: Controller range 40, laser range 10, standby 7/1 seconds, separate friendly/hostile multipliers, and head/trap headings. Existing saved values remain authoritative.
 2. Open Controller, resize and scroll Connections, collapse a linked group, drag/reassign devices and use right-click **Assign to Group**. Check fixed Add Group, hidden collapsed cables, clipped labels, and **Controller Settings** after selecting a device.
@@ -33,3 +33,7 @@ Owner explicitly requests balanced audio before installation. Production playbac
 Balanced audition integrity check: twelve embedded PCM clips decode correctly and expose manual controls without autoplay. Browser rendering/playback was not verified because browser tooling blocks file URLs; no alternate browser route was attempted.
 
 Installed 42.21 bytecode confirms `FMODSoundEmitter.Sound.getVolume()` multiplies emitter gain by the clip effective volume; the custom mix is applied once and still respects game/user volume. Native package probes additionally verify all five custom clip gains and reel-only looping. Final package probes run after the gain changes; prior write/read gameplay persistence remains unchanged.
+
+## Installation evidence
+
+Both independent entries installed through OMH.cmd with full managed backups. All 367 source and 496 tag/package/install/archive files match SHA-256; both previous 0.2.61 backups verify. [Machine-readable release record](../diagnostics/v0.2.62/local-release.json). The first sandboxed install attempt was denied filesystem access; the authorized elevated installer completed and hashes verified. No player save, enabled-mod selection, Workshop content or LootLab deployment was changed.
