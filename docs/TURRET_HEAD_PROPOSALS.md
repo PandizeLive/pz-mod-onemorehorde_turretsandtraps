@@ -1,5 +1,11 @@
 # Unique turret head candidates
 
+## C415 - Label-only consumption retained; spectrum confirmed (2026-10-22)
+
+Owner explicitly rejects adding extra consumption numbers and asks the current spectrum and whether Extreme is highest. Retain colored qualitative consumption labels; withdraw C414 proposed numeric drain addition. Do not remove unrelated existing numerical stats or interpret this as selecting an audit/rebalance option or Arc cost.
+
+Verified ControlConsumption names and English translations: None for zero, then Minimal, Very Low, Low, Medium, High, Very High, Extreme. Extreme is the highest with no extra tier above it. Shared band thresholds in percentage points per real unpaused hour: Minimal >0 and <1; Very Low >=1 and <2.5; Low >=2.5 and <5; Medium >=5 and <15; High >=15 and <30; Very High >=30 and <60; Extreme >=60. Palette is blue, light blue, green, yellow, orange, red and purple, softened by the existing rendering formula; None gray. These are developer evidence, not a new numerical tooltip proposal. Head ratings already account for attack cadence/reload; all three proposed Arc costs project Extreme at one-second cadence. No threshold/color/gameplay edits. Arc battery cost and remaining pre-patch scope stay open; installed 0.2.63.2/testing unchanged.
+
 ## C414 - Consumption rating already includes speed; consistency audit proposed (2026-10-22)
 
 Owner asks whether to audit heads and account for attack speed so Arc's low per-shot number does not understate its consumption rating. Read-only audit confirms this is already the intended implementation: shared TurretHeadDescription.rating resolves module-free stats and estimates percentage points per real unpaused hour using magazine, cooldown and reload (plus firearm rack/per-round reload). Rotary uses continuous motorPower. ControlConsumption.band uses boundaries 1, 2.5, 5, 15, 30, 60, producing Minimal through Extreme; >=60%/hour is Extreme. At proposed .05% per shot and one-second cadence with no artificial reload, Arc would rate 180%/hour = Extreme; .10/.20 would be 360/720 and also Extreme. Arc is unimplemented, so these are calculated expected ratings, not observed UI.

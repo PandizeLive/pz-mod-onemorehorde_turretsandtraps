@@ -2036,3 +2036,8 @@ Owner requests current most-expensive comparison. [Stock-head calculations](TURR
 ## C414 - Attack-speed rating concern audited (2026-10-22)
 
 Owner raises misleading per-shot versus sustained consumption labels. [Read-only findings](TURRET_HEAD_PROPOSALS.md#c414---consumption-rating-already-includes-speed-consistency-audit-proposed-2026-10-22) establish existing speed/reload-aware ratings, Extreme projection for proposed Arc and baseline/effective/formula consistency gaps. Recommend rating audit/numeric display without silently changing energy balance; no implementation authorization inferred.
+
+
+## C415 - Reject added consumption numbers (2026-10-22)
+
+Owner says not to add extra numbers. Retain colored labels, superseding C414 proposed numerical drain line. [Current spectrum verified](TURRET_HEAD_PROPOSALS.md#c415---label-only-consumption-retained-spectrum-confirmed-2026-10-22): Extreme is highest; None separately indicates zero. No Arc cost or balance approval inferred.
