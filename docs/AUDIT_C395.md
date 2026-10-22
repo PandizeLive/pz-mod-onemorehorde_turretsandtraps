@@ -48,3 +48,13 @@ Owner defers live multiplayer testing until the correction work is complete. Acc
 ## Next action
 
 **Decision needed:** 1A/1B expansion semantics and 2A/2B loot precision versus retuning. Then recap the agreed patch. No gameplay patch or new acceptance is claimed in C395.
+
+## C396 - selections and pending-entry feedback
+
+Owner selects **1A** (single Controller slot, existing Improvised/Small/Medium/Large grades: 20/200, 30/300, 40/400, 50/500 above the unexpanded 10/100 base) and **2B** (global loot default exactly 1.00 plus readable formatting). Preserve existing saved overrides and individual/tier LootLab values; align exported defaults without claiming hosted publication. These choices settle the two design questions; the complete corrective patch still awaits explicit build approval.
+
+Owner requests a buffering icon on entries still being checked. Show a small spinner and Checking status on known/cached rows awaiting validation, using one shared animation clock and bounded background work. Replace pending state promptly when validated; mark stale/unavailable entries accurately. Unknown undiscovered devices cannot have individual named rows yet, so retain one unobtrusive discovery indicator until the scan completes. Do not hide already valid entries or imply cached state is authoritative.
+
+Artwork clarification: all fourteen packaged owner Performance/Expansion PNGs measure 32x32. `TurretSlot.render` currently requests 16x16 for modules and 32x32 for expansion slots. The file resolution is correct; the UI shrinks modules. Planned correction renders modules at 32x32 where space allows, shrinking only for compact layouts, without resampling or altering owner originals.
+
+No Source/Contents/install changes or new tests in C396. Next action: final patch approval; no further generic design choices are required.
