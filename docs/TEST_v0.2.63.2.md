@@ -20,3 +20,7 @@ Full validation passed **27,152 assertions**, compiling 316 runtime/translation 
 A final Kahlua removal check also caught aliased table writes retaining the last cache slot; separate writes and permanent last/final-slot regressions correct this. One intermediate label-cache fixture failed because labels generated within the current rebuild were not reused until the next rebuild. The cache was corrected and full validation rerun. Failed attempts are not counted as passes. Final native write passed in 64.8s and fresh-process read in 63.8s. Standalone Traps and Turrets startup passed in 56.3s and 54.1s; combined-package startup passed in 50.6s. These are the corrected final-source runs; earlier pre-correction runs are not the release evidence.
 
 No FPS improvement, rendered fix or connected-player acceptance is inferred from these tests. All native probes use isolated caches and zero connected clients; player saves are not modified.
+
+## Installation evidence
+
+Immutable `test/v0.2.63.2` points to `c1eb9817df09c1479a874fa546fe4dae442ec9be`. All 378 source and 525 package/tag/install/archive files match. Both previous 0.2.63.1 package backups verify. Local record: `diagnostics/v0.2.63.2/local-release.json`. Archive SHA-256: `dfaf775c05529959d60212ed7a4cd9fdd9a47d872a5e498e58d82cb19c049cfa`. Owner acceptance remains deferred.
