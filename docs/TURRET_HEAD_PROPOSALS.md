@@ -1,5 +1,17 @@
 # Unique turret head candidates
 
+## C411 - One-second cadence and Synergy-gated branch Piercing (2026-10-22)
+
+Owner answers C410: one-second delay; 2B; power operates like other turrets every shot; Synergy allows Piercing on Splitter shots. Confirm base interval of one second between main discharges, distinct from the prior 0.1-second branch staggering; 12-tile initial acquisition and four-tile circular jumps. Preserve six total normal targets at 20 damage, nearest available selection, per-pulse victim marking and finite nonrecursive Splitter allowance.
+
+Power follows existing committed turret-shot accounting rather than the proposed new per-connection debit or independently settled branch charges. Source evidence: TurretWorld spends power.cost once at committed firing and captures one paid Siphon record; existing head-specific TurretStats formulas incorporate module drain, Regulator and, for some heads, Splitter factors. Do not claim every existing head has the same numerical formula or silently introduce per-branch debit/refund records. Arc's exact head cost remains to tune using the existing framework and useful Sandbox settings; the C410 separate branch-record recommendation is superseded.
+
+Main Arc chain can use equipped Piercing after its six normal targets. Splitter chains gain Piercing only with Synergy; without it they stop at their normal chain allowance. With Synergy, apply equipped Piercing allowance to each eligible Splitter chain, retaining Splitter damage and Piercing retention and shared no-repeat tracking; no shared allowance that the main chain exhausts first. This follows the owner's explicit cross-module direction and supersedes C410 proposed allocation alternatives. Do not claim existing TurretVolley already implements this exact Arc behavior; Arc does not exist yet. General secondary kill/Synergy Siphon eligibility remains unchanged.
+
+At one-second cadence, nominal base output is 20 damage/second against one target or 120 combined across six, before crits, modules, delays and target availability. Compared with the proposed two-second cadence, both firing expenditure and damage per second double at equal per-shot cost; ideal encounter Siphon ratio stays 108% in the earlier illustrative full-crowd model. Actual overlap/backlog must remain bounded; no new performance claim. Range-module mapping is still only the earlier recommendation, not independently selected here.
+
+Next pre-patch work: concrete current-head-relative battery tuning, remaining module mappings, crafting/acquisition/service particulars and audio/native temporary arc feasibility. No further question is needed to reconfirm these four selected mechanics. No code/build/version/install changes; 0.2.63.2 and deferred personal testing unchanged. Gameplay implementation still awaits concrete patch approval.
+
 ## C410 - Six targets at 20 confirmed; remaining Arc decisions (2026-10-22)
 
 Owner selects C409 1A and notes full six-target crowds will not always be present. Confirm 20 base damage and six total normal-chain targets (initial plus five jumps), superseding the earlier tentative initial plus six. Retain per-kill Siphon, finite shared Splitter opportunities, pulse-wide no-repeat marking and requested 0.1-second branch staggering. Owner asks what remains to discuss; this is not patch implementation approval.

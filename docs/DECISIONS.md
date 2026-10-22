@@ -2016,3 +2016,8 @@ Owner asks about six chain at 20 damage. [Comparison](TURRET_HEAD_PROPOSALS.md#c
 ## C410 - Six total targets at 20 damage selected (2026-10-22)
 
 Owner selects C409 1A, citing incomplete crowds, and asks for remaining discussion. Confirm initial plus five jumps at 20 base damage. [Remaining choices](TURRET_HEAD_PROPOSALS.md#c410---six-targets-at-20-confirmed-remaining-arc-decisions-2026-10-22) separate recommendations from settled Siphon/Splitter rules and remaining recipe/module/power/audio work. No gameplay patch approval or numerical defaults inferred beyond the selected damage/target count.
+
+
+## C411 - Arc firing and Synergy selections (2026-10-22)
+
+Owner sets one-second main firing delay, selects C410 2B, retains normal per-shot turret power handling and assigns Piercing on Splitter shots to Synergy. [Contract](TURRET_HEAD_PROPOSALS.md#c411---one-second-cadence-and-synergy-gated-branch-piercing-2026-10-22) supersedes separate branch charges and the proposed shared Piercing allowance. Preserve remaining exact tuning and implementation approval gates; no gameplay edits.
