@@ -27,6 +27,7 @@ local groups = {
     {"Sandbox_Title_OMHTurretsTraps_Firearms", {"FirearmTurrets", "FirearmAmmoCapacity", "FirearmAimingLevel", "FirearmAccuracyMultiplier", "FirearmRangeAccuracy", "PrecisionRangeAccuracy", "FirearmDamageMultiplier", "FirearmRangeMultiplier", "FirearmReloadMultiplier", "FirearmRateMultiplier", "FirearmCycleMultiplier", "FirearmTurnSpeed"}},
     {"Sandbox_Title_OMHTurretsTraps_Standby", {"TurretStandbyEnabled", "TurretIdleSeconds", "TurretWakeSeconds", "TurretAlertDelay", "TurretStateIndicator"}},
     {"Sandbox_Title_OMHTurretsTraps_PlayerContact", {"FriendlyPlayerDamageMultiplier", "FriendlyPlayerWoundMultiplier", "HostilePlayerDamageMultiplier", "HostilePlayerWoundMultiplier"}},
+    {"Sandbox_Title_OMHTurretsTraps_Arc", {"ArcDamage", "ArcRange", "ArcCooldown", "ArcTargets", "ArcJumpRange", "ArcBatteryPercent"}},
     {"Sandbox_Title_OMHTurretsTraps_Ballista", {"BallistaDamage", "BallistaRange", "BallistaCooldown", "BallistaReload"}},
     {"Sandbox_Title_OMHTurretsTraps_Scrapshot", {"ScrapshotDamage", "ScrapshotRange", "ScrapshotCooldown", "ScrapshotReload"}},
     {"Sandbox_Title_OMHTurretsTraps_Lobber", {"LobberDamage", "LobberRange", "LobberCooldown", "LobberReload"}},

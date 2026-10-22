@@ -594,5 +594,7 @@
     "UI_OMHTT_ControlExpansion": "Expansion Kit",
     "UI_OMHTT_ControllerKitHint": "Drag an expansion kit here. Right-click to remove.",
     "UI_OMHTT_ControllerKitBonus": "Controller: +%1 tiles / +%2 storage weight",
-    "UI_OMHTT_ControllerOutOfRange": "Outside Controller range"
+    "UI_OMHTT_ControllerOutOfRange": "Outside Controller range",
+    "UI_OMHTT_HeadAmmoArc": "None",
+    "UI_OMHTT_HeadFeatureArc": "Electrical shots chain to nearby targets."
 }

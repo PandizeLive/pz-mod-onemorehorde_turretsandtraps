@@ -12,7 +12,7 @@ local R = {}
 ---@return boolean allowed
 function R.allowed(contents, stats)
     local head = contents.head
-    if not head or stats.rotary or head:getCondition() <= 0 then return false end
+    if not head or stats.rotary or stats.ammoFree or head:getCondition() <= 0 then return false end
     local cycle = State.get(head, "cycle")
     if G.profile(head) and not (cycle and cycle.virtual) then
         local gun = State.get(head, "gun")

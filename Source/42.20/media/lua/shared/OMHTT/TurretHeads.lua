@@ -1,6 +1,7 @@
 local H = {cache = {}}
 local configurable = {damage = {0, 2500}, range = {1, 64}, cooldown = {.1, 60}, reload = {.1, 60}, shove = {0, 100}}
 H.definitions = {
+    ["Base.OMHTTTurretArc"] = {key = "Arc", damage = 20, range = 12, cooldown = 1, reload = 0, magazine = 1, ammoCapacity = 0, weight = 8, ammoFree = true},
     ["Base.OMHTTTurretLobber"] = {key = "Lobber", damage = 150, range = 18, minimumRange = 6, cooldown = 5.5, reload = 4, magazine = 3, ammoCapacity = 20, weight = 8},
     ["Base.OMHTTTurretScrapshot"] = {key = "Scrapshot", ammo = "Base.ScrapMetal", damage = 320, range = 8, cone = 90, cooldown = 2, reload = 3, magazine = 10, weight = 6},
     ["Base.OMHTTTurretBallista"] = {key = "Ballista", ammo = "Base.SpearCrafted", damage = 240, range = 24, cooldown = 6, reload = 6, magazine = 5, cone = 45, ammoCapacity = 40, weight = 6},
@@ -40,6 +41,9 @@ end
 ---@nodiscard
 function H.supports(item, name)
     local definition = H.get(item)
+    if definition and definition.key == "Arc" then
+        return name ~= "Magazine" and name ~= "Reload" and name ~= "Autoloader" and name ~= "Conservation" and name ~= "Void" and name ~= "Accuracy"
+    end
     if definition and definition.key == "Lobber" and name == "Piercing" then return false end
     return not definition or not definition.rotary or not H.excluded[name]
 end

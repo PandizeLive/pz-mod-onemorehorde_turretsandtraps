@@ -11,6 +11,9 @@ local Conditional = require("OMHTT/TurretConditionalHit")
 ---@param stats table Shot stats
 ---@return number rays Worst-case lineage capacity
 function V.capacity(stats)
+    if stats.headKind == "Arc" then
+        return stats.fragment > 0 and 5 or 0
+    end
     if stats.headKind == "Lobber" then return 0 end
     if stats.headKind == "Scrapshot" then
         return 8 + stats.splitter + (stats.fragment > 0 and (6 + (stats.synergy and stats.splitter * 5 or 0)) or 0)
@@ -280,7 +283,9 @@ function V.finish(ray)
     local facts = {id = ray.id, shot = ray.shot,
         x = ray.x + ray.dx * distance, y = ray.y + ray.dy * distance, z = ray.z,
         fromX = group.fromX or ray.x, fromY = group.fromY or ray.y, muzzleHeight = group.height, firearm = true, missed = not hit, silent = true}
-    if ray.speed then
+    if group.stats.headKind == "Arc" then
+        require("OMHTT/DefenseEffects").emit("Arc", facts)
+    elseif ray.speed then
         if not victim or (hit and group.left and group.left <= 1) or group.kind == "splitter" then
             facts.firearm, facts.projectile = false, group.stats.headKind == "Ballista" and "spear" or nil
             require("OMHTT/DefenseEffects").emit("Impact", facts)
@@ -425,15 +430,7 @@ function V.save()
     data.serial, data.rays, data.groups, data.owners = V.serial, {}, {}, {}
     local groups, owners, live = {}, {}, {}
     for i = 1, #V.queue do live[V.queue[i].group.persistId] = true end
-    for i = 1, #V.queue do
-        local ray, saved = V.queue[i], {}
-        local group, owner = ray.group, ray.group.options
-        for key, value in pairs(ray) do
-            if type(value) == "number" or type(value) == "string" or type(value) == "boolean" then saved[key] = value end
-        end
-        if ray.flightStart then saved.flightElapsed = now - ray.flightStart end
-        saved.scanning, saved.objectIndex, saved.bestDistance = ray.square ~= nil, 0, nil
-        if ray.square then saved.squareX, saved.squareY = ray.square:getX(), ray.square:getY() end
+    local function ownerIndex(owner)
         if not owners[owner] then
             owners[owner] = #data.owners + 1
             local savedScrap = {}
@@ -452,6 +449,18 @@ function V.save()
                 playerSource = owner.playerSource, playerBudget = owner.playerBudget, playerEvent = owner.playerEvent, playerKind = owner.playerKind,
                 damage = owner.damage, splash = owner.splash, radius = owner.radius, source = owner.source, siphon = owner.siphon}
         end
+        return owners[owner]
+    end
+    for i = 1, #V.queue do
+        local ray, saved = V.queue[i], {}
+        local group, owner = ray.group, ray.group.options
+        for key, value in pairs(ray) do
+            if type(value) == "number" or type(value) == "string" or type(value) == "boolean" then saved[key] = value end
+        end
+        if ray.flightStart then saved.flightElapsed = now - ray.flightStart end
+        saved.scanning, saved.objectIndex, saved.bestDistance = ray.square ~= nil, 0, nil
+        if ray.square then saved.squareX, saved.squareY = ray.square:getX(), ray.square:getY() end
+        ownerIndex(owner)
         if not groups[group] then
             groups[group] = #data.groups + 1
             local copy = {stats = group.stats, owner = owners[owner], rays = group.rays, delay = math.max(0, (group.due or now) - now)}
@@ -469,6 +478,7 @@ function V.save()
         saved.group = groups[group]
         data.rays[i] = saved
     end
+    data.arcs = require("OMHTT/TurretArc").save(ownerIndex)
 end
 
 ---@return nil
@@ -500,6 +510,7 @@ function V.load()
         ray.group.options.pending = ray.group.options.pending + 1
         V.queue[#V.queue + 1] = ray
     end
+    require("OMHTT/TurretArc").load(data.arcs, owners, now)
 end
 
 ---@return nil

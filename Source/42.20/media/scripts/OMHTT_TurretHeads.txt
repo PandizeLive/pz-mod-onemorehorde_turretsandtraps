@@ -1,4 +1,41 @@
 module Base {
+    item OMHTTTurretArc {
+        DisplayName = Arc Emitter Head,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        WorldStaticModel = OMHTTTurretProbe,
+        Weight = 8,
+        Icon = OMHTT_TestCube,
+        ConditionMax = 100,
+        Tooltip = Tooltip_OMHTT_ArcHead,
+    }
+    craftRecipe OMHTTCraftArc {
+        timedAction = Making,
+        time = 864,
+        category = OMHTurrets,
+        Tags = InHandCraft,
+        needToBeLearn = false,
+        SkillRequired = Mechanics:2;Electricity:4,
+        xpAward = Mechanics:10;Electricity:30,
+        OnAddToMenu = OMHTT_TurretMenuAvailable,
+        OnTest = OMHTT_Turret.recipeInput,
+        OnCreate = OMHTT_Turret.onCrafted,
+        inputs {
+            item 1 tags[base:screwdriver] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 [Base.Wrench;Base.PipeWrench] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 tags[base:pliers] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 tags[base:metalsaw] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 2 [Base.SmallSheetMetal],
+            item 2 [Base.ScrapMetal],
+            item 8 [Base.ElectronicsScrap],
+            item 4 [Base.ElectricWire],
+            item 12 [Base.Screws],
+        }
+        outputs {
+            item 1 Base.OMHTTTurretArc,
+        }
+    }
+
     item OMHTTTurretBallista {
         DisplayName = Ballista Head,
         ItemType = base:normal,

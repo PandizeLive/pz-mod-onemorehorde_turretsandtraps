@@ -1,7 +1,9 @@
-v0.2.63.2
+v0.2.64
 
 Development test content
 
+- Added craftable Arc Emitter Head with electrical chains, ammo-free battery use, supported module effects and configurable Arc settings.
+- Corrected head consumption labels to share sustained firing-cycle estimates and reflect installed loadouts in Manage.
 - Added Controller expansion using existing kits: base 10-tile range and 100 stockpile weight, up to 50/500 with a Large kit; configurable bonuses and protected contents when capacity shrinks.
 - Added local laser visibility/opacity, device feedback volume and turret state-marker preferences; laser visuals default off.
 - Kept Poke Floor mechanical without manual disarming, with service restricted to retraction.

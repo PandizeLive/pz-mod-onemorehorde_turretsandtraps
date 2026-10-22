@@ -69,7 +69,7 @@ function S.step(graph)
     total = total + require("OMHTT/TurretVoid").count(job.void, job.head)
     local definition = require("OMHTT/TurretHeads").get(job.head)
     local label = getText("UI_OMHTT_GraphAmmo", total)
-    if not job.head or (definition and definition.rotary) then
+    if not job.head or (definition and (definition.rotary or definition.ammoFree)) then
         label = getText("UI_OMHTT_GraphAmmoNone")
     end
     graph.stats[job.object] = {label = label, ammo = total}

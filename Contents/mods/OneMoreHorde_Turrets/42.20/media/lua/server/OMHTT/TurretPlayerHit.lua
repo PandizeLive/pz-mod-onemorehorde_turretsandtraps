@@ -7,6 +7,7 @@ local contacts = setmetatable({}, {__mode = "k"})
 -- Live jobs retain budgets. Weak values release finished attacks without a scan.
 local events = setmetatable({}, {__mode = "v"})
 local profiles = {
+    Arc = {damage = 2, chance = 0},
     Potato = {damage = 2, chance = 0},
     Firearm = {damage = 4, chance = .06, bullet = true},
     Shotgun = {damage = 8, chance = .06, bullet = true},

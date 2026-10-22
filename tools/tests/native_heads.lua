@@ -17,11 +17,29 @@ return function(player)
         local stats = S.resolve({head = gun, active = {}, powerLoad = 0})
         local rating, drain = descriptions.rating(gun)
         local reload = stats.reload * (gun:getMagazineType() and 1 or stats.magazine)
-        local seconds = (stats.magazine * stats.cooldown + reload + (gun:haveChamber() and stats.rack or 0)) / 1000
+        local seconds = ((stats.magazine - 1) * stats.cooldown + math.max(stats.cooldown, reload + (gun:haveChamber() and stats.rack or 0))) / 1000
         assert(rating and math.abs(drain - stats.batteryPercent * stats.magazine * 3600 / seconds) < .0000001,
             "Native head rating must include magazine/per-round loading and chamber timing")
         assert(string.find(descriptions.get(gun, true), "<RGB:1,1,1>", 1, true), "Native rich head rating")
     end
+    local arc = instanceItem("Base.OMHTTTurretArc")
+    assert(arc and arc:getActualWeight() == 8 and arc:getConditionMax() == 100, "Native Arc head metadata")
+    local base = instanceItem(T.BASE)
+    local storage = base:getInventory()
+    T.configure(storage)
+    assert(T.accept(storage, arc), "Arc uses normal universal base")
+    storage:AddItem(arc)
+    local contents = T.contents(storage)
+    local arcStats = S.resolve(contents)
+    local cycle, status = require("OMHTT/TurretFeed").update(contents, arcStats, 1000, true)
+    local fired, rounds = require("OMHTT/TurretFeed").consume(contents, arcStats, cycle, 1000)
+    assert(status == "Ready" and fired and rounds == 0 and cycle.nextShot == 2000, "Native Arc ammo-free cadence")
+    assert(not T.accept(storage, instanceItem(T.TYPES.Magazine)), "Arc refuses incompatible ammo module")
+    assert(not require("OMHTT/TurretAmmo").accepts(arc, "Base.Bullets9mm"), "Arc does not accept ammunition")
+    local arcRating, arcDrain = descriptions.rating(arc)
+    assert(arcRating.key == "UI_OMHTT_HeadBatteryExtreme" and math.abs(arcDrain - 72) < .0001, "Native Arc cadence-aware rating")
+    assert(instanceItem("Base.OMHTTTrapTetherCableVisual"), "Arc electrical segment model exists independently")
+    print("[OMHTT-C421] native-arc metadata=pass install=pass no-ammo=pass cooldown=pass rating=Extreme visual-model=registered GPU=pending")
     local shared = {MetalPipe = 1, SmallSheetMetal = 1, ScrapMetal = 2, ElectronicsScrap = 2, ElectricWire = 1, Screws = 8}
     local cases = {
         {"Ballista", {Plank = 4, MetalBar = 2, Rope = 1, Nails = 8}, {"Hammer", "Saw"}, 90},

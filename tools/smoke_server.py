@@ -110,8 +110,9 @@ def main():
     if os.environ.get("OMHTT_PROBE_MODE") == "read":
         assert "[OMHTT-C369] private-condition fresh-process=preserved" in text, "Private condition restart proof missing"
     assert "[OMHTT-Controls] native-stock-transfer selectedBag=exact removedBag=rejected constructorArgs=retained" in text, "Native stockpile transfer proof missing"
+    assert "[OMHTT-C421] native-arc metadata=pass install=pass no-ammo=pass cooldown=pass rating=Extreme visual-model=registered GPU=pending" in text, "Native Arc proof missing"
     assert "[OMHTT-Heads] native recipes=3" in text, "Native head recipe/metadata proof failed"
-    assert "[OMHTT-C247] recipes=5 drainableUses=8/2 tools=retained sounds=4 virtualNativeGun=no-materialized-rounds exactModule=preserved" in text, "Native content and virtual ammunition proof failed"
+    assert "[OMHTT-C247] recipes=6 drainableUses=8/2 tools=retained sounds=4 virtualNativeGun=no-materialized-rounds exactModule=preserved" in text, "Native content and virtual ammunition proof failed"
     assert "[OMHTT-Smoke] native-distance-parity samples=16 passed=true" in text, "Native accuracy parity failed"
     assert "[OMHTT-Smoke] native-atlas-lua bypass=verified restore=verified" in text, "Native atlas exposure failed"
     assert "[OMHTT-Smoke] native-suppression sounds=18 potato=2 reload=native" in text, "Native audio registration failed"

@@ -490,5 +490,18 @@
     "Sandbox_Title_OMHTurretsTraps_Tether": "Tether Dart Trap",
     "Sandbox_OMHTurretsTraps_ControllerCapacity_tooltip": "Base stockpile weight. Existing excess items remain available for withdrawal.",
     "Sandbox_OMHTurretsTraps_ControllerKitRange_tooltip": "Additional tiles per installed expansion-kit grade.",
-    "Sandbox_OMHTurretsTraps_ControllerKitCapacity_tooltip": "Additional stockpile weight per installed expansion-kit grade."
+    "Sandbox_OMHTurretsTraps_ControllerKitCapacity_tooltip": "Additional stockpile weight per installed expansion-kit grade.",
+    "Sandbox_Title_OMHTurretsTraps_Arc": "Arc Emitter",
+    "Sandbox_OMHTurretsTraps_ArcDamage": "Damage",
+    "Sandbox_OMHTurretsTraps_ArcDamage_tooltip": "Damage for the Arc Emitter.",
+    "Sandbox_OMHTurretsTraps_ArcRange": "Acquisition Range",
+    "Sandbox_OMHTurretsTraps_ArcRange_tooltip": "Acquisition Range for the Arc Emitter.",
+    "Sandbox_OMHTurretsTraps_ArcCooldown": "Shot Interval",
+    "Sandbox_OMHTurretsTraps_ArcCooldown_tooltip": "Base seconds between electrical discharges.",
+    "Sandbox_OMHTurretsTraps_ArcTargets": "Normal Targets",
+    "Sandbox_OMHTurretsTraps_ArcTargets_tooltip": "Total normal targets, including the initial hit. Piercing adds weaker continuation hits.",
+    "Sandbox_OMHTurretsTraps_ArcJumpRange": "Jump Range",
+    "Sandbox_OMHTurretsTraps_ArcJumpRange_tooltip": "Maximum distance in tiles from each struck target to the next.",
+    "Sandbox_OMHTurretsTraps_ArcBatteryPercent": "Battery Cost Per Shot",
+    "Sandbox_OMHTurretsTraps_ArcBatteryPercent_tooltip": "Percentage of a full battery per shot before module and power modifiers."
 }

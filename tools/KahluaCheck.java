@@ -266,6 +266,7 @@ public final class KahluaCheck {
             {"OMHTT/TurretProc", base + "server/OMHTT/TurretProc.lua"},
             {"OMHTT/TurretTackServer", base + "server/OMHTT/TurretTackServer.lua"},
             {"OMHTT/TurretVolley", base + "server/OMHTT/TurretVolley.lua"},
+            {"OMHTT/TurretArc", base + "server/OMHTT/TurretArc.lua"},
             {"OMHTT/PrototypeCombat", base + "server/OMHTT/PrototypeCombat.lua"},
             {"OMHTT/TurretScrapshot", base + "server/OMHTT/TurretScrapshot.lua"},
             {"OMHTT/TurretOrdnance", base + "server/OMHTT/TurretOrdnance.lua"},
@@ -525,6 +526,8 @@ public final class KahluaCheck {
             {"_", "tools/tests/corrections_c397.lua"},
             {"_", "tools/tests/performance_c399.lua"},
             {"_", "tools/tests/performance_c400.lua"},
+            {"OMHTT/TurretArcView", base + "client/OMHTT/TurretArcView.lua"},
+            {"_", "tools/tests/turret_arc.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

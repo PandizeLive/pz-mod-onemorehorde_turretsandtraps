@@ -30,8 +30,8 @@ for i = 1, #cases do
     check(rating.key == "UI_OMHTT_HeadBattery" .. cases[i][2] and drain > 0, "Base sustained rating " .. cases[i][1])
     local modified = S.resolve({head = item, active = {Regulator = 10, RapidFire = 2}, powerLoad = 20})
     local plain, rich = D.get(item, false, modified), D.get(item, true, modified)
-    check(string.find(plain, D.battery(item, false), 1, true) ~= nil,
-        "Installed buffs cannot change the head-only rating")
+    check(string.find(plain, D.battery(item, false, D.rating(item, modified)), 1, true) ~= nil,
+        "Installed tooltip rating uses its effective stats; inventory remains baseline")
     check(string.find(rich, "<RGB:1,1,1>", 1, true) ~= nil, "Rich rating restores white text")
 end
 local blades, bat, lobber = head("RotaryBlades"), head("RotaryBat"), head("Lobber")

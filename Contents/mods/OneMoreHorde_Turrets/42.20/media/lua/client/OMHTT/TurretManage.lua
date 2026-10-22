@@ -362,7 +362,7 @@ function Panel:refresh()
     local nextShot = cycle and cycle.loaded and cycle.loaded > 0 and (cycle.payload or contents.payloadType)
     self.magazineSlot.summary = getText("UI_OMHTT_NextShot", label(nextShot))
     self.magazineSlot.subtext = nil
-    local ammoHint = contents.head and not stats.rotary and contents.payloadType or nil
+    local ammoHint = contents.head and not (stats.rotary or stats.ammoFree) and contents.payloadType or nil
     if stats.headKind == "Lobber" and not require("OMHTT/TurretAmmo").bombs[ammoHint] then
         ammoHint = require("OMHTT/TurretFeed").BOMBS[1]
     end
@@ -371,14 +371,14 @@ function Panel:refresh()
     Hint.set(self.magazineSlot, magazineType and not gun:isContainsClip() and magazineType or nil)
     if not contents.head then
         self.ammoSlot.summary = getText("UI_OMHTT_ManageNoHead")
-    elseif not magazineType and not stats.rotary then
+    elseif not magazineType and not (stats.rotary or stats.ammoFree) then
         self.magazineSlot.subtext = getText("UI_OMHTT_ManageInternal")
     end
     if not contents.void then
         self.voidSlot.summary = getText("UI_OMHTT_VoidRequired")
         self.voidSlot.subtext = nil
     end
-    self.loadOrderButton:setEnable(true)
+    self.loadOrderButton:setEnable(not (stats.ammoFree or stats.rotary))
     self.reloadButton:setEnable(power ~= nil and T.isOn(state) and require("OMHTT/TurretReload").allowed(contents, stats))
     self.voidSlot.detailText = require("OMHTT/TurretVoid").description(contents.void, contents.head, true)
     require("OMHTT/TurretManageExtras").refresh(self, contents, stats)
@@ -387,9 +387,9 @@ function Panel:refresh()
     self.batterySlot.meter = contents.battery and require("OMHTT/TurretBattery").charge(contents.battery) or 0
     self.headSlot.missing = not contents.head or contents.head:getCondition() <= 0
     self.batterySlot.missing = contents.head ~= nil and not power
-    self.ammoSlot.missing = contents.head ~= nil and not stats.rotary and contents.ammo == 0
-    self.ammoSlot.disabled = stats.rotary
-    if stats.rotary then
+    self.ammoSlot.missing = contents.head ~= nil and not (stats.rotary or stats.ammoFree) and contents.ammo == 0
+    self.ammoSlot.disabled = stats.rotary or stats.ammoFree
+    if stats.rotary or stats.ammoFree then
         self.ammoSlot.label = getText("UI_OMHTT_ManageNotNeeded")
         self.magazineSlot.label = getText("UI_OMHTT_ManageNotNeeded")
     end

@@ -220,6 +220,7 @@ function T.contents(container)
     end
     result.physicalAmmo = result.ammo
     result.ammo = result.ammo + result.virtualAmmo
+    if definition and definition.ammoFree then result.ammo = 1 end
     return result
 end
 

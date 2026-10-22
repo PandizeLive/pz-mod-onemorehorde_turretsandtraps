@@ -3,6 +3,7 @@ return function(player)
     local Void = require("OMHTT/TurretVoid")
     local Feed = require("OMHTT/TurretFeed")
     local recipes = {
+        {"Arc", {SmallSheetMetal = 2, ScrapMetal = 2, ElectronicsScrap = 8, ElectricWire = 4, Screws = 12}, "OMHTTTurretArc"},
         {"Lobber", {MetalPipe = 2, SmallSheetMetal = 2, ScrapMetal = 2, ElectronicsScrap = 4, ElectricWire = 2, Screws = 12, TirePump = 1}, "OMHTTTurretLobber"},
         {"LobberImprovised", {MetalPipe = 2, SmallSheetMetal = 2, ScrapMetal = 4, ElectronicsScrap = 4, ElectricWire = 2, Screws = 12}, "OMHTTTurretLobber"},
         {"Scrapshot", {MetalPipe = 1, SmallSheetMetal = 1, ScrapMetal = 2, ElectronicsScrap = 2, ElectricWire = 1, Screws = 8, TirePump = 1}, "OMHTTTurretScrapshot"},
@@ -143,5 +144,5 @@ return function(player)
     end
     local bomb = instanceItem("Base.OMHTTAmmoMakeshiftBomb")
     assert(not instanceof(bomb, "HandWeapon"), "Makeshift Bomb accidentally became a handheld explosive")
-    print("[OMHTT-C247] recipes=5 drainableUses=8/2 tools=retained sounds=4 virtualNativeGun=no-materialized-rounds exactModule=preserved")
+    print("[OMHTT-C247] recipes=6 drainableUses=8/2 tools=retained sounds=4 virtualNativeGun=no-materialized-rounds exactModule=preserved")
 end

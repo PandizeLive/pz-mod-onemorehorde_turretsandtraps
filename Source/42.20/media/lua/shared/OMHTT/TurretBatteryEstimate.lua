@@ -6,6 +6,7 @@ local E = {}
 ---@return number milliseconds Estimated continuous-use time, never consumption
 function E.duration(stats, gun, count, currentLoaded, currentDebt)
     if count <= 0 then return 0 end
+    if stats.ammoFree then return (count - 1) * stats.cooldown end
     local capacity = math.max(1, stats.magazine)
     local divisor = stats.conservation or 1
     local cost = 1 + (stats.splitter or 0)

@@ -150,13 +150,15 @@ function S.resolve(contents)
     elseif head and head.key == "Scrapshot" then
         shotPower = S.option("ScrapshotBatteryPercent", .0025, 0, 100) * modulePower / regulator * (1 + S.bonus(active, "Velocity", 20, 100) / 100) * (1 + splitter * .5)
             * math.max(1, (range + S.bonus(active, "Range", 2, 10)) / head.range)
+    elseif head and head.key == "Arc" then
+        shotPower = S.option("ArcBatteryPercent", .02, 0, 100) * modulePower / regulator
     elseif head and not rotary then
         shotPower = S.option("BallistaBatteryPercent", .025, 0, 100) * weaponPower / math.sqrt(4.8) * modulePower / regulator
     elseif rotary then
         shotPower = motorPower / 3600
         magazine = 0
     end
-    return {headKind = head and head.key, minimumRange = head and head.minimumRange or 0, cone = head and head.cone, rotary = rotary, motorSpeed = motorSpeed, motorPower = motorPower,
+    return {ammoFree = head and head.ammoFree == true, arcTargets = math.floor(S.option("ArcTargets", 6, 1, 32)), arcJump = S.option("ArcJumpRange", 4, 1, 10), headKind = head and head.key, minimumRange = head and head.minimumRange or 0, cone = head and head.cone, rotary = rotary, motorSpeed = motorSpeed, motorPower = motorPower,
         damage = damage * (1 + S.bonus(active, "Velocity", 20, 100) / 100),
         knockdown = math.min(100, knockdown + knockBonus),
         range = math.min(firearm and 50 or 30, range + S.bonus(active, "Range", 2, 10)),

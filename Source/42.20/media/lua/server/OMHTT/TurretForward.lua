@@ -31,6 +31,9 @@ function B.fire(record, object, player, options)
     record.ammo = record.ammo - options.ammoCost
     record.shots = record.shots + 1
     record.nextShot = Clock.now() + options.interval
+    if stats.headKind == "Arc" then
+        return "Fired", require("OMHTT/TurretArc").launch(record, origin, nil, player, options)
+    end
     if stats.headKind == "Lobber" or stats.headKind == "Scrapshot" then
         return "Fired", require("OMHTT/TurretOrdnance").launch(record, origin, nil, player, options)
     end

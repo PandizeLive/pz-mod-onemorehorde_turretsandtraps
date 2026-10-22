@@ -28,6 +28,8 @@ end
 function F.select(contents, container)
     local head = contents.head
     if not head then return nil end
+    local definition = require("OMHTT/TurretHeads").get(head)
+    if definition and definition.ammoFree then return nil end
     if G.profile(head) then return G.ammoType(head) end
     local cycle = State.get(head, "cycle")
     if cycle and cycle.loaded and cycle.loaded > 0 and cycle.payload then return cycle.payload end
@@ -83,6 +85,12 @@ function F.update(contents, stats, now, operate)
     if isClient() then return nil, "Unavailable" end
     local head = contents.head
     local cycle = State.get(head, "cycle", {schema = 1, loaded = 0, nextShot = 0})
+    if stats.ammoFree then
+        cycle.loaded, cycle.payload, cycle.reloadReady, cycle.virtual = 1, nil, nil, nil
+        cycle.impactReady = true
+        cycle.status = now < (cycle.nextShot or 0) and "Cooling" or "Ready"
+        return cycle, cycle.status
+    end
     local firearm = G.profile(head)
     if firearm and (not contents.void or G.loaded(head) > 0 or (not cycle.virtual and contents.reserve > 0)) then
         if cycle.virtual then
@@ -176,6 +184,11 @@ end
 ---@return number cost Whole rounds charged
 function F.consume(contents, stats, cycle, now)
     if isClient() or not cycle or (cycle.loaded or 0) < 1 then return false, 0 end
+    if stats.ammoFree then
+        if now < (cycle.nextShot or 0) then return false, 0 end
+        cycle.nextShot, cycle.cooldownDuration = now + stats.cooldown, stats.cooldown
+        return true, 0
+    end
     if G.profile(contents.head) and not cycle.virtual then return G.consume(contents, stats, now) end
     local uses = math.min(cycle.loaded, 1 + stats.splitter)
     local cost

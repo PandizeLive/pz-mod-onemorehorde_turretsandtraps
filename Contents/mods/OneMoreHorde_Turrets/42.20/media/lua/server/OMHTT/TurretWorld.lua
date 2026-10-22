@@ -538,6 +538,11 @@ function W.fire(player, object, target, signal)
         options.resolve = require("OMHTT/TurretOrdnance").launch
         if not require("OMHTT/TurretOrdnance").available(stats) then return "Unavailable" end
     end
+    if stats.headKind == "Arc" then
+        options.projectileSpeed, options.splash, options.radius = nil, 0, 0
+        options.resolve = require("OMHTT/TurretArc").launch
+        if not require("OMHTT/TurretArc").available() then return "Unavailable" end
+    end
     options.playerKind = require("OMHTT/TurretPlayerHit").kind(options)
     options.playerBudget = {}
     options.playerEvent = state.id .. ":" .. tostring(state.shots + 1)
@@ -554,7 +559,7 @@ function W.fire(player, object, target, signal)
     ---@return boolean committed
     function options.commit()
         if not W.valid(object) or not T.isOn(T.state(object)) or not object:getContainer():contains(contents.head) then return false end
-        if not G.profile(contents.head) and not cycle.virtual and not object:getContainer():contains(contents.round) then return false end
+        if not stats.ammoFree and not G.profile(contents.head) and not cycle.virtual and not object:getContainer():contains(contents.round) then return false end
         if player and not W.near(player, object) then return false end
         if not player and ((not forward and not M.detects(state, contents)) or not contents.active.Firing) then return false end
         if not player and contents.active.FiringImprovised
@@ -598,7 +603,7 @@ function W.fire(player, object, target, signal)
         result, impact = Combat.fire(state, object, player, options)
     end
     if result == "Fired" then
-        if stats.headKind == "Lobber" or stats.headKind == "Scrapshot" then
+        if stats.headKind == "Arc" or stats.headKind == "Lobber" or stats.headKind == "Scrapshot" then
             Volley.done(options)
         else
             Volley.split(state, object:getSquare(), target, player, options, impact)

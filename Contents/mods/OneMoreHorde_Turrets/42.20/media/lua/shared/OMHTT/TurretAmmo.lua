@@ -39,6 +39,8 @@ end
 function A.accepts(head, fullType)
     if not head then return false end
     if G.profile(head) then return fullType == G.ammoType(head) end
+    local definition = require("OMHTT/TurretHeads").get(head)
+    if definition and definition.ammoFree then return false end
     local kind = head:getFullType()
     local family = A.family(fullType)
     if kind == "Base.OMHTTTurretBallista" then return family == "spear" end

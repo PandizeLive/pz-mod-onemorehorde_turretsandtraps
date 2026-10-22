@@ -58,5 +58,6 @@
     "ItemName_Base.OMHTTModuleGrid": "Grid Module",
     "ItemName_Base.OMHTTTrapPokeFloor": "Poke Floor",
     "ItemName_Base.OMHTTTrapLever": "Lever",
-    "ItemName_Base.OMHTTTrapLaser": "Laser Sensor"
+    "ItemName_Base.OMHTTTrapLaser": "Laser Sensor",
+    "ItemName_Base.OMHTTTurretArc": "Arc Emitter Head"
 }

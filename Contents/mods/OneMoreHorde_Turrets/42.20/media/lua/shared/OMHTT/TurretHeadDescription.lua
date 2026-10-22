@@ -7,22 +7,13 @@ local Consumption = require("OMHTT/ControlConsumption")
 ---@return table rating Shared label and color
 ---@return number drain Percentage points per real unpaused hour
 ---@return table stats Module-free baseline
-function D.rating(item)
-    local stats = Stats.resolve({head = item, active = {}, powerLoad = 0})
+function D.rating(item, resolved)
+    local stats = resolved or Stats.resolve({head = item, active = {}, powerLoad = 0})
     local drain = stats.motorPower
     if not stats.rotary then
-        local magazine = math.max(1, stats.magazine)
-        local gap = math.max(stats.cooldown, stats.reload)
-        if stats.firearm then
-            local reload = stats.reload
-            if not item:getMagazineType() then
-                reload = reload * magazine
-            end
-            local rack = item:haveChamber() and stats.rack or 0
-            gap = stats.cooldown + reload + rack
-        end
-        local duration = (magazine - 1) * stats.cooldown + gap
-        drain = stats.batteryPercent * magazine * 3600000 / math.max(1, duration)
+        local count = stats.ammoFree and 1 or require("OMHTT/TurretBatteryEstimate").magazineUses(math.max(1, stats.magazine), 1 + (stats.splitter or 0), stats.conservation or 1, 0)
+        local duration = require("OMHTT/TurretBatteryEstimate").duration(stats, item, count + 1)
+        drain = stats.batteryPercent * count * 3600000 / math.max(1, duration)
     end
     return Consumption.band(drain), drain, stats
 end
@@ -47,7 +38,7 @@ end
 ---@return table rating Shared native tooltip color
 function D.get(item, rich, resolved)
     local definition = H.get(item)
-    local rating, _, baseline = D.rating(item)
+    local rating, _, baseline = D.rating(item, resolved)
     local stats = resolved or baseline
     local kind = definition and definition.key or "Potato"
     local ammo = getText("UI_OMHTT_HeadAmmo" .. kind)

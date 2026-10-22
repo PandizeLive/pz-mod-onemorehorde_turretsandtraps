@@ -45,5 +45,6 @@
     "Recipe_OMHTTCraftLever": "Lever",
     "Recipe_OMHTTDeployLever": "Place Lever",
     "Recipe_OMHTTCraftLaser": "Laser Sensor",
-    "Recipe_OMHTTDeployLaser": "Place Laser Sensor"
+    "Recipe_OMHTTDeployLaser": "Place Laser Sensor",
+    "Recipe_OMHTTCraftArc": "Craft Arc Emitter Head"
 }
