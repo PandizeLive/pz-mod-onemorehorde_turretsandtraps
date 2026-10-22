@@ -1,5 +1,7 @@
 # Planning
 
+**C417 / Arc 0.02% base cost approved (2026-10-22).** [Selected tuning and next acquisition choice](TURRET_HEAD_PROPOSALS.md#c417---arc-base-shot-cost-selected-2026-10-22): .02% per main shot before modifiers, Extreme at one-second cadence. No extra tooltip numbers. Next **1A craftable recommended / 1B craftable plus lootable**, then consolidate module/recipe/audio details before patch approval. No gameplay/build changes. **Decision needed.**
+
 **C416 / Minimum Extreme cost calculated (2026-10-22).** [Threshold arithmetic](TURRET_HEAD_PROPOSALS.md#c416---minimum-arc-cost-for-extreme-2026-10-22): at one shot/second without reload, minimum is 1/60 percent (~0.0166667%) per shot; 0.0167% clears it, 0.02% is a clean value above it. No cost selected or numeric tooltip added; gameplay unchanged.
 
 **C415 / No extra consumption numbers (2026-10-22).** Owner rejects C414 numeric drain addition. [Confirmed spectrum](TURRET_HEAD_PROPOSALS.md#c415---label-only-consumption-retained-spectrum-confirmed-2026-10-22): None, Minimal, Very Low, Low, Medium, High, Very High, Extreme; Extreme is highest. Retain colored labels. No audit-scope/cost selection or implementation inferred; Arc cost remains open.

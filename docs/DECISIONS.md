@@ -2046,3 +2046,8 @@ Owner says not to add extra numbers. Retain colored labels, superseding C414 pro
 ## C416 - Extreme threshold clarification (2026-10-22)
 
 Owner asks minimum Arc cost for Extreme. [Calculation](TURRET_HEAD_PROPOSALS.md#c416---minimum-arc-cost-for-extreme-2026-10-22): 60/3600 = 0.0166667% per shot at one shot/second. Cost remains unselected; label-only preference and existing build unchanged.
+
+
+## C417 - Arc 0.02% shot cost approved (2026-10-22)
+
+Owner agrees to .02 following C416. [Contract](TURRET_HEAD_PROPOSALS.md#c417---arc-base-shot-cost-selected-2026-10-22) records .02% base cost per shot, existing modifiers and Extreme label without extra numbers. Not blanket implementation approval; acquisition/module/recipe/audio scope remains to settle.

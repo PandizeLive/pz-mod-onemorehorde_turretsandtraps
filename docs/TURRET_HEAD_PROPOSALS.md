@@ -1,5 +1,13 @@
 # Unique turret head candidates
 
+## C417 - Arc base shot cost selected (2026-10-22)
+
+Owner agrees to 0.02. Record **0.02% of full battery per committed main shot** as selected Arc base cost, before existing module/power modifiers; fractional battery debit is .0002 before modifiers, not .02. Preserve standard turret shot accounting and selected per-kill Siphon, with no new separate branch charges. At one shot/second, module-free no-reload baseline is 72 percentage points/hour and Extreme. Full battery gives 5000 base shots/about 83m20s of continuous firing before other drain/refunds/modifiers; calculated only. Keep label-only tooltip, without new numerical consumption line.
+
+Selected combat baseline now: 20 damage, six total normal targets, one-second main interval, 12-tile acquisition/four-tile jumps, finite nonrecursive Splitter with pulse-wide victim marking and 0.1s branch staggering, Synergy enables Piercing on Splitter chains. This numerical selection is not blanket patch approval. Installed 0.2.63.2/testing remain unchanged.
+
+Next concrete acquisition choice: **1A recommended craftable head**, following existing custom-head crafting approach; **1B craftable and lootable**, additionally requiring owner-selected rarity and its existing assigned weight. Existing custom heads have craftRecipe entries in OMHTT_TurretHeads.txt; do not claim this alone proves all existing loot distribution behavior. This choice does not finalize materials/tools/skills/XP or authorize adding speculative recipe ingredients. Remaining module mapping, exact recipe and audio proposal should be consolidated before final patch approval. No code/build edits.
+
 ## C416 - Minimum Arc cost for Extreme (2026-10-22)
 
 Owner asks the minimum cost reaching Extreme in the selected scenario. Current band begins at 60 battery percentage points per real unpaused hour. At one main shot per second, no reload and module-free baseline, 3600 shots/hour implies 60/3600 = 1/60 percent = approximately 0.0166667% per shot. Decimal 0.0167% is just above the boundary; 0.016% remains Very High. A clean 0.02% would be Extreme with margin and equals 72%/hour, not a selected default. The threshold implies 6000 shots/full battery, approximately 100 minutes of continuous firing before modifiers/refunds/other drains. These figures are discussion arithmetic, not added tooltip numbers or measured runtime. Do not select energy merely for a label, and do not infer owner cost approval. Existing label-only requirement remains. No gameplay/install change; Arc base cost remains the open decision.
