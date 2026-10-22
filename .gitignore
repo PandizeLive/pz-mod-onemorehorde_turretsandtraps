@@ -61,3 +61,6 @@ diagnostics/p1c1/install-stage/
 
 # Workspace-local probe runners and extracted native libraries
 /.tmp/
+
+# Local audition embeds installed-game audio; mirror its generator only.
+/art/DEVICE_AUDIO.html

@@ -27,3 +27,10 @@ An additional audit corrected armor-blocked rotary contact recovery. Its new reg
 ## Tagged installation
 
 Installed from immutable `test/v0.2.61` / `1cf3889e8bf96987627de66a4ed865977927012c`. All 334 source and 445 tagged/package/install/archive files match SHA-256; both prior 0.2.60 package backups verify. [Local release record](../diagnostics/v0.2.61/local-release.json). The final formatting-only cleanup also passed compilation/regression validation. **Test now** after restarting; the installed manifest does not establish which version an already-running client loaded. Rendered/connected acceptance remains pending.
+
+
+## Owner session - 2026-10-21 (C390)
+
+Owner reports Test Complete with remaining issues; this is partial SP acceptance, not full rendered or connected multiplayer acceptance. The console snapshot confirms 0.2.61 SP and Tether 30-hit/15-pull events with the expected hold. M4 sounds are logged. No OMHTT Lua stack trace was identified in the captured snapshot; engine/other-mod diagnostics remain.
+
+[Complete findings, evidence and proposed scope](AUDIT_C390.md): Tether depth/fall/flight and missing cycle sound, Lever placement, laser beam/range, Connections scroll/collapse/clipping/drag/group access, Controller defaults access, player profile severity, incomplete Sandbox organization/radius and item tooltip/rarity-art coverage. These observed failures are not overridden by prior automated passes. No gameplay patch was installed in the audit turn.
