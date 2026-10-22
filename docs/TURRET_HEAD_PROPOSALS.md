@@ -1,5 +1,42 @@
 # Unique turret head candidates
 
+## C404 - Uncapped Arc chains and deferred Splitter branches (2026-10-22)
+
+Owner selects C403 **1A chained pulses / 2B equal base-chain damage / 3A no consumable ammunition**. Owner rejects a total target cap, assigns damage falloff to Piercing after the main chain, and requests auto-aimed Splitter branches to either side. If no additional target exists beyond the initial target, retain the unused split for a subsequent chain connection. This supersedes the proposed fixed victim cap and blanket one-chain/no-branch recommendation. Discussion continues; no gameplay patch or numerical tuning is approved.
+
+### Confirmed intent versus unresolved mechanics
+
+Normal chain jumps should not lose damage merely because they are later jumps. Piercing continuation should still behave as a chain, with reduced damage per piercing. Splitter's side targeting and carry-forward are selected direction; exact branch entitlement sharing and damage/resource handling remain to settle. Existing `TurretStats` has configurable Splitter damage (default 50%) and Piercing retention (default 70%); neither setting is changed here. Existing resource paths use one extra shot per Splitter count, not two extra shots automatically per module. Arc-specific compatibility is not implemented.
+
+There is a real unresolved interaction: if the base chain already continues through every reachable target without a count limit, what constitutes its end and gives Piercing additional targets? Do not silently reintroduce a total victim cap or assume a straight projectile.
+
+### Proposed containment without a victim-count cap
+
+Recommend one hit per victim across every branch of the same pulse, a finite candidate area/set for that pulse, obstruction/target-policy checks at every connection, and incremental authoritative processing within shared work budgets. Avoid adding new arrivals indefinitely or allowing independent pulses to accumulate an unlimited processing backlog. More targets can require more processing time; an uncapped victim count does not mean unlimited synchronous computation or infinite world traversal. Native visual depth, gameplay latency and multiplayer costs still need proof.
+
+Equal base damage over uncapped dense crowds makes total damage grow with crowd size. Resolve jump distance, discharge cadence and power pricing using representative packs before treating the design as balanced. Siphon/Grid and on-hit module propagation need separate explicit review.
+
+### 1 - Chain territory
+
+- **1A (recommended): all jumps stay within the turret's effective range.** No victim-count cap inside that area; a finite eligible set and one-hit rule keep a pulse finite. Range-module behavior remains understandable.
+- **1B: initial acquisition uses turret range; chaining uses a separately configurable larger radius.** Greater propagation reach, with more balance and spatial-query cost. Still a finite area, not unrestricted map traversal.
+
+### 2 - When Piercing takes over
+
+- **2A (recommended): gap bridging.** When the chain has no unused target inside ordinary jump distance, a Piercing allowance permits a longer connection. Reduce damage when that allowance is spent; subsequent ordinary jumps retain the reduced damage. Another Piercing continuation reduces it again. This is a new proposal for interpreting the requested end-of-chain effect, not an owner-selected reach rule.
+- **2B: a full-damage opening phase followed by a weaker chain phase.** Define how many ordinary jumps comprise the opening phase; Piercing then sustains the diminished continuation. This limits full-damage hops, not total victims, but its exact per-module semantics still require definition.
+
+Do not invent the bridging distance, count, damage, resource debit or shared/per-branch Piercing allocation as settled values.
+
+### Splitter recommendation
+
+Preserve the existing extra-shot allowance as a finite number of split opportunities per pulse. Try distinct targets to either side of the initial aim. If unavailable, carry unused opportunities forward along the chain and try again at later connections in that same pulse. Consuming an opportunity creates an auto-aimed side chain; it does not copy a fresh set of Splitter allowances into every child. All branches share victim reservation/hit tracking so they cannot select the same enemy simultaneously. Unused opportunities expire at pulse completion; they do not accumulate between shots. Side-chain damage should retain the relevant Splitter modifier rather than silently becoming full main-chain damage.
+
+This delivers deferred splitting without recursive branch multiplication. Fragment, Synergy and other secondary effects still need deliberate Arc mappings. The existing shared scheduler demonstrates budgeting infrastructure, not native Arc feasibility or a guaranteed FPS result.
+
+**Decision needed: chain territory 1A/1B and Piercing interpretation 2A/2B.** Installed 0.2.63.2 and deferred personal testing unchanged; no gameplay/source/package edits.
+
+
 ## C403 - Arc Emitter selected next; remaining tracks retained (2026-10-22)
 
 Owner: "We'll do all of these, including Arc Emitter. Let's do arc emitter next. Let's discuss."

@@ -1981,3 +1981,8 @@ Owner challenges the implication that only testing remains. Reconciled the curre
 ## C403 - Arc Emitter next; all C402 tracks retained (2026-10-22)
 
 Owner commits to the discussed future tracks, including Arc Emitter, and explicitly requests discussing Arc next. Record that ordering without inventing mechanics, numerical tuning, implementation approval or publication authorization. Cure simulation stays last and art stays owner-sourced. [Initial Arc contract and options](TURRET_HEAD_PROPOSALS.md#c403---arc-emitter-selected-next-remaining-tracks-retained-2026-10-22). Current build/testing unchanged.
+
+
+## C404 - Arc selections and uncapped-chain correction (2026-10-22)
+
+Owner selects C403 1A/2B/3A, explicitly rejects a total target cap, and specifies reduced-damage Piercing continuation plus auto-aimed deferred Splitter branches. Preserve that correction; do not silently restore the rejected cap or duplicate module entitlements recursively. Exact chain territory and the transition from main chain to Piercing remain unresolved; [discussion](TURRET_HEAD_PROPOSALS.md#c404---uncapped-arc-chains-and-deferred-splitter-branches-2026-10-22) records concrete alternatives and performance tradeoffs. No gameplay implementation or numerical balance approval.
