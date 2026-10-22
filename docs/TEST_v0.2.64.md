@@ -24,4 +24,4 @@ No owner-rendered, GPU-occlusion or live connected-player acceptance is claimed.
 
 ## Installation
 
-Pending final validated tag and managed installation.
+Installed from immutable `test/v0.2.64` / `7d2b925c4239f293fc765b04ae930b90ca856dfe`. All **380 source and 527 package/tag/install/archive files** match; both prior 0.2.63.2 package backups verify. Archive SHA-256: `c317bdb50f869abdcdf59e298e96f8c3517dba50e26f00c39486bf2cd9698f1e`. Local evidence: `diagnostics/v0.2.64/local-release.json`. No Workshop publication or LootLab deployment. Owner and connected-player acceptance remain pending. **Test now** after restart when available.
