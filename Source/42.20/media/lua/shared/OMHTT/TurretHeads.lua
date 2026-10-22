@@ -1,4 +1,5 @@
-local H = {}
+local H = {cache = {}}
+local configurable = {damage = {0, 2500}, range = {1, 64}, cooldown = {.1, 60}, reload = {.1, 60}, shove = {0, 100}}
 H.definitions = {
     ["Base.OMHTTTurretLobber"] = {key = "Lobber", damage = 150, range = 18, minimumRange = 6, cooldown = 5.5, reload = 4, magazine = 3, ammoCapacity = 20, weight = 8},
     ["Base.OMHTTTurretScrapshot"] = {key = "Scrapshot", ammo = "Base.ScrapMetal", damage = 320, range = 8, cone = 90, cooldown = 2, reload = 3, magazine = 10, weight = 6},
@@ -14,7 +15,23 @@ H.excluded = {Filter = true, Splitter = true, Piercing = true, Conservation = tr
 ---@nodiscard
 function H.get(item)
     if not item then return nil end
-    return H.definitions[item:getFullType()]
+    local base = H.definitions[item:getFullType()]
+    if not base then return nil end
+    local cached = H.cache[base.key]
+    if not cached then
+        cached = {}
+        for key, value in pairs(base) do cached[key] = value end
+        H.cache[base.key] = cached
+    end
+    local settings = SandboxVars.OMHTurretsTraps or {}
+    for key, bounds in pairs(configurable) do
+        if base[key] and (key ~= "range" or not base.rotary) then
+            local suffix = string.upper(string.sub(key, 1, 1)) .. string.sub(key, 2)
+            local value = settings[base.key .. suffix]
+            cached[key] = type(value) == "number" and math.max(bounds[1], math.min(bounds[2], value)) or base[key]
+        end
+    end
+    return cached
 end
 
 ---@param item InventoryItem? Head

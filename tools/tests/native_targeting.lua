@@ -36,7 +36,7 @@ return function(player, controller)
     end
     local root = {playerSource = source, playerEvent = "native:targeting:" .. tostring(getTimestampMs())}
     for i = 1, 12 do H.hit(player, root, "Scrapshot", 1 / 8) end
-    assert(#sent == 8 and root.playerBudget[player:getUsername()].used == 8, "Native player volley cap failed")
+    assert(#sent == 8 and root.playerBudget[player:getUsername()].used == 32, "Native player volley cap failed")
     local total, wounds = 0, 0
     for i = 1, #sent do
         local packet = sent[i]
@@ -47,7 +47,7 @@ return function(player, controller)
         assert(limb == BodyPartType.ForeArm_L or limb == BodyPartType.ForeArm_R
             or limb == BodyPartType.UpperLeg_L or limb == BodyPartType.UpperLeg_R, "Invalid native wound limb")
     end
-    assert(total <= 8 and wounds <= 1, "Native injury budget/wound roll exceeded")
+    assert(total <= 32 and wounds <= 1, "Native injury budget/wound roll exceeded")
     sendServerCommand = send
     options:putOption("PVP", tostring(pvp))
     options:putOption("SafetySystem", tostring(safetySystem))

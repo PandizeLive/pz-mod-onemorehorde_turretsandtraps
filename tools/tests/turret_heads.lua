@@ -5,8 +5,9 @@ local M = require("OMHTT/TurretModules")
 local savedSettings = SandboxVars.OMHTurretsTraps
 SandboxVars.OMHTurretsTraps = {}
 local function head(name)
+    local data = {}
     return {getFullType = function() return "Base.OMHTTTurret" .. name end,
-        getCondition = function() return 100 end}
+        getCondition = function() return 100 end, getModData = function() return data end}
 end
 local ballista, bat, blades = head("Ballista"), head("RotaryBat"), head("RotaryBlades")
 local stats = S.resolve({head = ballista, active = {}, powerLoad = 0})
@@ -69,7 +70,7 @@ function origin:getMovingObjects()
 end
 local object = {getSquare = function() return origin end, hasModData = function() return true end,
     getModData = function() return {OMHTTTurret = state} end}
-local battery = {charge = 1, getCondition = function() return 100 end}
+local battery = {charge = 1, getCondition = function() return 100 end, getModData = function() return data end}
 battery.data = {}
 function battery:getModData() return self.data end
 function battery:getCurrentUsesFloat() return self.charge end
@@ -160,10 +161,10 @@ check(damage == 0 and cuts == 0, "Rotary injury exempts dead and protected playe
 R.injure(player, false, now)
 now = now + 1000
 R.injure(player, true, now)
-check(damage == 2 and pain == 0 and cuts == 0, "Bat injury and cross-head guard")
+check(damage == 4 and pain == 0 and cuts == 0, "Bat injury and cross-head guard")
 now = now + 1000
 R.injure(player, true, now)
-check(cuts == 1 and damage == 6, "Reduced blade damage and rolled cut resume after shared injury guard")
+check(cuts == 1 and damage == 12, "Reduced blade damage and rolled cut resume after shared injury guard")
 getTimestampMs, BodyPartType = oldTime, oldParts
 W.valid, W.contents, W.near = oldValid, oldContents, oldNear
 getCell, getGameTime, Clock.now, Combat.clearLane, Effects.sound = oldCell, oldGameTime, oldClock, oldLane, oldSound

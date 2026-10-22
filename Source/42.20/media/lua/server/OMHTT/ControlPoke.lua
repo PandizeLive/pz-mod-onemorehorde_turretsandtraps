@@ -67,6 +67,7 @@ function P.step(object, state)
         entry.victims = requests
         state.powerSource = nil
         P.visual(object, state, true)
+        require("OMHTT/ControlAudio").emit(object, "poke")
     end
     if not entry.strike or now < entry.strike then return end
     entry.strike = nil

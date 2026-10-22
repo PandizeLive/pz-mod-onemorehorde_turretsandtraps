@@ -1,5 +1,5 @@
 {
-    "Tooltip_OMHTT_BedSpikes": "Crafts two independent spike tiles. Place two together, or one remaining tile alone. Each fall wears only the landing tile. Walk safely; running risks scratches and sprinting risks a fall. Free ten-second repair; five-second pickup per tile.",
+    "Tooltip_OMHTT_BedSpikes": "Floor spikes. Walk safely; running risks scratches and sprinting risks a fall. Repair: one plank and a hammer, 4 seconds. Place/pick up: 2 seconds; condition retained.",
     "Tooltip_OMHTT_PortableBarrier": "Right-click the crafted item and choose Place Trap. Placement consumes one finished barrier and grants no XP.",
     "Tooltip_OMHTT_BarrierPack": "Contains five Spike Barriers. Unpack in the Crafting menu. Bundled encumbrance is reduced by 67 percent.",
     "Tooltip_OMHTT_ReinforcedBarrier": "Right-click the crafted item and choose Place Trap.",

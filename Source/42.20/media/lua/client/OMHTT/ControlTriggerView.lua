@@ -55,7 +55,7 @@ function V.render()
                             local tile=cell:getGridSquare(math.floor(wx),math.floor(wy),state.z)
                             if not tile or not tile:isCanSee(index) then break end
                             local ex,ey=screen(wx,wy,state.z+.32,index)
-                            canvas:drawLine(nil,sx,sy,ex,ey,1,.3,1,1,1)
+                            canvas:drawLine(nil,sx,sy,ex,ey,2,.8,state.active and 1 or .15,state.active and .15 or 1,.15)
                             sx,sy=ex,ey
                         end
                     elseif state.kind=="Lever" then

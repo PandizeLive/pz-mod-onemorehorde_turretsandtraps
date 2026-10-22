@@ -13,7 +13,7 @@ function UI.triggerSettings(page)
     for i=1,#settings do primary[settings[i].name]=true end
     for i=#settings,1,-1 do
         local name=settings[i].name
-        local common=name and name:gsub("^OMHTurretsTraps%.TrapsTrigger", "OMHTurretsTraps.Trigger")
+        local common=name and name:gsub("^OMHTurretsTraps%.Traps", "OMHTurretsTraps.")
         if common~=name and primary[common] then table.remove(settings,i) end
     end
     return page
@@ -21,10 +21,18 @@ end
 local groups = {
     {"Sandbox_Title_OMHTurretsTraps_Operation", {"PotatoTurret", "PotatoHealth", "IdleSweepSpeed", "TurretPlayerDamageMultiplier", "TurretPlayerWoundMultiplier"}},
     {"Sandbox_Title_OMHTurretsTraps_Storage", {"PotatoAmmoCapacity", "PotatoModuleCapacity", "PotatoMagazineCapacity"}},
-    {"Sandbox_Title_OMHTurretsTraps_Combat", {"PotatoDamage", "PotatoCriticalChance", "PotatoCriticalDamage", "PotatoCooldown", "PotatoReloadTime", "PotatoRange", "PotatoTurnSpeed", "PotatoProjectileSpeed", "PotatoKnockdownChance", "PotatoSplashPercent", "PotatoSplashRadius"}},
+    {"Sandbox_Title_OMHTurretsTraps_Potato", {"PotatoDamage", "PotatoCriticalChance", "PotatoCriticalDamage", "PotatoCooldown", "PotatoReloadTime", "PotatoRange", "PotatoTurnSpeed", "PotatoProjectileSpeed", "PotatoKnockdownChance", "PotatoSplashPercent", "PotatoSplashRadius"}},
     {"Sandbox_Title_OMHTurretsTraps_Audio", {"PotatoHearingRadius", "PotatoPlaybackVolume"}},
     {"Sandbox_Title_OMHTurretsTraps_Power", {"PotatoRequirePower", "PotatoBatteryPercentPerShot", "FirearmBatteryMultiplier", "ScrapshotBatteryPercent", "PotatoGeneratorFuelPerShot", "ModulePowerBonus", "BallistaBatteryPercent", "RotaryBatteryHours"}},
     {"Sandbox_Title_OMHTurretsTraps_Firearms", {"FirearmTurrets", "FirearmAmmoCapacity", "FirearmAimingLevel", "FirearmAccuracyMultiplier", "FirearmRangeAccuracy", "PrecisionRangeAccuracy", "FirearmDamageMultiplier", "FirearmRangeMultiplier", "FirearmReloadMultiplier", "FirearmRateMultiplier", "FirearmCycleMultiplier", "FirearmTurnSpeed"}},
+    {"Sandbox_Title_OMHTurretsTraps_Standby", {"TurretStandbyEnabled", "TurretIdleSeconds", "TurretWakeSeconds", "TurretStateIndicator"}},
+    {"Sandbox_Title_OMHTurretsTraps_PlayerContact", {"FriendlyPlayerDamageMultiplier", "FriendlyPlayerWoundMultiplier", "HostilePlayerDamageMultiplier", "HostilePlayerWoundMultiplier"}},
+    {"Sandbox_Title_OMHTurretsTraps_Ballista", {"BallistaDamage", "BallistaRange", "BallistaCooldown", "BallistaReload"}},
+    {"Sandbox_Title_OMHTurretsTraps_Scrapshot", {"ScrapshotDamage", "ScrapshotRange", "ScrapshotCooldown", "ScrapshotReload"}},
+    {"Sandbox_Title_OMHTurretsTraps_Lobber", {"LobberDamage", "LobberRange", "LobberCooldown", "LobberReload"}},
+    {"Sandbox_Title_OMHTurretsTraps_RotaryBat", {"RotaryBatDamage", "RotaryBatShove"}},
+    {"Sandbox_Title_OMHTurretsTraps_RotaryBlades", {"RotaryBladesDamage", "RotaryBladesShove"}},
+
 }
 
 local moduleGroups = {
@@ -92,8 +100,20 @@ function UI.attach(panel)
         sections = {
             {"Sandbox_Title_OMHTurretsTraps_Barrier", {"SpikeBarrier", "SpikeBarrierDamage", "ReinforcedBarrierDamage", "SpikeBarrierHealth", "ReinforcedBarrierHealthMultiplier", "SpikeBarrierScratchChance"}},
             {"Sandbox_Title_OMHTurretsTraps_Beds", {"BedSpikes", "BedDamage", "BedReinforcedDamage", "BedHealth", "BedReinforcedHealth", "BedWear", "BedTripChance", "BedRecoverySeconds"}},
-            {"Sandbox_Title_OMHTurretsTraps_Barbs", {"BarbSections", "BarbWire", "BarbDamage", "BarbInterval", "BarbMovementDivisor"}},
+            {"Sandbox_Title_OMHTurretsTraps_BarbedPanel", {"BarbSections"}},
+            {"Sandbox_Title_OMHTurretsTraps_ConcertinaWire", {"BarbWire"}},
+            {"Sandbox_Title_OMHTurretsTraps_Barbs", {"BarbDamage", "BarbInterval", "BarbMovementDivisor"}},
             {"Sandbox_Title_OMHTurretsTraps_PlayerContact", {"BedScratchChance", "BedSprintTripChance"}},
+        }
+    elseif panel.controls["OMHTurretsTraps.ControllerRange"] or panel.controls["OMHTurretsTraps.TrapsControllerRange"] then
+        local prefix = panel.controls["OMHTurretsTraps.ControllerRange"] and "" or "Traps"
+        sections = {
+            {"Sandbox_Title_OMHTurretsTraps_Controller", {prefix .. "ControllerRange"}},
+            {"Sandbox_Title_OMHTurretsTraps_Laser", {prefix .. "LaserRange", prefix .. "TriggerLaserConsumption"}},
+            {"Sandbox_Title_OMHTurretsTraps_Button", {prefix .. "TriggerButtonConsumption"}},
+            {"Sandbox_Title_OMHTurretsTraps_Lever", {prefix .. "TriggerLeverConsumption"}},
+            {"Sandbox_Title_OMHTurretsTraps_Plate", {prefix .. "TriggerPlateConsumption"}},
+            {"Sandbox_Title_OMHTurretsTraps_TriggerAudio", {prefix .. "DeviceSoundVolume"}},
         }
     elseif not panel.controls["OMHTurretsTraps.PotatoTurret"] then
         return panel

@@ -2,6 +2,14 @@
 
 2026-10-21. Owner reports a completed play session with remaining audio, tether/trigger rendering, Connections, tooltip and balance issues. This is an audit and requested local sound audition, **not approval for the next gameplay patch**. Installed 0.2.61 and its immutable test tag are unchanged. Live two-client PvP acceptance is still unproven.
 
+## C393 — complete recap approved (2026-10-21)
+
+Owner says "Approved" to the recap after C392. Implement the recorded audio, standby, tether, trigger, Controller UI/range, player-damage, tooltip, Sandbox and rarity-art scope. Keep implementation verification distinct from rendered or connected-client acceptance. No further approval is needed for this patch.
+
+## C393 implementation
+
+The approved work is implemented in [0.2.62](PATCH_v0.2.62.md). [Verification and owner checklist](TEST_v0.2.62.md) separate automated/native evidence from rendered and connected-client acceptance. Existing Horde Night gates and independent package boundaries remain. The tether uses cached native models with bounded segments, not vehicle/rope physics. No final artwork was generated.
+
 ## Evidence
 
 ### C392 — standby scope and indicator selected (2026-10-21)
@@ -182,3 +190,13 @@ All 62 source item definitions were enumerated; all referenced static Tooltip ke
 | OMHTTModuleSynergy | Tooltip_OMHTT_ModuleSynergy | Dynamic module footer; shared defaults/stack/rarity audit |
 | OMHTTModuleMartyrdom | Tooltip_OMHTT_ModuleMartyrdom | Dynamic module footer; shared defaults/stack/rarity audit |
 | OMHTTModuleTack | Tooltip_OMHTT_ModuleTack | Dynamic module footer; shared defaults/stack/rarity audit |
+
+## C393 follow-up: audio balance (2026-10-21)
+
+Owner explicitly requests balanced audio before installation. Production playback gains now distinguish high-priority wake/impact cues from quieter laser transitions, reel, shutdown and pull. Owner WAV bytes remain unchanged. Measurement uses 50 ms windows with an ungained -50 dBFS active gate; native captures are at one metre/default FMOD parameters. This is a reproducible relative-level check, not a claim of perceived in-game loudness or clipping-free simultaneous playback.
+
+- Owner clip gains: reel 0.38, laser detect 0.38, laser clear 0.60, turret wake 0.65, turret sleep 0.50.
+- Native cue gains: launch 0.80, impact 0.70, pull 0.35, reset/switch 1.00, Poke/rotary 0.65.
+- Laser active-window RMS differs by 0.48 dB after adjustment; wake is about 3 dB above laser and 8 dB above reel/shutdown. Single-cue peaks retain at least 3 dB headroom at the default device-volume multiplier. Native switch/reset stay at their already quiet native level; no blanket amplification.
+- Global Sandbox volume multiplies the mix, including mute; source normalization and zombie hearing/attraction are unchanged.
+- `tools/measure_device_audio.py` reads actual shipped gains and writes local diagnostics plus `art/DEVICE_AUDIO_BALANCED.html`. Native preview captures are not distributed. An in-game listen with multiple devices and normal combat remains required.

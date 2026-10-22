@@ -215,6 +215,10 @@ function Panel:refresh()
     if not power and contents.head then status = "NoPower" end
     if contents.head and contents.head:getCondition() <= 0 then status = "NoHead" end
     if not T.isOn(T.state(self.object)) then status = "Off" end
+    local standby = T.state(self.object).standby
+    if status == "Ready" and (standby == "asleep" or standby == "waking") then
+        status = standby == "asleep" and "Asleep" or "Waking"
+    end
     self.status = status
     local response = Search and Search.results[self.object]
     if response and self.searchResponse ~= response then
@@ -266,7 +270,7 @@ function Panel:refresh()
         self.moduleEffects = self.moduleEffects .. " | " .. getText("UI_OMHTT_ImprovisedStatus",
             string.format("%.1f", M.profile(state, contents, true).range))
     end
-    self.fireButton:setEnable(status == "Ready")
+    self.fireButton:setEnable(status == "Ready" or status == "Asleep" or status == "Waking")
     local capacity = stats.modules
     self.rows = math.max(4, math.ceil(math.max(contents.modules, capacity) / 4))
     self.hasLockedSlots = capacity < 16

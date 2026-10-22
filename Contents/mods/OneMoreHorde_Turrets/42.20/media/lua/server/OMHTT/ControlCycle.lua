@@ -43,7 +43,11 @@ function C.request(object)
     local stats = T.cycleConfig(contents)
     if not world.power(object, contents, stats) or (not stats.rotary and contents.ammo == 0) then return false end
     local turn = 360000 / math.max(1, T.turnSpeed(contents.head, contents.active))
-    C.pending[object] = {head = contents.head, expires = Clock.now() + turn + (stats.reload or 0) + (stats.cooldown or 0) + 5000, rotary = stats.rotary}
+    local wake = 0
+    if contents.active.MotionDetection then
+        wake = require("OMHTT/TurretModules").option("TurretWakeSeconds", 1, 0, 10) * 1000
+    end
+    C.pending[object] = {head = contents.head, expires = Clock.now() + turn + wake + (stats.reload or 0) + (stats.cooldown or 0) + 5000, rotary = stats.rotary}
     if not T.isOn(T.state(object)) then
         world.applyPower(object, true)
     end
@@ -104,7 +108,7 @@ function C.step(object, on, valid)
                 local result = require("OMHTT/ControlWorld").fireSignal(object)
                 if result == "Fired" or result == "Misfire" then
                     C.fired(object)
-                elseif result ~= "Turning" and result ~= "Aiming" and result ~= "Reloading" and result ~= "Cooling" then
+                elseif result ~= "Waking" and result ~= "Turning" and result ~= "Aiming" and result ~= "Reloading" and result ~= "Cooling" then
                     C.cancel(object)
                 end
             elseif auto and auto.status == "no-target" then

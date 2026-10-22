@@ -140,6 +140,7 @@ lagged:close()
 check(stops[#sounds], "Early Collect stops its pending tick")
 local rarity = require("OMHTT/TurretRarity")
 local anchorOptions = {RarityWeightAbundant=20, RarityWeightCommon=18, RarityWeightUncommon=14, RarityWeightRare=10, RarityWeightEpic=6, RarityWeightLegendary=3, RarityWeightMythic=1}
+SandboxVars.OMHTurretsTraps = anchorOptions
 rarity.refresh(anchorOptions)
 local kinds = {"Regulator", "Filter", "Firing", "Piercing", "Impact", "Execute", "Synergy"}
 for i = 1, #kinds do
@@ -156,6 +157,7 @@ for i = 1, #kinds do
     check(not stops[#sounds] and stops[#sounds - 1], "Opening another pack preserves the completed reveal tail")
     replacement:close()
 end
+SandboxVars.OMHTurretsTraps = settings
 rarity.refresh(settings)
 local staggered = Reveal.show(player, rewards)
 local base = testMillis

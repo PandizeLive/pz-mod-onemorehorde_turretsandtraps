@@ -39,7 +39,7 @@ function C.start(state, detected, pulse)
     end
     state.sequence = state.sequence + 1
     state.revision = state.revision + 1
-    state.phase, state.distance, state.debt = "out", 0, 0
+    state.phase, state.distance, state.debt, state.backTime = "out", 0, 0, 0
     return true
 end
 
@@ -95,6 +95,7 @@ function C.step(state, elapsed, cast, hit, pull)
                 if pull then pull(state) end
             end
         elseif state.phase == "back" then
+            state.backTime = (state.backTime or 0) + dt
             state.distance = math.max(0, state.distance - state.returnSpeed * dt)
             if state.distance == 0 then
                 state.phase, state.resetLeft = "reset", state.resetTime
@@ -140,7 +141,7 @@ function C.snapshot(state, id, serial, session)
     return {id = id, serial = serial, session = session or "1", sequence = state.sequence, phase = state.phase,
         x = state.x, y = state.y, z = state.z, dx = state.dx, dy = state.dy,
         distance = state.distance, range = state.range, speed = state.speed,
-        returnSpeed = state.returnSpeed}
+        returnSpeed = state.returnSpeed, height = state.phase == "back" and math.max(.025, .3 - 3 * (state.backTime or 0) ^ 2) or .3}
 end
 
 ---@param previous table? Previous accepted message
@@ -151,6 +152,7 @@ function C.accept(previous, message)
     if type(message.session) ~= "string" or #message.session > 16
         or not string.match(message.session, "^%d+$") then return false end
     if type(message.id) ~= "string" or #message.id > 80 or not string.match(message.id, "^control%-%d+$") then return false end
+    if message.height ~= nil and (not C.finite(message.height) or message.height < 0 or message.height > 1) then return false end
     local fields = {"serial", "sequence", "x", "y", "z", "dx", "dy", "distance", "range", "speed", "returnSpeed"}
     for i = 1, #fields do
         if not C.finite(message[fields[i]]) then return false end
@@ -178,7 +180,7 @@ end
 function C.position(message, elapsed, previousDistance)
     local distance = message.distance
     if previousDistance then
-        local fraction = math.max(0, math.min(1, elapsed / .1))
+        local fraction = math.max(0, math.min(1, elapsed / (message.phase == "out" and .025 or .1)))
         distance = previousDistance + (distance - previousDistance) * fraction
     end
     return message.x + message.dx * distance, message.y + message.dy * distance

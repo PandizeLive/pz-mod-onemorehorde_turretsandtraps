@@ -1,3 +1,5 @@
+local savedRange = SandboxVars.OMHTurretsTraps.ControllerRange
+SandboxVars.OMHTurretsTraps.ControllerRange = 20
 local C = require("OMHTT/ControlWorld")
 local A = require("OMHTT/ControlAccess")
 local Action = require("OMHTT/ControlAction")
@@ -316,3 +318,5 @@ W.applyPower, W.fire, W.contents, W.power = oldPower, oldFire, oldWorldContents,
 Faction, testMode, testMillis = savedFaction, savedMode, oldTime
 
 Power.trigger = oldTriggerPower
+
+SandboxVars.OMHTurretsTraps.ControllerRange = savedRange

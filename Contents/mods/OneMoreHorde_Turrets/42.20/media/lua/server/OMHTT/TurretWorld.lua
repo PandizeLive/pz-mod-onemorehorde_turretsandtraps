@@ -505,6 +505,7 @@ function W.fire(player, object, target, signal)
     if require("OMHTT/TurretHeads").get(contents.head) and T.cycleConfig(contents).rotary then
         return require("OMHTT/TurretRotary").start(player, object, signal)
     end
+    if not player and target and not require("OMHTT/TurretStandby").step(object, contents, target) then return "Waking" end
     if contents.ammo == 0 then return "Empty" end
     local stats = T.cycleConfig(contents)
     local cycle, status = T.cycle(contents, Clock.now(), stats)

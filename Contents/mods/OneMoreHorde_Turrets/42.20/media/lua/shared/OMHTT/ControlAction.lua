@@ -63,7 +63,7 @@ function Action:isValid()
             and ((self.object == self.target and A.near(self.character, self.target))
                 or require("OMHTT/ControlRemote").valid(self.character, self.object, self.target))
     elseif self.command == "BeamRange" then
-        return state.kind == "Laser" and type(self.value) == "number" and self.value == math.floor(self.value) and self.value >= 1 and self.value <= 10
+        return false
     elseif self.command == "TetherEnabled" then
         return state.kind == "Tether" and type(self.value) == "boolean"
     elseif self.command == "ClearInputs" then
@@ -136,9 +136,6 @@ function Action:complete()
         return require("OMHTT/TurretWorld").setFacing(self.target, self.value)
     elseif self.command == "Link" then
         return W.link(self.object, self.target, self.value)
-    elseif self.command == "BeamRange" then
-        state.beamRange = self.value
-        require("OMHTT/ControlSensor").step(self.object, state)
     elseif self.command == "TetherEnabled" then
         state.enabled = self.value
     elseif self.command == "ClearInputs" then
@@ -154,6 +151,9 @@ function Action:complete()
     elseif self.command == "Pickup" then
         return W.pickup(self.character, self.object)
     end
+    if self.command == "Pulse" or self.command == "Toggle" then
+        require("OMHTT/ControlAudio").emit(self.object, "switch")
+    end
     W.publish(self.object)
     return true
 end
@@ -167,9 +167,6 @@ end
 
 ---@return nil
 function Action:perform()
-    if (self.command == "Pulse" or self.command == "Toggle") and not isServer() then
-        self.object:getSquare():playSound("LightSwitch")
-    end
     ISBaseTimedAction.perform(self)
 end
 

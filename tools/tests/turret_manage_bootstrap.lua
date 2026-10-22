@@ -104,7 +104,7 @@ function ISScrollingListBox:addItem(name, value)
     self.items[#self.items + 1] = {text = name, item = value, index = #self.items + 1}
 end
 ISInventoryItem = {renderItemIcon = function() end}
-ISInventoryPane = {}
+ISInventoryPane = {drawItemDetails = function() end}
 ISInventoryTransferAction = {
     canMergeAction = function(self, other) return self ~= other and other.srcContainer == self.srcContainer and other.destContainer == self.destContainer end,
     isValid = function(self) return self.srcContainer:contains(self.item) end,
@@ -173,3 +173,5 @@ function ISPanel:setMaxDrawHeight(value) self.maxDrawHeight=value end
 function ISPanel:clearMaxDrawHeight() self.maxDrawHeight=nil end
 function ISButton:setImage(value) self.image=value end
 function ISPanel:drawTextureScaled(texture,x,y,w,h) end
+
+ISInventoryItem = ISInventoryItem or {renderItemIcon = function() end}

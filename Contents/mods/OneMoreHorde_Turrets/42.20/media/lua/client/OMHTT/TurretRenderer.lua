@@ -104,12 +104,18 @@ function R.animate(now)
         if state then
             local elapsed = math.min(100, math.max(0, now - (entry.lastFrame or now))) / 1000
             entry.lastFrame = now
+            local lowered = not T.isOn(state) or state.standby == "asleep" or state.standby == "disabled"
+            local goal = lowered and .18 or 0
+            local duration = state.standby == "waking" and M.option("TurretWakeSeconds", 1, 0, 10) or .25
+            local step = elapsed * .18 / math.max(.01, duration)
+            entry.lowered = entry.lowered or goal
+            entry.lowered = entry.lowered + math.max(-step, math.min(step, goal - entry.lowered))
             if isClient() then
                 local desired = state.aimDegrees or (state.facing or 0) * 22.5
                 entry.visualHeading = Aim.move(entry.visualHeading or desired, desired, elapsed * 720)
             elseif entry.profile.stats.rotary then
                 entry.visualHeading = state.aimDegrees
-            elseif T.isOn(state) and not state.facingPending and automatic and automatic.status == "no-target" and not Aim.entries[object] and entry.head and speed > 0 then
+            elseif T.isOn(state) and state.standby ~= "asleep" and state.standby ~= "waking" and not state.facingPending and automatic and automatic.status == "no-target" and not Aim.entries[object] and entry.head and speed > 0 then
                 local profile = entry.profile
                 local cone = configuredCone
                 if profile.omni then
@@ -157,8 +163,24 @@ function R.render(playerIndex)
         elseif entry.head and square:getZ() == math.floor(player:getZ()) and square:isCanSee(playerIndex) then
             local dx, dy = square:getX() - player:getX(), square:getY() - player:getY()
             if dx * dx + dy * dy <= 80 * 80 then
+                if (SandboxVars.OMHTurretsTraps or {}).TurretStateIndicator ~= false then
+                    local kind
+                    if not T.isOn(state) or state.standby == "disabled" then
+                        kind = "Dark"
+                    elseif state.standby == "asleep" or state.standby == "waking" then
+                        kind = "Amber"
+                    else
+                        kind = "Green"
+                    end
+                    if entry.indicatorKind ~= kind then
+                        entry.indicatorKind = kind
+                        entry.indicator = instanceItem("Base.OMHTTTurretState" .. kind .. "Visual")
+                    end
+                    Render3DItem(entry.indicator, square, square:getX() + .7, square:getY() + .7, square:getZ() + .28, 0)
+                end
                 local heading = R.heading(object)
                 local yaw = (360 - heading) % 360
+                local height = R.headHeight - (entry.lowered or 0)
                 local profile = G.profile(entry.head)
                 if profile then
                     local head = entry.head
@@ -171,20 +193,20 @@ function R.render(playerIndex)
                     head:setWorldXRotation(profile.roll)
                     head:setWorldYRotation(yaw)
                     head:setWorldZRotation(0)
-                    Render3DItem(entry.support, square, square:getX() + 0.5, square:getY() + 0.5, square:getZ() + R.headHeight, yaw)
+                    Render3DItem(entry.support, square, square:getX() + 0.5, square:getY() + 0.5, square:getZ() + height, yaw)
                     -- The debug-only switch reads its default outside debug mode.
                     atlas:setValue(false)
                     atlas:setDefaultToCurrentValue()
-                    Render3DItem(head, square, square:getX() + 0.5, square:getY() + 0.5, square:getZ() + R.headHeight + 0.1, -1)
+                    Render3DItem(head, square, square:getX() + 0.5, square:getY() + 0.5, square:getZ() + height + 0.1, -1)
                     R.restoreDraw()
                 elseif entry.profile.stats.rotary then
                     for arm = 0, 1 do
                         local angle = math.rad(heading + arm * 180)
                         Render3DItem(entry.head, square, square:getX() + .5 + math.cos(angle) * 1,
-                            square:getY() + .5 - math.sin(angle) * 1, square:getZ() + R.headHeight, (yaw + arm * 180) % 360)
+                            square:getY() + .5 - math.sin(angle) * 1, square:getZ() + height, (yaw + arm * 180) % 360)
                     end
                 else
-                    Render3DItem(entry.head, square, square:getX() + 0.5, square:getY() + 0.5, square:getZ() + R.headHeight, yaw)
+                    Render3DItem(entry.head, square, square:getX() + 0.5, square:getY() + 0.5, square:getZ() + height, yaw)
                 end
             end
         end

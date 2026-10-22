@@ -8,6 +8,19 @@ local C = require("OMHTT/ControlDefinitions")
 local Groups = require("OMHTT/ControlGroupUI")
 local Theme = require("OMHTT/ControlTheme")
 local Graph = ISPanel:derive("OMHTTControlGraph")
+---@param text string Label
+---@param width number Pixel limit
+---@return string label
+local function fit(text, width)
+    local manager = getTextManager()
+    if manager:MeasureStringX(UIFont.Small, text) <= width then return text end
+    local length = #text
+    while length > 0 and manager:MeasureStringX(UIFont.Small, string.sub(text, 1, length) .. "...") > width do
+        length = length - 1
+    end
+    return string.sub(text, 1, length) .. "..."
+end
+
 local conditionColor = {r = .45, g = .7, b = .45, a = 1}
 
 ---@param panel ISPanel Controller
@@ -84,7 +97,7 @@ end
 ---@return nil
 function Graph.menu(panel, object, direct)
     local state, links = A.state(object), {}
-    if not state then return end
+    if not state or state.kind == "Controller" then return end
     for i = 1, #panel.graph.edges do
         local edge = panel.graph.edges[i]
         local source, target = panel.graph.triggers[edge.input].object, panel.graph.defenses[edge.output].object
@@ -92,16 +105,24 @@ function Graph.menu(panel, object, direct)
             links[#links + 1] = {source = source, target = target, other = source == object and target or source}
         end
     end
-    if #links == 0 then return end
     if direct and #links == 1 then
         Graph.disconnect(panel, links[1].source, links[1].target)
         return
     end
     local menu = ISContextMenu.get(panel.player:getPlayerNum(), getMouseX(), getMouseY())
-    menu:addOption(getText("UI_OMHTT_All"), panel, Graph.disconnectAll, links)
+    if #links > 0 then
+        menu:addOption(getText("UI_OMHTT_All"), panel, Graph.disconnectAll, links)
+    end
     for i = 1, #links do
         local link = links[i]
         menu:addOption(getText("UI_OMHTT_DisconnectNamed", U.name(link.other)), panel, Graph.disconnect, link.source, link.target)
+    end
+    local assign = menu:addOption(getText("UI_OMHTT_AssignGroup"), nil)
+    local submenu = ISContextMenu:getNew(menu)
+    menu:addSubMenu(assign, submenu)
+    for i = 1, #panel.graph.groups do
+        local group = panel.graph.groups[i]
+        submenu:addOption(group.name, panel, Groups.request, "DeviceMove", group.id, nil, nil, object)
     end
     menu:bringToTop()
 end
@@ -166,7 +187,7 @@ function Graph.refreshForPanel(panel)
     graph.textWidth = graph.width
     graph.triggers, graph.defenses, graph.positions, graph.edges, graph.markers = {}, {}, {}, {}, {}
     graph.markerByObject = {}
-    graph.rowHeight = panel.lineHeight * 3 + 26
+    graph.rowHeight = panel.lineHeight * 3 + 24
     for i = 1, #graph.items do
         local object = graph.items[i].item
         local state = A.state(object)
@@ -184,9 +205,8 @@ function Graph.refreshForPanel(panel)
                 row.subtitle = state.headType and state.headType ~= "Base" and getItemNameFromFullType(state.headType) or getText("UI_OMHTT_TurretBase")
             end
             local width = (graph.width - 88) / 2 - 29
-            row.lines = string.split(getTextManager():WrapText(UIFont.Small, row.title, width), "\n")
-            row.detail = row.subtitle and string.split(getTextManager():WrapText(UIFont.Small, row.subtitle, width), "\n") or {}
-            graph.rowHeight = math.max(graph.rowHeight, (#row.lines + #row.detail + 1) * panel.lineHeight + 26)
+            row.lines = {fit(row.title, width)}
+            row.detail = row.subtitle and {fit(row.subtitle, width)} or {}
             rows[#rows + 1] = row
             graph.positions[state.id] = #rows
         end
@@ -240,6 +260,7 @@ end
 ---@param y number Local Y
 ---@return boolean handled
 function Graph:onMouseDown(x, y)
+    y = y + self:getYScroll()
     local row, port = self:hit(x, y)
     local group = Groups.at(self, y)
     self.downX, self.downY = x, y
@@ -269,6 +290,7 @@ end
 ---@param y number Local Y
 ---@return boolean handled
 function Graph:onMouseUp(x, y)
+    y = y + self:getYScroll()
     local row = self:hit(x, y)
     local group = Groups.at(self, y)
     local moved = self.downX and math.abs(x - self.downX) + math.abs(y - self.downY) > 6
@@ -301,6 +323,7 @@ end
 ---@param y number Local Y
 ---@return boolean handled
 function Graph:onRightMouseUp(x, y)
+    y = y + self:getYScroll()
     local row = self:hit(x, y)
     if row then
         Graph.menu(self.owner, row.object)
@@ -320,23 +343,24 @@ end
 function Graph:prerender()
     local header, rowHeight = self.headerHeight, self.rowHeight
     self.addGroup:setX(self.width - self.addGroup.width - 18)
-    self.addGroup:setY(5 - self:getYScroll())
+    self.addGroup:setY(5)
     self.addGroup:setEnable(A.authorized(self.owner.player, self.owner.object))
     self:setStencilRect(0, header, self.width - 12, math.max(0, self.height - header))
     self:drawRectStatic(0, header, self.width, self.height - header, 1, .055, .055, .055)
     local half = (self.width - 88) / 2
-    local mouseY, now = self:getMouseY(), getTimestampMs()
+    local mouseY, now = self:getMouseY() + self:getYScroll(), getTimestampMs()
     self:drawRectStatic(4, header, half - 4, self.height - header, 1, .035, .035, .035)
     self:drawRectStatic(half + 74, header, half - 4, self.height - header, 1, .035, .035, .035)
     if (self.dragSource or self.dragGroup) and now >= (self.scrollAt or 0) then
         if mouseY < header + 20 then
-            self:onMouseWheel(-.2)
+            self:onMouseWheel(-0.2)
         elseif mouseY > self.height - 20 then
-            self:onMouseWheel(.2)
+            self:onMouseWheel(0.2)
         end
         self.scrollAt = now + 60
     end
-    local hovered = self:hit(self:getMouseX(), self:getMouseY())
+    local hovered = self:hit(self:getMouseX(), mouseY)
+    self.tooltip = hovered and (hovered.title .. (hovered.subtitle and " <LINE> " .. hovered.subtitle or "")) or getText("UI_OMHTT_GraphLinkHelp")
     for side = 1, 2 do
         local rows = side == 1 and self.triggers or self.defenses
         local x = side == 1 and 4 or half + 74
@@ -376,7 +400,7 @@ function Graph:prerender()
                     local fraction = maximum > 0 and math.max(0, math.min(1, health / maximum)) or 0
                     local barWidth = half - 37
                     self:drawProgressBar(textX, y + rowHeight - 17, barWidth, 6, fraction, conditionColor)
-                    self:drawText(stats and stats.label or getText("UI_OMHTT_GraphAmmoPending"), textX,
+                    self:drawText(fit(stats and stats.label or getText("UI_OMHTT_GraphAmmoPending"), barWidth), textX,
                         y + rowHeight - self.owner.lineHeight - 21, .75, .75, .75, 1, UIFont.Small)
                 end
             end
@@ -386,7 +410,7 @@ function Graph:prerender()
         local group = self.groups[i]
         self:drawRect(4, group.y, self.width - 22, group.header - 2, 1, .18, .18, .18)
         self:drawRectBorder(4, group.y, self.width - 22, group.header - 2, 1, .32, .32, .32)
-        self:drawText((self.collapsed[group.id] and "> " or "v ") .. group.name, 9, group.y + 3, .9, .9, .9, 1, UIFont.Small)
+        self:drawText((self.collapsed[group.id] and "> " or "v ") .. fit(group.name, self.width - 42), 9, group.y + 3, .9, .9, .9, 1, UIFont.Small)
     end
     for i = 1, #self.edges do
         local edge = self.edges[i]
@@ -397,16 +421,16 @@ function Graph:prerender()
         local state = A.state(source.object)
         local active = state and state.active == true
         local scroll = self:getYScroll()
-        if math.max(y1, y2) + scroll >= header and math.min(y1, y2) + scroll < self.height then
+        if not source.collapsed and not target.collapsed and math.max(y1, y2) + scroll >= header and math.min(y1, y2) + scroll < self.height then
             self:drawLine(nil, half - 3, y1, half + 76, y2, selected and 2 or 1, selected and 1 or .65,
                 active and .4 or .75, active and .9 or .75, active and .4 or .75)
         end
     end
     if self.dragSource or self.dragGroup then
         local label = self.dragSource and U.name(self.dragSource) or self.dragGroup.name
-        local x, y = self:getMouseX(), self:getMouseY() - self:getYScroll()
+        local x, y = self:getMouseX(), self:getMouseY()
         self:drawRect(x, y, math.max(0, math.min(150, self.width - x - 14)), 26, .95, .23, .23, .23)
-        self:drawText(label, x + 4, y + 4, 1, 1, 1, 1, UIFont.Small)
+        self:drawText(fit(label, math.max(0, math.min(142, self.width - x - 22))), x + 4, y + 4, 1, 1, 1, 1, UIFont.Small)
     end
     self:clearStencilRect()
     local scroll = self:getYScroll()

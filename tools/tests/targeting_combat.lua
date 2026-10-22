@@ -109,7 +109,7 @@ getCell, Combat.clearLane = old.cell, oldLane
 testMode = "client"
 check(not C.eligible(object, enemy), "Client cannot run authoritative acquisition")
 testMode = "server"
-SandboxVars.OMHTurretsTraps = {}
+SandboxVars.OMHTurretsTraps = {FriendlyPlayerDamageMultiplier = 1, HostilePlayerDamageMultiplier = 1, FriendlyPlayerWoundMultiplier = 1, HostilePlayerWoundMultiplier = 1}
 I.turret = function(player, part, amount, wound)
     shots[#shots + 1] = {player = player, part = part, amount = amount, wound = wound}
 end
@@ -175,11 +175,11 @@ check(not H.hit(enemy, root(), "RotaryBlades"), "Armor-blocked rotary contact st
 now = now + 3000
 H.hit(enemy, root(), "Lobber", .25)
 check(shots[#shots].amount == 2.5, "Explosion preserves radial falloff")
-SandboxVars.OMHTurretsTraps = {TurretPlayerDamageMultiplier = 2, TurretPlayerWoundMultiplier = 0}
+SandboxVars.OMHTurretsTraps = {TurretPlayerDamageMultiplier = 2, TurretPlayerWoundMultiplier = 0, HostilePlayerDamageMultiplier = 1}
 now = now + 3000
 H.hit(enemy, root(), "Ballista")
 check(shots[#shots].amount == 20 and shots[#shots].wound == "none", "Independent Sandbox damage/wound tuning")
-SandboxVars.OMHTurretsTraps = {}
+SandboxVars.OMHTurretsTraps = {FriendlyPlayerDamageMultiplier = 1, HostilePlayerDamageMultiplier = 1, FriendlyPlayerWoundMultiplier = 1, HostilePlayerWoundMultiplier = 1}
 settings.PVP = false
 before = #shots
 check(not H.hit(enemy, root(), "Ballista") and #shots == before, "Impact rechecks server rules after launch")
@@ -188,6 +188,20 @@ check(H.hit(enemy, root(), "Ballista") and shots[#shots].amount == 10, "SP colla
 testMode = "client"
 before = #shots
 check(not H.hit(enemy, root(), "Ballista") and #shots == before, "Client cannot originate turret injuries")
+-- C393 relationship multipliers: separate defaults and independent zero overrides.
+testMode = "server"
+settings.PVP = true
+SandboxVars.OMHTurretsTraps = {}
+now = now + 3000
+check(H.hit(enemy, root(), "Firearm") and shots[#shots].amount == 16, "Hostile default multiplies existing damage by four")
+now = now + 3000
+check(H.hit(ally, root(), "Firearm") and shots[#shots].amount == 8, "Friendly default doubles damage")
+SandboxVars.OMHTurretsTraps = {FriendlyPlayerDamageMultiplier = 0}
+now = now + 3000
+check(H.hit(enemy, root(), "Firearm") and shots[#shots].amount == 16, "Missing hostile setting never inherits friendly zero")
+SandboxVars.OMHTurretsTraps = {HostilePlayerWoundMultiplier = 0}
+now = now + 3000
+check(H.hit(enemy, root(), "Firearm") and shots[#shots].wound == "none", "Hostile wounds can independently be disabled")
 -- Strict server-to-owner injury envelope: limb-only, bounded, once per event.
 I.turret = old.injury
 local oldSpecific = getSpecificPlayer
@@ -209,7 +223,7 @@ check(amount == 4 and woundsReceived == 1, "Owner receives authoritative limb in
 message.serial, message.part = 9000001, 0
 I.receive("OMHTT_InjuryV1", "turret", message)
 check(amount == 4, "Head/non-limb messages rejected")
-message.part, message.amount = 2, 51
+message.part, message.amount = 2, 501
 I.receive("OMHTT_InjuryV1", "turret", message)
 check(amount == 4, "Over-limit network injury rejected")
 message.amount, message.id = 4, 16

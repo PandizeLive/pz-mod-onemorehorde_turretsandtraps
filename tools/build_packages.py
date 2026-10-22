@@ -31,15 +31,19 @@ def owner(path):
             return {"turrets"}
         raise ValueError("Unassigned Lua module: " + relative)
     if "/scripts/" in relative:
-        if name == "OMHTT_Controls.txt":
+        if name in {"OMHTT_Controls.txt", "OMHTT_DeviceSounds.txt", "OMHTT_DeviceVisuals.txt"}:
             return set(IDS)
         return {"traps"} if name in TRAP_SCRIPTS else {"turrets"}
     if "/AnimSets/" in relative:
+        return set(IDS)
+    if any(key in relative for key in ("/models_X/OMHTT_Tether", "/models_X/OMHTT_State", "/textures/OMHTT/State", "/textures/OMHTT/ProbeWhite")):
         return set(IDS)
     if "/textures/" in relative:
         if name in {"OMHTT_TestCube.png", "OMHTT_Foundation.png"}:
             return {"traps"}
         return {"traps"} if "Barrier" in name or "BedSpikes" in name or "ConcertinaWire" in name else {"turrets"}
+    if "/sound/OMHTT" in relative and any(key in name for key in ("Reeling", "Laser", "TurretAlert", "TurretDeactivate")):
+        return set(IDS)
     if relative.startswith("common/") or "/models_X/" in relative or "/sound/" in relative:
         return {"turrets"}
     raise ValueError("Unassigned package file: " + relative)
@@ -51,11 +55,11 @@ def sandbox(component):
     result = ["VERSION = 1,\n"]
     for match in re.finditer(r"option OMHTurretsTraps\.(\w+)\s*\{[^}]+\}", content):
         key = match[1]
-        trap = key in TRAP_OPTIONS or "Barrier" in key or key.startswith(("Bed", "Barb", "Poke"))
-        if key.startswith("Trigger") or trap == (component == "traps"):
+        trap = key in TRAP_OPTIONS or "Barrier" in key or key.startswith(("Bed", "Barb", "Poke", "Tether"))
+        if key.startswith("Trigger") or key in {"ControllerRange", "LaserRange", "DeviceSoundVolume"} or trap == (component == "traps"):
             block = match[0]
-            if component == "traps" and key.startswith("Trigger"):
-                block = block.replace("option OMHTurretsTraps.Trigger", "option OMHTurretsTraps.TrapsTrigger", 1)
+            if component == "traps" and (key.startswith("Trigger") or key in {"ControllerRange", "LaserRange", "DeviceSoundVolume"}):
+                block = block.replace("option OMHTurretsTraps." + key, "option OMHTurretsTraps.Traps" + key, 1)
             result.append(block + "\n")
     assert blocks and len(result) > 1
     return ("\n".join(result)).encode()

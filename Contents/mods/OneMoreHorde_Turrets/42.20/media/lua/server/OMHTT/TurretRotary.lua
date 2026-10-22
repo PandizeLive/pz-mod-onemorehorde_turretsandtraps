@@ -21,6 +21,8 @@ function R.start(player, object, signal)
     local stats = T.cycleConfig(contents)
     if not W.power(object, contents, stats) then return "NoPower" end
     local state = T.state(object)
+    local auto = require("OMHTT/TurretAutomation").entries[object]
+    if not player and contents.active.MotionDetection and not require("OMHTT/TurretStandby").step(object, contents, auto and auto.detectedTarget) then return "Waking" end
     state.rotaryManual = Clock.now() + 90000 / stats.motorSpeed
     return "Fired"
 end
@@ -54,6 +56,7 @@ function R.contact(entry, actor, job)
     if not require("OMHTT/PrototypeCombat").clearLane(origin, square, 2) then return end
     if require("OMHTT/ControlCombat").eligible(entry.object, actor) and M.inside(origin, actor, job.detection) then
         job.target = true
+        job.targetActor = actor
     end
     if not job.moving or not T.isOn(T.state(entry.object)) then return end
     if Clock.now() - job.at > 150 then return end
@@ -132,13 +135,16 @@ function R.step(entry, deadline)
     if not powered then
         Siphon.stop(entry)
         state.rotaryMoving, state.rotaryManual = false, nil
+        require("OMHTT/TurretStandby").step(object, contents, nil)
         entry.rotaryJob, entry.hasTarget = nil, false
         return true
     end
     local profile = M.profile(state, contents, true, stats)
     local automatic = M.detects(state, contents) and contents.active.Firing and not require("OMHTT/ControlCycle").managed(object)
     local manual = state.rotaryManual and now < state.rotaryManual
-    local wants = manual or (automatic and entry.hasTarget)
+    local standby = require("OMHTT/TurretStandby")
+    local ready = standby.step(object, contents, entry.detectedTarget, state.rotaryMoving == true)
+    local wants = manual or (automatic and entry.hasTarget and ready)
     local moving = state.rotaryMoving == true
     if moving and not wants and entry.stopAt == nil then
         local span = profile.omni and 180 or 90
@@ -158,6 +164,7 @@ function R.step(entry, deadline)
     end
     if wants and not moving then
         moving = true
+        require("OMHTT/ControlAudio").emit(object, "rotary")
         elapsed, gameHours = 0, 0
     end
     local before = entry.travel
@@ -218,6 +225,7 @@ function R.step(entry, deadline)
                 Siphon.stop(entry)
             end
             entry.hasTarget = job.target == true
+            entry.detectedTarget = job.targetActor
             local interval = M.option("DetectionInterval", .25, .1, 5)
             if contents.active.MotionDetectionEnhanced then
                 interval = math.min(interval, M.option("EnhancedDetectionInterval", .1, .05, 5))

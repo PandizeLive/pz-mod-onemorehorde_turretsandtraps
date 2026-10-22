@@ -630,6 +630,13 @@ local function verifyTurrets()
     local Stats = require("OMHTT/TurretStats")
     local savedOptions = SandboxVars.OMHTurretsTraps
     SandboxVars.OMHTurretsTraps = {}
+    -- Keep the real owner rarity configuration while isolating combat tuning.
+    for key, value in pairs(savedOptions) do
+        if string.sub(key, 1, 12) == "RarityWeight" or string.sub(key, 1, 8) == "LootRate" then
+            SandboxVars.OMHTurretsTraps[key] = value
+        end
+    end
+    require("OMHTT/TurretRarity").refresh(SandboxVars.OMHTurretsTraps)
     local powerStore = instanceItem(T.BASE):getInventory()
     local powerGun = powerStore:AddItem("Base.Pistol")
     powerStore:AddItem(T.TYPES.FiringEnhanced)
@@ -685,6 +692,7 @@ local function verifyTurrets()
     local LootDefinitions = require("OMHTT/LootDefinitions")
     for i = 1, #rarityAnchors do
         raritySettings.LootRateRange = rarityAnchors[i] / LootDefinitions.WEIGHTS.Range
+        SandboxVars.OMHTurretsTraps = raritySettings
         Rarity.refresh(raritySettings)
         assert(Rarity.get("Range").band == i and Rarity.get("Range").surcharge == Rarity.surcharges[i], "Native custom rarity/power parity failed")
     end

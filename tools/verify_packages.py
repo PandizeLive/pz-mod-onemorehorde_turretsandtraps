@@ -12,7 +12,7 @@ OPTIONAL_TRAPS = {
     "OMHTT/ControlGraphStats": {"OMHTT/Turret", "OMHTT/TurretAmmo", "OMHTT/Firearms",
                               "OMHTT/FirearmFeed", "OMHTT/TurretVoid", "OMHTT/TurretHeads"},
     # Invoked by ControlWorld only for turret receivers.
-    "OMHTT/ControlCycle": {"OMHTT/Turret", "OMHTT/TurretClock", "OMHTT/TurretWorld", "OMHTT/TurretAutomation"},
+    "OMHTT/ControlCycle": {"OMHTT/Turret", "OMHTT/TurretClock", "OMHTT/TurretWorld", "OMHTT/TurretAutomation", "OMHTT/TurretModules"},
     # This branch requires an existing OMHTTTurret source container.
     "OMHTT/ControlTransferAction": {"OMHTT/Turret", "OMHTT/TurretTransferAction"},
     "OMHTT/ControlPanel": {"OMHTT/TurretManage"},
@@ -49,12 +49,21 @@ def main():
         assert "require=" not in info and "incompatible=" not in info, component + " is not independent"
         assert "id=" + IDS[component] + "\n" in info
         scripts = "\n".join(data.decode() for name, data in files.items() if "/scripts/" in name)
+        # Every custom world model and texture referenced by the shared visual script ships independently.
+        visuals = files["42.20/media/scripts/OMHTT_DeviceVisuals.txt"].decode()
+        for mesh in re.findall(r"mesh\s*=\s*(\w+)", visuals):
+            assert "42.20/media/models_X/" + mesh + ".x" in files, (component, mesh)
+        for texture in re.findall(r"texture\s*=\s*([\w/]+)", visuals):
+            assert "42.20/media/textures/" + texture + ".png" in files, (component, texture)
         if component == "traps":
             assert not any(name.startswith(("OMHTT/Turret", "OMHTT/Firearm"))
                            and name not in {"OMHTT/TurretBattery", "OMHTT/TurretItemState"} for name in lua)
             assert "OMHTT/ModuleLoot" not in lua and "OMHTT/PrototypeCombat" not in lua
             assert "item OMHTTTurretBase" not in scripts and "item OMHTTModuleFiring" not in scripts
-            assert not any("/models_X/" in name or "/sound/" in name for name in files)
+            allowed_models = {"OMHTT_TetherNail.x", "OMHTT_TetherCable.x", "OMHTT_StateAmber.x", "OMHTT_StateGreen.x", "OMHTT_StateDark.x"}
+            allowed_sounds = {"OMHTTReeling.wav", "OMHTTLaserCleared.wav", "OMHTTLaserDetected.wav", "OMHTTTurretAlert.wav", "OMHTTTurretDeactivate.wav"}
+            assert all(Path(name).name in allowed_models for name in files if "/models_X/" in name)
+            assert all(Path(name).name in allowed_sounds for name in files if "/sound/" in name)
             assert "OMHTurretsTraps.PotatoTurret" not in options
         else:
             assert not any(name.startswith("OMHTT/Barrier") for name in lua)
@@ -63,7 +72,7 @@ def main():
             assert "OMHTurretsTraps.SpikeBarrier" not in options
     assert not option_sets["traps"] & option_sets["turrets"], "Duplicate native Sandbox identities"
     all_options = set(re.findall(r"option\s+(\w+\.\w+)\s*\{", (ROOT / "Source/42.20/media/sandbox-options.txt").read_text()))
-    normalized_options = {name.replace(".TrapsTrigger", ".Trigger") for name in option_sets["traps"] | option_sets["turrets"]}
+    normalized_options = {name.replace(".TrapsTrigger", ".Trigger").replace(".TrapsControllerRange", ".ControllerRange").replace(".TrapsLaserRange", ".LaserRange").replace(".TrapsDeviceSoundVolume", ".DeviceSoundVolume") for name in option_sets["traps"] | option_sets["turrets"]}
     assert all_options == normalized_options, "Sandbox options lost during split"
     common = packages["traps"].keys() & packages["turrets"].keys()
     control_script = "42.20/media/scripts/OMHTT_Controls.txt"

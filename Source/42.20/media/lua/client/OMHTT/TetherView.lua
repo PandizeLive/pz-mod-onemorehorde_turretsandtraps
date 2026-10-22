@@ -1,8 +1,6 @@
 if isServer() then return end
-require("ISUI/ISPanel")
 local C = require("OMHTT/TetherCycle")
-local V = {states = {}, received = {}, from = {}}
-local canvas = nil
+local V = {states = {}, received = {}, from = {}, visuals = {}}
 
 ---@param module string Namespace
 ---@param command string Event
@@ -21,61 +19,44 @@ function V.receive(module, command, message)
     V.states[message.id], V.received[message.id] = message, getTimestampMs()
 end
 
----@param x number World coordinate
----@param y number World coordinate
----@param z number Height
----@param index number Viewport
----@return number screenX
----@return number screenY
-local function screen(x, y, z, index)
-    local zoom = getCore():getZoom(index)
-    return (IsoUtils.XToScreen(x, y, z, 0) - IsoCamera.getOffX(index)) / zoom + getPlayerScreenLeft(index),
-        (IsoUtils.YToScreen(x, y, z, 0) - IsoCamera.getOffY(index)) / zoom + getPlayerScreenTop(index)
-end
-
+---@param index number Native viewport
 ---@return nil
-function V.render()
-    local now = getTimestampMs()
+function V.render(index)
+    local player, cell = getSpecificPlayer(index), getCell()
+    if not player or not cell then return end
+    local now, budget = getTimestampMs(), 192
     for id, state in pairs(V.states) do
         if now - V.received[id] > 2000 then
-            V.states[id], V.received[id], V.from[id] = nil, nil, nil
-        end
-        if V.received[id] and state.phase ~= "idle" and now - V.received[id] <= 1000 then
-            if not canvas then
-                canvas = ISPanel:new(0, 0, getCore():getScreenWidth(), getCore():getScreenHeight())
-                canvas:initialise()
-                canvas:instantiate()
-            end
-            for index = 0, getNumActivePlayers() - 1 do
-                local player = getSpecificPlayer(index)
-                if player and math.floor(player:getZ()) == state.z then
-                    local x, y = C.position(state, (now - V.received[id]) / 1000, V.from[id])
-                    local ox, oy = screen(state.x, state.y, state.z + .3, index)
-                    local origin = getCell():getGridSquare(math.floor(state.x), math.floor(state.y), state.z)
-                    if origin and origin:isCanSee(index) then
-                        canvas:setStencilRect(getPlayerScreenLeft(index), getPlayerScreenTop(index),
-                            getPlayerScreenWidth(index), getPlayerScreenHeight(index))
-                        canvas:drawRect(ox - 4, oy - 4, 8, 8, 1, 1, 1, 1)
-                        local px, py = ox, oy
-                        local visible = true
-                        for step = 1, 24 do
-                            local t = step / 24
-                            local wx, wy = state.x + (x - state.x) * t, state.y + (y - state.y) * t
-                            local square = getCell():getGridSquare(math.floor(wx), math.floor(wy), state.z)
-                            if not square or not square:isCanSee(index) then
-                                visible = false
-                                break
-                            end
-                            local sx, sy = screen(wx, wy, state.z + .3 - math.sin(t * math.pi) * .04, index)
-                            canvas:drawLine(nil, px, py, sx, sy, 1, .8, .7, .7, .7)
-                            px, py = sx, sy
-                        end
-                        if visible and state.distance > 0 then
-                            local nx, ny = screen(x, y, state.z + .3, index)
-                            local tx, ty = screen(x - state.dx * .22, y - state.dy * .22, state.z + .3, index)
-                            canvas:drawLine(nil, tx, ty, nx, ny, 2, 1, 1, 1, 1)
-                        end
-                        canvas:clearStencilRect()
+            V.states[id], V.received[id], V.from[id], V.visuals[id] = nil, nil, nil, nil
+        elseif state.phase ~= "idle" and state.phase ~= "reset" and now - V.received[id] <= 1000
+            and math.floor(player:getZ()) == state.z
+            and (player:getX() - state.x) ^ 2 + (player:getY() - state.y) ^ 2 < 2500 then
+            local origin = cell:getGridSquare(math.floor(state.x), math.floor(state.y), state.z)
+            if origin and origin:isCanSee(index) then
+                local visual = V.visuals[id]
+                if not visual then
+                    visual = {nail = instanceItem("Base.OMHTTTrapTetherNailVisual"), cable = instanceItem("Base.OMHTTTrapTetherCableVisual")}
+                    V.visuals[id] = visual
+                end
+                local x, y = C.position(state, (now - V.received[id]) / 1000, V.from[id])
+                local height = math.max(.025, math.min(.3, state.height or .3))
+                local square = cell:getGridSquare(math.floor(x), math.floor(y), state.z)
+                local yaw = math.deg(math.atan2(state.dy, state.dx))
+                if square and square:isCanSee(index) then
+                    Render3DItem(visual.nail, square, x, y, state.z + height, yaw)
+                end
+                local distance = math.sqrt((x - state.x) ^ 2 + (y - state.y) ^ 2)
+                local segments = math.min(24, math.max(1, math.ceil(distance / .4)))
+                if distance > .01 and budget >= segments then
+                    budget = budget - segments
+                    visual.cable:setWorldScale(distance / segments)
+                    for segment = 1, segments do
+                        local t = (segment - .5) / segments
+                        local wx, wy = state.x + (x - state.x) * t, state.y + (y - state.y) * t
+                        local tile = cell:getGridSquare(math.floor(wx), math.floor(wy), state.z)
+                        if not tile or not tile:isCanSee(index) then break end
+                        local z = .3 + (height - .3) * t - math.sin(t * math.pi) * .025
+                        Render3DItem(visual.cable, tile, wx, wy, state.z + math.max(.025, z), yaw)
                     end
                 end
             end
@@ -84,6 +65,6 @@ function V.render()
 end
 
 Events.OnServerCommand.Add(V.receive)
-Events.OnPreUIDraw.Add(V.render)
-Events.OnGameStart.Add(function() V.states, V.received, V.from, canvas = {}, {}, {}, nil end)
+Events.RenderOpaqueObjectsInWorld.Add(V.render)
+Events.OnGameStart.Add(function() V.states, V.received, V.from, V.visuals = {}, {}, {}, {} end)
 return V

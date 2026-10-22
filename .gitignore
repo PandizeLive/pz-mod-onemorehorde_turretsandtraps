@@ -64,3 +64,4 @@ diagnostics/p1c1/install-stage/
 
 # Local audition embeds installed-game audio; mirror its generator only.
 /art/DEVICE_AUDIO.html
+/art/DEVICE_AUDIO_BALANCED.html

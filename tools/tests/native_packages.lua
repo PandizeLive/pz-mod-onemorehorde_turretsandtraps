@@ -7,6 +7,16 @@ local function checkPackages()
     assert(active:contains("OneMoreHorde_Traps") == expectedTraps, "Unexpected Traps dependency")
     assert(active:contains("OneMoreHorde_Turrets") == expectedTurrets, "Unexpected Turrets dependency")
     assert(not active:contains("OneMoreHorde_TurretsAndTraps"), "Retired combined ID loaded")
+    for _, suffix in pairs({"TrapTetherNail", "TrapTetherCable", "TurretStateAmber", "TurretStateGreen", "TurretStateDark"}) do
+        local visual = instanceItem("Base.OMHTT" .. suffix .. "Visual")
+        assert(visual and visual:getScriptItem():isHidden(), "Visible or missing technical visual: " .. suffix)
+        assert(ScriptManager.instance:getModelScript(visual:getWorldStaticItem()), "Unbound world visual: " .. suffix)
+    end
+    for name, gain in pairs({OMHTTReeling = .38, OMHTTLaserDetected = .38, OMHTTLaserCleared = .60, OMHTTTurretAlert = .65, OMHTTTurretDeactivate = .50}) do
+        local sound = GameSounds.getSound(name)
+        assert(sound and math.abs(sound:getRandomClip():getVolume() - gain) < .0001, "Missing or unbalanced custom cue: " .. name)
+        assert(sound:isLooped() == (name == "OMHTTReeling"), "Incorrect cue looping: " .. name)
+    end
     local items, counts = getScriptManager():getAllItems(), {}
     for i = 0, items:size() - 1 do
         local name = items:get(i):getFullName()

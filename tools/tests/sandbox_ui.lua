@@ -58,7 +58,7 @@ traps.addChild, traps.getWidth, traps.insertNewLineOfButtons = panel.addChild, p
 traps.setScrollHeight, traps.prerender = panel.setScrollHeight, function() end
 ISServerSandboxOptionsUI:createPanel(traps)
 traps:prerender()
-check(#traps.children == 4 and traps.settingNames[1] == "OMHTurretsTraps.SpikeBarrier"
+check(#traps.children == 6 and traps.settingNames[1] == "OMHTurretsTraps.SpikeBarrier"
     and traps.settingNames[2] == "OMHTurretsTraps.ReinforcedBarrierDamage"
     and traps.settingNames[9] == "OMHTurretsTraps.BedScratchChance", "Trap damage precedes durability; shared player injuries have their own final heading")
 check(#traps.joypadButtonsY == #keys, "Server editing retains controller order for all settings")

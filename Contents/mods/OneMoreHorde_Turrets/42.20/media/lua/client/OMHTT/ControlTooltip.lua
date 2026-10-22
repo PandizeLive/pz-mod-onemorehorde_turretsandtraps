@@ -2,13 +2,14 @@ if isServer() then return end
 require("ISUI/ISToolTipInv")
 local native=ISToolTipInv.render
 function ISToolTipInv:render()
+    local description = require("OMHTT/ControlItemDescription").get(self.item)
+    local original = self.item and self.item:getTooltip()
+    if description then self.item:setTooltip(nil) end
     native(self)
-    if not self.item or (ISContextMenu.instance and ISContextMenu.instance.visibleCheck) then return end
-    local D=require("OMHTT/ControlDefinitions")
-    local kind
-    for name,fullType in pairs(D.types) do if D.inputs[name] and self.item:getFullType()==fullType then kind=name; break end end
-    if not kind then return end
-    local description,color=require("OMHTT/ControlConsumption").description(kind,false)
+    if description then self.item:setTooltip(original) end
+    if not description or (ISContextMenu.instance and ISContextMenu.instance.visibleCheck) then return end
+    local color = {r = .8, g = .8, b = .8}
+    description = getTextManager():WrapText(self.tooltip:getFont(), description, 350)
     local font,spacing=self.tooltip:getFont(),self.tooltip:getLineSpacing()
     local lines=string.split(description,"\n")
     local width,height=self:getWidth(),self:getHeight()
@@ -19,7 +20,9 @@ function ISToolTipInv:render()
     self:setY(math.max(0,math.min(self:getY(),getCore():getScreenHeight()-total-1)))
     self.tooltip:setX(self:getX()); self.tooltip:setY(self:getY())
     self:drawRect(0,0,width,height,self.backgroundColor.a,self.backgroundColor.r,self.backgroundColor.g,self.backgroundColor.b)
+    self.item:setTooltip(nil)
     self.item:DoTooltip(self.tooltip)
+    self.item:setTooltip(original)
     self:setHeight(total)
     self:drawRect(0,height,width,total-height,self.backgroundColor.a,self.backgroundColor.r,self.backgroundColor.g,self.backgroundColor.b)
     self:drawRectBorder(0,0,width,total,self.borderColor.a,self.borderColor.r,self.borderColor.g,self.borderColor.b)

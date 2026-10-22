@@ -119,7 +119,7 @@ function I.receive(module, command, message)
         or type(message) ~= "table" or not P.identity(message.id) or not P.number(message.serial, 1, 1000000000000) then return end
     if command == "blast" and (not P.number(message.amount, 0, 10) or not P.number(message.chance, 0, .5)) then return end
     if command == "turret" then
-        if not P.number(message.amount, 0, 50) or not P.number(message.part, 0, 16)
+        if not P.number(message.amount, 0, 500) or not P.number(message.part, 0, 16)
             or message.part ~= math.floor(message.part)
             or (message.wound ~= "none" and message.wound ~= "scratch" and message.wound ~= "cut") then return end
         local part = BodyPartType.FromIndex(message.part)

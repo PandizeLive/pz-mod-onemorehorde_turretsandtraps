@@ -40,7 +40,7 @@ return function(player)
         after = after + part:getHealth()
         assert(not part:scratched() and not part:isCut() and not part:bleeding(), "Blunt injury added a wound")
     end
-    assert(math.abs(before - after - 2) < .0001, "Native injury throttle or local body damage failed")
+    assert(math.abs(before - after - 4) < .0001, "Native injury throttle or local body damage failed")
     E.injuryAt[player:getPlayerNum()] = nil
     local shot = {stats = stats, damage = .1, managed = true}
     assert(V.reserve(shot), "Native admission rejected")
@@ -56,5 +56,5 @@ return function(player)
     V.reset()
     E.fields, E.fieldOrder, E.buckets, E.fieldCount = {}, {}, {}, 0
     E.save()
-    print("[OMHTT-Proc] native modules=3 damage=2 wounds=none injuryGuard=passed fieldSave=passed")
+    print("[OMHTT-Proc] native modules=3 damage=4 wounds=none injuryGuard=passed fieldSave=passed")
 end

@@ -87,7 +87,17 @@ W.incoming={t={l=true,p=true}}
 W.updateInput(plate,true)
 states[lever].controller=nil
 local linked,on,valid=W.input(target,testMillis)
-check(linked and on and valid,"Another powered OR input preserves ON")
+check(linked and not on and valid,"Unpowered Lever blocks an otherwise active plate")
+states[lever].controller="c"
+W.updateInput(lever,true)
+linked,on,valid=W.input(target,testMillis)
+check(linked and on and valid,"Powered ON Lever permits another active trigger")
+states[lever].latched=false
+W.updateInput(lever,false)
+linked,on,valid=W.input(target,testMillis)
+check(linked and not on and valid,"OFF Lever blocks an active plate")
+states[lever].latched=true
+W.updateInput(lever,true)
 states[plate].controller=nil
 linked,on,valid=W.input(target,testMillis)
 check(linked and not on and valid,"Supply loss preserves links and validity for admitted receiver work")

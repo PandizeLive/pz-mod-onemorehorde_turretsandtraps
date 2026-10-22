@@ -5,6 +5,7 @@ local tooltipRender = ISToolTipInv.render
 
 ---@return nil
 function ISToolTipInv:render()
+    require("OMHTT/TurretModuleArt").apply(self.item)
     local component = self.item and T.component(self.item:getFullType())
     if component or (self.item and T.kind(self.item) == "head") then
         local old = self.item:getTooltip()

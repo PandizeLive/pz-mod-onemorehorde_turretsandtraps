@@ -48,6 +48,11 @@ function H.hit(player, options, kind, fraction)
     local settings = SandboxVars.OMHTurretsTraps or {}
     local damageScale = math.max(0, math.min(5, settings.TurretPlayerDamageMultiplier or 1))
     local woundScale = math.max(0, math.min(5, settings.TurretPlayerWoundMultiplier or 1))
+    local hostile = require("OMHTT/ControlTargeting").outsider(options.playerSource, player)
+    local relationshipDamage = settings[hostile and "HostilePlayerDamageMultiplier" or "FriendlyPlayerDamageMultiplier"]
+    local relationshipWound = settings[hostile and "HostilePlayerWoundMultiplier" or "FriendlyPlayerWoundMultiplier"]
+    damageScale = damageScale * math.max(0, math.min(10, relationshipDamage or (hostile and 4 or 2)))
+    woundScale = woundScale * math.max(0, math.min(10, relationshipWound or (hostile and 4 or 1)))
     local cap = profile.damage * damageScale
     options.playerBudget = options.playerBudget or {}
     if options.playerEvent then

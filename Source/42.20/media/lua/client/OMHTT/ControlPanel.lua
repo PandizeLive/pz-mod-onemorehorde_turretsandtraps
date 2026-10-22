@@ -33,12 +33,15 @@ end
 function Panel:scan()
     if not self.scanIndex then
         self.scanIndex, self.scanObjectIndex, self.scanResults, self.scanSelection = 0, 0, {}, {}
+        self.scanRadius = A.radius()
     end
+    local radius = self.scanRadius
+    local diameter = radius * 2 + 1
     local square, deadline = self.object:getSquare(), getTimestampMs() + 2
     if not square then return end
     for step = 1, 64 do
         local index = self.scanIndex
-        if index >= 1681 then
+        if index >= diameter * diameter then
             self.devices.items, self.devices.count = self.scanResults, #self.scanResults
             self.devices.itemheightoverride = {}
             self.devices.selected = self.scanSelection[self.selected] or 1
@@ -47,9 +50,9 @@ function Panel:scan()
             self.scanDue = getTimestampMs() + 5000
             return
         end
-        local dx, dy = math.floor(index / 41) - 20, index % 41 - 20
+        local dx, dy = math.floor(index / diameter) - radius, index % diameter - radius
         local objects
-        if dx * dx + dy * dy <= 400 then
+        if dx * dx + dy * dy <= radius * radius then
             local tile = getCell():getGridSquare(square:getX() + dx, square:getY() + dy, square:getZ())
             objects = tile and tile:getObjects()
         end
@@ -155,7 +158,7 @@ function Panel:prerender()
     if state and state.kind == "Plate" then caption = "UI_OMHTT_TriggerMode"
     elseif state and state.kind == "Lever" then caption = state.latched and "UI_OMHTT_LeverOff" or "UI_OMHTT_LeverOn"
     elseif state and state.kind == "Laser" then caption = "UI_OMHTT_BeamRange" end
-    self.trigger:setTitle(getText(caption, state and (state.kind == "Laser" and (state.beamRange or 10) or (state.trigger or "Both"))))
+    self.trigger:setTitle(getText(caption, state and (state.kind == "Laser" and A.laserRange() or (state.trigger or "Both"))))
     self.trigger:setVisible(input == true)
     self.manage:setVisible(state ~= nil and require("OMHTT/ControlDefinitions").defense(state.kind))
     self.assign:setVisible(state ~= nil and self.selected ~= self.object and host.kind == "Controller")
@@ -183,6 +186,7 @@ function Panel:prerender()
     if not self.policy.enable then
         self.policy.tooltip = A.write(self.player, state, true) and remoteReason or getText("UI_OMHTT_ControllerAccessNeeded")
     end
+    if state and state.kind == "Laser" then self.trigger:setEnable(false) end
     self.trigger.tooltip = input and require("OMHTT/ControlConsumption").description(state.kind, true) or remoteReason
     if input and state.powered ~= true then self.trigger.tooltip = self.trigger.tooltip .. " <LINE> " .. getText("UI_OMHTT_TriggerUnpowered") end
 
@@ -267,6 +271,11 @@ function Panel.open(player, object)
     panel.targeting = button(panel, 274, 300, 246, "", function(self)
         require("OMHTT/ControlTargetingUI").open(self.player, self.selected)
     end)
+    panel.controllerSettings = button(panel, 0, 0, 140, getText("UI_OMHTT_ControllerSettings"), function(self)
+        require("OMHTT/ControlGraph").select(self, self.object)
+        self.detailBody:setYScroll(0)
+    end)
+    panel.controllerSettings.tooltip = getText("UI_OMHTT_ControllerSettings")
     panel.closeButton = button(panel, panel.width - 40, 6, 28, "X", Panel.close)
     require("OMHTT/ControlPanelLayout").create(panel)
     if A.state(object).kind == "Controller" then
@@ -308,6 +317,7 @@ function Panel:showStockpile(visible)
     self.devices:setVisible(false)
     self.graph:setVisible(not self.stockPage)
     self.mapView:setVisible(not self.stockPage)
+    self.controllerSettings:setVisible(not self.stockPage)
     self.batterySlot:setVisible(not self.stockPage)
     self.stockButton:setTitle(getText(self.stockPage and "UI_OMHTT_StockpileBack" or "UI_OMHTT_OpenStockpile"))
     self.stockButton:setY(self.stockPage and self.height - 42 or self.stockButtonY)

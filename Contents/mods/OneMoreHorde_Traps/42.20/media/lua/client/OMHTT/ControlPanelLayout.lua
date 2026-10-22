@@ -91,6 +91,10 @@ function L.arrange(panel)
     local detailHeight = math.min(h * 15 + 158, math.max(100, bottom - y - toolbar - 100))
     local mapHeight = math.max(64, bottom - y - toolbar - detailHeight - 8)
     panel.mapY = y
+    local captionWidth = getTextManager():MeasureStringX(UIFont.Small, getText("UI_OMHTT_ControllerSettings")) + 16
+    place(panel.controllerSettings, panel.detailX + centerWidth - captionWidth, y, captionWidth)
+    panel.controllerSettings:setHeight(toolbar - 2)
+    panel.controllerSettings:setVisible(true)
     local mapTop = y + toolbar
     place(panel.mapView, panel.detailX, mapTop, centerWidth)
     panel.mapView:setHeight(mapHeight)
@@ -225,7 +229,7 @@ function L.draw(panel, host, state)
     local textX = panel.controlWidth / 2 + 10
     panel:setStencilRect(textX, panel.equipmentY + h + 10, panel.controlWidth / 2 - 32, h * 3 + 8)
     panel:drawText(getText(power), textX, panel.equipmentY + h + 10, .85, .85, .85, 1, UIFont.Small)
-    panel:drawText(getText("UI_OMHTT_ControllerRange"), textX, panel.equipmentY + h * 2 + 12, .7, .7, .7, 1, UIFont.Small)
+    panel:drawText(getText("UI_OMHTT_ControllerRange", A.radius()), textX, panel.equipmentY + h * 2 + 12, .7, .7, .7, 1, UIFont.Small)
     panel:clearStencilRect()
     Theme.section(panel, panel.detailX, panel.mapY, panel.mapView.width,
         panel.mapView.y + panel.mapView.height - panel.mapY, h + 8, getText("UI_OMHTT_Map"))
@@ -280,7 +284,7 @@ function L.drawDetails(panel, host, state)
     body:setStencilRect(x, hintY + scroll, width, h * 2)
     local hint = getText(panel.graph.notice or "UI_OMHTT_GraphConnectHint")
     if not panel.graph.notice and state.kind == "Controller" then
-        hint = getText("UI_OMHTT_ControllerRange")
+        hint = getText("UI_OMHTT_ControllerRange", A.radius())
     elseif panel.linkSource then
         hint = getText("UI_OMHTT_SelectedInput", U.name(panel.linkSource))
     end

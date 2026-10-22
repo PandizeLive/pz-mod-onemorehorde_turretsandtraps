@@ -210,7 +210,8 @@ public final class KahluaCheck {
             {"OMHTT/BarbContact", base + "shared/OMHTT/BarbContact.lua"},
             {"OMHTT/BarbMovement", base + "shared/OMHTT/BarbMovement.lua"},
             {"OMHTT/DefenseMotion", base + "shared/OMHTT/DefenseMotion.lua"},
-            {"OMHTT/DefenseEffects", base + "shared/OMHTT/DefenseEffects.lua"},
+            { "OMHTT/DefenseEffects", base + "shared/OMHTT/DefenseEffects.lua"},
+            {"OMHTT/ControlAudio", base + "shared/OMHTT/ControlAudio.lua"},
             {"OMHTT/DefenseCombatServer", base + "server/OMHTT/DefenseCombatServer.lua"},
             {"OMHTT/DefenseCombatClient", base + "client/OMHTT/DefenseCombatClient.lua"},
             {"OMHTT/Damage", base + "server/OMHTT/Damage.lua"},
@@ -318,6 +319,7 @@ public final class KahluaCheck {
             {"_", "tools/tests/turret_stats.lua"},
             {"_", "tools/tests/turret_audio.lua"},
             {"_", "tools/tests/turret_manage_bootstrap.lua"},
+            {"OMHTT/TurretModuleArt", base + "client/OMHTT/TurretModuleArt.lua"},
             {"OMHTT/ControlTargetingUI", base + "client/OMHTT/ControlTargetingUI.lua"},
             {"OMHTT/TurretAccess", base + "shared/OMHTT/TurretAccess.lua"},
             {"OMHTT/TurretControlAction", base + "shared/OMHTT/TurretControlAction.lua"},
@@ -382,6 +384,7 @@ public final class KahluaCheck {
             {"OMHTT/TurretOnceEach", base + "server/OMHTT/TurretOnceEach.lua"},
             {"OMHTT/TurretBallista", base + "server/OMHTT/TurretBallista.lua"},
             {"OMHTT/TurretRotary", base + "server/OMHTT/TurretRotary.lua"},
+            {"OMHTT/TurretStandby", base + "server/OMHTT/TurretStandby.lua"},
             {"OMHTT/TurretAutomation", base + "server/OMHTT/TurretAutomation.lua"},
             {"_", "tools/tests/turret.lua"},
             {"_", "tools/tests/turret_renderer.lua"},
@@ -506,6 +509,10 @@ public final class KahluaCheck {
             {"_", "tools/tests/trigger_power.lua"},
             {"_", "tools/tests/targeting_policy.lua"},
             {"_", "tools/tests/targeting_combat.lua"},
+            {"OMHTT/TetherCycle", base + "shared/OMHTT/TetherCycle.lua"},
+            {"OMHTT/ControlItemDescription", base + "shared/OMHTT/ControlItemDescription.lua"},
+            {"OMHTT/TurretModuleArt", base + "client/OMHTT/TurretModuleArt.lua"},
+            {"_", "tools/tests/corrections_c393.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

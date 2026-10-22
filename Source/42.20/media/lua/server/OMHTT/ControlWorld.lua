@@ -209,7 +209,7 @@ function W.register(object, player, kind, previous)
                 count = count + 1
             end
         end
-        if not host or not host.placed or host.z ~= state.z or (host.x - state.x) ^ 2 + (host.y - state.y) ^ 2 > 400 or count >= 32 then
+        if not host or not host.placed or host.z ~= state.z or (host.x - state.x) ^ 2 + (host.y - state.y) ^ 2 > A.radius() ^ 2 or count >= 32 then
             state.controller = nil
         end
     end
@@ -333,6 +333,12 @@ function W.updateInput(object, desired, available)
     local powered = require("OMHTT/ControlPower").trigger(object) and available ~= false
     local active = powered and desired == true and getTimestampMs() >= state.recoverAt
     if active == state.active and powered == state.powered then return end
+    if state.active ~= active then
+        local event = state.kind == "Laser" and (active and "detected" or "cleared") or "switch"
+        if state.kind == "Laser" or state.kind == "Plate" then
+            require("OMHTT/ControlAudio").emit(object, event)
+        end
+    end
     state.active, state.powered = active, powered
     W.publish(object)
     for i = 1, #state.links do
@@ -524,17 +530,23 @@ function W.input(target, now)
     local targetState = W.state(target)
     if not targetState then return false, false end
     local linked, on, valid = false, false, false
+    local lever, leverOn, other = false, true, false
     for id in pairs(W.incoming[targetState.id] or {}) do
         local source, state = W.objects[id], W.records().records[id]
         if state and state.placed then
             linked = true
-            if source and source:getObjectIndex() >= 0 and A.range(source, target) and source:getHealth() > 0 and now >= state.recoverAt then
-                valid = true
-                on = on or (state.active == true and require("OMHTT/ControlPower").trigger(source))
+            local usable = source and source:getObjectIndex() >= 0 and A.range(source, target)
+                and source:getHealth() > 0 and now >= state.recoverAt
+            valid = valid or usable == true
+            local active = usable and (state.active == true or (state.pulseUntil and now <= state.pulseUntil)) and require("OMHTT/ControlPower").trigger(source)
+            if state.kind == "Lever" then
+                lever, leverOn = true, leverOn and active == true
+            else
+                other, on = true, on or active == true
             end
         end
     end
-    return linked, on, valid
+    return linked, (not lever or leverOn) and (on or (lever and not other)), valid, not lever or leverOn
 end
 
 ---@param object IsoObject Removed device
@@ -741,6 +753,8 @@ end
 ---@param object IsoObject Button's linked output
 ---@return nil
 function W.pulse(object)
+    local linked, on, valid, leverAllowed = W.input(object, getTimestampMs())
+    if linked and not leverAllowed then return end
     local control = W.state(object)
     if control and control.kind == "Tether" then
         require("OMHTT/TetherServer").step(object, control, true)

@@ -49,6 +49,12 @@ end
 ---@return nil
 function R.refresh(settings)
     R.initialized = true
+    R.observed = {}
+    for key, value in pairs(settings) do
+        if string.sub(key, 1, 8) == "LootRate" or string.sub(key, 1, 12) == "RarityWeight" or key == "ModuleLootRate" then
+            R.observed[key] = value
+        end
+    end
     local anchors, error = readAnchors(settings)
     if error and error ~= R.anchorError then
         print("[OMHTT] " .. error)
@@ -95,6 +101,20 @@ end
 ---@param name string Module key
 ---@return table color Cached palette and effective weight
 function R.get(name)
+    local now = getTimestampMs()
+    if now >= (R.checkAt or 0) then
+        R.checkAt = now + 1000
+        local settings = SandboxVars.OMHTurretsTraps or {}
+        local changed = not R.initialized
+        for key, value in pairs(R.observed or {}) do
+            if settings[key] ~= value then changed = true end
+        end
+        for key, value in pairs(settings) do
+            if (string.sub(key, 1, 8) == "LootRate" or string.sub(key, 1, 12) == "RarityWeight" or key == "ModuleLootRate")
+                and (not R.observed or R.observed[key] ~= value) then changed = true end
+        end
+        if changed then R.refresh(settings) end
+    end
     if not R.initialized then
         R.refresh(SandboxVars.OMHTurretsTraps or {})
     end

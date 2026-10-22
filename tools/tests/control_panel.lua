@@ -35,7 +35,7 @@ check(not panel.batterySlot.countDirty, "Initial battery count completes for emp
 triggerEvent("OnContainerUpdate")
 check(panel.batterySlot.countDirty, "Native content event invalidates battery count even when the item count is unchanged")
 check(panel.devices.items[1].item == object, "Controller itself remains selectable for ownership")
-for i = 1, 30 do panel:prerender() end
+for i = 1, 110 do panel:prerender() end
 check(not panel.scanIndex and #panel.devices.items == 1, "Incremental scan completes without duplicate controller")
 check(not panel.nameEntry.visible and not panel.save and panel.policy.enabled and not panel.manage.enabled, "Controller settings are editable without pretending controller is a turret")
 check(panel.source == nil and not panel.trigger.enabled, "Controller cannot masquerade as a pressure plate")

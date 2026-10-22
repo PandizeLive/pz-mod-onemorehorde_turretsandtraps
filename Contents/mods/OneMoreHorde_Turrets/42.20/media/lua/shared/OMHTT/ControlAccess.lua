@@ -1,5 +1,17 @@
 local A = {}
+
+---@return number tiles Shared authoritative management radius
+function A.radius()
+    local settings = SandboxVars.OMHTurretsTraps or {}
+    return math.floor(math.max(5, math.min(100, settings.ControllerRange or settings.TrapsControllerRange or 40)))
+end
 A.remote = setmetatable({}, {__mode = "k"})
+
+---@return number tiles Effective beam length
+function A.laserRange()
+    local settings = SandboxVars.OMHTurretsTraps or {}
+    return math.max(1, math.min(32, settings.LaserRange or settings.TrapsLaserRange or 10))
+end
 
 ---@param object IsoObject Device
 ---@return table? state
@@ -32,7 +44,7 @@ function A.range(first, second)
     if not first or not second or first:getObjectIndex() < 0 or second:getObjectIndex() < 0 then return false end
     local a, b = first:getSquare(), second:getSquare()
     if not a or not b or a:getZ() ~= b:getZ() then return false end
-    return (a:getX() - b:getX()) ^ 2 + (a:getY() - b:getY()) ^ 2 <= 400
+    return (a:getX() - b:getX()) ^ 2 + (a:getY() - b:getY()) ^ 2 <= A.radius() ^ 2
 end
 
 ---@param player IsoPlayer Operator

@@ -9,7 +9,7 @@ return function(player)
         local saved=W.records().records[fixture.lever]
         assert(saved and saved.latched==true and saved.controller==fixture.controller,"Lever latch/assignment did not survive restart")
         local laser=W.records().records[fixture.laser]
-        assert(laser and laser.beamRange==6 and laser.facing=="e","Laser range/facing did not survive restart")
+        assert(laser and require("OMHTT/ControlAccess").laserRange()==10 and laser.facing=="e","Laser Sandbox range/facing did not survive restart")
         print("[OMHTT-C381] native triggers fresh-process=latch/range/assignment preserved")
     end
     local oldCell,oldTime=getCell,getGameTime
@@ -74,7 +74,8 @@ return function(player)
     actor:setY(1001.5)
     Sensor.step(laser,ss)
     assert(not ss.active,"Cleared beam remained active")
-    assert(Action:new(player,laser,"BeamRange",6,nil,ss.id):complete() and ss.beamRange==6,"Native range adjustment failed")
+    assert(not Action:new(player,laser,"BeamRange",6,nil,ss.id):complete(),"Per-device range edits must be rejected")
+    assert(require("OMHTT/ControlAccess").laserRange()==10,"Native default laser range must be ten tiles")
     assert(not Action:new(player,laser,"BeamRange",11,nil,ss.id):complete(),"Out-of-range edit accepted")
     local blocking=lookup[(base+4) .. ":1000"]
     local wall=IsoObject.new(blocking,wallSprite,"block")

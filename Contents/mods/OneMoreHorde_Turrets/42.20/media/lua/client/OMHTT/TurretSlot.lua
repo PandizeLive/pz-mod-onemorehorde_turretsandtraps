@@ -169,6 +169,9 @@ function Slot:prerender()
         name = self.disabled and getText("UI_OMHTT_ManageLocked") or "+"
     end
     if item then
+        if self.kind == "module" or self.kind == "capacity" then
+            require("OMHTT/TurretModuleArt").apply(item)
+        end
         if self.kind == "module" then
             ISInventoryItem.renderItemIcon(self, item, narrowModule and 4 or self.width / 2 - 8, narrowModule and 5 or (self.compact and 6 or h + 2), 1, 16, 16)
         else

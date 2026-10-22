@@ -57,7 +57,8 @@ def main():
         assert all(isinstance(v, str) for v in values.values())
         assert not translations.keys() & values.keys(), "Duplicate translation keys"
         translations.update(values)
-    keys = set(re.findall(r'getText\("([A-Za-z0-9_]+)"', lua)) - {"UI_OMHTT_", "ContextMenu_OMHTT_Hybrid", "UI_OMHTT_Module", "UI_OMHTT_Effect", "UI_OMHTT_Rarity", "UI_OMHTT_Stack", "UI_OMHTT_HeadFeature", "UI_OMHTT_Control", "UI_OMHTT_TriggerCost", "UI_OMHTT_Target"}
+    keys = set(re.findall(r'getText\("([A-Za-z0-9_]+)"', lua)) - {"UI_OMHTT_", "ContextMenu_OMHTT_Hybrid", "UI_OMHTT_Module", "UI_OMHTT_Effect", "UI_OMHTT_Rarity", "UI_OMHTT_Stack", "UI_OMHTT_HeadFeature", "UI_OMHTT_Control", "UI_OMHTT_TriggerCost", "UI_OMHTT_Target", "UI_OMHTT_DevicePurpose"}
+    keys.update("UI_OMHTT_DevicePurpose" + key for key in ["Barrier", "Bed", "Barb", "Wire", "Poke", "Tether", "Controller", "Button", "Plate", "Lever", "Laser"])
     keys.update("UI_OMHTT_Target" + key for key in ["Zombies", "OtherFactions", "Inherit"])
     keys.update("UI_OMHTT_Control" + key for key in ["Controller", "Plate", "Button"])
     keys.update("UI_OMHTT_Stack" + key for key in ["Magazine", "Rate", "Reload", "Range", "Velocity", "Chance", "Damage", "Threshold", "Radius", "Battery", "Uses", "Shots", "Piercing", "Suppression"])
@@ -146,7 +147,10 @@ def main():
     (OUTPUT / "base-depth.log").write_text(depth_log, encoding="utf-8")
     pages = list(dict.fromkeys(re.findall(r"page\s*=\s*(\w+)", sandbox)))
     assert pages == ["OMHTurretsTraps_General", "OMHTurretsTraps_BarrierPage", "OMHTurretsTraps_PotatoPage",
-                     "OMHTurretsTraps_AutomationPage", "OMHTurretsTraps_StatModulesPage", "OMHTurretsTraps_ModuleLootPage", "OMHTurretsTraps_Debug", "OMHTurretsTraps_PokePage", "OMHTurretsTraps_TriggersPage"]
+                     "OMHTurretsTraps_AutomationPage", "OMHTurretsTraps_StatModulesPage", "OMHTurretsTraps_ModuleLootPage", "OMHTurretsTraps_Debug", "OMHTurretsTraps_PokePage", "OMHTurretsTraps_TriggersPage", "OMHTurretsTraps_TetherPage"]
+    for asset in ("TetherNail", "TetherCable", "StateAmber", "StateGreen", "StateDark"):
+        run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED", "-cp", os.pathsep.join([str(classes), str(GAME / "projectzomboid.jar")]),
+             "HybridAssetCheck", PACKAGE / ("42.20/media/models_X/OMHTT_" + asset + ".x"), "12"], cwd=GAME)
     stock = os.environ.get("OMHTT_STOCK_CLASSES") == "1"
     classpath = os.pathsep.join(str(path) for path in ([classes, GAME / "projectzomboid.jar", GAME] if stock else [classes, GAME, GAME / "projectzomboid.jar"]))
     map_log = run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED", "-Djava.awt.headless=true",

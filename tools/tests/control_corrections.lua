@@ -146,7 +146,7 @@ for i=1,180 do
     square:AddTileObject(object)
 end
 square:AddTileObject(turret)
-for i=1,50 do
+for i=1,120 do
     local before=#(panel.scanResults or {})
     panel:scan()
     if panel.scanIndex then

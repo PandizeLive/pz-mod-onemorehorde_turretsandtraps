@@ -1,3 +1,5 @@
+local indicatorSetting = SandboxVars.OMHTurretsTraps.TurretStateIndicator
+SandboxVars.OMHTurretsTraps.TurretStateIndicator = false
 local R = require("OMHTT/TurretRenderer")
 local T = require("OMHTT/Turret")
 local W = require("OMHTT/TurretWorld")
@@ -121,3 +123,5 @@ R.entries[gunObject] = nil
 getDebugOptions = oldDebug
 instanceItem = oldInstance
 T.hybrid, getSpecificPlayer, Render3DItem, W.refresh = hybrid, specific, oldRender, oldRefresh
+
+SandboxVars.OMHTurretsTraps.TurretStateIndicator = indicatorSetting

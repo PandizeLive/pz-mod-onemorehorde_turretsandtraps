@@ -135,9 +135,8 @@ function Body:prerender()
     self:section(4, p.equipmentWidth, 4, p.equipmentBottom, getText("UI_OMHTT_Equipment"))
     self:section(p.ammunitionX, p.ammunitionWidth, 4, p.ammunitionBottom, getText("UI_OMHTT_Ammunition"))
     self:section(4, self.width - 12, p.modulesY, p.modulesBottom, p.moduleLabel)
-    if p.hasLockedSlots then
-        self:drawText(getText("UI_OMHTT_ExpansionHint"), 12, p.modulesY + p.headerHeight + 4, .75, .75, .75, 1, UIFont.Small)
-    end
+    local moduleHint = p.hasLockedSlots and "UI_OMHTT_ExpansionHint" or "UI_OMHTT_ModuleHelp"
+    self:drawText(getText(moduleHint), 12, p.modulesY + p.headerHeight + 4, .75, .75, .75, 1, UIFont.Small)
     if p.detailsOpen then
         local y, stats = p.detailsY + 8, p.stats
         self:drawRect(4, p.detailsY, p.benefitList.x - 12, p.benefitList.height, .95, .055, .055, .055)

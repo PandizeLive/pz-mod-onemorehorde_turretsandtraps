@@ -33,7 +33,7 @@ function S.step(object,state)
         if changed then W.publish(object) end
         return
     end
-    mount.length=Beam.length(mount,math.max(1,math.min(10,state.beamRange or 10)))
+    mount.length=Beam.length(mount,require("OMHTT/ControlAccess").laserRange())
     local changed=not old or old.length~=mount.length or old.x~=mount.x or old.y~=mount.y
     local entry=old
     if changed then
@@ -90,7 +90,7 @@ function S.actor(actor)
                     if state and state.powered and object:getHealth()>0 then
                         local entry=S.entries[object]
                         local length=entry.length
-                        entry.length=Beam.length(entry,math.min(length,state.beamRange or 10))
+                        entry.length=Beam.length(entry,math.min(length,require("OMHTT/ControlAccess").laserRange()))
                         if Beam.cross(entry,ax,ay,x,y) then
                             entry.crossedUntil=getTimestampMs()+150
                             W.updateInput(object,true)

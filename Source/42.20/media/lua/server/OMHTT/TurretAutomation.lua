@@ -102,6 +102,15 @@ function A.step(entry, deadline)
     if not square or not state or object:getObjectIndex() < 0
         or getCell():getGridSquare(square:getX(), square:getY(), square:getZ()) ~= square then return false end
     local now = Clock.now()
+    local contents = W.contents(object)
+    local standby = require("OMHTT/TurretStandby")
+    local waking = standby.entries[object]
+    if state.standby == "waking" and waking and not standby.valid(object, waking.target, contents) then
+        standby.step(object, contents, nil)
+        entry.target, entry.job = nil, nil
+        A.status(entry, "no-target")
+        return true
+    end
     if state.facingPending then return true end
     if entry.rotaryKind then
         return require("OMHTT/TurretRotary").step(entry, deadline)
@@ -109,13 +118,13 @@ function A.step(entry, deadline)
     if now < entry.due and (not entry.target or now < (entry.fireDue or 0)) then return true end
     local aim = require("OMHTT/TurretAim").entries[object]
     if require("OMHTT/TurretSearch").pending[object] or (aim and aim.player) then return true end
-    local contents = W.contents(object)
     local stats = T.cycleConfig(contents)
     local interval = M.option("DetectionInterval", 0.25, 0.1, 5) * 1000
     if contents.active.MotionDetectionEnhanced then interval = math.min(interval, M.option("EnhancedDetectionInterval", 0.1, 0.05, 5) * 1000) end
     if not W.valid(object) or not M.detects(state, contents) or not W.power(object, contents, stats) then
         entry.job, entry.due = nil, now + interval
         entry.target = nil
+        standby.step(object, contents, nil)
         A.status(entry, "inactive")
         return true
     end
@@ -143,6 +152,7 @@ function A.step(entry, deadline)
             target, retained = selected, false
             if not target then
                 entry.round, entry.target, entry.due = nil, nil, now + interval
+                standby.step(object, contents, nil)
                 A.status(entry, "no-target")
                 return true
             end
@@ -168,11 +178,18 @@ function A.step(entry, deadline)
             D.defer("turret-auto-search", {id = state.id, visits = job.visited, range = profile.range,
                 cone = profile.cone, baseFacing = state.baseFacing, selected = false})
         end
+        standby.step(object, contents, nil)
         A.status(entry, "no-target")
         return true
     end
+    local previousTarget = entry.target
+    entry.target = target
+    if not standby.step(object, contents, target, false, true) then
+        A.status(entry, "Waking")
+        return true
+    end
     local aligned = require("OMHTT/TurretAim").request(object, target, nil)
-    if entry.target ~= target then
+    if previousTarget ~= target then
         entry.target = target
         D.defer("turret-auto-target", {id = state.id, x = target:getX(), y = target:getY(), visits = job.visited,
             priority = profile.priority, cone = profile.cone, baseFacing = state.baseFacing, aim = state.aimDegrees})

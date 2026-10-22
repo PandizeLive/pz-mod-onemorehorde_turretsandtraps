@@ -6,7 +6,15 @@ local Mount = require("OMHTT/TetherMount")
 local Horde = require("OMHTT/DefenseHorde")
 local Active = require("OMHTT/ActiveTime")
 local S = {entries = setmetatable({}, {__mode = "k"}), clock = Active.new(), time = 0, serial = 0, session = tostring(getTimestampMs())}
-local tuning = {range = 6, speed = 12, returnSpeed = 4, resetTime = .4, holdTime = .75}
+---@param key string Setting suffix
+---@param default number Default
+---@param low number Minimum
+---@param high number Maximum
+---@return number value
+local function option(key, default, low, high)
+    local value = (SandboxVars.OMHTurretsTraps or {})["Tether" .. key]
+    return math.max(low, math.min(high, type(value) == "number" and value or default))
+end
 
 ---@param entry table Active trap
 ---@return nil
@@ -34,9 +42,10 @@ end
 ---@return nil
 local function hit(cycle, victim, reason)
     local entry = cycle.entry
+    require("OMHTT/ControlAudio").emit(entry.object, "impact")
     if reason == "zombie" and Horde.allowed(victim) then
         entry.victim = victim
-        require("OMHTT/Damage").resolve(victim, .3, entry.state.id, "tether-dart")
+        require("OMHTT/Damage").resolve(victim, option("HitDamage", 30, 0, 2500) / 100, entry.state.id, "tether-dart")
     elseif reason == "player" and require("OMHTT/ControlCombat").protected(require("OMHTT/ControlCombat").source(entry.object), victim) then
         require("OMHTT/DefenseInjury").poke(victim, "scratch")
     end
@@ -46,12 +55,13 @@ end
 ---@return nil
 local function pull(cycle)
     local entry = cycle.entry
+    require("OMHTT/ControlAudio").emit(entry.object, "pull")
     local victim = entry.victim
     entry.victim = nil
     if not victim or victim:isDead() or math.floor(victim:getZ()) ~= cycle.z or not Horde.allowed(victim) then return end
     local square = victim:getSquare()
     if not square or getCell():getGridSquare(square:getX(), square:getY(), square:getZ()) ~= square then return end
-    require("OMHTT/Damage").resolve(victim, .15, entry.state.id, "tether-pull")
+    require("OMHTT/Damage").resolve(victim, option("PullDamage", 15, 0, 2500) / 100, entry.state.id, "tether-pull")
 end
 
 ---@param object IsoObject Trap
@@ -59,9 +69,20 @@ end
 ---@return table? entry
 function S.entry(object, state)
     local entry = S.entries[object]
-    if entry then return entry end
+    if entry then
+        if entry.cycle.phase == "idle" then
+            local cycle = entry.cycle
+            cycle.range, cycle.speed = option("Range", 6, 1, 32), option("LaunchSpeed", 30, 1, 64)
+            cycle.returnSpeed = option("ReturnSpeed", 4, 1, 64)
+            cycle.resetTime, cycle.holdTime = option("ResetSeconds", .4, 0, 60), option("HoldSeconds", .75, 0, 10)
+        end
+        return entry
+    end
     local mount, support = Mount.resolve(state.x, state.y, state.z, state.facing)
     if not mount then return nil end
+    local tuning = {range = option("Range", 6, 1, 32), speed = option("LaunchSpeed", 30, 1, 64),
+        returnSpeed = option("ReturnSpeed", 4, 1, 64), resetTime = option("ResetSeconds", .4, 0, 60),
+        holdTime = option("HoldSeconds", .75, 0, 10)}
     local cycle = C.new(mount.x, mount.y, mount.z, mount.dx, mount.dy, tuning)
     entry = {cycle = cycle, mount = mount, support = support, object = object, state = state, time = S.time, sent = S.time, scan = S.time}
     cycle.entry = entry
@@ -74,6 +95,7 @@ end
 function S.cancel(object)
     local entry = S.entries[object]
     if not entry then return end
+    require("OMHTT/ControlAudio").emit(object, "stop")
     C.cancel(entry.cycle)
     S.publish(entry)
     S.entries[object] = nil
@@ -111,7 +133,7 @@ function S.step(object, state, pulse)
         object:setHealth(math.max(0, object:getHealth() - 1))
         if isServer() then object:sync() end
     end
-    local linked, on = W.input(object, getTimestampMs())
+    local linked, on, valid, leverAllowed = W.input(object, getTimestampMs())
     cycle.links, cycle.held = linked and 1 or 0, on
     if cycle.phase == "idle" and object:getHealth() > 0 and getTimestampMs() >= state.recoverAt then
         local detected = false
@@ -120,7 +142,19 @@ function S.step(object, state, pulse)
             local fraction, victim = Lane.cast(cycle, 0, cycle.range)
             detected = fraction ~= nil and require("OMHTT/ControlCombat").eligible(object, victim)
         end
-        C.start(cycle, detected, pulse == true)
+        if C.start(cycle, detected, pulse == true and (not linked or leverAllowed ~= false)) then
+            require("OMHTT/ControlAudio").emit(object, "launch")
+        end
+    end
+    if cycle.phase ~= before then
+        if cycle.phase == "back" then
+            require("OMHTT/ControlAudio").emit(object, "reel")
+        elseif before == "back" or cycle.phase == "idle" then
+            require("OMHTT/ControlAudio").emit(object, "stop")
+            if cycle.phase == "reset" then
+                require("OMHTT/ControlAudio").emit(object, "reset")
+            end
+        end
     end
     local active = cycle.phase ~= "idle"
     if state.active ~= active then
