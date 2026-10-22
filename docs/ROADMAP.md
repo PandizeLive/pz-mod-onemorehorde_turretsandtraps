@@ -1,5 +1,30 @@
 # Phases and checkpoints
 
+## C402 - Remaining roadmap clarified (2026-10-22)
+
+Owner asks whether anything remains beyond testing and what is worth considering. The earlier conversational summary was too broad: C401 closes the approved performance fixes, not the entire roadmap. Installed 0.2.63.2 and deferred personal testing remain unchanged. No new feature implementation, sibling edit or deployment is authorized by this discussion.
+
+| Track | Current disposition | Useful next work |
+| --- | --- | --- |
+| R1C3/R3C7/R5C1 | Current implementation has automated/native evidence; real-load performance, balance/endurance and connected-player acceptance remain | Personal test when available; preserve unmeasured versus passed distinctions |
+| R2C3 multi-panel/garage-door barbs | Documented coverage gap, not certified support | Current native multi-leaf identity/movement/destruction proof before extending attachment behavior; generic door acceptance is not proof of correct multi-leaf support |
+| R5C2 shared Trait Shop defense XP | Confirmed direction: one shared pool, offline inclusion toggle default ON. Reward percentage, recipient/life rules and durable delivery still need a current coordinated contract | Review current Trait Shop APIs and settle design; do not adopt the old proposed 25% as approved or mutate private progression ledgers |
+| R5C2 Horde scoring | T&T-side selected scoring behavior implemented in development; matching core/validator deployment and end-to-end acceptance remain unconfirmed | Reconcile current sibling versions and coordinated release readiness. Historical integration snapshots are not current deployment proof |
+| R5C3 release | Owner art, compatibility/acceptance, release documentation and publication remain | Prepare the selected release scope; no implied Workshop authorization |
+| R6C1-R6C3 Cure simulation | Explicitly deferred, last | Versioned core/addon contract, resource reconciliation and real/simulated kill deduplication before implementation |
+| Additional heads | Arc Emitter is an old unselected candidate; Nail Scatter lacks a distinct selected role | Optional future design, not missing promised content. Don't revive dropped Extinguisher/Ram or superseded Flail |
+
+Worthwhile next choices while testing is deferred:
+
+- **1A (recommended): shared defense XP design.** Meaningful co-op progression; start with current API/recipient/death-accounting review. Cross-project integration and duplicate/offline rewards are the principal costs. No numeric tuning is assumed.
+- **1B: garage/multi-panel Barbed Panel feasibility.** Smaller standalone coverage improvement; prove moving-leaf geometry/identity before promising it works.
+- **1C: coordinated Horde scoring readiness audit.** Strongest release-readiness work; inspect game/core/website agreement and report concrete gaps, without deploying.
+
+A modder-facing extension guide and sample addon would also be worthwhile optional polish, given the owner's modularity goals; it is not newly approved scope. New heads and Cure simulation are lower priority than completing existing integration/coverage contracts.
+
+This snapshot supersedes older next-work labels below. In particular, Controller targeting is implemented through 0.2.61, and earlier 4/6/6 module-layout or 0.2.50-only acceptance wording is historical; use current patches/tests for behavior. **Decision needed only if selecting another work track; current build remains ready for deferred testing.**
+
+
 **0.2.63.2 / C401 installed (2026-10-22).** Owner-approved C400 fixes are installed: fair FIFO/routine device updates, complete bounded Controller cache traversal and cached Connections layout/text with live-state refresh. **27,152 assertions**, native write/restart and all three package startup checks pass. Immutable `test/v0.2.63.2` / `c1eb9817df09c1479a874fa546fe4dae442ec9be`; all **378 source and 525 tagged/package/install/archive files** match, with both 0.2.63.1 backups verified. [Patch](PATCH_v0.2.63.2.md) / [Verification](TEST_v0.2.63.2.md). No stress presets or balance changes. Owner will test personally when able; rendered/FPS/connected acceptance remains deferred. No Workshop upload or hosted LootLab deployment. C108 mirror follows. **Test now when available; testing remains deferred.**
 
 **C400 / Follow-up performance audit complete (2026-10-22).** Reproduced conditional routine-work starvation and assigned-device cache omission; measured repeated Connections text-layout work. [Evidence and stress-test proposal](AUDIT_C400.md). Optional audit passes 27,037 assertions; counts/simulated timings are not FPS measurements. Source/packages/install remain 0.2.63.1; owner testing stays deferred. **1A (recommended): fixes plus bounded debug stress presets/timing summaries; 1B: fixes with manual stress setup. Decision needed: patch scope.**

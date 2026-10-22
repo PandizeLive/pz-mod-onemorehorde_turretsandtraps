@@ -1971,3 +1971,8 @@ Owner requests another audit and advice on stress-test support. Audit-only repro
 ## C401 - C400 fixes approved; personal test deferred (2026-10-22)
 
 Owner: "Fix the findings, I’ll test when I’m able to personally." Proceed with the three corrective findings; do not add the optional stress preset/timing tool. Existing gameplay/balance contracts remain. Implemented as 0.2.63.2; [patch](PATCH_v0.2.63.2.md) and [test evidence](TEST_v0.2.63.2.md) distinguish automated verification from deferred personal/connected acceptance.
+
+
+## C402 - Roadmap completeness clarification (2026-10-22)
+
+Owner challenges the implication that only testing remains. Reconciled the current remaining-work snapshot in [Planning](PLANNING.md#c402---remaining-roadmap-clarified-2026-10-22) and Roadmap: approved C401 fixes complete does not mean the whole roadmap is complete. Shared XP, coordinated scoring, multi-leaf barbed support and release/Cure work remain separate. New heads are optional candidates, not commitments. Proposed 1A shared XP design / 1B garage-door feasibility / 1C scoring readiness audit; no selection or implementation authorization inferred. Installed build and deferred tests unchanged.
