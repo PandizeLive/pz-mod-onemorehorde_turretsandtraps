@@ -45,22 +45,37 @@ function Panel:scan()
             self.marker:setScaleCircleTexture(true)
             self.markerRadius = self.scanRadius
         end
-        local checked = 0
-        for object in pairs(Discovery.objects) do
-            checked = checked + 1
-            if checked > 64 then break end
-            local state = A.state(object)
-            local within = object:getObjectIndex() >= 0 and A.range(self.object, object)
-            local assigned = state and state.controller == A.state(self.object).id
-            if object ~= self.object and object:getObjectIndex() >= 0 and (within or assigned) then
-                local row = #self.scanResults + 1
-                self.scanResults[row] = {text = U.name(object), item = object, itemindex = row, height = self.devices.itemheight}
-                self.scanSelection[object], self.checking[object] = row, within or nil
-            end
-        end
+        self.cacheIndex = 1
         self.devices.items, self.devices.count = self.scanResults, #self.scanResults
         self.devices.itemheightoverride = {}
         self.devices.selected = self.scanSelection[self.selected] or 0
+    end
+    if self.cacheIndex then
+        local deadline = getTimestampMs() + 2
+        for step = 1, 64 do
+            if self.cacheIndex > Discovery.listSize then
+                self.cacheIndex = nil
+                break
+            end
+            local object = Discovery.list[self.cacheIndex]
+            if not object then
+                Discovery.drop(self.cacheIndex)
+            else
+                self.cacheIndex = self.cacheIndex + 1
+                local state = A.state(object)
+                local within = object:getObjectIndex() >= 0 and A.range(self.object, object)
+                local assigned = state and state.controller == A.state(self.object).id
+                if object ~= self.object and not self.scanSelection[object] and object:getObjectIndex() >= 0 and (within or assigned) then
+                    local row = #self.scanResults + 1
+                    self.scanResults[row] = {text = U.name(object), item = object, itemindex = row, height = self.devices.itemheight}
+                    self.scanSelection[object], self.checking[object] = row, within or nil
+                end
+            end
+            if getTimestampMs() >= deadline then break end
+        end
+        self.devices.count = #self.scanResults
+        self.devices.selected = self.scanSelection[self.selected] or self.devices.selected
+        return
     end
     local radius = self.scanRadius
     local diameter = radius * 2 + 1

@@ -1966,3 +1966,8 @@ Owner selects C398 1A. Continue bounded discovery, mixed-device scheduling and e
 ## C400 - Follow-up performance audit requested (2026-10-22)
 
 Owner requests another audit and advice on stress-test support. Audit-only reproductions confirm two scheduling/discovery defects and count repeated graph text work. See [AUDIT_C400.md](AUDIT_C400.md). No new gameplay patch or debug spawning is approved by this audit request. Recommend 1A fixes plus bounded debug stress presets/timing summaries; 1B fixes with manual setup. Installed 0.2.63.1 and deferred owner acceptance remain unchanged.
+
+
+## C401 - C400 fixes approved; personal test deferred (2026-10-22)
+
+Owner: "Fix the findings, I’ll test when I’m able to personally." Proceed with the three corrective findings; do not add the optional stress preset/timing tool. Existing gameplay/balance contracts remain. Implemented as 0.2.63.2; [patch](PATCH_v0.2.63.2.md) and [test evidence](TEST_v0.2.63.2.md) distinguish automated verification from deferred personal/connected acceptance.

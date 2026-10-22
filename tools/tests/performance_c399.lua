@@ -4,11 +4,12 @@ local A = require("OMHTT/ControlAccess")
 local E = require("OMHTT/ControlExpansion")
 local old = {state = A.state, objects = D.objects, pending = D.pending, byId = D.byId,
     due = D.due, mode = testMode, millis = testMillis, settings = SandboxVars.OMHTurretsTraps,
-    queue = D.queue, queued = D.queued, first = D.first, last = D.last}
+    queue = D.queue, queued = D.queued, first = D.first, last = D.last, list = D.list, listIndex = D.listIndex, listSize = D.listSize}
 testMode, testMillis = "client", 0
 SandboxVars.OMHTurretsTraps = {}
 D.objects, D.pending, D.byId, D.due = {}, {}, {}, nil
 D.queue, D.queued, D.first, D.last = {}, {}, 1, 0
+D.list, D.listIndex, D.listSize = {}, {}, 0
 local reads, nodes = 0, {}
 A.state = function(object) reads = reads + 1; return object and object.state end
 for i = 1, 256 do
@@ -90,6 +91,7 @@ A.state, testMode, testMillis = old.state, old.mode, old.millis
 SandboxVars.OMHTurretsTraps = old.settings
 D.objects, D.pending, D.byId, D.due = old.objects, old.pending, old.byId, old.due
 D.queue, D.queued, D.first, D.last = old.queue, old.queued, old.first, old.last
+D.list, D.listIndex, D.listSize = old.list, old.listIndex, old.listSize
 testC399Audit = "pending=256 slicesToLast=4 maxStateReads=" .. maximum .. " allowanceQueries=12800 inventoryLookups=" .. measuredLookups .. " removalInvalidation=pass lateClientState=pass"
 testPackAudit = testC399Audit
 

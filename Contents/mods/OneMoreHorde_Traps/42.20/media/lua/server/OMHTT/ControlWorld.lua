@@ -343,7 +343,7 @@ function W.updateInput(object, desired, available)
     W.publish(object)
     for i = 1, #state.links do
         local id = state.links[i]
-        if not W.dirtySet[id] then W.dirtySet[id] = true; W.dirty[#W.dirty+1] = id end
+        W.queueDirty(id)
     end
 end
 
@@ -622,6 +622,44 @@ function W.deleted(object)
     W.removed(object)
 end
 
+---@param id string Receiver identity
+---@return nil
+function W.queueDirty(id)
+    if W.dirtyQueue ~= W.dirty then
+        W.dirtyQueue, W.dirtyHead, W.dirtyLast = W.dirty, 1, #W.dirty
+    end
+    if W.dirtySet[id] then return end
+    W.dirtySet[id] = true
+    W.dirtyLast = W.dirtyLast + 1
+    W.dirty[W.dirtyLast] = id
+end
+
+---@param now number Update time
+---@param deadline number Shared soft deadline
+---@return nil
+function W.flushDirty(now, deadline)
+    if W.dirtyQueue ~= W.dirty then
+        W.dirtyQueue, W.dirtyHead, W.dirtyLast = W.dirty, 1, #W.dirty
+    end
+    for i = 1, 32 do
+        if W.dirtyHead > W.dirtyLast or getTimestampMs() >= deadline then break end
+        local id = W.dirty[W.dirtyHead]
+        W.dirty[W.dirtyHead] = nil
+        W.dirtyHead = W.dirtyHead + 1
+        if id then
+            W.dirtySet[id] = nil
+            local receiver = W.objects[id]
+            if receiver then
+                W.receiver(receiver, now)
+            end
+        end
+    end
+    if W.dirtyHead > W.dirtyLast then
+        W.dirty, W.dirtyHead, W.dirtyLast = {}, 1, 0
+        W.dirtyQueue = W.dirty
+    end
+end
+
 ---@return nil
 function W.tick()
     require("OMHTT/ControlPoke").advance()
@@ -632,14 +670,9 @@ function W.tick()
     require("OMHTT/ControlPower").flush()
     local deadline = now + 2
     local hours = getGameTime():getWorldAgeHours()
-    for i = #W.dirty, 1, -1 do
-        if getTimestampMs() >= deadline then break end
-        local id = W.dirty[i]
-        W.dirty[i], W.dirtySet[id] = nil, nil
-        local receiver = W.objects[id]
-        if receiver then
-            W.receiver(receiver, now)
-        end
+    W.routineFirst = not W.routineFirst
+    if not W.routineFirst then
+        W.flushDirty(now, deadline)
     end
     for iteration = 1, math.min(64, #W.order) do
         if #W.order == 0 then break end
@@ -677,6 +710,9 @@ function W.tick()
             table.remove(W.order, W.cursor - 1)
             W.cursor = W.cursor - 1
         end
+    end
+    if W.routineFirst then
+        W.flushDirty(now, deadline)
     end
 end
 

@@ -2,6 +2,30 @@ if isServer() then return end
 local D = {byId = setmetatable({}, {__mode = 'v'}), objects = setmetatable({}, {__mode = 'k'}), pending = setmetatable({}, {__mode = 'k'})}
 local A = require('OMHTT/ControlAccess')
 D.queue, D.queued, D.first, D.last = {}, {}, 1, 0
+D.list, D.listIndex, D.listSize = setmetatable({}, {__mode = 'v'}), setmetatable({}, {__mode = 'k'}), 0
+
+---@param object IsoObject Known device
+---@return nil
+function D.track(object)
+    if D.listIndex[object] then return end
+    D.listSize = D.listSize + 1
+    D.list[D.listSize], D.listIndex[object] = object, D.listSize
+end
+
+---@param index number Removed or collected slot
+---@return nil
+function D.drop(index)
+    local object, last = D.list[index], D.list[D.listSize]
+    if object then
+        D.listIndex[object] = nil
+    end
+    D.list[index] = last
+    D.list[D.listSize] = nil
+    if last and index < D.listSize then
+        D.listIndex[last] = index
+    end
+    D.listSize = D.listSize - 1
+end
 
 ---@param object IsoObject Candidate
 ---@return nil
@@ -10,6 +34,7 @@ function D.add(object)
     local state = A.state(object)
     if state then
         D.objects[object], D.pending[object], D.byId[state.id] = state.id, nil, object
+        D.track(object)
     else
         D.pending[object] = getTimestampMs() + 10000
         if not D.queued[object] then
@@ -29,6 +54,10 @@ end
 ---@param object IsoObject Removed object
 ---@return nil
 function D.remove(object)
+    local index = D.listIndex[object]
+    if index then
+        D.drop(index)
+    end
     local id = D.objects[object]
     if id and D.byId[id] == object then D.byId[id] = nil end
     D.objects[object], D.pending[object] = nil, nil
@@ -49,6 +78,7 @@ function D.tick()
             local state = A.state(object)
             if state then
                 D.objects[object], D.pending[object], D.byId[state.id] = state.id, nil, object
+                D.track(object)
             elseif now < expires then
                 D.last = D.last + 1
                 D.queue[D.last], D.queued[object] = object, true

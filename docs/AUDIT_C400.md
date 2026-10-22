@@ -51,3 +51,7 @@ A copied test save, console.txt and a short frame-time capture would help reprod
 **1B:** fix the three findings first; keep stress setup manual.
 
 No balance change or broader content work is proposed. **Decision needed: next patch scope.**
+
+## C401 implementation follow-up
+
+Owner approved fixes without requesting stress tooling. The original reproduction is preserved in commit `8fdccf080fd2545c2f79ec6e8e4889b1a6021576`. The current `performance_c400.lua` now asserts the corrected behavior as a normal regression stage. See [0.2.63.2 patch](PATCH_v0.2.63.2.md) and [verification](TEST_v0.2.63.2.md). The earlier numeric audit results remain historical evidence, not current expected behavior.

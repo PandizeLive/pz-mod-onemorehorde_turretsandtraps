@@ -21,6 +21,60 @@ local function fit(text, width)
     return string.sub(text, 1, length) .. "..."
 end
 
+---@param graph ISPanel Graph
+---@param text string Label
+---@param width number Width
+---@return string fitted
+local function cachedFit(graph, text, width)
+    local cache = graph.labelCache
+    local key = text .. '|' .. tostring(width)
+    local value = graph.nextLabels[key] or cache[key] or fit(text, width)
+    graph.nextLabels[key] = value
+    return value
+end
+
+---@param graph ISPanel Graph
+---@param panel ISPanel Controller
+---@return boolean changed
+local function changed(graph, panel)
+    local host = A.state(panel.object)
+    local revision = host and host.organization and host.organization.revision or 0
+    local fontHeight = getTextManager():getFontHeight(UIFont.Small)
+    local dirty = graph.refreshDue == 0 or graph.textWidth ~= graph.width
+        or graph.fontHeight ~= fontHeight or graph.revision ~= revision
+        or graph.lineHeight ~= panel.lineHeight or not graph.snapshots
+        or #graph.snapshots ~= #panel.devices.items
+    local snapshots = graph.snapshots or {}
+    for i = 1, #panel.devices.items do
+        local object = panel.devices.items[i].item
+        local state = A.state(object)
+        local title = state and U.name(object)
+        local links = state and state.links and table.concat(state.links, '|') or ''
+        local outside = state and host and state.controller == host.id and not A.range(panel.object, object)
+        local previous = snapshots[i]
+        if previous and previous.object == object and graph.rowsByObject and graph.rowsByObject[object] then
+            graph.rowsByObject[object].state = state
+        end
+        if not previous or previous.object ~= object
+            or previous.title ~= title or previous.links ~= links or previous.outside ~= outside
+            or previous.kind ~= (state and state.kind) or previous.head ~= (state and state.headType)
+            or previous.number ~= (state and state.number) then
+            dirty = true
+            snapshots[i] = {object = object, state = state, title = title, links = links, outside = outside,
+                kind = state and state.kind, head = state and state.headType, number = state and state.number}
+        end
+    end
+    for i = #snapshots, #panel.devices.items + 1, -1 do
+        snapshots[i] = nil
+    end
+    graph.snapshots, graph.revision, graph.lineHeight = snapshots, revision, panel.lineHeight
+    if graph.textWidth ~= graph.width or graph.fontHeight ~= fontHeight or not graph.labelCache then
+        graph.labelCache = {}
+    end
+    graph.fontHeight = fontHeight
+    return dirty
+end
+
 local conditionColor = {r = .45, g = .7, b = .45, a = 1}
 
 ---@param panel ISPanel Controller
@@ -183,7 +237,10 @@ function Graph.refreshForPanel(panel)
     local graph = panel.graph
     require("OMHTT/ControlGraphStats").step(graph)
     if getTimestampMs() < graph.refreshDue and graph.items == panel.devices.items and graph.textWidth == graph.width then return end
+    local rebuild = changed(graph, panel)
     graph.items, graph.refreshDue = panel.devices.items, getTimestampMs() + 500
+    if not rebuild then return end
+    graph.nextLabels, graph.rowsByObject = {}, {}
     graph.textWidth = graph.width
     graph.triggers, graph.defenses, graph.positions, graph.edges, graph.markers = {}, {}, {}, {}, {}
     graph.markerByObject = {}
@@ -208,13 +265,18 @@ function Graph.refreshForPanel(panel)
                 row.subtitle = getText("UI_OMHTT_ControllerOutOfRange")
             end
             local width = (graph.width - 88) / 2 - 29
-            row.lines = {fit(row.title, width)}
-            row.detail = row.subtitle and {fit(row.subtitle, width)} or {}
+            row.lines = {cachedFit(graph, row.title, width)}
+            row.detail = row.subtitle and {cachedFit(graph, row.subtitle, width)} or {}
             rows[#rows + 1] = row
+            graph.rowsByObject[object] = row
             graph.positions[state.id] = #rows
         end
     end
     Groups.layout(graph)
+    for i = 1, #graph.groups do
+        graph.groups[i].label = cachedFit(graph, graph.groups[i].name, graph.width - 42)
+    end
+    graph.labelCache, graph.nextLabels = graph.nextLabels, nil
     for i = 1, #graph.triggers do
         local row = graph.triggers[i]
         for j = 1, #row.state.links do
@@ -422,7 +484,7 @@ function Graph:prerender()
         local group = self.groups[i]
         self:drawRect(4, group.y, self.width - 22, group.header - 2, 1, .18, .18, .18)
         self:drawRectBorder(4, group.y, self.width - 22, group.header - 2, 1, .32, .32, .32)
-        self:drawText((self.collapsed[group.id] and "> " or "v ") .. fit(group.name, self.width - 42), 9, group.y + 3, .9, .9, .9, 1, UIFont.Small)
+        self:drawText((self.collapsed[group.id] and "> " or "v ") .. (group.label or group.name), 9, group.y + 3, .9, .9, .9, 1, UIFont.Small)
     end
     for i = 1, #self.edges do
         local edge = self.edges[i]

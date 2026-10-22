@@ -524,6 +524,7 @@ public final class KahluaCheck {
             {"_", "tools/tests/corrections_c393.lua"},
             {"_", "tools/tests/corrections_c397.lua"},
             {"_", "tools/tests/performance_c399.lua"},
+            {"_", "tools/tests/performance_c400.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {
@@ -627,6 +628,7 @@ public final class KahluaCheck {
         System.out.println("Assertions passed: " + get.invoke(env, "testAssertions"));
         System.out.println("C247 content: " + get.invoke(env, "testC247"));
         System.out.println("C399 performance/lifecycle: " + get.invoke(env, "testC399Audit"));
+        System.out.println("C401 regressions: " + get.invoke(env, "testC401Audit"));
         System.out.println("World/player/network/UI objects were test doubles; in-game acceptance remains pending.");
         System.exit(0);
     }
