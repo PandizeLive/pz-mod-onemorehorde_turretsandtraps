@@ -1,5 +1,14 @@
 # Planning
 
+## C398 - Next checkpoint with owner testing deferred
+
+Owner asks what is next and cannot test at present. Installed 0.2.63 remains unchanged; do not mark its visual checklist passed or request it again now. C397 was mirrored successfully at `127d0edb2626bf05f710c0c575cd743194db219d`.
+
+- **1A (recommended): performance and lifecycle hardening**, within R1C3/R5C1 engineering: audit bounded Controller discovery and mixed active-defense workloads, pickup/reload and exact-item persistence, Controller expansion/range changes, and late-arriving client state. Measure native/test-double limits explicitly. Make concrete findings reviewable before proposing changes beyond existing contracts.
+- **1B: balance/endurance review**, within R3C7: compare representative pistol/M4/custom-head and trap workloads, battery/module stacking and crafting value. Separate calculated estimates from measured runtime; propose tuning without silently applying it.
+
+Recommend High reasoning for the cross-system engineering pass; Fast if it grows beyond 25 minutes. No new device or optional sibling integration is proposed. Owner-connected multiplayer testing remains deferred; native and authority checks can continue. This discussion records the next-focus choice, not fresh gameplay approval.
+
 **0.2.63 / C397 installed (2026-10-22).** Approved Controller expansion and corrective scope are installed. **26,794 assertions**, native write/restart and all three independent-package startup checks pass. Immutable `test/v0.2.63` / `0865b40e62c4bf5134ce6d62a7ff9c14178cbd4e`; all **378 source and 525 tagged/package/install/archive files** match, with both 0.2.62 backups verified. [Patch](PATCH_v0.2.63.md) / [short owner checklist](TEST_v0.2.63.md). Wall alignment, tether depth, standby appearance and connected-player acceptance remain pending. Base fading is consistent with native container occlusion, not a confirmed rendered diagnosis. No Workshop upload, merge or hosted LootLab deployment. C108 development mirror follows. **Test now** after restart.
 
 **C396 / Controller and loot choices selected.** Owner selects C395 **1A / 2B**: one Controller expansion slot using existing kit grades, and global loot default exactly 1.00. Adds a buffering indicator for known entries pending validation. Verified all fourteen supplied packaged module/expansion images are 32x32; Manage currently draws modules at 16x16 versus expansion at 32x32. [Selected contract and clarification](AUDIT_C395.md#c396---selections-and-pending-entry-feedback). Documentation only; installed 0.2.62 unchanged, owner acceptance incomplete. **Decision needed: final corrective-patch approval.**

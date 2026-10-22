@@ -1952,3 +1952,7 @@ Owner supplies new Performance/Expansion rarity art and requests automatic consi
 ## C397 / 0.2.63 local delivery (2026-10-22)
 
 **0.2.63 / C397 installed (2026-10-22).** Approved Controller expansion and corrective scope are installed. **26,794 assertions**, native write/restart and all three independent-package startup checks pass. Immutable `test/v0.2.63` / `0865b40e62c4bf5134ce6d62a7ff9c14178cbd4e`; all **378 source and 525 tagged/package/install/archive files** match, with both 0.2.62 backups verified. [Patch](PATCH_v0.2.63.md) / [short owner checklist](TEST_v0.2.63.md). Wall alignment, tether depth, standby appearance and connected-player acceptance remain pending. Base fading is consistent with native container occlusion, not a confirmed rendered diagnosis. No Workshop upload, merge or hosted LootLab deployment. C108 development mirror follows. **Test now** after restart.
+# C398 - Owner test deferred; next-focus recommendation (2026-10-22)
+
+Owner cannot test now and asks what follows. Preserve installed 0.2.63 and its incomplete rendered/connected acceptance. Offer 1A performance/lifecycle hardening (recommended) or 1B balance/endurance review, as scoped in [Planning](PLANNING.md#c398---next-checkpoint-with-owner-testing-deferred). No new tuning, gameplay patch, integration or publication approved by this discussion.
+

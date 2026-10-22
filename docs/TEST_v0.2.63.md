@@ -1,5 +1,7 @@
 # 0.2.63 - C397 verification
 
+Owner update, 2026-10-22: unable to test at present. Checklist is deferred, not passed; no new client console or gameplay result supplied.
+
 Status: 0.2.63 installed and verified, 2026-10-22. Owner/rendered and connected multiplayer acceptance pending.
 
 ## Owner checklist
