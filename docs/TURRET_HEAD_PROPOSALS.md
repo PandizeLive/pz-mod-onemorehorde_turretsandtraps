@@ -1,5 +1,24 @@
 # Unique turret head candidates
 
+## C406 - Finite Splitter approved; pacing and Siphon discussion (2026-10-22)
+
+Owner selects C405 1A: finite shared Splitter opportunities with reduced-damage side chains, no recursive entitlement duplication. Owner confirms marking victims per shot to avoid repeat hits, requests 0.1-second chain staggering to give the main chain priority, and emphasizes optimizing/cutting demonstrably problematic features. Discussion continues; no gameplay patch approval. Interpret the delay as between side-chain starts, not automatically between every hop; exact timing semantics remain open if the owner intends otherwise.
+
+Recommend pulse-local hit/reservation tracking, main-chain scheduling priority, and launching side chains no sooner than their stagger and the main chain's completion. A fixed 100ms delay alone cannot guarantee the main finishes under budget pressure. Waiting does not reduce total searches or prevent simultaneous turrets from producing a burst. Reuse bounded scheduler work, local candidate queries and cleanup; avoid recursive branching, global victim scans per hop and redundant per-frame targeting work. Measure costs before cutting requested finite branches. No performance result or native Arc proof claimed.
+
+### Source-backed Siphon risk
+
+TurretSiphon.capture records actual paid turret-battery cost. hit allows one claim per dead victim, rolls 45%, and excludes secondary module damage without Synergy. settle restores cost times multiplier per successful kill; one module supplies multiplier 2 through TurretStats. TurretWorld creates this record only for turret battery power, not Controller or generator power. Thus the present protection prevents duplicate callbacks, not multiple distinct kills returning the entire paid cost each.
+
+Illustration only: a future Arc pulse costs 1% battery and kills seven eligible victims classified as native chain damage. Expected refund is 7 * 0.45 * 2% = 6.3%, for a net gain of 5.3 percentage points before battery capacity clamping. Even two eligible kills average 1.8% returned. Arc does not exist yet; this is a conditional integration risk, not a confirmed Arc bug or approved cost. Splitter kills require Synergy under existing secondary rules. Marking targets once per pulse does not prevent this distinct-victim multiplication.
+
+### Proposed Arc Siphon contract
+
+- **1A (recommended): one Siphon roll per paid Arc discharge, triggered by its first eligible kill.** Share that roll across all chains, Piercing and eligible secondary effects; a failed roll is spent too. Keep 45% and the existing stack refund multiplier, applied to actual paid discharge cost. One module averages 90% refund on discharges with an eligible kill; two average 135%, preserving intentional stacking sustain. This changes Arc's mapping only, not every existing head. Branch power pricing remains unresolved and must use the same paid-cost accounting.
+- **1B: retain full per-kill refunds for Arc.** More crowd reward, but one Siphon can sustain/refill the battery in a crowd. This conflicts with the earlier goal that stacking is needed for reliable sustain; not recommended.
+
+Recorded finite branching and target marking as selected; scheduling guarantees and Siphon mapping are recommendations. Six additional normal jumps remains proposed tuning. Installed 0.2.63.2 and deferred testing unchanged.
+
 ## C405 - Local jumps and Splitter tradeoffs (2026-10-22)
 
 Owner selects C404 1B/2B and clarifies: after connecting to a target, search a circular range around that target and choose the closest available target. Owner proposes a maximum of six additional jumps and explicitly requests candid evaluation of Splitter. Interpret six as a proposed starting default: initial hit plus six full-damage jumps, followed by diminished Piercing continuation. This corrects C404's unlimited base chain; it does not settle the extra Piercing count, a global victim cap, or final numbers. The search circle is victim-centered, not an invented turret-centered global envelope. Initial acquisition still uses turret range; later jumps may leave it. Hop radius remains open.
