@@ -4,6 +4,12 @@
 
 ## Evidence
 
+### C392 — standby scope and indicator selected (2026-10-21)
+
+Owner answers **1B / 2A** to C391: standby applies only to Detection-controlled turrets; manual/trigger-only operation bypasses standby. Preserve Detection requirements when triggers gate a detector-equipped turret; linking a trigger must not silently remove its Detection behavior. Selected feedback is a small non-illuminating indicator plus lowered pose and menu status: amber asleep, green active, unlit disabled, with explicit Waking status during the transition. Keep seven active real-time idle seconds, one-second wake, immediate abort when the target becomes invalid, and alert only after successful wake. Preserve existing action completion, pause handling and power rules; no automatic battery-saving balance change. Useful Sandbox enable/timing/audio/visual controls remain in the proposed patch scope.
+
+These choices settle the two C391 design questions. C390/C391 audio, tether, UI, tooltip, art, radius and damage selections remain recorded; no additional generic design question is required before the patch recap/approval. This reply selects the design, not an explicit build/install command. No gameplay, package or installed-version changes, and no new test result. Installed 0.2.61 remains current; final next-build approval is pending under the project discussion-before-patch agreement.
+
 ### C391 — owner selections and turret standby proposal (2026-10-21)
 
 Owner selects C390 **1A**, native world nail plus bounded native cable adapter while retaining authoritative simulation; **3B**, 40-tile Controller radius with Sandbox; and replaces the proposed injury choices with **2x friendly damage / 4x hostile PvP damage and wound chance**, relative to installed 0.2.61. Friendly wound chance is unchanged. For the current M4 profile this means 8 limb damage / 6% friendly scratch chance and 16 limb damage / 24% hostile scratch chance, before armour and existing wound-roll limits. Preserve server PvP/safety protections, classify actual victims using current owner/faction relationships, and expose separate useful Sandbox multipliers. This is selected next-patch scope, not an installed change or connected PvP acceptance.
