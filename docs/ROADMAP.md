@@ -1,5 +1,7 @@
 # Phases and checkpoints
 
+**C395 correction contract:** [0.2.62 findings and next-patch decisions](AUDIT_C395.md). Trap settings belong in internal sections of the existing Traps page, not individual sidebar pages. Placeable item tips show purpose/effective damage/health; repair materials/tools/skill/time belong only in Repair context tips. Presentation preferences belong in local Mod Options, gameplay in Sandbox. Controller expansion semantics and loot precision versus retuning remain under discussion; no patch approval inferred.
+
 **0.2.61 / C389 installed (2026-10-21).** Controller defaults, defense overrides, Other Factions targeting and the approved 1C player injury package are installed. **26,293 assertions**, native write/restart and all three independent-package startup checks pass. Immutable `test/v0.2.61` / `1cf3889e8bf96987627de66a4ed865977927012c`; all **334 source and 445 tagged/package/install/archive files** match, with both 0.2.60 backups verified. [Patch](PATCH_v0.2.61.md) / [Owner test](TEST_v0.2.61.md) / [Release evidence](../diagnostics/v0.2.61/local-release.json). Native fixtures had zero connected clients; rendered/live multiplayer acceptance remains pending. C108 mirror uses the existing development branch/draft PR. No Workshop upload, merge or LootLab deployment. **Test now** after restart.
 
 

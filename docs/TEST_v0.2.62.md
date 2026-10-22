@@ -1,5 +1,7 @@
 # 0.2.62 owner test and evidence
 
+**C395 owner test reported issues; acceptance incomplete.** [Findings, source evidence and proposed corrections](AUDIT_C395.md). Installed/tagged files unchanged. Live multiplayer test deferred by owner; no MP acceptance claimed.
+
 Status: **installed and byte-verified** from immutable `test/v0.2.62` / `01fa9fb4648f8bb528ec296284267c26d3cd4f86`. Owner rendered/live multiplayer acceptance is pending. **Test now** after restart.
 
 - [ ] Restart; confirm 0.2.62.
