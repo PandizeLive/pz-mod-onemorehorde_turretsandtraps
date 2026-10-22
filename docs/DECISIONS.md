@@ -1961,3 +1961,8 @@ Owner cannot test now and asks what follows. Preserve installed 0.2.63 and its i
 ## C399 - Performance/lifecycle pass selected (2026-10-22)
 
 Owner selects C398 1A. Continue bounded discovery, mixed-device scheduling and exact-item/expansion lifecycle hardening within existing contracts. No new balance, content, rendering acceptance or multiplayer acceptance is authorized or implied. Confirmed fixes and measured limits are recorded in [AUDIT_C399.md](AUDIT_C399.md); corrective build 0.2.63.1 passed 27,129 assertions, native write/restart and all package probes, and is installed with verified backups. Owner testing stays deferred.
+
+
+## C400 - Follow-up performance audit requested (2026-10-22)
+
+Owner requests another audit and advice on stress-test support. Audit-only reproductions confirm two scheduling/discovery defects and count repeated graph text work. See [AUDIT_C400.md](AUDIT_C400.md). No new gameplay patch or debug spawning is approved by this audit request. Recommend 1A fixes plus bounded debug stress presets/timing summaries; 1B fixes with manual setup. Installed 0.2.63.1 and deferred owner acceptance remain unchanged.

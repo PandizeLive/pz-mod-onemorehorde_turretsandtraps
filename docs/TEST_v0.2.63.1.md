@@ -15,3 +15,7 @@ No game FPS, rendered behavior or connected-player acceptance is inferred from t
 ## Installation evidence
 
 Immutable `test/v0.2.63.1` points to `49b769e8d6c7cf731719d55e37a8caa251e63e51`. All 378 source and 525 package/tag/install/archive files match; both 0.2.63 backups verify. Local record: `diagnostics/v0.2.63.1/local-release.json`. Archive SHA-256: `97dc8db3026cf6aecf850d3b7fbe33fd5f2906e5126890f441a439f98107f36b`. Owner testing remains deferred.
+
+## C400 follow-up audit
+
+The optional audit reproduced routine-work starvation under simulated sustained dirty load, assigned out-of-range cache omissions, and repeated text measurements. See [AUDIT_C400.md](AUDIT_C400.md) for exact fixtures and limitations. These are unresolved findings against this installed build, not owner-test failures or fixes. The C400 optional suite has 27,037 assertions because it replaces the optional module-pack audit. Original release evidence remains unchanged; owner testing stays deferred.
