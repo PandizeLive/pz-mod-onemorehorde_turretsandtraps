@@ -1,5 +1,13 @@
 # Unique turret head candidates
 
+## C409 - Six-target 20-damage comparison (2026-10-22)
+
+Owner proposes a six chain at 20 damage and asks how it balances. Distinguish six total targets (initial plus five jumps) from the prior six additional jumps (seven total); do not silently record a final count while wording is ambiguous. Using the same illustrative 100-HP, equal-cost, no-modifier, all-kills-credited-to-Arc model: five discharges kill the group; with one Siphon, N targets return N * 0.45 * 2C against 5C spent. Five targets yield 90%, six yield 108%, seven yield 126% expected firing-cost refund, before battery clamping and other operating costs. Six targets with two Siphons yield 162%.
+
+For six total targets, expected return is 5.4C versus 5C spent, a net 0.4C gain (8% of firing expenditure, not eight battery percentage points). Two successful rolls return 4C (loss); three return 6C (gain). Payment precedes kills, shortened chains reduce return and health/modules/wounded enemies change results. This is modestly profitable in an ideal full-chain baseline, not a guaranteed battery charger or an average net-drain design. No measured native endurance claim.
+
+Recommend six total targets at 20 as a reasonable starting compromise if slight ideal-crowd sustain is acceptable; use five total targets at 20 if the objective is baseline average drain. Choices: **1A six total / 20 (recommended compromise); 1B five total / 20 (90% baseline refund); 1C six additional jumps / seven total / 20 (126%)**. Per-kill Siphon remains selected. Count clarification and tuning selection pending; discussion only, installed 0.2.63.2/testing unchanged.
+
 ## C408 - Proposed 15-damage Arc baseline (2026-10-22)
 
 Owner asks to choose damage that keeps Siphon strong but risky. Recommend 15 base damage per normal-chain hit, with existing per-kill Siphon intact; this is a proposed baseline awaiting selection, not a gameplay change. Preserve six additional jumps as the working assumption and existing reduced Splitter/Piercing damage rules.

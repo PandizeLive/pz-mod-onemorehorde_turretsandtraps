@@ -2006,3 +2006,8 @@ Owner selects C406 1B and proposes about 20 damage per victim, expecting several
 ## C408 - Strong but risky Arc damage proposal (2026-10-22)
 
 Owner asks for damage that retains strong but risky Siphon. [Comparison](TURRET_HEAD_PROPOSALS.md#c408---proposed-15-damage-arc-baseline-2026-10-22) recommends 15 damage, with 14 as a conservative alternative. Seven illustrative 100-HP victims give 90% versus 78.75% expected firing-cost recovery respectively with one Siphon. Preserve conditional assumptions; no automatic numerical approval, source edits or balance guarantee.
+
+
+## C409 - Six-chain at 20 damage evaluated (2026-10-22)
+
+Owner asks about six chain at 20 damage. [Comparison](TURRET_HEAD_PROPOSALS.md#c409---six-target-20-damage-comparison-2026-10-22) distinguishes six total targets from six additional jumps: 108% versus 126% expected firing-cost recovery in the existing illustrative baseline. Recommend six total as a slight-sustain compromise, five total if baseline net drain is desired. Count clarification pending; no patch approval inferred.
