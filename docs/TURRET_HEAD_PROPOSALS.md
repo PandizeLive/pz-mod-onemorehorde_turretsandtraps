@@ -1,5 +1,15 @@
 # Unique turret head candidates
 
+## C413 - Existing high-cost heads versus proposed Arc power (2026-10-22)
+
+Owner requests comparison to current most expensive before selecting. No selection inferred. Source-backed comparison uses shipped stock custom-head defaults, not saved Sandbox overrides, arbitrary supported modded firearms or upgraded loadouts. TurretAmmo PipeBomb power .04 times TurretStats LobberBatteryMultiplier 1.5 gives .06% per shot, highest defined stock custom-head shot. Aerosol gives .045%; Makeshift .03%. Ballista normalized default .025%; Scrapshot .0025%. Rotary Blades spends motor power continuously, not a discrete shot cost: six-hour motor base times 2 gives .55556% per running minute before modules; Bat .27778%.
+
+At configured cooldown alone, excluding reload/rack/turning/idle/module effects, Pipe Bomb Lobber .06% every 5.5s = .65455% per minute; Ballista .025% every 6s = .25%; Scrapshot .0025% every 2s = .075%. Actual sustained Lobber rate is lower when reload/aim delays apply; do not label cooldown arithmetic measured endurance. Arc's selected one-second interval gives 3%, 6%, 12% per minute at .05%, .10%, .20% respectively. Versus Pipe Bomb Lobber these are .8333x/1.6667x/3.3333x per shot, but 4.5833x/9.1667x/18.3333x cooldown-only firing expenditure per minute.
+
+Revise recommendation within the already presented choices to **1B 0.05%** as the less aggressive starting point: still about 4.6 times Lobber cooldown-only firing drain, despite a lower per-shot cost. 1A .10% is deliberately harsh; 1C .20% is extreme and not recommended without a demonstrated need. This recommendation is not owner approval or a claim that .05% is proven balanced. Existing module drain can further shorten operating time; Regulator/Siphon can improve it. If the owner wants parity in base consumption per second, approximately .0109% per Arc shot matches Lobber's cooldown-only rate; this is a comparison reference, not a silently selected fourth option.
+
+Preserve existing per-shot accounting and per-kill refunds; higher base cost does not change proportional refund ratios. Full battery before modifiers at Arc .05/.10/.20 is 2000/1000/500 shots, around 33m20s/16m40s/8m20s firing at normal speed. No current save settings or live endurance inspected. Source evidence: shared TurretAmmo/TurretHeads/TurretStats, server TurretWorld percentage conversion and shared TurretBattery. Installed 0.2.63.2 unchanged; planning only. **Decision needed: original 1A/1B/1C, now recommending 1B.**
+
 ## C412 - Handoff correction and concrete battery-cost choice (2026-10-22)
 
 Owner asks whether ready for patch approval after the inaccurate "Wait for a patch" handoff. Correct explicitly: no Arc implementation is underway and final patch scope is not ready. Core combat choices are settled; remaining actual decisions must be presented rather than implying an approved patch is coming. Next decision is exact base battery consumption using existing per-shot accounting, not reopening charging semantics.

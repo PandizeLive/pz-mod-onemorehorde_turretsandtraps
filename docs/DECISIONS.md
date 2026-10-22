@@ -2026,3 +2026,8 @@ Owner sets one-second main firing delay, selects C410 2B, retains normal per-sho
 ## C412 - Correct premature patch handoff (2026-10-22)
 
 Owner challenges prior Wait for a patch message. No Arc patch is underway; remaining decisions exist. [Concrete battery options and readiness correction](TURRET_HEAD_PROPOSALS.md#c412---handoff-correction-and-concrete-battery-cost-choice-2026-10-22) recommend 0.10% base shot cost versus 0.05%/0.20%, explicitly before existing modifiers. Follow with consolidated remaining module/acquisition/audio review, then concrete patch approval. No new user selection or implementation authorization inferred.
+
+
+## C413 - Compare Arc cost before selection (2026-10-22)
+
+Owner requests current most-expensive comparison. [Stock-head calculations](TURRET_HEAD_PROPOSALS.md#c413---existing-high-cost-heads-versus-proposed-arc-power-2026-10-22) identify Pipe Bomb Lobber at .06% per shot and distinguish per-shot from cooldown-only per-minute drain. Revise recommendation to existing 1B .05%; no owner selection inferred. Saved overrides/modded-firearm extrema and actual endurance are not claimed verified.
