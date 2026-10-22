@@ -1,5 +1,7 @@
 # Phases and checkpoints
 
+**C416 / Minimum Extreme cost calculated (2026-10-22).** [Threshold arithmetic](TURRET_HEAD_PROPOSALS.md#c416---minimum-arc-cost-for-extreme-2026-10-22): at one shot/second without reload, minimum is 1/60 percent (~0.0166667%) per shot; 0.0167% clears it, 0.02% is a clean value above it. No cost selected or numeric tooltip added; gameplay unchanged.
+
 **C415 / No extra consumption numbers (2026-10-22).** Owner rejects C414 numeric drain addition. [Confirmed spectrum](TURRET_HEAD_PROPOSALS.md#c415---label-only-consumption-retained-spectrum-confirmed-2026-10-22): None, Minimal, Very Low, Low, Medium, High, Very High, Extreme; Extreme is highest. Retain colored labels. No audit-scope/cost selection or implementation inferred; Arc cost remains open.
 
 **C414 / Head-rating audit findings (2026-10-22).** [Source evidence](TURRET_HEAD_PROPOSALS.md#c414---consumption-rating-already-includes-speed-consistency-audit-proposed-2026-10-22) confirms ratings already include cooldown/reload; Arc .05% at one second would be Extreme (180%/hour). Baseline versus installed/payload clarity and differing firearm cycle formulas warrant audit. Recommend **1A rating consistency plus compact numeric drain**, preserving balance; **1B additionally propose head rebalance for review**. No implementation or Arc-cost selection. **Decision needed.**

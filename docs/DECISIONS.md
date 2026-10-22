@@ -2041,3 +2041,8 @@ Owner raises misleading per-shot versus sustained consumption labels. [Read-only
 ## C415 - Reject added consumption numbers (2026-10-22)
 
 Owner says not to add extra numbers. Retain colored labels, superseding C414 proposed numerical drain line. [Current spectrum verified](TURRET_HEAD_PROPOSALS.md#c415---label-only-consumption-retained-spectrum-confirmed-2026-10-22): Extreme is highest; None separately indicates zero. No Arc cost or balance approval inferred.
+
+
+## C416 - Extreme threshold clarification (2026-10-22)
+
+Owner asks minimum Arc cost for Extreme. [Calculation](TURRET_HEAD_PROPOSALS.md#c416---minimum-arc-cost-for-extreme-2026-10-22): 60/3600 = 0.0166667% per shot at one shot/second. Cost remains unselected; label-only preference and existing build unchanged.

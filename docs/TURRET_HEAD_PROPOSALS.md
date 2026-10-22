@@ -1,5 +1,9 @@
 # Unique turret head candidates
 
+## C416 - Minimum Arc cost for Extreme (2026-10-22)
+
+Owner asks the minimum cost reaching Extreme in the selected scenario. Current band begins at 60 battery percentage points per real unpaused hour. At one main shot per second, no reload and module-free baseline, 3600 shots/hour implies 60/3600 = 1/60 percent = approximately 0.0166667% per shot. Decimal 0.0167% is just above the boundary; 0.016% remains Very High. A clean 0.02% would be Extreme with margin and equals 72%/hour, not a selected default. The threshold implies 6000 shots/full battery, approximately 100 minutes of continuous firing before modifiers/refunds/other drains. These figures are discussion arithmetic, not added tooltip numbers or measured runtime. Do not select energy merely for a label, and do not infer owner cost approval. Existing label-only requirement remains. No gameplay/install change; Arc base cost remains the open decision.
+
 ## C415 - Label-only consumption retained; spectrum confirmed (2026-10-22)
 
 Owner explicitly rejects adding extra consumption numbers and asks the current spectrum and whether Extreme is highest. Retain colored qualitative consumption labels; withdraw C414 proposed numeric drain addition. Do not remove unrelated existing numerical stats or interpret this as selecting an audit/rebalance option or Arc cost.
