@@ -1,5 +1,47 @@
 # Unique turret head candidates
 
+## C403 - Arc Emitter selected next; remaining tracks retained (2026-10-22)
+
+Owner: "We'll do all of these, including Arc Emitter. Let's do arc emitter next. Let's discuss."
+
+Accept the C402 tracks into the intended future scope: shared Trait Shop defense XP, multi-panel/garage-door barbed feasibility/support, coordinated Horde scoring, modder extension documentation/sample, owner-sourced art/release preparation, and Cure simulation (still last). Arc Emitter is now selected for the next design discussion. This does not authorize publishing/deploying, generating final art, choosing unresolved numbers, or starting an unspecified gameplay implementation during this discussion. Installed 0.2.63.2/testing deferral unchanged.
+
+### Existing basis and proposed role
+
+The prior head shortlist describes a damage-focused bounded chain attack without default prolonged stun. Arc is absent from the current `TurretHeads.definitions`; no existing implementation or engine proof is claimed. Recommend an aimed universal-base head with a discrete electrical discharge: strong initial hit and a small capped sequence of nearby eligible targets. Its niche is clustered enemies and electrical supply rather than explosive area damage, projectile piercing or ammunition logistics. It should be less attractive against isolated targets than a comparable dedicated single-target head. This role is a proposal, not approved damage tuning.
+
+### First choices
+
+**1 - Firing behavior.** Recommend finite pulses for readable cadence and bounded processing.
+
+- **1A (recommended): chained pulse.** One initial target, then a finite chain of nearby targets.
+- **1B: sustained single-target beam.** Sustained contact damage without chaining; more tracking/presentation work and a less distinct crowd role.
+
+**2 - Damage across a chain (if 1A).** Recommend weaker later jumps so the first target and positioning matter.
+
+- **2A (recommended): diminishing damage per jump.** First victim takes most damage; subsequent hits taper.
+- **2B: equal damage per victim.** More dependable crowd damage; needs a lower per-hit damage or tighter target cap.
+
+**3 - Resource model.** Keep the existing turret power-source rules; this choice concerns ammunition.
+
+- **3A (recommended): no consumable ammo, substantial battery cost per discharge.** Power and cooldown pay for convenience. Grid Module/Siphon interactions must be reviewed before numeric balance.
+- **3B: consumable electrodes plus lower battery cost.** Adds a supply/crafting burden and an additional item contract; not selected merely because it sounds electrical.
+
+### Recommended constraints, not yet final numerical design
+
+- No default stun-lock, long slowing, fire or building damage. Preserve the existing rejection of general slowing turret effects.
+- One chain per pulse, a strict total victim cap, no repeat victim in that pulse, and obstruction/target-policy checks on each jump. Do not create branching recursive chains.
+- Charge a declared cost for the committed discharge; specify miss/abort handling and Siphon kill refunds before implementation. Grid supply follows the existing optional Grid Module contract.
+- Reuse turret ownership, Controller inputs, Detection/standby and authoritative damage paths. Per-head player injury mapping and shared friendly/hostile modifiers need explicit review, not invented values.
+- Module compatibility must be deliberate. Do not let the current non-rotary permissive fallback accidentally enable projectile Fragment/Piercing/Splitter recursion. Review Synergy/Siphon and rapid-fire combinations against a total work/damage budget.
+- Prove short-lived native-world arc rendering, depth, replicated endpoints, sound and cleanup; no screen-overlay depth guarantee. Final art remains owner-sourced.
+- Include useful settings in an Arc subsection of the existing Turrets Sandbox category. Exposure/ranges/defaults follow the selected mechanic, not speculative inert settings.
+
+After these choices: propose concrete damage/range/jump distance/victim cap/cadence/battery values and representative comparisons; settle module mapping, crafting/skills/repair, audio and any loot rarity using assigned weights. Then obtain concrete patch/prototype approval. No numbers or recipes are selected by C403.
+
+**Decision needed: 1A/1B, 2A/2B if chaining, and 3A/3B.**
+
+
 **C235 / final capacity selected; ready to implement (2026-10-14).** Owner selects1B:40 spears,20 shared launchable explosives in any mixture,250 ordinary firearm base rounds. [Combined readiness and verification gates](VOID_MODULE.md#c235-final-capacity-selected-ready-for-implementation-2026-10-14). Last presented balance choice settled; remaining work is native integration/validation, not further generic design approval. Installed0.2.49 unchanged; no gameplay/install/test-status change in this readiness turn.
 
 **C234 / shared explosive capacity and Makeshift Bomb confirmed (2026-10-14).** Owner rejects per-explosive-type quotas, chooses Makeshift Bomb naming and approves25%of relative donor-stat difference. [Settled rules and final capacity choice](VOID_MODULE.md#c234-shared-explosive-capacity-and-makeshift-bomb-2026-10-14). One shared bomb count replaces subtype limits/weighted mixing;40 versus20 total bombs remains proposed. No gameplay/install/test-status change.

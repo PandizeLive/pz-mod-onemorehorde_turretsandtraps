@@ -1976,3 +1976,8 @@ Owner: "Fix the findings, I’ll test when I’m able to personally." Proceed wi
 ## C402 - Roadmap completeness clarification (2026-10-22)
 
 Owner challenges the implication that only testing remains. Reconciled the current remaining-work snapshot in [Planning](PLANNING.md#c402---remaining-roadmap-clarified-2026-10-22) and Roadmap: approved C401 fixes complete does not mean the whole roadmap is complete. Shared XP, coordinated scoring, multi-leaf barbed support and release/Cure work remain separate. New heads are optional candidates, not commitments. Proposed 1A shared XP design / 1B garage-door feasibility / 1C scoring readiness audit; no selection or implementation authorization inferred. Installed build and deferred tests unchanged.
+
+
+## C403 - Arc Emitter next; all C402 tracks retained (2026-10-22)
+
+Owner commits to the discussed future tracks, including Arc Emitter, and explicitly requests discussing Arc next. Record that ordering without inventing mechanics, numerical tuning, implementation approval or publication authorization. Cure simulation stays last and art stays owner-sourced. [Initial Arc contract and options](TURRET_HEAD_PROPOSALS.md#c403---arc-emitter-selected-next-remaining-tracks-retained-2026-10-22). Current build/testing unchanged.

@@ -1,5 +1,7 @@
 # Phases and checkpoints
 
+**C403 / All C402 future tracks accepted; Arc Emitter discussion next (2026-10-22).** Owner selects Arc Emitter next and retains shared XP, garage/barbed coverage, scoring readiness, modder guide/sample, owner art/release work and last-phase Cure simulation. [Arc role, choices and constraints](TURRET_HEAD_PROPOSALS.md#c403---arc-emitter-selected-next-remaining-tracks-retained-2026-10-22). Recommend **1A chained pulse / 2A diminishing jumps / 3A battery-only ammunition model** (existing turret power sources retained). Alternatives: sustained single-target beam, equal-damage chain, or consumable electrodes. Choices/numbers remain proposed; discussion is not gameplay or publication approval. Installed 0.2.63.2/testing deferral unchanged. **Decision needed.**
+
 ## C402 - Remaining roadmap clarified (2026-10-22)
 
 Owner asks whether anything remains beyond testing and what is worth considering. The earlier conversational summary was too broad: C401 closes the approved performance fixes, not the entire roadmap. Installed 0.2.63.2 and deferred personal testing remain unchanged. No new feature implementation, sibling edit or deployment is authorized by this discussion.
