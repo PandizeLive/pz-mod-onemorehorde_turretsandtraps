@@ -1,5 +1,13 @@
 # Unique turret head candidates
 
+## C418 - Craftable acquisition selected; recipe proposal (2026-10-22)
+
+Owner selects C417 1A: craftable Arc head, not a new loot-distribution addition. No new rarity/loot-weight choice is needed for this route. Preserve .02% base shot cost and all selected combat mechanics. Selection does not finalize a recipe or approve implementation.
+
+Read existing OMHTT_TurretHeads.txt Lobber recipes and Controller/trigger recipe ingredients. Recommend Arc recipe using established item families: eight Electronics Scrap, four Electric Wire, two Small Metal Sheets, two Scrap Metal, twelve Screws. Retained tools: screwdriver, wrench or pipe wrench, pliers, metal saw. Yield one Arc head; no consumed battery because power comes from the installed turret supply. Propose same base crafting duration as the normal Lobber recipe (864 native recipe-time units, not an unverified real-second conversion), no recipe-learning requirement, 30 Electrical XP plus 10 Mechanics XP. These are proposed values and should still be native-validated during approved implementation; reuse of existing IDs is not new rendered/runtime proof.
+
+Skill choices: **1A recommended Electrical 4 / Mechanics 2** for an advanced electrical weapon with modest fabrication; **1B Electrical 3 / Mechanics 2**, easier access. Ingredient/tool/time/XP proposal is common to both. Owner can revise the proposal; do not silently approve it. Remaining module compatibility and audio/native temporary effects review remains necessary before final patch approval; do not claim ready or tell the owner to wait for an underway patch. Current build/test status unchanged; documentation only.
+
 ## C417 - Arc base shot cost selected (2026-10-22)
 
 Owner agrees to 0.02. Record **0.02% of full battery per committed main shot** as selected Arc base cost, before existing module/power modifiers; fractional battery debit is .0002 before modifiers, not .02. Preserve standard turret shot accounting and selected per-kill Siphon, with no new separate branch charges. At one shot/second, module-free no-reload baseline is 72 percentage points/hour and Extreme. Full battery gives 5000 base shots/about 83m20s of continuous firing before other drain/refunds/modifiers; calculated only. Keep label-only tooltip, without new numerical consumption line.

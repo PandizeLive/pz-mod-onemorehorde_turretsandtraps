@@ -2051,3 +2051,8 @@ Owner asks minimum Arc cost for Extreme. [Calculation](TURRET_HEAD_PROPOSALS.md#
 ## C417 - Arc 0.02% shot cost approved (2026-10-22)
 
 Owner agrees to .02 following C416. [Contract](TURRET_HEAD_PROPOSALS.md#c417---arc-base-shot-cost-selected-2026-10-22) records .02% base cost per shot, existing modifiers and Extreme label without extra numbers. Not blanket implementation approval; acquisition/module/recipe/audio scope remains to settle.
+
+
+## C418 - Craftable Arc acquisition approved (2026-10-22)
+
+Owner selects C417 1A. Record craftable acquisition without loot addition. [Recipe proposal](TURRET_HEAD_PROPOSALS.md#c418---craftable-acquisition-selected-recipe-proposal-2026-10-22) remains unapproved; ingredients/tools/skills/time/XP are proposed explicitly. No implementation or patch approval inferred.
