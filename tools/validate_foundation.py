@@ -125,7 +125,7 @@ def main():
     pitch_log = run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED",
         "-Djava.library.path=" + str(GAME), "-cp", os.pathsep.join([str(classes), str(GAME / "projectzomboid.jar")]),
         "NativePitchCheck", PACKAGE / "42.20", OUTPUT / "pitch-cache", GAME], cwd=GAME)
-    assert "NATIVE_PITCH_PASS definitions=23 clips=2626 plays=690" in pitch_log
+    assert "NATIVE_PITCH_PASS definitions=24 clips=2727 plays=720" in pitch_log
     assert "NATIVE_PACK_AUDIO_PASS tiers=7 nativeUIHandles=7 stopped=7" in pitch_log
     assert "Set pitch for" not in pitch_log, "Runtime pitch setter logging returned"
     (OUTPUT / "native-pitch.log").write_text(pitch_log, encoding="utf-8")

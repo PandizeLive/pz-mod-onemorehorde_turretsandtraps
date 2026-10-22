@@ -1,5 +1,7 @@
 # Unique turret head candidates
 
+**C422 / Selected Arc audio verified; installation pending (2026-10-22).** Owner selects S1B RadioZap with shot pitch variation and S1C DismantleFailed for impact. 0.2.64.1 adds one varied firing cue per main shot, quiet confirmed-contact cues, existing volume/Suppression support and bounded overlap. Fixes an unrelated projectile receiver consuming Arc packets before their handlers. [Patch](PATCH_v0.2.64.1.md) | [Verification](TEST_v0.2.64.1.md). 27,299 assertions and native file-clip pitch checks pass. Native write/restart and Traps-only, Turrets-only and combined startup pass. Install and mirror remain pending; no listening or connected-client acceptance claimed. **Wait for a patch.**
+
 ## C421 - Approved implementation and electrical presentation (2026-10-22)
 
 Owner explicitly approves the C420 initial patch and requests an electrical appearance. Implement 0.2.64 with thin jagged world-space segments using the existing white technical model, 160 active-millisecond lifetime, 64-burst ring and 192 rendered-segment budget per viewport. This is functional developer presentation, not final head artwork. Native model registration and test-double geometry/cleanup checks do not establish GPU depth or readability.

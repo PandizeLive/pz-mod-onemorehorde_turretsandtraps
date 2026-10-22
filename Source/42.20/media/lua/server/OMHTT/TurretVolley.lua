@@ -247,6 +247,9 @@ function V.finish(ray)
             local primary = group.kind == "forward" and not group.penetrated
             if primary or group.stats.synergy then amount = Conditional.damage(victim, amount, Conditional.snapshot(victim, group.stats)) end
             hit = require("OMHTT/TurretHit").resolve(victim, amount, ray.id, group.kind, owner, function()
+                if group.stats.headKind == "Arc" then
+                    require("OMHTT/DefenseEffects").emit("ArcHit", {x = x, y = y, z = ray.z, gain = group.stats.hearingMultiplier})
+                end
                 if (group.kind == "piercing" or group.kind == "forward") and not group.stats.firearm and not group.stats.headKind and owner then
                     local combat = require("OMHTT/PrototypeCombat")
                     local record = {id = ray.id, shots = ray.shot}

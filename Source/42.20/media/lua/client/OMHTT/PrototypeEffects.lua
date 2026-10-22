@@ -36,6 +36,8 @@ end
 ---@param facts table Shot facts; target reference is local SP only
 ---@return nil
 function E.receive(module, command, facts)
+    if module ~= F.MODULE or (command ~= "Volley" and command ~= "Click" and command ~= "Launch"
+        and command ~= "Land" and command ~= "Impact" and command ~= "GunShot" and command ~= "Ray") then return end
     if module == F.MODULE and not require("OMHTT/DefenseEffects").accept(facts) then return end
     if module == F.MODULE and command == "Volley" then
         for i = 1, math.min(64, #facts.rays) do E.receive(module, "Ray", facts.rays[i]) end

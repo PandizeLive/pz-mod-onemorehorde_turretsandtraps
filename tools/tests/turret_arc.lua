@@ -105,7 +105,13 @@ local crowded = S.resolve({head = head, active = {Splitter = 16, Piercing = 16, 
 check(V.available(crowded), "Large approved Arc lineage is admitted per contact instead of permanently rejected")
 local options = start(20)
 finish()
-check(#hits == 6 and #cues == 6 and procs == 1 and options.pending == 0, "Base arc hits six and releases reservation")
+check(#hits == 6 and #cues == 13 and procs == 1 and options.pending == 0, "Base arc hits six and releases reservation")
+local shots, impacts = 0, 0
+for i = 1, #cues do
+    if cues[i].command == "ArcShot" then shots = shots + 1 end
+    if cues[i].command == "ArcHit" then impacts = impacts + 1 end
+end
+check(shots == 1 and impacts == 6, "One launch sound per paid shot and impacts only on confirmed contacts")
 for i = 1, #hits do check(hits[i].damage == .2, "Native chain retains 20 damage") end
 options = start(20, {Piercing = 2})
 finish()

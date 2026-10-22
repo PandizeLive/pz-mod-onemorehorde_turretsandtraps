@@ -528,6 +528,8 @@ public final class KahluaCheck {
             {"_", "tools/tests/performance_c400.lua"},
             {"OMHTT/TurretArcView", base + "client/OMHTT/TurretArcView.lua"},
             {"_", "tools/tests/turret_arc.lua"},
+            {"OMHTT/TurretArcAudio", base + "client/OMHTT/TurretArcAudio.lua"},
+            {"_", "tools/tests/turret_arc_audio.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

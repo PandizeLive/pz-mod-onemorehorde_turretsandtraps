@@ -4,7 +4,7 @@ import build_device_audio_audition as audition
 audition.RAW = audition.ROOT / 'diagnostics/audio-audition/arc-c421'
 audition.OUT = audition.ROOT / 'art/ARC_AUDIO.html'
 audition.GROUPS = [
-    ('Arc discharge', 'Radio zaps are the closest native electrical character. Compare the quieter alternatives; none is installed yet.', ['VehicleRadioZap', 'RadioZap', 'DismantleFailed', 'RadioStatic', 'TuneIn', None]),
+    ('Arc discharge', 'Selected: S1B for firing with pitch variation; S1C for impact. Other candidates remain available for comparison.', ['VehicleRadioZap', 'RadioZap', 'DismantleFailed', 'RadioStatic', 'TuneIn', None]),
 ]
 if __name__ == '__main__':
     audition.main()
@@ -13,5 +13,5 @@ if __name__ == '__main__':
     page = page.replace('Native sound audition', 'Arc Emitter sound audition')
     start = page.index('<p>Existing coverage:')
     end = page.index('</p>', start) + 4
-    page = page[:start] + '<p>Arc uses the existing wake and deactivation cues. This audition covers the discharge only. Native radio and electrical sounds are approximations, not a dedicated lightning asset. Final firing audio is deferred and these previews are for local use only.</p>' + page[end:]
+    page = page[:start] + '<p>C422 selections: S1B RadioZap firing with subtle pitch variation and S1C DismantleFailed impact. The selected firing sample is included in 0.2.64.1; impact references the native event. Installed gains keep impacts quieter, with a burst limit. Arc retains existing wake and deactivation cues. These original candidate previews do not reproduce the final mix.</p>' + page[end:]
     audition.OUT.write_text(page, encoding='utf-8')

@@ -113,6 +113,7 @@ function A.hit(job, actor)
         if finished then return end
         finished = true
         if lost > 0 then
+            Effects.emit("ArcHit", {x = x, y = y, z = job.z, gain = stats.hearingMultiplier})
             if not instanceof(actor, "IsoPlayer") then
                 require("OMHTT/TurretSiphon").hit(actor, options.siphon, not primary)
             end
@@ -159,6 +160,7 @@ function A.launch(record, origin, target, player, options)
     end
     local radius = require("OMHTT/TurretStats").hearingRadius(options.weapon, options.stats)
     require("OMHTT/DefenseHorde").sound(options.object, x, y, job.z, radius, 10)
+    Effects.emit("ArcShot", {x = x, y = y, z = job.z, gain = options.stats.hearingMultiplier})
     A.jobs[#A.jobs + 1] = job
     return nil
 end

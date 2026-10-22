@@ -85,7 +85,7 @@ public final class NativePitchCheck {
                 definitions++;
             }
         }
-        check(definitions == 23 && clipsChecked == 2626 && plays == 690, "Incomplete source sound coverage");
+        check(definitions == 24 && clipsChecked == 2727 && plays == 720, "Incomplete source sound coverage");
         System.out.printf(Locale.ROOT,"NATIVE_PITCH_PASS definitions=%d clips=%d plays=%d range=0.950-1.050 steps=101 queued-pitch=verified maxPlayMs=%.3f%n", definitions, clipsChecked, plays, maximum);
         String packText = Files.readString(Path.of(args[0], "media/scripts/OMHTT_PackSounds.txt"));
         Matcher packMatch = pattern.matcher(packText);
