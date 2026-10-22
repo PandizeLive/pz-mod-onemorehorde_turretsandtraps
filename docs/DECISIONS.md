@@ -1960,4 +1960,4 @@ Owner cannot test now and asks what follows. Preserve installed 0.2.63 and its i
 
 ## C399 - Performance/lifecycle pass selected (2026-10-22)
 
-Owner selects C398 1A. Continue bounded discovery, mixed-device scheduling and exact-item/expansion lifecycle hardening within existing contracts. No new balance, content, rendering acceptance or multiplayer acceptance is authorized or implied. Confirmed fixes and measured limits are recorded in [AUDIT_C399.md](AUDIT_C399.md); corrective build 0.2.63.1 verification is in progress. Owner testing stays deferred.
+Owner selects C398 1A. Continue bounded discovery, mixed-device scheduling and exact-item/expansion lifecycle hardening within existing contracts. No new balance, content, rendering acceptance or multiplayer acceptance is authorized or implied. Confirmed fixes and measured limits are recorded in [AUDIT_C399.md](AUDIT_C399.md); corrective build 0.2.63.1 passed 27,129 assertions, native write/restart and all package probes, and is installed with verified backups. Owner testing stays deferred.
