@@ -1956,3 +1956,8 @@ Owner supplies new Performance/Expansion rarity art and requests automatic consi
 
 Owner cannot test now and asks what follows. Preserve installed 0.2.63 and its incomplete rendered/connected acceptance. Offer 1A performance/lifecycle hardening (recommended) or 1B balance/endurance review, as scoped in [Planning](PLANNING.md#c398---next-checkpoint-with-owner-testing-deferred). No new tuning, gameplay patch, integration or publication approved by this discussion.
 
+
+
+## C399 - Performance/lifecycle pass selected (2026-10-22)
+
+Owner selects C398 1A. Continue bounded discovery, mixed-device scheduling and exact-item/expansion lifecycle hardening within existing contracts. No new balance, content, rendering acceptance or multiplayer acceptance is authorized or implied. Confirmed fixes and measured limits are recorded in [AUDIT_C399.md](AUDIT_C399.md); corrective build 0.2.63.1 verification is in progress. Owner testing stays deferred.

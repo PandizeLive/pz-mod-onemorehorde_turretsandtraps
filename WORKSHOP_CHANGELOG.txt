@@ -1,4 +1,4 @@
-v0.2.63
+v0.2.63.1
 
 Development test content
 
@@ -8,7 +8,7 @@ Development test content
 - Refined wall-trigger inset and tether segment orientation; consolidated trap settings and readable loot multipliers, with global loot default 1.00.
 - Added selected native and owner-supplied device sounds, Detection-only turret standby with configurable seven-second idle/one-second wake, 45-degree downward head pitch, post-wake firing delay and amber/green/dark state feedback.
 - Moved Tether nail/cable visuals into native world rendering, with faster launch and falling retraction; retained its authoritative damage cycle.
-- Polished Controller Connections with compact entries, fixed headings, collapsed-cable hiding, group assignment menus and persistent Controller Settings access; Controller discovery now appears progressively with checking indicators.
+- Polished Controller Connections with compact entries, fixed headings, collapsed-cable hiding, group assignment menus and persistent Controller Settings access; Controller discovery now appears progressively with checking indicators and fair delayed-device retries; cached expansion lookups reduce repeated stockpile searches and keep client capacity/range consistent while inventory arrives.
 - Added compact purpose/damage/health item tooltips, repair requirement menus, larger module icons and organized per-device combat/feedback Sandbox controls.
 - Added Controller target defaults and individual turret/Tether overrides: Zombies Only or Other Factions, including factionless outsiders. Owner/faction exclusions apply to deliberate targeting; server PvP, safety and non-PvP protections apply.
 - Added reduced, fixed turret player damage with limb wounds, armor checks, shared volley limits and bounded wound rolls; separate friendly/hostile damage and wound Sandbox multipliers leave zombie balance unchanged.

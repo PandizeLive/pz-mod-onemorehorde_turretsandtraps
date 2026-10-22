@@ -1,5 +1,7 @@
 # Planning
 
+**C399 / Performance and lifecycle pass selected (2026-10-22).** Owner selects C398 **1A**. Confirmed delayed-discovery starvation, repeated expansion inventory lookups and late-client expansion display have corrective fixes staged as 0.2.63.1. Full validation passes **27,129 assertions**; native write/restart and all three independent-package checks pass. Tagged installation follows. [Audit and limits](AUDIT_C399.md). No balance/content changes; 0.2.63 visual and connected-player acceptance remain deferred. **Wait for a patch.**
+
 ## C398 - Next checkpoint with owner testing deferred
 
 Owner asks what is next and cannot test at present. Installed 0.2.63 remains unchanged; do not mark its visual checklist passed or request it again now. C397 was mirrored successfully at `127d0edb2626bf05f710c0c575cd743194db219d`.

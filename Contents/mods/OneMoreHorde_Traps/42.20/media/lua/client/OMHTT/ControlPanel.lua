@@ -33,6 +33,7 @@ end
 ---@return nil
 function Panel:scan()
     if not self.scanIndex then
+        Discovery.add(self.object)
         self.scanIndex, self.scanObjectIndex, self.scanResults, self.scanSelection = 0, 0, {}, {}
         self.scanRadius = A.radius(self.object)
         self.checking = {}

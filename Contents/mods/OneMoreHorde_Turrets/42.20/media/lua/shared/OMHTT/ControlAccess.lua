@@ -13,7 +13,7 @@ function A.radius(object)
     end
     local expansion = require("OMHTT/ControlExpansion")
     local base = expansion.option("ControllerRange", 10, 100)
-    return math.floor(math.max(5, math.min(100, base + expansion.tier(expansion.item(object)) * expansion.option("ControllerKitRange", 10, 25))))
+    return math.floor(math.max(5, math.min(100, base + expansion.grade(object) * expansion.option("ControllerKitRange", 10, 25))))
 end
 A.remote = setmetatable({}, {__mode = "k"})
 

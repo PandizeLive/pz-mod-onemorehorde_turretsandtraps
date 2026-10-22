@@ -1,4 +1,5 @@
 local E = {}
+E.cached = setmetatable({}, {__mode = 'kv'})
 local tiers = {['Base.OMHTTModuleExpansionImprovised'] = 1, ['Base.OMHTTModuleExpansionSmall'] = 2,
     ['Base.OMHTTModuleExpansionMedium'] = 3, ['Base.OMHTTModuleExpansionLarge'] = 4}
 
@@ -27,15 +28,41 @@ end
 function E.item(object)
     local state = object and require('OMHTT/ControlAccess').state(object)
     local storage = object and object:getContainer()
-    if not state or not storage or not state.expansionId then return nil end
-    return storage:getItemWithID(state.expansionId)
+    if not state or not storage or not state.expansionId then
+        if object then
+            E.cached[object] = nil
+        end
+        return nil
+    end
+    local item = E.cached[object]
+    if item and item:getID() == state.expansionId and item:getContainer() == storage then
+        return item
+    end
+    item = storage:getItemWithID(state.expansionId)
+    E.cached[object] = item
+    return item
+end
+
+---@param object IsoObject? Controller
+---@return number tier Server-owned grade; clients need not wait for inventory replication
+function E.grade(object)
+    if isClient() then
+        local state = object and require('OMHTT/ControlAccess').state(object)
+        local tier = state and state.expansionTier
+        if type(tier) == 'number' and tier == tier then
+            return math.floor(math.max(0, math.min(4, tier)))
+        end
+    end
+    return E.tier(E.item(object))
 end
 
 ---@param object IsoObject? Controller
 ---@param tier number? Hypothetical replacement grade
 ---@return number capacity
 function E.capacity(object, tier)
-    if tier == nil then tier = E.tier(E.item(object)) end
+    if tier == nil then
+        tier = E.grade(object)
+    end
     return E.option('ControllerCapacity', 100, 5000) + tier * E.option('ControllerKitCapacity', 100, 1000)
 end
 

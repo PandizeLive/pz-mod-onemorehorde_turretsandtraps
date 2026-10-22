@@ -1,6 +1,7 @@
 if isServer() then return end
 local D = {byId = setmetatable({}, {__mode = 'v'}), objects = setmetatable({}, {__mode = 'k'}), pending = setmetatable({}, {__mode = 'k'})}
 local A = require('OMHTT/ControlAccess')
+D.queue, D.queued, D.first, D.last = {}, {}, 1, 0
 
 ---@param object IsoObject Candidate
 ---@return nil
@@ -11,6 +12,10 @@ function D.add(object)
         D.objects[object], D.pending[object], D.byId[state.id] = state.id, nil, object
     else
         D.pending[object] = getTimestampMs() + 10000
+        if not D.queued[object] then
+            D.last = D.last + 1
+            D.queue[D.last], D.queued[object] = object, true
+        end
     end
 end
 
@@ -31,18 +36,31 @@ end
 
 ---@return nil
 function D.tick()
-    local now, count = getTimestampMs(), 0
+    local now = getTimestampMs()
     if now < (D.due or 0) then return end
     D.due = now + 250
-    for object, expires in pairs(D.pending) do
-        if object:getObjectIndex() < 0 or now >= expires then
-            D.pending[object] = nil
-        else
+    local count = math.min(64, D.last - D.first + 1)
+    for i = 1, count do
+        local object = D.queue[D.first]
+        D.queue[D.first], D.queued[object] = nil, nil
+        D.first = D.first + 1
+        local expires = D.pending[object]
+        if expires and object:getObjectIndex() >= 0 then
             local state = A.state(object)
-            if state then D.objects[object], D.pending[object], D.byId[state.id] = state.id, nil, object end
+            if state then
+                D.objects[object], D.pending[object], D.byId[state.id] = state.id, nil, object
+            elseif now < expires then
+                D.last = D.last + 1
+                D.queue[D.last], D.queued[object] = object, true
+            else
+                D.pending[object] = nil
+            end
+        else
+            D.pending[object] = nil
         end
-        count = count + 1
-        if count >= 64 then break end
+    end
+    if D.first > D.last then
+        D.first, D.last = 1, 0
     end
 end
 
