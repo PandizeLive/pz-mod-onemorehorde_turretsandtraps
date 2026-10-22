@@ -1986,3 +1986,8 @@ Owner commits to the discussed future tracks, including Arc Emitter, and explici
 ## C404 - Arc selections and uncapped-chain correction (2026-10-22)
 
 Owner selects C403 1A/2B/3A, explicitly rejects a total target cap, and specifies reduced-damage Piercing continuation plus auto-aimed deferred Splitter branches. Preserve that correction; do not silently restore the rejected cap or duplicate module entitlements recursively. Exact chain territory and the transition from main chain to Piercing remain unresolved; [discussion](TURRET_HEAD_PROPOSALS.md#c404---uncapped-arc-chains-and-deferred-splitter-branches-2026-10-22) records concrete alternatives and performance tradeoffs. No gameplay implementation or numerical balance approval.
+
+
+## C405 - Local Arc jumps and tentative six-jump phase (2026-10-22)
+
+Owner selects C404 1B/2B: nearest available target in a circle around each struck target; proposes six additional jumps. Record initial plus six as tentative base tuning, superseding the unlimited base-chain proposal. Owner asks whether Splitter is worthwhile. [Tradeoffs and choices](TURRET_HEAD_PROPOSALS.md#c405---local-jumps-and-splitter-tradeoffs-2026-10-22) recommend finite shared opportunities for reduced-damage independent side chains, versus explicitly excluding Splitter. No recursive entitlement duplication, final balance selection or implementation approval inferred. Current installation and deferred testing unchanged.

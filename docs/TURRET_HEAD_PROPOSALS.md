@@ -1,5 +1,24 @@
 # Unique turret head candidates
 
+## C405 - Local jumps and Splitter tradeoffs (2026-10-22)
+
+Owner selects C404 1B/2B and clarifies: after connecting to a target, search a circular range around that target and choose the closest available target. Owner proposes a maximum of six additional jumps and explicitly requests candid evaluation of Splitter. Interpret six as a proposed starting default: initial hit plus six full-damage jumps, followed by diminished Piercing continuation. This corrects C404's unlimited base chain; it does not settle the extra Piercing count, a global victim cap, or final numbers. The search circle is victim-centered, not an invented turret-centered global envelope. Initial acquisition still uses turret range; later jumps may leave it. Hop radius remains open.
+
+Recommend available means alive, loaded, permitted by targeting policy, unobstructed from the current hit and not already hit/reserved by any branch of this pulse. These safeguards are recommendations, not new owner-confirmed mechanics. Stop when no eligible target exists; a remaining jump allowance does not permit crossing arbitrary gaps.
+
+### Benefits and costs
+
+Splitter now has a useful spatial role: a nearest-neighbor chain can spend its six jumps inside one cluster; a branch can cover another direction/cluster. It also preserves a meaningful module build choice. Arc already auto-aims and hits multiple enemies, so Splitter is optional rather than fundamental to the head's identity.
+
+Independent side chains increase total damage and processing. With seven main hits at D damage and one full seven-hit branch at the existing default 50% Splitter damage, the ceiling is 10.5D versus 7D, a 50% increase, assuming distinct available targets and no Piercing/secondary effects. This is illustrative arithmetic, not measured DPS or selected Arc tuning. Sparse crowds may not supply distinct targets, and branches can compete with the main path. Siphon/secondary effects and battery pricing need deliberate settlement. Extra target/obstruction searches, replicated endpoints and effects cost work; finite branching can be budgeted but performance is not yet proven. Recursive duplication of Splitter allowances creates rapidly multiplying branches and should be rejected.
+
+### Splitter choice
+
+- **1A (recommended): keep finite side chains.** One extra branch opportunity per existing Splitter count, shared across the whole pulse; use the existing Splitter damage modifier. Auto-aim a distinct side target; if absent, retain the opportunity for a later connection in this same pulse. A child does not receive a fresh Splitter allowance. Recommend each created side chain gets its own normal jump allowance, including a deferred branch, so delayed splitting does not arbitrarily weaken the module. This increases possible reach and must be priced/tuned explicitly. Shared victim tracking prevents repeat hits. Unused opportunities expire with the pulse. Branch/Piercing allowance sharing and power/refund accounting remain to settle before implementation.
+- **1B: exclude Splitter from Arc.** Simpler balance, presentation and processing; normal chain plus Piercing supplies the head's crowd role. This is an explicit alternative to the owner's requested branching, not a silent removal.
+
+No gameplay, assets, Sandbox values, packages or version changed. Installed 0.2.63.2 remains current; owner testing stays deferred. Decision needed on Splitter; six jumps remains tentative tuning.
+
 ## C404 - Uncapped Arc chains and deferred Splitter branches (2026-10-22)
 
 Owner selects C403 **1A chained pulses / 2B equal base-chain damage / 3A no consumable ammunition**. Owner rejects a total target cap, assigns damage falloff to Piercing after the main chain, and requests auto-aimed Splitter branches to either side. If no additional target exists beyond the initial target, retain the unused split for a subsequent chain connection. This supersedes the proposed fixed victim cap and blanket one-chain/no-branch recommendation. Discussion continues; no gameplay patch or numerical tuning is approved.
