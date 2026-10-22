@@ -4,6 +4,8 @@ Read README.md, docs/DECISIONS.md, and docs/ROADMAP.md before project changes. T
 
 ## Per-turn context and consistency review (C111, owner-requested 2026-10-09)
 
+- C394 (2026-10-21): Owner tests use a small feature checklist, at most ten words per item. Name straightforward features without procedural detail. Add longer instructions only when essential to run or interpret a test; keep technical evidence in the test record. This supersedes the older 4-8 numbered-step presentation requirement.
+
 - C257: When identifying remaining owner decisions, present the actual numbered choices and recommendations in that response. Do not end with only "decisions next" and make the owner request them again.
 
 - At the start of every project turn, including discussion, reread this section and `docs/CURRENT_STATUS.md` from disk before substantive recommendations or work. Repeat after context compaction. Read the full applicable AGENTS.md at session start or when changed; consult relevant decisions/checkpoints before proposing or implementing changes. Do not rely on chat recollection alone.

@@ -2,13 +2,16 @@
 
 Status: **installed and byte-verified** from immutable `test/v0.2.62` / `01fa9fb4648f8bb528ec296284267c26d3cd4f86`. Owner rendered/live multiplayer acceptance is pending. **Test now** after restart.
 
-1. Restart and confirm **0.2.62** in the developer menu. Check Sandbox: Controller range 40, laser range 10, standby 7/1 seconds, separate friendly/hostile multipliers, and head/trap headings. Existing saved values remain authoritative.
-2. Open Controller, resize and scroll Connections, collapse a linked group, drag/reassign devices and use right-click **Assign to Group**. Check fixed Add Group, hidden collapsed cables, clipped labels, and **Controller Settings** after selecting a device.
-3. Connect a Lever and sensor to one defense. OFF must block the sensor; ON must allow it. Test two Levers (both ON required), power loss/restoration, switch sounds and all four wall orientations. Laser should show green clear/red interrupted and no device range slider.
-4. On a Detection-equipped turret, leave no target for seven seconds. Check lowered head/amber marker/deactivate sound, one-second wake and alert only at completion. Remove the target during wake; it should sleep immediately. Check manual operation and a turret without Detection, including power off/on.
-5. Fire Tether past/in front of zombies and walls from four orientations. Check fast launch, impact, 0.75-second hold, falling nail/reeling, world depth and reset sound. Listen to Poke/rotary cues and check pause/resume. Report the face/zoom when alignment looks wrong.
-6. Inspect Poke, reinforced Bed Spikes and other device tips; check repair material/tool/time. Inspect Performance/Expansion icons in inventory and Manage. Change an effective rarity in Sandbox, then hover/draw an existing item: tooltip and artwork should agree. Confirm other categories retain their art.
-7. Compare friendly and hostile turret injury with server PvP rules enabled, then repeat with safety/non-PvP protection and armor. Check wounds/damage separately. With a second client, verify signals, state markers, wake audio and injuries arrive once; save/restart with devices linked. Send console.txt after testing.
+- [ ] Restart; confirm 0.2.62.
+- [ ] Audio balance, including multiple active devices.
+- [ ] Turret sleep, wake, cancellation, and state indicators.
+- [ ] Tether speed, retraction, depth, and wall alignment.
+- [ ] Lever mounting and override; laser beam colors.
+- [ ] Connections scrolling, collapsing, grouping, resizing, and text clipping.
+- [ ] Controller settings access and 40-tile range.
+- [ ] Tooltips, module hints, and rarity-matching icons.
+- [ ] Sandbox categories; friendly versus hostile player damage.
+- [ ] Multiplayer synchronization, safety protections, and save/reload.
 
 ## Evidence and limits
 
