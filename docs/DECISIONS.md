@@ -2021,3 +2021,8 @@ Owner selects C409 1A, citing incomplete crowds, and asks for remaining discussi
 ## C411 - Arc firing and Synergy selections (2026-10-22)
 
 Owner sets one-second main firing delay, selects C410 2B, retains normal per-shot turret power handling and assigns Piercing on Splitter shots to Synergy. [Contract](TURRET_HEAD_PROPOSALS.md#c411---one-second-cadence-and-synergy-gated-branch-piercing-2026-10-22) supersedes separate branch charges and the proposed shared Piercing allowance. Preserve remaining exact tuning and implementation approval gates; no gameplay edits.
+
+
+## C412 - Correct premature patch handoff (2026-10-22)
+
+Owner challenges prior Wait for a patch message. No Arc patch is underway; remaining decisions exist. [Concrete battery options and readiness correction](TURRET_HEAD_PROPOSALS.md#c412---handoff-correction-and-concrete-battery-cost-choice-2026-10-22) recommend 0.10% base shot cost versus 0.05%/0.20%, explicitly before existing modifiers. Follow with consolidated remaining module/acquisition/audio review, then concrete patch approval. No new user selection or implementation authorization inferred.

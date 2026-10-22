@@ -1,5 +1,15 @@
 # Unique turret head candidates
 
+## C412 - Handoff correction and concrete battery-cost choice (2026-10-22)
+
+Owner asks whether ready for patch approval after the inaccurate "Wait for a patch" handoff. Correct explicitly: no Arc implementation is underway and final patch scope is not ready. Core combat choices are settled; remaining actual decisions must be presented rather than implying an approved patch is coming. Next decision is exact base battery consumption using existing per-shot accounting, not reopening charging semantics.
+
+Source review: TurretStats default Ballista cost is 0.025% with its default damage/range normalization and before module/Regulator effects; Scrapshot starts at 0.0025% with its own modifiers. TurretWorld divides batteryPercent by 100 before TurretBattery.spend, which tracks exact fractional charge. Arc proposal is intentionally more power-hungry in exchange for ammunition-free crowd damage. Recommend **1A 0.10% base charge per shot**, four times Ballista's normalized base shot cost; alternatives **1B 0.05%** and **1C 0.20%**. These are new proposed tuning values, not installed defaults or final balance proof.
+
+At one shot per second, a full battery mathematically supplies 1,000 / 2,000 / 500 base shots respectively: approximately 16m40s / 33m20s / 8m20s firing at normal speed. These are firing-only reference calculations before all module load, Regulator, Siphon, other drain and downtime, not an actual equipped build's endurance. Mandatory firing/detection module costs matter. Retain configured module weights and player overrides; selecting a base cost does not alter rarity, loot weights or the agreed 45% per-kill Siphon mechanism. Raising paid cost also raises proportional Siphon refunds, so this choice controls expenditure scale/upfront risk, not the ideal 108% recovery ratio.
+
+After this choice, present the remaining module compatibility and acquisition/recipe/audio scope as one consolidated review before final patch approval; do not drip-feed merely engineering implementation choices. Do not fabricate recipe/native audio validity. Existing project requirements still demand owner review of recipe ingredients/tools/skills/XP and selected rarity/assigned loot weight if applicable. No code/version/install changes; installed 0.2.63.2 and deferred tests unchanged. **Decision needed: 1A/1B/1C.**
+
 ## C411 - One-second cadence and Synergy-gated branch Piercing (2026-10-22)
 
 Owner answers C410: one-second delay; 2B; power operates like other turrets every shot; Synergy allows Piercing on Splitter shots. Confirm base interval of one second between main discharges, distinct from the prior 0.1-second branch staggering; 12-tile initial acquisition and four-tile circular jumps. Preserve six total normal targets at 20 damage, nearest available selection, per-pulse victim marking and finite nonrecursive Splitter allowance.
