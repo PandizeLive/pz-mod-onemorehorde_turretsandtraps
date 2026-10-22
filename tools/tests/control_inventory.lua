@@ -1,3 +1,5 @@
+local savedCapacity = SandboxVars.OMHTurretsTraps.ControllerCapacity
+SandboxVars.OMHTurretsTraps.ControllerCapacity = 500
 local A = require("OMHTT/ControlAccess")
 local oldMode,oldNear,oldPlayer = testMode,A.near,getSpecificPlayer
 local oldActual,oldDragging = ISInventoryPane.getActualItems,ISMouseDrag.dragging
@@ -65,3 +67,5 @@ ISInventoryPage.update(page)
 check(page.capacity==100,"Switching to another container restores its native capacity display")
 testMode,A.near,getSpecificPlayer=oldMode,oldNear,oldPlayer
 ISInventoryPane.getActualItems,ISMouseDrag.dragging=oldActual,oldDragging
+
+SandboxVars.OMHTurretsTraps.ControllerCapacity = savedCapacity

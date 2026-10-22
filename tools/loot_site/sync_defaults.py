@@ -15,9 +15,11 @@ def apply_defaults(data, turrets_enabled=True):
     baseline = 'T&T ' + version
     data['meta']['previousBaselines'] = list(dict.fromkeys(p for p in previous if p != baseline))
     data['meta']['baseline'] = baseline
-    data['meta']['requiredModId'] = 'OneMoreHorde_Turrets'
+    data['meta']['requiredModId'] = 'OneMoreHorde_Turrets' if turrets_enabled else 'OneMoreHorde_Traps'
     data['meta']['turretsEnabled'] = turrets_enabled
-    data['defaults'] = {'global': float(values['ModuleLootRate']) if turrets_enabled else 0,
+    if not turrets_enabled:
+        data['modules'] = [m for m in data['modules'] if m['id'] in {'CapacitySmall', 'Capacity', 'CapacityLarge'}]
+    data['defaults'] = {'global': float(values['ModuleLootRate']),
                         'tierWeights': {name: float(values['RarityWeight' + name]) or None for name in ['Abundant','Common','Uncommon','Rare','Epic','Legendary','Mythic']},
                         'items': {m['id']: float(values['LootRate' + m['id']]) for m in data['modules']}}
     return data

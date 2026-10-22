@@ -498,7 +498,7 @@ option OMHTurretsTraps.ModuleLootRate {
     type = double,
     min = 0,
     max = 20,
-    default = 1.011111111111111,
+    default = 1.00,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_ModuleLootMultiplier,
 }
@@ -1303,7 +1303,7 @@ option OMHTurretsTraps.TurretPlayerWoundMultiplier {
 
 option OMHTurretsTraps.ControllerRange {
     type = double,
-    default = 40,
+    default = 10,
     min = 5,
     max = 100,
     page = OMHTurretsTraps_TriggersPage,
@@ -1538,4 +1538,40 @@ option OMHTurretsTraps.RotaryBladesShove {
     max = 100,
     page = OMHTurretsTraps_PotatoPage,
     translation = OMHTurretsTraps_RotaryBladesShove,
+}
+
+option OMHTurretsTraps.TurretAlertDelay {
+    type = double,
+    min = 0,
+    max = 5,
+    default = 0.25,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_TurretAlertDelay,
+}
+
+option OMHTurretsTraps.ControllerCapacity {
+    type = integer,
+    min = 0,
+    max = 5000,
+    default = 100,
+    page = OMHTurretsTraps_TriggersPage,
+    translation = OMHTurretsTraps_ControllerCapacity,
+}
+
+option OMHTurretsTraps.ControllerKitCapacity {
+    type = integer,
+    min = 0,
+    max = 1000,
+    default = 100,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_ControllerKitCapacity,
+}
+
+option OMHTurretsTraps.ControllerKitRange {
+    type = integer,
+    min = 0,
+    max = 25,
+    default = 10,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_ControllerKitRange,
 }

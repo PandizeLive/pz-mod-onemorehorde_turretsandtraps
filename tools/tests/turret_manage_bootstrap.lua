@@ -128,10 +128,21 @@ function require(name)
     return testTurretRequire(name)
 end
 
-PZAPI = {ModOptions = {getOptions = function() return nil end, create = function()
-    local option = {getValue = function() return true end}
-    return {addTickBox = function() end, getOption = function() return option end}
-end}}
+PZAPI = {ModOptions = {data = {}}}
+function PZAPI.ModOptions:getOptions(id) return self.data[id] end
+function PZAPI.ModOptions:create(id)
+    local options = {dict = {}}
+    function options:getOption(key) return self.dict[key] end
+    function options:addTickBox(key, title, value)
+        self.dict[key] = {getValue = function() return value end}
+    end
+    function options:addSlider(key, title, minimum, maximum, step, value)
+        self.dict[key] = {getValue = function() return value end}
+    end
+    self.data[id] = options
+    return options
+end
+
 ISSliderPanel = {new = function(self, x, y, w, h, target, callback)
     return {x=x, y=y, width=w, height=h, setX = function(self, x) self.x=x end, setWidth = function(self, w) self.width = w end, setY = function(self, y) self.y = y end, setVisible = function(self, v) self.visible = v end, currentValue = 1, initialise = function() end,
         setValues = function(self, low, high) self.minValue, self.maxValue = low, high end,

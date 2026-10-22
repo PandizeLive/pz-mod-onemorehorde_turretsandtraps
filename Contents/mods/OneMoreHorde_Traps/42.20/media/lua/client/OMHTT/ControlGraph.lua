@@ -204,6 +204,9 @@ function Graph.refreshForPanel(panel)
             if state.kind == "Turret" then
                 row.subtitle = state.headType and state.headType ~= "Base" and getItemNameFromFullType(state.headType) or getText("UI_OMHTT_TurretBase")
             end
+            if state.controller == A.state(panel.object).id and not A.range(panel.object, object) then
+                row.subtitle = getText("UI_OMHTT_ControllerOutOfRange")
+            end
             local width = (graph.width - 88) / 2 - 29
             row.lines = {fit(row.title, width)}
             row.detail = row.subtitle and {fit(row.subtitle, width)} or {}
@@ -342,6 +345,9 @@ end
 ---@return nil
 function Graph:prerender()
     local header, rowHeight = self.headerHeight, self.rowHeight
+    local phase = math.floor(getTimestampMs() / 150) % 4
+    local spinner = ({"|", "/", "-", "\\"})[phase + 1]
+    self.addGroup.tooltip = self.owner.scanIndex and getText("UI_OMHTT_Scanning") or getText("UI_OMHTT_GroupAdd")
     self.addGroup:setX(self.width - self.addGroup.width - 18)
     self.addGroup:setY(5)
     self.addGroup:setEnable(A.authorized(self.owner.player, self.owner.object))
@@ -361,6 +367,9 @@ function Graph:prerender()
     end
     local hovered = self:hit(self:getMouseX(), mouseY)
     self.tooltip = hovered and (hovered.title .. (hovered.subtitle and " <LINE> " .. hovered.subtitle or "")) or getText("UI_OMHTT_GraphLinkHelp")
+    if hovered and self.owner.checking and self.owner.checking[hovered.object] then
+        self.tooltip = self.tooltip .. " <LINE> " .. getText("UI_OMHTT_Scanning")
+    end
     for side = 1, 2 do
         local rows = side == 1 and self.triggers or self.defenses
         local x = side == 1 and 4 or half + 74
@@ -376,6 +385,9 @@ function Graph:prerender()
                     local moving = A.state(self.dragSource)
                     local valid = moving and C.defense(moving.kind) == C.defense(row.state.kind)
                     self:drawRectBorder(x, y + 3, half - 4, rowHeight - 6, 1, valid and .4 or 1, valid and .9 or .3, .3)
+                end
+                if self.owner.checking and self.owner.checking[row.object] then
+                    self:drawText(spinner, x + half - 17, y + 6, .8, .8, .8, 1, UIFont.Small)
                 end
                 local textX = side == 1 and x + 5 or x + 27
                 local textY = y + 6
@@ -440,6 +452,9 @@ function Graph:prerender()
     self:drawRectBorder(4, header - self.owner.lineHeight - 8 - scroll, self.width - 22, self.owner.lineHeight + 8, .8, .3, .3, .3)
     if self.flashUntil and getTimestampMs() < self.flashUntil then
         self:drawRectBorder(1, -scroll, self.width - 16, self.height, .9, .7, .95, .7)
+    end
+    if self.owner.scanIndex then
+        self:drawText("...", self.addGroup:getX() - 24, 6 - scroll, .7, .85, 1, 1, UIFont.Small)
     end
     self:drawText(getText("UI_OMHTT_Triggers"), 8, header - self.owner.lineHeight - 4 - scroll, .75, .75, .75, 1, UIFont.Small)
     self:drawText(getText("UI_OMHTT_Defenses"), half + 78, header - self.owner.lineHeight - 4 - scroll, .75, .75, .75, 1, UIFont.Small)

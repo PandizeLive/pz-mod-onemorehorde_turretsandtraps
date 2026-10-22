@@ -62,7 +62,7 @@ end
 ---@return boolean allowed
 function C.accept(container, item)
     if isServer() or not C.storable(item) then return false end
-    return container:getCapacityWeight() + item:getUnequippedWeight() <= 500
+    return container:getCapacityWeight() + item:getUnequippedWeight() <= require("OMHTT/ControlExpansion").capacity(container:getParent())
 end
 
 ---@param params table Native placement preview

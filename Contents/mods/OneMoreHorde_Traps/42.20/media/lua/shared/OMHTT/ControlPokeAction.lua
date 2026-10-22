@@ -27,8 +27,7 @@ function Action:isValid()
     local state = Access.state(self.object)
     if self.done or not state or state.id ~= self.id or state.kind ~= "Poke"
         or not Access.authorized(self.character, self.object) then return false end
-    if self.operation == "Power" then return type(self.value) == "boolean" end
-    if state.enabled ~= false or state.active then return false end
+    if self.operation == "Power" or state.active then return false end
     local storage = self.object:getContainer()
     if not storage then return false end
     if self.operation == "Pickup" then return Access.near(self.character, self.object) end
@@ -52,9 +51,7 @@ function Action:complete()
     if isClient() or not self:isValid() then return false end
     local W = require("OMHTT/ControlWorld")
     local state = W.state(self.object)
-    if self.operation == "Power" then
-        state.enabled = self.value
-    elseif self.operation == "Pickup" then
+    if self.operation == "Pickup" then
         self.done = true
         return W.pickup(self.character, self.object)
     elseif self.operation == "Repair" then

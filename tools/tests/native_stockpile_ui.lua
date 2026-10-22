@@ -7,7 +7,7 @@ function storage:getCapacityWeight() return 0 end
 local owner=ISPanel:new(0,0,1220,720)
 owner.lineHeight=20
 owner.player={getPlayerNum=function() return 0 end}
-owner.object={getContainer=function() return storage end}
+owner.object={getContainer=function() return storage end,hasModData=function() return false end}
 local wing=Wing.create(owner,764,48,440,650)
 local pane=wing.inventoryPane
 pane:createChildren()

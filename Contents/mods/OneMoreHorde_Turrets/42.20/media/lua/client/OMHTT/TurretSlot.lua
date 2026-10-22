@@ -173,7 +173,8 @@ function Slot:prerender()
             require("OMHTT/TurretModuleArt").apply(item)
         end
         if self.kind == "module" then
-            ISInventoryItem.renderItemIcon(self, item, narrowModule and 4 or self.width / 2 - 8, narrowModule and 5 or (self.compact and 6 or h + 2), 1, 16, 16)
+            local size = math.max(12, math.min(32, self.height - h - 8))
+            ISInventoryItem.renderItemIcon(self, item, self.width / 2 - size / 2, 3, 1, size, size)
         else
             ISInventoryItem.renderItemIcon(self, item, 8, h + 8, 1, 32, 32)
         end

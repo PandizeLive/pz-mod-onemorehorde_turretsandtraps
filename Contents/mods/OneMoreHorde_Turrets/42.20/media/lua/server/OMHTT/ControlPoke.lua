@@ -59,7 +59,7 @@ function P.step(object, state)
             entry.players[actor] = {seen = entry.scan, down = down}
         end
     end
-    local enabled = state.enabled ~= false and object:getHealth() > 0
+    local enabled = object:getHealth() > 0
         and SandboxVars.OMHTurretsTraps.Enabled ~= false
     if not entry.finish and now >= entry.due and enabled and eligible then
         local duration = P.option("CycleSeconds", 1.5, .3, 60) * 1000

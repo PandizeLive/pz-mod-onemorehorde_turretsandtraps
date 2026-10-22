@@ -47,7 +47,7 @@ function C.request(object)
     if contents.active.MotionDetection then
         wake = require("OMHTT/TurretModules").option("TurretWakeSeconds", 1, 0, 10) * 1000
     end
-    C.pending[object] = {head = contents.head, expires = Clock.now() + turn + wake + (stats.reload or 0) + (stats.cooldown or 0) + 5000, rotary = stats.rotary}
+    C.pending[object] = {head = contents.head, expires = Clock.now() + turn + wake + require("OMHTT/TurretModules").option("TurretAlertDelay", .25, 0, 5) * 1000 + (stats.reload or 0) + (stats.cooldown or 0) + 5000, rotary = stats.rotary}
     if not T.isOn(T.state(object)) then
         world.applyPower(object, true)
     end

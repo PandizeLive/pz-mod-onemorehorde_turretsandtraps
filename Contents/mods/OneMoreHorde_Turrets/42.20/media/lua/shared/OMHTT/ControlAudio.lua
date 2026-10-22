@@ -29,6 +29,7 @@ function A.receive(module, command, facts)
     if not sound then return end
     local settings = SandboxVars.OMHTurretsTraps or {}
     local gain = math.max(0, math.min(2, settings.DeviceSoundVolume or settings.TrapsDeviceSoundVolume or 1))
+    gain = gain * require("OMHTT/ControlOptions").get("FeedbackVolume") / 100
     if gain == 0 then return end
     local emitter = getWorld():getFreeEmitter(facts.x, facts.y, facts.z)
     local handle = emitter:playSound(sound)
@@ -59,7 +60,11 @@ function A.tick()
     if isServer() then return end
     A.time = A.time + Active.step(A.clock)
     local now = A.time
+    local settings = SandboxVars.OMHTurretsTraps or {}
+    local volume = math.max(0, math.min(2, settings.DeviceSoundVolume or settings.TrapsDeviceSoundVolume or 1))
+        * require("OMHTT/ControlOptions").get("FeedbackVolume") / 100
     for id, playing in pairs(A.playing) do
+        playing.emitter:setVolume(playing.handle, volume)
         if now > playing.expires then
             playing.emitter:stopSound(playing.handle)
             A.playing[id] = nil

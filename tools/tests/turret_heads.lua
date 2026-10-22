@@ -3,7 +3,7 @@ local S = require("OMHTT/TurretStats")
 local T = require("OMHTT/Turret")
 local M = require("OMHTT/TurretModules")
 local savedSettings = SandboxVars.OMHTurretsTraps
-SandboxVars.OMHTurretsTraps = {}
+SandboxVars.OMHTurretsTraps = {TurretStandbyEnabled = false}
 local function head(name)
     local data = {}
     return {getFullType = function() return "Base.OMHTTTurret" .. name end,

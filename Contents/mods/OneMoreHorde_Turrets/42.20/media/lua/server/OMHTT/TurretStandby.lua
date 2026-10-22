@@ -45,18 +45,18 @@ function S.step(object, contents, target, busy, validated)
     end
     local W = require("OMHTT/TurretWorld")
     if not T.isOn(state) or not W.valid(object) or not W.power(object, contents, T.cycleConfig(contents)) then
-        entry.target, entry.untilTime, entry.last = nil, nil, now
+        entry.target, entry.untilTime, entry.fireAt, entry.last = nil, nil, nil, now
         S.mode(object, "disabled")
         return false
     end
     if (SandboxVars.OMHTurretsTraps or {}).TurretStandbyEnabled == false or not contents.active.MotionDetection then
-        entry.target, entry.untilTime, entry.last = nil, nil, now
+        entry.target, entry.untilTime, entry.fireAt, entry.last = nil, nil, nil, now
         S.mode(object, "active")
         return true
     end
-    if state.standby == "disabled" or not state.standby then S.mode(object, "active") end
+    if state.standby == "disabled" or not state.standby then S.mode(object, "asleep") end
     if entry.target and not (validated and entry.target == target) and not S.valid(object, entry.target, contents) then
-        entry.target, entry.untilTime, entry.last = nil, nil, now
+        entry.target, entry.untilTime, entry.fireAt, entry.last = nil, nil, nil, now
         S.mode(object, "asleep")
         return false
     end
@@ -69,9 +69,12 @@ function S.step(object, contents, target, busy, validated)
         end
         if state.standby == "waking" then
             if now < entry.untilTime then return false end
-            entry.target, entry.untilTime = nil, nil
+            entry.untilTime = nil
+            entry.fireAt = now + M.option("TurretAlertDelay", .25, 0, 5) * 1000
             S.mode(object, "active", "awake")
         end
+        if entry.fireAt and now < entry.fireAt then return false end
+        entry.target, entry.fireAt = nil, nil
         return true
     end
     if entry.target then return false end

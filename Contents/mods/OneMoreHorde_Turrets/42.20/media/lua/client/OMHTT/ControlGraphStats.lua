@@ -21,7 +21,7 @@ function S.step(graph)
         end
         if not container then return end
         if state and state.kind == "Poke" then
-            graph.stats[object] = {label = getText(state.enabled == false and "UI_OMHTT_PokeDisabled" or "UI_OMHTT_PokeContact")}
+            graph.stats[object] = {label = getText("UI_OMHTT_PokeContact")}
             return
         end
         job = {object = object, container = container, index = 0, count = container:getItems():size(), rounds = {}, kinds = {}}

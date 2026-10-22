@@ -17,7 +17,6 @@ function M.add(menu, player, object)
             require("OMHTT/ControlRepairTooltip").bind(option, "Poke", player)
         end
     end
-    add(getText(state.enabled == false and "UI_OMHTT_PokeEnable" or "UI_OMHTT_PokeDisable"), "Power", state.enabled == false)
     local storage = object:getContainer()
     local battery = storage and storage:getItems():size() > 0 and storage:getItems():get(0)
     if battery then

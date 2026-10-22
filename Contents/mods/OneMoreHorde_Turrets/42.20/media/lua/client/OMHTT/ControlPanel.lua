@@ -13,6 +13,7 @@ Panel.onMouseUp = Drag.stop
 Panel.onMouseUpOutside = Drag.stop
 Panel.update = Drag.update
 local active = {}
+local Discovery = require("OMHTT/ControlDiscovery")
 
 ---@param panel ISPanel Parent
 ---@param x number X
@@ -33,7 +34,32 @@ end
 function Panel:scan()
     if not self.scanIndex then
         self.scanIndex, self.scanObjectIndex, self.scanResults, self.scanSelection = 0, 0, {}, {}
-        self.scanRadius = A.radius()
+        self.scanRadius = A.radius(self.object)
+        self.checking = {}
+        self.scanResults[1] = {text = U.name(self.object), item = self.object, itemindex = 1, height = self.devices.itemheight}
+        self.scanSelection[self.object] = 1
+        if self.marker and self.markerRadius ~= self.scanRadius then
+            self.marker:remove()
+            self.marker = getWorldMarkers():addGridSquareMarker(self.object:getSquare(), Theme.accent.r, Theme.accent.g, Theme.accent.b, false, self.scanRadius)
+            self.marker:setScaleCircleTexture(true)
+            self.markerRadius = self.scanRadius
+        end
+        local checked = 0
+        for object in pairs(Discovery.objects) do
+            checked = checked + 1
+            if checked > 64 then break end
+            local state = A.state(object)
+            local within = object:getObjectIndex() >= 0 and A.range(self.object, object)
+            local assigned = state and state.controller == A.state(self.object).id
+            if object ~= self.object and object:getObjectIndex() >= 0 and (within or assigned) then
+                local row = #self.scanResults + 1
+                self.scanResults[row] = {text = U.name(object), item = object, itemindex = row, height = self.devices.itemheight}
+                self.scanSelection[object], self.checking[object] = row, within or nil
+            end
+        end
+        self.devices.items, self.devices.count = self.scanResults, #self.scanResults
+        self.devices.itemheightoverride = {}
+        self.devices.selected = self.scanSelection[self.selected] or 0
     end
     local radius = self.scanRadius
     local diameter = radius * 2 + 1
@@ -42,9 +68,17 @@ function Panel:scan()
     for step = 1, 64 do
         local index = self.scanIndex
         if index >= diameter * diameter then
+            for i = #self.scanResults, 1, -1 do
+                if self.checking[self.scanResults[i].item] then table.remove(self.scanResults, i) end
+            end
+            self.checking = {}
             self.devices.items, self.devices.count = self.scanResults, #self.scanResults
             self.devices.itemheightoverride = {}
-            self.devices.selected = self.scanSelection[self.selected] or 1
+            self.devices.selected = 1
+            for i = 1, #self.scanResults do
+                self.scanResults[i].itemindex = i
+                if self.scanResults[i].item == self.selected then self.devices.selected = i end
+            end
             self.devices:setScrollHeight(#self.scanResults * self.devices.itemheight)
             self.scanIndex, self.scanResults, self.scanSelection, self.scanObjectIndex = nil, nil, nil, nil
             self.scanDue = getTimestampMs() + 5000
@@ -59,10 +93,18 @@ function Panel:scan()
         if objects and self.scanObjectIndex < objects:size() then
             local object = objects:get(self.scanObjectIndex)
             self.scanObjectIndex = self.scanObjectIndex + 1
+            if object:getObjectIndex() >= 0 and A.state(object) then
+                self.checking[object] = nil
+                Discovery.add(object)
+            end
             if object:getObjectIndex() >= 0 and A.state(object) and not self.scanSelection[object] then
                 local row = #self.scanResults + 1
                 self.scanResults[row] = {text = U.name(object), item = object, itemindex = row, height = self.devices.itemheight}
                 self.scanSelection[object] = row
+                if object == self.selected then
+                    self.devices.selected = row
+                end
+                self.devices.count = #self.scanResults
             end
         else
             self.scanIndex, self.scanObjectIndex = index + 1, 0
@@ -73,6 +115,9 @@ end
 
 ---@return nil
 function Panel:select()
+    if self.scanIndex and self.devices.selected == 0 then
+        return
+    end
     local row = self.devices.items[self.devices.selected]
     local object = row and row.item
     if object == self.selected then return end
@@ -159,7 +204,7 @@ function Panel:prerender()
     elseif state and state.kind == "Lever" then caption = state.latched and "UI_OMHTT_LeverOff" or "UI_OMHTT_LeverOn"
     elseif state and state.kind == "Laser" then caption = "UI_OMHTT_BeamRange" end
     self.trigger:setTitle(getText(caption, state and (state.kind == "Laser" and A.laserRange() or (state.trigger or "Both"))))
-    self.trigger:setVisible(input == true)
+    self.trigger:setVisible(input == true and state.kind ~= "Laser")
     self.manage:setVisible(state ~= nil and require("OMHTT/ControlDefinitions").defense(state.kind))
     self.assign:setVisible(state ~= nil and self.selected ~= self.object and host.kind == "Controller")
 
@@ -190,7 +235,7 @@ function Panel:prerender()
     self.trigger.tooltip = input and require("OMHTT/ControlConsumption").description(state.kind, true) or remoteReason
     if input and state.powered ~= true then self.trigger.tooltip = self.trigger.tooltip .. " <LINE> " .. getText("UI_OMHTT_TriggerUnpowered") end
 
-    self.policy:setTitle(getText("UI_OMHTT_Access", state and state.access or "—"))
+    self.policy:setTitle(getText("UI_OMHTT_Access", state and state.access or "-"))
     self.assign:setTitle(getText(state and state.controller == host.id and "UI_OMHTT_Unassign" or "UI_OMHTT_Assign"))
     if not A.near(self.player, self.object) then
         self.manage:setEnable(false)
@@ -282,6 +327,7 @@ function Panel.open(player, object)
         local top = panel.equipmentY + panel.lineHeight + 12
         panel.batterySlot = require("OMHTT/ControlBatterySlot").create(panel, 22, top,
             math.floor(panel.controlWidth / 2) - 30, panel.lineHeight * 2 + 20)
+        panel.expansionSlot = require("OMHTT/ControlExpansionSlot").create(panel)
         panel.stockWing = require("OMHTT/ControlStockpilePane").create(panel,
             panel.stockCompact and 12 or panel.controlWidth + 8,
             panel.titleHeight + 10, panel.stockCompact and panel.width - 24 or panel.width - panel.controlWidth - 20,
@@ -296,8 +342,9 @@ function Panel.open(player, object)
     require("OMHTT/WindowGeometry").install(panel, "Controller", math.max(840, panel.lineHeight * 42), 620,
         require("OMHTT/ControlPanelLayout").arrange)
     if A.state(object).kind == "Controller" then
-        panel.marker = getWorldMarkers():addGridSquareMarker(object:getSquare(), Theme.accent.r, Theme.accent.g, Theme.accent.b, false, 40)
+        panel.marker = getWorldMarkers():addGridSquareMarker(object:getSquare(), Theme.accent.r, Theme.accent.g, Theme.accent.b, false, A.radius(object))
         panel.marker:setScaleCircleTexture(true)
+        panel.markerRadius = A.radius(object)
     end
     require("OMHTT/ControlWindowChrome").install(panel)
     panel:addToUIManager()
@@ -319,6 +366,7 @@ function Panel:showStockpile(visible)
     self.mapView:setVisible(not self.stockPage)
     self.controllerSettings:setVisible(not self.stockPage)
     self.batterySlot:setVisible(not self.stockPage)
+    if self.expansionSlot then self.expansionSlot:setVisible(not self.stockPage) end
     self.stockButton:setTitle(getText(self.stockPage and "UI_OMHTT_StockpileBack" or "UI_OMHTT_OpenStockpile"))
     self.stockButton:setY(self.stockPage and self.height - 42 or self.stockButtonY)
     self.stockButton:setX(self.stockPage and 12 or self.controlWidth / 2 + 10)

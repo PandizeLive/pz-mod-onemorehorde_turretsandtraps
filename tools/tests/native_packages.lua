@@ -40,6 +40,14 @@ local function checkPackages()
     assert((SpriteConfigManager.GetObjectInfo("OMHTTBarbs") ~= nil) == expectedTraps, "Barb recipe isolation")
     assert(counts["Base.OMHTTTrapController"] == 1 and counts["Base.OMHTTTrapPressurePlate"] == 1 and counts["Base.OMHTTTrapButton"] == 1, "Shared control items must register once")
     assert(counts["Base.OMHTTTrapLever"] == 1 and counts["Base.OMHTTTrapLaser"] == 1, "New shared triggers must register exactly once")
+    for tier, suffix in pairs({"Improvised", "Small", "Medium", "Large"}) do
+        local name = "Base.OMHTTModuleExpansion" .. suffix
+        assert(counts[name] == 1, "Controller kit must register once in every package mode: " .. name)
+        local kit = instanceItem(name)
+        assert(require("OMHTT/ControlExpansion").tier(kit) == tier, "Shared kit tier mismatch")
+        assert(require("OMHTT/ControlExpansion").capacity(nil, tier) == 100 + tier * 100, "Shared kit capacity mismatch")
+    end
+    assert(getScriptManager():getCraftRecipe("Base.OMHTTCraftCapacityImprovised"), "Independent Controller kit recipe missing")
     assert(SpriteConfigManager.GetObjectInfo("OMHTTDeployLever") and SpriteConfigManager.GetObjectInfo("OMHTTDeployLaser"), "New trigger placements missing")
     assert(OMHTT_ControlWorld and OMHTTControlAction and OMHTTControlTransferAction, "Shared control authority missing")
     local plateInfo = SpriteConfigManager.GetObjectInfo("OMHTTDeployInsetPlate")
@@ -102,7 +110,7 @@ local function checkPackages()
             end
         end
     end
-    assert(lootCount == (expectedTurrets and 246 or 0), "Wrong component loot count " .. lootCount)
+    assert(lootCount == (expectedTurrets and 246 or 26), "Wrong component loot count " .. lootCount)
     assert(packCount == (expectedTurrets and 16 or 0), "Wrong pack loot count " .. packCount)
     isServer, isClient = oldServer, oldClient
     print("[OMHTT-Packages] PASS traps=" .. tostring(expectedTraps) .. " turrets=" .. tostring(expectedTurrets)

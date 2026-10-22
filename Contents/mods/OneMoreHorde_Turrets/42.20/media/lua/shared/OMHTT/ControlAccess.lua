@@ -1,9 +1,19 @@
 local A = {}
 
 ---@return number tiles Shared authoritative management radius
-function A.radius()
+function A.radius(object)
     local settings = SandboxVars.OMHTurretsTraps or {}
-    return math.floor(math.max(5, math.min(100, settings.ControllerRange or settings.TrapsControllerRange or 40)))
+    local state = A.state(object)
+    if state and state.kind ~= "Controller" and state.controller then
+        if isClient() then
+            object = require("OMHTT/ControlDiscovery").byId[state.controller]
+        else
+            object = require("OMHTT/ControlWorld").objects[state.controller]
+        end
+    end
+    local expansion = require("OMHTT/ControlExpansion")
+    local base = expansion.option("ControllerRange", 10, 100)
+    return math.floor(math.max(5, math.min(100, base + expansion.tier(expansion.item(object)) * expansion.option("ControllerKitRange", 10, 25))))
 end
 A.remote = setmetatable({}, {__mode = "k"})
 
@@ -44,7 +54,7 @@ function A.range(first, second)
     if not first or not second or first:getObjectIndex() < 0 or second:getObjectIndex() < 0 then return false end
     local a, b = first:getSquare(), second:getSquare()
     if not a or not b or a:getZ() ~= b:getZ() then return false end
-    return (a:getX() - b:getX()) ^ 2 + (a:getY() - b:getY()) ^ 2 <= A.radius() ^ 2
+    return (a:getX() - b:getX()) ^ 2 + (a:getY() - b:getY()) ^ 2 <= A.radius(first) ^ 2
 end
 
 ---@param player IsoPlayer Operator

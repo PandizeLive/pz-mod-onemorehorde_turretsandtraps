@@ -19,8 +19,8 @@ function M.resolve(x, y, z, face)
             and props:has(north and IsoFlagType.collideN or IsoFlagType.collideW) then support = object; break end
     end
     if not support then return nil end
-    local ox, oy, dx, dy = bx+side*.08, by+.5, side, 0
-    if north then ox, oy, dx, dy = bx+.5, by+side*.08, 0, side end
+    local ox, oy, dx, dy = bx+side*.015, by+.5, side, 0
+    if north then ox, oy, dx, dy = bx+.5, by+side*.015, 0, side end
     local front = getCell():getGridSquare(math.floor(ox), math.floor(oy), z)
     if not front or not front:TreatAsSolidFloor() or front:isSolid() or front:isSolidTrans() then return nil end
     return {x=ox,y=oy,z=z,dx=dx,dy=dy}

@@ -1,5 +1,6 @@
 if isServer() then return end
 local C = require("OMHTT/TetherCycle")
+local Draw = require("OMHTT/ControlModelDraw")
 local V = {states = {}, received = {}, from = {}, visuals = {}}
 
 ---@param module string Namespace
@@ -43,20 +44,25 @@ function V.render(index)
                 local square = cell:getGridSquare(math.floor(x), math.floor(y), state.z)
                 local yaw = math.deg(math.atan2(state.dy, state.dx))
                 if square and square:isCanSee(index) then
-                    Render3DItem(visual.nail, square, x, y, state.z + height, yaw)
+                    Draw.draw(visual.nail, square, x, y, state.z + height + .72 / 2.44949, 0, 0, yaw)
                 end
                 local distance = math.sqrt((x - state.x) ^ 2 + (y - state.y) ^ 2)
                 local segments = math.min(24, math.max(1, math.ceil(distance / .4)))
                 if distance > .01 and budget >= segments then
                     budget = budget - segments
-                    visual.cable:setWorldScale(distance / segments)
                     for segment = 1, segments do
                         local t = (segment - .5) / segments
                         local wx, wy = state.x + (x - state.x) * t, state.y + (y - state.y) * t
                         local tile = cell:getGridSquare(math.floor(wx), math.floor(wy), state.z)
                         if not tile or not tile:isCanSee(index) then break end
-                        local z = .3 + (height - .3) * t - math.sin(t * math.pi) * .025
-                        Render3DItem(visual.cable, tile, wx, wy, state.z + math.max(.025, z), yaw)
+                        local t0, t1 = (segment - 1) / segments, segment / segments
+                        local z0 = .3 + (height - .3) * t0 - math.sin(t0 * math.pi) * .025
+                        local z1 = .3 + (height - .3) * t1 - math.sin(t1 * math.pi) * .025
+                        local horizontal, vertical = distance / segments, (z1 - z0) * 2.44949
+                        local length = math.sqrt(horizontal * horizontal + vertical * vertical)
+                        visual.cable:setWorldScale(length / 1.5)
+                        local tilt = math.deg(math.atan2(vertical, horizontal))
+                        Draw.draw(visual.cable, tile, wx, wy, state.z + (z0 + z1) / 2 + .72 / 2.44949, 0, tilt, yaw)
                     end
                 end
             end

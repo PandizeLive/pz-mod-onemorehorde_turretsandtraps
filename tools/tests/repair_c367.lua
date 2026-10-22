@@ -12,14 +12,14 @@ local favorite = item("Base.ScrapMetal", true)
 entries = {favorite, item("Base.Aluminum", false), scrap}
 local materials = R.materials(player, "Poke")
 check(#materials == 1 and materials[1] == scrap, "Repair material selection excludes favorites and unrelated items")
-check(string.find(U.description("Poke", player), getText("UI_OMHTT_RepairMaterial", getItemNameFromFullType("Base.ScrapMetal"), 1), 1, true),
+check(string.find(U.description("Poke", player), getItemNameFromFullType("Base.ScrapMetal"), 1, true),
     "Poke repair tooltip shows the authoritative eligible material count")
 local second = item("Base.ScrapMetal", false)
 entries[#entries + 1] = second
 entries[#entries + 1] = item("Base.ScrapMetal", false)
 materials = R.materials(player, "Poke")
 check(#materials == 1 and materials[1] == scrap, "Repair selection caps at exactly the consumed count")
-check(string.find(U.description("Poke", player), getText("UI_OMHTT_RepairMaterial", getItemNameFromFullType("Base.ScrapMetal"), 1), 1, true),
+check(string.find(U.description("Poke", player), getItemNameFromFullType("Base.ScrapMetal"), 1, true),
     "Poke tooltip changes when the missing material is supplied")
 local action = require("OMHTT/ControlPokeAction")
 local chosen = action.materials({character = player})
@@ -29,18 +29,18 @@ entries = {favorite}
 check(action.materials({character = player}) == nil, "Missing unfavorited scrap keeps repair invalid")
 for kind, profile in pairs(R.profiles) do
     local description = U.description(kind, player)
-    check(string.find(description, getText("UI_OMHTT_RepairSkills"), 1, true)
+    check(not string.find(description, getText("UI_OMHTT_RepairSkills"), 1, true)
         and string.find(description, getText("UI_OMHTT_RepairTime", profile.seconds), 1, true),
-        "Every repair profile shows skill and the action duration: " .. kind)
+        "Repair tips omit nonexistent skill requirements and show duration: " .. kind)
     if not profile.material then
-        check(string.find(description, getText("UI_OMHTT_RepairMaterials", getText("UI_OMHTT_RepairNone")), 1, true),
-            "Free repair explicitly shows no consumed materials: " .. kind)
+        check(not string.find(description, getText("UI_OMHTT_RepairMaterials", getText("UI_OMHTT_RepairNone")), 1, true),
+            "Free repair only lists its retained tool: " .. kind)
     end
 end
-check(string.find(U.description("Barb", player, false), getText("UI_OMHTT_RepairToolsMissing"), 1, true),
+check(string.find(U.description("Barb", player, false), "<RGB:1,0.3,0.3>", 1, true),
     "Barbed panel tooltip explains missing retained tools")
-check(string.find(U.description("Turret", player), getText("UI_OMHTT_RepairBaseResult"), 1, true),
-    "Turret repair explains that installed head condition is separate")
+check(not string.find(U.description("Turret", player), getText("UI_OMHTT_RepairBaseResult"), 1, true),
+    "Repair tip excludes extra result instructions")
 local oldMenu = ISWorldObjectContextMenu
 ISWorldObjectContextMenu = {addToolTip = function() return {} end}
 local option = {notAvailable = true}

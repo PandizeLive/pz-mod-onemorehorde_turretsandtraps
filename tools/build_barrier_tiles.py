@@ -206,7 +206,7 @@ def build_component(component):
         label="LASER" if marker_index < 4 else "LEVER"
         marker = Image.new("RGBA", (128, 256))
         draw = ImageDraw.Draw(marker)
-        cx, cy = [(.08, .5), (.5, .92), (.92, .5), (.5, .08)][facing]
+        cx, cy = [(.015, .5), (.5, .985), (.985, .5), (.5, .015)][facing]
         ux, uy = (0, 1) if facing % 2 == 0 else (1, 0)
         points = [(round(64+64*(cx+a*ux-cy-a*uy)), round(192+32*(cx+a*ux+cy+a*uy)-192*h))
                   for a,h in [(-.12,.4),(.12,.4),(.12,.25),(-.12,.25)]]

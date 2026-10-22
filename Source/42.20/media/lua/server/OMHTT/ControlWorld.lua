@@ -209,7 +209,7 @@ function W.register(object, player, kind, previous)
                 count = count + 1
             end
         end
-        if not host or not host.placed or host.z ~= state.z or (host.x - state.x) ^ 2 + (host.y - state.y) ^ 2 > A.radius() ^ 2 or count >= 32 then
+        if not host or not host.placed or host.z ~= state.z or count >= 32 then
             state.controller = nil
         end
     end
@@ -496,6 +496,7 @@ function W.create(params)
     for key in pairs(object:getBuildMaterials()) do
         object:getBuildMaterials()[key] = nil
     end
+    require("OMHTT/ControlExpansion").refresh(object)
     W.autoAssign(object, player)
     W.publish(object)
 end
@@ -504,6 +505,7 @@ end
 ---@param elapsed number In-game hours
 ---@return boolean powered
 function W.power(object, elapsed)
+    require("OMHTT/ControlExpansion").refresh(object)
     return require("OMHTT/ControlPower").idle(object, elapsed)
 end
 

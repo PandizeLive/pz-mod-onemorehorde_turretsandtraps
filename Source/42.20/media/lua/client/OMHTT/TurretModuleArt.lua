@@ -12,7 +12,7 @@ local expansion = {CapacityImprovised = true, CapacitySmall = true, Capacity = t
 function A.apply(item)
     if not item then return end
     local component = T.component(item:getFullType())
-    local category = performance[component] and "performance" or expansion[component] and "expansion"
+    local category = performance[component] and "performance"
     if not category then return end
     local name = category .. "_" .. string.lower(R.names[R.get(component).band])
     if A.applied[item] == name then return end

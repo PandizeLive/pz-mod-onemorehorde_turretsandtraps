@@ -219,10 +219,10 @@ function Map:render()
     self:repaintStencilRect(0, 0, self.width, self.height)
     local controller = self.owner.object
     local cx, cy = controller:getX() + .5, controller:getY() + .5
-    local previousX, previousY = self:point(cx + A.radius(), cy)
+    local previousX, previousY = self:point(cx + A.radius(controller), cy)
     for i = 1, 64 do
         local angle = i * math.pi / 32
-        local x, y = self:point(cx + math.cos(angle) * A.radius(), cy + math.sin(angle) * A.radius())
+        local x, y = self:point(cx + math.cos(angle) * A.radius(controller), cy + math.sin(angle) * A.radius(controller))
         self:drawLine(nil, previousX, previousY, x, y, 1, .65, .65, .7, .65)
         previousX, previousY = x, y
     end

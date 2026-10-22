@@ -1,4 +1,3 @@
-local Repair = require("OMHTT/ControlRepair")
 local D = {}
 local kinds = {
     OMHTTTrapSpikeBarrier = "Barrier", OMHTTTrapSpikeBarrierReinforced = "Barrier",
@@ -13,6 +12,11 @@ local kinds = {
 ---@return string? description Compact live device description
 function D.get(item)
     if not item then return nil end
+    local expansion = require("OMHTT/ControlExpansion")
+    local tier = expansion.tier(item)
+    if tier > 0 then
+        return getText("UI_OMHTT_ControllerKitBonus", tier * expansion.option("ControllerKitRange", 10, 25), tier * expansion.option("ControllerKitCapacity", 100, 1000))
+    end
     local name = item:getFullType()
     if string.sub(name, 1, 5) ~= "Base." then return nil end
     local kind = kinds[string.sub(name, 6)]
@@ -36,10 +40,21 @@ function D.get(item)
     if require("OMHTT/ControlDefinitions").inputs[kind] then
         text = text .. "\n" .. require("OMHTT/ControlConsumption").description(kind, false)
     end
-    local profile = Repair.profiles[kind]
-    local material = profile.material and ("1 " .. getItemNameFromFullType(profile.material)) or getText("UI_OMHTT_ToolOnly")
-    text = text .. "\n" .. getText("UI_OMHTT_DeviceRepair", material, getText(profile.tools), profile.seconds)
-        .. "\n" .. getText("UI_OMHTT_DevicePlacement", profile.pickup)
+    local reinforced = string.find(name, "Reinforced", 1, true) ~= nil
+    local health = 100
+    if kind == "Barrier" then
+        local damage = reinforced and (settings.ReinforcedBarrierDamage or 25) or (settings.SpikeBarrierDamage or 10)
+        text = text .. "\n" .. getText("UI_OMHTT_DeviceDamage", damage)
+        health = (settings.SpikeBarrierHealth or 100) * (reinforced and (settings.ReinforcedBarrierHealthMultiplier or 2) or 1)
+    elseif kind == "Bed" then
+        health = reinforced and (settings.BedReinforcedHealth or 100) or (settings.BedHealth or 50)
+    elseif kind == "Poke" then
+        health = settings.PokeHealth or 200
+    elseif kind == "Wire" or kind == "Barb" then
+        health = 50
+        text = text .. "\n" .. getText("UI_OMHTT_DeviceDamage", settings.BarbDamage or 10)
+    end
+    text = text .. "\n" .. getText("UI_OMHTT_DeviceHealth", health)
     return text
 end
 

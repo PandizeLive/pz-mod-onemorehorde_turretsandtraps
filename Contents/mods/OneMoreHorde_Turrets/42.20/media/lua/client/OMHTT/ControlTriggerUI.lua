@@ -15,6 +15,7 @@ function U.activate(player,object)
 end
 function U.world(menu,player,object,option)
     local state=require("OMHTT/ControlAccess").state(object)
+    if state.kind == "Laser" then return end
     if not option then
         option=menu:addOption(getText(state.kind=="Laser" and "UI_OMHTT_BeamRange" or "UI_OMHTT_TriggerMode",
             state.kind=="Laser" and require("OMHTT/ControlAccess").laserRange() or (state.trigger or "Both")),object,function(target) U.activate(player,target) end)

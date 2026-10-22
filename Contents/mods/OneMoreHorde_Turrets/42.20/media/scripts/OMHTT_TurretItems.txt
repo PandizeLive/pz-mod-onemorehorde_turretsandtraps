@@ -243,33 +243,6 @@ module Base {
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_ModuleAutoloader,
     }
-    item OMHTTModuleExpansionSmall {
-        DisplayName = Small Expansion Kit,
-        ItemType = base:normal,
-        DisplayCategory = OMHTTExpansion,
-        Weight = 0.2,
-        Icon = OMHTT_TestCube,
-        ScaleWorldIcon = 0.25,
-        Tooltip = Tooltip_OMHTT_ModuleCapacity,
-    }
-    item OMHTTModuleExpansionMedium {
-        DisplayName = Medium Expansion Kit,
-        ItemType = base:normal,
-        DisplayCategory = OMHTTExpansion,
-        Weight = 0.2,
-        Icon = OMHTT_TestCube,
-        ScaleWorldIcon = 0.25,
-        Tooltip = Tooltip_OMHTT_ModuleCapacity,
-    }
-    item OMHTTModuleExpansionLarge {
-        DisplayName = Large Expansion Kit,
-        ItemType = base:normal,
-        DisplayCategory = OMHTTExpansion,
-        Weight = 0.2,
-        Icon = OMHTT_TestCube,
-        ScaleWorldIcon = 0.25,
-        Tooltip = Tooltip_OMHTT_ModuleCapacity,
-    }
     item OMHTTModuleDetection {
         DisplayName = Detection Module,
         ItemType = base:normal,
@@ -305,15 +278,6 @@ module Base {
         Icon = OMHTT_TestCube,
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_FiringImprovised,
-    }
-    item OMHTTModuleExpansionImprovised {
-        DisplayName = Makeshift Expansion Kit,
-        ItemType = base:normal,
-        DisplayCategory = OMHTTExpansion,
-        Weight = 0.2,
-        Icon = OMHTT_TestCube,
-        ScaleWorldIcon = 0.25,
-        Tooltip = Tooltip_OMHTT_CapacityImprovised,
     }
 
     item OMHTTModuleSynergy {

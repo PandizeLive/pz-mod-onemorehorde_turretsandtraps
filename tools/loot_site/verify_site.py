@@ -8,7 +8,7 @@ site=root/'art/loot-tuner'
 game=Path('C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid')
 package=root/'Contents/mods/OneMoreHorde_Turrets/42.20/media'
 sources=[game/'media/maps/Muldraugh, KY/worldmap.xml',game/'media/maps/Muldraugh, KY/worldmap-annotations.lua',
-    package/'lua/shared/OMHTT/LootDefinitions.lua',root/'diagnostics/loot-site/cache/Lua/loot-routes.json',
+    package/'lua/shared/OMHTT/ControlLootDefinitions.lua',root/'diagnostics/loot-site/cache/Lua/loot-routes.json',
     root/'diagnostics/loot-site/cache/Lua/loot-tile-properties.txt',root/'diagnostics/loot-current-bytecode.txt',package/'sandbox-options.txt']
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 baseline=json.loads((site/'data.js').read_text().removeprefix('window.LOOT_DATA=').strip().removesuffix(';'))['meta']['baseline']

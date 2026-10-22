@@ -76,11 +76,13 @@ function ISInventoryPaneDraggedItems:update()
     if not object or not self.items then return end
     local player = getSpecificPlayer(self.playerNum)
     local weightNow = self.mouseOverContainer:getCapacityWeight()
+    local capacity = require("OMHTT/ControlExpansion").capacity(object)
     local writable = A.near(player, object) and A.write(player, A.state(object))
     if previousContainer == self.mouseOverContainer and previousCount == self.mouseOverItemCount
-        and self.controlItems == self.items and self.controlWeight == weightNow and self.controlWritable == writable then return end
+        and self.controlItems == self.items and self.controlWeight == weightNow and self.controlWritable == writable and self.controlCapacity == capacity then return end
     self.controlItems, self.controlWeight, self.controlWritable = self.items, weightNow, writable
-    local remaining = 500 - weightNow
+    self.controlCapacity = capacity
+    local remaining = capacity - weightNow
     for i = 1, #self.items do
         local item = self.items[i]
         local weight = item:getUnequippedWeight()
@@ -99,11 +101,11 @@ function ISInventoryPage:refreshBackpacks()
     for i = 1, #self.backpacks do
         local button = self.backpacks[i]
         if controller(button.inventory) then
-            button.capacity = 500
+            button.capacity = require("OMHTT/ControlExpansion").capacity(controller(button.inventory))
         end
     end
     if controller(self.inventoryPane.inventory) then
-        self.capacity = 500
+        self.capacity = require("OMHTT/ControlExpansion").capacity(controller(self.inventoryPane.inventory))
     end
 end
 
@@ -112,7 +114,7 @@ local nativeUpdate = ISInventoryPage.update
 function ISInventoryPage:update()
     nativeUpdate(self)
     if controller(self.inventoryPane.inventory) then
-        self.capacity = 500
+        self.capacity = require("OMHTT/ControlExpansion").capacity(controller(self.inventoryPane.inventory))
     end
 end
 

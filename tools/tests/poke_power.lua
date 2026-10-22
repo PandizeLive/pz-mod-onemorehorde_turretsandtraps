@@ -99,7 +99,7 @@ check(hits == 2, "Raised trap has no repeated contact damage")
 states[poke].enabled = false
 Poke.time = 2500
 Poke.step(poke, states[poke])
-check(not states[poke].active and hits == 2, "Disable completes retraction and starts no new cycle")
+check(states[poke].active and hits == 2, "Legacy disabled flag cannot disarm a mechanical pressure trap")
 states[poke].enabled = true
 Poke.step(poke, states[poke])
 Poke.time = 2650

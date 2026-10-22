@@ -172,6 +172,42 @@ option OMHTurretsTraps.BarbInterval {
     translation = OMHTurretsTraps_BarbInterval,
 }
 
+option OMHTurretsTraps.TrapsModuleLootRate {
+    type = double,
+    min = 0,
+    max = 20,
+    default = 1.00,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_ModuleLootMultiplier,
+}
+
+option OMHTurretsTraps.TrapsLootRateCapacity {
+    type = double,
+    default = 2.4,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootCapacity,
+}
+
+option OMHTurretsTraps.TrapsLootRateCapacitySmall {
+    type = double,
+    default = 1.8666666666666667,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootCapacitySmall,
+}
+
+option OMHTurretsTraps.TrapsLootRateCapacityLarge {
+    type = double,
+    default = 2,
+    min = 0,
+    max = 20,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootCapacityLarge,
+}
+
 option OMHTurretsTraps.FoundationTestControls {
     type = boolean,
     default = false,
@@ -216,12 +252,75 @@ option OMHTurretsTraps.BarbMovementDivisor {
     translation = OMHTurretsTraps_BarbMovementDivisor,
 }
 
+option OMHTurretsTraps.TrapsRarityWeightAbundant {
+    type = double,
+    default = 20,
+    min = 0,
+    max = 1000000,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_RarityWeightAbundant,
+}
+
+option OMHTurretsTraps.TrapsRarityWeightCommon {
+    type = double,
+    default = 18,
+    min = 0,
+    max = 1000000,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_RarityWeightCommon,
+}
+
+option OMHTurretsTraps.TrapsRarityWeightUncommon {
+    type = double,
+    default = 14,
+    min = 0,
+    max = 1000000,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_RarityWeightUncommon,
+}
+
+option OMHTurretsTraps.TrapsRarityWeightRare {
+    type = double,
+    default = 10,
+    min = 0,
+    max = 1000000,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_RarityWeightRare,
+}
+
+option OMHTurretsTraps.TrapsRarityWeightEpic {
+    type = double,
+    default = 6,
+    min = 0,
+    max = 1000000,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_RarityWeightEpic,
+}
+
+option OMHTurretsTraps.TrapsRarityWeightLegendary {
+    type = double,
+    default = 3,
+    min = 0,
+    max = 1000000,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_RarityWeightLegendary,
+}
+
+option OMHTurretsTraps.TrapsRarityWeightMythic {
+    type = double,
+    default = 1,
+    min = 0,
+    max = 1000000,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_RarityWeightMythic,
+}
+
 option OMHTurretsTraps.PokeDamage {
     type = double,
     default = 45,
     min = 0,
     max = 2500,
-    page = OMHTurretsTraps_PokePage,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_PokeDamage,
 }
 
@@ -230,7 +329,7 @@ option OMHTurretsTraps.PokeCycleSeconds {
     default = 1.5,
     min = 0.3,
     max = 60,
-    page = OMHTurretsTraps_PokePage,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_PokeCycleSeconds,
 }
 
@@ -239,7 +338,7 @@ option OMHTurretsTraps.PokeHealth {
     default = 200,
     min = 1,
     max = 10000,
-    page = OMHTurretsTraps_PokePage,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_PokeHealth,
 }
 
@@ -248,7 +347,7 @@ option OMHTurretsTraps.PokeWear {
     default = 1,
     min = 0,
     max = 1000,
-    page = OMHTurretsTraps_PokePage,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_PokeWear,
 }
 
@@ -257,7 +356,7 @@ option OMHTurretsTraps.PokeScratchChance {
     default = 20,
     min = 0,
     max = 100,
-    page = OMHTurretsTraps_PokePage,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_PokeScratchChance,
 }
 
@@ -299,7 +398,7 @@ option OMHTurretsTraps.TrapsTriggerLaserConsumption {
 
 option OMHTurretsTraps.TrapsControllerRange {
     type = double,
-    default = 40,
+    default = 10,
     min = 5,
     max = 100,
     page = OMHTurretsTraps_TriggersPage,
@@ -329,7 +428,7 @@ option OMHTurretsTraps.TetherRange {
     default = 6,
     min = 1,
     max = 32,
-    page = OMHTurretsTraps_TetherPage,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_TetherRange,
 }
 
@@ -338,7 +437,7 @@ option OMHTurretsTraps.TetherLaunchSpeed {
     default = 30,
     min = 1,
     max = 64,
-    page = OMHTurretsTraps_TetherPage,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_TetherLaunchSpeed,
 }
 
@@ -347,7 +446,7 @@ option OMHTurretsTraps.TetherReturnSpeed {
     default = 4,
     min = 1,
     max = 64,
-    page = OMHTurretsTraps_TetherPage,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_TetherReturnSpeed,
 }
 
@@ -356,7 +455,7 @@ option OMHTurretsTraps.TetherHoldSeconds {
     default = 0.75,
     min = 0,
     max = 10,
-    page = OMHTurretsTraps_TetherPage,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_TetherHoldSeconds,
 }
 
@@ -365,7 +464,7 @@ option OMHTurretsTraps.TetherResetSeconds {
     default = 0.4,
     min = 0,
     max = 60,
-    page = OMHTurretsTraps_TetherPage,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_TetherResetSeconds,
 }
 
@@ -374,7 +473,7 @@ option OMHTurretsTraps.TetherHitDamage {
     default = 30,
     min = 0,
     max = 2500,
-    page = OMHTurretsTraps_TetherPage,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_TetherHitDamage,
 }
 
@@ -383,6 +482,33 @@ option OMHTurretsTraps.TetherPullDamage {
     default = 15,
     min = 0,
     max = 2500,
-    page = OMHTurretsTraps_TetherPage,
+    page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_TetherPullDamage,
+}
+
+option OMHTurretsTraps.TrapsControllerCapacity {
+    type = integer,
+    min = 0,
+    max = 5000,
+    default = 100,
+    page = OMHTurretsTraps_TriggersPage,
+    translation = OMHTurretsTraps_ControllerCapacity,
+}
+
+option OMHTurretsTraps.TrapsControllerKitCapacity {
+    type = integer,
+    min = 0,
+    max = 1000,
+    default = 100,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_ControllerKitCapacity,
+}
+
+option OMHTurretsTraps.TrapsControllerKitRange {
+    type = integer,
+    min = 0,
+    max = 25,
+    default = 10,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_ControllerKitRange,
 }

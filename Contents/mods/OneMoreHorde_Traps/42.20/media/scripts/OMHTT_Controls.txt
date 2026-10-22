@@ -119,7 +119,7 @@ module Base {
         }
         outputs { item 1 Base.OMHTTTrapPressurePlate, }
     }
-    xuiSkin default { entity ES_OMHTTPlate { LuaWindowClass = ISEntityWindow, DisplayName = UI_OMHTT_ControlPlate, Icon = Plank, } }
+    xuiSkin default { entity ES_OMHTTPlate { LuaWindowClass = ISEntityWindow, DisplayName = UI_OMHTT_ControlPlate, Icon = Item_Plank, } }
     item OMHTTTrapButton {
         DisplayName = Button,
         ItemType = base:normal,
@@ -183,7 +183,7 @@ module Base {
         }
         outputs { item 1 Base.OMHTTTrapButton, }
     }
-    xuiSkin default { entity ES_OMHTTButton { LuaWindowClass = ISEntityWindow, DisplayName = UI_OMHTT_ControlButton, Icon = ElectronicsScrap, } }
+    xuiSkin default { entity ES_OMHTTButton { LuaWindowClass = ISEntityWindow, DisplayName = UI_OMHTT_ControlButton, Icon = Item_ElectronicsScrap, } }
     item OMHTTTrapLever {
         DisplayName = Lever,
         ItemType = base:normal,
@@ -234,7 +234,7 @@ module Base {
         }
         outputs { item 1 Base.OMHTTTrapLever, }
     }
-    xuiSkin default { entity ES_OMHTTLever { LuaWindowClass = ISEntityWindow, DisplayName = UI_OMHTT_ControlLever, Icon = ElectronicsScrap, } }
+    xuiSkin default { entity ES_OMHTTLever { LuaWindowClass = ISEntityWindow, DisplayName = UI_OMHTT_ControlLever, Icon = Item_ElectronicsScrap, } }
     item OMHTTTrapLaser {
         DisplayName = Laser Sensor,
         ItemType = base:normal,
@@ -286,6 +286,6 @@ module Base {
         }
         outputs { item 1 Base.OMHTTTrapLaser, }
     }
-    xuiSkin default { entity ES_OMHTTLaser { LuaWindowClass = ISEntityWindow, DisplayName = UI_OMHTT_ControlLaser, Icon = ElectronicsScrap, } }
+    xuiSkin default { entity ES_OMHTTLaser { LuaWindowClass = ISEntityWindow, DisplayName = UI_OMHTT_ControlLaser, Icon = Item_ElectronicsScrap, } }
 }
 

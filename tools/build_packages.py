@@ -31,12 +31,14 @@ def owner(path):
             return {"turrets"}
         raise ValueError("Unassigned Lua module: " + relative)
     if "/scripts/" in relative:
-        if name in {"OMHTT_Controls.txt", "OMHTT_DeviceSounds.txt", "OMHTT_DeviceVisuals.txt"}:
+        if name in {"OMHTT_Controls.txt", "OMHTT_DeviceSounds.txt", "OMHTT_DeviceVisuals.txt", "OMHTT_ControllerKits.txt"}:
             return set(IDS)
         return {"traps"} if name in TRAP_SCRIPTS else {"turrets"}
     if "/AnimSets/" in relative:
         return set(IDS)
     if any(key in relative for key in ("/models_X/OMHTT_Tether", "/models_X/OMHTT_State", "/textures/OMHTT/State", "/textures/OMHTT/ProbeWhite")):
+        return set(IDS)
+    if "/textures/OMHTT/Modules/expansion_" in relative:
         return set(IDS)
     if "/textures/" in relative:
         if name in {"OMHTT_TestCube.png", "OMHTT_Foundation.png"}:
@@ -56,9 +58,9 @@ def sandbox(component):
     for match in re.finditer(r"option OMHTurretsTraps\.(\w+)\s*\{[^}]+\}", content):
         key = match[1]
         trap = key in TRAP_OPTIONS or "Barrier" in key or key.startswith(("Bed", "Barb", "Poke", "Tether"))
-        if key.startswith("Trigger") or key in {"ControllerRange", "LaserRange", "DeviceSoundVolume"} or trap == (component == "traps"):
+        if key.startswith(("Trigger", "Controller")) or key in {"LaserRange", "DeviceSoundVolume", "ModuleLootRate", "LootRateCapacitySmall", "LootRateCapacity", "LootRateCapacityLarge", "RarityWeightAbundant", "RarityWeightCommon", "RarityWeightUncommon", "RarityWeightRare", "RarityWeightEpic", "RarityWeightLegendary", "RarityWeightMythic"} or trap == (component == "traps"):
             block = match[0]
-            if component == "traps" and (key.startswith("Trigger") or key in {"ControllerRange", "LaserRange", "DeviceSoundVolume"}):
+            if component == "traps" and (key.startswith(("Trigger", "Controller")) or key in {"LaserRange", "DeviceSoundVolume", "ModuleLootRate", "LootRateCapacitySmall", "LootRateCapacity", "LootRateCapacityLarge", "RarityWeightAbundant", "RarityWeightCommon", "RarityWeightUncommon", "RarityWeightRare", "RarityWeightEpic", "RarityWeightLegendary", "RarityWeightMythic"}):
                 block = block.replace("option OMHTurretsTraps." + key, "option OMHTurretsTraps.Traps" + key, 1)
             result.append(block + "\n")
     assert blocks and len(result) > 1

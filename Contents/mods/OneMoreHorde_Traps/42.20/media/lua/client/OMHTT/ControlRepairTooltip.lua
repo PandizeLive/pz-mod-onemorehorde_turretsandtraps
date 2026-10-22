@@ -9,27 +9,15 @@ local U = {}
 ---@return string description Native rich text
 function U.description(kind, player, toolsReady)
     local profile = R.profiles[kind]
-    local materials = getText("UI_OMHTT_RepairNone")
+    local lines = {}
     if profile.material then
-        materials = getText("UI_OMHTT_RepairMaterial", getItemNameFromFullType(profile.material), #R.materials(player, kind))
+        local color = #R.materials(player, kind) > 0 and " <RGB:0.3,0.9,0.3> " or " <RGB:1,0.3,0.3> "
+        lines[#lines + 1] = color .. getItemNameFromFullType(profile.material)
     end
-    local tools = getText(profile.tools)
-    if toolsReady == false or not R.tools(player, kind) then
-        tools = tools .. " - " .. getText("UI_OMHTT_RepairToolsMissing")
-    end
-    local lines = {
-        getText("UI_OMHTT_RepairMaterials", materials),
-        getText("UI_OMHTT_RepairTools", tools),
-        getText("UI_OMHTT_RepairSkills"),
-        getText("UI_OMHTT_RepairTime", profile.seconds),
-        getText(kind == "Turret" and "UI_OMHTT_RepairBaseResult" or "UI_OMHTT_RepairResult"),
-    }
-    if kind == "Poke" then
-        lines[#lines + 1] = getText("UI_OMHTT_RepairPokeAccess")
-    end
-    if profile.material then
-        lines[#lines + 1] = getText("UI_OMHTT_RepairMaterialSource")
-    end
+    local ready = toolsReady ~= false and R.tools(player, kind)
+    local color = ready and " <RGB:0.3,0.9,0.3> " or " <RGB:1,0.3,0.3> "
+    lines[#lines + 1] = color .. getText(profile.tools)
+    lines[#lines + 1] = " <RGB:1,1,1> " .. getText("UI_OMHTT_RepairTime", profile.seconds)
     return table.concat(lines, " <LINE> ")
 end
 

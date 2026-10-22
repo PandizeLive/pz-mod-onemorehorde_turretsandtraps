@@ -32,7 +32,7 @@ function Action.canStore(character, object, item)
         and require("OMHTT/ControlDefinitions").storable(item)
         and source ~= nil and source:contains(item) and source:isRemoveItemAllowed(item)
         and source:isInCharacterInventory(character) and not item:isFavorite()
-        and object:getContainer():getCapacityWeight() + item:getUnequippedWeight() <= 500
+        and object:getContainer():getCapacityWeight() + item:getUnequippedWeight() <= require("OMHTT/ControlExpansion").capacity(object)
 end
 
 ---@return boolean valid
@@ -50,7 +50,7 @@ function Action:isValid()
         return Action.canStore(self.character, self.object, self.item)
     end
     local destination = self:destination()
-    return source == storage and destination ~= nil and destination ~= storage
+    return source == storage and require("OMHTT/ControlExpansion").canRemove(self.object, self.item) and destination ~= nil and destination ~= storage
         and destination:isItemAllowed(self.item) and destination:hasRoomFor(self.character, self.item)
 end
 
@@ -72,6 +72,8 @@ function Action:complete()
         source:AddItem(self.item)
         return false
     end
+    require("OMHTT/ControlExpansion").refresh(self.object)
+    require("OMHTT/ControlWorld").publish(self.object)
     self.done = true
     if self.incoming then
         ISTransferAction:removeItemOnCharacter(self.character, self.item)

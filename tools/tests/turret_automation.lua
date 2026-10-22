@@ -1,3 +1,5 @@
+local savedStandby = SandboxVars.OMHTurretsTraps.TurretStandbyEnabled
+SandboxVars.OMHTurretsTraps.TurretStandbyEnabled = false
 local M = require("OMHTT/TurretModules")
 local T = require("OMHTT/Turret")
 local W = require("OMHTT/TurretWorld")
@@ -20,7 +22,7 @@ local side = makeZombie(testSquares["900:897:0"], 9)
 local rear = makeZombie(testSquares["898:900:0"], 0.8)
 local edge = makeZombie(testSquares["902:898:0"], 3)
 local Aim = require("OMHTT/TurretAim")
-local record = {schema = 1, id = "auto-test", kind = "potato", baseFacing = 0, facing = 8, aimDegrees = 180,
+local record = {standby = "active", schema = 1, id = "auto-test", kind = "potato", baseFacing = 0, facing = 8, aimDegrees = 180,
     shots = 0, nextShot = 0, priority = "Toughest"}
 local plain = {active = {}}
 local profile = M.profile(record, plain)
@@ -376,3 +378,6 @@ SandboxVars.OMHTurretsTraps.PotatoRequirePower = oldPowerSetting
 SandboxVars.OMHTurretsTraps.AutomationEnabled = oldEnabled
 SandboxVars.OMHTurretsTraps.DetectionInterval = oldInterval
 SandboxVars.OMHTurretsTraps.ForwardCone = oldCone
+
+
+SandboxVars.OMHTurretsTraps.TurretStandbyEnabled = savedStandby

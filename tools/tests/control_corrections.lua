@@ -21,6 +21,7 @@ local player={nearby=true,getUsername=function() return "correction-owner" end,
 local function container(kind)
     local value={kind=kind,allowed=true,room=true,carried=true}
     function value:getType() return self.kind end
+    function value:setCapacity(capacity) self.capacity = capacity end
     function value:getContainingItem() return self.bag end
     function value:getParent() return self.parent end
     function value:contains(item) return item.container==self end
@@ -150,13 +151,13 @@ for i=1,120 do
     local before=#(panel.scanResults or {})
     panel:scan()
     if panel.scanIndex then
-        check(#panel.scanResults-before<=64 and #rows.items==1,"Discovery and row creation stay bounded while previous complete list remains visible")
+        check(#panel.scanResults-before<=65 and rows.items==panel.scanResults,"Discovery adds at most 64 entries per slice plus the immediate Controller row")
     else
         break
     end
 end
-check(not panel.scanIndex and #rows.items==181 and rows.items[rows.selected].item==turret and scans==0,
-    "Atomic list completion preserves selected identity with no full inventory scans")
+check(not panel.scanIndex and #rows.items==182 and rows.items[rows.selected].item==turret and scans==0,
+    "Progressive list completion preserves selected identity with no full inventory scans")
 
 local sent,replies,queued={},{},0
 sendClientCommand=function(p,module,command,args) sent[#sent+1]={module=module,command=command,args=args} end

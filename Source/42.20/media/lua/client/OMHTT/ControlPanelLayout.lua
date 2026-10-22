@@ -79,7 +79,7 @@ function L.arrange(panel)
     panel.stockCompact = panel.width < 1160
     panel.controlWidth = panel.stockCompact and panel.width or panel.width - stock - 8
     panel.equipmentY = panel.titleHeight + 8
-    panel.devicesY = panel.equipmentY + h * (panel.stockCompact and 5 or 4) + 34
+    panel.devicesY = panel.equipmentY + h * (panel.stockCompact and 7 or 6) + 50
     local y, bottom = panel.devicesY, panel.height - (panel.footerHeight or 14) - 6
     local graphWidth = math.max(260, math.floor((panel.controlWidth - 24) * .40))
     panel.detailX = 12 + graphWidth + 8
@@ -103,11 +103,14 @@ function L.arrange(panel)
     panel.detailBody:setHeight(math.max(80, bottom - detailsY))
     Theme.scrollbar(panel.detailBody)
     panel.layoutKind = nil
-    panel.stockButtonY = panel.equipmentY + h * 3 + 12
+    panel.stockButtonY = panel.equipmentY + h * 5 + 40
     place(panel.stockButton, panel.controlWidth / 2 + 10, panel.stockButtonY, panel.controlWidth / 2 - 34)
     panel.stockButton:setVisible(panel.stockCompact)
     if panel.batterySlot then
         place(panel.batterySlot, 22, panel.equipmentY + h + 12, math.floor(panel.controlWidth / 2) - 30)
+    end
+    if panel.expansionSlot then
+        place(panel.expansionSlot, panel.controlWidth / 2 + 10, panel.equipmentY + h + 12, panel.controlWidth / 2 - 34)
     end
     if panel.stockWing then
         local wing = panel.stockWing
@@ -140,6 +143,7 @@ function L.arrange(panel)
         if panel.batterySlot then
             panel.batterySlot:setVisible(true)
         end
+        if panel.expansionSlot then panel.expansionSlot:setVisible(true) end
     end
 end
 
@@ -227,9 +231,9 @@ function L.draw(panel, host, state)
         panel.devicesY - panel.equipmentY - 10, h + 8, getText("UI_OMHTT_Equipment"))
     local power = host.powered and "UI_OMHTT_ControllerPowerReady" or "UI_OMHTT_ControllerPowerEmpty"
     local textX = panel.controlWidth / 2 + 10
-    panel:setStencilRect(textX, panel.equipmentY + h + 10, panel.controlWidth / 2 - 32, h * 3 + 8)
-    panel:drawText(getText(power), textX, panel.equipmentY + h + 10, .85, .85, .85, 1, UIFont.Small)
-    panel:drawText(getText("UI_OMHTT_ControllerRange", A.radius()), textX, panel.equipmentY + h * 2 + 12, .7, .7, .7, 1, UIFont.Small)
+    panel:setStencilRect(textX, panel.equipmentY + h * 3 + 34, panel.controlWidth / 2 - 32, h * 3 + 8)
+    panel:drawText(getText(power), textX, panel.equipmentY + h * 3 + 34, .85, .85, .85, 1, UIFont.Small)
+    panel:drawText(getText("UI_OMHTT_ControllerRange", A.radius(panel.object)), textX, panel.equipmentY + h * 4 + 34, .7, .7, .7, 1, UIFont.Small)
     panel:clearStencilRect()
     Theme.section(panel, panel.detailX, panel.mapY, panel.mapView.width,
         panel.mapView.y + panel.mapView.height - panel.mapY, h + 8, getText("UI_OMHTT_Map"))
@@ -263,7 +267,7 @@ function L.drawDetails(panel, host, state)
     elseif state.kind == "Tether" then
         status = "UI_OMHTT_TetherStats"
     elseif state.kind == "Poke" then
-        status = state.enabled == false and "UI_OMHTT_PokeDisabled" or "UI_OMHTT_PokeContact"
+        status = "UI_OMHTT_PokeContact"
     end
     if require("OMHTT/ControlDefinitions").inputs[state.kind] and state.powered ~= true then status = "UI_OMHTT_TriggerUnpowered" end
     body:drawText(getText(status), x, infoY + h, .85, .85, .85, 1, UIFont.Small)
@@ -284,7 +288,7 @@ function L.drawDetails(panel, host, state)
     body:setStencilRect(x, hintY + scroll, width, h * 2)
     local hint = getText(panel.graph.notice or "UI_OMHTT_GraphConnectHint")
     if not panel.graph.notice and state.kind == "Controller" then
-        hint = getText("UI_OMHTT_ControllerRange", A.radius())
+        hint = getText("UI_OMHTT_ControllerRange", A.radius(panel.object))
     elseif panel.linkSource then
         hint = getText("UI_OMHTT_SelectedInput", U.name(panel.linkSource))
     end

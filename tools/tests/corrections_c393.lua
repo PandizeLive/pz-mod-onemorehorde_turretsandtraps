@@ -7,7 +7,7 @@ local Authority = require("OMHTT/TurretAuthority")
 local old = {state = T.state, config = T.cycleConfig, on = T.isOn, valid = W.valid,
     power = W.power, clock = Clock.now, target = S.valid, publish = Authority.publish,
     sound = Audio.emit, settings = SandboxVars.OMHTurretsTraps}
-local state, now, powered, targetValid, cues = {}, 0, true, true, {}
+local state, now, powered, targetValid, cues = {standby = "active"}, 0, true, true, {}
 local object, target, contents = {}, {}, {active = {MotionDetection = 1}}
 SandboxVars.OMHTurretsTraps = {}
 T.state = function() return state end
@@ -31,8 +31,12 @@ check(not S.step(object, contents, target) and state.standby == "waking", "Targe
 now = 7999
 check(not S.step(object, contents, target) and #cues == 1, "No early fire or alert during wake")
 now = 8000
-check(S.step(object, contents, target) and state.standby == "active" and cues[2] == "awake", "Alert only after complete wake")
-now = 15000
+check(not S.step(object, contents, target) and state.standby == "active" and cues[2] == "awake", "Alert starts a quarter-second firing delay")
+now = 8249
+check(not S.step(object, contents, target), "No firing before alert delay")
+now = 8250
+check(S.step(object, contents, target), "Firing resumes after alert delay")
+now = 15250
 S.step(object, contents)
 S.step(object, contents, target)
 targetValid = false
@@ -51,6 +55,15 @@ check(not S.step(object, contents), "Completed action can subsequently sleep")
 powered = false
 check(not S.step(object, contents, target) and state.standby == "disabled", "No power disables marker and firing")
 powered = true
+now = 40000
+check(not S.step(object, contents, target) and state.standby == "waking", "Power-on requires initial detector wake")
+now = 41000
+local beforeWake = #cues
+check(not S.step(object, contents, target) and #cues == beforeWake + 1 and cues[#cues] == "awake", "Initial wake plays alert before firing")
+targetValid = false
+now = 41100
+check(not S.step(object, contents, target) and state.standby == "asleep", "Target lost during alert delay cancels firing")
+targetValid = true
 SandboxVars.OMHTurretsTraps.TurretStandbyEnabled = false
 check(S.step(object, contents) and state.standby == "active", "Sandbox can disable standby")
 S.entries[object] = nil
@@ -60,7 +73,7 @@ Authority.publish, Audio.emit = old.publish, old.sound
 
 local A = require("OMHTT/ControlAccess")
 SandboxVars.OMHTurretsTraps = {}
-check(A.radius() == 40 and A.laserRange() == 10, "New default Controller and fixed laser ranges")
+check(A.radius() == 10 and A.laserRange() == 10, "New default Controller and fixed laser ranges")
 SandboxVars.OMHTurretsTraps = {TrapsControllerRange = 55, TrapsLaserRange = 17}
 check(A.radius() == 55 and A.laserRange() == 17, "Independent Traps Sandbox fallback")
 SandboxVars.OMHTurretsTraps.ControllerRange = 1000
@@ -98,7 +111,8 @@ band = 7
 Art.apply(item)
 check(writes == 2 and string.find(item.texture, "mythic", 1, true), "Changed effective rarity refreshes existing item artwork")
 T.component = function() return "CapacityLarge" end
-Art.apply(item)
+item.getFullType = function() return "Base.OMHTTModuleExpansionLarge" end
+require("OMHTT/ControlExpansionArt").apply(item)
 check(string.find(item.texture, "expansion", 1, true), "Expansion kit uses its own category art")
 T.component = function() return "Martyrdom" end
 Art.apply(item)
@@ -114,7 +128,7 @@ getText = function(key, ...) return key end
 getItemNameFromFullType = function(name) return name end
 for _, kind in pairs({"SpikeBarrier", "SpikeBarrierReinforced", "BedSpikes", "BedSpikesReinforced", "BarbedPanel", "ConcertinaWire", "PokeFloor", "TetherDart", "Controller", "Button", "PressurePlate", "Lever", "Laser"}) do
     local tip = D.get({getFullType = function() return "Base.OMHTTTrap" .. kind end})
-    check(tip and string.find(tip, "UI_OMHTT_DeviceRepair", 1, true) and string.find(tip, "UI_OMHTT_DevicePlacement", 1, true), "Compact purpose/repair/service tip: " .. kind)
+    check(tip and not string.find(tip, "UI_OMHTT_DeviceRepair", 1, true) and string.find(tip, "UI_OMHTT_DeviceHealth", 1, true), "Compact purpose/repair/service tip: " .. kind)
 end
 getText, getItemNameFromFullType = savedText, savedItemName
 

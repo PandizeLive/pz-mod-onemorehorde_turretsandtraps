@@ -39,7 +39,7 @@ function V.render()
         local square=object:getSquare()
         if not state or object:getObjectIndex()<0 or not square or cell:getGridSquare(state.x,state.y,state.z)~=square then
             V.remove(object)
-        elseif state.powered and object:getHealth()>0 and (state.kind=="Laser" or state.active) then
+        elseif state.powered and object:getHealth()>0 and ((state.kind=="Laser" and require("OMHTT/ControlOptions").get("LaserVisible")) or (state.kind=="Lever" and state.active)) then
             if not canvas then canvas=ISPanel:new(0,0,getCore():getScreenWidth(),getCore():getScreenHeight()); canvas:initialise(); canvas:instantiate() end
             for index=0,getNumActivePlayers()-1 do
                 local player=getSpecificPlayer(index)
@@ -55,7 +55,7 @@ function V.render()
                             local tile=cell:getGridSquare(math.floor(wx),math.floor(wy),state.z)
                             if not tile or not tile:isCanSee(index) then break end
                             local ex,ey=screen(wx,wy,state.z+.32,index)
-                            canvas:drawLine(nil,sx,sy,ex,ey,2,.8,state.active and 1 or .15,state.active and .15 or 1,.15)
+                            canvas:drawLine(nil,sx,sy,ex,ey,1,require("OMHTT/ControlOptions").get("LaserOpacity") / 100,state.active and 1 or .15,state.active and .15 or 1,.15)
                             sx,sy=ex,ey
                         end
                     elseif state.kind=="Lever" then

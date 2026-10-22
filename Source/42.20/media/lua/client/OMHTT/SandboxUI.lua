@@ -25,7 +25,7 @@ local groups = {
     {"Sandbox_Title_OMHTurretsTraps_Audio", {"PotatoHearingRadius", "PotatoPlaybackVolume"}},
     {"Sandbox_Title_OMHTurretsTraps_Power", {"PotatoRequirePower", "PotatoBatteryPercentPerShot", "FirearmBatteryMultiplier", "ScrapshotBatteryPercent", "PotatoGeneratorFuelPerShot", "ModulePowerBonus", "BallistaBatteryPercent", "RotaryBatteryHours"}},
     {"Sandbox_Title_OMHTurretsTraps_Firearms", {"FirearmTurrets", "FirearmAmmoCapacity", "FirearmAimingLevel", "FirearmAccuracyMultiplier", "FirearmRangeAccuracy", "PrecisionRangeAccuracy", "FirearmDamageMultiplier", "FirearmRangeMultiplier", "FirearmReloadMultiplier", "FirearmRateMultiplier", "FirearmCycleMultiplier", "FirearmTurnSpeed"}},
-    {"Sandbox_Title_OMHTurretsTraps_Standby", {"TurretStandbyEnabled", "TurretIdleSeconds", "TurretWakeSeconds", "TurretStateIndicator"}},
+    {"Sandbox_Title_OMHTurretsTraps_Standby", {"TurretStandbyEnabled", "TurretIdleSeconds", "TurretWakeSeconds", "TurretAlertDelay", "TurretStateIndicator"}},
     {"Sandbox_Title_OMHTurretsTraps_PlayerContact", {"FriendlyPlayerDamageMultiplier", "FriendlyPlayerWoundMultiplier", "HostilePlayerDamageMultiplier", "HostilePlayerWoundMultiplier"}},
     {"Sandbox_Title_OMHTurretsTraps_Ballista", {"BallistaDamage", "BallistaRange", "BallistaCooldown", "BallistaReload"}},
     {"Sandbox_Title_OMHTurretsTraps_Scrapshot", {"ScrapshotDamage", "ScrapshotRange", "ScrapshotCooldown", "ScrapshotReload"}},
@@ -54,7 +54,7 @@ local moduleGroups = {
     {"Sandbox_Title_OMHTurretsTraps_InitialBlow", {"InitialBlowBonus", "InitialBlowThreshold"}},
     {"Sandbox_Title_OMHTurretsTraps_Execute", {"ExecuteFirst", "ExecuteBonus"}},
     {"Sandbox_Title_OMHTurretsTraps_Impact", {"ImpactFirst", "ImpactBonus"}},
-    {"Sandbox_Title_OMHTurretsTraps_Capacity", {"CapacityImprovisedModuleBonus", "CapacityImprovisedAmmoBonus", "CapacitySmallAmmoBonus", "CapacitySmallModuleBonus", "CapacityAmmoBonus", "CapacityModuleBonus", "CapacityLargeAmmoBonus", "CapacityLargeModuleBonus"}},
+    {"Sandbox_Title_OMHTurretsTraps_Capacity", {"ControllerKitRange", "ControllerKitCapacity", "TrapsControllerKitRange", "TrapsControllerKitCapacity", "CapacityImprovisedModuleBonus", "CapacityImprovisedAmmoBonus", "CapacitySmallAmmoBonus", "CapacitySmallModuleBonus", "CapacityAmmoBonus", "CapacityModuleBonus", "CapacityLargeAmmoBonus", "CapacityLargeModuleBonus"}},
 }
 
 ---@param panel ISPanel Sandbox panel
@@ -83,14 +83,45 @@ function UI.layout(panel)
     panel:setScrollHeight(y)
 end
 
+---@param control ISTextEntryBox Numeric entry
+---@return nil
+function UI.precision(control)
+    if control.omhttPrecision or control.Type ~= "ISTextEntryBox" then return end
+    control.omhttPrecision = true
+    local setText, getTextValue = control.setText, control.getText
+    control.setText = function(self, value)
+        local number = tonumber(value)
+        self.omhttRaw, self.omhttDisplay = nil, nil
+        if number and number == number and math.abs(number) < math.huge then
+            local digits = math.abs(number) > 0 and math.abs(number) < .01 and 6 or 2
+            local display = string.format("%." .. digits .. "f", number)
+            self.omhttRaw, self.omhttDisplay = tostring(value), display
+            setText(self, display)
+        else
+            setText(self, value)
+        end
+    end
+    control.getText = function(self)
+        local value = getTextValue(self)
+        if value == self.omhttDisplay then return self.omhttRaw end
+        return value
+    end
+    control:setText(getTextValue(control))
+end
+
 ---@param panel ISPanel Sandbox panel
 ---@return ISPanel panel
 function UI.attach(panel)
     if not panel or not panel.controls or panel.omhttTitles then return panel end
+    for name, control in pairs(panel.controls) do
+        if string.find(name, "^OMHTurretsTraps%.") and (string.find(name, "LootRate", 1, true) or string.find(name, "LootWeight", 1, true) or string.find(name, "RarityWeight", 1, true)) then
+            UI.precision(control)
+        end
+    end
     local sections = groups
-    if panel.controls["OMHTurretsTraps.RapidFireBonus"] then
+    if panel.controls["OMHTurretsTraps.RapidFireBonus"] or panel.controls["OMHTurretsTraps.TrapsControllerKitRange"] then
         sections = moduleGroups
-    elseif panel.controls["OMHTurretsTraps.ModuleLootRate"] then
+    elseif panel.controls["OMHTurretsTraps.ModuleLootRate"] or panel.controls["OMHTurretsTraps.TrapsModuleLootRate"] then
         sections = {
             {"Sandbox_Title_OMHTurretsTraps_LootGeneral", {"ModuleLootRate", "PackLootWeight", "PackZombieChance"}},
             {"Sandbox_Title_OMHTurretsTraps_Rarity", {"RarityWeightAbundant", "RarityWeightCommon", "RarityWeightUncommon", "RarityWeightRare", "RarityWeightEpic", "RarityWeightLegendary", "RarityWeightMythic"}},
@@ -99,6 +130,8 @@ function UI.attach(panel)
     elseif panel.controls["OMHTurretsTraps.SpikeBarrier"] then
         sections = {
             {"Sandbox_Title_OMHTurretsTraps_Barrier", {"SpikeBarrier", "SpikeBarrierDamage", "ReinforcedBarrierDamage", "SpikeBarrierHealth", "ReinforcedBarrierHealthMultiplier", "SpikeBarrierScratchChance"}},
+            {"Sandbox_Title_OMHTurretsTraps_Poke", {"PokeDamage", "PokeCycleSeconds", "PokeHealth", "PokeWear", "PokeScratchChance"}},
+            {"Sandbox_Title_OMHTurretsTraps_Tether", {"TetherRange", "TetherLaunchSpeed", "TetherReturnSpeed", "TetherHoldSeconds", "TetherResetSeconds", "TetherHitDamage", "TetherPullDamage"}},
             {"Sandbox_Title_OMHTurretsTraps_Beds", {"BedSpikes", "BedDamage", "BedReinforcedDamage", "BedHealth", "BedReinforcedHealth", "BedWear", "BedTripChance", "BedRecoverySeconds"}},
             {"Sandbox_Title_OMHTurretsTraps_BarbedPanel", {"BarbSections"}},
             {"Sandbox_Title_OMHTurretsTraps_ConcertinaWire", {"BarbWire"}},
@@ -108,7 +141,7 @@ function UI.attach(panel)
     elseif panel.controls["OMHTurretsTraps.ControllerRange"] or panel.controls["OMHTurretsTraps.TrapsControllerRange"] then
         local prefix = panel.controls["OMHTurretsTraps.ControllerRange"] and "" or "Traps"
         sections = {
-            {"Sandbox_Title_OMHTurretsTraps_Controller", {prefix .. "ControllerRange"}},
+            {"Sandbox_Title_OMHTurretsTraps_Controller", {prefix .. "ControllerRange", prefix .. "ControllerCapacity"}},
             {"Sandbox_Title_OMHTurretsTraps_Laser", {prefix .. "LaserRange", prefix .. "TriggerLaserConsumption"}},
             {"Sandbox_Title_OMHTurretsTraps_Button", {prefix .. "TriggerButtonConsumption"}},
             {"Sandbox_Title_OMHTurretsTraps_Lever", {prefix .. "TriggerLeverConsumption"}},
@@ -125,6 +158,9 @@ function UI.attach(panel)
         local group, first = sections[i], true
         for j = 1, #group[2] do
             local name = "OMHTurretsTraps." .. group[2][j]
+            if not panel.controls[name] and panel.controls["OMHTurretsTraps.Traps" .. group[2][j]] then
+                name = "OMHTurretsTraps.Traps" .. group[2][j]
+            end
             if panel.controls[name] then
                 ordered[#ordered + 1], used[name] = name, true
                 if first then

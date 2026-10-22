@@ -285,11 +285,11 @@ public final class NativePersistenceCheck {
         Object restored = Class.forName("zombie.inventory.InventoryItem").getMethod("loadItem", ByteBuffer.class, int.class).invoke(null, input, version);
         check(!input.hasRemaining(), "Heavy controller unread bytes");
         Object storage = get(restored, "getInventory");
-        check(((java.util.List<?>)get(storage, "getItems")).size() == 250, "Heavy stockpile count changed");
+        check(((java.util.List<?>)get(storage, "getItems")).size() == 251, "Heavy stockpile count changed");
         check(((Number)get(storage, "getCapacityWeight")).doubleValue() > 100, "Heavy stockpile weight was compressed");
         Object state = call(get(restored, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTControl");
         check("control-owner".equals(call(state, "rawget", new Class<?>[]{Object.class}, "owner")), "Heavy controller owner lost");
-        System.out.println("[OMHTT-Controls] persistence mode=" + mode + " items=250 weight=over100 owner=preserved");
+        System.out.println("[OMHTT-Controls] persistence mode=" + mode + " items=251 weight=over100 owner=preserved");
         Object transfer = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeStockTransfer");
         check(transfer != null, "Stockpile transfer fixture missing");
         Object operator = call(transfer, "rawget", new Class<?>[]{Object.class}, "character");

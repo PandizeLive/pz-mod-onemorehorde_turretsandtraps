@@ -58,3 +58,8 @@ Owner requests a buffering icon on entries still being checked. Show a small spi
 Artwork clarification: all fourteen packaged owner Performance/Expansion PNGs measure 32x32. `TurretSlot.render` currently requests 16x16 for modules and 32x32 for expansion slots. The file resolution is correct; the UI shrinks modules. Planned correction renders modules at 32x32 where space allows, shrinking only for compact layouts, without resampling or altering owner originals.
 
 No Source/Contents/install changes or new tests in C396. Next action: final patch approval; no further generic design choices are required.
+
+
+## C397 - Implementation and evidence
+
+Owner approved the complete C395/C396 scope. Implemented behavior and explicit remaining visual uncertainty are recorded in [0.2.63 patch](PATCH_v0.2.63.md) and [test evidence](TEST_v0.2.63.md). Native 42.21 ItemContainer caps ordinary capacity reporting at 100, so the existing authoritative Controller transfer path supplies its virtual allowance. Native FBORenderCell identifies objects with containers as possible occluders and uses a .66 alpha branch; the reported base fade remains a rendered investigation, not a confirmed fix. No global occlusion change, AI art, hosted deployment or multiplayer acceptance claim.

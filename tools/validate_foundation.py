@@ -147,7 +147,7 @@ def main():
     (OUTPUT / "base-depth.log").write_text(depth_log, encoding="utf-8")
     pages = list(dict.fromkeys(re.findall(r"page\s*=\s*(\w+)", sandbox)))
     assert pages == ["OMHTurretsTraps_General", "OMHTurretsTraps_BarrierPage", "OMHTurretsTraps_PotatoPage",
-                     "OMHTurretsTraps_AutomationPage", "OMHTurretsTraps_StatModulesPage", "OMHTurretsTraps_ModuleLootPage", "OMHTurretsTraps_Debug", "OMHTurretsTraps_PokePage", "OMHTurretsTraps_TriggersPage", "OMHTurretsTraps_TetherPage"]
+                     "OMHTurretsTraps_AutomationPage", "OMHTurretsTraps_StatModulesPage", "OMHTurretsTraps_ModuleLootPage", "OMHTurretsTraps_Debug", "OMHTurretsTraps_TriggersPage"]
     for asset in ("TetherNail", "TetherCable", "StateAmber", "StateGreen", "StateDark"):
         run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED", "-cp", os.pathsep.join([str(classes), str(GAME / "projectzomboid.jar")]),
              "HybridAssetCheck", PACKAGE / ("42.20/media/models_X/OMHTT_" + asset + ".x"), "12"], cwd=GAME)

@@ -54,7 +54,7 @@ function Action:rejection(candidate, summary)
         room = true
     elseif self.stockpile then
         if not require("OMHTT/ControlDefinitions").storable(candidate) then return "TransferWrongItem" end
-        room = destination:getCapacityWeight() + candidate:getUnequippedWeight() <= 500
+        room = destination:getCapacityWeight() + candidate:getUnequippedWeight() <= require("OMHTT/ControlExpansion").capacity(destination:getParent())
     else
         room = destination:hasRoomFor(self.character, candidate)
     end

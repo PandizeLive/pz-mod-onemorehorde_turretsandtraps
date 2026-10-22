@@ -72,7 +72,7 @@ def main():
             assert "OMHTurretsTraps.SpikeBarrier" not in options
     assert not option_sets["traps"] & option_sets["turrets"], "Duplicate native Sandbox identities"
     all_options = set(re.findall(r"option\s+(\w+\.\w+)\s*\{", (ROOT / "Source/42.20/media/sandbox-options.txt").read_text()))
-    normalized_options = {name.replace(".TrapsTrigger", ".Trigger").replace(".TrapsControllerRange", ".ControllerRange").replace(".TrapsLaserRange", ".LaserRange").replace(".TrapsDeviceSoundVolume", ".DeviceSoundVolume") for name in option_sets["traps"] | option_sets["turrets"]}
+    normalized_options = {name.replace("OMHTurretsTraps.Traps", "OMHTurretsTraps.") for name in option_sets["traps"] | option_sets["turrets"]}
     assert all_options == normalized_options, "Sandbox options lost during split"
     common = packages["traps"].keys() & packages["turrets"].keys()
     control_script = "42.20/media/scripts/OMHTT_Controls.txt"

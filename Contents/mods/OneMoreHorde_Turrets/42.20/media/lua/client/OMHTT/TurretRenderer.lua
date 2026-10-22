@@ -4,6 +4,7 @@ local D = require("OMHTT/Diagnostics")
 local G = require("OMHTT/Firearms")
 local M = require("OMHTT/TurretModules")
 local Aim = require("OMHTT/TurretAim")
+local Draw = require("OMHTT/ControlModelDraw")
 local R = {order = {}, ordered = {}, cursor = 1, entries = {}, mode = nil, lastCheck = 0, headHeight = T.HEAD_VISUAL.height, headScale = T.HEAD_VISUAL.scale}
 
 ---@param object IsoObject Replicated device; this only changes its local presentation
@@ -31,16 +32,7 @@ end
 
 ---@return nil
 function R.restoreDraw()
-    local restore = R.drawRestore
-    if not restore then return end
-    local atlas = restore.atlas
-    atlas:setValue(restore.default)
-    atlas:setDefaultToCurrentValue()
-    atlas:setValue(restore.enabled)
-    restore.head:setWorldXRotation(restore.x)
-    restore.head:setWorldYRotation(restore.y)
-    restore.head:setWorldZRotation(restore.z)
-    R.drawRestore = nil
+    Draw.restore()
 end
 
 ---@param object IsoObject Managed base
@@ -105,9 +97,9 @@ function R.animate(now)
             local elapsed = math.min(100, math.max(0, now - (entry.lastFrame or now))) / 1000
             entry.lastFrame = now
             local lowered = not T.isOn(state) or state.standby == "asleep" or state.standby == "disabled"
-            local goal = lowered and .18 or 0
+            local goal = lowered and 45 or 0
             local duration = state.standby == "waking" and M.option("TurretWakeSeconds", 1, 0, 10) or .25
-            local step = elapsed * .18 / math.max(.01, duration)
+            local step = elapsed * 45 / math.max(.01, duration)
             entry.lowered = entry.lowered or goal
             entry.lowered = entry.lowered + math.max(-step, math.min(step, goal - entry.lowered))
             if isClient() then
@@ -163,7 +155,7 @@ function R.render(playerIndex)
         elseif entry.head and square:getZ() == math.floor(player:getZ()) and square:isCanSee(playerIndex) then
             local dx, dy = square:getX() - player:getX(), square:getY() - player:getY()
             if dx * dx + dy * dy <= 80 * 80 then
-                if (SandboxVars.OMHTurretsTraps or {}).TurretStateIndicator ~= false then
+                if (SandboxVars.OMHTurretsTraps or {}).TurretStateIndicator ~= false and require("OMHTT/ControlOptions").get("StateMarkers") then
                     local kind
                     if not T.isOn(state) or state.standby == "disabled" then
                         kind = "Dark"
@@ -180,33 +172,24 @@ function R.render(playerIndex)
                 end
                 local heading = R.heading(object)
                 local yaw = (360 - heading) % 360
-                local height = R.headHeight - (entry.lowered or 0)
+                local height = R.headHeight
+                local pitch = entry.lowered or 0
                 local profile = G.profile(entry.head)
                 if profile then
-                    local head = entry.head
-                    local oldX, oldY, oldZ = head:getWorldXRotation(), head:getWorldYRotation(), head:getWorldZRotation()
-                    atlas = atlas or getDebugOptions():getOptionByName("WorldItemAtlas.Enable")
-                    local restore = R.restoreBuffer or {}
-                    R.restoreBuffer, R.drawRestore = restore, restore
-                    restore.atlas, restore.enabled, restore.default = atlas, atlas:getValueAsString() == "true", atlas:getDefaultValue()
-                    restore.head, restore.x, restore.y, restore.z = head, oldX, oldY, oldZ
-                    head:setWorldXRotation(profile.roll)
-                    head:setWorldYRotation(yaw)
-                    head:setWorldZRotation(0)
-                    Render3DItem(entry.support, square, square:getX() + 0.5, square:getY() + 0.5, square:getZ() + height, yaw)
-                    -- The debug-only switch reads its default outside debug mode.
-                    atlas:setValue(false)
-                    atlas:setDefaultToCurrentValue()
-                    Render3DItem(head, square, square:getX() + 0.5, square:getY() + 0.5, square:getZ() + height + 0.1, -1)
-                    R.restoreDraw()
+                    local angle, tilt = math.rad(yaw), math.rad(pitch)
+                    local rx = math.deg(math.atan2(-math.cos(tilt), -math.sin(angle) * math.sin(tilt)))
+                    local rz = math.deg(math.asin(math.cos(angle) * math.sin(tilt)))
+                    local ry = math.deg(math.atan2(math.sin(angle), math.cos(angle) * math.cos(tilt)))
+                    Render3DItem(entry.support, square, square:getX() + .5, square:getY() + .5, square:getZ() + height, yaw)
+                    Draw.draw(entry.head, square, square:getX() + .5, square:getY() + .5, square:getZ() + height + .1, rx, ry, rz)
                 elseif entry.profile.stats.rotary then
                     for arm = 0, 1 do
                         local angle = math.rad(heading + arm * 180)
-                        Render3DItem(entry.head, square, square:getX() + .5 + math.cos(angle) * 1,
-                            square:getY() + .5 - math.sin(angle) * 1, square:getZ() + height, (yaw + arm * 180) % 360)
+                        Draw.draw(entry.head, square, square:getX() + .5 + math.cos(angle),
+                            square:getY() + .5 - math.sin(angle), square:getZ() + height, 0, -pitch, (yaw + arm * 180) % 360)
                     end
                 else
-                    Render3DItem(entry.head, square, square:getX() + 0.5, square:getY() + 0.5, square:getZ() + height, yaw)
+                    Draw.draw(entry.head, square, square:getX() + .5, square:getY() + .5, square:getZ() + height, 0, -pitch, yaw)
                 end
             end
         end

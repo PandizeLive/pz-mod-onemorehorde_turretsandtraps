@@ -2,7 +2,7 @@ local G = require("OMHTT/Firearms")
 local T = require("OMHTT/Turret")
 local W = require("OMHTT/TurretWorld")
 local oldSettings = SandboxVars.OMHTurretsTraps
-SandboxVars.OMHTurretsTraps = {Enabled = true, PotatoTurret = true, PotatoRequirePower = false, FirearmAccuracyMultiplier = 3}
+SandboxVars.OMHTurretsTraps = {TurretStandbyEnabled = false, Enabled = true, PotatoTurret = true, PotatoRequirePower = false, FirearmAccuracyMultiplier = 3}
 local definitions = {{"Base.Pistol", "Base.Bullets9mm", 15, false},
     {"Base.Shotgun", "Base.ShotgunShells", 6, true}, {"Base.HuntingRifle", "Base.308Bullets", 4, true}}
 local function item(fullType)

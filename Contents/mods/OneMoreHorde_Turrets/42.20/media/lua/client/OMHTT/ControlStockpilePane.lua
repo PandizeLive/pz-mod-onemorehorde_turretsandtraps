@@ -29,7 +29,7 @@ function Wing:prerender()
     self:setStencilRect(0, 0, self.width, self.height)
     Theme.section(self, 0, 0, self.width, self.height, self.owner.lineHeight + 8, getText("UI_OMHTT_StockpileTitle"))
     local weight = self.inventory:getCapacityWeight()
-    self:drawText(getText("UI_OMHTT_StockWeight", string.format("%.1f", weight)), 10, self.owner.lineHeight + 14, .8, .8, .8, 1, UIFont.Small)
+    self:drawText(getText("UI_OMHTT_StockWeight", string.format("%.1f", weight), require("OMHTT/ControlExpansion").capacity(self.owner.object)), 10, self.owner.lineHeight + 14, .8, .8, .8, 1, UIFont.Small)
 end
 
 ---@return nil

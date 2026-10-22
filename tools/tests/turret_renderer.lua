@@ -28,6 +28,13 @@ local function turret(x, yaw)
     local square = makeSquare(x, 610, 0)
     function square:isCanSee(index) return self.visible ~= false end
     local head = {getFullType = function() return T.HEAD end, setWorldScale = function(self, scale) self.scale = scale end}
+    head.rx, head.ry, head.rz = 0, 0, 0
+    function head:getWorldXRotation() return self.rx end
+    function head:getWorldYRotation() return self.ry end
+    function head:getWorldZRotation() return self.rz end
+    function head:setWorldXRotation(v) self.rx = v end
+    function head:setWorldYRotation(v) self.ry = v end
+    function head:setWorldZRotation(v) self.rz = v end
     local object = {data = {OMHTTTurret = {schema = 1, facing = 0, aimDegrees = yaw}}, square = square, index = 0}
     function object:hasModData() return true end
     function object:getModData() return self.data end
@@ -43,7 +50,7 @@ R.render(1)
 check(#draws == 2 and headA.scale == 0.512 and headB.scale == 0.512, "Actual installed heads use recorded calibration")
 for i = 1, #draws do
     check(math.abs(draws[i].z - (0.4 - 16 / 192)) < 0.000001 and draws[i].y == 610.5, "Head draws at base center and height lowered with base")
-    check(draws[i].yaw == (draws[i].head == headA and 315 or 90), "Per-instance aiming never leaks across shared models")
+    check(draws[i].rz == (draws[i].head == headA and 315 or 90), "Per-instance aiming never leaks across shared models")
 end
 local A = require("OMHTT/TurretAutomation")
 local savedSpeed = SandboxVars.OMHTurretsTraps.IdleSweepSpeed
@@ -103,23 +110,26 @@ R.changed(gunObject, gun)
 draws = {}
 R.render(1)
 check(#draws == 2 and draws[1].head.support and draws[2].head == gun, "One support and actual gun render without a ground item")
-check(draws[2].yaw == -1 and draws[2].rx == -90 and draws[2].ry == 315 and draws[2].rz == 0, "Native item XYZ pose is used for mounted firearm")
+
+check(draws[2].yaw == -1 and math.abs(draws[2].rx + 90) < .0001 and math.abs((draws[2].ry + 360) % 360 - 315) < .000001 and math.abs(draws[2].rz) < .0001, "Native item XYZ pose " .. tostring(draws[2].yaw) .. "/" .. tostring(draws[2].rx) .. "/" .. tostring(draws[2].ry) .. "/" .. tostring(draws[2].rz))
 check(gun.rx == 13 and gun.ry == 27 and gun.rz == 39, "Rendering restores original gun pose")
 check(math.abs(draws[2].z - draws[1].z - .1) < .000001, "Gun is seated above the support")
 check(atlas.value and atlas.default, "Ground item atlas settings restored after mounted draw")
 atlas.value, atlas.default = false, true
 R.render(1)
 check(not atlas.value and atlas.default, "Stored non-default atlas preference survives draw")
-local restore = R.restoreBuffer
+local Draw = require("OMHTT/ControlModelDraw")
+local restore = Draw.buffer
 restore.atlas, restore.enabled, restore.default = atlas, false, true
-restore.head, restore.x, restore.y, restore.z = gun, 13, 27, 39
-R.drawRestore = restore
+restore.item, restore.x, restore.y, restore.z = gun, 13, 27, 39
+Draw.pending = restore
 atlas.value, atlas.default = false, false
 gun.rx, gun.ry, gun.rz = -90, 315, 0
 R.restoreDraw()
 check(not atlas.value and atlas.default and gun.rx == 13 and gun.ry == 27 and gun.rz == 39,
     "Interrupted draw state can be recovered before the next render/tick")
 R.entries[gunObject] = nil
+Draw.atlas = nil
 getDebugOptions = oldDebug
 instanceItem = oldInstance
 T.hybrid, getSpecificPlayer, Render3DItem, W.refresh = hybrid, specific, oldRender, oldRefresh
