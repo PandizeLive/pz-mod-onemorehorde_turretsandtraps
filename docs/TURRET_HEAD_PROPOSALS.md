@@ -1,5 +1,15 @@
 # Unique turret head candidates
 
+## C408 - Proposed 15-damage Arc baseline (2026-10-22)
+
+Owner asks to choose damage that keeps Siphon strong but risky. Recommend 15 base damage per normal-chain hit, with existing per-kill Siphon intact; this is a proposed baseline awaiting selection, not a gameplay change. Preserve six additional jumps as the working assumption and existing reduced Splitter/Piercing damage rules.
+
+For seven illustrative 100-HP victims, no crits/modifier effects, equal cost C per discharge, every discharge hitting all seven and Arc receiving every kill: 14 damage needs eight discharges and averages 78.75% firing-cost refund; 15 damage needs seven and averages 90%; 20 damage needs five and averages 126%. Formula: 7 * 0.45 * 2 / ceil(100 / damage). This is a controlled comparison, not a vanilla-health claim or runtime endurance measurement. With 15 damage and one Siphon, three procs return 6C against 7C spent, four return 8C; independent 45% rolls produce at most three procs with probability 60.8287796875%, before charge clamping. Two Siphons average 135% in the same scenario. With three fresh victims, seven discharges yield only about 38.6% average refund; sparse packs remain costly.
+
+The 15-damage proposal strongly rewards full chains while retaining upfront battery risk and random losses. Damage boosts, crits, weakened enemies, additional eligible branch/Piercing kills and health/Sandbox changes can still cross into net charging. Do not promise global balance from this one scenario. Cadence, power pricing, module combinations and representative enemy health need actual encounter checks before release tuning. Damage/cadence/power remain exposed through useful Arc Sandbox settings when implemented, following existing project direction.
+
+Choices: **1A (recommended) 15 damage**, stronger recovery with average baseline drain; **1B 14 damage**, more conservative baseline drain. Preserve previously selected per-kill mechanic either way. No source/package/install edits; installed 0.2.63.2 and deferred testing unchanged.
+
 ## C407 - Per-kill Siphon selected; low-damage crowd accounting (2026-10-22)
 
 Owner selects C406 1B: preserve per-eligible-kill Siphon refunds for Arc, rejecting the proposed once-per-discharge restriction. Owner proposes approximately 20 damage per zombie and reasons that several costly shots before kills offset refunds. Accept this mechanic selection without silently capping refunds; approximate damage is a tuning target, not implementation approval. Existing secondary/Synergy eligibility and turret-battery-only refunds remain intact.

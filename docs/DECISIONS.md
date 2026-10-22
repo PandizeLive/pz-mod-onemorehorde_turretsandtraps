@@ -2001,3 +2001,8 @@ Owner selects C405 1A and requests 0.1s chain staggering for main-chain priority
 ## C407 - Arc per-kill Siphon retained (2026-10-22)
 
 Owner selects C406 1B and proposes about 20 damage per victim, expecting several shots before kills to offset energy refunds. Preserve that selection. [Encounter analysis](TURRET_HEAD_PROPOSALS.md#c407---per-kill-siphon-selected-low-damage-crowd-accounting-2026-10-22) corrects the single-shot illustration while showing possible crowd sustain across multiple paid shots; no silent refund cap or unsupported balance guarantee. Cadence/power tuning and implementation approval remain open.
+
+
+## C408 - Strong but risky Arc damage proposal (2026-10-22)
+
+Owner asks for damage that retains strong but risky Siphon. [Comparison](TURRET_HEAD_PROPOSALS.md#c408---proposed-15-damage-arc-baseline-2026-10-22) recommends 15 damage, with 14 as a conservative alternative. Seven illustrative 100-HP victims give 90% versus 78.75% expected firing-cost recovery respectively with one Siphon. Preserve conditional assumptions; no automatic numerical approval, source edits or balance guarantee.
