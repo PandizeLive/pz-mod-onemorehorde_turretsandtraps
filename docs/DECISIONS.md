@@ -1996,3 +1996,8 @@ Owner selects C404 1B/2B: nearest available target in a circle around each struc
 ## C406 - Finite Splitter and per-shot target marking selected (2026-10-22)
 
 Owner selects C405 1A and requests 0.1s chain staggering for main-chain priority, optimization and removal of demonstrably costly features. [Contract and Siphon evidence](TURRET_HEAD_PROPOSALS.md#c406---finite-splitter-approved-pacing-and-siphon-discussion-2026-10-22) distinguish these selections from proposed scheduling guarantees and the unresolved Arc refund rule. Current Siphon pays per distinct eligible kill; proposed one-roll-per-discharge mapping is not yet approved. No gameplay/build/test status change.
+
+
+## C407 - Arc per-kill Siphon retained (2026-10-22)
+
+Owner selects C406 1B and proposes about 20 damage per victim, expecting several shots before kills to offset energy refunds. Preserve that selection. [Encounter analysis](TURRET_HEAD_PROPOSALS.md#c407---per-kill-siphon-selected-low-damage-crowd-accounting-2026-10-22) corrects the single-shot illustration while showing possible crowd sustain across multiple paid shots; no silent refund cap or unsupported balance guarantee. Cadence/power tuning and implementation approval remain open.

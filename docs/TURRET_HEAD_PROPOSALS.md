@@ -1,5 +1,15 @@
 # Unique turret head candidates
 
+## C407 - Per-kill Siphon selected; low-damage crowd accounting (2026-10-22)
+
+Owner selects C406 1B: preserve per-eligible-kill Siphon refunds for Arc, rejecting the proposed once-per-discharge restriction. Owner proposes approximately 20 damage per zombie and reasons that several costly shots before kills offset refunds. Accept this mechanic selection without silently capping refunds; approximate damage is a tuning target, not implementation approval. Existing secondary/Synergy eligibility and turret-battery-only refunds remain intact.
+
+Correct the prior illustration: seven kills from a single fresh-crowd shot is not representative of the intended low damage. However, repeated simultaneous crowd hits still matter. In an explicitly illustrative 100-HP model, seven distinct victims receiving 20 damage per discharge die after five equal-cost discharges. Paid cost is 5C; seven eligible kill rolls at 45% and 2C yield expected refund 6.3C, or 126% of firing expenditure, before capacity clamping and excluding idle/movement costs, crits, other modules, misses and changing targets. Refunds are rolls per kill, not retroactive rolls for each of the preceding shots. This is not a claim about exact vanilla zombie health or measured endurance.
+
+For one Siphon, expected refund fraction with equal paid cost per shot is 0.9 times eligible kills per discharge over the full encounter. Break-even is about 1.11 kills per discharge. The example averages 7/5 = 1.4. Raising C alone scales both expense and refund, so it does not change that ratio; it increases the battery needed to survive until refunds arrive. Sparse groups, higher health and damage shared with other defenses can lower Arc-attributed kills; finishing wounded crowds or damage upgrades can increase them. Accept owner-selected per-kill behavior with possible crowd sustain, not as proof that 20 damage guarantees net drain. Do not reopen the same Siphon selection or impose a hidden cap.
+
+Next balance work should settle cadence and actual power cost and compare full encounters against sparse, dense and pre-damaged crowds. No new numerical cost/cadence is selected here. No gameplay/version/install changes; 0.2.63.2 and deferred personal testing unchanged.
+
 ## C406 - Finite Splitter approved; pacing and Siphon discussion (2026-10-22)
 
 Owner selects C405 1A: finite shared Splitter opportunities with reduced-damage side chains, no recursive entitlement duplication. Owner confirms marking victims per shot to avoid repeat hits, requests 0.1-second chain staggering to give the main chain priority, and emphasizes optimizing/cutting demonstrably problematic features. Discussion continues; no gameplay patch approval. Interpret the delay as between side-chain starts, not automatically between every hop; exact timing semantics remain open if the owner intends otherwise.
