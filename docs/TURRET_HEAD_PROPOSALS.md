@@ -1,5 +1,25 @@
 # Unique turret head candidates
 
+## C420 - Final Arc module corrections and initial implementation scope (2026-10-22)
+
+Owner corrects C419 and selects remaining direction: Velocity and Fragment stay enabled, otherwise 1A exclusions; effects activate on first target and on all with Synergy; 3A acquisition-only Range; 4B weight eight; native audition 5A but sound selection may follow initial implementation; 6A label-only rating audit/fixes. Treat native sound selection as deferred rather than a blocker to initial implementation approval. Record these specific decisions without silently preserving the rejected restrictions.
+
+### Selected module behavior
+
+Enable Velocity with applicable existing damage/modifier behavior (TurretStats currently multiplies damage by Velocity bonus); no invented requirement for a ballistic projectile or arbitrary new stun. Enable Fragment using the triggering projectile's style and existing fragment effect/count/range/damage conventions. Fragment children never become Arc chains. Their hit tracking is separate from the main/Splitter pulse mark set: they may hit previously marked eligible victims, but never the victim that generated that fragment burst. Preserve normal targeting/friendly/PvP eligibility: "any target" waives Arc marking, not all safety filters. Preserve existing finite/nonrecursive fragment lifecycle; do not let fragments spawn new Arc chains or recursively reproduce bursts.
+
+Source evidence: TurretVolley.fragment builds five rays with fragment damage/range, seeds its own hits set with the source victim, and current fragment handling is distinct from primary/splitter rays. Source already demonstrates the exclusion pattern, not proof of Arc world rendering. Arc visuals must copy the parent Arc style without adding electrical secondary-chain behavior. Existing eligible Fragment/Synergy proc rules remain, except the explicit Arc mark exemption. Exclude Magazine, Reload, Autoloader, Conservation, Void and Accuracy, as the remainder of C419 1A. Preserve all previously selected applicable modules.
+
+For Tack/Martyrdom/Impact, without Synergy only the initial main target qualifies under normal effect conditions. With Synergy, all struck main/continuation/Splitter chain targets qualify, not just each chain's first victim. This supersedes C419 2A's restrictive per-chain-first recommendation. Preserve existing secondary-effect/Synergy rules without accidentally making every field spawn another Arc pulse. Main/Splitter direct-hit no-repeat remains; Fragment has the stated exception. Audit reservations/admission for the larger effect count; do not silently suppress approved procs for an arbitrary victim cap. Shared bounded work and cleanup must prevent frame spikes/backlog growth, with actual latency/performance limitations reported if discovered.
+
+### Other selections and patch readiness
+
+Range modules affect initial acquisition only; hop distance remains four tiles unless Sandbox changes it. Head weight eight. Use selected recipe Electrical4/Mechanics2 and existing standard head condition/service conventions. Include C414 head-rating baseline/cycle consistency audit/fixes with qualitative colored labels only, no added consumption numbers or unapproved head rebalance. Balance .02%/shot, one-second interval, 20 damage, six normal targets, finite deferred Splitter and per-kill Siphon unchanged.
+
+Initial patch scope is now concrete: Arc head/recipe, chain/Splitter/Piercing/Fragment/Velocity integration, Synergy proc mapping, power/Sandbox/targeting/MP/native effects, label-only rating corrections and native audio audition preparation. Final firing sound may be selected after initial implementation; reuse established wake/deactivation cues and do not claim firing audio is already delivered. Native audition HTML remains an authorized follow-up deliverable, not produced in this planning checkpoint. Final art remains owner-sourced; functional temporary world-space effects must pass native depth/cleanup checks.
+
+No more design questions are required before asking for initial implementation approval; unresolved engine details are engineering verification, not reason to reopen selected mechanics. Recommend High reasoning, Fast if work exceeds 25 minutes. Present concise concrete recap and seek final initial-patch approval under existing discussion-first workflow; do not claim a build is underway/installed. No source/gameplay edits this turn; installed0.2.63.2/testing unchanged.
+
 ## C419 - Recipe selected and consolidated remaining review (2026-10-22)
 
 Owner selects C418 1A, then asks to send remaining decisions. Accept the presented recipe including Electrical 4 / Mechanics 2: eight Electronics Scrap, four Electric Wire, two Small Metal Sheets, two Scrap Metal, twelve Screws; retained screwdriver/wrench-or-pipe-wrench/pliers/metalsaw; one head, normal Lobber base craft duration, 30 Electrical/10 Mechanics XP, no learning requirement or consumed battery. No gameplay patch approval inferred. This selection is recorded here rather than leaving the recipe pending.

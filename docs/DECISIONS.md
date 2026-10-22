@@ -2061,3 +2061,8 @@ Owner selects C417 1A. Record craftable acquisition without loot addition. [Reci
 ## C419 - Recipe approved; consolidated remaining decisions requested (2026-10-22)
 
 Owner selects C418 1A and asks for remaining decisions. Record recipe/skills selected. [Consolidated review](TURRET_HEAD_PROPOSALS.md#c419---recipe-selected-and-consolidated-remaining-review-2026-10-22) presents six remaining groups with recommendations and separates subsequent native audio selection/final patch approval from engineering work. No new choices silently approved.
+
+
+## C420 - Arc module corrections and sound deferral selected (2026-10-22)
+
+Owner keeps Velocity/Fragment, specifies Fragment mark exemption/source exclusion/no chaining, expands all-target procs with Synergy, selects C419 3A/4B/5A/6A and allows final sound after initial implementation. [Scope](TURRET_HEAD_PROPOSALS.md#c420---final-arc-module-corrections-and-initial-implementation-scope-2026-10-22) supersedes contrary proposals. Native audio audition remains requested; no artifact or code claimed delivered. Ready to request final initial-implementation approval, no additional speculative design choices.
