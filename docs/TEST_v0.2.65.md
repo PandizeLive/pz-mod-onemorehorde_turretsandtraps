@@ -2,7 +2,7 @@
 
 ## Owner checklist
 
-Restart before testing.
+Restart before testing; use a fresh progression test world.
 
 - Manuals and Turret Specialist
 - Firearm installation knowledge
@@ -18,7 +18,7 @@ Restart before testing.
 
 27,553 assertions pass, including game-time acceleration/pause, bounded tether debt, inherited manual tiers/custom overrides, pack exclusion, exact numeric selector round-trips and rotary coverage. All 325 runtime/translation files compile. Native model import and current shader/render bytecode checks retain the GPU limitation. Source/package manifest: 419 source files, 570 packaged files (219 Traps / 351 Turrets). Package dependency checks confirm 141 identical shared files and independent trait registration.
 
-The native progression probe confirms five literature items teach six known-recipe identifiers, Firearms knowledge controls mounting, Specialist costs two with six knowledge grants, no equipment and no XP boost. Native character binary serialization proves learned and trait knowledge survive loading. Native write (50.8s), read (53.5s), Traps-only (51.9s), Turrets-only (45.2s) and combined (49.7s) startups pass with clean shutdowns. Installation is being finalized.
+The native progression probe confirms five literature items teach six known-recipe identifiers, Firearms knowledge controls mounting, Specialist costs two with six knowledge grants, no equipment and no XP boost. Native character binary serialization proves learned and trait knowledge survive loading. Native write (50.8s), read (53.5s), Traps-only (51.9s), Turrets-only (45.2s) and combined (49.7s) startups pass with clean shutdowns. Installed from immutable test/v0.2.65 / 8a977bc60ea4845646f8bfb20a8eb7d7cd4b5f19. All 419 source and 570 package/tag/install/archive files match; both 0.2.64.4 backups verify. Local release evidence: diagnostics/v0.2.65/local-release.json. **Test now** after restart when available.
 
 Local LootLab weight/tier/package tests and all seven cloud-schema migration tests pass, including custom saved rarity anchors for newly added manuals. The regenerated map has 32,307 eligible containers and 98 distribution routes across 21 pools; 38 catalog entries include five manuals. Exact owner tuning is retained. These are extracted vanilla-map locations and probability-model checks, not measured survival acquisition times or hosted publication.
 
