@@ -1,5 +1,7 @@
 # C428 - Current progression, acquisition and upkeep
 
+[C429 follow-up](PROGRESSION_C429.md) expands this assessment with actual starting professions, unequal skill-training effort, OMHTT crafting XP, native auto-learning/profession exceptions and locally inspected Angry Turrets recipes. Use that follow-up alongside these costs and pack probabilities.
+
 2026-10-22. Read-only assessment of installed 0.2.64.4 and current source, with fresh default Sandbox tuning. No recipe, loot, battery, damage or skill changes are approved here. The owner's loaded global loot multiplier is 1.011111111111111, not the fresh default 1.00; saved tuning remains untouched.
 
 ## Conclusion

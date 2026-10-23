@@ -1,5 +1,7 @@
 # C428 - Sandbox, feedback and timing audit
 
+C429 follow-up: owner selects 1A/2A/3A and replaces the shared Forward Cone proposal with per-head settings. [Selected scope and starting-skill/leveling review](PROGRESSION_C429.md). The choices below describe the earlier discussion; 1A/2A are now settled, not awaiting repeat selection.
+
 2026-10-22. Owner reports new 0.2.64.4 findings and requests a complete settings review, audio/visual corrections, timing audit and progression assessment. This checkpoint records evidence and proposed patch scope. No gameplay, assets, settings, version or installed files are changed.
 
 Inspected `codex/performance-barbed-audit` at cf55134115e056de49fdc7915cb18b0656c07238, fetched origin/dev and checked open PRs; draft PR1 remains the only open PR. Captured current SP 0.2.64.4 console and install identity at `diagnostics/captures/20261022-224045-0945`. No OMHTT exception stack was found in the captured session; unrelated translation, map and clothing-model warnings remain. Owner screenshots/report establish presentation failures regardless of automated tests. Unmentioned checks are not accepted automatically.
