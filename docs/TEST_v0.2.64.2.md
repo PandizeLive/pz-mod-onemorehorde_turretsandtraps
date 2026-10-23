@@ -8,4 +8,4 @@ All sixteen source PNGs are 32x32 RGBA, nonempty and byte-identical to owner fil
 
 Native file/audio/API and package-content validation ran through the standard validator. Dedicated startup/save/restart tests were not repeated for this presentation-only update; 0.2.64.1 retains the preceding engine/authority baseline. Do not count its logs as new 0.2.64.2 evidence. In-game rendered acceptance remains pending.
 
-Installation and mirror pending.
+Installed from immutable test/v0.2.64.2 / c19e7b5ff0d346641a5873ffa8a6d43096cea9b7. All 390 Source files and 537 packaged/tagged/installed/archive files match; both complete 0.2.64.1 backups verify. Evidence: diagnostics/v0.2.64.2/icon-release.json. C108 development mirror accompanies handoff; no Workshop upload.
