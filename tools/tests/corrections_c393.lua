@@ -135,6 +135,16 @@ for _, component in pairs({"Piercing", "InitialBlow", "Execute", "Impact", "Spli
             "Effects artwork follows effective rarity for " .. component)
     end
 end
+for _, component in pairs({"FiringEnhanced", "MotionDetectionEnhanced", "Firing", "Filter",
+    "MotionDetection", "Detection360", "MotionDetectionImprovised", "FiringImprovised"}) do
+    T.component = function() return component end
+    for tier = 1, 7 do
+        band = tier
+        Art.apply(item)
+        check(item.texture == "media/textures/OMHTT/Modules/automation_" .. string.lower(R.names[tier]) .. ".png",
+            "Automation artwork follows effective rarity for " .. component)
+    end
+end
 Art.textures = oldTextures
 T.component, R.get, getTexture = oldComponent, oldRarity, oldTexture
 SandboxVars.OMHTurretsTraps = old.settings

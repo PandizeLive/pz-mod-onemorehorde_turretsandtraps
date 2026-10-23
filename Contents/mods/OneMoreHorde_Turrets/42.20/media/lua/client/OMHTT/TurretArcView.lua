@@ -11,13 +11,13 @@ local V = {bursts = {}, cursor = 1}
 function V.receive(module, command, facts)
     if module ~= F.MODULE or command ~= "Arc" or type(facts) ~= "table" then return end
     for _, key in pairs({"fromX", "fromY", "x", "y", "z"}) do
-        if type(facts[key]) ~= "number" or facts[key] ~= facts[key] then return end
+        if type(facts[key]) ~= "number" or facts[key] ~= facts[key] or math.abs(facts[key]) == math.huge then return end
     end
     local dx, dy = facts.x - facts.fromX, facts.y - facts.fromY
     local length = math.sqrt(dx * dx + dy * dy)
     if length < .01 or length > 70 or not Effects.accept(facts) then return end
     local count = math.min(32, math.max(3, math.ceil(length / .3)))
-    local burst = {untilTime = Clock.now() + 160, segments = {}, z = facts.z}
+    local burst = {untilTime = Clock.now() + 330, segments = {}, z = facts.z}
     local px, py, pz = facts.fromX, facts.fromY, .3
     for i = 1, count do
         local t = i / count
@@ -28,7 +28,7 @@ function V.receive(module, command, facts)
         local horizontal = math.sqrt(sx * sx + sy * sy)
         burst.segments[i] = {x = (px + x) / 2, y = (py + y) / 2, z = (pz + z) / 2,
             yaw = math.deg(math.atan2(sy, sx)), tilt = math.deg(math.atan2(sz, horizontal)),
-            scale = math.sqrt(horizontal * horizontal + sz * sz) / 1.5}
+            scale = math.sqrt(horizontal * horizontal + sz * sz) / .3}
         px, py, pz = x, y, z
     end
     V.bursts[V.cursor] = burst
@@ -44,15 +44,18 @@ function V.render(index)
         if now >= burst.untilTime then
             V.bursts[id] = nil
         elseif math.floor(player:getZ()) == burst.z then
+            local alpha = math.min(1, (burst.untilTime - now) / 250)
+            alpha = alpha * alpha
             for i = 1, #burst.segments do
                 if budget <= 0 then return end
                 local segment = burst.segments[i]
                 if (player:getX() - segment.x) ^ 2 + (player:getY() - segment.y) ^ 2 < 2500 then
                     local tile = cell:getGridSquare(math.floor(segment.x), math.floor(segment.y), burst.z)
                     if tile and tile:isCanSee(index) then
-                        V.model = V.model or instanceItem("Base.OMHTTTrapTetherCableVisual")
+                        V.model = V.model or instanceItem("Base.OMHTTTurretArcVisual")
                         V.model:setWorldScale(segment.scale)
-                        Draw.draw(V.model, tile, segment.x, segment.y, burst.z + segment.z + .72 / 2.44949, 0, segment.tilt, segment.yaw)
+                        V.model:setWorldAlpha(alpha)
+                        Draw.draw(V.model, tile, segment.x, segment.y, burst.z + segment.z, 0, segment.tilt, segment.yaw)
                         budget = budget - 1
                     end
                 end

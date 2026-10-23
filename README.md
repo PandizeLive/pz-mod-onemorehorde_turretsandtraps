@@ -1,5 +1,7 @@
 # OMH: Turrets & Traps
 
+**C427 / 0.2.64.4 approved correction implemented (2026-10-22).** Owner reaffirms approval. Arc volume/glow/fade, native wall/render anchors, corrected Controller equipment, Automation icons, installed battery totals, higher tier drain and labelled repair requirements are implemented. [Patch](docs/PATCH_v0.2.64.4.md) | [Verification](docs/TEST_v0.2.64.4.md). 27,534 assertions and all three independent-package startups pass. Native persistence and tagged installation are in progress; rendered/audio/connected-client acceptance remains pending. No Workshop upload or hosted LootLab changes. **Wait for a patch.**
+
 **0.2.64.3 / C424:** Owner Effects icons installed for all nine Effects modules. Rarity mapping, artwork hashes and packaged installation verified; rendered acceptance pending. [Patch](docs/PATCH_v0.2.64.3.md) | [Test record](docs/TEST_v0.2.64.3.md).
 
 **0.2.64.2 / C423:** Updated owner Performance and new rarity-aware Utility icons installed. 27,327 assertions and all package/tag/install/archive hashes pass; rendered acceptance pending. [Patch](docs/PATCH_v0.2.64.2.md) | [Test record](docs/TEST_v0.2.64.2.md).

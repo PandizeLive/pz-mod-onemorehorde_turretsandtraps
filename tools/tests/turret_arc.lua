@@ -161,9 +161,9 @@ local crooked = false
 for i = 1, #burst.segments do
     local segment = burst.segments[i]
     if math.abs(segment.y) > .01 then crooked = true end
-    check(segment.scale > 0 and segment.scale < 1, "Electrical segments are finite world geometry")
+    check(segment.scale > 0 and segment.scale < 10, "Electrical segments are finite world geometry")
 end
-check(crooked and burst.untilTime == 1160, "Electricity is jagged and expires in 160 active milliseconds")
+check(crooked and burst.untilTime == 1330, "Electricity is jagged and expires after its flash and 250ms decay")
 View.receive(module, "Arc", {fromX = 0, fromY = 0, x = 10000, y = 0, z = 0})
 check(View.cursor == 2, "Malformed oversized beam is rejected")
 for i = 1, 100 do View.receive(module, "Arc", {fromX = 0, fromY = 0, x = 4, y = 0, z = 0}) end

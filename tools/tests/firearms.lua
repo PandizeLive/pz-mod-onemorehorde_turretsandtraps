@@ -366,13 +366,13 @@ local brokenModule = item(T.TYPES.Execute)
 brokenModule.condition = 0
 powerItems:AddItem(brokenModule)
 local powerContents = T.contents(powerItems)
-check(math.abs(powerContents.powerLoad - 1.6) < .000001 and powerContents.active.Firing == 1 and powerContents.active.FiringEnhanced == 1,
+check(math.abs(powerContents.powerLoad - 2.15) < .000001 and powerContents.active.Firing == 1 and powerContents.active.FiringEnhanced == 1,
     "Enhanced aliases count once, separate expansion and broken modules cost nothing")
 local powerStats = Stats.resolve(powerContents)
-check(math.abs(powerStats.batteryPercent - .00117) < .0000001 and powerStats.weaponPower == 1,
+check(math.abs(powerStats.batteryPercent - .0014175) < .0000001 and powerStats.weaponPower == 1,
     "Two working modules and potato floor match approved battery cost")
 for _, name in pairs({"Piercing", "InitialBlow", "Execute", "Impact"}) do
-    check(T.kind(item(T.TYPES[name])) == "module" and require("OMHTT/TurretRarity").get(name).surcharge == ({Piercing = .15, InitialBlow = .25, Execute = .75, Impact = .25})[name],
+    check(T.kind(item(T.TYPES[name])) == "module" and require("OMHTT/TurretRarity").get(name).surcharge == ({Piercing = .25, InitialBlow = .5, Execute = 1, Impact = .5})[name],
         "Offensive modules use their loaded rarity surcharge")
 end
 local reference = item("Base.Pistol")

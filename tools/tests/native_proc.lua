@@ -11,7 +11,7 @@ return function(player)
     store:AddItem(T.TYPES.Tack)
     local contents = T.contents(store)
     local stats = Stats.resolve(contents)
-    assert(contents.modules == 3 and math.abs(contents.powerLoad - 3.5) < .00001 and stats.synergy and stats.tack == 1 and stats.martyrdom == 1.5,
+    assert(contents.modules == 3 and math.abs(contents.powerLoad - 5) < .00001 and stats.synergy and stats.tack == 1 and stats.martyrdom == 1.5,
         "Native proc modules did not resolve")
     assert(synergy:getWeight() == instanceItem(T.TYPES.Conservation):getWeight(), "Module encumbrance drift")
     local beforeRegulator = stats.batteryPercent

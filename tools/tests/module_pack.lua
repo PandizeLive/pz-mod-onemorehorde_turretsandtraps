@@ -72,7 +72,7 @@ E.duration = function() return minutes * 60000 end
 local head = {getCondition = function() return 100 end, getModData = function() return {} end}
 local battery = {getCondition = function() return 100 end, getCurrentUsesFloat = function() return 1 end,
     getModData = function() return {} end}
-local contents, stats = {head = head, battery = battery}, {batteryPercent = .1}
+local contents, stats = {head = head, battery = battery}, {batteryPercent = .1, modulePower = 1, regulator = 1}
 check(string.find(B.battery(contents, stats), "59.9 in-game minutes", 1, true), "Below one hour uses minutes")
 minutes = 60
 check(string.find(B.battery(contents, stats), "1.0 in-game hours", 1, true), "One-hour boundary uses hours")

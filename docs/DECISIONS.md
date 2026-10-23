@@ -2078,3 +2078,8 @@ Owner keeps Velocity/Fragment, specifies Fragment mark exemption/source exclusio
 **C425 / 0.2.64.3 owner feedback audited (2026-10-22).** Captured the loaded SP test; Arc sound/thickness/fade, wall anchors, Controller equipment, Automation icons, battery totals and repair labels need correction. [Evidence and proposed scope](FEEDBACK_C425.md). Higher rarity drain requested; lower tiers remain a choice: **1A .15/.25/.50 recommended / 1B retain .10/.15/.25**, with the same combined patch. Costs remain additive: Mythic +2x produces 3x base alone. No gameplay/install changes or rendered acceptance claimed. **Decision needed.**
 
 **C426 / C425 correction approved with layout correction (2026-10-22).** Owner selects **1A** and asks to confirm. Restore the original right-side Online/range area; split the former battery area equally between battery and expansion, without an extra status row. [Approved contract and verified Regulator behavior](FEEDBACK_C425.md#c426-1a-approved-layout-corrected-regulator-confirmed-2026-10-22). Regulator adds no drain and divides cost by 1 + .25 per active copy; one saves 20%, two 33.3%. C425 tier schedule and combined scope approved, no additional patch permission required. Confirmation only; installed 0.2.64.3 unchanged. **Wait for a patch.**
+
+
+## C427 - approved C425/C426 implementation (2026-10-22)
+
+Owner: "Approved". Implements the settled C426 layout and C425 1A schedule without additional design changes. [Patch](PATCH_v0.2.64.4.md) and [test evidence](TEST_v0.2.64.4.md) separate native verification, local installation and pending rendered/audio acceptance. No publication or LootLab deployment is authorized by this checkpoint.

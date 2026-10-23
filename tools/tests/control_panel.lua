@@ -168,6 +168,10 @@ check(compact.stockCompact and not compact.stockWing.visible and compact.stockBu
 check(compact.stockButton.y >= compact.equipmentY + compact.lineHeight * 3 + 12
     and compact.stockButton.y + compact.stockButton.height < compact.devicesY,
     "Compact Stockpile action clears power/range text and Devices")
+check(compact.batterySlot.width == compact.expansionSlot.width
+    and compact.expansionSlot.x == compact.batterySlot.x + compact.batterySlot.width + 8
+    and compact.expansionSlot.x + compact.expansionSlot.width < compact.controlWidth / 2,
+    "Battery and expansion split the original left area, preserving adjacent status")
 compact:showStockpile(true)
 check(compact.stockWing.visible and not compact.devices.visible and not compact.detailBody.visible
     and not compact.batterySlot.visible and compact.stockButton.y + compact.stockButton.height <= compact.height,

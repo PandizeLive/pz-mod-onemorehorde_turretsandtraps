@@ -167,7 +167,9 @@ function Slot:prerender()
     ISPanel.prerender(self)
     local h = self.owner.lineHeight
     local label = getText("UI_OMHTT_ControllerBatteries", self.storedCount and tostring(self.storedCount) or "...")
+    self:setStencilRect(4, 3, self.width - 8, h + 4)
     self:drawText(label, 8, 4, .85, .85, .85, 1, UIFont.Small)
+    self:clearStencilRect()
     local start = 16 + getTextManager():MeasureStringX(UIFont.Small, label)
     local charge = self.item and Battery.charge(self.item) or 0
     if self.width - start > 20 then

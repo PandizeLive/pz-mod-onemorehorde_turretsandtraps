@@ -33,6 +33,8 @@ def main():
     OUTPUT.mkdir(parents=True, exist_ok=True)
     classes = OUTPUT / "classes"
     classes.mkdir(exist_ok=True)
+    from check_device_render import check as check_device_render
+    check_device_render(GAME, OUTPUT)
     texts = list(PACKAGE.rglob("*.lua")) + list(PACKAGE.rglob("*.txt")) + list(PACKAGE.rglob("*.json")) + list(PACKAGE.rglob("mod.info"))
     for path in texts:
         data = path.read_bytes()
@@ -86,17 +88,20 @@ def main():
     for key in re.findall(r"Tooltip\s*=\s*(\w+)", item_script):
         assert key in translations and "prototype" not in translations[key].lower(), key
     textures = list((PACKAGE / "42.20/media/textures").glob("*.png"))
-    assert len(textures) == 46, "Existing technical markers and owner Performance/Utility/Effects icons required"
+    assert len(textures) == 47, "Existing technical markers and owner Performance/Utility/Effects icons required"
     owner_art = json.loads((ROOT / "art/MODULE_ART_C423.json").read_text())
     assert len(owner_art) == 16
     effects_art = json.loads((ROOT / "art/MODULE_ART_C424.json").read_text())
     assert len(effects_art) == 8
     owner_art.extend(effects_art)
+    automation_art = json.loads((ROOT / "art/MODULE_ART_C427.json").read_text())
+    assert len(automation_art) == 8
+    owner_art.extend(automation_art)
     for asset in owner_art:
         path = ROOT / asset["target"]
         assert hashlib.sha256(path.read_bytes()).hexdigest() == asset["sha256"], "Owner artwork must remain unchanged"
         with Image.open(path) as icon:
-            assert icon.size == (32, 32) and icon.mode == "RGBA" and icon.getbbox()
+            assert icon.size == ((28, 29) if "automation" in path.name.lower() else (32, 32)) and icon.mode == "RGBA" and icon.getbbox()
     for heading, index in zip("ENWS", range(4)):
         for part in "AB":
             assert (PACKAGE / f"42.20/media/textures/OMHTT_BuildBarrier{heading}_{part}.png").read_bytes() == (PACKAGE / f"42.20/media/textures/OMHTT_Barrier{index}.png").read_bytes(), "Construction sprites reuse authorized technical markers"
@@ -124,10 +129,10 @@ def main():
     assert len(barrier_bytes) == 4, "Barrier directions must have distinct pixels"
     for texture in textures:
         with Image.open(texture) as sprite:
-            expected_size = (32, 32) if texture.name in {"Item_OMHTT_ModulePerformance.png", "Item_OMHTT_ModuleUtility.png", "Item_OMHTT_ModuleEffects.png"} else (60, 36) if texture.name in {"Item_OMHTT_BedSpikes.png", "Item_OMHTT_ReinforcedBedSpikes.png"} else (128, 256)
+            expected_size = (28, 29) if texture.name == "Item_OMHTT_ModuleAutomation.png" else (32, 32) if texture.name in {"Item_OMHTT_ModulePerformance.png", "Item_OMHTT_ModuleUtility.png", "Item_OMHTT_ModuleEffects.png"} else (60, 36) if texture.name in {"Item_OMHTT_BedSpikes.png", "Item_OMHTT_ReinforcedBedSpikes.png"} else (128, 256)
             assert sprite.size == expected_size and sprite.mode == "RGBA"
             assert sprite.getbbox() is not None
-            if texture.name not in {"Item_OMHTT_ModulePerformance.png", "Item_OMHTT_ModuleUtility.png", "Item_OMHTT_ModuleEffects.png"}:
+            if texture.name not in {"Item_OMHTT_ModuleAutomation.png", "Item_OMHTT_ModulePerformance.png", "Item_OMHTT_ModuleUtility.png", "Item_OMHTT_ModuleEffects.png"}:
                 assert all(r == g == b for r, g, b, a in sprite.get_flattened_data() if a), "Technical sprites must remain white/grayscale"
     javac = Path(os.environ.get("PZ_JAVAC", "C:/Program Files/Java/jdk-17/bin/javac.exe"))
     run([javac, "-d", classes, ROOT / "tools/NativePitchCheck.java"])
@@ -147,6 +152,9 @@ def main():
     model_log += run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED",
         "-Djava.library.path=" + str(GAME), "-cp", os.pathsep.join([str(classes), str(GAME / "projectzomboid.jar")]),
         "HybridAssetCheck", PACKAGE / "42.20/media/models_X/OMHTT_GunSupport.x", "36"], cwd=GAME)
+    model_log += run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED",
+        "-Djava.library.path=" + str(GAME), "-cp", os.pathsep.join([str(classes), str(GAME / "projectzomboid.jar")]),
+        "HybridAssetCheck", PACKAGE / "42.20/media/models_X/OMHTT_Arc.x", "4"], cwd=GAME)
     (OUTPUT / "model-import.log").write_text(model_log, encoding="utf-8")
     run([javac, "-d", classes, ROOT / "tools/BuildBaseDepth.java"])
     depth_log = run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED",

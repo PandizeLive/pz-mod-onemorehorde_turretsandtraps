@@ -44,7 +44,7 @@ function V.render(index)
                 local square = cell:getGridSquare(math.floor(x), math.floor(y), state.z)
                 local yaw = math.deg(math.atan2(state.dy, state.dx))
                 if square and square:isCanSee(index) then
-                    Draw.draw(visual.nail, square, x, y, state.z + height + .72 / 2.44949, 0, 0, yaw)
+                    Draw.draw(visual.nail, square, x, y, state.z + height, 0, 0, yaw)
                 end
                 local distance = math.sqrt((x - state.x) ^ 2 + (y - state.y) ^ 2)
                 local segments = math.min(24, math.max(1, math.ceil(distance / .4)))
@@ -62,7 +62,7 @@ function V.render(index)
                         local length = math.sqrt(horizontal * horizontal + vertical * vertical)
                         visual.cable:setWorldScale(length / 1.5)
                         local tilt = math.deg(math.atan2(vertical, horizontal))
-                        Draw.draw(visual.cable, tile, wx, wy, state.z + (z0 + z1) / 2 + .72 / 2.44949, 0, tilt, yaw)
+                        Draw.draw(visual.cable, tile, wx, wy, state.z + (z0 + z1) / 2, 0, tilt, yaw)
                     end
                 end
             end

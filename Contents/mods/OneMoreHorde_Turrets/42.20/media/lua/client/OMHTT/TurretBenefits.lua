@@ -21,16 +21,22 @@ end
 ---@return string description Battery-local tooltip
 ---@nodiscard
 function B.battery(contents, stats)
+    local multiplier = getText("UI_OMHTT_BatteryModuleTotal", B.number(stats.modulePower))
+    if stats.regulator > 1 then
+        multiplier = multiplier .. " <LINE> " .. getText("UI_OMHTT_BatteryRegulatedTotal",
+            B.number(stats.modulePower / stats.regulator), B.number((1 - 1 / stats.regulator) * 100))
+    end
+    multiplier = multiplier .. " <LINE> "
     if not contents.head or contents.head:getCondition() <= 0 or not contents.battery or contents.battery:getCondition() <= 0 then
-        return getText("UI_OMHTT_BatteryUnavailable")
+        return multiplier .. getText("UI_OMHTT_BatteryUnavailable")
     end
     if stats.rotary then
-        if stats.motorPower == 0 then return getText("UI_OMHTT_BatteryFree") end
+        if stats.motorPower == 0 then return multiplier .. getText("UI_OMHTT_BatteryFree") end
         local hours = require("OMHTT/TurretBattery").charge(contents.battery) * 100 / stats.motorPower
-        return getText("UI_OMHTT_MotorBattery", B.number(stats.motorPower), string.format("%.1f", hours))
+        return multiplier .. getText("UI_OMHTT_MotorBattery", B.number(stats.motorPower), string.format("%.1f", hours))
     end
     local cost = stats.batteryPercent
-    if cost == 0 then return getText("UI_OMHTT_BatteryFree") end
+    if cost == 0 then return multiplier .. getText("UI_OMHTT_BatteryFree") end
     local costText = B.number(cost)
     if cost < .0001 then costText = "<0.0001" end
     local volleys = math.floor(require("OMHTT/TurretBattery").charge(contents.battery) * 100 / cost + .0000001)
@@ -46,7 +52,7 @@ function B.battery(contents, stats)
         unit = getText("UI_OMHTT_BatteryHours")
     end
     local time = string.format("%.1f", minutes)
-    return getText("UI_OMHTT_BatteryCost", costText) .. " <LINE> "
+    return multiplier .. getText("UI_OMHTT_BatteryCost", costText) .. " <LINE> "
         .. getText("UI_OMHTT_BatteryVolleys", volleys) .. " <LINE> "
         .. getText("UI_OMHTT_BatteryTime", time, unit)
 end

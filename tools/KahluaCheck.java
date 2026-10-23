@@ -530,6 +530,8 @@ public final class KahluaCheck {
             {"_", "tools/tests/turret_arc.lua"},
             {"OMHTT/TurretArcAudio", base + "client/OMHTT/TurretArcAudio.lua"},
             {"_", "tools/tests/turret_arc_audio.lua"},
+            {"OMHTT/TetherView", base + "client/OMHTT/TetherView.lua"},
+            {"_", "tools/tests/corrections_c427.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

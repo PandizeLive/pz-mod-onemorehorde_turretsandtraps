@@ -79,7 +79,7 @@ function L.arrange(panel)
     panel.stockCompact = panel.width < 1160
     panel.controlWidth = panel.stockCompact and panel.width or panel.width - stock - 8
     panel.equipmentY = panel.titleHeight + 8
-    panel.devicesY = panel.equipmentY + h * (panel.stockCompact and 7 or 6) + 50
+    panel.devicesY = panel.equipmentY + h * (panel.stockCompact and 5 or 4) + 34
     local y, bottom = panel.devicesY, panel.height - (panel.footerHeight or 14) - 6
     local graphWidth = math.max(260, math.floor((panel.controlWidth - 24) * .40))
     panel.detailX = 12 + graphWidth + 8
@@ -103,14 +103,15 @@ function L.arrange(panel)
     panel.detailBody:setHeight(math.max(80, bottom - detailsY))
     Theme.scrollbar(panel.detailBody)
     panel.layoutKind = nil
-    panel.stockButtonY = panel.equipmentY + h * 5 + 40
+    panel.stockButtonY = panel.equipmentY + h * 3 + 12
     place(panel.stockButton, panel.controlWidth / 2 + 10, panel.stockButtonY, panel.controlWidth / 2 - 34)
     panel.stockButton:setVisible(panel.stockCompact)
+    local slotWidth = math.floor((math.floor(panel.controlWidth / 2) - 38) / 2)
     if panel.batterySlot then
-        place(panel.batterySlot, 22, panel.equipmentY + h + 12, math.floor(panel.controlWidth / 2) - 30)
+        place(panel.batterySlot, 22, panel.equipmentY + h + 12, slotWidth)
     end
     if panel.expansionSlot then
-        place(panel.expansionSlot, panel.controlWidth / 2 + 10, panel.equipmentY + h + 12, panel.controlWidth / 2 - 34)
+        place(panel.expansionSlot, 30 + slotWidth, panel.equipmentY + h + 12, slotWidth)
     end
     if panel.stockWing then
         local wing = panel.stockWing
@@ -231,9 +232,9 @@ function L.draw(panel, host, state)
         panel.devicesY - panel.equipmentY - 10, h + 8, getText("UI_OMHTT_Equipment"))
     local power = host.powered and "UI_OMHTT_ControllerPowerReady" or "UI_OMHTT_ControllerPowerEmpty"
     local textX = panel.controlWidth / 2 + 10
-    panel:setStencilRect(textX, panel.equipmentY + h * 3 + 34, panel.controlWidth / 2 - 32, h * 3 + 8)
-    panel:drawText(getText(power), textX, panel.equipmentY + h * 3 + 34, .85, .85, .85, 1, UIFont.Small)
-    panel:drawText(getText("UI_OMHTT_ControllerRange", A.radius(panel.object)), textX, panel.equipmentY + h * 4 + 34, .7, .7, .7, 1, UIFont.Small)
+    panel:setStencilRect(textX, panel.equipmentY + h + 10, panel.controlWidth / 2 - 32, h * 3 + 8)
+    panel:drawText(getText(power), textX, panel.equipmentY + h + 10, .85, .85, .85, 1, UIFont.Small)
+    panel:drawText(getText("UI_OMHTT_ControllerRange", A.radius(panel.object)), textX, panel.equipmentY + h * 2 + 12, .7, .7, .7, 1, UIFont.Small)
     panel:clearStencilRect()
     Theme.section(panel, panel.detailX, panel.mapY, panel.mapView.width,
         panel.mapView.y + panel.mapView.height - panel.mapY, h + 8, getText("UI_OMHTT_Map"))

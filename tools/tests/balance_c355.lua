@@ -6,7 +6,7 @@ SandboxVars.OMHTurretsTraps = {}
 local function head(name)
     return {getFullType = function() return "Base.OMHTTTurret" .. name end}
 end
-local schedule = {.1, .15, .25, .5, .75, 1, 1.5}
+local schedule = {.15, .25, .5, .75, 1, 1.5, 2}
 for i = 1, #schedule do
     check(R.surcharges[i] == schedule[i], "Approved direct surcharge for rarity " .. i)
 end

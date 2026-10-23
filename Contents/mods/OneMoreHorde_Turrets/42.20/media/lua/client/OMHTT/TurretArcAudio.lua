@@ -28,7 +28,7 @@ function A.receive(module, command, facts)
     local gain = math.max(Stats.option("SuppressionVolumeFloor", 10, 1, 100) / 100, math.min(1, facts.gain))
     local emitter = getWorld():getFreeEmitter(facts.x, facts.y, facts.z)
     local handle = emitter:playSound(impact and "DismantleFailed" or "OMHTTArcFire")
-    emitter:setVolume(handle, volume * gain * (impact and .12 or .65))
+    emitter:setVolume(handle, volume * gain * (impact and .12 or 1.3))
 end
 
 Events.OnServerCommand.Add(A.receive)

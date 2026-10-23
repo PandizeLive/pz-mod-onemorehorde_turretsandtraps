@@ -141,7 +141,7 @@ def main():
     assert "[OMHTT-Smoke] native-module-pack-persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Native pack persistence proof missing"
     assert "[OMHTT-Smoke] native-pack-loot-parser pools=16 packs=16 weights=positive" in text, "Native pack loot parse failed"
     assert "[OMHTT-Smoke] native-module-loot-parser pools=16 items=246 weights=positive" in text, "Native module loot parse failed"
-    assert "native-power modules=16 aliases=once m9=0.01215 rifleShots=3563 generator=matched conditionals=valid" in text, "Native power/conditional integration failed"
+    assert "native-power modules=16 aliases=once m9=0.01755 rifleShots=2467 generator=matched conditionals=valid" in text, "Native power/conditional integration failed"
     assert "[OMHTT-Smoke] native-modules loot=246 profiles=valid condition=checked" in text, "Native module rules failed"
     assert "[OMHTT-Smoke] native-install exact=selected decoy=preserved preview=nonconsuming" in text, "Native Install selection failed"
     assert "[OMHTT-Smoke] native-turret-persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Turret world persistence failed"

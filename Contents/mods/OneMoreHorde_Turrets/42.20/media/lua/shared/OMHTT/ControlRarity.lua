@@ -1,6 +1,6 @@
 local L = require("OMHTT/ControlLootDefinitions")
 local R = {cache = {}}
-R.surcharges = {.1, .15, .25, .5, .75, 1, 1.5}
+R.surcharges = {.15, .25, .5, .75, 1, 1.5, 2}
 R.stops = {{130,174,255}, {115,204,255}, {89,230,102}, {255,250,77}, {255,148,51}, {255,46,46}, {66,13,130}}
 R.names = {"Abundant", "Common", "Uncommon", "Rare", "Epic", "Legendary", "Mythic"}
 
@@ -125,6 +125,6 @@ function R.get(name)
     return R.cache[name] or R.neutral
 end
 
-R.neutral = {band = 1, surcharge = .1, r = 130/255, g = 174/255, b = 1, tr = .78, tg = .86, tb = 1}
+R.neutral = {band = 1, surcharge = R.surcharges[1], r = 130/255, g = 174/255, b = 1, tr = .78, tg = .86, tb = 1}
 Events.OnGameStart.Add(function() R.refresh(SandboxVars.OMHTurretsTraps or {}) end)
 return R

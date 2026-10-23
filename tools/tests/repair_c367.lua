@@ -29,6 +29,12 @@ entries = {favorite}
 check(action.materials({character = player}) == nil, "Missing unfavorited scrap keeps repair invalid")
 for kind, profile in pairs(R.profiles) do
     local description = U.description(kind, player)
+    check(string.find(description, getText("UI_OMHTT_RepairToolRequired", getText(profile.tools)), 1, true),
+        "Repair requirements label the retained tool: " .. kind)
+    if profile.material then
+        check(string.find(description, getText("UI_OMHTT_RepairMaterialRequired", getItemNameFromFullType(profile.material), 1), 1, true),
+            "Repair requirements label one consumed material: " .. kind)
+    end
     check(not string.find(description, getText("UI_OMHTT_RepairSkills"), 1, true)
         and string.find(description, getText("UI_OMHTT_RepairTime", profile.seconds), 1, true),
         "Repair tips omit nonexistent skill requirements and show duration: " .. kind)

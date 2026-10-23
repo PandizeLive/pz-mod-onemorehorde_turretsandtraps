@@ -45,3 +45,8 @@ Owner selects **1A** and asks for confirmation. The combined C425 correction and
 Current Regulator has **zero added drain**, not its rarity surcharge plus a discount. `Turret.lua` excludes it from powerLoad; `TurretStats.lua` divides cost by `1 + .25 * active.Regulator`. One gives 20% less consumption; two give about 33.3% less, relative to the same loadout without Regulators. The inventory tooltip currently shows `Battery Drain: +0x` plus a battery-life benefit; Manage details show the calculated negative percentage as a reduction. It never creates negative consumption or recharges power. Preserve this behavior and include the reduction in the requested effective battery total.
 
 This confirmation records the selected scope, not implementation or installation. Installed 0.2.64.3 remains unchanged. **Wait for a patch.**
+
+
+## C427 - implemented after approval (2026-10-22)
+
+Owner reaffirms approval. [0.2.64.4 patch](PATCH_v0.2.64.4.md) implements this contract. Native camera inspection confirms the obsolete Tether height compensation; native item world alpha supports bounded Arc fading. Lever load-time sprite replacement used incompatible native offsets and is removed. [Verification](TEST_v0.2.64.4.md) records tests and remaining rendered/listening acceptance. The C426 half-battery-area layout and surcharge-free Regulator behavior are preserved.

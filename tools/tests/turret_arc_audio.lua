@@ -17,7 +17,7 @@ local facts = {x = 1, y = 2, z = 0, gain = 1, packet = 99999901}
 require("OMHTT/PrototypeEffects").receive(module, "ArcShot", facts)
 A.receive(module, "ArcShot", facts)
 A.receive(module, "ArcShot", facts)
-check(#sounds == 1 and sounds[1].name == "OMHTTArcFire" and sounds[1].volume == .65,
+check(#sounds == 1 and sounds[1].name == "OMHTTArcFire" and sounds[1].volume == 1.3,
     "Arc sound survives unrelated handler and suppresses duplicate MP delivery")
 facts.packet = nil
 for i = 1, 8 do A.receive(module, "ArcHit", facts) end
@@ -28,7 +28,7 @@ A.receive(module, "ArcHit", facts)
 check(#sounds == 6, "Impact budget recovers after 100 milliseconds")
 facts.gain = .01
 A.receive(module, "ArcShot", facts)
-check(math.abs(sounds[7].volume - .065) < .000001, "Suppression respects existing audible floor")
+check(math.abs(sounds[7].volume - .13) < .000001, "Suppression respects existing audible floor")
 localVolume = 0
 A.receive(module, "ArcShot", facts)
 check(#sounds == 7, "Local sound preference mutes Arc")

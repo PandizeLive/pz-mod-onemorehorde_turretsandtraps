@@ -12,11 +12,11 @@ function U.description(kind, player, toolsReady)
     local lines = {}
     if profile.material then
         local color = #R.materials(player, kind) > 0 and " <RGB:0.3,0.9,0.3> " or " <RGB:1,0.3,0.3> "
-        lines[#lines + 1] = color .. getItemNameFromFullType(profile.material)
+        lines[#lines + 1] = color .. getText("UI_OMHTT_RepairMaterialRequired", getItemNameFromFullType(profile.material), 1)
     end
     local ready = toolsReady ~= false and R.tools(player, kind)
     local color = ready and " <RGB:0.3,0.9,0.3> " or " <RGB:1,0.3,0.3> "
-    lines[#lines + 1] = color .. getText(profile.tools)
+    lines[#lines + 1] = color .. getText("UI_OMHTT_RepairToolRequired", getText(profile.tools))
     lines[#lines + 1] = " <RGB:1,1,1> " .. getText("UI_OMHTT_RepairTime", profile.seconds)
     return table.concat(lines, " <LINE> ")
 end

@@ -1,0 +1,42 @@
+[
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Automation\\automation_abundant.png",
+    "target": "Source/42.20/media/textures/OMHTT/Modules/automation_abundant.png",
+    "sha256": "3049e163c46d969fd1d94b4b4f6d6e3304ff508041f4514eb151e049921aea32"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Automation\\automation_base.png",
+    "target": "Source/42.20/media/textures/Item_OMHTT_ModuleAutomation.png",
+    "sha256": "4db3aad5171dede9c0bfb4a1f4d4115d386d6f543f5e2fac6c87bdcd0fe52958"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Automation\\automation_common.png",
+    "target": "Source/42.20/media/textures/OMHTT/Modules/automation_common.png",
+    "sha256": "8ef02bb00606208d74b48d19603eb686ab2dcea47c02781b1a1da530b893b36b"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Automation\\automation_epic.png",
+    "target": "Source/42.20/media/textures/OMHTT/Modules/automation_epic.png",
+    "sha256": "d6fcf5e11072fce7a3b51f95b82adee264e7a6a80e3d324cb210d4b49bb77520"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Automation\\automation_legendary.png",
+    "target": "Source/42.20/media/textures/OMHTT/Modules/automation_legendary.png",
+    "sha256": "eb653ea4481099a2c72c98fe2bc4e1fd490c87d922d36cd1fcaad97cbfbc4784"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Automation\\automation_mythic.png",
+    "target": "Source/42.20/media/textures/OMHTT/Modules/automation_mythic.png",
+    "sha256": "de20f82d73ee4e0e2b3f6bd0354f79f19e012253b6b2f3879a7ad0e820cd6442"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Automation\\automation_rare.png",
+    "target": "Source/42.20/media/textures/OMHTT/Modules/automation_rare.png",
+    "sha256": "8c3e15b46f91632c3428dd94977764832a910e679295270e2379db0a6fe50708"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Automation\\automation_uncommon.png",
+    "target": "Source/42.20/media/textures/OMHTT/Modules/automation_uncommon.png",
+    "sha256": "519b303d105239079525275fc646d2cc07580b3da4039074f18b9cf635296761"
+  }
+]

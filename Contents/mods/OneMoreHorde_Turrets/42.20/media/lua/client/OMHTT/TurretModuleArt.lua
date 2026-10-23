@@ -9,13 +9,15 @@ local utility = {Grid = true, Siphon = true, Lure = true, Void = true}
 local effects = {Piercing = true, InitialBlow = true, Execute = true, Impact = true,
     Splitter = true, Fragment = true, Synergy = true, Martyrdom = true, Tack = true}
 
+local automation = {FiringEnhanced = true, MotionDetectionEnhanced = true, Firing = true, Filter = true, MotionDetection = true, Detection360 = true, MotionDetectionImprovised = true, FiringImprovised = true}
+
 ---@param item InventoryItem? Existing or newly received item
 ---@return nil
 function A.apply(item)
     if not item then return end
     local component = T.component(item:getFullType())
     local category = performance[component] and "performance" or utility[component] and "utility"
-        or effects[component] and "effects"
+        or effects[component] and "effects" or automation[component] and "automation"
     if not category then return end
     local name = category .. "_" .. string.lower(R.names[R.get(component).band])
     if A.applied[item] == name then return end

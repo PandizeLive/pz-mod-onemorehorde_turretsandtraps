@@ -85,7 +85,7 @@ module Base {
         ItemType = base:normal,
         DisplayCategory = OMHTTAutomation,
         Weight = 0.2,
-        Icon = OMHTT_TestCube,
+        Icon = OMHTT_ModuleAutomation,
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_ModuleFiringEnhanced,
     }
@@ -94,7 +94,7 @@ module Base {
         ItemType = base:normal,
         DisplayCategory = OMHTTAutomation,
         Weight = 0.2,
-        Icon = OMHTT_TestCube,
+        Icon = OMHTT_ModuleAutomation,
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_ModuleDetectionEnhanced,
     }
@@ -156,7 +156,7 @@ module Base {
         ItemType = base:normal,
         DisplayCategory = OMHTTAutomation,
         Weight = 0.2,
-        Icon = OMHTT_TestCube,
+        Icon = OMHTT_ModuleAutomation,
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_ModuleFiring,
     }
@@ -165,7 +165,7 @@ module Base {
         ItemType = base:normal,
         DisplayCategory = OMHTTAutomation,
         Weight = 0.2,
-        Icon = OMHTT_TestCube,
+        Icon = OMHTT_ModuleAutomation,
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_ModuleFilter,
     }
@@ -248,7 +248,7 @@ module Base {
         ItemType = base:normal,
         DisplayCategory = OMHTTAutomation,
         Weight = 0.2,
-        Icon = OMHTT_TestCube,
+        Icon = OMHTT_ModuleAutomation,
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_ModuleMotionDetection,
     }
@@ -257,7 +257,7 @@ module Base {
         ItemType = base:normal,
         DisplayCategory = OMHTTAutomation,
         Weight = 0.2,
-        Icon = OMHTT_TestCube,
+        Icon = OMHTT_ModuleAutomation,
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_ModuleDetection360,
     }
@@ -266,7 +266,7 @@ module Base {
         ItemType = base:normal,
         DisplayCategory = OMHTTAutomation,
         Weight = 0.2,
-        Icon = OMHTT_TestCube,
+        Icon = OMHTT_ModuleAutomation,
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_MotionDetectionImprovised,
     }
@@ -275,7 +275,7 @@ module Base {
         ItemType = base:normal,
         DisplayCategory = OMHTTAutomation,
         Weight = 0.2,
-        Icon = OMHTT_TestCube,
+        Icon = OMHTT_ModuleAutomation,
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_FiringImprovised,
     }

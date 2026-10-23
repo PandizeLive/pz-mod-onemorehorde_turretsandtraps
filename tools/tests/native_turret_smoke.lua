@@ -595,6 +595,9 @@ local function verifyTurrets()
     assert(ScriptManager.instance:getModelScript(first:getWorldStaticItem()) == model,
         "Probe item model not bound: " .. tostring(first:getWorldStaticItem()))
     first:getModData().OMHTTHybridProbe = "native-probe"
+    first:setWorldAlpha(.25)
+    assert(math.abs(first:getWorldAlpha() - .25) < .000001, "Native per-item opacity is Lua-accessible")
+    first:setWorldAlpha(1)
     first:setWorldScale(1.25)
     first:getModData().OMHTTProbeScale = 1.25
     local world = IsoWorldInventoryObject.new(first, square, 0.5, 0.5, 0.3)
@@ -645,12 +648,12 @@ local function verifyTurrets()
     for i = 1, 14 do powerStore:AddItem(T.TYPES.Execute) end
     local powerContents = T.contents(powerStore)
     local powerStats = Stats.resolve(powerContents)
-    assert(math.abs(powerContents.powerLoad - 17) < .00001 and math.abs(powerStats.batteryPercent - .01215) < .000001, "Native M9 rarity power failed")
-    assert(math.abs(powerStats.generatorFuel - .0018) < .0000001, "Native generator cost mismatch")
+    assert(math.abs(powerContents.powerLoad - 25) < .00001 and math.abs(powerStats.batteryPercent - .01755) < .000001, "Native M9 rarity power failed")
+    assert(math.abs(powerStats.generatorFuel - .0026) < .0000001, "Native generator cost mismatch")
     powerStore:Remove(powerGun)
     powerStore:AddItem("Base.HuntingRifle")
     powerStats = Stats.resolve(T.contents(powerStore))
-    assert(math.floor(100 / powerStats.batteryPercent) == 3563 and math.abs(powerStats.weaponPower - math.sqrt(16 / 3)) < .000001, "Native rifle endurance mismatch")
+    assert(math.floor(100 / powerStats.batteryPercent) == 2467 and math.abs(powerStats.weaponPower - math.sqrt(16 / 3)) < .000001, "Native rifle endurance mismatch")
     local Conditional = require("OMHTT/TurretConditionalHit")
     victim:getModData().OMHTTInitialHealth = 3.7
     victim:setHealth(.37)
@@ -699,7 +702,7 @@ local function verifyTurrets()
     Rarity.refresh(savedOptions)
     print("[OMHTT-Smoke] native-rarity anchors=7 settings=registered defaults=owner-tiers colorsAndSurcharges=matched")
     SandboxVars.OMHTurretsTraps = savedOptions
-    print("[OMHTT-Smoke] native-power modules=16 aliases=once m9=0.01215 rifleShots=3563 generator=matched conditionals=valid")
+    print("[OMHTT-Smoke] native-power modules=16 aliases=once m9=0.01755 rifleShots=2467 generator=matched conditionals=valid")
     print("[OMHTT-Smoke] native-offensive-feasibility health=creation-recorded wounded=preserved horde=preferred unknown=zero stagger=exposed-standing")
     print("[OMHTT-Smoke] native-turret recipes=6 loadedDeploy=exact contents=preserved weight=exact filters=valid cooldown=preserved")
     isServer, isClient = serverFunction, clientFunction

@@ -240,7 +240,7 @@ function Panel:refresh()
     self.batteryContents = contents
     local batteryKey = benefitsKey .. ":" .. (contents.battery and require("OMHTT/TurretBattery").charge(contents.battery) or 0)
         .. ":" .. stats.batteryPercent .. ":" .. stats.reload .. ":" .. stats.cooldown .. ":" .. stats.magazine
-        .. ":" .. getGameTime():getMinutesPerDay()
+        .. ":" .. getGameTime():getMinutesPerDay() .. ":" .. stats.modulePower .. ":" .. stats.regulator
         .. ":" .. (cycle and cycle.loaded or 0) .. ":" .. (cycle and cycle.conservationDebt or 0)
     if batteryKey ~= self.batteryKey then self.batteryKey, self.batteryText = batteryKey, nil end
     self.stats = stats
