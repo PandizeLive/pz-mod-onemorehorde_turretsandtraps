@@ -2083,3 +2083,13 @@ Owner keeps Velocity/Fragment, specifies Fragment mark exemption/source exclusio
 ## C427 - approved C425/C426 implementation (2026-10-22)
 
 Owner: "Approved". Implements the settled C426 layout and C425 1A schedule without additional design changes. [Patch](PATCH_v0.2.64.4.md) and [test evidence](TEST_v0.2.64.4.md) separate native verification, local installation and pending rendered/audio acceptance. No publication or LootLab deployment is authorized by this checkpoint.
+
+## C428 - Test findings, Sandbox and progression audit (2026-10-22)
+
+Owner reports poor settings organization/formatting, duplicate preferences, Fragment/Arc audio, Arc glow/light, laser depth and timing concerns; supplies the exact eleven-section turret order and proposes category/tier/name rarity dropdowns. Requests current progression/loot/material/battery analysis against native crafting.
+
+[Audit](AUDIT_C428.md), [complete settings snapshot](SANDBOX_INVENTORY_C428.md) and [progression assessment](PROGRESSION_C428.md) record evidence and distinguish confirmed source defects from unmeasured runtime behavior. Existing approval C427 applies to the installed 0.2.64.4 correction, not the new findings. No source, asset, version, install, saved tuning or hosted LootLab change in this checkpoint.
+
+Proposed choices: **1A** combined settings/audio/render/light/gameplay-time correction in independently verified slices (recommended), **1B** defer timing to a second patch. **2A** tier dropdowns with Disabled/Custom compatibility and preserved owner LootLab tuning (recommended), **2B** tier-only with separately reviewed custom-value conversion. **3A** design advanced skill/component/knowledge gates and review pack supply while keeping starters accessible (recommended), **3B** retain soft progression and mainly review acquisition probabilities. Neither progression choice approves unreviewed numerical balance changes.
+
+Captured SP 0.2.64.4 console at diagnostics/captures/20261022-224045-0945, SHA256 99A7AECD8F860E567ACD681221FFB34068D9D70E029C618D374BF48E99F5237D. No OMHTT exception stack found; unrelated warnings remain. All 33 current craftRecipe definitions are known recipes; default pack calculations give any Mythic median 77 kills and a particular Mythic median 451. Calendar estimates remain explicitly conditional. C108 documentation mirror required; next handoff **Decision needed**.
