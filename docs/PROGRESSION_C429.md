@@ -1,6 +1,6 @@
 # C429 - Selected corrections and starting-character progression
 
-**Current direction, C433 (2026-10-23):** owner selects the two-point Turret Specialist trait with personal learned recipes at creation, and four separate advanced-head manuals (Ballista, Rotary Blade, Lobber, Arc). Default-known recipes are enumerated below. Manual rarities/acquisition and C431 recipe additions remain unapproved. Zombie pack default stays selected at 7%, three rewards and saved owner tuning preserved. This is the planned behavior; installed 0.2.64.4 still has all 33 craft recipes known and no such trait/manual gates.
+**Current direction, C434 (2026-10-23):** five manuals are planned, adding Firearms. Owner selected Ballista/Rotary Blade Uncommon, Lobber Rare, Arc Epic, with book locations and gas-station magazine areas. Firearms rarity/mounting proposal and module-pack inclusion remain choices below. The two-point Turret Specialist learns the selected manual knowledge at creation; 7% zombie packs and owner tuning remain. Makeshift Detection currently needs no native Motion Sensor. C431 ingredient/skill proposals remain unapproved. Installed 0.2.64.4 still has no manual/trait gates; this is planning.
 
 2026-10-22. Owner selects C428 **1A / 2A / 3A**, requests a Forward Cone setting for every head instead of the shared default, asks to consider high starting skills and other craftables/mods such as Angry Turrets, then explicitly adds the difficulty/time of leveling each skill.
 
@@ -282,3 +282,64 @@ These are unselected rarities, not fixed spawn percentages or approved new weigh
 ### Retained scope and handoff
 
 Keep the selected 7% zombie pack default, three rewards, saved owner Sandbox/LootLab tuning and previously selected corrective work. C431's proposed Arc/Controller/Laser ingredients/skills remain proposals. No code/assets, package/version, installation, Workshop notes or test results changed. Installed 0.2.64.4 remains. Documentation links and recipe enumeration are verification of this explanation, not native custom-trait or multiplayer acceptance. **Decision needed** for the new manual-rarity choice; trait benefit/cost/grouping are settled.
+
+
+## C434 - Lower manual tiers, literature locations and Firearms; native sensor audit (2026-10-23)
+
+Owner: "1B, but knock them down a rarity and let's include them in book locations and gas station magazine areas. We'll also add a firearms manual. Does the makeshift detection module require a motion sensor? Is that native? How hard are they to find?"
+
+### Selected manual changes
+
+Lower C433 1B by exactly one tier:
+
+| Manual | Selected rarity | Existing source-default tier anchor |
+| --- | --- | --- |
+| Ballista | Uncommon | 14 |
+| Rotary Blade | Uncommon | 14 |
+| Lobber | Rare | 10 |
+| Arc Emitter | Epic | 6 |
+
+These are the existing assigned tier anchors from `sandbox-options.txt`, not invented item weights or drop percentages. At implementation record/apply the owner's actual loaded corresponding tier weights and preserve LootLab/item overrides under C315/C338. The rarity selection authorizes its assigned weight; do not ask again for a separate numerical approval. The previously proposed Rare/Rare/Epic/Legendary set is superseded.
+
+The owner explicitly authorizes book locations and gas-station magazine areas as manual sources. Current native pools/call sites checked: `LibraryBooks`, relevant BookstoreBlueCollar/BookstoreScience literature and home `LivingRoomShelf`; `MagazineRackMixed` is referenced by native `fossoil.shelvesmag` and other magazine racks. Existing generic book/magazine pools can also serve other appropriate businesses/maps. Do not insert manuals into a gas station's fuel/snack/medical inventory just because the building is a gas station. Use applicable native literature pools, with final distribution verification and normal saved-world loot behavior. This does not promise retroactive stocking of already-generated containers.
+
+A fifth **Firearms manual** is requested. Turret Specialist's selected learned-manual benefit should cover it as well, retaining the selected two-point cost and no free skills/gear. Exact Firearms rarity and how its knowledge is checked are proposed below; do not silently introduce native firearm crafting or a new adapter item.
+
+### Firearms manual proposal and decision 1
+
+Existing compatible guns are installed as heads; OMHTT does not have a firearm-head manufacturing recipe. `Firearms.profile` uses supported firearm/reload metadata and `TurretTransfers.rejection` validates transfers. Therefore recommend a manual teaching **mounting supported firearms as turret heads**, rather than pretending it unlocks an existing craft recipe. Include currently supported addon firearms through the existing adapter checks. Ordinary handheld gun use remains native. An already installed gun can still be operated/reloaded/removed by otherwise authorized users; the proposed knowledge requirement is on mounting a gun, not each shot or ordinary servicing. A specialist can still build for teammates, and this is intentional cooperative production.
+
+This would supersede C433's ungated firearm mounting, while retaining the default-known turret base and Potato/Scrapshot/Rotary Bat routes. The current five advanced-head craft definitions remain the manual-gated recipe set; firearms add a separate installation knowledge check. Before implementation verify a native supported knowledge identifier and enforce permission on all applicable authoritative installation paths, with matching UI feedback, rather than only hiding a client menu item. The inspected `TurretTransfers.lua` has an SP guard and is not by itself production multiplayer authority proof. No native feasibility/runtime success is claimed for the new manual gate.
+
+**1A - Firearms manual Uncommon (recommended).** Same assigned tier as Ballista/Rotary Blade; keeps a discovered firearm a reasonably accessible turret route while adding knowledge discovery.
+
+**1B - Firearms manual Rare.** A stronger discovery delay for all supported firearm heads. Both choices refer to the mounting scope above; materials, tools and existing firearm support rules otherwise remain.
+
+### Module-pack inclusion: decision 2
+
+Book/gas-magazine sources are selected. Whether manuals should also occupy the existing module-pack draws remains unresolved. C315/C338 normally includes new loot items in packs; the literature-only choice below explicitly asks the owner to authorize an exception for these manuals, motivated by keeping the selected 7% pack's module/kit rewards intact.
+
+**2A - Literature loot only (recommended).** Manuals spawn in the selected book/magazine sources and have Sandbox/LootLab entries, but do not enter the existing module-pack reward pool. This preserves the module/kit yield used in the earlier 7% arithmetic and keeps manuals an exploration reward.
+
+**2B - Literature loot plus module packs.** Add manuals to existing weighted pack rewards as well. A manual can replace a module/kit reward; the expected 21 total pack rewards per 100 eligible kills remain, but expected module/kit rewards decrease. The tier pool total and item probability model must be recalculated after integrating the manuals. Do not keep quoting the old 33-item/292-weight probabilities for that expanded pool.
+
+No pack dilution or exception is implemented before the owner's choice. No additional pack item or separate custom loot subsystem is proposed.
+
+### Makeshift Detection: current recipe and native sensor facts
+
+Verified `OMHTT_TurretRecipes.txt`, `OMHTTCraftMotionDetectionImprovised`: **no Motion Sensor input**. Requirements are Electrical 2; consume 3 Electronics Scrap, 1 Electric Wire and 2 Duct Tape uses; retain a screwdriver and pliers. It awards 15 base Electrical XP, and is known by default. This is an OMHTT recipe. The earlier proposal to add a sensor concerned the Laser Sensor, not Makeshift Detection, and even that Laser ingredient change is still unapproved.
+
+The component **`Base.MotionSensor` is native**. Installed `generated/items/normal.txt` declares it (Electronics, weight 0.3). Native `generated/recipes/recipes_electrical.txt`, `DismantleMiscElectronics`, accepts the inventory `Base.HomeAlarm` item and a retained screwdriver, maps it to one Motion Sensor, and also outputs Electronics Scrap. The recipe declares no skill or learned-recipe requirement. The Home Alarm item is distinct from the abstract burglar-alarm flag on a building; do not imply every alarmed house offers a removable component.
+
+Actual installed native procedural distribution entries:
+
+- HomeAlarm: ElectronicStoreMisc and StoreShelfElectronics each include weight-20 and weight-10 entries; PoliceEvidence has weight 20; KitchenRandom has weight 0.5.
+- Direct MotionSensor: EngineerTools, ElectricianTools and SafehouseTraps each list weight 8. A BombCache1 junk distribution also lists it at weight 1.
+
+These are relative/raw loot entry weights, not percentages. They support targeted electronics-store scavenging and specialized salvage as practical routes; random household searching is much less dependable. A sensor is not justified as an assured endgame rarity solely because it is a named part. Actual availability depends on town, container assignment, loot settings and other mods; no fixed visit/day count or runtime drop-rate measurement is claimed.
+
+Recommendation: keep Makeshift Detection's current sensor-free starter recipe, and retain a real sensor as the proposed Laser ingredient. This answers the question without interpreting it as approval to alter either recipe.
+
+### Scope and handoff
+
+Source checks are read-only. No new items, trait/knowledge gate, distribution entries, source/assets, version/package/install, test result or Workshop changelog changed. Installed 0.2.64.4 remains. Lower tiers, literature locations and adding the fifth manual are selected; Firearms rarity/mounting details, module-pack inclusion and C431 recipe costs/skills remain proposals. Keep prior corrective scope and 7% selection. **Decision needed** for C434 1A/1B and 2A/2B.
