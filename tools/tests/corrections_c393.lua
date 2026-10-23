@@ -114,7 +114,7 @@ T.component = function() return "CapacityLarge" end
 item.getFullType = function() return "Base.OMHTTModuleExpansionLarge" end
 require("OMHTT/ControlExpansionArt").apply(item)
 check(string.find(item.texture, "expansion", 1, true), "Expansion kit uses its own category art")
-T.component = function() return "Martyrdom" end
+T.component = function() return "Detection" end
 Art.apply(item)
 check(writes == 3, "Categories without supplied artwork retain their icons")
 for _, component in pairs({"Grid", "Siphon", "Lure", "Void"}) do
@@ -124,6 +124,15 @@ for _, component in pairs({"Grid", "Siphon", "Lure", "Void"}) do
         Art.apply(item)
         check(item.texture == "media/textures/OMHTT/Modules/utility_" .. string.lower(R.names[tier]) .. ".png",
             "Utility artwork follows effective rarity for " .. component)
+    end
+end
+for _, component in pairs({"Piercing", "InitialBlow", "Execute", "Impact", "Splitter", "Fragment", "Synergy", "Martyrdom", "Tack"}) do
+    T.component = function() return component end
+    for tier = 1, 7 do
+        band = tier
+        Art.apply(item)
+        check(item.texture == "media/textures/OMHTT/Modules/effects_" .. string.lower(R.names[tier]) .. ".png",
+            "Effects artwork follows effective rarity for " .. component)
     end
 end
 Art.textures = oldTextures

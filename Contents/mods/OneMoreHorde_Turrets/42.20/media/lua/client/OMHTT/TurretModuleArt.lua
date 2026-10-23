@@ -6,6 +6,8 @@ local A = {textures = {}, applied = setmetatable({}, {__mode = "k"})}
 local performance = {Regulator = true, Conservation = true, Magazine = true, RapidFire = true,
     Velocity = true, Range = true, Suppression = true, Critical = true, Accuracy = true, Reload = true, Autoloader = true}
 local utility = {Grid = true, Siphon = true, Lure = true, Void = true}
+local effects = {Piercing = true, InitialBlow = true, Execute = true, Impact = true,
+    Splitter = true, Fragment = true, Synergy = true, Martyrdom = true, Tack = true}
 
 ---@param item InventoryItem? Existing or newly received item
 ---@return nil
@@ -13,6 +15,7 @@ function A.apply(item)
     if not item then return end
     local component = T.component(item:getFullType())
     local category = performance[component] and "performance" or utility[component] and "utility"
+        or effects[component] and "effects"
     if not category then return end
     local name = category .. "_" .. string.lower(R.names[R.get(component).band])
     if A.applied[item] == name then return end

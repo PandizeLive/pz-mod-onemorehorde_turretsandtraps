@@ -49,7 +49,7 @@ module Base {
         ItemType = base:normal,
         DisplayCategory = OMHTTEffects,
         Weight = 0.2,
-        Icon = OMHTT_TestCube,
+        Icon = OMHTT_ModuleEffects,
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_ModulePiercing,
     }
@@ -58,7 +58,7 @@ module Base {
         ItemType = base:normal,
         DisplayCategory = OMHTTEffects,
         Weight = 0.2,
-        Icon = OMHTT_TestCube,
+        Icon = OMHTT_ModuleEffects,
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_ModuleInitialBlow,
     }
@@ -67,7 +67,7 @@ module Base {
         ItemType = base:normal,
         DisplayCategory = OMHTTEffects,
         Weight = 0.2,
-        Icon = OMHTT_TestCube,
+        Icon = OMHTT_ModuleEffects,
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_ModuleExecute,
     }
@@ -76,7 +76,7 @@ module Base {
         ItemType = base:normal,
         DisplayCategory = OMHTTEffects,
         Weight = 0.2,
-        Icon = OMHTT_TestCube,
+        Icon = OMHTT_ModuleEffects,
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_ModuleImpact,
     }
@@ -112,7 +112,7 @@ module Base {
         ItemType = base:normal,
         DisplayCategory = OMHTTEffects,
         Weight = 0.2,
-        Icon = OMHTT_TestCube,
+        Icon = OMHTT_ModuleEffects,
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_ModuleSplitter,
     }
@@ -121,7 +121,7 @@ module Base {
         ItemType = base:normal,
         DisplayCategory = OMHTTEffects,
         Weight = 0.2,
-        Icon = OMHTT_TestCube,
+        Icon = OMHTT_ModuleEffects,
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_ModuleFragment,
     }
@@ -285,7 +285,7 @@ module Base {
         ItemType = base:normal,
         DisplayCategory = OMHTTEffects,
         Weight = 0.2,
-        Icon = OMHTT_TestCube,
+        Icon = OMHTT_ModuleEffects,
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_ModuleSynergy,
     }
@@ -295,7 +295,7 @@ module Base {
         ItemType = base:normal,
         DisplayCategory = OMHTTEffects,
         Weight = 0.2,
-        Icon = OMHTT_TestCube,
+        Icon = OMHTT_ModuleEffects,
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_ModuleMartyrdom,
     }
@@ -305,7 +305,7 @@ module Base {
         ItemType = base:normal,
         DisplayCategory = OMHTTEffects,
         Weight = 0.2,
-        Icon = OMHTT_TestCube,
+        Icon = OMHTT_ModuleEffects,
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_ModuleTack,
     }

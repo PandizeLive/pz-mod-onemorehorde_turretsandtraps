@@ -86,9 +86,12 @@ def main():
     for key in re.findall(r"Tooltip\s*=\s*(\w+)", item_script):
         assert key in translations and "prototype" not in translations[key].lower(), key
     textures = list((PACKAGE / "42.20/media/textures").glob("*.png"))
-    assert len(textures) == 45, "Existing technical markers and owner Performance/Utility icons required"
+    assert len(textures) == 46, "Existing technical markers and owner Performance/Utility/Effects icons required"
     owner_art = json.loads((ROOT / "art/MODULE_ART_C423.json").read_text())
     assert len(owner_art) == 16
+    effects_art = json.loads((ROOT / "art/MODULE_ART_C424.json").read_text())
+    assert len(effects_art) == 8
+    owner_art.extend(effects_art)
     for asset in owner_art:
         path = ROOT / asset["target"]
         assert hashlib.sha256(path.read_bytes()).hexdigest() == asset["sha256"], "Owner artwork must remain unchanged"
@@ -121,10 +124,10 @@ def main():
     assert len(barrier_bytes) == 4, "Barrier directions must have distinct pixels"
     for texture in textures:
         with Image.open(texture) as sprite:
-            expected_size = (32, 32) if texture.name in {"Item_OMHTT_ModulePerformance.png", "Item_OMHTT_ModuleUtility.png"} else (60, 36) if texture.name in {"Item_OMHTT_BedSpikes.png", "Item_OMHTT_ReinforcedBedSpikes.png"} else (128, 256)
+            expected_size = (32, 32) if texture.name in {"Item_OMHTT_ModulePerformance.png", "Item_OMHTT_ModuleUtility.png", "Item_OMHTT_ModuleEffects.png"} else (60, 36) if texture.name in {"Item_OMHTT_BedSpikes.png", "Item_OMHTT_ReinforcedBedSpikes.png"} else (128, 256)
             assert sprite.size == expected_size and sprite.mode == "RGBA"
             assert sprite.getbbox() is not None
-            if texture.name not in {"Item_OMHTT_ModulePerformance.png", "Item_OMHTT_ModuleUtility.png"}:
+            if texture.name not in {"Item_OMHTT_ModulePerformance.png", "Item_OMHTT_ModuleUtility.png", "Item_OMHTT_ModuleEffects.png"}:
                 assert all(r == g == b for r, g, b, a in sprite.get_flattened_data() if a), "Technical sprites must remain white/grayscale"
     javac = Path(os.environ.get("PZ_JAVAC", "C:/Program Files/Java/jdk-17/bin/javac.exe"))
     run([javac, "-d", classes, ROOT / "tools/NativePitchCheck.java"])
