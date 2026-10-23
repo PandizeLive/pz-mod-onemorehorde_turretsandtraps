@@ -2073,3 +2073,6 @@ Owner selects C418 1A and asks for remaining decisions. Record recipe/skills sel
 ## C420 - Arc module corrections and sound deferral selected (2026-10-22)
 
 Owner keeps Velocity/Fragment, specifies Fragment mark exemption/source exclusion/no chaining, expands all-target procs with Synergy, selects C419 3A/4B/5A/6A and allows final sound after initial implementation. [Scope](TURRET_HEAD_PROPOSALS.md#c420---final-arc-module-corrections-and-initial-implementation-scope-2026-10-22) supersedes contrary proposals. Native audio audition remains requested; no artifact or code claimed delivered. Ready to request final initial-implementation approval, no additional speculative design choices.
+
+
+**C425 / 0.2.64.3 owner feedback audited (2026-10-22).** Captured the loaded SP test; Arc sound/thickness/fade, wall anchors, Controller equipment, Automation icons, battery totals and repair labels need correction. [Evidence and proposed scope](FEEDBACK_C425.md). Higher rarity drain requested; lower tiers remain a choice: **1A .15/.25/.50 recommended / 1B retain .10/.15/.25**, with the same combined patch. Costs remain additive: Mythic +2x produces 3x base alone. No gameplay/install changes or rendered acceptance claimed. **Decision needed.**
