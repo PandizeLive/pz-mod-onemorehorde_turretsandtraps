@@ -17,9 +17,9 @@ for(const m of D.modules){
       assert.equal(M.probability(m.weight*(pool.scale??1),2.7,roundtrip,.6),M.probability(m.weight*(pool.scale??1),2.7,multiplier,.6));
     }
   }
-  for(const value of [-1,Infinity,NaN,m.weight*20+.01])assert.throws(()=>M.weightMultiplier(m,value));
+  for(const value of [-1,Infinity,NaN,m.weight*1000000+.01])assert.throws(()=>M.weightMultiplier(m,value));
 }
 const regulator=D.modules.find(m=>m.id==='Regulator');
 assert.equal(M.weightMultiplier(regulator,11),2);
 assert.equal(M.lootWeight(regulator,M.weightMultiplier(regulator,0)),0);
-console.log('PASS: direct weights for 33 modules, exact seeded-world preservation, fractional/zero/max inputs, invalid input rejection and Sandbox multiplier conversion.');
+console.log('PASS: direct weights for 38 catalog entries, exact seeded-world preservation, fractional/zero/max inputs, invalid input rejection and Sandbox multiplier conversion.');

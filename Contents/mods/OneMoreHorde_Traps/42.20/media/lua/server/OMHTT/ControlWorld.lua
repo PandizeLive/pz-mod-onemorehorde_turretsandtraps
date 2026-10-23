@@ -215,7 +215,7 @@ function W.register(object, player, kind, previous)
     end
     W.locations[state.location] = W.locations[state.location] or {}
     W.locations[state.location][id] = true
-    state.recoverAt = getTimestampMs() + 1000
+    state.recoverAt = require("OMHTT/ControlClock").now() + 1000
     state.active, state.powered, state.triggerHours = false, false, nil
     if kind == "Lever" then state.latched = false end
     if kind == "Laser" then state.beamRange, state.beamLength = state.beamRange or 10, 0 end
@@ -253,7 +253,7 @@ function W.bind(object)
     if other and other ~= object and other:getObjectIndex() >= 0 then return end
     W.objects[state.id], W.bindings[object] = object, state
     state.active, state.powered, state.triggerHours, state.beamLength = false, false, nil, 0
-    state.recoverAt = getTimestampMs() + 1000
+    state.recoverAt = require("OMHTT/ControlClock").now() + 1000
     state.checkedHours, state.pulseHoldUntil, state.facingPulse = nil, nil, nil
     if not W.indexed[state.id] then
         W.order[#W.order + 1], W.indexed[state.id] = state.id, true
@@ -331,7 +331,7 @@ function W.updateInput(object, desired, available)
     local state = W.state(object)
     if not state then return end
     local powered = require("OMHTT/ControlPower").trigger(object) and available ~= false
-    local active = powered and desired == true and getTimestampMs() >= state.recoverAt
+    local active = powered and desired == true and require("OMHTT/ControlClock").now() >= state.recoverAt
     if active == state.active and powered == state.powered then return end
     if state.active ~= active then
         local event = state.kind == "Laser" and (active and "detected" or "cleared") or "switch"
@@ -348,6 +348,7 @@ function W.updateInput(object, desired, available)
 end
 
 function W.updatePlate(object, now)
+    now = require("OMHTT/ControlClock").now()
     local state = W.state(object)
     if not state then return end
     local pressed = now >= state.recoverAt and W.occupied(object)
@@ -529,6 +530,7 @@ end
 ---@return boolean linked
 ---@return boolean on
 function W.input(target, now)
+    now = require("OMHTT/ControlClock").now()
     local targetState = W.state(target)
     if not targetState then return false, false end
     local linked, on, valid = false, false, false
@@ -798,7 +800,7 @@ function W.pulse(object)
         require("OMHTT/TetherServer").step(object, control, true)
         return
     end
-    if not control or control.kind ~= "Turret" or getTimestampMs() < control.recoverAt then return end
+    if not control or control.kind ~= "Turret" or require("OMHTT/ControlClock").now() < control.recoverAt then return end
     local cycle = require("OMHTT/ControlCycle")
     cycle.blocked[object] = nil
     if cycle.request(object) then

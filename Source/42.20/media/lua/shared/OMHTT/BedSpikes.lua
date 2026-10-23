@@ -2,7 +2,7 @@ local F = require("OMHTT/Foundation")
 local B = {tiles = {}, nearby = {}, indexed = {}, count = 0, time = 0, session = tostring(getTimestampMs())}
 OMHTT_BedSpikes = B
 local ActiveTime = require("OMHTT/ActiveTime")
-local clock = ActiveTime.new()
+local clock = ActiveTime.new(true)
 local removing = false
 local enabled = nil
 local facings = {e = 0, n = 1, w = 2, s = 3}

@@ -90,11 +90,10 @@ function R.animate(now)
     local A = not isClient() and require("OMHTT/TurretAutomation")
     local started = D.enabled("turrets") and getTimestampMs()
     local speed = M.option("IdleSweepSpeed", 30, 0, 180)
-    local configuredCone = M.option("ForwardCone", 90, 10, 360)
     for object, entry in pairs(R.entries) do
         local state, automatic = T.state(object), A and A.entries[object]
         if state then
-            local elapsed = math.min(100, math.max(0, now - (entry.lastFrame or now))) / 1000
+            local elapsed = math.min(2000, math.max(0, now - (entry.lastFrame or now))) / 1000
             entry.lastFrame = now
             local lowered = not T.isOn(state) or state.standby == "asleep" or state.standby == "disabled"
             local goal = lowered and 45 or 0
@@ -109,7 +108,7 @@ function R.animate(now)
                 entry.visualHeading = state.aimDegrees
             elseif T.isOn(state) and state.standby ~= "asleep" and state.standby ~= "waking" and not state.facingPending and automatic and automatic.status == "no-target" and not Aim.entries[object] and entry.head and speed > 0 then
                 local profile = entry.profile
-                local cone = configuredCone
+                local cone = profile.cone
                 if profile.omni then
                     cone = 360
                 end
@@ -201,7 +200,7 @@ end
 function R.tick()
     R.restoreDraw()
     local now = getTimestampMs()
-    R.animate(now)
+    R.animate(require("OMHTT/TurretClock").now())
     if now - R.lastCheck < 1000 then return end
     R.lastCheck = now
     local deadline = now + 1

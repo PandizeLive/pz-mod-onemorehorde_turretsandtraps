@@ -16,7 +16,7 @@ def main():
     source = RAW / 'RadioZap_preview.wav'
     meta = json.loads((RAW / 'RadioZap.json').read_text())
     assert meta['event'] == 'event:/Object/Radio/Zap' and meta['playback_state'] in (2, 4)
-    run(FFMPEG, '-v', 'error', '-y', '-i', source, '-c:a', 'libvorbis', '-q:a', '4', OUTPUT)
+    run(FFMPEG, '-v', 'error', '-y', '-i', source, '-af', 'volume=14dB', '-c:a', 'libvorbis', '-q:a', '4', OUTPUT)
     sample = decode(OUTPUT)
     assert 0 < len(sample) < 48000 * 3 and 0 < np.abs(sample).max() < 1
     script = ROOT / 'Source/42.20/media/scripts/OMHTT_Sounds.txt'
@@ -36,7 +36,7 @@ def main():
                   output_sha256=hashlib.sha256(OUTPUT.read_bytes()).hexdigest(),
                   seconds=len(sample) / 48000, peak=float(np.abs(sample).max()),
                   rms=float(np.sqrt(np.mean(sample ** 2))), bytes=OUTPUT.stat().st_size,
-                  pitch=[.95, 1.05], playback_gain=.65, impact='DismantleFailed', impact_gain=.12,
+                  pitch=[.95, 1.05], normalization_db=14, playback_gain=1.3, impact='DismantleFailed', impact_gain=2,
                   impact_limit='Four starts per 100 wall-clock milliseconds per client')
     (ROOT / 'art/ARC_AUDIO_SELECTED.json').write_text(json.dumps(record, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(record))

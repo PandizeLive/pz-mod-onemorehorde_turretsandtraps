@@ -185,7 +185,7 @@ option OMHTurretsTraps.TrapsLootRateCapacity {
     type = double,
     default = 2.4,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootCapacity,
 }
@@ -194,7 +194,7 @@ option OMHTurretsTraps.TrapsLootRateCapacitySmall {
     type = double,
     default = 1.8666666666666667,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootCapacitySmall,
 }
@@ -203,7 +203,7 @@ option OMHTurretsTraps.TrapsLootRateCapacityLarge {
     type = double,
     default = 2,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootCapacityLarge,
 }

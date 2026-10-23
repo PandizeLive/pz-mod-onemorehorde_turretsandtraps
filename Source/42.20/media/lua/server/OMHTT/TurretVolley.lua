@@ -257,19 +257,19 @@ function V.finish(ray)
                         radius = owner.radius or 0, range = group.stats.range, siphon = owner.siphon, secondary = not primary})
                     local state = require("OMHTT/DefenseActorState").get(victim)
                     if not victim:isDead() and not victim:isOnFloor() and not victim:isKnockedDown()
-                        and (not state.OMHTTKnockdownUntilMs or state.OMHTTKnockdownUntilMs <= getTimestampMs())
+                        and (not state.OMHTTKnockdownUntilMs or state.OMHTTKnockdownUntilMs <= require("OMHTT/ControlClock").now())
                         and ZombRand(100) < group.stats.knockdown then
                         if require("OMHTT/DefenseMotion").request(victim, "knock", ray.id, ray.x, ray.y) then
-                            state.OMHTTKnockdownUntilMs = getTimestampMs() + combat.KNOCKDOWN_GUARD_MS
+                            state.OMHTTKnockdownUntilMs = require("OMHTT/ControlClock").now() + combat.KNOCKDOWN_GUARD_MS
                         end
                     end
                 end
                 if primary and group.stats.firearm and not victim:isDead() and not victim:isOnFloor() and not victim:isKnockedDown() then
                     local state = require("OMHTT/DefenseActorState").get(victim)
-                    if (not state.OMHTTKnockdownUntilMs or state.OMHTTKnockdownUntilMs <= getTimestampMs())
+                    if (not state.OMHTTKnockdownUntilMs or state.OMHTTKnockdownUntilMs <= require("OMHTT/ControlClock").now())
                         and ZombRand(100) < group.stats.knockdown then
                         if require("OMHTT/DefenseMotion").request(victim, "knock", ray.id, ray.x, ray.y) then
-                            state.OMHTTKnockdownUntilMs = getTimestampMs() + 3000
+                            state.OMHTTKnockdownUntilMs = require("OMHTT/ControlClock").now() + 3000
                         end
                     end
                 end
@@ -379,7 +379,11 @@ function V.tick()
             waiting = 0
             if group.kind == "fragment" and not group.sounded then
                 group.sounded = true
-                Proc.sound("OMHTTSuppressedM9Shoot", ray)
+                local stats = group.stats
+                local sound = stats.firearm and "OMHTTSuppressedM9Shoot" or stats.fireSound
+                if sound then
+                    Proc.sound(sound, ray, .45 * (stats.hearingMultiplier or 1))
+                end
             end
             local origin = getCell():getGridSquare(math.floor(ray.x), math.floor(ray.y), ray.z)
             local complete = false

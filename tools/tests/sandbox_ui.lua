@@ -19,12 +19,12 @@ function panel:getWidth() return self.width end
 function panel:insertNewLineOfButtons(control) self.joypadButtonsY[#self.joypadButtonsY+1]={control} end
 function panel:setScrollHeight(h) self.scrollHeight=h end
 function panel:prerender() self.originalCalled=true end
-check(SandboxOptionsScreen:createPanel(panel)==panel and #panel.children==4, "Potato page gains four headings")
+check(SandboxOptionsScreen:createPanel(panel)==panel and #panel.children==3, "Turret page omits empty groups and puts general first")
 panel:prerender()
-check(panel.originalCalled and panel.settingNames[1]=="OMHTurretsTraps.PotatoTurret" and panel.settingNames[4]=="OMHTurretsTraps.PotatoRequirePower", "Native panel remains active with grouped order")
+check(panel.originalCalled and panel.settingNames[1]=="OMHTurretsTraps.PotatoRequirePower" and panel.settingNames[3]=="OMHTurretsTraps.PotatoTurret", "Native panel remains active with grouped order")
 local height=panel.scrollHeight
 UI.attach(panel); panel.width=800; panel:prerender()
-check(#panel.children==4 and panel.scrollHeight==height and #panel.joypadButtonsY==4, "Resize and repeated attachment preserve layout and joypad rows")
+check(#panel.children==3 and panel.scrollHeight==height and #panel.joypadButtonsY==4, "Resize and repeated attachment preserve layout and joypad rows")
 local unrelated={controls={}}
 check(UI.attach(unrelated)==unrelated and unrelated.omhttTitles==nil, "Other mods' Sandbox pages untouched")
 local modules = {controls = {}, labels = {}, settingNames = {}, children = {}, width = 500}
@@ -58,8 +58,8 @@ traps.addChild, traps.getWidth, traps.insertNewLineOfButtons = panel.addChild, p
 traps.setScrollHeight, traps.prerender = panel.setScrollHeight, function() end
 ISServerSandboxOptionsUI:createPanel(traps)
 traps:prerender()
-check(#traps.children == 6 and traps.settingNames[1] == "OMHTurretsTraps.SpikeBarrier"
-    and traps.settingNames[2] == "OMHTurretsTraps.ReinforcedBarrierDamage"
-    and traps.settingNames[9] == "OMHTurretsTraps.BedScratchChance", "Trap damage precedes durability; shared player injuries have their own final heading")
+check(#traps.children == 5 and traps.settingNames[1] == "OMHTurretsTraps.BarbMovementDivisor"
+    and traps.settingNames[3] == "OMHTurretsTraps.SpikeBarrier"
+    and traps.settingNames[4] == "OMHTurretsTraps.ReinforcedBarrierDamage", "Shared contact rules precede grouped trap damage and durability")
 check(#traps.joypadButtonsY == #keys, "Server editing retains controller order for all settings")
 getTextManager=oldTextManager

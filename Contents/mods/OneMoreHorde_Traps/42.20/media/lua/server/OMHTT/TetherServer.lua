@@ -5,7 +5,7 @@ local Lane = require("OMHTT/TetherLane")
 local Mount = require("OMHTT/TetherMount")
 local Horde = require("OMHTT/DefenseHorde")
 local Active = require("OMHTT/ActiveTime")
-local S = {entries = setmetatable({}, {__mode = "k"}), clock = Active.new(), time = 0, serial = 0, session = tostring(getTimestampMs())}
+local S = {entries = setmetatable({}, {__mode = "k"}), clock = Active.new(true), time = 0, serial = 0, session = tostring(getTimestampMs())}
 ---@param key string Setting suffix
 ---@param default number Default
 ---@param low number Minimum
@@ -135,7 +135,7 @@ function S.step(object, state, pulse)
     end
     local linked, on, valid, leverAllowed = W.input(object, getTimestampMs())
     cycle.links, cycle.held = linked and 1 or 0, on
-    if cycle.phase == "idle" and object:getHealth() > 0 and getTimestampMs() >= state.recoverAt then
+    if cycle.phase == "idle" and object:getHealth() > 0 and require("OMHTT/ControlClock").now() >= state.recoverAt then
         local detected = false
         if not linked and S.time >= entry.scan then
             entry.scan = S.time + 200
@@ -166,7 +166,7 @@ end
 
 ---@return nil
 local function advance()
-    S.time = S.time + math.min(250, Active.step(S.clock))
+    S.time = S.time + Active.step(S.clock)
 end
 
 Events.OnTick.Add(advance)

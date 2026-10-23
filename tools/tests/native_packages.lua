@@ -100,17 +100,20 @@ local function checkPackages()
         SandboxVars.OMHTurretsTraps.Enabled = oldTraps
         require("OMHTT/ModuleLoot").loaded()
     end
-    local lootCount, packCount = 0, 0
+    local lootCount, packCount, manualCount = 0, 0, 0
     for _, pool in pairs(ProceduralDistributions.list) do
         for i = 1, #pool.items, 2 do
             if pool.items[i] == "Base.OMHTTModulePack" then
                 packCount = packCount + 1
             elseif string.sub(pool.items[i], 1, 10) == "Base.OMHTT" then
                 lootCount = lootCount + 1
+                if string.sub(pool.items[i],1,16) == "Base.OMHTTManual" then manualCount = manualCount + 1 end
             end
         end
     end
-    assert(lootCount == (expectedTurrets and 246 or 26), "Wrong component loot count " .. lootCount)
+    assert(lootCount == (expectedTurrets and 351 or 26), "Wrong component loot count " .. lootCount)
+    assert(manualCount == (expectedTurrets and 105 or 0), "Manual pools/package isolation")
+    assert((OMHTTTurretSpecialist ~= nil) == expectedTurrets, "Specialist registry package isolation")
     assert(packCount == (expectedTurrets and 16 or 0), "Wrong pack loot count " .. packCount)
     isServer, isClient = oldServer, oldClient
     print("[OMHTT-Packages] PASS traps=" .. tostring(expectedTraps) .. " turrets=" .. tostring(expectedTurrets)

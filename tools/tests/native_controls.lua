@@ -171,7 +171,7 @@ return function(player)
     assert(plate:getSpriteName() == "omhtt_turret_01_25", "Existing plate did not adopt inset sprite")
     assert(plate:getSpriteConfig():getTileInfo():getSpriteName() == "omhtt_turret_01_25", "Existing plate placement component was not migrated")
     local plateState = C.state(plate)
-    plateState.recoverAt = getTimestampMs() - 1
+    plateState.recoverAt = require("OMHTT/ControlClock").now() - 1
     local moving = square:getMovingObjects()
     local alreadyPresent = moving:contains(player)
     if not alreadyPresent then moving:add(player) end
@@ -421,6 +421,7 @@ return function(player)
     World.refresh(localTurret)
     C.state(button).recoverAt, C.state(localTurret).recoverAt = 0, 0
     assert(C.link(button,localTurret,true), "Native cycle input link failed")
+    C.state(button).pulseUntil = nil -- The earlier physical press has completed before this isolated cycle.
     local clockNow = Clock.now
     local activeNow = clockNow()
     Clock.now = function() return activeNow end
@@ -462,7 +463,7 @@ return function(player)
     output.controller = nil
     assert(not A.authorized(player, receiver), "Unassignment allowed stale remote writes")
     output.controller = host.id
-    local clock = getTimestampMs()
+    local clock = require("OMHTT/ControlClock").now()
     local inputSquare = IsoGridSquare.new(getCell(), nil, 38, 28, 0)
     local remotePlate = create("Plate", "floors_interior_tilesandwood_01_40", inputSquare)
     local remoteState = C.state(remotePlate)

@@ -382,3 +382,17 @@ function getCombatConfig()
 end
 
 function getActivatedMods() return {contains=function(_, id) return id=="OneMoreHorde_Turrets" end} end
+
+function getFileReader() return {readLine=function() return nil end, close=function() end} end
+PZAPI = {ModOptions = {data = {}}}
+function PZAPI.ModOptions:getOptions(id) return self.data[id] end
+function PZAPI.ModOptions:create(id)
+    local options = {dict = {}}
+    function options:getOption(key) return self.dict[key] end
+    function options:addTickBox(key, title, value) self.dict[key] = {getValue=function() return value end} end
+    function options:addSlider(key, title, low, high, step, value) self.dict[key] = {getValue=function() return value end} end
+    self.data[id] = options
+    return options
+end
+
+function getNumActivePlayers() return 0 end

@@ -2,7 +2,7 @@ if isServer() then return end
 local F = require("OMHTT/Foundation")
 local Effects = require("OMHTT/DefenseEffects")
 local Draw = require("OMHTT/ControlModelDraw")
-local Clock = require("OMHTT/TurretClock")
+local Light = require("OMHTT/TurretArcLight")
 local V = {bursts = {}, cursor = 1}
 
 ---@param module string Namespace
@@ -17,7 +17,7 @@ function V.receive(module, command, facts)
     local length = math.sqrt(dx * dx + dy * dy)
     if length < .01 or length > 70 or not Effects.accept(facts) then return end
     local count = math.min(32, math.max(3, math.ceil(length / .3)))
-    local burst = {untilTime = Clock.now() + 330, segments = {}, z = facts.z}
+    local burst = {untilTime = getTimestampMs() + 330, segments = {}, z = facts.z}
     local px, py, pz = facts.fromX, facts.fromY, .3
     for i = 1, count do
         local t = i / count
@@ -31,6 +31,7 @@ function V.receive(module, command, facts)
             scale = math.sqrt(horizontal * horizontal + sz * sz) / .3}
         px, py, pz = x, y, z
     end
+    Light.flash(facts.x, facts.y, facts.z)
     V.bursts[V.cursor] = burst
     V.cursor = V.cursor % 64 + 1
 end
@@ -39,7 +40,7 @@ end
 function V.render(index)
     local player, cell = getSpecificPlayer(index), getCell()
     if not player or not cell then return end
-    local now, budget = Clock.now(), 192
+    local now, budget = getTimestampMs(), 192
     for id, burst in pairs(V.bursts) do
         if now >= burst.untilTime then
             V.bursts[id] = nil

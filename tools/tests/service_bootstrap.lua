@@ -20,7 +20,7 @@ function instanceItem(kind)
         getCondition=function(self) return self.condition end, getConditionMax=function() return 100 end,
         setCondition=function(self,value) self.condition=value end}
 end
-function getGameTime() return {getMinutesPerDay = function() return 60 end, getMultiplier = function() return (0.1) * 48 end, getMultiplierFromTimeDelta = function() return 48 end} end
+function getGameTime() return {getMinutesPerDay = function() return 60 end, getWorldAgeHours = function() return testTime end, getMultiplier = function() return (0.1) * 48 end, getMultiplierFromTimeDelta = function() return 48 end} end
 
 function testPlayer:setIsFarming() end
 ISTimedActionQueue = {getTimedActionQueue = function() return {resetQueue = function() end} end}

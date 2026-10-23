@@ -57,8 +57,9 @@ testMillis = testMillis + 10000
 Clock.tick()
 check(Clock.now() == start, "Resume excludes pause time")
 testMillis = testMillis + 700
+testTime = testTime + 700 / 150000
 Clock.tick()
-check(Clock.now() == start + 700, "A lag spike advances cooldown by actual active elapsed time")
+check(math.abs(Clock.now() - start - 700) < .001, "World-time progress advances cooldown at normal speed")
 local ActiveTime = require("OMHTT/ActiveTime")
 local observed = ActiveTime.new()
 check(ActiveTime.step(observed) == 0, "Fresh clock cannot grant offline progress")

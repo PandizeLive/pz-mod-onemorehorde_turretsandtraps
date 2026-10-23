@@ -50,7 +50,7 @@ return function(player)
     for n = 1, #cases do
         local case = cases[n]
         local recipe = getScriptManager():getCraftRecipe("Base.OMHTTCraft" .. case[1])
-        assert(recipe and not recipe:needToBeLearn(), "Missing head recipe " .. case[1])
+        assert(recipe and recipe:needToBeLearn() == (case[1] ~= "RotaryBat"), "Missing head recipe " .. case[1])
         assert(math.abs(recipe:getTime() * 5 - case[4] * getGameTime():getMultiplierFromTimeDelta(1)) < .001, "Head recipe duration conversion")
         local inputs, tools = ArrayList.new(), {"Screwdriver", "Wrench", "Pliers"}
         for i = 1, #case[3] do tools[#tools + 1] = case[3][i] end

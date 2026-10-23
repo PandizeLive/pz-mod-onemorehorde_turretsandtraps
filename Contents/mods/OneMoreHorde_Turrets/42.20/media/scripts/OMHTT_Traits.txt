@@ -1,0 +1,13 @@
+module Base
+{
+    character_trait_definition omhtt:turretspecialist
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = omhtt:turretspecialist,
+        Cost = 2,
+        UIName = UI_trait_OMHTTTurretSpecialist,
+        UIDescription = UI_trait_OMHTTTurretSpecialistDesc,
+        GrantedRecipes = OMHTTCraftBallista;OMHTTCraftRotaryBlades;OMHTTCraftLobber;OMHTTCraftLobberImprovised;OMHTTCraftArc;OMHTTMountFirearm,
+    }
+}

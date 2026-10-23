@@ -97,7 +97,7 @@ check(tripper.bump == "OMHTTBedTrip" and tripper.variables.SprinterTripped == fa
 check(record.health == 50, "Requesting a fall does not charge damage or wear before landing")
 local zombie = makeZombie(square, 10)
 local impacts = 0
-function zombie:getEmitter() return {playSound = function(_, name)
+function zombie:getEmitter() return {setVolume = function() end, playSound = function(_, name)
     check(name == "SpearCraftedHit", "Bed impact uses the registered native crafted-spear hit")
     impacts = impacts + 1
 end} end

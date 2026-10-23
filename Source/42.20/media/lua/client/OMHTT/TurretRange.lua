@@ -155,7 +155,7 @@ function O.render()
         if not player or player:isDead() or not state or not square or object:getObjectIndex() < 0
             or getCell():getGridSquare(square:getX(), square:getY(), square:getZ()) ~= square then
             O.selected[index] = nil
-        elseif (entries.facing or SandboxVars.OMHTurretsTraps.ShowTurretRange ~= false)
+        elseif (entries.facing or require("OMHTT/ControlOptions").get("ShowRanges"))
             and math.floor(player:getZ()) == square:getZ() and square:isCanSee(index)
             and (player:getX() - square:getX()) ^ 2 + (player:getY() - square:getY()) ^ 2 <= 30 ^ 2 then
             local render = R.entries[object]

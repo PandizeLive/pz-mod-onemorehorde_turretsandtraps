@@ -9,4 +9,8 @@ module Base {
     item OMHTTTurretStateGreenVisual { DisplayName = OMH StateGreen Visual, ItemType = base:normal, Weight = 0, Hidden = true, Icon = ElectronicsScrap, WorldStaticModel = OMHTTStateGreen, }
     model OMHTTStateDark { mesh = OMHTT_StateDark, texture = OMHTT/StateDark, scale = 1.0, static = true, shader = basicEffect, }
     item OMHTTTurretStateDarkVisual { DisplayName = OMH StateDark Visual, ItemType = base:normal, Weight = 0, Hidden = true, Icon = ElectronicsScrap, WorldStaticModel = OMHTTStateDark, }
+    model OMHTTTrapLaserGreen { mesh = OMHTT_TetherCable, texture = OMHTT/StateGreen, scale = 1.0, static = true, shader = OMHTTEmissive, }
+    item OMHTTTrapLaserGreenVisual { DisplayName = OMH Laser Visual, ItemType = base:normal, Weight = 0, Hidden = true, Icon = ElectronicsScrap, WorldStaticModel = OMHTTTrapLaserGreen, }
+    model OMHTTTrapLaserRed { mesh = OMHTT_TetherCable, texture = OMHTT/StateRed, scale = 1.0, static = true, shader = OMHTTEmissive, }
+    item OMHTTTrapLaserRedVisual { DisplayName = OMH Laser Visual, ItemType = base:normal, Weight = 0, Hidden = true, Icon = ElectronicsScrap, WorldStaticModel = OMHTTTrapLaserRed, }
 }

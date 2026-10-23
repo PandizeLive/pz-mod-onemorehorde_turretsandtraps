@@ -310,7 +310,7 @@ option OMHTurretsTraps.RotaryBatteryHours {
 option OMHTurretsTraps.AutomationEnabled {
     type = boolean,
     default = true,
-    page = OMHTurretsTraps_AutomationPage,
+    page = OMHTurretsTraps_PotatoPage,
     translation = OMHTurretsTraps_AutomationEnabled,
 }
 
@@ -319,7 +319,7 @@ option OMHTurretsTraps.ForwardCone {
     min = 10,
     max = 360,
     default = 90,
-    page = OMHTurretsTraps_AutomationPage,
+    page = OMHTurretsTraps_PotatoPage,
     translation = OMHTurretsTraps_ForwardCone,
 }
 
@@ -328,7 +328,7 @@ option OMHTurretsTraps.DetectionInterval {
     min = 0.1,
     max = 5,
     default = 0.25,
-    page = OMHTurretsTraps_AutomationPage,
+    page = OMHTurretsTraps_PotatoPage,
     translation = OMHTurretsTraps_DetectionInterval,
 }
 
@@ -506,7 +506,7 @@ option OMHTurretsTraps.ModuleLootRate {
 option OMHTurretsTraps.LootRateFiring {
     type = double,
     min = 0,
-    max = 20,
+    max = 1000000,
     default = 0.4666666666666667,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootFiring,
@@ -515,7 +515,7 @@ option OMHTurretsTraps.LootRateFiring {
 option OMHTurretsTraps.LootRateMotionDetection {
     type = double,
     min = 0,
-    max = 20,
+    max = 1000000,
     default = 0.4666666666666667,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootMotionDetection,
@@ -524,7 +524,7 @@ option OMHTurretsTraps.LootRateMotionDetection {
 option OMHTurretsTraps.LootRateFilter {
     type = double,
     min = 0,
-    max = 20,
+    max = 1000000,
     default = 3.6,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootFilter,
@@ -533,7 +533,7 @@ option OMHTurretsTraps.LootRateFilter {
 option OMHTurretsTraps.LootRateDetection360 {
     type = double,
     min = 0,
-    max = 20,
+    max = 1000000,
     default = 4,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootDetection360,
@@ -543,7 +543,7 @@ option OMHTurretsTraps.LootRateRapidFire {
     type = double,
     default = 3.6,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRapidFire,
 }
@@ -551,7 +551,7 @@ option OMHTurretsTraps.LootRateRapidFire {
 option OMHTurretsTraps.LootRateSuppression {
     type = double,
     min = 0,
-    max = 20,
+    max = 1000000,
     default = 4,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootSuppression,
@@ -561,7 +561,7 @@ option OMHTurretsTraps.LootRateReload {
     type = double,
     default = 4,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootReload,
 }
@@ -570,7 +570,7 @@ option OMHTurretsTraps.LootRateAutoloader {
     type = double,
     default = 0.6666666666666666,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootAutoloader,
 }
@@ -579,7 +579,7 @@ option OMHTurretsTraps.LootRateVelocity {
     type = double,
     default = 2,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootVelocity,
 }
@@ -588,7 +588,7 @@ option OMHTurretsTraps.LootRateRange {
     type = double,
     default = 3.6,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRange,
 }
@@ -597,7 +597,7 @@ option OMHTurretsTraps.LootRateCapacity {
     type = double,
     default = 2.4,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootCapacity,
 }
@@ -606,7 +606,7 @@ option OMHTurretsTraps.LootRateCapacitySmall {
     type = double,
     default = 1.8666666666666667,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootCapacitySmall,
 }
@@ -615,7 +615,7 @@ option OMHTurretsTraps.LootRateCapacityLarge {
     type = double,
     default = 2,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootCapacityLarge,
 }
@@ -695,7 +695,7 @@ option OMHTurretsTraps.PotatoCriticalDamage {
 option OMHTurretsTraps.LootRateCritical {
     type = double,
     min = 0,
-    max = 20,
+    max = 1000000,
     default = 4,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootCritical,
@@ -704,7 +704,7 @@ option OMHTurretsTraps.LootRateCritical {
 option OMHTurretsTraps.LootRateAccuracy {
     type = double,
     min = 0,
-    max = 20,
+    max = 1000000,
     default = 4,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootAccuracy,
@@ -823,7 +823,7 @@ option OMHTurretsTraps.LootRateMagazine {
     type = double,
     default = 3.6,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRateMagazine,
 }
@@ -832,7 +832,7 @@ option OMHTurretsTraps.LootRateSplitter {
     type = double,
     default = 2.4,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRateSplitter,
 }
@@ -841,7 +841,7 @@ option OMHTurretsTraps.LootRateFragment {
     type = double,
     default = 1.2,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRateFragment,
 }
@@ -877,7 +877,7 @@ option OMHTurretsTraps.LootRateFiringEnhanced {
     type = double,
     default = 0.6666666666666666,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRateFiringEnhanced,
 }
@@ -886,7 +886,7 @@ option OMHTurretsTraps.LootRateMotionDetectionEnhanced {
     type = double,
     default = 0.6666666666666666,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRateMotionDetectionEnhanced,
 }
@@ -896,7 +896,7 @@ option OMHTurretsTraps.ModulePowerBonus {
     default = 5,
     min = 0,
     max = 200,
-    page = OMHTurretsTraps_PotatoPage,
+    page = OMHTurretsTraps_StatModulesPage,
     translation = OMHTurretsTraps_ModulePowerBonus,
 }
 
@@ -967,7 +967,7 @@ option OMHTurretsTraps.LootRatePiercing {
     type = double,
     default = 4,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRatePiercing,
 }
@@ -976,7 +976,7 @@ option OMHTurretsTraps.LootRateInitialBlow {
     type = double,
     default = 2.4,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRateInitialBlow,
 }
@@ -985,7 +985,7 @@ option OMHTurretsTraps.LootRateExecute {
     type = double,
     default = 1.2,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRateExecute,
 }
@@ -994,7 +994,7 @@ option OMHTurretsTraps.LootRateImpact {
     type = double,
     default = 2.4,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRateImpact,
 }
@@ -1003,7 +1003,7 @@ option OMHTurretsTraps.LootRateConservation {
     type = double,
     default = 2.4,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRateConservation,
 }
@@ -1012,7 +1012,7 @@ option OMHTurretsTraps.LootRateSynergy {
     type = double,
     default = 1,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRateSynergy,
 }
@@ -1021,7 +1021,7 @@ option OMHTurretsTraps.LootRateSiphon {
     type = double,
     default = 1,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRateSiphon,
 }
@@ -1030,7 +1030,7 @@ option OMHTurretsTraps.LootRateMartyrdom {
     type = double,
     default = 2,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRateMartyrdom,
 }
@@ -1039,7 +1039,7 @@ option OMHTurretsTraps.LootRateTack {
     type = double,
     default = 2,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRateTack,
 }
@@ -1098,7 +1098,7 @@ option OMHTurretsTraps.LootRateRegulator {
     type = double,
     default = 3.6363636363636362,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRateRegulator,
 }
@@ -1116,7 +1116,7 @@ option OMHTurretsTraps.PackZombieChance {
     type = double,
     min = 0,
     max = 100,
-    default = 15,
+    default = 7,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_PackZombieChance,
 }
@@ -1188,7 +1188,7 @@ option OMHTurretsTraps.LootRateLure {
     type = double,
     default = 1,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRateLure,
 }
@@ -1197,7 +1197,7 @@ option OMHTurretsTraps.LootRateVoid {
     type = double,
     default = 1,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRateVoid,
 }
@@ -1206,7 +1206,7 @@ option OMHTurretsTraps.LootRateGrid {
     type = double,
     default = 1,
     min = 0,
-    max = 20,
+    max = 1000000,
     page = OMHTurretsTraps_ModuleLootPage,
     translation = OMHTurretsTraps_LootRateGrid,
 }
@@ -1587,3 +1587,193 @@ option OMHTurretsTraps.ArcTargets { type = double, min = 1, max = 32, default = 
 option OMHTurretsTraps.ArcJumpRange { type = double, min = 1, max = 10, default = 4, page = OMHTurretsTraps_PotatoPage, translation = OMHTurretsTraps_ArcJumpRange, }
 
 option OMHTurretsTraps.ArcBatteryPercent { type = double, min = 0, max = 100, default = 0.02, page = OMHTurretsTraps_PotatoPage, translation = OMHTurretsTraps_ArcBatteryPercent, }
+
+option OMHTurretsTraps.LootRateManualBallista
+{
+    type = double,
+    min = -1,
+    max = 1000000,
+    default = -1,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootRateManualBallista,
+}
+
+option OMHTurretsTraps.LootRateManualRotaryBlades
+{
+    type = double,
+    min = -1,
+    max = 1000000,
+    default = -1,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootRateManualRotaryBlades,
+}
+
+option OMHTurretsTraps.LootRateManualLobber
+{
+    type = double,
+    min = -1,
+    max = 1000000,
+    default = -1,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootRateManualLobber,
+}
+
+option OMHTurretsTraps.LootRateManualArc
+{
+    type = double,
+    min = -1,
+    max = 1000000,
+    default = -1,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootRateManualArc,
+}
+
+option OMHTurretsTraps.LootRateManualFirearms
+{
+    type = double,
+    min = -1,
+    max = 1000000,
+    default = -1,
+    page = OMHTurretsTraps_ModuleLootPage,
+    translation = OMHTurretsTraps_LootRateManualFirearms,
+}
+
+option OMHTurretsTraps.RotaryBatForwardCone
+{
+    type = double,
+    min = -1,
+    max = 360,
+    default = -1,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_RotaryBatForwardCone,
+}
+
+option OMHTurretsTraps.RotaryBatHearingRadius
+{
+    type = double,
+    min = -1,
+    max = 200,
+    default = -1,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_RotaryBatHearingRadius,
+}
+
+option OMHTurretsTraps.RotaryBladesForwardCone
+{
+    type = double,
+    min = -1,
+    max = 360,
+    default = -1,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_RotaryBladesForwardCone,
+}
+
+option OMHTurretsTraps.RotaryBladesHearingRadius
+{
+    type = double,
+    min = -1,
+    max = 200,
+    default = -1,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_RotaryBladesHearingRadius,
+}
+
+option OMHTurretsTraps.PotatoForwardCone
+{
+    type = double,
+    min = -1,
+    max = 360,
+    default = -1,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_PotatoForwardCone,
+}
+
+option OMHTurretsTraps.ScrapshotForwardCone
+{
+    type = double,
+    min = -1,
+    max = 360,
+    default = -1,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_ScrapshotForwardCone,
+}
+
+option OMHTurretsTraps.ScrapshotHearingRadius
+{
+    type = double,
+    min = -1,
+    max = 200,
+    default = -1,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_ScrapshotHearingRadius,
+}
+
+option OMHTurretsTraps.BallistaForwardCone
+{
+    type = double,
+    min = -1,
+    max = 360,
+    default = -1,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_BallistaForwardCone,
+}
+
+option OMHTurretsTraps.BallistaHearingRadius
+{
+    type = double,
+    min = -1,
+    max = 200,
+    default = -1,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_BallistaHearingRadius,
+}
+
+option OMHTurretsTraps.ArcForwardCone
+{
+    type = double,
+    min = -1,
+    max = 360,
+    default = -1,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_ArcForwardCone,
+}
+
+option OMHTurretsTraps.ArcHearingRadius
+{
+    type = double,
+    min = -1,
+    max = 200,
+    default = -1,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_ArcHearingRadius,
+}
+
+option OMHTurretsTraps.LobberForwardCone
+{
+    type = double,
+    min = -1,
+    max = 360,
+    default = -1,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_LobberForwardCone,
+}
+
+option OMHTurretsTraps.LobberHearingRadius
+{
+    type = double,
+    min = -1,
+    max = 200,
+    default = -1,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_LobberHearingRadius,
+}
+
+option OMHTurretsTraps.FirearmForwardCone
+{
+    type = double,
+    min = -1,
+    max = 360,
+    default = -1,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_FirearmForwardCone,
+}

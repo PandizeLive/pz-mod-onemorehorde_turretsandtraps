@@ -2163,3 +2163,10 @@ This checkpoint adds research/approval records only. Corrective implementation r
 - Keep the separately selected manual knowledge gates, five manual rarities, normal OMHTT container plus literature sources, exclusion from packs, two-point knowledge-only Turret Specialist and 7% packs with three module/kit rewards. Preserve owner Sandbox/LootLab overrides. Makeshift Detection remains sensor-free.
 - Recipe knowledge changes are still part of the plan; "keep current recipes" does not undo them. No progression design decision remains. Previously selected corrective scope remains outstanding; do not invent another balance questionnaire or imply implementation is complete.
 - Documentation only; no gameplay/source/assets/version/install/test-result or Workshop changes. Installed 0.2.64.4 remains; no fresh runtime pass. C108/C119 mirror required. **Wait for a patch**; no new build or background work claimed.
+
+
+## C437 - Approved implementation and local build (2026-10-23)
+
+Owner: "Approved", following C436 selection 1C. Implement the settled C429/C433-C436 manual/trait/loot plan and earlier C428/C429 corrective scope together. No additional recipe ingredients, skills, tools, durations or XP changes. Native literature handles reading and persistence; native trait registration grants six known-recipe IDs (five manual subjects), cost two, no gear or XP. Firearms knowledge is checked by client transfer admission and authoritative transfer completion. Existing mounted guns remain usable. New manuals inherit their selected loaded rarity anchors unless an explicit numeric override is saved; module packs exclude manuals. Existing numeric loot tuning is not rounded or reset. Local LootLab includes all five new entries and actual literature routes; hosted publication remains separate and unperformed.
+
+Implementation and test evidence are in PATCH_v0.2.65.md and TEST_v0.2.65.md. Rendering/listening and connected-player acceptance remain distinct from native zero-client checks. No Workshop upload, PR merge, hosted deployment or new materials rebalance is authorized by this checkpoint.

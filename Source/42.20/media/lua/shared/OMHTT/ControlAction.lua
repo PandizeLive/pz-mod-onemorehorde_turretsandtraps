@@ -95,7 +95,7 @@ function Action:complete()
         W.updateInput(self.object, state.latched)
     elseif self.command == "Pulse" then
         if not require("OMHTT/ControlPower").trigger(self.object, require("OMHTT/ControlConsumption").rate("Button") / 100) then return false end
-        state.pulseUntil = getTimestampMs() + 1
+        state.pulseUntil = require("OMHTT/ControlClock").now() + 1
         for i = 1, #state.links do
             local target = W.objects[state.links[i]]
             if target and A.range(self.object, target) then

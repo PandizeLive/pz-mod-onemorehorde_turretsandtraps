@@ -31,13 +31,14 @@ def main():
     option_sets = {}
     for component, files in packages.items():
         lua = {Path(name).with_suffix("").as_posix().split("/lua/", 1)[1].split("/", 1)[1]: data.decode()
-               for name, data in files.items() if name.endswith(".lua")}
+               for name, data in files.items() if name.endswith(".lua") and "/lua/" in name}
         for name, text in lua.items():
             for match in re.finditer(r'require\("(OMHTT/[^"\n]+)"\)', text):
                 dependency = match[1]
                 if dependency not in lua:
                     line = text[text.rfind('\n', 0, match.start()) + 1:match.start()]
                     assert dependency in (OPTIONAL_TRAPS if component == 'traps' else OPTIONAL_TURRETS).get(name, set()) and line.startswith('    '), f"{component}: {name} requires absent {dependency}"
+        assert ("42.20/media/registries.lua" in files) == (component == "turrets"), "Trait registry package independence"
         adapter = "OMHTT/BarrierPlacement" if component == "traps" else "OMHTT/TurretInstall"
         assert adapter in lua and "OMHTT/HybridBuild" in lua, "Missing component Building adapter"
         for module in ["TetherCycle", "TetherLane", "TetherMount"]:

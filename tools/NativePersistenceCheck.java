@@ -94,7 +94,34 @@ public final class NativePersistenceCheck {
         System.out.println("[OMHTT-C370] native-placement durations=1000/2000/5000 constructorArgs=exact serialized=true");
     }
 
+    private static void verifyProgression(Path directory, String mode) throws Exception {
+        Object env = Class.forName("zombie.Lua.LuaManager").getField("env").get(null);
+        Class<?> cellType = Class.forName("zombie.iso.IsoCell");
+        Class<?> worldType = Class.forName("zombie.iso.IsoWorld");
+        Object cell = worldType.getField("currentCell").get(worldType.getField("instance").get(null));
+        int version = ((Number)worldType.getMethod("getWorldVersion").invoke(null)).intValue();
+        Files.createDirectories(directory);
+        for (String key : new String[]{"OMHTT_C437ManualPlayer", "OMHTT_C437Specialist"}) {
+            Object player = call(env, "rawget", new Class<?>[]{Object.class}, key);
+            Path path = directory.resolve(key + ".bin");
+            if (mode.equals("write")) {
+                ByteBuffer buffer = ByteBuffer.allocate(4 * 1024 * 1024);
+                call(player, "save", new Class<?>[]{ByteBuffer.class, boolean.class}, buffer, false);
+                Files.write(path, Arrays.copyOf(buffer.array(), buffer.position()));
+            }
+            Object restored = player.getClass().getConstructor(cellType).newInstance(cell);
+            ByteBuffer input = ByteBuffer.wrap(Files.readAllBytes(path));
+            call(restored, "load", new Class<?>[]{ByteBuffer.class, int.class, boolean.class}, input, version, false);
+            List<?> recipes = (List<?>)get(restored, "getKnownRecipes");
+            for (String recipe : new String[]{"OMHTTCraftBallista","OMHTTCraftRotaryBlades","OMHTTCraftLobber","OMHTTCraftLobberImprovised","OMHTTCraftArc","OMHTTMountFirearm"}) {
+                check(recipes.contains(recipe), "Manual/trait knowledge lost on native save: " + recipe);
+            }
+        }
+        System.out.println("[OMHTT-C437] native-knowledge persistence=" + mode + " characters=2 recipes=6");
+    }
+
     private static void verify(Path directory, String mode) throws Exception {
+        verifyProgression(directory, mode);
         verifyPlacement();
         verifyTurret(directory, mode);
         verifyHeavyController(directory, mode);

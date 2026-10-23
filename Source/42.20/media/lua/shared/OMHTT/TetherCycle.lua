@@ -69,7 +69,7 @@ function C.step(state, elapsed, cast, hit, pull)
     end
     for i = 1, 8 do
         if state.debt <= .000001 or state.phase == "idle" then break end
-        local dt = math.min(.05, state.debt)
+        local dt = math.min(math.max(.05, elapsed / 8), state.debt)
         state.debt = state.debt - dt
         if state.phase == "out" then
             local destination = math.min(state.range, state.distance + state.speed * dt)

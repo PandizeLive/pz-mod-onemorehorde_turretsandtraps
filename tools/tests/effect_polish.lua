@@ -59,7 +59,7 @@ now = now + 250
 for i = 1, 200 do V.tick() end
 check(#V.queue == 0 and V.reserved == 0 and E.reservedJobs == 0 and E.reservedFields == 0,
     "Restored lineage releases every admission credit")
-check(#sounds == before + 1 and sounds[#sounds].name == "OMHTTSuppressedM9Shoot", "One suppressed pistol cue per fragment burst")
+check(#sounds == before + 1 and sounds[#sounds].name == "OMHTTPotatoFire", "Non-firearm fragments inherit the originating head cue")
 local rarity = require("OMHTT/TurretRarity")
 rarity.refresh({})
 for name in pairs(require("OMHTT/LootDefinitions").WEIGHTS) do

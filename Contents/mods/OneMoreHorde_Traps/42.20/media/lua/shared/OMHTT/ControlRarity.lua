@@ -72,13 +72,16 @@ function R.refresh(settings)
         end
     end
     local weights, low, high, baseLow, baseHigh = {}, math.huge, 0, math.huge, 0
-    for name, base in pairs(L.WEIGHTS) do
+    for name, base in pairs(L.CATALOG) do
         baseLow, baseHigh = math.min(baseLow, base), math.max(baseHigh, base)
         local multiplier = settings["LootRate" .. name]
         if type(multiplier) ~= "number" then
-            multiplier = L.DEFAULTS.items[name]
+            multiplier = L.MANUALS[name] and -1 or L.DEFAULTS.items[name]
         end
-        local weight = base * math.max(0, math.min(20, multiplier))
+        if L.MANUALS[name] and multiplier < 0 then
+            multiplier = anchors and anchors[L.MANUALS[name]] or L.DEFAULTS.items[name]
+        end
+        local weight = base * math.max(0, math.min(1000000, multiplier))
         if settings.ModuleLootRate == 0 then
             weight = 0
         end
@@ -92,7 +95,7 @@ function R.refresh(settings)
         local band
         if weight <= 0 then
             -- Owned items remain usable when their loot is disabled.
-            band = classify(L.WEIGHTS[name], baseLow, baseHigh, boundaries)
+            band = classify(L.CATALOG[name], baseLow, baseHigh, boundaries)
         else
             band = classify(weight, low, high, boundaries)
         end

@@ -23,7 +23,8 @@ function R.start(player, object, signal)
     local state = T.state(object)
     local auto = require("OMHTT/TurretAutomation").entries[object]
     if not player and contents.active.MotionDetection and not require("OMHTT/TurretStandby").step(object, contents, auto and auto.detectedTarget) then return "Waking" end
-    state.rotaryManual = Clock.now() + 90000 / stats.motorSpeed
+    local profile = M.profile(state, contents, false, stats)
+    state.rotaryManual = Clock.now() + (profile.omni and 90 or profile.cone) * 1000 / stats.motorSpeed
     return "Fired"
 end
 
@@ -60,7 +61,7 @@ function R.contact(entry, actor, job)
     end
     if not job.moving or not T.isOn(T.state(entry.object)) then return end
     if Clock.now() - job.at > 150 then return end
-    local arm, pass = Heads.crossing(bearing, job.before, job.after, job.profile.omni)
+    local arm, pass = Heads.crossing(bearing, job.before, job.after, job.profile.omni, job.profile.cone)
     if not arm then return end
     if player then
         R.injure(actor, job.stats.headKind == "RotaryBlades", Clock.now(), entry.object)
@@ -89,8 +90,8 @@ function R.contact(entry, actor, job)
         end
         Proc.release(proc)
     end)
-    if Clock.now() >= (entry.soundAt or 0) then
-        entry.soundAt = Clock.now() + 150
+    if getTimestampMs() >= (entry.soundAt or 0) then
+        entry.soundAt = getTimestampMs() + 150
         local radius = require("OMHTT/TurretStats").hearingRadius(entry.rotaryHead, job.stats)
         if radius > 0 then
             Horde.sound(entry.object, origin:getX(), origin:getY(), origin:getZ(), radius, 10)
@@ -147,7 +148,7 @@ function R.step(entry, deadline)
     local wants = manual or (automatic and entry.hasTarget and ready)
     local moving = state.rotaryMoving == true
     if moving and not wants and entry.stopAt == nil then
-        local span = profile.omni and 180 or 90
+        local span = profile.omni and 180 or profile.cone
         entry.stopAt = (math.floor(entry.travel / span) + 1) * span
     elseif wants then
         entry.stopAt = nil
@@ -201,14 +202,14 @@ function R.step(entry, deadline)
                 require("OMHTT/TurretPowerSync").changed(power.generator)
             end
             entry.travel = before + travel
-            entry.siphonEnergy = Siphon.motor(entry, power, stats, spent, before, entry.travel, profile.omni)
+            entry.siphonEnergy = Siphon.motor(entry, power, stats, spent, before, entry.travel, profile.omni, profile.cone)
         end
         if entry.stopAt and entry.travel >= entry.stopAt then
             moving = false
         end
     end
     state.rotaryMoving = moving
-    local angle = Heads.motion(entry.travel, profile.omni)
+    local angle = Heads.motion(entry.travel, profile.omni, profile.cone)
     state.aimDegrees = (profile.heading + angle + 360) % 360
     if not entry.rotaryJob then
         if not moving and not manual and (not automatic or now < (entry.rotaryScanAt or 0)) then return true end

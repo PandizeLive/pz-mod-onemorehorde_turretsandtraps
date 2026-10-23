@@ -158,8 +158,9 @@ testMillis = testMillis + 10000
 B.tick()
 check(B.time == before, "First resumed sample excludes the paused interval")
 testMillis = testMillis + 700
+testTime = testTime + 700 / 150000
 B.tick()
-check(B.time == before + 700, "Active stalls preserve elapsed contact time")
+check(math.abs(B.time - before - 700) < .001, "World-time progress preserves elapsed contact time")
 B.initialize()
 for x = -1, 1 do
     for y = -1, 1 do B.index({id = "wire-" .. x .. ":" .. y, kind = "wire", x = x, y = y, z = 0}, true) end

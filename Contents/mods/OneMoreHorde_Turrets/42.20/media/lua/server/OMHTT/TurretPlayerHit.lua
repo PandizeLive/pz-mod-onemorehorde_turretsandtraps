@@ -43,7 +43,7 @@ function H.hit(player, options, kind, fraction)
     if not Combat.protected(options.playerSource, player) then return false end
     local profile = profiles[kind or H.kind(options)]
     if not profile then return false end
-    local now = getTimestampMs()
+    local now = require("OMHTT/ControlClock").now()
     local contact = contacts[player]
     if profile.interval and contact and now < (contact[kind] or 0) then return false end
     local settings = SandboxVars.OMHTurretsTraps or {}

@@ -4,7 +4,7 @@ module Base {
         texture = OMHTT/Arc,
         scale = 1.0,
         static = true,
-        shader = basicEffect,
+        shader = OMHTTEmissive,
     }
     item OMHTTTurretArcVisual {
         DisplayName = OMH Arc Visual,

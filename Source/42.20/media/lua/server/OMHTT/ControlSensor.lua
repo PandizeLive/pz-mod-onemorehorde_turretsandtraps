@@ -29,6 +29,7 @@ function S.step(object,state)
         S.remove(object)
         local changed = state.beamLength ~= 0
         state.beamLength=0
+        state.beamVisualLength=0
         W.updateInput(object,false,false)
         if changed then W.publish(object) end
         return
@@ -54,7 +55,7 @@ function S.step(object,state)
             end
         end
     end
-    local occupied=false
+    local occupied, visualLength = false, entry.length
     for i=1,#entry.keys do
         local tile=entry.squares[i]
         local square=getCell():getGridSquare(tile.x,tile.y,tile.z)
@@ -62,13 +63,20 @@ function S.step(object,state)
         if objects then
             for j=0,math.min(127,objects:size()-1) do
                 local actor=objects:get(j)
-                if actorValid(actor,entry.z) and Beam.cross(entry,actor:getX(),actor:getY(),actor:getX(),actor:getY()) then occupied=true; break end
+                if actorValid(actor,entry.z) and Beam.cross(entry,actor:getX(),actor:getY(),actor:getX(),actor:getY()) then
+                    occupied = true
+                    local forward = (actor:getX() - entry.x) * entry.dx + (actor:getY() - entry.y) * entry.dy
+                    visualLength = math.min(visualLength, math.max(0, forward - .3))
+                end
             end
         end
-        if occupied then break end
+    end
+    if state.beamVisualLength == nil or math.abs(state.beamVisualLength - visualLength) > .025 then
+        state.beamVisualLength = visualLength
+        changed = true
     end
     state.beamX,state.beamY,state.beamDX,state.beamDY,state.beamLength=entry.x,entry.y,entry.dx,entry.dy,entry.length
-    W.updateInput(object,occupied or getTimestampMs()<(entry.crossedUntil or 0))
+    W.updateInput(object,occupied or require("OMHTT/ControlClock").now()<(entry.crossedUntil or 0))
     if changed then W.publish(object) end
 end
 function S.actor(actor)
@@ -92,7 +100,7 @@ function S.actor(actor)
                         local length=entry.length
                         entry.length=Beam.length(entry,math.min(length,require("OMHTT/ControlAccess").laserRange()))
                         if Beam.cross(entry,ax,ay,x,y) then
-                            entry.crossedUntil=getTimestampMs()+150
+                            entry.crossedUntil=require("OMHTT/ControlClock").now()+150
                             W.updateInput(object,true)
                             -- Admit this crossing now; no delayed historical Button-like replay.
                             if state.active then

@@ -32,7 +32,21 @@ end
 ---@param resolved table? Already resolved operation stats
 function M.profile(state, contents, automatic, resolved)
     local active = contents.active
-    local cone = M.option("ForwardCone", 90, 10, 360)
+    local stats = resolved or T.cycleConfig(contents)
+    local key = stats.headKind or (stats.firearm and "Firearm" or "Potato")
+    local legacy = M.option("ForwardCone", 90, 10, 360)
+    local inherited = legacy
+    if legacy < 360 then
+        inherited = stats.cone or legacy
+        if stats.rotary then
+            inherited = 90
+        end
+    end
+    local cone = M.option(key .. "ForwardCone", -1, -1, 360)
+    if cone < 0 then
+        cone = inherited
+    end
+    cone = math.max(10, cone)
     if active.Detection360 then
         cone = 360
     end
@@ -45,17 +59,9 @@ function M.profile(state, contents, automatic, resolved)
             end
         end
     end
-    local stats = resolved or T.cycleConfig(contents)
-    if cone < 360 then
-        if stats.rotary then
-            cone = 90
-        elseif stats.cone then
-            cone = stats.cone
-        end
-    end
     local range = stats.range
     if automatic and active.MotionDetectionImprovised then range = range * 0.75 end
-    return {rotary = stats.rotary, stats = stats, heading = M.heading(state), cone = cone, omni = active.Detection360 ~= nil,
+    return {rotary = stats.rotary, stats = stats, heading = M.heading(state), cone = cone, omni = cone >= 360,
         range = stats.rotary and not automatic and stats.range or math.min(range, state.engagementRange or 100000), priority = priority}
 end
 
@@ -104,7 +110,7 @@ function M.detects(state, contents)
     local enabled = SandboxVars.OMHTurretsTraps.PotatoTurret ~= false
     if require("OMHTT/TurretHeads").get(contents.head) then enabled = true end
     if gun.profile(contents.head) then enabled = gun.enabled() end
-    return enabled and T.enabled() and SandboxVars.OMHTurretsTraps.AutomationEnabled ~= false and T.isOn(state)
+    return enabled and T.enabled() and T.isOn(state)
         and contents.heads == 1 and contents.head:getCondition() > 0 and contents.active.MotionDetection ~= nil
 end
 

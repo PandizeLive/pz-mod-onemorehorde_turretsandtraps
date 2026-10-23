@@ -186,3 +186,5 @@ function ISButton:setImage(value) self.image=value end
 function ISPanel:drawTextureScaled(texture,x,y,w,h) end
 
 ISInventoryItem = ISInventoryItem or {renderItemIcon = function() end}
+
+function getFileReader() return {readLine=function() return nil end, close=function() end} end

@@ -7,7 +7,7 @@ const require=createRequire(import.meta.url);
 const model=require('../../../art/loot-tuner/model.js');
 const data=JSON.parse(readFileSync(new URL('../../../art/loot-tuner/data.js',import.meta.url),'utf8').replace(/^window.LOOT_DATA=/,'').trim().replace(/;$/,''));
 const fresh=model.defaults(data);
-test('cloud schema matches all 33 local module controls',()=>{
+test('cloud schema matches all 38 local catalog controls',()=>{
  assert.deepEqual(MODULES,Object.keys(fresh.items));
  assert.deepEqual(validateScenario(fresh),fresh);
 });
@@ -47,4 +47,23 @@ test('Grid upgrades prior patch versions without changing any saved weights or t
   assert.equal(Object.values(data.pools).filter(p=>p.modules.includes('Grid')).length,13);
  }
  const custom=structuredClone(fresh);custom.items.Grid=.625;assert.equal(upgradeScenario(custom).items.Grid,.625);
+});
+
+test('previous corrective builds preserve custom tuning while adding manuals',()=>{
+ const old=structuredClone(fresh);old.baseline='T&T 0.2.64.4';old.global=1.011111111111111;old.items.Range=.47321;
+ for(const key of MODULES.filter(x=>x.startsWith('Manual'))){delete old.items[key];delete old.visible[key];}
+ const local=model.validate(old,data),cloud=upgradeScenario(old);
+ assert.equal(local.global,old.global);assert.equal(local.items.Range,old.items.Range);
+ assert.deepEqual(local,cloud);assert.equal(local.items.ManualArc,6);
+});
+
+test('new manuals inherit saved tier anchors without retuning explicit item weights',()=>{
+ const old=structuredClone(fresh);old.baseline='T&T 0.2.64.4';
+ old.tierWeights.Uncommon=24;old.tierWeights.Epic=8;old.items.Range=.47321;
+ for(const key of MODULES.filter(x=>x.startsWith('Manual'))){delete old.items[key];delete old.visible[key];}
+ old.items.ManualFirearms=.625;old.visible.ManualFirearms=false;
+ const local=model.validate(old,data),cloud=upgradeScenario(old);
+ assert.deepEqual(local,cloud);assert.equal(local.items.ManualBallista,24);
+ assert.equal(local.items.ManualArc,8);assert.equal(local.items.ManualFirearms,.625);
+ assert.equal(local.visible.ManualFirearms,false);assert.equal(local.items.Range,.47321);
 });

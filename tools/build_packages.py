@@ -22,6 +22,10 @@ def owner(path):
         return set()
     if name == "icon.png" or "/Translate/" in relative:
         return set(IDS)
+    if name == "registries.lua":
+        return {"turrets"}
+    if "/shaders/" in relative:
+        return set(IDS)
     if path.suffix == ".lua":
         if path.stem in SHARED_LUA or path.stem.startswith("Control") or path.stem in {"TurretBattery", "TurretItemState"}:
             return set(IDS)

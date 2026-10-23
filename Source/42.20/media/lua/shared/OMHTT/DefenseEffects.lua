@@ -62,7 +62,7 @@ function E.contact(name, actor, gain)
     else
         local emitter = actor:getEmitter()
         local handle = emitter:playSound(name)
-        if gain ~= 1 then emitter:setVolume(handle, gain) end
+        emitter:setVolume(handle, gain * require("OMHTT/ControlOptions").volume())
     end
 end
 
@@ -75,7 +75,7 @@ function E.receive(module, command, facts)
     if not E.accept(facts) then return end
     local emitter = getWorld():getFreeEmitter(facts.x, facts.y, facts.z)
     local handle = emitter:playSound(facts.sound)
-    emitter:setVolume(handle, facts.gain)
+    emitter:setVolume(handle, facts.gain * require("OMHTT/ControlOptions").volume())
 end
 
 Events.OnServerCommand.Add(E.receive)

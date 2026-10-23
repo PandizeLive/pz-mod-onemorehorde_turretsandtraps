@@ -1,6 +1,6 @@
 # C429 - Selected corrections and starting-character progression
 
-**Current direction, C436 (2026-10-23):** owner selects C435 1C: retain current crafting costs, skills, tools, durations and XP; reject the C431 added components and skill increases. The selected manual knowledge gates remain. Ballista/Rotary Blade manuals are Uncommon, Lobber/Firearms Rare, Arc Epic; normal OMHTT containers plus book/magazine sources, no module-pack manuals. Two-point Turret Specialist starts with all five manuals' knowledge. Keep 7% zombie packs, three module/kit rewards and owner tuning. No progression design choice remains; implementation of this plan and prior corrections is outstanding. Installed 0.2.64.4 is unchanged.
+**C436 approved contract (2026-10-23; implemented by C437 below):** owner selects C435 1C: retain current crafting costs, skills, tools, durations and XP; reject the C431 added components and skill increases. The selected manual knowledge gates remain. Ballista/Rotary Blade manuals are Uncommon, Lobber/Firearms Rare, Arc Epic; normal OMHTT containers plus book/magazine sources, no module-pack manuals. Two-point Turret Specialist starts with all five manuals' knowledge. Keep 7% zombie packs, three module/kit rewards and owner tuning. C437 implements this plan and the prior corrections in 0.2.65; see [patch](PATCH_v0.2.65.md) and [verification](TEST_v0.2.65.md) for current installation/acceptance evidence.
 
 2026-10-22. Owner selects C428 **1A / 2A / 3A**, requests a Forward Cone setting for every head instead of the shared default, asks to consider high starting skills and other craftables/mods such as Angry Turrets, then explicitly adds the difficulty/time of leveling each skill.
 
@@ -395,3 +395,8 @@ Owner: "1C". This explicitly selects C435's keep-current-recipes option while re
 - C428/C429 corrective scope remains selected and outstanding. No additional design questionnaire or repeat selection is needed. Native implementation, persistence/package checks and player acceptance remain work, not assumed successes.
 
 Documentation-only checkpoint: no source/assets, version/package/install, Workshop changelog or test-result changes. Installed 0.2.64.4 remains. C108/C119 documentation mirror required. **Wait for a patch**; no new build or background implementation is claimed by this record.
+
+
+## C437 - Implementation
+
+Owner approved the settled contract. Native 42.21 manual learning, custom trait registration/creation knowledge and character serialization are used. Fresh manuals inherit Uncommon/Rare/Epic loaded anchors via an internal unset sentinel; explicit zero disables drops and explicit custom numbers win. Normal module distribution subsets stay unchanged; manuals join all 16 normal OMHTT pools plus LibraryBooks, BookstoreBlueCollar, BookstoreScience, LivingRoomShelf and MagazineRackMixed. Existing literature is preserved. Five craft definitions require learned knowledge; Firearms adds an installation knowledge marker. Local LootLab re-extracts native book/magazine routes and exports the same effective numeric weights. No hosted publication is included. See the versioned verification for pending visual, listening and connected-multiplayer acceptance.

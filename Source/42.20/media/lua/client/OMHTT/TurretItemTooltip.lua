@@ -8,7 +8,9 @@ function U.footer(panel, component)
     local tip = panel.tooltip
     local height, spacing = panel:getHeight(), tip:getLineSpacing()
     local description, headRating
-    if component then
+    if component and string.sub(component, 1, 6) == "Manual" then
+        description = getText("UI_OMHTT_ModuleRarity", getText("UI_OMHTT_Rarity" .. R.get(component).band))
+    elseif component then
         description = require("OMHTT/TurretDescriptions").get(component, false)
         if component == "Void" then
             description = description .. "\n" .. require("OMHTT/TurretVoid").description(panel.item)

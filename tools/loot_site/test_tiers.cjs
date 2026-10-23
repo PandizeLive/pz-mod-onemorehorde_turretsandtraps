@@ -11,7 +11,7 @@ draft.weights.Regulator=3.25;draft.custom.Regulator=true;
 const next=T.confirm(draft,modules,weights);assert.equal(next.Regulator,3.25);assert.equal(next.Firing,weights.Firing);
 assert.throws(()=>T.confirm(draft,modules,{...weights,Regulator:10}),/Saved weights changed/);
 assert(T.assign(draft,reg,-1));assert.deepEqual(T.confirm(draft,modules,weights),weights);
-draft.tiers[0]=reg.weight*20+1;assert(!T.assign(draft,reg,0));
+draft.tiers[0]=reg.weight*1000000+1;assert(!T.assign(draft,reg,0));
 const zero=Object.fromEntries(modules.map(m=>[m.id,0]));assert(Object.values(T.bands(modules,zero)).every(x=>x===-1));
 const equal=Object.fromEntries(modules.map(m=>[m.id,2]));assert(Object.values(T.bands(modules,equal)).every(x=>x===0));
 assert.deepEqual(T.colors,['#82aeff','#73ccff','#59e666','#fffa4d','#ff9433','#ff2e2e','#420d82']);

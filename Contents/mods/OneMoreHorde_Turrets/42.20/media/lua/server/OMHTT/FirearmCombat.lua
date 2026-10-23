@@ -64,7 +64,7 @@ function C.hit(record, origin, target, player, options)
                     if not victim:isDead() and not victim:isOnFloor() and not victim:isKnockedDown()
                         and (not guard or guard < getTimestampMs()) and ZombRand(10000) < chance * 10000 then
                         if require("OMHTT/DefenseMotion").request(victim, "knock", record.id) then
-                            require("OMHTT/DefenseActorState").get(victim).OMHTTKnockdownUntilMs = getTimestampMs() + Combat.KNOCKDOWN_GUARD_MS
+                            require("OMHTT/DefenseActorState").get(victim).OMHTTKnockdownUntilMs = require("OMHTT/ControlClock").now() + Combat.KNOCKDOWN_GUARD_MS
                         end
                     end
                     Conditional.impact(victim, origin, options)

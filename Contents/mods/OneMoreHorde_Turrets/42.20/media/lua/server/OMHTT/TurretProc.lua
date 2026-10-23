@@ -145,11 +145,11 @@ end
 ---@param name string Native or owned sound script
 ---@param effect table Captured position
 ---@return nil
-function E.sound(name, effect)
-    local now = Clock.now()
+function E.sound(name, effect, gain)
+    local now = getTimestampMs()
     if E.audioAt[name] and now < E.audioAt[name] then return end
     E.audioAt[name] = now + 100
-    require("OMHTT/DefenseEffects").emit("Click", {sound = name, x = effect.x, y = effect.y, z = effect.z})
+    require("OMHTT/DefenseEffects").emit("Click", {sound = name, x = effect.x, y = effect.y, z = effect.z, gain = gain or 1})
 end
 
 ---@param player IsoPlayer Nearby player

@@ -148,9 +148,10 @@ Proc.hit, Siphon.hit, V.fragment, Horde.sound = old.proc, old.siphon, old.fragme
 print("[OMHTT-C421] arc contract, nearest search, finite branches, synergy, persistence, cooldown and reservations checked")
 
 local View = require("OMHTT/TurretArcView")
-local savedClock, savedAccept = Clock.now, Effects.accept
+local savedClock, savedAccept, savedWall = Clock.now, Effects.accept, getTimestampMs
 local time = 1000
 Clock.now = function() return time end
+getTimestampMs = function() return time end
 Effects.accept = function() return true end
 View.bursts, View.cursor = {}, 1
 local module = require("OMHTT/Foundation").MODULE
@@ -170,5 +171,5 @@ for i = 1, 100 do View.receive(module, "Arc", {fromX = 0, fromY = 0, x = 4, y = 
 local count = 0
 for _ in pairs(View.bursts) do count = count + 1 end
 check(count == 64, "Electrical presentation ring stays bounded under burst load")
-Clock.now, Effects.accept = savedClock, savedAccept
+Clock.now, Effects.accept, getTimestampMs = savedClock, savedAccept, savedWall
 View.bursts, View.cursor = {}, 1

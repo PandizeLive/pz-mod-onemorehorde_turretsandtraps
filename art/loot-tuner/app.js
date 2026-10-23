@@ -48,7 +48,7 @@ for(const [i,m] of D.modules.entries()){
   top.className='component-top';label.className='component-name';swatch.className='swatch shape-'+appearances[i][1];swatch.style.backgroundColor=colors[i];swatch.title=familyNames[appearances[i][1]];
   show.type='checkbox';show.id='show-'+m.id;show.setAttribute('aria-label','Show '+m.name+' on map');
   show.addEventListener('change',()=>{scenario.visible[m.id]=show.checked;controls();updateSampleSummary();scheduleDraw();saveSettings();});
-  span.textContent=m.name;input.type='number';input.min=0;input.max=m.weight*20;input.step='any';input.id='item-'+m.id;input.className='rate';input.setAttribute('aria-label',m.name+' loot weight');input.title=`Loot weight: 0–${m.weight*20}. Default ${M.lootWeight(m,D.defaults?.items?.[m.id]??1)}. Zero disables this component.`;
+  span.textContent=m.name;input.type='number';input.min=0;input.max=m.weight*1000000;input.step='any';input.id='item-'+m.id;input.className='rate';input.setAttribute('aria-label',m.name+' loot weight');input.title=`Loot weight: 0–${m.weight*1000000}. Default ${M.lootWeight(m,D.defaults?.items?.[m.id]??1)}. Zero disables this component.`;
   const changeRate=()=>{if(input.value.trim()===''||!input.validity.valid)return;const weight=Number(input.value);if(!Number.isFinite(weight))return;scenario.items[m.id]=M.weightMultiplier(m,weight);saveSettings();scheduleUpdate();};
   input.addEventListener('input',changeRate);
   input.addEventListener('change',()=>{changeRate();input.value=weightText(m);});

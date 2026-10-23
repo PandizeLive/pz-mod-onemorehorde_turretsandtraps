@@ -80,8 +80,9 @@ strokes = {}; square.visible = false; O.render()
 check(#strokes == 0, "Unseen turret does not reveal range")
 square.visible = true; player.z = 1; O.render()
 check(#strokes == 0, "Other floors do not reveal range")
-player.z = 2; SandboxVars.OMHTurretsTraps.ShowTurretRange = false; O.render()
-check(#strokes == 0, "Sandbox toggle disables range")
+player.z = 2; local opts = require("OMHTT/ControlOptions"); local priorGet = opts.get
+opts.get = function(key) if key == "ShowRanges" then return false end return priorGet(key) end; O.render()
+check(#strokes == 0, "Personal Mod Option disables range")
 O.focus(0,"facing",object,true)
 O.preview[0]={object=object,heading=123.25}
 strokes={};O.render()
@@ -92,7 +93,7 @@ O.preview[0]=nil
 O.focus(0,"facing",object,false)
 strokes={};O.render()
 check(#strokes==0,"Cancel restores passive overlay preference")
-SandboxVars.OMHTurretsTraps.ShowTurretRange = true
+opts.get = priorGet
 R.entries[object].head = nil; O.render()
 check(#strokes == 0, "Empty base has no weapon range")
 O.focus(0, "manage", object, true); O.focus(0, "manage", object, false)

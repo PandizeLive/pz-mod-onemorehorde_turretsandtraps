@@ -282,7 +282,7 @@ function Combat.hit(record, origin, target, player, options)
         if not target:isDead() and not target:isOnFloor() and not target:isKnockedDown()
             and (not guard or guard <= getTimestampMs()) and ZombRand(100) < options.knockdown then
             knocked = require("OMHTT/DefenseMotion").request(target, "knock", record.id, origin:getX() + .5, origin:getY() + .5)
-            if knocked then require("OMHTT/DefenseActorState").get(target).OMHTTKnockdownUntilMs = getTimestampMs() + Combat.KNOCKDOWN_GUARD_MS end
+            if knocked then require("OMHTT/DefenseActorState").get(target).OMHTTKnockdownUntilMs = require("OMHTT/ControlClock").now() + Combat.KNOCKDOWN_GUARD_MS end
         end
         Conditional.impact(target, origin, options)
         Diagnostics.defer("shot-damage-confirmed", {id = record.id, shot = record.shots, dead = target:isDead(), knocked = knocked})

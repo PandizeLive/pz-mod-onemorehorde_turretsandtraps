@@ -183,6 +183,7 @@ public final class KahluaCheck {
             {"OMHTT/ControlRepair", base + "shared/OMHTT/ControlRepair.lua"},
             {"OMHTT/ControlRepairTooltip", base + "client/OMHTT/ControlRepairTooltip.lua"},
             {"OMHTT/ActiveTime", base + "shared/OMHTT/ActiveTime.lua"},
+            {"OMHTT/ControlClock", base + "shared/OMHTT/ControlClock.lua"},
             {"OMHTT/DefenseNames", base + "shared/OMHTT/DefenseNames.lua"},
             {"OMHTT/Foundation", base + "shared/OMHTT/Foundation.lua"},
             {"OMHTT/Diagnostics", base + "shared/OMHTT/Diagnostics.lua"},
@@ -229,6 +230,7 @@ public final class KahluaCheck {
             {"OMHTT/TurretBattery", base + "shared/OMHTT/TurretBattery.lua"},
             {"OMHTT/FirearmFeed", base + "shared/OMHTT/FirearmFeed.lua"},
             {"OMHTT/Firearms", base + "shared/OMHTT/Firearms.lua"},
+            {"OMHTT/TurretManuals", base + "shared/OMHTT/TurretManuals.lua"},
             {"OMHTT/TurretAmmo", base + "shared/OMHTT/TurretAmmo.lua"},
             {"OMHTT/TurretVoid", base + "shared/OMHTT/TurretVoid.lua"},
             {"OMHTT/TurretLoadOrder", base + "shared/OMHTT/TurretLoadOrder.lua"},
@@ -526,12 +528,15 @@ public final class KahluaCheck {
             {"_", "tools/tests/corrections_c397.lua"},
             {"_", "tools/tests/performance_c399.lua"},
             {"_", "tools/tests/performance_c400.lua"},
+            {"OMHTT/TurretArcLight", base + "client/OMHTT/TurretArcLight.lua"},
             {"OMHTT/TurretArcView", base + "client/OMHTT/TurretArcView.lua"},
             {"_", "tools/tests/turret_arc.lua"},
             {"OMHTT/TurretArcAudio", base + "client/OMHTT/TurretArcAudio.lua"},
             {"_", "tools/tests/turret_arc_audio.lua"},
             {"OMHTT/TetherView", base + "client/OMHTT/TetherView.lua"},
             {"_", "tools/tests/corrections_c427.lua"},
+            {"OMHTT/ControlLootUI", base + "client/OMHTT/ControlLootUI.lua"},
+            {"_", "tools/tests/corrections_c437.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

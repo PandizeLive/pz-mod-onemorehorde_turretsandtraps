@@ -29,6 +29,7 @@ local function verifyTurrets()
     end
     print("[OMHTT-Smoke] distance-accuracy samples=16 config=native")
     local player = IsoPlayer.new(getCell())
+    require("OMHTT/NativeC437")(player)
     local capacityItem = instanceItem(T.BASE)
     T.configure(capacityItem:getInventory())
     assert(capacityItem:getCapacity() == 44 and capacityItem:getInventory():getCapacity() == 44, "Carried capacity must subtract six-unit base weight")
@@ -61,7 +62,7 @@ local function verifyTurrets()
     assert(getSandboxOptions():getOptionByName("OMHTurretsTraps.ModuleLootRate"):getDefaultValue() == Loot.DEFAULTS.global, "Native global loot default drift")
     SandboxVars.OMHTurretsTraps.ModuleLootRate = Loot.DEFAULTS.global
     for kind, value in pairs(Loot.DEFAULTS.items) do
-        assert(getSandboxOptions():getOptionByName("OMHTurretsTraps.LootRate" .. kind):getDefaultValue() == value, "Native component loot default drift: " .. kind)
+        assert(getSandboxOptions():getOptionByName("OMHTurretsTraps.LootRate" .. kind):getDefaultValue() == (require("OMHTT/LootDefinitions").MANUALS[kind] and -1 or value), "Native component loot default drift: " .. kind)
         SandboxVars.OMHTurretsTraps["LootRate" .. kind] = value
     end
     Loot.loaded()
@@ -137,7 +138,7 @@ local function verifyTurrets()
         end
         if string.find(fullType, "Base.OMHTT", 1, true) == 1 then
             assert(string.find(fullType, "Base.OMHTTTrap", 1, true) == 1 or string.find(fullType, "Base.OMHTTTurret", 1, true) == 1
-                or string.find(fullType, "Base.OMHTTModule", 1, true) == 1 or fullType == "Base.OMHTTAmmoMakeshiftBomb", "Inconsistent OMHTT item family: " .. fullType)
+                or string.find(fullType, "Base.OMHTTModule", 1, true) == 1 or string.find(fullType, "Base.OMHTTManual", 1, true) == 1 or fullType == "Base.OMHTTAmmoMakeshiftBomb", "Inconsistent OMHTT item family: " .. fullType)
         end
         local component = T.component(fullType)
         if component then

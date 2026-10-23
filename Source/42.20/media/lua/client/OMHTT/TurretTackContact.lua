@@ -27,7 +27,7 @@ local function zombieUpdate(zombie)
     Movement.apply(zombie, 2)
     local data = zombie:getModData()
     if not data.OMHTTBarbContact then data.OMHTTBarbContact = {} end
-    local now, identity = Clock.now(), session
+    local now, identity = getTimestampMs(), session
     if P.barbs then now, identity = P.barbs.time, P.barbs.session end
     if Contact.step(data.OMHTTBarbContact, now, identity, true, 2000) then
         Damage.resolve(zombie, field.damage / 100, field.source, "tack", function(lost)

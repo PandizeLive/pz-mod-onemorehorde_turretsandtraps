@@ -84,7 +84,7 @@ function Aim.turnFacing(object, entry, now)
         return
     end
     entry.speed = T.turnSpeed(contents.head, contents.active)
-    local elapsed = math.min(100, math.max(0, now - entry.last)) / 1000
+    local elapsed = math.min(2000, math.max(0, now - entry.last)) / 1000
     entry.last = now
     local desired = M.heading(state)
     state.aimDegrees = Aim.move(state.aimDegrees or (state.facing or 0) * 22.5, desired, elapsed * entry.speed)
@@ -140,7 +140,7 @@ function Aim.tick()
                 end
             else
                 local desired = Aim.angle(object, entry.target)
-                local elapsed = math.min(100, math.max(0, now - entry.last)) / 1000
+                local elapsed = math.min(2000, math.max(0, now - entry.last)) / 1000
                 entry.last = now
                 state.aimDegrees = Aim.move(state.aimDegrees or (state.facing or 0) * 22.5, desired, elapsed * entry.speed)
                 if math.abs((desired - state.aimDegrees + 540) % 360 - 180) <= 1 and entry.player then

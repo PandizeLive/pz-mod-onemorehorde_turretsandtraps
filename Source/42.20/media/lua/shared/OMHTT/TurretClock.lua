@@ -1,6 +1,6 @@
 local C = {}
 local ActiveTime = require("OMHTT/ActiveTime")
-local clock = ActiveTime.new()
+local clock = ActiveTime.new(true)
 local session = tostring(getTimestampMs())
 local now = nil
 

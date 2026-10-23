@@ -65,4 +65,17 @@ L.DEFAULTS = {global = 1.00, items = {
     Tack = 2,
     Regulator = 3.6363636363636362
 }}
+L.MANUALS = {ManualBallista = 3, ManualRotaryBlades = 3, ManualLobber = 4, ManualArc = 5, ManualFirearms = 4}
+L.CATALOG = {}
+for key, value in pairs(L.WEIGHTS) do
+    L.CATALOG[key] = value
+end
+for key in pairs(L.MANUALS) do
+    L.CATALOG[key] = 1
+end
+L.DEFAULTS.items.ManualBallista = 14
+L.DEFAULTS.items.ManualRotaryBlades = 14
+L.DEFAULTS.items.ManualLobber = 10
+L.DEFAULTS.items.ManualArc = 6
+L.DEFAULTS.items.ManualFirearms = 10
 return L

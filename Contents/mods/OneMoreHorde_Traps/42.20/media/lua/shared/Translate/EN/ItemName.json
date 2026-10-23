@@ -59,5 +59,10 @@
     "ItemName_Base.OMHTTTrapPokeFloor": "Poke Floor",
     "ItemName_Base.OMHTTTrapLever": "Lever",
     "ItemName_Base.OMHTTTrapLaser": "Laser Sensor",
-    "ItemName_Base.OMHTTTurretArc": "Arc Emitter Head"
+    "ItemName_Base.OMHTTTurretArc": "Arc Emitter Head",
+    "ItemName_Base.OMHTTManualBallista": "Ballista Turret Manual",
+    "ItemName_Base.OMHTTManualRotaryBlades": "Rotary Blade Turret Manual",
+    "ItemName_Base.OMHTTManualLobber": "Lobber Turret Manual",
+    "ItemName_Base.OMHTTManualArc": "Arc Emitter Turret Manual",
+    "ItemName_Base.OMHTTManualFirearms": "Firearms Turret Manual"
 }

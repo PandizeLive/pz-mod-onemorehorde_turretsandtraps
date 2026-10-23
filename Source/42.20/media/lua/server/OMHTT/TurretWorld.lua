@@ -498,7 +498,6 @@ function W.fire(player, object, target, signal)
         return "Unavailable"
     end
     local contents = T.contents(object:getContainer())
-    if not player and SandboxVars.OMHTurretsTraps.AutomationEnabled == false then return "Unavailable" end
     local forward = not target and contents.active.Firing and (signal or not contents.active.MotionDetection)
     if not player and ((not forward and not M.detects(T.state(object), contents)) or not contents.active.Firing) then return "Unavailable" end
     if contents.heads ~= 1 or contents.head:getCondition() <= 0 then return "NoHead" end

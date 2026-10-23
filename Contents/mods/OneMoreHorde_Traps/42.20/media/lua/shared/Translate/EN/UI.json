@@ -261,7 +261,7 @@
     "UI_OMHTT_Status": "Status",
     "UI_OMHTT_EffectRadius": "%1 Tiles",
     "UI_OMHTT_EffectSynergy": "100 percent linked",
-    "UI_OMHTT_LootDisabled": "Loot disabled",
+    "UI_OMHTT_LootDisabled": "Disabled",
     "UI_OMHTT_LootCrafted": "Crafted",
     "UI_OMHTT_LootWeight": "Relative loot weight: %1",
     "UI_OMHTT_BatteryMinutes": "in-game minutes",
@@ -586,7 +586,7 @@
     "UI_OMHTT_ToolOnly": "No material",
     "UI_OMHTT_OptionLaser": "Show Laser Beams",
     "UI_OMHTT_OptionOpacity": "Laser Beam Opacity",
-    "UI_OMHTT_OptionVolume": "Device Feedback Volume",
+    "UI_OMHTT_OptionVolume": "OMH Sound Volume",
     "UI_OMHTT_OptionMarkers": "Show Turret State Markers",
     "UI_OMHTT_DeviceHealth": "Health: %1",
     "UI_OMHTT_Checking": "Checking",
@@ -600,5 +600,12 @@
     "UI_OMHTT_RepairMaterialRequired": "Required material: %1 (%2)",
     "UI_OMHTT_RepairToolRequired": "Required tool: %1",
     "UI_OMHTT_BatteryModuleTotal": "Module drain total: %1x",
-    "UI_OMHTT_BatteryRegulatedTotal": "After Regulator: %1x (%2%% less)"
+    "UI_OMHTT_BatteryRegulatedTotal": "After Regulator: %1x (%2%% less)",
+    "UI_trait_OMHTTTurretSpecialist": "Turret Specialist",
+    "UI_trait_OMHTTTurretSpecialistDesc": "Knows all OMH turret manuals. Crafting skills, tools and materials are still required.",
+    "UI_OMHTT_ManageManualRequired": "Read the Firearms Turret Manual first.",
+    "UI_OMHTT_OptionArcLight": "Arc Lighting",
+    "UI_OMHTT_OptionArcIntensity": "Arc Light Intensity",
+    "UI_OMHTT_OptionRanges": "Show Range Indicators",
+    "UI_OMHTT_LootCustom": "Custom"
 }

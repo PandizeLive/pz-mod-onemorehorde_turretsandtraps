@@ -4,6 +4,7 @@ local A = require("OMHTT/TurretAuthority")
 local Action = require("OMHTT/TurretPickupAction")
 
 return function(player)
+    player:getKnownRecipes():add("OMHTTMountFirearm")
     assert(isServer() and not isClient(), "Authority probe must run in actual dedicated-server mode")
     local source = player:getInventory():AddItem(T.BASE)
     T.configure(source:getInventory())

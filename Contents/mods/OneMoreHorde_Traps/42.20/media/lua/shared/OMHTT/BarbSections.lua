@@ -5,7 +5,7 @@ local B = {nodes = {}, order = {}, nearby = {}, time = 0, cursor = 1, session = 
 OMHTT_BarbSections = B
 B.policy = {fixedWindowFrame = true}
 local ActiveTime = require("OMHTT/ActiveTime")
-local clock = ActiveTime.new()
+local clock = ActiveTime.new(true)
 local moving = false
 local geometry = {}
 local resolvedObjects = {}

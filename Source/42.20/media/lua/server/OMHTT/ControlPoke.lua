@@ -1,7 +1,7 @@
 if isClient() then return end
 local Horde = require("OMHTT/DefenseHorde")
 local Active = require("OMHTT/ActiveTime")
-local P = {entries = setmetatable({}, {__mode = "k"}), clock = Active.new(), time = 0}
+local P = {entries = setmetatable({}, {__mode = "k"}), clock = Active.new(true), time = 0}
 
 function P.option(key, fallback, minimum, maximum)
     local value = SandboxVars.OMHTurretsTraps and tonumber(SandboxVars.OMHTurretsTraps["Poke" .. key])
@@ -93,7 +93,7 @@ function P.step(object, state)
 end
 
 function P.advance()
-    P.time = P.time + math.min(250, Active.step(P.clock))
+    P.time = P.time + Active.step(P.clock)
 end
 
 return P

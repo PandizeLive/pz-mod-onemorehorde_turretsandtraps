@@ -14,8 +14,10 @@ local canvas = nil
 ---@param gain number? Fallback playback gain
 function E.sound(name, x, y, z, gain)
     if string.find(name, "OMHTTPotato", 1, true) or string.find(name, "OMHTTSuppressedPotato", 1, true) then
-        gain = require("OMHTT/TurretStats").option("PotatoPlaybackVolume", 35, 0, 100) / 100
+        gain = (gain or 1) * require("OMHTT/TurretStats").option("PotatoPlaybackVolume", 35, 0, 100) / 100
     end
+    gain = (gain or 1) * require("OMHTT/ControlOptions").volume()
+    if gain <= 0 then return end
     local logging = D.enabled("turrets")
     local started = logging and getTimestampMs()
     local emitter = getWorld():getFreeEmitter(x, y, z)

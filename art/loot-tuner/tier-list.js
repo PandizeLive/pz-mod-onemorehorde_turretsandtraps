@@ -38,7 +38,7 @@ function create(modules,weights,previousTiers){
 function assign(draft,module,tier){
   if(tier===-1){delete draft.groups[module.id];delete draft.custom[module.id];draft.weights[module.id]=draft.original[module.id];return true;}
   const weight=draft.tiers[tier];
-  if(!Number.isFinite(weight)||weight<0||weight>module.weight*20)return false;
+  if(!Number.isFinite(weight)||weight<0||weight>module.weight*1000000)return false;
   draft.groups[module.id]=tier;draft.weights[module.id]=weight;delete draft.custom[module.id];return true;
 }
 function confirm(draft,modules,current){
@@ -47,7 +47,7 @@ function confirm(draft,modules,current){
     if(draft.groups[m.id]===undefined||draft.weights[m.id]===draft.original[m.id])continue;
     if(current[m.id]!==draft.original[m.id])throw Error('Saved weights changed while this draft was open. Cancel and reopen to use the latest values.');
     const value=draft.weights[m.id];
-    if(!Number.isFinite(value)||value<0||value>m.weight*20)throw Error('Invalid weight for '+m.name);
+    if(!Number.isFinite(value)||value<0||value>m.weight*1000000)throw Error('Invalid weight for '+m.name);
     out[m.id]=value;
   }
   return out;
@@ -84,23 +84,23 @@ function mount({element,modules,read,readTiers,apply}){
       const heading=el('div','tier-heading'),list=el('div','tier-cards');heading.append(el('h3','',tier<0?'Unassigned':names[tier]));
       if(tier>=0){const label=el('label','','Tier weight'),input=el('input');input.type='number';input.min=0;input.max=1000000;input.step='any';input.value=Number(draft.tiers[tier].toPrecision(12));input.setAttribute('aria-label',names[tier]+' tier weight');label.append(input);heading.append(label);
         input.onchange=()=>{const value=input.value.trim()===''?NaN:Number(input.value);const members=modules.filter(m=>draft.groups[m.id]===tier&&!draft.custom[m.id]);
-          if(!Number.isFinite(value)||value<0||value>1000000||members.some(m=>value>m.weight*20)){status.textContent='That tier weight is outside a member’s allowed range.';input.value=Number(draft.tiers[tier].toPrecision(12));return;}
+          if(!Number.isFinite(value)||value<0||value>1000000||members.some(m=>value>m.weight*1000000)){status.textContent='That tier weight is outside a member’s allowed range.';input.value=Number(draft.tiers[tier].toPrecision(12));return;}
           draft.tiers[tier]=value;for(const m of members)draft.weights[m.id]=value;render();};
       }else heading.append(el('small','','Keeps current weights'));
       lane.append(heading,list);lanes[tier+1]=list;body.append(lane);
       lane.ondragover=e=>{e.preventDefault();e.dataTransfer.dropEffect='move';};
-      lane.ondrop=e=>{e.preventDefault();const id=dragged||e.dataTransfer.getData('text/plain'),m=modules.find(m=>m.id===id);if(!m)return;if(!assign(draft,m,tier)){status.textContent='Tier weight exceeds '+m.name+'’s maximum ('+(m.weight*20)+').';return;}dragged=null;render();};
+      lane.ondrop=e=>{e.preventDefault();const id=dragged||e.dataTransfer.getData('text/plain'),m=modules.find(m=>m.id===id);if(!m)return;if(!assign(draft,m,tier)){status.textContent='Tier weight exceeds '+m.name+'’s maximum ('+(m.weight*1000000)+').';return;}dragged=null;render();};
     }
     for(const m of modules){
       const tier=draft.groups[m.id]??-1,card=el('article','tier-card'),b=band[m.id];card.draggable=true;card.dataset.module=m.id;
       card.style.setProperty('--rarity-color',b<0?'#82928a':colors[b]);card.dataset.rarity=b===-2?'Invalid tiers':b<0?'Disabled':names[b];
       card.ondragstart=e=>{if(['INPUT','SELECT','OPTION'].includes(e.target.tagName)){e.preventDefault();return;}dragged=m.id;e.dataTransfer.setData('text/plain',m.id);e.dataTransfer.effectAllowed='move';};card.ondragend=()=>{dragged=null;};
       card.append(el('strong','',m.name),el('small','tier-actual',(b===-2?'Invalid tiers':b<0?'Disabled':names[b])+(draft.custom[m.id]?' · custom':'')));
-      const input=el('input');input.type='number';input.min=0;input.max=m.weight*20;input.step='any';input.value=Number(draft.weights[m.id].toPrecision(12));input.disabled=tier<0;input.setAttribute('aria-label',m.name+' draft weight');
+      const input=el('input');input.type='number';input.min=0;input.max=m.weight*1000000;input.step='any';input.value=Number(draft.weights[m.id].toPrecision(12));input.disabled=tier<0;input.setAttribute('aria-label',m.name+' draft weight');
       input.onchange=()=>{const value=input.value.trim()===''?NaN:Number(input.value);if(!input.validity.valid||!Number.isFinite(value)){status.textContent='Enter a weight from 0 to '+input.max;input.value=Number(draft.weights[m.id].toPrecision(12));return;}draft.weights[m.id]=value;draft.custom[m.id]=true;render();};
       const move=el('select');move.setAttribute('aria-label','Move '+m.name+' to tier');
       ['Unassigned',...names].forEach((name,i)=>{const option=el('option','',name);option.value=i-1;move.append(option);});move.value=tier;
-      move.onchange=()=>{if(!assign(draft,m,Number(move.value))){status.textContent='Tier weight exceeds '+m.name+'’s maximum ('+(m.weight*20)+').';move.value=tier;return;}render();};
+      move.onchange=()=>{if(!assign(draft,m,Number(move.value))){status.textContent='Tier weight exceeds '+m.name+'’s maximum ('+(m.weight*1000000)+').';move.value=tier;return;}render();};
       card.append(input,move);lanes[tier+1].append(card);
     }
     const footer=el('div','tier-footer'),accept=el('button','primary','Confirm weights'),cancel=el('button','','Cancel draft');

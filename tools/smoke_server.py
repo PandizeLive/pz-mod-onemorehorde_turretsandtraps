@@ -54,6 +54,7 @@ def main():
         assert core.startswith('if isClient() then return end\n')
         core = core.split('\n', 1)[1].replace('require("OMHTT/TurretProc")', 'require("OMHTT/NativeTurretProc")')
         (turret_probe.parent / ('OMHTT/Native' + name + '.lua')).write_text(core, encoding='utf-8')
+    (turret_probe.parent / "OMHTT/NativeC437.lua").write_text((ROOT / "tools/tests/native_c437.lua").read_text(encoding="utf-8"), encoding="utf-8")
     console = CACHE / "server-console.txt"
     transcript = OUTPUT / ("server-" + os.environ.get("OMHTT_PROBE_MODE", "write") + ".log")
     classes = OUTPUT / "persistence-classes"
@@ -102,6 +103,8 @@ def main():
     text = transcript.read_text(encoding="utf-8", errors="replace")
     assert "[OMHTT-C373] native-placement-complete cases=148" in text, "Full native placement matrix missing"
     assert "[OMHTT-C373] native-performance-icons=11 category=Performance" in text, "Native module icon/category proof missing"
+    assert "[OMHTT-C437] native-knowledge persistence=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Native character knowledge persistence missing"
+    assert "[OMHTT-C437] native manuals=5" in text, "Native progression proof missing"
     mod_errors = [line for line in text.splitlines() if "MOD:OMH:" in line and "Exception thrown" in line]
     assert not mod_errors, f"Native mod callbacks threw despite completion markers: {mod_errors}"
     assert "[OMHTT-C355] mechanical-recipes=2 inputs=consumed tools=retained output=exact translations=passed" in text, "Mechanical recipe proof missing"

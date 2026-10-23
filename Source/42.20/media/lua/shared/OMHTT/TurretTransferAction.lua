@@ -35,6 +35,7 @@ function Action:rejection(candidate, summary)
     local destination = self:destination()
     if not destination then return "TransferCarried" end
     if self.incoming then
+        if not require("OMHTT/TurretManuals").canMount(self.character, candidate) then return "ManualRequired" end
         local controller = require("OMHTT/ControlAccess").stockpile(self.character, self.object, self.controller)
         local stockpile = controller and controller:getContainer()
         if source == storage or (not source:isInCharacterInventory(self.character) and source ~= stockpile) then return "TransferCarried" end

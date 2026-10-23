@@ -81,12 +81,12 @@ end
 ---@param after number Paid angular travel
 ---@param omni boolean Full rotation
 ---@return table? windows At most two observed pass records
-function S.motor(entry, power, stats, spent, before, after, omni)
+function S.motor(entry, power, stats, spent, before, after, omni, cone)
     if after <= before or power.kind ~= "battery" or (stats.siphon or 0) <= 0 then
         S.stop(entry)
         return nil
     end
-    local span = omni and 360 or 90
+    local span = omni and 360 or (cone or 90)
     local first, last = math.floor(before / span), math.floor(after / span)
     local windows = motors[entry]
     if not windows then

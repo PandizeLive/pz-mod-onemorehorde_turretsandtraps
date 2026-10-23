@@ -21,7 +21,7 @@ check(#sounds == 1 and sounds[1].name == "OMHTTArcFire" and sounds[1].volume == 
     "Arc sound survives unrelated handler and suppresses duplicate MP delivery")
 facts.packet = nil
 for i = 1, 8 do A.receive(module, "ArcHit", facts) end
-check(#sounds == 5 and sounds[2].name == "DismantleFailed" and sounds[2].volume == .12,
+check(#sounds == 5 and sounds[2].name == "DismantleFailed" and sounds[2].volume == 2,
     "Impact mix limits simultaneous contact bursts without changing damage")
 now = 1100
 A.receive(module, "ArcHit", facts)

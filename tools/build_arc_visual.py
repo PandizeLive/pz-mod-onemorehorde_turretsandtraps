@@ -20,7 +20,7 @@ def build():
     image = Image.new("RGBA", (8, 64))
     for y in range(64):
         distance = abs((y + .5) / 32 - 1)
-        core = max(0, 1 - distance / .3)
+        core = max(0, min(1, (0.45 - distance) / .3))
         alpha = round(255 * (1 - distance) ** 2)
         color = (round(45 + 210 * core), round(135 + 120 * core), 255, alpha)
         for x in range(8):
@@ -32,7 +32,7 @@ def build():
         texture = OMHTT/Arc,
         scale = 1.0,
         static = true,
-        shader = basicEffect,
+        shader = OMHTTEmissive,
     }
     item OMHTTTurretArcVisual {
         DisplayName = OMH Arc Visual,

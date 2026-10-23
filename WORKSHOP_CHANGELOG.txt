@@ -1,8 +1,12 @@
-v0.2.64.4
+v0.2.65
 
 Development test content
 
-- Added craftable Arc Emitter Head with thicker blue-glow electrical chains and fade-out, balanced varied firing and impact audio, ammo-free battery use, supported module effects and configurable Arc settings.
+- Added five turret manuals and the two-point Turret Specialist knowledge trait; advanced head crafting and firearm mounting require their matching knowledge, with existing materials and skills retained. Manuals appear in equipment, book and magazine locations, including gas-station racks; packs remain modules/kits only.
+- Reorganized Turrets and Traps Sandbox settings, added per-head coverage/hearing controls and category-grouped loot rarity selectors with Disabled/Custom support. Readable decimal fields retain exact saved tuning. Removed the Automation category/global veto and consolidated personal Mod Options.
+- Corrected Fragment sounds by originating head, laser world depth/actor obstruction, and game-time timing through fast-forward and pause.
+
+- Added craftable Arc Emitter Head with white-core electrical chains, feathered blue glow, fade-out and optional bounded world lighting, balanced varied firing and impact audio, ammo-free battery use, supported module effects and configurable Arc settings.
 - Corrected head consumption labels to share sustained firing-cycle estimates and reflect installed loadouts in Manage.
 - Added Controller expansion using existing kits: base 10-tile range and 100 stockpile weight, up to 50/500 with a Large kit; configurable bonuses and protected contents when capacity shrinks. Battery and expansion share the original battery area equally beside Online/range status.
 - Added local laser visibility/opacity, device feedback volume and turret state-marker preferences; laser visuals default off.
@@ -41,7 +45,7 @@ Development test content
 - Added coordinated Horde Night opt-in assistance and the selected score divider, with consent-aware defense damage, movement effects and attraction.
 - Fixed small battery costs rounding away at each shot; fractional charge now persists with the battery.
 - Added craftable Ballista, Rotary Bat and Rotary Blades heads on the universal base, with integrated mounts, crafted-spear ammunition, paired directional/360 rotary contacts, native impact sounds, player contact injuries, motor-time battery use and head-specific module feedback. Head tooltips show ammunition, damage, range and firing rate. New heads retain base-only maintenance and technical placeholder visuals.
-- Added Module Packs with three weighted module/expansion rewards, a default-on rolling reveal with faster-opening six-second reels staggered150ms from top to bottom with one rarity cue at whole-roll completion, Manage-style panels, a neutral Skip button during rolling and green Collect afterward, settled-reward tooltips and Open Next, native ticking/selection cues, seven custom rarity sounds with one highest-reward cue, a four-second rarity fade and support for smaller viewports, supplemental container loot and a configurable 15% zombie-body drop chance; no packs drop when all reward weights are disabled.
+- Added Module Packs with three weighted module/expansion rewards, a default-on rolling reveal with faster-opening six-second reels staggered150ms from top to bottom with one rarity cue at whole-roll completion, Manage-style panels, a neutral Skip button during rolling and green Collect afterward, settled-reward tooltips and Open Next, native ticking/selection cues, seven custom rarity sounds with one highest-reward cue, a four-second rarity fade and support for smaller viewports, supplemental container loot and a configurable 7% fresh-world zombie-body drop chance; no packs drop when all reward weights are disabled.
 - Applied owner-tuned module loot defaults across the game and LootLab while preserving saved tuning.
 - Added the loot-only Regulator Module, providing 25% more battery life per copy without extra power draw; includes LootLab tuning.
 - Reduced all module item weights from 0.3 to 0.2.

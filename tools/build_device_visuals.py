@@ -27,7 +27,10 @@ def build():
         (MEDIA / f"models_X/OMHTT_{name}.x").write_text(mesh, encoding="ascii")
         scripts.append(f"""    model OMHTT{name} {{ mesh = OMHTT_{name}, texture = OMHTT/{texture}, scale = 1.0, static = true, shader = basicEffect, }}
     item OMHTT{"Trap" if name.startswith("Tether") else "Turret"}{name}Visual {{ DisplayName = OMH {name} Visual, ItemType = base:normal, Weight = 0, Hidden = true, Icon = ElectronicsScrap, WorldStaticModel = OMHTT{name}, }}""")
-    for name, colour in [("StateAmber", (255, 180, 45, 255)), ("StateGreen", (75, 235, 95, 255)), ("StateDark", (32, 32, 32, 255))]:
+    for colour in ["Green", "Red"]:
+        scripts.append(f"    model OMHTTTrapLaser{colour} {{ mesh = OMHTT_TetherCable, texture = OMHTT/State{colour}, scale = 1.0, static = true, shader = OMHTTEmissive, }}")
+        scripts.append(f"    item OMHTTTrapLaser{colour}Visual {{ DisplayName = OMH Laser Visual, ItemType = base:normal, Weight = 0, Hidden = true, Icon = ElectronicsScrap, WorldStaticModel = OMHTTTrapLaser{colour}, }}")
+    for name, colour in [("StateRed", (255, 45, 35, 255)), ("StateAmber", (255, 180, 45, 255)), ("StateGreen", (75, 235, 95, 255)), ("StateDark", (32, 32, 32, 255))]:
         Image.new("RGBA", (4, 4), colour).save(MEDIA / f"textures/OMHTT/{name}.png")
     (MEDIA / "scripts/OMHTT_DeviceVisuals.txt").write_text("\n".join(scripts) + "\n}\n", encoding="utf-8")
 

@@ -158,7 +158,7 @@ function S.resolve(contents)
         shotPower = motorPower / 3600
         magazine = 0
     end
-    return {ammoFree = head and head.ammoFree == true, arcTargets = math.floor(S.option("ArcTargets", 6, 1, 32)), arcJump = S.option("ArcJumpRange", 4, 1, 10), headKind = head and head.key, minimumRange = head and head.minimumRange or 0, cone = head and head.cone, rotary = rotary, motorSpeed = motorSpeed, motorPower = motorPower,
+    return {fireSound = head and head.fireSound or (firearm and "OMHTTSuppressedM9Shoot" or "OMHTTPotatoFire"), ammoFree = head and head.ammoFree == true, arcTargets = math.floor(S.option("ArcTargets", 6, 1, 32)), arcJump = S.option("ArcJumpRange", 4, 1, 10), headKind = head and head.key, minimumRange = head and head.minimumRange or 0, cone = head and head.cone, rotary = rotary, motorSpeed = motorSpeed, motorPower = motorPower,
         damage = damage * (1 + S.bonus(active, "Velocity", 20, 100) / 100),
         knockdown = math.min(100, knockdown + knockBonus),
         range = math.min(firearm and 50 or 30, range + S.bonus(active, "Range", 2, 10)),
@@ -198,7 +198,14 @@ end
 ---@nodiscard
 function S.hearingRadius(head, stats)
     local radius = S.option("PotatoHearingRadius", 8, 0, 200)
-    if stats.firearm then radius = head:getSoundRadius() end
+    if stats.firearm then
+        radius = head:getSoundRadius()
+    elseif stats.headKind then
+        local configured = S.option(stats.headKind .. "HearingRadius", -1, -1, 200)
+        if configured >= 0 then
+            radius = configured
+        end
+    end
     return math.ceil(radius * stats.hearingMultiplier)
 end
 

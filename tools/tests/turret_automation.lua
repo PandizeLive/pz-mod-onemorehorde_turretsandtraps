@@ -122,8 +122,8 @@ check(record.shots == 1 and T.contents(storage).ammo == 2 and front.health == 4.
 check(record.baseFacing == 0 and record.aimDegrees == 0, "Tracking changes head without rotating placement cone")
 record.automatic = false; run()
 check(record.shots == 1 and entry.status == "inactive", "Individual automatic switch prevents firing")
-record.automatic = true; SandboxVars.OMHTurretsTraps.AutomationEnabled = false; run()
-check(record.shots == 1, "Global switch prevents automatic shots")
+record.automatic = true; SandboxVars.OMHTurretsTraps.AutomationEnabled = false
+check(M.detects(record, T.contents(storage)), "Removed global switch does not veto installed detection")
 SandboxVars.OMHTurretsTraps.AutomationEnabled = true
 storage:Remove(firing); run()
 check(record.shots == 1 and entry.status == "tracking-only", "Detection alone tracks but never fires")

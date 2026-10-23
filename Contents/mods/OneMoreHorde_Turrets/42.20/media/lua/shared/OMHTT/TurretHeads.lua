@@ -1,12 +1,12 @@
 local H = {cache = {}}
 local configurable = {damage = {0, 2500}, range = {1, 64}, cooldown = {.1, 60}, reload = {.1, 60}, shove = {0, 100}}
 H.definitions = {
-    ["Base.OMHTTTurretArc"] = {key = "Arc", damage = 20, range = 12, cooldown = 1, reload = 0, magazine = 1, ammoCapacity = 0, weight = 8, ammoFree = true},
-    ["Base.OMHTTTurretLobber"] = {key = "Lobber", damage = 150, range = 18, minimumRange = 6, cooldown = 5.5, reload = 4, magazine = 3, ammoCapacity = 20, weight = 8},
-    ["Base.OMHTTTurretScrapshot"] = {key = "Scrapshot", ammo = "Base.ScrapMetal", damage = 320, range = 8, cone = 90, cooldown = 2, reload = 3, magazine = 10, weight = 6},
-    ["Base.OMHTTTurretBallista"] = {key = "Ballista", ammo = "Base.SpearCrafted", damage = 240, range = 24, cooldown = 6, reload = 6, magazine = 5, cone = 45, ammoCapacity = 40, weight = 6},
-    ["Base.OMHTTTurretRotaryBat"] = {key = "RotaryBat", rotary = true, damage = 20, range = 2, shove = 40, weight = 5},
-    ["Base.OMHTTTurretRotaryBlades"] = {key = "RotaryBlades", rotary = true, damage = 40, range = 2, shove = 10, weight = 6},
+    ["Base.OMHTTTurretArc"] = {key = "Arc", fireSound = "OMHTTArcFire", damage = 20, range = 12, cooldown = 1, reload = 0, magazine = 1, ammoCapacity = 0, weight = 8, ammoFree = true},
+    ["Base.OMHTTTurretLobber"] = {key = "Lobber", fireSound = "OMHTTPotatoFire", damage = 150, range = 18, minimumRange = 6, cooldown = 5.5, reload = 4, magazine = 3, ammoCapacity = 20, weight = 8},
+    ["Base.OMHTTTurretScrapshot"] = {key = "Scrapshot", fireSound = "JS2000ShotgunShoot", ammo = "Base.ScrapMetal", damage = 320, range = 8, cone = 90, cooldown = 2, reload = 3, magazine = 10, weight = 6},
+    ["Base.OMHTTTurretBallista"] = {key = "Ballista", fireSound = "SpearCraftedSwing", ammo = "Base.SpearCrafted", damage = 240, range = 24, cooldown = 6, reload = 6, magazine = 5, cone = 45, ammoCapacity = 40, weight = 6},
+    ["Base.OMHTTTurretRotaryBat"] = {key = "RotaryBat", fireSound = "BaseballBatHit", rotary = true, damage = 20, range = 2, shove = 40, weight = 5},
+    ["Base.OMHTTTurretRotaryBlades"] = {key = "RotaryBlades", fireSound = "AxeSawBladeHit", rotary = true, damage = 40, range = 2, shove = 10, weight = 6},
 }
 H.excluded = {Filter = true, Splitter = true, Piercing = true, Conservation = true, Magazine = true, Reload = true,
     Autoloader = true, Impact = true, Fragment = true, Range = true, Accuracy = true, Void = true}
@@ -62,14 +62,15 @@ end
 ---@return number angle Relative degrees
 ---@return number stroke Pass identity
 ---@nodiscard
-function H.motion(travel, omni)
+function H.motion(travel, omni, cone)
+    cone = math.max(10, math.min(360, cone or 90))
     if omni then return travel % 360, math.floor(travel / 360) end
-    local stroke = math.floor(travel / 90)
-    local offset = travel % 90
+    local stroke = math.floor(travel / cone)
+    local offset = travel % cone
     if stroke % 2 == 1 then
-        offset = 90 - offset
+        offset = cone - offset
     end
-    return offset - 45, stroke
+    return offset - cone / 2, stroke
 end
 
 ---@param bearing number Heading relative to placement axis
@@ -79,7 +80,8 @@ end
 ---@return number? arm Physical arm identity
 ---@return number? pass Distinct crossing identity
 ---@nodiscard
-function H.crossing(bearing, before, after, omni)
+function H.crossing(bearing, before, after, omni, cone)
+    cone = math.max(10, math.min(360, cone or 90))
     if after <= before then return nil end
     for arm = 0, 1 do
         local angle = (bearing - arm * 180 + 540) % 360 - 180
@@ -88,14 +90,14 @@ function H.crossing(bearing, before, after, omni)
             local pass = math.floor((after - phase) / 360)
             local crossing = pass * 360 + phase
             if crossing > before and crossing <= after then return arm + 1, pass end
-        elseif math.abs(angle) <= 45 then
-            local first, last = math.floor(before / 90), math.floor(after / 90)
+        elseif math.abs(angle) <= cone / 2 then
+            local first, last = math.floor(before / cone), math.floor(after / cone)
             for stroke = first, last do
-                local phase = angle + 45
+                local phase = angle + cone / 2
                 if stroke % 2 == 1 then
-                    phase = 90 - phase
+                    phase = cone - phase
                 end
-                local crossing = stroke * 90 + phase
+                local crossing = stroke * cone + phase
                 if crossing > before and crossing <= after then return arm + 1, stroke end
             end
         end

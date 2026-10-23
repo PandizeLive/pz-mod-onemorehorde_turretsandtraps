@@ -58,7 +58,7 @@ end
 ---@return nil
 function I.request(player, kind, interval)
     if not isServer() or player:isDead() or player:isGodMod() or player:isNoClip() or player:isGhostMode() then return end
-    local now = getTimestampMs()
+    local now = require("OMHTT/ControlClock").now()
     local guard = guards[player]
     if not guard then guard = {}; guards[player] = guard end
     local group = kind == "bruise" and "burst" or "rotary"

@@ -69,6 +69,7 @@ function X.rejection(player, item, source, destination)
         return "Servicing"
     end
     if T.isContainer(destination) then
+        if not require("OMHTT/TurretManuals").canMount(player, item) then return "ManualRequired" end
         if not T.transferSnapshots or not T.transferSnapshots[destination] then T.configure(destination) end
         local contents = T.transferContents(destination)
         if item:isFavorite() and not destination:isInCharacterInventory(player) then return "TransferFavorite" end

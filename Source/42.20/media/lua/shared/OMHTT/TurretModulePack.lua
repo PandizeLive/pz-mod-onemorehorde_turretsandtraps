@@ -17,7 +17,7 @@ function P.pool()
     local changed = P.total == nil
     for i = 1, #names do
         local name = names[i]
-        local weight = L.WEIGHTS[name] * M.option("LootRate" .. name, L.DEFAULTS.items[name], 0, 20)
+        local weight = L.WEIGHTS[name] * M.option("LootRate" .. name, L.DEFAULTS.items[name], 0, 1000000)
         if weights[i] ~= weight then
             weights[i], changed = weight, true
         end
@@ -106,11 +106,11 @@ end
 ---@param zombie IsoZombie Newly killed zombie after native inventory generation
 ---@return nil
 function P.onDeath(zombie)
-    if isClient() or not T.enabled() or SandboxVars.OMHTurretsTraps.PotatoTurret == false then return end
+    if isClient() or not T.enabled() then return end
     local data = zombie:getModData()
     if data.OMHTTPackRolled then return end
     data.OMHTTPackRolled = true
-    local chance = M.option("PackZombieChance", 15, 0, 100)
+    local chance = M.option("PackZombieChance", 7, 0, 100)
     if chance <= 0 or M.option("ModuleLootRate", L.DEFAULTS.global, 0, 20) <= 0 then return end
     if P.total == nil then
         P.pool()

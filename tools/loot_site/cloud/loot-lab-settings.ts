@@ -1,7 +1,7 @@
 // Account identity comes exclusively from the existing Access/allowlist gate.
-export const MODULES = ["Firing","MotionDetection","Filter","Detection360","Suppression","RapidFire","Reload","Velocity","Range","CapacitySmall","Capacity","CapacityLarge","Autoloader","Critical","Accuracy","Magazine","Splitter","Fragment","FiringEnhanced","MotionDetectionEnhanced","Piercing","InitialBlow","Execute","Impact","Conservation","Synergy","Martyrdom","Tack","Regulator","Siphon","Lure","Void","Grid"];
+export const MODULES = ["Firing","MotionDetection","Filter","Detection360","Suppression","RapidFire","Reload","Velocity","Range","CapacitySmall","Capacity","CapacityLarge","Autoloader","Critical","Accuracy","Magazine","Splitter","Fragment","FiringEnhanced","MotionDetectionEnhanced","Piercing","InitialBlow","Execute","Impact","Conservation","Synergy","Martyrdom","Tack","Regulator","Siphon","Lure","Void","Grid","ManualBallista","ManualRotaryBlades","ManualLobber","ManualArc","ManualFirearms"];
 const TIERS = ['Abundant','Common','Uncommon','Rare','Epic','Legendary','Mythic'];
-const BASELINE = 'T&T 0.2.57';
+const BASELINE = 'T&T 0.2.65';
 const NEW_MODULES = ['Magazine','Splitter','Fragment','FiringEnhanced','MotionDetectionEnhanced','Piercing','InitialBlow','Execute','Impact','Conservation','Synergy','Martyrdom','Tack','Regulator','Lure','Void','Siphon','Grid'];
 type Scenario = Record<string, unknown>;
 function object(value: unknown): value is Record<string, unknown> { return !!value && typeof value === 'object' && !Array.isArray(value); }
@@ -24,7 +24,7 @@ export function validateScenario(value: unknown): Scenario {
     const clean: Record<string, unknown> = {};
     for (const id of MODULES) {
       const n = values[id];
-      if (key === 'visible' ? typeof n !== 'boolean' : typeof n !== 'number' || !Number.isFinite(n) || n < 0 || n > 20) throw Error('Invalid component value.');
+      if (key === 'visible' ? typeof n !== 'boolean' : typeof n !== 'number' || !Number.isFinite(n) || n < 0 || n > 1000000) throw Error('Invalid component value.');
       clean[id] = n;
     }
     result[key] = clean;
@@ -42,7 +42,7 @@ export function validateScenario(value: unknown): Scenario {
 }
 export function upgradeScenario(value: unknown): Scenario {
   if (!object(value) || !object(value.items) || !object(value.visible)) return validateScenario(value);
-  const normalized = /^T&T 0\.2\.(2[6-9]|[3-4][0-9]|5[0-7])(?:\.\d+)?$/.test(value.baseline as string);
+  const normalized = /^T&T 0\.2\.(2[6-9]|[3-5][0-9]|6[0-5])(?:\.\d+)?$/.test(value.baseline as string);
   const old = ['Installed 0.2.22','T&T 0.2.23','T&T 0.2.24','T&T 0.2.25'].includes(value.baseline as string);
   if (!normalized && !old) return validateScenario(value);
   const items: Record<string, unknown> = old ? {Critical:1,Accuracy:1,...value.items} : {...value.items};
@@ -52,6 +52,13 @@ export function upgradeScenario(value: unknown): Scenario {
     if(typeof items[id]==='number')items[id]=(items[id] as number)/(value.baseline==='Installed 0.2.22'&&id==='Suppression'?1:factor);
   }
   for (const id of NEW_MODULES) { if (!(id in items)) items[id]=1; if (!(id in visible)) visible[id]=true; }
+  const manualDefaults: Record<string,number>={ManualBallista:14,ManualRotaryBlades:14,ManualLobber:10,ManualArc:6,ManualFirearms:10};
+  const manualTiers: Record<string,string>={ManualBallista:'Uncommon',ManualRotaryBlades:'Uncommon',ManualLobber:'Rare',ManualArc:'Epic',ManualFirearms:'Rare'};
+  for(const [id,weight] of Object.entries(manualDefaults)){
+    const anchor=object(value.tierWeights)?value.tierWeights[manualTiers[id]]:null;
+    if(!(id in items))items[id]=typeof anchor==='number'&&anchor>0?anchor:weight;
+    if(!(id in visible))visible[id]=true;
+  }
   if(typeof value.global!=='number')throw Error('Invalid global multiplier.');
   return validateScenario({...value,baseline:BASELINE,global:old?value.global/4.5:value.global,items,visible});
 }

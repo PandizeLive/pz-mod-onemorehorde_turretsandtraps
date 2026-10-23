@@ -14,29 +14,30 @@ function UI.triggerSettings(page)
     for i=#settings,1,-1 do
         local name=settings[i].name
         local common=name and name:gsub("^OMHTurretsTraps%.Traps", "OMHTurretsTraps.")
-        if common~=name and primary[common] then table.remove(settings,i) end
+        local key = name and name:gsub("^OMHTurretsTraps%.", ""):gsub("^Traps", "")
+        if (common ~= name and primary[common]) or key == "AutomationEnabled" or key == "ForwardCone"
+            or key == "PotatoPlaybackVolume" or key == "DeviceSoundVolume" or key == "ShowTurretRange" then
+            table.remove(settings, i)
+        end
     end
     return page
 end
 local groups = {
-    {"Sandbox_Title_OMHTurretsTraps_Operation", {"PotatoTurret", "PotatoHealth", "IdleSweepSpeed", "TurretPlayerDamageMultiplier", "TurretPlayerWoundMultiplier"}},
-    {"Sandbox_Title_OMHTurretsTraps_Storage", {"PotatoAmmoCapacity", "PotatoModuleCapacity", "PotatoMagazineCapacity"}},
-    {"Sandbox_Title_OMHTurretsTraps_Potato", {"PotatoDamage", "PotatoCriticalChance", "PotatoCriticalDamage", "PotatoCooldown", "PotatoReloadTime", "PotatoRange", "PotatoTurnSpeed", "PotatoProjectileSpeed", "PotatoKnockdownChance", "PotatoSplashPercent", "PotatoSplashRadius"}},
-    {"Sandbox_Title_OMHTurretsTraps_Audio", {"PotatoHearingRadius", "PotatoPlaybackVolume"}},
-    {"Sandbox_Title_OMHTurretsTraps_Power", {"PotatoRequirePower", "PotatoBatteryPercentPerShot", "FirearmBatteryMultiplier", "ScrapshotBatteryPercent", "PotatoGeneratorFuelPerShot", "ModulePowerBonus", "BallistaBatteryPercent", "RotaryBatteryHours"}},
-    {"Sandbox_Title_OMHTurretsTraps_Firearms", {"FirearmTurrets", "FirearmAmmoCapacity", "FirearmAimingLevel", "FirearmAccuracyMultiplier", "FirearmRangeAccuracy", "PrecisionRangeAccuracy", "FirearmDamageMultiplier", "FirearmRangeMultiplier", "FirearmReloadMultiplier", "FirearmRateMultiplier", "FirearmCycleMultiplier", "FirearmTurnSpeed"}},
+    {"Sandbox_Title_OMHTurretsTraps_Operation", {"PotatoHealth", "PotatoRequirePower", "PotatoGeneratorFuelPerShot", "IdleSweepSpeed", "DetectionInterval", "TurretPlayerDamageMultiplier", "TurretPlayerWoundMultiplier", "FriendlyPlayerDamageMultiplier", "FriendlyPlayerWoundMultiplier", "HostilePlayerDamageMultiplier", "HostilePlayerWoundMultiplier"}},
     {"Sandbox_Title_OMHTurretsTraps_Standby", {"TurretStandbyEnabled", "TurretIdleSeconds", "TurretWakeSeconds", "TurretAlertDelay", "TurretStateIndicator"}},
-    {"Sandbox_Title_OMHTurretsTraps_PlayerContact", {"FriendlyPlayerDamageMultiplier", "FriendlyPlayerWoundMultiplier", "HostilePlayerDamageMultiplier", "HostilePlayerWoundMultiplier"}},
-    {"Sandbox_Title_OMHTurretsTraps_Arc", {"ArcDamage", "ArcRange", "ArcCooldown", "ArcTargets", "ArcJumpRange", "ArcBatteryPercent"}},
-    {"Sandbox_Title_OMHTurretsTraps_Ballista", {"BallistaDamage", "BallistaRange", "BallistaCooldown", "BallistaReload"}},
-    {"Sandbox_Title_OMHTurretsTraps_Scrapshot", {"ScrapshotDamage", "ScrapshotRange", "ScrapshotCooldown", "ScrapshotReload"}},
-    {"Sandbox_Title_OMHTurretsTraps_Lobber", {"LobberDamage", "LobberRange", "LobberCooldown", "LobberReload"}},
-    {"Sandbox_Title_OMHTurretsTraps_RotaryBat", {"RotaryBatDamage", "RotaryBatShove"}},
-    {"Sandbox_Title_OMHTurretsTraps_RotaryBlades", {"RotaryBladesDamage", "RotaryBladesShove"}},
-
+    {"Sandbox_Title_OMHTurretsTraps_Storage", {"PotatoAmmoCapacity", "PotatoModuleCapacity", "PotatoMagazineCapacity"}},
+    {"Sandbox_Title_OMHTurretsTraps_RotaryBat", {"RotaryBatDamage", "RotaryBatShove", "RotaryBatteryHours", "RotaryBatForwardCone", "RotaryBatHearingRadius"}},
+    {"Sandbox_Title_OMHTurretsTraps_RotaryBlades", {"RotaryBladesDamage", "RotaryBladesShove", "RotaryBladesBatteryMultiplier", "RotaryBladesForwardCone", "RotaryBladesHearingRadius"}},
+    {"Sandbox_Title_OMHTurretsTraps_Potato", {"PotatoTurret", "PotatoDamage", "PotatoCriticalChance", "PotatoCriticalDamage", "PotatoCooldown", "PotatoReloadTime", "PotatoRange", "PotatoTurnSpeed", "PotatoProjectileSpeed", "PotatoKnockdownChance", "PotatoSplashPercent", "PotatoSplashRadius", "PotatoBatteryPercentPerShot", "PotatoForwardCone", "PotatoHearingRadius"}},
+    {"Sandbox_Title_OMHTurretsTraps_Scrapshot", {"ScrapshotDamage", "ScrapshotRange", "ScrapshotCooldown", "ScrapshotReload", "ScrapshotBatteryPercent", "ScrapshotForwardCone", "ScrapshotHearingRadius"}},
+    {"Sandbox_Title_OMHTurretsTraps_Ballista", {"BallistaDamage", "BallistaRange", "BallistaCooldown", "BallistaReload", "BallistaBatteryPercent", "BallistaForwardCone", "BallistaHearingRadius"}},
+    {"Sandbox_Title_OMHTurretsTraps_Arc", {"ArcDamage", "ArcRange", "ArcCooldown", "ArcTargets", "ArcJumpRange", "ArcBatteryPercent", "ArcForwardCone", "ArcHearingRadius"}},
+    {"Sandbox_Title_OMHTurretsTraps_Lobber", {"LobberDamage", "LobberRange", "LobberCooldown", "LobberReload", "LobberBatteryMultiplier", "LobberForwardCone", "LobberHearingRadius"}},
+    {"Sandbox_Title_OMHTurretsTraps_Firearms", {"FirearmTurrets", "FirearmAmmoCapacity", "FirearmAimingLevel", "FirearmAccuracyMultiplier", "FirearmRangeAccuracy", "PrecisionRangeAccuracy", "FirearmDamageMultiplier", "FirearmRangeMultiplier", "FirearmReloadMultiplier", "FirearmRateMultiplier", "FirearmCycleMultiplier", "FirearmTurnSpeed", "FirearmBatteryMultiplier", "FirearmForwardCone"}},
 }
 
 local moduleGroups = {
+    {"Sandbox_Title_OMHTurretsTraps_Power", {"ModulePowerBonus"}},
     {"Sandbox_Title_OMHTurretsTraps_Martyrdom", {"MartyrdomRadius", "MartyrdomDamage"}},
     {"Sandbox_Title_OMHTurretsTraps_Tack", {"TackRadius", "TackDamage", "TackLifetime"}},
     {"Sandbox_Title_OMHTurretsTraps_Firing", {"ImprovisedFiringFailure", "EnhancedFireMultiplier"}},
@@ -77,7 +78,7 @@ function UI.layout(panel)
         label:setY(y)
         control:setY(y)
         y = y + math.max(label:getHeight(), control:getHeight()) + 10
-        panel:insertNewLineOfButtons(control)
+        panel:insertNewLineOfButtons(control.omhttRarity or control)
     end
     panel.joypadIndex, panel.joypadIndexY = 1, 1
     panel.joypadButtons = panel.joypadButtonsY[1]
@@ -94,8 +95,14 @@ function UI.precision(control)
         local number = tonumber(value)
         self.omhttRaw, self.omhttDisplay = nil, nil
         if number and number == number and math.abs(number) < math.huge then
-            local digits = math.abs(number) > 0 and math.abs(number) < .01 and 6 or 2
+            local digits = 2
+            if math.abs(number) > 0 and math.abs(number) < .01 then
+                digits = 10
+            end
             local display = string.format("%." .. digits .. "f", number)
+            if digits == 10 then
+                display = string.gsub(display, "0+$", "")
+            end
             self.omhttRaw, self.omhttDisplay = tostring(value), display
             setText(self, display)
         else
@@ -115,7 +122,7 @@ end
 function UI.attach(panel)
     if not panel or not panel.controls or panel.omhttTitles then return panel end
     for name, control in pairs(panel.controls) do
-        if string.find(name, "^OMHTurretsTraps%.") and (string.find(name, "LootRate", 1, true) or string.find(name, "LootWeight", 1, true) or string.find(name, "RarityWeight", 1, true)) then
+        if string.find(name, "^OMHTurretsTraps%.") then
             UI.precision(control)
         end
     end
@@ -126,18 +133,21 @@ function UI.attach(panel)
         sections = {
             {"Sandbox_Title_OMHTurretsTraps_LootGeneral", {"ModuleLootRate", "PackLootWeight", "PackZombieChance"}},
             {"Sandbox_Title_OMHTurretsTraps_Rarity", {"RarityWeightAbundant", "RarityWeightCommon", "RarityWeightUncommon", "RarityWeightRare", "RarityWeightEpic", "RarityWeightLegendary", "RarityWeightMythic"}},
-            {"Sandbox_Title_OMHTurretsTraps_LootComponents", {"LootRateFiring", "LootRateMotionDetection", "LootRateFilter", "LootRateDetection360", "LootRateRapidFire", "LootRateSuppression", "LootRateReload", "LootRateAutoloader", "LootRateVelocity", "LootRateRange", "LootRateCapacity", "LootRateCapacitySmall", "LootRateCapacityLarge", "LootRateCritical", "LootRateAccuracy", "LootRateMagazine", "LootRateSplitter", "LootRateFragment", "LootRateFiringEnhanced", "LootRateMotionDetectionEnhanced", "LootRatePiercing", "LootRateInitialBlow", "LootRateExecute", "LootRateImpact", "LootRateConservation", "LootRateSynergy", "LootRateMartyrdom", "LootRateTack", "LootRateRegulator"}},
+
         }
+        local loot = require("OMHTT/ControlLootUI").sections(panel)
+        for i = 1, #loot do
+            sections[#sections + 1] = loot[i]
+        end
     elseif panel.controls["OMHTurretsTraps.SpikeBarrier"] then
         sections = {
+            {"Sandbox_Title_OMHTurretsTraps_SharedContact", {"BarbDamage", "BarbInterval", "BarbMovementDivisor", "BedScratchChance", "BedSprintTripChance"}},
             {"Sandbox_Title_OMHTurretsTraps_Barrier", {"SpikeBarrier", "SpikeBarrierDamage", "ReinforcedBarrierDamage", "SpikeBarrierHealth", "ReinforcedBarrierHealthMultiplier", "SpikeBarrierScratchChance"}},
             {"Sandbox_Title_OMHTurretsTraps_Poke", {"PokeDamage", "PokeCycleSeconds", "PokeHealth", "PokeWear", "PokeScratchChance"}},
             {"Sandbox_Title_OMHTurretsTraps_Tether", {"TetherRange", "TetherLaunchSpeed", "TetherReturnSpeed", "TetherHoldSeconds", "TetherResetSeconds", "TetherHitDamage", "TetherPullDamage"}},
             {"Sandbox_Title_OMHTurretsTraps_Beds", {"BedSpikes", "BedDamage", "BedReinforcedDamage", "BedHealth", "BedReinforcedHealth", "BedWear", "BedTripChance", "BedRecoverySeconds"}},
             {"Sandbox_Title_OMHTurretsTraps_BarbedPanel", {"BarbSections"}},
             {"Sandbox_Title_OMHTurretsTraps_ConcertinaWire", {"BarbWire"}},
-            {"Sandbox_Title_OMHTurretsTraps_Barbs", {"BarbDamage", "BarbInterval", "BarbMovementDivisor"}},
-            {"Sandbox_Title_OMHTurretsTraps_PlayerContact", {"BedScratchChance", "BedSprintTripChance"}},
         }
     elseif panel.controls["OMHTurretsTraps.ControllerRange"] or panel.controls["OMHTurretsTraps.TrapsControllerRange"] then
         local prefix = panel.controls["OMHTurretsTraps.ControllerRange"] and "" or "Traps"

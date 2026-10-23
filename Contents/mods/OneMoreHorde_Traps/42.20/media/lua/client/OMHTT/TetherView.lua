@@ -1,7 +1,8 @@
 if isServer() then return end
 local C = require("OMHTT/TetherCycle")
 local Draw = require("OMHTT/ControlModelDraw")
-local V = {states = {}, received = {}, from = {}, visuals = {}}
+local Clock = require("OMHTT/ControlClock")
+local V = {states = {}, received = {}, simulated = {}, from = {}, visuals = {}}
 
 ---@param module string Namespace
 ---@param command string Event
@@ -13,11 +14,11 @@ function V.receive(module, command, message)
     local previous = V.states[message.id]
     local distance = 0
     if previous and previous.session == message.session and previous.sequence == message.sequence then
-        local x, y = C.position(previous, (getTimestampMs() - V.received[message.id]) / 1000, V.from[message.id])
+        local x, y = C.position(previous, (Clock.now() - V.simulated[message.id]) / 1000, V.from[message.id])
         distance = math.max(0, math.min(message.range, (x - message.x) * message.dx + (y - message.y) * message.dy))
     end
     V.from[message.id] = distance
-    V.states[message.id], V.received[message.id] = message, getTimestampMs()
+    V.states[message.id], V.received[message.id], V.simulated[message.id] = message, getTimestampMs(), Clock.now()
 end
 
 ---@param index number Native viewport
@@ -28,7 +29,7 @@ function V.render(index)
     local now, budget = getTimestampMs(), 192
     for id, state in pairs(V.states) do
         if now - V.received[id] > 2000 then
-            V.states[id], V.received[id], V.from[id], V.visuals[id] = nil, nil, nil, nil
+            V.states[id], V.received[id], V.simulated[id], V.from[id], V.visuals[id] = nil, nil, nil, nil, nil
         elseif state.phase ~= "idle" and state.phase ~= "reset" and now - V.received[id] <= 1000
             and math.floor(player:getZ()) == state.z
             and (player:getX() - state.x) ^ 2 + (player:getY() - state.y) ^ 2 < 2500 then
@@ -39,7 +40,7 @@ function V.render(index)
                     visual = {nail = instanceItem("Base.OMHTTTrapTetherNailVisual"), cable = instanceItem("Base.OMHTTTrapTetherCableVisual")}
                     V.visuals[id] = visual
                 end
-                local x, y = C.position(state, (now - V.received[id]) / 1000, V.from[id])
+                local x, y = C.position(state, (Clock.now() - V.simulated[id]) / 1000, V.from[id])
                 local height = math.max(.025, math.min(.3, state.height or .3))
                 local square = cell:getGridSquare(math.floor(x), math.floor(y), state.z)
                 local yaw = math.deg(math.atan2(state.dy, state.dx))

@@ -24,7 +24,7 @@ function Loot.loaded()
                 end
             end
             for component, fullType in pairs(types) do
-                local weight = L.WEIGHTS[component] * L.SCALES[name] * multiplier * E.option("LootRate" .. component, L.DEFAULTS.items[component], 20)
+                local weight = L.WEIGHTS[component] * L.SCALES[name] * multiplier * E.option("LootRate" .. component, L.DEFAULTS.items[component], 1000000)
                 if weight > 0 and (not L.SUBSETS[name] or L.SUBSETS[name][component]) then
                     items[#items + 1], items[#items + 2] = fullType, weight
                 end
