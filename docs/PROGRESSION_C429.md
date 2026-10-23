@@ -1,6 +1,6 @@
 # C429 - Selected corrections and starting-character progression
 
-**Current direction, C434 (2026-10-23):** five manuals are planned, adding Firearms. Owner selected Ballista/Rotary Blade Uncommon, Lobber Rare, Arc Epic, with book locations and gas-station magazine areas. Firearms rarity/mounting proposal and module-pack inclusion remain choices below. The two-point Turret Specialist learns the selected manual knowledge at creation; 7% zombie packs and owner tuning remain. Makeshift Detection currently needs no native Motion Sensor. C431 ingredient/skill proposals remain unapproved. Installed 0.2.64.4 still has no manual/trait gates; this is planning.
+**Current direction, C435 (2026-10-23):** five manuals selected: Ballista/Rotary Blade Uncommon, Lobber/Firearms Rare, Arc Epic. Manuals use normal OMHTT container pools plus book/magazine locations, including gas-station magazine racks, and are excluded from module packs. Firearms knowledge gates mounting supported guns as heads. The two-point Turret Specialist starts with all five manuals' knowledge; 7% zombie packs, three module/kit rewards and owner tuning remain. Makeshift Detection stays sensor-free. C431 ingredient/skill proposals remain unapproved; consolidated choices are at C435 below. Installed 0.2.64.4 still has no manual/trait gates; this is planning.
 
 2026-10-22. Owner selects C428 **1A / 2A / 3A**, requests a Forward Cone setting for every head instead of the shared default, asks to consider high starting skills and other craftables/mods such as Angry Turrets, then explicitly adds the difficulty/time of leveling each skill.
 
@@ -343,3 +343,41 @@ Recommendation: keep Makeshift Detection's current sensor-free starter recipe, a
 ### Scope and handoff
 
 Source checks are read-only. No new items, trait/knowledge gate, distribution entries, source/assets, version/package/install, test result or Workshop changelog changed. Installed 0.2.64.4 remains. Lower tiers, literature locations and adding the fifth manual are selected; Firearms rarity/mounting details, module-pack inclusion and C431 recipe costs/skills remain proposals. Keep prior corrective scope and 7% selection. **Decision needed** for C434 1A/1B and 2A/2B.
+
+## C435 - Firearms Rare; normal container pools and literature; no pack manuals (2026-10-23)
+
+Owner: "1B / 2A - we'll include the other loot pools. It's a manual, that would be found in tool cabinets as well. Let's keep it in our normal loot pool + the magazine / book locations."
+
+### Selected acquisition contract
+
+C434 **1B** selects the Firearms manual at **Rare**, with knowledge required when mounting a supported firearm as a turret head. Existing addon-firearm compatibility checks apply. Ordinary handheld use, firing/reloading/removing an installed head and other authorized servicing remain unchanged. Turret Specialist covers all five manuals at the selected two-point cost; no free skills, gear or physical manuals.
+
+| Manual | Selected rarity | Existing source-default tier anchor |
+| --- | --- | --- |
+| Ballista | Uncommon | 14 |
+| Rotary Blade | Uncommon | 14 |
+| Lobber | Rare | 10 |
+| Firearms | Rare | 10 |
+| Arc Emitter | Epic | 6 |
+
+Use actual loaded corresponding tier weights and preserve owner Sandbox/LootLab overrides. These anchors are relative weights, not percentages. Rarity selection authorizes its assigned weight.
+
+C434 **2A**, with the owner's explicit correction, selects **normal OMHTT container pools plus literature**, while excluding manuals from module packs. This supersedes the proposed literature-only restriction and grants the manual exception to C315's usual pack inclusion. The existing 7% pack default and three module/kit rewards stay selected; adding manuals must not dilute those draws.
+
+Read-only source check, `ControlLootDefinitions.lua`: the 16 normal pools are ElectronicStoreMisc, CrateElectronics, MechanicShelfElectric, ArmyStorageElectronics, ElectricianTools, GunStoreAccessories, ToolCabinetMechanics, GarageTools, CrateTools, ToolStoreTools, ToolStoreMisc, MechanicShelfTools, GarageMechanics, CrateMechanics, ElectronicStoreComputers and ElectronicStoreHAMRadio. Include manuals in this existing container coverage plus appropriate LibraryBooks, bookstore/home literature and MagazineRackMixed sources verified at C434, including native gas-station magazine racks. Do not infer general fuel/snack shelf distribution or retroactive loot in already-generated containers.
+
+Implementation must distinguish catalog visibility, container eligibility and pack eligibility. Current pool subsets must not accidentally filter manuals out, nor should a shared catalog insertion accidentally add them to pack draws. Retain existing container scaling conventions and tuning; no new manual-specific weight multiplier is selected. Game/Sandbox/LootLab integration remains required, and local catalog work is not hosted publication.
+
+### Remaining recipe adjustment, consolidated
+
+Manual tiers, sources, pack exclusion and Specialist benefits need no further choice. C431's three recipe additions remain unapproved. Recommend its modest Electrical 5 / Mechanics 3 Arc requirement; the new manual and consumed charger make the larger Electrical 6 training increase less attractive. Other skills, retained tools, crafting times and XP awards stay as in the C431 table.
+
+- **1A - Recommended:** add one consumed Car Battery Charger to Arc and require Electrical 5 / Mechanics 3; add one Radio Receiver plus one Radio Transmitter to Controller; add one Motion Sensor to Laser.
+- **1B - Stronger Arc skill gate:** the same three ingredient additions, but Arc requires Electrical 6 / Mechanics 3.
+- **1C - Keep current recipes:** no new ingredients or skill increases; retain the selected manuals, trait and loot changes.
+
+All additions are on top of existing recipe bills. Makeshift Detection remains unchanged and sensor-free under every option. These are concrete choices for the outstanding recipe proposal, not an inference that today's 1B authorizes C431's unrelated 1B.
+
+### Verification and handoff
+
+Documentation-only selection. No source/assets, version/package/install, Workshop notes or test-result changes. No custom knowledge, distribution, trait or multiplayer runtime validation claimed. Prior corrective scope remains selected and unimplemented. Installed 0.2.64.4 remains. Check documentation links and mirror under C108/C119. **Decision needed** for the recipe choice above; no manual decision is outstanding.
