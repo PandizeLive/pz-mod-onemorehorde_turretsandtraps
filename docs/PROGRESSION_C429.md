@@ -1,6 +1,6 @@
 # C429 - Selected corrections and starting-character progression
 
-**Current direction, C431 (2026-10-23):** no OMHTT book/manual/blueprint unlocks. Progress through materials and required skills, with crafting XP considered separately. Owner selected a 7% zombie module-pack default, retaining three rewards and existing owner tuning. This supersedes C429/C430 manual proposals. The concrete three-recipe proposal at the end remains unapproved; installed 0.2.64.4 is unchanged.
+**Current direction, C432 (2026-10-23):** owner reopens manuals on the condition that a Turret Specialist starting trait is added. This supersedes C431's rejection; trait benefit, point cost and manual grouping are proposals below. Materials/skills remain important and the C431 recipe additions remain unapproved. The selected zombie pack default stays 7%, with three rewards and saved owner tuning preserved. Discussion only; installed 0.2.64.4 is unchanged.
 
 2026-10-22. Owner selects C428 **1A / 2A / 3A**, requests a Forward Cone setting for every head instead of the shared default, asks to consider high starting skills and other craftables/mods such as Angry Turrets, then explicitly adds the difficulty/time of leveling each skill.
 
@@ -104,7 +104,7 @@ Selecting this direction does not authorize arbitrary manual rarities, exact rep
 
 ## C430 - Components and advanced designs selected; discovery and pack pacing proposed (2026-10-23)
 
-Historical proposal: C431 below rejects manual unlocks and selects 7% packs. Neither C430 manual option remains pending.
+Historical proposal: C431 initially rejected manual unlocks and selected 7% packs. C432 subsequently reopens manuals conditional on a Turret Specialist trait; its options below govern the current discussion.
 
 Owner: "1A / But let's discuss more". This selects C429's physical components plus a small number of advanced-design unlocks, preserving accessible starters. It requests continued discussion, not implementation of unreviewed recipes or loot changes. No new manual rarity, distribution, ingredient quantity, skill requirement, XP award or pack probability has been approved.
 
@@ -148,6 +148,8 @@ The current corrective patch scope remains selected and outstanding. This checkp
 
 
 ## C431 - Manual unlocks rejected; materials and skills with 7 percent packs (2026-10-23)
+
+Historical decision: the later C432 owner message reopens manuals with a starting-trait alternative. The selected 7% and the unapproved status of the recipe proposal are unchanged.
 
 Owner: "I don't like the book / manual unlock idea. I think we should focus more on the materials and xp to craft. 2 - 7%".
 
@@ -195,3 +197,44 @@ The owner may revise individual materials or skill values; these choices are rev
 Installed current `media/lua/server/Items/ProceduralDistributions.lua` contains charger entries in CarSupplyBatteries (weight 10), CarSupplyTools (4), GarageMechanics (4), GasStoreEmergency (6) and MechanicShelfElectric (6), among other pools. Receiver/transmitter entries occur in ArmyStorageElectronics, EngineerTools and RadioFactoryComponents; sensors occur in EngineerTools, ElectricianTools and SafehouseTraps. Native `DismantleMiscElectronics` maps HomeAlarm to MotionSensor. Pool weights are not spawn percentages and do not establish a fixed number of garage visits or a rare/late-game guarantee. These provide targeted existing acquisition routes without inventing custom rare loot.
 
 When implementing approved recipe changes, check actual usable-item/condition eligibility, retained tools, inventory consumption and independently loaded packages against the current native craft system. Preserve turret/trap pickup condition, existing multiplayer authority and ordinary skill-book behavior. This is a documentation checkpoint only: no gameplay, source/assets, version, package, Workshop changelog, test tag or test result is changed. Installed 0.2.64.4 remains; the already-selected corrective scope and 7% default are pending implementation. **Decision needed** only for this concrete material/skill proposal.
+
+
+## C432 - Manuals reconsidered with Turret Specialist (2026-10-23)
+
+Later owner message, received during the C431 handoff: "I think I'll take it back. Manuals may be good. But we'd have to add a trait that starts with them as a 'Turret Specialist'".
+
+### Current direction and important tradeoff
+
+- Reopen learned manuals with **Turret Specialist** as an explicit starting-character alternative. The owner supplied the trait name and condition for accepting the manual direction; exact point cost, learned recipes versus physical books and manual grouping were not specified. Do not treat these details as approved.
+- C431's rejection is superseded. Materials and normal skill progression still matter; neither this correction nor a future selection of a trait option approves the C431 Arc/Controller/Laser recipe bills or changed Arc skill requirements.
+- The selected **7% zombie module-pack default** remains settled, with three rewards and saved settings/LootLab preservation. No repeat probability choice is required.
+- A knowledge-granting trait deliberately bypasses manual discovery. Manuals therefore cannot guarantee a late unlock for every character. Appropriate materials, skills and operation remain the constraints for specialist starts, including the owner's Electrical-8 scenario. Do not conceal this exception while calling manuals a universal progression gate.
+- Distinguish knowing a design from meeting its craft requirements. Do not add skill levels, starting XP boosts, free tools, batteries, turrets or combat bonuses to the trait without a separate owner selection.
+
+### Decision 1: Proposed trait benefit
+
+Both draft options cost **two character-creation points**, apply to any otherwise eligible profession while Turrets is enabled, and keep the existing skill/material checks. Two points is a balance starting proposal, not a measured optimum. Final value depends on the scope and availability of the manuals.
+
+**1A - Learned recipes at character creation (recommended).** Turret Specialist begins knowing the recipes taught by the eventual OMHTT advanced turret manuals. No physical manuals or equipment are added. Knowledge is personal; the character can still craft finished heads for teammates if qualified and supplied. This supports a co-op crafting role but does not prevent cooperation from accelerating progression.
+
+**1B - Physical manuals in the starting inventory.** The character receives one copy of each eventual advanced turret manual and learns through ordinary reading. These can be shared, traded or recovered from a corpse, so one specialist can teach a whole group and repeated character creation can add more copies. This is a materially broader starting benefit at the same proposed point cost; no silent substitution between this and 1A.
+
+For implementation, use normal native knowledge/trait systems and verify new-character grant, save/reload and connected-client behavior. Do not implement a repeating inventory grant or per-tick scan. Turrets-only and combined packages should expose the trait; Traps-only must remain independent. Custom trait registration, recipe IDs and duplicate grant prevention need native verification. Trait Shop or another addon granting/removing the trait after creation is a separate compatibility case to audit; do not modify the sibling mod or claim runtime acquisition support without a contract. Normal acquired recipe knowledge should be handled by native persistence, not a custom account-wide unlock.
+
+### Decision 2: Manuals taught or supplied
+
+**2A - Two manuals (recommended).** Advanced Turret Mechanisms teaches Ballista, Rotary Blade and Lobber, including corresponding alternate craft routes; Arc Emitter Schematics teaches Arc. Names are working labels. The trait covers both. Keep basic defenses, Poke/Tether, base, starter heads, simple triggers, Controller/Laser and Makeshift modules known by default, subject to their recipe requirements. This limits book-search friction and retains meaningful material/skill differences among the advanced heads.
+
+**2B - Four manuals.** One for Ballista, one Rotary Blade, one Lobber and one Arc. The trait covers all four. More individually targeted discoveries, with more duplicate finds and a less predictable search for the preferred head. This also increases the value of the trait relative to having only two manuals, so reassess the draft point cost with final loot availability.
+
+Neither option adds modules to traps. New manuals still need owner-selected rarities and assigned loaded weights under C315/C338, appropriate acquisition sources and game/Sandbox/LootLab/pack integration review. Do not silently put literature into the existing module-reward pool. Keep those details visible before final implementation approval rather than inventing them from this discussion.
+
+### Current native evidence
+
+Inspected installed 42.21 `media/scripts/generated/characters/character_traits.txt`: `base:mechanics` (Vehicle Knowledge) costs 3, grants Mechanics +1 and Basic/Intermediate Mechanics recipes through `GrantedRecipes`; `base:gardener` costs 2 and grants Farming +1 and recipes; `base:herbalist` costs 4 and grants PlantScavenging +1 and knowledge. These are comparison points, not proof of OMHTT trait balance. A two-point knowledge-only starting proposal is deliberately below the three-point Mechanics-and-recipes trait.
+
+Native `media/lua/shared/TimedActions/ISReadABook.lua`, `complete`, records learned literature on the character and calls native reading/recipe functions. The ordinary reading path shown does not consume the book; physical starting manuals would be reusable unless a new consumption rule were explicitly introduced. No consumption rule is proposed. Native trait definitions demonstrate the recipe-grant pattern, not successful registration or multiplayer validation of the proposed custom trait.
+
+### Handoff
+
+C431 was committed/mirrored before the later correction arrived; C432 must supersede it in the current records and PR rather than rewriting history or dropping the selected 7%. No gameplay/code/assets, version, installation, test result or Workshop changelog changes. Installed build remains 0.2.64.4. The earlier corrective scope remains selected and outstanding. **Decision needed** for trait delivery **1A/1B** and manual grouping **2A/2B**; numerical recipe/material and manual-acquisition proposals remain unapproved.
