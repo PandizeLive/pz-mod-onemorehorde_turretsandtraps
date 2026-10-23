@@ -4,7 +4,7 @@ module Base {
         ItemType = base:normal,
         DisplayCategory = OMHTTUtility,
         Weight = 0.2,
-        Icon = OMHTT_TestCube,
+        Icon = OMHTT_ModuleUtility,
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_ModuleGrid,
     }
@@ -22,7 +22,7 @@ module Base {
         ItemType = base:normal,
         DisplayCategory = OMHTTUtility,
         Weight = 0.2,
-        Icon = OMHTT_TestCube,
+        Icon = OMHTT_ModuleUtility,
         ScaleWorldIcon = 0.25,
         Tooltip = Tooltip_OMHTT_ModuleSiphon,
     }

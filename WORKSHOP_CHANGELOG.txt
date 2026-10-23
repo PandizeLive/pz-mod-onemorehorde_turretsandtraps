@@ -1,4 +1,4 @@
-v0.2.64.1
+v0.2.64.2
 
 Development test content
 
@@ -91,7 +91,7 @@ Local tools
 - Added Knox Country LootLab with seeded spawn/probability maps, mobile zoom, component tuning and account-synced settings matching the gameplay loot definitions, expected occupied-container counts, per-container haul probabilities and larger five-plus jackpot circles.
 - Added a compact Mythic-first tier-list editor to LootLab with unchanged module-card height, per-tier weights, personal overrides, live rarity badges, automatic equal-weight grouping on reopen, persistent account tier weights across refreshes/devices and explicit confirmation. Custom tier weights consistently define rarity/colors and battery costs in LootLab and the mod, with matching Sandbox export and invalid-tier feedback.
 - Fixed portable placement failures and exact-item restoration in normal/Build Cheat modes; aligned the Tether developer panel with its backing wall in all four directions.
-- Added owner-supplied rarity-aware Performance module and Expansion Kit icons and native Performance, Automation, Effects, Utility and Expansion Kits categories; custom installed slot order is preserved. All triggers require a powered assigned Controller; outages preserve links, held signals resume on restoration, and Button presses are not replayed.
+- Added owner-supplied rarity-aware Performance, Utility and Expansion Kit icons and native Performance, Automation, Effects, Utility and Expansion Kits categories; custom installed slot order is preserved. All triggers require a powered assigned Controller; outages preserve links, held signals resume on restoration, and Button presses are not replayed.
 - Added wall-mounted Lever with a persistent ON/OFF latch, native switch appearance and faint green powered-ON indicator and master-enable gating of other connected triggers; recovery retains condition and redeployment starts OFF.
 - Added craftable wall-mounted Laser Sensor with a green/red powered beam and fixed ten-tile default range configurable in Sandbox. Players and zombies, including crawlers, interrupt it; walls and closed doors shorten coverage without firing.
 - Added configurable incremental trigger consumption and OMH-colored tooltips with exact rates, time basis and Controller supply. Buttons cost per accepted press, Plate/Lever while active, and Laser while scanning; Controller idle and receiver costs stay separate. Detection-equipped rotary turrets now wait for an eligible target.

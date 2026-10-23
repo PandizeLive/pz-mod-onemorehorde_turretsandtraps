@@ -5,14 +5,14 @@ local R = require("OMHTT/TurretRarity")
 local A = {textures = {}, applied = setmetatable({}, {__mode = "k"})}
 local performance = {Regulator = true, Conservation = true, Magazine = true, RapidFire = true,
     Velocity = true, Range = true, Suppression = true, Critical = true, Accuracy = true, Reload = true, Autoloader = true}
-local expansion = {CapacityImprovised = true, CapacitySmall = true, Capacity = true, CapacityLarge = true}
+local utility = {Grid = true, Siphon = true, Lure = true, Void = true}
 
 ---@param item InventoryItem? Existing or newly received item
 ---@return nil
 function A.apply(item)
     if not item then return end
     local component = T.component(item:getFullType())
-    local category = performance[component] and "performance"
+    local category = performance[component] and "performance" or utility[component] and "utility"
     if not category then return end
     local name = category .. "_" .. string.lower(R.names[R.get(component).band])
     if A.applied[item] == name then return end

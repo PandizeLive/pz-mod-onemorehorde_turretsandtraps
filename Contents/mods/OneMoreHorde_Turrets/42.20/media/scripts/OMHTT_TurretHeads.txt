@@ -304,7 +304,7 @@ module Base {
         DisplayCategory = OMHTTUtility,
         WorldStaticModel = OMHTTTurretProbe,
         Weight = 0.2,
-        Icon = OMHTT_TestCube,
+        Icon = OMHTT_ModuleUtility,
         ConditionMax = 100,
         Tooltip = Tooltip_OMHTT_ModuleLure,
     }
@@ -314,7 +314,7 @@ module Base {
         DisplayCategory = OMHTTUtility,
         WorldStaticModel = OMHTTTurretProbe,
         Weight = 0.2,
-        Icon = OMHTT_TestCube,
+        Icon = OMHTT_ModuleUtility,
         ConditionMax = 100,
         Tooltip = Tooltip_OMHTT_ModuleVoid,
     }

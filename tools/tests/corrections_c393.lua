@@ -117,6 +117,15 @@ check(string.find(item.texture, "expansion", 1, true), "Expansion kit uses its o
 T.component = function() return "Martyrdom" end
 Art.apply(item)
 check(writes == 3, "Categories without supplied artwork retain their icons")
+for _, component in pairs({"Grid", "Siphon", "Lure", "Void"}) do
+    T.component = function() return component end
+    for tier = 1, 7 do
+        band = tier
+        Art.apply(item)
+        check(item.texture == "media/textures/OMHTT/Modules/utility_" .. string.lower(R.names[tier]) .. ".png",
+            "Utility artwork follows effective rarity for " .. component)
+    end
+end
 Art.textures = oldTextures
 T.component, R.get, getTexture = oldComponent, oldRarity, oldTexture
 SandboxVars.OMHTurretsTraps = old.settings

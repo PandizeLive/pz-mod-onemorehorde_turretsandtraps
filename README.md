@@ -1,5 +1,7 @@
 # OMH: Turrets & Traps
 
+**0.2.64.2 / C423:** Updated owner Performance and new rarity-aware Utility icons verified; installation pending. [Patch](docs/PATCH_v0.2.64.2.md) | [Test record](docs/TEST_v0.2.64.2.md).
+
 **0.2.64.1 / C422 installed:** Selected Arc firing/impact audio and multiplayer effect-routing fix. 27,299 assertions, native playback, save/restart and all package startup checks pass; tagged installation and backups verify. [Patch](docs/PATCH_v0.2.64.1.md) | [Test record](docs/TEST_v0.2.64.1.md). In-game listening and connected-client acceptance remain pending. **Test now** after restart.
 
 **0.2.64 / C421:** Arc Emitter patch installed; see [patch](docs/PATCH_v0.2.64.md) and [verification](docs/TEST_v0.2.64.md). 27,290 assertions and native write/restart plus independent-package startup checks pass. Tagged installation and previous-build backups verify. Final firing sound, rendered and connected-player acceptance remain pending.
