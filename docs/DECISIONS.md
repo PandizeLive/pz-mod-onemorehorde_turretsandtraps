@@ -2102,3 +2102,12 @@ Owner selects C428 1A, 2A and 3A. Annotation replaces the shared base Forward Co
 [C429 contract and evidence](PROGRESSION_C429.md) records current 42.21 starting skills, native XP mechanisms and book effects, OMHTT consumptive crafting XP, vanilla physical/knowledge gates and original installed Angry Turrets recipe facts. The old C428 choices are selected; do not request 1A/2A approval again. Progression remains design work: new candidate components, manuals, recipe counts and pack supply numbers require concrete review. Recommended next choice is components plus selected advanced-design unlocks (1A); alternative is components/operating costs only (1B).
 
 This checkpoint adds research/approval records only. Corrective implementation remains outstanding; installed 0.2.64.4, source/assets, saved tuning and acceptance status are unchanged. No runtime skill-leveling, rendered or multiplayer pass is claimed. C108 documentation mirror required. **Decision needed only for the new progression gate direction.**
+
+
+## C430 - Progression components/designs chosen; continued discussion (2026-10-23)
+
+- Owner selects C429 **1A** (physical components plus a small number of learned advanced designs), then says "But let's discuss more". Record the direction as selected, not a recipe/loot patch approval.
+- [Evolving contract](PROGRESSION_C429.md#c430---components-and-advanced-designs-selected-discovery-and-pack-pacing-proposed-2026-10-23) proposes **1A two manuals** (Ballista/Rotary Blade/Lobber grouped; Arc separate) or **1B four individual manuals**, with basic automation and traps still known. These contents remain unselected.
+- Separate proposed pacing choice: **2A 5%**, **2B 10%**, or **2C current 15%** zombie pack chance, retaining three rewards, assigned tier weights and owner Sandbox/LootLab values. Expected rewards are 15/30/45 per 100 eligible kills. No new value is applied or presented as play-tested.
+- Preserve the required comparisons across unequal skill-training effort, native/modded specialist starts, co-op, native crafts and Angry Turrets. No blanket skill increase or arbitrary calendar unlock is approved. New manual acquisition/rarities, recipe bills and XP still require concrete owner review.
+- C428/C429 corrective selections remain outstanding implementation work. No gameplay/version/package/changelog/test-result changes. Installed 0.2.64.4 unchanged; discussion-only documentation must be mirrored under C108/C119. **Decision needed** for the new proposals.

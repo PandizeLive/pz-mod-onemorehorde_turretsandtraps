@@ -97,4 +97,47 @@ Recommended choice for the progression proposal: **1A** physical components plus
 
 Selecting this direction does not authorize arbitrary manual rarities, exact replacement recipes or reduced pack chance. The subsequent cost proposal should compare: zero-skill survivor without books; hobby starts with relevant books; vanilla specialists; Electrical 8/modded starts; and co-op specialists. For each, show unmet skill XP, practical acquisition route, full setup bill, ongoing supplies and uncertainty. Corrective 1A/2A choices need no repeat selection.
 
-**Decision needed only for the new progression gate direction.** Corrective scope is settled; no playable corrective build is claimed by this research record.
+**C430 update:** the owner selected 1A on 2026-10-23 and requested more discussion. Components plus selected advanced designs is now the chosen direction. Exact manuals, recipes and loot changes remain proposals below; corrective scope is settled and still unimplemented.
+
+
+## C430 - Components and advanced designs selected; discovery and pack pacing proposed (2026-10-23)
+
+Owner: "1A / But let's discuss more". This selects C429's physical components plus a small number of advanced-design unlocks, preserving accessible starters. It requests continued discussion, not implementation of unreviewed recipes or loot changes. No new manual rarity, distribution, ingredient quantity, skill requirement, XP award or pack probability has been approved.
+
+### Recommended progression shape
+
+Progression is a set of useful projects and branches, not a guaranteed day-by-day schedule. Early finds and specialist starts should sometimes accelerate it. A discovered firearm can offer an early alternative to custom heads; its ammunition, battery and modules still matter. Learned custom-head designs do not make every firearm or module a late-game item.
+
+- Keep basic/reinforced wood and wire defenses, Poke Floor and Tether Dart Trap known. Their materials, tools, skills and upkeep remain the gates to cost. Making the slower single-target Tether require a lucky book while Poke stays accessible needs a stronger balance reason than technical complexity alone.
+- Keep the turret base, Potato, Scrapshot, Rotary Bat, basic triggers and Makeshift modules known. This retains an obtainable first powered defense and a reason to upgrade later.
+- Keep Controller and Laser known, but cost appropriate salvaged control/sensing components in the next recipe proposal. The Controller helps manage existing defenses; a mandatory book would delay that management as well as its power/storage benefits. Keep an affordable Makeshift Detection route rather than requiring a real sensor for every first automated turret.
+- Put learned designs on selected advanced heads. Retain native profession advantages without granting every advanced design or an automatic Electrical-8 bypass. Skills remain relevant; selection does not approve raising all skill gates.
+- Existing native receiver/transmitter/sensor hardware and the candidate battery charger remain component proposals, not approved ingredient changes or proven rare finds. Evaluate current sources and opportunity cost before assigning quantities. No new bespoke crafting-component subsystem is proposed.
+
+### Decision 1: How many advanced designs?
+
+**1A - Two manuals (recommended).** Working groups: Advanced Turret Mechanisms teaches Ballista, Rotary Blade and Lobber; Arc Emitter Schematics teaches Arc. Apply each unlock consistently to its alternate craft routes. This creates two meaningful discoveries and lets ingredients, skills, ammunition and power differentiate the three mechanical heads. It avoids a separate book hunt for every sidegrade. Both manuals belong to Turrets, preserving the standalone Traps package without a cross-package knowledge dependency.
+
+**1B - Four manuals.** One each for Ballista, Rotary Blade, Lobber and Arc. This makes each find more specific and spreads discoveries across more loot, but duplicates become more frustrating and locating the desired design less predictable. It is not automatically a more realistic or better progression curve.
+
+These are knowledge proposals only. Names are working labels; no art request, recipe implementation, chosen manual rarity or public loot publication follows from this record. New items must receive the owner's selected rarity and its assigned loaded weight under C315/C338 before implementation. Exact manual acquisition/distribution and integration with game/packs/Sandbox/LootLab remain to resolve under that contract; do not silently force literature into the existing module reward pool while costing it. Native learning/persistence and independent-package behavior require verification when implemented. Do not promise a guaranteed late-game date from random discovery.
+
+### Decision 2: Zombie module-pack pacing
+
+Current C428 fresh-default math: 15% pack chance per eligible dead zombie, three weighted module/kit selections per pack. That is 45 expected rewards per 100 eligible kills, not 45 unique/useful items and not a guarantee. At 300 eligible kills the expectation is 135 rewards. Horde Night and co-op accelerate the number of opportunities. Better head recipes alone cannot prevent a found firearm from becoming heavily upgraded early.
+
+Propose changing only the fresh default of the existing zombie pack chance, retaining three selections and the selected rarity-weight/LootLab compatibility rules:
+
+| Option | Pack chance | Expected packs / 100 eligible kills | Expected rewards / 100 eligible kills | Expected rewards / 300 eligible kills |
+| --- | --- | --- | --- | --- |
+| 2A (recommended starting proposal) | 5% | 5 | 15 | 45 |
+| 2B (gentler reduction) | 10% | 10 | 30 | 90 |
+| 2C (current default) | 15% | 15 | 45 | 135 |
+
+The recommendation is a candidate for owner selection and later play testing, not a demonstrated optimum. It increases the expected number of kill opportunities needed for a particular outcome by roughly threefold versus 15%, while retaining the feeling of opening a pack with three rewards. Container loot and loose finds are separate sources and remain in the total progression model. No calendar/real-hour claim follows from these expectations. Do not change existing saved Sandbox values, individual module weights or owner LootLab tuning on account of this proposal. Module rarity assignment remains a separate feature already selected in C429.
+
+### Next costing and validation
+
+After these choices, consolidate exact recipe bills, manual acquisition/rarities and crafting XP for review rather than silently selecting them. Compare zero-skill survivors, book-equipped hobby starts, vanilla specialists, Electrical-8 modded starts and cooperative supply. Include repeatable OMHTT crafting XP and the different Electrical/Mechanics/Carpentry training opportunities established above. Skill levels are not interchangeable units of effort; do not raise every requirement uniformly.
+
+The current corrective patch scope remains selected and outstanding. This checkpoint changes documentation only: no code/assets, installed version, Workshop changelog, package, test tag or gameplay acceptance result changes. Installed build remains 0.2.64.4. **Decision needed** for C430 1A/1B and 2A/2B/2C; no repeat decision is needed for the C429 direction or corrective scope.
