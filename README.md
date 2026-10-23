@@ -1,6 +1,6 @@
 # OMH: Turrets & Traps
 
-**0.2.64.3 / C424:** Owner Effects icons added for all nine Effects modules; validation and installation pending. [Patch](docs/PATCH_v0.2.64.3.md) | [Test record](docs/TEST_v0.2.64.3.md).
+**0.2.64.3 / C424:** Owner Effects icons installed for all nine Effects modules. Rarity mapping, artwork hashes and packaged installation verified; rendered acceptance pending. [Patch](docs/PATCH_v0.2.64.3.md) | [Test record](docs/TEST_v0.2.64.3.md).
 
 **0.2.64.2 / C423:** Updated owner Performance and new rarity-aware Utility icons installed. 27,327 assertions and all package/tag/install/archive hashes pass; rendered acceptance pending. [Patch](docs/PATCH_v0.2.64.2.md) | [Test record](docs/TEST_v0.2.64.2.md).
 
