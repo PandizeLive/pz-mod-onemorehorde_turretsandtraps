@@ -1,6 +1,6 @@
 # C429 - Selected corrections and starting-character progression
 
-**Current direction, C432 (2026-10-23):** owner reopens manuals on the condition that a Turret Specialist starting trait is added. This supersedes C431's rejection; trait benefit, point cost and manual grouping are proposals below. Materials/skills remain important and the C431 recipe additions remain unapproved. The selected zombie pack default stays 7%, with three rewards and saved owner tuning preserved. Discussion only; installed 0.2.64.4 is unchanged.
+**Current direction, C433 (2026-10-23):** owner selects the two-point Turret Specialist trait with personal learned recipes at creation, and four separate advanced-head manuals (Ballista, Rotary Blade, Lobber, Arc). Default-known recipes are enumerated below. Manual rarities/acquisition and C431 recipe additions remain unapproved. Zombie pack default stays selected at 7%, three rewards and saved owner tuning preserved. This is the planned behavior; installed 0.2.64.4 still has all 33 craft recipes known and no such trait/manual gates.
 
 2026-10-22. Owner selects C428 **1A / 2A / 3A**, requests a Forward Cone setting for every head instead of the shared default, asks to consider high starting skills and other craftables/mods such as Angry Turrets, then explicitly adds the difficulty/time of leveling each skill.
 
@@ -238,3 +238,47 @@ Native `media/lua/shared/TimedActions/ISReadABook.lua`, `complete`, records lear
 ### Handoff
 
 C431 was committed/mirrored before the later correction arrived; C432 must supersede it in the current records and PR rather than rewriting history or dropping the selected 7%. No gameplay/code/assets, version, installation, test result or Workshop changelog changes. Installed build remains 0.2.64.4. The earlier corrective scope remains selected and outstanding. **Decision needed** for trait delivery **1A/1B** and manual grouping **2A/2B**; numerical recipe/material and manual-acquisition proposals remain unapproved.
+
+
+## C433 - Specialist knowledge and four manuals selected; default-known recipes (2026-10-23)
+
+Owner: "1A / 2B - What's automatically known of the start?". This selects C432's **two-point Turret Specialist**, personal learned recipes at character creation, and **four separate advanced-head manuals**. No physical starting manuals, skill/XP bonuses or free equipment. Do not ask the owner to choose these details again. The trait grants the knowledge from all four selected manuals, including the Lobber's existing alternate recipe, while ordinary crafting qualifications still apply.
+
+### What everyone knows under the selected plan
+
+| Group | Known without an OMHTT manual or the trait |
+| --- | --- |
+| Traps and barriers | Spike Barrier, Bed Spikes, their Reinforced variants, Barbed Panel, Concertina Wire, Poke Floor and Tether Dart Trap |
+| Starter turrets | Turret Base, Potato Launcher Head, Scrapshot Head and Rotary Bat Head |
+| Controller and triggers | Controller, Button, Lever, Pressure Plate and Laser Sensor |
+| Makeshift modules/kits | Makeshift Firing Module, Makeshift Detection Module and Makeshift Expansion Kit |
+| Other crafting/service | Makeshift Bomb, available reinforcement recipes, barrier packing/unpacking, and existing improvised versions of the listed default-known devices |
+
+Knowing a recipe means no knowledge-unlock requirement, not that a zero-skill naked survivor can craft it. Applicable skills, tools and ingredients still apply. Existing native firearms can still be installed as compatible heads without an OMHTT manual; this does not grant native firearm-crafting recipes. Other modules and larger expansion kits keep their current acquisition paths; this list does not create additional craft recipes or add modules to traps.
+
+For ordinary characters, four manuals separately teach Ballista, Rotary Blade, Lobber and Arc Emitter. For Turret Specialist characters, those recipes are already learned at creation. No vanilla profession receives them automatically in addition to this selected trait. Ordinary native skill books remain unaffected.
+
+### Exact source mapping and current-build distinction
+
+Read-only enumeration of `Source/42.20/media/scripts/*.txt` found **33 craftRecipe definitions**, all currently `needToBeLearn = false`. The four selected manuals would gate these five existing recipe definitions:
+
+- Ballista: `OMHTTCraftBallista`.
+- Rotary Blade: `OMHTTCraftRotaryBlades`.
+- Lobber: `OMHTTCraftLobber` and `OMHTTCraftLobberImprovised`.
+- Arc: `OMHTTCraftArc`.
+
+The other **28 existing definitions** remain known without a manual. This count includes alternate recipes and packing; it is not a count of 28 distinct devices. Confirm the real recipe IDs/native knowledge linkage during implementation. No recipe gate or trait has been implemented by this documentation checkpoint; the installed build still knows all 33 recipes.
+
+### Next concrete choice: manual rarity
+
+Four separate manuals already create four distinct searches. Recommend avoiding an additional steep rarity ladder until the material/skill and acquisition-source proposals are costed.
+
+**1A - All four Rare (recommended).** Same rarity for each individual manual; item-specific ingredients, skills and running costs distinguish the advanced heads. Use the owner's loaded Rare weight when implemented (current source anchor default 10), preserving overrides.
+
+**1B - Graduated rarity.** Ballista and Rotary Blade Rare, Lobber Epic, Arc Legendary. Use each assigned loaded tier weight (current source anchor defaults Rare 10, Epic 6, Legendary 3). This further delays particular designs but makes the two-point starting trait more valuable and the Arc search less predictable.
+
+These are unselected rarities, not fixed spawn percentages or approved new weights. The owner-selected tier carries its assigned weight under C315/C338; no redundant numerical confirmation should follow. Acquisition sources and pack integration remain to review; do not silently dilute the existing three-module reward pool with literature. No manual distribution, new custom component, skill threshold, recipe bill or crafting XP award is approved by the current 1A/2B answer.
+
+### Retained scope and handoff
+
+Keep the selected 7% zombie pack default, three rewards, saved owner Sandbox/LootLab tuning and previously selected corrective work. C431's proposed Arc/Controller/Laser ingredients/skills remain proposals. No code/assets, package/version, installation, Workshop notes or test results changed. Installed 0.2.64.4 remains. Documentation links and recipe enumeration are verification of this explanation, not native custom-trait or multiplayer acceptance. **Decision needed** for the new manual-rarity choice; trait benefit/cost/grouping are settled.
