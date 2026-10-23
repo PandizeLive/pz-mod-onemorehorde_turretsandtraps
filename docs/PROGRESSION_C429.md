@@ -1,6 +1,6 @@
 # C429 - Selected corrections and starting-character progression
 
-**Current direction, C435 (2026-10-23):** five manuals selected: Ballista/Rotary Blade Uncommon, Lobber/Firearms Rare, Arc Epic. Manuals use normal OMHTT container pools plus book/magazine locations, including gas-station magazine racks, and are excluded from module packs. Firearms knowledge gates mounting supported guns as heads. The two-point Turret Specialist starts with all five manuals' knowledge; 7% zombie packs, three module/kit rewards and owner tuning remain. Makeshift Detection stays sensor-free. C431 ingredient/skill proposals remain unapproved; consolidated choices are at C435 below. Installed 0.2.64.4 still has no manual/trait gates; this is planning.
+**Current direction, C436 (2026-10-23):** owner selects C435 1C: retain current crafting costs, skills, tools, durations and XP; reject the C431 added components and skill increases. The selected manual knowledge gates remain. Ballista/Rotary Blade manuals are Uncommon, Lobber/Firearms Rare, Arc Epic; normal OMHTT containers plus book/magazine sources, no module-pack manuals. Two-point Turret Specialist starts with all five manuals' knowledge. Keep 7% zombie packs, three module/kit rewards and owner tuning. No progression design choice remains; implementation of this plan and prior corrections is outstanding. Installed 0.2.64.4 is unchanged.
 
 2026-10-22. Owner selects C428 **1A / 2A / 3A**, requests a Forward Cone setting for every head instead of the shared default, asks to consider high starting skills and other craftables/mods such as Angry Turrets, then explicitly adds the difficulty/time of leveling each skill.
 
@@ -381,3 +381,17 @@ All additions are on top of existing recipe bills. Makeshift Detection remains u
 ### Verification and handoff
 
 Documentation-only selection. No source/assets, version/package/install, Workshop notes or test-result changes. No custom knowledge, distribution, trait or multiplayer runtime validation claimed. Prior corrective scope remains selected and unimplemented. Installed 0.2.64.4 remains. Check documentation links and mirror under C108/C119. **Decision needed** for the recipe choice above; no manual decision is outstanding.
+
+## C436 - Current crafting costs and skills retained; progression design settled (2026-10-23)
+
+Owner: "1C". This explicitly selects C435's keep-current-recipes option while retaining the selected manuals, trait and loot changes.
+
+- Keep all current consumed ingredients, retained tools, required skill levels, crafting times and XP awards. Arc remains Electrical 4 / Mechanics 2; Controller remains Electrical 3; Laser remains Electrical 2.
+- Reject C431's additional consumed Car Battery Charger for Arc, Radio Receiver/Radio Transmitter for Controller and Motion Sensor for Laser. Reject both proposed Arc skill increases. These are no longer pending decisions. Makeshift Detection stays sensor-free.
+- "Keep current recipes" refers to costs, skills and crafting behavior, not removing the separately selected knowledge requirements. The five advanced-head craft definitions still gain their manual gates; firearms mounting retains its selected knowledge gate and existing supported-gun checks. Do not gate ordinary handheld use or installed-head firing/reloading/removal.
+- Retain the five manual rarities and assigned loaded weights: Ballista/Blade Uncommon, Lobber/Firearms Rare, Arc Epic, preserving owner overrides. Existing OMHTT container pools plus literature/gas-station magazine racks are selected; module packs exclude manuals.
+- Retain two-point Turret Specialist with personal learned knowledge from all five manuals at creation, no physical manuals/gear/skills/XP bonus. Keep the selected 7% zombie pack default and three module/kit rewards; preserve saved tuning.
+- Native skill/material costs, alternative recipes and service behavior are not rebalanced by this selection. Discovery is bypassable through the paid starting trait and cooperative production; do not portray advanced equipment as guaranteed late-game progression.
+- C428/C429 corrective scope remains selected and outstanding. No additional design questionnaire or repeat selection is needed. Native implementation, persistence/package checks and player acceptance remain work, not assumed successes.
+
+Documentation-only checkpoint: no source/assets, version/package/install, Workshop changelog or test-result changes. Installed 0.2.64.4 remains. C108/C119 documentation mirror required. **Wait for a patch**; no new build or background implementation is claimed by this record.
