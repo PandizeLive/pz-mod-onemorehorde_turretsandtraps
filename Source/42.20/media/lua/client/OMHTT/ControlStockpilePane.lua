@@ -29,7 +29,10 @@ function Wing:prerender()
     self:setStencilRect(0, 0, self.width, self.height)
     Theme.section(self, 0, 0, self.width, self.height, self.owner.lineHeight + 8, getText("UI_OMHTT_StockpileTitle"))
     local weight = self.inventory:getCapacityWeight()
-    self:drawText(getText("UI_OMHTT_StockWeight", string.format("%.1f", weight), require("OMHTT/ControlExpansion").capacity(self.owner.object)), 10, self.owner.lineHeight + 14, .8, .8, .8, 1, UIFont.Small)
+    local capacity = require("OMHTT/ControlExpansion").capacity(self.owner.object)
+    local free = math.max(0, capacity - weight)
+    self:drawText(getText("UI_OMHTT_StockFree", string.format("%.1f", free), capacity), 10, self.owner.lineHeight + 14, .8, .8, .8, 1, UIFont.Small)
+    Theme.meter(self, 10, self.owner.lineHeight * 2 + 18, self.width - 20, 7, free / math.max(1, capacity))
 end
 
 ---@return nil
@@ -134,7 +137,7 @@ function Wing.create(owner, x, y, width, height)
     wing.isCollapsed, wing.render3DItems = false, {}
     wing:initialise()
     owner:addChild(wing)
-    local top = owner.lineHeight * 2 + 24
+    local top = owner.lineHeight * 2 + 34
     local pane = Pane:new(6, top, width - 12, height - top - 6, wing.inventory, 1)
     pane.player, pane.inventoryPage = owner.player:getPlayerNum(), wing
     pane.stockDirty = true

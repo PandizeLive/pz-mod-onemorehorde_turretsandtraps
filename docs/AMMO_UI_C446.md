@@ -55,3 +55,28 @@ Meter meaning is consistent: filled area means **remaining** battery, ammunition
 Standalone checks: all three variants rendered and visually inspected;12 variant/width checks at 1080/736/390/320 found no horizontal overflow or control clipping; local Access/Unassign interactions and script-error checks passed. These establish mockup behavior only, not native PZ layout acceptance. Owner choice and game implementation remain outstanding.
 
 **Decision needed:** endurance baseline 1A/1B and UI 2A/2B/2C. Twelve-hour goal is recorded; no gameplay balance or visual variant has been installed.
+
+
+## C447 - 5.56 supply and selected Native slim style (2026-10-24)
+
+Owner asks whether finding 8,000 5.56 rounds is realistic and selects **2A**, explicitly applying the visuals to Controller and Turret Manage. Horde Night and Trait Shop are deferred. This authorizes the selected UI source work; it does not select C446's numerical ammo option, alter loot, or approve the entire pending corrective build for installation.
+
+### Supply evidence
+
+Current installed vanilla `media/scripts/generated/recipes/recipes_ammunition.txt` (`OpenBoxOfBullets20`) unpacks one `Base.556Box` into **20 rounds**. `recipes_packing.txt` (`OpenCarton12`) unpacks one `Base.556Carton` into **12 boxes**, or **240 rounds**. Thus 8,000 rounds is **400 boxes**, or 33 1/3 cartons; **34 full cartons contain 8,160 rounds**. These are current B42 quantities, not assumptions based on another game version.
+
+Current `media/lua/server/Items/ProceduralDistributions.lua` includes 5.56 boxes and cartons in `ArmyStorageAmmunition` and `GunStoreAmmunition`, alongside competing calibers. Those entries use weighted rolls: their weights are neither guaranteed counts nor literal percentage chances. Firearms B42 adds other ammunition to these pools; it does not establish a guaranteed 8,000-round supply. No store-count or acquisition-day promise is justified without sampling actual map containers, rarity settings and prior looting.
+
+The current save has `AmmoLootNew=0.6` and `HoursForLootRespawn=0`. Respawn is off, so previously cleared ammunition stores do not routinely replenish. Loose native 5.56 weighs .035 per round (280 encumbrance for 8,000); the installed Firearms B42 42.16 override in `scripts/Items/Firearms_Items_Ammo.txt` sets .02 (160 encumbrance). These are loose-item carrying weights, not packed-carton weights or a change to turret virtual reserve handling. Only these relevant settings and source conclusions are recorded; raw saves are not included.
+
+**Assessment:** feasible as a late-game stockpile after targeted looting, but not a reliable ordinary fill or sustainable daily single-turret budget. Capacity and affordability are separate: allowing 8,000 reserves room for a siege without making its ammunition cheap. Retain 8,000 only as a proposed ceiling, not an assumption about what players routinely own. The twelve-hour target still needs a baseline choice; making smaller practical stocks last twelve hours would require explicitly reviewing ammo efficiency/cadence and module tradeoffs. No such rebalance, loot increase or new numeric stock target is selected here. The C446 1A/1B capacity proposals remain unselected.
+
+### Selected visual implementation
+
+Source now shares one Native slim header/meter implementation between Controller and Turret Manage. Existing native window-header texture is reused for restrained shading; no new artwork, texture generation, scan or per-item cache is introduced. Header highlight/separator lines retain native panel structure. Continuous meters represent remaining battery, ammo, condition or free storage; green above 25%, amber at or below 25%, red at or below 10%. Existing text/tooltip values remain available, and Controller storage explicitly labels its free weight. The stockpile list reserves ten extra pixels for the new meter.
+
+Affected clients: `ControlTheme`, `TurretSlot`, `ControlBatterySlot`, `ControlGraph`, `ControlStockpilePane`, plus one EN translation. Both management menus use the shared helpers; group strips use the same header treatment. This is the selected visual treatment only. C445's separate settings-pane layout, assignment cleanup, transfer audio, slot hints/endurance, tooltip and asset-integration corrections remain pending, not silently marked complete by this styling selection.
+
+Verification: installed Kahlua compiles 329 runtime/translation files; current suite plus the focused meter bounds/threshold/zero-width probe passes **27,607 assertions**. The meter uses at most four draw operations, clamps fractions and emits no fill for empty/invalid resources. Translation JSON parses; changed source introduces no prohibited protected calls; diff whitespace checks pass. Local evidence: `.local/c447-style.log` and `.local/c447-style.lua`. UI/world/network objects in this suite are test doubles; no live performance, native gradient rendering or connected-client acceptance is claimed.
+
+Source changes are staged for the next patch. `Contents`, installed **0.2.66**, immutable test tag and saved balance remain unchanged. The cumulative Workshop draft retains its existing heading/notes and gains one net visual-change bullet; no publication occurred. Standing C108/C119 commit/mirror applies. **Wait for a patch** for visuals; ammo balance discussion remains open.

@@ -2,6 +2,8 @@ v0.2.66
 
 Development test content
 
+- Unified Controller and Turret Manage section shading and slim battery, ammunition, condition and free-storage meters.
+
 - Retuned stackable modules with separate first-copy and additive duplicate gains; removed ordinary bonus ceilings and old firing/reload floors while preserving saved custom settings.
 - Added inactive module storage and expansion-kit replacement with excess ammunition returned to inventory or the floor; saved activation priority stays independent of rarity sorting.
 - Sorted module slots by rarity, corrected compact icon/text overlap and Details resizing, and clarified unsupported-head feedback.

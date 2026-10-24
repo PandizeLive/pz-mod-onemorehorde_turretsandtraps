@@ -113,3 +113,8 @@ Checks: every source/export hash, PNG decode, native-pack page extent, unique mo
 Owner log captured through the standard Capture action: `diagnostics/captures/20261024-125714-6543`, console SHA256 `A5E9450A15D985AA4D08FC2257BC74404A0A6ABA864082876454951ECB6B3EE8`. It identifies0.2.66/SP. No OMHTT exception stack is found; base-game font and unrelated Firearms translation warnings exist. This does not invalidate visible owner-reported failures. No new gameplay acceptance, performance stress result or connected multiplayer pass is claimed.
 
 **Decision needed:** ammo policy1A/1B/1C and native UI scope2A/2B. Asset creation is complete; gameplay patch integration awaits those scope decisions. No repeated approval request for the clearly requested text/slot/range fixes.
+
+
+## C447 selection update (2026-10-24)
+
+C446 2A Native slim is selected for Controller and Turret Manage; shared headers/meters are implemented in Source. [Exact scope and remaining work](AMMO_UI_C446.md#c447---556-supply-and-selected-native-slim-style-2026-10-24). Separate C445 functional/layout/asset corrections remain pending. Ammo ceilings, base values and universal multipliers remain unselected; Horde Night and Trait Shop styling is explicitly deferred.

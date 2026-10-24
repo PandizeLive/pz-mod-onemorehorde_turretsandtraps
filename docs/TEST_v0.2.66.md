@@ -41,3 +41,8 @@ Standard capture: diagnostics/captures/20261024-125714-6543; console SHA256 A5E9
 ## C446 - Endurance calculation and standalone mockups (2026-10-24)
 
 [Comparison and boundaries](AMMO_UI_C446.md). Current saved DayLength4 and native mapping confirm 90 minutes/day. 80 source-stat duration rows were independently cross-checked, including reloads and target thresholds. Three standalone UI variants rendered, visually inspected and checked at four widths; local interactions pass with no script errors. Native Kahlua calculation uses modeled gun methods with installed script inputs, not a running-world endurance test. No owner test, new gameplay build or installed acceptance is claimed. Source/Contents,0.2.66 and unuploaded Workshop draft are unchanged.
+
+
+## C447 - Staged Native slim verification (2026-10-24)
+
+The installed 0.2.66 owner test status is unchanged. Post-tag Source now applies selected C446 2A to shared Controller/Manage headers and remaining-resource meters; this is not part of the installed immutable snapshot. Current Kahlua compile (329 files), suite and focused meter geometry/threshold probe pass 27,607 assertions. JSON/prohibited-call/diff checks pass. Local `.local/c447-style.log` records the run. UI/world/network objects are test doubles; rendered styling, live FPS and owner acceptance remain pending. No new package, tag, installation or owner test. [Approval, supply evidence and boundaries](AMMO_UI_C446.md#c447---556-supply-and-selected-native-slim-style-2026-10-24).

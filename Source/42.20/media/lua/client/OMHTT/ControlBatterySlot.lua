@@ -173,7 +173,7 @@ function Slot:prerender()
     local start = 16 + getTextManager():MeasureStringX(UIFont.Small, label)
     local charge = self.item and Battery.charge(self.item) or 0
     if self.width - start > 20 then
-        self:drawProgressBar(start, 8, self.width - start - 8, 7, charge, Theme.accent)
+        Theme.meter(self, start, 8, self.width - start - 8, 7, charge)
     end
     local name = getText("UI_OMHTT_ControllerBatteryDrop")
     if self.item then

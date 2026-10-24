@@ -422,6 +422,7 @@
     "UI_OMHTT_DeviceDistance": "Distance: %1 tiles",
     "UI_OMHTT_DeviceCondition": "Condition: %1 / %2",
     "UI_OMHTT_StockWeight": "Stockpile: %1 / %2 weight",
+    "UI_OMHTT_StockFree": "Storage Free: %1 / %2 weight",
     "UI_OMHTT_Devices": "Devices",
     "UI_OMHTT_ToStockpile": "Remove To: Stockpile",
     "UI_OMHTT_ToInventory": "Remove To: Inventory",
