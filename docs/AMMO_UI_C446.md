@@ -80,3 +80,8 @@ Affected clients: `ControlTheme`, `TurretSlot`, `ControlBatterySlot`, `ControlGr
 Verification: installed Kahlua compiles 329 runtime/translation files; current suite plus the focused meter bounds/threshold/zero-width probe passes **27,607 assertions**. The meter uses at most four draw operations, clamps fractions and emits no fill for empty/invalid resources. Translation JSON parses; changed source introduces no prohibited protected calls; diff whitespace checks pass. Local evidence: `.local/c447-style.log` and `.local/c447-style.lua`. UI/world/network objects in this suite are test doubles; no live performance, native gradient rendering or connected-client acceptance is claimed.
 
 Source changes are staged for the next patch. `Contents`, installed **0.2.66**, immutable test tag and saved balance remain unchanged. The cumulative Workshop draft retains its existing heading/notes and gains one net visual-change bullet; no publication occurred. Standing C108/C119 commit/mirror applies. **Wait for a patch** for visuals; ammo balance discussion remains open.
+
+
+## C448 - Six-hour target supersedes twelve hours (2026-10-24)
+
+The owner now targets six hours of constant M4 firing and requests every kit/head comparison. [Current proposed multipliers, bases and full runtime tables](AMMO_SIX_HOURS_C448.md) supersede the unselected twelve-hour numerical candidates. C447 Native slim selection and staged implementation remain unchanged. Numerical approval remains pending; no gameplay or installed change.
