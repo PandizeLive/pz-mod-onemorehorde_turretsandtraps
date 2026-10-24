@@ -27,3 +27,14 @@ Audio evidence: diagnostics/v0.2.65/audio-balance.json; selected capture provena
 Initial verification failures identified outdated fixture expectations for the removed Automation veto, new head-specific sounds, game-time clocks, manual item family/defaults and shader lights. Native cycle testing also found a real remaining wall-clock Button pulse; production now uses the receiver's simulation clock. No errors were suppressed to pass validation. Current successful evidence supersedes those attempts; diagnostic probes remain local.
 
 Owner rendering/listening, connected multiplayer, Horde Night integration in an active game and stress FPS acceptance remain pending. Dedicated native probes have zero connected players. No public upload, merge or hosted deployment.
+
+
+## C438 owner feedback (2026-10-24)
+
+Owner reports missing trigger consumption colors, inconsistent grey/wrapped Feature descriptions and expansion text, unsorted module slots, and rejected kit replacements. Requests inactive module storage, ammunition overflow during kit downgrade and explicit unsupported-head feedback. These presentation/transfer behaviors are **failed or missing**, not accepted by the previous automated checks. [Source diagnosis and proposed corrective contract](FEEDBACK_C438.md).
+
+Captured current console: 0.2.65 SP, 2,463,426 bytes, source modified 2026-10-24 00:42:20 local; local copy and hash in diagnostics/c438/evidence.json. TransferFull admission messages and M4/M9 effective stats are present. No OMHTT-attributed exception stack found; vanilla/map and Firearms translation/model warnings remain. This is not a complete no-errors claim.
+
+A separate stock-Kahlua calculation executes current Stats/Estimate with source defaults and firearm fixtures, includes reload/rack, and confirms the eight-copy Rapid rate cap and five-copy Velocity damage cap. The source probe exits 0; results are theoretical raw DPS, not a live timing or balance acceptance test. Existing compiled harness prints 27,458 assertions for that optional run; it does not replace or extend the packaged 27,553-assertion release result. See diagnostics/c438/balance.lua and balance.log.
+
+No gameplay/source/package/install changes. Manuals/progression, audio/rendering, live Horde Night, stress FPS and connected multiplayer acceptance remain pending unless separately confirmed; this feedback does not implicitly pass those features.
