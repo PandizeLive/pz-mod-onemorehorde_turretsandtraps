@@ -52,6 +52,8 @@ Be a candid technical collaborator: assess ideas before agreeing, explain materi
 
 ## Rules
 
+- [2026-10-24] C445 explicitly authorizes standalone artist handoff packaging, neutral labeled module development markers and distinct very blocky custom-head placeholders. Keep these functional prototypes separate from final owner/artist artwork, reuse existing assets instead of duplicating them, preserve actual firearm models and require native/rendered validation before describing staged meshes as installed. No texture-pack switching system is requested. See docs/FEEDBACK_C445.md.
+
 - [2026-10-19] Traps do not have module slots or accept turret modules. This is a product rule, not a temporary first-release limitation. Siphon applies only to the turret and must never refund Controller batteries (C333).
 - [2026-09-26] Review crafting ingredients, required tools/skills and crafting XP with the owner before implementing recipe changes. The owner objected to selecting the v0.2.0 temporary recipe without consultation. General Phase 2 approval does not settle those recipe choices.
 - [2026-09-25] For OMH: Turrets & Traps, the owner will source final art without AI. Do not generate concept art, stylistic designs, textures, icons or final visual assets, or otherwise direct the art. The explicitly authorized temporary white cube-only mechanical placeholder is an exception; its proportions and appearance are not design direction.

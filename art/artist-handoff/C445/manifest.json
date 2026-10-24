@@ -1,0 +1,3662 @@
+{
+  "baseline": "0.2.66",
+  "status": "artist handoff; staged markers, not installed",
+  "assets": [
+    {
+      "source": "Source/42.20/icon.png",
+      "file": "current/42.20/icon.png",
+      "sha256": "5301a6f80b9349ac945c8e8409b4d2fa0a4c760273f27aaddba47a456cff69d3",
+      "bytes": 2132,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/models_X/OMHTT_Arc.x",
+      "file": "current/42.20/media/models_X/OMHTT_Arc.x",
+      "sha256": "ff6d002ef9c840238e467fd2285bc21aec0eb473d54b1442533e80ad1d1ecde9",
+      "bytes": 436,
+      "role": "current exported asset"
+    },
+    {
+      "source": "Source/42.20/media/models_X/OMHTT_GunSupport.x",
+      "file": "current/42.20/media/models_X/OMHTT_GunSupport.x",
+      "sha256": "b0e9d72a8d9be79002972c6f9f89970745eda0a3cab8e10227070d6606e6185d",
+      "bytes": 7030,
+      "role": "current exported asset"
+    },
+    {
+      "source": "Source/42.20/media/models_X/OMHTT_ProbeHead.x",
+      "file": "current/42.20/media/models_X/OMHTT_ProbeHead.x",
+      "sha256": "788bd99c9a968a16c11a3b0975ef092675ae797676599be8b5a972c30d4d2375",
+      "bytes": 4725,
+      "role": "current exported asset"
+    },
+    {
+      "source": "Source/42.20/media/models_X/OMHTT_StateAmber.x",
+      "file": "current/42.20/media/models_X/OMHTT_StateAmber.x",
+      "sha256": "1e0ed17f6941d60ff6dcc6a6ab8f66ea9411642fcf89307ff4cccf3ac84d67ef",
+      "bytes": 2410,
+      "role": "current exported asset"
+    },
+    {
+      "source": "Source/42.20/media/models_X/OMHTT_StateDark.x",
+      "file": "current/42.20/media/models_X/OMHTT_StateDark.x",
+      "sha256": "348fdeace3051680f39e680c22ea0d45b6467137ae825c595a1bc98d1cf752c0",
+      "bytes": 2409,
+      "role": "current exported asset"
+    },
+    {
+      "source": "Source/42.20/media/models_X/OMHTT_StateGreen.x",
+      "file": "current/42.20/media/models_X/OMHTT_StateGreen.x",
+      "sha256": "0861434f0c6aefba64b00d70df2ee29de179b9ccc8ac2b41b9264ee2f095cc2c",
+      "bytes": 2410,
+      "role": "current exported asset"
+    },
+    {
+      "source": "Source/42.20/media/models_X/OMHTT_TetherCable.x",
+      "file": "current/42.20/media/models_X/OMHTT_TetherCable.x",
+      "sha256": "b4e33d6ec345a3d7a1509e7e4cd6462ac0932e1ac8c5230c792ae035372b3d2e",
+      "bytes": 2411,
+      "role": "current exported asset"
+    },
+    {
+      "source": "Source/42.20/media/models_X/OMHTT_TetherNail.x",
+      "file": "current/42.20/media/models_X/OMHTT_TetherNail.x",
+      "sha256": "14afadd4288f28be0c397b6c20890b8cf205451c08361c1510493c88dd7ba397",
+      "bytes": 2410,
+      "role": "current exported asset"
+    },
+    {
+      "source": "Source/42.20/media/OMHTT_Barriers.tiles",
+      "file": "current/42.20/media/OMHTT_Barriers.tiles",
+      "sha256": "71e030fa455d1293938d776a423ee7666aee2c7756259bf65b559465edab9343",
+      "bytes": 259,
+      "role": "current exported asset"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack",
+      "file": "current/42.20/media/texturepacks/OMHTT_Barriers.pack",
+      "sha256": "1791c85797831c7318e24e9b332e0889e4588e22d5e82a559eaf24aad49128b5",
+      "bytes": 54597,
+      "role": "current exported asset"
+    },
+    {
+      "source": "Source/42.20/media/textures/Item_OMHTT_Barrier0.png",
+      "file": "current/42.20/media/textures/Item_OMHTT_Barrier0.png",
+      "sha256": "51adfce038e0ab9eaafa70306460cad0afd4192d0c3830286e949872aaf1cf50",
+      "bytes": 1571,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/Item_OMHTT_BedSpikes.png",
+      "file": "current/42.20/media/textures/Item_OMHTT_BedSpikes.png",
+      "sha256": "db9071caccffc9e6728230ca9febfcaed1cf3f58545907da8781f2f0cc8dc3bb",
+      "bytes": 1233,
+      "role": "current exported asset",
+      "dimensions": [
+        60,
+        36
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/Item_OMHTT_ConcertinaWire.png",
+      "file": "current/42.20/media/textures/Item_OMHTT_ConcertinaWire.png",
+      "sha256": "40c7e43a416890a5600e3e2a9565aed2d05308b61384f95567d1e0379fca6887",
+      "bytes": 1073,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/Item_OMHTT_ModuleAutomation.png",
+      "file": "current/42.20/media/textures/Item_OMHTT_ModuleAutomation.png",
+      "sha256": "4db3aad5171dede9c0bfb4a1f4d4115d386d6f543f5e2fac6c87bdcd0fe52958",
+      "bytes": 1316,
+      "role": "current exported asset",
+      "dimensions": [
+        28,
+        29
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/Item_OMHTT_ModuleEffects.png",
+      "file": "current/42.20/media/textures/Item_OMHTT_ModuleEffects.png",
+      "sha256": "82cbaea904bf7d66794349e6945f51a5d004df33a716321cbece7c47372b4071",
+      "bytes": 1966,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/Item_OMHTT_ModulePerformance.png",
+      "file": "current/42.20/media/textures/Item_OMHTT_ModulePerformance.png",
+      "sha256": "347387437274597615df2fb093eb2deb7f848b37d4a7ed5df76eb4e5ec81bfc6",
+      "bytes": 1898,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/Item_OMHTT_ModuleUtility.png",
+      "file": "current/42.20/media/textures/Item_OMHTT_ModuleUtility.png",
+      "sha256": "f1f058f3e7fb41761e0dfaed23ac7057a1c789f6735b9a674fb8f9eb12497ee6",
+      "bytes": 749,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/Item_OMHTT_ReinforcedBarrier0.png",
+      "file": "current/42.20/media/textures/Item_OMHTT_Barrier0.png",
+      "sha256": "51adfce038e0ab9eaafa70306460cad0afd4192d0c3830286e949872aaf1cf50",
+      "bytes": 1571,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/Item_OMHTT_ReinforcedBedSpikes.png",
+      "file": "current/42.20/media/textures/Item_OMHTT_ReinforcedBedSpikes.png",
+      "sha256": "5c06c7972e512793586f9e0e74cdba2d99500813da4444635d44d542075aeff8",
+      "bytes": 1300,
+      "role": "current exported asset",
+      "dimensions": [
+        60,
+        36
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/Item_OMHTT_TestCube.png",
+      "file": "current/42.20/media/textures/Item_OMHTT_TestCube.png",
+      "sha256": "92082e5eaf5c376bcb34520d12d46b74d9f35e304b9491e9577a087b2cbb59a0",
+      "bytes": 1042,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Arc.png",
+      "file": "current/42.20/media/textures/OMHTT/Arc.png",
+      "sha256": "515e54e1bf2b63c2a9e57bc5ac8a7fcdbf71c4ae9e3f73191ce2401ea2063661",
+      "bytes": 216,
+      "role": "current exported asset",
+      "dimensions": [
+        8,
+        64
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/automation_abundant.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/automation_abundant.png",
+      "sha256": "3049e163c46d969fd1d94b4b4f6d6e3304ff508041f4514eb151e049921aea32",
+      "bytes": 1248,
+      "role": "current exported asset",
+      "dimensions": [
+        28,
+        29
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/automation_common.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/automation_common.png",
+      "sha256": "8ef02bb00606208d74b48d19603eb686ab2dcea47c02781b1a1da530b893b36b",
+      "bytes": 1319,
+      "role": "current exported asset",
+      "dimensions": [
+        28,
+        29
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/automation_epic.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/automation_epic.png",
+      "sha256": "d6fcf5e11072fce7a3b51f95b82adee264e7a6a80e3d324cb210d4b49bb77520",
+      "bytes": 1390,
+      "role": "current exported asset",
+      "dimensions": [
+        28,
+        29
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/automation_legendary.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/automation_legendary.png",
+      "sha256": "eb653ea4481099a2c72c98fe2bc4e1fd490c87d922d36cd1fcaad97cbfbc4784",
+      "bytes": 1270,
+      "role": "current exported asset",
+      "dimensions": [
+        28,
+        29
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/automation_mythic.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/automation_mythic.png",
+      "sha256": "de20f82d73ee4e0e2b3f6bd0354f79f19e012253b6b2f3879a7ad0e820cd6442",
+      "bytes": 1363,
+      "role": "current exported asset",
+      "dimensions": [
+        28,
+        29
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/automation_rare.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/automation_rare.png",
+      "sha256": "8c3e15b46f91632c3428dd94977764832a910e679295270e2379db0a6fe50708",
+      "bytes": 1329,
+      "role": "current exported asset",
+      "dimensions": [
+        28,
+        29
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/automation_uncommon.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/automation_uncommon.png",
+      "sha256": "519b303d105239079525275fc646d2cc07580b3da4039074f18b9cf635296761",
+      "bytes": 1329,
+      "role": "current exported asset",
+      "dimensions": [
+        28,
+        29
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/effects_abundant.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/effects_abundant.png",
+      "sha256": "1a51ad2b694f079bc0ede06964a723686e7a0e5b4fce9946a3afac54105ff285",
+      "bytes": 2029,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/effects_common.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/effects_common.png",
+      "sha256": "adc3dabd4026b4708a51b831041a36b59b9e4254fee81f8825d8efbe16c69a3d",
+      "bytes": 2027,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/effects_epic.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/effects_epic.png",
+      "sha256": "3583ae8cde14138fd35af60b536656ba9398dce3be0bd84704dd211fea4a336b",
+      "bytes": 2034,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/effects_legendary.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/effects_legendary.png",
+      "sha256": "9edbdb56c08c5da7ce0d560f82967d9108150eba0d554d99af7d7a370c46b8a4",
+      "bytes": 2021,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/effects_mythic.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/effects_mythic.png",
+      "sha256": "4bf2988832e298a8aec3a73fb24ad44daa649cfc1f21e01931cb2f6c67b54fe2",
+      "bytes": 2062,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/effects_rare.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/effects_rare.png",
+      "sha256": "5df2b1b874f211a718a1b8b6b756d22a57b1978e523d5ccf8151bef186387e64",
+      "bytes": 2019,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/effects_uncommon.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/effects_uncommon.png",
+      "sha256": "6df7d15972eaafd7639610d154d4048ed7f0885664a9c31b11dcdd44e296305b",
+      "bytes": 2066,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/expansion_abundant.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/expansion_abundant.png",
+      "sha256": "67d5a8aed65430c73d194d86ea6f7090375821e973cbe405086d603f93c44657",
+      "bytes": 1990,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/expansion_common.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/expansion_common.png",
+      "sha256": "79bcd10b36a6a264f43bb408293a9c96c55828cbad6bd0a4a7a64403a8d59cf4",
+      "bytes": 1999,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/expansion_epic.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/expansion_epic.png",
+      "sha256": "4c22e444d57e62439e1120516c6d16036fd3b4607e3ea93baab5bff641b713dd",
+      "bytes": 1965,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/expansion_legendary.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/expansion_legendary.png",
+      "sha256": "a30d907eed92b45ee44b61314177baabe85a32424daf3120ea88e812d68e1816",
+      "bytes": 1909,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/expansion_mythic.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/expansion_mythic.png",
+      "sha256": "c23c879e008a4bd0dc9eb6f04db648415d754772cf0fcb5075fc3ee0af8eaa8e",
+      "bytes": 1953,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/expansion_rare.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/expansion_rare.png",
+      "sha256": "e2ef5c5edcffcb2b8aac4fe49d2a569ab9ce064fab2dc4fbb31977251e52c3ac",
+      "bytes": 2021,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/expansion_uncommon.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/expansion_uncommon.png",
+      "sha256": "16c44a9b10a7ce17b9490202e207e29f86285e60ac9750eebcc7a3858ce6b1e1",
+      "bytes": 1964,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/performance_abundant.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/performance_abundant.png",
+      "sha256": "dd4a65ae814c1aad8a539b06bcee8594dba447197d03c2f5b0c306c2898a5e55",
+      "bytes": 1852,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/performance_common.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/performance_common.png",
+      "sha256": "287eaf2e3c857c7a094bb45498fab7ada94b77f64144b2ee8d091dcb91365fbe",
+      "bytes": 1887,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/performance_epic.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/performance_epic.png",
+      "sha256": "79588784428b54e684d0ed86989cb4053269bbdaca8e57c03525afc0b0c76db4",
+      "bytes": 1901,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/performance_legendary.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/performance_legendary.png",
+      "sha256": "7d7d97a11f4b26e93d161dc56b5ecbbe3fa70e5b029efaddc0f5f3d6fc58642f",
+      "bytes": 1890,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/performance_mythic.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/performance_mythic.png",
+      "sha256": "cc0afddb2cb3fdcea3c5aecd31555a1236e6189dbe4921b7e3173c435704d8c6",
+      "bytes": 1746,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/performance_rare.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/performance_rare.png",
+      "sha256": "883f3227ce68814b99eb0d5f751833e3fa6bf44efc0c3e4de7913ec937c08bb9",
+      "bytes": 1911,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/performance_uncommon.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/performance_uncommon.png",
+      "sha256": "dc256f9a4b8b3e3d4e79729b58f3608d2e4e739fc0745fc5b52c57ca4dd5eb9e",
+      "bytes": 1874,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/utility_abundant.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/utility_abundant.png",
+      "sha256": "3bf056842f3f0d244de10ed06d3db8037c738343df112c24b2993dbe9126675a",
+      "bytes": 744,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/utility_common.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/utility_common.png",
+      "sha256": "e951a7df0ee1b552ba5089a2793ed8138a7a1bfe250f642d9ebb90f02fa84f7b",
+      "bytes": 839,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/utility_epic.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/utility_epic.png",
+      "sha256": "ab0daaf0e608425f6993874be72180d872f168bab9301411113f2088e2678c45",
+      "bytes": 813,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/utility_legendary.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/utility_legendary.png",
+      "sha256": "053fae01b4cd8addfdb175b7178fafbf42a53f45e016a664d2a106310b5067f9",
+      "bytes": 782,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/utility_mythic.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/utility_mythic.png",
+      "sha256": "5226a303f8564e5feaf0cb812d76a1d4ed799d4f4c2427fb5a99e6dc02313b15",
+      "bytes": 806,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/utility_rare.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/utility_rare.png",
+      "sha256": "2c4fc2111f9b079e5b9a95741cc7c4efdc8de78954752924819a063ced7f8117",
+      "bytes": 824,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/Modules/utility_uncommon.png",
+      "file": "current/42.20/media/textures/OMHTT/Modules/utility_uncommon.png",
+      "sha256": "0ea38441a96c246587500aeddb1f30f3f94c07ce73e0b912382a982518ac13cd",
+      "bytes": 827,
+      "role": "current exported asset",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/ProbeWhite.png",
+      "file": "current/42.20/media/textures/OMHTT/ProbeWhite.png",
+      "sha256": "38fb43fbd4b078237a94650903231de41f9ac8ed0c2550b3581cd41b6e9ff501",
+      "bytes": 79,
+      "role": "current exported asset",
+      "dimensions": [
+        8,
+        8
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/StateAmber.png",
+      "file": "current/42.20/media/textures/OMHTT/StateAmber.png",
+      "sha256": "8d78964c769752de75375f92b592c86c285775fc629965c5ca16252ec09e8b31",
+      "bytes": 78,
+      "role": "current exported asset",
+      "dimensions": [
+        4,
+        4
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/StateDark.png",
+      "file": "current/42.20/media/textures/OMHTT/StateDark.png",
+      "sha256": "b7a1c2b42d7106be32038552af0ebe5b029ed87552cf577631474e9a1222a5de",
+      "bytes": 78,
+      "role": "current exported asset",
+      "dimensions": [
+        4,
+        4
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/StateGreen.png",
+      "file": "current/42.20/media/textures/OMHTT/StateGreen.png",
+      "sha256": "f3b3c696263f08293f66197ec45042bd00d6924ef7dc58df44f07ea2beb380ed",
+      "bytes": 78,
+      "role": "current exported asset",
+      "dimensions": [
+        4,
+        4
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT/StateRed.png",
+      "file": "current/42.20/media/textures/OMHTT/StateRed.png",
+      "sha256": "84a31126eb69fcd7830c28bd921b0cb115f4f235c53eecf40d0bcf7a78acdebd",
+      "bytes": 78,
+      "role": "current exported asset",
+      "dimensions": [
+        4,
+        4
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_Aim0.png",
+      "file": "current/42.20/media/textures/OMHTT_Aim0.png",
+      "sha256": "f2f9795d618ba869dd996ca6623a13ab81099c6b60a0f28f0b5aca46747e2911",
+      "bytes": 2378,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_Aim1.png",
+      "file": "current/42.20/media/textures/OMHTT_Aim1.png",
+      "sha256": "181485e6878257d70be59531e9a25355d02058a99044b6f7f4b4d210c9c46fc3",
+      "bytes": 2322,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_Aim10.png",
+      "file": "current/42.20/media/textures/OMHTT_Aim10.png",
+      "sha256": "29e3f8350fb03ca8aedfffd66eb8c7159267c1284b0b5d9f13523e4d454765fe",
+      "bytes": 2037,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_Aim11.png",
+      "file": "current/42.20/media/textures/OMHTT_Aim11.png",
+      "sha256": "9ff0e93c0703e837353b5fcfd1fd8211c0fcf813af352436294b91eb8b82219a",
+      "bytes": 2279,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_Aim12.png",
+      "file": "current/42.20/media/textures/OMHTT_Aim12.png",
+      "sha256": "76ba95495eb0350ba5123c16478f17a27c93197cb1a1c1a91bba28df155324b9",
+      "bytes": 2292,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_Aim13.png",
+      "file": "current/42.20/media/textures/OMHTT_Aim13.png",
+      "sha256": "4f9edc3944fe4b121c708b89642506c59292cc6fde0f4b270312b5a239100c86",
+      "bytes": 2369,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_Aim14.png",
+      "file": "current/42.20/media/textures/OMHTT_Aim14.png",
+      "sha256": "f5336b8d36c7f521b63d6f1fbc58f88d1dbda0107b6c67d931707a8dab68825c",
+      "bytes": 2114,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_Aim15.png",
+      "file": "current/42.20/media/textures/OMHTT_Aim15.png",
+      "sha256": "c50dbdacb14f5d4837fb03e99244faa4f2ea5904b16a0966b6c5708fdccd4cae",
+      "bytes": 2395,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_Aim2.png",
+      "file": "current/42.20/media/textures/OMHTT_Aim2.png",
+      "sha256": "84d806ce4dd12bab79a6a7650230a532710586ab805c9e5a6df83ad090c8f185",
+      "bytes": 2060,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_Aim3.png",
+      "file": "current/42.20/media/textures/OMHTT_Aim3.png",
+      "sha256": "1101ab4816b5f1ef3939db0cb96729d2a6410bd66f7738b788c56f61d79481f7",
+      "bytes": 2354,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_Aim4.png",
+      "file": "current/42.20/media/textures/OMHTT_Aim4.png",
+      "sha256": "13e250087fd74c7a4d90e87ecc1bb5643e7de8491b1f45b3e37d44c76605b806",
+      "bytes": 2260,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_Aim5.png",
+      "file": "current/42.20/media/textures/OMHTT_Aim5.png",
+      "sha256": "3535ad814d821278fb60cfa5cd987028997e446d3e4183f8311e31ca6ef2c11b",
+      "bytes": 2318,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_Aim6.png",
+      "file": "current/42.20/media/textures/OMHTT_Aim6.png",
+      "sha256": "10c5ad401408ffa8be671bd1e29cb9ffb3ca3be84c6e7a32b600f6a0dce1bd37",
+      "bytes": 2120,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_Aim7.png",
+      "file": "current/42.20/media/textures/OMHTT_Aim7.png",
+      "sha256": "fdadd3515480ac6c9b59c60c97a4733caa61d0a7b5118245e207037c47ae6732",
+      "bytes": 2349,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_Aim8.png",
+      "file": "current/42.20/media/textures/OMHTT_Aim8.png",
+      "sha256": "28c4197abedd5c0e8850cbff3c2ef92ac447f19fa231655b14e34c465a86359a",
+      "bytes": 2299,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_Aim9.png",
+      "file": "current/42.20/media/textures/OMHTT_Aim9.png",
+      "sha256": "d00260a84984cc85d4d34b737fc3a0656d62e74c1401793f99ab1f727723a55b",
+      "bytes": 2374,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_Barrier0.png",
+      "file": "current/42.20/media/textures/Item_OMHTT_Barrier0.png",
+      "sha256": "51adfce038e0ab9eaafa70306460cad0afd4192d0c3830286e949872aaf1cf50",
+      "bytes": 1571,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_Barrier1.png",
+      "file": "current/42.20/media/textures/OMHTT_Barrier1.png",
+      "sha256": "1f16c20790eff44566f1da2dda4640b56b8e6cbd0a5d7d2da313d62c4fd1e62c",
+      "bytes": 1562,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_Barrier2.png",
+      "file": "current/42.20/media/textures/OMHTT_Barrier2.png",
+      "sha256": "a8e6383c6d57a9380652fb190466df6fa877c6e94ff1eab240482af8ed8cbb39",
+      "bytes": 1584,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_Barrier3.png",
+      "file": "current/42.20/media/textures/OMHTT_Barrier3.png",
+      "sha256": "c1b0f217d5a5fcc9135fa0628badf7f8156448d86190e977fc8ff3a59985f45a",
+      "bytes": 1588,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_BedSpikes.png",
+      "file": "current/42.20/media/textures/OMHTT_BedSpikes.png",
+      "sha256": "637380dbc29f792b5795fd46a7621521be6d2069895b7e979da8886ddb9c63c6",
+      "bytes": 1108,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_BuildBarrierE_A.png",
+      "file": "current/42.20/media/textures/Item_OMHTT_Barrier0.png",
+      "sha256": "51adfce038e0ab9eaafa70306460cad0afd4192d0c3830286e949872aaf1cf50",
+      "bytes": 1571,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_BuildBarrierE_B.png",
+      "file": "current/42.20/media/textures/Item_OMHTT_Barrier0.png",
+      "sha256": "51adfce038e0ab9eaafa70306460cad0afd4192d0c3830286e949872aaf1cf50",
+      "bytes": 1571,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_BuildBarrierN_A.png",
+      "file": "current/42.20/media/textures/OMHTT_Barrier1.png",
+      "sha256": "1f16c20790eff44566f1da2dda4640b56b8e6cbd0a5d7d2da313d62c4fd1e62c",
+      "bytes": 1562,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_BuildBarrierN_B.png",
+      "file": "current/42.20/media/textures/OMHTT_Barrier1.png",
+      "sha256": "1f16c20790eff44566f1da2dda4640b56b8e6cbd0a5d7d2da313d62c4fd1e62c",
+      "bytes": 1562,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_BuildBarrierS_A.png",
+      "file": "current/42.20/media/textures/OMHTT_Barrier3.png",
+      "sha256": "c1b0f217d5a5fcc9135fa0628badf7f8156448d86190e977fc8ff3a59985f45a",
+      "bytes": 1588,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_BuildBarrierS_B.png",
+      "file": "current/42.20/media/textures/OMHTT_Barrier3.png",
+      "sha256": "c1b0f217d5a5fcc9135fa0628badf7f8156448d86190e977fc8ff3a59985f45a",
+      "bytes": 1588,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_BuildBarrierW_A.png",
+      "file": "current/42.20/media/textures/OMHTT_Barrier2.png",
+      "sha256": "a8e6383c6d57a9380652fb190466df6fa877c6e94ff1eab240482af8ed8cbb39",
+      "bytes": 1584,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_BuildBarrierW_B.png",
+      "file": "current/42.20/media/textures/OMHTT_Barrier2.png",
+      "sha256": "a8e6383c6d57a9380652fb190466df6fa877c6e94ff1eab240482af8ed8cbb39",
+      "bytes": 1584,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_ConcertinaWire.png",
+      "file": "current/42.20/media/textures/Item_OMHTT_ConcertinaWire.png",
+      "sha256": "40c7e43a416890a5600e3e2a9565aed2d05308b61384f95567d1e0379fca6887",
+      "bytes": 1073,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_Foundation.png",
+      "file": "current/42.20/media/textures/OMHTT_Foundation.png",
+      "sha256": "9e65cc42bf890f411bf2b8782d48b9c13c52434e9e7c0bd32d71ede5f50675a0",
+      "bytes": 1356,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_ProbeBase.png",
+      "file": "current/42.20/media/textures/OMHTT_ProbeBase.png",
+      "sha256": "3cacecc7fa854a9e5ac1b06e837e22b5ac6f810db3cd7163f8f872ec3bf2e725",
+      "bytes": 773,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_ReinforcedBarrier0.png",
+      "file": "current/42.20/media/textures/Item_OMHTT_Barrier0.png",
+      "sha256": "51adfce038e0ab9eaafa70306460cad0afd4192d0c3830286e949872aaf1cf50",
+      "bytes": 1571,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_ReinforcedBarrier1.png",
+      "file": "current/42.20/media/textures/OMHTT_Barrier1.png",
+      "sha256": "1f16c20790eff44566f1da2dda4640b56b8e6cbd0a5d7d2da313d62c4fd1e62c",
+      "bytes": 1562,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_ReinforcedBarrier2.png",
+      "file": "current/42.20/media/textures/OMHTT_Barrier2.png",
+      "sha256": "a8e6383c6d57a9380652fb190466df6fa877c6e94ff1eab240482af8ed8cbb39",
+      "bytes": 1584,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_ReinforcedBarrier3.png",
+      "file": "current/42.20/media/textures/OMHTT_Barrier3.png",
+      "sha256": "c1b0f217d5a5fcc9135fa0628badf7f8156448d86190e977fc8ff3a59985f45a",
+      "bytes": 1588,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/42.20/media/textures/OMHTT_TestCube.png",
+      "file": "current/42.20/media/textures/OMHTT_TestCube.png",
+      "sha256": "8a8ab37276f8c9bee35a8379bf9fab195a8b8141eca4522af2bf0e0ec08a980c",
+      "bytes": 1042,
+      "role": "current exported asset",
+      "dimensions": [
+        128,
+        256
+      ]
+    },
+    {
+      "source": "Source/common/media/depthmaps/DEPTH_omhtt_turret_01.png",
+      "file": "current/common/media/depthmaps/DEPTH_omhtt_turret_01.png",
+      "sha256": "02ea94b2adf1fad6c0faabc40844e4049011ff85aeeae541f10edc0c6ae69458",
+      "bytes": 5698,
+      "role": "current exported asset",
+      "dimensions": [
+        1024,
+        768
+      ]
+    },
+    {
+      "source": "Source/common/media/tileGeometry.txt",
+      "file": "current/common/media/tileGeometry.txt",
+      "sha256": "d7cc7b68b673106f6e9a8bac713ea8e55e6de8d6c809449ffb557a42e5e237ae",
+      "bytes": 970,
+      "role": "current exported asset"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_Barrier0",
+      "file": "current/42.20/media/textures/Item_OMHTT_Barrier0.png",
+      "sha256": "51adfce038e0ab9eaafa70306460cad0afd4192d0c3830286e949872aaf1cf50",
+      "bytes": 1571,
+      "dimensions": [
+        128,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_Barrier1",
+      "file": "current/42.20/media/textures/OMHTT_Barrier1.png",
+      "sha256": "1f16c20790eff44566f1da2dda4640b56b8e6cbd0a5d7d2da313d62c4fd1e62c",
+      "bytes": 1562,
+      "dimensions": [
+        128,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_Barrier2",
+      "file": "current/42.20/media/textures/OMHTT_Barrier2.png",
+      "sha256": "a8e6383c6d57a9380652fb190466df6fa877c6e94ff1eab240482af8ed8cbb39",
+      "bytes": 1584,
+      "dimensions": [
+        128,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_Barrier3",
+      "file": "current/42.20/media/textures/OMHTT_Barrier3.png",
+      "sha256": "c1b0f217d5a5fcc9135fa0628badf7f8156448d86190e977fc8ff3a59985f45a",
+      "bytes": 1588,
+      "dimensions": [
+        128,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_ReinforcedBarrier0",
+      "file": "current/42.20/media/textures/Item_OMHTT_Barrier0.png",
+      "sha256": "51adfce038e0ab9eaafa70306460cad0afd4192d0c3830286e949872aaf1cf50",
+      "bytes": 1571,
+      "dimensions": [
+        128,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_ReinforcedBarrier1",
+      "file": "current/42.20/media/textures/OMHTT_Barrier1.png",
+      "sha256": "1f16c20790eff44566f1da2dda4640b56b8e6cbd0a5d7d2da313d62c4fd1e62c",
+      "bytes": 1562,
+      "dimensions": [
+        128,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_ReinforcedBarrier2",
+      "file": "current/42.20/media/textures/OMHTT_Barrier2.png",
+      "sha256": "a8e6383c6d57a9380652fb190466df6fa877c6e94ff1eab240482af8ed8cbb39",
+      "bytes": 1584,
+      "dimensions": [
+        128,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_ReinforcedBarrier3",
+      "file": "current/42.20/media/textures/OMHTT_Barrier3.png",
+      "sha256": "c1b0f217d5a5fcc9135fa0628badf7f8156448d86190e977fc8ff3a59985f45a",
+      "bytes": 1588,
+      "dimensions": [
+        128,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_Edges",
+      "file": "current/unpacked_pages/OMHTT_Edges.png",
+      "sha256": "f6f7bf1856a16a01e6f3d16decc41fa0f93f2291dcddaeafe9a7b30d75b50c34",
+      "bytes": 634,
+      "dimensions": [
+        256,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_Aim0",
+      "file": "current/42.20/media/textures/OMHTT_Aim0.png",
+      "sha256": "f2f9795d618ba869dd996ca6623a13ab81099c6b60a0f28f0b5aca46747e2911",
+      "bytes": 2378,
+      "dimensions": [
+        128,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_Aim1",
+      "file": "current/42.20/media/textures/OMHTT_Aim1.png",
+      "sha256": "181485e6878257d70be59531e9a25355d02058a99044b6f7f4b4d210c9c46fc3",
+      "bytes": 2322,
+      "dimensions": [
+        128,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_Aim2",
+      "file": "current/42.20/media/textures/OMHTT_Aim2.png",
+      "sha256": "84d806ce4dd12bab79a6a7650230a532710586ab805c9e5a6df83ad090c8f185",
+      "bytes": 2060,
+      "dimensions": [
+        128,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_Aim3",
+      "file": "current/42.20/media/textures/OMHTT_Aim3.png",
+      "sha256": "1101ab4816b5f1ef3939db0cb96729d2a6410bd66f7738b788c56f61d79481f7",
+      "bytes": 2354,
+      "dimensions": [
+        128,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_Aim4",
+      "file": "current/42.20/media/textures/OMHTT_Aim4.png",
+      "sha256": "13e250087fd74c7a4d90e87ecc1bb5643e7de8491b1f45b3e37d44c76605b806",
+      "bytes": 2260,
+      "dimensions": [
+        128,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_Aim5",
+      "file": "current/42.20/media/textures/OMHTT_Aim5.png",
+      "sha256": "3535ad814d821278fb60cfa5cd987028997e446d3e4183f8311e31ca6ef2c11b",
+      "bytes": 2318,
+      "dimensions": [
+        128,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_Aim6",
+      "file": "current/42.20/media/textures/OMHTT_Aim6.png",
+      "sha256": "10c5ad401408ffa8be671bd1e29cb9ffb3ca3be84c6e7a32b600f6a0dce1bd37",
+      "bytes": 2120,
+      "dimensions": [
+        128,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_Aim7",
+      "file": "current/42.20/media/textures/OMHTT_Aim7.png",
+      "sha256": "fdadd3515480ac6c9b59c60c97a4733caa61d0a7b5118245e207037c47ae6732",
+      "bytes": 2349,
+      "dimensions": [
+        128,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_Aim8",
+      "file": "current/42.20/media/textures/OMHTT_Aim8.png",
+      "sha256": "28c4197abedd5c0e8850cbff3c2ef92ac447f19fa231655b14e34c465a86359a",
+      "bytes": 2299,
+      "dimensions": [
+        128,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_Aim9",
+      "file": "current/42.20/media/textures/OMHTT_Aim9.png",
+      "sha256": "d00260a84984cc85d4d34b737fc3a0656d62e74c1401793f99ab1f727723a55b",
+      "bytes": 2374,
+      "dimensions": [
+        128,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_Aim10",
+      "file": "current/42.20/media/textures/OMHTT_Aim10.png",
+      "sha256": "29e3f8350fb03ca8aedfffd66eb8c7159267c1284b0b5d9f13523e4d454765fe",
+      "bytes": 2037,
+      "dimensions": [
+        128,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_Aim11",
+      "file": "current/42.20/media/textures/OMHTT_Aim11.png",
+      "sha256": "9ff0e93c0703e837353b5fcfd1fd8211c0fcf813af352436294b91eb8b82219a",
+      "bytes": 2279,
+      "dimensions": [
+        128,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_Aim12",
+      "file": "current/42.20/media/textures/OMHTT_Aim12.png",
+      "sha256": "76ba95495eb0350ba5123c16478f17a27c93197cb1a1c1a91bba28df155324b9",
+      "bytes": 2292,
+      "dimensions": [
+        128,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_Aim13",
+      "file": "current/42.20/media/textures/OMHTT_Aim13.png",
+      "sha256": "4f9edc3944fe4b121c708b89642506c59292cc6fde0f4b270312b5a239100c86",
+      "bytes": 2369,
+      "dimensions": [
+        128,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_Aim14",
+      "file": "current/42.20/media/textures/OMHTT_Aim14.png",
+      "sha256": "f5336b8d36c7f521b63d6f1fbc58f88d1dbda0107b6c67d931707a8dab68825c",
+      "bytes": 2114,
+      "dimensions": [
+        128,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_Aim15",
+      "file": "current/42.20/media/textures/OMHTT_Aim15.png",
+      "sha256": "c50dbdacb14f5d4837fb03e99244faa4f2ea5904b16a0966b6c5708fdccd4cae",
+      "bytes": 2395,
+      "dimensions": [
+        128,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_TestCube",
+      "file": "current/42.20/media/textures/OMHTT_ProbeBase.png",
+      "sha256": "3cacecc7fa854a9e5ac1b06e837e22b5ac6f810db3cd7163f8f872ec3bf2e725",
+      "bytes": 773,
+      "dimensions": [
+        128,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/texturepacks/OMHTT_Barriers.pack#OMHTT_ProbeBase",
+      "file": "current/42.20/media/textures/OMHTT_ProbeBase.png",
+      "sha256": "3cacecc7fa854a9e5ac1b06e837e22b5ac6f810db3cd7163f8f872ec3bf2e725",
+      "bytes": 773,
+      "dimensions": [
+        128,
+        256
+      ],
+      "role": "native sprite page"
+    },
+    {
+      "source": "Source/42.20/media/scripts/OMHTT_ArcVisual.txt",
+      "file": "reference/item_and_model_scripts/OMHTT_ArcVisual.txt",
+      "sha256": "7ed5055dc0b9816c4d644aaf2c63008718d4f1cb4242ee34eb4a2cd57a33badc",
+      "bytes": 411,
+      "role": "mapping reference, not an install override"
+    },
+    {
+      "source": "Source/42.20/media/scripts/OMHTT_Barbs.txt",
+      "file": "reference/item_and_model_scripts/OMHTT_Barbs.txt",
+      "sha256": "67d37da08f928ba0f5f88edc4530ab4a6aec9de0a63c4383300f75b0484b6f38",
+      "bytes": 4447,
+      "role": "mapping reference, not an install override"
+    },
+    {
+      "source": "Source/42.20/media/scripts/OMHTT_BedSpikes.txt",
+      "file": "reference/item_and_model_scripts/OMHTT_BedSpikes.txt",
+      "sha256": "658181b1e38cd7d97901447f4186b4fd8e9abdd36010e3dff9f12bf751522262",
+      "bytes": 9110,
+      "role": "mapping reference, not an install override"
+    },
+    {
+      "source": "Source/42.20/media/scripts/OMHTT_construction.txt",
+      "file": "reference/item_and_model_scripts/OMHTT_construction.txt",
+      "sha256": "b836f604f1be6b8dfe21cc4ba0a6ea030ec20c25c10d5a4ab36251962a6f5b59",
+      "bytes": 5031,
+      "role": "mapping reference, not an install override"
+    },
+    {
+      "source": "Source/42.20/media/scripts/OMHTT_construction_ui.txt",
+      "file": "reference/item_and_model_scripts/OMHTT_construction_ui.txt",
+      "sha256": "90faeea7698d522d27c264dc2e15837781eb2daddff55a164f4b8a4953422ca3",
+      "bytes": 631,
+      "role": "mapping reference, not an install override"
+    },
+    {
+      "source": "Source/42.20/media/scripts/OMHTT_ControllerKits.txt",
+      "file": "reference/item_and_model_scripts/OMHTT_ControllerKits.txt",
+      "sha256": "8356c210eaac6f209228f6849bb59f8e0aa2e31ec6cede4acf4b6f87e9edeea2",
+      "bytes": 1992,
+      "role": "mapping reference, not an install override"
+    },
+    {
+      "source": "Source/42.20/media/scripts/OMHTT_Controls.txt",
+      "file": "reference/item_and_model_scripts/OMHTT_Controls.txt",
+      "sha256": "dd39015dd476e23fde6dbdfe66b20d0a9292b8833061313ae498ea41a2201a9e",
+      "bytes": 11880,
+      "role": "mapping reference, not an install override"
+    },
+    {
+      "source": "Source/42.20/media/scripts/OMHTT_DeviceVisuals.txt",
+      "file": "reference/item_and_model_scripts/OMHTT_DeviceVisuals.txt",
+      "sha256": "6483f4113e5459cdfdf33c2efe8c1ab8527d82c97c28576876d6f4efea118513",
+      "bytes": 2272,
+      "role": "mapping reference, not an install override"
+    },
+    {
+      "source": "Source/42.20/media/scripts/OMHTT_GunSupport.txt",
+      "file": "reference/item_and_model_scripts/OMHTT_GunSupport.txt",
+      "sha256": "4296682ae9ec7b7821cf1b50e36e6d93ef37204d8bd85a27564fefcf6b55b2d7",
+      "bytes": 469,
+      "role": "mapping reference, not an install override"
+    },
+    {
+      "source": "Source/42.20/media/scripts/OMHTT_HybridProbe.txt",
+      "file": "reference/item_and_model_scripts/OMHTT_HybridProbe.txt",
+      "sha256": "d472a11a4f087dca0a439419beecafca003aa1edef1f4f89769dacddad92173d",
+      "bytes": 436,
+      "role": "mapping reference, not an install override"
+    },
+    {
+      "source": "Source/42.20/media/scripts/OMHTT_Items.txt",
+      "file": "reference/item_and_model_scripts/OMHTT_Items.txt",
+      "sha256": "7fa2d2d31a11662fb90e24c84085e3e9bcde48f108241072f54ea549557fb80a",
+      "bytes": 1188,
+      "role": "mapping reference, not an install override"
+    },
+    {
+      "source": "Source/42.20/media/scripts/OMHTT_Manuals.txt",
+      "file": "reference/item_and_model_scripts/OMHTT_Manuals.txt",
+      "sha256": "5b6503c8980a84aa0b7f744d70dd68eac0b2e12571311d1bdaf89a7b4be5b488",
+      "bytes": 1941,
+      "role": "mapping reference, not an install override"
+    },
+    {
+      "source": "Source/42.20/media/scripts/OMHTT_PokeFloor.txt",
+      "file": "reference/item_and_model_scripts/OMHTT_PokeFloor.txt",
+      "sha256": "961a3f912917ecec07a6e0710b1f524602e224bbef36d200393e92c728da059f",
+      "bytes": 2873,
+      "role": "mapping reference, not an install override"
+    },
+    {
+      "source": "Source/42.20/media/scripts/OMHTT_Tether.txt",
+      "file": "reference/item_and_model_scripts/OMHTT_Tether.txt",
+      "sha256": "fe20e755dd6826bfcc928a7d53e7091521487128cf7513b5e1223efd146ba656",
+      "bytes": 2179,
+      "role": "mapping reference, not an install override"
+    },
+    {
+      "source": "Source/42.20/media/scripts/OMHTT_TurretConstruction.txt",
+      "file": "reference/item_and_model_scripts/OMHTT_TurretConstruction.txt",
+      "sha256": "88a9ef18ccfef154fb5d9ca37f97f4da1c23c86d18a8258858b59a728d39bfe3",
+      "bytes": 3915,
+      "role": "mapping reference, not an install override"
+    },
+    {
+      "source": "Source/42.20/media/scripts/OMHTT_TurretHeads.txt",
+      "file": "reference/item_and_model_scripts/OMHTT_TurretHeads.txt",
+      "sha256": "290e7937d22107045fccfc873ce5b1c6a12c1a2a42ba9d082b7a13a80a9cce46",
+      "bytes": 13544,
+      "role": "mapping reference, not an install override"
+    },
+    {
+      "source": "Source/42.20/media/scripts/OMHTT_TurretItems.txt",
+      "file": "reference/item_and_model_scripts/OMHTT_TurretItems.txt",
+      "sha256": "acfdfa14d76398760b41b60ea06b21f5b9b42b844bf76983d92c5136aac2f757",
+      "bytes": 9823,
+      "role": "mapping reference, not an install override"
+    },
+    {
+      "source": "Source/42.20/media/lua/client/OMHTT/TurretRenderer.lua",
+      "file": "reference/rendering/TurretRenderer.lua",
+      "sha256": "1d67116d71f85a4f60848183f886730b351aea2fcb3067728f763e89ae520e1e",
+      "bytes": 11590,
+      "role": "rendering reference"
+    },
+    {
+      "source": "Source/42.20/media/lua/client/OMHTT/TurretModuleArt.lua",
+      "file": "reference/rendering/TurretModuleArt.lua",
+      "sha256": "0dc78251c090f2b8ffdab00705b8e7b5b7e32f2c091cb92ed542d7700a9c55c3",
+      "bytes": 2521,
+      "role": "rendering reference"
+    },
+    {
+      "source": "Source/42.20/media/lua/client/OMHTT/SlotHint.lua",
+      "file": "reference/rendering/SlotHint.lua",
+      "sha256": "1f1231c55f472f1788b629cd722f8c6e987e1e8e8c3491ad2612548ef971c761",
+      "bytes": 1226,
+      "role": "rendering reference"
+    },
+    {
+      "source": "Source/42.20/media/lua/client/OMHTT/ControlModelDraw.lua",
+      "file": "reference/rendering/ControlModelDraw.lua",
+      "sha256": "95acf501216f14ad6bba407e8d94d3a7f94e258c39be659bb0b148a0452c611f",
+      "bytes": 1525,
+      "role": "rendering reference"
+    },
+    {
+      "source": "Source/42.20/media/lua/shared/OMHTT/Turret.lua",
+      "file": "reference/rendering/Turret.lua",
+      "sha256": "6e7c8cfebcbabc3fe639c744c63e0d855806f0c6f3ec33c5cb3fcfa960823078",
+      "bytes": 21315,
+      "role": "mapping reference"
+    },
+    {
+      "source": "Source/42.20/media/lua/shared/OMHTT/TurretHeads.lua",
+      "file": "reference/rendering/TurretHeads.lua",
+      "sha256": "3875b06e8cd3cac4e5a00776c67afe2f79aca43b3852c7e759cfc3b90c7cd46f",
+      "bytes": 5102,
+      "role": "mapping reference"
+    },
+    {
+      "source": "Source/42.20/media/lua/shared/OMHTT/ControlRarity.lua",
+      "file": "reference/rendering/ControlRarity.lua",
+      "sha256": "afc3eccbb0038fe07a1c2ce7bc9271de9e95e03e27f73a281ded55164cb44414",
+      "bytes": 5573,
+      "role": "mapping reference"
+    },
+    {
+      "source": "art/placeholders/cube_turret/cube_turret.glb",
+      "file": "editable_originals/potato/cube_turret.glb",
+      "sha256": "e6733aec207fd2c45da339a8254c3b9121e1efe59d8e3db4cb2ffa06d81b40ca",
+      "bytes": 2740,
+      "role": "original procedural potato/base scene"
+    },
+    {
+      "source": "art/placeholders/cube_turret/cube_turret.gltf",
+      "file": "editable_originals/potato/cube_turret.gltf",
+      "sha256": "4afbb4f47324827b3c289b252fd28d884d28b4b400e370c8867908da8e4e78bf",
+      "bytes": 5130,
+      "role": "original procedural potato/base scene"
+    },
+    {
+      "source": "generated:module:Accuracy",
+      "file": "development/modules/performance/Accuracy.png",
+      "sha256": "27b91c12e4612a5ee5e012223783769a78fa207bdb9f0b8e45623cfa99837bbf",
+      "bytes": 2305,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:Autoloader",
+      "file": "development/modules/performance/Autoloader.png",
+      "sha256": "502e218fcdab3dae6192ff70b4f847d65c1da17dcc1342281d1a59a871beefd9",
+      "bytes": 2450,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:Capacity",
+      "file": "development/modules/expansion/Capacity.png",
+      "sha256": "eac7e6b2660dbb5fc28b394f13207a094475a8ee9790224489bdb02df62fbaef",
+      "bytes": 2304,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:CapacityImprovised",
+      "file": "development/modules/expansion/CapacityImprovised.png",
+      "sha256": "0fc725581614c6441fa562c296f45822b61e9003657eb533ed8167a726caebd5",
+      "bytes": 2396,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:CapacityLarge",
+      "file": "development/modules/expansion/CapacityLarge.png",
+      "sha256": "c6a0ab62509337f3b36875abad714168610bf9389cdf103bc174185abf1efa6d",
+      "bytes": 2265,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:CapacitySmall",
+      "file": "development/modules/expansion/CapacitySmall.png",
+      "sha256": "278c83ac526d55eeecc3ef714c5112dd86df882bf7cab722d9d5daff5d920f9d",
+      "bytes": 2177,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:Conservation",
+      "file": "development/modules/performance/Conservation.png",
+      "sha256": "6cfd70163d3b8c0148bb0ea31b0b79a927882859f288a75adcd3e1500d12df5d",
+      "bytes": 2496,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:Critical",
+      "file": "development/modules/performance/Critical.png",
+      "sha256": "11f836ab9b3c879136dd8d354e6ab12735cd6ad015fe981588801a26a08dab0e",
+      "bytes": 2336,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:Detection360",
+      "file": "development/modules/automation/Detection360.png",
+      "sha256": "12bc4005af8b94bef3713948358080bcd57be097b484033c4deb69f74c35b401",
+      "bytes": 2113,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:Execute",
+      "file": "development/modules/effects/Execute.png",
+      "sha256": "a84c67b0fe29a46ab5d4cd51753b0352ba6daf1ff0ca5227630db5f72e1a0ff0",
+      "bytes": 1879,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:Filter",
+      "file": "development/modules/automation/Filter.png",
+      "sha256": "9387a5c11823dc9abd2ad979da00a8b2f8ff7106c327735aba8065f3a284f08d",
+      "bytes": 1782,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:Firing",
+      "file": "development/modules/automation/Firing.png",
+      "sha256": "07d5402274661abc2f01f0911821ff966b4e675834e42f1e42639172ee6fe5d8",
+      "bytes": 1963,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:FiringEnhanced",
+      "file": "development/modules/automation/FiringEnhanced.png",
+      "sha256": "c0f9def0508961edaf9e9b962aeba2720dbe83bc9685351a10403c952df8165c",
+      "bytes": 1989,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:FiringImprovised",
+      "file": "development/modules/automation/FiringImprovised.png",
+      "sha256": "48ce1a38628457c69aba59e2281d267d617fa45dcbbe5db7c0dba9c77964e5a9",
+      "bytes": 1985,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:Fragment",
+      "file": "development/modules/effects/Fragment.png",
+      "sha256": "ec8f375ac09fcc630ebca0f22655a57db1cbe6b37dea808c32edf44024894ed7",
+      "bytes": 1976,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:Grid",
+      "file": "development/modules/utility/Grid.png",
+      "sha256": "4989e699440d1a023f8d156cb109177eb476f366b91c6ea28885a0d1e6b9b629",
+      "bytes": 1636,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:Impact",
+      "file": "development/modules/effects/Impact.png",
+      "sha256": "2a1d7c1e34481cfbfa7e380a6afe7e58b2439ea43b221a51030f8d221d107411",
+      "bytes": 1802,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:InitialBlow",
+      "file": "development/modules/effects/InitialBlow.png",
+      "sha256": "011fe7275640f8d5cbd815c3799e6845581fd0ed3c81f763785dee7c6a520fc2",
+      "bytes": 2015,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:Lure",
+      "file": "development/modules/utility/Lure.png",
+      "sha256": "23a6d3ecf3ad3a5cd51eee4550917fa1b1fc9e2861b6325cfca1bc64b86375bf",
+      "bytes": 1540,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:Magazine",
+      "file": "development/modules/performance/Magazine.png",
+      "sha256": "a081fcf1d91551597b790749cfe4fb726f6f7e75b50ac7d2b61f4047e0b9c3ab",
+      "bytes": 2455,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:Martyrdom",
+      "file": "development/modules/effects/Martyrdom.png",
+      "sha256": "c52612bbee0c8a78d2b06a84caefcdf63a14cc9d62fe7d00d2a5b93a422c05e2",
+      "bytes": 2065,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:MotionDetection",
+      "file": "development/modules/automation/MotionDetection.png",
+      "sha256": "dbd97f1dfe705b39e01a38718fd99a6bb47d229d29e7cb0d2267797ee83af8c5",
+      "bytes": 2095,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:MotionDetectionEnhanced",
+      "file": "development/modules/automation/MotionDetectionEnhanced.png",
+      "sha256": "30137a91ff6203798e75a25ec52abaa8f4fc85e12a69ae09e37c2d1c47ca1ef4",
+      "bytes": 2248,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:MotionDetectionImprovised",
+      "file": "development/modules/automation/MotionDetectionImprovised.png",
+      "sha256": "631ab6f0aabed4584fa5c5e1ab26eb3c3d57e28b54b2154f469c48ae8b33d971",
+      "bytes": 2238,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:Piercing",
+      "file": "development/modules/effects/Piercing.png",
+      "sha256": "f4128435751ab87f95d08b17f2c36ae2b0efb1fde1e9a0d49916a6e7cb184641",
+      "bytes": 2052,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:Range",
+      "file": "development/modules/performance/Range.png",
+      "sha256": "327a77b6445f4823c732fc88a20a6354b5c15f937bd753fe6ce747ca31f83bb7",
+      "bytes": 2380,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:RapidFire",
+      "file": "development/modules/performance/RapidFire.png",
+      "sha256": "14fb827fa3e740a3a4be3eaeec88c1a243c7991015eea17c68e487af18e2f0d5",
+      "bytes": 2379,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:Regulator",
+      "file": "development/modules/performance/Regulator.png",
+      "sha256": "a9b6c9db5d64c6f6e1c5f73a2638e0172edc69f492a955d86cd7fe3712fc3fd0",
+      "bytes": 2483,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:Reload",
+      "file": "development/modules/performance/Reload.png",
+      "sha256": "9047c73a3c28252b3984324391be625826e2c29dac0cb7d11b32decde9a5b832",
+      "bytes": 2350,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:Siphon",
+      "file": "development/modules/utility/Siphon.png",
+      "sha256": "b2bc323aa8cdb3e4f6fcdc2ba24f40a947afbf79a5e368e2efe4120844fde185",
+      "bytes": 1863,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:Splitter",
+      "file": "development/modules/effects/Splitter.png",
+      "sha256": "82488c98693019bfa4fdac4765e01452e6d85aa86192852450a42780db9fea2b",
+      "bytes": 1856,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:Suppression",
+      "file": "development/modules/performance/Suppression.png",
+      "sha256": "11aa6a81a9c46ab507aa645e9d98a259ef0305953531c4eff8577d6f1c29a10f",
+      "bytes": 2572,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:Synergy",
+      "file": "development/modules/effects/Synergy.png",
+      "sha256": "15f5b7d9f93e9a5c5f1764c93807fab527f92fba3c4d5f1e19a6e8bea08ee095",
+      "bytes": 1961,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:Tack",
+      "file": "development/modules/effects/Tack.png",
+      "sha256": "a2548c5529b779f24770027d01d142f2fd41feae50b6a493589d01fa70912cd5",
+      "bytes": 1791,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:Velocity",
+      "file": "development/modules/performance/Velocity.png",
+      "sha256": "870803f4756ada267cdba1023e58f88e2efe9546c72b142451957b2fda9e6998",
+      "bytes": 2488,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:module:Void",
+      "file": "development/modules/utility/Void.png",
+      "sha256": "0b69c8cb9faceb78e688415f4ea64296207cb2095ac9de91a82a984a5e14138d",
+      "bytes": 1739,
+      "role": "neutral technical marker",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "source": "generated:head:Ballista:native",
+      "file": "development/heads/Ballista/OMHTT_DevBallista.x",
+      "sha256": "e03dc68fc5bf224fb200788e56132e2652f0ba4fec12b5077a48317d9f553630",
+      "bytes": 8999,
+      "role": "staged native mesh"
+    },
+    {
+      "source": "generated:head:Ballista:editable",
+      "file": "development/heads/Ballista/Ballista.obj",
+      "sha256": "a458500fa299e99fdbd164831aff45abde0bb24985f6214cd457cb5f989564aa",
+      "bytes": 5217,
+      "role": "editable geometry"
+    },
+    {
+      "source": "generated:head:Scrapshot:native",
+      "file": "development/heads/Scrapshot/OMHTT_DevScrapshot.x",
+      "sha256": "36cf5ea72798623a1d40c4fb3c3c9956f22c80b0540479acea2aebad21b465f1",
+      "bytes": 6744,
+      "role": "staged native mesh"
+    },
+    {
+      "source": "generated:head:Scrapshot:editable",
+      "file": "development/heads/Scrapshot/Scrapshot.obj",
+      "sha256": "425eea33f01185d8fd31faf98f7eaee8b2a02a5155d369a8b17bbea420ed84ef",
+      "bytes": 4475,
+      "role": "editable geometry"
+    },
+    {
+      "source": "generated:head:Lobber:native",
+      "file": "development/heads/Lobber/OMHTT_DevLobber.x",
+      "sha256": "139a4d5d8839fba55123da0049705d46bc185443f21ac415c66cc488fe977584",
+      "bytes": 6753,
+      "role": "staged native mesh"
+    },
+    {
+      "source": "generated:head:Lobber:editable",
+      "file": "development/heads/Lobber/Lobber.obj",
+      "sha256": "ceb5fb182bed6f4da9d9835a07be0898ac5c24ab4a8bffc05266db8634f9118e",
+      "bytes": 4097,
+      "role": "editable geometry"
+    },
+    {
+      "source": "generated:head:Arc:native",
+      "file": "development/heads/Arc/OMHTT_DevArc.x",
+      "sha256": "14566da9924d773fb2f9af06848513dd918215372c4c79e0caeadab9b481c3de",
+      "bytes": 8946,
+      "role": "staged native mesh"
+    },
+    {
+      "source": "generated:head:Arc:editable",
+      "file": "development/heads/Arc/Arc.obj",
+      "sha256": "f174844b8e7b993d01f91f25310b0b698f4634f6e979f57fe7c7fd5036c951ae",
+      "bytes": 5627,
+      "role": "editable geometry"
+    },
+    {
+      "source": "generated:head:RotaryBat:native",
+      "file": "development/heads/RotaryBat/OMHTT_DevRotaryBat.x",
+      "sha256": "7b8a064f1d35cd738aaa11cb8b30c403fa295791ea65607ed9ccab7e7bed0e19",
+      "bytes": 4536,
+      "role": "staged native mesh"
+    },
+    {
+      "source": "generated:head:RotaryBat:editable",
+      "file": "development/heads/RotaryBat/RotaryBat.obj",
+      "sha256": "882af09d2668d40f3e46178a32a89f78f6868e26a64b0c66d9ba184e84ac5239",
+      "bytes": 2375,
+      "role": "editable geometry"
+    },
+    {
+      "source": "generated:head:RotaryBlades:native",
+      "file": "development/heads/RotaryBlades/OMHTT_DevRotaryBlades.x",
+      "sha256": "e8031c4a5ab1057517344a22995386c572346add86af5e47580022d7e02b7ade",
+      "bytes": 6747,
+      "role": "staged native mesh"
+    },
+    {
+      "source": "generated:head:RotaryBlades:editable",
+      "file": "development/heads/RotaryBlades/RotaryBlades.obj",
+      "sha256": "13784a491ba4f218265fcd85848c3841782c6e6cfad30b9e413ca541d5283d33",
+      "bytes": 4193,
+      "role": "editable geometry"
+    }
+  ],
+  "spritePages": [
+    {
+      "page": "OMHTT_Barrier0",
+      "file": "current/42.20/media/textures/Item_OMHTT_Barrier0.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_0",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        },
+        {
+          "name": "omhtt_barrier_01_1",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        },
+        {
+          "name": "omhtt_barrier_01_8",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        },
+        {
+          "name": "omhtt_barrier_01_9",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    },
+    {
+      "page": "OMHTT_Barrier1",
+      "file": "current/42.20/media/textures/OMHTT_Barrier1.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_2",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        },
+        {
+          "name": "omhtt_barrier_01_3",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        },
+        {
+          "name": "omhtt_barrier_01_10",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        },
+        {
+          "name": "omhtt_barrier_01_11",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    },
+    {
+      "page": "OMHTT_Barrier2",
+      "file": "current/42.20/media/textures/OMHTT_Barrier2.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_4",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        },
+        {
+          "name": "omhtt_barrier_01_5",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        },
+        {
+          "name": "omhtt_barrier_01_12",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        },
+        {
+          "name": "omhtt_barrier_01_13",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    },
+    {
+      "page": "OMHTT_Barrier3",
+      "file": "current/42.20/media/textures/OMHTT_Barrier3.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_6",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        },
+        {
+          "name": "omhtt_barrier_01_7",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        },
+        {
+          "name": "omhtt_barrier_01_14",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        },
+        {
+          "name": "omhtt_barrier_01_15",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    },
+    {
+      "page": "OMHTT_ReinforcedBarrier0",
+      "file": "current/42.20/media/textures/Item_OMHTT_Barrier0.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_20",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        },
+        {
+          "name": "omhtt_barrier_01_21",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    },
+    {
+      "page": "OMHTT_ReinforcedBarrier1",
+      "file": "current/42.20/media/textures/OMHTT_Barrier1.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_22",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        },
+        {
+          "name": "omhtt_barrier_01_23",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    },
+    {
+      "page": "OMHTT_ReinforcedBarrier2",
+      "file": "current/42.20/media/textures/OMHTT_Barrier2.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_24",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        },
+        {
+          "name": "omhtt_barrier_01_25",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    },
+    {
+      "page": "OMHTT_ReinforcedBarrier3",
+      "file": "current/42.20/media/textures/OMHTT_Barrier3.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_26",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        },
+        {
+          "name": "omhtt_barrier_01_27",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    },
+    {
+      "page": "OMHTT_Edges",
+      "file": "current/unpacked_pages/OMHTT_Edges.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_16",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        },
+        {
+          "name": "omhtt_barrier_01_17",
+          "rectangle": [
+            128,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        },
+        {
+          "name": "omhtt_barrier_01_18",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        },
+        {
+          "name": "omhtt_barrier_01_19",
+          "rectangle": [
+            128,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    },
+    {
+      "page": "OMHTT_Aim0",
+      "file": "current/42.20/media/textures/OMHTT_Aim0.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_28",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    },
+    {
+      "page": "OMHTT_Aim1",
+      "file": "current/42.20/media/textures/OMHTT_Aim1.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_29",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    },
+    {
+      "page": "OMHTT_Aim2",
+      "file": "current/42.20/media/textures/OMHTT_Aim2.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_30",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    },
+    {
+      "page": "OMHTT_Aim3",
+      "file": "current/42.20/media/textures/OMHTT_Aim3.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_31",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    },
+    {
+      "page": "OMHTT_Aim4",
+      "file": "current/42.20/media/textures/OMHTT_Aim4.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_32",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    },
+    {
+      "page": "OMHTT_Aim5",
+      "file": "current/42.20/media/textures/OMHTT_Aim5.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_33",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    },
+    {
+      "page": "OMHTT_Aim6",
+      "file": "current/42.20/media/textures/OMHTT_Aim6.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_34",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    },
+    {
+      "page": "OMHTT_Aim7",
+      "file": "current/42.20/media/textures/OMHTT_Aim7.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_35",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    },
+    {
+      "page": "OMHTT_Aim8",
+      "file": "current/42.20/media/textures/OMHTT_Aim8.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_36",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    },
+    {
+      "page": "OMHTT_Aim9",
+      "file": "current/42.20/media/textures/OMHTT_Aim9.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_37",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    },
+    {
+      "page": "OMHTT_Aim10",
+      "file": "current/42.20/media/textures/OMHTT_Aim10.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_38",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    },
+    {
+      "page": "OMHTT_Aim11",
+      "file": "current/42.20/media/textures/OMHTT_Aim11.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_39",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    },
+    {
+      "page": "OMHTT_Aim12",
+      "file": "current/42.20/media/textures/OMHTT_Aim12.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_40",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    },
+    {
+      "page": "OMHTT_Aim13",
+      "file": "current/42.20/media/textures/OMHTT_Aim13.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_41",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    },
+    {
+      "page": "OMHTT_Aim14",
+      "file": "current/42.20/media/textures/OMHTT_Aim14.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_42",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    },
+    {
+      "page": "OMHTT_Aim15",
+      "file": "current/42.20/media/textures/OMHTT_Aim15.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_43",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    },
+    {
+      "page": "OMHTT_TestCube",
+      "file": "current/42.20/media/textures/OMHTT_ProbeBase.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_44",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        },
+        {
+          "name": "omhtt_barrier_01_45",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        },
+        {
+          "name": "omhtt_barrier_01_46",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        },
+        {
+          "name": "omhtt_barrier_01_47",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    },
+    {
+      "page": "OMHTT_ProbeBase",
+      "file": "current/42.20/media/textures/OMHTT_ProbeBase.png",
+      "alpha": 1,
+      "sprites": [
+        {
+          "name": "omhtt_barrier_01_48",
+          "rectangle": [
+            0,
+            0,
+            128,
+            256
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            128,
+            256
+          ]
+        }
+      ]
+    }
+  ],
+  "modules": [
+    {
+      "component": "Accuracy",
+      "item": "Base.OMHTTModuleAccuracy",
+      "label": "Accuracy",
+      "category": "performance",
+      "marker": "development/modules/performance/Accuracy.png"
+    },
+    {
+      "component": "Autoloader",
+      "item": "Base.OMHTTModuleAutoloader",
+      "label": "Autoloader",
+      "category": "performance",
+      "marker": "development/modules/performance/Autoloader.png"
+    },
+    {
+      "component": "Capacity",
+      "item": "Base.OMHTTModuleExpansionMedium",
+      "label": "Medium",
+      "category": "expansion",
+      "marker": "development/modules/expansion/Capacity.png"
+    },
+    {
+      "component": "CapacityImprovised",
+      "item": "Base.OMHTTModuleExpansionImprovised",
+      "label": "Makeshift",
+      "category": "expansion",
+      "marker": "development/modules/expansion/CapacityImprovised.png"
+    },
+    {
+      "component": "CapacityLarge",
+      "item": "Base.OMHTTModuleExpansionLarge",
+      "label": "Large",
+      "category": "expansion",
+      "marker": "development/modules/expansion/CapacityLarge.png"
+    },
+    {
+      "component": "CapacitySmall",
+      "item": "Base.OMHTTModuleExpansionSmall",
+      "label": "Small",
+      "category": "expansion",
+      "marker": "development/modules/expansion/CapacitySmall.png"
+    },
+    {
+      "component": "Conservation",
+      "item": "Base.OMHTTModuleConservation",
+      "label": "Conservation",
+      "category": "performance",
+      "marker": "development/modules/performance/Conservation.png"
+    },
+    {
+      "component": "Critical",
+      "item": "Base.OMHTTModuleCritical",
+      "label": "Critical",
+      "category": "performance",
+      "marker": "development/modules/performance/Critical.png"
+    },
+    {
+      "component": "Detection360",
+      "item": "Base.OMHTTModule360",
+      "label": "360",
+      "category": "automation",
+      "marker": "development/modules/automation/Detection360.png"
+    },
+    {
+      "component": "Execute",
+      "item": "Base.OMHTTModuleExecute",
+      "label": "Execute",
+      "category": "effects",
+      "marker": "development/modules/effects/Execute.png"
+    },
+    {
+      "component": "Filter",
+      "item": "Base.OMHTTModuleFilter",
+      "label": "Filter",
+      "category": "automation",
+      "marker": "development/modules/automation/Filter.png"
+    },
+    {
+      "component": "Firing",
+      "item": "Base.OMHTTModuleFiring",
+      "label": "Firing",
+      "category": "automation",
+      "marker": "development/modules/automation/Firing.png"
+    },
+    {
+      "component": "FiringEnhanced",
+      "item": "Base.OMHTTModuleFiringEnhanced",
+      "label": "Firing+",
+      "category": "automation",
+      "marker": "development/modules/automation/FiringEnhanced.png"
+    },
+    {
+      "component": "FiringImprovised",
+      "item": "Base.OMHTTModuleFiringImprovised",
+      "label": "Firing*",
+      "category": "automation",
+      "marker": "development/modules/automation/FiringImprovised.png"
+    },
+    {
+      "component": "Fragment",
+      "item": "Base.OMHTTModuleFragment",
+      "label": "Fragment",
+      "category": "effects",
+      "marker": "development/modules/effects/Fragment.png"
+    },
+    {
+      "component": "Grid",
+      "item": "Base.OMHTTModuleGrid",
+      "label": "Grid",
+      "category": "utility",
+      "marker": "development/modules/utility/Grid.png"
+    },
+    {
+      "component": "Impact",
+      "item": "Base.OMHTTModuleImpact",
+      "label": "Impact",
+      "category": "effects",
+      "marker": "development/modules/effects/Impact.png"
+    },
+    {
+      "component": "InitialBlow",
+      "item": "Base.OMHTTModuleInitialBlow",
+      "label": "Initial Blow",
+      "category": "effects",
+      "marker": "development/modules/effects/InitialBlow.png"
+    },
+    {
+      "component": "Lure",
+      "item": "Base.OMHTTModuleLure",
+      "label": "Lure",
+      "category": "utility",
+      "marker": "development/modules/utility/Lure.png"
+    },
+    {
+      "component": "Magazine",
+      "item": "Base.OMHTTModuleMagazine",
+      "label": "Magazine",
+      "category": "performance",
+      "marker": "development/modules/performance/Magazine.png"
+    },
+    {
+      "component": "Martyrdom",
+      "item": "Base.OMHTTModuleMartyrdom",
+      "label": "Martyrdom",
+      "category": "effects",
+      "marker": "development/modules/effects/Martyrdom.png"
+    },
+    {
+      "component": "MotionDetection",
+      "item": "Base.OMHTTModuleDetection",
+      "label": "Detection",
+      "category": "automation",
+      "marker": "development/modules/automation/MotionDetection.png"
+    },
+    {
+      "component": "MotionDetectionEnhanced",
+      "item": "Base.OMHTTModuleDetectionEnhanced",
+      "label": "Detection+",
+      "category": "automation",
+      "marker": "development/modules/automation/MotionDetectionEnhanced.png"
+    },
+    {
+      "component": "MotionDetectionImprovised",
+      "item": "Base.OMHTTModuleDetectionImprovised",
+      "label": "Detection*",
+      "category": "automation",
+      "marker": "development/modules/automation/MotionDetectionImprovised.png"
+    },
+    {
+      "component": "Piercing",
+      "item": "Base.OMHTTModulePiercing",
+      "label": "Piercing",
+      "category": "effects",
+      "marker": "development/modules/effects/Piercing.png"
+    },
+    {
+      "component": "Range",
+      "item": "Base.OMHTTModuleRange",
+      "label": "Range",
+      "category": "performance",
+      "marker": "development/modules/performance/Range.png"
+    },
+    {
+      "component": "RapidFire",
+      "item": "Base.OMHTTModuleRapidFire",
+      "label": "Rapid-Fire",
+      "category": "performance",
+      "marker": "development/modules/performance/RapidFire.png"
+    },
+    {
+      "component": "Regulator",
+      "item": "Base.OMHTTModuleRegulator",
+      "label": "Regulator",
+      "category": "performance",
+      "marker": "development/modules/performance/Regulator.png"
+    },
+    {
+      "component": "Reload",
+      "item": "Base.OMHTTModuleReload",
+      "label": "Reload",
+      "category": "performance",
+      "marker": "development/modules/performance/Reload.png"
+    },
+    {
+      "component": "Siphon",
+      "item": "Base.OMHTTModuleSiphon",
+      "label": "Siphon",
+      "category": "utility",
+      "marker": "development/modules/utility/Siphon.png"
+    },
+    {
+      "component": "Splitter",
+      "item": "Base.OMHTTModuleSplitter",
+      "label": "Splitter",
+      "category": "effects",
+      "marker": "development/modules/effects/Splitter.png"
+    },
+    {
+      "component": "Suppression",
+      "item": "Base.OMHTTModuleSuppression",
+      "label": "Suppression",
+      "category": "performance",
+      "marker": "development/modules/performance/Suppression.png"
+    },
+    {
+      "component": "Synergy",
+      "item": "Base.OMHTTModuleSynergy",
+      "label": "Synergy",
+      "category": "effects",
+      "marker": "development/modules/effects/Synergy.png"
+    },
+    {
+      "component": "Tack",
+      "item": "Base.OMHTTModuleTack",
+      "label": "Tack",
+      "category": "effects",
+      "marker": "development/modules/effects/Tack.png"
+    },
+    {
+      "component": "Velocity",
+      "item": "Base.OMHTTModuleVelocity",
+      "label": "Velocity",
+      "category": "performance",
+      "marker": "development/modules/performance/Velocity.png"
+    },
+    {
+      "component": "Void",
+      "item": "Base.OMHTTModuleVoid",
+      "label": "Void",
+      "category": "utility",
+      "marker": "development/modules/utility/Void.png"
+    }
+  ],
+  "heads": [
+    {
+      "head": "Ballista",
+      "native": "development/heads/Ballista/OMHTT_DevBallista.x",
+      "editable": "development/heads/Ballista/Ballista.obj",
+      "triangles": 48,
+      "boxes": [
+        [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0.8,
+            0.16,
+            0.18
+          ]
+        ],
+        [
+          [
+            0.23,
+            0.01,
+            0
+          ],
+          [
+            0.1,
+            0.14,
+            0.95
+          ]
+        ],
+        [
+          [
+            -0.23,
+            -0.11,
+            0
+          ],
+          [
+            0.2,
+            0.16,
+            0.3
+          ]
+        ],
+        [
+          [
+            0.52,
+            0.02,
+            0
+          ],
+          [
+            0.3,
+            0.05,
+            0.05
+          ]
+        ]
+      ],
+      "forward": "+X",
+      "up": "+Y",
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "muzzle": [
+        0.67,
+        0,
+        0
+      ]
+    },
+    {
+      "head": "Scrapshot",
+      "native": "development/heads/Scrapshot/OMHTT_DevScrapshot.x",
+      "editable": "development/heads/Scrapshot/Scrapshot.obj",
+      "triangles": 36,
+      "boxes": [
+        [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0.45,
+            0.4,
+            0.4
+          ]
+        ],
+        [
+          [
+            0.42,
+            0.02,
+            0
+          ],
+          [
+            0.46,
+            0.3,
+            0.44
+          ]
+        ],
+        [
+          [
+            -0.14,
+            0.29,
+            0
+          ],
+          [
+            0.3,
+            0.18,
+            0.3
+          ]
+        ]
+      ],
+      "forward": "+X",
+      "up": "+Y",
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "muzzle": [
+        0.65,
+        0,
+        0
+      ]
+    },
+    {
+      "head": "Lobber",
+      "native": "development/heads/Lobber/OMHTT_DevLobber.x",
+      "editable": "development/heads/Lobber/Lobber.obj",
+      "triangles": 36,
+      "boxes": [
+        [
+          [
+            -0.06,
+            -0.03,
+            0
+          ],
+          [
+            0.42,
+            0.3,
+            0.34
+          ]
+        ],
+        [
+          [
+            0.34,
+            0.11,
+            0
+          ],
+          [
+            0.48,
+            0.34,
+            0.34
+          ]
+        ],
+        [
+          [
+            -0.27,
+            0.22,
+            0
+          ],
+          [
+            0.14,
+            0.16,
+            0.24
+          ]
+        ]
+      ],
+      "forward": "+X",
+      "up": "+Y",
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "muzzle": [
+        0.5800000000000001,
+        0,
+        0
+      ]
+    },
+    {
+      "head": "Arc",
+      "native": "development/heads/Arc/OMHTT_DevArc.x",
+      "editable": "development/heads/Arc/Arc.obj",
+      "triangles": 48,
+      "boxes": [
+        [
+          [
+            -0.12,
+            0,
+            0
+          ],
+          [
+            0.48,
+            0.38,
+            0.38
+          ]
+        ],
+        [
+          [
+            0.3,
+            0.05,
+            -0.14
+          ],
+          [
+            0.42,
+            0.08,
+            0.08
+          ]
+        ],
+        [
+          [
+            0.3,
+            0.05,
+            0.14
+          ],
+          [
+            0.42,
+            0.08,
+            0.08
+          ]
+        ],
+        [
+          [
+            -0.24,
+            0.26,
+            0
+          ],
+          [
+            0.14,
+            0.12,
+            0.28
+          ]
+        ]
+      ],
+      "forward": "+X",
+      "up": "+Y",
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "muzzle": [
+        0.51,
+        0,
+        0
+      ]
+    },
+    {
+      "head": "RotaryBat",
+      "native": "development/heads/RotaryBat/OMHTT_DevRotaryBat.x",
+      "editable": "development/heads/RotaryBat/RotaryBat.obj",
+      "triangles": 24,
+      "boxes": [
+        [
+          [
+            -0.22,
+            0,
+            0
+          ],
+          [
+            0.5,
+            0.1,
+            0.1
+          ]
+        ],
+        [
+          [
+            0.22,
+            0,
+            0
+          ],
+          [
+            0.5,
+            0.2,
+            0.2
+          ]
+        ]
+      ],
+      "forward": "+X",
+      "up": "+Y",
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "muzzle": [
+        0.47,
+        0,
+        0
+      ]
+    },
+    {
+      "head": "RotaryBlades",
+      "native": "development/heads/RotaryBlades/OMHTT_DevRotaryBlades.x",
+      "editable": "development/heads/RotaryBlades/RotaryBlades.obj",
+      "triangles": 36,
+      "boxes": [
+        [
+          [
+            -0.18,
+            0,
+            0
+          ],
+          [
+            0.55,
+            0.1,
+            0.1
+          ]
+        ],
+        [
+          [
+            0.25,
+            0,
+            0
+          ],
+          [
+            0.42,
+            0.045,
+            0.58
+          ]
+        ],
+        [
+          [
+            0.25,
+            0,
+            0
+          ],
+          [
+            0.12,
+            0.12,
+            0.12
+          ]
+        ]
+      ],
+      "forward": "+X",
+      "up": "+Y",
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "muzzle": [
+        0.45999999999999996,
+        0,
+        0
+      ]
+    }
+  ],
+  "uniquePayloads": 161,
+  "aliases": 41
+}

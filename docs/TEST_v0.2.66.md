@@ -29,3 +29,10 @@ Installed from immutable **test/v0.2.66 / 7d56836bc097711ee426e0fdda9bf8a3598bbf
 - Tooltip colors and wrapped feature text
 
 Existing saved Sandbox values are preserved; use fresh defaults to assess the selected duplicate tuning. Rendered UI, listening, live balance, active Horde Night integration, stress FPS and connected dedicated/listen multiplayer acceptance remain pending. **Test now** after restarting when available.
+
+
+## C445 owner feedback - 2026-10-24
+
+Owner screenshots and report identify missing module transfer sound, kit/feature presentation inconsistencies, irrelevant Poke capacity, Controller layout/slot/endurance omissions and a moved out-of-range assigned turret that cannot be unassigned. These are reported failures, with relevant source causes confirmed in [the audit](FEEDBACK_C445.md); no new rendered pass or gameplay correction is claimed. Requested wording and color changes are new preferences, not retroactive failures of earlier approved colors.
+
+Standard capture: diagnostics/captures/20261024-125714-6543; console SHA256 A5E9450A15D985AA4D08FC2257BC74404A0A6ABA864082876454951ECB6B3EE8. Live diagnostics identify0.2.66/SP. No OMHTT exception stack found; unrelated font/Firearms warnings exist. This log does not prove the UI correct or multiplayer compatibility. Artist package file/hash/image/mesh/archive checks passed separately; new head assets remain staged with no native import/rendered acceptance. Installed0.2.66 unchanged.

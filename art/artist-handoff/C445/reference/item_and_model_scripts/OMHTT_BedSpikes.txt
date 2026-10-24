@@ -1,0 +1,284 @@
+module Base {
+    item OMHTTTrapBedSpikes {
+        DisplayName = Bed Spikes,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 1.5,
+        Icon = OMHTT_BedSpikes,
+        ConditionMax = 100,
+        Tooltip = Tooltip_OMHTT_BedSpikes,
+    }
+    item OMHTTTrapBedSpikesReinforced {
+        DisplayName = Reinforced Bed Spikes,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 2,
+        Icon = OMHTT_ReinforcedBedSpikes,
+        ConditionMax = 100,
+        Tooltip = Tooltip_OMHTT_BedSpikes,
+    }
+    entity OMHTTBedSpikes {
+        component UiConfig {
+            xuiSkin = default,
+            entityStyle = ES_OMHTTBedSpikes,
+            uiEnabled = false,
+        }
+        component SpriteConfig {
+            health = 50,
+            skillBaseHealth = 0,
+            bonusHealth = 0,
+            isThumpable = false,
+            OnIsValid = OMHTT_BedSpikes.onIsValid,
+            OnCreate = OMHTT_BedSpikes.onCreate,
+            face E {
+                layer {
+                    row = omhtt_barrier_01_28,
+                    row = omhtt_barrier_01_29,
+                }
+            }
+            face N {
+                layer {
+                    row = omhtt_barrier_01_30 omhtt_barrier_01_31,
+                }
+            }
+            face W {
+                layer {
+                    row = omhtt_barrier_01_32,
+                    row = omhtt_barrier_01_33,
+                }
+            }
+            face S {
+                layer {
+                    row = omhtt_barrier_01_34 omhtt_barrier_01_35,
+                }
+            }
+        }
+        component CraftRecipe {
+            timedAction = BuildLowNoTool,
+            time = 200,
+            category = OMHTraps,
+            needToBeLearn = false,
+            OnAddToMenu = OMHTT_PlacementHidden,
+            inputs { item 2 [Base.OMHTTTrapBedSpikes], }
+        }
+    }
+
+    entity OMHTTDeployBedSpikes {
+        component UiConfig {
+            xuiSkin = default,
+            entityStyle = ES_OMHTTDeployBedSpikes,
+            uiEnabled = false,
+        }
+        component SpriteConfig {
+            health = 50,
+            skillBaseHealth = 0,
+            bonusHealth = 0,
+            isThumpable = false,
+            OnIsValid = OMHTT_BedSpikes.onIsValid,
+            OnCreate = OMHTT_BedSpikes.onCreate,
+            face E {
+                layer {
+                    row = omhtt_barrier_01_36,
+                    row = omhtt_barrier_01_37,
+                }
+            }
+            face N {
+                layer {
+                    row = omhtt_barrier_01_38 omhtt_barrier_01_39,
+                }
+            }
+            face W {
+                layer {
+                    row = omhtt_barrier_01_40,
+                    row = omhtt_barrier_01_41,
+                }
+            }
+            face S {
+                layer {
+                    row = omhtt_barrier_01_42 omhtt_barrier_01_43,
+                }
+            }
+        }
+        component CraftRecipe {
+            timedAction = BuildLowNoTool,
+            time = 200,
+            category = OMHTraps,
+            Tooltip = Tooltip_OMHTT_BedSpikes,
+            Tags = Carpentry,
+            needToBeLearn = false,
+            OnAddToMenu = OMHTT_PlacementMenu,
+            inputs { item 2 [Base.OMHTTTrapBedSpikes], }
+        }
+    }
+    entity OMHTTDeployBedSpikesSingle {
+        component UiConfig {
+            xuiSkin = default,
+            entityStyle = ES_OMHTTDeployBedSpikes,
+            uiEnabled = false,
+        }
+        component SpriteConfig {
+            health = 50,
+            skillBaseHealth = 0,
+            bonusHealth = 0,
+            isThumpable = false,
+            OnIsValid = OMHTT_BedSpikes.onSingleValid,
+            OnCreate = OMHTT_BedSpikes.onCreate,
+            face E {
+                layer {
+                    row = omhtt_barrier_01_64,
+                }
+            }
+            face N {
+                layer {
+                    row = omhtt_barrier_01_65,
+                }
+            }
+            face W {
+                layer {
+                    row = omhtt_barrier_01_66,
+                }
+            }
+            face S {
+                layer {
+                    row = omhtt_barrier_01_67,
+                }
+            }
+        }
+        component CraftRecipe {
+            timedAction = BuildLowNoTool,
+            time = 200,
+            category = OMHTraps,
+            Tooltip = Tooltip_OMHTT_BedSpikes,
+            Tags = Carpentry,
+            needToBeLearn = false,
+            OnAddToMenu = OMHTT_PlacementMenu,
+            inputs { item 1 [Base.OMHTTTrapBedSpikes], }
+        }
+    }
+    entity OMHTTDeployReinforcedBedSpikes {
+        component UiConfig {
+            xuiSkin = default,
+            entityStyle = ES_OMHTTDeployReinforcedBedSpikes,
+            uiEnabled = false,
+        }
+        component SpriteConfig {
+            health = 100,
+            skillBaseHealth = 0,
+            bonusHealth = 0,
+            isThumpable = false,
+            OnIsValid = OMHTT_BedSpikes.onIsValid,
+            OnCreate = OMHTT_BedSpikes.onCreate,
+            face E {
+                layer {
+                    row = omhtt_barrier_01_44,
+                    row = omhtt_barrier_01_45,
+                }
+            }
+            face N {
+                layer {
+                    row = omhtt_barrier_01_46 omhtt_barrier_01_47,
+                }
+            }
+            face W {
+                layer {
+                    row = omhtt_barrier_01_48,
+                    row = omhtt_barrier_01_49,
+                }
+            }
+            face S {
+                layer {
+                    row = omhtt_barrier_01_50 omhtt_barrier_01_51,
+                }
+            }
+        }
+        component CraftRecipe {
+            timedAction = BuildLowNoTool,
+            time = 200,
+            category = OMHTraps,
+            Tooltip = Tooltip_OMHTT_BedSpikes,
+            Tags = Carpentry,
+            needToBeLearn = false,
+            OnAddToMenu = OMHTT_PlacementMenu,
+            inputs { item 2 [Base.OMHTTTrapBedSpikesReinforced], }
+        }
+    }
+    entity OMHTTDeployReinforcedBedSpikesSingle {
+        component UiConfig {
+            xuiSkin = default,
+            entityStyle = ES_OMHTTDeployReinforcedBedSpikes,
+            uiEnabled = false,
+        }
+        component SpriteConfig {
+            health = 100,
+            skillBaseHealth = 0,
+            bonusHealth = 0,
+            isThumpable = false,
+            OnIsValid = OMHTT_BedSpikes.onSingleValid,
+            OnCreate = OMHTT_BedSpikes.onCreate,
+            face E {
+                layer {
+                    row = omhtt_barrier_01_68,
+                }
+            }
+            face N {
+                layer {
+                    row = omhtt_barrier_01_69,
+                }
+            }
+            face W {
+                layer {
+                    row = omhtt_barrier_01_70,
+                }
+            }
+            face S {
+                layer {
+                    row = omhtt_barrier_01_71,
+                }
+            }
+        }
+        component CraftRecipe {
+            timedAction = BuildLowNoTool,
+            time = 200,
+            category = OMHTraps,
+            Tooltip = Tooltip_OMHTT_BedSpikes,
+            Tags = Carpentry,
+            needToBeLearn = false,
+            OnAddToMenu = OMHTT_PlacementMenu,
+            inputs { item 1 [Base.OMHTTTrapBedSpikesReinforced], }
+        }
+    }
+    craftRecipe OMHTTCraftBedSpikes {
+            timedAction = SharpenStakeWood,
+            time = 200,
+            category = OMHTraps,
+            Tooltip = Tooltip_OMHTT_BedSpikes,
+            Tags = InHandCraft;Carpentry,
+            needToBeLearn = false,
+            SkillRequired = Woodwork:1,
+            xpAward = Woodwork:10,
+            OnAddToMenu = OMHTT_BedMenuAvailable,
+            inputs {
+                item 1 tags[base:sharpknife] mode:keep flags[Prop1;DontRecordInput;IsNotDull;MayDegradeLight],
+                item 4 [Base.Plank;Base.SpearCrafted],
+                item 4 [Base.RippedSheets;Base.RippedSheetsDirty;Base.Twine],
+            }
+            outputs { item 2 Base.OMHTTTrapBedSpikes, }
+    }
+    xuiSkin default {
+        entity ES_OMHTTBedSpikes {
+            LuaWindowClass = ISEntityWindow,
+            DisplayName = UI_OMHTT_BedSpikes,
+            Icon = OMHTT_BedSpikes,
+        }
+        entity ES_OMHTTDeployBedSpikes {
+            LuaWindowClass = ISEntityWindow,
+            DisplayName = UI_OMHTT_DeployBedSpikes,
+            Icon = OMHTT_BedSpikes,
+        }
+        entity ES_OMHTTDeployReinforcedBedSpikes {
+            LuaWindowClass = ISEntityWindow,
+            DisplayName = UI_OMHTT_DeployReinforcedBedSpikes,
+            Icon = OMHTT_BedSpikes,
+        }
+    }
+}
