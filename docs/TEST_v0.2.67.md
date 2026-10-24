@@ -12,7 +12,7 @@ Earlier verification attempts exposed outdated test expectations for the previou
 
 ## Delivery
 
-All verification gates pass. Immutable-tag installation is next; installed 0.2.66 remains until managed delivery completes. Workshop and hosted LootLab remain unchanged.
+Installed from immutable **test/v0.2.67 / 4669ba13e1dc759b2b007229ac5fd7c98ff38d69**. All **435 source and 593 package/tag/install/archive files** match their SHA-256 manifest. Both managed 0.2.66 backups verify. Backup: `C:\Users\bandi\Zomboid_Modding\OMH\Turrets & Traps\diagnostics\p1c1\install-backups\20261024-190728-6688`. Archive SHA-256: `9477f74fcb042216a3ef63a9320f600b1016313ae6ab41aa60cfe3b1ec64e61f`. Local proof: diagnostics/v0.2.67/local-release.json. Workshop and hosted LootLab remain unchanged.
 
 ## Owner checklist
 
@@ -23,4 +23,4 @@ All verification gates pass. Immutable-tag installation is next; installed 0.2.6
 - Poke Floor recovery and retained contents
 - New blocky turret heads
 
-Existing saves retain legacy ammo tuning. Enable **Use New Ammo Rules in Existing Worlds** in Turrets > Storage to test the new capacities there; fresh worlds use them automatically. Rendered UI/model alignment, listening, actual ammo endurance, stress FPS, active Horde Night integration and connected dedicated/listen multiplayer acceptance remain pending. **Wait for a patch** until installation is recorded.
+Existing saves retain legacy ammo tuning. Enable **Use New Ammo Rules in Existing Worlds** in Turrets > Storage to test the new capacities there; fresh worlds use them automatically. Rendered UI/model alignment, listening, actual ammo endurance, stress FPS, active Horde Night integration and connected dedicated/listen multiplayer acceptance remain pending. **Test now** after restarting when available.
