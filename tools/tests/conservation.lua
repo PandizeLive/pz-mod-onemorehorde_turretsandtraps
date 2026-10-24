@@ -28,7 +28,7 @@ check(C.consume(debt, 3, 2) == 2 and debt.conservationDebt == .25, "Splitter car
 local stats = S.resolve({active = {Execute = 3, Splitter = 2, Conservation = 2, Piercing = 1}, powerLoad = 8})
 local rows = B.rows({active = {Execute = 3, Splitter = 2, Conservation = 2, Piercing = 1}, powerLoad = 8,
     moduleDetails = {Execute = {count = 3}, Splitter = {count = 2}, Conservation = {count = 2}, Piercing = {count = 1}, Impact = {count = 1}}}, stats)
-check(#rows == 5 and stats.conservation == 3, "Grouped list includes inactive and broken copies")
+check(#rows == 5 and stats.conservation == 2.5, "Grouped list includes inactive and broken copies")
 for i = 1, #rows do
     local row = rows[i]
     check(row.details ~= "" and row.effect ~= "", "Every grouped module has a short effect and individual details")

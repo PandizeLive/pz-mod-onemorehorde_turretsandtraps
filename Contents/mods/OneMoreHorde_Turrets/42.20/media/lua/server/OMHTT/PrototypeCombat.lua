@@ -74,8 +74,10 @@ function Combat.candidates(origin, range)
     range = range or Combat.RANGE
     local found = {}
     local seen = {}
-    local visits = 0
+    local visits, squares = 0, 0
+    local deadline = Budget.limit(1)
     for radius = 0, math.ceil(range) do
+        local loaded = false
         for dx = -radius, radius do
             local stride = 1
             if math.abs(dx) < radius then
@@ -83,8 +85,14 @@ function Combat.candidates(origin, range)
             end
             for dy = -radius, radius, stride do
                 if math.max(math.abs(dx), math.abs(dy)) == radius then
+                    squares = squares + 1
+                    if squares > 4096 or getTimestampMs() >= deadline then
+                        table.sort(found, function(a, b) return a.distance < b.distance end)
+                        return found, visits
+                    end
                     local square = getCell():getGridSquare(origin:getX() + dx, origin:getY() + dy, origin:getZ())
                     if square then
+                        loaded = true
                         local objects = square:getMovingObjects()
                         for index = 0, objects:size() - 1 do
                             if visits >= Combat.CANDIDATE_LIMIT then
@@ -107,6 +115,7 @@ function Combat.candidates(origin, range)
                 end
             end
         end
+        if not loaded then break end
     end
     table.sort(found, function(a, b) return a.distance < b.distance end)
     return found, visits

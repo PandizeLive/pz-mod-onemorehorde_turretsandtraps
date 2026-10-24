@@ -110,7 +110,7 @@ function B.rows(contents, stats)
             label, value = "Detection", name == "MotionDetectionImprovised" and stats.range * .75 or stats.range
         end
         if value == 0 and label ~= "Inactive" then label = "Capped" end
-        if count == 0 then label = "Broken" end
+        if count == 0 then label, value = entry.broken == entry.count and "Broken" or "Inactive", nil end
         if not require("OMHTT/TurretHeads").supports(contents.head, name) then label, value = "Inactive", nil end
         local effect = getText("UI_OMHTT_Effect" .. label, value and B.number(value) or "")
         local title = getText("UI_OMHTT_Module" .. name) .. (entry.count > 1 and " x" .. entry.count or "")

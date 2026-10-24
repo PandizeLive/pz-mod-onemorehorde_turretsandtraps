@@ -6,12 +6,13 @@ return function(player)
     local T = require("OMHTT/Turret")
     local Stats = require("OMHTT/TurretStats")
     local store = instanceItem(T.BASE):getInventory()
+    store:AddItem(T.TYPES.CapacityLarge)
     local synergy = store:AddItem(T.TYPES.Synergy)
     store:AddItem(T.TYPES.Martyrdom)
     store:AddItem(T.TYPES.Tack)
     local contents = T.contents(store)
     local stats = Stats.resolve(contents)
-    assert(contents.modules == 3 and math.abs(contents.powerLoad - 5) < .00001 and stats.synergy and stats.tack == 1 and stats.martyrdom == 1.5,
+    assert(contents.modules == 3 and math.abs(contents.powerLoad - 5) < .00001 and stats.synergy and stats.tack == 1.25 and stats.martyrdom == 1.5,
         "Native proc modules did not resolve")
     assert(synergy:getWeight() == instanceItem(T.TYPES.Conservation):getWeight(), "Module encumbrance drift")
     local beforeRegulator = stats.batteryPercent

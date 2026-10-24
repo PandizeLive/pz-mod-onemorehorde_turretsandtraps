@@ -235,21 +235,21 @@ local tooltip = {tooltip=tip, backgroundColor={a=1,r=0,g=0,b=0}, borderColor={a=
     getHeight=function() return 100 end, getWidth=function() return 250 end, getY=function() return 0 end,
     setHeight=function() end, drawRect=function() end, drawRectBorder=function() end, drawText=function() end,
     setWidth=function() end, getX=function() return 0 end, setX=function() end, setY=function() end,
-    item={DoTooltip=function() end}}
+    item={DoTooltip=function() end,getTooltip=function() return nil end,setTooltip=function() end}}
 wraps = 0
 for i = 1, 600 do U.footer(tooltip, "Regulator") end
-check(wraps == 0, "Unwrapped tooltip does not invoke wrapping across 600 frames")
-local cachedLayout = tooltip.OMHTTFooterLayout
+check(wraps == 4, "Semantic tooltip rows wrap once, then cache across 600 frames")
+local cachedLayout = tooltip.OMHTTRows
 local steadyWraps = wraps
 tooltip.getWidth = function() return 300 end
 U.footer(tooltip, "Regulator")
-check(tooltip.OMHTTFooterLayout == cachedLayout, "Native tooltip width does not rebuild unwrapped lines")
+check(tooltip.OMHTTRows == cachedLayout, "Native tooltip width does not rebuild unwrapped lines")
 tip.getFont = function() return UIFont.Medium end
 U.footer(tooltip, "Regulator")
-check(tooltip.OMHTTFooterLayout ~= cachedLayout, "Tooltip font invalidates measured lines")
-cachedLayout = tooltip.OMHTTFooterLayout
+check(tooltip.OMHTTRows ~= cachedLayout, "Tooltip font invalidates measured lines")
+cachedLayout = tooltip.OMHTTRows
 U.footer(tooltip, "Firing")
-check(tooltip.OMHTTFooterLayout ~= cachedLayout and wraps == 0, "Tooltip description invalidates measured lines without wrapping")
+check(tooltip.OMHTTRows ~= cachedLayout and wraps == 12, "Tooltip description invalidates measured lines once")
 local rows = {}
 tooltip.item.getFullType = function() return "Base.OMHTTTurretScrapshot" end
 tooltip.drawText = function(_, text, x, y, r, g, b)
@@ -272,7 +272,7 @@ check(not string.find(D.get(tooltip.item), "Head only", 1, true), "Redundant hea
 local oldDescription, oldTextManager = D.get, getTextManager
 local measured, advance = 0, 7
 getTextManager = function()
-    return {MeasureStringX = function(_, font, text)
+    return {WrapText=function(_,font,text) return text end, MeasureStringX = function(_, font, text)
         measured = measured + 1
         -- AngelCodeFont uses final-glyph width, so trailing whitespace has no advance.
         return (#text - (string.sub(text, -1) == " " and 1 or 0)) * advance
@@ -282,7 +282,7 @@ for _, value in ipairs({"Low", "Medium", "High"}) do
     for _, size in ipairs({7, 11}) do
         advance = size
         D.get = function() return prefix .. value, {r = 1, g = 0.6, b = 0.2} end
-        tooltip.OMHTTFooterLayout = nil
+        tooltip.OMHTTRows = nil
         rows = {}
         U.footer(tooltip)
         check(rows[2].x == 5 + #prefix * advance and rows[2].y == rows[1].y,

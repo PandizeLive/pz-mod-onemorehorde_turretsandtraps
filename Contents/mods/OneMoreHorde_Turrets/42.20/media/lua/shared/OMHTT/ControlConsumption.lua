@@ -37,9 +37,6 @@ function D.description(kind, rich)
     local rating, color = D.rating(kind)
     local value = getText("UI_OMHTT_HeadBattery" .. rating)
     if rich then value = string.format("<RGB:%.2f,%.2f,%.2f> %s <RGB:1,1,1>", color.r, color.g, color.b, value) end
-    local cost = string.format("%.4f", D.rate(kind)):gsub("0+$", ""):gsub("%.$", "")
-    local lines = {getText("UI_OMHTT_HeadBattery", value), getText("UI_OMHTT_TriggerCost" .. kind, cost),
-        getText("UI_OMHTT_TriggerSupply"), getText("UI_OMHTT_TriggerOverhead")}
-    return table.concat(lines, rich and " <LINE> " or "\n"), color
+    return getText("UI_OMHTT_HeadBattery", value), color
 end
 return D

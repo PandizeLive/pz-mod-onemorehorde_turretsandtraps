@@ -77,6 +77,7 @@ function X.rejection(player, item, source, destination)
             if instanceof(item, "HandWeapon") and item:isRanged() then return "UnsupportedFirearm" end
             return "TransferWrongItem"
         end
+        if T.kind(item) == "module" and not require("OMHTT/TurretHeads").supports(contents.head, T.component(item:getFullType())) then return "ModuleUnsupported" end
         local component = T.role(item:getFullType())
         if T.SINGLE[component] and contents.moduleCounts[component] then return "ModuleDoesNotStack" end
         if T.kind(item) == "ammo" then
@@ -136,9 +137,13 @@ function ISInventoryTransferAction:transferItem(item)
             if not require("OMHTT/FirearmFeed").restore(head, capacity, self.character, item == head) then return end
         end
     end
+    if T.isContainer(source) then T.rememberModules(source) end
+    if T.isContainer(destination) then T.rememberModules(destination) end
     if G.profile(item) then G.cancelLoading(item) end
     nativeTransfer(self, item)
     if item:getContainer() == destination then
+        if T.isContainer(source) then T.rememberModules(source) end
+        if T.isContainer(destination) then T.rememberModules(destination) end
         if T.isContainer(source) and T.kind(item) == "battery" then
             require("OMHTT/TurretBattery").detach(item)
         end
@@ -260,6 +265,7 @@ function X.queue(player, object, items, incoming, kind)
         if incoming and (not source or not source:isInCharacterInventory(player)) then failure = "TransferCarried" end
         if not incoming and source ~= storage then failure = "TransferMissing" end
         if incoming and counts[kind] >= limits[kind] then failure = "TransferFull" end
+        if T.kind(item) == "module" and not require("OMHTT/TurretHeads").supports(contents.head, T.component(item:getFullType())) then return "ModuleUnsupported" end
         local component = T.role(item:getFullType())
         if incoming and T.SINGLE[component] and components[component] then failure = "ModuleDoesNotStack" end
         if pending[item] then failure = "TransferPending" end

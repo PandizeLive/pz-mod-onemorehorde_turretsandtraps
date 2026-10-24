@@ -8,27 +8,7 @@ local Swap = OMHTTTurretModuleSwap
 ---@param object IsoObject Turret
 ---@return table modules Ordered actual items
 function Swap.modules(object)
-    local items, found, result, used = object:getContainer():getItems(), {}, {}, {}
-    for i = 0, items:size() - 1 do
-        local item = items:get(i)
-        if T.kind(item) == "module" then
-            found[item:getID()] = item
-        end
-    end
-    local state = T.state(object)
-    for i = 1, 64 do
-        local id = state["moduleSlot" .. i]
-        if id and found[id] and not used[id] then
-            result[#result + 1], used[id] = found[id], true
-        end
-    end
-    for i = 0, items:size() - 1 do
-        local item = items:get(i)
-        if found[item:getID()] and not used[item:getID()] then
-            result[#result + 1] = item
-        end
-    end
-    return result
+    return T.moduleOrder(object:getContainer())
 end
 
 ---@return boolean valid
@@ -40,6 +20,8 @@ function Swap:isValid()
         or self.replaced:getContainer() ~= storage or not storage:contains(self.replaced) then return false end
     local source = self.item:getContainer()
     if not source or not source:contains(self.item) then return false end
+    if not require("OMHTT/TurretHeads").supports(T.contents(storage).head, T.component(self.item:getFullType())) then return false end
+    if self.item:isFavorite() or self.replaced:isFavorite() then return false end
     if source == storage then return true end
     local controller = require("OMHTT/ControlAccess").stockpile(self.character, self.object, self.controller)
     if not source:isInCharacterInventory(self.character) and (not controller or source ~= controller:getContainer()) then return false end
@@ -47,7 +29,7 @@ function Swap:isValid()
         or not storage:isRemoveItemAllowed(self.replaced) then return false end
     if source:getType() == "OMHTTController" then
         if not require("OMHTT/ControlDefinitions").storable(self.replaced) then return false end
-        if source:getCapacityWeight() - self.item:getUnequippedWeight() + self.replaced:getUnequippedWeight() > 500 then return false end
+        if source:getCapacityWeight() - self.item:getUnequippedWeight() + self.replaced:getUnequippedWeight() > require("OMHTT/ControlExpansion").capacity(source:getParent()) then return false end
     else
         if not source:isItemAllowed(self.replaced) then return false end
         if self.replaced:getUnequippedWeight() > self.item:getUnequippedWeight()
@@ -81,6 +63,7 @@ function Swap:complete()
     if isClient() or not self:isValid() then return false end
     local storage, source = self.object:getContainer(), self.item:getContainer()
     local order = Swap.modules(self.object)
+    local prior = T.contents(storage)
     local same = source == storage
     if not same then
         source:Remove(self.item)
@@ -97,13 +80,6 @@ function Swap:complete()
             return false
         end
         ISTransferAction:removeItemOnCharacter(self.character, self.item)
-        local head = T.contents(storage).head
-        if self.replaced:getFullType() == T.TYPES.Void then
-            require("OMHTT/TurretFeed").cancel(head)
-        end
-        if require("OMHTT/Firearms").profile(head) then
-            require("OMHTT/FirearmFeed").restore(head, T.cycleConfig(T.contents(storage)).magazine, self.character, false)
-        end
         if isServer() then
             sendRemoveItemFromContainer(source, self.item)
             sendRemoveItemFromContainer(storage, self.replaced)
@@ -111,9 +87,6 @@ function Swap:complete()
             sendAddItemToContainer(source, self.replaced)
             require("OMHTT/TurretItemState").publish(self.item, self.character)
             require("OMHTT/TurretItemState").publish(self.replaced, self.character)
-            if head then
-                require("OMHTT/TurretItemState").publish(head, self.character)
-            end
         end
     end
     local state = T.state(self.object)
@@ -126,6 +99,12 @@ function Swap:complete()
         end
         state["moduleSlot" .. i] = item and item:getID() or nil
     end
+    local contents = T.contents(storage)
+    if prior.void ~= contents.void then require("OMHTT/TurretFeed").cancel(contents.head) end
+    if require("OMHTT/Firearms").profile(contents.head) then
+        require("OMHTT/FirearmFeed").restore(contents.head, T.cycleConfig(contents).magazine, self.character, false)
+    end
+    if isServer() and contents.head then require("OMHTT/TurretItemState").publish(contents.head, self.character) end
     state.transferRevision = (state.transferRevision or 0) + 1
     self.done = true
     require("OMHTT/TurretWorld").refresh(self.object)

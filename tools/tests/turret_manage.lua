@@ -384,16 +384,16 @@ local oldModules = SandboxVars.OMHTurretsTraps.PotatoModuleCapacity
 SandboxVars.OMHTurretsTraps.PotatoModuleCapacity = 20
 for i = 1, 20 do storage:AddItem(item("Base.OMHTTModuleRange")) end
 panel:refresh()
-check(panel.rows == 5, "High capacity uses additional scrollable rows")
+check(panel.rows == 7, "Configured physical storage includes empty inactive rows")
 panel:scrollModules(1); panel:scrollModules(1); panel:refresh()
-check(#panel.moduleSlots[16].items == 1 and panel.moduleRow == 1, "Twentieth module stays accessible")
+check(#panel.moduleSlots[12].items == 1 and panel.moduleRow == 2, "Twentieth module stays accessible")
 SandboxVars.OMHTurretsTraps.PotatoModuleCapacity = 4
 panel:refresh()
 check(panel.rows == 5, "Lowered capacity preserves access to stored modules")
-check(panel.moduleSlots[4].disabled, "Over-capacity slots still allow recovery but not deposits")
+check(panel.moduleSlots[4].disabled, "Over-capacity stored modules display unavailable")
 ISMouseDrag.dragging, ISMouseDrag.draggingFocus = {invalid}, {onMouseUp = function() end}
 panel.moduleSlots[4]:onMouseUp(1, 1)
-check(panel.reason == getText("UI_OMHTT_ManageTransferFull"), "Locked slot explains rejected deposit")
+check(panel.reason == getText("UI_OMHTT_ManageSwapFailed"), "Unavailable storage still rejects an unrelated item")
 local expansion = item("Base.OMHTTModuleExpansionMedium")
 carried:AddItem(expansion)
 actions = {}
@@ -403,8 +403,8 @@ actions[1]:transferItem(expansion)
 panel:refresh()
 check(panel.capacitySlot.items[1] == expansion and panel.stats.modules == 8 and panel.stats.ammo == 652,
     "Capacity slot displays exact component and expanded limits")
-check(panel.capacitySlot.disabled, "Expansion is dim only when its excess contents block removal")
-check(X.rejection(player, expansion, storage, carried) == "CapacityFull", "Expanded modules block capacity removal with useful reason")
+check(not panel.capacitySlot.disabled, "Stored inactive modules do not block kit removal")
+check(X.rejection(player, expansion, storage, carried) == nil, "Kit removal keeps excess modules stored and inactive")
 local secondExpansion = item("Base.OMHTTModuleExpansionMedium")
 carried:AddItem(secondExpansion)
 check(X.rejection(player, secondExpansion, carried, storage) == "TransferFull", "Second capacity cannot recursively expand storage")
@@ -567,6 +567,44 @@ for i = 1, #panel.orderPanel.groups do
 end
 check(savedBomb.rows[1].type == "Base.PipeBomb", "Reopening Load Order retains saved priority")
 panel.orderPanel:close()
+do
+    local slot=panel.moduleSlots[1]
+    local width,height,font=slot.width,slot.height,panel.lineHeight
+    for _,h in pairs({12,18,24,32}) do
+        panel.lineHeight=h
+        for _,size in pairs({h+8,h*2+8,h*3+8}) do
+            slot.width,slot.height=110,size
+            local g=slot:moduleGeometry()
+            check(g.size>0 and g.x>=0 and g.y>=0 and g.y+g.size<=slot.height,
+                "Module icon stays inside its bounds across font sizes")
+            check(g.x+g.size<=g.textX or g.y+g.size<=g.textY,
+                "Compact and tall module layouts keep icon and label rectangles separate")
+        end
+    end
+    slot.width,slot.height,panel.lineHeight=width,height,font
+    local kept,order={},{}
+    for i=1,#storage.items do kept[i]=storage.items[i] end
+    for i=1,64 do order[i]=T.state(object)["moduleSlot"..i] end
+    for i=#storage.items,1,-1 do storage:Remove(storage.items[i]) end
+    local limit=SandboxVars.OMHTurretsTraps.PotatoModuleCapacity
+    SandboxVars.OMHTurretsTraps.PotatoModuleCapacity=2
+    storage:AddItem(item(T.HEAD))
+    local rapid,reload,siphon=item(T.TYPES.RapidFire),item(T.TYPES.Reload),item(T.TYPES.Siphon)
+    storage:AddItem(rapid);storage:AddItem(reload);storage:AddItem(siphon)
+    T.rememberModules(storage,{rapid,reload,siphon})
+    panel.moduleRow=0;panel:refresh()
+    local R=require("OMHTT/TurretRarity")
+    local first=R.get("RapidFire").band>=R.get("Reload").band and rapid or reload
+    check(panel.moduleSlots[1].items[1]==first and panel.moduleSlots[3].items[1]==siphon and panel.moduleSlots[3].disabled,
+        "Rarity sorting stays within active and inactive groups")
+    check(T.moduleOrder(storage)[1]==rapid and not T.contents(storage).active.Siphon,
+        "Refreshing sorted presentation never changes activation priority")
+    for i=#storage.items,1,-1 do storage:Remove(storage.items[i]) end
+    for i=1,#kept do storage:AddItem(kept[i]) end
+    for i=1,64 do T.state(object)["moduleSlot"..i]=order[i] end
+    SandboxVars.OMHTurretsTraps.PotatoModuleCapacity=limit
+    panel:refresh()
+end
 reachable = false
 local action = ISInventoryTransferAction:new(player, battery, storage, carried)
 check(not action:isValid(), "Native outgoing drag revalidates turret reach")

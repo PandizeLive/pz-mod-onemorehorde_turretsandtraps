@@ -16,7 +16,7 @@ check(math.abs(stats.batteryPercent - .025) < .0000001 and stats.magazine == 5, 
 check(H.accuracy(stats, 0) == 75 and H.accuracy(stats, 12) == 60 and H.accuracy(stats, 24) == 45, "Ballista accuracy uses true near/mid/far endpoints")
 check(H.accuracy(stats, 50) == 45, "Accuracy endpoint clamps without extrapolation")
 stats = S.resolve({head = ballista, active = {Conservation = 2, Splitter = 2, Piercing = 2, Magazine = 2}, powerLoad = 3})
-check(stats.conservation == 3 and stats.splitter == 2 and stats.piercing == 2 and stats.magazine == 9, "Ballista uses existing projectile module accounting")
+check(stats.conservation == 2.5 and stats.splitter == 2 and stats.piercing == 2 and stats.magazine == 9, "Ballista uses existing projectile module accounting")
 check(math.abs(stats.batteryPercent - .1) < .000001, "Ballista additive module power")
 for _, item in pairs({bat, blades}) do
     stats = S.resolve({head = item, active = {}, powerLoad = 0})
@@ -25,7 +25,7 @@ for _, item in pairs({bat, blades}) do
     check(H.supports(item, "Regulator") and H.supports(item, "Detection360"), "Physical heads retain useful modules")
 end
 stats = S.resolve({head = bat, active = {RapidFire = 1, Regulator = 1}, powerLoad = 2})
-check(stats.motorSpeed == 187.5 and math.abs(stats.motorPower - 50) < .00001, "Speed and rarity drain scale once; Regulator offsets speed in this example")
+check(stats.motorSpeed == 210 and math.abs(stats.motorPower - 56) < .00001, "First Rapid Fire and rarity drain scale once; Regulator divides paid power")
 local profile = M.profile({baseFacing = 0}, {head = bat, active = {}}, false)
 check(profile.rotary and profile.cone == 90 and profile.range == 2, "Rotary placement-locked dual sector profile")
 for degrees = -180, 180 do

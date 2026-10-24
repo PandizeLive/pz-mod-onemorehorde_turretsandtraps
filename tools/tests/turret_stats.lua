@@ -5,18 +5,18 @@ local base = S.resolve()
 check(base.damage == 35 and base.range == 6 and base.ammo == 100 and base.modules == 2, "No modules preserve saved base balance")
 local active = {Reload = 2, RapidFire = 2, Velocity = 2, Range = 2, Capacity = 1}
 local stats = S.resolve({active = active})
-check(math.abs(stats.cooldown - 2000 / 1.5) < 0.001 and math.abs(stats.reload - 2000 / 1.5) < 0.001,
+check(math.abs(stats.cooldown - 2000 / 1.6) < 0.001 and math.abs(stats.reload - 2000 / 1.75) < 0.001,
     "Reload and Rapid-Fire independently stack speed without subtractive negative timers")
-check(stats.damage == 49 and stats.knockdown == 50 and stats.range == 10 and stats.modules == 12 and stats.ammo == 750,
+check(math.abs(stats.damage - 50.75) < .0001 and stats.knockdown == 48 and stats.range == 10 and stats.modules == 12 and stats.ammo == 750,
     "Damage, knockdown, range and storage bonuses combine")
 active.Autoloader = 1
 stats = S.resolve({active = active})
 check(stats.reload == 0 and stats.cooldown > 0 and stats.magazine == 3, "Autoloader bypasses reload only; Potato built-in magazine has three rounds")
 active = {Reload = 40, RapidFire = 40, Velocity = 40, Range = 40, Capacity = 40}
 stats = S.resolve({active = active})
-check(stats.damage == 70 and stats.knockdown == 90 and stats.range == 16 and stats.modules == 12 and stats.ammo == 750,
-    "Stack caps apply and legacy duplicate Capacity never compounds")
-check(math.abs(stats.cooldown - 2000 / 3) < 0.001 and math.abs(stats.reload - 2000 / 3) < 0.001, "Speed bonuses stop at configured cap")
+check(math.abs(stats.damage - 250.25) < .0001 and stats.knockdown == 100 and stats.range == 48 and stats.modules == 12 and stats.ammo == 750,
+    "Additive bonuses continue growing and legacy duplicate Capacity never compounds")
+check(math.abs(stats.cooldown - 2000 / 9.2) < 0.001 and math.abs(stats.reload - 2000 / 11.25) < 0.001, "Speed contributions remain additive beyond former caps")
 for _, tier in pairs({{"CapacityImprovised", 150, 2}, {"CapacitySmall", 400, 6}, {"Capacity", 650, 10}, {"CapacityLarge", 900, 14}}) do
     local expanded = S.resolve({active = {[tier[1]] = 1}})
     check(expanded.ammo == base.ammo + tier[2] and expanded.modules == base.modules + tier[3], "Expansion tier grants its own bonuses")
@@ -28,16 +28,18 @@ settings.PotatoKnockdownChance = 100
 check(S.resolve({active = active}).knockdown == 100, "Module cap cannot nerf higher base knockdown")
 settings.PotatoKnockdownChance = original
 settings.RangeBonus, settings.RangeBonusCap = 200, 1000
-check(S.resolve({active = active}).range == 30, "Maximum range bounds scan work")
+check(S.resolve({active = active}).range == 7809, "Range stat is uncapped; traversal must stop at loaded paths")
 settings.RangeBonus, settings.RangeBonusCap = nil, nil
+settings.RapidFireFirst, settings.ReloadFirst = 0, 0
 settings.RapidFireBonus, settings.ReloadBonus = 0, 0
 check(S.resolve({active = active}).cooldown == base.cooldown and S.resolve({active = active}).reload == base.reload,
     "Zero Sandbox gains disable speed bonuses")
 settings.RapidFireBonus, settings.ReloadBonus = nil, nil
+settings.RapidFireFirst, settings.ReloadFirst = nil, nil
 local state = {}
 C.update(state, 100, base, 0)
 C.update(state, 100, S.resolve({active = {Reload = 4}}), 1000)
-check(state.reloadReady == 1500, "Changing reload speed preserves completed fraction")
+check(math.abs(state.reloadReady - (1000 + 1000 / 2.25)) < .0001, "Changing reload speed preserves completed fraction")
 C.update(state, 100, base, 1000)
 check(state.reloadReady == 2000, "Removing and reinserting reload cannot erase remaining work")
 C.update(state, 100, base, 2000)
@@ -62,11 +64,11 @@ check(shots == 100 and ammo == 0 and state.loaded == 0, "Fastest modules conserv
 
 settings.PotatoCooldown, settings.PotatoReloadTime = 0.1, 0.1
 local short = S.resolve({active = {RapidFire = 10, Reload = 10}})
-check(short.cooldown == 100 and short.reload == 100, "Module time floors never slow an already faster base")
+check(math.abs(short.cooldown - 100 / 3.2) < .0001 and math.abs(short.reload - 100 / 3.75) < .0001, "Speed bonuses improve short base intervals without arbitrary floors")
 settings.PotatoCooldown, settings.PotatoReloadTime = nil, nil
 
 local chance = S.resolve({active = {Critical = 3, Accuracy = 3}})
-check(chance.critChance == 15 and chance.critMultiplier == 2 and chance.accuracy == 100, "Critical stacks add chance; potato accuracy stays guaranteed")
+check(chance.critChance == 25 and chance.critMultiplier == 2 and chance.accuracy == 100, "Critical stacks add chance; potato accuracy stays guaranteed")
 check(S.resolve({active = {Critical = 1000}}).critChance == 100, "Critical chance cannot exceed certainty")
 local previousReduction, previousDiminishing = 0, 0
 for stacks = 1, 30 do

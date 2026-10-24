@@ -7,8 +7,8 @@ local savedSettings, savedRoll = SandboxVars.OMHTurretsTraps, testRoll
 SandboxVars.OMHTurretsTraps, testRoll = {}, 0
 for n = 0, 16 do
     local stats = S.resolve({active = {InitialBlow = n, Execute = n, Impact = n}})
-    check(stats.initialBlow == n * .25, "Initial Blow remains uncapped and additive")
-    check(math.abs(stats.execute - (n == 0 and 0 or (.1 + (n - 1) * .02))) < .000001, "Execute uses approved first-plus-extra HP threshold")
+    check(math.abs(stats.initialBlow - (n > 0 and .5 + (n - 1) * .2 or 0)) < .000001, "Initial Blow remains uncapped and additive")
+    check(math.abs(stats.execute - (n == 0 and 0 or (.1 + (n - 1) * .01))) < .000001, "Execute uses approved first-plus-extra HP threshold")
     check(stats.impact == (n == 0 and 0 or 60 + (n - 1) * 2), "Impact uses approved first-plus-extra chance")
 end
 local square = makeSquare(1500, 1500, 0)
@@ -16,12 +16,12 @@ local zombie = makeZombie(square, 10)
 local stats = S.resolve({active = {InitialBlow = 16, Execute = 1, Impact = 1}})
 zombie.health = 9
 local eligibility = C.snapshot(zombie, stats)
-check(C.damage(zombie, .1, eligibility) == .5, "Exact 90 percent HP grants 5x primary damage at sixteen copies")
+check(C.damage(zombie, .1, eligibility) == .45, "Exact 90 percent HP grants 4.5x primary damage at sixteen copies")
 zombie.health = 8.9999999
-check(C.snapshot(zombie, stats).bonus == 5, "Native float rounding preserves the Initial Blow boundary")
+check(C.snapshot(zombie, stats).bonus == 4.5, "Native float rounding preserves the Initial Blow boundary")
 zombie.health = 8.99
 check(C.damage(zombie, .1, C.snapshot(zombie, stats)) == .1, "Below 90 percent receives ordinary damage")
-check(C.damage(zombie, .1, eligibility) == .5, "Shotgun eligibility remains fixed for allocated pellets")
+check(C.damage(zombie, .1, eligibility) == .45, "Shotgun eligibility remains fixed for allocated pellets")
 zombie.health = 1.00000001
 check(C.snapshot(zombie, stats).execute, "Native float rounding preserves the Execute boundary")
 zombie.health = 1.001

@@ -78,10 +78,27 @@ end
 ---@param replaced InventoryItem? Exact occupied module slot
 ---@return nil
 function Panel:transfer(items, incoming, kind, replaced)
+    if incoming and kind == "capacity" and replaced then
+        if #items ~= 1 then self:feedback(0, "SwapFailed"); return end
+        local Expansion = require("OMHTT/TurretExpansionAction")
+        local final = Expansion:new(self.player, self.object, items[1], replaced, self.deviceId, self.controller, true)
+        local reason = final:rejection()
+        if reason then self:feedback(0, reason); return end
+        local _, excess = final:projection()
+        local batches = math.ceil(excess / 20)
+        if batches > 1024 then self:feedback(0, "TransferFull"); return end
+        for i = 1, batches do
+            ISTimedActionQueue.add(Expansion:new(self.player, self.object, items[1], replaced, self.deviceId, self.controller, false))
+        end
+        ISTimedActionQueue.add(final)
+        self:feedback(1)
+        return
+    end
     if incoming and kind == "module" and replaced then
         if #items ~= 1 then self:feedback(0, "SwapFailed"); return end
         local Swap = require("OMHTT/TurretModuleSwap")
         local action = Swap:new(self.player, self.object, items[1], replaced, self.deviceId, self.controller)
+        if not require("OMHTT/TurretHeads").supports(T.contents(self.object:getContainer()).head, T.component(items[1]:getFullType())) then self:feedback(0, "ModuleUnsupported"); return end
         if not action:isValid() then self:feedback(0, "SwapFailed"); return end
         ISTimedActionQueue.add(action)
         self:feedback(1)
@@ -272,7 +289,7 @@ function Panel:refresh()
     end
     self.fireButton:setEnable(status == "Ready" or status == "Asleep" or status == "Waking")
     local capacity = stats.modules
-    self.rows = math.max(4, math.ceil(math.max(contents.modules, capacity) / 4))
+    self.rows = math.max(4, math.ceil(math.max(contents.modules, T.storageSlots()) / 4))
     self.hasLockedSlots = capacity < 16
     self.moduleRow = math.min(self.moduleRow, self.rows - 4)
     for i = 1, #self.slots do self.slots[i].items, self.slots[i].rarity = {}, nil end
@@ -300,12 +317,31 @@ function Panel:refresh()
             if kind == "module" or kind == "capacity" then slot.rarity = Rarity.get(T.component(item:getFullType())) end
         end
     end
-    local ordered = require("OMHTT/TurretModuleSwap").modules(self.object)
+    local ordered, inactive = {}, {}
+    local priority = contents.orderedModules
+    local Art = require("OMHTT/TurretModuleArt")
+    for i = 1, #priority do
+        local group = i <= capacity and ordered or inactive
+        group[#group + 1] = priority[i]
+    end
+    local function sorted(a, b)
+        local an, bn = T.component(a:getFullType()), T.component(b:getFullType())
+        local ar, br = Rarity.get(an).band, Rarity.get(bn).band
+        if ar ~= br then return ar > br end
+        local ac, bc = Art.category(an), Art.category(bn)
+        if ac ~= bc then return ac < bc end
+        if a:getDisplayName() ~= b:getDisplayName() then return a:getDisplayName() < b:getDisplayName() end
+        return a:getID() < b:getID()
+    end
+    table.sort(ordered, sorted)
+    table.sort(inactive, sorted)
+    for i = 1, #inactive do ordered[capacity + i] = inactive[i] end
     for i = 1, #self.moduleSlots do
         local slot = self.moduleSlots[i]
         local item = ordered[self.moduleRow * 4 + i]
         slot.items = item and {item} or {}
         slot.rarity = item and Rarity.get(T.component(item:getFullType())) or nil
+        slot.disabled = self.moduleRow * 4 + i > capacity or (item and not contents.activeIds[item:getID()]) or false
     end
     local loaded = stats.firearm and G.loaded(contents.head) or 0
     local physicalLimit, freeWeight = require("OMHTT/TurretCapacity").limit(storage, contents, stats)

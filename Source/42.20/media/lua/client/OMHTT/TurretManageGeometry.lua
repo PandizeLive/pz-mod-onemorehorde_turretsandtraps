@@ -18,7 +18,9 @@ end
 function G.apply(panel)
     local screen = getPlayerScreenHeight(panel.player:getPlayerNum())
     if panel.geometryWidth == panel.width and panel.geometryHeight == panel.height and panel.geometryScreen == screen and panel.geometryDetails == panel.detailsOpen
-        and panel.geometryLure == panel.hasLure and panel.geometryLanding == panel.hasLanding then return false end
+        and panel.geometryLure == panel.hasLure and panel.geometryLanding == panel.hasLanding
+        and panel.geometryLineHeight == panel.lineHeight and panel.geometryDetailCount == #(panel.detailLines or {}) then return false end
+    panel.geometryLineHeight, panel.geometryDetailCount = panel.lineHeight, #(panel.detailLines or {})
     panel.geometryWidth, panel.geometryHeight = panel.width, panel.height
     panel.geometryScreen, panel.geometryDetails = screen, panel.detailsOpen
     panel.geometryLure, panel.geometryLanding = panel.hasLure, panel.hasLanding

@@ -1,5 +1,7 @@
 # C443 - First-copy bonuses and additive duplicate tuning
 
+**C444 update (2026-10-24):** Owner selects C443 **1A**. The selective table and combined correction scope are implemented in [0.2.66](PATCH_v0.2.66.md); [verification and delivery](TEST_v0.2.66.md) distinguish automated evidence from pending owner acceptance. Earlier proposal/status wording below is historical.
+
 Date: 2026-10-24. Owner asks to calculate every stackable and consider strengthening the first copy, reducing later gains, or both. This reopens numerical tuning before approval of the C442 combined patch; it does not undo additive stacking or authorize gameplay edits. Installed build remains 0.2.65. **All candidate numbers below are proposals.**
 
 ## Recommendation and scope

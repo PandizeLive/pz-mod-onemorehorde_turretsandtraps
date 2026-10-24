@@ -11,6 +11,12 @@ local effects = {Piercing = true, InitialBlow = true, Execute = true, Impact = t
 
 local automation = {FiringEnhanced = true, MotionDetectionEnhanced = true, Firing = true, Filter = true, MotionDetection = true, Detection360 = true, MotionDetectionImprovised = true, FiringImprovised = true}
 
+---@param component string Module key
+---@return number group Stable category order
+function A.category(component)
+    return performance[component] and 1 or automation[component] and 2 or effects[component] and 3 or 4
+end
+
 ---@param item InventoryItem? Existing or newly received item
 ---@return nil
 function A.apply(item)

@@ -8,14 +8,14 @@ for _, base in pairs({1, 7, 14, 30, 60}) do
     SandboxVars.OMHTurretsTraps.PotatoMagazineCapacity = base
     for count = 0, 10 do
         local stats = Stats.resolve({active = {Magazine = count}})
-        check(stats.magazine == math.ceil(base + count * math.max(1, base * .35)), "Linear magazine growth rounds only the final capacity")
+        check(stats.magazine == math.ceil(base + (count > 0 and math.max(1, base * .5) + (count - 1) * math.max(1, base * .25) or 0)), "Linear magazine growth rounds only the final capacity")
     end
 end
 SandboxVars.OMHTurretsTraps.PotatoMagazineCapacity = nil
 for count = 1, 40 do
     local stats = Stats.resolve({powerLoad = count + 2, active = {Fragment = count, Splitter = 2}})
-    check(math.abs(stats.fragmentDamage - math.min(.4, (.2 + (count - 1) * .05))) < .000001 and stats.fragmentRange == 4,
-        "Fragment damage caps while range stays independent")
+    check(math.abs(stats.fragmentDamage - (.25 + (count - 1) * .04)) < .000001 and stats.fragmentRange == 4,
+        "Fragment damage remains additive while range stays independent")
     check(math.abs(stats.effectPower - (1 + count + 2)) < .000001, "Power stays additive, including copies above damage cap")
     for i = 1, count do
         check(math.abs(V.angle(count, i, -1)) <= 90 and V.angle(count, i, -1) ~= 0, "High-stack fan stays within 180 degrees and preserves primary")
@@ -36,7 +36,7 @@ V.fragment(record, victim:getX(), victim:getY(), 0, victim, nil, options)
 check(#V.queue == 5 and V.reserved == 4, "Primary callbacks cannot produce a second fragment burst")
 for i = 1, 5 do
     local ray = V.queue[i]
-    check(ray.damage == .8 and ray.range == 4 and ray.group.hits[victim], "Fragments inherit full critical budget and exclude primary victim")
+    check(math.abs(ray.damage - .82) < .000001 and ray.range == 4 and ray.group.hits[victim], "Fragments inherit full critical budget and exclude primary victim")
     for j = i + 1, 5 do
         local other = V.queue[j]
         local dot = math.max(-1, math.min(1, ray.dx * other.dx + ray.dy * other.dy))

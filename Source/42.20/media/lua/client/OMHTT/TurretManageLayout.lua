@@ -17,6 +17,11 @@ end
 ---@return nil
 function L.refresh(panel)
     if not panel.body then return end
+    local wrapWidth = math.floor((panel.width - 12) / 2) - 28
+    if panel.detailWrapWidth ~= wrapWidth or panel.detailSource ~= panel.moduleLines or panel.detailFontHeight ~= panel.lineHeight then
+        panel.detailLines = string.split(getTextManager():WrapText(UIFont.Small, panel.moduleLines or "", wrapWidth), "\n")
+        panel.detailWrapWidth, panel.detailSource, panel.detailFontHeight = wrapWidth, panel.moduleLines, panel.lineHeight
+    end
     local geometryChanged = require("OMHTT/TurretManageGeometry").apply(panel)
     if panel.orderPanel then
         panel.orderPanel:reflow()
@@ -33,7 +38,6 @@ function L.refresh(panel)
     local row = math.max(compact and 22 or 28, h + (compact and 2 or 8))
     panel.compactFooter = compact
     panel.detailsButton:setHeight(row)
-    panel.detailLines = string.split(getTextManager():WrapText(UIFont.Small, panel.moduleLines or "", math.floor(panel.body.width / 2) - 28), "\n")
     panel.detailsButton:setTitle(getText(panel.detailsOpen and "UI_OMHTT_DetailsClose" or "UI_OMHTT_DetailsOpen"))
     panel.modulesBottom = panel.moduleGridBottom + (panel.compactModuleActions and 4 or row + 6)
     local detailsHeight = math.max(h * (#panel.detailLines + 3) + 16, h * 4 + 16)

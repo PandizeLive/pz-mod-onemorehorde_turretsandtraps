@@ -48,6 +48,7 @@ local function container()
     local value = {items = {}}
     function value:getType() return T.CONTAINER end
     function value:getContainingItem() return nil end
+    function value:getParent() return nil end
     function value:getItems()
         return {size = function() return #value.items end, get = function(self, index) return value.items[index + 1] end}
     end
@@ -139,7 +140,7 @@ for n = 1, #definitions do
     check(config.range == ({15, 12, 40})[n], "Each supported firearm uses its own native range")
     check(config.critChance == ({20, 70, 30})[n] and config.critMultiplier == ({4, 12, 4})[n], "Native critical chance and multiplier retained")
     local modded = require("OMHTT/TurretStats").resolve({head = gun, active = {Critical = 2, Accuracy = 2}})
-    check(modded.critChance == config.critChance + 10 and modded.critMultiplier == config.critMultiplier, "Critical stacks add percentage points without multiplying critical damage")
+    check(modded.critChance == config.critChance + 20 and modded.critMultiplier == config.critMultiplier, "Critical first and additional copies add points without multiplying critical damage")
     check(modded.accuracy <= 100 and modded.accuracy >= config.accuracy, "Accuracy stacks respect 100 percent")
     local expectedCooldown = {400 / .75, 1000 / .75, 1200 / .75}
     check(math.abs(config.cooldown - expectedCooldown[n]) < .001, "Native recoil and manual cycling determine per-weapon cadence")
@@ -166,6 +167,7 @@ for n = 1, #definitions do
     check(boosted.reload == 0 and boosted.cooldown > 0 and boosted.rack > 0, "Autoloader preserves shot and pump/bolt cadence")
     local rapid = item(T.TYPES.RapidFire)
     local reloadA, reloadB = item(T.TYPES.Reload), item(T.TYPES.Reload)
+    storage:AddItem(item(T.TYPES.CapacityLarge))
     storage:AddItem(rapid); storage:AddItem(reloadA); storage:AddItem(reloadB)
     check(T.cycleConfig(T.contents(storage)).cooldown < config.cooldown, "Rapid-Fire affects firearm cadence")
     for i = #storage.items, 1, -1 do
@@ -290,13 +292,13 @@ gun.ammo, gun.chamber, gun.clip, gun.data = 0, false, true, {}
 extended:AddItem(gun)
 for i = 1, 50 do extended:AddItem(item("Base.Bullets9mm")) end
 local extendedStats = Stats.resolve({head = gun, powerLoad = 5, active = {Magazine = 2, Splitter = 3}})
-check(extendedStats.magazine == 26 and extendedStats.modulePower == 6, "Magazine scales linearly and all module power adds to base")
+check(extendedStats.magazine == 27 and extendedStats.modulePower == 6, "Magazine scales linearly and all module power adds to base")
 G.update(T.contents(extended), extendedStats, 1000000, true)
 G.update(T.contents(extended), extendedStats, 1100000, true)
 G.update(T.contents(extended), extendedStats, 1200000, true)
-check(G.loaded(gun) == 26 and gun.ammo == 14 and Feed.count(gun) == 11 and T.contents(extended).ammo == 50,
+check(G.loaded(gun) == 27 and gun.ammo == 14 and Feed.count(gun) == 12 and T.contents(extended).ammo == 50,
     "Expanded reload preserves native capacity, physical feed rounds and total ammunition")
-check(G.consume(T.contents(extended), extendedStats, 1200000) and G.loaded(gun) == 22 and T.contents(extended).ammo == 46,
+check(G.consume(T.contents(extended), extendedStats, 1200000) and G.loaded(gun) == 23 and T.contents(extended).ammo == 46,
     "Splitter spends four ready rounds, without charging reserve")
 Feed.restore(gun, 15, operator, false)
 check(T.contents(extended).ammo == 46 and gun.ammo + Feed.count(gun) == 15,
@@ -317,6 +319,7 @@ check(not G.consume(T.contents(extended), extendedStats, 3000000) and T.contents
     "Empty chamber cannot spend reserve immediately")
 local Volley = require("OMHTT/TurretVolley")
 function object:getContainer() return extended end
+extended:AddItem(item(T.TYPES.CapacityLarge))
 for _, name in pairs({"Magazine", "Magazine", "Splitter", "Splitter", "Splitter", "Fragment"}) do
     extended:AddItem(item(T.TYPES[name]))
 end

@@ -339,6 +339,17 @@ public final class NativePersistenceCheck {
         }
         check(encoded.position() > 0, "Native transfer arguments did not encode");
         System.out.println("[OMHTT-Controls] native-stock-transfer selectedBag=exact removedBag=rejected constructorArgs=retained bytes=" + encoded.position());
+        Object expansion = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeExpansionAction");
+        Object expansionNetwork = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeExpansionNetwork");
+        check(expansion != null && expansionNetwork != null, "Native expansion action fixture missing");
+        Object expansionArguments = argumentField.get(expansionNetwork);
+        for (String key : new String[]{"character", "object", "item", "replaced", "id", "controller", "final"}) {
+            Object expected = call(expansion, "rawget", new Class<?>[]{Object.class}, key);
+            Object actual = call(expansionArguments, "rawget", new Class<?>[]{Object.class}, key);
+            if (expected == null) expected = Class.forName("zombie.network.PZNetKahluaNull").getField("instance").get(null);
+            check(java.util.Objects.equals(expected, actual), "Native expansion argument extraction lost " + key);
+        }
+        System.out.println("[OMHTT-C444] native expansion constructorArgs=7 exact=true");
         Object ammo = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeLargeAmmo");
         Path ammoPath = directory.resolve("large-ammo.bin");
         if (mode.equals("write")) {

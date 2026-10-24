@@ -64,8 +64,12 @@ local rarity = require("OMHTT/TurretRarity")
 rarity.refresh({})
 for name in pairs(require("OMHTT/LootDefinitions").WEIGHTS) do
     local description = require("OMHTT/TurretDescriptions").get(name, false)
-    check(string.find(description, "Feature:") and string.find(description, "Stackable:")
-        and string.find(description, "Battery Drain:") and string.find(description, "Rarity:"), "Every loot module has four fields: " .. name)
+    if string.sub(name, 1, 8) == "Capacity" then
+        check(string.find(description, "Controller:") and string.find(description, "Turret:") and not string.find(description, "Feature:"), "Kits have device-specific benefits: " .. name)
+    else
+        check(string.find(description, "Feature:") and string.find(description, "Stackable:")
+            and string.find(description, "Battery Drain:") and string.find(description, "Rarity:"), "Every loot module has four fields: " .. name)
+    end
     check(not string.find(description, "Tooltip_OMHTT"), "Every module feature translation resolves")
 end
 data = {}; E.load(); V.reset()

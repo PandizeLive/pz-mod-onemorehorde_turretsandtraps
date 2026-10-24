@@ -34,9 +34,26 @@ end
 ---@return table job
 ---@nodiscard
 function A.scan(origin, profile)
-    local radius = math.ceil(profile.range)
-    return {origin = origin, profile = profile, radius = radius, x = -radius, y = -radius,
+    return {origin = origin, profile = profile, radius = 0, limit = math.ceil(profile.range), x = 0, y = 0,
         index = 0, bestDistance = 0, visited = 0, members = {}, seen = {}}
+end
+
+-- Visit concentric boundaries, yielding per square/object. A completely unloaded
+-- boundary cannot be crossed by any valid loaded line of sight.
+local function advanceSquare(job)
+    job.index = 0
+    local r = job.radius
+    if job.x == r and job.y == r then
+        if not job.ringLoaded or r >= job.limit then job.done = true; return end
+        job.radius, job.x, job.y, job.ringLoaded = r + 1, -r - 1, -r - 1, false
+    elseif math.abs(job.y) == r then
+        job.x = job.x + 1
+        if job.x > r then job.x, job.y = -r, job.y + 1 end
+    elseif job.x == -r then
+        job.x = r
+    else
+        job.x, job.y = -r, job.y + 1
+    end
 end
 
 ---@param job table Incremental scan
@@ -47,8 +64,9 @@ function A.advance(job, budget, deadline)
     local Combat = require("OMHTT/PrototypeCombat")
     for step = 1, budget do
         if getTimestampMs() >= deadline then return false end
-        if job.y > job.radius then return true end
+        if job.done then return true end
         local square = getCell():getGridSquare(job.origin:getX() + job.x, job.origin:getY() + job.y, job.origin:getZ())
+        if square then job.ringLoaded = true end
         local objects = square and square:getMovingObjects()
         if objects and job.index < objects:size() then
             local zombie = objects:get(job.index)
@@ -70,15 +88,10 @@ function A.advance(job, budget, deadline)
                 end
             end
         else
-            job.index = 0
-            job.x = job.x + 1
-            if job.x > job.radius then
-                job.x = -job.radius
-                job.y = job.y + 1
-            end
+            advanceSquare(job)
         end
     end
-    return job.y > job.radius
+    return job.done == true
 end
 
 ---@param entry table Scheduled turret

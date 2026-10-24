@@ -29,6 +29,7 @@ local function item(kind)
 end
 local function container()
     local c = {items = {}}
+    function c:getContainingItem() return nil end
     function c:getItems() return {size = function() return #self.items end, get = function(_, n) return self.items[n + 1] end} end
     function c:getParent() return self.parent end
     function c:contains(i) for n = 1, #self.items do if self.items[n] == i then return true end end return false end

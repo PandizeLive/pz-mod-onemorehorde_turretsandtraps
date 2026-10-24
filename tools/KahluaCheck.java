@@ -258,6 +258,7 @@ public final class KahluaCheck {
             {"OMHTT/ControlPoke", base + "server/OMHTT/ControlPoke.lua"},
             {"OMHTT/ControlWorld", base + "server/OMHTT/ControlWorld.lua"},
             {"OMHTT/ControlCycle", base + "server/OMHTT/ControlCycle.lua"},
+            {"OMHTT/TurretStacking", base + "shared/OMHTT/TurretStacking.lua"},
             {"OMHTT/TurretStats", base + "shared/OMHTT/TurretStats.lua"},
             {"OMHTT/Turret", base + "shared/OMHTT/Turret.lua"},
             {"OMHTT/TurretSiphon", base + "server/OMHTT/TurretSiphon.lua"},
@@ -331,6 +332,7 @@ public final class KahluaCheck {
             {"OMHTT/TurretAccess", base + "shared/OMHTT/TurretAccess.lua"},
             {"OMHTT/TurretControlAction", base + "shared/OMHTT/TurretControlAction.lua"},
             {"OMHTT/TurretTransferAction", base + "shared/OMHTT/TurretTransferAction.lua"},
+            {"OMHTT/TurretExpansionAction", base + "shared/OMHTT/TurretExpansionAction.lua"},
             {"OMHTT/TurretModuleSwap", base + "shared/OMHTT/TurretModuleSwap.lua"},
             {"OMHTT/TurretNetworkTransfers", base + "client/OMHTT/TurretNetworkTransfers.lua"},
             {"OMHTT/TurretTransfers", base + "client/OMHTT/TurretTransfers.lua"},
@@ -467,6 +469,7 @@ public final class KahluaCheck {
             {"_", "tools/tests/tack_load_order_after.lua"},
             {"_", "tools/tests/synergy.lua"},
             {"_", "tools/tests/effect_polish.lua"},
+            {"OMHTT/ControlTooltipRows", base + "client/OMHTT/ControlTooltipRows.lua"},
             {"OMHTT/TurretItemTooltip", base + "client/OMHTT/TurretItemTooltip.lua"},
             {"_", "tools/tests/regulator.lua"},
             {"_", "tools/tests/rarity_anchors.lua"},
@@ -537,6 +540,7 @@ public final class KahluaCheck {
             {"_", "tools/tests/corrections_c427.lua"},
             {"OMHTT/ControlLootUI", base + "client/OMHTT/ControlLootUI.lua"},
             {"_", "tools/tests/corrections_c437.lua"},
+            {"_", "tools/tests/corrections_c444.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

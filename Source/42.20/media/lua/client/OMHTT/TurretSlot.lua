@@ -47,14 +47,14 @@ function Slot:onMouseUp(x, y)
     if self.owner.readOnly then return false end
     if ISMouseDrag.dragging and ISMouseDrag.draggingFocus ~= self then
         local items = ISInventoryPane.getActualItems(ISMouseDrag.dragging)
-        if self.disabled then
+        if self.disabled and self.kind ~= "module" and self.kind ~= "capacity" then
             self.owner:feedback(0, "TransferFull")
         elseif self.kind == "void" then
             self.owner:storeVoid(items)
         elseif self.kind == "magazine" then
             self.owner:magazine(items[1])
         else
-            self.owner:transfer(items, true, self.kind, self.kind == "module" and self.items[1] or nil)
+            self.owner:transfer(items, true, self.kind, (self.kind == "module" or self.kind == "capacity") and self.items[1] or nil)
         end
         local focus = ISMouseDrag.draggingFocus
         if focus then focus:onMouseUp(0, 0) end
@@ -90,6 +90,7 @@ function Slot:update()
     if self.kind == "module" or self.kind == "capacity" then
         local name = item and T.component(item:getFullType())
         self.detailText = name and require("OMHTT/TurretDescriptions").get(name, true) or nil
+        if self.disabled and name then self.detailText = getText("UI_OMHTT_ModuleUnavailable") .. " <LINE> " .. self.detailText end
         if name == "Void" then self.detailText = self.detailText .. " <LINE> " .. require("OMHTT/TurretVoid").description(item, nil, true) end
     end
     if self.detailProvider and self:isMouseOver() and not ISMouseDrag.dragging then self.detailText = self.detailProvider() end
@@ -99,7 +100,7 @@ function Slot:update()
             self.tooltip:initialise()
             self.tooltip:addToUIManager()
             self.tooltip:setOwner(self)
-            self.tooltip.maxLineWidth = 10000
+            self.tooltip.maxLineWidth = 350
         end
         self.tooltip:setName(self.detailTitle or (item and item:getDisplayName()) or self.label)
         self.tooltip.description = self.detailText
@@ -119,6 +120,17 @@ function Slot:update()
     end
 end
 
+---@return table geometry Shared icon/text rectangles for populated and empty modules
+function Slot:moduleGeometry()
+    local h = self.owner.lineHeight
+    local compact = self.height < h * 2 + 8
+    local size = compact and math.min(20, self.height - 8) or math.min(32, self.height - h - 8)
+    local x = compact and 4 or (self.width - size) / 2
+    local y = compact and (self.height - size) / 2 or 3
+    return {x = x, y = y, size = size, textX = compact and x + size + 4 or 4,
+        textY = compact and (self.height - h) / 2 or self.height - h - 2}
+end
+
 ---@return nil
 function Slot:prerender()
     ISPanel.prerender(self)
@@ -131,7 +143,8 @@ function Slot:prerender()
     if color then self:drawRect(1, 1, self.width - 2, self.height - 2, .18, color.r, color.g, color.b) end
     local red, green = self.missing and 1 or 0.8, self.missing and 0.3 or 0.8
     local narrowModule = self.kind == "module" and self.height < h * 2 + 8
-    if not narrowModule then
+    local moduleGeometry = self.kind == "module" and self:moduleGeometry()
+    if self.kind ~= "module" then
         self:drawText(self.label, 8, 4, red, green, green, 1, UIFont.Small)
     end
     if self.meter then
@@ -173,8 +186,7 @@ function Slot:prerender()
             require("OMHTT/TurretModuleArt").apply(item)
         end
         if self.kind == "module" then
-            local size = math.max(12, math.min(32, self.height - h - 8))
-            ISInventoryItem.renderItemIcon(self, item, self.width / 2 - size / 2, 3, 1, size, size)
+            ISInventoryItem.renderItemIcon(self, item, moduleGeometry.x, moduleGeometry.y, 1, moduleGeometry.size, moduleGeometry.size)
         else
             ISInventoryItem.renderItemIcon(self, item, 8, h + 8, 1, 32, 32)
         end
@@ -184,23 +196,23 @@ function Slot:prerender()
             if key then name = getText("UI_OMHTT_Module" .. key) end
         end
         if #self.items > 1 then name = tostring(#self.items) .. " x " .. name end
+        if self.kind == "module" and self.disabled then name = getText("UI_OMHTT_ManageLocked") end
     elseif not self.disabled then
         if self.kind == "module" then
-            Hint.draw(self, narrowModule and 4 or self.width / 2 - 8, narrowModule and 5 or (self.compact and 6 or h + 2), 16)
+            Hint.draw(self, moduleGeometry.x, moduleGeometry.y, moduleGeometry.size)
         else
             Hint.draw(self, 8, h + 8, 32)
         end
     end
     local textX, textY = self.kind == "void" and 8 or 44, h + 8
-    if self.kind == "module" then textX, textY = 4, math.min(h + 20, self.height - h - 2) end
-    if narrowModule then
-        textX, textY = 24, 4
-    end
+    if moduleGeometry then textX, textY = moduleGeometry.textX, moduleGeometry.textY end
     local clipX, clipY, clipW, clipH = self:clampStencilRectToParent(textX, textY, self.width - textX - 4, h + 4)
     self:drawText(name, textX, textY, color and color.tr or 1, color and color.tg or 1, color and color.tb or 1, 1, UIFont.Small)
     self:clearStencilRect()
     self:repaintStencilRect(clipX, clipY, clipW, clipH)
-    if self.disabled then self:drawRect(0, 0, self.width, self.height, 0.4, 0, 0, 0) end
+    if self.disabled then
+        self:drawRect(0, 0, self.width, self.height, .55, 0, 0, 0)
+    end
     if self:isMouseOver() and ISMouseDrag.dragging and ISMouseDrag.draggingFocus ~= self then
         self:drawRectBorder(0, 0, self.width, self.height, 1, 0.8, 0.8, 0.8)
     end

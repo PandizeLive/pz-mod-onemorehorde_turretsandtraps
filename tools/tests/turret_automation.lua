@@ -59,6 +59,7 @@ for i = 1, 80 do makeZombie(front.square, 4) end
 check(scan("Furthest") == far, "Dense near crowd does not hide far targets after 64 entities")
 local items, nextId = {}, 8000
 local storage = {}
+function storage:getContainingItem() return nil end
 function storage:getParent() return nil end
 function storage:getItems() return {size = function() return #items end, get = function(_, i) return items[i + 1] end} end
 function storage:contains(item) for i = 1, #items do if items[i] == item then return true end end return false end
@@ -80,6 +81,7 @@ local function add(kind)
     return item
 end
 local head = add(T.HEAD)
+add(T.TYPES.CapacityLarge)
 local detector = add("Base.OMHTTModuleDetection")
 local firing = add("Base.OMHTTModuleFiring")
 local filter = add(T.TYPES.Filter)
@@ -163,10 +165,10 @@ check(W.fire(nil, object, front) == "Fired", "Automatic modified shot uses share
 local launchTime = testMillis
 check(front.health == hp, "Modified shot damage waits for flight")
 testMillis = testMillis + 500; Combat.tickFlights()
-check(math.abs(front.health - (hp - 0.42)) < 0.000001 and T.contents(storage).ammo == ammoBefore - 1,
+check(math.abs(front.health - (hp - 0.455)) < 0.000001 and T.contents(storage).ammo == ammoBefore - 1,
     "Velocity changes automatic direct damage while consuming one potato")
 local changedCycle = head.data.OMHTTCycle
-check(changedCycle.nextShot == launchTime + 1600 and changedCycle.reloadReady == nil,
+check(math.abs(changedCycle.nextShot - launchTime - 2000 / 1.4) < .000001 and changedCycle.reloadReady == nil,
     "Rapid-Fire and Autoloader reach the actual automatic firing cycle")
 check(W.fire(nil, object, front) ~= "Fired", "Autoloader cannot bypass shot cooldown")
 local previousPower = W.power

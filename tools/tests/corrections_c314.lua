@@ -86,7 +86,7 @@ S.hit(victim(),windows[0],false)
 check(math.abs(B.charge(battery)-.56)<.0000001,"Delayed server kill confirmation settles a closed rotary pass")
 S.stop(entry)
 local resolved=require("OMHTT/TurretStats").resolve({active={Siphon=3}})
-check(resolved.siphon==4,"Siphon stacks add one to the per-kill multiplier")
+check(resolved.siphon==3,"Siphon retains 2x first and adds .5x per extra copy")
 local Heads=require("OMHTT/TurretHeads")
 local blade={getFullType=function() return "Base.OMHTTTurretRotaryBlades" end}
 check(Heads.supports(blade,"Synergy") and Heads.supports(blade,"Siphon")

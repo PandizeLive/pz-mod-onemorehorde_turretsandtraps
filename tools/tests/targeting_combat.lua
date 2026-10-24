@@ -91,7 +91,11 @@ local square = {getX = function() return 10 end, getY = function() return 0 end,
 function square:getMovingObjects() return {size = function() return 2 end, get = function(_, i) return i == 0 and ally or enemy end} end
 function enemy:getSquare() return square end
 function ally:getSquare() return square end
-getCell = function() return {getGridSquare = function(_, x, y) return x == 10 and y == 0 and square or nil end} end
+local empty = {getMovingObjects = function() return {size = function() return 0 end} end}
+getCell = function() return {getGridSquare = function(_, x, y)
+    if x == 10 and y == 0 then return square end
+    return x >= 0 and x < 10 and y == 0 and empty or nil
+end} end
 local profile = {object = object, range = 12, heading = 0, cone = 90, priority = "Closest"}
 local job = Auto.scan(owner, profile)
 local slices = 0

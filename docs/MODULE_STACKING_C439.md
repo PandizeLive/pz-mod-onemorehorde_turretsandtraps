@@ -1,5 +1,7 @@
 # C439 - Rarity sorting selected; balance stacking instead of ceilings
 
+**C444 update (2026-10-24):** Owner selects C443 **1A**. The selective table and combined correction scope are implemented in [0.2.66](PATCH_v0.2.66.md); [verification and delivery](TEST_v0.2.66.md) distinguish automated evidence from pending owner acceptance. Earlier proposal/status wording below is historical.
+
 **Current discussion:** [C443 first-copy and duplicate tuning](MODULE_FIRST_COPY_C443.md) calculates all nineteen stackables and proposes separate first/additional values. Additive growth selected in C442 remains; acceleration/milestones are not selected. Candidate values and combined patch approval remain open. The C442 tables below are the uncapped baseline for this comparison.
 
 Date: 2026-10-24. Source/build remains **0.2.65**, `test/v0.2.65` / `8a977bc60ea4845646f8bfb20a8eb7d7cd4b5f19`. Discussion/audit only; no new gameplay build, test result or balance implementation.

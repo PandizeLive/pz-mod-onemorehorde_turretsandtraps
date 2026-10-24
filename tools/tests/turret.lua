@@ -69,7 +69,15 @@ for i = 1, 4 do
     check(T.accept(storage, module), "Repeated range module allowed while space remains")
     storage:AddItem(module)
 end
-check(not T.accept(storage, item("Base.OMHTTModuleVelocity")), "Module count bound enforced")
+check(T.accept(storage, item("Base.OMHTTModuleVelocity")), "Inactive storage accepts modules beyond active capacity")
+local overflow = {}
+for i = 5, T.storageSlots() do
+    overflow[#overflow + 1] = item("Base.OMHTTModuleVelocity")
+    storage:AddItem(overflow[#overflow])
+end
+check(not T.accept(storage, item("Base.OMHTTModuleVelocity")), "Configured physical module storage remains bounded")
+check(T.contents(storage).active.Velocity == nil, "Unavailable storage has no Velocity effect")
+for i = 1, #overflow do storage:Remove(overflow[i]) end
 SandboxVars.OMHTurretsTraps.PotatoAmmoCapacity = 1
 check(not T.accept(storage, item("Base.Potato")), "Ammo count bound enforced")
 SandboxVars.OMHTurretsTraps.PotatoAmmoCapacity = nil

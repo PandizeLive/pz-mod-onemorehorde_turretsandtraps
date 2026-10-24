@@ -40,6 +40,8 @@ function Action:rejection(candidate, summary)
         local stockpile = controller and controller:getContainer()
         if source == storage or (not source:isInCharacterInventory(self.character) and source ~= stockpile) then return "TransferCarried" end
         if candidate:isFavorite() then return "TransferFavorite" end
+        if T.kind(candidate) == "module" and not require("OMHTT/TurretHeads").supports(
+            (summary or T.contents(storage)).head, T.component(candidate:getFullType())) then return "ModuleUnsupported" end
         if not T.accepts(storage, candidate, summary) then return "TransferFull" end
         destination = storage
     elseif source ~= storage then
@@ -105,6 +107,7 @@ function Action:complete()
     if isClient() or not self:isValid() then return false end
     local source, storage = self.item:getContainer(), self.object:getContainer()
     local destination = self:destination()
+    T.rememberModules(storage)
     local items = {self.item}
     if self.ids ~= nil then
         if type(self.ids) ~= "table" or #self.ids > 20 or #self.ids < 1
@@ -167,6 +170,7 @@ function Action:complete()
         end
     end
     if moved == 0 then return false end
+    T.rememberModules(storage)
     local state = T.state(self.object)
     state.transferRevision = (state.transferRevision or 0) + 1
     local contents = T.contents(storage)

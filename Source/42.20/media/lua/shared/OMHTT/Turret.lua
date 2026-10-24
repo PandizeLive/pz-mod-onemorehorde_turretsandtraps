@@ -126,12 +126,68 @@ function T.kind(item)
     return nil
 end
 
+---@return number slots Configured physical storage, independent of the installed kit
+function T.storageSlots()
+    return Stats.moduleCapacity({CapacityImprovised = 1, CapacitySmall = 1, Capacity = 1, CapacityLarge = 1})
+end
+
+---@param container ItemContainer Turret or packed base
+---@return table? state Authoritative controls
+function T.containerState(container)
+    local item = container:getContainingItem()
+    if item then
+        if isServer() then return require("OMHTT/TurretAuthority").packed(item) end
+        return item:getModData().OMHTTTurret
+    end
+    return T.state(container:getParent())
+end
+
+---@param container ItemContainer Turret storage
+---@param candidates table? Already collected exact modules
+---@return table modules Stable activation priority, independent of display sorting
+function T.moduleOrder(container, candidates)
+    if not candidates then
+        candidates = {}
+        local items = container:getItems()
+        for i = 0, items:size() - 1 do
+            local item = items:get(i)
+            if T.kind(item) == "module" then candidates[#candidates + 1] = item end
+        end
+    end
+    if #candidates == 0 then return {} end
+    local found, result, used = {}, {}, {}
+    for i = 1, #candidates do found[candidates[i]:getID()] = candidates[i] end
+    local state = T.containerState(container)
+    for i = 1, 64 do
+        local id = state and state["moduleSlot" .. i]
+        if id and found[id] and not used[id] then
+            result[#result + 1], used[id] = found[id], true
+        end
+    end
+    for i = 1, #candidates do
+        local item = candidates[i]
+        if not used[item:getID()] then result[#result + 1] = item end
+    end
+    return result
+end
+
+---@param container ItemContainer Authoritative storage
+---@param order table? Explicit swap order
+---@return nil
+function T.rememberModules(container, order)
+    if isClient() then return end
+    local state = T.containerState(container)
+    if not state then return end
+    order = order or T.moduleOrder(container)
+    for i = 1, 64 do state["moduleSlot" .. i] = order[i] and order[i]:getID() or nil end
+end
+
 ---@param container ItemContainer Storage
 ---@return table summary Actual inventory contents
 ---@nodiscard
-function T.contents(container)
+function T.contents(container, replacementKit)
     local result = {reserve = 0, reserveAll = 0, rounds = {}, roundCounts = {}, firstRounds = {}, ammo = 0, modules = 0, powerLoad = 0, capacities = 0, heads = 0, batteries = 0, invalid = 0, moduleNames = {}, moduleDetails = {}, active = {}, moduleCounts = {}, weight = 0}
-    local items, kinds = container:getItems(), {}
+    local items, kinds, modules = container:getItems(), {}, {}
     for i = 0, items:size() - 1 do
         local item = items:get(i)
         local fullType = item:getFullType()
@@ -167,25 +223,36 @@ function T.contents(container)
             local component = T.role(item:getFullType())
             result.moduleCounts[component] = (result.moduleCounts[component] or 0) + 1
             result.moduleNames[#result.moduleNames + 1] = item:getDisplayName()
-            if item:getCondition() > 0 then
-                local name = T.component(item:getFullType())
-                if kind == "module" and name ~= "Regulator" then result.powerLoad = result.powerLoad + require("OMHTT/TurretRarity").get(name).surcharge end
-                result.active[name] = (result.active[name] or 0) + 1
-                if name == "Void" then result.void = item end
-                if roles[name] then
-                    result.active[roles[name]] = (result.active[roles[name]] or 0) + 1
-                end
+            if kind == "module" then
+                modules[#modules + 1] = item
+            elseif replacementKit == nil and item:getCondition() > 0 then
+                result.active[T.component(item:getFullType())] = 1
             end
         else
             result.invalid = result.invalid + 1
         end
     end
-    for name in pairs(result.active) do
-        if not Heads.supports(result.head, name) then
+    if replacementKit and replacementKit:getCondition() > 0 then
+        result.active[T.component(replacementKit:getFullType())] = 1
+    end
+    result.activeCapacity = Stats.moduleCapacity(result.active)
+    result.orderedModules = T.moduleOrder(container, modules)
+    result.activeIds = {}
+    for i = 1, #result.orderedModules do
+        local item = result.orderedModules[i]
+        local name = T.component(item:getFullType())
+        local entry = result.moduleDetails[name]
+        if i <= result.activeCapacity and item:getCondition() > 0 and Heads.supports(result.head, name) then
+            result.activeIds[item:getID()] = true
+            entry.active = (entry.active or 0) + 1
+            result.active[name] = (result.active[name] or 0) + 1
+            if roles[name] then result.active[roles[name]] = (result.active[roles[name]] or 0) + 1 end
+            if name == "Void" then result.void = item end
             if name ~= "Regulator" then
-                result.powerLoad = result.powerLoad - result.active[name] * require("OMHTT/TurretRarity").get(name).surcharge
+                result.powerLoad = result.powerLoad + require("OMHTT/TurretRarity").get(name).surcharge
             end
-            result.active[name] = nil
+        elseif item:getCondition() <= 0 then
+            entry.broken = (entry.broken or 0) + 1
         end
     end
     local definition = Heads.get(result.head)
@@ -288,7 +355,7 @@ function T.accepts(container, item, summary)
     if not Heads.supports(contents.head, T.component(item:getFullType())) then return false end
     local component = T.role(item:getFullType())
     if T.SINGLE[component] and contents.moduleCounts[component] then return false end
-    return contents.modules < stats.modules
+    return contents.modules < T.storageSlots()
 end
 
 ---@param container ItemContainer Source
@@ -314,7 +381,7 @@ function T.canRemove(container, item)
             end
         end
         local stats = Stats.resolve(contents)
-        return contents.reserveAll + (G.profile(contents.head) and G.loaded(contents.head) or 0) <= stats.ammo and contents.modules <= stats.modules
+        return contents.reserveAll + (G.profile(contents.head) and G.loaded(contents.head) or 0) <= stats.ammo
     end
     return true
 end

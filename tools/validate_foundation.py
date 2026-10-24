@@ -59,7 +59,8 @@ def main():
         assert all(isinstance(v, str) for v in values.values())
         assert not translations.keys() & values.keys(), "Duplicate translation keys"
         translations.update(values)
-    keys = set(re.findall(r'getText\("([A-Za-z0-9_]+)"', lua)) - {"UI_OMHTT_", "ContextMenu_OMHTT_Hybrid", "UI_OMHTT_Module", "UI_OMHTT_Effect", "UI_OMHTT_Rarity", "UI_OMHTT_Stack", "UI_OMHTT_HeadFeature", "UI_OMHTT_Control", "UI_OMHTT_TriggerCost", "UI_OMHTT_Target", "UI_OMHTT_DevicePurpose", "Sandbox_OMHTurretsTraps_"}
+    keys = set(re.findall(r'getText\("([A-Za-z0-9_]+)"', lua)) - {"UI_OMHTT_", "ContextMenu_OMHTT_Hybrid", "UI_OMHTT_Module", "UI_OMHTT_Effect", "UI_OMHTT_Rarity", "UI_OMHTT_Stack", "UI_OMHTT_FirstExtra", "UI_OMHTT_HeadFeature", "UI_OMHTT_Control", "UI_OMHTT_TriggerCost", "UI_OMHTT_Target", "UI_OMHTT_DevicePurpose", "Sandbox_OMHTurretsTraps_"}
+    keys.update("UI_OMHTT_FirstExtra" + key for key in ["Rate", "Reload", "Damage", "Magazine", "Range", "Chance", "Threshold", "Radius", "Uses", "Siphon", "Divisor", "Suppression", "Fragment"])
     keys.update("UI_OMHTT_DevicePurpose" + key for key in ["Barrier", "Bed", "Barb", "Wire", "Poke", "Tether", "Controller", "Button", "Plate", "Lever", "Laser"])
     keys.update("UI_OMHTT_Target" + key for key in ["Zombies", "OtherFactions", "Inherit"])
     keys.update("UI_OMHTT_Control" + key for key in ["Controller", "Plate", "Button"])

@@ -61,7 +61,7 @@ one.autoloader, one.reload = true, 0
 check(Estimate.duration(one, nil, 21) == 2000, "Autoloader removes reload contribution without changing consumption")
 local stats = S.resolve({active = {Synergy = 1, Tack = 1, Martyrdom = 1, Fragment = 1, Splitter = 4, Piercing = 4, Firing = 1, MotionDetection = 1, Filter = 1, Detection360 = 1}})
 stats.piercing = 4
-check(stats.tack == 1 and stats.martyrdom == 1.5 and E.hits(stats) == 62, "Sixteen-slot stress configuration reserves all possible passive hits")
+check(stats.tack == 1.25 and stats.martyrdom == 1.5 and E.hits(stats) == 62, "Sixteen-slot stress configuration reserves all possible passive hits")
 local shot = {stats = stats, damage = .1, managed = true}
 check(V.reserve(shot), "Mixed Synergy shot admitted")
 local record = {id = "proc-test", shots = 1}
@@ -132,7 +132,7 @@ for _, linked in pairs({false, true}) do
     table.remove(V.queue, 1)
     check(E.fieldCount == (linked and 1 or 0), "Only linked secondary hits can drop Tack")
     check(#V.queue == (linked and 5 or 0), "Linked Splitter produces one Fragment generation")
-    check(math.abs(b.health - (linked and 9.875 or 9.9)) < .0001, "Synergy retains Initial Blow health eligibility")
+    check(math.abs(b.health - (linked and 9.85 or 9.9)) < .0001, "Synergy retains Initial Blow health eligibility")
     V.release(owner)
     now = now + 250
     for _ = 1, 1000 do if #V.queue > 0 then V.tick() end end

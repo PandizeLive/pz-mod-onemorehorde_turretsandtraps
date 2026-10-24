@@ -44,6 +44,7 @@ def main():
     (turret_probe.parent / "OMHTT/NativePlacement.lua").write_text((ROOT / "tools/tests/native_placement.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativePlacementComplete.lua").write_text((ROOT / "tools/tests/native_placement_complete.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativeC314.lua").write_text((ROOT / "tools/tests/native_c314.lua").read_text(encoding="utf-8"), encoding="utf-8")
+    (turret_probe.parent / "OMHTT/NativeC444.lua").write_text((ROOT / "tools/tests/native_c444.lua").read_text(encoding="utf-8"), encoding="utf-8")
     bulk_probe = turret_probe.parent / "OMHTT/NativeBulkTransfer.lua"
     bulk_probe.write_text((ROOT / "tools/tests/native_bulk_transfer.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (turret_probe.parent / "OMHTT/NativeTurretAuthority.lua").write_text((ROOT / "tools/tests/native_turret_authority.lua").read_text(encoding="utf-8"), encoding="utf-8")
@@ -105,6 +106,7 @@ def main():
     assert "[OMHTT-C373] native-performance-icons=11 category=Performance" in text, "Native module icon/category proof missing"
     assert "[OMHTT-C437] native-knowledge persistence=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Native character knowledge persistence missing"
     assert "[OMHTT-C437] native manuals=5" in text, "Native progression proof missing"
+    assert "[OMHTT-C444] native kit=exact overflow=13 floor=14 inactive=filtered debt=preserved feed=conserved replay=blocked" in text, "Native expansion proof missing"
     mod_errors = [line for line in text.splitlines() if "MOD:OMH:" in line and "Exception thrown" in line]
     assert not mod_errors, f"Native mod callbacks threw despite completion markers: {mod_errors}"
     assert "[OMHTT-C355] mechanical-recipes=2 inputs=consumed tools=retained output=exact translations=passed" in text, "Mechanical recipe proof missing"
