@@ -1,5 +1,7 @@
 # Turret inventory and module plan
 
+**C442 / Additive stacking selected:** [Uncapped comparison and next patch](MODULE_STACKING_C439.md#c442---additive-selected-uncapped-dps-and-next-update-2026-10-24). Preserve existing per-copy gains; accelerating/milestone alternatives are not selected. Ordinary bonus/timing/range ceiling removal and natural probability treatment are concretely proposed with the C438/C440 corrections for patch approval. No new build is installed.
+
 **C441 discussion:** [Accelerating duplicate bonuses and three growth cases](MODULE_STACKING_C439.md#c441---accelerating-returns-and-build-specialization-2026-10-24). Owner examples are illustrative, not approved tuning. Earlier additive/diminishing-only choices are expanded. Rarity-first sorting and pending corrections stay selected.
 
 **C439 current direction (2026-10-24):** [Stacking audit and replacement discussion](MODULE_STACKING_C439.md). Owner selects rarity-first module sorting and rejects arbitrary total-bonus cutoffs as the balancing mechanism. Historical cap descriptions below describe the installed build, not the new design direction. C438 inactive storage and safe expansion replacement remain pending. No gameplay change is installed.

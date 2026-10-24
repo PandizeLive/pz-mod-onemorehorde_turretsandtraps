@@ -1,6 +1,6 @@
 # C439 - Rarity sorting selected; balance stacking instead of ceilings
 
-**Current discussion:** [C441 accelerating returns](#c441---accelerating-returns-and-build-specialization-2026-10-24) expands the earlier additive/diminishing choices. The owner is considering stronger gains from additional matching modules; no numerical curve is selected.
+**Current decision:** [C442 additive stacking and updated DPS](#c442---additive-selected-uncapped-dps-and-next-update-2026-10-24). Owner selects the additive route. C441 accelerating/milestone alternatives are not selected. Existing per-copy gains are the comparison baseline; the consolidated patch remains pending approval and implementation.
 
 Date: 2026-10-24. Source/build remains **0.2.65**, `test/v0.2.65` / `8a977bc60ea4845646f8bfb20a8eb7d7cd4b5f19`. Discussion/audit only; no new gameplay build, test result or balance implementation.
 
@@ -127,3 +127,61 @@ All columns use a hypothetical 10% starting effect solely to compare growth shap
 **1C - Steep accelerating specialization.** Pursue the feel of 10/25/70/175 with very strong matching sets. Best case is an intentional late-game power fantasy and satisfying duplicate jackpots. Costs: larger progression/loot/Horde Night and mixed-build rebalance, weak early-copy risk, potential dominant stacks and increased workload for rate/branch effects. Battery pricing alone cannot be assumed sufficient. The fifth-through-supported-maximum curve and scope would need explicit design; the four points are not adopted as final defaults.
 
 Recommendation: **1A**, because it preserves the owner's escalating reward idea while leaving room for useful mixed builds and predictable performance. Retain 1C as a valid deliberate power-fantasy direction rather than rejecting it as technically impossible. No gameplay edit, new tests, installation, Workshop/hosted change or art work this turn. C438/C440 corrective scope remains pending; rarity-first sorting remains selected. **Decision needed:** choose the desired feel among these three cases before settling exact module-specific curves.
+
+## C442 - Additive selected; uncapped DPS and next update (2026-10-24)
+
+Owner: "Let's stick to our additive route. With uncapped, what's the new DPS comparison. Also recap next update". This settles the growth-model choice in favor of ordinary additive stacking, superseding the unselected C441 acceleration/milestone cases. It requests calculation and recap, not installation. Preserve the existing per-copy gains; no new coefficient, rarity, battery surcharge or loot weight is selected.
+
+### Comparison and evidence
+
+Executed the installed-source stat resolver and duration estimator in the stock game's Kahlua runtime, loading all 240 numeric/boolean source Sandbox defaults. A temporary in-memory override compares installed caps, bonus-only removal, and bonus plus firing/reload-floor removal; original functions/settings are restored afterwards. Source, packaged Contents and installed files are untouched. Local probe/log: `diagnostics/c442/balance.lua` and `diagnostics/c442/balance.log`; parsed results and hashes: `diagnostics/c442/evidence.json`.
+
+Sixteen Rapid Fire copies: `1 + 16 * .25 = 5x` firing speed. Sixteen Velocity copies: `1 + 16 * .20 = 4.2x` damage. These use additive bonuses, not repeated compounding. The comparison has no other modules, including Reload, Enhanced Firing or automation.
+
+| Head | Base raw DPS | 16 Rapid Fire raw DPS | 16 Velocity raw DPS | Rapid / base | Velocity / base |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Potato Launcher | 17.50 | 37.50 | 73.50 | 2.14x | 4.20x |
+| Ballista | 40.00 | 111.11 | 168.00 | 2.78x | 4.20x |
+| Scrapshot | 152.38 | 484.85 | 640.00 | 3.18x | 4.20x |
+| Arc Emitter, per victim | 20.00 | 100.00 | 84.00 | 5.00x | 4.20x |
+| Rotary Bat | 33.33 | 166.67 | 140.00 | 5.00x | 4.20x |
+| Rotary Blades | 66.67 | 333.33 | 280.00 | 5.00x | 4.20x |
+| Lobber, nominal payload | 27.27 | 72.58 | 114.55 | 2.66x | 4.20x |
+| M4, installed Firearms B42 | 436.30 | 1187.08 | 1832.45 | 2.72x | 4.20x |
+| M9, installed Firearms B42 | 145.78 | 406.72 | 612.29 | 2.79x | 4.20x |
+
+For ammunition heads, rate is `magazine * 1000 / duration(stats, head, magazine + 1)`: the interval from the first shot of one full magazine to the first shot after reloading. This includes reload and applicable rack delay and represents one steady magazine cycle. It is not a long-running combat simulation. Arc uses `1000 / cooldown`; rotary uses its default 90-degree sweep contact cadence. The M4/M9 fixtures match installed Firearms B42 weapon properties, not vanilla weapon balance; effective baseline values were checked against the captured 0.2.65 console. Lobber is nominal payload scaling, not an AoE/falloff encounter result.
+
+Accuracy, crits, armor, target acquisition/turning, overkill, victim scarcity, splash, chains beyond the named Arc victim, Fragment/Splitter and workload admission are excluded. Sixteen copies fill all default slots, so this is a comparison fixture, not an autonomous Detection/Firing build. No live engine throughput, GPU, listening, owner acceptance or connected-player pass is claimed.
+
+The old 0.25-second firing floor must also go for this comparison. Removing only bonus caps leaves Rapid at **80 Arc DPS, 547.71 M4 DPS and 304.83 M9 DPS**, versus **100, 1187.08 and 406.72** in the table. Other listed heads are unchanged by that floor at sixteen copies. The 0.1-second firearm rack floor is still present in the probe, but M4/M9 resolve to 0.32 seconds, so removing it would not change these rows. No Reload copies are fitted; removing the reload floor does not change this comparison.
+
+Native execution exited 0 and both added arithmetic assertions passed. The existing compiled harness also ran its historical fixtures; its printed 27,458 total is not a new release-suite count or a replacement for the recorded 0.2.65 release verification. This is calculation evidence only.
+
+**Interpretation:** Velocity wins this raw sustained-DPS comparison on reload-heavy heads; Rapid wins Arc and rotaries. More fire-rate modules cannot eliminate reload time. Velocity also uses fewer rounds for the same raw damage, but may waste that damage once a hit already kills; Rapid can then clear available targets faster. Different module energy surcharges and firing frequencies mean this is not a battery-efficiency comparison. Retain current gains for this patch instead of forcing parity through a new unrequested rebalance. Mixed builds and stress acceptance remain necessary.
+
+### Concrete stacking treatment proposed for patch approval
+
+- Keep existing loaded per-copy coefficients; remove ordinary Rapid/Reload/Velocity/Range bonus ceilings and the Fragment damage ceiling. Sixteen default Fragment copies give 95% parent damage per fragment, still five terminal rays.
+- Remove arbitrary firing/reload/rack timing floors as balancing devices; resolve positive finite intervals from base time and additive speed. Keep bounded scheduling/admission and no catch-up storm or resource charge for an unadmitted attack. No universal attainable attacks-per-second guarantee.
+- Replace the arbitrary 30/50-tile total range ceilings with loaded-world, line-of-sight and bounded acquisition behavior. Range continues adding two tiles per default active copy. Verify query/trajectory/render paths and custom settings before claiming the range work complete; do not replace a ceiling with an unbounded square scan.
+- Preserve ordinary probability semantics and existing additive chance gains. Proposed Velocity knockdown ceiling becomes the natural 100%, replacing the arbitrary 90%; existing head applicability/recovery remains. Accuracy/Critical/Impact cannot exceed 100% and receive no invented overflow/multicrit or diminishing-chance mechanic. This supersedes the earlier unselected probability-curve suggestion, subject to approval of this consolidated scope.
+- Preserve unique capability modules, fixed effect/lineage definitions, shared victim recovery, player injury accounting and workload budgets. Suppression playback minimum is outside this ordinary-stat cap removal; hearing retains its existing diminishing formula. No new Siphon/Regulator rule or turret/trap power tuning.
+- Remove obsolete cap controls and misleading capped text from current UI/schema while preserving valid saved per-copy settings and exact LootLab rarity/weight overrides. Do not silently normalize owner tuning. Tooltip/Details must show effective active values, including natural probability saturation.
+
+### Consolidated next update
+
+- Uncapped additive module stacking
+- Trigger consumption colors
+- Consistent grey Feature tooltips
+- Readable Controller/Turret expansion benefits
+- Player-focused descriptions and loaded Damage/Health
+- Rarity-first module sorting
+- Inactive module storage
+- Atomic expansion replacement and ammunition overflow
+- Unsupported-head module feedback
+- Details/resize icon layout corrections
+
+[C438](FEEDBACK_C438.md) and its C440 section retain the detailed UI, authority and persistence requirements. Inactive modules contribute neither effects nor battery draw; display sorting cannot change activation priority. Replace kits against incoming capacity directly, return the old kit safely, and transfer only excess ammunition to player inventory then ground with exact-item authority and bounded work. Preserve chamber/clip state, Conservation/Void accounting, item condition and Controller's actual expanded capacity. Controller stockpile dumping is not authorized. Poke remains 45 damage/200 health; the earlier 50 was an example of tooltip format, not selected tuning.
+
+Installed build stays **0.2.65**. No version/changelog change, new owner test, Workshop upload or hosted LootLab deployment. **Decision needed: approve this consolidated corrective patch.** No additive-versus-accelerating choice remains open.

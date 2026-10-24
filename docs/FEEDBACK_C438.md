@@ -84,7 +84,7 @@ At defaults:
 | M4, installed Firearms B42 | 436.30 | 536.57 | 872.59 | 1.23x | 2.00x |
 | M9, installed Firearms B42 | 145.78 | 295.17 | 291.56 | 2.02x | 2.00x |
 
-Method: `damage * shotCount / (durationMilliseconds / 1000)` at a large shot count, including reload and rack delays. Rotary uses its default 90-degree sweep hit cadence against a continuously available victim. Lobber is nominal direct payload scaling, not an explosion-falloff/AoE encounter simulation. Fragment, Splitter, splash, knockdown, accuracy, crits, armor, overkill, acquisition, turning and target scarcity are excluded. No Enhanced Firing or other modules are installed in these comparisons. Sixteen modules fill all default slots, so this is not an autonomous Detection/Firing loadout.
+Method (description corrected C442; numerical results unchanged): `damage * magazine * 1000 / duration(stats, head, magazine + 1)` for one complete steady magazine cycle, including reload and rack delays; Arc uses damage divided by its shot interval. This was not a large-shot-count simulation. Rotary uses its default 90-degree sweep hit cadence against a continuously available victim. Lobber is nominal direct payload scaling, not an explosion-falloff/AoE encounter simulation. Fragment, Splitter, splash, knockdown, accuracy, crits, armor, overkill, acquisition, turning and target scarcity are excluded. No Enhanced Firing or other modules are installed in these comparisons. Sixteen modules fill all default slots, so this is not an autonomous Detection/Firing loadout.
 
 Conclusions:
 
