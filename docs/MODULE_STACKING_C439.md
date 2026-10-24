@@ -1,6 +1,6 @@
 # C439 - Rarity sorting selected; balance stacking instead of ceilings
 
-**Current decision:** [C442 additive stacking and updated DPS](#c442---additive-selected-uncapped-dps-and-next-update-2026-10-24). Owner selects the additive route. C441 accelerating/milestone alternatives are not selected. Existing per-copy gains are the comparison baseline; the consolidated patch remains pending approval and implementation.
+**Current discussion:** [C443 first-copy and duplicate tuning](MODULE_FIRST_COPY_C443.md) calculates all nineteen stackables and proposes separate first/additional values. Additive growth selected in C442 remains; acceleration/milestones are not selected. Candidate values and combined patch approval remain open. The C442 tables below are the uncapped baseline for this comparison.
 
 Date: 2026-10-24. Source/build remains **0.2.65**, `test/v0.2.65` / `8a977bc60ea4845646f8bfb20a8eb7d7cd4b5f19`. Discussion/audit only; no new gameplay build, test result or balance implementation.
 
