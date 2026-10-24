@@ -1,5 +1,7 @@
 # C445 - 0.2.66 feedback, artist handoff and next corrective scope
 
+**C446 follow-up:** [Twelve-hour goal, saved-time verification and UI previews](AMMO_UI_C446.md) supersede the capacity recommendation and refine the visual options below. These C445 numerical bases remain unselected historical candidates. Requested corrective scope and artist handoff remain.
+
 Date: 2026-10-24. Inspected `codex/performance-barbed-audit` at `5db1edf8f96770c3921cdfb8943317ea0523ddc7`, fetched origin and checked the sole open development PR (#1); origin/dev has no new unincorporated work. Owner supplied three screenshots and requests audit, corrections, an ammo-capacity review, native UI comparison, and artist assets. This is discussion of the next gameplay patch, not approval of newly proposed ammo balance. The explicitly requested standalone asset handoff is created in this turn. Installed Source/Contents and 0.2.66 remain unchanged.
 
 ## Owner corrections retained

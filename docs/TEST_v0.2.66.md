@@ -36,3 +36,8 @@ Existing saved Sandbox values are preserved; use fresh defaults to assess the se
 Owner screenshots and report identify missing module transfer sound, kit/feature presentation inconsistencies, irrelevant Poke capacity, Controller layout/slot/endurance omissions and a moved out-of-range assigned turret that cannot be unassigned. These are reported failures, with relevant source causes confirmed in [the audit](FEEDBACK_C445.md); no new rendered pass or gameplay correction is claimed. Requested wording and color changes are new preferences, not retroactive failures of earlier approved colors.
 
 Standard capture: diagnostics/captures/20261024-125714-6543; console SHA256 A5E9450A15D985AA4D08FC2257BC74404A0A6ABA864082876454951ECB6B3EE8. Live diagnostics identify0.2.66/SP. No OMHTT exception stack found; unrelated font/Firearms warnings exist. This log does not prove the UI correct or multiplayer compatibility. Artist package file/hash/image/mesh/archive checks passed separately; new head assets remain staged with no native import/rendered acceptance. Installed0.2.66 unchanged.
+
+
+## C446 - Endurance calculation and standalone mockups (2026-10-24)
+
+[Comparison and boundaries](AMMO_UI_C446.md). Current saved DayLength4 and native mapping confirm 90 minutes/day. 80 source-stat duration rows were independently cross-checked, including reloads and target thresholds. Three standalone UI variants rendered, visually inspected and checked at four widths; local interactions pass with no script errors. Native Kahlua calculation uses modeled gun methods with installed script inputs, not a running-world endurance test. No owner test, new gameplay build or installed acceptance is claimed. Source/Contents,0.2.66 and unuploaded Workshop draft are unchanged.
