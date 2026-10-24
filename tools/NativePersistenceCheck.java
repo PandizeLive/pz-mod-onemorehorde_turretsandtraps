@@ -287,12 +287,34 @@ public final class NativePersistenceCheck {
         Object restored = Class.forName("zombie.inventory.InventoryItem").getMethod("loadItem", ByteBuffer.class, int.class).invoke(null, input, version);
         check(!input.hasRemaining(), "Poke unread bytes");
         check(((Number)get(restored, "getCondition")).intValue() == 123, "Poke condition changed");
-        java.util.List<?> items = (java.util.List<?>)get(get(restored, "getInventory"), "getItems");
-        check(items.size() == 1 && "Base.CarBattery2".equals(get(items.get(0), "getFullType")), "Poke battery lost");
-        Object debtState = call(get(items.get(0), "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTBatteryDrain");
+        check(!Class.forName("zombie.inventory.types.InventoryContainer").isInstance(restored), "Poke retained obsolete portable capacity");
+        Path legacyPath = directory.resolve("poke-legacy-container.bin");
+        if (mode.equals("write")) {
+            Object legacy = Class.forName("zombie.inventory.InventoryItemFactory").getMethod("CreateItem", String.class).invoke(null, "Base.OMHTTTrapPokeFloor");
+            call(get(legacy, "getInventory"), "AddItem", new Class<?>[]{String.class}, "Base.CarBattery2");
+            ByteBuffer output = ByteBuffer.allocate(65536);
+            call(legacy, "saveWithSize", new Class<?>[]{ByteBuffer.class, boolean.class}, output, false);
+            Files.write(legacyPath, Arrays.copyOf(output.array(), output.position()));
+        }
+        ByteBuffer legacyInput = ByteBuffer.wrap(Files.readAllBytes(legacyPath));
+        Object legacyRestored = Class.forName("zombie.inventory.InventoryItem").getMethod("loadItem", ByteBuffer.class, int.class).invoke(null, legacyInput, version);
+        check(!legacyInput.hasRemaining() && Class.forName("zombie.inventory.types.InventoryContainer").isInstance(legacyRestored), "Legacy Poke container load changed type");
+        Object legacyItems = get(get(legacyRestored, "getInventory"), "getItems");
+        check(((Number)get(legacyItems, "size")).intValue() == 1, "Legacy packed Poke lost its battery");
+        System.out.println("[OMHTT-C450] legacy Poke container persistence=" + mode + " contents=preserved");
+        Object battery = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeRecoveredPokeBattery");
+        Path batteryPath = directory.resolve("poke-recovered-battery.bin");
+        if (mode.equals("write")) {
+            ByteBuffer output = ByteBuffer.allocate(65536);
+            call(battery, "saveWithSize", new Class<?>[]{ByteBuffer.class, boolean.class}, output, false);
+            Files.write(batteryPath, Arrays.copyOf(output.array(), output.position()));
+        }
+        ByteBuffer batteryInput = ByteBuffer.wrap(Files.readAllBytes(batteryPath));
+        Object restoredBattery = Class.forName("zombie.inventory.InventoryItem").getMethod("loadItem", ByteBuffer.class, int.class).invoke(null, batteryInput, version);
+        Object debtState = call(get(restoredBattery, "getModData"), "rawget", new Class<?>[]{Object.class}, "OMHTTBatteryDrain");
         double debt = ((Number)call(debtState, "rawget", new Class<?>[]{Object.class}, "debt")).doubleValue();
-        double charge = ((Number)get(items.get(0), "getCurrentUsesFloat")).doubleValue() - debt;
-        check(Math.abs(charge - .876544) < .000001, "Poke fractional battery charge changed");
+        double charge = ((Number)get(restoredBattery, "getCurrentUsesFloat")).doubleValue() - debt;
+        check(Math.abs(charge - .876544) < .000001, "Recovered Poke battery charge changed");
         System.out.println("[OMHTT-C339] poke persistence mode=" + mode + " condition=123 battery=exact charge=exact");
     }
 
@@ -360,8 +382,8 @@ public final class NativePersistenceCheck {
         ByteBuffer ammoInput = ByteBuffer.wrap(Files.readAllBytes(ammoPath));
         Object ammoRestored = Class.forName("zombie.inventory.InventoryItem").getMethod("loadItem", ByteBuffer.class, int.class).invoke(null, ammoInput, version);
         check(!ammoInput.hasRemaining(), "Large ammunition unread bytes");
-        check(((java.util.List<?>)get(get(ammoRestored, "getInventory"), "getItems")).size() == 5002, "Five-thousand-round reserve lost items");
-        System.out.println("[OMHTT-Controls] ammunition-persistence mode=" + mode + " rounds=5000 items=5002 exact=true");
+        check(((java.util.List<?>)get(get(ammoRestored, "getInventory"), "getItems")).size() == 4002, "Four-thousand-round reserve lost items");
+        System.out.println("[OMHTT-Controls] ammunition-persistence mode=" + mode + " rounds=4000 items=4002 exact=true");
     }
 
     private static void verifyModulePack(Path directory, String mode) throws Exception {

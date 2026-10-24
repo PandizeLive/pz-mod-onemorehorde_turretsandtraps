@@ -1,10 +1,16 @@
 if isServer() then return end
 local Hint = {}
+local kits = { ["Base.OMHTTModuleExpansionImprovised"] = 1, ["Base.OMHTTModuleExpansionSmall"] = 2, ["Base.OMHTTModuleExpansionMedium"] = 3, ["Base.OMHTTModuleExpansionLarge"] = 4 }
 
 ---@param slot ISPanel Empty-slot presentation
 ---@param fullType string? Representative accepted item, nil clears the hint
 ---@return nil
 function Hint.set(slot, fullType)
+    if kits[fullType] then
+        slot.hintType = fullType
+        slot.hintTexture = require("OMHTT/ControlExpansionTexture").texture(kits[fullType])
+        return
+    end
     if slot.hintType == fullType then return end
     slot.hintType, slot.hintTexture = fullType, nil
     if not fullType then return end

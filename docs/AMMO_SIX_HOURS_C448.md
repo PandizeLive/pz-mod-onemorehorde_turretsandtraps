@@ -1,5 +1,7 @@
 # C448 - Six-hour ammunition proposal
 
+**C450 update:** Final approval is implemented in [0.2.67](PATCH_v0.2.67.md); [verification/delivery](TEST_v0.2.67.md) distinguishes automated evidence from pending owner acceptance. Earlier proposal and installed-version statements below are historical.
+
 Date: 2026-10-24. Owner: "Let's do 6 hours of constant M4 fire. What would the multipliers and base values be and each of their resulting hours? Also list out the other expansion kit hours for each turret."
 
 This replaces the twelve-hour direction with six hours for the M4 at full Large capacity. The owner requests concrete numbers before selection, not implementation. Recommend retaining the prior Enhanced Firing comparison baseline, without Rapid Fire, Autoloader, Magazine, Splitter or Conservation. A full first magazine and ordinary reloads are included; power, condition, aiming/wake delays, jams and target interruptions are not modeled. Six game hours at the verified saved 90-minute day equals 22.5 normal-speed real minutes. Other day lengths change the game-hour results; inventories remain fixed rather than automatically adapting.

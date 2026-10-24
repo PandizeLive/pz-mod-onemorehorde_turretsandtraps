@@ -75,7 +75,6 @@ local function changed(graph, panel)
     return dirty
 end
 
-local conditionColor = {r = .45, g = .7, b = .45, a = 1}
 
 ---@param panel ISPanel Controller
 ---@param object IsoObject Selected device
@@ -473,7 +472,7 @@ function Graph:prerender()
                     local health, maximum = row.object:getHealth(), row.object:getMaxHealth()
                     local fraction = maximum > 0 and math.max(0, math.min(1, health / maximum)) or 0
                     local barWidth = half - 37
-                    self:drawProgressBar(textX, y + rowHeight - 17, barWidth, 6, fraction, conditionColor)
+                    Theme.meter(self, textX, y + rowHeight - 17, barWidth, 6, fraction)
                     self:drawText(fit(stats and stats.label or getText("UI_OMHTT_GraphAmmoPending"), barWidth), textX,
                         y + rowHeight - self.owner.lineHeight - 21, .75, .75, .75, 1, UIFont.Small)
                 end
@@ -482,8 +481,7 @@ function Graph:prerender()
     end
     for i = 1, #self.groups do
         local group = self.groups[i]
-        self:drawRect(4, group.y, self.width - 22, group.header - 2, 1, .18, .18, .18)
-        self:drawRectBorder(4, group.y, self.width - 22, group.header - 2, 1, .32, .32, .32)
+        Theme.header(self, 4, group.y, self.width - 22, group.header - 2)
         self:drawText((self.collapsed[group.id] and "> " or "v ") .. (group.label or group.name), 9, group.y + 3, .9, .9, .9, 1, UIFont.Small)
     end
     for i = 1, #self.edges do

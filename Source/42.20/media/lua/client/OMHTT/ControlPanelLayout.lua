@@ -6,6 +6,7 @@ local Theme = require("OMHTT/ControlTheme")
 local U = require("OMHTT/ControlClient")
 local A = require("OMHTT/ControlAccess")
 local Details = ISPanel:derive("OMHTTControllerDetails")
+local HostDetails = require("OMHTT/ControlHostDetails")
 
 ---@param delta number Wheel movement
 ---@return boolean handled
@@ -62,6 +63,7 @@ function L.create(panel)
         control:setY(control.y - body.y)
         body:addChild(control)
     end
+    panel.hostBody = HostDetails.create(panel)
     panel.graph = require("OMHTT/ControlGraph").create(panel)
     panel.mapView = require("OMHTT/ControlMap").create(panel)
     panel.devices:setVisible(false)
@@ -91,15 +93,15 @@ function L.arrange(panel)
     local detailHeight = math.min(h * 15 + 158, math.max(100, bottom - y - toolbar - 100))
     local mapHeight = math.max(64, bottom - y - toolbar - detailHeight - 8)
     panel.mapY = y
-    local captionWidth = getTextManager():MeasureStringX(UIFont.Small, getText("UI_OMHTT_ControllerSettings")) + 16
-    place(panel.controllerSettings, panel.detailX + centerWidth - captionWidth, y, captionWidth)
-    panel.controllerSettings:setHeight(toolbar - 2)
-    panel.controllerSettings:setVisible(true)
     local mapTop = y + toolbar
     place(panel.mapView, panel.detailX, mapTop, centerWidth)
     panel.mapView:setHeight(mapHeight)
     local detailsY = mapTop + mapHeight + 8
-    place(panel.detailBody, panel.detailX, detailsY, centerWidth)
+    local halfWidth = math.floor((centerWidth - 8) / 2)
+    place(panel.detailBody, panel.detailX, detailsY, halfWidth)
+    place(panel.hostBody, panel.detailX + halfWidth + 8, detailsY, centerWidth - halfWidth - 8)
+    panel.hostBody:setHeight(math.max(80, bottom - detailsY))
+    panel.hostBody:arrange()
     panel.detailBody:setHeight(math.max(80, bottom - detailsY))
     Theme.scrollbar(panel.detailBody)
     panel.layoutKind = nil
@@ -141,6 +143,7 @@ function L.arrange(panel)
         panel.graph:setVisible(true)
         panel.mapView:setVisible(true)
         panel.detailBody:setVisible(true)
+        panel.hostBody:setVisible(true)
         if panel.batterySlot then
             panel.batterySlot:setVisible(true)
         end
@@ -174,25 +177,20 @@ function L.refresh(panel, state)
         connection = connection + row + 10
     end
     panel.connectionY = body.y + connection
-    local controlsY = connection + h * 3 + 16
+    local controlsY = connection + h * 5 + 16
     place(panel.trigger, x, controlsY, width)
     local bottom = controlsY + (require("OMHTT/ControlDefinitions").inputs[kind] and row + 12 or 6)
     panel.accessY = body.y + bottom
-    place(panel.policy, x, bottom + h + 12, assigned and half or width)
-    place(panel.assign, x + half + 8, bottom + h + 12, half)
-    panel.ownerY = bottom + h + row + 20
+    local buttonY = bottom + h + 12
+    local stacked = assigned and half < getTextManager():MeasureStringX(UIFont.Small, getText("UI_OMHTT_Access", "Private")) + 24
+    place(panel.policy, x, buttonY, assigned and not stacked and half or width)
+    place(panel.assign, stacked and x or x + half + 8, buttonY + (stacked and row + 8 or 0), stacked and width or half)
+    panel.ownerY = buttonY + row + 8 + (stacked and row + 8 or 0)
     local controls = {panel.policy, panel.manage, panel.assign, panel.trigger}
     for i = 1, #controls do
         controls[i]:setHeight(row)
     end
-    body.contentHeight = panel.ownerY + h + 14
-    local height = math.min(body.contentHeight, math.max(100, panel.height - 24 - panel.mapView.y - 108))
-    local y = panel.height - 24 - height
-    local delta = y - body.y
-    panel.infoY, panel.connectionY, panel.accessY = panel.infoY + delta, panel.connectionY + delta, panel.accessY + delta
-    body:setY(y)
-    body:setHeight(height)
-    panel.mapView:setHeight(math.max(64, y - panel.mapView.y - 8))
+    body.contentHeight = assigned and panel.ownerY + h + 14 or body.height
     Theme.scrollbar(body)
     body:setScrollHeight(body.contentHeight)
     body:setYScroll(math.max(math.min(0, body.height - body.contentHeight), body:getYScroll()))
@@ -203,8 +201,8 @@ end
 ---@param title string Section label
 ---@return nil
 function Details:section(y, bottom, title)
-    local width = self.width - 24
-    Theme.section(self, 4, y, width, bottom - y, self.owner.lineHeight + 6, title)
+    local width = self.width
+    Theme.section(self, 0, y, width, bottom - y, self.owner.lineHeight + 6, title)
 end
 
 ---@param panel ISPanel Controller window
@@ -245,11 +243,16 @@ end
 ---@param state table? Selection state
 ---@return nil
 function L.drawDetails(panel, host, state)
-    if not host or not state then return end
+    if not host then return end
+    if not state or panel.selected == panel.object then
+        panel.detailBody:section(0, panel.detailBody.height, getText("UI_OMHTT_DeviceSettings"))
+        panel.detailBody:drawText(getText("UI_OMHTT_SelectDevice"), 10, panel.lineHeight + 14, .8, .8, .8, 1, UIFont.Small)
+        return
+    end
     local body, h, x = panel.detailBody, panel.lineHeight, 10
     local width = body.width - 36
     local infoY, accessY, connectionY = panel.infoY - body.y, panel.accessY - body.y, panel.connectionY - body.y
-    body:section(4, panel.controlsY - 4, getText("UI_OMHTT_SelectedDevice"))
+    body:section(0, panel.controlsY - 4, getText("UI_OMHTT_DeviceSettings"))
     if require("OMHTT/ControlDefinitions").defense(state.kind) or state.kind == "Controller" then
         body:section(panel.controlsY, connectionY - 8, getText("UI_OMHTT_Controls"))
     end
@@ -286,7 +289,7 @@ function L.drawDetails(panel, host, state)
     body:clearStencilRect()
     body:repaintStencilRect(0, 0, body.width, body.height)
     local hintY = connectionY + h + 8
-    body:setStencilRect(x, hintY + scroll, width, h * 2)
+    body:setStencilRect(x, hintY + scroll, width, h * 4)
     local hint = getText(panel.graph.notice or "UI_OMHTT_GraphConnectHint")
     if not panel.graph.notice and state.kind == "Controller" then
         hint = getText("UI_OMHTT_ControllerRange", A.radius(panel.object))
@@ -295,7 +298,6 @@ function L.drawDetails(panel, host, state)
     end
     if state.kind == "Tether" then hint = getText("UI_OMHTT_TetherMode") end
     if state.kind == "Poke" then hint = getText("UI_OMHTT_PokeContact") end
-    body:drawText(hint, x, hintY, .8, .8, .8, 1, UIFont.Small)
     local count = getText("UI_OMHTT_OutputCount", #state.links)
     if state.kind == "Turret" or state.kind == "Tether" then
         local source = A.state(panel.linkSource)
@@ -309,7 +311,19 @@ function L.drawDetails(panel, host, state)
         count = getText("UI_OMHTT_ControllerLimits")
     end
     if state.kind == "Poke" then count = getText("UI_OMHTT_PokeNoInputs") end
-    body:drawText(count, x, hintY + h, .7, .7, .7, 1, UIFont.Small)
+    local key = hint .. "\n" .. count .. tostring(width)
+    if body.connectionKey ~= key then
+        body.connectionKey = key
+        local measure = getTextManager()
+        body.hintLines = string.split(measure:WrapText(UIFont.Small, hint, width), "\n")
+        body.countLines = string.split(measure:WrapText(UIFont.Small, count, width), "\n")
+    end
+    for i = 1, math.min(2, #body.hintLines) do
+        body:drawText(body.hintLines[i], x, hintY + (i - 1) * h, .8, .8, .8, 1, UIFont.Small)
+    end
+    for i = 1, math.min(2, #body.countLines) do
+        body:drawText(body.countLines[i], x, hintY + (math.min(2, #body.hintLines) + i - 1) * h, .7, .7, .7, 1, UIFont.Small)
+    end
     body:clearStencilRect()
     body:repaintStencilRect(0, 0, body.width, body.height)
 end

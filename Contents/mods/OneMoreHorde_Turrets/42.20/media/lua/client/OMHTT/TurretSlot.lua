@@ -5,6 +5,7 @@ require("ISUI/ISToolTipInv")
 require("ISUI/ISToolTip")
 local T = require("OMHTT/Turret")
 local Hint = require("OMHTT/SlotHint")
+local Theme = require("OMHTT/ControlTheme")
 local Slot = ISPanel:derive("OMHTTTurretSlot")
 
 ---@return nil
@@ -151,7 +152,7 @@ function Slot:prerender()
         local labelWidth = getTextManager():MeasureStringX(UIFont.Small, self.label)
         local start = 16 + labelWidth
         if self.width - start > 14 then
-            self:drawProgressBar(start, 7, self.width - start - 6, 7, self.meter, require("OMHTT/ControlTheme").accent)
+            Theme.meter(self, start, 7, self.width - start - 6, 7, self.meter)
         end
     end
     if self.missing then self:drawRectBorder(0, 0, self.width, self.height, 1, 1, 0.3, 0.3) end

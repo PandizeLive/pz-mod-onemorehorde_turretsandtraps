@@ -1,6 +1,6 @@
 name=OMH: Traps
 id=OneMoreHorde_Traps
-modversion=0.2.66
+modversion=0.2.67
 versionMin=42.20
 icon=icon.png
 description=Independent Spike Barriers, Bed Spikes, Concertina Wire and backed Barbed Panels: crafting, placement, repair and portable defenses. Development build with server-authoritative multiplayer paths; connected multiplayer acceptance is pending. Part of OMH: Turrets & Traps. Fresh test world required for 0.2.41 item identities. Temporary developer artwork.

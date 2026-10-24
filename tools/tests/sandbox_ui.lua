@@ -6,7 +6,7 @@ local singlePage={settings={{name="OMHTurretsTraps.TrapsTriggerLaserConsumption"
 check(#UI.triggerSettings(singlePage).settings==1,"Traps-only trigger controls remain visible")
 local oldTextManager = getTextManager
 function getTextManager() return {getFontHeight = function() return 20 end} end
-local names = {"PotatoRequirePower", "PotatoDamage", "PotatoAmmoCapacity", "PotatoTurret"}
+local names = {"PotatoRequirePower", "PotatoDamage", "AmmoUseMultipliers", "PotatoTurret"}
 local panel = {controls = {}, labels = {}, settingNames = {}, children = {}, width = 500}
 for i=1,#names do
     local name = "OMHTurretsTraps." .. names[i]
@@ -28,8 +28,8 @@ check(#panel.children==3 and panel.scrollHeight==height and #panel.joypadButtons
 local unrelated={controls={}}
 check(UI.attach(unrelated)==unrelated and unrelated.omhttTitles==nil, "Other mods' Sandbox pages untouched")
 local modules = {controls = {}, labels = {}, settingNames = {}, children = {}, width = 500}
-local names = {"CapacityAmmoBonus", "RangeBonus", "VelocityBonus", "ReloadBonus", "RapidFireBonus",
-    "CapacityImprovisedModuleBonus", "CapacityImprovisedAmmoBonus", "ImprovisedFiringFailure"}
+local names = {"AmmoMediumMultiplier", "RangeBonus", "VelocityBonus", "ReloadBonus", "RapidFireBonus",
+    "CapacityImprovisedModuleBonus", "AmmoMakeshiftMultiplier", "ImprovisedFiringFailure"}
 for i = 1, #names do
     local name = "OMHTurretsTraps." .. names[i]
     modules.settingNames[i] = name
@@ -43,7 +43,7 @@ UI.attach(modules)
 modules:prerender()
 check(#modules.children == 6 and modules.settingNames[1] == "OMHTurretsTraps.ImprovisedFiringFailure"
     and modules.settingNames[6] == "OMHTurretsTraps.CapacityImprovisedModuleBonus"
-    and modules.settingNames[8] == "OMHTurretsTraps.CapacityAmmoBonus", "Firing reliability and starter expansion settings have correct semantic headings")
+    and modules.settingNames[8] == "OMHTurretsTraps.AmmoMediumMultiplier", "Firing reliability and starter expansion settings have correct semantic headings")
 UI.attach(modules); modules.width = 700; modules:prerender()
 check(#modules.children == 6 and #modules.joypadButtonsY == 8, "Module headings survive resize without duplicates")
 local traps = {controls = {}, labels = {}, settingNames = {}, children = {}, width = 500}

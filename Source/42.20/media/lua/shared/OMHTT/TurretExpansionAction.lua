@@ -136,6 +136,9 @@ function A:complete()
         if prior.head then require("OMHTT/TurretItemState").publish(prior.head, self.character) end
         require("OMHTT/TurretAuthority").publish(self.object)
     end
+    if self.final and not failed then
+        require("OMHTT/ControlMenuAudio").confirm(self.character)
+    end
     return not failed
 end
 

@@ -72,10 +72,7 @@ end
 ---@return boolean carried
 function U.carried(item, player)
     if not item or not item:getContainer() or not item:getContainer():isInCharacterInventory(player) then return false end
-    for _, fullType in pairs(C.types) do
-        if item:getFullType() == fullType then return true end
-    end
-    return false
+    return C.kind(item:getFullType()) ~= nil
 end
 
 ---@param item InventoryItem Exact device
@@ -84,12 +81,7 @@ end
 function U.place(item, player)
     if not U.carried(item, player) then return nil end
     require("BuildingObjects/ISBuildIsoEntity")
-    local kind
-    for key, fullType in pairs(C.types) do
-        if item:getFullType() == fullType then
-            kind = key
-        end
-    end
+    local kind = C.kind(item:getFullType())
     local entity = kind == "Plate" and "OMHTTDeployInsetPlate" or "OMHTTDeploy" .. kind
     if kind == "Button" then
         entity = "OMHTTDeploySwitchButton"

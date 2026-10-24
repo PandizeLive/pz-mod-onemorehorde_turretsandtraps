@@ -312,6 +312,24 @@ C.incoming[unlinkedState.id] = {}
 unlinkedTarget.turret.powered = true
 C.retire(unlinkedTarget)
 check(unlinkedTarget.turret.powered, "Empty incoming index does not change an unlinked turret's packed power state")
+local distant, distantState = device("Turret", 1990, 1910)
+distantState.controller = host.id
+host.organization = {revision=0,serial=1,groups={{id="1",name="Group"}},members={[distantState.id]="1"},order={distantState.id}}
+A.remote[owner] = {[distant]={}}
+C.reconcile(distant,distantState)
+check(not distantState.controller and not host.organization.members[distantState.id] and #host.organization.order==0
+    and not A.remote[owner][distant], "Out-of-range reconciliation clears group membership and remote sessions together")
+distantState.controller = host.id
+host.powered = false
+check(Action:new(owner,controller,"Assign",false,distant,host.id,distantState.id):complete()
+    and not distantState.controller,"Exact owner can unassign a stale out-of-range device while Controller is offline")
+distantState.controller = host.id
+check(not Action:new(stranger,controller,"Assign",false,distant,host.id,distantState.id):complete(),"Stale unassignment still enforces ownership")
+local savedObject=C.objects[host.id]
+C.objects[host.id]=nil
+C.reconcile(distant,distantState)
+check(distantState.controller==host.id,"Unloaded Controller does not provide evidence to discard assignment")
+C.objects[host.id]=savedObject
 for i = 1, #made do C.removed(made[i]) end
 T.state, T.contents, T.cycleConfig = oldState, oldContents, oldConfig
 W.applyPower, W.fire, W.contents, W.power = oldPower, oldFire, oldWorldContents, oldWorldPower

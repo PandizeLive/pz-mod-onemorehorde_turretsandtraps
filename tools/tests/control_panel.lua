@@ -154,7 +154,7 @@ local oldScreen, oldTextManager = getPlayerScreenHeight, getTextManager
 getPlayerScreenHeight = function() return 600 end
 getTextManager = function() return {getFontHeight = function() return 30 end,MeasureStringX=function(_,font,text) return #text*15 end} end
 local large = Panel.open(player, object)
-check(large.y + large.height <= 600 and large.detailBody.contentHeight > large.detailBody.height,
+check(large.y + large.height <= 600 and large.hostBody.contentHeight > large.hostBody.height,
     "Large fonts on a short screen scroll Controller details without pushing the window offscreen")
 local nextPanel = Panel.open(player, object)
 check(large.removed, "Only one Controller window per player remains open")

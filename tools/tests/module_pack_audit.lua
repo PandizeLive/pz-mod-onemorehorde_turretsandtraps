@@ -261,7 +261,7 @@ local found = false
 for i = 1, #rows - 1 do
     if rows[i].text == prefix then
         local label, value = rows[i], rows[i + 1]
-        check(label.r == 1 and label.g == 1 and value.g > value.r and value.x > label.x and value.y == label.y,
+        check(label.r == .8 and label.g == .8 and value.g > value.r and value.x > label.x and value.y == label.y,
             "Native head consumption colors only the value on the same line")
         found = true
     end

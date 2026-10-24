@@ -52,6 +52,11 @@ function Action:isValid()
         return Targeting.valid(state, self.value)
     elseif self.command == "Assign" or self.command == "Link" then
         local target = A.state(self.target)
+        if self.command == "Assign" and self.value == false then
+            return state.kind == "Controller" and A.near(self.character, self.object)
+                and target and target.id == self.targetId and target.controller == state.id
+                and A.write(self.character, target)
+        end
         return target and target.id == self.targetId and A.write(self.character, target)
             and A.range(self.object, self.target) and type(self.value) == "boolean"
             and (self.command ~= "Assign" or (state.kind == "Controller" and state.powered == true))

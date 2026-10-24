@@ -335,7 +335,9 @@ local function run(panel, player, controller)
     getPlayerScreenHeight = function() return 1080 end
     G.resize(panel, 1220, 1000)
     panel:prerender()
-    check(panel.detailBody.contentHeight <= panel.detailBody.height, "Default tall Controller shows Selected Device without scrolling")
+    check(panel.infoY + panel.lineHeight * 4 <= panel.detailBody.y + panel.detailBody.height
+        and math.abs(panel.detailBody.width - panel.hostBody.width) <= 1
+        and panel.detailBody.y == panel.hostBody.y, "Equal settings panes keep device summary visible and scroll remaining controls")
     testControllerSvg = require("tests/UITrace")(panel)
     getPlayerScreenHeight = previousHeight
     G.resize(panel, 1220, 690)

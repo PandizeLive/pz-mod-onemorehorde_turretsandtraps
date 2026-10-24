@@ -58,9 +58,9 @@ getTextManager=function() return {MeasureStringX=function(_,font,text) return #t
     WrapText=function(_,font,text) return text=="Feature: Long purpose" and "Feature: Long\npurpose continued" or text end} end
 local rating={r=.2,g=.7,b=.4}
 require("OMHTT/ControlTooltipRows").footer(panel,"Feature: Long purpose\nBattery Consumption: Low\nHealth: 200",rating)
-check(panel.labels[1].r==.8 and panel.labels[2].r==.8 and panel.labels[2].text=="purpose continued",
-    "Wrapped feature continuation retains the same readable grey")
-check(panel.labels[3].r==1 and panel.labels[4].r==rating.r and panel.labels[4].g==rating.g and panel.labels[5].r==1,
-    "Only consumption value receives its rating color; following stats reset to white")
+check(panel.labels[1].r==1 and panel.labels[2].r==1 and panel.labels[2].text=="purpose continued",
+    "Wrapped feature continuation retains the same feature white")
+check(panel.labels[3].r==.8 and panel.labels[4].r==rating.r and panel.labels[4].g==rating.g and panel.labels[5].r==.8,
+    "Only consumption value receives its rating color; following stats reset to grey")
 getCore = originalCore
 getTextManager = originalTextManager

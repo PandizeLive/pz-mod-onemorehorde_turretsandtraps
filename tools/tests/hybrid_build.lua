@@ -165,7 +165,7 @@ end
 check(countRecipe("OMHTTCraftPoke") == 1 and countRecipe("OMHTTCraftPokeImprovised") == 1,
     "Building exposes both distinct mechanical crafting routes")
 H.item = function(_, route)
-    if route.item == "Base.OMHTTTrapPokeFloor" then return {carried = true} end
+    if route.item == "Base.OMHTTTrapPokeFloorMechanical" then return {carried = true} end
 end
 selected = recipes["Base.OMHTTCraftPokeImprovised"]
 panel:refreshList()

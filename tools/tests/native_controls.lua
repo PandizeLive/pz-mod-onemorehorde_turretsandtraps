@@ -96,9 +96,9 @@ return function(player)
     player:setX(28.5)
     player:setY(28.5)
     player:setZ(0)
-    local function create(kind, sprite, location)
+    local function create(kind, sprite, location, legacy)
         location = location or square
-        local item = player:getInventory():AddItem(require("OMHTT/ControlDefinitions").types[kind])
+        local item = player:getInventory():AddItem(legacy or require("OMHTT/ControlDefinitions").types[kind])
         assert(item, "Missing control item " .. kind)
         local consumed = ArrayList.new()
         consumed:add(item)
@@ -290,7 +290,7 @@ return function(player)
         data:luaCallOnCreate(player)
         data:processDestroyAndUsedItems(player)
         local output = data:getFirstCreatedItem()
-        assert(output and output:getFullType() == "Base.OMHTTTrapPokeFloor" and data:getAllCreatedItems():size() == 1,
+        assert(output and output:getFullType() == "Base.OMHTTTrapPokeFloorMechanical" and data:getAllCreatedItems():size() == 1,
             "Mechanical Poke output identity/count")
         for i = 0, inputs:size() - 1 do
             local material = inputs:get(i)
@@ -303,7 +303,7 @@ return function(player)
     assert(getText("IGUI_CraftingCategories_OMHControls") == "OMH: Triggers"
         and getText("IGUI_ContainerTitle_OMHTTPoke") == "Poke Floor", "Native trigger/Poke translations")
     print("[OMHTT-C355] mechanical-recipes=2 inputs=consumed tools=retained output=exact translations=passed")
-    local poke = create("Poke", "omhtt_barrier_01_85")
+    local poke = create("Poke", "omhtt_barrier_01_85", nil, "Base.OMHTTTrapPokeFloor")
     local pokeState = C.state(poke)
     local PokeAction = require("OMHTT/ControlPokeAction")
     assert(poke:getMaxHealth() == 200 and poke:getHealth() == 200, "Poke Floor condition")
@@ -332,10 +332,21 @@ return function(player)
     assert(source.battery, "Native Controller bank selection")
     local sourceCharge = B.charge(source.battery)
     assert(math.abs(Power.spend(source) - .001) < .000001 and math.abs(B.charge(source.battery) - sourceCharge + .001) < .000001, "Native shared debit exact")
+    local priorPokeCapacity = player:getInventory():getCapacity()
+    player:getInventory():setCapacity(10000)
     poke:setHealth(123)
     assert(C.pickup(player, poke), "Native Poke Floor pickup")
-    local packedPoke = pokeBattery:getContainer():getContainingItem()
-    assert(packedPoke and packedPoke:getFullType() == "Base.OMHTTTrapPokeFloor" and packedPoke:getCondition() == 123, "Poke pickup retains wear")
+    local function findPackedPoke()
+        local items=player:getInventory():getItems()
+        for i=0,items:size()-1 do
+            local item=items:get(i)
+            local data=item:getModData().OMHTTControl
+            if data and data.id==pokeState.id then return item end
+        end
+    end
+    local packedPoke = findPackedPoke()
+    assert(not instanceof(packedPoke,"InventoryContainer") and pokeBattery:getContainer()==player:getInventory(),"Poke recovery must remove capacity and return real legacy contents")
+    assert(packedPoke and packedPoke:getFullType() == "Base.OMHTTTrapPokeFloorMechanical" and packedPoke:getCondition() == 123, "Poke pickup retains wear")
     assert(math.abs(B.charge(pokeBattery) - exact) < .000001, "Poke pickup preserves exact battery charge")
     local pokeItems = ArrayList.new()
     pokeItems:add(packedPoke)
@@ -344,10 +355,12 @@ return function(player)
     square:getSpecialObjects():add(installedPoke)
     GameEntityFactory.CreateIsoObjectEntity(installedPoke, SpriteConfigManager.GetObjectInfo("OMHTTDeployPoke"):getScript():getParent(), true)
     C.create({thumpable = installedPoke, character = player, craftRecipeData = {getAllConsumedItems = function() return pokeItems end}})
-    assert(installedPoke:getHealth() == 123 and installedPoke:getContainer():contains(pokeBattery), "Poke redeploy retains condition and exact battery")
+    assert(installedPoke:getHealth() == 123 and pokeBattery:getContainer()==player:getInventory(), "Poke redeploy retains condition and exact battery")
     assert(C.state(installedPoke).id == pokeState.id and C.state(installedPoke).enabled == false, "Poke redeploy preserves identity and disabled state")
     assert(C.pickup(player, installedPoke), "Poke persistence fixture pickup")
-    OMHTT_NativePackedPoke = pokeBattery:getContainer():getContainingItem()
+    OMHTT_NativePackedPoke = findPackedPoke()
+    OMHTT_NativeRecoveredPokeBattery = pokeBattery
+    player:getInventory():setCapacity(priorPokeCapacity)
     local pokeFixture = ModData.getOrCreate("OMHTTNativePoke")
     pokeFixture.id = pokeState.id
     pokeFixture.item = tostring(OMHTT_NativePackedPoke:getID())
@@ -582,7 +595,14 @@ return function(player)
     OMHTT_NativeHeavyController = first:getContainer():getContainingItem()
     local allowance = require("OMHTT/TurretAmmoCapacity")
     local saved = SandboxVars.OMHTurretsTraps
-    SandboxVars.OMHTurretsTraps = {}
+    assert(not allowance.legacy(), "Fresh native Sandbox must choose the approved multipliers")
+    for kind, base in pairs({Potato=75,Ballista=30,Lobber=35,Scrapshot=90,Firearm=400,Shotgun=80}) do
+        assert(allowance.resolve(kind, {}, base) == base, "Fresh native base allowance " .. kind)
+        for i, multiplier in ipairs({2.5,5,7.5,10}) do
+            assert(allowance.resolve(kind, {[allowance.kits[i]]=1}, base) == math.floor(base*multiplier), "Fresh native kit allowance " .. kind)
+        end
+    end
+    SandboxVars.OMHTurretsTraps = {PotatoAmmoCapacity = 100, FirearmAmmoCapacity = 250}
     for kind, row in pairs(allowance.rows) do
         assert(allowance.resolve(kind, {}, row[1]) == row[1], "Base allowance mismatch")
         for i = 1, 4 do

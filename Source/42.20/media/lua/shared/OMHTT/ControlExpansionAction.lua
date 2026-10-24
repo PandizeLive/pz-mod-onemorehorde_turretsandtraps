@@ -65,6 +65,7 @@ function Action:complete()
     W.state(self.object).expansionId = self.item and self.item:getID() or nil
     E.refresh(self.object)
     W.publish(self.object)
+    require("OMHTT/ControlMenuAudio").confirm(self.character)
     self.done = true
     return true
 end

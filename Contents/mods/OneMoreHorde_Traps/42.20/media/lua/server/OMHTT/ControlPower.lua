@@ -46,6 +46,9 @@ function P.spend(source)
     if not item or item:getCondition() <= 0 or Battery.charge(item) + 0.0000000001 < source.cost then return nil end
     if source.controller and item:getContainer() ~= source.controller:getContainer() then return nil end
     local spent = Battery.spend(item, source.cost)
+    if source.controller and spent > 0 then
+        require("OMHTT/ControlEndurance").spend(source.controller, spent)
+    end
     if isServer() then P.dirty[item] = true end
     return spent
 end
@@ -72,7 +75,7 @@ function P.idle(object, elapsed, extra)
     if square:haveElectricity() or (square:hasGridPower() and square:getRoom()) then return true end
     local W = require("OMHTT/ControlWorld")
     local state = W.state(object)
-    local remaining = math.max(0, elapsed / 48) + math.max(0, extra or 0) + (state.powerDebt or 0)
+    local remaining = math.max(0, elapsed / math.max(.1, require("OMHTT/ControlExpansion").option("ControllerIdleHours", 48, 10000))) + math.max(0, extra or 0) + (state.powerDebt or 0)
     for i = 1, 64 do
         local battery = P.battery(object, 0)
         if not battery then
@@ -102,7 +105,8 @@ function P.refresh(controller, extra)
     local powered = P.idle(controller, elapsed, extra)
     local battery = W.batteries[controller]
     local charge = battery and math.floor(Battery.charge(battery)*1000)/10 or 0
-    if state.powered ~= powered or state.backup ~= charge or oldId ~= state.batteryId then
+    local sampled = require("OMHTT/ControlEndurance").sample(controller, state)
+    if sampled or state.powered ~= powered or state.backup ~= charge or oldId ~= state.batteryId then
         state.powered, state.backup = powered, charge
         W.publish(controller)
     end

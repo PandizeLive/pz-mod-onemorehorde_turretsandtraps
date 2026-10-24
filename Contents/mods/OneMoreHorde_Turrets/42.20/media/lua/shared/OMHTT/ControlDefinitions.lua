@@ -7,8 +7,18 @@ C.types = {
     Button = "Base.OMHTTTrapButton",
     Lever = "Base.OMHTTTrapLever",
     Laser = "Base.OMHTTTrapLaser",
-    Poke = "Base.OMHTTTrapPokeFloor",
+    Poke = "Base.OMHTTTrapPokeFloorMechanical",
 }
+
+---@param fullType string Item identity, including the saved legacy container
+---@return string? kind Device family
+function C.kind(fullType)
+    if fullType == "Base.OMHTTTrapPokeFloor" then return "Poke" end
+    for kind, itemType in pairs(C.types) do
+        if fullType == itemType then return kind end
+    end
+    return nil
+end
 
 function C.defense(kind)
     return kind == "Turret" or kind == "Poke" or kind == "Tether"

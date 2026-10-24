@@ -29,6 +29,7 @@ end
 function ISPanel:setX(x) self.x = x end
 function ISPanel:setWidth(width) self.width = width end
 function ISPanel:setVisible(value) self.visible = value end
+function ISPanel:isVisible() return self.visible ~= false end
 function ISPanel:prerender() end
 function ISPanel:isMouseOver() return false end
 function ISPanel:getAbsoluteX() return self.x + (self.parent and self.parent:getAbsoluteX() or 0) end
@@ -188,3 +189,4 @@ function ISPanel:drawTextureScaled(texture,x,y,w,h) end
 ISInventoryItem = ISInventoryItem or {renderItemIcon = function() end}
 
 function getFileReader() return {readLine=function() return nil end, close=function() end} end
+function ISPanel:drawTextureScaledAspect(texture,x,y,w,h) check(texture ~= nil and w > 0 and h > 0, "Slot silhouette has valid geometry") end

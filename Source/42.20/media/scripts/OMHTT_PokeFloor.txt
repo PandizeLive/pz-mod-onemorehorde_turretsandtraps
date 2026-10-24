@@ -2,13 +2,22 @@ module Base {
     item OMHTTTrapPokeFloor {
         DisplayName = Poke Floor,
         ItemType = base:container,
+        Capacity = 15,
+        WeightReduction = 0,
         DisplayCategory = Material,
         Weight = 8,
         Icon = OMHTT_TestCube,
         Tags = base:heavyitem,
         ConditionMax = 200,
-        Capacity = 15,
-        WeightReduction = 0,
+    }
+    item OMHTTTrapPokeFloorMechanical {
+        DisplayName = Poke Floor,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 8,
+        Icon = OMHTT_TestCube,
+        Tags = base:heavyitem,
+        ConditionMax = 200,
     }
     entity OMHTTDeployPoke {
         component UiConfig { xuiSkin = default, entityStyle = ES_OMHTTPoke, uiEnabled = false, }
@@ -31,7 +40,7 @@ module Base {
             category = OMHTraps,
             needToBeLearn = false,
             OnAddToMenu = OMHTT_ControlMenu,
-            inputs { item 1 [Base.OMHTTTrapPokeFloor], }
+            inputs { item 1 [Base.OMHTTTrapPokeFloorMechanical;Base.OMHTTTrapPokeFloor], }
         }
     }
     xuiSkin default { entity ES_OMHTTPoke { LuaWindowClass = ISEntityWindow, DisplayName = UI_OMHTT_ControlPoke, Icon = OMHTT_TestCube, } }
@@ -52,7 +61,7 @@ module Base {
             item 2 [Base.SmallSheetMetal],
             item 8 [Base.Screws],
         }
-        outputs { item 1 Base.OMHTTTrapPokeFloor, }
+        outputs { item 1 Base.OMHTTTrapPokeFloorMechanical, }
     }
     craftRecipe OMHTTCraftPokeImprovised {
         timedAction = BuildLowNoTool,
@@ -71,6 +80,6 @@ module Base {
             item 2 [Base.SmallSheetMetal],
             item 8 [Base.Screws],
         }
-        outputs { item 1 Base.OMHTTTrapPokeFloor, }
+        outputs { item 1 Base.OMHTTTrapPokeFloorMechanical, }
     }
 }

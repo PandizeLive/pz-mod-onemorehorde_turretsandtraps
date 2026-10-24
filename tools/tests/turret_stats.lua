@@ -1,6 +1,8 @@
 local S = require("OMHTT/TurretStats")
 local C = require("OMHTT/TurretCycle")
 local settings = SandboxVars.OMHTurretsTraps
+local oldAmmo = settings.PotatoAmmoCapacity
+settings.PotatoAmmoCapacity = 100 -- Explicit legacy-world fixture; modern rules have separate coverage.
 local base = S.resolve()
 check(base.damage == 35 and base.range == 6 and base.ammo == 100 and base.modules == 2, "No modules preserve saved base balance")
 local active = {Reload = 2, RapidFire = 2, Velocity = 2, Range = 2, Capacity = 1}
@@ -85,3 +87,5 @@ check(math.abs(S.resolve({active = {Suppression = 2}}).hearingMultiplier - .25) 
 settings.PotatoModuleCapacity = 4
 settings.CapacitySmallModuleBonus, settings.CapacityModuleBonus, settings.CapacityLargeModuleBonus = 2, 4, 6
 check(S.resolve().modules == 4 and S.resolve({active = {CapacityLarge = 1}}).modules == 10, "Saved Sandbox bonus settings retain their meaning")
+
+settings.PotatoAmmoCapacity = oldAmmo

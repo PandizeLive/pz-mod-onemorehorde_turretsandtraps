@@ -159,6 +159,9 @@ function Panel:close()
     if self.batterySlot then
         self.batterySlot:cleanup()
     end
+    if self.expansionSlot then
+        self.expansionSlot:cleanup()
+    end
     require("OMHTT/ControlOverlay").panels[self] = nil
     if self.marker then
         self.marker:remove()
@@ -211,7 +214,8 @@ function Panel:prerender()
     self.manage:setEnable(state ~= nil and require("OMHTT/ControlDefinitions").defense(state.kind)
         and (A.near(self.player, self.selected) or (host.powered == true and state.controller == host.id)))
     self.assign:setEnable(state ~= nil and self.selected ~= self.object and host.kind == "Controller"
-        and host.powered == true and A.write(self.player, host) and A.write(self.player, state))
+        and (state.controller == host.id or (host.powered == true and A.range(self.object, self.selected)))
+        and A.write(self.player, host) and A.write(self.player, state))
 
     local input = state and require("OMHTT/ControlDefinitions").inputs[state.kind]
     self.trigger:setEnable(writable == true and input == true)
@@ -251,6 +255,10 @@ function Panel:prerender()
     self.trigger.tooltip = input and require("OMHTT/ControlConsumption").description(state.kind, true) or remoteReason
     if input and state.powered ~= true then self.trigger.tooltip = self.trigger.tooltip .. " <LINE> " .. getText("UI_OMHTT_TriggerUnpowered") end
 
+    self.policy:setVisible(state ~= nil and self.selected ~= self.object)
+    if self.selected == self.object then
+        self.targeting:setVisible(false)
+    end
     self.policy:setTitle(getText("UI_OMHTT_Access", state and state.access or "-"))
     self.assign:setTitle(getText(state and state.controller == host.id and "UI_OMHTT_Unassign" or "UI_OMHTT_Assign"))
     if not A.near(self.player, self.object) then
@@ -332,11 +340,6 @@ function Panel.open(player, object)
     panel.targeting = button(panel, 274, 300, 246, "", function(self)
         require("OMHTT/ControlTargetingUI").open(self.player, self.selected)
     end)
-    panel.controllerSettings = button(panel, 0, 0, 140, getText("UI_OMHTT_ControllerSettings"), function(self)
-        require("OMHTT/ControlGraph").select(self, self.object)
-        self.detailBody:setYScroll(0)
-    end)
-    panel.controllerSettings.tooltip = getText("UI_OMHTT_ControllerSettings")
     panel.closeButton = button(panel, panel.width - 40, 6, 28, "X", Panel.close)
     require("OMHTT/ControlPanelLayout").create(panel)
     if A.state(object).kind == "Controller" then
@@ -380,7 +383,7 @@ function Panel:showStockpile(visible)
     self.devices:setVisible(false)
     self.graph:setVisible(not self.stockPage)
     self.mapView:setVisible(not self.stockPage)
-    self.controllerSettings:setVisible(not self.stockPage)
+    self.hostBody:setVisible(not self.stockPage)
     self.batterySlot:setVisible(not self.stockPage)
     if self.expansionSlot then self.expansionSlot:setVisible(not self.stockPage) end
     self.stockButton:setTitle(getText(self.stockPage and "UI_OMHTT_StockpileBack" or "UI_OMHTT_OpenStockpile"))

@@ -2,7 +2,7 @@ if isServer() then return end
 require("ISUI/ISPanel")
 require("ISUI/ISInventoryPane")
 require("ISUI/ISInventoryItem")
-require("ISUI/ISToolTipInv")
+require("ISUI/ISToolTip")
 require("TimedActions/ISTimedActionQueue")
 local A = require("OMHTT/ControlAccess")
 local Transfer = require("OMHTT/ControlTransferAction")
@@ -111,13 +111,14 @@ function Slot:update()
     end
     if self:isMouseOver() and self.item and not ISMouseDrag.dragging then
         if not self.tooltip then
-            self.tooltip = ISToolTipInv:new(self.item)
+            self.tooltip = ISToolTip:new()
             self.tooltip:initialise()
             self.tooltip:addToUIManager()
             self.tooltip:setOwner(self)
-            self.tooltip:setCharacter(self.owner.player)
+            self.tooltip.maxLineWidth = 350
         end
-        self.tooltip:setItem(self.item)
+        self.tooltip:setName(self.item:getDisplayName())
+        self.tooltip.description = require("OMHTT/ControlBatteryDescription").get(self.owner.object, self.item)
         self.tooltip:setVisible(true)
     elseif self.tooltip then
         self.tooltip:removeFromUIManager()
@@ -173,7 +174,7 @@ function Slot:prerender()
     local start = 16 + getTextManager():MeasureStringX(UIFont.Small, label)
     local charge = self.item and Battery.charge(self.item) or 0
     if self.width - start > 20 then
-        self:drawProgressBar(start, 8, self.width - start - 8, 7, charge, Theme.accent)
+        Theme.meter(self, start, 8, self.width - start - 8, 7, charge)
     end
     local name = getText("UI_OMHTT_ControllerBatteryDrop")
     if self.item then

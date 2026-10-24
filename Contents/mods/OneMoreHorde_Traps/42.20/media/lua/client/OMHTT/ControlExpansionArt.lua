@@ -1,24 +1,16 @@
 if isServer() then return end
 require("ISUI/ISInventoryPane")
 local E = require("OMHTT/ControlExpansion")
-local R = require("OMHTT/ControlRarity")
-local A = {textures = {}, applied = setmetatable({}, {__mode = "k"})}
-local components = {"CapacityImprovised", "CapacitySmall", "Capacity", "CapacityLarge"}
+local A = {applied = setmetatable({}, {__mode = "k"})}
+A.texture = require("OMHTT/ControlExpansionTexture").texture
 
 ---@param item InventoryItem? Visible kit
 ---@return nil
 function A.apply(item)
     local tier = E.tier(item)
     if tier == 0 then return end
-    local color = R.get(components[tier])
-    local name = "expansion_" .. string.lower(R.names[color.band])
-    if A.applied[item] == name then return end
-    local texture = A.textures[name]
-    if not texture then
-        texture = getTexture("media/textures/OMHTT/Modules/" .. name .. ".png")
-        if not texture then return end
-        A.textures[name] = texture
-    end
+    local texture, name = A.texture(tier)
+    if not texture or A.applied[item] == name then return end
     item:setTexture(texture)
     item:setIcon(texture)
     A.applied[item] = name

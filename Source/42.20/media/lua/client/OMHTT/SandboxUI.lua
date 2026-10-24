@@ -4,6 +4,7 @@ require("ISUI/AdminPanel/ISServerSandboxOptionsUI")
 require("OptionScreens/ServerSettingsScreen")
 require("ISUI/ISLabel")
 local UI = {}
+local legacyAmmo = {PotatoAmmoCapacity = true, FirearmAmmoCapacity = true, CapacityImprovisedAmmoBonus = true, CapacitySmallAmmoBonus = true, CapacityAmmoBonus = true, CapacityLargeAmmoBonus = true}
 -- Filter only the duplicate *presentation*, before native controls are created.
 -- Distinct native option IDs preserve both packages' saved values independently.
 function UI.triggerSettings(page)
@@ -15,7 +16,7 @@ function UI.triggerSettings(page)
         local name=settings[i].name
         local common=name and name:gsub("^OMHTurretsTraps%.Traps", "OMHTurretsTraps.")
         local key = name and name:gsub("^OMHTurretsTraps%.", ""):gsub("^Traps", "")
-        if (common ~= name and primary[common]) or key == "AutomationEnabled" or key == "ForwardCone"
+        if legacyAmmo[key] or (common ~= name and primary[common]) or key == "AutomationEnabled" or key == "ForwardCone"
             or key == "PotatoPlaybackVolume" or key == "DeviceSoundVolume" or key == "ShowTurretRange" then
             table.remove(settings, i)
         end
@@ -25,15 +26,15 @@ end
 local groups = {
     {"Sandbox_Title_OMHTurretsTraps_Operation", {"PotatoHealth", "PotatoRequirePower", "PotatoGeneratorFuelPerShot", "IdleSweepSpeed", "DetectionInterval", "TurretPlayerDamageMultiplier", "TurretPlayerWoundMultiplier", "FriendlyPlayerDamageMultiplier", "FriendlyPlayerWoundMultiplier", "HostilePlayerDamageMultiplier", "HostilePlayerWoundMultiplier"}},
     {"Sandbox_Title_OMHTurretsTraps_Standby", {"TurretStandbyEnabled", "TurretIdleSeconds", "TurretWakeSeconds", "TurretAlertDelay", "TurretStateIndicator"}},
-    {"Sandbox_Title_OMHTurretsTraps_Storage", {"PotatoAmmoCapacity", "PotatoModuleCapacity", "PotatoMagazineCapacity"}},
+    {"Sandbox_Title_OMHTurretsTraps_Storage", {"AmmoUseMultipliers", "PotatoModuleCapacity", "PotatoMagazineCapacity"}},
     {"Sandbox_Title_OMHTurretsTraps_RotaryBat", {"RotaryBatDamage", "RotaryBatShove", "RotaryBatteryHours", "RotaryBatForwardCone", "RotaryBatHearingRadius"}},
     {"Sandbox_Title_OMHTurretsTraps_RotaryBlades", {"RotaryBladesDamage", "RotaryBladesShove", "RotaryBladesBatteryMultiplier", "RotaryBladesForwardCone", "RotaryBladesHearingRadius"}},
-    {"Sandbox_Title_OMHTurretsTraps_Potato", {"PotatoTurret", "PotatoDamage", "PotatoCriticalChance", "PotatoCriticalDamage", "PotatoCooldown", "PotatoReloadTime", "PotatoRange", "PotatoTurnSpeed", "PotatoProjectileSpeed", "PotatoKnockdownChance", "PotatoSplashPercent", "PotatoSplashRadius", "PotatoBatteryPercentPerShot", "PotatoForwardCone", "PotatoHearingRadius"}},
-    {"Sandbox_Title_OMHTurretsTraps_Scrapshot", {"ScrapshotDamage", "ScrapshotRange", "ScrapshotCooldown", "ScrapshotReload", "ScrapshotBatteryPercent", "ScrapshotForwardCone", "ScrapshotHearingRadius"}},
-    {"Sandbox_Title_OMHTurretsTraps_Ballista", {"BallistaDamage", "BallistaRange", "BallistaCooldown", "BallistaReload", "BallistaBatteryPercent", "BallistaForwardCone", "BallistaHearingRadius"}},
+    {"Sandbox_Title_OMHTurretsTraps_Potato", {"AmmoBasePotato", "PotatoTurret", "PotatoDamage", "PotatoCriticalChance", "PotatoCriticalDamage", "PotatoCooldown", "PotatoReloadTime", "PotatoRange", "PotatoTurnSpeed", "PotatoProjectileSpeed", "PotatoKnockdownChance", "PotatoSplashPercent", "PotatoSplashRadius", "PotatoBatteryPercentPerShot", "PotatoForwardCone", "PotatoHearingRadius"}},
+    {"Sandbox_Title_OMHTurretsTraps_Scrapshot", {"AmmoBaseScrapshot", "ScrapshotDamage", "ScrapshotRange", "ScrapshotCooldown", "ScrapshotReload", "ScrapshotBatteryPercent", "ScrapshotForwardCone", "ScrapshotHearingRadius"}},
+    {"Sandbox_Title_OMHTurretsTraps_Ballista", {"AmmoBaseBallista", "BallistaDamage", "BallistaRange", "BallistaCooldown", "BallistaReload", "BallistaBatteryPercent", "BallistaForwardCone", "BallistaHearingRadius"}},
     {"Sandbox_Title_OMHTurretsTraps_Arc", {"ArcDamage", "ArcRange", "ArcCooldown", "ArcTargets", "ArcJumpRange", "ArcBatteryPercent", "ArcForwardCone", "ArcHearingRadius"}},
-    {"Sandbox_Title_OMHTurretsTraps_Lobber", {"LobberDamage", "LobberRange", "LobberCooldown", "LobberReload", "LobberBatteryMultiplier", "LobberForwardCone", "LobberHearingRadius"}},
-    {"Sandbox_Title_OMHTurretsTraps_Firearms", {"FirearmTurrets", "FirearmAmmoCapacity", "FirearmAimingLevel", "FirearmAccuracyMultiplier", "FirearmRangeAccuracy", "PrecisionRangeAccuracy", "FirearmDamageMultiplier", "FirearmRangeMultiplier", "FirearmReloadMultiplier", "FirearmRateMultiplier", "FirearmCycleMultiplier", "FirearmTurnSpeed", "FirearmBatteryMultiplier", "FirearmForwardCone"}},
+    {"Sandbox_Title_OMHTurretsTraps_Lobber", {"AmmoBaseLobber", "LobberDamage", "LobberRange", "LobberCooldown", "LobberReload", "LobberBatteryMultiplier", "LobberForwardCone", "LobberHearingRadius"}},
+    {"Sandbox_Title_OMHTurretsTraps_Firearms", {"FirearmTurrets", "AmmoBaseFirearm", "AmmoBaseShotgun", "FirearmAimingLevel", "FirearmAccuracyMultiplier", "FirearmRangeAccuracy", "PrecisionRangeAccuracy", "FirearmDamageMultiplier", "FirearmRangeMultiplier", "FirearmReloadMultiplier", "FirearmRateMultiplier", "FirearmCycleMultiplier", "FirearmTurnSpeed", "FirearmBatteryMultiplier", "FirearmForwardCone"}},
 }
 
 local moduleGroups = {
@@ -59,7 +60,7 @@ local moduleGroups = {
     {"Sandbox_Title_OMHTurretsTraps_InitialBlow", {"InitialBlowFirst", "InitialBlowBonus", "InitialBlowThreshold"}},
     {"Sandbox_Title_OMHTurretsTraps_Execute", {"ExecuteFirst", "ExecuteBonus"}},
     {"Sandbox_Title_OMHTurretsTraps_Impact", {"ImpactFirst", "ImpactBonus"}},
-    {"Sandbox_Title_OMHTurretsTraps_Capacity", {"ControllerKitRange", "ControllerKitCapacity", "TrapsControllerKitRange", "TrapsControllerKitCapacity", "CapacityImprovisedModuleBonus", "CapacityImprovisedAmmoBonus", "CapacitySmallAmmoBonus", "CapacitySmallModuleBonus", "CapacityAmmoBonus", "CapacityModuleBonus", "CapacityLargeAmmoBonus", "CapacityLargeModuleBonus"}},
+    {"Sandbox_Title_OMHTurretsTraps_Capacity", {"ControllerKitRange", "ControllerKitCapacity", "TrapsControllerKitRange", "TrapsControllerKitCapacity", "CapacityImprovisedModuleBonus", "AmmoMakeshiftMultiplier", "AmmoSmallMultiplier", "CapacitySmallModuleBonus", "AmmoMediumMultiplier", "CapacityModuleBonus", "AmmoLargeMultiplier", "CapacityLargeModuleBonus"}},
 }
 
 ---@param panel ISPanel Sandbox panel
@@ -155,7 +156,7 @@ function UI.attach(panel)
     elseif panel.controls["OMHTurretsTraps.ControllerRange"] or panel.controls["OMHTurretsTraps.TrapsControllerRange"] then
         local prefix = panel.controls["OMHTurretsTraps.ControllerRange"] and "" or "Traps"
         sections = {
-            {"Sandbox_Title_OMHTurretsTraps_Controller", {prefix .. "ControllerRange", prefix .. "ControllerCapacity"}},
+            {"Sandbox_Title_OMHTurretsTraps_Controller", {prefix .. "ControllerRange", prefix .. "ControllerCapacity", prefix .. "ControllerIdleHours"}},
             {"Sandbox_Title_OMHTurretsTraps_Laser", {prefix .. "LaserRange", prefix .. "TriggerLaserConsumption"}},
             {"Sandbox_Title_OMHTurretsTraps_Button", {prefix .. "TriggerButtonConsumption"}},
             {"Sandbox_Title_OMHTurretsTraps_Lever", {prefix .. "TriggerLeverConsumption"}},

@@ -22,8 +22,9 @@ function R.footer(panel, description, battery, rarity)
             local text = rows[i]
             local kind = "normal"
             if string.sub(text, 1, #featurePrefix) == featurePrefix
-                or string.sub(text, 1, #getText("UI_OMHTT_KitControllerLabel")) == getText("UI_OMHTT_KitControllerLabel")
-                or string.sub(text, 1, #getText("UI_OMHTT_KitTurretLabel")) == getText("UI_OMHTT_KitTurretLabel") then kind = "feature" end
+                then
+                kind = "feature"
+            end
             if string.sub(text, 1, #rarityPrefix) == rarityPrefix then kind = "rarity" end
             if string.sub(text, 1, #batteryPrefix) == batteryPrefix then kind = "battery" end
             local lines = string.split(measure:WrapText(font, text, 350), "\n")
@@ -56,12 +57,12 @@ function R.footer(panel, description, battery, rarity)
     panel:drawRectBorder(0, 0, width, total, panel.borderColor.a, panel.borderColor.r, panel.borderColor.g, panel.borderColor.b)
     for i = 1, #cached.lines do
         local row = cached.lines[i]
-        local color = row.kind == "feature" and grey or white
+        local color = row.kind == "feature" and white or grey
         if row.kind == "rarity" and rarity then color = {r = rarity.tr, g = rarity.tg, b = rarity.tb} end
         local y = height + 4 + (i - 1) * spacing
         if row.kind == "battery" and battery then
             if row.value then
-                panel:drawText(batteryPrefix, 5, y, 1, 1, 1, 1, font)
+                panel:drawText(batteryPrefix, 5, y, grey.r, grey.g, grey.b, 1, font)
                 panel:drawText(row.value, 5 + row.offset, y, battery.r, battery.g, battery.b, 1, font)
             else
                 panel:drawText(row.text, 5, y, battery.r, battery.g, battery.b, 1, font)

@@ -214,6 +214,7 @@ public final class KahluaCheck {
             { "OMHTT/DefenseEffects", base + "shared/OMHTT/DefenseEffects.lua"},
             {"OMHTT/ControlOptions", base + "client/OMHTT/ControlOptions.lua"},
             {"OMHTT/ControlAudio", base + "shared/OMHTT/ControlAudio.lua"},
+            {"OMHTT/ControlMenuAudio", base + "shared/OMHTT/ControlMenuAudio.lua"},
             {"OMHTT/DefenseCombatServer", base + "server/OMHTT/DefenseCombatServer.lua"},
             {"OMHTT/DefenseCombatClient", base + "client/OMHTT/DefenseCombatClient.lua"},
             {"OMHTT/Damage", base + "server/OMHTT/Damage.lua"},
@@ -255,6 +256,8 @@ public final class KahluaCheck {
             {"OMHTT/ControlSensor", base + "server/OMHTT/ControlSensor.lua"},
             {"OMHTT/ControlDefinitions", base + "shared/OMHTT/ControlDefinitions.lua"},
             {"OMHTT/ControlPower", base + "server/OMHTT/ControlPower.lua"},
+            {"OMHTT/ControlEndurance", base + "server/OMHTT/ControlEndurance.lua"},
+            {"OMHTT/ControlLegacyStorage", base + "server/OMHTT/ControlLegacyStorage.lua"},
             {"OMHTT/ControlPoke", base + "server/OMHTT/ControlPoke.lua"},
             {"OMHTT/ControlWorld", base + "server/OMHTT/ControlWorld.lua"},
             {"OMHTT/ControlCycle", base + "server/OMHTT/ControlCycle.lua"},
@@ -339,6 +342,7 @@ public final class KahluaCheck {
             {"OMHTT/TurretNetworkView", base + "client/OMHTT/TurretNetworkView.lua"},
             {"OMHTT/TurretMagazineAction", base + "shared/OMHTT/TurretMagazineAction.lua"},
             {"OMHTT/ControlTheme", base + "client/OMHTT/ControlTheme.lua"},
+            {"OMHTT/ControlExpansionTexture", base + "client/OMHTT/ControlExpansionTexture.lua"},
             {"OMHTT/SlotHint", base + "client/OMHTT/SlotHint.lua"},
             {"OMHTT/TurretSlot", base + "client/OMHTT/TurretSlot.lua"},
             {"OMHTT/TurretAim", base + "shared/OMHTT/TurretAim.lua"},
@@ -367,6 +371,7 @@ public final class KahluaCheck {
             {"OMHTT/WindowGeometry", base + "client/OMHTT/WindowGeometry.lua"},
             {"OMHTT/ControlWindowChrome", base + "client/OMHTT/ControlWindowChrome.lua"},
             {"OMHTT/ControlBatterySlot", base + "client/OMHTT/ControlBatterySlot.lua"},
+            {"OMHTT/ControlBatteryDescription", base + "client/OMHTT/ControlBatteryDescription.lua"},
             {"OMHTT/ControlStockpilePane", base + "client/OMHTT/ControlStockpilePane.lua"},
             {"OMHTT/ControlWindowDrag", base + "client/OMHTT/ControlWindowDrag.lua"},
             {"OMHTT/ControlInventory", base + "client/OMHTT/ControlInventory.lua"},
@@ -379,6 +384,7 @@ public final class KahluaCheck {
             {"OMHTT/ControlGroupUI", base + "client/OMHTT/ControlGroupUI.lua"},
             {"OMHTT/ControlGraph", base + "client/OMHTT/ControlGraph.lua"},
             {"OMHTT/ControlMap", base + "client/OMHTT/ControlMap.lua"},
+            {"OMHTT/ControlHostDetails", base + "client/OMHTT/ControlHostDetails.lua"},
             {"OMHTT/ControlPanelLayout", base + "client/OMHTT/ControlPanelLayout.lua"},
             {"OMHTT/ControlDiscovery", base + "client/OMHTT/ControlDiscovery.lua"},
             {"OMHTT/ControlExpansionAction", base + "shared/OMHTT/ControlExpansionAction.lua"},
@@ -541,6 +547,7 @@ public final class KahluaCheck {
             {"OMHTT/ControlLootUI", base + "client/OMHTT/ControlLootUI.lua"},
             {"_", "tools/tests/corrections_c437.lua"},
             {"_", "tools/tests/corrections_c444.lua"},
+            {"_", "tools/tests/corrections_c450.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

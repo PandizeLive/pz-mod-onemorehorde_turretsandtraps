@@ -106,6 +106,7 @@ function Swap:complete()
     end
     if isServer() and contents.head then require("OMHTT/TurretItemState").publish(contents.head, self.character) end
     state.transferRevision = (state.transferRevision or 0) + 1
+    require("OMHTT/ControlMenuAudio").confirm(self.character)
     self.done = true
     require("OMHTT/TurretWorld").refresh(self.object)
     if isServer() then

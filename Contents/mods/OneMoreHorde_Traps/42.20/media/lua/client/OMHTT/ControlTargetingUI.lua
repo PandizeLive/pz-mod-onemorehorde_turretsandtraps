@@ -53,7 +53,11 @@ function U.refresh(button, player, object)
     local supported = state and Policy.supported(state.kind)
     button:setVisible(supported == true)
     button:setEnable(supported and Access.authorized(player, object) and Access.write(player, state) or false)
-    button:setTitle(U.caption(state))
+    local caption = U.caption(state)
+    if getTextManager():MeasureStringX(UIFont.Small, caption) > button.width - 16 then
+        caption = getText("UI_OMHTT_TargetingShort")
+    end
+    button:setTitle(caption)
     local effective = state and state.targetingEffective or "Zombies"
     if state and not isClient() then
         local records = require("OMHTT/ControlWorld").records().records

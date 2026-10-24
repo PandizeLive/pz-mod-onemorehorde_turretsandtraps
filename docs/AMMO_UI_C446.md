@@ -1,5 +1,7 @@
 # C446 - Twelve-hour ammo endurance and Controller meter choices
 
+**C450 update:** Final approval is implemented in [0.2.67](PATCH_v0.2.67.md); [verification/delivery](TEST_v0.2.67.md) distinguishes automated evidence from pending owner acceptance. Earlier proposal and installed-version statements below are historical.
+
 Date: 2026-10-24. Owner asks for firearms at 5,000 rounds, other ammunition runtimes, a twelve-in-game-hour continuous-firing target, and descriptive gradient UI mockups. This sets the endurance direction and authorizes standalone comparisons; it does not select a numerical capacity policy or authorize installing a UI variant. Installed 0.2.66 remains unchanged. C445 corrective scope and artist assets remain pending.
 
 ## Verified time baseline and calculation

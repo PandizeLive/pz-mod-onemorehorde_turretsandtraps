@@ -52,6 +52,7 @@ end
 ---@return nil
 function Theme.title(panel, key)
     require("OMHTT/ControlWindowChrome").arrange(panel)
+    Theme.gradient = panel.titlebarbkg
     panel:drawTextureScaled(panel.titlebarbkg, 2, 1, panel.width - 4, panel.titleHeight - 2, 1, 1, 1, 1)
     panel:drawRect(1, panel.titleHeight - 1, panel.width - 2, 1, 1, .35, .35, .35)
     local footer = panel.footerHeight
@@ -66,6 +67,51 @@ function Theme.title(panel, key)
     panel:clearStencilRect()
 end
 
+---@param panel ISPanel Drawing owner
+---@param x number Left
+---@param y number Top
+---@param width number Width
+---@param height number Height
+---@return nil
+function Theme.header(panel, x, y, width, height)
+    if width <= 0 or height <= 0 then return end
+    panel:drawRect(x, y, width, height, 1, .19, .20, .18)
+    if Theme.gradient then
+        panel:drawTextureScaled(Theme.gradient, x, y, width, height, .45, 1, 1, 1)
+    end
+    panel:drawRect(x, y, width, 1, .55, .43, .45, .40)
+    panel:drawRect(x, y + height - 1, width, 1, 1, .28, .30, .25)
+end
+
+---@param panel ISPanel Drawing owner
+---@param x number Left
+---@param y number Top
+---@param width number Width
+---@param height number Height
+---@param remaining number Remaining resource fraction
+---@return nil
+function Theme.meter(panel, x, y, width, height, remaining)
+    if width <= 0 or height <= 0 then return end
+    local fraction = 0
+    if type(remaining) == "number" and remaining == remaining then
+        fraction = math.max(0, math.min(1, remaining))
+    end
+    panel:drawRect(x, y, width, height, 1, .14, .16, .12)
+    local fill = width * fraction
+    if fill <= 0 then return end
+    local red, green, blue = .46, .59, .35
+    if fraction <= .1 then
+        red, green, blue = .74, .29, .22
+    elseif fraction <= .25 then
+        red, green, blue = .76, .55, .27
+    end
+    panel:drawRect(x, y, fill, height, 1, red, green, blue)
+    if Theme.gradient then
+        panel:drawTextureScaled(Theme.gradient, x, y, fill, height, .22, 1, 1, 1)
+    end
+    panel:drawRect(x, y, fill, math.min(1, height), .3, 1, 1, 1)
+end
+
 ---@param panel ISPanel Section owner
 ---@param x number Left
 ---@param y number Top
@@ -77,8 +123,7 @@ end
 function Theme.section(panel, x, y, width, height, header, title)
     panel:drawRect(x, y, width, height, .88, .055, .055, .055)
     panel:drawRectBorder(x, y, width, height, .65, .30, .30, .30)
-    panel:drawRect(x, y, width, header, 1, Theme.surface.r, Theme.surface.g, Theme.surface.b)
-    panel:drawRect(x, y, 2, header, 1, Theme.accent.r, Theme.accent.g, Theme.accent.b)
+    Theme.header(panel, x, y, width, header)
     panel:drawText(title, x + 8, y + 4, .95, .95, .95, 1, UIFont.Small)
 end
 

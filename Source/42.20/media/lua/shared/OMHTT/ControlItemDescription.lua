@@ -3,7 +3,7 @@ local kinds = {
     OMHTTTrapSpikeBarrier = "Barrier", OMHTTTrapSpikeBarrierReinforced = "Barrier",
     OMHTTTrapBedSpikes = "Bed", OMHTTTrapBedSpikesReinforced = "Bed",
     OMHTTTrapBarbedPanel = "Barb", OMHTTTrapConcertinaWire = "Wire",
-    OMHTTTrapPokeFloor = "Poke", OMHTTTrapTetherDart = "Tether",
+    OMHTTTrapPokeFloor = "Poke", OMHTTTrapPokeFloorMechanical = "Poke", OMHTTTrapTetherDart = "Tether",
     OMHTTTrapController = "Controller", OMHTTTrapButton = "Button",
     OMHTTTrapLever = "Lever", OMHTTTrapPressurePlate = "Plate", OMHTTTrapLaser = "Laser",
 }
@@ -20,8 +20,7 @@ function D.get(item)
         local text = getText("UI_OMHTT_ControllerKitBonus", tier * expansion.option("ControllerKitRange", 10, 25), tier * expansion.option("ControllerKitCapacity", 100, 1000))
         if require("OMHTT/Foundation").turretsAvailable then
             local stats = require("OMHTT/TurretStats")
-            local base = stats.resolve().modules
-            text = text .. "\n" .. getText("UI_OMHTT_TurretKitBonus", stats.resolve({active = {[name] = 1}}).modules - base)
+            text = text .. "\n" .. require("OMHTT/TurretAmmoCapacity").description(tier, stats.moduleCapacity({[name] = 1}))
         end
         return text .. "\n" .. getText("UI_OMHTT_ModuleRarity", getText("UI_OMHTT_Rarity" .. rarity.band)), nil, rarity
     end

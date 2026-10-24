@@ -11,8 +11,8 @@ H.definitions = {
     {item = "Base.OMHTTTrapConcertinaWire", craft = "OMHTTCraftConcertinaWire", deploy = "OMHTTDeployConcertinaWire"},
     {item = "Base.OMHTTTrapBarbedPanel", craft = "OMHTTCraftBarbs", deploy = "OMHTTBarbs"},
     {item = "Base.OMHTTTrapTetherDart", craft = "OMHTTCraftTether", deploy = "OMHTTDeployTether", control = true},
-    {item = "Base.OMHTTTrapPokeFloor", craft = "OMHTTCraftPoke", deploy = "OMHTTDeployPoke", control = true},
-    {item = "Base.OMHTTTrapPokeFloor", craft = "OMHTTCraftPokeImprovised", deploy = "OMHTTDeployPoke", control = true},
+    {item = "Base.OMHTTTrapPokeFloorMechanical", legacy = "Base.OMHTTTrapPokeFloor", craft = "OMHTTCraftPoke", deploy = "OMHTTDeployPoke", control = true},
+    {item = "Base.OMHTTTrapPokeFloorMechanical", legacy = "Base.OMHTTTrapPokeFloor", craft = "OMHTTCraftPokeImprovised", deploy = "OMHTTDeployPoke", control = true},
     {item = "Base.OMHTTTurretBase", craft = "OMHTTCraftTurretBase", deploy = "OMHTTDeployTurret", turret = true},
     {item = "Base.OMHTTTrapController", craft = "OMHTTCraftController", deploy = "OMHTTDeployController", control = true},
     {item = "Base.OMHTTTrapPressurePlate", craft = "OMHTTCraftPlate", deploy = "OMHTTDeployInsetPlate", control = true},
@@ -49,8 +49,13 @@ end
 ---@param definition table Build route
 ---@return InventoryItem? item Exact usable carried object
 function H.item(player, definition)
-    return player:getInventory():getFirstTypeEvalArgRecurse(definition.item, carried,
-        {player = player, definition = definition})
+    local context = {player = player, definition = definition}
+    local inventory = player:getInventory()
+    local item = inventory:getFirstTypeEvalArgRecurse(definition.item, carried, context)
+    if not item and definition.legacy then
+        item = inventory:getFirstTypeEvalArgRecurse(definition.legacy, carried, context)
+    end
+    return item
 end
 
 ---@param player IsoPlayer Builder

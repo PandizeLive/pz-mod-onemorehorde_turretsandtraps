@@ -186,6 +186,9 @@ function Action:complete()
         self.object:transmitUpdatedSpriteToClients()
         require("OMHTT/TurretAuthority").publish(self.object)
     end
+    if T.kind(self.item) ~= "ammo" then
+        require("OMHTT/ControlMenuAudio").confirm(self.character)
+    end
     return true
 end
 

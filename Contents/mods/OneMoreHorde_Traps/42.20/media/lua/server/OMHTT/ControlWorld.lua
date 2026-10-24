@@ -111,6 +111,51 @@ function W.publish(object)
     end
 end
 
+---@param state table Assigned device record
+---@param object IsoObject? Loaded device
+---@param hostId string? Previous controller identity
+---@return nil
+function W.detach(state, object, hostId)
+    hostId = hostId or state.controller
+    local host = hostId and W.records().records[hostId]
+    if host and host.organization then
+        local groups = host.organization
+        groups.members[state.id] = nil
+        for i = #groups.order, 1, -1 do
+            if groups.order[i] == state.id then
+                table.remove(groups.order, i)
+            end
+        end
+        groups.revision = groups.revision + 1
+        local controller = W.objects[hostId]
+        if controller then
+            W.publish(controller)
+        end
+    end
+    state.controller = nil
+    if object then
+        for _, sessions in pairs(A.remote) do
+            sessions[object] = nil
+        end
+        W.publish(object)
+    end
+end
+
+---@param object IsoObject Loaded device
+---@param state table Device record
+---@return nil
+function W.reconcile(object, state)
+    if not state.controller then return end
+    local host = W.records().records[state.controller]
+    local controller = W.objects[state.controller]
+    if not host or not host.placed then
+        W.detach(state, object)
+    elseif controller and controller:getObjectIndex() >= 0 and controller:getSquare()
+        and not A.range(controller, object) then
+        W.detach(state, object)
+    end
+end
+
 ---@param object IsoObject Controller
 ---@param state table Private record
 ---@return nil
@@ -201,6 +246,7 @@ function W.register(object, player, kind, previous)
     state.location = state.x .. ":" .. state.y .. ":" .. state.z .. ":" .. state.sprite
     state.placed = true
     W.name(state)
+    local previousController = state.controller
     if state.controller then
         local host, count = records.records[state.controller], 0
         for _, assigned in pairs(records.records) do
@@ -227,6 +273,11 @@ function W.register(object, player, kind, previous)
     W.controllerSprite(object, state)
     W.buttonSprite(object, state)
     W.indexPlate(object, state)
+    if previousController and not state.controller then
+        W.detach(state, object, previousController)
+    else
+        W.reconcile(object, state)
+    end
     W.publish(object)
     return state
 end
@@ -389,9 +440,13 @@ end
 function W.assign(controller, object, player, enabled)
     local host, state = W.state(controller), W.state(object)
     if not host or host.kind ~= "Controller" or not state or state.kind == "Controller"
-        or controller:getHealth() <= 0 or object:getHealth() <= 0 or not A.range(controller, object)
+        or controller:getHealth() <= 0 or (enabled and (object:getHealth() <= 0 or not A.range(controller, object)))
         or not A.write(player, host) or not A.write(player, state) then return false end
     if not enabled and state.controller ~= host.id then return false end
+    if not enabled then
+        W.detach(state, object)
+        return true
+    end
     if enabled then
         local count = 0
         for _, other in pairs(W.records().records) do
@@ -445,10 +500,9 @@ function W.create(params)
     local source, kind
     if consumed then
         for i = 0, consumed:size() - 1 do
-            for key, fullType in pairs(C.types) do
-                if consumed:get(i):getFullType() == fullType then
-                    source, kind = consumed:get(i), key
-                end
+            local key = C.kind(consumed:get(i):getFullType())
+            if key then
+                source, kind = consumed:get(i), key
             end
         end
     end
@@ -459,7 +513,7 @@ function W.create(params)
     local previous = W.records().packed[tostring(source:getID())]
     local state = W.register(object, player, kind, previous)
     W.records().packed[tostring(source:getID())] = false
-    state.itemType = source:getFullType()
+    state.itemType = C.types[kind]
     if kind == "Lever" or kind == "Laser" then state.facing = params.facing end
     object:setName(getText("UI_OMHTT_Control" .. kind))
     local health = kind == "Poke" and require("OMHTT/ControlPoke").option("Health", 200, 1, 10000) or 100
@@ -479,8 +533,8 @@ function W.create(params)
         container:setAcceptItemFunction(kind == "Poke" and "OMHTTPokeReject" or "OMHTTControlAccept")
         container:setExplored(true)
         object:setContainer(container)
-        local inventory = source:getInventory()
-        while inventory:getItems():size() > 0 do
+        local inventory = instanceof(source, "InventoryContainer") and source:getInventory()
+        while inventory and inventory:getItems():size() > 0 do
             local item = inventory:getItems():get(0)
             inventory:Remove(item)
             container:AddItem(item)
@@ -688,6 +742,7 @@ function W.tick()
         local square = object and object:getSquare()
         local loaded = state and square and getCell():getGridSquare(state.x, state.y, state.z) == square
         if loaded and state and object:getObjectIndex() >= 0 and (object:getHealth() > 0 or state.kind == "Poke" or state.kind == "Tether") then
+            W.reconcile(object, state)
             if state.kind == "Controller" and (not state.powerDue or now >= state.powerDue) then
                 state.powerDue = now + 1000
                 require("OMHTT/ControlPower").refresh(object)
@@ -816,11 +871,16 @@ end
 function W.pickup(player, object)
     local state = W.state(object)
     if not state or not A.near(player, object) or not A.write(player, state) or not state.itemType then return false end
-    local item = instanceItem(state.itemType)
+    local itemType = state.kind == "Poke" and C.types.Poke or state.itemType
+    local item = instanceItem(itemType)
     if not item then return false end
     state.carriedHealth = object:getHealth()
     item:setCondition(state.carriedHealth > 0 and math.max(1, math.floor(state.carriedHealth / (state.maxHealth or 100) * item:getConditionMax())) or 0)
     local storage = object:getContainer()
+    if storage and not instanceof(item, "InventoryContainer") then
+        if not require("OMHTT/ControlLegacyStorage").recover(player, object) then return false end
+        storage = nil
+    end
     if storage then
         local destination = item:getInventory()
         while storage:getItems():size() > 0 do
@@ -845,6 +905,7 @@ function W.pickup(player, object)
         return false
     end
     W.retire(object)
+    state.itemType = itemType
     W.records().packed[tostring(item:getID())] = W.copy(state)
     item:getModData().OMHTTControl = W.copy(state)
     W.removed(object)

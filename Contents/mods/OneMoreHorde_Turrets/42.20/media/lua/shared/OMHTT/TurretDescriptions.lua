@@ -38,7 +38,7 @@ function D.get(name, rich)
         local tier = ({CapacityImprovised = 1, CapacitySmall = 2, Capacity = 3, CapacityLarge = 4})[name]
         local sep = rich and " <LINE> " or "\n"
         local text = getText("UI_OMHTT_ControllerKitBonus", tier * E.option("ControllerKitRange", 10, 25), tier * E.option("ControllerKitCapacity", 100, 1000))
-            .. sep .. getText("UI_OMHTT_TurretKitBonus", S.resolve({active = {[name] = 1}}).modules - S.resolve().modules)
+            .. sep .. require("OMHTT/TurretAmmoCapacity").description(tier, S.moduleCapacity({[name] = 1}))
         local rarity = R.get(name)
         return (rich and "<RGB:0.8,0.8,0.8> " .. text .. " <RGB:1,1,1>" or text) .. sep
             .. (rich and string.format("<RGB:%.3f,%.3f,%.3f> ", rarity.tr, rarity.tg, rarity.tb) or "")
@@ -61,8 +61,8 @@ function D.get(name, rich)
     if D.cache[key] then return D.cache[key] end
     local color = rich and string.format(" <RGB:%.3f,%.3f,%.3f> ", rarity.tr, rarity.tg, rarity.tb) or ""
     local sep = rich and " <LINE> " or "\n"
-    local text = (rich and "<RGB:0.8,0.8,0.8> " or "") .. getText("UI_OMHTT_ModuleFeature", effect)
-        .. (rich and " <RGB:1,1,1>" or "") .. sep
+    local text = (rich and "<RGB:1,1,1> " or "") .. getText("UI_OMHTT_ModuleFeature", effect)
+        .. (rich and " <RGB:0.8,0.8,0.8>" or "") .. sep
         .. getText("UI_OMHTT_ModuleStackable", stack) .. sep
         .. getText("UI_OMHTT_ModuleDrain", surcharge) .. sep
         .. color .. getText("UI_OMHTT_ModuleRarity", getText("UI_OMHTT_Rarity" .. rarity.band)) .. (rich and " <RGB:1,1,1> " or "")

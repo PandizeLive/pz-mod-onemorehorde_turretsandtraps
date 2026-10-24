@@ -26,7 +26,7 @@ function D.battery(item, rich, rating)
     rating = rating or D.rating(item)
     local value = getText(rating.key)
     if rich then
-        value = string.format("<RGB:%.2f,%.2f,%.2f> ", rating.r, rating.g, rating.b) .. value .. " <RGB:1,1,1>"
+        value = string.format("<RGB:%.2f,%.2f,%.2f> ", rating.r, rating.g, rating.b) .. value .. " <RGB:0.8,0.8,0.8>"
     end
     return getText("UI_OMHTT_HeadBattery", value)
 end
@@ -53,7 +53,7 @@ function D.get(item, rich, resolved)
     local rate = getText("UI_OMHTT_HeadRate", string.format("%.2f", 1000 / stats.cooldown))
     if stats.rotary then rate = getText("UI_OMHTT_MotorSpeed", string.format("%.1f", stats.motorSpeed / 6)) end
     local lines = {
-        (rich and "<RGB:0.8,0.8,0.8> " or "") .. getText("UI_OMHTT_ModuleFeature", getText("UI_OMHTT_HeadFeature" .. kind)) .. (rich and " <RGB:1,1,1>" or ""),
+        (rich and "<RGB:1,1,1> " or "") .. getText("UI_OMHTT_ModuleFeature", getText("UI_OMHTT_HeadFeature" .. kind)) .. (rich and " <RGB:0.8,0.8,0.8>" or ""),
         getText("UI_OMHTT_HeadAmmo", ammo), getText("UI_OMHTT_HeadDamage", damage),
         getText("UI_OMHTT_HeadRange", string.format("%.1f", stats.range)), getText("UI_OMHTT_HeadFirerate", rate),
         D.battery(item, rich, rating),

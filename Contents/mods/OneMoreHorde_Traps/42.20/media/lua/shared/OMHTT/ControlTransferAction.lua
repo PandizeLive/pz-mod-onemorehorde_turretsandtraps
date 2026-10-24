@@ -63,6 +63,7 @@ function Action:complete()
         world.state(self.object).batteryId = self.item:getID()
         world.publish(self.object)
         self.done = true
+        require("OMHTT/ControlMenuAudio").confirm(self.character)
         return true
     end
     local source = self.item:getContainer()
@@ -87,6 +88,9 @@ function Action:complete()
     if isServer() then
         sendRemoveItemFromContainer(source, self.item)
         sendAddItemToContainer(destination, self.item)
+    end
+    if require("OMHTT/TurretBattery").car(self.item) or require("OMHTT/ControlExpansion").tier(self.item) > 0 then
+        require("OMHTT/ControlMenuAudio").confirm(self.character)
     end
     return true
 end

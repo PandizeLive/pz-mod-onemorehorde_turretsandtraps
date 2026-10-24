@@ -195,8 +195,8 @@ option OMHTurretsTraps.PotatoRequirePower {
 
 option OMHTurretsTraps.PotatoAmmoCapacity {
     type = integer,
-    default = 100,
-    min = 1,
+    default = -1,
+    min = -1,
     max = 500,
     page = OMHTurretsTraps_PotatoPage,
     translation = OMHTurretsTraps_PotatoAmmoCapacity,
@@ -365,9 +365,9 @@ option OMHTurretsTraps.FirearmTurrets {
 
 option OMHTurretsTraps.FirearmAmmoCapacity {
     type = integer,
-    min = 1,
+    min = -1,
     max = 500,
-    default = 250,
+    default = -1,
     page = OMHTurretsTraps_PotatoPage,
     translation = OMHTurretsTraps_FirearmAmmoCapacity,
 }
@@ -552,8 +552,8 @@ option OMHTurretsTraps.RangeBonus {
 
 option OMHTurretsTraps.CapacityAmmoBonus {
     type = integer,
-    default = 400,
-    min = 0,
+    default = -1,
+    min = -1,
     max = 2000,
     page = OMHTurretsTraps_StatModulesPage,
     translation = OMHTurretsTraps_CapacityAmmoBonus,
@@ -570,8 +570,8 @@ option OMHTurretsTraps.CapacityModuleBonus {
 
 option OMHTurretsTraps.CapacitySmallAmmoBonus {
     type = integer,
-    default = 200,
-    min = 0,
+    default = -1,
+    min = -1,
     max = 2000,
     page = OMHTurretsTraps_StatModulesPage,
     translation = OMHTurretsTraps_CapacitySmallAmmoBonus,
@@ -588,8 +588,8 @@ option OMHTurretsTraps.CapacitySmallModuleBonus {
 
 option OMHTurretsTraps.CapacityLargeAmmoBonus {
     type = integer,
-    default = 650,
-    min = 0,
+    default = -1,
+    min = -1,
     max = 2000,
     page = OMHTurretsTraps_StatModulesPage,
     translation = OMHTurretsTraps_CapacityLargeAmmoBonus,
@@ -887,8 +887,8 @@ option OMHTurretsTraps.CapacityImprovisedModuleBonus {
 
 option OMHTurretsTraps.CapacityImprovisedAmmoBonus {
     type = integer,
-    default = 100,
-    min = 0,
+    default = -1,
+    min = -1,
     max = 2000,
     page = OMHTurretsTraps_StatModulesPage,
     translation = OMHTurretsTraps_CapacityImprovisedAmmoBonus,
@@ -2181,4 +2181,111 @@ option OMHTurretsTraps.TackBonus {
     default = 0.15,
     page = OMHTurretsTraps_StatModulesPage,
     translation = OMHTurretsTraps_TackBonus,
+}
+
+option OMHTurretsTraps.AmmoUseMultipliers {
+    type = boolean,
+    default = false,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_AmmoUseMultipliers,
+}
+
+option OMHTurretsTraps.AmmoBasePotato {
+    type = integer,
+    default = 75,
+    min = 1,
+    max = 10000,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_AmmoBasePotato,
+}
+
+option OMHTurretsTraps.AmmoBaseBallista {
+    type = integer,
+    default = 30,
+    min = 1,
+    max = 10000,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_AmmoBaseBallista,
+}
+
+option OMHTurretsTraps.AmmoBaseLobber {
+    type = integer,
+    default = 35,
+    min = 1,
+    max = 10000,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_AmmoBaseLobber,
+}
+
+option OMHTurretsTraps.AmmoBaseScrapshot {
+    type = integer,
+    default = 90,
+    min = 1,
+    max = 10000,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_AmmoBaseScrapshot,
+}
+
+option OMHTurretsTraps.AmmoBaseFirearm {
+    type = integer,
+    default = 400,
+    min = 1,
+    max = 10000,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_AmmoBaseFirearm,
+}
+
+option OMHTurretsTraps.AmmoBaseShotgun {
+    type = integer,
+    default = 80,
+    min = 1,
+    max = 10000,
+    page = OMHTurretsTraps_PotatoPage,
+    translation = OMHTurretsTraps_AmmoBaseShotgun,
+}
+
+option OMHTurretsTraps.AmmoMakeshiftMultiplier {
+    type = double,
+    default = 2.5,
+    min = 1,
+    max = 100,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_AmmoMakeshiftMultiplier,
+}
+
+option OMHTurretsTraps.AmmoSmallMultiplier {
+    type = double,
+    default = 5,
+    min = 1,
+    max = 100,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_AmmoSmallMultiplier,
+}
+
+option OMHTurretsTraps.AmmoMediumMultiplier {
+    type = double,
+    default = 7.5,
+    min = 1,
+    max = 100,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_AmmoMediumMultiplier,
+}
+
+option OMHTurretsTraps.AmmoLargeMultiplier {
+    type = double,
+    default = 10,
+    min = 1,
+    max = 100,
+    page = OMHTurretsTraps_StatModulesPage,
+    translation = OMHTurretsTraps_AmmoLargeMultiplier,
+}
+
+option OMHTurretsTraps.ControllerIdleHours
+{
+    type = double,
+    min = 0.1,
+    max = 10000,
+    default = 48,
+    page = OMHTurretsTraps_TriggersPage,
+    translation = OMHTurretsTraps_ControllerIdleHours,
 }

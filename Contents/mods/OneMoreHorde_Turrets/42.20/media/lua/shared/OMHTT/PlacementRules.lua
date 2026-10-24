@@ -14,7 +14,7 @@ P.routes = {
     OMHTTDeploySwitchButton = {"Base.OMHTTTrapButton", 1},
     OMHTTDeployLever = {"Base.OMHTTTrapLever", 1},
     OMHTTDeployLaser = {"Base.OMHTTTrapLaser", 1},
-    OMHTTDeployPoke = {"Base.OMHTTTrapPokeFloor", 2},
+    OMHTTDeployPoke = {"Base.OMHTTTrapPokeFloorMechanical", 2},
 }
 
 ---@param item InventoryItem? Exact input
@@ -24,8 +24,10 @@ P.routes = {
 ---@nodiscard
 function P.carried(item, player, fullType)
     local container = item and item:getContainer()
-    return container ~= nil and container:isInCharacterInventory(player) and container:contains(item)
-        and item:getFullType() == fullType and item:getCondition() > 0
+    if not container or not container:isInCharacterInventory(player) or not container:contains(item) then return false end
+    local matches = item and (item:getFullType() == fullType
+        or fullType == "Base.OMHTTTrapPokeFloorMechanical" and item:getFullType() == "Base.OMHTTTrapPokeFloor")
+    return matches and item:getCondition() > 0
 end
 
 ---@param item InventoryItem Tool
