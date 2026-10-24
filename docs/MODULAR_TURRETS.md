@@ -1,5 +1,7 @@
 # Turret inventory and module plan
 
+**C441 discussion:** [Accelerating duplicate bonuses and three growth cases](MODULE_STACKING_C439.md#c441---accelerating-returns-and-build-specialization-2026-10-24). Owner examples are illustrative, not approved tuning. Earlier additive/diminishing-only choices are expanded. Rarity-first sorting and pending corrections stay selected.
+
 **C439 current direction (2026-10-24):** [Stacking audit and replacement discussion](MODULE_STACKING_C439.md). Owner selects rarity-first module sorting and rejects arbitrary total-bonus cutoffs as the balancing mechanism. Historical cap descriptions below describe the installed build, not the new design direction. C438 inactive storage and safe expansion replacement remain pending. No gameplay change is installed.
 
 **C355 / Implementation approved (2026-10-20).** Owner approved the settled battery/Siphon and mechanical Poke/Building scope. Implemented in [0.2.58](PATCH_v0.2.58.md); 25,906 assertions, native save/reload and independent packages pass; installed from immutable test/v0.2.58 with verified rollback backups. Rendered and connected-player acceptance remains pending. Lever/emitter content remains separate. No new loot weights or unselected recipes.
