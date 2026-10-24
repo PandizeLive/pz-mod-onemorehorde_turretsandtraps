@@ -57,6 +57,7 @@ Be a candid technical collaborator: assess ideas before agreeing, explain materi
 - [2026-09-25] For OMH: Turrets & Traps, the owner will source final art without AI. Do not generate concept art, stylistic designs, textures, icons or final visual assets, or otherwise direct the art. The explicitly authorized temporary white cube-only mechanical placeholder is an exception; its proportions and appearance are not design direction.
 - [2026-09-25] The owner additionally authorized temporary developer textures with white direction arrows and distinct object identifiers to make testing readable. These functional markers are not final artwork or aesthetic direction.
 - [2026-10-01] For T&T test findings and proposed features, discuss the diagnosis, proposed fixes, tradeoffs and patch scope with the owner before changing gameplay code. A Test Complete report is not approval to implement the next patch. Read-only investigation and explicitly requested audition HTML may proceed.
+- [2026-10-24] C439: Balance stackable OMHTT modules through their stacking formulas, slot investment and operating costs, not arbitrary total-bonus cutoffs. Distinguish probability bounds, loaded-world constraints and processing safeguards from balance ceilings. Review the current caps and proposed replacement formulas with the owner; this direction does not authorize deleting every runtime limit or inventing new proc mechanics.
 
 ## Release conventions (owner direction, 2026-09-26)
 

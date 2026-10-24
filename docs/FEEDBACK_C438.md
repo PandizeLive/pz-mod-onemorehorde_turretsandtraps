@@ -1,5 +1,7 @@
 # C438 - Tooltip consistency, expansion replacement and stacking audit
 
+**C439 update:** [Rarity-first 1B is selected; stack-cap policy is superseded](MODULE_STACKING_C439.md). The historical C438 diagnosis and measured arithmetic below remain valid for installed 0.2.65. The recommendation to retain existing bonus caps is superseded by the owner's stacking-based balance direction.
+
 Date: 2026-10-24. Installed/tested version: **0.2.65**, immutable `test/v0.2.65`, source `8a977bc60ea4845646f8bfb20a8eb7d7cd4b5f19`. Investigation began on documentation HEAD `659315bdb98d0f5a76fdd0c032b01dc369a9bd47`, branch `codex/performance-barbed-audit`. Origin/dev and the existing development PR were checked; no incoming decision conflict found.
 
 Status: owner feedback and requested behavior recorded; source diagnosis and numerical comparison completed. **No gameplay, package, installed build, version or Workshop changes.** The project test-feedback discussion rule applies before implementing this next scope. Sorting remains a concrete choice; the tooltip and inactive-storage directions below do not need another questionnaire.
