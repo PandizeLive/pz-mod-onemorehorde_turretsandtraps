@@ -4,3 +4,4 @@ Source/** -text
 *.png binary
 *.glb binary
 *.zip binary
+art/artist-handoff/** -text
