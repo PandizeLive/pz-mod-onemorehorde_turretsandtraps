@@ -18,7 +18,7 @@ Write/start/save/shutdown passes in **53.8 seconds**. Fresh-process read passes 
 
 ## Delivery
 
-All verification gates passed; immutable tag and managed installation are next. Installed 0.2.65 remains until that process completes. Workshop and hosted LootLab are unchanged.
+Installed from immutable **test/v0.2.66 / 7d56836bc097711ee426e0fdda9bf8a3598bbf76**. All **422 source and 574 package/tag/install/archive files** match their SHA-256 manifest. Both managed 0.2.65 backups verify (219 Traps files / 351 Turrets files). Installer backup: `C:\Users\bandi\Zomboid_Modding\OMH\Turrets & Traps\diagnostics\p1c1\install-backups\20261024-114857-0231`. Archive SHA-256: `54c5b971cc01299be953f9850474494ff92dd5960a078aa83148a6aa2407440a`. Local proof: diagnostics/v0.2.66/local-release.json. Workshop and hosted LootLab are unchanged.
 
 ## Owner checklist
 
@@ -28,4 +28,4 @@ All verification gates passed; immutable tag and managed installation are next. 
 - Rarity sorting, Details and window resizing
 - Tooltip colors and wrapped feature text
 
-Existing saved Sandbox values are preserved; use fresh defaults to assess the selected duplicate tuning. Rendered UI, listening, live balance, active Horde Night integration, stress FPS and connected dedicated/listen multiplayer acceptance remain pending. **Wait for a patch** until installation is recorded.
+Existing saved Sandbox values are preserved; use fresh defaults to assess the selected duplicate tuning. Rendered UI, listening, live balance, active Horde Night integration, stress FPS and connected dedicated/listen multiplayer acceptance remain pending. **Test now** after restarting when available.
