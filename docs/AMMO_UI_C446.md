@@ -85,3 +85,8 @@ Source changes are staged for the next patch. `Contents`, installed **0.2.66**, 
 ## C448 - Six-hour target supersedes twelve hours (2026-10-24)
 
 The owner now targets six hours of constant M4 firing and requests every kit/head comparison. [Current proposed multipliers, bases and full runtime tables](AMMO_SIX_HOURS_C448.md) supersede the unselected twelve-hour numerical candidates. C447 Native slim selection and staged implementation remain unchanged. Numerical approval remains pending; no gameplay or installed change.
+
+
+## C449 approval update (2026-10-24)
+
+Owner selects C4481A. [The six-hour table is now approved](AMMO_SIX_HOURS_C448.md#c449---1a-selected-2026-10-24), superseding the unselected twelve-hour numerical candidates. Native slim remains selected for both management menus; Horde Night/Trait Shop styling stays deferred. No Source/Contents or installed change is claimed by this approval record.

@@ -78,3 +78,23 @@ All times are game hours:minutes at the current 90-minute day, with ordinary rel
 Arc Emitter, Rotary Bat and Rotary Blade consume no ammunition. Their operation is limited by power and condition; expansion ammo capacity does not establish a runtime for them. Reusable Tether Dart has no consumable ammunition and traps do not accept expansion kits.
 
 Source basis: C446 current-Kahlua stats and installed weapon inputs, rechecked against the current relevant save settings; every original duration recomputed within 0.02 ms. All 200 new tier durations and 40 minimum-six-hour boundaries were checked with the current TurretBatteryEstimate.duration formula. These are calculation checks, not live firing measurements.
+
+
+## C449 - 1A selected (2026-10-24)
+
+Owner responds **"1A"** to the immediately preceding C448 choice. This approves the recommended entire ammunition table: six-hour M4 target using Enhanced Firing, without Rapid Fire, Conservation, Splitter, reload or magazine modifiers; total capacity multipliers1/2.5/5/7.5/10 for no kit/Makeshift/Small/Medium/Large; floor fractional capacities; one kit's total multiplier, not compounded upgrades.
+
+| Ammo family | Approved base | Approved Large |
+| --- | ---: | ---: |
+| Firearm rounds |400|4000|
+| Shotgun shells |80|800|
+| Potato |75|750|
+| Ballista |30|300|
+| Scrapshot |90|900|
+| Lobber |35|350|
+
+The complete intermediate-tier capacities and calculated runtimes above are selected. C4481B (ordinary-Firing target/320 firearm base) and prior twelve-hour capacity proposals are not selected. At the current90-minute day the approved full M4 capacity estimates6h07m with Enhanced or7h38m with ordinary Firing. This is ammunition endurance, not a guaranteed battery/condition/service duration. Fixed capacities remain independent of world day length or current rate. Arc/rotary ammo-free behavior, module-slot totals, Controller expansion bonuses, loot quantities/weights and existing saved tuning are unchanged by this decision.
+
+No additional owner choice is needed for the ammo numbers or Native slim styling. Carry the selected tuning into the next implementation with C445 corrections and C447 styling. Engineering requirements remain: consistent settings/tooltips for the actual selected rule, preserve existing custom Sandbox/base/legacy expansion values through a verifiable migration or legacy path, and do not delete stored ammunition when capacity decreases. Reuse the authoritative kit replacement/overflow protections; no automatic lossy truncation or silent reinterpretation of old saved100/200/400/650 values as literal multipliers. The current resolver uses head-family differences rather than direct multiplication, so changing four numbers alone would be incorrect. Validate independent packages, native save state and new/old settings semantics before delivery.
+
+This turn records the owner's approval; it does not claim implementation, build/install, test acceptance or publication. Current source still includes the staged C447 visual treatment but retains the old ammo resolver/settings. Installed0.2.66 and Contents are unchanged. No new test run was needed for a selection of the already-calculated table; retain C448 calculation evidence and outstanding rendered/MP acceptance. Standing C108/C119 requires committing/mirroring this decision. **Wait for a patch.**

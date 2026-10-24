@@ -118,3 +118,8 @@ Owner log captured through the standard Capture action: `diagnostics/captures/20
 ## C447 selection update (2026-10-24)
 
 C446 2A Native slim is selected for Controller and Turret Manage; shared headers/meters are implemented in Source. [Exact scope and remaining work](AMMO_UI_C446.md#c447---556-supply-and-selected-native-slim-style-2026-10-24). Separate C445 functional/layout/asset corrections remain pending. Ammo ceilings, base values and universal multipliers remain unselected; Horde Night and Trait Shop styling is explicitly deferred.
+
+
+## C449 remaining-choice review (2026-10-24)
+
+C4481A settles the revised ammunition bases and uniform multipliers; C447 settled Native slim for Controller and Manage. The earlier numerical/UI-choice prompts in this historical audit are superseded. No further owner design choice is currently identified in this recorded scope. The requested functional/layout/tooltips/audio/artist integration and safe saved-setting/ammo handling remain implementation and verification work. [Selected ammo contract](AMMO_SIX_HOURS_C448.md#c449---1a-selected-2026-10-24). No new installation or test result is inferred from approval.
