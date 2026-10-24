@@ -38,3 +38,10 @@ Captured current console: 0.2.65 SP, 2,463,426 bytes, source modified 2026-10-24
 A separate stock-Kahlua calculation executes current Stats/Estimate with source defaults and firearm fixtures, includes reload/rack, and confirms the eight-copy Rapid rate cap and five-copy Velocity damage cap. The source probe exits 0; results are theoretical raw DPS, not a live timing or balance acceptance test. Existing compiled harness prints 27,458 assertions for that optional run; it does not replace or extend the packaged 27,553-assertion release result. See diagnostics/c438/balance.lua and balance.log.
 
 No gameplay/source/package/install changes. Manuals/progression, audio/rendering, live Horde Night, stress FPS and connected multiplayer acceptance remain pending unless separately confirmed; this feedback does not implicitly pass those features.
+
+
+## C440 additional owner feedback (2026-10-24)
+
+**Failed presentation:** owner reports module icons overlapping/appearing behind labels when Details opens or the window resizes. [Source diagnosis and correction scope](FEEDBACK_C438.md#c440---module-icons-overlap-labels-after-details-or-resizing-2026-10-24) confirms populated icons remain centered after compact-mode text moves to the left; a 108x24 cell at line height 16 has overlapping icon/text bounds. Arithmetic reproduction only, not native rendered acceptance.
+
+Current console is unchanged from the C438 snapshot (SHA256 56b980f38d9c9c6ba1c2c58301a7d51408b3308b22808cf1181e640948fab4cd); no new runtime exception evidence or test session is claimed. Fix is added to the pending corrective patch. Installed 0.2.65 and earlier acceptance limitations remain unchanged.

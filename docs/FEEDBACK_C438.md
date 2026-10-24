@@ -100,3 +100,16 @@ Captured `C:/Users/bandi/Zomboid/console.txt` for the owner session: 0.2.65 SP d
 Console snapshot, hash/provenance, source probe and output are local under `diagnostics/c438/`. [Versioned feedback](TEST_v0.2.65.md#c438-owner-feedback-2026-10-24) preserves owner-reported failures separately from previous automated checks. New rendered, multiplayer and gameplay acceptance has not been claimed.
 
 **Decision needed:** choose 1A or 1B sorting and confirm the presented corrective scope under the project's discuss-before-patch rule. No numerical rebalance is proposed or applied.
+
+
+## C440 - Module icons overlap labels after Details or resizing (2026-10-24)
+
+Owner reports module icons drawing behind text when opening Details or resizing Turret Management. Add to the same pending corrective scope; no new visual-design choice is required. Rarity-first sorting stays selected. C439 additive/diminishing stacking choice remains open.
+
+Confirmed source cause: `TurretManageGeometry.apply` reduces module tile height to as little as `lineHeight + 8` when vertical room is limited. In `TurretSlot.prerender`, `narrowModule` changes the name position to x=24/y=4, but a populated icon still draws at the tile's horizontal center/y=3. Only the empty-slot hint switches to the left. At line height 16, tile 108x24, the real icon rectangle is x=48..60/y=3..15 and the text clipping rectangle is x=24..104/y=4..24: **132 square pixels of overlapping layout area**. This is deterministic source-coordinate evidence, not a new rendered screenshot or native-font glyph measurement. Local calculation: diagnostics/c440/layout-evidence.json.
+
+Related reflow risk: `TurretManageLayout.refresh` calls geometry before wrapping the current Details lines; geometry consumes the previous `detailLines` count and its cache key omits that count/font metrics. Verify current text measurement and final window dimensions are used in one consistent reflow, including repeated Details toggles and both resize axes. This is an additional code-review concern, not a separately reproduced visual failure.
+
+Correction contract: derive icon bounds and label bounds together. In compact rows use a left icon with a reserved text inset; in taller tiles use separate icon and label bands. Keep populated, empty and stored-unavailable slots consistent; scale/clamp icons and clip/ellipsize names within the cell, preserving full hover text. Retain the selected four-column grid and rarity-first ordering. Recompute from current dimensions/font/Details content without stale offsets or per-frame full remeasurement. No owner artwork changes.
+
+Verification planned with the patch: populated/empty/unavailable slots across the compact threshold, several font heights, repeated open/close Details and grow/shrink widths/heights; assert nonoverlapping rectangles and valid clipping, then include a short rendered owner check. Existing geometry tests did not prove icon/text separation. No source/package/version/install changes or new rendered pass this turn.
