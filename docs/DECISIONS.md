@@ -2276,3 +2276,10 @@ C450 delivery: **C450 / 0.2.67 installed (2026-10-24).** Owner gives final "Appr
 **C451 / 0.2.67 owner functional pass (2026-10-24).** Owner reports: "Looks like it's good and functional now!" [Playtest record](TEST_v0.2.67.md#c451---owner-playtest-2026-10-24). Captured console confirms both packages on 0.2.67 / game42.21 in SP, with no OMHTT exception stack found. This accepts the reported general workflow; it is not a measured endurance/stress or connected multiplayer result. The save retains its legacy 5,000-round firearm capacity, so the new ammo balance is not established by this session. No gameplay, version, installation or Workshop-draft change. **Test now** for remaining SP capacity/endurance/stress checks when available; multiplayer remains deferred.
 
 Provenance: owner confirmation immediately follows the C450 installed-build handoff. Do not reinterpret ambient preview selections as a new UI-style choice. Native slim remains the approved style. This feedback is not publication authorization or a claim that every checklist entry, new ammo defaults or multiplayer was exercised.
+
+
+## C452 - Owner closes 0.2.67 testing (2026-10-24)
+
+Provenance: owner explicitly confirms "Yea test complete. It's all good" after C451's functional-pass handoff. Accept and close the current 0.2.67 owner test round and checklist. This supersedes the provisional request for further single-player capacity/endurance/stress checks; do not repeatedly ask the owner to retest this accepted patch. Preserve prior log findings and distinguish calculated runtimes from measured benchmarks. Connected multiplayer remains deferred, and unrelated roadmap work and publication are not implied complete.
+
+[Acceptance record](TEST_v0.2.67.md#c452---test-round-complete-2026-10-24). Documentation-only update; no gameplay, version, installed-package, loot, immutable-tag or cumulative Workshop-draft changes.
