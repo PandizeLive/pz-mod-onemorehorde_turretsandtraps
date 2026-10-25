@@ -1,5 +1,7 @@
 # OMH: Turrets & Traps
 
+**C465 / Owner test findings audited; corrections pending (2026-10-25).** [Diagnosis and patch choices](docs/FEEDBACK_C465.md) record broken Custom entry, missing Specialist icon, stale Horde settings/whitelist classification, rotary grounded hits and Controller overlap. Current defaults reproduce the three settings flags; low XP remains an open live-payout check. All intended versions loaded, but this test round is not accepted. Recommend **1A retain/fix Custom, 2A manual icon**, then the coordinated corrective patch. Documentation only; 0.2.68 remains installed. **Decision needed.**
+
 **C464 / Shared defense XP implemented (2026-10-25).** Owner: "Approved, go ahead and implement the XP patch." Implements C460-C463 across T&T **0.2.68**, Trait Shop **0.9.1**, and Horde Night/Cure Defense **0.6.16.6**. Half-value owner-faction pool, equal personal PvP assists, retained delayed-death credit and life-bound offline delivery are implemented. [Patch](docs/PATCH_v0.2.68.md) | [Evidence and short test](docs/TEST_v0.2.68.md). Native injury and fresh-process ledger persistence pass; connected-player acceptance remains pending. All coordinated local packages are installed and hash-verified with backups; immutable test/v0.2.68 is privately mirrored. 0.2.67 acceptance stays closed. No Workshop publication. **Test now (single-player), with Trait Shop enabled.**
 
 

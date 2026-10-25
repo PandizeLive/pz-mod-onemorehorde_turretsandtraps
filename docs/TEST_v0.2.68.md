@@ -1,5 +1,16 @@
 # 0.2.68 - Shared defense XP verification
 
+## C465 owner test outcome (2026-10-25)
+
+Owner reports Test Complete with failures. Captured console confirms normal-client T&T 0.2.68, Trait Shop 0.9.1 and Horde/Cure 0.6.16.6 loaded. [Full diagnosis and pending choices](FEEDBACK_C465.md); capture `diagnostics/captures/20261025-125054-8293`.
+
+- Failed/source-supported: Custom entry visibility and 2,493 empty-number errors, absent Specialist icon, rotary hits on grounded enemies and Controller/furniture overlap.
+- Reproduced in installed Kahlua: saved current-default T&T settings produce Hardened, Lessened and Unknown (151 policy issues). Four enabled external IDs fail the current exact whitelist lookup; that is not reviewed proof of unfairness.
+- Owner-reported/open: low XP. Expected solo rates are 1 ordinary / 2.5 Horde defense XP with earning enabled. Saved GlobalModData is the initial 12:31:07 snapshot, older than completed combat; no final paid-kill count can be inferred. Native death ordering does not demonstrate a consume-guard failure. Actual lethal-hit-to-ledger and rendered/save-reload acceptance remain pending.
+- Requested presentation: colored score suffixes on Run Options, remove assistance wording, reuse a selected existing icon.
+
+This supersedes the earlier request for the now-completed owner test. No new build installed or repeat test requested. Earlier automated results remain scoped to their fixtures; they do not close these failures. Connected multiplayer remains unaccepted. **Decision needed** for the next corrective patch.
+
 ## Automated evidence (2026-10-25)
 
 - T&T: **27,729** Kahlua assertions; 436 source and 595 generated package files validated. Receipt checks cover matched sender/token, forged owner/XP rejection, malformed/expired/duplicate replies, optional Trait Shop absence, and client recipient/deduplication.

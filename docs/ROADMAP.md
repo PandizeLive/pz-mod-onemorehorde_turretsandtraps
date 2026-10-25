@@ -1,5 +1,7 @@
 # Phases and checkpoints
 
+**C465 / Corrective checkpoint awaiting decisions (2026-10-25).** [Owner findings and proposed scope](FEEDBACK_C465.md): Custom layout/validation, Specialist icon, Horde Run Options colors and settings-policy parity, unknown-mod classification, rotary ground exclusion, Controller occupancy and actual lethal-hit XP verification. Current defaults reproduce Hardened/Lessened/Unknown; final live XP totals remain unverified. No rebalance, blanket third-party approval, run reset or new build. Recommend **1A Custom fix / 2A manual icon**; combined patch approval pending. **Decision needed.**
+
 **C464 / Shared defense XP implemented (2026-10-25).** Owner: "Approved, go ahead and implement the XP patch." Implements C460-C463 across T&T **0.2.68**, Trait Shop **0.9.1**, and Horde Night/Cure Defense **0.6.16.6**. Half-value owner-faction pool, equal personal PvP assists, retained delayed-death credit and life-bound offline delivery are implemented. [Patch](PATCH_v0.2.68.md) | [Evidence and short test](TEST_v0.2.68.md). Native injury and fresh-process ledger persistence pass; connected-player acceptance remains pending. All coordinated local packages are installed and hash-verified with backups; immutable test/v0.2.68 is privately mirrored. 0.2.67 acceptance stays closed. No Workshop publication. **Test now (single-player), with Trait Shop enabled.**
 
 
