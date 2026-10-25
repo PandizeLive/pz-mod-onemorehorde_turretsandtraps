@@ -1,4 +1,4 @@
-v0.2.67
+v0.2.68
 
 Development test content
 
@@ -110,3 +110,5 @@ Local tools
 - Added wall-mounted Lever with a persistent ON/OFF latch, dedicated wall-face developer artwork and faint green powered-ON indicator and master-enable gating of other connected triggers; recovery retains condition and redeployment starts OFF.
 - Added craftable wall-mounted Laser Sensor with a green/red powered beam and fixed ten-tile default range configurable in Sandbox. Players and zombies, including crawlers, interrupt it; walls and closed doors shorten coverage without firing.
 - Added configurable incremental trigger consumption and OMH-colored tooltips with exact rates, time basis and Controller supply. Buttons cost per accepted press, Plate/Lever while active, and Laser while scanning; Controller idle and receiver costs stay separate. Detection-equipped rotary turrets now wait for an eligible target.
+
+- Added optional Trait Shop defense XP: half-value faction sharing, equal personal PvP assists, and same-character offline rewards; configurable faction rate and offline inclusion.

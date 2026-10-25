@@ -64,6 +64,7 @@ local function commitResult(job)
     zombie:setHealth(math.min(zombie:getHealth(), result.after))
     if result.lethal then
         zombie:setHealth(0)
+        require("OMHTT/DefenseXP").lethal(zombie, job.source, token and token.event)
         zombie:Kill(nil, false)
     end
     if core then

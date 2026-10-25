@@ -7,11 +7,9 @@ local crossings = {}
 
 ---@param player IsoPlayer Player landing on a bed
 ---@return nil
-local function injureFall(player)
+local function injureFall(player, source)
     if player:isGodMod() then return end
-    local parts = {BodyPartType.LowerLeg_L, BodyPartType.LowerLeg_R, BodyPartType.ForeArm_L, BodyPartType.ForeArm_R}
-    local part = player:getBodyDamage():getBodyPart(parts[ZombRand(#parts) + 1])
-    part:setCut(true, true)
+    require("OMHTT/DefenseInjury").contact(player, source, "fall")
 end
 
 ---@param player IsoPlayer Updated local player
@@ -34,7 +32,9 @@ function P.update(player, id, barb, divisor, trip, scratch, poke)
         crossings[index] = state
     end
     player:setVariable("OMHTTBedBrush", touching and player:isPlayerMoving() and not down and not traversing)
-    if down and not state.down and touching and not poke then injureFall(player) end
+    if down and not state.down and touching and not poke then
+        injureFall(player, id or (barb and (barb.source or barb.id)))
+    end
     local sprinting = player:isSprinting()
     if touching and not state.touching and not down and not traversing and (sprinting or state.sprinting)
         and not player:isGodMod() and ZombRand(100) < trip then
@@ -46,11 +46,7 @@ function P.update(player, id, barb, divisor, trip, scratch, poke)
     end
     if touching and not state.touching and not down and not traversing and (player:isRunning() or sprinting)
         and not poke and not player:isGodMod() and ZombRand(100) < scratch then
-        local leg = BodyPartType.LowerLeg_L
-        if ZombRand(2) == 1 then
-            leg = BodyPartType.LowerLeg_R
-        end
-        player:getBodyDamage():getBodyPart(leg):setScratched(true, true)
+        require("OMHTT/DefenseInjury").contact(player, id or (barb and (barb.source or barb.id)), "scratch")
     end
     state.touching, state.down, state.sprinting = touching, down, sprinting
 end

@@ -220,11 +220,7 @@ function Vault.contact(player, plan)
     if plan.side == "front" and denominator > 0 then
         plan.roll = ZombRand(denominator)
         if plan.roll == 0 and not player:isGodMod() then
-            local bodyPart = BodyPartType.LowerLeg_L
-            if ZombRand(2) == 1 then
-                bodyPart = BodyPartType.LowerLeg_R
-            end
-            player:getBodyDamage():getBodyPart(bodyPart):setScratched(true, true)
+            require("OMHTT/DefenseInjury").contact(player, plan.id, "scratch")
             plan.injured = true
         end
     end

@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "Source"
 PACKAGES = ROOT / "Contents/mods"
 IDS = {"traps": "OneMoreHorde_Traps", "turrets": "OneMoreHorde_Turrets"}
-SHARED_LUA = {"WindowGeometry", "DefenseNames", "SlotHint", "DefenseAuthority", "DefenseActorState", "DefenseLine", "DefenseInjury", "DefenseEffects", "DefenseMotion", "DefenseCombatProtocol", "DefenseCombatServer", "DefenseCombatClient", "DefenseHorde", "ContactPlayer", "BarbMovement", "BarbContact", "ActiveTime", "Foundation", "Diagnostics", "Damage", "DamagePresentation", "ConstructionMenu", "CraftingMenu", "CraftingGroups", "HybridBuild", "SandboxUI", "WorldHighlight", "PackageInfo", "PlacementTiming", "PlacementRules", "PlacementAction", "PlacementBuild"}
+SHARED_LUA = {"WindowGeometry", "DefenseNames", "DefenseXP", "SlotHint", "DefenseAuthority", "DefenseActorState", "DefenseLine", "DefenseInjury", "DefenseEffects", "DefenseMotion", "DefenseCombatProtocol", "DefenseCombatServer", "DefenseCombatClient", "DefenseHorde", "ContactPlayer", "BarbMovement", "BarbContact", "ActiveTime", "Foundation", "Diagnostics", "Damage", "DamagePresentation", "ConstructionMenu", "CraftingMenu", "CraftingGroups", "HybridBuild", "SandboxUI", "WorldHighlight", "PackageInfo", "PlacementTiming", "PlacementRules", "PlacementAction", "PlacementBuild"}
 TRAP_LUA = {"FoundationServer", "FoundationClient", "DevMarkers", "Construction", "DefenseMaterials"}
 TRAP_SCRIPTS = {"OMHTT_Items.txt", "OMHTT_PortableBarrier.txt", "OMHTT_construction.txt", "OMHTT_construction_ui.txt", "OMHTT_BedSpikes.txt", "OMHTT_Barbs.txt", "OMHTT_PokeFloor.txt", "OMHTT_Tether.txt"}
 TRAP_OPTIONS = {"Enabled", "FoundationTestControls", "DiagnosticLogging", "ShowCollision", "DetailedLogging"}
@@ -62,9 +62,9 @@ def sandbox(component):
     for match in re.finditer(r"option OMHTurretsTraps\.(\w+)\s*\{[^}]+\}", content):
         key = match[1]
         trap = key in TRAP_OPTIONS or "Barrier" in key or key.startswith(("Bed", "Barb", "Poke", "Tether"))
-        if key.startswith(("Trigger", "Controller")) or key in {"LaserRange", "DeviceSoundVolume", "ModuleLootRate", "LootRateCapacitySmall", "LootRateCapacity", "LootRateCapacityLarge", "RarityWeightAbundant", "RarityWeightCommon", "RarityWeightUncommon", "RarityWeightRare", "RarityWeightEpic", "RarityWeightLegendary", "RarityWeightMythic"} or trap == (component == "traps"):
+        if key.startswith(("Trigger", "Controller", "DefenseXP")) or key in {"LaserRange", "DeviceSoundVolume", "ModuleLootRate", "LootRateCapacitySmall", "LootRateCapacity", "LootRateCapacityLarge", "RarityWeightAbundant", "RarityWeightCommon", "RarityWeightUncommon", "RarityWeightRare", "RarityWeightEpic", "RarityWeightLegendary", "RarityWeightMythic"} or trap == (component == "traps"):
             block = match[0]
-            if component == "traps" and (key.startswith(("Trigger", "Controller")) or key in {"LaserRange", "DeviceSoundVolume", "ModuleLootRate", "LootRateCapacitySmall", "LootRateCapacity", "LootRateCapacityLarge", "RarityWeightAbundant", "RarityWeightCommon", "RarityWeightUncommon", "RarityWeightRare", "RarityWeightEpic", "RarityWeightLegendary", "RarityWeightMythic"}):
+            if component == "traps" and (key.startswith(("Trigger", "Controller", "DefenseXP")) or key in {"LaserRange", "DeviceSoundVolume", "ModuleLootRate", "LootRateCapacitySmall", "LootRateCapacity", "LootRateCapacityLarge", "RarityWeightAbundant", "RarityWeightCommon", "RarityWeightUncommon", "RarityWeightRare", "RarityWeightEpic", "RarityWeightLegendary", "RarityWeightMythic"}):
                 block = block.replace("option OMHTurretsTraps." + key, "option OMHTurretsTraps.Traps" + key, 1)
             result.append(block + "\n")
     assert blocks and len(result) > 1

@@ -625,5 +625,11 @@
     "Sandbox_OMHTurretsTraps_AmmoLargeMultiplier": "Large: Ammo Capacity Multiplier",
     "Sandbox_OMHTurretsTraps_AmmoLargeMultiplier_tooltip": "Total ammo capacity multiplier. Magazine size is unchanged. Used by fresh worlds or when new ammo rules are enabled.",
     "Sandbox_OMHTurretsTraps_ControllerIdleHours": "Controller Idle Battery Hours",
-    "Sandbox_OMHTurretsTraps_ControllerIdleHours_tooltip": "In-game idle hours per full Car Battery. Connected triggers and fallback-powered defenses add their own consumption."
+    "Sandbox_OMHTurretsTraps_ControllerIdleHours_tooltip": "In-game idle hours per full Car Battery. Connected triggers and fallback-powered defenses add their own consumption.",
+    "Sandbox_OMHTurretsTraps_DefenseXPEnabled": "Shared Defense XP",
+    "Sandbox_OMHTurretsTraps_DefenseXPEnabled_tooltip": "Requires OMH: Trait Shop. Share eligible defense kill XP with the registered owner's faction.",
+    "Sandbox_OMHTurretsTraps_DefenseXPPercent": "Defense Faction XP (Percent)",
+    "Sandbox_OMHTurretsTraps_DefenseXPPercent_tooltip": "One shared faction pool. On enemy player kills, eligible personal assistants share the remainder.",
+    "Sandbox_OMHTurretsTraps_DefenseXPIncludeOffline": "Include Offline Members",
+    "Sandbox_OMHTurretsTraps_DefenseXPIncludeOffline_tooltip": "Reserve earned shares for existing living characters. Undelivered shares expire on character death."
 }

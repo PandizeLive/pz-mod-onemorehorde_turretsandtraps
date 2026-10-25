@@ -107,7 +107,11 @@ function H.hit(player, options, kind, fraction)
         budget.rolled, wounds[player] = true, now + 1000
         wound = ZombRand(10000) < chance * 10000
     end
-    Injury.turret(player, part, amount, wound and (profile.cut and "cut" or "scratch") or "none")
+    local source = options.playerSource
+    if source then
+        require("OMHTT/DefenseXP").register(source.id, source.owner)
+    end
+    Injury.turret(player, part, amount, wound and (profile.cut and "cut" or "scratch") or "none", source and source.id)
     return true
 end
 

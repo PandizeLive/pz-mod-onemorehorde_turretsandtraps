@@ -62,7 +62,7 @@ function N.pack(record, item)
     local health = record.condition or record.health
     local maximum = record.maxHealth or (record.kind == "wire" and 50)
     registry().packed[tostring(item:getID())] = {identity = record.displayIdentity, name = record.name,
-        health = health, maxHealth = maximum, itemType = item:getFullType()}
+        health = health, maxHealth = maximum, itemType = item:getFullType(), owner = record.owner}
     if health and maximum then
         item:setCondition(health > 0 and math.max(1, math.floor(health / maximum * item:getConditionMax())) or 0)
     end
@@ -98,6 +98,9 @@ function N.restore(record, items, ordinal, fullType)
                 record.name = packed.name
             end
             record.recoveredHealth = packed.health
+            if packed.owner then
+                record.owner = packed.owner
+            end
             data.packed[key] = nil
             return
         end

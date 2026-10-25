@@ -51,6 +51,7 @@ function B.zombie(zombie)
         if record.tier == "reinforced" then
             amount = B.option("ReinforcedDamage", 50, 0, 2500)
         end
+        require("OMHTT/DefenseXP").register(record.id, record.owner, record.x, record.y, record.z)
         Damage.resolve(zombie, amount / 100, record.id, "bed-spikes", function(lost)
             if lost <= 0 then return end
             require("OMHTT/DefenseEffects").contact("SpearCraftedHit", zombie, 1)

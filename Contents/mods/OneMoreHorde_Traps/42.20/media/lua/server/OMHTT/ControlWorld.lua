@@ -267,6 +267,7 @@ function W.register(object, player, kind, previous)
     if kind == "Laser" then state.beamRange, state.beamLength = state.beamRange or 10, 0 end
     state.checkedHours, state.pulseHoldUntil, state.facingPulse = nil, nil, nil
     W.records().records[id], W.objects[id], W.bindings[object] = state, object, state
+    require("OMHTT/DefenseXP").register(id, state.owner)
     if not W.indexed[id] then
         W.order[#W.order + 1], W.indexed[id] = id, true
     end
@@ -303,6 +304,7 @@ function W.bind(object)
     local other = W.objects[state.id]
     if other and other ~= object and other:getObjectIndex() >= 0 then return end
     W.objects[state.id], W.bindings[object] = object, state
+    require("OMHTT/DefenseXP").register(state.id, state.owner)
     state.active, state.powered, state.triggerHours, state.beamLength = false, false, nil, 0
     state.recoverAt = require("OMHTT/ControlClock").now() + 1000
     state.checkedHours, state.pulseHoldUntil, state.facingPulse = nil, nil, nil
@@ -784,6 +786,11 @@ function W.turret(object, player, packed)
         if packed then
             W.records().packed[tostring(packed:getID())] = false
         end
+    end
+    local control = W.state(object)
+    local turret = require("OMHTT/Turret").state(object)
+    if control and turret then
+        require("OMHTT/DefenseXP").register(turret.id, control.owner)
     end
 end
 

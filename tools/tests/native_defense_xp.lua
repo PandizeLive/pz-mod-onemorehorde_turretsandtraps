@@ -148,7 +148,8 @@ local function run()
     print(marker .. " bleeding twoDifferentLimbs=true identicalCallbacks=true extraArguments=0"
         .. " overallLoss=" .. (100 - body:getOverallBodyHealth()))
     local wounds = require("WoundProbe").run(player)
-    OMHTT_XPProbe = {player = player, zombie = zombie, weapon = weapon, observations = observations, wounds = wounds}
+    OMHTT_XPProbe = {player = player, zombie = zombie, weapon = weapon, observations = observations, wounds = wounds,
+        credit = require("CreditProbe").create(player, square)}
     print(marker .. " completed=true game=" .. getCore():getVersionNumber() .. " clients=0 liveAttributionProven=false")
 end
 

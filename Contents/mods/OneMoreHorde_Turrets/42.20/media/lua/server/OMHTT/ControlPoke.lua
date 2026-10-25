@@ -85,7 +85,7 @@ function P.step(object, state)
         elseif entry.victims[actor] and not actor:isDead() and not actor:isGodMod()
             and not actor:isNoClip() and not actor:isGhostMode() then
             wear(1)
-            require("OMHTT/DefenseInjury").poke(actor, entry.victims[actor])
+            require("OMHTT/DefenseInjury").poke(actor, entry.victims[actor], state.id)
         end
     end
     entry.victims = nil

@@ -47,7 +47,7 @@ local function hit(cycle, victim, reason)
         entry.victim = victim
         require("OMHTT/Damage").resolve(victim, option("HitDamage", 30, 0, 2500) / 100, entry.state.id, "tether-dart")
     elseif reason == "player" and require("OMHTT/ControlCombat").protected(require("OMHTT/ControlCombat").source(entry.object), victim) then
-        require("OMHTT/DefenseInjury").poke(victim, "scratch")
+        require("OMHTT/DefenseInjury").poke(victim, "scratch", entry.state.id)
     end
 end
 

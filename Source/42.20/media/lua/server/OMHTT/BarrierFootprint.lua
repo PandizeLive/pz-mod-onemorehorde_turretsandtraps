@@ -324,6 +324,10 @@ function Footprint.adoptBuild(object, player, x, y, facing, entity, consumed)
         local names = require("OMHTT/DefenseNames")
         names.restore(record, consumed)
     end
+    if not record.owner then
+        record.owner = record.builderUsername
+    end
+    require("OMHTT/DefenseXP").register(record.id, record.owner, record.x, record.y, record.z)
     if entity == "OMHTTDeployReinforcedBarrier" and not record.tier then
         record.tier = "reinforced"
         record.maxHealth = F.barrierHealth(record)

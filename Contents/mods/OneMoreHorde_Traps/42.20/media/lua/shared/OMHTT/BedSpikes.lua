@@ -318,7 +318,7 @@ function B.onCreate(params)
     if isServer() and persistedTiles[F.key(x, y, square:getZ())] then
         error("[OMHTT] Duplicate bed placement")
     end
-    local record = {id = "bed-" .. B.store.nextId, x = x, y = y, z = square:getZ(), facing = facing,
+    local record = {id = "bed-" .. B.store.nextId, owner = params.character and params.character:getUsername(), x = x, y = y, z = square:getZ(), facing = facing,
         tier = index >= 44 and "reinforced" or "basic", deployed = index >= 36, single = single, part = part}
     B.store.nextId = B.store.nextId + 1
     local portableType = record.tier == "reinforced" and "Base.OMHTTTrapBedSpikesReinforced" or "Base.OMHTTTrapBedSpikes"
@@ -327,6 +327,7 @@ function B.onCreate(params)
     record.maxHealth = B.maxHealth(record)
     record.health = require("OMHTT/DefenseNames").health(record, record.maxHealth)
     B.store.records[record.id] = record
+    require("OMHTT/DefenseXP").register(record.id, record.owner, record.x, record.y, record.z)
     object:getModData().OMHTTBed = {id = record.id, part = part}
     B.configure(record, object)
 end

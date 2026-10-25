@@ -74,6 +74,8 @@ function getCore()
 end
 
 function testPlayer:isDead() return self.dead end
+function testPlayer:isNoClip() return false end
+function testPlayer:isGhostMode() return false end
 function testPlayer:getX() return self.x end
 function testPlayer:getY() return self.y end
 function testPlayer:getZ() return self.z end

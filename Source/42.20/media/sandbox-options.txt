@@ -2289,3 +2289,24 @@ option OMHTurretsTraps.ControllerIdleHours
     page = OMHTurretsTraps_TriggersPage,
     translation = OMHTurretsTraps_ControllerIdleHours,
 }
+
+option OMHTurretsTraps.DefenseXPEnabled {
+    type = boolean,
+    default = true,
+    page = OMHTurretsTraps_General,
+    translation = OMHTurretsTraps_DefenseXPEnabled,
+}
+option OMHTurretsTraps.DefenseXPPercent {
+    type = integer,
+    min = 0,
+    max = 100,
+    default = 50,
+    page = OMHTurretsTraps_General,
+    translation = OMHTurretsTraps_DefenseXPPercent,
+}
+option OMHTurretsTraps.DefenseXPIncludeOffline {
+    type = boolean,
+    default = true,
+    page = OMHTurretsTraps_General,
+    translation = OMHTurretsTraps_DefenseXPIncludeOffline,
+}

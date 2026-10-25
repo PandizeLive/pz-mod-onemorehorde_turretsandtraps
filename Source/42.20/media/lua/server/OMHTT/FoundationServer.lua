@@ -46,6 +46,8 @@ function Server.initialize()
             record.facing = Foundation.normalizeFacing(record.facing)
             if record.kind == "barrier" then
                 record.x, record.y, record.z = slot.x, slot.y, slot.z
+                require("OMHTT/DefenseXP").register(record.id, record.owner or record.builderUsername,
+                    record.x, record.y, record.z)
                 if record.collisionModel == "edge-v1" then
                     record.collisionModel = "outline-v1"
                     record.revision = record.revision + 1

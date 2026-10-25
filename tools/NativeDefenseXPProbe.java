@@ -70,6 +70,23 @@ public final class NativeDefenseXPProbe {
             + " callbackHealth=" + get(last, "health") + " callbackInput=" + get(last, "amount")
             + " clients=0 packetTransportTested=false");
         verifyWounds(samples);
+        Object credit = get(samples, "credit");
+        Object victim = get(credit, "victim");
+        Object store = get(credit, "store");
+        Object encounters = get(get(store, "defense"), "encounters");
+        hitType.getMethod("set", float.class, float.class, float.class, float.class, float.class,
+            boolean.class, boolean.class, boolean.class, boolean.class)
+            .invoke(hit, .2f, 1f, 0f, 1f, 0f, false, false, false, true);
+        hitType.getMethod("process", actorType, actorType, weaponType).invoke(hit, player, victim, weapon);
+        if (get(encounters, "victim") != null) throw new IllegalStateException("Ignored native player hit earned an assist");
+        hitType.getMethod("set", float.class, float.class, float.class, float.class, float.class,
+            boolean.class, boolean.class, boolean.class, boolean.class)
+            .invoke(hit, .2f, 1f, 0f, 1f, 0f, false, false, false, false);
+        hitType.getMethod("process", actorType, actorType, weaponType).invoke(hit, player, victim, weapon);
+        Object encounter = get(encounters, "victim");
+        if (encounter == null || !Double.valueOf(1).equals(get(get(encounter, "assists"), "attacker")))
+            throw new IllegalStateException("Confirmed native player injury did not register production assist credit");
+        System.out.println("[OMHTT-XPProbe] productionPlayerCredit=true ignoredRejected=true clients=0");
         System.out.println("[OMHTT-XPProbe] packetCompleted=true");
     }
 

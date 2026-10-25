@@ -216,6 +216,7 @@ public final class KahluaCheck {
             {"OMHTT/ControlAudio", base + "shared/OMHTT/ControlAudio.lua"},
             {"OMHTT/ControlMenuAudio", base + "shared/OMHTT/ControlMenuAudio.lua"},
             {"OMHTT/DefenseCombatServer", base + "server/OMHTT/DefenseCombatServer.lua"},
+            {"OMHTT/DefenseXP", base + "server/OMHTT/DefenseXP.lua"},
             {"OMHTT/DefenseCombatClient", base + "client/OMHTT/DefenseCombatClient.lua"},
             {"OMHTT/Damage", base + "server/OMHTT/Damage.lua"},
             {"OMHTT/TurretHit", base + "server/OMHTT/TurretHit.lua"},
@@ -548,6 +549,7 @@ public final class KahluaCheck {
             {"_", "tools/tests/corrections_c437.lua"},
             {"_", "tools/tests/corrections_c444.lua"},
             {"_", "tools/tests/corrections_c450.lua"},
+            {"_", "tools/tests/defense_xp.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

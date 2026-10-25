@@ -25,6 +25,13 @@ def main():
     write(package / "42.20/mod.info", "name=OMHTT Isolated XP Probe\nid=OMHTT_XPProbe\nmodversion=0.0.1\nversionMin=42.20\n")
     write(package / "42.20/media/lua/server/XPProbe.lua", (ROOT / "tools/tests/native_defense_xp.lua").read_text(encoding="utf-8"))
     write(package / "42.20/media/lua/server/WoundProbe.lua", (ROOT / "tools/tests/native_wound_attribution.lua").read_text(encoding="utf-8"))
+    write(package / "42.20/media/lua/server/CreditProbe.lua", (ROOT / "tools/tests/native_defense_credit.lua").read_text(encoding="utf-8"))
+    trait = ROOT.parent / "Trait Shop/Contents/mods/OneMoreHorde_TraitShop/42.20/media/lua"
+    for layer, names in {"shared": ["Bootstrap", "RewardsConfig", "Physical", "Catalog", "Effects", "Progression", "Prestige", "InjuryEvidence"],
+                         "server": ["State", "DefenseRewards", "DefenseCredit"]}.items():
+        for name in names:
+            relative = Path(layer) / ("OMHTS_" + name + ".lua")
+            write(package / "42.20/media/lua" / relative, (trait / relative).read_text(encoding="utf-8"))
     write(cache / "Server/OMHTT_XPProbe.ini", "Mods=OMHTT_XPProbe\nMap=Muldraugh, KY\nPublic=false\nPauseEmpty=true\nUPnP=false\nDefaultPort=29341\nUDPPort=29342\n")
     classes = OUTPUT / "classes"
     classes.mkdir(parents=True, exist_ok=True)
@@ -61,6 +68,7 @@ def main():
     lines = [line[line.index(MARKER):] for line in output.splitlines() if MARKER in line]
     result = {"seconds": round(time.monotonic() - started, 1), "reports": lines,
               "success": MARKER + " completed=true" in output and MARKER + " packetCompleted=true" in output
+                         and MARKER + " productionPlayerCredit=true" in output
                          and "Shutdown handling finished" in output,
               "jarSha256": hashlib.sha256((GAME / "projectzomboid.jar").read_bytes()).hexdigest(),
               "scope": "Native synthetic actors on a zero-client stock server; not live client transport or a complete attribution proof."}

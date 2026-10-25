@@ -28,6 +28,7 @@ function B.zombie(zombie)
     local selected, source = B.contact(zombie, bucket)
     if selected then require("OMHTT/DefenseMotion").request(zombie, "slow", selected.id, B.option("MovementDivisor", 2, 1, 10)) end
     if C.step(state, B.time, B.session, selected ~= nil, interval) then
+        require("OMHTT/DefenseXP").register(selected.id, selected.owner, selected.x, selected.y, selected.z)
         Damage.resolve(zombie, B.option("Damage", 10, 0, 1000) / 100, selected.id, "barbs", function(damage)
             local node = B.nodes[selected.id]
             if damage <= 0 or not node or node.record ~= selected then return end

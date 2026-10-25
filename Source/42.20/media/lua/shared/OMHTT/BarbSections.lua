@@ -512,8 +512,9 @@ function B.onCreate(params)
     local id = "barb-" .. B.store.nextId
     if not host or not S.bind(host, north, side, id, B.policy) then error("[OMHTT] Barb backing changed before construction") end
     B.store.nextId = B.store.nextId + 1
-    local record = {id = id, x = x, y = y, z = square:getZ(), north = north, side = side}
+    local record = {id = id, owner = params.character and params.character:getUsername(), x = x, y = y, z = square:getZ(), north = north, side = side}
     require("OMHTT/DefenseNames").restore(record, params.craftRecipeData and params.craftRecipeData:getAllConsumedItems())
+    require("OMHTT/DefenseXP").register(record.id, record.owner, record.x, record.y, record.z)
     local frame = IsoThumpable.new(square:getCell(), square, "omhtt_barrier_01_52", north)
     frame:getModData().OMHTTBarbFrame = record
     original:getModData().OMHTTBarbFrame = record
@@ -586,11 +587,12 @@ function B.onWireCreate(params)
         if isServer() and wireTiles[F.key(x, y, square:getZ())] then
             error("[OMHTT] Duplicate wire placement")
         end
-        record = {id = "barb-" .. B.store.nextId, kind = "wire", x = x, y = y,
+        record = {id = "barb-" .. B.store.nextId, owner = params.character and params.character:getUsername(), kind = "wire", x = x, y = y,
             z = square:getZ(), health = 50, shared = false, paired = true, facing = facing, revision = 1}
         B.store.nextId = B.store.nextId + 1
         local names = require("OMHTT/DefenseNames")
         names.restore(record, params.craftRecipeData and params.craftRecipeData:getAllConsumedItems())
+        require("OMHTT/DefenseXP").register(record.id, record.owner, record.x, record.y, record.z)
         record.health = names.health(record, 50)
         names.ensure(record, "Wire", getText("UI_OMHTT_ConcertinaWire"))
         B.store.wires[record.id] = record
