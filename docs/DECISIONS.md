@@ -2288,3 +2288,8 @@ Provenance: owner explicitly confirms "Yea test complete. It's all good" after C
 ## C453 - Recommend the next retained roadmap track (2026-10-24)
 
 Owner asks "Now what" following C452's completed 0.2.67 test round. Reviewed C402/C403 and the shared defense XP contract. Recommend 1A shared Trait Shop defense XP design; alternatives 1B garage/multi-panel barbs or 1C coordinated Horde scoring readiness. [Scope, selected foundations and tradeoffs](INTEGRATIONS.md#c453---next-track-after-0267-acceptance-2026-10-24). These tracks were retained by C403; order remains a choice. No new numbers, gameplay implementation, sibling edits, publication or reopened SP testing are inferred.
+
+
+## C454 - Shared defense XP discussion selected (2026-10-24)
+
+Owner's "1A" selects C453's shared Trait Shop defense XP design/API review. It is not approval of the historical 25% proposal or a gameplay patch. Read current Trait Shop 0.9.0.1 reward, authority, life and fractional progression source plus T&T damage/ownership adapters. [Findings and concrete options](INTEGRATIONS.md#c454---shared-defense-xp-selected-for-design-2026-10-24): recommend 1A 25% pool, 2A registered device owner's faction with solo fallback, 3A final-hit credit. Rate alternatives 50%/10%, defended-faction attribution and proportional damage credit remain proposals. Shared pool/offline default ON are already settled. Future recap must include life-bound offline shares, zombie-only scope, Sandbox settings and coordinated sibling API work; none silently implemented. C452 accepted test round remains closed.

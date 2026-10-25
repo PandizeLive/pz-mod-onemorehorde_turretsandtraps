@@ -108,3 +108,44 @@ Recommend **1A shared Trait Shop defense XP design** next: review the current si
 Alternatives: **1B garage/multi-panel Barbed Panel feasibility**, a smaller standalone coverage improvement requiring moving-leaf identity/geometry proof; **1C coordinated Horde scoring readiness**, reconciling T&T, current Horde core and score validator without deployment. These are next-track choices, not reapproval of the retained roadmap. No track selected by "Now what" alone.
 
 Modder-facing extension documentation/sample and remaining owner art/release preparation remain retained. Connected multiplayer remains deferred until the agreed development work is complete; Cure simulation remains last. No sibling edits, code patch, deployment or publication authorized by this status question. Current 0.2.67 acceptance is unchanged.
+
+
+## C454 - Shared defense XP selected for design (2026-10-24)
+
+Owner selects C453 **1A**, authorizing the shared Trait Shop defense XP discussion/API review. Current 0.2.67 owner acceptance remains closed. This does not select the old 25% proposal or authorize a coordinated gameplay patch yet. Read-only review of sibling files below; no sibling modifications, live XP awards or runtime tests.
+
+### Current source evidence
+
+- Trait Shop local package declares **0.9.0.1**. `OMHTS_RewardsConfig.lua` (`Config.defaults`, `Config.visible`, `Config.amount`) defaults to 2 ordinary Zombie XP and 5 Horde Zombie XP, but selected reward mode, disabled sources and configured values remain authoritative. Horde reward mode excludes ordinary kills. No integration may pay a disabled source or pay both sources for one zombie.
+- `OMHTS_Authority.lua` exposes `Authority.awardXP(player, lifeId, revision, amount)`: it binds a live player, checks enabled state, audits earnings, validates the exact life/revision through State, and sends a snapshot. This is an existing supported individual award entry point; it is not an offline, receipt-keyed faction award API. `store` is private, and T&T must not write it directly.
+- `OMHTS_State.lua` (`State.isXP`, `State.awardXP`) accepts fractional nonnegative XP and validates a live character life; `OMHTS_Progression.lua` (`Progression.advance`) retains fractional remainders. No rounding each split to whole XP. The initial bar is 100 XP. `DESIGN.md` specifies that death resets current XP/Trait Level, with separate prestige rules.
+- `OMHTS_Rewards.lua` uses separate ordinary death and participant-count Horde receipts. `Authority.onHordeKill` resolves a connected credited participant. Horde API v3 `eventHooks.onKill` supplies participant kill-count facts, not a shared defense death/recipient fact. A coordinated extension is needed to connect authoritative device kills to a pool without inventing a player killer.
+- T&T `Damage.apply`/local `apply` in `server/OMHTT/Damage.lua` calls `Kill(nil, false)` for lethal device damage and reports damage source/kind. `shared/OMHTT/DefenseHorde.lua` already brackets native damage through the Horde integration. Existing `ControlAccess.write` uses persisted device owner/faction for access; access permission and Controller target settings must not be treated as reward ownership. Legacy passive-object ownership and offline identity mapping still require a focused implementation audit.
+
+Source references: [Trait Shop reward configuration](../../Trait%20Shop/Contents/mods/OneMoreHorde_TraitShop/42.20/media/lua/shared/OMHTS_RewardsConfig.lua), [Authority](../../Trait%20Shop/Contents/mods/OneMoreHorde_TraitShop/42.20/media/lua/server/OMHTS_Authority.lua), [State](../../Trait%20Shop/Contents/mods/OneMoreHorde_TraitShop/42.20/media/lua/server/OMHTS_State.lua), [Progression](../../Trait%20Shop/Contents/mods/OneMoreHorde_TraitShop/42.20/media/lua/shared/OMHTS_Progression.lua), [Horde API](../../pz-mod-onemorehorde_protectthecure/docs/EXTENSION_API.md). These are local source findings, not proof of matching deployed versions or connected acceptance.
+
+### Settled foundations
+
+One reduced pool is divided between eligible members. Include Offline Members defaults ON. This is Trait Shop progression, not vanilla skill XP. Trait Shop remains optional; absent Trait Shop means no speculative XP bank. Offline participation does not simulate unloaded combat or grant Horde-completion rewards. Cure simulation stays last.
+
+### Decisions now proposed
+
+**1 - Reward rate.** Recommend **1A 25%** of the applicable configured kill reward. **1B 50%** gives stronger defense progression; **1C 10%** emphasizes direct combat. At current defaults, 100 Horde kills produce 125/250/50 XP total respectively, or 31.25/62.5/12.5 each for four eligible members. Ordinary kill totals for the same 100 kills are 50/100/20 XP, if that source is enabled. These are arithmetic examples, not awarded XP or measured progression. Larger membership divides the same pool rather than multiplying it.
+
+**2 - Recipients.** Recommend **2A the registered device owner's current faction, including the owner; solo owners receive the pool themselves**. Snapshot verified eligible character lives and membership at the kill, so joining later never earns old shares. Alternative **2B the faction whose Horde is being defended for Horde kills, falling back to the owner's faction for ordinary kills**. This favors the defended group but gives away the device owner's resource-funded rewards when helping outsiders. Neither option routes rewards by who clicks a Button, opens Manage, changes target filters or is nearest. Do not pay both factions.
+
+**3 - Player assists.** Recommend **3A final-hit credit**: a device finishing blow creates only the reduced shared pool; a player finishing blow uses the existing ordinary personal reward path. No second payout for earlier chip damage. This rewards active cleanup and avoids maintaining every player's damage history. Alternative **3B proportional effective-damage credit**: separate the player's full-rate damage share and the device's reduced shared portion, never two full rewards; this needs additional authoritative damage attribution and rules for healing, overkill and multiple factions. It is more complex and less attractive for crowded fights. No damage-ledger feature is approved merely by this discussion.
+
+### Recommended defaults for the later recap, not yet approved
+
+Apply to owned zombie-killing turrets and traps, including passive traps with verified ownership. Triggers themselves earn nothing; automated player kills grant no defense XP. Unowned/ambiguous legacy devices do not invent an owner or grant rewards until a supported ownership claim is available. Recipients must have an existing living Trait Shop character, and relevant Horde casualty rules remain enforced. No proximity requirement.
+
+Retain earned shares for the same character across disconnects and faction departure, but discard undelivered shares if that character dies; do not inherit XP on a new life. Dead or uncreated lives are excluded from future recipient snapshots. A faction/rate/offline-option change never recalculates an already-earned share. Use Trait Shop's existing death/prestige lifecycle rather than an independent inheritance system.
+
+Expose Enable Defense XP, Defense XP Percentage and Include Offline Members under the existing T&T General integration section, with clear optional-dependency descriptions; do not create another top-level category. Default enablement and rate will be included in the approval recap. Official-score provenance/default-or-harder handling must be coordinated with current Horde/Trait Shop contracts before any eligibility claim; score factors never multiply the XP pool.
+
+### Implementation outline and next gate
+
+After decisions: prepare a versioned server-owned defense reward fact and a Trait Shop-owned receipt-aware pool settlement API. Persist earning-time recipient/life/source/rate/rules snapshots and settled receipts together with progression; retry after reconnect/restart without duplicate awards. Resolve offline identity via supported faction/character registries, not private record mutation or online-player guesses. Use bounded event-driven award work and batched UI notifications, not world scans or one popup per kill. Establish identity, receipt retention/compaction and mixed-kill ordering under both ordinary and Horde death paths, including the final event kill.
+
+Then provide a concrete coordinated patch recap, including required sibling work, before gameplay implementation. Minimum verification covers single recipients and factions, fractional shares, reward-source filtering, duplicate/reordered death callbacks, offline delivery, death/new life, faction changes, restart and independent Turrets/Traps packages. Connected acceptance remains deferred until the agreed development work is complete. **Decision needed: 1A/1B/1C, 2A/2B and 3A/3B.**
