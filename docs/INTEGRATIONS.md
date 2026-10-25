@@ -272,3 +272,27 @@ C460's kill-based attribution replaces proportional damage shares. Earlier playe
 Include Offline Members remains default ON: reserve eligible earning-time shares for the same living character and deliver on reconnect; do not redistribute them to online members. Death discards the pending share, a replacement life inherits none, and faction/rate changes do not recalculate an already-earned share. Durable offline settlement remains to be implemented; installed 0.2.67 does not already provide it. The existing receipt/cooldown eligibility requirements still apply.
 
 The payout clarification is resolved and exact wound-share research is no longer a gate. Coordinated authoritative device credit, Trait Shop settlement, Horde source integration and relevant native/duplicate/offline/restart verification remain. This checkpoint records the selection only: no gameplay/sibling edits, new installed package, runtime test or reopened 0.2.67 acceptance. **Wait for a patch; no further payout decision.**
+
+## C462 - Participation-based PvP assists proposed (2026-10-25)
+
+Owner asks whether the remaining half can be split based on who also dealt damage in the PvP flag. Treat this as a feasibility/design question, not approval to revive proportional wound damage or silently change C461's unawarded half.
+
+### Native evidence
+
+The installed 42.21 `IsoGameCharacter.getAttackedBy()` returns one character reference. `PVPLogTool` also has a shared rolling combat-event list: its current bytecode initializes ten entries and replaces the oldest when logging a combat event. It is not a durable victim-specific contributor set. Current `PVPEvent` exposes timestamp, wielder, target and XYZ; it contains no accumulated actual damage or character-life contribution ledger. Do not parse text logs or depend on the ten-event admin history for rewards.
+
+Current installed `javap` results were checked against the prior C459 jar evidence; no gameplay or probe source changed. Official API corroboration: [PvP event fields](https://projectzomboid.com/modding/zombie/network/PVPLogTool.PVPEvent.html) and [PvP logging methods](https://projectzomboid.com/modding/zombie/network/PVPLogTool.html). This is static review, not a new connected assist test.
+
+### Practical option
+
+**1A - Equal personal assist shares (recommended if adding assists).** For an eligible defense-credited PvP death, retain the selected 50% owner-faction pool and divide the remaining 50% equally among distinct eligible players whose confirmed personal attacks injured that victim during the relevant encounter. Record participation, not exact damage amounts or subsequent bleed ticks. Example: normal reward 100, faction pool 50, two qualifying assistants receive 25 each. With no qualifying assistant, the remaining50 stays unawarded. The assist half is personal; it is not a second faction pool. The owner can qualify through their own attack, but ownership alone is insufficient. A faction member can receive their ordinary equal defense share plus their personal assist share, settled together once.
+
+This is a proposed change to the currently selected C461 payout. It does not automatically expand assist sharing to ordinary player-credited kills or zombie kills. Previous enemy/victim/source eligibility, life ownership, offline delivery and account/victim cooldown requirements remain applicable to each beneficiary. A combined defense/assist payout must neither double-award nor consume its own cooldown between components. No eligible-recipient or unknown-share redistribution rule is silently changed.
+
+A compact server-owned record per victim life and distinct contributor life would be needed; no unbounded per-hit history or per-frame limb scan is proposed. A raw pre-hit callback alone is not proof of injury: misses, blocked/ignored hits and zero-effect attacks must not qualify. Wound-producing hits can qualify without resolving every later tick. Verified hit coverage, lifecycle/recovery or encounter expiry, restart/disconnect behavior and duplicate receipts require a concrete implementation contract and testing. No numerical expiry, minimum damage threshold or production performance claim is approved here.
+
+The tradeoff is deliberate: one qualifying hit receives the same personal assist share as many hits and can unlock the previously unawarded half. This rewards participation but permits light tagging for XP. Weighting by exact damage would return to the C458 wound-attribution problem; weighting by hit count would favor rapid-fire weapons and is not recommended as a silent substitute.
+
+**1B - Keep C461:** only the 50% faction pool; the other half remains unawarded. This retains the selected simpler rule and avoids an assist ledger.
+
+Only documentation changed. C461 remains the selected payout until the owner chooses otherwise; no gameplay/sibling/package/install/version/Workshop changes or new runtime test. Accepted 0.2.67 stays closed. **Decision needed: 1A equal personal assists or 1B keep the selected rule.**
