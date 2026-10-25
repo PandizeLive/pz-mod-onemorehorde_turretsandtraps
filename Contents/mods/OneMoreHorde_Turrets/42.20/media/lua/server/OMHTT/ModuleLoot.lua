@@ -13,7 +13,7 @@ function L.apply()
     if SandboxVars.OMHTurretsTraps.TurretsEnabled == false then
         multiplier = 0
     end
-    D.emit("module-loot-summary", {pools = #L.POOLS, multiplier = multiplier})
+    D.emit("module-loot-summary", {pools = #L.POOLS, multiplier = multiplier}, nil, nil, "turrets")
     for i = 1, #L.POOLS do
         local name = L.POOLS[i]
         local pool = ProceduralDistributions.list[name]
@@ -33,7 +33,7 @@ function L.apply()
                     items[#items + 1] = T.TYPES[module]
                     items[#items + 1] = effective
                 end
-                D.trace("module-loot-weight", {pool = name, module = module, weight = effective})
+                D.trace("module-loot-weight", {pool = name, module = module, weight = effective}, "turrets")
             end
             local packWeight = M.option("PackLootWeight", 1, 0, 100) * L.SCALES[name] * multiplier
             if packWeight > 0 and packTotal > 0 then
@@ -41,7 +41,7 @@ function L.apply()
                 items[#items + 1] = packWeight
             end
         else
-            D.emit("module-loot-missing-pool", {pool = name})
+            D.emit("module-loot-missing-pool", {pool = name}, nil, nil, "turrets")
         end
     end
 end

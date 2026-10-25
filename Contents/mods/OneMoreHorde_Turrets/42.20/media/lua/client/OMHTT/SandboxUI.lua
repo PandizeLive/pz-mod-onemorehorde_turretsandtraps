@@ -81,8 +81,19 @@ function UI.layout(panel)
         local label, control = panel.labels[name], panel.controls[name]
         label:setY(y)
         control:setY(y)
+        if control.omhttRarity then
+            require("OMHTT/ControlLootUI").layout(panel, control)
+            if label:getRight() + 10 > control.omhttRarity:getX() then
+                control:setY(y + label:getHeight() + 4)
+                y = y + label:getHeight() + 4
+            end
+        end
         y = y + math.max(label:getHeight(), control:getHeight()) + 10
-        panel:insertNewLineOfButtons(control.omhttRarity or control)
+        if control.omhttRarity and control.omhttRarity.selected == 9 then
+            panel:insertNewLineOfButtons(control.omhttRarity, control)
+        else
+            panel:insertNewLineOfButtons(control.omhttRarity or control)
+        end
     end
     panel.joypadIndex, panel.joypadIndexY = 1, 1
     panel.joypadButtons = panel.joypadButtonsY[1]
@@ -131,7 +142,12 @@ function UI.attach(panel)
         end
     end
     local sections = groups
-    if panel.controls["OMHTurretsTraps.RapidFireBonus"] or panel.controls["OMHTurretsTraps.TrapsControllerKitRange"] then
+    if panel.controls["OMHTurretsTraps.DiagnosticLogging"] or panel.controls["OMHTurretsTraps.TurretDiagnosticLogging"] then
+        sections = {
+            {"Sandbox_Title_OMHTurretsTraps_DebugLogs", {"DiagnosticLogging", "DetailedLogging", "TurretDiagnosticLogging", "TurretDetailedLogging"}},
+            {"Sandbox_Title_OMHTurretsTraps_DebugTools", {"FoundationTestControls", "ShowCollision", "TurretTestControls"}},
+        }
+    elseif panel.controls["OMHTurretsTraps.RapidFireBonus"] or panel.controls["OMHTurretsTraps.TrapsControllerKitRange"] then
         sections = moduleGroups
     elseif panel.controls["OMHTurretsTraps.ModuleLootRate"] or panel.controls["OMHTurretsTraps.TrapsModuleLootRate"] then
         sections = {

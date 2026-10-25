@@ -149,7 +149,7 @@ function Barrier.update(zombie)
         zombie:clearVariable(Barrier.TOKEN)
         zombie:setVariable("ThumpType", Barrier.TYPE)
         Diagnostics.emit("barrier-attacker-attached", {id = record.id, x = zombie:getX(), y = zombie:getY(),
-            animation = Barrier.TYPE, damage100 = Foundation.barrierDamage(record)})
+            animation = Barrier.TYPE, damage100 = Foundation.barrierDamage(record)}, nil, nil, "traps")
         return
     end
     if zombie:getVariableString("ThumpType") ~= Barrier.TYPE then
@@ -161,7 +161,7 @@ function Barrier.update(zombie)
     if (token ~= "left" and token ~= "right") or token == state.token then
         if now >= state.nextWarning then
             Diagnostics.emit("barrier-marker-wait", {id = record.id, token = tostring(token),
-                elapsedMs = now - state.lastStrikeAt, barrierHP = target:getHealth(), strikes = state.strikes})
+                elapsedMs = now - state.lastStrikeAt, barrierHP = target:getHealth(), strikes = state.strikes}, nil, nil, "traps")
             state.nextWarning = now + 5000
         end
         return
@@ -174,7 +174,7 @@ function Barrier.update(zombie)
     local face = Barrier.face(record, zombie:getX(), zombie:getY(), target:getModData().OMHTTEdge)
     if face == "rear" then
         Diagnostics.emit("barrier-strike-blocked", {id = record.id, face = face, facing = record.facing,
-            token = token, x = zombie:getX(), y = zombie:getY(), barrierHP = target:getHealth()})
+            token = token, x = zombie:getX(), y = zombie:getY(), barrierHP = target:getHealth()}, nil, nil, "traps")
         return
     end
     local lost = 0
@@ -182,7 +182,7 @@ function Barrier.update(zombie)
     Diagnostics.emit("barrier-strike", {id = record.id, token = token, strikes = state.strikes,
         face = face, facing = record.facing, width = record.width,
         x = zombie:getX(), y = zombie:getY(), nativeDamage = lost, damage100 = lost * 100,
-        barrierHP = target:getHealth(), elapsedMs = elapsed, dead = zombie:isDead()})
+        barrierHP = target:getHealth(), elapsedMs = elapsed, dead = zombie:isDead()}, nil, nil, "traps")
     if zombie:isDead() then
         Barrier.release(zombie)
     end

@@ -92,7 +92,7 @@ local function finish(player, plan, result)
         x = player:getX(), y = player:getY(), z = player:getZ(), outcome = plan.outcome,
         state = tostring(player:getCurrentState()), fromX = plan.fromX, fromY = plan.fromY, toX = plan.toX, toY = plan.toY,
         animationStarted = plan.animationStarted == true, entered = plan.entered == true,
-        elapsedMs = getTimestampMs() - plan.startedAt})
+        elapsedMs = getTimestampMs() - plan.startedAt}, nil, nil, "traps")
 end
 
 ---@param player IsoPlayer Local player update
@@ -116,7 +116,7 @@ function Vault.update(player)
     if climbing then
         if not plan.entered then
             plan.entered = true
-            Diagnostics.emit("barrier-vault-enter", {crossing = plan.sequence, id = plan.id, side = plan.side})
+            Diagnostics.emit("barrier-vault-enter", {crossing = plan.sequence, id = plan.id, side = plan.side}, nil, nil, "traps")
         end
         if player:getVariableBoolean("ClimbFenceStarted") or player:getVariableBoolean("VaultOverRun")
             or player:getVariableBoolean("VaultOverSprint") then
@@ -168,7 +168,7 @@ function OMHTTBarrierVaultAction:perform()
         self.direction = plan.direction
         ISClimbOverFence.perform(self)
     else
-        Diagnostics.emit("barrier-vault-refused", {id = self.omhttId, reason = reason or "approach-changed"})
+        Diagnostics.emit("barrier-vault-refused", {id = self.omhttId, reason = reason or "approach-changed"}, nil, nil, "traps")
         ISBaseTimedAction.perform(self)
     end
 end
@@ -191,7 +191,7 @@ end
 function Vault.queue(object, player, id)
     local plan, reason = Vault.plan(player, object, id)
     if not plan then
-        Diagnostics.emit("barrier-vault-refused", {id = id, reason = reason})
+        Diagnostics.emit("barrier-vault-refused", {id = id, reason = reason}, nil, nil, "traps")
         return
     end
     ISTimedActionQueue.add(OMHTTBarrierVaultAction:new(player, plan.object, plan))
@@ -208,7 +208,7 @@ function Vault.begin(player, plan, source)
     active[player] = plan
     Diagnostics.emit("barrier-vault-start", {crossing = sequence, id = plan.id, side = plan.side,
         fromX = plan.fromX, fromY = plan.fromY, toX = plan.toX, toY = plan.toY, z = plan.z,
-        input = source, running = player:isRunning(), sprinting = player:isSprinting()})
+        input = source, running = player:isRunning(), sprinting = player:isSprinting()}, nil, nil, "traps")
 end
 
 ---@param player IsoPlayer Crossing player
@@ -225,7 +225,7 @@ function Vault.contact(player, plan)
         end
     end
     Diagnostics.emit("barrier-vault-contact", {crossing = plan.sequence, id = plan.id, side = plan.side,
-        denominator = denominator, roll = plan.roll, injured = plan.injured, outcome = plan.outcome})
+        denominator = denominator, roll = plan.roll, injured = plan.injured, outcome = plan.outcome}, nil, nil, "traps")
 end
 
 ---@param player IsoPlayer Local player
@@ -276,7 +276,7 @@ local function reportInput(player, plan, reason, distance, reach)
     lastInputReport[player] = {key = key, ms = now}
     Diagnostics.emit("barrier-vault-input", {id = plan.id, reason = reason, direction = tostring(plan.direction),
         state = tostring(player:getCurrentState()), x = player:getX(), y = player:getY(),
-        distance = distance, reach = reach, running = player:isRunning(), sprinting = player:isSprinting()})
+        distance = distance, reach = reach, running = player:isRunning(), sprinting = player:isSprinting()}, nil, nil, "traps")
 end
 
 ---@param player IsoPlayer Local player

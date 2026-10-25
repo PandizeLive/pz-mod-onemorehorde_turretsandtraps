@@ -1,5 +1,12 @@
 # Decision register
 
+## C467 - Coordinated corrective patch approved (2026-10-25)
+
+The owner's "Approved" authorizes implementation, validation, packaging and local installation of all C465/C466 corrections. No remaining design decision blocks this patch. Approved utility/HUD identities are exact IDs, not wildcards; Denied remains the official-run exclusion flag. The minimum1 rule is the explicit exception to the shared-pool total: merge each recipient's eligible portions for the action first, then raise positive totals below1 once before payment/banking. Zero, ineligible and duplicate rewards remain zero; amounts of1 or more remain unchanged. Four eligible shares of0.25 therefore pay4 total, an accepted tradeoff. No backpay is fabricated for the earlier test.
+
+Implemented versions: T&T0.2.68.1 / Trait Shop0.9.1.1 / Horde-Cure0.6.16.7. See [patch](PATCH_v0.2.68.1.md) and [verification](TEST_v0.2.68.1.md). Existing live-run flag history is not reset; changed gameplay can still produce valid Hardened/Lessened/Unknown classifications. Source defaults and inactive legacy aliases now receive the correct baseline. Workshop and sibling remote publication are not authorized by this local patch.
+
+
 **C424 / 0.2.64.3 Effects icons installed (2026-10-22).** All nine Effects modules now use the supplied seven rarity colors and neutral fallback in inventory, tooltip and Manage icons. Eight owner PNGs copied unchanged. [Patch](PATCH_v0.2.64.3.md) | [Verification](TEST_v0.2.64.3.md). 27,390 assertions pass; all 398 source and 545 tagged/package/install/archive files plus both 0.2.64.2 backups verify. Immutable test/v0.2.64.3 / c62972a02e31f9fce80f2489399e88b32776ed24. Presentation-only scope; dedicated startup/save probes not repeated. No tuning or hosted changes. Rendered acceptance pending. **Test now** after restart when available.
 
 **C423 / 0.2.64.2 owner module icons installed (2026-10-22).** Updated Performance *2 artwork and new Utility icons, copied unchanged. Utility covers Grid, Siphon, Lure and Void through existing inventory/tooltip/Manage hooks, following all seven effective rarities. [Patch](PATCH_v0.2.64.2.md) | [Verification](TEST_v0.2.64.2.md). 27,327 assertions pass; all 390 source and 537 tagged/package/install/archive files plus both 0.2.64.1 backups verify. Immutable test/v0.2.64.2 / c19e7b5ff0d346641a5873ffa8a6d43096cea9b7. Presentation-only scope; dedicated startup/save probes were not repeated. No tuning or hosted changes. Rendered acceptance pending. **Test now** after restart when available.

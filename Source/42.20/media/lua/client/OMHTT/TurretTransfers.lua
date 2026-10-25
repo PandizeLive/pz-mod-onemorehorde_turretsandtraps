@@ -42,7 +42,7 @@ function ISInventoryTransferAction:perform()
     T.transferSnapshots = {}
     nativePerform(self)
     T.transferSnapshots = nil
-    D.measure("transfer-batch-ms", getTimestampMs() - started)
+    D.measure("transfer-batch-ms", getTimestampMs() - started, "turrets")
 end
 
 ---@param player IsoPlayer Operator
@@ -98,7 +98,7 @@ function ISInventoryTransferAction:isValid()
         local reason = X.rejection(self.character, self.item, self.srcContainer, self.destContainer)
         if reason then
             if self.omhttRejection ~= reason then
-                D.emit("turret-transfer-rejected", {itemId = self.item:getID(), reason = reason, stage = "validate"})
+                D.emit("turret-transfer-rejected", {itemId = self.item:getID(), reason = reason, stage = "validate"}, nil, nil, "turrets")
                 self.omhttRejection = reason
             end
             return false
@@ -118,7 +118,7 @@ function ISInventoryTransferAction:transferItem(item)
     if not T.isContainer(source) and not T.isContainer(destination) then nativeTransfer(self, item); return end
     local reason = X.rejection(self.character, item, source, destination)
     if reason then
-        D.emit("turret-transfer-rejected", {itemId = item:getID(), reason = reason})
+        D.emit("turret-transfer-rejected", {itemId = item:getID(), reason = reason}, nil, nil, "turrets")
         return
     end
     if T.isContainer(source) and T.kind(item) ~= "ammo" then
@@ -195,9 +195,9 @@ function ISInventoryTransferAction:transferItem(item)
         end
         if T.state(container:getParent()) then W.queueRefresh(container:getParent(), T.kind(item) ~= "ammo") end
     end
-    D.count("turret-transfer", 1)
+    D.count("turret-transfer", 1, "turrets")
     D.trace("turret-transfer", {item = item:getFullType(), itemId = item:getID(),
-        source = source:getType(), destination = destination:getType(), moved = destination:contains(item)})
+        source = source:getType(), destination = destination:getType(), moved = destination:contains(item)}, "turrets")
 end
 
 ---@return boolean merge
@@ -291,9 +291,9 @@ function X.queue(player, object, items, incoming, kind)
         end
     end
     D.emit("turret-manage-transfer", {id = T.state(object).id, incoming = incoming, kind = kind,
-        requested = #items, queued = queued, reason = reason or "OK"})
+        requested = #items, queued = queued, reason = reason or "OK"}, nil, nil, "turrets")
     T.transferSnapshots = nil
-    D.measure("transfer-prepare-ms", getTimestampMs() - started)
+    D.measure("transfer-prepare-ms", getTimestampMs() - started, "turrets")
     return queued, reason
 end
 

@@ -102,7 +102,7 @@ function A.status(entry, status)
     entry.status = status
     local state = T.state(entry.object)
     if not state then return end
-    D.defer("turret-auto-state", {id = state.id, status = status})
+    D.defer("turret-auto-state", {id = state.id, status = status}, "turrets")
 end
 
 ---@param entry table Scheduled turret
@@ -189,7 +189,7 @@ function A.step(entry, deadline)
         entry.target = nil
         if entry.status ~= "no-target" then
             D.defer("turret-auto-search", {id = state.id, visits = job.visited, range = profile.range,
-                cone = profile.cone, baseFacing = state.baseFacing, selected = false})
+                cone = profile.cone, baseFacing = state.baseFacing, selected = false}, "turrets")
         end
         standby.step(object, contents, nil)
         A.status(entry, "no-target")
@@ -205,7 +205,7 @@ function A.step(entry, deadline)
     if previousTarget ~= target then
         entry.target = target
         D.defer("turret-auto-target", {id = state.id, x = target:getX(), y = target:getY(), visits = job.visited,
-            priority = profile.priority, cone = profile.cone, baseFacing = state.baseFacing, aim = state.aimDegrees})
+            priority = profile.priority, cone = profile.cone, baseFacing = state.baseFacing, aim = state.aimDegrees}, "turrets")
     end
     if not aligned then
         A.status(entry, "Aiming")

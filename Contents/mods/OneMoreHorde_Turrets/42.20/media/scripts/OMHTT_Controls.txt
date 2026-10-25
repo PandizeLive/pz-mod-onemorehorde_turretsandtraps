@@ -17,7 +17,7 @@ module Base {
             skillBaseHealth = 0,
             bonusHealth = 0,
             isThumpable = true,
-            OnIsValid = OMHTT_Controls.valid,
+            OnIsValid = OMHTT_Controls.controller,
             OnCreate = OMHTT_Controls.created,
             face E { layer { row = omhtt_turret_01_21, } }
             face N { layer { row = omhtt_turret_01_22, } }

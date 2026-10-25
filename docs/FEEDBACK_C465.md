@@ -1,5 +1,12 @@
 # C465 - Owner test findings and proposed corrective patch
 
+## C467 - Coordinated corrective patch approved (2026-10-25)
+
+The owner's "Approved" authorizes implementation, validation, packaging and local installation of all C465/C466 corrections. No remaining design decision blocks this patch. Approved utility/HUD identities are exact IDs, not wildcards; Denied remains the official-run exclusion flag. The minimum1 rule is the explicit exception to the shared-pool total: merge each recipient's eligible portions for the action first, then raise positive totals below1 once before payment/banking. Zero, ineligible and duplicate rewards remain zero; amounts of1 or more remain unchanged. Four eligible shares of0.25 therefore pay4 total, an accepted tradeoff. No backpay is fabricated for the earlier test.
+
+Implemented versions: T&T0.2.68.1 / Trait Shop0.9.1.1 / Horde-Cure0.6.16.7. See [patch](PATCH_v0.2.68.1.md) and [verification](TEST_v0.2.68.1.md). Existing live-run flag history is not reset; changed gameplay can still produce valid Hardened/Lessened/Unknown classifications. Source defaults and inactive legacy aliases now receive the correct baseline. Workshop and sibling remote publication are not authorized by this local patch.
+
+
 **Latest: C466 below records the selected Custom/manual-icon choices, explicit mod approvals, retained Denied wording, confirmed SP XP identity defect and minimum positive split. C465's Unknown-label proposal is superseded; the combined corrective build still awaits approval.**
 
 2026-10-25. Owner reports Test Complete for 0.2.68, with Custom rarity, missing Specialist icon, Horde labels/flags, rotary grounded hits, Controller collision and low XP. This is a failed/partial acceptance round, not approval of another gameplay patch. Installed versions remain T&T 0.2.68, Trait Shop 0.9.1 and Horde/Cure 0.6.16.6. Prior 0.2.67 acceptance remains closed.

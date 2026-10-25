@@ -29,7 +29,7 @@ function E.sound(name, x, y, z, gain)
         local finished = getTimestampMs()
         D.defer("potato-audio", {sound = name, x = x, y = y, z = z,
             audioMs = finished - started, emitterMs = acquired - started, playMs = played - acquired,
-            volumeMs = finished - played})
+            volumeMs = finished - played}, "turrets")
     end
 end
 
@@ -88,7 +88,7 @@ function E.receive(module, command, facts)
         E.sound(facts.sound or (effect.projectile == "spear" and "SpearCraftedHit" or "OMHTTPotatoImpact"), facts.x, facts.y, facts.z, facts.gain)
     end
     D.defer("projectile-effect", {id = facts.id, shot = facts.shot, phase = command, flightMs = effect.flight,
-        x = facts.x, y = facts.y, z = facts.z, fromX = effect.fromX, fromY = effect.fromY})
+        x = facts.x, y = facts.y, z = facts.z, fromX = effect.fromX, fromY = effect.fromY}, "turrets")
 end
 
 ---@param effect table Presentation state
@@ -198,13 +198,13 @@ function E.render()
                     if not effect.logged then
                         effect.logged = true
                         D.defer("projectile-first-render", {id = effect.id, shot = effect.shot, phase = effect.phase,
-                            screenX = x, screenY = y, zoom = zoom, viewport = index, renderMs = getTimestampMs() - renderStarted})
+                            screenX = x, screenY = y, zoom = zoom, viewport = index, renderMs = getTimestampMs() - renderStarted}, "turrets")
                     end
                 end
             end
         end
     end
-    if started then D.measure("effects-render", getTimestampMs() - started) end
+    if started then D.measure("effects-render", getTimestampMs() - started, "turrets") end
 end
 
 ---@return nil

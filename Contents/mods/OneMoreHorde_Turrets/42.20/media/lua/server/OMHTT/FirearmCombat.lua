@@ -91,7 +91,7 @@ function C.hit(record, origin, target, player, options)
     Horde.sound(options.object, origin:getX(), origin:getY(), origin:getZ(), hearingRadius, gun:getSoundVolume())
     D.defer("firearm-shot", {id = record.id, gun = gun:getFullType(), shot = record.shots,
         critical = critical, critChance = stats.critChance, critMultiplier = multiplier, hearingRadius = hearingRadius, suppressed = stats.suppressed, pellets = pellets, hits = hits, damage = lost * 100, condition = gun:getCondition(),
-        magazine = gun:getCurrentAmmoCount(), chamber = gun:isRoundChambered(), ms = getTimestampMs() - started})
+        magazine = gun:getCurrentAmmoCount(), chamber = gun:isRoundChambered(), ms = getTimestampMs() - started}, "turrets")
     return {id = record.id, shot = record.shots, x = target:getX(), y = target:getY(), z = origin:getZ(),
         fromX = origin:getX() + 0.5, fromY = origin:getY() + 0.5, sound = gun:getSwingSound(),
         muzzle = G.profile(gun).muzzle * 1.5, muzzleHeight = require("OMHTT/Turret").HEAD_VISUAL.height + 0.1, firearm = true, missed = hits == 0}

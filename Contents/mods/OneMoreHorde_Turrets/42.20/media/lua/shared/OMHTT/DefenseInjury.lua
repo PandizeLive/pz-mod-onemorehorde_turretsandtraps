@@ -31,7 +31,7 @@ local function prepareXP(player, message, source)
     if count >= 256 then return end
     local token = session .. ":" .. message.serial
     message.xpToken = token
-    jobs[token] = {owner = owner, deadline = now + 5000}
+    jobs[token] = {owner = owner, source = source, deadline = now + 5000}
     credit.beginInjury(player, token)
 end
 
@@ -269,7 +269,7 @@ function I.acknowledge(module, command, player, message)
     local credit = rawget(_G, "OMHTS_DefenseCredit")
     if not credit or credit.API_VERSION ~= 1 then return end
     credit.finishInjury(player, message.token, job.owner,
-        message.injured and getTimestampMs() <= job.deadline)
+        message.injured and getTimestampMs() <= job.deadline, job.source)
 end
 
 Events.OnServerCommand.Add(I.receive)

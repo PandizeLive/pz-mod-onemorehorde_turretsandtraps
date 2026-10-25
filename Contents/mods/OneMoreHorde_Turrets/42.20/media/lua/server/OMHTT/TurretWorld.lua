@@ -225,7 +225,7 @@ function W.applyPower(object, enabled, player)
         end
         Authority.publish(object)
     end
-    D.emit("turret-power-toggle", {id = state.id, enabled = enabled})
+    D.emit("turret-power-toggle", {id = state.id, enabled = enabled}, nil, nil, "turrets")
     return true
 end
 
@@ -236,7 +236,7 @@ function W.onCreate(params)
     local object, player, data = params.thumpable, params.character, params.craftRecipeData
     if T.state(object) then return end
     D.emit("turret-placement", {cheat = player:isBuildCheat(), x = object:getX(), y = object:getY(),
-        playerX = player:getX(), playerY = player:getY(), distance = math.sqrt((object:getX() - player:getX()) ^ 2 + (object:getY() - player:getY()) ^ 2)})
+        playerX = player:getX(), playerY = player:getY(), distance = math.sqrt((object:getX() - player:getX()) ^ 2 + (object:getY() - player:getY()) ^ 2)}, nil, nil, "turrets")
     local source = nil
     if data then
         local items = data:getAllConsumedItems()
@@ -252,7 +252,7 @@ function W.onCreate(params)
     if not source then
         if not player:isBuildCheat() then
             object:getSquare():transmitRemoveItemFromSquare(object)
-            D.emit("turret-deploy-rejected", {reason = "missing-exact-item"})
+            D.emit("turret-deploy-rejected", {reason = "missing-exact-item"}, nil, nil, "turrets")
             return {objectAlreadyTransmitted = true}
         end
         source = instanceItem(T.BASE)
@@ -310,7 +310,7 @@ function W.onCreate(params)
     end
     object:getSquare():RecalcAllWithNeighbours(true)
     D.emit("turret-deployed", {id = state.id, facing = state.facing, health = state.condition,
-        ammo = T.contents(container).ammo, items = container:getItems():size(), x = object:getX(), y = object:getY()})
+        ammo = T.contents(container).ammo, items = container:getItems():size(), x = object:getX(), y = object:getY()}, nil, nil, "turrets")
 end
 
 ---@param player IsoPlayer Operator
@@ -330,7 +330,7 @@ function W.repair(player, object, id)
         object:sync()
         Authority.publish(object)
     end
-    D.emit("turret-repaired", {id = id, health = state.condition})
+    D.emit("turret-repaired", {id = id, health = state.condition}, nil, nil, "turrets")
     return true
 end
 
@@ -383,7 +383,7 @@ function W.pickup(player, object, id)
         if isServer() then sendEquip(player) end
     end
     D.emit("turret-picked-up", {id = id, items = item:getInventory():getItems():size(), weight = weight,
-        shots = copied.shots, nextShot = copied.nextShot})
+        shots = copied.shots, nextShot = copied.nextShot}, nil, nil, "turrets")
     return true
 end
 
@@ -406,7 +406,7 @@ function W.loaded(object)
         if isServer() then
             Authority.publish(object, false)
         end
-        D.emit("turret-restored", {id = T.state(object).id, health = object:getHealth(), items = object:getContainer():getItems():size()})
+        D.emit("turret-restored", {id = T.state(object).id, health = object:getHealth(), items = object:getContainer():getItems():size()}, nil, nil, "turrets")
     end
 end
 
@@ -448,7 +448,7 @@ function W.removed(object)
     for i = 1, 2 do
         square:AddWorldInventoryItem("Base.ScrapMetal", 0.35 + i * 0.1, 0.5, 0)
     end
-    D.emit("turret-destroyed", {id = state.id, fallbackItemsDropped = remaining, scrap = 2})
+    D.emit("turret-destroyed", {id = state.id, fallbackItemsDropped = remaining, scrap = 2}, nil, nil, "turrets")
 end
 
 ---@param object IsoObject Turret
@@ -591,7 +591,7 @@ function W.fire(player, object, target, signal)
             power.generator:setFuel(math.max(0, power.generator:getFuel() - power.cost))
             require("OMHTT/TurretPowerSync").changed(power.generator)
         end
-        D.defer("turret-resource-spent", {id = state.id, head = contents.head:getID(), power = power.kind, cost = power.cost})
+        D.defer("turret-resource-spent", {id = state.id, head = contents.head:getID(), power = power.kind, cost = power.cost}, "turrets")
         return true
     end
     local Combat = require("OMHTT/PrototypeCombat")
@@ -631,7 +631,7 @@ function W.fire(player, object, target, signal)
             local square = object:getSquare()
             local radius = require("OMHTT/TurretStats").hearingRadius(contents.head, stats)
             require("OMHTT/DefenseHorde").sound(object, square:getX(), square:getY(), square:getZ(), radius, 10)
-            D.defer("turret-hearing", {id = state.id, radius = radius, suppressed = stats.suppressed})
+            D.defer("turret-hearing", {id = state.id, radius = radius, suppressed = stats.suppressed}, "turrets")
         end
         local command = "Launch"
         if impact.firearm then command = "GunShot" end
@@ -641,7 +641,7 @@ function W.fire(player, object, target, signal)
     D.defer("turret-fire-result", {id = state.id, result = result, ammo = state.ammo, power = power.kind, automatic = player == nil,
         loaded = cycle.loaded, reloadReady = cycle.reloadReady, nextShot = cycle.nextShot, fireMs = effectsAt - started,
         prepareMs = fireStarted - started, combatMs = committedAt - fireStarted,
-        refreshMs = refreshedAt - committedAt, effectsMs = effectsAt - refreshedAt})
+        refreshMs = refreshedAt - committedAt, effectsMs = effectsAt - refreshedAt}, "turrets")
     if result == "Fired" or result == "Misfire" then
         require("OMHTT/ControlCycle").fired(object)
     end
@@ -698,7 +698,7 @@ function W.feedTick()
                             require("OMHTT/TurretItemState").publish(contents.head)
                         end
                         if state.feedStatus ~= status then
-                            D.defer("turret-cycle", {id = state.id, head = contents.head:getFullType(), status = status})
+                            D.defer("turret-cycle", {id = state.id, head = contents.head:getFullType(), status = status}, "turrets")
                             state.feedStatus = status
                         end
                     else

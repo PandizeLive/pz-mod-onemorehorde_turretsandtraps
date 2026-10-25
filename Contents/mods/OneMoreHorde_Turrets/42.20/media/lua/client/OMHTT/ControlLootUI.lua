@@ -13,6 +13,21 @@ U.groups = {
 }
 local defaults = {20, 18, 14, 10, 6, 3, 1}
 
+---@param panel ISPanel Settings page
+---@param control ISTextEntryBox Numeric field
+---@return nil
+function U.layout(panel, control)
+    local combo = control.omhttRarity
+    local right = math.min(control:getX() + control:getWidth(), panel:getWidth() - 12)
+    local left = math.max(8, right - 220)
+    local custom = combo.selected == 9
+    combo:setX(left)
+    combo:setY(control:getY())
+    combo:setWidth(custom and right - left - 98 or right - left)
+    control.omhttSetX(control, right - 90)
+    control:setVisible(custom)
+end
+
 ---@param panel ISPanel Native settings page
 ---@param tier integer Rarity
 ---@return number weight Exact configured anchor
@@ -32,7 +47,8 @@ function U.attach(panel, control, key)
     if control.omhttRarity or control.Type ~= "ISTextEntryBox" then return end
     local base = L.CATALOG[key]
     if not base then return end
-    local rawSet, rawGet, setY = control.setText, control.getText, control.setY
+    local rawSet, rawGet, setY, setX = control.setText, control.getText, control.setY, control.setX
+    local border = control.borderColor
     local x, width = control:getX(), math.max(220, control:getWidth())
     local combo = ISComboBox:new(x, control:getY(), width, control:getHeight(), nil, nil)
     combo:initialise()
@@ -43,16 +59,25 @@ function U.attach(panel, control, key)
     combo:addOption(getText("UI_OMHTT_LootCustom"))
     panel:addChild(combo)
     control.omhttRarity = combo
+    control.omhttSetX = setX
+    control.omhttLastValid = rawGet(control)
+    if not tonumber(control.omhttLastValid) then
+        control.omhttLastValid = tostring(L.DEFAULTS.items[key])
+    end
     control:setWidth(90)
     control:setX(x + width - 90)
     combo.onChange = function()
-        control:setVisible(combo.selected == 9)
-        combo:setWidth(combo.selected == 9 and width - 98 or width)
         if combo.selected == 1 then
             rawSet(control, "0")
         elseif combo.selected <= 8 then
             rawSet(control, tostring(U.anchor(panel, combo.selected - 1) / base))
         end
+        U.layout(panel, control)
+        panel.omhttWidth = nil
+    end
+    control.setX = function(self, value)
+        setX(self, value)
+        U.layout(panel, self)
     end
     control.setY = function(self, y)
         setY(self, y)
@@ -74,11 +99,26 @@ function U.attach(panel, control, key)
                 end
             end
         end
-        self:setVisible(combo.selected == 9)
-        combo:setWidth(combo.selected == 9 and width - 98 or width)
+        if number then
+            self.omhttLastValid = value
+        end
+        U.layout(panel, self)
+        panel.omhttWidth = nil
     end
     -- Preserve exact imported values until the player explicitly chooses a tier.
-    control.getText = rawGet
+    control.getText = function(self)
+        local value = rawGet(self)
+        local number = tonumber(value)
+        local valid = number and number == number and number < math.huge
+            and (number >= 0 or number == -1 and L.MANUALS[key])
+        if not valid then
+            self.borderColor = {r = .8, g = .2, b = .2, a = 1}
+            return self.omhttLastValid
+        end
+        self.borderColor = border
+        self.omhttLastValid = value
+        return value
+    end
     control:setText(rawGet(control))
 end
 

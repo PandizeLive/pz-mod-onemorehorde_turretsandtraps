@@ -20,7 +20,7 @@ local function queueService(object, player, id, operation)
     local route = Approach.route(player, record)
     Diagnostics.emit("barrier-approach", {id = id, action = operation, x = player:getX(), y = player:getY(),
         steps = route and #route or -1, targetX = route and #route > 0 and route[#route]:getX(),
-        targetY = route and #route > 0 and route[#route]:getY()})
+        targetY = route and #route > 0 and route[#route]:getY()}, nil, nil, "traps")
     if not route then
         player:setHaloNote(getText("UI_OMHTT_ServiceBlocked"), 255, 170, 80, 180)
         return
@@ -49,7 +49,7 @@ local function fillMenu(playerIndex, context, worldobjects, test)
     local y = IsoUtils.YToIso(getMouseXScaled(), getMouseYScaled(), z)
     local entries = Selection.collect(player, worldobjects, x, y)
     Diagnostics.emit("barrier-selection", {x = x, y = y, z = z, picked = #worldobjects, candidates = #entries,
-        result = #entries == 0 and "miss" or "found"})
+        result = #entries == 0 and "miss" or "found"}, nil, nil, "traps")
     for i = 1, #entries do
         local entry = entries[i]
         local record, object, parts = entry.record, entry.object, entry.parts
@@ -106,7 +106,7 @@ local function fillMenu(playerIndex, context, worldobjects, test)
             Selection.bindHighlight(vault, parts)
             Diagnostics.emit("barrier-menu", {id = record.id, condition = record.condition, max = record.maxHealth,
                 source = entry.source, choice = i, collisionModel = record.collisionModel, vault = plan and plan.side or reason,
-                playerX = player:getX(), playerY = player:getY(), playerZ = player:getZ()})
+                playerX = player:getX(), playerY = player:getY(), playerZ = player:getZ()}, nil, nil, "traps")
         end
     end
 end

@@ -41,8 +41,12 @@ local function apply(zombie, amount, source, kind, operator, weapon)
         core.endDamage(zombie, token)
     end
     local lost = before - zombie:getHealth()
+    local component = "traps"
+    if type(source) == "string" and string.find(source, "^turret") then
+        component = "turrets"
+    end
     Diagnostics.defer("damage-applied", {id = source, kind = kind, before = before,
-        after = zombie:getHealth(), nativeDamage = lost, damage100 = lost * 100, dead = zombie:isDead()})
+        after = zombie:getHealth(), nativeDamage = lost, damage100 = lost * 100, dead = zombie:isDead()}, component)
     triggerEvent("OnOMHTTDamage", zombie, lost, source, kind)
     return lost
 end

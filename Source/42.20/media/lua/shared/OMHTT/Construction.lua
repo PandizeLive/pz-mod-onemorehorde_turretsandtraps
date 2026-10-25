@@ -83,7 +83,7 @@ function Construction.installEdges()
         end
     end
     ISBuildIsoEntity.omhttEdgeInstalled = true
-    Diagnostics.emit("construction-edge-hook", {model = "outline-v1"})
+    Diagnostics.emit("construction-edge-hook", {model = "outline-v1"}, nil, nil, "traps")
 end
 
 Events.OnGameStart.Add(Construction.installEdges)
@@ -95,7 +95,7 @@ function Construction.onAddToMenu(params)
     local available = F.barrierEnabled()
     if menuAvailable ~= available then
         menuAvailable = available
-        Diagnostics.emit("construction-menu", {available = available, multiplayer = isClient() or isServer()})
+        Diagnostics.emit("construction-menu", {available = available, multiplayer = isClient() or isServer()}, nil, nil, "traps")
     end
     return available
 end
@@ -128,7 +128,7 @@ function Construction.onCrafted(data, player)
     local item = data:getFirstCreatedItem()
     Diagnostics.emit("portable-crafted", {recipe = data:getRecipe():getName(), type = item:getFullType(),
         itemId = item:getID(), weight = item:getActualWeight(), count = data:getAllCreatedItems():size(),
-        crafter = player:getUsername()})
+        crafter = player:getUsername()}, nil, nil, "traps")
 end
 
 ---@return nil
@@ -162,7 +162,7 @@ function Construction.initializeSprites()
             properties:set(IsoFlagType.WallW)
         end
     end
-    Diagnostics.emit("construction-sprites", {persistent = 28, tiledef = 7316, outlineMetadata = true})
+    Diagnostics.emit("construction-sprites", {persistent = 28, tiledef = 7316, outlineMetadata = true}, nil, nil, "traps")
 end
 
 Events.OnInitGlobalModData.Add(Construction.initializeSprites)
@@ -186,7 +186,7 @@ function Construction.onIsValid(params)
     if failure == nil then
         params.testCollisions = false
     end
-    if Diagnostics.enabled() then
+    if Diagnostics.enabled("traps") then
         local status = failure
         if status == nil then
             status = "Ready"
@@ -195,7 +195,7 @@ function Construction.onIsValid(params)
         local now = getTimestampMs()
         if state ~= previewState and (now - previewTime >= 500 or now < previewTime) then
             previewState, previewTime = state, now
-            Diagnostics.emit("construction-preview", {x = x, y = y, z = params.square:getZ(), facing = facing, status = status})
+            Diagnostics.emit("construction-preview", {x = x, y = y, z = params.square:getZ(), facing = facing, status = status}, nil, nil, "traps")
         end
     end
     return failure == nil

@@ -17,7 +17,7 @@ end
 ---@param reason string Failure category
 ---@return nil
 function I.reject(player, reason)
-    D.emit("turret-install-rejected", {reason = reason})
+    D.emit("turret-install-rejected", {reason = reason}, nil, nil, "turrets")
     player:setHaloNote(getText("UI_OMHTT_InstallFailed"), 255, 190, 90, 180)
     return nil
 end
@@ -26,7 +26,7 @@ end
 ---@param player IsoPlayer Builder
 ---@return ISBuildIsoEntity? cursor
 function I.install(item, player)
-    D.emit("turret-install-request", {itemId = item:getID(), cheat = player:isBuildCheat()})
+    D.emit("turret-install-request", {itemId = item:getID(), cheat = player:isBuildCheat()}, nil, nil, "turrets")
     if not T.enabled() or not I.carried(item, player) then return I.reject(player, "not-carried") end
     if not ISBuildIsoEntity then return I.reject(player, "construction-not-ready") end
     local info = SpriteConfigManager.GetObjectInfo("OMHTTDeployTurret")
@@ -55,7 +55,7 @@ function I.install(item, player)
     end
     cursor.dragNilAfterPlace = true
     getCell():setDrag(cursor, player:getPlayerNum())
-    D.emit("turret-install-preview", {itemId = item:getID(), cheat = player:isBuildCheat(), items = item:getInventory():getItems():size()})
+    D.emit("turret-install-preview", {itemId = item:getID(), cheat = player:isBuildCheat(), items = item:getInventory():getItems():size()}, nil, nil, "turrets")
     return cursor
 end
 

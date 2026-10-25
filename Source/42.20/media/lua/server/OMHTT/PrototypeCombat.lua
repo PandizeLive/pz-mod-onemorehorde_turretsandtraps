@@ -45,7 +45,7 @@ function Combat.observeImpacts()
                 loaded = zombie:getSquare() ~= nil, dead = zombie:isDead(), onFloor = zombie:isOnFloor(),
                 knockedDown = zombie:isKnockedDown(), ragdoll = zombie:isRagdoll(),
                 physicsRequested = zombie:usePhysicHitReaction(),
-                displacementX = zombie:getX() - entry.x, displacementY = zombie:getY() - entry.y})
+                displacementX = zombie:getX() - entry.x, displacementY = zombie:getY() - entry.y}, nil, nil, "turrets")
             entry.stage = entry.stage + 1
             if entry.stage >= 3 or zombie:getSquare() == nil then
                 table.remove(observations, i)
@@ -131,13 +131,13 @@ function Combat.fire(record, object, player, options)
     options = options or {range = Combat.RANGE, interval = Combat.SHOT_INTERVAL_MS, damage = Combat.DIRECT_DAMAGE,
         knockdown = Combat.KNOCKDOWN_CHANCE, splash = Combat.SPLASH_DAMAGE, radius = 1.1}
     Diagnostics.defer("shot-attempt", {id = record.id, ammo = record.ammo, shots = record.shots,
-        nowMs = getTimestampMs(), nextShotMs = record.nextShot, kind = record.kind})
+        nowMs = getTimestampMs(), nextShotMs = record.nextShot, kind = record.kind}, "turrets")
     if isClient() or (isServer() and not options.managed) then return "MPCombatDeferred" end
     if record.kind ~= "potato" then return "WrongDevice" end
     if record.ammo <= 0 then return "Empty" end
     local now = Clock.now()
     if not options.managed and record.nextShot > now + options.interval then
-        Diagnostics.defer("shot-clock-rebased", {id = record.id, previous = record.nextShot, nowMs = now})
+        Diagnostics.defer("shot-clock-rebased", {id = record.id, previous = record.nextShot, nowMs = now}, "turrets")
         record.nextShot = now + options.interval
     end
     if not options.managed and now < record.nextShot then return "Cooling" end
@@ -166,7 +166,7 @@ function Combat.fire(record, object, player, options)
     end
     record.lastCandidates = visits
     Diagnostics.defer("shot-search", {id = record.id, visits = visits, candidates = #candidates,
-        selected = target ~= nil, capped = visits >= Combat.CANDIDATE_LIMIT})
+        selected = target ~= nil, capped = visits >= Combat.CANDIDATE_LIMIT}, "turrets")
     if not target then return "NoTarget" end
     options.visits = visits
     if options.align and not options.align(target) then return "Aiming" end
@@ -209,7 +209,7 @@ function Combat.fire(record, object, player, options)
         Combat.pending[#Combat.pending + 1] = {record = {id = record.id, shots = record.shots, ammo = record.ammo, facing = record.facing},
             origin = origin, target = target, player = player, options = options, facts = facts, due = now + facts.flight}
         Diagnostics.defer("shot-launched", {id = record.id, shot = record.shots, flightMs = facts.flight,
-            pending = #Combat.pending, x = tx, y = ty})
+            pending = #Combat.pending, x = tx, y = ty}, "turrets")
         return "Fired", facts
     end
     if options.resolve then return "Fired", options.resolve(record, origin, target, player, options) end
@@ -274,7 +274,7 @@ function Combat.hit(record, origin, target, player, options)
     local before = target:getHealth()
     local impactSquare = target:getSquare()
     Diagnostics.defer("shot-hit-begin", {id = record.id, shot = record.shots, x = tx, y = ty, health = before,
-        ammo = record.ammo, damageInput = options.damage, facing = record.facing})
+        ammo = record.ammo, damageInput = options.damage, facing = record.facing}, "turrets")
     local critical = options.critical
     if critical == nil then critical = ZombRand(10000) < (options.critChance or 0) * 100 end
     local directDamage = options.damage * (critical and options.critMultiplier or 1)
@@ -294,7 +294,7 @@ function Combat.hit(record, origin, target, player, options)
             if knocked then require("OMHTT/DefenseActorState").get(target).OMHTTKnockdownUntilMs = require("OMHTT/ControlClock").now() + Combat.KNOCKDOWN_GUARD_MS end
         end
         Conditional.impact(target, origin, options)
-        Diagnostics.defer("shot-damage-confirmed", {id = record.id, shot = record.shots, dead = target:isDead(), knocked = knocked})
+        Diagnostics.defer("shot-damage-confirmed", {id = record.id, shot = record.shots, dead = target:isDead(), knocked = knocked}, "turrets")
         if not isServer() and Diagnostics.enabled("turrets") and SandboxVars.OMHTurretsTraps.TurretDetailedLogging == true then
             if #observations >= 12 then table.remove(observations, 1) end
             observations[#observations + 1] = {zombie = target, id = record.id, shot = record.shots,
@@ -306,7 +306,7 @@ function Combat.hit(record, origin, target, player, options)
     Diagnostics.defer("shot-hit-end", {id = record.id, shot = record.shots, before = before, after = target:getHealth(),
         dead = target:isDead(), critical = critical, knockdown = knocked, splash = splash, ammo = record.ammo,
         directMs = damagedAt - now, reactionMs = splashStarted - damagedAt,
-        splashMs = getTimestampMs() - splashStarted, hitMs = getTimestampMs() - now})
+        splashMs = getTimestampMs() - splashStarted, hitMs = getTimestampMs() - now}, "turrets")
     require("OMHTT/TurretVolley").release(options)
     return {x = tx, y = ty, z = origin:getZ(), id = record.id, shot = record.shots, target = target,
         fromX = origin:getX() + 0.5, fromY = origin:getY() + 0.5}
@@ -329,7 +329,7 @@ function Combat.arrive(shot)
     volley.miss(shot.record, origin, target, shot.player, options, shot.facts.x, shot.facts.y)
     volley.release(options)
     local facts = shot.facts
-    Diagnostics.defer("shot-missed", {id = facts.id, shot = facts.shot, reason = "target-or-path-changed"})
+    Diagnostics.defer("shot-missed", {id = facts.id, shot = facts.shot, reason = "target-or-path-changed"}, "turrets")
     return {id = facts.id, shot = facts.shot, x = facts.x, y = facts.y, z = facts.z, missed = true}
 end
 
@@ -347,7 +347,7 @@ function Combat.tickFlights()
             local facts = Combat.arrive(shot)
             require("OMHTT/DefenseEffects").emit("Impact", facts)
             Diagnostics.defer("shot-arrived", {id = facts.id, shot = facts.shot, delayMs = now - shot.facts.start,
-                lateMs = now - shot.due, missed = facts.missed == true})
+                lateMs = now - shot.due, missed = facts.missed == true}, "turrets")
             done = done + 1
         else
             Combat.cursor = Combat.cursor + 1

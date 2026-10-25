@@ -38,7 +38,7 @@ function Service.apply(player, object, id, operation)
     if isClient() then return false end
     local record = Service.resolve(player, object, id)
     if not record then
-        Diagnostics.emit("barrier-service-rejected", {id = id, action = operation, reason = "Unavailable"})
+        Diagnostics.emit("barrier-service-rejected", {id = id, action = operation, reason = "Unavailable"}, nil, nil, "traps")
         return false
     end
     local slot = Footprint.slot(object:getSquare(), id)
@@ -51,7 +51,7 @@ function Service.apply(player, object, id, operation)
         local item = instanceItem(kind)
         if not player:getInventory():hasRoomFor(player, item) then
             player:setHaloNote(getText("UI_OMHTT_PickupNoRoom"), 255, 170, 80, 180)
-            Diagnostics.emit("barrier-service-rejected", {id = id, action = operation, reason = "InventoryFull"})
+            Diagnostics.emit("barrier-service-rejected", {id = id, action = operation, reason = "InventoryFull"}, nil, nil, "traps")
             return false
         end
         if player:getInventory():AddItem(item) ~= item then return false end
@@ -76,7 +76,7 @@ function Service.apply(player, object, id, operation)
     elseif operation == "Reinforce" then
         local materials = Service.reinforcementMaterials(player, record)
         if not materials then
-            Diagnostics.emit("barrier-service-rejected", {id = id, action = operation, reason = "Requirements"})
+            Diagnostics.emit("barrier-service-rejected", {id = id, action = operation, reason = "Requirements"}, nil, nil, "traps")
             return false
         end
         for i = 1, #materials.items do
@@ -106,13 +106,13 @@ function Service.apply(player, object, id, operation)
         end
         Diagnostics.emit("barrier-reinforced", {id = id, before = before, after = record.condition,
             max = record.maxHealth, damage = F.barrierDamage(record), consumed = #materials.items,
-            xp = materials.cheat and 0 or 30, cheat = materials.cheat})
+            xp = materials.cheat and 0 or 30, cheat = materials.cheat}, nil, nil, "traps")
         return true
     else
         return false
     end
     Diagnostics.emit("barrier-service", {id = id, action = operation, before = before, after = record.maxHealth,
-        player = player:getUsername(), items = operation == "Pickup" and 1 or 0, xp = 0})
+        player = player:getUsername(), items = operation == "Pickup" and 1 or 0, xp = 0}, nil, nil, "traps")
     return true
 end
 

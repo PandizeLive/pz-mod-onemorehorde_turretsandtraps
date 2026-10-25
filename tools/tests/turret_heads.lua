@@ -84,6 +84,9 @@ local zombie = {health = 10, kind = "IsoZombie", getX = function() return 1.5 en
     getCurrentStateName = function() return "idle" end, isProne = function() return false end,
     isKnockedDown = function() return false end, isStaggerBack = function() return false end, isBumpFall = function() return false end}
 function zombie:isDead() return self.health <= 0 end
+function zombie:isOnFloor() return self.grounded == true end
+function zombie:isRagdoll() return self.ragdoll == true end
+function zombie:isGettingUp() return self.gettingUp == true end
 function zombie:getHealth() return self.health end
 function zombie:setHealth(value) self.health = value end
 function zombie:Kill() self.health = 0 end
@@ -98,6 +101,13 @@ Combat.clearLane = function() return true end
 Effects.sound = function() soundCount = soundCount + 1 end
 actors[1] = zombie
 local entry = {object = object}
+zombie.grounded = true
+R.contact(entry, zombie, {})
+check(not entry.hasTarget and zombie.health == 10, "Grounded actor cannot activate rotary or take an arm hit")
+zombie.grounded, zombie.gettingUp = false, true
+R.contact(entry, zombie, {})
+check(zombie.health == 10, "Getting-up zombie remains excluded until standing")
+zombie.gettingUp = false
 R.step(entry, getTimestampMs() + 100)
 check(entry.hasTarget and not state.rotaryMoving, "Bounded idle scan discovers a target without attacking")
 for i = 1, 120 do

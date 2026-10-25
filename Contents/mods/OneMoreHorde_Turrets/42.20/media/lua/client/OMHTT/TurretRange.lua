@@ -23,7 +23,7 @@ function O.focus(index, source, object, enabled)
         local state = T.state(object)
         if not state then return end
         entries[source] = object
-        D.emit("turret-range-selected", {id = state.id, source = source, range = R.entries[object] and R.entries[object].profile and R.entries[object].profile.range})
+        D.emit("turret-range-selected", {id = state.id, source = source, range = R.entries[object] and R.entries[object].profile and R.entries[object].profile.range}, nil, nil, "turrets")
     elseif entries[source] == object then
         entries[source] = nil
     end
@@ -215,7 +215,7 @@ function O.render()
             end
         end
     end
-    if started then D.measure("range-render", getTimestampMs() - started) end
+    if started then D.measure("range-render", getTimestampMs() - started, "turrets") end
 end
 
 Events.OnObjectLeftMouseButtonDown.Add(O.clicked)

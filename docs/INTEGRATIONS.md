@@ -1,5 +1,12 @@
 # OMH and Trait Shop integration plan
 
+## C467 - Coordinated corrective patch approved (2026-10-25)
+
+The owner's "Approved" authorizes implementation, validation, packaging and local installation of all C465/C466 corrections. No remaining design decision blocks this patch. Approved utility/HUD identities are exact IDs, not wildcards; Denied remains the official-run exclusion flag. The minimum1 rule is the explicit exception to the shared-pool total: merge each recipient's eligible portions for the action first, then raise positive totals below1 once before payment/banking. Zero, ineligible and duplicate rewards remain zero; amounts of1 or more remain unchanged. Four eligible shares of0.25 therefore pay4 total, an accepted tradeoff. No backpay is fabricated for the earlier test.
+
+Implemented versions: T&T0.2.68.1 / Trait Shop0.9.1.1 / Horde-Cure0.6.16.7. See [patch](PATCH_v0.2.68.1.md) and [verification](TEST_v0.2.68.1.md). Existing live-run flag history is not reset; changed gameplay can still produce valid Hardened/Lessened/Unknown classifications. Source defaults and inactive legacy aliases now receive the correct baseline. Workshop and sibling remote publication are not authorized by this local patch.
+
+
 **C466 current correction:** the owner selected a minimum1XP for positive recipient splits below1, after combining shares per action and before award/banking. Zero/ineligible stays zero; delivery never reapplies the minimum. This can exceed the original pool total. See the C466 section below and [the reproduced SP startup identity defect](FEEDBACK_C465.md#c466---choices-confirmed-startup-xp-defect-reproduced-2026-10-25). Selected, not yet implemented.
 
 Current status C239: owner selects divide by5, explicit per-run opt-in and default-or-harder eligibility; [reviewed MP/scoring contract](MULTIPLAYER_HORDE_PATCH.md) supersedes the old source snapshot below. Native enforcement and coordinated implementation remain outstanding. Existing shared-XP and Cure simulation proposals remain separate, unapproved where marked. No sibling project was changed by this planning update.

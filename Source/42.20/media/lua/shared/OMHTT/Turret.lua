@@ -463,7 +463,7 @@ function T.onCrafted(data, player)
         item:getModData().OMHTTTurret = {schema = 1, kind = "potato", facing = 0, shots = 0, nextShot = 0,
             condition = health, maxHealth = health, revision = 1}
     end
-    D.emit("turret-crafted", {recipe = data:getRecipe():getName(), item = item:getFullType(), itemId = item:getID()})
+    D.emit("turret-crafted", {recipe = data:getRecipe():getName(), item = item:getFullType(), itemId = item:getID()}, nil, nil, "turrets")
 end
 
 ---@param container ItemContainer Contents

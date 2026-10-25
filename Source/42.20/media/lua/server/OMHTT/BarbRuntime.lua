@@ -49,7 +49,7 @@ function B.zombie(zombie)
             end
         end)
     end
-    if started then D.measure("barb-contact", getTimestampMs() - started) end
+    if started then D.measure("barb-contact", getTimestampMs() - started, "traps") end
 end
 
 Events.OnZombieUpdate.Add(B.zombie)

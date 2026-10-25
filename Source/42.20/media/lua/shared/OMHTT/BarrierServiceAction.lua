@@ -51,7 +51,7 @@ function OMHTTBarrierServiceAction:start()
         end
         addSound(self.character, self.character:getX(), self.character:getY(), self.character:getZ(), 20, 1)
     end
-    Diagnostics.emit("barrier-service-start", {id = self.id, action = self.operation, seconds = self.seconds})
+    Diagnostics.emit("barrier-service-start", {id = self.id, action = self.operation, seconds = self.seconds}, nil, nil, "traps")
 end
 
 ---@return nil
@@ -68,7 +68,7 @@ end
 ---@return nil
 function OMHTTBarrierServiceAction:stop()
     self.done = true
-    Diagnostics.emit("barrier-service-cancel", {id = self.id, action = self.operation, elapsed = self.elapsed})
+    Diagnostics.emit("barrier-service-cancel", {id = self.id, action = self.operation, elapsed = self.elapsed}, nil, nil, "traps")
     ISBaseTimedAction.stop(self)
 end
 

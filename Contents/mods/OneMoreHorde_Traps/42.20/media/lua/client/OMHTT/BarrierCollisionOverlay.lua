@@ -109,7 +109,7 @@ function Overlay.render()
         Diagnostics.emit("barrier-overlay", {phase = "ui", parts = #lines, player = entry.player,
             x = entry.x, y = entry.y, z = entry.z, screenX = sx, screenY = sy,
             zoom = getCore():getZoom(entry.player), cameraX = IsoCamera.getOffX(entry.player),
-            cameraY = IsoCamera.getOffY(entry.player)})
+            cameraY = IsoCamera.getOffY(entry.player)}, nil, nil, "traps")
     end
 end
 

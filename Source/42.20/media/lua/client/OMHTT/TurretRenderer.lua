@@ -134,7 +134,7 @@ function R.animate(now)
             entry.lastAim = state.aimDegrees
         end
     end
-    if started then D.measure("head-animation", getTimestampMs() - started) end
+    if started then D.measure("head-animation", getTimestampMs() - started, "turrets") end
 end
 
 ---@param playerIndex number Native render viewport
@@ -193,7 +193,7 @@ function R.render(playerIndex)
             end
         end
     end
-    if started then D.measure("head-render", getTimestampMs() - started) end
+    if started then D.measure("head-render", getTimestampMs() - started, "turrets") end
 end
 
 ---@return nil
@@ -231,7 +231,7 @@ function R.tick()
     for object in pairs(R.entries) do
         if object:getObjectIndex() >= 0 and object:getSquare() then W.refresh(object) end
     end
-    D.emit("turret-render-mode", {hybrid = mode, height = R.headHeight, scale = R.headScale, yawConvention = "negative-heading", pass = "opaque", looseHead = false})
+    D.emit("turret-render-mode", {hybrid = mode, height = R.headHeight, scale = R.headScale, yawConvention = "negative-heading", pass = "opaque", looseHead = false}, nil, nil, "turrets")
 end
 
 Events.OnOMHTTTurretChanged.Add(R.changed)

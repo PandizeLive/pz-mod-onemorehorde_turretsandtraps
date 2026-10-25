@@ -1,6 +1,7 @@
 """Load coordinated release packages and prove offline ledger persistence on stock B42."""
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -8,11 +9,13 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 GAME = Path(os.environ.get("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"))
-OUTPUT = ROOT / "diagnostics/v0.2.68/xp-release"
+VERSION = re.search(r"^modversion=(.+)$", (ROOT / "Source/42.20/mod.info").read_text(), re.M)[1].strip()
+OUTPUT = ROOT / "diagnostics" / ("v" + VERSION) / "xp-release"
 
 
 def main():
     # A fresh cache per invocation; never touch owner saves or an earlier probe.
+    OUTPUT.mkdir(parents=True, exist_ok=True)
     cache = OUTPUT / ("cache-" + time.strftime("%Y%m%d-%H%M%S"))
     packages = [(ROOT, "OneMoreHorde_Traps"), (ROOT, "OneMoreHorde_Turrets"),
                 (ROOT.parent / "Trait Shop", "OneMoreHorde_TraitShop"),

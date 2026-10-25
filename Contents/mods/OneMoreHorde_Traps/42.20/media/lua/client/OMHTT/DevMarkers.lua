@@ -33,7 +33,7 @@ local function onResult(module, command, result)
         playerNum = result.playerNum, label = label, start = getTimestampMs(), nextCheck = getTimestampMs() + 100,
         ready = false, finished = false,
     }
-    Diagnostics.emit("marker-queued", {id = result.id, label = label, x = result.x, y = result.y, z = result.z})
+    Diagnostics.emit("marker-queued", {id = result.id, label = label, x = result.x, y = result.y, z = result.z}, nil, nil, "traps")
 end
 
 ---@return nil
@@ -59,13 +59,13 @@ local function update()
                         object:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_REDRAW)
                         marker.finished = true
                         Diagnostics.emit("marker-texture-ready", {id = marker.id, elapsedMs = now - marker.start,
-                            sprite = tostring(object:getSpriteName())})
+                            sprite = tostring(object:getSpriteName())}, nil, nil, "traps")
                     end
                 end
             end
             if not marker.finished and now - marker.start >= 3000 then
                 marker.finished = true
-                Diagnostics.emit("marker-texture-timeout", {id = marker.id, elapsedMs = now - marker.start})
+                Diagnostics.emit("marker-texture-timeout", {id = marker.id, elapsedMs = now - marker.start}, nil, nil, "traps")
             end
         end
     end

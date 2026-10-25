@@ -5,6 +5,6 @@ local A = rawget(_G, "OMHTT_DefenseAuthority")
 if A then return A end
 require("OMHTT/Damage")
 require("OMHTT/DefenseCombatServer")
-A = {HORDE_API_VERSION = 1, SETTINGS_BASELINE = "tt-c464-xp-v1"}
+A = {HORDE_API_VERSION = 1, SETTINGS_BASELINE = "tt-c467-v1"}
 OMHTT_DefenseAuthority = A
 return A

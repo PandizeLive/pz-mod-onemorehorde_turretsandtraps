@@ -73,7 +73,7 @@ end
 function X.lethal(zombie, source, horde)
     local credit = rawget(_G, "OMHTS_DefenseCredit")
     if not credit or credit.API_VERSION ~= 1 then return end
-    credit.zombieFinisher(zombie, X.owner(source), horde)
+    credit.zombieFinisher(zombie, X.owner(source), horde, source)
 end
 
 ---@param player IsoPlayer Before an independently applied defense injury
@@ -91,7 +91,7 @@ function X.injury(player, source)
     if type(source) ~= "string" then return end
     local credit = rawget(_G, "OMHTS_DefenseCredit")
     if not credit or credit.API_VERSION ~= 1 then return end
-    credit.playerInjury(player, X.owner(source))
+    credit.playerInjury(player, X.owner(source), source)
 end
 
 return X

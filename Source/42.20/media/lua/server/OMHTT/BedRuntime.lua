@@ -57,7 +57,7 @@ function B.zombie(zombie)
             require("OMHTT/DefenseEffects").contact("SpearCraftedHit", zombie, 1)
         end)
         record.health = math.max(0, record.health - B.option("Wear", 6, 0, 1000))
-        D.defer("bed-fall", {id = record.id, health = record.health, damage100 = amount})
+        D.defer("bed-fall", {id = record.id, health = record.health, damage100 = amount}, "traps")
         if record.health == 0 then
             B.retire(record)
         else
@@ -75,9 +75,9 @@ function B.zombie(zombie)
         if require("OMHTT/DefenseMotion").request(zombie, "trip", record.id) then
             state.requestedUntil = B.time + 2000
         end
-        D.defer("bed-trip", {id = record.id})
+        D.defer("bed-trip", {id = record.id}, "traps")
     end
-    if started then D.measure("bed-contact", getTimestampMs() - started) end
+    if started then D.measure("bed-contact", getTimestampMs() - started, "traps") end
 end
 
 Events.OnZombieUpdate.Add(B.zombie)

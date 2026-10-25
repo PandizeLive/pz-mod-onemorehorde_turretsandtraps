@@ -53,6 +53,25 @@ function C.valid(params)
     return square ~= nil and square:TreatAsSolidFloor()
 end
 
+---@param params table Native preview or server construction
+---@return boolean valid
+---@nodiscard
+function C.controller(params)
+    if not C.valid(params) then return false end
+    local square = params.square
+    if square:isSolid() or square:isSolidTrans() then return false end
+    local objects = square:getObjects()
+    for i = 0, objects:size() - 1 do
+        local object = objects:get(i)
+        if object:hasModData() then
+            local data = object:getModData()
+            if data.OMHTT or data.OMHTTEdge or data.OMHTTControl or data.OMHTTTurret
+                or data.OMHTTBed or data.OMHTTBarbFrame then return false end
+        end
+    end
+    return true
+end
+
 ---@param item InventoryItem? Candidate defense supply
 ---@return boolean allowed
 function C.storable(item)

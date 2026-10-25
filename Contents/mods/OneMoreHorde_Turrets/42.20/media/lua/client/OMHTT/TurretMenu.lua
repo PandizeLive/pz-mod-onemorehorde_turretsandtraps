@@ -79,7 +79,7 @@ local function fillMenu(playerIndex, context, worldobjects, test)
             condition.notAvailable = true
             Range.bind(recovery, {object})
             D.emit("turret-menu", {id = T.state(object).id, ammo = contents.ammo, modules = contents.modules,
-                battery = contents.battery ~= nil, head = contents.head ~= nil})
+                battery = contents.battery ~= nil, head = contents.head ~= nil}, nil, nil, "turrets")
         end
     end
 end

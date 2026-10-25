@@ -82,7 +82,7 @@ function Action:complete()
         require("OMHTT/TurretAuthority").publish(self.object)
     end
     D.emit("turret-magazine", {gun = gun:getID(), inserted = self.magazine ~= nil,
-        rounds = magazine:getCurrentAmmoCount(), chamber = gun:isRoundChambered()})
+        rounds = magazine:getCurrentAmmoCount(), chamber = gun:isRoundChambered()}, nil, nil, "turrets")
     return true
 end
 

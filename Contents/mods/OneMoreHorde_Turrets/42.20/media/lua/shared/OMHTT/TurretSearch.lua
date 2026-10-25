@@ -43,7 +43,7 @@ function S.finish(entry, result)
     end
     D.emit("turret-manual-search", {id = T.state(entry.object) and T.state(entry.object).id,
         result = result, queueMs = getTimestampMs() - entry.started, searchMs = entry.workMs,
-        slices = entry.slices, visits = entry.job.visited})
+        slices = entry.slices, visits = entry.job.visited}, nil, nil, "turrets")
 end
 
 ---@param entry table Queued search

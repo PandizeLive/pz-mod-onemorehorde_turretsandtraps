@@ -271,7 +271,7 @@ function Footprint.place(square, player)
     createPart(square, record)
     createPart(second, record)
     Diagnostics.emit("barrier-footprint", {id = record.id, action = "place", x = record.x, y = record.y,
-        secondX = x, secondY = y, facing = record.facing, width = 2})
+        secondX = x, secondY = y, facing = record.facing, width = 2}, nil, nil, "traps")
     return "Placed", slot
 end
 
@@ -370,7 +370,7 @@ function Footprint.adoptBuild(object, player, x, y, facing, entity, consumed)
         anchorX = x, anchorY = y, facing = facing, complete = Footprint.parts(record) ~= nil,
         builder = player:getUsername(), buildCheat = player:isBuildCheat(), condition = record.condition, recipe = entity,
         sprite = object:getSpriteName(), nativeConfigValid = spriteConfig and spriteConfig:isValid(),
-        collisionModel = record.collisionModel, north = object:getNorth()})
+        collisionModel = record.collisionModel, north = object:getNorth()}, nil, nil, "traps")
     return record
 end
 
@@ -407,7 +407,7 @@ function Footprint.retire(slot, excluding)
     end
     -- Native multi-tile removal can include the sibling. Never nest world removal in its callback.
     if excluding then
-        Diagnostics.emit("barrier-footprint", {id = record.id, action = "retire-deferred", width = width})
+        Diagnostics.emit("barrier-footprint", {id = record.id, action = "retire-deferred", width = width}, nil, nil, "traps")
         return
     end
     if record.collisionModel == "outline-v1" then
@@ -430,7 +430,7 @@ function Footprint.retire(slot, excluding)
             end
         end
     end
-    Diagnostics.emit("barrier-footprint", {id = record.id, action = "retire", width = width})
+    Diagnostics.emit("barrier-footprint", {id = record.id, action = "retire", width = width}, nil, nil, "traps")
 end
 
 ---@param square IsoGridSquare Newly loaded tile
@@ -449,7 +449,7 @@ function Footprint.cleanRetired(square)
             if count == 1 then
                 square:transmitRemoveItemFromSquare(object)
                 square:RecalcAllWithNeighbours(true)
-                Diagnostics.emit("barrier-retired-part", {id = slot.retired, x = slot.x, y = slot.y})
+                Diagnostics.emit("barrier-retired-part", {id = slot.retired, x = slot.x, y = slot.y}, nil, nil, "traps")
                 slot.retired = nil
             elseif count == 0 then
                 slot.retired = nil
@@ -469,7 +469,7 @@ local function expandLegacy(record, slot)
     local failure = available(square)
     if failure then
         if migrationWarnings[record.id] ~= failure then
-            Diagnostics.emit("barrier-expansion-deferred", {id = record.id, reason = failure, x = x, y = y})
+            Diagnostics.emit("barrier-expansion-deferred", {id = record.id, reason = failure, x = x, y = y}, nil, nil, "traps")
             migrationWarnings[record.id] = failure
         end
         return
@@ -481,7 +481,7 @@ local function expandLegacy(record, slot)
     slot.epoch = math.max(slot.epoch, other.epoch) + 1
     other.epoch = slot.epoch
     createPart(square, record)
-    Diagnostics.emit("barrier-footprint", {id = record.id, action = "expand", width = 2, secondX = x, secondY = y})
+    Diagnostics.emit("barrier-footprint", {id = record.id, action = "expand", width = 2, secondX = x, secondY = y}, nil, nil, "traps")
 end
 
 ---@param slot table Canonical barrier slot
@@ -496,7 +496,7 @@ function Footprint.sync(slot, reason)
         record.collisionModel = "outline-v1"
         record.revision = record.revision + 1
         Outline.changed()
-        Diagnostics.emit("barrier-outline-migrate", {id = record.id, facing = record.facing})
+        Diagnostics.emit("barrier-outline-migrate", {id = record.id, facing = record.facing}, nil, nil, "traps")
     end
     local colliders = record.collisionModel == "outline-v1" and Outline.objects(record) or {}
     local healthObjects = {}
@@ -511,7 +511,7 @@ function Footprint.sync(slot, reason)
         record.observedLoss = record.observedLoss + loss
         record.revision = record.revision + 1
         slot.epoch = slot.epoch + 1
-        Diagnostics.emit("barrier-health", {id = record.id, hp = record.condition, loss = loss, parts = #parts})
+        Diagnostics.emit("barrier-health", {id = record.id, hp = record.condition, loss = loss, parts = #parts}, nil, nil, "traps")
     end
     if record.condition <= 0 then
         Footprint.retire(slot, nil)
@@ -526,7 +526,7 @@ function Footprint.sync(slot, reason)
         record.revision = record.revision + 1
         slot.epoch = slot.epoch + 1
         Diagnostics.emit("barrier-settings", {id = record.id, previousMax = oldMaximum,
-            max = maximum, hp = record.condition, damage = F.barrierDamage(record)})
+            max = maximum, hp = record.condition, damage = F.barrierDamage(record)}, nil, nil, "traps")
     end
     local width = record.width
     expandLegacy(record, slot)
@@ -612,7 +612,7 @@ function Footprint.rotate(slot)
     other.epoch = slot.epoch
     createPart(square, record)
     Footprint.sync(slot)
-    Diagnostics.emit("barrier-footprint", {id = record.id, action = "rotate", facing = facing, secondX = x, secondY = y})
+    Diagnostics.emit("barrier-footprint", {id = record.id, action = "rotate", facing = facing, secondX = x, secondY = y}, nil, nil, "traps")
     return "BarrierRotated"
 end
 

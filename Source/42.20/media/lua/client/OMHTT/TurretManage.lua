@@ -60,7 +60,7 @@ function Panel:close()
     end
     active[self.player:getPlayerNum()] = nil
     self:removeFromUIManager()
-    D.emit("turret-manage-close", {id = self.deviceId})
+    D.emit("turret-manage-close", {id = self.deviceId}, nil, nil, "turrets")
 end
 
 ---@param count number Queued items
@@ -156,7 +156,7 @@ function Panel:changePriority()
     end
     require("OMHTT/TurretWorld").refresh(self.object)
     self.nextRefresh = 0
-    D.emit("turret-priority", {id = state.id, priority = state.priority})
+    D.emit("turret-priority", {id = state.id, priority = state.priority}, nil, nil, "turrets")
 end
 
 ---@param value number Slider tile value
@@ -475,12 +475,12 @@ function Panel:refresh()
     if self.lastStatKey ~= statKey then
         D.emit("turret-effective-stats", {id = self.deviceId, damage = stats.damage, range = stats.range,
             reload = stats.reload, cooldown = stats.cooldown, ammoCapacity = stats.ammo, moduleCapacity = stats.modules,
-            knockdown = stats.knockdown, autoloader = stats.autoloader, accuracy = stats.accuracy, critChance = stats.critChance, critMultiplier = stats.critMultiplier, hearingMultiplier = stats.hearingMultiplier, batteryPercent = stats.batteryPercent, generatorFuel = stats.generatorFuel})
+            knockdown = stats.knockdown, autoloader = stats.autoloader, accuracy = stats.accuracy, critChance = stats.critChance, critMultiplier = stats.critMultiplier, hearingMultiplier = stats.hearingMultiplier, batteryPercent = stats.batteryPercent, generatorFuel = stats.generatorFuel}, nil, nil, "turrets")
         self.lastStatKey = statKey
     end
     if self.lastStatus ~= status then
         D.emit("turret-manage-status", {id = self.deviceId, status = status, ammo = contents.ammo,
-            loaded = cycle and cycle.loaded or 0, modules = contents.modules, power = power and power.kind or "none"})
+            loaded = cycle and cycle.loaded or 0, modules = contents.modules, power = power and power.kind or "none"}, nil, nil, "turrets")
         self.lastStatus = status
     end
 end
@@ -605,7 +605,7 @@ function OpenAction:perform()
         if Range then
             Range.focus(index, "manage", self.object, true)
         end
-        D.emit("turret-manage-open", {id = panel.deviceId, interface = "dedicated", width = width, height = panel.height})
+        D.emit("turret-manage-open", {id = panel.deviceId, interface = "dedicated", width = width, height = panel.height}, nil, nil, "turrets")
     end
     ISBaseTimedAction.perform(self)
 end

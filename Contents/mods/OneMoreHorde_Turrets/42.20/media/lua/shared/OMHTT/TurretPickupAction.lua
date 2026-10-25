@@ -31,7 +31,7 @@ function OMHTTTurretPickupAction:start()
     self:setActionAnim("Loot")
     self:setAnimVariable("LootPosition", "Low")
     self:setOverrideHandModels(nil, nil)
-    D.emit("turret-pickup-start", {id = self.id, operation = self.operation, seconds = self.seconds})
+    D.emit("turret-pickup-start", {id = self.id, operation = self.operation, seconds = self.seconds}, nil, nil, "turrets")
 end
 
 ---@return nil
@@ -46,7 +46,7 @@ end
 ---@return nil
 function OMHTTTurretPickupAction:stop()
     self.done = true
-    D.emit("turret-pickup-cancel", {id = self.id, elapsed = self.elapsed})
+    D.emit("turret-pickup-cancel", {id = self.id, elapsed = self.elapsed}, nil, nil, "turrets")
     ISBaseTimedAction.stop(self)
 end
 

@@ -45,6 +45,8 @@ function R.contact(entry, actor, job)
     local zombie = instanceof(actor, "IsoZombie")
     local player = instanceof(actor, "IsoPlayer")
     if not zombie and not player then return end
+    if actor:isOnFloor() or actor:isKnockedDown() or actor:isRagdoll()
+        or zombie and actor:isGettingUp() then return end
     if zombie and not Horde.allowed(actor) then return end
     local origin = entry.object:getSquare()
     local square = actor:getSquare()

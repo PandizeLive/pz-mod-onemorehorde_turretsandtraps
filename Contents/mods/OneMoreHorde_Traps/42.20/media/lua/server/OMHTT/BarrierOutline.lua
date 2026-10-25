@@ -232,7 +232,7 @@ function O.reconcile(square)
                     object:transmitCompleteItemToClients()
                 end
                 D.emit("barrier-outline-edge", {id = edge.id, key = edge.key, role = edge.role,
-                    facing = edge.facing, north = edge.north, hp = record.condition})
+                    facing = edge.facing, north = edge.north, hp = record.condition}, nil, nil, "traps")
             end
         end
     end

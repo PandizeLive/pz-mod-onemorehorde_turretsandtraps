@@ -52,7 +52,7 @@ function A.play(object, entry, name)
     entry.handles[#entry.handles + 1] = {emitter = emitter, handle = handle}
     if logging then
         D.defer("turret-reload-audio", {head = entry.head:getFullType(), phase = entry.phase, sound = name,
-            audioMs = getTimestampMs() - started})
+            audioMs = getTimestampMs() - started}, "turrets")
     end
 end
 

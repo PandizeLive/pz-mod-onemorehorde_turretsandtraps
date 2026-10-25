@@ -1,5 +1,16 @@
 local F = require("OMHTT/Foundation")
 local D = require("OMHTT/Diagnostics")
+local savedTurrets, savedTurretDetail = SandboxVars.OMHTurretsTraps.TurretsEnabled, SandboxVars.OMHTurretsTraps.TurretDetailedLogging
+SandboxVars.OMHTurretsTraps.TurretsEnabled = true
+SandboxVars.OMHTurretsTraps.TurretDetailedLogging = true
+SandboxVars.OMHTurretsTraps.DetailedLogging = false
+check(D.detailed("turrets") and not D.detailed("traps"), "Turret detail cannot enable trap detail")
+SandboxVars.OMHTurretsTraps.TurretDetailedLogging = false
+SandboxVars.OMHTurretsTraps.DetailedLogging = true
+check(D.detailed("traps") and not D.detailed("turrets"), "Trap detail cannot enable turret detail")
+SandboxVars.OMHTurretsTraps.TurretsEnabled = savedTurrets
+SandboxVars.OMHTurretsTraps.TurretDetailedLogging = savedTurretDetail
+SandboxVars.OMHTurretsTraps.DetailedLogging = false
 local S = require("OMHTT/FoundationServer")
 testMillis = testMillis + 2000
 check(D.auditTranslations() == 0, "runtime audit resolves all probe keys through native translator")

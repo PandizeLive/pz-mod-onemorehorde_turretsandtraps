@@ -9,7 +9,7 @@ OMHTTBarrierApproachAction = ISWalkToTimedAction:derive("OMHTTBarrierApproachAct
 function OMHTTBarrierApproachAction:start()
     self.startedAt, self.progressAt = getTimestampMs(), getTimestampMs()
     self.lastX, self.lastY = self.character:getX(), self.character:getY()
-    Diagnostics.emit("barrier-approach-start", {id = self.id, x = self.lastX, y = self.lastY, steps = #self.route})
+    Diagnostics.emit("barrier-approach-start", {id = self.id, x = self.lastX, y = self.lastY, steps = #self.route}, nil, nil, "traps")
     ISWalkToTimedAction.start(self)
 end
 
@@ -46,7 +46,7 @@ function OMHTTBarrierApproachAction:update()
         self:forceStop()
     elseif self.result == BehaviorResult.Succeeded then
         Diagnostics.emit("barrier-approach-step", {id = self.id, step = self.step,
-            x = self.character:getX(), y = self.character:getY()})
+            x = self.character:getX(), y = self.character:getY()}, nil, nil, "traps")
         if Approach.ready(self.character, record) then
             self:forceComplete()
         else
@@ -79,7 +79,7 @@ function OMHTTBarrierApproachAction:stop()
         x = self.character:getX(), y = self.character:getY(), step = self.step,
         targetX = self.location:getX(), targetY = self.location:getY(),
         elapsed = self.startedAt and getTimestampMs() - self.startedAt or 0,
-        stalled = self.progressAt and getTimestampMs() - self.progressAt or 0})
+        stalled = self.progressAt and getTimestampMs() - self.progressAt or 0}, nil, nil, "traps")
     if self.failure then
         self.character:setHaloNote(getText("UI_OMHTT_ServiceBlocked"), 255, 170, 80, 180)
     end
