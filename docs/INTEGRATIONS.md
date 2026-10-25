@@ -149,3 +149,38 @@ Expose Enable Defense XP, Defense XP Percentage and Include Offline Members unde
 After decisions: prepare a versioned server-owned defense reward fact and a Trait Shop-owned receipt-aware pool settlement API. Persist earning-time recipient/life/source/rate/rules snapshots and settled receipts together with progression; retry after reconnect/restart without duplicate awards. Resolve offline identity via supported faction/character registries, not private record mutation or online-player guesses. Use bounded event-driven award work and batched UI notifications, not world scans or one popup per kill. Establish identity, receipt retention/compaction and mixed-kill ordering under both ordinary and Horde death paths, including the final event kill.
 
 Then provide a concrete coordinated patch recap, including required sibling work, before gameplay implementation. Minimum verification covers single recipients and factions, fractional shares, reward-source filtering, duplicate/reordered death callbacks, offline delivery, death/new life, faction changes, restart and independent Turrets/Traps packages. Connected acceptance remains deferred until the agreed development work is complete. **Decision needed: 1A/1B/1C, 2A/2B and 3A/3B.**
+
+
+## C455 - 50% pool, owner faction and proportional damage selected (2026-10-24)
+
+Owner selects C454 **1B / 2A / 3B**. Confirm **50% defense reward rate**, **registered device owner's faction, including the owner, with solo fallback**, and **proportional effective-damage credit**. This supersedes the earlier 25% and final-hit recommendations; do not silently fall back to final-hit credit if attribution proves difficult. Shared-pool/offline-default-ON foundations remain settled. This selects gameplay rules for the contract, not final coordinated patch approval or proof that native attribution is complete.
+
+### Selected accounting and examples
+
+For a mixed player/defense kill with applicable configured reward R, direct player i receives `R * effectivePlayerDamage_i / totalEffectiveDamage`. Each defense faction receives one pool `R * 0.50 * effectiveDefenseDamage_faction / totalEffectiveDamage`, divided among its eligible members. Independent factions receive only their own defenses' proportional portions. A contributing player in that faction may receive both their earned personal fraction and their equal share of the defense pool; this is not two full-kill rewards. Never also pay the ordinary full finishing-blow reward for the same death. Existing player-only reward behavior remains unchanged for kills untouched by T&T.
+
+Example at default Horde R=5: a player does 60% of effective damage and their faction's turret does 40%. The player earns 3 XP directly; the faction shares a 1 XP pool. Four eligible members receive 0.25 XP each from that pool, so the contributing player's combined award is 3.25 XP. A defense-only kill creates 2.5 XP total, divided by membership; 100 such Horde kills create 250 XP total or 62.5 each for four recipients. Values remain fractional and follow source settings/eligibility, not a hardcoded five-XP reward.
+
+Effective damage means health actually removed, capped at remaining health per hit; nominal weapon damage and overkill do not inflate contributions. Unknown/unattributed environmental or other-mod damage must not be awarded to a guessed player or defense faction. Healing must not mint extra full-kill reward budgets; normalization and incomplete histories need explicit native verification. No arbitrary contribution expiry or cap may silently turn the selected proportional rule into final-hit credit.
+
+### Current native review: feasibility gate, not a delivered implementation
+
+Read-only `javap -c -p` inspection of the installed projectzomboid.jar, SHA-256 `e1a69eb743ede60b213a0fe7f8b83d4fcab773036d256cc4543a336f3b058a33`, confirms:
+
+- `IsoZombie.Hit(HandWeapon, IsoGameCharacter, float, boolean, float, boolean)` fires `OnHitZombie` at bytecode offset 75, before superclass Hit at 107. This event does not supply final applied damage.
+- `IsoGameCharacter.Hit` fires `OnWeaponHitCharacter` at 115 with the input damageSplit, before `processHitDamage` at 261 and `hitConsequences` at 275. Treating that event argument as actual health loss would mis-credit modified, ignored or lethal hits.
+- Current Horde `OMH_DefenseIntegration` retains terminal device attribution and clears it on later player hits. Current `OMH_Phase3HordeEngine.onZombieDead` chooses either participant kill credit or defense finishing status. These are existing final-hit paths, not a proportional damage ledger.
+
+A focused isolated proof must establish native player-hit before/after ordering, overlapping same-tick hits, lethal callback ordering and client-owned zombie transport before promising accurate proportional awards. Do not monkey-patch weapon damage to force an accounting result or trust raw client XP/kill totals. T&T's own confirmed health-loss receipts can feed the same attribution contract, but no final native/MP attribution algorithm is claimed yet.
+
+Keep compact accumulated contribution amounts per relevant victim/identity, driven by hits and death, rather than an unbounded hit history or full-world scans. Exact early-player contributions must not be invented when a defense first touches an already-damaged victim. Lifecycle, partial histories, unload/reload and collection of abandoned ledgers are part of the proof. The selected faction rule is retained; identity and ownership changes must not redirect already-earned contributions without an explicit contract.
+
+### Remaining gameplay choices
+
+**1 - Kill eligibility.** Recommend **1A zombie kills only**. Alternative **1B also eligible enemy-player kills**, using the configured Player Kill XP source, the selected proportional/reduced-defense calculation, existing enemy-faction rules and same-victim cooldown. Never pay both PvP paths. Automated PvP XP increases farming incentives; that scope is not implied by proportional zombie credit. A disabled Player Kill source remains disabled.
+
+**2 - Undelivered offline shares after character death.** Recommend **2A discard shares belonging to that dead life**, retaining earned shares through ordinary disconnect/reconnect and faction departure for the same living character. This follows Trait Shop's XP reset on death. Alternative **2B retain an account-level bank for the replacement character**, an explicit exception to the death reset that needs separate provenance/official-rule treatment. Do not infer inheritance from the already-selected Include Offline Members option.
+
+Other recap defaults remain recommended: existing living characters only, applicable Horde casualty/source rules, no proximity requirement, no rewards for unowned/ambiguous legacy devices without a supported ownership claim, no speculative bank when Trait Shop is absent, and an enable toggle plus percentage/offline options under the existing T&T General integration section. Default enablement recommended ON when a compatible Trait Shop integration is present. Existing Horde-completion rewards remain unchanged.
+
+Next: settle 1/2 and complete the focused attribution proof, then present the coordinated T&T/Trait Shop/Horde patch recap. No source, sibling, installation, version, Workshop draft or 0.2.67 acceptance changes in this discussion. No new runtime or connected test claimed. **Decision needed: 1A/1B and 2A/2B.**
