@@ -97,3 +97,14 @@ Only defenses whose placement, facing, power, ammo, range and obstruction suppor
 Simulated death facts may eventually feed the same shared reward ledger, including offline members when enabled. The receipts must distinguish and deduplicate simulated versus restored live combat. No new offline-completion reward is implied. PauseEmpty, core hibernation and stopped-server rules remain authoritative; do not invent wall-clock catch-up.
 
 Acceptance: switching loaded/simulated mode repeatedly cannot reset targets, inflate survivors, refill ammo, heal devices, replay damage, duplicate XP, or improve survival versus a comparable loaded control. If this cannot be met, keep the integration disabled and retain the documented limitation.
+
+
+## C453 - Next track after 0.2.67 acceptance (2026-10-24)
+
+Owner asks "Now what" after closing the current SP test round in C452. C403 retained the future integration, garage/barbed, modder support, art/release and Cure tracks; Arc Emitter is now implemented and the current patch accepted. Do not propose implementing completed heads/Controller targeting again or reopen the closed SP checklist.
+
+Recommend **1A shared Trait Shop defense XP design** next: review the current sibling APIs read-only, then settle pool percentage, eligible recipients/character lives, offline delivery and mixed player/device kill credit. The selected foundation remains one reduced pool divided across recipients and Include Offline Members default ON. The old 25% proposal remains unapproved. This rewards defense investment and closes the progression integration gap; duplicate awards, life persistence and offline settlement are the material engineering risks. Use Medium reasoning for the initial design/API review; implementation effort can be assessed once the contract is concrete.
+
+Alternatives: **1B garage/multi-panel Barbed Panel feasibility**, a smaller standalone coverage improvement requiring moving-leaf identity/geometry proof; **1C coordinated Horde scoring readiness**, reconciling T&T, current Horde core and score validator without deployment. These are next-track choices, not reapproval of the retained roadmap. No track selected by "Now what" alone.
+
+Modder-facing extension documentation/sample and remaining owner art/release preparation remain retained. Connected multiplayer remains deferred until the agreed development work is complete; Cure simulation remains last. No sibling edits, code patch, deployment or publication authorized by this status question. Current 0.2.67 acceptance is unchanged.

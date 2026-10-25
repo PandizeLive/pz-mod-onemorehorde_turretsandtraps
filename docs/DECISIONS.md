@@ -2283,3 +2283,8 @@ Provenance: owner confirmation immediately follows the C450 installed-build hand
 Provenance: owner explicitly confirms "Yea test complete. It's all good" after C451's functional-pass handoff. Accept and close the current 0.2.67 owner test round and checklist. This supersedes the provisional request for further single-player capacity/endurance/stress checks; do not repeatedly ask the owner to retest this accepted patch. Preserve prior log findings and distinguish calculated runtimes from measured benchmarks. Connected multiplayer remains deferred, and unrelated roadmap work and publication are not implied complete.
 
 [Acceptance record](TEST_v0.2.67.md#c452---test-round-complete-2026-10-24). Documentation-only update; no gameplay, version, installed-package, loot, immutable-tag or cumulative Workshop-draft changes.
+
+
+## C453 - Recommend the next retained roadmap track (2026-10-24)
+
+Owner asks "Now what" following C452's completed 0.2.67 test round. Reviewed C402/C403 and the shared defense XP contract. Recommend 1A shared Trait Shop defense XP design; alternatives 1B garage/multi-panel barbs or 1C coordinated Horde scoring readiness. [Scope, selected foundations and tradeoffs](INTEGRATIONS.md#c453---next-track-after-0267-acceptance-2026-10-24). These tracks were retained by C403; order remains a choice. No new numbers, gameplay implementation, sibling edits, publication or reopened SP testing are inferred.
