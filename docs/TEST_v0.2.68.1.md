@@ -50,3 +50,9 @@ Backups:
 The private T&T checkpoint and test tag use the required C108 Mirror command and existing [draft PR1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1); no merge. Horde mirroring remains manual-only. Trait Shop's unrelated pre-existing release-tool/Workshop edits remain untouched and uncommitted; no sibling remote push. No settings or owner save data were edited.
 
 All intended versions loaded in the isolated stock native server. The owner's normal client has not loaded this patch yet. Restart before the short single-player checklist above. **Test now**; rendered acceptance and connected multiplayer remain pending.
+
+## C468 - Owner test complete with reported failures (2026-10-25)
+
+Owner reports oversized Specialist art, Controller overlaps, failed kit replacement, apparent conditional-module inactivity and one-side barb failure. [Audit and remaining decisions](FEEDBACK_C468.md). Exact loaded versions and game42.21 confirmed from capture20261025-170559-1540. Last world logs55 paid defense settlements/55XP; earlier10 zero-reward events reflect effective configured source reward0. No cross-world balance is inferred. Tooltip raw-percent formatting warning confirmed; source copy corrected in Horde for the next build.
+
+Focused installed-Kahlua checks reproduce stacked-item rejection, missing BlocksPlacement validation and missing-health-baseline skips; conditional damage74 and10% Execute pass when health is known. Opposite-face record/geometry checks pass without establishing live dual-face contact/persistence.27,657 assertions pass in this standalone run with13 focused audit assertions; world/UI objects are test doubles. This session is complete, but failed features and connected multiplayer remain unaccepted. No new owner test, installation or version/tag change.

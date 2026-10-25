@@ -1,5 +1,7 @@
 # Project working agreement
 
+- C468 (2026-10-25): Do not add hypothetical scenarios or examples to player-facing tooltips/help without the owner's approval. Show combined score reductions in the Difficulty menu; Enable T&T and its run-flag help should describe only their own effect.
+
 Read README.md, docs/DECISIONS.md, and docs/ROADMAP.md before project changes. The workspace AGENTS.md also applies.
 
 ## Per-turn context and consistency review (C111, owner-requested 2026-10-09)

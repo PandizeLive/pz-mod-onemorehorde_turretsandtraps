@@ -1,5 +1,9 @@
 # Decision register
 
+## C468 - Follow-up feedback and player-help rule (2026-10-25)
+
+Owner requests T&T Controller naming, used-weight storage display, Execute10% first/+2 per extra, clear percentage wording and fixes for the reported icon/placement/kit/module problems. The later tooltip correction expressly rejects hypothetical scenarios/examples without approval; combined scoring belongs in Difficulty. [Evidence and unsettled assignment/movement choices](FEEDBACK_C468.md). These explicit corrections need no repeat design approval. Automatic assignment policy and the proposed tether motion/reset design remain undecided. No new T&T build or blanket acceptance is claimed.
+
 ## C467 - Coordinated corrective patch approved (2026-10-25)
 
 The owner's "Approved" authorizes implementation, validation, packaging and local installation of all C465/C466 corrections. No remaining design decision blocks this patch. Approved utility/HUD identities are exact IDs, not wildcards; Denied remains the official-run exclusion flag. The minimum1 rule is the explicit exception to the shared-pool total: merge each recipient's eligible portions for the action first, then raise positive totals below1 once before payment/banking. Zero, ineligible and duplicate rewards remain zero; amounts of1 or more remain unchanged. Four eligible shares of0.25 therefore pay4 total, an accepted tradeoff. No backpay is fabricated for the earlier test.
