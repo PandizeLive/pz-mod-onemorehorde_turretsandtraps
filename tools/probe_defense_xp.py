@@ -24,6 +24,7 @@ def main():
             (package / layer / "media" / folder).mkdir(parents=True, exist_ok=True)
     write(package / "42.20/mod.info", "name=OMHTT Isolated XP Probe\nid=OMHTT_XPProbe\nmodversion=0.0.1\nversionMin=42.20\n")
     write(package / "42.20/media/lua/server/XPProbe.lua", (ROOT / "tools/tests/native_defense_xp.lua").read_text(encoding="utf-8"))
+    write(package / "42.20/media/lua/server/WoundProbe.lua", (ROOT / "tools/tests/native_wound_attribution.lua").read_text(encoding="utf-8"))
     write(cache / "Server/OMHTT_XPProbe.ini", "Mods=OMHTT_XPProbe\nMap=Muldraugh, KY\nPublic=false\nPauseEmpty=true\nUPnP=false\nDefaultPort=29341\nUDPPort=29342\n")
     classes = OUTPUT / "classes"
     classes.mkdir(parents=True, exist_ok=True)

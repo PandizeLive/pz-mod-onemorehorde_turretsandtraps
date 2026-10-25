@@ -147,7 +147,8 @@ local function run()
     assert(bleeding[1].extra == 0 and bleeding[2].extra == 0, "Native wound callback gained source information")
     print(marker .. " bleeding twoDifferentLimbs=true identicalCallbacks=true extraArguments=0"
         .. " overallLoss=" .. (100 - body:getOverallBodyHealth()))
-    OMHTT_XPProbe = {player = player, zombie = zombie, weapon = weapon, observations = observations}
+    local wounds = require("WoundProbe").run(player)
+    OMHTT_XPProbe = {player = player, zombie = zombie, weapon = weapon, observations = observations, wounds = wounds}
     print(marker .. " completed=true game=" .. getCore():getVersionNumber() .. " clients=0 liveAttributionProven=false")
 end
 

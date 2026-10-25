@@ -1,5 +1,7 @@
 # Shared defense XP: native attribution proof
 
+**C458 follow-up (2026-10-25):** Owner selects this checkpoint's **1B**, continuing deeper wound investigation. The [expanded results and new tradeoff](DEFENSE_XP_WOUNDS_C458.md) supersede the pending choice below. Confirmed-only coverage remains unselected; the original measurements remain historical evidence.
+
 Owner approval: 2026-10-24, "Approved", following C456. This authorizes progressing the selected work; it does not authorize replacing proportional rewards with final-hit credit, dropping PvP, or changing offline life ownership. The isolated proof identified a material coverage limitation before production integration.
 
 ## Reproduction and boundary

@@ -215,3 +215,13 @@ The owner approves proceeding from C456. [Reproducible native proof and coverage
 New recommendation **1A confirmed damage only** retains proportional accounting but leaves untraceable portions unpaid, including delayed injury effects from our own traps when ownership cannot be verified. **1B continue deeper wound-attribution work before shipping** retains the full target at unproven cost/compatibility. These alternatives address newly verified behavior rather than reopening the selected 50% rate, owner-faction pool, eligible PvP or life-bound offline shares. Never redistribute the unknown share among known contributors. Coverage selection remains pending; no fallback or Java gameplay dependency is silently introduced.
 
 The current checkpoint changes only isolated tools and documentation. No award API, production ledger, sibling source, version or installed package changed. Duplicate/offline/restart settlement and connected transport still require their own implementation and evidence. Accepted 0.2.67 testing remains closed. **Decision needed: 1A or 1B.**
+
+## C458 - Deeper wound investigation and accounting boundary (2026-10-25)
+
+Owner selects C457 **1B**, authorizing deeper investigation while preserving full proportional accounting. [Current native results and concrete choices](DEFENSE_XP_WOUNDS_C458.md) supersede C457's pending-coverage status. C457's confirmed-only recommendation remains unselected.
+
+The expanded zero-client native probe passes in92.7s. Ten isolated wound cases match a limited predictor, but scratch/cut damage emits no damage event, healing can hide that loss, same-type wounds replace timers and native bleeding rerolls into one aggregate. Source recording is feasible at known infliction; exact attribution is not recoverable from the resulting values alone. The native in-memory round trip verifies selected fields, not restart, custom source persistence or reward delivery.
+
+Recommend **1A defer shared XP while preserving the exact requirement**, avoiding a second health simulation or Java dependency for reward accounting. **1B prototype explicitly estimated wound credit** instead accepts a new accounting policy: per-limb/type source replacement and expected-weight sharing of aggregate bleeding, with modeled silent damage and unpaid unknown shares. Accuracy, authority, performance and persistence still need proof. Neither option is implemented or silently selected. No final-hit/zombie-only substitution; all selected reward/recipient/life/cooldown rules remain.
+
+Only probe tooling and documentation changed. No sibling edits, production reward API, version/install/changelog change or new owner test. C452 acceptance remains closed. **Decision needed: 1A or 1B.**

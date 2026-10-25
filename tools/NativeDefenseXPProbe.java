@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.lang.reflect.Proxy;
+import java.nio.ByteBuffer;
 
 public final class NativeDefenseXPProbe {
     private static Object get(Object table, Object key) throws Exception {
@@ -8,6 +9,34 @@ public final class NativeDefenseXPProbe {
 
     private static float health(Object actor) throws Exception {
         return ((Number)actor.getClass().getMethod("getHealth").invoke(actor)).floatValue();
+    }
+
+    private static void verifyWounds(Object samples) throws Exception {
+        Object wounds = get(samples, "wounds");
+        Object body = get(wounds, "body");
+        Object owner = get(wounds, "owner");
+        Class<?> bodyType = body.getClass();
+        ByteBuffer buffer = ByteBuffer.allocate(65536);
+        bodyType.getMethod("save", ByteBuffer.class).invoke(body, buffer);
+        int bytes = buffer.position();
+        buffer.flip();
+        Object restored = bodyType.getConstructor(Class.forName("zombie.characters.IsoGameCharacter")).newInstance(owner);
+        int version = ((Number)Class.forName("zombie.iso.IsoWorld").getMethod("getWorldVersion").invoke(null)).intValue();
+        bodyType.getMethod("load", ByteBuffer.class, int.class).invoke(restored, buffer, version);
+        var originalParts = (java.util.List<?>)bodyType.getMethod("getBodyParts").invoke(body);
+        var restoredParts = (java.util.List<?>)bodyType.getMethod("getBodyParts").invoke(restored);
+        if (originalParts.size() != 17 || restoredParts.size() != 17 || buffer.hasRemaining())
+            throw new IllegalStateException("Native wound serialization shape changed");
+        for (int index = 0; index < originalParts.size(); index++) {
+            Object original = originalParts.get(index), copy = restoredParts.get(index);
+            for (String method : new String[]{"getHealth", "getScratchTime", "getCutTime", "getBleedingTime", "bandaged"}) {
+                Object expected = original.getClass().getMethod(method).invoke(original);
+                Object actual = copy.getClass().getMethod(method).invoke(copy);
+                if (!expected.equals(actual)) throw new IllegalStateException("Native wound round trip changed " + method);
+            }
+        }
+        System.out.println("[OMHTT-XPProbe] woundSerialization=true parts=17 fields=5 bytes=" + bytes
+            + " worldVersion=" + version + " restartTested=false");
     }
 
     private static void verify() throws Exception {
@@ -40,6 +69,7 @@ public final class NativeDefenseXPProbe {
         System.out.println("[OMHTT-XPProbe] packetPostHit=true before=" + before + " after=" + after
             + " callbackHealth=" + get(last, "health") + " callbackInput=" + get(last, "amount")
             + " clients=0 packetTransportTested=false");
+        verifyWounds(samples);
         System.out.println("[OMHTT-XPProbe] packetCompleted=true");
     }
 
