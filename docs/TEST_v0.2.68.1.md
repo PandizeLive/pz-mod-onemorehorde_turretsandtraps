@@ -14,7 +14,7 @@ The first regression run exposed a missing native posture method on a test doubl
 
 ## Limits and installation
 
-Owner client appearance, live progression and connected-player transport remain pending. No fabricated backpay, historical flag deletion, saved gameplay tuning change, Workshop upload or sibling remote push. Existing Trait Shop release-tool/Workshop edits predate this task and are excluded. C452 acceptance of 0.2.67 stays closed. Tagged installation evidence will be appended after verification.
+Owner client appearance, live progression and connected-player transport remain pending. No fabricated backpay, historical flag deletion, saved gameplay tuning change, Workshop upload or sibling remote push. Existing Trait Shop release-tool/Workshop edits predate this task and are excluded. C452 acceptance of 0.2.67 stays closed. Tagged installation and backups are verified below.
 
 ## Owner checklist
 
@@ -28,3 +28,25 @@ Restart with Trait Shop enabled. Ordinary zombies, 2 XP reward, 50% defense, eli
 - Run Options and Debug settings
 
 Connected multiplayer remains deferred. No additional long testing instructions.
+
+## Local installation and rollback
+
+Installed on 2026-10-25 from immutable local development tags:
+
+| Project | Tag | Gameplay commit | Verified files |
+| --- | --- | --- | --- |
+| T&T | test/v0.2.68.1 | 028eed6cf68cc2e21e93211c3c0d5b8b0b0eab78 | 596 |
+| Trait Shop | v0.9.1.1 | db6a5ce1b1ed1f5e5ed0cc8eecfc95a3c766e847 | 37, local and staging |
+| Horde/Cure | test/v0.6.16.7 | 81738de7ea3058cc9f1f22bf4edeb99d904ffc25 | 172, local and staging |
+
+Independent SHA256 verification matches all 437 T&T source files and 596 generated package files to the tag archive, current package and local install. Both previous 0.2.68 package backups verify. Trait Shop's 37 and Horde/Cure's 124+48 files match source at both local and Workshop staging destinations. Evidence: diagnostics/v0.2.68.1/xp-install-verification.json. No Workshop upload occurred.
+
+Backups:
+
+- T&T: diagnostics/p1c1/install-backups/20261025-145809-9265.
+- Trait Shop: C:/Users/bandi/Zomboid/OMH-TraitShop-local-backups/before-v0.9.1.1-20261025-145759-4557.
+- Horde/Cure: C:/Users/bandi/Zomboid/OMH-local-backups/before-v0.6.16.7-20261025-145802-1319.
+
+The private T&T checkpoint and test tag use the required C108 Mirror command and existing [draft PR1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1); no merge. Horde mirroring remains manual-only. Trait Shop's unrelated pre-existing release-tool/Workshop edits remain untouched and uncommitted; no sibling remote push. No settings or owner save data were edited.
+
+All intended versions loaded in the isolated stock native server. The owner's normal client has not loaded this patch yet. Restart before the short single-player checklist above. **Test now**; rendered acceptance and connected multiplayer remain pending.
