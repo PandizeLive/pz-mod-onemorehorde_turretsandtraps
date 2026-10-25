@@ -19,7 +19,23 @@ No Workshop content upload, public release, existing owner save mutation or mod-
 
 ## Local release
 
-Tag/install/hash evidence pending final packaging. Horde follows its manual-only mirror policy. T&T follows standing C108/C119 automatic private development mirroring.
+Installed from immutable local tags on 2026-10-25:
+
+| Project | Tag | Gameplay commit | Verified local package files |
+| --- | --- | --- | --- |
+| T&T | test/v0.2.68 | 70736f0eaaa360a9eb9ba9a63517f4c6633b1723 | 595 |
+| Trait Shop | v0.9.1 | 5fb6f2b964490475fbd51e68de5cf1bf55b565b1 | 37, plus matching staging copy |
+| Horde/Cure | test/v0.6.16.6 | 29d0c7debf636e6d37287ce2385d486784b99cb1 | 172, plus matching staging copy |
+
+Installers verified rollback points, copied hashes and retained backups. Independent SHA256 comparison confirms every destination file against the source; see `diagnostics/v0.2.68/xp-install-verification.json`. Backups:
+
+- T&T: `diagnostics/p1c1/install-backups/20261025-031100-9502`.
+- Trait Shop: `C:/Users/bandi/Zomboid/OMH-TraitShop-local-backups/before-v0.9.1-20261025-031052-7924`.
+- Horde/Cure: `C:/Users/bandi/Zomboid/OMH-local-backups/before-v0.6.16.6-20261025-031055-4118`.
+
+T&T gameplay commit and test tag were verified on the existing private [draft PR 1](https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1) under C108/C119; deployment documentation follows in a separate commit. No merge or Workshop upload. Horde's manual-only policy remains: use its root OMH.cmd, option 2, when ready to mirror. Trait Shop's unrelated pre-existing release-tool/Workshop edits are still uncommitted and untouched; its mirror remains pending. No attempt was made to bypass its clean-tree release check.
+
+All three intended versions were loaded by the isolated native server. The owner's normal client has not yet loaded this build; restart with Trait Shop enabled for the short single-player test. **Test now (single-player)**; connected testing remains deferred.
 
 ## Owner checklist
 
