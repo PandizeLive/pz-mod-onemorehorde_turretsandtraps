@@ -296,3 +296,15 @@ The tradeoff is deliberate: one qualifying hit receives the same personal assist
 **1B - Keep C461:** only the 50% faction pool; the other half remains unawarded. This retains the selected simpler rule and avoids an assist ledger.
 
 Only documentation changed. C461 remains the selected payout until the owner chooses otherwise; no gameplay/sibling/package/install/version/Workshop changes or new runtime test. Accepted 0.2.67 stays closed. **Decision needed: 1A equal personal assists or 1B keep the selected rule.**
+
+## C463 - Equal PvP assist shares selected (2026-10-25)
+
+Owner selects C462 **1A**. For an eligible defense-credited PvP kill, keep one pool worth 50% of the normal configured kill reward for the registered owner's eligible faction, including the owner, and divide the remaining 50% equally among distinct eligible players whose confirmed personal attacks injured the victim. With no qualifying player assist, that half remains unawarded. This supersedes C461's always-unawarded remainder for this PvP case only.
+
+This is participation-based credit: no exact damage weighting, per-hit reward multiplication or attribution of subsequent bleed ticks. One confirmed qualifying attack and many qualifying attacks earn the same personal assist share. The owner qualifies for a personal assist only through their own attack; ownership alone gives no personal half. A player may receive their equal faction share and their earned personal assist share, combined in one settlement without duplicating the normal kill reward or consuming its own cooldown twice.
+
+Existing source/enemy eligibility and account/victim cooldown checks apply to each beneficiary. Life-bound offline shares and earning-time membership remain selected; replacement lives inherit none. No assist expansion to ordinary player-credited kills or zombie kills is authorized by this choice. Existing trap/turret scope remains; native credited death can occur after bleeding rather than an immediately lethal shot.
+
+The selected payout needs a compact authoritative participant set keyed by victim/contributor life, verified injury registration, device-owner credit and durable deduplicated settlement. The native single-attacker field and ten-event admin log alone are insufficient. Encounter/recovery lifetime behavior and connected coverage still need a concrete implementation and verification; do not silently introduce a numerical expiry, nominal-damage threshold or a Java dependency. No new player-facing payout choice is pending.
+
+Recorded selection only: no production or sibling changes, version/install/Workshop change, new runtime result or reopened0.2.67 acceptance. **Wait for a patch; implementation and verification remain.**
