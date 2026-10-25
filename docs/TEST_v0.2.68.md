@@ -58,3 +58,13 @@ Single-player after restart, with Trait Shop enabled:
 - XP after save/reload
 
 Connected faction/assist/offline tests are retained for multiplayer acceptance after coordinated publication. They are not represented as completed or requested for an unpublished hosted build.
+
+## C466 - Missing XP reproduced after owner's exact kill count (2026-10-25)
+
+Owner specifies seven turret zombie kills, two manual kills and four Trait Shop XP. At the saved normal zombie XP2 and solo defense rate50%, expected total is11, with earning enabled. The capture and save timestamps remain unchanged; no additional live test is claimed.
+
+Installed 42.21 bytecode confirms SP native updateUsername runs in IngameState.enter before OnGameStart. It replaces constructor username Bob with the character's full name. Initial saved defense metadata still records Bob. Production Authority's cached bind omits a refresh, leaving DefenseCredit's name index stale while new defenses register the final native name.
+
+`diagnostics/c466/replay.ps1` loads unchanged production Trait Shop authority/reward modules and T&T DefenseXP into installed Kahlua. Test-double actors/events reproduce early Bob binding, name finalization, turret registration, seven defense deaths and two ordinary deaths. Five assertions pass: defense kills pay0, ordinary kills pay4, metadata stays Bob, and explicit same-life reattachment makes the next defense kill pay1. Output: `C466 reproduced: 7 defense + 2 ordinary kills = 4 XP; identity refresh + next defense kill = 5 XP; 5 checks`. This demonstrates the lifecycle defect with native-backed ordering; it is not a full live death sequence or an implemented fix.
+
+Current normal logs aggregate damage hits; detailed mode was disabled and would still lack full settlement evidence. [C466 corrective contract](FEEDBACK_C465.md#c466---choices-confirmed-startup-xp-defect-reproduced-2026-10-25) adds owner/index repair, positive split minimum and bounded award/rejection diagnostics. Custom/manual-icon choices and mod eligibility wording are settled. Combined patch approval remains pending. Installed0.2.68 stays unchanged; no new owner checklist or retest until a corrective build.
