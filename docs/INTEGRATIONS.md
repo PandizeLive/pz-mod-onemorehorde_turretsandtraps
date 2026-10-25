@@ -225,3 +225,21 @@ The expanded zero-client native probe passes in92.7s. Ten isolated wound cases m
 Recommend **1A defer shared XP while preserving the exact requirement**, avoiding a second health simulation or Java dependency for reward accounting. **1B prototype explicitly estimated wound credit** instead accepts a new accounting policy: per-limb/type source replacement and expected-weight sharing of aggregate bleeding, with modeled silent damage and unpaid unknown shares. Accuracy, authority, performance and persistence still need proof. Neither option is implemented or silently selected. No final-hit/zombie-only substitution; all selected reward/recipient/life/cooldown rules remain.
 
 Only probe tooling and documentation changed. No sibling edits, production reward API, version/install/changelog change or new owner test. C452 acceptance remains closed. **Decision needed: 1A or 1B.**
+
+## C459 - XP deferred; native killer credit distinguished from damage shares (2026-10-25)
+
+Owner selects C458 **1A**, deferring shared XP while retaining its exact-accounting design, then requests a brief explanation before further work. The later question asks whether native PvP killer tracking exists because bleedouts matter. This authorizes inspecting that question, not resuming the XP implementation or changing the selected attribution rule. The intervening briefing turns made no project edits.
+
+**Yes: native killer attribution exists.** Current installed42.21 bytecode, jar SHA-256 `e1a69eb743ede60b213a0fe7f8b83d4fcab773036d256cc4543a336f3b058a33`, confirms:
+
+- `IsoGameCharacter.getAttackedBy/setAttackedBy` read/write one character reference. The native hit path sets that reference to its wielder.
+- `IsoGameCharacter.die()` calls `Kill(getAttackedBy())` if the kill callback has not already run (bytecode offsets24/27). Its normal death path can therefore credit the retained attacker after delayed death; an immediately lethal hit is not required by that path.
+- `DoDeath` uses that reference for `PVPLogTool.logKill` when victim and attacker are players on the server (offset38). `PVPLogTool.logKill` records killer/victim names and can announce the death.
+- `DeadCharacterPacket` has one `killerId`, populated from the corpse's `getKilledBy()`, written/read over the network and used for `dieNetwork`.
+- Trait Shop's existing `OMHTS_Authority.observeDeath` reads `player:getAttackedBy()` and passes the resolved killer to its PvP reward path. No sibling source was changed.
+
+Official API corroboration: [attacker getter](https://projectzomboid.com/modding/zombie/characters/IsoGameCharacter.html#getAttackedBy()) and [PvP kill logger](https://projectzomboid.com/modding/zombie/network/PVPLogTool.html). The installed code supplies the behavioral evidence; API signatures alone do not prove retention.
+
+This corrects the conversational framing: the C457/C458 blocker is **exact proportional damage shares**, not an absence of any killer flag or an impossibility of rewarding bleedouts. One attacker reference cannot recover each contributor's wound damage. Later attacks can overwrite it; other paths can clear it. No guarantee is made across all causes, reconnects, restarts or attacker departure. This inspection is static; no new live connected bleedout test occurred. The owner's claim about how frequently players die by bleedout was not statistically tested.
+
+Native-style killer credit is a simpler alternative if the owner later changes the proportional requirement. Defenses still need a device/owner attribution record because the native field holds a character, not a turret or trap. Do not forge an online owner, parse log strings as reward authority, bypass existing eligibility/cooldowns, or silently adopt killer-only rewards. Shared XP remains deferred; no gameplay, package/version, install, Workshop or test-acceptance change.

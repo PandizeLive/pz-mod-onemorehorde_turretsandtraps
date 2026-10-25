@@ -1,5 +1,7 @@
 # Shared defense XP: deeper wound-attribution investigation
 
+**C459 follow-up:** Owner selects **1A**, deferring shared XP. [Native killer-tracking clarification](INTEGRATIONS.md#c459---xp-deferred-native-killer-credit-distinguished-from-damage-shares-2026-10-25): a retained attacker can identify one credited killer after delayed death; the limitation below concerns exact multi-source damage shares. No estimated or killer-only replacement has been selected.
+
 ## Selection and conclusion
 
 On 2026-10-25 the owner selects C457 **1B**, continuing investigation before shipping shared XP. Confirmed-damage-only coverage was not selected. The approved 50% defense rate, owner-faction pool, proportional actual-health accounting, eligible PvP and life-bound offline shares remain intact.
