@@ -2398,3 +2398,7 @@ Owner selects C4721A and requires replacing defective mechanisms rather than acc
 ## C474 - Corrective patch approved (2026-10-26)
 
 Owner approves C472/C473 scope and the native-refresh replacement. T&T0.2.68.3 implements [the selected corrections](PATCH_v0.2.68.3.md); no assistance-policy choice remains. Preserve the valid native OnContainerUpdate notification through the same invalidator while replacing event-only wiring. Tests cover the failure mechanism and idle cost. No speculative management-radius change or new balance. Install and mirror evidence is tracked in [verification](TEST_v0.2.68.3.md).
+
+## C475 - Owner test deferral and next-work recommendation (2026-10-26)
+
+Owner cannot test0.2.68.3yet. Preserve pending acceptance. Recommend1A Barbed Panel backing/opposite-face audit and garage feasibility; alternatives1B modder guide/example or1C Horde scoring readiness. No selection or new implementation approval yet. See [current plan](PLANNING.md).

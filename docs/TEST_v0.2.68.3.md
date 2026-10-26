@@ -36,3 +36,7 @@ No running ProjectZomboid process was found at pre-install inspection. The insta
 ## Development mirror blocked
 
 Standard mirror local preflight passed at d14e5110ebb872c93bdcbb668ae903c0b475f41f. Execution was rejected by automatic approval review: the owner Approved reply was considered ambiguous for uploading private source/documentation to the existing GitHub destination. No push occurred and no workaround was attempted. Temporary clean mirror checkout was removed; all commits/tag remain local. Explicit authorization for PandizeLive/pz-mod-onemorehorde_turretsandtraps, branch codex/performance-barbed-audit and test/v0.2.68.3 is requested. Installed build and test readiness are unaffected.
+
+## Owner testing deferred - C475, 2026-10-26
+
+Owner cannot test yet. The existing checklist remains pending; no rendered acceptance, waiver or failure is inferred. Installed build and automated evidence are unchanged.
