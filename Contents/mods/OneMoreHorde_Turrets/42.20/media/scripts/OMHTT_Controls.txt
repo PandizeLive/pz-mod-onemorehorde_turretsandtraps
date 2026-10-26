@@ -1,6 +1,6 @@
 module Base {
     item OMHTTTrapController {
-        DisplayName = Controller,
+        DisplayName = T&T Controller,
         ItemType = base:container,
         DisplayCategory = Electronics,
         Weight = 8,

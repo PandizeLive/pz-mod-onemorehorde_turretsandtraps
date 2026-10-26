@@ -14,6 +14,7 @@ function R.valid(player, controller, target)
     return host ~= nil and state ~= nil and host.kind == "Controller" and host.powered == true
         and controller:getHealth() > 0 and target:getHealth() > 0 and state.controller == host.id
         and A.near(player, controller) and A.range(controller, target)
+        and A.visible(controller, target) and A.write(player, host)
 end
 
 ---@param player IsoPlayer Operator

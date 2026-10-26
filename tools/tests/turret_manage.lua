@@ -86,6 +86,7 @@ check(queued and queued:isValid(), "Manage queues a reach-validated action")
 queued:perform()
 check(completed and not inventory.visible and not inventory.pinned, "Manage leaves both inventory windows untouched")
 local panel = testTurretPanel
+testC471ManageTransfer = panel.transfer
 panel:prerender()
 check(panel.width == 760 and panel.titleHeight == 19 and panel.footerHeight == 14,
     "Default Manage width and native Small-font title/footer formulas match at 18px")

@@ -65,7 +65,8 @@ function Panel:scan()
                 local state = A.state(object)
                 local within = object:getObjectIndex() >= 0 and A.range(self.object, object)
                 local assigned = state and state.controller == A.state(self.object).id
-                if object ~= self.object and not self.scanSelection[object] and object:getObjectIndex() >= 0 and (within or assigned) then
+                if object ~= self.object and not self.scanSelection[object] and object:getObjectIndex() >= 0
+                    and A.visible(self.object, object) and (within or assigned) then
                     local row = #self.scanResults + 1
                     self.scanResults[row] = {text = U.name(object), item = object, itemindex = row, height = self.devices.itemheight}
                     self.scanSelection[object], self.checking[object] = row, within or nil
@@ -113,7 +114,7 @@ function Panel:scan()
                 self.checking[object] = nil
                 Discovery.add(object)
             end
-            if object:getObjectIndex() >= 0 and A.state(object) and not self.scanSelection[object] then
+            if object:getObjectIndex() >= 0 and A.visible(self.object, object) and not self.scanSelection[object] then
                 local row = #self.scanResults + 1
                 self.scanResults[row] = {text = U.name(object), item = object, itemindex = row, height = self.devices.itemheight}
                 self.scanSelection[object] = row
@@ -130,12 +131,36 @@ function Panel:scan()
 end
 
 ---@return nil
+function Panel:prunePrivateEntries()
+    local rows = self.devices.items
+    local selection = rows[self.devices.selected]
+    local selected = selection and selection.item or self.selected
+    for i = #rows, 1, -1 do
+        if not A.visible(self.object, rows[i].item) then
+            self.checking[rows[i].item] = nil
+            table.remove(rows, i)
+        end
+    end
+    self.devices.count = #rows
+    self.devices.selected = 0
+    if self.scanSelection then self.scanSelection = {} end
+    for i = 1, #rows do
+        rows[i].itemindex = i
+        if self.scanSelection then self.scanSelection[rows[i].item] = i end
+        if rows[i].item == selected then self.devices.selected = i end
+    end
+end
+
+---@return nil
 function Panel:select()
-    if self.scanIndex and self.devices.selected == 0 then
+    if self.scanIndex and self.devices.selected == 0 and A.visible(self.object, self.selected) then
         return
     end
     local row = self.devices.items[self.devices.selected]
     local object = row and row.item
+    if object and not A.visible(self.object, object) then
+        object = nil
+    end
     if object == self.selected then return end
     self.selected = object
     self.renewDue = 0
@@ -176,7 +201,8 @@ end
 
 ---@return nil
 function Panel:prerender()
-    if not A.state(self.object) or self.object:getObjectIndex() < 0 or (not A.near(self.player, self.object)) then
+    if not A.state(self.object) or self.object:getObjectIndex() < 0 or not A.near(self.player, self.object)
+        or not A.write(self.player, A.state(self.object)) then
         self:close(); return
     end
     ISPanel.prerender(self)
@@ -185,9 +211,13 @@ function Panel:prerender()
     if self.scanIndex or now >= self.scanDue then
         self:scan()
     end
+    if now >= (self.privacyDue or 0) then
+        self:prunePrivateEntries()
+        self.privacyDue = now + 500
+    end
     self:select()
     require("OMHTT/ControlGraph").refreshForPanel(self)
-    if self.linkSource and (self.linkSource:getObjectIndex() < 0 or not A.state(self.linkSource)) then
+    if self.linkSource and (self.linkSource:getObjectIndex() < 0 or not A.visible(self.object, self.linkSource)) then
         self.linkSource = nil
     end
     local host = A.state(self.object)
@@ -282,7 +312,7 @@ end
 ---@return ISPanel? panel
 function Panel.open(player, object)
     local state = A.state(object)
-    if not state or state.kind ~= "Controller" or not A.near(player, object) then return nil end
+    if not state or state.kind ~= "Controller" or not A.near(player, object) or not A.write(player, state) then return nil end
     local old = active[player:getPlayerNum()]
     if old then old:close() end
     local pn = player:getPlayerNum()

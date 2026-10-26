@@ -1,4 +1,8 @@
 {
+    "Sandbox_OMHTurretsTraps_TetherPushDistance": "Push Distance",
+    "Sandbox_OMHTurretsTraps_TetherPushDistance_tooltip": "Maximum tiles pushed away on impact. Zero disables pushing.",
+    "Sandbox_OMHTurretsTraps_TetherPullDistance": "Pull Distance",
+    "Sandbox_OMHTurretsTraps_TetherPullDistance_tooltip": "Maximum tiles pulled toward the trap during retraction. Zero disables pulling.",
     "Sandbox_OMHTurretsTraps": "OMH: Turrets & Traps",
     "Sandbox_OMHTurretsTraps_Enabled": "Enable Traps",
     "Sandbox_OMHTurretsTraps_Enabled_tooltip": "Enables construction and defense operation.",

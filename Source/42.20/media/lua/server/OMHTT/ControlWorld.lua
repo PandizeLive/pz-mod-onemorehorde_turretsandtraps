@@ -99,7 +99,7 @@ function W.publish(object)
         for id in pairs(W.incoming[state.id] or {}) do
             local source = W.records().records[id]
             if source and source.placed then
-                view.inputs[#view.inputs + 1] = {id = id, name = source.displayName or source.name, kind = source.kind,
+                view.inputs[#view.inputs + 1] = {id = id, name = source.displayName or source.name, kind = source.kind, owner = source.owner,
                     x = source.x, y = source.y, z = source.z}
             end
         end
@@ -280,6 +280,7 @@ function W.register(object, player, kind, previous)
         W.reconcile(object, state)
     end
     W.publish(object)
+    require("OMHTT/ControlAutoAssign").add(object, player)
     return state
 end
 
@@ -443,7 +444,8 @@ function W.assign(controller, object, player, enabled)
     local host, state = W.state(controller), W.state(object)
     if not host or host.kind ~= "Controller" or not state or state.kind == "Controller"
         or controller:getHealth() <= 0 or (enabled and (object:getHealth() <= 0 or not A.range(controller, object)))
-        or not A.write(player, host) or not A.write(player, state) then return false end
+        or not A.write(player, host) or not A.write(player, state)
+        or (enabled and not A.visible(controller, object)) then return false end
     if not enabled and state.controller ~= host.id then return false end
     if not enabled then
         W.detach(state, object)
@@ -474,12 +476,13 @@ end
 ---@return boolean assigned
 function W.autoAssign(object, player)
     local state = W.state(object)
-    if not state or state.controller or state.kind == "Controller" or not C.types[state.kind] then return false end
+    if not state or state.controller or state.kind == "Controller" or not player
+        or state.owner ~= player:getUsername() then return false end
     local candidates = {}
     for id, controller in pairs(W.objects) do
         local host = W.state(controller)
         if host and host.kind == "Controller" and host.placed and controller:getHealth() > 0
-            and A.range(controller, object) and A.write(player, host) then
+            and host.owner == state.owner and A.range(controller, object) and A.write(player, host) then
             candidates[#candidates + 1] = {object = controller, id = id,
                 distance = (host.x - state.x) ^ 2 + (host.y - state.y) ^ 2}
         end
@@ -554,7 +557,6 @@ function W.create(params)
         object:getBuildMaterials()[key] = nil
     end
     require("OMHTT/ControlExpansion").refresh(object)
-    W.autoAssign(object, player)
     W.publish(object)
 end
 

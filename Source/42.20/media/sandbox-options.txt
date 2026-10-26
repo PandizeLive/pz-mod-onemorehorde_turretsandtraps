@@ -1765,9 +1765,27 @@ option OMHTurretsTraps.TetherHoldSeconds {
     translation = OMHTurretsTraps_TetherHoldSeconds,
 }
 
+
+option OMHTurretsTraps.TetherPushDistance {
+    type = double,
+    min = 0,
+    max = 2,
+    default = 0.35,
+    page = OMHTurretsTraps_BarrierPage,
+    translation = OMHTurretsTraps_TetherPushDistance,
+}
+
+option OMHTurretsTraps.TetherPullDistance {
+    type = double,
+    min = 0,
+    max = 2,
+    default = 0.75,
+    page = OMHTurretsTraps_BarrierPage,
+    translation = OMHTurretsTraps_TetherPullDistance,
+}
 option OMHTurretsTraps.TetherResetSeconds {
     type = double,
-    default = 0.4,
+    default = 0.5,
     min = 0,
     max = 60,
     page = OMHTurretsTraps_BarrierPage,

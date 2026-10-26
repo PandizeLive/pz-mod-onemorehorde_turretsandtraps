@@ -59,7 +59,8 @@ end
 function C.controller(params)
     if not C.valid(params) then return false end
     local square = params.square
-    if square:isSolid() or square:isSolidTrans() then return false end
+    if square:isSolid() or square:isSolidTrans()
+        or square:getProperties():has(IsoPropertyType.BLOCKS_PLACEMENT) then return false end
     local objects = square:getObjects()
     for i = 0, objects:size() - 1 do
         local object = objects:get(i)

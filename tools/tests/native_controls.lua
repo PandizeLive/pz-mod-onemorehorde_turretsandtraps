@@ -5,6 +5,7 @@ local Transfer = require("OMHTT/ControlTransferAction")
 local T = require("OMHTT/Turret")
 
 return function(player)
+    player:setUsername("native-controls-owner")
     require("OMHTT/NativeTriggers")(player)
     -- Legacy ownership/receiver fixture uses synthetic, non-loaded squares. Shared
     -- supply is exercised with actual batteries and native objects in NativeTriggers.
@@ -481,6 +482,13 @@ return function(player)
     local inputSquare = IsoGridSquare.new(getCell(), nil, 38, 28, 0)
     local remotePlate = create("Plate", "floors_interior_tilesandwood_01_40", inputSquare)
     local remoteState = C.state(remotePlate)
+    local nativeGameTime, assignmentQueue = GameTime, require("OMHTT/ControlAutoAssign")
+    GameTime = {isGamePaused = function() return false end}
+    for _ = 1, 2000 do
+        assignmentQueue.tick()
+        if assignmentQueue.first > assignmentQueue.last then break end
+    end
+    GameTime = nativeGameTime
     assert(remoteState.controller == host.id and not A.near(player,remotePlate), "Native placement failed automatic Controller assignment")
     require("OMHTT/ControlRemote").command("OMHTT_ControlRemote","Renew",player,
         {controller=host.id,target=remoteState.id,serial=2,player=0})

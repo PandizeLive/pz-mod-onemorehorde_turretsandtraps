@@ -88,9 +88,10 @@ end
 ---@param y number Top
 ---@param width number Width
 ---@param height number Height
----@param remaining number Remaining resource fraction
+---@param remaining number Resource fraction
+---@param usage boolean? Filled storage is a warning rather than available supply
 ---@return nil
-function Theme.meter(panel, x, y, width, height, remaining)
+function Theme.meter(panel, x, y, width, height, remaining, usage)
     if width <= 0 or height <= 0 then return end
     local fraction = 0
     if type(remaining) == "number" and remaining == remaining then
@@ -100,9 +101,10 @@ function Theme.meter(panel, x, y, width, height, remaining)
     local fill = width * fraction
     if fill <= 0 then return end
     local red, green, blue = .46, .59, .35
-    if fraction <= .1 then
+    local available = usage and 1 - fraction or fraction
+    if available <= .1 then
         red, green, blue = .74, .29, .22
-    elseif fraction <= .25 then
+    elseif available <= .25 then
         red, green, blue = .76, .55, .27
     end
     panel:drawRect(x, y, fill, height, 1, red, green, blue)

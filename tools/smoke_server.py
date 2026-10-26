@@ -56,6 +56,7 @@ def main():
         core = core.split('\n', 1)[1].replace('require("OMHTT/TurretProc")', 'require("OMHTT/NativeTurretProc")')
         (turret_probe.parent / ('OMHTT/Native' + name + '.lua')).write_text(core, encoding='utf-8')
     (turret_probe.parent / "OMHTT/NativeC437.lua").write_text((ROOT / "tools/tests/native_c437.lua").read_text(encoding="utf-8"), encoding="utf-8")
+    (turret_probe.parent / "OMHTT/NativeC471.lua").write_text((ROOT / "tools/tests/native_c471.lua").read_text(encoding="utf-8"), encoding="utf-8")
     console = CACHE / "server-console.txt"
     transcript = OUTPUT / ("server-" + os.environ.get("OMHTT_PROBE_MODE", "write") + ".log")
     classes = OUTPUT / "persistence-classes"

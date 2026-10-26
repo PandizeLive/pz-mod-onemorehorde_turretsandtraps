@@ -26,7 +26,42 @@ return function(player)
         end
     end
     local square=lookup[base .. ":1000"]
+    local place = require("OMHTT/ControlDefinitions")
+    local checks = 0
+    for _, family in pairs({"fixtures_bathroom_01_", "street_decoration_01_", "lighting_outdoor_01_"}) do
+        local found = false
+        for i = 0, 63 do
+            local sprite = getSprite(family .. i)
+            if sprite and sprite:getProperties():has(IsoPropertyType.BLOCKS_PLACEMENT) then
+                local obstruction = IsoObject.new(square, family .. i, "native-obstruction")
+                square:getObjects():add(obstruction); square:RecalcProperties()
+                assert(not place.controller({square = square}), "Controller overlapped native obstruction " .. family .. i)
+                square:getObjects():remove(obstruction); square:RecalcProperties()
+                assert(place.controller({square = square}), "Removed native obstruction still blocks Controller")
+                checks = checks + 1; found = true
+                print("[OMHTT-C471] placement native-blocker=" .. family .. i .. " rejected=true removed=allowed")
+                break
+            end
+        end
+        assert(found, "No native BlocksPlacement evidence for " .. family)
+    end
+    assert(checks == 3, "Native obstruction family coverage missing")
     getCell=function() return {getGridSquare=function(_,x,y,z) return z==0 and lookup[x .. ":" .. y] or nil end} end
+    local motion, clock = require("OMHTT/DefenseDisplacement"), require("OMHTT/ControlClock")
+    local nativeNow, motionTime = clock.now, 1000
+    clock.now = function() return motionTime end
+    local actor = IsoZombie.new(cell)
+    actor:setCurrent(square);actor:setX(base+.5);actor:setY(1000.5);actor:setZ(0)
+    motion.start(actor,false,base-2,1000.5,.35)
+    motionTime=1050;motion.update(actor)
+    assert(actor:getNextX()>actor:getX() and math.abs(actor:getNextY()-actor:getY())<.0001,
+        "Native tether pending movement must point away from its muzzle")
+    motion.start(actor,true,base-2,1000.5,.75)
+    motionTime=1100;motion.update(actor)
+    assert(actor:getNextX()<actor:getX() and math.abs(actor:getNextY()-actor:getY())<.0001,
+        "Native tether pending movement must point toward its muzzle")
+    motion.clear(actor);clock.now=nativeNow
+    print("[OMHTT-C471] native-tether pending-push=away pending-pull=toward world-position=unchanged")
     local hours=time:getWorldAgeHours()
     getGameTime=function() return {getWorldAgeHours=function() return hours end,getMinutesPerDay=function() return time:getMinutesPerDay() end} end
     player:setCurrent(square);player:setX(base+.5);player:setY(1000.5);player:setZ(0)
@@ -46,6 +81,8 @@ return function(player)
         W.state(object).recoverAt=0
         return object
     end
+    local queue = require("OMHTT/ControlAutoAssign")
+    queue.reset()
     local controller=create("Controller","omhtt_turret_01_21")
     local battery=controller:getContainer():AddItem("Base.CarBattery1")
     battery:setCurrentUsesFloat(1)
@@ -53,6 +90,15 @@ return function(player)
     local lever=create("Lever","omhtt_turret_01_34")
     local laser=create("Laser","omhtt_turret_01_30")
     local ls,ss=W.state(lever),W.state(laser)
+    local nativeGameTime = GameTime
+    print("[OMHTT-C471] queue nativePaused=" .. tostring(GameTime.isGamePaused()) .. " fixtureJobs=" .. queue.last)
+    GameTime = {isGamePaused = function() return false end}
+    for _ = 1, 2000 do
+        queue.tick()
+        if queue.first > queue.last then break end
+    end
+    GameTime = nativeGameTime
+    print("[OMHTT-C471] queue remaining=" .. (queue.last - queue.first + 1) .. " assigned=" .. tostring(ls.controller))
     assert(ls.controller==W.state(controller).id and ss.controller==ls.controller,"New trigger auto-assignment failed")
     assert(not lever:isThumpable() and not laser:isThumpable(),"Triggers must never be thump targets")
     local toggle=Action:new(player,lever,"Toggle",nil,nil,ls.id)

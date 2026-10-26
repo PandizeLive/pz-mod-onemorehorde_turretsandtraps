@@ -45,6 +45,8 @@ local function hit(cycle, victim, reason)
     require("OMHTT/ControlAudio").emit(entry.object, "impact")
     if reason == "zombie" and Horde.allowed(victim) then
         entry.victim = victim
+        require("OMHTT/DefenseMotion").request(victim, "push", entry.state.id, cycle.x, cycle.y,
+            option("PushDistance", .35, 0, 2))
         require("OMHTT/Damage").resolve(victim, option("HitDamage", 30, 0, 2500) / 100, entry.state.id, "tether-dart")
     elseif reason == "player" and require("OMHTT/ControlCombat").protected(require("OMHTT/ControlCombat").source(entry.object), victim) then
         require("OMHTT/DefenseInjury").poke(victim, "scratch", entry.state.id)
@@ -61,6 +63,10 @@ local function pull(cycle)
     if not victim or victim:isDead() or math.floor(victim:getZ()) ~= cycle.z or not Horde.allowed(victim) then return end
     local square = victim:getSquare()
     if not square or getCell():getGridSquare(square:getX(), square:getY(), square:getZ()) ~= square then return end
+    local origin = entry.object:getSquare()
+    if not require("OMHTT/DefenseLine").clear(origin, square, cycle.range + 2) then return end
+    require("OMHTT/DefenseMotion").request(victim, "pull", entry.state.id, cycle.x, cycle.y,
+        option("PullDistance", .75, 0, 2))
     require("OMHTT/Damage").resolve(victim, option("PullDamage", 15, 0, 2500) / 100, entry.state.id, "tether-pull")
 end
 
@@ -74,14 +80,14 @@ function S.entry(object, state)
             local cycle = entry.cycle
             cycle.range, cycle.speed = option("Range", 6, 1, 32), option("LaunchSpeed", 30, 1, 64)
             cycle.returnSpeed = option("ReturnSpeed", 4, 1, 64)
-            cycle.resetTime, cycle.holdTime = option("ResetSeconds", .4, 0, 60), option("HoldSeconds", .75, 0, 10)
+            cycle.resetTime, cycle.holdTime = option("ResetSeconds", .5, 0, 60), option("HoldSeconds", .75, 0, 10)
         end
         return entry
     end
     local mount, support = Mount.resolve(state.x, state.y, state.z, state.facing)
     if not mount then return nil end
     local tuning = {range = option("Range", 6, 1, 32), speed = option("LaunchSpeed", 30, 1, 64),
-        returnSpeed = option("ReturnSpeed", 4, 1, 64), resetTime = option("ResetSeconds", .4, 0, 60),
+        returnSpeed = option("ReturnSpeed", 4, 1, 64), resetTime = option("ResetSeconds", .5, 0, 60),
         holdTime = option("HoldSeconds", .75, 0, 10)}
     local cycle = C.new(mount.x, mount.y, mount.z, mount.dx, mount.dy, tuning)
     entry = {cycle = cycle, mount = mount, support = support, object = object, state = state, time = S.time, sent = S.time, scan = S.time}

@@ -1,5 +1,9 @@
 # Decision register
 
+## C471 - Corrective patch approval and implementation (2026-10-25)
+
+Owner "Aproved" authorizes all C468-C470 corrections and the coordinated local Horde baseline/tooltip patch. No additional gameplay rebalance or save reset. First-update/pre-damage baseline settlement fixes the confirmed post-spawn health override defect; bounded conditional diagnostics support verification. Controller discovery is scoped to the host owner, with separately authorized shared-host access retained. Placement autoassignment is queued and never steals existing assignments or creates trigger links. Tether displacement defaults0.35tiles away and0.75tiles toward its muzzle; native pending movement and collision govern movement. Both distances are Sandbox options,0disables; the post-return reset defaults0.5game-seconds. Existing tuning remains explicit. See [patch](PATCH_v0.2.68.2.md) and [tests](TEST_v0.2.68.2.md).
+
 ## C470 - Execute18/+2 confirmed (2026-10-25)
 
 Owner: **3A**. Set the first active Execute threshold to18% and add2 percentage points per additional copy. Supersedes10/+2; thresholds are18/20/22/24/.../48 at1/2/3/4/.../16 copies. Preserve saved custom Sandbox values. Shared defaults and wording are staged and verified, not installed. [Scope and limits](FEEDBACK_C468.md#c470---execute182-selected-and-staged-2026-10-25). C469 assignment/privacy and tether decisions remain selected; no repeat design approval is required.

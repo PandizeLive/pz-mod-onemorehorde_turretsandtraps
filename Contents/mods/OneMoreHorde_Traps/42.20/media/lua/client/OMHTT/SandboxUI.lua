@@ -164,7 +164,7 @@ function UI.attach(panel)
             {"Sandbox_Title_OMHTurretsTraps_SharedContact", {"BarbDamage", "BarbInterval", "BarbMovementDivisor", "BedScratchChance", "BedSprintTripChance"}},
             {"Sandbox_Title_OMHTurretsTraps_Barrier", {"SpikeBarrier", "SpikeBarrierDamage", "ReinforcedBarrierDamage", "SpikeBarrierHealth", "ReinforcedBarrierHealthMultiplier", "SpikeBarrierScratchChance"}},
             {"Sandbox_Title_OMHTurretsTraps_Poke", {"PokeDamage", "PokeCycleSeconds", "PokeHealth", "PokeWear", "PokeScratchChance"}},
-            {"Sandbox_Title_OMHTurretsTraps_Tether", {"TetherRange", "TetherLaunchSpeed", "TetherReturnSpeed", "TetherHoldSeconds", "TetherResetSeconds", "TetherHitDamage", "TetherPullDamage"}},
+            {"Sandbox_Title_OMHTurretsTraps_Tether", {"TetherRange", "TetherLaunchSpeed", "TetherReturnSpeed", "TetherHoldSeconds", "TetherResetSeconds", "TetherHitDamage", "TetherPullDamage", "TetherPushDistance", "TetherPullDistance"}},
             {"Sandbox_Title_OMHTurretsTraps_Beds", {"BedSpikes", "BedDamage", "BedReinforcedDamage", "BedHealth", "BedReinforcedHealth", "BedWear", "BedTripChance", "BedRecoverySeconds"}},
             {"Sandbox_Title_OMHTurretsTraps_BarbedPanel", {"BarbSections"}},
             {"Sandbox_Title_OMHTurretsTraps_ConcertinaWire", {"BarbWire"}},

@@ -88,7 +88,7 @@ function getSpecificPlayer(index) return testPlayer end
 Events = {}
 Events.OnDestroyIsoThumpable = {handlers = {}, Add = function() end}
 Events.OnObjectAdded = {handlers = {}, Add = function() end}
-for _, name in pairs({"OnGameBoot", "OnServerStarted", "OnSave", "OnInitGlobalModData", "LoadGridsquare", "OnObjectAboutToBeRemoved", "OnClientCommand", "OnServerCommand", "OnFillWorldObjectContextMenu", "OnGameStart", "OnTickEvenPaused", "OnTick", "OnPostRender", "OnPreUIDraw", "OnPostUIDraw", "OnZombieCreate", "OnZombieUpdate", "OnZombieDead", "OnContextKey", "OnPlayerUpdate"}) do
+for _, name in pairs({"OnGameBoot", "OnServerStarted", "OnSave", "OnInitGlobalModData", "LoadGridsquare", "OnObjectAboutToBeRemoved", "OnClientCommand", "OnServerCommand", "OnFillWorldObjectContextMenu", "OnGameStart", "OnTickEvenPaused", "OnTick", "OnPostRender", "OnPreUIDraw", "OnPostUIDraw", "OnZombieCreate", "OnHitZombie", "OnZombieUpdate", "OnZombieDead", "OnContextKey", "OnPlayerUpdate"}) do
     local handlers = {}
     Events[name] = {handlers = handlers, Add = function(callback) table.insert(handlers, callback) end}
 end
@@ -321,6 +321,7 @@ function makeZombie(square, health)
     end
     square.moving[#square.moving + 1] = zombie
     triggerEvent("OnZombieCreate", zombie)
+    if OMHTT_TargetHealth then OMHTT_TargetHealth.settle(zombie) end
     return zombie
 end
 

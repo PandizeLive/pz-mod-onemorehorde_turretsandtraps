@@ -276,8 +276,8 @@ local nextInput, nextState = device("Plate", 1920, 1910)
 check(C.autoAssign(nextInput,owner) and nextState.controller == host.id, "Auto-assignment skips a closer private Controller")
 restrictedState.access = "Public"
 local nearestInput, nearestState = device("Button",1920,1910)
-check(C.autoAssign(nearestInput,owner) and nearestState.controller == restrictedState.id,
-    "Auto-assignment chooses the nearest permitted Controller even before its power is available")
+check(C.autoAssign(nearestInput,owner) and nearestState.controller == host.id,
+    "Auto-assignment ignores another owner's Public Controller")
 check(not C.autoAssign(remoteButton,owner) and remoteState.controller == host.id,
     "Automatic assignment preserves an existing Controller selection")
 restrictedState.placed = false

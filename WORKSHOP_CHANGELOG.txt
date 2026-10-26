@@ -1,9 +1,14 @@
-v0.2.68.1
+v0.2.68.2
 
 Development test content
 
-- Fixed Custom rarity editing and added the manual icon to Turret Specialist.
-- Prevented rotary heads from striking grounded targets and Controllers from overlapping solid furniture or devices.
+- Fixed Initial Blow and Execute health baselines after native spawn health changes; Execute defaults to18% plus2% per extra copy while retaining saved tuning.
+- Scoped Controller maps and requests to their owner's devices and added nearest own-device autoassignment without stealing existing assignments.
+- Added configurable tether push/pull and a half-second post-return reset.
+- Fixed stacked expansion-kit replacement, clarified module percentages and showed Controller storage usage.
+
+- Fixed Custom rarity editing and added a properly sized manual icon to Turret Specialist.
+- Prevented rotary heads from striking grounded targets and Controllers from overlapping native placement blockers or devices.
 - Grouped Debug logs and tools consistently and made package logging controls independent.
 - Added bounded defense XP attribution and payout diagnostics.
 

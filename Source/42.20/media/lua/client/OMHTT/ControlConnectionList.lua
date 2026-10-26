@@ -42,8 +42,11 @@ function List:refresh()
             and (A.near(panel.player, object) or require("OMHTT/ControlRemote").valid(panel.player, panel.object, object))
             and A.write(panel.player, A.state(panel.selected)) and A.range(object, panel.selected)
         local title = state and U.name(object) or row.name or getText("UI_OMHTT_Control" .. row.kind)
-        rows[#rows + 1] = {title = title, object = object, active = state and state.active, writable = writable == true}
-        keys[#keys + 1] = row.id .. ":" .. title .. ":" .. tostring(state and state.active) .. ":" .. tostring(writable)
+        local host = A.state(panel.object)
+        if host and ((state and A.visible(panel.object, object)) or (not state and row.owner == host.owner)) then
+            rows[#rows + 1] = {title = title, object = object, active = state and state.active, writable = writable == true}
+            keys[#keys + 1] = row.id .. ":" .. title .. ":" .. tostring(state and state.active) .. ":" .. tostring(writable)
+        end
     end
     local signature = table.concat(keys, "|")
     if self.signature == signature and previous == self.target then return end

@@ -50,9 +50,9 @@ A.range=function() return false end
 U.name=function(o) return o.state.id end
 getCell=function() return {getGridSquare=function() return nil end} end
 local square={getX=function() return 0 end,getY=function() return 0 end,getZ=function() return 0 end}
-local host={state={id='host',kind='Controller'},getSquare=function() return square end}
+local host={state={id='host',kind='Controller',owner='performance-owner'},getSquare=function() return square end}
 for i=1,256 do
-    local o={state={id='known-'..i,kind='Turret'},getObjectIndex=function() return 0 end}
+    local o={state={id='known-'..i,kind='Turret',owner='performance-owner'},getObjectIndex=function() return 0 end}
     D.objects[o]=true
     D.track(o)
 end
@@ -93,7 +93,7 @@ for _,count in pairs({64,256}) do
         getYScroll=function() return 0 end,setScrollHeight=function() end,setYScroll=function() end}
     local owner={object=host,graph=graph,devices={items={}},lineHeight=18}
     for i=1,count do
-        owner.devices.items[i]={item={state={id='graph-'..i,kind='Button',number=i,links={}}}}
+        owner.devices.items[i]={item={state={id='graph-'..i,kind='Button',owner='performance-owner',number=i,links={}}}}
     end
     measures=0
     Graph.refreshForPanel(owner)
@@ -119,7 +119,7 @@ for _,count in pairs({64,256}) do
     check(graph.triggers~=rows,'Connection change rebuilds edges')
     rows=graph.triggers
     local object=owner.devices.items[1].item
-    object.state={id=object.state.id,kind=object.state.kind,number=object.state.number,links=object.state.links,powered=true}
+    object.state={id=object.state.id,kind=object.state.kind,owner=object.state.owner,number=object.state.number,links=object.state.links,powered=true}
     graph.refreshDue=-1
     measures=0
     Graph.refreshForPanel(owner)

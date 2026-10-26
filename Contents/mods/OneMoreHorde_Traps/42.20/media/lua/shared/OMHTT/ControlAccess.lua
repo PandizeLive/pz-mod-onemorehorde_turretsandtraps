@@ -1,5 +1,15 @@
 local A = {}
 
+---@param controller IsoObject Network owner
+---@param object IsoObject? Candidate shown or queried through that network
+---@return boolean visible
+function A.visible(controller, object)
+    if not object then return false end
+    local host, state = A.state(controller), A.state(object)
+    return host ~= nil and state ~= nil and host.kind == "Controller"
+        and type(host.owner) == "string" and host.owner ~= "" and state.owner == host.owner
+end
+
 ---@return number tiles Shared authoritative management radius
 function A.radius(object)
     local settings = SandboxVars.OMHTurretsTraps or {}
@@ -90,7 +100,7 @@ function A.remoteAllowed(player, object, read)
     local host = A.state(controller)
     if not host or not state or state.controller ~= host.id or host.kind ~= "Controller"
         or controller:getHealth() <= 0 or not A.near(player, controller) or not A.range(controller, object) then return false end
-    if not read and not A.write(player, host) then return false end
+    if not A.visible(controller, object) or not A.write(player, host) then return false end
     return host.powered == true
 end
 

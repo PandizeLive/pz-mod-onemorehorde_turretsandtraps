@@ -1,5 +1,6 @@
 local Health = require("OMHTT/TargetHealth")
 local Clock = require("OMHTT/TurretClock")
+local Diagnostics = require("OMHTT/Diagnostics")
 local C = {}
 
 ---@param zombie IsoZombie Primary victim before the shot damages it
@@ -9,10 +10,19 @@ local C = {}
 function C.snapshot(zombie, stats)
     if stats.initialBlow == 0 and stats.execute == 0 then return {bonus = 1, execute = false} end
     local maximum = Health.maximum(zombie)
-    if maximum <= 0 then return {bonus = 1, execute = false} end
-    local fraction = zombie:getHealth() / maximum
-    return {bonus = fraction + .0000001 >= stats.initialThreshold and 1 + stats.initialBlow or 1,
-        execute = stats.execute > 0 and fraction <= stats.execute + .0000001}
+    local health = Health.current(zombie)
+    local fraction = maximum > 0 and health / maximum or nil
+    local eligibility = {bonus = 1, execute = false}
+    if fraction then
+        eligibility.bonus = fraction + .0000001 >= stats.initialThreshold and 1 + stats.initialBlow or 1
+        eligibility.execute = stats.execute > 0 and fraction <= stats.execute + .0000001
+    end
+    if Diagnostics.detailed("turrets") then
+        Diagnostics.emit("conditional-hit", {health = health, maximum = maximum, fraction = fraction or "unknown",
+            initialBlow = stats.initialBlow, bonus = eligibility.bonus, threshold = stats.execute,
+            execute = eligibility.execute}, nil, nil, "turrets")
+    end
+    return eligibility
 end
 
 ---@param zombie IsoZombie Successful primary victim

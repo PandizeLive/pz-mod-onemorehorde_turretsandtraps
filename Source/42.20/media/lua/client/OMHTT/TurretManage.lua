@@ -78,6 +78,16 @@ end
 ---@param replaced InventoryItem? Exact occupied module slot
 ---@return nil
 function Panel:transfer(items, incoming, kind, replaced)
+    if incoming and kind == "capacity" and replaced and #items > 1 then
+        local fullType = items[1]:getFullType()
+        for i = 2, #items do
+            if items[i]:getFullType() ~= fullType then
+                self:feedback(0, "SwapSelection")
+                return
+            end
+        end
+        items = {items[1]}
+    end
     if incoming and kind == "capacity" and replaced then
         if #items ~= 1 then self:feedback(0, "SwapFailed"); return end
         local Expansion = require("OMHTT/TurretExpansionAction")

@@ -216,6 +216,25 @@ function OMHTT_NativeBarbCheck(squares)
         fixtures:add(frame)
         fixtures:add(host)
     end
+    local pairedHost = fixtures:get(11)
+    local pairedSquare = pairedHost:getSquare()
+    local opposite = IsoThumpable.new(cell, pairedSquare, "omhtt_barrier_01_52", true)
+    pairedSquare:getObjects():add(opposite)
+    pairedSquare:getSpecialObjects():add(opposite)
+    assert(B.onIsValid({square = pairedSquare, facing = "s"}), "Opposite panel must accept the existing backed wall")
+    opposite = B.onCreate({thumpable = opposite, character = player, facing = "s"}).object
+    assert(B.record(opposite).id ~= B.record(fixtures:get(10)).id, "Opposite faces need separate identities")
+    local pairedActor = IsoZombie.new(cell)
+    for _, side in pairs({-1, 1}) do
+        local expected = side == -1 and fixtures:get(10) or opposite
+        local y = pairedSquare:getY() + side * .2
+        pairedActor:setX(pairedSquare:getX() + .5)
+        pairedActor:setY(y)
+        pairedActor:setZ(0)
+        pairedActor:setCurrent(lookup[pairedSquare:getX() .. ":" .. math.floor(y) .. ":0"])
+        local contact = B.contact(pairedActor)
+        assert(contact and contact.id == B.record(expected).id, "Opposite face contact was overwritten")
+    end
     local wireInfo = SpriteConfigManager.GetObjectInfo("OMHTTDeployConcertinaWire")
     for _, direction in pairs({"e", "n", "w", "s"}) do
         local face = wireInfo:getFace(direction)
@@ -260,6 +279,8 @@ function OMHTT_NativeBarbCheck(squares)
     fixtures:add(tail)
     print("[OMHTT-Wire] craft=exact wireUses=2 pliers=retained skills=0 xp=0 footprint=2 durability=shared50 duplicate=blocked")
     print("[OMHTT-Barbs] PASS construction=8 facings=4 tools=retained wireUses=2 recipe=exact separateWindowHP=50 sharedHostHP=137")
+    fixtures:add(opposite)
+    print("[OMHTT-C471] native-barb-pair created=2 contacts=2 backingHealth=137")
     return fixtures
 end
 
@@ -280,6 +301,25 @@ function OMHTT_NativeBarbRestoredCheck(fixtures)
     local frame, _, record, status = B.resolve(B.record(wire))
     assert(frame == wire and status == "active" and record.health == 47 and record.kind == "wire", "Wire state lost on reload")
     assert(B.record(fixtures:get(17)) == record and record.paired, "Restored halves lost shared durability")
+    local opposite, original, support = fixtures:get(18), fixtures:get(10), fixtures:get(11)
+    B.loaded(support:getSquare())
+    local pairedActor = IsoZombie.new(nativeCell())
+    for _, side in pairs({-1, 1}) do
+        local expected = side == -1 and original or opposite
+        local square = support:getSquare()
+        local y = square:getY() + side * .2
+        pairedActor:setX(square:getX() + .5)
+        pairedActor:setY(y)
+        pairedActor:setZ(0)
+        pairedActor:setCurrent(getCell():getGridSquare(square:getX(), math.floor(y), 0))
+        local contact = B.contact(pairedActor)
+        assert(contact and contact.id == B.record(expected).id, "Reload lost one panel face")
+    end
+    B.retire(B.record(opposite))
+    local _, exact, _, remaining = B.resolve(B.record(original))
+    assert(exact == support and remaining == "active" and support:getHealth() == 137,
+        "Removing one face must retain the other and the thumpable backing")
+    print("[OMHTT-C471] native-barb-pair reload=2 contacts=2 removeOne=otherRetained")
     isServer, isClient, getCell = nativeServer, nativeClient, nativeCell
     return true
 end

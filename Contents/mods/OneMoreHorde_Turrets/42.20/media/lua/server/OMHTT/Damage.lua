@@ -26,6 +26,10 @@ local function apply(zombie, amount, source, kind, operator, weapon)
     if isClient() or zombie:isDead() or amount <= 0 then return 0 end
     local allowed, core, token = Horde.beginDamage(zombie, amount, source, kind)
     if not allowed then return 0 end
+    local health = rawget(_G, "OMHTT_TargetHealth")
+    if health then
+        health.settle(zombie)
+    end
     local before = zombie:getHealth()
     local remaining = before - amount
     if remaining < 0.000001 then
@@ -74,6 +78,10 @@ function Damage.request(zombie, amount, source, kind, callback)
         or not Protocol.number(amount, 0.000001, 1000000)
         or type(source) ~= "string" or #source == 0 or #source > 160
         or type(kind) ~= "string" or #kind == 0 or #kind > 64 then return false end
+    local health = rawget(_G, "OMHTT_TargetHealth")
+    if health then
+        health.settle(zombie)
+    end
     if isServer() and zombie:getOwner() ~= nil then
         return require("OMHTT/DefenseCombatServer").request(zombie, amount, source, kind, callback)
     end

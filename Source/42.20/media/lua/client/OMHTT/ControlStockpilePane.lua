@@ -30,9 +30,9 @@ function Wing:prerender()
     Theme.section(self, 0, 0, self.width, self.height, self.owner.lineHeight + 8, getText("UI_OMHTT_StockpileTitle"))
     local weight = self.inventory:getCapacityWeight()
     local capacity = require("OMHTT/ControlExpansion").capacity(self.owner.object)
-    local free = math.max(0, capacity - weight)
-    self:drawText(getText("UI_OMHTT_StockFree", string.format("%.1f", free), capacity), 10, self.owner.lineHeight + 14, .8, .8, .8, 1, UIFont.Small)
-    Theme.meter(self, 10, self.owner.lineHeight * 2 + 18, self.width - 20, 7, free / math.max(1, capacity))
+    local used = math.max(0, weight)
+    self:drawText(getText("UI_OMHTT_StockUsage", string.format("%.1f", used), capacity), 10, self.owner.lineHeight + 14, .8, .8, .8, 1, UIFont.Small)
+    Theme.meter(self, 10, self.owner.lineHeight * 2 + 18, self.width - 20, 7, used / math.max(1, capacity), true)
 end
 
 ---@return nil

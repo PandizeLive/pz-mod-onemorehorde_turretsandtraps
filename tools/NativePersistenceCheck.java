@@ -120,8 +120,35 @@ public final class NativePersistenceCheck {
         System.out.println("[OMHTT-C437] native-knowledge persistence=" + mode + " characters=2 recipes=6");
     }
 
+    private static void verifyConditionalHealth(Path directory, String mode) throws Exception {
+        Object env = Class.forName("zombie.Lua.LuaManager").getField("env").get(null);
+        Object actor = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_C471HealthZombie");
+        Class<?> cellType = Class.forName("zombie.iso.IsoCell"), world = Class.forName("zombie.iso.IsoWorld");
+        Object cell = world.getField("currentCell").get(world.getField("instance").get(null));
+        int version = ((Number)world.getMethod("getWorldVersion").invoke(null)).intValue();
+        Path path = directory.resolve("conditional-health.bin");
+        if (mode.equals("write")) {
+            ByteBuffer buffer = ByteBuffer.allocate(4 * 1024 * 1024);
+            call(actor, "save", new Class<?>[]{ByteBuffer.class, boolean.class}, buffer, false);
+            Files.write(path, Arrays.copyOf(buffer.array(), buffer.position()));
+        }
+        Object restored = actor.getClass().getConstructor(cellType).newInstance(cell);
+        ByteBuffer input = ByteBuffer.wrap(Files.readAllBytes(path));
+        check(input.get() == 1, "Native moving-object serialization header missing");
+        input.get(); // Object factory consumes the class ID before IsoZombie.load.
+        call(restored, "load", new Class<?>[]{ByteBuffer.class, int.class, boolean.class}, input, version, false);
+        Object data = get(restored, "getModData");
+        double baseline = ((Number)call(data, "rawget", new Class<?>[]{Object.class}, "OMHTTInitialHealth")).doubleValue();
+        double health = ((Number)get(restored, "getHealth")).doubleValue();
+        check(Math.abs(baseline - 1) < .000001,
+            "Conditional baseline must survive native character serialization");
+        System.out.println("[OMHTT-C471] native-conditional persistence=" + mode + " baseline=" + baseline
+            + " savedHealth=0.5 nativeLoadedHealth=" + health);
+    }
+
     private static void verify(Path directory, String mode) throws Exception {
         verifyProgression(directory, mode);
+        verifyConditionalHealth(directory, mode);
         verifyPlacement();
         verifyTurret(directory, mode);
         verifyHeavyController(directory, mode);

@@ -68,7 +68,7 @@ public final class NativeBarbProbe {
         }
         check(result instanceof List<?>, "Barb native fixture creation failed");
         @SuppressWarnings("unchecked") List<Object> fixtures = (List<Object>)result;
-        check(fixtures.size() == 18, "Expected eight frame/support pairs and two linked wire halves");
+        check(fixtures.size() == 19, "Expected eight frame/support pairs, two linked wire halves and one opposite panel");
         Files.createDirectories(directory);
         if (mode.equals("write")) {
             Object names = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeBarbNames");

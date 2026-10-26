@@ -47,7 +47,7 @@ local function changed(graph, panel)
     local snapshots = graph.snapshots or {}
     for i = 1, #panel.devices.items do
         local object = panel.devices.items[i].item
-        local state = A.state(object)
+        local state = A.visible(panel.object, object) and A.state(object) or nil
         local title = state and U.name(object)
         local links = state and state.links and table.concat(state.links, '|') or ''
         local outside = state and host and state.controller == host.id and not A.range(panel.object, object)
@@ -246,7 +246,7 @@ function Graph.refreshForPanel(panel)
     graph.rowHeight = panel.lineHeight * 3 + 24
     for i = 1, #graph.items do
         local object = graph.items[i].item
-        local state = A.state(object)
+        local state = A.visible(panel.object, object) and A.state(object) or nil
         if state then
             local prefix = state.kind == "Tether" and "D" or state.kind == "Turret" and "T" or (state.kind == "Controller" and "C" or (state.kind == "Button" and "B" or state.kind == "Lever" and "L" or state.kind == "Laser" and "S" or "P"))
             local label = prefix .. (state.number or "")

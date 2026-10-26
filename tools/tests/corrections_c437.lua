@@ -49,6 +49,7 @@ end
 local Controls=require("OMHTT/ControlDefinitions")
 local occupied={hasModData=function() return true end,getModData=function() return {OMHTTControl={}} end}
 local square={TreatAsSolidFloor=function() return true end,isSolid=function(self) return self.solid end,
+    getProperties=function() return {has=function() return false end} end,
     isSolidTrans=function() return false end,getObjects=function(self) return {size=function() return self.occupied and 1 or 0 end,get=function() return occupied end} end}
 check(Controls.controller({square=square}), "Controller accepts clear solid floor")
 square.solid=true

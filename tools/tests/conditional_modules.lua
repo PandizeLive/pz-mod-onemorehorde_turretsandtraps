@@ -20,6 +20,7 @@ check(S.resolve({active = {Execute = 16}}).execute == 0, "Explicit zero Execute 
 SandboxVars.OMHTurretsTraps = {}
 local square = makeSquare(1500, 1500, 0)
 local zombie = makeZombie(square, 10)
+require("OMHTT/TargetHealth").settle(zombie)
 local stats = S.resolve({active = {InitialBlow = 16, Execute = 1, Impact = 1}})
 zombie.health = 9
 local eligibility = C.snapshot(zombie, stats)
@@ -40,6 +41,7 @@ Damage.apply(zombie, amount, "test", "firearm", nil, nil)
 Damage.apply(zombie, amount, "test", "firearm", nil, nil)
 check(zombie.kills == 1, "Execution cannot double-kill or double-award")
 zombie = makeZombie(square, 10)
+require("OMHTT/TargetHealth").settle(zombie)
 zombie.data.OMHTTInitialHealth = nil
 check(not C.snapshot(zombie, stats).execute and C.snapshot(zombie, stats).bonus == 1, "Unknown historical HP does not invent conditional eligibility")
 zombie.data.OMHToughnessInitialHealth = 100
@@ -93,3 +95,29 @@ for _ = 1, 100 do if #V.queue > 0 then V.tick() end end
 check(math.abs(a.health - 9.3) < .000001, "Piercing cannot bypass a solid edge after the primary hit")
 V.reset()
 SandboxVars.OMHTurretsTraps, testRoll = savedSettings, savedRoll
+
+do
+    local health = require("OMHTT/TargetHealth")
+    local target = makeZombie(square, 3.7)
+    target.health = 3.7
+    target:getModData().OMHTTInitialHealth = nil
+    triggerEvent("OnZombieCreate", target)
+    -- Native debug spawner replaces the random toughness health after this event.
+    target.health = 1
+    local moduleStats = S.resolve({active = {InitialBlow = 12, Execute = 1}})
+    local snapshot = C.snapshot(target, moduleStats)
+    check(math.abs(C.damage(target, .2, snapshot) - .74) < .000001,
+        "Post-create native health override receives 74 Initial Blow damage")
+    target.health = .18
+    check(C.snapshot(target, moduleStats).execute, "Execute uses settled spawn health after subsequent damage")
+    target.health = .181
+    check(not C.snapshot(target, moduleStats).execute, "Settled health is not reset at each shot")
+    target.health = 3.7
+    target:getModData().OMHTTInitialHealth = nil
+    triggerEvent("OnZombieCreate", target)
+    target.health = 1
+    triggerEvent("OnHitZombie", target)
+    target.health = .5
+    check(health.maximum(target) == 1 and C.snapshot(target, moduleStats).bonus == 1,
+        "First native weapon hit freezes baseline before damage")
+end

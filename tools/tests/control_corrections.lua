@@ -143,7 +143,7 @@ controller.getSquare=function() return square end
 local rows={items={{item=controller}},itemheight=30,setScrollHeight=function(self,value) self.scrollHeight=value end}
 local panel=setmetatable({object=controller,devices=rows,selected=turret},{__index=Panel})
 for i=1,180 do
-    local object={state={id="scan-"..i,kind="Turret",headType="Base.OMHTTTurretBallista"},getObjectIndex=function() return 0 end}
+    local object={state={id="scan-"..i,kind="Turret",owner="correction-owner",headType="Base.OMHTTTurretBallista"},getObjectIndex=function() return 0 end}
     square:AddTileObject(object)
 end
 square:AddTileObject(turret)
@@ -181,7 +181,7 @@ A.remote[player]=nil; testMode="client"
 R.response(R.MODULE,"Renewed",replies[1])
 check(A.authorized(player,turret),"Matching current server response enables local remote controls")
 controller.state.owner="someone-else"
-check(A.authorized(player,turret,true) and not A.authorized(player,turret),"Read-only session never bypasses private write policy")
+check(not A.authorized(player,turret,true) and not A.authorized(player,turret),"Ownership change revokes both remote reads and writes")
 controller.state.owner="correction-owner"
 for i=1,60 do testMillis=testMillis+5000; U.remote(player,controller,turret); U.remote(player,controller,turret) end
 check(#sent==61 and queued==0 and #R.requests[player]==1,"Five minutes of stalled actions stays at one request slot with bounded retries")

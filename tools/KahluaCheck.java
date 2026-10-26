@@ -211,6 +211,7 @@ public final class KahluaCheck {
             {"OMHTT/BarbContact", base + "shared/OMHTT/BarbContact.lua"},
             {"OMHTT/BarbMovement", base + "shared/OMHTT/BarbMovement.lua"},
             {"OMHTT/DefenseMotion", base + "shared/OMHTT/DefenseMotion.lua"},
+            {"OMHTT/DefenseDisplacement", base + "shared/OMHTT/DefenseDisplacement.lua"},
             { "OMHTT/DefenseEffects", base + "shared/OMHTT/DefenseEffects.lua"},
             {"OMHTT/ControlOptions", base + "client/OMHTT/ControlOptions.lua"},
             {"OMHTT/ControlAudio", base + "shared/OMHTT/ControlAudio.lua"},
@@ -261,6 +262,7 @@ public final class KahluaCheck {
             {"OMHTT/ControlLegacyStorage", base + "server/OMHTT/ControlLegacyStorage.lua"},
             {"OMHTT/ControlPoke", base + "server/OMHTT/ControlPoke.lua"},
             {"OMHTT/ControlWorld", base + "server/OMHTT/ControlWorld.lua"},
+            {"OMHTT/ControlAutoAssign", base + "server/OMHTT/ControlAutoAssign.lua"},
             {"OMHTT/ControlCycle", base + "server/OMHTT/ControlCycle.lua"},
             {"OMHTT/TurretStacking", base + "shared/OMHTT/TurretStacking.lua"},
             {"OMHTT/TurretStats", base + "shared/OMHTT/TurretStats.lua"},
@@ -550,6 +552,7 @@ public final class KahluaCheck {
             {"_", "tools/tests/corrections_c444.lua"},
             {"_", "tools/tests/corrections_c450.lua"},
             {"_", "tools/tests/defense_xp.lua"},
+            {"_", "tools/tests/corrections_c471.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {
