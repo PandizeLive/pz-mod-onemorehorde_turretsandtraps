@@ -8,7 +8,7 @@ local active = setmetatable({}, {__mode = "k"})
 ---@param x number Muzzle X
 ---@param y number Muzzle Y
 ---@param distance number Maximum displacement in tiles
----@return nil
+---@return boolean? started
 function D.start(zombie, pulling, x, y, distance)
     if distance <= 0 or zombie:isDead() or Movement.traversing(zombie) then return end
     local dx, dy = zombie:getX() - x, zombie:getY() - y
@@ -23,6 +23,7 @@ function D.start(zombie, pulling, x, y, distance)
     local duration = pulling and 500 or 250
     active[zombie] = {dx = dx / length, dy = dy / length, remaining = distance,
         speed = distance / duration, last = now, expires = now + duration, z = math.floor(zombie:getZ())}
+    return true
 end
 
 ---@param zombie IsoZombie Native update before collision resolution

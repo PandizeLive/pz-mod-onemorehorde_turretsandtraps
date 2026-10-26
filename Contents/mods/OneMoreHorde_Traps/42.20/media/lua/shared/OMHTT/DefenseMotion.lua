@@ -15,7 +15,15 @@ local serial = 0
 local function apply(zombie, kind, x, y, distance)
     if zombie:isDead() then return end
     if kind == "push" or kind == "pull" then
-        require("OMHTT/DefenseDisplacement").start(zombie, kind == "pull", x, y, distance or 0)
+        local started = require("OMHTT/DefenseDisplacement").start(zombie, kind == "pull", x, y, distance or 0)
+        if started and kind == "push" and not zombie:isProne() and not zombie:isKnockedDown()
+            and not zombie:isStaggerBack() then
+            local dx, dy = zombie:getX() - x, zombie:getY() - y
+            local length = math.sqrt(dx * dx + dy * dy)
+            zombie:setHitDir(Vector2.new(dx / length, dy / length))
+            zombie:setHitForce(0)
+            zombie:setStaggerBack(true)
+        end
     elseif kind == "trip" then
         if zombie:isOnFloor() or zombie:isKnockedDown() or zombie:getBumpType() ~= "" then return end
         zombie:setVariable("BumpAnimFinished", false)

@@ -207,7 +207,12 @@ function Slot:prerender()
     end
     local textX, textY = self.kind == "void" and 8 or 44, h + 8
     if moduleGeometry then textX, textY = moduleGeometry.textX, moduleGeometry.textY end
-    local clipX, clipY, clipW, clipH = self:clampStencilRectToParent(textX, textY, self.width - textX - 4, h + 4)
+    local width = self.width - textX - 4
+    if self.sourceLabel then
+        local combined = name .. " - " .. self.sourceLabel
+        name = getTextManager():MeasureStringX(UIFont.Small, combined) <= width and combined or self.sourceLabel
+    end
+    local clipX, clipY, clipW, clipH = self:clampStencilRectToParent(textX, textY, width, h + 4)
     self:drawText(name, textX, textY, color and color.tr or 1, color and color.tg or 1, color and color.tb or 1, 1, UIFont.Small)
     self:clearStencilRect()
     self:repaintStencilRect(clipX, clipY, clipW, clipH)

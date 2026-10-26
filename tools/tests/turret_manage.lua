@@ -300,7 +300,20 @@ check(panel.batterySlot.missing, "No usable power highlights the battery")
 W.power = function() return {kind = "external"} end
 panel:refresh()
 check(not panel.batterySlot.missing, "External power clears the battery warning")
+W.power = function() return {kind = "controller"} end
+panel:refresh()
+check(panel.batterySlot.sourceLabel==getText("UI_OMHTT_ControllerReserve"),"Controller reserve is visible beside the turret battery")
+local reserveSlot=panel.batterySlot
+local oldWidth,oldDraw=reserveSlot.width,reserveSlot.drawText
+local reserveY
+reserveSlot:setWidth(210)
+reserveSlot.drawText=function(self,text,x,y) if text==getText("UI_OMHTT_ControllerReserve") then reserveY=y end end
+reserveSlot:prerender()
+check(reserveY and reserveY+panel.lineHeight<=reserveSlot.height,"Compact reserve caption y="..tostring(reserveY).." h="..tostring(panel.lineHeight).." slot="..tostring(reserveSlot.height).." summary="..tostring(reserveSlot.summary))
+reserveSlot.width,reserveSlot.drawText=oldWidth,oldDraw
 W.power = function() return {kind = "battery"} end
+panel:refresh()
+check(panel.batterySlot.sourceLabel==nil,"Returning to local battery clears the reserve label")
 local flattened = ISInventoryPane.getActualItems({{items = {potato3, potato3, invalid}}, potato3})
 check(#flattened == 2 and flattened[1] == potato3 and flattened[2] == invalid, "Native stack expansion excludes display duplicate and repeated selected child")
 ISMouseDrag.dragging, ISMouseDrag.draggingFocus = {invalid}, {onMouseUp = function() end}

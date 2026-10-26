@@ -11,6 +11,7 @@ A.near = function() return true end
 getWorldMarkers = function() return {addGridSquareMarker = function() return {setScaleCircleTexture = function() end, remove = function() end} end} end
 local square = makeSquare(1950, 1950, 0)
 local inventory = {getItems = function() return {size = function() return 0 end} end, getCapacityWeight = function() return 0 end, requestSync = function() end}
+function inventory:isDrawDirty() return false end
 function inventory:getType() return "OMHTTController" end
 local player = {getInventory = function() return inventory end, getUsername = function() return "ui-owner" end, isDead = function() return false end, getPlayerNum = function() return 0 end}
 local object = {data = {OMHTTControl = {id = "ui-controller", kind = "Controller", owner = "ui-owner", access = "Private", powered = true, links = {}}}}

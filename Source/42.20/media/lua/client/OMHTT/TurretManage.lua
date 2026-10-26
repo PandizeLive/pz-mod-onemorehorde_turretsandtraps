@@ -471,6 +471,7 @@ function Panel:refresh()
     local charge = getText("UI_OMHTT_None")
     if contents.battery then charge = tostring(math.floor(require("OMHTT/TurretBattery").charge(contents.battery) * 100)) .. "%" end
     self.batterySlot.label = getText("UI_OMHTT_ManageBattery", charge)
+    self.batterySlot.sourceLabel = power and power.kind == "controller" and getText("UI_OMHTT_ControllerReserve") or nil
     self.capacitySlot.disabled = self.capacitySlot.items[1] ~= nil and not T.canRemove(storage, self.capacitySlot.items[1])
     self.moduleLabel = getText("UI_OMHTT_ManageModules", contents.modules, capacity)
     self.powerLabel = getText("UI_OMHTT_ManagePowerNone")

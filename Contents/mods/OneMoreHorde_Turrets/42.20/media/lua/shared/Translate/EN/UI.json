@@ -9,6 +9,8 @@
     "UI_OMHTT_ControllerTitle": "T&T Controller Menu",
     "UI_OMHTT_StockpileTitle": "Stockpile",
     "UI_OMHTT_StockpileBack": "Back to Controller",
+    "UI_OMHTT_ControllerReserve": "Controller Reserve",
+    "UI_OMHTT_ItemList": "OMH: Turrets & Traps",
     "UI_OMHTT_ControllerBattery": "Backup Battery",
     "UI_OMHTT_ControllerBatteries": "Stored Batteries: %1",
     "UI_OMHTT_ControllerBatteryDrop": "Drop Car Batteries Here",

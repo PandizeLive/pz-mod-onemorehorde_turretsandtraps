@@ -1,5 +1,5 @@
 testC300UI = {core=getCore,text=getTextManager,panel=ISPanel,button=ISButton,pane=ISInventoryPane,
-    texture=getTexture,player=getSpecificPlayer,hotbar=getPlayerHotbar,mode=testMode,resizable=ISResizableButton}
+    texture=getTexture,player=getSpecificPlayer,hotbar=getPlayerHotbar,mode=testMode,resizable=ISResizableButton,players=getNumActivePlayers,data=getPlayerData}
 testMode="client"
 ISPanel=testControlPanelBase
 getCore=function() return {getGoodHighlitedColor=function() return {} end,getOptionInventoryFont=function() return "Small" end} end
@@ -16,3 +16,6 @@ function ISButton:setImage(image) self.image=image end
 ISResizableButton=ISButton
 getPlayerHotbar=function() return {} end
 getSpecificPlayer=function() return {} end
+
+getNumActivePlayers=function() return 0 end
+getPlayerData=function() return nil end

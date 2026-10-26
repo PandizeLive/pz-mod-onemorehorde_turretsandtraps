@@ -553,9 +553,19 @@ public final class KahluaCheck {
             {"_", "tools/tests/corrections_c450.lua"},
             {"_", "tools/tests/defense_xp.lua"},
             {"_", "tools/tests/corrections_c471.lua"},
+            {"_", "tools/tests/corrections_c474_setup.lua"},
+            {"OMHTT/ControlItemList", base + "client/OMHTT/ControlItemList.lua"},
+            {"OMHTT/TurretSpecialist", base + "client/OMHTT/TurretSpecialist.lua"},
+            {"_", "tools/tests/corrections_c474.lua"},
+            {"_", "tools/tests/horde_c474_setup.lua"},
+            {"C474Horde", "../pz-mod-onemorehorde_protectthecure/Contents/mods/OneMoreHorde_HordeNight/42.20/media/lua/server/OMH_DefenseIntegration.lua"},
+            {"_", "tools/tests/horde_c474.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {
+                if (stage[1].endsWith("client/OMHTT/ControlStockpilePane.lua")) {
+                    set.invoke(env, "testNativeInventoryRefresh", get.invoke(get.invoke(env, "ISInventoryPane"), "refreshContainer"));
+                }
                 if (stage[1].equals("tools/tests/effects.lua")) {
                     Path element = Path.of(System.getenv().getOrDefault("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"), "media/lua/client/ISUI/ISUIElement.lua");
                     String nativeLua = Files.readString(element);

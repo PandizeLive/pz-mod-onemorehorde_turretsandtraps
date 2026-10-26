@@ -48,6 +48,28 @@ local function run(panel, player, controller)
         "In-game map opens by default and loads its data once, never during repeated UI draws")
     check(api.options.HideUnvisited==true and api.options.ImagePyramid==false,
         "Default map preserves visited-area visibility without satellite images")
+    local expansion=require("OMHTT/ControlExpansion")
+    local oldGrade,oldRange,oldKit=expansion.grade,SandboxVars.OMHTurretsTraps.ControllerRange,SandboxVars.OMHTurretsTraps.ControllerKitRange
+    SandboxVars.OMHTurretsTraps.ControllerRange,SandboxVars.OMHTurretsTraps.ControllerKitRange=10,10
+    local oldGraph=native.owner.graph
+    native.owner.graph={markers={},edges={}}
+    for grade=0,4 do
+        expansion.grade=function() return grade end
+        for _,zoom in pairs({2,7,19}) do
+            api.worldToUIX=function(_,x) return (x-native.centerX)*zoom+native.width/2 end
+            api.worldToUIY=function(_,x,y) return (y-native.centerY)*zoom+native.height/2 end
+            local segments=0
+            native.drawLine=function(_,texture,x1,y1,x2,y2)
+                local dx,dy=(x2-native.width/2)/zoom,(y2-native.height/2)/zoom
+                check(math.abs(math.sqrt(dx*dx+dy*dy)-A.radius(controller))<.00001,"Map ring radius="..tostring(math.sqrt(dx*dx+dy*dy)).." expected="..tostring(A.radius(controller)).." center="..tostring(native.centerX)..","..tostring(native.centerY).." object="..tostring(native.owner.object:getX())..","..tostring(native.owner.object:getY()))
+                segments=segments+1
+            end
+            native:render()
+            check(segments==64,"Range circle retains64 segments across expansion and zoom")
+        end
+    end
+    expansion.grade,SandboxVars.OMHTurretsTraps.ControllerRange,SandboxVars.OMHTurretsTraps.ControllerKitRange=oldGrade,oldRange,oldKit
+    native.owner.graph=oldGraph
     local menuBefore, hitBefore, routed = Graph.menu, native.hit, 0
     Graph.menu = function(owner, object) check(owner==panel and object==controller, "Map forwards the exact selected device"); routed=routed+1 end
     native.hit = function() return controller end

@@ -2394,3 +2394,7 @@ Installed-native lifecycle inspection and unchanged-production Kahlua replay rep
 ## C473 - Horde prevention selected; maintainable refresh correction required (2026-10-26)
 
 Owner selects C4721A and requires replacing defective mechanisms rather than accumulating bandage fixes. [Stockpile design and verification requirements](FEEDBACK_C468.md#c473---prevention-selected-replace-faulty-refresh-ownership-2026-10-26) retain the native inventory component and replace incomplete refresh wiring; avoid timer-driven whole-list rebuilding and duplicated inventory state. Complete patch approval and blocked mirror authorization remain pending. No gameplay edit.
+
+## C474 - Corrective patch approved (2026-10-26)
+
+Owner approves C472/C473 scope and the native-refresh replacement. T&T0.2.68.3 implements [the selected corrections](PATCH_v0.2.68.3.md); no assistance-policy choice remains. Preserve the valid native OnContainerUpdate notification through the same invalidator while replacing event-only wiring. Tests cover the failure mechanism and idle cost. No speculative management-radius change or new balance. Install and mirror evidence is tracked in [verification](TEST_v0.2.68.3.md).

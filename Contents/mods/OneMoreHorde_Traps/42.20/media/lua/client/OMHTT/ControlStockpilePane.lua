@@ -1,6 +1,7 @@
 if isServer() then return end
 require("ISUI/ISPanel")
 require("ISUI/ISInventoryPane")
+require("ISUI/PlayerData/ISPlayerData")
 local A = require("OMHTT/ControlAccess")
 local Theme = require("OMHTT/ControlTheme")
 local Pane = ISInventoryPane:derive("OMHTTStockpilePane")
@@ -69,7 +70,7 @@ function Pane:update()
             self:cleanup()
         end
     end
-    if self.stockDirty then
+    if self.stockDirty and self:isReallyVisible() then
         self.stockDirty = false
         self:refreshContainer()
     end
@@ -170,16 +171,42 @@ function ISInventoryPaneDraggedItems:getDropContainer()
     return nativeDrop(self)
 end
 
+---@param inventory ItemContainer? Changed container, nil for a native global notification
+---@param refreshed ISInventoryPane? View already current
 ---@return nil
-local function dirty()
+local function invalidate(inventory, refreshed)
     for pane in pairs(active) do
-        pane.stockDirty = true
-        local slot = pane.inventoryPage.owner.batterySlot
-        if slot then
-            slot.countDirty = true
+        if not inventory or pane.inventory == inventory then
+            if pane ~= refreshed then pane.stockDirty = true end
+            local slot = pane.inventoryPage.owner.batterySlot
+            if slot then slot.countDirty = true end
         end
     end
 end
 
-Events.OnContainerUpdate.Add(dirty)
+local nativeRefresh = ISInventoryPane.refreshContainer
+---@return nil
+function ISInventoryPane:refreshContainer()
+    local inventory = self.inventory
+    local changed = inventory and inventory:isDrawDirty()
+    nativeRefresh(self)
+    if active[self] then self.stockDirty = false end
+    if changed or not active[self] then invalidate(inventory, self) end
+    if active[self] and changed then
+        for i = 0, getNumActivePlayers() - 1 do
+            local data = getPlayerData(i)
+            if data then
+                local carried, loot = data.playerInventory, data.lootInventory
+                if carried and carried.inventoryPane and carried.inventoryPane.inventory == inventory then
+                    nativeRefresh(carried.inventoryPane)
+                end
+                if loot and loot.inventoryPane and loot.inventoryPane.inventory == inventory then
+                    nativeRefresh(loot.inventoryPane)
+                end
+            end
+        end
+    end
+end
+
+Events.OnContainerUpdate.Add(function() invalidate() end)
 return Wing
