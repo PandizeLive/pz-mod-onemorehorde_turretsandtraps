@@ -2424,3 +2424,8 @@ Owner: "One B". This selects the contact correction plus closed-only garage-segm
 ## C479 - Tether and Controller rendered findings (2026-10-26)
 
 Owner requests Controller circle removal, shorter scrollable settings and title-bar-only group collapse; panels reportedly appear functional. [Audit and proposed patch](FEEDBACK_C468.md#c479---owner-feedback-tether-reaction-and-controller-cleanup-2026-10-26) confirms competing tether displacement/native animation and whole-group collapse hit bounds. Recommend 1A damage-only impact plus directional pull reaction; 1B preserves corrected push/pull. Tether choice and combined patch approval remain pending. No gameplay/build change; 0.2.69 stays installed.
+
+
+## C480 - Pull-only selected with slight-turn investigation (2026-10-26)
+
+Owner selects C479 1A and asks to investigate slight rotation to fit the pull reaction. [Refinement and native evidence](FEEDBACK_C468.md#c480---pull-only-selected-slight-rotation-refinement-requested-2026-10-26): choose the nearest directional reaction and correct the remaining facing mismatch smoothly; avoid full forced turns and duplicate animation movement. Design selection is recorded; native/rendered motion proof and combined patch approval remain pending. No new build.
