@@ -42,3 +42,7 @@ Installed0.2.68.2from immutable test/v0.2.68.2 /9c1eb4af943626dd4b27742055fd6879
 Horde/Cure0.6.16.8is installed from its immutable6350799tagged source; Trait Shop0.9.1.1is unchanged. All sibling package files match local mods and Workshop staging. C108 development mirroring uses the existing T&T branch/PR1; Horde remote updates remain manual through its OMH.cmd. No Workshop publication, hosted loot update, save edit or live-run flag reset. Owner edit docs/AMMO_UI_C446.md retains SHA-25624506649c189a6e0b9f9e7fd04ab53fba940d3741a79ec38c267b75b75207fbaand is excluded from commits.
 
 **Test now (single-player), after restarting.** Use fresh zombies for conditional damage; existing saved Execute/tether values remain unchanged. Opposite panels and icon appearance still need the rendered owner retest. Connected multiplayer remains deferred as requested.
+
+## C472 - Owner feedback, 2026-10-26
+
+Owner reports wrong Specialist artwork, stale stockpile list, questionable management-ring alignment and tether displacement without a shove animation. Displacement is owner-observed working; animation/icon/stockpile are not accepted. Ring mismatch remains unverified. See [diagnosis and proposed scope](FEEDBACK_C468.md#c472---rendered-feedback-and-assistance-policy-review-2026-10-26). Current console confirms0.2.68.2 and later Execute18/2. No new automated gameplay checks or connected-MP result; no full test completion or Execute/Initial Blow acceptance inferred.
