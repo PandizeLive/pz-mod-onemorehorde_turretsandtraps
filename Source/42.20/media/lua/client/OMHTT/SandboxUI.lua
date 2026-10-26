@@ -16,7 +16,7 @@ function UI.triggerSettings(page)
         local name=settings[i].name
         local common=name and name:gsub("^OMHTurretsTraps%.Traps", "OMHTurretsTraps.")
         local key = name and name:gsub("^OMHTurretsTraps%.", ""):gsub("^Traps", "")
-        if legacyAmmo[key] or (common ~= name and primary[common]) or key == "AutomationEnabled" or key == "ForwardCone"
+        if key == "TetherPushDistance" or legacyAmmo[key] or (common ~= name and primary[common]) or key == "AutomationEnabled" or key == "ForwardCone"
             or key == "PotatoPlaybackVolume" or key == "DeviceSoundVolume" or key == "ShowTurretRange" then
             table.remove(settings, i)
         end
@@ -164,7 +164,7 @@ function UI.attach(panel)
             {"Sandbox_Title_OMHTurretsTraps_SharedContact", {"BarbDamage", "BarbInterval", "BarbMovementDivisor", "BedScratchChance", "BedSprintTripChance"}},
             {"Sandbox_Title_OMHTurretsTraps_Barrier", {"SpikeBarrier", "SpikeBarrierDamage", "ReinforcedBarrierDamage", "SpikeBarrierHealth", "ReinforcedBarrierHealthMultiplier", "SpikeBarrierScratchChance"}},
             {"Sandbox_Title_OMHTurretsTraps_Poke", {"PokeDamage", "PokeCycleSeconds", "PokeHealth", "PokeWear", "PokeScratchChance"}},
-            {"Sandbox_Title_OMHTurretsTraps_Tether", {"TetherRange", "TetherLaunchSpeed", "TetherReturnSpeed", "TetherHoldSeconds", "TetherResetSeconds", "TetherHitDamage", "TetherPullDamage", "TetherPushDistance", "TetherPullDistance"}},
+            {"Sandbox_Title_OMHTurretsTraps_Tether", {"TetherRange", "TetherLaunchSpeed", "TetherReturnSpeed", "TetherHoldSeconds", "TetherResetSeconds", "TetherHitDamage", "TetherPullDamage", "TetherPullDistance"}},
             {"Sandbox_Title_OMHTurretsTraps_Beds", {"BedSpikes", "BedDamage", "BedReinforcedDamage", "BedHealth", "BedReinforcedHealth", "BedWear", "BedTripChance", "BedRecoverySeconds"}},
             {"Sandbox_Title_OMHTurretsTraps_BarbedPanel", {"BarbSections"}},
             {"Sandbox_Title_OMHTurretsTraps_ConcertinaWire", {"BarbWire"}},

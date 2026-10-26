@@ -60,12 +60,10 @@ local function run(panel, player, controller)
             api.worldToUIY=function(_,x,y) return (y-native.centerY)*zoom+native.height/2 end
             local segments=0
             native.drawLine=function(_,texture,x1,y1,x2,y2)
-                local dx,dy=(x2-native.width/2)/zoom,(y2-native.height/2)/zoom
-                check(math.abs(math.sqrt(dx*dx+dy*dy)-A.radius(controller))<.00001,"Map ring radius="..tostring(math.sqrt(dx*dx+dy*dy)).." expected="..tostring(A.radius(controller)).." center="..tostring(native.centerX)..","..tostring(native.centerY).." object="..tostring(native.owner.object:getX())..","..tostring(native.owner.object:getY()))
                 segments=segments+1
             end
             native:render()
-            check(segments==64,"Range circle retains64 segments across expansion and zoom")
+            check(segments==0 and A.radius(controller)==10+grade*10,"No Controller circle is drawn; authoritative radius is unchanged")
         end
     end
     expansion.grade,SandboxVars.OMHTurretsTraps.ControllerRange,SandboxVars.OMHTurretsTraps.ControllerKitRange=oldGrade,oldRange,oldKit
@@ -267,6 +265,23 @@ local function run(panel, player, controller)
     Groups.layout(graph)
     check(graph.triggers[1].collapsed and graph.positions["map-input"] == 1,
         "Collapsed groups retain connection endpoints")
+    graph.collapsed = {}
+    Groups.layout(graph)
+    for _,scroll in pairs({0,-18}) do
+        graph:setYScroll(scroll)
+        local group=graph.groups[scroll==0 and 1 or 2]
+        local title=group.y+5
+        local body=group.y+group.header+12
+        local gap=graph.width/2
+        graph:onMouseDown(gap,body);graph:onMouseUp(gap,body)
+        check(not graph.collapsed[group.id],"Blank group body does not collapse, including after scrolling")
+        graph:onMouseDown(gap,title);graph:onMouseUp(gap,body)
+        check(not graph.collapsed[group.id],"Title press followed by body release does not collapse")
+        graph:onMouseDown(gap,title);graph:onMouseUp(gap,title)
+        check(graph.collapsed[group.id],"Same title click collapses at native scrolled coordinates")
+        graph.collapsed[group.id]=nil
+    end
+    graph:setYScroll(0)
     local proposed = {revision=2,serial=2,groups={{id="1",name="New Front"},{id="2",name="Rear"}},members={},order={}}
     check(Groups.applied({expected=proposed},proposed), "Matching group confirmation succeeds")
     check(not Groups.applied({expected=proposed},hostState.organization), "Concurrent differing group update is not reported as success")
@@ -360,6 +375,7 @@ local function run(panel, player, controller)
     check(panel.infoY + panel.lineHeight * 4 <= panel.detailBody.y + panel.detailBody.height
         and math.abs(panel.detailBody.width - panel.hostBody.width) <= 1
         and panel.detailBody.y == panel.hostBody.y, "Equal settings panes keep device summary visible and scroll remaining controls")
+    check(panel.mapView.height >= panel.detailBody.height * 1.8,"Map retains roughly two-thirds of the right column")
     testControllerSvg = require("tests/UITrace")(panel)
     getPlayerScreenHeight = previousHeight
     G.resize(panel, 1220, 690)

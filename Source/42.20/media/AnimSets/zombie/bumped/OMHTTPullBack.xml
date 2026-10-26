@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+    <m_Name>OMHTTPullBack</m_Name>
+    <m_AnimName>Zombie_StaggerBack</m_AnimName>
+    <m_Priority>20</m_Priority>
+    <m_Looped>false</m_Looped>
+    <m_DeferredBoneName>Bip01</m_DeferredBoneName>
+    <m_deferredBoneAxis>Z</m_deferredBoneAxis>
+    <m_useDeferredMovement>false</m_useDeferredMovement>
+    <m_BlendTime>0.10</m_BlendTime>
+    <m_BlendOutTime>0.15</m_BlendOutTime>
+    <m_SpeedScale>1.0</m_SpeedScale>
+    <m_Conditions>
+        <m_Name>BumpType</m_Name>
+        <m_Type>STRING</m_Type>
+        <m_Value>OMHTTPullBack</m_Value>
+    </m_Conditions>
+    <m_Events>
+        <m_EventName>SetVariable</m_EventName>
+        <m_Time>End</m_Time>
+        <m_ParameterValue>BumpAnimFinished=true</m_ParameterValue>
+    </m_Events>
+</animNode>

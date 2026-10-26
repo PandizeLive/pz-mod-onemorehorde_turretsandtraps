@@ -1,6 +1,8 @@
-v0.2.69
+v0.2.69.1
 
 Development test content
+
+- Improved Controller map space with shorter scrollable settings, removed the management circle and limited group collapse to title bars.
 
 - Fixed rounded-position Barbed Panel contact misses on opposite faces.
 - Added Barbed Panels to individual garage-door segments; raised doors suspend contact until closed.
@@ -9,7 +11,7 @@ Development test content
 - Added an OMH: Turrets & Traps Item List tab and a Controller Reserve indicator beside turret batteries.
 - Fixed Initial Blow and Execute health baselines after native spawn health changes; Execute defaults to18% plus2% per extra copy while retaining saved tuning.
 - Scoped Controller maps and requests to their owner's devices and added nearest own-device autoassignment without stealing existing assignments.
-- Added configurable tether push/pull with a standing impact reaction and a half-second post-return reset.
+- Added configurable tether pulling with directional reactions, slight facing alignment and a half-second post-return reset.
 - Fixed stacked expansion-kit replacement, clarified module percentages and showed Controller storage usage.
 
 - Fixed Custom rarity editing and added a correctly cropped, properly sized manual icon to Turret Specialist.

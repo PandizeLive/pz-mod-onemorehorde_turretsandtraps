@@ -6,7 +6,7 @@ for _,source in pairs({"owner-turret","stranger-turret"}) do
     for _,kind in pairs({"firearm","arc","splash","fragment","tack"}) do
         check(Damage.apply(actor,.2,source,kind)==0 and actor.health==1,"Real Horde consent API prevents disabled-run damage from every source/effect")
     end
-    check(not Motion.request(actor,"push",source,14728,14730,.35),"Real Horde consent prevents foreign crowd control as well as kills")
+    check(not Motion.request(actor,"pull",source,14728,14730,.35),"Real Horde consent prevents foreign crowd control as well as kills")
 end
 check(testH474.flagsApplied==0,"Rejected stranger assistance does not invalidate the receiving run")
 testH474.owner.defensesEnabled=true

@@ -33,6 +33,7 @@ return function(player)
     assert(state.active, "Button did not start Tether cycle")
     S.time = S.time + 50; S.step(trap, state)
     assert(math.abs(zombie:getHealth() - .7) < .00001, "Native Tether impact is not 30")
+    assert(not zombie:isStaggerBack() and zombie:getBumpType()=="", "Impact must not push or start a reaction")
     for i=1,14 do S.time=S.time+50; S.step(trap,state) end
     assert(math.abs(zombie:getHealth() - .7) < .00001, "Tether pulled before hold elapsed")
     S.time=S.time+50; S.step(trap,state)

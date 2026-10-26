@@ -324,9 +324,10 @@ end
 ---@param y number Local Y
 ---@return boolean handled
 function Graph:onMouseDown(x, y)
+    if x < 4 or x >= self.width - 18 then return true end
     y = y + self:getYScroll()
     local row, port = self:hit(x, y)
-    local group = Groups.at(self, y)
+    local group = Groups.at(self, y, true)
     self.downX, self.downY = x, y
     if not row then
         if group and y >= self.headerHeight then
@@ -363,10 +364,10 @@ function Graph:onMouseUp(x, y)
         if not row or C.defense(state.kind) == C.defense(row.state.kind) then
             Groups.request(self.owner, "DeviceMove", group.id, row and row.state.id, nil, self.dragSource)
         end
-    elseif self.dragGroup and group then
+    elseif self.dragGroup and group and x >= 4 and x < self.width - 18 then
         if moved and self.dragGroup.id ~= "" then
             Groups.request(self.owner, "GroupMove", self.dragGroup.id, group.id)
-        else
+        elseif not moved and group == self.dragGroup and Groups.at(self, y, true) == group then
             self.collapsed[group.id] = not self.collapsed[group.id]
             self.refreshDue = 0
         end

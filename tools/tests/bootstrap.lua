@@ -273,6 +273,8 @@ function makeZombie(square, health)
     local zombie = {kind = "IsoZombie", square = square, health = health, floor = false, data = {}, hits = 0,
         kills = 0, variables = {ThumpType = "Door"}, state = "thump"}
     function zombie:getOnlineID() return self.onlineId or -1 end
+    function zombie:isDeferredMovementEnabled() return self.deferred ~= false end
+    function zombie:setDeferredMovementEnabled(value) self.deferred = value end
     function zombie:getPersistentOutfitID() return self.outfitId or 0 end
     function zombie:getOwner() return self.owner end
     function zombie:getOwnerPlayer() return self.owner end
@@ -288,6 +290,12 @@ function makeZombie(square, health)
     function zombie:isDead() return self.health <= 0 end
     function zombie:isOnFloor() return self.floor end
     function zombie:isProne() return self.floor end
+    function zombie:getBumpType() return self.bump or "" end
+    function zombie:setBumpType(value) self.bump = value end
+    function zombie:isClimbing() return self.climbing == true end
+    function zombie:isCrawling() return self.crawler == true end
+    function zombie:getDirectionAngleRadians() return self.angle or 0 end
+    function zombie:setTargetAndCurrentDirection(x,y) self.angle=math.atan2(y,x) end
     function zombie:isStaggerBack() return self.stagger == true end
     function zombie:setStaggerBack(value) self.stagger = value end
     function zombie:isBumpFall() return self.bumpFall == true end

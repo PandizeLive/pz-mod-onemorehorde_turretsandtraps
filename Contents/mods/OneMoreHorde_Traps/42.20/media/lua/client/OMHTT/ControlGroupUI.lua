@@ -131,11 +131,12 @@ end
 ---@param graph ISPanel Connection graph
 ---@param y number Local pointer Y
 ---@return table? group
-function G.at(graph, y)
+function G.at(graph, y, headerOnly)
+    if y < graph.headerHeight or y >= graph.height then return end
     local content = y - graph:getYScroll()
     for i = 1, #graph.groups do
         local group = graph.groups[i]
-        if content >= group.y and content < group.y + group.height then return group end
+        if content >= group.y and content < group.y + (headerOnly and group.header - 2 or group.height) then return group end
     end
 end
 

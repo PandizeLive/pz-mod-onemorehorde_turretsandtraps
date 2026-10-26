@@ -90,7 +90,7 @@ function L.arrange(panel)
     panel.graph:setHeight(bottom - y)
     Theme.scrollbar(panel.graph)
     local toolbar = h + 10
-    local detailHeight = math.min(h * 15 + 158, math.max(100, bottom - y - toolbar - 100))
+    local detailHeight = math.max(80, math.floor((bottom - y - toolbar - 8) / 3))
     local mapHeight = math.max(64, bottom - y - toolbar - detailHeight - 8)
     panel.mapY = y
     local mapTop = y + toolbar

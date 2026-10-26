@@ -59,7 +59,26 @@ public final class KahluaCheck {
             throw new IllegalStateException("Native child geometry did not follow scroll offset");
         System.out.println("Native UI: children follow scrolling only after the parent enables it");
         Path root = Path.of(args[0]);
+        Class<?> trackType = Class.forName("zombie.core.skinnedmodel.animation.AnimationTrack");
+        Object pullTrack = trackType.getMethod("alloc").invoke(null);
+        trackType.getMethod("setUseDeferredMovement", boolean.class).invoke(pullTrack, false);
+        if ((Boolean)trackType.getMethod("getUseDeferredMovement").invoke(pullTrack))
+            throw new IllegalStateException("Native playback cannot suppress tether root motion");
+        trackType.getMethod("reset").invoke(pullTrack);
+        if (!(Boolean)trackType.getMethod("getUseDeferredMovement").invoke(pullTrack))
+            throw new IllegalStateException("Recycled native track retained tether suppression");
         Class<?> animNodeType = Class.forName("zombie.core.skinnedmodel.advancedanimation.AnimNode");
+        for (String side : new String[]{"Forward", "Back", "Left", "Right"}) {
+            Object pullNode = animNodeType.getMethod("Parse", String.class).invoke(null,
+                root.resolve("Source/42.20/media/AnimSets/zombie/bumped/OMHTTPull" + side + ".xml").toString());
+            if (pullNode == null || animNodeType.getField("useDeferredMovement").getBoolean(pullNode))
+                throw new IllegalStateException("Pull animation must not add displacement: " + side);
+            if (!animNodeType.getField("deferredBoneName").get(pullNode).equals("Bip01")
+                || !animNodeType.getField("deferredBoneAxis").get(pullNode).toString().equals("Z"))
+                throw new IllegalStateException("Pull must cancel horizontal model-root drift: " + side);
+            if (((java.util.List<?>)animNodeType.getField("events").get(pullNode)).size() != 1)
+                throw new IllegalStateException("Pull completion event missing: " + side);
+        }
         Object node = animNodeType.getMethod("Parse", String.class).invoke(null,
             root.resolve("Source/42.20/media/AnimSets/zombie/thump/OMHTTBarrierClaw.xml").toString());
         if (node == null) throw new IllegalStateException("Native thump animation parser rejected node");
@@ -554,6 +573,7 @@ public final class KahluaCheck {
             {"_", "tools/tests/corrections_c450.lua"},
             {"_", "tools/tests/defense_xp.lua"},
             {"_", "tools/tests/corrections_c471.lua"},
+            {"_", "tools/tests/pull_reaction.lua"},
             {"_", "tools/tests/corrections_c474_setup.lua"},
             {"OMHTT/ControlItemList", base + "client/OMHTT/ControlItemList.lua"},
             {"OMHTT/TurretSpecialist", base + "client/OMHTT/TurretSpecialist.lua"},

@@ -79,22 +79,22 @@ function actor:setNextX(x) self.nx=x end
 function actor:setNextY(y) self.ny=y end
 function actor:isClimbing() return false end
 function actor:isCrawling() return false end
-Motion.start(actor,false,14708,14710.5,.35);now=1050;Motion.update(actor)
+Motion.start(actor,14713,14710.5,.35);now=1050;Motion.update(actor)
 check(actor.nx>actor.x and actor.ny==actor.y and actor.x==14710.5,
-    "Tether pushes away along its lane using pending native movement")
-Motion.start(actor,true,14708,14710.5,.75);now=1100;Motion.update(actor)
-check(actor.nx<actor.x and actor.ny==actor.y,"Tether pulls toward the same muzzle")
+    "Tether pulls east toward its muzzle using pending native movement")
+Motion.start(actor,14708,14710.5,.75);now=1100;Motion.update(actor)
+check(actor.nx<actor.x and actor.ny==actor.y,"Tether pulls toward the same muzzle "..tostring(actor.nx)..","..tostring(actor.ny).." bump="..tostring(actor.bump).." angle="..tostring(actor.angle))
 actor.x=14710.99;actor.nx=nil;nextSquare.blocked=true
-Motion.start(actor,false,14708,14710.5,.35);now=1150;Motion.update(actor)
+Motion.start(actor,14713,14710.5,.35);now=1150;Motion.update(actor)
 check(actor.nx==nil,"Tether refuses a blocked tile crossing")
 nextSquare.blocked=false;actor.x=14710.5;actor.nx=nil
-Motion.start(actor,false,14708,14710.5,.35);now=2000;Motion.update(actor)
+Motion.start(actor,14713,14710.5,.35);now=2000;Motion.update(actor)
 check(actor.nx==nil,"Expired game-time motion does not teleport after fast-forward")
 actor.owner={};testMode="server"
-Motion.start(actor,false,14708,14710.5,.35);now=2050;Motion.update(actor)
+Motion.start(actor,14713,14710.5,.35);now=2050;Motion.update(actor)
 check(actor.nx==nil,"Server cannot displace a client-owned actor")
 testMode="client";actor.remote=true
-Motion.start(actor,false,14708,14710.5,.35);now=2100;Motion.update(actor)
+Motion.start(actor,14713,14710.5,.35);now=2100;Motion.update(actor)
 check(actor.nx==nil,"Observer clients cannot displace remotely simulated actors")
 Motion.clear(actor);Clock.now=saved.now;testMode=saved.mode
 print("[C471] queue ownership/privacy and tether direction/collision/clock/authority passed")

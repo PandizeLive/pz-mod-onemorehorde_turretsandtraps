@@ -1,5 +1,10 @@
 # Decision register
 
+## C481 - Pull-only correction approved (2026-10-26)
+
+Owner "Approved" authorizes the combined C479/C480 patch. Impact damage remains, outward push/native shove is removed, and retraction pulls toward the muzzle with the nearest directional reaction and smooth residual facing correction (maximum45 degrees). Existing pull distance/damage and half-second reset remain. Remove the Controller management circle; use shorter independently scrollable settings and title-bar-only group collapse. Implemented in [0.2.69.1](PATCH_v0.2.69.1.md). Native/automated evidence does not establish rendered or connected-player acceptance. Retain the hidden, ignored legacy push registration because current Horde settings verification expects it. No saved-value migration or sibling patch is authorized by this change.
+
+
 ## C471 - Corrective patch approval and implementation (2026-10-25)
 
 Owner "Aproved" authorizes all C468-C470 corrections and the coordinated local Horde baseline/tooltip patch. No additional gameplay rebalance or save reset. First-update/pre-damage baseline settlement fixes the confirmed post-spawn health override defect; bounded conditional diagnostics support verification. Controller discovery is scoped to the host owner, with separately authorized shared-host access retained. Placement autoassignment is queued and never steals existing assignments or creates trigger links. Tether displacement defaults0.35tiles away and0.75tiles toward its muzzle; native pending movement and collision govern movement. Both distances are Sandbox options,0disables; the post-return reset defaults0.5game-seconds. Existing tuning remains explicit. See [patch](PATCH_v0.2.68.2.md) and [tests](TEST_v0.2.68.2.md).

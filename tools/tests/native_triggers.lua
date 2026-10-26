@@ -52,16 +52,16 @@ return function(player)
     clock.now = function() return motionTime end
     local actor = IsoZombie.new(cell)
     actor:setCurrent(square);actor:setX(base+.5);actor:setY(1000.5);actor:setZ(0)
-    motion.start(actor,false,base-2,1000.5,.35)
+    motion.start(actor,base+3,1000.5,.35)
     motionTime=1050;motion.update(actor)
     assert(actor:getNextX()>actor:getX() and math.abs(actor:getNextY()-actor:getY())<.0001,
-        "Native tether pending movement must point away from its muzzle")
-    motion.start(actor,true,base-2,1000.5,.75)
+        "Native tether pending movement must point east toward its muzzle")
+    motion.start(actor,base-2,1000.5,.75)
     motionTime=1100;motion.update(actor)
     assert(actor:getNextX()<actor:getX() and math.abs(actor:getNextY()-actor:getY())<.0001,
         "Native tether pending movement must point toward its muzzle")
     motion.clear(actor);clock.now=nativeNow
-    print("[OMHTT-C471] native-tether pending-push=away pending-pull=toward world-position=unchanged")
+    print("[OMHTT-C471] native-tether pending-pull=east-and-west world-position=unchanged")
     local hours=time:getWorldAgeHours()
     getGameTime=function() return {getWorldAgeHours=function() return hours end,getMinutesPerDay=function() return time:getMinutesPerDay() end} end
     player:setCurrent(square);player:setX(base+.5);player:setY(1000.5);player:setZ(0)

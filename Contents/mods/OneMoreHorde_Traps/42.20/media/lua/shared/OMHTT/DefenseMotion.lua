@@ -14,16 +14,10 @@ local serial = 0
 ---@return nil
 local function apply(zombie, kind, x, y, distance)
     if zombie:isDead() then return end
-    if kind == "push" or kind == "pull" then
-        local started = require("OMHTT/DefenseDisplacement").start(zombie, kind == "pull", x, y, distance or 0)
-        if started and kind == "push" and not zombie:isProne() and not zombie:isKnockedDown()
-            and not zombie:isStaggerBack() then
-            local dx, dy = zombie:getX() - x, zombie:getY() - y
-            local length = math.sqrt(dx * dx + dy * dy)
-            zombie:setHitDir(Vector2.new(dx / length, dy / length))
-            zombie:setHitForce(0)
-            zombie:setStaggerBack(true)
-        end
+    if kind == "pull" then
+        require("OMHTT/DefenseDisplacement").start(zombie, x, y, distance or 0)
+    elseif kind == "visualPull" then
+        require("OMHTT/DefenseDisplacement").present(zombie, x, y)
     elseif kind == "trip" then
         if zombie:isOnFloor() or zombie:isKnockedDown() or zombie:getBumpType() ~= "" then return end
         zombie:setVariable("BumpAnimFinished", false)
@@ -60,8 +54,8 @@ end
 function M.request(zombie, kind, source, x, y, distance)
     if isClient() or not zombie or zombie:isDead() or not H.allowed(zombie) then return false end
     if kind ~= "trip" and kind ~= "knock" and kind ~= "stagger" and kind ~= "slow"
-        and kind ~= "push" and kind ~= "pull" then return false end
-    if (kind == "push" or kind == "pull") and not P.number(distance, 0, 2) then return false end
+        and kind ~= "pull" then return false end
+    if kind == "pull" and not P.number(distance, 0, 2) then return false end
     local lease = H.capture(zombie)
     if not H.mark(zombie, lease, source, kind) then return false end
     local player = isServer() and zombie:getOwnerPlayer()
@@ -75,10 +69,10 @@ function M.request(zombie, kind, source, x, y, distance)
         serial = serial + 1
         sendServerCommand(player, "OMHTT_MotionV1", kind, {id = zombie:getOnlineID(),
             outfit = zombie:getPersistentOutfitID(), serial = serial, source = source, x = x or 0, y = y or 0, distance = distance})
-        if kind == "trip" then
-            require("OMHTT/DefenseEffects").send("OMHTT_MotionV1", "visualTrip", {
+        if kind == "trip" or (kind == "pull" and distance > 0) then
+            require("OMHTT/DefenseEffects").send("OMHTT_MotionV1", kind == "trip" and "visualTrip" or "visualPull", {
                 id = zombie:getOnlineID(), outfit = zombie:getPersistentOutfitID(), serial = serial,
-                x = 0, y = 0, fromX = zombie:getX(), fromY = zombie:getY()})
+                x = x or 0, y = y or 0, fromX = zombie:getX(), fromY = zombie:getY()})
         end
     elseif kind == "slow" then
         require("OMHTT/BarbMovement").apply(zombie, x)
@@ -97,11 +91,11 @@ function M.command(module, command, message)
         or not P.identity(message.id) or not P.identity(message.outfit)
         or not P.number(message.serial, 1, 1000000000000)
         or not P.number(message.x, -1000000, 1000000) or not P.number(message.y, -1000000, 1000000) then return end
-    if (command == "push" or command == "pull") and not P.number(message.distance, 0, 2) then return end
+    if command == "pull" and not P.number(message.distance, 0, 2) then return end
     local zombie = indexed[message.id]
     if not zombie or zombie:getOnlineID() ~= message.id or zombie:isDead()
         or zombie:getPersistentOutfitID() ~= message.outfit then return end
-    if command == "visualTrip" then
+    if command == "visualTrip" or command == "visualPull" then
         if not zombie:isRemoteZombie() then return end
     elseif zombie:isRemoteZombie() then
         return
