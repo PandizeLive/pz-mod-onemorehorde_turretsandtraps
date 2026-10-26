@@ -2402,3 +2402,10 @@ Owner approves C472/C473 scope and the native-refresh replacement. T&T0.2.68.3 i
 ## C475 - Owner test deferral and next-work recommendation (2026-10-26)
 
 Owner cannot test0.2.68.3yet. Preserve pending acceptance. Recommend1A Barbed Panel backing/opposite-face audit and garage feasibility; alternatives1B modder guide/example or1C Horde scoring readiness. No selection or new implementation approval yet. See [current plan](PLANNING.md).
+
+
+## C476 - Barbed audit selected; contact requirement clarified (2026-10-26)
+
+**C476 / Barbed Panel audit selected (2026-10-26).** Owner selects C475 1A and asks whether panels require thumping. Current production contact selection uses exposed-side position and actor collision width, with no thump-state requirement; zombie updates apply immediate contact damage and the configured repeat interval (default 10 damage / two seconds). The attachment frame is non-thumpable; the backing remains independently thumpable. Existing native paired-face persistence evidence does not establish backing protection during an actual AI attack or reproduce the reported live failure. Continue the bounded backing/opposite-face and garage feasibility audit; no gameplay change is approved by this selection. 0.2.68.3 owner testing remains deferred; mirror remains blocked by prior approval review.
+
+Evidence: Source/42.20/media/lua/shared/OMHTT/BarbContact.lua, BarbSections.lua contact selection and non-thumpable attachment frame; server/OMHTT/BarbRuntime.lua zombie update; TEST_v0.2.68.2.md native backing/paired-face evidence. Read-only source review this turn; no new runtime test or correction claimed.

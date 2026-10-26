@@ -123,3 +123,10 @@ Map tests match the shared management radius across all kit grades and three sca
 ## C475 - Testing deferred; next track proposed (2026-10-26)
 
 Owner cannot test and asks for next work. Current0.2.68.3 remains installed, with its owner checklist deferred and unaccepted. Recommend1A a bounded Barbed Panel audit: reproduce opposite-side state/identity behavior, verify what damage can reach the backing wall/door, and assess native garage/multi-panel association. First deliver concrete findings and the smallest maintainable correction/proposal; do not assume a full rewrite or approve new mechanics. Alternatives1B modder guide/example and1C Horde scoring-readiness audit were retained in C403. Connected multiplayer, dense-client performance and rendered findings remain acceptance work; owner art/release follows and Cure simulation remains last. No new implementation authorization inferred. Existing mirror rejection remains unresolved, without another retry.
+
+
+## C476 - Barbed audit selected; contact requirement clarified (2026-10-26)
+
+**C476 / Barbed Panel audit selected (2026-10-26).** Owner selects C475 1A and asks whether panels require thumping. Current production contact selection uses exposed-side position and actor collision width, with no thump-state requirement; zombie updates apply immediate contact damage and the configured repeat interval (default 10 damage / two seconds). The attachment frame is non-thumpable; the backing remains independently thumpable. Existing native paired-face persistence evidence does not establish backing protection during an actual AI attack or reproduce the reported live failure. Continue the bounded backing/opposite-face and garage feasibility audit; no gameplay change is approved by this selection. 0.2.68.3 owner testing remains deferred; mirror remains blocked by prior approval review.
+
+Evidence: Source/42.20/media/lua/shared/OMHTT/BarbContact.lua, BarbSections.lua contact selection and non-thumpable attachment frame; server/OMHTT/BarbRuntime.lua zombie update; TEST_v0.2.68.2.md native backing/paired-face evidence. Read-only source review this turn; no new runtime test or correction claimed.
