@@ -47,3 +47,8 @@ Neither option is approved for implementation by this investigation request. No 
 - No connected player, rendered client, owner save mutation, installation or new owner testing is involved. Native fixtures temporarily route Lua through the single-player branch on real game objects; they do not prove connected multiplayer behavior.
 
 The audit assertions deliberately expose the current defect; replace their expected-miss assertions with expected-contact regression assertions when the correction is approved.
+
+
+## C478 - Option 1B approved and implemented (2026-10-26)
+
+Owner: "One B". This selects the contact correction plus closed-only garage-segment support presented in C477, including persistence while raised. Implemented as 0.2.69; swinging double gates are not included. Existing backing damage, recipes, saved settings and item identities stay intact. [Patch](PATCH_v0.2.69.md) and [verification](TEST_v0.2.69.md) separate native/automated evidence from deferred rendered and connected-player acceptance. Private mirror remains blocked; no upload attempted.

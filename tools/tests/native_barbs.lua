@@ -270,7 +270,7 @@ function OMHTT_NativeBarbCheck(squares)
                 end
             end
         end
-        assert(misses > 0 and misses < total, "Audit must reproduce coordinate-dependent strict-boundary misses")
+        assert(misses == 0, "Rounded native positions must contact both faces")
         print("[OMHTT-C477] backing-thump=137-to-136 frames=not-targets boundaryMisses=" .. misses .. "/" .. total)
         local nextId = B.store.nextId
         local boundarySquare = lookup["16384:16384:0"]
@@ -295,8 +295,7 @@ function OMHTT_NativeBarbCheck(squares)
             pairedActor:setY(16384 + side * width)
             pairedActor:setCurrent(lookup["16384:" .. math.floor(pairedActor:getY()) .. ":0"])
             local contact = B.contact(pairedActor)
-            assert((side < 0 and contact == expected) or (side > 0 and contact == nil),
-                "Full contact lookup must reproduce opposite-face boundary mismatch")
+            assert(contact == expected, "Full contact lookup must include both rounded native boundaries")
             pairedActor:setY(16384 + side * .2)
             assert(B.contact(pairedActor) == expected, "Both attachments must still work inside the boundary")
         end
@@ -304,7 +303,7 @@ function OMHTT_NativeBarbCheck(squares)
         boundarySquare:getSpecialObjects():remove(boundaryHost)
         boundarySquare:getObjects():remove(boundaryHost)
         B.store.nextId = nextId
-        print("[OMHTT-C477] full-contact boundary=16384 negative=hit positive=miss interior=both-hit")
+        print("[OMHTT-C477] full-contact boundary=16384 negative=hit positive=hit interior=both-hit")
 
     end
     local wireInfo = SpriteConfigManager.GetObjectInfo("OMHTTDeployConcertinaWire")
@@ -353,6 +352,58 @@ function OMHTT_NativeBarbCheck(squares)
     print("[OMHTT-Barbs] PASS construction=8 facings=4 tools=retained wireUses=2 recipe=exact separateWindowHP=50 sharedHostHP=137")
     fixtures:add(opposite)
     print("[OMHTT-C471] native-barb-pair created=2 contacts=2 backingHealth=137")
+    for group = 0, 5 do
+        local north = group < 3
+        local square = lookup[(17000 + group * 4) .. ":17000:0"]
+        local sprite = "industry_trucks_01_" .. ((north and 35 or 32) + group % 3)
+        local door = IsoDoor.new(cell, square, sprite, north)
+        square:getObjects():add(door)
+        square:getSpecialObjects():add(door)
+        door:setHealth(137)
+        assert(IsoDoor.getGarageDoorIndex(door) == group % 3 + 1, "Native garage segment must be recognized")
+        local frames = {}
+        for _, side in pairs({-1, 1}) do
+            local x, y = square:getX(), square:getY()
+            if side < 0 then
+                if north then y = y - 1 else x = x - 1 end
+            end
+            local floor = lookup[x .. ":" .. y .. ":0"]
+            local facing = north and (side < 0 and "n" or "s") or (side < 0 and "w" or "e")
+            assert(B.onIsValid({square = floor, facing = facing}), "Closed garage must permit each exposed face")
+            local temp = IsoThumpable.new(cell, floor, "omhtt_barrier_01_52", north)
+            floor:getObjects():add(temp)
+            floor:getSpecialObjects():add(temp)
+            frames[side] = B.onCreate({thumpable = temp, character = player, facing = facing}).object
+            fixtures:add(frames[side])
+        end
+        local count = square:getObjects():size()
+        for cycle = 1, 3 do
+            IsoDoor.toggleGarageDoor(door, false)
+            for visit = 1, #B.order do B.tick() end
+            assert(door:IsOpen() == (cycle % 2 == 1), "Native garage toggle did not change state")
+            for _, side in pairs({-1, 1}) do
+                local frame = frames[side]
+                local record = B.record(frame)
+                local _, host, attachment, status = B.resolve(record)
+                assert(host == door and status == "active" and B.nodes[record.id] and attachment.shared,
+                    "Raising a garage must retain its attached panel and shared health")
+                assert((frame:getSpriteName() == "omhtt_barrier_01_102") == door:IsOpen(), "Raised marker must hide and closing restore it")
+                pairedActor:setX(square:getX() + (north and .5 or side * .2))
+                pairedActor:setY(square:getY() + (north and side * .2 or .5))
+                pairedActor:setCurrent(lookup[math.floor(pairedActor:getX()) .. ":" .. math.floor(pairedActor:getY()) .. ":0"])
+                local contact = B.contact(pairedActor)
+                assert(door:IsOpen() and contact == nil or not door:IsOpen() and contact == record, "Garage contact must follow native open state")
+                assert(not frame:isThumpable() and frame:isCanPassThrough(), "Hidden marker must not block or absorb thumps")
+            end
+            assert(door:getHealth() == 137 and square:getObjects():size() == count, "Toggling must preserve health and object count")
+        end
+        if group % 2 == 1 then
+            IsoDoor.toggleGarageDoor(door, false)
+            for visit = 1, #B.order do B.tick() end
+        end
+        fixtures:add(door)
+    end
+    print("[OMHTT-C478] garages=6 faces=12 nativeToggles=21 contact=closed-only health=137 objects=stable")
     return fixtures
 end
 
@@ -392,6 +443,31 @@ function OMHTT_NativeBarbRestoredCheck(fixtures)
     assert(exact == support and remaining == "active" and support:getHealth() == 137,
         "Removing one face must retain the other and the thumpable backing")
     print("[OMHTT-C471] native-barb-pair reload=2 contacts=2 removeOne=otherRetained")
+    for group = 0, 5 do
+        local door = fixtures:get(21 + group * 3)
+        B.loaded(door:getSquare())
+        assert(door:IsOpen() == (group % 2 == 0), "Garage open state must survive serialization")
+        for side = 0, 1 do
+            local frame = fixtures:get(19 + group * 3 + side)
+            local _, host, _, status = B.resolve(B.record(frame))
+            assert(host == door and status == "active", "Reload must retain each raised or lowered garage attachment")
+            B.visual(B.record(frame), frame, door)
+            assert((frame:getSpriteName() == "omhtt_barrier_01_102") == door:IsOpen(), "Reload must preserve raised visibility")
+        end
+        if door:IsOpen() then IsoDoor.toggleGarageDoor(door, false) end
+        for visit = 1, #B.order do B.tick() end
+        for side = 0, 1 do
+            local frame = fixtures:get(19 + group * 3 + side)
+            assert(frame:getSpriteName() ~= "omhtt_barrier_01_102", "Closing restored garage must reveal panels")
+        end
+        local first, second = fixtures:get(19 + group * 3), fixtures:get(20 + group * 3)
+        B.retire(B.record(first))
+        assert(select(4, B.resolve(B.record(second))) == "active", "Removing one garage face must retain the other")
+        door:setHealth(0)
+        for visit = 1, #B.order + 4 do B.tick() end
+        assert(second:getObjectIndex() < 0, "Broken garage must retire remaining panel")
+    end
+    print("[OMHTT-C478] garage-reload=6 raised=3 closed=3 close=restored remove=independent broken=retired")
     isServer, isClient, getCell = nativeServer, nativeClient, nativeCell
     return true
 end

@@ -358,6 +358,7 @@ function B.visual(record, frame, host)
     if geometry.side < 0 then
         index = index + 1
     end
+    if not geometry.contact then index = 102 end
     local name = "omhtt_barrier_01_" .. index
     if frame:getSpriteName() ~= name then
         frame:setSprite(name)
@@ -637,7 +638,7 @@ function B.contact(actor, bucket)
                 if record.kind == "wire" then
                     touching = true
                 else
-                    touching = S.edge(host, record.north, record.side, geometry)
+                    touching = S.edge(host, record.north, record.side, geometry) and geometry.contact
                         and C.touching(geometry, x, y, z, actor:getWidth())
                 end
             end

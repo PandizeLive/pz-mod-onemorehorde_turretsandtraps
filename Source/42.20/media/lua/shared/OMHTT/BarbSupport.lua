@@ -157,11 +157,13 @@ function S.edge(object, north, side, result)
     if not kind then return false end
     local square = object:getSquare()
     result.x, result.y, result.z = square:getX(), square:getY(), square:getZ()
-    result.north, result.side = north, side
+    result.north, result.side, result.contact = north, side, true
     if kind ~= "door" and kind ~= "constructed-door" then return true end
     local properties = object:getProperties()
-    if properties and (properties:has(IsoPropertyType.DOUBLE_DOOR) or properties:has(IsoPropertyType.GARAGE_DOOR)) then
-        return false
+    if properties and properties:has(IsoPropertyType.DOUBLE_DOOR) then return false end
+    if properties and properties:has(IsoPropertyType.GARAGE_DOOR) then
+        result.contact = not object:IsOpen()
+        return true
     end
     local direction = object:getSpriteEdge(false)
     if direction == IsoDirections.N then
@@ -212,7 +214,8 @@ end
 function S.bind(object, north, side, id, policy)
     if isClient() or type(id) ~= "string" or id == "" or (side ~= -1 and side ~= 1)
         or not S.active(object, north, policy) or S.attachment(object, north, side) then return false end
-    if not S.edge(object, north, side, {}) then return false end
+    local edge = {}
+    if not S.edge(object, north, side, edge) or not edge.contact then return false end
     local data = object:getModData()
     if not data.OMHTTBarbs then
         data.OMHTTBarbs = {}

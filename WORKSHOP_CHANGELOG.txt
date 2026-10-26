@@ -1,6 +1,9 @@
-v0.2.68.3
+v0.2.69
 
 Development test content
+
+- Fixed rounded-position Barbed Panel contact misses on opposite faces.
+- Added Barbed Panels to individual garage-door segments; raised doors suspend contact until closed.
 
 - Fixed live Controller stockpile updates across native and embedded inventory views without periodic polling.
 - Added an OMH: Turrets & Traps Item List tab and a Controller Reserve indicator beside turret batteries.

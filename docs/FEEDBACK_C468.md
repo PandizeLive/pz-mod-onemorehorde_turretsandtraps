@@ -135,3 +135,8 @@ Evidence: Source/42.20/media/lua/shared/OMHTT/BarbContact.lua, BarbSections.lua 
 ## C477 - Barbed audit findings and patch scope (2026-10-26)
 
 Owner: "Go ahead and investigate." This authorizes the bounded investigation, not a new gameplay patch. **C477 / Barbed audit complete; precision defect reproduced (2026-10-26).** [Native findings and proposed scope](BARBED_AUDIT_C477.md): real actor rounding causes 18/32 strict boundary misses; full production panel lookup reproduces one face hitting while the opposite misses without overwriting either record. Native thumping still damages the backing (137 to 136). Paired identity/save/reload/removal tests pass; the owner scene remains unconfirmed. Garage objects retain identity when raised; swinging double gates can replace/move leaves and need separate handling. Recommend **1A contact correction first**, alternative **1B correction plus closed-only garage-segment support**. Audit only; 0.2.68.3 stays installed and testing deferred. Native write/read pass 57.0/53.5 seconds, no connected player. Private mirror remains blocked by prior approval review. **Decision needed: patch scope.**
+
+
+## C478 - Option 1B approved and implemented (2026-10-26)
+
+Owner: "One B". This selects the contact correction plus closed-only garage-segment support presented in C477, including persistence while raised. Implemented as 0.2.69; swinging double gates are not included. Existing backing damage, recipes, saved settings and item identities stay intact. [Patch](PATCH_v0.2.69.md) and [verification](TEST_v0.2.69.md) separate native/automated evidence from deferred rendered and connected-player acceptance. Private mirror remains blocked; no upload attempted.

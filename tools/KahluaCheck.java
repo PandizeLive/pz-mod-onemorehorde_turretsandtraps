@@ -460,6 +460,7 @@ public final class KahluaCheck {
             {"_", base + "shared/OMHTT/BarbServiceAction.lua"},
             {"_", base + "client/OMHTT/BarbMenu.lua"},
             {"_", "tools/tests/barb_runtime.lua"},
+            {"_", "tools/tests/barb_garage.lua"},
             {"_", "tools/tests/concertina.lua"},
             {"_", "tools/tests/wire_multiplayer.lua"},
             {"_", "tools/tests/panel_multiplayer.lua"},

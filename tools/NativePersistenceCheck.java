@@ -28,7 +28,7 @@ public final class NativePersistenceCheck {
         java.util.Set<String> pages = new java.util.HashSet<>();
         for (int index = 0; index < count; index++) {
             Object entry = map.get(prefix + index);
-            String expected = index >= (turrets ? 34 : 98) ? "OMHTT_Lever" + (index - (turrets ? 34 : 98))
+            String expected = !turrets && index == 102 ? "OMHTT_Barb0" : index >= (turrets ? 34 : 98) ? "OMHTT_Lever" + (index - (turrets ? 34 : 98))
                 : index >= (turrets ? 30 : 94) ? "OMHTT_Laser" + (index - (turrets ? 30 : 94))
                 : turrets ? (index >= 25 ? "OMHTT_PlateTurrets" + (index == 29 ? 1 : 0) : index >= 21 ? "OMHTT_ControllerTurrets" : index == 20 ? "OMHTT_ProbeBase" : index >= 16 ? "OMHTT_TestCube" : "OMHTT_Aim" + index)
                 : index >= 90 ? "OMHTT_Tether" + (index - 90)
@@ -49,6 +49,7 @@ public final class NativePersistenceCheck {
             try (var stream = (java.io.InputStream)call(pack, "createStream", new Class<?>[]{String.class, java.io.InputStream.class}, page, null)) {
                 var image = javax.imageio.ImageIO.read(stream);
                 check(image != null && image.getWidth() == (page.equals("OMHTT_Edges") ? 256 : 128) && image.getHeight() == 256, "Native texture page unreadable: " + page);
+                if (page.equals("OMHTT_Barb0")) check((image.getRGB(0, 0) >>> 24) == 0, "Raised panel sprite must reuse a transparent pixel");
                 if (page.startsWith("OMHTT_Tether")) {
                     int facing = Integer.parseInt(page.substring("OMHTT_Tether".length()));
                     float[][] anchors = {{0f,.5f},{.5f,1f},{1f,.5f},{.5f,0f}};
@@ -161,9 +162,9 @@ public final class NativePersistenceCheck {
         NativeBarbProbe.verify(directory, mode);
         NativeVaultProbe.verify();
         NativeTurretProbe.verify();
-        verifyTexturePack("OMHTT_Traps", "omhtt_barrier_01_", 102, false);
+        verifyTexturePack("OMHTT_Traps", "omhtt_barrier_01_", 103, false);
         verifyTexturePack("OMHTT_Turrets", "omhtt_turret_01_", 38, true);
-        System.out.println("[OMHTT-Smoke] native-texturepacks traps=102 turrets=38 pages=59 png=valid");
+        System.out.println("[OMHTT-Smoke] native-texturepacks traps=103 turrets=38 pages=59 png=valid");
         Class<?> lua = Class.forName("zombie.Lua.LuaManager");
         Object env = lua.getField("env").get(null);
         Object fixtures = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeFixtures");

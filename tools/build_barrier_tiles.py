@@ -87,7 +87,7 @@ def build_component(component):
     _, original = build()
     trap = component == "traps"
     sheet = "omhtt_barrier_01" if trap else "omhtt_turret_01"
-    count = 102 if trap else 38
+    count = 103 if trap else 38
     tiles = b"tdef" + integer(1) + integer(1)
     tiles += (sheet + "\nOMHTT_" + component.title() + ".png\n").encode("ascii")
     tiles += integer(4) + integer((count + 3) // 4) + integer(1) + integer(count)
@@ -144,7 +144,9 @@ def build_component(component):
                 for side in range(2):
                     entries.append(pack_string(sheet + "_" + str(52 + edge * 2 + side))
                                    + struct.pack("<8i", 0, 0, 128, 256, dx, dy, 128, 256))
-            pages.append(pack_string("OMHTT_Barb" + str(axis)) + integer(4) + integer(1) + b"".join(entries) + integer(len(png)) + png)
+            if axis == 0:
+                entries.append(pack_string(sheet + "_102") + struct.pack("<8i", 0, 0, 1, 1, 0, 0, 1, 1))
+            pages.append(pack_string("OMHTT_Barb" + str(axis)) + integer(len(entries)) + integer(1) + b"".join(entries) + integer(len(png)) + png)
         marker = Image.new("RGBA", (128, 256))
         draw = ImageDraw.Draw(marker)
         draw.polygon([(64, 190), (126, 222), (64, 254), (2, 222)], outline="white", width=3)

@@ -47,6 +47,15 @@ public final class NativeBarbProbe {
             squareType.getField("chunk").set(square, boundaryChunk);
             squares.add(square);
         }
+        for (int group = 0; group < 6; group++) {
+            Object chunk = chunkType.getConstructor(cellType).newInstance(cell);
+            for (int dx = -1; dx <= 0; dx++) for (int dy = -1; dy <= 0; dy++) {
+                Object square = squareType.getConstructor(cellType, Class.forName("zombie.iso.SliceY"), int.class, int.class, int.class)
+                    .newInstance(cell, null, 17000 + group * 4 + dx, 17000 + dy, 0);
+                squareType.getField("chunk").set(square, chunk);
+                squares.add(square);
+            }
+        }
         Class<?> platformType = Class.forName("se.krka.kahlua.vm.Platform"), threadType = Class.forName("se.krka.kahlua.vm.KahluaThread");
         Object platform = Class.forName("se.krka.kahlua.j2se.J2SEPlatform").getMethod("getInstance").invoke(null);
         int version = ((Number)world.getMethod("getWorldVersion").invoke(null)).intValue();
@@ -75,7 +84,7 @@ public final class NativeBarbProbe {
         }
         check(result instanceof List<?>, "Barb native fixture creation failed");
         @SuppressWarnings("unchecked") List<Object> fixtures = (List<Object>)result;
-        check(fixtures.size() == 19, "Expected eight frame/support pairs, two linked wire halves and one opposite panel");
+        check(fixtures.size() == 37, "Expected original panels/wire plus six garage supports with two faces each");
         Files.createDirectories(directory);
         if (mode.equals("write")) {
             Object names = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeBarbNames");
@@ -113,10 +122,11 @@ public final class NativeBarbProbe {
             check(!input.hasRemaining(), "Unread barb object data");
             for (String method : new String[]{"getSpriteName", "getHealth"})
                 check(get(source, method).equals(get(restored, method)), "Barb/support reload changed " + method);
-            if (i % 2 == 0 || i >= 16) {
+            boolean frameObject = i < 19 ? i % 2 == 0 || i >= 16 : (i - 19) % 3 != 2;
+            if (frameObject) {
                 check(Boolean.TRUE.equals(get(restored, "isCanPassThrough")) && Boolean.FALSE.equals(get(restored, "isThumpable")), "Barb marker became a collider or target");
             }
-            String key = i % 2 == 0 || i >= 16 ? "OMHTTBarbFrame" : "OMHTTBarbs";
+            String key = frameObject ? "OMHTTBarbFrame" : "OMHTTBarbs";
             Object expected = call(get(source, "getModData"), "rawget", new Class<?>[]{Object.class}, key);
             Object actual = call(get(restored, "getModData"), "rawget", new Class<?>[]{Object.class}, key);
             check(expected != null && actual != null, "Barb metadata missing on reload");
@@ -129,7 +139,14 @@ public final class NativeBarbProbe {
             fixtures.set(i, restored);
         }
         Object finish = call(env, "rawget", new Class<?>[]{Object.class}, "OMHTT_NativeBarbRestoredCheck");
-        check(Boolean.TRUE.equals(threadType.getMethod("call", Object.class, Object[].class).invoke(thread, finish, new Object[]{fixtures})), "Restored barbs do not resolve");
+        var serverFlag = Class.forName("zombie.network.GameServer").getField("server");
+        boolean wasServer = serverFlag.getBoolean(null);
+        serverFlag.setBoolean(null, false);
+        try {
+            check(Boolean.TRUE.equals(threadType.getMethod("call", Object.class, Object[].class).invoke(thread, finish, new Object[]{fixtures})), "Restored barbs do not resolve");
+        } finally {
+            serverFlag.setBoolean(null, wasServer);
+        }
         System.out.println("[OMHTT-Barbs] persistence mode=" + mode + " pairs=8 wire=2 identity=valid durability=shared-preserved hostHealth=unchanged collision=passable");
     }
 }

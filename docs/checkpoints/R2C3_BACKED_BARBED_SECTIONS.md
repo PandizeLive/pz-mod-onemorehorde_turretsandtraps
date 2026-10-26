@@ -1,5 +1,7 @@
 # R2C3: Barbed Panel
 
+**C478 / 0.2.69:** Owner selected C477 1B. [Garage segments and precision correction](../PATCH_v0.2.69.md) are implemented: each face/segment remains attached while raised, with contact/visual suspension until closed. Native backing health rules remain; swinging double gates are excluded. [Verification and deferred owner checklist](../TEST_v0.2.69.md).
+
 **C477 audit:** [Native contact precision failure and backing/garage findings](../BARBED_AUDIT_C477.md). Contact correction is proposed; garage/double-door support remains unimplemented. Existing contact and backing-health rules are unchanged. Owner testing is deferred.
 
 Current override: C120 / [0.2.38](../PATCH_v0.2.38.md) adds contact-only half movement and Bed Spikes-style player injuries to panels, shared with Concertina Wire. The backing/door/window health contract below is unchanged. Native/automated checks pass; rendered owner acceptance remains pending.

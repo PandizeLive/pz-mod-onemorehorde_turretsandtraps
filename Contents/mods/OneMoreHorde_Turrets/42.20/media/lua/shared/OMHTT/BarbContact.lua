@@ -30,7 +30,7 @@ function C.touching(edge, x, y, z, width)
         along, across = x - edge.x, y - edge.y
     end
     across = across * edge.side
-    return along >= 0 and along <= 1 and across >= 0 and across <= width
+    return along >= 0 and along <= 1 and across >= 0 and across <= width + .001
 end
 
 ---@param state table One timer per zombie across all sections
