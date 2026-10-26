@@ -40,3 +40,8 @@ Standard mirror local preflight passed at d14e5110ebb872c93bdcbb668ae903c0b475f4
 ## Owner testing deferred - C475, 2026-10-26
 
 Owner cannot test yet. The existing checklist remains pending; no rendered acceptance, waiver or failure is inferred. Installed build and automated evidence are unchanged.
+
+
+## C477 - Barbed audit findings and patch scope (2026-10-26)
+
+Owner: "Go ahead and investigate." This authorizes the bounded investigation, not a new gameplay patch. **C477 / Barbed audit complete; precision defect reproduced (2026-10-26).** [Native findings and proposed scope](BARBED_AUDIT_C477.md): real actor rounding causes 18/32 strict boundary misses; full production panel lookup reproduces one face hitting while the opposite misses without overwriting either record. Native thumping still damages the backing (137 to 136). Paired identity/save/reload/removal tests pass; the owner scene remains unconfirmed. Garage objects retain identity when raised; swinging double gates can replace/move leaves and need separate handling. Recommend **1A contact correction first**, alternative **1B correction plus closed-only garage-segment support**. Audit only; 0.2.68.3 stays installed and testing deferred. Native write/read pass 57.0/53.5 seconds, no connected player. Private mirror remains blocked by prior approval review. **Decision needed: patch scope.**

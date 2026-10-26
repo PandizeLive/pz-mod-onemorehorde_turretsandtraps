@@ -235,6 +235,78 @@ function OMHTT_NativeBarbCheck(squares)
         local contact = B.contact(pairedActor)
         assert(contact and contact.id == B.record(expected).id, "Opposite face contact was overwritten")
     end
+    do
+        assert(pairedHost:getThumpableFor(pairedActor) == pairedHost, "Backing must remain the native thump target")
+        assert(opposite:getThumpableFor(pairedActor) == nil and fixtures:get(10):getThumpableFor(pairedActor) == nil,
+            "Neither panel frame may intercept a native thump")
+        assert(pairedSquare:getThumpableWallOrHoppable(true) == pairedHost, "Native square must still select the backing wall")
+        local health, thumpDamage = pairedHost:getHealth(), pairedHost:getThumpDmg()
+        local zombies = cell:getZombieList()
+        zombies:add(pairedActor)
+        pairedHost:setThumpDmg(1)
+        pairedHost:Thump(pairedActor, 1)
+        assert(pairedHost:getHealth() == health - 1, "Panels must not absorb or block native backing damage")
+        pairedHost:setHealth(health)
+        pairedHost:setThumpDmg(thumpDamage)
+        zombies:remove(pairedActor)
+        local width, misses, total = pairedActor:getWidth(), 0, 0
+        for _, coordinate in pairs({100, 1000, 2000, 3000, 5000, 10000, 16384, 20000}) do
+            for _, north in pairs({false, true}) do
+                for _, side in pairs({-1, 1}) do
+                    local edge = {x = coordinate, y = coordinate, z = 0, north = north, side = side}
+                    pairedActor:setX(coordinate + (north and .5 or side * width))
+                    pairedActor:setY(coordinate + (north and side * width or .5))
+                    local touching = C.touching(edge, pairedActor:getX(), pairedActor:getY(), 0, width)
+                    local distance = ((north and pairedActor:getY() or pairedActor:getX()) - coordinate) * side
+                    assert(C.touching(edge, pairedActor:getX(), pairedActor:getY(), 0, width + .001),
+                        "A one-thousandth-tile comparison tolerance must cover tested rounding")
+                    total = total + 1
+                    if not touching then misses = misses + 1 end
+                    print("[OMHTT-C477] boundary coordinate=" .. coordinate .. " north=" .. tostring(north)
+                        .. " side=" .. side .. " distance=" .. distance .. " width=" .. width .. " contact=" .. tostring(touching))
+                    pairedActor:setX(coordinate + (north and .5 or side * .5))
+                    pairedActor:setY(coordinate + (north and side * .5 or .5))
+                    assert(not C.touching(edge, pairedActor:getX(), pairedActor:getY(), 0, width), "Tile center must not count as panel contact")
+                end
+            end
+        end
+        assert(misses > 0 and misses < total, "Audit must reproduce coordinate-dependent strict-boundary misses")
+        print("[OMHTT-C477] backing-thump=137-to-136 frames=not-targets boundaryMisses=" .. misses .. "/" .. total)
+        local nextId = B.store.nextId
+        local boundarySquare = lookup["16384:16384:0"]
+        local boundaryHost = IsoThumpable.new(cell, boundarySquare, "carpentry_02_81", true)
+        boundaryHost:setMaxHealth(200)
+        boundaryHost:setHealth(137)
+        boundaryHost:setIsThumpable(true)
+        boundarySquare:getObjects():add(boundaryHost)
+        boundarySquare:getSpecialObjects():add(boundaryHost)
+        local boundaryFrames = {}
+        for _, side in pairs({-1, 1}) do
+            local floor = lookup["16384:" .. (side < 0 and 16383 or 16384) .. ":0"]
+            local facing = side < 0 and "n" or "s"
+            local temp = IsoThumpable.new(cell, floor, "omhtt_barrier_01_52", true)
+            floor:getObjects():add(temp)
+            floor:getSpecialObjects():add(temp)
+            boundaryFrames[side] = B.onCreate({thumpable = temp, character = player, facing = facing}).object
+        end
+        for _, side in pairs({-1, 1}) do
+            local expected = B.record(boundaryFrames[side])
+            pairedActor:setX(16384.5)
+            pairedActor:setY(16384 + side * width)
+            pairedActor:setCurrent(lookup["16384:" .. math.floor(pairedActor:getY()) .. ":0"])
+            local contact = B.contact(pairedActor)
+            assert((side < 0 and contact == expected) or (side > 0 and contact == nil),
+                "Full contact lookup must reproduce opposite-face boundary mismatch")
+            pairedActor:setY(16384 + side * .2)
+            assert(B.contact(pairedActor) == expected, "Both attachments must still work inside the boundary")
+        end
+        for _, side in pairs({-1, 1}) do B.retire(B.record(boundaryFrames[side])) end
+        boundarySquare:getSpecialObjects():remove(boundaryHost)
+        boundarySquare:getObjects():remove(boundaryHost)
+        B.store.nextId = nextId
+        print("[OMHTT-C477] full-contact boundary=16384 negative=hit positive=miss interior=both-hit")
+
+    end
     local wireInfo = SpriteConfigManager.GetObjectInfo("OMHTTDeployConcertinaWire")
     for _, direction in pairs({"e", "n", "w", "s"}) do
         local face = wireInfo:getFace(direction)

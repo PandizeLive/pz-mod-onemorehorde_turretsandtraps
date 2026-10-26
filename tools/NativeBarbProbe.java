@@ -40,6 +40,13 @@ public final class NativeBarbProbe {
                 squares.add(square);
             }
         }
+        Object boundaryChunk = chunkType.getConstructor(cellType).newInstance(cell);
+        for (int dx = 0; dx < 2; dx++) for (int dy = -1; dy < 1; dy++) {
+            Object square = squareType.getConstructor(cellType, Class.forName("zombie.iso.SliceY"), int.class, int.class, int.class)
+                .newInstance(cell, null, 16384 + dx, 16384 + dy, 0);
+            squareType.getField("chunk").set(square, boundaryChunk);
+            squares.add(square);
+        }
         Class<?> platformType = Class.forName("se.krka.kahlua.vm.Platform"), threadType = Class.forName("se.krka.kahlua.vm.KahluaThread");
         Object platform = Class.forName("se.krka.kahlua.j2se.J2SEPlatform").getMethod("getInstance").invoke(null);
         int version = ((Number)world.getMethod("getWorldVersion").invoke(null)).intValue();
