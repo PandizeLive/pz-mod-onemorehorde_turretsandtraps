@@ -11,7 +11,7 @@ C481, 2026-10-26. Owner approves C479/C480. Prior0.2.69 contact feedback remains
 - Controller regressions cover title/background/release/scroll hit regions, retained map range calculations without a circle, responsive map/settings geometry and existing scrolling.
 - Source review: no new full-world scan, global movement switch, event, polling timer or persistent per-target record. Existing weak active map and owner-routing are reused; inactive actors return immediately. The actor gate is saved/restored without inspecting animation tracks.
 
-Final native write/read, independent package startup and installation evidence will be appended after completion. Evidence files: diagnostics/v0.2.69.1/validation.log, manifest.json, server-write.log, server-read.log and packages-*.json. These establish bounded native/runtime behavior, not rendered or connected-player acceptance.
+Final native write/read passed in 79.3/87.7 seconds; all three independent package startups passed. Evidence files: diagnostics/v0.2.69.1/validation.log, manifest.json, server-write.log, server-read.log and packages-*.json. These establish bounded native/runtime behavior, not rendered or connected-player acceptance.
 
 ## Owner checklist
 
@@ -24,3 +24,16 @@ Restart before testing. No new world is needed. Connected multiplayer remains de
 ## Publication
 
 Private mirror remains blocked by the earlier automatic approval-review rejection of that upload; no push retry. No Workshop upload or sibling changes. Unrelated owner edit docs/AMMO_UI_C446.md is preserved and excluded from this patch.
+
+
+## Final installed evidence
+
+- Immutable tag: `test/v0.2.69.1`; source commit `c31de5cedfacd885283172d6193763371d2a1a3f`.
+- Final package-only starts: Traps/Turrets/both 71.9/75.6/67.8 seconds. Native write/read:79.3/87.7 seconds, with no connected player. Earlier intermediate track-access failure was corrected before tagging and all final checks passed.
+- Local install: `C:\Users\bandi\Zomboid\mods`. All 444 source and 610 package/tag/install/archive files verified; both 0.2.69 package backups verified.
+- Backup: `C:\Users\bandi\Zomboid_Modding\OMH\Turrets & Traps\diagnostics\p1c1\install-backups\20261026-192807-1839`.
+- Archive: `C:\Users\bandi\Zomboid_Modding\OMH\Turrets & Traps\artifacts\OMHTT-0.2.69.1.zip`; SHA-256 `3bc1051c9492d3d0d36341be52e5b80c632ce6ed1d4792416904e64e2e9df865`.
+- Machine-readable evidence: `diagnostics/v0.2.69.1/local-release.json`. Its historical generic `fresh worlds` field is not a new migration requirement: this correction needs a restart only.
+- Private mirror remains blocked by the prior automatic approval review requiring explicit destination/payload authorization. No retry, public upload, sibling modification or owner-save change.
+
+**Test now after restart when available.** Rendered and connected-player acceptance remains pending.
