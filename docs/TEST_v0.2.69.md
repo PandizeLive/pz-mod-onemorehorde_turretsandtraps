@@ -32,3 +32,8 @@ Traps-only, Turrets-only and combined native startup/save/shutdown all pass in 5
 Installed 2026-10-26 from immutable test/v0.2.69 at 2232aa6fed541c7ca31fbc36a496caeec960cc79. Verified all 440 source files and all 602 tag/package/installed/archive files (230 Traps, 372 Turrets). Both prior 0.2.68.3 packages were backed up and verified at diagnostics/p1c1/install-backups/20261026-172932-4898. Archive artifacts/OMHTT-0.2.69.zip SHA256: a7cb201c09f0cc2e39541be2f29e2a93e58820f13c76717c2166139041652098. Evidence: diagnostics/v0.2.69/local-release.json.
 
 The generic release recorder retains historical fresh-world wording; this patch requires no new world. Restart before testing. Earlier owner checks and rendered/connected multiplayer acceptance remain deferred. GitHub mirroring remains blocked by the prior automatic approval review requiring explicit destination/payload authorization; no retry, Workshop upload or sibling modification occurred.
+
+
+## C479 owner feedback (2026-10-26)
+
+Owner says panels appear to work. Record positive contact feedback without closing unconfirmed garage/reload/independent-removal or MP checks. Console confirms 0.2.69 on 42.21 SP and barb contact/damage activity. Tether rendered behavior failed acceptance; Controller circle clarity, excessive settings height and group-body collapse remain reported failures. See FEEDBACK_C468.md C479 for source/native-animation findings and preserved console evidence. No new build or runtime regression suite was run for this read-only investigation.

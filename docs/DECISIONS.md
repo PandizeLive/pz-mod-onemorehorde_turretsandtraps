@@ -2419,3 +2419,8 @@ Owner: "Go ahead and investigate." This authorizes the bounded investigation, no
 ## C478 - Option 1B approved and implemented (2026-10-26)
 
 Owner: "One B". This selects the contact correction plus closed-only garage-segment support presented in C477, including persistence while raised. Implemented as 0.2.69; swinging double gates are not included. Existing backing damage, recipes, saved settings and item identities stay intact. [Patch](PATCH_v0.2.69.md) and [verification](TEST_v0.2.69.md) separate native/automated evidence from deferred rendered and connected-player acceptance. Private mirror remains blocked; no upload attempted.
+
+
+## C479 - Tether and Controller rendered findings (2026-10-26)
+
+Owner requests Controller circle removal, shorter scrollable settings and title-bar-only group collapse; panels reportedly appear functional. [Audit and proposed patch](FEEDBACK_C468.md#c479---owner-feedback-tether-reaction-and-controller-cleanup-2026-10-26) confirms competing tether displacement/native animation and whole-group collapse hit bounds. Recommend 1A damage-only impact plus directional pull reaction; 1B preserves corrected push/pull. Tether choice and combined patch approval remain pending. No gameplay/build change; 0.2.69 stays installed.
