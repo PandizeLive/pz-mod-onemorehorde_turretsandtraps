@@ -24,3 +24,11 @@ Earlier validation failures were test fixtures: an incorrectly indexed projectio
 - Controller range boundary.
 
 Restart before testing the installed version. Multiplayer remains pending; no new world required by this patch, and saved tuning is preserved.
+
+## Installed release
+
+Installed from immutable test/v0.2.68.3 /97fcfdcbc612dad8667822e59833a4bcd4e5037a. All440Source files and602tag/package/install/archive files match SHA-256. Both0.2.68.2backups verify (229Traps/371Turrets files). Backup: diagnostics/p1c1/install-backups/20261026-114635-4962. Archive: artifacts/OMHTT-0.2.68.3.zip; SHA-2560f37d7e289294520ddebf9f24046a42ea5a353480ee596512283a1a61e9da2d0. Evidence: diagnostics/v0.2.68.3/local-release.json and install.json.
+
+No running ProjectZomboid process was found at pre-install inspection. The installer/record tool's generic fresh-world policy is legacy and does not identify a migration requirement in this patch; item IDs and saved settings remain unchanged. No save was edited. No Workshop upload or sibling install. Unrelated owner edit docs/AMMO_UI_C446.md remains byte-identical and excluded from commits.
+
+**Test now after restart.** Rendered appearance and connected-player acceptance remain pending.
