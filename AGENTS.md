@@ -1,5 +1,7 @@
 # Project working agreement
 
+- C473 (2026-10-26): Prefer replacing the defective mechanism over accumulating corrective layers. Keep working native components; remove superseded paths. For stockpile freshness, fix native invalidation participation and per-view refresh ownership before considering polling, extra network requests or duplicate state. Prove the reported failure and the replacement's idle cost; do not equate a larger rewrite with a better fix.
+
 - C469 (2026-10-25): A player's Controller must not discover another owner's controllers, turrets or traps as radar. Apply the ownership boundary to cached/fresh map and list entries, links, selection/details and Controller-originated requests. Public/faction access alone must not make foreign devices appear in the player's own Controller. Preserve explicitly shared Controller access separately; do not silently grant or remove sharing permissions.
 
 - C468 (2026-10-25): Do not add hypothetical scenarios or examples to player-facing tooltips/help without the owner's approval. Show combined score reductions in the Difficulty menu; Enable T&T and its run-flag help should describe only their own effect.

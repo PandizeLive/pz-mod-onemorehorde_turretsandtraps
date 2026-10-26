@@ -2390,3 +2390,7 @@ Installed-native lifecycle inspection and unchanged-production Kahlua replay rep
 ## C472 - Rendered corrections and assistance policy proposed (2026-10-26)
 
 [Read-only findings and concrete alternatives](FEEDBACK_C468.md#c472---rendered-feedback-and-assistance-policy-review-2026-10-26). Recommend1A preserve existing prevention for disabled-assistance Horde runs; alternative1B allow effects and flag a confirmed turret kill, with sabotage/nonlethal-assistance tradeoffs. Neither is a new owner selection. The requested UI/animation corrections are recorded for patch approval. No gameplay or installed version change.
+
+## C473 - Horde prevention selected; maintainable refresh correction required (2026-10-26)
+
+Owner selects C4721A and requires replacing defective mechanisms rather than accumulating bandage fixes. [Stockpile design and verification requirements](FEEDBACK_C468.md#c473---prevention-selected-replace-faulty-refresh-ownership-2026-10-26) retain the native inventory component and replace incomplete refresh wiring; avoid timer-driven whole-list rebuilding and duplicated inventory state. Complete patch approval and blocked mirror authorization remain pending. No gameplay edit.
