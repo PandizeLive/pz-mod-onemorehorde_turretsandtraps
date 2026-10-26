@@ -1,5 +1,9 @@
 # Decision register
 
+## C470 - Execute18/+2 confirmed (2026-10-25)
+
+Owner: **3A**. Set the first active Execute threshold to18% and add2 percentage points per additional copy. Supersedes10/+2; thresholds are18/20/22/24/.../48 at1/2/3/4/.../16 copies. Preserve saved custom Sandbox values. Shared defaults and wording are staged and verified, not installed. [Scope and limits](FEEDBACK_C468.md#c470---execute182-selected-and-staged-2026-10-25). C469 assignment/privacy and tether decisions remain selected; no repeat design approval is required.
+
 ## C469 - Own-device discovery, automatic assignment and tether motion selected (2026-10-25)
 
 Owner selects C4681A and2A, adding an explicit no-foreign-device Controller radar requirement. Remove the visible Poke duplicate while preserving legacy save definitions. Pixel Strike20 against healthy zombies is owner-reported failed Initial Blow behavior; Execute is untested. Proposed18/+2 remains a recommendation awaiting3A/3B selection. [Detailed provenance, native evidence and limits](FEEDBACK_C468.md#c469---selected-assignmentmotion-privacy-and-damage-evidence-2026-10-25). Source-only Hidden flag is implemented; no combined corrective build is claimed.

@@ -14,7 +14,7 @@ Development test content
 - Added distinct blocky development heads for Ballista, Scrapshot, Lobber, Arc, Rotary Bat and Rotary Blades.
 - Unified Controller and Turret Manage section shading and slim battery, ammunition, condition and free-storage meters.
 
-- Retuned stackable modules with separate first-copy and additive duplicate gains; removed ordinary bonus ceilings and old firing/reload floors while preserving saved custom settings.
+- Retuned stackable modules with separate first-copy and additive duplicate gains, including an 18% Execute threshold plus 2% per extra copy; removed ordinary bonus ceilings and old firing/reload floors while preserving saved custom settings.
 - Added inactive module storage and expansion-kit replacement with excess ammunition returned to inventory or the floor; saved activation priority stays independent of rarity sorting.
 - Sorted module slots by rarity, corrected compact icon/text overlap and Details resizing, and clarified unsupported-head feedback.
 - Standardized compact purpose/damage/health tooltips, white Feature text, grey statistics and consistent wrapping, colored trigger consumption ratings, and readable Controller/Turret expansion benefits.

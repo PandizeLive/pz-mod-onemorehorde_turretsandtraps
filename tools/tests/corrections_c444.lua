@@ -13,7 +13,7 @@ SandboxVars.OMHTurretsTraps = {}
 testMode = "sp"
 local selected = {RapidFire={40,340}, Reload={50,425}, Velocity={30,255}, Range={3,18},
     Magazine={50,425}, Accuracy={10,70}, Critical={15,90}, InitialBlow={50,350},
-    Fragment={25,85}, Execute={10,25}, Impact={60,90}, Conservation={1,8.5},
+    Fragment={25,85}, Execute={18,48}, Impact={60,90}, Conservation={1,8.5},
     Regulator={.25,4}, Siphon={2,9.5}, Martyrdom={1.5,3.75}, Tack={1.25,3.5}}
 for name, row in pairs(selected) do
     check(Stack.bonus({},name)==0, name.." contributes nothing without an active copy")

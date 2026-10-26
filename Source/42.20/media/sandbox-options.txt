@@ -1073,7 +1073,7 @@ option OMHTurretsTraps.InitialBlowThreshold {
 
 option OMHTurretsTraps.ExecuteFirst {
     type = double,
-    default = 10,
+    default = 18,
     min = 0,
     max = 100,
     page = OMHTurretsTraps_StatModulesPage,
@@ -1082,7 +1082,7 @@ option OMHTurretsTraps.ExecuteFirst {
 
 option OMHTurretsTraps.ExecuteBonus {
     type = double,
-    default = 1,
+    default = 2,
     min = 0,
     max = 100,
     page = OMHTurretsTraps_StatModulesPage,

@@ -622,7 +622,7 @@
     "UI_OMHTT_FirstExtraMagazine": "+%1%% base magazine capacity first; +%2%% per extra copy",
     "UI_OMHTT_FirstExtraRange": "+%1 tiles first; +%2 per extra copy",
     "UI_OMHTT_FirstExtraChance": "+%1 chance points first; +%2 per extra copy (maximum 100%%)",
-    "UI_OMHTT_FirstExtraThreshold": "%1%% health threshold first; +%2 points per extra copy",
+    "UI_OMHTT_FirstExtraThreshold": "Finishes targets at %1%% health or lower; +%2%% to the threshold per extra copy",
     "UI_OMHTT_FirstExtraRadius": "%1-tile radius first; +%2 tiles per extra copy",
     "UI_OMHTT_FirstExtraUses": "%1 uses per round first; +%2 per extra copy",
     "UI_OMHTT_FirstExtraSiphon": "%1x paid-cost refund first; +%2x per extra copy",

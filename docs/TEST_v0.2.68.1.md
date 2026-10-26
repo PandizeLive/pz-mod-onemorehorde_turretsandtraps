@@ -62,3 +62,7 @@ Focused installed-Kahlua checks reproduce stacked-item rejection, missing Blocks
 Owner confirms the20 damage observation came from Pixel Strike against completely healthy targets, not Manage's Damage field. Production integration forwards actual confirmed loss; Initial Blow is therefore recorded as a live failure needing diagnosis. Execute remains inconclusive/untested. No new console session or fabricated target trace is inferred.
 
 Legacy Poke item is now hidden in Source only. Native42.21 Item.DoParam/isHidden/getObsolete checks pass3 assertions and installed item-list Lua excludes hidden definitions.3 calculation assertions cover the proposed Execute shot-count comparison. These are not installed-gameplay acceptance. See C469 in FEEDBACK_C468.md;0.2.68.1 remains installed with its failed features unaccepted.
+
+## C470 - Selected Execute source regression (2026-10-25)
+
+Owner selects3A18/+2. Staged shared fallback and Sandbox defaults agree.27,646 installed-Kahlua assertions pass, covering exact18% and just-above thresholds, floating-point boundary tolerance,0-16 active copies, duplicate-kill prevention, saved10/1 settings and explicit0/0 disabling. Translation JSON parses. Diagnostics/c470/kahlua-output.txt records this source-only check; no generated package or installed build changed. Initial Blow's reported live failure and the rest of the corrective patch remain open; no owner retest requested.

@@ -64,3 +64,13 @@ Calculated examples (20 damage, healthy target, independent shots, no other modu
 | 180 | 9 | 9 | 9 | 9 | 8 | 6 |
 
 Evidence is in diagnostics/c469: installed-bytecode Item/VirtualZombieManager output, HiddenItemProbe.java/native output and execute-comparison.json.3 numeric sanity assertions pass. No threshold, conditional damage, privacy or tether gameplay implementation is claimed in this checkpoint. All C468 corrective scope stays active. No owner test, new version/tag, Workshop publication or sibling edit. Preserve docs/AMMO_UI_C446.md's pre-existing owner edit byte-for-byte. T&T commit/mirror uses the existing development branch/PR.
+
+## C470 - Execute18/+2 selected and staged (2026-10-25)
+
+Owner selects **3A**, confirming18% for the first active Execute and an additive2 percentage points per additional copy. This supersedes C468's10/+2 request and resolves the last presented design choice. C4691A/2A and Controller privacy remain selected. No further numerical confirmation is needed.
+
+Source now changes ExecuteFirst/ExecuteBonus Sandbox defaults to18/2 and the shared TurretStacking fallback to18/2. Item and Sandbox wording explicitly describe the finishing health threshold, removing the ambiguous points text for Execute. The threshold remains based on pre-hit health. Saved custom Sandbox values, including zero, retain their explicit values; no owner save is edited or reset. No loot, rarity or battery cost is changed.
+
+Verification:27,646 installed-Kahlua assertions pass, including0-16 Execute copies, exact/above-threshold behavior at18%, native-float tolerance, no duplicate killing, old saved10/1 override preservation and explicit0/0 disabling. Both edited JSON files parse. Runtime/world/UI objects in this runner are test doubles; this does not close the Initial Blow live failure, missing-baseline handling or rendered acceptance. Evidence: diagnostics/c470/kahlua-output.txt.
+
+The complete corrective patch is still pending: Controller ownership-safe discovery/assignment and occupancy, tether push/pull, Initial Blow initialization/receipts, dual-face barbs, icon sizing, kit replacement, name/stockpile display and remaining percentage wording. Before packaging, also align Horde's Execute difficulty-baseline defaults with18/2 and verify old saved/custom settings still classify accurately. The staged Horde tooltip fix and legacy Poke Hidden flag remain part of the same correction scope. No new version/tag, package regeneration, local installation or Workshop publication occurred in C470; installed0.2.68.1 remains. Documentation and these selected Source/test edits are committed/mirrored, preserving the unrelated owner edit. **Wait for a patch.**

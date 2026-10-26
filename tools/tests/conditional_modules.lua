@@ -8,9 +8,16 @@ SandboxVars.OMHTurretsTraps, testRoll = {}, 0
 for n = 0, 16 do
     local stats = S.resolve({active = {InitialBlow = n, Execute = n, Impact = n}})
     check(math.abs(stats.initialBlow - (n > 0 and .5 + (n - 1) * .2 or 0)) < .000001, "Initial Blow remains uncapped and additive")
-    check(math.abs(stats.execute - (n == 0 and 0 or (.1 + (n - 1) * .01))) < .000001, "Execute uses approved first-plus-extra HP threshold")
+    check(math.abs(stats.execute - (n == 0 and 0 or (.18 + (n - 1) * .02))) < .000001, "Execute uses approved first-plus-extra HP threshold")
     check(stats.impact == (n == 0 and 0 or 60 + (n - 1) * 2), "Impact uses approved first-plus-extra chance")
 end
+SandboxVars.OMHTurretsTraps.ExecuteFirst = 10
+SandboxVars.OMHTurretsTraps.ExecuteBonus = 1
+check(S.resolve({active = {Execute = 16}}).execute == .25, "Saved Execute tuning remains effective")
+SandboxVars.OMHTurretsTraps.ExecuteFirst = 0
+SandboxVars.OMHTurretsTraps.ExecuteBonus = 0
+check(S.resolve({active = {Execute = 16}}).execute == 0, "Explicit zero Execute tuning stays disabled")
+SandboxVars.OMHTurretsTraps = {}
 local square = makeSquare(1500, 1500, 0)
 local zombie = makeZombie(square, 10)
 local stats = S.resolve({active = {InitialBlow = 16, Execute = 1, Impact = 1}})
@@ -22,13 +29,13 @@ check(C.snapshot(zombie, stats).bonus == 4.5, "Native float rounding preserves t
 zombie.health = 8.99
 check(C.damage(zombie, .1, C.snapshot(zombie, stats)) == .1, "Below 90 percent receives ordinary damage")
 check(C.damage(zombie, .1, eligibility) == .45, "Shotgun eligibility remains fixed for allocated pellets")
-zombie.health = 1.00000001
+zombie.health = 1.80000001
 check(C.snapshot(zombie, stats).execute, "Native float rounding preserves the Execute boundary")
-zombie.health = 1.001
+zombie.health = 1.801
 check(not C.snapshot(zombie, stats).execute, "Above threshold cannot execute")
-zombie.health = 1
+zombie.health = 1.8
 local amount = C.damage(zombie, .01, C.snapshot(zombie, stats))
-check(amount == 1, "Exact Execute threshold removes actual remaining HP, not magic damage")
+check(amount == 1.8, "Exact Execute threshold removes actual remaining HP, not magic damage")
 Damage.apply(zombie, amount, "test", "firearm", nil, nil)
 Damage.apply(zombie, amount, "test", "firearm", nil, nil)
 check(zombie.kills == 1, "Execution cannot double-kill or double-award")

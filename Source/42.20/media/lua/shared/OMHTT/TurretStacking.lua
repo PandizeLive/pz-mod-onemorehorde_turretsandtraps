@@ -4,7 +4,7 @@ S.definitions = {
     RapidFire = {40, 20}, Reload = {50, 25}, Velocity = {30, 15}, Range = {3, 1},
     Magazine = {50, 25}, Accuracy = {10, 4}, Critical = {15, 5}, InitialBlow = {50, 20},
     VelocityKnockdown = {5, 3}, Fragment = {25, 4, "FragmentDamage"},
-    Execute = {10, 1}, Impact = {60, 2}, Conservation = {1, .5}, Siphon = {2, .5},
+    Execute = {18, 2}, Impact = {60, 2}, Conservation = {1, .5}, Siphon = {2, .5},
     Regulator = {.25, .25}, Martyrdom = {1.5, .15, "MartyrdomRadius"},
     Tack = {1.25, .15, "TackRadius"},
 }
