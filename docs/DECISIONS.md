@@ -1,5 +1,9 @@
 # Decision register
 
+## C469 - Own-device discovery, automatic assignment and tether motion selected (2026-10-25)
+
+Owner selects C4681A and2A, adding an explicit no-foreign-device Controller radar requirement. Remove the visible Poke duplicate while preserving legacy save definitions. Pixel Strike20 against healthy zombies is owner-reported failed Initial Blow behavior; Execute is untested. Proposed18/+2 remains a recommendation awaiting3A/3B selection. [Detailed provenance, native evidence and limits](FEEDBACK_C468.md#c469---selected-assignmentmotion-privacy-and-damage-evidence-2026-10-25). Source-only Hidden flag is implemented; no combined corrective build is claimed.
+
 ## C468 - Follow-up feedback and player-help rule (2026-10-25)
 
 Owner requests T&T Controller naming, used-weight storage display, Execute10% first/+2 per extra, clear percentage wording and fixes for the reported icon/placement/kit/module problems. The later tooltip correction expressly rejects hypothetical scenarios/examples without approval; combined scoring belongs in Difficulty. [Evidence and unsettled assignment/movement choices](FEEDBACK_C468.md). These explicit corrections need no repeat design approval. Automatic assignment policy and the proposed tether motion/reset design remain undecided. No new T&T build or blanket acceptance is claimed.

@@ -1,6 +1,7 @@
 module Base {
     item OMHTTTrapPokeFloor {
         DisplayName = Poke Floor,
+        Hidden = true,
         ItemType = base:container,
         Capacity = 15,
         WeightReduction = 0,

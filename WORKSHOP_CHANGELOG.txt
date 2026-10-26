@@ -10,7 +10,7 @@ Development test content
 - Unified expansion ammunition with 2.5x/5x/7.5x/10x kit multipliers and reviewed family bases; preserved saved legacy tuning and real ammunition, with an explicit Sandbox opt-in for existing worlds. Kits show total slots and the active ammo policy.
 - Corrected stale Controller assignments, group membership and remote sessions after confirmed range changes; authorized stale assignments can be removed without power or range access.
 - Matched expansion socket hints/artwork, added Controller battery endurance estimates including recent fallback use, and restored confirmation sounds for equipment transfers.
-- Removed portable capacity from new/recovered Poke Floors while retaining readable legacy packed items and returning their real contents safely.
+- Removed portable capacity from new/recovered Poke Floors, hid the duplicate legacy item from the item list, and retained readable legacy items with safe content recovery.
 - Added distinct blocky development heads for Ballista, Scrapshot, Lobber, Arc, Rotary Bat and Rotary Blades.
 - Unified Controller and Turret Manage section shading and slim battery, ammunition, condition and free-storage meters.
 
