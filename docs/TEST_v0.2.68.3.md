@@ -32,3 +32,7 @@ Installed from immutable test/v0.2.68.3 /97fcfdcbc612dad8667822e59833a4bcd4e5037
 No running ProjectZomboid process was found at pre-install inspection. The installer/record tool's generic fresh-world policy is legacy and does not identify a migration requirement in this patch; item IDs and saved settings remain unchanged. No save was edited. No Workshop upload or sibling install. Unrelated owner edit docs/AMMO_UI_C446.md remains byte-identical and excluded from commits.
 
 **Test now after restart.** Rendered appearance and connected-player acceptance remain pending.
+
+## Development mirror blocked
+
+Standard mirror local preflight passed at d14e5110ebb872c93bdcbb668ae903c0b475f41f. Execution was rejected by automatic approval review: the owner Approved reply was considered ambiguous for uploading private source/documentation to the existing GitHub destination. No push occurred and no workaround was attempted. Temporary clean mirror checkout was removed; all commits/tag remain local. Explicit authorization for PandizeLive/pz-mod-onemorehorde_turretsandtraps, branch codex/performance-barbed-audit and test/v0.2.68.3 is requested. Installed build and test readiness are unaffected.
