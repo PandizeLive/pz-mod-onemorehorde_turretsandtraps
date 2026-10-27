@@ -11,7 +11,7 @@
 
 ## Native and local delivery
 
-Native write/read pass in 65.2/53.4 seconds, with zero connected clients. Traps/Turrets/both startup checks pass in 62.3/48.2/56.7 seconds. Tagged local installation is next. No connected-client acceptance is claimed.
+Native write/read pass in 65.2/53.4 seconds, with zero connected clients. Traps/Turrets/both startup checks pass in 62.3/48.2/56.7 seconds. Installed and hash-verified from immutable test/v0.2.70.2 / 42822d3a78a69f8b31ed1719db933196a23b6aa3. All446 source and614 tag/package/install/archive files plus both0.2.70.1 backups match. No connected-client acceptance is claimed.
 
 ## Owner checks when available
 
@@ -22,3 +22,9 @@ Restart to load this version; no new world required. Connected testing remains d
 - Multiplayer notifications and Controller status text.
 
 No sibling gameplay, website deployment or Workshop upload is included. Private mirroring remains blocked by the earlier automatic approval review requiring explicit destination/payload authorization.
+
+## Local delivery record
+
+Backup: `C:\Users\bandi\Zomboid_Modding\OMH\Turrets & Traps\diagnostics\p1c1\install-backups\20261027-001431-9517`. Archive SHA-256: `2864510de800571dac9cb5d387be01531403d73a224f8c3f8213e06148867f0a`. Machine-readable evidence: `diagnostics/v0.2.70.2/local-release.json`. The stable installer/record tool retains generic fresh-world wording from the original split; this corrective patch requires only a restart, not a new world.
+
+Owner `docs/AMMO_UI_C446.md` remains untouched (SHA-256 `24506649c189a6e0b9f9e7fd04ab53fba940d3741a79ec38c267b75b75207fba`). No gameplay sources changed after validation/tagging. C488 remains undeployed. **Test now when available.**
