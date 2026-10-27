@@ -1,5 +1,9 @@
 # Decision register
 
+## C483 - Cooldown/tabs selected; Connections multi-selection requested (2026-10-26)
+
+**C483 / Three-second reset and tabs selected; multi-selection requested (2026-10-26).** Owner selects C482 **1A / 2C** and adds Connections box/multi-selection, group dragging and bulk Assign/Unassign. [Interaction contract and authority findings](CONTROLLER_SETTINGS_C482.md#c483---selected-cooldownlayout-and-connections-multi-selection-2026-10-26) recommend **1A keep grouping separate from assignment**; **1B group drop also assigns eligible unassigned devices**. Existing one-pending-target group requests need a shared bounded batch path, not a loop. Preserve foreign-owner privacy and offline/out-of-range unassignment. Horde's 0.5 reset audit baseline also needs coordinated review for the selected 3-second default. Gameplay/install remain 0.2.69.1; private mirror remains blocked. **Decision needed only for group-drop behavior.**
+
 ## C482 - Longer refire requested; compact layout alternatives (2026-10-26)
 
 Owner reports a repeat-stun loop, requests longer tether refire and compact, clear Device/Controller Settings mockups. [Contract and evidence](CONTROLLER_SETTINGS_C482.md) propose 1A three-second reset / 1B two-second reset, and 2A Compact rows / 2B Foldouts / 2C Tabbed inspector. Recommend 1A/2A. The direction is requested, numerical selection and final native layout are pending; preview interactions are not approval. Preserve custom saved tuning and investigate elapsed-time cancellation before implementing the chosen cooldown. No gameplay or installation change.

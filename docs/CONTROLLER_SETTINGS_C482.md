@@ -44,3 +44,38 @@ Headless browser checks cover three designs, three device families and four widt
 No change to Source, Contents, saved settings, loot, cumulative Workshop draft, siblings or installed packages. Owner's unrelated `docs/AMMO_UI_C446.md` edit is preserved. Read-only remote fetch succeeded; no newer origin/dev commits. Private mirror remains blocked by the prior automatic approval-review rejection requiring destination/payload authorization; no retry.
 
 **Decision needed: 1A/1B delay and 2A/2B/2C layout.** Medium reasoning is sufficient for the selected tuning/layout patch; first verify elapsed-time reset handling and native layout with the existing test harness. No new playtest requested for unchanged 0.2.69.1 in this discussion.
+
+
+## C483 - Selected cooldown/layout and Connections multi-selection (2026-10-26)
+
+Owner selects **1A / 2C**: three seconds of reset after the nail returns, and the full-width **Tabbed inspector**. These choices supersede the pending numerical/layout choices above. Owner additionally requests drag selection, multi-selection, dragging selections into groups, and Assign/Unassign for selections. No implementation or owner acceptance is claimed by this planning checkpoint.
+
+### Proposed interaction contract
+
+- Drag blank Connections space to box-select visible expanded device cards; Ctrl-click toggles individual cards. Selection is temporary UI state keyed by device identity, reconciled on refresh/removal/privacy changes.
+- Drag a selected card to move the selected set into a group; dragging an unselected card selects that card. Preserve input/defense columns and stable ordering. Group title bars retain their own collapse/reorder behavior; connector handles retain wiring behavior.
+- Show the selection count with Assign Selected / Unassign Selected. Report successful and skipped entries with useful reasons. Preserve capacity, ownership, access, range and power checks; no silent takeover from another Controller. Unassign must remain possible for this Controller's out-of-range/offline devices.
+- Use the current graph and refresh path. Replace single-target drag state with shared selection handling, rather than adding a second graph or per-card polling. Keep the tabbed inspector compact and scrollable, with existing targeting editor and family-specific controls.
+- Source review corrects the C482 Pressure Plate mockup: the actual trigger filter is Both/Players/Zombies, not press/release transitions. The preview is not approval to change that behavior.
+
+### Material choice: group drops versus Controller assignment
+
+**1A, recommended:** grouping and Controller assignment remain separate. Assign Selected first, then drag into a group. For a mixed selection, move eligible members of this Controller and clearly report skipped unassigned/other-Controller devices. This avoids an organizational gesture unexpectedly changing management/power relationships.
+
+**1B:** dropping into a group also assigns eligible unassigned devices to this Controller. Still refuse silent transfers from another Controller and report skipped entries. Fewer clicks, but dropping has a gameplay side effect.
+
+This is the remaining interaction choice for the combined patch, not a request to reconfirm the selected three seconds or tabs.
+
+### Implementation findings and verification boundary
+
+`ControlGroupUI.request` permits one pending edit, and `ControlGroups.propose` validates one exact assigned target plus organization revision. Looping the existing request would discard later moves while pending. Extend the shared authoritative mutation path for bounded multi-target operations with current identity, access, capacity and revision checks; do not simply loop the UI handler. Existing organization is bounded by 32 inputs plus 32 defenses. Preserve loaded-object verification and C469 foreign-owner privacy throughout selection, details and commands. Native B42 timed-action serialization must be verified before choosing the batch payload.
+
+`ControlWorld.assign` currently allows another Controller ID to be replaced when otherwise eligible; the proposed bulk action must not silently exploit this behavior. This observation does not authorize unrelated assignment redesign.
+
+The selected reset reuses existing state/Sandbox configuration. Existing-save application must be explicit and preserve custom tuning; fresh defaults alone do not update the owner's saved 0.5. Verify the elapsed/debt cancellation path cannot bypass the cooldown. Multiple staggered traps can still pin targets; no immunity is requested.
+
+Horde Night `OMH_DefenseSettings.lua` currently audits `TetherResetSeconds` against 0.5 (higher is hardened). A new default of 3 therefore needs a coordinated baseline decision to avoid falsely classifying fresh default settings. Propose only the matching baseline correction as part of the combined patch; sibling edits are not made in this checkpoint. Historical flags and custom tuning must not be cleared automatically.
+
+Smallest useful checks: selection hit bounds and ports/header precedence; mixed eligibility and stale/deleted identities; one versus several selected cards; order/group persistence; permission/range/capacity rejection; offline/out-of-range release; native batch serialization and independent package startup; tab layout at minimum width; cooldown normal speed/fast-forward/large elapsed handling. Rendered and connected-player acceptance remain separate.
+
+Medium reasoning is sufficient; estimate 35-55 minutes for the combined selection/authority/layout patch and verification, so recommend Fast. Current 0.2.69.1 remains installed. No Source, Contents, save, Workshop draft or sibling changes. Owner's unrelated AMMO_UI_C446.md edit is preserved. Planning is committed locally; the previous automatic approval-review rejection still blocks the private mirror, and no upload is retried. **Decision needed: 1A or 1B group-drop behavior.**
