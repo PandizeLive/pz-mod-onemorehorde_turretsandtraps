@@ -24,3 +24,7 @@ Owner AMMO_UI_C446.md remains untouched (SHA-25624506649c189a6e0b9f9e7fd04ab53fb
 ## C486 owner result -2026-10-26
 
 Owner: "Perfect! What's next?" The restored Controller map range preview is accepted; the prior0.2.70 features were already accepted in C485. This focused SP round is closed, with no repeat checklist. Snapshot diagnostics/c486-console.txt confirms0.2.70.1 side=sp; no Controller stack trace found. Unrelated font/Firearms/map startup warnings remain. This does not waive historical unrelated checks or establish connected multiplayer acceptance. No build, save or sibling change. Next track choices are recorded in current status.
+
+## C489 readiness audit -2026-10-26
+
+Owner testing remains deferred. [Multiplayer audit](MULTIPLAYER_READINESS_C489.md) reproduces Tack's dropped accelerated-time area snapshot and global broadcast fan-out; correction approval is pending. Fresh current-suite run with the audit fixture passes35,333 assertions, plus68 Trait Shop XP/startup assertions. This is automated evidence with network/world doubles, not a new connected or owner test. Installed files and C486's focused SP acceptance remain unchanged; C488's website candidate is still not deployed.
