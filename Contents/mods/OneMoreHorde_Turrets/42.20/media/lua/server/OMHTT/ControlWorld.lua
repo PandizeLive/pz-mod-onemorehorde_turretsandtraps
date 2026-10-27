@@ -114,8 +114,9 @@ end
 ---@param state table Assigned device record
 ---@param object IsoObject? Loaded device
 ---@param hostId string? Previous controller identity
+---@param deferHost boolean? Batch publishes the host once
 ---@return nil
-function W.detach(state, object, hostId)
+function W.detach(state, object, hostId, deferHost)
     hostId = hostId or state.controller
     local host = hostId and W.records().records[hostId]
     if host and host.organization then
@@ -128,7 +129,7 @@ function W.detach(state, object, hostId)
         end
         groups.revision = groups.revision + 1
         local controller = W.objects[hostId]
-        if controller then
+        if controller and not deferHost then
             W.publish(controller)
         end
     end
@@ -439,8 +440,9 @@ end
 ---@param object IsoObject Device
 ---@param player IsoPlayer Authorized operator
 ---@param enabled boolean Assign or release
+---@param counts table? Authority-owned batch capacity snapshot
 ---@return boolean assigned
-function W.assign(controller, object, player, enabled)
+function W.assign(controller, object, player, enabled, counts)
     local host, state = W.state(controller), W.state(object)
     if not host or host.kind ~= "Controller" or not state or state.kind == "Controller"
         or controller:getHealth() <= 0 or (enabled and (object:getHealth() <= 0 or not A.range(controller, object)))
@@ -448,12 +450,12 @@ function W.assign(controller, object, player, enabled)
         or (enabled and not A.visible(controller, object)) then return false end
     if not enabled and state.controller ~= host.id then return false end
     if not enabled then
-        W.detach(state, object)
+        W.detach(state, object, nil, counts ~= nil)
         return true
     end
     if enabled then
-        local count = 0
-        for _, other in pairs(W.records().records) do
+        local count = counts and counts[C.defense(state.kind) and "defenses" or "inputs"] or 0
+        for _, other in pairs(counts and {} or W.records().records) do
             if other.placed and other.id ~= state.id and other.controller == host.id
                 and C.defense(other.kind) == C.defense(state.kind) then
                 count = count + 1
@@ -462,6 +464,10 @@ function W.assign(controller, object, player, enabled)
         if count >= 32 then return false end
     end
     if C.inputs[state.kind] then require("OMHTT/ControlPower").trigger(object) end
+    if counts and state.controller ~= host.id then
+        local key = C.defense(state.kind) and "defenses" or "inputs"
+        counts[key] = counts[key] + 1
+    end
     state.controller = enabled and host.id or nil
     if C.inputs[state.kind] then W.updateInput(object, state.kind == "Lever" and state.latched or false) end
     if enabled and state.kind == "Turret" then

@@ -78,14 +78,14 @@ function S.entry(object, state)
             local cycle = entry.cycle
             cycle.range, cycle.speed = option("Range", 6, 1, 32), option("LaunchSpeed", 30, 1, 64)
             cycle.returnSpeed = option("ReturnSpeed", 4, 1, 64)
-            cycle.resetTime, cycle.holdTime = option("ResetSeconds", .5, 0, 60), option("HoldSeconds", .75, 0, 10)
+            cycle.resetTime, cycle.holdTime = option("ResetSeconds", 3, 0, 60), option("HoldSeconds", .75, 0, 10)
         end
         return entry
     end
     local mount, support = Mount.resolve(state.x, state.y, state.z, state.facing)
     if not mount then return nil end
     local tuning = {range = option("Range", 6, 1, 32), speed = option("LaunchSpeed", 30, 1, 64),
-        returnSpeed = option("ReturnSpeed", 4, 1, 64), resetTime = option("ResetSeconds", .5, 0, 60),
+        returnSpeed = option("ReturnSpeed", 4, 1, 64), resetTime = option("ResetSeconds", 3, 0, 60),
         holdTime = option("HoldSeconds", .75, 0, 10)}
     local cycle = C.new(mount.x, mount.y, mount.z, mount.dx, mount.dy, tuning)
     entry = {cycle = cycle, mount = mount, support = support, object = object, state = state, time = S.time, sent = S.time, scan = S.time}

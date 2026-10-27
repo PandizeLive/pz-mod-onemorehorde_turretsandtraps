@@ -479,7 +479,7 @@ option OMHTurretsTraps.TetherPullDistance {
 
 option OMHTurretsTraps.TetherResetSeconds {
     type = double,
-    default = 0.5,
+    default = 3,
     min = 0,
     max = 60,
     page = OMHTurretsTraps_BarrierPage,

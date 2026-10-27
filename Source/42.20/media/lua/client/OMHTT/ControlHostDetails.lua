@@ -17,14 +17,14 @@ end
 ---@return nil
 function Host:arrange()
     local h, row = self.owner.lineHeight, math.max(28, self.owner.lineHeight + 6)
-    self.infoY = h + 14
+    self.infoY = 10
     self.targeting:setX(10)
     self.targeting:setY(self.infoY + h * 4 + 12)
-    self.targeting:setWidth(self.width - 36)
+    self.targeting:setWidth((self.width - 44) / 2)
     self.targeting:setHeight(row)
-    self.policy:setX(10)
-    self.policy:setY(self.targeting.y + row + 8)
-    self.policy:setWidth(self.width - 36)
+    self.policy:setX(18 + (self.width - 44) / 2)
+    self.policy:setY(self.targeting.y)
+    self.policy:setWidth((self.width - 44) / 2)
     self.policy:setHeight(row)
     self.ownerY = self.policy.y + row + 10
     self.contentHeight = self.ownerY + h + 12
@@ -39,7 +39,7 @@ function Host:prerender()
     local state = A.state(panel.object)
     if not state then return end
     self:setStencilRect(0, 0, self.width, self.height)
-    Theme.section(self, 0, 0, self.width, math.max(self.height, self.contentHeight), h + 6, getText("UI_OMHTT_ControllerSettings"))
+    self:drawRectStatic(0, 0, self.width, self.height, .12, .045, .045, .045)
     local y, width = self.infoY, self.width - 36
     self:setStencilRect(10, y + self:getYScroll(), width, h * 4)
     self:drawText(getText("UI_OMHTT_ControllerRange", A.radius(panel.object)), 10, y, .8, .8, .8, 1, UIFont.Small)

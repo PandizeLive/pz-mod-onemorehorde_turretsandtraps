@@ -1,6 +1,7 @@
 require("TimedActions/ISBaseTimedAction")
 local A = require("OMHTT/ControlAccess")
 local Targeting = require("OMHTT/ControlTargeting")
+local Batch = require("OMHTT/ControlBatch")
 OMHTTControlAction = ISBaseTimedAction:derive("OMHTTControlAction")
 local Action = OMHTTControlAction
 
@@ -36,6 +37,7 @@ function Action:isValid()
     local state = A.state(self.object)
     if self.done or not state or state.id ~= self.id or not A.authorized(self.character, self.object, (self.command == "Pulse" or self.command == "Toggle"))
         or (self.object:getHealth() <= 0 and state.kind ~= "Poke" and state.kind ~= "Tether") then return false end
+    if self.command == "Batch" then return Batch.valid(self) end
     if self.command == "Pulse" then return state.kind == "Button" end
     if self.command == "Toggle" then return state.kind == "Lever" end
     if self.command == "GroupAdd" or self.command == "GroupName" or self.command == "GroupMove"
@@ -91,6 +93,7 @@ function Action:complete()
     self.done = true
     local W = require("OMHTT/ControlWorld")
     local state = W.state(self.object)
+    if self.command == "Batch" then return Batch.complete(self) end
     if self.command == "GroupAdd" or self.command == "GroupName" or self.command == "GroupMove"
         or self.command == "GroupDelete" or self.command == "DeviceMove" then
         state.organization = require("OMHTT/ControlGroups").propose(self)

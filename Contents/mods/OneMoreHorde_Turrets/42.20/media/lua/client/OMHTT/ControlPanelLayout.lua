@@ -64,6 +64,19 @@ function L.create(panel)
         body:addChild(control)
     end
     panel.hostBody = HostDetails.create(panel)
+    panel.settingsTab = "Device"
+    panel.deviceTab = ISButton:new(0, 0, 120, h + 10, getText("UI_OMHTT_DeviceSettings"), panel, function(owner)
+        L.tab(owner, "Device")
+    end)
+    panel.controllerTab = ISButton:new(0, 0, 120, h + 10, getText("UI_OMHTT_ControllerSettings"), panel, function(owner)
+        L.tab(owner, "Controller")
+    end)
+    panel.deviceTab:initialise()
+    panel.controllerTab:initialise()
+    Theme.button(panel.deviceTab)
+    Theme.button(panel.controllerTab)
+    panel:addChild(panel.deviceTab)
+    panel:addChild(panel.controllerTab)
     panel.graph = require("OMHTT/ControlGraph").create(panel)
     panel.mapView = require("OMHTT/ControlMap").create(panel)
     panel.devices:setVisible(false)
@@ -97,12 +110,15 @@ function L.arrange(panel)
     place(panel.mapView, panel.detailX, mapTop, centerWidth)
     panel.mapView:setHeight(mapHeight)
     local detailsY = mapTop + mapHeight + 8
-    local halfWidth = math.floor((centerWidth - 8) / 2)
-    place(panel.detailBody, panel.detailX, detailsY, halfWidth)
-    place(panel.hostBody, panel.detailX + halfWidth + 8, detailsY, centerWidth - halfWidth - 8)
-    panel.hostBody:setHeight(math.max(80, bottom - detailsY))
+    local tabHeight = h + 10
+    place(panel.deviceTab, panel.detailX, detailsY, math.floor(centerWidth / 2))
+    place(panel.controllerTab, panel.detailX + math.floor(centerWidth / 2), detailsY, centerWidth - math.floor(centerWidth / 2))
+    detailsY = detailsY + tabHeight + 4
+    place(panel.detailBody, panel.detailX, detailsY, centerWidth)
+    place(panel.hostBody, panel.detailX, detailsY, centerWidth)
+    panel.hostBody:setHeight(math.max(40, bottom - detailsY))
     panel.hostBody:arrange()
-    panel.detailBody:setHeight(math.max(80, bottom - detailsY))
+    panel.detailBody:setHeight(math.max(40, bottom - detailsY))
     Theme.scrollbar(panel.detailBody)
     panel.layoutKind = nil
     panel.stockButtonY = panel.equipmentY + h * 3 + 12
@@ -142,13 +158,26 @@ function L.arrange(panel)
         panel.stockPage = false
         panel.graph:setVisible(true)
         panel.mapView:setVisible(true)
-        panel.detailBody:setVisible(true)
-        panel.hostBody:setVisible(true)
+        L.tab(panel, panel.settingsTab)
         if panel.batterySlot then
             panel.batterySlot:setVisible(true)
         end
         if panel.expansionSlot then panel.expansionSlot:setVisible(true) end
     end
+end
+
+---@param panel ISPanel Controller window
+---@param tab string Device or Controller
+---@return nil
+function L.tab(panel, tab)
+    panel.settingsTab = tab
+    local visible = panel.stockPage ~= true
+    panel.detailBody:setVisible(visible and tab == "Device")
+    panel.hostBody:setVisible(visible and tab == "Controller")
+    panel.deviceTab:setVisible(visible)
+    panel.controllerTab:setVisible(visible)
+    panel.deviceTab:setEnable(tab ~= "Device")
+    panel.controllerTab:setEnable(tab ~= "Controller")
 end
 
 ---@param panel ISPanel Controller window
@@ -163,34 +192,31 @@ function L.refresh(panel, state)
     local x, width = 10, body.width - 36
     local half = (width - 8) / 2
     local row = math.max(28, h + 6)
-    place(panel.nameEntry, x, h + 14, width)
+    place(panel.nameEntry, x, 8, width)
     panel.nameEntry:setHeight(row)
-    local info = kind == "Controller" and h + 14 or h + row + 24
+    local info = row + 16
     panel.infoY = body.y + info
-    panel.controlsY = info + h * 4 + 8
-    local actionY = panel.controlsY + h + 12
-    place(panel.manage, x, actionY, width)
-    local connection = actionY + (require("OMHTT/ControlDefinitions").defense(kind) and row + 14 or 0)
-    if require("OMHTT/ControlTargeting").supported(kind) then
-        place(panel.targeting, x, connection, width)
-        panel.targeting:setHeight(row)
-        connection = connection + row + 10
+    panel.controlsY = info + h * 2 + 8
+    local actionY = panel.controlsY
+    place(panel.manage, x, actionY, half)
+    place(panel.assign, x + half + 8, actionY, half)
+    local policyY = actionY + row + 8
+    place(panel.targeting, x, policyY, half)
+    place(panel.policy, x + half + 8, policyY, half)
+    panel.targeting:setHeight(row)
+    local bottom = policyY + row + 8
+    place(panel.trigger, x, bottom, width)
+    if kind == "Plate" or kind == "Lever" or kind == "Button" then
+        bottom = bottom + row + 8
     end
-    panel.connectionY = body.y + connection
-    local controlsY = connection + h * 5 + 16
-    place(panel.trigger, x, controlsY, width)
-    local bottom = controlsY + (require("OMHTT/ControlDefinitions").inputs[kind] and row + 12 or 6)
-    panel.accessY = body.y + bottom
-    local buttonY = bottom + h + 12
-    local stacked = assigned and half < getTextManager():MeasureStringX(UIFont.Small, getText("UI_OMHTT_Access", "Private")) + 24
-    place(panel.policy, x, buttonY, assigned and not stacked and half or width)
-    place(panel.assign, stacked and x or x + half + 8, buttonY + (stacked and row + 8 or 0), stacked and width or half)
-    panel.ownerY = buttonY + row + 8 + (stacked and row + 8 or 0)
+    panel.accessY = body.y + policyY
+    panel.connectionY = body.y + bottom
+    panel.ownerY = bottom + h * 2 + 6
     local controls = {panel.policy, panel.manage, panel.assign, panel.trigger}
     for i = 1, #controls do
         controls[i]:setHeight(row)
     end
-    body.contentHeight = assigned and panel.ownerY + h + 14 or body.height
+    body.contentHeight = assigned and panel.ownerY + h + 10 or body.height
     Theme.scrollbar(body)
     body:setScrollHeight(body.contentHeight)
     body:setYScroll(math.max(math.min(0, body.height - body.contentHeight), body:getYScroll()))
@@ -244,86 +270,57 @@ end
 ---@return nil
 function L.drawDetails(panel, host, state)
     if not host then return end
+    local body, h, x = panel.detailBody, panel.lineHeight, 10
+    local width, scroll = body.width - 36, body:getYScroll()
     if not state or panel.selected == panel.object then
-        panel.detailBody:section(0, panel.detailBody.height, getText("UI_OMHTT_DeviceSettings"))
-        panel.detailBody:drawText(getText("UI_OMHTT_SelectDevice"), 10, panel.lineHeight + 14, .8, .8, .8, 1, UIFont.Small)
+        body:drawText(getText("UI_OMHTT_SelectDevice"), x, 10, .8, .8, .8, 1, UIFont.Small)
         return
     end
-    local body, h, x = panel.detailBody, panel.lineHeight, 10
-    local width = body.width - 36
-    local infoY, accessY, connectionY = panel.infoY - body.y, panel.accessY - body.y, panel.connectionY - body.y
-    body:section(0, panel.controlsY - 4, getText("UI_OMHTT_DeviceSettings"))
-    if require("OMHTT/ControlDefinitions").defense(state.kind) or state.kind == "Controller" then
-        body:section(panel.controlsY, connectionY - 8, getText("UI_OMHTT_Controls"))
-    end
-    body:section(accessY, body.contentHeight - 4, getText("UI_OMHTT_AccessAssignment"))
-    body:section(connectionY, accessY - 10, getText("UI_OMHTT_Connections"))
-    local scroll = body:getYScroll()
-    body:setStencilRect(x, infoY + scroll, width, h * 4)
+    local infoY = panel.infoY - body.y
+    local half = (width - 8) / 2
     local dx, dy = panel.selected:getX() - panel.object:getX(), panel.selected:getY() - panel.object:getY()
-    body:drawText(getText("UI_OMHTT_DeviceDistance", string.format("%.1f", math.sqrt(dx * dx + dy * dy))), x, infoY, .75, .75, .75, 1, UIFont.Small)
     local status = state.active and "UI_OMHTT_InputOn" or "UI_OMHTT_InputOff"
     if state.kind == "Turret" then
         local T = require("OMHTT/Turret")
         status = T.isOn(T.state(panel.selected)) and "UI_OMHTT_PowerOn" or "UI_OMHTT_PowerOff"
-    elseif state.kind == "Controller" then
-        status = state.powered and "UI_OMHTT_PowerOn" or "UI_OMHTT_PowerOff"
     elseif state.kind == "Tether" then
         status = "UI_OMHTT_TetherStats"
     elseif state.kind == "Poke" then
         status = "UI_OMHTT_PokeContact"
+    elseif require("OMHTT/ControlDefinitions").inputs[state.kind] and state.powered ~= true then
+        status = "UI_OMHTT_TriggerUnpowered"
     end
-    if require("OMHTT/ControlDefinitions").inputs[state.kind] and state.powered ~= true then status = "UI_OMHTT_TriggerUnpowered" end
-    body:drawText(getText(status), x, infoY + h, .85, .85, .85, 1, UIFont.Small)
-    local assigned = state.controller == host.id and "UI_OMHTT_DeviceAssigned" or "UI_OMHTT_DeviceUnassigned"
-    if panel.selected == panel.object then
-        assigned = "UI_OMHTT_ControlController"
-    end
-    local info = getText("UI_OMHTT_DeviceCondition", panel.selected:getHealth(), panel.selected:getMaxHealth())
-    body:drawText(panel.ammoSummary or info, x, infoY + h * 2, .75, .75, .75, 1, UIFont.Small)
-    body:drawText(panel.ammoSummary and info or getText(assigned), x, infoY + h * 3, .75, .75, .75, 1, UIFont.Small)
+    body:setStencilRect(x, infoY + scroll, half, h * 2)
+    body:drawText(getText(status), x, infoY, .85, .85, .85, 1, UIFont.Small)
+    body:drawText(getText("UI_OMHTT_DeviceCondition", panel.selected:getHealth(), panel.selected:getMaxHealth()), x, infoY + h, .75, .75, .75, 1, UIFont.Small)
     body:clearStencilRect()
     body:repaintStencilRect(0, 0, body.width, body.height)
-    body:setStencilRect(x, panel.ownerY + scroll, width, h)
-    body:drawText(getText("UI_OMHTT_ControlOwner", state.owner), x, panel.ownerY, .65, .65, .65, 1, UIFont.Small)
+    body:setStencilRect(x + half + 8, infoY + scroll, half, h * 2)
+    body:drawText(getText("UI_OMHTT_DeviceDistance", string.format("%.1f", math.sqrt(dx * dx + dy * dy))), x + half + 8, infoY, .75, .75, .75, 1, UIFont.Small)
+    body:drawText(panel.ammoSummary or getText(state.controller == host.id and "UI_OMHTT_DeviceAssigned" or "UI_OMHTT_DeviceUnassigned"), x + half + 8, infoY + h, .75, .75, .75, 1, UIFont.Small)
     body:clearStencilRect()
     body:repaintStencilRect(0, 0, body.width, body.height)
-    local hintY = connectionY + h + 8
-    body:setStencilRect(x, hintY + scroll, width, h * 4)
-    local hint = getText(panel.graph.notice or "UI_OMHTT_GraphConnectHint")
-    if not panel.graph.notice and state.kind == "Controller" then
-        hint = getText("UI_OMHTT_ControllerRange", A.radius(panel.object))
-    elseif panel.linkSource then
+    local hint = panel.graph.batchNotice or getText(panel.graph.notice or "UI_OMHTT_GraphConnectHint")
+    if panel.linkSource then
         hint = getText("UI_OMHTT_SelectedInput", U.name(panel.linkSource))
+    elseif state.kind == "Poke" and not panel.graph.notice and not panel.graph.batchNotice then
+        hint = getText("UI_OMHTT_PokeNoInputs")
     end
-    if state.kind == "Tether" then hint = getText("UI_OMHTT_TetherMode") end
-    if state.kind == "Poke" then hint = getText("UI_OMHTT_PokeContact") end
-    local count = getText("UI_OMHTT_OutputCount", #state.links)
-    if state.kind == "Turret" or state.kind == "Tether" then
-        local source = A.state(panel.linkSource)
-        count = getText(source and (require("OMHTT/ControlDefinitions").linked(source, state)
-            and "UI_OMHTT_InputConnected" or "UI_OMHTT_InputNotConnected") or "UI_OMHTT_GraphDisconnectHint")
-    end
-    if panel.linkSource == panel.selected and not require("OMHTT/ControlDefinitions").defense(state.kind) then
-        count = getText("UI_OMHTT_SelectReceiverHint")
-    end
-    if state.kind == "Controller" then
-        count = getText("UI_OMHTT_ControllerLimits")
-    end
-    if state.kind == "Poke" then count = getText("UI_OMHTT_PokeNoInputs") end
-    local key = hint .. "\n" .. count .. tostring(width)
+    body.tooltip = hint
+    local key = hint .. tostring(width)
     if body.connectionKey ~= key then
         body.connectionKey = key
-        local measure = getTextManager()
-        body.hintLines = string.split(measure:WrapText(UIFont.Small, hint, width), "\n")
-        body.countLines = string.split(measure:WrapText(UIFont.Small, count, width), "\n")
+        body.hintLines = string.split(getTextManager():WrapText(UIFont.Small, hint, width), "\n")
     end
+    local hintY = panel.connectionY - body.y
+    body:setStencilRect(x, hintY + scroll, width, h * 2)
     for i = 1, math.min(2, #body.hintLines) do
         body:drawText(body.hintLines[i], x, hintY + (i - 1) * h, .8, .8, .8, 1, UIFont.Small)
     end
-    for i = 1, math.min(2, #body.countLines) do
-        body:drawText(body.countLines[i], x, hintY + (math.min(2, #body.hintLines) + i - 1) * h, .7, .7, .7, 1, UIFont.Small)
-    end
+    body:clearStencilRect()
+    body:repaintStencilRect(0, 0, body.width, body.height)
+    body:setStencilRect(x, panel.ownerY + scroll, width, h)
+    body:drawText(getText("UI_OMHTT_ControlOwner", state.owner), x, panel.ownerY, .7, .7, .7, 1, UIFont.Small)
     body:clearStencilRect()
     body:repaintStencilRect(0, 0, body.width, body.height)
 end

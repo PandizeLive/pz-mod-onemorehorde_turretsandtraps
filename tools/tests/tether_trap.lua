@@ -33,7 +33,23 @@ local function run()
     state.links = 0
     check(C.start(state, true, false), "Unlink restores sensing")
     C.step(state, 20, collision, hit)
-    check(impacts == 1 and state.phase == "idle", "Stall causes no late damage")
+    check(impacts == 1 and state.phase == "reset" and state.resetLeft == .4, "Stall causes no late damage and retains refire reset")
+    C.step(state, .4, collision, hit)
+    check(state.phase == "idle", "Stall reset eventually completes")
+    local reset=C.new(0,0,0,1,0,{range=6,speed=30,returnSpeed=4,resetTime=3,holdTime=.75})
+    reset.phase="reset";reset.resetLeft=3
+    for i=1,29 do C.step(reset,.1,collision,hit) end
+    check(reset.phase=="reset" and not C.start(reset,true,false),"Three-second reset blocks early refire")
+    C.step(reset,.1,collision,hit)
+    check(reset.phase=="idle","Three-second reset completes at normal simulation speed")
+    reset.phase="reset";reset.resetLeft=3
+    C.step(reset,1.5,collision,hit);C.step(reset,1.5,collision,hit)
+    check(reset.phase=="idle","Accelerated simulation consumes the same reset duration")
+    reset.phase="out";reset.debt=1.8
+    C.step(reset,.5,collision,hit)
+    check(reset.phase=="reset" and reset.resetLeft==3,"Excess catch-up debt retains the reset instead of refiring")
+    C.step(reset,2.5,collision,hit)
+    check(reset.phase=="reset" and reset.resetLeft==.5,"Large elapsed reset consumes elapsed time without travel callbacks")
     local message = C.snapshot(state, "control-304", 2, "100")
     check(C.accept(nil, message), "Persistent Controller identity supported")
     check(not C.accept(message, message), "Duplicate snapshot rejected")

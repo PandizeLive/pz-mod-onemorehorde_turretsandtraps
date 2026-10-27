@@ -39,6 +39,8 @@ return function(player)
     S.time=S.time+50; S.step(trap,state)
     assert(math.abs(zombie:getHealth() - .55) < .00001, "Native Tether pull is not 15")
     for i=1,12 do S.time=S.time+50; S.step(trap,state) end
+    assert(state.active and math.abs(zombie:getHealth()-.55)<.00001, "Three-second reset ended at old half-second interval")
+    for i=1,50 do S.time=S.time+50; S.step(trap,state) end
     assert(not state.active and trap:getHealth()==99 and math.abs(zombie:getHealth()-.55)<.00001, "Released input repeats or wear is wrong")
     assert(W.link(button,trap,false) and state.active, "Last unlink does not restore detection")
     assert(Action:new(player,trap,"TetherEnabled",false,nil,state.id):complete(), "Disable rejected")

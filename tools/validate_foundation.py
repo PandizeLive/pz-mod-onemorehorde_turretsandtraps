@@ -78,6 +78,8 @@ def main():
     keys.update("UI_OMHTT_Module" + name for name in ["Firing", "MotionDetection", "Filter", "Detection360"])
     keys.update("UI_OMHTT_Priority" + name for name in ["Closest", "Furthest", "Weakest", "Toughest"])
     keys.update(["UI_OMHTT_PowerOn", "UI_OMHTT_PowerOff", "UI_OMHTT_PriorityRandom"])
+    keys.discard("UI_OMHTT_Batch")
+    keys.update("UI_OMHTT_Batch" + key for key in ["Stale", "Missing", "Access", "OtherController", "Unassigned", "Range", "Broken", "Power", "Capacity"])
     for key in keys:
         assert key in translations, f"Missing translation: {key}"
     sandbox = (PACKAGE / "42.20/media/sandbox-options.txt").read_text()

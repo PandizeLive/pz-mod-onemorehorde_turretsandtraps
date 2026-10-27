@@ -92,6 +92,7 @@ for _,count in pairs({64,256}) do
     local graph={width=300,height=500,refreshDue=-1,defenses={},getScrollHeight=function() return 0 end,
         getYScroll=function() return 0 end,setScrollHeight=function() end,setYScroll=function() end}
     local owner={object=host,graph=graph,devices={items={}},lineHeight=18}
+    graph.owner=owner
     for i=1,count do
         owner.devices.items[i]={item={state={id='graph-'..i,kind='Button',owner='performance-owner',number=i,links={}}}}
     end

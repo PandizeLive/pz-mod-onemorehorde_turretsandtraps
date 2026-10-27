@@ -469,7 +469,7 @@
     "Sandbox_OMHTurretsTraps_TetherHoldSeconds": "Hold Duration",
     "Sandbox_OMHTurretsTraps_TetherHoldSeconds_tooltip": "Tether Dart Trap hold duration. Speeds use tiles per second; durations use active real-time seconds.",
     "Sandbox_OMHTurretsTraps_TetherResetSeconds": "Reset Duration",
-    "Sandbox_OMHTurretsTraps_TetherResetSeconds_tooltip": "Tether Dart Trap reset duration. Speeds use tiles per second; durations use active real-time seconds.",
+    "Sandbox_OMHTurretsTraps_TetherResetSeconds_tooltip": "Time after the nail returns before firing again. Advances with simulation speed.",
     "Sandbox_OMHTurretsTraps_TetherHitDamage": "Impact Damage",
     "Sandbox_OMHTurretsTraps_TetherHitDamage_tooltip": "Tether Dart Trap impact damage. Speeds use tiles per second; durations use active real-time seconds.",
     "Sandbox_OMHTurretsTraps_TetherPullDamage": "Pull Damage",

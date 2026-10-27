@@ -13,6 +13,15 @@ return function(player)
     require("OMHTT/ControlPower").trigger = function() return true end
     assert(isServer() and not isClient(), "Controls probe requires actual server mode")
     if EXPECT_READ then
+        local batchFixture=ModData.getOrCreate("OMHTTNativeBatchC484")
+        local records=C.records().records
+        local savedHost=records[batchFixture.host]
+        assert(savedHost and records[batchFixture.first].controller==savedHost.id
+            and records[batchFixture.second].controller==savedHost.id
+            and savedHost.organization.members[batchFixture.first]=="1"
+            and savedHost.organization.members[batchFixture.second]=="1",
+            "Fresh process lost native bulk assignment/group state")
+        print("[OMHTT-C484] fresh-process batch assignment/group persistence=passed")
         local targetingFixture = ModData.getOrCreate("OMHTTNativeTargeting")
         local targetingHost = C.records().records[targetingFixture.controller]
         assert(targetingHost and targetingHost.targeting == "OtherFactions", "Fresh process lost Controller target default")
@@ -625,5 +634,21 @@ return function(player)
     fixture.retired = C.records().records[button:getModData().OMHTTControl.id].id
     C.records().records[fixture.retired].links = {output.id}
     print("[OMHTT-Controls] native devices=3 ownership=private read=public replay=blocked remote=power-scoped plate=recovery-safe backup=48h heavy=exact capacities=30")
+    local batchController=create("Controller","omhtt_turret_01_21")
+    local batchHost=C.state(batchController)
+    batchHost.powered=true
+    local one=create("Button","appliances_radio_01_0")
+    local two=create("Plate","floors_interior_tilesandwood_01_40")
+    C.detach(C.state(one),one);C.detach(C.state(two),two)
+    assert(Action:new(player,batchController,"GroupAdd","0|||Batch",nil,batchHost.id):complete(),"Native batch group creation failed")
+    local payload={mode="Move",group="1",before="",revision=1,serial=1,player=0,ids={C.state(one).id,C.state(two).id}}
+    local batchAction=Action:new(player,batchController,"Batch",payload,nil,batchHost.id)
+    assert(batchAction:complete() and not batchAction:complete(),"Native batch action or replay guard failed")
+    assert(C.state(one).controller==batchHost.id and C.state(two).controller==batchHost.id
+        and batchHost.organization.members[payload.ids[1]]=="1" and batchHost.organization.members[payload.ids[2]]=="1"
+        and #batchHost.organization.order==2,"Native batch lost an assignment or group member")
+    local batchFixture=ModData.getOrCreate("OMHTTNativeBatchC484")
+    batchFixture.host,batchFixture.first,batchFixture.second=batchHost.id,payload.ids[1],payload.ids[2]
+    print("[OMHTT-C484] native batch assignment=2 grouping=2 replay=blocked connectedClients=0")
     require("OMHTT/ControlPower").trigger = triggerPower
 end

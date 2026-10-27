@@ -330,6 +330,56 @@ C.objects[host.id]=nil
 C.reconcile(distant,distantState)
 check(distantState.controller==host.id,"Unloaded Controller does not provide evidence to discard assignment")
 C.objects[host.id]=savedObject
+-- C484: bulk group moves use one authority batch, including assignment and partial receipts.
+local Batch = require("OMHTT/ControlBatch")
+local batchHost, bh = device("Controller", 1910, 1910)
+bh.powered = true
+bh.organization = {revision=0,serial=1,groups={{id="1",name="Batch"}},members={},order={}}
+local ba, bas = device("Button", 1911, 1910)
+local bb, bbs = device("Plate", 1912, 1910)
+local foreign, fs = device("Button", 1913, 1910)
+fs.owner, fs.access = "outsider", "Public"
+local elsewhere, es = device("Button", 1914, 1910)
+es.controller = host.id
+local oldSend, receipt = sendServerCommand, nil
+sendServerCommand = function(p,m,c,r) receipt=r end
+local value={mode="Move",group="1",before="",revision=0,serial=1,player=0,ids={bas.id,bbs.id,fs.id,es.id,"missing-device"}}
+local action=Action:new(owner,batchHost,"Batch",value,nil,bh.id)
+check(action:complete() and bas.controller==bh.id and bbs.controller==bh.id,
+    "Batch drop assigns both eligible unassigned devices")
+check(receipt.applied==2 and receipt.skipped==3 and receipt.reasons.Access==1
+    and receipt.reasons.OtherController==1 and receipt.reasons.Missing==1,
+    "Batch receipt explains foreign, other-controller and missing skips")
+check(bh.organization.members[bas.id]=="1" and bh.organization.members[bbs.id]=="1"
+    and bh.organization.order[1]==bas.id and bh.organization.order[2]==bbs.id and bh.organization.revision==1,
+    "Batch grouping retains both cards in order with one organization revision")
+check(not action:complete(),"Same timed action cannot apply twice")
+check(not fs.controller and es.controller==host.id,"Bulk operations never steal another owner's or Controller's devices")
+local fresh, freshState=device("Button",1912,1911)
+value={mode="Move",group="1",before="",revision=0,serial=2,player=0,ids={freshState.id}}
+check(Action:new(owner,batchHost,"Batch",value,nil,bh.id):complete() and receipt.reasons.Stale==1
+    and not freshState.controller,"Stale group revision rejects before assignment")
+value.revision=1;value.ids={freshState.id,freshState.id}
+check(not Action:new(owner,batchHost,"Batch",value,nil,bh.id):isValid(),"Duplicate identities reject malformed batch")
+value.ids={freshState.id};value.group="deleted"
+check(Action:new(owner,batchHost,"Batch",value,nil,bh.id):complete() and receipt.reasons.Stale==1
+    and not freshState.controller,"Deleted group cannot cause assignment side effect")
+value.group="1";value.mode="Assign";bh.powered=false
+check(Action:new(owner,batchHost,"Batch",value,nil,bh.id):complete() and receipt.reasons.Power==1,
+    "Offline Controller rejects new assignments")
+value.mode="Unassign";value.ids={bas.id,bbs.id};ba.square=makeSquare(1990,1910,0)
+check(Action:new(owner,batchHost,"Batch",value,nil,bh.id):complete() and receipt.applied==2
+    and not bas.controller and not bbs.controller and not bh.organization.members[bas.id]
+    and #bh.organization.order==0,"Bulk release works offline and out of range, clearing group metadata")
+bh.powered=true;value.mode="Assign";value.ids={freshState.id};value.revision=bh.organization.revision
+for i=1,32 do records["batch-cap-"..i]={id="batch-cap-"..i,placed=true,kind="Button",controller=bh.id} end
+check(Action:new(owner,batchHost,"Batch",value,nil,bh.id):complete() and receipt.reasons.Capacity==1
+    and not freshState.controller,"Bulk assignment honors the existing input capacity")
+for i=1,32 do records["batch-cap-"..i]=nil end
+value.ids={};for i=1,65 do value.ids[i]="batch-limit-"..i end
+check(not Action:new(owner,batchHost,"Batch",value,nil,bh.id):isValid(),"Oversized batches reject before world work")
+value.ids={};for i=1,64 do value.ids[i]="control-"..i end;testBatchPayload=value
+sendServerCommand=oldSend
 for i = 1, #made do C.removed(made[i]) end
 T.state, T.contents, T.cycleConfig = oldState, oldContents, oldConfig
 W.applyPower, W.fire, W.contents, W.power = oldPower, oldFire, oldWorldContents, oldWorldPower

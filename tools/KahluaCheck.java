@@ -386,6 +386,7 @@ public final class KahluaCheck {
             {"OMHTT/TurretHeadDescription", base + "shared/OMHTT/TurretHeadDescription.lua"},
             {"OMHTT/TurretManageExtras", base + "client/OMHTT/TurretManageExtras.lua"},
             {"OMHTT/TurretLoadOrderPanel", base + "client/OMHTT/TurretLoadOrderPanel.lua"},
+            {"OMHTT/ControlBatch", base + "shared/OMHTT/ControlBatch.lua"},
             {"OMHTT/ControlAction", base + "shared/OMHTT/ControlAction.lua"},
             {"OMHTT/ControlTransferAction", base + "shared/OMHTT/ControlTransferAction.lua"},
             {"_", "tools/tests/control_ui_bootstrap.lua"},
@@ -404,6 +405,7 @@ public final class KahluaCheck {
             {"OMHTT/ControlManage", base + "client/OMHTT/ControlManage.lua"},
             {"OMHTT/ControlConnectionList", base + "client/OMHTT/ControlConnectionList.lua"},
             {"OMHTT/ControlGroupUI", base + "client/OMHTT/ControlGroupUI.lua"},
+            {"OMHTT/ControlSelection", base + "client/OMHTT/ControlSelection.lua"},
             {"OMHTT/ControlGraph", base + "client/OMHTT/ControlGraph.lua"},
             {"OMHTT/ControlMap", base + "client/OMHTT/ControlMap.lua"},
             {"OMHTT/ControlHostDetails", base + "client/OMHTT/ControlHostDetails.lua"},
@@ -667,6 +669,32 @@ public final class KahluaCheck {
             }
             System.out.println("Optional audit: " + get.invoke(env, "testPackAudit"));
         }
+        Object batch = get.invoke(env, "testBatchPayload");
+        Class<?> networkTable = Class.forName("zombie.network.PZNetKahluaTableImpl");
+        var wire = java.nio.ByteBuffer.allocate(16384);
+        Object encoded = networkTable.getConstructor(java.util.Map.class).newInstance(new java.util.HashMap<>());
+        networkTable.getMethod("rawset", Object.class, Object.class).invoke(encoded, "value", batch);
+        networkTable.getMethod("save", java.nio.ByteBuffer.class).invoke(encoded, wire);
+        int batchBytes = wire.position();
+        wire.flip();
+        Object decoded = networkTable.getConstructor(java.util.Map.class).newInstance(new java.util.HashMap<>());
+        Class<?> reader = Class.forName("zombie.core.network.ByteBufferReader");
+        Object input = reader.getConstructor(java.nio.ByteBuffer.class).newInstance(wire);
+        networkTable.getMethod("load", reader, Class.forName("zombie.network.IConnection")).invoke(decoded, input, null);
+        Object restoredBatch = networkTable.getMethod("rawget", Object.class).invoke(decoded, "value");
+        for (String key : new String[]{"mode", "group", "before", "serial", "revision", "player"}) {
+            if (!java.util.Objects.equals(get.invoke(batch, key), get.invoke(restoredBatch, key)))
+                throw new IllegalStateException("Batch timed-action field did not survive: " + key);
+        }
+        Object originalIds = get.invoke(batch, "ids"), restoredIds = get.invoke(restoredBatch, "ids");
+        int batchSize = ((Number)tableType.getMethod("len").invoke(originalIds)).intValue();
+        if (((Number)tableType.getMethod("len").invoke(restoredIds)).intValue() != batchSize)
+            throw new IllegalStateException("Batch target count did not survive timed-action transport");
+        for (int i = 1; i <= batchSize; i++) {
+            if (!get.invoke(originalIds, Double.valueOf(i)).equals(get.invoke(restoredIds, Double.valueOf(i))))
+                throw new IllegalStateException("Batch target identity did not survive timed-action transport");
+        }
+        System.out.println("Native batch timed-action payload roundtrip: " + batchSize + " identities; " + batchBytes + " bytes");
         Object packets = get.invoke(env, "testPackets");
         int count = ((Number)tableType.getMethod("len").invoke(packets)).intValue();
         var buffer = java.nio.ByteBuffer.allocate(60000);

@@ -7,6 +7,7 @@ local U = require("OMHTT/ControlClient")
 local C = require("OMHTT/ControlDefinitions")
 local Groups = require("OMHTT/ControlGroupUI")
 local Theme = require("OMHTT/ControlTheme")
+local Selection = require("OMHTT/ControlSelection")
 local Graph = ISPanel:derive("OMHTTControlGraph")
 ---@param text string Label
 ---@param width number Pixel limit
@@ -175,7 +176,7 @@ function Graph.menu(panel, object, direct)
     menu:addSubMenu(assign, submenu)
     for i = 1, #panel.graph.groups do
         local group = panel.graph.groups[i]
-        submenu:addOption(group.name, panel, Groups.request, "DeviceMove", group.id, nil, nil, object)
+        submenu:addOption(group.name, panel, Selection.submit, "Move", group.id, nil, {state.id})
     end
     menu:bringToTop()
 end
@@ -191,6 +192,7 @@ end
 ---@param panel ISPanel Controller
 ---@return nil
 function Graph.refreshForPanel(panel)
+    Selection.refresh(panel)
     local groupPending, host = panel.groupPending, A.state(panel.object)
     if groupPending and host then
         if (host.organization and host.organization.revision or 0) ~= groupPending.revision then
@@ -272,6 +274,7 @@ function Graph.refreshForPanel(panel)
         end
     end
     Groups.layout(graph)
+    Selection.reconcile(graph)
     for i = 1, #graph.groups do
         graph.groups[i].label = cachedFit(graph, graph.groups[i].name, graph.width - 42)
     end
@@ -333,6 +336,15 @@ function Graph:onMouseDown(x, y)
         if group and y >= self.headerHeight then
             self.dragGroup = group
             self:setCapture(true)
+        elseif y >= self.headerHeight and y < self.height then
+            local initial = {}
+            if isCtrlKeyDown() then
+                for id in pairs(self.selection or {}) do initial[id] = true end
+            end
+            self.selectionBox = {x = x, y = y - self:getYScroll(), initial = initial}
+            self.selection = initial
+            self.selectionCount = #Selection.ids(self)
+            self:setCapture(true)
         end
         return true
     end
@@ -345,8 +357,11 @@ function Graph:onMouseDown(x, y)
             self.owner.linkSource = self.owner.linkSource ~= row.object and row.object or nil
         end
     else
-        self.dragSource = row.object
-        self:setCapture(true)
+        Selection.select(self, row, isCtrlKeyDown())
+        if self.selection[row.state.id] then
+            self.dragSource = row.object
+            self:setCapture(true)
+        end
     end
     return true
 end
@@ -359,11 +374,12 @@ function Graph:onMouseUp(x, y)
     local row = self:hit(x, y)
     local group = Groups.at(self, y)
     local moved = self.downX and math.abs(x - self.downX) + math.abs(y - self.downY) > 6
-    if group and self.dragSource and moved and (not row or row.object ~= self.dragSource) then
-        local state = A.state(self.dragSource)
-        if not row or C.defense(state.kind) == C.defense(row.state.kind) then
-            Groups.request(self.owner, "DeviceMove", group.id, row and row.state.id, nil, self.dragSource)
+    if self.selectionBox then
+        if moved then
+            Selection.box(self, x, y)
         end
+    elseif group and self.dragSource and moved then
+        Selection.submit(self.owner, "Move", group.id, row and row.state.id)
     elseif self.dragGroup and group and x >= 4 and x < self.width - 18 then
         if moved and self.dragGroup.id ~= "" then
             Groups.request(self.owner, "GroupMove", self.dragGroup.id, group.id)
@@ -372,14 +388,14 @@ function Graph:onMouseUp(x, y)
             self.refreshDue = 0
         end
     end
-    self.dragSource, self.dragGroup = nil, nil
+    self.dragSource, self.dragGroup, self.selectionBox = nil, nil, nil
     self:setCapture(false)
     return true
 end
 
 ---@return boolean handled
 function Graph:onMouseUpOutside()
-    self.dragSource, self.dragGroup = nil, nil
+    self.dragSource, self.dragGroup, self.selectionBox = nil, nil, nil
     self:setCapture(false)
     return true
 end
@@ -394,10 +410,15 @@ function Graph:onRightMouseUp(x, y)
         Graph.menu(self.owner, row.object)
     else
         local group = Groups.at(self, y)
-        if group and group.id ~= "" then
+        if group then
             local menu = ISContextMenu.get(self.owner.player:getPlayerNum(), getMouseX(), getMouseY())
-            menu:addOption(getText("UI_OMHTT_GroupRename"), self.owner, Groups.rename, group)
-            menu:addOption(getText("UI_OMHTT_GroupDelete"), self.owner, Groups.remove, group)
+            menu:addOption(getText("UI_OMHTT_SelectGroup"), self.owner, Selection.group, group)
+            menu:addOption(getText("UI_OMHTT_AssignWholeGroup"), self.owner, Selection.assignGroup, "Assign", group)
+            menu:addOption(getText("UI_OMHTT_UnassignWholeGroup"), self.owner, Selection.assignGroup, "Unassign", group)
+            if group.id ~= "" then
+                menu:addOption(getText("UI_OMHTT_GroupRename"), self.owner, Groups.rename, group)
+                menu:addOption(getText("UI_OMHTT_GroupDelete"), self.owner, Groups.remove, group)
+            end
             menu:bringToTop()
         end
     end
@@ -413,13 +434,21 @@ function Graph:prerender()
     self.addGroup:setX(self.width - self.addGroup.width - 18)
     self.addGroup:setY(5)
     self.addGroup:setEnable(A.authorized(self.owner.player, self.owner.object))
+    local busy = self.owner.groupPending or require("OMHTT/ControlBatch").pending[self.owner.player]
+    local buttonWidth = (self.width - 30) / 2
+    self.bulkAssign:setX(4)
+    self.bulkUnassign:setX(8 + buttonWidth)
+    self.bulkAssign:setWidth(buttonWidth)
+    self.bulkUnassign:setWidth(buttonWidth)
+    self.bulkAssign:setEnable((self.selectionCount or 0) > 0 and not busy)
+    self.bulkUnassign:setEnable((self.selectionCount or 0) > 0 and not busy)
     self:setStencilRect(0, header, self.width - 12, math.max(0, self.height - header))
     self:drawRectStatic(0, header, self.width, self.height - header, 1, .055, .055, .055)
     local half = (self.width - 88) / 2
     local mouseY, now = self:getMouseY() + self:getYScroll(), getTimestampMs()
     self:drawRectStatic(4, header, half - 4, self.height - header, 1, .035, .035, .035)
     self:drawRectStatic(half + 74, header, half - 4, self.height - header, 1, .035, .035, .035)
-    if (self.dragSource or self.dragGroup) and now >= (self.scrollAt or 0) then
+    if (self.dragSource or self.dragGroup or self.selectionBox) and now >= (self.scrollAt or 0) then
         if mouseY < header + 20 then
             self:onMouseWheel(-0.2)
         elseif mouseY > self.height - 20 then
@@ -440,13 +469,11 @@ function Graph:prerender()
         for i = first, last do
             local row, y = rows[i], rows[i].y
             if not row.collapsed and y + self:getYScroll() + rowHeight > header and y + self:getYScroll() < self.height then
-                local selected = row.object == self.owner.selected or row == hovered
+                local selected = (self.selection and self.selection[row.state.id]) or row == hovered
                 self:drawRect(x, y + 3, half - 4, rowHeight - 6, 1, selected and .11 or .025, selected and .11 or .025, selected and .11 or .025)
                 self:drawRectBorder(x, y + 3, half - 4, rowHeight - 6, 1, selected and .65 or .25, selected and .65 or .25, selected and .65 or .25)
                 if row == hovered and self.dragSource then
-                    local moving = A.state(self.dragSource)
-                    local valid = moving and C.defense(moving.kind) == C.defense(row.state.kind)
-                    self:drawRectBorder(x, y + 3, half - 4, rowHeight - 6, 1, valid and .4 or 1, valid and .9 or .3, .3)
+                    self:drawRectBorder(x, y + 3, half - 4, rowHeight - 6, 1, .4, .9, .3)
                 end
                 if self.owner.checking and self.owner.checking[row.object] then
                     self:drawText(spinner, x + half - 17, y + 6, .8, .8, .8, 1, UIFont.Small)
@@ -500,10 +527,18 @@ function Graph:prerender()
         end
     end
     if self.dragSource or self.dragGroup then
-        local label = self.dragSource and U.name(self.dragSource) or self.dragGroup.name
+        local label = self.dragSource and getText("UI_OMHTT_SelectedCount", self.selectionCount or 1) or self.dragGroup.name
         local x, y = self:getMouseX(), self:getMouseY()
         self:drawRect(x, y, math.max(0, math.min(150, self.width - x - 14)), 26, .95, .23, .23, .23)
         self:drawText(fit(label, math.max(0, math.min(142, self.width - x - 22))), x + 4, y + 4, 1, 1, 1, 1, UIFont.Small)
+    end
+    if self.selectionBox then
+        Selection.box(self, self:getMouseX(), mouseY)
+        local box = self.selectionBox
+        local x1, y1 = math.min(box.x, self:getMouseX()), math.min(box.y, self:getMouseY())
+        local width, height = math.abs(box.x - self:getMouseX()), math.abs(box.y - self:getMouseY())
+        self:drawRect(x1, y1, width, height, .15, .4, .7, 1)
+        self:drawRectBorder(x1, y1, width, height, .9, .4, .7, 1)
     end
     self:clearStencilRect()
     local scroll = self:getYScroll()
@@ -514,6 +549,14 @@ function Graph:prerender()
     if self.flashUntil and getTimestampMs() < self.flashUntil then
         self:drawRectBorder(1, -scroll, self.width - 16, self.height, .9, .7, .95, .7)
     end
+    local summary = getText("UI_OMHTT_SelectedCount", self.selectionCount or 0)
+    if self.batchNotice then
+        summary = summary .. " | " .. self.batchNotice
+        self.tooltip = self.batchNotice
+    elseif self.notice then
+        summary = summary .. " | " .. getText(self.notice)
+    end
+    self:drawText(fit(summary, self.width - 30), 8, self.owner.lineHeight + 18 - scroll, .8, .8, .8, 1, UIFont.Small)
     if self.owner.scanIndex then
         self:drawText("...", self.addGroup:getX() - 24, 6 - scroll, .7, .85, 1, 1, UIFont.Small)
     end
@@ -527,13 +570,14 @@ function Graph.create(owner)
     local graph = Graph:new(12, 180, 300, 400)
     graph.owner, graph.refreshDue = owner, 0
     graph.triggers, graph.defenses, graph.positions, graph.edges = {}, {}, {}, {}
-    graph.groups, graph.collapsed = {}, {}
+    graph.groups, graph.collapsed, graph.selection = {}, {}, {}
+    graph.selectionCount = 0
     graph.markers = {}
     graph.markerByObject = {}
     graph.stats = setmetatable({}, {__mode = "k"})
     graph.statsIndex, graph.statsDue = 1, 0
     graph.tooltip = getText("UI_OMHTT_GraphLinkHelp")
-    graph.headerHeight, graph.rowHeight = owner.lineHeight * 2 + 24, owner.lineHeight * 3 + 12
+    graph.headerHeight, graph.rowHeight = owner.lineHeight * 4 + 52, owner.lineHeight * 3 + 12
     graph:initialise()
     graph:setScrollChildren(false)
     local caption = getText("UI_OMHTT_GroupAdd")
@@ -544,6 +588,18 @@ function Graph.create(owner)
     Theme.button(graph.addGroup)
     graph.addGroup.tooltip = getText("UI_OMHTT_GroupAddHelp")
     graph:addChild(graph.addGroup)
+    graph.bulkAssign = ISButton:new(4, owner.lineHeight * 2 + 24, 100, owner.lineHeight + 8,
+        getText("UI_OMHTT_Assign"), owner, function(panel) Selection.submit(panel, "Assign") end)
+    graph.bulkUnassign = ISButton:new(108, owner.lineHeight * 2 + 24, 100, owner.lineHeight + 8,
+        getText("UI_OMHTT_Unassign"), owner, function(panel) Selection.submit(panel, "Unassign") end)
+    graph.bulkAssign:initialise()
+    graph.bulkUnassign:initialise()
+    graph.bulkAssign.tooltip = getText("UI_OMHTT_AssignSelectedHelp")
+    graph.bulkUnassign.tooltip = getText("UI_OMHTT_UnassignSelectedHelp")
+    Theme.button(graph.bulkAssign)
+    Theme.button(graph.bulkUnassign)
+    graph:addChild(graph.bulkAssign)
+    graph:addChild(graph.bulkUnassign)
     graph:addScrollBars(false)
     Theme.scrollbar(graph)
     owner:addChild(graph)

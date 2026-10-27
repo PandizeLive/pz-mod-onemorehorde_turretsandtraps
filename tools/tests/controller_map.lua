@@ -372,10 +372,34 @@ local function run(panel, player, controller)
     getPlayerScreenHeight = function() return 1080 end
     G.resize(panel, 1220, 1000)
     panel:prerender()
-    check(panel.infoY + panel.lineHeight * 4 <= panel.detailBody.y + panel.detailBody.height
+    check(panel.infoY + panel.lineHeight * 2 <= panel.detailBody.y + panel.detailBody.height
         and math.abs(panel.detailBody.width - panel.hostBody.width) <= 1
-        and panel.detailBody.y == panel.hostBody.y, "Equal settings panes keep device summary visible and scroll remaining controls")
+        and panel.detailBody.y == panel.hostBody.y, "Tabbed full-width settings keep summary visible and scroll remaining controls")
     check(panel.mapView.height >= panel.detailBody.height * 1.8,"Map retains roughly two-thirds of the right column")
+    local Selection=require("OMHTT/ControlSelection")
+    local Layout=require("OMHTT/ControlPanelLayout")
+    check(panel.detailBody.x==panel.hostBody.x and panel.detailBody.width==panel.mapView.width,
+        "Settings tabs share the full map width")
+    Layout.tab(panel,"Controller")
+    check(panel.hostBody.visible and not panel.detailBody.visible,"Controller tab shows only Controller settings")
+    Layout.tab(panel,"Device")
+    check(panel.detailBody.visible and not panel.hostBody.visible,"Device tab restores only device settings")
+    local gr=panel.graph
+    gr.selection={}
+    Selection.select(gr,gr.triggers[1],false)
+    Selection.select(gr,gr.defenses[1],true)
+    check(gr.selectionCount==2,"Ctrl selection spans both graph columns")
+    Selection.select(gr,gr.triggers[1],true)
+    check(gr.selectionCount==1 and gr.selection[gr.defenses[1].state.id],"Ctrl selection toggles one card off")
+    gr.selectionBox={x=0,y=gr.headerHeight,initial={}}
+    Selection.box(gr,gr.width-20,gr.height)
+    check(gr.selectionCount==2,"Box selection includes visible device cards in both columns")
+    gr.selectionBox=nil
+    gr.collapsed[gr.triggers[1].group]=true
+    Groups.layout(gr);Selection.reconcile(gr)
+    check(gr.selectionCount==0,"Collapsed cards do not remain hidden bulk targets")
+    gr.collapsed={};Groups.layout(gr)
+    require("OMHTT/ControlBatch").pending[player]=nil
     testControllerSvg = require("tests/UITrace")(panel)
     getPlayerScreenHeight = previousHeight
     G.resize(panel, 1220, 690)

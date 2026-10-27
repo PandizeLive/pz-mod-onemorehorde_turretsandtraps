@@ -1,6 +1,53 @@
 local G = {}
 local A = require("OMHTT/ControlAccess")
 
+---@param data table Detached organization
+---@param ids table Ordered moved identities
+---@param group string Destination group
+---@param before string Insertion identity
+---@param records table Authority records
+---@param hostId string Controller identity
+---@return nil
+function G.move(data, ids, group, before, records, hostId)
+    local moving, present, order, remaining = {}, {}, {}, {}
+    for i = 1, #ids do
+        moving[ids[i]] = true
+    end
+    for i = 1, #data.order do
+        local id = data.order[i]
+        local state = records[id]
+        if state and state.placed and state.controller == hostId then
+            if not moving[id] and not present[id] then
+                order[#order + 1] = id
+                present[id] = true
+            end
+        else
+            data.members[id] = nil
+        end
+    end
+    for id, state in pairs(records) do
+        if state.placed and state.controller == hostId and not moving[id] and not present[id] then
+            remaining[#remaining + 1] = id
+        end
+    end
+    table.sort(remaining)
+    for i = 1, #remaining do
+        order[#order + 1] = remaining[i]
+    end
+    local position = #order + 1
+    for i = 1, #order do
+        if order[i] == before then
+            position = i
+        end
+    end
+    for i = 1, #ids do
+        table.insert(order, position + i - 1, ids[i])
+        data.members[ids[i]] = group ~= "" and group or nil
+    end
+    data.order = order
+    data.revision = data.revision + 1
+end
+
 ---@param state table Controller state
 ---@return table organization Detached snapshot
 function G.copy(state)

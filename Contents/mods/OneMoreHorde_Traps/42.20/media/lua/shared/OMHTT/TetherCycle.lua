@@ -57,16 +57,22 @@ end
 ---@param pull function? Authoritative retraction callback
 ---@return nil
 function C.step(state, elapsed, cast, hit, pull)
-    if not C.finite(elapsed) or elapsed < 0 or elapsed > 2 then
-        C.cancel(state)
-        return
-    end
     if state.phase == "idle" then return end
-    state.debt = state.debt + elapsed
-    if state.debt > 2 then
-        C.cancel(state)
+    if not C.finite(elapsed) or elapsed < 0 or elapsed > 2 or state.debt + elapsed > 2 then
+        -- Discard unsafe travel catch-up, but never reopen firing through cancellation.
+        if state.phase ~= "reset" then
+            state.resetLeft = state.resetTime
+        elseif C.finite(elapsed) and elapsed >= 0 then
+            state.resetLeft = math.max(0, state.resetLeft - elapsed)
+        end
+        state.phase, state.distance, state.debt = "reset", 0, 0
+        state.revision = state.revision + 1
+        if state.resetLeft <= .000001 then
+            C.cancel(state)
+        end
         return
     end
+    state.debt = state.debt + elapsed
     for i = 1, 8 do
         if state.debt <= .000001 or state.phase == "idle" then break end
         local dt = math.min(math.max(.05, elapsed / 8), state.debt)

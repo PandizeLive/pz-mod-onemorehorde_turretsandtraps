@@ -79,3 +79,12 @@ Horde Night `OMH_DefenseSettings.lua` currently audits `TetherResetSeconds` agai
 Smallest useful checks: selection hit bounds and ports/header precedence; mixed eligibility and stale/deleted identities; one versus several selected cards; order/group persistence; permission/range/capacity rejection; offline/out-of-range release; native batch serialization and independent package startup; tab layout at minimum width; cooldown normal speed/fast-forward/large elapsed handling. Rendered and connected-player acceptance remain separate.
 
 Medium reasoning is sufficient; estimate 35-55 minutes for the combined selection/authority/layout patch and verification, so recommend Fast. Current 0.2.69.1 remains installed. No Source, Contents, save, Workshop draft or sibling changes. Owner's unrelated AMMO_UI_C446.md edit is preserved. Planning is committed locally; the previous automatic approval-review rejection still blocks the private mirror, and no upload is retried. **Decision needed: 1A or 1B group-drop behavior.**
+
+
+## C484 - 1B selected; group assignment retained (2026-10-26)
+
+Owner: "1B (we'll still have group signing)". Implement assignment-on-drop and retain separate bulk selection controls plus direct whole-group Assign/Unassign. Three-second post-return reset and Tabbed inspector remain selected; stale preview carousel selections do not override the owner's explicit2C.
+
+Owner subsequently answers **"Yes, include the matching baseline correction"** to the specific Horde Night audit update from0.5 to3 seconds, with saved settings and historical run flags left untouched. This authorizes only the matching rule/capability and its normal versioned local packaging, not broader Horde gameplay or publication.
+
+[Implemented patch](PATCH_v0.2.70.md), [verification](TEST_v0.2.70.md), and sibling `docs/PATCH_v0.6.16.9.md` record behavior and evidence. No further design decision is pending. Local installation is finalized only after the required native/package checks and immutable tags. Do not silently migrate saved reset tuning. Private mirror remains blocked by the earlier review; owner AMMO_UI_C446.md edit is untouched.

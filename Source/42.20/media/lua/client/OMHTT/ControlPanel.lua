@@ -174,6 +174,7 @@ end
 function Panel:close()
     require("OMHTT/WindowGeometry").close(self)
     self.closed = true
+    require("OMHTT/ControlBatch").pending[self.player] = nil
     if self.cursor and getCell():getDrag(self.player:getPlayerNum()) == self.cursor then
         getCell():setDrag(nil, self.player:getPlayerNum())
     end
@@ -409,11 +410,10 @@ function Panel:showStockpile(visible)
     if not self.stockCompact then return end
     self.stockPage = visible ~= false
     self.stockWing:setVisible(self.stockPage)
-    self.detailBody:setVisible(not self.stockPage)
+    require("OMHTT/ControlPanelLayout").tab(self, self.settingsTab)
     self.devices:setVisible(false)
     self.graph:setVisible(not self.stockPage)
     self.mapView:setVisible(not self.stockPage)
-    self.hostBody:setVisible(not self.stockPage)
     self.batterySlot:setVisible(not self.stockPage)
     if self.expansionSlot then self.expansionSlot:setVisible(not self.stockPage) end
     self.stockButton:setTitle(getText(self.stockPage and "UI_OMHTT_StockpileBack" or "UI_OMHTT_OpenStockpile"))

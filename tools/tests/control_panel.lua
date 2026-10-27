@@ -74,7 +74,7 @@ check(panel.assign.enabled and not panel.manage.enabled and panel.manage.tooltip
 turret.data.OMHTTControl.controller=object.data.OMHTTControl.id
 panel:prerender()
 check(panel.setFacing == nil and panel.manage.enabled, "Controller opens Manage; Set Aim is in Manage")
-check(panel.policy.y > panel.connectionY - panel.detailBody.y, "Access follows Connections")
+check(panel.policy.y == panel.targeting.y and panel.manage.y == panel.assign.y, "Tabbed inspector pairs controls on compact rows")
 local source=setmetatable({data={OMHTTControl={id="ui-input",kind="Plate",owner="ui-owner",links={}}}}, {__index=object})
 panel.linkSource=source
 A.near=function() return true end
