@@ -11,7 +11,7 @@ C484, 2026-10-26. Automated verification is complete; installation is recorded s
 - Intermediate native failures: the old tether fixture expected the half-second reset; updated to assert that it remains busy through that interval and finishes after3 seconds. New batch fixture initially supplied sprites incompatible with its legacy native entity helper; corrected to reuse the existing helper's accepted sprites. Do not classify those intermediate runs as successful release proofs.
 - Final native write/read pass in107.3/108.1 seconds with no connected player; actual batch assignment/grouping, replay rejection and fresh-process persistence pass.
 - Independent Traps/Turrets/both startups pass in93.5/89.8/98.5 seconds at0.2.70.
-- Local installation and immutable-tag/hash evidence pending.
+- Installed from immutable test/v0.2.70 / 85d2551daafd1dbcb8ede9fdc0938adea9f4b2c1. All 446 source and 614 package/tag/install/archive files plus both previous-package backups verify. Horde/Cure 0.6.16.9 is also installed and hash-verified. Rendered and connected-player acceptance remain pending.
 
 ## Owner checklist after verified installation
 
@@ -22,3 +22,13 @@ C484, 2026-10-26. Automated verification is complete; installation is recorded s
 - Tether recovery with Reset Duration set to3.
 
 Connected multiplayer remains pending/deferred. No new world is required; restart for installed Lua changes. Saved tuning is not rewritten.
+
+## Local delivery evidence
+
+T&T backup: `diagnostics/p1c1/install-backups/20261026-220520-5157`; previous0.2.69.1 packages verify234/376 files. Archive `artifacts/OMHTT-0.2.70.zip`, SHA-256 `acea66fb66f84c8e6b23763447c1fc5a36cf81b6c5dd8db09e3261400eb3079a`. Machine-readable proof: `diagnostics/v0.2.70/local-release.json`.
+
+Horde/Cure tagged source `test/v0.6.16.9` / `1544656b614347b3bddc8be30aa901cb82d9026c` installed through its root launcher; local mods and local Workshop staging hashes match. Backup: `C:/Users/bandi/Zomboid/OMH-local-backups/before-v0.6.16.9-20261026-220541-6681`. Trait Shop unchanged. Native isolated probes establish T&T loaded0.2.70; the owner client must restart and its loaded versions remain to be confirmed from console.
+
+The launcher and release recorder retain generic historical fresh-world wording; this patch does not require a new world. Preserve saved tuning and set Reset Duration to3 explicitly. Owner AMMO_UI_C446.md SHA-256 remains `24506649c189a6e0b9f9e7fd04ab53fba940d3741a79ec38c267b75b75207fba`.
+
+Private T&T GitHub mirroring remains blocked by the prior automatic approval review requiring explicit destination/payload authorization; no retry or bypass. Horde mirroring remains manual-only. No Workshop content upload, save changes or historical flag reset. **Test now (single-player), after restart when available.**
