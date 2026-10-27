@@ -37,3 +37,8 @@ Private mirror remains blocked by the earlier automatic approval-review rejectio
 - Private mirror remains blocked by the prior automatic approval review requiring explicit destination/payload authorization. No retry, public upload, sibling modification or owner-save change.
 
 **Test now after restart when available.** Rendered and connected-player acceptance remains pending.
+
+
+## C482 - Owner repeat-interruption report (2026-10-26)
+
+Owner reports tether stun/pull repeats as a loop and requests a longer refire delay; settings need compact reordering. Captured console confirms both packages0.2.69.1 / game42.21, reset0.5, hold0.75, return speed4 and pull distance0.75. Capture: diagnostics/captures/20261026-202614-9485, console SHA-25613ae4650921b4f7c0dab048b0f188c0431e11322dad3148d4b472306aa320824. No OMHTT exception stack found; the log does not measure per-target recovery. This is a reported gameplay-balance failure, not full acceptance or a failure of the previously recorded source/native checks. See [proposed correction and mockups](CONTROLLER_SETTINGS_C482.md). No new build, installed tuning change or owner retest request in this discussion. Connected-player acceptance remains pending.

@@ -1,5 +1,10 @@
 # Decision register
 
+## C482 - Longer refire requested; compact layout alternatives (2026-10-26)
+
+Owner reports a repeat-stun loop, requests longer tether refire and compact, clear Device/Controller Settings mockups. [Contract and evidence](CONTROLLER_SETTINGS_C482.md) propose 1A three-second reset / 1B two-second reset, and 2A Compact rows / 2B Foldouts / 2C Tabbed inspector. Recommend 1A/2A. The direction is requested, numerical selection and final native layout are pending; preview interactions are not approval. Preserve custom saved tuning and investigate elapsed-time cancellation before implementing the chosen cooldown. No gameplay or installation change.
+
+
 ## C481 - Pull-only correction approved (2026-10-26)
 
 Owner "Approved" authorizes the combined C479/C480 patch. Impact damage remains, outward push/native shove is removed, and retraction pulls toward the muzzle with the nearest directional reaction and smooth residual facing correction (maximum45 degrees). Existing pull distance/damage and half-second reset remain. Remove the Controller management circle; use shorter independently scrollable settings and title-bar-only group collapse. Implemented in [0.2.69.1](PATCH_v0.2.69.1.md). Native/automated evidence does not establish rendered or connected-player acceptance. Retain the hidden, ignored legacy push registration because current Horde settings verification expects it. No saved-value migration or sibling patch is authorized by this change.
