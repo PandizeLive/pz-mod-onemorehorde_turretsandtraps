@@ -1,5 +1,7 @@
 # C487 - Horde scoring readiness audit
 
+**C488 correction:** the version named below was selected from the wrong end of Wrangler's deployment history. Current production is `308c1b4e-ff42-4134-9348-9aa812d8d37a` (2026-10-19). Fresh inspection confirms the same scoring/version defects. Use the corrected baseline and rollback in [C488](HORDE_SCORING_PATCH_C488.md), not the historical version recorded below.
+
 2026-10-26. Owner selected C486 **1B**. Audit only: no gameplay, installed package, score database, deployment, historical run flag or sibling source changed. Accepted T&T0.2.70.1 / Horde-Cure0.6.16.9 remain installed.
 
 ## Conclusion
