@@ -7,11 +7,13 @@ local Injury = require("OMHTT/DefenseInjury")
 local oldMode, oldCore = testMode, OneMoreHordeDefenseIntegration
 local oldServer, oldClient, oldSpecific = sendServerCommand, sendClientCommand, getSpecificPlayer
 local oldNow, oldApply = Clock.now, Movement.apply
+local oldWall = getTimestampMs
 local oldParts, oldRandom = BodyPartType, ZombRand
 local oldOnline = getOnlinePlayers
 getOnlinePlayers = function() return {size = function() return 0 end} end
 local time, sent, replies, slows = 10000, {}, {}, 0
 Clock.now = function() return time end
+getTimestampMs = function() return time end
 Movement.apply = function(_, divisor) check(divisor == 2, "Wire slowdown is a divisor"); slows = slows + 1 end
 sendServerCommand = function(player, module, command, data) sent[#sent + 1] = {player, module, command, nativeRoundTrip(data)} end
 sendClientCommand = function(player, module, command, data) replies[#replies + 1] = {player, module, command, data} end
@@ -130,6 +132,7 @@ check(total == 2 and injured == "upper" and cuts == 0, "Authenticated split-scre
 testMode, OneMoreHordeDefenseIntegration = oldMode, oldCore
 sendServerCommand, sendClientCommand, getSpecificPlayer = oldServer, oldClient, oldSpecific
 Clock.now, Movement.apply, BodyPartType, ZombRand = oldNow, oldApply, oldParts, oldRandom
+getTimestampMs = oldWall
 testMultiplayerAudit = "authorityAndOwnerProtocol=pass contactAndPresentation=pass liveDedicated=zero-client-probe liveListen=pending liveTwoClient=pending"
 
 local Battery = require("OMHTT/TurretBattery")

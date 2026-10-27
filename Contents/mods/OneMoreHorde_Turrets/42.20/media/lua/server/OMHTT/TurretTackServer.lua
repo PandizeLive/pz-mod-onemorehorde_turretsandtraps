@@ -7,7 +7,28 @@ local Contact = require("OMHTT/BarbContact")
 local Motion = require("OMHTT/DefenseMotion")
 local S = {}
 local requests = setmetatable({}, {__mode = "k"})
+local pending = {}
+local nextDue = nil
 local session = tostring(getTimestampMs())
+
+---@param player IsoPlayer Connected recipient
+---@return table state Delivery cooldown and active field identities
+local function stateFor(player)
+    local state = requests[player]
+    if not state then
+        state = {due = 0, known = {}}
+        requests[player] = state
+    end
+    return state
+end
+
+---@param field table Active field
+---@param player IsoPlayer Recipient
+---@return boolean nearby Same area margin as late-arrival snapshots
+---@nodiscard
+local function nearby(field, player)
+    return math.abs(field.x - player:getX()) < 100 and math.abs(field.y - player:getY()) < 100
+end
 
 ---@param field table Private active field
 ---@return table view Plain relative-time snapshot
@@ -22,10 +43,26 @@ end
 ---@return nil
 function S.publish(field, removed)
     if not isServer() then return end
-    if removed then
-        sendServerCommand("OMHTT_TackView", "Remove", {id = field.id})
-    else
-        sendServerCommand("OMHTT_TackView", "Fields", {S.view(field)})
+    local players = getOnlinePlayers()
+    local payload = nil
+    for i = 0, players:size() - 1 do
+        local player = players:get(i)
+        if removed then
+            local state = requests[player]
+            if state and state.known[field.id] then
+                state.known[field.id] = nil
+                if not payload then
+                    payload = {id = field.id}
+                end
+                sendServerCommand(player, "OMHTT_TackView", "Remove", payload)
+            end
+        elseif not player:isDead() and nearby(field, player) then
+            stateFor(player).known[field.id] = true
+            if not payload then
+                payload = {S.view(field)}
+            end
+            sendServerCommand(player, "OMHTT_TackView", "Fields", payload)
+        end
     end
 end
 
@@ -35,13 +72,22 @@ end
 ---@return nil
 function S.command(module, command, player)
     if not isServer() or module ~= "OMHTT_TackView" or command ~= "Request" or player:isDead() then return end
-    local now = getTimestampMs()
-    if requests[player] and now - requests[player] < 5000 then return end
-    requests[player] = now
+    local state = stateFor(player)
+    pending[player] = state
+    nextDue = math.min(nextDue or state.due, state.due)
+end
+
+---@param player IsoPlayer Connected requester at its latest position
+---@param state table Delivery tracking
+---@return nil
+local function snapshot(player, state)
+    state.due = getTimestampMs() + 5000
+    local now = Clock.now()
     local fields = {}
     for i = 1, #E.fieldOrder do
         local field = E.fieldOrder[i]
-        if math.abs(field.x - player:getX()) < 100 and math.abs(field.y - player:getY()) < 100 then
+        if nearby(field, player) and field.expires > now then
+            state.known[field.id] = true
             fields[#fields + 1] = S.view(field)
             if #fields == 32 then
                 sendServerCommand(player, "OMHTT_TackView", "Fields", fields)
@@ -49,7 +95,37 @@ function S.command(module, command, player)
             end
         end
     end
-    if #fields > 0 then sendServerCommand(player, "OMHTT_TackView", "Fields", fields) end
+    if #fields > 0 then
+        sendServerCommand(player, "OMHTT_TackView", "Fields", fields)
+    end
+end
+
+---@return nil
+function S.pump()
+    if not isServer() or not nextDue or getTimestampMs() < nextDue then return end
+    local selected, state = nil, nil
+    for player, request in pairs(pending) do
+        if not state or request.due < state.due then
+            selected, state = player, request
+        end
+    end
+    if not state then
+        nextDue = nil
+        return
+    end
+    nextDue = state.due
+    if getTimestampMs() < nextDue then return end
+    pending[selected], nextDue = nil, 0
+    -- At most one bounded snapshot per tick; disconnected/dead requests retire.
+    local players = getOnlinePlayers()
+    for i = 0, players:size() - 1 do
+        if players:get(i) == selected then
+            if not selected:isDead() then
+                snapshot(selected, state)
+            end
+            return
+        end
+    end
 end
 
 ---@param zombie IsoZombie Server-updated contact candidate
@@ -75,5 +151,6 @@ function S.update(zombie)
 end
 
 Events.OnClientCommand.Add(S.command)
+Events.OnTick.Add(S.pump)
 Events.OnZombieUpdate.Add(S.update)
 return S

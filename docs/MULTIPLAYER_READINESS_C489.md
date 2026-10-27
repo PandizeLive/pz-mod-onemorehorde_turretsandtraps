@@ -71,3 +71,7 @@ Run once on dedicated and once on listen server, with two clients. Retain both c
 - Server restart and retained inventories.
 
 No owner test is requested now. Private mirroring remains blocked by the earlier automatic approval review requiring explicit destination/payload authorization; no retry or bypass. **Decision needed: approve the focused Tack correction.**
+
+## C490 resolution - 2026-10-27
+
+Owner selects1A and adds multiplayer text verification. Both confirmed findings are corrected in [0.2.70.2](PATCH_v0.2.70.2.md); the original defect fixture now runs corrected expectations in the regular suite. Connected acceptance remains pending. See the version test record for actual release/install evidence.

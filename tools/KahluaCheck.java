@@ -583,6 +583,7 @@ public final class KahluaCheck {
             {"_", "tools/tests/horde_c474_setup.lua"},
             {"C474Horde", "../pz-mod-onemorehorde_protectthecure/Contents/mods/OneMoreHorde_HordeNight/42.20/media/lua/server/OMH_DefenseIntegration.lua"},
             {"_", "tools/tests/horde_c474.lua"},
+            {"_", "tools/tests/readiness_c489.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {

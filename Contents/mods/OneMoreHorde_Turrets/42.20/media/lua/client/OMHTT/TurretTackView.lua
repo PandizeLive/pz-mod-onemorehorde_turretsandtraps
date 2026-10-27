@@ -86,20 +86,23 @@ end
 function V.start()
     if not isClient() then return end
     local player = getSpecificPlayer(0)
-    if player then sendClientCommand(player, "OMHTT_TackView", "Request", {}) end
+    if player then
+        V.update(player)
+    end
 end
 
 ---@param player IsoPlayer Local player entering another area
 ---@return nil
 function V.update(player)
     if not isClient() or not player:isLocalPlayer() then return end
-    local now = Clock.now()
+    local wall = getTimestampMs()
     local old = watched[player]
     local x, y = math.floor(player:getX() / 40), math.floor(player:getY() / 40)
-    if not old or (now >= old.due and (old.x ~= x or old.y ~= y)) then
-        watched[player] = {x = x, y = y, due = now + 5000}
+    if not old or (wall >= old.due and (old.x ~= x or old.y ~= y)) then
+        watched[player] = {x = x, y = y, due = wall + 5000}
         sendClientCommand(player, "OMHTT_TackView", "Request", {})
     end
+    local now = Clock.now()
     if now < nextPrune then return end
     nextPrune = now + 250
     for _ = 1, math.min(32, #V.fieldOrder) do

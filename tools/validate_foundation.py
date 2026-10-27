@@ -82,6 +82,29 @@ def main():
     keys.update("UI_OMHTT_Batch" + key for key in ["Stale", "Missing", "Access", "OtherController", "Unassigned", "Range", "Broken", "Power", "Capacity"])
     for key in keys:
         assert key in translations, f"Missing translation: {key}"
+    # Network status suffixes are translated by the receiving UI, not by the server.
+    # Check their producers as well as literal getText calls (which miss concatenation).
+    network_keys = set()
+    status_sources = {"TurretWorld", "TurretSearch", "Turret", "TurretCycle", "Firearms",
+                      "TurretTransfers", "TurretNetworkTransfers", "TurretNetworkService"}
+    for path in PACKAGE.rglob("*.lua"):
+        content = path.read_text(encoding="utf-8")
+        if path.stem in status_sources:
+            statuses = set(re.findall(r'(?:return|status\s*=|result\s*=)\s*"([A-Z][A-Za-z]+)"', content))
+            statuses.update(re.findall(r'return\s+[^\n,]+,\s*"([A-Z][A-Za-z]+)"', content))
+            network_keys.update("UI_OMHTT_Manage" + status for status in statuses)
+        if path.stem == "FoundationServer":
+            statuses = set(re.findall(r'reply\(player, command, args, "([A-Za-z]+)"', content))
+            statuses.update(re.findall(r'status\s*=\s*"([A-Za-z]+)"', content))
+            network_keys.update("UI_OMHTT_" + status for status in statuses)
+        if path.stem.startswith("Control"):
+            network_keys.update(re.findall(r'"(UI_OMHTT_[A-Za-z]+)"(?!\s*\.\.)', content))
+    network_keys.update("UI_OMHTT_Batch" + status for status in
+                        ["Stale", "Missing", "Access", "OtherController", "Unassigned", "Range", "Broken", "Power", "Capacity"])
+    for key in network_keys:
+        assert key in translations and translations[key].strip() and not translations[key].startswith("UI_OMHTT_"), \
+            f"Untranslated multiplayer UI status: {key}"
+    print(f"Multiplayer status/Controller text: {len(network_keys)} translation keys resolved.")
     sandbox = (PACKAGE / "42.20/media/sandbox-options.txt").read_text()
     for key in re.findall(r"translation\s*=\s*(\w+)", sandbox):
         assert "Sandbox_" + key in translations and "Sandbox_" + key + "_tooltip" in translations, key
