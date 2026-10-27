@@ -1,8 +1,8 @@
-v0.2.70
+v0.2.70.1
 
 Development test content
 
-- Improved Controller map space with compact tabbed settings, removed the management circle and limited group collapse to title bars.
+- Improved Controller map space with compact tabbed settings, retained the map management-range outline while removing the in-world circle and limited group collapse to title bars.
 
 - Added Connections box/Ctrl selection, group dragging with assignment, and bulk Assign/Unassign controls.
 

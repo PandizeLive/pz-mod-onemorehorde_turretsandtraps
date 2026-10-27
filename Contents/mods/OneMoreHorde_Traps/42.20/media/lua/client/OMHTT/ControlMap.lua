@@ -217,6 +217,16 @@ end
 ---@return nil
 function Map:render()
     self:repaintStencilRect(0, 0, self.width, self.height)
+    local controller = self.owner.object
+    local cx, cy = controller:getX() + .5, controller:getY() + .5
+    local radius = A.radius(controller)
+    local previousX, previousY = self:point(cx + radius, cy)
+    for i = 1, 64 do
+        local angle = i * math.pi / 32
+        local x, y = self:point(cx + math.cos(angle) * radius, cy + math.sin(angle) * radius)
+        self:drawLine(nil, previousX, previousY, x, y, 1, .65, .65, .7, .65)
+        previousX, previousY = x, y
+    end
     local graph = self.owner.graph
     for i = 1, #graph.markers do
         local marker = graph.markers[i]

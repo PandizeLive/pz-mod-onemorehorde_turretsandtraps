@@ -32,3 +32,7 @@ Horde/Cure tagged source `test/v0.6.16.9` / `1544656b614347b3bddc8be30aa901cb82d
 The launcher and release recorder retain generic historical fresh-world wording; this patch does not require a new world. Preserve saved tuning and set Reset Duration to3 explicitly. Owner AMMO_UI_C446.md SHA-256 remains `24506649c189a6e0b9f9e7fd04ab53fba940d3741a79ec38c267b75b75207fba`.
 
 Private T&T GitHub mirroring remains blocked by the prior automatic approval review requiring explicit destination/payload authorization; no retry or bypass. Horde mirroring remains manual-only. No Workshop content upload, save changes or historical flag reset. **Test now (single-player), after restart when available.**
+
+## C485 owner acceptance -2026-10-26
+
+Owner: "You removed the range preview on the map. I only wanted the gradient circle removed in-game. The rest has passed." Record the0.2.70 checklist as owner-passed for Connections box/Ctrl selection, group drops/bulk/whole-group assignment, settings tabs/resize/scroll and tether recovery. The map-outline omission remains failed and is corrected in0.2.70.1. No connected-player acceptance is inferred. Console snapshot diagnostics/c485-console.txt confirms T&T0.2.70 SP and Horde0.6.16.9. Unrelated startup font/Firearms/map warnings remain; no Controller stack trace found.

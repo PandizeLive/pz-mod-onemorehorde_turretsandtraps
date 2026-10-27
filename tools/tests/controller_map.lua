@@ -61,9 +61,14 @@ local function run(panel, player, controller)
             local segments=0
             native.drawLine=function(_,texture,x1,y1,x2,y2)
                 segments=segments+1
+                local cx,cy=api:worldToUIX(controller:getX()+.5),api:worldToUIY(controller:getX()+.5,controller:getY()+.5)
+                local expected=(10+grade*10)*zoom
+                check(math.abs(math.sqrt((x1-cx)^2+(y1-cy)^2)-expected)<0.00001
+                    and math.abs(math.sqrt((x2-cx)^2+(y2-cy)^2)-expected)<0.00001,
+                    "Map outline endpoints match the authoritative range at each kit grade and zoom")
             end
             native:render()
-            check(segments==0 and A.radius(controller)==10+grade*10,"No Controller circle is drawn; authoritative radius is unchanged")
+            check(segments==64 and A.radius(controller)==10+grade*10,"Controller map outline is restored without changing management range")
         end
     end
     expansion.grade,SandboxVars.OMHTurretsTraps.ControllerRange,SandboxVars.OMHTurretsTraps.ControllerKitRange=oldGrade,oldRange,oldKit
