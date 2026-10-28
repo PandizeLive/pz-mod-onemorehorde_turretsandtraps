@@ -71,7 +71,7 @@ Be a candid technical collaborator: assess ideas before agreeing, explain materi
 
 - Follow docs/RELEASE_TOOLS.md, aligned with the reviewed Horde Night process. Use OMH: Turrets & Traps as the public name; use independent IDs OneMoreHorde_Traps and OneMoreHorde_Turrets (C88); preserve existing item IDs and state keys. Old combined saves are outside the fresh-world test scope.
 - Use numeric three-field feature versions and fourth-field corrective versions; no checkpoint suffix in modversion. Keep historical build identifiers unchanged in evidence.
-- Use only the root OMH.cmd release menu and stable tools. Commit complete source on a non-main local branch and create an annotated test/v<version> rollback tag before installing. Do not invent a remote, Workshop ID or uploader.
+- Use the root OMH.cmd release menu and stable tools. C492 adds the owner-requested OMH_TurretsAndTraps.cmd entry point to the same menu; first upload is through Zomboid, then the CMD updates that game-created unlisted item. Commit complete source on a non-main local branch and create an annotated test/v<version> rollback tag before installing. Do not invent a remote or Workshop ID.
 - Spike Barriers are 1x2, two tiles across and one deep. Front and side ends retaliate; the rear is safe. Preserve both-tile identity, condition, rotation and retirement.
 
 - [2026-09-27] Owner approved combining barrier pickup, repair and five-item bundles. Pickup returns a full-condition item; free Repair and pickup each take ten seconds and interrupt on movement. This supersedes condition-preserving basic-barrier recovery. No service/packing/redeployment XP. Keep vaulting pending native proof, and final damaged artwork owner-sourced.

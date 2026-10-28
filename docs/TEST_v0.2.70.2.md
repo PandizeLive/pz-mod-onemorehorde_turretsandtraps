@@ -1,5 +1,9 @@
 # 0.2.70.2 verification
 
+## C492 Workshop preparation (2026-10-27)
+
+[Staging, launcher and verification](WORKSHOP_UPLOAD_C492.md): 614 tagged package files staged and hash-verified for the owner's first in-game Unlisted upload. Installed-game Workshop validation passes, including the owner-supplied still exported to 512x512. Fifteen isolated tooling checks and existing installer regressions pass without Steam calls. Gameplay/tag/install and connected-player acceptance remain unchanged. The owner subsequently confirmed native upload success for item 3828638252, establishing the first per-item content baseline; the project records that exact ID. No cumulative changelog notes were cleared.
+
 ## Automated evidence
 
 - Full foundation validation passes **36,482 assertions**, including the C490 regressions and the regular module-pack audit. World/player/network/UI fixture objects are doubles.

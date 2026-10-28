@@ -1,0 +1,11 @@
+version=1
+id=3828638252
+title=OMH: Turrets & Traps
+description=Unlisted development build for multiplayer testing.
+description=
+description=Includes two independent mod entries: OMH: Turrets and OMH: Traps. Enable either or both.
+description=Modular turrets, traps, defensive barriers and Controller automation. Development artwork is temporary, and connected multiplayer testing is still in progress.
+description=
+description=Mod IDs: OneMoreHorde_Turrets; OneMoreHorde_Traps
+tags=Build 42;Audio;Balance;Building;Interface;Items;Military;Misc;Models;Multiplayer;Silly/Fun;Textures;Traits;WIP;Weapons
+visibility=unlisted
