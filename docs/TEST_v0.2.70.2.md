@@ -1,5 +1,9 @@
 # 0.2.70.2 verification
 
+## C493 connected owner test: failed (2026-10-28)
+
+[Client/SFTP evidence and proposed correction](MULTIPLAYER_FEEDBACK_C493.md). Both sides loaded T&T 0.2.70.2 on PZ 42.21.0. Server Horde 0.6.16.5 / Trait Shop 0.9.0.1 lagged client 0.6.16.9 / 0.9.1.1. Confirmed 23 client combat API exceptions and Private inspection bypass; production-function reproduction identifies transfer invalidation after the server moves the first potato. Observer effects remain unresolved. Earlier automated passes remain valid within their recorded fixture/ownerless scope and do not establish connected acceptance. No gameplay patch installed; owner approval pending.
+
 ## C492 Workshop preparation (2026-10-27)
 
 [Staging, launcher and verification](WORKSHOP_UPLOAD_C492.md): 614 tagged package files staged and hash-verified for the owner's first in-game Unlisted upload. Installed-game Workshop validation passes, including the owner-supplied still exported to 512x512. Fifteen isolated tooling checks and existing installer regressions pass without Steam calls. Gameplay/tag/install and connected-player acceptance remain unchanged. The owner subsequently confirmed native upload success for item 3828638252, establishing the first per-item content baseline; the project records that exact ID. No cumulative changelog notes were cleared.

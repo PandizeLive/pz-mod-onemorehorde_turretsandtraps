@@ -1,5 +1,9 @@
 # Decision register
 
+## C493 - Connected multiplayer failures investigated (2026-10-28)
+
+Owner requests console/SFTP review of one-potato transfers, combat exceptions, missing observer effects and Private turret access. [Findings and proposed patch](MULTIPLAYER_FEEDBACK_C493.md). Logs read only; no new gameplay patch authorized. Recommend1A focused MP correction, alternative1B combat-only. Prior automated/ownerless checks do not establish connected acceptance. Owner's sibling update plan is recorded separately from fixing confirmed T&T defects.
+
 ## C492 - Native first Workshop upload, then CMD updates (2026-10-27)
 
 **C492 / First unlisted Workshop upload confirmed (2026-10-27).** Owner confirms Zomboid completed the content upload to [item 3828638252](https://steamcommunity.com/sharedfiles/filedetails/?id=3828638252). [Workflow and evidence](WORKSHOP_UPLOAD_C492.md): 0.2.70.2, both independent entries and all 614 tagged files verified; native validation, 15 isolated Workshop checks and installer regressions pass. `OMH_TurretsAndTraps.cmd` uses the game-created ID for later updates, preserving page text/cover and Unlisted visibility. Project metadata now matches the owner-edited native stage. This is the first confirmed content baseline for this exact item; the cumulative draft remains intact until the next change. No official promotion, gameplay/install change or C488 deployment. Private mirror blockers remain. **Test now: connected multiplayer via Workshop.**
