@@ -31,3 +31,5 @@ C494 mirror attempt (2026-10-28): `OMH.cmd -Action Mirror` stopped at its local 
 
 
 C495 (2026-10-28): CMD mirror tooling now leaves ordinary tracked documentation edits local with a warning while publishing committed work. Fifteen isolated cases pass; no gameplay/package/tag change. The earlier blanket clean-tree blocker is superseded; live push verification follows.
+
+C495 live result: `OMH.cmd -Action Mirror` successfully pushed and independently verified commit `78b9ef8c81b9c5d2454acb91c27948226074c8d8` and the immutable `test/v0.2.70.3` tag on the configured GitHub repository, using existing draft PR1. Original AGENTS.md, README.md and AMMO_UI_C446.md edits remain local. No merge, official release or Workshop upload occurred.
