@@ -33,3 +33,18 @@ C494 mirror attempt (2026-10-28): `OMH.cmd -Action Mirror` stopped at its local 
 C495 (2026-10-28): CMD mirror tooling now leaves ordinary tracked documentation edits local with a warning while publishing committed work. Fifteen isolated cases pass; no gameplay/package/tag change. The earlier blanket clean-tree blocker is superseded; live push verification follows.
 
 C495 live result: `OMH.cmd -Action Mirror` successfully pushed and independently verified commit `78b9ef8c81b9c5d2454acb91c27948226074c8d8` and the immutable `test/v0.2.70.3` tag on the configured GitHub repository, using existing draft PR1. Original AGENTS.md, README.md and AMMO_UI_C446.md edits remain local. No merge, official release or Workshop upload occurred.
+
+
+## C498 - owner retest used 0.2.70.2 client (2026-10-28)
+
+The16:16 client session reports `packages-ready` and `client-ready version=0.2.70.2`, with13 `java.lang.RuntimeException: attempted index: extraUpdate` errors at DefenseCombatClient.lua155. Read-only SFTP capture confirms the15:10 server session loaded0.2.70.3, with no corresponding extraUpdate exception. This is not evidence that the removed call still exists in the0.2.70.3 patch.
+
+The local native Workshop authoring stage still contained0.2.70.2 and both extraUpdate calls, while the ordinary local install and downloaded Steam item contained0.2.70.3 without them. Installed42.21 ZomboidFileSystem bytecode establishes default enumeration order `workshop,steam,mods`, placing this stale authoring copy first. Refreshed the managed native stage using `OMH.cmd -Action Stage`; it preserves its owner metadata and prior contents in the helper's backup. All615 packaged files now match the immutable tag across all three local locations. No new code, upload, world or server change.
+
+SteamCMD receipt `upload-v0.2.70.3-20261028-200859-0574-3f7611c1` independently confirms the owner's upload at2026-10-28T20:09:27.9380072Z. This establishes0.2.70.3 as the new per-item content baseline; preserve its current changelog until the next content change. Earlier failed authentication receipts remain failed/pending attempts, not publication evidence.
+
+Evidence: workspace `diagnostics/2026-10-28-tt-retest/`, project `diagnostics/c498-filesystem-javap.txt` and `diagnostics/c498-copy-verification.json`. Connected acceptance still requires a restarted client that actually reports0.2.70.3. The other player's loaded version was not independently captured.
+
+- Restart Zomboid; verify 0.2.70.3
+- Turret and trap attacks
+- Both players' shot effects
