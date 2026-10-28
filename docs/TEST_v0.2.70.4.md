@@ -23,3 +23,5 @@ Upload0.2.70.4 using the CMD, then restart/update the server and both clients. L
 
 
 Native save/write **96.0s**, fresh-process read **90.3s**, Traps **76.0s**, Turrets **84.5s**, combined **68.3s** pass. Final authority probe with real death-hook loot also passes. All native probes had zero clients. Sanitized evidence: [C500 verification](evidence/c500-verification.json); raw native log copied to diagnostics/v0.2.70.4/native-combat-authority.log.
+
+Installed from immutable `test/v0.2.70.4` / `a415b76832f9d29e02d528b610a8ad7a73e02c40`. All448 source files and616 tagged/package/local-install/archive files match; both prior0.2.70.3 managed package backups verify. Existing native Workshop stage refreshed through the stable helper, preserving item3828638252 and page metadata/preview; all616 staged package files independently match. Steam download and hosted server are not changed. No content upload, merge or official release. Existing saves/settings are compatible; the installer generic fresh-world notice does not introduce a new-world requirement for this corrective patch. C108 committed development mirror follows.

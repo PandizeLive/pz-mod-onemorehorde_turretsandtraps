@@ -36,5 +36,22 @@
     }
   ],
   "liveAcceptance": "pending owner multiplayer test",
-  "publication": "not performed"
+  "publication": "not performed",
+  "sourceCommit": "a415b76832f9d29e02d528b610a8ad7a73e02c40",
+  "tag": "test/v0.2.70.4",
+  "localFilesVerified": 616,
+  "stageFilesVerified": 616,
+  "previousBackups": [
+    {
+      "package": "OneMoreHorde_Traps",
+      "version": "0.2.70.3",
+      "filesVerified": 236
+    },
+    {
+      "package": "OneMoreHorde_Turrets",
+      "version": "0.2.70.3",
+      "filesVerified": 379
+    }
+  ],
+  "archiveSHA256": "4eaf0072ef745749b4dd9035d3190fe9f97eb45d69c03ff21398d9fd9cc7a124"
 }
