@@ -36,7 +36,7 @@ if ($branch -in @($config.releaseBranch, 'master')) { throw 'Official release br
 if (Invoke-ProjectGit @('status', '--porcelain', '--untracked-files=all')) { throw 'Commit intended changes before mirroring. Keep local caches and credentials ignored.' }
 foreach ($arguments in @(@('remote', 'get-url', '--all', 'origin'), @('remote', 'get-url', '--push', '--all', 'origin'))) {
     $urls = @(Invoke-ProjectGit $arguments)
-    if ($urls.Count -ne 1 -or $urls[0] -ne $config.remote) { throw 'Origin fetch and push URLs must match the configured private repository.' }
+    if ($urls.Count -ne 1 -or $urls[0] -ne $config.remote) { throw 'Origin fetch and push URLs must match the configured repository.' }
 }
 $head = Invoke-ProjectGit @('rev-parse', 'HEAD')
 $version = ((Get-Content -LiteralPath (Join-Path $projectRoot 'Source/42.20/mod.info') | Where-Object { $_ -like 'modversion=*' }) -replace '^modversion=', '').Trim()
@@ -60,8 +60,8 @@ if (-not $ghPath) { $ghPath = (Get-Command gh -ErrorAction Stop).Source }
 $ghConfig = Find-SharedPath '.gh-codex'
 if ($ghConfig) { $env:GH_CONFIG_DIR = $ghConfig }
 $gitAuth = @('-c', 'credential.helper=', '-c', ('credential.helper=!"' + $ghPath.Replace('\', '/') + '" auth git-credential'))
-$repository = Invoke-GitHub @('repo', 'view', $config.repository, '--json', 'nameWithOwner,isPrivate,defaultBranchRef') | ConvertFrom-Json
-if (-not $repository.isPrivate -or $repository.nameWithOwner -ne $config.repository -or $repository.defaultBranchRef.name -ne $config.developmentBranch) { throw 'Expected the configured private repository with dev as its default branch.' }
+$repository = Invoke-GitHub @('repo', 'view', $config.repository, '--json', 'nameWithOwner,visibility,defaultBranchRef') | ConvertFrom-Json
+if ($repository.visibility -ne $config.visibility -or $repository.nameWithOwner -ne $config.repository -or $repository.defaultBranchRef.name -ne $config.developmentBranch) { throw "Expected the configured $($config.visibility) repository with $($config.developmentBranch) as its default branch." }
 Invoke-ProjectGit @('fetch', 'origin', '--prune') | Out-Host
 Invoke-ProjectGit @('merge-base', '--is-ancestor', "origin/$($config.developmentBranch)", 'HEAD') | Out-Null
 $refspecs = @("HEAD:refs/heads/$branch")
