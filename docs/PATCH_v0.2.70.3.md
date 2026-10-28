@@ -20,3 +20,6 @@ No independent delivery failure is established by the available owner logs. Prod
 0.2.70.2 was successfully uploaded to Workshop item 3828638252 (C492). Therefore the new cumulative changelog contains only the net changes above since that confirmed upload. Local packaging/install does not upload to Steam or update the hosted test server. Existing saves/settings are retained; no new world is required.
 
 See [verification and owner checklist](TEST_v0.2.70.3.md).
+
+
+C494 mirror attempt (2026-10-28): `OMH.cmd -Action Mirror` stopped at its local clean-tree guard because unrelated `AGENTS.md`, `README.md` and `docs/AMMO_UI_C446.md` edits remain. The patch and installation evidence are committed; those edits are preserved and excluded. No network push occurred in this attempt; this was a local preflight refusal, not an automatic approval-review rejection.

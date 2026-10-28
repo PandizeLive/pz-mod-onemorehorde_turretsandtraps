@@ -25,3 +25,6 @@ Both clients and the server must load 0.2.70.3 before this test. Local installat
 - Automation replacement icons
 
 Connected acceptance and observer visual parity remain pending.
+
+
+C494 mirror attempt (2026-10-28): `OMH.cmd -Action Mirror` stopped at its local clean-tree guard because unrelated `AGENTS.md`, `README.md` and `docs/AMMO_UI_C446.md` edits remain. The patch and installation evidence are committed; those edits are preserved and excluded. No network push occurred in this attempt; this was a local preflight refusal, not an automatic approval-review rejection.
