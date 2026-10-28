@@ -2,6 +2,20 @@ if isServer() then return end
 local Options = require("OMHTT/ControlOptions")
 local Draw = require("OMHTT/ControlModelDraw")
 local V = {lights = {}, due = 0}
+local colors = {Amber = {.8, .45, .05}, Green = {.1, .7, .15}}
+
+---@param entry table Reused native light
+---@param strength number Current intensity
+---@return nil
+local function updateLight(entry, strength)
+    if entry.strength == strength and entry.appliedKind == entry.kind then return end
+    local color = colors[entry.kind]
+    entry.light:setR(color[1] * strength)
+    entry.light:setG(color[2] * strength)
+    entry.light:setB(color[3] * strength)
+    entry.light:setActive(strength > 0)
+    entry.strength, entry.appliedKind = strength, entry.kind
+end
 
 ---@param now number Real milliseconds
 ---@param start number Start of the warning
@@ -52,17 +66,20 @@ function V.draw(object, entry, square, kind, empty, nearby)
     else
         Render3DItem(entry.indicator, square, square:getX() + .7, square:getY() + .7, square:getZ() + .28, 0)
     end
-    if empty and nearby then
+    if colors[kind] and nearby then
         local light = V.lights[object]
         if not light then
             local cell = getCell()
-            local source = IsoLightSource.new(square:getX(), square:getY(), square:getZ(), .8 * alpha, .45 * alpha, .05 * alpha, 3)
+            local color = colors[kind]
+            local source = IsoLightSource.new(square:getX(), square:getY(), square:getZ(), color[1] * alpha, color[2] * alpha, color[3] * alpha, 3)
             source:setActive(alpha > 0)
             cell:addLamppost(source)
-            light = {cell = cell, light = source}
+            light = {cell = cell, light = source, kind = kind, appliedKind = kind, strength = alpha}
             V.lights[object] = light
         end
-        light.seen, light.start = now, entry.emptySince
+        local changed = light.kind ~= kind or light.start ~= entry.emptySince
+        light.seen, light.start, light.kind = now, entry.emptySince, kind
+        if changed then updateLight(light, alpha) end
     elseif V.lights[object] then
         local light = V.lights[object]
         light.cell:removeLamppost(light.light)
@@ -82,11 +99,8 @@ function V.tick()
             entry.cell:removeLamppost(entry.light)
             V.lights[object] = nil
         else
-            local strength = V.strength(now, entry.start)
-            entry.light:setR(.8 * strength)
-            entry.light:setG(.45 * strength)
-            entry.light:setB(.05 * strength)
-            entry.light:setActive(strength > 0)
+            local strength = entry.start and V.strength(now, entry.start) or 1
+            updateLight(entry, strength)
         end
     end
 end

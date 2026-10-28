@@ -1,8 +1,8 @@
-v0.2.70.4
+v0.2.70.5
 
 Development test content
 
 - Fixed multiplayer turret and trap kills leaving zombies without completing death.
 - Fixed ammunition loading interrupting turret aiming and firing.
 - Fixed module loot synchronization when zombies die.
-- Added dry-fire clicks and fading amber warning lights for empty turrets.
+- Added dry-fire clicks for empty turrets and world lighting for active, standby and fading empty-ammo indicators.

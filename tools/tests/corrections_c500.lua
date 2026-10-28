@@ -71,17 +71,28 @@ now = 2500
 V.draw(object, entry, square, "Green", true, true); V.tick()
 check(not light.active and light.r == 0, "Pause extinguishes world lighting")
 V.draw(object, entry, square, "Green", false, true)
-check(removes == 1 and V.lights[object] == nil and entry.indicator.alpha == 1,
-    "Refilling removes the warning light and restores a steady marker")
+check(removes == 0 and adds == 1 and V.lights[object].light == light and light.active and light.g == .7 and light.r == .1,
+    "Refilling reuses the same native light as steady active green")
+now = 2550
+V.draw(object, entry, square, "Amber", false, true); V.tick()
+check(light.active and light.r == .8 and light.g == .45 and entry.indicator.alpha == 1,
+    "Asleep and waking cast steady amber world light")
+now = 2600
+V.draw(object, entry, square, "Amber", false, true); V.tick()
+check(light.r == .8 and adds == 1, "Steady amber does not inherit the empty fade")
 V.draw(object, entry, square, "Amber", true, false)
-check(adds == 1, "Distant indicators do not allocate local world lights")
+check(adds == 1 and removes == 1, "Distant indicators remove local world lights")
 V.draw(object, entry, square, "Amber", true, true)
-now = 2800; V.tick()
+now = 2850; V.tick()
 check(removes == 2 and V.lights[object] == nil, "Unseen or unloaded marker lights expire promptly")
 V.draw(object, entry, square, "Amber", true, true)
 Options.get = function() return false end
-now = 2900; V.tick()
+now = 2950; V.tick()
 check(removes == 3 and V.lights[object] == nil, "Player marker preference also removes world lights")
+Options.get = function() return true end
+V.draw(object, entry, square, "Green", false, true)
+V.draw(object, entry, square, "Dark", false, true)
+check(removes == 4 and V.lights[object] == nil, "Disabled and unpowered turrets extinguish world lighting")
 V.clear()
 getTimestampMs, Effects.emit, getCell, IsoLightSource = saved.time, saved.emit, saved.cell, saved.light
 Draw.draw, Render3DItem, instanceItem, Options.get = saved.draw, saved.render, saved.item, saved.options
