@@ -166,7 +166,7 @@ function Copy-Item {
     assert before == hash_tree(project / 'diagnostics')
     checks.append('cancelled upload changes nothing')
     changelog = (project / 'WORKSHOP_CHANGELOG.txt').read_bytes()
-    script('Publish-OMHWorkshop.ps1', input_text='UPDATE\n')
+    script('Publish-OMHWorkshop.ps1', input_text=' publish \n')
     assert 'id=9912345678' in source_meta.read_text()
     assert (project / 'WORKSHOP_CHANGELOG.txt').read_bytes() == changelog
     receipts = list((project / 'diagnostics/workshop').glob('upload-*/upload-result.json'))
@@ -177,7 +177,7 @@ function Copy-Item {
     git('add', 'workshop.txt', 'docs/RELEASE.md')
     git('commit', '-m', 'Fixture identity')
     release_before = (project / 'docs/RELEASE.md').read_bytes()
-    script('Publish-OMHWorkshop.ps1', input_text='UPDATE\n', extra_env={'OMHTT_TEST_FAIL_UPLOAD': '1'}, success=False)
+    script('Publish-OMHWorkshop.ps1', input_text='PUBLISH\n', extra_env={'OMHTT_TEST_FAIL_UPLOAD': '1'}, success=False)
     receipts = list((project / 'diagnostics/workshop').glob('upload-*/upload-result.json'))
     assert sorted(json.loads(p.read_text())['status'] for p in receipts) == ['confirmed', 'pending']
     assert (project / 'docs/RELEASE.md').read_bytes() == release_before

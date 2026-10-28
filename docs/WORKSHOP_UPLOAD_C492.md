@@ -65,3 +65,10 @@ The installed local mod folders still coexist with the Workshop subscription. Us
 
 
 Local implementation committed as `a878828`. The required `OMH.cmd -Action Mirror` was invoked after commit and stopped at its local clean-worktree gate because the pre-existing owner edit in `docs/AMMO_UI_C446.md` remains uncommitted. That file was preserved, excluded from the commit and not stashed. No network push or PR was attempted, and the earlier automatic-review authorization blocker was not bypassed. The updater's release-input paths are committed and clean; the owner documentation edit does not block its Workshop readiness check.
+
+
+## C496 - match sibling confirmation (2026-10-28)
+
+Owner points out that the adapted T&T launcher should match the other OMH publishers. Inspection confirms Horde Night uses `PUBLISH` with `-ine`, and Trait Shop uses the same word/comparison for existing-item content publication. T&T previously used `UPDATE` with `-cne`, introducing both word and case differences without a technical requirement. Its prompt and comparison now match the siblings. Existing isolated fixtures exercise lowercase/whitespace confirmation, uppercase confirmation and cancellation; Steam calls remain stubbed. This correction does not invoke the real publisher, change Workshop visibility/content, reset the changelog, or alter the immutable0.2.70.3 gameplay tag.
+
+Verification: all15 grouped Workshop-tool fixture checks pass, zero Steam calls; evidence in `diagnostics/release-tool-tests/workshop-results.json`. No new gameplay build is required.

@@ -45,7 +45,7 @@ try {
     if (Invoke-TTGit $repoRoot (@('status', '--porcelain', '--untracked-files=all', '--') + $criticalPaths)) { throw 'Commit release inputs and tooling before publishing.' }
     Assert-ProjectZomboidClosed
     Write-Host $changeLog.Source
-    if ((Read-Host "Type UPDATE to upload v$($release.Version) to unlisted T&T item $workshopId").Trim() -cne 'UPDATE') { throw 'Upload cancelled.' }
+    if ((Read-Host "Type PUBLISH to upload v$($release.Version) to unlisted T&T item $workshopId").Trim() -ine 'PUBLISH') { throw 'Upload cancelled.' }
     $snapshot = New-TTContentSnapshot $release 'upload'
     [IO.File]::WriteAllText((Join-Path $snapshot 'WORKSHOP_CHANGELOG.txt'), $changeLog.Source, [Text.UTF8Encoding]::new($false))
     $vdfPath = Join-Path $snapshot 'upload.vdf'
