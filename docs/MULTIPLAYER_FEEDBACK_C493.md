@@ -35,3 +35,7 @@ The local reproduction is `production-path-probe.txt` in the diagnostic director
 Recommend **1A: one focused multiplayer correction** for the combat call, transfer completion, Private inspection boundary and observer-effect investigation. **1B: combat exception only**, leaving the other known failures deferred. High reasoning is appropriate; estimate 35-55 minutes at Normal speed for implementation and automated/native checks, with Fast recommended under the workspace timing preference. Connected owner acceptance remains separate and cannot be promised by elapsed development time.
 
 Owner approval for the corrective gameplay patch is pending. Current build 0.2.70.2 failed this connected acceptance round. The confirmed Workshop baseline remains 0.2.70.2; no new cumulative gameplay draft is created for this documentation-only audit. No new world is indicated by the diagnosed code defects. **Decision needed.**
+
+## Documentation handoff
+
+Read-only fetch of origin/dev succeeded and there are no origin/dev commits missing from this branch. Findings committed as 73ceb18. The required OMH.cmd -Action Mirror attempt stopped locally: `Commit intended changes before mirroring`. The pre-existing owner edit in docs/AMMO_UI_C446.md is preserved, SHA-256 `24506649c189a6e0b9f9e7fd04ab53fba940d3741a79ec38c267b75b75207fba`; it was not folded into this audit, stashed or reverted. No remote push occurred. This specific stop is a clean-worktree prerequisite, not an automatic approval-review rejection. Resolve that intended edit before retrying the mirror.
