@@ -48,3 +48,8 @@ Evidence: workspace `diagnostics/2026-10-28-tt-retest/`, project `diagnostics/c4
 - Restart Zomboid; verify 0.2.70.3
 - Turret and trap attacks
 - Both players' shot effects
+
+
+## C499 - restarted multiplayer test (2026-10-28)
+
+Both captured sides now load0.2.70.3; no extraUpdate exception in the new capture. Owner reports low-health survival, target resets during ammo loading and missing empty feedback. Server records50 Applied receipts and one module-loot container packet error during death. This is not accepted combat testing or proof that every receipt completed a kill. See [C499 findings and proposal](MULTIPLAYER_FEEDBACK_C499.md). No gameplay patch or new owner test in this checkpoint.
