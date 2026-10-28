@@ -34,6 +34,9 @@ local function actor(id)
     function z:getX() return 100 end
     function z:getY() return 100 end
     function z:getZ() return 0 end
+    function z:getSquare() return self.removed and nil or {} end
+    function z:die() self.corpse, self.removed = true, true end
+    function z:isOnDeathDone() return self.corpse == true end
     function z:Kill(attacker) check(attacker == nil, "Device death never fabricates player credit"); self.health = 0; self.killed = true end
     return z
 end
@@ -135,7 +138,7 @@ S.request(server, 2, "turret-1", "firearm", done)
 clientReceive(); serverReceive(); clientReceive()
 check(not client:isDead() and client.health == P.EPSILON and not finisher, "Owner reserves lethal damage; server still owns terminal attribution")
 serverReceive()
-check(server.killed and finisher and completions[#completions][1] == 1, "Server commits exactly the reported native health loss before death")
+check(server.killed and server.corpse and finisher and completions[#completions][1] == 1, "Server completes corpse creation and commits the reported health loss once")
 OneMoreHordeDefenseIntegration = nil
 
 server, client = pair()

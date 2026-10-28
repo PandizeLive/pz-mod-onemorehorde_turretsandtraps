@@ -5,6 +5,7 @@ local G = require("OMHTT/Firearms")
 local M = require("OMHTT/TurretModules")
 local Aim = require("OMHTT/TurretAim")
 local Draw = require("OMHTT/ControlModelDraw")
+local StateView = require("OMHTT/TurretStateView")
 local R = {order = {}, ordered = {}, cursor = 1, entries = {}, mode = nil, lastCheck = 0, headHeight = T.HEAD_VISUAL.height, headScale = T.HEAD_VISUAL.scale}
 
 ---@param object IsoObject Replicated device; this only changes its local presentation
@@ -156,18 +157,14 @@ function R.render(playerIndex)
             if dx * dx + dy * dy <= 80 * 80 then
                 if (SandboxVars.OMHTurretsTraps or {}).TurretStateIndicator ~= false and require("OMHTT/ControlOptions").get("StateMarkers") then
                     local kind
-                    if not T.isOn(state) or state.standby == "disabled" then
+                    if not T.isOn(state) or state.standby == "disabled" or state.powerSource == "none" then
                         kind = "Dark"
                     elseif state.standby == "asleep" or state.standby == "waking" then
                         kind = "Amber"
                     else
                         kind = "Green"
                     end
-                    if entry.indicatorKind ~= kind then
-                        entry.indicatorKind = kind
-                        entry.indicator = instanceItem("Base.OMHTTTurretState" .. kind .. "Visual")
-                    end
-                    Render3DItem(entry.indicator, square, square:getX() + .7, square:getY() + .7, square:getZ() + .28, 0)
+                    StateView.draw(object, entry, square, kind, kind ~= "Dark" and state.feedStatus == "Empty", dx * dx + dy * dy <= 400)
                 end
                 local heading = R.heading(object)
                 local yaw = (360 - heading) % 360

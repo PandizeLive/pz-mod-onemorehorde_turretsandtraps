@@ -40,6 +40,7 @@ local function apply(zombie, amount, source, kind, operator, weapon)
         require("OMHTT/DefenseXP").lethal(zombie, source, token and token.event)
         -- Manual device fire must not grant ordinary weapon-kill credit.
         zombie:Kill(nil, false)
+        if isServer() and zombie:getSquare() then zombie:die() end
     end
     if core then
         core.endDamage(zombie, token)

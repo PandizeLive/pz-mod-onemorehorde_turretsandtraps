@@ -2,6 +2,10 @@
 
 Status: investigated; corrective gameplay patch awaits owner approval. Installed and published version remains 0.2.70.3. No code, package, save, server setting or Workshop change in this checkpoint.
 
+## C500 - approved with world-light refinement (2026-10-28)
+
+Owner selects **1A** and specifies that the amber warning must snap on, fade out, and illuminate the world. This authorizes the combined corrective patch and replaces C499's hard on/off proposal. Implemented as a one-second cycle: immediate full amber, a half-second fade, then half a second dark; native local world lighting follows the same envelope. [Final patch](PATCH_v0.2.70.4.md) and [verification](TEST_v0.2.70.4.md) supersede the pending implementation status above. No Workshop publication is authorized by this approval.
+
 ## Owner report
 
 Turrets struggle to finish a low-health zombie; adding ammunition repeatedly redirects the head and prevents shooting; an empty turret looks operational. Owner requests the existing makeshift firing dry-click once per second and asks about a distinguishable warning light. No light pattern has been selected.

@@ -52,7 +52,7 @@ def main():
                 if marker in content:
                     passed = True
                     break
-                if "NativeTurretAuthority.lua:" in content or "Exception in thread" in content or "Server Terminated." in content:
+                if "NativeTurretAuthority.lua:" in content or "NativeCombatAuthority.lua:" in content or "Exception in thread" in content or "Server Terminated." in content:
                     break
                 time.sleep(.5)
             if process.poll() is None:
@@ -71,6 +71,7 @@ def main():
         content = transcript.read_text(encoding="utf-8", errors="replace")
         mod_errors = [line for line in content.splitlines() if "MOD:OMH:" in line and "Exception thrown" in line]
         assert not mod_errors, f"Native mod callbacks threw despite completion markers: {mod_errors}; inspect {transcript}"
+        assert 'Packet "AddInventoryItemToContainer" send failed' not in content, "Premature corpse inventory synchronization failed"
     print("Stock dedicated-server turret authority/services passed; no player clients connected.")
     print(transcript)
 

@@ -238,10 +238,19 @@ check(not Transfer:new(player, transferObject, potato, true, transferId):complet
 potato.favorite = false
 check(not Transfer:new(player, transferObject, potato, true, transferId, {potato.id, potato.id}):complete(), "Repeated batch identities are rejected")
 check(not Transfer:new(player, transferObject, potato, true, transferId, {potato.id}):complete(), "Heavy ammunition cannot use light-item batching")
+local beforeAmmoRefresh = W.refresh
+W.refresh = function() error("Ammo transfer must not emit an equipment reset") end
+local automation = require("OMHTT/TurretAutomation")
+local tracking = {target = {}, fireDue = 7788, job = {}}
+automation.entries[transferObject] = tracking
 check(Transfer:new(player, transferObject, potato, true, transferId):complete(), "Exact ammo can enter the mounted matching head")
+check(automation.entries[transferObject] == tracking and tracking.target ~= nil and tracking.fireDue == 7788,
+    "Ammo deposit retains target and pending firing deadline")
 check(not Transfer:new(player, transferObject, potato, true, transferId):complete(), "Concurrent stale incoming transfer is rejected")
 check(not Transfer:new(player, transferObject, potato, false, transferId, nil, false):complete(), "Unsupported destination is rejected instead of silently changed")
 check(Transfer:new(player, transferObject, potato, false, transferId):complete() and inv:contains(potato), "Outgoing transfer restores the exact item")
+W.refresh = beforeAmmoRefresh
+automation.entries[transferObject] = nil
 -- The native Done packet may follow inventory replication. Validate the client
 -- action throughout that gap, while the server still rejects stale completion.
 do

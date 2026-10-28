@@ -66,11 +66,19 @@ local function commitResult(job)
         zombie:setHealth(0)
         require("OMHTT/DefenseXP").lethal(zombie, job.source, token and token.event)
         zombie:Kill(nil, false)
+        -- The owning client reserves nonzero health and cannot enter its death
+        -- animation. Complete native server death, including corpse replication.
+        if zombie:getSquare() then zombie:die() end
     end
     if core then
         core.endDamage(zombie, token)
     end
     finish(job, result.lost, "applied")
+    local component = string.find(job.source, "^turret") and "turrets" or "traps"
+    local event = result.lethal and "combat-lethal" or "combat-settled"
+    require("OMHTT/Diagnostics").defer(event, {id = job.source, victim = job.id,
+        damage = result.lost, lethal = result.lethal, dead = zombie:isDead(),
+        corpseComplete = zombie:isOnDeathDone()}, component)
     triggerEvent("OnOMHTTDamage", zombie, result.lost, job.source, job.kind)
 end
 

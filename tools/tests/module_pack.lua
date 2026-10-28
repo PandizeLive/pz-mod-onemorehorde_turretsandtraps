@@ -63,6 +63,14 @@ zombie.data = {}; ZombRand = function() return 1500 end; P.onDeath(zombie)
 check(count == 1, "15 percent boundary excludes 1500 and above")
 zombie.data = {}; settings.PackZombieChance = 0; ZombRand = function() return 0 end; P.onDeath(zombie)
 check(count == 1, "Zero disables corpse packs")
+do
+    local previousSend = sendAddItemToContainer
+    sendAddItemToContainer = function() error("Dying zombie inventory is not a world container") end
+    settings.PackZombieChance, zombie.data, testMode = 100, {}, "server"
+    P.onDeath(zombie); P.onDeath(zombie)
+    check(count == 2, "Server adds corpse loot once without premature inventory packets")
+    sendAddItemToContainer, testMode = previousSend, "sp"
+end
 local B = require("OMHTT/TurretBenefits")
 local E = require("OMHTT/TurretBatteryEstimate")
 local originalDuration, originalTime = E.duration, getGameTime

@@ -1,0 +1,40 @@
+{
+  "version": "0.2.70.4",
+  "checkpoint": "C500",
+  "assertions": 37150,
+  "sourceFiles": 448,
+  "packageFiles": 616,
+  "nativeClients": 0,
+  "nativeAuthorityLogSHA256": "6038f7a3da70af9cf1ff54706fc60d9866cc6e511f8b2c1db11209e9fe3b97dd",
+  "checks": [
+    "Kill alone leaves death incomplete",
+    "die creates one corpse and removes live actor",
+    "real OnZombieDead hook adds one module pack",
+    "corpse retains module pack",
+    "repeat completion creates no duplicate corpse",
+    "production final hit completes death",
+    "native world-light and marker-alpha APIs callable"
+  ],
+  "packageStarts": [
+    {
+      "selection": "traps",
+      "version": "0.2.70.4",
+      "passed": true,
+      "seconds": 76.0
+    },
+    {
+      "selection": "turrets",
+      "version": "0.2.70.4",
+      "passed": true,
+      "seconds": 84.5
+    },
+    {
+      "selection": "both",
+      "version": "0.2.70.4",
+      "passed": true,
+      "seconds": 68.3
+    }
+  ],
+  "liveAcceptance": "pending owner multiplayer test",
+  "publication": "not performed"
+}

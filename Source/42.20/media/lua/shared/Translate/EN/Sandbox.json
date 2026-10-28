@@ -414,7 +414,7 @@
     "Sandbox_OMHTurretsTraps_TurretWakeSeconds": "Wake Duration",
     "Sandbox_OMHTurretsTraps_TurretWakeSeconds_tooltip": "Active real-time seconds before a sleeping detector-controlled turret can resume firing.",
     "Sandbox_OMHTurretsTraps_TurretStateIndicator": "Turret State Indicator",
-    "Sandbox_OMHTurretsTraps_TurretStateIndicator_tooltip": "Show amber asleep/waking, green active and an unlit disabled marker. Does not illuminate the world.",
+    "Sandbox_OMHTurretsTraps_TurretStateIndicator_tooltip": "Show amber asleep/waking, green active and an unlit disabled marker. Empty turrets pulse amber and illuminate their surroundings.",
     "Sandbox_OMHTurretsTraps_FriendlyPlayerDamageMultiplier": "Friendly Damage",
     "Sandbox_OMHTurretsTraps_FriendlyPlayerDamageMultiplier_tooltip": "Multiplier relative to the reduced turret player profile, applied alongside the general player multiplier. Server protection rules still apply.",
     "Sandbox_OMHTurretsTraps_FriendlyPlayerWoundMultiplier": "Friendly Wound Chance",

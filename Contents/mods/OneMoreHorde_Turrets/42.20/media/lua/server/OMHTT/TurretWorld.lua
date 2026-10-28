@@ -16,6 +16,21 @@ local generators = {}
 local feeders, feederOrder, feederCursor = {}, {}, 1
 local snapshots, refreshQueue = {}, {}
 local presentations = setmetatable({}, {__mode = "k"})
+local emptyClicks = setmetatable({}, {__mode = "k"})
+
+---@param object IsoObject Authorized, powered firing attempt
+---@return string status
+function W.empty(object)
+    local now = getTimestampMs()
+    local previous = emptyClicks[object]
+    if not previous or now < previous or now - previous >= 1000 then
+        emptyClicks[object] = now
+        local square = object:getSquare()
+        require("OMHTT/DefenseEffects").emit("Click", {sound = "OMHTTTriggerClick",
+            x = square:getX() + .5, y = square:getY() + .5, z = square:getZ()})
+    end
+    return "Empty"
+end
 
 ---@param object IsoObject Server-owned turret
 ---@param state table Authoritative controls
@@ -31,8 +46,6 @@ function W.publishRuntime(object, state, contents, now)
     end
     if now >= view.due then
         view.due = now + 250
-        local source = W.power(object, contents)
-        state.powerSource = source and source.kind or "none"
         local heading = math.floor((state.aimDegrees or 0) / 2)
         if view.heading ~= heading or view.shots ~= state.shots or view.moving ~= state.rotaryMoving
             or view.status ~= state.feedStatus or view.loaded ~= state.feedLoaded or view.powerSource ~= state.powerSource then
@@ -505,9 +518,12 @@ function W.fire(player, object, target, signal)
         return require("OMHTT/TurretRotary").start(player, object, signal)
     end
     if not player and target and not require("OMHTT/TurretStandby").step(object, contents, target) then return "Waking" end
-    if contents.ammo == 0 then return "Empty" end
     local stats = T.cycleConfig(contents)
     local cycle, status = T.cycle(contents, Clock.now(), stats)
+    if status == "Empty" then
+        if not W.power(object, contents, stats) then return "NoPower" end
+        return W.empty(object)
+    end
     if status ~= "Ready" then return status end
     stats = T.cycleConfig(contents)
     local power = W.power(object, contents, stats)
@@ -681,7 +697,9 @@ function W.feedTick()
                 local contents = W.contents(object)
                 if contents.head then
                     local stats = T.cycleConfig(contents)
-                    if W.valid(object) and T.isOn(state) and W.power(object, contents, stats) then
+                    local power = W.valid(object) and T.isOn(state) and W.power(object, contents, stats)
+                    state.powerSource = power and power.kind or "none"
+                    if power then
                         if state.facingPending then
                             require("OMHTT/TurretAim").face(object, contents)
                         end

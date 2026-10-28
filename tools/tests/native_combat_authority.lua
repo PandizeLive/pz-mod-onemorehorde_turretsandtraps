@@ -42,5 +42,49 @@ return function()
     assert(not reserved:isDead() and math.floor(reserved:getHealth() * 1000) >= 1,
         "Native float sentinel dies during thousandth-health conversion")
     reserved:setHealth(0)
+    local square = IsoGridSquare.new(getCell(), nil, 9, 9, 0)
+    local terminal = IsoZombie.new(getCell())
+    terminal:setX(9.5); terminal:setY(9.5); terminal:setZ(0); terminal:setCurrent(square)
+    square:getMovingObjects():add(terminal)
+    local packs = require("OMHTT/TurretModulePack")
+    local settings = SandboxVars.OMHTurretsTraps
+    local oldChance, oldRate = settings.PackZombieChance, settings.ModuleLootRate
+    settings.PackZombieChance, settings.ModuleLootRate = 100, 1
+    terminal:Kill(nil, false)
+    settings.PackZombieChance, settings.ModuleLootRate = oldChance, oldRate
+    local pack, count = nil, 0
+    local inventory = terminal:getInventory():getItems()
+    for i = 0, inventory:size() - 1 do
+        if inventory:get(i):getFullType() == packs.TYPE then
+            pack, count = inventory:get(i), count + 1
+        end
+    end
+    assert(pack and count == 1, "Production death hook did not create exactly one module pack")
+    assert(not terminal:isOnDeathDone() and square:getDeadBodys():isEmpty(),
+        "Native Kill now completes corpse creation; re-review server death path")
+    terminal:die()
+    assert(terminal:isOnDeathDone() and square:getDeadBodys():size() == 1,
+        "Native death completion did not create exactly one body")
+    local body = square:getDeadBodys():get(0)
+    assert(body:getContainer():contains(pack), "Native corpse lost pre-death inventory")
+    assert(not square:getMovingObjects():contains(terminal), "Corpse completion left a live moving actor")
+    terminal:die()
+    assert(square:getDeadBodys():size() == 1, "Repeated native completion duplicated the corpse")
+    local finished = IsoZombie.new(getCell())
+    finished:setX(9.5); finished:setY(9.5); finished:setZ(0); finished:setCurrent(square)
+    square:getMovingObjects():add(finished)
+    finished:getModData().OMHTTPackRolled = true
+    finished:setHealth(.01)
+    assert(D.request(finished, .35, "native-probe", "combat"), "Production final hit was rejected")
+    assert(finished:isOnDeathDone() and square:getDeadBodys():size() == 2,
+        "Production damage stopped at zero health without completing native death")
+    local light = IsoLightSource.new(9, 9, 0, .8, .45, .05, 3)
+    getCell():addLamppost(light)
+    light:setR(.2); light:setG(.1125); light:setB(.0125); light:setActive(false)
+    getCell():removeLamppost(light)
+    local marker = instanceItem("Base.OMHTTTurretStateAmberVisual")
+    marker:setWorldAlpha(.25)
+    assert(math.abs(marker:getWorldAlpha() - .25) < .001, "Native marker alpha is not mutable")
+    print("[OMHTT-C500] native-death Kill=event-only die=corpse-once loot=retained clients=0")
     print("[OMHTT-Smoke] native-server-combat ownerless=relative death=once invulnerable=preserved sentinel=nonzero clients=0")
 end

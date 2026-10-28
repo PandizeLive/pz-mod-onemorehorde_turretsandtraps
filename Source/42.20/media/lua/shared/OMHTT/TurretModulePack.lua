@@ -119,10 +119,9 @@ function P.onDeath(zombie)
     if ZombRand(10000) >= chance * 100 then return end
     local inventory = zombie:getInventory()
     if inventory then
-        local pack = inventory:AddItem(P.TYPE)
-        if isServer() and pack then
-            sendAddItemToContainer(inventory, pack)
-        end
+        -- OnZombieDead precedes corpse creation. Native death replication carries
+        -- this inventory; it is not yet an addressable world-item container.
+        inventory:AddItem(P.TYPE)
     end
 end
 

@@ -179,16 +179,22 @@ function Action:complete()
     local state = T.state(self.object)
     state.transferRevision = (state.transferRevision or 0) + 1
     local contents = T.contents(storage)
-    if G.profile(contents.head) then
+    local ammoOnly = T.kind(self.item) == "ammo"
+    if not ammoOnly and G.profile(contents.head) then
         Feed.restore(contents.head, T.cycleConfig(contents).magazine, self.character, false)
         if isServer() then
             require("OMHTT/TurretItemState").publish(contents.head, self.character)
         end
     end
     local W = require("OMHTT/TurretWorld")
-    W.refresh(self.object)
+    if ammoOnly then
+        W.queueRefresh(self.object, false)
+        state.feedCheck = 0
+    else
+        W.refresh(self.object)
+    end
     if isServer() then
-        self.object:transmitUpdatedSpriteToClients()
+        if not ammoOnly then self.object:transmitUpdatedSpriteToClients() end
         require("OMHTT/TurretAuthority").publish(self.object)
     end
     if T.kind(self.item) ~= "ammo" then
