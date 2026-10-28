@@ -58,6 +58,8 @@ function Entry:refresh()
     if editable ~= self.nameEditable then
         self.nameEditable = editable
         self:setEditable(editable)
+        local shade = editable and 1 or .5
+        self:setTextRGBA(shade, shade, shade, 1)
     end
 end
 

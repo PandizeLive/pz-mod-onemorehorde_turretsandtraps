@@ -57,6 +57,19 @@ visible=true; testMillis=2050; E.render(); check(#E.effects==0,"Impacts expire")
 for i=1,70 do E.receive(F.MODULE,"Impact",{id="cap",shot=i,x=1,y=1,z=0}) end
 check(#E.effects==64,"Visual queue is bounded")
 E.reset(); check(#E.effects==0,"Session reset clears transient effects")
+do
+    local mode = testMode
+    testMode = "client"
+    draws = 0
+    E.receive(F.MODULE, "Launch", nativeRoundTrip({id="observer-c494",shot=1,packet=9494001,
+        fromX=98,fromY=100,x=100,y=100,z=0,flight=500,start=99999999,silent=true}))
+    E.render()
+    check(draws == 1 and E.effects[1].start == require("OMHTT/TurretClock").now(),
+        "C494 observer renders serialized launch using its local clock, without a target object")
+    visible=false;draws=0;E.render()
+    check(draws==0,"C494 observer presentation retains line-of-sight privacy")
+    visible=true;testMode=mode;E.reset()
+end
 for heading=0,315,45 do
     local dx,dy=math.cos(heading*math.pi/180),-math.sin(heading*math.pi/180)
     E.receive(F.MODULE,"Launch",{id="heading",shot=heading,x=10+dx*4,y=10+dy*4,z=0,fromX=10,fromY=10,flight=200})

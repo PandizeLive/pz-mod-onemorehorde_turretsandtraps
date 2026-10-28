@@ -87,7 +87,7 @@ function E.receive(module, command, facts)
     elseif command ~= "Ray" and not facts.silent then
         E.sound(facts.sound or (effect.projectile == "spear" and "SpearCraftedHit" or "OMHTTPotatoImpact"), facts.x, facts.y, facts.z, facts.gain)
     end
-    D.defer("projectile-effect", {id = facts.id, shot = facts.shot, phase = command, flightMs = effect.flight,
+    D.defer("projectile-effect", {id = facts.id, shot = facts.shot, packet = facts.packet, phase = command, flightMs = effect.flight,
         x = facts.x, y = facts.y, z = facts.z, fromX = effect.fromX, fromY = effect.fromY}, "turrets")
 end
 

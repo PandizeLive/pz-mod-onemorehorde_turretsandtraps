@@ -39,3 +39,8 @@ Owner approval for the corrective gameplay patch is pending. Current build 0.2.7
 ## Documentation handoff
 
 Read-only fetch of origin/dev succeeded and there are no origin/dev commits missing from this branch. Findings committed as 73ceb18. The required OMH.cmd -Action Mirror attempt stopped locally: `Commit intended changes before mirroring`. The pre-existing owner edit in docs/AMMO_UI_C446.md is preserved, SHA-256 `24506649c189a6e0b9f9e7fd04ab53fba940d3741a79ec38c267b75b75207fba`; it was not folded into this audit, stashed or reverted. No remote push occurred. This specific stop is a clean-worktree prerequisite, not an automatic approval-review rejection. Resolve that intended edit before retrying the mirror.
+
+
+## C494 approval and correction (2026-10-28)
+
+Owner selects 1A, retaining Private read-only viewing and requesting visibly grey locked controls instead of blocking inspection. Eight Automation 2 replacements are included. See [implementation contract](PATCH_v0.2.70.3.md) and [verification](TEST_v0.2.70.3.md). The earlier inspection-block proposal is superseded.

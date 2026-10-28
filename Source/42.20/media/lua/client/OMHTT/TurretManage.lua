@@ -211,11 +211,12 @@ end
 function Panel:drawPower()
     ISButton.prerender(self)
     local cx, cy = self.width / 2, self.height / 2
+    local shade = self.enable and 1 or .45
     for i = 0, 28 do
         local angle = math.rad(55 + i * 250 / 28)
-        self:drawRect(cx + math.sin(angle) * 12 - 1, cy - math.cos(angle) * 12 - 1, 3, 3, 1, 1, 1, 1)
+        self:drawRect(cx + math.sin(angle) * 12 - 1, cy - math.cos(angle) * 12 - 1, 3, 3, 1, shade, shade, shade)
     end
-    self:drawRect(cx - 1, cy - 16, 3, 14, 1, 1, 1, 1)
+    self:drawRect(cx - 1, cy - 16, 3, 14, 1, shade, shade, shade)
 end
 
 ---@return nil
@@ -231,7 +232,7 @@ function Panel:refresh()
         if result and result.id == self.deviceId and getTimestampMs() - result.at < 3000 then
             self.result = getText("UI_OMHTT_Manage" .. result.status)
         end
-        if self.pendingRange ~= nil and not self.rangeSlider.dragInside then
+        if self.pendingRange ~= nil and not self.rangeSlider.dragInside and Access.near(self.player, self.object, self.deviceId) then
             View.control(self.player, self.object, "Range", self.pendingRange)
             self.pendingRange = nil
         end
@@ -555,7 +556,7 @@ function OpenAction:perform()
         panel:addChild(panel.benefitList)
         local rangeLabel = getText("UI_OMHTT_EngagementRange", getText("UI_OMHTT_RangeMax"))
         local rangeX = math.min(width - 150, 28 + font:MeasureStringX(UIFont.Small, rangeLabel))
-        panel.rangeSlider = ISSliderPanel:new(rangeX, detailsY + lineHeight * 8 + 5, width - rangeX - 24, lineHeight + 2, panel, Panel.changeRange)
+        panel.rangeSlider = require("OMHTT/TurretRangeSlider"):new(rangeX, detailsY + lineHeight * 8 + 5, width - rangeX - 24, lineHeight + 2, panel, Panel.changeRange)
         panel.rangeSlider:initialise()
         panel.rangeSlider.toolTipText = getText("UI_OMHTT_RangeTooltip")
         panel:addChild(panel.rangeSlider)

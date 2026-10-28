@@ -308,7 +308,7 @@ function makeZombie(square, health)
     function zombie:canRagdoll() return self.allowRagdoll == true end
     function zombie:isRagdoll() return self.ragdoll == true end
     function zombie:getCurrentStateName() return self.state end
-    function zombie:getNetworkCharacterAI() return {extraUpdate = function() self.extraUpdates = (self.extraUpdates or 0) + 1 end} end
+    function zombie:getNetworkCharacterAI() error("NetworkZombieAI is not exposed to Lua") end
     function zombie:getThumpTarget() return self.thumpTarget end
     function zombie:getVariableString(name) return self.variables[name] end
     function zombie:setVariable(name, value) self.variables[name] = value end

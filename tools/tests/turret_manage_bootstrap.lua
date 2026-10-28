@@ -94,6 +94,7 @@ function ISPanel:setYScroll(value) self.yScroll = value end
 function ISPanel:drawText(text) check(type(text) == "string", "Manage draws resolved status text") end
 ISButton = {new = function(self, x, y, w, h, title, target, callback)
     return {setX = function(self, x) self.x = x end, setHeight = function(self, h) self.height = h end, initialise = function() end, setWidth = function(self, w) self.width = w end, setY = function(self, y) self.y = y end, setVisible = function(self, visible) self.visible = visible end, setEnable = function(self, enabled) self.enabled = enabled; self.enable = enabled end,
+        setBorderRGBA=function(self,r,g,b,a) self.borderColor={r=r,g=g,b=b,a=a} end,
         setImage=function(self,image) self.image=image end, x=x, y=y, width=w, height=h, title=title, target = target, callback = callback, setTitle = function(self, title) self.title = title end}
 end}
 ISMouseDrag = {}
@@ -144,12 +145,20 @@ function PZAPI.ModOptions:create(id)
     return options
 end
 
-ISSliderPanel = {new = function(self, x, y, w, h, target, callback)
-    return {x=x, y=y, width=w, height=h, setX = function(self, x) self.x=x end, setWidth = function(self, w) self.width = w end, setY = function(self, y) self.y = y end, setVisible = function(self, v) self.visible = v end, currentValue = 1, initialise = function() end,
-        setValues = function(self, low, high) self.minValue, self.maxValue = low, high end,
-        setCurrentValue = function(self, value) self.currentValue = value end,
-        getCurrentValue = function(self) return self.currentValue end}
-end}
+ISSliderPanel = ISPanel:derive("TestSlider")
+function ISSliderPanel:new(x, y, w, h, target, callback)
+    local slider = ISPanel.new(self, x, y, w, h)
+    slider.target, slider.callback, slider.currentValue = target, callback, 1
+    return slider
+end
+function ISSliderPanel:setValues(low, high) self.minValue, self.maxValue = low, high end
+function ISSliderPanel:setCurrentValue(value, silent)
+    self.currentValue = value
+    if not silent and self.callback then self.callback(self.target, value, self) end
+end
+function ISSliderPanel:getCurrentValue() return self.currentValue end
+function ISSliderPanel:onMouseDown() self.dragInside = true end
+function ISSliderPanel:render() end
 ISComboBox = {new = function(self, x, y, w, h, target, callback)
     return {selected = 1, options = {}, initialise = function() end,
         clear = function(self) self.options = {} end,

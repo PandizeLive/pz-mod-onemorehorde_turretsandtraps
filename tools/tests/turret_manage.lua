@@ -619,6 +619,37 @@ do
     SandboxVars.OMHTurretsTraps.PotatoModuleCapacity=limit
     panel:refresh()
 end
+do
+    local oldNear = Access.near
+    Access.near = function(_, _, _, read) return read == true end
+    panel.pendingRange, panel.pendingLure, panel.pendingLanding = 4, 8, 9
+    panel.rangeSlider.dragInside = true
+    panel:prerender()
+    check(panel.readOnly and not panel.removed, "C494 Private Manage remains open for inspection")
+    for _, name in ipairs({"fireButton", "priorityButton", "reloadButton", "targetingButton", "loadOrderButton",
+        "sourceButton", "setAimButton", "powerButton", "lurePlay", "lureLoop"}) do
+        check(not panel[name].enabled, "C494 Private control is visibly disabled: " .. name)
+        check(panel[name].borderColor.r == panel[name].borderColor.g, "C494 Private control border is grey: " .. name)
+    end
+    check(panel.powerButton.backgroundColor.r == panel.powerButton.backgroundColor.g,
+        "C494 disabled power uses neutral grey")
+    check(not panel.pendingRange and not panel.pendingLure and not panel.pendingLanding,
+        "C494 losing access discards pending slider edits")
+    for _, slider in ipairs({panel.rangeSlider, panel.lureSlider, panel.landingSlider}) do
+        local value = slider:getCurrentValue()
+        slider:onMouseDown(1, 1)
+        slider:setCurrentValue(value + 1)
+        check(not slider.dragInside and slider:getCurrentValue() == value,
+            "C494 read-only slider rejects mouse and controller value changes")
+        slider:setCurrentValue(value + 2, true)
+        check(slider:getCurrentValue() == value + 2, "C494 read-only sliders still display authoritative values")
+    end
+    Access.near = oldNear
+    panel:refresh()
+    require("OMHTT/ControlManage").refresh(panel)
+    check(not panel.readOnly and panel.targetingButton.enabled and panel.setAimButton.enabled,
+        "C494 restoring write access restores permitted controls")
+end
 reachable = false
 local action = ISInventoryTransferAction:new(player, battery, storage, carried)
 check(not action:isValid(), "Native outgoing drag revalidates turret reach")

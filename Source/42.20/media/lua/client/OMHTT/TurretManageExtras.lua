@@ -9,13 +9,14 @@ local E = {}
 ---@param x number Slider origin
 ---@return nil
 function E.create(panel, x)
-    panel.lureSlider = ISSliderPanel:new(x, 0, panel.width - x - 168, panel.lineHeight + 2, panel, function(self, value)
+    local Slider = require("OMHTT/TurretRangeSlider")
+    panel.lureSlider = Slider:new(x, 0, panel.width - x - 168, panel.lineHeight + 2, panel, function(self, value)
         self.pendingLure = math.floor(value)
     end)
     panel.lureSlider:initialise()
     panel.lureSlider:setValues(5, 20, 1, 5, true)
     panel:addChild(panel.lureSlider)
-    panel.landingSlider = ISSliderPanel:new(x, 0, panel.width - x - 24, panel.lineHeight + 2, panel, function(self, value)
+    panel.landingSlider = Slider:new(x, 0, panel.width - x - 24, panel.lineHeight + 2, panel, function(self, value)
         self.pendingLanding = math.floor(value)
     end)
     panel.landingSlider:initialise()
@@ -43,6 +44,9 @@ function E.refresh(panel, contents, stats)
     panel.lureSlider:setVisible(panel.hasLure)
     panel.lurePlay:setVisible(panel.hasLure)
     panel.lureLoop:setVisible(panel.hasLure)
+    local writable = require("OMHTT/TurretAccess").near(panel.player, panel.object, panel.deviceId)
+    panel.lurePlay:setEnable(writable and panel.hasLure)
+    panel.lureLoop:setEnable(writable and panel.hasLure)
     if panel.hasLure then
         panel.lureLoop:setTitle(getText(state.lureRepeat and "UI_OMHTT_LoopOn" or "UI_OMHTT_LoopOff"))
         if not panel.lureSlider.dragInside then

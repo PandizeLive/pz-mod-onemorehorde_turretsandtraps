@@ -141,7 +141,7 @@ function C.command(module, command, message)
             prior.after = math.min(prior.before, message.health)
             prior.lethal, prior.applied, prior.reconciled = false, true, true
             zombie:setHealth(prior.after)
-            zombie:getNetworkCharacterAI():extraUpdate()
+            -- Native owner updates carry health; NetworkZombieAI is not exposed to Lua.
             reply(player, "Reconciled", message, prior)
             return
         end
@@ -152,7 +152,7 @@ function C.command(module, command, message)
         local after, _, lethal = P.result(before, message.amount)
         prior.before, prior.after, prior.lethal, prior.applied = before, after, lethal, true
         zombie:setHealth(after)
-        zombie:getNetworkCharacterAI():extraUpdate()
+        -- Acknowledge before native owner replication; do not call the unexposed NetworkZombieAI.
         -- The server owns terminal death and Horde attribution; no player attack is fabricated.
         reply(player, "Applied", message, prior)
     end

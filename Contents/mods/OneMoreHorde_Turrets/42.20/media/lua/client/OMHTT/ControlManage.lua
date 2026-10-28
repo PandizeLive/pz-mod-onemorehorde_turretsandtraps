@@ -2,7 +2,7 @@ if isServer() then return end
 require("ISUI/ISButton")
 local U = require("OMHTT/ControlClient")
 local E = {}
-local controls = {"fireButton", "priorityButton", "reloadButton", "lurePlay", "lureLoop"}
+local controls = {"fireButton", "priorityButton", "reloadButton", "targetingButton", "loadOrderButton", "lurePlay", "lureLoop", "setAimButton", "sourceButton"}
 
 ---@param panel ISPanel Turret Manage
 ---@return nil
@@ -59,13 +59,12 @@ function E.refresh(panel)
         end
     end
     if not writable then
-        for i = 1, #controls do
-            local control = panel[controls[i]]
-            if control then
-                control:setEnable(false)
-            end
-        end
+        panel.pendingRange = nil
+        panel.pendingLure, panel.pendingLanding = nil, nil
+        panel.rangeSlider.dragInside = false
+        panel.lureSlider.dragInside, panel.landingSlider.dragInside = false, false
     end
+    panel.targetingButton:setEnable(writable)
     panel.nameEntry:refresh()
     local storage = panel.object:getContainer()
     local weight = storage:getCapacityWeight() + 6
@@ -76,6 +75,13 @@ function E.refresh(panel)
         panel.sourceButton.tooltip = getText(panel.toStockpile and "UI_OMHTT_RemoveStockpileHelp" or "UI_OMHTT_RemoveInventoryHelp")
         if not writable then
             panel.sourceButton.tooltip = panel.sourceButton.tooltip .. " <LINE> " .. getText("UI_OMHTT_ControllerAccessNeeded")
+        end
+    end
+    if not writable then
+        local theme = require("OMHTT/ControlTheme")
+        for i = 1, #controls do
+            local control = panel[controls[i]]
+            if control then theme.lock(control) end
         end
     end
 end

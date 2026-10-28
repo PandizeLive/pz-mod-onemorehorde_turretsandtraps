@@ -74,6 +74,18 @@ check(#sent == effectStart + 1 and sent[#sent][1] == near and sent[#sent][4].tar
 testMode = "client"
 local effect = sent[#sent][4]
 check(Effects.accept(effect) and not Effects.accept(effect), "Split-screen duplicate delivery plays one presentation event")
+local observer = {getX = function() return 11 end, getY = function() return 10 end}
+getOnlinePlayers = function() return {size = function() return 3 end,
+    get = function(_, i) return ({near, observer, far})[i + 1] end} end
+testMode = "server"
+effectStart = #sent
+Effects.emit("Launch", {id = "observer-test", shot = 1, fromX = 10, fromY = 10, x = 15, y = 10,
+    z = 0, flight = 500, target = zombie})
+check(#sent == effectStart + 2 and sent[effectStart + 1][1] == near and sent[effectStart + 2][1] == observer,
+    "C494 projectile launch reaches shooter-side and independent nearby observer recipients")
+check(sent[effectStart + 1][4].packet == sent[effectStart + 2][4].packet
+    and sent[effectStart + 2][4].target == nil and sent[effectStart + 2][4].flight == 500,
+    "C494 all observer recipients receive the same serial and plain projectile facts")
 getOnlinePlayers = oldOnline
 
 testMode = "server"

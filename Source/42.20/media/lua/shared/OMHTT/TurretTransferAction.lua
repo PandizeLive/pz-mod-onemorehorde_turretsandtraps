@@ -67,6 +67,11 @@ end
 
 ---@return boolean valid
 function Action:isValid()
+    -- Inventory replication can precede the native Done packet. The server still
+    -- revalidates the exact items in complete(); the active client checks reach only.
+    if isClient() and self:isStarted() then
+        return not self.cancelled and Access.near(self.character, self.object, self.id)
+    end
     return self:rejection(self.item) == nil
 end
 

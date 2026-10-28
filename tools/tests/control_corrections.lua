@@ -53,6 +53,17 @@ local function withdrawal(destination)
 end
 local action=withdrawal(backpack)
 check(action.Type==Transfer.Type and action.destinationBag==bag, "Native stockpile transfer retains exact top-level destination bag")
+action.action={isStarted=function() return true end}
+item.container=nil
+check(action:isValid(), "C494 active stockpile withdrawal survives removal replication")
+item.container=backpack
+check(action:isValid(), "C494 active stockpile withdrawal waits for native Done after addition")
+controller.state.owner="someone-else"
+check(not action:isValid(), "C494 running stockpile transfer still rejects revoked write access")
+controller.state.owner="correction-owner"
+action.action=nil
+check(not action:isValid(), "C494 queued stockpile withdrawal still validates the exact source")
+item.container=storage
 local callbacks=0
 action:setOnComplete(function(value) callbacks=callbacks+value end,1)
 action:perform()

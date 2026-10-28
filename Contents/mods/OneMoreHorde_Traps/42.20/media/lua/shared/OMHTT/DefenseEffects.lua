@@ -15,11 +15,18 @@ function E.send(module, command, facts)
     serial = serial + 1
     facts.packet = serial
     local players = getOnlinePlayers()
+    local recipients = 0
     for i = 0, players:size() - 1 do
         local player = players:get(i)
         if math.abs(player:getX() - x) <= 100 and math.abs(player:getY() - y) <= 100 then
             sendServerCommand(player, module, command, facts)
+            recipients = recipients + 1
         end
+    end
+    local diagnostics = require("OMHTT/Diagnostics")
+    if module == F.MODULE and diagnostics.enabled("turrets") then
+        diagnostics.defer("presentation-send", {packet = serial, command = command, id = facts.id,
+            shot = facts.shot, recipients = recipients, x = x, y = y}, "turrets")
     end
 end
 

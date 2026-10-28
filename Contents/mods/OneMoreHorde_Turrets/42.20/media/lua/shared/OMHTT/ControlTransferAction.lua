@@ -39,7 +39,10 @@ end
 function Action:isValid()
     local state = A.state(self.object)
     if self.done or self.cancelled or type(self.incoming) ~= "boolean" or not state or state.kind ~= "Controller" or state.id ~= self.id
-        or not A.near(self.character, self.object) or not A.write(self.character, state) or not self.item then return false end
+        or not A.near(self.character, self.object) or not A.write(self.character, state) then return false end
+    -- Replicated removal/addition is not a client cancellation of a running transfer.
+    if isClient() and self:isStarted() then return true end
+    if not self.item then return false end
     local source, storage = self.item:getContainer(), self.object:getContainer()
     if not source or not source:contains(self.item) or not source:isRemoveItemAllowed(self.item) then return false end
     if self.selectBattery then

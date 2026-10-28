@@ -26,7 +26,7 @@ local function actor(id)
     function z:getOwner() return self.connection or (self.owner and player) end
     function z:getHealth() return self.health end
     function z:setHealth(value) self.health = value end
-    function z:getNetworkCharacterAI() return {extraUpdate = function() self.extraUpdates = (self.extraUpdates or 0) + 1 end} end
+    function z:getNetworkCharacterAI() error("NetworkZombieAI is not exposed to Lua") end
     function z:isDead() return self.health <= 0 end
     function z:isRemoteZombie() return self.remote == true end
     function z:isInvulnerable() return self.invulnerable == true end

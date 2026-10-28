@@ -242,6 +242,30 @@ check(Transfer:new(player, transferObject, potato, true, transferId):complete(),
 check(not Transfer:new(player, transferObject, potato, true, transferId):complete(), "Concurrent stale incoming transfer is rejected")
 check(not Transfer:new(player, transferObject, potato, false, transferId, nil, false):complete(), "Unsupported destination is rejected instead of silently changed")
 check(Transfer:new(player, transferObject, potato, false, transferId):complete() and inv:contains(potato), "Outgoing transfer restores the exact item")
+-- The native Done packet may follow inventory replication. Validate the client
+-- action throughout that gap, while the server still rejects stale completion.
+do
+    local savedMode = testMode
+    for i = 1, 100 do
+        local round = component("Base.Potato")
+        inv:AddItem(round)
+        local queued = Transfer:new(player, transferObject, round, true, transferId)
+        testMode = "client"
+        check(queued:isValid(), "C494 queued potato validates before starting")
+        queued.action = {isStarted = function() return true end}
+        inv:Remove(round)
+        check(queued:isValid(), "C494 running transfer survives the remove/add replication gap")
+        target:AddItem(round)
+        check(queued:isValid(), "C494 inventory arriving before Done does not cancel the remaining queue")
+        testMode = "server"
+        check(not queued:complete(), "C494 server rejects a repeated item transfer after replication")
+        testMode = "client"
+        queued.action = nil
+        check(not queued:isValid(), "C494 a stale not-started action retains full item validation")
+        target:Remove(round)
+    end
+    testMode = savedMode
+end
 local state = T.state(transferObject)
 check(not Control:new(player, transferObject, transferId, "Power", "true"):complete(), "Power control rejects a non-boolean")
 check(not Control:new(player, transferObject, transferId, "Range", 0/0):complete(), "Nonfinite ranges are rejected")

@@ -416,6 +416,7 @@ public final class KahluaCheck {
             {"OMHTT/ControlPanel", base + "client/OMHTT/ControlPanel.lua"},
             {"OMHTT/TurretManageGeometry", base + "client/OMHTT/TurretManageGeometry.lua"},
             {"OMHTT/TurretManageLayout", base + "client/OMHTT/TurretManageLayout.lua"},
+            {"OMHTT/TurretRangeSlider", base + "client/OMHTT/TurretRangeSlider.lua"},
             {"OMHTT/TurretManage", base + "client/OMHTT/TurretManage.lua"},
             {"_", "tools/tests/turret_manage_load_order.lua"},
             {"OMHTT/TurretAuthority", base + "server/OMHTT/TurretAuthority.lua"},

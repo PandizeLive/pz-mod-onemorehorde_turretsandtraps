@@ -172,7 +172,7 @@ function Slot:prerender()
         if self.disabled and self.kind ~= "magazine" then
             self:drawRect(0, 0, self.width, self.height, .4, 0, 0, 0)
         end
-        if self:isMouseOver() and ISMouseDrag.dragging and ISMouseDrag.draggingFocus ~= self then
+        if not self.owner.readOnly and self:isMouseOver() and ISMouseDrag.dragging and ISMouseDrag.draggingFocus ~= self then
             self:drawRectBorder(0, 0, self.width, self.height, 1, .8, .8, .8)
         end
         return
@@ -219,7 +219,7 @@ function Slot:prerender()
     if self.disabled then
         self:drawRect(0, 0, self.width, self.height, .55, 0, 0, 0)
     end
-    if self:isMouseOver() and ISMouseDrag.dragging and ISMouseDrag.draggingFocus ~= self then
+    if not self.owner.readOnly and self:isMouseOver() and ISMouseDrag.dragging and ISMouseDrag.draggingFocus ~= self then
         self:drawRectBorder(0, 0, self.width, self.height, 1, 0.8, 0.8, 0.8)
     end
 end
@@ -233,6 +233,12 @@ end
 
 ---@return nil
 function Slot:render()
+    if self.owner.readOnly then
+        self:clearDrag()
+        self:drawRect(0, 0, self.width, self.height, .5, .10, .10, .10)
+        self:drawRectBorder(0, 0, self.width, self.height, .7, .35, .35, .35)
+        return
+    end
     if self.pulseUntil then
         local remaining = self.pulseUntil - getTimestampMs()
         if remaining > 0 then

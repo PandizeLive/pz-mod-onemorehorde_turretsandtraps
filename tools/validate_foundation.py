@@ -120,7 +120,7 @@ def main():
     effects_art = json.loads((ROOT / "art/MODULE_ART_C424.json").read_text())
     assert len(effects_art) == 8
     owner_art.extend(effects_art)
-    automation_art = json.loads((ROOT / "art/MODULE_ART_C427.json").read_text())
+    automation_art = json.loads((ROOT / "art/MODULE_ART_C494.json").read_text())
     assert len(automation_art) == 8
     owner_art.extend(automation_art)
     for asset in owner_art:

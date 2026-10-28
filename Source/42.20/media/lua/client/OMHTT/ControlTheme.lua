@@ -36,15 +36,23 @@ end
 ---@param enabled boolean Operator can change state
 ---@return nil
 function Theme.power(button, powered, enabled)
-    local color = powered and Theme.on or Theme.off
+    local color = enabled and (powered and Theme.on or Theme.off) or Theme.surface
     button.backgroundColor = button.backgroundColor or {}
     button.backgroundColorEnabled = button.backgroundColorEnabled or {}
     local background, cached = button.backgroundColor, button.backgroundColorEnabled
     background.r, background.g, background.b, background.a = color.r, color.g, color.b, color.a
     cached.r, cached.g, cached.b, cached.a = color.r, color.g, color.b, color.a
-    button.backgroundColorMouseOver = powered and Theme.onHover or Theme.offHover
+    button.backgroundColorMouseOver = enabled and (powered and Theme.onHover or Theme.offHover) or Theme.surface
     button:setEnable(enabled)
+    if not enabled then button:setBorderRGBA(.35, .35, .35, .7) end
     background.r, background.g, background.b, background.a = color.r, color.g, color.b, color.a
+end
+
+---@param button ISButton Read-only mutation control
+---@return nil
+function Theme.lock(button)
+    button:setEnable(false)
+    button:setBorderRGBA(.35, .35, .35, .7)
 end
 
 ---@param panel ISPanel Window

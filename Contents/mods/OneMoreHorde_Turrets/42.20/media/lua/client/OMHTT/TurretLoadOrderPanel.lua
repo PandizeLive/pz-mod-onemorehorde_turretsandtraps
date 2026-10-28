@@ -63,6 +63,7 @@ end
 ---@param button ISButton Move operation
 ---@return nil
 function P:move(button)
+    if self.owner.readOnly then return end
     local index = self.list.selected
     local row = self.rows[index]
     if not row or row.header or self.loading then return end
@@ -168,8 +169,14 @@ function P:prerender()
     self:drawText(self.message or getText("UI_OMHTT_LoadOrderHint"), 12, 36, .8, .8, .8, 1, UIFont.Small)
     self.applyButton:setEnable(not self.loading and #self.rows > 0 and not self.owner.readOnly)
     local selected = self.rows[self.list.selected]
-    self.upButton:setEnable(not self.loading and selected ~= nil and not selected.header and selected.position > 1)
-    self.downButton:setEnable(not self.loading and selected ~= nil and not selected.header and selected.position < #selected.group.rows)
+    self.upButton:setEnable(not self.owner.readOnly and not self.loading and selected ~= nil and not selected.header and selected.position > 1)
+    self.downButton:setEnable(not self.owner.readOnly and not self.loading and selected ~= nil and not selected.header and selected.position < #selected.group.rows)
+    if self.owner.readOnly then
+        local theme = require("OMHTT/ControlTheme")
+        theme.lock(self.applyButton)
+        theme.lock(self.upButton)
+        theme.lock(self.downButton)
+    end
     if self.loading and getTimestampMs() >= self.due then
         self.due = getTimestampMs() + 750
         require("OMHTT/TurretVoidView").read(self.owner.player, self.owner.object, self.module, self.offset, function(page)

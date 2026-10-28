@@ -1,5 +1,11 @@
 # Decision register
 
+**C494 / Connected-test corrections approved (2026-10-28).** Owner selects C493 **1A**, explicitly preserves Private inspection with grey locked mutation controls, and requests the eight Automation 2 replacements. [Patch contract](PATCH_v0.2.70.3.md) | [Verification](TEST_v0.2.70.3.md). Combat API, active-client transfer validation, read-only presentation and owner art changes pass 37,026 assertions, native write/read and all three independent package startups. Local tagged installation is next. Observer visual parity remains a connected-test requirement, not a proven separate defect. No sibling changes, Workshop upload or website deployment. **Wait for a patch.**
+
+## Public GitHub repositories with collaborator-only pull requests (2026-10-28)
+
+Owner: "Can you do that for me?" in response to the recommendation to make the mod repositories public with collaborator-only pull requests. Applied to `PandizeLive/pz-mod-onemorehorde_traitshop` and `PandizeLive/pz-mod-onemorehorde_turretsandtraps`; anonymous API reads independently confirm both settings and enabled pull requests. Existing collaborators, issues, default branches and licenses are unchanged. T&T's private-only mirror check is replaced by an explicit configured-visibility check, retaining exact destination and default-branch checks. [Verification and remaining mirror prerequisite](GITHUB_WORKFLOW.md#public-visibility-and-collaborator-only-pull-requests-2026-10-28). This request authorizes repository access and mirror compatibility only; it does not alter approvals or work from other project chats.
+
 ## C493 - Connected multiplayer failures investigated (2026-10-28)
 
 Owner requests console/SFTP review of one-potato transfers, combat exceptions, missing observer effects and Private turret access. [Findings and proposed patch](MULTIPLAYER_FEEDBACK_C493.md). Logs read only; no new gameplay patch authorized. Recommend1A focused MP correction, alternative1B combat-only. Prior automated/ownerless checks do not establish connected acceptance. Owner's sibling update plan is recorded separately from fixing confirmed T&T defects.
