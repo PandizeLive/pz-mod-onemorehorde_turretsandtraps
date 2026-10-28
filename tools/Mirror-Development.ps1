@@ -33,7 +33,21 @@ function Invoke-GitHub {
 
 $branch = Invoke-ProjectGit @('symbolic-ref', '--short', 'HEAD')
 if ($branch -in @($config.releaseBranch, 'master')) { throw 'Official release branches cannot be mirrored by this command. Use dev or a development/planning branch.' }
-if (Invoke-ProjectGit @('status', '--porcelain', '--untracked-files=all')) { throw 'Commit intended changes before mirroring. Keep local caches and credentials ignored.' }
+$pending = @(Invoke-ProjectGit @('-c', 'core.quotepath=false', 'status', '--porcelain', '--untracked-files=all'))
+$localDocuments = @()
+foreach ($entry in $pending) {
+    $path = $entry.Substring(3)
+    # Only ordinary edits to tracked documentation can remain local. Additions,
+    # deletions, renames, untracked files and all build/tool changes still block.
+    $document = $path -match '^(AGENTS\.md|README\.md|docs/.+\.md)$'
+    if ($entry.Substring(0, 2) -notin @(' M', 'M ', 'MM') -or -not $document) {
+        throw "Commit intended changes before mirroring. Blocking file: $path. Keep local caches and credentials ignored."
+    }
+    $localDocuments += $path
+}
+if ($localDocuments.Count -gt 0) {
+    Write-Warning ('Mirroring committed work only. These documentation edits stay local: ' + ($localDocuments -join ', '))
+}
 foreach ($arguments in @(@('remote', 'get-url', '--all', 'origin'), @('remote', 'get-url', '--push', '--all', 'origin'))) {
     $urls = @(Invoke-ProjectGit $arguments)
     if ($urls.Count -ne 1 -or $urls[0] -ne $config.remote) { throw 'Origin fetch and push URLs must match the configured repository.' }
