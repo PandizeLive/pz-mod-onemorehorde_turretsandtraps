@@ -7,8 +7,8 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 GAME = Path(os.environ.get("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"))
-OUTPUT = ROOT / "diagnostics/c241-multiplayer/authority-server"
-IDENTIFIERS = ["OneMoreHorde_Turrets"]
+OUTPUT = ROOT / "diagnostics/c503-contacts" / time.strftime("%Y%m%d-%H%M%S")
+IDENTIFIERS = ["OneMoreHorde_Turrets", "OneMoreHorde_Traps"]
 
 
 def main():
@@ -26,21 +26,24 @@ def main():
         (ROOT / "tools/tests/native_trap_services.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (lua / "OMHTT/NativeCombatAuthority.lua").write_text(
         (ROOT / "tools/tests/native_combat_authority.lua").read_text(encoding="utf-8"), encoding="utf-8")
+    (lua / "OMHTT/NativeContactsC503.lua").write_text(
+        (ROOT / "tools/tests/native_contacts_c503.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (lua / "OMHTT_AuthorityProbe.lua").write_text(
         'Events.OnServerStarted.Add(function()\n'
         '    require("OMHTT/NativeCombatAuthority")()\n'
         '    require("OMHTT/NativeTurretAuthority")(IsoPlayer.new(getCell()))\n'
+        '    require("OMHTT/NativeContactsC503")()\n'
         'end)\n', encoding="utf-8")
     settings = cache / "Server/OMHTT_Authority.ini"
     settings.parent.mkdir(parents=True, exist_ok=True)
-    settings.write_text("Mods=" + ";".join(IDENTIFIERS) + "\nPublic=false\nPauseEmpty=true\nUPnP=false\nMap=Muldraugh, KY\nDefaultPort=29163\nUDPPort=29164\n", encoding="utf-8")
+    settings.write_text("Mods=" + ";".join(IDENTIFIERS) + "\nPublic=false\nPauseEmpty=false\nUPnP=false\nMap=Muldraugh, KY\nDefaultPort=29163\nUDPPort=29164\n", encoding="utf-8")
     transcript = OUTPUT / "server.log"
     command = [str(GAME / "jre64/bin/java.exe"), "--enable-native-access=ALL-UNNAMED",
                "--add-exports=java.base/jdk.internal.misc=ALL-UNNAMED", "-XX:-CreateCoredumpOnCrash", "-Xmx1536m",
                "-Djava.library.path=./natives/;./natives/win64/;./", "-cp", "projectzomboid.jar;.",
                "zombie.network.GameServer", "-cachedir=" + str(cache), "-servername", "OMHTT_Authority",
                "-nosteam", "-ip", "127.0.0.1", "-port", "29163", "-adminusername", "probe", "-adminpassword", "local-probe"]
-    marker = "[OMHTT-Smoke] native-server-turret deploy=exact"
+    marker = "[OMHTT-C503] native-contacts event=OnTick"
     with transcript.open("w", encoding="utf-8") as output:
         process = subprocess.Popen(command, cwd=GAME, stdin=subprocess.PIPE, stdout=output,
                                    stderr=subprocess.STDOUT, text=True, creationflags=subprocess.CREATE_NO_WINDOW)
@@ -52,7 +55,7 @@ def main():
                 if marker in content:
                     passed = True
                     break
-                if "NativeTurretAuthority.lua:" in content or "NativeCombatAuthority.lua:" in content or "Exception in thread" in content or "Server Terminated." in content:
+                if "NativeContactsC503.lua:" in content or "NativeTurretAuthority.lua:" in content or "NativeCombatAuthority.lua:" in content or "Exception in thread" in content or "Server Terminated." in content:
                     break
                 time.sleep(.5)
             if process.poll() is None:

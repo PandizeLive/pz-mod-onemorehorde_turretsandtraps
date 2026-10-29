@@ -52,4 +52,7 @@ function B.zombie(zombie)
     if started then D.measure("barb-contact", getTimestampMs() - started, "traps") end
 end
 
-Events.OnZombieUpdate.Add(B.zombie)
+require("OMHTT/DefenseContacts").handlers.barb = B.zombie
+if not isServer() then
+    Events.OnZombieUpdate.Add(B.zombie)
+end

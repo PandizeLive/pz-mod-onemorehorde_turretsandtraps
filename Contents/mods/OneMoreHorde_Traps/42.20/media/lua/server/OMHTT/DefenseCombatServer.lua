@@ -61,6 +61,7 @@ local function commitResult(job)
     if not H.matches(zombie, job.lease) then finish(job, 0, "consent-changed"); return end
     local allowed, core, token = H.beginDamage(zombie, result.lost, job.source, job.kind, result.lethal)
     if not allowed then finish(job, 0, "consent-changed"); return end
+    local notice = require("OMHTT/DamageNotice").capture(zombie, result.lost, job.source, job.kind)
     zombie:setHealth(math.min(zombie:getHealth(), result.after))
     if result.lethal then
         zombie:setHealth(0)
@@ -73,6 +74,7 @@ local function commitResult(job)
     if core then
         core.endDamage(zombie, token)
     end
+    require("OMHTT/DamageNotice").send(notice)
     finish(job, result.lost, "applied")
     local component = string.find(job.source, "^turret") and "turrets" or "traps"
     local event = result.lethal and "combat-lethal" or "combat-settled"

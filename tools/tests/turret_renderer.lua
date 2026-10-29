@@ -28,6 +28,7 @@ local function turret(x, yaw)
     local square = makeSquare(x, 610, 0)
     function square:isCanSee(index) return self.visible ~= false end
     local head = {getFullType = function() return T.HEAD end, setWorldScale = function(self, scale) self.scale = scale end}
+    function head:getID() return x end
     head.rx, head.ry, head.rz = 0, 0, 0
     function head:getWorldXRotation() return self.rx end
     function head:getWorldYRotation() return self.ry end

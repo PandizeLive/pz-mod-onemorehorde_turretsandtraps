@@ -152,5 +152,8 @@ end
 
 Events.OnClientCommand.Add(S.command)
 Events.OnTick.Add(S.pump)
-Events.OnZombieUpdate.Add(S.update)
+require("OMHTT/DefenseContacts").handlers.tack = S.update
+if not isServer() then
+    Events.OnZombieUpdate.Add(S.update)
+end
 return S

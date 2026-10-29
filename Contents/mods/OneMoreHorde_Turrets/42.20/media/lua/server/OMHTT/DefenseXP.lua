@@ -48,7 +48,7 @@ function X.contact(player, source)
     if not entry and barbs and barbs.store then
         entry = barbs.store.panels[source] or barbs.store.wires[source]
     end
-    if not entry and string.sub(source, 1, 5) == "test-" then
+    if not entry and string.sub(source, 1, 5) == "test-" and getActivatedMods():contains("OneMoreHorde_Traps") then
         local known = registry()[source]
         if known and known.x then
             local square = getCell():getGridSquare(known.x, known.y, known.z)

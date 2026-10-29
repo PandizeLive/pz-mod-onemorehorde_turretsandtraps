@@ -41,9 +41,9 @@ function B.zombie(zombie)
     local moving = state.x ~= nil and ((x - state.x) ^ 2 + (y - state.y) ^ 2) > 0.000001
     state.x, state.y = x, y
     local record = B.store.records[B.tiles[key]]
-    local down = zombie:isKnockedDown() or zombie:isRagdoll() or zombie:isGettingUp()
+    local prone, down = require("OMHTT/DefenseActorState").stance(zombie)
     frame.now, frame.recovery = B.time, recovery
-    frame.prone, frame.down, frame.crawler, frame.moving = zombie:isOnFloor(), down, zombie:isCrawling(), moving
+    frame.prone, frame.down, frame.crawler, frame.moving = prone, down, zombie:isCrawling(), moving
     frame.bed, frame.tile, frame.x, frame.y = record and record.id, key, x, y
     local hit, roll = C.step(state, frame)
     if hit and record and #B.parts(record) == 1 then
@@ -80,4 +80,7 @@ function B.zombie(zombie)
     if started then D.measure("bed-contact", getTimestampMs() - started, "traps") end
 end
 
-Events.OnZombieUpdate.Add(B.zombie)
+require("OMHTT/DefenseContacts").handlers.bed = B.zombie
+if not isServer() then
+    Events.OnZombieUpdate.Add(B.zombie)
+end

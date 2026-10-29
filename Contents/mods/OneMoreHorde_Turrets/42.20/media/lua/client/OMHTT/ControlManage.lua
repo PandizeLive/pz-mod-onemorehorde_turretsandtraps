@@ -48,7 +48,7 @@ function E.refresh(panel)
         if panel.powerTooltipInputs ~= view.inputs then
             local names = {}
             for i = 1, #view.inputs do
-                names[i] = view.inputs[i].name or view.inputs[i].id
+                names[i] = require("OMHTT/DefenseNames").label(view.inputs[i], getText("UI_OMHTT_Control" .. view.inputs[i].kind))
             end
             panel.powerTooltipInputs = view.inputs
             panel.inputPowerTooltip = getText("UI_OMHTT_TriggerPowerHelp") .. " <LINE> " .. getText("UI_OMHTT_ConnectedInputs", table.concat(names, ", "))

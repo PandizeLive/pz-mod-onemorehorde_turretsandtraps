@@ -5,6 +5,10 @@ from pathlib import Path
 from build_packages import IDS, ROOT, build
 
 OPTIONAL_TRAPS = {
+    # Tack-source validation is explicitly gated by the Turrets entry being active.
+    "OMHTT/DefenseXP": {"OMHTT/TurretProc"},
+    # Expansion tooltips add turret information only when that entry is available.
+    "OMHTT/ControlItemDescription": {"OMHTT/TurretStats", "OMHTT/TurretAmmoCapacity"},
     "OMHTT/ControlClient": {"OMHTT/Turret", "OMHTT/TurretTransferAction"},
     # Manage callbacks are invoked only by the Turrets-only management window.
     "OMHTT/ControlManage": {"OMHTT/TurretAccess", "OMHTT/Turret", "OMHTT/TurretFacingCursor"},
@@ -23,7 +27,8 @@ OPTIONAL_TRAPS = {
 }
 
 
-OPTIONAL_TURRETS = {"OMHTT/ControlWorld": {"OMHTT/TetherServer"}}
+OPTIONAL_TURRETS = {"OMHTT/ControlWorld": {"OMHTT/TetherServer"},
+                   "OMHTT/DefenseXP": {"OMHTT/BarrierFootprint"}}
 
 
 def main():

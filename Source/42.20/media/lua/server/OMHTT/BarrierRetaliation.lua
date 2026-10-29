@@ -8,7 +8,6 @@ local Diagnostics = require("OMHTT/Diagnostics")
 local ActorState = require("OMHTT/DefenseActorState")
 local Barrier = {TYPE = "OMHTTBarrierClaw", TOKEN = "OMHTTBarrierStrike"}
 local generation = 0
-local indexed = setmetatable({}, {__mode = "v"})
 local receipts = setmetatable({}, {__mode = "k"})
 
 ---@param module string Namespace
@@ -24,17 +23,35 @@ function Barrier.command(module, command, player, message)
         or not P.number(message.z, -32, 32) or not P.number(message.index, 0, 10000)
         or message.index % 1 ~= 0 or message.x % 1 ~= 0 or message.y % 1 ~= 0 or message.z % 1 ~= 0
         or (message.token ~= "left" and message.token ~= "right") then return end
-    local zombie = indexed[message.id]
-    if not zombie or zombie:getOnlineID() ~= message.id or zombie:isDead() or zombie:getPersistentOutfitID() ~= message.outfit
-        or not zombie:getOwner() or not zombie:getOwner():havePlayer(player)
-        or not Horde.allowed(zombie) or not Foundation.barrierEnabled() then return end
-    if not string.find(string.lower(zombie:getRealState()), "thump", 1, true) then return end
     local square = getCell():getGridSquare(message.x, message.y, message.z)
     local objects = square and square:getObjects()
-    if not objects or message.index >= objects:size() or zombie:getZ() ~= message.z then return end
+    if not objects or message.index >= objects:size() then return end
     local target = objects:get(message.index)
     local record = Footprint.exact(target)
     if not record or record.id ~= message.barrier or target:getHealth() <= 0 then return end
+    -- Resolve from the validated collider's immediate vicinity, not an undriven update-event index.
+    local zombie, scanned = nil, 0
+    for x = message.x - 2, message.x + 2 do
+        for y = message.y - 2, message.y + 2 do
+            local tile = getCell():getGridSquare(x, y, message.z)
+            local moving = tile and tile:getMovingObjects()
+            for i = 0, (moving and moving:size() or 0) - 1 do
+                local actor = moving:get(i)
+                scanned = scanned + 1
+                if instanceof(actor, "IsoZombie") and actor:getOnlineID() == message.id then
+                    zombie = actor
+                    break
+                end
+                if scanned >= 256 then return end
+            end
+            if zombie then break end
+        end
+        if zombie then break end
+    end
+    if not zombie or zombie:isDead() or zombie:getPersistentOutfitID() ~= message.outfit
+        or not zombie:getOwner() or not zombie:getOwner():havePlayer(player)
+        or not Horde.allowed(zombie) or not Foundation.barrierEnabled() then return end
+    if not string.find(string.lower(zombie:getRealState()), "thump", 1, true) then return end
     local dx, dy = zombie:getX() - message.x - .5, zombie:getY() - message.y - .5
     if dx * dx + dy * dy > 4 or Barrier.face(record, zombie:getX(), zombie:getY(), target:getModData().OMHTTEdge) == "rear" then return end
     local now, receipt = getTimestampMs(), receipts[zombie]
@@ -105,8 +122,6 @@ end
 function Barrier.update(zombie)
     if isClient() then return end
     if isServer() then
-        local id = zombie:getOnlineID()
-        if id ~= -1 then indexed[id] = zombie end
         if zombie:getOwner() then return end
     end
     local data = ActorState.peek(zombie)

@@ -51,6 +51,11 @@ function R.changed(object, head)
     end
     local entry = R.entries[object] or {}
     local contents = T.contents(object:getContainer())
+    local headId = head and head:getID()
+    if entry.headId ~= headId then
+        entry.aimSample = {}
+    end
+    entry.headId = headId
     entry.head, entry.profile = head, M.profile(T.state(object), contents)
     entry.automatic = M.profile(T.state(object), contents, true, entry.profile.stats)
     entry.hasDetector = contents.active.MotionDetection ~= nil
@@ -104,7 +109,14 @@ function R.animate(now)
             entry.lowered = entry.lowered + math.max(-step, math.min(step, goal - entry.lowered))
             if isClient() then
                 local desired = state.aimDegrees or (state.facing or 0) * 22.5
-                entry.visualHeading = Aim.move(entry.visualHeading or desired, desired, elapsed * 720)
+                entry.aimSample = entry.aimSample or {}
+                local rotary = entry.profile.stats.rotary and type(state.rotaryTravel) == "number"
+                local value = require("OMHTT/TurretAimView").sample(entry.aimSample,
+                    rotary and state.rotaryTravel or desired, getTimestampMs(), rotary)
+                if rotary then
+                    value = entry.profile.heading + require("OMHTT/TurretHeads").motion(value, entry.profile.omni, entry.profile.cone)
+                end
+                entry.visualHeading = value % 360
             elseif entry.profile.stats.rotary then
                 entry.visualHeading = state.aimDegrees
             elseif T.isOn(state) and state.standby ~= "asleep" and state.standby ~= "waking" and not state.facingPending and automatic and automatic.status == "no-target" and not Aim.entries[object] and entry.head and speed > 0 then

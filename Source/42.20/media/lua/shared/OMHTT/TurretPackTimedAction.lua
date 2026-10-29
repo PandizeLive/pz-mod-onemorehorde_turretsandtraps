@@ -19,6 +19,16 @@ function A:start()
     self:setOverrideHandModels(nil, nil)
 end
 
+---@return nil
+function A:serverStart()
+    require("OMHTT/TurretPackObservers").start(self)
+end
+
+---@return nil
+function A:serverStop()
+    require("OMHTT/TurretPackObservers").stop(self)
+end
+
 ---@return number duration Native action time; enforced by NetTimedAction on the server
 ---@nodiscard
 function A:getDuration()
@@ -38,6 +48,9 @@ end
 
 ---@return boolean completed
 function A:complete()
+    if isServer() then
+        require("OMHTT/TurretPackObservers").stop(self)
+    end
     if isClient() or not self:isValid() then return false end
     self.done = true
     local rewards = P.open(self.character, self.pack)

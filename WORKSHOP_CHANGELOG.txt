@@ -1,8 +1,11 @@
-v0.2.70.5
+v0.2.70.6
 
 Development test content
 
-- Fixed multiplayer turret and trap kills leaving zombies without completing death.
-- Fixed ammunition loading interrupting turret aiming and firing.
-- Fixed module loot synchronization when zombies die.
-- Added dry-fire clicks for empty turrets and world lighting for active, standby and fading empty-ammo indicators.
+- Fixed multiplayer contact damage for Bed Spikes, Barbed Panels, Concertina Wire and Tacks.
+- Fixed Poke Floor startup and delayed strikes, and Initial Blow and Execute health tracking.
+- Fixed multiplayer trap names and restored Pixel Strike damage numbers for turret and trap hits.
+- Fixed rotary heads hitting knocked-down zombies in multiplayer.
+- Fixed a trap-credit error when using Turrets without Traps.
+- Smoothed multiplayer turret aiming and rotary movement.
+- Added nearby Module Pack opening indicators above other players.

@@ -65,8 +65,8 @@ local function fillMenu(playerIndex, context, worldobjects, test)
                 title = "ContextMenu_OMHTT_ReinforcedFacing"
             end
             local name = getText(title, headings[record.facing / 4 + 1])
-            if record.displayName then
-                name = record.displayName .. " (" .. headings[record.facing / 4 + 1] .. ")"
+            if record.name or record.displayNumber then
+                name = require("OMHTT/DefenseNames").label(record, name)
             elseif #entries > 1 then
                 name = getText("ContextMenu_OMHTT_BarrierChoice", name, i)
             end

@@ -99,7 +99,7 @@ function W.publish(object)
         for id in pairs(W.incoming[state.id] or {}) do
             local source = W.records().records[id]
             if source and source.placed then
-                view.inputs[#view.inputs + 1] = {id = id, name = source.displayName or source.name, kind = source.kind, owner = source.owner,
+                view.inputs[#view.inputs + 1] = {id = id, name = source.name, number = source.displayNumber, headType = source.headType, kind = source.kind, owner = source.owner,
                     x = source.x, y = source.y, z = source.z}
             end
         end
@@ -343,6 +343,9 @@ function W.indexPlate(object, state)
     local square = object:getSquare()
     W.plates[square] = W.plates[square] or {}
     W.plates[square][object] = true
+    if isServer() then
+        require("OMHTT/DefenseContacts").watch(object, "control", state.x - 1, state.y - 1, state.x + 1, state.y + 1, state.z)
+    end
 end
 
 ---@param object IsoThumpable Pressure plate
@@ -620,6 +623,9 @@ end
 ---@param object IsoObject Removed device
 ---@return nil
 function W.removed(object)
+    if isServer() then
+        require("OMHTT/DefenseContacts").remove(object)
+    end
     require("OMHTT/ControlSensor").remove(object)
     require("OMHTT/ControlPoke").entries[object] = nil
     local state = W.state(object)
@@ -1000,6 +1006,9 @@ Events.LoadGridsquare.Add(W.square)
 Events.OnObjectAdded.Add(W.bind)
 Events.OnObjectAboutToBeRemoved.Add(W.deleted)
 Events.OnTick.Add(W.tick)
-Events.OnZombieUpdate.Add(W.actor)
+require("OMHTT/DefenseContacts").handlers.control = W.actor
+if not isServer() then
+    Events.OnZombieUpdate.Add(W.actor)
+end
 Events.OnPlayerUpdate.Add(W.actor)
 return W

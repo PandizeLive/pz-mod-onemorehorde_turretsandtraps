@@ -85,6 +85,9 @@ function B.wireEnabled() return B.enabled("wire") end
 
 ---@return nil
 function B.initialize()
+    if isServer() then
+        require("OMHTT/DefenseContacts").clear("barb")
+    end
     if isClient() then
         B.store = {nextId = 1, wires = {}}
     else
@@ -144,6 +147,14 @@ function B.index(record, adding)
                     B.nearby[key] = nil
                 end
             end
+        end
+    end
+    if isServer() then
+        local contacts = require("OMHTT/DefenseContacts")
+        if adding then
+            contacts.watch("barb:" .. record.id, "barb", record.x - 1, record.y - 1, record.x + width, record.y + height, record.z)
+        else
+            contacts.remove("barb:" .. record.id)
         end
     end
     if adding then

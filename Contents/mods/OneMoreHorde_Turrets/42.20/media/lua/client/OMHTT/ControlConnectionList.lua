@@ -41,7 +41,7 @@ function List:refresh()
         local writable = object and A.write(panel.player, state)
             and (A.near(panel.player, object) or require("OMHTT/ControlRemote").valid(panel.player, panel.object, object))
             and A.write(panel.player, A.state(panel.selected)) and A.range(object, panel.selected)
-        local title = state and U.name(object) or row.name or getText("UI_OMHTT_Control" .. row.kind)
+        local title = state and U.name(object) or require("OMHTT/DefenseNames").label(row, getText("UI_OMHTT_Control" .. row.kind))
         local host = A.state(panel.object)
         if host and ((state and A.visible(panel.object, object)) or (not state and row.owner == host.owner)) then
             rows[#rows + 1] = {title = title, object = object, active = state and state.active, writable = writable == true}

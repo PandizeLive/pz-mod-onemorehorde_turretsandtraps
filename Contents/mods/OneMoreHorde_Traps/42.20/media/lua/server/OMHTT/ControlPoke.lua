@@ -30,11 +30,11 @@ function P.step(object, state)
     local now = P.time
     local entry = P.entries[object]
     if not entry then
-        entry = {players = setmetatable({}, {__mode = "k"}), due = now + 1000}
+        entry = {players = setmetatable({}, {__mode = "k"}), due = now}
         P.entries[object] = entry
         P.visual(object, state, false)
     end
-    if entry.finish and now >= entry.finish then
+    if entry.finish and now >= entry.finish and not entry.strike then
         entry.finish, entry.strike, entry.victims = nil, nil, nil
         P.visual(object, state, false)
     end
@@ -89,6 +89,10 @@ function P.step(object, state)
         end
     end
     entry.victims = nil
+    if entry.finish and now >= entry.finish then
+        entry.finish = nil
+        P.visual(object, state, false)
+    end
     W.publish(object)
 end
 

@@ -45,8 +45,12 @@ function R.contact(entry, actor, job)
     local zombie = instanceof(actor, "IsoZombie")
     local player = instanceof(actor, "IsoPlayer")
     if not zombie and not player then return end
-    if actor:isOnFloor() or actor:isKnockedDown() or actor:isRagdoll()
-        or zombie and actor:isGettingUp() then return end
+    if zombie then
+        local _, down = require("OMHTT/DefenseActorState").stance(actor)
+        if down then return end
+    elseif actor:isOnFloor() or actor:isKnockedDown() or actor:isRagdoll() then
+        return
+    end
     if zombie and not Horde.allowed(actor) then return end
     local origin = entry.object:getSquare()
     local square = actor:getSquare()
@@ -211,6 +215,7 @@ function R.step(entry, deadline)
         end
     end
     state.rotaryMoving = moving
+    state.rotaryTravel = entry.travel
     local angle = Heads.motion(entry.travel, profile.omni, profile.cone)
     state.aimDegrees = (profile.heading + angle + 360) % 360
     if not entry.rotaryJob then

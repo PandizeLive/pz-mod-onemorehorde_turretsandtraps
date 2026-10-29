@@ -57,7 +57,6 @@ end
 function U.name(object, automatic)
     local state = A.state(object)
     if not state then return "" end
-    if not automatic and state.displayName then return state.displayName end
     if state.kind ~= "Controller" and not automatic and state.name and state.name ~= "" then return state.name end
     if state.kind == "Turret" then
         local head = state.headType

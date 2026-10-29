@@ -35,6 +35,7 @@ local function apply(zombie, amount, source, kind, operator, weapon)
     if remaining < 0.000001 then
         remaining = 0
     end
+    local notice = require("OMHTT/DamageNotice").capture(zombie, before - remaining, source, kind)
     zombie:setHealth(remaining)
     if remaining == 0 then
         require("OMHTT/DefenseXP").lethal(zombie, source, token and token.event)
@@ -52,6 +53,7 @@ local function apply(zombie, amount, source, kind, operator, weapon)
     end
     Diagnostics.defer("damage-applied", {id = source, kind = kind, before = before,
         after = zombie:getHealth(), nativeDamage = lost, damage100 = lost * 100, dead = zombie:isDead()}, component)
+    require("OMHTT/DamageNotice").send(notice)
     triggerEvent("OnOMHTTDamage", zombie, lost, source, kind)
     return lost
 end

@@ -1,6 +1,15 @@
 local N = {}
 local store
 
+---@param record table Replicated identity and optional custom name
+---@param base string Viewer-localized automatic label
+---@return string label
+function N.label(record, base)
+    if record.name and string.trim(record.name) ~= "" then return record.name end
+    local number = record.displayNumber or record.number
+    return base .. (number and " #" .. number or "")
+end
+
 ---@return table registry
 local function registry()
     if not store then
@@ -66,7 +75,8 @@ function N.pack(record, item)
     if health and maximum then
         item:setCondition(health > 0 and math.max(1, math.floor(health / maximum * item:getConditionMax())) or 0)
     end
-    item:getModData().OMHTTDisplayName = record.displayName
+    item:getModData().OMHTTDisplayName = record.name
+    item:getModData().OMHTTDisplayNumber = record.displayNumber
 end
 
 ---@param record table New private state

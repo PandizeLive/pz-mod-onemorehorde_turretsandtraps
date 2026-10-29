@@ -1,6 +1,6 @@
 ---@class OMHTTFoundation
 local Foundation = {
-    VERSION = "0.2.70.5",
+    VERSION = "0.2.70.6",
     MODULE = "OMHTT_Foundation",
     STORE = "OMHTT_Foundation_v1",
     PREFIX = "OMHTT_P1C1_",
@@ -29,7 +29,7 @@ end
 function Foundation.writeMarker(object, record)
     object:getModData().OMHTT = {
         schema = 1, tier = record.tier, id = record.id, condition = record.condition, revision = record.revision,
-        displayName = record.displayName, displayNumber = record.displayNumber,
+        name = record.name, displayName = record.displayName, displayNumber = record.displayNumber,
         testOwner = record.testOwner, kind = record.kind, ammo = record.ammo, shots = record.shots,
         nextShot = record.nextShot, facing = record.facing, width = record.width,
         anchorX = record.x, anchorY = record.y, anchorZ = record.z,

@@ -33,6 +33,9 @@ end
 
 ---@return nil
 function B.initialize()
+    if isServer() then
+        require("OMHTT/DefenseContacts").clear("bed")
+    end
     if isClient() then
         B.store = {nextId = 1, records = {}}
     else
@@ -138,6 +141,14 @@ function B.index(record, delta)
         end
     end
     B.indexed[record.id] = delta > 0 or nil
+    if isServer() then
+        local contacts = require("OMHTT/DefenseContacts")
+        if delta > 0 then
+            contacts.watch("bed:" .. record.id, "bed", record.x - 2, record.y - 2, record.x + 2, record.y + 2, record.z)
+        else
+            contacts.remove("bed:" .. record.id)
+        end
+    end
 end
 
 ---@param record table Bed record

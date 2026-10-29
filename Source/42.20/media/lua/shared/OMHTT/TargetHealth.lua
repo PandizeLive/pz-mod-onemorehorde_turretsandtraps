@@ -2,6 +2,7 @@ local H = {}
 OMHTT_TargetHealth = H
 local baselines = setmetatable({}, {__mode = "k"})
 local pending = setmetatable({}, {__mode = "k"})
+local created, first, last = {}, 1, 0
 
 ---@param actor IsoGameCharacter Candidate
 ---@return number health Comparable current health
@@ -18,6 +19,10 @@ function H.created(zombie)
         and (tonumber(zombie:getModData().OMHTTInitialHealth) or 0) > 0 then return end
     -- Native spawners can replace health AFTER OnZombieCreate returns.
     -- Finalize at the first update or pre-damage observation, not at spawn notification.
+    if isServer() and not pending[zombie] then
+        last = last + 1
+        created[last] = zombie
+    end
     pending[zombie] = true
     baselines[zombie] = nil
     if not isServer() then
@@ -61,6 +66,22 @@ function H.maximum(zombie)
     return maximum
 end
 
+---@return nil
+function H.tick()
+    if not isServer() or first > last then return end
+    -- Capture after native spawner customization, before waiting for any turret hit.
+    for _ = 1, 512 do
+        if first > last then break end
+        local zombie = created[first]
+        created[first], first = nil, first + 1
+        H.settle(zombie)
+    end
+    if first > last then
+        created, first, last = {}, 1, 0
+    end
+end
+
+Events.OnTick.Add(H.tick)
 Events.OnZombieCreate.Add(H.created)
 Events.OnZombieUpdate.Add(H.settle)
 Events.OnHitZombie.Add(H.settle)

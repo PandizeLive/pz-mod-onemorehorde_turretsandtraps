@@ -47,9 +47,9 @@ function W.publishRuntime(object, state, contents, now)
     if now >= view.due then
         view.due = now + 250
         local heading = math.floor((state.aimDegrees or 0) / 2)
-        if view.heading ~= heading or view.shots ~= state.shots or view.moving ~= state.rotaryMoving
+        if view.heading ~= heading or view.travel ~= state.rotaryTravel or view.shots ~= state.shots or view.moving ~= state.rotaryMoving
             or view.status ~= state.feedStatus or view.loaded ~= state.feedLoaded or view.powerSource ~= state.powerSource then
-            view.powerSource = state.powerSource
+            view.powerSource, view.travel = state.powerSource, state.rotaryTravel
             view.heading, view.shots, view.moving = heading, state.shots, state.rotaryMoving
             view.status, view.loaded = state.feedStatus, state.feedLoaded
             Authority.publish(object)

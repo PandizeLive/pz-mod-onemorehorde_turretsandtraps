@@ -17,6 +17,9 @@ function S.remove(object)
         for _ in pairs(bucket) do found=true; break end
         if not found then S.tiles[k]=nil end
     end
+    if isServer() then
+        require("OMHTT/DefenseContacts").remove(object)
+    end
     S.entries[object]=nil
     S.count=S.count-1
     if S.count==0 then S.positions=setmetatable({}, {__mode="k"}) end
@@ -45,6 +48,9 @@ function S.step(object,state)
         S.entries[object]=entry
         S.count=S.count+1
         local bx,by=entry.x+entry.dx*entry.length,entry.y+entry.dy*entry.length
+        if isServer() then
+            require("OMHTT/DefenseContacts").watch(object, "control", math.min(entry.x,bx)-1, math.min(entry.y,by)-1, math.max(entry.x,bx)+1, math.max(entry.y,by)+1, entry.z)
+        end
         for x=math.floor(math.min(entry.x,bx)-.3),math.floor(math.max(entry.x,bx)+.3) do
             for y=math.floor(math.min(entry.y,by)-.3),math.floor(math.max(entry.y,by)+.3) do
                 local k=key(x,y,entry.z)

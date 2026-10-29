@@ -51,6 +51,14 @@ end
 ---@param add boolean Insert or erase
 ---@return nil
 function E.index(field, add)
+    if isServer() then
+        local contacts = require("OMHTT/DefenseContacts")
+        if add then
+            contacts.watch("tack:" .. field.id, "tack", field.x - field.radius, field.y - field.radius, field.x + field.radius, field.y + field.radius, field.z)
+        else
+            contacts.remove("tack:" .. field.id)
+        end
+    end
     for x = math.floor((field.x - field.radius) / 8), math.floor((field.x + field.radius) / 8) do
         for y = math.floor((field.y - field.radius) / 8), math.floor((field.y + field.radius) / 8) do
             local key = F.key(x, y, field.z)
@@ -281,6 +289,9 @@ end
 
 ---@return nil
 function E.load()
+    if isServer() then
+        require("OMHTT/DefenseContacts").clear("tack")
+    end
     E.jobs, E.fields, E.buckets, E.injuryAt, E.fieldOrder, E.fieldCursor = {}, {}, {}, {}, {}, 1
     E.reservedJobs, E.reservedFields, E.fieldCount = 0, 0, 0
     E.audioAt = {}

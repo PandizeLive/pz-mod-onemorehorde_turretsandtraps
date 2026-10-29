@@ -47,3 +47,7 @@ All36 component identifiers in `Turret.MODULES` were covered:32 modules and4 kit
 Neither option changes damage balance, module stacking, existing permissions or Horde assistance policy. Approval is pending under the project test-feedback agreement. No additional owner test is requested until the corrective build exists.
 
 Required verification: reproduce server event-driven contact rather than directly calling handlers; test first contact/repeat/exit, overlapping wire/Tack, owner handoff and unloaded actors; Poke deadline/fast movement; before-turret injury and custom maximum HP; recipient/dedup/death popup behavior; existing/custom names across two locales; bursty heading samples; icon start/stop/range/privacy. Final connected acceptance remains essential even after isolated tests pass.
+
+## C503 approval (2026-10-28)
+
+Owner selects **1A** and asks whether Martyrdom shares the failure. Approval covers the full corrective scope above, including visual aim interpolation and the eight-tile pack-opening indicator. Martyrdom uses the registered TurretProc tick scheduler, not OnZombieUpdate; verify its scheduled root and Synergy follow-up damage in this patch. Implementation/verification are in progress; no connected acceptance or publication is implied.

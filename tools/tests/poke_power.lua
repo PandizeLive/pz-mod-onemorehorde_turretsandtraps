@@ -86,14 +86,14 @@ actors[1] = {kind = "IsoZombie", isDead = function() return false end}
 actors[2] = {kind = "IsoZombie", isDead = function() return false end}
 Poke.time = 0
 Poke.step(poke, states[poke])
-Poke.time = 1000
+Poke.time = 100
 Poke.step(poke, states[poke])
 check(states[poke].active and hits == 0 and localBattery.charge == 1 and second.charge == .5,
     "Pressure cycle spends no local or Controller charge; no immediate damage")
-Poke.time = 1150
+Poke.time = 150
 Poke.step(poke, states[poke])
 check(hits == 2 and poke.health == 199, "Strike hits every eligible zombie once but wears once")
-Poke.time = 1200
+Poke.time = 200
 Poke.step(poke, states[poke])
 check(hits == 2, "Raised trap has no repeated contact damage")
 states[poke].enabled = false
