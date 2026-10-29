@@ -32,3 +32,7 @@ The earlier GitHub mirror approval-review block remains; no workaround or public
 ## C506 connected owner retest
 
 2026-10-29: Failed connected acceptance. Owner reports missing Bed damage, late Wire/Poke contacts, apparent double hits and corpse-triggered Poke. [Investigation and next choices](MULTIPLAYER_FEEDBACK_C506.md). Earlier automated evidence is retained; it does not cover these real connected cases. No corrective patch installed this turn.
+
+## C508 source-only repair
+
+Owner approved the replacement and requires proof before packaging. See [candidate evidence and remaining connected gate](MULTIPLAYER_REPAIR_C508.md). This does not change the failed connected acceptance of the installed0.2.70.7 build. No new package or installation.

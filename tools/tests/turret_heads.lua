@@ -84,6 +84,7 @@ local zombie = {health = 10, kind = "IsoZombie", getX = function() return 1.5 en
     getCurrentStateName = function() return "idle" end, isProne = function() return false end,
     isKnockedDown = function() return false end, isStaggerBack = function() return false end, isBumpFall = function() return false end}
 function zombie:isDead() return self.health <= 0 end
+function zombie:isReanimatedForGrappleOnly() return false end
 function zombie:isOnFloor() return self.grounded == true end
 function zombie:isRagdoll() return self.ragdoll == true end
 function zombie:isGettingUp() return self.gettingUp == true end

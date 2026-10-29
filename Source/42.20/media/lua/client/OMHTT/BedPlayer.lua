@@ -5,6 +5,12 @@ local Barbs = require("OMHTT/BarbSections")
 local P = require("OMHTT/ContactPlayer")
 P.trapsRegistered = true
 P.barbs = Barbs
+if isClient() then
+    require("OMHTT/DefenseContactClient").checks.traps=function(zombie)
+        local key=F.key(math.floor(zombie:getX()),math.floor(zombie:getY()),math.floor(zombie:getZ()))
+        return B.nearby[key]~=nil or Barbs.nearby[key]~=nil
+    end
+end
 require("OMHTT/DefenseMotion").checks.traps = function(zombie, source)
     local barb = Barbs.contact(zombie)
     return barb ~= nil and barb.id == source

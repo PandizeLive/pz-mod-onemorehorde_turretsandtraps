@@ -4,6 +4,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import time
+import argparse
 
 ROOT = Path(__file__).resolve().parents[1]
 GAME = Path(os.environ.get("PZ_GAME_DIR", "C:/Program Files (x86)/Steam/steamapps/common/ProjectZomboid"))
@@ -12,13 +13,25 @@ IDENTIFIERS = ["OneMoreHorde_Turrets", "OneMoreHorde_Traps"]
 
 
 def main():
-    from build_packages import build
-    build(check=True)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--source", action="store_true", help="Use an isolated source candidate; leave release packages untouched")
+    args = parser.parse_args()
+    from build_packages import build, expected_files
+    candidate = expected_files()[1] if args.source else None
+    if not args.source:
+        build(check=True)
     cache = OUTPUT / "cache"
     identifier = "OneMoreHorde_Turrets"
     destination = cache / "mods" / identifier
     for selected in IDENTIFIERS:
-        shutil.copytree(ROOT / "Contents/mods" / selected, cache / "mods" / selected, dirs_exist_ok=True)
+        if candidate:
+            component = "turrets" if selected.endswith("Turrets") else "traps"
+            for relative, content in candidate[component].items():
+                target = cache / "mods" / selected / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(content)
+        else:
+            shutil.copytree(ROOT / "Contents/mods" / selected, cache / "mods" / selected, dirs_exist_ok=True)
     lua = destination / "42.20/media/lua/server"
     (lua / "OMHTT/NativeTurretAuthority.lua").write_text(
         (ROOT / "tools/tests/native_turret_authority.lua").read_text(encoding="utf-8"), encoding="utf-8")
@@ -28,8 +41,11 @@ def main():
         (ROOT / "tools/tests/native_combat_authority.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (lua / "OMHTT/NativeContactsC503.lua").write_text(
         (ROOT / "tools/tests/native_contacts_c503.lua").read_text(encoding="utf-8"), encoding="utf-8")
+    (lua / "OMHTT/NativeContactC508.lua").write_text(
+        (ROOT / "tools/tests/native_contact_c508.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (lua / "OMHTT_AuthorityProbe.lua").write_text(
         'Events.OnServerStarted.Add(function()\n'
+        '    require("OMHTT/NativeContactC508")()\n'
         '    require("OMHTT/NativeCombatAuthority")()\n'
         '    require("OMHTT/NativeTurretAuthority")(IsoPlayer.new(getCell()))\n'
         '    require("OMHTT/NativeContactsC503")()\n'
@@ -55,7 +71,7 @@ def main():
                 if marker in content:
                     passed = True
                     break
-                if "NativeContactsC503.lua:" in content or "NativeTurretAuthority.lua:" in content or "NativeCombatAuthority.lua:" in content or "Exception in thread" in content or "Server Terminated." in content:
+                if "NativeContactC508.lua:" in content or "NativeContactsC503.lua:" in content or "NativeTurretAuthority.lua:" in content or "NativeCombatAuthority.lua:" in content or "Exception in thread" in content or "Server Terminated." in content:
                     break
                 time.sleep(.5)
             if process.poll() is None:
@@ -72,6 +88,7 @@ def main():
                 process.wait(timeout=15)
         assert passed, f"Native turret authority probe failed; inspect {transcript}"
         content = transcript.read_text(encoding="utf-8", errors="replace")
+        assert "[OMHTT-C508] native-clock-corpse passed=true" in content, "Native C508 API checks failed"
         mod_errors = [line for line in content.splitlines() if "MOD:OMH:" in line and "Exception thrown" in line]
         assert not mod_errors, f"Native mod callbacks threw despite completion markers: {mod_errors}; inspect {transcript}"
         assert 'Packet "AddInventoryItemToContainer" send failed' not in content, "Premature corpse inventory synchronization failed"

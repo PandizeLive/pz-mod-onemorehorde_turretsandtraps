@@ -122,17 +122,24 @@ public final class KahluaCheck {
                 throw new IllegalStateException("Trip must use the native forward clip");
             if (animNodeType.getField("useDeferredMovement").getBoolean(tripNode) != actor.equals("player"))
                 throw new IllegalStateException("Only zombie bed trips must suppress clip displacement");
-            int landingEvents = 0, completionEvents = 0, sounds = 0;
+            int landingEvents = 0, completionEvents = 0, sounds = 0, ownerLandingEvents = 0;
             for (Object event : (java.util.List<?>)animNodeType.getField("events").get(tripNode)) {
                 String name = (String)event.getClass().getField("eventName").get(event);
                 String value = (String)event.getClass().getField("parameterValue").get(event);
                 if (name.equals("FallOnFront") && value.equals("true")) landingEvents++;
+                else if (actor.equals("zombie") && name.equals("SetVariable") && value.equals("OMHTTBedLanded=true")
+                    && event.getClass().getSimpleName().equals("AnimEventSetVariable")) {
+                    if (Math.abs(event.getClass().getField("timePc").getFloat(event) - .5f) > .00001f)
+                        throw new IllegalStateException("Owner landing must coincide with native ground contact");
+                    ownerLandingEvents++;
+                }
                 else if (actor.equals("zombie") && name.equals("PlaySound") && (value.equals("ZombieTrip") || value.equals("BodyHitGround"))) sounds++;
                 else if (name.equals("SetVariable") && event.getClass().getSimpleName().equals("AnimEventSetVariable")
                     && (value.equals("SprinterTripped=true") || value.equals("BumpAnimFinished=true") || value.equals("BumpFallAnimFinished=true"))) completionEvents++;
                 else throw new IllegalStateException("Unexpected forward trip event: " + name + " " + value);
             }
-            if (landingEvents != 1 || completionEvents != (actor.equals("player") ? 1 : 2) || sounds != (actor.equals("player") ? 0 : 2))
+            if (landingEvents != 1 || ownerLandingEvents != (actor.equals("zombie") ? 1 : 0)
+                || completionEvents != (actor.equals("player") ? 1 : 2) || sounds != (actor.equals("player") ? 0 : 2))
                 throw new IllegalStateException("Incomplete trip landing/recovery markers");
         }
         System.out.println("Native trip parser: player/zombie forward clips and complete landing/recovery markers valid");
@@ -187,7 +194,7 @@ public final class KahluaCheck {
         });
         set.invoke(env, "nativeText", textFunction);
         List<Path> scripts;
-        try (var walk = Files.walk(root.resolve("Contents"))) {
+        try (var walk = Files.walk(root.resolve("Source"))) {
             scripts = walk.filter(path -> path.toString().endsWith(".lua")).sorted().toList();
         }
         for (Path script : scripts) {
@@ -595,6 +602,11 @@ public final class KahluaCheck {
             {"C474Horde", "../pz-mod-onemorehorde_protectthecure/Contents/mods/OneMoreHorde_HordeNight/42.20/media/lua/server/OMH_DefenseIntegration.lua"},
             {"_", "tools/tests/horde_c474.lua"},
             {"_", "tools/tests/readiness_c489.lua"},
+            {"_", "tools/tests/contact_path_server_setup.lua"},
+            {"OMHTT/DefenseContactServer", base + "server/OMHTT/DefenseContactServer.lua"},
+            {"_", "tools/tests/contact_path_client_setup.lua"},
+            {"OMHTT/DefenseContactClient", base + "client/OMHTT/DefenseContactClient.lua"},
+            {"_", "tools/tests/contact_path.lua"},
         };
         for (String[] stage : stages) {
             try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {
@@ -667,7 +679,7 @@ public final class KahluaCheck {
         }
         String version = Files.readString(root.resolve("Source/42.20/mod.info")).lines()
             .filter(line -> line.startsWith("modversion=")).findFirst().orElseThrow().substring(11).trim();
-        Path traceDirectory = root.resolve("diagnostics/v" + version);
+        Path traceDirectory = root.resolve(System.getenv().getOrDefault("OMHTT_TEST_OUTPUT", "diagnostics/v" + version));
         Files.createDirectories(traceDirectory);
         for (String view : new String[] {"Manage", "Controller"}) {
             Object svg = get.invoke(env, "test" + view + "Svg");
@@ -728,6 +740,8 @@ public final class KahluaCheck {
         System.out.println("C247 content: " + get.invoke(env, "testC247"));
         System.out.println("C399 performance/lifecycle: " + get.invoke(env, "testC399Audit"));
         System.out.println("C401 regressions: " + get.invoke(env, "testC401Audit"));
+        System.out.println("C508 contact path: " + get.invoke(env, "testContactPath"));
+        System.out.println("C508 contact stress: " + get.invoke(env, "testContactStress"));
         System.out.println("World/player/network/UI objects were test doubles; in-game acceptance remains pending.");
         System.exit(0);
     }

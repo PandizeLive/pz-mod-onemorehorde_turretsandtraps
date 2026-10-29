@@ -82,8 +82,8 @@ localBattery.charge = 1
 local hits, allowed = 0, true
 H.allowed = function() return allowed end
 D.resolve = function(_, amount, _, _, callback) hits = hits + 1; check(amount == .45, "Poke damage is 45 points"); callback(amount); return true end
-actors[1] = {kind = "IsoZombie", isDead = function() return false end}
-actors[2] = {kind = "IsoZombie", isDead = function() return false end}
+actors[1] = {kind = "IsoZombie", isDead = function() return false end, isReanimatedForGrappleOnly=function() return false end}
+actors[2] = {kind = "IsoZombie", isDead = function() return false end, isReanimatedForGrappleOnly=function() return false end}
 Poke.time = 0
 Poke.step(poke, states[poke])
 Poke.time = 100
@@ -109,7 +109,7 @@ actors = {}
 Poke.time = 4000
 Poke.step(poke, states[poke])
 check(not states[poke].active and hits == 4, "Clear tile retracts without queued catch-up attacks")
-actors[1] = {kind = "IsoZombie", isDead = function() return false end}
+actors[1] = {kind = "IsoZombie", isDead = function() return false end, isReanimatedForGrappleOnly=function() return false end}
 allowed = false
 Poke.time = 6000
 Poke.step(poke, states[poke])

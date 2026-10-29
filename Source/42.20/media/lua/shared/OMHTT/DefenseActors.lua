@@ -2,6 +2,8 @@
 local A = {buckets = {}, bucketOrder = {}, nodes = {}, order = {}, cleanup = 1, cursor = 0, due = 0, generation = 1, listeners = {}}
 local F = require("OMHTT/Foundation")
 local WIDTH = 8
+local P = require("OMHTT/DefenseCombatProtocol")
+A.online = setmetatable({}, {__mode="v"})
 
 function A.square(actor)
     if not actor or not actor:getSquare() then return nil end
@@ -14,7 +16,9 @@ function A.key(x, y, z)
 end
 
 function A.remove(actor)
+    if not actor then return end
     local node = A.nodes[actor]
+    if A.online[actor:getOnlineID()] == actor then A.online[actor:getOnlineID()] = nil end
     if not node then return end
     local bucket = A.buckets[node.key]
     local last = bucket[#bucket]
@@ -37,7 +41,7 @@ end
 
 function A.observe(actor, initializing)
     if isClient() then return end
-    if actor:isDead() or not A.square(actor) then A.remove(actor); return end
+    if not P.living(actor) or not A.square(actor) then A.remove(actor); return end
     local x, y, z = actor:getX(), actor:getY(), math.floor(actor:getZ())
     local key = A.key(x, y, z)
     local node = A.nodes[actor]
@@ -53,6 +57,7 @@ function A.observe(actor, initializing)
         A.order[node.slot] = node
         bucket[node.index], A.nodes[actor] = node, node
     end
+    if actor:getOnlineID() ~= -1 then A.online[actor:getOnlineID()] = actor end
     local now = getTimestampMs()
     node.generation = A.generation
     if initializing then return end
@@ -145,7 +150,7 @@ function A.advance(job)
         job.index = job.index + 1
         job.last = bucket[job.index]
         local actor = bucket[job.index].actor
-        if job.last.generation >= A.generation - 1 and not actor:isDead() and A.square(actor) then return actor end
+        if job.last.generation >= A.generation - 1 and P.living(actor) and A.square(actor) then return actor end
         return nil
     end
     advanceBucket(job)
@@ -160,7 +165,7 @@ function A.at(square)
     if bucket then
         for i = 1, #bucket do
             local actor = bucket[i].actor
-            if bucket[i].generation >= A.generation - 1 and not actor:isDead() and A.square(actor) == square then result[#result + 1] = actor end
+            if bucket[i].generation >= A.generation - 1 and P.living(actor) and A.square(actor) == square then result[#result + 1] = actor end
         end
     end
     -- Players use the native authoritative list; SP includes local players.

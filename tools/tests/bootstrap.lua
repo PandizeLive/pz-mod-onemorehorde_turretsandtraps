@@ -1,5 +1,5 @@
 __modules = {}
-GameTime = {isGamePaused = function() return false end}
+GameTime = {isGamePaused = function() return false end, getServerTimeMills = function() return testMillis end}
 if not math.min then function math.min(a, b) if a < b then return a end return b end end
 if not math.max then function math.max(a, b) if a > b then return a end return b end end
 -- Standalone Kahlua registration omits the game's supplemental Lua standard library.
@@ -299,6 +299,8 @@ function makeZombie(square, health)
     function zombie:getHealth() return self.health end
     function zombie:setHealth(value) self.health = value end
     function zombie:isDead() return self.health <= 0 end
+    function zombie:isReanimatedForGrappleOnly() return self.corpseProxy == true end
+    function zombie:getVariableBoolean(name) return self.variables[name] == true end
     function zombie:isOnFloor() return self.floor end
     function zombie:isProne() return self.floor end
     function zombie:getBumpType() return self.bump or "" end
@@ -312,6 +314,7 @@ function makeZombie(square, health)
     function zombie:isBumpFall() return self.bumpFall == true end
     function zombie:setKnockedDown(value) self.knocked = value end
     function zombie:isKnockedDown() return self.knocked == true end
+    function zombie:isGettingUp() return self.state == "getup" end
     function zombie:knockDown(behind) self.knocked = true; self.nativeKnockdown = true end
     function zombie:setPlayerAttackPosition(position) self.attackPosition = position end
     function zombie:setUsePhysicHitReaction(value) self.physics = value end

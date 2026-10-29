@@ -1,12 +1,15 @@
 if isServer() then return end
 local D = {byId = setmetatable({}, {__mode = 'v'}), objects = setmetatable({}, {__mode = 'k'}), pending = setmetatable({}, {__mode = 'k'})}
+D.pokes=setmetatable({}, {__mode="v"})
+local F=require("OMHTT/Foundation")
 local A = require('OMHTT/ControlAccess')
 D.queue, D.queued, D.first, D.last = {}, {}, 1, 0
 D.list, D.listIndex, D.listSize = setmetatable({}, {__mode = 'v'}), setmetatable({}, {__mode = 'k'}), 0
 
 ---@param object IsoObject Known device
 ---@return nil
-function D.track(object)
+function D.track(object, state)
+    if state and state.kind=="Poke" then D.pokes[F.key(state.x,state.y,state.z)]=object end
     if D.listIndex[object] then return end
     D.listSize = D.listSize + 1
     D.list[D.listSize], D.listIndex[object] = object, D.listSize
@@ -34,7 +37,7 @@ function D.add(object)
     local state = A.state(object)
     if state then
         D.objects[object], D.pending[object], D.byId[state.id] = state.id, nil, object
-        D.track(object)
+        D.track(object, state)
     else
         D.pending[object] = getTimestampMs() + 10000
         if not D.queued[object] then
@@ -78,7 +81,7 @@ function D.tick()
             local state = A.state(object)
             if state then
                 D.objects[object], D.pending[object], D.byId[state.id] = state.id, nil, object
-                D.track(object)
+                D.track(object, state)
             elseif now < expires then
                 D.last = D.last + 1
                 D.queue[D.last], D.queued[object] = object, true
@@ -98,4 +101,18 @@ Events.LoadGridsquare.Add(D.square)
 Events.OnObjectAdded.Add(D.add)
 Events.OnObjectAboutToBeRemoved.Add(D.remove)
 Events.OnTick.Add(D.tick)
+if isClient() then
+    require("OMHTT/DefenseContactClient").checks.poke=function(zombie)
+        local x,y,z=math.floor(zombie:getX()),math.floor(zombie:getY()),math.floor(zombie:getZ())
+        for dx=-1,1 do for dy=-1,1 do
+            local key=F.key(x+dx,y+dy,z)
+            local object=D.pokes[key]
+            if object then
+                if object:getObjectIndex()<0 or not object:getSquare() then D.pokes[key]=nil
+                elseif object:getHealth()>0 then return true end
+            end
+        end end
+        return false
+    end
+end
 return D

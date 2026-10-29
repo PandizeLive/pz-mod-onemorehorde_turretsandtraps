@@ -1,5 +1,5 @@
 -- Native ZombiePacket quantizes health to thousandths. The lethal reservation must stay nonzero on that wire.
-local P = {MODULE = "OMHTT_CombatV1", TIMEOUT = 5000, MAX_PENDING = 128, EPSILON = 0.001}
+local P = {MODULE = "OMHTT_CombatV2", TIMEOUT = 5000, MAX_PENDING = 128, EPSILON = 0.001}
 
 ---@param value any Candidate
 ---@param minimum number Inclusive lower bound
@@ -47,6 +47,15 @@ function P.outfit(value)
     local unsigned = value
     if unsigned < 0 then unsigned = unsigned + 4294967296 end
     return value - (math.floor(unsigned / 32768) % 2) * 32768
+end
+
+function P.living(zombie)
+    return zombie ~= nil and not zombie:isDead() and not zombie:isReanimatedForGrappleOnly()
+end
+
+-- Contact is a short-lived observation, not a five-second backlog of strikes.
+function P.contact(kind)
+    return kind == "poke-floor" or kind == "bed-spikes" or kind == "barbs" or kind == "tack"
 end
 
 return P

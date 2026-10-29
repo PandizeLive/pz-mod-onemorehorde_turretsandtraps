@@ -42,6 +42,7 @@ Events.OnGameStart.Add(function()
     E = require(isClient() and "OMHTT/TurretTackView" or "OMHTT/TurretProc")
     if not isClient() then Damage = require("OMHTT/Damage") end
     P.tackContact = E.contact
+    if isClient() then require("OMHTT/DefenseContactClient").checks.tacks=function(zombie) return E.contact(zombie)~=nil end end
     Events.OnPlayerUpdate.Add(playerUpdate)
     if not isClient() then Events.OnZombieUpdate.Add(zombieUpdate) end
     require("OMHTT/DefenseMotion").checks.tack = function(zombie, source)

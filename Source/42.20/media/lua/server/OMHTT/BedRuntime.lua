@@ -12,12 +12,12 @@ local frame = {}
 
 ---@param zombie IsoZombie Updated zombie
 ---@return nil
-function B.zombie(zombie)
+function B.zombie(zombie, position)
     if not Horde.allowed(zombie) then return end
     if B.count == 0 or not B.enabled() or not B.store or zombie:isDead() then
         return
     end
-    local square = Actors.square(zombie)
+    local square = position and getCell():getGridSquare(math.floor(position.x),math.floor(position.y),position.z) or Actors.square(zombie)
     if not square then
         return
     end
@@ -40,11 +40,12 @@ function B.zombie(zombie)
     end
     state.seen = B.time
     state.observedAt = observedAt
-    local x, y = zombie:getX(), zombie:getY()
+    local x, y = position and position.x or zombie:getX(), position and position.y or zombie:getY()
     local moving = state.x ~= nil and ((x - state.x) ^ 2 + (y - state.y) ^ 2) > 0.000001
     state.x, state.y = x, y
     local record = B.store.records[B.tiles[key]]
     local prone, down = require("OMHTT/DefenseActorState").stance(zombie)
+    if position and position.ownerReport then prone, down = position.prone or position.landing, position.down or position.landing end
     frame.now, frame.recovery = B.time, recovery
     frame.prone, frame.down, frame.crawler, frame.moving = prone, down, zombie:isCrawling(), moving
     frame.bed, frame.tile, frame.x, frame.y = record and record.id, key, x, y

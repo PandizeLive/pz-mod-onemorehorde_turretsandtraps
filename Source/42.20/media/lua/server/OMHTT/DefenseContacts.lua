@@ -63,13 +63,13 @@ end
 
 local Actors = require("OMHTT/DefenseActors")
 
-function C.contact(actor, position, crossed)
-    if not isServer() or actor:isDead() then return end
+function C.contact(actor, position, crossed, ownerReport)
+    if not isServer() or not require("OMHTT/DefenseCombatProtocol").living(actor) then return end
     local tile = C.tiles[F.key(math.floor(position.x), math.floor(position.y), position.z)]
     if not tile then return end
     for i = 1, #channels do
         local kind = channels[i]
-        if (not crossed or kind == "poke" or kind == "barb" or kind == "tack")
+        if (ownerReport or not actor:getOwner() or kind == "control") and (not crossed or kind == "poke" or kind == "barb" or kind == "tack")
             and (tile[kind] or 0) > 0 and C.handlers[kind] then C.handlers[kind](actor, position) end
     end
     D.count("contact-observed", 1, "traps")
@@ -77,9 +77,9 @@ end
 
 -- Interpolate only short, recent, unobstructed native movement. Never replay a
 -- teleport, a floor change, an old packet gap or a landing at an invented tile.
-function C.observe(actor, position, previous)
+function C.observe(actor, position, previous, ownerReport)
     if C.count == 0 then return end
-    C.contact(actor, position)
+    C.contact(actor, position, false, ownerReport)
     if not previous or previous.z ~= position.z or position.at - previous.at > 250 then return end
     local dx, dy = position.x - previous.x, position.y - previous.y
     local distance = math.sqrt(dx * dx + dy * dy)
@@ -96,11 +96,12 @@ function C.observe(actor, position, previous)
     end
     if #crossing == 0 then return end
     local from = getCell():getGridSquare(math.floor(previous.x), math.floor(previous.y), previous.z)
-    if not require("OMHTT/DefenseLine").clear(from, Actors.square(actor), 3) then
+    local to = getCell():getGridSquare(math.floor(position.x), math.floor(position.y), position.z)
+    if not require("OMHTT/DefenseLine").clear(from, to, 3) then
         D.count("contact-crossing-blocked", 1, "traps")
         return
     end
-    for i = 1, #crossing do C.contact(actor, crossing[i], true) end
+    for i = 1, #crossing do C.contact(actor, crossing[i], true, ownerReport) end
 end
 
 Actors.listeners[#Actors.listeners + 1] = C.observe
