@@ -1,5 +1,7 @@
 # 0.2.70.5 verification
 
+**C502 owner multiplayer report: failed acceptance, corrections pending.** See [contact/module/presentation audit](MULTIPLAYER_FEEDBACK_C502.md) and [sanitized evidence](evidence/c502-audit.json). Both endpoints load0.2.70.5. Successful Workshop upload is confirmed at2026-10-29T00:06:34Z; no new upload was performed by this audit. Earlier automated lighting checks remain valid but do not establish contact-loop or all-module multiplayer behavior. No production code changed. Recommend1A combined corrections and requested visuals, or1B correctness repairs only. **Decision needed; no repeat owner test yet.**
+
 Approved scope: [C501 patch](PATCH_v0.2.70.5.md).
 
 - Full validation:37,154 assertions;448 source files and616 packaged files. Tests verify the same lamp changes from fading amber to steady green on refill, steady amber does not inherit the empty fade, and Dark removes the lamp. Existing visibility, distance, option and fade regressions pass.

@@ -640,3 +640,7 @@ Owner: "Test Complete," no new issue. Console confirms live 0.2.41 and no OMHTT 
 ## Confirmed unlisted development upload - v0.2.70.3
 
 SteamCMD confirmed item 3828638252 at 2026-10-28T20:09:27.9380072Z. Source: test/v0.2.70.3 / ccf9e7bd5a7e07a4bc05a745d02dc6d18c9fba14. Receipt with content hashes and log: C:\Users\bandi\Zomboid_Modding\OMH\Turrets & Traps\diagnostics\workshop\upload-v0.2.70.3-20261028-200859-0574-3f7611c1\upload-result.json. Published changelog snapshot: C:\Users\bandi\Zomboid_Modding\OMH\Turrets & Traps\diagnostics\workshop\upload-v0.2.70.3-20261028-200859-0574-3f7611c1\WORKSHOP_CHANGELOG.txt. This is the content baseline for this item only; retain the cumulative draft until the next change, preserving any newer unpublished notes. No official release promotion.
+
+## Confirmed unlisted development upload - v0.2.70.5
+
+SteamCMD confirmed item 3828638252 at 2026-10-29T00:06:34.8249325Z. Source: test/v0.2.70.5 / 6eb3aba648f7b888242a6ae256b4abbc0a9e1692. Receipt with content hashes and log: C:\Users\bandi\Zomboid_Modding\OMH\Turrets & Traps\diagnostics\workshop\upload-v0.2.70.5-20261029-000552-7401-16dd9520\upload-result.json. Published changelog snapshot: C:\Users\bandi\Zomboid_Modding\OMH\Turrets & Traps\diagnostics\workshop\upload-v0.2.70.5-20261029-000552-7401-16dd9520\WORKSHOP_CHANGELOG.txt. This is the content baseline for this item only; retain the cumulative draft until the next change, preserving any newer unpublished notes. No official release promotion.
