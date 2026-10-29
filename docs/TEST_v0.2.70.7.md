@@ -28,3 +28,7 @@ After uploading this build, update/restart the server and both clients. No new w
 Client-owned zombies still require native owner acknowledgement. Long packet gaps cannot be reconstructed perfectly from server samples. Failed-target backoff is bounded recovery, not proof that all ghost targets are resolved. Rendered smoothness and actual two-client behavior require the owner test; no connected test was performed here.
 
 The earlier GitHub mirror approval-review block remains; no workaround or publication was attempted. The changelog update initially failed automatic review over possible unpublished-note loss. A subsequent receipt/log and line-by-line comparison proved the old draft was already published, allowing the new cumulative draft safely.
+
+## C506 connected owner retest
+
+2026-10-29: Failed connected acceptance. Owner reports missing Bed damage, late Wire/Poke contacts, apparent double hits and corpse-triggered Poke. [Investigation and next choices](MULTIPLAYER_FEEDBACK_C506.md). Earlier automated evidence is retained; it does not cover these real connected cases. No corrective patch installed this turn.
