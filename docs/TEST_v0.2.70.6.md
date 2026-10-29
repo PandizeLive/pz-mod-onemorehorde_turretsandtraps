@@ -20,3 +20,7 @@ After publication, update/restart the server and both clients. No new world requ
 - Pixel Strike numbers and translated device names
 - Smooth aiming and rotary movement
 - Nearby pack icons, cancellation and range
+
+## Mirror handoff
+
+GitHub mirror remains pending: the normal command could not reach api.github.com; automatic approval review rejected the network-enabled push because it did not recognize authorization for this external destination. Local commits and immutable test tag are retained; no workaround or publication was attempted.
