@@ -23,3 +23,7 @@ Alternative1B: fix corpse eligibility and continue server-only contact/landing r
 Moving visual/contact observation to the native owner does not inherently break Horde Night. Moving unrestricted damage/kills to arbitrary observers would bypass the current server consent/run lease, assistance classification, death and XP accounting. Preserve DefenseHorde and DefenseXP authority; do not fabricate ordinary player attacks or duplicate awards. Native-owner reports are evidence to validate, not permission to choose damage.
 
 Decision needed:1A recommended,1B narrower. No code, install, Sandbox, live-server or publication changes. GitHub mirror remains blocked by the earlier automatic approval-review rejection of destination authorization; no alternate route attempted.
+
+## C507 owner selection and evidence requirement
+
+**C507 / 1A selected; fundamental-path verification required (2026-10-29).** Owner accepts native-owner contact reports but requests brief confirmation first and concrete evidence instead of another speculative patch. Audit the full observation/queue/Prepare/Ready/Commit/Applied path; separate server scheduling, network transit and confirmation cost before attributing the407ms maximum. Reproduce connected contact, landing and corpse failures and compare the replacement against that baseline; preserve server Horde/XP authority. Do not claim connected success from fixture counts. This turn records scope only; no gameplay or installation change. **Wait for a patch.**
