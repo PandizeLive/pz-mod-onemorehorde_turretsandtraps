@@ -7,7 +7,7 @@ Scope: [C503 patch](PATCH_v0.2.70.6.md). Owner selected C502 1A. Automated and i
 - Initial native probes exposed startup wall-time assumptions and reused fixture records. The corrected harness uses a fresh isolated cache, gates phases on observed contact and has a 30-second timeout. Its final run passes without mod callback errors. This is not connected acceptance.
 - Full package validation: 453 source files, 623 packaged files, native parser/translation checks pass. Native save/write (151.2s) and fresh-process read (152.8s) pass. Traps-only (137.2s), Turrets-only (139.2s) and combined (140.0s) startup checks pass. Dependency closure confirms 266 unique Sandbox identities and 160 identical shared files.
 - A stale barrier-source lookup now checks that Traps is enabled before loading its optional implementation; a missing-package regression passes. No live server, Steam upload, sibling mod or player save was changed.
-- [Sanitized verification](evidence/c503-verification.json). Local installation and immutable-tag verification follow after the source commit.
+- [Sanitized verification](evidence/c503-verification.json). Installed from immutable `test/v0.2.70.6` / `f338fd5545267bd67863eff59321a0970b1542d3`. All453 source and623 tagged/package/installed/archive/stage files verify, plus both previous0.2.70.5 backups. Existing Workshop item/page metadata/preview are preserved. The installer's generic fresh-world message does not apply to this corrective patch; no new world is required.
 
 ## Owner checklist
 

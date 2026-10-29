@@ -39,5 +39,23 @@
   },
   "nativeConnectedClients": 0,
   "renderedAndMultiplayerAcceptance": "pending",
-  "publication": "not performed"
+  "publication": "not performed",
+  "tag": "test/v0.2.70.6",
+  "sourceCommit": "f338fd5545267bd67863eff59321a0970b1542d3",
+  "installedFilesVerified": 623,
+  "stageFilesVerified": 623,
+  "previousBackups": [
+    {
+      "package": "OneMoreHorde_Traps",
+      "version": "0.2.70.5",
+      "filesVerified": 236
+    },
+    {
+      "package": "OneMoreHorde_Turrets",
+      "version": "0.2.70.5",
+      "filesVerified": 380
+    }
+  ],
+  "archiveSHA256": "b4d15a6bf334720f7e46bbbdf5ba22ae3f2ad4cb806cf01bc70127cee339fc24",
+  "newWorldRequired": false
 }

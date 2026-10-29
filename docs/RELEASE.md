@@ -644,3 +644,10 @@ SteamCMD confirmed item 3828638252 at 2026-10-28T20:09:27.9380072Z. Source: test
 ## Confirmed unlisted development upload - v0.2.70.5
 
 SteamCMD confirmed item 3828638252 at 2026-10-29T00:06:34.8249325Z. Source: test/v0.2.70.5 / 6eb3aba648f7b888242a6ae256b4abbc0a9e1692. Receipt with content hashes and log: C:\Users\bandi\Zomboid_Modding\OMH\Turrets & Traps\diagnostics\workshop\upload-v0.2.70.5-20261029-000552-7401-16dd9520\upload-result.json. Published changelog snapshot: C:\Users\bandi\Zomboid_Modding\OMH\Turrets & Traps\diagnostics\workshop\upload-v0.2.70.5-20261029-000552-7401-16dd9520\WORKSHOP_CHANGELOG.txt. This is the content baseline for this item only; retain the cumulative draft until the next change, preserving any newer unpublished notes. No official release promotion.
+
+
+## C503 / 0.2.70.6 local developmental delivery
+
+**C503 / Corrective patch installed (2026-10-28).** Owner selects C502 **1A** and asks about Martyrdom. **0.2.70.6** replaces undriven dedicated contact hooks, corrects replicated landing/rotary stance and delayed health/Poke processing, localizes automatic names and adds damage notices, aim interpolation and eight-tile pack observers. [Patch](PATCH_v0.2.70.6.md) | [Checks](TEST_v0.2.70.6.md). 37,208 assertions, native real-OnTick contact/Martyrdom/Synergy proof, save/read and all package starts pass; zero clients connected. Installed from immutable test/v0.2.70.6 / f338fd5; all453 source and623 tagged/package/local/archive/stage files plus both previous backups verify. No new world, Workshop upload, live-server or sibling change. **Test now after uploading0.2.70.6 and updating/restarting server and clients.**
+
+This is local preparation only; the last confirmed Workshop content baseline remains0.2.70.5. The0.2.70.6 draft contains only subsequent net changes. [Sanitized verification](evidence/c503-verification.json).

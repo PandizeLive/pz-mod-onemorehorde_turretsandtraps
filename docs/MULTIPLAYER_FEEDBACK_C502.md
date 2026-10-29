@@ -51,3 +51,6 @@ Required verification: reproduce server event-driven contact rather than directl
 ## C503 approval (2026-10-28)
 
 Owner selects **1A** and asks whether Martyrdom shares the failure. Approval covers the full corrective scope above, including visual aim interpolation and the eight-tile pack-opening indicator. Martyrdom uses the registered TurretProc tick scheduler, not OnZombieUpdate; verify its scheduled root and Synergy follow-up damage in this patch. Implementation/verification are in progress; no connected acceptance or publication is implied.
+
+
+C503 implementation and isolated verification completed in [0.2.70.6](PATCH_v0.2.70.6.md); [test evidence](TEST_v0.2.70.6.md) distinguishes native zero-client checks from pending connected acceptance. Martyrdom root and Synergy follow-up pass through the real tick scheduler.
