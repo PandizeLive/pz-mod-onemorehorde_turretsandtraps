@@ -1,0 +1,88 @@
+{
+  "checkpoint": "C504",
+  "version": "0.2.70.6",
+  "kind": "audit; no gameplay changes",
+  "serverCombatReplies": {
+    "Reject": 396,
+    "Ready": 150,
+    "Applied": 150
+  },
+  "server": {
+    "events": {
+      "module-loot-summary": 1,
+      "construction-sprites": 1,
+      "authority-ready": 1,
+      "turret-restored": 1,
+      "summary": 167,
+      "turret-power-toggle": 10
+    },
+    "totals": {
+      "active-update-gapCount": 8420.0,
+      "active-update-gapTotalMs": 843363.0,
+      "turret-auto-state": 114.0,
+      "contact-scan": 7669.0,
+      "barb-contactCount": 13759.0,
+      "barb-contactTotalMs": 133.0,
+      "bed-contactCount": 18081.0,
+      "bed-contactTotalMs": 272.0,
+      "combat-settled": 130.0,
+      "bed-trip": 4.0,
+      "bed-fall": 1.0,
+      "combat-lethal": 20.0,
+      "turret-auto-search": 25.0,
+      "presentation-send": 748.0,
+      "shot-attempt": 107.0,
+      "shot-launched": 94.0,
+      "shot-search": 107.0,
+      "turret-fire-result": 107.0,
+      "turret-hearing": 94.0,
+      "turret-resource-spent": 94.0,
+      "shot-arrived": 94.0,
+      "shot-damage-confirmed": 11.0,
+      "shot-hit-begin": 94.0,
+      "shot-hit-end": 94.0,
+      "turret-cycle": 129.0,
+      "turret-auto-target": 36.0
+    },
+    "maxs": {
+      "active-update-gapMaxMs": 1413.0,
+      "barb-contactMaxMs": 1.0,
+      "bed-contactMaxMs": 1.0,
+      "shot-attempt_nowMsMax": 1793245336615.0,
+      "shot-launched_flightMsMax": 395.6956484239861,
+      "turret-fire-result_combatMsMax": 1.0,
+      "turret-fire-result_effectsMsMax": 2.0,
+      "turret-fire-result_fireMsMax": 3.0,
+      "turret-fire-result_prepareMsMax": 1.0,
+      "turret-fire-result_refreshMsMax": 0,
+      "shot-arrived_delayMsMax": 399.970703125,
+      "shot-arrived_lateMsMax": 99.840087890625,
+      "shot-hit-end_directMsMax": 1.0,
+      "shot-hit-end_hitMsMax": 1.0,
+      "shot-hit-end_reactionMsMax": 1.0,
+      "shot-hit-end_splashMsMax": 1.0
+    },
+    "nonstartupErrors": []
+  },
+  "clientNonstartupErrors": [],
+  "auditAssertions": 37164,
+  "fixtureSearchVisits": {
+    "range9": 6,
+    "range24": 38
+  },
+  "nativeEvidence": [
+    "NetworkZombiePacker.applyZombie",
+    "IsoMovingObject.getSquare",
+    "IsoMovingObject.setCurrent",
+    "IsoMovingObject.setMovingSquareNow"
+  ],
+  "auditLogSha256": "fa770113b180e33782f57613a575f5efa98b5e0fca7df83f5b595853df39b915",
+  "nativePackerSha256": "0b48e92bd72c98c3741ebd952ca825e808d770cd788a50877cd9f61d7ef950b8",
+  "connectedRetest": "owner reports failure; no automated connected acceptance",
+  "workshopBaseline": {
+    "version": "0.2.70.6",
+    "item": "3828638252",
+    "confirmedUtc": "2026-10-29T03:20:46.8098799Z"
+  },
+  "mirror": "blocked by prior automatic approval review; not retried"
+}

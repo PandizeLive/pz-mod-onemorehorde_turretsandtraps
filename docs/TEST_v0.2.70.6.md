@@ -24,3 +24,7 @@ After publication, update/restart the server and both clients. No new world requ
 ## Mirror handoff
 
 GitHub mirror remains pending: the normal command could not reach api.github.com; automatic approval review rejected the network-enabled push because it did not recognize authorization for this external destination. Local commits and immutable test tag are retained; no workaround or publication was attempted.
+
+## C504 connected owner retest
+
+Owner reports missed Bed/Poke/Wire contacts, slow extended-range acquisition and stale-target firing. Both client/server load0.2.70.6. This is failed connected acceptance, despite earlier fixture/native-zero-client passes. [Audit, native evidence and proposed corrections](MULTIPLAYER_FEEDBACK_C504.md). No next gameplay patch is approved yet.
