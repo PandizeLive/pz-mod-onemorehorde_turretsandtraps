@@ -9,6 +9,10 @@ Scope: [C505 patch](PATCH_v0.2.70.7.md), approved C504 1A plus remote pack displ
 - Initial native runs exposed the first-tick Bed session reset; production code was corrected. Fixtures now supply physical-position and online-player lists and remove dead actors from their synthetic list. Native pooled references can be reused after death, so death completion is captured synchronously at the confirmed callback. These fixture repairs do not claim native network ownership coverage.
 - Native save/write passes in 56.9s and fresh-process read in 49.9s. Independent Traps, Turrets and combined package starts pass. Final manifest and delivery evidence are recorded in [sanitized evidence](evidence/c505-verification.json).
 
+## Delivery verification
+
+Installed and staged from immutable `test/v0.2.70.7` / `00970de538bf6ad8f14520232ed4ea9297b11043`. All 454 source and 625 tagged, packaged, installed, staged and archived files match the validation manifest. Both prior local packages (238 Traps / 385 Turrets files) and the previous 623-file Workshop stage match their saved manifests. Existing Workshop page text and preview hashes are unchanged. The archive is `artifacts/OMHTT-0.2.70.7.zip`; hashes and backup locations are in the sanitized evidence. No Workshop upload or live-server update was performed.
+
 ## Owner checklist
 
 After uploading this build, update/restart the server and both clients. No new world required. Enable existing Detailed Logging for Turrets and Traps during this focused test.

@@ -57,5 +57,23 @@
     "oldDraftMatchesPublishedLines": true,
     "unpublishedNotesDiscarded": false
   },
-  "delivery": "pending local install/stage"
+  "delivery": {
+    "status": "installed and staged",
+    "installedAt": "2026-10-29T01:25:01.5211519-04:00",
+    "sourceFilesVerified": 454,
+    "tagPackageInstallStageArchiveFilesVerified": 625,
+    "installBackup": "diagnostics/p1c1/install-backups/20261029-012457-7419",
+    "installBackupVerifiedCounts": {
+      "OneMoreHorde_Traps": 238,
+      "OneMoreHorde_Turrets": 385
+    },
+    "stageBackup": "diagnostics/workshop/stage-v0.2.70.7-20261029-052515-4060-65499bcf-previous",
+    "stageBackupFilesVerified": 623,
+    "workshopMetadataPreserved": true,
+    "archive": "artifacts/OMHTT-0.2.70.7.zip",
+    "archiveSha256": "f50b5fa9cd6535d11c8ad5902e0597aa4d2416cb8339945142994f7279c6a89f",
+    "workshopUploadPerformed": false
+  },
+  "tag": "test/v0.2.70.7",
+  "sourceCommit": "00970de538bf6ad8f14520232ed4ea9297b11043"
 }
