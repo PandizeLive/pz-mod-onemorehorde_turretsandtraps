@@ -1,4 +1,5 @@
 if isClient() then return end
+local Actors = require("OMHTT/DefenseActors")
 local Clock = require("OMHTT/TurretClock")
 local Budget = require("OMHTT/TurretScheduler")
 local Damage = require("OMHTT/Damage")
@@ -83,7 +84,7 @@ end
 ---@param radius number Tiles
 ---@return boolean eligible Same floor, circle and clear line
 function E.inside(origin, actor, x, y, radius)
-    local square = actor:getSquare()
+    local square = Actors.square(actor)
     if not origin or not square or actor:isDead() or square:getZ() ~= origin:getZ() then return false end
     local dx, dy = actor:getX() - x, actor:getY() - y
     return dx * dx + dy * dy <= radius * radius
@@ -92,18 +93,20 @@ end
 
 ---@param actor IsoGameCharacter Updated actor
 ---@return table? field First valid local contact; overlaps cannot stack
-function E.contact(actor)
+function E.contact(actor, position)
     if E.fieldCount == 0 then return nil end
-    local square = actor:getSquare()
+    local x, y, z = actor:getX(), actor:getY(), math.floor(actor:getZ())
+    if position then x, y, z = position.x, position.y, position.z end
+    local square = getCell():getGridSquare(math.floor(x), math.floor(y), z)
     if not square then return nil end
-    local bucket = E.buckets[F.key(math.floor(actor:getX() / 8), math.floor(actor:getY() / 8), square:getZ())]
+    local bucket = E.buckets[F.key(math.floor(x / 8), math.floor(y / 8), z)]
     if not bucket then return nil end
     local now = Clock.now()
     for _, field in pairs(bucket) do
-        local dx, dy = actor:getX() - field.x, actor:getY() - field.y
+        local dx, dy = x - field.x, y - field.y
         if now >= field.starts and now < field.expires and dx * dx + dy * dy <= field.radius * field.radius then
             local origin = getCell():getGridSquare(math.floor(field.x), math.floor(field.y), field.z)
-            if E.inside(origin, actor, field.x, field.y, field.radius) then return field end
+            if origin and require("OMHTT/DefenseLine").clear(origin, square, field.radius + 2) then return field end
         end
     end
     return nil
@@ -186,7 +189,7 @@ function E.step(job)
     local origin = getCell():getGridSquare(math.floor(job.x), math.floor(job.y), job.z)
     if not origin then return true end
     local square = getCell():getGridSquare(math.floor(job.x) + job.dx, math.floor(job.y) + job.dy, job.z)
-    local moving = square and square:getMovingObjects()
+    local moving = square and Actors.occupants(square, job)
     if moving and job.index < moving:size() then
         local actor = moving:get(job.index)
         job.index = job.index + 1

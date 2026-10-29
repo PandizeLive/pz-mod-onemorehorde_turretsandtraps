@@ -185,11 +185,18 @@ return function(player)
     local moving = square:getMovingObjects()
     local alreadyPresent = moving:contains(player)
     if not alreadyPresent then moving:add(player) end
+    local oldCell, oldOnline, nativeCell = getCell, getOnlinePlayers, getCell()
+    getCell = function() return {getZombieList=function() return nativeCell:getZombieList() end,
+        getGridSquare=function(_,x,y,z) if x==28 and y==28 and z==0 then return square end end} end
+    getOnlinePlayers = function() return {size=function() return 1 end,get=function() return player end} end
     C.updatePlate(plate, getTimestampMs())
     assert(plateState.active and plate:getSpriteName() == "omhtt_turret_01_29", "Native occupied plate failed to press")
     moving:remove(player)
+    player:setX(29.5)
     C.updatePlate(plate, getTimestampMs())
     assert(not plateState.active and plate:getSpriteName() == "omhtt_turret_01_25", "Native released plate failed to rise")
+    player:setX(28.5)
+    getCell, getOnlinePlayers = oldCell, oldOnline
     if alreadyPresent then moving:add(player) end
     print("[OMHTT-C309] native-plate migration=passed pressed=29 released=25 state=authoritative")
     assert(not plate:isThumpable() and plate:isCanPassThrough() and not plate:isBlockAllTheSquare(), "Native plate must be pass-through and non-thumpable")

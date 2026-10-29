@@ -1,4 +1,5 @@
 if isClient() then return end
+local Actors = require("OMHTT/DefenseActors")
 local Clock = require("OMHTT/TurretClock")
 local Budget = require("OMHTT/TurretScheduler")
 local Volley = require("OMHTT/TurretVolley")
@@ -99,11 +100,11 @@ function O.impact(shared)
     local actor = shared.actor
     if not actor and candidate then
         local square = getCell():getGridSquare(math.floor(candidate.x), math.floor(candidate.y), candidate.z)
-        local objects = square and square:getMovingObjects()
+        local objects = square and Actors.at(square)
         if objects then
             for i = 0, objects:size() - 1 do
                 local other = objects:get(i)
-                if instanceof(other, "IsoZombie") and other:getOnlineID() == candidate.id and other:getPersistentOutfitID() == candidate.outfit then
+                if instanceof(other, "IsoZombie") and other:getOnlineID() == candidate.id and require("OMHTT/DefenseCombatProtocol").outfit(other:getPersistentOutfitID()) == candidate.outfit then
                     actor = other
                     break
                 end
@@ -177,7 +178,7 @@ function O.step(job)
     local bound = math.ceil(job.radius)
     if job.scanY > bound then return true end
     local square = getCell():getGridSquare(math.floor(job.x) + job.scanX, math.floor(job.y) + job.scanY, job.z)
-    local objects = square and square:getMovingObjects()
+    local objects = square and Actors.occupants(square, job)
     if not objects or job.index >= objects:size() then
         job.index, job.scanX = 0, job.scanX + 1
         if job.scanX > bound then
@@ -218,7 +219,7 @@ function O.step(job)
                 if not actor:isDead() and not actor:isProne() and not actor:isKnockedDown()
                     and (not job.shared.distance or distance < job.shared.distance) then
                     job.shared.actor, job.shared.distance = actor, distance
-                    job.shared.candidate = {id = actor:getOnlineID(), outfit = actor:getPersistentOutfitID(),
+                    job.shared.candidate = {id = actor:getOnlineID(), outfit = require("OMHTT/DefenseCombatProtocol").outfit(actor:getPersistentOutfitID()),
                         x = actor:getX(), y = actor:getY(), z = actor:getZ()}
                 end
             end

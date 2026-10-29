@@ -1,4 +1,5 @@
 if isClient() then return end
+local Actors = require("OMHTT/DefenseActors")
 local T = require("OMHTT/Turret")
 local M = require("OMHTT/TurretModules")
 local Clock = require("OMHTT/TurretClock")
@@ -25,7 +26,7 @@ function S.valid(object, target, contents)
     local stats = T.cycleConfig(contents)
     local profile = M.profile(T.state(object), contents, true, stats)
     return M.inside(object:getSquare(), target, profile)
-        and require("OMHTT/PrototypeCombat").clearLane(object:getSquare(), target:getSquare(), profile.range)
+        and require("OMHTT/PrototypeCombat").clearLane(object:getSquare(), Actors.square(target), profile.range)
 end
 
 ---@param object IsoObject Turret

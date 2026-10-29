@@ -12,52 +12,31 @@ Clock.now = function() return testMillis end
 do
     local registered = false
     for i = 1, #Events.OnTick.handlers do
-        if Events.OnTick.handlers[i] == C.tick then registered = true end
+        if Events.OnTick.handlers[i] == require("OMHTT/DefenseActors").refresh then registered = true end
     end
     check(registered and C.handlers.bed and C.handlers.barb and C.handlers.tack and C.handlers.control,
         "C503 all installed hazard channels share a registered tick driver")
-    local oldHandlers, oldCell = C.handlers, getCell
-    C.handlers, C.tiles, C.order, C.sources, C.cursor, C.actor, C.due = {}, {}, {}, {}, 1, 0, 0
-    local hits, queries = 0, 0
+    -- C505 replaces square-list slicing with one shared physical-position index.
+    local Actors = require("OMHTT/DefenseActors")
+    local oldHandlers = C.handlers
+    C.handlers, C.tiles, C.sources, C.count = {}, {}, {}, 0
+    local hits = 0
     C.handlers.tack = function() hits = hits + 1 end
-    getCell = function()
-        return {getGridSquare = function(_, x,y,z)
-            queries = queries + 1
-            return testSquares[x .. ":" .. y .. ":" .. z]
-        end}
-    end
-    C.tick()
-    check(queries == 0, "C503 no watched hazards means no square queries")
     local square = makeSquare(5100,5100,0)
-    for i = 1, 300 do makeZombie(square,1) end
+    local actors = {}
+    for i = 1, 300 do actors[i] = makeZombie(square,1) end
     C.watch("a","tack",5100,5100,5100,5100,0)
     C.watch("b","tack",5100,5100,5100,5100,0)
-    C.tick()
-    check(hits == 256, "C503 dense square stops at 256 actors")
-    C.tick()
-    check(hits == 300, "C503 dense square resumes without losing remaining actors")
-    C.tick()
-    check(hits == 300, "C503 same pass and overlapping hazards do not duplicate contact")
+    testMillis = testMillis + 50
+    for i = 1, #actors do Actors.observe(actors[i]) end
+    check(hits == 300, "C505 shared actor sample visits every dense contact once")
+    for i = 1, #actors do Actors.observe(actors[i]) end
+    check(hits == 300, "C505 overlapping watches and same-time samples do not duplicate contact")
     C.remove("a")
-    check(#C.order == 1, "C503 removing one overlapping source retains the tile")
+    check(C.tiles["5100:5100:0"] ~= nil, "C505 removing one overlapping source retains tile")
     C.remove("b")
-    check(#C.order == 0 and C.tiles["5100:5100:0"] == nil, "C503 last source reclaims all watched tiles")
-    C.watch("unloaded","tack",5200,5200,5200,5200,0)
-    testMillis = testMillis + 50
-    C.tick()
-    check(hits == 300, "C503 unloaded tiles never manufacture contact")
-    check(#C.order == 0, "C503 unloaded watches do not retain active scan work")
-    local loaded = makeSquare(5200,5200,0)
-    makeZombie(loaded,1)
-    C.loaded(loaded)
-    C.tick()
-    check(hits == 301, "C503 native square-load event reactivates an existing hazard watch")
-    testSquares["5200:5200:0"] = nil
-    testMillis = testMillis + 50
-    C.tick()
-    check(#C.order == 0, "C503 unloading a watched square removes it from active work")
-    C.remove("unloaded")
-    C.handlers, getCell = oldHandlers, oldCell
+    check(C.tiles["5100:5100:0"] == nil, "C505 last source reclaims watch")
+    C.handlers = oldHandlers
 end
 
 do
@@ -131,16 +110,16 @@ do
     D.resolve = function() hits = hits + 1 end
     P.time = 0
     P.step(object,state)
-    check(state.active and hits == 0, "C503 first occupied observation starts Poke immediately")
+    check(state.active and hits == 1, "C505 first occupied observation starts and strikes immediately")
     P.time = 1600
     P.step(object,state)
-    check(hits == 1 and not state.active, "C503 overdue Poke strike resolves once before retracting")
+    check(hits == 2 and state.active, "C505 ready occupied Poke repeats once after its cooldown")
     P.step(object,state)
-    check(hits == 1 and state.active, "C503 overdue strikes do not create a catch-up damage burst")
+    check(hits == 2 and state.active, "C505 same-time observations do not create catch-up damage")
     square.moving = {}
     P.time = 1750
     P.step(object,state)
-    check(hits == 1, "C503 victim leaving before strike is not damaged remotely")
+    check(hits == 2, "C505 cooldown prevents damage after crossing")
     P.entries[object] = nil
     P.visual, W.publish, D.resolve, Audio.emit = oldVisual, oldPublish, oldResolve, oldEmit
 end

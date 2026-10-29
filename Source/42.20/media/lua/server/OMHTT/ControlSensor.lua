@@ -1,4 +1,5 @@
 if isClient() then return end
+local Actors = require("OMHTT/DefenseActors")
 local Beam = require("OMHTT/ControlBeam")
 local S = {entries={},tiles={},positions=setmetatable({}, {__mode="k"}),count=0}
 local function key(x,y,z) return x .. ":" .. y .. ":" .. z end
@@ -65,7 +66,7 @@ function S.step(object,state)
     for i=1,#entry.keys do
         local tile=entry.squares[i]
         local square=getCell():getGridSquare(tile.x,tile.y,tile.z)
-        local objects=square and square:getMovingObjects()
+        local objects=square and Actors.at(square)
         if objects then
             for j=0,math.min(127,objects:size()-1) do
                 local actor=objects:get(j)

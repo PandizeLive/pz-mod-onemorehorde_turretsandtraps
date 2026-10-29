@@ -1,4 +1,5 @@
 if isClient() then return end
+local Actors = require("OMHTT/DefenseActors")
 require("OMHTT/TetherDefinition")
 local C = require("OMHTT/TetherCycle")
 local Lane = require("OMHTT/TetherLane")
@@ -59,7 +60,7 @@ local function pull(cycle)
     local victim = entry.victim
     entry.victim = nil
     if not victim or victim:isDead() or math.floor(victim:getZ()) ~= cycle.z or not Horde.allowed(victim) then return end
-    local square = victim:getSquare()
+    local square = Actors.square(victim)
     if not square or getCell():getGridSquare(square:getX(), square:getY(), square:getZ()) ~= square then return end
     local origin = entry.object:getSquare()
     if not require("OMHTT/DefenseLine").clear(origin, square, cycle.range + 2) then return end

@@ -1,4 +1,5 @@
 if isClient() then return end
+local Actors = require("OMHTT/DefenseActors")
 local Horde = require("OMHTT/DefenseHorde")
 local T = require("OMHTT/Turret")
 local Heads = require("OMHTT/TurretHeads")
@@ -53,7 +54,7 @@ function R.contact(entry, actor, job)
     end
     if zombie and not Horde.allowed(actor) then return end
     local origin = entry.object:getSquare()
-    local square = actor:getSquare()
+    local square = Actors.square(actor)
     if not square or actor:isDead() or square:getZ() ~= origin:getZ() then return end
     local dx, dy = actor:getX() - origin:getX() - .5, actor:getY() - origin:getY() - .5
     if dx * dx + dy * dy > job.profile.range * job.profile.range then return end
@@ -244,7 +245,7 @@ function R.step(entry, deadline)
         end
         local origin = object:getSquare()
         local square = getCell():getGridSquare(origin:getX() + job.x, origin:getY() + job.y, origin:getZ())
-        local objects = square and square:getMovingObjects()
+        local objects = square and Actors.occupants(square, job)
         if objects and job.index < objects:size() then
             local actor = objects:get(job.index)
             job.index = job.index + 1

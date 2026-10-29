@@ -1,6 +1,7 @@
+if isClient() then return end
+local Actors = require("OMHTT/DefenseActors")
 local Budget = require("OMHTT/TurretScheduler")
 local Clock = require("OMHTT/TurretClock")
-if isClient() then return end
 local T = require("OMHTT/Turret")
 local M = require("OMHTT/TurretModules")
 local CombatPolicy = require("OMHTT/ControlCombat")
@@ -34,52 +35,40 @@ end
 ---@return table job
 ---@nodiscard
 function A.scan(origin, profile)
-    return {origin = origin, profile = profile, radius = 0, limit = math.ceil(profile.range), x = 0, y = 0,
-        index = 0, bestDistance = 0, visited = 0, members = {}, seen = {}}
+    return {origin = origin, profile = profile, visited = 0, members = {}, seen = {},
+        started = getTimestampMs(), search = Actors.query(origin:getX() + .5, origin:getY() + .5, origin:getZ(), profile.range)}
 end
 
--- Visit concentric boundaries, yielding per square/object. A completely unloaded
--- boundary cannot be crossed by any valid loaded line of sight.
-local function advanceSquare(job)
-    job.index = 0
-    local r = job.radius
-    if job.x == r and job.y == r then
-        if not job.ringLoaded or r >= job.limit then job.done = true; return end
-        job.radius, job.x, job.y, job.ringLoaded = r + 1, -r - 1, -r - 1, false
-    elseif math.abs(job.y) == r then
-        job.x = job.x + 1
-        if job.x > r then job.x, job.y = -r, job.y + 1 end
-    elseif job.x == -r then
-        job.x = r
-    else
-        job.x, job.y = -r, job.y + 1
+function A.complete(job)
+    if not job.done then
+        job.done = true
+        local elapsed = getTimestampMs() - job.started
+        D.measure("target-search", elapsed, "turrets")
+        if D.detailed("turrets") then
+            local state = job.profile.object and T.state(job.profile.object)
+            D.defer("target-search-complete", {source=state and state.id, range=job.profile.range,
+                priority=job.profile.priority, visits=job.visited, elapsed=elapsed,
+                victim=job.best and job.best:getOnlineID(), selected=job.best~=nil}, "turrets")
+        end
     end
+    return true
 end
 
----@param job table Incremental scan
----@param budget number Maximum work units
----@param deadline number Wall-clock ceiling
----@return boolean complete
 function A.advance(job, budget, deadline)
     local Combat = require("OMHTT/PrototypeCombat")
     for step = 1, budget do
         if getTimestampMs() >= deadline then return false end
-        if job.done then return true end
-        local square = getCell():getGridSquare(job.origin:getX() + job.x, job.origin:getY() + job.y, job.origin:getZ())
-        if square then job.ringLoaded = true end
-        local objects = square and square:getMovingObjects()
-        if objects and job.index < objects:size() then
-            local zombie = objects:get(job.index)
-            job.index = job.index + 1
+        if job.search.done then return A.complete(job) end
+        local zombie = Actors.advance(job.search)
+        if zombie and not job.seen[zombie] then
+            job.seen[zombie] = true
             job.visited = job.visited + 1
-            if CombatPolicy.eligible(job.profile.object, zombie) then
+            if CombatPolicy.eligible(job.profile.object, zombie) and require("OMHTT/Damage").available(zombie) then
                 local inside, distance = M.inside(job.origin, zombie, job.profile)
                 local select = inside and (job.profile.priority == "OnceEach" or job.profile.priority == "Random"
-                    or M.better(zombie, distance, job.best, job.bestDistance, job.profile.priority))
-                if select and Combat.clearLane(job.origin, zombie:getSquare(), job.profile.range) then
-                    if job.profile.priority == "OnceEach" and not job.seen[zombie] then
-                        job.members[#job.members + 1], job.seen[zombie] = zombie, true
-                    end
+                    or M.better(zombie, distance, job.best, job.bestDistance or 0, job.profile.priority))
+                if select and Combat.clearLane(job.origin, Actors.square(zombie), job.profile.range) then
+                    if job.profile.priority == "OnceEach" then job.members[#job.members + 1] = zombie end
                     if job.profile.priority == "Random" then
                         job.eligible = (job.eligible or 0) + 1
                         select = ZombRand(job.eligible) == 0
@@ -87,11 +76,10 @@ function A.advance(job, budget, deadline)
                     if select then job.best, job.bestDistance = zombie, distance end
                 end
             end
-        else
-            advanceSquare(job)
         end
     end
-    return job.done == true
+    if job.search.done then return A.complete(job) end
+    return false
 end
 
 ---@param entry table Scheduled turret
@@ -149,8 +137,8 @@ function A.step(entry, deadline)
     local Combat = require("OMHTT/PrototypeCombat")
     local target = entry.target
     local sticky = profile.priority == "Random" or profile.priority == "Toughest"
-    local retained = target and CombatPolicy.eligible(object, target) and M.inside(square, target, profile)
-        and Combat.clearLane(square, target:getSquare(), profile.range)
+    local retained = target and require("OMHTT/Damage").available(target) and CombatPolicy.eligible(object, target) and M.inside(square, target, profile)
+        and Combat.clearLane(square, Actors.square(target), profile.range)
     local job = {visited = 0}
     if profile.priority == "OnceEach" then
         if not retained then
@@ -172,8 +160,7 @@ function A.step(entry, deadline)
         end
     elseif not retained or entry.job or (not sticky and now >= entry.due) then
         if not entry.job then entry.job = A.scan(square, profile) end
-        local fireReady = retained and contents.active.Firing and now >= (entry.fireDue or 0)
-        if not fireReady and A.advance(entry.job, 64, deadline) then
+        if A.advance(entry.job, 128, deadline) then
             job = entry.job
             if job.best then target, retained = job.best, false end
             entry.job, entry.due = nil, now + interval
@@ -184,8 +171,8 @@ function A.step(entry, deadline)
     elseif now >= entry.due then
         entry.due = now + interval
     end
-    if not target or not CombatPolicy.eligible(object, target) or (not retained and (not M.inside(square, target, profile)
-        or not Combat.clearLane(square, target:getSquare(), profile.range))) then
+    if not target or not require("OMHTT/Damage").available(target) or not CombatPolicy.eligible(object, target) or (not retained and (not M.inside(square, target, profile)
+        or not Combat.clearLane(square, Actors.square(target), profile.range))) then
         entry.target = nil
         if entry.status ~= "no-target" then
             D.defer("turret-auto-search", {id = state.id, visits = job.visited, range = profile.range,

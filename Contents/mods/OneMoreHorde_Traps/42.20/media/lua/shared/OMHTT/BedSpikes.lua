@@ -347,7 +347,7 @@ end
 function B.tick()
     local active = B.enabled()
     if active ~= enabled then
-        B.session = tostring(getTimestampMs()) .. ":" .. tostring(active)
+        if enabled ~= nil then B.session = tostring(getTimestampMs()) .. ":" .. tostring(active) end
         enabled = active
     end
     B.time = B.time + ActiveTime.step(clock)

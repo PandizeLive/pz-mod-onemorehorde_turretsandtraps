@@ -1,4 +1,5 @@
 local C = require("OMHTT/TetherCycle")
+local Actors = require("OMHTT/DefenseActors")
 local W = {}
 
 ---@param state table Cycle
@@ -38,7 +39,7 @@ function W.cast(state, from, destination, cell)
         for y = math.floor(math.min(ay, by) - .3), math.floor(math.max(ay, by) + .3) do
             local square = cell:getGridSquare(x, y, state.z)
             if square then
-                local objects = square:getMovingObjects()
+                local objects = Actors.at(square)
                 if objects:size() > 64 then return 0, nil, "density-limit" end
                 for i = 0, objects:size() - 1 do
                     local actor = objects:get(i)

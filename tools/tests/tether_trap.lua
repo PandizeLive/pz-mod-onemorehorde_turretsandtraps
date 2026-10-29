@@ -73,11 +73,18 @@ local function run()
     player:setGodMod(false)
     player:setNoClip(false)
     player:setGhostMode(false)
+    zombie:setCurrent(square)
+    player:setCurrent(square)
     square:getMovingObjects():add(zombie)
     square:getMovingObjects():add(player)
     local fixture = {getGridSquare = function(_, x, y, z)
         if x == 100 and y == 100 and z == 0 then return square end
     end}
+    local oldCell, oldOnline = getCell, getOnlinePlayers
+    fixture.getZombieList = function() return native:getZombieList() end
+    getCell = function() return fixture end
+    getOnlinePlayers = function() return {size=function() return 1 end,get=function() return player end} end
+    require("OMHTT/DefenseActors").observe(zombie)
     local fraction, victim, reason = W.cast(state, 0, .9, fixture)
     check(fraction and victim == player and reason == "player", "Player blocks a zombie behind them")
     check(W.detect(state, fixture) == nil, "Player cannot activate autonomous firing")
@@ -90,6 +97,8 @@ local function run()
     zombie:setHealth(0)
     check(select(2, W.cast(state, 0, .9, fixture)) == player, "Player still blocks a triggered shot without a zombie")
     square:getMovingObjects():clear()
+    require("OMHTT/DefenseActors").remove(zombie)
+    getCell, getOnlinePlayers = oldCell, oldOnline
 
     local lookup = {}
     for x = 99, 102 do

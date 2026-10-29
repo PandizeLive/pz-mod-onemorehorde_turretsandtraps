@@ -52,6 +52,10 @@ function E.emit(command, facts)
         for key, value in pairs(facts) do
             if key ~= "target" then message[key] = value end
         end
+        if facts.target and instanceof(facts.target, "IsoZombie") then
+            message.targetId = facts.target:getOnlineID()
+            message.targetOutfit = require("OMHTT/DefenseCombatProtocol").outfit(facts.target:getPersistentOutfitID())
+        end
         E.send(F.MODULE, command, message)
     else
         triggerEvent("OnServerCommand", F.MODULE, command, facts)

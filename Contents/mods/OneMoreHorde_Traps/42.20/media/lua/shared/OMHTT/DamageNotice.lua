@@ -9,7 +9,7 @@ local N = {}
 function N.capture(zombie, lost, source, kind)
     if not isServer() or lost <= 0 or kind == "splash" then return nil end
     return {x = zombie:getX(), y = zombie:getY(), z = zombie:getZ(), lost = lost,
-        id = zombie:getOnlineID(), outfit = zombie:getPersistentOutfitID(), source = source, kind = kind}
+        id = zombie:getOnlineID(), outfit = require("OMHTT/DefenseCombatProtocol").outfit(zombie:getPersistentOutfitID()), source = source, kind = kind}
 end
 
 ---@param facts table? Confirmed snapshot

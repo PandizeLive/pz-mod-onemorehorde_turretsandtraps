@@ -41,4 +41,12 @@ function P.result(before, amount)
     return after, before - after, false
 end
 
+function P.outfit(value)
+    -- PersistentOutfits.setFallenHat changes bit 15. Kahlua's negative modulo
+    -- differs from Lua 5.1, so extract that bit from the unsigned representation.
+    local unsigned = value
+    if unsigned < 0 then unsigned = unsigned + 4294967296 end
+    return value - (math.floor(unsigned / 32768) % 2) * 32768
+end
+
 return P

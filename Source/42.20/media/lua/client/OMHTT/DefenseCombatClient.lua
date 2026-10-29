@@ -31,6 +31,26 @@ local function reply(player, command, message, receipt)
     sendClientCommand(player, P.MODULE, command, result)
 end
 
+local function reject(player, message, reason, zombie)
+    local result = {token = message.token, id = message.id, outfit = message.outfit,
+        owner = message.owner, sequence = message.sequence, reason = reason}
+    if zombie then
+        result.x, result.y, result.z = zombie:getX(), zombie:getY(), zombie:getZ()
+        result.actualOutfit = P.outfit(zombie:getPersistentOutfitID())
+        result.remote, result.health = zombie:isRemoteZombie(), zombie:getHealth()
+    end
+    sendClientCommand(player, P.MODULE, "Reject", result)
+    local D = require("OMHTT/Diagnostics")
+    D.count("combat-reject-" .. reason, 1)
+    D.defer("combat-reject", result)
+end
+
+-- Presentation and combat resolve the same live identity, never a recycled ID.
+function C.find(id, outfit)
+    local zombie = indexed[id]
+    if zombie and zombie:getOnlineID() == id and P.outfit(zombie:getPersistentOutfitID()) == outfit then return zombie end
+end
+
 ---@param zombie IsoZombie Native observed instance
 ---@return nil
 function C.observe(zombie)
@@ -88,11 +108,12 @@ function C.command(module, command, message)
         reply(player, prior.applied and "Applied" or "Unapplied", message, prior)
         return
     end
-    if not zombie or zombie:isDead() or zombie:getOnlineID() ~= message.id
-        or zombie:getPersistentOutfitID() ~= message.outfit or zombie:isRemoteZombie() then
-        reply(player, "Reject", message)
-        return
-    end
+    local reason
+    if not zombie then reason = "missing"
+    elseif zombie:getOnlineID() ~= message.id or P.outfit(zombie:getPersistentOutfitID()) ~= message.outfit then reason = "identity"
+    elseif zombie:isDead() then reason = "dead"
+    elseif zombie:isRemoteZombie() then reason = "not-owner" end
+    if reason then reject(player, message, reason, zombie); return end
     if command == "Prepare" then
         -- A recycled/unloaded actor must never turn an old operation into a new application.
         if saved and saved.sequence == message.sequence then
@@ -110,7 +131,7 @@ function C.command(module, command, message)
         if not P.number(message.x, -1000000, 1000000) or not P.number(message.y, -1000000, 1000000)
             or not P.number(message.z, -32, 32) or math.abs(zombie:getZ() - message.z) > .5
             or (zombie:getX() - message.x) ^ 2 + (zombie:getY() - message.y) ^ 2 > 64 then
-            reply(player, "Reject", message)
+            reject(player, message, "position", zombie)
             return
         end
         if prior and message.sequence <= prior.sequence then
@@ -120,7 +141,7 @@ function C.command(module, command, message)
             return
         end
         if #historyOrder >= P.MAX_PENDING * 4 then
-            reply(player, "Reject", message)
+            reject(player, message, "capacity", zombie)
             return
         end
         serial = serial + 1
@@ -146,9 +167,9 @@ function C.command(module, command, message)
             return
         end
         if getTimestampMs() > prior.expires or not P.number(message.amount, 0.000001, 1000000)
-            or zombie:isInvulnerable() then reply(player, "Reject", message); return end
+            or zombie:isInvulnerable() then reject(player, message, getTimestampMs() > prior.expires and "expired" or "invulnerable", zombie); return end
         local before = zombie:getHealth()
-        if not P.number(before, P.EPSILON, 1000000) then reply(player, "Reject", message); return end
+        if not P.number(before, P.EPSILON, 1000000) then reject(player, message, "health", zombie); return end
         local after, _, lethal = P.result(before, message.amount)
         prior.before, prior.after, prior.lethal, prior.applied = before, after, lethal, true
         zombie:setHealth(after)

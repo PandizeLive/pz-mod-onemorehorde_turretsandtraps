@@ -35,7 +35,7 @@ return function(player)
         object:getSquare():getSpecialObjects():add(object)
     end
     getCell = function()
-        return {getGridSquare = function(_, x, y, z) return squares[key(x, y, z)] end}
+        return {getZombieList = function() return nativeCell:getZombieList() end, getGridSquare = function(_, x, y, z) return squares[key(x, y, z)] end}
     end
     Beds.onCreate({thumpable = bed, facing = "e"})
     local record = Beds.record(bed)

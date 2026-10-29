@@ -41,7 +41,7 @@ function C.update(zombie)
     if not player or not player:isLocalPlayer() then return end
     local square = target:getSquare()
     sendClientCommand(player, "OMHTT_BarrierContact", "Strike", {id = zombie:getOnlineID(),
-        outfit = zombie:getPersistentOutfitID(), barrier = record.id, x = square:getX(), y = square:getY(), z = square:getZ(),
+        outfit = require("OMHTT/DefenseCombatProtocol").outfit(zombie:getPersistentOutfitID()), barrier = record.id, x = square:getX(), y = square:getY(), z = square:getZ(),
         index = target:getObjectIndex(), token = token, sequence = old.sequence})
 end
 

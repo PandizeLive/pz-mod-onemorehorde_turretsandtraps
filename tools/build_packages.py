@@ -13,6 +13,7 @@ SHARED_LUA = {"WindowGeometry", "DefenseNames", "DefenseXP", "SlotHint", "Defens
 TRAP_LUA = {"FoundationServer", "FoundationClient", "DevMarkers", "Construction", "DefenseMaterials"}
 TRAP_SCRIPTS = {"OMHTT_Items.txt", "OMHTT_PortableBarrier.txt", "OMHTT_construction.txt", "OMHTT_construction_ui.txt", "OMHTT_BedSpikes.txt", "OMHTT_Barbs.txt", "OMHTT_PokeFloor.txt", "OMHTT_Tether.txt"}
 TRAP_OPTIONS = {"Enabled", "FoundationTestControls", "DiagnosticLogging", "ShowCollision", "DetailedLogging"}
+SHARED_LUA.add("DefenseActors")
 
 
 def owner(path):

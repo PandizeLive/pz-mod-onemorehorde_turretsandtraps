@@ -1,7 +1,7 @@
 if isServer() then return end
 require("ISUI/ISUIElement")
 local P = require("OMHTT/DefenseCombatProtocol")
-local V = {entries = {}}
+local V = {entries = {}, serials = {}}
 local canvas, texture
 
 ---@param module string Namespace
@@ -12,8 +12,9 @@ function V.receive(module, command, facts)
     if not isClient() or module ~= "OMHTT_PackView" or command ~= "Opening" or type(facts) ~= "table" then return end
     if not P.identity(facts.player) or not P.number(facts.serial, 1, 1000000000000)
         or type(facts.active) ~= "boolean" then return end
-    local entry = V.entries[facts.player]
-    if entry and entry.serial >= facts.serial then return end
+    if facts.player < 0 or facts.player > 32767 then return end
+    if (V.serials[facts.player] or 0) >= facts.serial then return end
+    V.serials[facts.player] = facts.serial
     V.entries[facts.player] = {serial = facts.serial, active = facts.active, expires = getTimestampMs() + 2000}
 end
 
@@ -22,7 +23,8 @@ end
 ---@param index number Local viewport
 ---@return boolean visible
 function V.visible(actor, viewer, index)
-    if actor == viewer or actor:isDead() or viewer:isDead() or math.floor(actor:getZ()) ~= math.floor(viewer:getZ()) then return false end
+    if actor == viewer or actor:isDead() or actor:isInvisible() or viewer:isDead()
+        or math.floor(actor:getZ()) ~= math.floor(viewer:getZ()) then return false end
     local dx, dy = actor:getX() - viewer:getX(), actor:getY() - viewer:getY()
     local square = actor:getSquare()
     return dx * dx + dy * dy <= 64 and square ~= nil and square:isCanSee(index)
@@ -57,6 +59,7 @@ function V.render()
     end
 end
 
+Events.OnGameStart.Add(function() V.entries, V.serials = {}, {} end)
 Events.OnServerCommand.Add(V.receive)
 Events.OnPreUIDraw.Add(V.render)
 return V

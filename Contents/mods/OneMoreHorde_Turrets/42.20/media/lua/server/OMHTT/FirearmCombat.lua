@@ -1,4 +1,5 @@
 if isClient() then return end
+local Actors = require("OMHTT/DefenseActors")
 local Horde = require("OMHTT/DefenseHorde")
 local G = require("OMHTT/Firearms")
 local Accuracy = require("OMHTT/FirearmAccuracy")
@@ -21,14 +22,14 @@ function C.hit(record, origin, target, player, options)
     local targets = {target}
     local pellets = math.max(1, math.min(9, gun:getProjectileCount()))
     if pellets > 1 then
-        local candidates = Combat.candidates(target:getSquare(), 2)
+        local candidates = Combat.candidates(Actors.square(target), 2)
         for i = 1, #candidates do
             if #targets >= 3 then break end
             local zombie = candidates[i].zombie
             local dx, dy = zombie:getX() - target:getX(), zombie:getY() - target:getY()
             if zombie ~= target and dx * dx + dy * dy <= 1.44
                 and Modules.inside(origin, zombie, options.profile)
-                and Combat.clearLane(origin, zombie:getSquare(), stats.range) then
+                and Combat.clearLane(origin, Actors.square(zombie), stats.range) then
                 targets[#targets + 1] = zombie
             end
         end
@@ -50,7 +51,7 @@ function C.hit(record, origin, target, player, options)
         local victim = targets[i]
         local allocated = math.floor((pellets - i) / #targets) + 1
         if allocated > 0 and aimHit and not victim:isDead() and require("OMHTT/ControlCombat").eligible(options.object, victim) then
-            local hitX, hitY, hitSquare = victim:getX(), victim:getY(), victim:getSquare()
+            local hitX, hitY, hitSquare = victim:getX(), victim:getY(), Actors.square(victim)
             local admitted
             if instanceof(victim, "IsoPlayer") then
                 admitted = require("OMHTT/TurretPlayerHit").hit(victim, options, pellets > 1 and "Shotgun" or "Firearm", allocated / pellets)

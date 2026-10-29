@@ -1,4 +1,5 @@
 local Budget = require("OMHTT/TurretScheduler")
+local Actors = require("OMHTT/DefenseActors")
 local Clock = require("OMHTT/TurretClock")
 local T = require("OMHTT/Turret")
 local M = require("OMHTT/TurretModules")
@@ -125,7 +126,7 @@ function Aim.tick()
                 entry.speed = T.turnSpeed(contents.head, contents.active)
                 valid = contents.head and contents.head:getCondition() > 0 and W.power(object, contents, stats)
                     and M.inside(object:getSquare(), entry.target, M.profile(state, contents, entry.player == nil, stats))
-                    and Combat.clearLane(object:getSquare(), entry.target:getSquare(), stats.range)
+                    and Combat.clearLane(object:getSquare(), Actors.square(entry.target), stats.range)
                 if entry.player then
                     valid = valid and W.near(entry.player, object)
                 else

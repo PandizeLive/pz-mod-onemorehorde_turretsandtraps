@@ -7,6 +7,7 @@ local old = {mode = testMode, instance = instanceof, faction = Faction, options 
     clock = getTimestampMs, random = ZombRand, parts = BodyPartType, injury = I.turret,
     settings = SandboxVars.OMHTurretsTraps, cell = getCell}
 local now, shots, rolls = 100000, {}, 0
+local oldOnline = getOnlinePlayers
 getTimestampMs = function() return now end
 ZombRand = function(n)
     if n == 10000 then rolls = rolls + 1 end
@@ -91,8 +92,9 @@ local square = {getX = function() return 10 end, getY = function() return 0 end,
 function square:getMovingObjects() return {size = function() return 2 end, get = function(_, i) return i == 0 and ally or enemy end} end
 function enemy:getSquare() return square end
 function ally:getSquare() return square end
+getOnlinePlayers = function() return {size=function() return 2 end,get=function(_,i) return i == 0 and ally or enemy end} end
 local empty = {getMovingObjects = function() return {size = function() return 0 end} end}
-getCell = function() return {getGridSquare = function(_, x, y)
+getCell = function() return {getZombieList=function() return {size=function() return 0 end} end, getGridSquare = function(_, x, y)
     if x == 10 and y == 0 then return square end
     return x >= 0 and x < 10 and y == 0 and empty or nil
 end} end
@@ -103,13 +105,14 @@ while not Auto.advance(job, 64, now + 1) do
     slices = slices + 1
     check(slices < 50, "Player acquisition stays bounded")
 end
-check(job.best == enemy and slices > 1, "Incremental acquisition selects outsider, skips faction mate, and yields")
+check(job.best == enemy and slices <= 1, "Candidate acquisition promptly selects outsider and skips faction mate")
 state.targeting = "Zombies"
 job = Auto.scan(owner, profile)
 while not Auto.advance(job, 64, now + 1) do end
 check(job.best == nil, "Changing policy removes players from the actual scan")
 state.targeting = nil
 getCell, Combat.clearLane = old.cell, oldLane
+getOnlinePlayers = oldOnline
 testMode = "client"
 check(not C.eligible(object, enemy), "Client cannot run authoritative acquisition")
 testMode = "server"

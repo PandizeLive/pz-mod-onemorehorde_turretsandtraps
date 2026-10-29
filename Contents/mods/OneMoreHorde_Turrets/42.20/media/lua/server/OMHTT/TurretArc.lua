@@ -1,4 +1,5 @@
 if isClient() then return end
+local Actors = require("OMHTT/DefenseActors")
 local Clock = require("OMHTT/TurretClock")
 local Budget = require("OMHTT/TurretScheduler")
 local Volley = require("OMHTT/TurretVolley")
@@ -30,14 +31,14 @@ end
 function A.eligible(job, actor, search)
     if not (instanceof(actor, "IsoZombie") or instanceof(actor, "IsoPlayer")) then return false end
     local marks = actor:getModData().OMHTTSavedArcHits
-    if job.seen[actor] or (marks and marks[job.key]) or actor:isDead() or not actor:getSquare() then return false end
+    if job.seen[actor] or (marks and marks[job.key]) or actor:isDead() or not Actors.square(actor) then return false end
     if math.floor(actor:getZ()) ~= job.z then return false end
     if not require("OMHTT/ControlCombat").eligible(job.options.object, actor) then return false end
     local dx, dy = actor:getX() - search.x, actor:getY() - search.y
     if dx * dx + dy * dy > search.radius * search.radius then return false end
     if search.forward and (dx * job.dx + dy * job.dy < 0 or math.abs(dx * job.dy - dy * job.dx) > .35) then return false end
     local origin = getCell():getGridSquare(math.floor(search.x), math.floor(search.y), job.z)
-    return origin ~= nil and require("OMHTT/DefenseLine").clear(origin, actor:getSquare(), search.radius + 2)
+    return origin ~= nil and require("OMHTT/DefenseLine").clear(origin, Actors.square(actor), search.radius + 2)
 end
 
 ---@param job table Pulse with incremental nearest search
@@ -51,7 +52,7 @@ function A.scan(job, deadline)
         local x = scan.left + scan.tile % scan.width
         local y = scan.top + math.floor(scan.tile / scan.width)
         local square = cell:getGridSquare(x, y, job.z)
-        local objects = square and square:getMovingObjects()
+        local objects = square and Actors.occupants(square, scan)
         if objects and scan.index < objects:size() then
             local actor = objects:get(scan.index)
             scan.index = scan.index + 1

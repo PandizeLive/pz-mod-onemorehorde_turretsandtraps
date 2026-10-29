@@ -213,11 +213,18 @@ function Diagnostics.measure(event, elapsed, component)
     counters[event .. "MaxMs"] = math.max(counters[event .. "MaxMs"] or 0, elapsed)
 end
 
-local lastPulse, pulsePaused = nil, false
+local lastPulse, pulsePaused, settingsKey = nil, false, nil
 
 ---@return nil
 function Diagnostics.pulse()
     local now, paused = getTimestampMs(), GameTime.isGamePaused()
+    local key = tostring(Diagnostics.enabled("traps")) .. ":" .. tostring(Diagnostics.detailed("traps"))
+        .. ":" .. tostring(Diagnostics.enabled("turrets")) .. ":" .. tostring(Diagnostics.detailed("turrets"))
+    if key ~= settingsKey then
+        settingsKey = key
+        Diagnostics.emit("logging-settings", {traps=Diagnostics.enabled("traps"), trapDetails=Diagnostics.detailed("traps"),
+            turrets=Diagnostics.enabled("turrets"), turretDetails=Diagnostics.detailed("turrets")})
+    end
     if Diagnostics.enabled() and lastPulse and not paused and not pulsePaused then
         Diagnostics.measure("active-update-gap", math.max(0, now - lastPulse))
     end

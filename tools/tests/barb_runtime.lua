@@ -165,6 +165,7 @@ B.initialize()
 for x = -1, 1 do
     for y = -1, 1 do B.index({id = "wire-" .. x .. ":" .. y, kind = "wire", x = x, y = y, z = 0}, true) end
 end
+makeSquare(0,0,0)
 local contactActor = {getSquare = function() return {getX = function() return 0 end, getY = function() return 0 end, getZ = function() return 0 end} end,
     getX = function() return .5 end, getY = function() return .5 end, getZ = function() return 0 end}
 visits = 0

@@ -6,6 +6,7 @@ local Damage = require("OMHTT/Damage")
 local Horde = require("OMHTT/DefenseHorde")
 local Diagnostics = require("OMHTT/Diagnostics")
 local ActorState = require("OMHTT/DefenseActorState")
+local Actors = require("OMHTT/DefenseActors")
 local Barrier = {TYPE = "OMHTTBarrierClaw", TOKEN = "OMHTTBarrierStrike"}
 local generation = 0
 local receipts = setmetatable({}, {__mode = "k"})
@@ -34,7 +35,7 @@ function Barrier.command(module, command, player, message)
     for x = message.x - 2, message.x + 2 do
         for y = message.y - 2, message.y + 2 do
             local tile = getCell():getGridSquare(x, y, message.z)
-            local moving = tile and tile:getMovingObjects()
+            local moving = tile and Actors.at(tile)
             for i = 0, (moving and moving:size() or 0) - 1 do
                 local actor = moving:get(i)
                 scanned = scanned + 1
@@ -48,7 +49,7 @@ function Barrier.command(module, command, player, message)
         end
         if zombie then break end
     end
-    if not zombie or zombie:isDead() or zombie:getPersistentOutfitID() ~= message.outfit
+    if not zombie or zombie:isDead() or require("OMHTT/DefenseCombatProtocol").outfit(zombie:getPersistentOutfitID()) ~= message.outfit
         or not zombie:getOwner() or not zombie:getOwner():havePlayer(player)
         or not Horde.allowed(zombie) or not Foundation.barrierEnabled() then return end
     if not string.find(string.lower(zombie:getRealState()), "thump", 1, true) then return end

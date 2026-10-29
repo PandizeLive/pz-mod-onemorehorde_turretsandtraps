@@ -1,5 +1,6 @@
 if isClient() then return end
 local Horde = require("OMHTT/DefenseHorde")
+local Actors = require("OMHTT/DefenseActors")
 local Budget = require("OMHTT/TurretScheduler")
 local Damage = require("OMHTT/Damage")
 local F = require("OMHTT/Foundation")
@@ -330,11 +331,11 @@ end
 ---@return boolean done Ray reached a victim, obstruction or range limit
 function V.step(ray)
     if ray.scanning then
-        local objects = ray.square:getMovingObjects()
+        local objects = Actors.occupants(ray.square, ray)
         if ray.objectIndex < objects:size() then
             local candidate = objects:get(ray.objectIndex)
             ray.objectIndex = ray.objectIndex + 1
-            if ray.group.kind ~= "terminal" and (instanceof(candidate, "IsoZombie") or (ray.group.kind ~= "fragment" and instanceof(candidate, "IsoPlayer"))) and not candidate:isDead() and candidate:getSquare() == ray.square
+            if ray.group.kind ~= "terminal" and (instanceof(candidate, "IsoZombie") or (ray.group.kind ~= "fragment" and instanceof(candidate, "IsoPlayer"))) and not candidate:isDead() and Actors.square(candidate) == ray.square
                 and (ray.group.kind == "splitter" or not V.seen(ray.group, candidate)) then
                 local x, y = candidate:getX() - ray.x, candidate:getY() - ray.y
                 local along = x * ray.dx + y * ray.dy
@@ -446,7 +447,7 @@ function V.save()
                 for actor in pairs(owner.scrapEligibility) do actors[actor] = true end
                 for actor in pairs(owner.scrapInjury) do actors[actor] = true end
                 for actor in pairs(actors) do
-                    local key = tostring(actor:getOnlineID()) .. ":" .. tostring(instanceof(actor, "IsoZombie") and actor:getPersistentOutfitID() or "player")
+                    local key = tostring(actor:getOnlineID()) .. ":" .. tostring(instanceof(actor, "IsoZombie") and require("OMHTT/DefenseCombatProtocol").outfit(actor:getPersistentOutfitID()) or "player")
                     savedScrap[key] = {id = owner.scrapId, eligibility = owner.scrapEligibility[actor],
                         effects = owner.scrapEffects[actor], injury = owner.scrapInjury[actor]}
                 end

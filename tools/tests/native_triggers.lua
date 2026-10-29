@@ -46,7 +46,8 @@ return function(player)
         assert(found, "No native BlocksPlacement evidence for " .. family)
     end
     assert(checks == 3, "Native obstruction family coverage missing")
-    getCell=function() return {getGridSquare=function(_,x,y,z) return z==0 and lookup[x .. ":" .. y] or nil end} end
+    getCell=function() return {getZombieList=function() return cell:getZombieList() end,
+        getGridSquare=function(_,x,y,z) return z==0 and lookup[x .. ":" .. y] or nil end} end
     local motion, clock = require("OMHTT/DefenseDisplacement"), require("OMHTT/ControlClock")
     local nativeNow, motionTime = clock.now, 1000
     clock.now = function() return motionTime end
@@ -114,6 +115,7 @@ return function(player)
     local near=lookup[(base+3) .. ":1000"]
     actor:setX(base+3.5);actor:setY(1000.5);actor:setZ(0);actor:setCurrent(near);actor:setCrawler(true)
     near:getMovingObjects():add(actor)
+    require("OMHTT/DefenseActors").observe(actor)
     Sensor.step(laser,ss)
     assert(ss.active,"Crawler must interrupt laser")
     near:getMovingObjects():remove(actor)

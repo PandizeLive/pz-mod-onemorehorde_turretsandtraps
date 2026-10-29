@@ -1,4 +1,6 @@
 if isClient() then return end
+local Actors = require("OMHTT/DefenseActors")
+local F = require("OMHTT/Foundation")
 local existing = rawget(_G, "OMHTT_ControlWorld")
 if existing then return existing end
 local A = require("OMHTT/ControlAccess")
@@ -339,6 +341,7 @@ function W.indexPlate(object, state)
         W.plateSprite(object, state, true)
     end
     C.passive(object, state.kind)
+    if state.kind == "Poke" then require("OMHTT/ControlPoke").register(object, state) end
     if state.kind ~= "Plate" then return end
     local square = object:getSquare()
     W.plates[square] = W.plates[square] or {}
@@ -422,7 +425,7 @@ end
 function W.actor(actor)
     require("OMHTT/ControlSensor").actor(actor)
     local previous = W.actorSquares[actor]
-    local square = actor:getSquare()
+    local square = Actors.square(actor)
     if actor:isDead() then
         square = nil
     end
@@ -580,7 +583,7 @@ end
 ---@param object IsoObject Pressure plate
 ---@return boolean occupied
 function W.occupied(object)
-    local moving = object:getSquare():getMovingObjects()
+    local moving = Actors.at(object:getSquare())
     local state = W.state(object)
     local trigger = state and state.trigger or "Both"
     for i = 0, moving:size() - 1 do
@@ -627,7 +630,13 @@ function W.removed(object)
         require("OMHTT/DefenseContacts").remove(object)
     end
     require("OMHTT/ControlSensor").remove(object)
-    require("OMHTT/ControlPoke").entries[object] = nil
+    local poke = require("OMHTT/ControlPoke")
+    poke.entries[object] = nil
+    local removedSquare = object:getSquare()
+    if removedSquare then
+        local key = F.key(removedSquare:getX(), removedSquare:getY(), removedSquare:getZ())
+        if poke.objects[key] == object then poke.objects[key] = nil end
+    end
     local state = W.state(object)
     if state and state.kind == "Tether" then
         require("OMHTT/TetherServer").cancel(object)

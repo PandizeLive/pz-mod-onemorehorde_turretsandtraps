@@ -39,3 +39,18 @@
 **1B - Diagnostics only first.** Capture exact rejection causes before the broader corrective patch. Smaller first patch, but it knowingly leaves the reproduced contact/search/presentation defects in place for another test round.
 
 No request for a new world or another blind test. **Decision needed:1A or1B.** GitHub mirror remains blocked by the prior automatic approval review; no retry or alternate push route was attempted. Existing local owner edits remain intact.
+
+
+## C505 approval and implementation (2026-10-29)
+
+Owner selects **1A**, asks for thorough reproduction/verification and smooth presentation while the server tracks real gameplay, then authorizes proceeding at Extra High with an additional remote Module Pack check. This supersedes the historical pending-approval status above. No further gameplay balance, sibling changes or publication is authorized.
+
+Implementation replaces predicted square/moving-list contact and area discovery with one shared bounded actual-position actor index. Immediate Poke rising contact uses a150ms victim-deduplicated window; the configured repeat cycle and careful-walking rule remain. Recent clear crossings between samples are considered only within2tiles/250ms, on one floor; unknown long gaps do not invent hits. Bed landed damage waits for confirmation before wear and can retry a rejected still-landed hit. Arc, rotary, projectile, splash, Martyrdom, Tacks, triggers and barriers share actual-position queries.
+
+Native PersistentOutfits.setFallenHat changes bit15 of the ID. Normalize only that bit, preserving signed32-bit identity and every other bit, across protocol/effects/motion/retaliation. This removes a confirmed legitimate-hit rejection mechanism; the historical396 generic rejections cannot all be attributed to it. Fixed reason codes and bounded source/victim/phase/loss/elapsed/actual-coordinate diagnostics now distinguish remaining failures. A rejected target is temporarily excluded and revalidated, preserving later native-owner recovery.
+
+Projectile packets carry validated target identity; clients follow that native target inside the same displacement tolerance used by impact validation. Existing aim interpolation remains. Unconfirmed obsolete flights expire promptly. Server damage/resources/XP and owner receipt/idempotency rules remain authoritative. Remote pack icons retain24px existing art, eight-tile/floor/visibility checks, native action lifecycle and expiry, with stale-start ordering retained after expiry and invisible actors hidden.
+
+Automated and isolated native verification is recorded in TEST_v0.2.70.7.md. It does not replace connected player acceptance, prove unseen packets, or guarantee every crossing during a long network gap. No new world is required.
+
+Final implementation also removes the obsolete watched-square sweep, bounds empty/occupied bucket selection, fixes first-tick Bed contact invalidation, uses real observation time for contact freshness, and retains a short per-cycle Poke victim set so later batches participate in the same rising strike. The final native fixture captures terminal death before native pooling can reuse references. [Final checks and limits](TEST_v0.2.70.7.md).

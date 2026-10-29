@@ -1,7 +1,8 @@
+if isClient() then return end
+local Actors = require("OMHTT/DefenseActors")
 local Horde = require("OMHTT/DefenseHorde")
 local Budget = require("OMHTT/TurretScheduler")
 local Clock = require("OMHTT/TurretClock")
-if isClient() then return end
 
 local Foundation = require("OMHTT/Foundation")
 local Diagnostics = require("OMHTT/Diagnostics")
@@ -42,12 +43,12 @@ function Combat.observeImpacts()
             local zombie = entry.zombie
             Diagnostics.emit("shot-reaction-observed", {id = entry.id, shot = entry.shot,
                 elapsedMs = now - entry.started, state = zombie:getCurrentStateName(),
-                loaded = zombie:getSquare() ~= nil, dead = zombie:isDead(), onFloor = zombie:isOnFloor(),
+                loaded = Actors.square(zombie) ~= nil, dead = zombie:isDead(), onFloor = zombie:isOnFloor(),
                 knockedDown = zombie:isKnockedDown(), ragdoll = zombie:isRagdoll(),
                 physicsRequested = zombie:usePhysicHitReaction(),
                 displacementX = zombie:getX() - entry.x, displacementY = zombie:getY() - entry.y}, nil, nil, "turrets")
             entry.stage = entry.stage + 1
-            if entry.stage >= 3 or zombie:getSquare() == nil then
+            if entry.stage >= 3 or Actors.square(zombie) == nil then
                 table.remove(observations, i)
             elseif entry.stage == 1 then
                 entry.checkAt = entry.started + 600
@@ -72,50 +73,21 @@ Combat.clearLane = require("OMHTT/DefenseLine").clear
 ---@return number visits Number of moving objects examined
 function Combat.candidates(origin, range)
     range = range or Combat.RANGE
-    local found = {}
-    local seen = {}
-    local visits, squares = 0, 0
+    local found, seen = {}, {}
+    local visits, units = 0, 0
+    local search = Actors.query(origin:getX() + .5, origin:getY() + .5, origin:getZ(), range)
     local deadline = Budget.limit(1)
-    for radius = 0, math.ceil(range) do
-        local loaded = false
-        for dx = -radius, radius do
-            local stride = 1
-            if math.abs(dx) < radius then
-                stride = radius * 2
-            end
-            for dy = -radius, radius, stride do
-                if math.max(math.abs(dx), math.abs(dy)) == radius then
-                    squares = squares + 1
-                    if squares > 4096 or getTimestampMs() >= deadline then
-                        table.sort(found, function(a, b) return a.distance < b.distance end)
-                        return found, visits
-                    end
-                    local square = getCell():getGridSquare(origin:getX() + dx, origin:getY() + dy, origin:getZ())
-                    if square then
-                        loaded = true
-                        local objects = square:getMovingObjects()
-                        for index = 0, objects:size() - 1 do
-                            if visits >= Combat.CANDIDATE_LIMIT then
-                                table.sort(found, function(a, b) return a.distance < b.distance end)
-                                return found, visits
-                            end
-                            visits = visits + 1
-                            local zombie = objects:get(index)
-                            if not seen[zombie] and instanceof(zombie, "IsoZombie") and not zombie:isDead() and Horde.allowed(zombie) then
-                                seen[zombie] = true
-                                local zx = zombie:getX() - origin:getX() - 0.5
-                                local zy = zombie:getY() - origin:getY() - 0.5
-                                local distance = zx * zx + zy * zy
-                                if distance <= range * range then
-                                    found[#found + 1] = {zombie = zombie, distance = distance}
-                                end
-                            end
-                        end
-                    end
-                end
+    while not search.done and units < 4096 and visits < Combat.CANDIDATE_LIMIT and getTimestampMs() < deadline do
+        units = units + 1
+        local zombie = Actors.advance(search)
+        if zombie and instanceof(zombie, "IsoZombie") and not seen[zombie] then
+            seen[zombie], visits = true, visits + 1
+            local dx, dy = zombie:getX() - origin:getX() - .5, zombie:getY() - origin:getY() - .5
+            local distance = dx * dx + dy * dy
+            if distance <= range * range and math.floor(zombie:getZ()) == origin:getZ() and Horde.allowed(zombie) then
+                found[#found + 1] = {zombie = zombie, distance = distance}
             end
         end
-        if not loaded then break end
     end
     table.sort(found, function(a, b) return a.distance < b.distance end)
     return found, visits
@@ -149,7 +121,7 @@ function Combat.fire(record, object, player, options)
         for i = 1, #candidates do
             local zombie = candidates[i].zombie
             local inside = not options.profile or Modules.inside(origin, zombie, options.profile)
-            if inside and Combat.clearLane(origin, zombie:getSquare(), options.range)
+            if inside and Combat.clearLane(origin, Actors.square(zombie), options.range)
                 and Modules.better(zombie, candidates[i].distance, target, bestDistance,
                     options.profile and options.profile.priority or "Closest") then
                 target, bestDistance = zombie, candidates[i].distance
@@ -158,7 +130,7 @@ function Combat.fire(record, object, player, options)
     end
     if options.target then
         local inside = Modules.inside(origin, options.target, options.profile)
-        if inside and require("OMHTT/ControlCombat").eligible(object, options.target) and Combat.clearLane(origin, options.target:getSquare(), options.range) then
+        if inside and require("OMHTT/ControlCombat").eligible(object, options.target) and Combat.clearLane(origin, Actors.square(options.target), options.range) then
             target = options.target
         else
             target = nil
@@ -242,7 +214,7 @@ function Combat.splash(record, target, impactSquare, tx, ty, options)
             local dx = zombie:getX() - tx
             local dy = zombie:getY() - ty
             if options.splash > 0 and dx * dx + dy * dy <= options.radius * options.radius
-                and Combat.clearLane(impactSquare, zombie:getSquare(), options.range) then
+                and Combat.clearLane(impactSquare, Actors.square(zombie), options.range) then
                 Damage.resolve(zombie, options.splash, record.id, "splash", function(lost)
                     if lost > 0 then
                         require("OMHTT/TurretSiphon").hit(zombie, options.siphon, options.secondary == true)
@@ -259,10 +231,10 @@ function Combat.hit(record, origin, target, player, options)
     if instanceof(target, "IsoPlayer") then
         local hit = require("OMHTT/TurretPlayerHit").hit(target, options, "Potato")
         local volley = require("OMHTT/TurretVolley")
-        if not volley.pierce(record, origin, target, player, options, target:getSquare(), target:getX(), target:getY()) then
+        if not volley.pierce(record, origin, target, player, options, Actors.square(target), target:getX(), target:getY()) then
             volley.fragment(record, target:getX(), target:getY(), origin:getZ(), target, player, options)
         end
-        Combat.splash(record, target, target:getSquare(), target:getX(), target:getY(), options)
+        Combat.splash(record, target, Actors.square(target), target:getX(), target:getY(), options)
         volley.release(options)
         return {id = record.id, shot = record.shots, x = target:getX(), y = target:getY(), z = target:getZ(), missed = not hit}
     end
@@ -272,7 +244,7 @@ function Combat.hit(record, origin, target, player, options)
     end
     local now, tx, ty = getTimestampMs(), target:getX(), target:getY()
     local before = target:getHealth()
-    local impactSquare = target:getSquare()
+    local impactSquare = Actors.square(target)
     Diagnostics.defer("shot-hit-begin", {id = record.id, shot = record.shots, x = tx, y = ty, health = before,
         ammo = record.ammo, damageInput = options.damage, facing = record.facing}, "turrets")
     local critical = options.critical
@@ -316,7 +288,7 @@ end
 ---@return table impact Arrival facts
 function Combat.arrive(shot)
     local target, origin, options = shot.target, shot.origin, shot.options
-    local square = target:getSquare()
+    local square = Actors.square(target)
     local dx, dy = target:getX() - shot.facts.x, target:getY() - shot.facts.y
     if require("OMHTT/ControlCombat").eligible(options.object, target) and not target:isDead() and square and target:getZ() == origin:getZ() and dx * dx + dy * dy <= 4
         and getCell():getGridSquare(square:getX(), square:getY(), square:getZ()) == square

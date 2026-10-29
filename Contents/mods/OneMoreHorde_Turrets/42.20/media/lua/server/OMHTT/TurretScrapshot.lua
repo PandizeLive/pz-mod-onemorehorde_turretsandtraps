@@ -43,7 +43,7 @@ function S.hit(ray, victim)
     local actorState = require("OMHTT/DefenseActorState").get(victim)
     local saved = actorState.OMHTTScrapShot
     if isServer() and owner.savedScrap then
-        local key = tostring(victim:getOnlineID()) .. ":" .. tostring(instanceof(victim, "IsoZombie") and victim:getPersistentOutfitID() or "player")
+        local key = tostring(victim:getOnlineID()) .. ":" .. tostring(instanceof(victim, "IsoZombie") and require("OMHTT/DefenseCombatProtocol").outfit(victim:getPersistentOutfitID()) or "player")
         saved = owner.savedScrap[key] or saved
     end
     if saved and saved.id == owner.scrapId then

@@ -5,6 +5,24 @@ local D = require("OMHTT/Diagnostics")
 local T = require("OMHTT/Turret")
 local E = {effects = {}}
 local canvas = nil
+local phases, phaseOrder, phaseCursor = {}, {}, 1
+
+local function progress(command, facts)
+    if not isClient() or not facts.packet then return true end
+    local rank = command == "Impact" and 3 or command == "Land" and 2 or command == "Launch" and 1
+    if not rank then return true end
+    local key = tostring(facts.id) .. ":" .. tostring(facts.shot)
+    local previous = phases[key]
+    if previous and previous >= rank then return false end
+    if not previous then
+        local old = phaseOrder[phaseCursor]
+        if old then phases[old] = nil end
+        phaseOrder[phaseCursor] = key
+        phaseCursor = phaseCursor % 512 + 1
+    end
+    phases[key] = rank
+    return true
+end
 
 ---@param name string Sound script
 ---@param x number World X
@@ -41,6 +59,7 @@ function E.receive(module, command, facts)
     if module ~= F.MODULE or (command ~= "Volley" and command ~= "Click" and command ~= "Launch"
         and command ~= "Land" and command ~= "Impact" and command ~= "GunShot" and command ~= "Ray") then return end
     if module == F.MODULE and not require("OMHTT/DefenseEffects").accept(facts) then return end
+    if not progress(command, facts) then return end
     if module == F.MODULE and command == "Volley" then
         for i = 1, math.min(64, #facts.rays) do E.receive(module, "Ray", facts.rays[i]) end
         return
@@ -69,6 +88,7 @@ function E.receive(module, command, facts)
     effect.x, effect.y, effect.z = facts.x, facts.y, facts.z
     effect.fromX, effect.fromY, effect.flight = facts.fromX, facts.fromY, facts.flight or 0
     effect.target, effect.missed = facts.target, facts.missed
+    effect.targetId, effect.targetOutfit = facts.targetId, facts.targetOutfit
     effect.firearm = facts.firearm == true
     effect.projectile = facts.projectile
     effect.muzzleHeight = facts.muzzleHeight or T.HEAD_VISUAL.height
@@ -97,7 +117,11 @@ end
 ---@return number height World Z offset
 function E.position(effect)
     local target = effect.target
-    if target and target:getSquare() and target:getZ() == effect.z then
+    if isClient() and effect.targetId and not effect.missed then
+        target = require("OMHTT/DefenseCombatClient").find(effect.targetId, effect.targetOutfit)
+    end
+    if target and not effect.missed and not target:isDead() and target:getSquare() and math.floor(target:getZ()) == effect.z
+        and (target:getX() - effect.x)^2 + (target:getY() - effect.y)^2 <= 4 then
         return target:getX(), target:getY(), target:isOnFloor() and 0.06 or 0.30
     end
     return effect.x, effect.y, effect.missed and 0.02 or 0.30
@@ -144,7 +168,7 @@ function E.render()
         local effect = E.effects[i]
         local elapsed = now - effect.start
         local traceAge = effect.renderStart and now - effect.renderStart or 0
-        if (effect.phase == "Impact" and elapsed >= 450) or (effect.firearm and (traceAge >= 100 or elapsed >= 1000)) or elapsed > effect.flight + 10000 then
+        if (effect.phase == "Impact" and elapsed >= 450) or (effect.firearm and (traceAge >= 100 or elapsed >= 1000)) or elapsed > effect.flight + 750 then
             table.remove(E.effects, i)
         else
             for index = 0, getNumActivePlayers() - 1 do
@@ -210,6 +234,7 @@ end
 ---@return nil
 function E.reset()
     E.effects, canvas = {}, nil
+    phases, phaseOrder, phaseCursor = {}, {}, 1
 end
 
 Events.OnServerCommand.Add(E.receive)

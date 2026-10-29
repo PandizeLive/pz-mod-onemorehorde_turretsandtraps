@@ -178,8 +178,18 @@ function makeSquare(x, y, z)
     return square
 end
 
+function testZombieList()
+    local actors, seen = {}, {}
+    for _, square in pairs(testSquares) do
+        for i = 1, #square.moving do
+            local actor = square.moving[i]
+            if actor.kind == "IsoZombie" and not seen[actor] then actors[#actors + 1], seen[actor] = actor, true end
+        end
+    end
+    return {size=function() return #actors end,get=function(_,i) return actors[i+1] end}
+end
 function getCell()
-    return {getGridSquare = function(self, x, y, z)
+    return {getZombieList = testZombieList, getGridSquare = function(self, x, y, z)
         if not testLoaded then return nil end
         return testSquares[tostring(x) .. ":" .. tostring(y) .. ":" .. tostring(z)]
     end}
@@ -281,6 +291,7 @@ function makeZombie(square, health)
     function zombie:isRemoteZombie() return self.remote == true end
     function zombie:getRealState() return self.state end
     function zombie:isInvulnerable() return self.invulnerable == true end
+    function zombie:isInvisible() return self.invisible == true end
     function zombie:getSquare() return self.square end
     function zombie:getX() return self.square.x + 0.5 end
     function zombie:getY() return self.square.y + 0.5 end

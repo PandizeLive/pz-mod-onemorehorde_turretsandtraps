@@ -245,6 +245,31 @@ clientReceive(); serverReceive(); clientReceive(); serverReceive()
 check(owner.pending == 0 and callbacks == 1, "Confirmed effect runs once before releasing the final reservation")
 
 serverPackets, clientPackets = {}, {}
+server, client = pair()
+local hat = true
+server.getPersistentOutfitID = function() return 12345 end
+client.getPersistentOutfitID = function() return 12345 + (hat and 32768 or 0) end
+S.request(server, .3, "c505-hat", "firearm", done)
+clientReceive(); serverReceive()
+hat = false
+testMillis = testMillis + 250
+clientReceive(); serverReceive()
+check(math.abs(server.health - .7) < .000001 and completions[#completions][2] == "applied",
+    "C505 fallen-hat changes before prepare and commit do not reject a valid hit")
+
+server, client = pair()
+local rejected, rejectedReason = 0, nil
+client.remote = true
+damage.resolve(server, .2, "c505-owner", "tacks", function(lost, reason) rejected, rejectedReason = lost, reason end)
+clientReceive()
+check(clientPackets[1][2].reason == "not-owner", "C505 rejection records the actual ownership cause")
+serverReceive()
+check(rejected == 0 and rejectedReason == "not-owner" and not damage.available(server),
+    "C505 rejected victim is retired from automatic targeting during bounded revalidation")
+testMillis = testMillis + 1001
+check(damage.available(server), "C505 revalidation can recover without permanently blacklisting a live zombie")
+
+serverPackets, clientPackets = {}, {}
 for i = 1, P.MAX_PENDING do
     held[i] = pair()
     check(S.request(held[i], .1, "wire-1", "barbs", done), "Bounded queue accepts available capacity")

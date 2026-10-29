@@ -1,3 +1,4 @@
+local Actors = require("OMHTT/DefenseActors")
 local F = require("OMHTT/Foundation")
 local S = require("OMHTT/BarbSupport")
 local C = require("OMHTT/BarbContact")
@@ -625,13 +626,14 @@ end
 ---@param bucket table? Already located nearby hazards
 ---@return table? selected One touching hazard, shared by damage and movement
 ---@return table? attachment Durable state
-function B.contact(actor, bucket)
-    local square = actor:getSquare()
+function B.contact(actor, bucket, position)
+    local square = position and getCell():getGridSquare(math.floor(position.x), math.floor(position.y), position.z) or Actors.square(actor)
     if #B.order == 0 or not square then return nil end
     bucket = bucket or B.nearby[F.key(square:getX(), square:getY(), square:getZ())]
     if not bucket then return nil end
     local selected, source = nil, nil
     local x, y, z = actor:getX(), actor:getY(), actor:getZ()
+    if position then x, y, z = position.x, position.y, position.z end
     for id in pairs(bucket) do
         local node = B.nodes[id]
         local wire = node and node.record.kind == "wire"

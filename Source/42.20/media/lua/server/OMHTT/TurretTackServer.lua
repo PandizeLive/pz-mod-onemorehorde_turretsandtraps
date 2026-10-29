@@ -130,11 +130,11 @@ end
 
 ---@param zombie IsoZombie Server-updated contact candidate
 ---@return nil
-function S.update(zombie)
+function S.update(zombie, position)
     if not isServer() or zombie:isDead() or not H.allowed(zombie) then return end
     local barbs = rawget(_G, "OMHTT_BarbSections")
-    if barbs and barbs.contact(zombie) then return end
-    local field = E.contact(zombie)
+    if barbs and barbs.contact(zombie, nil, position) then return end
+    local field = E.contact(zombie, position)
     if not field then return end
     Motion.request(zombie, "slow", field.source, 2)
     local data = require("OMHTT/DefenseActorState").get(zombie)

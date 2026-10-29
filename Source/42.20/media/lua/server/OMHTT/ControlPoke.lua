@@ -1,7 +1,21 @@
 if isClient() then return end
 local Horde = require("OMHTT/DefenseHorde")
 local Active = require("OMHTT/ActiveTime")
-local P = {entries = setmetatable({}, {__mode = "k"}), clock = Active.new(true), time = 0}
+local P = {entries = setmetatable({}, {__mode = "k"}), objects = {}, clock = Active.new(true), time = 0}
+local Actors = require("OMHTT/DefenseActors")
+local F = require("OMHTT/Foundation")
+
+function P.register(object, state)
+    P.objects[F.key(state.x, state.y, state.z)] = object
+    if isServer() then require("OMHTT/DefenseContacts").watch(object, "poke", state.x, state.y, state.x, state.y, state.z) end
+end
+
+function P.contact(actor, position)
+    local object = P.objects[F.key(math.floor(position.x), math.floor(position.y), position.z)]
+    local W = require("OMHTT/ControlWorld")
+    local state = object and W.state(object)
+    if state and state.kind == "Poke" and object:getObjectIndex() >= 0 then P.step(object, state, actor) end
+end
 
 function P.option(key, fallback, minimum, maximum)
     local value = SandboxVars.OMHTurretsTraps and tonumber(SandboxVars.OMHTurretsTraps["Poke" .. key])
@@ -25,7 +39,7 @@ function P.visual(object, state, raised)
     W.publish(object)
 end
 
-function P.step(object, state)
+function P.step(object, state, contact)
     local W = require("OMHTT/ControlWorld")
     local now = P.time
     local entry = P.entries[object]
@@ -34,11 +48,12 @@ function P.step(object, state)
         P.entries[object] = entry
         P.visual(object, state, false)
     end
-    if entry.finish and now >= entry.finish and not entry.strike then
-        entry.finish, entry.strike, entry.victims = nil, nil, nil
+    if entry.finish and now >= entry.finish then
+        entry.finish, entry.cycle = nil, nil
         P.visual(object, state, false)
     end
-    local moving = object:getSquare():getMovingObjects()
+    local moving = require("OMHTT/DefenseActors").at(object:getSquare())
+    if contact and Actors.square(contact) ~= object:getSquare() then moving[#moving + 1] = contact end
     local eligible, requests = false, {}
     entry.scan = (entry.scan or 0) + 1
     for i = 0, moving:size() - 1 do
@@ -63,41 +78,38 @@ function P.step(object, state)
         and SandboxVars.OMHTurretsTraps.Enabled ~= false
     if not entry.finish and now >= entry.due and enabled and eligible then
         local duration = P.option("CycleSeconds", 1.5, .3, 60) * 1000
-        entry.finish, entry.strike, entry.due = now + duration, now + math.min(150, duration / 3), now + duration
-        entry.victims = requests
+        entry.finish, entry.due = now + duration, now + duration
+        entry.cycle = {untilTime = now + 150, hits = setmetatable({}, {__mode = "k"})}
         state.powerSource = nil
         P.visual(object, state, true)
         require("OMHTT/ControlAudio").emit(object, "poke")
     end
-    if not entry.strike or now < entry.strike then return end
-    entry.strike = nil
-    local worn = false
+    local cycle = entry.cycle
+    if not enabled or not cycle or now > cycle.untilTime then return end
     local function wear(lost)
-        if worn or lost <= 0 or W.state(object) ~= state or object:getObjectIndex() < 0 then return end
-        worn = true
+        if cycle.worn or lost <= 0 or W.state(object) ~= state or object:getObjectIndex() < 0 then return end
+        cycle.worn = true
         object:setHealth(math.max(0, object:getHealth() - P.option("Wear", 1, 0, 1000)))
         if isServer() then object:sync() end
     end
     for i = 0, moving:size() - 1 do
         local actor = moving:get(i)
-        if instanceof(actor, "IsoZombie") and not actor:isDead() and Horde.allowed(actor) then
+        if not cycle.hits[actor] and instanceof(actor, "IsoZombie") and not actor:isDead() and Horde.allowed(actor) then
+            cycle.hits[actor] = true
             require("OMHTT/Damage").resolve(actor, P.option("Damage", 45, 0, 2500) / 100, state.id, "poke-floor", wear)
-        elseif entry.victims[actor] and not actor:isDead() and not actor:isGodMod()
+        elseif not cycle.hits[actor] and requests[actor] and not actor:isDead() and not actor:isGodMod()
             and not actor:isNoClip() and not actor:isGhostMode() then
+            cycle.hits[actor] = true
             wear(1)
-            require("OMHTT/DefenseInjury").poke(actor, entry.victims[actor], state.id)
+            require("OMHTT/DefenseInjury").poke(actor, requests[actor], state.id)
         end
     end
-    entry.victims = nil
-    if entry.finish and now >= entry.finish then
-        entry.finish = nil
-        P.visual(object, state, false)
-    end
-    W.publish(object)
 end
 
 function P.advance()
     P.time = P.time + Active.step(P.clock)
 end
+
+require("OMHTT/DefenseContacts").handlers.poke = P.contact
 
 return P

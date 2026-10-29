@@ -19,6 +19,12 @@ local function finish(job, lost, reason)
         last.index = job.index
     end
     order[#order] = nil
+    local D = require("OMHTT/Diagnostics")
+    local component = string.find(job.source, "^turret") and "turrets" or "traps"
+    D.count("combat-result-" .. reason, 1, component)
+    D.defer("combat-result", {token = job.token, id = job.source, victim = job.id, kind = job.kind,
+        phase = job.phase, reason = reason, loss = lost, elapsedMs = getTimestampMs() - job.started,
+        clientX = job.clientX, clientY = job.clientY, x = job.zombie:getX(), y = job.zombie:getY()}, component)
     if job.callback then job.callback(lost, reason) end
 end
 
@@ -27,7 +33,7 @@ end
 local function current(job)
     local zombie = job.zombie
     return not zombie:isDead() and zombie:getOnlineID() == job.id
-        and zombie:getPersistentOutfitID() == job.outfit and zombie:getOwnerPlayer() == job.player
+        and require("OMHTT/DefenseCombatProtocol").outfit(zombie:getPersistentOutfitID()) == job.outfit and zombie:getOwnerPlayer() == job.player
         and zombie:getOwner() == job.connection and not job.player:isDead() and H.matches(zombie, job.lease)
 end
 
@@ -88,7 +94,7 @@ end
 ---@return boolean same Native identity remains alive
 local function alive(job)
     return not job.zombie:isDead() and job.zombie:getOnlineID() == job.id
-        and job.zombie:getPersistentOutfitID() == job.outfit
+        and require("OMHTT/DefenseCombatProtocol").outfit(job.zombie:getPersistentOutfitID()) == job.outfit
 end
 
 ---@param job table Operation at an ownership boundary
@@ -122,15 +128,15 @@ function S.request(zombie, amount, source, kind, callback)
     local player = zombie:getOwnerPlayer()
     if not player or not zombie:getOwner() or player:isDead() or zombie:getOnlineID() == -1 or player:getOnlineID() == -1
         or not P.identity(player:getOnlineID()) or not P.identity(zombie:getOnlineID())
-        or not P.identity(zombie:getPersistentOutfitID()) then return false end
+        or not P.identity(require("OMHTT/DefenseCombatProtocol").outfit(zombie:getPersistentOutfitID())) then return false end
     serial = serial + 1
     local sequence = (serials[zombie] or 0) + 1
     serials[zombie] = sequence
     local job = {token = session .. ":" .. serial, sequence = sequence, zombie = zombie, player = player,
         connection = zombie:getOwner(),
-        id = zombie:getOnlineID(), outfit = zombie:getPersistentOutfitID(), amount = amount,
+        id = zombie:getOnlineID(), outfit = require("OMHTT/DefenseCombatProtocol").outfit(zombie:getPersistentOutfitID()), amount = amount,
         source = source, kind = kind, lease = H.capture(zombie), callback = callback, phase = "prepare", deadline = getTimestampMs() + P.TIMEOUT,
-        index = #order + 1}
+        index = #order + 1, started = getTimestampMs()}
     pending[job.token], victims[zombie], order[job.index] = job, job, job
     local message = envelope(job)
     message.x, message.y, message.z = zombie:getX(), zombie:getY(), zombie:getZ()
@@ -160,7 +166,12 @@ function S.command(module, command, player, message)
     end
     if command == "Reject" then
         if current(job) then
-            finish(job, 0, job.result and "reconciliation-failed" or "rejected")
+            local reasons = {missing=true, identity=true, dead=true, ["not-owner"]=true, position=true,
+                capacity=true, expired=true, invulnerable=true, health=true}
+            local reason = reasons[message.reason] and message.reason or "rejected"
+            job.clientX = P.number(message.x, -1000000, 1000000) and message.x or nil
+            job.clientY = P.number(message.y, -1000000, 1000000) and message.y or nil
+            finish(job, 0, job.result and "reconciliation-failed" or reason)
         else
             handoff(job)
         end

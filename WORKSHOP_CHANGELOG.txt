@@ -1,11 +1,11 @@
-v0.2.70.6
+v0.2.70.7
 
 Development test content
 
-- Fixed multiplayer contact damage for Bed Spikes, Barbed Panels, Concertina Wire and Tacks.
-- Fixed Poke Floor startup and delayed strikes, and Initial Blow and Execute health tracking.
-- Fixed multiplayer trap names and restored Pixel Strike damage numbers for turret and trap hits.
-- Fixed rotary heads hitting knocked-down zombies in multiplayer.
-- Fixed a trap-credit error when using Turrets without Traps.
-- Smoothed multiplayer turret aiming and rotary movement.
-- Added nearby Module Pack opening indicators above other players.
+- Fixed multiplayer trap contact and fast crossings using zombies' actual positions.
+- Fixed missed Bed Spikes landings and made ready Poke Floors strike immediately.
+- Improved turret target acquisition with Range modules and dense groups.
+- Fixed valid turret and trap hits being rejected when zombies lose hats.
+- Improved stale-target recovery and moving projectile effects in multiplayer.
+- Fixed delayed effects and Module Pack indicators reappearing after completion.
+- Improved multiplayer combat diagnostics.

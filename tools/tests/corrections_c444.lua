@@ -140,18 +140,25 @@ rarity.refresh(old.settings)
 local previousCell=getCell
 local queried=0
 local empty={getMovingObjects=function() return {size=function() return 0 end} end}
-getCell=function() return {getGridSquare=function(_,x,y)
+getCell=function() return {getZombieList=function() return {size=function() return 0 end} end,getGridSquare=function(_,x,y)
     queried=queried+1
     return math.abs(x)<=1 and math.abs(y)<=1 and empty or nil
 end} end
 local origin={getX=function() return 0 end,getY=function() return 0 end,getZ=function() return 0 end}
 local Auto=require("OMHTT/TurretAutomation")
+local Actors=require("OMHTT/DefenseActors")
+local oldBuckets=Actors.bucketOrder
+local oldRefreshActors=Actors.refresh
+Actors.bucketOrder={}
+Actors.refresh=function() end
 local job=Auto.scan(origin,{range=7809})
 local slices=0
 repeat
     slices=slices+1
-    check(slices<=4,"Uncapped acquisition exits a completely unloaded surrounding boundary")
+    check(slices<=4,"Uncapped acquisition terminates without scanning empty area")
 until Auto.advance(job,7,getTimestampMs()+100000)
-check(queried==25,"Huge custom range visits only the loaded island and its immediate empty boundary")
+check(queried==0,"Huge custom range performs no per-tile area scan")
+Actors.bucketOrder=oldBuckets
+Actors.refresh=oldRefreshActors
 getCell=previousCell
 print("[OMHTT-C444] selected tuning=pass fractional-debt=pass inactive-effects=absent kit-exchange=exact overflow=bounded rollback=pass authority=pass")

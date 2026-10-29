@@ -1,35 +1,8 @@
 if isClient() then return end
 local F = require("OMHTT/Foundation")
 local D = require("OMHTT/Diagnostics")
-local C = {handlers = {}, tiles = {}, order = {}, sources = {}, cursor = 1, actor = 0, due = 0}
-local seen = setmetatable({}, {__mode = "k"})
-local channels = {"bed", "barb", "tack", "control"}
-
-local function detach(tile)
-    local index = tile.index
-    if not index then return end
-    local last = C.order[#C.order]
-    C.order[index] = last
-    C.order[#C.order] = nil
-    if last ~= tile then
-        last.index = index
-    end
-    tile.index = nil
-    if C.cursor == index then
-        C.actor = 0
-    end
-end
-
----@param square IsoGridSquare Newly loaded square
----@return nil
-function C.loaded(square)
-    if not isServer() then return end
-    local tile = C.tiles[F.key(square:getX(), square:getY(), square:getZ())]
-    if not tile or tile.index then return end
-    tile.index = #C.order + 1
-    C.order[tile.index] = tile
-    C.due = 0
-end
+local C = {handlers = {}, tiles = {}, sources = {}, count = 0}
+local channels = {"bed", "barb", "tack", "control", "poke"}
 
 ---@param owner any Exact hazard identity
 ---@return nil
@@ -43,8 +16,8 @@ function C.remove(owner)
         tile[source.kind] = tile[source.kind] - 1
         tile.count = tile.count - 1
         if tile.count == 0 then
-            detach(tile)
             C.tiles[key] = nil
+            C.count = C.count - 1
         end
     end
 end
@@ -79,64 +52,56 @@ function C.watch(owner, kind, x1, y1, x2, y2, z)
             if not tile then
                 tile = {x = x, y = y, z = z, count = 0}
                 C.tiles[key] = tile
+                C.count = C.count + 1
             end
             tile[kind] = (tile[kind] or 0) + 1
             tile.count = tile.count + 1
             source.keys[#source.keys + 1] = key
-            local square = getCell():getGridSquare(x, y, z)
-            if square then
-                C.loaded(square)
-            end
         end
-    end
-    C.due = 0
-end
-
----@return nil
-function C.tick()
-    if not isServer() or #C.order == 0 or GameTime.isGamePaused() then return end
-    local now = getTimestampMs()
-    if now < C.due then return end
-    local deadline, tiles, actors = now + 2, 0, 0
-    while tiles < 64 and actors < 256 and getTimestampMs() < deadline do
-        if C.cursor > #C.order then
-            C.cursor, C.actor, C.due = 1, 0, now + 50
-            break
-        end
-        local tile = C.order[C.cursor]
-        local square = getCell():getGridSquare(tile.x, tile.y, tile.z)
-        local moving = square and square:getMovingObjects()
-        if not square then
-            detach(tile)
-            tiles = tiles + 1
-        elseif C.actor >= moving:size() then
-            C.cursor, C.actor, tiles = C.cursor + 1, 0, tiles + 1
-        else
-            local actor = moving:get(C.actor)
-            actors = actors + 1
-            if instanceof(actor, "IsoZombie") and not actor:isDead() then
-                local previous = seen[actor]
-                if not previous or now - previous >= 50 then
-                    seen[actor] = now
-                    for i = 1, #channels do
-                        local kind = channels[i]
-                        if (tile[kind] or 0) > 0 and C.handlers[kind] then
-                            C.handlers[kind](actor)
-                        end
-                    end
-                end
-            end
-            if C.order[C.cursor] == tile and C.actor < moving:size() and moving:get(C.actor) == actor then
-                C.actor = C.actor + 1
-            end
-        end
-    end
-    if actors > 0 then
-        D.defer("contact-scan", {actors = actors, tiles = tiles}, "traps")
     end
 end
 
-Events.OnTick.Add(C.tick)
-Events.LoadGridsquare.Add(C.loaded)
-Events.OnZombieCreate.Add(function(zombie) seen[zombie] = nil end)
+local Actors = require("OMHTT/DefenseActors")
+
+function C.contact(actor, position, crossed)
+    if not isServer() or actor:isDead() then return end
+    local tile = C.tiles[F.key(math.floor(position.x), math.floor(position.y), position.z)]
+    if not tile then return end
+    for i = 1, #channels do
+        local kind = channels[i]
+        if (not crossed or kind == "poke" or kind == "barb" or kind == "tack")
+            and (tile[kind] or 0) > 0 and C.handlers[kind] then C.handlers[kind](actor, position) end
+    end
+    D.count("contact-observed", 1, "traps")
+end
+
+-- Interpolate only short, recent, unobstructed native movement. Never replay a
+-- teleport, a floor change, an old packet gap or a landing at an invented tile.
+function C.observe(actor, position, previous)
+    if C.count == 0 then return end
+    C.contact(actor, position)
+    if not previous or previous.z ~= position.z or position.at - previous.at > 250 then return end
+    local dx, dy = position.x - previous.x, position.y - previous.y
+    local distance = math.sqrt(dx * dx + dy * dy)
+    if distance <= .2 or distance > 2 then return end
+    local steps, seen, crossing = math.ceil(distance / .2), {}, {}
+    seen[F.key(math.floor(position.x), math.floor(position.y), position.z)] = true
+    for i = 0, steps - 1 do
+        local sample = {x=previous.x + dx*i/steps, y=previous.y + dy*i/steps, z=position.z, at=position.at}
+        local key = F.key(math.floor(sample.x), math.floor(sample.y), sample.z)
+        if not seen[key] then
+            seen[key] = true
+            if C.tiles[key] then crossing[#crossing + 1] = sample end
+        end
+    end
+    if #crossing == 0 then return end
+    local from = getCell():getGridSquare(math.floor(previous.x), math.floor(previous.y), previous.z)
+    if not require("OMHTT/DefenseLine").clear(from, Actors.square(actor), 3) then
+        D.count("contact-crossing-blocked", 1, "traps")
+        return
+    end
+    for i = 1, #crossing do C.contact(actor, crossing[i], true) end
+end
+
+Actors.listeners[#Actors.listeners + 1] = C.observe
 return C

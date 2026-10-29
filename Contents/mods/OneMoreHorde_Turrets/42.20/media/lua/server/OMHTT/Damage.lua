@@ -8,10 +8,18 @@ local Damage = {}
 local waiting, active = {}, setmetatable({}, {__mode = "k"})
 local byVictim = setmetatable({}, {__mode = "k"})
 local queued, cursor = 0, 1
+local failed = setmetatable({}, {__mode = "k"})
 
 ---@param zombie IsoZombie Exact candidate
 ---@return boolean capacity Bounded queue has room for another hit
 function Damage.available(zombie)
+    local failure = failed[zombie]
+    if failure then
+        if zombie:getOnlineID() ~= failure.id or Protocol.outfit(zombie:getPersistentOutfitID()) ~= failure.outfit
+            or zombie:getOwner() ~= failure.owner or getTimestampMs() >= failure.untilAt then
+            failed[zombie] = nil
+        else return false end
+    end
     return queued < 256 and (not byVictim[zombie] or #byVictim[zombie] < 8)
 end
 
@@ -106,6 +114,12 @@ local function dispatch(job)
         if completed then return end
         completed = true
         if active[zombie] == job then active[zombie] = nil end
+        if lost <= 0 and reason ~= "rejected" and reason ~= "capacity" then
+            failed[zombie] = {id = zombie:getOnlineID(), outfit = Protocol.outfit(zombie:getPersistentOutfitID()),
+                owner = zombie:getOwner(), untilAt = getTimestampMs() + 1000}
+            Diagnostics.defer("target-revalidate", {id = job.source, victim = zombie:getOnlineID(), reason = reason},
+                string.find(job.source, "^turret") and "turrets" or "traps")
+        else failed[zombie] = nil end
         if job.callback then job.callback(lost, reason) end
     end
     if not Damage.request(zombie, job.amount, job.source, job.kind, done) then
@@ -120,7 +134,7 @@ end
 ---@param callback function? Invoked exactly once, including rejection
 ---@return boolean admitted Accepted for immediate or bounded serialized application
 function Damage.resolve(zombie, amount, source, kind, callback)
-    if isClient() or not zombie or zombie:isDead() or queued >= 256
+    if isClient() or not zombie or zombie:isDead() or not Damage.available(zombie) or queued >= 256
         or (byVictim[zombie] and #byVictim[zombie] >= 8)
         or not Protocol.number(amount, .000001, 1000000) then
         if callback then callback(0, "rejected") end
@@ -138,7 +152,7 @@ function Damage.resolve(zombie, amount, source, kind, callback)
     end
     local job = {zombie = zombie, amount = amount, source = source, kind = kind, callback = callback,
         lease = lease, deadline = getTimestampMs() + Protocol.TIMEOUT,
-        id = zombie:getOnlineID(), outfit = zombie:getPersistentOutfitID()}
+        id = zombie:getOnlineID(), outfit = require("OMHTT/DefenseCombatProtocol").outfit(zombie:getPersistentOutfitID())}
     if active[zombie] or byVictim[zombie] then
         local queue = byVictim[zombie]
         if not queue then queue = {}; byVictim[zombie] = queue end
@@ -160,8 +174,8 @@ function Damage.tick()
         if cursor > #waiting then cursor = 1 end
         local job = waiting[cursor]
         local zombie = job.zombie
-        local valid = now <= job.deadline and not zombie:isDead() and zombie:getOnlineID() == job.id
-            and zombie:getPersistentOutfitID() == job.outfit and Horde.matches(zombie, job.lease)
+        local valid = now <= job.deadline and not failed[zombie] and not zombie:isDead() and zombie:getOnlineID() == job.id
+            and require("OMHTT/DefenseCombatProtocol").outfit(zombie:getPersistentOutfitID()) == job.outfit and Horde.matches(zombie, job.lease)
         local queue = byVictim[zombie]
         if not valid or (not active[zombie] and not processed[zombie] and queue[1] == job) then
             table.remove(waiting, cursor)

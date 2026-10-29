@@ -1,3 +1,4 @@
+local Actors = require("OMHTT/DefenseActors")
 local T = require("OMHTT/Turret")
 local Health = require("OMHTT/TargetHealth")
 local M = {}
@@ -72,7 +73,7 @@ end
 ---@return number distanceSquared
 ---@nodiscard
 function M.inside(origin, zombie, profile)
-    local square = zombie:getSquare()
+    local square = Actors.square(zombie)
     if zombie:isDead() or not square or square:getZ() ~= origin:getZ()
         or getCell():getGridSquare(square:getX(), square:getY(), square:getZ()) ~= square then return false, 0 end
     local dx, dy = zombie:getX() - origin:getX() - 0.5, zombie:getY() - origin:getY() - 0.5

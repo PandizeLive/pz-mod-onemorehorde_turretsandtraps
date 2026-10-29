@@ -1,4 +1,5 @@
 if isClient() then return end
+local Actors = require("OMHTT/DefenseActors")
 local Horde = require("OMHTT/DefenseHorde")
 local B = require("OMHTT/BarbSections")
 local C = require("OMHTT/BarbContact")
@@ -10,10 +11,10 @@ local soundAt = 0
 
 ---@param zombie IsoZombie Updated zombie
 ---@return nil
-function B.zombie(zombie)
+function B.zombie(zombie, position)
     if not Horde.allowed(zombie) then return end
     if #B.order == 0 or (not B.enabled() and not B.wireEnabled()) or zombie:isDead() then return end
-    local square = zombie:getSquare()
+    local square = position and getCell():getGridSquare(math.floor(position.x), math.floor(position.y), position.z) or Actors.square(zombie)
     if not square then return end
     local bucket = B.nearby[F.key(square:getX(), square:getY(), square:getZ())]
     if not bucket then return end
@@ -25,7 +26,7 @@ function B.zombie(zombie)
         data.OMHTTBarbContact = state
     end
     local interval = B.option("Interval", 2, .1, 60) * 1000
-    local selected, source = B.contact(zombie, bucket)
+    local selected, source = B.contact(zombie, bucket, position)
     if selected then require("OMHTT/DefenseMotion").request(zombie, "slow", selected.id, B.option("MovementDivisor", 2, 1, 10)) end
     if C.step(state, B.time, B.session, selected ~= nil, interval) then
         require("OMHTT/DefenseXP").register(selected.id, selected.owner, selected.x, selected.y, selected.z)

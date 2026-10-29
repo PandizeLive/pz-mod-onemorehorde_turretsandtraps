@@ -1,0 +1,61 @@
+{
+  "version": "0.2.70.7",
+  "assertions": 37207,
+  "sourceFiles": 454,
+  "packageFiles": 625,
+  "nativeWriteSeconds": 56.9,
+  "nativeReadSeconds": 49.9,
+  "packageStarts": [
+    {
+      "selection": "traps",
+      "version": "0.2.70.7",
+      "passed": true,
+      "seconds": 50.5
+    },
+    {
+      "selection": "turrets",
+      "version": "0.2.70.7",
+      "passed": true,
+      "seconds": 45.0
+    },
+    {
+      "selection": "both",
+      "version": "0.2.70.7",
+      "passed": true,
+      "seconds": 46.1
+    }
+  ],
+  "nativeContactProbe": {
+    "path": "diagnostics/c503-contacts/20261029-011842/server.log",
+    "sha256": "735a55de712dc6c09151f7b543011856a5c9f881ea8d24c8f70fb06585b8c8cd",
+    "event": "OnTick",
+    "nativeActorsAndObjects": true,
+    "squareLookup": "fixture",
+    "predictedMembership": "intentionally divergent",
+    "results": "Bed landing once; Wire/Tacks repeat without overlap doubling; Martyrdom and Synergy terminal death"
+  },
+  "stress": {
+    "actors": 2500,
+    "refreshBatches": [
+      1024,
+      1024,
+      452
+    ],
+    "concurrentQueries": 16,
+    "workUnitsPerQuerySlice": 128,
+    "maximumRounds": 21
+  },
+  "nativeConnectedClients": 0,
+  "renderedAndMultiplayerAcceptance": "pending",
+  "publication": "not performed",
+  "newWorldRequired": false,
+  "workshopBaseline": {
+    "itemId": "3828638252",
+    "version": "0.2.70.6",
+    "confirmedUtc": "2026-10-29T03:20:46.8098799Z",
+    "receipt": "diagnostics/workshop/upload-v0.2.70.6-20261029-031659-9181-2cd2ca5e/upload-result.json",
+    "oldDraftMatchesPublishedLines": true,
+    "unpublishedNotesDiscarded": false
+  },
+  "delivery": "pending local install/stage"
+}

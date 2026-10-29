@@ -173,7 +173,7 @@ return function(player)
     local supply = W.power(rebuilt, T.contents(rebuilt:getContainer()), stats)
     -- The native fixture square is not in the mapped world; provide only its lookup.
     local oldCell, nativeCell = getCell, getCell()
-    getCell = function() return {getGridSquare = function(_, x, y, z)
+    getCell = function() return {getZombieList = function() return nativeCell:getZombieList() end, getGridSquare = function(_, x, y, z)
         if x == 8 and y == 8 and z == 0 then return square end
         return nativeCell:getGridSquare(x, y, z)
     end} end

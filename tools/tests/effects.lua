@@ -1,6 +1,7 @@
 local E = require("OMHTT/PrototypeEffects")
 local F = require("OMHTT/Foundation")
 local oldSpecific, oldCell, oldWorld, oldElement = getSpecificPlayer, getCell, getWorld, ISUIElement
+local oldActivePlayers = getNumActivePlayers
 local oldTextureGetter = ISUITextureGetter
 ISUITextureGetter = {checkGetTexture = function(texture) check(texture == nil, "Native line resolves nil texture"); return texture end}
 local visible, sounds, draws, last, lines = true, {}, 0, nil, 0
@@ -32,6 +33,7 @@ function target:getX() return self.x end
 function target:getY() return self.y end
 function target:getZ() return 0 end
 function target:getSquare() return {} end
+function target:isDead() return false end
 function target:isOnFloor() return self.floor end
 local launch={id="flight",shot=1,x=100,y=100,z=0,fromX=98,fromY=100,start=testMillis,flight=500,target=target}
 E.receive(F.MODULE,"Launch",launch); E.receive(F.MODULE,"Launch",launch)
@@ -127,3 +129,4 @@ SandboxVars.OMHTurretsTraps.TurretTestControls = oldControls
 SandboxVars.OMHTurretsTraps.TurretDiagnosticLogging = oldDiagnostic
 getSpecificPlayer,getCell,getWorld,ISUIElement=oldSpecific,oldCell,oldWorld,oldElement
 ISUITextureGetter = oldTextureGetter
+getNumActivePlayers = oldActivePlayers

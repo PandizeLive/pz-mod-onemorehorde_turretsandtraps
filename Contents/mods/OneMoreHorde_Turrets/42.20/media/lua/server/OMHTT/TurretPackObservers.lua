@@ -13,8 +13,9 @@ end
 function S.stop(action)
     local entry = S.active[action.character]
     if not entry or entry.action ~= action then return end
+    local online = getOnlinePlayers()
     for viewer in pairs(entry.viewers) do
-        send(viewer, action.character, false)
+        if online:contains(viewer) then send(viewer, action.character, false) end
     end
     S.active[action.character] = nil
     S.count = S.count - 1
@@ -27,14 +28,14 @@ function S.tick()
     S.due = now + 250
     local online = getOnlinePlayers()
     for player, entry in pairs(S.active) do
-        if not online:contains(player) or not entry.action:isValid() then
+        if not online:contains(player) or player:isDead() or not entry.action:isValid() then
             S.stop(entry.action)
         else
             local nearby = {}
             for i = 0, online:size() - 1 do
                 local viewer = online:get(i)
                 local dx, dy = player:getX() - viewer:getX(), player:getY() - viewer:getY()
-                if viewer ~= player and not viewer:isDead() and math.floor(viewer:getZ()) == math.floor(player:getZ())
+                if not player:isInvisible() and viewer ~= player and not viewer:isDead() and math.floor(viewer:getZ()) == math.floor(player:getZ())
                     and dx * dx + dy * dy <= 64 then
                     nearby[viewer] = true
                     if not entry.viewers[viewer] or now >= entry.refresh then

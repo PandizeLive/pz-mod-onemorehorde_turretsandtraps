@@ -68,10 +68,10 @@ function M.request(zombie, kind, source, x, y, distance)
         end
         serial = serial + 1
         sendServerCommand(player, "OMHTT_MotionV1", kind, {id = zombie:getOnlineID(),
-            outfit = zombie:getPersistentOutfitID(), serial = serial, source = source, x = x or 0, y = y or 0, distance = distance})
+            outfit = require("OMHTT/DefenseCombatProtocol").outfit(zombie:getPersistentOutfitID()), serial = serial, source = source, x = x or 0, y = y or 0, distance = distance})
         if kind == "trip" or (kind == "pull" and distance > 0) then
             require("OMHTT/DefenseEffects").send("OMHTT_MotionV1", kind == "trip" and "visualTrip" or "visualPull", {
-                id = zombie:getOnlineID(), outfit = zombie:getPersistentOutfitID(), serial = serial,
+                id = zombie:getOnlineID(), outfit = require("OMHTT/DefenseCombatProtocol").outfit(zombie:getPersistentOutfitID()), serial = serial,
                 x = x or 0, y = y or 0, fromX = zombie:getX(), fromY = zombie:getY()})
         end
     elseif kind == "slow" then
@@ -94,7 +94,7 @@ function M.command(module, command, message)
     if command == "pull" and not P.number(message.distance, 0, 2) then return end
     local zombie = indexed[message.id]
     if not zombie or zombie:getOnlineID() ~= message.id or zombie:isDead()
-        or zombie:getPersistentOutfitID() ~= message.outfit then return end
+        or require("OMHTT/DefenseCombatProtocol").outfit(zombie:getPersistentOutfitID()) ~= message.outfit then return end
     if command == "visualTrip" or command == "visualPull" then
         if not zombie:isRemoteZombie() then return end
     elseif zombie:isRemoteZombie() then
