@@ -28,3 +28,7 @@ Recommend following one real contact through local detection, server admission, 
 Do not package another speculative timing fix or reuse fixture assertion counts as proof of connected responsiveness. The earlier replay manually supplied Barrier markers and therefore did not prove native animation output. The exact native marker failure and full contact-to-visible latency remain unresolved. This investigation does not authorize a new gameplay change or declare the current build ready for acceptance testing.
 
 GitHub synchronization remains blocked by the previously recorded automatic approval-review rejection over destination authorization. No alternate push route was attempted. Local findings are retained; no new owner test is requested for this unchanged build.
+
+## C514 - Owner approval and confirmation boundary
+
+2026-10-30: owner explicitly authorizes investigating the full delay and Spike Barrier, fixing underlying problems, researching native multiplayer behavior and proving the replacement before packaging. Client-side execution may be used where appropriate; evaluate its authority, synchronization, performance and Horde/XP implications. The owner asks to confirm first. This turn records approval only; no implementation or new research result is claimed. The next implementation may proceed under this approval, with packaging held until connected evidence supports the claimed behavior. If the required connected test cannot be run autonomously, report that limitation and retain the hold rather than substituting fixture success.
