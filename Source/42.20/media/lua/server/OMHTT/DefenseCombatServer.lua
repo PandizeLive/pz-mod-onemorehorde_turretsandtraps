@@ -121,6 +121,11 @@ local function handoff(job)
     end
 end
 
+---@return boolean available Space for another in-flight owner transaction
+function S.available()
+    return #order < P.MAX_PENDING
+end
+
 ---@param zombie IsoZombie Exact server victim
 ---@param amount number Server-calculated native damage
 ---@param source string Server device identity

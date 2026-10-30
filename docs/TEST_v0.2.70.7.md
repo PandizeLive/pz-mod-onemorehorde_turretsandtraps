@@ -1,5 +1,7 @@
 # 0.2.70.7 verification
 
+**C509 source-only follow-up (2026-10-29):** [Catalog-wide audit and corrections](MULTIPLAYER_COVERAGE_C509.md) pass 40,287 fixture assertions and isolated native-server checks. The five frozen pre-fix modules each reproduce their failure. These changes are **not packaged in this installed/tagged version**. Connected acceptance remains open and packaging is held; do not treat the new checks as acceptance of 0.2.70.7 or a new release.
+
 Scope: [C505 patch](PATCH_v0.2.70.7.md), approved C504 1A plus remote pack display. Connected owner acceptance remains pending.
 
 - Stock Kahlua production-Lua suite: 37,207 assertions pass. Regressions include divergent predicted membership, immediate/quick Poke crossings, later contact batches, repeat protection, blocked/stale crossing exclusion, rejected Bed wear/retry, accelerated-clock contact, Range acquisition, signed fallen-hat identity, native packet serialization and rejection recovery.

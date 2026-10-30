@@ -5,6 +5,28 @@ local createdAt = setmetatable({}, {__mode = "k"})
 local receipts = setmetatable({}, {__mode = "k"})
 local history, historyOrder, historyCursor = {}, {}, 1
 
+---@param receipt table Superseded or expired receipt
+---@return nil
+local function forget(receipt)
+    if history[receipt.token] == receipt then
+        history[receipt.token] = nil
+    end
+    local slot = receipt.slot
+    if not slot then return end
+    local last = historyOrder[#historyOrder]
+    historyOrder[slot] = last
+    last.slot = slot
+    historyOrder[#historyOrder] = nil
+    receipt.slot = nil
+end
+
+---@param receipt table Exact last result retained across native actor unload
+---@return nil
+local function remember(receipt)
+    receipt.slot = #historyOrder + 1
+    history[receipt.token], historyOrder[receipt.slot] = receipt, receipt
+end
+
 ---@param id number Server-selected owner
 ---@return IsoPlayer? player Local connection player
 local function owner(id)
@@ -76,15 +98,11 @@ end
 function C.expire()
     if not isClient() then return end
     local now = getTimestampMs()
-    for _ = 1, math.min(16, #historyOrder) do
+    for _ = 1, math.min(64, #historyOrder) do
         if historyCursor > #historyOrder then historyCursor = 1 end
         local receipt = historyOrder[historyCursor]
         if now > receipt.retainedUntil then
-            if history[receipt.token] == receipt then
-                history[receipt.token] = nil
-            end
-            historyOrder[historyCursor] = historyOrder[#historyOrder]
-            historyOrder[#historyOrder] = nil
+            forget(receipt)
         else
             historyCursor = historyCursor + 1
         end
@@ -111,11 +129,11 @@ function C.command(module, command, message)
             if not saved.applied then saved.cancelled = true end
             reply(player, saved.applied and "Applied" or "Unapplied", message, saved)
         elseif not saved or saved.sequence < message.sequence then
-            if #historyOrder >= P.MAX_PENDING * 4 then return end
+            if #historyOrder >= P.MAX_RECEIPTS then return end
             saved = {token=message.token, sequence=message.sequence, nonce=message.receipt,
                 id=message.id, outfit=message.outfit, owner=message.owner, cancelled=true,
                 retainedUntil=started + P.TIMEOUT*2}
-            history[message.token], historyOrder[#historyOrder+1] = saved, saved
+            remember(saved)
             if zombie and (not prior or prior.sequence < message.sequence) then receipts[zombie]=saved end
             reply(player, "Unapplied", message, saved)
         end
@@ -144,7 +162,6 @@ function C.command(module, command, message)
     if not P.number(message.x,-1000000,1000000) or not P.number(message.y,-1000000,1000000)
         or not P.number(message.z,-32,32) or math.abs(zombie:getZ()-message.z)>.5
         or (zombie:getX()-message.x)^2+(zombie:getY()-message.y)^2>64 then reject(player,message,"position",zombie); return end
-    if #historyOrder >= P.MAX_PENDING*4 then reject(player,message,"capacity",zombie); return end
     local before=zombie:getHealth()
     if not P.number(before,P.EPSILON,1000000) then reject(player,message,"health",zombie); return end
     local after,lost,lethal
@@ -155,13 +172,22 @@ function C.command(module, command, message)
         if not P.number(message.amount,.000001,1000000) then return end
         after,lost,lethal=P.result(before,message.amount)
     end
+    -- A newer authorized operation proves the server settled this actor's previous
+    -- operation. Keep the sequence guard, rather than every old hit for ten seconds.
+    if prior then
+        forget(prior)
+    end
+    if saved and saved ~= prior then
+        forget(saved)
+    end
+    if #historyOrder >= P.MAX_RECEIPTS then reject(player,message,"capacity",zombie); return end
     local receipt={token=message.token,sequence=message.sequence,nonce=message.receipt,
         id=message.id,outfit=message.outfit,owner=message.owner,applied=true,
         reconciled=command=="Reconcile",before=before,after=after,lethal=lethal,
         x=zombie:getX(),y=zombie:getY(),
         retainedUntil=started+P.TIMEOUT*2}
-    receipts[zombie],history[message.token]=receipt,receipt
-    historyOrder[#historyOrder+1]=receipt
+    receipts[zombie]=receipt
+    remember(receipt)
     zombie:setHealth(after)
     receipt.processingMs=getTimestampMs()-started
     reply(player,receipt.reconciled and "Reconciled" or "Applied",message,receipt)

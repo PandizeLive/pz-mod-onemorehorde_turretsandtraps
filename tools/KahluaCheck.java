@@ -607,9 +607,21 @@ public final class KahluaCheck {
             {"_", "tools/tests/contact_path_client_setup.lua"},
             {"OMHTT/DefenseContactClient", base + "client/OMHTT/DefenseContactClient.lua"},
             {"_", "tools/tests/contact_path.lua"},
+            {"tests/C509Traps", "tools/tests/multiplayer_traps_c509.lua"},
+            {"OMHTT/TetherMount", base + "shared/OMHTT/TetherMount.lua"},
+            {"OMHTT/TetherLane", base + "shared/OMHTT/TetherLane.lua"},
+            {"OMHTT/TetherDefinition", base + "shared/OMHTT/TetherDefinition.lua"},
+            {"OMHTT/TetherServer", base + "server/OMHTT/TetherServer.lua"},
+            {"_", "tools/tests/multiplayer_matrix_c509.lua"},
         };
         for (String[] stage : stages) {
-            try (Reader reader = Files.newBufferedReader(root.resolve(stage[1]))) {
+            Path stagePath = root.resolve(stage[1]);
+            String overlay = System.getenv("OMHTT_TEST_SOURCE_OVERRIDE");
+            if (overlay != null && stage[1].startsWith("Source/")) {
+                Path candidate = root.resolve(overlay).resolve(stage[1]);
+                if (Files.isRegularFile(candidate)) stagePath = candidate;
+            }
+            try (Reader reader = Files.newBufferedReader(stagePath)) {
                 if (stage[1].endsWith("client/OMHTT/ControlStockpilePane.lua")) {
                     set.invoke(env, "testNativeInventoryRefresh", get.invoke(get.invoke(env, "ISInventoryPane"), "refreshContainer"));
                 }
@@ -742,6 +754,9 @@ public final class KahluaCheck {
         System.out.println("C401 regressions: " + get.invoke(env, "testC401Audit"));
         System.out.println("C508 contact path: " + get.invoke(env, "testContactPath"));
         System.out.println("C508 contact stress: " + get.invoke(env, "testContactStress"));
+        System.out.println("C509 coverage: " + get.invoke(env, "testC509Summary"));
+        Object matrix = get.invoke(env, "testC509Matrix");
+        if (matrix instanceof String) Files.writeString(traceDirectory.resolve("multiplayer-matrix-c509.tsv"), (String)matrix);
         System.out.println("World/player/network/UI objects were test doubles; in-game acceptance remains pending.");
         System.exit(0);
     }

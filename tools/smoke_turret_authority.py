@@ -43,9 +43,12 @@ def main():
         (ROOT / "tools/tests/native_contacts_c503.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (lua / "OMHTT/NativeContactC508.lua").write_text(
         (ROOT / "tools/tests/native_contact_c508.lua").read_text(encoding="utf-8"), encoding="utf-8")
+    (lua / "OMHTT/NativeCatalogC509.lua").write_text(
+        (ROOT / "tools/tests/native_catalog_c509.lua").read_text(encoding="utf-8"), encoding="utf-8")
     (lua / "OMHTT_AuthorityProbe.lua").write_text(
         'Events.OnServerStarted.Add(function()\n'
         '    require("OMHTT/NativeContactC508")()\n'
+        '    require("OMHTT/NativeCatalogC509")()\n'
         '    require("OMHTT/NativeCombatAuthority")()\n'
         '    require("OMHTT/NativeTurretAuthority")(IsoPlayer.new(getCell()))\n'
         '    require("OMHTT/NativeContactsC503")()\n'
@@ -71,7 +74,7 @@ def main():
                 if marker in content:
                     passed = True
                     break
-                if "NativeContactC508.lua:" in content or "NativeContactsC503.lua:" in content or "NativeTurretAuthority.lua:" in content or "NativeCombatAuthority.lua:" in content or "Exception in thread" in content or "Server Terminated." in content:
+                if "NativeCatalogC509.lua:" in content or "NativeContactC508.lua:" in content or "NativeContactsC503.lua:" in content or "NativeTurretAuthority.lua:" in content or "NativeCombatAuthority.lua:" in content or "Exception in thread" in content or "Server Terminated." in content:
                     break
                 time.sleep(.5)
             if process.poll() is None:
@@ -89,6 +92,7 @@ def main():
         assert passed, f"Native turret authority probe failed; inspect {transcript}"
         content = transcript.read_text(encoding="utf-8", errors="replace")
         assert "[OMHTT-C508] native-clock-corpse passed=true" in content, "Native C508 API checks failed"
+        assert "[OMHTT-C509] native-catalog heads=10 modules=36 cells=360" in content, "Native C509 catalog checks failed"
         mod_errors = [line for line in content.splitlines() if "MOD:OMH:" in line and "Exception thrown" in line]
         assert not mod_errors, f"Native mod callbacks threw despite completion markers: {mod_errors}; inspect {transcript}"
         assert 'Packet "AddInventoryItemToContainer" send failed' not in content, "Premature corpse inventory synchronization failed"

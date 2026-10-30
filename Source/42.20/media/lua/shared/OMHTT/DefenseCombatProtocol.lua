@@ -1,5 +1,5 @@
 -- Native ZombiePacket quantizes health to thousandths. The lethal reservation must stay nonzero on that wire.
-local P = {MODULE = "OMHTT_CombatV2", TIMEOUT = 5000, MAX_PENDING = 128, EPSILON = 0.001}
+local P = {MODULE = "OMHTT_CombatV2", TIMEOUT = 5000, MAX_PENDING = 128, MAX_RECEIPTS = 4096, EPSILON = 0.001}
 
 ---@param value any Candidate
 ---@param minimum number Inclusive lower bound

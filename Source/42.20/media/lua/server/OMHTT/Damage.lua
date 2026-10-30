@@ -156,7 +156,8 @@ function Damage.resolve(zombie, amount, source, kind, callback)
         lease = lease, deadline = getTimestampMs() + lifetime, expiresAt = GameTime.getServerTimeMills() + lifetime,
         queuedAt = getTimestampMs(),
         id = zombie:getOnlineID(), outfit = require("OMHTT/DefenseCombatProtocol").outfit(zombie:getPersistentOutfitID())}
-    if active[zombie] or byVictim[zombie] then
+    local capacity = zombie:getOwner() == nil or require("OMHTT/DefenseCombatServer").available()
+    if active[zombie] or byVictim[zombie] or not capacity then
         local queue = byVictim[zombie]
         if not queue then queue = {}; byVictim[zombie] = queue end
         queue[#queue + 1] = job
@@ -180,7 +181,8 @@ function Damage.tick()
         local valid = now <= job.deadline and not failed[zombie] and Protocol.living(zombie) and zombie:getOnlineID() == job.id
             and require("OMHTT/DefenseCombatProtocol").outfit(zombie:getPersistentOutfitID()) == job.outfit and Horde.matches(zombie, job.lease)
         local queue = byVictim[zombie]
-        if not valid or (not active[zombie] and not processed[zombie] and queue[1] == job) then
+        local capacity = zombie:getOwner() == nil or require("OMHTT/DefenseCombatServer").available()
+        if not valid or (capacity and not active[zombie] and not processed[zombie] and queue[1] == job) then
             table.remove(waiting, cursor)
             queued = queued - 1
             for index = 1, #queue do

@@ -57,7 +57,8 @@ function S.hit(ray, victim)
         local hit = require("OMHTT/TurretPlayerHit").hit(victim, owner, "Scrapshot", 1 / 8)
         return hit
     end
-    local eligible = (group.primary and not group.penetrated) or group.stats.synergy
+    local secondary = not group.primary or group.penetrated == true
+    local eligible = not secondary or group.stats.synergy
     local eligibility = owner.scrapEligibility[victim]
     if not eligibility then
         eligibility = require("OMHTT/TurretConditionalHit").snapshot(victim, group.stats)
@@ -78,7 +79,7 @@ function S.hit(ray, victim)
     if owner.pending then owner.pending = owner.pending + 1 end
     return require("OMHTT/Damage").resolve(victim, amount, ray.id, "scrapshot", function(lost)
         if lost > 0 then
-            require("OMHTT/TurretSiphon").hit(victim, owner.siphon, not group.primary or group.penetrated == true)
+            require("OMHTT/TurretSiphon").hit(victim, owner.siphon, secondary)
         end
         if lost > 0 and eligible and not owner.scrapEffects[victim] then
             owner.scrapEffects[victim] = true

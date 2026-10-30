@@ -10,7 +10,7 @@ OUTPUT = ROOT / "diagnostics/c508"
 
 def run(command, name, extra_env=None):
     result = subprocess.run([str(part) for part in command], cwd=ROOT, capture_output=True, text=True,
-                            encoding="utf-8", errors="replace", env={**os.environ, "OMHTT_TEST_OUTPUT": "diagnostics/c508", **(extra_env or {})})
+                            encoding="utf-8", errors="replace", env={**os.environ, "OMHTT_TEST_OUTPUT": OUTPUT.relative_to(ROOT).as_posix(), **(extra_env or {})})
     text = result.stdout + result.stderr
     (OUTPUT / (name + ".log")).write_text(text, encoding="utf-8")
     print(text[-3500:])
@@ -18,10 +18,13 @@ def run(command, name, extra_env=None):
         raise SystemExit(result.returncode)
 
 def main():
+    global OUTPUT
     parser = argparse.ArgumentParser()
     parser.add_argument("--full", action="store_true")
     parser.add_argument("--compare", action="store_true")
+    parser.add_argument("--checkpoint", choices=["c508", "c509"], default="c508")
     args = parser.parse_args()
+    OUTPUT = ROOT / "diagnostics" / args.checkpoint
     OUTPUT.mkdir(parents=True, exist_ok=True)
     run(["C:/Program Files/Java/jdk-17/bin/javac.exe", "-d", OUTPUT,
          ROOT / "tools/CombatPathCheck.java", ROOT / "tools/KahluaCheck.java"], "compile")

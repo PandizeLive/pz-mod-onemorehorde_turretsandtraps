@@ -244,7 +244,8 @@ function V.finish(ray)
             else
             local owner = group.options
             local x, y, square = victim:getX(), victim:getY(), victim:getSquare()
-            local amount = ray.damage
+            local hitDamage = ray.damage
+            local amount = hitDamage
             local primary = group.kind == "forward" and not group.penetrated
             if primary or group.stats.synergy then amount = Conditional.damage(victim, amount, Conditional.snapshot(victim, group.stats)) end
             hit = require("OMHTT/TurretHit").resolve(victim, amount, ray.id, group.kind, owner, function()
@@ -254,7 +255,7 @@ function V.finish(ray)
                 if (group.kind == "piercing" or group.kind == "forward") and not group.stats.firearm and not group.stats.headKind and owner then
                     local combat = require("OMHTT/PrototypeCombat")
                     local record = {id = ray.id, shots = ray.shot}
-                    combat.splash(record, victim, square, x, y, {splash = ray.damage * (owner.splash or 0) / math.max(.000001, owner.damage),
+                    combat.splash(record, victim, square, x, y, {splash = hitDamage * (owner.splash or 0) / math.max(.000001, owner.damage),
                         radius = owner.radius or 0, range = group.stats.range, siphon = owner.siphon, secondary = not primary})
                     local state = require("OMHTT/DefenseActorState").get(victim)
                     if not victim:isDead() and not victim:isOnFloor() and not victim:isKnockedDown()
