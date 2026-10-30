@@ -29,3 +29,7 @@ Native write and fresh-process read pass in 48.6/48.0 seconds. Traps-only, Turre
 Installed and staged from immutable `test/v0.2.70.10` / `17fac14`. All 457 source and 631 tag/package/install/archive/stage files verify, as do both previous managed packages and all 629 previous-stage files. Workshop metadata and preview are byte-identical. [Delivery record](evidence/c515-delivery.json). No Workshop upload, server update or sibling change was performed. **Test now after upload and server/client restart; no new world required for this correction.**
 
 The previous automatic approval review rejected GitHub mirroring over destination authorization. Local commits and the immutable tag are retained; no alternate push route was attempted.
+
+## C516 - Connected partial improvement, presentation failures remain
+
+Owner reports better damage and Concertina after its first crossing, but desynchronized turret aim and delayed/stopping tether flight. Read-only logs confirm 58 retained Barrier hits and four Bed landing hits alongside Poke, barb and tether results. This is functional progress, not full multiplayer acceptance. [Findings, missing attachment behavior and proposed correction](MULTIPLAYER_FEEDBACK_C516.md). No new package or installation in this review.
