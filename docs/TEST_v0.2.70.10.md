@@ -23,3 +23,9 @@ Review `barrier-report-sent`, `barrier-report-accepted`, `barrier-damage-confirm
 ## Native/package verification
 
 Native write and fresh-process read pass in 48.6/48.0 seconds. Traps-only, Turrets-only and combined startups pass in 44.5/45.1/45.6 seconds. All 457 source and 631 generated package files validate. [Sanitized proof record](evidence/c515-verification.json). No clients connected during native probes.
+
+## Delivery
+
+Installed and staged from immutable `test/v0.2.70.10` / `17fac14`. All 457 source and 631 tag/package/install/archive/stage files verify, as do both previous managed packages and all 629 previous-stage files. Workshop metadata and preview are byte-identical. [Delivery record](evidence/c515-delivery.json). No Workshop upload, server update or sibling change was performed. **Test now after upload and server/client restart; no new world required for this correction.**
+
+The previous automatic approval review rejected GitHub mirroring over destination authorization. Local commits and the immutable tag are retained; no alternate push route was attempted.
