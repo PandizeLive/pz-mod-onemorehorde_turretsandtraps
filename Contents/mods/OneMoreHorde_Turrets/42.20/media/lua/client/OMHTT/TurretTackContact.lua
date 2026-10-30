@@ -42,12 +42,18 @@ Events.OnGameStart.Add(function()
     E = require(isClient() and "OMHTT/TurretTackView" or "OMHTT/TurretProc")
     if not isClient() then Damage = require("OMHTT/Damage") end
     P.tackContact = E.contact
-    if isClient() then require("OMHTT/DefenseContactClient").checks.tacks=function(zombie) return E.contact(zombie)~=nil end end
+    if isClient() then
+        require("OMHTT/DefenseContactClient").checks.tacks = function(zombie)
+            local key = require("OMHTT/Foundation").key(math.floor(zombie:getX()/8), math.floor(zombie:getY()/8), math.floor(zombie:getZ()))
+            return E.buckets[key] ~= nil
+        end
+    end
     Events.OnPlayerUpdate.Add(playerUpdate)
     if not isClient() then Events.OnZombieUpdate.Add(zombieUpdate) end
     require("OMHTT/DefenseMotion").checks.tack = function(zombie, source)
         local field = E.contact(zombie)
-        return field ~= nil and field.source == source
+        if field and (source == nil or field.source == source) then return 2 end
+        return nil
     end
 end)
 return {player = playerUpdate, zombie = zombieUpdate}

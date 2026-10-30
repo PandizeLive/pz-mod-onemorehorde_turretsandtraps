@@ -62,7 +62,7 @@ def main():
     transcript = OUTPUT / ("server-" + os.environ.get("OMHTT_PROBE_MODE", "write") + ".log")
     classes = OUTPUT / "persistence-classes"
     classes.mkdir(exist_ok=True)
-    subprocess.run(["C:/Program Files/Java/jdk-17/bin/javac.exe", "-d", str(classes), str(ROOT / "tools/NativePersistenceCheck.java"), str(ROOT / "tools/NativeVaultProbe.java"), str(ROOT / "tools/NativeTurretProbe.java"), str(ROOT / "tools/NativeBarbProbe.java"), str(ROOT / "tools/NativeOwnershipProbe.java")], check=True)
+    subprocess.run(["C:/Program Files/Java/jdk-17/bin/javac.exe", "-d", str(classes), str(ROOT / "tools/NativePersistenceCheck.java"), str(ROOT / "tools/NativeVaultProbe.java"), str(ROOT / "tools/NativeTurretProbe.java"), str(ROOT / "tools/NativeBarbProbe.java"), str(ROOT / "tools/NativeOwnershipProbe.java"), str(ROOT / "tools/NativeBarrierAnimationProbe.java")], check=True)
     command = [str(GAME / "jre64/bin/java.exe"), "--enable-native-access=ALL-UNNAMED",
         "--add-exports=java.base/jdk.internal.misc=ALL-UNNAMED", "-XX:-CreateCoredumpOnCrash", "-Xmx1536m",
         "-Domhtt.projectRoot=" + str(ROOT), "-Djava.library.path=./natives/;./natives/win64/;./", "-cp", str(classes) + (";projectzomboid.jar;." if os.environ.get("OMHTT_STOCK_CLASSES") == "1" else ";.;projectzomboid.jar"), "NativePersistenceCheck", str(OUTPUT / "native-objects"), os.environ.get("OMHTT_PROBE_MODE", "write"),
@@ -104,6 +104,7 @@ def main():
             barb_probe.unlink(missing_ok=True)
             turret_probe.unlink(missing_ok=True)
     text = transcript.read_text(encoding="utf-8", errors="replace")
+    assert "[OMHTT-C515] native-barrier packetOverwrite=reproduced newCondition=survives parsedMarkers=2 release=passed" in text, "Native Barrier packet/event proof missing"
     assert "[OMHTT-C373] native-placement-complete cases=148" in text, "Full native placement matrix missing"
     assert "[OMHTT-C373] native-performance-icons=11 category=Performance" in text, "Native module icon/category proof missing"
     assert "[OMHTT-C437] native-knowledge persistence=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Native character knowledge persistence missing"

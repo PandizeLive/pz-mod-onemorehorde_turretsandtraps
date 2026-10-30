@@ -102,6 +102,16 @@ Events.OnObjectAdded.Add(D.add)
 Events.OnObjectAboutToBeRemoved.Add(D.remove)
 Events.OnTick.Add(D.tick)
 if isClient() then
+    local Contacts = require("OMHTT/DefenseContactClient")
+    local Poke = require("OMHTT/ControlPokeView")
+    Contacts.presentations.poke = function(zombie, permitted)
+        if not permitted then return end
+        local key = F.key(math.floor(zombie:getX()), math.floor(zombie:getY()), math.floor(zombie:getZ()))
+        local object = D.pokes[key]
+        if not object or object:getObjectIndex() < 0 or not object:getSquare() then return end
+        local state = A.state(object)
+        if state and state.kind == "Poke" then Poke.contact(object, state) end
+    end
     require("OMHTT/DefenseContactClient").checks.poke=function(zombie)
         local x,y,z=math.floor(zombie:getX()),math.floor(zombie:getY()),math.floor(zombie:getZ())
         for dx=-1,1 do for dy=-1,1 do

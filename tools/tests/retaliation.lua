@@ -21,7 +21,7 @@ a.thumpTarget, b.thumpTarget = barrier, barrier
 a.state, b.state = "ThumpState", "ThumpState"
 B.update(a)
 B.update(b)
-check(a.health == 2 and a.variables.ThumpType == B.TYPE and b.variables.ThumpType == B.TYPE,
+check(a.health == 2 and a.variables.OMHTTBarrierContact == true and b.variables.OMHTTBarrierContact == true,
     "exact barrier attackers attach without contact damage")
 a.variables[B.TOKEN] = "left"
 B.update(a)

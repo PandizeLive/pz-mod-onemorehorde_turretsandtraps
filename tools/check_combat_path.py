@@ -22,7 +22,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--full", action="store_true")
     parser.add_argument("--compare", action="store_true")
-    parser.add_argument("--checkpoint", choices=["c508", "c509", "c512"], default="c508")
+    parser.add_argument("--checkpoint", choices=["c508", "c509", "c512", "c515"], default="c508")
     args = parser.parse_args()
     OUTPUT = ROOT / "diagnostics" / args.checkpoint
     OUTPUT.mkdir(parents=True, exist_ok=True)

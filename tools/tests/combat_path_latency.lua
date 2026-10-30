@@ -17,4 +17,5 @@ for i=1,8 do
 end
 check(finished~=nil,"transaction finished")
 check(math.abs(server.health-.55)<.00001,"server and owner agree")
+if testDamageViewAt then check(testDamageViewAt==hurt,"owner damage display occurs at health application without acknowledgement round trip") end
 print("PATH_RESULT legs="..legs.." ownerDamageMs="..(hurt-started).." settledMs="..(finished-started))

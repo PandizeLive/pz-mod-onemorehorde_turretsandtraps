@@ -248,6 +248,7 @@ public final class KahluaCheck {
             {"OMHTT/DefenseCombatServer", base + "server/OMHTT/DefenseCombatServer.lua"},
             {"OMHTT/DefenseXP", base + "server/OMHTT/DefenseXP.lua"},
             {"OMHTT/DefenseCombatClient", base + "client/OMHTT/DefenseCombatClient.lua"},
+            {"OMHTT/DefenseContactClient", base + "client/OMHTT/DefenseContactClient.lua"},
             {"OMHTT/Damage", base + "server/OMHTT/Damage.lua"},
             {"OMHTT/TurretHit", base + "server/OMHTT/TurretHit.lua"},
             {"OMHTT/DefenseMaterials", base + "shared/OMHTT/DefenseMaterials.lua"},
@@ -280,6 +281,7 @@ public final class KahluaCheck {
             {"OMHTT/TurretPlayerHit", base + "server/OMHTT/TurretPlayerHit.lua"},
             {"OMHTT/ControlExpansion", base + "shared/OMHTT/ControlExpansion.lua"},
             {"OMHTT/ControlAccess", base + "shared/OMHTT/ControlAccess.lua"},
+            {"OMHTT/ControlPokeView", base + "client/OMHTT/ControlPokeView.lua"},
             {"OMHTT/ControlGroups", base + "shared/OMHTT/ControlGroups.lua"},
             {"OMHTT/ControlMount", base + "shared/OMHTT/ControlMount.lua"},
             {"OMHTT/ControlConsumption", base + "shared/OMHTT/ControlConsumption.lua"},
@@ -326,7 +328,7 @@ public final class KahluaCheck {
             {"_", "tools/tests/markers.lua"},
             {"_", "tools/tests/combat_patch.lua"},
             {"OMHTT/BarrierRetaliation", base + "server/OMHTT/BarrierRetaliation.lua"},
-            {"_", base + "client/OMHTT/DamagePresentation.lua"},
+            {"OMHTT/DamagePresentation", base + "client/OMHTT/DamagePresentation.lua"},
             {"_", "tools/tests/retaliation.lua"},
             {"_", "tools/tests/footprint.lua"},
             {"OMHTT/Construction", base + "shared/OMHTT/Construction.lua"},
@@ -605,7 +607,6 @@ public final class KahluaCheck {
             {"_", "tools/tests/contact_path_server_setup.lua"},
             {"OMHTT/DefenseContactServer", base + "server/OMHTT/DefenseContactServer.lua"},
             {"_", "tools/tests/contact_path_client_setup.lua"},
-            {"OMHTT/DefenseContactClient", base + "client/OMHTT/DefenseContactClient.lua"},
             {"_", "tools/tests/contact_path.lua"},
             {"tests/C509Traps", "tools/tests/multiplayer_traps_c509.lua"},
             {"OMHTT/TetherMount", base + "shared/OMHTT/TetherMount.lua"},
@@ -613,6 +614,7 @@ public final class KahluaCheck {
             {"OMHTT/TetherDefinition", base + "shared/OMHTT/TetherDefinition.lua"},
             {"OMHTT/TetherServer", base + "server/OMHTT/TetherServer.lua"},
             {"_", "tools/tests/multiplayer_matrix_c509.lua"},
+            {"_", "tools/tests/response_c515.lua"},
         };
         for (String[] stage : stages) {
             Path stagePath = root.resolve(stage[1]);
@@ -681,7 +683,11 @@ public final class KahluaCheck {
                     call.invoke(thread, nativeChunk, new Object[0]);
                 }
                 Object chunk = compile.invoke(null, reader, stage[1], env);
+                Object previousMode = get.invoke(env, "testMode");
+                boolean clientOnly = stage[0].equals("OMHTT/DefenseContactClient") || stage[0].equals("OMHTT/ControlPokeView");
+                if (clientOnly) set.invoke(env, "testMode", "client");
                 Object result = call.invoke(thread, chunk, new Object[0]);
+                if (clientOnly) set.invoke(env, "testMode", previousMode);
                 if (!stage[0].equals("_")) set.invoke(get.invoke(env, "__modules"), stage[0], result);
             } catch (InvocationTargetException error) {
                 Object coroutine = threadType.getMethod("getCurrentCoroutine").invoke(thread);

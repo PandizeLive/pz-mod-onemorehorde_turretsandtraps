@@ -1,6 +1,7 @@
 if not isClient() then return end
 local P = require("OMHTT/DefenseCombatProtocol")
-local C = {checks = {}}
+local C = {checks = {}, presentations = {}}
+local permits = setmetatable({}, {__mode = "k"})
 local states = setmetatable({}, {__mode = "k"})
 local queue, serial, first, last = {}, 0, 1, 0
 
@@ -9,6 +10,7 @@ function C.update(zombie)
     if not P.living(zombie) or zombie:isRemoteZombie() then states[zombie] = nil; return end
     local player = zombie:getOwnerPlayer()
     if not player or not player:isLocalPlayer() then return end
+    for _, present in pairs(C.presentations) do present(zombie, C.permitted(zombie)) end
     local nearby = false
     for _, check in pairs(C.checks) do
         if check(zombie) then nearby = true; break end
@@ -54,7 +56,47 @@ function C.flush()
     for player,batch in pairs(batches) do sendClientCommand(player,"OMHTT_ContactV1","Observe",batch) end
 end
 
-function C.created(zombie) states[zombie]=nil end
+---@param zombie IsoZombie Native owner-side actor
+---@return boolean permitted Short server consent lease, never damage authority
+function C.permitted(zombie)
+    local permit = permits[zombie]
+    local owner = zombie:getOwnerPlayer()
+    local now = GameTime.getServerTimeMills()
+    return permit ~= nil and permit.allowed == true and not zombie:isRemoteZombie() and owner ~= nil and owner:isLocalPlayer()
+        and owner:getOnlineID() == permit.owner and zombie:getOnlineID() == permit.id
+        and P.outfit(zombie:getPersistentOutfitID()) == permit.outfit
+        and now > 0 and now <= permit.expires
+end
+
+---@param facts table Server consent lease
+---@return nil
+local function grant(facts)
+    if type(facts) ~= "table" or type(facts.allowed) ~= "boolean" or not P.identity(facts.id) or not P.identity(facts.outfit) or not P.identity(facts.owner)
+        or not P.number(facts.issuedAt, 1, 1000000000000000)
+        or not P.number(facts.expires, facts.issuedAt, facts.issuedAt + 400) then return end
+    local now = GameTime.getServerTimeMills()
+    if now <= 0 or facts.issuedAt > now+100 or (facts.allowed and now > facts.expires) then return end
+    local zombie = require("OMHTT/DefenseCombatClient").find(facts.id, facts.outfit)
+    if not zombie then return end
+    local previous = permits[zombie]
+    if previous and (facts.issuedAt < previous.issuedAt
+        or (facts.issuedAt == previous.issuedAt and not previous.allowed)) then return end
+    permits[zombie] = facts
+end
+
+---@param module string Namespace
+---@param command string Batched server grants
+---@param frames table Up to 32 consent leases
+---@return nil
+function C.command(module, command, frames)
+    if module ~= "OMHTT_ContactV1" or command ~= "Permits" or type(frames) ~= "table" or #frames > 32 then return end
+    for i=1,#frames do grant(frames[i]) end
+end
+
+---@param zombie IsoZombie Recycled actor
+---@return nil
+function C.created(zombie) states[zombie], permits[zombie] = nil, nil end
+Events.OnServerCommand.Add(C.command)
 Events.OnZombieUpdate.Add(C.update)
 Events.OnZombieCreate.Add(C.created)
 Events.OnZombieDead.Add(C.created)

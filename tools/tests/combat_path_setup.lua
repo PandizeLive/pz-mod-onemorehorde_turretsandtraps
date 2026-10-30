@@ -41,3 +41,6 @@ function actor(id)
  function z:isOnDeathDone() return self.deathDone==true end
  return z
 end
+
+-- Network-only fixture: presentation integration is exercised in the full suite.
+__modules["OMHTT/DamagePresentation"] = {present=function(facts) testDamageViewAt=testMillis end}

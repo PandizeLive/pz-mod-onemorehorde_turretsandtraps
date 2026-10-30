@@ -2,6 +2,8 @@ if isServer() then return end
 
 require("OMHTT/Foundation")
 local Diagnostics = require("OMHTT/Diagnostics")
+local View = {}
+local seen, order, cursor = {}, {}, 1
 
 ---@param zombie IsoZombie Damaged local victim
 ---@param lost number Actual health loss
@@ -29,13 +31,18 @@ Events.OnOMHTTDamage.Add(showDamage)
 ---@param command string Presentation event
 ---@param facts table Server-confirmed loss and captured position
 ---@return nil
-local function receive(module, command, facts)
-    if not isClient() or module ~= "OMHTT_DamageView" or command ~= "Hit" or type(facts) ~= "table" then return end
+function View.present(facts)
+    if not isClient() or type(facts) ~= "table" or facts.kind == "splash" then return end
     local protocol = require("OMHTT/DefenseCombatProtocol")
     if not protocol.number(facts.x, -1000000, 1000000) or not protocol.number(facts.y, -1000000, 1000000)
-        or not protocol.number(facts.z, -32, 32) or not protocol.number(facts.lost, .000001, 1000000)
-        or not protocol.number(facts.packet, 1, 1000000000000) then return end
-    if not require("OMHTT/DefenseEffects").accept(facts) then return end
+        or not protocol.number(facts.z, -32, 32) or not protocol.number(facts.lost, .000001, 1000000) then return end
+    if facts.token then
+        if not protocol.token(facts.token) or seen[facts.token] then return end
+        local previous = order[cursor]
+        if previous then seen[previous] = nil end
+        order[cursor], seen[facts.token] = facts.token, true
+        cursor = cursor % 512 + 1
+    end
     local indicator = PixelStrikeIndicator
     if type(indicator) ~= "table" or type(indicator.spawnAt) ~= "function" or type(indicator.Config) ~= "table" then return end
     local config = indicator.Config
@@ -49,8 +56,25 @@ local function receive(module, command, facts)
             and (player:getX() - facts.x) ^ 2 + (player:getY() - facts.y) ^ 2 <= 10000 then
             -- Coordinates survive the native lethal-hit corpse/removal packet order.
             indicator.spawnAt(facts.x, facts.y, facts.z, facts.lost * config.scale, "hit", i)
+            local now = GameTime.getServerTimeMills()
+            if protocol.number(facts.observedAt, 1, now) then
+                Diagnostics.measure("contact-to-damage-display", now-facts.observedAt, "traps")
+                Diagnostics.defer("contact-visible", {token=facts.token, source=facts.source, victim=facts.id,
+                    elapsedMs=now-facts.observedAt}, "traps")
+            end
         end
     end
 end
 
+---@param module string Namespace
+---@param command string Event
+---@param facts table Server-confirmed presentation
+---@return nil
+local function receive(module, command, facts)
+    if not isClient() or module ~= "OMHTT_DamageView" or command ~= "Hit" or type(facts) ~= "table" then return end
+    if not require("OMHTT/DefenseEffects").accept(facts) then return end
+    View.present(facts)
+end
+
 Events.OnServerCommand.Add(receive)
+return View

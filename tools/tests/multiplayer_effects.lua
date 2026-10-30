@@ -44,8 +44,11 @@ Motion.command(message[2], message[3], {id = 7001, outfit = 9001, serial = messa
 check(zombie.bump == "", "Recycled native ID cannot receive an older actor's reaction")
 zombie.onlineId = 7001
 local touching = true
-Motion.checks.test = function(_, source) return touching and source == "wire-test" end
-Motion.command("OMHTT_MotionV1", "slow", {id = 7001, outfit = 9001, serial = message[4].serial + 2, x = 2, y = 0, source = "wire-test"})
+Motion.checks.test = function() if touching then return 2 end end
+require("OMHTT/DefenseCombatClient").observe(zombie)
+local serverNow = GameTime.getServerTimeMills()
+require("OMHTT/DefenseContactClient").command("OMHTT_ContactV1", "Permits", {{
+    id=7001, outfit=9001, owner=41, allowed=true, issuedAt=serverNow, expires=serverNow+400}})
 Motion.update(zombie)
 check(slows == 1, "Authorized owner slows while touching exact active source")
 touching = false

@@ -8,6 +8,7 @@ local S = {}
 local history = setmetatable({}, {__mode="k"})
 local budgets = setmetatable({}, {__mode="k"})
 local createdAt = setmetatable({}, {__mode="k"})
+local permitAt = setmetatable({}, {__mode="k"})
 
 function S.command(module,command,player,frames)
     if module~="OMHTT_ContactV1" or command~="Observe" or not player or player:isDead()
@@ -17,7 +18,12 @@ function S.command(module,command,player,frames)
     if not budget or now-budget.at>=1000 then budget={at=now,count=0};budgets[player]=budget end
     if budget.count+#frames>8192 then D.count("owner-contact-rate-limited",#frames,"traps");return end
     budget.count=budget.count+#frames
-    for i=1,#frames do S.observe(player,frames[i],now) end
+    local grants = {}
+    for i=1,#frames do
+        local grant = S.observe(player,frames[i],now)
+        if grant then grants[#grants+1] = grant end
+    end
+    if #grants > 0 then sendServerCommand(player, "OMHTT_ContactV1", "Permits", grants) end
 end
 
 function S.observe(player,f,now)
@@ -32,21 +38,42 @@ function S.observe(player,f,now)
     local zombie=Actors.online[f.id]
     if not P.living(zombie) or P.outfit(zombie:getPersistentOutfitID())~=f.outfit
         or not zombie:getOwner()
-        or zombie:getOwnerPlayer() ~= player or not H.allowed(zombie)
+        or zombie:getOwnerPlayer() ~= player
         or math.floor(zombie:getZ())~=f.z or (zombie:getX()-f.x)^2+(zombie:getY()-f.y)^2>4 then return end
     if createdAt[zombie] and f.observedAt<createdAt[zombie] then return end
+    if not H.allowed(zombie) then
+        local grant = permitAt[zombie]
+        if grant and grant.owner == player and not grant.revoked then
+            grant.revoked = true
+            local issuedAt = GameTime.getServerTimeMills()
+            return {id=f.id, outfit=f.outfit, owner=player:getOnlineID(), allowed=false, issuedAt=issuedAt, expires=issuedAt}
+        end
+        return
+    end
     local old=history[zombie]
     local same=old and old.owner==player and old.connection==zombie:getOwner() and old.outfit==f.outfit
     if same and (f.sequence<=old.sequence or f.observedAt<old.frame.at) then return end
-    local frame={x=f.x,y=f.y,z=f.z,at=f.observedAt,prone=f.prone,down=f.down,landing=f.landing,ownerReport=true}
+    local frame={x=f.x,y=f.y,z=f.z,at=f.observedAt,sequence=f.sequence,prone=f.prone,down=f.down,landing=f.landing,ownerReport=true}
     history[zombie]={owner=player,connection=zombie:getOwner(),outfit=f.outfit,sequence=f.sequence,frame=frame}
+    -- Grant presentation/movement consent while approaching indexed hazards.
+    -- Damage, wear, deaths and rewards still use the authoritative contact path.
+    local response
+    local grant = permitAt[zombie]
+    if not grant or grant.revoked or grant.owner ~= player or now >= grant.due then
+        local issuedAt = GameTime.getServerTimeMills()
+        response = {id=f.id, outfit=f.outfit, owner=player:getOnlineID(), allowed=true, issuedAt=issuedAt, expires=issuedAt+400}
+        permitAt[zombie] = {owner=player, due=now+200}
+    end
+    Contacts.current = frame
     Contacts.observe(zombie,frame,same and old.frame or nil,true)
+    Contacts.current = nil
     D.count("owner-contact-accepted",1,"traps")
     D.measure("owner-contact-transit",math.max(0,transitAge),"traps")
+    return response
 end
 
 function S.created(zombie)
-    history[zombie]=nil
+    history[zombie], permitAt[zombie] = nil, nil
     createdAt[zombie]=GameTime.getServerTimeMills()
 end
 

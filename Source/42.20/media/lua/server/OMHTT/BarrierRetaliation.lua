@@ -110,9 +110,7 @@ function Barrier.release(zombie)
     if not data then return end
     local state = data.OMHTTBarrierStrike
     if not state then return end
-    if zombie:getVariableString("ThumpType") == Barrier.TYPE then
-        zombie:setVariable("ThumpType", state.previousType)
-    end
+    zombie:clearVariable("OMHTTBarrierContact")
     zombie:clearVariable(Barrier.TOKEN)
     data.OMHTTBarrierStrike = nil
 end
@@ -159,20 +157,16 @@ function Barrier.update(zombie)
     local state = data.OMHTTBarrierStrike
     if not state or state.id ~= record.id or state.generation ~= generation then
         Barrier.release(zombie)
-        local previousType = zombie:getVariableString("ThumpType")
-        if not previousType or previousType == Barrier.TYPE then
-            previousType = "DoorClaw"
-        end
-        state = {id = record.id, generation = generation, previousType = previousType, token = "", strikes = 0,
+        state = {id = record.id, generation = generation, token = "", strikes = 0,
             lastStrikeAt = getTimestampMs(), nextWarning = getTimestampMs() + 5000}
         data.OMHTTBarrierStrike = state
         zombie:clearVariable(Barrier.TOKEN)
-        zombie:setVariable("ThumpType", Barrier.TYPE)
+        zombie:setVariable("OMHTTBarrierContact", true)
         Diagnostics.emit("barrier-attacker-attached", {id = record.id, x = zombie:getX(), y = zombie:getY(),
             animation = Barrier.TYPE, damage100 = Foundation.barrierDamage(record)}, nil, nil, "traps")
         return
     end
-    if zombie:getVariableString("ThumpType") ~= Barrier.TYPE then
+    if not zombie:getVariableBoolean("OMHTTBarrierContact") then
         Barrier.release(zombie)
         return
     end

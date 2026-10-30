@@ -3,7 +3,6 @@ local H = require("OMHTT/DefenseHorde")
 local M = {checks = {}}
 local indexed = setmetatable({}, {__mode = "v"})
 local contacts = setmetatable({}, {__mode = "k"})
-local sent = setmetatable({}, {__mode = "k"})
 local serial = 0
 
 ---@param zombie IsoZombie Locally simulated actor
@@ -62,11 +61,9 @@ function M.request(zombie, kind, source, x, y, distance)
     local player = isServer() and zombie:getOwnerPlayer()
     if player and zombie:getOwner() then
         if zombie:getOnlineID() == -1 then return false end
-        local now = getTimestampMs()
-        if kind == "slow" then
-            if sent[zombie] and sent[zombie] > now then return true end
-            sent[zombie] = now + 200
-        end
+        -- Contact slowdown is applied by the owner on the exact local frame,
+        -- under the short approach consent lease. Do not send delayed impulses.
+        if kind == "slow" then return true end
         serial = serial + 1
         sendServerCommand(player, "OMHTT_MotionV1", kind, {id = zombie:getOnlineID(),
             outfit = require("OMHTT/DefenseCombatProtocol").outfit(zombie:getPersistentOutfitID()), serial = serial, source = source, x = x or 0, y = y or 0, distance = distance})
@@ -106,10 +103,7 @@ function M.command(module, command, message)
     contact = contact or {}
     contact.serial = message.serial
     contacts[zombie] = contact
-    if command == "slow" then
-        if not P.number(message.x, 1, 10) then return end
-        contact.divisor, contact.expires, contact.source = message.x, getTimestampMs() + 400, message.source
-    elseif command == "visualTrip" then
+    if command == "visualTrip" then
         apply(zombie, "trip", 0, 0)
     else
         apply(zombie, command, message.x, message.y, message.distance)
@@ -122,21 +116,19 @@ function M.update(zombie)
     if not isClient() or not P.living(zombie) then return end
     local id = zombie:getOnlineID()
     if id ~= -1 then indexed[id] = zombie end
-    local contact = contacts[zombie]
-    if contact and contact.expires and not zombie:isRemoteZombie() and getTimestampMs() <= contact.expires then
-        for _, check in pairs(M.checks) do
-            if check(zombie, contact.source) then
-                require("OMHTT/BarbMovement").apply(zombie, contact.divisor)
-                break
-            end
-        end
+    if not require("OMHTT/DefenseContactClient").permitted(zombie) then return end
+    local divisor = 1
+    for _, check in pairs(M.checks) do
+        local value = check(zombie)
+        if type(value) == "number" then divisor = math.max(divisor, value) end
     end
+    if divisor > 1 then require("OMHTT/BarbMovement").apply(zombie, divisor) end
 end
 
 ---@param zombie IsoZombie Recycled actor
 ---@return nil
 function M.created(zombie)
-    contacts[zombie], sent[zombie] = nil, nil
+    contacts[zombie] = nil
     M.update(zombie)
 end
 

@@ -32,3 +32,7 @@ GitHub synchronization remains blocked by the previously recorded automatic appr
 ## C514 - Owner approval and confirmation boundary
 
 2026-10-30: owner explicitly authorizes investigating the full delay and Spike Barrier, fixing underlying problems, researching native multiplayer behavior and proving the replacement before packaging. Client-side execution may be used where appropriate; evaluate its authority, synchronization, performance and Horde/XP implications. The owner asks to confirm first. This turn records approval only; no implementation or new research result is claimed. The next implementation may proceed under this approval, with packaging held until connected evidence supports the claimed behavior. If the required connected test cannot be run autonomously, report that limitation and retain the hold rather than substituting fixture success.
+
+## C515 - Implementation approved; packaging hold lifted
+
+Owner explicitly approves repair and says packaging no longer needs to be held. [0.2.70.10 implementation and proof](MULTIPLAYER_REPAIR_C515.md) supersede the earlier hold. Native packet/animation selection now reproduces the Barrier defect, and local presentation replaces identified waits. Connected visual acceptance is still pending and is not inferred from native/fixture passes.

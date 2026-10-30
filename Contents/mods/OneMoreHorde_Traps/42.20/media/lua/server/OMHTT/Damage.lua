@@ -84,7 +84,7 @@ end
 ---@param kind string Effect family
 ---@param callback function? Completion receives actual loss and result
 ---@return boolean accepted Completion may be asynchronous on MP
-function Damage.request(zombie, amount, source, kind, callback, expiresAt)
+function Damage.request(zombie, amount, source, kind, callback, expiresAt, observation)
     if isClient() or not zombie or not Protocol.living(zombie) or zombie:isInvulnerable()
         or not Protocol.number(amount, 0.000001, 1000000)
         or type(source) ~= "string" or #source == 0 or #source > 160
@@ -94,7 +94,7 @@ function Damage.request(zombie, amount, source, kind, callback, expiresAt)
         health.settle(zombie)
     end
     if isServer() and zombie:getOwner() ~= nil then
-        return require("OMHTT/DefenseCombatServer").request(zombie, amount, source, kind, callback, expiresAt)
+        return require("OMHTT/DefenseCombatServer").request(zombie, amount, source, kind, callback, expiresAt, observation)
     end
     local lost = apply(zombie, amount, source, kind, nil, nil)
     if callback then callback(lost, lost > 0 and "applied" or "rejected") end
@@ -123,7 +123,7 @@ local function dispatch(job)
         else failed[zombie] = nil end
         if job.callback then job.callback(lost, reason) end
     end
-    if not Damage.request(zombie, job.amount, job.source, job.kind, done, job.expiresAt) then
+    if not Damage.request(zombie, job.amount, job.source, job.kind, done, job.expiresAt, job.observation) then
         done(0, "rejected")
     end
 end
@@ -154,7 +154,7 @@ function Damage.resolve(zombie, amount, source, kind, callback)
     local lifetime = Protocol.contact(kind) and 500 or Protocol.TIMEOUT
     local job = {zombie = zombie, amount = amount, source = source, kind = kind, callback = callback,
         lease = lease, deadline = getTimestampMs() + lifetime, expiresAt = GameTime.getServerTimeMills() + lifetime,
-        queuedAt = getTimestampMs(),
+        queuedAt = getTimestampMs(), observation = require("OMHTT/DefenseContacts").current,
         id = zombie:getOnlineID(), outfit = require("OMHTT/DefenseCombatProtocol").outfit(zombie:getPersistentOutfitID())}
     local capacity = zombie:getOwner() == nil or require("OMHTT/DefenseCombatServer").available()
     if active[zombie] or byVictim[zombie] or not capacity then

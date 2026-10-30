@@ -3,7 +3,7 @@ local S,C=require("OMHTT/DefenseContactServer"),require("OMHTT/DefenseContactCli
 local A,R=require("OMHTT/DefenseActors"),require("OMHTT/DefenseContacts")
 local D=require("OMHTT/Damage")
 local saved={time=testMillis,settings=SandboxVars.OMHTurretsTraps,handlers=R.handlers,tiles=R.tiles,sources=R.sources,count=R.count,
- checks=C.checks,resolve=D.resolve,send=sendClientCommand}
+ checks=C.checks,resolve=D.resolve,send=sendClientCommand,serverSend=sendServerCommand}
 testMode="server";testMillis=8000000
 SandboxVars.OMHTurretsTraps={Enabled=true,TurretsEnabled=true}
 R.handlers,R.tiles,R.sources,R.count={},{},{},0
@@ -12,6 +12,14 @@ local square=makeSquare(8100,8100,0);makeSquare(8101,8100,0);makeSquare(8099,810
 local zombie=makeZombie(square,1);zombie.owner=owner;zombie.onlineId=8100;zombie.outfitId=81
 A.observe(zombie)
 local packets={}
+local grants, grantPackets, maxGrantBatch = {}, 0, 0
+sendServerCommand=function(player,module,command,frames)
+ if module=="OMHTT_ContactV1" then
+  check(command=="Permits" and #frames<=32,"C515 consent responses are bounded batches")
+  grantPackets=grantPackets+1;maxGrantBatch=math.max(maxGrantBatch,#frames)
+  for i=1,#frames do grants[#grants+1]=nativeRoundTrip(frames[i]) end
+ else saved.serverSend(player,module,command,frames) end
+end
 sendClientCommand=function(p,module,command,frames) packets[#packets+1]={p,module,command,nativeRoundTrip(frames)} end
 C.checks={test=function() return true end}
 local calls=0
@@ -26,6 +34,16 @@ end
 local packet=emit()
 testPackets[#testPackets+1]=packet[4]
 check(calls==1,"owner first contact immediately reaches server handler")
+check(#grants==1 and grants[1].allowed and grants[1].expires-grants[1].issuedAt==400,
+ "C515 accepted approach receives bounded server consent")
+local Horde=require("OMHTT/DefenseHorde")
+local allowed=Horde.allowed
+Horde.allowed=function() return false end
+S.command(packet[2],packet[3],owner,packet[4])
+check(calls==1 and #grants==2 and grants[2].allowed==false,"C515 Horde denial revokes consent without damage")
+S.command(packet[2],packet[3],owner,packet[4])
+check(#grants==2,"C515 repeated denial does not spam revocations")
+Horde.allowed=allowed
 S.command(packet[2],packet[3],owner,packet[4]);check(calls==1,"duplicate owner frame is ignored")
 for i=1,20 do emit() end
 check(calls==1,"unchanged native frames do not flood reports")
@@ -128,10 +146,12 @@ end
 local reached=0
 for _ in pairs(seen) do reached=reached+1 end
 check(reached==1000 and maxBatch<=32 and accepted==reports,"bounded crowd reports reach every contact without rate starvation")
+check(maxGrantBatch==32 and grantPackets<reports/2,"C515 crowded consent uses batches instead of one packet per actor")
 testContactStress="actors=1000 ticks=60 reached="..reached.." reports="..reports.." accepted="..accepted.." maxPacket="..maxBatch.." replayMs="..(realMillis()-started)
 R.remove("crowd")
 
 R.handlers,R.tiles,R.sources,R.count=saved.handlers,saved.tiles,saved.sources,saved.count
 C.checks,D.resolve,sendClientCommand=saved.checks,saved.resolve,saved.send
+sendServerCommand=saved.serverSend
 SandboxVars.OMHTurretsTraps=saved.settings;testMillis=saved.time;testMode=contactSavedMode
 testContactPath="Owner entry/exit, wire/Poke stale replica, Bed landing, corpse, duplicate and forged reports passed (test doubles)."

@@ -22,6 +22,7 @@ local function finish(job, lost, reason)
     local D = require("OMHTT/Diagnostics")
     local component = string.find(job.source, "^turret") and "turrets" or "traps"
     D.count("combat-result-" .. reason, 1, component)
+    if job.observedAt then D.measure("contact-to-settled", GameTime.getServerTimeMills()-job.observedAt, component) end
     D.defer("combat-result", {token = job.token, id = job.source, victim = job.id, kind = job.kind,
         phase = job.phase, reason = reason, loss = lost, elapsedMs = getTimestampMs() - job.started,
         ownerProcessingMs = job.ownerProcessingMs, dispatchMs = job.dispatched and job.dispatched - job.started, clientX = job.clientX, clientY = job.clientY, x = job.zombie:getX(), y = job.zombie:getY()}, component)
@@ -58,6 +59,7 @@ local function dispatch(job)
     if not H.mark(zombie, job.lease, job.source, job.kind) then return false end
     local message = envelope(job)
     message.receipt, message.amount = job.receipt, job.amount
+    message.source, message.kind, message.observedAt = job.source, job.kind, job.observedAt
     message.x, message.y, message.z = zombie:getX(), zombie:getY(), zombie:getZ()
     message.health = job.result and job.result.after or nil
     message.issuedAt = GameTime.getServerTimeMills()
@@ -75,6 +77,10 @@ local function commitResult(job)
     local allowed, core, token = H.beginDamage(zombie, result.lost, job.source, job.kind, result.lethal)
     if not allowed then finish(job, 0, "consent-changed"); return end
     local notice = require("OMHTT/DamageNotice").capture(zombie, result.lost, job.source, job.kind)
+    if notice then
+        notice.token, notice.observedAt = job.token, job.observedAt
+        notice.x, notice.y = job.clientX or notice.x, job.clientY or notice.y
+    end
     zombie:setHealth(math.min(zombie:getHealth(), result.after))
     if result.lethal then
         zombie:setHealth(0)
@@ -132,7 +138,7 @@ end
 ---@param kind string Server effect family
 ---@param callback function? Invoked once with confirmed damage and result
 ---@return boolean queued
-function S.request(zombie, amount, source, kind, callback, expiresAt)
+function S.request(zombie, amount, source, kind, callback, expiresAt, observation)
     if not isServer() or not zombie or not P.living(zombie) or victims[zombie] or #order >= P.MAX_PENDING
         or not P.number(amount, 0.000001, 1000000) or zombie:isInvulnerable()
         or type(source) ~= "string" or #source == 0 or #source > 160
@@ -152,7 +158,7 @@ function S.request(zombie, amount, source, kind, callback, expiresAt)
     local job = {token = session .. ":" .. serial, zombie = zombie, player = player,
         connection = zombie:getOwner(),
         id = zombie:getOnlineID(), outfit = require("OMHTT/DefenseCombatProtocol").outfit(zombie:getPersistentOutfitID()), amount = amount,
-        source = source, kind = kind, lease = H.capture(zombie), callback = callback, phase = "commit", deadline = getTimestampMs() + P.TIMEOUT,
+        source = source, kind = kind, observedAt = observation and observation.at, lease = H.capture(zombie), callback = callback, phase = "commit", deadline = getTimestampMs() + P.TIMEOUT,
         expiresAt = issuedAt + P.TIMEOUT, applyExpiresAt = applyExpiresAt,
         index = #order + 1, started = getTimestampMs()}
     pending[job.token], victims[zombie], order[job.index] = job, job, job

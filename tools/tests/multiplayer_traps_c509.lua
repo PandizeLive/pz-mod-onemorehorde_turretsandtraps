@@ -107,7 +107,7 @@ local function run(ctx)
     server.state, client.state, client.thumpTarget = "thump", "ThumpState", object
     testMode = "client"
     observer.update(client)
-    check(client.variables.ThumpType == "OMHTTBarrierClaw", "C512 client selects barrier strike animation")
+    check(client.variables.OMHTTBarrierContact == true, "C512 client selects barrier strike animation")
     client.variables.OMHTTBarrierStrike = "left"
     observer.update(client)
     testMode = "server"
@@ -129,7 +129,7 @@ local function run(ctx)
     testMode = "client"
     client.thumpTarget = nil
     observer.update(client)
-    check(client.variables.ThumpType == "Door" and client.variables.OMHTTBarrierStrike == nil, "C512 leaving barrier restores native animation")
+    check(client.variables.OMHTTBarrierContact == nil and client.variables.OMHTTBarrierStrike == nil, "C512 leaving barrier restores native animation")
     testMode = "server"
     views.exact, sendClientCommand, ctx.owner.isLocalPlayer = view, send, localPlayer
     Footprint.exact,Barrier.face=exact,face

@@ -191,6 +191,14 @@ function C.command(module, command, message)
     zombie:setHealth(after)
     receipt.processingMs=getTimestampMs()-started
     reply(player,receipt.reconciled and "Reconciled" or "Applied",message,receipt)
+    if command == "Apply" and P.number(message.observedAt, 1, serverNow) then
+        require("OMHTT/Diagnostics").measure("contact-to-owner-apply", serverNow-message.observedAt, "traps")
+    end
+    if command == "Apply" and type(message.source) == "string" and type(message.kind) == "string" then
+        require("OMHTT/DamagePresentation").present({token=message.token, id=message.id, outfit=message.outfit,
+            source=message.source, kind=message.kind, observedAt=message.observedAt, x=zombie:getX(), y=zombie:getY(), z=zombie:getZ(), lost=lost})
+    end
+
 end
 
 Events.OnZombieCreate.Add(C.created)

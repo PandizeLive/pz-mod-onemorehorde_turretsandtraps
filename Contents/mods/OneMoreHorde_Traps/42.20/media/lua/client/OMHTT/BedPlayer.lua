@@ -13,7 +13,10 @@ if isClient() then
 end
 require("OMHTT/DefenseMotion").checks.traps = function(zombie, source)
     local barb = Barbs.contact(zombie)
-    return barb ~= nil and barb.id == source
+    if barb and (source == nil or barb.id == source) then
+        return Barbs.option("MovementDivisor", 2, 1, 10)
+    end
+    return nil
 end
 
 ---@param player IsoPlayer Updated player

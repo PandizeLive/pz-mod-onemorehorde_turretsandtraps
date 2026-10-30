@@ -10,9 +10,7 @@ local actors = setmetatable({}, {__mode = "k"})
 function C.release(zombie)
     local old = actors[zombie]
     if not old then return end
-    if zombie:getVariableString("ThumpType") == "OMHTTBarrierClaw" then
-        zombie:setVariable("ThumpType", old.previous)
-    end
+    zombie:clearVariable("OMHTTBarrierContact")
     zombie:clearVariable("OMHTTBarrierStrike")
     actors[zombie] = nil
 end
@@ -35,10 +33,10 @@ function C.update(zombie)
     local old = actors[zombie]
     if not old or old.id ~= record.id then
         C.release(zombie)
-        old = {id = record.id, previous = zombie:getVariableString("ThumpType"), token = "", sequence = 0}
+        old = {id = record.id, token = "", sequence = 0}
         actors[zombie] = old
         zombie:clearVariable("OMHTTBarrierStrike")
-        zombie:setVariable("ThumpType", "OMHTTBarrierClaw")
+        zombie:setVariable("OMHTTBarrierContact", true)
         D.count("barrier-contact-start", 1, "traps")
         return
     end
