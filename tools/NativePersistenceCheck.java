@@ -766,7 +766,7 @@ public final class NativePersistenceCheck {
         Path directory = Path.of(args[0]);
         String mode = args[1];
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            try { verify(directory, mode); }
+            try { verify(directory, mode); NativeOwnershipProbe.verify(Path.of(System.getProperty("omhtt.projectRoot"))); }
             catch (Throwable error) { error.printStackTrace(); }
         }, "OMHTT-isolated-persistence-proof"));
         Method main = Class.forName("zombie.network.GameServer").getMethod("main", String[].class);

@@ -26,7 +26,6 @@ Effects.emit, Horde.sound = function() end, function() end
 Motion.request = function() return true end
 ZombRand = function() return 0 end
 local owner = {getOnlineID=function() return 309 end, isDead=function() return false end}
-owner.havePlayer=function(_,player) return player==owner end
 getSpecificPlayer = function(i) if i == 0 then return owner end end
 local out, incoming, receipts, applied = {}, {}, {}, 0
 sendServerCommand = function(player, module, command, message)

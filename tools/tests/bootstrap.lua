@@ -287,7 +287,7 @@ function makeZombie(square, health)
     function zombie:setDeferredMovementEnabled(value) self.deferred = value end
     function zombie:getPersistentOutfitID() return self.outfitId or 0 end
     function zombie:getOwner() return self.owner end
-    function zombie:getOwnerPlayer() return self.owner end
+    function zombie:getOwnerPlayer() return self.ownerPlayer or self.owner end
     function zombie:isRemoteZombie() return self.remote == true end
     function zombie:getRealState() return self.state end
     function zombie:isInvulnerable() return self.invulnerable == true end

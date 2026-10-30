@@ -32,7 +32,7 @@ function S.observe(player,f,now)
     local zombie=Actors.online[f.id]
     if not P.living(zombie) or P.outfit(zombie:getPersistentOutfitID())~=f.outfit
         or not zombie:getOwner()
-        or not zombie:getOwner():havePlayer(player) or not H.allowed(zombie)
+        or zombie:getOwnerPlayer() ~= player or not H.allowed(zombie)
         or math.floor(zombie:getZ())~=f.z or (zombie:getX()-f.x)^2+(zombie:getY()-f.y)^2>4 then return end
     if createdAt[zombie] and f.observedAt<createdAt[zombie] then return end
     local old=history[zombie]

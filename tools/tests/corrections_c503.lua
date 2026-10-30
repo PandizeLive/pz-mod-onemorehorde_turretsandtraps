@@ -46,7 +46,8 @@ do
     local actor = makeZombie(square,1)
     actor.onlineId, actor.outfitId, actor.state = 93, 94, "thump"
     local sender = {}
-    actor.owner = {havePlayer=function(_,p) return p == sender end}
+    actor.owner = {}
+    actor.ownerPlayer = sender
     local target = {getHealth=function() return 100 end,getModData=function() return {} end}
     square.objects = {target}
     Footprint.exact = function(value) return value == target and {id="c503-barrier",tier="normal"} end

@@ -1,0 +1,62 @@
+{
+  "checkpoint": "C512",
+  "version": "0.2.70.9",
+  "assertions": 40292,
+  "sourceFiles": 456,
+  "packageFiles": 629,
+  "nativeOwnership": "real IsoZombie, IsoPlayer and UdpConnection in installed 42.21 Lua environment",
+  "oldInvalidCall": "expected native exception reproduced",
+  "correctedProductionHandlers": "owner accepted; foreign/former owner rejected; handoff and duplicate checks pass",
+  "barrierReplay": "client marker -> serialized Strike -> server -> V2 damage -> acknowledgement; left/repeated/right/exit cases pass",
+  "proofLimits": [
+    "zero connected clients",
+    "native geometry and damage/contact sinks are test adapters",
+    "marker replay does not render the claw animation"
+  ],
+  "ownerConnectedAcceptance": "pending",
+  "publication": "none",
+  "mirror": "blocked by prior automatic approval review of destination authorization",
+  "logs": {
+    "diagnostics/v0.2.70.9/validation.log": "2b536c6305a718694761090839f416b5677e0d56565c9d0e501b45649a50f0ae",
+    "diagnostics/v0.2.70.9/server-write.log": "1a38148a5589bdce7e814df595e980348dee84148926b91af6a4954de0748baf",
+    "diagnostics/v0.2.70.9/server-read.log": "cbe47fa4cd602024128627c0406426d6adebea92373fc6ca86c8f64f213bf85d",
+    "diagnostics/v0.2.70.9/packages-traps.log": "cd371db8bdacdcc61a34fa908710ea77ac60c0528f9cdf1776a7a8ec1bfdfa15",
+    "diagnostics/v0.2.70.9/packages-turrets.log": "0b70b0d7447d8bad242376e53be4eec0798a3b959ba7ed4a575fd8fcfb6de68a",
+    "diagnostics/v0.2.70.9/packages-both.log": "f3e4d8c0a635b83913e89505e301acaa15615df90ac1da6a54767da877dc29a8",
+    "diagnostics/v0.2.70.9/manifest.json": "99e599d2d1468ba3a0f917b579a89cdb1bd5ceaa3e013c17e8d8b904ffd3d224"
+  },
+  "nativeWriteSeconds": 60.0,
+  "nativeReadSeconds": 54.8,
+  "packageStarts": [
+    {
+      "selection": "traps",
+      "version": "0.2.70.9",
+      "passed": true,
+      "seconds": 52.6
+    },
+    {
+      "selection": "turrets",
+      "version": "0.2.70.9",
+      "passed": true,
+      "seconds": 53.1
+    },
+    {
+      "selection": "both",
+      "version": "0.2.70.9",
+      "passed": true,
+      "seconds": 53.4
+    }
+  ],
+  "changedSourceHashes": {
+    "42.20/media/lua/client/OMHTT/BarrierContact.lua": "bb1367a4e32923dead700d5be4290d0059966f69a5c3b688a2026f16b67446ee",
+    "42.20/media/lua/server/OMHTT/BarrierRetaliation.lua": "4a962c645a4b62a4630445f9de941ef16ecf7fe54f60813bf3cfe640540c1ab0",
+    "42.20/media/lua/server/OMHTT/DefenseContactServer.lua": "db79acabccb3e4dddb9813c30c62ecc2b5246385c5bdd0e31dec7ea2e7208a46",
+    "42.20/media/lua/shared/OMHTT/Foundation.lua": "cd658fdb6a55d213f2659bf5d9fe640ae78c3e70ba8a846cca65e55db579950a",
+    "42.20/mod.info": "f609f7063262e18c67dbc45b61fd6ecd2d6400fa593657029740d188a84ee06e"
+  },
+  "nativeProbeHashes": {
+    "tools/NativeOwnershipProbe.java": "12b4fe37aeb7deced2730fed1ae26ad8589e9dbe41f9c420ac34184ad0511759",
+    "tools/tests/native_ownership_c512.lua": "8a4c25c8b1e88b212166020921ddb5e493521258c86f95c24166d294c3ae1bdb",
+    "tools/tests/multiplayer_traps_c509.lua": "b0634425c58ff22e97bd8e8bce7b3f7242f09bf1717df49df311a4aa08cedd05"
+  }
+}

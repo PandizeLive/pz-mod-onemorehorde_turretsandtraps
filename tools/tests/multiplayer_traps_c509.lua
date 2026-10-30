@@ -87,6 +87,51 @@ local function run(ctx)
     local health=client.health
     Barrier.command("OMHTT_BarrierContact","Strike",ctx.owner,message);ctx.settle()
     check(client.health==health,"C509 Spike Barrier duplicate marker cannot damage twice")
+    local observer = require("OMHTT/BarrierContact")
+    local views = require("OMHTT/BarrierView")
+    local view, send, localPlayer = views.exact, sendClientCommand, ctx.owner.isLocalPlayer
+    views.exact = Footprint.exact
+    ctx.owner.isLocalPlayer = function() return true end
+    local reports = 0
+    sendClientCommand = function(player, module, command, payload)
+        if module == "OMHTT_BarrierContact" then
+            reports = reports + 1
+            testMode = "server"
+            Barrier.command(module, command, player, nativeRoundTrip(payload))
+            testMode = "client"
+        else
+            send(player, module, command, payload)
+        end
+    end
+    server, client = ctx.pair()
+    server.state, client.state, client.thumpTarget = "thump", "ThumpState", object
+    testMode = "client"
+    observer.update(client)
+    check(client.variables.ThumpType == "OMHTTBarrierClaw", "C512 client selects barrier strike animation")
+    client.variables.OMHTTBarrierStrike = "left"
+    observer.update(client)
+    testMode = "server"
+    ctx.settle()
+    check(reports == 1 and client.health < 10, "C512 client marker reaches server and confirms owner damage")
+    health = client.health
+    testMode = "client"
+    observer.update(client)
+    testMode = "server"
+    ctx.settle()
+    check(reports == 1 and client.health == health, "C512 unchanged client marker cannot repeat damage")
+    testMillis = testMillis + 250
+    testMode = "client"
+    client.variables.OMHTTBarrierStrike = "right"
+    observer.update(client)
+    testMode = "server"
+    ctx.settle()
+    check(reports == 2 and client.health < health, "C512 alternating client marker confirms next strike")
+    testMode = "client"
+    client.thumpTarget = nil
+    observer.update(client)
+    check(client.variables.ThumpType == "Door" and client.variables.OMHTTBarrierStrike == nil, "C512 leaving barrier restores native animation")
+    testMode = "server"
+    views.exact, sendClientCommand, ctx.owner.isLocalPlayer = view, send, localPlayer
     Footprint.exact,Barrier.face=exact,face
     ctx.square.objects={}
 

@@ -8,7 +8,6 @@ testMode="server";testMillis=8000000
 SandboxVars.OMHTurretsTraps={Enabled=true,TurretsEnabled=true}
 R.handlers,R.tiles,R.sources,R.count={},{},{},0
 local owner={getOnlineID=function() return 91 end,isDead=function() return false end,isLocalPlayer=function() return true end}
-owner.havePlayer=function(_,p) return p==owner end
 local square=makeSquare(8100,8100,0);makeSquare(8101,8100,0);makeSquare(8099,8100,0)
 local zombie=makeZombie(square,1);zombie.owner=owner;zombie.onlineId=8100;zombie.outfitId=81
 A.observe(zombie)

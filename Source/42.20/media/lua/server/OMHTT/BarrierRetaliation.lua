@@ -18,6 +18,7 @@ local receipts = setmetatable({}, {__mode = "k"})
 ---@return nil
 function Barrier.command(module, command, player, message)
     if not isServer() or module ~= "OMHTT_BarrierContact" or command ~= "Strike" or type(message) ~= "table" then return end
+    Diagnostics.count("barrier-report-received", 1, "traps")
     local P = require("OMHTT/DefenseCombatProtocol")
     if not P.identity(message.id) or not P.identity(message.outfit) or type(message.barrier) ~= "string"
         or #message.barrier > 160 or not P.number(message.x, 0, 1000000) or not P.number(message.y, 0, 1000000)
@@ -50,7 +51,7 @@ function Barrier.command(module, command, player, message)
         if zombie then break end
     end
     if not zombie or zombie:isDead() or require("OMHTT/DefenseCombatProtocol").outfit(zombie:getPersistentOutfitID()) ~= message.outfit
-        or not zombie:getOwner() or not zombie:getOwner():havePlayer(player)
+        or not zombie:getOwner() or zombie:getOwnerPlayer() ~= player
         or not Horde.allowed(zombie) or not Foundation.barrierEnabled() then return end
     if not string.find(string.lower(zombie:getRealState()), "thump", 1, true) then return end
     local dx, dy = zombie:getX() - message.x - .5, zombie:getY() - message.y - .5
@@ -59,7 +60,10 @@ function Barrier.command(module, command, player, message)
     if receipt and receipt.owner == player and receipt.id == record.id
         and (receipt.token == message.token or now - receipt.at < 200) then return end
     receipts[zombie] = {owner = player, id = record.id, token = message.token, at = now}
-    Damage.resolve(zombie, Foundation.barrierDamage(record) / 100, record.id, "barrier")
+    Diagnostics.count("barrier-report-accepted", 1, "traps")
+    Damage.resolve(zombie, Foundation.barrierDamage(record) / 100, record.id, "barrier", function(amount)
+        if amount > 0 then Diagnostics.count("barrier-damage-confirmed", 1, "traps") end
+    end)
 end
 
 ---@param record table Authoritative barrier geometry

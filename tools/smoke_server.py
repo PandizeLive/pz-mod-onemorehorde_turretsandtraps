@@ -62,10 +62,10 @@ def main():
     transcript = OUTPUT / ("server-" + os.environ.get("OMHTT_PROBE_MODE", "write") + ".log")
     classes = OUTPUT / "persistence-classes"
     classes.mkdir(exist_ok=True)
-    subprocess.run(["C:/Program Files/Java/jdk-17/bin/javac.exe", "-d", str(classes), str(ROOT / "tools/NativePersistenceCheck.java"), str(ROOT / "tools/NativeVaultProbe.java"), str(ROOT / "tools/NativeTurretProbe.java"), str(ROOT / "tools/NativeBarbProbe.java")], check=True)
+    subprocess.run(["C:/Program Files/Java/jdk-17/bin/javac.exe", "-d", str(classes), str(ROOT / "tools/NativePersistenceCheck.java"), str(ROOT / "tools/NativeVaultProbe.java"), str(ROOT / "tools/NativeTurretProbe.java"), str(ROOT / "tools/NativeBarbProbe.java"), str(ROOT / "tools/NativeOwnershipProbe.java")], check=True)
     command = [str(GAME / "jre64/bin/java.exe"), "--enable-native-access=ALL-UNNAMED",
         "--add-exports=java.base/jdk.internal.misc=ALL-UNNAMED", "-XX:-CreateCoredumpOnCrash", "-Xmx1536m",
-        "-Djava.library.path=./natives/;./natives/win64/;./", "-cp", str(classes) + (";projectzomboid.jar;." if os.environ.get("OMHTT_STOCK_CLASSES") == "1" else ";.;projectzomboid.jar"), "NativePersistenceCheck", str(OUTPUT / "native-objects"), os.environ.get("OMHTT_PROBE_MODE", "write"),
+        "-Domhtt.projectRoot=" + str(ROOT), "-Djava.library.path=./natives/;./natives/win64/;./", "-cp", str(classes) + (";projectzomboid.jar;." if os.environ.get("OMHTT_STOCK_CLASSES") == "1" else ";.;projectzomboid.jar"), "NativePersistenceCheck", str(OUTPUT / "native-objects"), os.environ.get("OMHTT_PROBE_MODE", "write"),
         "-cachedir=" + str(CACHE), "-servername", "OMHTT_P1C1", "-nosteam", "-ip", "127.0.0.1", "-port", "29161", "-adminusername", "probe", "-adminpassword", "local-probe"]
     with transcript.open("w", encoding="utf-8") as output:
         process = subprocess.Popen(command, cwd=GAME, stdin=subprocess.PIPE, stdout=output,
@@ -128,6 +128,7 @@ def main():
     assert "[OMHTT-Smoke] native-reinforced deploy=1 pack=5to1 unpack=1to5 mixed=blocked materials=10 hammer=retained" in text, "Native reinforcement transactions failed"
     assert "[OMHTT-VaultProbe] native-corners=2/2 both-pathfinders=true directional-thump-ownership=true" in text, "Native shared corner recognition failed"
     assert "[OMHTT-VaultProbe] native-state-execute=4/4 native-edge-collision=4/4" in text, "Native vault proof failed"
+    assert "[OMHTT-C512] native-ownership oldCall=reproduced" in text, "Real ownership bridge proof missing"
     assert "[OMHTT-Smoke] native-persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") + " parts=28" in text, "Native object persistence failed"
     assert "native-turret-collision sides=4 player-and-zombie=blocked vision=clear reach=clear firing=clear pathfinders=2" in text, "Turret native collision/access failed"
     assert "Shutdown handling finished" in text, "No clean shutdown evidence"
