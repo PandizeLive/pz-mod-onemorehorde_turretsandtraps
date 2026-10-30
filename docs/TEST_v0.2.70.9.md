@@ -25,3 +25,7 @@ The earlier GitHub automatic approval-review rejection over destination authoriz
 ## Delivery verification
 
 Installed and staged from immutable `test/v0.2.70.9` / `4b3e956`; all629 tag/package/install/archive/stage files and previous managed backups verify. Workshop page text/preview preserved. **Test now after uploading0.2.70.9 and updating/restarting server and both clients. No new world required.**
+
+## C513 - Connected retest failed (2026-10-30)
+
+Owner reports Concertina, Poke Floor and other traps remain delayed. [Captured evidence and codepath review](MULTIPLAYER_FEEDBACK_C513.md) confirms0.2.70.9 on both sides and repairs to the ownership exception, but does not establish responsive multiplayer behavior. Six Barrier contact starts produce no strike reports. Bed landing damage remains unconfirmed. Successful Poke/barbed health changes and a Poke corpse are partial functional evidence only. Full contact-to-visible timing was not recorded;82-105ms server transaction timings must not be presented as that measurement. No new playable build or repeat acceptance test is requested.
