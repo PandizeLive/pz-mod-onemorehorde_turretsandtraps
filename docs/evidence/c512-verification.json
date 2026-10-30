@@ -58,5 +58,51 @@
     "tools/NativeOwnershipProbe.java": "12b4fe37aeb7deced2730fed1ae26ad8589e9dbe41f9c420ac34184ad0511759",
     "tools/tests/native_ownership_c512.lua": "8a4c25c8b1e88b212166020921ddb5e493521258c86f95c24166d294c3ae1bdb",
     "tools/tests/multiplayer_traps_c509.lua": "b0634425c58ff22e97bd8e8bce7b3f7242f09bf1717df49df311a4aa08cedd05"
+  },
+  "localRelease": {
+    "version": "0.2.70.9",
+    "sourceCommit": "4b3e9569df13806e36b210851e13fd1c7edefef1",
+    "tag": "test/v0.2.70.9",
+    "installed": "C:\\Users\\bandi\\Zomboid\\mods",
+    "packages": {
+      "OneMoreHorde_Traps": 241,
+      "OneMoreHorde_Turrets": 388
+    },
+    "filesVerified": 629,
+    "sourceFilesVerified": 456,
+    "backup": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\p1c1\\install-backups\\20261029-224333-7449",
+    "backupsVerified": [
+      {
+        "package": "OneMoreHorde_Traps",
+        "version": "0.2.70.8",
+        "filesVerified": 241
+      },
+      {
+        "package": "OneMoreHorde_Turrets",
+        "version": "0.2.70.8",
+        "filesVerified": 388
+      }
+    ],
+    "archive": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\artifacts\\OMHTT-0.2.70.9.zip",
+    "archiveSHA256": "b2b971f88cb91b23e505e8942eefa11944c555d2b17fb362389f38a2fd6e40da",
+    "kahluaAssertions": 40292,
+    "nativeWrite": "passed",
+    "nativeRead": "passed",
+    "nativeSelections": [
+      "traps",
+      "turrets",
+      "both"
+    ],
+    "clientAcceptance": "pending focused owner test",
+    "savePolicy": "fresh worlds",
+    "publication": "none",
+    "hostedLootLab": "No hosted update recorded for this release"
+  },
+  "existingWorldPolicy": "Existing worlds supported; no new world required",
+  "staging": {
+    "filesVerified": 629,
+    "backupFilesVerified": 629,
+    "backup": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\workshop\\stage-v0.2.70.9-20261030-024343-7935-5c423ceb-previous",
+    "pageMetadataAndPreview": "unchanged"
   }
 }

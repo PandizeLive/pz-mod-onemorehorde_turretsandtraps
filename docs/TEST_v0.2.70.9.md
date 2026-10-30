@@ -24,4 +24,4 @@ The earlier GitHub automatic approval-review rejection over destination authoriz
 
 ## Delivery verification
 
-All package checks pass; tagged installation and staging are next.
+Installed and staged from immutable `test/v0.2.70.9` / `4b3e956`; all629 tag/package/install/archive/stage files and previous managed backups verify. Workshop page text/preview preserved. **Test now after uploading0.2.70.9 and updating/restarting server and both clients. No new world required.**
