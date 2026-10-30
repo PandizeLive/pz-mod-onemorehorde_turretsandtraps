@@ -4,7 +4,7 @@ Status: automated/native package checks passed; connected owner acceptance pendi
 
 40,287 Kahlua assertions, current-version native save/read and Traps-only, Turrets-only and combined package starts pass. All 456 source files match the C509 proof after normalizing only the version field; 629 generated package files validate. Native probes have zero connected clients.
 
-Package checks passed; local tagged installation and managed staging are next. Connected acceptance remains pending.
+Installed and staged from immutable `test/v0.2.70.8` / `bd9f8f3`. All 629 tagged/package/install/archive/stage files and both previous-package backups verify; previous Workshop stage and page metadata/preview also verify. No Workshop upload, live-server update or sibling change. **Test now after uploading 0.2.70.8 and updating/restarting the server and both clients. No new world required.**
 
 [Verification evidence](evidence/c510-verification.json). [Catalog coverage and limits](MULTIPLAYER_COVERAGE_C509.md).
 
