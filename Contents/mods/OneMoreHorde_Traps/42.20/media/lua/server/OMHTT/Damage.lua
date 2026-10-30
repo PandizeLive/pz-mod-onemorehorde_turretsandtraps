@@ -31,7 +31,7 @@ end
 ---@param weapon HandWeapon? Native kill context for manual fire
 ---@return number lost Actual native health removed
 local function apply(zombie, amount, source, kind, operator, weapon)
-    if isClient() or zombie:isDead() or amount <= 0 then return 0 end
+    if isClient() or not Protocol.living(zombie) or amount <= 0 then return 0 end
     local allowed, core, token = Horde.beginDamage(zombie, amount, source, kind)
     if not allowed then return 0 end
     local health = rawget(_G, "OMHTT_TargetHealth")
@@ -60,7 +60,7 @@ local function apply(zombie, amount, source, kind, operator, weapon)
         component = "turrets"
     end
     Diagnostics.defer("damage-applied", {id = source, kind = kind, before = before,
-        after = zombie:getHealth(), nativeDamage = lost, damage100 = lost * 100, dead = zombie:isDead()}, component)
+        after = zombie:getHealth(), nativeDamage = lost, damage100 = lost * 100, dead = not Protocol.living(zombie)}, component)
     require("OMHTT/DamageNotice").send(notice)
     triggerEvent("OnOMHTTDamage", zombie, lost, source, kind)
     return lost
@@ -84,8 +84,8 @@ end
 ---@param kind string Effect family
 ---@param callback function? Completion receives actual loss and result
 ---@return boolean accepted Completion may be asynchronous on MP
-function Damage.request(zombie, amount, source, kind, callback)
-    if isClient() or not zombie or zombie:isDead() or zombie:isInvulnerable()
+function Damage.request(zombie, amount, source, kind, callback, expiresAt)
+    if isClient() or not zombie or not Protocol.living(zombie) or zombie:isInvulnerable()
         or not Protocol.number(amount, 0.000001, 1000000)
         or type(source) ~= "string" or #source == 0 or #source > 160
         or type(kind) ~= "string" or #kind == 0 or #kind > 64 then return false end
@@ -94,7 +94,7 @@ function Damage.request(zombie, amount, source, kind, callback)
         health.settle(zombie)
     end
     if isServer() and zombie:getOwner() ~= nil then
-        return require("OMHTT/DefenseCombatServer").request(zombie, amount, source, kind, callback)
+        return require("OMHTT/DefenseCombatServer").request(zombie, amount, source, kind, callback, expiresAt)
     end
     local lost = apply(zombie, amount, source, kind, nil, nil)
     if callback then callback(lost, lost > 0 and "applied" or "rejected") end
@@ -105,6 +105,7 @@ end
 ---@return nil
 local function dispatch(job)
     local zombie = job.zombie
+    Diagnostics.measure("damage-queue",getTimestampMs()-job.queuedAt,string.find(job.source,"^turret") and "turrets" or "traps")
     active[zombie] = job
     local completed = false
     ---@param lost number Confirmed loss
@@ -122,7 +123,7 @@ local function dispatch(job)
         else failed[zombie] = nil end
         if job.callback then job.callback(lost, reason) end
     end
-    if not Damage.request(zombie, job.amount, job.source, job.kind, done) then
+    if not Damage.request(zombie, job.amount, job.source, job.kind, done, job.expiresAt) then
         done(0, "rejected")
     end
 end
@@ -134,7 +135,7 @@ end
 ---@param callback function? Invoked exactly once, including rejection
 ---@return boolean admitted Accepted for immediate or bounded serialized application
 function Damage.resolve(zombie, amount, source, kind, callback)
-    if isClient() or not zombie or zombie:isDead() or not Damage.available(zombie) or queued >= 256
+    if isClient() or not zombie or not Protocol.living(zombie) or not Damage.available(zombie) or queued >= 256
         or (byVictim[zombie] and #byVictim[zombie] >= 8)
         or not Protocol.number(amount, .000001, 1000000) then
         if callback then callback(0, "rejected") end
@@ -150,10 +151,13 @@ function Damage.resolve(zombie, amount, source, kind, callback)
         if callback then callback(0, "rejected") end
         return false
     end
+    local lifetime = Protocol.contact(kind) and 500 or Protocol.TIMEOUT
     local job = {zombie = zombie, amount = amount, source = source, kind = kind, callback = callback,
-        lease = lease, deadline = getTimestampMs() + Protocol.TIMEOUT,
+        lease = lease, deadline = getTimestampMs() + lifetime, expiresAt = GameTime.getServerTimeMills() + lifetime,
+        queuedAt = getTimestampMs(),
         id = zombie:getOnlineID(), outfit = require("OMHTT/DefenseCombatProtocol").outfit(zombie:getPersistentOutfitID())}
-    if active[zombie] or byVictim[zombie] then
+    local capacity = zombie:getOwner() == nil or require("OMHTT/DefenseCombatServer").available()
+    if active[zombie] or byVictim[zombie] or not capacity then
         local queue = byVictim[zombie]
         if not queue then queue = {}; byVictim[zombie] = queue end
         queue[#queue + 1] = job
@@ -174,10 +178,11 @@ function Damage.tick()
         if cursor > #waiting then cursor = 1 end
         local job = waiting[cursor]
         local zombie = job.zombie
-        local valid = now <= job.deadline and not failed[zombie] and not zombie:isDead() and zombie:getOnlineID() == job.id
+        local valid = now <= job.deadline and not failed[zombie] and Protocol.living(zombie) and zombie:getOnlineID() == job.id
             and require("OMHTT/DefenseCombatProtocol").outfit(zombie:getPersistentOutfitID()) == job.outfit and Horde.matches(zombie, job.lease)
         local queue = byVictim[zombie]
-        if not valid or (not active[zombie] and not processed[zombie] and queue[1] == job) then
+        local capacity = zombie:getOwner() == nil or require("OMHTT/DefenseCombatServer").available()
+        if not valid or (capacity and not active[zombie] and not processed[zombie] and queue[1] == job) then
             table.remove(waiting, cursor)
             queued = queued - 1
             for index = 1, #queue do

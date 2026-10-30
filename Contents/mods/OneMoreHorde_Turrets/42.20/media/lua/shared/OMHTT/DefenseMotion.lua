@@ -13,7 +13,7 @@ local serial = 0
 ---@param distance number? Bounded tether displacement
 ---@return nil
 local function apply(zombie, kind, x, y, distance)
-    if zombie:isDead() then return end
+    if not P.living(zombie) then return end
     if kind == "pull" then
         require("OMHTT/DefenseDisplacement").start(zombie, x, y, distance or 0)
     elseif kind == "visualPull" then
@@ -22,6 +22,7 @@ local function apply(zombie, kind, x, y, distance)
         if zombie:isOnFloor() or zombie:isKnockedDown() or zombie:getBumpType() ~= "" then return end
         zombie:setVariable("BumpAnimFinished", false)
         zombie:setVariable("SprinterTripped", false)
+        zombie:setVariable("OMHTTBedLanded", false)
         zombie:setBumpType("OMHTTBedTrip")
     elseif kind == "knock" then
         if zombie:isOnFloor() or zombie:isKnockedDown() then return end
@@ -93,7 +94,7 @@ function M.command(module, command, message)
         or not P.number(message.x, -1000000, 1000000) or not P.number(message.y, -1000000, 1000000) then return end
     if command == "pull" and not P.number(message.distance, 0, 2) then return end
     local zombie = indexed[message.id]
-    if not zombie or zombie:getOnlineID() ~= message.id or zombie:isDead()
+    if not P.living(zombie) or zombie:getOnlineID() ~= message.id
         or require("OMHTT/DefenseCombatProtocol").outfit(zombie:getPersistentOutfitID()) ~= message.outfit then return end
     if command == "visualTrip" or command == "visualPull" then
         if not zombie:isRemoteZombie() then return end
@@ -118,7 +119,7 @@ end
 ---@param zombie IsoZombie Updated native actor
 ---@return nil
 function M.update(zombie)
-    if not isClient() then return end
+    if not isClient() or not P.living(zombie) then return end
     local id = zombie:getOnlineID()
     if id ~= -1 then indexed[id] = zombie end
     local contact = contacts[zombie]

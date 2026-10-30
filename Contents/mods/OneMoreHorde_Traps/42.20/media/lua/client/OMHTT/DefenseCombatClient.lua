@@ -1,9 +1,31 @@
 local P = require("OMHTT/DefenseCombatProtocol")
 local C = {}
 local indexed = setmetatable({}, {__mode = "v"})
+local createdAt = setmetatable({}, {__mode = "k"})
 local receipts = setmetatable({}, {__mode = "k"})
 local history, historyOrder, historyCursor = {}, {}, 1
-local session, serial = tostring(getTimestampMs()), 0
+
+---@param receipt table Superseded or expired receipt
+---@return nil
+local function forget(receipt)
+    if history[receipt.token] == receipt then
+        history[receipt.token] = nil
+    end
+    local slot = receipt.slot
+    if not slot then return end
+    local last = historyOrder[#historyOrder]
+    historyOrder[slot] = last
+    last.slot = slot
+    historyOrder[#historyOrder] = nil
+    receipt.slot = nil
+end
+
+---@param receipt table Exact last result retained across native actor unload
+---@return nil
+local function remember(receipt)
+    receipt.slot = #historyOrder + 1
+    history[receipt.token], historyOrder[receipt.slot] = receipt, receipt
+end
 
 ---@param id number Server-selected owner
 ---@return IsoPlayer? player Local connection player
@@ -26,6 +48,8 @@ local function reply(player, command, message, receipt)
         result.receipt = receipt.nonce
         if receipt.applied then
             result.before, result.after, result.lethal = receipt.before, receipt.after, receipt.lethal
+            result.processingMs = receipt.processingMs
+            result.x, result.y = receipt.x, receipt.y
         end
     end
     sendClientCommand(player, P.MODULE, command, result)
@@ -48,16 +72,17 @@ end
 -- Presentation and combat resolve the same live identity, never a recycled ID.
 function C.find(id, outfit)
     local zombie = indexed[id]
-    if zombie and zombie:getOnlineID() == id and P.outfit(zombie:getPersistentOutfitID()) == outfit then return zombie end
+    if P.living(zombie) and zombie:getOnlineID() == id and P.outfit(zombie:getPersistentOutfitID()) == outfit then return zombie end
 end
 
 ---@param zombie IsoZombie Native observed instance
 ---@return nil
 function C.observe(zombie)
-    if not isClient() or zombie:isDead() then return end
+    if not isClient() or not P.living(zombie) then return end
     local id = zombie:getOnlineID()
     if id ~= -1 and indexed[id] ~= zombie then
         indexed[id] = zombie
+        createdAt[zombie] = GameTime.getServerTimeMills()
     end
 end
 
@@ -65,6 +90,7 @@ end
 ---@return nil
 function C.created(zombie)
     receipts[zombie] = nil
+    createdAt[zombie] = GameTime.getServerTimeMills()
     C.observe(zombie)
 end
 
@@ -72,15 +98,11 @@ end
 function C.expire()
     if not isClient() then return end
     local now = getTimestampMs()
-    for _ = 1, math.min(16, #historyOrder) do
+    for _ = 1, math.min(64, #historyOrder) do
         if historyCursor > #historyOrder then historyCursor = 1 end
         local receipt = historyOrder[historyCursor]
         if now > receipt.retainedUntil then
-            if history[receipt.token] == receipt then
-                history[receipt.token] = nil
-            end
-            historyOrder[historyCursor] = historyOrder[#historyOrder]
-            historyOrder[#historyOrder] = nil
+            forget(receipt)
         else
             historyCursor = historyCursor + 1
         end
@@ -94,89 +116,81 @@ end
 function C.command(module, command, message)
     if not isClient() or module ~= P.MODULE or not P.envelope(message) then return end
     local player = owner(message.owner)
-    if not player then return end
+    if not player or player:isDead() then return end
     local zombie = indexed[message.id]
     local saved = history[message.token]
     local prior = zombie and receipts[zombie]
-    if command == "Status" then prior = saved end
-    if command == "Status" and prior and prior.token == message.token and prior.sequence == message.sequence
-        and prior.nonce == message.receipt and prior.id == message.id
-        and prior.outfit == message.outfit and prior.owner == message.owner then
-        if not prior.applied then
-            prior.cancelled = true
+    if command ~= "Apply" and command ~= "Reconcile" and command ~= "Status" then return end
+    if not P.token(message.receipt) then return end
+    local started = getTimestampMs()
+    -- Status is a cancellation barrier even when it overtakes the initial Apply.
+    if command == "Status" then
+        if saved and saved.sequence == message.sequence and saved.nonce == message.receipt then
+            if not saved.applied then saved.cancelled = true end
+            reply(player, saved.applied and "Applied" or "Unapplied", message, saved)
+        elseif not saved or saved.sequence < message.sequence then
+            if #historyOrder >= P.MAX_RECEIPTS then return end
+            saved = {token=message.token, sequence=message.sequence, nonce=message.receipt,
+                id=message.id, outfit=message.outfit, owner=message.owner, cancelled=true,
+                retainedUntil=started + P.TIMEOUT*2}
+            remember(saved)
+            if zombie and (not prior or prior.sequence < message.sequence) then receipts[zombie]=saved end
+            reply(player, "Unapplied", message, saved)
         end
-        reply(player, prior.applied and "Applied" or "Unapplied", message, prior)
+        return
+    end
+    if saved and saved.sequence == message.sequence then
+        if saved.id ~= message.id or saved.outfit ~= message.outfit or saved.owner ~= message.owner
+            or saved.nonce ~= message.receipt then return end
+        if saved.applied then reply(player, saved.reconciled and "Reconciled" or "Applied", message, saved)
+        else reject(player, message, "cancelled", zombie) end
         return
     end
     local reason
-    if not zombie then reason = "missing"
-    elseif zombie:getOnlineID() ~= message.id or P.outfit(zombie:getPersistentOutfitID()) ~= message.outfit then reason = "identity"
-    elseif zombie:isDead() then reason = "dead"
-    elseif zombie:isRemoteZombie() then reason = "not-owner" end
-    if reason then reject(player, message, reason, zombie); return end
-    if command == "Prepare" then
-        -- A recycled/unloaded actor must never turn an old operation into a new application.
-        if saved and saved.sequence == message.sequence then
-            if saved.id == message.id and saved.outfit == message.outfit and saved.owner == message.owner then
-                local response = "Reject"
-                if saved.applied then
-                    response = saved.reconciled and "Reconciled" or "Applied"
-                elseif saved == prior and not saved.cancelled then
-                    response = "Ready"
-                end
-                reply(player, response, message, saved)
-            end
-            return
-        end
-        if not P.number(message.x, -1000000, 1000000) or not P.number(message.y, -1000000, 1000000)
-            or not P.number(message.z, -32, 32) or math.abs(zombie:getZ() - message.z) > .5
-            or (zombie:getX() - message.x) ^ 2 + (zombie:getY() - message.y) ^ 2 > 64 then
-            reject(player, message, "position", zombie)
-            return
-        end
-        if prior and message.sequence <= prior.sequence then
-            if prior.token == message.token then
-                reply(player, prior.applied and "Applied" or "Ready", message, prior)
-            end
-            return
-        end
-        if #historyOrder >= P.MAX_PENDING * 4 then
-            reject(player, message, "capacity", zombie)
-            return
-        end
-        serial = serial + 1
-        local receipt = {token = message.token, sequence = message.sequence, nonce = session .. ":" .. serial,
-            id = message.id, outfit = message.outfit, owner = message.owner,
-            expires = getTimestampMs() + P.TIMEOUT, retainedUntil = getTimestampMs() + P.TIMEOUT * 2}
-        receipts[zombie] = receipt
-        history[message.token] = receipt
-        historyOrder[#historyOrder + 1] = receipt
-        reply(player, "Ready", message, receipt)
-    elseif command == "Commit" or command == "Reconcile" then
-        if not prior or prior.cancelled or prior.token ~= message.token or prior.sequence ~= message.sequence
-            or not P.token(message.receipt) or prior.nonce ~= message.receipt then return end
-        if prior.applied then reply(player, prior.reconciled and "Reconciled" or "Applied", message, prior); return end
-        if command == "Reconcile" then
-            if getTimestampMs() > prior.expires or not P.number(message.health, P.EPSILON, 1000000) then return end
-            prior.before = zombie:getHealth()
-            prior.after = math.min(prior.before, message.health)
-            prior.lethal, prior.applied, prior.reconciled = false, true, true
-            zombie:setHealth(prior.after)
-            -- Native owner updates carry health; NetworkZombieAI is not exposed to Lua.
-            reply(player, "Reconciled", message, prior)
-            return
-        end
-        if getTimestampMs() > prior.expires or not P.number(message.amount, 0.000001, 1000000)
-            or zombie:isInvulnerable() then reject(player, message, getTimestampMs() > prior.expires and "expired" or "invulnerable", zombie); return end
-        local before = zombie:getHealth()
-        if not P.number(before, P.EPSILON, 1000000) then reject(player, message, "health", zombie); return end
-        local after, _, lethal = P.result(before, message.amount)
-        prior.before, prior.after, prior.lethal, prior.applied = before, after, lethal, true
-        zombie:setHealth(after)
-        -- Acknowledge before native owner replication; do not call the unexposed NetworkZombieAI.
-        -- The server owns terminal death and Horde attribution; no player attack is fabricated.
-        reply(player, "Applied", message, prior)
+    if not zombie then reason="missing"
+    elseif zombie:getOnlineID() ~= message.id or P.outfit(zombie:getPersistentOutfitID()) ~= message.outfit then reason="identity"
+    elseif not P.living(zombie) then reason="dead"
+    elseif zombie:isRemoteZombie() then reason="not-owner"
+    elseif zombie:isInvulnerable() then reason="invulnerable" end
+    if reason then reject(player,message,reason,zombie); return end
+    local serverNow = GameTime.getServerTimeMills()
+    if serverNow <= 0 or not P.number(message.issuedAt, 1, 1000000000000000)
+        or not P.number(message.expiresAt, message.issuedAt, message.issuedAt + P.TIMEOUT)
+        or serverNow > message.expiresAt then reject(player,message,"expired",zombie); return end
+    if command == "Apply" and message.issuedAt < (createdAt[zombie] or serverNow) then reject(player,message,"identity",zombie); return end
+    if prior and message.sequence <= prior.sequence then reject(player,message,"cancelled",zombie); return end
+    if not P.number(message.x,-1000000,1000000) or not P.number(message.y,-1000000,1000000)
+        or not P.number(message.z,-32,32) or math.abs(zombie:getZ()-message.z)>.5
+        or (zombie:getX()-message.x)^2+(zombie:getY()-message.y)^2>64 then reject(player,message,"position",zombie); return end
+    local before=zombie:getHealth()
+    if not P.number(before,P.EPSILON,1000000) then reject(player,message,"health",zombie); return end
+    local after,lost,lethal
+    if command=="Reconcile" then
+        if not P.number(message.health,P.EPSILON,1000000) then return end
+        after,lethal=math.min(before,message.health),false
+    else
+        if not P.number(message.amount,.000001,1000000) then return end
+        after,lost,lethal=P.result(before,message.amount)
     end
+    -- A newer authorized operation proves the server settled this actor's previous
+    -- operation. Keep the sequence guard, rather than every old hit for ten seconds.
+    if prior then
+        forget(prior)
+    end
+    if saved and saved ~= prior then
+        forget(saved)
+    end
+    if #historyOrder >= P.MAX_RECEIPTS then reject(player,message,"capacity",zombie); return end
+    local receipt={token=message.token,sequence=message.sequence,nonce=message.receipt,
+        id=message.id,outfit=message.outfit,owner=message.owner,applied=true,
+        reconciled=command=="Reconcile",before=before,after=after,lethal=lethal,
+        x=zombie:getX(),y=zombie:getY(),
+        retainedUntil=started+P.TIMEOUT*2}
+    receipts[zombie]=receipt
+    remember(receipt)
+    zombie:setHealth(after)
+    receipt.processingMs=getTimestampMs()-started
+    reply(player,receipt.reconciled and "Reconciled" or "Applied",message,receipt)
 end
 
 Events.OnZombieCreate.Add(C.created)

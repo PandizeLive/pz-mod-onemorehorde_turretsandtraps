@@ -4,6 +4,7 @@ local Active = require("OMHTT/ActiveTime")
 local P = {entries = setmetatable({}, {__mode = "k"}), objects = {}, clock = Active.new(true), time = 0}
 local Actors = require("OMHTT/DefenseActors")
 local F = require("OMHTT/Foundation")
+local single = {__index = {size = function() return 1 end, get = function(list) return list[1] end}}
 
 function P.register(object, state)
     P.objects[F.key(state.x, state.y, state.z)] = object
@@ -52,13 +53,18 @@ function P.step(object, state, contact)
         entry.finish, entry.cycle = nil, nil
         P.visual(object, state, false)
     end
-    local moving = require("OMHTT/DefenseActors").at(object:getSquare())
-    if contact and Actors.square(contact) ~= object:getSquare() then moving[#moving + 1] = contact end
+    local moving = contact and setmetatable({contact}, single) or Actors.at(object:getSquare())
+    if isServer() and not contact then
+        for i=#moving,1,-1 do
+            local actor=moving[i]
+            if instanceof(actor,"IsoZombie") and actor:getOwner() then table.remove(moving,i) end
+        end
+    end
     local eligible, requests = false, {}
-    entry.scan = (entry.scan or 0) + 1
+    entry.scan = (entry.scan or 0) + (contact and 0 or 1)
     for i = 0, moving:size() - 1 do
         local actor = moving:get(i)
-        if instanceof(actor, "IsoZombie") and not actor:isDead() and Horde.allowed(actor) then
+        if instanceof(actor, "IsoZombie") and require("OMHTT/DefenseCombatProtocol").living(actor) and Horde.allowed(actor) then
             eligible = true
         elseif instanceof(actor, "IsoPlayer") and not actor:isDead() and not actor:isGodMod()
             and not actor:isNoClip() and not actor:isGhostMode() then
@@ -94,7 +100,7 @@ function P.step(object, state, contact)
     end
     for i = 0, moving:size() - 1 do
         local actor = moving:get(i)
-        if not cycle.hits[actor] and instanceof(actor, "IsoZombie") and not actor:isDead() and Horde.allowed(actor) then
+        if not cycle.hits[actor] and instanceof(actor, "IsoZombie") and require("OMHTT/DefenseCombatProtocol").living(actor) and Horde.allowed(actor) then
             cycle.hits[actor] = true
             require("OMHTT/Damage").resolve(actor, P.option("Damage", 45, 0, 2500) / 100, state.id, "poke-floor", wear)
         elseif not cycle.hits[actor] and requests[actor] and not actor:isDead() and not actor:isGodMod()

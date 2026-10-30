@@ -41,7 +41,8 @@ function C.request(object)
     local contents = world.contents(object)
     if contents.heads ~= 1 or not contents.active.Firing or contents.head:getCondition() <= 0 then return false end
     local stats = T.cycleConfig(contents)
-    if not world.power(object, contents, stats) or (not stats.rotary and contents.ammo == 0) then return false end
+    if not world.power(object, contents, stats)
+        or (not stats.rotary and not stats.ammoFree and contents.ammo == 0) then return false end
     local turn = 360000 / math.max(1, T.turnSpeed(contents.head, contents.active))
     local wake = 0
     if contents.active.MotionDetection then

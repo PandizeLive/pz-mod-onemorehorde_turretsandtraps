@@ -1,11 +1,11 @@
-v0.2.70.7
+v0.2.70.8
 
 Development test content
 
-- Fixed multiplayer trap contact and fast crossings using zombies' actual positions.
-- Fixed missed Bed Spikes landings and made ready Poke Floors strike immediately.
-- Improved turret target acquisition with Range modules and dense groups.
-- Fixed valid turret and trap hits being rejected when zombies lose hats.
-- Improved stale-target recovery and moving projectile effects in multiplayer.
-- Fixed delayed effects and Module Pack indicators reappearing after completion.
-- Improved multiplayer combat diagnostics.
+- Reworked multiplayer trap contact and damage delivery to reduce delay.
+- Fixed missed Bed Spikes landings and corpse-triggered Poke Floor attacks.
+- Improved fast trap crossings and stopped stale contact damage.
+- Fixed turret and trap hits being dropped during sustained combat.
+- Fixed linked triggers failing to fire Arc Emitters.
+- Fixed delayed Scrapshot Siphon refunds and piercing splash damage.
+- Improved multiplayer contact and combat diagnostics.

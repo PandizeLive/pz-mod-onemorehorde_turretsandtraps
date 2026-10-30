@@ -23,6 +23,11 @@
         <m_ParameterValue>BodyHitGround</m_ParameterValue>
     </m_Events>
     <m_Events>
+        <m_EventName>SetVariable</m_EventName>
+        <m_TimePc>0.5</m_TimePc>
+        <m_ParameterValue>OMHTTBedLanded=true</m_ParameterValue>
+    </m_Events>
+    <m_Events>
         <m_EventName>FallOnFront</m_EventName>
         <m_TimePc>0.5</m_TimePc>
         <m_ParameterValue>true</m_ParameterValue>

@@ -50,6 +50,8 @@ Reproduce with `tools/check_combat_path.py --full --compare --checkpoint c509`, 
 
 ## Remaining release gate
 
+C510 update (2026-10-29): the owner explicitly approved packaging this verified candidate for their connected test. [0.2.70.8 test patch](PATCH_v0.2.70.8.md) supersedes the packaging hold below; connected acceptance remains pending. The following records the gate at completion of C509.
+
 **Packaging remains on hold.** No version bump, new release tag, install, Workshop stage/upload, sibling change or live-server update. Preserve the cumulative Workshop draft and add the final candidate changes when the release gate opens.
 
 The next proof must be a connected two-client candidate session: native ownership/animation handoff, rapid trap crossings and corpse carrying, observer aim/projectile parity, packet delay/loss, Module Pack display, and Horde/XP attribution. Current results establish the repaired Lua paths and native server compatibility, not that multiplayer now feels smooth. The prior GitHub automatic approval-review block remains; no alternate push route was attempted.
