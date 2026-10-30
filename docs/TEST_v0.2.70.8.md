@@ -1,6 +1,6 @@
 # 0.2.70.8 verification and owner test
 
-Status: automated/native package checks passed; connected owner acceptance pending.
+Status: connected owner test FAILED (C511). Historical automated/native checks passed but missed an invalid Lua/Java ownership call.
 
 40,287 Kahlua assertions, current-version native save/read and Traps-only, Turrets-only and combined package starts pass. All 456 source files match the C509 proof after normalizing only the version field; 629 generated package files validate. Native probes have zero connected clients.
 
@@ -22,3 +22,8 @@ Upload using CMD option 3, then update/restart the server and both clients to 0.
 - Horde Night credit and Trait Shop XP
 
 The previous GitHub automatic approval-review rejection still blocks mirroring to the remote destination; the local tagged checkpoint will be retained. Workshop publication and live-server updates are separate owner actions.
+
+
+## C511 connected retest failed
+
+Owner reports no trap or Spike Barrier damage; module effects remain imperfect but passable. Client/server version0.2.70.8 confirmed. Read-only logs prove 8,079 ownership-call exceptions and no accepted trap contacts. [Diagnosis and required real-bridge proof](MULTIPLAYER_FEEDBACK_C511.md). No corrective code or install in this investigation.

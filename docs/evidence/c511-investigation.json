@@ -1,0 +1,20 @@
+{
+  "checkpoint": "C511",
+  "version": "0.2.70.8",
+  "acceptance": "failed connected owner test",
+  "ownershipBridgeExceptions": 8079,
+  "acceptedContactCounter": 0,
+  "appliedCombatResults": 261,
+  "lethalCombatResults": 37,
+  "barrier": "same invalid call exists; no confirmed strike or handler exception in capture; report path unresolved",
+  "remoteChanges": false,
+  "productionChanges": false,
+  "logs": {
+    "client-console.txt": "e9c05789be4d022b2df6e852f60b44411180d40f23e7fc435b8f0b0c9db315d9",
+    "server-console.txt": "bd6bfbbc2e264c075f9b8373ac153874f70f486be6d2d44075886d2277eac16f",
+    "server-debug.txt": "72497e5a5d0eef9bb58ef7d46f2e793567d3028da09440e1dd148d46ebcbb1a8",
+    "Traps-mod.info": "8b4302264cf541f2ee5d82fa88dbdd0cf661c8b2cc9f849a09d0da84a7f29e2e",
+    "Turrets-mod.info": "5ac553b3dc4be1d230d962960b87ec661bcba73e45e518f2cfa39fd2132921e5",
+    "IsoZombie.javap.txt": "c1313a601d1b3f030dbb50c7ef3a0fdb3745d89ae532d66ee40c67a2e5751201"
+  }
+}
