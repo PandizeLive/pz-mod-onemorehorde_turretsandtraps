@@ -16,3 +16,5 @@ Installed/staged from immutable `test/v0.2.71.1` / `b7ffd87`. All461 source and6
 ## C529 owner test - remaining failures
 
 Owner reports Splitter stacking delay, build-over stabilizers, rotary damage mismatch and errors. Both sides confirmed0.2.71.1. [Investigation](MULTIPLAYER_FEEDBACK_C529.md) distinguishes fixed server exception, teardown errors, reproduced firearm scaling and unresolved visual timing. Overall connected acceptance remains failed; no replacement build or new test requested.
+
+C530 clarification: M16 with5-6 Splitters; Potato Fragment/Splitter endpoint hold also fails. See the C530 addendum for reproduced lifetime/admission mechanisms and proof limits. No replacement patch approved or packaged.

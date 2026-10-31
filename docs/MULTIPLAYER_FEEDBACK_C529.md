@@ -49,3 +49,15 @@ The two client exceptions route through `ControlAccess.state` line40 while `Inga
 **1B - Construction and disconnect error only:** leave Splitter and rotary acceptance open. Lower scope, but does not meet the requested fluent combat goal.
 
 High reasoning is appropriate for1A; use Fast if full implementation/native verification exceeds25minutes. No production/package/install changes this turn. **Decision needed.** Prior automatic approval-review block on GitHub mirroring remains; no alternate push attempted.
+
+## C530 - Owner identifies M16 and Potato endpoint hold
+
+Owner clarification: M16 with approximately5-6 Splitters. Potato Fragment and Splitter children also fly out, stop for about0.25s, then pop. This is added evidence, not selection of1A or approval to patch.
+
+Expanded production scheduling replay covers5/6 children:30-tile empty firearm rays emit the completed volley after400/500ms respectively at100ms visits, before network transit. At10 tiles both take100ms. Actual occupied paths and connection timing differ; these are controlled measurements rather than reconstructed owner shot times.
+
+`PrototypeEffects.render` clamps Launch progress to1 at the visual endpoint, retains Launch up to750ms beyond flight and changes to Impact only on receipt. There is no automatic contact pop. `TurretVolley.finish` returns early when a selected victim is not available for damage, before emitting Impact. Thus authoritative damage admission can prolong the displayed endpoint hold. Once admitted, Impact emission does not wait for the damage acknowledgement; do not describe every pause as an acknowledgement delay.
+
+The expanded fixture runs the actual renderer lifetime path with no drawing players and confirms a500ms potato flight remains Launch at750ms, then changes immediately when Impact arrives. A separate actual finish call with an unavailable damage victim defers completion. This proves the mechanisms, not that damage contention caused every observed250ms pause. [Evidence](evidence/c530-findings.json).43,728 assertions pass; connected animation is not simulated.
+
+The proposed1A scope explicitly includes Potato Splitter/Fragment collision-to-pop timing and target contention, alongside M16 stack scaling, stabilizer/native build exclusion, rotary timing and disconnect cleanup. Flight termination/pop should share the validated collision event; the damage transaction should not leave a visible projectile frozen. Avoid merely adding a fixed pop timer or globally raising scheduler limits. Server damage/death/XP authority remains required. **Decision needed:1A full correction or1B construction/disconnect only.** No gameplay/package/install change.
