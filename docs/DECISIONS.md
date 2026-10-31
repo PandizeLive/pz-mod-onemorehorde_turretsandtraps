@@ -1,5 +1,9 @@
 # Decision register
 
+## C520 - Dulling and alternatives remain discussion (2026-10-30)
+
+Owner finds C519 1B/1C enticing, proposes condition-linked damage restored by repair, and explicitly asks to continue discussing. Interest is not approval of corpse obstruction, recipes or example numbers. [Current tradeoffs and alternatives](TRAP_SCALING_C519.md#c520---dulling-corpse-obstruction-and-further-alternatives). No gameplay edits.
+
 ## C519 - Endgame trap balance discussion (2026-10-30)
 
 Owner wants to curb mass Poke Floors without transferring the dominant strategy to another trap. [Evidence and 1A/1B/1C choices](TRAP_SCALING_C519.md). Whole-trap upkeep/roles recommended; no numbers, recipe edits or countermechanics approved. C518 remains separate and pending.
