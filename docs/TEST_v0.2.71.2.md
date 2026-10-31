@@ -2,7 +2,7 @@
 
 44,249 assertions, three frozen released-code negative controls, 266 compiled Lua files, native write/read and Traps/Turrets/both startup checks pass. Native stacked child shots apply exact health loss at contact. [Detailed evidence and limits](CONTACT_TIMING_C531.md) | [Verification receipt](evidence/c531-verification.json).
 
-Zero connected clients participated. Real two-client smoothness remains pending. Local tagged installation/staging is being completed; no upload or live-server change.
+Zero connected clients participated. Real two-client smoothness remains pending. Installed and staged from immutable `test/v0.2.71.2` / `9f83c8e`. All 464 source and 640 tag/package/install/archive/stage files match; previous backups and page metadata/preview verify. [Delivery](evidence/c531-delivery.json). No Workshop upload, live-server or sibling change.
 
 Test after uploading 0.2.71.2 and restarting server and clients. No new world required.
 
