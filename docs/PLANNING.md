@@ -1,4 +1,6 @@
-# Planning
+#C518 scope addition: owner requests faster Makeshift Bomb loading into turrets. Confirmed weight-based per-item duration and exclusion from both client/server light-ammo batching. Include bounded loading parity without changing bomb weight, capacity or damage. Broader 1A/1B selection remains pending; no build changed.
+
+ Planning
 
 **C518 / Child projectile timing and identity failure investigated (2026-10-30).** Owner reports overall/Tether improvement but wrong Splitter/Fragment timing and tracer-only children. [Findings and choices](MULTIPLAYER_FEEDBACK_C518.md): actual production functions reproduce Potato children and Ballista Fragment as instant firearm volleys; Ballista Splitter already launches spears. Ordinary Fragment has a fixed 250 ms wait; Lobber uses separate flight/fuse jobs and generic client shapes. Owner also reports unsmooth rotary heads. Production replay confirms a 250 ms prediction horizon against 250 ms snapshots freezes then jumps with transit delay. Sixteen diagnostic assertions reproduce these paths; full harness with this optional audit passes 40,417 assertions. Local console confirms 0.2.70.11 but lacks detailed child/Tether timeline events; residual Tether latency is not attributed. Recommend **1A full child identity/timeline and rotary correction plus measured Tether follow-up**; **1B visuals only**. No shipped code, package, install or upload change. Prior GitHub automatic approval-review block remains. **Decision needed.**
 

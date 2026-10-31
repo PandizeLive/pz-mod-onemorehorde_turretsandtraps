@@ -28,3 +28,9 @@ The captured local console loads **0.2.70.11**. It contains no retained detailed
 Option 1A also includes both rotary heads' continuous visual motion and snapshot reconciliation. Before packaging, reproduce the current failures and show the replacement passes across Potato, Ballista, Lobber ammunition families, Arc, Scrapshot and firearm Splitter/Fragment paths, including mixed modules, packet delay/reordering and save/reload. Keep server damage/death/Horde/XP authority and bounded scheduling. Connected rendered acceptance remains a separate owner check.
 
 High reasoning is appropriate for this multi-path timing correction; likely more than 25 minutes including native checks, so Fast is recommended if available. **Decision needed.**
+
+## Makeshift Bomb transfer addition
+
+Owner requests faster Makeshift Bomb transfer into turrets to match other ammunition. Confirmed: its script weight is 1, so `TurretTransferAction.getDuration` assigns 50 duration units per bomb before traits/gloves. The client queue and server validation only batch ammunition weighing at most 0.1, in groups of at most 20. Bombs therefore miss the fast light-ammo path on both sides; shortening only the UI timer would not fix the per-item multiplayer transfers.
+
+Include faster, bounded Makeshift Bomb loading in the pending patch. Reuse the existing exact-item batch transfer with consistent client/server eligibility and a light-ammo loading duration; preserve actual item weight, capacity, per-item permissions, trait modifiers and interruption handling. Verify both Manage and native inventory drag paths, partial capacity, simultaneous transfers and duplicate rejection. Check SP timing as well as the MP action override. This request settles the bomb-loading requirement; it does not select C518's broader 1A/1B timing proposal. No shipped code changed during this investigation.
