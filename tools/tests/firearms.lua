@@ -1,8 +1,9 @@
+-- Historical tuning fixture; current defaults/endurance are verified in corrections_c534.lua.
 local G = require("OMHTT/Firearms")
 local T = require("OMHTT/Turret")
 local W = require("OMHTT/TurretWorld")
 local oldSettings = SandboxVars.OMHTurretsTraps
-SandboxVars.OMHTurretsTraps = {Enabled = true, PotatoTurret = true, PotatoRequirePower = false, FirearmAccuracyMultiplier = 3}
+SandboxVars.OMHTurretsTraps = {FirearmBatteryMultiplier=1.5, BallistaBatteryPercent=.025, RotaryBatteryHours=6, RotaryBladesBatteryMultiplier=2, LobberBatteryMultiplier=1.5, ScrapshotBatteryPercent=.0025, ArcBatteryPercent=.02,TurretStandbyEnabled = false, Enabled = true, PotatoTurret = true, PotatoRequirePower = false, FirearmAccuracyMultiplier = 3}
 local definitions = {{"Base.Pistol", "Base.Bullets9mm", 15, false},
     {"Base.Shotgun", "Base.ShotgunShells", 6, true}, {"Base.HuntingRifle", "Base.308Bullets", 4, true}}
 local function item(fullType)
@@ -48,6 +49,7 @@ local function container()
     local value = {items = {}}
     function value:getType() return T.CONTAINER end
     function value:getContainingItem() return nil end
+    function value:getParent() return nil end
     function value:getItems()
         return {size = function() return #value.items end, get = function(self, index) return value.items[index + 1] end}
     end
@@ -81,7 +83,22 @@ function generic:getFireMode() return "Auto" end
 function generic:getCyclicRateMultiplier() return 1 end
 function generic:isRackAfterShoot() return false end
 local auto = Stats.resolve({head = generic, active = {}})
+SandboxVars.OMHTurretsTraps.FirearmBatteryMultiplier = 1
+local oldDraw = Stats.resolve({head = generic, active = {}})
+check(math.abs(auto.batteryPercent - oldDraw.batteryPercent * 1.5) < .000000001,
+    "New default multiplies every supported firearm by 1.5")
+check(auto.generatorFuel == oldDraw.generatorFuel, "Firearm battery factor leaves generator fuel unchanged")
+SandboxVars.OMHTurretsTraps.FirearmBatteryMultiplier = 2
+check(math.abs(Stats.resolve({head = generic, active = {}}).batteryPercent - oldDraw.batteryPercent * 2) < .000000001,
+    "Custom firearm battery factor remains effective")
+SandboxVars.OMHTurretsTraps.FirearmBatteryMultiplier = 1.5
 check(math.abs(auto.cooldown - 1000 / 3 / 1.5 / .75) < .001, "Automatic cadence uses clip/speed rather than recoil delay")
+function generic:getFireMode() return "Single" end
+function generic:getFireModePossibilities() return {size = function() return 2 end, get = function(_, i) return i == 0 and "Single" or "Auto" end} end
+check(math.abs(Stats.resolve({head = generic, active = {}}).cooldown - auto.cooldown) < .001, "Supported Auto cadence does not depend on modded default Single mode")
+local enhanced = Stats.resolve({head = generic, active = {FiringEnhanced = 1}})
+check(math.abs(enhanced.cooldown - auto.cooldown * .75) < .001, "Enhanced Firing removes the default 75-percent reduction")
+check(Stats.resolve({head = generic, active = {FiringEnhanced = 1, RapidFire = 1}}).cooldown < enhanced.cooldown, "Rapid-Fire still improves Enhanced Firing within its scaled floor")
 SandboxVars.OMHTurretsTraps.FirearmRateMultiplier = 1
 local full = Stats.resolve({head = generic, active = {}})
 check(math.abs(auto.cooldown * .75 - full.cooldown) < .001, "Global rate scales proportionally")
@@ -124,7 +141,7 @@ for n = 1, #definitions do
     check(config.range == ({15, 12, 40})[n], "Each supported firearm uses its own native range")
     check(config.critChance == ({20, 70, 30})[n] and config.critMultiplier == ({4, 12, 4})[n], "Native critical chance and multiplier retained")
     local modded = require("OMHTT/TurretStats").resolve({head = gun, active = {Critical = 2, Accuracy = 2}})
-    check(modded.critChance == config.critChance + 10 and modded.critMultiplier == config.critMultiplier, "Critical stacks add percentage points without multiplying critical damage")
+    check(modded.critChance == config.critChance + 20 and modded.critMultiplier == config.critMultiplier, "Critical first and additional copies add points without multiplying critical damage")
     check(modded.accuracy <= 100 and modded.accuracy >= config.accuracy, "Accuracy stacks respect 100 percent")
     local expectedCooldown = {400 / .75, 1000 / .75, 1200 / .75}
     check(math.abs(config.cooldown - expectedCooldown[n]) < .001, "Native recoil and manual cycling determine per-weapon cadence")
@@ -151,6 +168,7 @@ for n = 1, #definitions do
     check(boosted.reload == 0 and boosted.cooldown > 0 and boosted.rack > 0, "Autoloader preserves shot and pump/bolt cadence")
     local rapid = item(T.TYPES.RapidFire)
     local reloadA, reloadB = item(T.TYPES.Reload), item(T.TYPES.Reload)
+    storage:AddItem(item(T.TYPES.CapacityLarge))
     storage:AddItem(rapid); storage:AddItem(reloadA); storage:AddItem(reloadB)
     check(T.cycleConfig(T.contents(storage)).cooldown < config.cooldown, "Rapid-Fire affects firearm cadence")
     for i = #storage.items, 1, -1 do
@@ -207,6 +225,19 @@ check(victim.health < 5 and G.loaded(pair.gun) == 2 and noise == 1, "Gun spends 
 check(#require("OMHTT/PrototypeCombat").pending == 0, "Firearm does not launch potato projectiles")
 local prior = G.loaded(pair.gun)
 check(W.fire(nil, object, victim) == "Cooling" and G.loaded(pair.gun) == prior, "Gun integration enforces cooldown before spending")
+for i = 1, #pair.storage.items do
+    local module = pair.storage.items[i]
+    if module.fullType == T.TYPES.Firing then module.fullType = T.TYPES.FiringImprovised end
+end
+function pair.gun:getClickSound() return "M9Jam" end
+testMillis = G.state(pair.gun).nextShot
+SandboxVars.OMHTurretsTraps.ImprovisedFiringFailure = 100
+local beforeFailureHealth = victim.health
+check(W.fire(nil, object, victim) == "Misfire" and G.loaded(pair.gun) == prior
+    and not pair.gun:isJammed() and victim.health == beforeFailureHealth and noise == 1,
+    "Improvised firearm failure preserves chamber, health and noise without creating a jam")
+check(W.fire(nil, object, victim) == "Cooling", "Firearm failed-trigger cooldown prevents immediate retry")
+SandboxVars.OMHTurretsTraps.ImprovisedFiringFailure = nil
 SandboxVars.OMHTurretsTraps.FirearmAccuracyMultiplier = 0
 check(T.cycleConfig(T.contents(pair.storage)).accuracy == 0, "Zero accuracy multiplier allows no hits")
 SandboxVars.OMHTurretsTraps.FirearmTurrets = false
@@ -220,8 +251,11 @@ function gun:setContainsClip(value) self.clip = value end
 local carried = container()
 function carried:isInCharacterInventory() return true end
 local operator = {getInventory = function() return carried end, removeFromHands = function() end}
-local oldNear, oldRefresh, oldStop = W.near, W.refresh, ISBaseTimedAction.stop
+local Access = require("OMHTT/TurretAccess")
+local oldNear, oldRefresh, oldStop = Access.near, W.refresh, ISBaseTimedAction.stop
+local oldWorldNear = W.near
 local near = true
+Access.near = function() return near end
 W.near = function() return near end
 W.refresh = function() end
 ISBaseTimedAction.stop = function() end
@@ -252,6 +286,157 @@ action = Action:new(operator, object, magazine)
 action.started, G.servicing[gun] = true, action
 check(action:complete() and G.loaded(gun) == 8 and not carried:contains(magazine), "Completed insertion conserves rounds and chamber")
 check(not action:complete() and G.loaded(gun) == 8, "Duplicate complete cannot insert twice")
-W.near, W.refresh, ISBaseTimedAction.stop = oldNear, oldRefresh, oldStop
+-- Expanded magazines use real reserve items as a loaded extension.
+local Feed = require("OMHTT/FirearmFeed")
+local extended = container()
+gun.ammo, gun.chamber, gun.clip, gun.data = 0, false, true, {}
+extended:AddItem(gun)
+for i = 1, 50 do extended:AddItem(item("Base.Bullets9mm")) end
+local extendedStats = Stats.resolve({head = gun, powerLoad = 5, active = {Magazine = 2, Splitter = 3}})
+check(extendedStats.magazine == 27 and extendedStats.modulePower == 6, "Magazine scales linearly and all module power adds to base")
+G.update(T.contents(extended), extendedStats, 1000000, true)
+G.update(T.contents(extended), extendedStats, 1100000, true)
+G.update(T.contents(extended), extendedStats, 1200000, true)
+check(G.loaded(gun) == 27 and gun.ammo == 14 and Feed.count(gun) == 12 and T.contents(extended).ammo == 50,
+    "Expanded reload preserves native capacity, physical feed rounds and total ammunition")
+check(G.consume(T.contents(extended), extendedStats, 1200000) and G.loaded(gun) == 23 and T.contents(extended).ammo == 46,
+    "Splitter spends four ready rounds, without charging reserve")
+Feed.restore(gun, 15, operator, false)
+check(T.contents(extended).ammo == 46 and gun.ammo + Feed.count(gun) == 15,
+    "Removing capacity returns surplus to already-paid reserve storage")
+local nativeLoaded = gun.ammo + 1
+Feed.restore(gun, 15, operator, true)
+check(Feed.count(gun) == 0 and G.loaded(gun) == nativeLoaded and T.contents(extended).ammo == 46,
+    "Head/magazine removal releases all feed rounds without creating or deleting items")
+for ready = 1, 4 do
+    gun.ammo, gun.chamber, gun.data = ready - 1, true, {}
+    local before = T.contents(extended).ammo
+    check(G.consume(T.contents(extended), extendedStats, 2000000) and G.loaded(gun) == 0
+        and T.contents(extended).ammo == before - ready, "Partial Splitter volleys spend available ready rounds only")
+end
+gun.ammo, gun.chamber, gun.data = 0, false, {}
+local beforeEmpty = T.contents(extended).ammo
+check(not G.consume(T.contents(extended), extendedStats, 3000000) and T.contents(extended).ammo == beforeEmpty,
+    "Empty chamber cannot spend reserve immediately")
+local Volley = require("OMHTT/TurretVolley")
+function object:getContainer() return extended end
+extended:AddItem(item(T.TYPES.CapacityLarge))
+for _, name in pairs({"Magazine", "Magazine", "Splitter", "Splitter", "Splitter", "Fragment"}) do
+    extended:AddItem(item(T.TYPES[name]))
+end
+function gun:getProjectileCount() return 8 end
+SandboxVars.OMHTurretsTraps.FirearmAccuracyMultiplier = 3
+for tick = 1, 3 do
+    testMillis = testMillis + 1000000
+    G.update(T.contents(extended), T.cycleConfig(T.contents(extended)), testMillis, true)
+end
+Volley.reset()
+local battery = item("Base.CarBattery1")
+battery.charge = 1
+function battery:getCurrentUsesFloat() return self.charge end
+function battery:setCurrentUsesFloat(value) self.charge = value end
+extended:AddItem(battery)
+function origin:hasGridPower() return false end
+function origin:haveElectricity() return false end
+SandboxVars.OMHTurretsTraps.PotatoRequirePower = true
+local beforeVolley = T.contents(extended).ammo
+for i = 1, 256 do Volley.queue[i] = {} end
+check(W.fire(operator, object, victim) == "Unavailable" and T.contents(extended).ammo == beforeVolley and battery.charge == 1,
+    "Queue backpressure rejects before ammo or power commit")
+Volley.reset()
+check(W.fire(operator, object, victim) == "Fired" and T.contents(extended).ammo == beforeVolley - 4,
+    "Integrated multi-pellet volley spends the combined cost once")
+check(#Volley.queue == 8 and Volley.reserved == 1, "Multi-pellet primary makes one five-fragment burst plus three side rays")
+check(math.abs(battery.charge - (1 - .0000045 * 1.5 * (1 + T.contents(extended).powerLoad))) < .000001, "Physical modules add rarity surcharges once per shot")
+Volley.reset()
+gun.ammo, gun.chamber, gun.data = 0, true, {}
+victim.health = .0001
+testMillis = testMillis + 1000000
+beforeVolley = T.contents(extended).ammo
+battery.charge = .00001
+check(W.fire(operator, object, victim) == "NoPower" and T.contents(extended).ammo == beforeVolley and battery.charge == .00001,
+    "Insufficient multiplied power cannot spend a final round")
+battery.charge = .998
+check(W.fire(operator, object, victim) == "Fired" and victim:isDead() and T.contents(extended).ammo == beforeVolley - 1,
+    "Last-round exception pays one round and lethal primary remains eligible")
+check(#Volley.queue == 8 and Volley.queue[1].damage > .0001, "Lethal primary still produces full-budget fragments once")
+Volley.reset()
+SandboxVars.OMHTurretsTraps = {FirearmBatteryMultiplier=1.5, BallistaBatteryPercent=.025, RotaryBatteryHours=6, RotaryBladesBatteryMultiplier=2, LobberBatteryMultiplier=1.5, ScrapshotBatteryPercent=.0025, ArcBatteryPercent=.02,}
+local powerItems = container()
+powerItems:AddItem(item(T.TYPES.FiringEnhanced))
+powerItems:AddItem(item(T.TYPES.MotionDetectionImprovised))
+powerItems:AddItem(item(T.TYPES.CapacityLarge))
+local brokenModule = item(T.TYPES.Execute)
+brokenModule.condition = 0
+powerItems:AddItem(brokenModule)
+local powerContents = T.contents(powerItems)
+check(math.abs(powerContents.powerLoad - 2.15) < .000001 and powerContents.active.Firing == 1 and powerContents.active.FiringEnhanced == 1,
+    "Enhanced aliases count once, separate expansion and broken modules cost nothing")
+local powerStats = Stats.resolve(powerContents)
+check(math.abs(powerStats.batteryPercent - .0014175) < .0000001 and powerStats.weaponPower == 1,
+    "Two working modules and potato floor match approved battery cost")
+for _, name in pairs({"Piercing", "InitialBlow", "Execute", "Impact"}) do
+    check(T.kind(item(T.TYPES[name])) == "module" and require("OMHTT/TurretRarity").get(name).surcharge == ({Piercing = .25, InitialBlow = .5, Execute = 1, Impact = .5})[name],
+        "Offensive modules use their loaded rarity surcharge")
+end
+local reference = item("Base.Pistol")
+function reference:getMaxAmmo() return 15 end
+function reference:isRackAfterShoot() return false end
+local m9 = Stats.resolve({head = reference, active = {}, powerLoad = 16})
+check(math.abs(m9.batteryPercent - .011475) < .0000001 and math.abs(m9.generatorFuel - .0017) < .0000001,
+    "Sixteen-module M9 battery and generator cost match approved references")
+function reference:getMinDamage() return 1.2 end
+function reference:getMaxDamage() return 2 end
+function reference:getMaxRange() return 40 end
+local rifle = Stats.resolve({head = reference, active = {}, powerLoad = 16})
+check(math.abs(rifle.weaponPower - math.sqrt(16 / 3)) < .0000001 and math.floor(100 / rifle.batteryPercent) == 3773,
+    "MSR788-equivalent stats resolve expected weapon factor and endurance")
+local boosted = Stats.resolve({head = reference, active = {Velocity = 16, Range = 16, InitialBlow = 16, Execute = 16}, powerLoad = 16})
+check(boosted.damage > rifle.damage and boosted.range > rifle.range and boosted.batteryPercent == rifle.batteryPercent,
+    "Power uses pre-module ordinary damage and range, not conditional output")
+function reference:getMaxRange() return 400 end
+check(math.abs(Stats.resolve({head = reference, active = {}}).weaponPower - math.sqrt(2 * 50 / 15)) < .0000001,
+    "Weapon power uses the actual supported range cap")
+SandboxVars.OMHTurretsTraps = {FirearmBatteryMultiplier=1.5, BallistaBatteryPercent=.025, RotaryBatteryHours=6, RotaryBladesBatteryMultiplier=2, LobberBatteryMultiplier=1.5, ScrapshotBatteryPercent=.0025, ArcBatteryPercent=.02,PotatoBatteryPercentPerShot = .1, PotatoGeneratorFuelPerShot = .001, ModulePowerBonus = 10, SplitterPower = 200, FragmentPower = 200}
+local custom = Stats.resolve({active = {Splitter = 1, Fragment = 1}, powerLoad = 2})
+check(math.abs(custom.batteryPercent - .5) < .0000001 and math.abs(custom.generatorFuel - .005) < .0000001,
+    "Saved custom base costs survive, retired Splitter/Fragment surcharges do not double-charge")
+local accuracy = require("OMHTT/FirearmAccuracy")
+local oldChance, rolls = accuracy.chance, 0
+accuracy.chance = function() rolls = rolls + 1; return 0 end
+function gun:getProjectileCount() return 9 end
+local pelletStats = Stats.resolve({head = gun, active = {Piercing = 2, Fragment = 1}})
+check(pelletStats.piercing == 2, "Shotgun enables the same one-chain Piercing count as other guns")
+local pelletOptions = {weapon = gun, stats = pelletStats, damage = pelletStats.damage / 100,
+    critical = false, profile = {heading = 0, cone = 360, range = 50}}
+local beforeHealth = victim.health
+Volley.reset(); Volley.reserve(pelletOptions)
+require("OMHTT/FirearmCombat").hit({id = "aim", shots = 1}, object:getSquare(), victim, operator, pelletOptions)
+check(rolls == 1 and victim.health == beforeHealth and #Volley.queue == 1 and Volley.queue[1].group.kind == "terminal",
+    "Nine-pellet shotgun rolls accuracy once; a complete miss still traces its terminal Fragment endpoint")
+accuracy.chance = oldChance
+Volley.cancel(pelletOptions); Volley.reset()
+Access.near, W.refresh, ISBaseTimedAction.stop = oldNear, oldRefresh, oldStop
+W.near = oldWorldNear
 T.hybrid, addSound = oldHybrid, oldSound
+local reloadGun, reloadStorage = item("Base.Pistol"), container()
+function reloadGun:getAmmoType() return {getItemKey = function() return "Base.Bullets9mm" end} end
+function reloadGun:getMaxAmmo() return 15 end
+function reloadGun:getMagazineType() return "Base.9mmClip" end
+function reloadGun:isRackAfterShoot() return false end
+reloadStorage:AddItem(reloadGun)
+reloadGun.ammo, reloadGun.chamber = 5, true
+for i = 1, 20 do reloadStorage:AddItem(item("Base.Bullets9mm")) end
+local extension = require("OMHTT/FirearmFeed")
+extension.set(reloadGun, 4)
+local reloadConfig = Stats.resolve({head = reloadGun, active = {Magazine = 1}})
+local reloadState = G.state(reloadGun)
+reloadState.impactReady, reloadState.conservationDebt, reloadState.nextShot = false, .5, 900000
+local totalBefore = T.contents(reloadStorage).ammo
+check(require("OMHTT/TurretReload").start(T.contents(reloadStorage), reloadConfig, 500000), "Partial native magazine starts manual top-up")
+G.update(T.contents(reloadStorage), reloadConfig, 500000 + reloadConfig.reload, true)
+check(T.contents(reloadStorage).ammo == totalBefore and reloadGun.ammo == 15
+    and extension.count(reloadGun) == reloadConfig.magazine - 15, "Native and extended loaded rounds top up without duplication")
+check(reloadGun.chamber and reloadState.conservationDebt == .5 and not reloadState.impactReady and reloadState.nextShot == 900000,
+    "Native manual reload retains chamber, debt, cooldown and Impact")
 SandboxVars.OMHTurretsTraps = oldSettings

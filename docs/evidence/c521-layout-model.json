@@ -1,0 +1,406 @@
+{
+  "kind": "Illustrative deterministic design model, not game simulation",
+  "assumptions": "Design model, NOT PZ runtime evidence or a proposed gameplay implementation.\n\n100 zombies, ten identical straight lanes, 100 HP each, 45 damage/hit,\none tile/second, two seconds between arrivals per lane. Optional eight-second\ndwell on the final tile represents a blocked perimeter. No AI, armor, slowdown,\ntrip chance, networking or player attacks. Instant strokes; no 150ms admission\nwindow. Identical lanes are simulated once and multiplied by ten.\n",
+  "cases": [
+    {
+      "rows": 1,
+      "tiles": 10,
+      "mode": "repeat",
+      "lastTileDwellSeconds": 0,
+      "kills": 0,
+      "survivors": 100,
+      "damagingHits": 100,
+      "corpseBlockedTilesAtEnd": 0
+    },
+    {
+      "rows": 1,
+      "tiles": 10,
+      "mode": "live_reset",
+      "lastTileDwellSeconds": 0,
+      "kills": 0,
+      "survivors": 100,
+      "damagingHits": 100,
+      "corpseBlockedTilesAtEnd": 0
+    },
+    {
+      "rows": 1,
+      "tiles": 10,
+      "mode": "corpse_lock",
+      "lastTileDwellSeconds": 0,
+      "kills": 0,
+      "survivors": 100,
+      "damagingHits": 100,
+      "corpseBlockedTilesAtEnd": 0
+    },
+    {
+      "rows": 1,
+      "tiles": 10,
+      "mode": "clear_all",
+      "lastTileDwellSeconds": 0,
+      "kills": 0,
+      "survivors": 100,
+      "damagingHits": 100,
+      "corpseBlockedTilesAtEnd": 0
+    },
+    {
+      "rows": 1,
+      "tiles": 10,
+      "mode": "auto_clear_6s",
+      "lastTileDwellSeconds": 0,
+      "kills": 0,
+      "survivors": 100,
+      "damagingHits": 100,
+      "corpseBlockedTilesAtEnd": 0
+    },
+    {
+      "rows": 3,
+      "tiles": 30,
+      "mode": "repeat",
+      "lastTileDwellSeconds": 0,
+      "kills": 100,
+      "survivors": 0,
+      "damagingHits": 300,
+      "corpseBlockedTilesAtEnd": 0
+    },
+    {
+      "rows": 3,
+      "tiles": 30,
+      "mode": "live_reset",
+      "lastTileDwellSeconds": 0,
+      "kills": 100,
+      "survivors": 0,
+      "damagingHits": 300,
+      "corpseBlockedTilesAtEnd": 0
+    },
+    {
+      "rows": 3,
+      "tiles": 30,
+      "mode": "corpse_lock",
+      "lastTileDwellSeconds": 0,
+      "kills": 10,
+      "survivors": 90,
+      "damagingHits": 210,
+      "corpseBlockedTilesAtEnd": 10
+    },
+    {
+      "rows": 3,
+      "tiles": 30,
+      "mode": "clear_all",
+      "lastTileDwellSeconds": 0,
+      "kills": 10,
+      "survivors": 90,
+      "damagingHits": 210,
+      "corpseBlockedTilesAtEnd": 10
+    },
+    {
+      "rows": 3,
+      "tiles": 30,
+      "mode": "auto_clear_6s",
+      "lastTileDwellSeconds": 0,
+      "kills": 40,
+      "survivors": 60,
+      "damagingHits": 240,
+      "corpseBlockedTilesAtEnd": 0
+    },
+    {
+      "rows": 6,
+      "tiles": 60,
+      "mode": "repeat",
+      "lastTileDwellSeconds": 0,
+      "kills": 100,
+      "survivors": 0,
+      "damagingHits": 300,
+      "corpseBlockedTilesAtEnd": 0
+    },
+    {
+      "rows": 6,
+      "tiles": 60,
+      "mode": "live_reset",
+      "lastTileDwellSeconds": 0,
+      "kills": 100,
+      "survivors": 0,
+      "damagingHits": 300,
+      "corpseBlockedTilesAtEnd": 0
+    },
+    {
+      "rows": 6,
+      "tiles": 60,
+      "mode": "corpse_lock",
+      "lastTileDwellSeconds": 0,
+      "kills": 40,
+      "survivors": 60,
+      "damagingHits": 240,
+      "corpseBlockedTilesAtEnd": 40
+    },
+    {
+      "rows": 6,
+      "tiles": 60,
+      "mode": "clear_all",
+      "lastTileDwellSeconds": 0,
+      "kills": 40,
+      "survivors": 60,
+      "damagingHits": 240,
+      "corpseBlockedTilesAtEnd": 40
+    },
+    {
+      "rows": 6,
+      "tiles": 60,
+      "mode": "auto_clear_6s",
+      "lastTileDwellSeconds": 0,
+      "kills": 100,
+      "survivors": 0,
+      "damagingHits": 300,
+      "corpseBlockedTilesAtEnd": 0
+    },
+    {
+      "rows": 12,
+      "tiles": 120,
+      "mode": "repeat",
+      "lastTileDwellSeconds": 0,
+      "kills": 100,
+      "survivors": 0,
+      "damagingHits": 300,
+      "corpseBlockedTilesAtEnd": 0
+    },
+    {
+      "rows": 12,
+      "tiles": 120,
+      "mode": "live_reset",
+      "lastTileDwellSeconds": 0,
+      "kills": 100,
+      "survivors": 0,
+      "damagingHits": 300,
+      "corpseBlockedTilesAtEnd": 0
+    },
+    {
+      "rows": 12,
+      "tiles": 120,
+      "mode": "corpse_lock",
+      "lastTileDwellSeconds": 0,
+      "kills": 100,
+      "survivors": 0,
+      "damagingHits": 300,
+      "corpseBlockedTilesAtEnd": 100
+    },
+    {
+      "rows": 12,
+      "tiles": 120,
+      "mode": "clear_all",
+      "lastTileDwellSeconds": 0,
+      "kills": 100,
+      "survivors": 0,
+      "damagingHits": 300,
+      "corpseBlockedTilesAtEnd": 100
+    },
+    {
+      "rows": 12,
+      "tiles": 120,
+      "mode": "auto_clear_6s",
+      "lastTileDwellSeconds": 0,
+      "kills": 100,
+      "survivors": 0,
+      "damagingHits": 300,
+      "corpseBlockedTilesAtEnd": 0
+    },
+    {
+      "rows": 1,
+      "tiles": 10,
+      "mode": "repeat",
+      "lastTileDwellSeconds": 8,
+      "kills": 100,
+      "survivors": 0,
+      "damagingHits": 300,
+      "corpseBlockedTilesAtEnd": 0
+    },
+    {
+      "rows": 1,
+      "tiles": 10,
+      "mode": "live_reset",
+      "lastTileDwellSeconds": 8,
+      "kills": 0,
+      "survivors": 100,
+      "damagingHits": 10,
+      "corpseBlockedTilesAtEnd": 0
+    },
+    {
+      "rows": 1,
+      "tiles": 10,
+      "mode": "corpse_lock",
+      "lastTileDwellSeconds": 8,
+      "kills": 10,
+      "survivors": 90,
+      "damagingHits": 40,
+      "corpseBlockedTilesAtEnd": 10
+    },
+    {
+      "rows": 1,
+      "tiles": 10,
+      "mode": "clear_all",
+      "lastTileDwellSeconds": 8,
+      "kills": 0,
+      "survivors": 100,
+      "damagingHits": 10,
+      "corpseBlockedTilesAtEnd": 0
+    },
+    {
+      "rows": 1,
+      "tiles": 10,
+      "mode": "auto_clear_6s",
+      "lastTileDwellSeconds": 8,
+      "kills": 40,
+      "survivors": 60,
+      "damagingHits": 230,
+      "corpseBlockedTilesAtEnd": 0
+    },
+    {
+      "rows": 3,
+      "tiles": 30,
+      "mode": "repeat",
+      "lastTileDwellSeconds": 8,
+      "kills": 100,
+      "survivors": 0,
+      "damagingHits": 300,
+      "corpseBlockedTilesAtEnd": 0
+    },
+    {
+      "rows": 3,
+      "tiles": 30,
+      "mode": "live_reset",
+      "lastTileDwellSeconds": 8,
+      "kills": 100,
+      "survivors": 0,
+      "damagingHits": 300,
+      "corpseBlockedTilesAtEnd": 0
+    },
+    {
+      "rows": 3,
+      "tiles": 30,
+      "mode": "corpse_lock",
+      "lastTileDwellSeconds": 8,
+      "kills": 10,
+      "survivors": 90,
+      "damagingHits": 210,
+      "corpseBlockedTilesAtEnd": 10
+    },
+    {
+      "rows": 3,
+      "tiles": 30,
+      "mode": "clear_all",
+      "lastTileDwellSeconds": 8,
+      "kills": 10,
+      "survivors": 90,
+      "damagingHits": 210,
+      "corpseBlockedTilesAtEnd": 10
+    },
+    {
+      "rows": 3,
+      "tiles": 30,
+      "mode": "auto_clear_6s",
+      "lastTileDwellSeconds": 8,
+      "kills": 100,
+      "survivors": 0,
+      "damagingHits": 300,
+      "corpseBlockedTilesAtEnd": 0
+    },
+    {
+      "rows": 6,
+      "tiles": 60,
+      "mode": "repeat",
+      "lastTileDwellSeconds": 8,
+      "kills": 100,
+      "survivors": 0,
+      "damagingHits": 300,
+      "corpseBlockedTilesAtEnd": 0
+    },
+    {
+      "rows": 6,
+      "tiles": 60,
+      "mode": "live_reset",
+      "lastTileDwellSeconds": 8,
+      "kills": 100,
+      "survivors": 0,
+      "damagingHits": 300,
+      "corpseBlockedTilesAtEnd": 0
+    },
+    {
+      "rows": 6,
+      "tiles": 60,
+      "mode": "corpse_lock",
+      "lastTileDwellSeconds": 8,
+      "kills": 40,
+      "survivors": 60,
+      "damagingHits": 240,
+      "corpseBlockedTilesAtEnd": 40
+    },
+    {
+      "rows": 6,
+      "tiles": 60,
+      "mode": "clear_all",
+      "lastTileDwellSeconds": 8,
+      "kills": 40,
+      "survivors": 60,
+      "damagingHits": 240,
+      "corpseBlockedTilesAtEnd": 40
+    },
+    {
+      "rows": 6,
+      "tiles": 60,
+      "mode": "auto_clear_6s",
+      "lastTileDwellSeconds": 8,
+      "kills": 100,
+      "survivors": 0,
+      "damagingHits": 300,
+      "corpseBlockedTilesAtEnd": 0
+    },
+    {
+      "rows": 12,
+      "tiles": 120,
+      "mode": "repeat",
+      "lastTileDwellSeconds": 8,
+      "kills": 100,
+      "survivors": 0,
+      "damagingHits": 300,
+      "corpseBlockedTilesAtEnd": 0
+    },
+    {
+      "rows": 12,
+      "tiles": 120,
+      "mode": "live_reset",
+      "lastTileDwellSeconds": 8,
+      "kills": 100,
+      "survivors": 0,
+      "damagingHits": 300,
+      "corpseBlockedTilesAtEnd": 0
+    },
+    {
+      "rows": 12,
+      "tiles": 120,
+      "mode": "corpse_lock",
+      "lastTileDwellSeconds": 8,
+      "kills": 100,
+      "survivors": 0,
+      "damagingHits": 300,
+      "corpseBlockedTilesAtEnd": 100
+    },
+    {
+      "rows": 12,
+      "tiles": 120,
+      "mode": "clear_all",
+      "lastTileDwellSeconds": 8,
+      "kills": 100,
+      "survivors": 0,
+      "damagingHits": 300,
+      "corpseBlockedTilesAtEnd": 100
+    },
+    {
+      "rows": 12,
+      "tiles": 120,
+      "mode": "auto_clear_6s",
+      "lastTileDwellSeconds": 8,
+      "kills": 100,
+      "survivors": 0,
+      "damagingHits": 300,
+      "corpseBlockedTilesAtEnd": 0
+    }
+  ]
+}

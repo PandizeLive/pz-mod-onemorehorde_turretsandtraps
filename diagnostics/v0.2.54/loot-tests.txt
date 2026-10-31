@@ -1,0 +1,289 @@
+✔ cloud schema matches all 32 local module controls (2.4495ms)
+✔ prior catalog keeps exact account weights and tiers while adding Siphon (1.736ms)
+✔ catalog rejects malformed new weights and unknown component IDs (0.3899ms)
+Passed: all 32 colors, family shapes, reorder stability and future-ID fallback.
+✔ tools\loot_site\test_appearance.cjs (227.254ms)
+{ smallShare: 0.6884320013191221, jackpotShare: 0.15326287436342856 }
+{
+  "haul": {
+    "expectedSuccessfulContainers": 2962.6851638021426,
+    "oneOrTwoShare": 0.6884320013191221,
+    "jackpotShare": 0.15326287436342856
+  },
+  "status": "passed",
+  "scope": "Numerical model, seeded per-container spawning and extracted-data integrity; no in-game spawn certification",
+  "generatedItems": 7553,
+  "elapsedMs": 6432,
+  "candidates": 18630,
+  "worldSamples": 256,
+  "baseline": {
+    "version": 1,
+    "baseline": "T&T 0.2.54",
+    "seed": 24601,
+    "tierWeights": {
+      "Abundant": 20,
+      "Common": 18,
+      "Uncommon": 14,
+      "Rare": 10,
+      "Epic": 6,
+      "Legendary": 3,
+      "Mythic": 1
+    },
+    "global": 1.011111111111111,
+    "material": 0.6,
+    "rolls": 1,
+    "retention": 1,
+    "selected": "all",
+    "overlay": "spawns",
+    "visible": {
+      "Firing": true,
+      "MotionDetection": true,
+      "Filter": true,
+      "Detection360": true,
+      "Suppression": true,
+      "RapidFire": true,
+      "Reload": true,
+      "Velocity": true,
+      "Range": true,
+      "CapacitySmall": true,
+      "Capacity": true,
+      "CapacityLarge": true,
+      "Autoloader": true,
+      "Critical": true,
+      "Accuracy": true,
+      "Magazine": true,
+      "Splitter": true,
+      "Fragment": true,
+      "FiringEnhanced": true,
+      "MotionDetectionEnhanced": true,
+      "Piercing": true,
+      "InitialBlow": true,
+      "Execute": true,
+      "Impact": true,
+      "Conservation": true,
+      "Synergy": true,
+      "Martyrdom": true,
+      "Tack": true,
+      "Regulator": true,
+      "Siphon": true,
+      "Lure": true,
+      "Void": true
+    },
+    "items": {
+      "Firing": 0.4666666666666667,
+      "MotionDetection": 0.4666666666666667,
+      "Filter": 3.6,
+      "Detection360": 4,
+      "Suppression": 4,
+      "RapidFire": 3.6,
+      "Reload": 4,
+      "Velocity": 2,
+      "Range": 3.6,
+      "CapacitySmall": 1.8666666666666667,
+      "Capacity": 2.4,
+      "CapacityLarge": 2,
+      "Autoloader": 0.6666666666666666,
+      "Critical": 4,
+      "Accuracy": 4,
+      "Magazine": 3.6,
+      "Splitter": 2.4,
+      "Fragment": 1.2,
+      "FiringEnhanced": 0.6666666666666666,
+      "MotionDetectionEnhanced": 0.6666666666666666,
+      "Piercing": 4,
+      "InitialBlow": 2.4,
+      "Execute": 1.2,
+      "Impact": 2.4,
+      "Conservation": 2.4,
+      "Synergy": 1,
+      "Martyrdom": 2,
+      "Tack": 2,
+      "Regulator": 3.6363636363636362,
+      "Siphon": 1,
+      "Lure": 1,
+      "Void": 1
+    }
+  },
+  "selectedEstimate": {
+    "mean": 7713.487219140626,
+    "lo": 7442,
+    "hi": 7985
+  },
+  "allComponentsMean": 7713.487219140626,
+  "pools": [
+    {
+      "name": "ElectronicStoreMisc",
+      "containers": 53.4609375
+    },
+    {
+      "name": "CrateElectronics",
+      "containers": 432.23828125
+    },
+    {
+      "name": "MechanicShelfElectric",
+      "containers": 44.734375
+    },
+    {
+      "name": "ArmyStorageElectronics",
+      "containers": 45.46484375
+    },
+    {
+      "name": "ElectricianTools",
+      "containers": 36
+    },
+    {
+      "name": "GunStoreAccessories",
+      "containers": 5.1171875
+    },
+    {
+      "name": "ToolCabinetMechanics",
+      "containers": 211.8203125
+    },
+    {
+      "name": "GarageTools",
+      "containers": 460.03125
+    },
+    {
+      "name": "CrateTools",
+      "containers": 906.37109375
+    },
+    {
+      "name": "ToolStoreTools",
+      "containers": 126.9453125
+    },
+    {
+      "name": "ToolStoreMisc",
+      "containers": 170.7734375
+    },
+    {
+      "name": "MechanicShelfTools",
+      "containers": 758.015625
+    },
+    {
+      "name": "GarageMechanics",
+      "containers": 786.6171875
+    },
+    {
+      "name": "CrateMechanics",
+      "containers": 116.44921875
+    },
+    {
+      "name": "ElectronicStoreComputers",
+      "containers": 51.8984375
+    },
+    {
+      "name": "ElectronicStoreHAMRadio",
+      "containers": 2.51953125
+    }
+  ],
+  "regions": [
+    {
+      "name": "WestPoint",
+      "mean": 413.64115000005523,
+      "lo": 350,
+      "hi": 473
+    },
+    {
+      "name": "Riverside",
+      "mean": 666.5259550781609,
+      "lo": 574,
+      "hi": 749
+    },
+    {
+      "name": "Muldraugh",
+      "mean": 472.7933675781785,
+      "lo": 414,
+      "hi": 542
+    },
+    {
+      "name": "Brandenburg",
+      "mean": 388.9717531250425,
+      "lo": 332,
+      "hi": 454
+    },
+    {
+      "name": "Ekron",
+      "mean": 432.484884375076,
+      "lo": 372,
+      "hi": 487
+    },
+    {
+      "name": "Irvington",
+      "mean": 458.3237468750307,
+      "lo": 396,
+      "hi": 529
+    },
+    {
+      "name": "EchoCreek",
+      "mean": 341.80437812503266,
+      "lo": 288,
+      "hi": 401
+    },
+    {
+      "name": "Louisville",
+      "mean": 3203.1850953126095,
+      "lo": 3023,
+      "hi": 3381
+    },
+    {
+      "name": "MarchRidge",
+      "mean": 160.84257500000925,
+      "lo": 116,
+      "hi": 207
+    },
+    {
+      "name": "FallasLake",
+      "mean": 302.4676187500253,
+      "lo": 244,
+      "hi": 357
+    },
+    {
+      "name": "Rosewood",
+      "mean": 439.0261375000432,
+      "lo": 374,
+      "hi": 502
+    },
+    {
+      "name": "ValleyStation",
+      "mean": 433.4205574218913,
+      "lo": 372,
+      "hi": 504
+    }
+  ]
+}
+✔ tools\loot_site\test_model.cjs (7760.1585ms)
+{
+  "passed": true,
+  "defaults": {
+    "Abundant": 3,
+    "Common": 4,
+    "Uncommon": 4,
+    "Rare": 5,
+    "Epic": 5,
+    "Legendary": 5,
+    "Mythic": 6
+  },
+  "savedAllOne": {
+    "Abundant": 2,
+    "Common": 1,
+    "Uncommon": 1,
+    "Rare": 8,
+    "Epic": 11,
+    "Legendary": 6,
+    "Mythic": 3
+  }
+}
+PASS reopening, matching weights, custom tier values, precision tolerance, duplicate tiers and computed rarity changes
+PASS tier snapshot conflict and scenario persistence
+PASS custom anchors, proportional boundaries, tie toward rarer, no extreme drift, invalid/export guards and automatic compatibility
+✔ tools\loot_site\test_tiers.cjs (235.33ms)
+PASS: direct weights for 32 modules, exact seeded-world preservation, fractional/zero/max inputs, invalid input rejection and Sandbox multiplier conversion.
+✔ tools\loot_site\test_weights.cjs (429.9621ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7800.5954

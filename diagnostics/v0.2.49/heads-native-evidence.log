@@ -1,0 +1,4 @@
+write: LOG  : Lua          f:0 st:122,016,415> [OMHTT-Heads] native recipes=3 outputs=3 retainedTools=verified timing=verified ammo=spears modules=filtered sounds=3
+write: LOG  : General      f:0 st:122,019,330> [OMHTT-Heads] persistence mode=write heads=3 identity=condition=modData=preserved
+read: LOG  : Lua          f:0 st:122,066,642> [OMHTT-Heads] native recipes=3 outputs=3 retainedTools=verified timing=verified ammo=spears modules=filtered sounds=3
+read: LOG  : General      f:0 st:122,069,546> [OMHTT-Heads] persistence mode=read heads=3 identity=condition=modData=preserved

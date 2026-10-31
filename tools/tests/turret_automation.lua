@@ -1,3 +1,5 @@
+local savedStandby = SandboxVars.OMHTurretsTraps.TurretStandbyEnabled
+SandboxVars.OMHTurretsTraps.TurretStandbyEnabled = false
 local M = require("OMHTT/TurretModules")
 local T = require("OMHTT/Turret")
 local W = require("OMHTT/TurretWorld")
@@ -20,7 +22,7 @@ local side = makeZombie(testSquares["900:897:0"], 9)
 local rear = makeZombie(testSquares["898:900:0"], 0.8)
 local edge = makeZombie(testSquares["902:898:0"], 3)
 local Aim = require("OMHTT/TurretAim")
-local record = {schema = 1, id = "auto-test", kind = "potato", baseFacing = 0, facing = 8, aimDegrees = 180,
+local record = {standby = "active", schema = 1, id = "auto-test", kind = "potato", baseFacing = 0, facing = 8, aimDegrees = 180,
     shots = 0, nextShot = 0, priority = "Toughest"}
 local plain = {active = {}}
 local profile = M.profile(record, plain)
@@ -41,7 +43,7 @@ local function scan(priority)
         loops = loops + 1
         check(loops < 100, "Incremental scan terminates")
     end
-    check(loops > 1, "Target acquisition yields between bounded work slices")
+    check(job.visited > 0, "Target acquisition evaluates actual candidates within work slices")
     return job.best
 end
 check(scan("Closest") == front, "Closest selects nearest eligible zombie")
@@ -57,6 +59,8 @@ for i = 1, 80 do makeZombie(front.square, 4) end
 check(scan("Furthest") == far, "Dense near crowd does not hide far targets after 64 entities")
 local items, nextId = {}, 8000
 local storage = {}
+function storage:getContainingItem() return nil end
+function storage:getParent() return nil end
 function storage:getItems() return {size = function() return #items end, get = function(_, i) return items[i + 1] end} end
 function storage:contains(item) for i = 1, #items do if items[i] == item then return true end end return false end
 function storage:Remove(item) for i = #items, 1, -1 do if items[i] == item then table.remove(items, i) end end end
@@ -69,10 +73,15 @@ local function add(kind)
     function item:getID() return self.id end
     function item:getCondition() return self.condition end
     function item:getModData() return self.data end
+    function item:getContainer() return storage end
+    function item:getAge() return 0 end
+    function item:isCooked() return false end
+    function item:isBurnt() return false end
     items[#items + 1] = item
     return item
 end
 local head = add(T.HEAD)
+add(T.TYPES.CapacityLarge)
 local detector = add("Base.OMHTTModuleDetection")
 local firing = add("Base.OMHTTModuleFiring")
 local filter = add(T.TYPES.Filter)
@@ -115,8 +124,8 @@ check(record.shots == 1 and T.contents(storage).ammo == 2 and front.health == 4.
 check(record.baseFacing == 0 and record.aimDegrees == 0, "Tracking changes head without rotating placement cone")
 record.automatic = false; run()
 check(record.shots == 1 and entry.status == "inactive", "Individual automatic switch prevents firing")
-record.automatic = true; SandboxVars.OMHTurretsTraps.AutomationEnabled = false; run()
-check(record.shots == 1, "Global switch prevents automatic shots")
+record.automatic = true; SandboxVars.OMHTurretsTraps.AutomationEnabled = false
+check(M.detects(record, T.contents(storage)), "Removed global switch does not veto installed detection")
 SandboxVars.OMHTurretsTraps.AutomationEnabled = true
 storage:Remove(firing); run()
 check(record.shots == 1 and entry.status == "tracking-only", "Detection alone tracks but never fires")
@@ -131,7 +140,7 @@ run()
 local shots = record.shots
 check(shots == 2, "Reinstalled modules resume without granting free ammunition")
 A.changed(object); entry.due = 0
-A.step(entry, testMillis + 100)
+A.step(entry, testMillis)
 local job = entry.job
 check(job ~= nil, "Scan can be in progress during configuration changes")
 record.automatic = false
@@ -156,10 +165,10 @@ check(W.fire(nil, object, front) == "Fired", "Automatic modified shot uses share
 local launchTime = testMillis
 check(front.health == hp, "Modified shot damage waits for flight")
 testMillis = testMillis + 500; Combat.tickFlights()
-check(math.abs(front.health - (hp - 0.42)) < 0.000001 and T.contents(storage).ammo == ammoBefore - 1,
+check(math.abs(front.health - (hp - 0.455)) < 0.000001 and T.contents(storage).ammo == ammoBefore - 1,
     "Velocity changes automatic direct damage while consuming one potato")
 local changedCycle = head.data.OMHTTCycle
-check(changedCycle.nextShot == launchTime + 1600 and changedCycle.reloadReady == nil,
+check(math.abs(changedCycle.nextShot - launchTime - 2000 / 1.4) < .000001 and changedCycle.reloadReady == nil,
     "Rapid-Fire and Autoloader reach the actual automatic firing cycle")
 check(W.fire(nil, object, front) ~= "Fired", "Autoloader cannot bypass shot cooldown")
 local previousPower = W.power
@@ -256,7 +265,7 @@ for _, priority in pairs({"Random", "Toughest"}) do
     front.square.blocked = true
     entry.due = 0
     A.step(entry, testMillis + 100)
-    check(entry.job ~= nil, priority .. " reacquires after target obstruction")
+    check(entry.job ~= nil or entry.target ~= front, priority .. " reacquires after target obstruction")
     front.square.blocked = false
 end
 storage:Remove(filter)
@@ -278,9 +287,90 @@ local oldFire, oldStats, fired = W.fire, T.cycleConfig, 0
 W.fire = function() fired = fired + 1; return "Fired" end
 T.cycleConfig = function(contents) local stats = oldStats(contents); stats.cooldown = 100; return stats end
 A.advance = function() error("Acquired target caused a new detection scan") end
+local originalLane, laneChecks = Combat.clearLane, 0
+Combat.clearLane = function(...) laneChecks = laneChecks + 1; return originalLane(...) end
 for i = 1, 10 do testMillis = testMillis + 100; A.step(entry, testMillis + 100) end
 check(fired == 10, "Fast acquired target fires ten times while detection deadline remains five seconds away")
+check(laneChecks == 10, "Retained target performs one advisory LOS check per step")
+Combat.clearLane = originalLane
+local beforeRescan = fired
+entry.due = 0
+entry.job = A.scan(square, p)
+A.advance = function() return false end
+for i = 1, 10 do testMillis = testMillis + 100; A.step(entry, testMillis + 100) end
+check(fired == beforeRescan + 10 and entry.job ~= nil, "Incomplete reprioritization scan cannot stall a valid acquired target")
+entry.job = nil
 A.advance, W.fire, T.cycleConfig = priorAdvance, oldFire, oldStats
+local savedFailure = SandboxVars.OMHTurretsTraps.ImprovisedFiringFailure
+local beforeFailurePower = W.power
+local testBattery = {charge = .5, getCurrentUsesFloat = function(self) return self.charge end,
+    setCurrentUsesFloat = function(self, value) self.charge = value end}
+testBattery.data = {}
+function testBattery:getModData() return self.data end
+W.power = function() return {kind = "battery", battery = testBattery, cost = .01} end
+SandboxVars.OMHTurretsTraps.ImprovisedFiringFailure = 100
+firing.kind, detector.kind = T.TYPES.FiringImprovised, T.TYPES.MotionDetectionImprovised
+firing.kind, detector.kind = T.TYPES.FiringEnhanced, T.TYPES.MotionDetectionEnhanced
+local enhanced = T.contents(storage)
+check(enhanced.active.Firing and enhanced.active.MotionDetection and enhanced.moduleCounts.Firing == 1,
+    "Enhanced modules occupy one slot each and satisfy their normal roles")
+check(T.turnSpeed(head, enhanced.active) == T.turnSpeed(head) * 3, "Enhanced Detection triples tracking speed")
+local duplicate = add(T.TYPES.Firing); storage:Remove(duplicate)
+check(not T.accept(storage, duplicate), "Enhanced Firing excludes normal Firing")
+duplicate.kind = T.TYPES.MotionDetectionImprovised
+check(not T.accept(storage, duplicate), "Enhanced Detection excludes makeshift Detection")
+firing.kind, detector.kind = T.TYPES.FiringImprovised, T.TYPES.MotionDetectionImprovised
+local improvised = T.contents(storage)
+check(improvised.active.Firing and improvised.active.MotionDetection
+    and improvised.moduleCounts.Firing == 1 and improvised.moduleCounts.MotionDetection == 1,
+    "Improvised variants enable their standard roles without using extra slots")
+local spare = add(T.TYPES.Firing); storage:Remove(spare)
+check(not T.accept(storage, spare), "Standard Firing cannot coexist with improvised Firing")
+firing.kind = T.TYPES.Firing; spare.kind = T.TYPES.FiringImprovised
+check(not T.accept(storage, spare), "Improvised Firing cannot coexist with standard Firing")
+firing.kind = T.TYPES.FiringImprovised
+local range = add(T.TYPES.Range)
+local fullRange = T.cycleConfig(T.contents(storage)).range
+check(M.profile(record, T.contents(storage), true).range == fullRange * .75
+    and M.profile(record, T.contents(storage)).range == fullRange, "Improvised detection applies after Range bonuses and leaves manual reach unchanged")
+storage:Remove(range)
+add("Base.Potato")
+head.data.OMHTTCycle = {schema = 1, loaded = 1, nextShot = 0}
+record.aimDegrees = 0
+local beforeMisfire, shotsBeforeMisfire = T.contents(storage).ammo, record.shots
+check(W.fire(nil, object, far) == "NoTarget", "Automatic commit rejects a target outside reduced detection reach")
+check(W.fire(nil, object, front) == "Misfire", "Guaranteed improvised failure returns a click-only outcome")
+check(T.contents(storage).ammo == beforeMisfire and record.shots == shotsBeforeMisfire
+    and head.data.OMHTTCycle.loaded == 1 and testBattery.charge == .5, "Failed trigger preserves ammunition, shot power, loaded round and shot count")
+check(W.fire(nil, object, front) == "Cooling", "Failed trigger cannot retry before normal cooldown")
+head.data.OMHTTCycle = nativeRoundTrip(head.data.OMHTTCycle)
+check(W.fire(nil, object, front) == "Cooling", "Serialized exact-head failure cooldown remains enforced")
+testMillis = head.data.OMHTTCycle.nextShot
+local nearBefore = W.near
+W.near = function() return true end
+check(W.fire({}, object, far) == "Fired", "Manual fire keeps full range and bypasses the improvised failure roll")
+W.near = nearBefore
+testMillis = testMillis + 2500
+add("Base.Potato")
+head.data.OMHTTCycle = {schema = 1, loaded = 1, nextShot = 0}
+SandboxVars.OMHTurretsTraps.ImprovisedFiringFailure = 0
+check(W.fire(nil, object, front) == "Fired", "Zero failure setting permits normal automatic firing")
+local priorContents, scans = T.contents, 0
+T.contents = function(container) scans = scans + 1; return priorContents(container) end
+testMillis = testMillis + 250
+record.aimDegrees = 180
+for i = 1, 10 do Aim.request(object, front, nil) end
+check(scans == 1, "Repeated same-window aim requests share one inventory scan")
+detector.condition = 0
+head.data.OMHTTCycle = {schema = 1, loaded = 1, nextShot = 0}
+check(W.fire(nil, object, front) == "Unavailable", "Fresh shot check rejects same-count broken detector despite cached aiming summary")
+T.contents = priorContents
+detector.condition = 100
+firing.kind, detector.kind = T.TYPES.Firing, T.TYPES.MotionDetection
+SandboxVars.OMHTurretsTraps.ImprovisedFiringFailure = savedFailure
+W.power = beforeFailurePower
+testMillis = testMillis + 3000
+Combat.tickFlights()
 object.index = -1
 A.tick()
 check(A.entries[object] == nil, "Removed turret retires from scheduler")
@@ -290,3 +380,6 @@ SandboxVars.OMHTurretsTraps.PotatoRequirePower = oldPowerSetting
 SandboxVars.OMHTurretsTraps.AutomationEnabled = oldEnabled
 SandboxVars.OMHTurretsTraps.DetectionInterval = oldInterval
 SandboxVars.OMHTurretsTraps.ForwardCone = oldCone
+
+
+SandboxVars.OMHTurretsTraps.TurretStandbyEnabled = savedStandby

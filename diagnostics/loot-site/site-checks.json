@@ -1,10 +1,12 @@
 {
   "status": "passed",
-  "htmlIds": 48,
+  "htmlIds": 52,
   "localDependencies": [
     "style.css",
     "https://admin.onemorehorde.com/admin/LootLab/",
     "#mapArea",
+    "#statistics",
+    "#tuning",
     "#tuning",
     "README.md",
     "provenance.json",
@@ -12,9 +14,10 @@
     "model.js",
     "map-controls.js",
     "settings-sync.js",
+    "tier-list.js",
     "app.js"
   ],
   "sourceHashes": 7,
   "browserVisualReview": "not performed",
-  "gameplayInstalled": "0.2.28 approval; installation evidence in docs/RELEASE.md"
+  "gameplayInstallation": "Tracked separately in docs/RELEASE.md"
 }

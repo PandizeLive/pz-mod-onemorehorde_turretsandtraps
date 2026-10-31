@@ -1,0 +1,11 @@
+LOG  : Lua          f:0 st:181,972,252> [OMHTT-C369] private-condition fresh-process=preserved
+LOG  : Lua          f:0 st:181,972,326> [OMHTT-C369] native mixed-bed=exact callback-order=reverse private-condition=written
+LOG  : Lua          f:0 st:181,972,344> [OMHTT-TetherTrap] assertions=36 nativePlayer=true nativeWalls=true connectedClients=0 rendered=false
+LOG  : Lua          f:0 st:181,972,345> [OMHTT-TetherTrap] completed=true
+LOG  : Lua          f:0 st:181,972,354> [OMHTT-C370] native-placement exact-inputs=passed recipes=14 timing=server-derived
+LOG  : Lua          f:0 st:181,972,360> [OMHTT-C370] native-tether damage=30+15 hold=0.75 links=override unlink=automatic wear=1 pickup=37
+LOG  : Lua          f:0 st:181,972,361> [OMHTT-C370] native-tether-craft output=1 tools=retained wireUses=2
+LOG  : General      f:0 st:181,982,177> [OMHTT-C370] native-placement durations=1000/2000/5000 constructorArgs=exact serialized=true
+LOG  : General      f:0 st:181,982,843> [OMHTT-Smoke] native-texturepacks traps=94 turrets=30 pages=43 png=valid
+LOG  : General      f:0 st:181,982,889> [OMHTT-Smoke] native-persistence mode=read parts=28 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved legacy=8 edges=8 outline=4 reinforced=8 orientation=preserved
+LOG  : General      f:0 st:181,993,278> Shutdown handling finished

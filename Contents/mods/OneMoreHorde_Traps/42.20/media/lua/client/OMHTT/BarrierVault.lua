@@ -1,4 +1,4 @@
-if isClient() or isServer() then return end
+if isServer() then return end
 require("TimedActions/ISClimbOverFence")
 local F = require("OMHTT/Foundation")
 local Diagnostics = require("OMHTT/Diagnostics")
@@ -13,8 +13,8 @@ local lastInputReport = {}
 ---@return table? plan Validated crossing
 ---@return string? reason Rejection translation key
 function Vault.plan(player, object, id)
-    if isClient() or isServer() or not F.barrierEnabled() or player:isDead() then return nil, "UI_OMHTT_Unavailable" end
-    local Footprint = require("OMHTT/BarrierFootprint")
+    if isServer() or not F.barrierEnabled() or player:isDead() then return nil, "UI_OMHTT_Unavailable" end
+    local Footprint = require(isClient() and "OMHTT/BarrierView" or "OMHTT/BarrierFootprint")
     local record = Footprint.exact(object)
     if not record or record.id ~= id or not Footprint.parts(record) then return nil, "UI_OMHTT_Unavailable" end
     if record.collisionModel ~= "edge-v1" and record.collisionModel ~= "outline-v1" then return nil, "ContextMenu_OMHTT_VaultRedeploy" end
@@ -92,18 +92,19 @@ local function finish(player, plan, result)
         x = player:getX(), y = player:getY(), z = player:getZ(), outcome = plan.outcome,
         state = tostring(player:getCurrentState()), fromX = plan.fromX, fromY = plan.fromY, toX = plan.toX, toY = plan.toY,
         animationStarted = plan.animationStarted == true, entered = plan.entered == true,
-        elapsedMs = getTimestampMs() - plan.startedAt})
+        elapsedMs = getTimestampMs() - plan.startedAt}, nil, nil, "traps")
 end
 
 ---@param player IsoPlayer Local player update
 ---@return nil
 function Vault.update(player)
+    if isClient() and not player:isLocalPlayer() then return end
     local plan = active[player]
     if not plan then
         Vault.autoVault(player)
         return
     end
-    local Footprint = require("OMHTT/BarrierFootprint")
+    local Footprint = require(isClient() and "OMHTT/BarrierView" or "OMHTT/BarrierFootprint")
     local record = Footprint.exact(plan.object)
     if player:isDead() or not record or record.id ~= plan.id or not Footprint.parts(record)
         or not F.barrierEnabled() then
@@ -115,7 +116,7 @@ function Vault.update(player)
     if climbing then
         if not plan.entered then
             plan.entered = true
-            Diagnostics.emit("barrier-vault-enter", {crossing = plan.sequence, id = plan.id, side = plan.side})
+            Diagnostics.emit("barrier-vault-enter", {crossing = plan.sequence, id = plan.id, side = plan.side}, nil, nil, "traps")
         end
         if player:getVariableBoolean("ClimbFenceStarted") or player:getVariableBoolean("VaultOverRun")
             or player:getVariableBoolean("VaultOverSprint") then
@@ -167,7 +168,7 @@ function OMHTTBarrierVaultAction:perform()
         self.direction = plan.direction
         ISClimbOverFence.perform(self)
     else
-        Diagnostics.emit("barrier-vault-refused", {id = self.omhttId, reason = reason or "approach-changed"})
+        Diagnostics.emit("barrier-vault-refused", {id = self.omhttId, reason = reason or "approach-changed"}, nil, nil, "traps")
         ISBaseTimedAction.perform(self)
     end
 end
@@ -190,7 +191,7 @@ end
 function Vault.queue(object, player, id)
     local plan, reason = Vault.plan(player, object, id)
     if not plan then
-        Diagnostics.emit("barrier-vault-refused", {id = id, reason = reason})
+        Diagnostics.emit("barrier-vault-refused", {id = id, reason = reason}, nil, nil, "traps")
         return
     end
     ISTimedActionQueue.add(OMHTTBarrierVaultAction:new(player, plan.object, plan))
@@ -207,7 +208,7 @@ function Vault.begin(player, plan, source)
     active[player] = plan
     Diagnostics.emit("barrier-vault-start", {crossing = sequence, id = plan.id, side = plan.side,
         fromX = plan.fromX, fromY = plan.fromY, toX = plan.toX, toY = plan.toY, z = plan.z,
-        input = source, running = player:isRunning(), sprinting = player:isSprinting()})
+        input = source, running = player:isRunning(), sprinting = player:isSprinting()}, nil, nil, "traps")
 end
 
 ---@param player IsoPlayer Crossing player
@@ -219,16 +220,12 @@ function Vault.contact(player, plan)
     if plan.side == "front" and denominator > 0 then
         plan.roll = ZombRand(denominator)
         if plan.roll == 0 and not player:isGodMod() then
-            local bodyPart = BodyPartType.LowerLeg_L
-            if ZombRand(2) == 1 then
-                bodyPart = BodyPartType.LowerLeg_R
-            end
-            player:getBodyDamage():getBodyPart(bodyPart):setScratched(true, true)
+            require("OMHTT/DefenseInjury").contact(player, plan.id, "scratch")
             plan.injured = true
         end
     end
     Diagnostics.emit("barrier-vault-contact", {crossing = plan.sequence, id = plan.id, side = plan.side,
-        denominator = denominator, roll = plan.roll, injured = plan.injured, outcome = plan.outcome})
+        denominator = denominator, roll = plan.roll, injured = plan.injured, outcome = plan.outcome}, nil, nil, "traps")
 end
 
 ---@param player IsoPlayer Local player
@@ -248,7 +245,7 @@ function Vault.forDirection(player, direction)
     end
     local square = getCell():getGridSquare(x, y, from:getZ())
     if not square then return nil end
-    local Footprint = require("OMHTT/BarrierFootprint")
+    local Footprint = require(isClient() and "OMHTT/BarrierView" or "OMHTT/BarrierFootprint")
     local objects = square:getSpecialObjects()
     local refusal = nil
     for i = 0, objects:size() - 1 do
@@ -279,7 +276,7 @@ local function reportInput(player, plan, reason, distance, reach)
     lastInputReport[player] = {key = key, ms = now}
     Diagnostics.emit("barrier-vault-input", {id = plan.id, reason = reason, direction = tostring(plan.direction),
         state = tostring(player:getCurrentState()), x = player:getX(), y = player:getY(),
-        distance = distance, reach = reach, running = player:isRunning(), sprinting = player:isSprinting()})
+        distance = distance, reach = reach, running = player:isRunning(), sprinting = player:isSprinting()}, nil, nil, "traps")
 end
 
 ---@param player IsoPlayer Local player

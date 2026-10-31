@@ -9,13 +9,13 @@ testBuildCheat, testPlayer.woodwork = false, 3
 SandboxVars.OMHTurretsTraps.Enabled, SandboxVars.OMHTurretsTraps.SpikeBarrier = true, true
 S.initialize()
 for x = 898, 904 do for y = 898, 904 do makeSquare(x, y, 0) end end
-local function build(x, entity, offset)
+local function build(x, entity, offset, consumed)
     local record
     for part = 0, 1 do
         local square = getCell():getGridSquare(x, 900 + part, 0)
         local object = IsoThumpable.new(getCell(), square, "omhtt_barrier_01_" .. (offset + part), false)
         square:AddSpecialObject(object)
-        record = P.adoptBuild(object, testPlayer, x, 900, 0, entity)
+        record = P.adoptBuild(object, testPlayer, x, 900, 0, entity, consumed)
     end
     return record
 end
@@ -91,14 +91,16 @@ check(record.maxHealth == 300 and record.condition == 255 and F.barrierDamage(re
     "reinforced Sandbox changes preserve health percentage and retune damage")
 options.ReinforcedBarrierHealthMultiplier, options.ReinforcedBarrierDamage = nil, nil
 P.sync(testData.tiles[anchor])
-check(Service.apply(testPlayer, object, id, "Repair") and record.condition == 200, "reinforced repair is free and preserves tier")
+testRepairSupply(testPlayer, "Barrier")
+check(Service.apply(testPlayer, object, id, "Repair") and record.condition == 200, "one-plank reinforced repair preserves tier")
 object:setHealth(150); P.sync(testData.tiles[anchor])
 check(Service.apply(testPlayer, object, id, "Pickup"), "reinforced pickup succeeds")
 local recovered = testInventory.items[#testInventory.items]
-check(recovered.kind == "Base.OMHTTReinforcedBarrierItem" and recovered.condition == 100,
-    "pickup returns one full-condition reinforced item")
-local deployed = build(902, "OMHTTDeployReinforcedBarrier", 20)
-check(deployed.tier == "reinforced" and deployed.condition == 200 and deployed.maxHealth == 200, "native reinforced deployment restores correct tier and health")
+check(recovered.kind == "Base.OMHTTTrapSpikeBarrierReinforced" and recovered.condition == 75,
+    "pickup returns one worn reinforced item")
+local inputs = {size = function() return 1 end, get = function() return recovered end}
+local deployed = build(902, "OMHTTDeployReinforcedBarrier", 20, inputs)
+check(deployed.tier == "reinforced" and deployed.condition == 150 and deployed.maxHealth == 200, "reinforced deployment restores exact carried health across both native callbacks")
 for i = 0, 7 do check(C.edgeNorth("omhtt_barrier_01_" .. (20 + i), false) == (math.floor(i / 2) % 2 == 1), "reinforced sprite orientations match all four native faces") end
 testPlayer.x = 902.5
 testPlayer.woodwork, testBuildCheat = 0, true

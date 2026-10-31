@@ -33,10 +33,24 @@ function Invoke-GitHub {
 
 $branch = Invoke-ProjectGit @('symbolic-ref', '--short', 'HEAD')
 if ($branch -in @($config.releaseBranch, 'master')) { throw 'Official release branches cannot be mirrored by this command. Use dev or a development/planning branch.' }
-if (Invoke-ProjectGit @('status', '--porcelain', '--untracked-files=all')) { throw 'Commit intended changes before mirroring. Keep local caches and credentials ignored.' }
+$pending = @(Invoke-ProjectGit @('-c', 'core.quotepath=false', 'status', '--porcelain', '--untracked-files=all'))
+$localDocuments = @()
+foreach ($entry in $pending) {
+    $path = $entry.Substring(3)
+    # Only ordinary edits to tracked documentation can remain local. Additions,
+    # deletions, renames, untracked files and all build/tool changes still block.
+    $document = $path -match '^(AGENTS\.md|README\.md|docs/.+\.md)$'
+    if ($entry.Substring(0, 2) -notin @(' M', 'M ', 'MM') -or -not $document) {
+        throw "Commit intended changes before mirroring. Blocking file: $path. Keep local caches and credentials ignored."
+    }
+    $localDocuments += $path
+}
+if ($localDocuments.Count -gt 0) {
+    Write-Warning ('Mirroring committed work only. These documentation edits stay local: ' + ($localDocuments -join ', '))
+}
 foreach ($arguments in @(@('remote', 'get-url', '--all', 'origin'), @('remote', 'get-url', '--push', '--all', 'origin'))) {
     $urls = @(Invoke-ProjectGit $arguments)
-    if ($urls.Count -ne 1 -or $urls[0] -ne $config.remote) { throw 'Origin fetch and push URLs must match the configured private repository.' }
+    if ($urls.Count -ne 1 -or $urls[0] -ne $config.remote) { throw 'Origin fetch and push URLs must match the configured repository.' }
 }
 $head = Invoke-ProjectGit @('rev-parse', 'HEAD')
 $version = ((Get-Content -LiteralPath (Join-Path $projectRoot 'Source/42.20/mod.info') | Where-Object { $_ -like 'modversion=*' }) -replace '^modversion=', '').Trim()
@@ -60,8 +74,8 @@ if (-not $ghPath) { $ghPath = (Get-Command gh -ErrorAction Stop).Source }
 $ghConfig = Find-SharedPath '.gh-codex'
 if ($ghConfig) { $env:GH_CONFIG_DIR = $ghConfig }
 $gitAuth = @('-c', 'credential.helper=', '-c', ('credential.helper=!"' + $ghPath.Replace('\', '/') + '" auth git-credential'))
-$repository = Invoke-GitHub @('repo', 'view', $config.repository, '--json', 'nameWithOwner,isPrivate,defaultBranchRef') | ConvertFrom-Json
-if (-not $repository.isPrivate -or $repository.nameWithOwner -ne $config.repository -or $repository.defaultBranchRef.name -ne $config.developmentBranch) { throw 'Expected the configured private repository with dev as its default branch.' }
+$repository = Invoke-GitHub @('repo', 'view', $config.repository, '--json', 'nameWithOwner,visibility,defaultBranchRef') | ConvertFrom-Json
+if ($repository.visibility -ne $config.visibility -or $repository.nameWithOwner -ne $config.repository -or $repository.defaultBranchRef.name -ne $config.developmentBranch) { throw "Expected the configured $($config.visibility) repository with $($config.developmentBranch) as its default branch." }
 Invoke-ProjectGit @('fetch', 'origin', '--prune') | Out-Host
 Invoke-ProjectGit @('merge-base', '--is-ancestor', "origin/$($config.developmentBranch)", 'HEAD') | Out-Null
 $refspecs = @("HEAD:refs/heads/$branch")
@@ -80,7 +94,9 @@ if ($branch -ne $config.developmentBranch) {
     if ($prs.Count -eq 0) {
         $bodyPath = Join-Path $projectRoot '.local/development-pr.md'
         New-Item -ItemType Directory -Path (Split-Path -Parent $bodyPath) -Force | Out-Null
-        $body = "Development checkpoint for $branch, targeting dev.`n`nReview the changed files and recorded decisions/test evidence before merging. This is not an official release or a Workshop upload.`n"
+        $planningUrl = "https://github.com/$($config.repository)/blob/$branch/docs/PLANNING.md"
+        $statusUrl = "https://github.com/$($config.repository)/blob/$branch/docs/CURRENT_STATUS.md"
+        $body = "Development checkpoint for $branch, targeting dev.`n`n## Planning`n`n[Planning and approvals]($planningUrl) | [Current status]($statusUrl)`n`nReview the changed files and recorded decisions/test evidence before merging. This is not an official release or a Workshop upload.`n"
         [IO.File]::WriteAllText($bodyPath, $body, (New-Object Text.UTF8Encoding($false)))
         Invoke-GitHub @('pr', 'create', '--repo', $config.repository, '--base', $config.developmentBranch, '--head', $branch, '--draft', '--title', "Development: $branch", '--body-file', $bodyPath) | Out-Host
     } else { $prs | ForEach-Object { Write-Output $_.url } }

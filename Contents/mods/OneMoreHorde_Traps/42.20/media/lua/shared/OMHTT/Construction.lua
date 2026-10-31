@@ -25,7 +25,7 @@ end
 
 ---@return nil
 function Construction.installEdges()
-    if isClient() or isServer() then return end
+    if isServer() then return end
     require("BuildingObjects/ISBuildingObject")
     require("BuildingObjects/ISBuildIsoEntity")
     if ISBuildIsoEntity.omhttEdgeInstalled then return end
@@ -66,8 +66,13 @@ function Construction.installEdges()
                         local nx, ny = F.barrierDirection(facing)
                         ax, ay = ax + ny, ay - nx
                     end
-                    local Outline = require("OMHTT/BarrierOutline")
-                    local edges = Geometry.outline({id = "preview", x = ax, y = ay, z = z, facing = facing}, Outline.records())
+                    local records
+                    if isClient() then
+                        records = require("OMHTT/BarrierView").records(ax, ay, z)
+                    else
+                        records = require("OMHTT/BarrierOutline").records()
+                    end
+                    local edges = Geometry.outline({id = "preview", x = ax, y = ay, z = z, facing = facing}, records)
                     for i = 1, #edges do
                         local edge = edges[i]
                         renderIsoLine(edge.x, edge.y, z, edge.tx, edge.ty, z, 4, 1, 1, 1, 1)
@@ -78,19 +83,19 @@ function Construction.installEdges()
         end
     end
     ISBuildIsoEntity.omhttEdgeInstalled = true
-    Diagnostics.emit("construction-edge-hook", {model = "outline-v1"})
+    Diagnostics.emit("construction-edge-hook", {model = "outline-v1"}, nil, nil, "traps")
 end
 
 Events.OnGameStart.Add(Construction.installEdges)
 
 ---@param params table Native recipe menu parameters
----@return boolean available Initial SP construction gate
+---@return boolean available Configured native construction availability
 ---@nodiscard
 function Construction.onAddToMenu(params)
-    local available = not isClient() and not isServer() and F.barrierEnabled()
+    local available = F.barrierEnabled()
     if menuAvailable ~= available then
         menuAvailable = available
-        Diagnostics.emit("construction-menu", {available = available, multiplayer = isClient() or isServer()})
+        Diagnostics.emit("construction-menu", {available = available, multiplayer = isClient() or isServer()}, nil, nil, "traps")
     end
     return available
 end
@@ -102,11 +107,18 @@ OMHTT_ConstructionMenuAvailable = Construction.onAddToMenu
 ---@return boolean allowed
 ---@nodiscard
 function Construction.portableInputAllowed(item, player)
-    if isClient() or isServer() or not F.barrierEnabled() then return false end
-    if item:getFullType() == "Base.OMHTTSpikeBarrierItem" or item:getFullType() == "Base.OMHTTReinforcedBarrierItem" then
+    if not F.barrierEnabled() then return false end
+    if item:getFullType() == "Base.OMHTTTrapSpikeBarrier" or item:getFullType() == "Base.OMHTTTrapSpikeBarrierReinforced" then
         return item:getCondition() == item:getConditionMax()
     end
     return true
+end
+
+---@param item InventoryItem Portable barrier
+---@param player IsoPlayer Builder
+---@return boolean allowed
+function Construction.deploymentInputAllowed(item, player)
+    return F.barrierEnabled() and item:getCondition() > 0
 end
 
 ---@param data CraftRecipeData Completed recipe
@@ -116,7 +128,7 @@ function Construction.onCrafted(data, player)
     local item = data:getFirstCreatedItem()
     Diagnostics.emit("portable-crafted", {recipe = data:getRecipe():getName(), type = item:getFullType(),
         itemId = item:getID(), weight = item:getActualWeight(), count = data:getAllCreatedItems():size(),
-        crafter = player:getUsername()})
+        crafter = player:getUsername()}, nil, nil, "traps")
 end
 
 ---@return nil
@@ -150,7 +162,7 @@ function Construction.initializeSprites()
             properties:set(IsoFlagType.WallW)
         end
     end
-    Diagnostics.emit("construction-sprites", {persistent = 28, tiledef = 7316, outlineMetadata = true})
+    Diagnostics.emit("construction-sprites", {persistent = 28, tiledef = 7316, outlineMetadata = true}, nil, nil, "traps")
 end
 
 Events.OnInitGlobalModData.Add(Construction.initializeSprites)
@@ -159,7 +171,7 @@ Events.OnInitGlobalModData.Add(Construction.initializeSprites)
 ---@return boolean valid Both squares and authority ledger can accept the footprint
 ---@nodiscard
 function Construction.onIsValid(params)
-    if isClient() or isServer() or not F.barrierEnabled() then return false end
+    if not F.barrierEnabled() then return false end
     local facing = facings[params.facing]
     if facing == nil or not params.square or not params.tileInfo then return false end
     local x = params.square:getX() - params.tileInfo:getX()
@@ -169,12 +181,12 @@ function Construction.onIsValid(params)
     elseif facing == 12 then
         x = x + 1
     end
-    local Footprint = require("OMHTT/BarrierFootprint")
+    local Footprint = require(isClient() and "OMHTT/BarrierView" or "OMHTT/BarrierFootprint")
     local failure = Footprint.canBuild(x, y, params.square:getZ(), facing)
     if failure == nil then
         params.testCollisions = false
     end
-    if Diagnostics.enabled() then
+    if Diagnostics.enabled("traps") then
         local status = failure
         if status == nil then
             status = "Ready"
@@ -183,7 +195,7 @@ function Construction.onIsValid(params)
         local now = getTimestampMs()
         if state ~= previewState and (now - previewTime >= 500 or now < previewTime) then
             previewState, previewTime = state, now
-            Diagnostics.emit("construction-preview", {x = x, y = y, z = params.square:getZ(), facing = facing, status = status})
+            Diagnostics.emit("construction-preview", {x = x, y = y, z = params.square:getZ(), facing = facing, status = status}, nil, nil, "traps")
         end
     end
     return failure == nil
@@ -192,9 +204,8 @@ end
 ---@param params table Native SpriteConfig completion parameters
 ---@return nil
 function Construction.onCreate(params)
-    if isClient() or isServer() then
-        error("[OMHTT] Multiplayer construction is not enabled in this checkpoint")
-    end
+    if isClient() then return end
+    if not F.barrierEnabled() then error("[OMHTT] Barrier construction is disabled") end
     local object, player = params.thumpable, params.character
     local facing = facings[params.facing]
     if not object or not player or facing == nil then
@@ -218,7 +229,7 @@ function Construction.onCreate(params)
     end
     local Footprint = require("OMHTT/BarrierFootprint")
     local entity = object:getSpriteConfig():getObjectInfo():getName()
-    Footprint.adoptBuild(object, player, x, y, facing, entity)
+    Footprint.adoptBuild(object, player, x, y, facing, entity, params.craftRecipeData and params.craftRecipeData:getAllConsumedItems())
     Diagnostics.object(object, "native-construction")
 end
 

@@ -1,0 +1,19 @@
+{
+  "checkpoint": "C144",
+  "status": "incomplete-development-checkpoint",
+  "installedVersion": "0.2.41",
+  "kahluaAssertions": 5155,
+  "packetCases": 23,
+  "probeGame": "42.21.0",
+  "nativeProbePackages": "0.2.41 with test instrumentation, before new combat source integration",
+  "nativeLogSha256": "d733c216ed10e6bc4da2fa90d27ecad782a1a91d0d34ca7099d02d3fe0d390fa",
+  "nativeProof": "creation HP baseline; wounded preserved; Horde baseline preferred; unknown zero; standing stagger methods exposed without knockdown",
+  "limits": [
+    "rendered animation not tested",
+    "new full combat native integration pending",
+    "power answer pending",
+    "item/loot/Sandbox/LootLab integration pending",
+    "generated packages unchanged; source ahead",
+    "no install or Workshop publication"
+  ]
+}

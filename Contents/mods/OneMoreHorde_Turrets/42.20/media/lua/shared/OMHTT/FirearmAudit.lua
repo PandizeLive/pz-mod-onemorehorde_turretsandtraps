@@ -32,7 +32,7 @@ function A.tick()
     local now = getTimestampMs()
     if now < A.nextAt then return end
     if A.pending then
-        if not D.emit(A.pending.event, A.pending.fields, nil, true) then return end
+        if not D.emit(A.pending.event, A.pending.fields, nil, true, "turrets") then return end
         if A.pending.event == "firearm-audit-item" then
             if A.pending.fields.accepted then A.accepted = A.accepted + 1 else A.rejected = A.rejected + 1 end
         end

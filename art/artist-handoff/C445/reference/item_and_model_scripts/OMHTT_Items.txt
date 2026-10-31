@@ -1,0 +1,40 @@
+module Base {
+    item OMHTTTrapSpikeBarrier {
+        DisplayName = Spike Barrier,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 4,
+        Icon = OMHTT_Barrier0,
+        ConditionMax = 100,
+        Tooltip = Tooltip_OMHTT_PortableBarrier,
+    }
+
+    item OMHTTTrapSpikeBarrierPack {
+        DisplayName = Spike Barrier Pack,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 6.6,
+        Icon = OMHTT_Barrier0,
+        ConditionMax = 100,
+        Tooltip = Tooltip_OMHTT_BarrierPack,
+    }
+    item OMHTTTrapSpikeBarrierReinforced {
+        DisplayName = Reinforced Spike Barrier,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 5,
+        Icon = OMHTT_ReinforcedBarrier0,
+        ConditionMax = 100,
+        Tooltip = Tooltip_OMHTT_ReinforcedBarrier,
+    }
+
+    item OMHTTTrapSpikeBarrierReinforcedPack {
+        DisplayName = Reinforced Spike Barrier Pack,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 8.25,
+        Icon = OMHTT_ReinforcedBarrier0,
+        ConditionMax = 100,
+        Tooltip = Tooltip_OMHTT_ReinforcedPack,
+    }
+}

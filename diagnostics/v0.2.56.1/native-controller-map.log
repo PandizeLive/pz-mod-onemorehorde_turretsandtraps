@@ -1,0 +1,8 @@
+Native UIWorldMap right-button pair: child handlers consume exactly once without parent click-through
+Native anchored scrollbar after explicit reflow: width=400 x=383.0 height=500.0
+Native anchored scrollbar after explicit reflow: width=270 x=123.0 height=140.0
+Native anchored scrollbar after explicit reflow: width=540 x=793.0 height=810.0
+Native anchored scrollbar after explicit reflow: width=310 x=63.0 height=80.0
+Native resize grip: repeated deferred updates preserve bottom-right position
+Native deferred resize: explicitly positioned scrollbars stay within each panel
+Native Controller map: construction, zoom/visibility configuration and v3 method signatures passed; rendered map acceptance pending

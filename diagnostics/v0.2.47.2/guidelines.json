@@ -1,0 +1,23 @@
+{
+  "version": "0.2.47.2",
+  "scans": {
+    "source": {
+      "files": 101,
+      "pcallXpcall": 0,
+      "tabs": 0,
+      "bom": 0
+    },
+    "packages": {
+      "files": 117,
+      "pcallXpcall": 0,
+      "tabs": 0,
+      "bom": 0
+    },
+    "installed": {
+      "files": 117,
+      "pcallXpcall": 0,
+      "tabs": 0,
+      "bom": 0
+    }
+  }
+}

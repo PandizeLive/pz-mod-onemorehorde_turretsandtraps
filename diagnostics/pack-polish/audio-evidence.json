@@ -1,0 +1,58 @@
+[
+  {
+    "choice": "1A",
+    "sound": "UIHighlightMainMenuItem",
+    "event": "UI/Highlight",
+    "seconds": 0.5045,
+    "previewGain": 1
+  },
+  {
+    "choice": "1B",
+    "sound": "UIObjectMenuObjectRotate",
+    "event": "UI/ObjectMenu/ObjectRotate",
+    "seconds": 0.8375,
+    "previewGain": 1
+  },
+  {
+    "choice": "1C",
+    "sound": "UIActivateButton",
+    "event": "UI/Click",
+    "seconds": 1.1267083333333334,
+    "previewGain": 1
+  },
+  {
+    "choice": "2A",
+    "sound": "UIActivatePlayButton",
+    "event": "UI/ClickPlay",
+    "seconds": 7.218854166666667,
+    "previewGain": 0.9
+  },
+  {
+    "choice": "2B",
+    "sound": "UIObjectMenuObjectPickup",
+    "event": "UI/ObjectMenu/ObjectPickUp",
+    "seconds": 1.0175416666666666,
+    "previewGain": 1
+  },
+  {
+    "choice": "2C",
+    "sound": "UIObjectMenuObjectPlace",
+    "event": "UI/ObjectMenu/ObjectPlace",
+    "seconds": 0.9872708333333333,
+    "previewGain": 1
+  },
+  {
+    "choice": "3A",
+    "sound": "UIAchievement",
+    "event": "Game/LevelUp",
+    "seconds": 10.0815625,
+    "previewGain": 1
+  },
+  {
+    "choice": "3B",
+    "sound": "UIClickToStart",
+    "event": "UI/ClickToStart",
+    "seconds": 7.218854166666667,
+    "previewGain": 0.9
+  }
+]

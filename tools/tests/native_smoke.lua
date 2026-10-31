@@ -133,7 +133,7 @@ local function checkNativeConstruction()
     end
     assert(matches == 1, "Recipe must appear exactly once in native BuildLogic")
     local params = {player = player, recipe = recipe, shouldShowAll = true}
-    assert(not callLuaBool(recipe:getOnAddToMenu(), params), "Native callback bridge bypassed MP gate")
+    assert(not callLuaBool(recipe:getOnAddToMenu(), params), "Placement-only recipe should stay hidden in Building")
     local serverFunction, clientFunction = isServer, isClient
     local enabled, barrierEnabled = SandboxVars.OMHTurretsTraps.Enabled, SandboxVars.OMHTurretsTraps.SpikeBarrier
     isServer = function() return false end
@@ -145,22 +145,22 @@ local function checkNativeConstruction()
     local disabledVisible = callLuaBool(recipe:getOnAddToMenu(), params)
     isServer, isClient = serverFunction, clientFunction
     SandboxVars.OMHTurretsTraps.Enabled, SandboxVars.OMHTurretsTraps.SpikeBarrier = enabled, barrierEnabled
-    assert(visible == true and not disabledVisible, "Native callback must show enabled SP recipe and hide disabled content")
+    assert(not visible and not disabledVisible, "Placement-only recipes must stay hidden from Building")
     assert(not dottedVisible, "Reproduction changed: native global callback now accepts dotted paths")
-    print("[OMHTT-Smoke] native-build-menu registered=1 title=Spike_Barrier category=OMHTraps callback=resolved spGate=open disabledGate=closed dottedCallback=rejected")
+    print("[OMHTT-Smoke] native-build-menu registered=1 title=Spike_Barrier category=OMHTraps callback=resolved spGate=hidden disabledGate=closed dottedCallback=rejected")
     assert(found:getScript():getOnCreate() == "OMHTT_Construction.onCreate", "Native OnCreate hook missing")
     assert(found:getScript():getOnIsValid() == "OMHTT_Construction.onIsValid", "Native placement hook missing")
     local faces = {"e", "n", "w", "s"}
     OMHTT_NativeFixtures = ArrayList.new()
     assert(SandboxVars.OMHTurretsTraps.SpikeBarrierDamage == 10, "Native Sandbox damage default was not registered")
-    assert(SandboxVars.OMHTurretsTraps.SpikeBarrierHealth == 100, "Native Sandbox HP default was not registered")
+    assert(SandboxVars.OMHTurretsTraps.SpikeBarrierHealth == 80, "Native Sandbox HP default was not registered")
     assert(getText("Tooltip_OMHTT_BarrierPack") == "Contains five Spike Barriers. Unpack in the Crafting menu. Bundled encumbrance is reduced by 67 percent.", "Native no-argument bundle tooltip failed")
     assert(SandboxVars.OMHTurretsTraps.SpikeBarrierScratchChance == 5 and SandboxVars.OMHTurretsTraps.ShowCollision == false, "New Sandbox defaults missing")
     assert(getText("Sandbox_OMHTurretsTraps_General") == "OMH: T&T - General", "General category untranslated")
     assert(getText("Sandbox_OMHTurretsTraps_BarrierPage") == "OMH: T&T - Traps", "Barrier category untranslated")
     assert(getText("Sandbox_OMHTurretsTraps_Debug") == "OMH: T&T - Debug", "Debug category untranslated")
     assert(type(renderIsoLine) == "function", "Native collision-preview renderer is not exposed")
-    print("[OMHTT-Smoke] native-sandbox damage=10 maxHealth=100 tooltip=formatted")
+    print("[OMHTT-Smoke] native-sandbox damage=10 maxHealth=80 tooltip=formatted")
     print("[OMHTT-Smoke] native-sandbox scratch=5 collision=false categories=3 renderer=exposed")
     local parts = 0
     for i = 1, #faces do
@@ -224,8 +224,8 @@ local function checkNativeConstruction()
         end
     end
     assert(type(OMHTT_Construction.onCreate) == "function", "Construction Lua callback missing")
-    assert(not OMHTT_Construction.onAddToMenu({shouldShowAll = true}), "MP construction must stay disabled")
-    print("[OMHTT-Smoke] native-construction entity=OMHTTSpikeBarrier faces=4 parts=" .. parts .. " inputs=3 translated=true mpGate=closed")
+    assert(OMHTT_Construction.onAddToMenu({shouldShowAll = true}), "Native server construction should be available")
+    print("[OMHTT-Smoke] native-construction entity=OMHTTSpikeBarrier faces=4 parts=" .. parts .. " inputs=3 translated=true serverCallback=available")
     print("[OMHTT-Smoke] native-sprites objects=16 valid=16 categoryTranslated=true")
     for i = 16, 19 do
         local square = IsoGridSquare.new(getCell(), nil, i, 0, 0)
@@ -289,9 +289,9 @@ local function checkNativeConstruction()
     assert(deploy:getInputs():size() == 1 and deploy:getInputs():get(0):getIntAmount() == 1, "Deploy must consume one item")
     assert(deploy:getXPAwardCount() == 0 and deploy:getRequiredSkillCount() == 0, "Deployment must not repeat crafting skill/XP")
     assert(recipe:getTooltip() == "UI_OMHTT_SpikeBarrierDescription" and craft:getTooltip() == recipe:getTooltip() and deploy:getTooltip() == recipe:getTooltip(), "All barrier menus need the same description")
-    local item = instanceItem("Base.OMHTTSpikeBarrierItem")
+    local item = instanceItem("Base.OMHTTTrapSpikeBarrier")
     print("[OMHTT-Smoke] portable-script weight=" .. item:getScriptItem():getActualWeight() .. " file=" .. tostring(item:getScriptItem():getFileName()) .. " icon=" .. tostring(item:getScriptItem():getIcon()) .. " plankWeight=" .. instanceItem("Base.Plank"):getActualWeight())
-    print("[OMHTT-Smoke] portable-item name=" .. item:getDisplayName() .. " weight=" .. item:getActualWeight() .. " translated=" .. getItemNameFromFullType("Base.OMHTTSpikeBarrierItem"))
+    print("[OMHTT-Smoke] portable-item name=" .. item:getDisplayName() .. " weight=" .. item:getActualWeight() .. " translated=" .. getItemNameFromFullType("Base.OMHTTTrapSpikeBarrier"))
     assert(item:getDisplayName() == "Spike Barrier" and item:getActualWeight() == 4, "Portable item name/weight wrong")
     isServer = function() return false end
     isClient = function() return false end
@@ -312,14 +312,14 @@ local function checkNativeConstruction()
     end
     assert(crafting:consumeInputs(ArrayList.new()), "Portable crafting native consumption failed")
     assert(crafting:createOutputs(ArrayList.new(), player), "Portable crafting native output failed")
-    assert(crafting:getAllCreatedItems():size() == 1 and crafting:getFirstCreatedItem():getFullType() == "Base.OMHTTSpikeBarrierItem",
+    assert(crafting:getAllCreatedItems():size() == 1 and crafting:getFirstCreatedItem():getFullType() == "Base.OMHTTTrapSpikeBarrier",
         "Portable crafting did not create exactly one finished item")
     crafting:processDestroyAndUsedItems(player)
     assert(player:getInventory():contains(knife), "Crafting consumed the retained knife")
     crafting:luaCallOnCreate(player)
     local items, resources = ArrayList.new(), ArrayList.new()
     items:add(item)
-    local spare = instanceItem("Base.OMHTTSpikeBarrierItem")
+    local spare = instanceItem("Base.OMHTTTrapSpikeBarrier")
     player:getInventory():AddItem(item)
     player:getInventory():AddItem(spare)
     local data = CraftRecipeData.new(CraftMode.Handcraft, false, true, false, true)
@@ -340,9 +340,9 @@ local function checkNativeConstruction()
     local packData = CraftRecipeData.new(CraftMode.Handcraft, false, true, false, true)
     packData:setRecipe(packRecipe)
     local loose = ArrayList.new()
-    for i = 1, 4 do loose:add(instanceItem("Base.OMHTTSpikeBarrierItem")) end
+    for i = 1, 4 do loose:add(instanceItem("Base.OMHTTTrapSpikeBarrier")) end
     assert(not packData:canConsumeInputs(resources, loose, true, true), "Four barriers incorrectly satisfy five-item pack")
-    loose:add(instanceItem("Base.OMHTTSpikeBarrierItem"))
+    loose:add(instanceItem("Base.OMHTTTrapSpikeBarrier"))
     assert(packData:canConsumeInputs(resources, loose, true, true), "Five barriers cannot be packed")
     for i = 0, loose:size() - 1 do
         player:getInventory():AddItem(loose:get(i))
@@ -353,7 +353,7 @@ local function checkNativeConstruction()
     for i = 0, loose:size() - 1 do assert(not player:getInventory():contains(loose:get(i)), "Packing left input behind") end
     assert(packData:getAllCreatedItems():size() == 1, "Packing did not create one pack")
     local pack = packData:getFirstCreatedItem()
-    assert(pack:getFullType() == "Base.OMHTTSpikeBarrierPack" and math.abs(pack:getActualWeight() - 6.6) < 0.0001, "Pack identity/67 percent reduction wrong")
+    assert(pack:getFullType() == "Base.OMHTTTrapSpikeBarrierPack" and math.abs(pack:getActualWeight() - 6.6) < 0.0001, "Pack identity/67 percent reduction wrong")
     player:getInventory():AddItem(pack)
     local unpackData = CraftRecipeData.new(CraftMode.Handcraft, false, true, false, true)
     unpackData:setRecipe(unpackRecipe)
@@ -362,7 +362,7 @@ local function checkNativeConstruction()
     unpackData:processDestroyAndUsedItems(player)
     assert(not player:getInventory():contains(pack) and unpackData:getAllCreatedItems():size() == 5, "Unpack count or consumption wrong")
     for i = 0, 4 do
-        assert(unpackData:getAllCreatedItems():get(i):getFullType() == "Base.OMHTTSpikeBarrierItem", "Unpack created wrong item")
+        assert(unpackData:getAllCreatedItems():get(i):getFullType() == "Base.OMHTTTrapSpikeBarrier", "Unpack created wrong item")
     end
     packData:luaCallOnCreate(player)
     unpackData:luaCallOnCreate(player)
@@ -371,18 +371,18 @@ local function checkNativeConstruction()
     local reinforcedPack = getScriptManager():getCraftRecipe("Base.OMHTTPackReinforcedBarriers")
     local reinforcedUnpack = getScriptManager():getCraftRecipe("Base.OMHTTUnpackReinforcedBarriers")
     assert(reinforcedDeploy:getInputs():size() == 1 and reinforcedDeploy:getXPAwardCount() == 0, "Reinforced deployment repeats costs or XP")
-    assert(getRecipeDisplayName(reinforcedDeploy:getName()) == "Deploy Reinforced Spike Barrier", "Reinforced deployment name missing")
-    assert(getItemNameFromFullType("Base.OMHTTReinforcedBarrierItem") == "Reinforced Spike Barrier", "Reinforced item name missing")
+    assert(getRecipeDisplayName(reinforcedDeploy:getName()) == "Reinforced Spike Barrier", "Reinforced deployment name missing")
+    assert(getItemNameFromFullType("Base.OMHTTTrapSpikeBarrierReinforced") == "Reinforced Spike Barrier", "Reinforced item name missing")
     local reinforcedInputs = ArrayList.new()
-    for i = 1, 5 do reinforcedInputs:add(instanceItem("Base.OMHTTReinforcedBarrierItem")) end
+    for i = 1, 5 do reinforcedInputs:add(instanceItem("Base.OMHTTTrapSpikeBarrierReinforced")) end
     local reinforcedData = CraftRecipeData.new(CraftMode.Handcraft, false, true, false, true)
     reinforcedData:setRecipe(reinforcedPack)
     assert(reinforcedData:canConsumeInputs(resources, reinforcedInputs, true, true), "Five reinforced items rejected")
     reinforcedInputs:remove(reinforcedInputs:get(0))
-    reinforcedInputs:add(instanceItem("Base.OMHTTSpikeBarrierItem"))
+    reinforcedInputs:add(instanceItem("Base.OMHTTTrapSpikeBarrier"))
     assert(not reinforcedData:canConsumeInputs(resources, reinforcedInputs, true, true), "Mixed tiers incorrectly pack")
     reinforcedInputs:remove(reinforcedInputs:get(4))
-    reinforcedInputs:add(instanceItem("Base.OMHTTReinforcedBarrierItem"))
+    reinforcedInputs:add(instanceItem("Base.OMHTTTrapSpikeBarrierReinforced"))
     for i = 0, 4 do
         local input = reinforcedInputs:get(i)
         player:getInventory():AddItem(input)
@@ -390,9 +390,9 @@ local function checkNativeConstruction()
     end
     assert(reinforcedData:consumeInputs(resources) and reinforcedData:createOutputs(resources, player), "Reinforced pack transaction failed")
     reinforcedData:processDestroyAndUsedItems(player)
-    assert(instanceItem("Base.OMHTTReinforcedBarrierItem"):getActualWeight() == 5, "Reinforced loose weight wrong")
+    assert(instanceItem("Base.OMHTTTrapSpikeBarrierReinforced"):getActualWeight() == 5, "Reinforced loose weight wrong")
     local reinforcedBundle = reinforcedData:getFirstCreatedItem()
-    assert(reinforcedBundle:getFullType() == "Base.OMHTTReinforcedBarrierPack" and math.abs(reinforcedBundle:getActualWeight() - 8.25) < 0.0001, "Reinforced bundle wrong tier or weight")
+    assert(reinforcedBundle:getFullType() == "Base.OMHTTTrapSpikeBarrierReinforcedPack" and math.abs(reinforcedBundle:getActualWeight() - 8.25) < 0.0001, "Reinforced bundle wrong tier or weight")
     player:getInventory():AddItem(reinforcedBundle)
     local restoredData = CraftRecipeData.new(CraftMode.Handcraft, false, true, false, true)
     restoredData:setRecipe(reinforcedUnpack)
@@ -400,15 +400,15 @@ local function checkNativeConstruction()
     assert(restoredData:consumeInputs(resources) and restoredData:createOutputs(resources, player), "Reinforced unpack failed")
     restoredData:processDestroyAndUsedItems(player)
     assert(restoredData:getAllCreatedItems():size() == 5, "Reinforced unpack count wrong")
-    for i = 0, 4 do assert(restoredData:getAllCreatedItems():get(i):getFullType() == "Base.OMHTTReinforcedBarrierItem", "Unpack lost tier") end
+    for i = 0, 4 do assert(restoredData:getAllCreatedItems():get(i):getFullType() == "Base.OMHTTTrapSpikeBarrierReinforced", "Unpack lost tier") end
     assert(reinforcedPack:getXPAwardCount() == 0 and reinforcedUnpack:getXPAwardCount() == 0, "Packing repeats XP")
     local deploymentData = CraftRecipeData.new(CraftMode.Handcraft, false, true, false, true)
     deploymentData:setRecipe(reinforcedDeploy)
     local oneReinforced = ArrayList.new()
-    oneReinforced:add(instanceItem("Base.OMHTTReinforcedBarrierItem"))
+    oneReinforced:add(instanceItem("Base.OMHTTTrapSpikeBarrierReinforced"))
     assert(deploymentData:canConsumeInputs(resources, oneReinforced, true, true), "Reinforced deployment rejects item")
     oneReinforced:get(0):setCondition(20)
-    assert(not reinforcedDeploy:OnTestItem(oneReinforced:get(0), player), "Damaged reinforced input incorrectly accepted")
+    assert(reinforcedDeploy:OnTestItem(oneReinforced:get(0), player), "Worn reinforced input must remain placeable")
     local inventory = player:getInventory()
     local hammer = inventory:AddItem("Base.Hammer")
     for i = 1, 2 do inventory:AddItem("Base.Plank") end
@@ -425,13 +425,13 @@ local function checkNativeConstruction()
     assert(Sprites.ensure(upgraded, record, "restore-fixture"), "Could not restore basic fixture")
     print("[OMHTT-Smoke] native-reinforced deploy=1 pack=5to1 unpack=1to5 mixed=blocked materials=10 hammer=retained")
     item:setCondition(20)
-    assert(not deploy:OnTestItem(item, player), "Damaged portable input would reset condition")
+    assert(deploy:OnTestItem(item, player), "Worn portable input must remain placeable with retained condition")
     SandboxVars.OMHTurretsTraps.SpikeBarrier = false
     assert(not craft:OnTestItem(instanceItem("Base.Plank"), player), "Disabled portable crafting allowed")
     isServer, isClient = serverFunction, clientFunction
     SandboxVars.OMHTurretsTraps.Enabled, SandboxVars.OMHTurretsTraps.SpikeBarrier = enabled, barrierEnabled
-    assert(not craft:OnTestItem(instanceItem("Base.Plank"), player), "MP portable crafting gate bypassed")
-    print("[OMHTT-Smoke] native-portable recipe=registered mixes=75 crafted=1 tool=retained deployInputs=1 deployXP=0 missing=blocked damaged=blocked toggles=blocked mp=blocked")
+    assert(craft:OnTestItem(instanceItem("Base.Plank"), player), "Server portable crafting rejected")
+    print("[OMHTT-Smoke] native-portable recipe=registered mixes=75 crafted=1 tool=retained deployInputs=1 deployXP=0 missing=blocked worn=allowed toggles=blocked serverInput=allowed")
 end
 
 Events.OnServerStarted.Add(checkNativeConstruction)

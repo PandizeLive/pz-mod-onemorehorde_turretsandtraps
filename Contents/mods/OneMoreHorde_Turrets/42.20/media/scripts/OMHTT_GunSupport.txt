@@ -6,7 +6,7 @@ module Base {
         static = true,
         shader = basicEffect,
     }
-    item OMHTTGunSupportVisual {
+    item OMHTTTurretGunSupportVisual {
         DisplayName = Gun Mount Placeholder,
         ItemType = base:normal,
         DisplayCategory = Material,

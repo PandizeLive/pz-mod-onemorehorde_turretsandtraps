@@ -1,0 +1,64 @@
+--- a/cloudflare-api/src/loot-lab-settings.ts
++++ b/cloudflare-api/src/loot-lab-settings.ts
+@@ -2,0 +3 @@
++const TIERS = ['Abundant','Common','Uncommon','Rare','Epic','Legendary','Mythic'];
+@@ -9 +10 @@
+-  const allowed = ['version','baseline','seed','global','material','rolls','retention','selected','overlay','items','visible'];
++  const allowed = ['version','baseline','seed','global','material','rolls','retention','selected','overlay','items','visible','tierWeights'];
+@@ -30,0 +32,9 @@
++  const tiers=value.tierWeights;
++  if(tiers!==undefined&&(!object(tiers)||Object.keys(tiers).length!==TIERS.length||Object.keys(tiers).some(k=>!TIERS.includes(k))))throw Error('Invalid tier weights.');
++  const cleanTiers: Record<string, number|null> = {};
++  for(const name of TIERS){
++    const n=tiers===undefined?null:(tiers as Record<string, unknown>)[name];
++    if(n!==null&&(typeof n!=='number'||!Number.isFinite(n)||n<0||n>1000000))throw Error('Invalid tier weight.');
++    cleanTiers[name]=n as number|null;
++  }
++  result.tierWeights=cleanTiers;
+@@ -73,0 +84,4 @@
++    if(!Object.hasOwn(body.scenario as object,'tierWeights')){
++      const prior=await current();
++      if(prior.scenario)scenario.tierWeights=prior.scenario.tierWeights;
++    }
+--- a/cloudflare-api/tests/loot-lab-settings.test.ts
++++ b/cloudflare-api/tests/loot-lab-settings.test.ts
+@@ -172,0 +173,39 @@
++
++
++test('tier weights persist across clients and merge unrelated tier edits',async()=>{
++ const f=fixture(),a=client(f.transport),b=client(f.transport);await a.sync.sync();await b.sync.sync();
++ a.sync.edit({...a.sync.value,tierWeights:{...a.sync.value.tierWeights,Rare:4.25}});
++ b.sync.edit({...b.sync.value,tierWeights:{...b.sync.value.tierWeights,Mythic:.75}});
++ await a.sync.sync();await b.sync.sync();await b.sync.sync();await a.sync.sync();
++ const reopened=client(f.transport);await reopened.sync.sync();
++ assert.equal(reopened.sync.value.tierWeights.Rare,4.25);assert.equal(reopened.sync.value.tierWeights.Mythic,.75);
++ assert.deepEqual(reopened.sync.value.items,defaults.items);
++ assert.equal((await (await f.request('GET',undefined,'other@example.test')).json() as any).scenario,null);
++});
++test('old clients cannot erase tier weights and old rows need no database rewrite',async()=>{
++ const f=fixture(),old=structuredClone(defaults);delete old.tierWeights;
++ f.sql.prepare('INSERT INTO loot_lab_settings(owner,revision,scenario_json) VALUES(?,?,?)').run('owner@example.test',7,JSON.stringify(old));
++ const initial=await (await f.request()).json() as any;
++ assert.equal(initial.revision,7);assert.deepEqual(initial.scenario.tierWeights,defaults.tierWeights);
++ assert.equal(f.sql.prepare('SELECT scenario_json FROM loot_lab_settings').get()!.scenario_json,JSON.stringify(old));
++ const saved=await f.request('PUT',{revision:7,scenario:{...defaults,tierWeights:{...defaults.tierWeights,Rare:4.25}}});assert.equal(saved.status,200);
++ const stale=await f.request('PUT',{revision:7,scenario:{...old,global:2}});assert.equal(stale.status,409);
++ const response=await f.request('PUT',{revision:8,scenario:{...old,global:2}});assert.equal(response.status,200);
++ const result=await response.json() as any;assert.equal(result.scenario.tierWeights.Rare,4.25);assert.equal(result.scenario.global,2);
++});
++test('tier schema parity, invalid weights and scenario import/export',()=>{
++ const value={...defaults,tierWeights:{...defaults.tierWeights,Abundant:0,Rare:4.25,Mythic:1}};
++ assert.deepEqual(validateScenario(value),model.validate(JSON.parse(JSON.stringify(value)),context.window.LOOT_DATA));
++ for(const tierWeights of [[],null,{}, {...defaults.tierWeights,Unknown:1},{...defaults.tierWeights,Rare:-1},{...defaults.tierWeights,Rare:Infinity},{...defaults.tierWeights,Rare:'4'},{...defaults.tierWeights,Rare:1000001}]){
++  assert.throws(()=>validateScenario({...defaults,tierWeights}));assert.throws(()=>model.validate({...defaults,tierWeights},context.window.LOOT_DATA));
++ }
++});
++test('offline confirmed tier edits recover after reload and Default clears them',async()=>{
++ const f=fixture();let offline=false;
++ const transport=async(method:string,body:unknown)=>{if(offline)throw Error('Offline');return f.transport(method,body);};
++ const a=client(transport);await a.sync.sync();offline=true;
++ a.sync.edit({...a.sync.value,tierWeights:{...a.sync.value.tierWeights,Legendary:1.75}});await a.sync.sync();
++ assert.equal(a.storage.size,1);offline=false;
++ const reopened=client(f.transport,a.storage);await reopened.sync.sync();assert.equal(reopened.sync.value.tierWeights.Legendary,1.75);assert.equal(a.storage.size,0);
++ reopened.sync.edit(defaults,true);await reopened.sync.sync();assert.deepEqual(reopened.sync.value.tierWeights,defaults.tierWeights);
++});

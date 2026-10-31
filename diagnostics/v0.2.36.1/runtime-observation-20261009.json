@@ -1,0 +1,10 @@
+{
+  "capture": "diagnostics\\captures\\20261009-211037-3606\\console.txt",
+  "sha256": "5c070a16f193a72b80e1ecfbbb489ac1e6bf5378b6b101e4022e44432bd3caa8",
+  "markerLine": 3436,
+  "marker": "LOG  : Lua          f:0> [OMHTT] packages-ready version=0.2.36.1 traps=true turrets=true game=42.21",
+  "errorsAfterMarker": [],
+  "bedTripCount": 20,
+  "bedFallCount": 18,
+  "interpretation": "Runtime trip/fall damage events observed; no owner acceptance, rendered recovery, audible mix or stress-performance result inferred."
+}

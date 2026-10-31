@@ -1,4 +1,8 @@
+Current catalog: T&T 0.2.63, including Siphon. Existing account weights and tier anchors are preserved.
+
 # Knox Country Loot Lab
+
+Component controls edit direct loot weights (zero disables). Global/material/roll controls remain separate. Existing saved scenarios, cloud values and Sandbox exports retain their multiplier schema; the UI converts weight to/from the baseline internally, without rescaling saved tuning. Display formatting does not rewrite stored values. Limits match the game's per-item 0–20 multiplier, expressed as 0–20 times each component's baseline weight.
 
 Open `index.html` directly in a desktop browser. Keep `data.js`, `model.js`, `app.js`, `style.css` and `provenance.json` alongside it. No server, account or internet connection is required.
 
@@ -7,16 +11,16 @@ This is a personal, offline balancing tool for **new-world estimates**. It does 
 ## Use
 
 1. Choose a component, or All components.
-2. Change the T&T global multiplier and individual component multipliers. Material loot defaults to Apocalypse's 0.60; use your intended world settings.
+2. Change the T&T global multiplier and individual component loot weights. Material loot defaults to Apocalypse's 0.60; use your intended world settings.
 3. Click **Refresh spawns** for a new seed. Generated spawns shows one sample world, with a distinct color for each component. Switch to Container chances to inspect possible containers.
 4. Toggle individual components, or Show all / Hide all. Visibility never rerolls loot or changes rates. Select a town, zoom and hover dots for coordinates, floor, chances and generated quantities.
 5. Compare countywide and nearest-town estimates. Save/load scenario JSON to compare settings; export the Sandbox excerpt when satisfied. Apply settings yourself only after reviewing the excerpt.
 
-The baseline is **T&T 0.2.28** and **Project Zomboid 42.21.0**, including Critical/Accuracy and the reduced Suppression loot weight. The owner approved this gameplay patch and site update together. Gameplay installation is tracked separately in `docs/RELEASE.md`.
+The baseline is **T&T 0.2.63** and **Project Zomboid 42.21.0**, including Critical/Accuracy and the reduced Suppression loot weight. The owner approved this gameplay patch and site update together. Gameplay installation is tracked separately in `docs/RELEASE.md`.
 
 ## What the numbers mean
 
-The map contains 18,514 eligible **container-sprite candidates**, extracted from native lot headers/packs, with 75 eligible procedural routing rules. Real map geometry and town labels come from the installed map. All floors are included; a dot is a possible container, not a promised module.
+The map contains 18,630 eligible **container-sprite candidates**, extracted from native lot headers/packs, with 79 eligible procedural routing rules. Real map geometry and town labels come from the installed map. All floors are included; a dot is a possible container, not a promised module.
 
 The generated overlay first selects one pool per candidate using shared room quotas, then samples each component in that pool with an independent, stable per-container seed. The same seed/settings reproduce the same result; changing one component does not reroll others. Co-located components have small screen-space offsets for readability, without changing their world coordinates. Scenario JSON also retains visibility and overlay choice.
 
@@ -53,13 +57,13 @@ No browser-rendering acceptance is claimed by the automated checks. The model an
 
 ## Mobile controls and rarity
 
-Pinch to zoom, drag with one finger, or use the 44px on-map zoom controls. Tap a nearby marker when zoomed in for container details. The Tune loot / Back to map links avoid scrolling through the report on a phone. Legend checkboxes, dots, names and rate fields use fixed columns. A separate colored marker moves on a fixed logarithmic 0–1,000+ expected-items scale; it includes the final scenario multipliers and retention. It reflects estimated abundance, not random sample luck.
+Pinch to zoom, drag with one finger, or use the 44px on-map zoom controls. Tap a nearby marker when zoomed in for container details. The Tune loot / Back to map links avoid scrolling through the report on a phone. Legend checkboxes, dots, names and weight fields use fixed columns. A separate colored marker moves on a fixed logarithmic 0–1,000+ expected-items scale; it includes the final scenario multipliers and retention. It reflects estimated abundance, not random sample luck.
 
 `tools/loot_site/test_map_controls.cjs` checks the actual gesture controller for pinch anchoring, pinch-to-pan continuity, cancellation, taps and limits. Physical iOS/Android interaction remains a user acceptance check.
 
 ## Saved settings
 
-The hosted admin LootLab autosaves rates, seed, component visibility, estimate selection and overlay to the signed-in admin account. PC and phone must use the same login. Set to Default restores the T&T 0.2.28 scenario baseline (including Material 0.60, rolls 1 and retention 100%) and saves that reset. Map pan/zoom and town jumps are navigation, not saved tuning settings.
+The hosted admin LootLab autosaves rates, seed, component visibility, estimate selection and overlay to the signed-in admin account. PC and phone must use the same login. Set to Default restores the T&T 0.2.63 scenario baseline (including Material 0.60, rolls 1 and retention 100%) and saves that reset. Map pan/zoom and town jumps are navigation, not saved tuning settings.
 
 The account endpoint uses the existing admin host/Access/allowlist gate and a separate D1 table. Writes use revision checks; clients merge only locally changed fields after a conflict. Explicit reset/import replace the whole scenario. Saves debounce for 450 ms and refresh when the page regains focus or every 15 seconds while visible. A browser-local pending draft survives connection failures and reloads; the status distinguishes unsynced changes from successful saves. A failed initial read never uploads defaults. Local file copies use browser storage only.
 
@@ -93,3 +97,26 @@ Haul probabilities use an exact convolution of independent per-item rolls with a
 ## 0.2.28: normalized tuning
 
 Base weights now include approved global 4.5 and the prior component factors; all controls default to 1. Pool scales remain unchanged. New Sandbox export keys are ModuleLootRate and LootRate<Component>, preventing old saved multipliers from applying twice. Existing game loot controls start at the normalized baseline; generated loot is untouched. Old website scenarios/drafts convert their factors to retain effective weights. The owner scenario receives the requested 4.5-equivalent reset using a conditional revision update. Default estimates: 2,630 items, 83.17% one/two-item finds and 2.61% five-plus jackpots.
+
+## 0.2.41 catalog refresh
+
+Magazine, Splitter, Fragment, Enhanced Firing and Enhanced Detection now use the current game pools and weights. Both Enhanced modules match Large Expansion rarity and eligible pools. Existing account/scenario rates, seed and visibility are preserved; newly added modules start at multiplier 1. No global loot multiplier increase. The simulation still excludes physical container-capacity rejection.
+
+
+## 0.2.42 catalog refresh
+
+Piercing, Initial Blow, Execute and Impact are loot-only modules with the same 2.5 weight and eligible pools as Splitter/Fragment. The catalog contains 24 lootable modules and 170 entries across 16 pools. Existing per-item weights and global loot multipliers are unchanged; adding four independent candidates raises total expected component finds in those pools. Saved 0.2.41 scenarios keep existing rates and give new fields multiplier 1/visible.
+
+## 0.2.43 catalog refresh
+
+Conservation uses offensive-module weight 2.5, adding five entries to the same eligible pools (25 modules, 175 entries). Other weights and global controls are unchanged. Saved 0.2.42 tuning is retained; Conservation starts at multiplier 1 and visible.
+
+Module colors are keyed by ID, with a deterministic fallback for future entries. Shapes indicate Control, Ballistics, Ammo/reload, Hit effects or Expansion in both legend and map; marker size retains existing haul/count semantics. Show all / Hide all stays beneath the sync banner while scrolling. These are display controls, not loot-rate changes.
+
+## Scrolling layout
+
+On desktop/tablet widths above 700px, the map and its controls stay below the sync banner while the component list scrolls. All summary metrics, town/pool tables and methodology are below the complete tuning area; Statistics jumps there directly. On phones the map stays in normal page flow above tuning so it does not cover the controls; statistics remain last. Sticky positioning uses CSS, with banner-height updates only on resize, not scroll-time model work.
+
+## 0.2.47 defaults and packs
+
+New defaults match the owner export, while the underlying multiplier scale and saved values are preserved. Module Packs supplement loose loot (container weight 1.0; independent 15% body chance) and contain three draws from all 29 entries. Current map/haul metrics model loose modules only, not pack drops or their contents. The corpse percentage is a separate game Sandbox setting, not Material loot or container weight.

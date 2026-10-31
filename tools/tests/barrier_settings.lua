@@ -7,7 +7,7 @@ check(F.barrierDamage() == 10 and F.barrierHealth() == 100, "legacy saves use de
 options.SpikeBarrierDamage, options.SpikeBarrierHealth = -1, 20000
 check(F.barrierDamage() == 0 and F.barrierHealth() == 10000, "options are bounded")
 options.SpikeBarrierDamage, options.SpikeBarrierHealth = "bad", 0/0
-check(F.barrierDamage() == 10 and F.barrierHealth() == 100, "invalid options fall back safely")
+check(F.barrierDamage() == 10 and F.barrierHealth() == 80, "invalid options use the approved 80 HP fallback")
 options.SpikeBarrierDamage, options.SpikeBarrierHealth = nil, 200
 testData, testSquares = nil, {}
 S.initialize()
@@ -25,8 +25,9 @@ check(record.condition == 300 and record.maxHealth == 400 and parts[1]:getHealth
     "collect outstanding damage on both halves before preserving percentage at new maximum")
 P.sync(slot)
 check(record.condition == 300, "repeated settings reconciliation cannot heal or double damage")
+testRepairSupply(testPlayer, "Barrier")
 check(Service.apply(testPlayer, parts[1], record.id, "Repair") and record.condition == 400 and parts[2]:getHealth() == 400,
-    "free repair restores configured maximum on both parts")
+    "one-plank repair restores configured maximum on both parts")
 parts[1]:setHealth(148); P.sync(slot)
 testData = nativeRoundTrip(testData); S.initialize()
 record = testData.tiles[F.key(400, 400, 0)].device
@@ -40,4 +41,4 @@ check(record.condition == 74 and record.maxHealth == 200, "pre-settings save mig
 options.SpikeBarrierHealth = 1
 P.sync(testData.tiles[F.key(400, 400, 0)])
 check(record.condition == 1 and parts[2]:getMaxHealth() == 1, "minimum HP cannot kill a living barrier during migration")
-options.SpikeBarrierHealth, options.SpikeBarrierDamage = nil, nil
+options.SpikeBarrierHealth, options.SpikeBarrierDamage = 100, nil

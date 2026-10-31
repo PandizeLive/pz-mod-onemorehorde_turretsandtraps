@@ -1,0 +1,104 @@
+<div id="omhtt-meter-designs">
+  <div class="viz-carousel" aria-label="Controller meter designs">
+    <section data-variant="Native slim" aria-label="Native slim controller design"><div class="omh-stage" data-style="slim"></div></section>
+    <section data-variant="Radio segments" aria-label="Radio segmented controller design" hidden><div class="omh-stage" data-style="segments"></div></section>
+    <section data-variant="Readable gauges" aria-label="Readable controller gauges design" hidden><div class="omh-stage" data-style="gauges"></div></section>
+  </div>
+</div>
+<style>
+#omhtt-meter-designs .omh-stage{font:13px/1.4 Arial,sans-serif;color:#ddd;min-height:900px;color-scheme:dark}
+#omhtt-meter-designs .omh-window{background:#111210;border:1px solid #777;box-shadow:inset 0 0 0 2px #242522}
+#omhtt-meter-designs .omh-title{height:27px;display:flex;align-items:center;gap:9px;padding:0 8px;background:linear-gradient(#555,#202020 38%,#101010);border-bottom:1px solid #777;font-weight:bold}
+#omhtt-meter-designs .omh-title span{color:#dc5e57}
+#omhtt-meter-designs .omh-close{border:1px solid #aaa;border-radius:50%;width:18px;height:18px;display:inline-grid;place-items:center;background:linear-gradient(#eee,#999);color:#222;font-size:15px;line-height:1}
+#omhtt-meter-designs .omh-content{padding:10px;display:grid;gap:10px}
+#omhtt-meter-designs .omh-section{border:1px solid #50524d;background:#141613;min-width:0}
+#omhtt-meter-designs .omh-header{padding:5px 8px;background:linear-gradient(#383a35,#22241f);border-bottom:1px solid #50524d;display:flex;align-items:center;justify-content:space-between;gap:8px;color:#eee;font-weight:bold}
+#omhtt-meter-designs .omh-equipment{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(150px,.7fr);gap:8px;padding:8px}
+#omhtt-meter-designs .omh-slot{background:#0d0f0c;border:1px solid #44483f;padding:8px;min-width:0}
+#omhtt-meter-designs .omh-slot-top{display:flex;gap:10px;align-items:center;margin-bottom:8px;min-height:36px}
+#omhtt-meter-designs .omh-item-icon{width:36px;height:36px;display:grid;place-items:center;background:#272b24;border:1px solid #656d5a;flex-shrink:0;color:#d3dcc6;font-size:22px}
+#omhtt-meter-designs .omh-item-icon svg{width:24px;height:24px}
+#omhtt-meter-designs .omh-subtle{color:#b4b9ad;font-size:12px}
+#omhtt-meter-designs .omh-status{display:flex;flex-direction:column;justify-content:center;gap:5px;padding:8px}
+#omhtt-meter-designs .omh-led{display:inline-block;width:9px;height:9px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#d1f7b3,#78a762 45%,#354d29);box-shadow:0 0 0 2px #30372b;margin-right:7px}
+#omhtt-meter-designs .omh-meter-label{display:flex;justify-content:space-between;gap:8px;color:#c6cbbf;margin-bottom:5px;font-variant-numeric:tabular-nums;flex-wrap:wrap}
+#omhtt-meter-designs .omh-track{height:8px;background:#292d25;position:relative;overflow:hidden}
+#omhtt-meter-designs .omh-fill{height:100%;width:var(--amount);background:linear-gradient(180deg,#a7bf8b 0%,#718d58 45%,#536d3f 100%)}
+#omhtt-meter-designs .omh-fill.low{background:linear-gradient(#ddab7a,#a66c38)}
+#omhtt-meter-designs .omh-meter{margin-top:9px}
+#omhtt-meter-designs .omh-main{display:grid;grid-template-columns:minmax(200px,.7fr) minmax(0,2fr);gap:10px}
+#omhtt-meter-designs .omh-connection-body{padding:8px;display:grid;gap:9px}
+#omhtt-meter-designs .omh-column-labels{display:grid;grid-template-columns:1fr 1fr;gap:12px;color:#afb4a7;font-size:12px;padding:0 2px}
+#omhtt-meter-designs .omh-group{background:linear-gradient(#30332c,#22251f);padding:6px;border-bottom:1px solid #4b5144;color:#ddd}
+#omhtt-meter-designs .omh-devices{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start;position:relative}
+#omhtt-meter-designs .omh-device{padding:7px 6px;background:#0c0e0b;border:1px solid #444b3b;min-width:0;overflow-wrap:anywhere;font-size:12px}
+#omhtt-meter-designs .omh-device.selected{border-color:#a4ad96;background:#252b1e}
+#omhtt-meter-designs .omh-device-link{height:2px;background:#c4c8bf;position:absolute;left:calc(50% - 9px);width:18px;top:24px}
+#omhtt-meter-designs .omh-device small{display:block;color:#acb49f;margin-top:6px}
+#omhtt-meter-designs button{font:inherit;line-height:1.35;min-height:27px;padding:4px 9px;border:1px solid #8a8e83;color:#e2e4dc;background:linear-gradient(#363a31,#20231c);text-align:center;white-space:normal}
+#omhtt-meter-designs button:hover{background:linear-gradient(#4a5140,#2c3525)}
+#omhtt-meter-designs button:disabled{color:#7d8276;border-color:#4d5247}
+#omhtt-meter-designs .omh-map-column{display:grid;gap:10px;min-width:0}
+#omhtt-meter-designs .omh-map{height:240px;background:#d4d0b5;position:relative;overflow:hidden}
+#omhtt-meter-designs .omh-road{position:absolute;background:#848176;left:42%;width:17%;height:100%}
+#omhtt-meter-designs .omh-crossroad{position:absolute;background:#848176;left:0;top:65%;width:100%;height:21%}
+#omhtt-meter-designs .omh-building{position:absolute;background:#c99a65;width:23%;height:30%;left:6%;top:10%}
+#omhtt-meter-designs .omh-building.second{left:69%;top:14%;height:36%}
+#omhtt-meter-designs .omh-ring{position:absolute;border:2px solid #71a4ad;border-radius:50%;width:235px;height:235px;left:calc(50% - 118px);top:3px;opacity:.8}
+#omhtt-meter-designs .omh-pin{position:absolute;display:grid;place-items:center;background:#333630;border:1px solid #eee;color:#fff;min-width:22px;height:22px;font-size:11px;font-weight:bold;box-sizing:border-box}
+#omhtt-meter-designs .omh-map-caption{position:absolute;bottom:6px;left:8px;color:#252922;font-size:11px;background:#d4d0b5;padding:2px 5px}
+#omhtt-meter-designs .omh-settings{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+#omhtt-meter-designs .omh-settings-body{padding:9px;display:grid;gap:9px}
+#omhtt-meter-designs .omh-name{padding:5px 6px;border:1px solid #62675b;background:#0b0d09;color:#eceee7}
+#omhtt-meter-designs .omh-row{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;color:#b9c0af}
+#omhtt-meter-designs .omh-row b{color:#dce0d5;font-weight:normal}
+#omhtt-meter-designs .omh-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:7px}
+#omhtt-meter-designs .omh-footer{height:15px;border-top:1px solid #4e5149;background:linear-gradient(#2e3229,#13160f);text-align:right;color:#9ea691;font-size:12px;padding-right:4px}
+#omhtt-meter-designs [data-style="segments"] .omh-track{height:13px}
+#omhtt-meter-designs [data-style="segments"] .omh-track::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent calc(10% - 3px),#141613 calc(10% - 3px),#141613 10%)}
+#omhtt-meter-designs [data-style="segments"] .omh-header{justify-content:center;background:linear-gradient(#4b4c49,#22231f 55%,#11120f);border-top:1px solid #6c6e65;padding:3px 7px}
+#omhtt-meter-designs [data-style="segments"] .omh-equipment{grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(150px,.7fr)}
+#omhtt-meter-designs [data-style="segments"] .omh-status{border-left:1px solid #40453a}
+#omhtt-meter-designs [data-style="segments"] .omh-actions{grid-template-columns:1fr}
+#omhtt-meter-designs [data-style="segments"] .omh-led{width:12px;height:12px;box-shadow:0 0 0 2px #686d61}
+#omhtt-meter-designs [data-style="gauges"] .omh-track{height:24px;background:#232a1e}
+#omhtt-meter-designs [data-style="gauges"] .omh-fill{background:linear-gradient(90deg,#40512d,#6d8750 75%,#8ba36b)}
+#omhtt-meter-designs [data-style="gauges"] .omh-fill.low{background:linear-gradient(90deg,#69442a,#ac7948)}
+#omhtt-meter-designs [data-style="gauges"] .omh-meter-label{margin:0;position:relative;z-index:1;top:25px;height:24px;padding:0 7px;color:#fff;text-shadow:0 1px 2px #000;align-items:center;flex-wrap:nowrap;font-size:12px}
+#omhtt-meter-designs [data-style="gauges"] .omh-meter{margin-top:-8px}
+#omhtt-meter-designs [data-style="gauges"] .omh-settings-body{gap:12px}
+#omhtt-meter-designs [data-style="gauges"] .omh-device .omh-track{height:8px}
+#omhtt-meter-designs [data-style="gauges"] .omh-header{background:#2d3327;border-left:3px solid #9ca78e}
+#omhtt-meter-designs [data-style="gauges"] .omh-slot{padding:10px}
+@media(max-width:760px){#omhtt-meter-designs .omh-main{grid-template-columns:1fr}#omhtt-meter-designs .omh-connection-body{grid-template-columns:1fr 1fr}#omhtt-meter-designs .omh-column-labels{grid-column:1/-1}#omhtt-meter-designs .omh-stage{min-height:1080px}#omhtt-meter-designs .omh-connection-body>.omh-subtle{grid-column:1/-1}}
+@media(max-width:460px){#omhtt-meter-designs .omh-settings{grid-template-columns:1fr}#omhtt-meter-designs .omh-equipment,#omhtt-meter-designs [data-style="segments"] .omh-equipment{grid-template-columns:1fr 1fr}#omhtt-meter-designs .omh-status{grid-column:1/-1}#omhtt-meter-designs .omh-connection-body{grid-template-columns:1fr}#omhtt-meter-designs .omh-stage{min-height:1500px}#omhtt-meter-designs .omh-title{font-size:12px}#omhtt-meter-designs .omh-content{padding:6px}}
+</style>
+<script>
+(function(){
+const root=document.getElementById('omhtt-meter-designs');
+function meter(label,value,amount,low=false){return `<div class="omh-meter"><div class="omh-meter-label"><span>${label}</span><span>${value}</span></div><div class="omh-track" role="meter" aria-label="${label}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${amount}"><div class="omh-fill ${low?'low':''}" style="--amount:${amount}%"></div></div></div>`}
+for(const stage of root.querySelectorAll('.omh-stage')){
+ stage.innerHTML=`<div class="omh-window"><div class="omh-title"><div class="omh-close" aria-hidden="true">×</div><div><span>One More Horde</span> - Controller Menu</div></div>
+ <div class="omh-content">
+ <div class="omh-section"><div class="omh-header">Equipment</div><div class="omh-equipment">
+ <div class="omh-slot"><div class="omh-slot-top"><div class="omh-item-icon"><i data-lucide="battery-medium" aria-hidden="true"></i></div><div>Car Battery<div class="omh-subtle">Stored Batteries: 3</div></div></div>${meter('Battery','67%',67)}</div>
+ <div class="omh-slot"><div class="omh-slot-top"><div class="omh-item-icon"><i data-lucide="package" aria-hidden="true"></i></div><div>Expansion Kit<div class="omh-subtle">Large Expansion Kit</div></div></div><div class="omh-subtle">Right-click to remove</div></div>
+ <div class="omh-status"><div><span class="omh-led"></span>Online</div><div class="omh-subtle">40-tile management range</div><div class="omh-subtle">8 connected devices</div></div></div></div>
+ <div class="omh-main">
+ <div class="omh-section"><div class="omh-header"><span>Connections</span><button type="button" class="omh-add">Add Group</button></div><div class="omh-connection-body"><div class="omh-column-labels"><span>Triggers</span><span>Defenses</span></div><div><div class="omh-group">▾ Front of House</div><div class="omh-devices"><div class="omh-device">Laser Sensor #1<small>Watching</small></div><span class="omh-device-link"></span><div class="omh-device selected">M4 Turret<small>Active</small><div class="omh-track"><div class="omh-fill" style="--amount:82%"></div></div></div></div></div><div><div class="omh-group">▾ Ungrouped</div><div class="omh-devices"><div class="omh-device">Pressure Plate #5<small>Ready</small></div><div class="omh-device">Poke Floor #1<small>Condition: 96%</small></div></div></div><div class="omh-subtle">Right-click a device to assign its group.</div></div></div>
+ <div class="omh-map-column"><div class="omh-section"><div class="omh-header">Map</div><div class="omh-map" role="img" aria-label="Schematic controller map with connected devices and management radius"><div class="omh-road"></div><div class="omh-crossroad"></div><div class="omh-building"></div><div class="omh-building second"></div><div class="omh-ring"></div><span class="omh-pin" style="left:48%;top:48%">C</span><span class="omh-pin" style="left:37%;top:22%">T1</span><span class="omh-pin" style="left:34%;top:37%">L1</span><span class="omh-pin" style="left:68%;top:68%">P5</span><span class="omh-map-caption">Layout preview</span></div></div>
+ <div class="omh-settings">
+ <div class="omh-section"><div class="omh-header">Device Settings</div><div class="omh-settings-body"><div class="omh-name">M4 Turret</div><div class="omh-row"><span>Distance</span><b>12.4 tiles</b></div><div class="omh-row"><span>Power</span><b>On</b></div>${meter('Condition','82 / 100',82)}${meter('Ammunition','4,100 / 5,000',82)}<button type="button" class="omh-target">Targets: Controller Default</button><div class="omh-actions"><button type="button" class="omh-access">Access: Private</button><button type="button" class="omh-unassign">Unassign</button></div><div class="omh-subtle">Owner: JulietteBone</div></div></div>
+ <div class="omh-section"><div class="omh-header">Controller Settings</div><div class="omh-settings-body"><div class="omh-name">Home Controller</div><div class="omh-row"><span>Management Range</span><b>40 tiles</b></div><div class="omh-row"><span>Stockpile Used</span><b>165 / 400</b></div>${meter('Storage Free','235 / 400',58.75)}${meter('Connections Free','24 / 32',75)}<button type="button" class="omh-target">Targets: Zombies Only</button><button type="button" class="omh-access">Access: Private</button><div class="omh-subtle">Battery estimate available on hover.</div></div></div>
+ </div></div></div></div><div class="omh-footer">◢</div></div>`;
+ stage.querySelectorAll('.omh-access').forEach(b=>b.addEventListener('click',()=>{b.textContent=b.textContent.includes('Private')?'Access: Public':'Access: Private'}));
+ stage.querySelectorAll('.omh-target').forEach(b=>b.addEventListener('click',()=>{b.textContent=b.textContent.includes('Zombies Only')?'Targets: Other Factions / Zombies':'Targets: Zombies Only'}));
+ stage.querySelector('.omh-add').addEventListener('click',()=>{const e=document.createElement('div');e.className='omh-group';e.textContent='▾ New Group';stage.querySelector('.omh-connection-body').appendChild(e)});
+ stage.querySelector('.omh-unassign').addEventListener('click',e=>{e.currentTarget.textContent='Unassigned';e.currentTarget.disabled=true;stage.querySelector('.omh-device.selected').classList.remove('selected')});
+ const state={charge:67};function update(){const m=stage.querySelector('.omh-slot .omh-meter');m.querySelector('.omh-meter-label span:last-child').textContent=state.charge+'%';m.querySelector('.omh-fill').style.setProperty('--amount',state.charge+'%');m.querySelector('.omh-fill').classList.toggle('low',state.charge<25);m.querySelector('.omh-track').setAttribute('aria-valuenow',state.charge)}
+ if(globalThis.Tweak){const t=new Tweak({container:stage,onChange:update});t.addSlider(state,'charge',{label:'Battery charge',min:0,max:100,step:1,unit:'%'});}
+}
+if(globalThis.lucide)lucide.createIcons({attrs:{width:24,height:24}});
+})();
+</script>

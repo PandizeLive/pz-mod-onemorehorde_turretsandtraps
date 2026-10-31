@@ -1,5 +1,6 @@
-if isClient() or isServer() then return end
+if isServer() then return end
 local T = require("OMHTT/Turret")
+require("OMHTT/TurretPlacement")
 local D = require("OMHTT/Diagnostics")
 local I = {}
 
@@ -16,7 +17,7 @@ end
 ---@param reason string Failure category
 ---@return nil
 function I.reject(player, reason)
-    D.emit("turret-install-rejected", {reason = reason})
+    D.emit("turret-install-rejected", {reason = reason}, nil, nil, "turrets")
     player:setHaloNote(getText("UI_OMHTT_InstallFailed"), 255, 190, 90, 180)
     return nil
 end
@@ -25,7 +26,7 @@ end
 ---@param player IsoPlayer Builder
 ---@return ISBuildIsoEntity? cursor
 function I.install(item, player)
-    D.emit("turret-install-request", {itemId = item:getID(), cheat = player:isBuildCheat()})
+    D.emit("turret-install-request", {itemId = item:getID(), cheat = player:isBuildCheat()}, nil, nil, "turrets")
     if not T.enabled() or not I.carried(item, player) then return I.reject(player, "not-carried") end
     if not ISBuildIsoEntity then return I.reject(player, "construction-not-ready") end
     local info = SpriteConfigManager.GetObjectInfo("OMHTTDeployTurret")
@@ -33,6 +34,8 @@ function I.install(item, player)
     local containers = ArrayList.new()
     containers:add(item:getContainer())
     local cursor = ISBuildIsoEntity:new(player, info, 1, containers)
+    cursor.omhttInputs = {item}
+    require("OMHTT/PlacementTiming").apply(cursor)
     local logic = cursor.buildPanelLogic
     logic:setManualSelectInputs(true)
     local input = info:getRecipe():getCraftRecipe():getInputs():get(0)
@@ -52,7 +55,7 @@ function I.install(item, player)
     end
     cursor.dragNilAfterPlace = true
     getCell():setDrag(cursor, player:getPlayerNum())
-    D.emit("turret-install-preview", {itemId = item:getID(), cheat = player:isBuildCheat(), items = item:getInventory():getItems():size()})
+    D.emit("turret-install-preview", {itemId = item:getID(), cheat = player:isBuildCheat(), items = item:getInventory():getItems():size()}, nil, nil, "turrets")
     return cursor
 end
 

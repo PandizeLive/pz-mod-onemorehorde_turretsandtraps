@@ -1,8 +1,10 @@
+if isClient() then return end
+local Actors = require("OMHTT/DefenseActors")
 local Budget = require("OMHTT/TurretScheduler")
 local Clock = require("OMHTT/TurretClock")
-if isClient() or isServer() then return end
 local T = require("OMHTT/Turret")
 local M = require("OMHTT/TurretModules")
+local CombatPolicy = require("OMHTT/ControlCombat")
 local D = require("OMHTT/Diagnostics")
 local F = require("OMHTT/Foundation")
 local A = {entries = {}, order = {}, cursor = 1}
@@ -17,6 +19,14 @@ function A.changed(object, head)
         A.entries[object] = entry
         A.order[#A.order + 1] = entry
     end
+    require("OMHTT/TurretSiphon").stop(entry)
+    local definition = require("OMHTT/TurretHeads").get(head)
+    entry.rotaryKind = definition and definition.rotary == true
+    local state = T.state(object)
+    if state then
+        state.rotaryManual, state.rotaryMoving = nil, false
+    end
+    entry.rotaryHead, entry.rotaryJob, entry.stopAt = nil, nil, nil
     entry.job, entry.due, entry.status, entry.target, entry.fireDue = nil, 0, nil, nil, 0
 end
 
@@ -25,31 +35,40 @@ end
 ---@return table job
 ---@nodiscard
 function A.scan(origin, profile)
-    local radius = math.ceil(profile.range)
-    return {origin = origin, profile = profile, radius = radius, x = -radius, y = -radius,
-        index = 0, bestDistance = 0, visited = 0}
+    return {origin = origin, profile = profile, visited = 0, members = {}, seen = {},
+        started = getTimestampMs(), search = Actors.query(origin:getX() + .5, origin:getY() + .5, origin:getZ(), profile.range)}
 end
 
----@param job table Incremental scan
----@param budget number Maximum work units
----@param deadline number Wall-clock ceiling
----@return boolean complete
+function A.complete(job)
+    if not job.done then
+        job.done = true
+        local elapsed = getTimestampMs() - job.started
+        D.measure("target-search", elapsed, "turrets")
+        if D.detailed("turrets") then
+            local state = job.profile.object and T.state(job.profile.object)
+            D.defer("target-search-complete", {source=state and state.id, range=job.profile.range,
+                priority=job.profile.priority, visits=job.visited, elapsed=elapsed,
+                victim=job.best and job.best:getOnlineID(), selected=job.best~=nil}, "turrets")
+        end
+    end
+    return true
+end
+
 function A.advance(job, budget, deadline)
     local Combat = require("OMHTT/PrototypeCombat")
     for step = 1, budget do
         if getTimestampMs() >= deadline then return false end
-        if job.y > job.radius then return true end
-        local square = getCell():getGridSquare(job.origin:getX() + job.x, job.origin:getY() + job.y, job.origin:getZ())
-        local objects = square and square:getMovingObjects()
-        if objects and job.index < objects:size() then
-            local zombie = objects:get(job.index)
-            job.index = job.index + 1
+        if job.search.done then return A.complete(job) end
+        local zombie = Actors.advance(job.search)
+        if zombie and not job.seen[zombie] then
+            job.seen[zombie] = true
             job.visited = job.visited + 1
-            if instanceof(zombie, "IsoZombie") then
+            if CombatPolicy.eligible(job.profile.object, zombie) and require("OMHTT/Damage").available(zombie) then
                 local inside, distance = M.inside(job.origin, zombie, job.profile)
-                local select = inside and (job.profile.priority == "Random"
-                    or M.better(zombie, distance, job.best, job.bestDistance, job.profile.priority))
-                if select and Combat.clearLane(job.origin, zombie:getSquare(), job.profile.range) then
+                local select = inside and (job.profile.priority == "OnceEach" or job.profile.priority == "Random"
+                    or M.better(zombie, distance, job.best, job.bestDistance or 0, job.profile.priority))
+                if select and Combat.clearLane(job.origin, Actors.square(zombie), job.profile.range) then
+                    if job.profile.priority == "OnceEach" then job.members[#job.members + 1] = zombie end
                     if job.profile.priority == "Random" then
                         job.eligible = (job.eligible or 0) + 1
                         select = ZombRand(job.eligible) == 0
@@ -57,16 +76,10 @@ function A.advance(job, budget, deadline)
                     if select then job.best, job.bestDistance = zombie, distance end
                 end
             end
-        else
-            job.index = 0
-            job.x = job.x + 1
-            if job.x > job.radius then
-                job.x = -job.radius
-                job.y = job.y + 1
-            end
         end
     end
-    return job.y > job.radius
+    if job.search.done then return A.complete(job) end
+    return false
 end
 
 ---@param entry table Scheduled turret
@@ -77,7 +90,7 @@ function A.status(entry, status)
     entry.status = status
     local state = T.state(entry.object)
     if not state then return end
-    D.defer("turret-auto-state", {id = state.id, status = status})
+    D.defer("turret-auto-state", {id = state.id, status = status}, "turrets")
 end
 
 ---@param entry table Scheduled turret
@@ -90,56 +103,107 @@ function A.step(entry, deadline)
     if not square or not state or object:getObjectIndex() < 0
         or getCell():getGridSquare(square:getX(), square:getY(), square:getZ()) ~= square then return false end
     local now = Clock.now()
+    local contents = W.contents(object)
+    local standby = require("OMHTT/TurretStandby")
+    local waking = standby.entries[object]
+    if state.standby == "waking" and waking and not standby.valid(object, waking.target, contents) then
+        standby.step(object, contents, nil)
+        entry.target, entry.job = nil, nil
+        A.status(entry, "no-target")
+        return true
+    end
+    if state.facingPending then return true end
+    if entry.rotaryKind then
+        return require("OMHTT/TurretRotary").step(entry, deadline)
+    end
     if now < entry.due and (not entry.target or now < (entry.fireDue or 0)) then return true end
     local aim = require("OMHTT/TurretAim").entries[object]
     if require("OMHTT/TurretSearch").pending[object] or (aim and aim.player) then return true end
+    local stats = T.cycleConfig(contents)
     local interval = M.option("DetectionInterval", 0.25, 0.1, 5) * 1000
-    local contents = W.contents(object)
-    if not W.valid(object) or not M.detects(state, contents) or not W.power(object, contents) then
+    if contents.active.MotionDetectionEnhanced then interval = math.min(interval, M.option("EnhancedDetectionInterval", 0.1, 0.05, 5) * 1000) end
+    if not W.valid(object) or not M.detects(state, contents) or not W.power(object, contents, stats) then
         entry.job, entry.due = nil, now + interval
         entry.target = nil
+        standby.step(object, contents, nil)
         A.status(entry, "inactive")
         return true
     end
-    local profile = M.profile(state, contents)
+    local profile = M.profile(state, contents, true, stats)
+    profile.object = object
     local key = profile.heading .. ":" .. profile.cone .. ":" .. profile.range .. ":" .. profile.priority
-    if entry.key ~= key then entry.job, entry.target = nil, nil end
+    if entry.key ~= key then entry.job, entry.target, entry.round = nil, nil, nil end
     entry.key = key
     local Combat = require("OMHTT/PrototypeCombat")
     local target = entry.target
     local sticky = profile.priority == "Random" or profile.priority == "Toughest"
-    local retained = (sticky or now < entry.due) and target and M.inside(square, target, profile)
-        and Combat.clearLane(square, target:getSquare(), profile.range)
+    local retained = target and require("OMHTT/Damage").available(target) and CombatPolicy.eligible(object, target) and M.inside(square, target, profile)
+        and Combat.clearLane(square, Actors.square(target), profile.range)
     local job = {visited = 0}
-    if not retained then
+    if profile.priority == "OnceEach" then
+        if not retained then
+            if not entry.round then
+                if not entry.job then entry.job = A.scan(square, profile) end
+                if not A.advance(entry.job, 64, deadline) then return true end
+                entry.round = {members = entry.job.members, used = {}}
+                entry.job = nil
+            end
+            local complete, selected = require("OMHTT/TurretOnceEach").select(entry.round, square, profile, state.aimDegrees or profile.heading, deadline)
+            if not complete then return true end
+            target, retained = selected, false
+            if not target then
+                entry.round, entry.target, entry.due = nil, nil, now + interval
+                standby.step(object, contents, nil)
+                A.status(entry, "no-target")
+                return true
+            end
+        end
+    elseif not retained or entry.job or (not sticky and now >= entry.due) then
         if not entry.job then entry.job = A.scan(square, profile) end
-        if not A.advance(entry.job, 64, deadline) then return true end
-        job, target = entry.job, entry.job.best
+        if A.advance(entry.job, 128, deadline) then
+            job = entry.job
+            if job.best then target, retained = job.best, false end
+            entry.job, entry.due = nil, now + interval
+        elseif not retained then
+            entry.target = nil
+            return true
+        end
+    elseif now >= entry.due then
+        entry.due = now + interval
     end
-    entry.job = nil
-    if now >= entry.due then entry.due = now + interval end
-    if not target or not M.inside(square, target, profile)
-        or not Combat.clearLane(square, target:getSquare(), profile.range) then
+    if not target or not require("OMHTT/Damage").available(target) or not CombatPolicy.eligible(object, target) or (not retained and (not M.inside(square, target, profile)
+        or not Combat.clearLane(square, Actors.square(target), profile.range))) then
         entry.target = nil
         if entry.status ~= "no-target" then
             D.defer("turret-auto-search", {id = state.id, visits = job.visited, range = profile.range,
-                cone = profile.cone, baseFacing = state.baseFacing, selected = false})
+                cone = profile.cone, baseFacing = state.baseFacing, selected = false}, "turrets")
         end
+        standby.step(object, contents, nil)
         A.status(entry, "no-target")
         return true
     end
+    local previousTarget = entry.target
+    entry.target = target
+    if not standby.step(object, contents, target, false, true) then
+        A.status(entry, "Waking")
+        return true
+    end
     local aligned = require("OMHTT/TurretAim").request(object, target, nil)
-    if entry.target ~= target then
+    if previousTarget ~= target then
         entry.target = target
         D.defer("turret-auto-target", {id = state.id, x = target:getX(), y = target:getY(), visits = job.visited,
-            priority = profile.priority, cone = profile.cone, baseFacing = state.baseFacing, aim = state.aimDegrees})
+            priority = profile.priority, cone = profile.cone, baseFacing = state.baseFacing, aim = state.aimDegrees}, "turrets")
     end
     if not aligned then
         A.status(entry, "Aiming")
     elseif contents.active.Firing and now >= (entry.fireDue or 0) then
         local result = W.fire(nil, object, target)
         entry.fireDue = now + 50
-        if result == "Fired" then entry.fireDue = now + T.cycleConfig(contents).cooldown end
+        if result == "Fired" or result == "Misfire" then entry.fireDue = now + T.cycleConfig(contents).cooldown end
+        if result == "Fired" and profile.priority == "OnceEach" and entry.round then
+            entry.round.used[target], entry.round.started = true, true
+            entry.target, entry.due = nil, now
+        end
         A.status(entry, result)
     elseif not contents.active.Firing then
         A.status(entry, "tracking-only")
@@ -160,6 +224,7 @@ function A.tick()
         if A.step(entry, deadline) then
             A.cursor = A.cursor + 1
         else
+            require("OMHTT/TurretSiphon").stop(entry)
             A.entries[entry.object] = nil
             table.remove(A.order, A.cursor)
         end

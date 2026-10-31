@@ -3,9 +3,68 @@ if isClient() then return end
 local Footprint = require("OMHTT/BarrierFootprint")
 local Foundation = require("OMHTT/Foundation")
 local Damage = require("OMHTT/Damage")
+local Horde = require("OMHTT/DefenseHorde")
 local Diagnostics = require("OMHTT/Diagnostics")
+local ActorState = require("OMHTT/DefenseActorState")
+local Actors = require("OMHTT/DefenseActors")
 local Barrier = {TYPE = "OMHTTBarrierClaw", TOKEN = "OMHTTBarrierStrike"}
 local generation = 0
+local receipts = setmetatable({}, {__mode = "k"})
+
+---@param module string Namespace
+---@param command string Observed native strike
+---@param player IsoPlayer Authenticated sender
+---@param message table Native identity and collider reference
+---@return nil
+function Barrier.command(module, command, player, message)
+    if not isServer() or module ~= "OMHTT_BarrierContact" or command ~= "Strike" or type(message) ~= "table" then return end
+    Diagnostics.count("barrier-report-received", 1, "traps")
+    local P = require("OMHTT/DefenseCombatProtocol")
+    if not P.identity(message.id) or not P.identity(message.outfit) or type(message.barrier) ~= "string"
+        or #message.barrier > 160 or not P.number(message.x, 0, 1000000) or not P.number(message.y, 0, 1000000)
+        or not P.number(message.z, -32, 32) or not P.number(message.index, 0, 10000)
+        or message.index % 1 ~= 0 or message.x % 1 ~= 0 or message.y % 1 ~= 0 or message.z % 1 ~= 0
+        or (message.token ~= "left" and message.token ~= "right") then return end
+    local square = getCell():getGridSquare(message.x, message.y, message.z)
+    local objects = square and square:getObjects()
+    if not objects or message.index >= objects:size() then return end
+    local target = objects:get(message.index)
+    local record = Footprint.exact(target)
+    if not record or record.id ~= message.barrier or target:getHealth() <= 0 then return end
+    -- Resolve from the validated collider's immediate vicinity, not an undriven update-event index.
+    local zombie, scanned = nil, 0
+    for x = message.x - 2, message.x + 2 do
+        for y = message.y - 2, message.y + 2 do
+            local tile = getCell():getGridSquare(x, y, message.z)
+            local moving = tile and Actors.at(tile)
+            for i = 0, (moving and moving:size() or 0) - 1 do
+                local actor = moving:get(i)
+                scanned = scanned + 1
+                if instanceof(actor, "IsoZombie") and actor:getOnlineID() == message.id then
+                    zombie = actor
+                    break
+                end
+                if scanned >= 256 then return end
+            end
+            if zombie then break end
+        end
+        if zombie then break end
+    end
+    if not zombie or zombie:isDead() or require("OMHTT/DefenseCombatProtocol").outfit(zombie:getPersistentOutfitID()) ~= message.outfit
+        or not zombie:getOwner() or zombie:getOwnerPlayer() ~= player
+        or not Horde.allowed(zombie) or not Foundation.barrierEnabled() then return end
+    if not string.find(string.lower(zombie:getRealState()), "thump", 1, true) then return end
+    local dx, dy = zombie:getX() - message.x - .5, zombie:getY() - message.y - .5
+    if dx * dx + dy * dy > 4 or Barrier.face(record, zombie:getX(), zombie:getY(), target:getModData().OMHTTEdge) == "rear" then return end
+    local now, receipt = getTimestampMs(), receipts[zombie]
+    if receipt and receipt.owner == player and receipt.id == record.id
+        and (receipt.token == message.token or now - receipt.at < 200) then return end
+    receipts[zombie] = {owner = player, id = record.id, token = message.token, at = now}
+    Diagnostics.count("barrier-report-accepted", 1, "traps")
+    Damage.resolve(zombie, Foundation.barrierDamage(record) / 100, record.id, "barrier", function(amount)
+        if amount > 0 then Diagnostics.count("barrier-damage-confirmed", 1, "traps") end
+    end)
+end
 
 ---@param record table Authoritative barrier geometry
 ---@param x number Attacker world X
@@ -47,13 +106,11 @@ end
 ---@param zombie IsoZombie Previously tracked attacker
 ---@return nil
 function Barrier.release(zombie)
-    if not zombie:hasModData() then return end
-    local data = zombie:getModData()
+    local data = ActorState.peek(zombie)
+    if not data then return end
     local state = data.OMHTTBarrierStrike
     if not state then return end
-    if zombie:getVariableString("ThumpType") == Barrier.TYPE then
-        zombie:setVariable("ThumpType", state.previousType)
-    end
+    zombie:clearVariable("OMHTTBarrierContact")
     zombie:clearVariable(Barrier.TOKEN)
     data.OMHTTBarrierStrike = nil
 end
@@ -66,14 +123,14 @@ end
 ---@param zombie IsoZombie Engine-updated zombie
 ---@return nil
 function Barrier.update(zombie)
-    if isClient() or isServer() then return end
-    local data = nil
-    if zombie:hasModData() then
-        data = zombie:getModData()
+    if isClient() then return end
+    if isServer() then
+        if zombie:getOwner() then return end
     end
+    local data = ActorState.peek(zombie)
     local target = zombie:getThumpTarget()
     if zombie:isDead() or not target or zombie:getCurrentStateName() ~= "ThumpState"
-        or not Foundation.barrierEnabled() then
+        or not Foundation.barrierEnabled() or not Horde.allowed(zombie) then
         if data and data.OMHTTBarrierStrike then
             Barrier.release(zombie)
         end
@@ -95,25 +152,21 @@ function Barrier.update(zombie)
         return
     end
     if not data then
-        data = zombie:getModData()
+        data = ActorState.get(zombie)
     end
     local state = data.OMHTTBarrierStrike
     if not state or state.id ~= record.id or state.generation ~= generation then
         Barrier.release(zombie)
-        local previousType = zombie:getVariableString("ThumpType")
-        if not previousType or previousType == Barrier.TYPE then
-            previousType = "DoorClaw"
-        end
-        state = {id = record.id, generation = generation, previousType = previousType, token = "", strikes = 0,
+        state = {id = record.id, generation = generation, token = "", strikes = 0,
             lastStrikeAt = getTimestampMs(), nextWarning = getTimestampMs() + 5000}
         data.OMHTTBarrierStrike = state
         zombie:clearVariable(Barrier.TOKEN)
-        zombie:setVariable("ThumpType", Barrier.TYPE)
+        zombie:setVariable("OMHTTBarrierContact", true)
         Diagnostics.emit("barrier-attacker-attached", {id = record.id, x = zombie:getX(), y = zombie:getY(),
-            animation = Barrier.TYPE, damage100 = Foundation.barrierDamage(record)})
+            animation = Barrier.TYPE, damage100 = Foundation.barrierDamage(record)}, nil, nil, "traps")
         return
     end
-    if zombie:getVariableString("ThumpType") ~= Barrier.TYPE then
+    if not zombie:getVariableBoolean("OMHTTBarrierContact") then
         Barrier.release(zombie)
         return
     end
@@ -122,7 +175,7 @@ function Barrier.update(zombie)
     if (token ~= "left" and token ~= "right") or token == state.token then
         if now >= state.nextWarning then
             Diagnostics.emit("barrier-marker-wait", {id = record.id, token = tostring(token),
-                elapsedMs = now - state.lastStrikeAt, barrierHP = target:getHealth(), strikes = state.strikes})
+                elapsedMs = now - state.lastStrikeAt, barrierHP = target:getHealth(), strikes = state.strikes}, nil, nil, "traps")
             state.nextWarning = now + 5000
         end
         return
@@ -135,21 +188,29 @@ function Barrier.update(zombie)
     local face = Barrier.face(record, zombie:getX(), zombie:getY(), target:getModData().OMHTTEdge)
     if face == "rear" then
         Diagnostics.emit("barrier-strike-blocked", {id = record.id, face = face, facing = record.facing,
-            token = token, x = zombie:getX(), y = zombie:getY(), barrierHP = target:getHealth()})
+            token = token, x = zombie:getX(), y = zombie:getY(), barrierHP = target:getHealth()}, nil, nil, "traps")
         return
     end
-    local lost = Damage.apply(zombie, Foundation.barrierDamage(record) / 100, record.id, "barrier", nil, nil)
+    local lost = 0
+    Damage.resolve(zombie, Foundation.barrierDamage(record) / 100, record.id, "barrier", function(amount) lost = amount end)
     Diagnostics.emit("barrier-strike", {id = record.id, token = token, strikes = state.strikes,
         face = face, facing = record.facing, width = record.width,
         x = zombie:getX(), y = zombie:getY(), nativeDamage = lost, damage100 = lost * 100,
-        barrierHP = target:getHealth(), elapsedMs = elapsed, dead = zombie:isDead()})
+        barrierHP = target:getHealth(), elapsedMs = elapsed, dead = zombie:isDead()}, nil, nil, "traps")
     if zombie:isDead() then
         Barrier.release(zombie)
     end
 end
 
 Events.OnGameStart.Add(Barrier.reset)
+Events.OnServerStarted.Add(Barrier.reset)
+Events.OnClientCommand.Add(Barrier.command)
 Events.OnZombieUpdate.Add(Barrier.update)
 Events.OnZombieDead.Add(Barrier.release)
+Events.OnZombieCreate.Add(function(zombie)
+    receipts[zombie] = nil
+    Barrier.release(zombie)
+    Barrier.update(zombie)
+end)
 
 return Barrier

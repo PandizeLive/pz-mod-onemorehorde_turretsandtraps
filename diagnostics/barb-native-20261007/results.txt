@@ -1,0 +1,25 @@
+LOG  : Lua          f:0 st:402,233,814> [OMHTT] packages-ready version=0.2.30 traps=true turrets=false game=42.21
+LOG  : Lua          f:0 st:402,233,822> [BarbProbe] map-fence damageBefore=100 damageAfter=90
+LOG  : Lua          f:0 st:402,233,822> [BarbProbe] map-fence damageBefore=100 damageAfter=90
+LOG  : Lua          f:0 st:402,233,825> [BarbProbe] TIMER PASS hits=3 health=0.7 immediate=1 cadenceMs=2000 exit=stops sharedGuard=prototype
+LOG  : Lua          f:0 st:402,233,825> [BarbProbe] LUA PASS fixtures=8 fencePairs=4 contactSamples=20 width=0.30000001192092896 nativeLuaAPIs=exposed
+LOG  : General      f:0 st:402,238,147> [BarbProbe] roundtrip sprite=carpentry_02_81 metric=getHealth before=427 after=427
+LOG  : General      f:0 st:402,238,148> [BarbProbe] roundtrip sprite=carpentry_02_80 metric=getHealth before=427 after=427
+LOG  : General      f:0 st:402,238,148> [BarbProbe] roundtrip sprite=crafted_04_115 metric=getHealth before=127 after=127
+LOG  : General      f:0 st:402,238,148> [BarbProbe] roundtrip sprite=crafted_04_116 metric=getHealth before=127 after=127
+LOG  : General      f:0 st:402,238,149> [BarbProbe] roundtrip sprite=fencing_01_1 metric=getDamage before=90 after=100
+LOG  : General      f:0 st:402,238,149> [BarbProbe] roundtrip sprite=fencing_01_2 metric=getDamage before=90 after=100
+LOG  : General      f:0 st:402,238,149> [BarbProbe] roundtrip sprite=walls_exterior_house_01_1 metric=getDamage before=100 after=100
+LOG  : General      f:0 st:402,238,149> [BarbProbe] roundtrip sprite=walls_exterior_house_01_0 metric=getDamage before=100 after=100
+LOG  : General      f:0 st:402,238,150> [BarbProbe] SAVE PASS hosts=8 constructedHealth=preserved marker=preserved mapCounterResets=2
+LOG  : General      f:0 st:402,238,150> [BarbProbe] nativeTimeMultiplier=3.1608644
+LOG  : General      f:0 st:402,238,164> [BarbProbe] crossing direction=S pos=908.5,904.1 edge=904.0 width=0.30000001192092896 started=true outcome=success
+LOG  : General      f:0 st:402,238,168> [BarbProbe] crossing direction=N pos=908.5,903.9 edge=904.0 width=0.30000001192092896 started=true outcome=success
+LOG  : General      f:0 st:402,238,170> [BarbProbe] crossing direction=E pos=908.1,908.5 edge=908.0 width=0.30000001192092896 started=true outcome=success
+LOG  : General      f:0 st:402,238,172> [BarbProbe] crossing direction=W pos=907.9,908.5 edge=908.0 width=0.30000001192092896 started=true outcome=success
+LOG  : General      f:0 st:402,238,174> [BarbProbe] crossing direction=S pos=912.5,904.1 edge=904.0 width=0.30000001192092896 started=true outcome=success
+LOG  : General      f:0 st:402,238,176> [BarbProbe] crossing direction=N pos=912.5,903.9 edge=904.0 width=0.30000001192092896 started=true outcome=success
+LOG  : General      f:0 st:402,238,178> [BarbProbe] crossing direction=E pos=912.1,908.5 edge=912.0 width=0.30000001192092896 started=true outcome=success
+LOG  : General      f:0 st:402,238,180> [BarbProbe] crossing direction=W pos=911.9,908.5 edge=912.0 width=0.30000001192092896 started=true outcome=success
+LOG  : General      f:0 st:402,238,180> [BarbProbe] CROSS PASS nativeZombieExecutions=8 contactBands=8 animationVariables=controlled
+LOG  : General      f:0 st:402,248,378> Shutdown handling finished

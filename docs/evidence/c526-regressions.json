@@ -1,0 +1,68 @@
+{
+  "baseline": "ad91d55",
+  "connectedClients": 0,
+  "cases": [
+    {
+      "case": "physical-child-timing",
+      "expectedFailure": "Fragments launch immediately at terminal stop",
+      "reproduced": true,
+      "files": [
+        {
+          "path": "Source/42.20/media/lua/server/OMHTT/TurretVolley.lua",
+          "beforeSHA256": "c3207426e2cc96dbb7ee5d9502607d9f4b0c24b788342d59dea36c8ab2ff1084",
+          "afterSHA256": "a178f5ccae9148bb64b5c57e5985da79f6121c340ec94869d6f8771d4bef329a"
+        }
+      ]
+    },
+    {
+      "case": "explosive-fragment-delay",
+      "expectedFailure": "Minis launch at impact",
+      "reproduced": true,
+      "files": [
+        {
+          "path": "Source/42.20/media/lua/server/OMHTT/TurretOrdnance.lua",
+          "beforeSHA256": "cdd8e1cb6d30035f96e6923bdef4bd106395d7c4633fbdc8f01369f60b280e37",
+          "afterSHA256": "68764c3db28faea69eb4c6f267dd26600587af1a1590b383f85ed277e15e9ed3"
+        }
+      ]
+    },
+    {
+      "case": "rotary-packet-freeze",
+      "expectedFailure": "C526 rotary prediction advances through delayed snapshots",
+      "reproduced": true,
+      "files": [
+        {
+          "path": "Source/42.20/media/lua/client/OMHTT/TurretAimView.lua",
+          "beforeSHA256": "8f35725c000a9588fe573f45362b485917e627b33659e9c29e5e34efd40c6be0",
+          "afterSHA256": "337149a76a4dd9370be2bbdaeb2ecf524ddbbd6f1addfd6c428ab410844cf430"
+        }
+      ]
+    },
+    {
+      "case": "tether-packet-freeze",
+      "expectedFailure": "C526 delayed tether snapshots",
+      "reproduced": true,
+      "files": [
+        {
+          "path": "Source/42.20/media/lua/shared/OMHTT/TetherCycle.lua",
+          "beforeSHA256": "b77a38a1fe71fece3e7ed42b9dd4f6dac6953f31f658610be4afecaa5990f3f7",
+          "afterSHA256": "7a7e5fa77d7b9e9e358384ff092ee24e759917c5085bbd354dd18e998f63ddce"
+        }
+      ]
+    },
+    {
+      "case": "bomb-server-batching",
+      "expectedFailure": "C526 bomb batches use light-ammo time",
+      "reproduced": true,
+      "files": [
+        {
+          "path": "Source/42.20/media/lua/shared/OMHTT/TurretTransferAction.lua",
+          "beforeSHA256": "5ab217c55b616c5451699c077d2b23a87799b26a853bb508de43cb7f0ba27e37",
+          "afterSHA256": "894790aa15ee6bc56ca26de0589a1d3e059ef17445fde4450905ad98dd2225f7"
+        }
+      ]
+    }
+  ],
+  "correctedPassed": true,
+  "result": "Assertions passed: 41863.0"
+}

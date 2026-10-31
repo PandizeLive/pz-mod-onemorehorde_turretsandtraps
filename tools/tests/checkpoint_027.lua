@@ -55,7 +55,30 @@ check(Clock.now() == start, "Paused active clock cannot grant reload progress")
 GameTime.isGamePaused = function() return false end
 testMillis = testMillis + 10000
 Clock.tick()
-check(Clock.now() == start + 100, "Large wall-clock skips cannot release a catch-up burst")
+check(Clock.now() == start, "Resume excludes pause time")
+testMillis = testMillis + 700
+testTime = testTime + 700 / 150000
+Clock.tick()
+check(math.abs(Clock.now() - start - 700) < .001, "World-time progress advances cooldown at normal speed")
+local ActiveTime = require("OMHTT/ActiveTime")
+local observed = ActiveTime.new()
+check(ActiveTime.step(observed) == 0, "Fresh clock cannot grant offline progress")
+GameTime.isGamePaused = function() return true end
+testMillis = testMillis + 10000
+triggerEvent("OnTickEvenPaused")
+GameTime.isGamePaused = function() return false end
+testMillis = testMillis + 10000
+check(ActiveTime.step(observed) == 0, "Native paused event excludes pause even without ordinary tick calls")
+testMillis = testMillis + 700
+check(ActiveTime.step(observed) == 700, "Observer counts full active elapsed time")
+testMillis = testMillis - 100
+check(ActiveTime.step(observed) == 0, "Clock rollback cannot reverse cooldown progress")
+local C = require("OMHTT/TurretCycle")
+local settings = {magazine = 2, reload = 2000, cooldown = 2000}
+local delayed = {loaded = 2, nextShot = 1000}
+check(C.update(delayed, 2, settings, 10000) == "Ready", "Long stall permits the due shot")
+C.consume(delayed, 1, settings, 10000)
+for i = 1, 10 do check(C.update(delayed, 1, settings, 10000) == "Cooling", "Missed shot deadlines never form a catch-up burst") end
 Clock.now = realNow
 local B = require("OMHTT/TurretScheduler")
 local workers, cursor = B.workers, B.cursor

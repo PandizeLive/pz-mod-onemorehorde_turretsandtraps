@@ -1,0 +1,127 @@
+{
+  "version": "0.2.70.10",
+  "logs": {
+    "client-console.txt": {
+      "sha256": "e6bf207835879f69a584865cc22bffe229b0f938f815df3ad09754ccf06e4e8d",
+      "versions": [
+        "0.2.70.10"
+      ],
+      "events": {
+        "construction-sprites": 1,
+        "construction-edge-hook": 1,
+        "client-ready": 1,
+        "logging-settings": 1,
+        "summary": 86,
+        "contact-visible": 68,
+        "barrier-vault-start": 7,
+        "barrier-vault-enter": 7,
+        "barrier-vault-contact": 7,
+        "barrier-vault-result": 7,
+        "barrier-vault-input": 6,
+        "barrier-selection": 1
+      },
+      "retainedDamageKinds": {},
+      "contactVisible": {
+        "count": 68,
+        "min": 113,
+        "median": 131.0,
+        "max": 181
+      },
+      "nearbyTTErrorLines": []
+    },
+    "server-console.txt": {
+      "sha256": "5ebde73a800e5e8b649782f8f535eeac3e46ed89bc8e89fb5d0610c5923cecdf",
+      "versions": [
+        "0.2.70.10"
+      ],
+      "events": {
+        "module-loot-summary": 1,
+        "construction-sprites": 1,
+        "authority-ready": 1,
+        "logging-settings": 1,
+        "barrier-restoration": 18,
+        "turret-restored": 1,
+        "summary": 87,
+        "turret-power-toggle": 8,
+        "combat-result": 119,
+        "combat-settled": 108,
+        "bed-trip": 4,
+        "bed-landing": 4,
+        "bed-fall": 4,
+        "scheduler": 7,
+        "combat-lethal": 11,
+        "barrier-health": 12
+      },
+      "retainedDamageKinds": {
+        "('barrier', 'applied')": 58,
+        "('poke-floor', 'applied')": 18,
+        "('barbs', 'applied')": 22,
+        "('bed-spikes', 'applied')": 4,
+        "('tether-dart', 'applied')": 9,
+        "('tether-pull', 'applied')": 8
+      },
+      "contactVisible": {
+        "count": 0,
+        "min": null,
+        "median": null,
+        "max": null
+      },
+      "nearbyTTErrorLines": [
+        508
+      ],
+      "nearbyTTErrorExplanation": "Line 508: unrelated startup Fuel Pump name sanitization; nearby asset warnings, no T&T attack stack trace."
+    },
+    "server-debug.txt": {
+      "sha256": "fef2c63bb74213ffa7ec95152f963185a275e78fbe00199ed129da3685774f89",
+      "versions": [
+        "0.2.70.10"
+      ],
+      "events": {
+        "module-loot-summary": 1,
+        "construction-sprites": 1,
+        "authority-ready": 1,
+        "logging-settings": 1,
+        "barrier-restoration": 18,
+        "turret-restored": 1,
+        "summary": 87,
+        "turret-power-toggle": 8,
+        "combat-result": 119,
+        "combat-settled": 108,
+        "bed-trip": 4,
+        "bed-landing": 4,
+        "bed-fall": 4,
+        "scheduler": 7,
+        "combat-lethal": 11,
+        "barrier-health": 12
+      },
+      "retainedDamageKinds": {
+        "('barrier', 'applied')": 58,
+        "('poke-floor', 'applied')": 18,
+        "('barbs', 'applied')": 22,
+        "('bed-spikes', 'applied')": 4,
+        "('tether-dart', 'applied')": 9,
+        "('tether-pull', 'applied')": 8
+      },
+      "contactVisible": {
+        "count": 0,
+        "min": null,
+        "median": null,
+        "max": null
+      },
+      "nearbyTTErrorLines": [
+        508
+      ],
+      "nearbyTTErrorExplanation": "Duplicate of console startup finding."
+    }
+  },
+  "replay": {
+    "assertions": 9,
+    "result": "Current outbound snapshot wait, inter-update stop, missing target attachment and extra aim blend reproduced",
+    "connectedRendering": false
+  },
+  "remoteChanges": false,
+  "sourceChanges": false,
+  "artistKit": "artifacts/OMHTT-Artist-Handoff-C445.zip",
+  "artistBaseline": "0.2.66",
+  "dartAndCableMeshesMatchCurrentSource": true
+}

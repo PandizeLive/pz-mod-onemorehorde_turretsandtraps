@@ -1,8 +1,33 @@
 'use strict';
 const D=window.LOOT_DATA, M=window.LootModel, $=id=>document.getElementById(id);
 let scenario=M.defaults(D), prepared=null, result=null, sample=null, generation=0, redrawPending=false;
-const colors=['#f2bd62','#56b4e9','#ed648c','#b888f5','#47ce88','#ff7959','#e0dc66','#74dedc','#bd97dc','#8ca756','#f69ed0','#d09a75','#bbc9da','#eea577','#93d6b5'];
+const moduleAppearance={
+  Firing:['#f2bd62','circle'],MotionDetection:['#56b4e9','circle'],Filter:['#ed648c','circle'],Detection360:['#b888f5','circle'],Suppression:['#47ce88','circle'],
+  RapidFire:['#ff7959','triangle'],Reload:['#e0dc66','square'],Velocity:['#74dedc','triangle'],Range:['#bd97dc','triangle'],
+  CapacitySmall:['#8ca756','hexagon'],Capacity:['#f69ed0','hexagon'],CapacityLarge:['#d09a75','hexagon'],Autoloader:['#bbc9da','square'],
+  Critical:['#eea577','triangle'],Accuracy:['#93d6b5','triangle'],Magazine:['#a3b8ff','square'],Splitter:['#dc9f49','diamond'],Fragment:['#ce82a9','diamond'],
+  FiringEnhanced:['#e9d6a0','circle'],MotionDetectionEnhanced:['#64aab0','circle'],Piercing:['#8edbff','diamond'],InitialBlow:['#ffb4a2','diamond'],
+  Execute:['#e96969','diamond'],Impact:['#c4db72','diamond'],Conservation:['#70d4ac','square'],Regulator:['#a1c7ff','square'],Grid:['#df83ff','square'],Siphon:['#86e0cb','square'],Lure:['#5dd6c6','circle'],Void:['#b589ff','square'],Synergy:['#d4a6ff','diamond'],Martyrdom:['#ff934f','diamond'],Tack:['#f5db84','diamond']
+};
+const familyNames={circle:'Control',triangle:'Ballistics',square:'Ammo & reload',diamond:'Hit effects',hexagon:'Expansion'};
+function appearance(id){
+  if(moduleAppearance[id])return moduleAppearance[id];
+  let hash=0;for(const ch of id)hash=(hash*31+ch.charCodeAt(0))>>>0;
+  return [`hsl(${hash%360} 65% 70%)`,'circle'];
+}
+const appearances=D.modules.map(m=>appearance(m.id)),colors=appearances.map(a=>a[0]);
+const shapePoints={triangle:[[0,-1],[.866,.5],[-.866,.5]],square:[[-.707,-.707],[.707,-.707],[.707,.707],[-.707,.707]],diamond:[[0,-1],[1,0],[0,1],[-1,0]],hexagon:[[0,-1],[.866,-.5],[.866,.5],[0,1],[-.866,.5],[-.866,-.5]]};
+function drawMarker(x,y,r,module){
+  const points=shapePoints[appearances[module][1]];ctx.beginPath();
+  if(points){points.forEach(([px,py],i)=>i?ctx.lineTo(x+px*r,y+py*r):ctx.moveTo(x+px*r,y+py*r));ctx.closePath();}
+  else ctx.arc(x,y,r,0,Math.PI*2);
+  ctx.fill();
+}
 let markers=[],chanceCache=[];
+const tierPlanner=window.LootTiers.mount({element:$('tierPlanner'),modules:D.modules,
+  read:()=>Object.fromEntries(D.modules.map(m=>[m.id,M.lootWeight(m,scenario.items[m.id])])),
+  readTiers:()=>window.LootTiers.names.map(name=>scenario.tierWeights[name]),
+  apply:(weights,tiers)=>{scenario.tierWeights=Object.fromEntries(window.LootTiers.names.map((name,i)=>[name,tiers[i]]));for(const m of D.modules)if(weights[m.id]!==M.lootWeight(m,scenario.items[m.id]))scenario.items[m.id]=M.weightMultiplier(m,weights[m.id]);saveSettings();controls();scheduleUpdate();}});
 const number=n=>n.toLocaleString(undefined,{maximumFractionDigits:1});
 const pretty=s=>s.replace(/([a-z])([A-Z])/g,'$1 $2');
 const canvas=$('map'), ctx=canvas.getContext('2d');
@@ -20,27 +45,32 @@ for(const m of [{id:'all',name:'All components'},...D.modules]){const o=document
 for(const [i,m] of D.modules.entries()){
   const div=document.createElement('div');div.className='component';div.id='component-'+m.id;
   const top=document.createElement('div'),label=document.createElement('label'),swatch=document.createElement('span'),span=document.createElement('span'),show=document.createElement('input'),input=document.createElement('input'),small=document.createElement('small');
-  top.className='component-top';label.className='component-name';swatch.className='swatch';swatch.style.backgroundColor=colors[i];
+  top.className='component-top';label.className='component-name';swatch.className='swatch shape-'+appearances[i][1];swatch.style.backgroundColor=colors[i];swatch.title=familyNames[appearances[i][1]];
   show.type='checkbox';show.id='show-'+m.id;show.setAttribute('aria-label','Show '+m.name+' on map');
   show.addEventListener('change',()=>{scenario.visible[m.id]=show.checked;controls();updateSampleSummary();scheduleDraw();saveSettings();});
-  span.textContent=m.name;input.type='number';input.min=0;input.max=20;input.step=.05;input.id='item-'+m.id;input.className='rate';input.setAttribute('aria-label',m.name+' loot multiplier');
-  const changeRate=()=>{if(input.value.trim()===''||!Number.isFinite(Number(input.value)))return;scenario.items[m.id]=bounded(input.value,0,20,1);saveSettings();scheduleUpdate();};
+  span.textContent=m.name;input.type='number';input.min=0;input.max=m.weight*1000000;input.step='any';input.id='item-'+m.id;input.className='rate';input.setAttribute('aria-label',m.name+' loot weight');input.title=`Loot weight: 0–${m.weight*1000000}. Default ${M.lootWeight(m,D.defaults?.items?.[m.id]??1)}. Zero disables this component.`;
+  const changeRate=()=>{if(input.value.trim()===''||!input.validity.valid)return;const weight=Number(input.value);if(!Number.isFinite(weight))return;scenario.items[m.id]=M.weightMultiplier(m,weight);saveSettings();scheduleUpdate();};
   input.addEventListener('input',changeRate);
-  input.addEventListener('change',()=>{changeRate();input.value=scenario.items[m.id];});
+  input.addEventListener('change',()=>{changeRate();input.value=weightText(m);});
+  const badge=document.createElement('small');badge.id='component-rarity-'+m.id;badge.className='component-rarity';
   small.id='estimate-'+m.id;label.append(show,swatch,span);top.append(label,input);
   const rarity=document.createElement('div'),track=document.createElement('div'),marker=document.createElement('span'),ends=document.createElement('div');
   rarity.className='rarity';track.className='rarity-track';track.id='rarity-'+m.id;track.setAttribute('role','meter');track.setAttribute('aria-label',m.name+' estimated abundance');track.setAttribute('aria-valuemin','0');track.setAttribute('aria-valuemax','1000');
-  marker.className='rarity-marker';marker.id='rarity-marker-'+m.id;marker.style.backgroundColor=colors[i];track.append(marker);
+  marker.className='rarity-marker shape-'+appearances[i][1];marker.id='rarity-marker-'+m.id;marker.style.backgroundColor=colors[i];track.append(marker);
   ends.className='rarity-ends';for(const text of ['Rare','Common']){const end=document.createElement('span');end.textContent=text;ends.append(end);}rarity.append(track,ends);
-  div.append(top,rarity,small);$('components').append(div);
+  div.append(top,badge,rarity,small);$('components').append(div);
 }
 function bounded(value,min,max,fallback){const n=Number(value);return Number.isFinite(n)?Math.min(max,Math.max(min,n)):fallback;}
 let updateTimer=null;
 function scheduleUpdate(){clearTimeout(updateTimer);updateTimer=setTimeout(()=>{updateTimer=null;update();},150);}
 function fieldValue(id,value){const input=$(id);if(document.activeElement!==input)input.value=value;}
+function weightText(m){return Number(M.lootWeight(m,scenario.items[m.id]).toPrecision(12));}
 function controls(){
+  tierPlanner.refresh();
+  const rarityBands=window.LootTiers.bands(D.modules,Object.fromEntries(D.modules.map(m=>[m.id,M.lootWeight(m,scenario.items[m.id])])),window.LootTiers.names.map(name=>scenario.tierWeights[name]));
+  for(const m of D.modules){const b=rarityBands[m.id],badge=$('component-rarity-'+m.id);badge.textContent=b===-2?'Invalid tiers':b<0?'Disabled':window.LootTiers.names[b];badge.style.setProperty('--rarity-color',b<0?'#82928a':window.LootTiers.colors[b]);}
   for(const key of ['global','material','rolls','retention']){fieldValue(key,scenario[key]);$(key+'Out').textContent=key==='retention'?Math.round(scenario[key]*100)+'%':scenario[key].toFixed(2)+'×';}
-  for(const m of D.modules){fieldValue('item-'+m.id,scenario.items[m.id]);$('show-'+m.id).checked=scenario.visible[m.id];$('component-'+m.id).classList.toggle('is-hidden',!scenario.visible[m.id]);}
+  for(const m of D.modules){fieldValue('item-'+m.id,weightText(m));$('show-'+m.id).checked=scenario.visible[m.id];$('component-'+m.id).classList.toggle('is-hidden',!scenario.visible[m.id]);}
   $('overlay').value=scenario.overlay;$('seedBadge').textContent='Seed '+scenario.seed;
   fieldValue('seed',scenario.seed);$('selected').value=scenario.selected;
 }
@@ -66,7 +96,7 @@ function update(){
   $('zero').textContent=result.zero===0?'0%':result.zero<.0001?'<0.01%':(100*result.zero).toFixed(2)+'%';
   D.modules.forEach((m,i)=>{
     const expected=result.itemMeans[i],track=$('rarity-'+m.id);
-    $('estimate-'+m.id).textContent=`${sample.totals[i]} generated · ${number(expected)} expected · weight ${m.weight}`;
+    $('estimate-'+m.id).textContent=`${sample.totals[i]} generated · ${number(expected)} expected`;
     $('rarity-marker-'+m.id).style.left=(window.LootMapControls.rarityPosition(expected)*100)+'%';
     track.setAttribute('aria-valuenow',String(Math.min(1000,expected)));track.setAttribute('aria-valuetext',expected===0?'Disabled':number(expected)+' expected items countywide');
     track.title=expected===0?'Disabled':number(expected)+' expected items countywide; fixed 0–1,000+ log scale';
@@ -99,12 +129,14 @@ $('reset').addEventListener('click',()=>{const old=scenario.seed;scenario=M.defa
 function download(name,text,type){const a=document.createElement('a'),url=URL.createObjectURL(new Blob([text],{type}));a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);$('feedback').textContent='Exported '+name+'.';}
 $('save').addEventListener('click',()=>download('omh-loot-scenario.json',JSON.stringify(scenario,null,2),'application/json'));
 $('lua').addEventListener('click',()=>{
+  let anchors;try{anchors=window.LootTiers.sandbox(window.LootTiers.names.map(name=>scenario.tierWeights[name]));}catch(error){$('feedback').textContent=error.message;return;}
   const lines=[`-- OMH loot tuning: ${D.meta.baseline} keys. Merge into your SandboxVars table.`,
     '-- Do not replace an entire save configuration with this excerpt.',
+    '-- Rarity anchors require OMH: Turrets 0.2.47.4 or newer; zero means automatic.',
     '-- Retention and model seed are estimates only; not game settings.',
     '-- Assumes ZombiePopLootEffect = 0 and a new-world time multiplier of 1.',
     `MaterialLootNew = ${scenario.material},`,`RollsMultiplier = ${scenario.rolls},`,'OMHTurretsTraps = {',`    ModuleLootRate = ${scenario.global},`,
-    ...D.modules.map(m=>`    LootRate${m.id} = ${scenario.items[m.id]},`),'}'];
+    ...anchors,...D.modules.map(m=>`    LootRate${m.id} = ${scenario.items[m.id]},`),'}'];
   download('omh-loot-sandbox-excerpt.lua',lines.join('\n')+'\n','text/plain');
 });
 $('load').addEventListener('click',()=>$('file').click());
@@ -159,7 +191,7 @@ function draw(){
         // Small screen-space separation makes co-located components visible without inventing tiles.
         const angle=module/D.modules.length*Math.PI*2;x+=Math.cos(angle)*6;y+=Math.sin(angle)*6;
         ctx.globalAlpha=scenario.overlay==='spawns'?.95:Math.min(.85,.16+Math.sqrt(value)*.7);ctx.fillStyle=colors[module];
-        ctx.beginPath();ctx.arc(x,y,M.markerRadius(scenario.overlay,sample.containerTotals[index],result.hauls[index].jackpot),0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+        drawMarker(x,y,M.markerRadius(scenario.overlay,sample.containerTotals[index],result.hauls[index].jackpot),module);ctx.globalAlpha=1;
         markers.push({x,y,container:index,module,radius:M.markerRadius(scenario.overlay,sample.containerTotals[index],result.hauls[index].jackpot)});
       }else{
         const key=Math.floor(x/18)+','+Math.floor(y/18)+','+module;
@@ -170,7 +202,7 @@ function draw(){
     else D.containers.forEach((c,index)=>{if(c.x<left||c.x>right||c.y<top||c.y>bottom)return;for(let i=0;i<D.modules.length;i++){if(!scenario.visible[D.modules[i].id])continue;const chance=containerChance(index,i);if(chance>0)dot(index,i,chance,0);}});
     for(const b of bins.values()){
       const angle=b.module/D.modules.length*Math.PI*2;
-      ctx.globalAlpha=scenario.overlay==='spawns'?.85:.45;ctx.fillStyle=colors[b.module];ctx.beginPath();ctx.arc(b.x/b.n+Math.cos(angle)*5,b.y/b.n+Math.sin(angle)*5,Math.min(b.jackpot&&scenario.overlay==='spawns'?13:9,2+Math.sqrt(b.value)*1.5+(b.jackpot&&scenario.overlay==='spawns'?4:0)),0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+      ctx.globalAlpha=scenario.overlay==='spawns'?.85:.45;ctx.fillStyle=colors[b.module];drawMarker(b.x/b.n+Math.cos(angle)*5,b.y/b.n+Math.sin(angle)*5,Math.min(b.jackpot&&scenario.overlay==='spawns'?13:9,2+Math.sqrt(b.value)*1.5+(b.jackpot&&scenario.overlay==='spawns'?4:0)),b.module);ctx.globalAlpha=1;
     }
   }
   ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='600 12px system-ui';
@@ -178,6 +210,7 @@ function draw(){
   let tiles=10**Math.floor(Math.log10(100/view.scale));if(tiles*view.scale<40)tiles*=5;
   ctx.textAlign='right';ctx.font='11px system-ui';ctx.fillStyle='#edf0e8';ctx.fillText(number(tiles)+' tiles',width-17,height-34);ctx.strokeStyle='#edf0e8';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(width-17-tiles*view.scale,height-24);ctx.lineTo(width-17,height-24);ctx.stroke();
 }
+new ResizeObserver(()=>{const height=Math.ceil($('syncBanner').getBoundingClientRect().height)+'px';$('visibilityActions').style.top=height;$('mapArea').style.setProperty('--sync-height',height);}).observe($('syncBanner'));
 let firstResize=true;
 new ResizeObserver(()=>{gestures.reset();const rect=canvas.getBoundingClientRect();width=rect.width;height=rect.height;const dpr=window.devicePixelRatio||1;canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);firstResize?(fit(),firstResize=false):scheduleDraw();}).observe(canvas);
 let settingsSync=null;

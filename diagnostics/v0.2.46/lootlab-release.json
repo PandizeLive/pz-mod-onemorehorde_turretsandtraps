@@ -1,0 +1,86 @@
+{
+  "workerVersion": "5ff34931-812d-4954-b837-99e08c3ebf40",
+  "previousWorkerVersion": "374ee38a-d419-498a-b55a-2787f903faf9",
+  "baseline": "T&T 0.2.46",
+  "modules": 29,
+  "pools": 16,
+  "entries": 208,
+  "apiPageTests": 77,
+  "savedSettings": "0.2.44 migration preserves existing choices and supplies Regulator defaults; no database writes",
+  "browser": "Desktop 1360x900 and mobile 390x844: Regulator utility square visible; hide/show 29; sticky controls; no page errors. Local assets inspected.",
+  "production": {
+    "phase": "after",
+    "productionBundleMatches": true,
+    "sha256": "5e1432455af93b65fc934038360a35ae0a569d04e6027d306773b115d3342123",
+    "checks": [
+      {
+        "path": "/admin/",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/data.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/model.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/map-controls.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/settings-sync.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/settings",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/app.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/style.css",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/provenance.json",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/README.md",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "url": "https://api.onemorehorde.com/v1/leaderboard?limit=1",
+        "status": 200
+      },
+      {
+        "url": "https://api.onemorehorde.com/v1/workshop-snapshots/latest",
+        "status": 200
+      }
+    ]
+  }
+}

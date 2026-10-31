@@ -1,0 +1,1 @@
+PASS: saved tuning unchanged on load; direct/fractional/zero/invalid weights; correct Sandbox export; legacy scenario import; reset; sticky visibility; desktop/mobile bounds; zero page errors.

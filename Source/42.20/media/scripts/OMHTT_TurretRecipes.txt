@@ -31,7 +31,7 @@ module Base {
         needToBeLearn = false,
         SkillRequired = Mechanics:2;Electricity:1,
         xpAward = Mechanics:15;Electricity:5,
-        Tooltip = UI_OMHTT_TurretDescription,
+        Tooltip = UI_OMHTT_HeadDescription,
         OnAddToMenu = OMHTT_TurretMenuAvailable,
         OnTest = OMHTT_Turret.recipeInput,
         OnCreate = OMHTT_Turret.onCrafted,
@@ -47,7 +47,7 @@ module Base {
             item 1 [Base.TirePump],
         }
         outputs {
-            item 1 Base.OMHTTPotatoHead,
+            item 1 Base.OMHTTTurretPotato,
         }
     }
     craftRecipe OMHTTCraftTurretHeadImprovised {
@@ -58,7 +58,7 @@ module Base {
         needToBeLearn = false,
         SkillRequired = Mechanics:4;Electricity:1,
         xpAward = Mechanics:15;Electricity:5,
-        Tooltip = UI_OMHTT_TurretDescription,
+        Tooltip = UI_OMHTT_HeadDescription,
         OnAddToMenu = OMHTT_TurretMenuAvailable,
         OnTest = OMHTT_Turret.recipeInput,
         OnCreate = OMHTT_Turret.onCrafted,
@@ -73,62 +73,54 @@ module Base {
             item 1 [Base.SmallSheetMetal],
         }
         outputs {
-            item 1 Base.OMHTTPotatoHead,
+            item 1 Base.OMHTTTurretPotato,
         }
     }
-    craftRecipe OMHTTCraftTurretComplete {
+
+
+    craftRecipe OMHTTCraftMotionDetectionImprovised {
         timedAction = Making,
-        time = 350,
+        time = 192,
         category = OMHTurrets,
         Tags = InHandCraft,
         needToBeLearn = false,
-        SkillRequired = Mechanics:2;Electricity:1,
-        xpAward = Mechanics:30;Electricity:5,
-        Tooltip = UI_OMHTT_TurretDescription,
+        SkillRequired = Electricity:2,
+        xpAward = Electricity:15,
         OnAddToMenu = OMHTT_TurretMenuAvailable,
         OnTest = OMHTT_Turret.recipeInput,
         OnCreate = OMHTT_Turret.onCrafted,
         inputs {
             item 1 tags[base:screwdriver] mode:keep flags[NoBrokenItems;DontRecordInput],
-            item 1 [Base.Wrench;Base.PipeWrench] mode:keep flags[NoBrokenItems;DontRecordInput],
-            item 2 [Base.DuctTape],
+            item 1 tags[base:pliers] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 3 [Base.ElectronicsScrap],
             item 1 [Base.ElectricWire],
-            item 2 [Base.ElectronicsScrap],
-            item 3 [Base.MetalPipe],
-            item 3 [Base.ScrapMetal],
-            item 8 [Base.Screws],
-            item 3 [Base.SmallSheetMetal],
-            item 1 [Base.TirePump],
+            item 2 [Base.DuctTape],
         }
         outputs {
-            item 1 Base.OMHTTTurretBase,
+            item 1 Base.OMHTTModuleDetectionImprovised,
         }
     }
-    craftRecipe OMHTTCraftTurretCompleteImprovised {
+    craftRecipe OMHTTCraftFiringImprovised {
         timedAction = Making,
-        time = 400,
+        time = 192,
         category = OMHTurrets,
         Tags = InHandCraft,
         needToBeLearn = false,
-        SkillRequired = Mechanics:4;Electricity:1,
-        xpAward = Mechanics:30;Electricity:5,
-        Tooltip = UI_OMHTT_TurretDescription,
+        SkillRequired = Electricity:2,
+        xpAward = Electricity:15,
         OnAddToMenu = OMHTT_TurretMenuAvailable,
         OnTest = OMHTT_Turret.recipeInput,
         OnCreate = OMHTT_Turret.onCrafted,
         inputs {
             item 1 tags[base:screwdriver] mode:keep flags[NoBrokenItems;DontRecordInput],
-            item 1 [Base.Wrench;Base.PipeWrench] mode:keep flags[NoBrokenItems;DontRecordInput],
-            item 2 [Base.DuctTape],
-            item 1 [Base.ElectricWire],
+            item 1 tags[base:pliers] mode:keep flags[NoBrokenItems;DontRecordInput],
             item 2 [Base.ElectronicsScrap],
-            item 3 [Base.MetalPipe],
-            item 7 [Base.ScrapMetal],
-            item 8 [Base.Screws],
-            item 3 [Base.SmallSheetMetal],
+            item 1 [Base.ElectricWire],
+            item 4 [Base.Screws],
         }
         outputs {
-            item 1 Base.OMHTTTurretBase,
+            item 1 Base.OMHTTModuleFiringImprovised,
         }
     }
+
 }

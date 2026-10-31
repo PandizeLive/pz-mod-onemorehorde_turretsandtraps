@@ -1,5 +1,5 @@
 __modules = {}
-GameTime = {isGamePaused = function() return false end}
+GameTime = {isGamePaused = function() return false end, getServerTimeMills = function() return testMillis end}
 if not math.min then function math.min(a, b) if a < b then return a end return b end end
 if not math.max then function math.max(a, b) if a > b then return a end return b end end
 -- Standalone Kahlua registration omits the game's supplemental Lua standard library.
@@ -31,6 +31,16 @@ testLogs = {}
 testDialogs = 0
 function print(value) testLogs[#testLogs + 1] = tostring(value) end
 function getTimestampMs() return testMillis end
+WeaponCategory = {SPEAR = "spear"}
+function getItemNameFromFullType(value) return value end
+function getScriptManager()
+    return {getItem = function(_, fullType)
+        if fullType == "Base.SpearCrafted" then
+            return {containsWeaponCategory = function() return true end,
+                getMinDamage = function() return 1 end, getMaxDamage = function() return 1 end}
+        end
+    end}
+end
 function getMouseXScaled() return 400 end
 function getMouseYScaled() return 300 end
 IsoDirections = {N = "N", S = "S", E = "E", W = "W"}
@@ -39,7 +49,8 @@ IsoUtils = {XToIso = function() return 400 end, YToIso = function() return 300 e
 IsoCamera = {getOffX = function() return 0 end, getOffY = function() return 0 end}
 testAdmin = true
 testPlayer = {x = 100.5, y = 100.5, z = 0, dead = false}
-SandboxVars = {OMHTurretsTraps = {FoundationTestControls = true}}
+-- Legacy damage fixtures explicitly use their original 100-HP setting.
+SandboxVars = {OMHTurretsTraps = {FoundationTestControls = true, SpikeBarrierHealth = 100}}
 Capability = {UseDebugContextMenu = "debug"}
 
 function check(value, message)
@@ -64,6 +75,8 @@ function getCore()
 end
 
 function testPlayer:isDead() return self.dead end
+function testPlayer:isNoClip() return false end
+function testPlayer:isGhostMode() return false end
 function testPlayer:getX() return self.x end
 function testPlayer:getY() return self.y end
 function testPlayer:getZ() return self.z end
@@ -74,10 +87,16 @@ function testPlayer:getRole() return {hasCapability = function() return testAdmi
 function getSpecificPlayer(index) return testPlayer end
 
 Events = {}
+Events.OnDisconnect = {handlers={}, Add=function(callback) table.insert(Events.OnDisconnect.handlers,callback) end}
+-- Gameplay startup has loaded native building classes; native probes replace these doubles.
+ISBuildIsoEntity = {isValidPerSquare=function() return true end}
+ISWoodenWall = {isValid=function() return true end,create=function() return true end}
+Events.OnDestroyIsoThumpable = {handlers = {}, Add = function() end}
 Events.OnObjectAdded = {handlers = {}, Add = function() end}
-for _, name in pairs({"OnInitGlobalModData", "LoadGridsquare", "OnObjectAboutToBeRemoved", "OnClientCommand", "OnServerCommand", "OnFillWorldObjectContextMenu", "OnGameStart", "OnTick", "OnPostRender", "OnPreUIDraw", "OnPostUIDraw", "OnZombieCreate", "OnZombieUpdate", "OnZombieDead", "OnContextKey", "OnPlayerUpdate"}) do
+for _, name in pairs({"OnGameBoot", "OnServerStarted", "OnSave", "OnInitGlobalModData", "LoadGridsquare", "OnObjectAboutToBeRemoved", "OnClientCommand", "OnServerCommand", "OnFillWorldObjectContextMenu", "OnGameStart", "OnTickEvenPaused", "OnTick", "OnPostRender", "OnPreUIDraw", "OnPostUIDraw", "OnZombieCreate", "OnHitZombie", "OnZombieUpdate", "OnZombieDead", "OnContextKey", "OnPlayerUpdate"}) do
     local handlers = {}
-    Events[name] = {handlers = handlers, Add = function(callback) table.insert(handlers, callback) end}
+    Events[name] = {handlers = handlers, Add = function(callback) table.insert(handlers, callback) end,
+        Remove = function(callback) for i=#handlers,1,-1 do if handlers[i]==callback then table.remove(handlers,i) end end end}
 end
 LuaEventManager = {AddEvent = function(name)
     local handlers = {}
@@ -94,10 +113,15 @@ function triggerEvent(name, ...)
     for i = 1, #handlers do handlers[i](...) end
 end
 
+local namesRegistry, controlsRegistry = {}, {}
 ModData = {getOrCreate = function(key)
+    if key == "OMHTTDefenseNamesV1" then return namesRegistry end
+    if key == "OMHTTControlsV1" then return controlsRegistry end
     if testData == nil then testData = {} end
     return testData
 end}
+
+function getOnlinePlayers() return {size = function() return 0 end} end
 
 function sendServerCommand(player, module, command, args)
     table.insert(testPackets, args)
@@ -111,6 +135,7 @@ end
 
 function makeSquare(x, y, z)
     local square = {x = x, y = y, z = z, objects = {}, moving = {}, floor = true, free = true, blocked = false, window = false}
+    function square:getCell() return getCell() end
     function square:getX() return self.x end
     function square:getY() return self.y end
     function square:getZ() return self.z end
@@ -159,8 +184,18 @@ function makeSquare(x, y, z)
     return square
 end
 
+function testZombieList()
+    local actors, seen = {}, {}
+    for _, square in pairs(testSquares) do
+        for i = 1, #square.moving do
+            local actor = square.moving[i]
+            if actor.kind == "IsoZombie" and not seen[actor] then actors[#actors + 1], seen[actor] = actor, true end
+        end
+    end
+    return {size=function() return #actors end,get=function(_,i) return actors[i+1] end}
+end
 function getCell()
-    return {getGridSquare = function(self, x, y, z)
+    return {getZombieList = testZombieList, getGridSquare = function(self, x, y, z)
         if not testLoaded then return nil end
         return testSquares[tostring(x) .. ":" .. tostring(y) .. ":" .. tostring(z)]
     end}
@@ -175,7 +210,7 @@ IsoObject = {new = function(square, sprite, name)
     function object:invalidateRenderChunkLevel(reason) self.renderInvalidated = reason end
     function object:getSprite()
         if self.noSprite then return nil end
-        return {getID = function() return 1918369792 end, getTextureForCurrentFrame = function()
+        return {getProperties = function() return {set = function() end} end, getID = function() return 1918369792 end, getTextureForCurrentFrame = function()
             if self.noTexture then return nil end
             return {
                 isReady = function() return not self.texturePending end,
@@ -238,7 +273,7 @@ IsoThumpable = {new = function(cell, square, sprite, north)
     return object
 end}
 
-function getGameTime() return {getWorldAgeHours = function() return testTime end} end
+function getGameTime() return {getMultiplier = function() return 1 end, getTrueMultiplier=function() return 1 end, getMinutesPerDay = function() return 60 end, getWorldAgeHours = function() return testTime end} end
 testRoll = 0
 function ZombRand(maximum) return testRoll end
 function instanceof(object, kind) return object.kind == kind end
@@ -253,6 +288,16 @@ end
 function makeZombie(square, health)
     local zombie = {kind = "IsoZombie", square = square, health = health, floor = false, data = {}, hits = 0,
         kills = 0, variables = {ThumpType = "Door"}, state = "thump"}
+    function zombie:getOnlineID() return self.onlineId or -1 end
+    function zombie:isDeferredMovementEnabled() return self.deferred ~= false end
+    function zombie:setDeferredMovementEnabled(value) self.deferred = value end
+    function zombie:getPersistentOutfitID() return self.outfitId or 0 end
+    function zombie:getOwner() return self.owner end
+    function zombie:getOwnerPlayer() return self.ownerPlayer or self.owner end
+    function zombie:isRemoteZombie() return self.remote == true end
+    function zombie:getRealState() return self.state end
+    function zombie:isInvulnerable() return self.invulnerable == true end
+    function zombie:isInvisible() return self.invisible == true end
     function zombie:getSquare() return self.square end
     function zombie:getX() return self.square.x + 0.5 end
     function zombie:getY() return self.square.y + 0.5 end
@@ -260,10 +305,22 @@ function makeZombie(square, health)
     function zombie:getHealth() return self.health end
     function zombie:setHealth(value) self.health = value end
     function zombie:isDead() return self.health <= 0 end
+    function zombie:isReanimatedForGrappleOnly() return self.corpseProxy == true end
+    function zombie:getVariableBoolean(name) return self.variables[name] == true end
     function zombie:isOnFloor() return self.floor end
     function zombie:isProne() return self.floor end
+    function zombie:getBumpType() return self.bump or "" end
+    function zombie:setBumpType(value) self.bump = value end
+    function zombie:isClimbing() return self.climbing == true end
+    function zombie:isCrawling() return self.crawler == true end
+    function zombie:getDirectionAngleRadians() return self.angle or 0 end
+    function zombie:setTargetAndCurrentDirection(x,y) self.angle=math.atan2(y,x) end
+    function zombie:isStaggerBack() return self.stagger == true end
+    function zombie:setStaggerBack(value) self.stagger = value end
+    function zombie:isBumpFall() return self.bumpFall == true end
     function zombie:setKnockedDown(value) self.knocked = value end
     function zombie:isKnockedDown() return self.knocked == true end
+    function zombie:isGettingUp() return self.state == "getup" end
     function zombie:knockDown(behind) self.knocked = true; self.nativeKnockdown = true end
     function zombie:setPlayerAttackPosition(position) self.attackPosition = position end
     function zombie:setUsePhysicHitReaction(value) self.physics = value end
@@ -271,6 +328,7 @@ function makeZombie(square, health)
     function zombie:canRagdoll() return self.allowRagdoll == true end
     function zombie:isRagdoll() return self.ragdoll == true end
     function zombie:getCurrentStateName() return self.state end
+    function zombie:getNetworkCharacterAI() error("NetworkZombieAI is not exposed to Lua") end
     function zombie:getThumpTarget() return self.thumpTarget end
     function zombie:getVariableString(name) return self.variables[name] end
     function zombie:setVariable(name, value) self.variables[name] = value end
@@ -291,6 +349,7 @@ function makeZombie(square, health)
     end
     square.moving[#square.moving + 1] = zombie
     triggerEvent("OnZombieCreate", zombie)
+    if OMHTT_TargetHealth then OMHTT_TargetHealth.settle(zombie) end
     return zombie
 end
 
@@ -326,14 +385,22 @@ IsoFlagType = {water="water", solid="solid", solidtrans="solidtrans", collideN="
 
 function getSprite(name) return {getProperties = function() return {set = function() end, unset = function() end} end} end
 IsoFlagType.FloorOverlay = "FloorOverlay"
-function getWorld() return {getFreeEmitter = function() return {playSound = function() return 1 end, setPitch = function() end, setVolume = function() end} end} end
-function getSoundManager() return {PlayWorldSound = function() end} end
+function getWorld() return {getFreeEmitter = function() return {playSound = function() return 1 end, setPitch = function() end, setVolume = function() end, stopSound = function() end} end} end
+function getSoundManager() return {PlayWorldSound = function() end, playUISound = function() return 0 end, stopUISound = function() end} end
 
 UIFont = {Small="small"}
 function getTextManager() return {DrawStringCentre = function() testDraws = testDraws + 1 end} end
 
 function getScriptManager()
-    return {getAllItems = function() return {size = function() return 0 end} end}
+    return {getAllItems = function() return {size = function() return 0 end} end,
+        getItem = function(_, fullType)
+            if fullType == "Base.SpearCrafted" then
+                return {containsWeaponCategory = function() return true end,
+                    getNormalTexture = function() return nil end, getIconsForTexture = function() return nil end,
+                    getDisplayName = function() return "Wooden Spear" end,
+                    getMinDamage = function() return 1 end, getMaxDamage = function() return 1 end}
+            end
+        end}
 end
 
 CombatConfigKey = setmetatable({}, {__index = function(t, key) return key end})
@@ -344,3 +411,19 @@ function getCombatConfig()
         OPTIMAL_RANGE_DROP_OFF_TO_HIT_PENALTY_INCREMENT = 1, MINIMUM_TO_HIT_CHANCE = 0, MAXIMUM_TO_HIT_CHANCE = 100}
     return {get = function(self, key) return values[key] end}
 end
+
+function getActivatedMods() return {contains=function(_, id) return id=="OneMoreHorde_Turrets" end} end
+
+function getFileReader() return {readLine=function() return nil end, close=function() end} end
+PZAPI = {ModOptions = {data = {}}}
+function PZAPI.ModOptions:getOptions(id) return self.data[id] end
+function PZAPI.ModOptions:create(id)
+    local options = {dict = {}}
+    function options:getOption(key) return self.dict[key] end
+    function options:addTickBox(key, title, value) self.dict[key] = {getValue=function() return value end} end
+    function options:addSlider(key, title, low, high, step, value) self.dict[key] = {getValue=function() return value end} end
+    self.data[id] = options
+    return options
+end
+
+function getNumActivePlayers() return 0 end

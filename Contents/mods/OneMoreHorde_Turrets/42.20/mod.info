@@ -1,8 +1,8 @@
 name=OMH: Turrets
 id=OneMoreHorde_Turrets
-modversion=0.2.30
+modversion=0.2.71.4
 versionMin=42.20
 icon=icon.png
-description=Independent single-player modular potato and firearm turrets, modules, power and component loot. Part of OMH: Turrets & Traps. Fresh test world required for 0.2.29. Temporary developer artwork.
+description=Independent modular potato, firearm, Ballista and rotary turrets, modules, power and component loot. Development build with server-authoritative multiplayer paths; connected multiplayer acceptance is pending. Part of OMH: Turrets & Traps. Fresh test world required for 0.2.41 item identities. Temporary developer artwork.
 tiledef=OMHTT_Turrets 7317
 pack=OMHTT_Turrets

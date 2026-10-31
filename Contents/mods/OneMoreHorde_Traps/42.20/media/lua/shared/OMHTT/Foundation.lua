@@ -1,6 +1,6 @@
 ---@class OMHTTFoundation
 local Foundation = {
-    VERSION = "0.2.30",
+    VERSION = "0.2.71.4",
     MODULE = "OMHTT_Foundation",
     STORE = "OMHTT_Foundation_v1",
     PREFIX = "OMHTT_P1C1_",
@@ -29,6 +29,7 @@ end
 function Foundation.writeMarker(object, record)
     object:getModData().OMHTT = {
         schema = 1, tier = record.tier, id = record.id, condition = record.condition, revision = record.revision,
+        name = record.name, displayName = record.displayName, displayNumber = record.displayNumber,
         testOwner = record.testOwner, kind = record.kind, ammo = record.ammo, shots = record.shots,
         nextShot = record.nextShot, facing = record.facing, width = record.width,
         anchorX = record.x, anchorY = record.y, anchorZ = record.z,
@@ -69,9 +70,9 @@ end
 ---@nodiscard
 function Foundation.barrierHealth(record)
     if record and record.tier == "reinforced" then
-        return barrierOption("SpikeBarrierHealth", 100, 1, 10000) * barrierOption("ReinforcedBarrierHealthMultiplier", 2, 1, 10)
+        return barrierOption("SpikeBarrierHealth", 80, 1, 10000) * barrierOption("ReinforcedBarrierHealthMultiplier", 2, 1, 10)
     end
-    return barrierOption("SpikeBarrierHealth", 100, 1, 10000)
+    return barrierOption("SpikeBarrierHealth", 80, 1, 10000)
 end
 
 ---@return number denominator Zero disables spike scratches
@@ -144,7 +145,9 @@ end
 ---@return boolean matches
 ---@nodiscard
 function Foundation.matches(object, id)
-    if object:getName() ~= Foundation.PREFIX .. id or not object:hasModData() then return false end
+    if object:getName() ~= Foundation.PREFIX .. id then return false end
+    if isServer() then return true end
+    if not object:hasModData() then return false end
     local marker = object:getModData().OMHTT
     return type(marker) == "table" and marker.id == id and marker.schema == 1
 end
@@ -181,6 +184,25 @@ function Foundation.countPrototypes(square)
         end
     end
     return count
+end
+
+
+---@return boolean visible
+---@nodiscard
+function OMHTT_PlacementHidden()
+    return false
+end
+
+---@param params table Native recipe query
+---@return boolean visible
+function OMHTT_PlacementMenu(params)
+    if isClient() or isServer() then return false end
+    local name = params.recipe:getName()
+    if name == "OMHTTDeployTurret" then return OMHTT_TurretMenuAvailable(params) end
+    if name == "OMHTTDeployConcertinaWire" then return OMHTT_BarbWireMenuAvailable(params) end
+    if name == "OMHTTBarbs" then return OMHTT_BarbMenuAvailable(params) end
+    if string.find(name, "BedSpikes", 1, true) then return OMHTT_BedMenuAvailable(params) end
+    return Foundation.barrierEnabled()
 end
 
 return Foundation

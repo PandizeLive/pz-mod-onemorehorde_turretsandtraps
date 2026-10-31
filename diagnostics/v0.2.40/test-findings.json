@@ -1,0 +1,30 @@
+{
+  "version": "0.2.40",
+  "approval": "C136",
+  "logicAssertions": 5018,
+  "luaTranslationFiles": 96,
+  "nativeTranslationKeys": 608,
+  "nativePacketSerializations": 23,
+  "nativeFirearmsWithExpandedFeed": 20,
+  "lootPoolEntries": 138,
+  "writeSeconds": 81.1,
+  "readSeconds": 80.8,
+  "packages": {
+    "traps": 90.5,
+    "turrets": 91.5,
+    "both": 90.2
+  },
+  "sourceFiles": 190,
+  "packageFiles": 230,
+  "ownerAcceptance": "pending combined five-step module/Concertina test",
+  "knownLimits": [
+    "SP only",
+    "Child rays and existing potato flights are not persisted",
+    "Hosted LootLab remains explicitly labeled 0.2.28 baseline"
+  ],
+  "initialFailedChecks": [
+    "Literal percent strings replaced with native-safe wording",
+    "Obsolete native loot expectation changed from 121 to verified 138 entries",
+    "Test floating tolerance and Cycle.consume nil-return expectation corrected"
+  ]
+}

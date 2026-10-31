@@ -1,0 +1,136 @@
+{
+  "workerVersion": "374ee38a-d419-498a-b55a-2787f903faf9",
+  "previousWorkerVersion": "179a5409-ecc1-441b-be90-b3ac5086b1e0",
+  "baseline": "T&T 0.2.44",
+  "scope": "LootLab display only: 28 ID-keyed colors, five family shapes, sticky visibility controls",
+  "gameplayChanged": false,
+  "databaseWrites": false,
+  "apiPageTests": 76,
+  "appearanceRegression": "passed: 28 entries, unique colors, shape families, reorder stability, future fallback",
+  "browser": "Headless Edge: 1360x900 and 390x844; controls at y=41 below 40.5px sync banner; hide 28/show 28; no page errors. Local identical UI assets, not authenticated production rendering.",
+  "production": {
+    "phase": "after",
+    "productionBundleMatches": true,
+    "sha256": "1dd13c6799095e218026801951e3ee3bcaf21dba1133ffbfa33189fccab2f2cc",
+    "checks": [
+      {
+        "path": "/admin/",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/data.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/model.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/map-controls.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/settings-sync.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/settings",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/app.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/style.css",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/provenance.json",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/README.md",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "url": "https://api.onemorehorde.com/v1/leaderboard?limit=1",
+        "status": 200
+      },
+      {
+        "url": "https://api.onemorehorde.com/v1/workshop-snapshots/latest",
+        "status": 200
+      }
+    ]
+  },
+  "assets": {
+    "baseline": "T&T 0.2.44",
+    "files": [
+      {
+        "name": "index.html",
+        "bytes": 9321,
+        "sha256": "7c4395c89d4405d45141dccf1aecd0216fda5cfdc3691f9aa07a7423412e02f3"
+      },
+      {
+        "name": "style.css",
+        "bytes": 8987,
+        "sha256": "ddfd4b62ddab7e30710bd39de722b40c982dc91f08f15f6a8931b2849178b0b7"
+      },
+      {
+        "name": "app.js",
+        "bytes": 23048,
+        "sha256": "b7a7b1b3ca02f5fd56d0f430e934c52534b26f5b820fd0e7b9f240c5bd25023a"
+      },
+      {
+        "name": "model.js",
+        "bytes": 11737,
+        "sha256": "d0a7297806b4b01d0cf0b05f030cf6d920eb8bb1653485e7ea83ef0a2e243569"
+      },
+      {
+        "name": "map-controls.js",
+        "bytes": 2419,
+        "sha256": "57a21b7d58799404b22e0a8dfe3cf7580f264ea6bd0a766c661384a5cbf53c03"
+      },
+      {
+        "name": "settings-sync.js",
+        "bytes": 4630,
+        "sha256": "bf2b585cd5cfedb6315f9eb057ba69a81763fd6ed2b38147b6c08eed68180624"
+      },
+      {
+        "name": "data.js",
+        "bytes": 4362617,
+        "sha256": "49492d0b9ce2005d816ae11c13e7b4c359d7347a138fcb553a79966ba3ce558d"
+      },
+      {
+        "name": "README.md",
+        "bytes": 1093,
+        "sha256": "4ad90dbf8c5e4220d21e5b1064abfd86437e35e68f8f1d75f555ee00349877e3"
+      },
+      {
+        "name": "provenance.json",
+        "bytes": 4455,
+        "sha256": "744bdb08b89b5b21ba8115afce4deb6638383b4ea3da1f571365d79937cce884"
+      }
+    ]
+  }
+}

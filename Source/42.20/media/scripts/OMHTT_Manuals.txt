@@ -1,0 +1,63 @@
+module Base
+{
+    item OMHTTManualBallista
+    {
+        DisplayName = Ballista Turret Manual,
+        DisplayCategory = RecipeResource,
+        ItemType = base:literature,
+        Weight = 0.5,
+        Icon = MagazineElectronics01,
+        LearnedRecipes = OMHTTCraftBallista,
+        StaticModel = Magazine,
+        WorldStaticModel = MagazineElec1Ground,
+        Tags = base:magazine,
+    }
+    item OMHTTManualRotaryBlades
+    {
+        DisplayName = Rotary Blade Turret Manual,
+        DisplayCategory = RecipeResource,
+        ItemType = base:literature,
+        Weight = 0.5,
+        Icon = MagazineElectronics01,
+        LearnedRecipes = OMHTTCraftRotaryBlades,
+        StaticModel = Magazine,
+        WorldStaticModel = MagazineElec1Ground,
+        Tags = base:magazine,
+    }
+    item OMHTTManualLobber
+    {
+        DisplayName = Lobber Turret Manual,
+        DisplayCategory = RecipeResource,
+        ItemType = base:literature,
+        Weight = 0.5,
+        Icon = MagazineElectronics01,
+        LearnedRecipes = OMHTTCraftLobber;OMHTTCraftLobberImprovised,
+        StaticModel = Magazine,
+        WorldStaticModel = MagazineElec1Ground,
+        Tags = base:magazine,
+    }
+    item OMHTTManualArc
+    {
+        DisplayName = Arc Emitter Turret Manual,
+        DisplayCategory = RecipeResource,
+        ItemType = base:literature,
+        Weight = 0.5,
+        Icon = MagazineElectronics01,
+        LearnedRecipes = OMHTTCraftArc,
+        StaticModel = Magazine,
+        WorldStaticModel = MagazineElec1Ground,
+        Tags = base:magazine,
+    }
+    item OMHTTManualFirearms
+    {
+        DisplayName = Firearms Turret Manual,
+        DisplayCategory = RecipeResource,
+        ItemType = base:literature,
+        Weight = 0.5,
+        Icon = MagazineElectronics01,
+        LearnedRecipes = OMHTTMountFirearm,
+        StaticModel = Magazine,
+        WorldStaticModel = MagazineElec1Ground,
+        Tags = base:magazine,
+    }
+}

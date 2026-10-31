@@ -10,9 +10,12 @@ SandboxVars.OMHTurretsTraps.SpikeBarrier = true
 SandboxVars.OMHTurretsTraps.FoundationTestControls = false
 S.initialize()
 check(C.onAddToMenu({}), "native construction does not require debug controls")
+for _, condition in pairs({1, 17, 100}) do
+    check(C.deploymentInputAllowed({getFullType=function() return "Base.OMHTTTrapSpikeBarrier" end, getCondition=function() return condition end}), "Worn portable barrier can redeploy without healing")
+end
 for _, mode in pairs({"client", "server"}) do
     testMode = mode
-    check(not C.onAddToMenu({}), "MP construction remains explicitly gated on " .. mode)
+    check(C.onAddToMenu({}), "Native construction is available with server completion on " .. mode)
 end
 testMode = "sp"
 
@@ -137,7 +140,8 @@ end
 testData.tileCount = F.MAX_TILES - 1
 local capped = makeCursor("e", 1)
 ISBuildIsoEntity.create(capped, 140, 140, 0, false, "unused")
-check(capped.consumed == 0 and #capped.parts == 0, "ledger cap rejects both-tile reservation before materials")
+check(capped.consumed > 0 and #capped.parts == 2, "Real barrier placement crosses the old 64-entry prototype cap")
+P.retire(P.slot(testSquares["140:140:0"]), nil)
 testData.tileCount = 0
 testBuildCheat = true
 local cheat = makeCursor("e", 1)

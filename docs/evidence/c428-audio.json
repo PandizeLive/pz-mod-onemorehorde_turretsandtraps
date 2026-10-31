@@ -1,0 +1,93 @@
+[
+  {
+    "name": "Arc shot",
+    "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\Source\\42.20\\media\\sound\\OMHTT_ArcFire.ogg",
+    "gain": 1.3,
+    "peak_dbfs": -15.23,
+    "active_rms_dbfs": -35.7
+  },
+  {
+    "name": "Arc hit",
+    "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\arc-c421\\DismantleFailed.wav",
+    "gain": 0.12,
+    "peak_dbfs": -20.42,
+    "active_rms_dbfs": -43.78
+  },
+  {
+    "name": "Potato",
+    "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\Source\\42.20\\media\\sound\\potato_thump_1.wav",
+    "gain": 0.24499999999999997,
+    "peak_dbfs": -12.22,
+    "active_rms_dbfs": -30.55
+  },
+  {
+    "name": "M9 suppressed",
+    "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\Source\\42.20\\media\\sound\\M9Shoot_layered.ogg",
+    "gain": 1.0,
+    "peak_dbfs": -5.58,
+    "active_rms_dbfs": -22.98
+  },
+  {
+    "name": "M16 suppressed",
+    "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\Source\\42.20\\media\\sound\\M16Shoot_layered.ogg",
+    "gain": 1.0,
+    "peak_dbfs": -5.82,
+    "active_rms_dbfs": -24.32
+  },
+  {
+    "name": "M9 native capture",
+    "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\M9Shoot.wav",
+    "gain": 1,
+    "peak_dbfs": -0.98,
+    "active_rms_dbfs": -20.15
+  },
+  {
+    "name": "M16 native capture",
+    "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\M16Shoot.wav",
+    "gain": 1,
+    "peak_dbfs": 0.0,
+    "active_rms_dbfs": -20.22
+  },
+  {
+    "name": "MetalworkingPunchSwing",
+    "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\devices-c390\\MetalworkingPunchSwing.wav",
+    "gain": 0.8,
+    "peak_dbfs": -4.02,
+    "active_rms_dbfs": -23.16
+  },
+  {
+    "name": "SpearCraftedHit",
+    "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\devices-c390\\SpearCraftedHit.wav",
+    "gain": 0.7,
+    "peak_dbfs": -3.1,
+    "active_rms_dbfs": -22.25
+  },
+  {
+    "name": "CloseMetalToolbox",
+    "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\devices-c390\\CloseMetalToolbox.wav",
+    "gain": 1,
+    "peak_dbfs": -22.73,
+    "active_rms_dbfs": -37.17
+  },
+  {
+    "name": "KnobSwitch",
+    "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\devices-c390\\KnobSwitch.wav",
+    "gain": 1,
+    "peak_dbfs": -14.93,
+    "active_rms_dbfs": -36.35
+  },
+  {
+    "name": "ChairLegNailsHit",
+    "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\devices-c390\\ChairLegNailsHit.wav",
+    "gain": 0.65,
+    "peak_dbfs": -3.74,
+    "active_rms_dbfs": -21.95
+  },
+  {
+    "name": "AxeSawBladeSwing",
+    "path": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\audio-audition\\devices-c390\\AxeSawBladeSwing.wav",
+    "gain": 0.65,
+    "peak_dbfs": -12.69,
+    "active_rms_dbfs": -26.11
+  }
+]

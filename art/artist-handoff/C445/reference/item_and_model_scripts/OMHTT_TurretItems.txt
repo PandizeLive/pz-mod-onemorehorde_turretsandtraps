@@ -1,0 +1,312 @@
+module Base {
+    item OMHTTModuleGrid {
+        DisplayName = Grid Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTUtility,
+        Weight = 0.2,
+        Icon = OMHTT_ModuleUtility,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleGrid,
+    }
+    item OMHTTModulePack {
+        DisplayName = Module Pack,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0.2,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModulePack,
+    }
+    item OMHTTModuleSiphon {
+        DisplayName = Siphon Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTUtility,
+        Weight = 0.2,
+        Icon = OMHTT_ModuleUtility,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleSiphon,
+    }
+    item OMHTTModuleRegulator {
+        DisplayName = Regulator Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTPerformance,
+        Weight = 0.2,
+        Icon = OMHTT_ModulePerformance,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleRegulator,
+    }
+    item OMHTTModuleConservation {
+        DisplayName = Conservation Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTPerformance,
+        Weight = 0.2,
+        Icon = OMHTT_ModulePerformance,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleConservation,
+    }
+    item OMHTTModulePiercing {
+        DisplayName = Piercing Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTEffects,
+        Weight = 0.2,
+        Icon = OMHTT_ModuleEffects,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModulePiercing,
+    }
+    item OMHTTModuleInitialBlow {
+        DisplayName = Initial Blow Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTEffects,
+        Weight = 0.2,
+        Icon = OMHTT_ModuleEffects,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleInitialBlow,
+    }
+    item OMHTTModuleExecute {
+        DisplayName = Execute Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTEffects,
+        Weight = 0.2,
+        Icon = OMHTT_ModuleEffects,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleExecute,
+    }
+    item OMHTTModuleImpact {
+        DisplayName = Impact Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTEffects,
+        Weight = 0.2,
+        Icon = OMHTT_ModuleEffects,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleImpact,
+    }
+    item OMHTTModuleFiringEnhanced {
+        DisplayName = Enhanced Firing Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTAutomation,
+        Weight = 0.2,
+        Icon = OMHTT_ModuleAutomation,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleFiringEnhanced,
+    }
+    item OMHTTModuleDetectionEnhanced {
+        DisplayName = Enhanced Detection Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTAutomation,
+        Weight = 0.2,
+        Icon = OMHTT_ModuleAutomation,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleDetectionEnhanced,
+    }
+    item OMHTTModuleMagazine {
+        DisplayName = Magazine Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTPerformance,
+        Weight = 0.2,
+        Icon = OMHTT_ModulePerformance,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleMagazine,
+    }
+    item OMHTTModuleSplitter {
+        DisplayName = Splitter Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTEffects,
+        Weight = 0.2,
+        Icon = OMHTT_ModuleEffects,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleSplitter,
+    }
+    item OMHTTModuleFragment {
+        DisplayName = Fragment Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTEffects,
+        Weight = 0.2,
+        Icon = OMHTT_ModuleEffects,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleFragment,
+    }
+
+    item OMHTTTurretBase {
+        Tags = base:heavyitem,
+        DisplayName = Turret Base,
+        ItemType = base:container,
+        DisplayCategory = Material,
+        Weight = 6,
+        WeightReduction = 0,
+        Capacity = 28,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        ConditionMax = 100,
+        AcceptItemFunction = OMHTT_Turret.accept,
+        Tooltip = Tooltip_OMHTT_TurretBase,
+    }
+    item OMHTTTurretPotato {
+        DisplayName = Potato Launcher Head,
+        WorldStaticModel = OMHTTTurretProbe,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 4,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        ConditionMax = 100,
+        Tooltip = Tooltip_OMHTT_PotatoHead,
+    }
+    item OMHTTModuleFiring {
+        DisplayName = Firing Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTAutomation,
+        Weight = 0.2,
+        Icon = OMHTT_ModuleAutomation,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleFiring,
+    }
+    item OMHTTModuleFilter {
+        DisplayName = Filter Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTAutomation,
+        Weight = 0.2,
+        Icon = OMHTT_ModuleAutomation,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleFilter,
+    }
+    item OMHTTModuleRapidFire {
+        DisplayName = Rapid-Fire Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTPerformance,
+        Weight = 0.2,
+        Icon = OMHTT_ModulePerformance,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleRapidFire,
+    }
+    item OMHTTModuleVelocity {
+        DisplayName = Velocity Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTPerformance,
+        Weight = 0.2,
+        Icon = OMHTT_ModulePerformance,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleVelocity,
+    }
+    item OMHTTModuleRange {
+        DisplayName = Range Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTPerformance,
+        Weight = 0.2,
+        Icon = OMHTT_ModulePerformance,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleRange,
+    }
+    item OMHTTModuleSuppression {
+        DisplayName = Suppression Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTPerformance,
+        Weight = 0.2,
+        Icon = OMHTT_ModulePerformance,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleSuppression,
+    }
+
+    item OMHTTModuleCritical {
+        DisplayName = Critical Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTPerformance,
+        Weight = 0.2,
+        Icon = OMHTT_ModulePerformance,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleCritical,
+    }
+
+    item OMHTTModuleAccuracy {
+        DisplayName = Accuracy Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTPerformance,
+        Weight = 0.2,
+        Icon = OMHTT_ModulePerformance,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleAccuracy,
+    }
+    item OMHTTModuleReload {
+        DisplayName = Reload Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTPerformance,
+        Weight = 0.2,
+        Icon = OMHTT_ModulePerformance,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleReload,
+    }
+    item OMHTTModuleAutoloader {
+        DisplayName = Autoloader Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTPerformance,
+        Weight = 0.2,
+        Icon = OMHTT_ModulePerformance,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleAutoloader,
+    }
+    item OMHTTModuleDetection {
+        DisplayName = Detection Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTAutomation,
+        Weight = 0.2,
+        Icon = OMHTT_ModuleAutomation,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleMotionDetection,
+    }
+    item OMHTTModule360 {
+        DisplayName = 360 Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTAutomation,
+        Weight = 0.2,
+        Icon = OMHTT_ModuleAutomation,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleDetection360,
+    }
+    item OMHTTModuleDetectionImprovised {
+        DisplayName = Makeshift Detection Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTAutomation,
+        Weight = 0.2,
+        Icon = OMHTT_ModuleAutomation,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_MotionDetectionImprovised,
+    }
+    item OMHTTModuleFiringImprovised {
+        DisplayName = Makeshift Firing Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTAutomation,
+        Weight = 0.2,
+        Icon = OMHTT_ModuleAutomation,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_FiringImprovised,
+    }
+
+    item OMHTTModuleSynergy {
+        DisplayName = Synergy Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTEffects,
+        Weight = 0.2,
+        Icon = OMHTT_ModuleEffects,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleSynergy,
+    }
+
+    item OMHTTModuleMartyrdom {
+        DisplayName = Martyrdom Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTEffects,
+        Weight = 0.2,
+        Icon = OMHTT_ModuleEffects,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleMartyrdom,
+    }
+
+    item OMHTTModuleTack {
+        DisplayName = Tack Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTEffects,
+        Weight = 0.2,
+        Icon = OMHTT_ModuleEffects,
+        ScaleWorldIcon = 0.25,
+        Tooltip = Tooltip_OMHTT_ModuleTack,
+    }
+}

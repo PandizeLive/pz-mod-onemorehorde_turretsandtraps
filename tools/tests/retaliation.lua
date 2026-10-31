@@ -21,7 +21,7 @@ a.thumpTarget, b.thumpTarget = barrier, barrier
 a.state, b.state = "ThumpState", "ThumpState"
 B.update(a)
 B.update(b)
-check(a.health == 2 and a.variables.ThumpType == B.TYPE and b.variables.ThumpType == B.TYPE,
+check(a.health == 2 and a.variables.OMHTTBarrierContact == true and b.variables.OMHTTBarrierContact == true,
     "exact barrier attackers attach without contact damage")
 a.variables[B.TOKEN] = "left"
 B.update(a)
@@ -58,8 +58,10 @@ a.thumpTarget = barrier
 B.update(a)
 a.variables[B.TOKEN] = "left"
 testMode = "server"
+a.owner = testPlayer
 B.update(a)
-check(a.health > 1.54 and D.apply(a, 1, "test", "barrier", nil, nil) == 0, "dedicated combat path fails closed")
+check(a.health > 1.54 and D.apply(a, 1, "test", "barrier", nil, nil) == 0, "Owned zombies require the acknowledged damage path")
+a.owner = nil
 testMode = "client"
 B.update(a)
 check(a.health > 1.54, "MP client cannot retaliate independently")

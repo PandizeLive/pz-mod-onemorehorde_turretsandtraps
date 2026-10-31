@@ -1,0 +1,11 @@
+{
+  "version": "0.2.56.1",
+  "review": "Generated geometry traces rendered in headless Edge and visually inspected; native textures, stencil clipping and inventory rows require rendered game acceptance.",
+  "grid": "4/4/4/4, saved order",
+  "lockedSlots": "One centered Unavailable plus expansion hint",
+  "addGroup": "Separate measured native button action row",
+  "nativeMap": "Actual UIWorldMap child right-button pair consumed once, parent callbacks zero",
+  "keepOpen": "Read-only out of reach; pin is separate",
+  "renderedClient": "pending",
+  "connectedMP": "pending"
+}

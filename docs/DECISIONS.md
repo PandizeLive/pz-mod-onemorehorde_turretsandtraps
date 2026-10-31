@@ -1,5 +1,497 @@
 # Decision register
 
+**C536 / Coherent presentation and actor lifecycle verified (2026-10-31).** Owner approved C535 option1A. **0.2.71.4** sends targeted firearm Splitters with the primary shot, retains delayed first-arrival traces, shares validated owner coordinates across eligibility/aim/shot paths, and fixes post-creation client ID indexing without resetting birth time. [Contract](PRESENTATION_C536.md) | [Checks](TEST_v0.2.71.4.md). Six frozen-code failures,44,455 assertions, native late-ID/unload, save/read, authority and three independent starts pass with zero connected clients. Native Horde Manager remains untouched; its missing spawn visibility remains unproven. Installed engine/MPFF competing multiplier writers are identified; no pause-mod change. Confirmed0.2.71.3 upload establishes the new changelog baseline. Owner documents preserved. Installed and staged from immutable `test/v0.2.71.4` / `2f651b8`. All464 source and640 tag/package/install/archive/stage files and previous backups verify; page metadata/preview are byte-identical. [Delivery](evidence/c536-delivery.json). No Workshop upload, live-server or sibling changes. **Test now after uploading0.2.71.4 and restarting server and clients. No new world or saved-setting reset required.** GitHub mirror pending.
+
+**C535 / Connected retest failed; spawning and presentation investigated (2026-10-31).** Owner reports missing Horde Manager spawns both running/paused, invisible firearm Splitter and wrong Potato aim. [Evidence and recommended correction](MULTIPLAYER_FEEDBACK_C535.md). Both sides load0.2.71.3; six native spawn requests construct51 zombies and client receives all six replies, but128 later combat requests cannot resolve their client actor. Cause of missing native visibility/indexing remains unproven. Nine production diagnostic assertions reproduce250ms first-arrival tracer suppression and inconsistent native/validated-owner aim coordinates. Server pause toggles0/1 while client stays paused. No gameplay/package/install/server changes. Owner explicitly approved exporting C535 to the configured GitHub repository. The normal mirror verified commit03084f2 through draft PR1; the earlier C535 approval block is resolved. This authorizes the documentation mirror only, not the corrective patch. Recommend1A coherent presentation/position/actor-lifecycle correction;1B actor-visibility investigation first. **Decision needed.**
+
+**C534 / Full corrective update verified (2026-10-31).** Owner approves C532/C533 1A and separately approves the seven-setting Horde battery baseline and rotary maximum. **0.2.71.3** corrects delayed firearm burst presentation, warning attenuation, zero-rate pause and native construction edges, and applies rounded battery targets. [Contract](UPDATE_C534.md) | [Checks](TEST_v0.2.71.3.md). Five frozen-code controls reproduce the defects; 44,376 assertions, native save/read and all independent package starts pass. Native grass/fern placement works; solid bushes remain blocked. Zero clients connected; remaining general zombie sliding and multiplayer presentation require owner acceptance. Horde0.6.16.11 is installed/staged from74f168a, with610 baseline checks passed. Installed and staged from immutable `test/v0.2.71.3` / `8ec07f4`. All 464 source and 640 tag/package/install/archive/stage files match; previous backups and page metadata/preview verify. [Delivery](evidence/c534-delivery.json). No Workshop upload or live-server change. No upload/live-server changes. Prior GitHub approval-review block remains. **Test now after uploading T&T0.2.71.3 and Horde0.6.16.11 and restarting server and clients. No new world required; existing battery tuning stays unchanged.**
+
+**C533 / Approximate battery targets selected (2026-10-31).** Owner selects real-time normal-automation endurance: Scrapshot ~30h, M16/M4 12h, Ballista 8h, Makeshift Lobber 6h, Arc 2h, Bat 4h, Blades 3h; exact matches unnecessary and decimal limits reaffirmed. [Rounded candidate values, enhanced results and dependencies](BATTERY_TARGETS_C533.md) calculated with current production formulas; no shipped/saved/server changes. Ordinary two-decimal display and the existing small-consumption precision exception remain; Potato unchanged. Preserve C532 repairs separately, prepare matching Horde audit baseline and do not overwrite saved customization. Targets accepted, implementation pending; prior GitHub approval-review block remains. **Wait for a patch for battery tuning; C532 corrective scope remains pending.**
+
+**C532 / Connected retest failed; empty effects and pause clarified (2026-10-31).** Owner identifies M16/no Void or Conservation and visual-only delayed Splitter output; additionally reports zombies moving during multiplayer pause. [Findings, battery table and scope](MULTIPLAYER_FEEDBACK_C532.md) confirms0.2.71.2, early build-hook exception, incorrect outer-edge restriction, delayed firearm tracer emission and native/MPFF pause mismatch. Logs contain new Tether attacks and Poke damage during requested pause; exact zombie sliding source and vegetation sprite remain unproven.27 production diagnostic assertions reproduce failures; no fix claim. Enhanced automation drains Rotary Blades in.45 game hours under current settings. Recommend1A complete correctness/pause follow-up with separate battery tuning;1B defers pause. No gameplay/package/install/server/sibling changes. Prior GitHub approval-review block remains. **Decision needed.**
+
+**C531 / Full contact correction verified (2026-10-31).** Owner approves C529/C530 **1A** and requires stacked/contact tests before packaging. **0.2.71.2** corrects stacked ray scheduling, physical child contact presentation, rotary observation timing, standalone turret reports, stabilizer build gates and disconnect cleanup. [Contract](CONTACT_TIMING_C531.md) | [Patch](PATCH_v0.2.71.2.md) | [Checks](TEST_v0.2.71.2.md). 44,249 assertions, three frozen-code controls, native health/contact, write/read and package isolation pass; zero connected clients. Confirmed 0.2.71.1 upload establishes the changelog baseline. Installed and staged from immutable `test/v0.2.71.2` / `9f83c8e`. All 464 source and 640 tag/package/install/archive/stage files match; previous backups and page metadata/preview verify. [Delivery](evidence/c531-delivery.json). No Workshop upload, live-server or sibling change. Prior GitHub automatic approval-review block remains. **Test now after uploading 0.2.71.2 and restarting server and clients. No new world required.**
+
+**C530 / M16 stack and Potato hold clarified (2026-10-31).** Owner identifies M16 with5-6 Splitters and reports Potato Splitter/Fragment stop-before-pop. [C530 addendum](MULTIPLAYER_FEEDBACK_C529.md#c530---owner-identifies-m16-and-potato-endpoint-hold): production30-tile empty firearm replay delays5/6-child visuals400/500ms; actual Potato renderer retains Launch250ms beyond flight until Impact, and a busy damage victim postpones emission.43,728 investigation assertions pass; exact live pause attribution remains unproven. Proposed1A explicitly includes physical-child contact/pop as well as priorC529 findings. Clarification is not patch approval; no gameplay/package/install changes. Prior GitHub approval-review block remains. **Decision needed.**
+
+**C529 / Remaining connected defects confirmed (2026-10-31).** Client/server load0.2.71.1. [Comparison and proposed correction](MULTIPLAYER_FEEDBACK_C529.md): previous45 nil-name server errors are absent; two client render errors occur during disconnect. Production firearm Splitter replay grows from100ms at2 children to1500ms at16 over30 empty tiles; physical Potato children do not gain extra delay in that ideal case. Ordinary walls bypass the OMH-only stabilizer reservation. Rotary owner application averages155.8ms from sampled position, peaks215ms; exact visual-contact mismatch remains unmeasured. Owner head/loadout clarification requested. Investigation harness43,717 assertions reproduces behavior, not a fix. No gameplay/package/install/server changes. Recommend1A complete follow-up;1B construction/disconnect only leaves combat unresolved. Prior GitHub approval-review block remains. **Decision needed.**
+
+**C528 / Complete rotary correction approved and verified (2026-10-31).** Owner selects C5271A. **0.2.71.1** replaces the competing rotary renderer fallback, uses validated owner positions for crossing, expires contact damage from observation time and repairs the shared unnamed-state Impact callback. [Implementation](ROTARY_REPAIR_C528.md) | [Patch](PATCH_v0.2.71.1.md) | [Checks](TEST_v0.2.71.1.md). 43794.0 assertions, three frozen-code negative controls, native save/read and independent package starts pass. Zero connected clients; connected smoothness remains pending. Confirmed0.2.71 publication establishes the new changelog baseline. Installed and staged from immutable `test/v0.2.71.1` / `b7ffd87`. All461 source and636 tag/package/install/archive/stage files and previous backups verify; page metadata/preview are preserved. [Delivery](evidence/c528-delivery.json). No Workshop upload, live-server or sibling change. Prior GitHub approval-review block remains. **Test now after uploading0.2.71.1 and restarting server and clients. No new world required.**
+
+**C527 / Rotary acceptance failed; defects reproduced (2026-10-31).** Owner reports late hits and violent rotation after stopping. Client/server both load0.2.71. [Investigation and corrective choices](ROTARY_FEEDBACK_C527.md): actual renderer switches to stale fallback after1000ms and replays rotation at10x speed; rotary geometry ignores fresh owner positions; server logs45 nil-animation-name exceptions in the post-hit impact callback. Full harness plus diagnostic passes41,772 assertions reproducing faulty behavior, not a fix. No gameplay/build/install/server changes. Recommend1A complete rotary correction;1B stop-only leaves damage-path defects. **Decision needed.** Prior GitHub approval-review block remains.
+
+**C526 / Full update implemented and verified (2026-10-31).** Owner approved the entire C525 scope and separately approved the matching Horde Night baseline. **0.2.71** includes physical Splitter/Fragment travel and source identity, immediate Fragment launch, continuous rotary rendering, bounded Tether prediction/phase tracing, fast bounded bomb loading, exclusive five-tile Poke stabilizers/costs and Barrier defaults80/160. [Patch](PATCH_v0.2.71.md) | [Checks](TEST_v0.2.71.md) | [Implementation](UPDATE_C526.md). 41,863 assertions and five frozen-code negative controls pass; native write/read and package validation pass with zero connected clients. Horde Night0.6.16.10 baseline patch is locally installed/staged. Installed and staged from immutable `test/v0.2.71` / `bd42f08`. All461 source and636 tagged/package/install/archive/stage files match; previous packages/stage and page metadata verify. [Delivery](evidence/c526-delivery.json). Live multiplayer rendering remains unaccepted. Confirmed0.2.70.11 upload establishes the T&T changelog baseline. No Workshop upload or live-server change. Prior GitHub automatic approval-review block remains. **Test now after publishing both builds and updating/restarting server and clients. No new world required.**
+
+## C525 - Recaps must retain all outstanding requested work (2026-10-30)
+
+**C525 / Full pending update restored to the recap (2026-10-30).** Owner flags omission of Makeshift Bomb transfer, Splitter and the other outstanding requests. [Consolidated scope](UPDATE_SCOPE_C525.md) keeps bomb loading, Splitter/Fragment projectile identity and timing, audio/impact timing, rotary smoothness and measured Tether follow-up visible alongside approved Poke stabilizers/costs and80/160 Barrier health. Trap discussion did not supersede repairs. All these follow-ups remain unimplemented; no new build or acceptance claim. Prior GitHub approval-review block remains. **Wait for a patch.**
+
+## C524 - Barrier 1A approved; ground-mounted cross braces (2026-10-30)
+
+**C524 / Barrier tuning approved; cross art corrected (2026-10-30).** Owner selects C523 **1A:80 basic /160 reinforced Barrier health**. The Poke cross uses four low stabilizer bars extending north/south/east/west and mounting to the ground, **not platform tiles**. Preserve the exclusive center-plus-four-neighbor placement footprint; thin visuals do not permit overlapping installations or filling reserved arms with other floor traps. Treat low bars as traversable ground hardware, not walls or an added obstacle/slowdown. One assembled placement/repair/pickup; center alone damages. Stability explains the footprint and does not grant an extra health bonus. [Current approved contract](TRAP_BASES_C523.md#c524---approved-tuning-and-stabilizer-bar-correction). Cross/cost direction and Barrier tuning are approved; gameplay/assets remain pending implementation. C518 remains separate. **Wait for a patch.** Prior GitHub approval-review block remains.
+
+## C523 - Exclusive cross approved, simulation requested (2026-10-30)
+
+**C523 / Cross selected; trap-only bases simulated (2026-10-30).** Owner approves exclusive cross footprint and modest Poke cost increase, requests Barrier endurance review and trap-only simulations. [326-case design model, native formula evidence, costs and recommendations](TRAP_BASES_C523.md). Recommend interpreting cost increase as5 bars/10 screws in both recipes; other inputs unchanged. Native crowd-dependent thumping makes a universal two-kill health conversion invalid. Explore80/160 Barrier health;40/80 can fail before a kill in the crowded reference. Mixed layered approaches outperform unused perimeter coverage under assumed routing; native AI and connected behavior are not proven. Cross approved but not implemented; no gameplay/package edits, C518 separate. **Decision needed: Barrier numeric tuning.** Prior GitHub approval-review block remains.
+
+## C522 - Spatial restriction discussion (2026-10-30)
+
+**C522 / Trap spacing under discussion (2026-10-30).** Owner proposes adjacent pressure trigger/delay, adjacency exclusion or five-tile cross platforms. [Geometry check and tradeoffs](TRAP_SCALING_C519.md#c522---spatial-footprint-alternatives): cardinal exclusion permits 50% center density, eight-neighbor 25%, exclusive cross 20% in periodic layouts. Shared clearance does not reserve exclusive platforms. Recommend exploring **1A eight-neighbor floor-hazard spacing** for simplicity; **1B cross assembly** offers a visible physical reason at greater corridor/placement cost; **1C trigger/strike pair** has timing/direction drawbacks. No game/runtime proof, gameplay approval or package changes. Mixed trap substitution and deeper fields remain explicit limitations. C518 stays separate. **Decision needed; discussion continues.**
+
+## C521 - Low-maintenance trap balance remains discussion (2026-10-30)
+
+Owner rejects corpse-hauling chores, identifies relocation/more-traps counterplay and requests simulation and candid disagreement. [Model and revised proposals](TRAP_SCALING_C519.md#c521---reject-maintenance-driven-obstruction-as-the-primary-answer). Corpse obstruction withdrawn as primary recommendation; centralized resource servicing and active grouped alternatives are proposals only. No gameplay or numeric selection.
+
+## C520 - Dulling and alternatives remain discussion (2026-10-30)
+
+Owner finds C519 1B/1C enticing, proposes condition-linked damage restored by repair, and explicitly asks to continue discussing. Interest is not approval of corpse obstruction, recipes or example numbers. [Current tradeoffs and alternatives](TRAP_SCALING_C519.md#c520---dulling-corpse-obstruction-and-further-alternatives). No gameplay edits.
+
+## C519 - Endgame trap balance discussion (2026-10-30)
+
+Owner wants to curb mass Poke Floors without transferring the dominant strategy to another trap. [Evidence and 1A/1B/1C choices](TRAP_SCALING_C519.md). Whole-trap upkeep/roles recommended; no numbers, recipe edits or countermechanics approved. C518 remains separate and pending.
+
+C518 scope addition: owner requests faster Makeshift Bomb loading into turrets. Confirmed weight-based per-item duration and exclusion from both client/server light-ammo batching. Include bounded loading parity without changing bomb weight, capacity or damage. Broader 1A/1B selection remains pending; no build changed.
+
+## C518 - Child-projectile correction requested; scope proposed (2026-10-30)
+
+Owner requires Splitter/Fragment children to reproduce the original projectile and reports timing defects plus partial Tether improvement. Owner also reports unsmooth rotary heads; include Bat and Blades in the proposed correction. This records the requirements and diagnostic reproduction, not approval of the proposed removal of the fixed Fragment wait. [1A/1B scope and proof](MULTIPLAYER_FEEDBACK_C518.md). No gameplay patch or new test request yet.
+
+## C517 - Combined response correction and consistent whole-trap audit (2026-10-30)
+
+Owner: "We need to ensure all traps aren't delayed like they are. 1A." Approves C516 combined aim/tether work and the same discovery-to-recovery audit for every trap, with implementation and verification. Existing corrective packaging authorization remains; Workshop publication, live-server mutations and sibling changes remain separate. [Contract and proof limits](MULTIPLAYER_RESPONSE_C517.md). Eight old production paths fail their new behaviour checks; 40,498 corrected assertions pass. Native/package verification and connected acceptance are tracked separately.
+
+**C516 / Connected damage improved; aim and tether presentation failed (2026-10-30).** Owner reports better damage, first-crossing Concertina delay, lagging aim and delayed/stopping tether flight; requests the nail follow its target. [Capture, reproduction and choices](MULTIPLAYER_FEEDBACK_C516.md) confirm 0.2.70.10, retained Barrier/Bed/Poke/barb/tether damage, additional angle blending, stop-start tether interpolation and absent visual victim identity. Nine production-function assertions reproduce presentation defects; exact immediate-stop and cold-start causes remain unproven. Artist ZIP includes current-identical nail/cable meshes but retains its older overall baseline. Recommend **1A combined presentation correction**, alternative **1B tether first**. No gameplay/build/install/server changes; partial improvement is not full acceptance. Prior GitHub automatic approval-review block remains. **Decision needed: follow-up scope/patch.**
+
+**C515 / Multiplayer response and Barrier repair installed (2026-10-30).** Owner lifts the packaging hold and approves underlying repair. [Implementation and proof limits](MULTIPLAYER_REPAIR_C515.md) | [0.2.70.10 checks](TEST_v0.2.70.10.md). Native Thump packet overwrite reproduces the Barrier failure; independent animation selection survives it. Short server consent leases permit exact owner-side slowdown and local Poke presentation; damage popups no longer await settlement on the owner. Server damage/death/Horde/XP authority is retained. 40,460 assertions, native save/read and all three independent package starts pass. Installed and staged from immutable `test/v0.2.70.10` / `17fac14`; all 631 tag/package/install/archive/stage files and previous backups verify. [Delivery](evidence/c515-delivery.json). **Test now after upload and server/client restart. No new world required.** Connected smoothness remains unaccepted. Confirmed 0.2.70.9 upload establishes the changelog baseline; [receipt](evidence/c515-upload-baseline.json). No Workshop upload, live-server or sibling change. Prior GitHub automatic approval-review block remains.
+
+**C514 / Full latency and Barrier repair authorized; confirmation first (2026-10-30).** Owner authorizes research, investigation of the complete delay and Spike Barrier path, underlying repairs and proof before another package. Smooth connected multiplayer is the acceptance target. Client-side work is authorized where appropriate if server-dependent waits are the cause; preserve authoritative damage validation, death/XP/Horde accounting and duplicate protection. Follow real contact through visible response, investigate native Barrier marker output, compare before/after under connection delay and ownership changes, and distinguish connected evidence from simulations. Use current installed engine/vanilla evidence and authoritative external research. Confirmation only this turn: implementation has not started, no version/package/install/server changes, and packaging remains held until the required proof exists. No further design approval is needed for this scope. Prior GitHub automatic approval-review block remains.
+
+**C513 / Connected timing test failed (2026-10-30).** Owner reports Concertina, Poke Floor and other traps remain delayed. [Log review and remaining waits](MULTIPLAYER_FEEDBACK_C513.md) confirms both sides load0.2.70.9, the ownership exception is gone and570 contact reports are accepted. Some Poke/barbed damage and one Poke corpse are confirmed;82-105ms damage request/result timings exclude full visible latency. Poke presentation and wire slowdown still await server responses. Six Barrier contact starts yield no strike reports; native marker generation remains unproven. Bed landing damage is not established by this capture. Acceptance remains failed; next proof must correlate actual contact through visible response before another timing patch. No gameplay/build/install/server change or new test request. Previous GitHub automatic approval-review block remains.
+
+**C512 / Native ownership correction installed (2026-10-29).** Owner selects C511 **1A**. **0.2.70.9** replaces both invalid connection-method calls with native owner-player identity checks; bounded barrier counters identify marker/report/confirmed damage stages. Real engine objects reproduce the old exception and pass owner/foreign/handoff/duplicate validation. 40,292 assertions, full barrier marker-to-acknowledgement replay, native save/read and all independent package starts pass. Zero clients connected; native geometry/damage sinks are adapters and rendered acceptance remains pending. [Patch](PATCH_v0.2.70.9.md) | [Checks](TEST_v0.2.70.9.md). Installed and staged from immutable `test/v0.2.70.9` / `4b3e956`; all629 tag/package/install/archive/stage files and previous managed backups verify. Workshop page text/preview preserved. **Test now after uploading0.2.70.9 and updating/restarting server and both clients. No new world required.** Confirmed0.2.70.8 upload is the changelog baseline; no Workshop upload, live-server or sibling change. GitHub mirror remains blocked by prior automatic approval review.
+
+**C511 / Connected trap test failed; concrete ownership-bridge defect found (2026-10-29).** Client/server load0.2.70.8. Server records8,079 `UdpConnection.havePlayer` Lua-access failures and zero accepted contact reports; turret combat still records261 applied results. Spike Barrier contains the same invalid call, but its client marker/report path remains unproven. Earlier connection doubles incorrectly allowed this method. [Evidence, test gap and correction choices](MULTIPLAYER_FEEDBACK_C511.md). Owner considers Fragment/module visuals passable, not fully accepted. Recommend **1A focused ownership correction with real bridge proof and barrier tracing**; **1B investigation only**. No code/install/upload/server change. Prior GitHub approval-review block remains. **Decision needed.**
+
+**C510 / 0.2.70.8 test patch installed and staged (2026-10-29).** Owner: "Approved. Patch it and let me test." This lifts the C508/C509 packaging hold for owner testing. [Patch](PATCH_v0.2.70.8.md) | [Checks](TEST_v0.2.70.8.md). 40,287 Kahlua assertions, current-version native save/read and Traps-only, Turrets-only and combined package starts pass. All 456 source files match the C509 proof after normalizing only the version field; 629 generated package files validate. Native probes have zero connected clients. Installed and staged from immutable `test/v0.2.70.8` / `bd9f8f3`. All 629 tagged/package/install/archive/stage files and both previous-package backups verify; previous Workshop stage and page metadata/preview also verify. No Workshop upload, live-server update or sibling change. **Test now after uploading 0.2.70.8 and updating/restarting the server and both clients. No new world required.** Confirmed 0.2.70.7 upload is the changelog baseline; [verified receipt](evidence/c510-upload-baseline.json). Prior GitHub approval-review block remains.
+
+**C509 / Whole-catalog follow-through approved (2026-10-29).** Owner authorizes finishing the turret/trap/module audit, fixing findings and holding packaging until proof. [Contract, reproduced failures and evidence boundaries](MULTIPLAYER_COVERAGE_C509.md). Implemented five focused source corrections: bounded transport-capacity waiting, ammo-free Arc trigger admission, immutable per-hit Siphon/splash inputs, and superseded-receipt replacement with bounded distinct-victim retention. No balance formula, Horde/XP authority, version, install or publication change. Automated/native proof is distinct from the still-open connected two-client gate. **Wait for a patch.**
+
+**C508 / Approved source replacement; packaging held (2026-10-29).** Owner authorizes fundamental multiplayer repair and requires proof before another patch. [Implementation, comparison and remaining gate](MULTIPLAYER_REPAIR_C508.md): native-owner contact/landing reports, corpse exclusion, two-leg damage exchange, bounded contact expiry and no repeated Poke tile scans. Controlled failure replays, native serialization and zero-client stock-server checks pass; connected two-client animation/transport and visible latency remain unproven. Source candidate only: installed/staged 0.2.70.7, release packages and cumulative Workshop draft remain unchanged. GitHub mirror remains blocked by the prior approval review. **Wait for a patch.**
+
+**C507 / 1A selected; fundamental-path verification required (2026-10-29).** Owner accepts native-owner contact reports but requests brief confirmation first and concrete evidence instead of another speculative patch. Audit the full observation/queue/Prepare/Ready/Commit/Applied path; separate server scheduling, network transit and confirmation cost before attributing the407ms maximum. Reproduce connected contact, landing and corpse failures and compare the replacement against that baseline; preserve server Horde/XP authority. Do not claim connected success from fixture counts. This turn records scope only; no gameplay or installation change. **Wait for a patch.**
+
+**C506 / Connected trap retest failed; authority redesign proposed (2026-10-29).** [Evidence and choices](MULTIPLAYER_FEEDBACK_C506.md). Both sides load0.2.70.7. Native corpse dragging uses a grapple-only zombie representation missed by our liveness filter. Server records two Bed trips but no landing requests;46 detailed Poke/Wire transactions apply in150-407ms, not a ping measurement. Adjacent Poke devices account for one observed pair; all double-hit causes are not established. Recommend **1A validated native-owner contact/landing reports with local presentation and preserved server damage/Horde authority**; **1B narrower server-only corrections**. Prior tests did not establish connected animation/corpse behavior. No gameplay/install/server change. GitHub mirror remains blocked by prior automatic approval review. **Decision needed.**
+
+**C505 / Multiplayer repairs installed and staged (2026-10-29).** Owner selects C504 **1A** and explicitly requests thorough multiplayer repair and remote Module Pack checks. **0.2.70.7** replaces predicted-square contact/discovery with physical-position queries, fixes Bed/Poke landing timing and mutable hat identity, revalidates rejected targets and follows moving projectile victims. Pack lifecycle/order/privacy and focused diagnostics are verified. [Patch](PATCH_v0.2.70.7.md) | [Checks](TEST_v0.2.70.7.md). 37,207 assertions, a 2,500-actor/16-query simulation, native divergent-membership contact, save/read and all independent package starts pass; zero clients connected. Installed and staged from immutable test/v0.2.70.7 / 00970de; all 454 source and 625 tagged/package/local/archive/stage files verify, plus both previous packages and the previous Workshop stage. Workshop page text and preview are preserved. The confirmed 0.2.70.6 content upload is the changelog baseline; no upload, live-server or sibling change was performed. Connected acceptance remains pending. GitHub mirror remains blocked by prior automatic approval review. **Test now after uploading 0.2.70.7 and updating/restarting the server and both clients. No new world required.**
+
+**C504 / Connected 0.2.70.6 failures investigated (2026-10-28).** [Evidence and proposed patch](MULTIPLAYER_FEEDBACK_C504.md). Both sides load0.2.70.6; no non-startup console errors.396 generic combat Reject replies versus150 completed transactions; exact rejection causes are not logged. Native predicted square membership differs from actual coordinates; production fixtures reproduce missed Bed/Poke contact, delayed quick crossings, full-area acquisition latency and detached projectile endpoints.37,164 diagnostic assertions pass; owner connected acceptance fails and remains open. Recommend **1A shared contact/targeting/presentation corrections plus reason-coded diagnostics**; **1B diagnostics first**. No gameplay/install/server/settings changes. Confirmed0.2.70.6 Workshop receipt is the new content baseline; published changelog retained. Prior GitHub approval-review block remains. **Decision needed.**
+
+**C503 / Corrective patch installed (2026-10-28).** Owner selects C502 **1A** and asks about Martyrdom. **0.2.70.6** replaces undriven dedicated contact hooks, corrects replicated landing/rotary stance and delayed health/Poke processing, localizes automatic names and adds damage notices, aim interpolation and eight-tile pack observers. [Patch](PATCH_v0.2.70.6.md) | [Checks](TEST_v0.2.70.6.md). 37,208 assertions, native real-OnTick contact/Martyrdom/Synergy proof, save/read and all package starts pass; zero clients connected. Installed from immutable test/v0.2.70.6 / f338fd5; all453 source and623 tagged/package/local/archive/stage files plus both previous backups verify. No new world, Workshop upload, live-server or sibling change. **Test now after uploading0.2.70.6 and updating/restarting server and clients.**
+
+**C502 / Connected-test failures audited (2026-10-28).** [Findings and proposed scope](MULTIPLAYER_FEEDBACK_C502.md): client/server load0.2.70.5; server records confirmed turret damage/deaths. Installed native scheduler skips the zombie-update hook used by Bed/Barb/Tack contact. Production fixtures reproduce MP popup suppression, raw saved labels, Poke startup/overdue-strike gaps and a delayed conditional-health baseline. All32 modules and4 kits have a codepath review; this is not live acceptance.37,066 Kahlua assertions include diagnostic failure reproductions. Recommend **1A correctness repairs plus smooth aim and eight-tile observer pack icon**; **1B correctness repairs only**. No production/install/server changes; patch approval pending.0.2.70.5 successful content upload is confirmed and is the next changelog baseline. **Decision needed.**
+
+**C501 / All lit states installed (2026-10-28).** Owner requests world light for each indicator. **0.2.70.5** adds steady active-green and asleep/waking-amber illumination to the existing fading empty warning; disabled/unpowered stays dark. One native light is reused across states, without redundant steady-color updates. [Patch](PATCH_v0.2.70.5.md) | [Checks](TEST_v0.2.70.5.md).37,154 assertions, native write/read and all independent-package starts pass. Installed from immutable test/v0.2.70.5 /6eb3aba; all616 tag/package/local/archive/stage files and both previous-package backups verify. No new world, Workshop upload or sibling changes. C500 combat and rendered lighting acceptance remain pending. **Test now after uploading0.2.70.5 and updating/restarting server and clients.**
+
+**C500 / Corrective patch installed (2026-10-28).** Owner selects C499 **1A** and requires snap-on/fading amber world illumination. **0.2.70.4** completes native server death/corpse delivery, removes premature corpse-loot packets and preserves targeting during ammo-only transfers. Empty firing attempts share a one-second click limiter; the amber marker and native local light fade together. [Patch](PATCH_v0.2.70.4.md) | [Checks](TEST_v0.2.70.4.md). 37150 assertions, native death/loot/light proof, write/read and all package starts pass; no clients connected. Installed from immutable test/v0.2.70.4 /a415b76; all616 tagged/package/local/archive/stage files and both previous-package backups verify. Local Workshop stage refreshed with page metadata preserved. Live multiplayer acceptance remains pending. No Workshop upload or sibling changes. **Test now after uploading0.2.70.4 and updating/restarting the server and both clients.**
+
+**C499 / Combat and ammo retest investigated (2026-10-28).** [Evidence and proposed patch](MULTIPLAYER_FEEDBACK_C499.md): client/server both load0.2.70.3; old extraUpdate failure absent. Every ammo transfer emits a configuration-change event that clears target/fire scheduling. Confirmed server module-pack loot synchronization error during a kill; causal link to the reported survivor remains unproven. Fifty Applied receipts do not prove terminal death; focused owner/server/corpse verification is required. Recommend **1A corrections plus once-per-second empty click and blinking amber**, alternative **1B corrections only**. No gameplay/install/upload change. **Decision needed: corrective scope.**
+
+**C498 / Retest loaded stale local Workshop copy (2026-10-28).** Latest client log16:16-16:19 loads0.2.70.2 and records13 extraUpdate exceptions; SFTP server log loads0.2.70.3. SteamCMD successfully published0.2.70.3 at20:09:27Z and the downloaded Steam package matches the tagged build. The authoring-stage copy remained0.2.70.2; native default folder order is workshop,steam,mods. Refreshed that existing managed stage with the stable helper, preserving metadata and a full backup. All615 files in each local-mod, native-stage and Steam-download copy now match0.2.70.3. No gameplay change or new upload. The patch was not exercised by this old-version client session; connected acceptance remains pending. **Test now after fully restarting Zomboid: turret and trap attacks.**
+
+**C496 / Publisher confirmation consistency (2026-10-28).** Owner challenges T&T requiring UPDATE when sibling launchers use PUBLISH. Current Horde Night and Trait Shop update code both accept PUBLISH case-insensitively; T&T had unnecessarily introduced case-sensitive UPDATE. T&T now matches PUBLISH, including lowercase and surrounding whitespace. Target, content checks, Unlisted visibility and metadata preservation remain unchanged. No real upload authorized or performed by this correction. All15 isolated Workshop-tool checks pass with zero Steam calls. **Test now: option3 accepts publish.**
+
+**C495 / CMD mirror correction (2026-10-28).** Owner reports option2 failing after successful0.2.70.3 installation. The mirror now permits ordinary edits to tracked `AGENTS.md`, `README.md` and `docs/*.md`, clearly warning that they remain local; it pushes only committed history. Untracked files, additions/deletions/renames and code/tool/build changes still block. No auto-commit, stash, restore or owner-edit removal. Fifteen isolated preflight cases pass plus the no-network assertion. Exact repository/branch checks and immutable test-tag eligibility remain intact. Gameplay/install/Workshop content unchanged. Live CMD mirror succeeded: branch commit78b9ef8 and immutable test/v0.2.70.3 verified on GitHub through existing draft PR1. The three original local documentation edits remain intact. **Test now: CMD option2.**
+
+**C494 / Connected-test corrections approved (2026-10-28).** Owner selects C493 **1A**, explicitly preserves Private inspection with grey locked mutation controls, and requests the eight Automation 2 replacements. [Patch contract](PATCH_v0.2.70.3.md) | [Verification](TEST_v0.2.70.3.md). Combat API, active-client transfer validation, read-only presentation and owner art changes pass 37,026 assertions, native write/read and all three independent package startups. Installed from immutable test/v0.2.70.3 /ccf9e7b; all447 source and615 package/tag/install/archive files and both previous-package backups verify. Observer visual parity remains a connected-test requirement, not a proven separate defect. No sibling changes, Workshop upload or website deployment. **Test now after the Workshop server and both clients update to0.2.70.3.**
+
+## Public GitHub repositories with collaborator-only pull requests (2026-10-28)
+
+Owner: "Can you do that for me?" in response to the recommendation to make the mod repositories public with collaborator-only pull requests. Applied to `PandizeLive/pz-mod-onemorehorde_traitshop` and `PandizeLive/pz-mod-onemorehorde_turretsandtraps`; anonymous API reads independently confirm both settings and enabled pull requests. Existing collaborators, issues, default branches and licenses are unchanged. T&T's private-only mirror check is replaced by an explicit configured-visibility check, retaining exact destination and default-branch checks. [Verification and remaining mirror prerequisite](GITHUB_WORKFLOW.md#public-visibility-and-collaborator-only-pull-requests-2026-10-28). This request authorizes repository access and mirror compatibility only; it does not alter approvals or work from other project chats.
+
+## C493 - Connected multiplayer failures investigated (2026-10-28)
+
+Owner requests console/SFTP review of one-potato transfers, combat exceptions, missing observer effects and Private turret access. [Findings and proposed patch](MULTIPLAYER_FEEDBACK_C493.md). Logs read only; no new gameplay patch authorized. Recommend1A focused MP correction, alternative1B combat-only. Prior automated/ownerless checks do not establish connected acceptance. Owner's sibling update plan is recorded separately from fixing confirmed T&T defects.
+
+## C492 - Native first Workshop upload, then CMD updates (2026-10-27)
+
+**C492 / First unlisted Workshop upload confirmed (2026-10-27).** Owner confirms Zomboid completed the content upload to [item 3828638252](https://steamcommunity.com/sharedfiles/filedetails/?id=3828638252). [Workflow and evidence](WORKSHOP_UPLOAD_C492.md): 0.2.70.2, both independent entries and all 614 tagged files verified; native validation, 15 isolated Workshop checks and installer regressions pass. `OMH_TurretsAndTraps.cmd` uses the game-created ID for later updates, preserving page text/cover and Unlisted visibility. Project metadata now matches the owner-edited native stage. This is the first confirmed content baseline for this exact item; the cumulative draft remains intact until the next change. No official promotion, gameplay/install change or C488 deployment. Private mirror blockers remain. **Test now: connected multiplayer via Workshop.**
+
+## C491 - Connected testing and Workshop presentation review (2026-10-27)
+
+**C491 / Multiplayer testing and Workshop inventory (2026-10-27).** Owner requests connected-test direction and review of prior Workshop chats. [Retrieved decisions, existing assets and proposed capture plan](WORKSHOP_READINESS_C491.md) references OMH: Presentation, Prep Trait Shop Steam page and Update Horde Night addon display. Existing T&T cover/thumbnail/icons are verified; no gameplay capture pack was found in its image folder. Recommend two-client hosted/dedicated acceptance alongside page planning, with final promo capture after owner artwork. No new artwork, gameplay, upload or C488 deployment approval.0.2.70.2 remains installed; private mirror remains blocked. **Test now when available: connected multiplayer.**
+
+## C490 - Tack delivery correction and multiplayer text review (2026-10-27)
+
+**C490 / Tack delivery correction installed (2026-10-27).** Owner selects C489 **1A** and requests multiplayer text verification. **0.2.70.2** replaces dropped area requests with real-time, coalesced deferred delivery and replaces global field broadcasts with nearby updates/remembered-recipient removals. [Patch](PATCH_v0.2.70.2.md) | [Verification](TEST_v0.2.70.2.md). 36,482 assertions pass; 201 multiplayer status/Controller keys resolve and native loading checks 1,525 translation keys. Native write/read and Traps/Turrets/both startup checks pass. Installed from immutable test/v0.2.70.2 /42822d3; all446 source and614 tag/package/install/archive files plus both previous-package backups verify. Connected owner testing remains deferred. C488 deployment still awaits separate approval. Private mirror remains blocked; read-only fetch failed this turn. **Test now when available, after restart; no new world required.**
+
+**C489 / Multiplayer readiness audit complete (2026-10-26).** Owner defers testing and selects the next readiness audit. [Findings, evidence and patch scope](MULTIPLAYER_READINESS_C489.md): accelerated time can cause a Tack area request to be dropped without a stationary retry; Tack creation/removal also broadcasts to every connection. Both reproduced in production-path fixtures.35,333 current Kahlua assertions and68 Trait Shop XP/startup assertions pass; connected dedicated/listen acceptance remains open. Recommend **1A focused Tack delivery correction**, alternative **1B defer**. No new transfer/XP defect reproduced, no shipped files/install changed;0.2.70.1 stays accepted. C488 deployment still awaits approval. Private mirror remains blocked. **Decision needed.**
+
+**C488 / Narrow scoring release prepared (2026-10-26).** Owner selects C487 **1A**. [Candidate, verification and deployment choices](HORDE_SCORING_PATCH_C488.md). Finished Worker preserves all deployed code outside the scoring segment and retains remote assets/bindings; adds T&T validation/flags and Horde0.6.16.9/PZ42.21.0 compatibility.40 genuine Lua cases pass in Node and local workerd;18 focused candidate tests and historical/frozen/invalid-input checks pass. Corrected C487's deployment-history ordering: current/rollback is308c1b4e (2026-10-19). No upload, deployment, score change or game install. Recommend **1A deploy the verified narrow candidate**, alternative **1B defer**; separate approval remains required.0.2.70.1 stays accepted. Private mirror remains blocked. **Decision needed.**
+
+**C487 / Horde scoring audit selected and completed (2026-10-26).** Owner selects C486 **1B**. [Audit and evidence](HORDE_SCORING_AUDIT_C487.md) confirm local game/API parity but production still lacks T&T modifier/flag handling and excludes Horde0.6.16.9/PZ42.21.0.610 Horde assertions,35424 T&T assertions and39 focused API tests pass;40 actual Lua award cases pass local API under reviewed versions and are held under live bindings. Full API suite65/80 passes, with15 LootLab failures and unrelated website edits blocking wholesale deployment. Recommend **1A prepare a narrow scoring patch preserving production LootLab, then seek deployment approval**; **1B defer official-score readiness**. No gameplay, sibling source, scores or deployment changed;0.2.70.1 remains accepted. Private mirror remains blocked. **Decision needed.**
+
+**C486 / Map correction accepted; next track (2026-10-26).** Owner: "Perfect! What's next?" Accept the restored map preview and close this focused single-player test round; C485 already records the rest of0.2.70 passed. Console confirms0.2.70.1 SP; no Controller stack trace found, while unrelated startup font/Firearms/map warnings remain. Recommend **1A multiplayer readiness audit**, then a separately arranged connected test covering ownership/privacy, concurrent transfers, synchronization, reconnect/save and XP. Alternatives **1B coordinated Horde scoring-readiness audit** or **1C modder guide/sample addon**. These are retained roadmap tracks, not new gameplay/publication approval. Final owner art, balance/endurance evidence and release preparation remain; Cure simulation stays last.0.2.70.1 stays installed, no new test or build requested. Private mirror remains blocked. **Decision needed: next track.**
+
+**C485 / Map-only range preview correction (2026-10-26).** Owner clarifies that only the in-world gradient should be removed; the Controller menu map must retain its management-range outline. Owner reports the rest of the0.2.70 test round passed. Console confirms T&T0.2.70 and Horde0.6.16.9; preserve this as single-player owner acceptance, not connected multiplayer proof. T&T0.2.70.1 restores the previous map drawing with one authoritative radius lookup per render. In-world rendering, range rules, saves and siblings are unchanged. [Patch](PATCH_v0.2.70.1.md) | [Verification](TEST_v0.2.70.1.md). Installed from immutable test/v0.2.70.1 / e5734627d2c1c905e5380de51d8a3f28be524a21;446 source and614 tag/package/install/archive files plus both0.2.70 backups verify.35,424 assertions, native write/read and all three independent package starts pass. Restored map visual acceptance remains pending. Private mirror remains blocked by prior approval review. **Test now after restart: Controller map range preview.**
+
+## C484 - Assignment on drop selected; coordinated baseline approved (2026-10-26)
+
+**C484 / Assignment-on-drop selected and implemented (2026-10-26).** Owner selects C483 **1B** while retaining group assignment, then explicitly approves the coordinated Horde baseline correction. T&T0.2.70 implements box/Ctrl selection, group dragging with eligible assignment, separate bulk and whole-group Assign/Unassign, compact full-width settings tabs, and the3-second fresh reset default with cancellation protection. Horde/Cure0.6.16.9 aligns the reviewed default/capability. [Patch](PATCH_v0.2.70.md) | [Verification](TEST_v0.2.70.md). Existing saved tuning is preserved; a saved0.5 requires setting Reset Duration to3. 34,400 assertions, native write/read and all three independent package starts pass. Installed from immutable test/v0.2.70 / 85d2551daafd1dbcb8ede9fdc0938adea9f4b2c1. All 446 source and 614 package/tag/install/archive files plus both previous-package backups verify. Horde/Cure 0.6.16.9 is also installed and hash-verified. Rendered and connected-player acceptance remain pending. Private mirror remains blocked. **Test now after restart when available.**
+
+## C483 - Cooldown/tabs selected; Connections multi-selection requested (2026-10-26)
+
+**C483 / Three-second reset and tabs selected; multi-selection requested (2026-10-26).** Owner selects C482 **1A / 2C** and adds Connections box/multi-selection, group dragging and bulk Assign/Unassign. [Interaction contract and authority findings](CONTROLLER_SETTINGS_C482.md#c483---selected-cooldownlayout-and-connections-multi-selection-2026-10-26) recommend **1A keep grouping separate from assignment**; **1B group drop also assigns eligible unassigned devices**. Existing one-pending-target group requests need a shared bounded batch path, not a loop. Preserve foreign-owner privacy and offline/out-of-range unassignment. Horde's 0.5 reset audit baseline also needs coordinated review for the selected 3-second default. Gameplay/install remain 0.2.69.1; private mirror remains blocked. **Decision needed only for group-drop behavior.**
+
+## C482 - Longer refire requested; compact layout alternatives (2026-10-26)
+
+Owner reports a repeat-stun loop, requests longer tether refire and compact, clear Device/Controller Settings mockups. [Contract and evidence](CONTROLLER_SETTINGS_C482.md) propose 1A three-second reset / 1B two-second reset, and 2A Compact rows / 2B Foldouts / 2C Tabbed inspector. Recommend 1A/2A. The direction is requested, numerical selection and final native layout are pending; preview interactions are not approval. Preserve custom saved tuning and investigate elapsed-time cancellation before implementing the chosen cooldown. No gameplay or installation change.
+
+
+## C481 - Pull-only correction approved (2026-10-26)
+
+Owner "Approved" authorizes the combined C479/C480 patch. Impact damage remains, outward push/native shove is removed, and retraction pulls toward the muzzle with the nearest directional reaction and smooth residual facing correction (maximum45 degrees). Existing pull distance/damage and half-second reset remain. Remove the Controller management circle; use shorter independently scrollable settings and title-bar-only group collapse. Implemented in [0.2.69.1](PATCH_v0.2.69.1.md). Native/automated evidence does not establish rendered or connected-player acceptance. Retain the hidden, ignored legacy push registration because current Horde settings verification expects it. No saved-value migration or sibling patch is authorized by this change.
+
+
+## C471 - Corrective patch approval and implementation (2026-10-25)
+
+Owner "Aproved" authorizes all C468-C470 corrections and the coordinated local Horde baseline/tooltip patch. No additional gameplay rebalance or save reset. First-update/pre-damage baseline settlement fixes the confirmed post-spawn health override defect; bounded conditional diagnostics support verification. Controller discovery is scoped to the host owner, with separately authorized shared-host access retained. Placement autoassignment is queued and never steals existing assignments or creates trigger links. Tether displacement defaults0.35tiles away and0.75tiles toward its muzzle; native pending movement and collision govern movement. Both distances are Sandbox options,0disables; the post-return reset defaults0.5game-seconds. Existing tuning remains explicit. See [patch](PATCH_v0.2.68.2.md) and [tests](TEST_v0.2.68.2.md).
+
+## C470 - Execute18/+2 confirmed (2026-10-25)
+
+Owner: **3A**. Set the first active Execute threshold to18% and add2 percentage points per additional copy. Supersedes10/+2; thresholds are18/20/22/24/.../48 at1/2/3/4/.../16 copies. Preserve saved custom Sandbox values. Shared defaults and wording are staged and verified, not installed. [Scope and limits](FEEDBACK_C468.md#c470---execute182-selected-and-staged-2026-10-25). C469 assignment/privacy and tether decisions remain selected; no repeat design approval is required.
+
+## C469 - Own-device discovery, automatic assignment and tether motion selected (2026-10-25)
+
+Owner selects C4681A and2A, adding an explicit no-foreign-device Controller radar requirement. Remove the visible Poke duplicate while preserving legacy save definitions. Pixel Strike20 against healthy zombies is owner-reported failed Initial Blow behavior; Execute is untested. Proposed18/+2 remains a recommendation awaiting3A/3B selection. [Detailed provenance, native evidence and limits](FEEDBACK_C468.md#c469---selected-assignmentmotion-privacy-and-damage-evidence-2026-10-25). Source-only Hidden flag is implemented; no combined corrective build is claimed.
+
+## C468 - Follow-up feedback and player-help rule (2026-10-25)
+
+Owner requests T&T Controller naming, used-weight storage display, Execute10% first/+2 per extra, clear percentage wording and fixes for the reported icon/placement/kit/module problems. The later tooltip correction expressly rejects hypothetical scenarios/examples without approval; combined scoring belongs in Difficulty. [Evidence and unsettled assignment/movement choices](FEEDBACK_C468.md). These explicit corrections need no repeat design approval. Automatic assignment policy and the proposed tether motion/reset design remain undecided. No new T&T build or blanket acceptance is claimed.
+
+## C467 - Coordinated corrective patch approved (2026-10-25)
+
+The owner's "Approved" authorizes implementation, validation, packaging and local installation of all C465/C466 corrections. No remaining design decision blocks this patch. Approved utility/HUD identities are exact IDs, not wildcards; Denied remains the official-run exclusion flag. The minimum1 rule is the explicit exception to the shared-pool total: merge each recipient's eligible portions for the action first, then raise positive totals below1 once before payment/banking. Zero, ineligible and duplicate rewards remain zero; amounts of1 or more remain unchanged. Four eligible shares of0.25 therefore pay4 total, an accepted tradeoff. No backpay is fabricated for the earlier test.
+
+Implemented versions: T&T0.2.68.1 / Trait Shop0.9.1.1 / Horde-Cure0.6.16.7. See [patch](PATCH_v0.2.68.1.md) and [verification](TEST_v0.2.68.1.md). Existing live-run flag history is not reset; changed gameplay can still produce valid Hardened/Lessened/Unknown classifications. Source defaults and inactive legacy aliases now receive the correct baseline. Workshop and sibling remote publication are not authorized by this local patch.
+
+
+**C424 / 0.2.64.3 Effects icons installed (2026-10-22).** All nine Effects modules now use the supplied seven rarity colors and neutral fallback in inventory, tooltip and Manage icons. Eight owner PNGs copied unchanged. [Patch](PATCH_v0.2.64.3.md) | [Verification](TEST_v0.2.64.3.md). 27,390 assertions pass; all 398 source and 545 tagged/package/install/archive files plus both 0.2.64.2 backups verify. Immutable test/v0.2.64.3 / c62972a02e31f9fce80f2489399e88b32776ed24. Presentation-only scope; dedicated startup/save probes not repeated. No tuning or hosted changes. Rendered acceptance pending. **Test now** after restart when available.
+
+**C423 / 0.2.64.2 owner module icons installed (2026-10-22).** Updated Performance *2 artwork and new Utility icons, copied unchanged. Utility covers Grid, Siphon, Lure and Void through existing inventory/tooltip/Manage hooks, following all seven effective rarities. [Patch](PATCH_v0.2.64.2.md) | [Verification](TEST_v0.2.64.2.md). 27,327 assertions pass; all 390 source and 537 tagged/package/install/archive files plus both 0.2.64.1 backups verify. Immutable test/v0.2.64.2 / c19e7b5ff0d346641a5873ffa8a6d43096cea9b7. Presentation-only scope; dedicated startup/save probes were not repeated. No tuning or hosted changes. Rendered acceptance pending. **Test now** after restart when available.
+
+**C422 / 0.2.64.1 Arc audio installed (2026-10-22).** Owner selects S1B RadioZap with shot pitch variation and S1C DismantleFailed for impact. Adds one varied firing cue per main shot, quieter confirmed-contact cues, existing volume/Suppression support and bounded overlap. Fixes the unrelated projectile receiver consuming Arc packets before their handlers. [Patch](PATCH_v0.2.64.1.md) | [Verification](TEST_v0.2.64.1.md). 27,299 assertions, native pitch/playback, write/restart and all three independent-package startups pass. Installed from immutable test/v0.2.64.1 / a5168e222870873339774e79f4c47c2c99520650; all 382 source and 529 package/tag/install/archive files plus both 0.2.64 backups verify. Listening, rendered and connected-client acceptance remain pending. No Workshop upload or LootLab deployment. **Test now** after restart when available.
+
+**C421 / 0.2.64 Arc Emitter installed (2026-10-22).** Owner: "Approved. Make sure it looks like electricity". Implements C403-C420 as **0.2.64**: craftable ammo-free Arc, six normal targets at 20, one-second cadence/.02% shot cost, nearest four-tile hops, finite delayed Splitter/Piercing, selected Fragment/Synergy mapping and jagged native world-space electrical segments. Contact-sized reservations prevent large approved combinations being rejected solely by whole-pulse effect capacity. [Patch](PATCH_v0.2.64.md) | [Verification and pending acceptance](TEST_v0.2.64.md). Native audition HTML has five candidates plus silence; final discharge audio stays deferred. 27,290 assertions, native write/restart and all three independent package startups pass. Installed from immutable test/v0.2.64 / 7d2b925c4239f293fc765b04ae930b90ca856dfe; all 380 source and 527 tagged/package/install/archive files and both 0.2.63.2 backups verify. Rendered and connected-client acceptance remain pending. **Test now** after restart when available.
+**C397 / Corrective patch approved.** Owner explicitly approves C395-C396, including tiered Controller expansion, 1.00 loot default, pending-entry indicators, local options and all recorded corrections. Implementation/verification underway; installed 0.2.62 unchanged until validated tagged replacement. **Wait for a patch.**
+
+**C396 / Controller and loot choices selected.** Owner selects C395 **1A / 2B**: one Controller expansion slot using existing kit grades, and global loot default exactly 1.00. Adds a buffering indicator for known entries pending validation. Verified all fourteen supplied packaged module/expansion images are 32x32; Manage currently draws modules at 16x16 versus expansion at 32x32. [Selected contract and clarification](AUDIT_C395.md#c396---selections-and-pending-entry-feedback). Documentation only; installed 0.2.62 unchanged, owner acceptance incomplete. **Decision needed: final corrective-patch approval.**
+
+**C395 / 0.2.62 owner findings audited (2026-10-21).** Owner reports remaining Lever/standby/tether/base visual issues, delayed Controller entries, opaque laser/stale range menu, small module icons, corrupted Siphon text, Poke disarm/service inconsistency, verbose/missing tips and messy Sandbox organization. Requests Controller expansion (10/100 base, +10/+100 per step), local presentation options and deferred live MP testing. [Source-backed audit and choices](AUDIT_C395.md): **1A one existing kit grade per Controller slot (recommended) / 1B stack up to four kits with equal bonuses; 2A display precision only (recommended) / 2B also reset loot global to 1.00**. Exact current loot default is 1.011111111111111, not display-only noise. Console confirms 0.2.62/SP; focused scan found no OMHTT exception stack, but construction icon warnings remain. No gameplay/install or hosted changes; rendered acceptance remains incomplete. **Decision needed.**
+
+**C394 / Short test checklists (2026-10-21).** Owner replaces detailed testing instructions with small feature checklists, at most ten words per item, unless longer guidance is essential. Updated the [0.2.62 owner test](TEST_v0.2.62.md) and project agreement. This is documentation only: installed 0.2.62, its immutable tag and pending owner acceptance remain unchanged. **Test now.**
+
+**0.2.62 / C393 installed (2026-10-21).** Approved device feedback/standby, native tether visuals, Lever/Laser corrections, Controller polish/radius, friendly/hostile tuning, compact tooltips and rarity-aware owner artwork are installed. Audio uses measured individual gains with quieter reel/shutdown/pull and matched laser transitions; originals are unchanged. **26,904 assertions**, native write/restart and all three independent-package startup checks pass, including final sound gains/loop registration. Immutable `test/v0.2.62` / `01fa9fb4648f8bb528ec296284267c26d3cd4f86`; all **367 source and 496 tagged/package/install/archive files** match, with both 0.2.61 backups verified. [Patch](PATCH_v0.2.62.md) / [Owner test](TEST_v0.2.62.md) / [Release evidence](../diagnostics/v0.2.62/local-release.json). Rendered depth/alignment, in-game listening and connected-player acceptance remain pending; native fixtures had no connected clients. C108 mirror uses the existing development branch/draft PR. No Workshop upload, merge or LootLab deployment. **Test now** after restart.
+
+**C393 audio follow-up (2026-10-21).** Owner requests balanced audio. Measured native captures/owner WAVs now use individual playback gains; laser transitions are matched, reel/shutdown/pull are subdued, Sandbox master volume remains. Originals are unchanged. [Measurements and limits](TEST_v0.2.62.md#c393-follow-up-audio-balance-2026-10-21). Final rebuild/installation is underway; in-game listening acceptance remains pending.
+
+**C393 / Patch approved and implementing (2026-10-21).** Owner explicitly approves the complete recap: C390 corrective scope, selected audio, Detection-only standby/indicator, native tether visuals, friendly/hostile tuning, 40-tile Controller range, Sandbox/tooltip/artwork work and verification. No further design gate. Implementation and automated/native checks are in progress; installed 0.2.61 remains unchanged until a verified tagged build is ready. **Wait for a patch.**
+
+**C392 / Standby choices settled (2026-10-21).** Owner selects **1B Detection-only standby / 2A indicator plus pose and text**. Manual/trigger-only operation bypasses standby; detector-equipped turrets retain existing Detection and trigger gates. Seven-second idle delay, one-second wake, invalid-target abort and successful-wake alert remain. Amber asleep, green active, unlit disabled; explicit Waking status. [Contract](AUDIT_C390.md#c392--standby-scope-and-indicator-selected-2026-10-21). C390/C391 selections retained, no further generic design choice required. Documentation only; installed 0.2.61 unchanged. **Decision needed: final next-build approval.**
+
+**C391 / Audio, damage and radius selected; standby proposed (2026-10-21).** Owner selects native bounded tether visuals, 40-tile Controller radius, 2x friendly damage and 4x hostile damage/wound chance versus installed 0.2.61 (friendly wound chance unchanged). Six native sound choices and five new owner WAVs recorded; WAV metadata verified. New request: 7-second idle standby, lowered head, 1-second wake, alert after successful wake, immediate abort on invalid target. [Selected scope and remaining choices](AUDIT_C390.md#c391--owner-selections-and-turret-standby-proposal-2026-10-21): **1A all turret heads with existing acquisition/request gates (recommended) / 1B Detection-only standby; 2A status indicator plus pose/text (recommended) / 2B pose/text only**. Useful Sandbox timing/audio/indicator controls proposed. No gameplay or installed change; 0.2.61 remains current. **Decision needed.**
+
+**C388 / Stronger PvP option requested (2026-10-21).** Owner asks for **1C, even larger**, interpreted as a stronger package than C387 1B. [Proposed 1C values](TARGETING_AUDIT_C386.md#c388--stronger-1c-requested-2026-10-21) use twice 1A damage and three times its wound chances (33% more damage and 50% higher wound chances than 1B). This is a numeric proposal, not owner approval of those exact multipliers. Existing proposed wound-roll and anti-instant-kill safeguards remain; no extra immunity or damage cap. Targeting implementation remains approved and unfinished; installed 0.2.60 unchanged. **Decision needed: confirm the proposed 1C values.**
+
+**C387 / Reduced custom turret PvP profile selected (2026-10-21).** Owner selects C386 **1B**, rejecting native gun/spear severity and requesting substantially lower player damage and wound chance for enjoyable PvP. Full targeting implementation remains authorized; exact values are not yet selected. [Proposed numeric package](TARGETING_AUDIT_C386.md#c387--custom-reduced-player-injuries-selected-2026-10-21): **1A cautious fixed per-head damage/wounds with bounded wound rolls (recommended) / 1B 50% higher damage and doubled wound chances, with the same protections**. Preserve zombie balance and passive traps. No gameplay change or new test claim this turn; C386 policy remains staged, installed 0.2.60 unchanged. **Decision needed: numeric starting package.**
+
+**C386 / Targeting patch approved; policy foundation staged (2026-10-21).** Owner approves the patch. Implemented Controller defaults, explicit overrides, current-owner faction classification and authoritative edit validation; 26,217 assertions and native command checks pass. Full UI/acquisition/player combat is not enabled. The current-game audit confirms missing player-hit rules for firearm, Ballista and Potato direct projectiles. [Concrete decision and evidence](TARGETING_AUDIT_C386.md): **1A native gun/spear wounds plus existing light Potato bruise (recommended) / 1B separate custom PvP damage values**. Existing collateral and player module effects stay unchanged under 1A. No zombie-only release substitution; complete targeting remains approved and unfinished. Installed 0.2.60/tag unchanged; no new playable build or acceptance claimed. **Decision needed: missing player injury mapping.**
+
+**C385 / Targeting readiness clarified (2026-10-21).** Owner asks whether anything else needs discussion. No further generic targeting or friendly-fire choices are needed now; C383-C384 remain the contract. Use Zombies Only default and the defense owner's current faction as the stated working baseline, retaining Controller inheritance/local overrides and existing SP collateral rules. [Remaining engineering boundary](checkpoints/R4C1_CONNECTED_CONTROLS.md#c385--remaining-discussion-versus-engineering-2026-10-21): per-head deliberate player hit/damage, server protections and permission/persistence checks are not yet verified. Do not call the full targeting patch ready or invent player damage values; return a concrete choice only if the native audit exposes a real balance/scope gap. No new patch approval, gameplay edit or test result. Installed 0.2.60 testing remains deferred. **Wait for a patch.**
+
+**C384 / Target groups and single-player damage parity selected (2026-10-21).** Owner selects C383 **1A / 2B**: Other Factions includes zombies and factionless outsiders. For collateral, owner explicitly requires the existing single-player turret/trap rules; do not introduce blanket faction immunity or universal friendly damage. Owner/own-faction exclusion applies to deliberate acquisition, with existing per-device incidental injuries retained. [Selected behavior and audit boundary](checkpoints/R4C1_CONNECTED_CONTROLS.md#c384--target-groups-and-single-player-damage-parity-2026-10-21). Retain Controller defaults/per-device overrides; recommend Zombies Only default and defense-owner faction reference. Per-head deliberate player acquisition/damage and server protections still need native compatibility review before a complete patch recap; no new damage values or missing paths are silently invented. Planning only, installed 0.2.60/testing deferred unchanged. **Wait for a patch.**
+
+**C383 / Controller targeting and faction scope selected (2026-10-21).** Owner selects C382 **1A / 2B**, specifying **Other Factions / Zombies Only**. Controller targeting is next, including deliberate player/faction targeting in the first slice; the proposed zombie-only staging is not selected. Retain Controller defaults and individual overrides. [Mode semantics and remaining choices](checkpoints/R4C1_CONNECTED_CONTROLS.md#c383--other-factions-and-zombies-only-selected-2026-10-21): **1A Other Factions also targets zombies (recommended) / 1B other-faction players only; 2A factionless players excluded (recommended literal interpretation) / 2B factionless outsiders included; 3A protect excluded players from controlled-defense collateral too (recommended) / 3B filter acquisition only, retain collateral.** Ownership reference, default mode and server-rule handling are recommendations pending the final contract; no gameplay patch approval or new test claim. Installed 0.2.60 testing remains deferred. **Decision needed.**
+
+**C382 / Testing deferred; next-checkpoint discussion (2026-10-21).** Owner delays the 0.2.60 test and asks what follows. Installed packages and immutable tag remain unchanged; rendered/connected acceptance is deferred, not passed. The Poke Floor, Tether, Lever and Laser content sequence is implemented. Source review finds access sharing and Plate actor filters, but no Controller target-default/inheritance commands or deliberate faction/player acquisition path. Recommend completing that previously selected Controller targeting requirement next, preserving per-device overrides. [Concrete choices and boundaries](checkpoints/R4C1_CONNECTED_CONTROLS.md#c382--post-sensor-controller-targeting-discussion-2026-10-21): **1A Controller targeting (recommended) / 1B balance and endurance / 1C another device; 2A Zombies and No One first, explicit player/faction targeting afterward (recommended) / 2B include player/faction targeting in the first slice.** These are proposals, not implementation approval. R1C3 performance, R3C7 balance and R5C1 connected acceptance remain open. **Decision needed.**
+
+**0.2.60 / C381 installed (2026-10-21).** Lever, Laser Sensor, Controller-powered triggers and consumption tooltips are installed. **26,179 assertions**, 148 native construction cases, native write/restart and all three independent-package startup checks pass. Immutable `test/v0.2.60` / `362b30fcee7ac347e5986d2ce3700712f4f2f6ac`; all **330 source and 438 tagged/package/install/archive files** match, with both 0.2.59.1 backups verified. [Patch](PATCH_v0.2.60.md) / [Owner test](TEST_v0.2.60.md) / [Release evidence](../diagnostics/v0.2.60/local-release.json). Native fixtures cover SP/server Lua branches, not rendered or connected-player acceptance; those remain pending. C108 development mirror uses the existing branch/draft PR. No Workshop upload, merge or LootLab deployment. **Test now** after restart.
+
+**C381 / Combined trigger build approved (2026-10-21).** Owner explicitly approves C380: Lever, single-unit laser sensor, all-trigger assigned Controller supply, selected recipes/rates and consumption tooltips. Implementation is underway for 0.2.60. Preserve C375-C380 persistence, Detection, OR-input, obstruction, service and independent-package rules. Installed 0.2.59.1 remains unchanged until validated/tagged installation; no new runtime acceptance or publication is claimed. **Wait for a patch.**
+
+**C380 / Raw-component sensor package selected; consumption tooltips requested (2026-10-21).** Owner selects C379 **1A**, including its common numeric balance/service package, and asks whether Button is Minimal and other triggers Very Low. [Selection and rating review](checkpoints/R4C3_BEAM_SENSOR.md#c380--recipe-selected-and-consumption-tooltip-review-2026-10-21) records the raw-component recipe and tooltip requirement. Existing head bands are per real hour: at a 60-minute game day, Plate/Lever are Minimal (0.24%/real hour), laser Very Low (2.4%/real hour). Recommend preserving those bands, explicit game-hour costs and Controller source; Button Minimal is a qualitative per-press description, not an invented hourly firing cadence. No consumption increase merely to reach a label. This recommendation is not an owner-selected change to rating semantics. Planning only; combined build approval and implementation remain pending, installed 0.2.59.1 unchanged. **Wait for a patch.**
+
+**C379 / All-trigger Controller power selected (2026-10-21).** Owner selects C378 **1A**, adding very low active electricity use for mechanical triggers, and selects **3A**: walls/closed doors shorten the laser without firing. Buttons, Plates, Lever and laser will require powered assigned Controllers; Poke Floor/passive hazards stay independent. [Final proposed balance and crafting package](checkpoints/R4C3_BEAM_SENSOR.md#c379--shared-power-and-obstruction-selected-2026-10-21): Button 0.0001% per accepted press; Plate/Lever 0.01% per active game hour; laser 0.10% per powered game hour. Sensor recipe **1A raw components (recommended) / 1B upgrade a Button**, with shared Electricity 2/10 XP/20s and trigger service rules. Numerical balance/recipe are proposals; no gameplay patch approved or installed. **Decision needed.**
+
+**C378 / Laser power/range selected; wider trigger-power review (2026-10-21).** Owner selects C377 **1A / 2A**: assigned Controller supply and adjustable 1-10 tiles. Suggests considering that supply rule for all triggers; this is exploratory, not approval to change Buttons/Plates/Lever. [Tradeoffs and choices](checkpoints/R4C3_BEAM_SENSOR.md#c378--controller-supply-and-range-selected-2026-10-21): new **1A require Controller power for every trigger / 1B require it only for laser/electronic sensors (recommended)**. Existing basic inputs currently have no Controller-power gate. Prior obstruction choice **3A shorten at walls/closed doors without firing (recommended) / 3B closed doors also trigger** remains unanswered. Mechanical Poke Floor is not a trigger and stays independent. No gameplay/install change; 0.2.59.1 testing remains deferred. **Decision needed.**
+
+**C377 / Single-unit visible beam selected (2026-10-21).** Owner selects C376 **1B / 2A**: one wall-mounted forward sensor, no reflector, with a faint beam visible while powered. [Next beam choices](checkpoints/R4C3_BEAM_SENSOR.md#c377--single-unit-visible-beam-selected-2026-10-21): **1A assigned Controller supply / 1B local ordinary Battery plus Controller fallback; 2A adjustable 1-10 tiles / 2B adjustable 1-20 tiles; 3A walls/closed doors shorten the monitored line without triggering / 3B closed doors also trigger**. Recommend A for each. These are proposals; exact consumption and crafting remain to review after selection. Lever stays settled; no implementation approval or installed-build/test change. **Decision needed.**
+
+**C376 / Discuss laser before build approval (2026-10-21).** Owner asks whether to discuss the laser now or approve Lever first. Recommend discussing R4C3 now and considering one combined build after laser design/native feasibility are settled. Lever choices remain selected, not reopened. [Beam discussion](checkpoints/R4C3_BEAM_SENSOR.md): **1A emitter plus passive reflector (recommended) / 1B single-unit forward sensor; 2A faint visible beam while powered (recommended) / 2B beam shown only during setup/selection**. DESIGN.md already specifies ON while interrupted, OFF when clear, without inherent friend/foe identity. Power, range, mounting details, obstruction/fault handling and recipe remain to settle. No implementation approval or new test claim. **Decision needed.**
+
+**C375 / Lever choices selected (2026-10-21).** Owner selects C374 **1A / 2A / 3A**: wall-only, Button-equivalent crafting, placed latch persistence with pickup/reset OFF. Owner adds a **faint green light while ON, no light while OFF**. [Settled contract](checkpoints/R4C1_CONNECTED_CONTROLS.md#c375--lever-selections-and-on-light-2026-10-21). Existing Detection/Firing, OR inputs, finish-current-action and trigger service rules remain. No further design choice is needed for this slice; implementation/native light verification and rotary Detection correction belong in the next approved patch. No new gameplay build or test claim; installed 0.2.59.1 remains deferred. **Wait for a patch.**
+
+**C374 / Testing deferred; Lever discussion (2026-10-21).** Owner cannot test 0.2.59.1 and asks to continue. Installed build and rendered/connected acceptance remain unchanged. Recommend completing the requested Lever before R4C3 beam sensors. [Lever choices](checkpoints/R4C1_CONNECTED_CONTROLS.md#c374--lever-content-choices-2026-10-21): **1A wall-only / 1B wall-or-floor; 2A Button-equivalent crafting / 2B convert a Button plus one Scrap Metal; 3A retain latch while placed, reset OFF on pickup / 3B preserve latch through pickup**. Recommend A in each case. These are proposals, not selected content or patch approval. **Decision needed.**
+
+**0.2.59.1 / C373 installed (2026-10-20).** Approved placement/wall corrections, Rotary Blades x2 / Lobber x1.5, seven consumption bands, owner Performance icons and five native module categories are installed. **26,133 assertions**, 84 native construction cases, write/restart and all three package startup checks pass. Immutable `test/v0.2.59.1` / `810c5768f09c93edb696435a91e78f290f881fb5`; all **322 source and 422 tagged/package/install/archive files** match, with both 0.2.59 backups verified. [Patch](PATCH_v0.2.59.1.md) / [Owner test](TEST_v0.2.59.1.md) / [Release evidence](../diagnostics/v0.2.59.1/local-release.json). SP/server Lua branches use native objects with synthetic square lookup; rendered/connected acceptance remains pending. C108 development mirror uses the existing branch/draft PR; no merge, LootLab deployment or Workshop upload. **Test now** after restart.
+
+**C369 / Repair mapping and Controller timing approved (2026-10-20).** Owner selects **1A / 2A**: the family-specific one-material/one-tool mapping and Controller **5s place/pickup, 10s repair**. Source/generated packages implement authoritative repair costs, category pickup/repair timing, category SP portable placement and exact carried condition. Mixed fresh/damaged Bed inputs retain their own health even in reverse callback order; paired barriers/wire share one recovery claim. **26,069 assertions**, 256 compiled files, 1,117 translation keys and independent-package checks pass. Native server write and fresh-process read pass, including exact private condition, mixed Bed callbacks and Controller/Poke recovery; rendered/connected acceptance remains pending. [Selected contract and implementation boundary](SERVICE_RULES_C368.md#c369--approved-mapping-and-implementation-2026-10-20). Exact MP native placement duration remains unfinished: installed 42.21 BuildAction ignores recipe/cursor timing. Tether/Lever integration remains queued. Installed 0.2.58 and its immutable tag are unchanged. **Wait for a patch.**
+
+**C368 / Service rules and condition retention selected (2026-10-20).** Owner sets traps **2s place/pickup, 4s repair**; triggers **1s place/pickup, 2s repair**; turrets **5s place/pickup, 10s repair**, superseding the opening general ten-second statement. One consumed material per repair, except tool-only triggers; one retained tool each. Exact condition must survive moving/redeployment. [Source audit and concrete choices](SERVICE_RULES_C368.md) confirms full-health resets for Spike Barriers, Bed Spikes and Concertina Wire, existing exact turret state and rounded Controller/trigger state. Proposed **1A family-specific material/tool pairs (recommended) / 1B Scrap Metal + Wrench for all paid repairs**; **2A Controller 5/5/10 (recommended) / 2B 2/2/4**. Specific pairs and Controller category remain unselected. No new code/install or timing/retention test claim; C367 corrections remain staged for the next release. **Decision needed.**
+
+**C367 / Tether split damage and uniform repair requirements (2026-10-20).** Owner selects one-Scrap Tether repair, revises combat to **30 impact + 15 pull after a 0.75-second hold**, and lowers Poke Floor to **45**. [Repair audit](REPAIR_AUDIT_C367.md) covers every custom repair path and native/shared-health exceptions. Source/generated packages now give all custom Repair entries uniform materials/tools/skill/time/result tooltips; Poke material counts share its authoritative selector and its label is Repair. Existing other repair costs stay unchanged. Poke default/runtime fallback are 45; saved Sandbox overrides remain. **25,945 assertions**, 256 compiled files and independent-package checks pass; rendered/connected acceptance remains pending. Tether combat is selected but full integration is unfinished; installed 0.2.58 remains unchanged. **Wait for a patch.**
+
+**C366 / Tether balance and crafting selected (2026-10-20).** Owner selects C364 **1A / 2A**: 35 damage, six-tile reach, 100 condition, four weight and the reviewed Mechanics 2 / 20 XP mechanical recipe. Requests comparison with Poke Floor cost/range/DPS/AoE. [Source-based comparison](checkpoints/R4C2_DART_EMITTER.md#c366--tuning-and-recipe-selected-poke-floor-comparison-2026-10-20) supports the selected package: Poke deals 50 to each eligible zombie on its tile per 1.5-second cycle; Tether is single-target with ideal ~47.7/25/14.6 DPS at 1/3/6 tiles. These are calculations, not measured endurance. One proposed correction remains: **1A one Scrap Metal per full Tether repair (recommended)** versus **1B retain selected free repair**; Poke consumes two for its 200 condition. No repair change is silently selected. Integration remains authorized and unfinished; installed 0.2.58 and C365 tooltip patch status are unchanged. **Decision needed: repair adjustment.**
+
+**C365 / Head tooltip cleanup (2026-10-20).** Owner requests removal of the redundant head-only explanation and repair of the missing space before Medium. Both are fixed in source/generated packages; colored ratings and battery balance remain unchanged. Full-line measurement preserves the interior space and caches its offset. **25,918 assertions**, 252 compiled Lua/translation files, native translation and package-independence checks pass; rendered acceptance remains pending. [Evidence](TOOLTIP_C365.md). Installed 0.2.58 is unchanged; corrections await the next gameplay patch. C364 Tether integration and its remaining tuning/recipe choices remain open. **Wait for a patch; Tether decisions needed.**
+
+**C364 / Tether Dart Trap and prototype cleanup (2026-10-20).** Owner selects damage-only **1B**, first-hit player collateral **2A**, the name **Tether Dart Trap**, and a wall panel firing outward in one of four placement directions. Owner reports prototype success; console confirms 13 zombie impacts, not connected MP acceptance. Removed the exact verified six-file debug mod from the game directory, preserving it in project diagnostics. Ported inactive cycle/collision/wall-geometry modules into Traps; **32 new native + 41 regression assertions** and package checks pass. Actual playable item, Controller/lifecycle wiring and injury settlement are not delivered yet; 0.2.58 remains installed. [Evidence and remaining tuning/recipe choices](checkpoints/R4C2_DART_EMITTER.md#c364--tether-dart-trap-selected-prototype-retired-2026-10-20): new **1A 35 damage (recommended) / 1B 50**, shared six-tile/tested-cycle/100-condition/four-weight proposal; **2A Mechanics 2 / 20 XP (recommended) / 2B Mechanics 1 / 10 XP**, same proposed mechanical materials/tools. No new stats/recipe selection, tag or gameplay install. **Decision needed.**
+
+**C363 / Next emitter checkpoint (2026-10-20).** Recommend integrating the installed tether prototype into the wall-mounted trap with Controller links and persistence. [Combat choices](checkpoints/R4C2_DART_EMITTER.md#c363--next-checkpoint-and-combat-choices-2026-10-20): **1A 25% retraction knockdown with five-second repeat protection (recommended)** / **1B damage only**; **2A zombie sensing with player first-hit collateral (recommended)** / **2B zombies-only collision/damage**. All new values are proposals, not selected or measured balance. Rendering/live multiplayer remain pending; deferred testing does not block approved independent development. Lever remains queued, beam sensors follow emitter. Planning only; 0.2.58 and debug prototype 0.0.1 unchanged. **Decision needed.**
+
+**C362 / Tether prototype installed (2026-10-20).** Owner approved installation after the status clarification. Installed the separate **OMH Tether Prototype (Debug Only)** / `OMHTT_TetherPrototype` **0.0.1** in `C:/Users/bandi/Zomboid/mods/OMHTT_TetherPrototype`; all six files match C361 native-tested source/preview by SHA-256. No existing mods/saves changed and no save auto-enabled; main release remains 0.2.58. [Owner test and install evidence](TETHER_PROTOTYPE_C361.md#c362--owner-approved-local-installation-2026-10-20). SP requires debug mode; no damage, markers expire after 60 seconds. 41 native assertions passed previously; rendered/connected acceptance pending. **Test now.**
+
+**C361 / Scripted tether prototype approved and built (2026-10-20).** Owner selects C360 **1A**. The isolated debug package implements a single nail, swept first-hit collision, full retrieval/reset, corrected detection/input modes, server authority and client cable interpolation; no damage or gameplay integration. **41 native-runtime assertions pass**, including native actor/square fixtures, authorization, message ordering and authority-session renewal; client Lua compiles. [Prototype and evidence](TETHER_PROTOTYPE_C361.md). Rendering and connected-client acceptance remain pending; the clean preview ZIP matches tested source. No final balance/recipe/knockdown selection, installed-package change or version bump; 0.2.58 unchanged. **Wait for a patch.**
+
+**C360 / Physical tether investigation completed (2026-10-20).** Owner selects C359 1B and conditionally authorizes the physical approach if feasible. Installed 42.21 bytecode and a 46.1-second isolated Lua API probe verify vehicle towing access but no direct Bullet/WorldSimulation/luajava globals. The vehicle route requires two vehicles, has no found winch/rope-length setter, and carries vehicle collision/persistence/client simulation ownership; animal leashes do not provide a rope solver. No physical or connected-client tether was tested, and production feasibility is not established. [Evidence and recommendation](TETHER_FEASIBILITY_C360.md): **1A scripted prototype (recommended)** / **1B defer the retractable trap**. Neither fallback selected. Probe tooling/documentation only; 0.2.58 unchanged. **Decision needed.**
+
+**C359 / Tether feasibility reviewed (2026-10-20).** Installed bytecode confirms a rope constraint used by vehicle towing; arbitrary nail/zombie tether support is unproven. Existing projectile visuals, obstruction checks and knockdown routing support a scripted approach, pending a rendered/connected prototype. [Evidence and choices](checkpoints/R4C2_DART_EMITTER.md#c359--tether-feasibility-review-2026-10-20): **1A scripted-tether prototype (recommended)** / **1B investigate true physical tethering**. Neither newly approved; knockdown remains TBD and 0.2.58 unchanged. **Decision needed.**
+
+**C358 / Single nail and input override confirmed (2026-10-20).** Owner selects C357 **1A: one tethered nail per cycle** and corrects detection: default autonomous sensing; connecting any trigger disables sensing and requires an input. Linked activation does not require a detected target. This supersedes C356/C357 detected-target gating. Removing the last input restores default sensing. Button requests one cycle; held Plate/Lever repeats only after full return/reset. No piercing, consumable ammunition, batteries or modules; knockdown remains TBD. [Current contract](checkpoints/R4C2_DART_EMITTER.md#c358--single-nail-and-trigger-override-2026-10-20). Design recorded only, not gameplay implementation approval; installed 0.2.58 unchanged.
+
+**C357 / Retractable dart trap selected (2026-10-20).** Owner selects C356 **1A linked-input activation** and replaces consumed nail ammunition with reusable long nails that retract/reload fully before refiring. No enemy piercing; retraction knockdown is explicitly TBD. Wall-only, autonomous when unlinked, no batteries and no modules remain. [Updated contract and firing-pattern choice](checkpoints/R4C2_DART_EMITTER.md#c357--retractable-trap-replaces-consumable-darts-2026-10-20): **1A one tethered nail per cycle (recommended)** / **1B three-nail volley, all return before refiring**. Neither new pattern is selected; recommend cycle/wear balancing and defer knockdown tuning. No gameplay changes or implementation approval; 0.2.58 testing remains pending. **Decision needed.**
+
+**C356 / Next checkpoint (2026-10-20).** Owner asks what follows 0.2.58. Continue R4C2 Dart Emitter discussion with settled wall-only/nails/autonomous/no-battery/no-modules rules. [Optional-input choices](checkpoints/R4C2_DART_EMITTER.md#c356--next-checkpoint-and-optional-input-decision-2026-10-20): **1A linked triggers arm detected-target firing (recommended)**; **1B autonomy stays active and inputs request ordinary-cadence straight-ahead shots**. Neither is selected. Lever remains queued, beam sensors follow the emitter, and 0.2.58 rendered/connected acceptance remains pending. No gameplay or installed-version changes. **Decision needed.**
+
+**0.2.58 / C355 installed (2026-10-20).** Approved tier battery surcharges, firearm x1.5/Scrapshot x1.25 factors, Siphon 45% chance, colored head consumption ratings and mechanical Poke Floor/Building corrections are delivered. **25,906 assertions**, native write/read and Traps-only/Turrets-only/both startup checks pass. Installed from immutable `test/v0.2.58` / `befd7291a328e0edb5fb7c2f214ee063a029ad44`; all 308 source and 402 tagged/package/install/archive files match, with both 0.2.57.2 backups verified. [Patch](PATCH_v0.2.58.md) · [Tests](TEST_v0.2.58.md) · [Release evidence](../diagnostics/v0.2.58/local-release.json). Rendered/connected acceptance remains pending. Lever and Dart Emitter retain unresolved content choices and are not included. C108 development mirror uses the existing draft PR; no merge, LootLab deployment or Workshop upload. **Test now.**
+
+**C355 / Patch approved (2026-10-20).** Owner approves implementing settled C354 battery balance, C351 Siphon chance, head-only consumption labels, and C345–C346 mechanical Poke Floor/Building corrections as 0.2.58. Lever and Dart Emitter remain planned with unresolved content details; no recipes or stats are invented. Implemented as 0.2.58; 25,906 assertions, native write/read and all independent package selections pass. Tagged installation is next; 0.2.57.2 remains the rollback baseline. Rendered/connected acceptance is pending. No Workshop upload or merge.
+
+## C354 — Explicit tier surcharge replacement
+
+Owner supplies 10%, 15%, 25%, 50%, 75%, 100%, 150% in the preceding rarity-table order. [Selected replacement schedule](BATTERY_BALANCE_C349.md#c354--owner-replaces-the-tier-surcharge-schedule) supersedes C353 tier values without changing head factors, loot tuning, Siphon or exceptions. Planning persisted; no installed gameplay change.
+
+## C353 — Gentler head and tier values confirmed
+
+Owner selects C352 1A and requests per-module battery multipliers. [Selected exact values and source-backed surcharge table](BATTERY_BALANCE_C349.md#c353--gentler-values-selected-per-module-surcharge-audit). Head balance and tier adjustments are settled for the pending patch. No code/install or unresolved recipe approval inferred from this informational follow-up.
+
+## C352 — Gentler combined balance, colored head rating and recap
+
+Owner wants smaller family-level head increases and then a modest higher-tier module increase, explicitly retaining purposeful DPS/effect differences. Adds colored Low/Medium/High head battery consumption tooltip. [Selected direction, proposed exact values and recap](BATTERY_BALANCE_C349.md#c352--gentler-hybrid-balance-and-consumption-labels-2026-10-19). C351 aggressive values are superseded proposals, not approved tuning. New 1A/1B numbers need confirmation; no code/install or unreviewed recipe change.
+
+## C351 — Siphon selection and head consumption comparison
+
+Owner selects the prior 1A (45% / 2x, +1x per additional module), then requests comparison of higher-tier module penalties versus head consumption, including Ballista, Scrapshot, modded M4 and a cheap pistol. [Audit and proposed drain choices](BATTERY_BALANCE_C349.md#c351--siphon-selected-head-versus-module-comparison-2026-10-19). Siphon is selected for pending patch; proposed firearm x3/Scrapshot x2.5 costs are not selected. No code, save, installed package, loot tuning or publication change.
+
+## C350 — Lever requested; Detection firing condition clarified
+
+Owner requests a latched power-switch trigger and confirms that Detection-equipped turrets wait for detection to provide a target. [Lever contract and current rotary exception](checkpoints/R4C1_CONNECTED_CONTROLS.md#c350--lever-trigger-requested-2026-10-19). No implementation claim or unreviewed recipe selection.
+
+## C349 — Saved M4 drain audit and Siphon alternatives
+
+Owner asks about 75%/1.5x, leans toward earlier 1B, requests a saved-turret battery baseline without Siphon/Regulator and clarifies real versus game time. [Evidence, calculation and comparison choices](BATTERY_BALANCE_C349.md). Result is approximately one real unpaused hour from full under continuous-fire assumptions, around 16 game hours at the saved day length. No measured endurance claim. Chance discussion reopened; no new value selected. No gameplay or save mutation.
+
+## C348 — Siphon 60% proc requested; multiplier tradeoff pending
+
+Owner requests a 60% chance and stacking that enables sustained power. The current 2x first refund can still sustain at that chance. Recommend 1x first/+1x per additional module, with one shared roll per eligible kill; owner selection of the multiplier is pending. Preserve Synergy gating, turret-local source restriction and loot tuning. [Contract and exact choices](MODULAR_TURRETS.md#c348--siphon-proc-chance-and-sustain-balance-2026-10-19). Planning only.
+
+## C347 — Wall-only, nail-fed, autonomous dart emitter
+
+Owner selects C346 1B/2B/3B and explicitly requires built-in forward detection without batteries or mandatory external triggers. Optional trigger support remains; camera flavor is tentative. [Selected contract and remaining design](checkpoints/R4C2_DART_EMITTER.md#c347--wall-only-autonomous-emitter-selected-2026-10-19). No gameplay patch this turn; mechanical Poke correction remains queued.
+
+## C346 — Poke recipe 1A selected; dart emitter foundation proposed
+
+**C346 / Mechanical Poke Floor recipe selected; dart emitter discussion (2026-10-19).** Owner selects C345 **1A**; Poke Floor correction scope is settled and pending implementation. [Dart emitter choices](checkpoints/R4C2_DART_EMITTER.md): **1A floor-mounted / 1B wall-mounted; 2A crafted metal darts / 2B nails; 3A local car battery then Controller bank / 3B no electrical consumption**. Recommend A for each; these are proposals, not selected balance or implementation approval. Retain the existing single-Button/held-input cycle model and no trap modules. Installed 0.2.57.2 remains unchanged; R4C3 sensors follows. **Decision needed: emitter foundation.**
+
+## C345 — Building visibility, Triggers naming and mechanical Poke Floor
+
+**C345 / Building audit and pressure-driven Poke Floor (2026-10-19).** Owner reports 0.2.57.2 seems functional. Confirmed missing Poke Floor hybrid Building registration and 88 missing inventory-title warnings. Owner requests OMH: Triggers and mechanically pressure-driven Poke Floor with no battery/grid/Controller energy. [Audit and recipe choices](checkpoints/R4C2_POKE_FLOOR.md#c345--building-audit-and-pressure-driven-poke-floor-2026-10-19): **1A remove electrical materials/skill/XP (recommended)**; **1B retain recipes, remove operational power only**. No gameplay/install change this audit turn. Next content: fixed dart emitter (R4C2), then beam sensors (R4C3). **Decision needed: recipe scope.**
+
+## C343 - Fewer module categories requested (2026-10-19)
+
+Owner requests tighter grouping than seven categories: direct numerical upgrades together, with 360/Filter under Automation. [Four-category recommendation and three-category alternative](MODULAR_TURRETS.md#c343---compact-category-options-2026-10-19). Names and exact classification remain proposals; no sorting/gameplay implementation approval. C342 layout selections remain separate and unchanged.
+
+## C342 — Native compact Manage layout selected (2026-10-19)
+
+Owner answers 1A / 2A / 3A to C341: native compact chrome, narrower balanced Manage, inline Details with a content-aware minimum height. [Selected contract](UI_AUDIT_C341.md#c342--owner-selections-2026-10-19). Layout decisions are settled; implementation approval remains pending. No gameplay/package/install change in this selection turn.
+
+## C341 — UI owner test and choices requested (2026-10-19)
+
+Owner reports 0.2.57.1 title-bar mismatch, apparently unlinked trigger requirement, blank module margins and disappearing controls on Details resize. Explicitly requests discussion/options before patching. [Source-backed audit, proposals and recommendations](UI_AUDIT_C341.md). None of the new layout options is selected yet; no gameplay edits authorized by this discussion.
+
+## C340 — Owner-test corrections requested (2026-10-19)
+
+Owner requests removal of locking/pinning, corrected window framing and compact 4/4/4/4 modules, equal action buttons, power investigation, Poke Floor technical texture, player-built wall support, game-speed-aware five-second pickup/placement, consistent Connections formatting and light-switch audio. Implemented correction scope and the unresolved native multiplayer placement duration are recorded in [0.2.57.1](PATCH_v0.2.57.1.md). Standing C108 covers local installation and GitHub mirror; no merge or Workshop upload.
+
+## C339 — Poke Floor and power patch approved (2026-10-19)
+
+Owner approves the final C333–C338 recap. Implement contact-only Poke Floor, car-battery Controller bank, assigned fallback, battery-default turrets and Mythic Grid Module at assigned weight 1; preserve owner LootLab overrides. [Implementation](PATCH_v0.2.57.md) and [verification](TEST_v0.2.57.md). No Workshop upload or merge.
+
+## C326 — Controller organization and feedback follow-up (2026-10-18)
+
+Owner requests confirmation/mockups for UI feedback, connection grouping/reordering, Manage/context corrections, LootLab ordering/density and native Stockpile overflow. [Contract and 1A shared / 1B personal organization choice](CORRECTIONS_C326.md). Planning only; no new gameplay approval or version bump inferred.
+
+## C325 — Controller corrective interaction and polish (2026-10-18)
+
+Owner directly requests three connection gestures, defense disconnect handles, visible links, condition/ammo rows, darker inset lists, taller initial height, stable resizing with /// corners and a right-edge native Stockpile scrollbar. Remove redundant Connect controls after gesture support. [Contract](CONTROLLER_MAP_C316.md#c325--connection-gestures-and-controller-polish-2026-10-18). Multiple-input removal offers a choice of the individual connection; no blanket disconnect or new signal semantics. Implemented, validated and installed as [0.2.55.2](TEST_v0.2.55.2.md); rendered and connected acceptance remain pending.
+
+## C313 — Siphon Module name and final wording (2026-10-18)
+
+Owner: **“6A - instead of ‘the attack’s’ we’ll use ‘the shot’s’.”** Select **Siphon Module** with **“Feature: Kills restore 2× the shot’s battery cost.”** and **“Stackable: +1× refunded per module.”** [Final contract](CORRECTIONS_C310.md#c313--siphon-module-name-and-final-wording). This settles the remaining naming choice without altering per-kill eligibility, Synergy requirements or actual paid rotary swing/pass accounting. All C310–C312 corrective scope remains queued; no gameplay/version/install change or new test claim. Standing C108/C119 covers the documentation mirror.
+
+## C312 — Rotary Synergy selected; Sap naming question (2026-10-18)
+
+Owner explicitly selects **5A**, approving Synergy on rotary heads for supported effects while retaining unrelated module exclusions. Owner asks whether **Sap Module** better describes the energy-refund feature than Leech, whose health/repair association is misleading. [Comparison and proposed wording](CORRECTIONS_C310.md#c312--rotary-synergy-approved-battery-refund-naming): recommend **6A Siphon Module**, with **6B Sap Module** as an alternative; neither new name is selected yet. No formula/eligibility change and no additional gameplay decision. All C310/C311 corrective scope remains recorded. Planning only, installed 0.2.53.11 unchanged; standing C108 mirror applies.
+
+## C311 — Grouped Controller and Leech/Synergy selections (2026-10-18)
+
+Owner selects **1A, 2B, 3A, 4A**, explicitly requiring Synergy for Leech refunds from Splitter, Fragment, Martyrdom and other secondary effects. Confirm Grouped layout, per-kill 2x/+1x stacking refunds (not once per shot), one additional 50%-damage Martyrdom generation, and rotary refunds based on actual paid swing/pass energy. [Contract](CORRECTIONS_C310.md#c311--confirmed-selections-and-rotary-compatibility). Source review identifies the existing rotary Synergy exclusion alongside supported Martyrdom/Tack. Present **5A enable Synergy for supported rotary effects (recommended)** versus **5B retain exclusion/direct-kill-only rotary Leech**. This interaction is not silently settled by 4A. No gameplay/version/install change; preserve all C310 findings and deferred acceptance. Standing C108 covers this planning mirror.
+
+## C310 — Owner test findings, Controller alternatives and module discussion (2026-10-18)
+
+Owner reports plate/player ordering, missing pickup animation, Controller access from turrets, invisible incoming links, eight-pixel Manage inset, module replacement/pulse needs and Set Facing errors. Requests **Set Aim**, explanatory Open Manage/Unassign tooltips, then adds missing **To Stockpile / To Inventory** tooltips. Owner asks for three Controller redesigns and **A/B/C = designs, D = original, E = another three**. New proposed module refunds 2x paid shot power on kill, +1x per stack; Synergy should permit one self-chain at 50% damage. [C310 evidence, mockups and open decisions](CORRECTIONS_C310.md) records exact causes, semantic tradeoffs and recommendations. No redesign/module-default choice or gameplay patch approval inferred. SP 0.2.53.11 findings supersede its pending rendered acceptance; immutable tags remain unchanged. Standing C108 requires this planning/test-evidence mirror.
+
+## C309 — Inset pressure plate with activation feedback (2026-10-18)
+
+Owner asks to make the plate visually slightly smaller than one tile and press down while activated, like Minecraft. This is implementation authorization. Use two native sprite states with about 85% width, six-pixel released height and one-pixel pressed height in the existing neutral technical placeholder style. Keep full-tile occupancy, filtering, power/signals, durability and non-thumpability. Existing plates convert when bound; server owns state and publishes native sprite changes only on transitions. No new gameplay/recipes, art direction, per-frame animation or sensors. [Patch](PATCH_v0.2.53.11.md) and [verification](TEST_v0.2.53.11.md). R4C2 remains next.
+
+## C308 — Implement plate, linking and Set Facing corrections (2026-10-17)
+
+Owner says "Patch", authorizing implementation, verification, local installation and development mirroring of C306/C307. Preserve 1A Set Facing with normal Detection, matching FoV and no implicit shot; existing plates and future passive sensors use native non-thumpable behavior. Keep current control permissions, package independence and power semantics. [Patch](PATCH_v0.2.53.10.md), [tests/delivery](TEST_v0.2.53.10.md). No new trap content, recipes, Manual Aim Lock, merge or Workshop publication. R4C2 Poke Floor stays next; rendered/connected acceptance is pending.
+
+## C307 — Controller Set Facing selected (2026-10-17)
+
+Owner replies "1A" to C306: save normal facing and rotate its firing/detection sector together, retaining normal Detection tracking and 360 coverage. Direction selection does not shoot. Preserve power/access/range/identity checks and no physical turning while OFF. Manual Aim Lock is not selected. [Confirmed next-patch contract](CORRECTIONS_C306.md#c307--confirmed-aiming-behavior). Record alongside non-thumpable plates and clearer linking; no gameplay/version/install change in this planning turn. R4C1 corrections precede R4C2 Poke Floor; connected acceptance remains pending.
+
+## C306 — Pressure-plate feedback, Controller aiming and checkpoint reconciliation (2026-10-17)
+
+Owner reports tentative success, functional pressure-plate activation, confusing linking and zombie thumping. Requires non-thumpable plates and the same rule for future sensors; requests selecting a Controller turret then clicking a world direction to aim. Queue for the next patch. [Contract and subsequent selection](CORRECTIONS_C306.md): recommend1A saved facing plus sector rotation with normal Detection;1B manual aim lock is the alternative. The subsequent C307 reply selects 1A. R4C1 remains corrective work; R4C2 Poke Floor is the next selected content, followed by fixed dart emitter and R4C3 beam sensors. Record the actual0.2.53.9 SP console and owner evidence separately from connected MP acceptance; no gameplay patch in this discussion turn.
+
+## C305 — Implement context-aware empty-slot silhouettes (2026-10-17)
+
+Owner says "Patch" after selecting C304/1A. This authorizes immediate implementation using existing normal icons tinted black, overriding the earlier future-art scheduling. Preserve native texture alpha, category labels, current-head ammo/removable-magazine matching, built-in/locked/not-needed distinctions and empty Void requirements. Ordinary filled slots retain real items and color. Use cached texture references and native drawing; no extra PNGs, dummy hint items, per-frame lookup/scan or multiplayer messages. Keep the grey theme, existing multiple Controller batteries and capacity rules. Placeholder custom icons remain until owner art replaces them. [Patch](PATCH_v0.2.53.9.md) and [test/evidence](TEST_v0.2.53.9.md) distinguish automated verification from pending visual/connected acceptance.
+
+## C304 — context-aware silhouettes from normal icons, 2026-10-17
+
+Owner: "1A if it can be done by taking normal icons and blacking them out." Select1A with black tint applied to existing icon textures, preserving alpha and original artwork. [Native feasibility evidence and contract](UI_EMPTY_SLOT_HINTS_C303.md#c304--normal-icons-blacked-out-2026-10-17). No extra silhouette files, generated art, inventory items or per-frame image processing. Retain the original future icon/art-pass timing and compatibility exceptions. Native API feasibility is confirmed; rendered readability still needs checking after implementation. No new patch or gameplay acceptance is inferred.
+
+## C303 — future empty-slot silhouettes discussion, 2026-10-17
+
+Owner: "Once we add icons and art for the other assets, can we add silhouettes to the other empty slots too, like the head, ammo, magazine, and expansion slots, so players know what goes where? Discuss." [Proposed mapping, compatibility exceptions and1A/1B choice](UI_EMPTY_SLOT_HINTS_C303.md). Recommend context-aware faded icons with supplied/native art, preserving labels and non-insertable/locked states. Discussion is not implementation approval or a new acceptance result.0.2.53.8 remains installed; no Source/Contents, test evidence, Workshop changelog or version change.
+
+## C302 — Controller battery silhouette and multiple small batteries, 2026-10-17
+
+Owner: "The battery section makes me unsure of which battery to add... add a sillouhette of the item... allow multiple batteries to be stored, since they're so small." Direct implementation request, scoped to the Controller's ordinary Battery. [Contract and implementation](PATCH_v0.2.53.8.md): faded native item icon, stored count and multi-item drop through existing authority. No separate inventory, car-battery expansion or capacity/drain change. Findings explained before implementation: storage and charged-spare selection already exist; the old UI showed only one and stopped after the first dropped battery. C301 grey choice is retained. Validation/delivery/acceptance tracked separately.
+
+## C301: grey replaces copper-orange (2026-10-17)
+
+Owner finds the copper build brown/bland and directly requests returning to grey. This authorizes a color-only correction, superseding C299/C300's accent choice. Use neutral charcoal/grey surfaces, borders, highlights and labels. Retain red/white OMH titles, green/red power states, rarity colors, separate action rows, attached native Stockpile, Battery slot and exact transfers. [0.2.53.7 patch](PATCH_v0.2.53.7.md) / [verification](TEST_v0.2.53.7.md). No general C300 gameplay acceptance is inferred from this aesthetic feedback.
+
+## C300: copper-orange corrective patch approved (2026-10-17)
+
+Owner: "We'll do copper-orange. So instead of the green background accents, we'll use that color I think. Let's try it out. You're approved." Implements the reviewed C297 correction and C298 titles with C299 option 1A: copper-orange #E7A05A / dark #30251B, charcoal bodies, red One More Horde and white menu suffixes. Green/red power states and module rarities stay independent. Attached native Stockpile belongs to Controller rather than moving the player's HUD. Visible ordinary Battery and exact-item transfers are included. [Patch](PATCH_v0.2.53.6.md) and [verification](TEST_v0.2.53.6.md) track implementation separately from installation and rendered/connected acceptance. No sibling edits, merge or Workshop publication.
+
+## C299: OMH family colors audited; T&T accent choice open (2026-10-17)
+
+Owner requests palette comparison before approving the patch. [Source-backed findings and three accent proposals](CORRECTIONS_C297.md#c299--omh-family-palette-audit-and-tt-accent-proposals-2026-10-17): Horde Night red/gold, Cure blue and Trait Shop green identities; native menus also share red/gold. Recommend 1A copper-orange, alternatives 1B violet / 1C steel. Preserve C298 red brand/white menu title, power semantics and rarity colors. No accent selected, sibling change, gameplay patch or installation.
+
+## C298: One More Horde menu-title branding (2026-10-17)
+
+Owner requests `One More Horde - Turret Management Menu` and `One More Horde - Controller Menu`, with red brand text and white separator/suffix. Existing Horde Night title RGB 0.85/0.25/0.25 verified; editable preview updated. [Exact requirement and implementation notes](CORRECTIONS_C297.md#c298--one-more-horde-title-branding-2026-10-17). Owner's "Once confirmed, we can approve" reserves final patch approval; no gameplay change or install this turn.
+
+## C297: attached native Stockpile and clearer Manage controls (2026-10-17)
+
+Owner reports 0.2.53.5 mostly working and requests a Controller battery slot, clear section/action separation, red/green power feedback and direct Manage/Stockpile drag transfers. Requests paired mockups, then explicitly clarifies the Stockpile must be a dedicated component connected to the Controller menu, not the player's repositioned HUD. [Findings, proposal and evidence](CORRECTIONS_C297.md). Preserve the native list/item system with a scoped adapter, exact inventory and existing authority/capacity. Read-only audit and mockups completed; layout proposal awaiting review, no new implementation/install or blanket acceptance implied.
+
+## C296: expanding Details, grouped Load Order and Controller reach correction (2026-10-17)
+
+Owner directly requests Module Stats inside + Details, vertical expansion instead of whole-menu scrolling, category tooltips/removal of the drop hint, and a full-size grouped Load Order page. Owner reports disabled Assign/Open Manage and clarifies Access/Connections require standing inside the Controller world tile. Implement these corrections with existing ownership/power authority; no new recipe/balance decision. [Contract, evidence and limits](PATCH_v0.2.53.5.md). Owner separately reports C295 launch slowdown solved; exact cause remains unconfirmed. Rendered/connected acceptance is not inferred.
+
+## C295: investigate launch and whole-PC slowdown (2026-10-17)
+
+Owner asks why launching/playing now slows the whole PC; clarification is "Starts on the main menu, stops on exit or minimize." Read-only process/resource, log, display-setting and current-hook inspection is authorized. [Evidence, uncertainty and recommended comparison](LAUNCH_LAG_C295.md). No source, display, Java-agent, other-mod or driver change was requested or made. Current 0.2.53.4 loading is confirmed; no completed acceptance result is inferred.
+
+## C294: C293 corrective patch approved (2026-10-17)
+
+Owner: "Approved" following the stockpile clarification, capitalization audit and five recommended corrections. Implement, validate, install and mirror under the established local workflow; no additional gameplay decision is required. [0.2.53.4 implementation](PATCH_v0.2.53.4.md). Preserve defense-only admission and native recovery of existing items. Related validation closes stale remote-stockpile access from local turret proximity and handles synchronized replacement items for native callbacks. Connected and rendered acceptance are still pending, not waived by this approval.
+
+## C293: stockpile clarification, capitalization and corrective proposals (2026-10-17)
+
+Owner asks why backpacks/clothing appeared in the audit, reaffirms turret/trap-only storage, requests a UI capitalization check, and asks to consider solutions to the listed findings. [Reviewed contract and recommended corrections](CORRECTIONS_C293.md). The backpack is a withdrawal destination; clothing describes legacy-item recovery, not admission. Keep the existing scope. Title-case actions/short labels and the five engineering corrections are recommended without a new gameplay decision. This is review/planning, not a new installation or test acceptance. Standing C108/C119 authorize recording and mirroring the findings.
+
+## C292: deferred-test audit (2026-10-17)
+
+Owner: “Unable to test this moment. Audit and check for any issues.” Audit and reproduce current integration/performance defects; preserve the installed patch and pending acceptance. [Five confirmed findings](AUDIT_C292_v0.2.53.3.md). No new gameplay, balance, recipe, art, or feature approval inferred. C108 authorizes mirroring this audit/test record.
+
+## C291: native scrolling and compact management correction (2026-10-17)
+
+Owner explicitly requests implementing and auditing the reported defects. Equipment and Ammunition share a row; Reload/Load Order are adjacent; title is "Turret Management Menu". Keep the shaded headers. Details/module stats must remain accessible. Rename commits on Enter or blur; clearing shows the automatic name in gray; weight shares that row. Controllers have no rename UI. Stockpile accepts defense supplies only, retaining access,500 capacity and removal of pre-existing unrelated items. Controller uses the existing authorized white-cube technical art. Preserve gameplay and server authority; no new approval or owner test blocks implementation. [Implementation/audit](PATCH_v0.2.53.3.md). Owner's report rejects the relevant0.2.53.2 rendered behavior; its automated results are not acceptance.
+
+## C290: single-page Manage, Controller cleanup and native inventory (2026-10-17)
+
+Owner: “Let's switch to the1 tab view instead” and “Please clean everything up. The inventory can use the native zomboid inventory system, not this invented thing.” Supersedes C288's two-tab choice. Authorizes implementation of the reported header/Details/Controller layering defects, reliable window dragging and removal of the custom stockpile browser. Preserve equipment/ammunition layout, module4/6/6, full remote Manage,500 stockpile capacity, read/write access and exact-item server authority. Native inventory lifetime belongs to the player; closing Controller no longer closes a custom child inventory. No balance change or acceptance inferred. [Patch and diagnosis](PATCH_v0.2.53.2.md).
+
+## C289: approved corrective patch (2026-10-17)
+
+Owner: “Approved.” Authorizes implementing the selected C288 two-tab Manage and Controller cleanup, including C286 recursion/window-lifecycle fixes, validation, installation and the standing C108 GitHub mirror. Preserve gameplay, remote authority and exact-item accounting. [Implementation](PATCH_v0.2.53.1.md) | [Checks and short test](TEST_v0.2.53.1.md). Approval does not establish rendered or connected multiplayer acceptance.
+
+## C288: two-tab Manage selected (2026-10-17)
+
+Owner: "1B / Recap the update." Selects the two-tab design from C287, superseding the compact-page recommendation. [Final corrective scope](TEST_FINDINGS_v0.2.53.md#c288--two-tab-manage-selected-update-recap-2026-10-17). Record the choice and recap; no implementation/install/test acceptance is claimed in this discussion turn. Preserve C286 crash correction, approved Controller hierarchy and multiplayer authority. Owner follow-up: "Make sure it's clean and not overwhelming." Record concrete presentation/verification criteria in the same C288 contract; no new feature or design choice is inferred.
+
+## C287: preview both proposed Manage layouts (2026-10-17)
+
+Owner: "Show the designs for both options." [Comparison and browser verification](TEST_FINDINGS_v0.2.53.md#c287--both-manage-designs-previewed-2026-10-17). This authorizes design previews, not selection of1A/1B or a new implementation. Preserve C286 corrections, the accepted Controller direction and pending native/connected acceptance. No balance, authority, installed version or Workshop changes.
+
+## C286: owner UI failures and corrective design discussion (2026-10-17)
+
+Owner reports overlapping Turret Manage framing, blocked dragging under the name controls, excessive complexity, a Controller unlike the approved preview, and a black screen during Controller menu use. [Diagnosis, proposed corrections and one layout choice](TEST_FINDINGS_v0.2.53.md). The native UI-name recursion is independently reproduced; retained logs cannot identify the original trigger. Recommend1A compact single page with expandable detailed stats;1B uses Equipment/Modules tabs. This is a finding/design discussion, not a selection or new patch implementation. Preserve the accepted C284 Controller hierarchy, multiplayer authority and installed0.2.53 evidence; prioritize corrections before R4C2. Standing C108/C119 authorizes mirroring these findings.
+
+## C285: implement the approved connected-controls patch (2026-10-16)
+
+Owner: "Looks good. Approved to patch. Implement the controller, pressure plates, updated menus, and ammo capacity changes. Keep multiplayer in mind and push it to GitHub." This approves C283 storage/capacity rules and C284 menu direction for local implementation, native verification, installation and the standing development mirror. [Implementation](PATCH_v0.2.53.md) | [Tests](TEST_v0.2.53.md). No new approval or owner-test gate; connected/rendered acceptance remains deferred, and no Workshop/main publication is authorized.
+
+## C100: 0.2.31 findings, presentation cleanup and movement revisions (2026-10-07)
+
+Owner requests consolidated Traps settings, consistent naming with **Barbed Panel**, fewer reusable bed/panel textures, fence-side bed placement, bush-like player traversal with sprint-trip/fall injury, recovery for zombies stuck down, increased bed-trip chance, and **40% potato knockdown**. Owner also asks whether to replace Building with crafting plus inventory installation and authorizes a quick live stress-log inspection. [Findings and concrete next-patch scope](TEST_FINDINGS_v0.2.31.md) distinguish direct requests, proposed defaults and verified defects. Craft-only flow, the exact increased bed-trip percentage and player fall-injury defaults remain pending answers; do not infer their approval. Installed gameplay remains 0.2.31 during the active test. No publication is requested.
+
+Owner subsequently selects **2B**, settling zombie Bed Spikes trip chance at **40%** (both tiers); this is separate from the already requested 40% potato knockdown. Player sprint-trip behavior remains under discussion: the owner asks whether it should be native bush behavior. Current installed IsoPlayer bytecode distinguishes bush sprint interruption from the explicit tree/collapsed-fence trip branch, so do not invent a native bush percentage. Building removal remains a question, not approval. After checking vanilla trapping recipes and inventory placement, the revised recommendation is craft-and-place for portable beds/barriers/turret bases, with construction/attachment retained for supported Barbed Panels. This supersedes the blanket recommendation to retain all Building entries; exact flow is still the owner's choice.
+
+## C99: develop backed barbs; host expansion and conditional durability (2026-10-07)
+
+Owner explicitly requests: "Doors, windows, walls, and fences, and you're approved to develop it for the next patch." This authorizes local implementation of the one-tile wooden-frame barbs and the C97 recipe. It supersedes the earlier wall/fence-only host direction. Preserve the held 0.2.30 test, existing cumulative Workshop notes and manual GitHub mirroring; no publication is requested.
+
+When asked how to handle supports without persistent finite HP, owner directs: "If it doesn't have HP or it's infinite, then give the barbs HP and it gets damaged when it deals damage. Deal 1 damage to durability per damage activation, with 50 HP." This explicitly revises the previously universal shared-health rule: ordinary finite, damageable supports share native health, while other supports use a separate 50-HP barb pool. Successful damage activations wear that separate pool by one; neither attachment nor repair adds or heals native support HP. Partial map-fence counters that reset on native reload are not a persistent shared-health pool.
+
+Owner also directs: "Opening doors should have the barbs follow the door. Opening a window does not follow." Move door contact geometry with the native swinging leaf; keep window contact fixed across its opening. Do not disable ordinary door barbs just because the door opens. No additional collision, slowing, trips or player-injury policy is authorized here.
+
+Owner selects "Allow repair too" when offered the otherwise ten-second construction/removal, retained hammer/pliers and no removal refunds/XP defaults. Include repair of the separate barb pool. The implementation recommendation is the existing free, ten-second repair restoring 50; this recommendation is not an owner-specified new recipe. Shared support repairs remain native. Broken zero-HP sections require rebuilding; no repair of stale removed objects. The exact shared-glass versus independent window-frame health choice remains pending: preserving barbs after glass breaks requires frame-based independent durability. Both alternatives can be tested without selecting one for release.
+
+Ordinary single-panel door geometry has a current native API (`getSpriteEdge(false)`). Multi-panel doors may relocate/recreate objects when toggled, and garage doors have different movement; these classes are rejected by the initial helper pending additional native proof, rather than silently damaging their former doorway. This technical limitation was reported to the owner; it does not change the requested eventual host scope.
+
+Owner resolves the window choice with "50 HP on the window frame", then clarifies: "It won't increase the window's HP, it will stay on the window with 50HP until depleted." Window barbs always have independent 50 durability; opening/smashing the glass does not remove them or alter the window's native HP. Removing the actual backing object still removes its attachment. This settles the previously pending window policy above.
+
+Implementation and validation are in [0.2.31](PATCH_v0.2.31.md) and [C99 evidence](checkpoints/R2C3_IMPLEMENTATION_20261007.md). Release/installation status is recorded separately in RELEASE.md.
+
+## C98: proceed with backed-barb native verification (2026-10-07)
+
+Owner replies "approved" after the confirmed one-tile recipe/footprint handoff and the proposed next step of native support-health/contact verification. Proceed with that local investigation; no new recipe confirmation is required for the chosen wooden-frame construction. The turn's stated scope is native verification before gameplay code changes. This approval does not settle unresolved service/player/host-roster policies or authorize remote publication.
+
+The [native feasibility report](checkpoints/R2C3_NATIVE_FEASIBILITY_20261007.md) records successful native API, contact/timer, constructed-health/marker serialization and controlled zombie-crossing checks, plus the map-fence partial-counter reset and limits. Recommended first implementation scope is damageable player-built wall/fence edges; this recommendation is not a newly approved restriction. No gameplay files or installed package changed.
+
+## C97: held playtest, performance audit and wall/fence-backed barbs (2026-10-07)
+
+Owner is away from the PC and holds the 0.2.30 gameplay test while continuing work. This is a deferral, not a pass or waiver. Owner says "approved. also confirm the new pipeline created with github" in response to the proposed performance audit plus barbed-attachment design. Scope is investigation/design and verification of the existing GitHub process; it does not request a new CI workflow, remote push, publication or gameplay installation.
+
+Owner clarifies the barbed host as walls/fences, semi freestanding with a surface required behind it. This replaces the suggested first window/door-barricade host list. When asked about independent barb durability, owner selects "Share the supporting wall/fence health". Preserve the support's existing health pool, with no automatic repair or added HP. Do not silently substitute separate barb durability for hosts without usable health. Host eligibility, native attack/contact detection, damage, footprint, support-loss behavior and recipe/service choices still need proof or discussion. That answer settles health only, not the bundled proposed attack/removal behavior.
+
+Owner then answers "crossing contact" to whether barbs damage zombies only attacking the support or also crossing a supported fence. Owner further specifies: "it should be time based. barbs will always be time based damage when in contact. like 10 damage every 2 seconds". All barb damage uses recurring timed contact, including contact during a crossing; it is not gated on thumps or limited to one hit per crossing. This supersedes the assistant's one-hit-per-crossing recommendation. Use 10 damage every two seconds as the owner's working tuning example, not a separately approved final balance value. Standing in actual contact also qualifies; merely standing nearby does not.
+
+Owner answers "yes" to "should the first hit happen immediately?" Immediate first contact damage is confirmed. Recommend a shared per-zombie two-second interval that persists through brief exits/re-entry and adjacent sections; recheck contact at each hit and stop damage outside contact. Shared cooldown details, player injury and clock semantics still need settlement/native verification. No independent attack/crossing bonus hit or damage-over-time after leaving is implied. Shared support health remains unchanged.
+
+Owner selects "wood frame" from the proposed recipe alternatives. Approve the presented wooden-frame construction materials: one Barbed Wire, two Planks, four Nails and two uses of Wire; retained hammer and pliers; Carpentry 1; 10 Carpentry XP. Wire consumption is two uses, not two full spools. Owner subsequently answers "1 tile" to the width question: confirm one tile-wide section aligned to a single wall/fence segment, retaining these recipe costs. No separate frame HP or host repair is added. Construction duration and servicing remain unresolved.
+
+See [audit results and recommendations](checkpoints/R1C3_PERFORMANCE_AUDIT_20261007.md) and [backed-barb design](checkpoints/R2C3_BACKED_BARBED_SECTIONS.md). Operation counts establish redundant calls, not the cause of client pauses. No gameplay code changed in this checkpoint.
+
 ## C96: private GitHub development and Cloud planning process (2026-10-07)
 
 Owner approved: "Approved. Go ahead and create this process." This follows discussion of using the normal full repository like Trait Shop, with Cloud restricted to planning and the PC implementing/testing. Create the private PandizeLive/pz-mod-onemorehorde_turretsandtraps repository, preserve local history, use dev as the initial/default branch and short-lived planning/implementation branches, retain immutable test/v<version> build tags, and reserve main plus official v<version>/GitHub Releases for confirmed official Workshop publication. Initial repository configuration and history/test-tag push are authorized; no gameplay change or Workshop upload is included.
@@ -481,3 +973,1611 @@ Two separately asked tuning questions remain unanswered: (1) proposed 20% trip r
 Owner answers the two remaining tuning bullets: "Let's do 6 damage to durability per fall. Confirmed prone zombies." Apply six shared bed durability loss per damaging zombie fall, replacing the proposed one wear. Confirm one hit for a genuinely fresh fall from any source landing on the bed, including turret knockdowns, with no repeat hit while lying/getting up and no damage merely for detecting an existing prone/crawling zombie.
 
 Retain the other proposed defaults with this amendment: 20% trip chance per eligible upright moving tile entry, 20% running/sprinting scratch chance per whole-bed entry, and 100/200 durability. This interpretation was stated back while continuing implementation; it does not infer a new universal 2.5x durability multiplier. At six wear, the final damaging fall breaks a fresh basic bed on hit 17 or a reinforced bed on hit 34. Shared recovery remains five seconds after getting up; direct weapon knockdowns remain available during trip protection.
+
+## C101 — crafting-only placement and 0.2.31 repairs (owner-approved 2026-10-07)
+
+Owner explicitly commits to crafting and removal from Building, with Place Trap / Attach Trap / Install Trap labels. Owner approves authored native-animation bush-like traversal, requests noclip bypass, previously chose 2B (40% bed trip chance), 40% potato knockdown, Traps settings grouping, singular Barbed Panel naming, one repeating bed texture and two panel states with four directions. Preserve approved recipe costs and exact items; offer crafted portable reinforcement using existing service costs. Chosen implementation default for the new player sprint-trip control is 20%, exposed in Sandbox; it is not a verified native ordinary-bush percentage. Environmental laceration applies once on an actual new fall; walking remains safe.
+
+[0.2.32 implementation](PATCH_v0.2.32.md) also fixes the observed barb service startup dependency and fence-adjacent bed placement. Native knockdown replaces animation-only zombie requests; controlled engine checks do not establish rendered recovery acceptance. [Four-step test](TEST_v0.2.32.md) replaces the remaining long checklist. No remote push, Workshop publication, broad content expansion or renewed old regression round is authorized.
+
+## C102 — 0.2.32 owner findings and cleanup requests (2026-10-07)
+
+Owner requests one grouping verb with no Five in names; choose Pack/Unpack. Turret placement should read Install Trap, not only component management. Owner asks whether modified recipes can collapse below their base family, reports panel placement failure and incorrect trip/run-brush visuals, and asks about weights. Preserve simplified Building as a deferred idea; do not re-enable it now. [Evidence and repair scope](TEST_v0.2.32.md#owner-findings--2026-10-07).
+
+Native group presentation exists but the recipe-group enum only defines OPEN_BOX in current 42.21. A custom-family UI adapter needs a prototype. Current weights are 4/4/5 for panel/basic/reinforced bed; panel 2 with beds unchanged is a recommendation, not approved balance. Grouping and weight options are pending owner reply. No acceptance or new installed patch is established by this report.
+
+## C103 � approved crafting organization, movement repairs and lighter beds (2026-10-07)
+
+Owner approves the seven-feature patch after the names-only recap: consistent Pack/Unpack naming, collapsible crafting groups, forward trip animations, running brush-through animation, Barbed Panel placement repair, turret Install Trap action and trap weight rebalance. Latest approved loose weights are Barbed Panel 2, Bed Spikes 3 and reinforced Bed Spikes 4; Spike Barriers remain 4/5, their five-item packs remain 6.6/8.25, Turret Base remains 6 and Potato Launcher Head remains 4. This supersedes C102's pending weight recommendation and implements the owner's requirement that beds weigh less than the corresponding barriers.
+
+Use native expandable list rows for exact OMH recipe families; icon view remains flat. Preserve each base/reinforced/pack/unpack recipe, filtering and actual recipe selection. Keep Building deferred; successful grouping may inform a later simplified design, but does not authorize re-enabling it. No recipe ingredient/skill/XP changes, new damage tuning or broader performance claims. Local implementation, validation, test tag and installation are approved; mirroring/publication remain separately controlled. See [0.2.33](PATCH_v0.2.33.md).
+
+
+## C104: approved starter modules, expanded Manage, performance cleanup and faster service (2026-10-08)
+
+Owner chooses 1A/2A/3A/4B, explicitly approves crafting, selects 5B, then confirms the patch. Approve two rows of eight; 2/4/8/12/16 total slots for None/Improvised/Small/Medium/Large; 75-percent automatic detection range after Range bonuses with normal acquisition speed; 15-percent configurable click-only automatic failure with ordinary retry cooldown, no spent ammo/shot power or persistent jam, and no manual-fire penalty. One Detection/Firing role across tiers; kits replace, never stack. Improvised reserve bonus 25; standard 50/100/200 bonuses remain. Empty slots add no power cost. Preserve saved Sandbox values and accessible existing/overflow contents; fresh-world tests remain authorized.
+
+All three improvised items are craft-only: Detection consumes 3 Electronics Scrap, 1 Electric Wire and 2 duct-tape uses; Firing consumes 2 Electronics Scrap, 1 Electric Wire and 4 Screws; Expansion consumes 1 Small Metal Sheet, 1 Electronics Scrap, 1 Electric Wire and 4 Screws. Electrical 2, retained screwdriver and pliers, twenty-second base crafting and 15 Electrical XP each are approved. Standard modules/kits remain loot-based.
+
+Approve cached advisory aim inventory summaries and removal of same-step duplicate LOS checks while retaining fresh shot checks and multi-tick search revalidation. This is not proof the reported client pauses are fixed. Owner also reduces portable trap/turret placement and pickup to five seconds each, including panel attachment/removal; repair and reinforcement remain ten seconds. Native instant-placement debug behavior remains native.
+
+Local implementation, validation, tagging and installation are approved by "Approved to Patch". No remote push or publication is implied. The held 0.2.33 rendered test is consolidated into TEST_v0.2.34.md, not marked passed or waived. See PATCH_v0.2.34.md.
+
+## C105: synchronize roadmap and checkpoint status (2026-10-08)
+
+Owner asks what the documented next work was, challenges recommendations presented as the roadmap, and requests syncing checkpoints/phases. This authorizes documentation reconciliation, not a new gameplay slice, balance choice, reordered implementation sequence, remote push or publication.
+
+ROADMAP.md is the canonical execution/status index. R1C1-R1C2 are implemented/native-verified with remaining owner regression waived by C89. R2C1-R2C3 and R3C8 are implemented; outstanding rendered acceptance is consolidated in TEST_v0.2.34.md, not passed or waived. R1C3 remains partial, with client pauses unresolved. C104 settles R3C8 recipes/layout/tuning independently of the still-planned offensive-module contract.
+
+R2C4 concertina feasibility is the earliest unfinished content checkpoint in phase order, subject to the slowdown discussion. Phase 3 may proceed independently through R3C1 head selection or R3C4 module contract/battery baseline. The documented module sequence remains R3C4 -> R3C5 -> R3C6 -> R3C7. Initial Blow/Execute were already scheduled under R3C6; the assistant suggested prioritizing them without an approved reorder. No next gameplay patch is selected by this sync. Stable checkpoint IDs, historical evidence, Building deferral, optional scope and final Cure-simulation phase remain intact.
+
+## C106: 0.2.34 feedback, crafting/Building organization and three module rows (2026-10-08)
+
+Owner reports Test Completed and says unmentioned checks passed "(I think)". Record tentative owner-reported acceptance separately from log proof. Always inspect console.txt after owner testing. This capture confirms both 0.2.34 entries and no post-startup errors; zombie forward trips visibly overshoot beds and fail acceptance. Detailed disposition and captured-console hash are in TEST_v0.2.34.md. Do not repeat the full old test.
+
+Owner requests crafting categories Normal, Reinforced and Packed, corresponding Building reintroduction, and three module rows. These supersede the installed recipe-family presentation, indefinite Building deferral and two-row layout direction; capacity changes were not requested. Working recommendation is six/six/four slots with the existing 16-slot maximum. Clarification is pending on whether Building places crafted items or consumes raw materials; Packed transport bundles must first be unpacked for placement. Do not infer a new packing operation for every item or alter recipe costs merely to populate categories.
+
+Owner asks whether panel/bed Type naming is native and why Item appears. Inspection shows both use ItemType=base:normal and DisplayCategory=Material. Native animal traps also use base:normal but DisplayCategory=Trapping. Item is our internal script-ID suffix distinguishing portable items from world entities; it is not a native type requirement or normal localized name. Preserve IDs pending any explicit migration decision; player-facing category changes need not rename IDs or set native hunting-trap behavior. Screenshot group IDs are native debug-mode annotations.
+
+Investigate the zombie-only custom Bob_RunStumble node, animation displacement and delayed on-floor detection before selecting a bounded short-trip correction. Current damage requires a fresh fall while actually on the bed; do not hide overshoot by automatically damaging actors who land elsewhere, freezing all zombies or changing potato knockdown. Installed AnimNode exposes useDeferredMovement, but a specific XML/runtime correction and rendered behavior are not verified by inspection alone. New roadmap content-track decisions remain postponed by owner direction.
+
+## C107: approved Building fallback, 4/6/6 layout and feedback repair (2026-10-08)
+
+Owner selected 4/6/6 after confirming unlock totals 2/4/8/12/16, asked to use crafted items before falling back to the crafting recipe, then explicitly said "Approved. Go ahead and patch." Implement 0.2.35: native Normal/Reinforced/Packed crafting categories; one Building route per defense using an exact carried item first, otherwise the original recipe and its actual output, followed by five-second placement. Preserve recipe skills/tools/materials/time/XP and exact turret contents; no recursive ingredient crafting, duplicate charge or placement XP. Cancelled placement retains completed output. Packed remains crafting-only. Remove the superseded collapsible family adapter.
+
+Three Manage rows are 4/6/6; capacities and saved values remain unchanged. Correct zombie-only bed-trip displacement while retaining native recovery and actual-on-bed damage checks. Preserve internal item IDs and player/weapon behavior. Prior tentative owner passes remain as recorded by C106; run only TEST_v0.2.35.md after local checks. Local patch/install authorized; no GitHub push, PR or Workshop upload. Roadmap new-content choices remain postponed.
+
+## C108: mirror every update and versioned test findings (2026-10-09)
+
+Owner: "A dev push to GitHub should be posted every update, and test findings for those versions should be posted on the GitHub as well." This is standing authorization and a required handoff step for completed project updates, including documentation-only changes and test results without a following patch. Commit and mirror through root OMH.cmd; do not require another push approval. Include eligible immutable test tags and readable version-specific findings with actual evidence/pending status. Inspect console.txt after owner testing; do not claim unrun checks passed.
+
+Supersedes C96's owner-run-unless-requested mirroring restriction and earlier patch-specific no-push statements for this development synchronization. Preserve the existing branch/draft-PR route into dev, remote verification, immutable tags, clean intended commits and separate merge/official-release/Workshop authorization. No gameplay change or version bump. Current catch-up includes installed 0.2.35 and already-recorded earlier test findings; 0.2.35 gameplay acceptance remains pending.
+
+## C109: 0.2.35 owner findings and proposed correction scope (2026-10-09)
+
+Owner clarifies Normal/Reinforced/Packed meant dropdown/group names, not top-level categories; reports continued forward zombie launch, one-placement Building interaction, and missing zombie trip/spike impact sounds. See TEST_v0.2.35.md for native inspection and captured-console evidence. These are reported failures/requirements, not proof of unmentioned passes or approval of a chosen replacement animation/audio implementation.
+
+Proposed next correction: restore OMH parent categories with expandable tier/pack groups; evaluate a native forward collapse instead of Bob_RunStumble; keep Building placement active while rebinding each actual item or original-recipe result; use native ZombieTrip/BodyHitGround and crafted-spear impact audio once per appropriate event. Preserve recovery, damage, recipe costs and player state. Native clips/sound registrations exist, but rendered displacement and audible suitability remain unverified. No gameplay edits/version bump in this review. C108 authorizes immediate findings synchronization.
+
+## C110: approved tier groups, zombie collapse, continuous Building and audio (2026-10-09)
+
+Owner approved the C109 correction scope and explicitly distinguished player trips from zombie forward-collapse. Implement 0.2.36: restore OMH parent categories and use Normal/Reinforced/Packed expandable recipe groups; keep Building active with exact carried-item rebinding and original-recipe fallback on the next placement click; use native zombie forward-collapse and trip/landing/spike-impact audio. Preserve player movement, actual-on-bed damage, recovery, costs and item contents. Packed remains crafting-only. Local validation/install and C108 development synchronization apply; no automatic merge, Workshop publication or new roadmap content. Headless checks do not establish rendered/audio acceptance; use only TEST_v0.2.36.md.
+
+## C111: durable per-turn context and semantic review (2026-10-09)
+
+Owner challenges the repeated promise to check consistency and explicitly requests updating the documentation consulted every turn. Add a short review section near the top of project AGENTS.md, a workspace routing pointer and a current-status reminder. Require a fresh read of that section and CURRENT_STATUS each project turn and after compaction, relevant decision/checkpoint review before recommendations or changes, and player-workflow/semantic review before handoff. Persist corrections and unresolved findings with their real approval and acceptance status; retain C108 documentation mirroring. This is process/documentation authorization, not a gameplay patch.
+
+Owner identifies Normal under OMH: Turrets as redundant and proposes Turret Base outside groups with Modules and Heads collapsibles. Recommendation also puts complete turret recipes alongside the base, includes expansion kits in Modules, keeps Normal/Reinforced/Packed for Traps, and leaves only placeables in Building. Record as proposed correction, not approved or implemented. See TEST_v0.2.36.md for the scoped owner finding and console review; no completed test or unmentioned passes inferred.
+
+
+## C112: approved turret grouping and cross-system review (2026-10-09)
+
+Owner approves the C111 grouping correction and explicitly asks for discussion of current issues across audio, visuals, gameplay and code. Implement 0.2.36.1: base/complete turret recipes at root, Heads and Modules (including expansion kits), trap Normal/Reinforced/Packed retained, Building turret base at root. Preserve recipes, items, costs, timing and combat. Review relevant neighboring behavior and document evidence-backed findings and recommendations in REVIEW_v0.2.36.1.md; this does not approve all proposed fixes or new content. Synchronize stale art guidance and the durable review checklist. Continue C108 local validation/install and development mirror; no merge or Workshop publication. TEST_v0.2.36.1.md replaces the uncompleted 0.2.36 checklist, retaining its pending rendered checks.
+
+
+## C113: review repairs and elapsed-time choice (2026-10-09)
+
+Owner requests fixing all actionable findings discussed after 0.2.36.1 and asks whether anything requires discussion. Implement automatic/manual range feedback, explicit alternate-method recipe naming and accurate output descriptions, bounded native barb contact audio, redundant overlay-work reduction and aggregated render diagnostics. Owner explicitly selects counting elapsed active time after stalls, at most one due action per update without backlog bursts, excluding pause/offline time. Implement shared pause-aware observation with existing persisted remaining-time restoration. Preserve balance, crafting inputs, item IDs and SP scope. Existing forward-collapse remains subject to rendered acceptance; do not invent a new animation fix or claim client stalls resolved without workload evidence. Broader documented boundaries such as multiplayer/final art/player barb injury remain roadmap work, not incidental fixes. Version 0.2.37; TEST_v0.2.37.md replaces older outstanding checklists. C108 requires local install, immutable test tag, development mirror and versioned runtime findings.
+
+
+## C114: complete-turret recipe removal request and naming discussion (2026-10-10)
+
+Owner requests removing Potato Turret and Potato Turret (Without Tire Pump) crafting shortcuts because players can assemble the base/head manually. Owner asks to discuss shorter native-style names, possibly Improvised for the alternate head method and another word for starter modules. This turn records the requested removal and naming proposal only; no gameplay patch or naming approval is claimed. Keep base/head crafting, manual assembly, existing items and Building's base-recipe fallback.
+
+Installed 42.21 English Recipes.json includes Make Improvised Flashlight, Make Improvised Gas Mask and Make Improvised Screwdriver, alongside Make Makeshift Radio and Make Makeshift Walkie Talkie. Vanilla uses both adjectives; it does not establish a universal term for alternate recipes. Recommendation pending owner choice: Potato Launcher Head (Improvised) for the pump-free recipe only; Makeshift Detection Module, Makeshift Firing Module and Makeshift Expansion Kit for the weaker starter items. Both head methods still output the same ordinary Potato Launcher Head; retain an explicit tooltip describing the alternate materials and identical result. Names alone do not explain the distinction between a recipe method and an item tier.
+
+Current pump-free head requires Mechanics 4 versus 2, six Scrap Metal versus two, and recipe time 250 versus 200. It removes the Tire Pump requirement, not skill/material difficulty; do not reduce costs or stats under a naming request. Makeshift is especially consistent with vanilla crafted electronics. Apply any later approved rename across recipes, inventory names, management labels and tooltips while preserving internal IDs. Removing complete crafts also needs cleanup of their special output callback, translations and tests; do not retain an empty group or remove the separate component workflow. No new test result, version, package or Workshop-note change this turn. C108 development documentation mirror applies.
+
+
+## C115: naming approved for bundling; next content discussion (2026-10-10)
+
+Owner approves the C114 naming scheme and asks what next update can include it. Queue removal of both complete Potato Turret craft shortcuts, recipe-only Potato Launcher Head (Improvised), and Makeshift Detection Module / Makeshift Firing Module / Makeshift Expansion Kit across player-facing surfaces. Keep the standard head output, internal IDs, existing items, costs and balance. Bundle the cleanup with the next selected patch rather than installing a naming-only build now. Approval is recorded; implementation remains pending.
+
+The canonical next unfinished content checkpoint remains R2C4 concertina movement feasibility, alongside ongoing R1C3 performance evidence. Recommend combining the cleanup with concertina only after approving its movement contract and proving native feasibility. Proposed distinction: contact damage plus localized, non-stacking slowdown only while touching the wire, with no lingering effect. This is a recommendation, not owner approval or engine proof. C81's concern about undermining Horde Night zombies still requires an explicit decision; damage-only concertina would overlap Barbed Panel's role. Footprint, player effects, damage/wear, recipe/tools/skills/XP and service details remain to be settled after the core role choice. New heads and offensive modules remain the documented independent Phase 3 alternatives, not a silently reordered next patch. No gameplay/version/test change in this discussion; C108 mirror applies.
+
+
+## C116: contact-only slowing, Sandbox sorting and recap format (2026-10-10)
+
+Owner approves contact damage plus non-stacking slowdown while touching concertina, asks for the same behavior as Barbed Panels, and asks whether panels already slow. Current code does not: BarbRuntime applies timed damage/audio/wear, with no movement change. Record adding the requested contact slowdown to both as the proposed combined patch scope; do not claim it exists in installed 0.2.37. Owner delegates implementation method, preferring native temporary movement scaling without saved original-speed restoration. Reduce current movement by a divisor only during actual contact, end on exit, and preserve other speed effects. The contextual approval includes Horde Night zombies; the prior slowing-turret exclusion remains. Recommend divisor 2 (half speed), not yet owner-approved balance. Concertina footprint, player behavior, durability and recipe still need decisions and native zombie feasibility remains unproven. This turn is discussion/read-only investigation, not a gameplay patch.
+
+Owner reports uncertain Sandbox header sorting and requests better organization within categories. Confirmed: CapacityImprovisedModuleBonus, CapacityImprovisedAmmoBonus and ImprovisedFiringFailure are omitted from SandboxUI header mappings and fall into the final section; the Operation heading contains actual mojibake. Queue semantic grouping/order and heading cleanup across applicable pages, preserving option IDs, values and package-specific visibility. Detailed evidence and proposed scope: checkpoints/R2C4_CONCERTINA.md. No owner test was reported this turn; no new console acceptance claim.
+
+Owner establishes future update recaps: feature-name-only bullet points, with additional prose only for important information or decisions. Persist in the per-turn project agreement. C114/C115 removal/naming remains approved and bundled; C108 documentation mirror applies. No implementation, new test result, version bump or Workshop changelog reset.
+
+
+## C117: half-speed contact default approved (2026-10-10)
+
+Owner answers "Approved" to the explicit half-speed default question. Set the planned zombie contact divisor to 2 for Concertina Wire and Barbed Panels, including Horde Night zombies, without stacking or lingering effects. Preserve other movement modifiers and do not infer engine feasibility or implementation from this approval. Existing cleanup/naming/Sandbox scope remains bundled. Installed 0.2.37 is unchanged.
+
+Propose the remaining concertina defaults together for owner review: one-tile freestanding coil on clear floor; 50 independent HP with one wear per damaging activation; existing panel-style 10 zombie damage every two seconds; craft from one Barbed Wire and two Wire with retained pliers, ten-second base crafting, no skill requirement or crafting XP; five-second placement/pickup, ten-second free repair, no service XP. Player proposal is the same half-speed contact reduction without introducing injury in this first slice, matching panels' existing no-player-injury scope; this is not approved by the zombie-speed answer. These are proposed defaults, not approved recipes or implementation. Native movement feasibility remains required. C108 mirror applies; no new test outcome or version bump.
+
+
+## C118: Bed Spikes-style player injury and independent placed spike tiles (2026-10-10)
+
+Owner rejects the proposed no-player-injury treatment for concertina/panels and requests the same treatment as spike flooring. Current BedPlayer rules are the reference: walking does not roll a scratch/trip; running/sprinting rolls a 20% scratch chance on entry; sprinting additionally rolls a 20% trip chance; a fresh landing on spikes produces one environmental cut; god mode avoids injury and noclip/ghost bypasses custom traversal. Apply this requested player-treatment direction to both wire and panels while preserving their actual contact geometry and native door/window/fence movement. It does not mean repeatedly inflicting fall wounds while already prone. Numerical values reflect current defaults, not a new unrelated balance change. C117's other proposed concertina defaults are not implicitly approved by this correction.
+
+Owner also requests two separately durable traps from spike placement so they do not break together. Context is interpreted as Bed Spikes, including reinforced beds, not Spike Barriers. Current BedSpikes stores one health record for both tiles, BedRuntime retires the whole record on depletion, and BedService requires both parts and returns one item deploying two tiles. Requested direction is independent tile health, wear, breakage and servicing with the original two-tile placement intent retained. A one-tile survivor must never recover into an item that creates two tiles.
+
+Propose 50 basic / 100 reinforced HP per tile (rather than silently doubling the existing 100/200 total), retaining six wear on the tile receiving a fall and 20/50 fall damage. This preserves aggregate nominal durability, though six-wear rounding changes maximum damaging falls from 17/34 shared to 18/34 across evenly used independent halves. Propose one current-cost craft producing two single-tile inventory units; pair placement consumes two units, each pickup returns one, and a lone recovered unit can place one. Per-unit weights would be 1.5/2 to retain the current total 3/4. Per-unit reinforcement would consume one plank/four nails and grant 15 XP, retaining the existing pair cost/XP and Carpentry 3/hammer requirement. These inventory, numerical and recipe consequences require owner choice before implementation. Do not introduce new Bed Spikes packing recipes: none currently exists. Adjacent independent tiles must not add player entry rolls or duplicate damage per fall merely because IDs differ; retain zombie recovery protection and current tile-based trip eligibility.
+
+Discussion and code inspection only. No gameplay patch, new test outcome, migration promise or version bump. Continue bundling C114-C117 and mirror the record under C108. Fresh-world policy remains; existing saves are not silently converted during this discussion.
+
+
+## C119: approved combined plan and mandatory GitHub planning handoff (2026-10-10)
+
+Owner: "Anytime we discuss and confirm plans, they should reflect on our GitHub under some planning section, possibly provided by OMH: Turrets & Traps - Planning chat in codex. All approved." Add a persistent Planning entry point, required same-turn planning synchronization and explicit proposed/approved/implemented/verified distinctions to the existing C108 pipeline. Plans discussed here or in the named Planning chat must be reconciled into repository records and pushed, not left only in chat. Keep GitHub as the shared handoff; the named chat is a planning surface, not an automatically synchronized authority or a required intermediary. This does not create a scheduled automation, authorize automatic merges, or require unsolicited cross-chat messages.
+
+"All approved" settles the current combined C114-C118 plan, including the remaining concertina defaults and independent Bed Spikes inventory/durability consequences. Concertina is one tile, freestanding on clear floor, 50 HP/one wear per damaging activation, panel-style 10 zombie damage every two seconds, one Barbed Wire + two Wire, retained pliers, ten-second base craft/no skill gate/no XP, five-second placement/pickup and ten-second free repair/no service XP. C118 injury rules replace the rejected no-player-injury proposal. Half-speed contact is shared by wire/panels, non-stacking and only during actual contact. Bed Spikes are two independently durable tiles (50/100 HP each, six wear on the hit tile, 20/50 fall damage), craft two single-tile units at current pair cost, place pairs by consuming two, recover/redeploy one tile without duplication, weight 1.5/2 per unit, reinforcement one plank/four nails/15 XP with retained hammer and Carpentry 3. Preserve neighboring-tile injury-roll protection, per-fall damage and recovery. Include naming/complete-recipe cleanup and Sandbox organization. No further design approval is required for these settled values.
+
+Approval does not establish native zombie slowdown feasibility, migration support, rendered acceptance, or a shipped patch. The present pipeline update records the approved implementation queue; installed 0.2.37 remains unchanged. Checkpoint brief owns the detailed contract; PLANNING.md is the discoverable status/index, DECISIONS.md preserves provenance, ROADMAP.md owns phase order, and CURRENT_STATUS.md owns runtime handoff. Use the actual active PR branch when dev is older. Read-only inspection found the named Planning chat last read 4b9b1c9; do not present that old chat answer as the latest project state. No message was sent to that chat in this update.
+
+
+## C120: implement the approved combined patch (2026-10-10)
+
+Owner: "Approved for patch". Proceed with the full settled C114-C119 bundle, local verification/install and the standing C108/C119 GitHub mirror. No new design approval is needed. Version 0.2.38 implements Concertina Wire, shared contact-only movement division/player injuries, independent Bed Spikes tiles/inventory, semantic Sandbox organization and the approved crafting/naming cleanup. Native implementation scales pending displacement before collision resolution, not persistent speed; native climbing/falling states are preserved. Gameplay acceptance, dense-client pauses and external movement-hook compatibility remain distinct from native/unit checks. Fresh worlds remain required; no automatic merge or Workshop publication. See PATCH_v0.2.38.md, TEST_v0.2.38.md and RELEASE.md for final verification/install evidence.
+
+## C121: 0.2.38 mixed-defense lag report and proposed audio follow-up (2026-10-10)
+
+Owner: "Looks like it's functioning, but there was some lag when using Spike Beds, Concertina, and a Turret." This is provisional general functional feedback and a performance failure, not approval for new gameplay changes. Captured both loaded 0.2.38 entries; measured update gaps reach 1,077 ms and the setPitch interval reaches 674 ms. Detailed evidence/limits are in TEST_v0.2.38.md. Recommend removing runtime per-play pitch variation from effects/reload while preserving clips, selection, volume and hearing, plus gated aggregate reload/trap timings. Reduced pitch variation is the tradeoff. Proposal awaits approval under the test-findings discussion rule; package/version/tag remain unchanged. C108/C119 authorize mirroring these findings/planning without a new patch.
+
+## C122: preserve pitch variation and optimize again (2026-10-10)
+
+Owner: "We should strive to keep the pitch changing, isn't pitch differences in zomboid native to sounds? We should try and optimize again." This authorizes the focused optimization pass with pitch variation preserved, superseding C121's removal-of-variation proposal. 0.2.38.1 uses native clip pitch/random selection for all owned file sounds, retains 101 values from 0.950 to 1.050 and existing sample weighting, and removes the noisy emitter setter from effects/reload. Existing FMOD events retain authored behavior; unrelated sound scripts are unchanged. The same pass rejects unoccupied Concertina tiles before world resolution, reuses the nearby bucket, and adds aggregate reload/trap timings. No balance or content change is authorized by this correction. Native parser/queued-pitch proof and focused tests are recorded in PATCH_v0.2.38.1.md and TEST_v0.2.38.1.md; owner performance acceptance remains open. C108/C119 require the development mirror, not a merge or Workshop release.
+
+## C123: positive lag result in 0.2.38.1 (2026-10-10)
+
+Follow-up: "Yea seems fine," then "Why are we still playing if it works?" Close the current owner lag test as accepted for the reported issue. The continued "Test now" handoff was unnecessary; no further play is required. Retain measured limitations without creating an indefinite testing obligation. Broader R1C3 work remains separate; no new patch is authorized.
+
+Owner: "Seems like lag is gone." Console capture confirms the loaded version and supports substantial audio improvement: 3-ms audio max versus 674 ms before, and 2-ms bed/barb callback maxima. Largest active-update gap remains 368 ms; the firing sample has 11 shots versus 58 before. Record a positive tentative result for perceived lag in this run, not blanket performance/audio acceptance. No repeated checklist, new code, publication or roadmap expansion is authorized. Keep residual performance and existing authority scope in R1C3; detailed evidence is in TEST_v0.2.38.1.md. C108 requires mirroring this result.
+
+
+## C124: accurate next-patch handoff and roadmap reconciliation (2026-10-10)
+
+Owner asks what patch they are waiting for and requests the current roadmap/checkpoints. No next patch is selected or underway; the prior Wait for a patch label was misleading. C123 closes the current lag test. Reconcile the stale 0.2.37 status table and pre-fix lag wording without promoting unmentioned content checks to passes. Recommend R3C4 offensive-module contract/battery baseline next; R3C1 new-head selection is an independent alternative. Retain R3C4 -> R3C5 -> R3C6 -> R3C7 order and completed R3C8 implementation. This records a recommendation, not approval or new gameplay. No additional owner test is requested. C108/C119 require mirroring this correction.
+
+
+## C125: module planning track selected (2026-10-10)
+
+Owner: Modules. Select R3C4 contract/battery baseline discussion, preserving R3C5 -> R3C6 -> R3C7 order and deferring new-head selection. This does not approve unresolved numbers, recipes or implementation. The checkpoint brief records the current ammo/stack/Fragment choices and their tradeoffs; recommendations remain proposals. Installed 0.2.38.1 and the completed lag test are unchanged. C108/C119 mirror applies.
+
+
+## C126: Splitter/Fragment stacking selected; magazine capacity question (2026-10-10)
+
+Owner selects 2B slot-limited Splitter stacking and 3A fixed-five Fragment damage stacking with a cap. These supersede the four-Splitter proposal and fragment-count stacking alternative. Owner asks about a Mag Size module to support paid Splitter children (1B); ammo choice and module scope/tuning remain open. Read-only source/native-Lua review and proposed +2 ready rounds per Magazine Module are recorded in R3_OFFENSIVE_MODULES.md. Native firearm capacity lifecycle is not proven, and no gameplay implementation, recipe, numerical cap or test is approved here. Mirror under C108/C119.
+
+
+## C127: magazine percentage-growth direction (2026-10-10)
+
+Owner requests multiplicative capacity with upward rounding and suggests linear +25% per module. Record ceil(base * (1 + 0.25 * count)) as the working formula, replacing the assistant's flat +2 proposal. Round once; do not compound or grant a hidden minimum increase per stack. The checkpoint records small-magazine plateaus and the five-module requirement for base-1 capacity to reach three. Exact 25% remains a suggested value pending design settlement; no implementation or Splitter ammunition choice is inferred.
+
+
+## C128: minimum one-round magazine gain (2026-10-10)
+
+C128: owner requires at least one added round per Magazine Module, explicitly base 1 plus two modules = 3. With the working linear 25% rate, use ceil(base + count * max(1, base * 0.25)), rounded once from the unmodified base. This supersedes C127 small-magazine plateaus. Examples for 1/2/3/4 modules: base 1 -> 2/3/4/5; base 7 -> 9/11/13/14; base 14 -> 18/21/25/28; base 30 -> 38/45/53/60; base 60 -> 75/90/105/120. No compounding or per-module rounding. Native capacity lifecycle, Splitter ammo rules and other R3C4 choices remain unresolved; no gameplay patch or test is authorized by this arithmetic clarification.
+
+
+## C129: 35-percent capacity and one-round ammo exception (2026-10-11)
+
+Owner selects 35% linear capacity per Magazine Module, minimum +1 with final rounding, superseding C127/C128's 25%. Owner requests a one-round ammo exception; clarify effective one-round capacity versus any last loaded round before implementing. Context is Splitter extra-round charges, preserving normal primary-shot consumption. The checkpoint documents both interpretations and the last-round incentive tradeoff. No patch authorization inferred.
+
+
+## C130: last-loaded-round Splitter exemption approved (2026-10-11)
+
+Owner selects B: any weapon with one loaded round remaining gets the full Splitter volley for that round, irrespective of magazine capacity. Deliberate one-round loading was explained and is accepted. Consume the primary round; never fire with zero. Do not substitute the recommended capacity-one restriction. Behavior with two or more insufficient rounds remains open; full volley consuming remaining rounds is a new recommendation, not approval. No code/package/test change.
+
+
+## C131: insufficient-ammo full volley approved (2026-10-11)
+
+Owner selects A: fire the full configured Splitter volley when any ready ammunition remains; consume the lesser of ready rounds and normal volley cost. Four Splitters produce five projectiles for five, two or one consumed rounds when those are the respective ready totals. Zero cannot fire. This generalizes C130 without a capacity restriction or reserve-ammunition charge for the shortfall. Remaining R3C4 rules/native proofs are separate; no gameplay patch approval inferred.
+
+
+## C132: paired 1x2 Concertina requested (2026-10-11)
+
+Owner requests 1x2 Concertina similar to Spike Barrier, explicitly rejecting independent Bed Spikes halves. Queue one carried item, paired placement, shared durability, whole-trap repair/pickup/depletion. Retain existing recipe, weight 2, 50 total HP and contact rules; no balance change was requested. Prevent seam-based extra activations/slowdown and duplicate refunds. Exact implementation and verification belong to the upcoming patch; no old-save migration or change to independent Bed Spikes is implied. See R2C4_CONCERTINA.md; R3C4 module choices remain open.
+
+
+## C133: approve paired Concertina implementation (2026-10-11)
+
+Owner: "Approved" after the C132 paired-wire recap. Implement the 1x2 shared-identity/durability/service conversion now, preserving the settled recipe, weight 2 and total HP 50. Module contract choices remain separate and incomplete; this does not authorize invented Fragment tuning or unsupported native magazine behavior. Local validation/install and C108 development mirroring apply. See PATCH_v0.2.39.md and TEST_v0.2.39.md for implementation and evidence.
+
+
+## C134: Magazine requested; discuss Splitter and module scope before patching (2026-10-11)
+
+Owner: "Add the new module as well", then "Check for splitter too. We should discuss the rules of possible modules to add this turn". Interpret the singular new module as Magazine from C126-C131. The later instruction requests discussion before implementation, while retaining the intended module addition. Inspect active fb51d09 and fetch origin; no gameplay edits, version bump, tests or installation in this discussion. Existing growth/ammo/stack decisions remain approved; new choices below are recommendations only. Record/mirror this handoff under C119. See R3_OFFENSIVE_MODULES.md C134.
+
+
+## C135: module scope, ammo fallback, Splitter coverage/effects/power selected (2026-10-11)
+
+Owner selects 1B, 2A with reserve -> player inventory -> floor fallback, 3A, 4A and 5A from C134. Include Magazine, Splitter and Fragment in the intended patch, with Fragment tuning still to settle. Do not retain C134's reject-on-full-reserve policy: any rounds that cannot enter reserve go to player inventory, then floor if inventory is unavailable/full. Preserve every round. Splitter fan may leave the targeting cone, retains range/wall checks, caps total fan at 180 degrees by tightening high-stack spacing; children deal direct damage without extra splash, knockdown or triggered module effects. Splitter adds 25% of base firing power cost per copy; Magazine has no extra draw. No change to C129-C131 capacity/ammo rules. Installed 0.2.39 remains unchanged during this design discussion.
+
+Installed B42.21 ActionManager.lua Actions.addOrDropItem adds an item to character inventory, compares capacity weight with effective capacity, then removes/drops it on the current square if over capacity. ISCraftAction.complete calls it. This confirms a native inventory-to-floor mechanism, not a complete turret transaction or a generic arbitrary-failure handler. Implement reserve-first routing and valid-destination/replay/ammo-conservation checks around it. See R3_OFFENSIVE_MODULES.md C135 for the remaining Fragment proposal. Inspected 8c3f396 and fetched origin.
+
+
+## C136 - approved module patch (2026-10-11)
+
+Owner: "Approved." This approves the complete C135 Fragment baseline alongside Magazine and Splitter, and authorizes implementation/verification/install. No further gameplay decision is required for this slice. [0.2.40 patch](PATCH_v0.2.40.md) implements the selected rules; automated/native/package verification and tagged installation pass. [Combined test/evidence](TEST_v0.2.40.md) includes the held paired-Concertina check. R3C4 contract is settled for this slice; R3C5 is implemented pending verification and rendered acceptance. R3C6 stays next for later discussion; R3C7 combined balance/endurance remains pending. Earlier open-choice paragraphs are historical and superseded by this approval.
+
+## C137 - Enhanced modules, cadence/placement/volley corrections and LootLab (2026-10-11)
+
+Owner reports M4 about 0.75 shots/sec and M16 about 0.9 with Firearms, a placement stop after many Spike Barriers, and incomplete two-Splitter visuals. Requests OMHTT + Trap/Turret/Module item families, with no old-save migration, and explicitly selects "Two modules; keep Rapid-Fire boost" for the proposed Enhanced Firing/Detection defaults. Subsequently requests Makeshift/Small/Medium/Large reserve bonuses +100/+200/+400/+650 and "Make sure to update lootlab with the new loot". This authorizes the combined corrective/content patch, local install, GitHub development mirror and corresponding hosted LootLab catalog refresh. No new crafting recipes, multiplayer enablement or Workshop publication.
+
+Implemented 0.2.41: Enhanced Firing replaces the Firing role (100% versus normal 75% native-derived firearm cadence at defaults); Enhanced Detection replaces Detection (3x turn speed, 0.10-second scan interval). Both are loot-only, nonstacking by role, with Large Expansion's exact weight and six eligible pools. Rapid-Fire retains its bounded boost; potato cadence remains unchanged. Automatic-capable mounted guns use their Auto capability without changing the item's selected fire mode. Background target scans no longer hold an otherwise ready retained-target shot. Actual cadence still depends on turning, reloads and workload.
+
+Real barrier placement no longer uses the diagnostic 64-tile registry limit; diagnostic placement keeps its limit. Splitter/Fragment tracer batches are presented together after bounded ray resolution and clipped to visible space; primary/side damage remains independently validated. The family ID rename deliberately requires a fresh test world. Existing known loot weights/global multipliers remain unchanged; new loot adds new rolls, so total module finds can increase.
+
+Native capacity caveat: B42 clamps ordinary bag storage to 50 and world storage to 100 weight. The existing native limits remain in force; these bonuses are count ceilings, not a guarantee that any ammunition mass fits. Native proof fits 750 pistol rounds and stops at 228 potatoes in a portable test turret. A proposed separate storage redesign was offered for discussion; it is not approved or implemented. No physical ammo weight is reduced or converted into virtual ammo.
+
+Owner follow-up reports the handheld M4/M16 also fire slowly and asks whether T&T modifies handheld weapons. Source review finds no writes to fire mode/recoil delay/cyclic rate or player attack timing. A native Firearms fixture checks those properties before and after feeding/firing all 51 supported guns; they remain unchanged. Mounted operation does mutate real ammo/chamber state. Firearms defaults these two rifles to Single and exposes Auto; selected mode is a diagnostic check, not a confirmed explanation of the owner's handheld behavior. No handheld gameplay change is authorized or included.
+
+[Patch](PATCH_v0.2.41.md) | [Verification and focused owner test](TEST_v0.2.41.md). R3C5 acceptance remains open; R3C6 remains later discussion. Branch inspected at 7a9cf388; origin/dev was fetched and is an ancestor; only existing draft PR #1 was open. Rendered/audio acceptance remains distinct from automated/native verification.
+
+## C138 - owner test complete and console review (2026-10-11)
+
+Owner: "Test Complete." Close the requested 0.2.41 test round with no issues reported; do not infer separate attestations for every checklist item or request a repeat. No new gameplay is authorized by completion.
+
+Capture `20261011-143314-8532`, 2026-10-11 14:33:14 -04:00; SHA-256 `492B23B4E8B32A79F76982366FC885317F959D71BA4742556CB64B52DB25FB0C`. Both installed markers and live diagnostics identify 0.2.41, game 42.21. Seventy-four summary windows record 154 firearm shots. Effective configuration changes from 296.296 to 222.222 ms firing intervals and from 100/two to 750/sixteen ammo/module capacity. These support Enhanced Firing/Large Expansion configuration, not sustained measured RPM.
+
+No exception/stack trace or `status=Limit` appears. Nineteen engine ERROR lines concern fonts, fluid names, native recipe icons, map data or vegetation tiles; no OMHTT exception found. This is not a whole-console clean claim. Maximum active-update gap is 331 ms; firing work peaks at 4 ms, shot/reload audio at 1 ms and effect/head rendering at 2 ms. The gap's cause is unassigned; retain under R1C3 without a repeat test or universal performance clearance.
+
+The capture does not independently prove the modded M4 case, >32-barrier placement, every side tracer, paired-Concertina servicing or authenticated LootLab appearance. Unreported specifics and handheld slowdown remain distinct from the completed round. Reviewed summary: diagnostics/v0.2.41/owner-test-20261011.json; raw console stays local. R3C6 Piercing/Initial Blow/Execute/Impact is next for discussion, not approved implementation. Branch inspected at 29820ad; origin fetched; draft PR #1 remains the only open PR.
+
+## C139 - R3C6 choices requested (2026-10-11)
+
+Owner: "Give me the choices and your recommendations for Piercing, Initial Blow, Execute, and Impact." Offered [four A/B behavior choices](checkpoints/R3_OFFENSIVE_MODULES.md#c139---r3c6-choices-offered-not-approved-2026-10-11), recommending capped attenuating penetration, >=90%-HP Initial Blow, <=25%-HP Execute and stackable first-shot Impact chance. These numerical defaults are unapproved proposals. Shared compatibility/child-effect/reload/health-source rules and remaining loot/power/endurance choices are explicit in that record. Native maximum-health compatibility and standing stumble need proof; no engine capability is inferred from approval. Installed 0.2.41/test completion unchanged; no gameplay, version, test, install or Workshop change. Active f6ca54d inspected; origin fetched, existing PR #1 only. Record/mirror planning under C119.
+
+## C140 - uncapped module selections and Impact reconsideration (2026-10-11)
+
+Owner selects 1B, Initial Blow >=90% HP/+25% per copy without cap, Execute instant death at <=7% HP with +7 percentage points per copy, and 4A while asking for a better unlimited-stacking approach. [Current contract](checkpoints/R3_OFFENSIVE_MODULES.md#c140---selected-uncapped-rules-and-revised-impact-proposal-2026-10-11) records selected rules versus the proposed Impact diminishing-return curve (60% first copy, each additional removes 25% remaining failure chance). Existing physical slot limits remain; no blanket removal of unrelated module caps. Explicitly raise that 14 Execute copies reach 98%, 15 reach 105% and therefore full-health execution; preserve the owner's linear rule without imposing a new cap. Recommend lethal damage equal to actual remaining HP through the existing death route, not magic 9999 damage. Revised Impact probability awaits selection; health/stumble proofs and loot/power/endurance tuning remain open. No gameplay/version/install/test/Workshop changes or new patch approval. Inspected 15e1414, fetched origin, draft PR #1 only.
+
+
+## C141 - module capacity as percentage balance (2026-10-11)
+
+Owner asks how to tune percentages to avoid 100% at sixteen modules. [Revised proposal](checkpoints/R3_OFFENSIVE_MODULES.md#c141---slot-budget-percentage-proposal-2026-10-11): Impact retains 60% first-copy benefit and adds two percentage points per extra copy (90% at sixteen); Execute would change from the selected seven to three HP-threshold percentage points per copy (48% at sixteen). These replacement values are not approved; preserve C140 selections until chosen. Initial Blow +25% damage and Piercing remain selected and unchanged. Standard automation leaves fourteen effect slots, and Sandbox can exceed the standard sixteen-slot budget; no claim of an unlimited below-100% linear curve. No gameplay patch authorized. Installed 0.2.41/C138 test completion unchanged; planning-only GitHub mirror required.
+
+
+## C142 - Execute first-copy threshold proposal (2026-10-11)
+
+Owner proposes Execute at 10% HP for the first copy, +2 percentage points per additional copy. Recommended: more useful first-copy finishing and 40% at sixteen, compared with the prior proposed 48%. Impact remains proposed at 60% first/+2 points per extra (90% at sixteen). Numerical settlement/patch approval still pending; Initial Blow and Piercing unchanged. [Contract and arithmetic](checkpoints/R3_OFFENSIVE_MODULES.md#c142---execute-base-plus-increment-proposal-2026-10-11). Share Impact's stacking pattern only, not its first-shot restriction or probability semantics. Execute remains a deterministic kill on a successful eligible primary hit. No gameplay/version/test/install change; C119 planning mirror required.
+
+
+## C143 - Execute and Impact percentage approval (2026-10-11)
+
+Owner: "Approved", answering the explicit C142 numerical settlement question. Owner approves Execute at 10% HP for the first copy/+2 percentage points per additional copy, and Impact at 60% chance first/+2 points per additional copy. Sixteen copies yield a 40% Execute threshold or 90% Impact chance. Initial Blow and Piercing remain selected and unchanged. These percentage choices are settled; do not ask for their approval again. Remaining compatibility/loot/power details and native feasibility are still open; this approval answers the numerical choice, not an unoffered complete patch. [Approved contract](checkpoints/R3_OFFENSIVE_MODULES.md#c143---execute-and-impact-percentages-approved-2026-10-11). Installed 0.2.41/C138 unchanged; no new gameplay or test claim.
+
+
+## C144 - approval to proceed and concrete remaining power choice (2026-10-11)
+
+Owner: "Approved" after the C143 handoff. Owner approves proceeding after C143. R3C6 combat foundations are implemented in Source and pass 5,155 Kahlua assertions; native health/stagger method feasibility also passed in an isolated 42.21 probe. This is an unfinished development checkpoint, not an installed patch. A concrete power-cost question is pending: slots alone (recommended) versus +25% base firing power per new-module copy. Loot-only weight 2.5 alongside Splitter/Fragment was offered with that question. Item/loot/Sandbox/LootLab integration, complete native validation and packaging/install remain outstanding. [Scope and evidence](checkpoints/R3_OFFENSIVE_MODULES.md#c144---approved-implementation-progress-and-power-choice-2026-10-11). No gameplay values are inferred from the unanswered power question; installed 0.2.41/C138 unchanged.
+
+
+## C145 - global module-count power direction and calculated proposal (2026-10-11)
+
+Owner selects a global module-count power rule with per-type multipliers, initially equal, and requests a recommendation/calculated endurance. Proposed defaults: 0.005% battery charge per firing cycle; +5% of base cost per installed module; all type weights 1; no battery idle draw; generator base 0.0001 native fuel units/cycle with the same multiplier. These numbers await approval and replace the old C144 A/B question. C144 combat foundations remain committed/tested but uninstalled; no gameplay changes in this calculation turn. [Formula, counting scope, native fuel evidence and workload estimates](checkpoints/R3_OFFENSIVE_MODULES.md#c145---global-module-power-model-and-endurance-proposal-2026-10-11). Direction is confirmed; numerical defaults and counting exclusions are recommendations. Replace old Splitter/Fragment surcharges instead of doubling them; preserve saved custom settings explicitly. No new gameplay/test/install change.
+
+
+## C146 - damage/range power scaling direction (2026-10-11)
+
+Owner adds damage/range scaling to the global module-count power rule so stronger, longer-range weapons cost more per shot. Recommended weapon factor: max(1, sqrt((D/80) * (R/15))), using ordinary pre-module head damage and capped pre-module maximum range. Retain proposed 0.005% battery base, +5% per weighted module, equal initial weights and zero idle; numerical defaults remain proposed. At sixteen modules, vanilla M9 costs 0.009% per volley and MSR788 0.020785% (about 11,111 versus 4,811 volleys/full battery). C144 combat foundations are committed/tested but uninstalled; full integration and packaging remain outstanding. Installed 0.2.41/C138 unchanged. [Formula, scope, native stats and endurance](checkpoints/R3_OFFENSIVE_MODULES.md#c146---weapon-damage-and-range-power-proposal-2026-10-11). Owner confirms damage/range-dependent battery cost; the square-root shape, 1x floor, pre-module inputs, reference constants and generator extension are recommendations awaiting settlement. Higher cost per shot does not guarantee higher cost per kill. No new gameplay/version/test/install change.
+
+
+## C147 - power defaults approved; complete the module patch (2026-10-11)
+
+Owner: "Approved" in response to C146. Approves the complete battery formula, 1x weapon floor, pre-module damage/range inputs, equal per-type weights/counting exclusions, 5 percent per working module, 0.005 percent battery base, zero idle, and 0.0001 generator base with the same multipliers. No repeat numerical approval required. Continue C144-authorized integration, validation, installation and C108/C119 mirror. See [0.2.42 patch](PATCH_v0.2.42.md) and the versioned test record for implementation and evidence.
+
+C147 completion: 0.2.42 is installed and verified from immutable test/v0.2.42 / 2354a7ff3ed4ef174a0bbeb4d7d0051a620bc5d7. R3C6 implementation is complete; R3C7 owner verification is pending. [Release](RELEASE.md) and [test](TEST_v0.2.42.md) preserve actual evidence and limits. Hosted LootLab matches the new catalog.
+
+
+## C148 - optimization investigation during the 0.2.42 owner test (2026-10-11)
+
+Owner requests an optimization investigation and inventory of per-tick work while testing. Read-only gameplay audit authorized; no new optimization patch approval inferred. [Audit and proposed sequence](PERFORMANCE_AUDIT_v0.2.42.md) records nine OnTick registrations, two pause-aware, three zombie, two player and five render callbacks (21 unique with both packages), eight workers inside the existing scheduler, and 15 demand-driven UI/action method declarations. Recommend reducing barrier reconciliation, repeated barbed object discovery and duplicate turret stat resolution before broader rendering/queue cleanup or target-index redesign. Keep actor-update movement/landing/strike timing, pause semantics, independent packages and fresh shot validation. No measured speedup or current-lag attribution; the available console snapshot is startup-only. R1C3 investigation continues alongside pending R3C7; installed 0.2.42 and its owner test are unchanged. C108/C119 requires this planning evidence to be mirrored to GitHub.
+
+
+## C149 - retain optimization scope; match fast bounded ammo transfers (2026-10-11)
+
+Owner: keep C148 for the next update; transferring roughly 600 rounds into turret inventory freezes while Manage transfers individually. Requests fast, matching rates through both interfaces. Next-update direction confirmed; no immediate patch/install during testing. [Investigation and implementation contract](PERFORMANCE_AUDIT_v0.2.42.md#c149-bulk-ammo-transfer-follow-up-2026-10-11) prioritizes ammo transfer before the five retained optimization offers. Native light-item groups cap at 20, but queue merging and repeated OMH full-container validation are not time-budgeted. Manage disables merging explicitly; pending-item accounting must be adapted when unifying paths. Preserve native item/weight/reach/interruption rules, live ammo consumption, no duplication, and bounded work. Console confirms 0.2.42 and 343/542/563 ms gaps in transfer windows; correlation is not isolated causal profiling. [Versioned finding](TEST_v0.2.42.md#c149-owner-finding-bulk-ammo-transfer-freeze-2026-10-11). No gameplay files or acceptance result changed; R3C7 remains open with this finding.
+
+
+## C150 - ammo-saving module, battery clarity and compact Manage discussion (2026-10-11)
+
+Owner requests two shots per consumed round with increasing module stacks, naming alternatives, clearer battery costs/endurance and narrower Manage cells with battery/expansion in the two unused first-row cells. After a structured question, owner explicitly requests 1A/1B/1C reply options instead and says discussion is still needed. No option was selected; no patch approval inferred. [Contract and exact options](checkpoints/R3_AMMO_SAVER_MANAGE.md) recommends Ammo Saver, existing ammo-cost discount (including Splitter), adaptive display-only rounding plus battery-tooltip remaining volleys, and battery/expansion in the two gaps (1A/2A/3A/4A). Linear uses-per-round=count+1, normal per-volley power and anti-reset persistence are proposed rules, not silently settled. Rounding UI leaves consumption unchanged; game days are a workload-dependent estimate, not a remaining-life guarantee. C149 transfer fix remains first priority and C148 optimizations stay queued. Persisted the requested discussion format in AGENTS. Installed 0.2.42/R3C7 acceptance unchanged; decision needed in conversational options, not another question form.
+
+
+## C151 - Conservation Module and Manage selections (2026-10-11)
+
+Owner selects 1D Conservation Module, 2A existing-ammo-cost discount (including Splitter), asks to combine 3A+3B battery information, and selects 4C because battery/expansion beside the modules would be confusing. [Updated contract](checkpoints/R3_AMMO_SAVER_MANAGE.md#c151---selected-name-splitter-accounting-hybrid-battery-tooltip-and-separate-utilities-2026-10-11) records the combined tooltip: rounded cost, remaining volleys, labeled real-time continuous-firing estimate and zero idle drain; charge remains visible. Display rounding changes no actual consumption. Battery/expansion stay above; narrow the window/cells and retain 4/6/6 with empty end gaps. Do not revive 4A or alternate module names as unresolved choices. This is design discussion/selection, not an immediate patch/install request. C149 transfer fix stays first; C148 retained; installed 0.2.42/R3C7 acceptance unchanged.
+
+
+## C152 - module benefit list requested (2026-10-11)
+
+Owner requests each module and its current benefit in the blue-marked lower-right Manage details area. [Presentation contract](checkpoints/R3_AMMO_SAVER_MANAGE.md#c152---installed-module-benefit-list-in-manage-2026-10-11) recommends grouped duplicate counts, effective combined effects from actual settings/head, visible inactive/broken/capped reasons and a fixed-height scrollable list. Preserve C151 utilities above the modules, narrower window and 4/6/6; constrain left-side text to avoid overlap. Reuse existing 200 ms refresh/cached rows, no new tick handler. This adds requested next-update UI scope, not an installed fix or test pass. C149 correction remains first and C148 optimizations stay retained.
+
+
+## C153 - short module effects, individual-row hover explanations (2026-10-11)
+
+Owner directs concise Installed Modules rows such as `<14% HP` / `+2 Shots`, with explanations on module descriptions and hovering each individual list row. [Updated contract](checkpoints/R3_AMMO_SAVER_MANAGE.md#c153---compact-installed-modules-labels-and-row-tooltips-2026-10-11) replaces C152 descriptive sentences with name/count/compact effect; conditions go to each row's tooltip. Use inclusive `≤14% HP` to match actual Execute logic, not a gameplay change. Retain brief inactive/capped/broken flags, current values, grouped counts, scrolling and existing UI refresh. Next-patch design correction only; installed 0.2.42 and owner-test state unchanged.
+
+
+## C154 - combined implementation approved (2026-10-11)
+
+Owner: "Approved. Go ahead and patch all of this, including the ammo transfer fix and optimizations." This authorizes C148-C153 as the combined 0.2.43 patch: fast bounded transfers through both interfaces; the five recorded maintenance/cache/stat/render/queue optimizations; Conservation Module; narrower Manage; battery endurance tooltip; compact Installed Modules list with individual row details. Native verification, local install and the standing C108 development mirror follow. Owner acceptance remains pending; no Workshop publication or merge. Conservation is loot-only with the existing offensive-module weight (2.5), normal module weight (0.3), and ordinary power load (1); no recipe.
+
+
+## C155 - Manage presentation, target cycling and Synergy discussion (2026-10-11)
+
+Owner requests segmented/dimmed UI regions, left-name/right-effect Installed Modules rows, automatic Horde Night rarity colors, remaining bars, reload-aware concise battery text without tick calculations, Once each Filter priority and a possible rare Synergy module. Explicit request: "Let's discuss. Show image examples and options." [Full contract/options](checkpoints/R3_MANAGE_RARITY_SYNERGY.md) recommends 1A inset panels, 2A log-spaced positive catalog weights, 3A one fired shot per round member, 4A cached reload-aware per-shot estimates, and 5A one extra nonrecursive Fragment burst per Synergy per shot. These defaults and Synergy tuning remain proposals. Source/package/install unchanged. No completed owner test or acceptance inferred; console findings recorded against 0.2.43.
+
+
+## C156 - selected Manage design, full rarity spectrum and single-copy Synergy (2026-10-11)
+
+Owner selects 1B, 2A with the missing ultra-easy/ultra-hard colors, 3A, 4A, and custom 5D: "It will be only 1 instance allowed, but it's 100% chance." Record one installed Synergy per turret and guaranteed activation on eligible hits; this supersedes stackable burst allowances and chance-based Synergy. Horde Night endpoint constants are verified as #82AEFF and #420D82, yielding seven rarity stops. [Selected contract](checkpoints/R3_MANAGE_RARITY_SYNERGY.md#c156---selected-options-and-full-palette-2026-10-11) retains no-recursion recommendations and explicitly asks 6A Fragment-only versus 6B broader offensive interaction scope. No repeat of settled choices; no gameplay changes/install or inferred test acceptance.
+
+
+## C157 - Martyrdom, Tack and broader Synergy selected (2026-10-11)
+
+Owner selects 6B. Martyrdom Module: zombies pop on death with nearby damage; stacks increase AoE distance; loot weight 1.5. Tack Module: first shot on a new target drops tacks with barbed-wire-style slowdown/DoT; stacks increase AoE distance; loot weight 1.5. Owner explicitly includes Splitter and Fragment as Synergy trigger sources, and sets Synergy loot weight 1.0. Preserve one installed Synergy and 100-percent eligible activation. [Updated contract and proposed tuning](checkpoints/R3_MANAGE_RARITY_SYNERGY.md#c157---broader-synergy-martyrdom-and-tack-2026-10-11) distinguishes selected content from proposed death attribution, damage, radius curve, Tack lifetime and terminal-effect rules. Prior fragment-only scope and weight 1.5 for Synergy are superseded. No gameplay implementation or test acceptance inferred.
+
+
+## C158 - module tuning selected; minor player injury discussion (2026-10-11)
+
+Owner selects 1A, 2A with 20-radius noise, 3A with retrigger after the ten-second lifetime, 4B, and 5B. This confirms terminal death/Tack effects, Martyrdom on eligible turret kills, ten-second Tack fields that rearm the same zombie after expiry, linear +.25 radius stacking, and player interaction. Owner asks for explosion damage status options, suggesting a minor bruise. [Current contract](checkpoints/R3_MANAGE_RARITY_SYNERGY.md#c158---selected-module-tuning-and-player-injury-options-2026-10-11) proposes 6A minor blunt damage/pain, 6B native scratch, 6C soreness only, plus 7A one-second player injury protection versus 7B every burst. No dedicated native Bruise flag/status found in installed BodyPart/UI evidence; native runtime verification still required. No gameplay patch or implied 0.2.43 test pass.
+
+
+## C159 - injury choices finalized; optimized implementation readiness (2026-10-11)
+
+Owner selects 6A and 7A, emphasizes optimization because Synergy can get dicey, and asks "Are we ready to implement? Recap." This settles minor blunt injury (proposed 2 limb body-part damage plus 5 pain) and one active-second player-only burst protection. [Final contract](checkpoints/R3_MANAGE_RARITY_SYNERGY.md#c159---design-ready-for-implementation-2026-10-11) consolidates C155-C158 and requires incremental bounded effect jobs, admission/back-pressure, local Tack indexing, per-shot snapshots, terminal DoT/death damage, cached UI and measured multi-turret stress/native persistence tests. No owner-design question remains; technical proof remains implementation work. Readiness/recap only this turn; no gameplay patch, installation or inferred 0.2.43 test pass.
+
+## C160 — 0.2.44 implementation approved (2026-10-11)
+
+Owner says “Approved.” after C159 readiness/recap. Implement the complete Manage, rarity, Once each, Synergy/Martyrdom/Tack bundle and its bounded processing contract. Local verification, package independence, LootLab and C108 mirror remain required. No owner gameplay acceptance or publication is implied.
+
+
+## C161 - owner findings, delayed effects and rarity-power discussion (2026-10-12)
+
+Owner requests simpler percent/in-game-time battery text, slider/status polish, investigation of distant accuracy, .75-second Martyrdom and .5-second Tack delays with auditioned native sounds, 67-percent packed turret weight compression, range-end Fragment with .25-second delay and existing suppressed pistol audio, Piercing on all guns including shotguns, and a four-field Feature/Stackable/Battery Drain/Rarity tooltip format. Rarity and drain should be linked over 1.1x-3.0x. Owner invites choices where something is off; sound selection is explicitly requested through the existing HTML audition workflow. The layout picker selects Inset panels. [C161 contract](checkpoints/R3_EFFECT_POLISH.md) records exact requests, confirmed errors, recommended interpretations and numbered alternatives. Current 5-percent additive module surcharge is not retroactively a rarity multiplier. Fragment endpoint, power interpretation and far-range balance require discussion; no gameplay implementation is claimed this turn.
+
+Console review confirms 1,355 Tack marker null-module exceptions in the captured 0.2.44 SP slice. The first failing startup is absent. Current native Lua search-path evidence supports early client-to-server require as the cause; ordered startup proof belongs in correction. Earlier automated evidence is retained with this explicit coverage failure; owner acceptance remains open. Local audio picker renders six native candidates plus the existing suppressed M9 reference. C108/C119 requires mirroring these findings and plans now.
+
+
+## C162 - additive power clarification; accuracy, Fragment and Tack selections (2026-10-12)
+
+Owner says "1C ... start at 1.0, and each module adds between 0.1x - 2.0x", selects 2A/3B/5B, and requests more Martyrdom sounds because the initial choices are too extreme. [Updated contract](checkpoints/R3_EFFECT_POLISH.md#c162---selected-rules-and-expanded-martyrdom-audition-2026-10-12) records the additive formula and its equivalence to previous 1B: sixteen cheapest/highest-cost copies give 2.6x/33x, before the retained weapon factor. Suggested interior rarity increments are recommendations. Shotgun shared aim roll/current far defaults, terminal-stop Fragment and MetalworkingPunchDrop Tack audio are selected. Five new native previews (4D-4H) replace the rejected Martyrdom set. Sound choice remains open; no gameplay install/test acceptance or publication is implied.
+
+
+## C163 - Martyrdom sound selection and early playback (2026-10-12)
+
+Owner says "4G, but play it slightly before they pop so the impact is timed correctly. The file has some attack to it." Select native AttackStomp and begin its audio before the .75-second death-to-pop deadline. [Current contract](checkpoints/R3_EFFECT_POLISH.md#c163---martyrdom-stomp-selection-and-audio-lead-2026-10-12) proposes a .20-second lead based on the existing capture's .182-second peak / .209-second RMS attack relative to audible onset. This offset is initial calibration, not an owner-specified exact value or verified rendered synchronization. Damage/pop/AI noise remain at .75 seconds; no new gameplay implementation, install or test pass is claimed. C162 choices remain, and no sound selection remains open. Commit/mirror these planning changes under C108/C119.
+
+
+## C164 - immediate LootLab colors, shapes and sticky controls (2026-10-12)
+
+Owner requests new-module colors, proposes per-type shapes, then requests sticky Show/Hide All and says "Fix that this turn, and recap the next patch." This authorizes the small hosted UI update. Implemented 28 stable ID-keyed colors with future fallback, five family shapes across map/list and sticky visibility controls below the responsive sync banner. No loot/model/account/gameplay tuning changes. [Implementation and evidence](checkpoints/R3_EFFECT_POLISH.md#c164---lootlab-appearance-and-scrolling-correction-2026-10-12). C161-C163 gameplay patch remains pending separately. No new final art, mod install or Workshop publication.
+
+
+## C165 - approved correction patch and packed-pickup clarification (2026-10-12)
+
+Owner says "Approved" after the C164 recap, authorizing implementation of C161-C163. The seven interior rarity surcharges follow the proposed .1/.2/.4/.7/1/1.5/2 table as implementation tuning. [0.2.45 patch](PATCH_v0.2.45.md) implements the effects, startup, accuracy/Piercing, descriptions, additive power and UI changes. Automated verification is separate from owner acceptance; C108/C119 mirror remains required.
+
+During native weight verification the bag flag proved equipped-only. The owner clarified that reduction means after pickup, then confirmed automatic packing when clicking Pick Up, the normal contents summary, and unpacking through the existing placement action. This approves that flow, not a Java dependency or lossy item reconstruction. The ordinary-Lua native snapshot restore route failed because ByteBuffer is not exposed, and reflection is debug-only. Packed-weight implementation is withheld pending reliable exact-item preservation; the rest of the correction patch proceeds independently. Earlier assistant wording that packing would simply restore everything preceded this proof and is corrected here. The requested weight reduction remains approved and unfinished, not silently replaced by equipped-only reduction.
+
+
+## C166 - Endurance, safe packing, efficiency and rarity choices (2026-10-12)
+
+Owner reports battery drain works but the late-game turret lasts about 1.5 in-game minutes. Latest saved Battery use is 0.1, twenty times the shipped .005 default; log confirms 4.07965% per shot. Console also confirms repeated inventory rarity-tooltip errors at TurretMenu.lua:24. Battery acceptance is partial; the rest of the patch is not cleared. [Evidence and numbered options](checkpoints/R3_POWER_PACKING_OPTIONS.md) cover safe pickup alternatives, six-hour endurance tuning, Power Efficiency and seven rarity names. These are discussion proposals, not new gameplay approval. Packing remains unfinished. **Decision needed** on the four choice groups; no repeat test requested while discussing the corrective patch.
+
+## C167 - Selected packing, module weight, Regulator and rarity (2026-10-12)
+
+Owner selects 1C (full automatic packing), adds module item weight .3 -> .2, selects 3B named **Regulator Module**, and 4A **Abundant / Common / Uncommon / Rare / Epic / Legendary / Mythic**. Packing remains a native feasibility task; this does not authorize an added Java dependency or lossy restoration. The revised power proposal is base **.0008%** with **+.1x to +1x per module**, explicitly submitted for evaluation. [Updated contract and calculations](checkpoints/R3_POWER_PACKING_OPTIONS.md#c167---selected-directions-and-revised-power-evaluation-2026-10-12). With the tested weapon/day/cadence, sixteen highest-cost modules give only 3.54 hours before reloads, so the prior six-hour target needs qualification or lower base drain. **Decision needed:** retain .0008 for stronger power tradeoffs, or use .00045 for about 6.3 hours on that high-cost reference build. No gameplay patch or saved-setting change this discussion; existing tooltip defect remains queued.
+
+## C168 - Approved endurance, Regulator, weight and rarity update (2026-10-12)
+
+Owner: "2B Approved to update." This selects .00045% base battery cost and the .1-1.0 additive rarity range from C167. Interior increments .1/.15/.25/.4/.6/.8/1.0 follow the presented recommendation. Approves implementation of Regulator (+25% endurance/copy), module weight .2, selected names, tooltip correction and safe packing investigation. [0.2.46](PATCH_v0.2.46.md) implements all except full packing, which remains blocked by unproven native exact-item restore. No dependency or lossy workaround is approved. Regulator uses Rare default weight 5.5, utility loot pools, battery-only benefit and zero own surcharge as the discussed supporting defaults. The identified closed test save's Battery use may be corrected from .1 to .00045 with a backup; unrelated settings and other worlds remain unchanged. No universal six-hour guarantee is claimed. LootLab catalog/migration is deployed and verified; no Workshop upload.
+
+## C169 - Packed turret blocker and simple alternatives (2026-10-12)
+
+Owner asks what still blocks packed weight reduction and for the simplest safe options. Rechecked installed 42.21 InventoryContainer weight methods and InventoryItem.isFakeEquipped, plus the recorded ordinary-Lua buffer failure. The native special case is key-ring-specific, not a general equip flag. [Options and recommendation](checkpoints/R3_POWER_PACKING_OPTIONS.md#c169---simplest-safe-packing-alternatives-2026-10-12): 1A native equipped carry case recommended for simplicity if a slot is acceptable; 1B lighter base only; 1C retain exact automatic ordinary-inventory packing and investigate a concrete native bridge before dependency approval. No alternative selected, no gameplay implementation, no new test requested. Original full packing remains approved but technically unfinished; do not imply the failed route proves all native approaches impossible. C108/C119 planning mirror applies.
+
+## C170 - Abandon packed-weight reduction; focused test (2026-10-12)
+
+Owner: "I guess we'll just have to abandon the idea. What's my short test?" Cancels the packed-turret weight-reduction feature and its feasibility work. Keep existing exact-item pickup/placement at full contents weight; do not substitute C169 alternatives. Module weight .2 and all other installed 0.2.46 changes remain. Current planning/roadmap are updated; historical failures remain recorded. Provide the complete short five-step 0.2.46 test, then inspect console.txt after the owner reports completion. No test acceptance, new patch, gameplay edit or version bump is implied. C108/C119 documentation mirror applies.
+
+
+## C171 - Direct LootLab weights and ongoing 0.2.46 findings (2026-10-12)
+
+Owner requests direct component weights in LootLab and annotates the battery estimate remaining in minutes. Implemented/deployed direct-weight controls with unchanged saved tuning/schema and compatible Sandbox export; 77 API/page tests plus model/browser checks pass. [Contract/evidence](LOOTLAB_DIRECT_WEIGHTS.md). Confirmed minutes-only formatting and console tooltip/capacity issues are recorded for the next game correction, not silently patched or accepted. No game balance/code/version change, no database tuning write, no new gameplay acceptance. C170 packing cancellation remains. C108/C119 mirror applies.
+
+
+## C172 - Sticky LootLab map and bottom statistics (2026-10-12)
+
+Owner requests that the map follow while scrolling and statistics move to the page bottom. Implements/deploys a bounded CSS-sticky desktop/tablet map with toolbar and full-width bottom statistics, including summary metrics and tables. Narrow phones retain normal map flow to avoid covering controls. [Behavior and evidence](LOOTLAB_SCROLLING_MAP.md). Browser layout/weight suites and all 77 API/page checks pass. No saved tuning, game code/version, database or pending C171 game-fix status changes. C108/C119 development mirror applies.
+
+
+## C173 - Module pack, rolling reveal and supplied loot weights (2026-10-12)
+
+Owner requests a new card-pack-like item using all module weights, an optional default-on CS2-style roll with Manage module icons/text/rarity-colored foreground and background, combined with battery hours/minutes formatting. Requests using the attached LootLab tuning and confirmation before one more support requirement. Validated all 29 exported entries; recorded exact original JSON/hash and effective weights, including Regulator 6, Firing/Detection 15 and Martyrdom/Tack 2. [Plan](checkpoints/R3_MODULE_PACK.md). This turn records the approved direction; no implementation until remaining support and pack details are discussed. Normalize relative pack selection rather than equating it with independent container loot rolls; committed-outcome visual reveal and migration avoiding double-applied weights are recommendations to verify. C171 defects stay queued. C108/C119 planning mirror applies.
+
+
+## C174 - Project Viewpoint feasibility inquiry (2026-10-12)
+
+Owner asks whether first-person mod support is realistic before moving it to another chat. Read-only inspection finds installed Viewpoint 0.1.6 for PZ 42.21, mouse world-coordinate helpers and native context-menu harvesting; OMHTT retains isometric selection/overlay assumptions and an unproven native 3D render hook under Viewpoint. [Evidence and proposal](checkpoints/VIEWPOINT_COMPATIBILITY.md). Recommend a separate optional adapter prototype for one turret and trap, preserving dependency-free core packages. Full rendering/performance support remains unverified; no implementation, dependency change or chat creation authorized. C173 pack/weights/battery planning stays separate and its remaining choices are unresolved. C108/C119 mirror applies.
+
+
+## C175 - Module-pack/hour patch approval and weights reaffirmed (2026-10-12)
+
+Owner approves the hour patch and module pack, explicitly adds the new weights, and then invites questions/options first. Scope approved: adaptive battery hours/minutes, weighted pack/reveal, all 29 supplied effective weights. [Remaining material choices and proposed defaults](checkpoints/R3_MODULE_PACK.md#c175-approval-and-remaining-choices): reward count, additional versus replacement loot, expansion-kit eligibility. These choices are not settled by feature approval. No gameplay/package change this turn; Viewpoint stays separate and C171 findings remain pending. C108/C119 planning mirror applies.
+
+
+## C176 - Three-reward packs, supplemental loot and zombie bodies (2026-10-12)
+
+Owner selects 1B/2A/3A: three independent draws with duplicates, packs alongside loose modules at container weight 1.0, and all 29 exported entries including expansion kits. Adds more-frequent pack finds on zombie bodies. [Contract and final rate choice](checkpoints/R3_MODULE_PACK.md#c176-selected-pack-rules-and-zombie-body-loot). Recommend separately configurable 1% per eligible body, with 0.5%/2% alternatives; numerical rate not yet approved. Container weights and corpse probabilities are distinct. Existing hour/weight/pack approval persists; do not require generic reapproval after the rate choice. No gameplay patch or test claim this turn.
+
+
+## C177 - Fifteen-percent corpse packs and 0.2.47 implementation (2026-10-12)
+
+Owner: "should be way more common, like 15%". Select 15% independent once-per-body pack chance, including turret kills, separate from container weight 1.0. Existing approval covers three rewards, duplicates, all 29 entries, optional reveal, supplied weights and battery hour/minute fix. Implemented with native inventory transactions and event timing evidence; [final contract](checkpoints/R3_MODULE_PACK.md#c177-15-percent-body-rate-and-implementation), [patch](PATCH_v0.2.47.md), [test](TEST_v0.2.47.md). C171 inventory tooltip correction is included; capacity warnings remain open. Saved tuning preserved; rarity/power follow loaded weights. LootLab deployed with loose-module-only estimate note. No further design gate, Workshop upload, Viewpoint implementation or packed-turret weight reduction.
+
+
+## C178 - Review of 0.2.47 performance and new features (2026-10-12)
+
+Owner requests a double-check of optimizations/performance and concerns. [Audit](AUDIT_v0.2.47.md) records confirmed tooltip allocation, small-viewport reveal overflow and empty-reward-pool acquisition issues; recommends a small corrective patch with unchanged balance. Review/test/documentation only; no gameplay patch approval inferred. Source/Contents and installed test/v0.2.47 unchanged. 16,084 combined assertions pass; current console is still 0.2.46. C108/C119 mirror applies.
+
+
+## C179 - Record audit concerns and reaffirm Alex guidelines (2026-10-12)
+
+Owner: "Note this down and confirm Alex’s guidelines are being followed, including no Pcalls". Record the C178 corrections without inferring gameplay patch approval. Direct scans confirm zero pcall/xpcall tokens in owned source, packages and installed copies; retain validator enforcement and add a concise per-turn reminder. Full compliance is qualified: tooltip wrapping/caching and new-pack inline-conditional style gaps remain. [Evidence and pending scope](AUDIT_v0.2.47.md#c179---alex-guideline-confirmation-and-queued-work). No package/version/install/balance change; C108/C119 mirror applies.
+
+
+## C180 - Implement the remarked audit corrections (2026-10-12)
+
+Owner: "Go ahead and solve the remarked issues". Explicitly authorizes the focused C178/C179 corrective patch, validation, installation and standing GitHub development mirror. Implemented as 0.2.47.1: cached tooltip wrapping; viewport-bound reveal with wheel/arrow scrolling and fixed Skip/Close; native script display metadata instead of temporary items; cached weighted pool/loaded eligibility; suppress empty-pool acquisition; clean new pack non-guard inline conditionals. Preserve pack rates, draws, weights, transaction safety and SP-only scope. [Patch](PATCH_v0.2.47.1.md), [test/evidence](TEST_v0.2.47.1.md). C171 capacity warning investigation is separate and remains open; no unsupported claim of resolution. No Workshop upload or hosted-tool change.
+
+
+## C181 - Capacity diagnosis, pack presentation and LootLab tiers (2026-10-12)
+
+Owner asks to investigate warnings, clean the reveal to match Manage, replace bottom controls with one green Collect button, check the rarity spread, provide sound-choice HTML and create a tier-assignment section in LootLab. Implement the directly requested UI/tier workflow and the confirmed capacity correction as 0.2.47.2. No additional gameplay balancing or sound selections inferred. Collect closes the already-secured rewards, including during rolling, without another grant. All 29 supplied defaults use seven bands; the current saved all-one values use six. Tier drafting never resets saved values automatically. Sound/particle candidates are reviewable in art/PACK_AUDIO.html; await choices before runtime playback. [Contract and findings](PACK_POLISH.md). C108/C119 development mirror applies; no Workshop upload.
+
+## C182 - Pack cues, four-second fade and tier reopening (2026-10-12)
+
+Owner selected 1B with native pitch variation, 2B, 3C, and 4B with a four-second fade; requested immediate tier color/rarity refresh and reopening assignments for equal weights. Implement native object-rotation/pickup cues and pulse only; owner-created rarity files are not supplied. Additional randomized pitch remains an explicit engine limitation, not a completed requirement: current EventSound does not apply clip pitch and FMODSoundEmitter.setPitch writes all sounds. Keep native events unchanged rather than affect other UI audio. See PACK_POLISH.md and TEST_v0.2.47.3.md. Tier assignments are derived without retuning weights; same-page confirmed tier values are retained. Colors remain actual game formula results; component map identity colors stay separate. No account schema/default changes or particles.
+
+## C183 - Persistent LootLab tier weights (2026-10-12)
+
+Owner corrects the C182 session-only limitation: tier weights must remain saved after refreshing or reopening LootLab. Implement account-backed persistence using the existing versioned settings JSON, with browser storage in the local copy. Save only on Confirm; maintain Cancel, exact module weights, automatic matching groups, per-field conflict merging and offline recovery. Old clients must not delete new tier metadata. No new database table/migration, gameplay version, local install or Workshop publication. Deployed and verified; details in LOOTLAB_TIER_PERSISTENCE.md.
+
+## C184 - Diagnose inconsistent tier and card rarities (2026-10-12)
+
+Owner reports yellow cards in orange rows and green cards in yellow rows. Confirmed cause is separate manual tier labels and the unchanged logarithmic runtime classifier, not demonstrated stale saved weights. Record this as unresolved semantic acceptance. Recommend shared saved tier-weight rarity anchors in LootLab and the mod (1A); alternatively derive fixed tier weights from the existing classifier (1B). The first changes rarity-based power costs; the second restricts custom tier weights. No new gameplay/site change approved by this question. See LOOTLAB_TIER_PERSISTENCE.md#c184-rarity-row-conflict-2026-10-12.
+
+## C185 - Approved shared rarity anchors (2026-10-12)
+
+Owner: "1A". Approves C184 option 1A: saved tier weights define rarity across LootLab and the mod, including existing rarity battery surcharges. Implement in 0.2.47.4 with geometric midpoint boundaries (ties rarer), positive strictly descending anchors, Sandbox export, automatic compatibility and explicit invalid-setting handling. No new loot/default weights or account data writes authorized. [Contract](LOOTLAB_TIER_PERSISTENCE.md#c185-shared-rarity-anchors-2026-10-12). Inspected active branch 3f8e32d and fetched origin; no incoming planning change. Automated verification, deployment/install and owner acceptance remain separate.
+
+## C186 - Owner rarity audio received and next-update recap (2026-10-12)
+
+Owner supplied seven named rarity WAVs in Audio/Turrets & Traps and requested a recap. Record files received for the already selected C182 custom-audio option; next work is Module Pack rarity reveal audio. Highest-rarity-only playback remains the recommended integration to avoid layered fanfares, using C185 cached classification. Inventory/format inspection only this turn; no gameplay/version/install changes or audible acceptance. Existing inset-panel layout selection is consistent with installed UI, not new scope. [Contract](PACK_POLISH.md#c186-owner-rarity-sounds-received-2026-10-12).
+
+## C187 - Requested current LootLab weight check (2026-10-12)
+
+Owner expects a couple Mythic items and requests confirmation of the next patch. Saved weights cannot yet be verified: available browser is signed out and auto-review rejected the read-only database access path pending explicit account authorization. Requested permission or an export. Do not claim Mythic assignments from old defaults. C186 custom rarity audio remains next; no implementation/version/install changes this turn. [Details](PACK_POLISH.md#c187-current-weights-check-2026-10-12).
+
+## C188 - Authorized read and verified current LootLab weights (2026-10-12)
+
+Owner: "Approve read-only check" for the explicit C187 account/database query. SELECT succeeded with one row read and zero writes, revision196 at 2026-10-12 22:26:27 UTC. Four Mythics at weight1: Autoloader, Enhanced Firing, Enhanced Detection, Synergy. All seven anchors20/18/14/10/6/3/1 are valid and populated. Record the exact snapshot for the next sound/weight patch plan; no gameplay/default/site mutation performed. Do not imply that read approval installed the values or authorizes unrelated global loot changes. [Contract](PACK_POLISH.md#c188-verified-saved-weights-2026-10-12).
+
+## C189 - Approved custom audio and saved loot defaults (2026-10-12)
+
+Owner: "Approved." This approves the C188 combined patch: the verified saved weights/anchors and C186 seven custom rarity sounds with one highest-rarity cue. Rechecked revision 196 unchanged immediately before implementation. Source branch codex/performance-barbed-audit at f58d354 was reconciled with fetched origin. No additional owner decision is required.
+
+Implemented in 0.2.48. New-world Sandbox defaults, LootDefinitions fallback and LootLab reset/default baseline use all 29 exact C188 weights and anchors; original item base weights remain intact. The global module multiplier is 1.011111111111111. Unrelated material rates, pack corpse chance, recipes and existing saved Sandbox values are unchanged. Old account scenarios migrate baseline identifiers without silently adopting defaults; legacy missing tier metadata retains automatic classification. Current 0.2.47 browser clients can save their complete existing settings without losing values; malformed/missing component fields are rejected. No account row or schema was written by deployment.
+
+All seven original PCM WAV files are copied byte-for-byte, preserving original level differences. Native UI sound scripts use one non-looping non-spatial clip per tier. Highest actual reward rarity is cached at panel creation; at the existing four-second settle, the pickup selection cue and one rarity cue play. Both owned handles stop on Collect or replacement. Early Collect skips unfinished reveal audio and preserves already granted rewards. Disabling the rolling UI retains its existing halo behavior. No new tick handler, per-frame item allocation, global pitch mutation, particles or zombie-hearing event. Native tick pitch variation remains unresolved as documented under C182.
+
+Rarity-linked battery surcharges follow the new anchors: .1/.15/.25/.4/.6/.8/1; Regulator retains its battery-only reduction without a surcharge, and separate expansion kits remain exempt. This is a consequence of approved rarity tuning, not a new drain formula. Existing worlds require explicit Sandbox import to adopt the new weights and anchors.
+
+Performance and validation: 16,166 assertions; 117 Lua/translation files compile; native parser/FMOD UI handles play/stop all seven sounds in a muted probe. Pack tests cover every highest-tier choice, exactly one reveal cue, early Collect, replacement and long-frame no-burst behavior. The 300-frame probe creates no items or text wraps. Changed shipped Lua retains Alex's annotations/guard-only style and introduces no pcall/xpcall. Native persistence/package results and owner acceptance are recorded in TEST_v0.2.48.md, not inferred from mocks.
+
+Balance observation: LootLab's full-retention default model estimates 70.0% one/two-component and 15.1% five-plus-component hauls among successful containers. This exceeds the previous test fixture's under-10% assumption because the owner changed weights. Preserve the explicit approved tuning; report measured estimates without treating them as guaranteed in-game loot or global vanilla spawn changes. The saved scenario's .7 retention is simulator-only.
+
+## C190 - Staggered, longer and faster-opening pack reels (2026-10-12)
+
+Owner explicitly requests offsetting each roll, bottom last, extending roll time and increasing initial speed. Implemented in 0.2.48.1 as a presentation-only correction: each row starts 350 ms after the previous one and rolls for six seconds. Relative to panel opening, starts are 0/0.35/0.70 seconds and stops are 6/6.35/6.70 seconds. Travel increases from 13 to 39 card widths with the same cubic ease-out, yielding twice the initial velocity while allowing a longer slowdown. Each row expands onto its already granted winner and begins its four-second pulse independently.
+
+One shared rotation-tick stream remains limited to at most one sound per 100 ms. Selection and the one cached highest-rarity cue wait until the bottom reel finishes. Collect/replacement still stops both owned handles; early Collect keeps all three already granted rewards. Long frames skip missed ticks rather than replaying them. The rolling toggle, loot weights, reward selection, three independent draws, sounds themselves and gameplay remain unchanged. With C189 defaults, Mythic odds remain 1-(269/273)^3 = 4.3315% per pack.
+
+The three reel tables cache position/crossing/settlement scalars. Their 42 card entries reuse the existing per-type card metadata; only visible card indices are iterated during drawing. No per-frame items/text wrapping/tables, new event handler, protected call, global sound modification or new asset. Changed Lua follows Alex's annotations, four-space and guard-only inline rules. The existing getTimestampMs/ISPanel/sound API paths were validated in C189; no new native API is introduced.
+
+Verified with 16,180 assertions and 117 Lua/translation compilations. Focused coverage includes staggered starts/stops, initial speed comparison, exact winner, per-row pulse, final-only cue, early collection, replacement and a 20-second frame jump without backlog. A 500-frame render probe creates no items or text wraps; small-viewport controls remain in bounds. Initial test failures were stale 16-card/four-second expectations, updated to the requested behavior. Native package/save/restart results and installation are in TEST_v0.2.48.1.md. Rendered pacing remains owner acceptance, not inferred from mocks.
+
+Inspected branch codex/performance-barbed-audit at 8b089b7, fetched origin and checked the sole open draft PR #1 before edits. This stays within R3C7 pack polish; no new phase or broader combat retest. LootLab remains on its verified C189 deployment and unchanged 0.2.48 loot baseline.
+
+## C191 - Owner accepts reels; two timing refinements queued (2026-10-12)
+
+Owner: "Works well! Let's do 0.15s apart and adjust the rarity sound to be .25s earlier. It has some lead in. We'll add this to the next patch. What's next on our checkpoints?" Accept the reported 0.2.48.1 reel behavior; record these exact refinements as approved for the next patch, not authorization to install another patch during this discussion.
+
+Queued: change row spacing from 350 to 150 ms, retaining six seconds per reel and the current twice-faster opening. Start times become 0/.15/.30 seconds and stop times 6/6.15/6.30 seconds. Play the existing one highest-rarity sound 250 ms before the bottom reel's scheduled stop, at 6.05 seconds after opening, to align its authored lead-in. Keep the selection cue at final settlement, independent four-second row pulses, one bounded tick stream and Collect/replacement cleanup. A skipped threshold must trigger at most one cue; no catch-up burst. Reward rolls, weights, Mythic odds and audio files remain unchanged. Implementation is pending.
+
+Console capture 20261012-195320-4179 confirms 0.2.48.1 and ten completed pack actions. No ERROR/Exception/stack trace occurs from the first pack opening through capture; recorded active-update gaps in that segment peak at 54 ms. Earlier log errors include fonts/fluid scripts and Firearms translation formatting, so this is not a whole-console-clean claim. No OMHTT pack exception found. This supports the owner's pack result, not a combat stress certificate or acceptance of every historical checklist. No repeat pack test is requested now. [Versioned result](TEST_v0.2.48.1.md#c191-owner-result-and-console-review-2026-10-12).
+
+Roadmap reconciliation: R3C4 contract/baseline, R3C5 Magazine/Splitter/Fragment and R3C6 conditional/Piercing content are already implemented; don't propose redoing their choices. R3C7 combined balance/endurance/lifecycle is still the open module-track checkpoint; this pack slice is now owner-accepted, with two queued polish changes. R1C3 performance/authority remains parallel work, and previously accepted lag improvements stay accepted. The next documented new-head content path is R3C1 selection -> R3C2 prototype; Ballista remains the shortlist's recommended first candidate, not an approved implementation. Rotary Blades/Bat are alternatives. Nail Scatter overlaps the since-implemented Tack module and requires a renewed distinct-role discussion before selection. R4C1 signal contract precedes R4C2 connected traps; R5 integrated MP/integrations/release and R6 Cure simulation stay later. Phase order is flexible, not an automatic requirement to finish every old test before discussing new content.
+
+Updated stale roadmap checkbox/table wording for already implemented C106/R3C4-R3C6 work without claiming all rendered acceptance. Inspected c898bf1 on codex/performance-barbed-audit, fetched origin and checked the sole open draft PR #1. Documentation/test findings only: Source, Contents, installed version, test tag, hosted site and Workshop draft are unchanged.
+
+## C192 - New turret-head track selected; shortlist requested (2026-10-12)
+
+Owner: "I guess it's time to start working on New Turret Heads, provide our list". Move active content discussion to R3C1 selection, followed by R3C2 prototype. Present the seven documented candidates without treating this as selection/approval of any head. Recommend Ballista first for implementation fit, with Rotary Blades as the strongest mechanical alternative and Rotary Bat sharing that mechanism. Scrapshot and Nail Scatter need distinct-role review against existing modules; Grenade lobber and Arc emitter stay later options. Correct historical shortlist statements superseded by implemented Tack and endpoint Fragment. C191 pack timing polish remains approved and queued. R1C3/R3C7 stay open, with accepted test findings preserved. No source/version/install/Workshop change or new test request.
+
+Inspected 283abb8 on codex/performance-barbed-audit and fetched origin; sole open draft PR #1 targets dev. Current details: TURRET_HEAD_PROPOSALS.md#c192-active-new-head-selection-2026-10-12.
+
+## C193 - Ballista, Rotary Blades and Rotary Bat selected (2026-10-12)
+
+Owner: "Let's create 1A 1B and 1C." Approves development scope for all three selected heads, superseding C192's unselected state. R3C1 roster selection is complete for this bundle; ammunition, coverage, player danger, compatibility, recipes and exact tuning remain unresolved. Record concrete A/B choices and recommend one shared rotary system alongside a Ballista projectile extension. Read-only code inspection confirms firearm-versus-potato assumptions in TurretStats/TurretVolley that require explicit head compatibility. Do not silently inherit potato splash or firearm-only Piercing assumptions. No recipe or gameplay changes this turn; the project requires owner review of materials/tools/skills/XP. Final art restrictions remain. C191 queued timing refinements are retained for the next patch.
+
+Inspected 051e41b on codex/performance-barbed-audit and fetched origin; sole open draft PR #1 targets dev. Contract: TURRET_HEAD_PROPOSALS.md#c193-three-head-development-scope-2026-10-12. No version/install/test/publication change.
+
+## C194 - Spear ammunition, directional rotary heads and player contact confirmed (2026-10-12)
+
+Owner chooses C193 1B/2B/3A/4B and explicitly asks to discuss what module adaptations are possible. Confirm crafted-spear Ballista ammo, forward rotary sweep with 360 upgrade, and player injury on moving contact. Explore melee equivalents; no blanket approval of invented effects. Recorded an evidence-based candidate compatibility matrix and three grouped choices in TURRET_HEAD_PROPOSALS.md#c194-confirmed-head-rules-and-module-adaptations-2026-10-12. Recommend attack sequences for cycle modules, bounded extra-stroke/cleave/proc adaptations, and deferring Range/Accuracy until meaningful visible mechanics exist. All mappings remain proposals; recipes/tuning/native rotary proof remain open. C191 timing polish remains queued. Inspected 6ec09e7 and fetched origin; sole open draft PR #1 targets dev. Documentation only.
+
+## C195 - Continuous physical rotary heads; ten modules initially unsupported (2026-10-12)
+
+Owner selects C194 1B/2B/3A. Confirm continuous swings without magazine/reset mechanics; Magazine/Reload/Autoloader/Impact unsupported. Defer Fragment/Tack/Martyrdom/Synergy for the physical-melee-first prototype. Range/Accuracy remain incompatible initially. These restrictions are rotary-specific, not changes to existing heads or automatic Ballista restrictions. Continuous attacks do not imply idle spinning. Remaining physical adaptations, baseline tuning, player injury severity, recipes and spear lifecycle still require settlement; do not treat unnumbered earlier proposals as approved. Recorded in TURRET_HEAD_PROPOSALS.md#c195-continuous-physical-rotary-scope-2026-10-12. C191 pack timing remains queued. Inspected 98dffb6, fetched origin and confirmed sole open draft PR #1. Documentation only; installed 0.2.48.1 unchanged.
+
+## C196 - Splitter excluded from rotary heads (2026-10-12)
+
+Owner explicitly removes Splitter and favors avoiding forced module adaptations. Apply this to Rotary Bat/Blades; preserve existing projectile-head behavior and prior rotary exclusions. Recommend also excluding Piercing/Conservation (1A), with retaining their adaptation discussion as 1B; not yet approved. No head selection, recipe or gameplay implementation is repeated or assumed. Contract: TURRET_HEAD_PROPOSALS.md#c196-simpler-rotary-compatibility-2026-10-12. Inspected 736acd2, fetched origin and checked sole open draft PR #1. Documentation only; installed 0.2.48.1 unchanged; C191 pack timing stays queued.
+
+## C197 - Inherent multi-target Bat/Blades; Piercing and Conservation excluded (2026-10-12)
+
+Owner approves C196 1A and clarifies both rotary heads are always piercing. Confirm inherent multi-target physical sweep contact, without module-gated extra victims. Piercing and Conservation are excluded alongside prior rotary exclusions. Do not infer wall penetration, invisible reach, an arbitrary victim cap or projectile damage falloff. Recommend once-per-victim-per-stroke for frame-independent damage, subject to contact/cadence proof. Stats, recipes and other remaining head rules are still open; no gameplay implementation. Contract: TURRET_HEAD_PROPOSALS.md#c197-inherent-rotary-multi-target-contact-2026-10-12. Inspected 81b349e, fetched origin and checked sole open draft PR #1. Installed 0.2.48.1 unchanged; C191 timing queued.
+
+## C198 - Starting combat-stat choices presented (2026-10-12)
+
+Owner requests the next decision. Propose Ballista120/4s versus180/6s at18tiles, Bat20/1.5s/40%shove versus30/1.5s/20%, Blades40/1.5s versus25/1s with10%shove; both rotary heads reach1.25tiles subject to visual/contact proof. Recommend1A/2A/3A, once per victim per stroke and shared five-second reaction protection. All are unapproved starting test values, not measured balance; player injury severity is separate. Preserve current multi-target/module exclusions and C191 queued timing. Full semantics/tradeoffs: TURRET_HEAD_PROPOSALS.md#c198-starting-combat-stat-choices-2026-10-12. Source potato defaults checked; inspected19b3871, fetched origin and sole open draft PR#1. Documentation only.
+
+## C199 - Heavy Ballista, Bat2A correction and two-arm rotary motion (2026-10-12)
+
+Owner selects heavy Ballista1B with stronger-than-native-rifle requirement, Blades3A modified to1s, and initially Bat2B. Same-turn correction explicitly changes Bat to2A:20 damage/1.5s/40% shove. Blades40/1s/10%; Ballista selected180/6s/18tiles. Owner requires opposite front/back arms, both swinging without360 and spinning with360; supersedes front-only coverage and safe-rear assumptions. Native rifle scripts and current mod conversion establish160 strongest default mounted-rifle ordinary damage,640 at4x crit. Recommend240 Ballista base (not yet approved) and shared per-victim cadence across both rotary arms (not yet approved); expose alternatives and limits. Full evidence/options: TURRET_HEAD_PROPOSALS.md#c199-selected-stats-and-opposite-rotary-arms-2026-10-12. Inspected5a00327, fetched origin, sole open draft PR#1. Documentation only; existing build and C191 queued polish unchanged.
+
+## C200 - Ballista240, reduced accuracy and independent25RPM rotary arms (2026-10-12)
+
+Owner approves C1991A/2B, requests less accurate Ballista and high battery draw for rotary heads at25RPM. Confirm240damage Ballista and independent arm contact; shared cross-arm damage lockout is rejected. State interpretation:25RPM for360 spin, prior non360 swing intervals retained. Derived2.4s/revolution and1.2s between opposite-arm passages; do not claim doubled per-second damage. Propose accuracy75/45% versus85/55%, and active-motor baseline life3 versus6in-game-hours before module/Regulator effects. Recommendations are1A/2A, not approvals. Motor-time billing is proposed; rates/timebase remain to verify. Contract: TURRET_HEAD_PROPOSALS.md#c200-independent-arms-at25rpm-and-ballista-accuracy-2026-10-12. Inspected7d0c13f and fetched origin; sole draft PR#1. Planning only; installed build unchanged, C191 timing queued.
+
+## C201 - Convert25RPM to non360 angular swing rate (2026-10-12)
+
+Owner annotation corrects C200: "Convert the25RPM to the rate without360." Replace retained Bat1.5s/Blades1s with150degrees/second in both modes. Proposed90degree non360 arc gives0.6s each way,1.2s out/back; two opposed arms move together. Full rotation remains2.4s/revolution with1.2s opposite-arm passages. Explain focused-sector contact can occur more often at equal angular speed, and verify reversal deduplication. Exact arc is still working geometry, no rendered proof. Annotation addresses speed, not approval of the quoted motor-charge recommendation. Accuracy/power options remain unselected. Contract: TURRET_HEAD_PROPOSALS.md#c201-shared-angular-speed-for-swing-and-spin-2026-10-12. Documentation-only correction after eb4b00e; mirror with C200, preserve C191 queued timing.
+
+## C202 -45degree front/rear arcs; sides require360 (2026-10-12)
+
+Owner corrects90degree assumption to45degrees at the front and back, with no side hits without360. Record45degree total sectors centered on opposing placement axes, plus/minus22.5degrees. Approved150degrees/second gives0.3s each direction/0.6s out-back;360 remains25RPM. Narrower oscillation concentrates repeated contacts; document the arithmetic and reversal-deduplication risk without silently adding a forbidden shared damage cooldown. Contract: TURRET_HEAD_PROPOSALS.md#c202-45degree-front-and-rear-arcs-2026-10-12. Same-turn correction after36b5773; documentation only, queued C191 unchanged.
+
+## C203 - Accuracy and battery options with verified formula arithmetic (2026-10-12)
+
+Owner requests options/recommendations. Propose Ballista hit chance75/60/45%(1A),85/70/55%(1B) or65/50/35%(1C) close/half/full18tile range. Recommend rotary6in-game motor-hours(2A), versus3(2B) or12(2C), before module/Regulator/speed modifiers;6hours at3x drain becomes2, or2.5with one Regulator. This revises C200 recommendation based on surcharge impact. Propose Ballista0.05%/shot(3A), current formula0.000853815%(3B), or0.10%(3C), calibrated at240damage/18range before modules. Current formula verified from TurretStats and normalized charge debit; no implemented Ballista claim. Recommend1A/2A/3A. Current FirearmAccuracy close-point boost needs a separate Ballista endpoint path. Motor-time/activation/speed charging rules are proposed, not approved. Full details: TURRET_HEAD_PROPOSALS.md#c203-accuracy-and-battery-options-2026-10-12. Inspectedf203255, fetched origin, sole draft PR#1. Documentation only, installed build unchanged and C191 queued.
+
+## C204 - Accuracy and battery approved; Ballista0.025% per shot (2026-10-12)
+
+Owner selects C2031A/2A and3A modified to0.025%. Confirm75/60/45% Ballista hit chance close/mid/max,6in-game rotary motor-hours baseline before modifiers with proposed moving-motor charging/automatic stop rules, and0.025 percentage points per Ballista committed shot at240damage/18tiles.4000 shots per full battery before modifiers; preserve existing damage/range and rarity/Regulator scaling. Supersedes proposed0.05%. Contract: TURRET_HEAD_PROPOSALS.md#c204-approved-accuracy-and-battery-2026-10-12. Durability/injury/recipes/spear lifecycle and remaining compatibility details stay open. Inspected889f8f0, fetched origin, sole draft PR#1. Documentation approval only; installed build unchanged; C191 timing queued.
+
+## C205 - Durability, repair, player injury and recipe proposals (2026-10-12)
+
+Owner requests options for all four subjects. Recommend1A separate100-condition heads with Ballista2000-shot/Bat12-hour/Blades18-hour active-use life;2A10second free full Repair Head preserving existing base-repair distinction;3A2limb-damage/+5pain Bat and native laceration Blades, shared2second player-only injury guard;4A three separate native-material head recipes with explicit costs/tools/skills/XP. Alternatives offer longer/no operation wear, material50% repair, harsher injuries or EngineParts scavenging requirement. Installed materials and existing repair/injury code inspected; no claim recipes or new contact work are native-verified. All detailed defaults remain proposed: TURRET_HEAD_PROPOSALS.md#c205-durability-repair-injury-and-recipes-2026-10-12. Inspected e4c8817 and fetched origin; sole draft PR#1. Documentation only, no patch/install, C191 timing queued.
+
+## C206 - Potato-style base maintenance, approved injuries and mount clarification (2026-10-12)
+
+Owner conditionally selects no new head wear, explicitly says only the base is the concern, approves C205 3A injuries and 4A recipe direction while requiring rotary mounting materials. Source confirms Potato has ConditionMax100 metadata but no operational wear; only base Repair and native firearm wear currently exist. Record new-head no-wear/no-Repair-Head behavior, unchanged firearm/base rules, moderate guarded player injuries, and integrated mount versus separate Rotary Mount options. Existing common mechanism materials already provide the proposed mount; exact presentation remains pending. Native CircularSawblade entries are broadly present in tool/carpentry pools, weighted 2-8 typically in the checked garage/shop pools and 20/10 in two factory pools; weights are not spawn percentages. Full contract: TURRET_HEAD_PROPOSALS.md#c206-base-only-maintenance-and-rotary-mounting-2026-10-12. Inspected563d891 and fetched origin; sole draft PR#1. Documentation only; no gameplay/test/version/install changes, C191 timing queued.
+
+
+## C207 - Integrated mounts, Ballista nails and implementation approval (2026-10-12)
+
+Owner: "1A, we should also add nails to the ballista. I think we're far enough to start this patch. You're approved to begin." This authorizes the C206 integrated mount option and implementation. Eight nails is the selected implementation quantity, not a separately quoted owner number. No separate mount item, redundant complete-turret recipe, new head-wear system or final art.
+
+Implemented0.2.49 with all prior selected head rules and C191 pack timing. Exact implementation defaults, Filter exclusion, tests and remaining rendered limitations are in [the current contract](TURRET_HEAD_PROPOSALS.md#c207-approved-integrated-mounts-and-implemented-prototypes-2026-10-12). Inspected4518077 and fetched origin before work. Alex guidelines applied: no shipped pcall/xpcall/ipairs/next; new non-guard inline conditionals expanded, helpers imported, SP guards preserved and contacts budgeted/cached. Automated/native results are distinct from owner acceptance. No sibling project, hosted LootLab, account weights, Workshop or official release changes.
+
+
+## C208 - Owner test deferred and next-head advice (2026-10-13)
+
+Owner cannot test0.2.49 now and asks whether to add heads. Recommend one design discussion first, with Grenade Lobber1A, Scrapshot1B, Arc Emitter1C and Nail Scatter1D/defer. Reasons, overlap and native-proof gates are recorded in [the contract](TURRET_HEAD_PROPOSALS.md#c208-next-head-options-while-testing-is-deferred-2026-10-13). No new head selected or approved; current build and R3C2 acceptance remain unchanged. Fetched origin at72806fe; sole draft PR#1. Planning-only update under C119/C108.
+
+
+## C209 - Grenade Lobber and Scrapshot selected for design (2026-10-13)
+
+Owner selects C2081A/1B. Both heads enter discussion; no implementation or specific ammo/collateral contract approved. [Initial choices](TURRET_HEAD_PROPOSALS.md#c209-grenade-lobber-and-scrapshot-design-2026-10-13) recommend native PipeBomb feed, impact detonation, loose ScrapMetal feed and actor-only blast collateral. Native script confirms PipeBomb identity only; trajectory and explosion behavior need proof. Installed0.2.49 owner test remains deferred; no code/version/test-result changes. Fetched origin0a58373; sole draft PR#1 into dev.
+
+
+## C210 - Multi-payload ammunition, landing fuse and improvised balance concern (2026-10-13)
+
+Owner confirms C2091C/2B/3A/4A and raises possible improvised explosives becoming dominant outside turrets. Confirm multiple payloads, short fuse after landing, loose ScrapMetal and actor-only/no-fire/no-structure turret blast. Propose turret-only Improvised Shell1A, weak throwable1B or native-only1C; no new shell or numerical balance approved. Native Aerosolbomb ignition metadata requires turret-specific no-fire behavior without editing handheld scripts. [Contract and proposed roster](TURRET_HEAD_PROPOSALS.md#c210-payload-rules-and-improvised-ammunition-balance-2026-10-13). Fetchedc6042cf and checked sole PR#1. Planning only;0.2.49 test remains deferred.
+
+
+## C211 - Cloud ammo roster, priority, fallback and corrected fuse (2026-10-13)
+
+Owner asks for an explainable turret-only shell and visible additional loaded ammo for future supported ammo mods. Selects **2B** player-controlled priority, then **3B** stop on preferred-ammo exhaustion unless **Use next ammo type** is enabled (default OFF). Later selects **1A** roster (Improvised Shell/Aerosol Bomb/Pipe Bomb) and first **2C**, immediately correcting to **2A I meant**: the approved fuse is **two seconds after landing**, not three. The shell requires the launcher's powered arming system and cannot be thrown by hand. Exact damage/radius/recipes are still open. C210 actor-only blast and no fire/structure damage persist. [Full contract](TURRET_HEAD_PROPOSALS.md#c211-cloud-ammunition-decisions-and-pc-handoff-2026-10-13).
+
+Owner explicitly requests continuing planning here and updating GitHub every time until the PC chat picks it up, reaffirming C108/C119. This record consolidates the intervening Cloud selections that had previously only been acknowledged in chat. Branch `planning/lobber-ammunition` starts from active `codex/performance-barbed-audit` checkpoint `63c32db`, including current dev. PC must fetch/reconcile the planning commits. No gameplay implementation approval, new version, owner test, or publication claim.
+
+## C212 - Proposed Lobber engagement envelope and cadence (2026-10-13)
+
+Present next choices: 1A recommended 6-18 tiles versus 1B 8-24 tiles; 2A recommended six-second base launch interval versus 2B eight seconds. The approved two-second post-landing fuse is independent. These are recommendations, not owner-selected numbers or verified native capabilities; blast safety, reload/modifier interactions and power remain to settle. [Options and tradeoffs](TURRET_HEAD_PROPOSALS.md#c212-proposed-lobber-range-and-cadence-choices-2026-10-13). Preserve installed 0.2.49 and deferred acceptance.
+
+
+## C213 - Lobber 6-18 tiles and two-second firing interval (2026-10-13)
+
+Owner: "1A / 2 - 2seconds". Confirms C212's 6-18-tile range and supplies a two-second base launch interval instead of either proposed six/eight-second option. C211's two-second post-landing fuse remains separate and unchanged. This is design approval, not authorization to implement a patch. [Contract and proposed payload balance choices](TURRET_HEAD_PROPOSALS.md#c213-approved-lobber-range-and-two-second-cadence-2026-10-13) record 30 theoretical base launches/minute, overlapping payload considerations, proposed 1A restrained versus 1B heavier zombie damage at 2/3/4-tile radii, and 2A linear versus 2B inner-half full-damage falloff. These next choices remain unapproved; player injury and all other unresolved contracts retain their gates. Inspected planning checkpoint 530c07c and checked remote branches (development still 63c32db). Documentation only; 0.2.49 test remains deferred.
+
+
+## C214 - Request for stock Pipe Bomb and Aerosol Bomb damage (2026-10-13)
+
+Owner asks for native damage, selecting none of C213's proposed balance values. Existing installed-game script evidence records ExplosionPower/ExplosionRange 90/7 and 70/6 respectively, not measured HP loss. [Clarification and native follow-up](TURRET_HEAD_PROPOSALS.md#c214-native-explosive-baseline-question-2026-10-13) prevents interpreting those fields as direct damage or presenting proposed turret numbers as native parity. Actual damage conversion remains a local evidence question; no game-dependent tests ran in Cloud. Inspected b667d02; remote development remains 63c32db. Documentation only.
+
+
+## C215 - Investigate native explosive damage conversion (2026-10-13)
+
+Owner: "Figure out what the damage values equate to". Investigation retrieves pinned public 42.0 source and compares committed 42.20 character bytecode; neither establishes 42.21 bomb health loss. Historical capped power/random Hit input and its additional downstream modifiers are documented, not represented as current health damage. [Findings and exact local evidence needed](TURRET_HEAD_PROPOSALS.md#c215-explosion-damage-trace-and-version-mismatch-2026-10-13). Current damage options remain unselected; no gameplay change, native execution or test-status change. Inspected ff3c75a and remote branches; active development remains 63c32db.
+
+
+## C216 - Assign native damage answer to PC and continue independent planning (2026-10-13)
+
+Owner: "Well note that down so it'll be answered once the PC has the decompiled code. What else shall we discuss". C215 becomes an explicit PC follow-up; damage/radius/falloff remain unselected. Present proposed chambered-ammo switching (1A finish chambered round; 1B recommended pause and explicitly unload/reload safely) and fallback recovery (2A recommended return to preferred at next reload/selection; 2B exhaust fallback first). [Full choices and item-preservation rules](TURRET_HEAD_PROPOSALS.md#c216-pc-damage-follow-up-and-ammo-switching-discussion-2026-10-13). No answers to these options inferred. Inspected 0c42c32 and unchanged remote development 63c32db. Planning only, mirrored under standing authorization; no game tests or new implementation approval.
+
+
+## C217 - Approve safe switching and return to preferred; propose Scrapshot pattern (2026-10-13)
+
+Owner: "1B / 2A" in response to C216. Confirm explicit safe unload/reload after a conflicting player priority change, preserving exact unspent ammunition, and return to preferred ammo at next normal reload while fallback is enabled. Preserve chambered and in-flight identities and default-OFF fallback. [Contract and next Scrapshot choices](TURRET_HEAD_PROPOSALS.md#c217-ammo-switching-selected-and-scrapshot-pattern-options-2026-10-13) distinguish approved ammo behavior from new recommended 1A 6-tile/60-degree spread and 2A one-scrap/three-second volley proposals. Alternatives are 8-tile/35-degree spread and one-scrap/two-second volleys. No pellet count/damage, energy, recipes or implementation approved. Native explosive damage remains the PC's follow-up. Inspected 838f055 and remote development 63c32db; documentation only.
+
+
+## C218 - Scrapshot spread accepted; challenge unnecessary new mechanics (2026-10-13)
+
+Owner: "1A - Why did we deviate from our spread? I'm down for 60, but we're inventing things that don't need to be. Just suggest if you think it'd be good. 2 - Why are we using volley and every however many seconds? This doesn't make sense." Record the selected C217 1A range/spread, with no approval of ammo quantity or either firing interval. [Read-only comparison and corrected recommendation](TURRET_HEAD_PROPOSALS.md#c218-scrapshot-consistency-correction-and-plain-firing-terms-2026-10-13) distinguishes existing shotgun target/pellet handling, Splitter spread and shared cooldown/reload logic. Recommend ordinary shot terminology and shared firing machinery, not an extra volley delay. Explain any proposed deviation before implementation. Inspected a8fdba2; remote development remains 63c32db. Only planning Markdown changed; no code execution tests or gameplay approval.
+
+
+## C219 - Scrapshot two seconds with no magazine/reload; Lobber 3.5 seconds (2026-10-13)
+
+Owner: "Let's do every 2 seconds, and a reload isn't necessary since there's no mag. We'll change grenade launch to 3.5 seconds". Confirm Scrapshot two-second base shot interval and no magazine/reload cycle. Replace Lobber two-second launch interval with 3.5 seconds; keep its separate two-second post-landing fuse and prior mixed-ammo handling. [Contract and proposed next steps](TURRET_HEAD_PROPOSALS.md#c219-scrapshot-direct-feed-and-revised-lobber-firing-interval-2026-10-13). One scrap per shot and shared total fragment damage are recommendations, not selected by this timing answer. Magazine-dependent module exclusions still need explicit compatibility review. Native explosive damage remains a PC follow-up; no gameplay implementation or test approval. Inspected 6dc7044 and unchanged development remote 63c32db. Planning-only GitHub update.
+
+
+## C220 - Approve Scrapshot consumption, shared damage and three module exclusions (2026-10-13)
+
+Owner: "Approved, what's next to discuss?" Approves the preceding one Scrap Metal per shot, shared total fragment damage, and Magazine/Reload/Autoloader exclusions. Does not settle Impact or other unpresented module choices. [Contract and next damage choices](TURRET_HEAD_PROPOSALS.md#c220-scrapshot-feed-and-module-exclusions-approved-damage-choices-2026-10-13) recommend six fragments sharing 120 total zombie damage (20 each), versus six sharing 180 (30 each); these new numbers await selection. Other selected timing/range/feed behavior remains; no new implementation approval or test outcome. Inspected c5189aa and unchanged remote development 63c32db. Planning Markdown only, committed and mirrored under standing authorization.
+
+
+## C221 - Scrapshot six fragments, 15 damage each (2026-10-13)
+
+Owner: "1A - 15 damage per fragment". Retain six fragments from C220 option 1A and replace 20 damage each with 15, for 90 total base zombie damage per shot. [Contract and next compatibility recommendation](TURRET_HEAD_PROPOSALS.md#c221-scrapshot-six-fragments-at-15-damage-each-2026-10-13). Preserve the shared shot budget and earlier feed/range/spread/timing approvals. Recommend additionally excluding Impact because no empty-reload trigger exists; do not infer approval of that new recommendation or other modules. No gameplay patch approval, native execution or new test result. Inspected 2d12c1c and unchanged remote development 63c32db; planning update only.
+
+
+## C222 - PC pickup of Cloud planning C211-C221 (2026-10-13)
+
+User requests checking GitHub progress. Fetched origin/planning/lobber-ammunition at5b623ef and inspected all ten new documentation commits; imported them into active development under C119, preserving approvals and superseded values. [Consolidated handoff](TURRET_HEAD_PROPOSALS.md#c222-pc-planning-reconciliation-2026-10-13). Only draft PR#1 exists; no PR merge or gameplay changes. Native explosive-damage trace remains an explicit PC follow-up. No new design approval or test result;0.2.49 acceptance stays deferred.
+
+
+## C223 - PC explosive damage proof and consolidated remaining choices (2026-10-13)
+
+Owner requests discussion including the damage issue and other remaining decisions. Inspected development38b5e397 and fetched origin. Read installed42.21 bytecode; isolated native execution verifies explosive/non-melee classification, zero ExtraDamage and four deterministic damage-boundary health deltas. First run timed out during startup; second completed successfully. Full explosion/player/trajectory behavior is not tested. **C223 / native damage answered; remaining head choices (2026-10-13).** Installed42.21 bytecode plus a stock-first real-item/native-health probe establish ordinary zombie damage potential: Aerosol350-<700/radius6, Pipe450-<900/radius7 on OMH's scale, before overkill clamping. No native distance falloff; player injury is separate. Full blast scene/trajectory remains unverified. [Evidence](NATIVE_EXPLOSIVE_DAMAGE.md) | [Options and complete remaining agenda](TURRET_HEAD_PROPOSALS.md#c223-pc-damage-findings-and-remaining-decision-agenda-2026-10-13). Tuned damage/falloff, Scrapshot victim allocation/Impact, module matrix, injury/accuracy, feed/power, recipes and feedback remain proposals. No gameplay patch approved;0.2.49 owner test remains deferred.
+
+Options1A/1B/1C,2A/2B,3A/3B and4A/4B are recommendations only. Preserve C211-C221 approvals; no source/version/install/owner-acceptance changes. Planning/evidence mirrored under C108/C119.
+
+
+## C224 - Lure, head revisions and built-in magazine discussion (2026-10-13)
+
+**C224 / head feedback and expanded design (2026-10-13).** Owner requests Lure,90-degree front/rear rotary sectors and longer mount reach, narrower/longer-range Ballista with a travelling spear, wider/more Scrapshot fragments and built-in magazines (capacities pending). Multiple fragments per victim accepted; linear blast falloff conditional on final damage choice. Native bomb strength remains under discussion. Ballista's instant bullet path and100-weight container versus100-ammo mismatch confirmed in code; console0.2.49 shows full-transfer rejection consistent with reported44 spears. [Findings/options](TURRET_HEAD_PROPOSALS.md#c224-owner-head-feedback-lure-and-magazine-redesign-2026-10-13) | [Partial owner test](TEST_v0.2.49.md#c224-partial-owner-findings-and-console-review-2026-10-13). No gameplay patch yet; rotary magazine exception, exact values and native trajectory/storage proof remain open.
+
+Owner annotation questions native strength and raises scarcity; not an approval of C2231C. C2232A conditionally selected and3A selected with expanded width/count requested.4C reopens Scrapshot no-reload/exclusions; do not implement Impact exclusion. Present new groups1-6 in the linked contract, clearly proposed. Recommend ammo-free rotary exception and preserving native firearm capacities; not settled by all-head wording. No final art, source, tools, package or version changes. Console reviewed read-only and small filtered evidence retained. Existing test status becomes partial findings, not blanket acceptance. Fetched origin; starting commit c3a2f1e.
+
+
+## C225 - Approve revised head values and review earlier-head modules (2026-10-13)
+
+Owner:1A with150 damage/radius4 expensive Shell;2B with volume/range control and OMH Horde Night sound;3B;4A;5A;6B; asks to consider modules on previous heads. **C225 / head revisions selected; module review open (2026-10-13).** Owner selects native bomb strength/radii plus linear falloff; Shell150/radius4 with expensive crafting; repeating/manual Lure with adjustable volume/range and Horde Night attraction audio; rotary2-tile reach/90-degree sectors; Ballista45-degree FOV/24-tile range/24tiles-sec; Scrapshot90degrees/8x15; magazines Potato3/Ballista5/Lobber3/Scrapshot10. [Confirmed values, audio evidence and module choices](TURRET_HEAD_PROPOSALS.md#c225-selected-revisions-and-previous-head-module-review-2026-10-13). Previous-head module review finds inactive Potato Piercing still accepted/charged; rotary Tack/Martyrdom and linked Lure control are proposals. Reload/power/recipes, explosive module rules and native lifecycle proof remain open. No gameplay patch or test-status change.
+
+C2246B applies to ammo-using custom heads, with native firearm capacities preserved and no rotary ammunition. Built-in counts do not fix reserve-weight limits. New options1A/1B/1C rotary effects,2A/2B Potato Piercing and3A/3B Lure control are recommendations only. Final recipes/acquisition/numerical Lure limits and broader module matrix remain unapproved; no patch authorization inferred. Source review and owned audio discovery only, no game tests or sibling edits. Inspected a45f57b and fetched origin; mirror under C108/C119.
+
+
+## C226 - Rotary effects, Potato per-contact effects and5-20tile Lure (2026-10-13)
+
+Owner: "1A /2B - It'll apply on all zombie contacts. /3A -5 to20tiles." **C226 / module and Lure selections (2026-10-13).** Owner approves rotary Tack+Martyrdom, working Potato Piercing with splash/knockdown chance at each directly contacted zombie, and linked Lure loudness/range bounded5-20tiles. [Interpretation, existing effect guards and next Lobber module choices](TURRET_HEAD_PROPOSALS.md#c226-rotary-effects-potato-contact-behavior-and-lure-range-selected-2026-10-13). Retain splash-versus-direct distinction and no recursive effects; exact splash scaling/overlap needs explicit balance review. New Lure default remains unselected. Lobber Conservation/Splitter options are proposals, not part of this approval. No gameplay patch, version or test-status change.
+
+Selection references C225 response: rotary Tack+Martyrdom; Potato penetration with splash/direct-contact knockdown; linked sound/range slider. No grant of splash-recursive knockdown or unbounded contacts. Retain existing module semantics pending final explicit detail; no automatic Synergy/Fragment expansion. Future Lobber option1A is a new recommendation, not the selected rotary1A. Inspected969f639 and fetched origin. Planning only; no code, runtime test, assets, install or sibling changes. Mirror under C108/C119.
+
+
+## C227 - Approve both Lobber ammunition modules (2026-10-13)
+
+Owner: "1B", referring to the immediately preceding C226 Lobber ammunition-module options. **C227 / Lobber Conservation and Splitter selected (2026-10-13).** Owner chooses C2261B: both modules supported, existing Conservation scaling,50%side-grenade damage and Splitter ammo rules including the last-round exception. Payload blast radius/falloff and two-second landing fuse retained. [Approved behavior and remaining gates](TURRET_HEAD_PROPOSALS.md#c227-lobber-conservation-and-splitter-approved-2026-10-13). Mixed-payload accounting and other modules/reload/power/recipes/injury remain open; no gameplay patch or test-status change.
+
+Do not mistake this answer for older rotary/Potato choices. Scarcity tradeoff accepted; no new recursive secondary effects, payload conversion or gameplay implementation authorized. Read f416cd8, fetched origin, recorded documentation only. Standing C108/C119 mirror required.
+
+
+## C228 - Combined patch recap and Module Pack completion flow (2026-10-13)
+
+Owner explicitly requests Skip while rolling, Collect only after finished, and rarity audio only at roll completion including Skip, not Collect. Also says "Let's approve a new patch. Recap the new update." **C228 / combined next-patch recap and pack-flow correction (2026-10-13).** Owner requests approving the new patch and its recap, adding neutral Skip during rolling, green Collect after completion, and one rarity cue at natural/Skip completion, never triggered by Collect. This supersedes the250ms-early cue trigger. [Combined scope and remaining choices](TURRET_HEAD_PROPOSALS.md#c228-combined-patch-scope-and-pack-flow-correction-2026-10-13) | [Pack contract](PACK_POLISH.md#c228---skip-then-collect-and-completion-owned-rarity-audio-2026-10-13). Exact recipes, remaining module/ammo rules, reload/power and player injuries remain unset; no gameplay build/install/test-status change in this recap.
+
+Source review confirms always-green Collect and early cue; it does not prove a collect-triggered playback call because close currently stops audio. Record observed versus inferred separately. Settled features remain in requested patch scope; do not infer unselected numerical recipes or module propagation. Inspected34c8e19 and fetched origin. Documentation only, mirrored under standing authorization.
+
+
+## C229 - Consolidated choices requested before patching (2026-10-14)
+
+Owner: Provide the choices and your recommendations for everything we still need to settle before patching.
+
+**C229 / consolidated pre-patch choices (2026-10-14).** Owner requests all remaining choices and recommendations before implementation. [Twelve decision groups](NEXT_PATCH_CHOICES.md) cover mixed ammo, new-head effects, Potato splash overlap, reloads, power, Lure acquisition, exact recipes, player injuries, aiming/travel and the Ballista weight constraint. All A options are recommendations, not approvals; 12A corrects capacity presentation without increasing physical storage. C225-C228 approvals remain intact. No gameplay/version/install/test-status change.
+
+Inspected active development15e8b63 and fetched origin. This is a proposal slate, not selection of all A defaults. Preserve prior accepted scarcity/module exceptions. Engine feasibility and bounded scheduling are implementation obligations, not owner decisions. Planning documentation only; mirror under C108/C119.
+
+
+## C230 - Owner choices and native-component recipe reproposal (2026-10-14)
+
+**C230 / selections recorded; recipes, mini grenades and spear expansion open (2026-10-14).** Owner selects C2291A/2A with Lobber Fragment mini grenades/3B/4A/5A/6A/7B/9A with two Scrap Metal/10A/11A/12A with40 spears. [Selections, native storage evidence and three revised choices](NEXT_PATCH_CHOICES.md#c230-owner-selections-and-revised-recipefragment-proposals-2026-10-14). Recipes return for native donor and improvised alternatives. Kits currently increase count, not placed weight capacity; native above100 world-container capacity warns rather than hard-clamps, and larger safe storage remains unproven. No gameplay/install/test-status change.
+
+User explicitly asks cheaper common-material routes without rarer donor components and asks whether kits bypass spear weight. Preserve recipe alternatives as proposals, same-output recommendation not approval. New options1A/B mini count,2A/B donor recipes and3A/B immediate spear expansion policy are distinct from the old C229 numbers. Native evidence corrects any inference that100 is an absolute Java clamp. No protected calls or shipped code added. Fetched/reconciled2a1b7cf; standing C108/C119 mirror applies.
+
+
+## C231 - Mini grenades, pump recipes and Void Module direction (2026-10-14)
+
+**C231 / mini grenades and recipes selected; Void storage proposed (2026-10-14).** Owner selects C2301A and2B, replacing storage option3 with a roughly75% ammo-capacity reduction and portable Void Module holding permanently converted weightless ammo by type. [Approved direction, tradeoffs and remaining choices](VOID_MODULE.md). Reduction scope, normalization, conversion interaction, removal and rarity remain proposals. Preserve five-mini behavior, pump/improvised same-output recipes and earlier unrelated approvals. No gameplay/install/test-status change.
+
+Owner explicitly selects1A/2B from C230 and proposes3C with approximately75% reduction, infinite non-withdrawable turret ammunition stored on the module, active compatible-ammo display and all-types tooltip. Record their preference for a unique donor without reopening the accepted pump recipes. All Void implementation mechanics/numeric reduction scope remain unapproved proposals; no virtual storage feasibility proof claimed. Inspected7ffbdff and fetched origin. Preserve the distinction between unlimited storage and finite consumed ammunition. Documentation only; mirror under C108/C119.
+
+
+## C232 - Selective caps, potato/spear compatibility and compact decisions (2026-10-14)
+
+**C232 / selective ammo limits and Void controls selected (2026-10-14).** Owner replaces blanket75% cuts with selective ammo maxima, allows rotten/variant potatoes and requests modded-spear support; selects manual Void beside Ammo, safe module removal and Mythic rarity. Magazines remain. [Native classification evidence and compact remaining choices](VOID_MODULE.md#c232-selective-capacity-broad-ammo-families-and-compact-decisions-2026-10-14). Exact caps, donor-stat normalization and prepared-potato scope remain proposals. Compact decision-table preference added to AGENTS.md. No gameplay/install/test-status change.
+
+User selects1C (type-sensitive maxima), overrides rotten-potato exclusion and broadens ammo-family intent, then3A/4A/5A from C231. Category-based spear discovery is grounded in installed native XpUpdate.lua; potato identification requires explicit family registration, not Vegetables or English names. Standardized ammo stats remain proposed, not inferred from the variant request. Existing approval of module recipes and mini grenades stands. Fetch/review ecff49d; documentation/instruction-format update only, mirrored under C108/C119.
+
+
+## C233 - AoE-aware capacity, donor stats and separate decision blocks (2026-10-14)
+
+**C233 / damage-aware ammo limits and attenuated stats (2026-10-14).** Owner asks capacity balance including AoE, replaces Shell wording with grenade, selects retained donor ammo stats with reduced contribution for future alternate-ammo support, and approves whole-potato scope. [Capacity/scaling proposals and native evidence](VOID_MODULE.md#c233-ammo-balance-attenuated-stats-and-separated-decisions-2026-10-14). Vegetable/produce launcher remains an exploration idea. Separate decision blocks with thoughts/options now supersede combined tables in AGENTS.md. Exact capacity and scaling values remain proposals; no gameplay/install/test-status change.
+
+Owner gives40/40/250 as illustrative targets, not a fixed approved balance table. Selects2B with attenuated relative damage contribution and3A whole potato boundary. Preserve relevant ammo state in Void rather than flattening contrary to the selected direction. Naming correction affects Improvised Grenade display, not native shotgun shells or handheld availability. Later steering explicitly rejects the combined decision-table format: separate each topic, thoughts, options and blank line. Proposal arithmetic uses stated hypothetical crowd density, not fabricated gameplay testing. Inspected714170c/fetched origin; documentation only, mirror required.
+
+
+## C234 - Shared bomb capacity, Makeshift naming and25%ammo-stat contribution (2026-10-14)
+
+**C234 / shared explosive capacity and Makeshift Bomb confirmed (2026-10-14).** Owner rejects per-explosive-type quotas, chooses Makeshift Bomb naming and approves25%of relative donor-stat difference. [Settled rules and final capacity choice](VOID_MODULE.md#c234-shared-explosive-capacity-and-makeshift-bomb-2026-10-14). One shared bomb count replaces subtype limits/weighted mixing;40 versus20 total bombs remains proposed. No gameplay/install/test-status change.
+
+Owner answers1 by annotation correcting explosive subtypes, and2A selecting C233 stat scaling. Each supported bomb counts1 within a common allowance; no separate subtype quota or weighted mixture budget. Numerical40/20 choice still proposed, not fabricated approval. Makeshift Bomb is turret-only with unchanged selected recipe/damage; supported payload verification is not waived for arbitrary mod items. Fetched9ec9acb; docs only, standing mirror required.
+
+
+## C235 - Final ammo capacity and combined patch readiness (2026-10-14)
+
+**C235 / final capacity selected; ready to implement (2026-10-14).** Owner selects1B:40 spears,20 shared launchable explosives in any mixture,250 ordinary firearm base rounds. [Combined readiness and verification gates](VOID_MODULE.md#c235-final-capacity-selected-ready-for-implementation-2026-10-14). Last presented balance choice settled; remaining work is native integration/validation, not further generic design approval. Installed0.2.49 unchanged; no gameplay/install/test-status change in this readiness turn.
+
+Owner:1B; Are we ready to patch? This answer selects C2341B, not an earlier alternate option with the same label. Confirm readiness of design; do not misreport a built/installed patch or seek repeated general approval. Preserve prior engineering gates, supported-mode restrictions and publication boundaries. Current response is a documentation/readiness handoff; no gameplay changes this turn. Fetchedfb1dc39; standing mirror required.
+
+## C236 - Combined patch approval, deferred tests and multiplayer verification (2026-10-14)
+
+**C236 / implementation approved; first development checkpoint and MP audit (2026-10-14).** Owner approves the combined C235 patch and requests multiplayer verification while deferring player tests. Pack Skip/Collect/completion audio and isolated ammo/Void foundations are implemented and regression-checked; the full patch is unfinished and not installed. [Progress and remaining integration](PATCH_C236_PROGRESS.md) | [MP audit](MULTIPLAYER_AUDIT_C236.md): existing production turret/trap paths remain SP-only; multiplayer compatibility is blocked, not passed.18,229 assertions and package checks pass; no live MP/owner acceptance. Installed0.2.49 and its immutable tag/evidence remain unchanged.
+
+Owner: "Approved." Then: "Also verify Multiplayer compatibility. We won't be testing yet though." Approval covers C235 combined implementation, with verification added and live testing deferred. No new generic planning approval is needed. The audit confirms production remains SP-only; full multiplayer support requires a separate deliberate port. Preserve supported-mode guards and do not equate headless loading, native table serialization or foundation debug transport with live gameplay support. Mirror this incomplete source checkpoint under C108/C119; no installation, new immutable tag, Workshop upload or PR merge.
+
+## C237 - Multiplayer was always required; correct the premature stop (2026-10-14)
+
+Owner: "Okay, we knew this was for multiplayer from the beginning. Why have we stopped? What's needed."
+
+Reaffirms original multiplayer intent rather than requesting a new optional feature. P1C1 already required dedicated-server lifecycle agreement; R5C1 is integrated proof, not permission to defer architecture. SP-first production prototypes accumulated authority debt. C236 incorrectly framed that known unfinished work as a reason to stop and as requiring fresh generic scope approval. Correct that interpretation without removing protective guards or inventing live compatibility evidence.
+
+The C235 combined patch remains approved. Recommend establishing the common server-authoritative lifecycle and exact-item transactions first, then wiring Void/new heads and trap effects through shared rules. Details and acceptance gates are in MULTIPLAYER_AUDIT_C236.md, C237. No additional balance decision is needed for the identified gaps. Owner testing stays deferred; native/automated development can proceed. Optional sibling integrations and publication remain separate. This turn changes records only; no new gameplay, installation or test result. Fetched origin; no newer origin/dev commits than the active development history. Mirror under C108/C119.
+
+## C238 - Horde Night integration and Score Divider patch preparation (2026-10-14)
+
+Owner: "This mod is supposed to work with OMH: Horde Night, and it'll be allowed to be used with a Score Divider. We need to make sure it's safe to add and score. Brush up on Horde Night, and prepare a patch for Multiplayer integration."
+
+Confirms intended Allowed-with-divider policy and coordinated MP integration preparation. This supersedes treating Horde scoring as merely an unrelated future suggestion. It does not select O07's proposed x0.20, the unresolved usage/outsider rule Q07, or a gameplay-settings baseline. MULTIPLAYER_HORDE_PATCH.md records reviewed current sources, required coordinated work and choices: recommend1A divide by5,2A enabled-world run marking,3A reviewed gameplay defaults initially. These are recommendations, not owner selections. One modifier for either/both packages and multiplicative composition preserve C09; no effect on actual kill counts or Trait XP. Shared-XP recipients/percentage and Cure simulation remain separate.
+
+Fetched both repositories and inspected the required related chats plus current Horde release-preparation work. No incoming main/dev changes were missing; no sibling conflict or edits. Existing Horde native-Kahlua settings/persistence/score suite passes149 assertions, not new integration or live MP acceptance. Core schema5 and website validator lack T&T reduction support; T&T's after-death callback is too late to establish assistance for a terminal Horde kill. Preparatory specification addresses authority, exact-once deaths, attribution, persistent eligibility, historical scores, schema arithmetic, website parity and bounded replication. MP/C235 implementation remains authorized and unfinished, with owner tests deferred. No runtime changes, install, new tag, merge, publication or sibling push. Mirror these planning records through the standing T&T pipeline.
+
+## C239 - Score Divider, opt-in and harder settings selected (2026-10-14)
+
+Owner: "1A / 2B / 3B", referring to C238's final choices. Confirms divide by5 (retain20%), explicit per-run opt-in rather than automatic world-wide scoring, and default-or-harder settings audit in the initial integration rather than defaults-only. O07's numerical proposal is now approved; historical options remain provenance, not outstanding choices.
+
+Update MULTIPLAYER_HORDE_PATCH.md, integration contract and current roadmap/status accordingly. One T&T factor applies for either or both packages, composing with other approved modifiers; no kill/XP division or retroactive rescoring. Consent must belong to the authoritative receiving run, with normal run-configuration permissions. Recommend gating special assistance by that consent; investigate native physical obstruction and Lure attraction before promising complete isolation. Do not force opt-in from a foreign device, silently select the rejected world-wide policy, or claim unknown settings are harder. No new owner decision is requested until a concrete unresolved behavior or native limitation is established. Shared-XP rules remain separate.
+
+This turn records the selections and inspects existing Horde run configuration and T&T contact paths. No runtime/sibling edits, tests, installation or new MP acceptance. Fetched origin; no missing origin/dev commits. Independent approved MP/content work remains outstanding; player tests stay deferred. Standing T&T development mirror applies.
+
+
+## C240 - implementation authorized; ordinary collision neutral (2026-10-14)
+
+Owner: "Approved. Go ahead and implement the multiplayer patch with the Horde Night integration. We'll test later." Follow-up explicitly selects **1A: ordinary native collision is neutral; active effects require receiving-run opt-in**. Preserve C239 /5, per-run consent and default-or-harder audit. Gameplay acceptance remains deferred, not a development blocker. [Working implementation and evidence](PATCH_C240_PROGRESS.md).
+
+
+## C241 - multiplayer catch-up implementation reaffirmed (2026-10-14)
+
+Owner: "You need to ensure that we're caught up on Multiplayer implementation. You're approved to complete as much as possible." Continue approved production authority and native verification now, retaining C235/C240 scope and deferred owner testing. No new generic approval gate or change to the settled Horde policy. [Implemented lifecycle and remaining work](PATCH_C241_PROGRESS.md).
+
+## C242 - continue multiplayer implementation without the owner test (2026-10-14)
+
+Owner: "Keep going with the remaining multiplayer implementation. You're already approved, so complete as much as possible without waiting for me to test." Continue C235/C240/C241 implementation; do not request another generic approval or treat deferred owner testing as a development blocker. [Implemented inventory/Manage checkpoint, native findings and remaining work](PATCH_C242_PROGRESS.md). This checkpoint introduces no new balance choice, release approval or acceptance claim. Preserve the established Horde policies and remaining content work. Development source is mirrored through the standing T&T pipeline; sibling manual-mirror restrictions remain.
+
+## C243 — complete approved MP work and mirror progress (2026-10-14)
+
+Owner explicitly authorizes ALL multiplayer integration patches and requests continued completion without waiting for owner testing, plus a GitHub push. This preserves C235 content and the C239/C240 scoring policies; it does not certify unsupported engine behavior. Implemented feed/power/trap service progress and remaining authority work are recorded in [C243](PATCH_C243_PROGRESS.md). Existing sibling Horde integration may be mirrored as development under this explicit request, without updating its older release tag or publishing. No new generic approval gate.
+
+
+## C244 — continue zombie combat synchronization and remaining MP work (2026-10-14)
+
+Owner: "Why are we stopping again? Keep going with zombie combat synchronization and the remaining multiplayer work. You're already approved. Finish as much as possible and push it to GitHub." Continue implementation, verification and the development mirror under existing authority; no player-test or generic approval gate. [C244 implementation and evidence](PATCH_C244_PROGRESS.md) separates working barrier lifecycle from the experimental combat receipt path and its unresolved native ownership/async attribution cases. This does not change gameplay balance or certify MP completion.
+
+
+## C245 — continued ownership handoff and multiplayer implementation (2026-10-14)
+
+Owner explicitly requests resolving combat handoff, finishing remaining MP work, and pushing progress without another approval or test gate. Continue within C235/C240 scope. [C245 implementation and evidence](PATCH_C245_PROGRESS.md) records the completed Panel lifecycle/server-loot work and ordinary handoff recovery, without concealing the disconnect-after-apply and native packet/consent limitations. No balance choice, install, merge or release is inferred. C245 also corrects the C244 native fixture evidence: completion markers had not ruled out logged callback exceptions.
+
+
+## C246 — complete the approved multiplayer implementation (2026-10-14)
+
+Owner: "Complete multiplayer support." This reiterates the prior approvals to implement all multiplayer/Horde integration and push progress without waiting for owner testing. Implemented the remaining existing-roster paths and conservative consent-safe attraction admission; no new balance choice or content recipe is inferred. [Final behavior, evidence and limits](PATCH_C246_MULTIPLAYER.md). R1C3/R5C1 implementation and connected acceptance are distinct. Full C235 new-content/Void integration remains approved and unfinished; do not discard it, split the combined release, or call zero-client probes multiplayer acceptance.
+
+## C247: complete content bundle on multiplayer authority (2026-10-15)
+
+**C247 / 0.2.50 content bundle implemented and validated (2026-10-15).** Complete C235 content is integrated with C246 authority: Lobber/Makeshift Bomb, Scrapshot, Lure, Void, head magazines/ammo families, revised Ballista/rotary/Potato contacts and pack flow. 20,401 assertions, native recipes/virtual-firearm transactions, write/read and independent packages pass. Connected MP and rendered owner acceptance remain pending. [Patch](PATCH_v0.2.50.md) | [Verification](TEST_v0.2.50.md). Packaging/install and dev mirror are the final delivery steps; no Workshop publication.
+
+The metal-saw tool uses the current native tag, not a nonexistent Hacksaw identity. Void uses private descriptor/debt state with compact replicated counts and bounded inspection; no new withdrawal or weight workaround. Scrapshot serializes same-shot contacts per victim across owner receipts. Approved tuning and cumulative unpublished notes are preserved.
+
+
+## C248 — future work after the combined patch (2026-10-15)
+
+**C248 / post-0.2.50 roadmap reconciliation (2026-10-15).** Owner is away from the PC and asks about future work; no gameplay results or new implementation approval are inferred. 0.2.50 is installed and mirrored at `7e2c099cc4917c4266c8f4722265f324beaf3851` with immutable `test/v0.2.50`. Next documented content track is R4C1 connected-control design, followed by triggered hazards/sensors/optional turret receiver. Recommend discussing R4C1 now while retaining focused 0.2.50 corrections, R1C3/R3C7 measured performance/balance and R5C1 connected acceptance. R5C2 coordinated Horde deployment/end-to-end scoring remains distinct from the deployed LootLab catalog; shared Trait Shop XP remains separate. Release assets/polish follow; Cure simulation stays last. This records a recommendation, not approval to implement Phase 4. [Current checkpoint table](ROADMAP.md#current-checkpoint-status-and-next-work).
+
+Corrected stale current-table entries for head/content implementation, the pack audio queue, MP authority and Horde scoring. Historical checkpoint narratives remain historical; no old test was promoted to a pass, gameplay version changed, or new content implementation authorized.
+
+
+## C249 — R4C1 preparation and choices (2026-10-15)
+
+**C249 / R4C1 discussion prepared (2026-10-15).** Owner requests preparing and discussing connected controls. [Six proposed choices and multiplayer/performance constraints](checkpoints/R4C1_CONNECTED_CONTROLS.md): input power, plate detection, bounded links, cycling, access and recovery. Existing button-pulse/plate-held behavior is retained; choices are recommendations, not implementation approval. Recipes/service/ownership details follow; damaging receivers remain R4C2. Installed 0.2.50 and pending acceptance are unchanged.
+
+
+## C250 — selected controls and external-mod investigation (2026-10-15)
+
+**C250 / R4C1 selections and external-mod research (2026-10-15).** Mechanical inputs, editable local/controller targeting, 20-tile links with 32 inputs/outputs, receiver-specific held-signal behavior, controller-based faction-base access and one-second recovery selected/amended. Filter scope, base boundary and controller lifecycle remain open. [Current selections and researched mod candidates](checkpoints/R4C1_CONNECTED_CONTROLS.md#c250-selections-and-compatibility-research-2026-10-15). Recommend standalone controls with optional verified adapters; no dependency or gameplay implementation approved by this discussion. Installed 0.2.50 unchanged.
+
+
+## C251 — independent controls and proposed controller rules (2026-10-15)
+
+**C251 / standalone controls with optional integrations approved (2026-10-15).** Owner agrees to our own system with support for other mods. Specific adapters remain unverified; no required dependency selected. [Next controller choices](checkpoints/R4C1_CONNECTED_CONTROLS.md#c251-independent-controls-approved-controller-choices-proposed-2026-10-15): trigger/target filters, base boundary, assignment, controller-loss policy and local overrides. These recommendations await selection; no gameplay or installed-build change.
+
+
+## C252 — controller radius, Horde consistency and personal ownership (2026-10-15)
+
+**C252 / controller radius and placer-ownership discussion (2026-10-15).** Owner selects receiver-side filtering, 20-tile controller radius, persistent ownership after controller loss and local targeting overrides. Proposes placer-owned devices with faction/public sharing. [Horde consistency evidence and two remaining ownership/access choices](checkpoints/R4C1_CONNECTED_CONTROLS.md#c252-targetingradius-selections-and-placer-ownership-discussion-2026-10-15). Recommend management radius separate from ownership; Horde identity/consent remain separate from territory. No reusable base-area API identified in inspected local runtime. Sharing details remain proposals; installed 0.2.50 unchanged.
+
+
+## C253 — public inspection, selected-group writes and native range marker (2026-10-15)
+
+**C253 / read/write sharing confirmed; native range graphic identified (2026-10-15).** Everyone may inspect; Private/Faction/Public determines device writes, with placer ownership retained. Public is not limited to operation-only. Native Horde Manager uses the existing world circle marker API; straight links need separate matching rendering. [Selected access and native evidence](checkpoints/R4C1_CONNECTED_CONTROLS.md#c253-readwrite-sharing-selected-and-native-selector-reviewed-2026-10-15). Radius calibration/rendered acceptance and remaining device recipes/lifecycle design are pending. No gameplay or installed 0.2.50 change.
+
+
+## C254 — range/FOV styling and next device choices (2026-10-15)
+
+**C254 / native-style range/FOV visuals and device choices (2026-10-15).** Owner requests native-style visuals for ranges and FOV. Full native circles are available; angular sectors require separate matching geometry. Found stale rotary/Ballista visual-cone selection in current TurretRange.lua; preserve combat rules while correcting display in planned work. [Evidence and proposed placement/recipes/power/service/link choices](checkpoints/R4C1_CONNECTED_CONTROLS.md#c254-native-style-rangesfov-requested-device-choices-proposed-2026-10-15). Choices await selection; no gameplay/install change.
+
+
+## C255 — installable controller and approved device specifications (2026-10-15)
+
+**C255 / control-device specifications selected (2026-10-15).** Owner approves floor plates, wall buttons and a ham-radio-like installable controller; C2542A recipes/skills/XP, grid/generator plus small-battery fallback, 100 HP/free service and material-free links selected. [Exact selections, native radio evidence and two remaining controller choices](checkpoints/R4C1_CONNECTED_CONTROLS.md#c255-device-specifications-selected-2026-10-15). Battery endurance/outage behavior remain proposals. No gameplay/install change.
+
+
+## C256 — controller endurance and outage selections (2026-10-15)
+
+**C256 / controller power settled (2026-10-15).** Owner selects 48 in-game hours per full backup battery and independent device operation during controller outages. Grid/generator takes priority; settings, direct signals and ownership persist, with receiver resource rules intact. [Confirmed contract](checkpoints/R4C1_CONNECTED_CONTROLS.md#c256-controller-power-choices-confirmed-2026-10-15). Receiver-specific pulse/held/OFF responses and R4C2 content remain to discuss; native integration remains to implement/verify. Installed 0.2.50 unchanged.
+
+
+## C257 — present decisions directly; receiver options (2026-10-15)
+
+**C257 / concrete receiver choices supplied (2026-10-15).** Owner requests actual choices whenever decisions remain; recorded in AGENTS.md. [Four proposals](checkpoints/R4C1_CONNECTED_CONTROLS.md#c257-concrete-receiver-choices-presented-2026-10-15): projectile-head held response, rotary held response, optional inhibition and first Poke Floor/dart design. No new selection or gameplay change; controller power choices remain settled.
+
+
+## C258 — unified activation, controller wording and Poke Floor (2026-10-15)
+
+**C258 / unified signal activation and Poke Floor selected (2026-10-15).** Owner chooses sustained operation for all head types while powered by inputs, one-cycle button activation, optional controller "allow turning" and Poke Floor as the next receiver. [Selections and three material clarifications](checkpoints/R4C1_CONNECTED_CONTROLS.md#c258-unified-powered-activation-and-poke-floor-selected-2026-10-15): energy source versus switching, ON/OFF versus rotation wording, and connected-only versus all-turret scope. No per-device held-default re-selection needed; no gameplay/install change.
+
+
+## C259 — owner test findings, UI direction and Detection clarification (2026-10-15)
+
+**C259 / 0.2.50 owner findings and correction discussion (2026-10-15).** Owner completes the test with alternate-ammo rejection, Void reload stall, UI/FOV defects and requested Manage/pack/tooltip improvements. Captured SP0.2.50 console and installed manifests; confirmed the stale exact-ammo transfer check, tooltip title fallback, Expansion dimming and preview-cone mismatch. Void stall is log-confirmed; its root cause remains under investigation. Initial native weight audit and Scrapshot spread/damage comparison are recorded. [Full findings and two concrete choices](TEST_FINDINGS_v0.2.50.md). C2581A receiver power-switch semantics selected; Detection explanation and linked-only signal recommendation remain discussion. No gameplay/install change, blanket test acceptance or connected MP pass. Prioritize corrective work before new connected-control content; retained R4C1/Poke Floor planning is not dropped.
+
+
+## C260 — Scrapshot320 and separate Firing/Detection roles (2026-10-15)
+
+**C260 / Scrapshot damage selected and directional Firing clarified (2026-10-15).** Owner selects eight40-damage pellets (320total) and explains the original Firing/Detection separation for triggered traps. Existing turret fire/manual paths still require target acquisition; the coordinate/direction ray engine supports a feasible forward-shot implementation, not an already-working trigger mode. Recommend retaining separate modules: Firing actuates, Detection acquires/aims. [Contract, evidence and remaining behavior proposals](checkpoints/R4C1_CONNECTED_CONTROLS.md#c260-directional-firing-and-scrapshot-selection-2026-10-15). Preserve current90-degree Scrapshot spread because no spread change was selected. No Autonomy merge, all-turrets trigger requirement, gameplay edit or install inferred.
+
+
+## C261 — blind forward firing and separate landing distance (2026-10-15)
+
+**C261 / blind firing and separate Lobber distance confirmed (2026-10-15).** Owner selects C260 **1A and 2B**: triggered Firing-only operation shoots forward and spends normal ammo/power even without a target; Lobber gets a separate landing-distance control instead of reusing Engagement Range. Firing and Detection remain separate. [Confirmed contract](checkpoints/R4C1_CONNECTED_CONTROLS.md#c261-blind-firing-and-lobber-distance-confirmed-2026-10-15). Scrapshot remains selected at eight40-damage pellets/320total with its existing90-degree spread. Design selections recorded; installed0.2.50 and outstanding correction/MP acceptance status unchanged.
+
+
+## C262 — implement the approved correction patch, 2026-10-15
+
+Owner: “Approved. Go ahead and implement the patch with all the fixes and confirmed changes. Keep multiplayer in mind and push it to GitHub.” Implements C259 findings plus C260/C261 selections; see [0.2.51 patch](PATCH_v0.2.51.md) and [verification](TEST_v0.2.51.md). No new balance/recipe choices are inferred. Scrapshot stays eight40-damage pellets with its existing90-degree spread; Firing/Detection remain separate. The Void stall is now traced to mixed wall/active clocks, not assumed to be a depletion issue. Native placed capacity remains100 and the logical head caps remain40spears/20bombs; physical weight still applies. R4C1 physical devices remain recorded next, following the C259 correction priority. Approval is implementation authority, not owner or connected multiplayer test acceptance.
+
+
+## C263 — owner correction report and Load Order mockup, 2026-10-15
+
+Owner reports loud Makeshift explosions, asks Lobber to wait for detonation, requests Large Expansion scrap around80 and other metal scraps, shared Ammo/Void Load Order menus with arbitrary ordering, equal widths and more height, head reload sounds, white unwrapped descriptions except rarity, and plain rotary RPM. [All eleven findings, captured evidence and concrete choices](TEST_FINDINGS_v0.2.51.md). Proposed sound/cap/family/reorder semantics are not selections. Existing installed0.2.51 remains unchanged. This is a correction discussion under the project agreement, not a blanket gameplay approval or successful owner acceptance.
+
+
+## C264 — correction selections and owner timing revision, 2026-10-16
+
+Owner selects C2631B/2A/3B/4A: single-firecracker Makeshift audio,20/30/40/60/80 scrap reserve progression, gold/silver compatibility and order changes at next reload. Requests one shared Load Order control, mockup layouts, per-ammo bonus display and mixed-magazine feasibility. Rejects an explosion-completion firing gate; prefers shorter fuse and longer shot delay. [Selections, native/code evidence, inspected layouts and outstanding choices](TEST_FINDINGS_v0.2.51.md#c264--selections-shared-button-layouts-and-timing-revision-2026-10-16). Layout, mixed magazine behavior, exact timing/module treatment and numeric scrap bonuses are proposals. No gameplay patch or acceptance inferred.
+
+
+## C265 — final correction selections and revised Manage preview, 2026-10-16
+
+**C265 / correction selections settled (2026-10-16).** Shared Load Order header selected with Magazine below equal-width Ammo/Void, Power beside Battery, next-load/type-count feedback and requested manual Reload. One ammo type per magazine retained. Lobber fuse1.25s/base interval5.5s selected with normal speed upgrades and no new timing cap; upgraded shots may overlap prior explosions. Scrap bonuses selected at0/5/10/15%. [Contract, reload safety and touch-tested preview](TEST_FINDINGS_v0.2.51.md#c265--layout-reload-and-final-correction-selections-2026-10-16). No gameplay/install change;0.2.51 remains installed. Corrective implementation precedes retained R4C1 devices.
+
+Owner selects1A/2B/3A without cap/4A and requests Reload. Next-load versus actual next-shot wording and safe reload semantics are recommendations, not claims of shipped functionality. The previous preview failed on the owner's mobile; new emulated touch checks pass, actual app remains unverified.
+
+
+## C266 — Expansion belongs in Equipment, 2026-10-16
+
+**C266 / final layout correction (2026-10-16).** Expansion belongs in Equipment with Head and Battery/Power. Magazine spans the row beneath equal-width Ammo/Void. Owner still cannot manipulate the preview on mobile; provide a static preview and do not claim touch support is fixed. [Corrected layout](TEST_FINDINGS_v0.2.51.md#c266--expansion-in-equipment-and-mobile-preview-2026-10-16). C265 gameplay selections remain unchanged; installed0.2.51 unchanged.
+
+Owner: "Expansion should be on Equipment. I do prefer that." Reports continued inability to manipulate on mobile, and says the corrected mockup should settle the layout. This supersedes C265 Magazine/Expansion pairing; preserve its other selections. No source patch or installed-build acceptance inferred.
+
+
+Owner follow-up (2026-10-16): "I like the new design"; corrected C266 layout accepted and patch recap requested. This accepts the design, not installed gameplay or actual mobile interaction. C263-C266 corrective scope is unchanged.
+
+
+## C269 — owner clarifies fire signal and plate gating, 2026-10-16
+
+**Historical: C270 supersedes the separate gate and aiming-while-OFF interpretation below.**
+
+Owner says Firing requires a fire signal supplied by a pressure plate or Detection; an unpressed connected plate prevents firing while Detection continues aiming. Requests Detection-equipped turrets as signal sources for connected traps. Selects2A subject to this model and3A repeating Poke Floor strikes. [Confirmed semantics, recommended sensor output and remaining empty-target choice](checkpoints/R4C1_CONNECTED_CONTROLS.md#c269-fire-requests-and-firing-permission-2026-10-16). Do not interpret this as selection of C2681A/1B or an OR of all signal sources that lets Detection bypass an OFF plate. No implementation or test acceptance inferred.
+
+## C284 — controller and turret Manage mockups requested, 2026-10-16
+
+Owner requests both menus. [Interactive preview scope, static screenshots and browser verification](checkpoints/R4C1_CONNECTED_CONTROLS.md#c284-paired-controller-and-turret-manage-mockups-2026-10-16). Preserve selected inset panels/shared header and C283 capacities; sample UI values and local simulated actions do not establish game behavior. No further choice or gameplay approval inferred; no source/install/version changes.
+
+## C283 — storage route and all expansion tiers approved, 2026-10-16
+
+Owner selects1A/2A. [Approved complete contract](checkpoints/R4C1_CONNECTED_CONTROLS.md#c283-storage-route-and-full-expansion-progression-approved-2026-10-16): controlled over-capacity real-item storage and native two-hand pickup for turrets/controller, controller capped500, full C282 ammo progression. Replaces controller compartment proposal; full weight and existing ownership/source rules retained. No further scope decisions; technical verification remains. Planning approval recorded without gameplay/test implementation claim.
+
+## C282 — remaining storage/progression choices presented, 2026-10-16
+
+Owner asks what else needs deciding. [Two proposals and complete fixed tier table](checkpoints/R4C1_CONNECTED_CONTROLS.md#c282-remaining-decisions-scoped-to-storage-and-expansion-progression-2026-10-16). Recommend1A controlled real-item storage/heavy pickup for turret/controller (controller retains500), and2A full expansion progression with unchanged no-kit defaults. No selections or new implementation authorization inferred. Established controls choices remain settled; technical verification is not another design gate.
+
+## C281 — Large ammo defaults approved; heavy-storage path clarified, 2026-10-16
+
+Owner accepts C280's default proposals and asks how heavy lifting permits over100 weight. [Approved counts and corrected native evidence](checkpoints/R4C1_CONNECTED_CONTROLS.md#c281-ammo-defaults-approved-controlled-over-capacity-storage-investigation-2026-10-16). Current native AddItem skips room admission; ISEquipHeavyItem uses exact-item server completion/both hands. Recommend investigating a scoped over-capacity real-item transfer path rather than claiming compartments are mandatory. Not proven safe in complete MP/save/carry lifecycle; controller architecture replacement remains to reconcile. No gameplay or test acceptance claim.
+
+## C280 — fixed balance selected; head and firearm estimates, 2026-10-16
+
+Owner selects1B and clarifies this is balancing, not exact programmed endurance. [Fixed reference, source-derived estimates and proposed limits](checkpoints/R4C1_CONNECTED_CONTROLS.md#c280-fixed-balance-selected-and-per-head-ammunition-estimates-2026-10-16). No automatic day-length/RPM capacity scaling. Rounded Large proposals and lower-tier progression remain unselected; no Void removal, battery rebalance or native-weight bypass. Estimates include ordinary reload/cadence and are not runtime acceptance. No gameplay change.
+
+## C279 — eight in-game hours of ammunition, 2026-10-16
+
+Owner requests most turrets sustain eight in-game hours without additional modules besides expansions. [Target, source-derived timing and remaining day-length choice](checkpoints/R4C1_CONNECTED_CONTROLS.md#c279-eight-in-game-hours-of-ammunition-requested-2026-10-16). Large Expansion is the working interpretation; ordinary reloads included, battery/durability separate. Recommend world-day-length-aware capacity; fixed90-minute-day baseline is an alternative, neither selected yet. Current native Apocalypse/bytecode mapping verified; no claimed installed-world setting or heavy-storage feasibility. No gameplay/test change.
+
+## C278 — higher ammo maximum and overweight feedback requested, 2026-10-16
+
+Owner says to increase the maximum with an overweight warning icon and asks for the original Large Expansion amount. [Historical counts and feasibility distinction](checkpoints/R4C1_CONNECTED_CONTROLS.md#c278-increased-ammo-maximum-and-overweight-warning-requested-2026-10-16). Increased physical allowance/weight feedback is the requested direction, but no exact count or Void retirement is approved. Original0.2.18 potato total300; familiar0.2.41 total750; current firearm default900. Current stock getter rechecked: ordinary placed100/carried50 limits remain hard limits, not just warnings. Fetched origin; no gameplay or acceptance change.
+
+## C277 — native heavy carry selected; ordinary capacity questioned, 2026-10-16
+
+Owner selects C2761A and asks about normal turret expansion, Void redundancy and realistic uptime. [Selected pickup rule, verified current defaults and capacity/runtime proposals](checkpoints/R4C1_CONNECTED_CONTROLS.md#c277-heavy-carry-selected-normal-turret-endurance-discussion-2026-10-16). Heavy carrying is selected for controller transport; storage/carry persistence still requires proof. Recommend increasing physical reserves while keeping Void optional; no new ammo limits, Void removal or automatic resupply approved by the question. No implementation/test claim.
+
+## C276 — two-handed heavy carry feasibility question, 2026-10-16
+
+Owner asks whether native fridge-like carrying allows over100 controller weight. [Current Lua/bytecode evidence and1A/1B choices](checkpoints/R4C1_CONNECTED_CONTROLS.md#c276-native-two-handed-heavy-carrying-investigated-2026-10-16): recommend the distinct native heavy-item action when ordinary pickup does not fit; contents retain full weight and forced-drop/lifecycle integration needs proof. Question does not itself select heavy-carry expansion or establish a working five-compartment portable controller. C275 remains selected pending this choice; no gameplay change.
+
+## C275 — 500 capacity and loaded pickup selected, 2026-10-16
+
+Owner selects1A/2B from the capacity/pickup choices:500 nominal total controller storage; allow loaded pickup when the player can carry the controller and contents at full weight, no reduction. [Contract](checkpoints/R4C1_CONNECTED_CONTROLS.md#c275-500-capacity-and-full-weight-loaded-pickup-selected-2026-10-16). Supersedes recommended empty-only pickup; exact-item carry persistence and native limits require implementation verification. No new gameplay/test claim.
+
+## C274 — stockpile plus player transfers; per-head numbering, 2026-10-16
+
+Owner selects1B with direct player-inventory transfers also allowed and asks for storage sufficient for multiple turrets, then selects2B per-head automatic numbering. [Confirmed choices, capacity evidence and proposals](checkpoints/R4C1_CONNECTED_CONTROLS.md#c274-shared-controller-stockpile-and-per-head-numbering-2026-10-16). Recommend500 nominal total across five native compartments;1000 alternative. Neither capacity nor empty-before-pickup recommendation is selected. Correct earlier C230 setter-only conclusion: current native getCapacity caps ordinary containers at100. No gameplay or test acceptance inferred.
+
+## C273 — full controller management and names requested, 2026-10-16
+
+Owner requests all turret Manage functions from the controller, specifically adding/removing modules and changing heads. Requests a top name bar, head-name/count defaults on placement and retention of custom text. [Expanded contract, current adjacency evidence and concrete choices](checkpoints/R4C1_CONNECTED_CONTROLS.md#c273-full-remote-manage-and-turret-names-requested-2026-10-16). Player versus controller inventory and shared versus per-head stable numbering are proposals. No implemented feature or test acceptance inferred; selected plate power/fire behavior is unchanged.
+
+## C272 — controller explanation and menu requested, 2026-10-16
+
+Owner asks for controller purpose and a menu mockup. [Explanation, proposed menu and browser-only verification](checkpoints/R4C1_CONNECTED_CONTROLS.md#c272-controller-purpose-and-menu-proposal-2026-10-16). No new gameplay choice, final art, implementation or test acceptance inferred. Controller management remains separate from direct signal operation and existing device ownership.
+
+## C271 — R4C1 readiness confirmed, 2026-10-16
+
+Owner asks whether more discussion is needed before pressure-plate/control implementation. [Readiness assessment](checkpoints/R4C1_CONNECTED_CONTROLS.md#c271-r4c1-design-readiness-2026-10-16): existing selected controls, recipes/access/lifecycle and C270 power/fire rules suffice for R4C1. Engineering verification remains; do not turn it into more owner design gates. Separate R4C2 Poke Floor balance/recipe is not included or blocking. No source change, installation or test claim in this readiness turn.
+
+## C270 — plate uses the existing Manage power switch, 2026-10-16
+
+Owner corrects the firing-permission interpretation: pressing a plate supplies fire and switches the connected device ON; release switches it OFF, so it does not aim. [Current contract](checkpoints/R4C1_CONNECTED_CONTROLS.md#c270-plate-toggles-actual-device-power-2026-10-16). Replace the separate firing gate with existing device power behavior; keep normal resource accounting and selected repeating Poke Floor. Withdraw C269's default target-presence restriction on external fire requests. Documentation-only clarification, not gameplay implementation or test acceptance.
+
+## C268 — planning resumed; owner test deferred, 2026-10-16
+
+Owner cannot test now and requests resuming planning. No test pass/failure or new gameplay approval is inferred. R4C1 is next; preserve all settled C253-C261 choices. [Three current proposals](checkpoints/R4C1_CONNECTED_CONTROLS.md#c268-planning-resumed-and-next-choices-2026-10-16) address signal-mode scope, safety/rotation wording, and the first R4C2 Poke Floor's held behavior. Recommendations are 1A/2A/3A, not selections. Installed 0.2.52 remains unchanged and pending rendered/connected-client acceptance.
+
+## C267 — correction patch implementation approved, 2026-10-16
+
+Owner: "Approved" following the C263–C266 patch recap and accepted corrected Manage design. This authorizes implementation, verification, local installation and the standing C108 GitHub mirror. **C267 / 0.2.52 corrective patch (2026-10-16).** Owner explicitly approves the C263–C266 recap. Implemented the accepted Equipment/Ammunition layout, shared per-head Load Order, safe manual Reload, next-load/next-shot summaries, eight scrap types and bonuses,20/30/40/60/80 scrap limits, quieter Makeshift blasts,1.25-second Lobber fuse/5.5-second base interval, head reload audio and unwrapped white descriptions except rarity. [Patch](PATCH_v0.2.52.md) | [Verification and short test](TEST_v0.2.52.md). Automated/native checks are recorded separately from pending rendered/connected-client acceptance. R4C1 physical inputs/controller remain next. No Workshop publication or main merge.
+
+Preserve one ammo type per magazine, normal speed upgrades without a detonation gate, private server accounting and pending connected acceptance. The approved work does not include R4C1 physical controls, new recipes or a Workshop upload.
+
+
+## C314 — Approved Controller corrections and Siphon patch (2026-10-18)
+
+Owner: “Approved to patch.” Authorizes implementation, verification, local installation and the standing development mirror for all settled C310–C313 changes. [Implemented contract](CORRECTIONS_C310.md#c314--patch-approved-and-implemented-2026-10-18). Version 0.2.54 includes Siphon with the exact “shot’s” wording, Synergy-gated secondary refunds, actual rotary pass energy, one half-damage Martyrdom follow-up generation, Grouped Controller, plate/UI/aim/link/swap fixes and LootLab catalog integration. No Workshop upload or merge authorized. Hosted LootLab deployment is pending Cloudflare authentication; playable build verification and installation are independent. See [test record](TEST_v0.2.54.md) for actual evidence and acceptance limits.
+
+
+## C315 — Siphon rarity and remote input assignment
+
+Owner-approved correction: Legendary Siphon at loaded weight 3; automatic placement assignment of buttons/plates to a writable Controller in range, retaining explicit receiver links and authoritative access rules. [Contract and provenance](CORRECTIONS_C310.md#c315--siphon-rarity-and-automatic-input-assignment-2026-10-18). Official Cloudflare setup and beta cf installation were also explicitly requested.
+
+
+## C316 — Controller map and connection views under discussion
+
+Owner requests preserving the current menu/Stockpile and discussing map-based connections and a clickable hierarchy, then proposes Inputs/Outputs lists. No implementation approved. [Preserved baseline, native evidence and numbered options](CONTROLLER_MAP_C316.md). Current installed build remains 0.2.54.1.
+
+
+## C317 — Controller layout direction selected
+
+Owner selects 1B / 2B / 3A: Triggers / Defenses, simultaneous lists beside the map, Grid / Native Map toggle. Stockpile and existing 0.2.54.1 baseline stay preserved. [Contract and concrete preview](CONTROLLER_MAP_C316.md#c317--direction-selected-and-interactive-layout-prepared-2026-10-18). Production implementation is not yet approved at this checkpoint.
+
+## C318 — Visual approved; unique names and Button interaction required
+
+Owner: “I approve the visual,” with compact Connections and head subtitles. Also requests unique turret/trap names, duplicate numbering, first Button #1, left-click activation and a temporary light-switch graphic. [Approval, source audit and next-patch requirements](CONTROLLER_MAP_C316.md#c318--visual-approved-identity-and-button-corrections-2026-10-18). Preview refined and verified; installed 0.2.54.1 remains unchanged. Current source does not yet meet the requested numbering/activation rules. No additional visual approval requested; no native or connected multiplayer test of unimplemented corrections claimed.
+
+## C319 — Taller Controller; right-column details and separated actions
+
+Owner requests Selected Device beneath Stockpile and Connections extended to the bottom, permits additional height, and corrects the mixed Open Manage/Set Aim/View Connections/Unassign row. Restore Controls, Connections, and Access & Assignment groups from the accepted Grouped design. Matching preview input sets list width to 43%. [Updated layout and verification](CONTROLLER_MAP_C316.md#c319--right-column-details-and-restored-action-groups-2026-10-18). Preview and planning only; C318 gameplay corrections remain pending.
+
+## C320 — Details span beneath Map and Stockpile; Connections scrollbar
+
+Owner clarifies that Selected Defense must extend beneath the Map as well as Stockpile, and requests a Connections scrollbar similar to Stockpile. Matching preview input sets list width to 40%. [Corrected layout and scrolling verification](CONTROLLER_MAP_C316.md#c320--details-beneath-map-and-stockpile-scrollable-connections-2026-10-18). Preserve separated groups and all prior gameplay requirements; installed build unchanged.
+
+## C321 — Stockpile to the far right; Map expands above details
+
+Owner moves Stockpile into a full-height right column beside Selected Defense and asks the Map to fill Stockpile's former upper-row space. Connections remains left with its scrollbar; details sit beneath the expanded Map. Preserve separated action groups and all gameplay requirements. [Updated preview and verification](CONTROLLER_MAP_C316.md#c321--full-height-stockpile-on-the-right-wider-map-2026-10-18). Planning only; installed build unchanged.
+
+## C322 — Add resizing to both menus; recap the upcoming patch
+
+Owner requests adjustable Controller and Manage menus that compact/expand safely, including smaller module tiles, then asks for agreement and a recap. Native resize and layout persistence mechanisms are verified in installed source; current menu layouts need geometry-aware reflow. Record readable minima, responsive sections, saved client geometry, retained controls/slots, bounded list scrolling and no per-tick scans. [Contract, evidence and recap](CONTROLLER_MAP_C316.md#c322--resizable-controller-and-turret-manage-menus-2026-10-18). This is a requested patch requirement; no gameplay implementation or runtime acceptance is claimed this turn.
+
+### C323 - Controller map and resizable menus approved (2026-10-18)
+
+Owner explicitly approves C318-C322. See [approved scope](CONTROLLER_MAP_C316.md#c323--implementation-approved-2026-10-18). Installed 0.2.54.1 remains the rollback baseline; approval is not a test result.
+
+
+C323 implementation note (2026-10-18): 0.2.55 implements the approved map/layout/resize/naming/Button scope. Native Map uses visited-world map data, not live satellite imagery. Compact Controller widths retain the existing attached Stockpile page. Passive traps receive names without adding a signal-receiver contract. Validation/release evidence: [TEST_v0.2.55.md](TEST_v0.2.55.md).
+
+## C324 — Controller error storm, scrollbar correction and in-game map (2026-10-18)
+
+Owner reports freezing/exiting with many errors and a scrollbar in the screen interior, accepts the in-game map as the default/only normal view, then suspects one overloaded CPU core. Continue the approved corrective work without another approval gate. The captured 0.2.55 console contains 454 identical `ControlGraph.update` failures; native dispatch passes the graph itself to a helper expecting its Controller parent. CPU utilization was not captured and the final exit cause is not established. Native deferred-anchor testing also reproduces scrollbar displacement during explicit reflow. Rename the helper, keep section scrollbars in their panels, and remove the Grid toggle/drawing. Preserve existing server-authorized actions and native Stockpile. [Patch](PATCH_v0.2.55.1.md) · [Evidence and acceptance](TEST_v0.2.55.1.md). Record the failed owner test separately from prior automated passes.
+
+
+## C327 — shared Controller organization approved (2026-10-18)
+
+Owner selects 1A and approves the C326 patch. Shared named groups and device ordering persist per Controller; collapse state stays local. Server checks permissions, identity and revision; stale edits fail instead of overwriting. Row dragging sorts; port/map gestures connect. Full implementation and delivery are documented in [0.2.56](PATCH_v0.2.56.md).
+
+
+## C328 — owner test and corrective discussion (2026-10-18)
+
+Owner requests strict module ordering, one centered Unavailable label with Expansion guidance, menu alignment/native chrome, map disconnection and finishing a triggered action before automatic power-down. [Audit](CORRECTIONS_C328.md) records confirmed bugs and proposed behavior. Module sorting and lock semantics remain open; no gameplay implementation is claimed or approved by the audit.
+
+## C329 — four-column modules and native keep-open lock (2026-10-19)
+
+Owner response to C328: rejects the 4/8/4 appearance in favor of 4/4/4/4 and chooses 2B. Adopt four centered, aligned rows of four; retain saved module order rather than inventing automatic sorting. Use native-style keep-open locking, distinct from pin/collapse and without overriding reach/access authority. Remaining corrective scope stays in [C328](CORRECTIONS_C328.md). Planning selections only; installed 0.2.56 unchanged. No further design choices required before patch approval.
+
+## C330 — Approved corrective implementation (2026-10-19)
+
+Owner: "Approved." Authorizes C328/C329 fixes, 4/4/4/4 saved-order geometry and native keep-open locking. Implemented as 0.2.56.1; see [patch](PATCH_v0.2.56.1.md) and [test/evidence](TEST_v0.2.56.1.md). No new recipe, loot, damage or permission decision. Installation and standing C108 development mirror follow verification; owner/rendered/connected acceptance stays pending.
+
+## C331 — Testing deferred; existing next checkpoint retained (2026-10-19)
+
+Owner: "Unable to test, what’s the next checkpoint?" No test result or gameplay approval. R4C2 Poke Floor remains next, followed by the separate dart emitter slice. [Status handoff](checkpoints/R4C1_CONNECTED_CONTROLS.md#c331--next-checkpoint-confirmed-while-testing-is-deferred-2026-10-19).
+
+## C332 — Poke Floor content choices requested (2026-10-19)
+
+Owner: "Anything need to be discussed with poke floor?" [R4C2 proposal](checkpoints/R4C2_POKE_FLOOR.md) records seven choices and recommendations. This is discussion authorization only. No new numerical balance, recipe, module host or gameplay implementation is approved; existing pulse/held behavior remains selected.
+
+## C333 — Poke Floor selections; Controller car-battery fallback (2026-10-19)
+
+Owner selects C332 1A/2B/3A/5A/6B, requests an improvised recipe and evaluates Tire Pump substitution. Bed Spikes-style traversal/scratch eligibility must request visible activation before the actual injury. Traps have no modules. Owner adds Controller car batteries, sequential spares and connected-device fallback; Siphon cannot affect the Controller. [Detailed provenance, source findings and remaining choices](checkpoints/R4C2_POKE_FLOOR.md#c333--owner-selections-and-shared-fallback-power-2026-10-19). Do not infer a second injury roll, unlimited stockpile, shared mains coverage or Controller-energy Siphon refund. No new gameplay version or implementation/owner acceptance claim.
+
+## C334 — Self-triggering Poke Floor supersedes external activation (2026-10-19)
+
+Owner selects C333 1A Tire Pump/improvised recipe and 3A local-before-Controller battery priority. Explicitly rejects external/manual Poke Floor activation: it triggers itself. [Updated contract and remaining zombie occupancy choice](checkpoints/R4C2_POKE_FLOOR.md#c334--self-triggering-poke-floor-recipe-and-power-order-selected-2026-10-19). No gameplay implementation or acceptance claim; other signal receivers are unchanged.
+
+## C335 — Poke Floor repeated occupancy selected; turret power idea (2026-10-19)
+
+Owner selects C334 1A repeated zombie occupancy, then tentatively considers requiring turret car batteries rather than building electricity. Repetition is selected; battery-only turret operation is not yet selected or implemented. [Source-backed recommendation, tradeoff and choices](checkpoints/R4C2_POKE_FLOOR.md#c335--repeating-zombie-contact-selected-battery-only-turrets-proposed). Retain Controller fallback, local-before-bank ordering and no Controller Siphon refund. No automatic charging or new power balance is inferred.
+
+## C336 — Optional grid connection module proposed (2026-10-19)
+
+Owner asks whether a module could enable grid connection. [Proposal and choices](checkpoints/R4C2_POKE_FLOOR.md#c336--grid-module-proposal-2026-10-19) combine battery-default turrets with an optional one-slot supply upgrade. Supply scope and rarity/loaded weight remain unselected; no charging, trap module slots, Controller Siphon refund or implementation approval is inferred. Installed 0.2.56.1 remains unchanged.
+
+## C337 — Grid Module mains/generator support and Mythic rarity (2026-10-19)
+
+Owner selects C336 1A and replaces the proposed Epic/Rare rarity with Mythic due to reduced upkeep. [Confirmed design and remaining loaded-weight choice](checkpoints/R4C2_POKE_FLOOR.md#c337--grid-module-mythic-rarity-selected-2026-10-19). Recommend weight 1, not yet numerically approved. No gameplay implementation approval inferred; installed 0.2.56.1 unchanged.
+
+## C338 — Inherit assigned rarity weight; preserve LootLab overrides (2026-10-19)
+
+Owner confirms Grid Module weight 1 and rejects redundant weight decisions. Rarity selection automatically authorizes its assigned weight, unless the owner changes it in LootLab. Preserve those tier/item overrides. [Contract](checkpoints/R4C2_POKE_FLOOR.md#c338--assigned-rarity-weights-confirmed-2026-10-19). Updates C315 process, not gameplay; Grid Module is settled as Mythic / 1.
+
+## C344 — Compact management correction approved and implemented (2026-10-19)
+
+Owner explicitly approves the C342 1A/2A/3A selections and proposed retired-trigger reconciliation. 0.2.57.2 implements native Small-font chrome, narrower balanced Manage, inline Details with a visible-content height minimum, and authoritative removal/restart cleanup without dropping temporarily unloaded links. If the viewport cannot fit Details at all, opening it is refused with an explanatory status; the main controls stay visible. C343 module categories remain a separate undecided proposal. [Patch](PATCH_v0.2.57.2.md) / [tests](TEST_v0.2.57.2.md). Native write/read, all three independent package selections and 25,867 assertions pass. Installed from immutable test/v0.2.57.2 with 308 source and 402 package/install/archive hashes verified; no Workshop upload or merge. Rendered/connected acceptance remains pending. Exact five-second native MP placement remains open.
+
+## C370 — next build approved (2026-10-20)
+
+Owner: “Approved” after clarifying that update/patch approval was the intended checkpoint and no further decisions remained. Proceed with settled Tether, service/condition/timing, Poke 45 and tooltip scope. Lever content details remain unselected and are explicitly excluded rather than invented. [Build contract](PATCH_v0.2.59.md). Implementation/native verification are in progress; installed 0.2.58 remains the rollback baseline until verified tagged installation. No Workshop publication or merge authorized.
+
+C370 delivery: 0.2.59 is implemented and installed from immutable test/v0.2.59 / c376cbb6c912e9aee6c367ac41eac386673161f2. 26,119 assertions, native write/read and all package selections pass; 320 source and 419 installed/archive files match and both prior backups verify. [Release evidence](../diagnostics/v0.2.59/local-release.json). Rendered/connected acceptance is pending. The development mirror follows C108; no merge or Workshop upload.
+
+## C371 — Owner test failure and consumption spectrum proposed (2026-10-20)
+
+Owner reports failed Tether placement/non-flush preview and requests the full OMH consumption spectrum. Read-only native inspection confirms missing local player binding in shared PlacementAction. [Diagnosis, verification gap and actual choices](TETHER_PLACEMENT_C371.md): 1A fixes plus seven fixed bands recommended; 1B placement/alignment first. Labels/cutoffs remain proposed. Test Complete does not approve the next patch; no gameplay/install changes.
+
+## C372 — Room for targeted battery increases (2026-10-20)
+
+Owner asks whether higher consumption is justified for any heads. [Source-based comparison and concrete choices](BATTERY_BALANCE_C349.md#c372--targeted-head-increases-discussed-2026-10-20) recommends 1A Blades/Lobber x1.5; 1B Blades x2 and Lobber x1.5 is the stronger alternative. Other heads, surcharges and saved tuning remain unchanged. Neither selected; C371 scope remains pending. Planning only.
+
+## C389 -- Approval and implementation (2026-10-21)
+
+**C389 / Full targeting and 1C approved (2026-10-21).** Owner confirms "Yea": C388 values and C387 safeguards are approved. Implementing Controller defaults/defense overrides, deliberate player acquisition, shared reduced turret injuries and independent Sandbox multipliers. No further design decision remains. Installed 0.2.60 stays unchanged until verification and tagged installation; connected/rendered acceptance remains pending. [Contract](TARGETING_AUDIT_C386.md#c389--approval-and-implementation-2026-10-21). **Wait for a patch.**
+
+C389 verification: the full approved implementation passes 26,293 assertions, native write/restart and all three independent package startup selections. [0.2.61](PATCH_v0.2.61.md) retains the selected numbers, state persistence and server protection rules. No connected/client-rendered acceptance is claimed. Tagged installation and the C108 mirror follow; no Workshop publication or merge.
+
+C389 delivered: immutable `test/v0.2.61` / `1cf3889e8bf96987627de66a4ed865977927012c` installed with 334 source / 445 package/archive/install hashes and both 0.2.60 backups verified. C108 development mirror follows on the existing branch/PR; no Workshop upload, merge or new live-client acceptance.
+
+
+## C390 - Owner test audit, sound audition and next-build discussion (2026-10-21)
+
+**C390 / 0.2.61 owner test audited (2026-10-21).** Owner completed an SP session and reports functional progress with remaining presentation, sound, control-list and player-damage issues. [Audit and concrete choices](AUDIT_C390.md) records all findings: screen-overlay tether with no fall phase; white/missing laser beam and requested fixed 10 tiles; Lever mounting/master-enable request; scroll/collapse/clipping/group access; Controller defaults return action; missing/stale tooltips; absent per-head Sandbox grouping/range option; and dynamic rarity art. Native code shows M4 4 limb damage yields about 0.8–1.2 overall-health loss before armour, with no friendly/hostile split. A local sound audition contains 32 choices / 26 distinct native captures; its builder is mirrored, game audio stays local. Proposed choices: **1A native bounded visuals (recommended) / 1B approximate sprites / 1C full physics; 2A hostile 3x damage + 2x wounds (recommended) / 2B 2x + 2x / 2C 4x + 2x**, friendly baseline unchanged; **3A 50-tile radius (recommended) / 3B 40 / 3C 75**, with Sandbox. Multiple Levers proposed as all-ON master gates. These proposals are not new patch approval. Installed 0.2.61 unchanged; live connected PvP remains pending. **Decision needed.**
+
+Owner supplies new Performance/Expansion rarity art and requests automatic consistency with Sandbox rarity. Explicit corrections include fixed laser range, master Lever behavior, compact Connections with Assign to Group, persistent Controller settings access and module removal guidance. User asks for audit and native sound HTML; this authorizes those artifacts, not the next gameplay build. Preserve current tag/install and cumulative Workshop draft. Full source evidence, unresolved rendered feasibility and proposals: [C390 audit](AUDIT_C390.md).
+
+
+## C397 - Corrective build verification (2026-10-22)
+
+**C397 / 0.2.63 verified, installation pending (2026-10-22).** Approved corrective scope is implemented. [Patch](PATCH_v0.2.63.md) / [test record](TEST_v0.2.63.md): 26,794 assertions, native write/fresh-process read and all three package combinations passed. Existing-kit Controller expansion, progressive discovery, 45-degree standby pitch/post-alert delay, local options and tooltip/Sandbox cleanup are ready for tagged installation. Native container limits use the existing Controller-specific allowance; no global override. Wall/tether/rendered acceptance and connected MP remain pending; base fading matches a native occlusion path but is not visually reproduced. Installed 0.2.62 stays current until installation succeeds. **Wait for a patch.**
+
+
+## C397 / 0.2.63 local delivery (2026-10-22)
+
+**0.2.63 / C397 installed (2026-10-22).** Approved Controller expansion and corrective scope are installed. **26,794 assertions**, native write/restart and all three independent-package startup checks pass. Immutable `test/v0.2.63` / `0865b40e62c4bf5134ce6d62a7ff9c14178cbd4e`; all **378 source and 525 tagged/package/install/archive files** match, with both 0.2.62 backups verified. [Patch](PATCH_v0.2.63.md) / [short owner checklist](TEST_v0.2.63.md). Wall alignment, tether depth, standby appearance and connected-player acceptance remain pending. Base fading is consistent with native container occlusion, not a confirmed rendered diagnosis. No Workshop upload, merge or hosted LootLab deployment. C108 development mirror follows. **Test now** after restart.
+# C398 - Owner test deferred; next-focus recommendation (2026-10-22)
+
+Owner cannot test now and asks what follows. Preserve installed 0.2.63 and its incomplete rendered/connected acceptance. Offer 1A performance/lifecycle hardening (recommended) or 1B balance/endurance review, as scoped in [Planning](PLANNING.md#c398---next-checkpoint-with-owner-testing-deferred). No new tuning, gameplay patch, integration or publication approved by this discussion.
+
+
+
+## C399 - Performance/lifecycle pass selected (2026-10-22)
+
+Owner selects C398 1A. Continue bounded discovery, mixed-device scheduling and exact-item/expansion lifecycle hardening within existing contracts. No new balance, content, rendering acceptance or multiplayer acceptance is authorized or implied. Confirmed fixes and measured limits are recorded in [AUDIT_C399.md](AUDIT_C399.md); corrective build 0.2.63.1 passed 27,129 assertions, native write/restart and all package probes, and is installed with verified backups. Owner testing stays deferred.
+
+
+## C400 - Follow-up performance audit requested (2026-10-22)
+
+Owner requests another audit and advice on stress-test support. Audit-only reproductions confirm two scheduling/discovery defects and count repeated graph text work. See [AUDIT_C400.md](AUDIT_C400.md). No new gameplay patch or debug spawning is approved by this audit request. Recommend 1A fixes plus bounded debug stress presets/timing summaries; 1B fixes with manual setup. Installed 0.2.63.1 and deferred owner acceptance remain unchanged.
+
+
+## C401 - C400 fixes approved; personal test deferred (2026-10-22)
+
+Owner: "Fix the findings, I’ll test when I’m able to personally." Proceed with the three corrective findings; do not add the optional stress preset/timing tool. Existing gameplay/balance contracts remain. Implemented as 0.2.63.2; [patch](PATCH_v0.2.63.2.md) and [test evidence](TEST_v0.2.63.2.md) distinguish automated verification from deferred personal/connected acceptance.
+
+
+## C402 - Roadmap completeness clarification (2026-10-22)
+
+Owner challenges the implication that only testing remains. Reconciled the current remaining-work snapshot in [Planning](PLANNING.md#c402---remaining-roadmap-clarified-2026-10-22) and Roadmap: approved C401 fixes complete does not mean the whole roadmap is complete. Shared XP, coordinated scoring, multi-leaf barbed support and release/Cure work remain separate. New heads are optional candidates, not commitments. Proposed 1A shared XP design / 1B garage-door feasibility / 1C scoring readiness audit; no selection or implementation authorization inferred. Installed build and deferred tests unchanged.
+
+
+## C403 - Arc Emitter next; all C402 tracks retained (2026-10-22)
+
+Owner commits to the discussed future tracks, including Arc Emitter, and explicitly requests discussing Arc next. Record that ordering without inventing mechanics, numerical tuning, implementation approval or publication authorization. Cure simulation stays last and art stays owner-sourced. [Initial Arc contract and options](TURRET_HEAD_PROPOSALS.md#c403---arc-emitter-selected-next-remaining-tracks-retained-2026-10-22). Current build/testing unchanged.
+
+
+## C404 - Arc selections and uncapped-chain correction (2026-10-22)
+
+Owner selects C403 1A/2B/3A, explicitly rejects a total target cap, and specifies reduced-damage Piercing continuation plus auto-aimed deferred Splitter branches. Preserve that correction; do not silently restore the rejected cap or duplicate module entitlements recursively. Exact chain territory and the transition from main chain to Piercing remain unresolved; [discussion](TURRET_HEAD_PROPOSALS.md#c404---uncapped-arc-chains-and-deferred-splitter-branches-2026-10-22) records concrete alternatives and performance tradeoffs. No gameplay implementation or numerical balance approval.
+
+
+## C405 - Local Arc jumps and tentative six-jump phase (2026-10-22)
+
+Owner selects C404 1B/2B: nearest available target in a circle around each struck target; proposes six additional jumps. Record initial plus six as tentative base tuning, superseding the unlimited base-chain proposal. Owner asks whether Splitter is worthwhile. [Tradeoffs and choices](TURRET_HEAD_PROPOSALS.md#c405---local-jumps-and-splitter-tradeoffs-2026-10-22) recommend finite shared opportunities for reduced-damage independent side chains, versus explicitly excluding Splitter. No recursive entitlement duplication, final balance selection or implementation approval inferred. Current installation and deferred testing unchanged.
+
+
+## C406 - Finite Splitter and per-shot target marking selected (2026-10-22)
+
+Owner selects C405 1A and requests 0.1s chain staggering for main-chain priority, optimization and removal of demonstrably costly features. [Contract and Siphon evidence](TURRET_HEAD_PROPOSALS.md#c406---finite-splitter-approved-pacing-and-siphon-discussion-2026-10-22) distinguish these selections from proposed scheduling guarantees and the unresolved Arc refund rule. Current Siphon pays per distinct eligible kill; proposed one-roll-per-discharge mapping is not yet approved. No gameplay/build/test status change.
+
+
+## C407 - Arc per-kill Siphon retained (2026-10-22)
+
+Owner selects C406 1B and proposes about 20 damage per victim, expecting several shots before kills to offset energy refunds. Preserve that selection. [Encounter analysis](TURRET_HEAD_PROPOSALS.md#c407---per-kill-siphon-selected-low-damage-crowd-accounting-2026-10-22) corrects the single-shot illustration while showing possible crowd sustain across multiple paid shots; no silent refund cap or unsupported balance guarantee. Cadence/power tuning and implementation approval remain open.
+
+
+## C408 - Strong but risky Arc damage proposal (2026-10-22)
+
+Owner asks for damage that retains strong but risky Siphon. [Comparison](TURRET_HEAD_PROPOSALS.md#c408---proposed-15-damage-arc-baseline-2026-10-22) recommends 15 damage, with 14 as a conservative alternative. Seven illustrative 100-HP victims give 90% versus 78.75% expected firing-cost recovery respectively with one Siphon. Preserve conditional assumptions; no automatic numerical approval, source edits or balance guarantee.
+
+
+## C409 - Six-chain at 20 damage evaluated (2026-10-22)
+
+Owner asks about six chain at 20 damage. [Comparison](TURRET_HEAD_PROPOSALS.md#c409---six-target-20-damage-comparison-2026-10-22) distinguishes six total targets from six additional jumps: 108% versus 126% expected firing-cost recovery in the existing illustrative baseline. Recommend six total as a slight-sustain compromise, five total if baseline net drain is desired. Count clarification pending; no patch approval inferred.
+
+
+## C410 - Six total targets at 20 damage selected (2026-10-22)
+
+Owner selects C409 1A, citing incomplete crowds, and asks for remaining discussion. Confirm initial plus five jumps at 20 base damage. [Remaining choices](TURRET_HEAD_PROPOSALS.md#c410---six-targets-at-20-confirmed-remaining-arc-decisions-2026-10-22) separate recommendations from settled Siphon/Splitter rules and remaining recipe/module/power/audio work. No gameplay patch approval or numerical defaults inferred beyond the selected damage/target count.
+
+
+## C411 - Arc firing and Synergy selections (2026-10-22)
+
+Owner sets one-second main firing delay, selects C410 2B, retains normal per-shot turret power handling and assigns Piercing on Splitter shots to Synergy. [Contract](TURRET_HEAD_PROPOSALS.md#c411---one-second-cadence-and-synergy-gated-branch-piercing-2026-10-22) supersedes separate branch charges and the proposed shared Piercing allowance. Preserve remaining exact tuning and implementation approval gates; no gameplay edits.
+
+
+## C412 - Correct premature patch handoff (2026-10-22)
+
+Owner challenges prior Wait for a patch message. No Arc patch is underway; remaining decisions exist. [Concrete battery options and readiness correction](TURRET_HEAD_PROPOSALS.md#c412---handoff-correction-and-concrete-battery-cost-choice-2026-10-22) recommend 0.10% base shot cost versus 0.05%/0.20%, explicitly before existing modifiers. Follow with consolidated remaining module/acquisition/audio review, then concrete patch approval. No new user selection or implementation authorization inferred.
+
+
+## C413 - Compare Arc cost before selection (2026-10-22)
+
+Owner requests current most-expensive comparison. [Stock-head calculations](TURRET_HEAD_PROPOSALS.md#c413---existing-high-cost-heads-versus-proposed-arc-power-2026-10-22) identify Pipe Bomb Lobber at .06% per shot and distinguish per-shot from cooldown-only per-minute drain. Revise recommendation to existing 1B .05%; no owner selection inferred. Saved overrides/modded-firearm extrema and actual endurance are not claimed verified.
+
+
+## C414 - Attack-speed rating concern audited (2026-10-22)
+
+Owner raises misleading per-shot versus sustained consumption labels. [Read-only findings](TURRET_HEAD_PROPOSALS.md#c414---consumption-rating-already-includes-speed-consistency-audit-proposed-2026-10-22) establish existing speed/reload-aware ratings, Extreme projection for proposed Arc and baseline/effective/formula consistency gaps. Recommend rating audit/numeric display without silently changing energy balance; no implementation authorization inferred.
+
+
+## C415 - Reject added consumption numbers (2026-10-22)
+
+Owner says not to add extra numbers. Retain colored labels, superseding C414 proposed numerical drain line. [Current spectrum verified](TURRET_HEAD_PROPOSALS.md#c415---label-only-consumption-retained-spectrum-confirmed-2026-10-22): Extreme is highest; None separately indicates zero. No Arc cost or balance approval inferred.
+
+
+## C416 - Extreme threshold clarification (2026-10-22)
+
+Owner asks minimum Arc cost for Extreme. [Calculation](TURRET_HEAD_PROPOSALS.md#c416---minimum-arc-cost-for-extreme-2026-10-22): 60/3600 = 0.0166667% per shot at one shot/second. Cost remains unselected; label-only preference and existing build unchanged.
+
+
+## C417 - Arc 0.02% shot cost approved (2026-10-22)
+
+Owner agrees to .02 following C416. [Contract](TURRET_HEAD_PROPOSALS.md#c417---arc-base-shot-cost-selected-2026-10-22) records .02% base cost per shot, existing modifiers and Extreme label without extra numbers. Not blanket implementation approval; acquisition/module/recipe/audio scope remains to settle.
+
+
+## C418 - Craftable Arc acquisition approved (2026-10-22)
+
+Owner selects C417 1A. Record craftable acquisition without loot addition. [Recipe proposal](TURRET_HEAD_PROPOSALS.md#c418---craftable-acquisition-selected-recipe-proposal-2026-10-22) remains unapproved; ingredients/tools/skills/time/XP are proposed explicitly. No implementation or patch approval inferred.
+
+
+## C419 - Recipe approved; consolidated remaining decisions requested (2026-10-22)
+
+Owner selects C418 1A and asks for remaining decisions. Record recipe/skills selected. [Consolidated review](TURRET_HEAD_PROPOSALS.md#c419---recipe-selected-and-consolidated-remaining-review-2026-10-22) presents six remaining groups with recommendations and separates subsequent native audio selection/final patch approval from engineering work. No new choices silently approved.
+
+
+## C420 - Arc module corrections and sound deferral selected (2026-10-22)
+
+Owner keeps Velocity/Fragment, specifies Fragment mark exemption/source exclusion/no chaining, expands all-target procs with Synergy, selects C419 3A/4B/5A/6A and allows final sound after initial implementation. [Scope](TURRET_HEAD_PROPOSALS.md#c420---final-arc-module-corrections-and-initial-implementation-scope-2026-10-22) supersedes contrary proposals. Native audio audition remains requested; no artifact or code claimed delivered. Ready to request final initial-implementation approval, no additional speculative design choices.
+
+
+**C425 / 0.2.64.3 owner feedback audited (2026-10-22).** Captured the loaded SP test; Arc sound/thickness/fade, wall anchors, Controller equipment, Automation icons, battery totals and repair labels need correction. [Evidence and proposed scope](FEEDBACK_C425.md). Higher rarity drain requested; lower tiers remain a choice: **1A .15/.25/.50 recommended / 1B retain .10/.15/.25**, with the same combined patch. Costs remain additive: Mythic +2x produces 3x base alone. No gameplay/install changes or rendered acceptance claimed. **Decision needed.**
+
+**C426 / C425 correction approved with layout correction (2026-10-22).** Owner selects **1A** and asks to confirm. Restore the original right-side Online/range area; split the former battery area equally between battery and expansion, without an extra status row. [Approved contract and verified Regulator behavior](FEEDBACK_C425.md#c426-1a-approved-layout-corrected-regulator-confirmed-2026-10-22). Regulator adds no drain and divides cost by 1 + .25 per active copy; one saves 20%, two 33.3%. C425 tier schedule and combined scope approved, no additional patch permission required. Confirmation only; installed 0.2.64.3 unchanged. **Wait for a patch.**
+
+
+## C427 - approved C425/C426 implementation (2026-10-22)
+
+Owner: "Approved". Implements the settled C426 layout and C425 1A schedule without additional design changes. [Patch](PATCH_v0.2.64.4.md) and [test evidence](TEST_v0.2.64.4.md) separate native verification, local installation and pending rendered/audio acceptance. No publication or LootLab deployment is authorized by this checkpoint.
+
+## C428 - Test findings, Sandbox and progression audit (2026-10-22)
+
+Owner reports poor settings organization/formatting, duplicate preferences, Fragment/Arc audio, Arc glow/light, laser depth and timing concerns; supplies the exact eleven-section turret order and proposes category/tier/name rarity dropdowns. Requests current progression/loot/material/battery analysis against native crafting.
+
+[Audit](AUDIT_C428.md), [complete settings snapshot](SANDBOX_INVENTORY_C428.md) and [progression assessment](PROGRESSION_C428.md) record evidence and distinguish confirmed source defects from unmeasured runtime behavior. Existing approval C427 applies to the installed 0.2.64.4 correction, not the new findings. No source, asset, version, install, saved tuning or hosted LootLab change in this checkpoint.
+
+Proposed choices: **1A** combined settings/audio/render/light/gameplay-time correction in independently verified slices (recommended), **1B** defer timing to a second patch. **2A** tier dropdowns with Disabled/Custom compatibility and preserved owner LootLab tuning (recommended), **2B** tier-only with separately reviewed custom-value conversion. **3A** design advanced skill/component/knowledge gates and review pack supply while keeping starters accessible (recommended), **3B** retain soft progression and mainly review acquisition probabilities. Neither progression choice approves unreviewed numerical balance changes.
+
+Captured SP 0.2.64.4 console at diagnostics/captures/20261022-224045-0945, SHA256 99A7AECD8F860E567ACD681221FFB34068D9D70E029C618D374BF48E99F5237D. No OMHTT exception stack found; unrelated warnings remain. All 33 current craftRecipe definitions are known recipes; default pack calculations give any Mythic median 77 kills and a particular Mythic median 451. Calendar estimates remain explicitly conditional. C108 documentation mirror required; next handoff **Decision needed**.
+
+
+## C429 - Corrective selections and progression evidence (2026-10-22)
+
+Owner selects C428 1A, 2A and 3A. Annotation replaces the shared base Forward Cone proposal with one control in each head's turret subsection. Preserve the 360 module and current effective head defaults; explain rotary's opposing sweeps. Owner additionally requests starting-character/high-skill cases, other crafts/mods such as Angry Turrets, and unequal skill leveling difficulty/time. These are required progression design dimensions, not permission to change professions or rebalance unselected recipes/loot.
+
+[C429 contract and evidence](PROGRESSION_C429.md) records current 42.21 starting skills, native XP mechanisms and book effects, OMHTT consumptive crafting XP, vanilla physical/knowledge gates and original installed Angry Turrets recipe facts. The old C428 choices are selected; do not request 1A/2A approval again. Progression remains design work: new candidate components, manuals, recipe counts and pack supply numbers require concrete review. Recommended next choice is components plus selected advanced-design unlocks (1A); alternative is components/operating costs only (1B).
+
+This checkpoint adds research/approval records only. Corrective implementation remains outstanding; installed 0.2.64.4, source/assets, saved tuning and acceptance status are unchanged. No runtime skill-leveling, rendered or multiplayer pass is claimed. C108 documentation mirror required. **Decision needed only for the new progression gate direction.**
+
+
+## C430 - Progression components/designs chosen; continued discussion (2026-10-23)
+
+- Owner selects C429 **1A** (physical components plus a small number of learned advanced designs), then says "But let's discuss more". Record the direction as selected, not a recipe/loot patch approval.
+- [Evolving contract](PROGRESSION_C429.md#c430---components-and-advanced-designs-selected-discovery-and-pack-pacing-proposed-2026-10-23) proposes **1A two manuals** (Ballista/Rotary Blade/Lobber grouped; Arc separate) or **1B four individual manuals**, with basic automation and traps still known. These contents remain unselected.
+- Separate proposed pacing choice: **2A 5%**, **2B 10%**, or **2C current 15%** zombie pack chance, retaining three rewards, assigned tier weights and owner Sandbox/LootLab values. Expected rewards are 15/30/45 per 100 eligible kills. No new value is applied or presented as play-tested.
+- Preserve the required comparisons across unequal skill-training effort, native/modded specialist starts, co-op, native crafts and Angry Turrets. No blanket skill increase or arbitrary calendar unlock is approved. New manual acquisition/rarities, recipe bills and XP still require concrete owner review.
+- C428/C429 corrective selections remain outstanding implementation work. No gameplay/version/package/changelog/test-result changes. Installed 0.2.64.4 unchanged; discussion-only documentation must be mirrored under C108/C119. **Decision needed** for the new proposals.
+
+
+## C431 - Manual gates rejected; 7% zombie packs selected (2026-10-23)
+
+- Owner: "I don't like the book / manual unlock idea. I think we should focus more on the materials and xp to craft. 2 - 7%". This supersedes the earlier selection of a learned-design direction; remove all proposed OMHTT manual/schematic unlock decisions. Native skill books are unaffected.
+- Set the pending zombie module-pack default to **7%**, retaining three rewards, current rarity weights, saved Sandbox values and owner LootLab overrides. Expected corpse-pack rewards: 21 per 100 eligible kills, 63 per 300. No container-loot or Traps-only expansion change is implied. The value is selected, not yet implemented.
+- [Current contract](PROGRESSION_C429.md#c431---manual-unlocks-rejected-materials-and-skills-with-7-percent-packs-2026-10-23) proposes consumed native charger hardware for Arc, receiver/transmitter for Controller and a Motion Sensor for Laser. **1A** uses Arc Electrical 5 / Mechanics 3 (recommended); **1B** uses Electrical 6 / Mechanics 3. Remaining bill/tool/skill/time/XP details are explicit. Neither recipe option has been selected.
+- Treat XP-to-craft as normal skill qualification; do not invent XP spending. Different skill-training effort, native/modded starts, crafting XP, co-op and actual material sources remain mandatory. Preserve current awards pending contrary evidence; no free service-XP exploit was found.
+- C428/C429 corrections remain selected and outstanding. No gameplay/build/install/test-result changes this turn; installed 0.2.64.4 remains. Commit/mirror documentation under C108/C119. **Decision needed** for the recipe proposal, not the rejected manuals or settled 7%.
+
+
+## C432 - Manuals reconsidered with Turret Specialist trait (2026-10-23)
+
+- Owner, during C431 handoff: "I think I'll take it back. Manuals may be good. But we'd have to add a trait that starts with them as a 'Turret Specialist'". This supersedes the manual rejection. The supplied name and conditional return to manuals are selected direction; exact trait benefit/cost, manual grouping and loot details are not specified.
+- [Current contract](PROGRESSION_C429.md#c432---manuals-reconsidered-with-turret-specialist-2026-10-23) offers a two-point trait: **1A** personal learned recipes at creation (recommended), or **1B** physical, shareable manuals. No bonus skills, XP multiplier, free equipment or combat benefits are proposed. Personal knowledge still lets a qualified specialist craft for teammates.
+- Manual grouping is still a real choice: **2A** two (Ballista/Blade/Lobber mechanisms, Arc separate) recommended, or **2B** four per-head manuals. Both trait options cover the selected set. Final manual rarities/acquisition and C431 recipe bills remain unapproved.
+- Preserve **7% zombie pack default**, three rewards and owner tuning; this selection was not withdrawn. Materials/skill training remain constraints even for specialists. Do not claim knowledge as a universal late-game gate when a paid starting trait bypasses it.
+- Native current `GrantedRecipes` trait examples and ordinary reusable reading behavior were inspected. No custom trait registration, creation, save/reload or multiplayer validation has run. Traps-only independence and addon/Trait Shop acquisition require appropriate verification; no sibling edits are authorized.
+- No gameplay/build/install/test-result changes. C431's mirrored history remains, with C432 current handoff overriding it. C108/C119 mirror required. Installed 0.2.64.4 unchanged. **Decision needed** for 1A/1B and 2A/2B.
+
+
+## C433 - Learned Specialist recipes and separate manuals selected (2026-10-23)
+
+- Owner: "1A / 2B - What's automatically known of the start?". Select C432's two-point Turret Specialist with personal learned recipes at creation, no physical manuals or bonus skills/gear, and four individual Ballista/Rotary Blade/Lobber/Arc manuals. These are settled design choices, not yet implemented.
+- [Default-known list and source mapping](PROGRESSION_C429.md#c433---specialist-knowledge-and-four-manuals-selected-default-known-recipes-2026-10-23) enumerates all traps, starter turret heads/base, Controller/triggers, Makeshift module/kit recipes, Makeshift Bomb, reinforcement/packing and corresponding improvised variants. Knowledge does not waive skills/tools/materials. Existing compatible firearm-head use is not book-gated.
+- Fresh source enumeration: all 33 craft recipes are currently known. The selected plan gates five definitions (Lobber has two) and leaves 28 known. The trait knows all five; ordinary characters learn from the four separate manuals. No blanket vanilla-profession grant or new crafting recipes inferred.
+- Next rarity proposals: **1A all four Rare** (recommended); **1B Ballista/Blade Rare, Lobber Epic, Arc Legendary**. Use selected loaded tier weights, preserving owner tuning. Neither rarity proposal, acquisition sources nor C431 recipe bills/skill changes is selected by this answer.
+- 7% zombie packs and previous corrective scope remain selected, pending implementation. No source/assets/version/install/test-result changes. Installed 0.2.64.4 unchanged; C108/C119 documentation mirror required. **Decision needed** for manual rarity, not trait benefit/cost/grouping.
+
+
+## C434 - Lower manual rarities, literature sources and Firearms manual (2026-10-23)
+
+- Owner selects C433 1B with each tier lowered once: **Ballista/Rotary Blade Uncommon, Lobber Rare, Arc Epic**. Use assigned loaded tier weights (source anchors 14/14/10/6) and preserve owner overrides; no separate numeric approval needed. Book locations and gas-station magazine areas are explicitly selected.
+- Add a fifth Firearms manual; Turret Specialist's learned-manual benefit covers it with the selected two-point cost. [Contract](PROGRESSION_C429.md#c434---lower-manual-tiers-literature-locations-and-firearms-native-sensor-audit-2026-10-23) proposes mounting supported firearm heads as the knowledge-gated activity, with **1A Uncommon** recommended or **1B Rare**. This is not native firearm crafting and would supersede C433's ungated firearm mounting; scope details remain proposed.
+- Source-choice proposal: **2A literature-only** recommended, explicitly requesting a manuals exception to C315's usual pack inclusion; **2B also module packs**, replacing some module/kit draws and requiring updated probability math. Book/gas sources are already selected; no new pack behavior is applied.
+- The user asks whether Makeshift Detection needs a native Motion Sensor. Source confirms no: Electrical 2, 3 Electronics Scrap, 1 Electric Wire, 2 tape uses, screwdriver/pliers. Native HomeAlarm dismantling declares one MotionSensor plus scrap with a screwdriver and no skill/knowledge gate. Native store/specialized loot routes checked; raw weights are not drop percentages or a measured scavenging timeline. Keep starter recipe as-is; no new sensor ingredient approval inferred.
+- 7% packs, existing tuning preservation and corrective scope remain selected. C431 ingredient/skill changes remain unapproved. No code/assets/version/install/test-result changes; installed 0.2.64.4 unchanged. C108/C119 mirror required. **Decision needed** for new manual details, not selected lower tiers or literature locations.
+
+## C435 - Firearms rarity and expanded manual container sources selected (2026-10-23)
+
+- Owner selects C434 **1B/2A** and explicitly includes normal OMHTT loot pools, tool cabinets, and book/magazine locations. Firearms is **Rare**, using its assigned loaded tier weight (source anchor 10) and preserving overrides. The mounting knowledge scope includes supported addon guns; ordinary handheld use and installed-head servicing are unchanged.
+- [Final manual acquisition contract](PROGRESSION_C429.md#c435---firearms-rare-normal-container-pools-and-literature-no-pack-manuals-2026-10-23): Ballista/Blade Uncommon, Lobber/Firearms Rare, Arc Epic; two-point Specialist starts with all five manuals' knowledge. No extra skills/equipment or physical manuals.
+- Manuals enter existing 16 OMHTT container pools plus applicable literature/gas-station magazine racks. They **do not enter module packs**. This owner correction supersedes C434's proposed literature-only source restriction and authorizes the C315 pack exception. Preserve 7% zombie packs and three module/kit rewards, existing container scaling, saved tuning and LootLab overrides. Separate container/pack eligibility so shared catalogs and subsets do not violate the selection.
+- C431 ingredients/skills remain unapproved. Consolidated remaining choices: **1A** charger for Arc at Electrical 5 / Mechanics 3, receiver/transmitter for Controller, sensor for Laser (recommended); **1B** same additions with Arc Electrical 6 / Mechanics 3; **1C** keep current recipe bills/skills. Existing tools/times/XP and sensor-free Makeshift Detection stay unchanged. Today's 1B refers to Firearms rarity, not the historical recipe choice.
+- Documentation only; no gameplay/build/install/test-result changes or fresh runtime acceptance. Installed 0.2.64.4 remains. Prior corrective scope remains selected and outstanding; C108/C119 mirror required. **Decision needed** for recipe adjustment, not manual details.
+
+## C436 - Retain current recipe costs and skills (2026-10-23)
+
+- Owner selects C435 **1C**. [Settled progression contract](PROGRESSION_C429.md#c436---current-crafting-costs-and-skills-retained-progression-design-settled-2026-10-23) retains current consumed ingredients, tools, skills, durations and crafting XP. Arc remains Electrical 4 / Mechanics 2. C431's charger/receiver/transmitter/sensor additions and both Arc skill increases are rejected, not deferred.
+- Keep the separately selected manual knowledge gates, five manual rarities, normal OMHTT container plus literature sources, exclusion from packs, two-point knowledge-only Turret Specialist and 7% packs with three module/kit rewards. Preserve owner Sandbox/LootLab overrides. Makeshift Detection remains sensor-free.
+- Recipe knowledge changes are still part of the plan; "keep current recipes" does not undo them. No progression design decision remains. Previously selected corrective scope remains outstanding; do not invent another balance questionnaire or imply implementation is complete.
+- Documentation only; no gameplay/source/assets/version/install/test-result or Workshop changes. Installed 0.2.64.4 remains; no fresh runtime pass. C108/C119 mirror required. **Wait for a patch**; no new build or background work claimed.
+
+
+## C437 - Approved implementation and local build (2026-10-23)
+
+Owner: "Approved", following C436 selection 1C. Implement the settled C429/C433-C436 manual/trait/loot plan and earlier C428/C429 corrective scope together. No additional recipe ingredients, skills, tools, durations or XP changes. Native literature handles reading and persistence; native trait registration grants six known-recipe IDs (five manual subjects), cost two, no gear or XP. Firearms knowledge is checked by client transfer admission and authoritative transfer completion. Existing mounted guns remain usable. New manuals inherit their selected loaded rarity anchors unless an explicit numeric override is saved; module packs exclude manuals. Existing numeric loot tuning is not rounded or reset. Local LootLab includes all five new entries and actual literature routes; hosted publication remains separate and unperformed.
+
+Implementation and test evidence are in PATCH_v0.2.65.md and TEST_v0.2.65.md. Rendering/listening and connected-player acceptance remain distinct from native zero-client checks. No Workshop upload, PR merge, hosted deployment or new materials rebalance is authorized by this checkpoint.
+
+Local delivery verified: Installed from immutable test/v0.2.65 / 8a977bc60ea4845646f8bfb20a8eb7d7cd4b5f19. All 419 source and 570 package/tag/install/archive files match; both 0.2.64.4 backups verify. 27,553 assertions, native character and device persistence, and all package selections pass. Owner acceptance remains pending; local catalog/schema changes have not been deployed to hosted LootLab.
+
+
+## C438 - Tooltip, inactive module storage and expansion feedback (2026-10-24)
+
+- Owner requests colored trigger consumption labels without raw cost/units, Power Source or Additional Draw; grey labelled Feature text across all item families, preserving wrapped colors; grey Controller/Turret kit benefit rows without generic Feature. Audit player relevance and loaded stat accuracy. Poke 50 in the example is treated as formatting, not a new balance approval; current 45 damage/200 HP remains.
+- Owner requests storage in unavailable module slots with no active effects, expansion replacement with excess ammo transferred to player inventory/floor, and explicit yellow unsupported-head feedback. [C438 contract](FEEDBACK_C438.md) records confirmed rejection causes, exact-item authority/persistence requirements, bounded overflow and capacity consequences. No Controller stockpile dumping is inferred.
+- Sorting is proposed, not selected: **1A category, rarity, name** recommended; **1B rarity, category, name** for color grouping. Highest rarity first; keep active/inactive selection independent of sort order and support deliberate swaps. Do not silently deactivate modules because their rarity/name changes.
+- Requested sixteen-copy Rapid Fire/Velocity audit executes shipped Lua against actual source defaults. Raw steady DPS differs by head: M4 1.23x versus 2x; Arc/rotaries 3x versus 2x; M9 approximately equal. Caps are eight Rapid for rate and five Velocity for damage, while excess copies still draw battery. Arc/Lobber do not apply the Velocity knockdown stat on their main hits; no universal control benefit claim. No rebalance authorized or implemented.
+- Console and owner findings recorded against 0.2.65. No gameplay, build, installed version, Workshop draft or hosted changes. C108/C119 documentation mirror applies. **Decision needed** for sorting and discussion of the concrete patch scope under the existing test-feedback rule.
+
+
+## C439 - Rarity sorting and stacking-based balance (2026-10-24)
+
+- Owner selects C438 **1B**: highest rarity first, then category/name. Activation priority stays independent; the display choice is settled. No selection of the historical C435/C434 options is inferred.
+- Owner asks why caps exist and what else is capped, and directs: "Our balancing should be based on the stacking, not by capping it." Record the scoped rule in AGENTS.md. This supersedes C438's recommendation to retain and merely disclose ordinary stat ceilings; no silent numerical implementation or wholesale deletion of all safeguards.
+- [C439 cap inventory](MODULE_STACKING_C439.md) distinguishes ordinary bonus caps, probability boundaries, capability uniqueness, head effect definitions, crowd-control/player protection and bounded processing. Original Rapid/Reload/Velocity/Range caps were adjustable implementation defaults, not separately chosen owner balance values; Fragment had explicit C136 approval, now subject to the new direction. No claim that the 0.25s/30-50 tile values are native engine requirements.
+- Recommend **1A additive growth for ordinary numerical stats**, initially using current per-copy gains for comparison; **1B diminishing ordinary-stat growth** is the alternative. Probability curves, timer/range handling and mixed-loadout tuning remain to be made concrete. Sixteen uncapped default copies imply 5x rate or 4.2x damage before other constraints, not measured sustained DPS. No overflow crit or arbitrary new proc design inferred.
+- C438 tooltip, unavailable-storage, atomic kit/ammo-overflow and compatibility feedback work stays pending. No Source/Contents/version/install/Workshop/test-outcome change. Installed 0.2.65 remains. C108/C119 documentation mirror applies. **Decision needed** for growth model, not sorting or the rejection of arbitrary balance caps.
+
+
+## C440 - Details/resize module icon overlap (2026-10-24)
+
+- Owner reports an additional Turret Management rendering defect: module icons overlap and appear behind text after Details toggling or resize. [Diagnosis](FEEDBACK_C438.md#c440---module-icons-overlap-labels-after-details-or-resizing-2026-10-24) confirms mismatched compact populated-icon/text positions and records a separate Details measurement-order concern.
+- Include shared icon/text bounds, compact left-icon layout, clipping and current-input reflow in the pending C438 corrective patch. Preserve owner artwork, four columns, selected rarity-first sorting and independent activation priority. No additional design choice for the defect.
+- Versioned 0.2.65 owner failure recorded. Console matches the prior C438 snapshot; geometry arithmetic is not rendered acceptance. No Source/Contents/version/install/Workshop change. C439 stacking model remains unresolved: **1A additive ordinary-stat growth recommended / 1B diminishing growth**. This report selects neither. C108/C119 documentation mirror applies.
+
+
+## C441 - Accelerating returns proposed by owner (2026-10-24)
+
+- Owner asks to explain stacking models and pitch benefits/issues; considers total bonuses 10%, 25%, 70%, 175% for one through four matching modules. This expresses interest in accelerating returns, not selection of a final numerical curve or an extrapolation beyond four. C439's two-option choice is expanded, not treated as answered.
+- [Analysis and cases](MODULE_STACKING_C439.md#c441---accelerating-returns-and-build-specialization-2026-10-24): duplicate excitement/specialization versus concentration pressure, progression, mixed-stat multiplication, differing runtime costs, chance constraints and power interactions. Checked +175% = 2.75x; four damage/four rate at that multiplier gives 7.5625x ideal firing DPS before reload and other constraints. No measured combat/engine benchmark claim.
+- Recommend **1A gradual accelerating gains**, illustrated by 10/25/45/70% and +760% at sixteen; **1B matching-set milestones** and **1C steep accelerating specialization** are alternatives. These are shapes/feel, not approved module values. Keep existing first-copy values unless a later balance decision changes them. No universal curve for probability/range/branch counts inferred, and no new cap selected.
+- Rarity-first order, inactive storage/kit overflow, tooltip corrections and C440 icon reflow remain pending as recorded. No Source/Contents/version/install/test-outcome/Workshop change. C108/C119 documentation mirror applies. **Decision needed** for growth feel; precise family curves follow, not another arbitrary-cap approval question.
+
+
+## C442 - Additive route selected; uncapped comparison and patch recap (2026-10-24)
+
+- Owner: "Let's stick to our additive route. With uncapped, what's the new DPS comparison. Also recap next update". Select ordinary additive stacking and retain current per-copy gains for comparison. C441 accelerating/milestone alternatives are unselected; no new coefficient, battery surcharge, rarity or loot weight is approved.
+- [Source-executed calculation and consolidated scope](MODULE_STACKING_C439.md#c442---additive-selected-uncapped-dps-and-next-update-2026-10-24) compares installed caps, bonus-only removal and removal of bonus plus firing/reload floors. Sixteen Rapid yields 5x rate, Velocity 4.2x damage. Reload/rack reduce sustained Rapid gains: M4 1187.08 versus 1832.45 DPS; Arc per victim 100 versus 84. Without removing the 0.25s shot floor, Rapid would instead give 547.71 M4 and 80 Arc DPS. No live combat or throughput pass claimed.
+- Concrete proposal removes arbitrary ordinary bonus/timing/range ceilings, retains positive finite timing and bounded loaded-world work, and uses existing additive chances bounded naturally at 100% (including replacing Velocity's 90% ceiling). No multicrit/diminishing-chance system, new effect lineage, PvP change or removal of workload safeguards. These specifics are proposed with the combined patch, not silently implemented or individually owner-approved by this recap request.
+- Consolidated C438/C440 update retains trigger colors, grey Feature text/kit benefits, relevant descriptions, rarity-first sorting independent of activation, inactive effect-free storage, atomic kit replacement with excess ammunition to inventory/floor, unsupported-head yellow feedback and Details/resize icon correction. Poke stays 45/200. No Controller stockpile dumping.
+- Corrected the C438 method description to one complete steady magazine interval, not a large-count simulation; historical numerical results are unchanged. Native arithmetic probe exits 0 with its two assertions; existing harness output is not a new release-suite or owner-test result. Local evidence is in diagnostics/c442. No Source/Contents/version/install/Workshop/hosted change. C108/C119 documentation mirror applies. **Decision needed: approve consolidated patch; growth-model selection is settled.**
+
+
+## C443 - First-copy bonuses and all-stackable balance discussion (2026-10-24)
+
+- Owner asks to calculate all stackables and consider a first-module bonus, keeping/reducing ordinary duplicate gains, or both. This requests further numerical design before C442 patch approval. Additive growth stays selected; no candidate value or implementation is authorized by the question.
+- [Complete nineteen-family calculation and recommendation](MODULE_FIRST_COPY_C443.md) compares the uncapped C442 baseline with first-only, duplicate-only and selective first/extra coefficients at 1/2/4/8/16. Source inventory coverage is verified. Recommend **1A selective tuning**; alternatives **1B first-copy improvements only**, **1C duplicate reductions only**. Preserve first and extra Sandbox controls within Modules, valid custom tuning, rarity/weights and current power surcharges; no new categories or hidden loot changes.
+- Candidate Rapid 40/20%, Reload 50/25%, Velocity 30/15%, Range 3/1 tiles, Magazine 50/25%, Accuracy 10/4 points, Critical 15/5 points, Initial Blow 50/20%, Fragment 25/4%, Execute 10/1 points, Conservation 2 uses then +0.5, Siphon 2x refund then +0.5x at unchanged 45%, Martyrdom 1.5/+0.15 tiles and Tack 1.25/+0.15 tiles. Velocity knockdown proposal is +5 first/+3 extra points. Impact, Splitter, Piercing, Regulator and Suppression remain unchanged. These are proposed defaults, not selected balance.
+- First-copy benefits encourage early/mixed builds but can create compulsory one-of-each layouts. Calculated M4 one-Rapid/one-Velocity DPS rises 621.89 to 732.68; full mixed sixteen-slot build stays near 1719.98 to 1731.00. Seven-Rapid/seven-Velocity plus automation drops 2107.27 to 1869.27. No claim of optimal builds, guaranteed balance, native frame throughput or live player acceptance. Siphon stacking still deliberately sustains; multiple eligible kills can sustain even one copy. Natural chance bounds, unique capabilities and effect/workload protections remain distinct from bonus caps.
+- Isolated Kahlua probe produces 436 comparison/stat rows and passes four added checks including fractional Conservation arithmetic and native table roundtrip. Complete source-inventory/curve checks recorded locally in diagnostics/c443; no new release-suite or owner-test result is asserted. Source/Contents, build/install 0.2.65, Workshop draft and hosted LootLab unchanged. Earlier tooltip/storage/kit/layout fixes retained. C108/C119 documentation mirror applies. **Decision needed for 1A/1B/1C tuning; additive-versus-other-growth is settled.**
+
+## C444 - Selected first-copy tuning and combined corrective patch
+
+**C444 / Selective first-copy tuning selected (2026-10-24).** Owner selects C443 **1A**. Implement the nineteen-family selected table with the C438/C440 tooltip, rarity sorting, inactive storage, atomic expansion replacement and layout corrections. Preserve saved custom tuning, exact loot weights, natural probability boundaries, authority and bounded processing. Implementation in progress; installed 0.2.65 unchanged until tagged verification and installation. **Wait for a patch.**
+
+C444 implementation: **C444 / Selective tuning implemented in 0.2.66 (2026-10-24).** Owner selects C443 **1A**, settling all nineteen stackable families and the combined C438/C440 corrections. [Patch](PATCH_v0.2.66.md) | [Verification](TEST_v0.2.66.md). First/extra additive gains, inactive storage, exact expansion replacement with bounded ammunition returns, rarity-first display, Details/icon geometry and uniform tooltips are implemented. Existing custom settings and loot weights remain. 27,678 assertions, native exact-item save/restart and all three independent-package startup checks pass; tagged installation is next. Installed 0.2.65 remains until immutable-tag delivery. **Wait for a patch.**
+
+C444 delivery: **C444 / 0.2.66 installed (2026-10-24).** Owner selects C443 **1A**. The nineteen-family first/extra tuning and combined C438/C440 tooltip, rarity sorting, inactive storage, expansion replacement/ammo overflow and Details/icon fixes are implemented. [Patch](PATCH_v0.2.66.md) | [Verification](TEST_v0.2.66.md). 27,678 assertions, native exact-item save/restart and all three package startup checks pass. Immutable test/v0.2.66 / 7d56836bc097711ee426e0fdda9bf8a3598bbf76; all 422 source and 574 tagged/package/install/archive files match, and both 0.2.65 backups verify. Existing Sandbox/loot tuning is preserved. Rendered/live balance and connected multiplayer acceptance remain pending. No Workshop upload or hosted LootLab changes. **Test now** after restart when available.
+
+
+## C445 - 0.2.66 feedback and artist handoff (2026-10-24)
+
+Owner requests rear-vulnerable Barrier wording, menu audio audit, consistent total-slot kit tooltips with ammo-policy review, inverted Feature/stat greys, Poke capacity cleanup, an artist archive and distinct blocky development heads/modules, equal Controller/Device Settings panes, range-based assignment cleanup, matching slot hints, Controller endurance and native radio/mechanics UI review. [Evidence and complete proposed choices](FEEDBACK_C445.md). Placeholder10x is not approved tuning. Recommended ammo1A uses2.5/5/7.5/10 multipliers and explicitly listed base changes preserving current Large totals;1B retains current family limits,1C retains current bases. Native UI2A recommended;2B limits styling scope. No numerical/UI option selection inferred. Direct asset creation is authorized and complete; gameplay changes await this review.
+
+[Artist kit](../art/artist-handoff/C445/README.md):161 unique asset payloads,41 alias references,36 module/kit markers, six24-48-triangle box head meshes with OBJ/native agreement, existing Potato/firearm support reused. Shared category/rarity originals preserved, no final art policy change or runtime switching system. Archive SHA256 bcbdfffcfbe3ee6c35b6fe274302affe569a43bdc77273e3bf68eea48e2fee7d. Installed0.2.66, Source/Contents, loot and Workshop draft unchanged. Owner0.2.66/SP log captured; visible/source-confirmed failures are not acceptance passes. C108/C119 mirror applies.
+
+
+## C446 - Twelve-hour ammunition and gradient mockups (2026-10-24)
+
+**C446 / Twelve-hour ammo target and three UI previews (2026-10-24).** Owner requests 5,000-round firearm runtimes, other ammo endurance and gradient mockups. [Verified comparison and concrete choices](AMMO_UI_C446.md). Current save day length is 90 minutes; 12 game hours equals 45 normal-speed minutes. M4/M16 with 5,000 lasts about 9h32m at ordinary firing. Recommend 1A Large reserves sized for Enhanced Firing without speed/ammo modifiers; 1B targets plain firing. Candidate1A is 8,000 rounds/1,600 shells/1,500 potatoes/600 spears/1,800 scrap/700 bombs. Fixed-capacity policy remains; universal multipliers/base changes still require selection. Three requested mockups: 2A Native slim, 2B Radio segments, 2C Readable gauges. 80 calculated rows and 12 responsive mockup checks pass; not live engine endurance/UI acceptance. Source, installed 0.2.66, loot and Workshop draft unchanged. **Decision needed** for the baseline and visual variant.
+
+The owner sets the twelve-game-hour direction but has not chosen whether it includes Enhanced or other speed modules, nor a kit/base-capacity policy. Interpret full Large kit as proposed scope, not permission to make starter reserves identical. C445 choices are updated by this evidence; do not implement its old candidate bases merely because the new endurance target is requested. Mockup images are directly authorized and created; they are not final artwork or gameplay acceptance.
+
+
+## C447 - Native slim selected and ammunition supply reviewed (2026-10-24)
+
+**C447 / Native slim selected; 5.56 supply reviewed (2026-10-24).** Owner selects C446 **2A for Controller and Turret Manage**, deferring Horde Night/Trait Shop. [Supply evidence and source implementation](AMMO_UI_C446.md#c447---556-supply-and-selected-native-slim-style-2026-10-24). 8,000 rounds requires 400 boxes or 34 full cartons; possible as a late-game stockpile, not a reliable routine operating budget. Shared shaded headers and remaining-resource meters are staged in Source; 27,607 Kahlua assertions pass with UI/world test doubles. No rendered acceptance or installation; 0.2.66 and Contents remain unchanged. C445 corrections remain pending. Ammo quantities, kit bases/multipliers and endurance baseline are still unselected. **Wait for a patch** for the selected visuals; ammo balance remains a discussion.
+
+Owner wording: "1 - Is it realistic to find 8,000 5.56 ammo in Zomboid? 2A - Apply to Controller and Manage. We'll discuss applying these visuals to OMH: Horde Night and Trait Shop later." This explicitly selects the style for both menus, not the ammunition option or sibling scope. C445's separate corrections remain pending; no repeat visual-choice question is needed.
+
+
+## C448 - Six-hour M4 target and kit comparison (2026-10-24)
+
+**C448 / Six-hour M4 target selected; all-kit capacities calculated (2026-10-24).** Owner replaces twelve hours with six and requests each expansion tier/head. [Proposed bases, multipliers and full runtime tables](AMMO_SIX_HOURS_C448.md). Recommend1A Enhanced baseline:400 firearm base and2.5/5/7.5/10 kit multipliers, reaching4,000 rounds and6h07m. Alternative1B ordinary Firing:320 base/3,200 Large gives6h06m. Other families and both baseline tables are recorded;200 tier durations and40 target boundaries calculated, not live measured. Numerical selection remains pending. Staged C447 visuals/C445 corrections retained; Source/Contents, installed0.2.66 and Workshop draft unchanged this turn. **Decision needed:1A/1B.**
+
+The owner selected the six-hour direction but asked what exact values would be. Enhanced/no-other-speed baseline is a stated recommendation, not inferred approval. Head-specific bases and floor rounding preserve fixed family capacities. Ammo-free Arc/rotary heads have no ammunition endurance; do not imply infinite battery life. Saved tuning and LootLab weights remain protected.
+
+
+## C449 - Enhanced six-hour ammunition table approved (2026-10-24)
+
+**C449 / Six-hour ammo values approved (2026-10-24).** Owner selects C448 **1A**. [Approved table and runtime boundaries](AMMO_SIX_HOURS_C448.md#c449---1a-selected-2026-10-24). Total kit multipliers are2.5/5/7.5/10; family bases are400 firearm rounds,80 shells,75 potatoes,30 spears,90 scrap and35 bombs. Large M4 holds4,000 rounds for approximately6h07m with Enhanced Firing at the saved90-minute day, before additional speed/ammo modifiers. Ammo and Native slim choices are settled; implementation/migration, remaining C445 corrections and verification remain. This approval record changes no Source/Contents or installed0.2.66; no new test claimed. **Wait for a patch.**
+
+Provenance: owner's exact response "1A" selects the immediately preceding C448 recommendation, including all six family bases and shared total multipliers. Do not ask again for numerical or Native slim selection. Implementation remains distinct from approval; saved tuning, exact-item overflow and independent-package checks are engineering work, not new discretionary balance decisions.
+
+C450 implementation: **C450 / Approved corrections implemented in 0.2.67 (2026-10-24).** Owner gives final "Approved" for C445/C447/C449. [Patch](PATCH_v0.2.67.md) | [Verification](TEST_v0.2.67.md). Shared ammo bases/multipliers, Native slim UI, equal settings panes, assignment cleanup, expansion consistency, Controller endurance, confirmed transfer cues, tooltip colors, compatible mechanical Poke items and six blocky head models are implemented. Saved tuning, real contents and owner artwork are preserved. Final native verification, immutable tag and managed installation are in progress; 0.2.66 remains installed. **Wait for a patch.**
+
+C450 verification: 27,720 assertions; native save/restart; Traps-only, Turrets-only and combined startups pass. Six head meshes import. Loaded legacy Poke containers retain contents and recovered plain items retain wear. UI traces are not game-rendered acceptance. Tagged installation follows.
+
+C450 delivery: **C450 / 0.2.67 installed (2026-10-24).** Owner gives final "Approved" for C445/C447/C449. [Patch](PATCH_v0.2.67.md) | [Verification](TEST_v0.2.67.md). Shared ammo bases/multipliers, Native slim UI, equal settings panes, assignment cleanup, expansion consistency, Controller endurance, transfer cues, tooltip colors, compatible mechanical Poke items and six blocky head models are implemented. 27,720 assertions, native save/restart and all three independent-package startups pass. Immutable test/v0.2.67 / 4669ba13e1dc759b2b007229ac5fd7c98ff38d69; all 435 source and 593 tagged/package/install/archive files plus both 0.2.66 backups verify. Existing worlds retain saved ammo tuning until **Use New Ammo Rules in Existing Worlds** is enabled. Owner artwork and LootLab weights are preserved. Rendered/audio/live endurance and connected multiplayer acceptance remain pending. No Workshop upload or hosted LootLab changes. **Test now** after restart when available.
+
+**C451 / 0.2.67 owner functional pass (2026-10-24).** Owner reports: "Looks like it's good and functional now!" [Playtest record](TEST_v0.2.67.md#c451---owner-playtest-2026-10-24). Captured console confirms both packages on 0.2.67 / game42.21 in SP, with no OMHTT exception stack found. This accepts the reported general workflow; it is not a measured endurance/stress or connected multiplayer result. The save retains its legacy 5,000-round firearm capacity, so the new ammo balance is not established by this session. No gameplay, version, installation or Workshop-draft change. **Test now** for remaining SP capacity/endurance/stress checks when available; multiplayer remains deferred.
+
+Provenance: owner confirmation immediately follows the C450 installed-build handoff. Do not reinterpret ambient preview selections as a new UI-style choice. Native slim remains the approved style. This feedback is not publication authorization or a claim that every checklist entry, new ammo defaults or multiplayer was exercised.
+
+
+## C452 - Owner closes 0.2.67 testing (2026-10-24)
+
+Provenance: owner explicitly confirms "Yea test complete. It's all good" after C451's functional-pass handoff. Accept and close the current 0.2.67 owner test round and checklist. This supersedes the provisional request for further single-player capacity/endurance/stress checks; do not repeatedly ask the owner to retest this accepted patch. Preserve prior log findings and distinguish calculated runtimes from measured benchmarks. Connected multiplayer remains deferred, and unrelated roadmap work and publication are not implied complete.
+
+[Acceptance record](TEST_v0.2.67.md#c452---test-round-complete-2026-10-24). Documentation-only update; no gameplay, version, installed-package, loot, immutable-tag or cumulative Workshop-draft changes.
+
+
+## C453 - Recommend the next retained roadmap track (2026-10-24)
+
+Owner asks "Now what" following C452's completed 0.2.67 test round. Reviewed C402/C403 and the shared defense XP contract. Recommend 1A shared Trait Shop defense XP design; alternatives 1B garage/multi-panel barbs or 1C coordinated Horde scoring readiness. [Scope, selected foundations and tradeoffs](INTEGRATIONS.md#c453---next-track-after-0267-acceptance-2026-10-24). These tracks were retained by C403; order remains a choice. No new numbers, gameplay implementation, sibling edits, publication or reopened SP testing are inferred.
+
+
+## C454 - Shared defense XP discussion selected (2026-10-24)
+
+Owner's "1A" selects C453's shared Trait Shop defense XP design/API review. It is not approval of the historical 25% proposal or a gameplay patch. Read current Trait Shop 0.9.0.1 reward, authority, life and fractional progression source plus T&T damage/ownership adapters. [Findings and concrete options](INTEGRATIONS.md#c454---shared-defense-xp-selected-for-design-2026-10-24): recommend 1A 25% pool, 2A registered device owner's faction with solo fallback, 3A final-hit credit. Rate alternatives 50%/10%, defended-faction attribution and proportional damage credit remain proposals. Shared pool/offline default ON are already settled. Future recap must include life-bound offline shares, zombie-only scope, Sandbox settings and coordinated sibling API work; none silently implemented. C452 accepted test round remains closed.
+
+
+## C455 - Shared XP proportional design selected (2026-10-24)
+
+Owner's "1B / 2A / 3B" selects the C454 50% rate, registered device owner's faction/solo fallback, and damage-proportional player/defense credit. Do not reask these selections or replace proportional accounting with final-hit credit. [Selected formula, examples, installed-bytecode evidence and remaining choices](INTEGRATIONS.md#c455---50-pool-owner-faction-and-proportional-damage-selected-2026-10-24). Existing native hit events occur before final damage; a focused proof must verify applied health-loss attribution and ordering before patch readiness. Recommend zombie-only 1A and life-bound offline shares 2A; PvP scope and inheritance alternatives are unselected. No gameplay implementation or sibling edits authorized by these design choices alone; current accepted build unchanged.
+
+
+## C456 - PvP eligibility and offline death handling selected (2026-10-24)
+
+Owner's "1B / 2A" selects C455's eligible enemy-player XP and life-bound offline shares lost on death. Retain all earlier 50% / owner-faction / proportional selections; no more currently presented gameplay decisions remain. [Source-backed cooldown/health-receipt review and next proof](INTEGRATIONS.md#c456---enemy-player-xp-and-character-bound-offline-shares-selected-2026-10-24). Preserve Trait Shop reward-mode gates and account/victim cooldowns; one mixed award must not duplicate or prematurely block its own components. Static review identifies missing confirmed player-health receipts, not completed runtime feasibility. Native attribution proof precedes a concrete coordinated patch recap; no code/sibling deployment, final patch approval or new owner test is inferred.
+
+## C457 - Approved progression; measured attribution limitation (2026-10-24)
+
+Owner says "Approved" after C456. Proceed with the selected shared-XP work and its native feasibility checks; do not request generic permission again. The [native proof](DEFENSE_XP_PROOF_C457.md) establishes pre-hit/input versus actual-loss differences and two indistinguishable bleeding callbacks from different limbs. The selected proportional rule cannot simply use nominal damage, pending-hit deltas across arbitrary intervening damage, or a guessed wound owner.
+
+Recommend the new **1A confirmed-damage-only coverage**, keeping untraceable portions unpaid and unredistributed; alternative **1B deeper wound-attribution work before shipping XP**. The consequence includes known trap-created wounds, not only external unknown damage: wound-only PvP kills can earn no defense XP under 1A. Neither coverage option is inferred from approval of the original full proportional design. Previously chosen rate/recipients/PvP/offline-life rules remain approved. Probe tooling and evidence only; no production/sibling changes or installed patch. Current 0.2.67 acceptance remains closed; Workshop draft unchanged. C108/C119 development mirror applies. **Decision needed for this newly demonstrated tradeoff.**
+
+## C458 - Deeper wound attribution selected and investigated (2026-10-25)
+
+Owner's **1B** selects C457's deeper investigation before shipping XP. Do not infer confirmed-only, final-hit, zombie-only or estimated coverage. The [expanded native proof](DEFENSE_XP_WOUNDS_C458.md) passes ten isolated wound cases, native same-type replacement, aggregate rerolls, healing-masked silent damage and limited in-memory serialization. Exact attribution is not recoverable from current callbacks/stored values alone. Recording known wound creation helps, but native merging/replacement requires a chosen sharing rule and silent damage requires a model or deeper hooks.
+
+New recommendation **1A defer shared XP while retaining the exact target**; alternative **1B prototype explicitly estimated wound credit** with a concrete limb/type source rule and expected bleeding weights. These are material tradeoffs exposed by the investigation; neither is selected yet. No Java gameplay dependency or native wound replacement is approved. The 50% rate, owner-faction pool, eligible PvP, source/cooldown gates and life-bound offline shares remain approved. Probe tooling/docs only, native final run92.7s; no gameplay/sibling/install/version/changelog change or reopened0.2.67 test. **Decision needed; no owner test.**
+
+## C459 - Shared XP deferred and native killer tracking clarified (2026-10-25)
+
+Owner selects C458 **1A**, asks for a briefing before further work, then asks about native PvP killer tracking. Shared XP is deferred with its approved design retained. [Current-code findings](INTEGRATIONS.md#c459---xp-deferred-native-killer-credit-distinguished-from-damage-shares-2026-10-25) confirm one native attacker/killer reference, a death-packet killer ID and PvP kill logging; Trait Shop already consumes the attacker field. Normal delayed death can use a retained attacker. Exact multi-source wound shares remain unavailable from that flag. Correct the earlier broad framing; do not imply bleedout XP inherently needs a complete wound simulation. Killer-only attribution is a possible simpler policy, not a selected replacement. No gameplay work resumed, new runtime proof, sibling edit or reopened0.2.67 testing.
+
+## C460 - Credited turret kills selected; 50/50 clarification pending (2026-10-25)
+
+Owner explicitly drops proportional damage tracking and requests a 50/50 split when a turret gets the kill. [Updated contract and offline answer](INTEGRATIONS.md#c460---proportional-tracking-dropped-payout-meaning-being-clarified-2026-10-25). Kill-based attribution now supersedes C455; no exact wound-share gate remains. Existing life-bound offline shares accumulate for reconnect in the planned integration, not the installed build. Clarify whether 50/50 means the previous 50% faction pool/50% unawarded or 50% personal owner/50% faction pool. Both interpretations were presented; no answer or payout formula is inferred. Preserve other approved source, faction, PvP and life rules. Documentation only; no gameplay/sibling edits or new tests.
+
+## C461 - Reduced faction pool confirmed (2026-10-25)
+
+Owner explicitly selects the previous rule: 50% of normal kill XP shared equally across the owner's faction, including the owner; the other 50% unawarded. [Confirmed formula and unchanged offline rules](INTEGRATIONS.md#c461---half-value-faction-pool-confirmed-2026-10-25). This is C460 **1A**, with no separate personal owner half. Kill-based attribution remains selected, proportional tracking remains dropped, and existing living offline recipients retain their shares until reconnect or death. Payout clarification is complete; coordinated implementation/verification remain. Documentation only, installed 0.2.67 and its accepted test round unchanged. **Wait for a patch.**
+
+## C462 - Personal PvP assist split feasibility discussed (2026-10-25)
+
+Owner asks whether the unawarded half can be split among other damaging players in native PvP tracking. [Evidence and concrete option](INTEGRATIONS.md#c462---participation-based-pvp-assists-proposed-2026-10-25): one native attacker plus a rolling ten-event admin history is insufficient as a durable contributor list. Propose 1A a compact confirmed-injury participant set and equal personal shares of the remaining 50% on defense-credited PvP kills; no assistants means that half remains unawarded. Alternative 1B retains the approved C461 pool only. Equal assists avoid exact wound percentages but permit one-hit tagging; no threshold, expiry or weighted-damage rule is inferred. C461 remains selected until changed, and no zombie/player-only assist expansion is assumed. Documentation only; no implementation, new native test or reopened 0.2.67 acceptance. **Decision needed.**
+
+## C463 - Equal personal assist pool approved (2026-10-25)
+
+Owner's **1A** selects C462's participation-based PvP assist split. [Selected contract](INTEGRATIONS.md#c463---equal-pvp-assist-shares-selected-2026-10-25): 50% owner-faction pool plus the remaining 50% split equally among eligible personal assistants; no assistants leaves that half unawarded. One qualifying hit and many hits receive the same share. No exact damage percentages, zombie/player-only assist expansion or automatic personal owner half. Preserve eligible source/enemy rules, beneficiary cooldowns and life-bound offline delivery; combine components once. This changes C461 only for the selected PvP assist case. Implementation/verification remain; accepted 0.2.67 unchanged. **Wait for a patch.**
+
+## C464 - XP implementation approved and implemented (2026-10-25)
+
+Owner explicitly approves implementing the XP patch. This authorizes the coordinated T&T, Trait Shop and Horde changes; no payout decision is reopened. C460-C463 are the operative design. See [0.2.68 patch](PATCH_v0.2.68.md) and [verification](TEST_v0.2.68.md).
+
+The optional server integration records a registered device owner before confirmed lethal zombie damage. Confirmed player injuries retain defense credit until a later native attacker or full recovery replaces it; delayed bleedout can therefore settle the same defense kill. Native synchronous post-hit injury evidence records distinct personal assistants. It does not infer wound percentages or parse admin logs. A player who both belongs to the owner faction and assisted receives the two portions in one cooldown transaction. No assist portion is created on ordinary personal kills or zombie kills.
+
+Server GlobalModData holds earning-time recipient lives, fixed amounts, pending shares, account cooldowns and victim participation. Same-life reconnect delivers once; replacement/death drops undelivered shares. Current native faction membership and Horde earning permission are consulted when earning. Offline identity eligibility is supplied by Horde; casualty/left/vigilante event participants cannot earn through this route. Completion rewards and defense score/consent remain on existing paths. No unloaded combat simulation is added.
+
+Client injury receipts only confirm a server-selected injury to the authenticated recipient with a single-use token and bounded transport grace. They cannot choose source ownership or XP. Full-recovery replies are matched to the current encounter; stale replies cannot clear newer injuries. The five-real-second receipt grace and one-real-second recovery polling are networking safeguards, not gameplay encounter expiry. Missing/expired receipts do not establish defense XP. Client body-state confirmation follows the existing native health authority boundary and is not an anti-cheat guarantee against a modified victim client.
+
+General Sandbox adds Shared Defense XP, Defense Faction XP (Percent), and Include Offline Members, defaults ON/50/ON. Traps-only aliases remain independent. Horde records these reviewed settings without asserting broader official approval of every later T&T setting. No Traits/Shop means no defense reward bank. Existing passive devices with no recorded builder remain unattributed; do not invent an owner. New/redeployed owned defenses retain ownership through the authoritative portable registry.
+
+Implementation and automated verification are complete; installation/tag/mirror evidence is recorded separately. Connected-client transport, concurrent PvP deaths, real bleedout/reconnect and visual XP acceptance remain unverified. The previous SP acceptance is preserved. No Workshop release is claimed.
+
+## C465 - Owner test failures diagnosed; corrective choices presented (2026-10-25)
+
+Owner reports Test Complete and asks about Custom rarity removal, a Specialist icon, Horde option/flag cleanup, grounded rotary targets, Controller overlap and low XP. [Evidence and proposed corrective contract](FEEDBACK_C465.md) distinguish confirmed source/console defects from the unverified final live XP payout. Native replay of saved current defaults produces Hardened/Lessened/Unknown; no intentional settings change is needed. Four loaded external mods fail the old exact whitelist check, which is not equivalent to a confirmed fairness rejection. Preserve current owner Unknown-versus-Not-approved policy and legitimate historical flags.
+
+Recommend **1A retain Custom with responsive numeric editing** versus **1B remove manual Custom editing while preserving imported values**; **2A manual icon** versus **2B mod icon**. The specified rotary, placement and score-label changes are recorded in the proposed coordinated patch along with settings parity and actual XP death-to-ledger verification. No reward rebalance or blanket external-mod approval is selected. Test Complete is not next-build approval. Documentation only; installed builds and cumulative Workshop drafts unchanged, no new owner retest. **Decision needed.**
+
+## C466 - Selections, official-run mod policy and minimum split confirmed (2026-10-25)
+
+Owner selects C465 1A/2A, approves Mod Load Order Sorter and ModComparer including equivalent originals/forks plus Pixel Strike Indicator, and explicitly retains Denied for unofficial mod-list eligibility. This supersedes C465's Unknown-label recommendation; exact verified IDs and remaining firearmmod exclusion are in [the updated contract](FEEDBACK_C465.md#c466---choices-confirmed-startup-xp-defect-reproduced-2026-10-25). No name-pattern blanket, historical flag deletion or published score rewrite is authorized.
+
+Owner requests Horde-style Debug ordering/wording, meaningful logging for seven turret/two manual kills, and minimum1XP for an eligible positive split below1. Record the minimum once per recipient/action after merging faction/assist portions, before banking/payment; zero/ineligible stays zero. This is an explicit exception to pool conservation, not permission to give each member a full reward. Four recipients of a1XP pool receive4XP total. Fractions at or above1 remain unchanged. No new numerical choice remains.
+
+Installed-native lifecycle inspection and unchanged-production Kahlua replay reproduce4XP because the SP username changes after the defense reward index caches Bob. Same-life identity refresh permits the next1XP payout; this is separate from fractional rewards. Five fixture assertions pass; no rendered/native-death acceptance or shipped fix is claimed. Normal/detailed logs lack complete payout evidence; Debug toggles also cross-enable package detail. Include identity reconciliation, minimum split, bounded settlement diagnostics and Debug organization in the existing corrective patch. No gameplay, version, install or Workshop draft changes. Combined patch approval remains pending. **Decision needed.**
+
+## C472 - Rendered corrections and assistance policy proposed (2026-10-26)
+
+[Read-only findings and concrete alternatives](FEEDBACK_C468.md#c472---rendered-feedback-and-assistance-policy-review-2026-10-26). Recommend1A preserve existing prevention for disabled-assistance Horde runs; alternative1B allow effects and flag a confirmed turret kill, with sabotage/nonlethal-assistance tradeoffs. Neither is a new owner selection. The requested UI/animation corrections are recorded for patch approval. No gameplay or installed version change.
+
+## C473 - Horde prevention selected; maintainable refresh correction required (2026-10-26)
+
+Owner selects C4721A and requires replacing defective mechanisms rather than accumulating bandage fixes. [Stockpile design and verification requirements](FEEDBACK_C468.md#c473---prevention-selected-replace-faulty-refresh-ownership-2026-10-26) retain the native inventory component and replace incomplete refresh wiring; avoid timer-driven whole-list rebuilding and duplicated inventory state. Complete patch approval and blocked mirror authorization remain pending. No gameplay edit.
+
+## C474 - Corrective patch approved (2026-10-26)
+
+Owner approves C472/C473 scope and the native-refresh replacement. T&T0.2.68.3 implements [the selected corrections](PATCH_v0.2.68.3.md); no assistance-policy choice remains. Preserve the valid native OnContainerUpdate notification through the same invalidator while replacing event-only wiring. Tests cover the failure mechanism and idle cost. No speculative management-radius change or new balance. Install and mirror evidence is tracked in [verification](TEST_v0.2.68.3.md).
+
+## C475 - Owner test deferral and next-work recommendation (2026-10-26)
+
+Owner cannot test0.2.68.3yet. Preserve pending acceptance. Recommend1A Barbed Panel backing/opposite-face audit and garage feasibility; alternatives1B modder guide/example or1C Horde scoring readiness. No selection or new implementation approval yet. See [current plan](PLANNING.md).
+
+
+## C476 - Barbed audit selected; contact requirement clarified (2026-10-26)
+
+**C476 / Barbed Panel audit selected (2026-10-26).** Owner selects C475 1A and asks whether panels require thumping. Current production contact selection uses exposed-side position and actor collision width, with no thump-state requirement; zombie updates apply immediate contact damage and the configured repeat interval (default 10 damage / two seconds). The attachment frame is non-thumpable; the backing remains independently thumpable. Existing native paired-face persistence evidence does not establish backing protection during an actual AI attack or reproduce the reported live failure. Continue the bounded backing/opposite-face and garage feasibility audit; no gameplay change is approved by this selection. 0.2.68.3 owner testing remains deferred; mirror remains blocked by prior approval review.
+
+Evidence: Source/42.20/media/lua/shared/OMHTT/BarbContact.lua, BarbSections.lua contact selection and non-thumpable attachment frame; server/OMHTT/BarbRuntime.lua zombie update; TEST_v0.2.68.2.md native backing/paired-face evidence. Read-only source review this turn; no new runtime test or correction claimed.
+
+
+## C477 - Barbed audit findings and patch scope (2026-10-26)
+
+Owner: "Go ahead and investigate." This authorizes the bounded investigation, not a new gameplay patch. **C477 / Barbed audit complete; precision defect reproduced (2026-10-26).** [Native findings and proposed scope](BARBED_AUDIT_C477.md): real actor rounding causes 18/32 strict boundary misses; full production panel lookup reproduces one face hitting while the opposite misses without overwriting either record. Native thumping still damages the backing (137 to 136). Paired identity/save/reload/removal tests pass; the owner scene remains unconfirmed. Garage objects retain identity when raised; swinging double gates can replace/move leaves and need separate handling. Recommend **1A contact correction first**, alternative **1B correction plus closed-only garage-segment support**. Audit only; 0.2.68.3 stays installed and testing deferred. Native write/read pass 57.0/53.5 seconds, no connected player. Private mirror remains blocked by prior approval review. **Decision needed: patch scope.**
+
+
+## C478 - Option 1B approved and implemented (2026-10-26)
+
+Owner: "One B". This selects the contact correction plus closed-only garage-segment support presented in C477, including persistence while raised. Implemented as 0.2.69; swinging double gates are not included. Existing backing damage, recipes, saved settings and item identities stay intact. [Patch](PATCH_v0.2.69.md) and [verification](TEST_v0.2.69.md) separate native/automated evidence from deferred rendered and connected-player acceptance. Private mirror remains blocked; no upload attempted.
+
+
+## C479 - Tether and Controller rendered findings (2026-10-26)
+
+Owner requests Controller circle removal, shorter scrollable settings and title-bar-only group collapse; panels reportedly appear functional. [Audit and proposed patch](FEEDBACK_C468.md#c479---owner-feedback-tether-reaction-and-controller-cleanup-2026-10-26) confirms competing tether displacement/native animation and whole-group collapse hit bounds. Recommend 1A damage-only impact plus directional pull reaction; 1B preserves corrected push/pull. Tether choice and combined patch approval remain pending. No gameplay/build change; 0.2.69 stays installed.
+
+
+## C480 - Pull-only selected with slight-turn investigation (2026-10-26)
+
+Owner selects C479 1A and asks to investigate slight rotation to fit the pull reaction. [Refinement and native evidence](FEEDBACK_C468.md#c480---pull-only-selected-slight-rotation-refinement-requested-2026-10-26): choose the nearest directional reaction and correct the remaining facing mismatch smoothly; avoid full forced turns and duplicate animation movement. Design selection is recorded; native/rendered motion proof and combined patch approval remain pending. No new build.

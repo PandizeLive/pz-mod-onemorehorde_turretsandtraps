@@ -1,0 +1,17 @@
+{
+  "source": "console.txt",
+  "sha256": "b648306dae33fd72aeaaf940b915dd0e36423a9a00d0c8d0efef582743eb8214",
+  "bytes": 2169923,
+  "observedVersion": "0.2.56",
+  "game": "42.21",
+  "mode": "singleplayer",
+  "bindExceptions": 16,
+  "stack": [
+    "TurretRange.lua:54 bind",
+    "TurretMenu.lua:89 fillMenu",
+    "ISWorldObjectContextMenu.lua:213 createMenu"
+  ],
+  "confirmedCause": "Fire option removed but Range.bind(shot, {object}) retained; shot is nil",
+  "mapRightClick": "Owner reported; native child event routing requires current-runtime reproduction",
+  "scope": "Read-only audit; no source/package/install changes"
+}

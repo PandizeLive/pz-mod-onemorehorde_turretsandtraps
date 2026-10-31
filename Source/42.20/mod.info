@@ -1,8 +1,8 @@
 name=OMH: Turrets & Traps
 id=OneMoreHorde_TurretsAndTraps
-modversion=0.2.30
+modversion=0.2.71.4
 versionMin=42.20
 icon=icon.png
-description=Single-player development test: craft modular potato turrets, deploy through Building, load real potatoes and a car battery, and pick up with contents intact. External power and battery fallback, configurable combat and power costs. Includes directional 1x2 Spike Barriers, reinforcement, native vaulting, ten-second servicing and five-item bundles. Module storage is available; automatic targeting and module effects are still in development. Temporary white developer markers. Use a disposable test world.
+description=Development source for independent Turrets and Traps packages: modular potato, firearm, Ballista and rotary turrets; Spike Barriers, Bed Spikes, Concertina Wire and backed Barbed Panels. Crafting, Building, modules, ammunition and power management with server-authoritative multiplayer paths. Connected multiplayer acceptance is pending. Temporary developer markers; use a disposable test world.
 tiledef=OMHTT_Barriers 7316
 pack=OMHTT_Barriers

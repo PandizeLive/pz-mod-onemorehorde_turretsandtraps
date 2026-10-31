@@ -1,0 +1,93 @@
+Note: C:\Users\bandi\Zomboid_Modding\OMH\Turrets & Traps\tools\NativePitchCheck.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+1792411952096 fmod: Java loging: OK
+1792411952102 fmod: FMOD::Studio::System::create() result: No errors.
+1792411952102 fmod: FMOD::Studio::System::getCoreSystem() result: No errors.
+1792411952102 fmod: FMOD_System_GetVersion() result: No errors.
+1792411952102 fmod: fmodintegration built with version 20309, fmod shared library version 20309
+1792411952102 fmod: System Create: OK
+1792411952103 fmod: FMOD_System_SetSoftwareFormat() result: No errors.
+1792411952137 fmod: FMOD::Studio::System::Initialize() result: No errors.
+1792411952137 fmod: Creating DSP for capture sound
+1792411952137 fmod: FMOD_System_CreateDSP() result: No errors.
+1792411952137 fmod: FMOD_DSP_SetBypass() result: No errors.
+1792411952137 fmod: FMOD_System_GetMasterChannelGroup() result: No errors.
+1792411952137 fmod: FMOD_ChannelGroup_AddDSP() result: No errors.
+1792411952137 fmod: FMOD_System_Set3DSettings() result: No errors.
+2366389018360
+2365597707160
+2365597707544
+2365597707928
+2366362487144
+2366435069752
+2366435070136
+2366435073208
+2366435070520
+2366435070904
+2366435071672
+2366435072440
+2366435071288
+2366435068216
+2366435067448
+2366435066680
+2366435067832
+2366435072824
+2366435074360
+2366435069368
+2366435068600
+2366435073592
+2366435073976
+2366435067064
+2366435068984
+2366452143400
+NATIVE_PITCH_PASS definitions=23 clips=2626 plays=690 range=0.950-1.050 steps=101 queued-pitch=verified maxPlayMs=16.281
+2366452147240
+COMMAND QUEUE stallCount = 2 peakUsage = 144
+2366452139944
+2366452144168
+2366452146472
+2366452147624
+2366452144552
+2366452141864
+NATIVE_PACK_AUDIO_PASS tiers=7 nativeUIHandles=7 stopped=7 volume=muted
+Native JOML: three gun world attachments remain upright and aimed over eight headings.
+Native IsoUtils / JOML projection: 8 heading vectors match; head follows 16-pixel base shift.
+Native Jassimp import and PZ StaticMesh conversion passed: one mesh, 48 vertices, 24 triangles; GPU rendering remains untested.
+Native JOML: three gun world attachments remain upright and aimed over eight headings.
+Native IsoUtils / JOML projection: 8 heading vectors match; head follows 16-pixel base shift.
+Native Jassimp import and PZ StaticMesh conversion passed: one mesh, 72 vertices, 36 triangles; GPU rendering remains untested.
+Depth pixels=5529 outside=0
+Native depth geometry parser and generated mask passed; GPU texture loading remains a client check.
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by org.joml.MemUtil$MemUtilUnsafe (file:/C:/Program%20Files%20(x86)/Steam/steamapps/common/ProjectZomboid/projectzomboid.jar)
+WARNING: Please consider reporting this to the maintainers of class org.joml.MemUtil$MemUtilUnsafe
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+Native UIWorldMap right-button pair: child handlers consume exactly once without parent click-through
+Native anchored scrollbar after explicit reflow: width=400 x=383.0 height=500.0
+Native anchored scrollbar after explicit reflow: width=270 x=123.0 height=140.0
+Native anchored scrollbar after explicit reflow: width=540 x=793.0 height=810.0
+Native anchored scrollbar after explicit reflow: width=310 x=63.0 height=80.0
+Native resize grip: repeated deferred updates preserve bottom-right position
+Native deferred resize: explicitly positioned scrollbars stay within each panel
+Native Controller map: construction, zoom/visibility configuration and v3 method signatures passed; rendered map acceptance pending
+Native UI: children follow scrolling only after the parent enables it
+Native animation parser: two strike markers matched, SetVariable bindings resolved
+Native bed animation parser: walking/running brush nodes valid, no tree injury events
+Native trip parser: player/zombie forward clips and complete landing/recovery markers valid
+Native JSON translation loading and substitution: 1057 keys passed
+Kahlua compilation: 241 runtime/translation files passed
+Optional audit: deaths=10000 repeats=10000 packs=1500 emptyPoolCorpseDrop=false mockDeathBatchMs=23.82150000333786 partialGrantRollback=pass removeRollback=pass revealCreateItems=0 revealFrames=500 newFrameItems=0 newFrameWraps=0 mockRenderBatchMs=9.689400002360344 smallViewportOverflowPx=0 tooltipFrames=600 tooltipWraps=0
+Native packet serialization: 27 packets; largest=392 bytes
+Proc test-double stress: bursts=160 zombies=486 callbacks=441 maxCallbackMs=1.0172999948263168 drainMs=254.3669000044465
+Void foundation audit: conversion=600 groups=2 mockBatchMs=3.288400001823902 nativeTablePersistence=pass clientMutationGuards=pass integration=pending
+Multiplayer audit: authorityAndOwnerProtocol=pass contactAndPresentation=pass liveDedicated=zero-client-probe liveListen=pending liveTwoClient=pending
+MP transfer mock stress: items=600 batches=30 maxBatchMs=4.803800001740456 elapsedMs=109.23939999938011
+Assertions passed: 23751.0
+C247 content: finiteVirtualMagazine=pass exactModuleDebt=pass mixedPayload=pass boundedGrenadeLineage=pass lureNoCatchup=pass
+World/player/network/UI objects were test doubles; in-game acceptance remains pending.
+Failed to load file Guid table.
+Failed to load file Guid table.
+Failed to load file Guid table.
+Failed to load file Guid table.
+Failed to load file Guid table.
+Package checks passed: 303 source files, 393 packaged files, 337 translation keys; manifest recorded.

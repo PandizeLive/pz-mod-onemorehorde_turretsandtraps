@@ -1,6 +1,6 @@
 local F = require("OMHTT/Foundation")
 local D = require("OMHTT/Diagnostics")
-local H = {ITEM = "Base.OMHTTProbeHead", SPRITE = "omhtt_turret_01_20"}
+local H = {ITEM = "Base.OMHTTTurretProbe", SPRITE = "omhtt_turret_01_20"}
 OMHTT_HybridProbe = H
 
 ---@param square IsoGridSquare? Probe square
@@ -60,7 +60,7 @@ function H.create(player, square)
     square:AddWorldInventoryItem(item, 0.5, 0.5, 0.3)
     base:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_REDRAW)
     D.emit("hybrid-probe-created", {id = id, item = item:getFullType(), model = item:getWorldStaticItem(),
-        x = square:getX(), y = square:getY(), z = square:getZ(), height = 0.3, scale = 1})
+        x = square:getX(), y = square:getY(), z = square:getZ(), height = 0.3, scale = 1}, nil, nil, "turrets")
     return base, item:getWorldItem()
 end
 
@@ -82,7 +82,7 @@ function H.remove(player, square)
         square:transmitRemoveItemFromSquare(head)
     end
     if base then
-        D.emit("hybrid-probe-removed", {id = base:getModData().OMHTTHybridProbe})
+        D.emit("hybrid-probe-removed", {id = base:getModData().OMHTTHybridProbe}, nil, nil, "turrets")
         square:transmitRemoveItemFromSquare(base)
     end
 end

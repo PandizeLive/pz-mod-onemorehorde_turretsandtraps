@@ -1,0 +1,89 @@
+{
+  "baseline": "9f83c8e",
+  "connectedClients": 0,
+  "cases": [
+    {
+      "case": "busy-firearm-burst",
+      "expectedFailure": "C534 busy victim does not hold firearm presentation",
+      "reproduced": true,
+      "files": [
+        {
+          "path": "Source/42.20/media/lua/server/OMHTT/TurretVolley.lua",
+          "beforeSHA256": "3c8a18bf32ff5292acc4f435c2490215f85d14e01020c52828ff9d5f3a02f06a",
+          "afterSHA256": "60161748c0f346c15c98c765e8b46951f5418c0dd7bd9e672b7e18fc1a590a92"
+        }
+      ]
+    },
+    {
+      "case": "late-firearm-receipt",
+      "expectedFailure": "C534 old firearm burst cannot restart",
+      "reproduced": true,
+      "files": [
+        {
+          "path": "Source/42.20/media/lua/client/OMHTT/PrototypeEffects.lua",
+          "beforeSHA256": "297c5ec484b6cd2d11094f375d901c02a922617ab303bc5fdb3d6bd7b2701506",
+          "afterSHA256": "253801ae423bc9da725e7ffc75800b4b435e7169b1a29f2ea814ee1b1342e699"
+        }
+      ]
+    },
+    {
+      "case": "outer-wall-edge",
+      "expectedFailure": "C534 outer stabilizer-end wall allowed",
+      "reproduced": true,
+      "files": [
+        {
+          "path": "Source/42.20/media/lua/shared/OMHTT/ControlBuildReservation.lua",
+          "beforeSHA256": "8565c1c7318b4ac46687022297d6e5dd70cee2d0c8d9cbb06f94ae4439aa4e11",
+          "afterSHA256": "2d5bdfb237dea29d50c8fae8ca4d8383f42fa776ea2ab7d08add7a31bddc8242"
+        }
+      ]
+    },
+    {
+      "case": "zero-rate-pause",
+      "expectedFailure": "C534 zero multiplier freezes presentation and simulation",
+      "reproduced": true,
+      "files": [
+        {
+          "path": "Source/42.20/media/lua/shared/OMHTT/ActiveTime.lua",
+          "beforeSHA256": "f8d5037f52b7f181f9f535312db2ff54906d5aa68c887eb8506b094ebd6a09db",
+          "afterSHA256": "bd656fdb3f115abd7f213d7124792206688125263c30211b2ea4c4bca9af0ba6"
+        }
+      ]
+    },
+    {
+      "case": "battery-targets",
+      "expectedFailure": "C534 rounded endurance target",
+      "reproduced": true,
+      "files": [
+        {
+          "path": "Source/42.20/media/lua/shared/OMHTT/TurretStats.lua",
+          "beforeSHA256": "71775720acc74026fe0b4da1e5c648162943160bf786a9249a2827396b597a10",
+          "afterSHA256": "aa297e7fb1464f93d9f8267670a06fe7bbbfa448565992b6d9f008c0f64bca59"
+        }
+      ]
+    }
+  ],
+  "correctedPassed": true,
+  "result": "Assertions passed: 44376.0",
+  "version": "0.2.71.3",
+  "assertions": 44376,
+  "sourceFiles": 464,
+  "packageFiles": 640,
+  "nativeWrite": "passed",
+  "nativeRead": "passed",
+  "packageSelections": [
+    "traps",
+    "turrets",
+    "both"
+  ],
+  "hordeBaselineAssertions": 610,
+  "connectedAcceptance": "pending",
+  "evidenceSHA256": {
+    "validation.log": "473c2485ba2dfb1c74b85fe60fdf73b1cb83dad4aa72bdc5bdb415d39fa8d30b",
+    "final-negative.log": "be5eaa9b2c3243ba346dd51e592f4d91e0ce6674a449273511d29c849eb151fc",
+    "final-native-write.log": "25eca1658f17424c1e1181c0aac6e58c81819143575ba2e78177203ef50f0bae",
+    "final-native-read.log": "b88211462c3279415e9ffcf8adeb6e61d892e2ccca55544d8dcbed71b0caf1a6",
+    "packages.log": "60ef68d595d15b8c914f65b02634187d0b9ab637e2c8e924146f903a28925142",
+    "horde-baseline.log": "88aac3e169431d4359d948e590ad9f98fbcaae5292d0e7a09fc755dab841bd03"
+  }
+}

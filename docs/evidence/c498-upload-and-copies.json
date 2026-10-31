@@ -1,0 +1,25 @@
+{
+  "status": "confirmed",
+  "itemId": "3828638252",
+  "version": "0.2.70.3",
+  "sourceCommit": "ccf9e7bd5a7e07a4bc05a745d02dc6d18c9fba14",
+  "confirmedUtc": "2026-10-28T20:09:27.9380072Z",
+  "copies": {
+    "local": {
+      "files": 615,
+      "mismatches": []
+    },
+    "stage": {
+      "files": 615,
+      "mismatches": []
+    },
+    "steam": {
+      "files": 615,
+      "mismatches": []
+    }
+  },
+  "clientVersion": "0.2.70.2",
+  "serverVersion": "0.2.70.3",
+  "clientExtraUpdateExceptions": 13,
+  "connectedAcceptance": "pending restarted 0.2.70.3 client"
+}

@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-12",
+  "version": "0.2.44",
+  "capture": "diagnostics\\captures\\20261012-002038-5027\\console.txt",
+  "consoleSHA256": "81dee69adbcce88c7dbfe8dfbf9eb4c076e6f0b9c3e48bf5f54ad3d6cc17aca9",
+  "bytes": 4644397,
+  "scope": "Captured console begins mid-stack at frame 28400; startup is absent. Counts apply only to this snapshot.",
+  "runtimeExceptions": {
+    "attempted index: fieldOrder of non-table: null at KahluaThread.tableget(KahluaThread.java:1430).": 1355
+  },
+  "maxRecordedActiveGapMs": 39,
+  "ownerAcceptance": "failed Tack marker runtime; remaining checks not marked passed",
+  "inference": "Client top-level require of a server module captures nil before server search paths exist; verify ordered client/SP startup in corrective tests."
+}

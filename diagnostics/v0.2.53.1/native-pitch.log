@@ -1,0 +1,50 @@
+1792217102958 fmod: Java loging: OK
+1792217102971 fmod: FMOD::Studio::System::create() result: No errors.
+1792217102971 fmod: FMOD::Studio::System::getCoreSystem() result: No errors.
+1792217102971 fmod: FMOD_System_GetVersion() result: No errors.
+1792217102971 fmod: fmodintegration built with version 20309, fmod shared library version 20309
+1792217102971 fmod: System Create: OK
+1792217102972 fmod: FMOD_System_SetSoftwareFormat() result: No errors.
+1792217103013 fmod: FMOD::Studio::System::Initialize() result: No errors.
+1792217103013 fmod: Creating DSP for capture sound
+1792217103013 fmod: FMOD_System_CreateDSP() result: No errors.
+1792217103013 fmod: FMOD_DSP_SetBypass() result: No errors.
+1792217103013 fmod: FMOD_System_GetMasterChannelGroup() result: No errors.
+1792217103013 fmod: FMOD_ChannelGroup_AddDSP() result: No errors.
+1792217103013 fmod: FMOD_System_Set3DSettings() result: No errors.
+1895693284248
+1895693279640
+1895693279256
+1895693282328
+1895695438264
+1895695434424
+1895695432504
+1895695435960
+1895695434040
+1895695432888
+1895695437880
+1895695433272
+1895695436344
+1895695433656
+1895695436728
+1895695438648
+1895695434808
+1895695439032
+1895695437112
+1895695431352
+1895695435192
+1895695431736
+1895695432120
+1895695437496
+1895695435576
+1895564195768
+NATIVE_PITCH_PASS definitions=23 clips=2626 plays=690 range=0.950-1.050 steps=101 queued-pitch=verified maxPlayMs=30.063
+1895751383016
+COMMAND QUEUE stallCount = 2 peakUsage = 144
+1895751383784
+1895751386472
+1895751383400
+1895751385320
+1895751384552
+1895751384168
+NATIVE_PACK_AUDIO_PASS tiers=7 nativeUIHandles=7 stopped=7 volume=muted

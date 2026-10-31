@@ -1,0 +1,201 @@
+{
+  "version": "0.2.47",
+  "sourceCommit": "4a2f0dad29e49b0f9919dc9fb36196b9facf3e12",
+  "tag": "test/v0.2.47",
+  "installed": "C:\\Users\\bandi\\Zomboid\\mods",
+  "packages": {
+    "OneMoreHorde_Traps": 106,
+    "OneMoreHorde_Turrets": 150
+  },
+  "filesVerified": 256,
+  "sourceFilesVerified": 208,
+  "backup": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\p1c1\\install-backups\\20261012-144014-6226",
+  "backupsVerified": [
+    {
+      "package": "OneMoreHorde_Traps",
+      "version": "0.2.46",
+      "filesVerified": 106
+    },
+    {
+      "package": "OneMoreHorde_Turrets",
+      "version": "0.2.46",
+      "filesVerified": 146
+    }
+  ],
+  "archive": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\artifacts\\OMHTT-0.2.47.zip",
+  "archiveSHA256": "8e7a0e732a0c81861adb6a8c23dc26e7b4acb12b63a22743b70a186b71ea15b3",
+  "kahluaAssertions": 16071,
+  "nativeWrite": "passed",
+  "nativeRead": "passed",
+  "nativeSelections": [
+    "traps",
+    "turrets",
+    "both"
+  ],
+  "clientAcceptance": "pending focused owner test",
+  "savePolicy": "fresh worlds",
+  "publication": "none",
+  "hostedLootLab": {
+    "baseline": "T&T 0.2.47",
+    "workerVersion": "b267828b-e930-4e46-98d2-7a5ec4f4495b",
+    "moduleEntries": 29,
+    "loosePoolEntries": 208,
+    "packPoolEntries": 16,
+    "packBodyChancePercent": 15,
+    "apiTestsPassed": 78,
+    "browser": "Headless Edge desktop/mobile passed; screenshot reviewed",
+    "savedTuning": "Preserved without account database writes",
+    "mapModel": "Loose modules only; packs excluded explicitly",
+    "source": "Isolated copy of previously deployed release; unrelated dirty website source preserved",
+    "before": {
+      "phase": "before",
+      "productionBundleMatches": true,
+      "sha256": "5e1432455af93b65fc934038360a35ae0a569d04e6027d306773b115d3342123",
+      "checks": [
+        {
+          "path": "/admin/",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/data.js",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/model.js",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/map-controls.js",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/settings-sync.js",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/settings",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/app.js",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/style.css",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/provenance.json",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/README.md",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "url": "https://api.onemorehorde.com/v1/leaderboard?limit=1",
+          "status": 200
+        },
+        {
+          "url": "https://api.onemorehorde.com/v1/workshop-snapshots/latest",
+          "status": 200
+        }
+      ]
+    },
+    "after": {
+      "phase": "after",
+      "productionBundleMatches": true,
+      "sha256": "c4c3b43ce82b81ff48842d36f3b052b6a22c8130e6faacd8b17dcec752b3f27d",
+      "checks": [
+        {
+          "path": "/admin/",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/data.js",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/model.js",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/map-controls.js",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/settings-sync.js",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/settings",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/app.js",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/style.css",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/provenance.json",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/README.md",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "url": "https://api.onemorehorde.com/v1/leaderboard?limit=1",
+          "status": 200
+        },
+        {
+          "url": "https://api.onemorehorde.com/v1/workshop-snapshots/latest",
+          "status": 200
+        }
+      ]
+    }
+  }
+}

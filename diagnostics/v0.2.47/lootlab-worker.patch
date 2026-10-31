@@ -1,0 +1,22 @@
+--- a/src/loot-lab-settings.ts
++++ b/src/loot-lab-settings.ts
+@@ -3 +3 @@
+-const BASELINE = 'T&T 0.2.46';
++const BASELINE = 'T&T 0.2.47';
+@@ -35 +35 @@
+-  const normalized = /^T&T 0\.2\.(2[6-9]|3[0-9]|4[0-5])$/.test(value.baseline as string);
++  const normalized = /^T&T 0\.2\.(2[6-9]|3[0-9]|4[0-6])$/.test(value.baseline as string);
+--- a/tests/loot-lab-settings.test.ts
++++ b/tests/loot-lab-settings.test.ts
+@@ -117 +117 @@
+- assert.equal(b.sync.value.global,1);assert.equal(b.sync.value.items.Firing,1);assert.equal(b.sync.value.items.Filter,1);assert.equal(b.sync.value.items.Autoloader,1);
++ assert.equal(b.sync.value.global,1);assert.equal(b.sync.value.items.Firing,.5);assert.equal(b.sync.value.items.Filter,2);assert.equal(b.sync.value.items.Autoloader,1);
+@@ -150 +150 @@
+- assert.equal(upgraded.baseline,'T&T 0.2.46');
++ assert.equal(upgraded.baseline,'T&T 0.2.47');
+@@ -168 +168 @@
+- assert.equal(upgraded.baseline,'T&T 0.2.46');assert.equal(upgraded.global,2.7);assert.equal(upgraded.items.Conservation,3.5);
++ assert.equal(upgraded.baseline,'T&T 0.2.47');assert.equal(upgraded.global,2.7);assert.equal(upgraded.items.Conservation,3.5);
+@@ -170,0 +171,2 @@
++
++test('0.2.46 owner weights survive baseline upgrade exactly',()=>{ const prior={...defaults,baseline:'T&T 0.2.46',items:{...defaults.items},global:1.011111111111111}; assert.deepEqual(upgradeScenario(prior),{...prior,baseline:defaults.baseline}); });
