@@ -1,5 +1,6 @@
 if isClient() then return end
 local V = require("OMHTT/TurretVolley")
+local Actors = require("OMHTT/DefenseActors")
 local S = {}
 
 ---@param record table Committed device identity
@@ -10,7 +11,9 @@ local S = {}
 ---@return table facts Fire sound
 function S.launch(record, origin, target, player, options)
     local x, y, stats = origin:getX() + .5, origin:getY() + .5, options.stats
-    local angle = math.atan2((options.aimY or target:getY()) - y, (options.aimX or target:getX()) - x)
+    local tx, ty = options.aimX, options.aimY
+    if tx == nil or ty == nil then tx, ty = Actors.position(target) end
+    local angle = math.atan2(ty - y, tx - x)
     angle = angle + math.rad((ZombRand(20001) / 10000 - 1) * 10 / math.max(1, stats.accuracy / 100))
     options.scrapId = tostring(record.id) .. ":" .. tostring(record.shots)
     options.scrapEligibility, options.scrapEffects, options.scrapInjury, options.scrapPending = {}, {}, {}, {}
@@ -73,7 +76,8 @@ function S.hit(ray, victim)
             amount = victim:getHealth()
         end
     end
-    local x, y, square = victim:getX(), victim:getY(), victim:getSquare()
+    local x, y = Actors.position(victim)
+    local square = Actors.square(victim)
     owner.scrapPending = owner.scrapPending or {}
     owner.scrapPending[victim] = true
     if owner.pending then owner.pending = owner.pending + 1 end

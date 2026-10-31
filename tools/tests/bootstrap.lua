@@ -87,6 +87,7 @@ function testPlayer:getRole() return {hasCapability = function() return testAdmi
 function getSpecificPlayer(index) return testPlayer end
 
 Events = {}
+Events.OnDisconnect = {handlers={}, Add=function(callback) table.insert(Events.OnDisconnect.handlers,callback) end}
 -- Gameplay startup has loaded native building classes; native probes replace these doubles.
 ISBuildIsoEntity = {isValidPerSquare=function() return true end}
 ISWoodenWall = {isValid=function() return true end,create=function() return true end}

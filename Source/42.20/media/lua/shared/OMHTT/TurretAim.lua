@@ -22,7 +22,8 @@ end
 ---@nodiscard
 function Aim.angle(object, target)
     local square = object:getSquare()
-    return (math.atan2(-(target:getY() - square:getY() - 0.5), target:getX() - square:getX() - 0.5) * 180 / math.pi + 360) % 360
+    local x, y = Actors.position(target)
+    return (math.atan2(-(y - square:getY() - 0.5), x - square:getX() - 0.5) * 180 / math.pi + 360) % 360
 end
 
 ---@param object IsoObject Turret

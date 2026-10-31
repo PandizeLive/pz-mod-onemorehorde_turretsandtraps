@@ -1,9 +1,8 @@
-v0.2.71.3
+v0.2.71.4
 
 Development test content
 
-- Fixed firearm Splitter visuals replaying after ammunition runs out.
-- Reduced empty and misfire warning sound range.
-- Paused trap and turret activity, tether movement and warning sounds with multiplayer time controls.
-- Fixed Poke Floor construction checks while allowing walls beyond stabilizer ends.
-- Increased turret battery endurance.
+- Fixed firearm Splitter visuals disappearing on delayed connections.
+- Synchronized Splitter bursts with the main shot.
+- Corrected turret aiming and projectile directions for moving multiplayer targets.
+- Fixed newly spawned zombies being missed by client defense tracking.

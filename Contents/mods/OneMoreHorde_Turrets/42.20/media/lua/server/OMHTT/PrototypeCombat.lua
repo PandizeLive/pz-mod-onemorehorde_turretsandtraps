@@ -82,7 +82,8 @@ function Combat.candidates(origin, range)
         local zombie = Actors.advance(search)
         if zombie and instanceof(zombie, "IsoZombie") and not seen[zombie] then
             seen[zombie], visits = true, visits + 1
-            local dx, dy = zombie:getX() - origin:getX() - .5, zombie:getY() - origin:getY() - .5
+            local x, y = Actors.position(zombie)
+            local dx, dy = x - origin:getX() - .5, y - origin:getY() - .5
             local distance = dx * dx + dy * dy
             if distance <= range * range and math.floor(zombie:getZ()) == origin:getZ() and Horde.allowed(zombie) then
                 found[#found + 1] = {zombie = zombie, distance = distance}
@@ -161,8 +162,8 @@ function Combat.fire(record, object, player, options)
     record.shots = record.shots + 1
     record.nextShot = now + options.interval
     record.cooldownClock = "realtime-ms-v1"
-    local tx = target:getX()
-    local ty = target:getY()
+    local tx, ty = Actors.position(target)
+    options.aimX, options.aimY = tx, ty
     local angle = math.atan2(-(ty - origin:getY() - 0.5), tx - origin:getX() - 0.5)
     record.facing = Foundation.normalizeFacing(math.floor(angle / (math.pi * 2) * 16 + 0.5))
     record.aimDegrees = (angle * 180 / math.pi + 360) % 360
@@ -212,8 +213,8 @@ function Combat.splash(record, target, impactSquare, tx, ty, options)
         local zombie = nearby[i].zombie
         if splash >= Combat.SPLASH_LIMIT then break end
         if zombie ~= target and not zombie:isDead() then
-            local dx = zombie:getX() - tx
-            local dy = zombie:getY() - ty
+            local x, y = Actors.position(zombie)
+            local dx, dy = x - tx, y - ty
             if options.splash > 0 and dx * dx + dy * dy <= options.radius * options.radius
                 and Combat.clearLane(impactSquare, Actors.square(zombie), options.range) then
                 Damage.resolve(zombie, options.splash, record.id, "splash", function(lost)
@@ -243,7 +244,8 @@ function Combat.hit(record, origin, target, player, options)
         require("OMHTT/TurretVolley").release(options)
         return {id = record.id, shot = record.shots, x = target:getX(), y = target:getY(), z = target:getZ(), missed = true}
     end
-    local now, tx, ty = getTimestampMs(), target:getX(), target:getY()
+    local now = getTimestampMs()
+    local tx, ty = Actors.position(target)
     local before = target:getHealth()
     local impactSquare = Actors.square(target)
     Diagnostics.defer("shot-hit-begin", {id = record.id, shot = record.shots, x = tx, y = ty, health = before,
@@ -290,7 +292,8 @@ end
 function Combat.arrive(shot)
     local target, origin, options = shot.target, shot.origin, shot.options
     local square = Actors.square(target)
-    local dx, dy = target:getX() - shot.facts.x, target:getY() - shot.facts.y
+    local tx, ty = Actors.position(target)
+    local dx, dy = tx - shot.facts.x, ty - shot.facts.y
     if require("OMHTT/ControlCombat").eligible(options.object, target) and not target:isDead() and square and target:getZ() == origin:getZ() and dx * dx + dy * dy <= 4
         and getCell():getGridSquare(square:getX(), square:getY(), square:getZ()) == square
         and getCell():getGridSquare(origin:getX(), origin:getY(), origin:getZ()) == origin

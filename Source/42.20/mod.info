@@ -1,6 +1,6 @@
 name=OMH: Turrets & Traps
 id=OneMoreHorde_TurretsAndTraps
-modversion=0.2.71.3
+modversion=0.2.71.4
 versionMin=42.20
 icon=icon.png
 description=Development source for independent Turrets and Traps packages: modular potato, firearm, Ballista and rotary turrets; Spike Barriers, Bed Spikes, Concertina Wire and backed Barbed Panels. Crafting, Building, modules, ammunition and power management with server-authoritative multiplayer paths. Connected multiplayer acceptance is pending. Temporary developer markers; use a disposable test world.

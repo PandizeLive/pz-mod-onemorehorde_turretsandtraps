@@ -45,5 +45,21 @@ public final class NativeOwnershipProbe {
         Object result = call.invoke(freshThread, test, new Object[]{actor, owner, other, connection});
         if (!Boolean.TRUE.equals(result)) throw new IllegalStateException("Native ownership production route failed");
         System.out.println("[OMHTT-C512] native-ownership oldCall=reproduced contact=accepted foreign=rejected handoff=validated barrier=validated clients=0");
+        Object lifecycle = compile.invoke(null, Files.newBufferedReader(root.resolve(
+            "Source/42.20/media/lua/client/OMHTT/DefenseCombatClient.lua")), "C536-client-lifecycle", env);
+        Object client = call.invoke(freshThread, lifecycle, new Object[]{});
+        actor = actorType.getConstructor(cellType).newInstance(cell);
+        Object create = compile.invoke(null, new StringReader("local C,z=...; local old=isClient; isClient=function() return true end; C.created(z); isClient=old"), "C536-create-before-id", env);
+        actorType.getField("onlineId").setShort(actor, (short)-1);
+        call.invoke(freshThread, create, new Object[]{client, actor});
+        actorType.getField("onlineId").setShort(actor, (short)31000);
+        Object lookup = compile.invoke(null, new StringReader("local C,z=...; return C.find(z:getOnlineID(),require('OMHTT/DefenseCombatProtocol').outfit(z:getPersistentOutfitID()))==z"), "C536-lookup-after-id", env);
+        if (!Boolean.TRUE.equals(call.invoke(freshThread, lookup, new Object[]{client, actor})))
+            throw new IllegalStateException("Native client lifecycle lost the post-creation network ID");
+        actorType.getField("onlineId").setShort(actor, (short)-1);
+        Object removed = compile.invoke(null, new StringReader("local C,z=...; return C.find(31000,require('OMHTT/DefenseCombatProtocol').outfit(z:getPersistentOutfitID()))==nil"), "C536-unload-id", env);
+        if (!Boolean.TRUE.equals(call.invoke(freshThread, removed, new Object[]{client, actor})))
+            throw new IllegalStateException("Native unloaded actor remained addressable");
+        System.out.println("[OMHTT-C536] native-client-lifecycle lateId=resolved unloadedId=rejected clients=0 transport=not-tested");
     }
 }

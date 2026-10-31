@@ -34,7 +34,8 @@ function A.eligible(job, actor, search)
     if job.seen[actor] or (marks and marks[job.key]) or actor:isDead() or not Actors.square(actor) then return false end
     if math.floor(actor:getZ()) ~= job.z then return false end
     if not require("OMHTT/ControlCombat").eligible(job.options.object, actor) then return false end
-    local dx, dy = actor:getX() - search.x, actor:getY() - search.y
+    local x, y = Actors.position(actor)
+    local dx, dy = x - search.x, y - search.y
     if dx * dx + dy * dy > search.radius * search.radius then return false end
     if search.forward and (dx * job.dx + dy * job.dy < 0 or math.abs(dx * job.dy - dy * job.dx) > .35) then return false end
     local origin = getCell():getGridSquare(math.floor(search.x), math.floor(search.y), job.z)
@@ -57,7 +58,8 @@ function A.scan(job, deadline)
             local actor = objects:get(scan.index)
             scan.index = scan.index + 1
             if A.eligible(job, actor, scan) then
-                local distance = (actor:getX() - scan.x) ^ 2 + (actor:getY() - scan.y) ^ 2
+                local x, y = Actors.position(actor)
+                local distance = (x - scan.x) ^ 2 + (y - scan.y) ^ 2
                 if not scan.best or distance < scan.distance then
                     scan.best, scan.distance = actor, distance
                 end
@@ -93,7 +95,7 @@ function A.hit(job, actor)
     if not Volley.reserve(contact) then return end
     options = contact
     job.seen[actor] = true
-    local x, y = actor:getX(), actor:getY()
+    local x, y = Actors.position(actor)
     local origin = getCell():getGridSquare(math.floor(search.x), math.floor(search.y), job.z)
     job.hits = job.hits + 1
     local damage = job.damage
@@ -153,7 +155,8 @@ function A.launch(record, origin, target, player, options)
         seen = {}, anchors = {{x = x, y = y}}, anchor = 1, branch = 0, hits = 0,
         damage = damage, baseDamage = damage, due = Clock.now(), started = Clock.now()}
     if target then
-        job.dx, job.dy = target:getX() - x, target:getY() - y
+        local tx, ty = Actors.position(target)
+        job.dx, job.dy = (options.aimX or tx) - x, (options.aimY or ty) - y
         local length = math.sqrt(job.dx * job.dx + job.dy * job.dy)
         if length > 0 then job.dx, job.dy = job.dx / length, job.dy / length end
     else

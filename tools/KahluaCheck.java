@@ -631,6 +631,7 @@ public final class KahluaCheck {
             {"_", "tools/tests/contact_timing_c531.lua"},
             {"_", "tools/tests/corrections_c534.lua"},
             {"_", "tools/tests/battery_c534.lua"},
+            {"_", "tools/tests/presentation_c536.lua"},
         };
         for (String[] stage : stages) {
             Path stagePath = root.resolve(stage[1]);

@@ -133,6 +133,15 @@ function V.ray(record, x, y, z, angle, range, damage, group, index)
             flight = remaining / ray.speed * 1000, projectile = family, ammoType = ammoType,
             muzzle = (group.kind == "fragment" or group.fromX) and 0 or nil, muzzleHeight = group.height, silent = true,
             contactFlight = not group.left, excludeId = group.excludeId, excludeOutfit = group.excludeOutfit})
+    elseif group.stats.headKind ~= "Arc" then
+        -- Hitscan presentation belongs to shot commitment, not queued damage work.
+        local ray = V.queue[#V.queue]
+        local facts = {id=ray.id, shot=ray.shot,
+            x=x+ray.dx*range, y=y+ray.dy*range, z=z,
+            fromX=group.fromX or x, fromY=group.fromY or y,
+            muzzleHeight=group.height, firearm=true, silent=true, firedAt=ray.firedAt}
+        if group.presentation then group.rays[#group.rays+1] = facts
+        else require("OMHTT/DefenseEffects").emit("Ray", facts) end
     end
 end
 
@@ -146,7 +155,9 @@ function V.split(record, origin, target, player, options, impact)
     local stats = options.stats
     if stats.splitter == 0 then V.done(options); return end
     local x, y = origin:getX() + .5, origin:getY() + .5
-    local angle = math.atan2((options.aimY or target:getY()) - y, (options.aimX or target:getX()) - x)
+    local tx, ty = options.aimX, options.aimY
+    if tx == nil or ty == nil then tx, ty = Actors.position(target) end
+    local angle = math.atan2(ty - y, tx - x)
     local side = record.splitterSide or -1
     if stats.splitter % 2 == 1 then record.splitterSide = -side end
     local group = {options = options, kind = "splitter", player = player, weapon = options.effectWeapon, stats = stats, hits = {}, remaining = stats.splitter, rays = {}}
@@ -157,7 +168,8 @@ function V.split(record, origin, target, player, options, impact)
         group.fromX, group.fromY = x, y
         if distance > 0 then group.fromX, group.fromY = x + dx / distance * forward, y + dy / distance * forward end
         group.height = impact.muzzleHeight
-        -- The primary keeps its own immediate visual; children never hold it.
+        -- Primary and Splitter rays travel in one presentation packet.
+        group.presentation, impact.rays = impact, group.rays
     end
     local damage = options.damage * (options.critical and options.critMultiplier or 1) * stats.splitterDamage
     for i = 1, stats.splitter do
@@ -233,17 +245,6 @@ function V.finish(ray)
         require("OMHTT/DefenseEffects").emit("Impact", {id=ray.id, shot=ray.shot,
             x=ray.x+ray.dx*distance, y=ray.y+ray.dy*distance, z=ray.z,
             fromX=ray.x, fromY=ray.y, projectile=ray.projectile, ammoType=ray.ammoType, silent=true})
-    end
-    -- A completed hitscan has already reached its endpoint. Health admission
-    -- must not postpone its tracer, even when another shot owns the victim.
-    if not ray.speed and group.stats.headKind ~= "Arc" and not ray.contactShown then
-        ray.contactShown = true
-        local distance = ray.bestDistance or math.min(ray.distance, ray.range)
-        require("OMHTT/DefenseEffects").emit("Ray", {id = ray.id, shot = ray.shot,
-            x = ray.x + ray.dx * distance, y = ray.y + ray.dy * distance, z = ray.z,
-            fromX = group.fromX or ray.x, fromY = group.fromY or ray.y,
-            muzzleHeight = group.height, firearm = true, silent = true,
-            firedAt = ray.firedAt, elapsedMs = math.max(0, Clock.now() - (ray.born or Clock.now()))})
     end
     if victim and group.kind == "scrapshot" and group.options.scrapPending and group.options.scrapPending[victim] then
         ray.waitingDamage = true

@@ -20,13 +20,16 @@ function C.hit(record, origin, target, player, options)
     local gun, stats = options.weapon, options.stats
     local Combat = require("OMHTT/PrototypeCombat")
     local targets = {target}
+    local tx, ty = Actors.position(target)
+    tx, ty = options.aimX or tx, options.aimY or ty
     local pellets = math.max(1, math.min(9, gun:getProjectileCount()))
     if pellets > 1 then
         local candidates = Combat.candidates(Actors.square(target), 2)
         for i = 1, #candidates do
             if #targets >= 3 then break end
             local zombie = candidates[i].zombie
-            local dx, dy = zombie:getX() - target:getX(), zombie:getY() - target:getY()
+            local zx, zy = Actors.position(zombie)
+            local dx, dy = zx - tx, zy - ty
             if zombie ~= target and dx * dx + dy * dy <= 1.44
                 and Modules.inside(origin, zombie, options.profile)
                 and Combat.clearLane(origin, Actors.square(zombie), stats.range) then
@@ -38,7 +41,7 @@ function C.hit(record, origin, target, player, options)
     local critical = options.critical
     if critical == nil then critical = ZombRand(10000) < stats.critChance * 100 end
     local multiplier = critical and stats.critMultiplier or 1
-    local dx, dy = target:getX() - origin:getX() - .5, target:getY() - origin:getY() - .5
+    local dx, dy = tx - origin:getX() - .5, ty - origin:getY() - .5
     local aimHit = ZombRand(10000) < Accuracy.chance(gun, stats, math.sqrt(dx * dx + dy * dy), target:isProne()) * 100
     local firstHit
     local eligibility = {}
@@ -51,7 +54,8 @@ function C.hit(record, origin, target, player, options)
         local victim = targets[i]
         local allocated = math.floor((pellets - i) / #targets) + 1
         if allocated > 0 and aimHit and not victim:isDead() and require("OMHTT/ControlCombat").eligible(options.object, victim) then
-            local hitX, hitY, hitSquare = victim:getX(), victim:getY(), Actors.square(victim)
+            local hitX, hitY = Actors.position(victim)
+            local hitSquare = Actors.square(victim)
             local admitted
             if instanceof(victim, "IsoPlayer") then
                 admitted = require("OMHTT/TurretPlayerHit").hit(victim, options, pellets > 1 and "Shotgun" or "Firearm", allocated / pellets)
@@ -93,7 +97,7 @@ function C.hit(record, origin, target, player, options)
     D.defer("firearm-shot", {id = record.id, gun = gun:getFullType(), shot = record.shots,
         critical = critical, critChance = stats.critChance, critMultiplier = multiplier, hearingRadius = hearingRadius, suppressed = stats.suppressed, pellets = pellets, hits = hits, damage = lost * 100, condition = gun:getCondition(),
         magazine = gun:getCurrentAmmoCount(), chamber = gun:isRoundChambered(), ms = getTimestampMs() - started}, "turrets")
-    return {id = record.id, shot = record.shots, x = target:getX(), y = target:getY(), z = origin:getZ(),
+    return {id = record.id, shot = record.shots, x = tx, y = ty, z = origin:getZ(),
         fromX = origin:getX() + 0.5, fromY = origin:getY() + 0.5, sound = gun:getSwingSound(),
         muzzle = G.profile(gun).muzzle * 1.5, muzzleHeight = require("OMHTT/Turret").HEAD_VISUAL.height + 0.1, firearm = true, missed = hits == 0}
 end

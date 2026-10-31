@@ -6,7 +6,12 @@ local oldTextureGetter = ISUITextureGetter
 ISUITextureGetter = {checkGetTexture = function(texture) check(texture == nil, "Native line resolves nil texture"); return texture end}
 local visible, sounds, draws, last, lines = true, {}, 0, nil, 0
 getSpecificPlayer = function() return {getZ = function() return 0 end} end
-getCell = function() return {getGridSquare = function() return {isCanSee = function() return visible end} end} end
+local function tile(x,y,z,shown)
+    local square = testSquares[x..":"..y..":"..z] or makeSquare(x,y,z)
+    square.isCanSee = function() return shown end
+    return square
+end
+getCell = function() return {getGridSquare = function(_,x,y,z) return tile(x,y,z,visible) end} end
 getNumActivePlayers = function() return 1 end
 getPlayerScreenLeft = function() return 0 end
 getPlayerScreenTop = function() return 0 end
@@ -91,7 +96,7 @@ check(lines == 1 and E.effects[1].muzzleHeight == .4166667, "Firearm tracer uses
 testMillis=testMillis+100
 E.render()
 check(#E.effects==0 and lines==1,"Firearm tracer expires without potato splash")
-getCell = function() return {getGridSquare = function(_, x) return {isCanSee = function() return x < 13 end} end} end
+getCell = function() return {getGridSquare = function(_,x,y,z) return tile(x,y,z,x<13) end} end
 E.receive(F.MODULE, "Volley", {rays = {
     {id="fan",shot="center",fromX=10,fromY=10,x=20,y=10,z=0,firearm=true},
     {id="fan",shot="left",fromX=10,fromY=10,x=20,y=8,z=0,firearm=true},
@@ -103,7 +108,7 @@ check(lines == previousLines + 3, "All three volley traces get a first render af
 for i = 1, #E.effects do check(E.effects[i].visible[0].x < 13, "Tracer is clipped before unseen squares") end
 testMillis = testMillis + 100; E.render()
 check(#E.effects == 0, "Volley expires after its shared visible lifetime")
-getCell = function() return {getGridSquare = function() return {isCanSee = function() return visible end} end} end
+getCell = function() return {getGridSquare = function(_,x,y,z) return tile(x,y,z,visible) end} end
 local D = require("OMHTT/Diagnostics")
 local oldDefer, oldControls, oldDiagnostic = D.defer, SandboxVars.OMHTurretsTraps.TurretTestControls,
     SandboxVars.OMHTurretsTraps.TurretDiagnosticLogging

@@ -9,7 +9,7 @@ local phases, phaseOrder, phaseCursor = {}, {}, 1
 
 local function progress(command, facts)
     if not isClient() or (not facts.packet and not facts.predicted) then return true end
-    local rank = command == "Impact" and 3 or command == "Land" and 2 or command == "Launch" and 1
+    local rank = command == "Impact" and 3 or command == "Land" and 2 or (command == "Launch" or command == "Ray" or command == "GunShot") and 1
     if not rank then return true end
     local key = tostring(facts.id) .. ":" .. tostring(facts.shot)
     local previous = phases[key]
@@ -62,15 +62,13 @@ function E.receive(module, command, facts)
     if module == F.MODULE and not require("OMHTT/DefenseEffects").accept(facts) then return end
     if require("OMHTT/ActiveTime").paused() then return end
     if not progress(command, facts) then return end
-    local age = 0
-    if command == "Ray" and type(facts.firedAt) == "number" then
-        age = math.max(0, GameTime.getServerTimeMills() - facts.firedAt, facts.elapsedMs or 0)
-        -- Late network/work results cannot restart a finished muzzle burst.
-        if age >= 250 then return end
-    end
-    if module == F.MODULE and command == "Volley" then
-        for i = 1, math.min(64, #facts.rays) do E.receive(module, "Ray", facts.rays[i]) end
-        return
+    if facts.rays and (command == "Volley" or command == "GunShot") then
+        for i = 1, math.min(64, #facts.rays) do
+            local ray = facts.rays[i]
+            if facts.packet then ray.packet = tostring(facts.packet) .. ":ray:" .. i end
+            E.receive(module, "Ray", ray)
+        end
+        if command == "Volley" then return end
     end
     if module == F.MODULE and command == "GunShot" and facts.deferVisual then
         E.sound(facts.sound or "OMHTTPotatoFire", facts.fromX, facts.fromY, facts.z, facts.gain)
@@ -108,10 +106,6 @@ function E.receive(module, command, facts)
         E.effects[#E.effects + 1] = effect
     end
     effect.phase, effect.start, effect.logged = command, require("OMHTT/TurretClock").now(), false
-    if command == "Ray" and type(facts.firedAt) == "number" then
-        effect.start = effect.start - age
-        effect.traceDeadline = effect.start + 250
-    end
     effect.x, effect.y, effect.z = facts.x, facts.y, facts.z
     effect.fromX, effect.fromY, effect.flight = facts.fromX, facts.fromY, facts.flight or 0
     effect.target, effect.missed = facts.target, facts.missed
@@ -182,12 +176,15 @@ function E.visibleTrace(effect, index)
     if effect.visible[index] ~= nil then return effect.visible[index] or nil end
     local dx, dy = effect.x - effect.fromX, effect.y - effect.fromY
     local steps = math.max(1, math.min(100, math.ceil(math.sqrt(dx * dx + dy * dy) * 2)))
-    local point = nil
+    local point, previous = nil, nil
+    local Line = require("OMHTT/DefenseLine")
     for step = 0, steps do
         local fraction = step / steps
         local x, y = effect.fromX + dx * fraction, effect.fromY + dy * fraction
         local square = getCell():getGridSquare(math.floor(x), math.floor(y), effect.z)
         if not square or not square:isCanSee(index) then break end
+        if previous and previous ~= square and not Line.clear(previous, square, 2) then break end
+        previous = square
         point = {x = x, y = y}
     end
     effect.visible[index] = point or false
@@ -209,7 +206,7 @@ function E.render()
         end
         local elapsed = now - effect.start
         local traceAge = effect.renderStart and now - effect.renderStart or 0
-        if (effect.traceDeadline and now >= effect.traceDeadline) or (effect.phase == "Impact" and elapsed >= 450)
+        if (effect.phase == "Impact" and elapsed >= 450)
             or (effect.firearm and (traceAge >= 100 or elapsed >= 1000)) or elapsed > effect.flight + 750 then
             table.remove(E.effects, i)
         else

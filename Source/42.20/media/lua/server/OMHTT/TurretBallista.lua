@@ -21,7 +21,8 @@ function B.hit(record, origin, target, player, options)
     end
     options.effectWeapon = weapon
     local stats = options.stats
-    local x, y, square = target:getX(), target:getY(), Actors.square(target)
+    local x, y = Actors.position(target)
+    local square = Actors.square(target)
     local dx, dy = x - origin:getX() - .5, y - origin:getY() - .5
     local hit = ZombRand(10000) < Heads.accuracy(stats, math.sqrt(dx * dx + dy * dy)) * 100
     hit = hit and require("OMHTT/ControlCombat").eligible(options.object, target)

@@ -12,7 +12,7 @@ Clock.now=function() return testMillis end
 local square=makeSquare(12100,12100,0)
 local victim=makeZombie(square,1)
 local packets={}
-Effects.emit=function(command,facts) packets[#packets+1]={command,facts} end
+Effects.emit=function(command,facts) facts.packet="c534-"..facts.id..":"..facts.shot; packets[#packets+1]={command,facts} end
 Damage.available=function() return false end
 for _,count in pairs({1,2,5,6,16}) do
     V.queue,packets={},{}

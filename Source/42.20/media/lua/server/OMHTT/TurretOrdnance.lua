@@ -57,7 +57,8 @@ function O.launch(record, origin, target, player, options)
         damage = damage * options.critMultiplier
     end
     local x, y = origin:getX() + .5, origin:getY() + .5
-    local tx, ty = options.aimX or target:getX(), options.aimY or target:getY()
+    local tx, ty = options.aimX, options.aimY
+    if tx == nil or ty == nil then tx, ty = Actors.position(target) end
     local dx, dy = tx - x, ty - y
     local distance = math.sqrt(dx * dx + dy * dy)
     local scatter = (.5 + math.min(1, math.max(0, (distance - 6) / 12))) / math.max(1, stats.accuracy / 100)

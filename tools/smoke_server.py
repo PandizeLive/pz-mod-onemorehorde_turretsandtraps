@@ -1,3 +1,4 @@
+import argparse
 import os
 import re
 import shutil
@@ -17,11 +18,20 @@ CACHE = OUTPUT / "server-cache"
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--source", action="store_true", help="Validate an isolated source candidate without changing release packages")
+    args = parser.parse_args()
     OUTPUT.mkdir(parents=True, exist_ok=True)
-    from build_packages import IDS, build
-    version, _ = build(check=True)
-    for identifier in IDS.values():
-        shutil.copytree(ROOT / "Contents/mods" / identifier, CACHE / "mods" / identifier, dirs_exist_ok=True)
+    from build_packages import IDS, build, expected_files
+    version, candidate = expected_files() if args.source else build(check=True)
+    for component, identifier in IDS.items():
+        if args.source:
+            for relative, content in candidate[component].items():
+                target = CACHE / "mods" / identifier / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(content)
+        else:
+            shutil.copytree(ROOT / "Contents/mods" / identifier, CACHE / "mods" / identifier, dirs_exist_ok=True)
     settings = CACHE / "Server/OMHTT_P1C1.ini"
     settings.parent.mkdir(parents=True, exist_ok=True)
     # Combat fixtures need an actual running clock with zero connected clients.

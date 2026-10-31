@@ -1,6 +1,7 @@
 local P = require("OMHTT/DefenseCombatProtocol")
 local C = {}
 local indexed = setmetatable({}, {__mode = "v"})
+local pending, queued, pendingFirst, pendingLast = {}, setmetatable({}, {__mode="k"}), 1, 0
 local createdAt = setmetatable({}, {__mode = "k"})
 local receipts = setmetatable({}, {__mode = "k"})
 local history, historyOrder, historyCursor = {}, {}, 1
@@ -57,7 +58,8 @@ end
 
 local function reject(player, message, reason, zombie)
     local result = {token = message.token, id = message.id, outfit = message.outfit,
-        owner = message.owner, sequence = message.sequence, reason = reason}
+        owner = message.owner, sequence = message.sequence, reason = reason, lookup = "lifecycle", pendingActors = pendingLast-pendingFirst+1}
+    if reason == "missing" and getCell() then result.nativeActors = getCell():getZombieList():size() end
     if zombie then
         result.x, result.y, result.z = zombie:getX(), zombie:getY(), zombie:getZ()
         result.actualOutfit = P.outfit(zombie:getPersistentOutfitID())
@@ -71,18 +73,40 @@ end
 
 -- Presentation and combat resolve the same live identity, never a recycled ID.
 function C.find(id, outfit)
+    C.indexCreated()
     local zombie = indexed[id]
     if P.living(zombie) and zombie:getOnlineID() == id and P.outfit(zombie:getPersistentOutfitID()) == outfit then return zombie end
 end
 
----@param zombie IsoZombie Native observed instance
----@return nil
+-- Native creation fires before the client assigns OnlineID. Revisit those
+-- same instances after native initialization, without scanning the world.
+function C.indexCreated()
+    local now = GameTime.getServerTimeMills()
+    for _ = 1, math.min(128, pendingLast-pendingFirst+1) do
+        local zombie = pending[pendingFirst]
+        pending[pendingFirst], pendingFirst = nil, pendingFirst+1
+        queued[zombie] = nil
+        if zombie:getOnlineID() ~= -1 then
+            indexed[zombie:getOnlineID()] = zombie
+            require("OMHTT/Diagnostics").defer("client-actor-indexed", {id=zombie:getOnlineID(),
+                outfit=P.outfit(zombie:getPersistentOutfitID()), remote=zombie:isRemoteZombie(),
+                health=zombie:getHealth(), x=zombie:getX(), y=zombie:getY(),
+                queueDelayMs=now-(createdAt[zombie] or now)})
+        elseif now-(createdAt[zombie] or now) < 2000 then
+            pendingLast = pendingLast+1
+            pending[pendingLast], queued[zombie] = zombie, true
+        end
+    end
+    if pendingFirst > pendingLast then pendingFirst,pendingLast=1,0 end
+end
+
 function C.observe(zombie)
     if not isClient() or not P.living(zombie) then return end
     local id = zombie:getOnlineID()
-    if id ~= -1 and indexed[id] ~= zombie then
+    if id ~= -1 then
         indexed[id] = zombie
-        createdAt[zombie] = GameTime.getServerTimeMills()
+        -- Observing an already-created actor is not another birth.
+        createdAt[zombie] = createdAt[zombie] or GameTime.getServerTimeMills()
     end
 end
 
@@ -91,12 +115,23 @@ end
 function C.created(zombie)
     receipts[zombie] = nil
     createdAt[zombie] = GameTime.getServerTimeMills()
-    C.observe(zombie)
+    if not isClient() then return end
+    if not queued[zombie] then
+        pendingLast = pendingLast+1
+        pending[pendingLast], queued[zombie] = zombie, true
+    end
+end
+
+function C.reset()
+    indexed, createdAt, receipts = setmetatable({}, {__mode="v"}), setmetatable({}, {__mode="k"}), setmetatable({}, {__mode="k"})
+    pending, queued, pendingFirst, pendingLast = {}, setmetatable({}, {__mode="k"}), 1, 0
+    history, historyOrder, historyCursor = {}, {}, 1
 end
 
 ---@return nil
 function C.expire()
     if not isClient() then return end
+    C.indexCreated()
     local now = getTimestampMs()
     for _ = 1, math.min(64, #historyOrder) do
         if historyCursor > #historyOrder then historyCursor = 1 end
@@ -117,6 +152,7 @@ function C.command(module, command, message)
     if not isClient() or module ~= P.MODULE or not P.envelope(message) then return end
     local player = owner(message.owner)
     if not player or player:isDead() then return end
+    C.indexCreated()
     local zombie = indexed[message.id]
     local saved = history[message.token]
     local prior = zombie and receipts[zombie]
@@ -208,4 +244,5 @@ Events.OnZombieCreate.Add(C.created)
 Events.OnTick.Add(C.expire)
 Events.OnZombieUpdate.Add(C.observe)
 Events.OnServerCommand.Add(C.command)
+Events.OnDisconnect.Add(C.reset)
 return C
