@@ -20,3 +20,7 @@ After upload, update/restart the server and both clients to 0.2.70.11. No new wo
 Retain actual failures separately from automated passes. Native tests with zero connected clients cannot establish smooth multiplayer rendering.
 
 Delivery: all 457 source and 631 tagged/package/local/archive/stage files verify, including previous package/stage backups. Workshop page metadata and preview remain byte-identical. [Delivery evidence](evidence/c517-delivery.json). No upload or server change performed. GitHub mirror remains blocked by the prior automatic approval review.
+
+## C518 owner follow-up
+
+Owner reports improved overall behavior and much better Tether, with residual Tether lateness, incorrect Splitter/Fragment timing/projectile identity, and unsmooth rotary turrets. Local console confirms 0.2.70.11. This is partial improvement; connected acceptance remains open. [Diagnostic findings](MULTIPLAYER_FEEDBACK_C518.md). No replacement build installed.

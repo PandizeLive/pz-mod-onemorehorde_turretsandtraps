@@ -1,5 +1,9 @@
 # Decision register
 
+## C518 - Child-projectile correction requested; scope proposed (2026-10-30)
+
+Owner requires Splitter/Fragment children to reproduce the original projectile and reports timing defects plus partial Tether improvement. Owner also reports unsmooth rotary heads; include Bat and Blades in the proposed correction. This records the requirements and diagnostic reproduction, not approval of the proposed removal of the fixed Fragment wait. [1A/1B scope and proof](MULTIPLAYER_FEEDBACK_C518.md). No gameplay patch or new test request yet.
+
 ## C517 - Combined response correction and consistent whole-trap audit (2026-10-30)
 
 Owner: "We need to ensure all traps aren't delayed like they are. 1A." Approves C516 combined aim/tether work and the same discovery-to-recovery audit for every trap, with implementation and verification. Existing corrective packaging authorization remains; Workshop publication, live-server mutations and sibling changes remain separate. [Contract and proof limits](MULTIPLAYER_RESPONSE_C517.md). Eight old production paths fail their new behaviour checks; 40,498 corrected assertions pass. Native/package verification and connected acceptance are tracked separately.
