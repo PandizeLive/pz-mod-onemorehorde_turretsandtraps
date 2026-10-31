@@ -1,5 +1,11 @@
 # C523 - Cross approval and trap-only base modeling
 
+## C524 - Approved tuning and stabilizer-bar correction
+
+Owner selects1A, approving80 basic /160 reinforced Barrier health. Owner corrects the art: four bars extend out from the Poke center and mount into the ground for extra stability; there are no platform tiles. This supersedes platform language in the historical model/proposal below. Preserve the exclusive five-tile cross footprint and one-assembly lifecycle. Bars are low ground hardware; no new impassable collider, trip, slowdown or damage is inferred. Actors may traverse the reserved arm squares; other floor-trap installations may not overlap them. The center alone deals damage. Stability is the visual explanation for the reserved space, not an additional durability buff. Existing model geometry remains applicable because its arms were non-damaging reserved ground; no new combat simulation is needed merely for this visual correction.
+
+Cross direction and modest cost increase were already approved inC523; carry the proposed5 Metal Bars/10 Screws consistently through both recipes when implementing. No further choice is needed on Barrier tuning. Gameplay/assets and connected/native placement proof are not implemented by this discussion record. Preserve saved Sandbox customization and existing installations deliberately in implementation; do not silently erase them. **Wait for a patch.**
+
 ## Owner scope
 
 Owner selects the exclusive cross footprint to limit space and authorizes a modest Poke construction-cost increase. This supersedes C522's recommendation for simple neighbor exclusion. One center plus four non-damaging walkable platforms; no overlap or other floor traps occupying reserved platform tiles. One assembly for placement/repair/pickup, no corpse hauling or new delay. The cross is approved design, not implemented runtime behavior. Owner also asks to consider reduced Spike Barrier durability, with capacity to kill at least two zombies, and simulate effective bases using traps only. Barrier values and the interpretation of that minimum remain under discussion. Preserve C518 separately. No other trap is silently converted to a cross.
