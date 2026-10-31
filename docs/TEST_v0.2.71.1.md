@@ -11,4 +11,4 @@ Test after uploading0.2.71.1 and restarting server and clients. No new world req
 - Grounded zombie exclusion
 - Impact and mixed modules
 
-Local installation/staging evidence will be added after tagged delivery. No Workshop upload or live-server changes performed. Prior GitHub mirror approval-review block remains.
+Installed/staged from immutable `test/v0.2.71.1` / `b7ffd87`. All461 source and636 tagged/package/installed/archive/stage files match. Previous0.2.71 install/stage backups and page metadata/preview verify. [Delivery receipt](evidence/c528-delivery.json). No Workshop upload or live-server changes performed. Prior GitHub mirror approval-review block remains.
