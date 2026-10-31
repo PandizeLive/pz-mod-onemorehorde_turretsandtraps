@@ -1,5 +1,9 @@
 # Decision register
 
+## C522 - Spatial restriction discussion (2026-10-30)
+
+**C522 / Trap spacing under discussion (2026-10-30).** Owner proposes adjacent pressure trigger/delay, adjacency exclusion or five-tile cross platforms. [Geometry check and tradeoffs](TRAP_SCALING_C519.md#c522---spatial-footprint-alternatives): cardinal exclusion permits 50% center density, eight-neighbor 25%, exclusive cross 20% in periodic layouts. Shared clearance does not reserve exclusive platforms. Recommend exploring **1A eight-neighbor floor-hazard spacing** for simplicity; **1B cross assembly** offers a visible physical reason at greater corridor/placement cost; **1C trigger/strike pair** has timing/direction drawbacks. No game/runtime proof, gameplay approval or package changes. Mixed trap substitution and deeper fields remain explicit limitations. C518 stays separate. **Decision needed; discussion continues.**
+
 ## C521 - Low-maintenance trap balance remains discussion (2026-10-30)
 
 Owner rejects corpse-hauling chores, identifies relocation/more-traps counterplay and requests simulation and candid disagreement. [Model and revised proposals](TRAP_SCALING_C519.md#c521---reject-maintenance-driven-obstruction-as-the-primary-answer). Corpse obstruction withdrawn as primary recommendation; centralized resource servicing and active grouped alternatives are proposals only. No gameplay or numeric selection.
