@@ -8,7 +8,7 @@
 - Tests retain native ownership, late/duplicate/recycled-ID rejection, report expiry, explicit forward fire and visible-wall clipping. Existing catalog coverage includes ten heads and 360 head/module cells.
 - Isolated source native lifecycle probe passes with a real IsoZombie: ID assigned after creation resolves without an update callback; unloaded ID rejects. The probe adapts the client-mode predicate on a dedicated server and does not simulate a connected client.
 
-Packaged native write/read passes in 94.5/93.1 seconds, including the real-actor C536 lifecycle probe. Traps-only, turrets-only and combined startups pass in 95.2/74.0/89.6 seconds. Stock dedicated turret authority/services also pass. [Durable verification and hashes](evidence/c536-verification.json). Installation/staging is the remaining delivery step.
+Packaged native write/read passes in 94.5/93.1 seconds, including the real-actor C536 lifecycle probe. Traps-only, turrets-only and combined startups pass in 95.2/74.0/89.6 seconds. Stock dedicated turret authority/services also pass. [Durable verification and hashes](evidence/c536-verification.json). Installed and staged from immutable `test/v0.2.71.4` / `2f651b8`. All464 source and640 tag/package/install/archive/stage files and previous backups verify; page metadata/preview are byte-identical. [Delivery](evidence/c536-delivery.json). No Workshop upload, live-server or sibling changes. **Test now after uploading0.2.71.4 and restarting server and clients. No new world or saved-setting reset required.** GitHub mirror pending.
 
 ## Remaining acceptance
 
