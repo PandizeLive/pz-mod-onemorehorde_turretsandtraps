@@ -1,5 +1,9 @@
 # Decision register
 
+## C523 - Exclusive cross approved, simulation requested (2026-10-30)
+
+**C523 / Cross selected; trap-only bases simulated (2026-10-30).** Owner approves exclusive cross footprint and modest Poke cost increase, requests Barrier endurance review and trap-only simulations. [326-case design model, native formula evidence, costs and recommendations](TRAP_BASES_C523.md). Recommend interpreting cost increase as5 bars/10 screws in both recipes; other inputs unchanged. Native crowd-dependent thumping makes a universal two-kill health conversion invalid. Explore80/160 Barrier health;40/80 can fail before a kill in the crowded reference. Mixed layered approaches outperform unused perimeter coverage under assumed routing; native AI and connected behavior are not proven. Cross approved but not implemented; no gameplay/package edits, C518 separate. **Decision needed: Barrier numeric tuning.** Prior GitHub approval-review block remains.
+
 ## C522 - Spatial restriction discussion (2026-10-30)
 
 **C522 / Trap spacing under discussion (2026-10-30).** Owner proposes adjacent pressure trigger/delay, adjacency exclusion or five-tile cross platforms. [Geometry check and tradeoffs](TRAP_SCALING_C519.md#c522---spatial-footprint-alternatives): cardinal exclusion permits 50% center density, eight-neighbor 25%, exclusive cross 20% in periodic layouts. Shared clearance does not reserve exclusive platforms. Recommend exploring **1A eight-neighbor floor-hazard spacing** for simplicity; **1B cross assembly** offers a visible physical reason at greater corridor/placement cost; **1C trigger/strike pair** has timing/direction drawbacks. No game/runtime proof, gameplay approval or package changes. Mixed trap substitution and deeper fields remain explicit limitations. C518 stays separate. **Decision needed; discussion continues.**
