@@ -14,7 +14,7 @@
 
 All dedicated probes had zero connected clients. They establish native API, simulation and persistence behavior, not rendered multiplayer smoothness. General zombie sliding during MPFF pause is not proven fixed. The exact obstacle in the vegetation screenshot remains unidentified. Real-time battery estimates depend on the captured normal/enhanced module costs and90-minute days; stock M16 differs from the captured modded profile.
 
-Local tagged installation/staging is being completed; no upload or live-server change.
+Installed and staged from immutable `test/v0.2.71.3` / `8ec07f4`. All 464 source and 640 tag/package/install/archive/stage files match; previous backups and page metadata/preview verify. [Delivery](evidence/c534-delivery.json). No Workshop upload or live-server change.
 
 ## Owner retest
 
