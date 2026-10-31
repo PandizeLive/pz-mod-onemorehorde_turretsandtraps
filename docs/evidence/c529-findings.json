@@ -1,0 +1,93 @@
+{
+  "c527-client": {
+    "versions": [
+      "0.2.71"
+    ],
+    "errorSites": {},
+    "runtimeErrors": {},
+    "metrics": {}
+  },
+  "c527-server": {
+    "versions": [
+      "0.2.71"
+    ],
+    "errorSites": {
+      "": 45
+    },
+    "runtimeErrors": {
+      "java.lang.RuntimeException: missing argument #1 to 'lower'": 45
+    },
+    "metrics": {
+      "owner-contact-transitCount": 6820.0,
+      "owner-contact-transitMaxMs": 122.0,
+      "owner-contact-transitTotalMs": 591751.0,
+      "combat-result-applied": 210.0,
+      "combat-result_dispatchMsMax": 1.0,
+      "combat-result_elapsedMsMax": 202.0,
+      "combat-result_ownerProcessingMsMax": 2.0,
+      "damage-queueCount": 210.0,
+      "damage-queueMaxMs": 299.0,
+      "damage-queueTotalMs": 1235.0
+    }
+  },
+  "c529-client": {
+    "versions": [
+      "0.2.71.1"
+    ],
+    "errorSites": {
+      "": 2
+    },
+    "runtimeErrors": {
+      "java.lang.RuntimeException: attempted index: state of non-table: null": 2
+    },
+    "metrics": {
+      "rotary-view": 75.0,
+      "rotary-view_ageMsMax": 41.0,
+      "rotary-to-damage-displayCount": 31.0,
+      "rotary-to-damage-displayMaxMs": 215.0,
+      "rotary-to-damage-displayTotalMs": 4841.0,
+      "rotary-to-owner-applyCount": 37.0,
+      "rotary-to-owner-applyMaxMs": 215.0,
+      "rotary-to-owner-applyTotalMs": 5763.0,
+      "rotary-visible": 31.0,
+      "rotary-visible_elapsedMsMax": 215.0
+    }
+  },
+  "c529-server": {
+    "versions": [
+      "0.2.71.1"
+    ],
+    "errorSites": {},
+    "runtimeErrors": {},
+    "metrics": {
+      "combat-result-applied": 428.0,
+      "damage-queueCount": 435.0,
+      "damage-queueMaxMs": 304.0,
+      "damage-queueTotalMs": 1518.0,
+      "owner-contact-transitCount": 11710.0,
+      "owner-contact-transitMaxMs": 107.0,
+      "owner-contact-transitTotalMs": 867038.0,
+      "combat-result_dispatchMsMax": 1.0,
+      "combat-result_elapsedMsMax": 122.0,
+      "combat-result_ownerProcessingMsMax": 2.0,
+      "rotary-hit": 37.0,
+      "rotary-hit_observationAgeMsMax": 201.0,
+      "rotary-hit_sweepAgeMsMax": 99.99267578125
+    }
+  },
+  "splitterReplay": "Optional audit: C529 production Splitter scheduling measurement; no connected rendering or fix claim: count=1 range=10 physical=false lastVisualMs=0 launches=0 ticks=1; count=1 range=10 physical=true lastVisualMs=500 launches=1 ticks=6; count=2 range=10 physical=false lastVisualMs=0 launches=0 ticks=1; count=2 range=10 physical=true lastVisualMs=500 launches=2 ticks=6; count=4 range=10 physical=false lastVisualMs=100 launches=0 ticks=2; count=4 range=10 physical=true lastVisualMs=500 launches=4 ticks=6; count=8 range=10 physical=false lastVisualMs=200 launches=0 ticks=3; count=8 range=10 physical=true lastVisualMs=500 launches=8 ticks=6; count=16 range=10 physical=false lastVisualMs=500 launches=0 ticks=6; count=16 range=10 physical=true lastVisualMs=500 launches=16 ticks=6; count=1 range=30 physical=false lastVisualMs=0 launches=0 ticks=1; count=1 range=30 physical=true lastVisualMs=1500 launches=1 ticks=16; count=2 range=30 physical=false lastVisualMs=100 launches=0 ticks=2; count=2 range=30 physical=true lastVisualMs=1500 launches=2 ticks=16; count=4 range=30 physical=false lastVisualMs=300 launches=0 ticks=4; count=4 range=30 physical=true lastVisualMs=1500 launches=4 ticks=16; count=8 range=30 physical=false lastVisualMs=700 launches=0 ticks=8; count=8 range=30 physical=true lastVisualMs=1500 launches=8 ticks=16; count=16 range=30 physical=false lastVisualMs=1500 launches=0 ticks=16; count=16 range=30 physical=true lastVisualMs=1500 launches=16 ticks=16",
+  "assertions": "43717.0",
+  "limits": [
+    "Different-duration live captures; counts are not comparable rates.",
+    "Rotary timings start at the sampled owner position, not first visual blade contact.",
+    "Splitter replay uses empty loaded tiles,100ms ticks and no wall-clock budget pressure; not measured live latency.",
+    "Physical Potato children match their expected flight time in this empty-path replay; owner head/loadout still needed.",
+    "No gameplay, package, installation, server mutation or Workshop upload in C529."
+  ],
+  "captures": {
+    "client-console.txt": "b2c0707685c5272179ff59534e0086932d1cf8a9ff4b961d6ffe3221e65015fa",
+    "server-console.txt": "2ee03c1619c12b50b1954190e91652511055db5914f87696039c4fe9aca0a777",
+    "server-mod.info": "5719b50c4f1b3895cc2fda15661c1a8cb157a02b7767e343130fca007dd0147a",
+    "replay.log": "a9068d58e6d4668e5135f733c42fe23146688fe794f5d6412ad5d0bc20e30d4e"
+  }
+}
