@@ -23,3 +23,5 @@ Recommended corrective scope1A: replace the age-based disappearance with shot-or
 No new patch is packaged. Corrective scope awaits owner decision under the project test-feedback agreement. The publisher integration's verified mirror supersedes the older GitHub block; this documentation checkpoint uses the normal mirror workflow.
 
 Mirror attempt: automatic approval review rejected C535 export to GitHub for insufficient payload/destination authorization. Findings are committed locally; specific user approval was requested. No alternate route or retry was attempted. The earlier publisher mirror remains historical successful evidence, not permission to bypass this rejection.
+
+Owner explicitly approved the C535 GitHub mirror on2026-10-31. OMH.cmd -Action Mirror subsequently verified remote commit03084f259c17de6dea91e094f66ff879446abef1 on codex/performance-barbed-audit and retained draft PR1. The approval block is resolved for this payload/destination. Uncommitted owner documents stayed local; no Workshop publication or corrective gameplay patch was authorized by this answer.
