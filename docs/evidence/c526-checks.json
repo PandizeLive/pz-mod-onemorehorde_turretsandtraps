@@ -35,7 +35,31 @@
     {
       "path": "diagnostics/v0.2.71/poke-stabilizers-import.log",
       "sha256": "3f4f7e3b00f2bc3c70d75ab2925ca6589e8866640094d414f49ba3617b31fb30"
+    },
+    {
+      "path": "diagnostics/c526/package-starts.log",
+      "sha256": "e29484bcc2e97d63df24670a25454667b7357fb5715b40aae8bad50f0d559f09"
     }
   ],
-  "limits": "Controlled world/network/UI doubles plus native stock-class probes; no rendered or live two-client acceptance."
+  "limits": "Controlled world/network/UI doubles plus native stock-class probes; no rendered or live two-client acceptance.",
+  "independentPackageStarts": [
+    {
+      "selection": "traps",
+      "version": "0.2.71",
+      "passed": true,
+      "seconds": 59.7
+    },
+    {
+      "selection": "turrets",
+      "version": "0.2.71",
+      "passed": true,
+      "seconds": 52.8
+    },
+    {
+      "selection": "both",
+      "version": "0.2.71",
+      "passed": true,
+      "seconds": 55.1
+    }
+  ]
 }

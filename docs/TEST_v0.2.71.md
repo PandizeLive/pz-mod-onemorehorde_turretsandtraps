@@ -1,6 +1,6 @@
 # 0.2.71 verification and owner test
 
-Status: verification underway; connected acceptance pending. Delivery evidence will be recorded after the final checks and local installation.
+Status: automated and native verification passed; locally installed and staged from immutable `test/v0.2.71` / `bd42f08`. Connected acceptance remains pending. [Checks](evidence/c526-checks.json) | [Delivery](evidence/c526-delivery.json).
 
 41,863 Kahlua assertions pass, including the full existing damage/module/contact suite. Five frozen pre-fix implementations fail their intended regression assertions: physical child travel, explosive Fragment delay, rotary packet freeze, Tether packet freeze and bomb batch duration. The corrected production paths pass.
 
@@ -23,3 +23,5 @@ After uploading both T&T 0.2.71 and Horde Night 0.6.16.10, update/restart the se
 - Spike Barrier damage and durability
 
 No Workshop upload or live-server change is performed by this update. GitHub mirroring remains blocked by the prior automatic approval review; it has not been bypassed.
+
+Delivery verifies all461 source and636 tagged/package/local/archive/stage files, previous package/stage backups, and unchanged Workshop page metadata/preview. All three independent package starts pass. The artist handoff contains164 unique payloads and47 aliases, including Tether nail/cable and the stabilizer mesh. Horde Night0.6.16.10 is also locally installed/staged from its immutable tag.
