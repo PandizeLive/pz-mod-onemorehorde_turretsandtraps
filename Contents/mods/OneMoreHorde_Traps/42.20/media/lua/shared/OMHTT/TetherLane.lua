@@ -1,5 +1,6 @@
 local C = require("OMHTT/TetherCycle")
 local Actors = require("OMHTT/DefenseActors")
+local Protocol = require("OMHTT/DefenseCombatProtocol")
 local W = {}
 
 ---@param state table Cycle
@@ -46,9 +47,10 @@ function W.cast(state, from, destination, cell)
                     local zombie = instanceof(actor, "IsoZombie")
                     local player = instanceof(actor, "IsoPlayer")
                     local tangible = not player or not actor:isGodMod() and not actor:isNoClip() and not actor:isGhostMode()
-                    if (zombie or player) and tangible and not actor:isDead() and not actor:isOnFloor()
+                    if ((zombie and Protocol.living(actor)) or player) and tangible and not actor:isDead() and not actor:isOnFloor()
                         and math.floor(actor:getZ()) == state.z then
-                        local t = C.intersection(ax, ay, bx, by, actor:getX(), actor:getY(), .3)
+                        local px, py, _, current = Actors.position(actor)
+                        local t = current and C.intersection(ax, ay, bx, by, px, py, .3)
                         if t and (not fraction or t < fraction) then
                             fraction, victim, reason = t, actor, player and "player" or "zombie"
                         end

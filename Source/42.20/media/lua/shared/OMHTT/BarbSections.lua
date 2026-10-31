@@ -127,8 +127,8 @@ function B.index(record, adding)
     resolvedObjects[record.id .. ":0"], resolvedObjects[record.id .. ":1"] = nil, nil
     local width = record.paired and record.facing % 2 == 1 and 2 or 1
     local height = record.paired and record.facing % 2 == 0 and 2 or 1
-    for dx = -1, width do
-        for dy = -1, height do
+    for dx = -2, width+1 do
+        for dy = -2, height+1 do
             local key = F.key(record.x + dx, record.y + dy, record.z)
             local bucket = B.nearby[key]
             if adding then

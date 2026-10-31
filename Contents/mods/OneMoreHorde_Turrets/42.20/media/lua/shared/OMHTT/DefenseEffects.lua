@@ -14,6 +14,7 @@ function E.send(module, command, facts)
     if not x or not y then return end
     serial = serial + 1
     facts.packet = serial
+    facts.sentAt = GameTime.getServerTimeMills()
     local players = getOnlinePlayers()
     local recipients = 0
     for i = 0, players:size() - 1 do

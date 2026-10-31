@@ -1,4 +1,5 @@
 local C = {}
+local Protocol = require("OMHTT/DefenseCombatProtocol")
 
 ---@param value any Candidate
 ---@return boolean finite
@@ -145,6 +146,8 @@ end
 ---@return table payload Primitive values only
 function C.snapshot(state, id, serial, session)
     return {id = id, serial = serial, session = session or "1", sequence = state.sequence, phase = state.phase,
+        sentAt = GameTime.getServerTimeMills(), backTime = state.backTime or 0,
+        attachX = state.attachX, attachY = state.attachY,
         x = state.x, y = state.y, z = state.z, dx = state.dx, dy = state.dy,
         distance = state.distance, range = state.range, speed = state.speed,
         returnSpeed = state.returnSpeed, height = state.phase == "back" and math.max(.025, .3 - 3 * (state.backTime or 0) ^ 2) or .3}
@@ -159,6 +162,12 @@ function C.accept(previous, message)
         or not string.match(message.session, "^%d+$") then return false end
     if type(message.id) ~= "string" or #message.id > 80 or not string.match(message.id, "^control%-%d+$") then return false end
     if message.height ~= nil and (not C.finite(message.height) or message.height < 0 or message.height > 1) then return false end
+    if message.sentAt ~= nil and (type(message.sentAt) ~= "number" or message.sentAt ~= message.sentAt or message.sentAt < 0 or message.sentAt > 1000000000000000) then return false end
+    if message.backTime ~= nil and (not C.finite(message.backTime) or message.backTime < 0) then return false end
+    if message.limit ~= nil and (not C.finite(message.limit) or message.limit < 0 or not C.finite(message.range) or message.limit > message.range) then return false end
+    if message.attachX ~= nil and (not C.finite(message.attachX) or not C.finite(message.attachY)) then return false end
+    if message.targetId ~= nil and (not Protocol.identity(message.targetId)
+        or type(message.targetPlayer)~="boolean" or (not message.targetPlayer and not Protocol.identity(message.targetOutfit))) then return false end
     local fields = {"serial", "sequence", "x", "y", "z", "dx", "dy", "distance", "range", "speed", "returnSpeed"}
     for i = 1, #fields do
         if not C.finite(message[fields[i]]) then return false end
@@ -184,11 +193,18 @@ end
 ---@return number x
 ---@return number y
 function C.position(message, elapsed, previousDistance)
+    local age = math.max(0, math.min(.25, elapsed))
     local distance = message.distance
-    if previousDistance then
-        local fraction = math.max(0, math.min(1, elapsed / (message.phase == "out" and .025 or .1)))
-        distance = previousDistance + (distance - previousDistance) * fraction
+    if message.phase == "out" then
+        distance = math.min(message.limit or message.range, distance + message.speed * age)
+    elseif message.phase == "back" then
+        distance = math.max(0, distance - message.returnSpeed * age)
     end
+    if previousDistance then
+        local correction = math.max(0, 1 - elapsed / .05)
+        distance = distance + (previousDistance - message.distance) * correction
+    end
+    distance = math.max(0, math.min(message.phase=="out" and (message.limit or message.range) or message.range, distance))
     return message.x + message.dx * distance, message.y + message.dy * distance
 end
 

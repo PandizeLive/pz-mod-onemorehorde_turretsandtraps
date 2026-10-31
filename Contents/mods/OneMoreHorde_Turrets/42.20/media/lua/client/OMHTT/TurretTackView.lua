@@ -10,8 +10,8 @@ local nextPrune, cursor = 0, 1
 ---@param add boolean Index or remove
 ---@return nil
 function V.index(field, add)
-    for x = math.floor((field.x - field.radius) / 8), math.floor((field.x + field.radius) / 8) do
-        for y = math.floor((field.y - field.radius) / 8), math.floor((field.y + field.radius) / 8) do
+    for x = math.floor((field.x - field.radius - 2) / 8), math.floor((field.x + field.radius + 2) / 8) do
+        for y = math.floor((field.y - field.radius - 2) / 8), math.floor((field.y + field.radius + 2) / 8) do
             local key = F.key(x, y, field.z)
             local bucket = V.buckets[key]
             if add then

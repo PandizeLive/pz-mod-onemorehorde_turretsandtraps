@@ -44,14 +44,28 @@ function W.publishRuntime(object, state, contents, now)
         view = {due = 0, batteryDue = 0}
         presentations[object] = view
     end
-    if now >= view.due then
+    local aiming = require("OMHTT/TurretAim").entries[object]
+    local automatic = require("OMHTT/TurretAutomation").entries[object]
+    local target = aiming and aiming.target or automatic and automatic.target
+    if target and (target:isDead() or not T.isOn(state) or state.standby == "asleep") then
+        target = nil
+    end
+    local targetId = target and target:getOnlineID()
+    local targetPlayer = target and instanceof(target, "IsoPlayer")
+    local targetOutfit = target and not targetPlayer and require("OMHTT/DefenseCombatProtocol").outfit(target:getPersistentOutfitID()) or nil
+    local changedTarget = view.targetId ~= targetId or view.targetOutfit ~= targetOutfit or view.targetPlayer ~= targetPlayer
+    if now >= view.due or changedTarget then
         view.due = now + 250
         local heading = math.floor((state.aimDegrees or 0) / 2)
-        if view.heading ~= heading or view.travel ~= state.rotaryTravel or view.shots ~= state.shots or view.moving ~= state.rotaryMoving
+        if changedTarget or (target and now >= (view.targetDue or 0)) or view.heading ~= heading or view.travel ~= state.rotaryTravel or view.shots ~= state.shots or view.moving ~= state.rotaryMoving
             or view.status ~= state.feedStatus or view.loaded ~= state.feedLoaded or view.powerSource ~= state.powerSource then
             view.powerSource, view.travel = state.powerSource, state.rotaryTravel
             view.heading, view.shots, view.moving = heading, state.shots, state.rotaryMoving
             view.status, view.loaded = state.feedStatus, state.feedLoaded
+            view.targetId, view.targetOutfit, view.targetPlayer = targetId, targetOutfit, targetPlayer
+            view.targetDue = now + 500
+            state.aimTargetId, state.aimTargetOutfit, state.aimTargetPlayer = targetId, targetOutfit, targetPlayer
+            state.aimAt, state.aimSpeed = GameTime.getServerTimeMills(), T.turnSpeed(contents.head, contents.active)
             Authority.publish(object)
         end
     end

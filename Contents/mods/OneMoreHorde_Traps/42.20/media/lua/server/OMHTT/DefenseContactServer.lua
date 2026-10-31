@@ -38,8 +38,11 @@ function S.observe(player,f,now)
     local zombie=Actors.online[f.id]
     if not P.living(zombie) or P.outfit(zombie:getPersistentOutfitID())~=f.outfit
         or not zombie:getOwner()
-        or zombie:getOwnerPlayer() ~= player
-        or math.floor(zombie:getZ())~=f.z or (zombie:getX()-f.x)^2+(zombie:getY()-f.y)^2>4 then return end
+        or zombie:getOwnerPlayer() ~= player then return end
+    if math.floor(zombie:getZ())~=f.z or (zombie:getX()-f.x)^2+(zombie:getY()-f.y)^2>4 then
+        D.count("owner-contact-position-rejected",1,"traps")
+        return
+    end
     if createdAt[zombie] and f.observedAt<createdAt[zombie] then return end
     if not H.allowed(zombie) then
         local grant = permitAt[zombie]
@@ -55,6 +58,7 @@ function S.observe(player,f,now)
     if same and (f.sequence<=old.sequence or f.observedAt<old.frame.at) then return end
     local frame={x=f.x,y=f.y,z=f.z,at=f.observedAt,sequence=f.sequence,prone=f.prone,down=f.down,landing=f.landing,ownerReport=true}
     history[zombie]={owner=player,connection=zombie:getOwner(),outfit=f.outfit,sequence=f.sequence,frame=frame}
+    Actors.report(zombie, frame)
     -- Grant presentation/movement consent while approaching indexed hazards.
     -- Damage, wear, deaths and rewards still use the authoritative contact path.
     local response

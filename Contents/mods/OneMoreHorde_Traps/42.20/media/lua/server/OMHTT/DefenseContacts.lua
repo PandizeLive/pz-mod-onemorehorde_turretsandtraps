@@ -2,7 +2,7 @@ if isClient() then return end
 local F = require("OMHTT/Foundation")
 local D = require("OMHTT/Diagnostics")
 local C = {handlers = {}, tiles = {}, sources = {}, count = 0}
-local channels = {"bed", "barb", "tack", "control", "poke"}
+local channels = {"bed", "barb", "tack", "control", "poke", "tether"}
 
 ---@param owner any Exact hazard identity
 ---@return nil
@@ -69,7 +69,7 @@ function C.contact(actor, position, crossed, ownerReport)
     if not tile then return end
     for i = 1, #channels do
         local kind = channels[i]
-        if (ownerReport or not actor:getOwner() or kind == "control") and (not crossed or kind == "poke" or kind == "barb" or kind == "tack")
+        if (ownerReport or not actor:getOwner()) and (not crossed or kind == "poke" or kind == "barb" or kind == "tack")
             and (tile[kind] or 0) > 0 and C.handlers[kind] then C.handlers[kind](actor, position) end
     end
     D.count("contact-observed", 1, "traps")

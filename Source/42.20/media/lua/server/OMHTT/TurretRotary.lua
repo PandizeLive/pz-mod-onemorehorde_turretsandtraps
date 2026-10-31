@@ -217,6 +217,7 @@ function R.step(entry, deadline)
     end
     state.rotaryMoving = moving
     state.rotaryTravel = entry.travel
+    state.rotarySpeed, state.rotaryStopAt = stats.motorSpeed, entry.stopAt
     local angle = Heads.motion(entry.travel, profile.omni, profile.cone)
     state.aimDegrees = (profile.heading + angle + 360) % 360
     if not entry.rotaryJob then

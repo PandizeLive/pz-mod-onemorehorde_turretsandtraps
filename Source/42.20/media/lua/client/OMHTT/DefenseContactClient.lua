@@ -25,14 +25,17 @@ function C.update(zombie)
     local down = prone or zombie:isKnockedDown() or zombie:isRagdoll() or zombie:isGettingUp()
     local landing = zombie:getBumpType()=="OMHTTBedTrip" and zombie:getVariableBoolean("OMHTTBedLanded")
     if old and now < old.due and old.prone == prone and old.down == down and old.landing == landing
-        and old.tileX == math.floor(x) and old.tileY == math.floor(y) and nearby then return end
+        and old.tileX == math.floor(x) and old.tileY == math.floor(y) and nearby
+        and (x-old.x)^2+(y-old.y)^2 < .04 then return end
     if last-first+1 >= 512 then return end -- bounded; next native update retries
     serial = serial + 1
     last = last + 1
     queue[last] = {player=player, at=now, frame={id=zombie:getOnlineID(),
         outfit=P.outfit(zombie:getPersistentOutfitID()), sequence=serial,
         x=x,y=y,z=z,prone=prone,down=down,landing=landing,observedAt=observedAt}}
-    states[zombie] = nearby and {due=now+100,prone=prone,down=down,landing=landing,tileX=math.floor(x),tileY=math.floor(y)} or nil
+    states[zombie] = nearby and {due=now+100,x=x,y=y,prone=prone,down=down,landing=landing,
+        firstAt=old and old.firstAt or now, ready=old and old.ready,
+        tileX=math.floor(x),tileY=math.floor(y)} or nil
 end
 
 function C.flush()
@@ -82,6 +85,11 @@ local function grant(facts)
     if previous and (facts.issuedAt < previous.issuedAt
         or (facts.issuedAt == previous.issuedAt and not previous.allowed)) then return end
     permits[zombie] = facts
+    local state = states[zombie]
+    if state and facts.allowed and not state.ready then
+        state.ready = true
+        require("OMHTT/Diagnostics").measure("owner-contact-permission-ready", getTimestampMs()-state.firstAt, "traps")
+    end
 end
 
 ---@param module string Namespace

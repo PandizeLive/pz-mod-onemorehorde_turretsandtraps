@@ -93,7 +93,12 @@ function E.receive(module, command, facts)
     effect.projectile = facts.projectile
     effect.muzzleHeight = facts.muzzleHeight or T.HEAD_VISUAL.height
     if command == "Launch" or command == "GunShot" then
-        if not isClient() then effect.start = facts.start or effect.start end
+        if not isClient() then
+            effect.start = facts.start or effect.start
+        elseif command == "Launch" and type(facts.sentAt)=="number" then
+            local transit = GameTime.getServerTimeMills()-facts.sentAt
+            effect.start = effect.start-math.max(0,math.min(250,transit))
+        end
         local dx, dy = facts.x - facts.fromX, facts.y - facts.fromY
         local distance = math.sqrt(dx * dx + dy * dy)
         if distance > 0 then

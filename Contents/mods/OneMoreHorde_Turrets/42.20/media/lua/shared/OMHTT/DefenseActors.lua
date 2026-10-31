@@ -5,10 +5,33 @@ local WIDTH = 8
 local P = require("OMHTT/DefenseCombatProtocol")
 A.online = setmetatable({}, {__mode="v"})
 
+---@param actor IsoGameCharacter Native actor
+---@return number x Latest validated owner position, otherwise native position
+---@return number y
+---@return number z
+---@return boolean current Safe for owner-driven contact detection
+function A.position(actor)
+    local node = A.nodes[actor]
+    local report = node and node.report
+    if report and report.owner == actor:getOwnerPlayer() and report.connection == actor:getOwner()
+        and report.outfit == P.outfit(actor:getPersistentOutfitID()) then
+        local age = GameTime.getServerTimeMills() - report.frame.at
+        if age >= -100 and age <= 250 then
+            return report.frame.x, report.frame.y, report.frame.z, true
+        end
+    end
+    if node then
+        node.report = nil
+    end
+    local current = not isServer() or not instanceof(actor,"IsoZombie") or not actor:getOwner()
+    return actor:getX(), actor:getY(), math.floor(actor:getZ()), current
+end
+
 function A.square(actor)
     if not actor or not actor:getSquare() then return nil end
     if not isServer() then return actor:getSquare() end
-    return getCell():getGridSquare(math.floor(actor:getX()), math.floor(actor:getY()), math.floor(actor:getZ()))
+    local x, y, z = A.position(actor)
+    return getCell():getGridSquare(math.floor(x), math.floor(y), z)
 end
 
 function A.key(x, y, z)
@@ -42,10 +65,11 @@ end
 function A.observe(actor, initializing)
     if isClient() then return end
     if not P.living(actor) or not A.square(actor) then A.remove(actor); return end
-    local x, y, z = actor:getX(), actor:getY(), math.floor(actor:getZ())
+    local x, y, z = A.position(actor)
     local key = A.key(x, y, z)
     local node = A.nodes[actor]
     local previous = node and node.position
+    local report = node and node.report
     if node and node.key ~= key then A.remove(actor); node = nil end
     if not node then
         local bucket = A.buckets[key]
@@ -58,14 +82,28 @@ function A.observe(actor, initializing)
         bucket[node.index], A.nodes[actor] = node, node
     end
     if actor:getOnlineID() ~= -1 then A.online[actor:getOnlineID()] = actor end
+    node.report = report
     local now = getTimestampMs()
     node.generation = A.generation
-    if initializing then return end
+    if initializing or report then return end
     if not previous or now ~= previous.at or x ~= previous.x or y ~= previous.y or z ~= previous.z then
         local position = {x = x, y = y, z = z, at = now}
         node.position = position
         for i = 1, #A.listeners do A.listeners[i](actor, position, previous) end
     end
+end
+
+---@param actor IsoZombie Server-validated native owner actor
+---@param frame table Accepted contact frame; never unvalidated client input
+---@return nil
+function A.report(actor, frame)
+    A.observe(actor, true)
+    local node = A.nodes[actor]
+    if not node then return end
+    node.report = {owner=actor:getOwnerPlayer(), connection=actor:getOwner(),
+        outfit=P.outfit(actor:getPersistentOutfitID()), frame=frame}
+    -- Reuse the existing spatial index; never change the native actor position.
+    A.observe(actor, true)
 end
 
 -- One fair bounded sweep shared by all defenses, independent of their ranges.

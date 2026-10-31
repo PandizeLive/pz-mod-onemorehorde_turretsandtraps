@@ -615,6 +615,10 @@ public final class KahluaCheck {
             {"OMHTT/TetherServer", base + "server/OMHTT/TetherServer.lua"},
             {"_", "tools/tests/multiplayer_matrix_c509.lua"},
             {"_", "tools/tests/response_c515.lua"},
+            {"_", "tools/tests/contact_path_client_setup.lua"},
+            {"OMHTT/ControlDiscovery", base + "client/OMHTT/ControlDiscovery.lua"},
+            {"_", base + "client/OMHTT/BedPlayer.lua"},
+            {"_", "tools/tests/response_c517.lua"},
         };
         for (String[] stage : stages) {
             Path stagePath = root.resolve(stage[1]);

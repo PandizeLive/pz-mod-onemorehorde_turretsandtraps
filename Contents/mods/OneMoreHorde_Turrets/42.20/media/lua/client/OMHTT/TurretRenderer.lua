@@ -111,8 +111,27 @@ function R.animate(now)
                 local desired = state.aimDegrees or (state.facing or 0) * 22.5
                 entry.aimSample = entry.aimSample or {}
                 local rotary = entry.profile.stats.rotary and type(state.rotaryTravel) == "number"
-                local value = require("OMHTT/TurretAimView").sample(entry.aimSample,
-                    rotary and state.rotaryTravel or desired, getTimestampMs(), rotary)
+                local target
+                local age = state.aimAt and GameTime.getServerTimeMills() - state.aimAt
+                if not rotary and not lowered and not state.facingPending and state.aimTargetId
+                    and type(state.aimSpeed)=="number" and state.aimSpeed>0 and age and age >= -100 and age <= 1000 then
+                    if state.aimTargetPlayer then
+                        target = getPlayerByOnlineID(state.aimTargetId)
+                    else
+                        target = require("OMHTT/DefenseCombatClient").find(state.aimTargetId, state.aimTargetOutfit)
+                    end
+                end
+                local value
+                if rotary and age and age>=-100 and age<=1000 and type(state.rotarySpeed)=="number" then
+                    value = require("OMHTT/TurretAimView").rotary(state.rotaryTravel,age,state.rotarySpeed,
+                        state.rotaryMoving==true,state.rotaryStopAt)
+                elseif target and not target:isDead() and math.floor(target:getZ()) == object:getSquare():getZ() then
+                    value = require("OMHTT/TurretAimView").follow(entry.aimSample,
+                        entry.visualHeading or desired, Aim.angle(object, target), getTimestampMs(), state.aimSpeed)
+                else
+                    value = require("OMHTT/TurretAimView").sample(entry.aimSample,
+                        rotary and state.rotaryTravel or desired, getTimestampMs(), rotary)
+                end
                 if rotary then
                     value = entry.profile.heading + require("OMHTT/TurretHeads").motion(value, entry.profile.omni, entry.profile.cone)
                 end

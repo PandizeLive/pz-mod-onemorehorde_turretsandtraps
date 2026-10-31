@@ -1,8 +1,9 @@
-v0.2.70.10
+v0.2.70.11
 
 Development test content
 
-- Fixed Spike Barrier strike detection being interrupted by multiplayer animation updates.
-- Improved multiplayer wire, Tack and Poke Floor response.
-- Reduced delay before turret and trap damage indicators appear.
-- Added contact-to-damage timing diagnostics.
+- Improved first-contact response for multiplayer traps and linked triggers.
+- Fixed delayed trap detection when object data arrives after map loading.
+- Improved turret aiming, rotary motion and projectile timing on clients.
+- Smoothed Tether Dart flight and made embedded darts follow their targets.
+- Added diagnostics for first-contact readiness and tether stops.

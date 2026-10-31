@@ -153,6 +153,7 @@ local function run(ctx)
     check(math.abs(client.health-9.7)<.00001,"C509 Tether impact settles separately")
     Tether.time=850;Tether.step(object,entry.state);ctx.settle()
     check(math.abs(client.health-9.55)<.00001,"C509 Tether pull settles once through owner")
+    if Tether.schedule then Tether.schedule(entry,false) end
     Tether.entries[object]=nil
     Lane.cast,Mount.supported,Tether.publish,W.input,Tether.time=savedTether.cast,savedTether.supported,savedTether.publish,savedTether.input,savedTether.time
     W.state,W.publish,P.visual,Audio.emit,Effects.contact=old.state,old.publish,old.visual,old.audio,old.contact

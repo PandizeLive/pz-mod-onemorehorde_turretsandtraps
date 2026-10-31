@@ -1,10 +1,11 @@
 if isClient() then return end
 local Actors = require("OMHTT/DefenseActors")
 local Beam = require("OMHTT/ControlBeam")
+local Protocol = require("OMHTT/DefenseCombatProtocol")
 local S = {entries={},tiles={},positions=setmetatable({}, {__mode="k"}),count=0}
 local function key(x,y,z) return x .. ":" .. y .. ":" .. z end
 local function actorValid(actor,z)
-    return (instanceof(actor,"IsoZombie") or instanceof(actor,"IsoPlayer")) and not actor:isDead()
+    return ((instanceof(actor,"IsoZombie") and Protocol.living(actor)) or (instanceof(actor,"IsoPlayer") and not actor:isDead()))
         and math.floor(actor:getZ())==z
 end
 function S.remove(object)
@@ -70,9 +71,10 @@ function S.step(object,state)
         if objects then
             for j=0,math.min(127,objects:size()-1) do
                 local actor=objects:get(j)
-                if actorValid(actor,entry.z) and Beam.cross(entry,actor:getX(),actor:getY(),actor:getX(),actor:getY()) then
+                local x, y, _, current = Actors.position(actor)
+                if current and actorValid(actor,entry.z) and Beam.cross(entry,x,y,x,y) then
                     occupied = true
-                    local forward = (actor:getX() - entry.x) * entry.dx + (actor:getY() - entry.y) * entry.dy
+                    local forward = (x - entry.x) * entry.dx + (y - entry.y) * entry.dy
                     visualLength = math.min(visualLength, math.max(0, forward - .3))
                 end
             end
@@ -88,12 +90,16 @@ function S.step(object,state)
 end
 function S.actor(actor)
     if S.count==0 or GameTime.isGamePaused() then return end
-    local x,y,z=actor:getX(),actor:getY(),math.floor(actor:getZ())
+    local x,y,z,current=Actors.position(actor)
+    if not current then return end
     local previous=S.positions[actor]
-    if not previous then S.positions[actor]={x=x,y=y,z=z}; return end
+    if not previous then
+        previous={x=x,y=y,z=z}
+        S.positions[actor]=previous
+    end
     local ax,ay,az=previous.x,previous.y,previous.z
     previous.x,previous.y,previous.z=x,y,z
-    if az~=z or not actorValid(actor,z) or math.abs(x-ax)+math.abs(y-ay)>4 or (x==ax and y==ay) then return end
+    if az~=z or not actorValid(actor,z) or math.abs(x-ax)+math.abs(y-ay)>4 then return end
     local checked={}
     for tx=math.floor(math.min(ax,x)-.3),math.floor(math.max(ax,x)+.3) do
         for ty=math.floor(math.min(ay,y)-.3),math.floor(math.max(ay,y)+.3) do

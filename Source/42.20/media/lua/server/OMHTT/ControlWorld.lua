@@ -590,7 +590,8 @@ function W.occupied(object)
         local actor = moving:get(i)
         local eligible = (trigger ~= "Zombies" and instanceof(actor, "IsoPlayer"))
             or (trigger ~= "Players" and instanceof(actor, "IsoZombie"))
-        if eligible and not actor:isDead() then return true end
+        local _, _, _, current = Actors.position(actor)
+        if eligible and current and not actor:isDead() then return true end
     end
     return false
 end
@@ -746,7 +747,10 @@ function W.tick()
     require("OMHTT/ControlPoke").advance()
     if GameTime.isGamePaused() then return end
     local now = getTimestampMs()
-    if W.due and now < W.due then return end
+    if W.due and now < W.due then
+        W.flushDirty(now, now+1)
+        return
+    end
     W.due = now + 100
     require("OMHTT/ControlPower").flush()
     local deadline = now + 2

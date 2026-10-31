@@ -6,6 +6,20 @@ local P = require("OMHTT/ContactPlayer")
 P.trapsRegistered = true
 P.barbs = Barbs
 if isClient() then
+    ---@param object IsoObject Newly streamed object awaiting its mod data
+    ---@return boolean ready Passive trap view is now indexed
+    require("OMHTT/ControlDiscovery").providers.traps = function(object)
+        if not object:hasModData() or not object:getSquare() then return false end
+        local data = object:getModData()
+        if data.OMHTTBed then
+            B.loaded(object:getSquare())
+            return B.record(object) ~= nil
+        elseif data.OMHTTBarbFrame then
+            Barbs.loaded(object:getSquare())
+            return Barbs.record(object) ~= nil
+        end
+        return false
+    end
     require("OMHTT/DefenseContactClient").checks.traps=function(zombie)
         local key=F.key(math.floor(zombie:getX()),math.floor(zombie:getY()),math.floor(zombie:getZ()))
         return B.nearby[key]~=nil or Barbs.nearby[key]~=nil

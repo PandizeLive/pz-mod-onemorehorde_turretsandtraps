@@ -2,7 +2,45 @@ if isServer() then return end
 local C = require("OMHTT/TetherCycle")
 local Draw = require("OMHTT/ControlModelDraw")
 local Clock = require("OMHTT/ControlClock")
-local V = {states = {}, received = {}, simulated = {}, from = {}, visuals = {}}
+local V = {states = {}, received = {}, simulated = {}, from = {}, visuals = {}, latency = {}, endpoints = {}}
+
+---@param state table Accepted cycle snapshot
+---@param elapsed number Local simulation seconds since receipt
+---@return number x Presentation endpoint
+---@return number y Presentation endpoint
+function V.position(state, elapsed)
+    local age = elapsed + (V.latency[state.id] or 0)
+    local x, y = C.position(state, age, V.from[state.id])
+    if state.phase == "hold" then
+        local target = not isClient() and state.target
+        if isClient() and state.targetId then
+            if state.targetPlayer then
+                target = getPlayerByOnlineID(state.targetId)
+            else
+                target = require("OMHTT/DefenseCombatClient").find(state.targetId, state.targetOutfit)
+            end
+        end
+        if target and not target:isDead() and math.floor(target:getZ()) == state.z
+            and (target:getX() - state.x)^2 + (target:getY() - state.y)^2 <= (state.range + 2)^2 then
+            x, y = target:getX(), target:getY()
+        elseif state.attachX then
+            x, y = state.attachX, state.attachY
+        end
+        local endpoint = V.endpoints[state.id] or {}
+        endpoint.x, endpoint.y = x, y
+        V.endpoints[state.id] = endpoint
+    elseif state.phase == "back" then
+        local endpoint = V.endpoints[state.id]
+        local ax, ay = endpoint and endpoint.x or state.attachX, endpoint and endpoint.y or state.attachY
+        local initial = state.distance + state.returnSpeed * (state.backTime or 0)
+        if ax and initial > .001 then
+            local remaining = math.max(0, state.distance - state.returnSpeed * math.min(.25, age))
+            local fraction = math.min(1, remaining / initial)
+            x, y = state.x + (ax - state.x) * fraction, state.y + (ay - state.y) * fraction
+        end
+    end
+    return x, y
+end
 
 ---@param module string Namespace
 ---@param command string Event
@@ -14,9 +52,13 @@ function V.receive(module, command, message)
     local previous = V.states[message.id]
     local distance = 0
     if previous and previous.session == message.session and previous.sequence == message.sequence then
-        local x, y = C.position(previous, (Clock.now() - V.simulated[message.id]) / 1000, V.from[message.id])
+        local x, y = V.position(previous, (Clock.now() - V.simulated[message.id]) / 1000)
         distance = math.max(0, math.min(message.range, (x - message.x) * message.dx + (y - message.y) * message.dy))
+    else
+        V.endpoints[message.id] = nil
     end
+    local transit = message.sentAt and GameTime.getServerTimeMills() - message.sentAt or 0
+    V.latency[message.id] = math.max(0, math.min(250, transit)) / 1000
     V.from[message.id] = distance
     V.states[message.id], V.received[message.id], V.simulated[message.id] = message, getTimestampMs(), Clock.now()
 end
@@ -30,6 +72,7 @@ function V.render(index)
     for id, state in pairs(V.states) do
         if now - V.received[id] > 2000 then
             V.states[id], V.received[id], V.simulated[id], V.from[id], V.visuals[id] = nil, nil, nil, nil, nil
+            V.latency[id], V.endpoints[id] = nil, nil
         elseif state.phase ~= "idle" and state.phase ~= "reset" and now - V.received[id] <= 1000
             and math.floor(player:getZ()) == state.z
             and (player:getX() - state.x) ^ 2 + (player:getY() - state.y) ^ 2 < 2500 then
@@ -40,10 +83,10 @@ function V.render(index)
                     visual = {nail = instanceItem("Base.OMHTTTrapTetherNailVisual"), cable = instanceItem("Base.OMHTTTrapTetherCableVisual")}
                     V.visuals[id] = visual
                 end
-                local x, y = C.position(state, (Clock.now() - V.simulated[id]) / 1000, V.from[id])
+                local x, y = V.position(state, (Clock.now() - V.simulated[id]) / 1000)
                 local height = math.max(.025, math.min(.3, state.height or .3))
                 local square = cell:getGridSquare(math.floor(x), math.floor(y), state.z)
-                local yaw = math.deg(math.atan2(state.dy, state.dx))
+                local yaw = math.deg(math.atan2(y - state.y, x - state.x))
                 if square and square:isCanSee(index) then
                     Draw.draw(visual.nail, square, x, y, state.z + height, 0, 0, yaw)
                 end
@@ -73,5 +116,7 @@ end
 
 Events.OnServerCommand.Add(V.receive)
 Events.RenderOpaqueObjectsInWorld.Add(V.render)
-Events.OnGameStart.Add(function() V.states, V.received, V.from, V.visuals = {}, {}, {}, {} end)
+Events.OnGameStart.Add(function()
+    V.states, V.received, V.simulated, V.from, V.visuals, V.latency, V.endpoints = {}, {}, {}, {}, {}, {}, {}
+end)
 return V
