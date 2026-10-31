@@ -1,5 +1,9 @@
 # Decision register
 
+## C521 - Low-maintenance trap balance remains discussion (2026-10-30)
+
+Owner rejects corpse-hauling chores, identifies relocation/more-traps counterplay and requests simulation and candid disagreement. [Model and revised proposals](TRAP_SCALING_C519.md#c521---reject-maintenance-driven-obstruction-as-the-primary-answer). Corpse obstruction withdrawn as primary recommendation; centralized resource servicing and active grouped alternatives are proposals only. No gameplay or numeric selection.
+
 ## C520 - Dulling and alternatives remain discussion (2026-10-30)
 
 Owner finds C519 1B/1C enticing, proposes condition-linked damage restored by repair, and explicitly asks to continue discussing. Interest is not approval of corpse obstruction, recipes or example numbers. [Current tradeoffs and alternatives](TRAP_SCALING_C519.md#c520---dulling-corpse-obstruction-and-further-alternatives). No gameplay edits.
