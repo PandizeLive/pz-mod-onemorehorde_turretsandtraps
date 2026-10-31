@@ -1,5 +1,9 @@
 # Decision register
 
+## C519 - Endgame trap balance discussion (2026-10-30)
+
+Owner wants to curb mass Poke Floors without transferring the dominant strategy to another trap. [Evidence and 1A/1B/1C choices](TRAP_SCALING_C519.md). Whole-trap upkeep/roles recommended; no numbers, recipe edits or countermechanics approved. C518 remains separate and pending.
+
 C518 scope addition: owner requests faster Makeshift Bomb loading into turrets. Confirmed weight-based per-item duration and exclusion from both client/server light-ammo batching. Include bounded loading parity without changing bomb weight, capacity or damage. Broader 1A/1B selection remains pending; no build changed.
 
 ## C518 - Child-projectile correction requested; scope proposed (2026-10-30)
