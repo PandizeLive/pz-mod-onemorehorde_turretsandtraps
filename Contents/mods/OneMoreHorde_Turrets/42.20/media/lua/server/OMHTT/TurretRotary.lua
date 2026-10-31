@@ -54,15 +54,20 @@ function R.contact(entry, actor, job)
     end
     if zombie and not Horde.allowed(actor) then return end
     local origin = entry.object:getSquare()
-    local square = Actors.square(actor)
+    local hitX, hitY, z, current, observedAt = Actors.position(actor)
+    if not current then return end
+    local square = actor:getSquare()
+    if isServer() then
+        square = getCell():getGridSquare(math.floor(hitX), math.floor(hitY), z)
+    end
     if not square or actor:isDead() or square:getZ() ~= origin:getZ() then return end
-    local dx, dy = actor:getX() - origin:getX() - .5, actor:getY() - origin:getY() - .5
+    local dx, dy = hitX - origin:getX() - .5, hitY - origin:getY() - .5
     if dx * dx + dy * dy > job.profile.range * job.profile.range then return end
     local bearing = math.deg(math.atan2(-dy, dx)) - job.profile.heading
     local relative = (bearing + 540) % 360 - 180
     if not job.profile.omni and math.abs(relative) > 45 and math.abs(relative) < 135 then return end
     if not require("OMHTT/PrototypeCombat").clearLane(origin, square, 2) then return end
-    if require("OMHTT/ControlCombat").eligible(entry.object, actor) and M.inside(origin, actor, job.detection) then
+    if require("OMHTT/ControlCombat").eligible(entry.object, actor) and M.inside(origin, actor, job.detection, hitX, hitY) then
         job.target = true
         job.targetActor = actor
     end
@@ -79,7 +84,6 @@ function R.contact(entry, actor, job)
     if not Proc.available(job.stats) then return end
     local proc = {playerSource = require("OMHTT/ControlCombat").source(entry.object), stats = job.stats, siphon = job.energy and job.energy[pass]}
     Proc.reserve(proc)
-    local hitX, hitY = actor:getX(), actor:getY()
     entry.hits[arm][actor] = pass
     if not weapon then
         weapon = instanceItem("Base.Hammer")
@@ -90,13 +94,17 @@ function R.contact(entry, actor, job)
     end
     amount = Conditional.damage(actor, amount, Conditional.snapshot(actor, job.stats))
     local source = T.state(entry.object).id
+    local observation = {at = observedAt or GameTime.getServerTimeMills()}
+    require("OMHTT/Diagnostics").defer("rotary-hit", {id=source, victim=actor:getOnlineID(), observedAt=observation.at,
+        observationAgeMs=GameTime.getServerTimeMills()-observation.at, sweepAgeMs=Clock.now()-job.at,
+        before=job.before, after=job.after, arm=arm, pass=pass, x=hitX, y=hitY}, "turrets")
     Damage.resolve(actor, amount, source, "rotary", function(lost)
         if lost > 0 then
             Proc.hit(actor, true, hitX, hitY, square:getZ(), {id = source}, nil, proc)
             Conditional.impact(actor, origin, {source = source, impactReady = true, stats = {impact = job.stats.knockdown}})
         end
         Proc.release(proc)
-    end)
+    end, observation)
     if getTimestampMs() >= (entry.soundAt or 0) then
         entry.soundAt = getTimestampMs() + 150
         local radius = require("OMHTT/TurretStats").hearingRadius(entry.rotaryHead, job.stats)

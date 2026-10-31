@@ -10,6 +10,7 @@ A.online = setmetatable({}, {__mode="v"})
 ---@return number y
 ---@return number z
 ---@return boolean current Safe for owner-driven contact detection
+---@return number? observedAt Validated owner's observation time
 function A.position(actor)
     local node = A.nodes[actor]
     local report = node and node.report
@@ -17,7 +18,7 @@ function A.position(actor)
         and report.outfit == P.outfit(actor:getPersistentOutfitID()) then
         local age = GameTime.getServerTimeMills() - report.frame.at
         if age >= -100 and age <= 250 then
-            return report.frame.x, report.frame.y, report.frame.z, true
+            return report.frame.x, report.frame.y, report.frame.z, true, report.frame.at
         end
     end
     if node then

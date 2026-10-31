@@ -177,6 +177,7 @@ for n=1,#families do
             object.getModData=function() return {OMHTTTurret=state} end
             local job={stats=stats,profile={range=2,heading=0,omni=true,cone=360},detection={range=2,heading=0,cone=360},
                 moving=true,at=testMillis,before=-1,after=1}
+            Actors.report(victim,{x=victim:getX(),y=victim:getY(),z=victim:getZ(),at=testMillis})
             require("OMHTT/TurretRotary").contact({object=object,hits={{},{}},soundAt=testMillis+1000},victim,job)
         end
         check(client.health == before, "C509 "..name.." waits for owner application")

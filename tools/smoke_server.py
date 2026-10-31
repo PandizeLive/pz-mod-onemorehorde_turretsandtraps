@@ -131,6 +131,8 @@ def main():
     assert "[OMHTT-VaultProbe] native-state-execute=4/4 native-edge-collision=4/4" in text, "Native vault proof failed"
     assert "[OMHTT-C512] native-ownership oldCall=reproduced" in text, "Real ownership bridge proof missing"
     assert "[OMHTT-C517] native-fresh-membership passed=true" in text, "Native fresh-position/handoff proof missing"
+    for server_mode in ["false", "true"]:
+        assert "[OMHTT-C528] native-impact server=" + server_mode + " animation=nil accepted=true repeat=blocked" in text, "Native unnamed-state impact proof missing"
     assert "[OMHTT-Smoke] native-persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") + " parts=28" in text, "Native object persistence failed"
     assert "native-turret-collision sides=4 player-and-zombie=blocked vision=clear reach=clear firing=clear pathfinders=2" in text, "Turret native collision/access failed"
     assert "Shutdown handling finished" in text, "No clean shutdown evidence"

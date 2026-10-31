@@ -55,7 +55,7 @@ end
 
 -- Contact is a short-lived observation, not a five-second backlog of strikes.
 function P.contact(kind)
-    return kind == "poke-floor" or kind == "bed-spikes" or kind == "barbs" or kind == "tack"
+    return kind == "poke-floor" or kind == "bed-spikes" or kind == "barbs" or kind == "tack" or kind == "rotary"
 end
 
 return P

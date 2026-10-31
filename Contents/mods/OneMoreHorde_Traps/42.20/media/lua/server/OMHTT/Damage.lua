@@ -134,7 +134,8 @@ end
 ---@param kind string Effect family
 ---@param callback function? Invoked exactly once, including rejection
 ---@return boolean admitted Accepted for immediate or bounded serialized application
-function Damage.resolve(zombie, amount, source, kind, callback)
+---@param observation table? Explicit validated contact timestamp
+function Damage.resolve(zombie, amount, source, kind, callback, observation)
     if isClient() or not zombie or not Protocol.living(zombie) or not Damage.available(zombie) or queued >= 256
         or (byVictim[zombie] and #byVictim[zombie] >= 8)
         or not Protocol.number(amount, .000001, 1000000) then
@@ -152,9 +153,13 @@ function Damage.resolve(zombie, amount, source, kind, callback)
         return false
     end
     local lifetime = Protocol.contact(kind) and 500 or Protocol.TIMEOUT
+    local expiresAt = GameTime.getServerTimeMills() + lifetime
+    if kind == "rotary" and observation then
+        expiresAt = math.min(expiresAt, observation.at + lifetime)
+    end
     local job = {zombie = zombie, amount = amount, source = source, kind = kind, callback = callback,
-        lease = lease, deadline = getTimestampMs() + lifetime, expiresAt = GameTime.getServerTimeMills() + lifetime,
-        queuedAt = getTimestampMs(), observation = require("OMHTT/DefenseContacts").current,
+        lease = lease, deadline = getTimestampMs() + lifetime, expiresAt = expiresAt,
+        queuedAt = getTimestampMs(), observation = observation or require("OMHTT/DefenseContacts").current,
         id = zombie:getOnlineID(), outfit = require("OMHTT/DefenseCombatProtocol").outfit(zombie:getPersistentOutfitID())}
     local capacity = zombie:getOwner() == nil or require("OMHTT/DefenseCombatServer").available()
     if active[zombie] or byVictim[zombie] or not capacity then

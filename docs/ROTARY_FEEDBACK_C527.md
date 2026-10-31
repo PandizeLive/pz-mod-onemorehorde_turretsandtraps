@@ -23,3 +23,7 @@ Captured logs, frames and replay output remain in ignored `diagnostics/c527`; [s
 **1B - Stop animation only:** leave hit geometry and callback defects unresolved. Not recommended.
 
 High reasoning is appropriate for the correction; Fast is recommended if the full native verification exceeds25minutes. **Decision needed: corrective patch scope.** Prior GitHub automatic approval-review block remains; no bypass attempted.
+
+## C528 approval and follow-through
+
+Owner selected1A. The full correction is implemented in0.2.71.1; see [C528](ROTARY_REPAIR_C528.md). The original C527 reproduction remains a diagnostic of the old failure, not a passing correction test.

@@ -192,7 +192,9 @@ function C.command(module, command, message)
     receipt.processingMs=getTimestampMs()-started
     reply(player,receipt.reconciled and "Reconciled" or "Applied",message,receipt)
     if command == "Apply" and P.number(message.observedAt, 1, serverNow) then
-        require("OMHTT/Diagnostics").measure("contact-to-owner-apply", serverNow-message.observedAt, "traps")
+        local component = message.kind == "rotary" and "turrets" or "traps"
+        local metric = message.kind == "rotary" and "rotary-to-owner-apply" or "contact-to-owner-apply"
+        require("OMHTT/Diagnostics").measure(metric, serverNow-message.observedAt, component)
     end
     if command == "Apply" and type(message.source) == "string" and type(message.kind) == "string" then
         require("OMHTT/DamagePresentation").present({token=message.token, id=message.id, outfit=message.outfit,

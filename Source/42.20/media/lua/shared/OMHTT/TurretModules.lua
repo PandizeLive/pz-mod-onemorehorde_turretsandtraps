@@ -69,14 +69,16 @@ end
 ---@param origin IsoGridSquare Turret tile
 ---@param zombie IsoZombie Candidate
 ---@param profile table Effective tuning
+---@param x number? Validated contact X when already sampled
+---@param y number? Validated contact Y when already sampled
 ---@return boolean inside
 ---@return number distanceSquared
 ---@nodiscard
-function M.inside(origin, zombie, profile)
+function M.inside(origin, zombie, profile, x, y)
     local square = Actors.square(zombie)
     if zombie:isDead() or not square or square:getZ() ~= origin:getZ()
         or getCell():getGridSquare(square:getX(), square:getY(), square:getZ()) ~= square then return false, 0 end
-    local dx, dy = zombie:getX() - origin:getX() - 0.5, zombie:getY() - origin:getY() - 0.5
+    local dx, dy = (x or zombie:getX()) - origin:getX() - 0.5, (y or zombie:getY()) - origin:getY() - 0.5
     local distance = dx * dx + dy * dy
     if distance > profile.range * profile.range then return false, distance end
     if profile.stats and distance < (profile.stats.minimumRange or 0) ^ 2 then return false, distance end

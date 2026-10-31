@@ -80,6 +80,7 @@ function origin:haveElectricity() return false end
 local contents = {head = bat, heads = 1, battery = battery, active = {Firing = 1, MotionDetection = 1}, powerLoad = 0}
 local data = {}
 local zombie = {health = 10, kind = "IsoZombie", getX = function() return 1.5 end, getY = function() return .5 end,
+    getZ = function() return 0 end, getOnlineID = function() return -1 end,
     getSquare = function() return origin end, getModData = function() return data end,
     getCurrentStateName = function() return "idle" end, isProne = function() return false end,
     isKnockedDown = function() return false end, isStaggerBack = function() return false end, isBumpFall = function() return false end}

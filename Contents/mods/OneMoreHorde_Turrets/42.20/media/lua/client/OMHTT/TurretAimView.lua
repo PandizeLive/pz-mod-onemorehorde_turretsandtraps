@@ -25,11 +25,15 @@ function V.motor(sample, travel, age, speed, moving, stopAt, now)
         sample.motorValue = target
     else
         local elapsed = math.max(0, math.min(100, now - sample.motorAt))
-        local advance = moving and age < 750 and speed * elapsed / 1000 or 0
+        local advance = moving and age >= 0 and age < 750 and speed * elapsed / 1000 or 0
         local value = sample.motorValue + advance
-        sample.motorValue = value + (target - value) * (1 - math.exp(-elapsed / 100))
+        local desired = value + (target - value) * (1 - math.exp(-elapsed / 100))
+        if stopAt and sample.motorValue <= stopAt then
+            desired = math.min(desired, stopAt)
+        end
+        local limit = speed * elapsed / 1000 * 1.5
+        sample.motorValue = sample.motorValue + math.max(-limit, math.min(limit, desired - sample.motorValue))
     end
-    if stopAt and moving then sample.motorValue = math.min(sample.motorValue, stopAt) end
     sample.motorAt = now
     return sample.motorValue
 end

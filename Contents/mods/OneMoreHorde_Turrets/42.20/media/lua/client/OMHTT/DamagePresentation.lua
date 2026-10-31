@@ -58,9 +58,11 @@ function View.present(facts)
             indicator.spawnAt(facts.x, facts.y, facts.z, facts.lost * config.scale, "hit", i)
             local now = GameTime.getServerTimeMills()
             if protocol.number(facts.observedAt, 1, now) then
-                Diagnostics.measure("contact-to-damage-display", now-facts.observedAt, "traps")
-                Diagnostics.defer("contact-visible", {token=facts.token, source=facts.source, victim=facts.id,
-                    elapsedMs=now-facts.observedAt}, "traps")
+                local rotary = facts.kind == "rotary"
+                local component = rotary and "turrets" or "traps"
+                Diagnostics.measure(rotary and "rotary-to-damage-display" or "contact-to-damage-display", now-facts.observedAt, component)
+                Diagnostics.defer(rotary and "rotary-visible" or "contact-visible", {token=facts.token, source=facts.source, victim=facts.id,
+                    elapsedMs=now-facts.observedAt}, component)
             end
         end
     end

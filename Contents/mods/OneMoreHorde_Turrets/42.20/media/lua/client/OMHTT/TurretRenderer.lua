@@ -122,15 +122,21 @@ function R.animate(now)
                     end
                 end
                 local value
-                if rotary and age and age>=-100 and age<=1000 and type(state.rotarySpeed)=="number" then
-                    value = require("OMHTT/TurretAimView").motor(entry.aimSample,state.rotaryTravel,age,state.rotarySpeed,
-                        state.rotaryMoving==true,state.rotaryStopAt,getTimestampMs())
+                if rotary then
+                    local motorSpeed = state.rotarySpeed or entry.profile.stats.motorSpeed or 0
+                    value = require("OMHTT/TurretAimView").motor(entry.aimSample,state.rotaryTravel,age or 750,motorSpeed,
+                        state.rotaryMoving==true and age ~= nil and age >= -100,state.rotaryStopAt,getTimestampMs())
+                    if entry.rotarySnapshotAt ~= state.aimAt then
+                        entry.rotarySnapshotAt = state.aimAt
+                        D.defer("rotary-view", {id=state.id, snapshotAt=state.aimAt, ageMs=age,
+                            travel=state.rotaryTravel, displayed=value, moving=state.rotaryMoving, stopAt=state.rotaryStopAt}, "turrets")
+                    end
                 elseif target and not target:isDead() and math.floor(target:getZ()) == object:getSquare():getZ() then
                     value = require("OMHTT/TurretAimView").follow(entry.aimSample,
                         entry.visualHeading or desired, Aim.angle(object, target), getTimestampMs(), state.aimSpeed)
                 else
                     value = require("OMHTT/TurretAimView").sample(entry.aimSample,
-                        rotary and state.rotaryTravel or desired, getTimestampMs(), rotary)
+                        desired, getTimestampMs(), false)
                 end
                 if rotary then
                     value = entry.profile.heading + require("OMHTT/TurretHeads").motion(value, entry.profile.omni, entry.profile.cone)

@@ -42,9 +42,10 @@ end
 function C.impact(zombie, origin, options)
     if not options.impactReady or not options.stats or options.stats.impact <= 0 then return false end
     options.impactReady = false
-    local state = string.lower(zombie:getCurrentStateName())
-    if zombie:isDead() or zombie:isProne() or zombie:isKnockedDown() or zombie:isStaggerBack()
-        or string.find(state, "getup", 1, true) or string.find(state, "stagger", 1, true) or zombie:isBumpFall() then return false end
+    local _, down = require("OMHTT/DefenseActorState").stance(zombie)
+    local state = isServer() and zombie:getOwner() and zombie:getRealState()
+    if zombie:isDead() or down or zombie:isStaggerBack() or zombie:isBumpFall()
+        or state == "staggerback" or state == "hitwhilestaggered" then return false end
     local data, now = require("OMHTT/DefenseActorState").get(zombie), Clock.now()
     if not data.OMHTTImpactGuard then data.OMHTTImpactGuard = {} end
     local guard = data.OMHTTImpactGuard

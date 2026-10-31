@@ -1,11 +1,7 @@
-v0.2.71
+v0.2.71.1
 
 Development test content
 
-- Splitter and Fragment now retain the original projectile style and travel timing.
-- Removed the extra Fragment launch delay and corrected piercing continuation timing.
-- Smoothed rotary movement and Tether Dart flight between multiplayer updates.
-- Sped up Makeshift Bomb loading with batches of up to 20.
-- Added ground stabilizers and a five-tile cross footprint to newly placed Poke Floors.
-- Increased Poke Floor crafting costs to 5 Metal Bars and 10 Screws.
-- Reduced default Spike Barrier health to 80, or 160 when reinforced.
+- Fixed rotary heads rapidly spinning again after stopping in multiplayer.
+- Fixed rotary hits using outdated zombie positions and delayed contact backlogs.
+- Fixed turret hit-reaction errors and interrupted module cleanup in multiplayer.

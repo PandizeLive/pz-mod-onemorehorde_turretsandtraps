@@ -156,6 +156,18 @@ if __modules["OMHTT/Damage"] then
  damage.resolve(server,.1,"wire-stale","barbs",function(_,reason) staleReason=reason end)
  testMillis=testMillis+501;receiveClient();receiveServer();damage.tick()
  check(staleReason=="cancelled" and #outbound==0,"stale queued contact does not burst after another shot settles")
+ server,client=pair()
+ local observation={at=testMillis-100}
+ damage.resolve(server,.2,"turret-rotary-expiry","rotary",done,observation)
+ check(outbound[1].message.observedAt==observation.at and outbound[1].message.expiresAt==observation.at+500,
+     "C528 rotary application lifetime starts at the validated observation")
+ testMillis=testMillis+401;receiveClient();receiveServer()
+ check(client.health==1 and completed[#completed].loss==0,"C528 late rotary packet cannot damage after its contact expires")
+ server,client=pair();local staleLoss
+ damage.resolve(server,.2,"first","firearm",function() end)
+ damage.resolve(server,.1,"turret-rotary-queue","rotary",function(loss) staleLoss=loss end,{at=testMillis-200})
+ testMillis=testMillis+301;receiveClient();receiveServer();damage.tick()
+ check(staleLoss==0 and #outbound==0,"C528 rotary queue cannot renew an expired observation")
 end
 
 local held={}

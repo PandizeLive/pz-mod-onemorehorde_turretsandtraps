@@ -39,5 +39,24 @@ return function()
     assert(Health.maximum(target) == 1 and Conditional.snapshot(target, stats).bonus == 1,
         "A native weapon pre-hit event freezes the baseline before damage")
     SandboxVars.OMHTurretsTraps = saved
+    local Motion = require("OMHTT/DefenseMotion")
+    local previousMotion, previousServer = Motion.request, isServer
+    local requests = 0
+    Motion.request = function(_, kind)
+        assert(kind == "stagger", "Native Impact requested wrong reaction")
+        requests = requests + 1
+        return true
+    end
+    local origin = {getX=function() return 0 end, getY=function() return 0 end}
+    for _, server in pairs({false, true}) do
+        isServer = function() return server end
+        local actor = IsoZombie.new(getCell())
+        actor:setHealth(1)
+        assert(Conditional.impact(actor, origin, {impactReady=true, stats={impact=100}}), "Native Impact must accept an unnamed standing actor")
+        assert(not Conditional.impact(actor, origin, {impactReady=true, stats={impact=100}}), "Native Impact recovery guard failed")
+        print("[OMHTT-C528] native-impact server=" .. tostring(server) .. " animation=" .. tostring(actor:getCurrentStateName()) .. " accepted=true repeat=blocked")
+    end
+    assert(requests == 2, "Native Impact duplicate reaction")
+    Motion.request, isServer = previousMotion, previousServer
     print("[OMHTT-C471] native-conditional spawnOverride=74 actualLoss=74 execute=18 boundary=pass damagedBaseline=retained")
 end

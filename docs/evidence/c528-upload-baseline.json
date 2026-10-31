@@ -1,0 +1,11 @@
+{
+  "status": "confirmed",
+  "itemId": "3828638252",
+  "version": "0.2.71",
+  "visibility": "unlisted",
+  "tag": "test/v0.2.71",
+  "sourceCommit": "bd42f0837530ba8b2865499bd314c38db983116f",
+  "confirmedUtc": "2026-10-31T04:40:17.9493399Z",
+  "publisherLogSHA256": "9fd02a1358342ca8136b4829af16b483f1f3d38948746af5a90ca931af0e0d91",
+  "evidence": "Publisher result confirmed; SteamCMD Committing update...Success.Unloading Steam API...OK"
+}

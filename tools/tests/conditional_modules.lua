@@ -63,7 +63,7 @@ zombie.stagger = false
 options.impactReady = true
 check(not C.impact(zombie, square, options), "Other turrets share the victim recovery guard")
 zombie.data.OMHTTImpactGuard = nil
-zombie.state = "ZombieGetUpState"
+zombie.state = "getup"
 options.impactReady = true
 check(not C.impact(zombie, square, options), "Getting-up zombie cannot be stagger-locked")
 zombie.state = "idle"; zombie.knocked = true

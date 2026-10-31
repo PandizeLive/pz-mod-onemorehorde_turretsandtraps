@@ -622,6 +622,7 @@ public final class KahluaCheck {
             {"_", base + "client/OMHTT/BedPlayer.lua"},
             {"_", "tools/tests/response_c517.lua"},
             {"_", "tools/tests/update_c526.lua"},
+            {"_", "tools/tests/rotary_c528.lua"},
         };
         for (String[] stage : stages) {
             Path stagePath = root.resolve(stage[1]);

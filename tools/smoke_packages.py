@@ -58,6 +58,7 @@ def check(selection):
                 process.wait(timeout=15)
             probe.unlink(missing_ok=True)
     text = transcript.read_text(encoding="utf-8", errors="replace")
+    assert "[OMHTT] packages-ready version=" + version + " " in text, "Runtime version differs from packaged version"
     assert "Shutdown handling finished" in text
     assert "NoSuchFileException" not in text
     assert "tiledef number" not in text.lower()
