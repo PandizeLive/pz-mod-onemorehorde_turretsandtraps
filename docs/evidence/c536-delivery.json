@@ -36,5 +36,10 @@
   "pageMetadataAndPreview": "byte-identical",
   "connectedAcceptance": "pending",
   "newWorldRequiredForThisPatch": false,
-  "githubMirror": "pending"
+  "githubMirror": {
+    "status": "verified",
+    "commit": "aafc0781948cbfab144984da13a5db6fbe7e801d",
+    "testTag": "test/v0.2.71.4",
+    "pullRequest": "https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1"
+  }
 }
