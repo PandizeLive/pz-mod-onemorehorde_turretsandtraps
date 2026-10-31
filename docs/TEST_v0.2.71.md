@@ -25,3 +25,7 @@ After uploading both T&T 0.2.71 and Horde Night 0.6.16.10, update/restart the se
 No Workshop upload or live-server change is performed by this update. GitHub mirroring remains blocked by the prior automatic approval review; it has not been bypassed.
 
 Delivery verifies all461 source and636 tagged/package/local/archive/stage files, previous package/stage backups, and unchanged Workshop page metadata/preview. All three independent package starts pass. The artist handoff contains164 unique payloads and47 aliases, including Tether nail/cable and the stabilizer mesh. Horde Night0.6.16.10 is also locally installed/staged from its immutable tag.
+
+## C527 connected rotary failure
+
+Owner reports delayed hits and a violent spin after stopping. Client/server logs confirm0.2.71. The stop-path renderer handoff and stale native-position rejection are reproduced; server logs45 post-hit impact callback exceptions. Rotary acceptance is failed. [Findings and proposed correction](ROTARY_FEEDBACK_C527.md). No replacement build installed.
