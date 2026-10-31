@@ -193,7 +193,7 @@ end
 ---@return number x
 ---@return number y
 function C.position(message, elapsed, previousDistance)
-    local age = math.max(0, math.min(.25, elapsed))
+    local age = math.max(0, math.min(.75, elapsed))
     local distance = message.distance
     if message.phase == "out" then
         distance = math.min(message.limit or message.range, distance + message.speed * age)

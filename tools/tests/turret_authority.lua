@@ -355,6 +355,33 @@ local nativeDrag = ISInventoryTransferAction:new(player, selected[1], inv, targe
 check(nativeDrag.Type == Transfer.Type and nativeDrag.id == transferId, "Ordinary native inventory drag routes to the same validated action")
 local declined = ISInventoryTransferAction:new(player, limited[1], target, {getType = function() return "floor" end, getContainingItem = function() return nil end})
 check(declined.destinationBag == false and not declined:isValid(), "Unsupported native drag cannot silently route to the player's main inventory")
+do
+    local previousItems=target.items
+    target.items={}
+    target:AddItem(component("Base.OMHTTTurretLobber"))
+    target:AddItem(component(T.TYPES.CapacityLarge))
+    local bombs={}
+    for i=1,41 do
+        bombs[i]=component("Base.OMHTTAmmoMakeshiftBomb")
+        bombs[i].weight=1
+        inv:AddItem(bombs[i])
+    end
+    check(Network.queue(player,transferObject,bombs,true,"ammo")==41 and #queue.queue==3,
+        "C526 Manage prepares 41 heavy Makeshift Bombs in three bounded batches")
+    local bombActions=queue.queue
+    for i=1,#bombActions do
+        check(bombActions[i]:getDuration()==5 and #bombActions[i].ids<=20 and inv:contains(bombActions[i].item),
+            "C526 bomb batches use light-ammo time with no client mutation")
+    end
+    testMode="server"
+    for i=1,#bombActions do
+        check(bombActions[i]:complete() and not bombActions[i]:complete(),"C526 server bomb batches move once and reject replay")
+    end
+    check(T.contents(target).reserve==41 and not inv:contains(bombs[41]),"C526 all 41 full-weight bombs arrive through server inventory authority")
+    target.items=previousItems
+    queue.queue={}
+    testMode="client"
+end
 ISTimedActionQueue, ISBaseTimedAction.begin = oldQueue, oldBegin
 testMode = "server"
 local ItemState = require("OMHTT/TurretItemState")

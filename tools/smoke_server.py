@@ -136,7 +136,7 @@ def main():
     assert "Shutdown handling finished" in text, "No clean shutdown evidence"
     assert "Saving GlobalModData" in text, "No native global state save"
     assert "Invalid SpriteConfig object! scripted object = OMHTT" not in text, "Invalid native barrier identity"
-    assert "[OMHTT-Smoke] native-sandbox damage=10 maxHealth=100 tooltip=formatted" in text, "Native Sandbox options/tooltip invalid"
+    assert "[OMHTT-Smoke] native-sandbox damage=10 maxHealth=80 tooltip=formatted" in text, "Native Sandbox options/tooltip invalid"
     assert "[OMHTT-Smoke] native-texturepacks traps=103 turrets=38 pages=59 png=valid" in text, "Native texture packs invalid"
     assert "[OMHTT-C389] native-player targeting=passed pvp=passed safety=passed clothing=passed limb-damage=passed volley-cap=passed connected-clients=0" in text, "Native targeting/player injury proof missing"
     assert "[OMHTT-Beds] PASS" in text, "Native bed content invalid"

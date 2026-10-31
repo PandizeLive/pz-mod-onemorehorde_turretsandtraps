@@ -77,7 +77,7 @@ function O.launch(record, origin, target, player, options)
         local children = (i == 0 or stats.synergy) and fragments or 0
         O.reserved = O.reserved + children
         O.add({source = record.id, shot = tostring(record.shots) .. ":" .. i, x = x, y = y, z = origin:getZ(),
-            dx = math.cos(a), dy = math.sin(a), range = distance, speed = 8, fuse = 1250,
+            dx = math.cos(a), dy = math.sin(a), range = distance, speed = 8, fuse = 1250, ammoType = options.ammoDescriptor and options.ammoDescriptor.type or "Base.OMHTTAmmoMakeshiftBomb",
             damage = damage * (i == 0 and 1 or .5), injuryScale = i == 0 and 1 or .5, radius = payload.radius, children = children,
             sound = options.ammoDescriptor and options.ammoDescriptor.type == "Base.PipeBomb" and "PipeBombExplode"
                 or (options.ammoDescriptor and options.ammoDescriptor.type == "Base.Aerosolbomb" and "AerosolBombExplode" or "FireCrackerSingleExplode"),
@@ -138,14 +138,15 @@ function O.step(job)
                 job.shown = true
                 Effects.emit("Launch", {id = job.source, shot = "grenade:" .. job.id, x = job.x + job.dx * job.range,
                     y = job.y + job.dy * job.range, z = job.z, fromX = job.x, fromY = job.y,
-                    start = now, flight = job.range / job.speed * 1000, projectile = "grenade", silent = true})
+                    start = job.due, elapsedMs = math.max(0,now-job.due), flight = job.range / job.speed * 1000,
+                    projectile = "grenade", ammoType = job.ammoType, muzzle = job.mini and 0 or nil, silent = true})
             end
             return false
         end
         job.x, job.y = job.x + job.dx * job.distance, job.y + job.dy * job.distance
         job.landed, job.due = true, now + job.fuse
         Effects.emit("Land", {id = job.source, shot = "grenade:" .. job.id, x = job.x, y = job.y,
-            z = job.z, fromX = job.x, fromY = job.y, silent = true, projectile = "grenade"})
+            z = job.z, fromX = job.x, fromY = job.y, silent = true, projectile = "grenade", ammoType = job.ammoType})
         local bound = math.ceil(job.radius)
         job.scanX, job.scanY, job.index = -bound, -bound, 0
         return false
@@ -169,9 +170,9 @@ function O.step(job)
             local angle = math.rad((i - 1) * 72 + ZombRand(3600) / 100)
             O.reserved = O.reserved - 1
             O.add({source = job.source, shot = job.shot .. ":mini" .. i, x = job.x, y = job.y, z = job.z,
-                dx = math.cos(angle), dy = math.sin(angle), range = 2, speed = 8, fuse = 500, mini = true, gain = .15, sound = "FireCrackerSingleExplode",
+                dx = math.cos(angle), dy = math.sin(angle), range = 2, speed = 8, fuse = 500, ammoType = job.ammoType, mini = true, gain = .15, sound = "FireCrackerSingleExplode",
                 damage = job.damage * job.stats.fragmentDamage, injuryScale = (job.injuryScale or 1) * job.stats.fragmentDamage, radius = 1, children = 0,
-                eligible = job.stats.synergy, stats = job.stats, shared = job.shared, due = now + 250})
+                eligible = job.stats.synergy, stats = job.stats, shared = job.shared, due = now})
         end
         job.children = 0
     end

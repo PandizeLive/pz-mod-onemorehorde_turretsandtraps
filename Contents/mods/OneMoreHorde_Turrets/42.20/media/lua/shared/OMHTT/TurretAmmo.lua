@@ -12,6 +12,19 @@ A.bombs = {
     ["Base.PipeBomb"] = {minimum = 450, maximum = 900, radius = 7, power = .04},
 }
 
+---@param item InventoryItem Exact ammunition item
+---@return boolean eligible Existing light ammunition and Makeshift Bombs
+function A.fastTransfer(item, weight)
+    return item ~= nil and ((weight or item:getActualWeight()) <= .1 or item:getFullType() == "Base.OMHTTAmmoMakeshiftBomb")
+end
+
+---@param item InventoryItem Exact transferred item
+---@return number weight Loading-time weight only; never inventory/capacity weight
+function A.transferWeight(item)
+    if item:getFullType() == "Base.OMHTTAmmoMakeshiftBomb" then return .1 end
+    return item:getActualWeight()
+end
+
 ---@param fullType string Registered script identity
 ---@return string? family
 ---@nodiscard

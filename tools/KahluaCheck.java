@@ -212,6 +212,8 @@ public final class KahluaCheck {
             {"OMHTT/ControlClock", base + "shared/OMHTT/ControlClock.lua"},
             {"OMHTT/DefenseNames", base + "shared/OMHTT/DefenseNames.lua"},
             {"OMHTT/Foundation", base + "shared/OMHTT/Foundation.lua"},
+            {"OMHTT/ControlPokeFootprint", base + "shared/OMHTT/ControlPokeFootprint.lua"},
+            {"OMHTT/TurretProjectileStyle", base + "shared/OMHTT/TurretProjectileStyle.lua"},
             {"OMHTT/Diagnostics", base + "shared/OMHTT/Diagnostics.lua"},
             {"OMHTT/BarrierGeometry", base + "shared/OMHTT/BarrierGeometry.lua"},
             {"OMHTT/BarrierView", base + "shared/OMHTT/BarrierView.lua"},
@@ -619,6 +621,7 @@ public final class KahluaCheck {
             {"OMHTT/ControlDiscovery", base + "client/OMHTT/ControlDiscovery.lua"},
             {"_", base + "client/OMHTT/BedPlayer.lua"},
             {"_", "tools/tests/response_c517.lua"},
+            {"_", "tools/tests/update_c526.lua"},
         };
         for (String[] stage : stages) {
             Path stagePath = root.resolve(stage[1]);

@@ -18,7 +18,7 @@ function V.tick()
         local state=A.state(object)
         if state or now>=expires or object:getObjectIndex()<0 then
             V.pending[object]=nil
-            if state and (state.kind=="Lever" or state.kind=="Laser") then V.entries[object]={} end
+            if state and (state.kind=="Lever" or state.kind=="Laser" or state.kind=="Poke") then V.entries[object]={} end
         end
         n=n+1
         if n>=64 then break end
@@ -37,9 +37,14 @@ function V.render(index)
         local state, square = A.state(object), object:getSquare()
         if not state or object:getObjectIndex() < 0 or not square or cell:getGridSquare(state.x,state.y,state.z) ~= square then
             V.remove(object)
-        elseif state.powered and object:getHealth() > 0 and math.floor(player:getZ()) == state.z
+        elseif (state.kind == "Poke" or state.powered and object:getHealth() > 0) and math.floor(player:getZ()) == state.z
             and square:isCanSee(index) and math.abs(player:getX()-state.x)+math.abs(player:getY()-state.y) < 50 then
-            if state.kind == "Laser" and Options.get("LaserVisible") and state.beamX and state.beamLength then
+            if state.kind == "Poke" and state.pokeFootprint == 1 then
+                if budget <= 0 then return end
+                if not cache.braces then cache.braces = instanceItem("Base.OMHTTTrapPokeStabilizersVisual") end
+                Draw.draw(cache.braces, square, state.x+.5, state.y+.5, state.z+.015, 0, 0, 0)
+                budget = budget - 1
+            elseif state.kind == "Laser" and Options.get("LaserVisible") and state.beamX and state.beamLength then
                 local length = math.min(state.beamLength, state.beamVisualLength or state.beamLength)
                 local colour = state.active and "Red" or "Green"
                 if not cache[colour] then

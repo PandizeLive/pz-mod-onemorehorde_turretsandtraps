@@ -50,12 +50,16 @@ end
 ---@return boolean valid
 function C.valid(params)
     local square = params.square
-    return square ~= nil and square:TreatAsSolidFloor()
+    return square ~= nil and square:TreatAsSolidFloor() and not require("OMHTT/ControlPokeFootprint").reserved(square)
 end
 
 ---@param params table Native preview or server construction
 ---@return boolean valid
 ---@nodiscard
+function C.poke(params)
+    return require("OMHTT/ControlPokeFootprint").valid(params.square, nil, params.character)
+end
+
 function C.controller(params)
     if not C.valid(params) then return false end
     local square = params.square

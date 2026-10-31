@@ -3,7 +3,7 @@ require("ISUI/ISUIElement")
 local F = require("OMHTT/Foundation")
 local D = require("OMHTT/Diagnostics")
 local T = require("OMHTT/Turret")
-local E = {effects = {}}
+local E = {effects = {}, textures = {}}
 local canvas = nil
 local phases, phaseOrder, phaseCursor = {}, {}, 1
 
@@ -91,13 +91,15 @@ function E.receive(module, command, facts)
     effect.targetId, effect.targetOutfit = facts.targetId, facts.targetOutfit
     effect.firearm = facts.firearm == true
     effect.projectile = facts.projectile
+    effect.ammoType = facts.ammoType or effect.ammoType
     effect.muzzleHeight = facts.muzzleHeight or T.HEAD_VISUAL.height
     if command == "Launch" or command == "GunShot" then
         if not isClient() then
             effect.start = facts.start or effect.start
         elseif command == "Launch" and type(facts.sentAt)=="number" then
             local transit = GameTime.getServerTimeMills()-facts.sentAt
-            effect.start = effect.start-math.max(0,math.min(250,transit))
+            effect.start = effect.start-math.max(0,math.min(750,transit))
+                - math.max(0,math.min(effect.flight, facts.elapsedMs or 0))
         end
         local dx, dy = facts.x - facts.fromX, facts.y - facts.fromY
         local distance = math.sqrt(dx * dx + dy * dy)
@@ -179,6 +181,13 @@ function E.render()
             for index = 0, getNumActivePlayers() - 1 do
                 local player = getSpecificPlayer(index)
                 local wx, wy, height = E.position(effect)
+                if effect.phase == "Launch" then
+                    local fraction = effect.flight > 0 and math.min(1, math.max(0, elapsed / effect.flight)) or 1
+                    wx = effect.fromX + (wx - effect.fromX) * fraction
+                    wy = effect.fromY + (wy - effect.fromY) * fraction
+                    height = effect.muzzleHeight + (height - effect.muzzleHeight) * fraction
+                    if effect.projectile == "grenade" or effect.projectile == "spear" then height = height + math.sin(fraction * math.pi) * .35 end
+                end
                 local square = getCell():getGridSquare(math.floor(wx), math.floor(wy), effect.z)
                 local trace = effect.firearm and E.visibleTrace(effect, index)
                 local visible = effect.firearm and trace or (not effect.firearm and square and square:isCanSee(index))
@@ -191,13 +200,6 @@ function E.render()
                     end
                     canvas:setStencilRect(getPlayerScreenLeft(index), getPlayerScreenTop(index), getPlayerScreenWidth(index), getPlayerScreenHeight(index))
                     local zoom = getCore():getZoom(index)
-                    if effect.phase == "Launch" then
-                        local fraction = math.min(1, math.max(0, elapsed / effect.flight))
-                        wx = effect.fromX + (wx - effect.fromX) * fraction
-                        wy = effect.fromY + (wy - effect.fromY) * fraction
-                        height = 0.32 + (height - 0.32) * fraction
-                        if effect.projectile then height = height + math.sin(fraction * math.pi) * .35 end
-                    end
                     local x, y = E.screen(wx, wy, effect.z + height, index)
                     if effect.firearm then
                         effect.renderStart = effect.renderStart or now
@@ -211,6 +213,19 @@ function E.render()
                             if length > 0 then
                                 local sx, sy = E.screen(wx - dx / length * .6, wy - dy / length * .6, effect.z + height, index)
                                 canvas:drawLine(nil, sx, sy, x, y, math.max(1, 2 / zoom), 1, .85, .85, .85)
+                            end
+                        elseif effect.ammoType then
+                            local texture = E.textures[effect.ammoType]
+                            if texture == nil then
+                                local item = instanceItem(effect.ammoType)
+                                texture = item and item:getTex() or false
+                                E.textures[effect.ammoType] = texture
+                            end
+                            if texture then
+                                local width = math.max(8, 14 / zoom)
+                                canvas:drawTextureScaled(texture, x - width / 2, y - width / 2, width, width, 1, 1, 1, 1)
+                            else
+                                canvas:drawRect(x - size / 2, y - size / 2, size, size * .75, 1, .55, .32, .13)
                             end
                         else
                             canvas:drawRect(x - size / 2, y - size / 2, size, size * 0.75, 1, 0.55, 0.32, 0.13)

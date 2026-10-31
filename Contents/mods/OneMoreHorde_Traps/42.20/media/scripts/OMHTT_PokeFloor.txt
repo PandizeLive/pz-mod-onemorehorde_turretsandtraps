@@ -27,7 +27,7 @@ module Base {
             skillBaseHealth = 0,
             bonusHealth = 0,
             isThumpable = true,
-            OnIsValid = OMHTT_Controls.valid,
+            OnIsValid = OMHTT_Controls.poke,
             OnCreate = OMHTT_Controls.created,
             face E { layer { row = omhtt_barrier_01_85, } }
             face N { layer { row = omhtt_barrier_01_86, } }
@@ -58,9 +58,9 @@ module Base {
             item 1 tags[base:screwdriver] mode:keep flags[Prop1;DontRecordInput;NoBrokenItems],
             item 1 [Base.Wrench;Base.PipeWrench] mode:keep flags[DontRecordInput;NoBrokenItems],
             item 1 [Base.TirePump],
-            item 4 [Base.MetalBar],
+            item 5 [Base.MetalBar],
             item 2 [Base.SmallSheetMetal],
-            item 8 [Base.Screws],
+            item 10 [Base.Screws],
         }
         outputs { item 1 Base.OMHTTTrapPokeFloorMechanical, }
     }
@@ -77,9 +77,9 @@ module Base {
             item 1 tags[base:screwdriver] mode:keep flags[Prop1;DontRecordInput;NoBrokenItems],
             item 1 [Base.Wrench;Base.PipeWrench] mode:keep flags[DontRecordInput;NoBrokenItems],
             item 2 [Base.MetalPipe],
-            item 4 [Base.MetalBar],
+            item 5 [Base.MetalBar],
             item 2 [Base.SmallSheetMetal],
-            item 8 [Base.Screws],
+            item 10 [Base.Screws],
         }
         outputs { item 1 Base.OMHTTTrapPokeFloorMechanical, }
     }

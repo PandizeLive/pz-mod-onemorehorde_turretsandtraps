@@ -83,7 +83,7 @@ local shot = {stats = piercingStats, damage = 1}
 V.reset(); V.reserve(shot)
 check(V.reserved == 1, "Piercing reserves one incremental ray, not one queue entry per copy")
 V.pierce({id = "pierce", shots = 1}, origin, primary, nil, shot, primary.square, primary:getX(), primary:getY())
-for _ = 1, 100 do if #V.queue > 0 then V.tick() end end
+for _ = 1, 100 do testMillis=testMillis+20; require("OMHTT/TurretClock").tick(); if #V.queue > 0 then V.tick() end end
 check(#V.queue == 0 and V.reserved == 0, "Piercing drains within the bounded effect scheduler")
 check(math.abs(a.health - 9.3) < .000001 and math.abs(b.health - 9.51) < .000001 and c.health == 10,
     "Piercing hits two aligned extra victims with 70/49 percent damage")
@@ -91,7 +91,7 @@ check(primary.health == 10 and not a.knocked and not b.knocked, "Piercing cannot
 V.reserve(shot)
 testSquares["1602:1600:0"].blocked = true
 V.pierce({id = "wall", shots = 2}, origin, primary, nil, shot, primary.square, primary:getX(), primary:getY())
-for _ = 1, 100 do if #V.queue > 0 then V.tick() end end
+for _ = 1, 100 do testMillis=testMillis+20; require("OMHTT/TurretClock").tick(); if #V.queue > 0 then V.tick() end end
 check(math.abs(a.health - 9.3) < .000001, "Piercing cannot bypass a solid edge after the primary hit")
 V.reset()
 SandboxVars.OMHTurretsTraps, testRoll = savedSettings, savedRoll

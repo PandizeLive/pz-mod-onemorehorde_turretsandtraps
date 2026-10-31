@@ -55,7 +55,9 @@ function B.fire(record, object, player, options)
         ray.speed, ray.flightStart = options.projectileSpeed, Clock.now()
         facts.shot = ray.shot
         facts.start, facts.flight = ray.flightStart, options.range / ray.speed * 1000
-        facts.projectile = options.projectile
+        local family, speed, ammoType = require("OMHTT/TurretProjectileStyle").describe(stats, options)
+        facts.projectile, facts.ammoType = family, ammoType
+        ray.projectile, ray.ammoType = family, ammoType
         facts.sound = options.projectile == "spear" and "SpearCraftedSwing" or nil
     end
     V.release(options)

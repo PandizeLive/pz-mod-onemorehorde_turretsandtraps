@@ -7,6 +7,7 @@ local P = OMHTT_TurretPlacement
 ---@nodiscard
 function P.valid(params)
     local square = params and params.square
+    if require("OMHTT/ControlPokeFootprint").reserved(square) then return false end
     if not T.enabled() or not square or not square:TreatAsSolidFloor()
         or square:isSolid() or square:isSolidTrans() then return false end
     local objects = square:getObjects()

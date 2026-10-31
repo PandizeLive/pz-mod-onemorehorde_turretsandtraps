@@ -34,7 +34,7 @@ option OMHTurretsTraps.SpikeBarrierHealth {
     type = integer,
     min = 1,
     max = 10000,
-    default = 100,
+    default = 80,
     page = OMHTurretsTraps_BarrierPage,
     translation = OMHTurretsTraps_SpikeBarrierHealth,
 }

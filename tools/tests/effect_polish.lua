@@ -45,21 +45,22 @@ V.reserve(options)
 victim.health = 10
 V.miss({id = "miss", shots = 2}, origin, victim, nil, options)
 V.release(options)
+now = now + 300
 for i = 1, 100 do V.tick() end
 check(#V.queue == 5 and victim.health == 10, "Miss reaches full range without turning the scan into a damage ray")
 check(math.abs(V.queue[1].x - 2211.5) < .001, "Miss fragments at terminal range")
 local due = V.queue[1].group.due
-check(due == now + 250, "Fragments start a quarter-second delay at terminal stop")
+check(due == nil, "Fragments launch immediately at terminal stop")
 E.save(); V.save(); data = nativeRoundTrip(data)
 now = now + 500000; E.load(); V.load()
-check(#V.queue == 5 and V.queue[1].group.due == now + 250, "All delayed fragment rays survive native table serialization")
+check(#V.queue == 5 and V.queue[1].group.due == now, "All in-flight fragment rays survive native table serialization")
 local before = #sounds
-V.tick(); check(#sounds == before, "Reloaded fragments do not play early")
+V.tick(); check(#sounds == before, "Reloaded in-flight fragments do not replay their launch sound")
 now = now + 250
 for i = 1, 200 do V.tick() end
 check(#V.queue == 0 and V.reserved == 0 and E.reservedJobs == 0 and E.reservedFields == 0,
     "Restored lineage releases every admission credit")
-check(#sounds == before + 1 and sounds[#sounds].name == "OMHTTPotatoFire", "Non-firearm fragments inherit the originating head cue")
+check(#sounds == before and sounds[#sounds].name == "OMHTTPotatoFire", "Non-firearm fragments inherit the originating head cue exactly once")
 local rarity = require("OMHTT/TurretRarity")
 rarity.refresh({})
 for name in pairs(require("OMHTT/LootDefinitions").WEIGHTS) do

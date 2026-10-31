@@ -65,6 +65,7 @@ function A:isValid()
         or (origin ~= square and not origin:canReachTo(square)) then return false end
     local cursor = self:prepare()
     if not cursor then return false end
+    if self.route == "OMHTTDeployPoke" and not require("OMHTT/ControlPokeFootprint").valid(square, nil, self.character) then return false end
     local face = cursor:getFace()
     if not face then return false end
     for dx = 0, face:getWidth() - 1 do

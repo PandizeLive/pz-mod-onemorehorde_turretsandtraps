@@ -103,7 +103,7 @@ return function(player)
     local repairBarrier = OMHTTBarrierServiceAction:new(player, barrierParts[1], state.id, "Repair")
     assert(repairBarrier:getDuration() == 200 and repairBarrier:complete() and not repairBarrier:complete(),
         "Native server barrier repair relies on client elapsed time or replays")
-    assert(barrierParts[2]:getHealth() == 100, "Native barrier partner health not repaired")
+    assert(barrierParts[2]:getHealth() == F.barrierHealth(state), "Native barrier partner health not repaired")
     local pickupBarrier = OMHTTBarrierServiceAction:new(player, barrierParts[2], state.id, "Pickup")
     assert(pickupBarrier:getDuration() == 100 and pickupBarrier:complete() and not pickupBarrier:complete(),
         "Native server barrier pickup failed or duplicated")

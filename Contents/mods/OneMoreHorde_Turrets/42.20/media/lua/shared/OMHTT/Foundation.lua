@@ -1,6 +1,6 @@
 ---@class OMHTTFoundation
 local Foundation = {
-    VERSION = "0.2.70.11",
+    VERSION = "0.2.71",
     MODULE = "OMHTT_Foundation",
     STORE = "OMHTT_Foundation_v1",
     PREFIX = "OMHTT_P1C1_",
@@ -70,9 +70,9 @@ end
 ---@nodiscard
 function Foundation.barrierHealth(record)
     if record and record.tier == "reinforced" then
-        return barrierOption("SpikeBarrierHealth", 100, 1, 10000) * barrierOption("ReinforcedBarrierHealthMultiplier", 2, 1, 10)
+        return barrierOption("SpikeBarrierHealth", 80, 1, 10000) * barrierOption("ReinforcedBarrierHealthMultiplier", 2, 1, 10)
     end
-    return barrierOption("SpikeBarrierHealth", 100, 1, 10000)
+    return barrierOption("SpikeBarrierHealth", 80, 1, 10000)
 end
 
 ---@return number denominator Zero disables spike scratches

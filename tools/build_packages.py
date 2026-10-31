@@ -11,7 +11,7 @@ PACKAGES = ROOT / "Contents/mods"
 IDS = {"traps": "OneMoreHorde_Traps", "turrets": "OneMoreHorde_Turrets"}
 SHARED_LUA = {"WindowGeometry", "DefenseNames", "DefenseXP", "SlotHint", "DefenseAuthority", "DefenseActorState", "DefenseContacts", "DefenseLine", "DefenseInjury", "DefenseEffects", "DefenseMotion", "DefenseDisplacement", "DefenseCombatProtocol", "DefenseCombatServer", "DefenseCombatClient", "DefenseHorde", "ContactPlayer", "BarbMovement", "BarbContact", "ActiveTime", "Foundation", "Diagnostics", "Damage", "DamagePresentation", "DamageNotice", "ConstructionMenu", "CraftingMenu", "CraftingGroups", "HybridBuild", "SandboxUI", "WorldHighlight", "PackageInfo", "PlacementTiming", "PlacementRules", "PlacementAction", "PlacementBuild"}
 TRAP_LUA = {"FoundationServer", "FoundationClient", "DevMarkers", "Construction", "DefenseMaterials"}
-TRAP_SCRIPTS = {"OMHTT_Items.txt", "OMHTT_PortableBarrier.txt", "OMHTT_construction.txt", "OMHTT_construction_ui.txt", "OMHTT_BedSpikes.txt", "OMHTT_Barbs.txt", "OMHTT_PokeFloor.txt", "OMHTT_Tether.txt"}
+TRAP_SCRIPTS = {"OMHTT_PokeVisuals.txt","OMHTT_Items.txt", "OMHTT_PortableBarrier.txt", "OMHTT_construction.txt", "OMHTT_construction_ui.txt", "OMHTT_BedSpikes.txt", "OMHTT_Barbs.txt", "OMHTT_PokeFloor.txt", "OMHTT_Tether.txt"}
 TRAP_OPTIONS = {"Enabled", "FoundationTestControls", "DiagnosticLogging", "ShowCollision", "DetailedLogging"}
 SHARED_LUA.add("DefenseActors")
 SHARED_LUA.update({"DefenseContactClient", "DefenseContactServer"})
@@ -46,6 +46,8 @@ def owner(path):
         return set(IDS)
     if "/textures/OMHTT/Modules/expansion_" in relative:
         return set(IDS)
+    if "/models_X/OMHTT_PokeStabilizers" in relative:
+        return {"traps"}
     if "/textures/" in relative:
         if name in {"OMHTT_TestCube.png", "OMHTT_Foundation.png"}:
             return {"traps"}

@@ -9,6 +9,7 @@ require("OMHTT/PlacementRules").routes.OMHTTDeployTether = {D.types.Tether, 2}
 ---@return boolean valid
 function T.valid(params)
     local square = params.square
+    if require("OMHTT/ControlPokeFootprint").reserved(square) then return false end
     if not square or SandboxVars.OMHTurretsTraps.Enabled == false then return false end
     local mount = M.resolve(square:getX(), square:getY(), square:getZ(), params.facing)
     if not mount then return false end

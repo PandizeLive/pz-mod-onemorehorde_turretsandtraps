@@ -66,7 +66,7 @@ def main():
                            and name not in {"OMHTT/TurretBattery", "OMHTT/TurretItemState"} for name in lua)
             assert "OMHTT/ModuleLoot" not in lua and "OMHTT/PrototypeCombat" not in lua
             assert "item OMHTTTurretBase" not in scripts and "item OMHTTModuleFiring" not in scripts
-            allowed_models = {"OMHTT_TetherNail.x", "OMHTT_TetherCable.x", "OMHTT_StateAmber.x", "OMHTT_StateGreen.x", "OMHTT_StateDark.x"}
+            allowed_models = {"OMHTT_TetherNail.x", "OMHTT_TetherCable.x", "OMHTT_StateAmber.x", "OMHTT_StateGreen.x", "OMHTT_StateDark.x", "OMHTT_PokeStabilizers.x"}
             allowed_sounds = {"OMHTTReeling.wav", "OMHTTLaserCleared.wav", "OMHTTLaserDetected.wav", "OMHTTTurretAlert.wav", "OMHTTTurretDeactivate.wav"}
             assert all(Path(name).name in allowed_models for name in files if "/models_X/" in name)
             assert all(Path(name).name in allowed_sounds for name in files if "/sound/" in name)

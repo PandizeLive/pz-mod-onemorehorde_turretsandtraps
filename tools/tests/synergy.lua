@@ -128,6 +128,7 @@ for _, linked in pairs({false, true}) do
     V.ray(record, 2000.5, 2000.5, 0, 0, 10, .1, group, 1)
     local ray = V.queue[1]
     ray.best, ray.square, ray.bestDistance = b, b.square, 5
+    now = now + 250
     V.finish(ray)
     table.remove(V.queue, 1)
     check(E.fieldCount == (linked and 1 or 0), "Only linked secondary hits can drop Tack")

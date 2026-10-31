@@ -251,7 +251,8 @@ def build(destination):
         with Image.open(destination / module["marker"]) as icon:
             sheet.paste(icon, (n % 6 * 128, n // 6 * 128), icon)
     sheet.save(destination / "MODULE_PREVIEW.png")
-    manifest = dict(baseline="0.2.66", status="artist handoff; staged markers, not installed",
+    version = re.search(r"^modversion=(.+)$", (ROOT / "Source/42.20/mod.info").read_text(), re.MULTILINE).group(1).strip()
+    manifest = dict(baseline=version, status="artist handoff; exported source assets and optional development variants",
                     assets=export.records, spritePages=pages, modules=modules, heads=heads,
                     uniquePayloads=len(export.hashes), aliases=len(export.records) - len(export.hashes))
     (destination / "manifest.json").write_text(json_text(manifest), encoding="utf-8")

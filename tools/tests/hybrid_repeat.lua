@@ -11,7 +11,7 @@ local player = {isDead = function() return false end, getPlayerNum = function() 
     getCurrentSquare = function(self) return self.square end}
 local panel, definition = {player = player}, H.definitions[1]
 local function cursor(item)
-    return {nSprite = 1, item = item, objectInfo = {getScript = function() return {getTimedActionOnIsValid = function() return "native-check" end} end},
+    return {nSprite = 1, item = item, objectInfo = {getName = function() return definition.deploy end, getScript = function() return {getTimedActionOnIsValid = function() return "native-check" end} end},
         onActionComplete = function() end, onTimedActionStart = function() end,
         getSprite = function(self) self.directionResolved = true end,
         isValid = function(self, target) return target ~= nil and not self.blockBuild end}

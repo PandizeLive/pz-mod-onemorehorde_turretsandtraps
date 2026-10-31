@@ -21,6 +21,10 @@ Owner asks why Makeshift Bomb transfer, Splitter and the other work from this di
 
 [C523/C524 approved direction and modeling](TRAP_BASES_C523.md#c524---approved-tuning-and-stabilizer-bar-correction). Four low ground-mounted arms, not platforms; one assembly and center-only damage. No corpse maintenance, dulling or automatic servicing was selected. No new trigger delay.
 
-## Delivery truth
+## C526 implementation follow-through
+
+The owner subsequently approved this entire update. Implementation, verification and delivery are recorded in [C526](UPDATE_C526.md) and [0.2.71 checks](TEST_v0.2.71.md). The following paragraph is the original C525 planning status, not the current build state.
+
+## Original delivery truth
 
 These follow-up changes remain unimplemented. Existing0.2.70.11 work is not being relabeled as a new patch; improved prior behavior does not settle owner-reported remaining defects. Current work produced investigations, simulation and planning only. No new build, installation, upload or connected acceptance. Provide the complete list in subsequent recaps instead of dismissing the first group as separately tracked. No change to sibling-project/publication authorization. Prior GitHub automatic approval-review rejection remains; this consolidated handoff is local. **Wait for a patch.**

@@ -531,6 +531,7 @@ function W.create(params)
     local state = W.register(object, player, kind, previous)
     W.records().packed[tostring(source:getID())] = false
     state.itemType = C.types[kind]
+    if kind == "Poke" then state.pokeFootprint = 1 end
     if kind == "Lever" or kind == "Laser" then state.facing = params.facing end
     object:setName(getText("UI_OMHTT_Control" .. kind))
     local health = kind == "Poke" and require("OMHTT/ControlPoke").option("Health", 200, 1, 10000) or 100

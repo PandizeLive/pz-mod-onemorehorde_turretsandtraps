@@ -72,6 +72,7 @@ end
 ---@return string? failure Placement rejection
 ---@nodiscard
 function Footprint.canBuildPart(square, facing)
+    if require("OMHTT/ControlPokeFootprint").reserved(square) then return "Occupied" end
     if not square or not square:getFloor() then return "Blocked" end
     local reserved = store.tiles[Footprint.edgeKey(square:getX(), square:getY(), square:getZ(), facing)]
     if reserved and (reserved.device or reserved.anchor) then return "Occupied" end

@@ -117,7 +117,7 @@ function Action:complete()
     if self.ids ~= nil then
         if type(self.ids) ~= "table" or #self.ids > 20 or #self.ids < 1
             or self.ids[1] ~= self.item:getID() or T.kind(self.item) ~= "ammo"
-            or self.item:getActualWeight() > .1 then return false end
+            or not require("OMHTT/TurretAmmo").fastTransfer(self.item) then return false end
         local seen = {[self.item:getID()] = true}
         for i = 2, #self.ids do
             local id = self.ids[i]
@@ -125,7 +125,7 @@ function Action:complete()
             seen[id] = true
             local candidate = source:getItemById(id)
             if not candidate or candidate:getContainer() ~= source
-                or candidate:getFullType() ~= self.item:getFullType() or candidate:getActualWeight() > .1 then return false end
+                or candidate:getFullType() ~= self.item:getFullType() or not require("OMHTT/TurretAmmo").fastTransfer(candidate) then return false end
             items[#items + 1] = candidate
         end
     end
@@ -206,7 +206,7 @@ end
 ---@return number duration
 function Action:getDuration()
     if not self.item then return 1 end
-    local duration = 50 * math.min(3, math.max(.02, self.item:getActualWeight()))
+    local duration = 50 * math.min(3, math.max(.02, require("OMHTT/TurretAmmo").transferWeight(self.item)))
     if self.character:hasTrait(CharacterTrait.DEXTROUS) then
         duration = duration * .5
     end

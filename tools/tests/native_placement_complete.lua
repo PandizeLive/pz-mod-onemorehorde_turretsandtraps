@@ -76,6 +76,18 @@ return function(player)
                 if route ~= "OMHTTBarbs" then
                     assert(square:getSpecialObjects():size() > 0, "No native object survived completion: " .. route)
                 end
+                if route == "OMHTTDeployPoke" then
+                    local footprint=require("OMHTT/ControlPokeFootprint")
+                    assert(square:getSpecialObjects():size()==1,"Poke assembly created extra collision objects")
+                    for i=1,#footprint.offsets do
+                        local offset=footprint.offsets[i]
+                        local tile=lookup[(x+offset[1])..":"..(y+offset[2])..":0"]
+                        assert(footprint.reserved(tile) and not require("OMHTT/BedSpikes").clear(tile),
+                            "Native cross reservation or floor-hazard exclusion failed")
+                        if i>1 then assert(tile:getSpecialObjects():size()==0,"Poke arm became an extra obstacle") end
+                    end
+                    print("[OMHTT-C526] native-poke-cross tiles=5 objects=1 arms=traversable server="..tostring(server).." cheat="..tostring(cheat))
+                end
                 if (route == "OMHTTDeployTether" or route == "OMHTTDeployLever" or route == "OMHTTDeployLaser") then
                     local found = false
                     for n=0,square:getSpecialObjects():size()-1 do

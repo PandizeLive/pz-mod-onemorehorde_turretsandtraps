@@ -123,8 +123,8 @@ function R.animate(now)
                 end
                 local value
                 if rotary and age and age>=-100 and age<=1000 and type(state.rotarySpeed)=="number" then
-                    value = require("OMHTT/TurretAimView").rotary(state.rotaryTravel,age,state.rotarySpeed,
-                        state.rotaryMoving==true,state.rotaryStopAt)
+                    value = require("OMHTT/TurretAimView").motor(entry.aimSample,state.rotaryTravel,age,state.rotarySpeed,
+                        state.rotaryMoving==true,state.rotaryStopAt,getTimestampMs())
                 elseif target and not target:isDead() and math.floor(target:getZ()) == object:getSquare():getZ() then
                     value = require("OMHTT/TurretAimView").follow(entry.aimSample,
                         entry.visualHeading or desired, Aim.angle(object, target), getTimestampMs(), state.aimSpeed)

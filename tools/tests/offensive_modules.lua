@@ -50,7 +50,12 @@ V.reset(); options.pending = nil; V.split(record, origin, victim, nil, options)
 check(V.queue[3].dy == -firstOdd and record.splitterSide == -1, "Odd outer side alternates each volley")
 check(nativeRoundTrip(record).splitterSide == -1, "Odd-side state survives native mod-data serialization")
 local function drain()
-    for i = 1, 1000 do if #V.queue == 0 then return end; V.tick() end
+    for i = 1, 1000 do
+        if #V.queue == 0 then return end
+        testMillis = testMillis + 20
+        require("OMHTT/TurretClock").tick()
+        V.tick()
+    end
     error("Bounded queue did not drain")
 end
 local group = {kind = "fragment", stats = {firearm = false}, hits = {}}
@@ -87,6 +92,7 @@ V.reset(); origin.moving = {}
 local oldEvent, emitted = triggerEvent, {}
 triggerEvent = function(event, module, command, facts) emitted[#emitted + 1] = {command=command,facts=facts} end
 local pairStats = Stats.resolve({active = {Splitter = 2}})
+pairStats.firearm = true
 local impact = {x=1203,y=1200.5,z=0,firearm=true,fromX=1200.5,fromY=1200.5,muzzle=.4}
 V.split(record, origin, victim, nil, {stats=pairStats,damage=.2}, impact)
 check(impact.deferVisual and #V.queue == 2 and #emitted == 0, "Primary waits for the resolved complete side fan")

@@ -1,0 +1,41 @@
+{
+  "version": "0.2.71",
+  "connectedClients": 0,
+  "assertions": 41863,
+  "negativeControls": 5,
+  "nativeWrite": "passed",
+  "nativeRead": "passed",
+  "hordeBaseline": {
+    "version": "0.6.16.10",
+    "commit": "942789d",
+    "assertions": 610,
+    "installed": true
+  },
+  "files": [
+    {
+      "path": "diagnostics/c526/validation.log",
+      "sha256": "45507b077c773e47ad416253051a69a10375a88514b1e89b3a9dd01b44ed8182"
+    },
+    {
+      "path": "diagnostics/c526/native-write.log",
+      "sha256": "c7d898d20cb336a9c2d9aa25373b8bf5f112a3cfdcb72841d8c592b990bf6088"
+    },
+    {
+      "path": "diagnostics/c526/native-read.log",
+      "sha256": "56028efcf76660c7108de3c2571e88012e5e0dc6b74571905a1365b03d721512"
+    },
+    {
+      "path": "diagnostics/c526/regressions.log",
+      "sha256": "603890135fe0a55bb478186fef382a2bf98d6c19ea78288b6088b1dcf62c06fc"
+    },
+    {
+      "path": "diagnostics/c526/horde-baseline.log",
+      "sha256": "88aac3e169431d4359d948e590ad9f98fbcaae5292d0e7a09fc755dab841bd03"
+    },
+    {
+      "path": "diagnostics/v0.2.71/poke-stabilizers-import.log",
+      "sha256": "3f4f7e3b00f2bc3c70d75ab2925ca6589e8866640094d414f49ba3617b31fb30"
+    }
+  ],
+  "limits": "Controlled world/network/UI doubles plus native stock-class probes; no rendered or live two-client acceptance."
+}

@@ -1,0 +1,4 @@
+module Base {
+    model OMHTTPokeStabilizers { mesh = OMHTT_PokeStabilizers, texture = OMHTT/ProbeWhite, scale = 1.0, static = true, shader = basicEffect, }
+    item OMHTTTrapPokeStabilizersVisual { DisplayName = OMH Poke Stabilizers Visual, ItemType = base:normal, Weight = 0, Hidden = true, Icon = ElectronicsScrap, WorldStaticModel = OMHTTPokeStabilizers, }
+}

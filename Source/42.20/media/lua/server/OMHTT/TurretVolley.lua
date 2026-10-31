@@ -114,12 +114,23 @@ function V.ray(record, x, y, z, angle, range, damage, group, index)
     V.queue[#V.queue + 1] = {x = x, y = y, z = z, dx = math.cos(angle), dy = math.sin(angle),
         range = range, distance = 0, damage = damage, group = group, id = record.id,
         shot = tostring(record.shots) .. ":" .. group.kind .. ":" .. index, objectIndex = 0}
-    if group.stats.headKind == "Ballista" and group.kind ~= "fragment" and group.kind ~= "forward" then
+    local family, speed, ammoType = require("OMHTT/TurretProjectileStyle").describe(group.stats, owner)
+    if family and group.kind ~= "forward" then
         local ray = V.queue[#V.queue]
-        ray.flightStart, ray.speed = Clock.now(), 24
+        ray.flightStart, ray.speed, ray.projectile, ray.ammoType = Clock.now(), speed, family, ammoType
+        local startX, startY, remaining = x, y, range
+        if (group.kind == "piercing" or group.kind == "terminal") and group.fromX then
+            startX, startY = group.fromX, group.fromY
+            local travelled = math.sqrt((startX-x)^2+(startY-y)^2)
+            remaining = math.max(0, range-travelled)
+            ray.flightStart = ray.flightStart-travelled/speed*1000
+            ray.distance, ray.minimum = travelled, travelled
+            ray.square = getCell():getGridSquare(math.floor(startX),math.floor(startY),z)
+        end
         require("OMHTT/DefenseEffects").emit("Launch", {id = ray.id, shot = ray.shot, x = x + ray.dx * range,
-            y = y + ray.dy * range, z = z, fromX = x, fromY = y, start = ray.flightStart,
-            flight = range / ray.speed * 1000, projectile = "spear", silent = true})
+            y = y + ray.dy * range, z = z, fromX = startX, fromY = startY, start = Clock.now(),
+            flight = remaining / ray.speed * 1000, projectile = family, ammoType = ammoType,
+            muzzle = (group.kind == "fragment" or group.fromX) and 0 or nil, muzzleHeight = group.height, silent = true})
     end
 end
 
@@ -170,7 +181,6 @@ function V.fragment(record, x, y, z, target, player, options)
     local owner = options.root or options
     local group = {options = owner, kind = "fragment", player = player, weapon = options.effectWeapon, stats = stats, hits = {}, remaining = 5, rays = {}, height = .30}
     if target then group.hits[target] = true end
-    group.due = Clock.now() + 250
     local rotation = ZombRand(36000) / 100
     local damage = options.damage * (options.critical and options.critMultiplier or 1) * stats.fragmentDamage
     for i = 1, 5 do
@@ -291,8 +301,8 @@ function V.finish(ray)
     if group.stats.headKind == "Arc" then
         require("OMHTT/DefenseEffects").emit("Arc", facts)
     elseif ray.speed then
-        if not victim or (hit and group.left and group.left <= 1) or group.kind == "splitter" then
-            facts.firearm, facts.projectile = false, group.stats.headKind == "Ballista" and "spear" or nil
+        if not victim or not group.left or (hit and group.left <= 1) then
+            facts.firearm, facts.projectile, facts.ammoType = false, ray.projectile, ray.ammoType
             require("OMHTT/DefenseEffects").emit("Impact", facts)
         end
     elseif group.kind == "scrapshot" then
@@ -429,6 +439,9 @@ function V.miss(record, origin, target, player, options, targetX, targetY)
     options.fragmentReserved = nil
     local x, y = origin:getX() + .5, origin:getY() + .5
     local group = {options = options, kind = "terminal", player = player, weapon = options.weapon, stats = options.stats, hits = {}}
+    if options.stats.headKind == "Ballista" then
+        group.fromX, group.fromY = targetX or target:getX(), targetY or target:getY()
+    end
     V.ray(record, x, y, origin:getZ(), math.atan2((targetY or options.aimY or target:getY()) - y, (targetX or options.aimX or target:getX()) - x), options.stats.range,
         options.damage * (options.critical and options.critMultiplier or 1), group, 1)
 end
@@ -456,7 +469,8 @@ function V.save()
             data.owners[owners[owner]] = {stats = owner.stats, rayBudget = owner.rayBudget, procJobs = owner.procJobs,
                 procFields = owner.procFields, impactReady = owner.impactReady, scrapId = owner.scrapId, savedScrap = savedScrap,
                 playerSource = owner.playerSource, playerBudget = owner.playerBudget, playerEvent = owner.playerEvent, playerKind = owner.playerKind,
-                damage = owner.damage, splash = owner.splash, radius = owner.radius, source = owner.source, siphon = owner.siphon}
+                damage = owner.damage, splash = owner.splash, radius = owner.radius, source = owner.source, siphon = owner.siphon,
+                projectileSpeed = owner.projectileSpeed, ammoDescriptor = owner.ammoDescriptor}
         end
         return owners[owner]
     end

@@ -100,6 +100,7 @@ function V.canBuild(x, y, z, facing)
     local nx, ny = F.barrierDirection(facing)
     for part = 0, 1 do
         local square = getCell():getGridSquare(x - ny * part, y + nx * part, z)
+        if require("OMHTT/ControlPokeFootprint").reserved(square) then return "Occupied" end
         if not square or not square:getFloor() or square:HasStairs() or square:HasStairsBelow()
             or square:isVehicleIntersecting() or square:has(IsoFlagType.water) or square:getMovingObjects():size() > 0 then return "Blocked" end
         local objects = square:getObjects()

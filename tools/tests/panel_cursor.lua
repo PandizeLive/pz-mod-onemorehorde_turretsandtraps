@@ -11,7 +11,7 @@ function testPlayer:getInventory() return inventory end
 local selectedInput, heading, consumed = {}, nil, 0
 local recipe = {getName = function() return "OMHTTBarbs" end,
     getInputs = function() return {get = function() return selectedInput end} end}
-local info = {getRecipe = function() return {getCraftRecipe = function() return recipe end} end,
+local info = {getName = function() return "OMHTTBarbs" end, getRecipe = function() return {getCraftRecipe = function() return recipe end} end,
     getScript = function() return {getOnIsValid = function() return "panel-valid" end} end}
 SpriteConfigManager = {GetObjectInfo = function() return info end}
 local props = {has = function() return false end}

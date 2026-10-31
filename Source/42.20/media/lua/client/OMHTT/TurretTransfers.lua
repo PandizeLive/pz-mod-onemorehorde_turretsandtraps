@@ -10,6 +10,21 @@ local nativeTransfer = ISInventoryTransferAction.transferItem
 local nativePerform = ISInventoryTransferAction.perform
 local nativeMerge = ISInventoryTransferAction.canMergeAction
 local nativeCheckQueue = ISInventoryTransferAction.checkQueueList
+local nativeNew = ISInventoryTransferAction.new
+
+---@return table action Native SP transfer with the same effective loading weight as MP
+function ISInventoryTransferAction:new(character, item, srcContainer, destContainer, time)
+    local action = nativeNew(self, character, item, srcContainer, destContainer, time)
+    if item and item:getFullType() == "Base.OMHTTAmmoMakeshiftBomb" and not time
+        and not character:isTimedActionInstant() and (T.isContainer(srcContainer) or T.isContainer(destContainer)) then
+        local weight = math.min(3, item:getActualWeight())
+        if weight > 0 then
+            action.maxTime = math.max(1, action.maxTime * require("OMHTT/TurretAmmo").transferWeight(item) / weight)
+            if action.queueList and action.queueList[1] then action.queueList[1].time = action.maxTime end
+        end
+    end
+    return action
+end
 
 ---@param action ISInventoryTransferAction Candidate
 ---@return boolean allowed
@@ -33,6 +48,20 @@ function ISInventoryTransferAction:checkQueueList()
     end
     nativeCheckQueue(self)
     self.omhttMergeRemaining = nil
+    if owned then
+        local groups = self.queueList
+        local i = 2
+        while i <= #groups do
+            local previous, group = groups[i-1], groups[i]
+            if group.type == "Base.OMHTTAmmoMakeshiftBomb" and previous.type == group.type
+                and previous.time == group.time and #previous.items + #group.items <= 20 then
+                for n=1,#group.items do previous.items[#previous.items+1] = group.items[n] end
+                table.remove(groups,i)
+            else
+                i = i+1
+            end
+        end
+    end
 end
 
 ---@return nil
@@ -252,7 +281,7 @@ function X.queue(player, object, items, incoming, kind)
     for i = 1, #items do
         local item = items[i]
         local source = item:getContainer()
-        local lightAmmo = kind == "ammo" and T.kind(item) == "ammo" and item:getWeight() <= .1
+        local lightAmmo = kind == "ammo" and T.kind(item) == "ammo" and require("OMHTT/TurretAmmo").fastTransfer(item, item:getWeight())
         local typeKey = item:getFullType()
         local failure
         if lightAmmo and source and validated[source] == typeKey then

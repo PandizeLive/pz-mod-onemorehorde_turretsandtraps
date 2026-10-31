@@ -113,8 +113,8 @@ now = now + 1
 O.step(job)
 check(#O.jobs == 8 and O.reserved == 10 and job.children == 0, "Parent blast releases exactly five reserved terminal minis")
 local mini = O.jobs[4]
-check(mini.due == now + 250 and mini.fuse == 500 and mini.range == 2 and mini.children == 0,
-    "Minis have delayed launch, short travel and landing fuse without recursion")
+check(mini.due == now and mini.fuse == 500 and mini.range == 2 and mini.children == 0,
+    "Minis launch at impact and preserve short travel and landing fuse without recursion")
 O.jobs, O.reserved, O.serial = savedJobs, savedReserve, savedSerial
 local lure = require("OMHTT/TurretLure")
 local oldSound, sounds = require("OMHTT/DefenseHorde").sound, 0

@@ -63,8 +63,8 @@ return function(player)
         {"Button", {ElectronicsScrap = 1, ElectricWire = 1, Screws = 2}},
         {"Lever", {ElectronicsScrap = 1, ElectricWire = 1, Screws = 2}},
         {"Laser", {ElectronicsScrap = 2, ElectricWire = 1, SmallSheetMetal = 1, Screws = 2}},
-        {"Poke", {TirePump = 1, MetalBar = 4, SmallSheetMetal = 2, ElectronicsScrap = 4, ElectricWire = 2, Screws = 8}},
-        {"Poke", {MetalPipe = 2, MetalBar = 4, SmallSheetMetal = 2, ElectronicsScrap = 4, ElectricWire = 2, Screws = 8}, "PokeImprovised"},
+        {"Poke", {TirePump = 1, MetalBar = 5, SmallSheetMetal = 2, ElectronicsScrap = 4, ElectricWire = 2, Screws = 10}},
+        {"Poke", {MetalPipe = 2, MetalBar = 5, SmallSheetMetal = 2, ElectronicsScrap = 4, ElectricWire = 2, Screws = 10}, "PokeImprovised"},
     }
     require("OMHTT/NativeTether")()
     require("OMHTT/NativePlacement")(player)
@@ -290,7 +290,7 @@ return function(player)
         assert(recipe:getXPAwardCount() == 1 and recipe:getXPAward(0):getPerk() == Perks.Mechanics,
             "Mechanical Poke awards only Mechanics XP")
         local inputs, resources = ArrayList.new(), ArrayList.new()
-        local costs = {Screwdriver = 1, Wrench = 1, MetalBar = 4, SmallSheetMetal = 2, Screws = 8}
+        local costs = {Screwdriver = 1, Wrench = 1, MetalBar = 5, SmallSheetMetal = 2, Screws = 10}
         costs[route == "Poke" and "TirePump" or "MetalPipe"] = route == "Poke" and 1 or 2
         for name, count in pairs(costs) do
             for i = 1, count do inputs:add(instanceItem("Base." .. name)) end

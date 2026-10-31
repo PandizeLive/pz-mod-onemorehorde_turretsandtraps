@@ -49,7 +49,8 @@ IsoUtils = {XToIso = function() return 400 end, YToIso = function() return 300 e
 IsoCamera = {getOffX = function() return 0 end, getOffY = function() return 0 end}
 testAdmin = true
 testPlayer = {x = 100.5, y = 100.5, z = 0, dead = false}
-SandboxVars = {OMHTurretsTraps = {FoundationTestControls = true}}
+-- Legacy damage fixtures explicitly use their original 100-HP setting.
+SandboxVars = {OMHTurretsTraps = {FoundationTestControls = true, SpikeBarrierHealth = 100}}
 Capability = {UseDebugContextMenu = "debug"}
 
 function check(value, message)

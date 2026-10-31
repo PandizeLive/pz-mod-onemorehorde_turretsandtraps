@@ -34,7 +34,7 @@ function V.position(state, elapsed)
         local ax, ay = endpoint and endpoint.x or state.attachX, endpoint and endpoint.y or state.attachY
         local initial = state.distance + state.returnSpeed * (state.backTime or 0)
         if ax and initial > .001 then
-            local remaining = math.max(0, state.distance - state.returnSpeed * math.min(.25, age))
+            local remaining = math.max(0, state.distance - state.returnSpeed * math.min(.75, age))
             local fraction = math.min(1, remaining / initial)
             x, y = state.x + (ax - state.x) * fraction, state.y + (ay - state.y) * fraction
         end
@@ -61,6 +61,10 @@ function V.receive(module, command, message)
     V.latency[message.id] = math.max(0, math.min(250, transit)) / 1000
     V.from[message.id] = distance
     V.states[message.id], V.received[message.id], V.simulated[message.id] = message, getTimestampMs(), Clock.now()
+    if not previous or previous.sequence ~= message.sequence or previous.phase ~= message.phase then
+        require("OMHTT/Diagnostics").defer("tether-receive", {id=message.id, sequence=message.sequence,
+            serial=message.serial, phase=message.phase, transitMs=transit, distance=message.distance}, "traps")
+    end
 end
 
 ---@param index number Native viewport
@@ -89,6 +93,12 @@ function V.render(index)
                 local yaw = math.deg(math.atan2(y - state.y, x - state.x))
                 if square and square:isCanSee(index) then
                     Draw.draw(visual.nail, square, x, y, state.z + height, 0, 0, yaw)
+                    if visual.sequence ~= state.sequence or visual.phase ~= state.phase then
+                        visual.sequence, visual.phase = state.sequence, state.phase
+                        require("OMHTT/Diagnostics").defer("tether-first-render", {id=id, sequence=state.sequence,
+                            serial=state.serial, phase=state.phase, receiptAgeMs=now - V.received[id],
+                            transitMs=(V.latency[id] or 0) * 1000}, "traps")
+                    end
                 end
                 local distance = math.sqrt((x - state.x) ^ 2 + (y - state.y) ^ 2)
                 local segments = math.min(24, math.max(1, math.ceil(distance / .4)))

@@ -37,7 +37,7 @@ end
 
 ---@return nil
 function Action:begin()
-    if not self.onCompleteFunc and self.item and T.kind(self.item) == "ammo" and self.item:getActualWeight() <= .1 then
+    if not self.onCompleteFunc and self.item and T.kind(self.item) == "ammo" and require("OMHTT/TurretAmmo").fastTransfer(self.item) then
         local queue = ISTimedActionQueue.getTimedActionQueue(self.character)
         local position = queue:indexOf(self)
         if position > 0 then
@@ -105,7 +105,7 @@ function X.queue(player, object, items, incoming, kind, stockpile, controller)
             reason = rejection
         else
             pending[item:getID()] = true
-            local lightAmmo = kind == "ammo" and item:getActualWeight() <= .1
+            local lightAmmo = kind == "ammo" and require("OMHTT/TurretAmmo").fastTransfer(item)
             if lightAmmo and batch and #batch.ids < 20 and batch.item:getFullType() == item:getFullType()
                 and batch.item:getContainer() == item:getContainer() then
                 batch.ids[#batch.ids + 1] = item:getID()

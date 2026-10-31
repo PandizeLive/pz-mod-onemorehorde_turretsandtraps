@@ -231,6 +231,7 @@ function H.repeatPlacement(panel, definition, facing)
     local info = SpriteConfigManager.GetObjectInfo(definition.deploy)
     if not info then return end
     local preview = ISBuildIsoEntity:new(panel.player, info, facing, containers)
+    require("OMHTT/PlacementTiming").preview(preview)
     preview.dragNilAfterPlace = false
     ---@param self ISBuildIsoEntity Planning cursor
     ---@param square IsoGridSquare Destination

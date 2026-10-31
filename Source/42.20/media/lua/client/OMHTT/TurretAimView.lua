@@ -9,12 +9,29 @@ local V = {}
 function V.rotary(travel, age, speed, moving, stopAt)
     local value = travel
     if moving then
-        value = value + speed * math.max(0,math.min(250,age))/1000
+        value = value + speed * math.max(0,math.min(750,age))/1000
         if stopAt then
             value = math.min(value,stopAt)
         end
     end
     return value
+end
+
+---@param sample table Per-head display state
+---@return number value Continuous motor travel with bounded snapshot correction
+function V.motor(sample, travel, age, speed, moving, stopAt, now)
+    local target = V.rotary(travel, age, speed, moving, stopAt)
+    if sample.motorAt == nil or now < sample.motorAt then
+        sample.motorValue = target
+    else
+        local elapsed = math.max(0, math.min(100, now - sample.motorAt))
+        local advance = moving and age < 750 and speed * elapsed / 1000 or 0
+        local value = sample.motorValue + advance
+        sample.motorValue = value + (target - value) * (1 - math.exp(-elapsed / 100))
+    end
+    if stopAt and moving then sample.motorValue = math.min(sample.motorValue, stopAt) end
+    sample.motorAt = now
+    return sample.motorValue
 end
 
 ---@param sample table Reused per-head state

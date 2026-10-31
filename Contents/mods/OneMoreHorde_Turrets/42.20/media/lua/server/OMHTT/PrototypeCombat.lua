@@ -174,7 +174,8 @@ function Combat.fire(record, object, player, options)
         fromX = origin:getX() + 0.5, fromY = origin:getY() + 0.5, target = target}
     if options.projectileSpeed then
         local dx, dy = tx - facts.fromX, ty - facts.fromY
-        facts.projectile = options.projectile
+        local family, speed, ammoType = require("OMHTT/TurretProjectileStyle").describe(options.stats or {}, options)
+        facts.projectile, facts.ammoType = family, ammoType
         facts.sound = options.projectile == "spear" and "SpearCraftedSwing" or nil
         facts.start = now
         facts.flight = math.max(50, math.sqrt(dx * dx + dy * dy) / options.projectileSpeed * 1000)

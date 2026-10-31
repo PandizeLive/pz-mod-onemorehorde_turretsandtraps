@@ -186,6 +186,10 @@ def main():
             "-Djava.library.path=" + str(GAME), "-cp", os.pathsep.join([str(classes), str(GAME / "projectzomboid.jar")]),
             "HybridAssetCheck", PACKAGE / ("42.20/media/models_X/OMHTT_Dev" + name + ".x"), str(faces)], cwd=GAME)
     (OUTPUT / "model-import.log").write_text(model_log, encoding="utf-8")
+    brace_log = run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED",
+        "-Djava.library.path=" + str(GAME), "-cp", os.pathsep.join([str(classes), str(GAME / "projectzomboid.jar")]),
+        "HybridAssetCheck", PACKAGE / "42.20/media/models_X/OMHTT_PokeStabilizers.x", "96"], cwd=GAME)
+    (OUTPUT / "poke-stabilizers-import.log").write_text(brace_log, encoding="utf-8")
     run([javac, "-d", classes, ROOT / "tools/BuildBaseDepth.java"])
     depth_log = run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED",
         "-Djava.library.path=" + str(GAME), "-cp", os.pathsep.join([str(classes), str(GAME / "projectzomboid.jar")]),

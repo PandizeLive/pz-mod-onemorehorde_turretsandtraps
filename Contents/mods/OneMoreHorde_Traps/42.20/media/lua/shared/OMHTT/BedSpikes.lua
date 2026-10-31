@@ -270,6 +270,7 @@ end
 ---@return boolean clear
 ---@nodiscard
 function B.clear(square)
+    if require("OMHTT/ControlPokeFootprint").reserved(square) then return false end
     if not square or not square:getFloor() or square:HasStairs() or square:HasStairsBelow()
         or square:isVehicleIntersecting() or square:has(IsoFlagType.water) or square:getMovingObjects():size() > 0
         or square:isSolid() or square:isSolidTrans() then return false end
