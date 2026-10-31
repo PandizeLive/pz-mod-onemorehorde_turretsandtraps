@@ -8,7 +8,7 @@ local old = {order=W.order,objects=W.objects,dirty=W.dirty,dirtySet=W.dirtySet,c
 local clock, dispatched, ordinary = 0, 0, 0
 testMode = 'sp'
 getTimestampMs = function() return clock end
-getGameTime = function() return {getWorldAgeHours=function() return 1 end} end
+getGameTime = function() return {getMultiplier=function() return 1 end, getTrueMultiplier=function() return 1 end,getWorldAgeHours=function() return 1 end} end
 GameTime.isGamePaused = function() return false end
 Poke.advance, Power.flush = function() end, function() end
 local square=makeSquare(7000,7000,0)

@@ -31,6 +31,16 @@ return function()
                 assert(math.abs(delta(angle,start))<=math.pi/4+.00001,"Native turn exceeded nearest quarter")
                 local x,y=actor:getNextX()-actor:getX(),actor:getNextY()-actor:getY()
                 assert(x*dx+y*dy>0 and math.abs(x*dy-y*dx)<.001,"Native pull diverged from muzzle")
+                if facing==0 and bearing==0 and step==5 then
+                    local multiplier=getGameTime():getTrueMultiplier()
+                    getGameTime():setMultiplier(0)
+                    assert(require("OMHTT/ActiveTime").paused(),"C534 native zero multiplier not detected")
+                    D.update(actor)
+                    assert(actor:getNextX()==actor:getX() and actor:getNextY()==actor:getY(),"C534 pending Tether movement survives pause")
+                    getGameTime():setMultiplier(multiplier)
+                    assert(not require("OMHTT/ActiveTime").paused(),"C534 native multiplier resume not detected")
+                    print("[OMHTT-C534] native zero-rate pause clears pending Tether displacement; resume passed")
+                end
                 count=count+1
             end
             assert(actor:getBumpType()=="" and actor:getX()==14710.5,"Native reaction failed to clean up or teleported")

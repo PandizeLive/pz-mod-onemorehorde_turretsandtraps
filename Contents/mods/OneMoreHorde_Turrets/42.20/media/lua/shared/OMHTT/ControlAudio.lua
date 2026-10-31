@@ -26,7 +26,7 @@ function A.receive(module, command, facts)
         end
     end
     local sound = sounds[facts.event]
-    if not sound then return end
+    if not sound or Active.paused() then return end
     local settings = SandboxVars.OMHTurretsTraps or {}
     local gain = math.max(0, math.min(2, settings.DeviceSoundVolume or settings.TrapsDeviceSoundVolume or 1))
     gain = gain * require("OMHTT/ControlOptions").get("FeedbackVolume") / 100
@@ -63,6 +63,7 @@ function A.tick()
     local settings = SandboxVars.OMHTurretsTraps or {}
     local volume = math.max(0, math.min(2, settings.DeviceSoundVolume or settings.TrapsDeviceSoundVolume or 1))
         * require("OMHTT/ControlOptions").get("FeedbackVolume") / 100
+    if Active.paused() then volume = 0 end
     for id, playing in pairs(A.playing) do
         playing.emitter:setVolume(playing.handle, volume)
         if now > playing.expires then
@@ -73,5 +74,5 @@ function A.tick()
 end
 
 Events.OnServerCommand.Add(A.receive)
-Events.OnTick.Add(A.tick)
+Events.OnTickEvenPaused.Add(A.tick)
 return A

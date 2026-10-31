@@ -75,7 +75,7 @@ local B = require("OMHTT/TurretBenefits")
 local E = require("OMHTT/TurretBatteryEstimate")
 local originalDuration, originalTime = E.duration, getGameTime
 local minutes = 59.9
-getGameTime = function() return {getMinutesPerDay = function() return 1440 end} end
+getGameTime = function() return {getMultiplier=function() return 1 end, getTrueMultiplier=function() return 1 end,getMinutesPerDay = function() return 1440 end} end
 E.duration = function() return minutes * 60000 end
 local head = {getCondition = function() return 100 end, getModData = function() return {} end}
 local battery = {getCondition = function() return 100 end, getCurrentUsesFloat = function() return 1 end,

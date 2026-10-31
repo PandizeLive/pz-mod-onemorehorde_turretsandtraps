@@ -19,6 +19,7 @@ CASES = {
     "visible-aim": (["client/TurretRenderer"], "C517 actual renderer follows"),
     "trigger-expiry": (["server/ControlWorld"], "C517 expired owner report"),
 }
+SOURCE_ADAPTERS = {}
 
 
 def main():
@@ -37,6 +38,8 @@ def main():
             relative = f"Source/42.20/media/lua/{side}/OMHTT/{stem}.lua"
             before = subprocess.run(["git", "-c", "safe.directory=" + ROOT.as_posix(), "show", BASE + ":" + relative],
                                     cwd=ROOT, check=True, capture_output=True).stdout
+            if module in SOURCE_ADAPTERS:
+                before = SOURCE_ADAPTERS[module](before)
             target = overlay / relative
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(before)

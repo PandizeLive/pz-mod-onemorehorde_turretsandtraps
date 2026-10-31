@@ -265,7 +265,7 @@ end
 ---@return nil
 function S.advance()
     S.time = S.time + Active.step(S.clock)
-    if GameTime.isGamePaused() then return end
+    if require("OMHTT/ActiveTime").paused() then return end
     local deadline = getTimestampMs()+1
     for _=1,math.min(64,#S.running) do
         if #S.running==0 or getTimestampMs()>=deadline then break end

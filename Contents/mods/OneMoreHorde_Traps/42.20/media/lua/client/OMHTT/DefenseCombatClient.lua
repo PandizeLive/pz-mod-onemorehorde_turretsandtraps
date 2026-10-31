@@ -147,7 +147,8 @@ function C.command(module, command, message)
         return
     end
     local reason
-    if not zombie then reason="missing"
+    if command == "Apply" and require("OMHTT/ActiveTime").paused() then reason="paused"
+    elseif not zombie then reason="missing"
     elseif zombie:getOnlineID() ~= message.id or P.outfit(zombie:getPersistentOutfitID()) ~= message.outfit then reason="identity"
     elseif not P.living(zombie) then reason="dead"
     elseif zombie:isRemoteZombie() then reason="not-owner"

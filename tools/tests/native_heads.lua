@@ -37,9 +37,21 @@ return function(player)
     assert(not T.accept(storage, instanceItem(T.TYPES.Magazine)), "Arc refuses incompatible ammo module")
     assert(not require("OMHTT/TurretAmmo").accepts(arc, "Base.Bullets9mm"), "Arc does not accept ammunition")
     local arcRating, arcDrain = descriptions.rating(arc)
-    assert(arcRating.key == "UI_OMHTT_HeadBatteryExtreme" and math.abs(arcDrain - 72) < .0001, "Native Arc cadence-aware rating")
+    assert(arcRating.key == "UI_OMHTT_HeadBatteryHigh" and math.abs(arcDrain - 25.2) < .0001, "Native Arc cadence-aware rating")
     assert(instanceItem("Base.OMHTTTrapTetherCableVisual"), "Arc electrical segment model exists independently")
-    print("[OMHTT-C421] native-arc metadata=pass install=pass no-ammo=pass cooldown=pass rating=Extreme visual-model=registered GPU=pending")
+    print("[OMHTT-C421] native-arc metadata=pass install=pass no-ammo=pass cooldown=pass rating=High visual-model=registered GPU=pending")
+    for _,case in pairs({{"Base.AssaultRifle",12},{"Base.OMHTTTurretBallista",8},{"Base.OMHTTTurretScrapshot",30},
+        {"Base.OMHTTTurretArc",2},{"Base.OMHTTTurretRotaryBat",4},{"Base.OMHTTTurretRotaryBlades",3},{"Base.OMHTTTurretLobber",6}}) do
+        local head=instanceItem(case[1])
+        local stats=S.resolve({head=head,active={Firing=1,MotionDetection=1},powerLoad=1,payloadType="Base.OMHTTAmmoMakeshiftBomb"})
+        local hours=stats.rotary and 100/stats.motorPower/16
+            or require("OMHTT/TurretBatteryEstimate").duration(stats,head,math.floor(100/stats.batteryPercent))/3600000
+        -- Native vanilla M16 differs from the owner's Firearms B42 definition.
+        local tolerance=case[1]=="Base.AssaultRifle" and .15 or .06
+        assert(math.abs(hours-case[2])/case[2]<tolerance,"C534 native battery endurance: "..case[1].." "..hours)
+        print("[OMHTT-C534] native battery "..case[1].." realHours="..hours.." cost="..stats.batteryPercent
+            .." cooldown="..stats.cooldown.." magazine="..stats.magazine.." reload="..stats.reload)
+    end
     local shared = {MetalPipe = 1, SmallSheetMetal = 1, ScrapMetal = 2, ElectronicsScrap = 2, ElectricWire = 1, Screws = 8}
     local cases = {
         {"Ballista", {Plank = 4, MetalBar = 2, Rope = 1, Nails = 8}, {"Hammer", "Saw"}, 90},

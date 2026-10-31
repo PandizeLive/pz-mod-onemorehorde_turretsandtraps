@@ -52,6 +52,7 @@ end
 ---@param distance number? Bounded tether displacement
 ---@return boolean accepted
 function M.request(zombie, kind, source, x, y, distance)
+    if require("OMHTT/ActiveTime").paused() then return false end
     if isClient() or not zombie or zombie:isDead() or not H.allowed(zombie) then return false end
     if kind ~= "trip" and kind ~= "knock" and kind ~= "stagger" and kind ~= "slow"
         and kind ~= "pull" then return false end
@@ -85,6 +86,7 @@ end
 ---@param message table Server facts
 ---@return nil
 function M.command(module, command, message)
+    if require("OMHTT/ActiveTime").paused() then return end
     if not isClient() or module ~= "OMHTT_MotionV1" or type(message) ~= "table"
         or not P.identity(message.id) or not P.identity(message.outfit)
         or not P.number(message.serial, 1, 1000000000000)
@@ -113,6 +115,7 @@ end
 ---@param zombie IsoZombie Updated native actor
 ---@return nil
 function M.update(zombie)
+    if require("OMHTT/ActiveTime").paused() then return end
     if not isClient() or not P.living(zombie) then return end
     local id = zombie:getOnlineID()
     if id ~= -1 then indexed[id] = zombie end

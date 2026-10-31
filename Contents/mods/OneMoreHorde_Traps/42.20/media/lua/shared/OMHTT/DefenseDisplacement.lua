@@ -92,6 +92,14 @@ end
 function D.update(zombie)
     local motion = active[zombie]
     if not motion then return end
+    if require("OMHTT/ActiveTime").paused() then
+        if not motion.visualOnly and not (isClient() and zombie:isRemoteZombie())
+            and not (isServer() and zombie:getOwner() ~= nil) then
+            zombie:setNextX(zombie:getX())
+            zombie:setNextY(zombie:getY())
+        end
+        return
+    end
     local now, square = Clock.now(), zombie:getSquare()
     if motion.finishing then
         if now >= motion.finishing or zombie:isDead() or Movement.traversing(zombie)

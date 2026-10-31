@@ -117,7 +117,7 @@ W.records = function() return {records = records} end
 W.receiver, W.updatePlate, W.updateInput, P.refresh = visit, visit, visit, visit
 Poke.step, Poke.advance, Sensor.step, Mount.resolve = visit, function() end, visit, function() return {} end
 GameTime.isGamePaused = function() return false end
-getGameTime = function() return {getWorldAgeHours = function() return 10 end} end
+getGameTime = function() return {getMultiplier=function() return 1 end, getTrueMultiplier=function() return 1 end,getWorldAgeHours = function() return 10 end} end
 local kinds = {"Controller", "Poke", "Plate", "Lever", "Laser", "Button", "Turret", "Tether"}
 for i = 1, 320 do
     local square = makeSquare(5000 + i, 5000, 0)

@@ -60,7 +60,7 @@ function V.receive(module, command, message)
     local transit = message.sentAt and GameTime.getServerTimeMills() - message.sentAt or 0
     V.latency[message.id] = math.max(0, math.min(250, transit)) / 1000
     V.from[message.id] = distance
-    V.states[message.id], V.received[message.id], V.simulated[message.id] = message, getTimestampMs(), Clock.now()
+    V.states[message.id], V.received[message.id], V.simulated[message.id] = message, Clock.now(), Clock.now()
     if not previous or previous.sequence ~= message.sequence or previous.phase ~= message.phase then
         require("OMHTT/Diagnostics").defer("tether-receive", {id=message.id, sequence=message.sequence,
             serial=message.serial, phase=message.phase, transitMs=transit, distance=message.distance}, "traps")
@@ -72,7 +72,7 @@ end
 function V.render(index)
     local player, cell = getSpecificPlayer(index), getCell()
     if not player or not cell then return end
-    local now, budget = getTimestampMs(), 192
+    local now, budget = Clock.now(), 192
     for id, state in pairs(V.states) do
         if now - V.received[id] > 2000 then
             V.states[id], V.received[id], V.simulated[id], V.from[id], V.visuals[id] = nil, nil, nil, nil, nil

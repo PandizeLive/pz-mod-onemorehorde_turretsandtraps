@@ -7,6 +7,7 @@ local queue, serial, first, last = {}, 0, 1, 0
 
 -- Providers inspect already indexed local trap views. No world-wide scan.
 function C.update(zombie)
+    if require("OMHTT/ActiveTime").paused() then return end
     if not P.living(zombie) or zombie:isRemoteZombie() then states[zombie] = nil; return end
     local player = zombie:getOwnerPlayer()
     if not player or not player:isLocalPlayer() then return end
@@ -39,6 +40,7 @@ function C.update(zombie)
 end
 
 function C.flush()
+    if require("OMHTT/ActiveTime").paused() then queue, first, last = {}, 1, 0; return end
     local now = getTimestampMs()
     local batches = {}
     for i=1,math.min(128,last-first+1) do

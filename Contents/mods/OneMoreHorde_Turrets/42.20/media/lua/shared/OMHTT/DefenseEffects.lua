@@ -68,6 +68,7 @@ end
 ---@param gain number Playback volume
 ---@return nil
 function E.contact(name, actor, gain)
+    if require("OMHTT/ActiveTime").paused() then return end
     if isClient() then return end
     if isServer() then
         E.send("OMHTT_ContactAudio", "Play", {sound = name, x = actor:getX(), y = actor:getY(), z = actor:getZ(), gain = gain})
@@ -84,6 +85,7 @@ end
 ---@return nil
 function E.receive(module, command, facts)
     if not isClient() or module ~= "OMHTT_ContactAudio" or command ~= "Play" then return end
+    if require("OMHTT/ActiveTime").paused() then return end
     if not E.accept(facts) then return end
     local emitter = getWorld():getFreeEmitter(facts.x, facts.y, facts.z)
     local handle = emitter:playSound(facts.sound)

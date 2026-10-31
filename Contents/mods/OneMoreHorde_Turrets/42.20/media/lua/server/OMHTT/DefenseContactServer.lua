@@ -27,6 +27,7 @@ function S.command(module,command,player,frames)
 end
 
 function S.observe(player,f,now)
+    if require("OMHTT/ActiveTime").paused() then return end
     if type(f)~="table" or not P.identity(f.id) or not P.identity(f.outfit)
         or not P.number(f.sequence,1,1000000000000) or f.sequence~=math.floor(f.sequence)
         or not P.number(f.x,-1000000,1000000) or not P.number(f.y,-1000000,1000000)

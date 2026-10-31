@@ -21,6 +21,7 @@ local emptyClicks = setmetatable({}, {__mode = "k"})
 ---@param object IsoObject Authorized, powered firing attempt
 ---@return string status
 function W.empty(object)
+    if require("OMHTT/ActiveTime").paused() then return "Empty" end
     local now = getTimestampMs()
     local previous = emptyClicks[object]
     if not previous or now < previous or now - previous >= 1000 then
@@ -514,6 +515,7 @@ end
 ---@param target IsoZombie? Detected target for autonomous shot
 ---@return string result
 function W.fire(player, object, target, signal)
+    if require("OMHTT/ActiveTime").paused() then return "Unavailable" end
     if isClient() then return "Unavailable" end
     local started = getTimestampMs()
     if not player and not require("OMHTT/ControlCycle").canFire(object) then return "Off" end
@@ -601,7 +603,7 @@ function W.fire(player, object, target, signal)
                 local nativeSound = contents.head:getClickSound()
                 if nativeSound and nativeSound ~= "" then sound = nativeSound end
             end
-            require("OMHTT/DefenseEffects").emit("Click", {sound = sound,
+            require("OMHTT/DefenseEffects").emit("Click", {sound = sound, warning = true,
                 x = square:getX() + .5, y = square:getY() + .5, z = square:getZ()})
             return false
         end

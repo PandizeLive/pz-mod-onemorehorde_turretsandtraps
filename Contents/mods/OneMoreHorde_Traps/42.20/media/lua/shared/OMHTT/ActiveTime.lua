@@ -1,5 +1,10 @@
 local A = {clocks = {}}
 
+---@return boolean paused Native pause or stopped multiplayer simulation clock
+function A.paused()
+    return GameTime.isGamePaused() or A.zeroRate == true or getGameTime():getTrueMultiplier() <= 0
+end
+
 ---@param simulation boolean? Normalize world time instead of presentation time
 ---@return table clock Session-local observer
 function A.new(simulation)
@@ -11,7 +16,7 @@ end
 ---@param clock table Observer
 ---@return number elapsed Milliseconds at normal-speed duration units
 function A.step(clock)
-    local wall, paused = getTimestampMs(), GameTime.isGamePaused()
+    local wall, paused = getTimestampMs(), A.paused()
     local elapsed = 0
     local game = getGameTime()
     local hours = game:getWorldAgeHours()
@@ -28,7 +33,14 @@ end
 
 ---@return nil
 function A.pause()
-    if not GameTime.isGamePaused() then return end
+    A.zeroRate = getGameTime():getTrueMultiplier() <= 0
+    local stopped = A.paused()
+    if A.stopped ~= stopped then
+        A.stopped = stopped
+        require("OMHTT/Diagnostics").defer("simulation-pause", {paused=stopped,
+            native=GameTime.isGamePaused(), multiplier=getGameTime():getTrueMultiplier()}, "traps")
+    end
+    if not stopped then return end
     local wall, hours = getTimestampMs(), getGameTime():getWorldAgeHours()
     for i = 1, #A.clocks do
         local clock = A.clocks[i]
@@ -36,5 +48,14 @@ function A.pause()
     end
 end
 
+---@return nil Observe after other mods apply their speed control for this tick
+function A.install()
+    A.zeroRate = false
+    Events.OnTickEvenPaused.Remove(A.pause)
+    Events.OnTickEvenPaused.Add(A.pause)
+end
+
 Events.OnTickEvenPaused.Add(A.pause)
+Events.OnGameStart.Add(A.install)
+Events.OnServerStarted.Add(A.install)
 return A

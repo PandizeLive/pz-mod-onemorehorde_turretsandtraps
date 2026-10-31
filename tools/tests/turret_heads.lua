@@ -1,9 +1,10 @@
+-- Historical tuning fixture; current defaults/endurance are verified in corrections_c534.lua.
 local H = require("OMHTT/TurretHeads")
 local S = require("OMHTT/TurretStats")
 local T = require("OMHTT/Turret")
 local M = require("OMHTT/TurretModules")
 local savedSettings = SandboxVars.OMHTurretsTraps
-SandboxVars.OMHTurretsTraps = {TurretStandbyEnabled = false}
+SandboxVars.OMHTurretsTraps = {FirearmBatteryMultiplier=1.5, BallistaBatteryPercent=.025, RotaryBatteryHours=6, RotaryBladesBatteryMultiplier=2, LobberBatteryMultiplier=1.5, ScrapshotBatteryPercent=.0025, ArcBatteryPercent=.02,TurretStandbyEnabled = false}
 local function head(name)
     local data = {}
     return {getFullType = function() return "Base.OMHTTTurret" .. name end,
@@ -95,7 +96,7 @@ function zombie:Kill() self.health = 0 end
 function instanceof(item, kind) return item.kind == kind end
 ZombRand = function(limit) return limit - 1 end
 Clock.now = function() return now end
-getGameTime = function() return {getWorldAgeHours = function() return age end, getMinutesPerDay = function() return 60 end} end
+getGameTime = function() return {getMultiplier=function() return 1 end, getTrueMultiplier=function() return 1 end,getWorldAgeHours = function() return age end, getMinutesPerDay = function() return 60 end} end
 getCell = function() return {getGridSquare = function(_, x, y) if x == 0 and y == 0 then return origin end end} end
 W.valid, W.near = function() return true end, function() return true end
 W.contents = function() return contents end

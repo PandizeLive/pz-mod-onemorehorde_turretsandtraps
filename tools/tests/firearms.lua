@@ -1,8 +1,9 @@
+-- Historical tuning fixture; current defaults/endurance are verified in corrections_c534.lua.
 local G = require("OMHTT/Firearms")
 local T = require("OMHTT/Turret")
 local W = require("OMHTT/TurretWorld")
 local oldSettings = SandboxVars.OMHTurretsTraps
-SandboxVars.OMHTurretsTraps = {TurretStandbyEnabled = false, Enabled = true, PotatoTurret = true, PotatoRequirePower = false, FirearmAccuracyMultiplier = 3}
+SandboxVars.OMHTurretsTraps = {FirearmBatteryMultiplier=1.5, BallistaBatteryPercent=.025, RotaryBatteryHours=6, RotaryBladesBatteryMultiplier=2, LobberBatteryMultiplier=1.5, ScrapshotBatteryPercent=.0025, ArcBatteryPercent=.02,TurretStandbyEnabled = false, Enabled = true, PotatoTurret = true, PotatoRequirePower = false, FirearmAccuracyMultiplier = 3}
 local definitions = {{"Base.Pistol", "Base.Bullets9mm", 15, false},
     {"Base.Shotgun", "Base.ShotgunShells", 6, true}, {"Base.HuntingRifle", "Base.308Bullets", 4, true}}
 local function item(fullType)
@@ -90,7 +91,7 @@ check(auto.generatorFuel == oldDraw.generatorFuel, "Firearm battery factor leave
 SandboxVars.OMHTurretsTraps.FirearmBatteryMultiplier = 2
 check(math.abs(Stats.resolve({head = generic, active = {}}).batteryPercent - oldDraw.batteryPercent * 2) < .000000001,
     "Custom firearm battery factor remains effective")
-SandboxVars.OMHTurretsTraps.FirearmBatteryMultiplier = nil
+SandboxVars.OMHTurretsTraps.FirearmBatteryMultiplier = 1.5
 check(math.abs(auto.cooldown - 1000 / 3 / 1.5 / .75) < .001, "Automatic cadence uses clip/speed rather than recoil delay")
 function generic:getFireMode() return "Single" end
 function generic:getFireModePossibilities() return {size = function() return 2 end, get = function(_, i) return i == 0 and "Single" or "Auto" end} end
@@ -360,7 +361,7 @@ check(W.fire(operator, object, victim) == "Fired" and victim:isDead() and T.cont
     "Last-round exception pays one round and lethal primary remains eligible")
 check(#Volley.queue == 8 and Volley.queue[1].damage > .0001, "Lethal primary still produces full-budget fragments once")
 Volley.reset()
-SandboxVars.OMHTurretsTraps = {}
+SandboxVars.OMHTurretsTraps = {FirearmBatteryMultiplier=1.5, BallistaBatteryPercent=.025, RotaryBatteryHours=6, RotaryBladesBatteryMultiplier=2, LobberBatteryMultiplier=1.5, ScrapshotBatteryPercent=.0025, ArcBatteryPercent=.02,}
 local powerItems = container()
 powerItems:AddItem(item(T.TYPES.FiringEnhanced))
 powerItems:AddItem(item(T.TYPES.MotionDetectionImprovised))
@@ -396,7 +397,7 @@ check(boosted.damage > rifle.damage and boosted.range > rifle.range and boosted.
 function reference:getMaxRange() return 400 end
 check(math.abs(Stats.resolve({head = reference, active = {}}).weaponPower - math.sqrt(2 * 50 / 15)) < .0000001,
     "Weapon power uses the actual supported range cap")
-SandboxVars.OMHTurretsTraps = {PotatoBatteryPercentPerShot = .1, PotatoGeneratorFuelPerShot = .001, ModulePowerBonus = 10, SplitterPower = 200, FragmentPower = 200}
+SandboxVars.OMHTurretsTraps = {FirearmBatteryMultiplier=1.5, BallistaBatteryPercent=.025, RotaryBatteryHours=6, RotaryBladesBatteryMultiplier=2, LobberBatteryMultiplier=1.5, ScrapshotBatteryPercent=.0025, ArcBatteryPercent=.02,PotatoBatteryPercentPerShot = .1, PotatoGeneratorFuelPerShot = .001, ModulePowerBonus = 10, SplitterPower = 200, FragmentPower = 200}
 local custom = Stats.resolve({active = {Splitter = 1, Fragment = 1}, powerLoad = 2})
 check(math.abs(custom.batteryPercent - .5) < .0000001 and math.abs(custom.generatorFuel - .005) < .0000001,
     "Saved custom base costs survive, retired Splitter/Fragment surcharges do not double-charge")

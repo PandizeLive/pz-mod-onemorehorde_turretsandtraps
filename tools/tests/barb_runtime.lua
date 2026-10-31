@@ -94,7 +94,7 @@ function host.square:isSomethingTo() return false end
 testRepairSupply(player, "Barb")
 check(Service.apply(player, frame, record.id, "Repair") and attachment.health == 50 and host.health == 0, "Barb repair cannot repair glass")
 local oldGameTime, oldQueue = getGameTime, ISTimedActionQueue
-getGameTime = function() return {getMultiplier = function() return (.1) * 48 end, getMultiplierFromTimeDelta = function() return 48 end} end
+getGameTime = function() return {getTrueMultiplier=function() return 1 end,getMultiplier = function() return (.1) * 48 end, getMultiplierFromTimeDelta = function() return 48 end} end
 ISTimedActionQueue = {getTimedActionQueue = function() return {resetQueue = function() end} end}
 function player:faceThisObject() end
 function player:shouldBeTurning() return false end

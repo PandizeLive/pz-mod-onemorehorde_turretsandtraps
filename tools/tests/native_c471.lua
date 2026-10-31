@@ -63,7 +63,9 @@ return function()
     Reservation.install()
     assert(ISBuildIsoEntity.omhttReservation, "Native build hook was not installed")
     local reserved = Footprint.reserved
+    local center = Footprint.center
     Footprint.reserved = function(square) return square ~= nil end
+    Footprint.center = Footprint.reserved
     -- Real native entry points, with reservation rejection before their
     -- downstream crafting state/material requirements can be accessed.
     local nativeSquare = IsoGridSquare.new(getCell(), nil, 10600, 9800, 0)
@@ -85,6 +87,7 @@ return function()
         "Native legacy completion bypassed reservation validation")
     getWorld, getCell, isServer = savedWorld, savedCell, savedServer
     Footprint.reserved = reserved
+    Footprint.center = center
     print("[OMHTT-C531] native-build entity=blocked legacy=blocked completion=blocked materials=untouched hooks=installed")
 
     local V = require("OMHTT/NativeTurretVolley")

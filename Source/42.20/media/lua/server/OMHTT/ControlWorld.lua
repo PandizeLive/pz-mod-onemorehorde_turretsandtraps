@@ -746,7 +746,7 @@ end
 ---@return nil
 function W.tick()
     require("OMHTT/ControlPoke").advance()
-    if GameTime.isGamePaused() then return end
+    if require("OMHTT/ActiveTime").paused() then return end
     local now = getTimestampMs()
     if W.due and now < W.due then
         W.flushDirty(now, now+1)

@@ -87,11 +87,15 @@ function testPlayer:getRole() return {hasCapability = function() return testAdmi
 function getSpecificPlayer(index) return testPlayer end
 
 Events = {}
+-- Gameplay startup has loaded native building classes; native probes replace these doubles.
+ISBuildIsoEntity = {isValidPerSquare=function() return true end}
+ISWoodenWall = {isValid=function() return true end,create=function() return true end}
 Events.OnDestroyIsoThumpable = {handlers = {}, Add = function() end}
 Events.OnObjectAdded = {handlers = {}, Add = function() end}
 for _, name in pairs({"OnGameBoot", "OnServerStarted", "OnSave", "OnInitGlobalModData", "LoadGridsquare", "OnObjectAboutToBeRemoved", "OnClientCommand", "OnServerCommand", "OnFillWorldObjectContextMenu", "OnGameStart", "OnTickEvenPaused", "OnTick", "OnPostRender", "OnPreUIDraw", "OnPostUIDraw", "OnZombieCreate", "OnHitZombie", "OnZombieUpdate", "OnZombieDead", "OnContextKey", "OnPlayerUpdate"}) do
     local handlers = {}
-    Events[name] = {handlers = handlers, Add = function(callback) table.insert(handlers, callback) end}
+    Events[name] = {handlers = handlers, Add = function(callback) table.insert(handlers, callback) end,
+        Remove = function(callback) for i=#handlers,1,-1 do if handlers[i]==callback then table.remove(handlers,i) end end end}
 end
 LuaEventManager = {AddEvent = function(name)
     local handlers = {}
@@ -268,7 +272,7 @@ IsoThumpable = {new = function(cell, square, sprite, north)
     return object
 end}
 
-function getGameTime() return {getMinutesPerDay = function() return 60 end, getWorldAgeHours = function() return testTime end} end
+function getGameTime() return {getMultiplier = function() return 1 end, getTrueMultiplier=function() return 1 end, getMinutesPerDay = function() return 60 end, getWorldAgeHours = function() return testTime end} end
 testRoll = 0
 function ZombRand(maximum) return testRoll end
 function instanceof(object, kind) return object.kind == kind end

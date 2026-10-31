@@ -24,6 +24,7 @@ end
 ---@param name string? Native or custom sound
 ---@return nil
 function A.play(object, entry, name)
+    if require("OMHTT/ActiveTime").paused() then return end
     if not name or name == "" then return end
     if isServer() then
         local square = object:getSquare()

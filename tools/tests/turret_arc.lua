@@ -1,3 +1,4 @@
+-- Historical tuning fixture; current defaults/endurance are verified in corrections_c534.lua.
 local A = require("OMHTT/TurretArc")
 local V = require("OMHTT/TurretVolley")
 local S = require("OMHTT/TurretStats")
@@ -15,7 +16,7 @@ local old = {mode = testMode, settings = SandboxVars.OMHTurretsTraps, instance =
     clock = Clock.now, damage = Damage.resolve, effects = Effects.emit, eligible = Combat.eligible,
     line = Line.clear, snapshot = Conditional.snapshot, conditional = Conditional.damage, impact = Conditional.impact,
     proc = Proc.hit, siphon = Siphon.hit, fragment = V.fragment, sound = Horde.sound}
-testMode, SandboxVars.OMHTurretsTraps = "sp", {}
+testMode, SandboxVars.OMHTurretsTraps = "sp", {ArcBatteryPercent=.02}
 local itemData = {}
 local head = {getFullType = function() return "Base.OMHTTTurretArc" end,
     getCondition = function() return 100 end, getModData = function() return itemData end}

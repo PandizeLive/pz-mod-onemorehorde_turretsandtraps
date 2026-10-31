@@ -113,7 +113,8 @@ function V.ray(record, x, y, z, angle, range, damage, group, index)
     end
     V.queue[#V.queue + 1] = {x = x, y = y, z = z, dx = math.cos(angle), dy = math.sin(angle),
         range = range, distance = 0, damage = damage, group = group, id = record.id,
-        shot = tostring(record.shots) .. ":" .. group.kind .. ":" .. index, objectIndex = 0}
+        shot = tostring(record.shots) .. ":" .. group.kind .. ":" .. index, objectIndex = 0,
+        born = Clock.now(), firedAt = GameTime.getServerTimeMills()}
     local family, speed, ammoType = require("OMHTT/TurretProjectileStyle").describe(group.stats, owner)
     if family and group.kind ~= "forward" then
         local ray = V.queue[#V.queue]
@@ -233,6 +234,17 @@ function V.finish(ray)
             x=ray.x+ray.dx*distance, y=ray.y+ray.dy*distance, z=ray.z,
             fromX=ray.x, fromY=ray.y, projectile=ray.projectile, ammoType=ray.ammoType, silent=true})
     end
+    -- A completed hitscan has already reached its endpoint. Health admission
+    -- must not postpone its tracer, even when another shot owns the victim.
+    if not ray.speed and group.stats.headKind ~= "Arc" and not ray.contactShown then
+        ray.contactShown = true
+        local distance = ray.bestDistance or math.min(ray.distance, ray.range)
+        require("OMHTT/DefenseEffects").emit("Ray", {id = ray.id, shot = ray.shot,
+            x = ray.x + ray.dx * distance, y = ray.y + ray.dy * distance, z = ray.z,
+            fromX = group.fromX or ray.x, fromY = group.fromY or ray.y,
+            muzzleHeight = group.height, firearm = true, silent = true,
+            firedAt = ray.firedAt, elapsedMs = math.max(0, Clock.now() - (ray.born or Clock.now()))})
+    end
     if victim and group.kind == "scrapshot" and group.options.scrapPending and group.options.scrapPending[victim] then
         ray.waitingDamage = true
         return true
@@ -317,13 +329,8 @@ function V.finish(ray)
             facts.firearm, facts.projectile, facts.ammoType = false, ray.projectile, ray.ammoType
             require("OMHTT/DefenseEffects").emit("Impact", facts)
         end
-    elseif group.kind == "scrapshot" then
-        require("OMHTT/DefenseEffects").emit("Ray", facts)
     elseif group.remaining then
         group.remaining = group.remaining - 1
-        require("OMHTT/DefenseEffects").emit("Ray", facts)
-    else
-        require("OMHTT/DefenseEffects").emit("Ray", facts)
     end
     if (group.kind == "piercing" or group.kind == "scrapshot" or group.kind == "forward") and victim then
         group.hits[victim] = true
@@ -335,6 +342,7 @@ function V.finish(ray)
             if hit then ray.damage = ray.damage * group.stats.pierceRetention end
             group.fromX, group.fromY = facts.x, facts.y
             ray.minimum = math.max(ray.minimum or 0, distance)
+            ray.contactShown = nil
             ray.best, ray.bestDistance, ray.scanning, ray.objectIndex = nil, nil, true, 0
             return true
         end

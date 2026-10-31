@@ -112,7 +112,7 @@ function A.refresh()
     local now = getTimestampMs()
     if A.last and now < A.last then A.due, A.cursor = 0, 0 end
     A.last = now
-    if A.refreshing or isClient() or now < A.due or GameTime.isGamePaused() then return end
+    if A.refreshing or isClient() or now < A.due or require("OMHTT/ActiveTime").paused() then return end
     local cell = getCell()
     if not cell then return end
     local list = cell:getZombieList()

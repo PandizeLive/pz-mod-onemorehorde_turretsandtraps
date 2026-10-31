@@ -89,7 +89,7 @@ function S.step(object,state)
     if changed then W.publish(object) end
 end
 function S.actor(actor)
-    if S.count==0 or GameTime.isGamePaused() then return end
+    if S.count==0 or require("OMHTT/ActiveTime").paused() then return end
     local x,y,z,current=Actors.position(actor)
     if not current then return end
     local previous=S.positions[actor]

@@ -143,24 +143,24 @@ function S.resolve(contents)
     local effectPower = weaponPower * modulePower
     local regulator = 1 + S.bonus(active, "Regulator")
     local shotPower = S.option("PotatoBatteryPercentPerShot", 0.00045, 0, 100) * effectPower / regulator
-    if firearm then shotPower = shotPower * S.option("FirearmBatteryMultiplier", 1.5, 0, 100) end
+    if firearm then shotPower = shotPower * S.option("FirearmBatteryMultiplier", 0.56, 0, 100) end
     local motorSpeed = 150 * (1 + rapid / 100) * enhancement
-    local motorPower = 100 / S.option("RotaryBatteryHours", 6, .1, 100) * modulePower / regulator * motorSpeed / 150
+    local motorPower = 100 / S.option("RotaryBatteryHours", 128, .1, 200) * modulePower / regulator * motorSpeed / 150
     if head and head.key == "RotaryBlades" then
-        motorPower = motorPower * S.option("RotaryBladesBatteryMultiplier", 2, 0, 100)
+        motorPower = motorPower * S.option("RotaryBladesBatteryMultiplier", 1.33, 0, 100)
     end
     if head and head.key == "Lobber" then
         local payload = require("OMHTT/TurretAmmo").bombs[contents.payloadType]
         shotPower = (payload and payload.power or .02) * modulePower / regulator * (1 + S.bonus(active, "Velocity") / 100)
-        shotPower = shotPower * S.option("LobberBatteryMultiplier", 1.5, 0, 100)
+        shotPower = shotPower * S.option("LobberBatteryMultiplier", 0.65, 0, 100)
         shotPower = shotPower * math.max(1, (range + S.bonus(active, "Range")) / head.range) * (1 + splitter * .5)
     elseif head and head.key == "Scrapshot" then
-        shotPower = S.option("ScrapshotBatteryPercent", .0025, 0, 100) * modulePower / regulator * (1 + S.bonus(active, "Velocity") / 100) * (1 + splitter * .5)
+        shotPower = S.option("ScrapshotBatteryPercent", 0.001, 0, 100) * modulePower / regulator * (1 + S.bonus(active, "Velocity") / 100) * (1 + splitter * .5)
             * math.max(1, (range + S.bonus(active, "Range")) / head.range)
     elseif head and head.key == "Arc" then
-        shotPower = S.option("ArcBatteryPercent", .02, 0, 100) * modulePower / regulator
+        shotPower = S.option("ArcBatteryPercent", 0.007, 0, 100) * modulePower / regulator
     elseif head and not rotary then
-        shotPower = S.option("BallistaBatteryPercent", .025, 0, 100) * weaponPower / math.sqrt(4.8) * modulePower / regulator
+        shotPower = S.option("BallistaBatteryPercent", 0.01, 0, 100) * weaponPower / math.sqrt(4.8) * modulePower / regulator
     elseif rotary then
         shotPower = motorPower / 3600
         magazine = 0

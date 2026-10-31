@@ -4,14 +4,14 @@ local B = {}
 ---@param square IsoGridSquare Candidate native tile
 ---@param north boolean? North edge
 ---@param wall boolean? Edge construction
----@return boolean blocked Reserved occupied tile or either side of an edge
+---@return boolean blocked Occupied footprint or wall crossing the center-to-arm connection
 function B.blocked(square, north, wall)
     if not square then return false end
-    if P.reserved(square) then return true end
-    if not wall then return false end
+    if not wall then return P.reserved(square) end
+    if P.center(square) then return true end
     local x,y = square:getX(),square:getY()
     if north then y=y-1 else x=x-1 end
-    return P.reserved(getCell():getGridSquare(x,y,square:getZ()))
+    return P.center(getCell():getGridSquare(x,y,square:getZ()))
 end
 
 ---@return nil
@@ -24,19 +24,20 @@ function B.install()
     local valid = ISBuildIsoEntity.isValidPerSquare
     ---@return boolean valid Native preview and server create both call this gate
     function ISBuildIsoEntity:isValidPerSquare(square, tileInfo, requiresFloor, extendsN, extendsW)
-        if B.blocked(square, self.north, self.isWallLike) then return false end
         -- isWallLike is normally populated by the client preview renderer;
         -- the dedicated server must derive edge occupancy from the tile too.
         local sprite = tileInfo and tileInfo:getSpriteName() and getSprite(tileInfo:getSpriteName())
         local props = sprite and sprite:getProperties()
+        local north, west = false, false
         if props then
-            local north = props:has(IsoPropertyType.WALL_N) or props:has(IsoPropertyType.WALL_N_TRANS)
+            north = props:has(IsoPropertyType.WALL_N) or props:has(IsoPropertyType.WALL_N_TRANS)
                 or props:has(IsoPropertyType.WINDOW_N) or props:has(IsoPropertyType.DOOR_WALL_N)
-            local west = props:has(IsoPropertyType.WALL_W) or props:has(IsoPropertyType.WALL_W_TRANS)
+            west = props:has(IsoPropertyType.WALL_W) or props:has(IsoPropertyType.WALL_W_TRANS)
                 or props:has(IsoPropertyType.WINDOW_W) or props:has(IsoPropertyType.DOOR_WALL_W)
             if north and B.blocked(square, true, true) then return false end
             if west and B.blocked(square, false, true) then return false end
         end
+        if not north and not west and B.blocked(square, self.north, self.isWallLike) then return false end
         return valid(self,square,tileInfo,requiresFloor,extendsN,extendsW)
     end
     local wallValid,wallCreate = ISWoodenWall.isValid,ISWoodenWall.create
@@ -52,5 +53,8 @@ function B.install()
     end
 end
 
-Events.OnGameBoot.Add(B.install)
+-- BuildingObjects is a server Lua directory also loaded by the game client.
+-- It is not available during the menu's OnGameBoot phase.
+Events.OnGameStart.Add(B.install)
+Events.OnServerStarted.Add(B.install)
 return B

@@ -31,6 +31,7 @@ end
 ---@return nil
 ---@param gain number? Fallback playback gain
 function E.sound(name, x, y, z, gain)
+    if require("OMHTT/ActiveTime").paused() then return end
     if string.find(name, "OMHTTPotato", 1, true) or string.find(name, "OMHTTSuppressedPotato", 1, true) then
         gain = (gain or 1) * require("OMHTT/TurretStats").option("PotatoPlaybackVolume", 35, 0, 100) / 100
     end
@@ -59,7 +60,14 @@ function E.receive(module, command, facts)
     if module ~= F.MODULE or (command ~= "Volley" and command ~= "Click" and command ~= "Launch"
         and command ~= "Land" and command ~= "Impact" and command ~= "GunShot" and command ~= "Ray") then return end
     if module == F.MODULE and not require("OMHTT/DefenseEffects").accept(facts) then return end
+    if require("OMHTT/ActiveTime").paused() then return end
     if not progress(command, facts) then return end
+    local age = 0
+    if command == "Ray" and type(facts.firedAt) == "number" then
+        age = math.max(0, GameTime.getServerTimeMills() - facts.firedAt, facts.elapsedMs or 0)
+        -- Late network/work results cannot restart a finished muzzle burst.
+        if age >= 250 then return end
+    end
     if module == F.MODULE and command == "Volley" then
         for i = 1, math.min(64, #facts.rays) do E.receive(module, "Ray", facts.rays[i]) end
         return
@@ -69,7 +77,22 @@ function E.receive(module, command, facts)
         return
     end
     if module == F.MODULE and command == "Click" then
-        if facts.sound then E.sound(facts.sound, facts.x, facts.y, facts.z, facts.gain) end
+        if not facts.warning and facts.sound ~= "OMHTTTriggerClick" then
+            if facts.sound then E.sound(facts.sound, facts.x, facts.y, facts.z, facts.gain) end
+            return
+        end
+        -- Both empty and native firearm misfire cues use the same local warning
+        -- envelope. Native weapon sound definitions are otherwise unchanged.
+        local distance = 8
+        for i = 0, getNumActivePlayers() - 1 do
+            local player = getSpecificPlayer(i)
+            if player then
+                local dx, dy, dz = player:getX() - facts.x, player:getY() - facts.y, player:getZ() - facts.z
+                distance = math.min(distance, math.sqrt(dx * dx + dy * dy + dz * dz * 9))
+            end
+        end
+        local gain = (facts.gain or 1) * math.max(0, 1 - distance / 8)^2
+        if facts.sound and gain > 0 then E.sound(facts.sound, facts.x, facts.y, facts.z, gain) end
         return
     end
     if module ~= F.MODULE or (command ~= "Launch" and command ~= "Land" and command ~= "Impact" and command ~= "GunShot" and command ~= "Ray") then return end
@@ -85,6 +108,10 @@ function E.receive(module, command, facts)
         E.effects[#E.effects + 1] = effect
     end
     effect.phase, effect.start, effect.logged = command, require("OMHTT/TurretClock").now(), false
+    if command == "Ray" and type(facts.firedAt) == "number" then
+        effect.start = effect.start - age
+        effect.traceDeadline = effect.start + 250
+    end
     effect.x, effect.y, effect.z = facts.x, facts.y, facts.z
     effect.fromX, effect.fromY, effect.flight = facts.fromX, facts.fromY, facts.flight or 0
     effect.target, effect.missed = facts.target, facts.missed
@@ -182,7 +209,8 @@ function E.render()
         end
         local elapsed = now - effect.start
         local traceAge = effect.renderStart and now - effect.renderStart or 0
-        if (effect.phase == "Impact" and elapsed >= 450) or (effect.firearm and (traceAge >= 100 or elapsed >= 1000)) or elapsed > effect.flight + 750 then
+        if (effect.traceDeadline and now >= effect.traceDeadline) or (effect.phase == "Impact" and elapsed >= 450)
+            or (effect.firearm and (traceAge >= 100 or elapsed >= 1000)) or elapsed > effect.flight + 750 then
             table.remove(E.effects, i)
         else
             for index = 0, getNumActivePlayers() - 1 do

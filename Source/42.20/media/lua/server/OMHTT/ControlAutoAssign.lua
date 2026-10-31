@@ -62,7 +62,7 @@ end
 
 ---@return nil
 function Q.tick()
-    if GameTime.isGamePaused() or Q.first > Q.last then return end
+    if require("OMHTT/ActiveTime").paused() or Q.first > Q.last then return end
     local world = require("OMHTT/ControlWorld")
     local deadline = getTimestampMs() + 1
     for _ = 1, 32 do

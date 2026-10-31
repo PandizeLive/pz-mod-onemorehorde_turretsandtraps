@@ -24,7 +24,9 @@ def main():
         shutil.copytree(ROOT / "Contents/mods" / identifier, CACHE / "mods" / identifier, dirs_exist_ok=True)
     settings = CACHE / "Server/OMHTT_P1C1.ini"
     settings.parent.mkdir(parents=True, exist_ok=True)
-    settings.write_text("Mods=OneMoreHorde_Traps;OneMoreHorde_Turrets\nPublic=false\nPauseEmpty=true\nUPnP=false\nMap=Muldraugh, KY\nDefaultPort=29161\nUDPPort=29162\n", encoding="utf-8")
+    # Combat fixtures need an actual running clock with zero connected clients.
+    # Explicit pause/resume is exercised separately by NativeC474.
+    settings.write_text("Mods=OneMoreHorde_Traps;OneMoreHorde_Turrets\nPublic=false\nPauseEmpty=false\nUPnP=false\nMap=Muldraugh, KY\nDefaultPort=29161\nUDPPort=29162\n", encoding="utf-8")
     destination = CACHE / "mods/OneMoreHorde_Traps"
     probe = destination / "42.20/media/lua/server/OMHTT_TranslationSmoke.lua"
     probe.write_text((ROOT / "tools/tests/native_smoke.lua").read_text(encoding="utf-8"), encoding="utf-8")
@@ -118,7 +120,7 @@ def main():
     if os.environ.get("OMHTT_PROBE_MODE") == "read":
         assert "[OMHTT-C369] private-condition fresh-process=preserved" in text, "Private condition restart proof missing"
     assert "[OMHTT-Controls] native-stock-transfer selectedBag=exact removedBag=rejected constructorArgs=retained" in text, "Native stockpile transfer proof missing"
-    assert "[OMHTT-C421] native-arc metadata=pass install=pass no-ammo=pass cooldown=pass rating=Extreme visual-model=registered GPU=pending" in text, "Native Arc proof missing"
+    assert "[OMHTT-C421] native-arc metadata=pass install=pass no-ammo=pass cooldown=pass rating=High visual-model=registered GPU=pending" in text, "Native Arc proof missing"
     assert "[OMHTT-Heads] native recipes=3" in text, "Native head recipe/metadata proof failed"
     assert "[OMHTT-C247] recipes=6 drainableUses=8/2 tools=retained sounds=4 virtualNativeGun=no-materialized-rounds exactModule=preserved" in text, "Native content and virtual ammunition proof failed"
     assert "[OMHTT-Smoke] native-distance-parity samples=16 passed=true" in text, "Native accuracy parity failed"
@@ -155,7 +157,7 @@ def main():
     assert "[OMHTT-Smoke] native-module-pack-persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Native pack persistence proof missing"
     assert "[OMHTT-Smoke] native-pack-loot-parser pools=16 packs=16 weights=positive" in text, "Native pack loot parse failed"
     assert "[OMHTT-Smoke] native-module-loot-parser pools=16 items=246 weights=positive" in text, "Native module loot parse failed"
-    assert "native-power modules=16 aliases=once m9=0.01755 rifleShots=2467 generator=matched conditionals=valid" in text, "Native power/conditional integration failed"
+    assert "native-power modules=16 aliases=once m9=0.006552 rifleShots=6608 generator=matched conditionals=valid" in text, "Native power/conditional integration failed"
     assert "[OMHTT-Smoke] native-modules loot=246 profiles=valid condition=checked" in text, "Native module rules failed"
     assert "[OMHTT-Smoke] native-install exact=selected decoy=preserved preview=nonconsuming" in text, "Native Install selection failed"
     assert "[OMHTT-Smoke] native-turret-persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") in text, "Turret world persistence failed"

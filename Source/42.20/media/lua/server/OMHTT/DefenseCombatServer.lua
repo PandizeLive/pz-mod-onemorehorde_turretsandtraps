@@ -189,7 +189,7 @@ function S.command(module, command, player, message)
     if command == "Reject" then
         if current(job) then
             local reasons = {missing=true, identity=true, dead=true, ["not-owner"]=true, position=true,
-                capacity=true, expired=true, invulnerable=true, health=true, cancelled=true}
+                capacity=true, expired=true, invulnerable=true, health=true, cancelled=true, paused=true}
             local reason = reasons[message.reason] and message.reason or "rejected"
             job.clientX = P.number(message.x, -1000000, 1000000) and message.x or nil
             job.clientY = P.number(message.y, -1000000, 1000000) and message.y or nil

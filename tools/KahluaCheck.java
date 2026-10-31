@@ -629,6 +629,8 @@ public final class KahluaCheck {
             {"_", "tools/tests/contact_path_client_setup.lua"},
             {"OMHTT/ControlTriggerView", base + "client/OMHTT/ControlTriggerView.lua"},
             {"_", "tools/tests/contact_timing_c531.lua"},
+            {"_", "tools/tests/corrections_c534.lua"},
+            {"_", "tools/tests/battery_c534.lua"},
         };
         for (String[] stage : stages) {
             Path stagePath = root.resolve(stage[1]);

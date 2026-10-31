@@ -1,7 +1,7 @@
 local Active = require("OMHTT/ActiveTime")
 local saved = {time=getGameTime, wall=getTimestampMs, paused=GameTime.isGamePaused, combo=ISComboBox}
 local hours, wall, paused = 10, 1000, false
-getGameTime = function() return {getWorldAgeHours=function() return hours end,getMinutesPerDay=function() return 60 end} end
+getGameTime = function() return {getMultiplier=function() return 1 end, getTrueMultiplier=function() return 1 end,getWorldAgeHours=function() return hours end,getMinutesPerDay=function() return 60 end} end
 getTimestampMs = function() return wall end
 GameTime.isGamePaused = function() return paused end
 local sim, real = Active.new(true), Active.new()

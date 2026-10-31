@@ -1,8 +1,9 @@
+-- Historical tuning fixture; current defaults/endurance are verified in corrections_c534.lua.
 local S = require("OMHTT/TurretStats")
 local R = require("OMHTT/TurretRarity")
 local D = require("OMHTT/TurretHeadDescription")
 local saved = SandboxVars.OMHTurretsTraps
-SandboxVars.OMHTurretsTraps = {}
+SandboxVars.OMHTurretsTraps = {FirearmBatteryMultiplier=1.5, BallistaBatteryPercent=.025, RotaryBatteryHours=6, RotaryBladesBatteryMultiplier=2, LobberBatteryMultiplier=1.5, ScrapshotBatteryPercent=.0025, ArcBatteryPercent=.02,}
 local function head(name)
     return {getFullType = function() return "Base.OMHTTTurret" .. name end}
 end
@@ -18,11 +19,11 @@ check(math.abs(loaded.batteryPercent - .0025 * 14.9) < .00000001,
     "Additive module load, Regulator and Splitter each apply once")
 SandboxVars.OMHTurretsTraps.ScrapshotBatteryPercent = .004
 check(S.resolve({head = scrap, active = {}}).batteryPercent == .004, "Custom Scrapshot tuning survives")
-SandboxVars.OMHTurretsTraps.ScrapshotBatteryPercent = nil
+SandboxVars.OMHTurretsTraps.ScrapshotBatteryPercent = .0025
 local potato = S.resolve({active = {}})
 SandboxVars.OMHTurretsTraps.FirearmBatteryMultiplier = 100
 check(S.resolve({active = {}}).batteryPercent == potato.batteryPercent, "Firearm change excludes Potato")
-SandboxVars.OMHTurretsTraps.FirearmBatteryMultiplier = nil
+SandboxVars.OMHTurretsTraps.FirearmBatteryMultiplier = 1.5
 local cases = {{"Ballista", "High"}, {"Scrapshot", "Low"}, {"RotaryBat", "High"}, {"RotaryBlades", "VeryHigh"}, {"Lobber", "High"}}
 for i = 1, #cases do
     local item = head(cases[i][1])

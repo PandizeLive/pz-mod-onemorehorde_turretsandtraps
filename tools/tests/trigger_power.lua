@@ -14,7 +14,7 @@ local Action=require("OMHTT/ControlAction")
 local saved={mode=testMode,cell=getCell,time=getGameTime,state=W.state,publish=W.publish,objects=W.objects,charge=B.charge,spend=B.spend,
     authorized=A.authorized,write=A.write,pulse=W.pulse,records=W.records,incoming=W.incoming}
 local hours=0
-getGameTime=function() return {getWorldAgeHours=function() return hours end,getMinutesPerDay=function() return 60 end} end
+getGameTime=function() return {getMultiplier=function() return 1 end, getTrueMultiplier=function() return 1 end,getWorldAgeHours=function() return hours end,getMinutesPerDay=function() return 60 end} end
 testMode="server"
 local states={}
 local square={getX=function() return 10 end,getY=function() return 10 end,getZ=function() return 0 end,
@@ -112,7 +112,7 @@ states[lever].controller=nil
 check(Action:new({},lever,"Toggle",nil,nil,"l"):complete() and not states[lever].latched,"Unpowered switch can still change saved latch")
 local rating=D.rating("Button");check(rating=="Minimal","Button explicitly per-use Minimal")
 check(D.rating("Plate")=="Minimal" and D.rating("Laser")=="VeryLow","Hourly bands normalize day length")
-getGameTime=function() return {getMinutesPerDay=function() return 30 end} end
+getGameTime=function() return {getMultiplier=function() return 1 end, getTrueMultiplier=function() return 1 end,getMinutesPerDay=function() return 30 end} end
 check(D.rating("Laser")=="Low","Faster game day changes real-hour rate")
 local beam={x=0,y=0,z=0,dx=1,dy=0,length=10}
 check(Beam.cross(beam,5,-1,5,1),"Fast crossing swept across beam")

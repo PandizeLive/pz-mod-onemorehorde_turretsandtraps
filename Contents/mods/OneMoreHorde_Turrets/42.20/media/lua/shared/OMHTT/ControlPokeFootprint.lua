@@ -1,5 +1,20 @@
 local P = {offsets = {{0,0},{1,0},{-1,0},{0,1},{0,-1}}}
 
+---@param square IsoGridSquare? Candidate center
+---@param ignore IsoObject? Placement in progress
+---@return boolean center Installed five-tile assembly
+function P.center(square, ignore)
+    local objects = square and square:getObjects()
+    for i = 0, (objects and objects:size() or 0) - 1 do
+        local object = objects:get(i)
+        if object ~= ignore then
+            local state = require("OMHTT/ControlAccess").state(object)
+            if state and state.kind == "Poke" and state.pokeFootprint == 1 then return true end
+        end
+    end
+    return false
+end
+
 ---@param square IsoGridSquare Candidate occupied tile
 ---@param ignore IsoObject? Current construction object
 ---@return boolean reserved A loaded Poke center owns this tile
@@ -9,14 +24,7 @@ function P.reserved(square, ignore)
     for i=1,#P.offsets do
         local offset = P.offsets[i]
         local tile = getCell():getGridSquare(x+offset[1],y+offset[2],z)
-        local objects = tile and tile:getObjects()
-        for n=0,(objects and objects:size() or 0)-1 do
-            local object = objects:get(n)
-            if object ~= ignore then
-                local state = require("OMHTT/ControlAccess").state(object)
-                if state and state.kind == "Poke" and state.pokeFootprint == 1 then return true end
-            end
-        end
+        if P.center(tile, ignore) then return true end
     end
     return false
 end

@@ -64,7 +64,7 @@ return function(player)
     motion.clear(actor);clock.now=nativeNow
     print("[OMHTT-C471] native-tether pending-pull=east-and-west world-position=unchanged")
     local hours=time:getWorldAgeHours()
-    getGameTime=function() return {getWorldAgeHours=function() return hours end,getMinutesPerDay=function() return time:getMinutesPerDay() end} end
+    getGameTime=function() return {getMultiplier=function() return 1 end, getTrueMultiplier=function() return 1 end,getWorldAgeHours=function() return hours end,getMinutesPerDay=function() return time:getMinutesPerDay() end} end
     player:setCurrent(square);player:setX(base+.5);player:setY(1000.5);player:setZ(0)
     local wallInfo=SpriteConfigManager.GetObjectInfo("WoodenWallLvl1")
     local wallSprite=wallInfo:getFace("w"):getTileInfo(0,0,0):getSpriteName()
@@ -120,7 +120,12 @@ return function(player)
     assert(ss.active,"Crawler must interrupt laser")
     near:getMovingObjects():remove(actor)
     actor:setY(1001.5)
+    -- Exit after the intentional 250ms swept-crossing pulse, not in the same native frame.
+    local contactClock=require("OMHTT/ControlClock")
+    local contactNow=contactClock.now
+    contactClock.now=function() return contactNow()+251 end
     Sensor.step(laser,ss)
+    contactClock.now=contactNow
     assert(not ss.active,"Cleared beam remained active")
     assert(not Action:new(player,laser,"BeamRange",6,nil,ss.id):complete(),"Per-device range edits must be rejected")
     assert(require("OMHTT/ControlAccess").laserRange()==10,"Native default laser range must be ten tiles")

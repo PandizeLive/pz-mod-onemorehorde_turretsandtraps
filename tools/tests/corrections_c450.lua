@@ -40,7 +40,7 @@ local Endurance=require("OMHTT/ControlEndurance")
 local Battery=require("OMHTT/TurretBattery")
 local oldClock,oldMillis,oldCharge=getGameTime,testMillis,Battery.charge
 local hours,reads=100,0
-getGameTime=function() return {getWorldAgeHours=function() return hours end} end
+getGameTime=function() return {getMultiplier=function() return 1 end, getTrueMultiplier=function() return 1 end,getWorldAgeHours=function() return hours end} end
 Battery.charge=function(item) return item.charge end
 local values={}
 for i=1,96 do values[i]={charge=.5,getFullType=function() return "Base.CarBattery1" end,getCondition=function() return 100 end} end

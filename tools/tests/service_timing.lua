@@ -1,5 +1,5 @@
 local oldTime = getGameTime
-getGameTime = function() return {getMultiplier = function() return (.25) * 48 end, getMultiplierFromTimeDelta = function() return 48 end} end
+getGameTime = function() return {getTrueMultiplier=function() return 1 end,getMultiplier = function() return (.25) * 48 end, getMultiplierFromTimeDelta = function() return 48 end} end
 local player = {faceThisObject = function() end}
 local object = {hasModData = function() return true end,
     getModData = function() return {OMHTTTurret = {schema = 1, id = "timing"}} end}
@@ -31,7 +31,7 @@ for i = 1, #actions do
 end
 getGameTime = oldTime
 for _, speed in pairs({1, 5, 30}) do
-    getGameTime = function() return {getMultiplier = function() return 48 * speed / 60 end,
+    getGameTime = function() return {getTrueMultiplier=function() return 1 end,getMultiplier = function() return 48 * speed / 60 end,
         getMultiplierFromTimeDelta = function() return 48 end} end
     local action = turret:new(player, object, "Pickup")
     action.action = {setJobDelta = function() end, forceComplete = function() action.forced = true end}

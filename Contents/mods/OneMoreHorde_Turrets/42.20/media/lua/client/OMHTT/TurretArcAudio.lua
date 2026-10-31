@@ -9,6 +9,7 @@ local A = {window = 0, impacts = 0}
 ---@param command string Authoritative sound event
 ---@param facts table Position and suppression gain
 function A.receive(module, command, facts)
+    if require("OMHTT/ActiveTime").paused() then return end
     if module ~= F.MODULE or (command ~= "ArcShot" and command ~= "ArcHit") or type(facts) ~= "table" then return end
     for _, key in pairs({"x", "y", "z", "gain"}) do
         if type(facts[key]) ~= "number" or facts[key] ~= facts[key] or math.abs(facts[key]) == math.huge then return end

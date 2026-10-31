@@ -85,6 +85,7 @@ end
 ---@param callback function? Completion receives actual loss and result
 ---@return boolean accepted Completion may be asynchronous on MP
 function Damage.request(zombie, amount, source, kind, callback, expiresAt, observation)
+    if require("OMHTT/ActiveTime").paused() then return false end
     if isClient() or not zombie or not Protocol.living(zombie) or zombie:isInvulnerable()
         or not Protocol.number(amount, 0.000001, 1000000)
         or type(source) ~= "string" or #source == 0 or #source > 160

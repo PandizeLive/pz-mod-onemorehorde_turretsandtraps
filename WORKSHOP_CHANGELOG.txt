@@ -1,8 +1,9 @@
-v0.2.71.2
+v0.2.71.3
 
 Development test content
 
-- Fixed delays with stacked Splitter modules and Potato child-projectile impacts.
-- Improved multiplayer rotary contact timing and standalone turret position updates.
-- Prevented construction over Poke Floor stabilizers.
-- Fixed trap rendering errors when leaving multiplayer.
+- Fixed firearm Splitter visuals replaying after ammunition runs out.
+- Reduced empty and misfire warning sound range.
+- Paused trap and turret activity, tether movement and warning sounds with multiplayer time controls.
+- Fixed Poke Floor construction checks while allowing walls beyond stabilizer ends.
+- Increased turret battery endurance.

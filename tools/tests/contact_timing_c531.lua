@@ -220,8 +220,10 @@ Horde.allowed,Policy.eligible,Damage.resolve,Proc.available,Proc.reserve=restore
 local Reservation=require("OMHTT/ControlBuildReservation")
 local Footprint=require("OMHTT/ControlPokeFootprint")
 local originalReserved=Footprint.reserved
+local originalCenter=Footprint.center
 local reserved=testSquares["11100:11100:0"]
 Footprint.reserved=function(tile) return tile==reserved end
+Footprint.center=function(tile) return tile==reserved end
 local oldEntity,oldWall=ISBuildIsoEntity,ISWoodenWall
 local calls=0
 ISBuildIsoEntity={isValidPerSquare=function() calls=calls+1;return true end}
@@ -233,6 +235,7 @@ check(not ISWoodenWall.create({},11100,11100,0,true,"wall") and calls==0,"C531 l
 check(not Reservation.blocked(testSquares["11102:11100:0"],true,true),"C531 nearby unrelated construction remains available")
 check(Reservation.blocked(testSquares["11101:11100:0"],false,true),"C531 opposite edge cannot cross reserved stabilizer")
 ISBuildIsoEntity,ISWoodenWall,Footprint.reserved=oldEntity,oldWall,originalReserved
+Footprint.center=originalCenter
 
 local View=require("OMHTT/ControlTriggerView")
 local Access=require("OMHTT/ControlAccess")

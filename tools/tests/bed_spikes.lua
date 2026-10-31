@@ -270,7 +270,7 @@ function player:setIsFarming() end
 local oldGameTime = getGameTime
 local oldQueue = ISTimedActionQueue
 ISTimedActionQueue = {getTimedActionQueue = function() return {resetQueue = function() end} end}
-getGameTime = function() return {getMultiplier = function() return (.1) * 48 end, getMultiplierFromTimeDelta = function() return 48 end} end
+getGameTime = function() return {getTrueMultiplier=function() return 1 end,getMultiplier = function() return (.1) * 48 end, getMultiplierFromTimeDelta = function() return 48 end} end
 record.health = 80
 testRepairSupply(player, "Bed")
 local action = OMHTTBedServiceAction:new(player, a, record.id, "Repair")
