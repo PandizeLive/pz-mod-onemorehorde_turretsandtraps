@@ -1,0 +1,499 @@
+{
+  "checkpoint": "C532",
+  "version": "0.2.71.2",
+  "purpose": "Reproduce reported failures; not a repair or connected acceptance",
+  "connectedClientsInReplay": 0,
+  "diagnosticAssertions": 27,
+  "totalHarnessAssertions": 44179,
+  "capturedServerVersion": "0.2.71.2",
+  "configuredDayMinutes": 90,
+  "moduleSurcharge": {
+    "normalFiringAndDetection": 1,
+    "enhancedFiringAndDetection": 4
+  },
+  "hashes": {
+    "client-console.txt": "b16fd3e88cd64bef68644e33025ef30a1ec206af9415c224420f8416210eb292",
+    "server-console.txt": "31a968fcf7d420f8e0ce1fbbcbb9d4ee54c2ffb5b53e0d89bae529398a9dfe47",
+    "server-mod.info": "6480118ba16f1271ea0d4215ffb5ba7a841ed91b2916cb45b74c0612d58168c7",
+    "settings-Testing_SandboxVars.lua": "c19b69a1ac79353cbba513b9ee7705977bf27ad3fbf998bacaeea6f710863188",
+    "audit.log": "901774332e0a062d06e493b12ccecf733c40bf03f4cf81f3a271e5283d794e4d",
+    "battery.log": "2c8bf3bb4427ab7212c884657e861a29647ed525203ea942daa877a9c67e1f81",
+    "feedback_c532.lua": "3ba9738a43c5271daf5ea88105e980af826202187ca07412e9887a96fc6a7033"
+  },
+  "reproduced": [
+    "Six firearm child tracers withheld by synthetic damage contention, then emitted at +1000ms after victim death without new damage; client starts all six fresh",
+    "Outer-end wall incorrectly blocked by operating geometry predicate",
+    "Startup exception with native building class absent",
+    "Zero-rate game clock does not pause presentation clock, repeated empty clicks, or received reel audio"
+  ],
+  "limits": [
+    "Exact live tracer queue delay not logged",
+    "Exact vegetation sprite not identified",
+    "Zombie sliding not isolated between native movement, replicated movement and OMHTT effects",
+    "No real client startup re-run or connected rendering in this replay"
+  ],
+  "battery": [
+    {
+      "head": "AssaultRifle",
+      "build": "bare",
+      "gameHours": 143.157498,
+      "percentPerShot": 0.00133409,
+      "shots": 74957
+    },
+    {
+      "head": "AssaultRifle",
+      "build": "normal",
+      "gameHours": 71.577432,
+      "percentPerShot": 0.00266817,
+      "shots": 37478
+    },
+    {
+      "head": "AssaultRifle",
+      "build": "enhanced",
+      "gameHours": 22.961432,
+      "percentPerShot": 0.00667043,
+      "shots": 14991
+    },
+    {
+      "head": "M4",
+      "build": "bare",
+      "gameHours": 143.157498,
+      "percentPerShot": 0.00133409,
+      "shots": 74957
+    },
+    {
+      "head": "M4",
+      "build": "normal",
+      "gameHours": 71.577432,
+      "percentPerShot": 0.00266817,
+      "shots": 37478
+    },
+    {
+      "head": "M4",
+      "build": "enhanced",
+      "gameHours": 22.961432,
+      "percentPerShot": 0.00667043,
+      "shots": 14991
+    },
+    {
+      "head": "Pistol",
+      "build": "bare",
+      "gameHours": 464.999407,
+      "percentPerShot": 0.00086869,
+      "shots": 115115
+    },
+    {
+      "head": "Pistol",
+      "build": "normal",
+      "gameHours": 232.496741,
+      "percentPerShot": 0.00173739,
+      "shots": 57557
+    },
+    {
+      "head": "Pistol",
+      "build": "enhanced",
+      "gameHours": 74.340444,
+      "percentPerShot": 0.00434347,
+      "shots": 23023
+    },
+    {
+      "head": "Pistol2",
+      "build": "bare",
+      "gameHours": 570.135556,
+      "percentPerShot": 0.00092428,
+      "shots": 108192
+    },
+    {
+      "head": "Pistol2",
+      "build": "normal",
+      "gameHours": 285.058222,
+      "percentPerShot": 0.00184856,
+      "shots": 54096
+    },
+    {
+      "head": "Pistol2",
+      "build": "enhanced",
+      "gameHours": 94.790667,
+      "percentPerShot": 0.00462141,
+      "shots": 21638
+    },
+    {
+      "head": "Pistol3",
+      "build": "bare",
+      "gameHours": 945.377827,
+      "percentPerShot": 0.00098397,
+      "shots": 101628
+    },
+    {
+      "head": "Pistol3",
+      "build": "normal",
+      "gameHours": 472.679358,
+      "percentPerShot": 0.00196795,
+      "shots": 50814
+    },
+    {
+      "head": "Pistol3",
+      "build": "enhanced",
+      "gameHours": 149.413333,
+      "percentPerShot": 0.00491987,
+      "shots": 20325
+    },
+    {
+      "head": "Revolver",
+      "build": "bare",
+      "gameHours": 1160.935704,
+      "percentPerShot": 0.00096202,
+      "shots": 103947
+    },
+    {
+      "head": "Revolver",
+      "build": "normal",
+      "gameHours": 580.460938,
+      "percentPerShot": 0.00192405,
+      "shots": 51973
+    },
+    {
+      "head": "Revolver",
+      "build": "enhanced",
+      "gameHours": 196.057481,
+      "percentPerShot": 0.00481012,
+      "shots": 20789
+    },
+    {
+      "head": "Revolver_Short",
+      "build": "bare",
+      "gameHours": 1350.975802,
+      "percentPerShot": 0.0008267,
+      "shots": 120962
+    },
+    {
+      "head": "Revolver_Short",
+      "build": "normal",
+      "gameHours": 675.484444,
+      "percentPerShot": 0.00165341,
+      "shots": 60481
+    },
+    {
+      "head": "Revolver_Short",
+      "build": "enhanced",
+      "gameHours": 228.150667,
+      "percentPerShot": 0.00413351,
+      "shots": 24192
+    },
+    {
+      "head": "Revolver_Long",
+      "build": "bare",
+      "gameHours": 1080.775111,
+      "percentPerShot": 0.00103338,
+      "shots": 96769
+    },
+    {
+      "head": "Revolver_Long",
+      "build": "normal",
+      "gameHours": 540.355111,
+      "percentPerShot": 0.00206676,
+      "shots": 48384
+    },
+    {
+      "head": "Revolver_Long",
+      "build": "enhanced",
+      "gameHours": 182.521481,
+      "percentPerShot": 0.00516689,
+      "shots": 19353
+    },
+    {
+      "head": "AssaultRifle2",
+      "build": "bare",
+      "gameHours": 503.520247,
+      "percentPerShot": 0.00168045,
+      "shots": 59507
+    },
+    {
+      "head": "AssaultRifle2",
+      "build": "normal",
+      "gameHours": 251.746617,
+      "percentPerShot": 0.00336091,
+      "shots": 29753
+    },
+    {
+      "head": "AssaultRifle2",
+      "build": "enhanced",
+      "gameHours": 77.305926,
+      "percentPerShot": 0.00840227,
+      "shots": 11901
+    },
+    {
+      "head": "HuntingRifle",
+      "build": "bare",
+      "gameHours": 659.451812,
+      "percentPerShot": 0.0015558,
+      "shots": 64275
+    },
+    {
+      "head": "HuntingRifle",
+      "build": "normal",
+      "gameHours": 329.718005,
+      "percentPerShot": 0.0031116,
+      "shots": 32137
+    },
+    {
+      "head": "HuntingRifle",
+      "build": "enhanced",
+      "gameHours": 107.333985,
+      "percentPerShot": 0.00777899,
+      "shots": 12855
+    },
+    {
+      "head": "VarmintRifle",
+      "build": "bare",
+      "gameHours": 617.339951,
+      "percentPerShot": 0.00146142,
+      "shots": 68426
+    },
+    {
+      "head": "VarmintRifle",
+      "build": "normal",
+      "gameHours": 308.666025,
+      "percentPerShot": 0.00292284,
+      "shots": 34213
+    },
+    {
+      "head": "VarmintRifle",
+      "build": "enhanced",
+      "gameHours": 96.695704,
+      "percentPerShot": 0.00730709,
+      "shots": 13685
+    },
+    {
+      "head": "Shotgun",
+      "build": "bare",
+      "gameHours": 899.47405,
+      "percentPerShot": 0.00102647,
+      "shots": 97421
+    },
+    {
+      "head": "Shotgun",
+      "build": "normal",
+      "gameHours": 449.731099,
+      "percentPerShot": 0.00205293,
+      "shots": 48710
+    },
+    {
+      "head": "Shotgun",
+      "build": "enhanced",
+      "gameHours": 152.94536,
+      "percentPerShot": 0.00513233,
+      "shots": 19484
+    },
+    {
+      "head": "DoubleBarrelShotgun",
+      "build": "bare",
+      "gameHours": 1371.096296,
+      "percentPerShot": 0.00102647,
+      "shots": 97421
+    },
+    {
+      "head": "DoubleBarrelShotgun",
+      "build": "normal",
+      "gameHours": 685.525926,
+      "percentPerShot": 0.00205293,
+      "shots": 48710
+    },
+    {
+      "head": "DoubleBarrelShotgun",
+      "build": "enhanced",
+      "gameHours": 259.764444,
+      "percentPerShot": 0.00513233,
+      "shots": 19484
+    },
+    {
+      "head": "Potato",
+      "build": "bare",
+      "gameHours": 1975.297778,
+      "percentPerShot": 0.00045,
+      "shots": 222222
+    },
+    {
+      "head": "Potato",
+      "build": "normal",
+      "gameHours": 987.644444,
+      "percentPerShot": 0.0009,
+      "shots": 111111
+    },
+    {
+      "head": "Potato",
+      "build": "enhanced",
+      "gameHours": 395.048889,
+      "percentPerShot": 0.00225,
+      "shots": 44444
+    },
+    {
+      "head": "Ballista",
+      "build": "bare",
+      "gameHours": 106.64,
+      "percentPerShot": 0.025,
+      "shots": 4000
+    },
+    {
+      "head": "Ballista",
+      "build": "normal",
+      "gameHours": 53.306667,
+      "percentPerShot": 0.05,
+      "shots": 2000
+    },
+    {
+      "head": "Ballista",
+      "build": "enhanced",
+      "gameHours": 17.04,
+      "percentPerShot": 0.125,
+      "shots": 800
+    },
+    {
+      "head": "Scrapshot",
+      "build": "bare",
+      "gameHours": 373.32,
+      "percentPerShot": 0.0025,
+      "shots": 40000
+    },
+    {
+      "head": "Scrapshot",
+      "build": "normal",
+      "gameHours": 186.653333,
+      "percentPerShot": 0.005,
+      "shots": 20000
+    },
+    {
+      "head": "Scrapshot",
+      "build": "enhanced",
+      "gameHours": 58.653333,
+      "percentPerShot": 0.0125,
+      "shots": 8000
+    },
+    {
+      "head": "Arc",
+      "build": "bare",
+      "gameHours": 22.217778,
+      "percentPerShot": 0.02,
+      "shots": 5000
+    },
+    {
+      "head": "Arc",
+      "build": "normal",
+      "gameHours": 11.106667,
+      "percentPerShot": 0.04,
+      "shots": 2500
+    },
+    {
+      "head": "Arc",
+      "build": "enhanced",
+      "gameHours": 3.33,
+      "percentPerShot": 0.1,
+      "shots": 1000
+    },
+    {
+      "head": "RotaryBat",
+      "build": "bare",
+      "gameHours": 6.0,
+      "percentPerShot": 0.00462963,
+      "shots": 21599
+    },
+    {
+      "head": "RotaryBat",
+      "build": "normal",
+      "gameHours": 3.0,
+      "percentPerShot": 0.00925926,
+      "shots": 10799
+    },
+    {
+      "head": "RotaryBat",
+      "build": "enhanced",
+      "gameHours": 0.9,
+      "percentPerShot": 0.0308642,
+      "shots": 3240
+    },
+    {
+      "head": "RotaryBlades",
+      "build": "bare",
+      "gameHours": 3.0,
+      "percentPerShot": 0.00925926,
+      "shots": 10799
+    },
+    {
+      "head": "RotaryBlades",
+      "build": "normal",
+      "gameHours": 1.5,
+      "percentPerShot": 0.01851852,
+      "shots": 5399
+    },
+    {
+      "head": "RotaryBlades",
+      "build": "enhanced",
+      "gameHours": 0.45,
+      "percentPerShot": 0.0617284,
+      "shots": 1620
+    },
+    {
+      "head": "Lobber Makeshift",
+      "build": "bare",
+      "gameHours": 81.448889,
+      "percentPerShot": 0.03,
+      "shots": 3333
+    },
+    {
+      "head": "Lobber Makeshift",
+      "build": "normal",
+      "gameHours": 40.7,
+      "percentPerShot": 0.06,
+      "shots": 1666
+    },
+    {
+      "head": "Lobber Makeshift",
+      "build": "enhanced",
+      "gameHours": 12.191667,
+      "percentPerShot": 0.15,
+      "shots": 666
+    },
+    {
+      "head": "Lobber Aerosol",
+      "build": "bare",
+      "gameHours": 54.291111,
+      "percentPerShot": 0.045,
+      "shots": 2222
+    },
+    {
+      "head": "Lobber Aerosol",
+      "build": "normal",
+      "gameHours": 27.133333,
+      "percentPerShot": 0.09,
+      "shots": 1111
+    },
+    {
+      "head": "Lobber Aerosol",
+      "build": "enhanced",
+      "gameHours": 8.121667,
+      "percentPerShot": 0.225,
+      "shots": 444
+    },
+    {
+      "head": "Lobber Pipe",
+      "build": "bare",
+      "gameHours": 40.7,
+      "percentPerShot": 0.06,
+      "shots": 1666
+    },
+    {
+      "head": "Lobber Pipe",
+      "build": "normal",
+      "gameHours": 20.337778,
+      "percentPerShot": 0.12,
+      "shots": 833
+    },
+    {
+      "head": "Lobber Pipe",
+      "build": "enhanced",
+      "gameHours": 6.086667,
+      "percentPerShot": 0.3,
+      "shots": 333
+    }
+  ]
+}
