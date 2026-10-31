@@ -1,6 +1,6 @@
 # 0.2.70.11 verification and owner test
 
-Status: automated and native checks passed; local delivery in progress; connected acceptance pending.
+Status: automated and native checks passed; installed and staged from immutable `test/v0.2.70.11`; connected acceptance pending.
 
 40,498 assertions pass. Eight frozen pre-fix paths fail at their named regression checks. Native write/read, Traps-only, Turrets-only, combined startup and dedicated combat/service probes pass with zero connected clients. [Evidence](evidence/c517-checks.json). The native ownership fixture was corrected to expose its real grid squares before reporting; its initial failed run is retained. The expiry fixture explicitly retains the stale occupant, preventing a vacuous pass.
 
@@ -18,3 +18,5 @@ After upload, update/restart the server and both clients to 0.2.70.11. No new wo
 - Tacks, Martyrdom and corpse exclusion
 
 Retain actual failures separately from automated passes. Native tests with zero connected clients cannot establish smooth multiplayer rendering.
+
+Delivery: all 457 source and 631 tagged/package/local/archive/stage files verify, including previous package/stage backups. Workshop page metadata and preview remain byte-identical. [Delivery evidence](evidence/c517-delivery.json). No upload or server change performed. GitHub mirror remains blocked by the prior automatic approval review.
