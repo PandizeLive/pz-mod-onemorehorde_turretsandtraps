@@ -25,3 +25,7 @@ Upload both staged versions, then restart server and clients. Existing saved bat
 - Paused traps, sounds and zombie movement
 - Poke grass placement and stabilizer boundaries
 - Battery endurance
+
+## Publisher tooling verification - 2026-10-31
+
+The owner authorized running-client SteamUploader integration. Fifteen isolated Workshop workflow checks pass, including a failed upload leaving the release baseline and cumulative changelog unchanged. The shared uploader suite passes real offline image validation, unchanged Steam PID, timeout/start failure, metadata omission, eight simulated failure outcomes and exact-item simulated confirmation. Three Rust tests cover sparse metadata, creation restrictions and callback ID/agreement checks. The current 640-file tagged package passes publisher preflight. No Steam upload or gameplay change occurred; live publication remains untested. [Implementation and reproducible build](../tools/steam-uploader/README.md).

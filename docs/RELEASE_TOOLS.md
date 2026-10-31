@@ -30,3 +30,7 @@ For 0.2.9, the game is 42.21.0 while installed PZOptimizer loose overrides still
 ## C498 - local authoring copies during test installs
 
 Before handing off a local test install, inspect the existing managed native Workshop stage for the same mod IDs as well as the ordinary mods folder. Zomboid42.21 searches staged Workshop content before Steam downloads and local mods by default. Publishing the frozen Contents snapshot does not refresh the authoring stage. If an existing managed stage is stale, use `OMH.cmd -Action Stage` and verify its packaged hashes before requesting a restart/retest. Preserve owner metadata and the helper's backup; never overwrite an unmanaged or edited stage. Do not create a new authoring copy merely to test a subscribed package. C498 exposed this delivery omission even though the uploaded Steam package and server were current.
+
+## SteamUploader integration - 2026-10-31
+
+The existing Publish action now uses the running Steam client and the compatible workspace SteamUploader build. Keep Steam signed in to the owner account and close Project Zomboid. The frozen content snapshot, Unlisted visibility and exact-item confirmation gate remain; title, description, tags and cover are omitted. T&T has no local GIF, so the current cover is retained. Failures remain unconfirmed and cannot append a publication baseline. [Build and verification](../tools/steam-uploader/README.md). No Workshop upload or gameplay change was made.

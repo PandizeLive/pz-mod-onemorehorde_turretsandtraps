@@ -16,7 +16,7 @@ def main():
     parent.mkdir(parents=True, exist_ok=True)
     project = Path(tempfile.mkdtemp(prefix='workshop-', dir=parent))
     (project / 'tools').mkdir()
-    for name in ['OMH-WorkshopCommon.ps1', 'OMH-SteamHelpers.ps1', 'Stage-Workshop.ps1', 'Publish-OMHWorkshop.ps1', 'OMH-Release.ps1']:
+    for name in ['SteamUploader.ps1', 'OMH-WorkshopCommon.ps1', 'OMH-SteamHelpers.ps1', 'Stage-Workshop.ps1', 'Publish-OMHWorkshop.ps1', 'OMH-Release.ps1']:
         shutil.copy2(ROOT / 'tools' / name, project / 'tools' / name)
     for name in ['preview.png']:
         shutil.copy2(ROOT / name, project / name)
@@ -34,15 +34,9 @@ def main():
     helper = project / 'tools/OMH-SteamHelpers.ps1'
     helper.write_text(helper.read_text(encoding='utf-8') + r'''
 function Assert-ProjectZomboidClosed {}
-function Get-PublisherCredential {
-    return [Management.Automation.PSCredential]::new('fixture', (ConvertTo-SecureString 'fixture' -AsPlainText -Force))
-}
-function Get-SteamPath { return 'fixture-no-steam.exe' }
-function Read-GuardCode { return 'FAKE1' }
-function Stop-SteamClient { param([string]$SteamPath); return $false }
-function Invoke-SteamCmdUpload {
-    param($Credential, $GuardCode, $LogPath)
-    $vdf = Get-Content -LiteralPath $vdfPath -Raw
+function Invoke-SteamUploaderUpload {
+    param($ManifestPath, $LogPath, $ReleaseVersion)
+    $vdf = Get-Content -LiteralPath $ManifestPath -Raw
     if ($vdf -notmatch '"visibility" "3"' -or $vdf -match '"(?:title|description|previewfile|tags)"') { throw 'Wrong update fields.' }
     if ($vdf -notmatch '"publishedfileid" "9912345678"') { throw 'Wrong target.' }
     if ($vdf -notmatch '"contentfolder" "([^"\r\n]+)"') { throw 'Missing snapshot.' }
@@ -179,10 +173,10 @@ function Copy-Item {
     release_before = (project / 'docs/RELEASE.md').read_bytes()
     script('Publish-OMHWorkshop.ps1', input_text='PUBLISH\n', extra_env={'OMHTT_TEST_FAIL_UPLOAD': '1'}, success=False)
     receipts = list((project / 'diagnostics/workshop').glob('upload-*/upload-result.json'))
-    assert sorted(json.loads(p.read_text())['status'] for p in receipts) == ['confirmed', 'pending']
+    assert sorted(json.loads(p.read_text())['status'] for p in receipts) == ['confirmed', 'unconfirmed']
     assert (project / 'docs/RELEASE.md').read_bytes() == release_before
     assert (project / 'WORKSHOP_CHANGELOG.txt').read_bytes() == changelog
-    checks.append('failed upload keeps pending evidence and leaves baseline untouched')
+    checks.append('failed upload keeps unconfirmed evidence and leaves baseline untouched')
     report = {'checks': checks, 'fixture': str(project), 'steamCalls': 0}
     (parent / 'workshop-results.json').write_text(json.dumps(report, indent=2))
     print(f'PASS: {len(checks)} Workshop checks; no Steam calls. Fixture: {project}')
