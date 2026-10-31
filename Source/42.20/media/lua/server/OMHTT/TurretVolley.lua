@@ -130,7 +130,8 @@ function V.ray(record, x, y, z, angle, range, damage, group, index)
         require("OMHTT/DefenseEffects").emit("Launch", {id = ray.id, shot = ray.shot, x = x + ray.dx * range,
             y = y + ray.dy * range, z = z, fromX = startX, fromY = startY, start = Clock.now(),
             flight = remaining / ray.speed * 1000, projectile = family, ammoType = ammoType,
-            muzzle = (group.kind == "fragment" or group.fromX) and 0 or nil, muzzleHeight = group.height, silent = true})
+            muzzle = (group.kind == "fragment" or group.fromX) and 0 or nil, muzzleHeight = group.height, silent = true,
+            contactFlight = not group.left, excludeId = group.excludeId, excludeOutfit = group.excludeOutfit})
     end
 end
 
@@ -155,9 +156,7 @@ function V.split(record, origin, target, player, options, impact)
         group.fromX, group.fromY = x, y
         if distance > 0 then group.fromX, group.fromY = x + dx / distance * forward, y + dy / distance * forward end
         group.height = impact.muzzleHeight
-        group.rays[1] = {id = record.id, shot = tostring(record.shots) .. ":primary", x = impact.x, y = impact.y, z = impact.z,
-            fromX = group.fromX, fromY = group.fromY, muzzleHeight = group.height, firearm = true, missed = impact.missed}
-        impact.deferVisual = true
+        -- The primary keeps its own immediate visual; children never hold it.
     end
     local damage = options.damage * (options.critical and options.critMultiplier or 1) * stats.splitterDamage
     for i = 1, stats.splitter do
@@ -180,7 +179,11 @@ function V.fragment(record, x, y, z, target, player, options)
     local stats = options.stats
     local owner = options.root or options
     local group = {options = owner, kind = "fragment", player = player, weapon = options.effectWeapon, stats = stats, hits = {}, remaining = 5, rays = {}, height = .30}
-    if target then group.hits[target] = true end
+    if target then
+        group.hits[target] = true
+        group.excludeId = target:getOnlineID()
+        group.excludeOutfit = require("OMHTT/DefenseCombatProtocol").outfit(target:getPersistentOutfitID())
+    end
     local rotation = ZombRand(36000) / 100
     local damage = options.damage * (options.critical and options.critMultiplier or 1) * stats.fragmentDamage
     for i = 1, 5 do
@@ -219,6 +222,17 @@ end
 ---@return nil
 function V.finish(ray)
     local victim, group = ray.best, ray.group
+    if ray.speed and Clock.now() < ray.flightStart + (ray.bestDistance or ray.distance) / ray.speed * 1000 then
+        ray.waitingDamage = true
+        return true
+    end
+    if ray.speed and not ray.contactShown and not group.left then
+        ray.contactShown = true
+        local distance = ray.bestDistance or math.min(ray.distance, ray.range)
+        require("OMHTT/DefenseEffects").emit("Impact", {id=ray.id, shot=ray.shot,
+            x=ray.x+ray.dx*distance, y=ray.y+ray.dy*distance, z=ray.z,
+            fromX=ray.x, fromY=ray.y, projectile=ray.projectile, ammoType=ray.ammoType, silent=true})
+    end
     if victim and group.kind == "scrapshot" and group.options.scrapPending and group.options.scrapPending[victim] then
         ray.waitingDamage = true
         return true
@@ -228,16 +242,14 @@ function V.finish(ray)
         return true
     end
     ray.waitingDamage = nil
-    if ray.speed and Clock.now() < ray.flightStart + (ray.bestDistance or ray.distance) / ray.speed * 1000 then
-        ray.waitingDamage = true
-        return true
-    end
     local hit = false
-    if victim and not victim:isDead() and ((group.kind ~= "fragment" and instanceof(victim, "IsoPlayer")) or Horde.allowed(victim)) and victim:getSquare() == ray.square
+    local victimX, victimY
+    if victim then victimX,victimY=Actors.position(victim) end
+    if victim and not victim:isDead() and ((group.kind ~= "fragment" and instanceof(victim, "IsoPlayer")) or Horde.allowed(victim)) and Actors.square(victim) == ray.square
         and getCell():getGridSquare(ray.square:getX(), ray.square:getY(), ray.z) == ray.square
-        and math.abs((victim:getX() - ray.x) * ray.dy - (victim:getY() - ray.y) * ray.dx) <= math.max(.2, victim:getWidth())
-        and (victim:getX() - ray.x) * ray.dx + (victim:getY() - ray.y) * ray.dy >= 0
-        and (victim:getX() - ray.x) * ray.dx + (victim:getY() - ray.y) * ray.dy <= ray.range
+        and math.abs((victimX - ray.x) * ray.dy - (victimY - ray.y) * ray.dx) <= math.max(.2, victim:getWidth())
+        and (victimX - ray.x) * ray.dx + (victimY - ray.y) * ray.dy >= 0
+        and (victimX - ray.x) * ray.dx + (victimY - ray.y) * ray.dy <= ray.range
         and (group.kind == "splitter" or not V.seen(group, victim)) then
         local chance = 100
         if group.stats.headKind == "Ballista" then
@@ -253,7 +265,7 @@ function V.finish(ray)
                 hit = require("OMHTT/TurretPlayerHit").hit(victim, group.options)
             else
             local owner = group.options
-            local x, y, square = victim:getX(), victim:getY(), victim:getSquare()
+            local x, y, square = victimX, victimY, Actors.square(victim)
             local hitDamage = ray.damage
             local amount = hitDamage
             local primary = group.kind == "forward" and not group.penetrated
@@ -301,16 +313,15 @@ function V.finish(ray)
     if group.stats.headKind == "Arc" then
         require("OMHTT/DefenseEffects").emit("Arc", facts)
     elseif ray.speed then
-        if not victim or not group.left or (hit and group.left <= 1) then
+        if not ray.contactShown and (not victim or not group.left or (hit and group.left <= 1)) then
             facts.firearm, facts.projectile, facts.ammoType = false, ray.projectile, ray.ammoType
             require("OMHTT/DefenseEffects").emit("Impact", facts)
         end
     elseif group.kind == "scrapshot" then
         require("OMHTT/DefenseEffects").emit("Ray", facts)
     elseif group.remaining then
-        group.rays[#group.rays + 1] = facts
         group.remaining = group.remaining - 1
-        if group.remaining == 0 then require("OMHTT/DefenseEffects").emit("Volley", {rays = group.rays}) end
+        require("OMHTT/DefenseEffects").emit("Ray", facts)
     else
         require("OMHTT/DefenseEffects").emit("Ray", facts)
     end
@@ -348,7 +359,8 @@ function V.step(ray)
             ray.objectIndex = ray.objectIndex + 1
             if ray.group.kind ~= "terminal" and (instanceof(candidate, "IsoZombie") or (ray.group.kind ~= "fragment" and instanceof(candidate, "IsoPlayer"))) and not candidate:isDead() and Actors.square(candidate) == ray.square
                 and (ray.group.kind == "splitter" or not V.seen(ray.group, candidate)) then
-                local x, y = candidate:getX() - ray.x, candidate:getY() - ray.y
+                local px,py=Actors.position(candidate)
+                local x, y = px - ray.x, py - ray.y
                 local along = x * ray.dx + y * ray.dy
                 local across = math.abs(x * ray.dy - y * ray.dx)
                 if along >= (ray.minimum or 0) and along <= ray.range and across <= math.max(.2, candidate:getWidth())
@@ -362,13 +374,21 @@ function V.step(ray)
         if ray.best then return true end
     end
     if ray.distance >= ray.range then return true end
-    ray.distance = math.min(ray.range, ray.distance + .25)
+    local previousDistance = ray.distance
+    local x, y = ray.x + ray.dx * ray.distance, ray.y + ray.dy * ray.distance
+    local stepX, stepY = math.huge, math.huge
+    if ray.dx > 0 then stepX = (math.floor(x) + 1 - x) / ray.dx end
+    if ray.dx < 0 then stepX = (math.ceil(x) - 1 - x) / ray.dx end
+    if ray.dy > 0 then stepY = (math.floor(y) + 1 - y) / ray.dy end
+    if ray.dy < 0 then stepY = (math.ceil(y) - 1 - y) / ray.dy end
+    local advance = ray.square and math.min(stepX, stepY) + .000001 or .000001
+    ray.distance = math.min(ray.range, ray.distance + advance)
     local square = getCell():getGridSquare(math.floor(ray.x + ray.dx * ray.distance), math.floor(ray.y + ray.dy * ray.distance), ray.z)
     if not square then return true end
     if square ~= ray.square then
         local previous = ray.square or getCell():getGridSquare(math.floor(ray.x), math.floor(ray.y), ray.z)
         if not previous or not require("OMHTT/PrototypeCombat").clearLane(previous, square, 2) then
-            ray.distance = math.max(0, ray.distance - .25)
+            ray.distance = math.max(previousDistance, ray.distance - .000002)
             return true
         end
         ray.square, ray.objectIndex, ray.scanning = square, 0, true
@@ -380,7 +400,9 @@ end
 function V.tick()
     local deadline, now = Budget.limit(1), Clock.now()
     local waiting = 0
-    for _ = 1, 128 do
+    -- The one-millisecond deadline remains authoritative. The old 128-step
+    -- guard artificially spread even empty stacked rays over several ticks.
+    for _ = 1, 1024 do
         if #V.queue == 0 or waiting >= #V.queue or getTimestampMs() >= deadline then break end
         if V.cursor > #V.queue then V.cursor = 1 end
         local ray = V.queue[V.cursor]

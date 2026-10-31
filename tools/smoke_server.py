@@ -133,6 +133,8 @@ def main():
     assert "[OMHTT-C517] native-fresh-membership passed=true" in text, "Native fresh-position/handoff proof missing"
     for server_mode in ["false", "true"]:
         assert "[OMHTT-C528] native-impact server=" + server_mode + " animation=nil accepted=true repeat=blocked" in text, "Native unnamed-state impact proof missing"
+    assert "[OMHTT-C531] native-build entity=blocked legacy=blocked completion=blocked materials=untouched hooks=installed" in text
+    assert "[OMHTT-C531] native-projectile stacks=1,2,4,5,6,8,16 contactMs=250 earlyDamage=0 health=exact impacts=once" in text
     assert "[OMHTT-Smoke] native-persistence mode=" + os.environ.get("OMHTT_PROBE_MODE", "write") + " parts=28" in text, "Native object persistence failed"
     assert "native-turret-collision sides=4 player-and-zombie=blocked vision=clear reach=clear firing=clear pathfinders=2" in text, "Turret native collision/access failed"
     assert "Shutdown handling finished" in text, "No clean shutdown evidence"

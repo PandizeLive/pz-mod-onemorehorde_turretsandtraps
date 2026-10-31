@@ -1,6 +1,7 @@
 if isServer() then return end
 local V={pending={},entries={}}
 local A=require("OMHTT/ControlAccess")
+local multiplayer = isClient()
 function V.add(object)
     if instanceof(object,"IsoThumpable") then V.pending[object]=getTimestampMs()+10000 end
 end
@@ -10,6 +11,10 @@ function V.square(square)
 end
 function V.remove(object) V.pending[object],V.entries[object]=nil,nil end
 function V.tick()
+    if multiplayer and not isClient() then
+        V.pending, V.entries = {}, {}
+        return
+    end
     local now=getTimestampMs()
     if now<(V.due or 0) then return end
     V.due=now+250
@@ -30,6 +35,10 @@ local Options = require("OMHTT/ControlOptions")
 ---@param index number Native viewport
 ---@return nil
 function V.render(index)
+    if multiplayer and not isClient() then
+        V.pending, V.entries = {}, {}
+        return
+    end
     local player, cell = getSpecificPlayer(index), getCell()
     if not player or not cell then return end
     local budget = 192

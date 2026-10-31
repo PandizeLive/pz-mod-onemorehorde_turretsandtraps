@@ -8,7 +8,7 @@ local canvas = nil
 local phases, phaseOrder, phaseCursor = {}, {}, 1
 
 local function progress(command, facts)
-    if not isClient() or not facts.packet then return true end
+    if not isClient() or (not facts.packet and not facts.predicted) then return true end
     local rank = command == "Impact" and 3 or command == "Land" and 2 or command == "Launch" and 1
     if not rank then return true end
     local key = tostring(facts.id) .. ":" .. tostring(facts.shot)
@@ -91,6 +91,7 @@ function E.receive(module, command, facts)
     effect.targetId, effect.targetOutfit = facts.targetId, facts.targetOutfit
     effect.firearm = facts.firearm == true
     effect.projectile = facts.projectile
+    effect.contactFlight, effect.excludeId, effect.excludeOutfit = facts.contactFlight, facts.excludeId, facts.excludeOutfit
     effect.ammoType = facts.ammoType or effect.ammoType
     effect.muzzleHeight = facts.muzzleHeight or T.HEAD_VISUAL.height
     if command == "Launch" or command == "GunShot" then
@@ -173,6 +174,12 @@ function E.render()
     local now = require("OMHTT/TurretClock").now()
     for i = #E.effects, 1, -1 do
         local effect = E.effects[i]
+        if require("OMHTT/PrototypeFlight").contact(effect, now) then
+            D.defer("projectile-local-contact", {id=effect.id, shot=effect.shot, elapsedMs=now-effect.start,
+                x=effect.x, y=effect.y, flightMs=effect.flight}, "turrets")
+            E.receive(F.MODULE,"Impact",{id=effect.id,shot=effect.shot,x=effect.x,y=effect.y,z=effect.z,
+                projectile=effect.projectile,ammoType=effect.ammoType,silent=true,predicted=true})
+        end
         local elapsed = now - effect.start
         local traceAge = effect.renderStart and now - effect.renderStart or 0
         if (effect.phase == "Impact" and elapsed >= 450) or (effect.firearm and (traceAge >= 100 or elapsed >= 1000)) or elapsed > effect.flight + 750 then
@@ -183,6 +190,10 @@ function E.render()
                 local wx, wy, height = E.position(effect)
                 if effect.phase == "Launch" then
                     local fraction = effect.flight > 0 and math.min(1, math.max(0, elapsed / effect.flight)) or 1
+                    if effect.contactFlight and effect.contactDistance then
+                        local length = math.sqrt((wx-effect.fromX)^2+(wy-effect.fromY)^2)
+                        if length > 0 then fraction = math.min(fraction, effect.contactDistance / length) end
+                    end
                     wx = effect.fromX + (wx - effect.fromX) * fraction
                     wy = effect.fromY + (wy - effect.fromY) * fraction
                     height = effect.muzzleHeight + (height - effect.muzzleHeight) * fraction

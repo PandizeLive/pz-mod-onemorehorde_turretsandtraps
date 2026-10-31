@@ -12,6 +12,35 @@ local R = {}
 local weapon
 local parts
 
+---@param entry table Motor owner
+---@param before number Previous travel
+---@param after number Current travel
+---@param elapsed number Active milliseconds advanced
+---@return nil
+function R.record(entry, before, after, elapsed)
+    local now = GameTime.getServerTimeMills()
+    entry.timeline = entry.timeline or {}
+    local history = entry.timeline
+    history[#history+1] = {at=now, from=now-math.max(0,elapsed), before=before, after=after}
+    while #history > 128 or (#history > 1 and history[1].at < now - 750) do
+        table.remove(history, 1)
+    end
+end
+
+---@param entry table Motor owner
+---@param at number Synchronized observation time
+---@return number? travel Confirmed motor position at that time
+function R.travelAt(entry, at)
+    local history = entry.timeline
+    for i=#history,1,-1 do
+        local sample=history[i]
+        if at>=sample.from and at<=sample.at then
+            local fraction=sample.at>sample.from and (at-sample.from)/(sample.at-sample.from) or 1
+            return sample.before+(sample.after-sample.before)*fraction
+        end
+    end
+end
+
 ---@param player IsoPlayer Operator
 ---@param object IsoObject Base
 ---@return string status
@@ -71,9 +100,26 @@ function R.contact(entry, actor, job)
         job.target = true
         job.targetActor = actor
     end
-    if not job.moving or not T.isOn(T.state(entry.object)) then return end
+    if not T.isOn(T.state(entry.object)) then return end
     if Clock.now() - job.at > 150 then return end
-    local arm, pass = Heads.crossing(bearing, job.before, job.after, job.profile.omni, job.profile.cone)
+    local before, after = job.before, job.after
+    if observedAt and entry.timeline then
+        entry.contactFrames = entry.contactFrames or setmetatable({}, {__mode="k"})
+        local old = entry.contactFrames[actor]
+        local owner = actor:getOwner()
+        local outfit = require("OMHTT/DefenseCombatProtocol").outfit(actor:getPersistentOutfitID())
+        local from = observedAt-100
+        if old and old.owner==owner and old.outfit==outfit then
+            if observedAt<=old.at then return end
+            from=math.max(observedAt-250,old.at)
+        end
+        before,after=R.travelAt(entry,from),R.travelAt(entry,observedAt)
+        if not before or not after then return end
+        entry.contactFrames[actor]={at=observedAt,owner=owner,outfit=outfit}
+    elseif not job.moving then
+        return
+    end
+    local arm, pass = Heads.crossing(bearing, before, after, job.profile.omni, job.profile.cone)
     if not arm then return end
     if player then
         R.injure(actor, job.stats.headKind == "RotaryBlades", Clock.now(), entry.object)
@@ -97,7 +143,7 @@ function R.contact(entry, actor, job)
     local observation = {at = observedAt or GameTime.getServerTimeMills()}
     require("OMHTT/Diagnostics").defer("rotary-hit", {id=source, victim=actor:getOnlineID(), observedAt=observation.at,
         observationAgeMs=GameTime.getServerTimeMills()-observation.at, sweepAgeMs=Clock.now()-job.at,
-        before=job.before, after=job.after, arm=arm, pass=pass, x=hitX, y=hitY}, "turrets")
+        before=before, after=after, arm=arm, pass=pass, x=hitX, y=hitY}, "turrets")
     Damage.resolve(actor, amount, source, "rotary", function(lost)
         if lost > 0 then
             Proc.hit(actor, true, hitX, hitY, square:getZ(), {id = source}, nil, proc)
@@ -137,6 +183,7 @@ function R.step(entry, deadline)
         entry.rotaryHead, entry.rotaryAt, entry.rotaryJob = head, now, nil
         entry.gameAt = getGameTime():getWorldAgeHours()
         entry.travel, entry.checkedTravel, entry.hits = 0, 0, {setmetatable({}, {__mode = "k"}), setmetatable({}, {__mode = "k"})}
+        entry.timeline,entry.contactFrames = {},nil
         state.rotaryMoving = false
     end
     local elapsed = math.max(0, now - entry.rotaryAt)
@@ -153,6 +200,7 @@ function R.step(entry, deadline)
         state.rotaryMoving, state.rotaryManual = false, nil
         require("OMHTT/TurretStandby").step(object, contents, nil)
         entry.rotaryJob, entry.hasTarget = nil, false
+        entry.timeline,entry.contactFrames = {},nil
         return true
     end
     local profile = M.profile(state, contents, true, stats)
@@ -224,6 +272,7 @@ function R.step(entry, deadline)
         end
     end
     state.rotaryMoving = moving
+    R.record(entry,before,entry.travel,elapsed)
     state.rotaryTravel = entry.travel
     state.rotarySpeed, state.rotaryStopAt = stats.motorSpeed, entry.stopAt
     local angle = Heads.motion(entry.travel, profile.omni, profile.cone)

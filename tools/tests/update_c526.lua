@@ -48,7 +48,7 @@ V.queue,captured={},{}
 V.ray({id="c526",shots=5},9600,9600,0,0,4,.2,
     {kind="fragment",stats={firearm=true},hits={},remaining=1,rays={}},1)
 V.queue[1].distance=4;V.finish(V.queue[1])
-check(captured[1].command=="Volley" and captured[1].facts.rays[1].firearm,"C526 firearms retain tracers")
+check(captured[1].command=="Ray" and captured[1].facts.firearm,"C526 firearms retain tracers")
 
 check(Aim.rotary(0,350,180,true)>Aim.rotary(0,250,180,true),"C526 rotary prediction advances through delayed snapshots")
 for _,transit in pairs({0,100,200,350}) do

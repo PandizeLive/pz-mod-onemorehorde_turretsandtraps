@@ -61,3 +61,7 @@ Expanded production scheduling replay covers5/6 children:30-tile empty firearm r
 The expanded fixture runs the actual renderer lifetime path with no drawing players and confirms a500ms potato flight remains Launch at750ms, then changes immediately when Impact arrives. A separate actual finish call with an unavailable damage victim defers completion. This proves the mechanisms, not that damage contention caused every observed250ms pause. [Evidence](evidence/c530-findings.json).43,728 assertions pass; connected animation is not simulated.
 
 The proposed1A scope explicitly includes Potato Splitter/Fragment collision-to-pop timing and target contention, alongside M16 stack scaling, stabilizer/native build exclusion, rotary timing and disconnect cleanup. Flight termination/pop should share the validated collision event; the damage transaction should not leave a visible projectile frozen. Avoid merely adding a fixed pop timer or globally raising scheduler limits. Server damage/death/XP authority remains required. **Decision needed:1A full correction or1B construction/disconnect only.** No gameplay/package/install change.
+
+## C531 approval and correction
+
+Owner approved 1A with stacked-module/contact-timing verification. Implemented in 0.2.71.2; see [C531](CONTACT_TIMING_C531.md). Original C529/C530 reproductions remain evidence of the released failure, not acceptance tests.

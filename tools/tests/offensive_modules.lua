@@ -95,16 +95,15 @@ local pairStats = Stats.resolve({active = {Splitter = 2}})
 pairStats.firearm = true
 local impact = {x=1203,y=1200.5,z=0,firearm=true,fromX=1200.5,fromY=1200.5,muzzle=.4}
 V.split(record, origin, victim, nil, {stats=pairStats,damage=.2}, impact)
-check(impact.deferVisual and #V.queue == 2 and #emitted == 0, "Primary waits for the resolved complete side fan")
+check(not impact.deferVisual and #V.queue == 2 and #emitted == 0, "C531 primary no longer waits for side scans")
 local first, second = V.queue[1], V.queue[2]
 first.distance, second.distance = 2, 3
 V.finish(first)
-check(#emitted == 0, "First completed side cannot flash independently")
+check(#emitted == 1 and emitted[1].command=="Ray", "C531 first completed side is displayed immediately")
 V.finish(second)
-check(#emitted == 1 and emitted[1].command == "Volley" and #emitted[1].facts.rays == 3,
-    "Two Splitters publish one center-left-right batch")
-local rays = emitted[1].facts.rays
-check(rays[2].y < rays[1].y and rays[3].y > rays[1].y and rays[1].fromX == rays[2].fromX,
+check(#emitted == 2 and emitted[2].command == "Ray", "C531 second side has independent completion")
+local rays = {impact,emitted[1].facts,emitted[2].facts}
+check(rays[2].y < rays[1].y and rays[3].y > rays[1].y and rays[2].fromX == rays[3].fromX,
     "Both sides share the muzzle and surround the center")
 triggerEvent = oldEvent; V.reset()
 for ready = 1, 3 do

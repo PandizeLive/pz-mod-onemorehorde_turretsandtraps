@@ -57,6 +57,7 @@ function R.changed(object, head)
     end
     entry.headId = headId
     entry.head, entry.profile = head, M.profile(T.state(object), contents)
+    if isClient() then require("OMHTT/TurretContactView").changed(object,entry.profile.range) end
     entry.automatic = M.profile(T.state(object), contents, true, entry.profile.stats)
     entry.hasDetector = contents.active.MotionDetection ~= nil
     if G.profile(head) and not entry.support then

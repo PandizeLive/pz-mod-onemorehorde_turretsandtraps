@@ -1,7 +1,8 @@
-v0.2.71.1
+v0.2.71.2
 
 Development test content
 
-- Fixed rotary heads rapidly spinning again after stopping in multiplayer.
-- Fixed rotary hits using outdated zombie positions and delayed contact backlogs.
-- Fixed turret hit-reaction errors and interrupted module cleanup in multiplayer.
+- Fixed delays with stacked Splitter modules and Potato child-projectile impacts.
+- Improved multiplayer rotary contact timing and standalone turret position updates.
+- Prevented construction over Poke Floor stabilizers.
+- Fixed trap rendering errors when leaving multiplayer.

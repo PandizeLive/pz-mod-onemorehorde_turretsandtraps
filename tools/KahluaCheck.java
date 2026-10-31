@@ -213,6 +213,7 @@ public final class KahluaCheck {
             {"OMHTT/DefenseNames", base + "shared/OMHTT/DefenseNames.lua"},
             {"OMHTT/Foundation", base + "shared/OMHTT/Foundation.lua"},
             {"OMHTT/ControlPokeFootprint", base + "shared/OMHTT/ControlPokeFootprint.lua"},
+            {"OMHTT/ControlBuildReservation", base + "shared/OMHTT/ControlBuildReservation.lua"},
             {"OMHTT/TurretProjectileStyle", base + "shared/OMHTT/TurretProjectileStyle.lua"},
             {"OMHTT/Diagnostics", base + "shared/OMHTT/Diagnostics.lua"},
             {"OMHTT/BarrierGeometry", base + "shared/OMHTT/BarrierGeometry.lua"},
@@ -324,6 +325,8 @@ public final class KahluaCheck {
             {"_", "tools/tests/combat.lua"},
             {"_", "tools/tests/projectile.lua"},
             {"OMHTT/PrototypeEffects", base + "client/OMHTT/PrototypeEffects.lua"},
+            {"OMHTT/PrototypeFlight", base + "client/OMHTT/PrototypeFlight.lua"},
+            {"OMHTT/TurretContactView", base + "client/OMHTT/TurretContactView.lua"},
             {"_", "tools/tests/effects.lua"},
             {"_", "tools/tests/diagnostics.lua"},
             {"_", base + "client/OMHTT/DevMarkers.lua"},
@@ -623,6 +626,9 @@ public final class KahluaCheck {
             {"_", "tools/tests/response_c517.lua"},
             {"_", "tools/tests/update_c526.lua"},
             {"_", "tools/tests/rotary_c528.lua"},
+            {"_", "tools/tests/contact_path_client_setup.lua"},
+            {"OMHTT/ControlTriggerView", base + "client/OMHTT/ControlTriggerView.lua"},
+            {"_", "tools/tests/contact_timing_c531.lua"},
         };
         for (String[] stage : stages) {
             Path stagePath = root.resolve(stage[1]);
@@ -719,6 +725,8 @@ public final class KahluaCheck {
             }
             System.out.println("Optional audit: " + get.invoke(env, "testPackAudit"));
         }
+        System.out.println(get.invoke(env, "testContactTiming"));
+        System.out.println("C531 measured work budget: " + get.invoke(env, "testContactBudget"));
         Object batch = get.invoke(env, "testBatchPayload");
         Class<?> networkTable = Class.forName("zombie.network.PZNetKahluaTableImpl");
         var wire = java.nio.ByteBuffer.allocate(16384);
