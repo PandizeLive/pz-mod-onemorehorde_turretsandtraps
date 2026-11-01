@@ -135,7 +135,10 @@ function R.animate(now)
                 elseif target and not target:isDead() and math.floor(target:getZ()) == object:getSquare():getZ() then
                     value = require("OMHTT/TurretAimView").follow(entry.aimSample,
                         entry.visualHeading or desired, Aim.angle(object, target), getTimestampMs(), state.aimSpeed)
+                elseif state.aimScanning and entry.hasDetector and not lowered and state.standby ~= "waking" and not state.facingPending and speed > 0 then
+                    value = require("OMHTT/TurretAimView").sweep(entry, entry.profile, elapsed, speed, entry.visualHeading or desired)
                 else
+                    entry.sweepPhase = nil
                     value = require("OMHTT/TurretAimView").sample(entry.aimSample,
                         desired, getTimestampMs(), false)
                 end

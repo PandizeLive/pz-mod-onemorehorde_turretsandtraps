@@ -35,7 +35,7 @@ end
 ---@return boolean eligible Deliberate targeting, separate from physical collateral
 function C.eligible(object, actor)
     if not actor then return false end
-    if instanceof(actor, "IsoZombie") then return Horde.allowed(actor) end
+    if instanceof(actor, "IsoZombie") then return require("OMHTT/DefenseActors").confirmed(actor) and Horde.allowed(actor) end
     if not instanceof(actor, "IsoPlayer") or isClient() or not object then return false end
     local W = require("OMHTT/ControlWorld")
     local state = W.state(object)

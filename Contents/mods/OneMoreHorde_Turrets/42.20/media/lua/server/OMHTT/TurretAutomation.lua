@@ -63,6 +63,7 @@ function A.advance(job, budget, deadline)
         if zombie and not job.seen[zombie] then
             job.seen[zombie] = true
             job.visited = job.visited + 1
+            if not Actors.confirmed(zombie) then job.unconfirmed = (job.unconfirmed or 0) + 1 end
             if CombatPolicy.eligible(job.profile.object, zombie) and require("OMHTT/Damage").available(zombie) then
                 local inside, distance = M.inside(job.origin, zombie, job.profile)
                 local select = inside and (job.profile.priority == "OnceEach" or job.profile.priority == "Random"
@@ -175,8 +176,9 @@ function A.step(entry, deadline)
         or not Combat.clearLane(square, Actors.square(target), profile.range))) then
         entry.target = nil
         if entry.status ~= "no-target" then
-            D.defer("turret-auto-search", {id = state.id, visits = job.visited, range = profile.range,
-                cone = profile.cone, baseFacing = state.baseFacing, selected = false}, "turrets")
+            D.emit("turret-auto-search", {id = state.id, visits = job.visited, range = profile.range,
+                minimum = stats.minimumRange, head = stats.headKind, unconfirmed = job.unconfirmed,
+                cone = profile.cone, baseFacing = state.baseFacing, selected = false}, nil, nil, "turrets")
         end
         standby.step(object, contents, nil)
         A.status(entry, "no-target")
@@ -191,8 +193,11 @@ function A.step(entry, deadline)
     local aligned = require("OMHTT/TurretAim").request(object, target, nil)
     if previousTarget ~= target then
         entry.target = target
-        D.defer("turret-auto-target", {id = state.id, x = target:getX(), y = target:getY(), visits = job.visited,
-            priority = profile.priority, cone = profile.cone, baseFacing = state.baseFacing, aim = state.aimDegrees}, "turrets")
+        local x, y, _, current, observedAt = Actors.position(target)
+        D.emit("turret-auto-target", {id = state.id, victim = target:getOnlineID(), x = x, y = y, visits = job.visited,
+            range = profile.range, minimum = stats.minimumRange, head = stats.headKind, confirmed = current,
+            observation = observedAt, distance = math.sqrt((x-square:getX()-.5)^2+(y-square:getY()-.5)^2),
+            priority = profile.priority, cone = profile.cone, baseFacing = state.baseFacing, aim = state.aimDegrees}, nil, nil, "turrets")
     end
     if not aligned then
         A.status(entry, "Aiming")

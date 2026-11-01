@@ -2,6 +2,7 @@ local P = require("OMHTT/DefenseCombatProtocol")
 local C = {}
 local indexed = setmetatable({}, {__mode = "v"})
 local pending, queued, pendingFirst, pendingLast = {}, setmetatable({}, {__mode="k"}), 1, 0
+local scanCursor, scanDue = 0, 0
 local createdAt = setmetatable({}, {__mode = "k"})
 local receipts = setmetatable({}, {__mode = "k"})
 local history, historyOrder, historyCursor = {}, {}, 1
@@ -122,7 +123,24 @@ function C.created(zombie)
     end
 end
 
+---@return nil
+function C.reconcile()
+    local now = getTimestampMs()
+    if now < scanDue then return end
+    scanDue = now + 100
+    local cell = getCell()
+    if not cell then return end
+    local actors = cell:getZombieList()
+    local count = actors:size()
+    for _ = 1, math.min(128, count) do
+        if scanCursor >= count then scanCursor = 0 end
+        C.observe(actors:get(scanCursor))
+        scanCursor = scanCursor + 1
+    end
+end
+
 function C.reset()
+    scanCursor, scanDue = 0, 0
     indexed, createdAt, receipts = setmetatable({}, {__mode="v"}), setmetatable({}, {__mode="k"}), setmetatable({}, {__mode="k"})
     pending, queued, pendingFirst, pendingLast = {}, setmetatable({}, {__mode="k"}), 1, 0
     history, historyOrder, historyCursor = {}, {}, 1
@@ -132,6 +150,7 @@ end
 function C.expire()
     if not isClient() then return end
     C.indexCreated()
+    C.reconcile()
     local now = getTimestampMs()
     for _ = 1, math.min(64, #historyOrder) do
         if historyCursor > #historyOrder then historyCursor = 1 end

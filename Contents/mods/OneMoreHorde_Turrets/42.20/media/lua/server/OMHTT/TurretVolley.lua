@@ -258,7 +258,7 @@ function V.finish(ray)
     local hit = false
     local victimX, victimY
     if victim then victimX,victimY=Actors.position(victim) end
-    if victim and not victim:isDead() and ((group.kind ~= "fragment" and instanceof(victim, "IsoPlayer")) or Horde.allowed(victim)) and Actors.square(victim) == ray.square
+    if victim and not victim:isDead() and Actors.confirmed(victim) and ((group.kind ~= "fragment" and instanceof(victim, "IsoPlayer")) or Horde.allowed(victim)) and Actors.square(victim) == ray.square
         and getCell():getGridSquare(ray.square:getX(), ray.square:getY(), ray.z) == ray.square
         and math.abs((victimX - ray.x) * ray.dy - (victimY - ray.y) * ray.dx) <= math.max(.2, victim:getWidth())
         and (victimX - ray.x) * ray.dx + (victimY - ray.y) * ray.dy >= 0
@@ -366,7 +366,7 @@ function V.step(ray)
         if ray.objectIndex < objects:size() then
             local candidate = objects:get(ray.objectIndex)
             ray.objectIndex = ray.objectIndex + 1
-            if ray.group.kind ~= "terminal" and (instanceof(candidate, "IsoZombie") or (ray.group.kind ~= "fragment" and instanceof(candidate, "IsoPlayer"))) and not candidate:isDead() and Actors.square(candidate) == ray.square
+            if ray.group.kind ~= "terminal" and (instanceof(candidate, "IsoZombie") or (ray.group.kind ~= "fragment" and instanceof(candidate, "IsoPlayer"))) and not candidate:isDead() and Actors.confirmed(candidate) and Actors.square(candidate) == ray.square
                 and (ray.group.kind == "splitter" or not V.seen(ray.group, candidate)) then
                 local px,py=Actors.position(candidate)
                 local x, y = px - ray.x, py - ray.y

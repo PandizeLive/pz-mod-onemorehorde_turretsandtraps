@@ -86,8 +86,9 @@ end
 function E.inside(origin, actor, x, y, radius)
     local square = Actors.square(actor)
     if not origin or not square or actor:isDead() or square:getZ() ~= origin:getZ() then return false end
-    local dx, dy = actor:getX() - x, actor:getY() - y
-    return dx * dx + dy * dy <= radius * radius
+    local ax, ay = Actors.position(actor)
+    local dx, dy = ax - x, ay - y
+    return Actors.confirmed(actor) and dx * dx + dy * dy <= radius * radius
         and require("OMHTT/PrototypeCombat").clearLane(origin, square, radius + 2)
 end
 
@@ -201,7 +202,7 @@ function E.step(job)
             if instanceof(actor, "IsoPlayer") then
                 E.injure(actor, job)
             else
-                local x, y = actor:getX(), actor:getY()
+                local x, y = Actors.position(actor)
                 Damage.resolve(actor, job.damage / 100, job.source, "martyrdom", function(lost)
                     if lost <= 0 then return end
                     require("OMHTT/TurretSiphon").hit(actor, job.siphon, true)

@@ -197,7 +197,8 @@ function O.step(job)
     local saved = actor:getModData().OMHTTOrdnanceSeen
     if job.seen[actor] or (saved and saved[job.id]) then return false end
     job.seen[actor] = true
-    local dx, dy = actor:getX() - job.x, actor:getY() - job.y
+    local ax, ay = Actors.position(actor)
+    local dx, dy = ax - job.x, ay - job.y
     local fraction = math.max(0, 1 - math.sqrt(dx * dx + dy * dy) / job.radius)
     if instanceof(actor, "IsoPlayer") then
         local scale = job.injuryScale or 1
@@ -207,7 +208,7 @@ function O.step(job)
         if job.eligible then
             Proc.reserve(options)
         end
-        local x, y = actor:getX(), actor:getY()
+        local x, y = ax, ay
         local amount = job.damage * fraction
         if job.eligible then
             amount = Conditional.damage(actor, amount, Conditional.snapshot(actor, job.stats))
@@ -216,13 +217,14 @@ function O.step(job)
         Damage.resolve(actor, amount, job.source, "grenade", function(lost)
             if lost > 0 and job.eligible then
                 Proc.hit(actor, true, x, y, job.z, {id = job.source, shots = job.shot}, nil, options)
-                local dx, dy = actor:getX() - job.shared.x, actor:getY() - job.shared.y
+                local currentX, currentY = Actors.position(actor)
+                local dx, dy = currentX - job.shared.x, currentY - job.shared.y
                 local distance = dx * dx + dy * dy
                 if not actor:isDead() and not actor:isProne() and not actor:isKnockedDown()
                     and (not job.shared.distance or distance < job.shared.distance) then
                     job.shared.actor, job.shared.distance = actor, distance
                     job.shared.candidate = {id = actor:getOnlineID(), outfit = require("OMHTT/DefenseCombatProtocol").outfit(actor:getPersistentOutfitID()),
-                        x = actor:getX(), y = actor:getY(), z = actor:getZ()}
+                        x = currentX, y = currentY, z = actor:getZ()}
                 end
             end
             Proc.release(options)

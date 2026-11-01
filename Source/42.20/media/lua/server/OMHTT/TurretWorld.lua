@@ -54,12 +54,15 @@ function W.publishRuntime(object, state, contents, now)
     local targetId = target and target:getOnlineID()
     local targetPlayer = target and instanceof(target, "IsoPlayer")
     local targetOutfit = target and not targetPlayer and require("OMHTT/DefenseCombatProtocol").outfit(target:getPersistentOutfitID()) or nil
+    local scanning = automatic and automatic.status == "no-target" and not aiming and M.detects(state, contents)
+        and T.isOn(state) and state.standby ~= "asleep" and state.standby ~= "waking" and not state.facingPending or false
     local changedTarget = view.targetId ~= targetId or view.targetOutfit ~= targetOutfit or view.targetPlayer ~= targetPlayer
-    if now >= view.due or changedTarget then
+    if now >= view.due or changedTarget or view.scanning ~= scanning then
         view.due = now + 250
         local heading = math.floor((state.aimDegrees or 0) / 2)
-        if changedTarget or (target and now >= (view.targetDue or 0)) or view.heading ~= heading or view.travel ~= state.rotaryTravel or view.shots ~= state.shots or view.moving ~= state.rotaryMoving
+        if view.scanning ~= scanning or changedTarget or (target and now >= (view.targetDue or 0)) or view.heading ~= heading or view.travel ~= state.rotaryTravel or view.shots ~= state.shots or view.moving ~= state.rotaryMoving
             or view.status ~= state.feedStatus or view.loaded ~= state.feedLoaded or view.powerSource ~= state.powerSource then
+            view.scanning, state.aimScanning = scanning, scanning
             view.powerSource, view.travel = state.powerSource, state.rotaryTravel
             view.heading, view.shots, view.moving = heading, state.shots, state.rotaryMoving
             view.status, view.loaded = state.feedStatus, state.feedLoaded
@@ -589,6 +592,7 @@ function W.fire(player, object, target, signal)
     end
     ---@return boolean committed
     function options.commit()
+        if target and (not require("OMHTT/ControlCombat").eligible(object, target) or not require("OMHTT/Damage").available(target)) then return false end
         if not W.valid(object) or not T.isOn(T.state(object)) or not object:getContainer():contains(contents.head) then return false end
         if not stats.ammoFree and not G.profile(contents.head) and not cycle.virtual and not object:getContainer():contains(contents.round) then return false end
         if player and not W.near(player, object) then return false end

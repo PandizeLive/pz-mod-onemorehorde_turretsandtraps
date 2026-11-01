@@ -55,6 +55,7 @@ function Action:begin()
             end
         end
     end
+    self.maxTime = self:getDuration()
     ISBaseTimedAction.begin(self)
 end
 
@@ -123,6 +124,7 @@ function X.queue(player, object, items, incoming, kind, stockpile, controller)
         end
     end
     for i = 1, #prepared do
+        prepared[i].maxTime = prepared[i]:getDuration()
         ISTimedActionQueue.add(prepared[i])
     end
     return queued, reason

@@ -1,8 +1,10 @@
-v0.2.71.4
+v0.2.71.5
 
 Development test content
 
-- Fixed firearm Splitter visuals disappearing on delayed connections.
-- Synchronized Splitter bursts with the main shot.
-- Corrected turret aiming and projectile directions for moving multiplayer targets.
-- Fixed newly spawned zombies being missed by client defense tracking.
+- Fixed multiplayer turret idle scanning animation.
+- Prevented repeated firing at unconfirmed multiplayer targets.
+- Corrected moving-target positions for area effects and Lobber damage.
+- Improved client zombie tracking after missed creation updates.
+- Replaced Ballista projectile lines with native spear models.
+- Sped up Scrapshot and Ballista ammunition loading.

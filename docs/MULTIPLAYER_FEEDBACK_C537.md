@@ -35,3 +35,8 @@ For loading, recommend fixed family rates based on unmodified head DPS, rather t
 Required checks: owner actor absent/reappearing, unloaded/recycled identities, acquisition outside eight tiles, moving targets, fixed forward fire, observer visuals, primary/stacked Splitter/Fragment contacts, Lobber proc/falloff positions, full-stack transfer and interruption, native spear orientation, and installed-package parity. Avoid claiming connected proof from test doubles alone.
 
 **Decision needed:** approve 1A full corrective scope or 1B narrower follow-up. Existing world retained; no new build delivered.
+
+
+## C538 approval and implementation
+
+Owner selected **1A**. The complete corrective scope is implemented in [C538](TARGETING_C538.md); see its evidence and explicit remaining limits. No native Horde Manager, sibling project or live server change.

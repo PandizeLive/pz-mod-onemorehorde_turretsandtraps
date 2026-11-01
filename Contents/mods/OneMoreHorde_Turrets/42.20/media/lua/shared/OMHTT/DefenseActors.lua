@@ -28,6 +28,14 @@ function A.position(actor)
     return actor:getX(), actor:getY(), math.floor(actor:getZ()), current
 end
 
+---@param actor IsoGameCharacter Candidate
+---@return boolean confirmed Native authority or a current owner observation
+function A.confirmed(actor)
+    if not isServer() or not instanceof(actor, "IsoZombie") or not actor:getOwner() then return true end
+    local _, _, _, current = A.position(actor)
+    return current
+end
+
 function A.square(actor)
     if not actor or not actor:getSquare() then return nil end
     if not isServer() then return actor:getSquare() end

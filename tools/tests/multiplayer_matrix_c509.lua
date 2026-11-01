@@ -17,7 +17,14 @@ local Motion = require("OMHTT/DefenseMotion")
 local old = {mode=testMode, time=testMillis, settings=SandboxVars.OMHTurretsTraps,
     server=sendServerCommand, client=sendClientCommand, player=getSpecificPlayer,
     clock=Clock.now, effects=Effects.emit, sound=Horde.sound, motion=Motion.request,
-    random=ZombRand, core=OneMoreHordeDefenseIntegration, squares=testSquares}
+    random=ZombRand, core=OneMoreHordeDefenseIntegration, squares=testSquares, cell=getCell}
+local clientActors, serverActors = {}, {}
+getCell = function()
+    local cell=old.cell()
+    if testMode ~= "client" then return cell end
+    return {getZombieList=function() return {size=function() return #clientActors end,get=function(_,i) return clientActors[i+1] end} end,
+        getGridSquare=function(_,x,y,z) return cell:getGridSquare(x,y,z) end}
+end
 testMode, testMillis, testSquares = "server", 9000000, {}
 SandboxVars.OMHTurretsTraps = {Enabled=true, TurretsEnabled=true, FirearmAccuracyMultiplier=3}
 OneMoreHordeDefenseIntegration = nil
@@ -36,6 +43,10 @@ sendClientCommand = function(player, module, command, message)
 end
 local function settle()
     for _ = 1, 200 do
+        for i=1,#serverActors do
+            local actor=serverActors[i]
+            if not actor:isDead() then Actors.report(actor,{x=actor:getX(),y=actor:getY(),z=actor:getZ(),at=testMillis}) end
+        end
         if #V.queue > 0 then V.tick() end
         if #Arc.jobs > 0 then Arc.tick() end
         if #out == 0 and #incoming == 0 then D.tick() end
@@ -70,6 +81,7 @@ local serial = 30000
 local previous
 local function pair(health,where,keep)
     if previous and not keep then Actors.remove(previous) end
+    if not keep then clientActors,serverActors={},{} end
     serial = serial + 1; testMillis = testMillis + 10
     local square=where or targetSquare
     square.moving = {}
@@ -85,6 +97,8 @@ local function pair(health,where,keep)
     square.moving = {server}
     testMode="client"; C.created(client); testMode="server"; S.created(server)
     Actors.observe(server)
+    clientActors[#clientActors+1],serverActors[#serverActors+1]=client,server
+    Actors.report(server,{x=server:getX(),y=server:getY(),z=server:getZ(),at=testMillis})
     previous=server
     return server, client
 end
@@ -298,3 +312,4 @@ testMode,testMillis, SandboxVars.OMHTurretsTraps=old.mode,old.time,old.settings
 sendServerCommand,sendClientCommand,getSpecificPlayer=old.server,old.client,old.player
 Clock.now,Effects.emit,Horde.sound,Motion.request=old.clock,old.effects,old.sound,old.motion
 ZombRand,OneMoreHordeDefenseIntegration,testSquares=old.random,old.core,old.squares
+getCell=old.cell

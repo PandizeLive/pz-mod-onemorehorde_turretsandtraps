@@ -22,6 +22,17 @@ return function(player)
             "Native head rating must include magazine/per-round loading and chamber timing")
         assert(string.find(descriptions.get(gun, true), "<RGB:1,1,1>", 1, true), "Native rich head rating")
     end
+    local ammo = require("OMHTT/TurretAmmo")
+    local spear = instanceItem("Base.SpearCrafted")
+    assert(ammo.family(spear:getFullType()) == "spear" and spear:getWeaponSprite() == "SpearCrafted", "C538 native spear model identity")
+    for _,case in pairs({{"Base.ScrapMetal",25},{"Base.SpearCrafted",12.5}}) do
+        local item = instanceItem(case[1])
+        local action = {item=item,ids={},character={hasTrait=function() return false end,isWearingAwkwardGloves=function() return false end}}
+        for i=1,20 do action.ids[i]=i end
+        assert(ammo.fastTransfer(item) and require("OMHTT/TurretTransferAction").getDuration(action) == case[2]*20,
+            "C538 native ammunition batch duration "..case[1])
+    end
+    print("[OMHTT-C538] native spear=SpearCrafted scrapBatchMs=10000 spearBatchMs=5000 traits=unmodified GPU=pending")
     local arc = instanceItem("Base.OMHTTTurretArc")
     assert(arc and arc:getActualWeight() == 8 and arc:getConditionMax() == 100, "Native Arc head metadata")
     local base = instanceItem(T.BASE)

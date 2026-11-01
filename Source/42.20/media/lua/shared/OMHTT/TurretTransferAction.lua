@@ -207,6 +207,9 @@ end
 function Action:getDuration()
     if not self.item then return 1 end
     local duration = 50 * math.min(3, math.max(.02, require("OMHTT/TurretAmmo").transferWeight(self.item)))
+    if require("OMHTT/TurretAmmo").countedTransfer(self.item) and type(self.ids) == "table" then
+        duration = duration * math.max(1, math.min(20, #self.ids))
+    end
     if self.character:hasTrait(CharacterTrait.DEXTROUS) then
         duration = duration * .5
     end

@@ -15,7 +15,7 @@ local nativeNew = ISInventoryTransferAction.new
 ---@return table action Native SP transfer with the same effective loading weight as MP
 function ISInventoryTransferAction:new(character, item, srcContainer, destContainer, time)
     local action = nativeNew(self, character, item, srcContainer, destContainer, time)
-    if item and item:getFullType() == "Base.OMHTTAmmoMakeshiftBomb" and not time
+    if item and (item:getFullType() == "Base.OMHTTAmmoMakeshiftBomb" or require("OMHTT/TurretAmmo").countedTransfer(item)) and not time
         and not character:isTimedActionInstant() and (T.isContainer(srcContainer) or T.isContainer(destContainer)) then
         local weight = math.min(3, item:getActualWeight())
         if weight > 0 then
@@ -282,6 +282,7 @@ function X.queue(player, object, items, incoming, kind)
         local item = items[i]
         local source = item:getContainer()
         local lightAmmo = kind == "ammo" and T.kind(item) == "ammo" and require("OMHTT/TurretAmmo").fastTransfer(item, item:getWeight())
+            and not require("OMHTT/TurretAmmo").countedTransfer(item)
         local typeKey = item:getFullType()
         local failure
         if lightAmmo and source and validated[source] == typeKey then

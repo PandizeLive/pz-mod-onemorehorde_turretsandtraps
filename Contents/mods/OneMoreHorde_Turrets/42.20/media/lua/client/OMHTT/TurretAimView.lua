@@ -77,4 +77,22 @@ function V.sample(sample, target, now, rotary)
     return rotary and sample.value or sample.value % 360
 end
 
+---@param entry table Renderer state
+---@param profile table Fixed detection cone
+---@param elapsed number Frame seconds
+---@param speed number Sweep degrees per second
+---@param current number Current visual heading
+---@return number heading Cosmetic only, never changes detection or authoritative aim
+function V.sweep(entry, profile, elapsed, speed, current)
+    local cone = profile.cone
+    local offset = (current - profile.heading + 540) % 360 - 180
+    offset = math.max(-cone / 2, math.min(cone / 2, offset))
+    local phase = entry.sweepPhase or (offset + cone / 2) / cone
+    phase = (phase + elapsed * speed / cone) % 2
+    entry.sweepPhase = phase
+    local position = phase
+    if phase > 1 then position = 2 - phase end
+    return (profile.heading - cone / 2 + position * cone + 360) % 360
+end
+
 return V

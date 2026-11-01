@@ -15,13 +15,16 @@ A.bombs = {
 ---@param item InventoryItem Exact ammunition item
 ---@return boolean eligible Existing light ammunition and Makeshift Bombs
 function A.fastTransfer(item, weight)
-    return item ~= nil and ((weight or item:getActualWeight()) <= .1 or item:getFullType() == "Base.OMHTTAmmoMakeshiftBomb")
+    return item ~= nil and ((weight or item:getActualWeight()) <= .1 or item:getFullType() == "Base.OMHTTAmmoMakeshiftBomb" or A.countedTransfer(item))
 end
 
 ---@param item InventoryItem Exact transferred item
 ---@return number weight Loading-time weight only; never inventory/capacity weight
 function A.transferWeight(item)
     if item:getFullType() == "Base.OMHTTAmmoMakeshiftBomb" then return .1 end
+    local family = A.family(item:getFullType())
+    if family == "scrap" then return .5 end
+    if family == "spear" then return .25 end
     return item:getActualWeight()
 end
 
@@ -86,6 +89,13 @@ function A.describe(item)
         descriptor.burnt = item:isBurnt()
     end
     return descriptor
+end
+
+---@param item InventoryItem Ammunition
+---@return boolean counted Heavy ammunition pays time for each item in a batch
+function A.countedTransfer(item)
+    local family = A.family(item:getFullType())
+    return family == "scrap" or family == "spear"
 end
 
 return A

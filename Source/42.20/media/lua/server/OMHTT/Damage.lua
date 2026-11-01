@@ -15,8 +15,10 @@ local failed = setmetatable({}, {__mode = "k"})
 function Damage.available(zombie)
     local failure = failed[zombie]
     if failure then
+        local _, _, _, current, observedAt = require("OMHTT/DefenseActors").position(zombie)
+        local recovered = failure.observedAfter and current and observedAt and observedAt > failure.observedAfter
         if zombie:getOnlineID() ~= failure.id or Protocol.outfit(zombie:getPersistentOutfitID()) ~= failure.outfit
-            or zombie:getOwner() ~= failure.owner or getTimestampMs() >= failure.untilAt then
+            or zombie:getOwner() ~= failure.owner or recovered or (not failure.observedAfter and getTimestampMs() >= failure.untilAt) then
             failed[zombie] = nil
         else return false end
     end
@@ -119,6 +121,9 @@ local function dispatch(job)
         if lost <= 0 and reason ~= "rejected" and reason ~= "capacity" then
             failed[zombie] = {id = zombie:getOnlineID(), outfit = Protocol.outfit(zombie:getPersistentOutfitID()),
                 owner = zombie:getOwner(), untilAt = getTimestampMs() + 1000}
+            if zombie:getOwner() and (reason == "missing" or reason == "identity" or reason == "dead" or reason == "not-owner" or reason == "position") then
+                failed[zombie].observedAfter = GameTime.getServerTimeMills()
+            end
             Diagnostics.defer("target-revalidate", {id = job.source, victim = zombie:getOnlineID(), reason = reason},
                 string.find(job.source, "^turret") and "turrets" or "traps")
         else failed[zombie] = nil end

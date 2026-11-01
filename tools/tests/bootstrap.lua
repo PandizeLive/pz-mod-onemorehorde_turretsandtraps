@@ -93,7 +93,7 @@ ISBuildIsoEntity = {isValidPerSquare=function() return true end}
 ISWoodenWall = {isValid=function() return true end,create=function() return true end}
 Events.OnDestroyIsoThumpable = {handlers = {}, Add = function() end}
 Events.OnObjectAdded = {handlers = {}, Add = function() end}
-for _, name in pairs({"OnGameBoot", "OnServerStarted", "OnSave", "OnInitGlobalModData", "LoadGridsquare", "OnObjectAboutToBeRemoved", "OnClientCommand", "OnServerCommand", "OnFillWorldObjectContextMenu", "OnGameStart", "OnTickEvenPaused", "OnTick", "OnPostRender", "OnPreUIDraw", "OnPostUIDraw", "OnZombieCreate", "OnHitZombie", "OnZombieUpdate", "OnZombieDead", "OnContextKey", "OnPlayerUpdate"}) do
+for _, name in pairs({"OnGameBoot", "OnServerStarted", "OnSave", "OnInitGlobalModData", "LoadGridsquare", "OnObjectAboutToBeRemoved", "OnClientCommand", "OnServerCommand", "OnFillWorldObjectContextMenu", "OnGameStart", "OnTickEvenPaused", "OnTick", "OnPostRender", "RenderOpaqueObjectsInWorld", "OnPreUIDraw", "OnPostUIDraw", "OnZombieCreate", "OnHitZombie", "OnZombieUpdate", "OnZombieDead", "OnContextKey", "OnPlayerUpdate"}) do
     local handlers = {}
     Events[name] = {handlers = handlers, Add = function(callback) table.insert(handlers, callback) end,
         Remove = function(callback) for i=#handlers,1,-1 do if handlers[i]==callback then table.remove(handlers,i) end end end}

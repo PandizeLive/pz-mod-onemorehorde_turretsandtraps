@@ -3,7 +3,7 @@ require("ISUI/ISUIElement")
 local F = require("OMHTT/Foundation")
 local D = require("OMHTT/Diagnostics")
 local T = require("OMHTT/Turret")
-local E = {effects = {}, textures = {}}
+local E = {effects = {}, textures = {}, models = {}}
 local canvas = nil
 local phases, phaseOrder, phaseCursor = {}, {}, 1
 
@@ -244,12 +244,7 @@ function E.render()
                     elseif effect.phase == "Launch" or effect.phase == "Land" then
                         local size = math.max(4, 6 / zoom)
                         if effect.projectile == "spear" then
-                            local dx, dy = wx - effect.fromX, wy - effect.fromY
-                            local length = math.sqrt(dx * dx + dy * dy)
-                            if length > 0 then
-                                local sx, sy = E.screen(wx - dx / length * .6, wy - dy / length * .6, effect.z + height, index)
-                                canvas:drawLine(nil, sx, sy, x, y, math.max(1, 2 / zoom), 1, .85, .85, .85)
-                            end
+                            -- Native spear models render in the opaque world pass.
                         elseif effect.ammoType then
                             local texture = E.textures[effect.ammoType]
                             if texture == nil then
@@ -287,13 +282,50 @@ function E.render()
     if started then D.measure("effects-render", getTimestampMs() - started, "turrets") end
 end
 
+---@param index number Native viewport
+---@return nil
+function E.renderSpears(index)
+    local player = getSpecificPlayer(index)
+    if not player then return end
+    local now = require("OMHTT/TurretClock").now()
+    for i = 1, #E.effects do
+        local effect = E.effects[i]
+        local elapsed = now - effect.start
+        if effect.projectile == "spear" and effect.phase == "Launch" and effect.flight > 0
+            and elapsed >= 0 and elapsed <= effect.flight and math.floor(player:getZ()) == effect.z then
+            local x, y, height = E.position(effect)
+            local dx, dy = x - effect.fromX, y - effect.fromY
+            local length = math.sqrt(dx * dx + dy * dy)
+            local fraction = elapsed / effect.flight
+            if effect.contactDistance and length > 0 then fraction = math.min(fraction, effect.contactDistance / length) end
+            x, y = effect.fromX + dx * fraction, effect.fromY + dy * fraction
+            height = effect.muzzleHeight + (height - effect.muzzleHeight) * fraction + math.sin(fraction * math.pi) * .35
+            local square = getCell():getGridSquare(math.floor(x), math.floor(y), effect.z)
+            if length > 0 and square and square:isCanSee(index) then
+                local kind = effect.ammoType or "Base.SpearCrafted"
+                if require("OMHTT/TurretAmmo").family(kind) ~= "spear" then kind = "Base.SpearCrafted" end
+                local model = E.models[kind]
+                if not model then
+                    model = instanceItem(kind)
+                    E.models[kind] = model
+                end
+                if model then
+                    require("OMHTT/ControlModelDraw").draw(model, square, x, y, effect.z + height,
+                        0, 0, math.atan2(dy, dx) * 180 / math.pi)
+                end
+            end
+        end
+    end
+end
+
 ---@return nil
 function E.reset()
-    E.effects, canvas = {}, nil
+    E.effects, E.models, canvas = {}, {}, nil
     phases, phaseOrder, phaseCursor = {}, {}, 1
 end
 
 Events.OnServerCommand.Add(E.receive)
 Events.OnPreUIDraw.Add(E.render)
+Events.RenderOpaqueObjectsInWorld.Add(E.renderSpears)
 Events.OnGameStart.Add(E.reset)
 return E
