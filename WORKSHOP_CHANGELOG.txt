@@ -1,4 +1,4 @@
-v0.2.71.5
+v0.2.71.6
 
 Development test content
 
@@ -8,3 +8,4 @@ Development test content
 - Improved client zombie tracking after missed creation updates.
 - Replaced Ballista projectile lines with native spear models.
 - Sped up Scrapshot and Ballista ammunition loading.
+- Removed the Lobber minimum firing distance.

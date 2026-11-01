@@ -57,11 +57,11 @@ Access.near = function() return true end
 local selected = "Lobber"
 T.contents = function() return {head = {getFullType = function() return "Base.OMHTTTurret" .. selected end}, active = {}, powerLoad = 0} end
 local control = setmetatable({id = "landing-test", object = {getContainer = function() return {} end}, command = "LandingRange"}, {__index = Action})
-for _, value in pairs({6, 9, 18}) do
+for _, value in pairs({0, 1, 5, 6, 9, 18}) do
     control.value = value
     check(control:isValid(), "Server accepts an in-range integral landing distance")
 end
-for _, value in pairs({-1, 5, 19, 9.5, "9", 0 / 0, math.huge}) do
+for _, value in pairs({-1, 19, 9.5, "9", 0 / 0, math.huge}) do
     control.value = value
     check(not control:isValid(), "Server rejects malformed or out-of-range landing distance")
 end

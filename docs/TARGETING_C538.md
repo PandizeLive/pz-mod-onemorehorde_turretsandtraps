@@ -30,3 +30,9 @@ No new Sandbox defaults were introduced, so there is no matching Horde Night bas
 Owner requests showing the Lobber minimum visually or removing it. Current `TurretHeads` defines six tiles, `TurretModules.inside` enforces it, and manual landing controls enforce the same lower bound. The existing selected-turret `TurretRange` preview draws outer coverage without the inner exclusion. This is a confirmed presentation omission; it does not prove the reported live eight-tile engagement cause.
 
 Recommend **1A: retain the six-tile minimum and show its boundary in the existing selected-turret range preview**, with a clearly labeled inner no-fire area and usable coverage between minimum and effective maximum. Respect the current cone, 360 module and preview visibility; derive both limits from effective stats. Reuse cached geometry. This is separate from the removed Controller in-world gradient. **1B: remove the minimum** permits point-blank targeting and is a gameplay buff, requiring matching targeting/manual controls and projectile-contact verification. Neither option is approved or implemented yet. No package, saved setting or gameplay change. **Decision needed.**
+
+## C540 - minimum-range removal approved (2026-11-01)
+
+Owner explicitly chose **1B**, superseding the recommendation above. Remove the Lobber minimum instead of adding a dead-zone preview. The shared head definition now supplies zero to automatic acquisition, manual landing validation, fixed-direction firing and the Manage slider. Preserve maximum range, existing saved landing distances, scatter, landing fuse, damage and module behavior. No new Sandbox default or sibling baseline change is needed. Corrective build **0.2.71.6**; [verification](TEST_v0.2.71.6.md).
+
+C539 documentation mirroring was separately approved and verified at `c7b34f6` through draft PR1. That permission is distinct from the gameplay choice recorded here.

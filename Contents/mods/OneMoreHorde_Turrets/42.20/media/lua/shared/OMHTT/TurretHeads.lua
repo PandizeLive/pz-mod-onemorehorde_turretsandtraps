@@ -2,7 +2,7 @@ local H = {cache = {}}
 local configurable = {damage = {0, 2500}, range = {1, 64}, cooldown = {.1, 60}, reload = {.1, 60}, shove = {0, 100}}
 H.definitions = {
     ["Base.OMHTTTurretArc"] = {key = "Arc", fireSound = "OMHTTArcFire", damage = 20, range = 12, cooldown = 1, reload = 0, magazine = 1, ammoCapacity = 0, weight = 8, ammoFree = true},
-    ["Base.OMHTTTurretLobber"] = {key = "Lobber", fireSound = "OMHTTPotatoFire", damage = 150, range = 18, minimumRange = 6, cooldown = 5.5, reload = 4, magazine = 3, ammoCapacity = 20, weight = 8},
+    ["Base.OMHTTTurretLobber"] = {key = "Lobber", fireSound = "OMHTTPotatoFire", damage = 150, range = 18, minimumRange = 0, cooldown = 5.5, reload = 4, magazine = 3, ammoCapacity = 20, weight = 8},
     ["Base.OMHTTTurretScrapshot"] = {key = "Scrapshot", fireSound = "JS2000ShotgunShoot", ammo = "Base.ScrapMetal", damage = 320, range = 8, cone = 90, cooldown = 2, reload = 3, magazine = 10, weight = 6},
     ["Base.OMHTTTurretBallista"] = {key = "Ballista", fireSound = "SpearCraftedSwing", ammo = "Base.SpearCrafted", damage = 240, range = 24, cooldown = 6, reload = 6, magazine = 5, cone = 45, ammoCapacity = 40, weight = 6},
     ["Base.OMHTTTurretRotaryBat"] = {key = "RotaryBat", fireSound = "BaseballBatHit", rotary = true, damage = 20, range = 2, shove = 40, weight = 5},

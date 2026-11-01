@@ -81,8 +81,8 @@ record.ammoFallback = true
 contents = T.contents(storage)
 check(contents.payloadType == "Base.OMHTTAmmoMakeshiftBomb", "Fallback selects available supported payload")
 stats = S.resolve(contents)
-check(stats.ammo == 35 and stats.magazine == 3 and stats.minimumRange == 6 and stats.range == 18,
-    "Lobber has shared thirty-five-bomb cap, three-round feed and six-to-eighteen range")
+check(stats.ammo == 35 and stats.magazine == 3 and stats.minimumRange == 0 and stats.range == 18,
+    "Lobber has shared thirty-five-bomb cap, three-round feed and zero-to-eighteen range")
 contents.active.CapacityLarge = 1
 check(S.resolve(contents).ammo == 350 and S.resolve(contents).modules == 16, "Large Expansion adds module slots and the approved 350-bomb allowance")
 local savedJobs, savedReserve, savedSerial = O.jobs, O.reserved, O.serial

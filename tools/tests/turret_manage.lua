@@ -140,7 +140,8 @@ panel.userSized = false
 panel:setWidth(900)
 panel.geometryWidth = nil
 require("OMHTT/TurretManageLayout").refresh(panel)
-require("OMHTT/TurretManageExtras").refresh(panel, {active = {Lure = 1}}, {headKind = "Lobber", minimumRange = 6, range = 18})
+require("OMHTT/TurretManageExtras").refresh(panel, {active = {Lure = 1}}, {headKind = "Lobber", minimumRange = 0, range = 18})
+check(panel.landingSlider.minValue == 0, "C540 manual landing slider starts at zero")
 check(panel.height + panel.y <= 720 and panel.lureSlider.visible and panel.landingSlider.visible,
     "Lure and Landing Distance remain inside a 720p viewport together")
 panel:refresh()
@@ -149,7 +150,7 @@ check(panel.ammoSlot.width == panel.voidSlot.width and panel.magazineSlot.y > pa
 testManageSvg = require("tests/UITrace")(panel)
 local originalScreenHeight = getPlayerScreenHeight
 getPlayerScreenHeight = function() return 600 end
-require("OMHTT/TurretManageExtras").refresh(panel, {active = {Lure = 1}}, {headKind = "Lobber", minimumRange = 6, range = 18})
+require("OMHTT/TurretManageExtras").refresh(panel, {active = {Lure = 1}}, {headKind = "Lobber", minimumRange = 0, range = 18})
 check(panel.height + panel.y <= 600 and panel.body.scrollHeight == panel.body.contentHeight, "Constrained viewport has no outer scrolling")
 local Layout = require("OMHTT/TurretManageLayout")
 local titleY, footerY = panel.nameEntry.y, panel.fireButton.y

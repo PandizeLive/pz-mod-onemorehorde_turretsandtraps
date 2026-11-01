@@ -1,0 +1,17 @@
+# 0.2.71.6 verification
+
+Owner selected C539 **1B**. The shared Lobber head minimum is zero; existing acquisition, server-validated manual controls and the client landing slider consume that value. No parallel override or additional targeting path was added.
+
+Checks cover zero, fractional and near distances in SP/server profiles, the unchanged maximum, valid and invalid manual commands, slider lower bound, all three bomb payloads landing at 0/0.1/1/5 tiles, the retained landing fuse and exactly one positive damage application per blast. Position and damage adapters are test doubles; native runtime checks do not include connected clients or GPU rendering.
+
+**44,580 assertions passed.** Native 42.21 save/read and Traps-only, Turrets-only and combined starts passed. All 464 source and 640 package files validate. [Evidence](evidence/c540-verification.json). Installation/staging pending. **Wait for delivery.**
+
+## Owner checklist
+
+After uploading 0.2.71.6, restart server and clients. Keep the current world.
+
+- Lobber targets inside six tiles
+- Manual landing distance below six
+- Close-range bomb landings and explosions
+
+Previous multiplayer presentation acceptance, unattributed native container errors and the pause-mod conflict remain open. This patch does not establish their resolution.
