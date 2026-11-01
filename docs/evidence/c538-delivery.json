@@ -36,5 +36,11 @@
   "pageMetadataAndPreview": "byte-identical",
   "connectedAcceptance": "pending",
   "newWorldRequiredForThisPatch": false,
-  "githubMirror": "pending"
+  "githubMirror": {
+    "status": "verified",
+    "commit": "837bfa0bec9e6490f2a73c824402f43982bb9da5",
+    "pullRequest": "https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1",
+    "tag": "test/v0.2.71.5",
+    "authorization": "Owner explicitly approved C538 patch and verification export after automatic review; block resolved."
+  }
 }
