@@ -37,7 +37,10 @@
   "connectedAcceptance": "pending",
   "newWorldRequiredForThisPatch": false,
   "githubMirror": {
-    "status": "blocked",
-    "reason": "Automatic approval review requires specific C540 external export authorization; requested from owner."
+    "status": "verified",
+    "commit": "3510356e521479253177e29a338cdeb4c8fe3b44",
+    "tag": "test/v0.2.71.6",
+    "pullRequest": "https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1",
+    "authorization": "Owner explicitly approved C540 patch and verification export on 2026-11-01; approval-review block resolved."
   }
 }
