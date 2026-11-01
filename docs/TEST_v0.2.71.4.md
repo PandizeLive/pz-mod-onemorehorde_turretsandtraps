@@ -23,3 +23,8 @@ Owner checklist after the new build is delivered and server/clients restart:
 - Trap damage on newly spawned zombies
 
 No new world or settings reset.
+
+
+## C537 connected retest
+
+**C537 / Lobber and physical-projectile retest investigated (2026-10-31).** Both sides load0.2.71.4; owner reports missing Lobber scanning, apparent short engagement, targetless Ballista/Potato and slow loading; Splitter looks improved. [Findings and proposed scope](MULTIPLAYER_FEEDBACK_C537.md). Production replay reproduces MP-only missing idle sweep and stale area-effect radius checks.74 missing-actor replies concern four IDs absent from creation-index messages; actual native presence remains unproven. Lobber saved/displayed range is18 and normal6-18 eligibility passes. Four native item-container packet errors need attribution.44,375 Kahlua assertions include17 focused checks; no connected fix proof. Propose1A full targeting/presentation/module-position/loading/native-spear correction;1B defers loading and spear. No new world indicated. No gameplay/package/install/server/sibling changes. **Decision needed.**
