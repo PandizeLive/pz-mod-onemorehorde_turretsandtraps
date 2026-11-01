@@ -36,5 +36,8 @@
   "pageMetadataAndPreview": "byte-identical",
   "connectedAcceptance": "pending",
   "newWorldRequiredForThisPatch": false,
-  "githubMirror": "pending"
+  "githubMirror": {
+    "status": "blocked",
+    "reason": "Automatic approval review requires specific C540 external export authorization; requested from owner."
+  }
 }
