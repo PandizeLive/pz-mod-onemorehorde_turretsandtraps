@@ -36,5 +36,10 @@
   "pageMetadataAndPreview": "byte-identical",
   "connectedAcceptance": "pending",
   "newWorldRequiredForThisPatch": false,
-  "githubMirror": "pending"
+  "githubMirror": {
+    "status": "verified",
+    "commit": "dc35286110bc7e0d224bd9439301f5add39280b7",
+    "tag": "test/v0.2.71.8",
+    "pullRequest": 1
+  }
 }
