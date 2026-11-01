@@ -61,6 +61,8 @@ check(require("OMHTT/TurretAuthority").register(object,state),"C528 server fixtu
 local profile={range=2,omni=true,heading=0,cone=360}
 local job={at=testMillis,moving=true,before=359,after=361,profile=profile,detection=profile,
     stats={damage=20,critChance=0,initialBlow=0,execute=0,knockdown=0}}
+entry.timeline={{from=testMillis-100,at=testMillis,before=359,after=361}}
+entry.contactFrames={[actor]={at=testMillis-100,owner=actor.owner,outfit=actor.outfitId}}
 Rotary.contact(entry,actor,job)
 check(hits==1,"C528 rotary hits using fresh owner position before native coordinates catch up")
 actor.square=inside
@@ -94,6 +96,8 @@ Proc.hit=function() end
 Proc.release=function() released=released+1 end
 ZombRand=function() return 0 end
 job.stats.knockdown=100
+entry.timeline={{from=testMillis-100,at=testMillis,before=719,after=721}}
+entry.contactFrames={[actor]={at=testMillis-100,owner=actor.owner,outfit=actor.outfitId}}
 Damage.resolve=function(_,_,_,_,callback,observation)
     pending=callback
     check(observation.at==testMillis,"C528 validated timestamp reaches the damage transaction")

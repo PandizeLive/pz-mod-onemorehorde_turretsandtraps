@@ -8,9 +8,9 @@ local Clock = require("OMHTT/TurretClock")
 local Conditional = require("OMHTT/TurretConditionalHit")
 local Damage = require("OMHTT/Damage")
 local Siphon = require("OMHTT/TurretSiphon")
+local Contacts = require("OMHTT/TurretRotaryContacts")
+local Active = require("OMHTT/ActiveTime")
 local R = {}
-local weapon
-local parts
 
 ---@param entry table Motor owner
 ---@param before number Previous travel
@@ -21,7 +21,14 @@ function R.record(entry, before, after, elapsed)
     local now = GameTime.getServerTimeMills()
     entry.timeline = entry.timeline or {}
     local history = entry.timeline
-    history[#history+1] = {at=now, from=now-math.max(0,elapsed), before=before, after=after}
+    local last = history[#history]
+    if last and now <= last.at then return end
+    -- Travel uses active game time; owner reports use synchronized wall time.
+    local from = last and last.at or now - math.max(0, elapsed)
+    if elapsed <= 0 then
+        from = now
+    end
+    history[#history+1] = {at=now, from=from, before=before, after=after, energy=entry.siphonEnergy}
     while #history > 128 or (#history > 1 and history[1].at < now - 750) do
         table.remove(history, 1)
     end
@@ -67,87 +74,135 @@ function R.injure(player, blades, now, object)
         {playerSource = require("OMHTT/ControlCombat").source(object)}, blades and "RotaryBlades" or "RotaryBat")
 end
 
----@param entry table Active turret job
----@param actor IsoMovingObject Candidate
----@param job table Observed sweep
+---@param actor IsoGameCharacter Candidate
+---@return boolean standing Alive and able to meet the rotating arms
+function R.standing(actor)
+    if actor:isDead() then return false end
+    if instanceof(actor, "IsoZombie") then
+        local _, down = require("OMHTT/DefenseActorState").stance(actor)
+        return not down
+    end
+    return instanceof(actor, "IsoPlayer") and not actor:isOnFloor()
+        and not actor:isKnockedDown() and not actor:isRagdoll()
+end
+
+---@param entry table Motor owner
+---@param actor IsoGameCharacter Observed candidate
+---@param job table Resolved sweep and timestamp
 ---@return nil
 function R.contact(entry, actor, job)
-    local zombie = instanceof(actor, "IsoZombie")
-    local player = instanceof(actor, "IsoPlayer")
-    if not zombie and not player then return end
-    if zombie then
-        local _, down = require("OMHTT/DefenseActorState").stance(actor)
-        if down then return end
-    elseif actor:isOnFloor() or actor:isKnockedDown() or actor:isRagdoll() then
+    if Active.paused() or not entry.timeline then return end
+    if not R.standing(actor) then
+        if entry.contactFrames then
+            entry.contactFrames[actor] = nil
+        end
         return
     end
+    local zombie = instanceof(actor, "IsoZombie")
     if zombie and not Horde.allowed(actor) then return end
     local origin = entry.object:getSquare()
-    local hitX, hitY, z, current, observedAt = Actors.position(actor)
-    if not current then return end
-    local square = actor:getSquare()
-    if isServer() then
-        square = getCell():getGridSquare(math.floor(hitX), math.floor(hitY), z)
-    end
-    if not square or actor:isDead() or square:getZ() ~= origin:getZ() then return end
-    local dx, dy = hitX - origin:getX() - .5, hitY - origin:getY() - .5
-    if dx * dx + dy * dy > job.profile.range * job.profile.range then return end
-    local bearing = math.deg(math.atan2(-dy, dx)) - job.profile.heading
-    local relative = (bearing + 540) % 360 - 180
-    local halfCone = job.profile.cone / 2
-    if not job.profile.omni and math.abs(relative) > halfCone and math.abs(relative) < 180 - halfCone then return end
-    if not require("OMHTT/PrototypeCombat").clearLane(origin, square, job.profile.range) then return end
-    if require("OMHTT/ControlCombat").eligible(entry.object, actor) and M.inside(origin, actor, job.detection, hitX, hitY) then
-        job.target = true
-        job.targetActor = actor
-    end
-    if not T.isOn(T.state(entry.object)) then return end
-    if not observedAt and Clock.now() - job.at > 150 then return end
-    if entry.pendingHits and entry.pendingHits[actor] then return end
-    local before, after = job.before, job.after
+    local x, y, z, current, observedAt = Actors.position(actor)
+    if not current or z ~= origin:getZ() or not T.isOn(T.state(entry.object)) then return end
+    observedAt = job.observedAt or observedAt or GameTime.getServerTimeMills()
+    local before, after
     local oldFrame, frame
-    if observedAt and entry.timeline then
-        entry.contactFrames = entry.contactFrames or setmetatable({}, {__mode="k"})
-        oldFrame = entry.contactFrames[actor]
-        local owner = actor:getOwner()
-        local outfit = require("OMHTT/DefenseCombatProtocol").outfit(actor:getPersistentOutfitID())
-        local from = observedAt-100
-        if oldFrame and oldFrame.owner == owner and oldFrame.outfit == outfit then
+    entry.contactFrames = entry.contactFrames or setmetatable({}, {__mode = "k"})
+    oldFrame = entry.contactFrames[actor]
+    local owner = zombie and actor:getOwner() or nil
+    local outfit = zombie and require("OMHTT/DefenseCombatProtocol").outfit(actor:getPersistentOutfitID()) or nil
+    local from = observedAt
+    if oldFrame then
+        if oldFrame.owner ~= owner or oldFrame.outfit ~= outfit then
+            oldFrame = nil
+            from = observedAt
+        else
             if observedAt <= oldFrame.at then return end
-            from = math.max(observedAt - 250, oldFrame.at)
+            from = oldFrame.at
+            if observedAt - from > 250 then
+                from = observedAt
+            end
         end
-        before,after=R.travelAt(entry,from),R.travelAt(entry,observedAt)
-        if not before or not after then return end
-        frame = {at = observedAt, owner = owner, outfit = outfit}
-    elseif not job.moving then
-        return
     end
-    local arm, pass = Heads.crossing(bearing, before, after, job.profile.omni, job.profile.cone)
-    if not arm then
-        if frame then
-            entry.contactFrames[actor] = frame
+    frame = {at = observedAt, owner = owner, outfit = outfit, x = x, y = y, z = z}
+    entry.contactFrames[actor] = frame
+    before, after = R.travelAt(entry, from), R.travelAt(entry, observedAt)
+    if not before or not after then return end
+    if after <= before then return end
+    local fromX, fromY = x, y
+    if oldFrame and oldFrame.x and oldFrame.z == z then
+        fromX, fromY = oldFrame.x, oldFrame.y
+    end
+    local dx, dy = x - fromX, y - fromY
+    local distance = math.sqrt(dx * dx + dy * dy)
+    if distance > 2 then return end
+    -- Short angular/position slices preserve separate passes at stacked motor speed.
+    local slices = math.max(1, math.ceil((after - before) / math.min(45, job.profile.cone / 2)), math.ceil(distance / .1))
+    local profile = job.profile
+    local first = before
+    while first < after do
+        local last = math.min(after, first + (after - before) / slices)
+        if not profile.omni then
+            last = math.min(last, (math.floor(first / profile.cone) + 1) * profile.cone)
         end
-        return
+        local fraction = ((first + last) / 2 - before) / (after - before)
+        local hitX, hitY = fromX + dx * fraction, fromY + dy * fraction
+        local offsetX, offsetY = hitX - origin:getX() - .5, hitY - origin:getY() - .5
+        if offsetX * offsetX + offsetY * offsetY <= (profile.range + .1) ^ 2 then
+            local bearing = math.deg(math.atan2(-offsetY, offsetX)) - profile.heading
+            local arm, pass, crossing = Heads.crossing(bearing, first, last, profile.omni, profile.cone)
+            if arm then
+                local contact = (crossing - before) / (after - before)
+                hitX, hitY = fromX + dx * contact, fromY + dy * contact
+                offsetX, offsetY = hitX - origin:getX() - .5, hitY - origin:getY() - .5
+            end
+            local square = arm and getCell():getGridSquare(math.floor(hitX), math.floor(hitY), z)
+            if arm and square and offsetX * offsetX + offsetY * offsetY <= profile.range * profile.range
+                and require("OMHTT/PrototypeCombat").clearLane(origin, square, profile.range) then
+                if zombie then
+                    R.hit(entry, actor, job, arm, pass, crossing, hitX, hitY, square, observedAt, first, last, frame, oldFrame)
+                elseif pass > (entry.hits[arm][actor] or -math.huge) then
+                    entry.hits[arm][actor] = pass
+                    R.injure(actor, job.stats.headKind == "RotaryBlades", Clock.now(), entry.object)
+                end
+            end
+        end
+        first = last
     end
-    if player then
-        R.injure(actor, job.stats.headKind == "RotaryBlades", Clock.now(), entry.object)
-        return
-    end
-    if entry.hits[arm][actor] == pass then return end
+end
+
+---@param entry table Motor owner
+---@param actor IsoZombie Confirmed contact victim
+---@param job table Resolved head and module snapshot
+---@param arm number Contact arm
+---@param pass number Unique motor pass
+---@param crossing number Angular travel at contact
+---@param hitX number Contact X
+---@param hitY number Contact Y
+---@param square IsoGridSquare Contact square
+---@param observedAt number Observation timestamp
+---@param before number Previous travel
+---@param after number Current travel
+---@param frame table? Reserved observation
+---@param oldFrame table? Previous observation
+---@return nil
+function R.hit(entry, actor, job, arm, pass, crossing, hitX, hitY, square, observedAt, before, after, frame, oldFrame)
+    local origin = entry.object:getSquare()
+    if pass <= (entry.hits[arm][actor] or -math.huge) then return end
     local Proc = require("OMHTT/TurretProc")
     if not Proc.available(job.stats) then return end
-    local proc = {playerSource = require("OMHTT/ControlCombat").source(entry.object), stats = job.stats, siphon = job.energy and job.energy[pass]}
+    local energy
+    for i = #entry.timeline, 1, -1 do
+        local sample = entry.timeline[i]
+        if crossing > sample.before and crossing <= sample.after then
+            energy = sample.energy and sample.energy[pass]
+            break
+        end
+    end
+    local proc = {playerSource = require("OMHTT/ControlCombat").source(entry.object), stats = job.stats, siphon = energy}
     Proc.reserve(proc)
-    local previousPass = entry.hits[arm][actor]
+    local hits = entry.hits
+    local previousPass = hits[arm][actor]
     entry.hits[arm][actor] = pass
-    if frame then
-        entry.contactFrames[actor] = frame
-    end
-    entry.pendingHits = entry.pendingHits or setmetatable({}, {__mode = "k"})
-    entry.pendingHits[actor] = proc
-    if not weapon then
-        weapon = instanceItem("Base.Hammer")
-    end
     local amount = job.stats.damage / 100
     if ZombRand(10000) < job.stats.critChance * 100 then
         amount = amount * job.stats.critMultiplier
@@ -159,7 +214,6 @@ function R.contact(entry, actor, job)
         observationAgeMs=GameTime.getServerTimeMills()-observation.at, sweepAgeMs=Clock.now()-job.at,
         before=before, after=after, arm=arm, pass=pass, x=hitX, y=hitY}, "turrets")
     Damage.resolve(actor, amount, source, "rotary", function(lost)
-        entry.pendingHits[actor] = nil
         if lost > 0 then
             require("OMHTT/Diagnostics").count("rotary-applied", 1, "turrets")
             Proc.hit(actor, true, hitX, hitY, square:getZ(), {id = source}, nil, proc)
@@ -175,10 +229,10 @@ function R.contact(entry, actor, job)
             end
         else
             require("OMHTT/Diagnostics").count("rotary-rejected", 1, "turrets")
-            if entry.hits[arm][actor] == pass then
-                entry.hits[arm][actor] = previousPass
+            if hits[arm][actor] == pass then
+                hits[arm][actor] = previousPass
             end
-            if frame and entry.contactFrames and entry.contactFrames[actor] == frame then
+            if frame and entry.contactFrames and entry.hits == hits and entry.contactFrames[actor] == frame then
                 entry.contactFrames[actor] = oldFrame
             end
         end
@@ -188,9 +242,9 @@ function R.contact(entry, actor, job)
 end
 
 ---@param entry table Scheduler entry
----@param deadline number Wall-clock budget
 ---@return boolean retained
-function R.step(entry, deadline)
+function R.step(entry)
+    if Active.paused() then return true end
     local W = require("OMHTT/TurretWorld")
     local object, now = entry.object, Clock.now()
     local state, contents = T.state(object), W.contents(object)
@@ -201,13 +255,15 @@ function R.step(entry, deadline)
     local head = contents.head
     if not state or not stats.rotary then
         Siphon.stop(entry)
+        Contacts.remove(object)
         return false
     end
+    Contacts.watch(entry, stats.range)
     if entry.rotaryHead ~= head then
         Siphon.stop(entry)
-        entry.rotaryHead, entry.rotaryAt, entry.rotaryJob = head, now, nil
+        entry.rotaryHead, entry.rotaryAt = head, now
         entry.gameAt = getGameTime():getWorldAgeHours()
-        entry.travel, entry.checkedTravel, entry.hits = 0, 0, {setmetatable({}, {__mode = "k"}), setmetatable({}, {__mode = "k"})}
+        entry.travel, entry.hits = 0, {setmetatable({}, {__mode = "k"}), setmetatable({}, {__mode = "k"})}
         entry.timeline,entry.contactFrames = {},nil
         state.rotaryMoving = false
     end
@@ -217,14 +273,11 @@ function R.step(entry, deadline)
     local gameHours = math.max(0, gameNow - entry.gameAt)
     entry.gameAt = gameNow
     local powered = W.valid(object) and T.isOn(state) and head:getCondition() > 0
-    if entry.rotaryJob and now - entry.rotaryJob.at > 150 then
-        entry.rotaryJob.moving = false
-    end
     if not powered then
         Siphon.stop(entry)
         state.rotaryMoving, state.rotaryManual = false, nil
         require("OMHTT/TurretStandby").step(object, contents, nil)
-        entry.rotaryJob, entry.hasTarget = nil, false
+        entry.hasTarget, entry.detectedTarget = false, nil
         entry.timeline,entry.contactFrames = {},nil
         return true
     end
@@ -232,6 +285,11 @@ function R.step(entry, deadline)
     local automatic = M.detects(state, contents) and contents.active.Firing and not require("OMHTT/ControlCycle").managed(object)
     local manual = state.rotaryManual and now < state.rotaryManual
     local standby = require("OMHTT/TurretStandby")
+    if entry.detectedTarget and (not R.standing(entry.detectedTarget) or not Actors.confirmed(entry.detectedTarget)
+        or not standby.valid(object, entry.detectedTarget, contents)) then
+        entry.detectedTarget = nil
+    end
+    entry.hasTarget = entry.detectedTarget ~= nil
     local ready = standby.step(object, contents, entry.detectedTarget, state.rotaryMoving == true)
     local wants = manual or (automatic and entry.hasTarget and ready)
     local moving = state.rotaryMoving == true
@@ -257,7 +315,7 @@ function R.step(entry, deadline)
         elapsed, gameHours = 0, 0
     end
     local before = entry.travel
-    if moving then
+    if moving and elapsed > 0 then
         local travel = elapsed / 1000 * stats.motorSpeed
         if entry.stopAt then
             travel = math.min(travel, math.max(0, entry.stopAt - before))
@@ -277,8 +335,6 @@ function R.step(entry, deadline)
             end
             state.rotaryManual = nil
             moving = false
-            entry.rotaryJob = nil
-            entry.checkedTravel = entry.travel
         else
             local spent = 0
             if power.kind == "battery" then
@@ -296,53 +352,69 @@ function R.step(entry, deadline)
             moving = false
         end
     end
+    if not moving then
+        Siphon.stop(entry)
+    end
     state.rotaryMoving = moving
     R.record(entry,before,entry.travel,elapsed)
     state.rotaryTravel = entry.travel
+    state.aimAt = GameTime.getServerTimeMills()
     state.rotarySpeed, state.rotaryStopAt = stats.motorSpeed, entry.stopAt
     local angle = Heads.motion(entry.travel, profile.omni, profile.cone)
     state.aimDegrees = (profile.heading + angle + 360) % 360
-    if not entry.rotaryJob then
-        if not moving and not manual and (not automatic or now < (entry.rotaryScanAt or 0)) then return true end
-        local radius = math.ceil(stats.range)
-        entry.rotaryJob = {at = now, x = -radius, y = -radius, radius = radius, index = 0, profile = M.profile(state, contents, false, stats), detection = profile, stats = stats,
-            moving = entry.travel > entry.checkedTravel, before = math.max(entry.checkedTravel, entry.travel - stats.motorSpeed * .1), after = entry.travel,
-            energy = entry.siphonEnergy}
-        entry.checkedTravel = entry.travel
-    end
-    local job = entry.rotaryJob
-    for i = 1, 48 do
-        if getTimestampMs() >= deadline then return true end
-        if job.y > job.radius then
-            if not moving then
-                Siphon.stop(entry)
-            end
-            entry.hasTarget = job.target == true
-            entry.detectedTarget = job.targetActor
-            local interval = M.option("DetectionInterval", .25, .1, 5)
-            if contents.active.MotionDetectionEnhanced then
-                interval = math.min(interval, M.option("EnhancedDetectionInterval", .1, .05, 5))
-            end
-            entry.rotaryScanAt = now + interval * 1000
-            entry.rotaryJob = nil
-            return true
-        end
-        local origin = object:getSquare()
-        local square = getCell():getGridSquare(origin:getX() + job.x, origin:getY() + job.y, origin:getZ())
-        local objects = square and Actors.occupants(square, job)
-        if objects and job.index < objects:size() then
-            local actor = objects:get(job.index)
-            job.index = job.index + 1
-            R.contact(entry, actor, job)
-        else
-            job.index = 0
-            job.x = job.x + 1
-            if job.x > job.radius then
-                job.x, job.y = -job.radius, job.y + 1
-            end
-        end
-    end
+    W.publishRuntime(object, state, contents, now)
     return true
+end
+
+---@param entry table Indexed rotary motor owner
+---@param actor IsoGameCharacter Observed target
+---@param position table Validated owner or native observation
+---@param previous table? Previous position from this observation source
+---@param ownerReport boolean? Server-validated owner frame
+---@return nil
+function R.observe(entry, actor, position, previous, ownerReport)
+    if Active.paused() then return end
+    local object = entry.object
+    local state = T.state(object)
+    if not state or not T.isOn(state) or state.facingPending then return end
+    local W = require("OMHTT/TurretWorld")
+    local contents = W.contents(object)
+    local stats = entry.rotaryContents == contents and entry.rotaryStats or T.cycleConfig(contents)
+    if not stats.rotary then
+        Contacts.remove(object)
+        return
+    end
+    local origin = object:getSquare()
+    local dx, dy = position.x - origin:getX() - .5, position.y - origin:getY() - .5
+    if dx * dx + dy * dy > (stats.range + 1) ^ 2 then
+        if entry.contactFrames then
+            entry.contactFrames[actor] = nil
+        end
+        return
+    end
+    if previous and previous.z ~= position.z and entry.contactFrames then
+        entry.contactFrames[actor] = nil
+    end
+    local detection = M.profile(state, contents, true, stats)
+    local target = entry.detectedTarget
+    if R.standing(actor) and require("OMHTT/ControlCombat").eligible(object, actor)
+        and M.inside(origin, actor, detection, position.x, position.y)
+        and require("OMHTT/PrototypeCombat").clearLane(origin, Actors.square(actor), stats.range) then
+        entry.detectedTarget = actor
+        if not target then
+            require("OMHTT/Diagnostics").defer("rotary-target-observed", {id=state.id, victim=actor:getOnlineID(),
+                observedAt=position.at, receivedAt=GameTime.getServerTimeMills()}, "turrets")
+        end
+    elseif target == actor then
+        entry.detectedTarget = nil
+    end
+    if entry.rotaryAt ~= Clock.now() or (not target and entry.detectedTarget) or (target and not entry.detectedTarget) then
+        R.step(entry)
+    end
+    if not entry.timeline then return end
+    R.contact(entry, actor, {at = Clock.now(), profile = M.profile(state, contents, false, stats),
+        stats = stats,
+        observedAt = ownerReport and position.at or GameTime.getServerTimeMills()})
 end
 
 return R

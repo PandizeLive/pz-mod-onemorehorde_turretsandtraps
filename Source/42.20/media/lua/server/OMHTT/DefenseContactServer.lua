@@ -1,7 +1,7 @@
 if not isServer() then return end
 local P = require("OMHTT/DefenseCombatProtocol")
 local Actors = require("OMHTT/DefenseActors")
-local Contacts = require("OMHTT/DefenseContacts")
+require("OMHTT/DefenseContacts")
 local H = require("OMHTT/DefenseHorde")
 local D = require("OMHTT/Diagnostics")
 local S = {}
@@ -59,7 +59,7 @@ function S.observe(player,f,now)
     if same and (f.sequence<=old.sequence or f.observedAt<old.frame.at) then return end
     local frame={x=f.x,y=f.y,z=f.z,at=f.observedAt,sequence=f.sequence,prone=f.prone,down=f.down,landing=f.landing,ownerReport=true}
     history[zombie]={owner=player,connection=zombie:getOwner(),outfit=f.outfit,sequence=f.sequence,frame=frame}
-    Actors.report(zombie, frame)
+    Actors.report(zombie, frame, same and old.frame or nil)
     -- Grant presentation/movement consent while approaching indexed hazards.
     -- Damage, wear, deaths and rewards still use the authoritative contact path.
     local response
@@ -69,9 +69,6 @@ function S.observe(player,f,now)
         response = {id=f.id, outfit=f.outfit, owner=player:getOnlineID(), allowed=true, issuedAt=issuedAt, expires=issuedAt+400}
         permitAt[zombie] = {owner=player, due=now+200}
     end
-    Contacts.current = frame
-    Contacts.observe(zombie,frame,same and old.frame or nil,true)
-    Contacts.current = nil
     D.count("owner-contact-accepted",1,"traps")
     D.measure("owner-contact-transit",math.max(0,transitAge),"traps")
     return response

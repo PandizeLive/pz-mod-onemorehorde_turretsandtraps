@@ -77,7 +77,7 @@ end
 
 -- Interpolate only short, recent, unobstructed native movement. Never replay a
 -- teleport, a floor change, an old packet gap or a landing at an invented tile.
-function C.observe(actor, position, previous, ownerReport)
+function C.trace(actor, position, previous, ownerReport)
     if C.count == 0 then return end
     C.contact(actor, position, false, ownerReport)
     if not previous or previous.z ~= position.z or position.at - previous.at > 250 then return end
@@ -102,6 +102,18 @@ function C.observe(actor, position, previous, ownerReport)
         return
     end
     for i = 1, #crossing do C.contact(actor, crossing[i], true, ownerReport) end
+end
+
+---@param actor IsoZombie Validated owner or native actor
+---@param position table Current observation
+---@param previous table? Previous observation from the same owner
+---@param ownerReport boolean? Server-validated owner report
+---@return nil
+function C.observe(actor, position, previous, ownerReport)
+    local saved = C.current
+    C.current = ownerReport and position or nil
+    C.trace(actor, position, previous, ownerReport)
+    C.current = saved
 end
 
 Actors.listeners[#Actors.listeners + 1] = C.observe

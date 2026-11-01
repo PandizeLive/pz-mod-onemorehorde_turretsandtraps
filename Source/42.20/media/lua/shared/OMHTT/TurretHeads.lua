@@ -79,6 +79,7 @@ end
 ---@param omni boolean Full rotation
 ---@return number? arm Physical arm identity
 ---@return number? pass Distinct crossing identity
+---@return number? travel Angular travel at contact
 ---@nodiscard
 function H.crossing(bearing, before, after, omni, cone)
     cone = math.max(10, math.min(360, cone or 90))
@@ -89,7 +90,7 @@ function H.crossing(bearing, before, after, omni, cone)
             local phase = (angle + 360) % 360
             local pass = math.floor((after - phase) / 360)
             local crossing = pass * 360 + phase
-            if crossing > before and crossing <= after then return arm + 1, pass end
+            if crossing > before and crossing <= after then return arm + 1, pass, crossing end
         elseif math.abs(angle) <= cone / 2 then
             local first, last = math.floor(before / cone), math.floor(after / cone)
             for stroke = first, last do
@@ -98,7 +99,7 @@ function H.crossing(bearing, before, after, omni, cone)
                     phase = cone - phase
                 end
                 local crossing = stroke * cone + phase
-                if crossing > before and crossing <= after then return arm + 1, stroke end
+                if crossing > before and crossing <= after then return arm + 1, stroke, crossing end
             end
         end
     end

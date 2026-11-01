@@ -62,6 +62,7 @@ local Effects = require("OMHTT/PrototypeEffects")
 local oldValid, oldContents, oldNear = W.valid, W.contents, W.near
 local oldCell, oldGameTime, oldClock, oldLane, oldSound = getCell, getGameTime, Clock.now, Combat.clearLane, Effects.sound
 local oldInstance, oldRandom = instanceof, ZombRand
+local oldServerMillis = GameTime.getServerTimeMills
 local now, age, soundCount = 0, 0, 0
 local state = {schema = 1, id = "rotary-test", baseFacing = 0, powered = true}
 local actors = {}
@@ -91,13 +92,16 @@ function zombie:isOnFloor() return self.grounded == true end
 function zombie:isRagdoll() return self.ragdoll == true end
 function zombie:isGettingUp() return self.gettingUp == true end
 function zombie:getHealth() return self.health end
+function zombie:getOwner() return nil end
+function zombie:getPersistentOutfitID() return 1 end
 function zombie:setHealth(value) self.health = value end
 function zombie:Kill() self.health = 0 end
 function instanceof(item, kind) return item.kind == kind end
 ZombRand = function(limit) return limit - 1 end
 Clock.now = function() return now end
+GameTime.getServerTimeMills = function() return now end
 getGameTime = function() return {getMultiplier=function() return 1 end, getTrueMultiplier=function() return 1 end,getWorldAgeHours = function() return age end, getMinutesPerDay = function() return 60 end} end
-getCell = function() return {getGridSquare = function(_, x, y) if x == 0 and y == 0 then return origin end end} end
+getCell = function() return {getGridSquare = function(_, x, y) if (x == 0 or x == 1) and y == 0 then return origin end end} end
 W.valid, W.near = function() return true end, function() return true end
 W.contents = function() return contents end
 Combat.clearLane = function() return true end
@@ -112,10 +116,12 @@ R.contact(entry, zombie, {})
 check(zombie.health == 10, "Getting-up zombie remains excluded until standing")
 zombie.gettingUp = false
 R.step(entry, getTimestampMs() + 100)
-check(entry.hasTarget and not state.rotaryMoving, "Bounded idle scan discovers a target without attacking")
+R.observe(entry, zombie, {x=1.5,y=.5,z=0,at=now})
+check(entry.hasTarget and zombie.health == 10, "Fresh observation discovers a target without retroactive damage")
 for i = 1, 120 do
     now, age = i * 10, i * 10 / 150000
     R.step(entry, getTimestampMs() + 100)
+    R.observe(entry, zombie, {x=1.5,y=.5,z=0,at=now})
 end
 check(zombie.health < 10 and zombie.health > 8, "Real rotary scheduler delivers contact damage without per-frame stacking")
 check(battery.charge < 1 and battery.charge > .99 and soundCount > 0, "Moving rotary consumes game-time power and emits impact sound")
@@ -130,6 +136,7 @@ R.step(entry, getTimestampMs() + 100)
 check(battery.charge == charge, "Powered-off sleep/time skip has no drain")
 state.powered = true
 R.step(entry, getTimestampMs() + 100)
+R.observe(entry, zombie, {x=1.5,y=.5,z=0,at=now})
 now = now + 10; R.step(entry, getTimestampMs() + 100)
 health = zombie.health
 now, age = now + 100000, age + 12
@@ -180,6 +187,8 @@ R.injure(player, true, now)
 check(cuts == 1 and damage == 12, "Reduced blade damage and rolled cut resume after shared injury guard")
 getTimestampMs, BodyPartType = oldTime, oldParts
 W.valid, W.contents, W.near = oldValid, oldContents, oldNear
+GameTime.getServerTimeMills = oldServerMillis
+require("OMHTT/TurretRotaryContacts").remove(object)
 getCell, getGameTime, Clock.now, Combat.clearLane, Effects.sound = oldCell, oldGameTime, oldClock, oldLane, oldSound
 instanceof, ZombRand = oldInstance, oldRandom
 SandboxVars.OMHTurretsTraps = savedSettings

@@ -1,10 +1,7 @@
-v0.2.71.7
+v0.2.71.8
 
 Development test content
 
-- Kept turret world lights and base indicators visible when turning away.
-- Improved rotary contact damage under multiplayer load.
-- Corrected rotary contact coverage for configured firing cones.
-- Fixed missed Tether activation when nearby zombie updates arrive together.
-- Corrected Tether detection of standing and prone multiplayer zombies.
-- Stopped turret animation and Tether actions during a stable multiplayer pause.
+- Improved rotary wakeup and contact damage when multiple turrets are active.
+- Fixed missed rotary strikes with stacked Rapid Fire and reversing firing cones.
+- Kept multiplayer rotary animation tied to the actual motor update time.

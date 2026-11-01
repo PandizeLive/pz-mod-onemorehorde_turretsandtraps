@@ -446,6 +446,7 @@ public final class KahluaCheck {
             {"OMHTT/TurretPickupAction", base + "shared/OMHTT/TurretPickupAction.lua"},
             {"OMHTT/TurretOnceEach", base + "server/OMHTT/TurretOnceEach.lua"},
             {"OMHTT/TurretBallista", base + "server/OMHTT/TurretBallista.lua"},
+            {"OMHTT/TurretRotaryContacts", base + "server/OMHTT/TurretRotaryContacts.lua"},
             {"OMHTT/TurretRotary", base + "server/OMHTT/TurretRotary.lua"},
             {"OMHTT/TurretStandby", base + "server/OMHTT/TurretStandby.lua"},
             {"OMHTT/TurretAutomation", base + "server/OMHTT/TurretAutomation.lua"},
@@ -635,6 +636,7 @@ public final class KahluaCheck {
             {"_", "tools/tests/targeting_c538.lua"},
             {"_", "tools/tests/lobber_c540.lua"},
             {"_", "tools/tests/multiplayer_c542.lua"},
+            {"_", "tools/tests/rotary_c544.lua"},
         };
         for (String[] stage : stages) {
             Path stagePath = root.resolve(stage[1]);
@@ -719,6 +721,9 @@ public final class KahluaCheck {
             .filter(line -> line.startsWith("modversion=")).findFirst().orElseThrow().substring(11).trim();
         Path traceDirectory = root.resolve(System.getenv().getOrDefault("OMHTT_TEST_OUTPUT", "diagnostics/v" + version));
         Files.createDirectories(traceDirectory);
+        Object rotaryCases = get.invoke(env, "testRotaryC544Cases");
+        if (rotaryCases instanceof String) Files.writeString(traceDirectory.resolve("rotary-c544-cases.txt"), (String) rotaryCases);
+        System.out.println("C544 rotary: " + get.invoke(env, "testRotaryC544"));
         for (String view : new String[] {"Manage", "Controller"}) {
             Object svg = get.invoke(env, "test" + view + "Svg");
             if (svg instanceof String) Files.writeString(traceDirectory.resolve(view.toLowerCase() + "-layout.svg"), (String)svg);

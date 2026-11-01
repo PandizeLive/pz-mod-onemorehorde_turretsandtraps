@@ -198,6 +198,7 @@ actor.onlineId,actor.outfitId=33000,33000
 Actors.observe(actor)
 Actors.report(actor,{x=11101.5,y=11100.5,z=0,at=840000})
 local entry={object=turret,hits={{},{}},soundAt=math.huge}
+entry.contactFrames={[actor]={at=839900,owner=actor.owner,outfit=require("OMHTT/DefenseCombatProtocol").outfit(actor.outfitId),x=11101.5,y=11100.5,z=0}}
 testMillis=840000;R.record(entry,350,370,100)
 testMillis=840150;R.record(entry,370,400,150)
 local profile={range=2,omni=true,heading=0,cone=360}

@@ -37,6 +37,7 @@ for _,age in pairs({0,75,150,225,250}) do
     local observed=testMillis-age
     entry.hits,entry.contactFrames,entry.pendingHits={{},{}},nil,nil
     entry.timeline={{from=observed-100,at=observed,before=359,after=361}}
+    entry.contactFrames={[actor]={at=observed-100,owner=actor.owner,outfit=actor.outfitId}}
     Actors.report(actor,{x=20543.5,y=20542.5,z=0,at=observed})
     job.at=testMillis-300
     local before=requests
@@ -77,8 +78,13 @@ Standby.step,Modules.detects=function() return true end,function() return true e
 Managed.managed=function() return false end
 local scan={object=object,rotaryContents=contents,rotaryStats=stats,rotaryHead=head,rotaryAt=testMillis,
     gameAt=getGameTime():getWorldAgeHours(),travel=0,checkedTravel=0,hits={{},{}}}
+local publishRuntime=World.publishRuntime
+World.publishRuntime=function() end
 Rotary.step(scan,testMillis+100)
-check(scan.rotaryJob and scan.rotaryJob.radius==3,"C542 custom rotary range defines the bounded scan footprint")
+World.publishRuntime=publishRuntime
+local indexed=require("OMHTT/TurretRotaryContacts")
+check(indexed.entries[object].range==3,"C542 custom rotary range defines the local observation footprint")
+indexed.remove(object)
 World.contents,World.valid,Standby.step,Modules.detects,Managed.managed=
     preserve.contents,preserve.valid,preserve.standby,preserve.detects,preserve.managed
 for _,cone in pairs({90,180,270}) do
@@ -88,6 +94,7 @@ for _,cone in pairs({90,180,270}) do
     local phase=bearing+cone/2
     entry.hits,entry.contactFrames,entry.pendingHits={{},{}},nil,nil
     entry.timeline={{from=observed-100,at=observed,before=phase-1,after=phase+1}}
+    entry.contactFrames={[actor]={at=observed-100,owner=actor.owner,outfit=actor.outfitId}}
     local x=20542.5+math.cos(math.rad(bearing))
     local y=20542.5-math.sin(math.rad(bearing))
     makeSquare(math.floor(x),math.floor(y),0)

@@ -192,7 +192,11 @@ for n=1,#families do
             local job={stats=stats,profile={range=2,heading=0,omni=true,cone=360},detection={range=2,heading=0,cone=360},
                 moving=true,at=testMillis,before=-1,after=1}
             Actors.report(victim,{x=victim:getX(),y=victim:getY(),z=victim:getZ(),at=testMillis})
-            require("OMHTT/TurretRotary").contact({object=object,hits={{},{}},soundAt=testMillis+1000},victim,job)
+            local motor={object=object,hits={{},{}},soundAt=testMillis+1000,
+                timeline={{from=testMillis-100,at=testMillis,before=-1,after=1}},
+                contactFrames={[victim]={at=testMillis-100,owner=victim:getOwner(),
+                    outfit=require("OMHTT/DefenseCombatProtocol").outfit(victim:getPersistentOutfitID())}}}
+            require("OMHTT/TurretRotary").contact(motor,victim,job)
         end
         check(client.health == before, "C509 "..name.." waits for owner application")
         check(#out > 0, "C509 "..name.." dispatches "..module)

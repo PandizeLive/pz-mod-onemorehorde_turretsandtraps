@@ -8,7 +8,7 @@ local P = require("OMHTT/DefenseCombatProtocol")
 local D = require("OMHTT/Damage")
 local B = require("OMHTT/BarrierRetaliation")
 local F = require("OMHTT/BarrierFootprint")
-local previousObserve, previousAt, previousExact, previousFace, previousDamage, previousCell = C.observe, A.at, F.exact, B.face, D.resolve, getCell
+local previousTrace, previousAt, previousExact, previousFace, previousDamage, previousCell = C.trace, A.at, F.exact, B.face, D.resolve, getCell
 local cell = getCell()
 local square = IsoGridSquare.new(cell, nil, 8100, 8100, 0)
 local entered = IsoGridSquare.new(cell, nil, 8101, 8100, 0)
@@ -32,7 +32,10 @@ local id = actor:getOnlineID()
 local oldActor = A.online[id]
 A.online[id] = actor
 local accepted, strikes = 0, 0
-C.observe = function(value) assert(value == actor); accepted = accepted + 1 end
+C.trace = function(value, position)
+    assert(value == actor and C.current == position, "Validated observation context missing")
+    accepted = accepted + 1
+end
 local frame = {id=id, outfit=P.outfit(actor:getPersistentOutfitID()), sequence=1, x=8101.5, y=8100.5, z=0,
     age=0, observedAt=GameTime.getServerTimeMills(), prone=false, down=false, landing=false}
 S.observe(owner, frame, getTimestampMs())
@@ -65,7 +68,7 @@ B.command("OMHTT_BarrierContact", "Strike", owner, message)
 assert(strikes == 1, "Native barrier ownership route blocked")
 B.command("OMHTT_BarrierContact", "Strike", owner, message)
 assert(strikes == 1, "Duplicate barrier report accepted")
-C.observe, A.at, F.exact, B.face, D.resolve, getCell = previousObserve, previousAt, previousExact, previousFace, previousDamage, previousCell
+C.trace, A.at, F.exact, B.face, D.resolve, getCell = previousTrace, previousAt, previousExact, previousFace, previousDamage, previousCell
 A.remove(actor)
 A.online[id] = oldActor
 actor:setOwner(nil)

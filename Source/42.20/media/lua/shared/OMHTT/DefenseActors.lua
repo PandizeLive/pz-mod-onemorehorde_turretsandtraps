@@ -104,8 +104,9 @@ end
 
 ---@param actor IsoZombie Server-validated native owner actor
 ---@param frame table Accepted contact frame; never unvalidated client input
+---@param previous table? Previous validated frame from the same owner
 ---@return nil
-function A.report(actor, frame)
+function A.report(actor, frame, previous)
     A.observe(actor, true)
     local node = A.nodes[actor]
     if not node then return end
@@ -113,6 +114,9 @@ function A.report(actor, frame)
         outfit=P.outfit(actor:getPersistentOutfitID()), frame=frame}
     -- Reuse the existing spatial index; never change the native actor position.
     A.observe(actor, true)
+    for i = 1, #A.listeners do
+        A.listeners[i](actor, frame, previous, true)
+    end
 end
 
 -- One fair bounded sweep shared by all defenses, independent of their ranges.

@@ -57,7 +57,7 @@ function W.publishRuntime(object, state, contents, now)
     local scanning = automatic and automatic.status == "no-target" and not aiming and M.detects(state, contents)
         and T.isOn(state) and state.standby ~= "asleep" and state.standby ~= "waking" and not state.facingPending or false
     local changedTarget = view.targetId ~= targetId or view.targetOutfit ~= targetOutfit or view.targetPlayer ~= targetPlayer
-    if now >= view.due or changedTarget or view.scanning ~= scanning then
+    if now >= view.due or changedTarget or view.scanning ~= scanning or view.moving ~= state.rotaryMoving then
         view.due = now + 250
         local heading = math.floor((state.aimDegrees or 0) / 2)
         if view.scanning ~= scanning or changedTarget or (target and now >= (view.targetDue or 0)) or view.heading ~= heading or view.travel ~= state.rotaryTravel or view.shots ~= state.shots or view.moving ~= state.rotaryMoving
@@ -69,7 +69,10 @@ function W.publishRuntime(object, state, contents, now)
             view.targetId, view.targetOutfit, view.targetPlayer = targetId, targetOutfit, targetPlayer
             view.targetDue = now + 500
             state.aimTargetId, state.aimTargetOutfit, state.aimTargetPlayer = targetId, targetOutfit, targetPlayer
-            state.aimAt, state.aimSpeed = GameTime.getServerTimeMills(), T.turnSpeed(contents.head, contents.active)
+            if not T.cycleConfig(contents).rotary or not state.aimAt then
+                state.aimAt = GameTime.getServerTimeMills()
+            end
+            state.aimSpeed = T.turnSpeed(contents.head, contents.active)
             Authority.publish(object)
         end
     end

@@ -13,6 +13,7 @@ local A = {entries = {}, order = {}, cursor = 1}
 ---@param head InventoryItem? Installed head
 ---@return nil
 function A.changed(object, head)
+    require("OMHTT/TurretRotaryContacts").remove(object)
     local entry = A.entries[object]
     if not entry then
         entry = {object = object, due = 0}
@@ -26,8 +27,11 @@ function A.changed(object, head)
     if state then
         state.rotaryManual, state.rotaryMoving = nil, false
     end
-    entry.rotaryHead, entry.rotaryJob, entry.stopAt = nil, nil, nil
+    entry.rotaryHead, entry.stopAt, entry.detectedTarget = nil, nil, nil
     entry.job, entry.due, entry.status, entry.target, entry.fireDue = nil, 0, nil, nil, 0
+    if entry.rotaryKind and object:getSquare() and object:getObjectIndex() >= 0 then
+        require("OMHTT/TurretRotary").step(entry)
+    end
 end
 
 ---@param origin IsoGridSquare Turret square
@@ -115,7 +119,7 @@ function A.step(entry, deadline)
     end
     if state.facingPending then return true end
     if entry.rotaryKind then
-        return require("OMHTT/TurretRotary").step(entry, deadline)
+        return require("OMHTT/TurretRotary").step(entry)
     end
     if now < entry.due and (not entry.target or now < (entry.fireDue or 0)) then return true end
     local aim = require("OMHTT/TurretAim").entries[object]
@@ -230,6 +234,7 @@ function A.tick()
             A.cursor = A.cursor + 1
         else
             require("OMHTT/TurretSiphon").stop(entry)
+            require("OMHTT/TurretRotaryContacts").remove(entry.object)
             A.entries[entry.object] = nil
             table.remove(A.order, A.cursor)
         end
