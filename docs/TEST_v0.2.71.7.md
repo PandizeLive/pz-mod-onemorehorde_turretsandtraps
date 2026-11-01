@@ -14,3 +14,8 @@ After uploading0.2.71.7, restart server and clients. Keep the current world.
 - Turret motion during pause and resume
 
 General zombie sliding during multiplayer pause remains a separate native/MPFF conflict. Report whether turret motion freezes separately from zombie movement.
+
+
+## Connected owner retest: failed (2026-11-01, C543)
+
+Owner reports less frequent Rotary Blades hits and delayed wakeup with Enhanced Firing/Detection +360; Rapid Fire uncertain. Client/server logs confirm0.2.71.7. [Investigation](ROTARY_FEEDBACK_C543.md) reproduces a scheduling/contact-window gap in both current and prior rotary code. This overrides the pending acceptance status for rotary behavior; automated checks did not establish the connected workflow. Lights and Tether are not newly accepted by this report. No replacement build was produced. **Decision needed: proposed1A corrective scope.**

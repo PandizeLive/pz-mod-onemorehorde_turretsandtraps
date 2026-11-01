@@ -1,0 +1,2456 @@
+{
+  "checkpoint": "C543",
+  "date": "2026-11-01",
+  "version": "0.2.71.7",
+  "status": "investigation; connected acceptance failed",
+  "ownerLoadout": {
+    "head": "Rotary Blades",
+    "confirmedModules": [
+      "Enhanced Firing",
+      "Enhanced Detection",
+      "360"
+    ],
+    "RapidFire": "owner uncertain"
+  },
+  "versions": {
+    "client": "0.2.71.7",
+    "server": "0.2.71.7"
+  },
+  "logSummary": {
+    "rotaryAttempts": 10,
+    "rotaryPositiveCompletions": 10,
+    "rotaryRejectionsRecorded": 0,
+    "ownerApplicationCount": 10,
+    "ownerApplicationMeanMs": 180.5,
+    "ownerApplicationMaxMs": 261,
+    "serverMeanActiveUpdateMs": 100.49,
+    "serverMaxActiveUpdateMs": 1253,
+    "ownerReportMeanTransitMs": 110.28,
+    "acceptedReports": 26457,
+    "positionRejectedReports": 1208,
+    "turretDetailedLogging": false,
+    "serverPauseTransitions": 839
+  },
+  "captures": {
+    "client-console.txt": "9ba8793aacbdc1570842f9798cc88890ad32fc9e752d4a6af54a5dac690cb0a5",
+    "server-console.txt": "2c90fafe0e3c0fced23d98a217e4984429a106130a24507a382a110f900f39cc",
+    "server-mod.info": "bc7b5f9805c3dc44527f6990dbfc7382900cb25f467d49044eab977c17cc1d63",
+    "integrated-output.txt": "a3df0baec95ae4fb3a609026e67f63e2e50d0cdabfa03d705256c0ba1242d68a",
+    "previous-output.txt": "375aea27305787d99ed86210f7379ea4f7480742602cb3a3eb01cb3799065a32"
+  },
+  "productionSourceHashes": {
+    "currentRotary": "62e8c8a8b181a139f5a16aac96761c22135e36350b081d4364b3b4acf2c9b2da",
+    "previousRotary": "14d0a94fd94f4931c1c48eed02582b97f6f44f5f28db678f968c89ec09eb2dc9"
+  },
+  "comparison": {
+    "0.2.71.7": {
+      "groups": [
+        {
+          "scheduledEntries": 1,
+          "anglesTested": 36,
+          "zeroHitAngles": 0,
+          "applied": 1140,
+          "crossings": 1144,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "scheduledEntries": 4,
+          "anglesTested": 36,
+          "zeroHitAngles": 0,
+          "applied": 1140,
+          "crossings": 1144,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "scheduledEntries": 8,
+          "anglesTested": 36,
+          "zeroHitAngles": 0,
+          "applied": 1131,
+          "crossings": 1136,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "scheduledEntries": 12,
+          "anglesTested": 36,
+          "zeroHitAngles": 5,
+          "applied": 961,
+          "crossings": 1128,
+          "wakeMs": 300,
+          "motorMs": 1800
+        }
+      ],
+      "cases": [
+        {
+          "entries": 1,
+          "bearing": 0,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 5,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 10,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 15,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 20,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 25,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 30,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 35,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 40,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 45,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 50,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 55,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 60,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 65,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 70,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 75,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 80,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 85,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 90,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 95,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 100,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 105,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 110,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 115,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 120,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 125,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 130,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 135,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 140,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 145,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 150,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 155,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 160,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 165,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 170,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 175,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 0,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 5,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 10,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 15,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 20,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 25,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 30,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 35,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 40,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 45,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 50,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 55,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 60,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 65,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 70,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 75,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 80,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 85,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 90,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 95,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 100,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 105,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 110,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 115,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 120,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 125,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 130,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 135,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 140,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 145,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 150,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 155,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 160,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 165,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 170,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 175,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 8,
+          "bearing": 0,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 5,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 10,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 15,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 20,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 25,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 30,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 35,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 40,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 45,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 50,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 55,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 60,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 65,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 70,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 75,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 80,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 85,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 90,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 95,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 100,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 105,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 110,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 115,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 120,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 125,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 130,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 135,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 140,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 145,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 150,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 155,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 160,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 165,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 170,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 175,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 12,
+          "bearing": 0,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 5,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 10,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 15,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 20,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 25,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 30,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 35,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 40,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 45,
+          "applied": 0,
+          "crossings": 32,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 50,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 55,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 60,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 65,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 70,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 75,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 80,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 85,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 90,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 95,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 100,
+          "applied": 0,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 105,
+          "applied": 0,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 110,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 115,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 120,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 125,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 130,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 135,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 140,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 145,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 150,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 155,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 160,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 165,
+          "applied": 0,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 170,
+          "applied": 0,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 175,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        }
+      ],
+      "totalAssertions": 44915
+    },
+    "0.2.71.6 rotary function": {
+      "groups": [
+        {
+          "scheduledEntries": 1,
+          "anglesTested": 36,
+          "zeroHitAngles": 0,
+          "applied": 1140,
+          "crossings": 1144,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "scheduledEntries": 4,
+          "anglesTested": 36,
+          "zeroHitAngles": 0,
+          "applied": 1140,
+          "crossings": 1144,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "scheduledEntries": 8,
+          "anglesTested": 36,
+          "zeroHitAngles": 0,
+          "applied": 1131,
+          "crossings": 1136,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "scheduledEntries": 12,
+          "anglesTested": 36,
+          "zeroHitAngles": 5,
+          "applied": 961,
+          "crossings": 1128,
+          "wakeMs": 300,
+          "motorMs": 1800
+        }
+      ],
+      "cases": [
+        {
+          "entries": 1,
+          "bearing": 0,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 5,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 10,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 15,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 20,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 25,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 30,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 35,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 40,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 45,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 50,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 55,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 60,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 65,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 70,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 75,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 80,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 85,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 90,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 95,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 100,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 105,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 110,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 115,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 120,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 125,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 130,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 135,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 140,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 145,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 150,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 155,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 160,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 165,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 170,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 1,
+          "bearing": 175,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 0,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 5,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 10,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 15,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 20,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 25,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 30,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 35,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 40,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 45,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 50,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 55,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 60,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 65,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 70,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 75,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 80,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 85,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 90,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 95,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 100,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 105,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 110,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 115,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 120,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 125,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 130,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 135,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 140,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 145,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 150,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 155,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 160,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 165,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 170,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 4,
+          "bearing": 175,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 100,
+          "motorMs": 1400
+        },
+        {
+          "entries": 8,
+          "bearing": 0,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 5,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 10,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 15,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 20,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 25,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 30,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 35,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 40,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 45,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 50,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 55,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 60,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 65,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 70,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 75,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 80,
+          "applied": 32,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 85,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 90,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 95,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 100,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 105,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 110,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 115,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 120,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 125,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 130,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 135,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 140,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 145,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 150,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 155,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 160,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 165,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 170,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 8,
+          "bearing": 175,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 200,
+          "motorMs": 1600
+        },
+        {
+          "entries": 12,
+          "bearing": 0,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 5,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 10,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 15,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 20,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 25,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 30,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 35,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 40,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 45,
+          "applied": 0,
+          "crossings": 32,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 50,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 55,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 60,
+          "applied": 31,
+          "crossings": 32,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 65,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 70,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 75,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 80,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 85,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 90,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 95,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 100,
+          "applied": 0,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 105,
+          "applied": 0,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 110,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 115,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 120,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 125,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 130,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 135,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 140,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 145,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 150,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 155,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 160,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 165,
+          "applied": 0,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 170,
+          "applied": 0,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        },
+        {
+          "entries": 12,
+          "bearing": 175,
+          "applied": 31,
+          "crossings": 31,
+          "wakeMs": 300,
+          "motorMs": 1800
+        }
+      ],
+      "totalAssertions": 44915
+    }
+  },
+  "connectedClientsInReplay": 0,
+  "assumptions": [
+    "two-tile range; 360; 200 degrees/second",
+    "100ms server tick and owner reports delayed by 100ms",
+    "one stationary standing target per trial",
+    "other scheduled entries cost zero time",
+    "power available; instant successful damage callback; no knockdown",
+    "world/player/network objects are test doubles"
+  ],
+  "notProven": [
+    "exact cause of every live miss",
+    "actual simultaneous scheduled turret count or Rapid Fire count",
+    "exact live wake delay",
+    "0.2.71.7 worsened damage relative to 0.2.71.6 under matched live conditions",
+    "replacement implementation, performance or connected acceptance"
+  ],
+  "proposedScope": "replace scan-dependent rotary sampling using existing validated owner observation path; start wake at first valid observation; shared motor timeline",
+  "gameplayChanged": false,
+  "githubMirror": "pending"
+}
