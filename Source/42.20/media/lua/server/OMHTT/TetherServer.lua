@@ -43,7 +43,7 @@ function S.publish(entry)
     S.serial = S.serial + 1
     local victim = entry.visualVictim
     if victim and not victim:isDead() then
-        entry.cycle.attachX, entry.cycle.attachY = victim:getX(), victim:getY()
+        entry.cycle.attachX, entry.cycle.attachY = Actors.position(victim)
     end
     local message = C.snapshot(entry.cycle, entry.state.id, S.serial, S.session)
     if entry.cycle.phase == "out" then
@@ -90,7 +90,7 @@ local function hit(cycle, victim, reason)
     local entry = cycle.entry
     entry.stopReason, entry.visualVictim = reason, victim
     if victim then
-        cycle.attachX, cycle.attachY = victim:getX(), victim:getY()
+        cycle.attachX, cycle.attachY = Actors.position(victim)
     end
     require("OMHTT/ControlAudio").emit(entry.object, "impact")
     if reason == "zombie" and Horde.allowed(victim) then
@@ -106,7 +106,7 @@ end
 local function pull(cycle)
     local entry = cycle.entry
     if entry.visualVictim and not entry.visualVictim:isDead() then
-        cycle.attachX, cycle.attachY = entry.visualVictim:getX(), entry.visualVictim:getY()
+        cycle.attachX, cycle.attachY = Actors.position(entry.visualVictim)
     end
     entry.visualVictim = nil
     require("OMHTT/ControlAudio").emit(entry.object, "pull")
@@ -194,6 +194,7 @@ end
 ---@param pulse boolean? Fresh button signal
 ---@return nil
 function S.step(object, state, pulse)
+    if Active.paused() then return end
     local W = require("OMHTT/ControlWorld")
     if object:getHealth() <= 0 or state.enabled == false or SandboxVars.OMHTurretsTraps.Enabled == false then
         S.cancel(object)
@@ -234,8 +235,16 @@ function S.step(object, state, pulse)
         local detected = false
         if not linked and S.time >= entry.scan then
             entry.scan = S.time + 200
-            local fraction, victim = Lane.cast(cycle, 0, cycle.range)
+            local fraction, victim, reason = Lane.cast(cycle, 0, cycle.range)
             detected = fraction ~= nil and require("OMHTT/ControlCombat").eligible(object, victim)
+            local result = detected and "ready" or reason or "clear"
+            if victim and not detected then
+                result = "filtered"
+            end
+            if entry.detectionReason ~= result then
+                entry.detectionReason = result
+                require("OMHTT/Diagnostics").defer("tether-detection", {id=state.id, reason=result}, "traps")
+            end
         end
         if C.start(cycle, detected, pulse == true and (not linked or leverAllowed ~= false)) then
             entry.stopReason, entry.visualVictim = nil, nil
@@ -286,10 +295,14 @@ end
 ---@param position table Fresh contact position
 ---@return nil
 function S.contact(actor, position)
+    if Active.paused() then return end
     local bucket = S.tiles[F.key(math.floor(position.x),math.floor(position.y),position.z)]
     for _,entry in pairs(bucket or {}) do
         local now = getTimestampMs()
-        if entry.cycle.phase=="idle" and entry.object:getObjectIndex()>=0 and now >= (entry.contactScan or 0) then
+        local cycle = entry.cycle
+        local crossing = C.intersection(cycle.x, cycle.y, cycle.x + cycle.dx * cycle.range,
+            cycle.y + cycle.dy * cycle.range, position.x, position.y, .3)
+        if crossing and cycle.phase=="idle" and entry.object:getObjectIndex()>=0 and now >= (entry.contactScan or 0) then
             entry.contactScan = now+50
             entry.scan = 0
             S.step(entry.object,entry.state)

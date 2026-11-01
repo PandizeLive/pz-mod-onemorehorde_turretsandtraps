@@ -634,6 +634,7 @@ public final class KahluaCheck {
             {"_", "tools/tests/presentation_c536.lua"},
             {"_", "tools/tests/targeting_c538.lua"},
             {"_", "tools/tests/lobber_c540.lua"},
+            {"_", "tools/tests/multiplayer_c542.lua"},
         };
         for (String[] stage : stages) {
             Path stagePath = root.resolve(stage[1]);

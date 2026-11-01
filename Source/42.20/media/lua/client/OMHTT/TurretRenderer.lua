@@ -6,6 +6,7 @@ local M = require("OMHTT/TurretModules")
 local Aim = require("OMHTT/TurretAim")
 local Draw = require("OMHTT/ControlModelDraw")
 local StateView = require("OMHTT/TurretStateView")
+local Active = require("OMHTT/ActiveTime")
 local R = {order = {}, ordered = {}, cursor = 1, entries = {}, mode = nil, lastCheck = 0, headHeight = T.HEAD_VISUAL.height, headScale = T.HEAD_VISUAL.scale}
 
 ---@param object IsoObject Replicated device; this only changes its local presentation
@@ -64,6 +65,7 @@ function R.changed(object, head)
         entry.support = instanceItem("Base.OMHTTTurretGunSupportVisual")
     end
     R.entries[object] = entry
+    StateView.track(object, entry)
     if not R.ordered[object] then
         R.order[#R.order + 1] = object
         R.ordered[object] = true
@@ -94,12 +96,29 @@ end
 ---@param now number Current tick timestamp
 ---@return nil
 function R.animate(now)
+    if Active.paused() then
+        for object, entry in pairs(R.entries) do
+            local state = T.state(object)
+            if isClient() and state then
+                entry.pauseAimAt = state.aimAt
+            end
+        end
+        return
+    end
     local A = not isClient() and require("OMHTT/TurretAutomation")
     local started = D.enabled("turrets") and getTimestampMs()
     local speed = M.option("IdleSweepSpeed", 30, 0, 180)
     for object, entry in pairs(R.entries) do
         local state, automatic = T.state(object), A and A.entries[object]
-        if state then
+        if entry.pauseAimAt then
+            entry.lastFrame = now
+            if entry.aimSample then
+                entry.aimSample.motorAt = getTimestampMs()
+                entry.aimSample.followAt = getTimestampMs()
+            end
+        end
+        if state and (not entry.pauseAimAt or state.aimAt ~= entry.pauseAimAt) then
+            entry.pauseAimAt = nil
             local elapsed = math.min(2000, math.max(0, now - (entry.lastFrame or now))) / 1000
             entry.lastFrame = now
             local lowered = not T.isOn(state) or state.standby == "asleep" or state.standby == "disabled"
@@ -193,40 +212,36 @@ function R.render(playerIndex)
         if object:getObjectIndex() < 0 or not square or not state
             or getCell():getGridSquare(square:getX(), square:getY(), square:getZ()) ~= square then
             R.entries[object] = nil
-        elseif entry.head and square:getZ() == math.floor(player:getZ()) and square:isCanSee(playerIndex) then
+        elseif entry.head and square:getZ() == math.floor(player:getZ()) then
             local dx, dy = square:getX() - player:getX(), square:getY() - player:getY()
             if dx * dx + dy * dy <= 80 * 80 then
-                if (SandboxVars.OMHTurretsTraps or {}).TurretStateIndicator ~= false and require("OMHTT/ControlOptions").get("StateMarkers") then
-                    local kind
-                    if not T.isOn(state) or state.standby == "disabled" or state.powerSource == "none" then
-                        kind = "Dark"
-                    elseif state.standby == "asleep" or state.standby == "waking" then
-                        kind = "Amber"
-                    else
-                        kind = "Green"
-                    end
-                    StateView.draw(object, entry, square, kind, kind ~= "Dark" and state.feedStatus == "Empty", dx * dx + dy * dy <= 400)
+                if square:isCouldSee(playerIndex) and (SandboxVars.OMHTurretsTraps or {}).TurretStateIndicator ~= false
+                    and require("OMHTT/ControlOptions").get("StateMarkers") then
+                    local kind = StateView.kind(state)
+                    StateView.draw(object, entry, square, kind, kind ~= "Dark" and state.feedStatus == "Empty")
                 end
-                local heading = R.heading(object)
-                local yaw = (360 - heading) % 360
-                local height = R.headHeight
-                local pitch = entry.lowered or 0
-                local profile = G.profile(entry.head)
-                if profile then
-                    local angle, tilt = math.rad(yaw), math.rad(pitch)
-                    local rx = math.deg(math.atan2(-math.cos(tilt), -math.sin(angle) * math.sin(tilt)))
-                    local rz = math.deg(math.asin(math.cos(angle) * math.sin(tilt)))
-                    local ry = math.deg(math.atan2(math.sin(angle), math.cos(angle) * math.cos(tilt)))
-                    Render3DItem(entry.support, square, square:getX() + .5, square:getY() + .5, square:getZ() + height, yaw)
-                    Draw.draw(entry.head, square, square:getX() + .5, square:getY() + .5, square:getZ() + height + .1, rx, ry, rz)
-                elseif entry.profile.stats.rotary then
-                    for arm = 0, 1 do
-                        local angle = math.rad(heading + arm * 180)
-                        Draw.draw(entry.head, square, square:getX() + .5 + math.cos(angle),
-                            square:getY() + .5 - math.sin(angle), square:getZ() + height, 0, -pitch, (yaw + arm * 180) % 360)
+                if square:isCanSee(playerIndex) then
+                    local heading = R.heading(object)
+                    local yaw = (360 - heading) % 360
+                    local height = R.headHeight
+                    local pitch = entry.lowered or 0
+                    local profile = G.profile(entry.head)
+                    if profile then
+                        local angle, tilt = math.rad(yaw), math.rad(pitch)
+                        local rx = math.deg(math.atan2(-math.cos(tilt), -math.sin(angle) * math.sin(tilt)))
+                        local rz = math.deg(math.asin(math.cos(angle) * math.sin(tilt)))
+                        local ry = math.deg(math.atan2(math.sin(angle), math.cos(angle) * math.cos(tilt)))
+                        Render3DItem(entry.support, square, square:getX() + .5, square:getY() + .5, square:getZ() + height, yaw)
+                        Draw.draw(entry.head, square, square:getX() + .5, square:getY() + .5, square:getZ() + height + .1, rx, ry, rz)
+                    elseif entry.profile.stats.rotary then
+                        for arm = 0, 1 do
+                            local angle = math.rad(heading + arm * 180)
+                            Draw.draw(entry.head, square, square:getX() + .5 + math.cos(angle),
+                                square:getY() + .5 - math.sin(angle), square:getZ() + height, 0, -pitch, (yaw + arm * 180) % 360)
+                        end
+                    else
+                        Draw.draw(entry.head, square, square:getX() + .5, square:getY() + .5, square:getZ() + height, 0, -pitch, yaw)
                     end
-                else
-                    Draw.draw(entry.head, square, square:getX() + .5, square:getY() + .5, square:getZ() + height, 0, -pitch, yaw)
                 end
             end
         end

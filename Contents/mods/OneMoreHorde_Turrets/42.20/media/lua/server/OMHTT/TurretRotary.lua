@@ -94,33 +94,41 @@ function R.contact(entry, actor, job)
     if dx * dx + dy * dy > job.profile.range * job.profile.range then return end
     local bearing = math.deg(math.atan2(-dy, dx)) - job.profile.heading
     local relative = (bearing + 540) % 360 - 180
-    if not job.profile.omni and math.abs(relative) > 45 and math.abs(relative) < 135 then return end
-    if not require("OMHTT/PrototypeCombat").clearLane(origin, square, 2) then return end
+    local halfCone = job.profile.cone / 2
+    if not job.profile.omni and math.abs(relative) > halfCone and math.abs(relative) < 180 - halfCone then return end
+    if not require("OMHTT/PrototypeCombat").clearLane(origin, square, job.profile.range) then return end
     if require("OMHTT/ControlCombat").eligible(entry.object, actor) and M.inside(origin, actor, job.detection, hitX, hitY) then
         job.target = true
         job.targetActor = actor
     end
     if not T.isOn(T.state(entry.object)) then return end
-    if Clock.now() - job.at > 150 then return end
+    if not observedAt and Clock.now() - job.at > 150 then return end
+    if entry.pendingHits and entry.pendingHits[actor] then return end
     local before, after = job.before, job.after
+    local oldFrame, frame
     if observedAt and entry.timeline then
         entry.contactFrames = entry.contactFrames or setmetatable({}, {__mode="k"})
-        local old = entry.contactFrames[actor]
+        oldFrame = entry.contactFrames[actor]
         local owner = actor:getOwner()
         local outfit = require("OMHTT/DefenseCombatProtocol").outfit(actor:getPersistentOutfitID())
         local from = observedAt-100
-        if old and old.owner==owner and old.outfit==outfit then
-            if observedAt<=old.at then return end
-            from=math.max(observedAt-250,old.at)
+        if oldFrame and oldFrame.owner == owner and oldFrame.outfit == outfit then
+            if observedAt <= oldFrame.at then return end
+            from = math.max(observedAt - 250, oldFrame.at)
         end
         before,after=R.travelAt(entry,from),R.travelAt(entry,observedAt)
         if not before or not after then return end
-        entry.contactFrames[actor]={at=observedAt,owner=owner,outfit=outfit}
+        frame = {at = observedAt, owner = owner, outfit = outfit}
     elseif not job.moving then
         return
     end
     local arm, pass = Heads.crossing(bearing, before, after, job.profile.omni, job.profile.cone)
-    if not arm then return end
+    if not arm then
+        if frame then
+            entry.contactFrames[actor] = frame
+        end
+        return
+    end
     if player then
         R.injure(actor, job.stats.headKind == "RotaryBlades", Clock.now(), entry.object)
         return
@@ -130,7 +138,13 @@ function R.contact(entry, actor, job)
     if not Proc.available(job.stats) then return end
     local proc = {playerSource = require("OMHTT/ControlCombat").source(entry.object), stats = job.stats, siphon = job.energy and job.energy[pass]}
     Proc.reserve(proc)
+    local previousPass = entry.hits[arm][actor]
     entry.hits[arm][actor] = pass
+    if frame then
+        entry.contactFrames[actor] = frame
+    end
+    entry.pendingHits = entry.pendingHits or setmetatable({}, {__mode = "k"})
+    entry.pendingHits[actor] = proc
     if not weapon then
         weapon = instanceItem("Base.Hammer")
     end
@@ -145,21 +159,32 @@ function R.contact(entry, actor, job)
         observationAgeMs=GameTime.getServerTimeMills()-observation.at, sweepAgeMs=Clock.now()-job.at,
         before=before, after=after, arm=arm, pass=pass, x=hitX, y=hitY}, "turrets")
     Damage.resolve(actor, amount, source, "rotary", function(lost)
+        entry.pendingHits[actor] = nil
         if lost > 0 then
+            require("OMHTT/Diagnostics").count("rotary-applied", 1, "turrets")
             Proc.hit(actor, true, hitX, hitY, square:getZ(), {id = source}, nil, proc)
             Conditional.impact(actor, origin, {source = source, impactReady = true, stats = {impact = job.stats.knockdown}})
+            if getTimestampMs() >= (entry.soundAt or 0) then
+                entry.soundAt = getTimestampMs() + 150
+                local radius = require("OMHTT/TurretStats").hearingRadius(entry.rotaryHead, job.stats)
+                if radius > 0 then
+                    Horde.sound(entry.object, origin:getX(), origin:getY(), origin:getZ(), radius, 10)
+                end
+                local sound = job.stats.fireSound or "BaseballBatHit"
+                require("OMHTT/DefenseEffects").emit("Click", {sound = sound, x = origin:getX() + .5, y = origin:getY() + .5, z = origin:getZ(), gain = job.stats.hearingMultiplier})
+            end
+        else
+            require("OMHTT/Diagnostics").count("rotary-rejected", 1, "turrets")
+            if entry.hits[arm][actor] == pass then
+                entry.hits[arm][actor] = previousPass
+            end
+            if frame and entry.contactFrames and entry.contactFrames[actor] == frame then
+                entry.contactFrames[actor] = oldFrame
+            end
         end
         Proc.release(proc)
     end, observation)
-    if getTimestampMs() >= (entry.soundAt or 0) then
-        entry.soundAt = getTimestampMs() + 150
-        local radius = require("OMHTT/TurretStats").hearingRadius(entry.rotaryHead, job.stats)
-        if radius > 0 then
-            Horde.sound(entry.object, origin:getX(), origin:getY(), origin:getZ(), radius, 10)
-        end
-        local sound = job.stats.headKind == "RotaryBlades" and "AxeSawBladeHit" or "BaseballBatHit"
-        require("OMHTT/DefenseEffects").emit("Click", {sound = sound, x = origin:getX() + .5, y = origin:getY() + .5, z = origin:getZ(), gain = job.stats.hearingMultiplier})
-    end
+
 end
 
 ---@param entry table Scheduler entry
@@ -279,7 +304,8 @@ function R.step(entry, deadline)
     state.aimDegrees = (profile.heading + angle + 360) % 360
     if not entry.rotaryJob then
         if not moving and not manual and (not automatic or now < (entry.rotaryScanAt or 0)) then return true end
-        entry.rotaryJob = {at = now, x = -2, y = -2, index = 0, profile = M.profile(state, contents, false, stats), detection = profile, stats = stats,
+        local radius = math.ceil(stats.range)
+        entry.rotaryJob = {at = now, x = -radius, y = -radius, radius = radius, index = 0, profile = M.profile(state, contents, false, stats), detection = profile, stats = stats,
             moving = entry.travel > entry.checkedTravel, before = math.max(entry.checkedTravel, entry.travel - stats.motorSpeed * .1), after = entry.travel,
             energy = entry.siphonEnergy}
         entry.checkedTravel = entry.travel
@@ -287,7 +313,7 @@ function R.step(entry, deadline)
     local job = entry.rotaryJob
     for i = 1, 48 do
         if getTimestampMs() >= deadline then return true end
-        if job.y > 2 then
+        if job.y > job.radius then
             if not moving then
                 Siphon.stop(entry)
             end
@@ -311,8 +337,8 @@ function R.step(entry, deadline)
         else
             job.index = 0
             job.x = job.x + 1
-            if job.x > 2 then
-                job.x, job.y = -2, job.y + 1
+            if job.x > job.radius then
+                job.x, job.y = -job.radius, job.y + 1
             end
         end
     end

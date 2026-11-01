@@ -54,13 +54,13 @@ Horde.allowed,Combat.clearLane,Policy.eligible=function() return true end,functi
 Proc.available,Proc.reserve=function() return true end,function() end
 Clock.now=function() return testMillis end
 local hits=0
-Damage.resolve=function() hits=hits+1;return true end
+Damage.resolve=function(_,_,_,_,callback) hits=hits+1;callback(.2);return true end
 local entry={object=object,hits={{},{}},soundAt=math.huge}
 state.id="turret-c527"
 check(require("OMHTT/TurretAuthority").register(object,state),"C528 server fixture has authoritative turret controls")
 local profile={range=2,omni=true,heading=0,cone=360}
 local job={at=testMillis,moving=true,before=359,after=361,profile=profile,detection=profile,
-    stats={damage=20,critChance=0,initialBlow=0,execute=0}}
+    stats={damage=20,critChance=0,initialBlow=0,execute=0,knockdown=0}}
 Rotary.contact(entry,actor,job)
 check(hits==1,"C528 rotary hits using fresh owner position before native coordinates catch up")
 actor.square=inside

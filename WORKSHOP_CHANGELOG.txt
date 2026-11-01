@@ -1,11 +1,10 @@
-v0.2.71.6
+v0.2.71.7
 
 Development test content
 
-- Fixed multiplayer turret idle scanning animation.
-- Prevented repeated firing at unconfirmed multiplayer targets.
-- Corrected moving-target positions for area effects and Lobber damage.
-- Improved client zombie tracking after missed creation updates.
-- Replaced Ballista projectile lines with native spear models.
-- Sped up Scrapshot and Ballista ammunition loading.
-- Removed the Lobber minimum firing distance.
+- Kept turret world lights and base indicators visible when turning away.
+- Improved rotary contact damage under multiplayer load.
+- Corrected rotary contact coverage for configured firing cones.
+- Fixed missed Tether activation when nearby zombie updates arrive together.
+- Corrected Tether detection of standing and prone multiplayer zombies.
+- Stopped turret animation and Tether actions during a stable multiplayer pause.
