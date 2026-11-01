@@ -34,3 +34,8 @@ The C541 server-wide pause oscillation remains unresolved outside this patch. T&
 The owner publisher confirmed0.2.71.6 on Workshop item3828638252. The exact published changelog matches the prior working draft, so0.2.71.7 starts the next cumulative draft. [Receipt evidence](evidence/c542-upload-baseline.json). Existing owner edits in AGENTS.md, README.md, AMMO_UI_C446.md and RELEASE.md are preserved and excluded from this patch's commits.
 
 Verification and delivery status: [test record](TEST_v0.2.71.7.md).
+
+
+## Mirror approval
+
+The owner explicitly approved this public export on 2026-11-01 and reaffirmed standing approval for future completed T&T mirrors. See [workflow authorization](GITHUB_WORKFLOW.md#standing-mirror-approval-reaffirmed-2026-11-01). Execution is recorded in the delivery evidence.
