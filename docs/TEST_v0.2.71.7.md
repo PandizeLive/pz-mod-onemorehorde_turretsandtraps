@@ -2,7 +2,7 @@
 
 Owner approved C5411A and reaffirmed simple shared mechanisms for custom-head compatibility. [Implementation](UPDATE_C542.md).
 
-**44,794 assertions passed.** Four frozen old-code controls reproduce their named failures. Native 42.21 save/read and Traps-only, Turrets-only and combined starts passed. All 464 source and 640 package files validate. [Evidence](evidence/c542-verification.json). Installation/staging pending. **Wait for delivery.** Connected multiplayer and rendered acceptance remain pending; automated/native checks must not be presented as their replacement.
+**44,794 assertions passed.** Four frozen old-code controls reproduce their named failures. Native 42.21 save/read and Traps-only, Turrets-only and combined starts passed. All 464 source and 640 package files validate. [Evidence](evidence/c542-verification.json). Installed and staged from immutable `test/v0.2.71.7` / `0f1fde8`. All 464 source and 640 tag/package/install/archive/stage files and prior backups verify; page metadata/preview preserved. [Delivery](evidence/c542-delivery.json). No Workshop upload, live-server or sibling changes. **Test now after uploading 0.2.71.7 and restarting server and clients. No new world required.** GitHub mirror pending. Connected multiplayer and rendered acceptance remain pending; automated/native checks must not be presented as their replacement.
 
 ## Owner checklist
 
