@@ -93,5 +93,3 @@ do
     SandboxVars.OMHTurretsTraps.TurretStateIndicator=oldIndicator
 end
 testPackAudit="C541 investigation: eight failure assertions plus two fixture checks. Old scan drops fresh owner sample; failed admission consumes crossing; skipped draw expires loaded light. Not fixes or connected-client proof."
-
-

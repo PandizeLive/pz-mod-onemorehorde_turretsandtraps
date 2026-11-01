@@ -65,6 +65,9 @@
     "Position-rejected counts do not identify individual actors or devices",
     "World/player/network/UI objects in the replay are test doubles"
   ],
-  "githubMirror": "pending",
+  "githubMirror": {
+    "status": "blocked",
+    "reason": "Automatic approval review requires specific C541 export approval; requested."
+  },
   "ownerDocuments": "four hashes unchanged"
 }
