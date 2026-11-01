@@ -36,5 +36,11 @@
   "pageMetadataAndPreview": "byte-identical",
   "connectedAcceptance": "pending",
   "newWorldRequiredForThisPatch": false,
-  "githubMirror": "owner explicitly approved C542 and future completed T&T mirrors on 2026-11-01; execution pending"
+  "githubMirror": {
+    "status": "verified",
+    "commit": "9f0c6dbd232dd8a0e04892a75ac446c17ac5ecd2",
+    "tag": "test/v0.2.71.7",
+    "pullRequest": "https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1",
+    "authorization": "explicit C542 and standing future completed T&T mirror approval, 2026-11-01"
+  }
 }
