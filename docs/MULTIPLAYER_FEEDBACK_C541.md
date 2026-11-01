@@ -45,3 +45,7 @@ No gameplay, version, package, installation, Workshop, live-server or sibling-pr
 **1B:** lights only first; rotary and Tether remain unresolved and the external pause conflict remains open.
 
 Owner feedback establishes the defects and desired light behavior; the new combined corrective scope has not been selected. **Decision needed.**
+
+## Mirror authorization
+
+Owner explicitly approved the C541 findings and sanitized evidence export on 2026-11-01. GitHub mirror verified at `ff8a69e` through draft PR1; the approval-review block is resolved. Corrective gameplay scope remains unselected.

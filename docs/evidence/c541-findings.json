@@ -66,8 +66,10 @@
     "World/player/network/UI objects in the replay are test doubles"
   ],
   "githubMirror": {
-    "status": "blocked",
-    "reason": "Automatic approval review requires specific C541 export approval; requested."
+    "status": "verified",
+    "commit": "ff8a69ed36c9d0a62288f97f1686f53ef570ac90",
+    "pullRequest": "https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1",
+    "authorization": "Owner explicitly approved C541 findings and sanitized evidence export on 2026-11-01; approval-review block resolved."
   },
   "ownerDocuments": "four hashes unchanged"
 }
