@@ -6,7 +6,7 @@ Owner approved C5431A. [Implementation and proof limits](ROTARY_REPAIR_C544.md).
 
 Zero connected clients; rendered multiplayer acceptance remains pending. The server-report replay uses world/network adapters and a delayed damage sink. The full head/module matrix separately tests the real damage transaction. Native ownership probes use real engine userdata. These do not establish connected smoothness.
 
-Installation/staging pending. **Wait for delivery.**
+Installed and staged from immutable `test/v0.2.71.8` / `9e2d636`. All 465 source and 641 tag/package/install/archive/stage files and prior backups verify; page metadata/preview preserved. [Delivery](evidence/c544-delivery.json). No Workshop upload, live-server or sibling changes. **Test now after uploading 0.2.71.8 and restarting server and clients. No new world required.** GitHub mirror pending.
 
 ## Owner checklist
 
