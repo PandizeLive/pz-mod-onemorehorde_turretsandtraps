@@ -24,3 +24,9 @@ The earlier MPFF/native pause conflict remains unresolved and unchanged. Do not 
 No new Sandbox defaults were introduced, so there is no matching Horde Night baseline edit. No gameplay changelog history is discarded: confirmed 0.2.71.4 publication is recorded in [baseline evidence](evidence/c538-upload-baseline.json), and only the next upload's net changes appear in the 0.2.71.5 draft.
 
 [Verification](TEST_v0.2.71.5.md).
+
+## C539 - minimum-range presentation discussion (2026-11-01)
+
+Owner requests showing the Lobber minimum visually or removing it. Current `TurretHeads` defines six tiles, `TurretModules.inside` enforces it, and manual landing controls enforce the same lower bound. The existing selected-turret `TurretRange` preview draws outer coverage without the inner exclusion. This is a confirmed presentation omission; it does not prove the reported live eight-tile engagement cause.
+
+Recommend **1A: retain the six-tile minimum and show its boundary in the existing selected-turret range preview**, with a clearly labeled inner no-fire area and usable coverage between minimum and effective maximum. Respect the current cone, 360 module and preview visibility; derive both limits from effective stats. Reuse cached geometry. This is separate from the removed Controller in-world gradient. **1B: remove the minimum** permits point-blank targeting and is a gameplay buff, requiring matching targeting/manual controls and projectile-contact verification. Neither option is approved or implemented yet. No package, saved setting or gameplay change. **Decision needed.**
