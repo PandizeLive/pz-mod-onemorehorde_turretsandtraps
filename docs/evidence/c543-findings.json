@@ -2452,5 +2452,9 @@
   ],
   "proposedScope": "replace scan-dependent rotary sampling using existing validated owner observation path; start wake at first valid observation; shared motor timeline",
   "gameplayChanged": false,
-  "githubMirror": "pending"
+  "githubMirror": {
+    "status": "verified",
+    "commit": "e457676552f0c9e66fc5084cb2f50df2b71916f1",
+    "pullRequest": 1
+  }
 }
