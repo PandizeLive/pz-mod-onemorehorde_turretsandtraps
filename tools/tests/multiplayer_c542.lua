@@ -37,7 +37,7 @@ for _,age in pairs({0,75,150,225,250}) do
     local observed=testMillis-age
     entry.hits,entry.contactFrames,entry.pendingHits={{},{}},nil,nil
     entry.timeline={{from=observed-100,at=observed,before=359,after=361}}
-    entry.contactFrames={[actor]={at=observed-100,owner=actor.owner,outfit=actor.outfitId}}
+    entry.contactFrames={[actor]={id=actor:getOnlineID(),player=actor:getOwnerPlayer(),epoch=require("OMHTT/ActiveTime").epoch,at=observed-100,owner=actor.owner,outfit=actor.outfitId}}
     Actors.report(actor,{x=20543.5,y=20542.5,z=0,at=observed})
     job.at=testMillis-300
     local before=requests
@@ -94,7 +94,7 @@ for _,cone in pairs({90,180,270}) do
     local phase=bearing+cone/2
     entry.hits,entry.contactFrames,entry.pendingHits={{},{}},nil,nil
     entry.timeline={{from=observed-100,at=observed,before=phase-1,after=phase+1}}
-    entry.contactFrames={[actor]={at=observed-100,owner=actor.owner,outfit=actor.outfitId}}
+    entry.contactFrames={[actor]={id=actor:getOnlineID(),player=actor:getOwnerPlayer(),epoch=require("OMHTT/ActiveTime").epoch,at=observed-100,owner=actor.owner,outfit=actor.outfitId}}
     local x=20542.5+math.cos(math.rad(bearing))
     local y=20542.5-math.sin(math.rad(bearing))
     makeSquare(math.floor(x),math.floor(y),0)

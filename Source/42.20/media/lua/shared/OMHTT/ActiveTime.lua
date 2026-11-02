@@ -36,6 +36,7 @@ function A.pause()
     A.zeroRate = getGameTime():getTrueMultiplier() <= 0
     local stopped = A.paused()
     if A.stopped ~= stopped then
+        if stopped then A.epoch = (A.epoch or 0) + 1 end
         A.stopped = stopped
         require("OMHTT/Diagnostics").defer("simulation-pause", {paused=stopped,
             native=GameTime.isGamePaused(), multiplier=getGameTime():getTrueMultiplier()}, "traps")

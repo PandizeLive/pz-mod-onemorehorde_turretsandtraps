@@ -54,6 +54,7 @@ end)
 local contentsByObject = {}
 replace(W,"contents",function(object) return contentsByObject[object] end)
 local requests, applied, pending, acknowledgements = 0, 0, {}, 0
+local productionResolve=Damage.resolve
 replace(Damage,"resolve",function(_,_,_,_,callback,observation)
     requests=requests+1
     check(observation.at<=testMillis and testMillis-observation.at<=250,"C544 damage retains fresh observation")
@@ -243,7 +244,7 @@ report(energyCase,energyCase.x+1,energyCase.y,0)
 local paid={cost=.01}
 energyCase.entry.timeline={{from=testMillis-100,at=testMillis-25,before=350,after=365,energy={[1]=paid}},
     {from=testMillis-25,at=testMillis,before=365,after=370,energy={[1]={cost=.02}}}}
-energyCase.entry.contactFrames={[energyCase.actor]={at=testMillis-100,owner=energyCase.actor.owner,
+energyCase.entry.contactFrames={[energyCase.actor]={id=energyCase.actor:getOnlineID(),player=energyCase.actor:getOwnerPlayer(),epoch=require("OMHTT/ActiveTime").epoch,at=testMillis-100,owner=energyCase.actor.owner,
     outfit=energyCase.actor.outfitId,x=energyCase.x+1,y=energyCase.y,z=0}}
 local reserve=Proc.reserve
 local captured
@@ -330,6 +331,22 @@ for tick=1,40 do
     packetTimes[#packetTimes+1]=realMillis()-began
     drain(false)
 end
+local movingPacketTimes={}
+for tick=41,80 do
+    testMillis=testMillis+100
+    local packet={}
+    for i=1,#crowdActors do
+        local angle=math.rad(i*11+tick*6)
+        local actor=crowdActors[i]
+        packet[i]={id=actor.onlineId,outfit=actor.outfitId,sequence=tick,x=crowd.x+.8*math.cos(angle),
+            y=crowd.y-.8*math.sin(angle),z=0,age=0,observedAt=testMillis-65,prone=false,down=false,landing=false}
+    end
+    local began=realMillis()
+    Reports.command("OMHTT_ContactV1","Observe",crowd.actor.owner,packet)
+    movingPacketTimes[#movingPacketTimes+1]=realMillis()-began
+    drain(false)
+end
+table.sort(movingPacketTimes)
 table.sort(packetTimes)
 for i=1,#crowdActors do Actors.remove(crowdActors[i]) end
 cleanup(crowd)
@@ -337,5 +354,202 @@ testRotaryC544="cases="..cases.." angleCases=144 zeroHitAngles=0 wakeMs=0 motorM
 testRotaryC544=testRotaryC544.." crowdActors=32 packetP95Ms="..packetTimes[38].." packetMaxMs="..packetTimes[40]
 testRotaryC544Cases=table.concat(lines,";")
 print("C544 rotary: "..testRotaryC544)
+do
+local Heads=require("OMHTT/TurretHeads")
+local customType="Base.OMHTTTurretTestRotary"
+replace(Heads.definitions,customType,{key="TestRotary",rotary=true,damage=35,range=3,shove=0,fireSound="BaseballBatHit"})
+local function scenario(kind,radius,a,b,nativeDown,reportedDown)
+    testMillis=testMillis+1000
+    local f=fixture(kind,0,true,12)
+    f.entry.rotaryAt=testMillis
+    f.entry.travel=360
+    f.entry.timeline={}
+    f.state.rotaryManual=testMillis+2000
+    f.state.rotaryMoving=true
+    Rotary.record(f.entry,360,360,0)
+    if nativeDown then f.actor.state="onground" end
+    local function deliver(angle)
+        report(f,f.x+radius*math.cos(math.rad(angle)),f.y-radius*math.sin(math.rad(angle)),0,{down=reportedDown,prone=reportedDown})
+    end
+    deliver(a)
+    local initial=requests
+    testMillis=testMillis+100
+    deliver(b)
+    local result=requests-initial
+    cleanup(f)
+    return result
+end
+local function oracle(radius,a,b)
+    local x0,y0=radius*math.cos(math.rad(a)),radius*math.sin(math.rad(a))
+    local x1,y1=radius*math.cos(math.rad(b)),radius*math.sin(math.rad(b))
+    local crossings=0
+    local previous=y0
+    for n=1,1000 do
+        local t=n/1000
+        local theta=math.rad(20*t)
+        local side=(y0+(y1-y0)*t)*math.cos(theta)-(x0+(x1-x0)*t)*math.sin(theta)
+        if (side>0)~=(previous>0) then crossings=crossings+1 end
+        previous=side
+    end
+    return crossings
+end
+local function clockPhase(kind,offset)
+    testMillis=testMillis+4000
+    local f=fixture(kind,0,true,1)
+    local base=testMillis
+    local tick=base
+    local savedNow=Clock.now
+    Clock.now=function() return tick end
+    f.entry.rotaryAt=base
+    f.entry.travel=360
+    f.entry.timeline={}
+    f.state.rotaryManual=base+7000
+    f.state.rotaryMoving=true
+    Rotary.record(f.entry,360,360,0)
+    local x=f.x+.5*math.cos(math.rad(10))
+    local y=f.y-.5*math.sin(math.rad(10))
+    report(f,x,y,0)
+    local before=requests
+    local uncovered=0
+    for i=1,50 do
+        tick=base+i*100
+        testMillis=tick
+        Automation.tick()
+        testMillis=tick+offset
+        report(f,x,y,65)
+        if Rotary.travelAt(f.entry,testMillis-65)==nil then uncovered=uncovered+1 end
+        drain(false)
+    end
+    tick=tick+100;testMillis=tick;Automation.tick()
+    local delta=f.entry.travel-360
+    local admitted=requests-before
+    Clock.now=savedNow
+    cleanup(f)
+    return admitted,uncovered,delta
+end
+
+local paths=0
+for _,kind in pairs({"RotaryBat","RotaryBlades","TestRotary"}) do
+    for _,radius in pairs({.45,.65,1,1.5}) do
+        for a=-9,35,4 do
+            for b=-9,35,4 do
+                if 2*radius*math.abs(math.sin(math.rad((a-b)/2)))<=.18 then
+                    local hits=scenario(kind,radius,a,b,false,false)
+                    check(hits==oracle(radius,a,b),"C546 moving crossing "..kind.."/"..radius.."/"..a.."/"..b.." hits="..hits)
+                    paths=paths+1
+                end
+            end
+        end
+    end
+    check(scenario(kind,.5,10,10,true,false)==1,"C546 authoritative observed standing "..kind)
+    check(scenario(kind,.5,10,10,false,true)==0,"C546 authoritative observed down "..kind)
+    for _,offset in pairs({15,85}) do
+        local hits=clockPhase(kind,offset)
+        check(hits==6,"C546 early and late reports both produce six hits "..kind.." offset="..offset.." hits="..hits)
+    end
+end
+local S=require("OMHTT/TurretRotarySweep")
+local omni={heading=0,omni=true,cone=360}
+local function countGeometry(profile,first,last,x,y,dx,dy)
+    local seen={}
+    S.crossings(profile,first,last,x,y,dx,dy,function(arm,pass)
+        local key=arm..":"..pass
+        seen[key]=(seen[key] or 0)+1
+    end)
+    local n=0
+    for _,count in pairs(seen) do n=n+count end
+    return n
+end
+check(countGeometry(omni,0,20,.1,.1,-.2,-.2)==1,"C546 pivot traversal hits once")
+local yaw=math.rad(10)
+local ux,uy=math.cos(yaw),math.sin(yaw)
+local vx,vy=.15*ux-math.rad(20)*uy,.15*uy+math.rad(20)*ux
+check(countGeometry(omni,0,20,ux-vx/2,uy-vy/2,vx,vy)==1,"C546 grazing tangent contact")
+check(countGeometry(omni,0,20,ux-vx/2+.01*uy,uy-vy/2-.01*ux,vx,vy)==0,"C546 near tangent outside blade")
+check(countGeometry(omni,0,0,.1,.1,-.2,-.2)==0,"C546 stopped arms never hit")
+local coasting={}
+Rotary.record(coasting,350,350,0)
+testMillis=testMillis+100
+Rotary.record(coasting,350,360,100,.5)
+check(Rotary.travelAt(coasting,testMillis-75)==355 and Rotary.travelAt(coasting,testMillis-25)==360,
+    "C546 history holds the physical angle after reaching a stop between ticks")
+local function deferredCase(reason)
+    testMillis=testMillis+1000
+    local f=fixture("RotaryBlades",0,true,1)
+    local base=testMillis
+    local active=base
+    local previousClock=Clock.now
+    Clock.now=function() return active end
+    f.entry.rotaryAt=base
+    f.entry.travel=350
+    f.entry.timeline={}
+    f.state.rotaryManual=base+5000
+    f.state.rotaryMoving=true
+    Rotary.record(f.entry,350,350,0)
+    local prior=requests
+    report(f,f.x+1,f.y,0)
+    for i=1,2 do
+        testMillis=base+i*100
+        report(f,f.x+1,f.y,0)
+    end
+    check(requests==prior and f.entry.pendingContacts,"C546 two unevaluated reports are retained")
+    if reason=="fallen" then
+        testMillis=testMillis+1
+        report(f,f.x+1,f.y,0,{down=true,prone=true})
+    elseif reason=="handoff" then
+        f.actor.ownerPlayer={getOnlineID=function() return 89 end}
+    elseif reason=="pause" then
+        local activeTime=require("OMHTT/ActiveTime")
+        local pause=GameTime.isGamePaused
+        GameTime.isGamePaused=function() return true end
+        activeTime.pause()
+        GameTime.isGamePaused=pause
+        activeTime.pause()
+    elseif reason=="expired" then
+        testMillis=testMillis+251
+    elseif reason=="power" then
+        f.state.powered=false
+    end
+    testMillis=testMillis+10
+    active=testMillis
+    Automation.tick()
+    local expected=reason=="valid" and 1 or 0
+    check(requests==prior+expected,"C546 buffered "..reason.." expected "..expected.." got "..(requests-prior))
+    Automation.tick()
+    check(requests==prior+expected,"C546 buffered work consumed once")
+    Clock.now=previousClock
+    cleanup(f)
+end
+for _,reason in pairs({"valid","fallen","handoff","pause","expired","power"}) do deferredCase(reason) end
+-- Apply a known strike through the real server damage path to a native-authority test actor.
+for _,kind in pairs({"RotaryBat","RotaryBlades","TestRotary"}) do
+    testMillis=testMillis+1000
+    local f=fixture(kind,0,true,1)
+    f.actor.owner=nil
+    f.entry.rotaryAt=testMillis
+    f.entry.travel=350
+    f.entry.timeline={}
+    f.state.rotaryManual=testMillis+2000
+    f.state.rotaryMoving=true
+    Rotary.record(f.entry,350,350,0)
+    Actors.observe(f.actor)
+    local fake=Damage.resolve
+    Damage.resolve=productionResolve
+    local initial=f.actor:getHealth()
+    testMillis=testMillis+100
+    Actors.observe(f.actor)
+    local expectedLoss=T.cycleConfig(f.contents).damage/100
+    check(math.abs(f.actor:getHealth()-(initial-expectedLoss))<.00001,"C546 "..kind.." actual health delta")
+    Actors.observe(f.actor)
+    check(math.abs(f.actor:getHealth()-(initial-expectedLoss))<.00001,"C546 "..kind.." duplicate cannot deduct twice")
+    Damage.resolve=fake
+    cleanup(f)
+end
+
+check(scenario("TestRotary",2.4,10,10,false,false)==1 and scenario("RotaryBlades",2.4,10,10,false,false)==0,
+    "C546 custom reach is honored by detection and the hitbox")
+check(paths==786,"C546 three-head moving matrix complete")
+testRotaryC544=testRotaryC544.." correctedPaths="..paths.." stationaryPhaseChecks=6 movingPacketP95Ms="..movingPacketTimes[38].." movingPacketMaxMs="..movingPacketTimes[40]
+end
 for i=#saved,1,-1 do local item=saved[i];item.object[item.key]=item.value end
 testMode,testMillis=oldMode,oldMillis

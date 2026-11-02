@@ -194,7 +194,7 @@ for n=1,#families do
             Actors.report(victim,{x=victim:getX(),y=victim:getY(),z=victim:getZ(),at=testMillis})
             local motor={object=object,hits={{},{}},soundAt=testMillis+1000,
                 timeline={{from=testMillis-100,at=testMillis,before=-1,after=1}},
-                contactFrames={[victim]={at=testMillis-100,owner=victim:getOwner(),
+                contactFrames={[victim]={id=victim:getOnlineID(),player=victim:getOwnerPlayer(),epoch=require("OMHTT/ActiveTime").epoch,at=testMillis-100,owner=victim:getOwner(),
                     outfit=require("OMHTT/DefenseCombatProtocol").outfit(victim:getPersistentOutfitID())}}}
             require("OMHTT/TurretRotary").contact(motor,victim,job)
         end

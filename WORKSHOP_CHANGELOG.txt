@@ -1,7 +1,6 @@
-v0.2.71.8
+v0.2.71.9
 
 Development test content
 
-- Improved rotary wakeup and contact damage when multiple turrets are active.
-- Fixed missed rotary strikes with stacked Rapid Fire and reversing firing cones.
-- Kept multiplayer rotary animation tied to the actual motor update time.
+- Fixed missed and extra rotary hits when zombies cross the arms or movement updates arrive between swings.
+- Fixed rotary hits using an outdated standing or fallen state in multiplayer.

@@ -447,6 +447,7 @@ public final class KahluaCheck {
             {"OMHTT/TurretOnceEach", base + "server/OMHTT/TurretOnceEach.lua"},
             {"OMHTT/TurretBallista", base + "server/OMHTT/TurretBallista.lua"},
             {"OMHTT/TurretRotaryContacts", base + "server/OMHTT/TurretRotaryContacts.lua"},
+            {"OMHTT/TurretRotarySweep", base + "server/OMHTT/TurretRotarySweep.lua"},
             {"OMHTT/TurretRotary", base + "server/OMHTT/TurretRotary.lua"},
             {"OMHTT/TurretStandby", base + "server/OMHTT/TurretStandby.lua"},
             {"OMHTT/TurretAutomation", base + "server/OMHTT/TurretAutomation.lua"},

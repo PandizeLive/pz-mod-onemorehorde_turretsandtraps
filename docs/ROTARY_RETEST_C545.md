@@ -41,3 +41,7 @@ On the installed 42.21 build, LuaManager.GlobalObject.Render3DItem calls WorldIt
 For 1A, compare the full supported interval of motor travel and validated target movement, even if intermediate evaluations were skipped. Handle each distinct arm pass within that interval once. If movement or posture history has a gap large enough to make the crossing unknowable, resume from a fresh observation. Stationary endpoints alone cannot prove a zombie stayed still in between. Verify short gaps, expiry, duplicated reports and ownership handoffs against health changes. Live data loss precludes guaranteeing every visible crossing.
 
 The client simulating a zombie already reports its position and stance and applies server-requested damage. That client could also present a predicted impact or report a candidate contact if connected tests establish a need. Its view of the motor can lag. Giving it final say would also let a modified client claim or suppress hits, affecting kills, XP and Horde rules. Keep final contact acceptance with the server for the proposed repair. Client contact hints are a separate fallback, pending a measured need.
+
+## November 2 decision
+
+The owner selected 1A after confirming shared coverage for the Bat, Blades and custom two-arm rotary heads. The implementation and test results are in [0.2.71.9](TEST_v0.2.71.9.md).
