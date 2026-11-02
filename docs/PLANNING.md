@@ -1,6 +1,6 @@
 # Planning
 
-**C551 / 0.2.71.11 multiplayer test build.** Owner selected C550 option 1A to package paired damage receipts and the indexed Spike Barrier lookup. The six promoted combat files match the tested candidate. [Release verification and two-player checklist](TEST_v0.2.71.11.md). Connected acceptance is pending.
+**C551 / 0.2.71.11 multiplayer test build.** Owner selected C550 option 1A to package paired damage receipts and the indexed Spike Barrier lookup. The six promoted combat files match the tested candidate. [Release verification and two-player checklist](TEST_v0.2.71.11.md). Connected acceptance is pending. Installed and staged from `test/v0.2.71.11` at `b3a1efe7`. All 642 tagged package files matched the ZIP, local install and Workshop stage. [Delivery record](evidence/c551-delivery.json). **Test now** after CMD option 3 and restarting the server and both clients.
 
 **C550 / Paired-hit multiplayer prototype.** Owner selected C549 option 1A. The barrier lookup and two-hit receipt candidate passed the fault suite and eight-rotary regression. [Comparison with 0.2.71.10 and promotion choices](PAIRED_RECEIPTS_C550.md). Prototype only. **Decision needed** on packaging a connected test build.
 

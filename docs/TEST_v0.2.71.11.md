@@ -13,6 +13,8 @@ Each mixed-base replay used 100 moving zombies, 14 turrets, 90 traps and Tack fi
 
 The release validator passed 51,974 assertions and verified 466 source files and 642 generated package files. Native dedicated save and fresh-process reload passed. Traps alone, Turrets alone and both entries together started with the exact version and shut down cleanly with zero connected players.
 
+The tag, ZIP, installed packages and Workshop stage matched for all 642 packaged files. The publisher preflight passed for the unlisted item. [Delivery record](evidence/c551-delivery.json).
+
 ## Two-player check
 
 Use the existing T&T test world. After the unlisted Workshop upload, restart the server and both clients with 0.2.71.11. Both clients need the paired-hit protocol.
