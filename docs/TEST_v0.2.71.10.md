@@ -25,3 +25,5 @@ In the eight-turret call-count capture, profile builds fell from 64,320 to 1,920
 
 - Overlapping turrets firing into one crowd
 - Poke Floor and Concertina Wire under turret fire
+
+Installed and staged from test/v0.2.71.10 at 654349c0. All 642 packaged files match the tagged build, installation, ZIP and Workshop stage. [Delivery](evidence/c548-delivery.json). **Test now when available** after uploading and restarting the server and clients. The existing test world is compatible.
