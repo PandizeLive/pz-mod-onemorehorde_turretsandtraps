@@ -23,3 +23,9 @@ The earlier C544 check looked at many angles with evenly timed snapshots. Its mo
 A patch should pass the stationary phase pair, sideways misses and false hits, stance disagreement, both rotation directions and arms, cone reversals, packet loss and stacked speeds. Compare the geometry with an independent reference and check the actual health transaction separately. A connected retest still determines what the player sees.
 
 **1B.** Capture one isolated run with Turret Detailed Logging before changing gameplay. Existing traces identify admitted hits and motor snapshots but cannot identify every skipped interval. This can narrow live attribution while leaving both reproduced contact failures in the current build.
+
+## Simpler implementation to try first (November 2)
+
+The owner asked whether the repair overcomplicates rotary combat. Keep the physical pass rule and server damage transaction. Each motor advance can consume nearby targets' validated movement and stance over the time the motor covers. An early observation stays available for the next advance. Try the target's change of side relative to the turning arm as the crossing test. Split at reversals and distinct arm passes and consume each crossing once.
+
+An independent endpoint side-change calculation matched all 262 short straight paths against the 0.1 ms reference. Testing only the latest target position against the swept sector missed 22 crossings and added 22. These cases cover one short forward sweep. Before packaging, check both stationary packet timings, pivot crossings, grazing contacts, reversals, stacked speeds, posture changes and actual health deductions. A periodic area attack could hit while both arms face elsewhere. This proposed simplification of 1A awaits the owner's choice.
