@@ -19,3 +19,7 @@ After uploading 0.2.71.8, restart server and clients. Keep the current world.
 - Stop, power-off and pause/resume
 
 General zombie sliding during multiplayer pause remains separate from this repair.
+
+## November 2 connected retest
+
+**C545 / Rotary Blades failed connected acceptance on 0.2.71.8 (2026-11-02).** All 36 admitted rotary hits applied. The released code misses sideways crossings and can discard a stationary target's entire pass when observations arrive ahead of motor history. A separate replay confirms disagreement between reported and native stance. Turret detailed logging was off, so individual live misses cannot be attributed. [Connected findings and corrective choices](ROTARY_RETEST_C545.md). Recommend **1A** to correct the shared contact calculation and cover both packet phases. **Decision needed.** The unlisted 0.2.71.8 upload is confirmed in the publisher receipt.
