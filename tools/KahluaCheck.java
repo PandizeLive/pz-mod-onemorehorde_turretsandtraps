@@ -733,7 +733,8 @@ public final class KahluaCheck {
             Path audit = root.resolve(args[1]);
             try (Reader reader = Files.newBufferedReader(audit)) {
                 Object chunk = compile.invoke(null, reader, audit.toString(), env);
-                call.invoke(thread, chunk, new Object[0]);
+                Object[] result = (Object[])threadType.getMethod("pcall", Object.class, Object[].class).invoke(thread, chunk, new Object[0]);
+                if (!Boolean.TRUE.equals(result[0])) throw new IllegalStateException(java.util.Arrays.toString(result));
             }
             System.out.println("Optional audit: " + get.invoke(env, "testPackAudit"));
         }

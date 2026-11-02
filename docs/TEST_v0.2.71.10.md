@@ -1,5 +1,7 @@
 # Shared damage queue verification for 0.2.71.10
 
+C549 extends this verification to 100 zombies, 14 turrets, 90 traps and Tack fields, and two linked pressure plates. [Mixed-base stress results](MIXED_BASE_C549.md). High-latency contact expiry is reproducible.
+
 The owner selected C547 option 1A and requested a mixed stress test and a review against Alex's guidelines. Three pairs of independent JVM runs compared the released damage and rotary code with the candidate. Each measured window lasted 12 simulated seconds with 32 continuously moving, standing zombies and one normal damage queue update per 100 ms server tick. Bat/Blades and other head/module checks run in the regular suite. The crowded configuration uses Rotary Blades with Enhanced Firing, Enhanced Detection and 360.
 
 | Scene | Previous rotary hits applied | New rotary applied / expected | New trap applied / attempted | Previous server p95 (ms) | New server p95 (ms) |
