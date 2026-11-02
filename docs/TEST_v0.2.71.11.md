@@ -1,5 +1,7 @@
 # 0.2.71.11 two-player test build
 
+[C552 live retest](HORDE_MANAGER_C552.md) records 45 rotary hits applied and displayed, plus the independent Horde Manager spawn-delivery check. Full two-player visual acceptance is still open.
+
 The six promoted Lua files match the verified [C550 prototype](PAIRED_RECEIPTS_C550.md) byte for byte. The release runner reads the current Source tree directly and clears the prototype override. Run `python tools/check_paired_receipts_c550.py --release` to reproduce the focused, rotary and mixed-base checks.
 
 The 200 focused assertions passed, including independent expiry, replay, lost acknowledgements, owner handoff, native death, XP and Horde finishing-blow credit. The earlier eight-rotary regression applied all 3,424 expected hits. At six rotaries plus Concertina, all 2,543 rotary hits and 188 wire hits applied.
