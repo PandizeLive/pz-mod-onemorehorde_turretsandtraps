@@ -1,6 +1,7 @@
-v0.2.71.9
+v0.2.71.10
 
 Development test content
 
 - Fixed missed and extra rotary hits when zombies cross the arms or movement updates arrive between swings.
 - Fixed rotary hits using an outdated standing or fallen state in multiplayer.
+- Fixed multiplayer damage stalling when several turrets and traps hit the same crowd.

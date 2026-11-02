@@ -29,3 +29,5 @@ Pass the project root and [rotary_crowd_c547.lua](../tools/tests/rotary_crowd_c5
 **1A (recommended).** Repair multiplayer damage scheduling. Prioritize ready victims, preserve ordered single application per victim, and keep expired work and retries from crowding out fresh hits. Verify against these per-turret and health totals, test mixed traps and turrets, and remeasure processing time before packaging.
 
 **1B.** Keep the current candidate for the planned connected test and defer the queue repair. The live retest still matters for what the player sees and how often a real base reaches this load.
+
+The owner approved 1A. The [C548 mixed-base retest](TEST_v0.2.71.10.md) records the implemented correction.

@@ -168,6 +168,64 @@ if __modules["OMHTT/Damage"] then
  damage.resolve(server,.1,"turret-rotary-queue","rotary",function(loss) staleLoss=loss end,{at=testMillis-200})
  testMillis=testMillis+301;receiveClient();receiveServer();damage.tick()
  check(staleLoss==0 and #outbound==0,"C528 rotary queue cannot renew an expired observation")
+ -- Keep an expired trap behind a valid firearm from using up a busy victim's backlog.
+ server,client=pair()
+ local notices={}
+ local function completion(label)
+  return function(loss,reason)
+   notices[#notices+1]=label..":"..reason
+   if label=="old-trap" then
+    check(damage.resolve(server,.1,"replacement","firearm",completion("replacement")),"reentrant fresh job admitted")
+   end
+  end
+ end
+ damage.resolve(server,.1,"active","firearm",completion("active"))
+ damage.resolve(server,.1,"ahead","firearm",completion("ahead"))
+ damage.resolve(server,.1,"old-trap","barbs",completion("old-trap"))
+ testMillis=testMillis+501
+ damage.tick()
+ check(#outbound==1 and #notices==1 and notices[1]=="old-trap:cancelled","expired trap retired behind a valid busy head exactly once")
+ receiveClient();receiveServer()
+ damage.tick();receiveClient();receiveServer()
+ damage.tick();receiveClient();receiveServer()
+ check(table.concat(notices,",")=="old-trap:cancelled,active:applied,ahead:applied,replacement:applied",
+  "per-victim FIFO survives cancellation callback reentry")
+ check(math.abs(server.health-.7)<.00001 and math.abs(client.health-.7)<.00001,"retired work cannot mutate either health record")
+ -- A burst may still fill the eight waiting slots; all admitted callbacks must settle once.
+ server,client=pair()
+ local hits,denials=0,0
+ local function result(loss,reason)
+  if loss>0 then hits=hits+1 elseif reason=="unavailable" then denials=denials+1 end
+ end
+ for i=1,9 do check(damage.resolve(server,.01,"burst","firearm",result),"active plus eight admitted") end
+ check(not damage.resolve(server,.01,"excess","firearm",result) and denials==1,"bounded victim capacity rejects once")
+ for i=1,9 do receiveClient();receiveServer();damage.tick() end
+ check(hits==9 and denials==1 and #outbound==0 and math.abs(server.health-.91)<.00001,"full queue drains once in order")
+ -- Verify the real FIFO uses both budgets and resumes from the next victim.
+ local originalRequest=damage.request
+ local pending,served={},{}
+ local slow=false
+ damage.request=function(z,amount,source,kind,callback)
+  if source=="held" then pending[#pending+1]=callback;return true end
+  served[#served+1]=z.id
+  if slow then testMillis=testMillis+3 end
+  callback(amount,"applied")
+  return true
+ end
+ for i=1,40 do
+  local z=actor(22000+i)
+  damage.resolve(z,.01,"held","firearm")
+  damage.resolve(z,.01,"fifo","firearm")
+ end
+ for i=1,#pending do pending[i](.01,"applied") end
+ slow=true;damage.tick()
+ check(#served==1,"queue yields after a costly victim")
+ slow=false;damage.tick()
+ check(#served==33,"queue bounds starts even on a fast tick")
+ damage.tick()
+ for i=1,40 do check(served[i]==22000+i,"queue resumes in fair victim order") end
+ check(#served==40,"each ready victim dispatched exactly once")
+ damage.request=originalRequest
 end
 
 local held={}

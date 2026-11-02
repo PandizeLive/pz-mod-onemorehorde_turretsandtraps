@@ -13,14 +13,17 @@ local Active = require("OMHTT/ActiveTime")
 local Sweep = require("OMHTT/TurretRotarySweep")
 local Diagnostics = require("OMHTT/Diagnostics")
 local Protocol = require("OMHTT/DefenseCombatProtocol")
+local Combat = require("OMHTT/PrototypeCombat")
+local Policy = require("OMHTT/ControlCombat")
+local ActorState = require("OMHTT/DefenseActorState")
 local R = {}
 
 ---@param entry table Motor owner
 ---@param before number Previous travel
 ---@param after number Current travel
 ---@param elapsed number Active milliseconds advanced
----@return nil
 ---@param movingFraction number? Portion of this interval before reaching a stop
+---@return nil
 function R.record(entry, before, after, elapsed, movingFraction)
     local now = GameTime.getServerTimeMills()
     entry.timeline = entry.timeline or {}
@@ -79,7 +82,7 @@ end
 ---@return nil
 function R.injure(player, blades, now, object)
     require("OMHTT/TurretPlayerHit").hit(player,
-        {playerSource = require("OMHTT/ControlCombat").source(object)}, blades and "RotaryBlades" or "RotaryBat")
+        {playerSource = Policy.source(object)}, blades and "RotaryBlades" or "RotaryBat")
 end
 
 ---@param actor IsoGameCharacter Candidate
@@ -91,12 +94,14 @@ function R.standing(actor, position)
         if not position and isServer() and actor:getOwner() then
             local node = Actors.nodes[actor]
             local report = node and node.report
-            if report and Actors.confirmed(actor) then position = report.frame end
+            if report and Actors.confirmed(actor) then
+                position = report.frame
+            end
         end
         if position and position.ownerReport and type(position.down) == "boolean" then
             return not position.down and not position.prone
         end
-        local _, down = require("OMHTT/DefenseActorState").stance(actor)
+        local _, down = ActorState.stance(actor)
         return not down
     end
     return instanceof(actor, "IsoPlayer") and not actor:isOnFloor()
@@ -105,9 +110,14 @@ end
 
 ---@param entry table Motor and outstanding intervals
 ---@param actor IsoGameCharacter Observed actor
+---@return nil
 local function forget(entry, actor)
-    if entry.contactFrames then entry.contactFrames[actor] = nil end
-    if entry.pendingContacts then entry.pendingContacts[actor] = nil end
+    if entry.contactFrames then
+        entry.contactFrames[actor] = nil
+    end
+    if entry.pendingContacts then
+        entry.pendingContacts[actor] = nil
+    end
 end
 
 ---@param entry table Motor with synchronized history
@@ -115,6 +125,7 @@ end
 ---@param job table Contact profile and module stats
 ---@param old table Previous standing observation
 ---@param frame table Current standing observation
+---@return nil
 local function consume(entry, actor, job, old, frame)
     local origin = entry.object:getSquare()
     local startX, startY = old.x or frame.x, old.y or frame.y
@@ -122,10 +133,14 @@ local function consume(entry, actor, job, old, frame)
     local duration = frame.at-old.at
     local history = entry.timeline
     local i = #history
-    while i > 1 and history[i-1].at > old.at do i = i-1 end
+    while i > 1 and history[i - 1].at > old.at do
+        i = i - 1
+    end
     for n = i, #history do
         local motor = history[n]
-        if motor.from >= frame.at then break end
+        if motor.from >= frame.at then
+            break
+        end
         local a, b = math.max(old.at,motor.from), math.min(frame.at,motor.at)
         if b > a and motor.after > motor.before then
             local speed = (motor.after-motor.before)/(motor.at-motor.from)
@@ -140,7 +155,7 @@ local function consume(entry, actor, job, old, frame)
                 if east*east+north*north > job.profile.range^2 then return end
                 local hitX, hitY = origin:getX()+.5+east, origin:getY()+.5-north
                 local square = getCell():getGridSquare(math.floor(hitX), math.floor(hitY), frame.z)
-                if not square or not require("OMHTT/PrototypeCombat").clearLane(origin,square,job.profile.range) then return end
+                if not square or not Combat.clearLane(origin,square,job.profile.range) then return end
                 if instanceof(actor,"IsoZombie") then
                     R.hit(entry,actor,job,arm,pass,travel,hitX,hitY,square,frame.at,first,last,frame,old)
                 else
@@ -154,6 +169,7 @@ end
 
 ---@param entry table Motor with newly recorded travel
 ---@param now number Current synchronized time
+---@return nil
 local function flush(entry, now)
     if not entry.pendingContacts then return end
     local waiting = false
@@ -177,20 +193,33 @@ local function flush(entry, now)
                 queue[keep] = item
             end
         end
-        for i = #queue, keep+1, -1 do queue[i] = nil end
-        if keep == 0 then entry.pendingContacts[actor] = nil end
+        for i = #queue, keep + 1, -1 do
+            queue[i] = nil
+        end
+        if keep == 0 then
+            entry.pendingContacts[actor] = nil
+        end
     end
-    if not waiting then entry.pendingContacts = nil end
+    if not waiting then
+        entry.pendingContacts = nil
+    end
 end
 
 ---@param entry table Motor owner
 ---@param actor IsoGameCharacter Observed candidate
 ---@param job table Resolved sweep and timestamp
+---@return nil
 function R.contact(entry, actor, job)
     if Active.paused() or not entry.timeline then return end
-    if not R.standing(actor,job.position) then forget(entry,actor); return end
+    if job.standing == false or (job.standing == nil and not R.standing(actor, job.position)) then
+        forget(entry, actor)
+        return
+    end
     local zombie = instanceof(actor,"IsoZombie")
-    if zombie and not Horde.allowed(actor) then forget(entry,actor); return end
+    if zombie and not Horde.allowed(actor) then
+        forget(entry, actor)
+        return
+    end
     local x,y,z,current,at = Actors.position(actor)
     if not current or z ~= entry.object:getSquare():getZ() or not T.isOn(T.state(entry.object)) then
         forget(entry,actor)
@@ -258,7 +287,7 @@ function R.hit(entry, actor, job, arm, pass, crossing, hitX, hitY, square, obser
             break
         end
     end
-    local proc = {playerSource = require("OMHTT/ControlCombat").source(entry.object), stats = job.stats, siphon = energy}
+    local proc = {playerSource = Policy.source(entry.object), stats = job.stats, siphon = energy}
     Proc.reserve(proc)
     local hits = entry.hits
     local previousPass = hits[arm][actor]
@@ -270,12 +299,12 @@ function R.hit(entry, actor, job, arm, pass, crossing, hitX, hitY, square, obser
     amount = Conditional.damage(actor, amount, Conditional.snapshot(actor, job.stats))
     local source = T.state(entry.object).id
     local observation = {at = observedAt or GameTime.getServerTimeMills()}
-    require("OMHTT/Diagnostics").defer("rotary-hit", {id=source, victim=actor:getOnlineID(), observedAt=observation.at,
+    Diagnostics.defer("rotary-hit", {id=source, victim=actor:getOnlineID(), observedAt=observation.at,
         observationAgeMs=GameTime.getServerTimeMills()-observation.at, sweepAgeMs=Clock.now()-job.at,
         before=before, after=after, arm=arm, pass=pass, x=hitX, y=hitY}, "turrets")
-    Damage.resolve(actor, amount, source, "rotary", function(lost)
+    Damage.resolve(actor, amount, source, "rotary", function(lost, reason)
         if lost > 0 then
-            require("OMHTT/Diagnostics").count("rotary-applied", 1, "turrets")
+            Diagnostics.count("rotary-applied", 1, "turrets")
             Proc.hit(actor, true, hitX, hitY, square:getZ(), {id = source}, nil, proc)
             Conditional.impact(actor, origin, {source = source, impactReady = true, stats = {impact = job.stats.knockdown}})
             if getTimestampMs() >= (entry.soundAt or 0) then
@@ -288,11 +317,12 @@ function R.hit(entry, actor, job, arm, pass, crossing, hitX, hitY, square, obser
                 require("OMHTT/DefenseEffects").emit("Click", {sound = sound, x = origin:getX() + .5, y = origin:getY() + .5, z = origin:getZ(), gain = job.stats.hearingMultiplier})
             end
         else
-            require("OMHTT/Diagnostics").count("rotary-rejected", 1, "turrets")
-            if hits[arm][actor] == pass then
+            Diagnostics.count("rotary-rejected", 1, "turrets")
+            local retryable = reason == nil or reason == "rejected"
+            if retryable and hits[arm][actor] == pass then
                 hits[arm][actor] = previousPass
             end
-            if frame and entry.contactFrames and entry.hits == hits and entry.contactFrames[actor] == frame then
+            if retryable and frame and entry.contactFrames and entry.hits == hits and entry.contactFrames[actor] == frame then
                 entry.contactFrames[actor] = oldFrame
             end
         end
@@ -301,9 +331,27 @@ function R.hit(entry, actor, job, arm, pass, crossing, hitX, hitY, square, obser
 
 end
 
+---@param entry table Rotary motor
+---@param now number Active clock
+---@param state table Turret settings
+---@param contents table Resolved inventory
+---@param stats table Current head stats
+---@return nil
+local function profiles(entry, now, state, contents, stats)
+    local heading = M.heading(state)
+    if entry.profilesAt == now and entry.profilesStats == stats and entry.detection.heading == heading
+        and entry.profilesRange == state.engagementRange then return end
+    entry.profilesAt = now
+    entry.profilesStats = stats
+    entry.profilesRange = state.engagementRange
+    entry.detection = M.profile(state, contents, true, stats)
+    entry.sweepProfile = M.profile(state, contents, false, stats)
+end
+
 ---@param entry table Scheduler entry
+---@param validated IsoGameCharacter? Target just confirmed by this observation
 ---@return boolean retained
-function R.step(entry)
+function R.step(entry, validated)
     if Active.paused() then return true end
     local W = require("OMHTT/TurretWorld")
     local object, now = entry.object, Clock.now()
@@ -341,16 +389,17 @@ function R.step(entry)
         entry.timeline,entry.contactFrames,entry.pendingContacts = {},nil,nil
         return true
     end
-    local profile = M.profile(state, contents, true, stats)
+    profiles(entry, now, state, contents, stats)
+    local profile = entry.detection
     local automatic = M.detects(state, contents) and contents.active.Firing and not require("OMHTT/ControlCycle").managed(object)
     local manual = state.rotaryManual and now < state.rotaryManual
     local standby = require("OMHTT/TurretStandby")
-    if entry.detectedTarget and (not R.standing(entry.detectedTarget) or not Actors.confirmed(entry.detectedTarget)
-        or not standby.valid(object, entry.detectedTarget, contents)) then
+    if entry.detectedTarget and entry.detectedTarget ~= validated and (not R.standing(entry.detectedTarget)
+        or not standby.valid(object, entry.detectedTarget, contents, profile)) then
         entry.detectedTarget = nil
     end
     entry.hasTarget = entry.detectedTarget ~= nil
-    local ready = standby.step(object, contents, entry.detectedTarget, state.rotaryMoving == true)
+    local ready = standby.step(object, contents, entry.detectedTarget, state.rotaryMoving == true, entry.hasTarget, stats)
     local wants = manual or (automatic and entry.hasTarget and ready)
     local wasMoving = state.rotaryMoving == true
     local moving = wasMoving
@@ -382,7 +431,9 @@ function R.step(entry)
         if entry.stopAt then
             local requested = travel
             travel = math.min(travel, math.max(0, entry.stopAt - before))
-            if requested > 0 then movingFraction = travel/requested end
+            if requested > 0 then
+                movingFraction = travel / requested
+            end
         end
         local seconds = travel / stats.motorSpeed
         local hours = gameHours
@@ -423,7 +474,9 @@ function R.step(entry)
     if elapsed > 0 or not moving or not entry.timeline or not entry.timeline[1] or not wasMoving then
         R.record(entry,before,entry.travel,elapsed,movingFraction)
     end
-    if entry.timeline and #entry.timeline > 0 then flush(entry,GameTime.getServerTimeMills()) end
+    if entry.timeline and #entry.timeline > 0 then
+        flush(entry,GameTime.getServerTimeMills())
+    end
     state.rotaryTravel = entry.travel
     state.aimAt = entry.timeline[#entry.timeline].at
     state.rotarySpeed, state.rotaryStopAt = stats.motorSpeed, entry.stopAt
@@ -457,28 +510,34 @@ function R.observe(entry, actor, position, previous, ownerReport)
         forget(entry,actor)
         return
     end
-    if (previous and (previous.z ~= position.z or previous.down or previous.prone)) or not R.standing(actor,position) then
+    local standing = R.standing(actor, position)
+    if (previous and (previous.z ~= position.z or previous.down or previous.prone)) or not standing then
         forget(entry,actor)
     end
-    local detection = M.profile(state, contents, true, stats)
+    local now = Clock.now()
+    profiles(entry, now, state, contents, stats)
     local target = entry.detectedTarget
-    if R.standing(actor,position) and require("OMHTT/ControlCombat").eligible(object, actor)
-        and M.inside(origin, actor, detection, position.x, position.y)
-        and require("OMHTT/PrototypeCombat").clearLane(origin, Actors.square(actor), stats.range) then
-        entry.detectedTarget = actor
-        if not target then
-            require("OMHTT/Diagnostics").defer("rotary-target-observed", {id=state.id, victim=actor:getOnlineID(),
-                observedAt=position.at, receivedAt=GameTime.getServerTimeMills()}, "turrets")
+    local validated
+    if not target or target == actor or entry.detectionAt ~= now then
+        if standing and Policy.eligible(object, actor)
+            and M.inside(origin, actor, entry.detection, position.x, position.y)
+            and Combat.clearLane(origin, Actors.square(actor), stats.range) then
+            validated = actor
+            entry.detectedTarget = actor
+            entry.detectionAt = now
+            if not target then
+                Diagnostics.defer("rotary-target-observed", {id=state.id, victim=actor:getOnlineID(),
+                    observedAt=position.at, receivedAt=GameTime.getServerTimeMills()}, "turrets")
+            end
+        elseif target == actor then
+            entry.detectedTarget = nil
         end
-    elseif target == actor then
-        entry.detectedTarget = nil
     end
-    if entry.rotaryAt ~= Clock.now() or (not target and entry.detectedTarget) or (target and not entry.detectedTarget) then
-        R.step(entry)
+    if entry.rotaryAt ~= now or (not target and entry.detectedTarget) or (target and not entry.detectedTarget) then
+        R.step(entry, validated)
     end
     if not entry.timeline then return end
-    R.contact(entry, actor, {at = Clock.now(), profile = M.profile(state, contents, false, stats),
-        stats = stats,
+    R.contact(entry, actor, {at = now, profile = entry.sweepProfile, stats = stats, standing = standing,
         position = ownerReport and position or nil, observedAt = ownerReport and position.at or GameTime.getServerTimeMills()})
 end
 

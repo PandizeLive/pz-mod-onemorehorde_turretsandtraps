@@ -1,5 +1,7 @@
 # Planning
 
+**C548 / Shared damage queue repaired in 0.2.71.10.** Owner approved C547 option 1A. All 3,424 expected hits applied in the eight-head replay. Mixed Poke delivered all hits. Two rotary contacts expired in the mixed wire case, matching the independent FIFO limit. [Results and Alex guideline review](TEST_v0.2.71.10.md). Connected acceptance is pending.
+
 **C547 / Crowded rotary base benchmark, 0.2.71.9.** Owner selected 1B. Three runs with 32 moving zombies matched all geometric crossings at 1, 2, 4, 6 and 8 turrets. The real damage transaction delivered every hit through four turrets, 35 of 2,543 at six and zero of 3,424 at eight during the measured window. Giving the queue more service in a diagnostic control restored all 3,424. [Results and proposed repair](ROTARY_CROWD_C547.md). Connected testing is still deferred. **Decision needed.**
 
 **While the 0.2.71.9 connected retest is deferred (November 2).** The owner is currently unable to test. The candidate remains available for the same multiplayer retest. Three optional tracks are open for selection.

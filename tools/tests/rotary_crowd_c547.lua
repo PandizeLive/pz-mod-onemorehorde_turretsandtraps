@@ -11,7 +11,6 @@ local Index = require("OMHTT/TurretRotaryContacts")
 local Standby = require("OMHTT/TurretStandby")
 local Clock = require("OMHTT/TurretClock")
 local World = require("OMHTT/TurretWorld")
-local T = require("OMHTT/Turret")
 local originalResolve, originalRequest = Damage.resolve, Damage.request
 local diagnostics = require("OMHTT/Diagnostics")
 local originalMeasure = diagnostics.measure
@@ -60,7 +59,38 @@ local function point(id,tick)
     local radius = .31 + (id%7)*.035
     return radius*math.cos(angle), radius*math.sin(angle)
 end
-local function run(count,transport,servicePasses)
+local function hazardFixture(kind, square)
+    local watch = require("OMHTT/DefenseContacts")
+    local key = require("OMHTT/Foundation").key(square:getX(), square:getY(), 0)
+    local record = {id="control-c548-"..kind, kind=kind, x=square:getX(), y=square:getY(), z=0}
+    if kind == "Poke" then
+        local poke = require("OMHTT/ControlPoke")
+        local control = require("OMHTT/ControlWorld")
+        local priorState, priorVisual = control.state, poke.visual
+        local obj = {health=200,getObjectIndex=function() return 0 end,getSquare=function() return square end,
+            getHealth=function(o) return o.health end,setHealth=function(o,h) o.health=h end,sync=noop}
+        control.state = function(o) if o==obj then return record end; return priorState(o) end
+        poke.visual = noop
+        poke.register(obj,record)
+        return function(t) poke.time=t end, function()
+            watch.remove(obj)
+            poke.entries[obj],poke.objects[key]=nil,nil
+            control.state,poke.visual=priorState,priorVisual
+        end
+    end
+    local barbs = require("OMHTT/BarbSections")
+    local prior = {barbs.order,barbs.nodes,barbs.nearby,barbs.resolve,barbs.publishWire}
+    local attachment = {health=10000}
+    barbs.order,barbs.nodes,barbs.nearby={record.id},{[record.id]={record=record}},{[key]={[record.id]=true}}
+    barbs.resolve=function() return square,square,attachment,"active" end
+    barbs.publishWire=noop
+    watch.watch(record,"barb",record.x,record.y,record.x,record.y,0)
+    return function(t) barbs.time=t end, function()
+        watch.remove(record)
+        barbs.order,barbs.nodes,barbs.nearby,barbs.resolve,barbs.publishWire=prior[1],prior[2],prior[3],prior[4],prior[5]
+    end
+end
+local function run(count,transport,servicePasses,hazard,wallBudget)
     servicePasses = servicePasses or 1
     serial=serial+1
     local base=94000000+serial*100000
@@ -91,6 +121,9 @@ local function run(count,transport,servicePasses)
         sourceMap[name]=n
     end
     local center=getCell():getGridSquare(x,y,0)
+    local trapTime, removeTrap = noop, noop
+    local trapAttempts, trapApplied, trapHealth = 0,0,{}
+    if hazard then trapTime,removeTrap=hazardFixture(hazard,center) end
     for i=1,32 do
         local id=12000+serial*40+i
         local function actor()
@@ -116,7 +149,28 @@ local function run(count,transport,servicePasses)
         if measured and expires and expires<GameTime.getServerTimeMills() then expiredDispatch=expiredDispatch+1 end
         return originalRequest(z,amount,source,kind,callback,expires,observation)
     end
+    local nextFree,lateRotary,lateTrap={},0,0
     Damage.resolve=function(z,amount,source,kind,callback,obs)
+        -- Ideal FIFO with unlimited global capacity, a single receipt per victim and the same network timings.
+        local firstSend=math.max(testMillis,nextFree[z] or testMillis)
+        local limit=testMillis+500
+        if kind=="rotary" then limit=obs.at+500 end
+        if firstSend+50<=limit then
+            nextFree[z]=firstSend+100
+        elseif measured then
+            if kind=="rotary" then lateRotary=lateRotary+1 else lateTrap=lateTrap+1 end
+        end
+        if hazard and (kind=="barbs" or kind=="poke-floor") then
+            local during=measured
+            if during then trapAttempts=trapAttempts+1 end
+            return originalResolve(z,amount,source,kind,function(loss,reason)
+                if loss>0 then
+                    trapHealth[z]=(trapHealth[z] or 0)+loss
+                    if during then trapApplied=trapApplied+1 end
+                end
+                callback(loss,reason)
+            end,obs)
+        end
         local n=sourceMap[source]
         check(n and slot[z] and kind=="rotary" and math.abs(amount-.4)<1e-7,"unexpected rotary damage source or amount")
         local key=n*100+slot[z]
@@ -147,7 +201,13 @@ local function run(count,transport,servicePasses)
     local function replies()
         for i=1,#incoming do Server.command(Protocol.MODULE,incoming[i][1],owner,incoming[i][2]) end
         incoming={}
+        local savedClock=getTimestampMs
+        if wallBudget then
+            local began=realMillis()
+            getTimestampMs=function() return testMillis+math.floor(realMillis()-began) end
+        end
         for pass=1,servicePasses do Damage.tick() end
+        getTimestampMs=savedClock
         Server.tick()
     end
     local function deliver()
@@ -173,6 +233,7 @@ local function run(count,transport,servicePasses)
             frames[i]={id=actors[i].onlineId,outfit=actors[i].outfitId,x=xx,y=yy,z=0,
                 age=0,observedAt=testMillis-65,sequence=tick+1,prone=false,down=false,landing=false}
         end
+        trapTime(testMillis)
         local started=realMillis()
         if transport then replies() end
         local packetStart=realMillis()
@@ -229,18 +290,25 @@ local function run(count,transport,servicePasses)
     check(successes+rejected==attempts and #incoming==0 and #outgoing==0,"unsettled attempts")
     for i=1,32 do
         if transport then
-            local hp=1000-succeededByActor[actors[i]]*.4
+            local hp=1000-succeededByActor[actors[i]]*.4-(trapHealth[actors[i]] or 0)
             check(math.abs(actors[i].health-hp)<1e-6 and math.abs(clients[i].health-hp)<1e-6,"end health")
         end
         Actors.remove(actors[i])
     end
+    removeTrap()
+    if hazard then
+        check(trapAttempts>0,"mixed scenario must activate its trap")
+    end
     table.sort(reasonText)
-    rows[#rows+1]=table.concat({transport and (servicePasses==1 and "wire" or "wire4x") or "contact",count,expected,attempts,successes,missed,extra,
+    rows[#rows+1]=table.concat({(wallBudget and "wallBudget") or (hazard and "mixed-"..hazard) or transport and (servicePasses==1 and "wire" or "wire4x") or "contact",count,expected,attempts,successes,missed,extra,
         q(packets,.5),q(packets,.95),q(packets,1),q(serverTimes,.95),table.concat(byDevice,","),table.concat(reasonText,","),expiredDispatch,failedImmediately,maxOutstanding,
-        #queueMs>0 and q(queueMs,.95) or 0,wireSends,warmSuccess},"|")
+        #queueMs>0 and q(queueMs,.95) or 0,wireSends,warmSuccess,trapAttempts,trapApplied,lateRotary,lateTrap},"|")
 end
 for _,transport in pairs({false,true}) do
     for _,count in pairs({1,2,4,6,8}) do run(count,transport) end
 end
 run(8,true,4)
+run(6,true,1,"Poke")
+run(6,true,1,"wire")
+run(8,true,1,nil,true)
 testPackAudit="C547\n"..table.concat(rows,"\n").."\nEND C547"

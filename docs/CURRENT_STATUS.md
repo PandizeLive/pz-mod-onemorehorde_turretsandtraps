@@ -1,5 +1,7 @@
 # Current development and planning handoff
 
+**C548 / Shared damage queue repaired in 0.2.71.10.** Owner approved C547 option 1A. All 3,424 expected hits applied in the eight-head replay. Mixed Poke delivered all hits. Two rotary contacts expired in the mixed wire case, matching the independent FIFO limit. [Results and Alex guideline review](TEST_v0.2.71.10.md). Connected acceptance is pending.
+
 **C547 / Crowded rotary base benchmark, 0.2.71.9.** Owner selected 1B. Three runs with 32 moving zombies matched all geometric crossings at 1, 2, 4, 6 and 8 turrets. The real damage transaction delivered every hit through four turrets, 35 of 2,543 at six and zero of 3,424 at eight during the measured window. Giving the queue more service in a diagnostic control restored all 3,424. [Results and proposed repair](ROTARY_CROWD_C547.md). Connected testing is still deferred. **Decision needed.**
 
 **C546 / Shared rotary hitboxes, 0.2.71.9 (2026-11-02).** Owner approved C545 option 1A for Bat, Blades and future two-arm rotary heads. All 786 moving-target cases matched the reference. Each head registered six hits at both packet timings. Native save/reload and all three package selections passed. Connected acceptance is pending. [Patch](PATCH_v0.2.71.9.md) and [verification](TEST_v0.2.71.9.md). Installed and staged from test/v0.2.71.9 at 6b170ff1. All 642 packaged files match the tag, installation, archive and Workshop stage. [Delivery](evidence/c546-delivery.json). **Test now** after uploading and restarting the server and clients. The current test world is compatible.

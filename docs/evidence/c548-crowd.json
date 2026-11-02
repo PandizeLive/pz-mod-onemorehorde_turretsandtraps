@@ -1,0 +1,915 @@
+{
+  "candidate": "0.2.71.10",
+  "control": "test/v0.2.71.9",
+  "controlCommit": "6b170ff1612930100869d28dcd19631998f05e66",
+  "probeSHA256LF": "dfb2bd0f94be3eebacfce1be1620b088004f9c76c392be9d9eb1267a18627e79",
+  "repetitions": 3,
+  "connectedClients": 0,
+  "conditions": "32 moving standing zombies in overlapping reach; 120 measured packets after 25 warmup packets. 100 ms server ticks, 65 ms old position reports, 50 ms each way on the simulated MP transport. End health checked on both sides for every victim. C547 per-victim geometry reference. Mixed six-head replays use a real Poke Floor or Concertina contact handler with simulated hardware and continuous high health. Standard cases hold game clocks fixed inside callbacks. The additional wallBudget variant advances the queue clock with real processing time. Timings are medians of p95s across fresh JVMs, excluding client rendering, real network and other mod work.",
+  "cases": {
+    "old": {
+      "contact-1": {
+        "runs": [
+          {
+            "serverP95Ms": 3.16,
+            "packetP95Ms": 2.94
+          },
+          {
+            "serverP95Ms": 3.165,
+            "packetP95Ms": 3.048
+          },
+          {
+            "serverP95Ms": 3.078,
+            "packetP95Ms": 2.949
+          }
+        ],
+        "outcome": {
+          "rotaryExpected": 416,
+          "rotaryAttempts": 416,
+          "rotaryApplied": 416,
+          "missed": 0,
+          "retries": 0,
+          "trapAttempts": 0,
+          "trapApplied": 0,
+          "idealFifoLateRotary": 0,
+          "idealFifoLateTrap": 0,
+          "failures": ""
+        },
+        "medianServerP95Ms": 3.16
+      },
+      "contact-2": {
+        "runs": [
+          {
+            "serverP95Ms": 6.004,
+            "packetP95Ms": 5.745
+          },
+          {
+            "serverP95Ms": 5.115,
+            "packetP95Ms": 4.91
+          },
+          {
+            "serverP95Ms": 5.178,
+            "packetP95Ms": 4.963
+          }
+        ],
+        "outcome": {
+          "rotaryExpected": 832,
+          "rotaryAttempts": 832,
+          "rotaryApplied": 832,
+          "missed": 0,
+          "retries": 0,
+          "trapAttempts": 0,
+          "trapApplied": 0,
+          "idealFifoLateRotary": 0,
+          "idealFifoLateTrap": 0,
+          "failures": ""
+        },
+        "medianServerP95Ms": 5.18
+      },
+      "contact-4": {
+        "runs": [
+          {
+            "serverP95Ms": 8.259,
+            "packetP95Ms": 7.775
+          },
+          {
+            "serverP95Ms": 8.362,
+            "packetP95Ms": 7.959
+          },
+          {
+            "serverP95Ms": 8.907,
+            "packetP95Ms": 8.527
+          }
+        ],
+        "outcome": {
+          "rotaryExpected": 1711,
+          "rotaryAttempts": 1711,
+          "rotaryApplied": 1711,
+          "missed": 0,
+          "retries": 0,
+          "trapAttempts": 0,
+          "trapApplied": 0,
+          "idealFifoLateRotary": 0,
+          "idealFifoLateTrap": 0,
+          "failures": ""
+        },
+        "medianServerP95Ms": 8.36
+      },
+      "contact-6": {
+        "runs": [
+          {
+            "serverP95Ms": 13.261,
+            "packetP95Ms": 12.836
+          },
+          {
+            "serverP95Ms": 13.263,
+            "packetP95Ms": 12.886
+          },
+          {
+            "serverP95Ms": 13.692,
+            "packetP95Ms": 13.185
+          }
+        ],
+        "outcome": {
+          "rotaryExpected": 2543,
+          "rotaryAttempts": 2543,
+          "rotaryApplied": 2543,
+          "missed": 0,
+          "retries": 0,
+          "trapAttempts": 0,
+          "trapApplied": 0,
+          "idealFifoLateRotary": 0,
+          "idealFifoLateTrap": 0,
+          "failures": ""
+        },
+        "medianServerP95Ms": 13.26
+      },
+      "contact-8": {
+        "runs": [
+          {
+            "serverP95Ms": 16.655,
+            "packetP95Ms": 16.244
+          },
+          {
+            "serverP95Ms": 16.717,
+            "packetP95Ms": 16.251
+          },
+          {
+            "serverP95Ms": 17.549,
+            "packetP95Ms": 17.063
+          }
+        ],
+        "outcome": {
+          "rotaryExpected": 3424,
+          "rotaryAttempts": 3424,
+          "rotaryApplied": 3424,
+          "missed": 0,
+          "retries": 0,
+          "trapAttempts": 0,
+          "trapApplied": 0,
+          "idealFifoLateRotary": 0,
+          "idealFifoLateTrap": 0,
+          "failures": ""
+        },
+        "medianServerP95Ms": 16.72
+      },
+      "wire-1": {
+        "runs": [
+          {
+            "serverP95Ms": 3.704,
+            "packetP95Ms": 3.171
+          },
+          {
+            "serverP95Ms": 4.276,
+            "packetP95Ms": 3.618
+          },
+          {
+            "serverP95Ms": 3.801,
+            "packetP95Ms": 3.271
+          }
+        ],
+        "outcome": {
+          "rotaryExpected": 416,
+          "rotaryAttempts": 416,
+          "rotaryApplied": 416,
+          "missed": 0,
+          "retries": 0,
+          "trapAttempts": 0,
+          "trapApplied": 0,
+          "idealFifoLateRotary": 0,
+          "idealFifoLateTrap": 0,
+          "failures": ""
+        },
+        "medianServerP95Ms": 3.8
+      },
+      "wire-2": {
+        "runs": [
+          {
+            "serverP95Ms": 6.42,
+            "packetP95Ms": 5.536
+          },
+          {
+            "serverP95Ms": 7.779,
+            "packetP95Ms": 6.698
+          },
+          {
+            "serverP95Ms": 6.471,
+            "packetP95Ms": 5.745
+          }
+        ],
+        "outcome": {
+          "rotaryExpected": 832,
+          "rotaryAttempts": 832,
+          "rotaryApplied": 832,
+          "missed": 0,
+          "retries": 0,
+          "trapAttempts": 0,
+          "trapApplied": 0,
+          "idealFifoLateRotary": 0,
+          "idealFifoLateTrap": 0,
+          "failures": ""
+        },
+        "medianServerP95Ms": 6.47
+      },
+      "wire-4": {
+        "runs": [
+          {
+            "serverP95Ms": 10.736,
+            "packetP95Ms": 9.214
+          },
+          {
+            "serverP95Ms": 9.904,
+            "packetP95Ms": 8.64
+          },
+          {
+            "serverP95Ms": 10.203,
+            "packetP95Ms": 8.931
+          }
+        ],
+        "outcome": {
+          "rotaryExpected": 1711,
+          "rotaryAttempts": 1711,
+          "rotaryApplied": 1711,
+          "missed": 0,
+          "retries": 0,
+          "trapAttempts": 0,
+          "trapApplied": 0,
+          "idealFifoLateRotary": 0,
+          "idealFifoLateTrap": 0,
+          "failures": ""
+        },
+        "medianServerP95Ms": 10.2
+      },
+      "wire-6": {
+        "runs": [
+          {
+            "serverP95Ms": 14.024,
+            "packetP95Ms": 13.284
+          },
+          {
+            "serverP95Ms": 14.056,
+            "packetP95Ms": 13.287
+          },
+          {
+            "serverP95Ms": 13.817,
+            "packetP95Ms": 13.104
+          }
+        ],
+        "outcome": {
+          "rotaryExpected": 2543,
+          "rotaryAttempts": 3468,
+          "rotaryApplied": 35,
+          "missed": 0,
+          "retries": 925,
+          "trapAttempts": 0,
+          "trapApplied": 0,
+          "idealFifoLateRotary": 97,
+          "idealFifoLateTrap": 0,
+          "failures": "cancelled=1971,rejected=1462"
+        },
+        "medianServerP95Ms": 14.02
+      },
+      "wire-8": {
+        "runs": [
+          {
+            "serverP95Ms": 18.217,
+            "packetP95Ms": 17.584
+          },
+          {
+            "serverP95Ms": 18.237,
+            "packetP95Ms": 17.539
+          },
+          {
+            "serverP95Ms": 17.979,
+            "packetP95Ms": 17.378
+          }
+        ],
+        "outcome": {
+          "rotaryExpected": 3424,
+          "rotaryAttempts": 5452,
+          "rotaryApplied": 0,
+          "missed": 0,
+          "retries": 2028,
+          "trapAttempts": 0,
+          "trapApplied": 0,
+          "idealFifoLateRotary": 1611,
+          "idealFifoLateTrap": 0,
+          "failures": "cancelled=1936,rejected=3516"
+        },
+        "medianServerP95Ms": 18.22
+      },
+      "wire4x-8": {
+        "runs": [
+          {
+            "serverP95Ms": 20.255,
+            "packetP95Ms": 17.737
+          },
+          {
+            "serverP95Ms": 19.593,
+            "packetP95Ms": 17.064
+          },
+          {
+            "serverP95Ms": 20.392,
+            "packetP95Ms": 18.099
+          }
+        ],
+        "outcome": {
+          "rotaryExpected": 3424,
+          "rotaryAttempts": 3424,
+          "rotaryApplied": 3424,
+          "missed": 0,
+          "retries": 0,
+          "trapAttempts": 0,
+          "trapApplied": 0,
+          "idealFifoLateRotary": 0,
+          "idealFifoLateTrap": 0,
+          "failures": ""
+        },
+        "medianServerP95Ms": 20.25
+      },
+      "mixed-Poke-6": {
+        "runs": [
+          {
+            "serverP95Ms": 14.584,
+            "packetP95Ms": 13.983
+          },
+          {
+            "serverP95Ms": 14.355,
+            "packetP95Ms": 13.752
+          },
+          {
+            "serverP95Ms": 14.306,
+            "packetP95Ms": 13.692
+          }
+        ],
+        "outcome": {
+          "rotaryExpected": 2543,
+          "rotaryAttempts": 3606,
+          "rotaryApplied": 6,
+          "missed": 0,
+          "retries": 1063,
+          "trapAttempts": 256,
+          "trapApplied": 13,
+          "idealFifoLateRotary": 360,
+          "idealFifoLateTrap": 0,
+          "failures": "cancelled=1768,expired=5,rejected=1827"
+        },
+        "medianServerP95Ms": 14.36
+      },
+      "mixed-wire-6": {
+        "runs": [
+          {
+            "serverP95Ms": 15.382,
+            "packetP95Ms": 14.754
+          },
+          {
+            "serverP95Ms": 14.654,
+            "packetP95Ms": 14.024
+          },
+          {
+            "serverP95Ms": 14.493,
+            "packetP95Ms": 13.859
+          }
+        ],
+        "outcome": {
+          "rotaryExpected": 2543,
+          "rotaryAttempts": 3635,
+          "rotaryApplied": 61,
+          "missed": 0,
+          "retries": 1092,
+          "trapAttempts": 188,
+          "trapApplied": 4,
+          "idealFifoLateRotary": 281,
+          "idealFifoLateTrap": 0,
+          "failures": "cancelled=1798,rejected=1776"
+        },
+        "medianServerP95Ms": 14.65
+      },
+      "wallBudget-8": {
+        "runs": [
+          {
+            "serverP95Ms": 18.115,
+            "packetP95Ms": 17.494,
+            "rotaryExpected": 3424,
+            "rotaryAttempts": 5452,
+            "rotaryApplied": 0,
+            "missed": 0,
+            "retries": 2028,
+            "trapAttempts": 0,
+            "trapApplied": 0,
+            "idealFifoLateRotary": 1611,
+            "idealFifoLateTrap": 0,
+            "failures": "cancelled=1936,rejected=3516"
+          },
+          {
+            "serverP95Ms": 18.264,
+            "packetP95Ms": 17.596,
+            "rotaryExpected": 3424,
+            "rotaryAttempts": 5452,
+            "rotaryApplied": 0,
+            "missed": 0,
+            "retries": 2028,
+            "trapAttempts": 0,
+            "trapApplied": 0,
+            "idealFifoLateRotary": 1611,
+            "idealFifoLateTrap": 0,
+            "failures": "cancelled=1936,rejected=3516"
+          },
+          {
+            "serverP95Ms": 18.33,
+            "packetP95Ms": 17.754,
+            "rotaryExpected": 3424,
+            "rotaryAttempts": 5452,
+            "rotaryApplied": 0,
+            "missed": 0,
+            "retries": 2028,
+            "trapAttempts": 0,
+            "trapApplied": 0,
+            "idealFifoLateRotary": 1611,
+            "idealFifoLateTrap": 0,
+            "failures": "cancelled=1936,rejected=3516"
+          }
+        ],
+        "medianServerP95Ms": 18.26
+      }
+    },
+    "new": {
+      "contact-1": {
+        "runs": [
+          {
+            "serverP95Ms": 2.181,
+            "packetP95Ms": 2.135
+          },
+          {
+            "serverP95Ms": 3.257,
+            "packetP95Ms": 3.169
+          },
+          {
+            "serverP95Ms": 2.243,
+            "packetP95Ms": 2.195
+          }
+        ],
+        "outcome": {
+          "rotaryExpected": 416,
+          "rotaryAttempts": 416,
+          "rotaryApplied": 416,
+          "missed": 0,
+          "retries": 0,
+          "trapAttempts": 0,
+          "trapApplied": 0,
+          "idealFifoLateRotary": 0,
+          "idealFifoLateTrap": 0,
+          "failures": ""
+        },
+        "medianServerP95Ms": 2.24
+      },
+      "contact-2": {
+        "runs": [
+          {
+            "serverP95Ms": 3.311,
+            "packetP95Ms": 3.223
+          },
+          {
+            "serverP95Ms": 4.878,
+            "packetP95Ms": 4.764
+          },
+          {
+            "serverP95Ms": 3.55,
+            "packetP95Ms": 3.454
+          }
+        ],
+        "outcome": {
+          "rotaryExpected": 832,
+          "rotaryAttempts": 832,
+          "rotaryApplied": 832,
+          "missed": 0,
+          "retries": 0,
+          "trapAttempts": 0,
+          "trapApplied": 0,
+          "idealFifoLateRotary": 0,
+          "idealFifoLateTrap": 0,
+          "failures": ""
+        },
+        "medianServerP95Ms": 3.55
+      },
+      "contact-4": {
+        "runs": [
+          {
+            "serverP95Ms": 5.084,
+            "packetP95Ms": 4.915
+          },
+          {
+            "serverP95Ms": 8.635,
+            "packetP95Ms": 8.285
+          },
+          {
+            "serverP95Ms": 4.963,
+            "packetP95Ms": 4.796
+          }
+        ],
+        "outcome": {
+          "rotaryExpected": 1711,
+          "rotaryAttempts": 1711,
+          "rotaryApplied": 1711,
+          "missed": 0,
+          "retries": 0,
+          "trapAttempts": 0,
+          "trapApplied": 0,
+          "idealFifoLateRotary": 0,
+          "idealFifoLateTrap": 0,
+          "failures": ""
+        },
+        "medianServerP95Ms": 5.08
+      },
+      "contact-6": {
+        "runs": [
+          {
+            "serverP95Ms": 9.13,
+            "packetP95Ms": 8.746
+          },
+          {
+            "serverP95Ms": 10.589,
+            "packetP95Ms": 10.213
+          },
+          {
+            "serverP95Ms": 7.955,
+            "packetP95Ms": 7.771
+          }
+        ],
+        "outcome": {
+          "rotaryExpected": 2543,
+          "rotaryAttempts": 2543,
+          "rotaryApplied": 2543,
+          "missed": 0,
+          "retries": 0,
+          "trapAttempts": 0,
+          "trapApplied": 0,
+          "idealFifoLateRotary": 0,
+          "idealFifoLateTrap": 0,
+          "failures": ""
+        },
+        "medianServerP95Ms": 9.13
+      },
+      "contact-8": {
+        "runs": [
+          {
+            "serverP95Ms": 9.403,
+            "packetP95Ms": 9.219
+          },
+          {
+            "serverP95Ms": 10.271,
+            "packetP95Ms": 10.065
+          },
+          {
+            "serverP95Ms": 10.132,
+            "packetP95Ms": 9.955
+          }
+        ],
+        "outcome": {
+          "rotaryExpected": 3424,
+          "rotaryAttempts": 3424,
+          "rotaryApplied": 3424,
+          "missed": 0,
+          "retries": 0,
+          "trapAttempts": 0,
+          "trapApplied": 0,
+          "idealFifoLateRotary": 0,
+          "idealFifoLateTrap": 0,
+          "failures": ""
+        },
+        "medianServerP95Ms": 10.13
+      },
+      "wire-1": {
+        "runs": [
+          {
+            "serverP95Ms": 3.054,
+            "packetP95Ms": 2.573
+          },
+          {
+            "serverP95Ms": 3.011,
+            "packetP95Ms": 2.559
+          },
+          {
+            "serverP95Ms": 2.837,
+            "packetP95Ms": 2.398
+          }
+        ],
+        "outcome": {
+          "rotaryExpected": 416,
+          "rotaryAttempts": 416,
+          "rotaryApplied": 416,
+          "missed": 0,
+          "retries": 0,
+          "trapAttempts": 0,
+          "trapApplied": 0,
+          "idealFifoLateRotary": 0,
+          "idealFifoLateTrap": 0,
+          "failures": ""
+        },
+        "medianServerP95Ms": 3.01
+      },
+      "wire-2": {
+        "runs": [
+          {
+            "serverP95Ms": 6.078,
+            "packetP95Ms": 5.069
+          },
+          {
+            "serverP95Ms": 4.873,
+            "packetP95Ms": 4.081
+          },
+          {
+            "serverP95Ms": 4.812,
+            "packetP95Ms": 4.013
+          }
+        ],
+        "outcome": {
+          "rotaryExpected": 832,
+          "rotaryAttempts": 832,
+          "rotaryApplied": 832,
+          "missed": 0,
+          "retries": 0,
+          "trapAttempts": 0,
+          "trapApplied": 0,
+          "idealFifoLateRotary": 0,
+          "idealFifoLateTrap": 0,
+          "failures": ""
+        },
+        "medianServerP95Ms": 4.87
+      },
+      "wire-4": {
+        "runs": [
+          {
+            "serverP95Ms": 7.369,
+            "packetP95Ms": 6.769
+          },
+          {
+            "serverP95Ms": 7.06,
+            "packetP95Ms": 5.863
+          },
+          {
+            "serverP95Ms": 6.773,
+            "packetP95Ms": 5.816
+          }
+        ],
+        "outcome": {
+          "rotaryExpected": 1711,
+          "rotaryAttempts": 1711,
+          "rotaryApplied": 1711,
+          "missed": 0,
+          "retries": 0,
+          "trapAttempts": 0,
+          "trapApplied": 0,
+          "idealFifoLateRotary": 0,
+          "idealFifoLateTrap": 0,
+          "failures": ""
+        },
+        "medianServerP95Ms": 7.06
+      },
+      "wire-6": {
+        "runs": [
+          {
+            "serverP95Ms": 17.097,
+            "packetP95Ms": 14.304
+          },
+          {
+            "serverP95Ms": 10.242,
+            "packetP95Ms": 8.711
+          },
+          {
+            "serverP95Ms": 9.748,
+            "packetP95Ms": 8.312
+          }
+        ],
+        "outcome": {
+          "rotaryExpected": 2543,
+          "rotaryAttempts": 2543,
+          "rotaryApplied": 2543,
+          "missed": 0,
+          "retries": 0,
+          "trapAttempts": 0,
+          "trapApplied": 0,
+          "idealFifoLateRotary": 0,
+          "idealFifoLateTrap": 0,
+          "failures": ""
+        },
+        "medianServerP95Ms": 10.24
+      },
+      "wire-8": {
+        "runs": [
+          {
+            "serverP95Ms": 12.172,
+            "packetP95Ms": 10.73
+          },
+          {
+            "serverP95Ms": 12.152,
+            "packetP95Ms": 10.286
+          },
+          {
+            "serverP95Ms": 12.056,
+            "packetP95Ms": 10.356
+          }
+        ],
+        "outcome": {
+          "rotaryExpected": 3424,
+          "rotaryAttempts": 3424,
+          "rotaryApplied": 3424,
+          "missed": 0,
+          "retries": 0,
+          "trapAttempts": 0,
+          "trapApplied": 0,
+          "idealFifoLateRotary": 0,
+          "idealFifoLateTrap": 0,
+          "failures": ""
+        },
+        "medianServerP95Ms": 12.15
+      },
+      "wire4x-8": {
+        "runs": [
+          {
+            "serverP95Ms": 12.575,
+            "packetP95Ms": 10.52
+          },
+          {
+            "serverP95Ms": 12.361,
+            "packetP95Ms": 10.431
+          },
+          {
+            "serverP95Ms": 12.149,
+            "packetP95Ms": 10.374
+          }
+        ],
+        "outcome": {
+          "rotaryExpected": 3424,
+          "rotaryAttempts": 3424,
+          "rotaryApplied": 3424,
+          "missed": 0,
+          "retries": 0,
+          "trapAttempts": 0,
+          "trapApplied": 0,
+          "idealFifoLateRotary": 0,
+          "idealFifoLateTrap": 0,
+          "failures": ""
+        },
+        "medianServerP95Ms": 12.36
+      },
+      "mixed-Poke-6": {
+        "runs": [
+          {
+            "serverP95Ms": 11.199,
+            "packetP95Ms": 9.468
+          },
+          {
+            "serverP95Ms": 10.433,
+            "packetP95Ms": 8.915
+          },
+          {
+            "serverP95Ms": 10.34,
+            "packetP95Ms": 8.921
+          }
+        ],
+        "outcome": {
+          "rotaryExpected": 2543,
+          "rotaryAttempts": 2543,
+          "rotaryApplied": 2543,
+          "missed": 0,
+          "retries": 0,
+          "trapAttempts": 256,
+          "trapApplied": 256,
+          "idealFifoLateRotary": 0,
+          "idealFifoLateTrap": 0,
+          "failures": ""
+        },
+        "medianServerP95Ms": 10.43
+      },
+      "mixed-wire-6": {
+        "runs": [
+          {
+            "serverP95Ms": 11.026,
+            "packetP95Ms": 9.49
+          },
+          {
+            "serverP95Ms": 11.096,
+            "packetP95Ms": 9.34
+          },
+          {
+            "serverP95Ms": 10.42,
+            "packetP95Ms": 9.007
+          }
+        ],
+        "outcome": {
+          "rotaryExpected": 2543,
+          "rotaryAttempts": 2543,
+          "rotaryApplied": 2541,
+          "missed": 0,
+          "retries": 0,
+          "trapAttempts": 188,
+          "trapApplied": 188,
+          "idealFifoLateRotary": 2,
+          "idealFifoLateTrap": 0,
+          "failures": "expired=2"
+        },
+        "medianServerP95Ms": 11.03
+      },
+      "wallBudget-8": {
+        "runs": [
+          {
+            "serverP95Ms": 12.803,
+            "packetP95Ms": 10.662,
+            "rotaryExpected": 3424,
+            "rotaryAttempts": 3424,
+            "rotaryApplied": 3423,
+            "missed": 0,
+            "retries": 0,
+            "trapAttempts": 0,
+            "trapApplied": 0,
+            "idealFifoLateRotary": 0,
+            "idealFifoLateTrap": 0,
+            "failures": "expired=1"
+          },
+          {
+            "serverP95Ms": 12.535,
+            "packetP95Ms": 10.397,
+            "rotaryExpected": 3424,
+            "rotaryAttempts": 3424,
+            "rotaryApplied": 3424,
+            "missed": 0,
+            "retries": 0,
+            "trapAttempts": 0,
+            "trapApplied": 0,
+            "idealFifoLateRotary": 0,
+            "idealFifoLateTrap": 0,
+            "failures": ""
+          },
+          {
+            "serverP95Ms": 12.18,
+            "packetP95Ms": 10.326,
+            "rotaryExpected": 3424,
+            "rotaryAttempts": 3424,
+            "rotaryApplied": 3424,
+            "missed": 0,
+            "retries": 0,
+            "trapAttempts": 0,
+            "trapApplied": 0,
+            "idealFifoLateRotary": 0,
+            "idealFifoLateTrap": 0,
+            "failures": ""
+          }
+        ],
+        "medianServerP95Ms": 12.54
+      }
+    }
+  },
+  "profileEightHeads": {
+    "old": {
+      "cycleConfig": 3200,
+      "profile": 64320,
+      "clearLane": 37612,
+      "position": 146880,
+      "standing": 93600,
+      "valid": 1440,
+      "eligible": 32160
+    },
+    "new": {
+      "cycleConfig": 320,
+      "profile": 1920,
+      "clearLane": 4864,
+      "position": 51360,
+      "standing": 31200,
+      "valid": 480,
+      "eligible": 1440
+    }
+  },
+  "nativeChecks": {
+    "assertions": 51984,
+    "serverSaveReload": true,
+    "packageSelections": [
+      "traps",
+      "turrets",
+      "both"
+    ],
+    "sourceFiles": 466,
+    "connectedClients": 0
+  },
+  "guidelineScan": {
+    "files": 267,
+    "banned": [],
+    "bom": [],
+    "tabs": [],
+    "requireSuffix": [],
+    "changed": {
+      "Damage": {
+        "nonGuardInlineIfLines": [],
+        "clientGuard": true
+      },
+      "TurretRotary": {
+        "nonGuardInlineIfLines": [],
+        "clientGuard": true
+      },
+      "TurretStandby": {
+        "nonGuardInlineIfLines": [],
+        "clientGuard": true
+      }
+    }
+  }
+}
