@@ -9,3 +9,5 @@ An interim mocked frame lacked the new pause-generation field, and the lightweig
 - Sideways crossings and stationary targets
 - Rotary Bat and Rotary Blades
 - Knockdown, recovery and stopping
+
+Installed and staged from test/v0.2.71.9 at 6b170ff1. All 642 packaged files match the tag, installation, archive and Workshop stage. [Delivery](evidence/c546-delivery.json). **Test now** after uploading and restarting the server and clients. The current test world is compatible.
