@@ -11,3 +11,7 @@ An interim mocked frame lacked the new pause-generation field, and the lightweig
 - Knockdown, recovery and stopping
 
 Installed and staged from test/v0.2.71.9 at 6b170ff1. All 642 packaged files match the tag, installation, archive and Workshop stage. [Delivery](evidence/c546-delivery.json). **Test now** after uploading and restarting the server and clients. The current test world is compatible.
+
+## C547 crowded base replay
+
+**C547 / Crowded rotary base benchmark, 0.2.71.9.** Owner selected 1B. Three runs with 32 moving zombies matched all geometric crossings at 1, 2, 4, 6 and 8 turrets. The real damage transaction delivered every hit through four turrets, 35 of 2,543 at six and zero of 3,424 at eight during the measured window. Giving the queue more service in a diagnostic control restored all 3,424. [Results and proposed repair](ROTARY_CROWD_C547.md). Connected testing is still deferred. **Decision needed.**

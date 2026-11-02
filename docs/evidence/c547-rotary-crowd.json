@@ -1,0 +1,819 @@
+{
+  "release": "test/v0.2.71.9",
+  "sourceCommit": "6b170ff1612930100869d28dcd19631998f05e66",
+  "repetitions": 3,
+  "connectedClients": 0,
+  "fixture": {
+    "actors": 32,
+    "intervalMs": 100,
+    "ownerObservationLagMs": 65,
+    "combatOneWayMs": 50,
+    "warmupPackets": 25,
+    "measuredPackets": 120,
+    "serverSteps": "server ACK handling, Damage.tick, DefenseCombatServer.tick, Reports.command and Automation.tick; excludes synthetic client and oracle",
+    "layout": "distinct 8-neighbor tiles around an empty center; 32 sustained standing targets follow short moving paths inside all 2-tile ranges",
+    "calculation": "two opposite arms at 200 degrees/s; expected crossings checked independently for every target and turret in each interval",
+    "healthCheck": "All 32 server and owner health values verified after draining all transactions including warmup",
+    "timing": "wall-clock; median of three independent JVM p95s; no production FPS inference",
+    "wire4x": "four existing queue-service calls per server tick in harness only"
+  },
+  "probeSha256": "c10aeac15f029c06171a6a366e8777caa1af2805f40172b60d93e8bf7bce5788",
+  "cases": {
+    "contact-1": {
+      "counts": {
+        "expected": 416,
+        "attempted": 416,
+        "positive": 416,
+        "missed": 0,
+        "extra": 0,
+        "dispatchPastContactExpiry": 0,
+        "immediateReject": 0,
+        "peakOutstandingIncludingOffer": 1,
+        "queueWaitP95Ms": 0,
+        "ownerCommandsSentInWindow": 0,
+        "warmupPositive": 96,
+        "perTurret": [
+          {
+            "expected": 416,
+            "attempts": 416,
+            "positive": 416,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          }
+        ],
+        "failures": {}
+      },
+      "timing": [
+        {
+          "packetP50Ms": 2.366,
+          "packetP95Ms": 4.437,
+          "packetMaxMs": 5.201,
+          "serverStepsP95Ms": 4.637
+        },
+        {
+          "packetP50Ms": 2.253,
+          "packetP95Ms": 2.827,
+          "packetMaxMs": 3.244,
+          "serverStepsP95Ms": 2.93
+        },
+        {
+          "packetP50Ms": 2.36,
+          "packetP95Ms": 3.052,
+          "packetMaxMs": 3.772,
+          "serverStepsP95Ms": 3.176
+        }
+      ],
+      "medianPacketP95Ms": 3.05,
+      "medianServerStepsP95Ms": 3.18
+    },
+    "contact-2": {
+      "counts": {
+        "expected": 832,
+        "attempted": 832,
+        "positive": 832,
+        "missed": 0,
+        "extra": 0,
+        "dispatchPastContactExpiry": 0,
+        "immediateReject": 0,
+        "peakOutstandingIncludingOffer": 1,
+        "queueWaitP95Ms": 0,
+        "ownerCommandsSentInWindow": 0,
+        "warmupPositive": 192,
+        "perTurret": [
+          {
+            "expected": 416,
+            "attempts": 416,
+            "positive": 416,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 416,
+            "attempts": 416,
+            "positive": 416,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          }
+        ],
+        "failures": {}
+      },
+      "timing": [
+        {
+          "packetP50Ms": 3.837,
+          "packetP95Ms": 4.862,
+          "packetMaxMs": 8.836,
+          "serverStepsP95Ms": 5.087
+        },
+        {
+          "packetP50Ms": 3.798,
+          "packetP95Ms": 4.722,
+          "packetMaxMs": 5.097,
+          "serverStepsP95Ms": 4.932
+        },
+        {
+          "packetP50Ms": 3.974,
+          "packetP95Ms": 5.341,
+          "packetMaxMs": 9.001,
+          "serverStepsP95Ms": 5.577
+        }
+      ],
+      "medianPacketP95Ms": 4.86,
+      "medianServerStepsP95Ms": 5.09
+    },
+    "contact-4": {
+      "counts": {
+        "expected": 1711,
+        "attempted": 1711,
+        "positive": 1711,
+        "missed": 0,
+        "extra": 0,
+        "dispatchPastContactExpiry": 0,
+        "immediateReject": 0,
+        "peakOutstandingIncludingOffer": 1,
+        "queueWaitP95Ms": 0,
+        "ownerCommandsSentInWindow": 0,
+        "warmupPositive": 337,
+        "perTurret": [
+          {
+            "expected": 416,
+            "attempts": 416,
+            "positive": 416,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 416,
+            "attempts": 416,
+            "positive": 416,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 442,
+            "attempts": 442,
+            "positive": 442,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 437,
+            "attempts": 437,
+            "positive": 437,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          }
+        ],
+        "failures": {}
+      },
+      "timing": [
+        {
+          "packetP50Ms": 7.377,
+          "packetP95Ms": 7.929,
+          "packetMaxMs": 60.409,
+          "serverStepsP95Ms": 8.354
+        },
+        {
+          "packetP50Ms": 7.446,
+          "packetP95Ms": 8.064,
+          "packetMaxMs": 59.036,
+          "serverStepsP95Ms": 8.475
+        },
+        {
+          "packetP50Ms": 7.165,
+          "packetP95Ms": 8.781,
+          "packetMaxMs": 63.101,
+          "serverStepsP95Ms": 9.269
+        }
+      ],
+      "medianPacketP95Ms": 8.06,
+      "medianServerStepsP95Ms": 8.47
+    },
+    "contact-6": {
+      "counts": {
+        "expected": 2543,
+        "attempted": 2543,
+        "positive": 2543,
+        "missed": 0,
+        "extra": 0,
+        "dispatchPastContactExpiry": 0,
+        "immediateReject": 0,
+        "peakOutstandingIncludingOffer": 1,
+        "queueWaitP95Ms": 0,
+        "ownerCommandsSentInWindow": 0,
+        "warmupPositive": 529,
+        "perTurret": [
+          {
+            "expected": 416,
+            "attempts": 416,
+            "positive": 416,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 416,
+            "attempts": 416,
+            "positive": 416,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 442,
+            "attempts": 442,
+            "positive": 442,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 437,
+            "attempts": 437,
+            "positive": 437,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 416,
+            "attempts": 416,
+            "positive": 416,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 416,
+            "attempts": 416,
+            "positive": 416,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          }
+        ],
+        "failures": {}
+      },
+      "timing": [
+        {
+          "packetP50Ms": 11.098,
+          "packetP95Ms": 15.029,
+          "packetMaxMs": 19.003,
+          "serverStepsP95Ms": 15.501
+        },
+        {
+          "packetP50Ms": 10.744,
+          "packetP95Ms": 12.437,
+          "packetMaxMs": 13.723,
+          "serverStepsP95Ms": 12.869
+        },
+        {
+          "packetP50Ms": 10.99,
+          "packetP95Ms": 12.69,
+          "packetMaxMs": 13.49,
+          "serverStepsP95Ms": 13.137
+        }
+      ],
+      "medianPacketP95Ms": 12.69,
+      "medianServerStepsP95Ms": 13.14
+    },
+    "contact-8": {
+      "counts": {
+        "expected": 3424,
+        "attempted": 3424,
+        "positive": 3424,
+        "missed": 0,
+        "extra": 0,
+        "dispatchPastContactExpiry": 0,
+        "immediateReject": 0,
+        "peakOutstandingIncludingOffer": 1,
+        "queueWaitP95Ms": 0,
+        "ownerCommandsSentInWindow": 0,
+        "warmupPositive": 672,
+        "perTurret": [
+          {
+            "expected": 416,
+            "attempts": 416,
+            "positive": 416,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 416,
+            "attempts": 416,
+            "positive": 416,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 442,
+            "attempts": 442,
+            "positive": 442,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 437,
+            "attempts": 437,
+            "positive": 437,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 416,
+            "attempts": 416,
+            "positive": 416,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 416,
+            "attempts": 416,
+            "positive": 416,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 446,
+            "attempts": 446,
+            "positive": 446,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 435,
+            "attempts": 435,
+            "positive": 435,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          }
+        ],
+        "failures": {}
+      },
+      "timing": [
+        {
+          "packetP50Ms": 15.659,
+          "packetP95Ms": 21.319,
+          "packetMaxMs": 46.107,
+          "serverStepsP95Ms": 21.78
+        },
+        {
+          "packetP50Ms": 15.03,
+          "packetP95Ms": 16.342,
+          "packetMaxMs": 40.63,
+          "serverStepsP95Ms": 16.744
+        },
+        {
+          "packetP50Ms": 14.806,
+          "packetP95Ms": 16.449,
+          "packetMaxMs": 41.179,
+          "serverStepsP95Ms": 16.861
+        }
+      ],
+      "medianPacketP95Ms": 16.45,
+      "medianServerStepsP95Ms": 16.86
+    },
+    "wire-1": {
+      "counts": {
+        "expected": 416,
+        "attempted": 416,
+        "positive": 416,
+        "missed": 0,
+        "extra": 0,
+        "dispatchPastContactExpiry": 0,
+        "immediateReject": 0,
+        "peakOutstandingIncludingOffer": 13,
+        "queueWaitP95Ms": 0,
+        "ownerCommandsSentInWindow": 416,
+        "warmupPositive": 96,
+        "perTurret": [
+          {
+            "expected": 416,
+            "attempts": 416,
+            "positive": 416,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          }
+        ],
+        "failures": {}
+      },
+      "timing": [
+        {
+          "packetP50Ms": 2.613,
+          "packetP95Ms": 5.114,
+          "packetMaxMs": 6.725,
+          "serverStepsP95Ms": 5.603
+        },
+        {
+          "packetP50Ms": 2.416,
+          "packetP95Ms": 3.387,
+          "packetMaxMs": 4.441,
+          "serverStepsP95Ms": 3.986
+        },
+        {
+          "packetP50Ms": 2.333,
+          "packetP95Ms": 3.335,
+          "packetMaxMs": 4.606,
+          "serverStepsP95Ms": 3.873
+        }
+      ],
+      "medianPacketP95Ms": 3.39,
+      "medianServerStepsP95Ms": 3.99
+    },
+    "wire-2": {
+      "counts": {
+        "expected": 832,
+        "attempted": 832,
+        "positive": 832,
+        "missed": 0,
+        "extra": 0,
+        "dispatchPastContactExpiry": 0,
+        "immediateReject": 0,
+        "peakOutstandingIncludingOffer": 27,
+        "queueWaitP95Ms": 100,
+        "ownerCommandsSentInWindow": 832,
+        "warmupPositive": 192,
+        "perTurret": [
+          {
+            "expected": 416,
+            "attempts": 416,
+            "positive": 416,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 416,
+            "attempts": 416,
+            "positive": 416,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          }
+        ],
+        "failures": {}
+      },
+      "timing": [
+        {
+          "packetP50Ms": 3.78,
+          "packetP95Ms": 5.376,
+          "packetMaxMs": 5.793,
+          "serverStepsP95Ms": 6.252
+        },
+        {
+          "packetP50Ms": 3.982,
+          "packetP95Ms": 5.468,
+          "packetMaxMs": 7.862,
+          "serverStepsP95Ms": 6.525
+        },
+        {
+          "packetP50Ms": 3.915,
+          "packetP95Ms": 5.396,
+          "packetMaxMs": 5.585,
+          "serverStepsP95Ms": 6.261
+        }
+      ],
+      "medianPacketP95Ms": 5.4,
+      "medianServerStepsP95Ms": 6.26
+    },
+    "wire-4": {
+      "counts": {
+        "expected": 1711,
+        "attempted": 1711,
+        "positive": 1711,
+        "missed": 0,
+        "extra": 0,
+        "dispatchPastContactExpiry": 0,
+        "immediateReject": 0,
+        "peakOutstandingIncludingOffer": 29,
+        "queueWaitP95Ms": 100,
+        "ownerCommandsSentInWindow": 1711,
+        "warmupPositive": 337,
+        "perTurret": [
+          {
+            "expected": 416,
+            "attempts": 416,
+            "positive": 416,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 416,
+            "attempts": 416,
+            "positive": 416,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 442,
+            "attempts": 442,
+            "positive": 442,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 437,
+            "attempts": 437,
+            "positive": 437,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          }
+        ],
+        "failures": {}
+      },
+      "timing": [
+        {
+          "packetP50Ms": 7.86,
+          "packetP95Ms": 8.54,
+          "packetMaxMs": 10.699,
+          "serverStepsP95Ms": 9.879
+        },
+        {
+          "packetP50Ms": 7.888,
+          "packetP95Ms": 8.68,
+          "packetMaxMs": 9.752,
+          "serverStepsP95Ms": 9.968
+        },
+        {
+          "packetP50Ms": 7.995,
+          "packetP95Ms": 8.888,
+          "packetMaxMs": 10.375,
+          "serverStepsP95Ms": 10.084
+        }
+      ],
+      "medianPacketP95Ms": 8.68,
+      "medianServerStepsP95Ms": 9.97
+    },
+    "wire-6": {
+      "counts": {
+        "expected": 2543,
+        "attempted": 3468,
+        "positive": 35,
+        "missed": 0,
+        "extra": 925,
+        "dispatchPastContactExpiry": 3,
+        "immediateReject": 1462,
+        "peakOutstandingIncludingOffer": 257,
+        "queueWaitP95Ms": 500,
+        "ownerCommandsSentInWindow": 37,
+        "warmupPositive": 216,
+        "perTurret": [
+          {
+            "expected": 416,
+            "attempts": 484,
+            "positive": 13,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 68
+          },
+          {
+            "expected": 416,
+            "attempts": 508,
+            "positive": 5,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 92
+          },
+          {
+            "expected": 442,
+            "attempts": 625,
+            "positive": 8,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 183
+          },
+          {
+            "expected": 437,
+            "attempts": 668,
+            "positive": 1,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 231
+          },
+          {
+            "expected": 416,
+            "attempts": 583,
+            "positive": 4,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 167
+          },
+          {
+            "expected": 416,
+            "attempts": 600,
+            "positive": 4,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 184
+          }
+        ],
+        "failures": {
+          "cancelled": 1971,
+          "rejected": 1462
+        }
+      },
+      "timing": [
+        {
+          "packetP50Ms": 11.213,
+          "packetP95Ms": 12.797,
+          "packetMaxMs": 13.794,
+          "serverStepsP95Ms": 13.412
+        },
+        {
+          "packetP50Ms": 11.301,
+          "packetP95Ms": 13.47,
+          "packetMaxMs": 14.349,
+          "serverStepsP95Ms": 14.114
+        },
+        {
+          "packetP50Ms": 11.448,
+          "packetP95Ms": 13.188,
+          "packetMaxMs": 21.533,
+          "serverStepsP95Ms": 14.03
+        }
+      ],
+      "medianPacketP95Ms": 13.19,
+      "medianServerStepsP95Ms": 14.03
+    },
+    "wire-8": {
+      "counts": {
+        "expected": 3424,
+        "attempted": 5452,
+        "positive": 0,
+        "missed": 0,
+        "extra": 2028,
+        "dispatchPastContactExpiry": 0,
+        "immediateReject": 3516,
+        "peakOutstandingIncludingOffer": 257,
+        "queueWaitP95Ms": 0,
+        "ownerCommandsSentInWindow": 0,
+        "warmupPositive": 138,
+        "perTurret": [
+          {
+            "expected": 416,
+            "attempts": 509,
+            "positive": 0,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 93
+          },
+          {
+            "expected": 416,
+            "attempts": 567,
+            "positive": 0,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 151
+          },
+          {
+            "expected": 442,
+            "attempts": 683,
+            "positive": 0,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 241
+          },
+          {
+            "expected": 437,
+            "attempts": 734,
+            "positive": 0,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 297
+          },
+          {
+            "expected": 416,
+            "attempts": 651,
+            "positive": 0,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 235
+          },
+          {
+            "expected": 416,
+            "attempts": 655,
+            "positive": 0,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 239
+          },
+          {
+            "expected": 446,
+            "attempts": 793,
+            "positive": 0,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 347
+          },
+          {
+            "expected": 435,
+            "attempts": 860,
+            "positive": 0,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 425
+          }
+        ],
+        "failures": {
+          "cancelled": 1936,
+          "rejected": 3516
+        }
+      },
+      "timing": [
+        {
+          "packetP50Ms": 15.541,
+          "packetP95Ms": 17.492,
+          "packetMaxMs": 22.903,
+          "serverStepsP95Ms": 18.095
+        },
+        {
+          "packetP50Ms": 16.805,
+          "packetP95Ms": 23.081,
+          "packetMaxMs": 30.769,
+          "serverStepsP95Ms": 23.954
+        },
+        {
+          "packetP50Ms": 15.743,
+          "packetP95Ms": 17.51,
+          "packetMaxMs": 29.235,
+          "serverStepsP95Ms": 18.185
+        }
+      ],
+      "medianPacketP95Ms": 17.51,
+      "medianServerStepsP95Ms": 18.18
+    },
+    "wire4x-8": {
+      "counts": {
+        "expected": 3424,
+        "attempted": 3424,
+        "positive": 3424,
+        "missed": 0,
+        "extra": 0,
+        "dispatchPastContactExpiry": 0,
+        "immediateReject": 0,
+        "peakOutstandingIncludingOffer": 96,
+        "queueWaitP95Ms": 200,
+        "ownerCommandsSentInWindow": 3424,
+        "warmupPositive": 672,
+        "perTurret": [
+          {
+            "expected": 416,
+            "attempts": 416,
+            "positive": 416,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 416,
+            "attempts": 416,
+            "positive": 416,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 442,
+            "attempts": 442,
+            "positive": 442,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 437,
+            "attempts": 437,
+            "positive": 437,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 416,
+            "attempts": 416,
+            "positive": 416,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 416,
+            "attempts": 416,
+            "positive": 416,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 446,
+            "attempts": 446,
+            "positive": 446,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          },
+          {
+            "expected": 435,
+            "attempts": 435,
+            "positive": 435,
+            "missingAtExpectedTick": 0,
+            "excessAttempts": 0
+          }
+        ],
+        "failures": {}
+      },
+      "timing": [
+        {
+          "packetP50Ms": 14.961,
+          "packetP95Ms": 16.576,
+          "packetMaxMs": 17.567,
+          "serverStepsP95Ms": 19.15
+        },
+        {
+          "packetP50Ms": 15.047,
+          "packetP95Ms": 17.589,
+          "packetMaxMs": 25.436,
+          "serverStepsP95Ms": 21.207
+        },
+        {
+          "packetP50Ms": 15.029,
+          "packetP95Ms": 16.956,
+          "packetMaxMs": 20.507,
+          "serverStepsP95Ms": 19.3
+        }
+      ],
+      "medianPacketP95Ms": 16.96,
+      "medianServerStepsP95Ms": 19.3
+    }
+  }
+}

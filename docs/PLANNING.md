@@ -1,12 +1,14 @@
 # Planning
 
+**C547 / Crowded rotary base benchmark, 0.2.71.9.** Owner selected 1B. Three runs with 32 moving zombies matched all geometric crossings at 1, 2, 4, 6 and 8 turrets. The real damage transaction delivered every hit through four turrets, 35 of 2,543 at six and zero of 3,424 at eight during the measured window. Giving the queue more service in a diagnostic control restored all 3,424. [Results and proposed repair](ROTARY_CROWD_C547.md). Connected testing is still deferred. **Decision needed.**
+
 **While the 0.2.71.9 connected retest is deferred (November 2).** The owner is currently unable to test. The candidate remains available for the same multiplayer retest. Three optional tracks are open for selection.
 
 - **1A (recommended).** Build a separate example two-arm rotary head and a short author guide. Load it as an add-on beside Turrets and identify exactly which item, model and Lua definitions a modder needs. The C546 custom-head fixture already covers contact behavior. This checks the external author's installation path.
 - **1B.** Benchmark several rotary turrets covering the same moving crowd in the local harness. Compare hit counts and processing time across turret counts with the C546 single-turret, 32-actor benchmark.
 - **1C.** Return to Workshop preparation. Draft the listing and a short screenshot/GIF shot list for later capture.
 
-No track selected yet. The [rotary test record](TEST_v0.2.71.9.md) remains the connected acceptance reference.
+1B was selected and completed in C547. The [rotary test record](TEST_v0.2.71.9.md) remains the connected acceptance reference.
 
 **C546 / Shared rotary hitboxes, 0.2.71.9 (2026-11-02).** Owner approved C545 option 1A for Bat, Blades and future two-arm rotary heads. All 786 moving-target cases matched the reference. Each head registered six hits at both packet timings. Native save/reload and all three package selections passed. Connected acceptance is pending. [Patch](PATCH_v0.2.71.9.md) and [verification](TEST_v0.2.71.9.md). Installed and staged from test/v0.2.71.9 at 6b170ff1. All 642 packaged files match the tag, installation, archive and Workshop stage. [Delivery](evidence/c546-delivery.json). **Test now** after uploading and restarting the server and clients. The current test world is compatible.
 
