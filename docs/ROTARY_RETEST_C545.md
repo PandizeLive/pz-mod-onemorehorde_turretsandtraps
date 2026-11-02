@@ -4,7 +4,7 @@ On November 2 the owner reported inconsistent Rotary Blades damage on their mult
 
 ## Connected evidence
 
-The server counted 36 rotary contacts admitted to damage and 36 positive completions. The client counted 36 owner applications and 36 damage displays. Time from the supplied observation endpoint to owner application averaged 110.2 ms and peaked at 187 ms. The timestamp describes the end of a movement sample, so it cannot measure visible blade impact precisely. These are aggregate counts for the capture. Turret detailed logging was off. A contact that never made it to damage has no per-victim trace. Across all defenses the server accepted 17,770 observations, rejected 955 for position and 15 for age. Those rejections cannot be assigned specifically to the blades.
+The owner could not tell whether a standing zombie stayed still through several blade passes during the live test. The server counted 36 rotary contacts admitted to damage and 36 positive completions. The client counted 36 owner applications and 36 damage displays. Time from the supplied observation endpoint to owner application averaged 110.2 ms and peaked at 187 ms. The timestamp describes the end of a movement sample, so it cannot measure visible blade impact precisely. These are aggregate counts for the capture. Turret detailed logging was off. A contact that never made it to damage has no per-victim trace. Across all defenses the server accepted 17,770 observations, rejected 955 for position and 15 for age. Those rejections cannot be assigned specifically to the blades.
 
 ## Reproductions on the released code
 
