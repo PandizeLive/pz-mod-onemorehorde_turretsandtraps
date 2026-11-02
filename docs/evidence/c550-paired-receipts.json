@@ -1,0 +1,1150 @@
+{
+  "baseline": "654349c05ac47cb95a23baad24a520b01b080b90",
+  "candidatePatchSHA256": "0332bdd327d3892f08c6af1e7afd45e2dbadae0fb8201cb7d4230f1435d4af99",
+  "connectedPlayers": 0,
+  "focused": "C550 focused checks 200 PASS",
+  "focusedSuiteAssertions": 52077,
+  "rotaryRegressionRows": [
+    "contact|1|416|416|416|0|0|1.6687999963760376|2.438099980354309|3.307099997997284|2.491200029850006|416/416/416/0/0||0|0|1|0|0|96|0|0|0|0",
+    "contact|2|832|832|832|0|0|2.513700008392334|3.509600043296814|4.54040002822876|3.604300022125244|416/416/416/0/0,416/416/416/0/0||0|0|1|0|0|192|0|0|0|0",
+    "contact|4|1711|1711|1711|0|0|4.644699990749359|5.336499989032745|8.605599999427795|5.506099998950958|416/416/416/0/0,416/416/416/0/0,442/442/442/0/0,437/437/437/0/0||0|0|1|0|0|337|0|0|0|0",
+    "contact|6|2543|2543|2543|0|0|6.085900008678436|7.865899980068207|52.806799948215485|8.0314000248909|416/416/416/0/0,416/416/416/0/0,442/442/442/0/0,437/437/437/0/0,416/416/416/0/0,416/416/416/0/0||0|0|1|0|0|529|0|0|0|0",
+    "contact|8|3424|3424|3424|0|0|8.58760005235672|9.511500000953674|9.841699957847595|9.700200021266937|416/416/416/0/0,416/416/416/0/0,442/442/442/0/0,437/437/437/0/0,416/416/416/0/0,416/416/416/0/0,446/446/446/0/0,435/435/435/0/0||0|0|1|0|0|672|0|0|0|0",
+    "wire|1|416|416|416|0|0|1.5612000226974487|2.456399977207184|2.9699000120162964|2.8227999806404114|416/416/416/0/0||0|0|13|0|416|96|0|0|0|0",
+    "wire|2|832|832|832|0|0|2.5031999945640564|4.187900006771088|4.9555999636650085|4.968400001525879|416/416/416/0/0,416/416/416/0/0||0|0|27|100|832|192|0|0|0|0",
+    "wire|4|1711|1711|1711|0|0|5.422899961471558|7.788100004196167|10.290399968624115|8.998300015926361|416/416/416/0/0,416/416/416/0/0,442/442/442/0/0,437/437/437/0/0||0|0|29|100|1711|337|0|0|0|0",
+    "wire|6|2543|2543|2543|0|0|6.408100008964539|8.30649995803833|8.842599987983704|9.693399965763092|416/416/416/0/0,416/416/416/0/0,442/442/442/0/0,437/437/437/0/0,416/416/416/0/0,416/416/416/0/0||0|0|67|100|2427|529|0|0|0|0",
+    "wire|8|3424|3424|3424|0|0|9.020500004291534|10.541999995708466|11.17170000076294|12.263300001621246|416/416/416/0/0,416/416/416/0/0,442/442/442/0/0,437/437/437/0/0,416/416/416/0/0,416/416/416/0/0,446/446/446/0/0,435/435/435/0/0||0|0|83|100|2972|672|0|0|0|0",
+    "wire4x|8|3424|3424|3424|0|0|8.97299998998642|10.66890001296997|11.371399998664856|13.181100010871887|416/416/416/0/0,416/416/416/0/0,442/442/442/0/0,437/437/437/0/0,416/416/416/0/0,416/416/416/0/0,446/446/446/0/0,435/435/435/0/0||0|0|83|100|2972|672|0|0|0|0",
+    "mixed-Poke|6|2543|2543|2543|0|0|7.225600004196167|9.117399990558624|11.103999972343445|10.922199964523315|416/416/416/0/0,416/416/416/0/0,442/442/442/0/0,437/437/437/0/0,416/416/416/0/0,416/416/416/0/0||0|0|92|100|2592|529|256|256|0|0",
+    "mixed-wire|6|2543|2543|2543|0|0|7.198400020599365|9.348699986934662|10.643899977207184|11.034199953079224|416/416/416/0/0,416/416/416/0/0,442/442/442/0/0,437/437/437/0/0,416/416/416/0/0,416/416/416/0/0||0|0|89|100|2538|529|188|188|2|0",
+    "wallBudget|8|3424|3424|3424|0|0|9.038399994373322|10.307899951934814|13.461399972438812|12.424299955368042|416/416/416/0/0,416/416/416/0/0,442/442/442/0/0,437/437/437/0/0,416/416/416/0/0,416/416/416/0/0,446/446/446/0/0,435/435/435/0/0||0|0|83|100|2972|672|0|0|0|0"
+  ],
+  "runs": [
+    {
+      "variant": "candidate",
+      "oneWayMs": 150,
+      "repeat": 1,
+      "families": {
+        "Arc": [20, 87, 87, 1, 300, 600, 450],
+        "Ballista": [4, 4, 4, 1, 650, 1250, 1100],
+        "Barrier": [0, 221, 221, 10, 300, 600, 450],
+        "BarrierReinforced": [0, 218, 218, 10, 300, 600, 450],
+        "Bed": [0, 540, 540, 10, 300, 550, 400],
+        "BedReinforced": [0, 390, 387, 10, 300, 500, 350],
+        "HuntingRifle": [17, 17, 17, 1, 750, 1100, 950],
+        "LobberAerosol": [5, 75, 75, 1, 350, 600, 450],
+        "LobberMakeshift": [5, 61, 61, 1, 300, 600, 450],
+        "LobberPipe": [5, 123, 123, 1, 300, 600, 450],
+        "M16": [41, 57, 57, 1, 350, 600, 450],
+        "M4": [36, 36, 36, 1, 650, 950, 800],
+        "Panel": [0, 40, 40, 10, 300, 350, 200],
+        "Pistol": [16, 16, 16, 1, 700, 900, 750],
+        "Poke": [0, 140, 140, 10, 300, 300, 150],
+        "Potato": [8, 16, 16, 1, 300, 600, 450],
+        "RotaryBat": [0, 44, 43, 1, 300, 500, 350],
+        "RotaryBlades": [0, 44, 44, 1, 300, 500, 350],
+        "Scrapshot": [11, 5, 5, 1, 300, 550, 400],
+        "Shotgun": [17, 26, 26, 1, 550, 900, 750],
+        "Tack": [0, 270, 268, 10, 300, 500, 350],
+        "Tether": [0, 100, 100, 10, 300, 550, 400],
+        "Wire": [0, 380, 375, 10, 400, 500, 350]
+      },
+      "ms": {
+        "barriers": {
+          "p50": 0.05,
+          "p95": 0.31,
+          "max": 0.6
+        },
+        "client": {
+          "p50": 0.15,
+          "p95": 0.48,
+          "max": 2.23
+        },
+        "devices": {
+          "p50": 3.06,
+          "p95": 4.27,
+          "max": 5.81
+        },
+        "reports": {
+          "p50": 0.0,
+          "p95": 6.91,
+          "max": 51.04
+        },
+        "server": {
+          "p50": 6.03,
+          "p95": 11.06,
+          "max": 57.09
+        },
+        "transport": {
+          "p50": 0.48,
+          "p95": 1.53,
+          "max": 2.39
+        }
+      },
+      "failures": {
+        "cancelled": 5,
+        "expired": 6
+      },
+      "cutoff": {
+        "damage": 53,
+        "flights": 0,
+        "ordnance": 3,
+        "rays": 194
+      },
+      "barrierReports": 523,
+      "barrierSquareReads": 0,
+      "pairedPackets": 142,
+      "observationFrames": 20000,
+      "permitEntries": 8032,
+      "damagePackets": 5526,
+      "peakOutstanding": 84,
+      "plate1Transitions": 54,
+      "plate2Transitions": 54,
+      "observerPackets": 8868,
+      "suiteAssertions": 57825,
+      "requested": 2910,
+      "applied": 2899
+    },
+    {
+      "variant": "stock",
+      "oneWayMs": 150,
+      "repeat": 1,
+      "families": {
+        "Arc": [19, 64, 64, 1, 300, 850, 700],
+        "Ballista": [4, 4, 4, 1, 500, 2050, 1900],
+        "Barrier": [0, 221, 221, 10, 300, 750, 600],
+        "BarrierReinforced": [0, 218, 218, 10, 300, 700, 550],
+        "Bed": [0, 540, 521, 10, 300, 550, 400],
+        "BedReinforced": [0, 390, 373, 10, 300, 550, 400],
+        "HuntingRifle": [11, 11, 11, 1, 1200, 2100, 1950],
+        "LobberAerosol": [4, 87, 86, 1, 400, 900, 750],
+        "LobberMakeshift": [5, 61, 60, 1, 450, 850, 700],
+        "LobberPipe": [4, 82, 82, 1, 400, 850, 700],
+        "M16": [25, 80, 80, 1, 550, 2150, 2000],
+        "M4": [29, 29, 29, 1, 1600, 2500, 2350],
+        "Panel": [0, 40, 39, 10, 300, 300, 150],
+        "Pistol": [17, 17, 17, 1, 600, 2400, 2250],
+        "Poke": [0, 140, 140, 10, 300, 300, 150],
+        "Potato": [8, 18, 18, 1, 300, 1900, 1750],
+        "RotaryBat": [0, 44, 39, 1, 300, 500, 350],
+        "RotaryBlades": [0, 44, 35, 1, 300, 500, 350],
+        "Scrapshot": [9, 25, 25, 1, 350, 700, 550],
+        "Shotgun": [13, 22, 22, 1, 500, 1300, 1150],
+        "Tack": [0, 270, 266, 10, 300, 550, 400],
+        "Tether": [0, 100, 100, 10, 300, 600, 450],
+        "Wire": [0, 380, 343, 10, 400, 500, 350]
+      },
+      "ms": {
+        "barriers": {
+          "p50": 0.08,
+          "p95": 4.24,
+          "max": 7.93
+        },
+        "client": {
+          "p50": 0.17,
+          "p95": 0.62,
+          "max": 1.91
+        },
+        "devices": {
+          "p50": 3.0,
+          "p95": 4.72,
+          "max": 7.0
+        },
+        "reports": {
+          "p50": 0.0,
+          "p95": 10.81,
+          "max": 48.42
+        },
+        "server": {
+          "p50": 9.02,
+          "p95": 15.48,
+          "max": 53.04
+        },
+        "transport": {
+          "p50": 0.56,
+          "p95": 2.0,
+          "max": 4.11
+        }
+      },
+      "failures": {
+        "cancelled": 45,
+        "expired": 45,
+        "rejected": 2,
+        "unavailable": 2
+      },
+      "cutoff": {
+        "damage": 64,
+        "flights": 0,
+        "ordnance": 1,
+        "rays": 57
+      },
+      "barrierReports": 523,
+      "barrierSquareReads": 7239,
+      "pairedPackets": 0,
+      "observationFrames": 20000,
+      "permitEntries": 7978,
+      "damagePackets": 5676,
+      "peakOutstanding": 99,
+      "plate1Transitions": 54,
+      "plate2Transitions": 54,
+      "observerPackets": 8360,
+      "suiteAssertions": 57706,
+      "requested": 2887,
+      "applied": 2793
+    },
+    {
+      "variant": "candidate",
+      "oneWayMs": 50,
+      "repeat": 1,
+      "families": {
+        "Arc": [21, 90, 90, 1, 100, 200, 150],
+        "Ballista": [4, 4, 4, 1, 100, 150, 100],
+        "Barrier": [0, 266, 266, 10, 100, 100, 50],
+        "BarrierReinforced": [0, 260, 260, 10, 100, 100, 50],
+        "Bed": [0, 540, 540, 10, 100, 100, 50],
+        "BedReinforced": [0, 390, 390, 10, 100, 100, 50],
+        "HuntingRifle": [17, 17, 17, 1, 100, 200, 150],
+        "LobberAerosol": [5, 74, 74, 1, 100, 200, 150],
+        "LobberMakeshift": [4, 57, 57, 1, 100, 200, 150],
+        "LobberPipe": [5, 101, 101, 1, 100, 200, 150],
+        "M16": [42, 51, 51, 1, 100, 150, 100],
+        "M4": [35, 35, 35, 1, 100, 200, 150],
+        "Panel": [0, 40, 40, 10, 100, 100, 50],
+        "Pistol": [19, 19, 19, 1, 100, 150, 100],
+        "Poke": [0, 140, 140, 10, 100, 100, 50],
+        "Potato": [9, 16, 16, 1, 100, 150, 100],
+        "RotaryBat": [0, 42, 42, 1, 100, 100, 50],
+        "RotaryBlades": [0, 42, 42, 1, 100, 100, 50],
+        "Scrapshot": [11, 5, 5, 1, 100, 200, 150],
+        "Shotgun": [18, 27, 27, 1, 100, 200, 150],
+        "Tack": [0, 270, 270, 10, 100, 100, 50],
+        "Tether": [0, 100, 100, 10, 100, 200, 150],
+        "Wire": [0, 380, 380, 10, 100, 100, 50]
+      },
+      "ms": {
+        "barriers": {
+          "p50": 0.06,
+          "p95": 0.33,
+          "max": 0.97
+        },
+        "client": {
+          "p50": 0.13,
+          "p95": 0.74,
+          "max": 1.47
+        },
+        "devices": {
+          "p50": 3.07,
+          "p95": 4.13,
+          "max": 5.65
+        },
+        "reports": {
+          "p50": 0.0,
+          "p95": 7.49,
+          "max": 13.91
+        },
+        "server": {
+          "p50": 6.06,
+          "p95": 11.18,
+          "max": 19.1
+        },
+        "transport": {
+          "p50": 0.35,
+          "p95": 1.72,
+          "max": 2.19
+        }
+      },
+      "failures": {},
+      "cutoff": {
+        "damage": 5,
+        "flights": 0,
+        "ordnance": 2,
+        "rays": 202
+      },
+      "barrierReports": 526,
+      "barrierSquareReads": 0,
+      "pairedPackets": 3,
+      "observationFrames": 20000,
+      "permitEntries": 8132,
+      "damagePackets": 5926,
+      "peakOutstanding": 42,
+      "plate1Transitions": 54,
+      "plate2Transitions": 54,
+      "observerPackets": 8986,
+      "suiteAssertions": 57948,
+      "requested": 2966,
+      "applied": 2966
+    },
+    {
+      "variant": "stock",
+      "oneWayMs": 50,
+      "repeat": 1,
+      "families": {
+        "Arc": [21, 96, 96, 1, 100, 200, 150],
+        "Ballista": [4, 4, 4, 1, 100, 150, 100],
+        "Barrier": [0, 266, 266, 10, 100, 100, 50],
+        "BarrierReinforced": [0, 260, 260, 10, 100, 100, 50],
+        "Bed": [0, 540, 540, 10, 100, 100, 50],
+        "BedReinforced": [0, 390, 390, 10, 100, 100, 50],
+        "HuntingRifle": [18, 18, 18, 1, 100, 200, 150],
+        "LobberAerosol": [5, 49, 48, 1, 100, 150, 100],
+        "LobberMakeshift": [4, 56, 55, 1, 100, 200, 150],
+        "LobberPipe": [5, 98, 98, 1, 100, 200, 150],
+        "M16": [43, 73, 73, 1, 100, 200, 150],
+        "M4": [39, 39, 39, 1, 100, 150, 100],
+        "Panel": [0, 40, 40, 10, 100, 100, 50],
+        "Pistol": [18, 18, 18, 1, 100, 250, 200],
+        "Poke": [0, 140, 140, 10, 100, 100, 50],
+        "Potato": [9, 19, 19, 1, 100, 100, 50],
+        "RotaryBat": [0, 42, 42, 1, 100, 100, 50],
+        "RotaryBlades": [0, 42, 42, 1, 100, 100, 50],
+        "Scrapshot": [11, 8, 8, 1, 100, 200, 150],
+        "Shotgun": [17, 29, 29, 1, 100, 200, 150],
+        "Tack": [0, 270, 270, 10, 100, 150, 100],
+        "Tether": [0, 100, 100, 10, 100, 200, 150],
+        "Wire": [0, 380, 380, 10, 100, 100, 50]
+      },
+      "ms": {
+        "barriers": {
+          "p50": 0.05,
+          "p95": 3.47,
+          "max": 4.26
+        },
+        "client": {
+          "p50": 0.13,
+          "p95": 0.67,
+          "max": 1.59
+        },
+        "devices": {
+          "p50": 2.95,
+          "p95": 4.45,
+          "max": 5.3
+        },
+        "reports": {
+          "p50": 0.0,
+          "p95": 7.17,
+          "max": 56.16
+        },
+        "server": {
+          "p50": 8.04,
+          "p95": 12.03,
+          "max": 61.07
+        },
+        "transport": {
+          "p50": 0.33,
+          "p95": 1.62,
+          "max": 2.16
+        }
+      },
+      "failures": {
+        "rejected": 2
+      },
+      "cutoff": {
+        "damage": 5,
+        "flights": 0,
+        "ordnance": 2,
+        "rays": 141
+      },
+      "barrierReports": 526,
+      "barrierSquareReads": 7278,
+      "pairedPackets": 0,
+      "observationFrames": 20000,
+      "permitEntries": 7982,
+      "damagePackets": 5950,
+      "peakOutstanding": 43,
+      "plate1Transitions": 54,
+      "plate2Transitions": 54,
+      "observerPackets": 9032,
+      "suiteAssertions": 57978,
+      "requested": 2977,
+      "applied": 2975
+    },
+    {
+      "variant": "stock",
+      "oneWayMs": 150,
+      "repeat": 2,
+      "families": {
+        "Arc": [20, 88, 88, 1, 300, 750, 600],
+        "Ballista": [4, 4, 4, 1, 300, 300, 150],
+        "Barrier": [0, 221, 221, 10, 300, 750, 600],
+        "BarrierReinforced": [0, 218, 218, 10, 300, 600, 450],
+        "Bed": [0, 540, 526, 10, 300, 500, 350],
+        "BedReinforced": [0, 390, 380, 10, 300, 550, 400],
+        "HuntingRifle": [14, 14, 14, 1, 300, 2100, 1950],
+        "LobberAerosol": [5, 80, 79, 1, 300, 700, 550],
+        "LobberMakeshift": [4, 58, 57, 1, 300, 600, 450],
+        "LobberPipe": [5, 78, 78, 1, 300, 750, 600],
+        "M16": [42, 76, 76, 1, 700, 1500, 1350],
+        "M4": [38, 38, 38, 1, 1650, 2400, 2250],
+        "Panel": [0, 40, 39, 10, 300, 350, 200],
+        "Pistol": [17, 17, 17, 1, 450, 2250, 2100],
+        "Poke": [0, 140, 140, 10, 300, 300, 150],
+        "Potato": [8, 14, 14, 1, 300, 600, 450],
+        "RotaryBat": [0, 44, 37, 1, 300, 500, 350],
+        "RotaryBlades": [0, 44, 31, 1, 300, 450, 300],
+        "Scrapshot": [10, 8, 8, 1, 300, 700, 550],
+        "Shotgun": [16, 25, 25, 1, 300, 1850, 1700],
+        "Tack": [0, 270, 266, 10, 300, 500, 350],
+        "Tether": [0, 101, 101, 10, 300, 600, 450],
+        "Wire": [0, 380, 342, 10, 400, 500, 350]
+      },
+      "ms": {
+        "barriers": {
+          "p50": 0.05,
+          "p95": 3.4,
+          "max": 5.9
+        },
+        "client": {
+          "p50": 0.14,
+          "p95": 0.48,
+          "max": 1.65
+        },
+        "devices": {
+          "p50": 2.9,
+          "p95": 4.34,
+          "max": 5.03
+        },
+        "reports": {
+          "p50": 0.0,
+          "p95": 7.01,
+          "max": 51.57
+        },
+        "server": {
+          "p50": 8.01,
+          "p95": 12.01,
+          "max": 57.01
+        },
+        "transport": {
+          "p50": 0.48,
+          "p95": 1.55,
+          "max": 2.18
+        }
+      },
+      "failures": {
+        "cancelled": 46,
+        "expired": 40,
+        "rejected": 2,
+        "unavailable": 1
+      },
+      "cutoff": {
+        "damage": 63,
+        "flights": 0,
+        "ordnance": 2,
+        "rays": 109
+      },
+      "barrierReports": 523,
+      "barrierSquareReads": 7239,
+      "pairedPackets": 0,
+      "observationFrames": 20000,
+      "permitEntries": 7964,
+      "damagePackets": 5678,
+      "peakOutstanding": 89,
+      "plate1Transitions": 54,
+      "plate2Transitions": 54,
+      "observerPackets": 8578,
+      "suiteAssertions": 57713,
+      "requested": 2888,
+      "applied": 2799
+    },
+    {
+      "variant": "candidate",
+      "oneWayMs": 150,
+      "repeat": 2,
+      "families": {
+        "Arc": [20, 82, 82, 1, 300, 550, 400],
+        "Ballista": [4, 4, 4, 1, 300, 300, 150],
+        "Barrier": [0, 221, 221, 10, 300, 600, 450],
+        "BarrierReinforced": [0, 218, 218, 10, 300, 600, 450],
+        "Bed": [0, 540, 538, 10, 300, 550, 400],
+        "BedReinforced": [0, 390, 388, 10, 300, 500, 350],
+        "HuntingRifle": [17, 17, 17, 1, 700, 950, 800],
+        "LobberAerosol": [5, 84, 84, 1, 300, 550, 400],
+        "LobberMakeshift": [4, 58, 58, 1, 300, 600, 450],
+        "LobberPipe": [5, 121, 121, 1, 350, 550, 400],
+        "M16": [43, 73, 73, 1, 400, 600, 450],
+        "M4": [38, 38, 38, 1, 600, 800, 650],
+        "Panel": [0, 40, 39, 10, 300, 300, 150],
+        "Pistol": [17, 17, 17, 1, 600, 750, 600],
+        "Poke": [0, 140, 140, 10, 300, 300, 150],
+        "Potato": [8, 16, 16, 1, 300, 600, 450],
+        "RotaryBat": [0, 44, 43, 1, 300, 500, 350],
+        "RotaryBlades": [0, 44, 44, 1, 300, 500, 350],
+        "Scrapshot": [10, 7, 7, 1, 300, 500, 350],
+        "Shotgun": [17, 27, 27, 1, 600, 950, 800],
+        "Tack": [0, 270, 269, 10, 300, 500, 350],
+        "Tether": [0, 100, 100, 10, 300, 550, 400],
+        "Wire": [0, 380, 378, 10, 400, 500, 350]
+      },
+      "ms": {
+        "barriers": {
+          "p50": 0.06,
+          "p95": 0.31,
+          "max": 0.49
+        },
+        "client": {
+          "p50": 0.15,
+          "p95": 0.51,
+          "max": 1.63
+        },
+        "devices": {
+          "p50": 3.03,
+          "p95": 4.07,
+          "max": 5.79
+        },
+        "reports": {
+          "p50": 0.0,
+          "p95": 7.08,
+          "max": 8.68
+        },
+        "server": {
+          "p50": 6.13,
+          "p95": 11.05,
+          "max": 13.04
+        },
+        "transport": {
+          "p50": 0.51,
+          "p95": 1.52,
+          "max": 2.46
+        }
+      },
+      "failures": {
+        "cancelled": 3,
+        "expired": 6
+      },
+      "cutoff": {
+        "damage": 50,
+        "flights": 0,
+        "ordnance": 2,
+        "rays": 132
+      },
+      "barrierReports": 523,
+      "barrierSquareReads": 0,
+      "pairedPackets": 156,
+      "observationFrames": 20000,
+      "permitEntries": 7900,
+      "damagePackets": 5544,
+      "peakOutstanding": 84,
+      "plate1Transitions": 54,
+      "plate2Transitions": 54,
+      "observerPackets": 8884,
+      "suiteAssertions": 57869,
+      "requested": 2931,
+      "applied": 2922
+    },
+    {
+      "variant": "stock",
+      "oneWayMs": 50,
+      "repeat": 2,
+      "families": {
+        "Arc": [21, 98, 98, 1, 100, 150, 100],
+        "Ballista": [4, 4, 4, 1, 100, 350, 300],
+        "Barrier": [0, 266, 266, 10, 100, 100, 50],
+        "BarrierReinforced": [0, 260, 260, 10, 100, 100, 50],
+        "Bed": [0, 540, 540, 10, 100, 100, 50],
+        "BedReinforced": [0, 390, 390, 10, 100, 100, 50],
+        "HuntingRifle": [18, 18, 18, 1, 100, 200, 150],
+        "LobberAerosol": [5, 84, 83, 1, 100, 200, 150],
+        "LobberMakeshift": [5, 56, 55, 1, 100, 200, 150],
+        "LobberPipe": [5, 97, 97, 1, 100, 200, 150],
+        "M16": [42, 155, 155, 1, 100, 200, 150],
+        "M4": [39, 39, 39, 1, 100, 200, 150],
+        "Panel": [0, 40, 40, 10, 100, 100, 50],
+        "Pistol": [18, 18, 18, 1, 100, 200, 150],
+        "Poke": [0, 140, 140, 10, 100, 100, 50],
+        "Potato": [9, 17, 17, 1, 100, 100, 50],
+        "RotaryBat": [0, 42, 42, 1, 100, 100, 50],
+        "RotaryBlades": [0, 42, 42, 1, 100, 150, 100],
+        "Scrapshot": [11, 39, 39, 1, 100, 150, 100],
+        "Shotgun": [17, 28, 28, 1, 100, 150, 100],
+        "Tack": [0, 270, 270, 10, 100, 100, 50],
+        "Tether": [0, 100, 100, 10, 100, 150, 100],
+        "Wire": [0, 380, 380, 10, 100, 100, 50]
+      },
+      "ms": {
+        "barriers": {
+          "p50": 0.06,
+          "p95": 3.48,
+          "max": 4.16
+        },
+        "client": {
+          "p50": 0.14,
+          "p95": 0.66,
+          "max": 1.5
+        },
+        "devices": {
+          "p50": 2.94,
+          "p95": 4.33,
+          "max": 5.39
+        },
+        "reports": {
+          "p50": 0.0,
+          "p95": 7.1,
+          "max": 58.16
+        },
+        "server": {
+          "p50": 8.01,
+          "p95": 11.89,
+          "max": 62.02
+        },
+        "transport": {
+          "p50": 0.36,
+          "p95": 1.69,
+          "max": 2.84
+        }
+      },
+      "failures": {
+        "rejected": 2
+      },
+      "cutoff": {
+        "damage": 3,
+        "flights": 0,
+        "ordnance": 3,
+        "rays": 19
+      },
+      "barrierReports": 526,
+      "barrierSquareReads": 7278,
+      "pairedPackets": 0,
+      "observationFrames": 20000,
+      "permitEntries": 8168,
+      "damagePackets": 6242,
+      "peakOutstanding": 45,
+      "plate1Transitions": 54,
+      "plate2Transitions": 54,
+      "observerPackets": 9338,
+      "suiteAssertions": 58270,
+      "requested": 3123,
+      "applied": 3121
+    },
+    {
+      "variant": "candidate",
+      "oneWayMs": 50,
+      "repeat": 2,
+      "families": {
+        "Arc": [21, 87, 87, 1, 100, 150, 100],
+        "Ballista": [4, 4, 4, 1, 150, 200, 150],
+        "Barrier": [0, 266, 266, 10, 100, 100, 50],
+        "BarrierReinforced": [0, 260, 260, 10, 100, 100, 50],
+        "Bed": [0, 540, 540, 10, 100, 100, 50],
+        "BedReinforced": [0, 390, 390, 10, 100, 100, 50],
+        "HuntingRifle": [18, 18, 18, 1, 150, 200, 150],
+        "LobberAerosol": [5, 75, 75, 1, 100, 200, 150],
+        "LobberMakeshift": [4, 35, 33, 1, 100, 200, 150],
+        "LobberPipe": [5, 108, 108, 1, 100, 200, 150],
+        "M16": [43, 84, 84, 1, 100, 200, 150],
+        "M4": [41, 41, 41, 1, 100, 150, 100],
+        "Panel": [0, 40, 40, 10, 100, 100, 50],
+        "Pistol": [18, 18, 18, 1, 100, 200, 150],
+        "Poke": [0, 140, 140, 10, 100, 100, 50],
+        "Potato": [9, 19, 19, 1, 100, 100, 50],
+        "RotaryBat": [0, 42, 42, 1, 100, 100, 50],
+        "RotaryBlades": [0, 42, 42, 1, 100, 150, 100],
+        "Scrapshot": [10, 14, 14, 1, 100, 200, 150],
+        "Shotgun": [18, 31, 31, 1, 100, 200, 150],
+        "Tack": [0, 270, 270, 10, 100, 150, 100],
+        "Tether": [0, 100, 100, 10, 100, 150, 100],
+        "Wire": [0, 380, 380, 10, 100, 100, 50]
+      },
+      "ms": {
+        "barriers": {
+          "p50": 0.05,
+          "p95": 0.33,
+          "max": 0.45
+        },
+        "client": {
+          "p50": 0.14,
+          "p95": 0.69,
+          "max": 1.6
+        },
+        "devices": {
+          "p50": 2.92,
+          "p95": 3.88,
+          "max": 5.75
+        },
+        "reports": {
+          "p50": 0.0,
+          "p95": 7.13,
+          "max": 10.88
+        },
+        "server": {
+          "p50": 6.22,
+          "p95": 11.02,
+          "max": 14.07
+        },
+        "transport": {
+          "p50": 0.34,
+          "p95": 1.73,
+          "max": 3.04
+        }
+      },
+      "failures": {
+        "rejected": 2
+      },
+      "cutoff": {
+        "damage": 8,
+        "flights": 0,
+        "ordnance": 3,
+        "rays": 110
+      },
+      "barrierReports": 526,
+      "barrierSquareReads": 0,
+      "pairedPackets": 7,
+      "observationFrames": 20000,
+      "permitEntries": 8114,
+      "damagePackets": 5990,
+      "peakOutstanding": 42,
+      "plate1Transitions": 52,
+      "plate2Transitions": 52,
+      "observerPackets": 9036,
+      "suiteAssertions": 58022,
+      "requested": 3004,
+      "applied": 3002
+    },
+    {
+      "variant": "candidate",
+      "oneWayMs": 150,
+      "repeat": 3,
+      "families": {
+        "Arc": [20, 83, 83, 1, 300, 600, 450],
+        "Ballista": [4, 4, 4, 1, 400, 450, 300],
+        "Barrier": [0, 221, 221, 10, 300, 550, 400],
+        "BarrierReinforced": [0, 218, 218, 10, 300, 550, 400],
+        "Bed": [0, 540, 537, 10, 300, 500, 350],
+        "BedReinforced": [0, 390, 389, 10, 300, 500, 350],
+        "HuntingRifle": [17, 17, 17, 1, 650, 1500, 1350],
+        "LobberAerosol": [4, 52, 51, 1, 450, 650, 500],
+        "LobberMakeshift": [4, 55, 55, 1, 300, 600, 450],
+        "LobberPipe": [4, 72, 72, 1, 300, 600, 450],
+        "M16": [30, 63, 63, 1, 400, 950, 800],
+        "M4": [34, 34, 34, 1, 600, 1250, 1100],
+        "Panel": [0, 40, 40, 10, 300, 300, 150],
+        "Pistol": [15, 15, 15, 1, 300, 700, 550],
+        "Poke": [0, 140, 140, 10, 300, 350, 200],
+        "Potato": [7, 16, 16, 1, 300, 550, 400],
+        "RotaryBat": [0, 44, 44, 1, 300, 500, 350],
+        "RotaryBlades": [0, 44, 44, 1, 300, 500, 350],
+        "Scrapshot": [10, 19, 19, 1, 350, 1200, 1050],
+        "Shotgun": [15, 26, 26, 1, 400, 1050, 900],
+        "Tack": [0, 270, 269, 10, 300, 500, 350],
+        "Tether": [0, 100, 100, 10, 300, 550, 400],
+        "Wire": [0, 380, 378, 10, 400, 500, 350]
+      },
+      "ms": {
+        "barriers": {
+          "p50": 0.06,
+          "p95": 0.31,
+          "max": 0.76
+        },
+        "client": {
+          "p50": 0.15,
+          "p95": 0.64,
+          "max": 3.05
+        },
+        "devices": {
+          "p50": 3.06,
+          "p95": 4.09,
+          "max": 5.92
+        },
+        "reports": {
+          "p50": 0.01,
+          "p95": 9.31,
+          "max": 15.11
+        },
+        "server": {
+          "p50": 6.07,
+          "p95": 14.01,
+          "max": 21.07
+        },
+        "transport": {
+          "p50": 0.5,
+          "p95": 1.83,
+          "max": 2.59
+        }
+      },
+      "failures": {
+        "cancelled": 4,
+        "expired": 3,
+        "rejected": 1
+      },
+      "cutoff": {
+        "damage": 71,
+        "flights": 0,
+        "ordnance": 3,
+        "rays": 74
+      },
+      "barrierReports": 523,
+      "barrierSquareReads": 0,
+      "pairedPackets": 128,
+      "observationFrames": 20000,
+      "permitEntries": 7946,
+      "damagePackets": 5420,
+      "peakOutstanding": 84,
+      "plate1Transitions": 51,
+      "plate2Transitions": 51,
+      "observerPackets": 8654,
+      "suiteAssertions": 57694,
+      "requested": 2843,
+      "applied": 2835
+    },
+    {
+      "variant": "stock",
+      "oneWayMs": 150,
+      "repeat": 3,
+      "families": {
+        "Arc": [18, 82, 82, 1, 300, 1600, 1450],
+        "Ballista": [4, 4, 4, 1, 600, 850, 700],
+        "Barrier": [0, 221, 221, 10, 300, 750, 600],
+        "BarrierReinforced": [0, 218, 218, 10, 300, 600, 450],
+        "Bed": [0, 540, 525, 10, 300, 500, 350],
+        "BedReinforced": [0, 390, 379, 10, 300, 600, 450],
+        "HuntingRifle": [16, 16, 16, 1, 850, 2700, 2550],
+        "LobberAerosol": [4, 86, 86, 1, 300, 1000, 850],
+        "LobberMakeshift": [4, 41, 41, 1, 400, 850, 700],
+        "LobberPipe": [4, 103, 103, 1, 300, 700, 550],
+        "M16": [35, 56, 56, 1, 450, 1100, 950],
+        "M4": [33, 33, 33, 1, 1500, 2350, 2200],
+        "Panel": [0, 40, 39, 10, 300, 300, 150],
+        "Pistol": [17, 17, 17, 1, 300, 650, 500],
+        "Poke": [0, 140, 139, 10, 300, 300, 150],
+        "Potato": [8, 16, 16, 1, 300, 600, 450],
+        "RotaryBat": [0, 44, 37, 1, 300, 500, 350],
+        "RotaryBlades": [0, 44, 37, 1, 300, 500, 350],
+        "Scrapshot": [9, 7, 7, 1, 400, 550, 400],
+        "Shotgun": [14, 22, 22, 1, 600, 2000, 1850],
+        "Tack": [0, 270, 265, 10, 300, 500, 350],
+        "Tether": [0, 100, 100, 10, 300, 750, 600],
+        "Wire": [0, 380, 341, 10, 400, 500, 350]
+      },
+      "ms": {
+        "barriers": {
+          "p50": 0.06,
+          "p95": 3.41,
+          "max": 6.92
+        },
+        "client": {
+          "p50": 0.15,
+          "p95": 0.51,
+          "max": 1.83
+        },
+        "devices": {
+          "p50": 3.01,
+          "p95": 4.39,
+          "max": 51.08
+        },
+        "reports": {
+          "p50": 0.01,
+          "p95": 7.2,
+          "max": 13.44
+        },
+        "server": {
+          "p50": 8.03,
+          "p95": 12.05,
+          "max": 55.08
+        },
+        "transport": {
+          "p50": 0.51,
+          "p95": 1.59,
+          "max": 3.47
+        }
+      },
+      "failures": {
+        "cancelled": 41,
+        "expired": 44,
+        "unavailable": 1
+      },
+      "cutoff": {
+        "damage": 71,
+        "flights": 0,
+        "ordnance": 2,
+        "rays": 77
+      },
+      "barrierReports": 523,
+      "barrierSquareReads": 7239,
+      "pairedPackets": 0,
+      "observationFrames": 20000,
+      "permitEntries": 8032,
+      "damagePackets": 5656,
+      "peakOutstanding": 84,
+      "plate1Transitions": 54,
+      "plate2Transitions": 54,
+      "observerPackets": 8468,
+      "suiteAssertions": 57680,
+      "requested": 2870,
+      "applied": 2784
+    },
+    {
+      "variant": "candidate",
+      "oneWayMs": 50,
+      "repeat": 3,
+      "families": {
+        "Arc": [20, 79, 79, 1, 100, 200, 150],
+        "Ballista": [4, 4, 4, 1, 100, 200, 150],
+        "Barrier": [0, 266, 266, 10, 100, 100, 50],
+        "BarrierReinforced": [0, 260, 260, 10, 100, 100, 50],
+        "Bed": [0, 540, 540, 10, 100, 100, 50],
+        "BedReinforced": [0, 390, 390, 10, 100, 100, 50],
+        "HuntingRifle": [18, 18, 18, 1, 100, 200, 150],
+        "LobberAerosol": [5, 50, 48, 1, 100, 200, 150],
+        "LobberMakeshift": [4, 55, 55, 1, 100, 200, 150],
+        "LobberPipe": [4, 126, 126, 1, 100, 150, 100],
+        "M16": [43, 83, 83, 1, 100, 150, 100],
+        "M4": [38, 38, 38, 1, 100, 150, 100],
+        "Panel": [0, 40, 40, 10, 100, 100, 50],
+        "Pistol": [17, 17, 17, 1, 100, 200, 150],
+        "Poke": [0, 140, 140, 10, 100, 100, 50],
+        "Potato": [9, 14, 14, 1, 100, 150, 100],
+        "RotaryBat": [0, 42, 42, 1, 100, 100, 50],
+        "RotaryBlades": [0, 42, 42, 1, 100, 100, 50],
+        "Scrapshot": [11, 16, 16, 1, 100, 250, 200],
+        "Shotgun": [16, 30, 30, 1, 100, 200, 150],
+        "Tack": [0, 270, 270, 10, 100, 150, 100],
+        "Tether": [0, 100, 100, 10, 100, 150, 100],
+        "Wire": [0, 380, 380, 10, 100, 100, 50]
+      },
+      "ms": {
+        "barriers": {
+          "p50": 0.06,
+          "p95": 0.34,
+          "max": 0.56
+        },
+        "client": {
+          "p50": 0.13,
+          "p95": 0.68,
+          "max": 1.63
+        },
+        "devices": {
+          "p50": 3.02,
+          "p95": 3.95,
+          "max": 5.27
+        },
+        "reports": {
+          "p50": 0.0,
+          "p95": 7.19,
+          "max": 12.74
+        },
+        "server": {
+          "p50": 5.9,
+          "p95": 11.05,
+          "max": 16.54
+        },
+        "transport": {
+          "p50": 0.35,
+          "p95": 1.67,
+          "max": 3.41
+        }
+      },
+      "failures": {
+        "rejected": 2
+      },
+      "cutoff": {
+        "damage": 9,
+        "flights": 0,
+        "ordnance": 1,
+        "rays": 97
+      },
+      "barrierReports": 526,
+      "barrierSquareReads": 0,
+      "pairedPackets": 9,
+      "observationFrames": 20000,
+      "permitEntries": 8118,
+      "damagePackets": 5978,
+      "peakOutstanding": 44,
+      "plate1Transitions": 52,
+      "plate2Transitions": 52,
+      "observerPackets": 9002,
+      "suiteAssertions": 58014,
+      "requested": 3000,
+      "applied": 2998
+    },
+    {
+      "variant": "stock",
+      "oneWayMs": 50,
+      "repeat": 3,
+      "families": {
+        "Arc": [20, 88, 88, 1, 100, 200, 150],
+        "Ballista": [4, 4, 4, 1, 100, 150, 100],
+        "Barrier": [0, 266, 266, 10, 100, 100, 50],
+        "BarrierReinforced": [0, 260, 260, 10, 100, 100, 50],
+        "Bed": [0, 540, 540, 10, 100, 100, 50],
+        "BedReinforced": [0, 390, 390, 10, 100, 100, 50],
+        "HuntingRifle": [18, 18, 18, 1, 100, 200, 150],
+        "LobberAerosol": [5, 80, 80, 1, 100, 200, 150],
+        "LobberMakeshift": [5, 55, 55, 1, 100, 200, 150],
+        "LobberPipe": [5, 72, 72, 1, 100, 150, 100],
+        "M16": [41, 61, 61, 1, 100, 200, 150],
+        "M4": [39, 39, 39, 1, 100, 200, 150],
+        "Panel": [0, 40, 40, 10, 100, 100, 50],
+        "Pistol": [18, 18, 18, 1, 100, 200, 150],
+        "Poke": [0, 140, 140, 10, 100, 100, 50],
+        "Potato": [8, 19, 19, 1, 100, 100, 50],
+        "RotaryBat": [0, 42, 42, 1, 100, 100, 50],
+        "RotaryBlades": [0, 42, 42, 1, 100, 100, 50],
+        "Scrapshot": [11, 6, 6, 1, 100, 100, 50],
+        "Shotgun": [18, 30, 30, 1, 100, 150, 100],
+        "Tack": [0, 270, 270, 10, 100, 100, 50],
+        "Tether": [0, 101, 101, 10, 100, 200, 150],
+        "Wire": [0, 380, 380, 10, 100, 100, 50]
+      },
+      "ms": {
+        "barriers": {
+          "p50": 0.06,
+          "p95": 3.42,
+          "max": 4.63
+        },
+        "client": {
+          "p50": 0.13,
+          "p95": 0.69,
+          "max": 1.51
+        },
+        "devices": {
+          "p50": 2.99,
+          "p95": 4.46,
+          "max": 49.54
+        },
+        "reports": {
+          "p50": 0.0,
+          "p95": 7.14,
+          "max": 9.04
+        },
+        "server": {
+          "p50": 8.03,
+          "p95": 12.02,
+          "max": 49.8
+        },
+        "transport": {
+          "p50": 0.34,
+          "p95": 1.66,
+          "max": 2.29
+        }
+      },
+      "failures": {},
+      "cutoff": {
+        "damage": 8,
+        "flights": 0,
+        "ordnance": 3,
+        "rays": 167
+      },
+      "barrierReports": 526,
+      "barrierSquareReads": 7278,
+      "pairedPackets": 0,
+      "observationFrames": 20000,
+      "permitEntries": 8082,
+      "damagePackets": 5922,
+      "peakOutstanding": 45,
+      "plate1Transitions": 54,
+      "plate2Transitions": 54,
+      "observerPackets": 8966,
+      "suiteAssertions": 57948,
+      "requested": 2961,
+      "applied": 2961
+    }
+  ],
+  "familyColumns": [
+    "shots",
+    "requested",
+    "applied",
+    "distinctSources",
+    "ackP50",
+    "ackP95",
+    "ownerP95"
+  ],
+  "timing": "milliseconds; 50 ms server tick, one-way 50 or 150 ms, identical 20-second scripted paths; positive owner/client health checked after draining submitted damage",
+  "summary": {
+    "stock-100rtt": {
+      "requested": 9061,
+      "applied": 9057,
+      "pairedPackets": 0,
+      "barrierSquareReads": 21834,
+      "reasons": {
+        "rejected": 4
+      },
+      "barriersP95": 3.47,
+      "serverP95": 12.02,
+      "reportsP95": 7.14,
+      "devicesP95": 4.45,
+      "M16OwnerP95": [150, 150, 150],
+      "stageSources": {
+        "Wire": [1140, 1140],
+        "RotaryBat": [126, 126],
+        "RotaryBlades": [126, 126],
+        "Bed": [1620, 1620],
+        "BedReinforced": [1170, 1170],
+        "M16": [289, 289],
+        "Tether": [301, 301]
+      }
+    },
+    "candidate-100rtt": {
+      "requested": 8970,
+      "applied": 8966,
+      "pairedPackets": 19,
+      "barrierSquareReads": 0,
+      "reasons": {
+        "rejected": 4
+      },
+      "barriersP95": 0.33,
+      "serverP95": 11.05,
+      "reportsP95": 7.19,
+      "devicesP95": 3.95,
+      "M16OwnerP95": [100, 150, 100],
+      "stageSources": {
+        "Wire": [1140, 1140],
+        "RotaryBat": [126, 126],
+        "RotaryBlades": [126, 126],
+        "Bed": [1620, 1620],
+        "BedReinforced": [1170, 1170],
+        "M16": [218, 218],
+        "Tether": [300, 300]
+      }
+    },
+    "stock-300rtt": {
+      "requested": 8645,
+      "applied": 8376,
+      "pairedPackets": 0,
+      "barrierSquareReads": 21717,
+      "reasons": {
+        "cancelled": 132,
+        "expired": 129,
+        "rejected": 4,
+        "unavailable": 4
+      },
+      "barriersP95": 3.41,
+      "serverP95": 12.05,
+      "reportsP95": 7.2,
+      "devicesP95": 4.39,
+      "M16OwnerP95": [2000, 1350, 950],
+      "stageSources": {
+        "Wire": [1026, 1140],
+        "RotaryBat": [113, 132],
+        "RotaryBlades": [103, 132],
+        "Bed": [1572, 1620],
+        "BedReinforced": [1132, 1170],
+        "M16": [212, 212],
+        "Tether": [301, 301]
+      }
+    },
+    "candidate-300rtt": {
+      "requested": 8684,
+      "applied": 8656,
+      "pairedPackets": 426,
+      "barrierSquareReads": 0,
+      "reasons": {
+        "cancelled": 12,
+        "expired": 15,
+        "rejected": 1
+      },
+      "barriersP95": 0.31,
+      "serverP95": 11.06,
+      "reportsP95": 7.08,
+      "devicesP95": 4.09,
+      "M16OwnerP95": [450, 450, 800],
+      "stageSources": {
+        "Wire": [1131, 1140],
+        "RotaryBat": [130, 132],
+        "RotaryBlades": [132, 132],
+        "Bed": [1615, 1620],
+        "BedReinforced": [1164, 1170],
+        "M16": [193, 193],
+        "Tether": [300, 300]
+      }
+    }
+  }
+}

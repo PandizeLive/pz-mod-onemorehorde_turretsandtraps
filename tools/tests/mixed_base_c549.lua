@@ -41,10 +41,12 @@ local function register(id,kind)
     stats[kind]=stats[kind] or {attempt=0,applied=0,instances={},shots=0,latency={}}
 end
 local outgoing,incoming,packets,permits,reported={}, {},0,0,0
-local effects=0
+local effects,pairsSent=0,0
+local combatCodec=stressWireCodec and networkRoundTrip or nativeRoundTrip
 sendServerCommand=function(owner,module,command,data)
     if module==Protocol.MODULE then
-        outgoing[#outgoing+1]={at=testMillis+legMs,owner=owner,command=command,data=nativeRoundTrip(data)}
+        outgoing[#outgoing+1]={at=testMillis+legMs,owner=owner,command=command,data=combatCodec(data)}
+        if command=="ApplyPair" then pairsSent=pairsSent+1 end
         packets=packets+1
     elseif module=="OMHTT_ContactV1" and command=="Permits" then
         permits=permits+#nativeRoundTrip(data)
@@ -55,7 +57,7 @@ sendServerCommand=function(owner,module,command,data)
 end
 sendClientCommand=function(owner,module,command,data)
     if module==Protocol.MODULE then
-        incoming[#incoming+1]={at=testMillis+legMs,owner=owner,command=command,data=nativeRoundTrip(data)}
+        incoming[#incoming+1]={at=testMillis+legMs,owner=owner,command=command,data=combatCodec(data)}
         packets=packets+1
     end
 end
@@ -430,6 +432,7 @@ for kind,v in pairs(timings) do rows[#rows+1]=string.format("ms %s %.2f %.2f %.2
 for kind,n in pairs(reasons) do rows[#rows+1]="failure "..kind.." "..n end
 check(plates[1].changes>2 and plates[2].changes>2,"inactive pressure plate")
 rows[#rows+1]="traffic "..reported.." "..permits.." "..packets.." peak "..peak.." plates "..plates[1].changes.." "..plates[2].changes.." observerPackets "..effects
+rows[#rows+1]="pairsSent "..pairsSent
 if stressTrace then rows[#rows+1]="arrivals "..table.concat(arrivals," ") end
 table.sort(rows)
 testPackAudit="C549\n"..table.concat(rows,"\n").."\nEND C549"

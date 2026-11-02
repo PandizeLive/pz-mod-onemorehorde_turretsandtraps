@@ -40,6 +40,28 @@ public final class KahluaCheck {
             return 1;
         });
         set.invoke(env, "nativeRoundTrip", roundTrip);
+        Class<?> protocolCodec = Class.forName("zombie.network.TableNetworkUtils");
+        Class<?> wireWriter = Class.forName("zombie.core.network.ByteBufferWriter");
+        Class<?> wireReader = Class.forName("zombie.core.network.ByteBufferReader");
+        var wireBuffer = java.nio.ByteBuffer.allocate(60000);
+        Object writerForTest = wireWriter.getConstructor(java.nio.ByteBuffer.class).newInstance(wireBuffer);
+        Object readerForTest = wireReader.getConstructor(java.nio.ByteBuffer.class).newInstance(wireBuffer);
+        Method writePacket = protocolCodec.getMethod("save", tableType, wireWriter);
+        Method readPacket = protocolCodec.getMethod("load", tableType, wireReader);
+        Class.forName("zombie.Lua.LuaManager").getField("platform").set(null, platform);
+        Object wireRoundTrip = Proxy.newProxyInstance(functionType.getClassLoader(), new Class<?>[] {functionType}, (proxy, method, values) -> {
+            if (!method.getName().equals("call")) return null;
+            Object frame = values[0];
+            Object data = frame.getClass().getMethod("get", int.class).invoke(frame, 0);
+            wireBuffer.clear();
+            writePacket.invoke(null, data, writerForTest);
+            wireBuffer.flip();
+            Object restored = platformImpl.getMethod("newTable").invoke(platform);
+            readPacket.invoke(null, restored, readerForTest);
+            frame.getClass().getMethod("push", Object.class).invoke(frame, restored);
+            return 1;
+        });
+        set.invoke(env, "networkRoundTrip", wireRoundTrip);
         Object realMillis = Proxy.newProxyInstance(functionType.getClassLoader(), new Class<?>[] {functionType}, (proxy, method, values) -> {
             if (!method.getName().equals("call")) return null;
             values[0].getClass().getMethod("push", Object.class).invoke(values[0], System.nanoTime() / 1000000.0);

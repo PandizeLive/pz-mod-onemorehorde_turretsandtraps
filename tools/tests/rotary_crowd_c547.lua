@@ -145,9 +145,9 @@ local function run(count,transport,servicePasses,hazard,wallBudget)
         if measured and name=="damage-queue" then queueMs[#queueMs+1]=value end
         return originalMeasure(name,value,component)
     end
-    Damage.request=function(z,amount,source,kind,callback,expires,observation)
+    Damage.request=function(z,amount,source,kind,callback,expires,...)
         if measured and expires and expires<GameTime.getServerTimeMills() then expiredDispatch=expiredDispatch+1 end
-        return originalRequest(z,amount,source,kind,callback,expires,observation)
+        return originalRequest(z,amount,source,kind,callback,expires,...)
     end
     local nextFree,lateRotary,lateTrap={},0,0
     Damage.resolve=function(z,amount,source,kind,callback,obs)

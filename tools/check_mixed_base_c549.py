@@ -64,14 +64,15 @@ def receipt_model(events, leg, limit):
             "ownerP95Ms": delays[(len(delays)*95+99)//100-1]}
 
 
-def run(leg, variant, repeat, overlay, trace=False):
+def run(leg, variant, repeat, overlay, trace=False, wire_codec=False):
     audit = OUT / f"scene-{leg}.lua"
-    audit.write_text(f"stressLeg={leg}\nstressTrace={str(trace).lower()}\n" + PROBE.read_text(encoding="utf-8"), encoding="utf-8")
+    settings = f"stressLeg={leg}\nstressTrace={str(trace).lower()}\nstressWireCodec={str(wire_codec).lower()}\n"
+    audit.write_text(settings + PROBE.read_text(encoding="utf-8"), encoding="utf-8")
     label = f"{variant}-{leg}-{repeat}"
     log = OUT / (label + ".log")
     env = {**os.environ, "OMHTT_TEST_OUTPUT": str(OUT)}
     env.pop("OMHTT_TEST_SOURCE_OVERRIDE", None)
-    if variant == "index":
+    if variant in ("index", "candidate"):
         env["OMHTT_TEST_SOURCE_OVERRIDE"] = overlay
     with log.open("w", encoding="utf-8") as stream:
         p = subprocess.run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED",
@@ -90,6 +91,8 @@ def run(leg, variant, repeat, overlay, trace=False):
                 ("shots","requested","applied","distinctSources","ackP50","ackP95","ownerP95"), map(int, parts[1:]), strict=True))
         elif key == "ms":
             result["ms"][parts[0]] = dict(zip(("p50","p95","max"), map(float, parts[1:]), strict=True))
+        elif key == "pairsSent":
+            result["pairedPackets"] = int(parts[0])
         elif key == "failure":
             result["failures"][parts[0]] = int(parts[1])
         elif key == "barriers":

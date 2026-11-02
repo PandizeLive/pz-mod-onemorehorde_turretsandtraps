@@ -1,5 +1,7 @@
 # Decision register
 
+**C550 / Paired-hit multiplayer prototype.** Owner selected C549 option 1A. The barrier lookup and two-hit receipt candidate passed the fault suite and eight-rotary regression. [Comparison with 0.2.71.10 and promotion choices](PAIRED_RECEIPTS_C550.md). Prototype only. **Decision needed** on packaging a connected test build.
+
 **C549 / Mixed-base latency audit on 0.2.71.10.** Fourteen turrets, 100 moving zombies, 90 traps and Tack fields, and two linked pressure plates ran together. At 100 ms round trip 8,984 of 8,987 damage requests applied. At 300 ms, 8,435 of 8,686 applied. An indexed barrier lookup cut strike processing p95 by about 90%. A separate same-victim receipt model warrants a two-hit prototype. [Full results and options](MIXED_BASE_C549.md). **Decision needed** on 1A (both investigations into a candidate) or 1B (barrier only). Connected acceptance remains pending.
 
 **C548 / Shared damage queue repaired in 0.2.71.10.** Owner approved C547 option 1A. All 3,424 expected hits applied in the eight-head replay. Mixed Poke delivered all hits. Two rotary contacts expired in the mixed wire case, matching the independent FIFO limit. [Results and Alex guideline review](TEST_v0.2.71.10.md). Connected acceptance is pending.

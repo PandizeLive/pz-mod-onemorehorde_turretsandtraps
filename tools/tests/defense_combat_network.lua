@@ -187,7 +187,8 @@ if __modules["OMHTT/Damage"] then
  check(#outbound==1 and #notices==1 and notices[1]=="old-trap:cancelled","expired trap retired behind a valid busy head exactly once")
  receiveClient();receiveServer()
  damage.tick();receiveClient();receiveServer()
- damage.tick();receiveClient();receiveServer()
+ damage.tick()
+ if #outbound>0 then receiveClient();receiveServer() end
  check(table.concat(notices,",")=="old-trap:cancelled,active:applied,ahead:applied,replacement:applied",
   "per-victim FIFO survives cancellation callback reentry")
  check(math.abs(server.health-.7)<.00001 and math.abs(client.health-.7)<.00001,"retired work cannot mutate either health record")
@@ -199,7 +200,10 @@ if __modules["OMHTT/Damage"] then
  end
  for i=1,9 do check(damage.resolve(server,.01,"burst","firearm",result),"active plus eight admitted") end
  check(not damage.resolve(server,.01,"excess","firearm",result) and denials==1,"bounded victim capacity rejects once")
- for i=1,9 do receiveClient();receiveServer();damage.tick() end
+ for i=1,9 do
+  if #outbound==0 then break end
+  receiveClient();receiveServer();damage.tick()
+ end
  check(hits==9 and denials==1 and #outbound==0 and math.abs(server.health-.91)<.00001,"full queue drains once in order")
  -- Verify the real FIFO uses both budgets and resumes from the next victim.
  local originalRequest=damage.request
