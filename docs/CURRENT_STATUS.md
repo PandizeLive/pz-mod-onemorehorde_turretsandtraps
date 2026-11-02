@@ -1,5 +1,7 @@
 # Current development and planning handoff
 
+**C553 / Rotary latency follow-up.** The owner deferred the Horde Manager issue. Of 45 live rotary hits, 43 applied within 164 ms. Two took 262 and 319 ms. The slow window shows no measured queue backlog. [Timing evidence and focused retest](HORDE_MANAGER_C552.md#c553-analysis-of-the-319-ms-peak).
+
 **C552 / Live Horde Manager and rotary check.** The server created all 15 zombies requested. Exact IDs reached the simulated client 15/15 with and without T&T on separate local runs. Live visibility remains unresolved. The connected rotary retest logged 45/45 admitted hits applied and displayed. [Findings and diagnostic choice](HORDE_MANAGER_C552.md).
 
 **C551 / 0.2.71.11 multiplayer test build.** Owner selected C550 option 1A to package paired damage receipts and the indexed Spike Barrier lookup. The six promoted combat files match the tested candidate. [Release verification and two-player checklist](TEST_v0.2.71.11.md). Connected acceptance is pending. Installed and staged from `test/v0.2.71.11` at `b3a1efe7`. All 642 tagged package files matched the ZIP, local install and Workshop stage. [Delivery record](evidence/c551-delivery.json). **Test now** after CMD option 3 and restarting the server and both clients.

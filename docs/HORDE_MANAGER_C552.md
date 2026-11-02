@@ -1,5 +1,7 @@
 # C552 Horde Manager visibility and rotary retest
 
+**C553 follow-up.** The owner deferred the Horde Manager investigation. Rotary timing remains the active question.
+
 On November 2 the owner reported that Horde Manager spawns were again invisible and that rotary hits appeared more consistent. The running client and dedicated server both logged T&T 0.2.71.11 on Project Zomboid 42.21.0. This investigation used the current client console, a read-only copy of the dedicated server console, and its admin and command logs.
 
 ## Live spawn attempts
@@ -20,6 +22,14 @@ A private loopback dedicated server and the installed game's FakeClientManager e
 | Both T&T entries, 0.2.71.11, plus observer | 15 | 15 |
 
 This exercises the native command and server-to-client spawn delivery. The simulated client has no renderer and does not run the player's client Lua. The local world also lacks the live base, other Workshop mods and live connection conditions. These tests rule out a general server-side block by T&T. They cannot resolve a conditional interaction on the owner's server.
+
+## C553 analysis of the 319 ms peak
+
+The 45 owner applications totalled 5,180 ms. The two hits in client summary 286 totalled 581 ms with a 319 ms maximum, giving individual readings of 262 and 319 ms. All other windows had maxima of 164 ms or less. Damage display and owner application had identical totals and maxima in the slow window. This timer starts at the movement sample used to decide contact.
+
+The largest logged sample age at rotary hit submission across the entire encounter was 134 ms. On the game's synchronized clocks that places at least approximately 185 ms of the 319 ms after hit detection. The overlapping server summary 80 recorded four rotary submissions, zero measured queue wait and a maximum of 490 ms for a turret damage transaction to settle. The settlement timer includes the return acknowledgement, which comes after the player sees damage. The two summaries cover different sets of hits and lack a per-hit join with turret detail disabled. The capture points toward delivery or scheduling after detection and cannot assign a specific duration to internet transport.
+
+Recommend a short retest on 0.2.71.11 with the existing **Turrets: Detailed Logging** setting enabled. Match client display and server result by token, and match the observed hit by victim and observation timestamp. Compare the slow transactions against ordinary ones before changing gameplay. The existing authority and expiry rules protect hit and kill correctness.
 
 ## Live rotary result
 
