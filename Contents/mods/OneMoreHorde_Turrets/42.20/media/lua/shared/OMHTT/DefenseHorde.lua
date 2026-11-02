@@ -76,7 +76,10 @@ function H.beginDamage(zombie, amount, source, kind, lethal)
     if isClient() or not require("OMHTT/DefenseCombatProtocol").living(zombie) then return false end
     local core = rawget(_G, "OneMoreHordeDefenseIntegration")
     if core and core.API_VERSION == 1 then
-        local allowed, token = core.beginDamage(zombie, source, kind, lethal == true or zombie:getHealth() - amount < 0.000001)
+        if lethal == nil then
+            lethal = zombie:getHealth() - amount < 0.000001
+        end
+        local allowed, token = core.beginDamage(zombie, source, kind, lethal)
         return allowed, core, token
     end
     return H.allowed(zombie)

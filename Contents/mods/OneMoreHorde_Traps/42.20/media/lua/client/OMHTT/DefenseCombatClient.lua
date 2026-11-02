@@ -50,7 +50,7 @@ local function reply(player, command, message, receipt)
         result.receipt = receipt.nonce
         if receipt.applied then
             result.before, result.after, result.lethal = receipt.before, receipt.after, receipt.lethal
-            result.processingMs = receipt.processingMs
+            result.processingMs, result.appliedAt = receipt.processingMs, receipt.appliedAt
             result.x, result.y = receipt.x, receipt.y
         end
     end
@@ -163,6 +163,18 @@ function C.expire()
     end
 end
 
+local function presentHit(zombie, hit, token, lost, now)
+    if lost <= 0 or type(hit.source) ~= "string" or type(hit.kind) ~= "string" then return end
+    if P.number(hit.observedAt, 1, now) then
+        local rotary = hit.kind == "rotary"
+        local metric = rotary and "rotary-to-owner-apply" or "contact-to-owner-apply"
+        require("OMHTT/Diagnostics").measure(metric, now-hit.observedAt, rotary and "turrets" or "traps")
+    end
+    require("OMHTT/DamagePresentation").present({token=token, id=zombie:getOnlineID(),
+        outfit=P.outfit(zombie:getPersistentOutfitID()), source=hit.source, kind=hit.kind, observedAt=hit.observedAt,
+        x=zombie:getX(), y=zombie:getY(), z=zombie:getZ(), lost=lost})
+end
+
 ---@param module string Server namespace
 ---@param command string Server operation
 ---@param message table Server-authorized values
@@ -175,7 +187,8 @@ function C.command(module, command, message)
     local zombie = indexed[message.id]
     local saved = history[message.token]
     local prior = zombie and receipts[zombie]
-    if command ~= "Apply" and command ~= "Reconcile" and command ~= "Status" then return end
+    local applying = command == "Apply" or command == "ApplyPair"
+    if not applying and command ~= "Reconcile" and command ~= "Status" then return end
     if not P.token(message.receipt) then return end
     local started = getTimestampMs()
     -- Status is a cancellation barrier even when it overtakes the initial Apply.
@@ -202,7 +215,7 @@ function C.command(module, command, message)
         return
     end
     local reason
-    if command == "Apply" and require("OMHTT/ActiveTime").paused() then reason="paused"
+    if applying and require("OMHTT/ActiveTime").paused() then reason="paused"
     elseif not zombie then reason="missing"
     elseif zombie:getOnlineID() ~= message.id or P.outfit(zombie:getPersistentOutfitID()) ~= message.outfit then reason="identity"
     elseif not P.living(zombie) then reason="dead"
@@ -213,20 +226,29 @@ function C.command(module, command, message)
     if serverNow <= 0 or not P.number(message.issuedAt, 1, 1000000000000000)
         or not P.number(message.expiresAt, message.issuedAt, message.issuedAt + P.TIMEOUT)
         or serverNow > message.expiresAt then reject(player,message,"expired",zombie); return end
-    if command == "Apply" and message.issuedAt < (createdAt[zombie] or serverNow) then reject(player,message,"identity",zombie); return end
+    if applying and message.issuedAt < (createdAt[zombie] or serverNow) then reject(player,message,"identity",zombie); return end
     if prior and message.sequence <= prior.sequence then reject(player,message,"cancelled",zombie); return end
     if not P.number(message.x,-1000000,1000000) or not P.number(message.y,-1000000,1000000)
         or not P.number(message.z,-32,32) or math.abs(zombie:getZ()-message.z)>.5
         or (zombie:getX()-message.x)^2+(zombie:getY()-message.y)^2>64 then reject(player,message,"position",zombie); return end
     local before=zombie:getHealth()
     if not P.number(before,P.EPSILON,1000000) then reject(player,message,"health",zombie); return end
-    local after,lost,lethal
+    local after,lost,lethal,first,second
     if command=="Reconcile" then
         if not P.number(message.health,P.EPSILON,1000000) then return end
         after,lethal=math.min(before,message.health),false
     else
         if not P.number(message.amount,.000001,1000000) then return end
-        after,lost,lethal=P.result(before,message.amount)
+        if command == "ApplyPair" then
+            local hit = message.second
+            if type(hit) ~= "table" or not P.number(hit.amount,.000001,1000000)
+                or not P.number(message.firstExpiresAt,1,message.expiresAt)
+                or not P.number(hit.expiresAt,1,message.expiresAt) then return end
+            first,second=P.ordered(before,message.amount,message.firstExpiresAt,serverNow,hit)
+            after,lost,lethal=second.after,first.lost,first.lethal or second.lethal
+        else
+            after,lost,lethal=P.result(before,message.amount)
+        end
     end
     -- A newer authorized operation proves the server settled this actor's previous
     -- operation. Keep the sequence guard, rather than every old hit for ten seconds.
@@ -239,7 +261,7 @@ function C.command(module, command, message)
     if #historyOrder >= P.MAX_RECEIPTS then reject(player,message,"capacity",zombie); return end
     local receipt={token=message.token,sequence=message.sequence,nonce=message.receipt,
         id=message.id,outfit=message.outfit,owner=message.owner,applied=true,
-        reconciled=command=="Reconcile",before=before,after=after,lethal=lethal,
+        reconciled=command=="Reconcile",before=before,after=after,lethal=lethal,appliedAt=second and serverNow,
         x=zombie:getX(),y=zombie:getY(),
         retainedUntil=started+P.TIMEOUT*2}
     receipts[zombie]=receipt
@@ -247,14 +269,11 @@ function C.command(module, command, message)
     zombie:setHealth(after)
     receipt.processingMs=getTimestampMs()-started
     reply(player,receipt.reconciled and "Reconciled" or "Applied",message,receipt)
-    if command == "Apply" and P.number(message.observedAt, 1, serverNow) then
-        local component = message.kind == "rotary" and "turrets" or "traps"
-        local metric = message.kind == "rotary" and "rotary-to-owner-apply" or "contact-to-owner-apply"
-        require("OMHTT/Diagnostics").measure(metric, serverNow-message.observedAt, component)
-    end
-    if command == "Apply" and type(message.source) == "string" and type(message.kind) == "string" then
-        require("OMHTT/DamagePresentation").present({token=message.token, id=message.id, outfit=message.outfit,
-            source=message.source, kind=message.kind, observedAt=message.observedAt, x=zombie:getX(), y=zombie:getY(), z=zombie:getZ(), lost=lost})
+    if applying then
+        presentHit(zombie, message, message.token, lost, serverNow)
+        if second then
+            presentHit(zombie, message.second, message.token.."/2", second.lost, serverNow)
+        end
     end
 
 end

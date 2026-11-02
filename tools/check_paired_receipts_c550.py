@@ -1,4 +1,5 @@
-"""Apply the C550 prototype in diagnostics and compare it against the tagged combat source."""
+"""Exercise the paired damage protocol against release source or the original prototype."""
+import argparse
 import hashlib
 import json
 import os
@@ -28,13 +29,15 @@ def prepare():
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(subprocess.check_output([*git, "show", f"{BASE}:{rel}"]))
     subprocess.run([*git, "apply", "--directory=" + overlay.relative_to(ROOT).as_posix(), PATCH], check=True)
-    subprocess.run(["C:/Program Files/Java/jdk-17/bin/javac.exe", "-d", OUT, ROOT / "tools/KahluaCheck.java"], check=True)
     return overlay
 
 
 def probe(overlay, name, fixture):
     log = OUT / (name + ".log")
-    env = {**os.environ, "OMHTT_TEST_OUTPUT": str(OUT), "OMHTT_TEST_SOURCE_OVERRIDE": str(overlay)}
+    env = {**os.environ, "OMHTT_TEST_OUTPUT": str(OUT)}
+    env.pop("OMHTT_TEST_SOURCE_OVERRIDE", None)
+    if overlay is not None:
+        env["OMHTT_TEST_SOURCE_OVERRIDE"] = str(overlay)
     with log.open("w", encoding="utf-8") as stream:
         result = subprocess.run([mixed.GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED",
                                  "-Djava.awt.headless=true", "-Duser.home=" + str(OUT / "native-home"),
@@ -47,7 +50,19 @@ def probe(overlay, name, fixture):
 
 
 def main():
-    overlay = prepare()
+    global OUT
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--release", action="store_true", help="Check current Source directly, without a prototype overlay")
+    args = parser.parse_args()
+    version = re.search(r"^modversion=([\d.]+)$", (ROOT / "Source/42.20/mod.info").read_text(), re.M)[1]
+    if args.release:
+        OUT = ROOT / "diagnostics" / ("v" + version) / "paired-receipts"
+        mixed.OUT = OUT
+        OUT.mkdir(parents=True, exist_ok=True)
+        overlay = None
+    else:
+        overlay = prepare()
+    subprocess.run(["C:/Program Files/Java/jdk-17/bin/javac.exe", "-d", OUT, ROOT / "tools/KahluaCheck.java"], check=True)
     focused = probe(overlay, "focused", "tools/tests/paired_receipts_c550.lua")
     rotary = probe(overlay, "rotary", "tools/tests/rotary_crowd_c547.lua")
     measurements = rotary.split("Optional audit: C547\n")[1].split("\nEND C547")[0].splitlines()
@@ -58,6 +73,15 @@ def main():
                 "connectedPlayers": 0, "focused": re.search(r"C550 focused checks \d+ PASS", focused)[0],
                 "focusedSuiteAssertions": int(float(focused.split("Assertions passed: ")[1].splitlines()[0])),
                 "rotaryRegressionRows": measurements, "runs": []}
+    if args.release:
+        evidence["version"] = version
+        for leg in (50, 150):
+            row = mixed.run(leg, "release", 1, None, wire_codec=True)
+            if row["pairedPackets"] < 1 or row["barrierSquareReads"] != 0:
+                raise RuntimeError("Release did not exercise both promoted paths")
+            evidence["runs"].append(row)
+        (OUT / "release.json").write_text(json.dumps(evidence, indent=2)+"\n", encoding="utf-8")
+        return
     for repeat in range(1, 4):
         for leg in (150, 50):
             for variant in (("candidate", "stock") if repeat % 2 else ("stock", "candidate")):

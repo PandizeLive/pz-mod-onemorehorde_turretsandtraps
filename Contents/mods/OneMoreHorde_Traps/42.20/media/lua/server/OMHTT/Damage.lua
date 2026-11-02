@@ -98,7 +98,7 @@ end
 ---@param kind string Effect family
 ---@param callback function? Completion receives actual loss and result
 ---@return boolean accepted Completion may be asynchronous on MP
-function Damage.request(zombie, amount, source, kind, callback, expiresAt, observation)
+function Damage.request(zombie, amount, source, kind, callback, expiresAt, observation, second)
     if ActiveTime.paused() then return false end
     if isClient() or not zombie or not Protocol.living(zombie) or zombie:isInvulnerable()
         or not Protocol.number(amount, 0.000001, 1000000)
@@ -109,8 +109,9 @@ function Damage.request(zombie, amount, source, kind, callback, expiresAt, obser
         if health then
             health.settle(zombie)
         end
-        return CombatServer.request(zombie, amount, source, kind, callback, expiresAt, observation)
+        return CombatServer.request(zombie, amount, source, kind, callback, expiresAt, observation, second)
     end
+    if second then return false end
     local lost = apply(zombie, amount, source, kind, nil, nil)
     if callback then
         callback(lost, lost > 0 and "applied" or "rejected")
@@ -120,14 +121,14 @@ end
 
 ---@param job table Server-calculated hit
 ---@return nil
-local function dispatch(job)
+local function dispatch(job, second)
     local zombie = job.zombie
     Diagnostics.measure("damage-queue",getTimestampMs()-job.queuedAt,string.find(job.source,"^turret") and "turrets" or "traps")
     active[zombie] = job
     local completed = false
+    local firstDelivered = false
     ---@param lost number Confirmed loss
     ---@param reason string Completion result
-    ---@return nil
     ---@return nil
     local function done(lost, reason)
         if completed then return end
@@ -146,12 +147,33 @@ local function dispatch(job)
         else
             failed[zombie] = nil
         end
+    end
+    local function firstDone(lost, reason)
+        if firstDelivered then return end
+        firstDelivered = true
+        if not second then
+            done(lost, reason)
+        end
         if job.callback then
             job.callback(lost, reason)
         end
     end
-    if not Damage.request(zombie, job.amount, job.source, job.kind, done, job.expiresAt, job.observation) then
-        done(0, "rejected")
+    if second then
+        local callback = second.callback
+        second.observedAt = second.observation and second.observation.at
+        second.callback = function(lost, reason)
+            if completed then return end
+            done(lost, reason)
+            if callback then
+                callback(lost, reason)
+            end
+        end
+    end
+    if not Damage.request(zombie, job.amount, job.source, job.kind, firstDone, job.expiresAt, job.observation, second) then
+        firstDone(0, "rejected")
+        if second then
+            second.callback(0, "rejected")
+        end
     end
 end
 
@@ -176,6 +198,8 @@ end
 ---@param observation table? Explicit validated contact timestamp
 function Damage.resolve(zombie, amount, source, kind, callback, observation)
     if isClient() or not zombie or not Protocol.living(zombie)
+        or type(source) ~= "string" or #source == 0 or #source > 160
+        or type(kind) ~= "string" or #kind == 0 or #kind > 64
         or not Protocol.number(amount, .000001, 1000000) then
         if callback then
             callback(0, "rejected")
@@ -271,8 +295,16 @@ function Damage.tick()
             queued = queued - 1
             if not failed[zombie] and Protocol.living(zombie) and zombie:getOnlineID() == job.id
                 and Protocol.outfit(zombie:getPersistentOutfitID()) == job.outfit and Horde.matches(zombie, job.lease) then
+                local second = lane[1]
+                if second and zombie:getOwner() and second.id == job.id and second.outfit == job.outfit
+                    and second.deadline >= now and second.expiresAt >= serverNow and Horde.matches(zombie, second.lease) then
+                    table.remove(lane, 1)
+                    queued = queued - 1
+                else
+                    second = nil
+                end
                 started = started + 1
-                dispatch(job)
+                dispatch(job, second)
             elseif job.callback then
                 job.callback(0, "cancelled")
             end

@@ -41,6 +41,23 @@ function P.result(before, amount)
     return after, before - after, false
 end
 
+-- Calculate each authorized hit at the same owner clock instant, in FIFO order.
+function P.ordered(before, amount, expires, at, second)
+    local first = {after=before, lost=0, lethal=false, reason="expired"}
+    if at <= expires then
+        first.after, first.lost, first.lethal = P.result(before, amount)
+        first.reason = "applied"
+    end
+    local last = {after=first.after, lost=0, lethal=false, reason="expired"}
+    if first.lethal then
+        last.reason = "dead"
+    elseif at <= second.expiresAt then
+        last.after, last.lost, last.lethal = P.result(first.after, second.amount)
+        last.reason = "applied"
+    end
+    return first, last
+end
+
 function P.outfit(value)
     -- PersistentOutfits.setFallenHat changes bit 15. Kahlua's negative modulo
     -- differs from Lua 5.1, so extract that bit from the unsigned representation.

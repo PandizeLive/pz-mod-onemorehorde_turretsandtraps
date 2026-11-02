@@ -10,6 +10,34 @@ local Actors = require("OMHTT/DefenseActors")
 local Barrier = {TYPE = "OMHTTBarrierClaw", TOKEN = "OMHTTBarrierStrike"}
 local generation = 0
 local receipts = setmetatable({}, {__mode = "k"})
+local Protocol = require("OMHTT/DefenseCombatProtocol")
+
+local function attacker(player, message)
+    local actor = Actors.online[message.id]
+    local node = actor and Actors.nodes[actor]
+    if node and node.generation >= Actors.generation-1 and instanceof(actor, "IsoZombie")
+        and Protocol.living(actor) and actor:getOnlineID() == message.id
+        and Protocol.outfit(actor:getPersistentOutfitID()) == message.outfit and actor:getOwnerPlayer() == player then
+        local square = Actors.square(actor)
+        if square and square:getZ() == message.z and math.abs(square:getX()-message.x) <= 2
+            and math.abs(square:getY()-message.y) <= 2 then return actor end
+    end
+    local scanned = 0
+    for x = message.x - 2, message.x + 2 do
+        for y = message.y - 2, message.y + 2 do
+            local tile = getCell():getGridSquare(x, y, message.z)
+            local moving = tile and Actors.at(tile)
+            for i = 0, (moving and moving:size() or 0) - 1 do
+                local candidate = moving:get(i)
+                scanned = scanned + 1
+                if instanceof(candidate, "IsoZombie") and candidate:getOnlineID() == message.id
+                    and Protocol.outfit(candidate:getPersistentOutfitID()) == message.outfit
+                    and candidate:getOwnerPlayer() == player and Protocol.living(candidate) then return candidate end
+                if scanned >= 256 then return end
+            end
+        end
+    end
+end
 
 ---@param module string Namespace
 ---@param command string Observed native strike
@@ -19,7 +47,7 @@ local receipts = setmetatable({}, {__mode = "k"})
 function Barrier.command(module, command, player, message)
     if not isServer() or module ~= "OMHTT_BarrierContact" or command ~= "Strike" or type(message) ~= "table" then return end
     Diagnostics.count("barrier-report-received", 1, "traps")
-    local P = require("OMHTT/DefenseCombatProtocol")
+    local P = Protocol
     if not P.identity(message.id) or not P.identity(message.outfit) or type(message.barrier) ~= "string"
         or #message.barrier > 160 or not P.number(message.x, 0, 1000000) or not P.number(message.y, 0, 1000000)
         or not P.number(message.z, -32, 32) or not P.number(message.index, 0, 10000)
@@ -31,26 +59,8 @@ function Barrier.command(module, command, player, message)
     local target = objects:get(message.index)
     local record = Footprint.exact(target)
     if not record or record.id ~= message.barrier or target:getHealth() <= 0 then return end
-    -- Resolve from the validated collider's immediate vicinity, not an undriven update-event index.
-    local zombie, scanned = nil, 0
-    for x = message.x - 2, message.x + 2 do
-        for y = message.y - 2, message.y + 2 do
-            local tile = getCell():getGridSquare(x, y, message.z)
-            local moving = tile and Actors.at(tile)
-            for i = 0, (moving and moving:size() or 0) - 1 do
-                local actor = moving:get(i)
-                scanned = scanned + 1
-                if instanceof(actor, "IsoZombie") and actor:getOnlineID() == message.id then
-                    zombie = actor
-                    break
-                end
-                if scanned >= 256 then return end
-            end
-            if zombie then break end
-        end
-        if zombie then break end
-    end
-    if not zombie or zombie:isDead() or require("OMHTT/DefenseCombatProtocol").outfit(zombie:getPersistentOutfitID()) ~= message.outfit
+    local zombie = attacker(player, message)
+    if not zombie or math.floor(zombie:getZ()) ~= message.z
         or not zombie:getOwner() or zombie:getOwnerPlayer() ~= player
         or not Horde.allowed(zombie) or not Foundation.barrierEnabled() then return end
     if not string.find(string.lower(zombie:getRealState()), "thump", 1, true) then return end

@@ -1,5 +1,7 @@
 # C550 mixed-base multiplayer prototype
 
+C551 promotes this candidate into the [0.2.71.11 multiplayer test build](TEST_v0.2.71.11.md) after the owner's 1A selection.
+
 The owner selected C549 option 1A. The candidate uses the existing zombie ID index for Spike Barrier strikes and lets two hits already waiting on the same zombie travel in one owner transaction. An idle lane still dispatches its first hit immediately. This is a reproducible source prototype against `test/v0.2.71.10`.
 
 ## How combat works

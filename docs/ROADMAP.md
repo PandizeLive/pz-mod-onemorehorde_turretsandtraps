@@ -1,5 +1,7 @@
 # Phases and checkpoints
 
+**C551 / 0.2.71.11 multiplayer test build.** Owner selected C550 option 1A to package paired damage receipts and the indexed Spike Barrier lookup. The six promoted combat files match the tested candidate. [Release verification and two-player checklist](TEST_v0.2.71.11.md). Connected acceptance is pending.
+
 **C548 / Shared damage queue repaired in 0.2.71.10.** Owner approved C547 option 1A. All 3,424 expected hits applied in the eight-head replay. Mixed Poke delivered all hits. Two rotary contacts expired in the mixed wire case, matching the independent FIFO limit. [Results and Alex guideline review](TEST_v0.2.71.10.md). Connected acceptance is pending.
 
 **C546 / Shared rotary hitboxes, 0.2.71.9 (2026-11-02).** Owner approved C545 option 1A for Bat, Blades and future two-arm rotary heads. All 786 moving-target cases matched the reference. Each head registered six hits at both packet timings. Native save/reload and all three package selections passed. Connected acceptance is pending. [Patch](PATCH_v0.2.71.9.md) and [verification](TEST_v0.2.71.9.md).
