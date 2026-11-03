@@ -1,5 +1,7 @@
 # Decision register
 
+**C559 / 0.2.71.13 multiplayer retest passed, November 3.** The owner confirmed the connected device retest works. The client loaded both entries on 0.2.71.13. The publisher confirmed the unlisted Workshop content upload. [Acceptance and upload record](TEST_v0.2.71.13.md#connected-result).
+
 **C558 / 0.2.71.13 device placement, Tether and Poke Floor fixes.** The owner approved the occupancy, audio, pickup and storage changes. Admin access remains intentional. [Patch and connected retest](TEST_v0.2.71.13.md).
 
 **C557 / 0.2.71.12 multiplayer test build.** Owner selected C556 option 1A to package the tested immediate queue dispatch. [Release scope](PATCH_v0.2.71.12.md) and [two-player retest](TEST_v0.2.71.12.md). Live timing is pending.

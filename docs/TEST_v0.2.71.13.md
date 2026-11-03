@@ -15,9 +15,15 @@ The release validator passed 51,980 assertions. The native placement matrix pass
 
 All 642 tagged files matched the archive, local install and Workshop stage. The publisher preflight passed for unlisted item 3828638252. [Delivery evidence](evidence/c558-delivery.json)
 
-Use the existing test world. After uploading with CMD option 3, restart the server and both clients. The audible result still needs two connected players.
+The connected checklist used for this build was:
 
 - Place bases near furniture, devices and tall grass.
 - Join during retraction, then pick up the firing dart.
 - Check Poke Floor loot tabs and recovered items.
 - Try both withdrawal paths as a non-admin non-owner.
+
+## Connected result
+
+On November 3, 2026 the owner reported “Test Complete and works.” This closes the 0.2.71.13 device retest as a whole. The report does not give individual results for each checklist item. The local console confirms that both T&T entries loaded on 0.2.71.13 with game 42.21. It records 33 Tether phase messages, including retraction, reset and idle, with no error or exception trace after T&T announced readiness. The audible result comes from the owner.
+
+The publisher's content receipt confirms unlisted Workshop item 3828638252 received 0.2.71.13 at 16:50:54 UTC on November 3, 2026, from `c6b02a906998025eb94aee60887d88f291fd8254`. The uploader also recorded a successful content upload with exit code 0. This is the baseline for the next Workshop changelog.

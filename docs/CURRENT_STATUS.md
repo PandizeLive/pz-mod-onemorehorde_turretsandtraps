@@ -1,5 +1,7 @@
 # Current development and planning handoff
 
+**C559 / 0.2.71.13 multiplayer retest passed, November 3.** The owner confirmed the connected device retest works. The client loaded both entries on 0.2.71.13. The publisher confirmed the unlisted Workshop content upload. [Acceptance and upload record](TEST_v0.2.71.13.md#connected-result).
+
 **C558 / 0.2.71.13 ready for the connected retest.** Installed and staged at `test/v0.2.71.13` (`c6b02a90`). All 642 packaged files matched the tag, ZIP, install and Workshop stage. Unlisted upload preflight passed. **Test now** after CMD option 3 and a server/client restart. [Patch and connected retest](TEST_v0.2.71.13.md) · [Delivery evidence](evidence/c558-delivery.json).
 
 **C557 / 0.2.71.12 ready for the connected retest.** Installed and staged from `test/v0.2.71.12` at `41ef8f75`. All 642 packaged files matched the tag, ZIP, install and Workshop stage. The unlisted upload preflight passed. **Test now** after CMD option 3 and restarting the server and both clients. [Two-player retest](TEST_v0.2.71.12.md) · [Delivery evidence](evidence/c557-delivery.json).
