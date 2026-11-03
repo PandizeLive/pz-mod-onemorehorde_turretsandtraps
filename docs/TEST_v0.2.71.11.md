@@ -1,5 +1,7 @@
 # 0.2.71.11 two-player test build
 
+**C556 / Further latency review.** The detailed capture had 35 of 38 rotary hits waiting at most 1 ms in the server queue. Two rotary hits arrived 3 and 38 ms after Martyrdom was sent. [Pairing tradeoff and test-build choice](RECEIPT_DISPATCH_C555.md#c556-further-latency-review).
+
 **C555 / Immediate dispatch prototype.** The owner selected C554 option 1A. Replaying the two recorded Martyrdom-to-rotary delays shortened sample-to-display time by 37 and 64 ms. The eight-rotary fixture delivered all 3,424 expected hits. [Crowded-base results, limits and promotion decision](RECEIPT_DISPATCH_C555.md).
 
 **C554 / Detailed rotary retest complete.** All 38 submitted rotary hits applied and displayed. The two slowest displays took 345 and 373 ms, including 185 and 194 ms waiting on the server. Both followed Martyrdom on the same victim. [Matched timing and proposed queue change](ROTARY_LATENCY_C554.md).
