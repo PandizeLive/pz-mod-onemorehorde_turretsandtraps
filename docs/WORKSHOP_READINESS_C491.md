@@ -1,5 +1,7 @@
 # C491 - Connected testing and Workshop presentation
 
+November 3 follow-up. The unlisted 0.2.71.13 device retest passed. The branded cover and addon thumbnail are still available. The next proposed presentation deliverable is a draft description in the owner's Horde Night style and a short real-game capture list. [Current options](PLANNING.md).
+
 2026-10-27. Owner asks whether multiplayer testing should begin and requests review of earlier Workshop chats, recalling "OMH: Presentation". This is research/planning, not publication or new artwork approval. Installed gameplay stays 0.2.70.2; connected acceptance remains pending.
 
 ## Retrieved discussions
