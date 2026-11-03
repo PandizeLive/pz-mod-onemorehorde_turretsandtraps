@@ -1,6 +1,6 @@
 ---@class OMHTTFoundation
 local Foundation = {
-    VERSION = "0.2.71.11",
+    VERSION = "0.2.71.12",
     MODULE = "OMHTT_Foundation",
     STORE = "OMHTT_Foundation_v1",
     PREFIX = "OMHTT_P1C1_",

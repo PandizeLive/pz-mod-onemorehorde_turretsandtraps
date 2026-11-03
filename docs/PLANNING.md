@@ -1,5 +1,7 @@
 # Planning
 
+**C557 / 0.2.71.12 multiplayer test build.** Owner selected C556 option 1A to package the tested immediate queue dispatch. [Release scope](PATCH_v0.2.71.12.md) and [two-player retest](TEST_v0.2.71.12.md). Live timing is pending.
+
 **C556 / Further latency review.** The detailed capture had 35 of 38 rotary hits waiting at most 1 ms in the server queue. Two rotary hits arrived 3 and 38 ms after Martyrdom was sent. [Pairing tradeoff and test-build choice](RECEIPT_DISPATCH_C555.md#c556-further-latency-review).
 
 **C555 / Immediate dispatch prototype.** The owner selected C554 option 1A. Replaying the two recorded Martyrdom-to-rotary delays shortened sample-to-display time by 37 and 64 ms. The eight-rotary fixture delivered all 3,424 expected hits. [Crowded-base results, limits and promotion decision](RECEIPT_DISPATCH_C555.md).

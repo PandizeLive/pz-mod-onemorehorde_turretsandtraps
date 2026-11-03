@@ -1,5 +1,7 @@
 # Phases and checkpoints
 
+**C557 / 0.2.71.12 multiplayer test build.** Owner selected C556 option 1A to package the tested immediate queue dispatch. [Release scope](PATCH_v0.2.71.12.md) and [two-player retest](TEST_v0.2.71.12.md). Live timing is pending.
+
 **C551 / 0.2.71.11 multiplayer test build.** Owner selected C550 option 1A to package paired damage receipts and the indexed Spike Barrier lookup. The six promoted combat files match the tested candidate. [Release verification and two-player checklist](TEST_v0.2.71.11.md). Connected acceptance is pending.
 
 **C548 / Shared damage queue repaired in 0.2.71.10.** Owner approved C547 option 1A. All 3,424 expected hits applied in the eight-head replay. Mixed Poke delivered all hits. Two rotary contacts expired in the mixed wire case, matching the independent FIFO limit. [Results and Alex guideline review](TEST_v0.2.71.10.md). Connected acceptance is pending.

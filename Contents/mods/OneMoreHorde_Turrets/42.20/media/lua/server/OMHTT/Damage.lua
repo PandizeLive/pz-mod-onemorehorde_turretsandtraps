@@ -260,13 +260,17 @@ function Damage.resolve(zombie, amount, source, kind, callback, observation)
     return true
 end
 
+local startsLeft, msLeft = STARTS_PER_TICK, SLICE_MS
+local servicing = false
+
+---@param visits number Maximum FIFO lanes to visit
 ---@return nil
-function Damage.tick()
-    if queued == 0 or not isServer() then return end
+local function service(visits)
+    if servicing or startsLeft <= 0 or msLeft <= 0 then return end
+    servicing = true
     local now = getTimestampMs()
     local serverNow = GameTime.getServerTimeMills()
-    local started = 0
-    for _ = 1, laneCount do
+    for _ = 1, visits do
         local lane = firstLane
         firstLane = lane.following
         if not firstLane then
@@ -303,7 +307,7 @@ function Damage.tick()
                 else
                     second = nil
                 end
-                started = started + 1
+                startsLeft = startsLeft - 1
                 dispatch(job, second)
             elseif job.callback then
                 job.callback(0, "cancelled")
@@ -315,8 +319,26 @@ function Damage.tick()
             byVictim[zombie] = nil
             laneCount = laneCount - 1
         end
-        if started >= STARTS_PER_TICK or getTimestampMs() - now >= SLICE_MS then return end
+        if startsLeft == 0 or getTimestampMs() - now >= msLeft then break end
     end
+    msLeft = msLeft - (getTimestampMs() - now)
+    servicing = false
+end
+
+---@param zombie IsoZombie Victim whose owner receipt has fully settled
+---@return nil
+function CombatServer.afterApplied(zombie)
+    -- Only advance the front lane. An acknowledgement never jumps a waiting victim.
+    if firstLane and firstLane.zombie == zombie and not active[zombie] and not ActiveTime.paused() then
+        service(1)
+    end
+end
+
+---@return nil
+function Damage.tick()
+    if not isServer() then return end
+    startsLeft, msLeft = STARTS_PER_TICK, SLICE_MS
+    if queued > 0 then service(laneCount) end
 end
 
 Events.OnTick.Add(Damage.tick)

@@ -1,5 +1,7 @@
 # C555 rotary receipt timing prototype
 
+C557 promotes this prototype to [0.2.71.12](TEST_v0.2.71.12.md) under the owner's C556 option 1A approval.
+
 The owner selected C554 option 1A. This prototype replays the two detailed Martyrdom-to-rotary sequences against the packaged 0.2.71.11 source and a two-file server overlay. Both use the game's Kahlua runtime and network table codec. The simulated owner applies health and raises the damage display. No players were connected during these runs.
 
 ## Matched timing

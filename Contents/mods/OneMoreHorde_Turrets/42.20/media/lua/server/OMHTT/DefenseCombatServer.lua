@@ -155,6 +155,9 @@ local function commitResult(job)
     finish(job, lost, reason)
     if reason == "applied" then
         announce(job, hit, result)
+        if S.afterApplied and not result.lethal and job.zombie:getOwner() then
+            S.afterApplied(job.zombie)
+        end
     end
 end
 

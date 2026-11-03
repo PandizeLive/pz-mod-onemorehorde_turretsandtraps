@@ -1,8 +1,5 @@
-v0.2.71.11
+v0.2.71.12
 
 Development test content
 
-- Fixed missed and extra rotary hits when zombies cross the arms or movement updates arrive between swings.
-- Fixed rotary hits using an outdated standing or fallen state in multiplayer.
-- Fixed multiplayer damage stalling in crowds and reduced delayed or missed hits when several defenses strike the same zombie.
-- Reduced server work when zombies strike Spike Barriers.
+- Reduced the delay between consecutive defense hits on the same zombie in multiplayer.
