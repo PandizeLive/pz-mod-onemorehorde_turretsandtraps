@@ -16,7 +16,7 @@ getSpecificPlayer = function(i) if i==0 then return activeOwner end end
 local outbound,inbound = {},{}
 sendServerCommand = function(player,module,cmd,data)
     if module==P.MODULE then
-        outbound[#outbound+1]={player=player,cmd=cmd,data=networkRoundTrip(data)}
+        outbound[#outbound+1]={at=testMillis,player=player,cmd=cmd,data=networkRoundTrip(data)}
     end
 end
 sendClientCommand = function(player,module,cmd,data)
@@ -50,7 +50,7 @@ OMHTS_DefenseCredit={API_VERSION=1,zombieFinisher=function(z,ownerId,hordeEvent,
     xp[#xp+1]={z=z,event=hordeEvent,source=source}
 end}
 require("OMHTT/DamagePresentation").present=function(f)
-    view[#view+1]={source=f.source,token=f.token,lost=f.lost}
+    view[#view+1]={at=testMillis,source=f.source,token=f.token,lost=f.lost}
 end
 require("OMHTT/DamageNotice").send=function(f)
     if f then notices[#notices+1]={source=f.source,token=f.token,lost=f.lost} end
@@ -96,6 +96,132 @@ local function replacement(h)
     activeOwner=b;local m=zombie(h)
     testMode="client";Client.created(m);testMode="server"
     return m
+end
+
+-- C555 replay uses the same transport, health, presentation and Horde fixtures.
+if receiptDispatchCandidate ~= nil then
+    local trace = {}
+    local function replay(label, age, previousAge, receiptAt, tickAt, lastLeg)
+        fresh()
+        Damage.tick()
+        submit("prior-martyrdom", .1, "martyrdom")
+        local base = testMillis + previousAge
+        testMillis = base
+        submit("turret-rotary", .2, "rotary", {at=base-age})
+        testMillis = base + receiptAt - 40
+        deliver()
+        testMillis = base + receiptAt
+        local previous = ack()
+        Server.command(P.MODULE, previous.cmd, previous.player, previous.data)
+        check(#outbound == (receiptDispatchCandidate and 1 or 0), "send occurs in the expected phase")
+        testMillis = base + tickAt
+        Damage.tick()
+        check(#outbound == 1, "duplicate ack and next tick do not resend")
+        local sent = outbound[1].at
+        testMillis = sent + lastLeg
+        deliver()
+        check(view[2].source == "turret-rotary" and view[2].at == testMillis, "rotary label displays on owner application")
+        local display = view[2].at - (base-age)
+        check(display == age + (receiptDispatchCandidate and receiptAt or tickAt) + lastLeg, "replayed display time")
+        testMillis = testMillis + lastLeg
+        ack()
+        expect(1,.1,"applied")
+        expect(2,.2,"applied")
+        check(#results==2 and #notices==2 and #view==2 and math.abs(server.health-.7)<.00001
+            and math.abs(client.health-.7)<.00001, "each hit settles and displays once")
+        trace[#trace+1] = label.." "..(sent-base).." "..display
+    end
+    replay("67",107,3,157,194,72)
+    replay("62",96,38,121,185,64)
+
+    local function burst(n)
+        fresh()
+        Damage.tick()
+        for i=1,n do
+            id=id+1
+            server,client=zombie(1),zombie(1)
+            testMode="client";Client.created(client);testMode="server";Server.created(server)
+            submit("lead-"..i,.1,"firearm")
+            submit("next-"..i,.1,"firearm")
+        end
+        for i=1,n do deliver() end
+    end
+    local function drain(n)
+        for i=1,n do deliver();ack() end
+        check(#results==2*n and #notices==2*n and #view==2*n,"every burst victim served once")
+    end
+    burst(40)
+    for i=1,40 do ack() end
+    check(#outbound==(receiptDispatchCandidate and 32 or 0),"a receipt burst shares the 32-start budget")
+    Damage.tick()
+    if not receiptDispatchCandidate then Damage.tick() end
+    check(#outbound==40,"remaining victims resume at next available tick")
+    for i=1,40 do check(outbound[i].data.source=="next-"..i,"FIFO for distinct victims") end
+    drain(40)
+
+    burst(40)
+    local first=table.remove(inbound,1)
+    for i=2,33 do ack() end
+    Damage.tick()
+    check(#outbound==32,"tick starts 32 ready victims")
+    for i=34,40 do ack() end
+    table.insert(inbound,1,first);ack()
+    check(#outbound==32,"receipts cannot reuse a spent tick budget")
+    Damage.tick()
+    drain(40)
+
+    burst(2)
+    inbound[1],inbound[2]=inbound[2],inbound[1]
+    ack()
+    check(#outbound==0,"later victim cannot skip earlier lane")
+    ack();Damage.tick()
+    check(outbound[1].data.source=="next-1" and outbound[2].data.source=="next-2","older victim retains priority")
+    drain(2)
+
+    burst(3)
+    local send=sendServerCommand
+    sendServerCommand=function(...)
+        send(...)
+        testMillis=testMillis+3
+    end
+    for i=1,3 do ack() end
+    check(#outbound==(receiptDispatchCandidate and 1 or 0),"receipt dispatch yields after slow work")
+    sendServerCommand=send
+    Damage.tick()
+    drain(3)
+
+    burst(1)
+    local clock=require("OMHTT/ActiveTime")
+    local paused=clock.paused
+    clock.paused=function() return true end
+    ack()
+    check(#outbound==0,"receipt does not start work while paused")
+    clock.paused=paused
+    Damage.tick()
+    drain(1)
+
+    fresh()
+    Damage.tick()
+    submit("lead",.1,"firearm")
+    submit("paired-first",.1,"barbs")
+    submit("paired-second",.1,"barbs")
+    submit("last",.1,"firearm")
+    deliver();ack();Damage.tick();deliver()
+    local announce=triggerEvent
+    local announced=0
+    triggerEvent=function(name,...)
+        if name=="OnOMHTTDamage" then
+            announced=announced+1
+            check(#outbound==0,"both paired hits announce before sending the next hit")
+        end
+        announce(name,...)
+    end
+    ack()
+    triggerEvent=announce
+    check(announced==2 and #results==3 and #outbound==(receiptDispatchCandidate and 1 or 0),"pair fully settled")
+    Damage.tick();deliver();ack()
+    check(#results==4 and #notices==4 and #view==4 and math.abs(server.health-.6)<.00001,"paired lane drains in order")
+    receiptDispatchTrace=table.concat(trace,"|")
 end
 
 local p=group(.2,.3)

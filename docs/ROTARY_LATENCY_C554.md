@@ -1,5 +1,7 @@
 # C554 connected rotary timing retest
 
+The owner approved the prototype. [C555 replay and stress results](RECEIPT_DISPATCH_C555.md) compare it with this test build.
+
 The November 2 retest ran 0.2.71.11. Both ends logged `turretDetails=true`. All 38 server rotary hit entries had a positive damage completion and a corresponding client damage display. There were no recorded expired rotary movement intervals. The observations establish delivery for the hits that entered the damage system. They cannot count physical blade passes absent from that system.
 
 From the zombie movement sample to the visible damage number, the median was 170 ms, the mean 180 ms and the maximum 373 ms. The maximum published sample-to-owner health application was 372 ms. The client emitted 38 individual displays but flushed aggregate owner-application counters for 37 samples. The table below uses the individual display measurements.

@@ -93,6 +93,10 @@ def run(leg, variant, repeat, overlay, trace=False, wire_codec=False):
             result["ms"][parts[0]] = dict(zip(("p50","p95","max"), map(float, parts[1:]), strict=True))
         elif key == "pairsSent":
             result["pairedPackets"] = int(parts[0])
+        elif key == "receiptStarts":
+            result["receiptStarts"] = int(parts[0])
+        elif key == "incomplete":
+            result.setdefault("incompleteCoverage", []).append(parts[0])
         elif key == "failure":
             result["failures"][parts[0]] = int(parts[1])
         elif key == "barriers":

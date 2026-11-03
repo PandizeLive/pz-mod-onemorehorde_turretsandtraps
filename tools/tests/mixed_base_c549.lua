@@ -290,7 +290,7 @@ addHead("Shotgun","Shotgun",3,14,"shotgun")
 addHead("HuntingRifle","HuntingRifle",3,17,"rifle")
 local timings={server={},reports={},barriers={},devices={},transport={},client={}}
 local function sample(name,t) timings[name][#timings[name]+1]=realMillis()-t end
-local function pct(v,p) if #v==0 then return 0 end; table.sort(v); return v[math.ceil(#v*p)] end
+local function pct(v,p) if not v or #v==0 then return 0 end; table.sort(v); return v[math.ceil(#v*p)] end
 local starting=testMillis
 Poke.time,Tether.time=starting,starting
 for i=1,10 do Tether.entries[tethers[i]].time=starting end
@@ -371,10 +371,41 @@ local workNames={}
 for i=1,#jobs do workNames[i]=jobs[i].name end
 local budgetStart
 local function now() return testMillis+math.floor(realMillis()-budgetStart) end
-local function beginBudget() budgetStart=realMillis(); getTimestampMs=now end
+local function beginBudget()
+    budgetStart=realMillis()
+    getTimestampMs=stressFixedBudget and Clock.now or now
+end
 local function endBudget() getTimestampMs=Clock.now end
+local betweenServerMs=0
+local receiptStarts=0
+if Server.afterApplied then
+    local settled=Server.afterApplied
+    Server.afterApplied=function(z)
+        local before=#outgoing
+        settled(z)
+        receiptStarts=receiptStarts+#outgoing-before
+    end
+end
+-- Deliver packets at their exact due time between device ticks for the phased audit.
+local function advance(target)
+    if stressBetweenTicks then
+        while true do
+            local due=math.min(outgoing[1] and outgoing[1].at or math.huge, incoming[1] and incoming[1].at or math.huge)
+            if due>=target then break end
+            testMillis=due
+            beginBudget()
+            local started=realMillis()
+            deliver(incoming,false)
+            betweenServerMs=betweenServerMs+realMillis()-started
+            endBudget()
+            deliver(outgoing,true)
+        end
+    end
+    testMillis=target
+end
 for tick=1,400 do
-    testMillis=starting+tick*50
+    betweenServerMs=0
+    advance(starting+tick*50)
     testTime=100+tick*50/150000
     local frames={{},{}}
     if tick%2==0 then scan(tick,frames) end
@@ -382,7 +413,7 @@ for tick=1,400 do
     beginBudget()
     deliver(incoming,false)
     Damage.tick();Server.tick()
-    sample("transport",started)
+    sample("transport",started-betweenServerMs)
     Bed.time,Barb.time=testMillis,testMillis
     local t=realMillis()
     if tick%2==0 then sendFrames(frames) end
@@ -403,14 +434,14 @@ for tick=1,400 do
     Scheduler.tick()
     sample("devices",t)
     endBudget()
-    sample("server",started)
+    sample("server",started-betweenServerMs)
     t=realMillis()
     deliver(outgoing,true)
     sample("client",t)
 end
 local tail={flights=#mod("PrototypeCombat").pending,rays=#mod("TurretVolley").queue,ordnance=#mod("TurretOrdnance").jobs,damage=outstanding}
 for tick=1,200 do
-    testMillis=testMillis+50
+    advance(testMillis+50)
     deliver(incoming,false);Damage.tick();Server.tick();deliver(outgoing,true)
 end
 check(outstanding==0 and #outgoing==0 and #incoming==0,"damage did not settle")
@@ -425,7 +456,14 @@ for name,n in pairs(tail) do rows[#rows+1]="cutoff "..name.." "..n end
 for kind,row in pairs(stats) do
     local n=0
     for id in pairs(row.instances) do n=n+1 end
-    check(row.applied>0 and (not objects[kind.."-1"] or n==10),"incomplete hit coverage "..kind.." "..n)
+    if row.applied==0 or (objects[kind.."-1"] and n~=10) then
+        local details=kind.." "..row.shots.." "..row.attempt.." "..row.applied.." "..n
+        if stressRecordCoverage then
+            rows[#rows+1]="incomplete "..details
+        else
+            check(false,"incomplete hit coverage "..details)
+        end
+    end
     rows[#rows+1]=string.format("family %s %d %d %d %d %.0f %.0f %.0f",kind,row.shots,row.attempt,row.applied,n,pct(row.latency,.5),pct(row.latency,.95),pct(row.ownerLatency,.95))
 end
 for kind,v in pairs(timings) do rows[#rows+1]=string.format("ms %s %.2f %.2f %.2f",kind,pct(v,.5),pct(v,.95),pct(v,1)) end
@@ -433,6 +471,7 @@ for kind,n in pairs(reasons) do rows[#rows+1]="failure "..kind.." "..n end
 check(plates[1].changes>2 and plates[2].changes>2,"inactive pressure plate")
 rows[#rows+1]="traffic "..reported.." "..permits.." "..packets.." peak "..peak.." plates "..plates[1].changes.." "..plates[2].changes.." observerPackets "..effects
 rows[#rows+1]="pairsSent "..pairsSent
+rows[#rows+1]="receiptStarts "..receiptStarts
 if stressTrace then rows[#rows+1]="arrivals "..table.concat(arrivals," ") end
 table.sort(rows)
 testPackAudit="C549\n"..table.concat(rows,"\n").."\nEND C549"
