@@ -1,6 +1,6 @@
 # Current development and planning handoff
 
-**C558 / 0.2.71.13 device placement, Tether and Poke Floor fixes.** The owner approved the occupancy, audio, pickup and storage changes. Admin access remains intentional. [Patch and connected retest](TEST_v0.2.71.13.md).
+**C558 / 0.2.71.13 ready for the connected retest.** Installed and staged at `test/v0.2.71.13` (`c6b02a90`). All 642 packaged files matched the tag, ZIP, install and Workshop stage. Unlisted upload preflight passed. **Test now** after CMD option 3 and a server/client restart. [Patch and connected retest](TEST_v0.2.71.13.md) · [Delivery evidence](evidence/c558-delivery.json).
 
 **C557 / 0.2.71.12 ready for the connected retest.** Installed and staged from `test/v0.2.71.12` at `41ef8f75`. All 642 packaged files matched the tag, ZIP, install and Workshop stage. The unlisted upload preflight passed. **Test now** after CMD option 3 and restarting the server and both clients. [Two-player retest](TEST_v0.2.71.12.md) · [Delivery evidence](evidence/c557-delivery.json).
 

@@ -13,6 +13,8 @@ The release validator passed 51,980 assertions. The native placement matrix pass
 
 ## Connected check
 
+All 642 tagged files matched the archive, local install and Workshop stage. The publisher preflight passed for unlisted item 3828638252. [Delivery evidence](evidence/c558-delivery.json)
+
 Use the existing test world. After uploading with CMD option 3, restart the server and both clients. The audible result still needs two connected players.
 
 - Place bases near furniture, devices and tall grass.
