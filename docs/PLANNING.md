@@ -1,5 +1,7 @@
 # Planning
 
+**C554 / Detailed rotary retest complete.** All 38 submitted rotary hits applied and displayed. The two slowest displays took 345 and 373 ms, including 185 and 194 ms waiting on the server. Both followed Martyrdom on the same victim. [Matched timing and proposed queue change](ROTARY_LATENCY_C554.md).
+
 **C553 / Rotary latency follow-up.** The owner deferred the Horde Manager issue. Of 45 live rotary hits, 43 applied within 164 ms. Two took 262 and 319 ms. The slow window shows no measured queue backlog. [Timing evidence and focused retest](HORDE_MANAGER_C552.md#c553-analysis-of-the-319-ms-peak).
 
 **C552 / Live Horde Manager and rotary check.** The server created all 15 zombies requested. Exact IDs reached the simulated client 15/15 with and without T&T on separate local runs. Live visibility remains unresolved. The connected rotary retest logged 45/45 admitted hits applied and displayed. [Findings and diagnostic choice](HORDE_MANAGER_C552.md).

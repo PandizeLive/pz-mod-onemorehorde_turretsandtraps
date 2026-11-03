@@ -1,5 +1,7 @@
 # 0.2.71.11 two-player test build
 
+**C554 / Detailed rotary retest complete.** All 38 submitted rotary hits applied and displayed. The two slowest displays took 345 and 373 ms, including 185 and 194 ms waiting on the server. Both followed Martyrdom on the same victim. [Matched timing and proposed queue change](ROTARY_LATENCY_C554.md).
+
 [C552 live retest](HORDE_MANAGER_C552.md) records 45 rotary hits applied and displayed, plus the independent Horde Manager spawn-delivery check. Full two-player visual acceptance is still open.
 
 The six promoted Lua files match the verified [C550 prototype](PAIRED_RECEIPTS_C550.md) byte for byte. The release runner reads the current Source tree directly and clears the prototype override. Run `python tools/check_paired_receipts_c550.py --release` to reproduce the focused, rotary and mixed-base checks.
