@@ -75,7 +75,7 @@ ISBuildIsoEntity,ISWoodenWall=entity,wall
 
 testMode="client"
 local starts,volume=0,nil
-local emitter={playSound=function() starts=starts+1;return 1 end,setVolume=function(_,_,v) volume=v end,stopSound=function() end}
+local emitter={playSound=function() starts=starts+1;return 1 end, playSoundImpl=function() starts=starts+1;return 1 end,setVolume=function(_,_,v) volume=v end,stopSound=function() end}
 getWorld=function() return {getFreeEmitter=function() return emitter end} end
 local distance=0
 getNumActivePlayers=function() return 1 end

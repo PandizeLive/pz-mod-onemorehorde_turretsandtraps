@@ -537,8 +537,6 @@
     "UI_OMHTT_ControlTether": "Tether Dart Trap",
     "UI_OMHTT_TetherStats": "30 Hit + 15 Pull | 6 Tiles",
     "UI_OMHTT_TetherMode": "Trigger links override automatic sensing.",
-    "UI_OMHTT_TetherEnable": "Enable Tether Dart Trap",
-    "UI_OMHTT_TetherDisable": "Disable Tether Dart Trap",
     "UI_OMHTT_TetherAmmo": "Reusable Nail",
     "UI_OMHTT_HeadBatteryNone": "None",
     "UI_OMHTT_HeadBatteryMinimal": "Minimal",

@@ -47,7 +47,7 @@ for _, width in pairs({300,500,800}) do
         and field.x+field.width <= width, "Custom combo and numeric input remain visible and separate after native reposition")
 end
 local Controls=require("OMHTT/ControlDefinitions")
-local occupied={hasModData=function() return true end,getModData=function() return {OMHTTControl={}} end}
+local occupied={getProperties=function() return nil end,hasModData=function() return true end,getModData=function() return {OMHTTControl={}} end}
 local square={TreatAsSolidFloor=function() return true end,isSolid=function(self) return self.solid end,
     getX=function() return 9740 end,getY=function() return 9740 end,getZ=function() return 0 end,
     getProperties=function() return {has=function() return false end} end,

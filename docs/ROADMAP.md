@@ -1,5 +1,7 @@
 # Phases and checkpoints
 
+**C558 / 0.2.71.13 device placement, Tether and Poke Floor fixes.** The owner approved the occupancy, audio, pickup and storage changes. Admin access remains intentional. [Patch and connected retest](TEST_v0.2.71.13.md).
+
 **C557 / 0.2.71.12 multiplayer test build.** Owner selected C556 option 1A to package the tested immediate queue dispatch. [Release scope](PATCH_v0.2.71.12.md) and [two-player retest](TEST_v0.2.71.12.md). Live timing is pending.
 
 **C551 / 0.2.71.11 multiplayer test build.** Owner selected C550 option 1A to package paired damage receipts and the indexed Spike Barrier lookup. The six promoted combat files match the tested candidate. [Release verification and two-player checklist](TEST_v0.2.71.11.md). Connected acceptance is pending.

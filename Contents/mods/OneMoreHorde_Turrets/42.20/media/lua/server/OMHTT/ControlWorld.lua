@@ -265,6 +265,7 @@ function W.register(object, player, kind, previous)
     W.locations[state.location] = W.locations[state.location] or {}
     W.locations[state.location][id] = true
     state.recoverAt = require("OMHTT/ControlClock").now() + 1000
+    if kind == "Tether" then state.enabled = nil end
     state.active, state.powered, state.triggerHours = false, false, nil
     if kind == "Lever" then state.latched = false end
     if kind == "Laser" then state.beamRange, state.beamLength = state.beamRange or 10, 0 end
@@ -309,6 +310,11 @@ function W.bind(object)
     if other and other ~= object and other:getObjectIndex() >= 0 then return end
     W.objects[state.id], W.bindings[object] = object, state
     require("OMHTT/DefenseXP").register(state.id, state.owner)
+    if state.kind == "Tether" then state.enabled = nil end
+    if state.kind == "Poke" and object:getContainer() and object:getContainer():getType() == "OMHTTPoke"
+        and object:getContainerCount() == 1 then
+        if require("OMHTT/ControlLegacyStorage").recover(nil, object) then object:removeAllContainers() end
+    end
     state.active, state.powered, state.triggerHours, state.beamLength = false, false, nil, 0
     state.recoverAt = require("OMHTT/ControlClock").now() + 1000
     state.checkedHours, state.pulseHoldUntil, state.facingPulse = nil, nil, nil
@@ -527,6 +533,11 @@ function W.create(params)
         object:getSquare():transmitRemoveItemFromSquare(object)
         return {objectAlreadyTransmitted = true}
     end
+    if kind == "Poke" and instanceof(source, "InventoryContainer")
+        and not require("OMHTT/ControlLegacyStorage").recover(player, object, source:getInventory()) then
+        object:getSquare():transmitRemoveItemFromSquare(object)
+        return {objectAlreadyTransmitted = true}
+    end
     local previous = W.records().packed[tostring(source:getID())]
     local state = W.register(object, player, kind, previous)
     W.records().packed[tostring(source:getID())] = false
@@ -545,10 +556,10 @@ function W.create(params)
     state.carriedHealth = nil
     object:setCanPassThrough(true)
     object:setBlockAllTheSquare(false)
-    if kind == "Controller" or kind == "Poke" then
-        local container = ItemContainer.new(kind == "Poke" and "OMHTTPoke" or "OMHTTController", object:getSquare(), object)
+    if kind == "Controller" then
+        local container = ItemContainer.new("OMHTTController", object:getSquare(), object)
         container:setCapacity(100)
-        container:setAcceptItemFunction(kind == "Poke" and "OMHTTPokeReject" or "OMHTTControlAccept")
+        container:setAcceptItemFunction("OMHTTControlAccept")
         container:setExplored(true)
         object:setContainer(container)
         local inventory = instanceof(source, "InventoryContainer") and source:getInventory()

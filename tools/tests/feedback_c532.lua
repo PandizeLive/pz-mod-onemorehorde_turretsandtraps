@@ -74,7 +74,7 @@ check(clicks==2,"C532 repeated empty requests still sound while game multiplier 
 local Audio=require("OMHTT/ControlAudio")
 local oldWorld,oldPlaying=getWorld,Audio.playing
 local starts,volume=0,nil
-local emitter={playSound=function() starts=starts+1;return 1 end,setVolume=function(_,_,v) volume=v end,
+local emitter={playSound=function() starts=starts+1;return 1 end, playSoundImpl=function() starts=starts+1;return 1 end,setVolume=function(_,_,v) volume=v end,
     stopSound=function() end}
 getWorld=function() return {getFreeEmitter=function() return emitter end} end
 testMode="client"

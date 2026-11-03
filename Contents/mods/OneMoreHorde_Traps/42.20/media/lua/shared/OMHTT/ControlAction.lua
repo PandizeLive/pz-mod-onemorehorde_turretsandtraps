@@ -71,15 +71,13 @@ function Action:isValid()
                 or require("OMHTT/ControlRemote").valid(self.character, self.object, self.target))
     elseif self.command == "BeamRange" then
         return false
-    elseif self.command == "TetherEnabled" then
-        return state.kind == "Tether" and type(self.value) == "boolean"
     elseif self.command == "ClearInputs" then
         return state.kind == "Turret" or state.kind == "Tether"
     elseif self.command == "Trigger" then
         return state.kind == "Plate" and (self.value == "Both" or self.value == "Players" or self.value == "Zombies")
     elseif self.command == "Pickup" or self.command == "Repair" then
         return state.kind ~= "Turret" and state.kind ~= "Poke"
-            and (state.kind ~= "Tether" or (state.enabled == false and not state.active and A.near(self.character, self.object)))
+            and (state.kind ~= "Tether" or (A.near(self.character, self.object) and (self.command == "Pickup" or not state.active)))
             and (self.command ~= "Repair" or (self.object:getHealth() < self.object:getMaxHealth()
                 and require("OMHTT/ControlRepair").ready(self.character, state.kind)))
     end
@@ -144,8 +142,6 @@ function Action:complete()
         return require("OMHTT/TurretWorld").setFacing(self.target, self.value)
     elseif self.command == "Link" then
         return W.link(self.object, self.target, self.value)
-    elseif self.command == "TetherEnabled" then
-        state.enabled = self.value
     elseif self.command == "ClearInputs" then
         W.clearInputs(self.object)
     elseif self.command == "Trigger" then

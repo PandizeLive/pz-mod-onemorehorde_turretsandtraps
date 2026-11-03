@@ -29,14 +29,13 @@ function Action:isValid()
         or not Access.authorized(self.character, self.object) then return false end
     if self.operation == "Power" or state.active then return false end
     local storage = self.object:getContainer()
-    if not storage then return false end
     if self.operation == "Pickup" then return Access.near(self.character, self.object) end
     if self.operation == "Repair" then
         return Access.near(self.character, self.object) and self.object:getHealth() < (state.maxHealth or 200) and self:materials() ~= nil
     end
     if self.operation == "Battery" then
         local source = self.item and self.item:getContainer()
-        if not source or not source:contains(self.item) or not source:isRemoveItemAllowed(self.item)
+        if not storage or not source or not source:contains(self.item) or not source:isRemoveItemAllowed(self.item)
             or not Battery.car(self.item) or self.item:isFavorite() then return false end
         -- Legacy batteries remain removable; mechanical traps accept no new batteries.
         if self.value ~= false then return false end

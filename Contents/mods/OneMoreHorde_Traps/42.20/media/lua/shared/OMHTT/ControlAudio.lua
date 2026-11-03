@@ -32,22 +32,24 @@ function A.receive(module, command, facts)
     gain = gain * require("OMHTT/ControlOptions").get("FeedbackVolume") / 100
     if gain == 0 then return end
     local emitter = getWorld():getFreeEmitter(facts.x, facts.y, facts.z)
-    local handle = emitter:playSound(sound)
+    -- The server already selected listeners. Native playSound would broadcast a second, untracked copy.
+    local handle = emitter:playSoundImpl(sound, false, nil)
     emitter:setVolume(handle, gain * (gains[facts.event] or 1))
     if facts.event == "reel" then
-        A.playing[facts.id] = {emitter = emitter, handle = handle, expires = A.time + 45000}
+        A.playing[facts.id] = {emitter = emitter, handle = handle, expires = A.time + (facts.durationMs or 1000)}
     end
 end
 
 ---@param object IsoObject Device
 ---@param event string Approved cue
+---@param durationMs number? Remaining tether retraction time
 ---@return nil
-function A.emit(object, event)
+function A.emit(object, event, durationMs)
     if isClient() or not object then return end
     local state = require("OMHTT/ControlWorld").state(object)
     local square = object:getSquare()
     if not state or not square then return end
-    local facts = {id = state.id, event = event, x = square:getX() + .5, y = square:getY() + .5, z = square:getZ()}
+    local facts = {id = state.id, event = event, durationMs = durationMs, x = square:getX() + .5, y = square:getY() + .5, z = square:getZ()}
     if isServer() then
         Effects.send("OMHTTDeviceAudio", "Play", facts)
     else

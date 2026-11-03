@@ -351,6 +351,26 @@ while #queue.queue > 0 do
     table.remove(queue.queue, 1)
 end
 check(batches == 3 and inv:contains(selected[41]), "Forty-one queued rounds form three actions without client inventory mutation")
+do
+    local access = require("OMHTT/TurretAccess")
+    local world = require("OMHTT/ControlWorld")
+    local policy = {id=transferId,kind="Turret",owner="owner-A",access="Private"}
+    transferObject:getModData().OMHTTControl=policy
+    local guest=setmetatable({getUsername=function() return "player-B" end,
+        getAccessLevel=function() return "None" end},{__index=player})
+    local take=ISInventoryTransferAction:new(guest,limited[1],target,inv)
+    check(access.near(guest,transferObject,transferId,true) and take.Type==Transfer.Type and not take:isValid(),
+        "Private turret permits inspection and rejects ordinary native withdrawal")
+    check(Network.queue(guest,transferObject,{limited[1]},false,"ammo")==0,"Manage denies the same non-owner")
+    testMode="server"
+    world.bindings[transferObject]=policy
+    check(not take:complete() and target:contains(limited[1]),"Server rejects direct replay without moving the item")
+    guest.getAccessLevel=function() return "Admin" end
+    check(access.near(guest,transferObject,transferId),"Explicit admin override remains")
+    world.bindings[transferObject]=nil
+    transferObject:getModData().OMHTTControl=nil
+    testMode="client"
+end
 local nativeDrag = ISInventoryTransferAction:new(player, selected[1], inv, target)
 check(nativeDrag.Type == Transfer.Type and nativeDrag.id == transferId, "Ordinary native inventory drag routes to the same validated action")
 local declined = ISInventoryTransferAction:new(player, limited[1], target, {getType = function() return "floor" end, getContainingItem = function() return nil end})

@@ -68,6 +68,11 @@ function C.controller(params)
     local objects = square:getObjects()
     for i = 0, objects:size() - 1 do
         local object = objects:get(i)
+        local props = object:getProperties()
+        if props and props:has(IsoPropertyType.IS_MOVE_ABLE) then
+            local moveType = props:get(IsoPropertyType.MOVE_TYPE)
+            if not moveType or moveType == "Object" then return false end
+        end
         if object:hasModData() then
             local data = object:getModData()
             if data.OMHTT or data.OMHTTEdge or data.OMHTTControl or data.OMHTTTurret

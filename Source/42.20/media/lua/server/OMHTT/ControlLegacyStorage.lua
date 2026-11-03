@@ -1,17 +1,19 @@
 if isClient() then return end
 local L = {}
 
----@param player IsoPlayer Authorized operator
+---@param player IsoPlayer? Authorized operator, or nil when restoring a placed floor
 ---@param object IsoObject Legacy Poke Floor
+---@param portableStorage ItemContainer? Legacy portable contents during placement
 ---@return boolean empty All real legacy contents were recovered
-function L.recover(player, object)
-    local storage, inventory = object:getContainer(), player:getInventory()
+function L.recover(player, object, portableStorage)
+    local storage = portableStorage or object:getContainer()
+    local inventory = player and player:getInventory()
     if not storage then return true end
     for i = 1, 64 do
         if storage:getItems():isEmpty() then return true end
         local item = storage:getItems():get(0)
         storage:Remove(item)
-        local carried = inventory:isItemAllowed(item) and inventory:hasRoomFor(player, item)
+        local carried = inventory and inventory:isItemAllowed(item) and inventory:hasRoomFor(player, item)
         local delivered
         if carried then
             delivered = inventory:AddItem(item) == item

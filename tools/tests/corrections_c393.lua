@@ -164,7 +164,8 @@ getText, getItemNameFromFullType = savedText, savedItemName
 local soundWorld, soundServer, soundSettings = getWorld, isServer, SandboxVars.OMHTurretsTraps
 local played, volume, stopped = 0, 0, 0
 local soundEmitter = {
-    playSound = function(self, sound) played = played + 1; return played end,
+    playSound = function() error("An already broadcast cue attempted native network playback") end,
+    playSoundImpl = function(self, sound) played = played + 1; return played end,
     setVolume = function(self, handle, gain) volume = gain end,
     stopSound = function(self, handle) stopped = stopped + 1 end,
 }
@@ -180,4 +181,10 @@ check(volume == .5 and Audio.playing["mix-test"], "Custom WAV uses script mix on
 SandboxVars.OMHTurretsTraps.DeviceSoundVolume = 0
 Audio.receive("OMHTTDeviceAudio", "Play", {id = "mix-test", event = "reel", x = 0, y = 0, z = 0})
 check(played == 3 and stopped == 1 and not Audio.playing["mix-test"], "Muted replacement stops old reel without starting another")
+SandboxVars.OMHTurretsTraps.DeviceSoundVolume = 1
+Audio.receive("OMHTTDeviceAudio", "Play", {id="lost-stop", event="reel", x=0, y=0, z=0, durationMs=250})
+check(Audio.playing["lost-stop"].expires == Audio.time+250, "Lost stop bounded to actual retract duration")
+Audio.time=Audio.time+251
+Audio.tick()
+check(stopped==2 and not Audio.playing["lost-stop"], "Missing pickup or stop packet cannot strand a running loop")
 getWorld, isServer, SandboxVars.OMHTurretsTraps = soundWorld, soundServer, soundSettings

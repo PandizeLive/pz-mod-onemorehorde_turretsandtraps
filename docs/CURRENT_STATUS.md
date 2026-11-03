@@ -1,5 +1,7 @@
 # Current development and planning handoff
 
+**C558 / 0.2.71.13 device placement, Tether and Poke Floor fixes.** The owner approved the occupancy, audio, pickup and storage changes. Admin access remains intentional. [Patch and connected retest](TEST_v0.2.71.13.md).
+
 **C557 / 0.2.71.12 ready for the connected retest.** Installed and staged from `test/v0.2.71.12` at `41ef8f75`. All 642 packaged files matched the tag, ZIP, install and Workshop stage. The unlisted upload preflight passed. **Test now** after CMD option 3 and restarting the server and both clients. [Two-player retest](TEST_v0.2.71.12.md) · [Delivery evidence](evidence/c557-delivery.json).
 
 **C556 / Further latency review.** The detailed capture had 35 of 38 rotary hits waiting at most 1 ms in the server queue. Two rotary hits arrived 3 and 38 ms after Martyrdom was sent. [Pairing tradeoff and test-build choice](RECEIPT_DISPATCH_C555.md#c556-further-latency-review).

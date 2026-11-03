@@ -53,6 +53,23 @@ return function(player)
                     assert(not require("OMHTT/ControlPokeFootprint").valid(square,nil,player),"C534 blocking bush was treated as grass")
                     square:getObjects():remove(bush);square:RecalcProperties()
                 end
+                if route == "OMHTTDeployTurret" or route == "OMHTTDeployController" then
+                    local valid=require("OMHTT/ControlDefinitions").controller
+                    assert(valid({square=square}),"Grass and fern must allow a device base")
+                    for _,name in pairs({"furniture_seating_indoor_01_0","vegetation_indoor_01_0"}) do
+                        local furniture=IsoObject.new(square,name,"furniture fixture")
+                        square:getObjects():add(furniture);square:RecalcProperties()
+                        assert(not valid({square=square}),"Furniture accepted: "..name)
+                        square:getObjects():remove(furniture);square:RecalcProperties()
+                    end
+                    for _,kind in pairs({"Plate","Controller"}) do
+                        local device=IsoObject.new(square,"omhtt_barrier_01_85","occupied fixture")
+                        device:getModData().OMHTTControl={kind=kind}
+                        square:getObjects():add(device)
+                        assert(not valid({square=square}),"Device overlap accepted: "..kind)
+                        square:getObjects():remove(device)
+                    end
+                end
                 player:setX(x + .5); player:setY(y + .5); player:setZ(0); player:setCurrent(square)
                 if (route == "OMHTTDeployTether" or route == "OMHTTDeployLever" or route == "OMHTTDeployLaser") or route == "OMHTTBarbs" or route == "OMHTTDeploySwitchButton" then
                     local wx, wy, north = x, y + 1, true
@@ -93,6 +110,21 @@ return function(player)
                 if route == "OMHTTDeployPoke" then
                     local footprint=require("OMHTT/ControlPokeFootprint")
                     assert(square:getSpecialObjects():size()==1,"Poke assembly created extra collision objects")
+                    if server and not cheat then
+                        local world=require("OMHTT/ControlWorld")
+                        local poke=square:getSpecialObjects():get(0)
+                        assert(not poke:getContainer(),"Mechanical floor exposed loot storage")
+                        local legacy=ItemContainer.new("OMHTTPoke",square,poke)
+                        poke:setContainer(legacy)
+                        local battery=legacy:AddItem("Base.CarBattery2")
+                        local state=world.state(poke)
+                        world.bindings[poke]=nil
+                        world.bind(poke)
+                        assert(world.state(poke)==state and not poke:getContainer(),"Legacy floor did not shed its storage")
+                        local drop=battery:getWorldItem()
+                        assert(drop and drop:getItem()==battery and drop:getSquare()==square,
+                            "Legacy floor must return its exact item on the original square")
+                    end
                     for i=1,#footprint.offsets do
                         local offset=footprint.offsets[i]
                         local tile=lookup[(x+offset[1])..":"..(y+offset[2])..":0"]

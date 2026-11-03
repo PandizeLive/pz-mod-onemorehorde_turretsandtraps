@@ -196,7 +196,7 @@ end
 function S.step(object, state, pulse)
     if Active.paused() then return end
     local W = require("OMHTT/ControlWorld")
-    if object:getHealth() <= 0 or state.enabled == false or SandboxVars.OMHTurretsTraps.Enabled == false then
+    if object:getHealth() <= 0 or SandboxVars.OMHTurretsTraps.Enabled == false then
         S.cancel(object)
         if state.active then
             state.active = false
@@ -254,7 +254,7 @@ function S.step(object, state, pulse)
     end
     if cycle.phase ~= before then
         if cycle.phase == "back" then
-            require("OMHTT/ControlAudio").emit(object, "reel")
+            require("OMHTT/ControlAudio").emit(object, "reel", math.ceil(cycle.distance / cycle.returnSpeed * 1000))
         elseif before == "back" or cycle.phase == "idle" then
             require("OMHTT/ControlAudio").emit(object, "stop")
             if cycle.phase == "reset" then

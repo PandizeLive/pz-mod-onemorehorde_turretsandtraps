@@ -1,5 +1,8 @@
-v0.2.71.12
+v0.2.71.13
 
 Development test content
 
-- Reduced the delay between consecutive defense hits on the same zombie in multiplayer.
+- Turret Bases and T&T Controllers require a clear tile for placement.
+- Fixed Tether Dart retraction sounds continuing after pickup in multiplayer.
+- Tether Darts can be picked up while armed. Removed the manual enable and disable options.
+- Removed storage from mechanical Poke Floors. Existing contents are recovered.
