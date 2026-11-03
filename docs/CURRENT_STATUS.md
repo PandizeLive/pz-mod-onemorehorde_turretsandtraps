@@ -1,6 +1,6 @@
 # Current development and planning handoff
 
-**C557 / 0.2.71.12 multiplayer test build.** Owner selected C556 option 1A to package the tested immediate queue dispatch. [Release scope](PATCH_v0.2.71.12.md) and [two-player retest](TEST_v0.2.71.12.md). Live timing is pending.
+**C557 / 0.2.71.12 ready for the connected retest.** Installed and staged from `test/v0.2.71.12` at `41ef8f75`. All 642 packaged files matched the tag, ZIP, install and Workshop stage. The unlisted upload preflight passed. **Test now** after CMD option 3 and restarting the server and both clients. [Two-player retest](TEST_v0.2.71.12.md) · [Delivery evidence](evidence/c557-delivery.json).
 
 **C556 / Further latency review.** The detailed capture had 35 of 38 rotary hits waiting at most 1 ms in the server queue. Two rotary hits arrived 3 and 38 ms after Martyrdom was sent. [Pairing tradeoff and test-build choice](RECEIPT_DISPATCH_C555.md#c556-further-latency-review).
 

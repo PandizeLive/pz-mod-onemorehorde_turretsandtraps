@@ -12,6 +12,8 @@ The general release validator passed 51,974 assertions and checked 466 source fi
 
 ## Two-player retest
 
+The installed packages, release ZIP and Workshop stage match all 642 files in `test/v0.2.71.12` at `41ef8f75`. The upload preflight passed for unlisted item 3828638252. [Delivery evidence](evidence/c557-delivery.json)
+
 Upload with T&T CMD option 3, then restart the server and both clients on 0.2.71.12. Use the existing test world and keep Turrets Detailed Logging enabled on the server and observing client for comparison with C554.
 
 - Rotary Blades and Bat with Martyrdom in a crowd.
