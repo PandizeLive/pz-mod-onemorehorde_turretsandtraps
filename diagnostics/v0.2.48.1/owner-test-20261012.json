@@ -1,0 +1,13 @@
+{
+  "decision": "C191",
+  "version": "0.2.48.1",
+  "ownerResult": "Works well; current reel behavior accepted. Two requested timing refinements queued for next patch.",
+  "capture": "20261012-195320-4179",
+  "sha256": "a407239acd7bc6d970b10d713771c109473b92f676b020bf9657a26d082bdb05",
+  "bytes": 150680,
+  "completedPackActions": 10,
+  "errorsOrExceptionsAfterFirstPack": 0,
+  "recordedMaxActiveGapMsAfterFirstPack": 54,
+  "scope": "Pack-opening segment, not combat stress or complete historical feature acceptance",
+  "newPatchInstalled": false
+}

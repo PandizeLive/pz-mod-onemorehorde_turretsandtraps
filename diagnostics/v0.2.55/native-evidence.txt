@@ -1,0 +1,18 @@
+NATIVE WRITE (zero connected clients)
+LOG  : Lua          f:0 st:384,747,389> [OMHTT-C323] native-button sprite=lightswitch device=momentary identity=numbered
+LOG  : Lua          f:0 st:384,747,434> [OMHTT-Controls] native devices=3 ownership=private read=public replay=blocked remote=power-scoped plate=recovery-safe backup=48h heavy=exact capacities=30
+LOG  : General      f:0 st:384,759,336> [OMHTT-Controls] persistence mode=write items=250 weight=over100 owner=preserved
+LOG  : General      f:0 st:384,759,343> [OMHTT-Controls] native-stock-transfer selectedBag=exact removedBag=rejected constructorArgs=retained bytes=137
+LOG  : General      f:0 st:384,759,813> [OMHTT-Barbs] persistence mode=write pairs=8 wire=2 identity=valid durability=shared-preserved hostHealth=unchanged collision=passable
+LOG  : General      f:0 st:384,760,245> [OMHTT-Smoke] native-persistence mode=write parts=28 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved legacy=8 edges=8 outline=4 reinforced=8 orientation=preserved
+LOG  : General      f:0 st:384,770,601> Shutdown handling finished
+
+NATIVE READ (zero connected clients)
+LOG  : Lua          f:0 st:384,890,764> [OMHTT-C323] native-names fresh-process=preserved private-reservation=preserved
+LOG  : Lua          f:0 st:384,890,777> [OMHTT-C323] native-button sprite=lightswitch device=momentary identity=numbered
+LOG  : Lua          f:0 st:384,890,824> [OMHTT-Controls] native devices=3 ownership=private read=public replay=blocked remote=power-scoped plate=recovery-safe backup=48h heavy=exact capacities=30
+LOG  : General      f:0 st:384,902,886> [OMHTT-Controls] persistence mode=read items=250 weight=over100 owner=preserved
+LOG  : General      f:0 st:384,902,893> [OMHTT-Controls] native-stock-transfer selectedBag=exact removedBag=rejected constructorArgs=retained bytes=137
+LOG  : General      f:0 st:384,903,203> [OMHTT-Barbs] persistence mode=read pairs=8 wire=2 identity=valid durability=shared-preserved hostHealth=unchanged collision=passable
+LOG  : General      f:0 st:384,903,621> [OMHTT-Smoke] native-persistence mode=read parts=28 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved legacy=8 edges=8 outline=4 reinforced=8 orientation=preserved
+LOG  : General      f:0 st:384,914,236> Shutdown handling finished

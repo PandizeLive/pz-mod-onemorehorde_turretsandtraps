@@ -11,3 +11,11 @@
 - Cloud connection remains unverified: the connected GitHub plugin returned 404 for this private repository and lists only an installation under a different account. The authenticated local GitHub CLI uses PandizeLive and successfully created/pushed/read the repository. Connect/authorize the PandizeLive repository in the intended Cloud GitHub connection, then select `dev`. No access was granted to another person or account as a workaround.
 
 Follow [GITHUB_WORKFLOW.md](GITHUB_WORKFLOW.md). Repository creation and successful Git pushes do not establish Cloud environment readiness or Workshop publication.
+
+## Connection and process recheck, 2026-10-07 (C97)
+
+- Fetched origin/dev; local dev and remote matched `5fc64467873ea81404927882cdeb5b07d2e1c50a` before the audit branch was created.
+- Authenticated CLI and connected GitHub app both returned the private repository with default branch dev. The app successfully fetched `docs/CURRENT_STATUS.md` from dev (blob `18ff514455595cbcfbb5cea2f0418a2d75a2ca06`). The earlier connector-access failure above is resolved. This proves repository/content access, not execution of a Cloud task or planning PR.
+- GitHub Actions API returned zero configured workflows; recent run listing was empty. The approved pipeline is the documented planning/implementation/mirroring/release process, not an automated GitHub CI build.
+- Reran all nine existing mirror preflight checks successfully in disposable repositories under Windows PowerShell 5.1. Initial sandbox attempts failed on temporary-directory permissions and child PowerShell policy; rerun with approved local execution and process-scoped policy passed. No test logic changed and no network operation occurs in these preflights.
+- Root `OMH.cmd -Action Mirror -ValidateOnly` passed at the unchanged dev checkpoint and included the existing test tag. No push, PR, merge, official release or Workshop upload was performed during this recheck.

@@ -1,0 +1,12 @@
+{
+  "version": "0.2.47.4",
+  "markers": {
+    "write": [
+      "[OMHTT-Smoke] native-rarity anchors=7 settings=registered defaults=automatic colorsAndSurcharges=matched"
+    ],
+    "read": [
+      "[OMHTT-Smoke] native-rarity anchors=7 settings=registered defaults=automatic colorsAndSurcharges=matched"
+    ]
+  },
+  "scope": "Native setting registration and runtime rarity/surcharge checks in both processes; overall existing save/restart probes pass. Custom anchor values constructed by fixture, not a separate persistence store."
+}

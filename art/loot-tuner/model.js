@@ -11,6 +11,11 @@
     return Math.min(1, Math.ceil(weight*global*item*material*100-1e-10)/10000);
   }
   function rolls(base, multiplier) { return Math.max(1, Math.floor(base*multiplier)); }
+  function lootWeight(component, multiplier) { return component.weight*multiplier; }
+  function weightMultiplier(component, weight) {
+    if(!Number.isFinite(weight)||weight<0||weight>component.weight*1000000)throw Error('Weight must be between 0 and '+component.weight*1000000+'.');
+    return weight/component.weight;
+  }
   function choose(rules, counts, forced, random) {
     if (forced.length) return forced[forced.length-1];
     let required=[], available=[];
@@ -37,12 +42,14 @@
     while(true) { position+=1+Math.floor(Math.log(1-random())/log); if(position>=n) return successes; successes++; }
   }
   function quantile(values,q) { const a=values.slice().sort((x,y)=>x-y); return a[Math.floor((a.length-1)*q)]||0; }
-  function defaults(data) { return {version:1,baseline:data.meta.baseline,seed:24601,global:data.defaults?.global??1,material:.6,rolls:1,retention:1,selected:'all',overlay:'spawns',visible:Object.fromEntries(data.modules.map(m=>[m.id,true])),items:Object.fromEntries(data.modules.map(m=>[m.id,data.defaults?.items?.[m.id]??1]))}; }
+  const tierNames=['Abundant','Common','Uncommon','Rare','Epic','Legendary','Mythic'];
+  function defaults(data) { return {version:1,baseline:data.meta.baseline,seed:24601,tierWeights:Object.fromEntries(tierNames.map(name=>[name,data.defaults?.tierWeights?.[name]??null])),global:data.defaults?.global??1,material:.6,rolls:1,retention:1,selected:'all',overlay:'spawns',visible:Object.fromEntries(data.modules.map(m=>[m.id,true])),items:Object.fromEntries(data.modules.map(m=>[m.id,data.defaults?.items?.[m.id]??1]))}; }
   function migrateValue(path,value,baseline) {
-    if(['T&T 0.2.26','T&T 0.2.27','T&T 0.2.28'].includes(baseline))return value;
+    if(/^T&T 0\.2\.(2[6-9]|[3-5][0-9]|6[0-5])(?:\.\d+)?$/.test(baseline))return value;
     if(path==='global')return value/4.5;
     if(path.startsWith('items.')) {
       const id=path.slice(6);
+      if(['Magazine','Splitter','Fragment','FiringEnhanced','MotionDetectionEnhanced','Piercing','InitialBlow','Execute','Impact','Conservation','Synergy','Martyrdom','Tack','Regulator','Lure','Void','Siphon','Grid'].includes(id))return value;
       const factor=['Firing','MotionDetection','CapacitySmall','CapacityLarge','Autoloader'].includes(id)?3:2;
       return value/(baseline==='Installed 0.2.22'&&id==='Suppression'?1:factor);
     }
@@ -58,10 +65,20 @@
       s[key]=legacy?migrateValue(key,input[key],input.baseline):input[key];
     }
     s.seed=Math.floor(s.seed);
+    s.tierWeights=Object.fromEntries(tierNames.map(name=>[name,null]));
+    if(input.tierWeights!==undefined){
+      const tiers=input.tierWeights;
+      if(!tiers||typeof tiers!=='object'||Array.isArray(tiers)||Object.keys(tiers).length!==7||Object.keys(tiers).some(k=>!tierNames.includes(k)))throw Error('Invalid tier weights.');
+      for(const name of tierNames){const n=tiers[name];if(n!==null&&(typeof n!=='number'||!Number.isFinite(n)||n<0||n>1000000))throw Error('Invalid '+name+' tier weight.');s.tierWeights[name]=n;}
+    }
+    const manualTiers={ManualBallista:'Uncommon',ManualRotaryBlades:'Uncommon',ManualLobber:'Rare',ManualArc:'Epic',ManualFirearms:'Rare'};
     for(const m of data.modules) {
-      const value=legacy&&['Critical','Accuracy'].includes(m.id)&&input.items?.[m.id]===undefined?1:input.items?.[m.id];
-      if(typeof value!=='number' || !Number.isFinite(value) || value<0 || value>20) throw Error('Invalid '+m.name+' multiplier.');
-      s.items[m.id]=legacy?migrateValue("items."+m.id,value,input.baseline):value;
+      const manual=m.id.startsWith('Manual')&&input.items?.[m.id]===undefined;
+      const added=legacy&&['Magazine','Splitter','Fragment','FiringEnhanced','MotionDetectionEnhanced','Piercing','InitialBlow','Execute','Impact','Conservation','Synergy','Martyrdom','Tack','Regulator','Lure','Void','Siphon','Grid'].includes(m.id)&&input.items?.[m.id]===undefined;
+      const anchor=s.tierWeights[manualTiers[m.id]];
+      const value=manual?(anchor>0?anchor/m.weight:s.items[m.id]):added?1:legacy&&['Critical','Accuracy'].includes(m.id)&&input.items?.[m.id]===undefined?1:input.items?.[m.id];
+      if(typeof value!=='number' || !Number.isFinite(value) || value<0 || value>1000000) throw Error('Invalid '+m.name+' multiplier.');
+      s.items[m.id]=legacy&&!added&&!manual?migrateValue("items."+m.id,value,input.baseline):value;
       if(input.visible?.[m.id]!==undefined) {
         if(typeof input.visible[m.id]!=='boolean')throw Error('Invalid component visibility.');
         s.visible[m.id]=input.visible[m.id];
@@ -181,6 +198,6 @@
     const poolMeans=pools.map((name,p)=>({name,containers:worlds.reduce((n,w)=>n+w.reduce((a,r)=>a+r[p],0),0)/samples}));
     return {itemMeans,expectations,presence,regions,poolMeans,mean:selected.reduce((n,i)=>n+itemMeans[i],0),lo:quantile(draws,.05),hi:quantile(draws,.95),zero,probabilities,poolProbabilities,meanTrials,hauls,haulByPool};
   }
-  root.LootModel={migrateValue,rng,probability,rolls,choose,binomial,quantile,defaults,validate,prepare,evaluate,regionFor,generate,haulDistribution,markerRadius};
+  root.LootModel={lootWeight,weightMultiplier,migrateValue,rng,probability,rolls,choose,binomial,quantile,defaults,validate,prepare,evaluate,regionFor,generate,haulDistribution,markerRadius};
   if(typeof module!=='undefined')module.exports=root.LootModel;
 })(typeof window!=='undefined'?window:globalThis);

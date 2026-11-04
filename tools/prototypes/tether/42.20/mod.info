@@ -1,0 +1,5 @@
+name=OMH Tether Prototype (Debug Only)
+id=OMHTT_TetherPrototype
+modversion=0.0.1
+versionMin=42.20
+description=Isolated no-damage launch/retract experiment. Not a gameplay release.

@@ -1,0 +1,209 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="654" style="font-family:Arial;background:#090909">
+<clipPath id="clip1"><rect x="0.000000" y="0.000000" width="900.000000" height="654.000000"/></clipPath><g clip-path="url(#clip1)">
+<rect x="1.000000" y="1.000000" width="898.000000" height="32.000000" fill="rgb(33,33,33)" stroke="none" opacity="1.000000"/>
+<text x="12.000000" y="22.000000" fill="rgb(216,63,63)" opacity="1.000000" font-size="16" text-anchor="start">One More Horde</text>
+<text x="138.000000" y="22.000000" fill="rgb(255,255,255)" opacity="1.000000" font-size="16" text-anchor="start"> - Turret Management Menu</text>
+<text x="888.000000" y="58.000000" fill="rgb(191,191,191)" opacity="1.000000" font-size="14" text-anchor="end">Weight: 6.0</text>
+<text x="12.000000" y="546.000000" fill="rgb(255,255,255)" opacity="1.000000" font-size="14" text-anchor="start">Engagement Range: Max</text>
+<text x="12.000000" y="576.000000" fill="rgb(216,216,216)" opacity="1.000000" font-size="14" text-anchor="start">No working head. | Battery power</text>
+<text x="12.000000" y="594.000000" fill="rgb(242,216,165)" opacity="1.000000" font-size="14" text-anchor="start"></text>
+<clipPath id="clip2"><rect x="217.000000" y="532.000000" width="659.000000" height="20.000000"/></clipPath><g clip-path="url(#clip2)">
+</g>
+<clipPath id="clip3"><rect x="12.000000" y="606.000000" width="110.000000" height="28.000000"/></clipPath><g clip-path="url(#clip3)">
+<rect x="12.000000" y="606.000000" width="110.000000" height="28.000000" fill="rgb(33,33,33)" stroke="none" opacity="1.000000"/>
+<rect x="12.000000" y="606.000000" width="110.000000" height="28.000000" fill="none" stroke="rgb(153,153,153)" opacity="1.000000"/>
+<text x="67.000000" y="626.000000" fill="rgb(229,229,229)" opacity="1.000000" font-size="14" text-anchor="middle">Fire</text>
+</g>
+<clipPath id="clip4"><rect x="130.000000" y="606.000000" width="758.000000" height="28.000000"/></clipPath><g clip-path="url(#clip4)">
+<rect x="130.000000" y="606.000000" width="758.000000" height="28.000000" fill="rgb(33,33,33)" stroke="none" opacity="1.000000"/>
+<rect x="130.000000" y="606.000000" width="758.000000" height="28.000000" fill="none" stroke="rgb(153,153,153)" opacity="1.000000"/>
+<text x="509.000000" y="626.000000" fill="rgb(229,229,229)" opacity="1.000000" font-size="14" text-anchor="middle">Priority: Random</text>
+</g>
+<clipPath id="clip5"><rect x="866.000000" y="6.000000" width="26.000000" height="24.000000"/></clipPath><g clip-path="url(#clip5)">
+<rect x="866.000000" y="6.000000" width="26.000000" height="24.000000" fill="rgb(33,33,33)" stroke="none" opacity="1.000000"/>
+<rect x="866.000000" y="6.000000" width="26.000000" height="24.000000" fill="none" stroke="rgb(153,153,153)" opacity="1.000000"/>
+<text x="879.000000" y="26.000000" fill="rgb(229,229,229)" opacity="1.000000" font-size="14" text-anchor="middle">X</text>
+</g>
+<clipPath id="clip6"><rect x="12.000000" y="38.000000" width="716.000000" height="28.000000"/></clipPath><g clip-path="url(#clip6)">
+<rect x="12.000000" y="38.000000" width="716.000000" height="28.000000" fill="none" stroke="rgb(153,153,153)" opacity="1.000000"/>
+<text x="16.000000" y="58.000000" fill="rgb(178,178,178)" opacity="1.000000" font-size="14" text-anchor="start"></text>
+</g>
+<clipPath id="clip7"><rect x="6.000000" y="74.000000" width="888.000000" height="448.000000"/></clipPath><g clip-path="url(#clip7)">
+<rect x="6.000000" y="74.000000" width="888.000000" height="448.000000" fill="rgb(6,6,6)" stroke="none" opacity="0.950000"/>
+<rect x="10.000000" y="78.000000" width="347.000000" height="198.000000" fill="rgb(14,14,14)" stroke="none" opacity="0.980000"/>
+<rect x="10.000000" y="78.000000" width="347.000000" height="198.000000" fill="none" stroke="rgb(76,76,76)" opacity="0.650000"/>
+<rect x="10.000000" y="78.000000" width="347.000000" height="26.000000" fill="rgb(40,40,40)" stroke="none" opacity="1.000000"/>
+<rect x="10.000000" y="78.000000" width="2.000000" height="26.000000" fill="rgb(178,178,178)" stroke="none" opacity="1.000000"/>
+<text x="18.000000" y="96.000000" fill="rgb(242,242,242)" opacity="1.000000" font-size="14" text-anchor="start">Equipment</text>
+<rect x="365.000000" y="78.000000" width="521.000000" height="198.000000" fill="rgb(14,14,14)" stroke="none" opacity="0.980000"/>
+<rect x="365.000000" y="78.000000" width="521.000000" height="198.000000" fill="none" stroke="rgb(76,76,76)" opacity="0.650000"/>
+<rect x="365.000000" y="78.000000" width="521.000000" height="26.000000" fill="rgb(40,40,40)" stroke="none" opacity="1.000000"/>
+<rect x="365.000000" y="78.000000" width="2.000000" height="26.000000" fill="rgb(178,178,178)" stroke="none" opacity="1.000000"/>
+<text x="373.000000" y="96.000000" fill="rgb(242,242,242)" opacity="1.000000" font-size="14" text-anchor="start">Ammunition</text>
+<rect x="10.000000" y="286.000000" width="876.000000" height="234.000000" fill="rgb(14,14,14)" stroke="none" opacity="0.980000"/>
+<rect x="10.000000" y="286.000000" width="876.000000" height="234.000000" fill="none" stroke="rgb(76,76,76)" opacity="0.650000"/>
+<rect x="10.000000" y="286.000000" width="876.000000" height="26.000000" fill="rgb(40,40,40)" stroke="none" opacity="1.000000"/>
+<rect x="10.000000" y="286.000000" width="2.000000" height="26.000000" fill="rgb(178,178,178)" stroke="none" opacity="1.000000"/>
+<text x="18.000000" y="304.000000" fill="rgb(242,242,242)" opacity="1.000000" font-size="14" text-anchor="start">Modules: 0 / 4</text>
+<clipPath id="clip8"><rect x="14.000000" y="110.000000" width="199.000000" height="60.000000"/></clipPath><g clip-path="url(#clip8)">
+<text x="22.000000" y="128.000000" fill="rgb(255,76,76)" opacity="1.000000" font-size="14" text-anchor="start">Head</text>
+<rect x="14.000000" y="110.000000" width="199.000000" height="60.000000" fill="none" stroke="rgb(255,76,76)" opacity="1.000000"/>
+<text x="58.000000" y="150.000000" fill="rgb(255,255,255)" opacity="1.000000" font-size="14" text-anchor="start">Drop Here</text>
+</g>
+<clipPath id="clip9"><rect x="219.000000" y="110.000000" width="134.000000" height="60.000000"/></clipPath><g clip-path="url(#clip9)">
+<text x="227.000000" y="128.000000" fill="rgb(204,204,204)" opacity="1.000000" font-size="14" text-anchor="start">Expansion</text>
+<text x="263.000000" y="150.000000" fill="rgb(255,255,255)" opacity="1.000000" font-size="14" text-anchor="start">Drop Here</text>
+</g>
+<clipPath id="clip10"><rect x="14.000000" y="178.000000" width="279.000000" height="60.000000"/></clipPath><g clip-path="url(#clip10)">
+<text x="22.000000" y="196.000000" fill="rgb(204,204,204)" opacity="1.000000" font-size="14" text-anchor="start">Battery: None</text>
+<rect x="147.000000" y="185.000000" width="140.000000" height="7.000000" fill="rgb(45,45,45)" stroke="none" opacity="1.000000"/>
+<rect x="147.000000" y="185.000000" width="0.000000" height="7.000000" fill="rgb(127,204,127)" stroke="none" opacity="1.000000"/>
+<text x="58.000000" y="218.000000" fill="rgb(255,255,255)" opacity="1.000000" font-size="14" text-anchor="start">Drop Here</text>
+</g>
+<clipPath id="clip11"><rect x="369.000000" y="110.000000" width="252.500000" height="60.000000"/></clipPath><g clip-path="url(#clip11)">
+<text x="377.000000" y="128.000000" fill="rgb(204,204,204)" opacity="1.000000" font-size="14" text-anchor="start">Ammo: 0/100</text>
+<rect x="484.000000" y="117.000000" width="131.500000" height="7.000000" fill="rgb(45,45,45)" stroke="none" opacity="1.000000"/>
+<rect x="484.000000" y="117.000000" width="0.000000" height="7.000000" fill="rgb(127,204,127)" stroke="none" opacity="1.000000"/>
+<text x="377.000000" y="146.000000" fill="rgb(255,255,255)" opacity="1.000000" font-size="14" text-anchor="start">No working head.</text>
+<text x="377.000000" y="164.000000" fill="rgb(191,191,191)" opacity="1.000000" font-size="14" text-anchor="start">0 Ammo Type(s)</text>
+</g>
+<clipPath id="clip12"><rect x="629.500000" y="110.000000" width="252.500000" height="60.000000"/></clipPath><g clip-path="url(#clip12)">
+<text x="637.500000" y="128.000000" fill="rgb(204,204,204)" opacity="1.000000" font-size="14" text-anchor="start">Void: 0</text>
+<text x="637.500000" y="146.000000" fill="rgb(255,255,255)" opacity="1.000000" font-size="14" text-anchor="start">Requires Void Module</text>
+<rect x="629.500000" y="110.000000" width="252.500000" height="60.000000" fill="rgb(0,0,0)" stroke="none" opacity="0.400000"/>
+</g>
+<clipPath id="clip13"><rect x="369.000000" y="178.000000" width="513.000000" height="60.000000"/></clipPath><g clip-path="url(#clip13)">
+<text x="377.000000" y="196.000000" fill="rgb(204,204,204)" opacity="1.000000" font-size="14" text-anchor="start">Magazine: 0/3</text>
+<rect x="502.000000" y="185.000000" width="374.000000" height="7.000000" fill="rgb(45,45,45)" stroke="none" opacity="1.000000"/>
+<rect x="502.000000" y="185.000000" width="0.000000" height="7.000000" fill="rgb(127,204,127)" stroke="none" opacity="1.000000"/>
+<text x="377.000000" y="214.000000" fill="rgb(255,255,255)" opacity="1.000000" font-size="14" text-anchor="start">Next Shot: None</text>
+</g>
+<clipPath id="clip14"><rect x="232.500000" y="318.000000" width="103.250000" height="52.000000"/></clipPath><g clip-path="url(#clip14)">
+<text x="240.500000" y="336.000000" fill="rgb(204,204,204)" opacity="1.000000" font-size="14" text-anchor="start"></text>
+<text x="236.500000" y="364.000000" fill="rgb(255,255,255)" opacity="1.000000" font-size="14" text-anchor="start">+</text>
+</g>
+<clipPath id="clip15"><rect x="341.750000" y="318.000000" width="103.250000" height="52.000000"/></clipPath><g clip-path="url(#clip15)">
+<text x="349.750000" y="336.000000" fill="rgb(204,204,204)" opacity="1.000000" font-size="14" text-anchor="start"></text>
+<text x="345.750000" y="364.000000" fill="rgb(255,255,255)" opacity="1.000000" font-size="14" text-anchor="start">+</text>
+</g>
+<clipPath id="clip16"><rect x="451.000000" y="318.000000" width="103.250000" height="52.000000"/></clipPath><g clip-path="url(#clip16)">
+<text x="459.000000" y="336.000000" fill="rgb(204,204,204)" opacity="1.000000" font-size="14" text-anchor="start"></text>
+<text x="455.000000" y="364.000000" fill="rgb(255,255,255)" opacity="1.000000" font-size="14" text-anchor="start">+</text>
+</g>
+<clipPath id="clip17"><rect x="560.250000" y="318.000000" width="103.250000" height="52.000000"/></clipPath><g clip-path="url(#clip17)">
+<text x="568.250000" y="336.000000" fill="rgb(204,204,204)" opacity="1.000000" font-size="14" text-anchor="start"></text>
+<text x="564.250000" y="364.000000" fill="rgb(255,255,255)" opacity="1.000000" font-size="14" text-anchor="start">+</text>
+</g>
+<clipPath id="clip18"><rect x="14.000000" y="374.000000" width="103.250000" height="52.000000"/></clipPath><g clip-path="url(#clip18)">
+<text x="22.000000" y="392.000000" fill="rgb(204,204,204)" opacity="1.000000" font-size="14" text-anchor="start">Unavailable</text>
+<text x="18.000000" y="420.000000" fill="rgb(255,255,255)" opacity="1.000000" font-size="14" text-anchor="start">Unavailable</text>
+<rect x="14.000000" y="374.000000" width="103.250000" height="52.000000" fill="rgb(0,0,0)" stroke="none" opacity="0.400000"/>
+</g>
+<clipPath id="clip19"><rect x="123.250000" y="374.000000" width="103.250000" height="52.000000"/></clipPath><g clip-path="url(#clip19)">
+<text x="131.250000" y="392.000000" fill="rgb(204,204,204)" opacity="1.000000" font-size="14" text-anchor="start">Unavailable</text>
+<text x="127.250000" y="420.000000" fill="rgb(255,255,255)" opacity="1.000000" font-size="14" text-anchor="start">Unavailable</text>
+<rect x="123.250000" y="374.000000" width="103.250000" height="52.000000" fill="rgb(0,0,0)" stroke="none" opacity="0.400000"/>
+</g>
+<clipPath id="clip20"><rect x="232.500000" y="374.000000" width="103.250000" height="52.000000"/></clipPath><g clip-path="url(#clip20)">
+<text x="240.500000" y="392.000000" fill="rgb(204,204,204)" opacity="1.000000" font-size="14" text-anchor="start">Unavailable</text>
+<text x="236.500000" y="420.000000" fill="rgb(255,255,255)" opacity="1.000000" font-size="14" text-anchor="start">Unavailable</text>
+<rect x="232.500000" y="374.000000" width="103.250000" height="52.000000" fill="rgb(0,0,0)" stroke="none" opacity="0.400000"/>
+</g>
+<clipPath id="clip21"><rect x="341.750000" y="374.000000" width="103.250000" height="52.000000"/></clipPath><g clip-path="url(#clip21)">
+<text x="349.750000" y="392.000000" fill="rgb(204,204,204)" opacity="1.000000" font-size="14" text-anchor="start">Unavailable</text>
+<text x="345.750000" y="420.000000" fill="rgb(255,255,255)" opacity="1.000000" font-size="14" text-anchor="start">Unavailable</text>
+<rect x="341.750000" y="374.000000" width="103.250000" height="52.000000" fill="rgb(0,0,0)" stroke="none" opacity="0.400000"/>
+</g>
+<clipPath id="clip22"><rect x="451.000000" y="374.000000" width="103.250000" height="52.000000"/></clipPath><g clip-path="url(#clip22)">
+<text x="459.000000" y="392.000000" fill="rgb(204,204,204)" opacity="1.000000" font-size="14" text-anchor="start">Unavailable</text>
+<text x="455.000000" y="420.000000" fill="rgb(255,255,255)" opacity="1.000000" font-size="14" text-anchor="start">Unavailable</text>
+<rect x="451.000000" y="374.000000" width="103.250000" height="52.000000" fill="rgb(0,0,0)" stroke="none" opacity="0.400000"/>
+</g>
+<clipPath id="clip23"><rect x="560.250000" y="374.000000" width="103.250000" height="52.000000"/></clipPath><g clip-path="url(#clip23)">
+<text x="568.250000" y="392.000000" fill="rgb(204,204,204)" opacity="1.000000" font-size="14" text-anchor="start">Unavailable</text>
+<text x="564.250000" y="420.000000" fill="rgb(255,255,255)" opacity="1.000000" font-size="14" text-anchor="start">Unavailable</text>
+<rect x="560.250000" y="374.000000" width="103.250000" height="52.000000" fill="rgb(0,0,0)" stroke="none" opacity="0.400000"/>
+</g>
+<clipPath id="clip24"><rect x="669.500000" y="374.000000" width="103.250000" height="52.000000"/></clipPath><g clip-path="url(#clip24)">
+<text x="677.500000" y="392.000000" fill="rgb(204,204,204)" opacity="1.000000" font-size="14" text-anchor="start">Unavailable</text>
+<text x="673.500000" y="420.000000" fill="rgb(255,255,255)" opacity="1.000000" font-size="14" text-anchor="start">Unavailable</text>
+<rect x="669.500000" y="374.000000" width="103.250000" height="52.000000" fill="rgb(0,0,0)" stroke="none" opacity="0.400000"/>
+</g>
+<clipPath id="clip25"><rect x="778.750000" y="374.000000" width="103.250000" height="52.000000"/></clipPath><g clip-path="url(#clip25)">
+<text x="786.750000" y="392.000000" fill="rgb(204,204,204)" opacity="1.000000" font-size="14" text-anchor="start">Unavailable</text>
+<text x="782.750000" y="420.000000" fill="rgb(255,255,255)" opacity="1.000000" font-size="14" text-anchor="start">Unavailable</text>
+<rect x="778.750000" y="374.000000" width="103.250000" height="52.000000" fill="rgb(0,0,0)" stroke="none" opacity="0.400000"/>
+</g>
+<clipPath id="clip26"><rect x="232.500000" y="430.000000" width="103.250000" height="52.000000"/></clipPath><g clip-path="url(#clip26)">
+<text x="240.500000" y="448.000000" fill="rgb(204,204,204)" opacity="1.000000" font-size="14" text-anchor="start">Unavailable</text>
+<text x="236.500000" y="476.000000" fill="rgb(255,255,255)" opacity="1.000000" font-size="14" text-anchor="start">Unavailable</text>
+<rect x="232.500000" y="430.000000" width="103.250000" height="52.000000" fill="rgb(0,0,0)" stroke="none" opacity="0.400000"/>
+</g>
+<clipPath id="clip27"><rect x="341.750000" y="430.000000" width="103.250000" height="52.000000"/></clipPath><g clip-path="url(#clip27)">
+<text x="349.750000" y="448.000000" fill="rgb(204,204,204)" opacity="1.000000" font-size="14" text-anchor="start">Unavailable</text>
+<text x="345.750000" y="476.000000" fill="rgb(255,255,255)" opacity="1.000000" font-size="14" text-anchor="start">Unavailable</text>
+<rect x="341.750000" y="430.000000" width="103.250000" height="52.000000" fill="rgb(0,0,0)" stroke="none" opacity="0.400000"/>
+</g>
+<clipPath id="clip28"><rect x="451.000000" y="430.000000" width="103.250000" height="52.000000"/></clipPath><g clip-path="url(#clip28)">
+<text x="459.000000" y="448.000000" fill="rgb(204,204,204)" opacity="1.000000" font-size="14" text-anchor="start">Unavailable</text>
+<text x="455.000000" y="476.000000" fill="rgb(255,255,255)" opacity="1.000000" font-size="14" text-anchor="start">Unavailable</text>
+<rect x="451.000000" y="430.000000" width="103.250000" height="52.000000" fill="rgb(0,0,0)" stroke="none" opacity="0.400000"/>
+</g>
+<clipPath id="clip29"><rect x="560.250000" y="430.000000" width="103.250000" height="52.000000"/></clipPath><g clip-path="url(#clip29)">
+<text x="568.250000" y="448.000000" fill="rgb(204,204,204)" opacity="1.000000" font-size="14" text-anchor="start">Unavailable</text>
+<text x="564.250000" y="476.000000" fill="rgb(255,255,255)" opacity="1.000000" font-size="14" text-anchor="start">Unavailable</text>
+<rect x="560.250000" y="430.000000" width="103.250000" height="52.000000" fill="rgb(0,0,0)" stroke="none" opacity="0.400000"/>
+</g>
+<clipPath id="clip30"><rect x="186.500000" y="244.000000" width="166.500000" height="28.000000"/></clipPath><g clip-path="url(#clip30)">
+<rect x="186.500000" y="244.000000" width="166.500000" height="28.000000" fill="rgb(40,40,40)" stroke="none" opacity="1.000000"/>
+<rect x="186.500000" y="244.000000" width="166.500000" height="28.000000" fill="none" stroke="rgb(153,153,153)" opacity="1.000000"/>
+<text x="269.750000" y="264.000000" fill="rgb(229,229,229)" opacity="1.000000" font-size="14" text-anchor="middle">Set Aim</text>
+</g>
+<clipPath id="clip31"><rect x="299.000000" y="178.000000" width="54.000000" height="60.000000"/></clipPath><g clip-path="url(#clip31)">
+<rect x="299.000000" y="178.000000" width="54.000000" height="60.000000" fill="rgb(20,107,40)" stroke="none" opacity="0.950000"/>
+<rect x="299.000000" y="178.000000" width="54.000000" height="60.000000" fill="none" stroke="rgb(153,153,153)" opacity="1.000000"/>
+<text x="326.000000" y="198.000000" fill="rgb(229,229,229)" opacity="1.000000" font-size="14" text-anchor="middle"></text>
+</g>
+<clipPath id="clip32"><rect x="682.000000" y="244.000000" width="80.000000" height="26.000000"/></clipPath><g clip-path="url(#clip32)">
+<rect x="682.000000" y="244.000000" width="80.000000" height="26.000000" fill="rgb(40,40,40)" stroke="none" opacity="1.000000"/>
+<rect x="682.000000" y="244.000000" width="80.000000" height="26.000000" fill="none" stroke="rgb(153,153,153)" opacity="1.000000"/>
+<text x="722.000000" y="264.000000" fill="rgb(229,229,229)" opacity="1.000000" font-size="14" text-anchor="middle">Reload</text>
+</g>
+<clipPath id="clip33"><rect x="768.000000" y="244.000000" width="114.000000" height="26.000000"/></clipPath><g clip-path="url(#clip33)">
+<rect x="768.000000" y="244.000000" width="114.000000" height="26.000000" fill="rgb(40,40,40)" stroke="none" opacity="1.000000"/>
+<rect x="768.000000" y="244.000000" width="114.000000" height="26.000000" fill="none" stroke="rgb(153,153,153)" opacity="1.000000"/>
+<text x="825.000000" y="264.000000" fill="rgb(229,229,229)" opacity="1.000000" font-size="14" text-anchor="middle">Load Order</text>
+</g>
+<clipPath id="clip34"><rect x="14.000000" y="244.000000" width="166.500000" height="26.000000"/></clipPath><g clip-path="url(#clip34)">
+<rect x="14.000000" y="244.000000" width="166.500000" height="26.000000" fill="rgb(40,40,40)" stroke="none" opacity="1.000000"/>
+<rect x="14.000000" y="244.000000" width="166.500000" height="26.000000" fill="none" stroke="rgb(153,153,153)" opacity="1.000000"/>
+<text x="97.250000" y="264.000000" fill="rgb(229,229,229)" opacity="1.000000" font-size="14" text-anchor="middle">Remove To: Inventory</text>
+</g>
+<clipPath id="clip35"><rect x="776.000000" y="488.000000" width="110.000000" height="28.000000"/></clipPath><g clip-path="url(#clip35)">
+<rect x="776.000000" y="488.000000" width="110.000000" height="28.000000" fill="rgb(40,40,40)" stroke="none" opacity="1.000000"/>
+<rect x="776.000000" y="488.000000" width="110.000000" height="28.000000" fill="none" stroke="rgb(153,153,153)" opacity="1.000000"/>
+<text x="831.000000" y="508.000000" fill="rgb(229,229,229)" opacity="1.000000" font-size="14" text-anchor="middle">+ Details</text>
+</g>
+<clipPath id="clip36"><rect x="10.000000" y="78.000000" width="347.000000" height="26.000000"/></clipPath><g clip-path="url(#clip36)">
+<rect x="10.000000" y="78.000000" width="347.000000" height="26.000000" fill="rgb(0,0,0)" stroke="none" opacity="0.000000"/>
+<rect x="10.000000" y="78.000000" width="347.000000" height="26.000000" fill="none" stroke="rgb(0,0,0)" opacity="0.000000"/>
+<text x="183.500000" y="98.000000" fill="rgb(229,229,229)" opacity="1.000000" font-size="14" text-anchor="middle"></text>
+</g>
+<clipPath id="clip37"><rect x="365.000000" y="78.000000" width="521.000000" height="26.000000"/></clipPath><g clip-path="url(#clip37)">
+<rect x="365.000000" y="78.000000" width="521.000000" height="26.000000" fill="rgb(0,0,0)" stroke="none" opacity="0.000000"/>
+<rect x="365.000000" y="78.000000" width="521.000000" height="26.000000" fill="none" stroke="rgb(0,0,0)" opacity="0.000000"/>
+<text x="625.500000" y="98.000000" fill="rgb(229,229,229)" opacity="1.000000" font-size="14" text-anchor="middle"></text>
+</g>
+<clipPath id="clip38"><rect x="10.000000" y="286.000000" width="876.000000" height="26.000000"/></clipPath><g clip-path="url(#clip38)">
+<rect x="10.000000" y="286.000000" width="876.000000" height="26.000000" fill="rgb(0,0,0)" stroke="none" opacity="0.000000"/>
+<rect x="10.000000" y="286.000000" width="876.000000" height="26.000000" fill="none" stroke="rgb(0,0,0)" opacity="0.000000"/>
+<text x="448.000000" y="306.000000" fill="rgb(229,229,229)" opacity="1.000000" font-size="14" text-anchor="middle"></text>
+</g>
+</g>
+<clipPath id="clip39"><rect x="1238.000000" y="636.000000" width="18.000000" height="18.000000"/></clipPath><g clip-path="url(#clip39)">
+<line x1="1251.000000" y1="652.000000" x2="1254.000000" y2="649.000000" opacity="1.000000" stroke="rgb(204,204,204)"/>
+<line x1="1246.000000" y1="652.000000" x2="1254.000000" y2="644.000000" opacity="1.000000" stroke="rgb(204,204,204)"/>
+<line x1="1241.000000" y1="652.000000" x2="1254.000000" y2="639.000000" opacity="1.000000" stroke="rgb(204,204,204)"/>
+</g>
+</g>
+</svg>

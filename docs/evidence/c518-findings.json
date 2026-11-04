@@ -1,0 +1,41 @@
+{
+  "consoleSHA256": "d669fd9e81cfc84cc613249112d6a58037822c7988bc1f88d37f87e2aae2d38b",
+  "versions": [
+    "0.2.70.11"
+  ],
+  "eventCounts": {
+    "construction-sprites": 1,
+    "construction-edge-hook": 1,
+    "client-ready": 1,
+    "logging-settings": 1,
+    "summary": 101,
+    "barrier-selection": 6,
+    "contact-visible": 81,
+    "barrier-vault-input": 1,
+    "turret-install-request": 2,
+    "turret-install-preview": 2,
+    "turret-range-selected": 11,
+    "turret-effective-stats": 34,
+    "turret-manage-status": 14,
+    "turret-manage-open": 3,
+    "turret-manage-close": 2
+  },
+  "childEffectCount": 0,
+  "childPhases": {},
+  "limits": "Local console only; retained counters are not session totals. No measured tether contact-to-render interval.",
+  "diagnosticAssertions": 16,
+  "harnessAssertions": 40417,
+  "diagnostic": "Current faulty behavior reproduced; not repaired",
+  "replaySHA256": "4b915be9f935b55f599d9b5e38c3b91ab48d1f5eebb7c13ad16246f8c8d0c879",
+  "replayLogSHA256": "51540640a6cebaec34107406b9434545b9aa07d29a221cb81a86e14c2052859d",
+  "rotaryReplay": {
+    "speedDegreesPerSecond": 180,
+    "snapshotIntervalMs": 250,
+    "transitMs": 100,
+    "observedCorrectionDegrees": 18,
+    "liveNetworkMeasurement": false
+  },
+  "serverCapture": "Not refreshed this turn",
+  "productionChanges": false,
+  "connectedAcceptance": "Partial improvement; child timing, rotary smoothness and Tether remain open"
+}

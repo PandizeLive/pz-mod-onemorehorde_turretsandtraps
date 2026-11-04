@@ -8,20 +8,7 @@ local M = require("OMHTT/TurretModules")
 local D = require("OMHTT/Diagnostics")
 local Range = require("OMHTT/TurretRange")
 local manage = require("OMHTT/TurretManage")
-local tooltipRender = ISToolTipInv.render
-
----@return nil
-function ISToolTipInv:render()
-    if self.item and self.item:getFullType() == T.BASE then
-        T.configure(self.item:getInventory())
-        local old = self.item:getTooltip()
-        self.item:setTooltip(getTextManager():WrapText(UIFont.Small, T.description(self.item:getInventory(), self.item:getActualWeight()), 320))
-        tooltipRender(self)
-        self.item:setTooltip(old)
-        return
-    end
-    tooltipRender(self)
-end
+require("OMHTT/TurretTooltip")
 
 ---@param object IsoThumpable Selected turret
 ---@param player IsoPlayer Operator
@@ -39,14 +26,6 @@ local function repair(object, player)
     if luautils.walkAdjObject(player, object, false) then
         ISTimedActionQueue.add(OMHTTTurretPickupAction:new(player, object, "Repair"))
     end
-end
-
----@param object IsoThumpable Selected turret
----@param player IsoPlayer Operator
----@return nil
-local function fire(object, player)
-    local result = require("OMHTT/TurretWorld").fire(player, object)
-    player:setHaloNote(getText("UI_OMHTT_Manage" .. result), 255, 255, 255, 120)
 end
 
 ---@param playerIndex number Local player
@@ -85,28 +64,22 @@ local function fillMenu(playerIndex, context, worldobjects, test)
             local title = getText("UI_OMHTT_Turret")
             local option = context:addOption(title, nil, nil)
             Range.bind(option, {object})
-            option.toolTip = ISWorldObjectContextMenu.addToolTip()
-            option.toolTip.description = string.gsub(T.description(object:getContainer(), 6), "\n", " <LINE> ")
             local menu = ISContextMenu:getNew(context)
             context:addSubMenu(option, menu)
             local manageOption = menu:addOption(getText("UI_OMHTT_Manage"), object, manage, player)
             Range.bind(manageOption, {object})
-            local shot = menu:addOption(getText("ContextMenu_OMHTT_TurretFire"), object, fire, player)
-            shot.notAvailable = not W.near(player, object) or not contents.head or contents.ammo == 0 or W.power(object, contents) == nil
             local recovery = menu:addOption(getText("ContextMenu_OMHTT_PickupTurret"), object, pickup, player)
             recovery.toolTip = ISWorldObjectContextMenu.addToolTip()
-            recovery.toolTip.description = getText("UI_OMHTT_ServiceDuration")
+            recovery.toolTip.description = getText("UI_OMHTT_PickupDuration")
             local repairOption = menu:addOption(getText("ContextMenu_OMHTT_RepairTurret"), object, repair, player)
-            repairOption.notAvailable = object:getHealth() >= object:getMaxHealth()
-            repairOption.toolTip = ISWorldObjectContextMenu.addToolTip()
-            repairOption.toolTip.description = getText("UI_OMHTT_ServiceDuration")
+            repairOption.notAvailable = object:getHealth() >= object:getMaxHealth() or not require("OMHTT/ControlRepair").ready(player, "Turret")
+            require("OMHTT/ControlRepairTooltip").bind(repairOption, "Turret", player)
             Range.bind(repairOption, {object})
             local condition = menu:addOption(getText("ContextMenu_OMHTT_BarrierCondition", object:getHealth(), object:getMaxHealth()), nil, nil)
             condition.notAvailable = true
-            Range.bind(shot, {object})
             Range.bind(recovery, {object})
             D.emit("turret-menu", {id = T.state(object).id, ammo = contents.ammo, modules = contents.modules,
-                battery = contents.battery ~= nil, head = contents.head ~= nil})
+                battery = contents.battery ~= nil, head = contents.head ~= nil}, nil, nil, "turrets")
         end
     end
 end

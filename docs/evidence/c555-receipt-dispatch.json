@@ -1,0 +1,1183 @@
+{
+  "base": "b3a1efe728111d44416396533cae12408c00af6f",
+  "patchSHA256": "e29b821f708736d4dd0b812905263dbb95fb1bc16f9c9cdeb4762ce0c6fb2d9b",
+  "connectedPlayers": 0,
+  "focused": {
+    "stock": "C550 focused checks 809 PASS C555 67 194 373|62 185 345",
+    "candidate": "C550 focused checks 809 PASS C555 67 157 336|62 121 281"
+  },
+  "runs": [
+    {
+      "variant": "stock",
+      "roundTripMs": 100,
+      "repeat": 1,
+      "all": {
+        "requested": 2817,
+        "applied": 2816
+      },
+      "rotaryBat": {
+        "shots": 0,
+        "requested": 42,
+        "applied": 42,
+        "distinctSources": 1,
+        "ackP50": 100,
+        "ackP95": 100,
+        "ownerP95": 50
+      },
+      "rotaryBlades": {
+        "shots": 0,
+        "requested": 42,
+        "applied": 42,
+        "distinctSources": 1,
+        "ackP50": 100,
+        "ackP95": 100,
+        "ownerP95": 50
+      },
+      "ballista": {
+        "shots": 3,
+        "requested": 3,
+        "applied": 3,
+        "distinctSources": 1,
+        "ackP50": 100,
+        "ackP95": 200,
+        "ownerP95": 150
+      },
+      "coverageGaps": [],
+      "unsuccessful": {
+        "rejected": 1
+      },
+      "receiptStarts": 0,
+      "serverStepP95Ms": 23.05,
+      "peakOutstanding": 42,
+      "endHealthPairsVerified": 100
+    },
+    {
+      "variant": "candidate",
+      "roundTripMs": 100,
+      "repeat": 1,
+      "all": {
+        "requested": 2750,
+        "applied": 2749
+      },
+      "rotaryBat": {
+        "shots": 0,
+        "requested": 42,
+        "applied": 42,
+        "distinctSources": 1,
+        "ackP50": 100,
+        "ackP95": 100,
+        "ownerP95": 50
+      },
+      "rotaryBlades": {
+        "shots": 0,
+        "requested": 42,
+        "applied": 42,
+        "distinctSources": 1,
+        "ackP50": 100,
+        "ackP95": 100,
+        "ownerP95": 50
+      },
+      "ballista": {
+        "shots": 3,
+        "requested": 3,
+        "applied": 3,
+        "distinctSources": 1,
+        "ackP50": 100,
+        "ackP95": 100,
+        "ownerP95": 50
+      },
+      "coverageGaps": [],
+      "unsuccessful": {
+        "rejected": 1
+      },
+      "receiptStarts": 73,
+      "serverStepP95Ms": 22.06,
+      "peakOutstanding": 41,
+      "endHealthPairsVerified": 100
+    },
+    {
+      "variant": "stock",
+      "roundTripMs": 300,
+      "repeat": 1,
+      "all": {
+        "requested": 2554,
+        "applied": 2553
+      },
+      "rotaryBat": {
+        "shots": 0,
+        "requested": 44,
+        "applied": 44,
+        "distinctSources": 1,
+        "ackP50": 300,
+        "ackP95": 500,
+        "ownerP95": 350
+      },
+      "rotaryBlades": {
+        "shots": 0,
+        "requested": 44,
+        "applied": 44,
+        "distinctSources": 1,
+        "ackP50": 300,
+        "ackP95": 500,
+        "ownerP95": 350
+      },
+      "ballista": {
+        "shots": 3,
+        "requested": 2,
+        "applied": 2,
+        "distinctSources": 1,
+        "ackP50": 300,
+        "ackP95": 450,
+        "ownerP95": 300
+      },
+      "coverageGaps": [],
+      "unsuccessful": {
+        "rejected": 1
+      },
+      "receiptStarts": 0,
+      "serverStepP95Ms": 26.09,
+      "peakOutstanding": 72,
+      "endHealthPairsVerified": 100
+    },
+    {
+      "variant": "candidate",
+      "roundTripMs": 300,
+      "repeat": 1,
+      "all": {
+        "requested": 2537,
+        "applied": 2535
+      },
+      "rotaryBat": {
+        "shots": 0,
+        "requested": 44,
+        "applied": 44,
+        "distinctSources": 1,
+        "ackP50": 300,
+        "ackP95": 500,
+        "ownerP95": 350
+      },
+      "rotaryBlades": {
+        "shots": 0,
+        "requested": 44,
+        "applied": 43,
+        "distinctSources": 1,
+        "ackP50": 300,
+        "ackP95": 500,
+        "ownerP95": 350
+      },
+      "ballista": {
+        "shots": 3,
+        "requested": 3,
+        "applied": 3,
+        "distinctSources": 1,
+        "ackP50": 350,
+        "ackP95": 450,
+        "ownerP95": 300
+      },
+      "coverageGaps": [],
+      "unsuccessful": {
+        "cancelled": 1,
+        "expired": 1
+      },
+      "receiptStarts": 285,
+      "serverStepP95Ms": 28.65,
+      "peakOutstanding": 72,
+      "endHealthPairsVerified": 100
+    },
+    {
+      "variant": "stock",
+      "roundTripMs": 110,
+      "repeat": 1,
+      "all": {
+        "requested": 2712,
+        "applied": 2712
+      },
+      "rotaryBat": {
+        "shots": 0,
+        "requested": 42,
+        "applied": 42,
+        "distinctSources": 1,
+        "ackP50": 110,
+        "ackP95": 110,
+        "ownerP95": 55
+      },
+      "rotaryBlades": {
+        "shots": 0,
+        "requested": 42,
+        "applied": 42,
+        "distinctSources": 1,
+        "ackP50": 110,
+        "ackP95": 110,
+        "ownerP95": 55
+      },
+      "ballista": {
+        "shots": 4,
+        "requested": 4,
+        "applied": 4,
+        "distinctSources": 1,
+        "ackP50": 110,
+        "ackP95": 110,
+        "ownerP95": 55
+      },
+      "coverageGaps": [],
+      "unsuccessful": {},
+      "receiptStarts": 0,
+      "serverStepP95Ms": 20.7,
+      "peakOutstanding": 60,
+      "endHealthPairsVerified": 100
+    },
+    {
+      "variant": "candidate",
+      "roundTripMs": 110,
+      "repeat": 1,
+      "all": {
+        "requested": 2519,
+        "applied": 2518
+      },
+      "rotaryBat": {
+        "shots": 0,
+        "requested": 42,
+        "applied": 42,
+        "distinctSources": 1,
+        "ackP50": 110,
+        "ackP95": 110,
+        "ownerP95": 55
+      },
+      "rotaryBlades": {
+        "shots": 0,
+        "requested": 42,
+        "applied": 42,
+        "distinctSources": 1,
+        "ackP50": 110,
+        "ackP95": 110,
+        "ownerP95": 55
+      },
+      "ballista": {
+        "shots": 3,
+        "requested": 3,
+        "applied": 3,
+        "distinctSources": 1,
+        "ackP50": 110,
+        "ackP95": 110,
+        "ownerP95": 55
+      },
+      "coverageGaps": [],
+      "unsuccessful": {
+        "rejected": 1
+      },
+      "receiptStarts": 186,
+      "serverStepP95Ms": 24.16,
+      "peakOutstanding": 56,
+      "endHealthPairsVerified": 100
+    },
+    {
+      "variant": "stock",
+      "roundTripMs": 310,
+      "repeat": 1,
+      "all": {
+        "requested": 2449,
+        "applied": 2409
+      },
+      "rotaryBat": {
+        "shots": 0,
+        "requested": 43,
+        "applied": 25,
+        "distinctSources": 1,
+        "ackP50": 310,
+        "ackP95": 310,
+        "ownerP95": 155
+      },
+      "rotaryBlades": {
+        "shots": 0,
+        "requested": 43,
+        "applied": 25,
+        "distinctSources": 1,
+        "ackP50": 310,
+        "ackP95": 310,
+        "ownerP95": 155
+      },
+      "ballista": {
+        "shots": 3,
+        "requested": 3,
+        "applied": 3,
+        "distinctSources": 1,
+        "ackP50": 410,
+        "ackP95": 660,
+        "ownerP95": 505
+      },
+      "coverageGaps": [],
+      "unsuccessful": {
+        "cancelled": 10,
+        "expired": 30
+      },
+      "receiptStarts": 0,
+      "serverStepP95Ms": 25.61,
+      "peakOutstanding": 78,
+      "endHealthPairsVerified": 100
+    },
+    {
+      "variant": "candidate",
+      "roundTripMs": 310,
+      "repeat": 1,
+      "all": {
+        "requested": 2429,
+        "applied": 2413
+      },
+      "rotaryBat": {
+        "shots": 0,
+        "requested": 43,
+        "applied": 35,
+        "distinctSources": 1,
+        "ackP50": 310,
+        "ackP95": 470,
+        "ownerP95": 315
+      },
+      "rotaryBlades": {
+        "shots": 0,
+        "requested": 43,
+        "applied": 35,
+        "distinctSources": 1,
+        "ackP50": 310,
+        "ackP95": 470,
+        "ownerP95": 315
+      },
+      "ballista": {
+        "shots": 2,
+        "requested": 2,
+        "applied": 2,
+        "distinctSources": 1,
+        "ackP50": 310,
+        "ackP95": 310,
+        "ownerP95": 155
+      },
+      "coverageGaps": [],
+      "unsuccessful": {
+        "expired": 16
+      },
+      "receiptStarts": 424,
+      "serverStepP95Ms": 26.21,
+      "peakOutstanding": 76,
+      "endHealthPairsVerified": 100
+    },
+    {
+      "variant": "candidate",
+      "roundTripMs": 100,
+      "repeat": 2,
+      "all": {
+        "requested": 2595,
+        "applied": 2595
+      },
+      "rotaryBat": {
+        "shots": 0,
+        "requested": 42,
+        "applied": 42,
+        "distinctSources": 1,
+        "ackP50": 100,
+        "ackP95": 100,
+        "ownerP95": 50
+      },
+      "rotaryBlades": {
+        "shots": 0,
+        "requested": 42,
+        "applied": 42,
+        "distinctSources": 1,
+        "ackP50": 100,
+        "ackP95": 100,
+        "ownerP95": 50
+      },
+      "ballista": {
+        "shots": 2,
+        "requested": 2,
+        "applied": 2,
+        "distinctSources": 1,
+        "ackP50": 100,
+        "ackP95": 200,
+        "ownerP95": 150
+      },
+      "coverageGaps": [],
+      "unsuccessful": {},
+      "receiptStarts": 54,
+      "serverStepP95Ms": 27.6,
+      "peakOutstanding": 37,
+      "endHealthPairsVerified": 100
+    },
+    {
+      "variant": "stock",
+      "roundTripMs": 100,
+      "repeat": 2,
+      "all": {
+        "requested": 2620,
+        "applied": 2620
+      },
+      "rotaryBat": {
+        "shots": 0,
+        "requested": 42,
+        "applied": 42,
+        "distinctSources": 1,
+        "ackP50": 100,
+        "ackP95": 100,
+        "ownerP95": 50
+      },
+      "rotaryBlades": {
+        "shots": 0,
+        "requested": 42,
+        "applied": 42,
+        "distinctSources": 1,
+        "ackP50": 100,
+        "ackP95": 100,
+        "ownerP95": 50
+      },
+      "ballista": {
+        "shots": 2,
+        "requested": 2,
+        "applied": 2,
+        "distinctSources": 1,
+        "ackP50": 100,
+        "ackP95": 100,
+        "ownerP95": 50
+      },
+      "coverageGaps": [],
+      "unsuccessful": {},
+      "receiptStarts": 0,
+      "serverStepP95Ms": 25.93,
+      "peakOutstanding": 39,
+      "endHealthPairsVerified": 100
+    },
+    {
+      "variant": "candidate",
+      "roundTripMs": 300,
+      "repeat": 2,
+      "all": {
+        "requested": 2498,
+        "applied": 2495
+      },
+      "rotaryBat": {
+        "shots": 0,
+        "requested": 44,
+        "applied": 44,
+        "distinctSources": 1,
+        "ackP50": 300,
+        "ackP95": 500,
+        "ownerP95": 350
+      },
+      "rotaryBlades": {
+        "shots": 0,
+        "requested": 44,
+        "applied": 43,
+        "distinctSources": 1,
+        "ackP50": 300,
+        "ackP95": 500,
+        "ownerP95": 350
+      },
+      "ballista": {
+        "shots": 2,
+        "requested": 2,
+        "applied": 2,
+        "distinctSources": 1,
+        "ackP50": 300,
+        "ackP95": 300,
+        "ownerP95": 150
+      },
+      "coverageGaps": [],
+      "unsuccessful": {
+        "expired": 2,
+        "rejected": 1
+      },
+      "receiptStarts": 278,
+      "serverStepP95Ms": 27.12,
+      "peakOutstanding": 72,
+      "endHealthPairsVerified": 100
+    },
+    {
+      "variant": "stock",
+      "roundTripMs": 300,
+      "repeat": 2,
+      "all": {
+        "requested": 2521,
+        "applied": 2514
+      },
+      "rotaryBat": {
+        "shots": 0,
+        "requested": 44,
+        "applied": 43,
+        "distinctSources": 1,
+        "ackP50": 300,
+        "ackP95": 500,
+        "ownerP95": 350
+      },
+      "rotaryBlades": {
+        "shots": 0,
+        "requested": 44,
+        "applied": 44,
+        "distinctSources": 1,
+        "ackP50": 300,
+        "ackP95": 500,
+        "ownerP95": 350
+      },
+      "ballista": {
+        "shots": 3,
+        "requested": 3,
+        "applied": 3,
+        "distinctSources": 1,
+        "ackP50": 500,
+        "ackP95": 550,
+        "ownerP95": 400
+      },
+      "coverageGaps": [],
+      "unsuccessful": {
+        "cancelled": 1,
+        "expired": 5,
+        "rejected": 1
+      },
+      "receiptStarts": 0,
+      "serverStepP95Ms": 27.25,
+      "peakOutstanding": 72,
+      "endHealthPairsVerified": 100
+    },
+    {
+      "variant": "candidate",
+      "roundTripMs": 110,
+      "repeat": 2,
+      "all": {
+        "requested": 2557,
+        "applied": 2557
+      },
+      "rotaryBat": {
+        "shots": 0,
+        "requested": 42,
+        "applied": 42,
+        "distinctSources": 1,
+        "ackP50": 110,
+        "ackP95": 110,
+        "ownerP95": 55
+      },
+      "rotaryBlades": {
+        "shots": 0,
+        "requested": 42,
+        "applied": 42,
+        "distinctSources": 1,
+        "ackP50": 110,
+        "ackP95": 110,
+        "ownerP95": 55
+      },
+      "ballista": {
+        "shots": 3,
+        "requested": 3,
+        "applied": 3,
+        "distinctSources": 1,
+        "ackP50": 110,
+        "ackP95": 110,
+        "ownerP95": 55
+      },
+      "coverageGaps": [
+        "Scrapshot"
+      ],
+      "unsuccessful": {},
+      "receiptStarts": 213,
+      "serverStepP95Ms": 23.81,
+      "peakOutstanding": 58,
+      "endHealthPairsVerified": 100
+    },
+    {
+      "variant": "stock",
+      "roundTripMs": 110,
+      "repeat": 2,
+      "all": {
+        "requested": 2546,
+        "applied": 2545
+      },
+      "rotaryBat": {
+        "shots": 0,
+        "requested": 42,
+        "applied": 42,
+        "distinctSources": 1,
+        "ackP50": 110,
+        "ackP95": 110,
+        "ownerP95": 55
+      },
+      "rotaryBlades": {
+        "shots": 0,
+        "requested": 42,
+        "applied": 42,
+        "distinctSources": 1,
+        "ackP50": 110,
+        "ackP95": 110,
+        "ownerP95": 55
+      },
+      "ballista": {
+        "shots": 4,
+        "requested": 4,
+        "applied": 4,
+        "distinctSources": 1,
+        "ackP50": 110,
+        "ackP95": 110,
+        "ownerP95": 55
+      },
+      "coverageGaps": [],
+      "unsuccessful": {
+        "rejected": 1
+      },
+      "receiptStarts": 0,
+      "serverStepP95Ms": 23.36,
+      "peakOutstanding": 57,
+      "endHealthPairsVerified": 100
+    },
+    {
+      "variant": "candidate",
+      "roundTripMs": 310,
+      "repeat": 2,
+      "all": {
+        "requested": 2450,
+        "applied": 2430
+      },
+      "rotaryBat": {
+        "shots": 0,
+        "requested": 43,
+        "applied": 36,
+        "distinctSources": 1,
+        "ackP50": 310,
+        "ackP95": 470,
+        "ownerP95": 315
+      },
+      "rotaryBlades": {
+        "shots": 0,
+        "requested": 43,
+        "applied": 34,
+        "distinctSources": 1,
+        "ackP50": 310,
+        "ackP95": 470,
+        "ownerP95": 315
+      },
+      "ballista": {
+        "shots": 2,
+        "requested": 2,
+        "applied": 2,
+        "distinctSources": 1,
+        "ackP50": 320,
+        "ackP95": 680,
+        "ownerP95": 525
+      },
+      "coverageGaps": [],
+      "unsuccessful": {
+        "cancelled": 1,
+        "expired": 18,
+        "rejected": 1
+      },
+      "receiptStarts": 399,
+      "serverStepP95Ms": 24.61,
+      "peakOutstanding": 78,
+      "endHealthPairsVerified": 100
+    },
+    {
+      "variant": "stock",
+      "roundTripMs": 310,
+      "repeat": 2,
+      "all": {
+        "requested": 2417,
+        "applied": 2377
+      },
+      "rotaryBat": {
+        "shots": 0,
+        "requested": 43,
+        "applied": 25,
+        "distinctSources": 1,
+        "ackP50": 310,
+        "ackP95": 310,
+        "ownerP95": 155
+      },
+      "rotaryBlades": {
+        "shots": 0,
+        "requested": 43,
+        "applied": 25,
+        "distinctSources": 1,
+        "ackP50": 310,
+        "ackP95": 310,
+        "ownerP95": 155
+      },
+      "ballista": {
+        "shots": 2,
+        "requested": 1,
+        "applied": 1,
+        "distinctSources": 1,
+        "ackP50": 460,
+        "ackP95": 460,
+        "ownerP95": 305
+      },
+      "coverageGaps": [],
+      "unsuccessful": {
+        "cancelled": 10,
+        "expired": 30
+      },
+      "receiptStarts": 0,
+      "serverStepP95Ms": 25.81,
+      "peakOutstanding": 85,
+      "endHealthPairsVerified": 100
+    },
+    {
+      "variant": "stock",
+      "roundTripMs": 100,
+      "repeat": 3,
+      "all": {
+        "requested": 2581,
+        "applied": 2579
+      },
+      "rotaryBat": {
+        "shots": 0,
+        "requested": 42,
+        "applied": 42,
+        "distinctSources": 1,
+        "ackP50": 100,
+        "ackP95": 100,
+        "ownerP95": 50
+      },
+      "rotaryBlades": {
+        "shots": 0,
+        "requested": 42,
+        "applied": 42,
+        "distinctSources": 1,
+        "ackP50": 100,
+        "ackP95": 100,
+        "ownerP95": 50
+      },
+      "ballista": {
+        "shots": 2,
+        "requested": 0,
+        "applied": 0,
+        "distinctSources": 0,
+        "ackP50": 0,
+        "ackP95": 0,
+        "ownerP95": 0
+      },
+      "coverageGaps": [
+        "Ballista"
+      ],
+      "unsuccessful": {
+        "rejected": 2
+      },
+      "receiptStarts": 0,
+      "serverStepP95Ms": 25.25,
+      "peakOutstanding": 38,
+      "endHealthPairsVerified": 100
+    },
+    {
+      "variant": "candidate",
+      "roundTripMs": 100,
+      "repeat": 3,
+      "all": {
+        "requested": 2612,
+        "applied": 2612
+      },
+      "rotaryBat": {
+        "shots": 0,
+        "requested": 42,
+        "applied": 42,
+        "distinctSources": 1,
+        "ackP50": 100,
+        "ackP95": 100,
+        "ownerP95": 50
+      },
+      "rotaryBlades": {
+        "shots": 0,
+        "requested": 42,
+        "applied": 42,
+        "distinctSources": 1,
+        "ackP50": 100,
+        "ackP95": 100,
+        "ownerP95": 50
+      },
+      "ballista": {
+        "shots": 3,
+        "requested": 3,
+        "applied": 3,
+        "distinctSources": 1,
+        "ackP50": 100,
+        "ackP95": 100,
+        "ownerP95": 50
+      },
+      "coverageGaps": [],
+      "unsuccessful": {},
+      "receiptStarts": 48,
+      "serverStepP95Ms": 26.04,
+      "peakOutstanding": 38,
+      "endHealthPairsVerified": 100
+    },
+    {
+      "variant": "stock",
+      "roundTripMs": 300,
+      "repeat": 3,
+      "all": {
+        "requested": 2555,
+        "applied": 2553
+      },
+      "rotaryBat": {
+        "shots": 0,
+        "requested": 44,
+        "applied": 44,
+        "distinctSources": 1,
+        "ackP50": 300,
+        "ackP95": 500,
+        "ownerP95": 350
+      },
+      "rotaryBlades": {
+        "shots": 0,
+        "requested": 44,
+        "applied": 44,
+        "distinctSources": 1,
+        "ackP50": 300,
+        "ackP95": 500,
+        "ownerP95": 350
+      },
+      "ballista": {
+        "shots": 3,
+        "requested": 1,
+        "applied": 1,
+        "distinctSources": 1,
+        "ackP50": 300,
+        "ackP95": 300,
+        "ownerP95": 150
+      },
+      "coverageGaps": [],
+      "unsuccessful": {
+        "expired": 1,
+        "rejected": 1
+      },
+      "receiptStarts": 0,
+      "serverStepP95Ms": 26.02,
+      "peakOutstanding": 75,
+      "endHealthPairsVerified": 100
+    },
+    {
+      "variant": "candidate",
+      "roundTripMs": 300,
+      "repeat": 3,
+      "all": {
+        "requested": 2559,
+        "applied": 2556
+      },
+      "rotaryBat": {
+        "shots": 0,
+        "requested": 44,
+        "applied": 44,
+        "distinctSources": 1,
+        "ackP50": 300,
+        "ackP95": 500,
+        "ownerP95": 350
+      },
+      "rotaryBlades": {
+        "shots": 0,
+        "requested": 44,
+        "applied": 44,
+        "distinctSources": 1,
+        "ackP50": 300,
+        "ackP95": 500,
+        "ownerP95": 350
+      },
+      "ballista": {
+        "shots": 3,
+        "requested": 3,
+        "applied": 3,
+        "distinctSources": 1,
+        "ackP50": 550,
+        "ackP95": 800,
+        "ownerP95": 650
+      },
+      "coverageGaps": [],
+      "unsuccessful": {
+        "expired": 2,
+        "rejected": 1
+      },
+      "receiptStarts": 300,
+      "serverStepP95Ms": 25.7,
+      "peakOutstanding": 72,
+      "endHealthPairsVerified": 100
+    },
+    {
+      "variant": "stock",
+      "roundTripMs": 110,
+      "repeat": 3,
+      "all": {
+        "requested": 2522,
+        "applied": 2522
+      },
+      "rotaryBat": {
+        "shots": 0,
+        "requested": 42,
+        "applied": 42,
+        "distinctSources": 1,
+        "ackP50": 110,
+        "ackP95": 110,
+        "ownerP95": 55
+      },
+      "rotaryBlades": {
+        "shots": 0,
+        "requested": 42,
+        "applied": 42,
+        "distinctSources": 1,
+        "ackP50": 110,
+        "ackP95": 110,
+        "ownerP95": 55
+      },
+      "ballista": {
+        "shots": 2,
+        "requested": 2,
+        "applied": 2,
+        "distinctSources": 1,
+        "ackP50": 110,
+        "ackP95": 210,
+        "ownerP95": 155
+      },
+      "coverageGaps": [],
+      "unsuccessful": {},
+      "receiptStarts": 0,
+      "serverStepP95Ms": 24.51,
+      "peakOutstanding": 56,
+      "endHealthPairsVerified": 100
+    },
+    {
+      "variant": "candidate",
+      "roundTripMs": 110,
+      "repeat": 3,
+      "all": {
+        "requested": 2536,
+        "applied": 2536
+      },
+      "rotaryBat": {
+        "shots": 0,
+        "requested": 42,
+        "applied": 42,
+        "distinctSources": 1,
+        "ackP50": 110,
+        "ackP95": 110,
+        "ownerP95": 55
+      },
+      "rotaryBlades": {
+        "shots": 0,
+        "requested": 42,
+        "applied": 42,
+        "distinctSources": 1,
+        "ackP50": 110,
+        "ackP95": 110,
+        "ownerP95": 55
+      },
+      "ballista": {
+        "shots": 3,
+        "requested": 1,
+        "applied": 1,
+        "distinctSources": 1,
+        "ackP50": 170,
+        "ackP95": 170,
+        "ownerP95": 115
+      },
+      "coverageGaps": [],
+      "unsuccessful": {},
+      "receiptStarts": 217,
+      "serverStepP95Ms": 23.49,
+      "peakOutstanding": 58,
+      "endHealthPairsVerified": 100
+    },
+    {
+      "variant": "stock",
+      "roundTripMs": 310,
+      "repeat": 3,
+      "all": {
+        "requested": 2453,
+        "applied": 2410
+      },
+      "rotaryBat": {
+        "shots": 0,
+        "requested": 43,
+        "applied": 25,
+        "distinctSources": 1,
+        "ackP50": 310,
+        "ackP95": 310,
+        "ownerP95": 155
+      },
+      "rotaryBlades": {
+        "shots": 0,
+        "requested": 43,
+        "applied": 25,
+        "distinctSources": 1,
+        "ackP50": 310,
+        "ackP95": 310,
+        "ownerP95": 155
+      },
+      "ballista": {
+        "shots": 3,
+        "requested": 3,
+        "applied": 3,
+        "distinctSources": 1,
+        "ackP50": 310,
+        "ackP95": 560,
+        "ownerP95": 405
+      },
+      "coverageGaps": [],
+      "unsuccessful": {
+        "cancelled": 10,
+        "expired": 32,
+        "rejected": 1
+      },
+      "receiptStarts": 0,
+      "serverStepP95Ms": 24.86,
+      "peakOutstanding": 80,
+      "endHealthPairsVerified": 100
+    },
+    {
+      "variant": "candidate",
+      "roundTripMs": 310,
+      "repeat": 3,
+      "all": {
+        "requested": 2447,
+        "applied": 2431
+      },
+      "rotaryBat": {
+        "shots": 0,
+        "requested": 43,
+        "applied": 36,
+        "distinctSources": 1,
+        "ackP50": 310,
+        "ackP95": 470,
+        "ownerP95": 315
+      },
+      "rotaryBlades": {
+        "shots": 0,
+        "requested": 43,
+        "applied": 35,
+        "distinctSources": 1,
+        "ackP50": 310,
+        "ackP95": 470,
+        "ownerP95": 315
+      },
+      "ballista": {
+        "shots": 2,
+        "requested": 2,
+        "applied": 2,
+        "distinctSources": 1,
+        "ackP50": 310,
+        "ackP95": 470,
+        "ownerP95": 315
+      },
+      "coverageGaps": [],
+      "unsuccessful": {
+        "expired": 15,
+        "rejected": 1
+      },
+      "receiptStarts": 412,
+      "serverStepP95Ms": 24.8,
+      "peakOutstanding": 79,
+      "endHealthPairsVerified": 100
+    }
+  ],
+  "eightRotary": {
+    "expected": 3424,
+    "admitted": 3424,
+    "applied": 3424,
+    "missed": 0,
+    "extra": 0
+  },
+  "fixedControl": [
+    {
+      "variant": "stock",
+      "roundTripMs": 300,
+      "repeat": "fixed",
+      "all": {
+        "requested": 3363,
+        "applied": 3321
+      },
+      "rotaryBat": {
+        "shots": 0,
+        "requested": 44,
+        "applied": 43,
+        "distinctSources": 1,
+        "ackP50": 300,
+        "ackP95": 500,
+        "ownerP95": 350
+      },
+      "rotaryBlades": {
+        "shots": 0,
+        "requested": 44,
+        "applied": 32,
+        "distinctSources": 1,
+        "ackP50": 400,
+        "ackP95": 500,
+        "ownerP95": 350
+      },
+      "ballista": {
+        "shots": 5,
+        "requested": 5,
+        "applied": 5,
+        "distinctSources": 1,
+        "ackP50": 300,
+        "ackP95": 600,
+        "ownerP95": 450
+      },
+      "coverageGaps": [],
+      "unsuccessful": {
+        "cancelled": 16,
+        "expired": 25,
+        "rejected": 1
+      },
+      "receiptStarts": 0,
+      "serverStepP95Ms": 41.21,
+      "peakOutstanding": 127,
+      "endHealthPairsVerified": 100
+    },
+    {
+      "variant": "candidate",
+      "roundTripMs": 300,
+      "repeat": "fixed",
+      "all": {
+        "requested": 3363,
+        "applied": 3321
+      },
+      "rotaryBat": {
+        "shots": 0,
+        "requested": 44,
+        "applied": 43,
+        "distinctSources": 1,
+        "ackP50": 300,
+        "ackP95": 500,
+        "ownerP95": 350
+      },
+      "rotaryBlades": {
+        "shots": 0,
+        "requested": 44,
+        "applied": 32,
+        "distinctSources": 1,
+        "ackP50": 400,
+        "ackP95": 500,
+        "ownerP95": 350
+      },
+      "ballista": {
+        "shots": 5,
+        "requested": 5,
+        "applied": 5,
+        "distinctSources": 1,
+        "ackP50": 300,
+        "ackP95": 600,
+        "ownerP95": 450
+      },
+      "coverageGaps": [],
+      "unsuccessful": {
+        "cancelled": 16,
+        "expired": 25,
+        "rejected": 1
+      },
+      "receiptStarts": 263,
+      "serverStepP95Ms": 40.33,
+      "peakOutstanding": 127,
+      "endHealthPairsVerified": 100
+    }
+  ],
+  "stoppedTrial": {
+    "variant": "candidate",
+    "oneWayMs": 150,
+    "repeat": 2,
+    "error": "incomplete hit coverage Ballista 0",
+    "stage": "all submitted damage drained and all 100 health pairs reconciled before coverage assertion; shot and submitted counts unavailable for this trial",
+    "instrumentation": "A preliminary diagnostic replay also stopped while formatting an empty latency distribution. The completed replays report empty coverage explicitly."
+  },
+  "testedFilesSHA256": {
+    "Source/42.20/media/lua/server/OMHTT/Damage.lua": "15831eef856e50eff31c091eb26508091996b11a2915969c3d7b8c7ab968d72a",
+    "Source/42.20/media/lua/server/OMHTT/DefenseCombatServer.lua": "927cfe590d5edd20ed7da6be972b17b80acb33f4a315e6f00ecb00373d06fcc2"
+  }
+}

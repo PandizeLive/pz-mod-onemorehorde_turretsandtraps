@@ -1,0 +1,9 @@
+{
+  "version": "0.2.56",
+  "geometry": "Native geometry and code-generated layout trace checks pass",
+  "browserTierChecks": "passed",
+  "renderedGameUI": "pending",
+  "connectedPlayers": 0,
+  "nativeGroups": "write/read, network serialization, stale and unauthorized rejection, membership order and preserved links passed",
+  "mainMenuSlowdown": "not resolved or changed by this patch"
+}

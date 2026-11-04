@@ -1,0 +1,17 @@
+{
+  "build": "42.21.0",
+  "selectedEvents": [
+    "UIObjectMenuObjectRotate",
+    "UIObjectMenuObjectPickup"
+  ],
+  "playUISound": "SoundManager.playUISound resolves native GameSound clip and UI emitter; returns per-voice handle",
+  "stopUISound": "SoundManager.stopUISound stops supplied handle",
+  "pitchLimitation": "FMODSoundEmitter.setPitch assigns pitch field outside handle comparison to every queued/active sound; EventSound has no pitch read, so setter and clip variants are not used",
+  "eventPitchProbe": "Twenty FMOD event-level samples returned base/final pitch 1.0; internal instrument modulation not established",
+  "pitchSetterBytecode": "  public void setPitch(long, float);\n    Code:\n       0: iconst_0\n       1: istore        4\n       3: iload         4\n       5: aload_0\n       6: getfield      #10                 // Field toStart:Ljava/util/ArrayList;\n       9: invokevirtual #91                 // Method java/util/ArrayList.size:()I\n      12: if_icmpge     56\n      15: aload_0\n      16: getfield      #10                 // Field toStart:Ljava/util/ArrayList;\n      19: iload         4\n      21: invokevirtual #94                 // Method java/util/ArrayList.get:(I)Ljava/lang/Object;\n      24: checkcast     #98                 // class fmod/fmod/FMODSoundEmitter$Sound\n      27: astore        5\n      29: aload         5\n      31: invokevirtual #100                // Method fmod/fmod/FMODSoundEmitter$Sound.getRef:()J\n      34: lload_1\n      35: lcmp\n      36: ifne          44\n      39: ldc           #217                // String Set pitch for ToStart\n      41: invokestatic  #219                // Method zombie/debug/DebugLog.log:(Ljava/lang/String;)V\n      44: aload         5\n      46: fload_3\n      47: putfield      #225                // Field fmod/fmod/FMODSoundEmitter$Sound.pitch:F\n      50: iinc          4, 1\n      53: goto          3\n      56: iconst_0\n      57: istore        4\n      59: iload         4\n      61: aload_0\n      62: getfield      #16                 // Field instances:Ljava/util/ArrayList;\n      65: invokevirtual #91                 // Method java/util/ArrayList.size:()I\n      68: if_icmpge     112\n      71: aload_0\n      72: getfield      #16                 // Field instances:Ljava/util/ArrayList;\n      75: iload         4\n      77: invokevirtual #94                 // Method java/util/ArrayList.get:(I)Ljava/lang/Object;\n      80: checkcast     #98                 // class fmod/fmod/FMODSoundEmitter$Sound\n      83: astore        5\n      85: aload         5\n      87: invokevirtual #100                // Method fmod/fmod/FMODSoundEmitter$Sound.getRef:()J\n      90: lload_1\n      91: lcmp\n      92: ifne          100\n      95: ldc           #228                // String Set pitch for Instance\n      97: invokestatic  #219                // Method zombie/debug/DebugLog.log:(Ljava/lang/String;)V\n     100: aload         5\n     102: fload_3\n     103: putfield      #225                // Field fmod/fmod/FMODSoundEmitter$Sound.pitch:F\n     106: iinc          4, 1\n     109: goto          59\n     112: return\n\n",
+  "bytecodeHashes": {
+    "sound-manager-bytecode.txt": "10ca04951dcef31d5ba246b8528ac2457e55ab18c4d30bd6872594db904ef7bf",
+    "emitter-bytecode.txt": "4c56797f02198f77cd1589a61fe47a0a5224be337085f1f1b6713ecf0e12bd00",
+    "event-sound-bytecode.txt": "011871837ab7f36372393a80a6cfb6312af11c7445a353a88d85c50c49bdf9aa"
+  }
+}

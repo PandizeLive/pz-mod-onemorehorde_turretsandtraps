@@ -1,0 +1,27 @@
+{
+  "version": "0.2.48.1",
+  "durationMs": 6000,
+  "rowDelayMs": 350,
+  "startsMs": [
+    0,
+    350,
+    700
+  ],
+  "stopsMs": [
+    6000,
+    6350,
+    6700
+  ],
+  "initialSpeedRatio": 2,
+  "travelCards": 39,
+  "winnerIndex": 40,
+  "cardsPerReel": 42,
+  "renderFrames": 500,
+  "perFrameItems": 0,
+  "perFrameWraps": 0,
+  "tickMinIntervalMs": 100,
+  "rarityCuesPerPack": 1,
+  "longFrameNoBacklog": true,
+  "assertions": 16180,
+  "clientAcceptance": "pending"
+}

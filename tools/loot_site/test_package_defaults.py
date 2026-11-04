@@ -13,12 +13,13 @@ def main():
     assert enabled['meta']['requiredModId'] == 'OneMoreHorde_Turrets'
     assert enabled['meta']['turretsEnabled'] is True
     assert disabled['meta']['turretsEnabled'] is False
-    assert disabled['defaults']['global'] == 0
-    assert disabled['defaults']['items'] == enabled['defaults']['items']
+    assert disabled['defaults']['global'] == enabled['defaults']['global'] == 1
+    assert set(disabled['defaults']['items']) == {'CapacitySmall', 'Capacity', 'CapacityLarge'}
+    assert disabled['meta']['requiredModId'] == 'OneMoreHorde_Traps'
     for key in original:
-        if key not in {'defaults', 'meta'}:
+        if key not in {'defaults', 'meta', 'modules'}:
             assert enabled[key] == original[key] == disabled[key], key
-    print('LootLab: unchanged loot tuning/data; turret ownership and traps-only zero-loot defaults verified.')
+    print('LootLab: global 1.00 and independent Traps expansion-kit defaults verified.')
 
 
 if __name__ == '__main__':

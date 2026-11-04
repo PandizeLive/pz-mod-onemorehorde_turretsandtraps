@@ -1,0 +1,71 @@
+{
+  "checkpoint": "C310",
+  "date": "2026-10-18",
+  "kind": "owner-report-and-read-only-review",
+  "loadedVersion": "0.2.53.11",
+  "side": "sp",
+  "consoleSha256": "85b8c570249996bd71ed15e65b5c7283dc8e496aa863d74be7bb7e04bfde96c2",
+  "startupExceptionCount": 2,
+  "buttonExceptionCount": 3,
+  "selectedEvidence": [
+    {
+      "line": 544,
+      "text": "WARN : Lua          f:0 at Lua((MOD:OMH: Turrets)).TurretFacingCursor.lua> require(\"BuildingObjects/ISBuildingObject\") failed"
+    },
+    {
+      "line": 552,
+      "text": "ERROR: General      f:0> Lua((MOD:OMH: Turrets)).TurretFacingCursor.lua> Exception thrown"
+    },
+    {
+      "line": 553,
+      "text": "\tjava.lang.RuntimeException: attempted index: derive of non-table: null at KahluaThread.tableget(KahluaThread.java:1430)."
+    },
+    {
+      "line": 601,
+      "text": "SEVERE: java.lang.RuntimeException: attempted index: derive of non-table: null"
+    },
+    {
+      "line": 1060,
+      "text": "WARN : Lua          f:0 at Lua((MOD:OMH: Turrets)).TurretFacingCursor.lua> require(\"BuildingObjects/ISBuildingObject\") failed"
+    },
+    {
+      "line": 1068,
+      "text": "ERROR: General      f:0> Lua((MOD:OMH: Turrets)).TurretFacingCursor.lua> Exception thrown"
+    },
+    {
+      "line": 1069,
+      "text": "\tjava.lang.RuntimeException: attempted index: derive of non-table: null at KahluaThread.tableget(KahluaThread.java:1430)."
+    },
+    {
+      "line": 1153,
+      "text": "SEVERE: java.lang.RuntimeException: attempted index: derive of non-table: null"
+    },
+    {
+      "line": 4417,
+      "text": "ERROR: General      f:27852> Lua((MOD:OMH: Turrets)).UI_OMHTT_SetFacing> Exception thrown"
+    },
+    {
+      "line": 4418,
+      "text": "\tjava.lang.RuntimeException: attempted index: start of non-table: null at KahluaThread.tableget(KahluaThread.java:1430)."
+    },
+    {
+      "line": 4622,
+      "text": "ERROR: General      f:28567> Lua((MOD:OMH: Turrets)).UI_OMHTT_SetFacing> Exception thrown"
+    },
+    {
+      "line": 4623,
+      "text": "\tjava.lang.RuntimeException: attempted index: start of non-table: null at KahluaThread.tableget(KahluaThread.java:1430)."
+    },
+    {
+      "line": 4679,
+      "text": "ERROR: General      f:28738> Lua((MOD:OMH: Turrets)).UI_OMHTT_SetFacing> Exception thrown"
+    },
+    {
+      "line": 4680,
+      "text": "\tjava.lang.RuntimeException: attempted index: start of non-table: null at KahluaThread.tableget(KahluaThread.java:1430)."
+    }
+  ],
+  "gameplayChanged": false,
+  "connectedMultiplayerAccepted": false,
+  "plan": "docs/CORRECTIONS_C310.md"
+}

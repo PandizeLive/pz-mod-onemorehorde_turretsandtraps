@@ -25,6 +25,16 @@ function Diagnostics.enabled(component)
     return traps or turrets
 end
 
+---@param component string|nil Package scope
+---@return boolean enabled
+---@nodiscard
+function Diagnostics.detailed(component)
+    local options = SandboxVars.OMHTurretsTraps
+    if not options then return false end
+    return component ~= "turrets" and Diagnostics.enabled("traps") and options.DetailedLogging == true
+        or component ~= "traps" and Diagnostics.enabled("turrets") and options.TurretDetailedLogging == true
+end
+
 ---@param value any Log value
 ---@return string safe
 ---@nodiscard
@@ -35,9 +45,11 @@ end
 ---@param event string Diagnostic category
 ---@param fields table? Scalar evidence
 ---@param occurredAt number? Original event time for deferred output
+---@param retain boolean? Keep suppressed count for queued retry
+---@param component string? Package scope
 ---@return nil
-function Diagnostics.emit(event, fields, occurredAt, retain)
-    if not Diagnostics.enabled() then return end
+function Diagnostics.emit(event, fields, occurredAt, retain, component)
+    if not Diagnostics.enabled(component) then return end
     local now = getTimestampMs()
     if now - windowStart >= 1000 or now < windowStart then
         windowStart = now
@@ -78,7 +90,7 @@ end
 ---@param playerNum number? Local viewport, omitted on server
 ---@return nil
 function Diagnostics.object(object, reason, playerNum)
-    if not Diagnostics.enabled() or not object then return end
+    if not Diagnostics.enabled("traps") or not object then return end
     local square = object:getSquare()
     local sprite = object:getSprite()
     local fields = {
@@ -126,7 +138,7 @@ function Diagnostics.object(object, reason, playerNum)
             end
         end
     end
-    Diagnostics.emit("object", fields)
+    Diagnostics.emit("object", fields, nil, nil, "traps")
 end
 
 ---@return number missing
@@ -155,10 +167,10 @@ end
 ---@param event string Diagnostic category
 ---@param fields table Scalar snapshot
 ---@return nil
-function Diagnostics.defer(event, fields)
-    if not Diagnostics.enabled() then return end
-    if SandboxVars.OMHTurretsTraps.DetailedLogging ~= true and SandboxVars.OMHTurretsTraps.TurretDetailedLogging ~= true then
-        Diagnostics.count(event, 1)
+function Diagnostics.defer(event, fields, component)
+    if not Diagnostics.enabled(component) then return end
+    if not Diagnostics.detailed(component) then
+        Diagnostics.count(event, 1, component)
         for key, value in pairs(fields) do
             if type(value) == "number" and string.sub(key, -2) == "Ms" then
                 local metric = event .. "_" .. key .. "Max"
@@ -172,27 +184,56 @@ function Diagnostics.defer(event, fields)
         return
     end
     pendingLast = pendingLast + 1
-    pending[pendingLast] = {event = event, fields = fields, at = getTimestampMs()}
+    pending[pendingLast] = {event = event, fields = fields, at = getTimestampMs(), component = component}
 end
 
 ---@param event string Category
 ---@param fields table Detail fields
 ---@return nil
-function Diagnostics.trace(event, fields)
-    if SandboxVars.OMHTurretsTraps.DetailedLogging == true or SandboxVars.OMHTurretsTraps.TurretDetailedLogging == true then
-        Diagnostics.emit(event, fields)
+function Diagnostics.trace(event, fields, component)
+    if Diagnostics.detailed(component) then
+        Diagnostics.emit(event, fields, nil, nil, component)
     end
 end
 
 ---@param event string Category
 ---@param amount number Occurrences
 ---@return nil
-function Diagnostics.count(event, amount)
-    if Diagnostics.enabled() then counters[event] = (counters[event] or 0) + amount end
+function Diagnostics.count(event, amount, component)
+    if Diagnostics.enabled(component) then counters[event] = (counters[event] or 0) + amount end
+end
+
+---@param event string Fixed stage name
+---@param elapsed number Stage duration in milliseconds
+---@return nil
+function Diagnostics.measure(event, elapsed, component)
+    if not Diagnostics.enabled(component) then return end
+    counters[event .. "Count"] = (counters[event .. "Count"] or 0) + 1
+    counters[event .. "TotalMs"] = (counters[event .. "TotalMs"] or 0) + elapsed
+    counters[event .. "MaxMs"] = math.max(counters[event .. "MaxMs"] or 0, elapsed)
+end
+
+local lastPulse, pulsePaused, settingsKey = nil, false, nil
+
+---@return nil
+function Diagnostics.pulse()
+    local now, paused = getTimestampMs(), GameTime.isGamePaused()
+    local key = tostring(Diagnostics.enabled("traps")) .. ":" .. tostring(Diagnostics.detailed("traps"))
+        .. ":" .. tostring(Diagnostics.enabled("turrets")) .. ":" .. tostring(Diagnostics.detailed("turrets"))
+    if key ~= settingsKey then
+        settingsKey = key
+        Diagnostics.emit("logging-settings", {traps=Diagnostics.enabled("traps"), trapDetails=Diagnostics.detailed("traps"),
+            turrets=Diagnostics.enabled("turrets"), turretDetails=Diagnostics.detailed("turrets")})
+    end
+    if Diagnostics.enabled() and lastPulse and not paused and not pulsePaused then
+        Diagnostics.measure("active-update-gap", math.max(0, now - lastPulse))
+    end
+    lastPulse, pulsePaused = now, paused
 end
 
 ---@return nil
 function Diagnostics.flush()
+    if pendingFirst > pendingLast and not Diagnostics.enabled() then return end
     local now = getTimestampMs()
     if now - summaryAt >= 5000 or now < summaryAt then
         summaryAt = now
@@ -210,7 +251,7 @@ function Diagnostics.flush()
         if pendingFirst > pendingLast or getTimestampMs() >= deadline then break end
         local entry = pending[pendingFirst]
         pending[pendingFirst], pendingFirst = nil, pendingFirst + 1
-        Diagnostics.emit(entry.event, entry.fields, entry.at)
+        Diagnostics.emit(entry.event, entry.fields, entry.at, nil, entry.component)
     end
     if pendingFirst > pendingLast then
         pending, pendingFirst, pendingLast = {}, 1, 0
@@ -219,11 +260,13 @@ end
 
 ---@return nil
 function Diagnostics.reset()
+    lastPulse, pulsePaused = nil, false
     pending, pendingFirst, pendingLast = {}, 1, 0
     counters, summaryAt = {}, 0
     sequence, windowStart, windowLines, suppressed = 0, 0, 0, 0
 end
 
+Events.OnTickEvenPaused.Add(Diagnostics.pulse)
 Events.OnTick.Add(Diagnostics.flush)
 Events.OnGameStart.Add(Diagnostics.reset)
 return Diagnostics

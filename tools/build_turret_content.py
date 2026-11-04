@@ -20,8 +20,8 @@ def main():
     modules = {"Firing": "Firing", "MotionDetection": "Detection", "Filter": "Filter",
                "RapidFire": "Rapid-Fire", "Velocity": "Velocity", "Range": "Range", "Capacity": "Medium Expansion Kit", "CapacitySmall": "Small Expansion Kit", "CapacityLarge": "Large Expansion Kit",
                "Detection360": "360", "Reload": "Reload", "Autoloader": "Autoloader"}
-    item_types = {"CapacitySmall": "OMHTTExpansionKitSmall", "Capacity": "OMHTTExpansionKitMedium",
-               "CapacityLarge": "OMHTTExpansionKitLarge", "MotionDetection": "OMHTTModuleDetection", "Detection360": "OMHTTModule360"}
+    item_types = {"CapacitySmall": "OMHTTModuleExpansionSmall", "Capacity": "OMHTTModuleExpansionMedium",
+               "CapacityLarge": "OMHTTModuleExpansionLarge", "MotionDetection": "OMHTTModuleDetection", "Detection360": "OMHTTModule360"}
     items = """module Base {
     item OMHTTTurretBase {
         DisplayName = Turret Base,
@@ -36,9 +36,9 @@ def main():
         AcceptItemFunction = OMHTT_Turret.accept,
         Tooltip = Tooltip_OMHTT_TurretBase,
     }
-    item OMHTTPotatoHead {
+    item OMHTTTurretPotato {
         DisplayName = Potato Launcher Head,
-        WorldStaticModel = OMHTTProbeHead,
+        WorldStaticModel = OMHTTTurretProbe,
         ItemType = base:normal,
         DisplayCategory = Material,
         Weight = 4,
@@ -72,8 +72,8 @@ def main():
     names = {}
     for kind, label, materials, skills, xp, output, duration in [
         ("Base", "Craft Turret Base", base, "Mechanics:2", "Mechanics:15", "OMHTTTurretBase", 150),
-        ("Head", "Craft Potato Launcher Head", head, "Mechanics:2;Electricity:1", "Mechanics:15;Electricity:5", "OMHTTPotatoHead", 200),
-        ("HeadImprovised", "Craft Potato Launcher Head (Improvised)", {**head, "TirePump": 0, "ScrapMetal": 6}, "Mechanics:4;Electricity:1", "Mechanics:15;Electricity:5", "OMHTTPotatoHead", 250),
+        ("Head", "Craft Potato Launcher Head", head, "Mechanics:2;Electricity:1", "Mechanics:15;Electricity:5", "OMHTTTurretPotato", 200),
+        ("HeadImprovised", "Craft Potato Launcher Head (Improvised)", {**head, "TirePump": 0, "ScrapMetal": 6}, "Mechanics:4;Electricity:1", "Mechanics:15;Electricity:5", "OMHTTTurretPotato", 250),
         ("Complete", "Craft Potato Turret", {k: base.get(k, 0) + head.get(k, 0) for k in base.keys() | head.keys()}, "Mechanics:2;Electricity:1", "Mechanics:30;Electricity:5", "OMHTTTurretBase", 350),
         ("CompleteImprovised", "Craft Potato Turret (Improvised)", {**{k: base.get(k, 0) + head.get(k, 0) for k in base.keys() | head.keys()}, "TirePump": 0, "ScrapMetal": 7}, "Mechanics:4;Electricity:1", "Mechanics:30;Electricity:5", "OMHTTTurretBase", 400),
     ]:
@@ -114,15 +114,15 @@ def main():
             bonusHealth = 0,
             isThumpable = true,
             breakSound = BreakObject,
-            OnIsValid = OMHTT_TurretWorld.onIsValid,
-            OnCreate = OMHTT_TurretWorld.onCreate,
+            OnIsValid = OMHTT_TurretPlacement.valid,
+            OnCreate = OMHTT_TurretPlacement.create,
 """
     for heading, index in zip("ENWS", range(16, 20)):
         entity += f"            face {heading} {{\n                layer {{\n                    row = omhtt_turret_01_{index},\n                }}\n            }}\n"
     entity += """        }
         component CraftRecipe {
             timedAction = BuildLowNoTool,
-            time = 200,
+            time = 250,
             category = OMHTurrets,
             Tooltip = UI_OMHTT_DeployTurretDescription,
             needToBeLearn = false,
@@ -152,7 +152,7 @@ def main():
     texture = MEDIA / "textures/Item_OMHTT_TestCube.png"
     texture.write_bytes((MEDIA / "textures/OMHTT_TestCube.png").read_bytes())
     translations("Recipes", {**names, "OMHTTDeployTurret": "Deploy Turret"})
-    translations("ItemName", {"Base.OMHTTTurretBase": "Turret Base", "Base.OMHTTPotatoHead": "Potato Launcher Head",
+    translations("ItemName", {"Base.OMHTTTurretBase": "Turret Base", "Base.OMHTTTurretPotato": "Potato Launcher Head",
                               **{"Base." + item_types.get(k, "OMHTTModule" + k): (v if k.startswith("Capacity") else v + " Module") for k, v in modules.items()}})
     translations("Tooltip", {
         "Tooltip_OMHTT_TurretBase": "Holds a head, ammo, modules and a battery.",

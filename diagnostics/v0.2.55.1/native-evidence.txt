@@ -1,0 +1,8 @@
+write: LOG  : General      f:0 st:386,788,835> [OMHTT-Smoke] native-persistence mode=write parts=28 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved legacy=8 edges=8 outline=4 reinforced=8 orientation=preserved
+write: LOG  : General      f:0 st:386,799,077> Shutdown handling finished
+read: LOG  : Lua          f:0 st:386,907,702> [OMHTT-C323] native-names fresh-process=preserved private-reservation=preserved
+read: LOG  : General      f:0 st:386,917,908> [OMHTT-Smoke] native-persistence mode=read parts=28 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved legacy=8 edges=8 outline=4 reinforced=8 orientation=preserved
+read: LOG  : General      f:0 st:386,928,306> Shutdown handling finished
+{"selection": "traps", "version": "0.2.55.1", "passed": true, "seconds": 127.1}
+{"selection": "turrets", "version": "0.2.55.1", "passed": true, "seconds": 115.5}
+{"selection": "both", "version": "0.2.55.1", "passed": true, "seconds": 110.4}

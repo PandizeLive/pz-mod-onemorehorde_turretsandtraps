@@ -26,11 +26,15 @@ def run(command, cwd=None):
 
 
 def main():
+    from build_sound_pitch import build as check_pitch
+    check_pitch(check=True)
     from build_packages import build
     _, packages = build(check=True)
     OUTPUT.mkdir(parents=True, exist_ok=True)
     classes = OUTPUT / "classes"
     classes.mkdir(exist_ok=True)
+    from check_device_render import check as check_device_render
+    check_device_render(GAME, OUTPUT)
     texts = list(PACKAGE.rglob("*.lua")) + list(PACKAGE.rglob("*.txt")) + list(PACKAGE.rglob("*.json")) + list(PACKAGE.rglob("mod.info"))
     for path in texts:
         data = path.read_bytes()
@@ -55,7 +59,14 @@ def main():
         assert all(isinstance(v, str) for v in values.values())
         assert not translations.keys() & values.keys(), "Duplicate translation keys"
         translations.update(values)
-    keys = set(re.findall(r'getText\("([A-Za-z0-9_]+)"', lua)) - {"UI_OMHTT_", "ContextMenu_OMHTT_Hybrid", "UI_OMHTT_Module"}
+    keys = set(re.findall(r'getText\("([A-Za-z0-9_]+)"', lua)) - {"UI_OMHTT_", "ContextMenu_OMHTT_Hybrid", "UI_OMHTT_Module", "UI_OMHTT_Effect", "UI_OMHTT_Rarity", "UI_OMHTT_Stack", "UI_OMHTT_FirstExtra", "UI_OMHTT_HeadFeature", "UI_OMHTT_Control", "UI_OMHTT_TriggerCost", "UI_OMHTT_Target", "UI_OMHTT_DevicePurpose", "Sandbox_OMHTurretsTraps_"}
+    keys.update("UI_OMHTT_FirstExtra" + key for key in ["Rate", "Reload", "Damage", "Magazine", "Range", "Chance", "Threshold", "Radius", "Uses", "Siphon", "Divisor", "Suppression", "Fragment"])
+    keys.update("UI_OMHTT_DevicePurpose" + key for key in ["Barrier", "Bed", "Barb", "Wire", "Poke", "Tether", "Controller", "Button", "Plate", "Lever", "Laser"])
+    keys.update("UI_OMHTT_Target" + key for key in ["Zombies", "OtherFactions", "Inherit"])
+    keys.update("UI_OMHTT_Control" + key for key in ["Controller", "Plate", "Button"])
+    keys.update("UI_OMHTT_Stack" + key for key in ["Magazine", "Rate", "Reload", "Range", "Velocity", "Chance", "Damage", "Threshold", "Radius", "Battery", "Uses", "Shots", "Piercing", "Suppression"])
+    keys.update("UI_OMHTT_HeadFeature" + key for key in ["Potato", "Ballista", "Lobber", "Scrapshot", "RotaryBat", "RotaryBlades", "Firearm"])
+    keys.update("UI_OMHTT_Rarity" + str(band) for band in range(1, 8))
     keys.update("ContextMenu_OMHTT_Hybrid" + action for action in ["Create", "Remove", "Rotate", "Spin", "Raise", "Lower", "Larger", "Smaller"])
     keys.update("UI_OMHTT_" + status for status in [
         "Agrees", "Waiting", "Denied", "VersionMismatch", "TooFar", "Unavailable", "Inspected", "Stale",
@@ -63,11 +74,37 @@ def main():
         "WrongDevice", "Empty", "Cooling", "NoTarget", "Fired", "Refilled", "Aimed", "NotCompared", "WrongBarrier", "BarrierRotated",
     ])
     keys.update("UI_OMHTT_Manage" + status for status in ['Drop', 'Hint', 'Head', 'Battery', 'Ammo', 'Modules', 'Module', 'Locked', 'ModulesHint', 'PowerNone', 'PowerExternal', 'PowerBattery', 'PowerDisabled', 'Stats', 'Timing', 'Fire', 'Off', 'Queued', 'TransferMissing', 'TransferReach', 'CapacityFull', 'UnloadFirst', 'TransferFavorite', 'TransferWrongItem', 'TransferFull', 'TransferCarried', 'TransferPending', 'NoHead', 'NoPower', 'Empty', 'Ready', 'Cooling', 'Reloading', 'NoTarget', 'Fired', 'Unavailable', 'MPCombatDeferred', 'WrongDevice', 'Disabled', 'Jammed', 'NoMagazine', 'Racking', 'WrongAmmo'])
+    keys.update("UI_OMHTT_Effect" + name for name in ["Damage", "Shots", "Stagger", "Ammo", "HP", "Piercing", "Magazine", "Range", "Rate", "Reload", "Chance", "Noise", "Active", "Inactive", "Broken", "Capped", "Degrees", "Detection"])
     keys.update("UI_OMHTT_Module" + name for name in ["Firing", "MotionDetection", "Filter", "Detection360"])
     keys.update("UI_OMHTT_Priority" + name for name in ["Closest", "Furthest", "Weakest", "Toughest"])
     keys.update(["UI_OMHTT_PowerOn", "UI_OMHTT_PowerOff", "UI_OMHTT_PriorityRandom"])
+    keys.discard("UI_OMHTT_Batch")
+    keys.update("UI_OMHTT_Batch" + key for key in ["Stale", "Missing", "Access", "OtherController", "Unassigned", "Range", "Broken", "Power", "Capacity"])
     for key in keys:
         assert key in translations, f"Missing translation: {key}"
+    # Network status suffixes are translated by the receiving UI, not by the server.
+    # Check their producers as well as literal getText calls (which miss concatenation).
+    network_keys = set()
+    status_sources = {"TurretWorld", "TurretSearch", "Turret", "TurretCycle", "Firearms",
+                      "TurretTransfers", "TurretNetworkTransfers", "TurretNetworkService"}
+    for path in PACKAGE.rglob("*.lua"):
+        content = path.read_text(encoding="utf-8")
+        if path.stem in status_sources:
+            statuses = set(re.findall(r'(?:return|status\s*=|result\s*=)\s*"([A-Z][A-Za-z]+)"', content))
+            statuses.update(re.findall(r'return\s+[^\n,]+,\s*"([A-Z][A-Za-z]+)"', content))
+            network_keys.update("UI_OMHTT_Manage" + status for status in statuses)
+        if path.stem == "FoundationServer":
+            statuses = set(re.findall(r'reply\(player, command, args, "([A-Za-z]+)"', content))
+            statuses.update(re.findall(r'status\s*=\s*"([A-Za-z]+)"', content))
+            network_keys.update("UI_OMHTT_" + status for status in statuses)
+        if path.stem.startswith("Control"):
+            network_keys.update(re.findall(r'"(UI_OMHTT_[A-Za-z]+)"(?!\s*\.\.)', content))
+    network_keys.update("UI_OMHTT_Batch" + status for status in
+                        ["Stale", "Missing", "Access", "OtherController", "Unassigned", "Range", "Broken", "Power", "Capacity"])
+    for key in network_keys:
+        assert key in translations and translations[key].strip() and not translations[key].startswith("UI_OMHTT_"), \
+            f"Untranslated multiplayer UI status: {key}"
+    print(f"Multiplayer status/Controller text: {len(network_keys)} translation keys resolved.")
     sandbox = (PACKAGE / "42.20/media/sandbox-options.txt").read_text()
     for key in re.findall(r"translation\s*=\s*(\w+)", sandbox):
         assert "Sandbox_" + key in translations and "Sandbox_" + key + "_tooltip" in translations, key
@@ -77,7 +114,20 @@ def main():
     for key in re.findall(r"Tooltip\s*=\s*(\w+)", item_script):
         assert key in translations and "prototype" not in translations[key].lower(), key
     textures = list((PACKAGE / "42.20/media/textures").glob("*.png"))
-    assert len(textures) == 48, "Existing markers and ten Bed Spikes technical markers required"
+    assert len(textures) == 47, "Existing technical markers and owner Performance/Utility/Effects icons required"
+    owner_art = json.loads((ROOT / "art/MODULE_ART_C423.json").read_text())
+    assert len(owner_art) == 16
+    effects_art = json.loads((ROOT / "art/MODULE_ART_C424.json").read_text())
+    assert len(effects_art) == 8
+    owner_art.extend(effects_art)
+    automation_art = json.loads((ROOT / "art/MODULE_ART_C494.json").read_text())
+    assert len(automation_art) == 8
+    owner_art.extend(automation_art)
+    for asset in owner_art:
+        path = ROOT / asset["target"]
+        assert hashlib.sha256(path.read_bytes()).hexdigest() == asset["sha256"], "Owner artwork must remain unchanged"
+        with Image.open(path) as icon:
+            assert icon.size == ((28, 29) if "automation" in path.name.lower() else (32, 32)) and icon.mode == "RGBA" and icon.getbbox()
     for heading, index in zip("ENWS", range(4)):
         for part in "AB":
             assert (PACKAGE / f"42.20/media/textures/OMHTT_BuildBarrier{heading}_{part}.png").read_bytes() == (PACKAGE / f"42.20/media/textures/OMHTT_Barrier{index}.png").read_bytes(), "Construction sprites reuse authorized technical markers"
@@ -105,12 +155,22 @@ def main():
     assert len(barrier_bytes) == 4, "Barrier directions must have distinct pixels"
     for texture in textures:
         with Image.open(texture) as sprite:
-            expected_size = (60, 36) if texture.name in {"Item_OMHTT_BedSpikes.png", "Item_OMHTT_ReinforcedBedSpikes.png"} else (128, 256)
+            expected_size = (28, 29) if texture.name == "Item_OMHTT_ModuleAutomation.png" else (32, 32) if texture.name in {"Item_OMHTT_ModulePerformance.png", "Item_OMHTT_ModuleUtility.png", "Item_OMHTT_ModuleEffects.png"} else (60, 36) if texture.name in {"Item_OMHTT_BedSpikes.png", "Item_OMHTT_ReinforcedBedSpikes.png"} else (128, 256)
             assert sprite.size == expected_size and sprite.mode == "RGBA"
             assert sprite.getbbox() is not None
-            assert all(r == g == b for r, g, b, a in sprite.get_flattened_data() if a), "Sprite must remain white/grayscale"
+            if texture.name not in {"Item_OMHTT_ModuleAutomation.png", "Item_OMHTT_ModulePerformance.png", "Item_OMHTT_ModuleUtility.png", "Item_OMHTT_ModuleEffects.png"}:
+                assert all(r == g == b for r, g, b, a in sprite.get_flattened_data() if a), "Technical sprites must remain white/grayscale"
     javac = Path(os.environ.get("PZ_JAVAC", "C:/Program Files/Java/jdk-17/bin/javac.exe"))
+    run([javac, "-d", classes, ROOT / "tools/NativePitchCheck.java"])
+    pitch_log = run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED",
+        "-Djava.library.path=" + str(GAME), "-cp", os.pathsep.join([str(classes), str(GAME / "projectzomboid.jar")]),
+        "NativePitchCheck", PACKAGE / "42.20", OUTPUT / "pitch-cache", GAME], cwd=GAME)
+    assert "NATIVE_PITCH_PASS definitions=24 clips=2727 plays=720" in pitch_log
+    assert "NATIVE_PACK_AUDIO_PASS tiers=7 nativeUIHandles=7 stopped=7" in pitch_log
+    assert "Set pitch for" not in pitch_log, "Runtime pitch setter logging returned"
+    (OUTPUT / "native-pitch.log").write_text(pitch_log, encoding="utf-8")
     run([javac, "-d", classes, ROOT / "tools/KahluaCheck.java"])
+    run([javac, "-d", classes, ROOT / "tools/NativeControllerMapCheck.java"])
     run([javac, "-cp", GAME / "projectzomboid.jar", "-d", classes, ROOT / "tools/HybridAssetCheck.java"])
     model_log = run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED",
         "-Djava.library.path=" + str(GAME), "-cp", os.pathsep.join([str(classes), str(GAME / "projectzomboid.jar")]),
@@ -118,7 +178,18 @@ def main():
     model_log += run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED",
         "-Djava.library.path=" + str(GAME), "-cp", os.pathsep.join([str(classes), str(GAME / "projectzomboid.jar")]),
         "HybridAssetCheck", PACKAGE / "42.20/media/models_X/OMHTT_GunSupport.x", "36"], cwd=GAME)
+    model_log += run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED",
+        "-Djava.library.path=" + str(GAME), "-cp", os.pathsep.join([str(classes), str(GAME / "projectzomboid.jar")]),
+        "HybridAssetCheck", PACKAGE / "42.20/media/models_X/OMHTT_Arc.x", "4"], cwd=GAME)
+    for name, faces in {"Ballista": 48, "Scrapshot": 36, "Lobber": 36, "Arc": 48, "RotaryBat": 24, "RotaryBlades": 36}.items():
+        model_log += run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED",
+            "-Djava.library.path=" + str(GAME), "-cp", os.pathsep.join([str(classes), str(GAME / "projectzomboid.jar")]),
+            "HybridAssetCheck", PACKAGE / ("42.20/media/models_X/OMHTT_Dev" + name + ".x"), str(faces)], cwd=GAME)
     (OUTPUT / "model-import.log").write_text(model_log, encoding="utf-8")
+    brace_log = run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED",
+        "-Djava.library.path=" + str(GAME), "-cp", os.pathsep.join([str(classes), str(GAME / "projectzomboid.jar")]),
+        "HybridAssetCheck", PACKAGE / "42.20/media/models_X/OMHTT_PokeStabilizers.x", "96"], cwd=GAME)
+    (OUTPUT / "poke-stabilizers-import.log").write_text(brace_log, encoding="utf-8")
     run([javac, "-d", classes, ROOT / "tools/BuildBaseDepth.java"])
     depth_log = run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED",
         "-Djava.library.path=" + str(GAME), "-cp", os.pathsep.join([str(classes), str(GAME / "projectzomboid.jar")]),
@@ -126,16 +197,29 @@ def main():
     assert (OUTPUT / "base-depth.png").read_bytes() == (PACKAGE / "common/media/depthmaps/DEPTH_omhtt_turret_01.png").read_bytes()
     (OUTPUT / "base-depth.log").write_text(depth_log, encoding="utf-8")
     pages = list(dict.fromkeys(re.findall(r"page\s*=\s*(\w+)", sandbox)))
-    assert pages == ["OMHTurretsTraps_General", "OMHTurretsTraps_BarrierPage", "OMHTurretsTraps_BedPage", "OMHTurretsTraps_PotatoPage",
-                     "OMHTurretsTraps_AutomationPage", "OMHTurretsTraps_StatModulesPage", "OMHTurretsTraps_ModuleLootPage", "OMHTurretsTraps_Debug"]
+    assert pages == ["OMHTurretsTraps_General", "OMHTurretsTraps_BarrierPage", "OMHTurretsTraps_PotatoPage",
+                     "OMHTurretsTraps_StatModulesPage", "OMHTurretsTraps_ModuleLootPage", "OMHTurretsTraps_Debug", "OMHTurretsTraps_TriggersPage"]
+    for asset in ("TetherNail", "TetherCable", "StateAmber", "StateGreen", "StateDark"):
+        run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED", "-cp", os.pathsep.join([str(classes), str(GAME / "projectzomboid.jar")]),
+             "HybridAssetCheck", PACKAGE / ("42.20/media/models_X/OMHTT_" + asset + ".x"), "12"], cwd=GAME)
     stock = os.environ.get("OMHTT_STOCK_CLASSES") == "1"
     classpath = os.pathsep.join(str(path) for path in ([classes, GAME / "projectzomboid.jar", GAME] if stock else [classes, GAME, GAME / "projectzomboid.jar"]))
+    map_log = run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED", "-Djava.awt.headless=true",
+        "-Duser.home=" + str(OUTPUT / "native-home"), "-cp", classpath, "NativeControllerMapCheck"], cwd=GAME)
+    (OUTPUT / "native-controller-map.log").write_text(map_log, encoding="utf-8")
     log = run([GAME / "jre64/bin/java.exe", "--enable-native-access=ALL-UNNAMED", "-Djava.awt.headless=true",
-        "-Duser.home=" + str(OUTPUT / "native-home"), "-cp", classpath, "KahluaCheck", ROOT], cwd=GAME)
+        "-Duser.home=" + str(OUTPUT / "native-home"), "-cp", classpath, "KahluaCheck", ROOT, "tools/tests/module_pack_audit.lua"], cwd=GAME)
     (OUTPUT / "validation.log").write_text(log, encoding="utf-8")
     files = {str(path.relative_to(PACKAGE)).replace("\\", "/"): hashlib.sha256(path.read_bytes()).hexdigest()
         for path in sorted(PACKAGE.rglob("*")) if path.is_file()}
     sources = [
+        "media/AnimSets/zombie/knockeddown-headTop/HeadTopFall.xml",
+        "media/anims_X/Zombie/Zombie_HitDeath_HeadTop.x",
+        "media/AnimSets/zombie/climbfence/start.xml",
+        "media/AnimSets/zombie/falldown/frombehind.xml",
+        "media/scripts/generated/sounds/zombies/sounds_zombie_foley.txt",
+        "media/scripts/generated/sounds/weapons/sounds_melee_spears.txt",
+        "media/lua/server/BuildingObjects/ISBuildingObject.lua",
         "media/scripts/generated/items/weapon.txt",
         "media/scripts/generated/models_weapons.txt",
         "media/lua/shared/TimedActions/ISReloadWeaponAction.lua",
@@ -188,6 +272,8 @@ def main():
         "media/lua/server/Items/ProceduralDistributions.lua", "media/lua/server/Items/SuburbsDistributions.lua",
         "zombie/inventory/ItemPickerJava.class", "zombie/Lua/LuaEventManager.class", "zombie/SandboxOptions.class",
         "media/lua/client/ISUI/ISButton.lua", "media/lua/shared/Entity/TimedActions/ISHandcraftAction.lua",
+        "media/lua/client/ISUI/ISUIElement.lua", "media/lua/client/ISUI/ISPanel.lua",
+        "media/lua/client/ISUI/ISScrollingListBox.lua",
         "media/lua/client/Entity/ISUI/Controls/ISItemSlot.lua",
         "media/lua/client/ISUI/ISInventoryPage.lua", "zombie/iso/fboRenderChunk/FBORenderCell.class",
         "media/lua/client/Entity/ISUI/CraftRecipe/ISHandCraftPanel.lua",

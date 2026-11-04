@@ -1,0 +1,58 @@
+{
+  "version": "0.2.38",
+  "approval": "C120 implements C114-C119",
+  "automatedAssertions": 3946,
+  "runtimeFiles": 94,
+  "translationKeys": 574,
+  "nativeWriteSeconds": 95.7,
+  "nativeReadSeconds": 90.6,
+  "packageSelections": {
+    "traps": {
+      "selection": "traps",
+      "version": "0.2.38",
+      "passed": true,
+      "seconds": 81.3
+    },
+    "turrets": {
+      "selection": "turrets",
+      "version": "0.2.38",
+      "passed": true,
+      "seconds": 83.3
+    },
+    "both": {
+      "selection": "both",
+      "version": "0.2.38",
+      "passed": true,
+      "seconds": 88.3
+    }
+  },
+  "developmentFindings": [
+    {
+      "finding": "Native sprite registry rejects duplicate IDs across faces and pair/single entities",
+      "resolution": "Unique native IDs reuse unchanged single bed pixels and one wire texture"
+    },
+    {
+      "finding": "Native ten-second wire recipe needs time=96 rather than 200",
+      "resolution": "Corrected and exact duration asserted against installed native conversion"
+    },
+    {
+      "finding": "Atlas verification expected pre-wire sprite counts/pages",
+      "resolution": "Verifier extended for wire and single-tile aliases; native PNG/page mapping passes"
+    },
+    {
+      "finding": "Single-tile Building entry could be hidden by group callback",
+      "resolution": "Enabled native placement callback; native availability and item conservation verified"
+    }
+  ],
+  "ownerTest": "pending",
+  "renderedMovement": "pending",
+  "denseClientPauses": "unproven resolved",
+  "publication": "none",
+  "installation": {
+    "tag": "test/v0.2.38",
+    "sourceCommit": "cdba8c610b66fe344b558b23ec4f1a9f7bb1a0f9",
+    "sourceFilesVerified": 188,
+    "packageFilesVerified": 228,
+    "previousBackups": "0.2.37 both entries verified"
+  }
+}

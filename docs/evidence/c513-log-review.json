@@ -1,0 +1,119 @@
+{
+  "client-console.txt": {
+    "sha256": "0725474a3dff525a50a513b4d98193ddc8462bd45d413b7f61fa6875f0f4b2d4",
+    "versions": [
+      "0.2.70.9"
+    ],
+    "counters": {
+      "owner-contact-accepted": 0,
+      "owner-contact-transitCount": 0,
+      "owner-contact-transitTotalMs": 0,
+      "barrier-contact-start": 6.0,
+      "barrier-report-sent": 0,
+      "barrier-report-received": 0,
+      "barrier-report-accepted": 0,
+      "barrier-damage-confirmed": 0,
+      "combat-result-applied": 0,
+      "bed-contactCount": 0,
+      "barb-contactCount": 0
+    },
+    "maximums": {
+      "active-update-gapMaxMs": 120.0
+    },
+    "detailed_combat_results": [],
+    "bed_event_lines": 0,
+    "havePlayer_exception_count": 0
+  },
+  "server-console.txt": {
+    "sha256": "07376828cf1c18914f9e51f3579a9e3908390f11dddc6d7f4b6583417e2918a3",
+    "versions": [
+      "0.2.70.9"
+    ],
+    "counters": {
+      "owner-contact-accepted": 570.0,
+      "owner-contact-transitCount": 570.0,
+      "owner-contact-transitTotalMs": 25203.0,
+      "barrier-contact-start": 0,
+      "barrier-report-sent": 0,
+      "barrier-report-received": 0,
+      "barrier-report-accepted": 0,
+      "barrier-damage-confirmed": 0,
+      "combat-result-applied": 36.0,
+      "bed-contactCount": 35.0,
+      "barb-contactCount": 23.0
+    },
+    "maximums": {
+      "active-update-gapMaxMs": 1396.0,
+      "owner-contact-transitMaxMs": 72.0
+    },
+    "detailed_combat_results": [
+      {
+        "kind": "poke-floor",
+        "reason": "applied",
+        "loss": "0.44999999999999996",
+        "elapsedMs": "102",
+        "dispatchMs": "1",
+        "ownerProcessingMs": "0",
+        "victim": "17439",
+        "id": "control-7"
+      },
+      {
+        "kind": "poke-floor",
+        "reason": "applied",
+        "loss": "0.44999999999999996",
+        "elapsedMs": "90",
+        "dispatchMs": "0",
+        "ownerProcessingMs": "0",
+        "victim": "17439",
+        "id": "control-7"
+      },
+      {
+        "kind": "poke-floor",
+        "reason": "applied",
+        "loss": "0.4200004041194916",
+        "elapsedMs": "105",
+        "dispatchMs": "0",
+        "ownerProcessingMs": "0",
+        "victim": "17439",
+        "id": "control-7"
+      },
+      {
+        "kind": "poke-floor",
+        "reason": "applied",
+        "loss": "0.44999999999999996",
+        "elapsedMs": "82",
+        "dispatchMs": "0",
+        "ownerProcessingMs": "0",
+        "victim": "17440",
+        "id": "control-10"
+      },
+      {
+        "kind": "poke-floor",
+        "reason": "applied",
+        "loss": "0.45",
+        "elapsedMs": "94",
+        "dispatchMs": "0",
+        "ownerProcessingMs": "0",
+        "victim": "17440",
+        "id": "control-11"
+      },
+      {
+        "kind": "barbs",
+        "reason": "applied",
+        "loss": "0.1",
+        "elapsedMs": "90",
+        "dispatchMs": "0",
+        "ownerProcessingMs": "0",
+        "victim": "17440",
+        "id": "barb-1"
+      }
+    ],
+    "bed_event_lines": 0,
+    "havePlayer_exception_count": 0
+  },
+  "limitations": [
+    "Counters may include suppressed detail; zero means not recorded in this capture.",
+    "Combat elapsed starts at server damage request, not initial contact or visible response.",
+    "Captured sandbox filename was inherited from prior capture; active runtime correspondence not established."
+  ]
+}

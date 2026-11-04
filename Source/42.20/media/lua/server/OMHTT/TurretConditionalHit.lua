@@ -1,0 +1,61 @@
+local Health = require("OMHTT/TargetHealth")
+local Clock = require("OMHTT/TurretClock")
+local Diagnostics = require("OMHTT/Diagnostics")
+local C = {}
+
+---@param zombie IsoZombie Primary victim before the shot damages it
+---@param stats table Effective modules
+---@return table eligibility Fixed health classification for the entire shot
+---@nodiscard
+function C.snapshot(zombie, stats)
+    if stats.initialBlow == 0 and stats.execute == 0 then return {bonus = 1, execute = false} end
+    local maximum = Health.maximum(zombie)
+    local health = Health.current(zombie)
+    local fraction = maximum > 0 and health / maximum or nil
+    local eligibility = {bonus = 1, execute = false}
+    if fraction then
+        eligibility.bonus = fraction + .0000001 >= stats.initialThreshold and 1 + stats.initialBlow or 1
+        eligibility.execute = stats.execute > 0 and fraction <= stats.execute + .0000001
+    end
+    if Diagnostics.detailed("turrets") then
+        Diagnostics.emit("conditional-hit", {health = health, maximum = maximum, fraction = fraction or "unknown",
+            initialBlow = stats.initialBlow, bonus = eligibility.bonus, threshold = stats.execute,
+            execute = eligibility.execute}, nil, nil, "turrets")
+    end
+    return eligibility
+end
+
+---@param zombie IsoZombie Successful primary victim
+---@param damage number Ordinary allocated primary damage
+---@param eligibility table Pre-hit health classification
+---@return number damage Conditional damage or actual remaining health
+---@nodiscard
+function C.damage(zombie, damage, eligibility)
+    if eligibility.execute then return zombie:getHealth() end
+    return damage * eligibility.bonus
+end
+
+---@param zombie IsoZombie Surviving primary victim
+---@param origin IsoGridSquare Muzzle position
+---@param options table Committed shot and magazine entitlement
+---@return boolean staggered Native standing reaction requested
+function C.impact(zombie, origin, options)
+    if not options.impactReady or not options.stats or options.stats.impact <= 0 then return false end
+    options.impactReady = false
+    local _, down = require("OMHTT/DefenseActorState").stance(zombie)
+    local state = isServer() and zombie:getOwner() and zombie:getRealState()
+    if zombie:isDead() or down or zombie:isStaggerBack() or zombie:isBumpFall()
+        or state == "staggerback" or state == "hitwhilestaggered" then return false end
+    local data, now = require("OMHTT/DefenseActorState").get(zombie), Clock.now()
+    if not data.OMHTTImpactGuard then data.OMHTTImpactGuard = {} end
+    local guard = data.OMHTTImpactGuard
+    Clock.restore(guard, now)
+    if guard.nextShot and now < guard.nextShot then return false end
+    if ZombRand(10000) >= options.stats.impact * 100 then return false end
+    if not require("OMHTT/DefenseMotion").request(zombie, "stagger", options.source or "turret-impact",
+        origin:getX() + .5, origin:getY() + .5) then return false end
+    guard.nextShot = now + 5000
+    return true
+end
+
+return C

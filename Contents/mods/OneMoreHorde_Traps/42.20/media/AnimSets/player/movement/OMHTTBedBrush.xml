@@ -4,7 +4,7 @@
     <m_AnimName>Bob_WalkTrees</m_AnimName>
     <m_Priority>5</m_Priority>
     <m_BlendTime>0.20</m_BlendTime>
-    <m_SpeedScale>1.0</m_SpeedScale>
+    <m_SpeedScale>WalkSpeedTrees</m_SpeedScale>
     <m_Conditions>
         <m_Name>OMHTTBedBrush</m_Name>
         <m_Type>BOOL</m_Type>

@@ -1,0 +1,17 @@
+module Base {
+    model OMHTTTurretProbe {
+        mesh = OMHTT_ProbeHead,
+        texture = OMHTT/ProbeWhite,
+        scale = 1.0,
+        static = true,
+        shader = basicEffect,
+    }
+    item OMHTTTurretProbe {
+        DisplayName = OMH Render Probe Head,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        Weight = 0,
+        Icon = OMHTT_TestCube,
+        WorldStaticModel = OMHTTTurretProbe,
+    }
+}

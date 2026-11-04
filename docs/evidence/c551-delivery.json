@@ -1,0 +1,64 @@
+{
+  "version": "0.2.71.11",
+  "tag": "test/v0.2.71.11",
+  "sourceCommit": "b3a1efe728111d44416396533cae12408c00af6f",
+  "archiveSHA256": "026326270ca1a352cc0127f57e3f0629ae24815bbc0cb9fa77b405fa72df30c1",
+  "filesVerified": 642,
+  "sourceFilesVerified": 466,
+  "packages": {
+    "OneMoreHorde_Traps": 246,
+    "OneMoreHorde_Turrets": 396
+  },
+  "backupsVerified": [
+    {
+      "package": "OneMoreHorde_Traps",
+      "version": "0.2.71.10",
+      "filesVerified": 246
+    },
+    {
+      "package": "OneMoreHorde_Turrets",
+      "version": "0.2.71.10",
+      "filesVerified": 396
+    }
+  ],
+  "kahluaAssertions": 51974,
+  "nativeWrite": "passed",
+  "nativeRead": "passed",
+  "nativeSelections": [
+    "traps",
+    "turrets",
+    "both"
+  ],
+  "stagedFilesVerified": 642,
+  "workshopMetadataAndPreview": "byte-identical",
+  "publication": "none",
+  "workshopItem": "3828638252",
+  "lastConfirmedWorkshopVersion": "0.2.71.8",
+  "connectedTest": "pending",
+  "newWorldRequiredForThisPatch": false,
+  "focused": "C550 focused checks 200 PASS",
+  "mixedBase": [
+    {
+      "roundTripMs": 100,
+      "applied": 2932,
+      "requested": 2933,
+      "failures": {
+        "rejected": 1
+      },
+      "pairs": 7,
+      "barrierSquareReads": 0
+    },
+    {
+      "roundTripMs": 300,
+      "applied": 2846,
+      "requested": 2857,
+      "failures": {
+        "cancelled": 5,
+        "expired": 5,
+        "rejected": 1
+      },
+      "pairs": 123,
+      "barrierSquareReads": 0
+    }
+  ]
+}

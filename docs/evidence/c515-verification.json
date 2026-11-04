@@ -1,0 +1,62 @@
+{
+  "version": "0.2.70.10",
+  "kahluaAssertions": 40460,
+  "sourceFiles": 457,
+  "packageFiles": 631,
+  "manifestSHA256": "ccaf4d07b3723305fb0fde3709f183ef379f667c0e212572e9f36b1348677159",
+  "nativeClassOrder": "stock-jar-first",
+  "nativeChecks": {
+    "write": {
+      "passed": true,
+      "log": "diagnostics\\v0.2.70.10\\server-write.log",
+      "sha256": "b8738bb3e9937e29ea819bc43af1032fabedd79c075b369850d2719dc496a8af"
+    },
+    "read": {
+      "passed": true,
+      "log": "diagnostics\\v0.2.70.10\\server-read.log",
+      "sha256": "4c1966f5a3f4d18ffda3799ee34e301d9d115d6d2dfeffa195ea43c4264e5c7a"
+    }
+  },
+  "packages": [
+    {
+      "selection": "traps",
+      "version": "0.2.70.10",
+      "passed": true,
+      "seconds": 44.5
+    },
+    {
+      "selection": "turrets",
+      "version": "0.2.70.10",
+      "passed": true,
+      "seconds": 45.1
+    },
+    {
+      "selection": "both",
+      "version": "0.2.70.10",
+      "passed": true,
+      "seconds": 45.6
+    }
+  ],
+  "barrierProof": "Real ThumpPacket overwrites frozen old condition; new independent condition wins native AnimState selection; parsed markers dispatch; release deselects. No live animation-track progression.",
+  "controlledContactDelaysMs": [
+    25,
+    50,
+    100
+  ],
+  "controlledDamageDispatch": {
+    "oneWayMs": 50,
+    "ownerHealthAndPopupMs": 50,
+    "settledMs": 100,
+    "initialContactTransitIncluded": false
+  },
+  "stress": {
+    "actors": 1000,
+    "reports": 7680,
+    "accepted": 7680,
+    "maxIdentitiesPerPacket": 32
+  },
+  "connectedClients": 0,
+  "renderedAcceptance": "pending",
+  "hordeAndXPAuthority": "server retained",
+  "workshopUpload": "not performed"
+}

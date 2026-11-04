@@ -1,3 +1,4 @@
+function getRecipeDisplayName(name) return name end
 local function recipe(name, category)
     return {getName = function() return name end, getCategory = function() return category end,
         overrideTranslationName = function() end}

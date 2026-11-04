@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+    <m_Name>OMHTTBarrierClaw</m_Name>
+    <m_AnimName>Zombie_DoorClaw</m_AnimName>
+    <m_BlendTime>0.20</m_BlendTime>
+    <m_SpeedScale>0.80</m_SpeedScale>
+    <m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
+    <m_Conditions>
+        <m_Name>ThumpType</m_Name>
+        <m_Type>STRING</m_Type>
+        <m_Value>OMHTTBarrierClaw</m_Value>
+    </m_Conditions>
+    <m_Events>
+        <m_EventName>ThumpFrame</m_EventName>
+        <m_TimePc>0.23</m_TimePc>
+        <m_ParameterValue></m_ParameterValue>
+    </m_Events>
+    <m_Events>
+        <m_EventName>SetVariable</m_EventName>
+        <m_TimePc>0.23</m_TimePc>
+        <m_ParameterValue>OMHTTBarrierStrike=left</m_ParameterValue>
+    </m_Events>
+    <m_Events>
+        <m_EventName>ThumpFrame</m_EventName>
+        <m_TimePc>0.73</m_TimePc>
+        <m_ParameterValue></m_ParameterValue>
+    </m_Events>
+    <m_Events>
+        <m_EventName>SetVariable</m_EventName>
+        <m_TimePc>0.73</m_TimePc>
+        <m_ParameterValue>OMHTTBarrierStrike=right</m_ParameterValue>
+    </m_Events>
+</animNode>

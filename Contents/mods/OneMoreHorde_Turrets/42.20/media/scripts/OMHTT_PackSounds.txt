@@ -1,0 +1,59 @@
+module Base
+{
+    sound OMHTTPackAbundant
+    {
+        category = UI,
+        is3D = false,
+        loop = false,
+        maxInstancesPerEmitter = 1,
+        clip { file = media/sound/OMHTTPackAbundant.wav, volume = 1, }
+    }
+    sound OMHTTPackCommon
+    {
+        category = UI,
+        is3D = false,
+        loop = false,
+        maxInstancesPerEmitter = 1,
+        clip { file = media/sound/OMHTTPackCommon.wav, volume = 1, }
+    }
+    sound OMHTTPackUncommon
+    {
+        category = UI,
+        is3D = false,
+        loop = false,
+        maxInstancesPerEmitter = 1,
+        clip { file = media/sound/OMHTTPackUncommon.wav, volume = 1, }
+    }
+    sound OMHTTPackRare
+    {
+        category = UI,
+        is3D = false,
+        loop = false,
+        maxInstancesPerEmitter = 1,
+        clip { file = media/sound/OMHTTPackRare.wav, volume = 1, }
+    }
+    sound OMHTTPackEpic
+    {
+        category = UI,
+        is3D = false,
+        loop = false,
+        maxInstancesPerEmitter = 1,
+        clip { file = media/sound/OMHTTPackEpic.wav, volume = 1, }
+    }
+    sound OMHTTPackLegendary
+    {
+        category = UI,
+        is3D = false,
+        loop = false,
+        maxInstancesPerEmitter = 1,
+        clip { file = media/sound/OMHTTPackLegendary.wav, volume = 1, }
+    }
+    sound OMHTTPackMythic
+    {
+        category = UI,
+        is3D = false,
+        loop = false,
+        maxInstancesPerEmitter = 1,
+        clip { file = media/sound/OMHTTPackMythic.wav, volume = 1, }
+    }
+}

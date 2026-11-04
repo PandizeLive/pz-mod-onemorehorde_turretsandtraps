@@ -1,0 +1,55 @@
+{
+  "baseline": "T&T 0.2.47",
+  "files": [
+    {
+      "name": "index.html",
+      "bytes": 10193,
+      "sha256": "58e119cdbdae6d8a4bbd0425851aff15dea75385e208f9a16ac09acf79bf0267"
+    },
+    {
+      "name": "style.css",
+      "bytes": 12211,
+      "sha256": "74b5059d8dcef09bcc866dd272df10ca15a1ff7940de01e5c56708c9fa1b0bbb"
+    },
+    {
+      "name": "app.js",
+      "bytes": 24621,
+      "sha256": "5f1b844b64f82d69b17fbbd48c0687faa2f28f1e18708014458697490e4ada46"
+    },
+    {
+      "name": "model.js",
+      "bytes": 12916,
+      "sha256": "9262111b3cf825b5998503fca8ae0b57977c71b43e8ce661180de26b062e75c1"
+    },
+    {
+      "name": "tier-list.js",
+      "bytes": 10101,
+      "sha256": "709ccb48324b052e6cfafad6abdcb745b6db8a3767929e3ce3b17557e5913002"
+    },
+    {
+      "name": "map-controls.js",
+      "bytes": 2419,
+      "sha256": "57a21b7d58799404b22e0a8dfe3cf7580f264ea6bd0a766c661384a5cbf53c03"
+    },
+    {
+      "name": "settings-sync.js",
+      "bytes": 4630,
+      "sha256": "bf2b585cd5cfedb6315f9eb057ba69a81763fd6ed2b38147b6c08eed68180624"
+    },
+    {
+      "name": "data.js",
+      "bytes": 4362948,
+      "sha256": "6a350727bc927e02680517fa3a13b43633d9471a5a311161828065a4c58b1aca"
+    },
+    {
+      "name": "README.md",
+      "bytes": 1093,
+      "sha256": "90feb4c8a5fdadbc5a9162136371167f612174586c8265cc308deb13a41249bc"
+    },
+    {
+      "name": "provenance.json",
+      "bytes": 4515,
+      "sha256": "3ccee0f081c19d742851e93ae436d7e818dbc291499dbdea7d8690af163d044e"
+    }
+  ]
+}

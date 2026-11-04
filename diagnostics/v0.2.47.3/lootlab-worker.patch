@@ -1,0 +1,5 @@
+--- a/cloudflare-api/tests/loot-lab-page.test.ts
++++ b/cloudflare-api/tests/loot-lab-page.test.ts
+@@ -15 +15 @@
+-  _id='';value='';type='';validity={valid:true};textContent='';disabled=false;hidden=false;checked=false;files=[];style={};
++  _id='';value='';type='';validity={valid:true};textContent='';disabled=false;hidden=false;checked=false;files=[];style={setProperty(name:string,value:string){this[name]=value;}};

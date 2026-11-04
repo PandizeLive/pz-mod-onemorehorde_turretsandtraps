@@ -1,0 +1,42 @@
+{
+  "passed": true,
+  "checks": [
+    "device selection and focus",
+    "background toggle",
+    "two-tap linking",
+    "drag linking",
+    "disconnect",
+    "Manage handoff",
+    "responsive widths",
+    "actual mobile touch linking and background toggle"
+  ],
+  "widths": [
+    {
+      "viewport": 1040,
+      "width": 1008,
+      "scroll": 1008,
+      "body": 1008
+    },
+    {
+      "viewport": 736,
+      "width": 704,
+      "scroll": 704,
+      "body": 704
+    },
+    {
+      "viewport": 390,
+      "width": 358,
+      "scroll": 358,
+      "body": 358
+    },
+    {
+      "viewport": 320,
+      "width": 288,
+      "scroll": 288,
+      "body": 288
+    }
+  ],
+  "pageErrors": [],
+  "kind": "UI mockup only; not game runtime",
+  "sourceSha256": "75f4e75efab9de5c7c2006799e98c093a5b316ba0ba955a6c2dd31019d00bcba"
+}

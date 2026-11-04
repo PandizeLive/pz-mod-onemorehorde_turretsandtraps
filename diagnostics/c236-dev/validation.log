@@ -1,0 +1,17 @@
+Native animation parser: two strike markers matched, SetVariable bindings resolved
+Native bed animation parser: walking/running brush nodes valid, no tree injury events
+Native trip parser: player/zombie forward clips and complete landing/recovery markers valid
+Native JSON translation loading and substitution: 808 keys passed
+Kahlua compilation: 122 runtime/translation files passed
+Optional audit: deaths=10000 repeats=10000 packs=1500 emptyPoolCorpseDrop=false mockDeathBatchMs=54.57169999927282 partialGrantRollback=pass removeRollback=pass revealCreateItems=0 revealFrames=500 newFrameItems=0 newFrameWraps=0 mockRenderBatchMs=21.880800001323223 smallViewportOverflowPx=0 tooltipFrames=600 tooltipWraps=1
+Native packet serialization: 23 packets; largest=390 bytes
+Proc test-double stress: bursts=160 zombies=486 callbacks=653 maxCallbackMs=1.4638000056147575 drainMs=655.4114999994636
+Void foundation audit: conversion=600 groups=2 mockBatchMs=4.497300006449223 nativeTablePersistence=pass mpMutationGuards=pass integration=pending
+Multiplayer audit: clientAndServerGuards=pass gameplayCompatibility=blocked liveDedicated=not-run liveListen=not-run
+Assertions passed: 18229.0
+World/player/network/UI objects were test doubles; in-game acceptance remains pending.
+Failed to load file Guid table.
+Failed to load file Guid table.
+Failed to load file Guid table.
+Failed to load file Guid table.
+Failed to load file Guid table.

@@ -1,0 +1,44 @@
+{
+  "baseline": "bd42f08",
+  "connectedClients": 0,
+  "cases": [
+    {
+      "case": "rotary-idle-handoff",
+      "expectedFailure": "C528 idle renderer uses the same motor timeline",
+      "reproduced": true,
+      "files": [
+        {
+          "path": "Source/42.20/media/lua/client/OMHTT/TurretRenderer.lua",
+          "beforeSHA256": "75c0499600a197af3b4c207aae6fa171bebec9bc9e975a00f7ec6102161cb63a",
+          "afterSHA256": "5ac25b84bec1dc4ab47922a9fe543169601262eb9d17b65658948c8d4c725e65"
+        }
+      ]
+    },
+    {
+      "case": "rotary-stale-position",
+      "expectedFailure": "C528 rotary hits using fresh owner position",
+      "reproduced": true,
+      "files": [
+        {
+          "path": "Source/42.20/media/lua/server/OMHTT/TurretRotary.lua",
+          "beforeSHA256": "eb63f800d6e22cdda640b6b6f6f0b965ec09cd38ad5ce6b38b9595cb287c60a4",
+          "afterSHA256": "29d93055b25c715d2ffa7fae1ea8efc35a4cd94519ef529eeacea75e280eb0a7"
+        }
+      ]
+    },
+    {
+      "case": "rotary-nil-animation",
+      "expectedFailure": "missing argument #1 to 'lower'",
+      "reproduced": true,
+      "files": [
+        {
+          "path": "Source/42.20/media/lua/server/OMHTT/TurretConditionalHit.lua",
+          "beforeSHA256": "419c66cba8e4d37a4d94a62817d4135d907b426f1a4361b2e122b45e2900adb4",
+          "afterSHA256": "8950f6328ff44ca6c5914b87a3bfcdd2b58e333c330a86677c1e09da54fd1f68"
+        }
+      ]
+    }
+  ],
+  "correctedPassed": true,
+  "result": "Assertions passed: 43794.0"
+}

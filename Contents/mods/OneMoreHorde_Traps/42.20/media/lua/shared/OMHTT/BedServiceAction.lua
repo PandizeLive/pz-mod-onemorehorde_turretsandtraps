@@ -1,0 +1,94 @@
+require("TimedActions/ISBaseTimedAction")
+OMHTTBedServiceAction = ISBaseTimedAction:derive("OMHTTBedServiceAction")
+
+---@return boolean valid
+---@nodiscard
+function OMHTTBedServiceAction:isValid()
+    if self.operation == "Repair" and not require("OMHTT/ControlRepair").ready(self.character, "Bed") then return false end
+    if self.done or type(self.id) ~= "string" then return false end
+    local S = require("OMHTT/BedService")
+    local record = S.resolve(self.character, self.object, self.id)
+    return record ~= nil and (self.operation == "Pickup" or (self.operation == "Repair" and record.health < record.maxHealth)
+        or (self.operation == "Reinforce" and S.materials(self.character, record) ~= nil))
+end
+
+---@return boolean turning
+function OMHTTBedServiceAction:waitToStart()
+    self.character:faceThisObject(self.object)
+    return self.character:shouldBeTurning()
+end
+
+---@return nil
+function OMHTTBedServiceAction:start()
+    self.elapsed = 0
+    self:setActionAnim("Loot")
+    self:setAnimVariable("LootPosition", "Low")
+    self:setOverrideHandModels(nil, nil)
+    if self.operation == "Reinforce" then
+        local S = require("OMHTT/BedService")
+        local record = S.resolve(self.character, self.object, self.id)
+        local materials = record and S.materials(self.character, record)
+        if not materials then
+            self:forceStop()
+            return
+        end
+        self:setActionAnim("Build")
+        if materials.hammer then
+            self:setOverrideHandModels(materials.hammer:getStaticModel(), getItemStaticModel("Base.Plank"))
+        end
+    end
+end
+
+---@return nil
+function OMHTTBedServiceAction:update()
+    self.character:faceThisObject(self.object)
+    if isClient() or isServer() then return end
+    self.elapsed = self.elapsed + getGameTime():getMultiplier() / getGameTime():getMultiplierFromTimeDelta(1)
+    self:setJobDelta(math.min(self.elapsed / self.seconds, 0.999))
+    if self.elapsed >= self.seconds then
+        self:forceComplete()
+    end
+end
+
+---@return nil
+function OMHTTBedServiceAction:stop()
+    self.done = true
+    ISBaseTimedAction.stop(self)
+end
+
+---@return nil
+function OMHTTBedServiceAction:perform()
+    ISBaseTimedAction.perform(self)
+end
+
+---@return boolean applied
+function OMHTTBedServiceAction:complete()
+    if not isServer() and self.elapsed < self.seconds then return false end
+    if isClient() then return false end
+    if not self:isValid() then return false end
+    self.done = true
+    return require("OMHTT/BedService").apply(self.character, self.object, self.id, self.operation)
+end
+
+---@return number seconds
+---@nodiscard
+function OMHTTBedServiceAction:getDuration()
+    if isClient() or isServer() then return self.seconds * 50 end
+    return 480
+end
+
+---@param character IsoPlayer Acting player
+---@param object IsoObject Selected part
+---@param id string Expected identity
+---@param operation string Service operation
+---@return OMHTTBedServiceAction action
+function OMHTTBedServiceAction:new(character, object, id, operation)
+    local o = ISBaseTimedAction.new(self, character)
+    o.object, o.id, o.operation = object, id, operation
+    local profile = require("OMHTT/ControlRepair").profiles.Bed
+    o.seconds = o.operation == "Pickup" and profile.pickup or (o.operation == "Repair" and profile.seconds or 10)
+    o.elapsed, o.done = 0, false
+    o.stopOnWalk, o.stopOnRun = true, true
+    o.maxTime = o:getDuration()
+    return o
+end

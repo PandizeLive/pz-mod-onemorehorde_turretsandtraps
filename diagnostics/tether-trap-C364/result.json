@@ -1,0 +1,29 @@
+{
+  "seconds": 48.2,
+  "gameJarSha256": "e1a69eb743ede60b213a0fe7f8b83d4fcab773036d256cc4543a336f3b058a33",
+  "reports": [
+    "[OMHTT-TetherCycle] clientSyntax=true",
+    "[OMHTT-TetherCycle] assertions=41 nativeActor=true nativeSquare=true connectedClients=0 rendered=false",
+    "[OMHTT-TetherCycle] completed=true"
+  ],
+  "prototypeHashes": {
+    "42.20/media/lua/client/OMHTTTether/View.lua": "f1471fdea6021d76d1eca08ae9896e28ef69bea112398f1d78f412f660a620b6",
+    "42.20/media/lua/server/OMHTTTether/Authority.lua": "a68d51b2abbe60114f1c1e60e6bf876158b9711a4d5bab007d088f0956a605ed",
+    "42.20/media/lua/shared/OMHTTTether/Core.lua": "1f918feb8af0a31610033238d6d0152732563671cb512837f132c805937044d6",
+    "42.20/media/lua/shared/OMHTTTether/World.lua": "1246e84a84ee254146b42c0408f3b073d478c63eca812ed88b08b81a2d32cc6f",
+    "42.20/media/lua/shared/Translate/EN/UI.json": "eab9f020597d870e42b4a557a3ee1e1e047dd49ff28911b48cebf8fa8c52f9cf",
+    "42.20/mod.info": "25dcee2f1a3a903117445938dd16799b67c0125168ff6da3ba55e085c958f122"
+  },
+  "trapHashes": {
+    "Source/42.20/media/lua/shared/OMHTT/TetherCycle.lua": "ca369a7fe6a82d743f381401bc89ec5e74cb1e137f28a25c30af5ea8e1137f53",
+    "Source/42.20/media/lua/shared/OMHTT/TetherLane.lua": "64094eb5ead9596381e453f545bb8a2517bbfe2f568533aecb39dcee883779eb",
+    "Source/42.20/media/lua/shared/OMHTT/TetherMount.lua": "d76e646b162052b1ab303d8a90435f8f6f8f5d9b889732c5f5e596a91fcbacfe",
+    "Source/42.20/media/lua/shared/OMHTT/BarbContact.lua": "8df800f3de377eb21a61b9adc17be2968142d963afa315e343ec41762a2ce887",
+    "Source/42.20/media/lua/shared/OMHTT/BarbSupport.lua": "7a3b332de77dfc9e83613369d943c80428ee46f433361760cad07a38cdcb5a4e"
+  },
+  "trapReports": [
+    "[OMHTT-TetherTrap] assertions=32 nativePlayer=true nativeWalls=true connectedClients=0 rendered=false",
+    "[OMHTT-TetherTrap] completed=true"
+  ],
+  "limitations": "No connected clients or rendered-world test; synthetic wall/cell lookup with native actor/square."
+}

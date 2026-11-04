@@ -1,0 +1,38 @@
+
+ ⛅️ wrangler 4.125.0 (update available 4.151.0)
+───────────────────────────────────────────────
+🌀 Building list of assets...
+✨ Read 12 files from the assets directory C:\Users\bandi\Zomboid_Modding\OMH\Turrets & Traps\.tmp\loot-c247\source\cloudflare-api\assets
+🌀 Starting asset upload...
+🌀 Found 4 new or modified static assets to upload. Proceeding with upload...
++ /admin/LootLab/README.md
++ /admin/LootLab/data.js
++ /admin/LootLab/provenance.json
++ /admin/LootLab/app.js
+Uploaded 1 of 4 assets
+Uploaded 2 of 4 assets
+Uploaded 4 of 4 assets
+✨ Success! Uploaded 4 files (6 already uploaded) (19.61 sec)
+
+Total Upload: 108.15 KiB / gzip: 26.95 KiB
+Worker Startup Time: 1 ms
+Your Worker has access to the following bindings:
+Binding                                                                      Resource
+env.DB (omh-leaderboard)                                                     D1 Database
+env.SCORE_EXPORTS (omh-score-exports)                                        R2 Bucket
+env.MEDIA (omh-media)                                                        R2 Bucket
+env.LOOT_LAB_ASSETS                                                          Assets
+env.ALLOWED_ORIGINS ("https://onemorehorde.com,https://www....")             Environment Variable
+env.ADMIN_ENABLED ("true")                                                   Environment Variable
+env.ADMIN_HOSTS ("admin.onemorehorde.com,omh-leaderboar...")                 Environment Variable
+env.ADMIN_EMAIL_ALLOWLIST ("abandiofficial@gmail.com")                       Environment Variable
+env.MEDIA_PUBLIC_URL ("https://media.onemorehorde.com")                      Environment Variable
+env.SUPPORTED_MOD_VERSION ("0.6.3,0.6.9.6,0.6.9.7,0.6.16.3,0.6.16.4")        Environment Variable
+env.SUPPORTED_GAME_VERSION ("42.20.3,42.20.4")                               Environment Variable
+
+Uploaded omh-leaderboard-api (33.10 sec)
+Deployed omh-leaderboard-api triggers (4.58 sec)
+  https://omh-leaderboard-api.pandize.workers.dev
+  api.onemorehorde.com (custom domain)
+  admin.onemorehorde.com (custom domain)
+Current Version ID: cc779434-0e9d-4b92-9eb1-ac7d3417bb66

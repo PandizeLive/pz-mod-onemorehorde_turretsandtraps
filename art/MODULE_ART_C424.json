@@ -1,0 +1,42 @@
+[
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Effects\\effects_base.png",
+    "target": "Source\\42.20\\media\\textures\\Item_OMHTT_ModuleEffects.png",
+    "sha256": "82cbaea904bf7d66794349e6945f51a5d004df33a716321cbece7c47372b4071"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Effects\\effects_abundant.png",
+    "target": "Source\\42.20\\media\\textures\\OMHTT\\Modules\\effects_abundant.png",
+    "sha256": "1a51ad2b694f079bc0ede06964a723686e7a0e5b4fce9946a3afac54105ff285"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Effects\\effects_common.png",
+    "target": "Source\\42.20\\media\\textures\\OMHTT\\Modules\\effects_common.png",
+    "sha256": "adc3dabd4026b4708a51b831041a36b59b9e4254fee81f8825d8efbe16c69a3d"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Effects\\effects_uncommon.png",
+    "target": "Source\\42.20\\media\\textures\\OMHTT\\Modules\\effects_uncommon.png",
+    "sha256": "6df7d15972eaafd7639610d154d4048ed7f0885664a9c31b11dcdd44e296305b"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Effects\\effects_rare.png",
+    "target": "Source\\42.20\\media\\textures\\OMHTT\\Modules\\effects_rare.png",
+    "sha256": "5df2b1b874f211a718a1b8b6b756d22a57b1978e523d5ccf8151bef186387e64"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Effects\\effects_epic.png",
+    "target": "Source\\42.20\\media\\textures\\OMHTT\\Modules\\effects_epic.png",
+    "sha256": "3583ae8cde14138fd35af60b536656ba9398dce3be0bd84704dd211fea4a336b"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Effects\\effects_legendary.png",
+    "target": "Source\\42.20\\media\\textures\\OMHTT\\Modules\\effects_legendary.png",
+    "sha256": "9edbdb56c08c5da7ce0d560f82967d9108150eba0d554d99af7d7a370c46b8a4"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Effects\\effects_mythic.png",
+    "target": "Source\\42.20\\media\\textures\\OMHTT\\Modules\\effects_mythic.png",
+    "sha256": "4bf2988832e298a8aec3a73fb24ad44daa649cfc1f21e01931cb2f6c67b54fe2"
+  }
+]

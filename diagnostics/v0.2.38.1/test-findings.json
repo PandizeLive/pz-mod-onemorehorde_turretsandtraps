@@ -1,0 +1,80 @@
+{
+  "version": "0.2.38.1",
+  "approval": "C122: keep pitch variation and optimize again",
+  "automated": {
+    "kahluaAssertions": 3860,
+    "compiledFiles": 94,
+    "translationKeys": 574,
+    "packets": 23
+  },
+  "nativeAudio": {
+    "definitions": 23,
+    "clips": 2626,
+    "starts": 690,
+    "pitchRange": [
+      0.95,
+      1.05
+    ],
+    "pitchValues": 101,
+    "queuedPitchVerified": true,
+    "runtimeSetterMessages": 0,
+    "isolatedMaxStartMs": 29.182,
+    "clientPerformanceClaim": false
+  },
+  "nativeLifecycleSeconds": {
+    "write": 148.4,
+    "read": 142.1
+  },
+  "packages": [
+    {
+      "selection": "traps",
+      "version": "0.2.38.1",
+      "passed": true,
+      "seconds": 132.0
+    },
+    {
+      "selection": "turrets",
+      "version": "0.2.38.1",
+      "passed": true,
+      "seconds": 130.1
+    },
+    {
+      "selection": "both",
+      "version": "0.2.38.1",
+      "passed": true,
+      "seconds": 129.4
+    }
+  ],
+  "ownerAcceptance": "C123: owner says lag seems gone; captured audio max 3 ms and residual update gaps up to 368 ms. Informal sample, not universal performance/audio acceptance.",
+  "resolvedDevelopmentProbeIssues": [
+    "Native probe initially assumed stock audio files were inside the mod; corrected the isolated asset map to use installed stock files where applicable.",
+    "Initial probe regex overflowed on expanded metadata; replaced it with bounded iterative brace parsing.",
+    "Pitch generator blank-line normalization corrected and idempotence verified."
+  ],
+  "scopeLimits": [
+    "No source audio file changes, new samples, gameplay balance or save schema changes.",
+    "No in-game frame-time or audible acceptance inferred from native queued playback.",
+    "Unmeasured engine/GC/external hook causes are not cleared by avoiding setPitch."
+  ],
+  "installation": {
+    "verified": true,
+    "tag": "test/v0.2.38.1",
+    "sourceCommit": "0654692d5fd04ca70a337073df6e6c0a71ac21a3",
+    "sourceFiles": 188,
+    "packageFiles": 228,
+    "backups": [
+      {
+        "package": "OneMoreHorde_Traps",
+        "version": "0.2.38",
+        "filesVerified": 105
+      },
+      {
+        "package": "OneMoreHorde_Turrets",
+        "version": "0.2.38",
+        "filesVerified": 123
+      }
+    ],
+    "archiveSHA256": "7398c87a4d339895e7d08ff39b26e0ce33a789a384f91ebfabaf8449e41e1108"
+  },
+  "ownerResult": "owner-test-20261010.json"
+}

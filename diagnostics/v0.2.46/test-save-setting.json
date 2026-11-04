@@ -1,0 +1,10 @@
+{
+  "save": "C:\\Users\\bandi\\Zomboid\\Saves\\Sandbox\\2026-10-11_13-56-01\\map_sand.bin",
+  "option": "OMHTurretsTraps.PotatoBatteryPercentPerShot",
+  "before": "0.1",
+  "after": "0.00045",
+  "backup": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\v0.2.46\\test-save-backup\\map_sand.bin",
+  "beforeSHA256": "1453d7043682aeee003ff4cf9808c12606f236568d08bf14d6378cf7a67e7211",
+  "afterSHA256": "5fcec7bcf5cb98eb5605675e2a7186a1b31ef5f2d058dbd1ef2bb6f1ed3c95ec",
+  "verification": "Game closed; exact option unique; previous value checked; all other bytes unchanged; backup/readback verified"
+}

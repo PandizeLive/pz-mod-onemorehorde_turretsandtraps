@@ -1,0 +1,7 @@
+{
+  "protectedCalls": [],
+  "changedRuntime": "TurretRarity and SandboxUI",
+  "cache": "Existing OnGameStart / lazy get / Manage open refresh; no tick hook added",
+  "nativeVersion": "42.21.0",
+  "scope": "Changed-code review, not a blanket assertion about all historical style"
+}

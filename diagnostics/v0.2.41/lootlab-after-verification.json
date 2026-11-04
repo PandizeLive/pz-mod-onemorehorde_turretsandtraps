@@ -1,0 +1,75 @@
+{
+  "phase": "after",
+  "productionBundleMatches": true,
+  "sha256": "f802a2b23296d5bfc9a9e4f34c055053de8168f9895affc640725c40cbcff4af",
+  "checks": [
+    {
+      "path": "/admin/",
+      "anonymousStatus": 302,
+      "accessLogin": true
+    },
+    {
+      "path": "/admin/LootLab",
+      "anonymousStatus": 302,
+      "accessLogin": true
+    },
+    {
+      "path": "/admin/LootLab/",
+      "anonymousStatus": 302,
+      "accessLogin": true
+    },
+    {
+      "path": "/admin/LootLab/data.js",
+      "anonymousStatus": 302,
+      "accessLogin": true
+    },
+    {
+      "path": "/admin/LootLab/model.js",
+      "anonymousStatus": 302,
+      "accessLogin": true
+    },
+    {
+      "path": "/admin/LootLab/map-controls.js",
+      "anonymousStatus": 302,
+      "accessLogin": true
+    },
+    {
+      "path": "/admin/LootLab/settings-sync.js",
+      "anonymousStatus": 302,
+      "accessLogin": true
+    },
+    {
+      "path": "/admin/LootLab/settings",
+      "anonymousStatus": 302,
+      "accessLogin": true
+    },
+    {
+      "path": "/admin/LootLab/app.js",
+      "anonymousStatus": 302,
+      "accessLogin": true
+    },
+    {
+      "path": "/admin/LootLab/style.css",
+      "anonymousStatus": 302,
+      "accessLogin": true
+    },
+    {
+      "path": "/admin/LootLab/provenance.json",
+      "anonymousStatus": 302,
+      "accessLogin": true
+    },
+    {
+      "path": "/admin/LootLab/README.md",
+      "anonymousStatus": 302,
+      "accessLogin": true
+    },
+    {
+      "url": "https://api.onemorehorde.com/v1/leaderboard?limit=1",
+      "status": 200
+    },
+    {
+      "url": "https://api.onemorehorde.com/v1/workshop-snapshots/latest",
+      "status": 200
+    }
+  ]
+}

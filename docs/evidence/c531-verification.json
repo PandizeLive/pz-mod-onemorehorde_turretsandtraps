@@ -1,0 +1,30 @@
+{
+  "version": "0.2.71.2",
+  "assertions": 44249,
+  "frozenNegativeControls": 3,
+  "compiledLuaFiles": 266,
+  "sourceFiles": 464,
+  "packagedFiles": 640,
+  "nativeClassOrder": "stock-jar-first",
+  "simulatedTiming": "C531 stacked firearm first/last ms 1:0/0, 2:0/0, 4:0/0, 5:0/0, 6:0/0, 8:0/0, 16:0/0; child contact timing, delayed confirmations, source exclusion, standalone reports and build gates passed; GPU/connected clients untested",
+  "measuredTestDoubleBudget": "C531 measured work budget: 1:1 slices/0.144ms peak, 2:1 slices/0.268ms peak, 4:1 slices/0.794ms peak, 5:1 slices/0.871ms peak, 6:1 slices/0.811ms peak, 8:2 slices/1.004ms peak, 16:3 slices/1.003ms peak",
+  "native": [
+    {
+      "mode": "write",
+      "log": "diagnostics\\v0.2.71.2\\server-write.log",
+      "sha256": "f9b8c223afada5beffce8113916546eadf8a6826cc0751cbafab844d06cc0695"
+    },
+    {
+      "mode": "read",
+      "log": "diagnostics\\v0.2.71.2\\server-read.log",
+      "sha256": "312b5f1b4f518e0d669ea80b4e6e4500e821990feeb8981d29ecf5b258be5d63"
+    }
+  ],
+  "connectedClients": 0,
+  "limits": [
+    "Native collision fixture uses synthetic square lookup and clear-lane adapter; actor health and Lua production traversal are native.",
+    "Native build completion uses real engine functions with crafting/lookup adapters; no player building session.",
+    "One-millisecond budget results are test-double measurements, not a live-server FPS guarantee.",
+    "No GPU or connected-client visual acceptance. Native negative ownership probe deliberately reproduces one old exception."
+  ]
+}

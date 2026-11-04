@@ -1,0 +1,10 @@
+{
+  "status": "confirmed",
+  "itemId": "3828638252",
+  "version": "0.2.71.1",
+  "tag": "test/v0.2.71.1",
+  "sourceCommit": "b7ffd87d811cd77cc9ebbbc90510932218a0e765",
+  "confirmedUtc": "2026-10-31T05:46:00.8829383Z",
+  "changelogSha256": "0F16D0921FBD6DE36E9692C7E90452D8B4729D0BD16286C2B88370C796550224",
+  "evidence": "diagnostics\\workshop\\upload-v0.2.71.1-20261031-054535-7380-92b5af72\\upload-result.json"
+}

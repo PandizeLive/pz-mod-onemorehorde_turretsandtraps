@@ -1,0 +1,23 @@
+{
+  "version": "0.2.53.4",
+  "collectedLocal": "2026-10-17T13:49:40.834640-04:00",
+  "consoleBytes": 235340,
+  "consoleSHA256": "994f5c8ddd3d721d5c9e15fbaa4abda1886f373140720fc156a45c410e2c5ce6",
+  "matchingLines": [
+    "LOG  : General      f:0> Display mode changed to 2560x1369 freq=0 fullScreen=false",
+    "LOG  : General      f:0> VSync: ON",
+    "LOG  : General      f:0> [ZB] [?] Blocking Java mod by stored denial: Viewpoint (C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\108600\\3809306528\\mods\\Viewpoint\\42\\media\\java\\client\\Viewpoint.jar)",
+    "LOG  : General      f:0> [ZB] [?] Blocking Java mod by stored denial: ViewpointSurface (C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\108600\\3814398576\\mods\\ViewpointSurface\\42\\media\\java\\client\\ViewpointInteriorSurfaces.jar)",
+    "LOG  : General      f:0> [ZB] [?] Blocking Java mod by stored denial: ViewpointRollingHills (C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\108600\\3815630947\\mods\\ViewpointRollingHills\\42\\media\\java\\client\\ViewpointRollingHills.jar)",
+    "LOG  : General      f:0> [ZB] Loader.loadMods() took 1125093 ms",
+    "LOG  : General      f:0> [ZB] [?] Blocking Java mod by stored denial: Viewpoint (C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\108600\\3809306528\\mods\\Viewpoint\\42\\media\\java\\client\\Viewpoint.jar)",
+    "LOG  : General      f:0> [ZB] [?] Blocking Java mod by stored denial: ViewpointSurface (C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\108600\\3814398576\\mods\\ViewpointSurface\\42\\media\\java\\client\\ViewpointInteriorSurfaces.jar)",
+    "LOG  : General      f:0> [ZB] [?] Blocking Java mod by stored denial: ViewpointRollingHills (C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\108600\\3815630947\\mods\\ViewpointRollingHills\\42\\media\\java\\client\\ViewpointRollingHills.jar)",
+    "LOG  : General      f:0> [ZB] Loader.loadMods() took 2479 ms",
+    "LOG  : Lua          f:0> [OMHTT] packages-ready version=0.2.53.4 traps=true turrets=true game=42.21",
+    "LOG  : Lua          f:0> [OMHTT] client-ready version=0.2.53.4 game=42.21"
+  ],
+  "outOfMemory": 0,
+  "luaCallErrors": 0,
+  "note": "Selected relevant lines only; foreground/minimized state was not observed during resource sampling."
+}

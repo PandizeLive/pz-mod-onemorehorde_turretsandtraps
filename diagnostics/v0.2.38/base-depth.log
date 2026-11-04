@@ -1,0 +1,6 @@
+Depth pixels=5529 outside=0
+Native depth geometry parser and generated mask passed; GPU texture loading remains a client check.
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by org.joml.MemUtil$MemUtilUnsafe (file:/C:/Program%20Files%20(x86)/Steam/steamapps/common/ProjectZomboid/projectzomboid.jar)
+WARNING: Please consider reporting this to the maintainers of class org.joml.MemUtil$MemUtilUnsafe
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release

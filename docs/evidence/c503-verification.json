@@ -1,0 +1,61 @@
+{
+  "version": "0.2.70.6",
+  "assertions": 37208,
+  "sourceFiles": 453,
+  "packageFiles": 623,
+  "nativeWriteSeconds": 151.2,
+  "nativeReadSeconds": 152.8,
+  "packageStarts": [
+    {
+      "selection": "traps",
+      "version": "0.2.70.6",
+      "passed": true,
+      "seconds": 137.2
+    },
+    {
+      "selection": "turrets",
+      "version": "0.2.70.6",
+      "passed": true,
+      "seconds": 139.2
+    },
+    {
+      "selection": "both",
+      "version": "0.2.70.6",
+      "passed": true,
+      "seconds": 140.0
+    }
+  ],
+  "nativeContactProbe": {
+    "path": "diagnostics/c503-contacts/20261028-222823/server.log",
+    "sha256": "2657299a819a8d324d43d652aca82cff7bd6e9a287020dfe3747254a74f3bfa6",
+    "event": "OnTick",
+    "actors": "native IsoZombie",
+    "objects": "native IsoThumpable and IsoGridSquare",
+    "squareLookup": "isolated fixture map",
+    "bed": "landing once",
+    "wireAndTacks": "repeat; overlapping field does not double damage",
+    "martyrdom": "root and one Synergy follow-up complete native deaths",
+    "clients": 0
+  },
+  "nativeConnectedClients": 0,
+  "renderedAndMultiplayerAcceptance": "pending",
+  "publication": "not performed",
+  "tag": "test/v0.2.70.6",
+  "sourceCommit": "f338fd5545267bd67863eff59321a0970b1542d3",
+  "installedFilesVerified": 623,
+  "stageFilesVerified": 623,
+  "previousBackups": [
+    {
+      "package": "OneMoreHorde_Traps",
+      "version": "0.2.70.5",
+      "filesVerified": 236
+    },
+    {
+      "package": "OneMoreHorde_Turrets",
+      "version": "0.2.70.5",
+      "filesVerified": 380
+    }
+  ],
+  "archiveSHA256": "b4d15a6bf334720f7e46bbbdf5ba22ae3f2ad4cb806cf01bc70127cee339fc24",
+  "newWorldRequired": false
+}

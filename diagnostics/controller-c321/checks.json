@@ -1,0 +1,93 @@
+{
+  "kind": "UI mockup only; not game runtime",
+  "passed": true,
+  "sourceSha256": "f71c5eadbc2925cc7c6d681a536178de262ee2c768a058b2414a06c91575f66c",
+  "checks": [
+    "full-height Stockpile at far right",
+    "wider Map above Selected Device",
+    "Connections extends to bottom",
+    "independent Connections and Stockpile scrolling",
+    "wires stay aligned on scroll",
+    "Controls, Connections and Access & Assignment separated",
+    "head subtitles for all three defenses",
+    "compact desktop rows",
+    "device selection and focus",
+    "background toggle",
+    "two-tap linking",
+    "drag linking",
+    "disconnect",
+    "Manage handoff",
+    "responsive widths",
+    "real mobile touch events"
+  ],
+  "layout": {
+    "connections": {
+      "x": 9,
+      "y": 111.796875,
+      "width": 305.671875,
+      "height": 858.75,
+      "bottom": 970.546875
+    },
+    "map": {
+      "x": 322.671875,
+      "y": 111.796875,
+      "width": 450.53125,
+      "height": 387.390625,
+      "bottom": 499.1875
+    },
+    "stock": {
+      "x": 781.203125,
+      "y": 111.796875,
+      "width": 217.796875,
+      "height": 858.75,
+      "bottom": 970.546875
+    },
+    "details": {
+      "x": 322.671875,
+      "y": 507.1875,
+      "width": 450.53125,
+      "height": 463.359375,
+      "bottom": 970.546875
+    }
+  },
+  "scrollCheck": {
+    "scrollTop": 90,
+    "overflow": true,
+    "wireError": 0,
+    "detailsY": 507.1875
+  },
+  "stockScrollCheck": {
+    "scrollTop": 90,
+    "overflow": true,
+    "detailsY": 507.1875,
+    "stockBottom": 970.546875
+  },
+  "desktopRowHeight": 52,
+  "widths": [
+    {
+      "viewport": 1040,
+      "width": 1008,
+      "scroll": 1008,
+      "body": 1008
+    },
+    {
+      "viewport": 736,
+      "width": 704,
+      "scroll": 704,
+      "body": 704
+    },
+    {
+      "viewport": 390,
+      "width": 358,
+      "scroll": 358,
+      "body": 358
+    },
+    {
+      "viewport": 320,
+      "width": 288,
+      "scroll": 288,
+      "body": 288
+    }
+  ],
+  "pageErrors": []
+}

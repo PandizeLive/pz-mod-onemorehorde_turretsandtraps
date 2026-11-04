@@ -1,0 +1,15 @@
+{
+  "status": "confirmed",
+  "itemId": "3828638252",
+  "version": "0.2.70.11",
+  "visibility": "unlisted",
+  "tag": "test/v0.2.70.11",
+  "sourceCommit": "ad91d55bda6c7168e7efbe1657777a432c4d7bdf",
+  "toolingCommit": "01e320626aabce1aab03e5b4600127305da46aab",
+  "changelogSha256": "88F98930970BBA0233EBE6A19BA29E9F8242DD49F020751E44162576283C8960",
+  "startedUtc": "2026-10-31T00:57:56.1492543Z",
+  "log": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\workshop\\upload-v0.2.70.11-20261031-005753-0542-bb295eec\\steamcmd.log",
+  "confirmedUtc": "2026-10-31T00:58:46.6776182Z",
+  "fileCount": 631,
+  "receiptSHA256": "60db6107a8e9138f98205fa2a7cb542db85731d85d6ea53e5bb2e9aedadbc440"
+}

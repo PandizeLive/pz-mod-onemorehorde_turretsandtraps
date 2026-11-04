@@ -5,15 +5,15 @@ local oldWorld, oldRandom = getWorld, ZombRand
 local played, stopped = {}, 0
 local emitter = {}
 function emitter:playSound(name) played[#played + 1] = name; return #played end
-function emitter:setPitch(handle, pitch) check(pitch >= .95 and pitch <= 1.05, "Mechanism pitch is bounded") end
-function emitter:setVolume(handle,gain) check(gain==.35,"Potato reload playback gain matches shots") end
+function emitter:setPitch(handle, pitch) error("Reload must preserve native pitch without the emitter setter") end
+function emitter:setVolume(handle,gain) check(gain==(played[handle]=="OMHTTPotatoReload" and .35 or 1),"Reload respects per-head mix and master gain") end
 function emitter:isPlaying(handle) return true end
 function emitter:stopSound(handle) stopped = stopped + 1 end
 function getWorld() return {getFreeEmitter = function() return emitter end} end
 function ZombRand(n) return 50 end
 local square = {getX = function() return 100 end, getY = function() return 100 end, getZ = function() return 0 end}
 local object = {getSquare = function() return square end}
-local potato = {getFullType = function() return "Base.OMHTTPotatoHead" end}
+local potato = {getFullType = function() return "Base.OMHTTTurretPotato" end}
 local stats = {reload = 2000}
 A.update(object, potato, {reloadReady = 2100}, "Reloading", stats, 100)
 A.update(object, potato, {reloadReady = 2100}, "Reloading", stats, 200)

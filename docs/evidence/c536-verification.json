@@ -1,0 +1,129 @@
+{
+  "version": "0.2.71.4",
+  "sourceFiles": 464,
+  "packageFiles": 640,
+  "assertions": 44455,
+  "connectedClients": 0,
+  "frozenControls": [
+    {
+      "case": "commitment-fan",
+      "expectedFailure": "C536 primary and children share one committed presentation",
+      "reproduced": true,
+      "files": [
+        {
+          "path": "Source/42.20/media/lua/server/OMHTT/TurretVolley.lua",
+          "beforeSHA256": "60161748c0f346c15c98c765e8b46951f5418c0dd7bd9e672b7e18fc1a590a92",
+          "afterSHA256": "f6cf5f1b97a58b4cd6591716d193bd0d87b04a1d7642a382ccc97e32ba74ccd9"
+        }
+      ]
+    },
+    {
+      "case": "late-first-arrival",
+      "expectedFailure": "C536 delayed first-arrival Splitters remain visible",
+      "reproduced": true,
+      "files": [
+        {
+          "path": "Source/42.20/media/lua/client/OMHTT/PrototypeEffects.lua",
+          "beforeSHA256": "253801ae423bc9da725e7ffc75800b4b435e7169b1a29f2ea814ee1b1342e699",
+          "afterSHA256": "d203142a66a14eb1f347623e9a6df391decc486f1b2ff75a3607a0299de2987e"
+        }
+      ]
+    },
+    {
+      "case": "late-network-id",
+      "expectedFailure": "C536 delayed native ID resolves without an update callback",
+      "reproduced": true,
+      "files": [
+        {
+          "path": "Source/42.20/media/lua/client/OMHTT/DefenseCombatClient.lua",
+          "beforeSHA256": "f651a2cfc6dccfeb86e59ce83dfe3a787222715333d9e17585c7494389eb2e33",
+          "afterSHA256": "3db94264e1e656b2eaa0f74fe4affe6f5f7559c624d9a644f0fc8f2ffd5edb81"
+        }
+      ]
+    },
+    {
+      "case": "owner-aim",
+      "expectedFailure": "C536 aim uses validated owner coordinates",
+      "reproduced": true,
+      "files": [
+        {
+          "path": "Source/42.20/media/lua/shared/OMHTT/TurretAim.lua",
+          "beforeSHA256": "54b8ed689dfcdecba1abf26742504d74332310f460ef55046a00c4be3055acec",
+          "afterSHA256": "adb7728c8ff2a8b721fd4ed5048a64fa203e5312ebc5b72a7355ae2fcbc5b92b"
+        }
+      ]
+    },
+    {
+      "case": "owner-eligibility",
+      "expectedFailure": "C536 firing eligibility shares validated aim",
+      "reproduced": true,
+      "files": [
+        {
+          "path": "Source/42.20/media/lua/shared/OMHTT/TurretModules.lua",
+          "beforeSHA256": "fab55cae7e7272001d040040efb36ed09cad34ddc5743466b29587e5a83dac28",
+          "afterSHA256": "bfac45a44bb93cef41a10b42f6e8ae0ba3bd21d9d5ce1918fced57718f695741"
+        }
+      ]
+    },
+    {
+      "case": "primary-snapshot",
+      "expectedFailure": "C536 primary commit snapshots the same validated direction",
+      "reproduced": true,
+      "files": [
+        {
+          "path": "Source/42.20/media/lua/server/OMHTT/PrototypeCombat.lua",
+          "beforeSHA256": "902b897987a98ba2f580b2fb417c3f932e765bd48bbb5147ff7e3622504b5998",
+          "afterSHA256": "6abd94c725b466490254d7b30de0b7462b6876d66e8ccbd04c6ea3ee2ac42a4e"
+        }
+      ]
+    }
+  ],
+  "packages": [
+    {
+      "selection": "traps",
+      "version": "0.2.71.4",
+      "passed": true,
+      "seconds": 95.2
+    },
+    {
+      "selection": "turrets",
+      "version": "0.2.71.4",
+      "passed": true,
+      "seconds": 74.0
+    },
+    {
+      "selection": "both",
+      "version": "0.2.71.4",
+      "passed": true,
+      "seconds": 89.6
+    }
+  ],
+  "nativeLifecycle": {
+    "actor": "real IsoZombie",
+    "lateOnlineID": "resolved",
+    "unload": "rejected",
+    "clientMode": "predicate adapter, no connection"
+  },
+  "nativeWriteSeconds": 94.5,
+  "nativeReadSeconds": 93.1,
+  "nativeAuthority": "passed",
+  "remaining": [
+    "connected presentation acceptance",
+    "native Horde Manager spawn visibility",
+    "MPFF/server multiplier conflict"
+  ],
+  "logs": {
+    "diagnostics/c536/validation.log": "ae678d5be8d9a4e737bc5c0f0e531d8a2cce22dfaa0621f205fa8e2131cea18d",
+    "diagnostics/c536/regressions.log": "66a982f2bdd84eec266bcfd5c1d6a0a1429d19264f633f10d5b543e1ceb0b58d",
+    "diagnostics/c536/native-write.log": "d94c561e505a8d8595be51b6c55f336bb2f361ef202b6ff3f3b3754a9bfb5bb0",
+    "diagnostics/c536/native-read.log": "29df573e35ece341e62d6dfed960939bcdc8f6284021eaec2602d6df75d6f271",
+    "diagnostics/c536/packages.log": "f1289d7eae69a5410bdf6dd75e820077352b0b7210781866ba3ff623b186afe7",
+    "diagnostics/c536/authority-final.log": "de916f5e745ec5ecf1b9eaf7049b5c0d22145e7a3dedf5fdd3fa04cf7cc34302"
+  },
+  "ownerFilesPreserved": [
+    "AGENTS.md",
+    "README.md",
+    "docs/AMMO_UI_C446.md",
+    "docs/RELEASE.md"
+  ]
+}

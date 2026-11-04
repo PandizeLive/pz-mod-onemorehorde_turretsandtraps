@@ -1,0 +1,95 @@
+{
+  "workerVersion": "a706d5c7-1483-4d92-ba1c-c4d7d9e7c307",
+  "previousWorkerVersion": "5ff34931-812d-4954-b837-99e08c3ebf40",
+  "change": "Direct component loot-weight controls; saved multiplier schema preserved",
+  "gameVersion": "0.2.46 unchanged",
+  "apiPageTests": 77,
+  "browser": "Desktop 1360x900 / mobile 390x844; saved settings on load, direct/fractional/zero/invalid input, Sandbox export, existing scenario import, reset, visibility controls; zero page errors",
+  "model": "29 module conversion boundaries and unchanged seeded generation; full model and appearance tests pass",
+  "production": {
+    "phase": "after",
+    "productionBundleMatches": true,
+    "sha256": "5e1432455af93b65fc934038360a35ae0a569d04e6027d306773b115d3342123",
+    "checks": [
+      {
+        "path": "/admin/",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/data.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/model.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/map-controls.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/settings-sync.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/settings",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/app.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/style.css",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/provenance.json",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/README.md",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "url": "https://api.onemorehorde.com/v1/leaderboard?limit=1",
+        "status": 200
+      },
+      {
+        "url": "https://api.onemorehorde.com/v1/workshop-snapshots/latest",
+        "status": 200
+      }
+    ]
+  },
+  "assets": {
+    "app.js": "9041e67ab2f8b52d4ff024a02d3e39cc829205a354687f8345743a4370ad0366",
+    "data.js": "ceeef68d82254b0747ff9b3fda3a9b3f8b326947a47309849ac21022acdeb0e6",
+    "index.html": "1f2dbc6584c7c1fbe14d1377c9619ecb8eacf74c8d176c343ac523feabe33ab0",
+    "map-controls.js": "57a21b7d58799404b22e0a8dfe3cf7580f264ea6bd0a766c661384a5cbf53c03",
+    "model.js": "aeb6dde1f9f11c4de00c494fdbc67c89f0eb9493051cb08a4ea7e9e8c4c80cbb",
+    "provenance.json": "97deffcf6e8394c13ec14891ec7b582025885d8d8bb03ba84a616fc008e1d99f",
+    "README.md": "546c17be8220e7a386ab5f71fb5ab93aea0019eb7c5632ff4a76295f575dfafa",
+    "settings-sync.js": "bf2b585cd5cfedb6315f9eb057ba69a81763fd6ed2b38147b6c08eed68180624",
+    "style.css": "ddfd4b62ddab7e30710bd39de722b40c982dc91f08f15f6a8931b2849178b0b7"
+  }
+}

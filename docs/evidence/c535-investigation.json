@@ -1,0 +1,24 @@
+{
+  "version": "0.2.71.3",
+  "ownerConnectedAcceptance": "failed",
+  "diagnosticAssertions": 9,
+  "kahluaAssertionsWithOptionalDiagnostic": 44288,
+  "newGameplayBuild": false,
+  "nativeSpawns": 51,
+  "nativeSpawnReplies": 6,
+  "clientMissingRejections": 128,
+  "clientPausedRejections": 9,
+  "serverPauseTransitions": 1120,
+  "clientPauseTransitions": 4,
+  "hashes": {
+    "2026-10-31_14-13_admin.txt": "7ed1e84101812aac74fffcbf1ffce9a6a7878f982c18ada26d8f8d62a9568d2c",
+    "2026-10-31_14-13_cmd.txt": "4bad4487c4167e098dc9f0198568933605220875a435070a977615e69b71cc83",
+    "client-combat-results.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "client-console.txt": "6c15c2d38cc19551f9c6927fb5b42b089ed4e00e9c5dd44e1711828292b63b85",
+    "server-combat-results.txt": "49674eefb023459bfb83b2f92042ac465b9d93d4007cf3f8d373db9178428866",
+    "server-console.txt": "6c4198ab64c542df3d64611cc14623b23b20aa6affb5c3414c9333fd8a156a60",
+    "audit.lua": "2da2d05791eb0d5c45e34daa7c3cb622d6d3a968e891e6ef8556befa49325111",
+    "audit.log": "10d3f1f2874e4a9c5274a36b92d3dc0618ef07064e1d5c531e6aadf4fb22dc4e",
+    "native-lua-globals.txt": "586836e8942507ec828c5ea010cf98120032747592a547c35e7d47ec6c271dd7"
+  }
+}

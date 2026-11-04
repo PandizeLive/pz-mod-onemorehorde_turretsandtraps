@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "defaults": {
+    "Abundant": 2,
+    "Common": 2,
+    "Uncommon": 8,
+    "Rare": 4,
+    "Epic": 8,
+    "Legendary": 4,
+    "Mythic": 1
+  },
+  "savedAllOne": {
+    "Abundant": 2,
+    "Common": 0,
+    "Uncommon": 1,
+    "Rare": 8,
+    "Epic": 11,
+    "Legendary": 6,
+    "Mythic": 1
+  }
+}
+PASS reopening, matching weights, custom tier values, precision tolerance, duplicate tiers and computed rarity changes
+PASS tier snapshot conflict and scenario persistence
+PASS custom anchors, proportional boundaries, tie toward rarer, no extreme drift, invalid/export guards and automatic compatibility

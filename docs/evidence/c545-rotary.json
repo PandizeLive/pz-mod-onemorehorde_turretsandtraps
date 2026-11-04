@@ -1,0 +1,61 @@
+{
+  "checkpoint": "C545",
+  "version": "0.2.71.8",
+  "date": "2026-11-02",
+  "status": "connected rotary acceptance failed",
+  "live": {
+    "serverAdmissions": 36,
+    "positiveServerCompletions": 36,
+    "serverRotaryRejections": 0,
+    "ownerApplications": 36,
+    "clientDamageDisplays": 36,
+    "observationEndToOwnerApplyMeanMs": 110.2,
+    "observationEndToOwnerApplyMaxMs": 187,
+    "allDefensesPositionRejected": 955,
+    "allDefensesStale": 15,
+    "allDefensesAccepted": 17770,
+    "turretDetailedLogging": false
+  },
+  "replay": {
+    "tag": "test/v0.2.71.8",
+    "head": "Rotary Blades",
+    "rangeTiles": 2,
+    "degreesPerSecond": 200,
+    "standingMotionCases": 262,
+    "geometricCrossings": 126,
+    "admitted": 130,
+    "missed": 21,
+    "spurious": 25,
+    "exampleMiss": {
+      "tilesFromPivot": 0.45,
+      "bearingFrom": 3,
+      "bearingTo": -9,
+      "durationMs": 100,
+      "bladeFrom": 0,
+      "bladeTo": 20
+    },
+    "phaseControl": {
+      "reportIntervalMs": 100,
+      "tickMs": 100,
+      "transitMs": 65,
+      "degreesTraveled": 1000,
+      "receiptPhaseMs": [
+        15,
+        85
+      ],
+      "hits": [
+        6,
+        0
+      ],
+      "uncoveredReports": [
+        0,
+        50
+      ]
+    },
+    "stanceConflict": {
+      "ownerStandingServerDown": 0,
+      "ownerDownServerStanding": 1
+    },
+    "scope": "Actual server observation, motor/contact and line-test functions with simulated actors, motor clock, world and damage sink. Independent signed-line geometry sampled at 0.1 ms for straight paths. Motion cases have zero transit delay."
+  }
+}

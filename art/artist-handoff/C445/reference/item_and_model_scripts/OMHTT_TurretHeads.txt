@@ -1,0 +1,345 @@
+module Base {
+    item OMHTTTurretArc {
+        DisplayName = Arc Emitter Head,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        WorldStaticModel = OMHTTTurretProbe,
+        Weight = 8,
+        Icon = OMHTT_TestCube,
+        ConditionMax = 100,
+        Tooltip = Tooltip_OMHTT_ArcHead,
+    }
+    craftRecipe OMHTTCraftArc {
+        timedAction = Making,
+        time = 864,
+        category = OMHTurrets,
+        Tags = InHandCraft,
+        needToBeLearn = true,
+        SkillRequired = Mechanics:2;Electricity:4,
+        xpAward = Mechanics:10;Electricity:30,
+        OnAddToMenu = OMHTT_TurretMenuAvailable,
+        OnTest = OMHTT_Turret.recipeInput,
+        OnCreate = OMHTT_Turret.onCrafted,
+        inputs {
+            item 1 tags[base:screwdriver] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 [Base.Wrench;Base.PipeWrench] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 tags[base:pliers] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 tags[base:metalsaw] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 2 [Base.SmallSheetMetal],
+            item 2 [Base.ScrapMetal],
+            item 8 [Base.ElectronicsScrap],
+            item 4 [Base.ElectricWire],
+            item 12 [Base.Screws],
+        }
+        outputs {
+            item 1 Base.OMHTTTurretArc,
+        }
+    }
+
+    item OMHTTTurretBallista {
+        DisplayName = Ballista Head,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        WorldStaticModel = OMHTTTurretProbe,
+        Weight = 6,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        ConditionMax = 100,
+        Tooltip = Tooltip_OMHTT_BallistaHead,
+    }
+    craftRecipe OMHTTCraftBallista {
+        timedAction = Making,
+        time = 864,
+        category = OMHTurrets,
+        Tags = InHandCraft,
+        needToBeLearn = true,
+        SkillRequired = Woodwork:3;Mechanics:3;Electricity:1,
+        xpAward = Woodwork:10;Mechanics:25;Electricity:5,
+        OnAddToMenu = OMHTT_TurretMenuAvailable,
+        OnTest = OMHTT_Turret.recipeInput,
+        OnCreate = OMHTT_Turret.onCrafted,
+        inputs {
+            item 1 tags[base:screwdriver] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 [Base.Wrench;Base.PipeWrench] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 tags[base:pliers] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 tags[base:hammer] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 tags[base:saw] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 [Base.MetalPipe],
+            item 1 [Base.SmallSheetMetal],
+            item 2 [Base.ScrapMetal],
+            item 2 [Base.ElectronicsScrap],
+            item 1 [Base.ElectricWire],
+            item 8 [Base.Screws],
+            item 4 [Base.Plank],
+            item 2 [Base.MetalBar],
+            item 1 [Base.Rope],
+            item 8 [Base.Nails],
+        }
+        outputs {
+            item 1 Base.OMHTTTurretBallista,
+        }
+    }
+    item OMHTTTurretRotaryBat {
+        DisplayName = Rotary Bat Head,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        WorldStaticModel = OMHTTTurretProbe,
+        Weight = 5,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        ConditionMax = 100,
+        Tooltip = Tooltip_OMHTT_RotaryBatHead,
+    }
+    craftRecipe OMHTTCraftRotaryBat {
+        timedAction = Making,
+        time = 576,
+        category = OMHTurrets,
+        Tags = InHandCraft,
+        needToBeLearn = false,
+        SkillRequired = Woodwork:1;Mechanics:2;Electricity:1,
+        xpAward = Mechanics:20;Electricity:5,
+        OnAddToMenu = OMHTT_TurretMenuAvailable,
+        OnTest = OMHTT_Turret.recipeInput,
+        OnCreate = OMHTT_Turret.onCrafted,
+        inputs {
+            item 1 tags[base:screwdriver] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 [Base.Wrench;Base.PipeWrench] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 tags[base:pliers] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 tags[base:hammer] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 [Base.MetalPipe],
+            item 1 [Base.SmallSheetMetal],
+            item 2 [Base.ScrapMetal],
+            item 2 [Base.ElectronicsScrap],
+            item 1 [Base.ElectricWire],
+            item 8 [Base.Screws],
+            item 2 [Base.BaseballBat] flags[NoBrokenItems],
+        }
+        outputs {
+            item 1 Base.OMHTTTurretRotaryBat,
+        }
+    }
+    item OMHTTTurretRotaryBlades {
+        DisplayName = Rotary Blades Head,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        WorldStaticModel = OMHTTTurretProbe,
+        Weight = 6,
+        Icon = OMHTT_TestCube,
+        ScaleWorldIcon = 0.25,
+        ConditionMax = 100,
+        Tooltip = Tooltip_OMHTT_RotaryBladesHead,
+    }
+    craftRecipe OMHTTCraftRotaryBlades {
+        timedAction = Making,
+        time = 864,
+        category = OMHTurrets,
+        Tags = InHandCraft,
+        needToBeLearn = true,
+        SkillRequired = Mechanics:4;Electricity:2,
+        xpAward = Mechanics:30;Electricity:10,
+        OnAddToMenu = OMHTT_TurretMenuAvailable,
+        OnTest = OMHTT_Turret.recipeInput,
+        OnCreate = OMHTT_Turret.onCrafted,
+        inputs {
+            item 1 tags[base:screwdriver] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 [Base.Wrench;Base.PipeWrench] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 tags[base:pliers] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 tags[base:sheetmetalsnips] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 [Base.MetalPipe],
+            item 1 [Base.SmallSheetMetal],
+            item 2 [Base.ScrapMetal],
+            item 2 [Base.ElectronicsScrap],
+            item 1 [Base.ElectricWire],
+            item 8 [Base.Screws],
+            item 2 [Base.CircularSawblade],
+            item 2 [Base.MetalBar],
+        }
+        outputs {
+            item 1 Base.OMHTTTurretRotaryBlades,
+        }
+    }
+    item OMHTTTurretLobber {
+        DisplayName = Grenade Lobber Head,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        WorldStaticModel = OMHTTTurretProbe,
+        Weight = 8,
+        Icon = OMHTT_TestCube,
+        ConditionMax = 100,
+        Tooltip = Tooltip_OMHTT_LobberHead,
+    }
+    craftRecipe OMHTTCraftLobber {
+        timedAction = Making,
+        time = 864,
+        category = OMHTurrets,
+        Tags = InHandCraft,
+        needToBeLearn = true,
+        SkillRequired = Mechanics:3;Electricity:2,
+        xpAward = Mechanics:30;Electricity:10,
+        OnAddToMenu = OMHTT_TurretMenuAvailable,
+        OnTest = OMHTT_Turret.recipeInput,
+        OnCreate = OMHTT_Turret.onCrafted,
+        inputs {
+            item 1 tags[base:screwdriver] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 [Base.Wrench;Base.PipeWrench] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 tags[base:pliers] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 tags[base:metalsaw] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 2 [Base.MetalPipe],
+            item 2 [Base.SmallSheetMetal],
+            item 2 [Base.ScrapMetal],
+            item 4 [Base.ElectronicsScrap],
+            item 2 [Base.ElectricWire],
+            item 12 [Base.Screws],
+            item 1 [Base.TirePump],
+        }
+        outputs {
+            item 1 Base.OMHTTTurretLobber,
+        }
+    }
+    craftRecipe OMHTTCraftLobberImprovised {
+        timedAction = Making,
+        time = 1080,
+        category = OMHTurrets,
+        Tags = InHandCraft,
+        needToBeLearn = true,
+        SkillRequired = Mechanics:4;Electricity:2,
+        xpAward = Mechanics:30;Electricity:10,
+        OnAddToMenu = OMHTT_TurretMenuAvailable,
+        OnTest = OMHTT_Turret.recipeInput,
+        OnCreate = OMHTT_Turret.onCrafted,
+        inputs {
+            item 1 tags[base:screwdriver] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 [Base.Wrench;Base.PipeWrench] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 tags[base:pliers] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 tags[base:metalsaw] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 2 [Base.MetalPipe],
+            item 2 [Base.SmallSheetMetal],
+            item 4 [Base.ScrapMetal],
+            item 4 [Base.ElectronicsScrap],
+            item 2 [Base.ElectricWire],
+            item 12 [Base.Screws],
+        }
+        outputs {
+            item 1 Base.OMHTTTurretLobber,
+        }
+    }
+    item OMHTTTurretScrapshot {
+        DisplayName = Scrapshot Head,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        WorldStaticModel = OMHTTTurretProbe,
+        Weight = 6,
+        Icon = OMHTT_TestCube,
+        ConditionMax = 100,
+        Tooltip = Tooltip_OMHTT_ScrapshotHead,
+    }
+    craftRecipe OMHTTCraftScrapshot {
+        timedAction = Making,
+        time = 576,
+        category = OMHTurrets,
+        Tags = InHandCraft,
+        needToBeLearn = false,
+        SkillRequired = Mechanics:2;Electricity:1,
+        xpAward = Mechanics:20;Electricity:5,
+        OnAddToMenu = OMHTT_TurretMenuAvailable,
+        OnTest = OMHTT_Turret.recipeInput,
+        OnCreate = OMHTT_Turret.onCrafted,
+        inputs {
+            item 1 tags[base:screwdriver] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 [Base.Wrench;Base.PipeWrench] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 tags[base:pliers] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 tags[base:metalsaw] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 [Base.MetalPipe],
+            item 1 [Base.SmallSheetMetal],
+            item 2 [Base.ScrapMetal],
+            item 2 [Base.ElectronicsScrap],
+            item 1 [Base.ElectricWire],
+            item 8 [Base.Screws],
+            item 1 [Base.TirePump],
+        }
+        outputs {
+            item 1 Base.OMHTTTurretScrapshot,
+        }
+    }
+    craftRecipe OMHTTCraftScrapshotImprovised {
+        timedAction = Making,
+        time = 720,
+        category = OMHTurrets,
+        Tags = InHandCraft,
+        needToBeLearn = false,
+        SkillRequired = Mechanics:4;Electricity:1,
+        xpAward = Mechanics:20;Electricity:5,
+        OnAddToMenu = OMHTT_TurretMenuAvailable,
+        OnTest = OMHTT_Turret.recipeInput,
+        OnCreate = OMHTT_Turret.onCrafted,
+        inputs {
+            item 1 tags[base:screwdriver] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 [Base.Wrench;Base.PipeWrench] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 tags[base:pliers] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 tags[base:metalsaw] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 2 [Base.MetalPipe],
+            item 1 [Base.SmallSheetMetal],
+            item 4 [Base.ScrapMetal],
+            item 2 [Base.ElectronicsScrap],
+            item 1 [Base.ElectricWire],
+            item 8 [Base.Screws],
+        }
+        outputs {
+            item 1 Base.OMHTTTurretScrapshot,
+        }
+    }
+    item OMHTTAmmoMakeshiftBomb {
+        DisplayName = Makeshift Bomb,
+        ItemType = base:normal,
+        DisplayCategory = Material,
+        WorldStaticModel = OMHTTTurretProbe,
+        Weight = 1,
+        Icon = OMHTT_TestCube,
+        ConditionMax = 100,
+        Tooltip = Tooltip_OMHTT_MakeshiftBomb,
+    }
+    item OMHTTModuleLure {
+        DisplayName = Lure Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTUtility,
+        WorldStaticModel = OMHTTTurretProbe,
+        Weight = 0.2,
+        Icon = OMHTT_ModuleUtility,
+        ConditionMax = 100,
+        Tooltip = Tooltip_OMHTT_ModuleLure,
+    }
+    item OMHTTModuleVoid {
+        DisplayName = Void Module,
+        ItemType = base:normal,
+        DisplayCategory = OMHTTUtility,
+        WorldStaticModel = OMHTTTurretProbe,
+        Weight = 0.2,
+        Icon = OMHTT_ModuleUtility,
+        ConditionMax = 100,
+        Tooltip = Tooltip_OMHTT_ModuleVoid,
+    }
+    craftRecipe OMHTTCraftMakeshiftBomb {
+        timedAction = Making,
+        time = 100,
+        category = OMHTurrets,
+        Tags = InHandCraft,
+        needToBeLearn = false,
+        SkillRequired = Mechanics:2;Electricity:1,
+        xpAward = Mechanics:5;Electricity:2,
+        OnAddToMenu = OMHTT_TurretMenuAvailable,
+        OnTest = OMHTT_Turret.recipeInput,
+        inputs {
+            item 1 tags[base:metalsaw] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 tags[base:pliers] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 tags[base:screwdriver] mode:keep flags[NoBrokenItems;DontRecordInput],
+            item 1 [Base.MetalPipe],
+            item 2 [Base.ScrapMetal],
+            item 1 [Base.ElectronicsScrap],
+            item 8 [Base.GunPowder],
+            item 2 [Base.DuctTape],
+        }
+        outputs {
+            item 1 Base.OMHTTAmmoMakeshiftBomb,
+        }
+    }
+}

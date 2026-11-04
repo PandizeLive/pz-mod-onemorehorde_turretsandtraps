@@ -1,0 +1,25 @@
+{
+  "ownerReport": {
+    "head": "M16",
+    "splitters": "approximately5-6",
+    "potato": "Fragment and Splitter potatoes pause about0.25s before popping"
+  },
+  "firearmReplay": {
+    "rangeTiles": 30,
+    "tickMs": 100,
+    "fiveChildrenMs": 400,
+    "sixChildrenMs": 500,
+    "networkTransit": false,
+    "emptyTiles": true
+  },
+  "potatoReplay": {
+    "launchHeldAfterFlightMs": 250,
+    "impactMessageEndsHold": true,
+    "busyDamageVictimDefersImpactEmission": true,
+    "connectedClients": 0,
+    "gpuRendering": false
+  },
+  "assertions": 43728,
+  "replaySHA256": "8a437d96f36e7db7f59dd237106e83562875eec807f1c66f397a911a1e434333",
+  "limits": "No per-shot capture proves the exact250ms contribution; no production changes or implementation approval."
+}

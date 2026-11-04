@@ -1,0 +1,7 @@
+{
+  "jar": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\ProjectZomboid\\projectzomboid.jar",
+  "sha256": "e1a69eb743ede60b213a0fe7f8b83d4fcab773036d256cc4543a336f3b058a33",
+  "evidence": "javap -c -p on installed stock jar; IsoThumpable.Thump and IsoMovingObject.getSurroundingThumpers; local extracts in diagnostics/c523.",
+  "finding": "Native fractional thump damage is min(surroundingCount/thumpDmg,1) per thump event; thumpDmg constructor default 8. Nearby count filters zombie list within distance 1.5, not only actively striking attackers. Mod does not override thumpDmg in inspected barrier constructors.",
+  "limits": "No native world/combat run. Queue-based nearby approximation and strike cadence in the design model are not engine measurements."
+}

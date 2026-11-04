@@ -1,0 +1,86 @@
+{
+  "kind": "UI mockup only; not game runtime",
+  "passed": true,
+  "sourceSha256": "0463a76c0227ef2be3cd83a49b6eb1751472b70c7fb64e951f01b339831d3c94",
+  "checks": [
+    "details spans beneath both Map and Stockpile",
+    "Connections extends to bottom",
+    "independent Connections scrolling",
+    "wires stay aligned on scroll",
+    "Controls, Connections and Access & Assignment separated",
+    "head subtitles for all three defenses",
+    "compact desktop rows",
+    "device selection and focus",
+    "background toggle",
+    "two-tap linking",
+    "drag linking",
+    "disconnect",
+    "Manage handoff",
+    "responsive widths",
+    "real mobile touch events"
+  ],
+  "layout": {
+    "connections": {
+      "x": 9,
+      "y": 111.796875,
+      "width": 396,
+      "height": 892.34375,
+      "bottom": 1004.140625
+    },
+    "map": {
+      "x": 413,
+      "y": 111.796875,
+      "width": 331.890625,
+      "height": 420.984375,
+      "bottom": 532.78125
+    },
+    "stock": {
+      "x": 752.890625,
+      "y": 111.796875,
+      "width": 246.109375,
+      "height": 420.984375,
+      "bottom": 532.78125
+    },
+    "details": {
+      "x": 413,
+      "y": 540.78125,
+      "width": 586,
+      "height": 463.359375,
+      "bottom": 1004.140625
+    }
+  },
+  "scrollCheck": {
+    "scrollTop": 90,
+    "overflow": true,
+    "wireError": 0,
+    "detailsY": 540.78125
+  },
+  "desktopRowHeight": 52,
+  "widths": [
+    {
+      "viewport": 1040,
+      "width": 1008,
+      "scroll": 1008,
+      "body": 1008
+    },
+    {
+      "viewport": 736,
+      "width": 704,
+      "scroll": 704,
+      "body": 704
+    },
+    {
+      "viewport": 390,
+      "width": 358,
+      "scroll": 358,
+      "body": 358
+    },
+    {
+      "viewport": 320,
+      "width": 288,
+      "scroll": 288,
+      "body": 288
+    }
+  ],
+  "pageErrors": []
+}

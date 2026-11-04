@@ -4,7 +4,7 @@ testMode = "sp"
 SandboxVars.OMHTurretsTraps.Enabled = true
 SandboxVars.OMHTurretsTraps.PotatoTurret = true
 local config = T.cycleConfig()
-check(config.magazine == 1 and config.reload == 2000 and config.cooldown == 2000, "Default potato cycle is magazine one with overlapping two-second timers")
+check(config.magazine == 3 and config.reload == 2000 and config.cooldown == 2000, "Default potato cycle has three rounds and overlapping two-second timers")
 local nextId = 1000
 local function item(kind, weight)
     nextId = nextId + 1
@@ -15,6 +15,9 @@ local function item(kind, weight)
     function result:getActualWeight() return self.weight end
     function result:getID() return self.id end
     function result:getCondition() return self.condition end
+    function result:getAge() return 0 end
+    function result:isCooked() return false end
+    function result:isBurnt() return false end
     function result:getCurrentUsesFloat() return self.charge end
     function result:setCurrentUsesFloat(value) self.charge = value end
     function result:getContainer() return self.container end
@@ -30,6 +33,7 @@ local function container()
     end
     function result:getType() return self.kind end
     function result:getContainingItem() return nil end
+    function result:getParent() return nil end
     function result:contains(candidate)
         for i = 1, #self.items do if self.items[i] == candidate then return true end end
         return false
@@ -37,6 +41,7 @@ local function container()
     function result:AddItem(candidate)
         self.items[#self.items + 1] = candidate
         candidate.container = self
+        return candidate
     end
     function result:Remove(candidate)
         for i = #self.items, 1, -1 do
@@ -64,7 +69,15 @@ for i = 1, 4 do
     check(T.accept(storage, module), "Repeated range module allowed while space remains")
     storage:AddItem(module)
 end
-check(not T.accept(storage, item("Base.OMHTTModuleVelocity")), "Module count bound enforced")
+check(T.accept(storage, item("Base.OMHTTModuleVelocity")), "Inactive storage accepts modules beyond active capacity")
+local overflow = {}
+for i = 5, T.storageSlots() do
+    overflow[#overflow + 1] = item("Base.OMHTTModuleVelocity")
+    storage:AddItem(overflow[#overflow])
+end
+check(not T.accept(storage, item("Base.OMHTTModuleVelocity")), "Configured physical module storage remains bounded")
+check(T.contents(storage).active.Velocity == nil, "Unavailable storage has no Velocity effect")
+for i = 1, #overflow do storage:Remove(overflow[i]) end
 SandboxVars.OMHTurretsTraps.PotatoAmmoCapacity = 1
 check(not T.accept(storage, item("Base.Potato")), "Ammo count bound enforced")
 SandboxVars.OMHTurretsTraps.PotatoAmmoCapacity = nil
@@ -84,14 +97,16 @@ local object = {square = square}
 function object:getSquare() return self.square end
 contents = T.contents(other)
 local power = W.power(object, contents)
-check(power.kind == "battery" and math.abs(power.cost - 0.001) < 0.000001, "Default battery shot cost is 0.1 percent")
+check(power.kind == "battery" and math.abs(power.cost - 0.0000072) < 0.000001, "Four Range modules give 0.00072 percent with automatic rarity battery cost")
 square.grid, square.room = true, {}
-check(W.power(object, contents).kind == "grid", "External grid preferred over battery")
+check(W.power(object, contents).kind == "battery", "Ordinary turret ignores mains without Grid Module")
+contents.active.Grid = 1
+check(W.power(object, contents).kind == "grid", "Grid Module prefers external power over battery")
 square.room = nil
 check(W.power(object, contents).kind == "battery", "Outdoor tile does not invent mains power")
 battery.charge = 0
 check(W.power(object, contents) == nil, "Empty battery provides no power")
-battery.charge = 0.0005
+battery.charge = 0.000005
 check(W.power(object, contents) == nil, "Partial shot charge cannot power full shot")
 SandboxVars.OMHTurretsTraps.PotatoRequirePower = false
 check(W.power(object, contents).kind == "disabled", "Power toggle bypasses consumption")
@@ -153,8 +168,8 @@ check(zombie.health == 1.5, "No direct damage before projectile arrival")
 testMillis = testMillis + 100
 require("OMHTT/PrototypeCombat").tickFlights()
 check(math.abs(zombie.health - 1.15) < 0.000001, "Default shot deals exactly 35 points or 0.35 native HP")
-check(not other:contains(potato) and math.abs(battery.charge - 0.369) < 0.000001, "Shot spends one exact potato and battery charge once")
-check(W.fire(testPlayer, object, zombie) == "Empty" and math.abs(battery.charge - 0.369) < 0.000001, "Empty turret spends no additional charge")
+check(not other:contains(potato) and math.abs(battery.charge - 0.3699928) < 0.000001, "Shot spends one exact potato and battery charge once")
+check(W.fire(testPlayer, object, zombie) == "Empty" and math.abs(battery.charge - 0.3699928) < 0.000001, "Empty turret spends no additional charge")
 local generator = {kind = "IsoGenerator", fuel = 1, active = true, connected = true, index = 0}
 function generator:hasModData() return false end
 function generator:getSquare() return square end
@@ -166,6 +181,8 @@ function generator:setFuel(value) self.fuel = value end
 IsoGenerator = {isPoweringSquare = function() return true end}
 W.loaded(generator)
 square.generatorPower = true
+local savedGridContents = T.contents
+T.contents = function(storage) local contents = savedGridContents(storage); contents.active.Grid = 1; return contents end
 check(W.power(object, T.contents(other)).kind == "generator", "Connected generator preferred over battery")
 generator.active = false
 check(W.power(object, T.contents(other)).kind == "battery", "Stopped generator falls back to battery")
@@ -177,8 +194,8 @@ other:AddItem(item("Base.Potato", 0.2))
 record.nextShot = 0
 check(W.fire(testPlayer, object, zombie) == "Reloading", "Replenishing empty turret reloads")
 testMillis = testMillis + 2000
-check(W.fire(testPlayer, object, zombie) == "Fired" and math.abs(generator.fuel - 0.999) < 0.000001, "Generator shot charges fuel exactly once")
-check(math.abs(battery.charge - 0.369) < 0.000001, "Generator operation preserves battery charge")
+check(W.fire(testPlayer, object, zombie) == "Fired" and math.abs(generator.fuel - 0.99984) < 0.000001, "Generator shot charges fuel exactly once")
+check(math.abs(battery.charge - 0.3699928) < 0.000001, "Generator operation preserves battery charge")
 testMillis = testMillis + 100
 require("OMHTT/PrototypeCombat").tickFlights()
 testPlayer.x, testPlayer.y, testPlayer.z, testPlayer.getSquare = oldX, oldY, oldZ, oldSquare
@@ -217,6 +234,7 @@ function object:getMaxHealth() return 100 end
 function object:setHealth(value) self.testHealth = value end
 local savedHeadCondition, savedCharge = head.condition, battery.charge
 check(not W.repair(pickupPlayer, object, "stale"), "Repair rejects wrong identity")
+testRepairSupply(pickupPlayer, "Turret")
 check(W.repair(pickupPlayer, object, record.id), "Damaged base can be repaired")
 check(object:getHealth() == 100 and head.condition == savedHeadCondition and battery.charge == savedCharge, "Repair changes only base condition")
 check(not W.repair(pickupPlayer, object, record.id), "Full condition repair rejected")
@@ -224,17 +242,23 @@ object.testHealth = 37
 function square:transmitRemoveItemFromSquare(candidate) self.removedTurret = candidate end
 record.maxHealth = 100
 local beforeCount = #other.items
-check(not W.pickup(pickupPlayer, object, record.id) and #other.items == beforeCount, "Full inventory pickup retains world contents")
-playerStorage.room = true
+local oldHeavyDrop = forceDropHeavyItems
+local heavyDropped = 0
+forceDropHeavyItems = function(player) heavyDropped = heavyDropped + 1 end
+function pickupPlayer:setPrimaryHandItem(value) self.primary = value end
+function pickupPlayer:setSecondaryHandItem(value) self.secondary = value end
 check(not W.pickup(pickupPlayer, object, "stale-id") and #other.items == beforeCount, "Stale pickup rejected before mutation")
 check(W.pickup(pickupPlayer, object, record.id) and #other.items == 0 and #playerStorage.items == 1, "Pickup transfers once and removes world object")
 local carried = playerStorage.items[1]
-check(carried.inventory:contains(battery) and math.abs(battery.charge - 0.369) < 0.000001, "Pickup preserves battery identity and charge")
+check(heavyDropped == 1 and pickupPlayer.primary == carried and pickupPlayer.secondary == carried,
+    "Overweight pickup uses both hands after native heavy-item release")
+forceDropHeavyItems = oldHeavyDrop
+check(carried.inventory:contains(battery) and math.abs(battery.charge - 0.3699928) < 0.000001, "Pickup preserves battery identity and charge")
 check(carried.data.OMHTTTurret.condition == 37 and carried.data.OMHTTTurret.nextShot == record.nextShot, "Pickup preserves durability and cooldown")
 check(not W.pickup(pickupPlayer, object, record.id) and #playerStorage.items == 1, "Repeated pickup cannot duplicate item")
 local Action = require("OMHTT/TurretPickupAction")
-local incomplete = {elapsed = 9.9, done = false}
-check(not Action.complete(incomplete), "Pickup cannot complete before ten seconds")
+local incomplete = {elapsed = 4.9, seconds = 5, done = false}
+check(not Action.complete(incomplete), "Pickup cannot complete before five seconds")
 instanceItem = oldInstanceItem
 
 local dropped = {}
@@ -253,7 +277,7 @@ local foundBattery = false
 for i = 1, #dropped do
     if dropped[i] == battery then foundBattery = true end
 end
-check(foundBattery and math.abs(battery.charge - 0.369) < 0.000001, "Fallback preserves exact battery charge")
+check(foundBattery and math.abs(battery.charge - 0.3699928) < 0.000001, "Fallback preserves exact battery charge")
 W.removed(object)
 check(#dropped == beforeDrop + 2, "Repeated removal cannot duplicate salvage")
 object.data.OMHTTTurret = {schema = 1, id = "empty-destroy-unit"}
@@ -265,3 +289,5 @@ W.clearBuildRefund(object)
 local materialCount = 0
 for _ in pairs(object.materials) do materialCount = materialCount + 1 end
 check(materialCount == 0, "Construction refunds cannot return a working base")
+
+T.contents = savedGridContents

@@ -1,0 +1,44 @@
+{
+  "baseline": "b7ffd87",
+  "connectedClients": 0,
+  "cases": [
+    {
+      "case": "stacked-primary",
+      "expectedFailure": "C531 primary no longer waits for side scans",
+      "reproduced": true,
+      "files": [
+        {
+          "path": "Source/42.20/media/lua/server/OMHTT/TurretVolley.lua",
+          "beforeSHA256": "a178f5ccae9148bb64b5c57e5985da79f6121c340ec94869d6f8771d4bef329a",
+          "afterSHA256": "3c8a18bf32ff5292acc4f435c2490215f85d14e01020c52828ff9d5f3a02f06a"
+        }
+      ]
+    },
+    {
+      "case": "physical-contact",
+      "expectedFailure": "C531 production render pops at actual occupied contact distance",
+      "reproduced": true,
+      "files": [
+        {
+          "path": "Source/42.20/media/lua/client/OMHTT/PrototypeEffects.lua",
+          "beforeSHA256": "d26c83c6b66d4e9bf3fdbd54517d446450353a6620e38ad1473b052f5ec66882",
+          "afterSHA256": "297c5ec484b6cd2d11094f375d901c02a922617ab303bc5fdb3d6bd7b2701506"
+        }
+      ]
+    },
+    {
+      "case": "disconnect-render",
+      "expectedFailure": "C531 disconnect attempted a server-only access lookup",
+      "reproduced": true,
+      "files": [
+        {
+          "path": "Source/42.20/media/lua/client/OMHTT/ControlTriggerView.lua",
+          "beforeSHA256": "b02ad9dd5c2cc7763f60bcc1ce5f11d58b162071f20b85e949528f6a8b1e4803",
+          "afterSHA256": "43970c0619cd2fe4e0ecc6d3ddd64340e26ac9d370e3e4b7d569096fe363b5e6"
+        }
+      ]
+    }
+  ],
+  "correctedPassed": true,
+  "result": "Assertions passed: 44249.0"
+}

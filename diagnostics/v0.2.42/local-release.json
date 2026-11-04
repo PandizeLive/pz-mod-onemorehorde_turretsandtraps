@@ -1,0 +1,136 @@
+{
+  "version": "0.2.42",
+  "sourceCommit": "2354a7ff3ed4ef174a0bbeb4d7d0051a620bc5d7",
+  "tag": "test/v0.2.42",
+  "installed": "C:\\Users\\bandi\\Zomboid\\mods",
+  "packages": {
+    "OneMoreHorde_Traps": 105,
+    "OneMoreHorde_Turrets": 127
+  },
+  "filesVerified": 232,
+  "sourceFilesVerified": 192,
+  "backup": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\p1c1\\install-backups\\20261011-180725-9030",
+  "backupsVerified": [
+    {
+      "package": "OneMoreHorde_Traps",
+      "version": "0.2.41",
+      "filesVerified": 105
+    },
+    {
+      "package": "OneMoreHorde_Turrets",
+      "version": "0.2.41",
+      "filesVerified": 125
+    }
+  ],
+  "archive": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\artifacts\\OMHTT-0.2.42.zip",
+  "archiveSHA256": "31609d4ad1c80391cf35077379b555cd36d577c66bcd7192bf80cc111a4d1839",
+  "kahluaAssertions": 5241,
+  "nativeWrite": "passed",
+  "nativeRead": "passed",
+  "nativeSelections": [
+    "traps",
+    "turrets",
+    "both"
+  ],
+  "clientAcceptance": "pending focused owner test",
+  "savePolicy": "fresh worlds",
+  "publication": "none",
+  "hostedLootLab": {
+    "baseline": "T&T 0.2.42",
+    "workerVersion": "0ad6ef2d-8d4f-4ff1-8a39-d28e60b6f6ea",
+    "previousWorkerVersion": "5390b196-0c1f-4884-be3e-36921adb3139",
+    "bundleSHA256": "f303ab3f3cc5dbee443bd0e769c8b25b97be3c60079023edf9c3361f3bbb721a",
+    "deployed": true,
+    "apiPageTests": 74,
+    "catalog": {
+      "modules": 24,
+      "pools": 16,
+      "entries": 170,
+      "routes": 79,
+      "containers": 18630
+    },
+    "databaseWrites": false,
+    "accountMigration": "read-time; existing tuning preserved; new fields default to 1/visible",
+    "sourceChanges": [
+      "src/loot-lab-settings.ts"
+    ],
+    "assets": 9,
+    "authenticatedDeviceAcceptance": "pending",
+    "verification": {
+      "phase": "after",
+      "productionBundleMatches": true,
+      "sha256": "f303ab3f3cc5dbee443bd0e769c8b25b97be3c60079023edf9c3361f3bbb721a",
+      "checks": [
+        {
+          "path": "/admin/",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/data.js",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/model.js",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/map-controls.js",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/settings-sync.js",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/settings",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/app.js",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/style.css",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/provenance.json",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "path": "/admin/LootLab/README.md",
+          "anonymousStatus": 302,
+          "accessLogin": true
+        },
+        {
+          "url": "https://api.onemorehorde.com/v1/leaderboard?limit=1",
+          "status": 200
+        },
+        {
+          "url": "https://api.onemorehorde.com/v1/workshop-snapshots/latest",
+          "status": 200
+        }
+      ]
+    },
+    "localSourceSync": "Only matching settings source and catalog assets; unrelated working tests preserved, release tests retained in isolated snapshot."
+  }
+}

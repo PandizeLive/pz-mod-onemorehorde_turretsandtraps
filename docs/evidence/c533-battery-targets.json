@@ -1,0 +1,480 @@
+{
+  "status": "Selected targets; candidate calculation only, no shipped change",
+  "dayMinutes": 90,
+  "settings": {
+    "ScrapshotBatteryPercent": 0.001,
+    "FirearmBatteryMultiplier": 0.56,
+    "BallistaBatteryPercent": 0.01,
+    "LobberBatteryMultiplier": 0.65,
+    "ArcBatteryPercent": 0.007,
+    "RotaryBatteryHours": 128,
+    "RotaryBladesBatteryMultiplier": 1.33
+  },
+  "requiredRangeChange": "RotaryBatteryHours maximum 100 to 200 in sandbox and resolver; candidate probe overrides this bound only",
+  "probeSha256": "cb9ae7790a0ae306b6555d1dd7dbb52c2445912caf8003cad66d12f9430ae9e8",
+  "resultSha256": "a7b7749b010b773d68019888552d4bde6a958a4f15bad7fccd350470c07cc463",
+  "results": [
+    {
+      "head": "AssaultRifle",
+      "build": "bare",
+      "gameHours": 383.478058,
+      "nominalRealHours": 23.967378625,
+      "percentPerShot": 0.00049806
+    },
+    {
+      "head": "AssaultRifle",
+      "build": "normal",
+      "gameHours": 191.737712,
+      "nominalRealHours": 11.983607,
+      "percentPerShot": 0.00099612
+    },
+    {
+      "head": "AssaultRifle",
+      "build": "enhanced",
+      "gameHours": 61.52879,
+      "nominalRealHours": 3.845549375,
+      "percentPerShot": 0.00249029
+    },
+    {
+      "head": "M4",
+      "build": "bare",
+      "gameHours": 383.478058,
+      "nominalRealHours": 23.967378625,
+      "percentPerShot": 0.00049806
+    },
+    {
+      "head": "M4",
+      "build": "normal",
+      "gameHours": 191.737712,
+      "nominalRealHours": 11.983607,
+      "percentPerShot": 0.00099612
+    },
+    {
+      "head": "M4",
+      "build": "enhanced",
+      "gameHours": 61.52879,
+      "nominalRealHours": 3.845549375,
+      "percentPerShot": 0.00249029
+    },
+    {
+      "head": "Pistol",
+      "build": "bare",
+      "gameHours": 1245.550222,
+      "nominalRealHours": 77.846888875,
+      "percentPerShot": 0.00032431
+    },
+    {
+      "head": "Pistol",
+      "build": "normal",
+      "gameHours": 622.77363,
+      "nominalRealHours": 38.923351875,
+      "percentPerShot": 0.00064862
+    },
+    {
+      "head": "Pistol",
+      "build": "enhanced",
+      "gameHours": 199.159556,
+      "nominalRealHours": 12.44747225,
+      "percentPerShot": 0.00162156
+    },
+    {
+      "head": "Pistol2",
+      "build": "bare",
+      "gameHours": 1527.180889,
+      "nominalRealHours": 95.4488055625,
+      "percentPerShot": 0.00034507
+    },
+    {
+      "head": "Pistol2",
+      "build": "normal",
+      "gameHours": 763.580889,
+      "nominalRealHours": 47.7238055625,
+      "percentPerShot": 0.00069013
+    },
+    {
+      "head": "Pistol2",
+      "build": "enhanced",
+      "gameHours": 253.902667,
+      "nominalRealHours": 15.8689166875,
+      "percentPerShot": 0.00172533
+    },
+    {
+      "head": "Pistol3",
+      "build": "bare",
+      "gameHours": 2532.296741,
+      "nominalRealHours": 158.2685463125,
+      "percentPerShot": 0.00036735
+    },
+    {
+      "head": "Pistol3",
+      "build": "normal",
+      "gameHours": 1266.134864,
+      "nominalRealHours": 79.133429,
+      "percentPerShot": 0.0007347
+    },
+    {
+      "head": "Pistol3",
+      "build": "enhanced",
+      "gameHours": 400.246667,
+      "nominalRealHours": 25.0154166875,
+      "percentPerShot": 0.00183675
+    },
+    {
+      "head": "Revolver",
+      "build": "bare",
+      "gameHours": 3109.707901,
+      "nominalRealHours": 194.3567438125,
+      "percentPerShot": 0.00035916
+    },
+    {
+      "head": "Revolver",
+      "build": "normal",
+      "gameHours": 1554.834272,
+      "nominalRealHours": 97.177142,
+      "percentPerShot": 0.00071831
+    },
+    {
+      "head": "Revolver",
+      "build": "enhanced",
+      "gameHours": 525.205185,
+      "nominalRealHours": 32.8253240625,
+      "percentPerShot": 0.00179578
+    },
+    {
+      "head": "Revolver_Short",
+      "build": "bare",
+      "gameHours": 3618.701235,
+      "nominalRealHours": 226.1688271875,
+      "percentPerShot": 0.00030864
+    },
+    {
+      "head": "Revolver_Short",
+      "build": "normal",
+      "gameHours": 1809.34716,
+      "nominalRealHours": 113.0841975,
+      "percentPerShot": 0.00061727
+    },
+    {
+      "head": "Revolver_Short",
+      "build": "enhanced",
+      "gameHours": 611.2,
+      "nominalRealHours": 38.2,
+      "percentPerShot": 0.00154318
+    },
+    {
+      "head": "Revolver_Long",
+      "build": "bare",
+      "gameHours": 2894.960988,
+      "nominalRealHours": 180.93506175,
+      "percentPerShot": 0.00038579
+    },
+    {
+      "head": "Revolver_Long",
+      "build": "normal",
+      "gameHours": 1447.47358,
+      "nominalRealHours": 90.46709875,
+      "percentPerShot": 0.00077159
+    },
+    {
+      "head": "Revolver_Long",
+      "build": "enhanced",
+      "gameHours": 488.96,
+      "nominalRealHours": 30.56,
+      "percentPerShot": 0.00192897
+    },
+    {
+      "head": "AssaultRifle2",
+      "build": "bare",
+      "gameHours": 1348.740889,
+      "nominalRealHours": 84.2963055625,
+      "percentPerShot": 0.00062737
+    },
+    {
+      "head": "AssaultRifle2",
+      "build": "normal",
+      "gameHours": 674.356938,
+      "nominalRealHours": 42.147308625,
+      "percentPerShot": 0.00125474
+    },
+    {
+      "head": "AssaultRifle2",
+      "build": "enhanced",
+      "gameHours": 207.078667,
+      "nominalRealHours": 12.9424166875,
+      "percentPerShot": 0.00313685
+    },
+    {
+      "head": "HuntingRifle",
+      "build": "bare",
+      "gameHours": 1766.432612,
+      "nominalRealHours": 110.40203825,
+      "percentPerShot": 0.00058083
+    },
+    {
+      "head": "HuntingRifle",
+      "build": "normal",
+      "gameHours": 883.208405,
+      "nominalRealHours": 55.2005253125,
+      "percentPerShot": 0.00116166
+    },
+    {
+      "head": "HuntingRifle",
+      "build": "enhanced",
+      "gameHours": 287.52603,
+      "nominalRealHours": 17.970376875,
+      "percentPerShot": 0.00290416
+    },
+    {
+      "head": "VarmintRifle",
+      "build": "bare",
+      "gameHours": 1653.624494,
+      "nominalRealHours": 103.351530875,
+      "percentPerShot": 0.0005456
+    },
+    {
+      "head": "VarmintRifle",
+      "build": "normal",
+      "gameHours": 826.804346,
+      "nominalRealHours": 51.675271625,
+      "percentPerShot": 0.00109119
+    },
+    {
+      "head": "VarmintRifle",
+      "build": "enhanced",
+      "gameHours": 259.028889,
+      "nominalRealHours": 16.1893055625,
+      "percentPerShot": 0.00272798
+    },
+    {
+      "head": "Shotgun",
+      "build": "bare",
+      "gameHours": 2409.354747,
+      "nominalRealHours": 150.5846716875,
+      "percentPerShot": 0.00038321
+    },
+    {
+      "head": "Shotgun",
+      "build": "normal",
+      "gameHours": 1204.664489,
+      "nominalRealHours": 75.2915305625,
+      "percentPerShot": 0.00076643
+    },
+    {
+      "head": "Shotgun",
+      "build": "enhanced",
+      "gameHours": 409.699573,
+      "nominalRealHours": 25.6062233125,
+      "percentPerShot": 0.00191607
+    },
+    {
+      "head": "DoubleBarrelShotgun",
+      "build": "bare",
+      "gameHours": 3672.607407,
+      "nominalRealHours": 229.5379629375,
+      "percentPerShot": 0.00038321
+    },
+    {
+      "head": "DoubleBarrelShotgun",
+      "build": "normal",
+      "gameHours": 1836.300741,
+      "nominalRealHours": 114.7687963125,
+      "percentPerShot": 0.00076643
+    },
+    {
+      "head": "DoubleBarrelShotgun",
+      "build": "enhanced",
+      "gameHours": 695.844444,
+      "nominalRealHours": 43.49027775,
+      "percentPerShot": 0.00191607
+    },
+    {
+      "head": "Potato",
+      "build": "bare",
+      "gameHours": 1975.297778,
+      "nominalRealHours": 123.456111125,
+      "percentPerShot": 0.00045
+    },
+    {
+      "head": "Potato",
+      "build": "normal",
+      "gameHours": 987.644444,
+      "nominalRealHours": 61.72777775,
+      "percentPerShot": 0.0009
+    },
+    {
+      "head": "Potato",
+      "build": "enhanced",
+      "gameHours": 395.048889,
+      "nominalRealHours": 24.6905555625,
+      "percentPerShot": 0.00225
+    },
+    {
+      "head": "Ballista",
+      "build": "bare",
+      "gameHours": 266.64,
+      "nominalRealHours": 16.665,
+      "percentPerShot": 0.01
+    },
+    {
+      "head": "Ballista",
+      "build": "normal",
+      "gameHours": 133.306667,
+      "nominalRealHours": 8.3316666875,
+      "percentPerShot": 0.02
+    },
+    {
+      "head": "Ballista",
+      "build": "enhanced",
+      "gameHours": 42.64,
+      "nominalRealHours": 2.665,
+      "percentPerShot": 0.05
+    },
+    {
+      "head": "Scrapshot",
+      "build": "bare",
+      "gameHours": 933.32,
+      "nominalRealHours": 58.3325,
+      "percentPerShot": 0.001
+    },
+    {
+      "head": "Scrapshot",
+      "build": "normal",
+      "gameHours": 466.653333,
+      "nominalRealHours": 29.1658333125,
+      "percentPerShot": 0.002
+    },
+    {
+      "head": "Scrapshot",
+      "build": "enhanced",
+      "gameHours": 146.653333,
+      "nominalRealHours": 9.1658333125,
+      "percentPerShot": 0.005
+    },
+    {
+      "head": "Arc",
+      "build": "bare",
+      "gameHours": 63.484444,
+      "nominalRealHours": 3.96777775,
+      "percentPerShot": 0.007
+    },
+    {
+      "head": "Arc",
+      "build": "normal",
+      "gameHours": 31.737778,
+      "nominalRealHours": 1.983611125,
+      "percentPerShot": 0.014
+    },
+    {
+      "head": "Arc",
+      "build": "enhanced",
+      "gameHours": 9.52,
+      "nominalRealHours": 0.595,
+      "percentPerShot": 0.035
+    },
+    {
+      "head": "RotaryBat",
+      "build": "bare",
+      "gameHours": 128.0,
+      "nominalRealHours": 8.0,
+      "percentPerShot": 0.00021701
+    },
+    {
+      "head": "RotaryBat",
+      "build": "normal",
+      "gameHours": 64.0,
+      "nominalRealHours": 4.0,
+      "percentPerShot": 0.00043403
+    },
+    {
+      "head": "RotaryBat",
+      "build": "enhanced",
+      "gameHours": 19.2,
+      "nominalRealHours": 1.2,
+      "percentPerShot": 0.00144676
+    },
+    {
+      "head": "RotaryBlades",
+      "build": "bare",
+      "gameHours": 96.240602,
+      "nominalRealHours": 6.015037625,
+      "percentPerShot": 0.00028863
+    },
+    {
+      "head": "RotaryBlades",
+      "build": "normal",
+      "gameHours": 48.120301,
+      "nominalRealHours": 3.0075188125,
+      "percentPerShot": 0.00057726
+    },
+    {
+      "head": "RotaryBlades",
+      "build": "enhanced",
+      "gameHours": 14.43609,
+      "nominalRealHours": 0.902255625,
+      "percentPerShot": 0.00192419
+    },
+    {
+      "head": "Lobber Makeshift",
+      "build": "bare",
+      "gameHours": 188.002222,
+      "nominalRealHours": 11.750138875,
+      "percentPerShot": 0.013
+    },
+    {
+      "head": "Lobber Makeshift",
+      "build": "normal",
+      "gameHours": 93.988889,
+      "nominalRealHours": 5.8743055625,
+      "percentPerShot": 0.026
+    },
+    {
+      "head": "Lobber Makeshift",
+      "build": "enhanced",
+      "gameHours": 28.178333,
+      "nominalRealHours": 1.7611458125,
+      "percentPerShot": 0.065
+    },
+    {
+      "head": "Lobber Aerosol",
+      "build": "bare",
+      "gameHours": 125.326667,
+      "nominalRealHours": 7.8329166875,
+      "percentPerShot": 0.0195
+    },
+    {
+      "head": "Lobber Aerosol",
+      "build": "normal",
+      "gameHours": 62.651111,
+      "nominalRealHours": 3.9156944375,
+      "percentPerShot": 0.039
+    },
+    {
+      "head": "Lobber Aerosol",
+      "build": "enhanced",
+      "gameHours": 18.773333,
+      "nominalRealHours": 1.1733333125,
+      "percentPerShot": 0.0975
+    },
+    {
+      "head": "Lobber Pipe",
+      "build": "bare",
+      "gameHours": 93.988889,
+      "nominalRealHours": 5.8743055625,
+      "percentPerShot": 0.026
+    },
+    {
+      "head": "Lobber Pipe",
+      "build": "normal",
+      "gameHours": 46.982222,
+      "nominalRealHours": 2.936388875,
+      "percentPerShot": 0.052
+    },
+    {
+      "head": "Lobber Pipe",
+      "build": "enhanced",
+      "gameHours": 14.08,
+      "nominalRealHours": 0.88,
+      "percentPerShot": 0.13
+    }
+  ]
+}

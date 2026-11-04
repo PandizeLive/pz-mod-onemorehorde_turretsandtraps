@@ -1,0 +1,30 @@
+# 0.2.48.1 - Short reel timing test
+
+## Automated verification
+
+- 16,180 assertions; 117 Lua/translation files compile; 216 source / 264 packaged files validate.
+- Starts at 0/350/700 ms; stops at 6000/6350/6700 ms. Exact winner and independent settlement/pulses verified. Early movement exceeds 1.9 times the prior curve; initial derivative is exactly doubled.
+- One bounded tick stream, final-only selection/rarity cue, Collect/replacement cleanup and long-frame no-backlog behavior pass. Already granted rewards remain intact.
+- 500 render frames create no items or text wraps; only visible card indices are drawn. Small-view controls remain within bounds. These are test doubles, not client rendering acceptance.
+- All seven native UI sound handles still load/stop; no audio files or sound definitions changed.
+- Native write/read and Traps-only/Turrets-only/both startup pass on installed engine 42.21.0. [Native evidence](../diagnostics/v0.2.48.1/native-verification.json).
+- Installed from immutable test/v0.2.48.1 / def298402fa617ccd2e033b5f4de95e6fe2c0392. All 216 source and 264 tagged/packaged/installed/archived files match; both 0.2.48 backups verify. [Release evidence](../diagnostics/v0.2.48.1/local-release.json). Owner visual/audio acceptance pending.
+
+No loot, combat, battery, persistence format or hosted site changes. The C189 0.2.48 LootLab deployment remains current. The only initial validation failure was the fixture's old 16-card/four-second expectation; it was updated and the complete validation passes.
+
+## Owner test
+
+1. Restart and confirm **0.2.48.1**.
+2. Open a Module Pack: reels begin top-to-bottom, start faster and slow down over about six seconds.
+3. Confirm they stop top-to-bottom, bottom last at about 6.7 seconds; the rarity cue plays once after the final stop.
+4. Open another pack and Collect early: all three rewards remain, and its ticking stops. Report pacing/audio issues; I will inspect console.txt.
+
+No repeated combat test or fresh world is needed solely for this UI correction. Existing weights remain whatever that save loaded.
+
+## C191 - Owner result and console review (2026-10-12)
+
+Owner: "Works well!" Current reel behavior accepted; the requested 150-ms spacing and 250-ms earlier rarity cue are queued for the next patch. They are not in installed 0.2.48.1. No repeat test now.
+
+Captured console and both installed markers with root OMH.cmd: 20261012-195320-4179, SHA-256 `a407239acd7bc6d970b10d713771c109473b92f676b020bf9657a26d082bdb05`. Version 0.2.48.1 is loaded. Ten pack actions complete; no errors/exceptions/stack traces appear after the first pack begins. Recorded active-update gaps in that segment peak at 54 ms; this is not a dedicated pack-render benchmark or combat stress test. Earlier font/fluid/Firearms translation errors prevent a blanket clean-console claim. No OMHTT pack exception found. [Compact evidence](../diagnostics/v0.2.48.1/owner-test-20261012.json); raw console remains local.
+
+The owner's general pack report does not independently attest every earlier module, every sound tier, early Collect case or historical acceptance item. Preserve automated evidence separately. R3C7's pack slice is accepted; broader combined balance/endurance/lifecycle remains open.

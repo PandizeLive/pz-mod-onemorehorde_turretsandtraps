@@ -1,0 +1,345 @@
+{
+  "dayLength": 4,
+  "minutesPerDay": 90,
+  "relevantSettings": {
+    "FirearmRateMultiplier": "0.75",
+    "FirearmReloadMultiplier": "1.0",
+    "FirearmCycleMultiplier": "1.0",
+    "PotatoCooldown": "2.0",
+    "PotatoReloadTime": "2.0",
+    "PotatoMagazineCapacity": "3",
+    "EnhancedFireMultiplier": "1.3333333333333333",
+    "BallistaCooldown": "6.0",
+    "BallistaReload": "6.0",
+    "ScrapshotCooldown": "2.0",
+    "ScrapshotReload": "3.0",
+    "LobberCooldown": "5.5",
+    "LobberReload": "4.0",
+    "RapidFireBonus": "25.0",
+    "RapidFireFirst": "40.0"
+  },
+  "guns": [
+    {
+      "name": "Native Pistol",
+      "type": "Base.Pistol",
+      "fields": {
+        "MinDamage": "0.6",
+        "MaxDamage": "1.0",
+        "RecoilDelay": "12",
+        "MaxAmmo": "15",
+        "MaxRange": "15.0",
+        "HitChance": "50",
+        "AimingPerkHitChanceModifier": "4",
+        "ProjectileCount": "1",
+        "CriticalChance": "20.0",
+        "CritDmgMultiplier": "4.0",
+        "MagazineType": "Base.9mmClip",
+        "WeaponReloadType": "handgun",
+        "AmmoType": "base:bullets_9mm"
+      }
+    },
+    {
+      "name": "Native Pistol2",
+      "type": "Base.Pistol2",
+      "fields": {
+        "MinDamage": "0.9",
+        "MaxDamage": "1.2",
+        "RecoilDelay": "15",
+        "MaxAmmo": "7",
+        "MaxRange": "12.0",
+        "HitChance": "50",
+        "AimingPerkHitChanceModifier": "4",
+        "ProjectileCount": "1",
+        "CriticalChance": "20.0",
+        "CritDmgMultiplier": "4.0",
+        "MagazineType": "Base.45Clip",
+        "WeaponReloadType": "handgun",
+        "AmmoType": "base:bullets_45"
+      }
+    },
+    {
+      "name": "Native Pistol3",
+      "type": "Base.Pistol3",
+      "fields": {
+        "MinDamage": "1.0",
+        "MaxDamage": "1.6",
+        "RecoilDelay": "17",
+        "MaxAmmo": "8",
+        "MaxRange": "17.0",
+        "HitChance": "50",
+        "AimingPerkHitChanceModifier": "4",
+        "ProjectileCount": "1",
+        "CriticalChance": "20.0",
+        "CritDmgMultiplier": "4.0",
+        "MagazineType": "Base.44Clip",
+        "WeaponReloadType": "handgun",
+        "AmmoType": "base:bullets_44"
+      }
+    },
+    {
+      "name": "Native Revolver",
+      "type": "Base.Revolver",
+      "fields": {
+        "MinDamage": "0.95",
+        "MaxDamage": "1.4",
+        "RecoilDelay": "16",
+        "MaxAmmo": "6",
+        "MaxRange": "12.0",
+        "HitChance": "50",
+        "AimingPerkHitChanceModifier": "4",
+        "ProjectileCount": "1",
+        "CriticalChance": "20.0",
+        "CritDmgMultiplier": "4.0",
+        "HaveChamber": "false",
+        "WeaponReloadType": "revolver",
+        "AmmoType": "base:bullets_357"
+      }
+    },
+    {
+      "name": "Native Revolver_Short",
+      "type": "Base.Revolver_Short",
+      "fields": {
+        "MinDamage": "0.5",
+        "MaxDamage": "0.8",
+        "RecoilDelay": "11",
+        "MaxAmmo": "5",
+        "MaxRange": "8.0",
+        "HitChance": "50",
+        "AimingPerkHitChanceModifier": "4",
+        "ProjectileCount": "1",
+        "CriticalChance": "20.0",
+        "CritDmgMultiplier": "4.0",
+        "HaveChamber": "false",
+        "WeaponReloadType": "revolver",
+        "AmmoType": "base:bullets_38"
+      }
+    },
+    {
+      "name": "Native Revolver_Long",
+      "type": "Base.Revolver_Long",
+      "fields": {
+        "MinDamage": "1.0",
+        "MaxDamage": "1.6",
+        "RecoilDelay": "17",
+        "MaxAmmo": "6",
+        "MaxRange": "18.0",
+        "HitChance": "50",
+        "AimingPerkHitChanceModifier": "4",
+        "ProjectileCount": "1",
+        "CriticalChance": "20.0",
+        "CritDmgMultiplier": "4.0",
+        "HaveChamber": "false",
+        "WeaponReloadType": "revolver",
+        "AmmoType": "base:bullets_44"
+      }
+    },
+    {
+      "name": "Native AssaultRifle",
+      "type": "Base.AssaultRifle",
+      "fields": {
+        "MinDamage": "1.0",
+        "MaxDamage": "1.6",
+        "RecoilDelay": "15",
+        "MaxAmmo": "30",
+        "MaxRange": "30.0",
+        "HitChance": "50",
+        "AimingPerkHitChanceModifier": "4",
+        "ProjectileCount": "1",
+        "CriticalChance": "20.0",
+        "CritDmgMultiplier": "4.0",
+        "CyclicRateMultiplier": "1.0",
+        "MagazineType": "Base.556Clip",
+        "WeaponReloadType": "boltaction",
+        "FireModePossibilities": "Auto/Single",
+        "AmmoType": "base:bullets_556",
+        "TwoHandWeapon": "true"
+      }
+    },
+    {
+      "name": "Native AssaultRifle2",
+      "type": "Base.AssaultRifle2",
+      "fields": {
+        "MinDamage": "1.2",
+        "MaxDamage": "2.0",
+        "RecoilDelay": "20",
+        "MaxAmmo": "20",
+        "MaxRange": "40.0",
+        "HitChance": "50",
+        "AimingPerkHitChanceModifier": "4",
+        "ProjectileCount": "1",
+        "CriticalChance": "30.0",
+        "CritDmgMultiplier": "4.0",
+        "MagazineType": "Base.M14Clip",
+        "WeaponReloadType": "boltaction",
+        "AmmoType": "base:bullets_308",
+        "TwoHandWeapon": "true"
+      }
+    },
+    {
+      "name": "Native HuntingRifle",
+      "type": "Base.HuntingRifle",
+      "fields": {
+        "MinDamage": "1.2",
+        "MaxDamage": "2.0",
+        "RecoilDelay": "23",
+        "MaxAmmo": "4",
+        "MaxRange": "40.0",
+        "HitChance": "50",
+        "AimingPerkHitChanceModifier": "4",
+        "ProjectileCount": "1",
+        "CriticalChance": "30.0",
+        "CritDmgMultiplier": "4.0",
+        "RackAfterShoot": "true",
+        "WeaponReloadType": "boltactionnomag",
+        "AmmoType": "base:bullets_308",
+        "TwoHandWeapon": "true"
+      }
+    },
+    {
+      "name": "Native VarmintRifle",
+      "type": "Base.VarmintRifle",
+      "fields": {
+        "MinDamage": "1.0",
+        "MaxDamage": "1.6",
+        "RecoilDelay": "17",
+        "MaxAmmo": "5",
+        "MaxRange": "30.0",
+        "HitChance": "50",
+        "AimingPerkHitChanceModifier": "4",
+        "ProjectileCount": "1",
+        "CriticalChance": "20.0",
+        "CritDmgMultiplier": "4.0",
+        "RackAfterShoot": "true",
+        "WeaponReloadType": "boltactionnomag",
+        "AmmoType": "base:bullets_556",
+        "TwoHandWeapon": "true"
+      }
+    },
+    {
+      "name": "Native Shotgun",
+      "type": "Base.Shotgun",
+      "fields": {
+        "MinDamage": "1.5",
+        "MaxDamage": "2.2",
+        "RecoilDelay": "30",
+        "MaxAmmo": "5",
+        "MaxRange": "12.0",
+        "HitChance": "65",
+        "AimingPerkHitChanceModifier": "4",
+        "ProjectileCount": "9",
+        "CriticalChance": "70.0",
+        "CritDmgMultiplier": "12.0",
+        "RackAfterShoot": "true",
+        "WeaponReloadType": "shotgun",
+        "AmmoType": "base:shotgun_shells",
+        "TwoHandWeapon": "true"
+      }
+    },
+    {
+      "name": "Native DoubleBarrelShotgun",
+      "type": "Base.DoubleBarrelShotgun",
+      "fields": {
+        "MinDamage": "1.5",
+        "MaxDamage": "2.2",
+        "RecoilDelay": "30",
+        "MaxAmmo": "2",
+        "MaxRange": "15.0",
+        "HitChance": "65",
+        "AimingPerkHitChanceModifier": "4",
+        "ProjectileCount": "9",
+        "CriticalChance": "70.0",
+        "CritDmgMultiplier": "12.0",
+        "HaveChamber": "false",
+        "RackAfterShoot": "false",
+        "WeaponReloadType": "doublebarrelshotgun",
+        "AmmoType": "base:shotgun_shells",
+        "TwoHandWeapon": "true"
+      }
+    },
+    {
+      "name": "Firearms M4",
+      "type": "Base.M4",
+      "fields": {
+        "MinDamage": "1",
+        "MaxDamage": "2.75",
+        "RecoilDelay": "50",
+        "MaxAmmo": "30",
+        "MaxRange": "25",
+        "HitChance": "50",
+        "AimingPerkHitChanceModifier": "7",
+        "ProjectileCount": "1",
+        "CriticalChance": "20",
+        "CritDmgMultiplier": "4",
+        "CyclicRateMultiplier": "1.0",
+        "RackAfterShoot": "FALSE",
+        "MagazineType": "Base.556Clip",
+        "WeaponReloadType": "boltaction",
+        "FireModePossibilities": "Auto/Single",
+        "AmmoType": "base:bullets_556",
+        "TwoHandWeapon": "TRUE"
+      }
+    },
+    {
+      "name": "Firearms Pistol",
+      "type": "Base.Pistol",
+      "fields": {
+        "MinDamage": "0.65",
+        "MaxDamage": "2",
+        "RecoilDelay": "15",
+        "MaxAmmo": "15",
+        "MaxRange": "15",
+        "HitChance": "40",
+        "AimingPerkHitChanceModifier": "5",
+        "ProjectileCount": "1",
+        "CriticalChance": "20",
+        "CritDmgMultiplier": "4",
+        "RackAfterShoot": "FALSE",
+        "MagazineType": "Base.9mmClip",
+        "WeaponReloadType": "handgun",
+        "AmmoType": "base:bullets_9mm",
+        "TwoHandWeapon": "FALSE"
+      }
+    },
+    {
+      "name": "Firearms Shotgun",
+      "type": "Base.Shotgun",
+      "fields": {
+        "MinDamage": "1.5",
+        "MaxDamage": "2.2",
+        "RecoilDelay": "30",
+        "MaxAmmo": "6",
+        "MaxRange": "15",
+        "HitChance": "65",
+        "AimingPerkHitChanceModifier": "4",
+        "ProjectileCount": "9",
+        "CriticalChance": "70",
+        "CritDmgMultiplier": "12",
+        "HaveChamber": "TRUE",
+        "RackAfterShoot": "TRUE",
+        "WeaponReloadType": "shotgun",
+        "AmmoType": "base:shotgun_shells",
+        "TwoHandWeapon": "TRUE"
+      }
+    },
+    {
+      "name": "Firearms HuntingRifle",
+      "type": "Base.HuntingRifle",
+      "fields": {
+        "MinDamage": "1.25",
+        "MaxDamage": "3",
+        "RecoilDelay": "40",
+        "MaxAmmo": "3",
+        "MaxRange": "30",
+        "HitChance": "55",
+        "AimingPerkHitChanceModifier": "5",
+        "ProjectileCount": "1",
+        "CriticalChance": "30",
+        "CritDmgMultiplier": "10",
+        "RackAfterShoot": "TRUE",
+        "WeaponReloadType": "boltactionnomag",
+        "AmmoType": "base:bullets_308",
+        "TwoHandWeapon": "TRUE"
+      }
+    }
+  ]
+}

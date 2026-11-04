@@ -1,19 +1,28 @@
 {
   "haul": {
-    "expectedSuccessfulContainers": 2076.8553590417087,
-    "oneOrTwoShare": 0.8394986241145925,
-    "jackpotShare": 0.02792641727600981
+    "expectedSuccessfulContainers": 6643.626641660177,
+    "oneOrTwoShare": 0.7043642218461008,
+    "jackpotShare": 0.09671140848533878
   },
   "status": "passed",
   "scope": "Numerical model, seeded per-container spawning and extracted-data integrity; no in-game spawn certification",
-  "generatedItems": 3374,
-  "elapsedMs": 5210,
-  "candidates": 18630,
+  "generatedItems": 15888,
+  "elapsedMs": 5947,
+  "candidates": 32307,
   "worldSamples": 256,
   "baseline": {
     "version": 1,
-    "baseline": "T&T 0.2.28",
+    "baseline": "T&T 0.2.65",
     "seed": 24601,
+    "tierWeights": {
+      "Abundant": 20,
+      "Common": 18,
+      "Uncommon": 14,
+      "Rare": 10,
+      "Epic": 6,
+      "Legendary": 3,
+      "Mythic": 1
+    },
     "global": 1,
     "material": 0.6,
     "rolls": 1,
@@ -35,48 +44,94 @@
       "CapacityLarge": true,
       "Autoloader": true,
       "Critical": true,
-      "Accuracy": true
+      "Accuracy": true,
+      "Magazine": true,
+      "Splitter": true,
+      "Fragment": true,
+      "FiringEnhanced": true,
+      "MotionDetectionEnhanced": true,
+      "Piercing": true,
+      "InitialBlow": true,
+      "Execute": true,
+      "Impact": true,
+      "Conservation": true,
+      "Synergy": true,
+      "Martyrdom": true,
+      "Tack": true,
+      "Regulator": true,
+      "Siphon": true,
+      "Lure": true,
+      "Void": true,
+      "Grid": true,
+      "ManualBallista": true,
+      "ManualRotaryBlades": true,
+      "ManualLobber": true,
+      "ManualArc": true,
+      "ManualFirearms": true
     },
     "items": {
-      "Firing": 1,
-      "MotionDetection": 1,
-      "Filter": 1,
-      "Detection360": 1,
-      "Suppression": 1,
-      "RapidFire": 1,
-      "Reload": 1,
-      "Velocity": 1,
-      "Range": 1,
-      "CapacitySmall": 1,
-      "Capacity": 1,
-      "CapacityLarge": 1,
-      "Autoloader": 1,
-      "Critical": 1,
-      "Accuracy": 1
+      "Firing": 0.4666666666666667,
+      "MotionDetection": 0.4666666666666667,
+      "Filter": 3.6,
+      "Detection360": 4,
+      "Suppression": 4,
+      "RapidFire": 3.6,
+      "Reload": 4,
+      "Velocity": 2,
+      "Range": 3.6,
+      "CapacitySmall": 1.8666666666666667,
+      "Capacity": 2.4,
+      "CapacityLarge": 2,
+      "Autoloader": 0.6666666666666666,
+      "Critical": 4,
+      "Accuracy": 4,
+      "Magazine": 3.6,
+      "Splitter": 2.4,
+      "Fragment": 1.2,
+      "FiringEnhanced": 0.6666666666666666,
+      "MotionDetectionEnhanced": 0.6666666666666666,
+      "Piercing": 4,
+      "InitialBlow": 2.4,
+      "Execute": 1.2,
+      "Impact": 2.4,
+      "Conservation": 2.4,
+      "Synergy": 1,
+      "Martyrdom": 2,
+      "Tack": 2,
+      "Regulator": 3.6363636363636362,
+      "Siphon": 1,
+      "Lure": 1,
+      "Void": 1,
+      "Grid": 1,
+      "ManualBallista": 14,
+      "ManualRotaryBlades": 14,
+      "ManualLobber": 10,
+      "ManualArc": 6,
+      "ManualFirearms": 10
     }
   },
   "selectedEstimate": {
-    "mean": 3462.3993242187494,
-    "lo": 3340,
-    "hi": 3583
+    "mean": 15932.302093359378,
+    "lo": 15523,
+    "hi": 16322
   },
-  "allComponentsMean": 3462.3993242187494,
+  "allComponentsMean": 15932.302093359378,
   "pools": [
     {
       "name": "ElectronicStoreMisc",
-      "containers": 53.4609375
+      "containers": 52.62109375
     },
     {
       "name": "CrateElectronics",
-      "containers": 432.23828125
+      "containers": 430.7734375
     },
     {
       "name": "MechanicShelfElectric",
-      "containers": 44.734375
+      "containers": 45.5625
     },
     {
       "name": "ArmyStorageElectronics",
-      "containers": 45.46484375
+      "containers": 45.23828125
     },
     {
       "name": "ElectricianTools",
@@ -84,121 +139,141 @@
     },
     {
       "name": "GunStoreAccessories",
-      "containers": 5.1171875
+      "containers": 4.9921875
     },
     {
       "name": "ToolCabinetMechanics",
-      "containers": 211.8203125
+      "containers": 211.55859375
     },
     {
       "name": "GarageTools",
-      "containers": 460.03125
+      "containers": 461.34765625
     },
     {
       "name": "CrateTools",
-      "containers": 906.37109375
+      "containers": 907.11328125
     },
     {
       "name": "ToolStoreTools",
-      "containers": 126.9453125
+      "containers": 126.2890625
     },
     {
       "name": "ToolStoreMisc",
-      "containers": 170.7734375
+      "containers": 171.375
     },
     {
       "name": "MechanicShelfTools",
-      "containers": 758.015625
+      "containers": 757.77734375
     },
     {
       "name": "GarageMechanics",
-      "containers": 786.6171875
+      "containers": 787.26171875
     },
     {
       "name": "CrateMechanics",
-      "containers": 116.44921875
+      "containers": 113.76171875
     },
     {
       "name": "ElectronicStoreComputers",
-      "containers": 51.8984375
+      "containers": 51.82421875
     },
     {
       "name": "ElectronicStoreHAMRadio",
-      "containers": 2.51953125
+      "containers": 2.65625
+    },
+    {
+      "name": "LibraryBooks",
+      "containers": 112.19140625
+    },
+    {
+      "name": "BookstoreBlueCollar",
+      "containers": 21.30078125
+    },
+    {
+      "name": "BookstoreScience",
+      "containers": 7.1171875
+    },
+    {
+      "name": "LivingRoomShelf",
+      "containers": 4107.31640625
+    },
+    {
+      "name": "MagazineRackMixed",
+      "containers": 109.1171875
     }
   ],
   "regions": [
     {
       "name": "WestPoint",
-      "mean": 178.7904734375065,
-      "lo": 153,
-      "hi": 210
+      "mean": 752.533000781217,
+      "lo": 678,
+      "hi": 823
     },
     {
       "name": "Riverside",
-      "mean": 311.14576171875336,
-      "lo": 268,
-      "hi": 351
+      "mean": 1021.7283128906226,
+      "lo": 914,
+      "hi": 1130
     },
     {
       "name": "Muldraugh",
-      "mean": 222.83272421875117,
-      "lo": 191,
-      "hi": 251
+      "mean": 830.0265187499715,
+      "lo": 748,
+      "hi": 902
     },
     {
       "name": "Brandenburg",
-      "mean": 167.5576984375039,
-      "lo": 140,
-      "hi": 196
+      "mean": 635.7373816406233,
+      "lo": 566,
+      "hi": 704
     },
     {
       "name": "Ekron",
-      "mean": 209.9612093750082,
-      "lo": 177,
-      "hi": 242
+      "mean": 669.0737882812223,
+      "lo": 591,
+      "hi": 736
     },
     {
       "name": "Irvington",
-      "mean": 225.04306875000307,
-      "lo": 194,
-      "hi": 255
+      "mean": 801.4862906250102,
+      "lo": 725,
+      "hi": 884
     },
     {
       "name": "EchoCreek",
-      "mean": 172.06279687501137,
-      "lo": 148,
-      "hi": 201
+      "mean": 521.1362941406217,
+      "lo": 458,
+      "hi": 590
     },
     {
       "name": "Louisville",
-      "mean": 1348.2136203124437,
-      "lo": 1275,
-      "hi": 1445
+      "mean": 8397.966821484039,
+      "lo": 8122,
+      "hi": 8657
     },
     {
       "name": "MarchRidge",
-      "mean": 74.33264375000294,
-      "lo": 52,
-      "hi": 97
+      "mean": 404.0884968750333,
+      "lo": 346,
+      "hi": 460
     },
     {
       "name": "FallasLake",
-      "mean": 145.77835468750612,
-      "lo": 118,
-      "hi": 173
+      "mean": 512.1576761718782,
+      "lo": 439,
+      "hi": 584
     },
     {
       "name": "Rosewood",
-      "mean": 199.04357187500227,
-      "lo": 168,
-      "hi": 232
+      "mean": 766.0478953124892,
+      "lo": 684,
+      "hi": 865
     },
     {
       "name": "ValleyStation",
-      "mean": 207.6374007812578,
-      "lo": 174,
-      "hi": 238
+      "mean": 620.3196164062498,
+      "lo": 540,
+      "hi": 700
     }
   ]
 }

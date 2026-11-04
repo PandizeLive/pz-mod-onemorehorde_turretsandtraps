@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+    <m_Name>OMHTTBedTrip</m_Name>
+    <m_AnimName>Zombie_HitDeath_HeadTop</m_AnimName>
+    <m_Priority>10</m_Priority>
+    <m_Looped>false</m_Looped>
+    <m_useDeferredMovement>false</m_useDeferredMovement>
+    <m_BlendTime>0.10</m_BlendTime>
+    <m_SpeedScale>1.0</m_SpeedScale>
+    <m_Conditions>
+        <m_Name>BumpType</m_Name>
+        <m_Type>STRING</m_Type>
+        <m_Value>OMHTTBedTrip</m_Value>
+    </m_Conditions>
+    <m_Events>
+        <m_EventName>PlaySound</m_EventName>
+        <m_Time>Start</m_Time>
+        <m_ParameterValue>ZombieTrip</m_ParameterValue>
+    </m_Events>
+    <m_Events>
+        <m_EventName>PlaySound</m_EventName>
+        <m_TimePc>0.5</m_TimePc>
+        <m_ParameterValue>BodyHitGround</m_ParameterValue>
+    </m_Events>
+    <m_Events>
+        <m_EventName>SetVariable</m_EventName>
+        <m_TimePc>0.5</m_TimePc>
+        <m_ParameterValue>OMHTTBedLanded=true</m_ParameterValue>
+    </m_Events>
+    <m_Events>
+        <m_EventName>FallOnFront</m_EventName>
+        <m_TimePc>0.5</m_TimePc>
+        <m_ParameterValue>true</m_ParameterValue>
+    </m_Events>
+    <m_Events>
+        <m_EventName>SetVariable</m_EventName>
+        <m_Time>End</m_Time>
+        <m_ParameterValue>SprinterTripped=true</m_ParameterValue>
+    </m_Events>
+    <m_Events>
+        <m_EventName>SetVariable</m_EventName>
+        <m_Time>End</m_Time>
+        <m_ParameterValue>BumpAnimFinished=true</m_ParameterValue>
+    </m_Events>
+</animNode>

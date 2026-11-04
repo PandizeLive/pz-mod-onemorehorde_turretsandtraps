@@ -17,8 +17,9 @@ def main():
     parent.mkdir(parents=True, exist_ok=True)
     project = Path(tempfile.mkdtemp(prefix="split-", dir=parent))
     (project / "tools").mkdir()
-    for name in ["OMH-Release.ps1", "Install-Packages.ps1"]:
+    for name in ["OMH-Release.ps1", "Install-Packages.ps1", "OMH-WorkshopCommon.ps1", "OMH-SteamHelpers.ps1", "Publish-OMHWorkshop.ps1"]:
         shutil.copy2(ROOT / "tools" / name, project / "tools" / name)
+    (project / "workshop.txt").write_text("version=1\nid=\ntitle=OMH: Turrets & Traps\nvisibility=unlisted\n")
     source = project / "Source/version.txt"
     source.parent.mkdir()
     source.write_text("fixture")
@@ -36,7 +37,7 @@ def main():
     def run(args, success=True):
         result = subprocess.run(args, cwd=project, capture_output=True, text=True)
         assert (result.returncode == 0) == success, result.stdout + result.stderr
-        return result.stdout
+        return result.stdout + result.stderr
 
     def git(*args):
         return run(["git", "-c", "user.name=Release Fixture", "-c", "user.email=fixture@example.invalid", *args])
@@ -101,14 +102,16 @@ function Move-Item {
 }
 & (Join-Path $PSScriptRoot 'tools/Install-Packages.ps1') -ModsDirectory (Join-Path $PSScriptRoot 'installed-mods')
 ''')
-    run([str(SHELL), "-NoProfile", "-File", str(failure_script)], success=False)
+    rollback = run([str(SHELL), "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(failure_script)], success=False)
+    assert "Injected second-package failure" in rollback
     for identifier in IDS:
         assert (mods / identifier / "42.20/mod.info").read_bytes() == (project / "Contents/mods" / identifier / "42.20/mod.info").read_bytes()
     assert (mods / IDS[0] / "owner-note.txt").read_text() == "keep current notes"
-    for action in ["Mirror", "Publish"]:
-        run([str(SHELL), "-NoProfile", "-File", str(project / "tools/OMH-Release.ps1"), "-Action", action, "-ValidateOnly"], success=False)
-    summary = "PASS: two-package install, legacy retirement/full backup, repeat install, owner-file preservation, transactional rollback, read-only readiness, modified/untracked/unmanaged refusal, branch/tag gates, unavailable publication."
-    (ROOT / "diagnostics/v0.2.29/release-tools.log").write_text(summary + "\nFixture: " + str(project) + "\n")
+    run([str(SHELL), "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(project / "tools/OMH-Release.ps1"), "-Action", "Mirror", "-ValidateOnly"], success=False)
+    pending = run([str(SHELL), "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(project / "tools/OMH-Release.ps1"), "-Action", "Publish", "-ValidateOnly", "-UserDataRoot", str(project / "user-data")], success=False)
+    assert "Initial in-game upload is pending" in pending
+    summary = "PASS: two-package install, legacy retirement/full backup, repeat install, owner-file preservation, transactional rollback, read-only readiness, modified/untracked/unmanaged refusal, branch/tag gates, native-first publication gate."
+    (parent / "install-results.log").write_text(summary + "\nFixture: " + str(project) + "\n")
     print(summary)
 
 

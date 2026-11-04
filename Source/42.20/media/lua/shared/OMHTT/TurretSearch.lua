@@ -2,6 +2,7 @@ local Budget = require("OMHTT/TurretScheduler")
 local Clock = require("OMHTT/TurretClock")
 local T = require("OMHTT/Turret")
 local M = require("OMHTT/TurretModules")
+local CombatPolicy = require("OMHTT/ControlCombat")
 local D = require("OMHTT/Diagnostics")
 local S = {targets = setmetatable({}, {__mode = "k"}), pending = {}, order = {}, cursor = 1, results = setmetatable({}, {__mode = "k"})}
 
@@ -14,10 +15,11 @@ function S.request(player, object)
     local aim = require("OMHTT/TurretAim").entries[object]
     if aim and aim.player then return "Aiming" end
     local profile = M.profile(T.state(object), T.contents(object:getContainer()))
+    profile.object = object
     local held = S.targets[object]
     local Combat = require("OMHTT/PrototypeCombat")
     if held and held.priority == profile.priority and (profile.priority == "Random" or profile.priority == "Toughest")
-        and M.inside(object:getSquare(), held.target, profile)
+        and CombatPolicy.eligible(object, held.target) and M.inside(object:getSquare(), held.target, profile)
         and Combat.clearLane(object:getSquare(), held.target:getSquare(), profile.range) then
         return require("OMHTT/TurretWorld").fire(player, object, held.target)
     end
@@ -36,9 +38,12 @@ end
 function S.finish(entry, result)
     S.pending[entry.object] = nil
     S.results[entry.object] = {status = result, at = getTimestampMs()}
+    if isServer() and T.state(entry.object) then
+        sendServerCommand(entry.player, "OMHTT_TurretControl", "Result", {id = T.state(entry.object).id, status = result})
+    end
     D.emit("turret-manual-search", {id = T.state(entry.object) and T.state(entry.object).id,
         result = result, queueMs = getTimestampMs() - entry.started, searchMs = entry.workMs,
-        slices = entry.slices, visits = entry.job.visited})
+        slices = entry.slices, visits = entry.job.visited}, nil, nil, "turrets")
 end
 
 ---@param entry table Queued search
@@ -54,6 +59,7 @@ function S.step(entry, deadline)
     local contents = T.contents(object:getContainer())
     if not W.power(object, contents) then S.finish(entry, "NoPower"); return true end
     local profile = M.profile(T.state(object), contents)
+    profile.object = object
     local old = entry.job.profile
     if profile.range ~= old.range or profile.cone ~= old.cone or profile.priority ~= old.priority or profile.heading ~= old.heading then
         S.finish(entry, "Unavailable")
@@ -74,7 +80,7 @@ end
 
 ---@return nil
 function S.tick()
-    if isClient() or isServer() then return end
+    if isClient() then return end
     local deadline = Budget.limit(2)
     local count = math.min(4, #S.order)
     for i = 1, count do

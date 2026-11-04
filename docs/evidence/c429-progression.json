@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-22",
+  "kind": "read-only current native and third-party source review; no runtime progression test",
+  "files": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\ProjectZomboid\\media\\scripts\\generated\\characters\\character_professions.txt",
+      "sha256": "80ee5dc38898eaceff7d0672c1aaaa0fab83b0055b380c2ef8231c9114b0c030"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\ProjectZomboid\\media\\scripts\\generated\\characters\\character_traits.txt",
+      "sha256": "d8524deb6ba3e979d2910822988bf21d237b3475c296d5ef4ae2947d2cdf9116"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\ProjectZomboid\\media\\scripts\\generated\\recipes\\recipes_radio.txt",
+      "sha256": "f47ca78639a824e59f408b9a22af5483e34ec95f7855a0c38f41cfd2634daa4e"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\ProjectZomboid\\media\\scripts\\generated\\recipes\\recipes_electrical.txt",
+      "sha256": "882dafb0a22a9c7d441c6d5b2743e60c7557a99e9c272e7a76e099a7951b1669"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\ProjectZomboid\\media\\scripts\\generated\\recipes\\recipes_traps.txt",
+      "sha256": "7d76023bba46cd8a1bd2abd6fd558b23ae26c1a4ce6cec3fd5b7ab28ec07ba19"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\ProjectZomboid\\media\\scripts\\generated\\recipes\\recipes_carpentry.txt",
+      "sha256": "b5c591529176da3462c82babd3f6e24b1a107089debb3007c816470330202f0b"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\ProjectZomboid\\media\\lua\\server\\XpSystem\\XPSystem_SkillBook.lua",
+      "sha256": "e54fb596b2e44b689e56ff8bbe81524fc0292b9138699280c4b09f33e1d60f80"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\108600\\2855343540\\mods\\AngryTurrets\\media\\scripts\\AT_item.txt",
+      "sha256": "3a94cbef99c7d73759bde44a59a9de985537999108cba5a84995c56d5fee2345"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\108600\\2855343540\\mods\\AngryTurrets\\media\\lua\\client\\AT_EngineerGettingAngry.lua",
+      "sha256": "61d90da406a22f3680970e1b803842c5af283be9f57a417826db006223d94b87"
+    }
+  ],
+  "xp_example": {
+    "mechanics_start": 1,
+    "next_level_xp": 150,
+    "poke_base_xp": 20,
+    "starting_bonus_coefficient": 1,
+    "book_multiplier": 3,
+    "crafts_with_book": 3,
+    "crafts_without_book": 8,
+    "assumptions": "XP multiplier 1, no other learner modifiers; consumed materials and book acquisition still required"
+  }
+}

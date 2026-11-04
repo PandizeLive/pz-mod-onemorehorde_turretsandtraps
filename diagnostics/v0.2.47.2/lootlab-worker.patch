@@ -1,0 +1,19 @@
+--- a/cloudflare-api/src/loot-lab.ts
++++ b/cloudflare-api/src/loot-lab.ts
+@@ -3 +3 @@
+-const FILES = new Set(["index.html", "style.css", "app.js", "model.js", "map-controls.js", "settings-sync.js", "data.js", "README.md", "provenance.json"]);
++const FILES = new Set(["index.html", "style.css", "app.js", "model.js", "tier-list.js", "map-controls.js", "settings-sync.js", "data.js", "README.md", "provenance.json"]);
+--- a/cloudflare-api/tools/sync-loot-lab.mjs
++++ b/cloudflare-api/tools/sync-loot-lab.mjs
+@@ -13 +13 @@
+-for(const name of ['index.html','style.css','app.js','model.js','map-controls.js','settings-sync.js','data.js','README.md','provenance.json']) {
++for(const name of ['index.html','style.css','app.js','model.js','tier-list.js','map-controls.js','settings-sync.js','data.js','README.md','provenance.json']) {
+--- a/cloudflare-api/tests/loot-lab.test.ts
++++ b/cloudflare-api/tests/loot-lab.test.ts
+@@ -18 +18 @@
+-  for (const path of ["/admin/LootLab", "/admin/LootLab/", "/admin/LootLab/data.js", "/admin/LootLab/app.js", "/admin/LootLab/model.js", "/admin/LootLab/map-controls.js", "/admin/LootLab/settings-sync.js", "/admin/LootLab/settings", "/admin/LootLab/style.css", "/admin/LootLab/provenance.json", "/admin/LootLab/README.md"]) {
++  for (const path of ["/admin/LootLab", "/admin/LootLab/", "/admin/LootLab/data.js", "/admin/LootLab/app.js", "/admin/LootLab/model.js", "/admin/LootLab/tier-list.js", "/admin/LootLab/map-controls.js", "/admin/LootLab/settings-sync.js", "/admin/LootLab/settings", "/admin/LootLab/style.css", "/admin/LootLab/provenance.json", "/admin/LootLab/README.md"]) {
+--- a/cloudflare-api/tests/loot-lab-page.test.ts
++++ b/cloudflare-api/tests/loot-lab-page.test.ts
+@@ -28,0 +29 @@
++ vm.runInContext(readFileSync(new URL('tier-list.js',site),'utf8'),context);

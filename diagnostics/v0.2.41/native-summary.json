@@ -1,0 +1,55 @@
+{
+  "stockFirst": true,
+  "gameVersion": "42.21.0",
+  "nativeWriteSeconds": 50.1,
+  "nativeReadSeconds": 51.2,
+  "logs": {
+    "server-write.log": {
+      "sha256": "701b7a6ffbe04b3032b296538f78dfa17415093a08325ee3acda82dbdf598a0c",
+      "evidence": [
+        "[OMHTT-Smoke] native-heavy-expansion potatoes=228 countAllowance=750 nativeWeightLimit=50",
+        "[OMHTT-Smoke] native-large-expansion rounds=750 weight=real overflow=blocked",
+        "[OMHTT-Smoke] native-component-list visible=23 hidden=0 duplicates=0 legacy=removed",
+        "[OMHTT-Smoke] native-improvised mode=write items=5 identity=exact loaded=1 cooldown=preserved",
+        "[OMHTT-Smoke] native-turret-persistence mode=write items=8 charge=0.37 health=37 cooldown=preserved identity=exact sprite=valid",
+        "[OMHTT-Smoke] native-firearm-persistence mode=write guns=20 rounds=conserved identity=exact attachments=preserved",
+        "[OMHTT-Smoke] native-module-loot-parser pools=16 items=150 weights=positive",
+        "[OMHTT-Smoke] native-persistence mode=write parts=28 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved legacy=8 edges=8 outline=4 reinforced=8 orientation=preserved",
+        "Shutdown handling finished"
+      ]
+    },
+    "server-read.log": {
+      "sha256": "214f5a38e36c33af763717945d212513d8cc53371c9b2e0a8680cdc1e3fd4caa",
+      "evidence": [
+        "[OMHTT-Smoke] native-heavy-expansion potatoes=228 countAllowance=750 nativeWeightLimit=50",
+        "[OMHTT-Smoke] native-large-expansion rounds=750 weight=real overflow=blocked",
+        "[OMHTT-Smoke] native-component-list visible=23 hidden=0 duplicates=0 legacy=removed",
+        "[OMHTT-Smoke] native-improvised mode=read items=5 identity=exact loaded=1 cooldown=preserved",
+        "[OMHTT-Smoke] native-turret-persistence mode=read items=8 charge=0.37 health=37 cooldown=preserved identity=exact sprite=valid",
+        "[OMHTT-Smoke] native-firearm-persistence mode=read guns=20 rounds=conserved identity=exact attachments=preserved",
+        "[OMHTT-Smoke] native-module-loot-parser pools=16 items=150 weights=positive",
+        "[OMHTT-Smoke] native-persistence mode=read parts=28 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved legacy=8 edges=8 outline=4 reinforced=8 orientation=preserved",
+        "Shutdown handling finished"
+      ]
+    },
+    "firearms-b42.log": {
+      "sha256": "746ee96c301ca0710a6a92abf48ce27aeda823f93b5086604ed465aa862d66e0",
+      "evidence": [
+        "[OMHTT-Modded] cadence=Base.M4 normal=296.2962962962963 enhanced=222.22222222222223",
+        "[OMHTT-Modded] cadence=Base.AssaultRifle normal=296.2962962962963 enhanced=222.22222222222223",
+        "[OMHTT-Modded] PASS accepted=51 skipped=2 conservedShots=153",
+        "Shutdown handling finished"
+      ]
+    }
+  },
+  "handheldPropertiesUnchanged": {
+    "guns": 51,
+    "properties": [
+      "fireMode",
+      "recoilDelay",
+      "cyclicRateMultiplier"
+    ],
+    "proof": "assertions before and after real feed/fire in modded_firearms_smoke.lua"
+  },
+  "renderedAcceptance": "pending"
+}

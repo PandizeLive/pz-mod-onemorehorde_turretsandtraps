@@ -1,0 +1,113 @@
+{
+  "version": "0.2.38.1",
+  "date": "2026-10-10",
+  "capture": "20261010-231708-7721",
+  "consoleSha256": "75d242b7be69026bee54b9bda7c6e2a3505225c5053a57aea6c457eab23b2a95",
+  "lines": [
+    3523,
+    4283
+  ],
+  "summaryWindows": 59,
+  "maximaMs": {
+    "active-update-gapMaxMs": 368.0,
+    "barb-contactMaxMs": 2.0,
+    "bed-contactMaxMs": 2.0,
+    "potato-audio_audioMsMax": 3.0,
+    "potato-audio_playMsMax": 2.0,
+    "turret-reload-audio_audioMsMax": 0.0,
+    "head-renderMaxMs": 4.0,
+    "range-renderMaxMs": 1.0,
+    "turret-fire-result_fireMsMax": 8.0
+  },
+  "largestGapWindows": [
+    {
+      "line": 3781,
+      "ms": 368,
+      "at": 1791688438279
+    },
+    {
+      "line": 3566,
+      "ms": 316,
+      "at": 1791688252800
+    },
+    {
+      "line": 3764,
+      "ms": 291,
+      "at": 1791688398171
+    },
+    {
+      "line": 3777,
+      "ms": 285,
+      "at": 1791688423237
+    },
+    {
+      "line": 3753,
+      "ms": 257,
+      "at": 1791688368053
+    },
+    {
+      "line": 3749,
+      "ms": 255,
+      "at": 1791688353016
+    },
+    {
+      "line": 3606,
+      "ms": 224,
+      "at": 1791688262825
+    },
+    {
+      "line": 3786,
+      "ms": 215,
+      "at": 1791688458332
+    }
+  ],
+  "totals": {
+    "bed-trip": 79,
+    "bed-fall": 71,
+    "shot-launched": 11,
+    "barb-contactCount": 94004,
+    "bed-contactCount": 98471,
+    "potato-audio": 25,
+    "turret-reload-audio": 5
+  },
+  "pitchSetterMessages": 0,
+  "gameplayErrors": [
+    {
+      "line": 3757,
+      "text": "ERROR: General      f:6963 at CellLoader.DoTileObjectCreation     > CellLoader> missing tile vegetation_groundcover_01_23"
+    },
+    {
+      "line": 3768,
+      "text": "ERROR: General      f:8377 at CellLoader.DoTileObjectCreation     > CellLoader> missing tile vegetation_groundcover_01_22"
+    },
+    {
+      "line": 3769,
+      "text": "ERROR: General      f:8378 at CellLoader.DoTileObjectCreation     > CellLoader> missing tile vegetation_groundcover_01_21"
+    },
+    {
+      "line": 3770,
+      "text": "ERROR: General      f:8404 at CellLoader.DoTileObjectCreation     > CellLoader> missing tile vegetation_groundcover_01_19"
+    },
+    {
+      "line": 3771,
+      "text": "ERROR: General      f:8404 at CellLoader.DoTileObjectCreation     > CellLoader> missing tile vegetation_groundcover_01_18"
+    }
+  ],
+  "ownerReport": "Seems like lag is gone.",
+  "limits": [
+    "Informal comparison; crowd size and workload not measured as identical.",
+    "Active-update gaps are elapsed intervals, not a CPU profile.",
+    "Audio quality and every old checklist item are not explicitly confirmed.",
+    "Only 11 shots versus 58 in the baseline; five reload calls were timed at 0 ms at the clock resolution, not proven zero cost."
+  ],
+  "summarySpanSeconds": 290.763,
+  "captureDuringGameplay": true,
+  "baseline": {
+    "version": "0.2.38",
+    "summaryWindows": 81,
+    "maxGapMs": 1077,
+    "maxAudioMs": 674,
+    "shotLaunched": 58
+  },
+  "disposition": "Owner-reported noticeable lag appears resolved in this sample; logs support substantial audio improvement, with residual update gaps. No universal performance or audio-quality acceptance."
+}

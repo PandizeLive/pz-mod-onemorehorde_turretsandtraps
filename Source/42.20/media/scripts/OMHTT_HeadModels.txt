@@ -1,0 +1,8 @@
+module Base {
+    model OMHTTDevBallista { mesh = OMHTT_DevBallista, texture = OMHTT/ProbeWhite, scale = 1.0, static = true, shader = basicEffect, }
+    model OMHTTDevScrapshot { mesh = OMHTT_DevScrapshot, texture = OMHTT/ProbeWhite, scale = 1.0, static = true, shader = basicEffect, }
+    model OMHTTDevLobber { mesh = OMHTT_DevLobber, texture = OMHTT/ProbeWhite, scale = 1.0, static = true, shader = basicEffect, }
+    model OMHTTDevArc { mesh = OMHTT_DevArc, texture = OMHTT/ProbeWhite, scale = 1.0, static = true, shader = basicEffect, }
+    model OMHTTDevRotaryBat { mesh = OMHTT_DevRotaryBat, texture = OMHTT/ProbeWhite, scale = 1.0, static = true, shader = basicEffect, }
+    model OMHTTDevRotaryBlades { mesh = OMHTT_DevRotaryBlades, texture = OMHTT/ProbeWhite, scale = 1.0, static = true, shader = basicEffect, }
+}

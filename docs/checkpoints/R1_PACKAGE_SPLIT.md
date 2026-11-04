@@ -1,6 +1,6 @@
 # R1C1-R1C2: selectable packages
 
-Implemented in 0.2.29 under C87/C88 (2026-10-06). Owner approves full independence and fresh worlds; testing is deferred. Offensive modules, new traps, recipes and the expanded Manage grid remain separate checkpoints.
+Implemented and native-verified in 0.2.29 under C87/C88 (2026-10-06). C89 closes the remaining owner regression by waiver, not a pass. Full independence and fresh worlds remain the policy. Subsequent traps and starter modules are implemented in the current 0.2.34 build; see [current phase status](../ROADMAP.md#current-checkpoint-status-and-next-work). This checkpoint's historical evidence/checklist does not request another split test.
 
 ## Loading investigation
 
@@ -41,4 +41,14 @@ This was the single combined test for 0.2.29, replacing separate 0.2.27/0.2.28 r
 7. After at least thirty seconds of gameplay, search unvisited mechanic/garage/electronics containers. Expect broader one/two-module finds with occasional jackpots. Refresh LootLab and confirm retained settings and the occupied-container metric; its hosted loot baseline remains 0.2.28 because weights are unchanged.
 8. Report **Test Complete** with the loaded version, enabled entries and issues so the audit totals and runtime log can be reviewed. Do not deliberately reproduce the unresolved Louisville hang on a main save; preserve the early log if it recurs.
 
-Next recommendation after this split is R1C3 performance/authority measurement. Fresh-world rendered SP acceptance remains pending; combat is still SP-only.
+R1C3 performance/authority work continues with subsequent optimizations; dense-client smoothness remains unaccepted. Only changed behavior and credible regression risks belong in the [current combined owner test](../TEST_v0.2.34.md). The waived split checklist stays closed; combat remains SP-only.
+
+
+## C148: 0.2.42 runtime audit (2026-10-11)
+
+[Callback inventory and optimization proposals](../PERFORMANCE_AUDIT_v0.2.42.md) records the requested investigation while the owner tests. Prioritize barrier maintenance, repeated barb object discovery and duplicate turret stat resolution; preserve contact timing and independent package behavior. Rendering/queue housekeeping follows; spatial target indexing needs measurement before a redesign. No gameplay edit, patch approval or current-owner-test outcome inferred. R1C3 remains partial alongside R3C7 verification.
+
+
+## C149: next-update optimization scope (2026-10-11)
+
+Owner retains C148 and requests matching fast Manage/inventory ammo transfer after a roughly 600-round transfer freeze. Prioritize [bounded shared transfer work](../PERFORMANCE_AUDIT_v0.2.42.md#c149-bulk-ammo-transfer-follow-up-2026-10-11), then the five C148 improvements. This is next-update work, not an installed fix. [R3C7 owner finding](../TEST_v0.2.42.md#c149-owner-finding-bulk-ammo-transfer-freeze-2026-10-11) remains open; no repeat immediate stress test required.

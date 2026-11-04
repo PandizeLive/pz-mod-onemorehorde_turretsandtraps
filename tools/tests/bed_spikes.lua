@@ -52,6 +52,27 @@ check(not hit and not roll, "Existing crawlers neither trip nor accumulate fall 
 
 B.initialize()
 testSquares = {}
+local candidate = makeSquare(9, 9, 0)
+function candidate:isSolid() return self.solid == true end
+function candidate:isSolidTrans() return false end
+check(B.clear(candidate), "Clear floor permits bed placement")
+local panel = IsoThumpable.new(getCell(), candidate, "omhtt_barrier_01_52", false, nil)
+panel:getModData().OMHTTBarbFrame = {id = "placement-panel"}
+candidate:AddSpecialObject(panel)
+local fence = IsoThumpable.new(getCell(), candidate, "carpentry_02_80", false, nil)
+function fence:isDoor() return false end
+function fence:isWindow() return false end
+function fence:isHoppable() return true end
+function fence:isTallHoppable() return false end
+candidate:AddSpecialObject(fence)
+check(B.clear(candidate), "Fence and attached panel do not occupy the adjacent floor footprint")
+candidate.solid = true
+check(not B.clear(candidate), "Solid obstacles remain blocked beside panels")
+candidate.solid = false
+local obstruction = IsoThumpable.new(getCell(), candidate, "omhtt_barrier_01_28", false, nil)
+obstruction:getModData().OMHTTBed = {id = "occupied"}
+candidate:AddSpecialObject(obstruction)
+check(not B.clear(candidate), "Existing bed cannot be overlapped")
 local square, second = makeSquare(10, 10, 0), makeSquare(10, 11, 0)
 local a = IsoThumpable.new(getCell(), square, "omhtt_barrier_01_28", false, nil)
 local b = IsoThumpable.new(getCell(), second, "omhtt_barrier_01_29", false, nil)
@@ -60,9 +81,26 @@ second:AddSpecialObject(b)
 B.onCreate({thumpable = a, facing = "e"})
 B.onCreate({thumpable = b, facing = "e"})
 local record = B.record(a)
-check(record == B.record(b) and record.health == 100 and #B.parts(record) == 2, "Both native callbacks adopt one bed and health pool")
+check(record ~= B.record(b) and record.health == 50 and B.record(b).health == 50 and #B.parts(record) == 1, "Native callbacks create independent one-tile health pools")
 check(a.passThrough and b.passThrough and not a.hoppable and not a.thumpable, "Beds are passable and cannot be vaulted or thumped")
+local tripper = makeZombie(square, 10)
+function tripper:isGettingUp() return false end
+function tripper:isCrawling() return false end
+function tripper:getBumpType() return self.bump or "" end
+function tripper:setBumpType(value) self.bump = value end
+B.zombie(tripper)
+tripper.square = second
+testRoll = 0
+B.zombie(tripper)
+check(tripper.bump == "OMHTTBedTrip" and tripper.variables.SprinterTripped == false and not tripper.nativeKnockdown,
+    "Winning entry requests forward stumble with fresh native recovery flags and no shove")
+check(record.health == 50, "Requesting a fall does not charge damage or wear before landing")
 local zombie = makeZombie(square, 10)
+local impacts = 0
+function zombie:getEmitter() return {setVolume = function() end, playSound = function(_, name)
+    check(name == "SpearCraftedHit", "Bed impact uses the registered native crafted-spear hit")
+    impacts = impacts + 1
+end} end
 function zombie:isGettingUp() return self.gettingUp == true end
 function zombie:isCrawling() return self.crawler == true end
 function zombie:getBumpType() return self.bump or "" end
@@ -70,19 +108,19 @@ function zombie:setBumpType(value) self.bump = value end
 B.zombie(zombie)
 zombie.floor, zombie.knocked = true, true
 B.zombie(zombie)
-check(math.abs(zombie.health - 9.8) < .00001 and record.health == 94 and a.health == 94 and b.health == 94,
-    "Fresh fall applies 20 damage and six wear once to shared durability")
+check(math.abs(zombie.health - 9.8) < .00001 and record.health == 44 and a.health == 44 and b.health == 50,
+    "Fresh fall applies 20 damage and six wear only to the landing tile")
 for i = 1, 30 do B.zombie(zombie) end
-check(record.health == 94 and math.abs(zombie.health - 9.8) < .00001, "Prone updates cannot repeat wear or damage")
+check(record.health == 44 and math.abs(zombie.health - 9.8) < .00001, "Prone updates cannot repeat wear or damage")
+check(impacts == 1, "A damaging fall plays one impact; prone updates stay silent")
 zombie.floor, zombie.knocked, zombie.gettingUp = false, false, false
 B.zombie(zombie)
-record.tier, record.maxHealth, record.health = "reinforced", 200, 200
+record.tier, record.maxHealth, record.health = "reinforced", 100, 100
 B.configure(record, a)
-B.configure(record, b)
 zombie.floor = true
 B.zombie(zombie)
-check(math.abs(zombie.health - 9.3) < .00001 and record.health == 194, "External falls retain 50 reinforced damage during trip protection")
-check(a.sprite == "omhtt_barrier_01_44" and b.sprite == "omhtt_barrier_01_45", "Reinforcement updates both registered part identities")
+check(math.abs(zombie.health - 9.3) < .00001 and record.health == 94, "External falls retain 50 reinforced damage during trip protection")
+check(a.sprite == "omhtt_barrier_01_44" and b.sprite == "omhtt_barrier_01_29", "Reinforcement updates only the selected tile")
 zombie.floor, zombie.knocked = false, false
 B.zombie(zombie)
 local protection = zombie.data.OMHTTBedContact.protectedUntil
@@ -96,14 +134,14 @@ B.zombie(zombie)
 check(zombie.data.OMHTTBedContact.protectedUntil == remaining, "Fresh session rebases unexpired trip protection without offline progress")
 B.store = nativeRoundTrip(B.store)
 record = B.record(a)
-check(record == B.record(b) and record.health == 194 and record.tier == "reinforced", "Authority survives native serialization without split health")
+check(record ~= B.record(b) and B.record(b).health == 50 and record.health == 94 and record.tier == "reinforced", "Independent identities and durability survive native serialization")
 record.health = 2
 zombie.floor = false
 B.zombie(zombie)
 zombie.floor = true
 B.zombie(zombie)
-check(B.record(a) == nil and a.removed and b.removed, "Last damaging fall retires both parts without nested removal")
-check(B.tiles[F.key(10, 10, 0)] == nil and B.nearby[F.key(10, 10, 0)] == nil, "Retirement clears collision-free contact index")
+check(B.record(a) == nil and a.removed and not b.removed, "Last damaging fall retires only the hit tile")
+check(B.tiles[F.key(10, 10, 0)] == nil and B.tiles[F.key(10, 11, 0)] ~= nil, "Retirement removes only the broken tile from the index")
 
 square, second = makeSquare(12, 10, 0), makeSquare(12, 11, 0)
 a = IsoThumpable.new(getCell(), square, "omhtt_barrier_01_28", false, nil)
@@ -111,9 +149,9 @@ b = IsoThumpable.new(getCell(), second, "omhtt_barrier_01_29", false, nil)
 square:AddSpecialObject(a); second:AddSpecialObject(b)
 B.onCreate({thumpable = a, facing = "e"}); B.onCreate({thumpable = b, facing = "e"})
 square:transmitRemoveItemFromSquare(a)
-check(not b.removed and #B.removals == 1, "External deletion defers companion cleanup outside native removal callback")
+check(not b.removed and B.record(b) ~= nil, "External deletion leaves the neighbor intact")
 B.tick()
-check(b.removed and #B.removals == 0, "Bounded cleanup removes orphan companion next tick")
+check(not b.removed and B.record(b) ~= nil, "Maintenance preserves the independent survivor")
 
 square, second = makeSquare(14, 10, 0), makeSquare(14, 11, 0)
 a = IsoThumpable.new(getCell(), square, "omhtt_barrier_01_28", false, nil)
@@ -122,12 +160,24 @@ square:AddSpecialObject(a); second:AddSpecialObject(b)
 B.onCreate({thumpable = a, facing = "e"}); B.onCreate({thumpable = b, facing = "e"})
 record = B.record(a)
 function square:isSomethingTo(other) return self.blocked or other.blocked end
-local scratches, animation = 0, nil
+local scratches, cuts, animation = 0, 0, nil
 local inventory = {room = false, items = {}}
 function inventory:hasRoomFor() return self.room end
-function inventory:AddItem(item) self.items[#self.items + 1] = item end
+function inventory:AddItem(item) self.items[#self.items + 1] = item; return item end
 local player = {running = false, sprinting = false, square = square}
+function player:isKnockedDown() return false end
+function player:isRagdoll() return false end
+function player:isClimbing() return false end
+function player:isBumpFall() return false end
 function player:isDead() return false end
+function player:isNoClip() return self.noclip == true end
+function player:isGhostMode() return self.ghost == true end
+function player:isOnFloor() return self.floor == true end
+function player:clearVariable() end
+function player:setBumpType(value) self.bump = value end
+function player:setBumpFall(value) self.bumpFall = value end
+function player:setBumpFallType(value) self.bumpFallType = value end
+function player:reportEvent(value) self.event = value end
 function player:getSquare() return self.square end
 function player:getX() return self.square.x + .5 end
 function player:getY() return self.square.y + .5 end
@@ -144,6 +194,9 @@ function player:isBuildCheat() return true end
 function player:getBodyDamage() return {getBodyPart = function() return {setScratched = function(_, value, safe)
     check(value and safe, "Bed scratch uses environmental non-infected damage")
     scratches = scratches + 1
+end, setCut = function(_, value, safe)
+    check(value and safe, "Fall laceration is environmental, not zombie infection")
+    cuts = cuts + 1
 end} end} end
 testRoll = 0
 B.player(player)
@@ -161,13 +214,34 @@ B.player(player)
 player.square, player.running, player.sprinting = square, false, true
 B.player(player)
 check(scratches == 2, "Sprinting inherits the per-entry running risk")
+check(player.bumpFall and player.bump == "OMHTTBedTrip" and not player.bumpFallType and player.event == "wasBumped",
+    "Winning sprint entry requests forward fall without pushedFront backward animation")
+player.floor = true
+B.player(player)
+B.player(player)
+check(cuts == 1, "Only an actual new landing causes one laceration")
+player.floor, player.noclip = false, true
+B.player(player)
+check(not animation and cuts == 1 and scratches == 2, "Noclip clears brush and bypasses bed injury")
+player.noclip, player.ghost = false, true
+B.player(player)
+check(not animation and cuts == 1 and scratches == 2, "Ghost mode also bypasses foliage")
+player.ghost, player.running, player.sprinting = false, false, false
+B.player(player)
+check(animation and cuts == 1 and scratches == 2, "Normal safe walking resumes after leaving noclip")
+player.floor = true
+B.player(player)
+check(cuts == 2, "A second distinct fall can injure again")
+player.floor = false
+B.player(player)
 
 local S = require("OMHTT/BedService")
 record.health = 40
-check(S.apply(player, a, record.id, "Repair") and record.health == 100 and a.health == 100 and b.health == 100,
-    "Free repair restores both tiles from one shared record")
+testRepairSupply(player, "Bed")
+check(S.apply(player, a, record.id, "Repair") and record.health == 50 and a.health == 50 and b.health == 50,
+    "One-plank repair restores only the selected tile")
 SandboxVars.OMHTurretsTraps.SpikeBarrier = false
-check(S.apply(player, a, record.id, "Reinforce") and record.health == 200 and record.tier == "reinforced",
+check(S.apply(player, a, record.id, "Reinforce") and record.health == 100 and record.tier == "reinforced",
     "Bed reinforcement works independently of the Spike Barrier switch")
 local oldSpecific, oldContext = getSpecificPlayer, ISContextMenu
 getSpecificPlayer = function() return player end
@@ -187,8 +261,8 @@ local context = newMenu()
 local handlers = Events.OnFillWorldObjectContextMenu.handlers
 handlers[#handlers](0, context, {a}, false)
 check(context.numOptions == 2 and context.submenu.numOptions == 4
-    and context.submenu.options[3].onHighlightParams[1][2] == b,
-    "Native next-slot menu indexing safely binds both-part highlighting")
+    and context.submenu.options[3].onHighlightParams[1][1] == a and context.submenu.options[3].onHighlightParams[1][2] == nil,
+    "Native next-slot menu indexing safely binds selected-tile highlighting")
 getSpecificPlayer, ISContextMenu = oldSpecific, oldContext
 function player:faceThisObject() end
 function player:shouldBeTurning() return false end
@@ -196,17 +270,18 @@ function player:setIsFarming() end
 local oldGameTime = getGameTime
 local oldQueue = ISTimedActionQueue
 ISTimedActionQueue = {getTimedActionQueue = function() return {resetQueue = function() end} end}
-getGameTime = function() return {getRealworldSecondsSinceLastUpdate = function() return .1 end} end
+getGameTime = function() return {getTrueMultiplier=function() return 1 end,getMultiplier = function() return (.1) * 48 end, getMultiplierFromTimeDelta = function() return 48 end} end
 record.health = 80
+testRepairSupply(player, "Bed")
 local action = OMHTTBedServiceAction:new(player, a, record.id, "Repair")
 action.action = {setActionAnim = function() end, setAnimVariable = function() end,
     setOverrideHandModelsObject = function() end, setJobDelta = function() end,
     forceComplete = function() action.forced = true end}
 action:start()
-for i = 1, 99 do action:update() end
-check(not action.forced and not action:complete() and record.health == 80, "Bed service cannot finish before ten active seconds")
+for i = 1, 39 do action:update() end
+check(not action.forced and not action:complete() and record.health == 80, "Bed service cannot finish before four active seconds")
 action:update(); action:update()
-check(action.forced and action:complete() and record.health == 200 and not action:complete(), "Bed timed repair restores both parts exactly once")
+check(action.forced and action:complete() and record.health == 100 and not action:complete(), "Bed timed repair restores the selected tile exactly once")
 action = OMHTTBedServiceAction:new(player, a, record.id, "Pickup")
 action.action = {setActionAnim = function() end, setAnimVariable = function() end,
     setOverrideHandModelsObject = function() end, setJobDelta = function() end}
@@ -217,6 +292,6 @@ getGameTime = oldGameTime
 ISTimedActionQueue = oldQueue
 check(not S.apply(player, a, record.id, "Pickup") and B.record(a), "Full inventory preserves bed and both parts")
 inventory.room = true
-check(S.apply(player, a, record.id, "Pickup") and #inventory.items == 1 and a.removed and b.removed,
-    "Pickup retires both tiles and returns exactly one item")
+check(S.apply(player, a, record.id, "Pickup") and #inventory.items == 1 and a.removed and not b.removed,
+    "Pickup retires only the selected tile and returns exactly one item")
 check(not S.apply(player, a, record.id, "Pickup") and #inventory.items == 1, "Stale pickup cannot duplicate a portable bed")

@@ -2,7 +2,7 @@ if isClient() then return end
 local F = require("OMHTT/Foundation")
 local G = require("OMHTT/BarrierGeometry")
 local D = require("OMHTT/Diagnostics")
-local O = {}
+local O = {generation = 0}
 local store, footprint = nil, nil
 local removing = {}
 local desired, byOwner = {}, {}
@@ -18,6 +18,7 @@ end
 
 ---@return nil
 function O.changed()
+    O.generation = O.generation + 1
     dirty = true
 end
 
@@ -97,22 +98,26 @@ local function rebuild()
     end
 end
 
+---@param object IsoObject Candidate collider, including a destroyed native edge
+---@return table? record Private owner resolved from native position/name, never public modData
+local function owner(object)
+    if not store or not instanceof(object, "IsoThumpable") then return nil end
+    local square = object:getSquare()
+    if not square then return nil end
+    rebuild()
+    local key = F.key(square:getX(), square:getY(), square:getZ()) .. (object:getNorth() and ":N" or ":W")
+    local edge = desired[key]
+    if not edge or object:getName() ~= F.PREFIX .. edge.id .. ":" .. key then return nil end
+    local slot = store.tiles[edge.anchor]
+    return slot and slot.device
+end
+
 ---@param object IsoObject Candidate collider
 ---@return table? record Exact live owner
 ---@nodiscard
 function O.exact(object)
-    if not store or not object:hasModData() then return nil end
-    local edge = object:getModData().OMHTTEdge
-    if not edge or object:getObjectIndex() < 0 or object:getHealth() <= 0 then return nil end
-    local slot = store.tiles[edge.anchor]
-    local record = slot and slot.device
-    if not record or record.id ~= edge.id or record.collisionModel ~= "outline-v1" then return nil end
-    rebuild()
-    local current = desired[edge.key]
-    local square = object:getSquare()
-    if current and current.id == record.id and square and square:getX() == current.x
-        and square:getY() == current.y and square:getZ() == current.z then return record end
-    return nil
+    if object:getObjectIndex() < 0 or object:getHealth() <= 0 then return nil end
+    return owner(object)
 end
 
 ---@param record table Owner
@@ -130,8 +135,7 @@ function O.objects(record)
             local objects = square:getSpecialObjects()
             for j = 0, objects:size() - 1 do
                 local object = objects:get(j)
-                local marker = object:hasModData() and object:getModData().OMHTTEdge
-                if marker and marker.id == record.id and marker.key == edge.key then
+                if object:getName() == F.PREFIX .. record.id .. ":" .. edge.key and object:getNorth() == edge.north then
                     found[#found + 1] = object
                 end
             end
@@ -141,7 +145,9 @@ function O.objects(record)
     ---@param b IsoThumpable Second collider
     ---@return boolean before Fronts precede caps
     table.sort(found, function(a, b)
-        local left, right = a:getModData().OMHTTEdge, b:getModData().OMHTTEdge
+        local sa, sb = a:getSquare(), b:getSquare()
+        local left = desired[F.key(sa:getX(), sa:getY(), sa:getZ()) .. (a:getNorth() and ":N" or ":W")]
+        local right = desired[F.key(sb:getX(), sb:getY(), sb:getZ()) .. (b:getNorth() and ":N" or ":W")]
         if left.role ~= right.role then return left.role == "front" end
         return left.key < right.key
     end)
@@ -151,16 +157,17 @@ end
 ---@param square IsoGridSquare Loaded square
 ---@return nil
 function O.reconcile(square)
-    if not store or isServer() then return end
+    if not store then return end
     rebuild()
     local objects = square:getSpecialObjects()
     local found = {}
     for i = objects:size() - 1, 0, -1 do
         local object = objects:get(i)
-        local marker = object:hasModData() and object:getModData().OMHTTEdge
-        if marker then
-            local edge = desired[marker.key]
-            if not edge or edge.id ~= marker.id or found[marker.key]
+        local name = object:getName() or ""
+        local key = string.sub(name, 1, #F.PREFIX) == F.PREFIX and string.match(name, ":(%d+:%d+:%-?%d+:[NW])$")
+        if key then
+            local edge = desired[key]
+            if not edge or name ~= F.PREFIX .. edge.id .. ":" .. key or found[key]
                 or edge.x ~= square:getX() or edge.y ~= square:getY() or edge.z ~= square:getZ()
                 or object:getNorth() ~= edge.north then
                 removing[object] = true
@@ -168,7 +175,13 @@ function O.reconcile(square)
                 removing[object] = nil
                 square:RecalcAllWithNeighbours(true)
             else
-                found[marker.key] = object
+                found[key] = object
+                if object:getModData().OMHTTEdge ~= edge then
+                    object:getModData().OMHTTEdge = edge
+                    if isServer() then
+                        object:transmitModData()
+                    end
+                end
             end
         end
     end
@@ -193,11 +206,14 @@ function O.reconcile(square)
             found[edge.key]:setSpriteFromName(sprite)
             found[edge.key]:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_OBJECT_MODIFY)
             square:RecalcAllWithNeighbours(true)
+            if isServer() then
+                found[edge.key]:transmitUpdatedSpriteToClients()
+            end
         end
         if edge and not found[edge.key] then
             local record = store.tiles[edge.anchor].device
             if footprint.parts(record) then
-                local object = IsoThumpable.new(getCell(), square, sprite, edge.north)
+                local object = IsoThumpable.new(square:getCell(), square, sprite, edge.north)
                 object:setName(F.PREFIX .. edge.id .. ":" .. edge.key)
                 object:setBlockAllTheSquare(false)
                 object:setCanPassThrough(false)
@@ -212,8 +228,11 @@ function O.reconcile(square)
                 square:RecalcAllWithNeighbours(true)
                 square:setSquareChanged()
                 object:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_OBJECT_ADD)
+                if isServer() then
+                    object:transmitCompleteItemToClients()
+                end
                 D.emit("barrier-outline-edge", {id = edge.id, key = edge.key, role = edge.role,
-                    facing = edge.facing, north = edge.north, hp = record.condition})
+                    facing = edge.facing, north = edge.north, hp = record.condition}, nil, nil, "traps")
             end
         end
     end
@@ -237,13 +256,11 @@ end
 ---@param object IsoObject Native removal target
 ---@return boolean handled Collider-specific removal
 function O.onRemoved(object)
-    local marker = object:hasModData() and object:getModData().OMHTTEdge
-    if not marker then return false end
     if removing[object] then return true end
-    local slot = store and store.tiles[marker.anchor]
-    if slot and slot.device and slot.device.id == marker.id then
-        footprint.retire(slot, object)
-    end
+    local record = owner(object)
+    if not record then return false end
+    local slot = store.tiles[record.slotKey or F.key(record.x, record.y, record.z)]
+    footprint.retire(slot, object)
     return true
 end
 

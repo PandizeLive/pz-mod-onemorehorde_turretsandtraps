@@ -1,0 +1,111 @@
+{
+  "date": "2026-10-10",
+  "version": "0.2.38",
+  "game": "42.21",
+  "capture": "20261010-220500-0006",
+  "consoleSha256": "c6093a5cf8484885691b4b025c730b873ecf89fb8f4772d41c939e8d993ddf15",
+  "gameplayLineRange": [
+    3439,
+    3824
+  ],
+  "summaryWindows": 81,
+  "maximaMs": {
+    "active-update-gapMaxMs": 1077.0,
+    "head-animationMaxMs": 2.0,
+    "head-renderMaxMs": 2.0,
+    "range-renderMaxMs": 3.0,
+    "effects-renderMaxMs": 3.0,
+    "potato-audio_pitchMsMax": 674.0,
+    "potato-audio_playMsMax": 2.0,
+    "potato-audio_volumeMsMax": 0.0,
+    "turret-fire-result_fireMsMax": 343.0
+  },
+  "largestGapWindows": [
+    {
+      "line": 3697,
+      "frameGapMs": 1077,
+      "pitchMs": 674.0
+    },
+    {
+      "line": 3707,
+      "frameGapMs": 858,
+      "pitchMs": 342.0
+    },
+    {
+      "line": 3655,
+      "frameGapMs": 633,
+      "pitchMs": 0.0
+    },
+    {
+      "line": 3714,
+      "frameGapMs": 362,
+      "pitchMs": 1.0
+    },
+    {
+      "line": 3725,
+      "frameGapMs": 250,
+      "pitchMs": 235.0
+    },
+    {
+      "line": 3530,
+      "frameGapMs": 244,
+      "pitchMs": 0.0
+    },
+    {
+      "line": 3457,
+      "frameGapMs": 221,
+      "pitchMs": 1.0
+    },
+    {
+      "line": 3718,
+      "frameGapMs": 211,
+      "pitchMs": 196.0
+    },
+    {
+      "line": 3738,
+      "frameGapMs": 174,
+      "pitchMs": 1.0
+    },
+    {
+      "line": 3560,
+      "frameGapMs": 128,
+      "pitchMs": 1.0
+    }
+  ],
+  "eventTotals": {
+    "bed-trip": 19,
+    "bed-fall": 20,
+    "shot-launched": 58
+  },
+  "gameplayErrors": [
+    {
+      "line": 3660,
+      "text": "ERROR: General      f:14310 at CellLoader.DoTileObjectCreation     > CellLoader> missing tile vegetation_groundcover_01_23"
+    },
+    {
+      "line": 3661,
+      "text": "ERROR: General      f:14310 at CellLoader.DoTileObjectCreation     > CellLoader> missing tile vegetation_groundcover_01_19"
+    },
+    {
+      "line": 3662,
+      "text": "ERROR: General      f:14310 at CellLoader.DoTileObjectCreation     > CellLoader> missing tile vegetation_groundcover_01_22"
+    },
+    {
+      "line": 3663,
+      "text": "ERROR: General      f:14310 at CellLoader.DoTileObjectCreation     > CellLoader> missing tile vegetation_groundcover_01_18"
+    },
+    {
+      "line": 3664,
+      "text": "ERROR: General      f:14312 at CellLoader.DoTileObjectCreation     > CellLoader> missing tile vegetation_groundcover_01_21"
+    }
+  ],
+  "ownerReport": "Looks like it's functioning, but there was some lag when using Spike Beds, Concertina, and a Turret.",
+  "disposition": "Provisional general functional report; performance failed; individual unmentioned checks remain unconfirmed.",
+  "limits": [
+    "Five-second maxima are not per-call traces or a CPU profile.",
+    "setPitch elapsed time can include engine synchronization, scheduling or GC; underlying cause is not isolated.",
+    "Reload audio and trap callback costs are not separately timed.",
+    "One restored turret was logged; fresh-world prerequisite is not established.",
+    "Raw console stays local; only reviewed metrics and five native tile errors are published."
+  ]
+}

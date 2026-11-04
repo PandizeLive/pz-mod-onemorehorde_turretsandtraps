@@ -1,0 +1,234 @@
+<div id="omh-map-plan" class="viz-dotted-background">
+<style>
+#omh-map-plan { width:100%; padding:8px 0; }
+#omh-map-plan .cm-window { --cm-bg:#111211; --cm-panel:#191a19; --cm-head:#2b2d2b; --cm-edge:#505350; --cm-text:#eeeeeb; --cm-muted:#b9bdb9; --cm-selected:#3a3e3a; color:var(--cm-text); background:var(--cm-bg); border:1px solid #676b67; font:12px/1.4 Arial,sans-serif; position:relative; width:100%; }
+#omh-map-plan .cm-window * { box-sizing:border-box; }
+#omh-map-plan .cm-title { background:#232623; padding:12px 100px 12px 12px; font-size:15px; min-height:51px; border-bottom:1px solid var(--cm-edge); }
+#omh-map-plan .cm-brand { color:#ec6666; }
+#omh-map-plan .cm-content { padding:8px; }
+#omh-map-plan .cm-equipment { display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; margin-bottom:9px; padding:8px; background:var(--cm-panel); border:1px solid #383b38; }
+#omh-map-plan .cm-equipment strong { font-weight:500; color:#afcfa8; }
+#omh-map-plan .cm-battery { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+#omh-map-plan .cm-meter { width:76px; height:6px; background:#353835; }
+#omh-map-plan .cm-meter span { display:block; width:78%; height:100%; background:#8db47f; }
+#omh-map-plan .cm-layout { display:grid; grid-template-columns:minmax(230px,var(--cm-list-share,40%)) minmax(0,1fr); gap:8px; align-items:stretch; }
+#omh-map-plan .cm-main { min-width:0; min-height:0; display:flex; contain:size; }
+#omh-map-plan .cm-sidebar { display:grid; grid-template-columns:minmax(0,1fr) minmax(150px,42%); gap:8px; min-width:0; }
+#omh-map-plan .cm-connections,#omh-map-plan .cm-map-section { display:flex; flex-direction:column; min-width:0; }
+#omh-map-plan .cm-connections { flex:1; min-height:0; }
+#omh-map-plan .cm-link-scroll { height:0; min-height:0; flex:1; overflow-y:scroll; overscroll-behavior:contain; scrollbar-gutter:stable; scrollbar-color:#6a706a #222622; }
+#omh-map-plan .cm-link-scroll::-webkit-scrollbar,#omh-map-plan .cm-stock-grid::-webkit-scrollbar { width:10px; }
+#omh-map-plan .cm-link-scroll::-webkit-scrollbar-track,#omh-map-plan .cm-stock-grid::-webkit-scrollbar-track { background:#222622; }
+#omh-map-plan .cm-link-scroll::-webkit-scrollbar-thumb,#omh-map-plan .cm-stock-grid::-webkit-scrollbar-thumb { background:#6a706a; border:2px solid #222622; }
+#omh-map-plan .cm-section { background:var(--cm-panel); border:1px solid var(--cm-edge); min-width:0; }
+#omh-map-plan .cm-heading { padding:7px 8px; background:var(--cm-head); font-weight:500; min-height:31px; display:flex; gap:8px; align-items:center; justify-content:space-between; }
+#omh-map-plan button,#omh-map-plan input,#omh-map-plan select { font:inherit; color:var(--cm-text); border:1px solid #777d77; border-radius:0; background:#131513; max-width:100%; }
+#omh-map-plan button { padding:5px 8px; min-height:30px; }
+#omh-map-plan button:hover { background:#343934; }
+#omh-map-plan button[aria-pressed=true] { background:var(--cm-selected); border-color:#bec8be; }
+#omh-map-plan input,#omh-map-plan select { padding:7px; min-width:0; width:100%; }
+#omh-map-plan .cm-links { position:relative; padding:6px; display:grid; grid-template-columns:minmax(0,1fr) 26px minmax(0,1fr); min-height:100%; align-content:start; }
+#omh-map-plan .cm-wire-layer { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:2; overflow:visible; }
+#omh-map-plan .cm-list { min-width:0; position:relative; z-index:3; pointer-events:none; }
+#omh-map-plan .cm-list:first-of-type { grid-column:1; }
+#omh-map-plan .cm-list:last-of-type { grid-column:3; }
+#omh-map-plan .cm-list-label { font-weight:500; margin:0 0 6px; padding:3px 2px; position:sticky; top:0; z-index:4; background:var(--cm-panel); }
+#omh-map-plan .cm-device { display:flex; align-items:stretch; background:#121412; border:1px solid #3f443f; margin-bottom:6px; min-height:52px; pointer-events:auto; }
+#omh-map-plan .cm-device.is-selected { border-color:#d0d7d0; background:#343934; }
+#omh-map-plan .cm-device.is-pending { border-color:#d7c88c; }
+#omh-map-plan .cm-device button.cm-device-name { padding:5px; flex:1; text-align:left; border:0; min-width:0; overflow-wrap:anywhere; background:transparent; font-size:12px; }
+#omh-map-plan .cm-device small { display:block; color:var(--cm-muted); font-size:11px; margin-top:2px; }
+#omh-map-plan button.cm-port { flex:0 0 23px; width:23px; padding:0; min-height:40px; background:#262a26; border:0; color:#dce4dc; font-size:16px; touch-action:none; }
+#omh-map-plan .cm-port[aria-pressed=true] { background:#5c5844; }
+#omh-map-plan .cm-map-toolbar { display:flex; gap:4px; padding:7px; background:#202320; flex-wrap:wrap; }
+#omh-map-plan .cm-map-toolbar button { flex:1; font-size:11px; }
+#omh-map-plan .cm-map { min-height:280px; flex:1; position:relative; background:#151815; overflow:hidden; touch-action:none; }
+#omh-map-plan .cm-map svg { display:block; position:absolute; inset:0; width:100%; height:100%; }
+#omh-map-plan .cm-map-label { padding:7px 8px; color:var(--cm-muted); font-size:11px; border-top:1px solid #393d39; }
+#omh-map-plan .cm-marker { position:absolute; width:30px; height:30px; padding:0; min-height:30px; transform:translate(-50%,-50%); font-size:11px; background:#242824; border:1px solid #afb7af; z-index:2; touch-action:none; }
+#omh-map-plan .cm-marker.is-selected { border:2px solid #ffffff; background:#505850; }
+#omh-map-plan .cm-marker.cm-trigger { border-radius:50%; }
+#omh-map-plan .cm-marker.cm-controller { border-color:#c3c9c3; background:#4b4f4b; }
+#omh-map-plan .cm-marker.is-pending { background:#6c6340; }
+#omh-map-plan .cm-message { min-height:42px; padding:9px 2px; color:#c9cec9; overflow-wrap:anywhere; }
+#omh-map-plan .cm-details { margin-top:0; min-height:375px; grid-column:1 / -1; }
+#omh-map-plan .cm-details-body { padding:10px; }
+#omh-map-plan .cm-fields { display:grid; grid-template-columns:minmax(0,1fr); gap:9px; align-items:start; }
+#omh-map-plan .cm-fields label { display:block; color:var(--cm-muted); }
+#omh-map-plan .cm-fields input,#omh-map-plan .cm-fields select { margin-top:4px; color:var(--cm-text); }
+#omh-map-plan .cm-meta { display:flex; flex-wrap:wrap; gap:7px 18px; margin-top:9px; color:var(--cm-muted); }
+#omh-map-plan .cm-actions { display:flex; gap:6px; flex-wrap:wrap; padding-top:8px; }
+#omh-map-plan .cm-actions button { flex:1 1 88px; padding-left:5px; padding-right:5px; }
+#omh-map-plan .cm-detail-group { margin-top:12px; border-top:1px solid #454945; padding-top:8px; }
+#omh-map-plan .cm-group-title { font-weight:500; margin-bottom:2px; }
+#omh-map-plan .cm-group-note { color:var(--cm-muted); margin-top:5px; font-size:11px; }
+#omh-map-plan .cm-detail-group .cm-fields { margin-top:8px; }
+#omh-map-plan .cm-stock { display:flex; flex-direction:column; }
+#omh-map-plan .cm-stock .cm-heading { display:block; }
+#omh-map-plan .cm-stock .cm-heading small { display:block; color:var(--cm-muted); font-size:11px; font-weight:400; margin-top:4px; }
+#omh-map-plan .cm-stock-head { padding:6px 8px; color:var(--cm-muted); background:#202320; border-bottom:1px solid #434743; }
+#omh-map-plan .cm-stock-grid { max-height:280px; overflow-y:auto; scrollbar-color:#6a706a #222622; }
+#omh-map-plan .cm-stock-item { display:flex; gap:7px; padding:9px 7px; border-bottom:1px solid #313631; align-items:center; min-height:47px; }
+#omh-map-plan .cm-stock-item:nth-child(even) { background:#151815; }
+#omh-map-plan .cm-stock-item i { width:18px; height:18px; color:#c1c7c1; flex-shrink:0; }
+#omh-map-plan .cm-stock-item span { min-width:0; overflow-wrap:anywhere; }
+#omh-map-plan .cm-stock-item small { display:block; color:var(--cm-muted); font-size:11px; }
+#omh-map-plan .cm-stock-item b { margin-left:auto; font-weight:400; }
+#omh-map-plan .cm-stock-empty { flex:1; min-height:24px; background:#121412; }
+#omh-map-plan .cm-stock-footer { padding:8px; color:var(--cm-muted); border-top:1px solid var(--cm-edge); font-size:11px; }
+#omh-map-plan .cm-disconnect { border-color:#b17b76; }
+#omh-map-plan .cm-link-detail { display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+#omh-map-plan .cm-overlay { position:absolute; z-index:12; inset:52px 8px 8px; background:#101210; border:1px solid #9ea59e; padding:14px; }
+#omh-map-plan .cm-overlay[hidden],#omh-map-plan [hidden] { display:none; }
+#omh-map-plan .cm-overlay .cm-heading { margin:-14px -14px 14px; }
+#omh-map-plan .cm-manage-block { padding:15px; border:1px solid #505550; margin-bottom:12px; background:#1b1e1b; }
+#omh-map-plan .cm-manage-block strong { font-weight:500; display:block; margin-bottom:8px; }
+@media(max-width:680px) {
+ #omh-map-plan .cm-layout { grid-template-columns:minmax(0,1fr); }
+ #omh-map-plan .cm-main { height:280px; }
+ #omh-map-plan .cm-stock-grid { display:grid; grid-template-columns:1fr 1fr; max-height:none; overflow:visible; }
+ #omh-map-plan .cm-stock-empty { display:none; }
+ #omh-map-plan .cm-stock { min-height:0; }
+}
+@media(max-width:480px) {
+ #omh-map-plan .cm-sidebar { grid-template-columns:minmax(0,1fr); }
+ #omh-map-plan .cm-map { min-height:285px; }
+ #omh-map-plan .cm-title { padding-right:55px; }
+ #omh-map-plan .cm-fields { grid-template-columns:minmax(0,1fr); }
+ #omh-map-plan input,#omh-map-plan select { font-size:16px; }
+}
+@media(pointer:coarse) {
+ #omh-map-plan button { min-height:44px; }
+ #omh-map-plan button.cm-port { flex-basis:44px; width:44px; }
+ #omh-map-plan .cm-marker { width:44px; height:44px; min-height:44px; }
+}
+</style>
+<section class="cm-window" aria-label="Controller map and connection layout preview">
+ <div class="cm-title"><span class="cm-brand">One More Horde</span> — Controller Menu</div>
+ <div class="cm-content">
+  <div class="cm-equipment"><span><strong>Online</strong> · Mains Power</span><div class="cm-battery"><span>Backup: Car Battery · 78%</span><div class="cm-meter" aria-label="Battery 78 percent"><span></span></div></div></div>
+  <div class="cm-layout">
+   <main class="cm-main">
+     <section class="cm-section cm-connections"><div class="cm-heading">Connections</div><div class="cm-link-scroll" role="region" aria-label="Connections list"><div class="cm-links"><svg class="cm-wire-layer" aria-label="Trigger to defense connections"></svg><div class="cm-list" data-list="triggers"><div class="cm-list-label">Triggers</div></div><div class="cm-list" data-list="defenses"><div class="cm-list-label">Defenses</div></div></div></div></section>
+   </main>
+   <div class="cm-sidebar">
+     <section class="cm-section cm-map-section"><div class="cm-heading">Map</div><div class="cm-map-toolbar"><button type="button" data-view="grid" aria-pressed="true">Grid</button><button type="button" data-view="native" aria-pressed="false">Native Map</button></div><div class="cm-map" aria-label="Schematic device map"><svg aria-label="Device positions and connections"></svg><div class="cm-markers"></div></div><div class="cm-map-label">20-tile radius · Same floor</div></section>
+   <aside class="cm-section cm-stock" aria-label="Controller Stockpile preview"><div class="cm-heading">Stockpile<small>145.4 / 500 Weight</small></div><div class="cm-stock-head">Name</div><div class="cm-stock-grid">
+    <div class="cm-stock-item"><i data-lucide="package" aria-hidden="true"></i><span>Ballista Head<small>Turret Head</small></span><b>1</b></div>
+    <div class="cm-stock-item"><i data-lucide="battery-medium" aria-hidden="true"></i><span>Car Battery<small>Power</small></span><b>2</b></div>
+    <div class="cm-stock-item"><i data-lucide="box" aria-hidden="true"></i><span>5.56mm Rounds<small>Ammunition</small></span><b>240</b></div>
+    <div class="cm-stock-item"><i data-lucide="component" aria-hidden="true"></i><span>Firing+<small>Module</small></span><b>1</b></div>
+    <div class="cm-stock-item"><i data-lucide="component" aria-hidden="true"></i><span>Detection+<small>Module</small></span><b>1</b></div>
+    <div class="cm-stock-item"><i data-lucide="square" aria-hidden="true"></i><span>Pressure Plate<small>Trigger</small></span><b>2</b></div>
+    <div class="cm-stock-item"><i data-lucide="package" aria-hidden="true"></i><span>Large Expansion<small>Expansion Kit</small></span><b>1</b></div>
+   </div><div class="cm-stock-empty"></div><div class="cm-stock-footer">Controller Stockpile</div></aside>
+    <section class="cm-section cm-details"><div class="cm-heading">Device</div><div class="cm-details-body"></div></section>
+   </div>
+  </div>
+  <div class="cm-message" role="status" aria-live="polite">Select a device, or connect a trigger to a defense.</div>
+ </div>
+ <section class="cm-overlay" aria-label="Manage handoff preview" hidden></section>
+</section>
+<script>
+(()=>{
+ const root=document.getElementById('omh-map-plan');
+ const devices=[
+  {id:'b1',code:'B1',name:'Button #1',type:'Button',side:'triggers',x:-11,y:-7},
+  {id:'p1',code:'P1',name:'Pressure Plate #1',type:'Pressure Plate',side:'triggers',x:-10,y:2},
+  {id:'p2',code:'P2',name:'Pressure Plate #2',type:'Pressure Plate',side:'triggers',x:3,y:9},
+  {id:'d1',code:'D1',name:'Courtyard',type:'Scrapshot Head',side:'defenses',x:-3,y:-8},
+  {id:'d2',code:'D2',name:'Front Gate',type:'Potato Launcher',side:'defenses',x:10,y:4},
+  {id:'d3',code:'D3',name:'Gate Side',type:'Ballista Head',side:'defenses',x:10,y:-5}
+ ];
+ const state={selected:'d2',background:'grid',links:[['b1','d1'],['p1','d1'],['p2','d2'],['p2','d3']],pending:null,edge:null,cx:0,cy:0,zoom:1};
+ const design={listShare:40};
+ const byId=id=>devices.find(d=>d.id===id);
+ const map=root.querySelector('.cm-map'),mapSvg=map.querySelector('svg'),wire=root.querySelector('.cm-wire-layer'),message=root.querySelector('.cm-message');
+ const ns='http://www.w3.org/2000/svg';
+ function svg(tag,attrs,parent){const e=document.createElementNS(ns,tag);Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,String(v)));if(parent)parent.append(e);return e;}
+ function say(text){message.textContent=text;}
+ function restore(value){if(!value||value.preview!=='Controller map and lists')return;const v=value.state;if(!v)return;if(byId(v.selected))state.selected=v.selected;if(['grid','native'].includes(v.background))state.background=v.background;if(Array.isArray(v.links))state.links=v.links.filter(e=>Array.isArray(e)&&byId(e[0])?.side==='triggers'&&byId(e[1])?.side==='defenses').map(e=>[e[0],e[1]]);}
+ function save(){const value={preview:'Controller map and lists',state:{selected:state.selected,background:state.background,links:state.links}};if(window.openai?.setWidgetState)window.openai.setWidgetState({modelContent:value,privateContent:null}).catch(()=>{});}
+ restore(window.openai?.widgetState?.modelContent);
+ function lineColor(a,b){return (state.edge&&state.edge[0]===a&&state.edge[1]===b)||state.selected===a||state.selected===b?'#e7ece7':'#707970';}
+ function addDevice(d){
+  const row=document.createElement('div');row.className='cm-device';row.dataset.device=d.id;
+  const name=document.createElement('button');name.type='button';name.className='cm-device-name cursor-interaction';name.dataset.select=d.id;
+  const text=document.createElement('span');text.className='cm-device-text';text.textContent=d.name;name.append(text);
+  name.setAttribute('data-tooltip',d.code+' · '+d.name+(d.side==='defenses'?' · '+d.type:''));
+  if(d.side==='defenses'){const type=document.createElement('small');type.className='cm-head-name';type.textContent=d.type;name.append(type);}
+  const port=document.createElement('button');port.type='button';port.className='cm-port cursor-interaction';port.dataset.port=d.id;port.textContent=d.side==='triggers'?'›':'‹';port.setAttribute('aria-label','Connect '+d.name);port.setAttribute('data-tooltip',d.side==='triggers'?'Drag or tap, then select a defense.':'Receive a connection from a trigger.');
+  if(d.side==='triggers')row.append(name,port);else row.append(port,name);
+  root.querySelector('[data-list="'+d.side+'"]').append(row);
+  const marker=document.createElement('button');marker.type='button';marker.className='cm-marker cursor-interaction '+(d.side==='triggers'?'cm-trigger':'');marker.dataset.mapDevice=d.id;marker.textContent=d.code;marker.setAttribute('aria-label',d.name+' on map');marker.setAttribute('data-tooltip',d.name);root.querySelector('.cm-markers').append(marker);
+ }
+ devices.forEach(addDevice);
+ const controller=document.createElement('div');controller.className='cm-marker cm-controller';controller.textContent='C';controller.style.display='grid';controller.style.placeItems='center';controller.setAttribute('aria-label','Controller');root.querySelector('.cm-markers').append(controller);
+ function select(id,focus=true){state.selected=id;state.edge=null;const d=byId(id);if(focus){state.cx=d.x*.55;state.cy=d.y*.55;}renderDetails();render();save();}
+ function connect(id){const target=byId(id);if(!target)return;if(!state.pending){if(target.side!=='triggers'){select(id);say('Select a trigger connection point first.');return;}state.pending=id;state.edge=null;say('Connect '+target.name+': choose a defense.');render();return;}
+  if(target.side==='triggers'){state.pending=id;say('Connect '+target.name+': choose a defense.');render();return;}
+  const source=state.pending;state.pending=null;
+  if(state.links.some(e=>e[0]===source&&e[1]===id))say('Already connected: '+byId(source).name+' → '+target.name+'.');
+  else{state.links.push([source,id]);say('Connected: '+byId(source).name+' → '+target.name+'.');}
+  select(id,false);
+ }
+ function selectEdge(a,b){state.edge=[a,b];state.pending=null;renderDetails();render();say(byId(a).name+' → '+byId(b).name);}
+ function drawWires(){const box=wire.parentElement.getBoundingClientRect();wire.replaceChildren();wire.setAttribute('viewBox','0 0 '+box.width+' '+box.height);
+  for(const [a,b] of state.links){const from=root.querySelector('[data-port="'+a+'"]').getBoundingClientRect(),to=root.querySelector('[data-port="'+b+'"]').getBoundingClientRect();const x1=from.right-box.left,y1=(from.top+from.bottom)/2-box.top,x2=to.left-box.left,y2=(to.top+to.bottom)/2-box.top;const data='M '+x1+' '+y1+' C '+(x1+15)+' '+y1+' '+(x2-15)+' '+y2+' '+x2+' '+y2;
+   svg('path',{d:data,fill:'none',stroke:lineColor(a,b),'stroke-width':1.5},wire);svg('path',{d:'M '+(x2-5)+' '+(y2-3)+' L '+x2+' '+y2+' L '+(x2-5)+' '+(y2+3),fill:'none',stroke:lineColor(a,b),'stroke-width':1.5},wire);
+   const hit=svg('path',{d:data,fill:'none',stroke:'transparent','stroke-width':12,'pointer-events':'stroke'},wire);hit.addEventListener('click',()=>selectEdge(a,b));
+  }
+ }
+ function world(x,y){const w=map.clientWidth,h=map.clientHeight,s=Math.min(w,h)/48*state.zoom;return {x:w/2+(x-state.cx)*s,y:h/2+(y-state.cy)*s,s};}
+ function drawMap(){const w=map.clientWidth,h=map.clientHeight;if(!w||!h)return;mapSvg.replaceChildren();mapSvg.setAttribute('viewBox','0 0 '+w+' '+h);const zero=world(0,0),s=zero.s;
+  if(state.background==='native'){
+   svg('rect',{x:0,y:0,width:w,height:h,fill:'#283128'},mapSvg);
+   const road=world(-18,12);svg('rect',{x:0,y:road.y,width:w,height:s*6,fill:'#5c6057'},mapSvg);
+   for(const [x,y,bw,bh] of [[-17,-15,12,11],[2,-13,13,8],[-17,1,6,8]]){const p=world(x,y);svg('rect',{x:p.x,y:p.y,width:bw*s,height:bh*s,fill:'#777468',stroke:'#989486','stroke-width':1},mapSvg);}
+  }
+  for(let i=-60;i<=60;i+=2){const a=world(i,0),b=world(0,i);if(a.x>=0&&a.x<=w)svg('line',{x1:a.x,y1:0,x2:a.x,y2:h,stroke:state.background==='grid'?'#293029':'#3c443c','stroke-width':.6},mapSvg);if(b.y>=0&&b.y<=h)svg('line',{x1:0,y1:b.y,x2:w,y2:b.y,stroke:state.background==='grid'?'#293029':'#3c443c','stroke-width':.6},mapSvg);}
+  svg('circle',{cx:zero.x,cy:zero.y,r:20*s,fill:'none',stroke:'#798779','stroke-width':1.3},mapSvg);
+  for(const [a,b] of state.links){const p=world(byId(a).x,byId(a).y),q=world(byId(b).x,byId(b).y);svg('line',{x1:p.x,y1:p.y,x2:q.x,y2:q.y,stroke:lineColor(a,b),'stroke-width':1.3},mapSvg);}
+  for(const d of devices){const p=world(d.x,d.y),el=root.querySelector('[data-map-device="'+d.id+'"]');el.style.left=p.x+'px';el.style.top=p.y+'px';el.classList.toggle('is-selected',state.selected===d.id);el.classList.toggle('is-pending',state.pending===d.id);el.hidden=p.x<15||p.y<15||p.x>w-15||p.y>h-15;}
+  controller.style.left=zero.x+'px';controller.style.top=zero.y+'px';
+ }
+ function renderDetails(){const body=root.querySelector('.cm-details-body');body.replaceChildren();const heading=root.querySelector('.cm-details .cm-heading');
+  if(state.edge){heading.textContent='Connection';const row=document.createElement('div');row.className='cm-link-detail';const label=document.createElement('span');label.textContent=byId(state.edge[0]).name+' → '+byId(state.edge[1]).name;const remove=document.createElement('button');remove.type='button';remove.textContent='Disconnect';remove.className='cm-disconnect cursor-interaction';remove.onclick=()=>{const [a,b]=state.edge;state.links=state.links.filter(e=>e[0]!==a||e[1]!==b);state.edge=null;say('Disconnected '+byId(a).name+' → '+byId(b).name+'.');renderDetails();render();save();};row.append(label,remove);body.append(row);return;}
+  const d=byId(state.selected);heading.textContent=d.side==='triggers'?'Selected Trigger':'Selected Defense';
+  const fields=document.createElement('div');fields.className='cm-fields';const nameLabel=document.createElement('label');nameLabel.textContent='Name';const input=document.createElement('input');input.value=d.name;input.maxLength=48;input.setAttribute('aria-label','Device name');input.addEventListener('change',()=>{d.name=input.value.trim()||d.type+' '+d.code;root.querySelector('[data-select="'+d.id+'"] .cm-device-text').textContent=d.name;input.value=d.name;root.querySelector('[data-map-device="'+d.id+'"]').setAttribute('data-tooltip',d.name);say('Name updated: '+d.name+'.');});input.addEventListener('keydown',e=>{if(e.key==='Enter')input.blur();});nameLabel.append(input);
+  fields.append(nameLabel);body.append(fields);
+  const meta=document.createElement('div');meta.className='cm-meta';meta.textContent=d.type;body.append(meta);
+  function group(title,note){const section=document.createElement('section');section.className='cm-detail-group';section.setAttribute('aria-label',title);const label=document.createElement('div');label.className='cm-group-title';label.textContent=title;section.append(label);if(note){const text=document.createElement('div');text.className='cm-group-note';text.textContent=note;section.append(text);}body.append(section);return section;}
+  const actions=document.createElement('div');actions.className='cm-actions';
+  if(d.side==='defenses'){const manage=document.createElement('button');manage.type='button';manage.className='cursor-interaction';manage.textContent='Open Manage';manage.setAttribute('data-tooltip','Open the existing Turret Management Menu.');manage.onclick=()=>openManage(d);actions.append(manage);const aim=document.createElement('button');aim.type='button';aim.className='cursor-interaction';aim.textContent='Set Aim';aim.setAttribute('data-tooltip','Choose a direction in the game world.');aim.onclick=()=>say('Set Aim: choose a direction in the game world.');actions.append(aim);}
+  if(d.side==='defenses')group('Controls').append(actions);
+  const connections=group('Connections',state.links.filter(e=>e.includes(d.id)).length+' Connected '+(d.side==='triggers'?'Defense(s)':'Trigger(s)'));
+  const connectionActions=document.createElement('div');connectionActions.className='cm-actions';connections.append(connectionActions);
+  const connectButton=document.createElement('button');connectButton.type='button';connectButton.className='cursor-interaction';connectButton.textContent=d.side==='triggers'?'Connect Defense':'View Connections';connectButton.setAttribute('data-tooltip',d.side==='triggers'?'Choose a defense to receive this trigger’s signal.':'Inspect the triggers connected to this defense.');connectButton.onclick=()=>{if(d.side==='triggers')connect(d.id);else{const edge=state.links.find(e=>e[1]===d.id);if(edge)selectEdge(...edge);else say('No connected triggers. Choose a trigger connection point.');}};connectionActions.append(connectButton);
+  const cancel=document.createElement('button');cancel.type='button';cancel.className='cursor-interaction';cancel.textContent='Cancel Connection';cancel.hidden=!state.pending;cancel.onclick=()=>{state.pending=null;renderDetails();render();say('Connection cancelled.');};connectionActions.append(cancel);
+  const permissions=group('Access & Assignment',d.assigned===false?'Unassigned':'Assigned to Controller');
+  const accessFields=document.createElement('div');accessFields.className='cm-fields';const accessLabel=document.createElement('label');accessLabel.textContent='Access';const access=document.createElement('select');access.setAttribute('aria-label','Device access');for(const x of ['Private','Faction','Public']){const op=document.createElement('option');op.textContent=x;access.append(op);}access.value=d.access||'Faction';access.onchange=()=>{d.access=access.value;say(d.name+' access: '+d.access+'.');};accessLabel.append(access);accessFields.append(accessLabel);permissions.append(accessFields);
+  const assignmentActions=document.createElement('div');assignmentActions.className='cm-actions';const assign=document.createElement('button');assign.type='button';assign.className='cursor-interaction';assign.textContent=d.assigned===false?'Assign':'Unassign';assign.setAttribute('data-tooltip','Change assignment to this Controller.');assign.onclick=()=>{d.assigned=d.assigned===false;renderDetails();say(d.name+(d.assigned?' assigned to Controller.':' unassigned from Controller.'));};assignmentActions.append(assign);permissions.append(assignmentActions);
+ }
+ function openManage(d){const modal=root.querySelector('.cm-overlay');modal.replaceChildren();modal.hidden=false;const head=document.createElement('div');head.className='cm-heading';head.textContent='Turret Management Menu · '+d.name;modal.append(head);for(const [title,value] of [['Equipment',d.type+' · Car Battery · Large Expansion'],['Ammunition','Ammo / Void · Magazine · Load Order'],['Modules','Existing module slots and Module Stats']]){const b=document.createElement('div');b.className='cm-manage-block';const t=document.createElement('strong');t.textContent=title;const v=document.createElement('span');v.textContent=value;b.append(t,v);modal.append(b);}const close=document.createElement('button');close.type='button';close.textContent='Back to Controller';close.className='cursor-interaction';close.onclick=()=>modal.hidden=true;modal.append(close);}
+ function render(){for(const d of devices){const row=root.querySelector('[data-device="'+d.id+'"]');row.classList.toggle('is-selected',state.selected===d.id);row.classList.toggle('is-pending',state.pending===d.id);root.querySelector('[data-port="'+d.id+'"]').setAttribute('aria-pressed',String(state.pending===d.id));}root.querySelectorAll('[data-view]').forEach(e=>e.setAttribute('aria-pressed',String(e.dataset.view===state.background)));drawWires();drawMap();}
+ root.querySelectorAll('[data-select]').forEach(el=>el.onclick=()=>{if(state.pending)connect(el.dataset.select);else{select(el.dataset.select);say('Focused '+byId(el.dataset.select).name+' on map.');}});
+ root.querySelectorAll('[data-view]').forEach(el=>el.onclick=()=>{state.background=el.dataset.view;drawMap();render();save();});
+ let pointer=null,skipUntil=0;
+ root.addEventListener('pointerdown',e=>{const port=e.target.closest('[data-port]'),marker=e.target.closest('[data-map-device]');const id=port?.dataset.port||marker?.dataset.mapDevice;if(!id)return;pointer={id,x:e.clientX,y:e.clientY,moved:false,port:!!port};});
+ document.addEventListener('pointermove',e=>{if(!pointer)return;if(Math.hypot(e.clientX-pointer.x,e.clientY-pointer.y)>7){pointer.moved=true;if(byId(pointer.id).side==='triggers'){state.pending=pointer.id;render();say('Connect '+byId(pointer.id).name+': release on a defense.');}}});
+ document.addEventListener('pointerup',e=>{if(!pointer)return;const p=pointer;pointer=null;skipUntil=p.moved?Date.now()+200:0;const at=document.elementFromPoint(e.clientX,e.clientY)?.closest('[data-port],[data-map-device],[data-select]');const end=at?.dataset.port||at?.dataset.mapDevice||at?.dataset.select;if(p.moved&&byId(p.id).side==='triggers'){if(end&&byId(end).side==='defenses')connect(end);else{say('Choose a defense to finish, or press Escape to cancel.');renderDetails();}}});
+ root.querySelectorAll('[data-port],[data-map-device]').forEach(el=>el.addEventListener('click',()=>{if(Date.now()<skipUntil)return;const id=el.dataset.port||el.dataset.mapDevice;if(el.dataset.port||state.pending){connect(id);renderDetails();}else{select(id);say('Selected '+byId(id).name+'.');}}));
+ let pan=null;
+ map.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;pan={x:e.clientX,y:e.clientY,cx:state.cx,cy:state.cy,s:world(0,0).s};map.setPointerCapture(e.pointerId);});
+ map.addEventListener('pointermove',e=>{if(!pan)return;state.cx=pan.cx-(e.clientX-pan.x)/pan.s;state.cy=pan.cy-(e.clientY-pan.y)/pan.s;drawMap();});
+ map.addEventListener('pointerup',()=>pan=null);map.addEventListener('pointercancel',()=>{pan=null;pointer=null;});
+ map.addEventListener('wheel',e=>{e.preventDefault();state.zoom=Math.max(.7,Math.min(2,state.zoom*(e.deltaY<0?1.12:.89)));drawMap();},{passive:false});
+ root.addEventListener('keydown',e=>{if(e.key==='Escape'){state.pending=null;state.edge=null;root.querySelector('.cm-overlay').hidden=true;renderDetails();render();say('Selection ready.');}});
+ window.addEventListener('openai:set_globals',e=>{const v=e.detail?.globals?.widgetState?.modelContent;if(v){restore(v);renderDetails();render();}});
+ const resize=new ResizeObserver(()=>render());resize.observe(root.querySelector('.cm-layout'));resize.observe(root.querySelector('.cm-links'));
+ renderDetails();render();if(globalThis.lucide)lucide.createIcons();
+ if(globalThis.Tweak){const tweak=new Tweak({container:root.querySelector('.cm-layout'),onChange:()=>{root.querySelector('.cm-layout').style.setProperty('--cm-list-share',design.listShare+'%');render();}});tweak.addSlider(design,'listShare',{label:'List width',min:30,max:46,unit:'%'});}
+})();
+</script>
+</div>

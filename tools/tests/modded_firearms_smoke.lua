@@ -15,6 +15,7 @@ Events.OnServerStarted.Add(function()
         local script = all:get(i)
         if script:isRanged() and script:getAmmoType() then
             local gun = instanceItem(script:getFullName())
+            local originalMode, originalRecoil, originalRate = gun:getFireMode(), gun:getRecoilDelay(), gun:getCyclicRateMultiplier()
             local evidence = require("OMHTT/FirearmAudit").inspect(script:getFullName())
             assert(evidence.accepted == (G.profile(gun) ~= nil), "Audit/admission mismatch")
             if G.profile(gun) then
@@ -25,6 +26,13 @@ Events.OnServerStarted.Add(function()
                 local contents = T.contents(storage)
                 local stats = T.cycleConfig(contents)
                 assert(stats.range > 0 and stats.cooldown > 0 and stats.reload >= 0)
+                if gun:getFullType() == "Base.M4" or gun:getFullType() == "Base.AssaultRifle" then
+                    assert(gun:getFireMode() == "Single", "Fixture must exercise the mod default Single mode")
+                    assert(math.abs(stats.cooldown - 1000 / 3 / 1.5 / .75) < .001, "Auto capability must determine modded rifle cadence")
+                    local enhanced = require("OMHTT/TurretStats").resolve({head = gun, active = {FiringEnhanced = 1}})
+                    assert(math.abs(enhanced.cooldown - 1000 / 3 / 1.5) < .001, "Enhanced native-derived cadence")
+                    print("[OMHTT-Modded] cadence=" .. gun:getFullType() .. " normal=" .. stats.cooldown .. " enhanced=" .. enhanced.cooldown)
+                end
                 local precision = Class.precision(gun)
                 assert(A.chance(gun, stats, stats.range, false) == (precision and 80 or 60), "Wrong range accuracy")
                 if expected[gun:getFullType()] ~= nil then
@@ -45,6 +53,8 @@ Events.OnServerStarted.Add(function()
                     time = time + 1000
                 end
                 assert(fired == 3, "Unable to feed/fire: " .. gun:getFullType())
+                assert(gun:getFireMode() == originalMode and gun:getRecoilDelay() == originalRecoil
+                    and gun:getCyclicRateMultiplier() == originalRate, "Turret modified handheld timing: " .. gun:getFullType())
                 accepted = accepted + 1
                 print("[OMHTT-Modded] gun=" .. gun:getFullType() .. " precision=" .. tostring(precision) .. " range=" .. stats.range .. " shots=3")
             else

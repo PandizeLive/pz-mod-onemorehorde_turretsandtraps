@@ -1,0 +1,9 @@
+{
+  "status": "not-deployed",
+  "reason": "Existing Cloudflare login expired; authenticated live-source comparison unavailable.",
+  "localCatalog": "0.2.54, 32 component controls including Siphon",
+  "localValidation": "model, weights, tiers, appearance, cloud catalog, desktop and mobile browser checks passed",
+  "accountDataChanged": false,
+  "productionChanged": false,
+  "pending": "Renew Cloudflare login, reconcile live Worker source and publish the validated catalog/assets."
+}

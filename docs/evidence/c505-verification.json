@@ -1,0 +1,79 @@
+{
+  "version": "0.2.70.7",
+  "assertions": 37207,
+  "sourceFiles": 454,
+  "packageFiles": 625,
+  "nativeWriteSeconds": 56.9,
+  "nativeReadSeconds": 49.9,
+  "packageStarts": [
+    {
+      "selection": "traps",
+      "version": "0.2.70.7",
+      "passed": true,
+      "seconds": 50.5
+    },
+    {
+      "selection": "turrets",
+      "version": "0.2.70.7",
+      "passed": true,
+      "seconds": 45.0
+    },
+    {
+      "selection": "both",
+      "version": "0.2.70.7",
+      "passed": true,
+      "seconds": 46.1
+    }
+  ],
+  "nativeContactProbe": {
+    "path": "diagnostics/c503-contacts/20261029-011842/server.log",
+    "sha256": "735a55de712dc6c09151f7b543011856a5c9f881ea8d24c8f70fb06585b8c8cd",
+    "event": "OnTick",
+    "nativeActorsAndObjects": true,
+    "squareLookup": "fixture",
+    "predictedMembership": "intentionally divergent",
+    "results": "Bed landing once; Wire/Tacks repeat without overlap doubling; Martyrdom and Synergy terminal death"
+  },
+  "stress": {
+    "actors": 2500,
+    "refreshBatches": [
+      1024,
+      1024,
+      452
+    ],
+    "concurrentQueries": 16,
+    "workUnitsPerQuerySlice": 128,
+    "maximumRounds": 21
+  },
+  "nativeConnectedClients": 0,
+  "renderedAndMultiplayerAcceptance": "pending",
+  "publication": "not performed",
+  "newWorldRequired": false,
+  "workshopBaseline": {
+    "itemId": "3828638252",
+    "version": "0.2.70.6",
+    "confirmedUtc": "2026-10-29T03:20:46.8098799Z",
+    "receipt": "diagnostics/workshop/upload-v0.2.70.6-20261029-031659-9181-2cd2ca5e/upload-result.json",
+    "oldDraftMatchesPublishedLines": true,
+    "unpublishedNotesDiscarded": false
+  },
+  "delivery": {
+    "status": "installed and staged",
+    "installedAt": "2026-10-29T01:25:01.5211519-04:00",
+    "sourceFilesVerified": 454,
+    "tagPackageInstallStageArchiveFilesVerified": 625,
+    "installBackup": "diagnostics/p1c1/install-backups/20261029-012457-7419",
+    "installBackupVerifiedCounts": {
+      "OneMoreHorde_Traps": 238,
+      "OneMoreHorde_Turrets": 385
+    },
+    "stageBackup": "diagnostics/workshop/stage-v0.2.70.7-20261029-052515-4060-65499bcf-previous",
+    "stageBackupFilesVerified": 623,
+    "workshopMetadataPreserved": true,
+    "archive": "artifacts/OMHTT-0.2.70.7.zip",
+    "archiveSha256": "f50b5fa9cd6535d11c8ad5902e0597aa4d2416cb8339945142994f7279c6a89f",
+    "workshopUploadPerformed": false
+  },
+  "tag": "test/v0.2.70.7",
+  "sourceCommit": "00970de538bf6ad8f14520232ed4ea9297b11043"
+}

@@ -81,6 +81,24 @@ public final class HybridAssetCheck {
             }
         }
         System.out.println("Native JOML: three gun world attachments remain upright and aimed over eight headings.");
+        for (int heading = 0; heading < 360; heading += 15) {
+            for (int pitch = 0; pitch <= 45; pitch += 5) {
+                double a = Math.toRadians(heading), p = Math.toRadians(pitch);
+                float rx = (float)Math.atan2(-Math.cos(p), -Math.sin(a) * Math.sin(p));
+                float rz = (float)Math.asin(Math.cos(a) * Math.sin(p));
+                float ry = (float)Math.atan2(Math.sin(a), Math.cos(a) * Math.cos(p));
+                Object pose = matrix.getConstructor().newInstance();
+                matrix.getMethod("rotateXYZ", float.class, float.class, float.class).invoke(pose, rx, rz, ry);
+                Object barrel = vector.getConstructor(float.class, float.class, float.class).newInstance(1f, 0f, 0f);
+                matrix.getMethod("transformDirection", vector).invoke(pose, barrel);
+                double bx = vector.getField("x").getFloat(barrel), by = vector.getField("y").getFloat(barrel), bz = vector.getField("z").getFloat(barrel);
+                if (Math.abs(bx - Math.cos(a) * Math.cos(p)) > .00001
+                    || Math.abs(by + Math.sin(p)) > .00001
+                    || Math.abs(bz + Math.sin(a) * Math.cos(p)) > .00001)
+                    throw new IllegalStateException("Standby barrel pitch mismatch " + heading + "/" + pitch);
+            }
+        }
+        System.out.println("Native JOML: 240 standby poses pitch the barrel downward without changing its mount origin.");
         float newY = (Float)screenY.invoke(null, 0f, 0f, 0.4f - 16f / 192f, 0);
         if (Math.abs(newY - oldY - 16) > 0.001) throw new IllegalStateException("Head lowering differs from base's 16-pixel shift");
         System.out.println("Native IsoUtils / JOML projection: 8 heading vectors match; head follows 16-pixel base shift.");

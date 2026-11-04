@@ -1,11 +1,17 @@
 local E = require("OMHTT/PrototypeEffects")
 local F = require("OMHTT/Foundation")
 local oldSpecific, oldCell, oldWorld, oldElement = getSpecificPlayer, getCell, getWorld, ISUIElement
+local oldActivePlayers = getNumActivePlayers
 local oldTextureGetter = ISUITextureGetter
 ISUITextureGetter = {checkGetTexture = function(texture) check(texture == nil, "Native line resolves nil texture"); return texture end}
 local visible, sounds, draws, last, lines = true, {}, 0, nil, 0
 getSpecificPlayer = function() return {getZ = function() return 0 end} end
-getCell = function() return {getGridSquare = function() return {isCanSee = function() return visible end} end} end
+local function tile(x,y,z,shown)
+    local square = testSquares[x..":"..y..":"..z] or makeSquare(x,y,z)
+    square.isCanSee = function() return shown end
+    return square
+end
+getCell = function() return {getGridSquare = function(_,x,y,z) return tile(x,y,z,visible) end} end
 getNumActivePlayers = function() return 1 end
 getPlayerScreenLeft = function() return 0 end
 getPlayerScreenTop = function() return 0 end
@@ -14,7 +20,7 @@ getPlayerScreenHeight = function() return 720 end
 getWorld = function() return {getFreeEmitter = function(_, x,y,z)
     return {playSound = function(_, name) sounds[#sounds+1] = {name=name,x=x,y=y,z=z}; return #sounds end,
         setVolume = function(_,handle,gain) sounds[handle].gain=gain end,
-        setPitch = function(_, handle,pitch) check(pitch >= 0.95 and pitch <= 1.05, "Pitch stays within approved range"); sounds[handle].pitch=pitch end}
+        setPitch = function() error("Playback must use native clip pitch without the emitter setter") end}
 end} end
 ISUIElement = {new = function()
     return {instantiate=function() end, setStencilRect=function() end, clearStencilRect=function() end,
@@ -32,6 +38,7 @@ function target:getX() return self.x end
 function target:getY() return self.y end
 function target:getZ() return 0 end
 function target:getSquare() return {} end
+function target:isDead() return false end
 function target:isOnFloor() return self.floor end
 local launch={id="flight",shot=1,x=100,y=100,z=0,fromX=98,fromY=100,start=testMillis,flight=500,target=target}
 E.receive(F.MODULE,"Launch",launch); E.receive(F.MODULE,"Launch",launch)
@@ -57,6 +64,19 @@ visible=true; testMillis=2050; E.render(); check(#E.effects==0,"Impacts expire")
 for i=1,70 do E.receive(F.MODULE,"Impact",{id="cap",shot=i,x=1,y=1,z=0}) end
 check(#E.effects==64,"Visual queue is bounded")
 E.reset(); check(#E.effects==0,"Session reset clears transient effects")
+do
+    local mode = testMode
+    testMode = "client"
+    draws = 0
+    E.receive(F.MODULE, "Launch", nativeRoundTrip({id="observer-c494",shot=1,packet=9494001,
+        fromX=98,fromY=100,x=100,y=100,z=0,flight=500,start=99999999,silent=true}))
+    E.render()
+    check(draws == 1 and E.effects[1].start == require("OMHTT/TurretClock").now(),
+        "C494 observer renders serialized launch using its local clock, without a target object")
+    visible=false;draws=0;E.render()
+    check(draws==0,"C494 observer presentation retains line-of-sight privacy")
+    visible=true;testMode=mode;E.reset()
+end
 for heading=0,315,45 do
     local dx,dy=math.cos(heading*math.pi/180),-math.sin(heading*math.pi/180)
     E.receive(F.MODULE,"Launch",{id="heading",shot=heading,x=10+dx*4,y=10+dy*4,z=0,fromX=10,fromY=10,flight=200})
@@ -76,6 +96,19 @@ check(lines == 1 and E.effects[1].muzzleHeight == .4166667, "Firearm tracer uses
 testMillis=testMillis+100
 E.render()
 check(#E.effects==0 and lines==1,"Firearm tracer expires without potato splash")
+getCell = function() return {getGridSquare = function(_,x,y,z) return tile(x,y,z,x<13) end} end
+E.receive(F.MODULE, "Volley", {rays = {
+    {id="fan",shot="center",fromX=10,fromY=10,x=20,y=10,z=0,firearm=true},
+    {id="fan",shot="left",fromX=10,fromY=10,x=20,y=8,z=0,firearm=true},
+    {id="fan",shot="right",fromX=10,fromY=10,x=20,y=12,z=0,firearm=true}}})
+testMillis = testMillis + 200
+local previousLines = lines
+E.render()
+check(lines == previousLines + 3, "All three volley traces get a first render after a delayed frame with hidden endpoints")
+for i = 1, #E.effects do check(E.effects[i].visible[0].x < 13, "Tracer is clipped before unseen squares") end
+testMillis = testMillis + 100; E.render()
+check(#E.effects == 0, "Volley expires after its shared visible lifetime")
+getCell = function() return {getGridSquare = function(_,x,y,z) return tile(x,y,z,visible) end} end
 local D = require("OMHTT/Diagnostics")
 local oldDefer, oldControls, oldDiagnostic = D.defer, SandboxVars.OMHTurretsTraps.TurretTestControls,
     SandboxVars.OMHTurretsTraps.TurretDiagnosticLogging
@@ -86,12 +119,12 @@ D.defer = function(event, fields) if event == "potato-audio" then timing = field
 getWorld = function() return {getFreeEmitter = function()
     testMillis = testMillis + 2
     return {playSound = function() testMillis = testMillis + 300; return 1 end,
-        setPitch = function() testMillis = testMillis + 4 end,
+        setPitch = function() error("Runtime pitch setter reintroduced") end,
         setVolume = function() testMillis = testMillis + 5 end}
 end} end
 E.sound("OMHTTPotatoFire", 1, 1, 0)
-check(timing and timing.audioMs == 311 and timing.emitterMs == 2 and timing.playMs == 300
-    and timing.pitchMs == 4 and timing.volumeMs == 5, "Audio telemetry isolates the blocking stage")
+check(timing and timing.audioMs == 307 and timing.emitterMs == 2 and timing.playMs == 300
+    and timing.pitchMs == nil and timing.volumeMs == 5, "Native clip playback avoids setter and retains stage telemetry")
 timing = nil
 SandboxVars.OMHTurretsTraps.TurretDiagnosticLogging = false
 E.sound("OMHTTPotatoImpact", 1, 1, 0)
@@ -101,3 +134,4 @@ SandboxVars.OMHTurretsTraps.TurretTestControls = oldControls
 SandboxVars.OMHTurretsTraps.TurretDiagnosticLogging = oldDiagnostic
 getSpecificPlayer,getCell,getWorld,ISUIElement=oldSpecific,oldCell,oldWorld,oldElement
 ISUITextureGetter = oldTextureGetter
+getNumActivePlayers = oldActivePlayers

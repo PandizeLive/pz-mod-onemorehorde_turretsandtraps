@@ -1,0 +1,188 @@
+local P = require("OMHTT/TurretModulePack")
+local L = require("OMHTT/LootDefinitions")
+local T = require("OMHTT/Turret")
+local settings = SandboxVars.OMHTurretsTraps
+local oldSettings, oldFactory, oldRoll, oldFloat = {}, instanceItem, ZombRand, ZombRandFloat
+for key, value in pairs(settings) do oldSettings[key] = value end
+for name in pairs(L.WEIGHTS) do settings["LootRate" .. name] = nil end
+local entries, total = P.pool()
+check(#entries == 33 and total > 0, "All 33 exported modules and expansion kits including Grid are eligible")
+check(L.WEIGHTS.Firing * L.DEFAULTS.items.Firing == 14 and L.WEIGHTS.Martyrdom * L.DEFAULTS.items.Martyrdom == 3,
+    "Owner weights are defaults on the unchanged saved multiplier scale")
+local sample = {{name = "first", ceiling = 1}, {name = "last", ceiling = 4}}
+check(P.pick(sample, 4, 0) == "first" and P.pick(sample, 4, .25) == "last" and P.pick(sample, 4, .9999) == "last", "Weighted cumulative boundaries")
+local inventory = {items = {}}
+function inventory:contains(item) return self.items[item] == true end
+function inventory:AddItem(item)
+    if self.fail then return nil end
+    self.items[item] = true
+    item.container = self
+    return item
+end
+function inventory:Remove(item) self.items[item] = nil; item.container = nil end
+local function item(kind)
+    local value = {kind = kind, data = {}}
+    function value:getID() return 123 end
+    function value:getFullType() return self.kind end
+    function value:getModData() return self.data end
+    function value:getContainer() return self.container end
+    return value
+end
+instanceItem = item
+ZombRandFloat = function() return 0 end
+local player = {isDead = function() return false end, getInventory = function() return inventory end}
+local pack = item(P.TYPE)
+inventory:AddItem(pack)
+inventory.fail = true
+check(P.open(player, pack) == nil and inventory:contains(pack), "Failed reward insertion preserves pack")
+local selected = pack.data.OMHTTPackRewards
+check(selected == nil, "Pending rewards are not stored in client-writable item metadata")
+inventory.fail = false
+ZombRandFloat = function() error("Retry must not reroll committed pack") end
+local rewards = P.open(player, pack)
+check(#rewards == 3 and not inventory:contains(pack) and pack.data.OMHTTPackRewards == selected, "Exact pack consumed once after three grants")
+check(rewards[1]:getFullType() == rewards[2]:getFullType() and rewards[1] ~= rewards[2], "Duplicate draws grant distinct physical items")
+check(P.open(player, pack) == nil, "Duplicate completion cannot grant again")
+for name in pairs(L.WEIGHTS) do settings["LootRate" .. name] = 0 end
+local emptyPack = item(P.TYPE)
+inventory:AddItem(emptyPack)
+check(P.open(player, emptyPack) == nil and inventory:contains(emptyPack), "Zero eligible weights preserve unopened pack")
+testMode = "client"
+check(P.open(player, emptyPack) == nil, "Clients cannot consume packs or mint rewards")
+testMode = "sp"
+for name in pairs(L.WEIGHTS) do settings["LootRate" .. name] = nil end
+P.pool()
+local count = 0
+local zombie = {data = {}, getInventory = function() return {AddItem = function(_, kind) check(kind == P.TYPE, "Only packs added to bodies"); count = count + 1 end} end}
+function zombie:getModData() return self.data end
+settings.PackZombieChance, settings.ModuleLootRate, settings.PotatoTurret, settings.TurretsEnabled = 15, 1, true, true
+ZombRand = function() return 1499 end
+P.onDeath(zombie); P.onDeath(zombie)
+check(count == 1, "15 percent boundary succeeds once per zombie")
+zombie.data = {}; ZombRand = function() return 1500 end; P.onDeath(zombie)
+check(count == 1, "15 percent boundary excludes 1500 and above")
+zombie.data = {}; settings.PackZombieChance = 0; ZombRand = function() return 0 end; P.onDeath(zombie)
+check(count == 1, "Zero disables corpse packs")
+do
+    local previousSend = sendAddItemToContainer
+    sendAddItemToContainer = function() error("Dying zombie inventory is not a world container") end
+    settings.PackZombieChance, zombie.data, testMode = 100, {}, "server"
+    P.onDeath(zombie); P.onDeath(zombie)
+    check(count == 2, "Server adds corpse loot once without premature inventory packets")
+    sendAddItemToContainer, testMode = previousSend, "sp"
+end
+local B = require("OMHTT/TurretBenefits")
+local E = require("OMHTT/TurretBatteryEstimate")
+local originalDuration, originalTime = E.duration, getGameTime
+local minutes = 59.9
+getGameTime = function() return {getMultiplier=function() return 1 end, getTrueMultiplier=function() return 1 end,getMinutesPerDay = function() return 1440 end} end
+E.duration = function() return minutes * 60000 end
+local head = {getCondition = function() return 100 end, getModData = function() return {} end}
+local battery = {getCondition = function() return 100 end, getCurrentUsesFloat = function() return 1 end,
+    getModData = function() return {} end}
+local contents, stats = {head = head, battery = battery}, {batteryPercent = .1, modulePower = 1, regulator = 1}
+check(string.find(B.battery(contents, stats), "59.9 in-game minutes", 1, true), "Below one hour uses minutes")
+minutes = 60
+check(string.find(B.battery(contents, stats), "1.0 in-game hours", 1, true), "One-hour boundary uses hours")
+minutes = 360
+check(string.find(B.battery(contents, stats), "6.0 in-game hours", 1, true), "Long battery estimates use hours")
+check(stats.batteryPercent == .1, "Duration formatting never changes consumption")
+E.duration, getGameTime = originalDuration, originalTime
+local Reveal = require("OMHTT/TurretPackReveal")
+ZombRandFloat = function() return .25 end
+local originalManager, originalScripts = getTextManager, getScriptManager
+getScriptManager = function() return {getItem = function(_, kind) return {
+    getDisplayName = function() return kind end, getNormalTexture = function() return nil end}
+end} end
+getTextManager = function() return {getFontHeight = function() return 16 end,
+    WrapText = function(_, font, text, width) return text end} end
+instanceItem = function(kind)
+    local value = item(kind)
+    function value:getTex() return nil end
+    function value:getDisplayName() return self.kind end
+    return value
+end
+function player:getPlayerNum() return 0 end
+local drawCount = 0
+function Reveal:drawText() drawCount = drawCount + 1 end
+function Reveal:drawTextCentre() drawCount = drawCount + 1 end
+function Reveal:drawRect() end
+function Reveal:drawRectBorder() end
+function Reveal:setStencilRect() end
+function Reveal:clearStencilRect() end
+local originalNew, originalPrerender = ISPanel.new, ISPanel.prerender
+ISPanel.prerender = function() end
+ISPanel.new = function(self, x, y, width, height) return setmetatable({x=x,y=y,width=width,height=height}, {__index=self}) end
+function Reveal:initialise() end
+function Reveal:addChild() end
+function Reveal:addToUIManager() end
+function Reveal:removeFromUIManager() end
+local panel = Reveal.show(player, rewards)
+panel:prerender()
+check(not panel.finished and #panel.reels == 3 and #panel.reels[1] == 42, "Three bounded visual reels")
+panel.started = testMillis - 6700; panel:prerender()
+check(panel.finished and drawCount > 0 and panel.reels[1][40].lines[1] == rewards[1]:getFullType(), "Finished reveal lands on the already granted reward")
+check(panel.nextButton.visible, "Open Next appears only after the roll finishes")
+local nextCount, nextPack = panel:packCount({getItems = function() return {size = function() return 2 end,
+    get = function(_, i) return i == 0 and emptyPack or rewards[1] end} end}, 0)
+check(nextCount == 1 and nextPack == emptyPack, "Open Next counts carried packs and keeps exact item identity")
+local oldContext, oldQueue = ISInventoryPaneContextMenu, ISTimedActionQueue.add
+local queuedNext
+ISInventoryPaneContextMenu = {transferIfNeeded = function(_, value) check(value == emptyPack, "Next uses the selected native pack") end}
+ISTimedActionQueue.add = function(action) queuedNext = action end
+function inventory:isInCharacterInventory() return true end
+panel.nextPack = emptyPack
+panel:openNext()
+check(queuedNext and inventory:contains(emptyPack), "Open Next queues authority action without consuming or granting on click")
+panel:openNext()
+check(panel.opening and inventory:contains(emptyPack), "Repeated Open Next does not duplicate consumption")
+ISInventoryPaneContextMenu, ISTimedActionQueue.add = oldContext, oldQueue
+panel.collectButton.callback(panel)
+for i = 1, #rewards do check(inventory:contains(rewards[i]), "Collect preserves previously granted rewards") end
+local Action = require("OMHTT/TurretPackAction")
+local actionPack = item(P.TYPE)
+actionPack.data.OMHTTPackRewards = {"Regulator", "Regulator", "CapacityLarge"}
+inventory:AddItem(actionPack)
+local action = Action:new(player, actionPack)
+check(action.maxTime == 100 and action.elapsed == nil, "Native action clock replaces nonserialized elapsed state")
+check(action:complete() and not inventory:contains(actionPack), "Completed action grants before reveal")
+check(not action:complete(), "Timed action duplicate completion blocked")
+local oldAdd, oldRemove, oldSend = sendAddItemToContainer, sendRemoveItemFromContainer, sendServerCommand
+local added, removed, results = 0, 0, 0
+sendAddItemToContainer = function(container, reward)
+    check(container == inventory and inventory:contains(reward), "Server syncs committed reward items")
+    added = added + 1
+end
+sendRemoveItemFromContainer = function(container, consumed)
+    check(container == inventory and not inventory:contains(consumed), "Server syncs committed pack removal")
+    removed = removed + 1
+end
+sendServerCommand = function(recipient, namespace, command, args)
+    check(recipient == player and namespace == "OMHTT" and command == "PackOpened", "Targeted reveal result")
+    check(#args.rewards == 3 and args.rewards[1] ~= T.TYPES.Regulator, "Client metadata cannot select reward")
+    testPackets[#testPackets + 1] = args
+    results = results + 1
+end
+function player:getOnlineID() return 7 end
+testMode = "server"
+local serverPack = item(P.TYPE)
+serverPack.data.OMHTTPackRewards = {"Regulator", "Regulator", "Regulator"}
+inventory:AddItem(serverPack)
+ZombRandFloat = function() return 0 end
+-- A fresh constructor mirrors NetTimedAction reconstruction: no client start/update.
+local reconstructed = Action:new(player, serverPack)
+check(reconstructed:complete(), "Server-reconstructed action completes without client-only elapsed or started fields")
+check(added == 3 and removed == 1 and results == 1, "One committed server transaction and one reveal")
+check(not Action:new(player, serverPack):complete(), "New action replay against consumed pack grants nothing")
+check(added == 3 and removed == 1, "Replay emits no duplicate inventory sync")
+testMode = "client"
+local clientPack = item(P.TYPE); inventory:AddItem(clientPack)
+check(not Action:new(player, clientPack):complete() and inventory:contains(clientPack), "Client complete cannot mutate inventory")
+testMode = "sp"
+sendAddItemToContainer, sendRemoveItemFromContainer, sendServerCommand = oldAdd, oldRemove, oldSend
+getTextManager, getScriptManager = originalManager, originalScripts
+ISPanel.new, ISPanel.prerender = originalNew, originalPrerender
+instanceItem, ZombRand, ZombRandFloat = oldFactory, oldRoll, oldFloat
+for key in pairs(settings) do settings[key] = nil end
+for key, value in pairs(oldSettings) do settings[key] = value end
+P.pool()
