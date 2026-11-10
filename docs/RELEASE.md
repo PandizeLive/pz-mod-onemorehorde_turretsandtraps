@@ -611,7 +611,7 @@ Do not populate a WORKSHOP_CHANGELOG.txt with planned features as if implemented
 
 Local versions, tests, commits, tags, mirrors, preflight and failed/preview/leaderboard uploads never reset the draft. Record exact item ID, released version, uploaded snapshot, upload evidence and time here after a successful content upload. Preserve changes made after that snapshot. Published notes remain until the next real change begins a fresh draft.
 
-Use the publisher's established category/bullet format when publication tooling is introduced. Preserve owner-authored Workshop descriptions and the cover. Required description line for OMH releases: `DISCLAIMER: This mod was made in tandem with ChatGPT`.
+Use the publisher's established category/bullet format when publication tooling is introduced. Preserve owner-authored Workshop descriptions and the cover.
 
 ## Coordinated integration releases
 

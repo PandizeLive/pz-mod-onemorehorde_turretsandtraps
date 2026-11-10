@@ -37,7 +37,7 @@ try {
         Write-Host 'Live upload additionally requires committed release inputs and Project Zomboid closed.'
         exit 0
     }
-    $criticalPaths = @('Source', 'Contents', 'tools', 'OMH.cmd', 'OMH_TurretsAndTraps.cmd', 'workshop.txt', 'preview.png', 'WORKSHOP_CHANGELOG.txt')
+    $criticalPaths = @('Source', 'Contents', 'tools', 'OMH_TurretsAndTraps.cmd', 'workshop.txt', 'preview.png', 'WORKSHOP_CHANGELOG.txt')
     if (Invoke-TTGit $repoRoot (@('status', '--porcelain', '--untracked-files=all', '--') + $criticalPaths)) { throw 'Commit release inputs and tooling before publishing.' }
     Assert-ProjectZomboidClosed
     Write-Host $changeLog.Source
