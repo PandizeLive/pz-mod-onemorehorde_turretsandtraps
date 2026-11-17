@@ -1,5 +1,20 @@
 # Decision register
 
+## Open decisions (ID'd log, started 2026-11-17)
+
+Owner request, 2026-11-17: use the same ID'd decision format as the Spore project. Every question to the owner gets the next ID in one running sequence in asking order (1A ... 1Z, 2A ...). IDs are permanent. Options per ID are A (recommended), B, and C only if needed. The owner answers like "1AB" (decision 1A, option B). This replaces the older C150/C233 presentation where "1A/1B" meant two options of one decision. Older decisions below keep their C numbers and are not re-numbered.
+
+**Next free ID: 1E**
+
+| ID | Question | Options | Answer |
+| --- | --- | --- | --- |
+| 1A | Next piece of work on T&T | A Workshop description and capture list; B match existing rotary logs | **A**, 2026-11-17. [Draft](WORKSHOP_PAGE_C561.md) |
+| 1B | Permanently trust the T&T folder in git | A yes; B keep per-command workaround | **A**, 2026-11-17. Done |
+| 1C | Correct the project path in the owner's global notes | A yes; B leave | **A**, 2026-11-17. Done |
+| 1D | Push local commit `4481b744` to GitHub | A yes, owner-edited docs stay local; B leave local | **A**, 2026-11-17 |
+
+**C561 / Workshop draft prepared (2026-11-17).** Owner selected 1AA. [Description draft and capture list](WORKSHOP_PAGE_C561.md) follow the Horde Night page layout. Draft only: no upload, no `workshop.txt` change, no gameplay change. The rotary log correlation (former C560 option 1B) is not selected and remains available.
+
 **C560 / Recommended next step.** Return to the [Workshop presentation plan](WORKSHOP_READINESS_C491.md#proposed-tt-media-package). The 0.2.71.13 device retest is accepted. Its client console also contains 100 distinct rotary damage displays, with a 95 ms median, 214 ms p95 and 336 ms maximum from movement sample to display. This does not count missing hits or identify which involved Martyrdom. Option 1A prepares short Workshop copy and a capture list using the existing branding, with final footage after the artist assets are in place. Option 1B prioritizes matching these existing timings against the dedicated-server log. Neither option has been selected.
 
 **C559 / 0.2.71.13 multiplayer retest passed, November 3.** The owner confirmed the connected device retest works. The client loaded both entries on 0.2.71.13. The publisher confirmed the unlisted Workshop content upload. [Acceptance and upload record](TEST_v0.2.71.13.md#connected-result).

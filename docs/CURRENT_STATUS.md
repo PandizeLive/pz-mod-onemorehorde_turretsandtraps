@@ -1,5 +1,7 @@
 # Current development and planning handoff
 
+**C561 / Workshop description draft ready for owner review, November 17.** Development moved from GPT to Claude; the checkout is now `C:\Users\bandi\AI_Projects\Project Zomboid\OMH\Turrets & Traps`. Owner selected decision 1A option A. [Description draft and capture list](WORKSHOP_PAGE_C561.md). Draft only: nothing uploaded, `workshop.txt` and gameplay unchanged at 0.2.71.13. Decisions now use the [ID'd log](DECISIONS.md#open-decisions-idd-log-started-2026-11-17). **Decision needed** on the draft; final captures wait for artist assets.
+
 **C559 / 0.2.71.13 multiplayer retest passed, November 3.** The owner confirmed the connected device retest works. The client loaded both entries on 0.2.71.13. The publisher confirmed the unlisted Workshop content upload. [Acceptance and upload record](TEST_v0.2.71.13.md#connected-result).
 
 **C558 / 0.2.71.13 ready for the connected retest.** Installed and staged at `test/v0.2.71.13` (`c6b02a90`). All 642 packaged files matched the tag, ZIP, install and Workshop stage. Unlisted upload preflight passed. **Test now** after CMD option 3 and a server/client restart. [Patch and connected retest](TEST_v0.2.71.13.md) · [Delivery evidence](evidence/c558-delivery.json).

@@ -1,5 +1,7 @@
 # Planning
 
+**C561 / Workshop draft prepared, November 17.** Owner selected the Workshop presentation (decision 1A, option A; formerly C560 option 1A). [Description draft and capture list](WORKSHOP_PAGE_C561.md) await owner edits. Rotary log correlation stays unselected. New questions use the [ID'd decision log](DECISIONS.md#open-decisions-idd-log-started-2026-11-17).
+
 **C560 / Recommended next step.** Return to the [Workshop presentation plan](WORKSHOP_READINESS_C491.md#proposed-tt-media-package). The 0.2.71.13 device retest is accepted. Its client console also contains 100 distinct rotary damage displays, with a 95 ms median, 214 ms p95 and 336 ms maximum from movement sample to display. This does not count missing hits or identify which involved Martyrdom. Option 1A prepares short Workshop copy and a capture list using the existing branding, with final footage after the artist assets are in place. Option 1B prioritizes matching these existing timings against the dedicated-server log. Neither option has been selected.
 
 **C559 / 0.2.71.13 multiplayer retest passed, November 3.** The owner confirmed the connected device retest works. The client loaded both entries on 0.2.71.13. The publisher confirmed the unlisted Workshop content upload. [Acceptance and upload record](TEST_v0.2.71.13.md#connected-result).
