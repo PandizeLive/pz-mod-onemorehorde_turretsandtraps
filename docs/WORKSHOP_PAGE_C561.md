@@ -1,141 +1,240 @@
-# C561 - Workshop description draft and capture list
+# C561 - Workshop description template and capture list
 
-2026-11-17. Owner selected decision **1A, option A**: draft the Workshop description and a three-shot capture list in the Horde Night page style. This is a draft for owner editing. Nothing was uploaded, and `workshop.txt`, the Workshop page, gameplay and packages are unchanged. Background: [Workshop readiness and media inventory](WORKSHOP_READINESS_C491.md).
+2026-11-17. Owner selected decision **1A, option A** (Workshop description and capture list), then answered **1E** with: the page must be in the owner's own words. This file is a fill-in template. Each section has questions to answer in your own words, an example for reference only, and a blank to write in. Nothing was uploaded, and `workshop.txt`, the Workshop page, gameplay and packages are unchanged. Background: [Workshop readiness and media inventory](WORKSHOP_READINESS_C491.md).
 
-Style rules applied: short casual copy, the Horde Night section layout, no em or en dashes, real gameplay media only, 1,000 pixel wide description media. Headings are placeholders for the owner's own voice.
+## How to use this
 
-## Check before publishing
+- Answer the questions under each section. Short, rough answers are fine. Bullet points are fine.
+- The examples are only there to show length and shape. Ignore them if they don't sound like you.
+- Skip any section you don't want on the page.
+- When you're done, send it back and I'll check every claim against the mod, convert it to Steam formatting, and flag anything that isn't true yet.
+- House rules from the Horde Night page: short and casual, no long dashes, real gameplay media only.
 
-- **Game version line.** The packages are built for 42.20 (`versionMin=42.20`). Confirm the wording against the game build used for the final test.
-- **Multiplayer wording.** The 0.2.71.13 connected device retest passed. Not every head and module has a fresh two-player combat pass, so the draft says "Supported" without claiming full coverage. Change if the owner wants a WIP note.
-- **Horde Night and Trait Shop lines.** Local integration is implemented. The hosted scoring update was tracked separately and is not verified live. The draft does not promise official scoring.
-- **Existing saves.** 0.2.71.13 supports existing test worlds. Very old pre-0.2.41 combined saves were never migrated. The draft says existing saves are supported, which is true for anyone starting from the public release.
-- **Media.** Every `[CAPTURE n]` and `[STILL n]` marker is a missing file. Final captures wait for the artist assets.
-- **Links.** Bugs and Feature Suggestions discussion links do not exist yet for this item.
-- **Credits.** Copied in form from the Horde Night page. Owner confirms names.
+---
 
-## Description draft (Steam BBCode)
+## 1. Opening hook
 
-```
-[img]COVER: existing animated T&T cover, 400x400[/img]
+The first thing people read, under the cover GIF.
 
-[h1]ONE MORE HORDE: TURRETS & TRAPS[/h1]
-[b]Modular turrets, traps, and base automation for Project Zomboid Build 42.[/b]
+**Questions**
+1. In one sentence, what is T&T to you?
+2. What's the moment in-game that made you go "yeah, this is cool"?
+3. Horde Night had "You WILL fail. Can you outlast everyone else?" What's the T&T equivalent punchline?
 
-Build a turret. Swap its head. Stack modules until it does something stupid. Then wire the whole base to a pressure plate and watch.
+**Example (reference only)**
+> **Modular turrets, traps, and base automation for Project Zomboid Build 42.**
+> Build a turret. Swap its head. Stack modules until it does something stupid. Then wire the whole base to a pressure plate and watch.
+> **Your base should fight back.**
 
-[b]Your base should fight back.[/b]
+**Your words**
 
-[hr][/hr]
+>
 
-[h1]THE OFFICIAL OMH WEBSITE[/h1]
+---
 
-[url=https://onemorehorde.com/][b]VISIT ONEMOREHORDE.COM[/b][/url]
+## 2. Turret heads
 
-[hr][/hr]
+Media: clip 2, head swap.
 
-[h1]ONE BASE. MANY HEADS.[/h1]
-[img][CAPTURE 2: head swap][/img]
-Every turret starts as a Turret Base. The head decides what it does.
+**Questions**
+1. How would you explain "one base, swap the head" to a friend?
+2. Which heads do you want named? (Potato Launcher, Firearms, Ballista, Scrapshot, Grenade Lobber, Rotary Bat, Rotary Blades, Arc Emitter)
+3. For each one you name: what's it good at, in a few words?
+4. Anything you want to say about real guns working as heads?
+5. Section title? (Horde Night used things like "START SMALL. DIE AS A BIG BOI.")
 
-[list]
-[*][b]Potato Launcher[/b] for cheap, splashy starter defense
-[*][b]Firearms[/b] mount real guns with their own ammo and attachments
-[*][b]Ballista[/b] and [b]Scrapshot[/b] for heavy hits and crowds
-[*][b]Grenade Lobber[/b] for explosives at range
-[*][b]Rotary Bat[/b] and [b]Rotary Blades[/b] for anything that gets close
-[*][b]Arc Emitter[/b] because electricity
-[/list]
+**Example (reference only)**
+> **ONE BASE. MANY HEADS.**
+> Every turret starts as a Turret Base. The head decides what it does.
+> - **Potato Launcher** for cheap, splashy starter defense
+> - **Firearms** mount real guns with their own ammo and attachments
+> - **Ballista** and **Scrapshot** for heavy hits and crowds
+> - **Grenade Lobber** for explosives at range
+> - **Rotary Bat** and **Rotary Blades** for anything that gets close
+> - **Arc Emitter** because electricity
+>
+> Heads, ammo, batteries, and modules are real items. Pull them out, swap them, move them to another base.
 
-Heads, ammo, batteries, and modules are real items. Pull them out, swap them, move them to another base.
+**Your words**
 
-[hr][/hr]
+>
 
-[h1]MODULES (the fun part)[/h1]
-[img][STILL 1: Manage window with a full module loadout][/img]
-Find modules as loot and stack them however you like.
+---
 
-[list]
-[*][b]Splitter[/b] and [b]Fragment[/b] turn one shot into several
-[*][b]Rapid-Fire, Reload, Range,[/b] and [b]Velocity[/b] tune the basics
-[*][b]Execute, Initial Blow, Piercing,[/b] and [b]Critical[/b] change how hits land
-[*][b]Detection, Filter,[/b] and [b]360[/b] control what a turret sees and shoots
-[*][b]Siphon, Conservation,[/b] and [b]Regulator[/b] manage power and ammo
-[/list]
+## 3. Modules
 
-More slots come from Expansion Kits. More power costs more battery.
+Media: still 1, Manage window with a full loadout.
 
-[hr][/hr]
+**Questions**
+1. What's your favourite module combo, and what does it do?
+2. Which modules matter most to a new player? (Full list: Firing, Detection, Filter, 360, Rapid-Fire, Reload, Range, Velocity, Autoloader, Magazine, Expansion Kits, Suppression, Critical, Accuracy, Splitter, Fragment, Piercing, Initial Blow, Execute, Impact, Conservation, Synergy, Martyrdom, Tack, Regulator, Lure, Void, Siphon, Grid. Some have Makeshift or Enhanced versions.)
+3. Do you want to mention that modules are found as loot, not crafted?
+4. Anything about stacking or the battery cost you want players to know?
+5. Section title?
 
-[h1]TRAPS THAT DO THE DIRTY WORK[/h1]
-[img][CAPTURE 1: defense in action][/img]
-[list]
-[*][b]Spike Barriers[/b] and [b]Bed Spikes[/b] punish anything that walks in
-[*][b]Concertina Wire[/b] and [b]Barbed Panels[/b] slow and shred
-[*][b]Poke Floors[/b] stab from below
-[*][b]Tether Darts[/b] grab a zombie and drag it back
-[/list]
+**Example (reference only)**
+> **MODULES (the fun part)**
+> Find modules as loot and stack them however you like.
+> - **Splitter** and **Fragment** turn one shot into several
+> - **Rapid-Fire, Reload, Range,** and **Velocity** tune the basics
+> - **Execute, Initial Blow, Piercing,** and **Critical** change how hits land
+> - **Detection, Filter,** and **360** control what a turret sees and shoots
+> - **Siphon, Conservation,** and **Regulator** manage power and ammo
+>
+> More slots come from Expansion Kits. More power costs more battery.
 
-Traps wear down, can be repaired, and can be picked up and moved.
+**Your words**
 
-[hr][/hr]
+>
 
-[h1]WIRE IT ALL TOGETHER[/h1]
-[img][CAPTURE 3: Controller-linked trigger][/img]
-The [b]T&T Controller[/b] links your defenses to triggers and shows them on its own map.
+---
 
-[list]
-[*][b]Pressure Plates, Buttons, Levers,[/b] and [b]Laser Sensors[/b] fire linked devices
-[*]Group devices and manage them from one place
-[*]Other players' Controllers cannot find your defenses
-[/list]
+## 4. Traps
 
-[hr][/hr]
+Media: clip 1, defense in action.
 
-[h1]YOUR DEFENSE, YOUR RULES[/h1]
-[img][STILL 2: Sandbox options][/img]
-Nearly everything is a Sandbox option: damage, power use, loot rates, ranges, and each defense on its own page.
+**Questions**
+1. Which traps do you want named? (Spike Barrier, Bed Spikes, Concertina Wire, Barbed Panel, Poke Floor, Tether Dart)
+2. What does each one do, in your words?
+3. Is there a trap you think players will love or hate? Why?
+4. Do you want to mention repair, pickup and moving traps?
+5. Section title?
 
-[hr][/hr]
+**Example (reference only)**
+> **TRAPS THAT DO THE DIRTY WORK**
+> - **Spike Barriers** and **Bed Spikes** punish anything that walks in
+> - **Concertina Wire** and **Barbed Panels** slow and shred
+> - **Poke Floors** stab from below
+> - **Tether Darts** grab a zombie and drag it back
+>
+> Traps wear down, can be repaired, and can be picked up and moved.
 
-[h1]INSTALLATION AND COMPATIBILITY[/h1]
-[list]
-[*][b]Game version:[/b] Build 42.20.x
-[*][b]Build 41:[/b] Not supported
-[*][b]Single-Player, hosted, dedicated, and existing saves:[/b] Supported
-[*][b]Multiplayer:[/b] Required on the server and every client
-[*][b]Included mods:[/b] OMH: Turrets and OMH: Traps. Enable either or both.
-[*][b]Works with:[/b] OMH: Horde Night and OMH: Trait Shop. Neither is required.
-[*][b]Modpacks and server packs:[/b] Redistribution allowed
-[*][b]Known incompatibilities:[/b] None confirmed yet
-[/list]
+**Your words**
 
-[b]Workshop ID:[/b] 3828638252
-[b]Turrets Mod ID:[/b] OneMoreHorde_Turrets
-[b]Traps Mod ID:[/b] OneMoreHorde_Traps
+>
 
-[h1]REPORTS, SOURCE, AND CREDITS[/h1]
+---
 
-Report bugs through the [b]Discussions[/b] tab with versions, game mode, reproduction steps, and logs.
+## 5. Controller and triggers
 
-[url=https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps]GitHub Source and Development Repository[/url]
+Media: clip 3, Controller-linked trigger.
 
-[b]Creator:[/b] Pandize
-[b]Art:[/b] (artist credit)
-[b]Play Testers:[/b] (names)
+**Questions**
+1. How would you describe the Controller in one line?
+2. Which triggers do you want named? (Pressure Plate, Button, Lever, Laser Sensor)
+3. What's a fun setup you'd show someone? (for example, a lever that fires the whole front wall)
+4. Do you want to mention privacy, that other players can't find your stuff?
+5. Section title?
 
-[hr][/hr]
+**Example (reference only)**
+> **WIRE IT ALL TOGETHER**
+> The **T&T Controller** links your defenses to triggers and shows them on its own map.
+> - **Pressure Plates, Buttons, Levers,** and **Laser Sensors** fire linked devices
+> - Group devices and manage them from one place
+> - Other players' Controllers cannot find your defenses
 
-"My" work isn't worth any amount of money, but if it's impacted you... buy me a coffee? :)
+**Your words**
 
-[url=https://ko-fi.com/pandize][b]Buy me a coffee? :)[/b][/url]
+>
 
-[hr][/hr]
-```
+---
+
+## 6. Sandbox options
+
+Media: still 2, one Sandbox page.
+
+**Questions**
+1. What's the one thing you want hosts to know they can change?
+2. Section title? (Horde Night used "YOUR HORDE, YOUR RULES (or smthn idk)")
+
+**Example (reference only)**
+> **YOUR DEFENSE, YOUR RULES**
+> Nearly everything is a Sandbox option: damage, power use, loot rates, ranges, and each defense on its own page.
+
+**Your words**
+
+>
+
+---
+
+## 7. Horde Night and Trait Shop
+
+Optional section. The Horde Night page has an addons table you could mirror here.
+
+**Questions**
+1. Do you want a section about using T&T with Horde Night and Trait Shop?
+2. What should players know? (turret kills on Horde Night zombies count toward your run; turret kills can give shared Trait Shop XP)
+3. Anything about official scoring? Note: the hosted scoring update isn't confirmed live, so I'd hold any scoring promise until it is.
+
+**Example (reference only)**
+> Works with **OMH: Horde Night** and **OMH: Trait Shop**. Neither is required.
+
+**Your words**
+
+>
+
+---
+
+## 8. Installation and compatibility
+
+Mostly facts, so this one is pre-filled. Just answer the questions.
+
+**Questions**
+1. Game version line: keep "Build 42.20.x"?
+2. Multiplayer: the device retest passed, but not every head has a fresh two-player combat test. Say "Supported", or add a WIP note?
+3. Allow redistribution in modpacks and server packs, like Horde Night?
+4. Keep the "Development artwork is temporary" note until the artist assets are in?
+
+**Pre-filled**
+> - **Game version:** Build 42.20.x
+> - **Build 41:** Not supported
+> - **Single-Player, hosted, dedicated, and existing saves:** Supported
+> - **Multiplayer:** Required on the server and every client
+> - **Included mods:** OMH: Turrets and OMH: Traps. Enable either or both.
+> - **Works with:** OMH: Horde Night and OMH: Trait Shop. Neither is required.
+> - **Modpacks and server packs:** Redistribution allowed
+> - **Known incompatibilities:** None confirmed yet
+>
+> **Workshop ID:** 3828638252
+> **Turrets Mod ID:** OneMoreHorde_Turrets
+> **Traps Mod ID:** OneMoreHorde_Traps
+
+**Your answers**
+
+>
+
+---
+
+## 9. Reports, source and credits
+
+**Questions**
+1. Who's the artist, and how do they want to be credited? (name, link)
+2. Which play testers do you want to thank? (names, Steam links)
+3. Anyone else? (ideas, the original discussion, RedChili, etc.)
+4. Keep the GitHub link and the Ko-fi line from Horde Night?
+5. Want Bugs and Feature Suggestions discussion threads made for this item, like Horde Night?
+
+**Example (reference only)**
+> Report bugs through the **Discussions** tab with versions, game mode, reproduction steps, and logs.
+> GitHub Source and Development Repository
+> **Creator:** Pandize
+> **Art:** (artist)
+> **Play Testers:** (names)
+> "My" work isn't worth any amount of money, but if it's impacted you... buy me a coffee? :)
+
+**Your words**
+
+>
+
+---
 
 ## Capture list
 
 Record at full resolution and keep the originals. Export description media 1,000 pixels wide, original colors and timing, no debug overlays. Reference takes can use current developer art. Final takes wait for the artist assets.
+
+**Questions**
+1. Do these three clips show what you'd want to see first? Swap any.
+2. Who records: you, or a tester?
 
 ### Three main clips
 

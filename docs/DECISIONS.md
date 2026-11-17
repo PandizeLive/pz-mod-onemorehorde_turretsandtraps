@@ -4,7 +4,7 @@
 
 Owner request, 2026-11-17: use the same ID'd decision format as the Spore project. Every question to the owner gets the next ID in one running sequence in asking order (1A ... 1Z, 2A ...). IDs are permanent. Options per ID are A (recommended), B, and C only if needed. The owner answers like "1AB" (decision 1A, option B). This replaces the older C150/C233 presentation where "1A/1B" meant two options of one decision. Older decisions below keep their C numbers and are not re-numbered.
 
-**Next free ID: 1E**
+**Next free ID: 1F**
 
 | ID | Question | Options | Answer |
 | --- | --- | --- | --- |
@@ -12,8 +12,9 @@ Owner request, 2026-11-17: use the same ID'd decision format as the Spore projec
 | 1B | Permanently trust the T&T folder in git | A yes; B keep per-command workaround | **A**, 2026-11-17. Done |
 | 1C | Correct the project path in the owner's global notes | A yes; B leave | **A**, 2026-11-17. Done |
 | 1D | Push local commit `4481b744` to GitHub | A yes, owner-edited docs stay local; B leave local | **A**, 2026-11-17 |
+| 1E | Handling the Workshop description draft | A owner edits it; B Claude tightens it first | **Owner's own option**, 2026-11-17: page must be in the owner's own words. Draft converted to a [fill-in template](WORKSHOP_PAGE_C561.md) with questions per section; examples kept as reference only |
 
-**C561 / Workshop draft prepared (2026-11-17).** Owner selected 1AA. [Description draft and capture list](WORKSHOP_PAGE_C561.md) follow the Horde Night page layout. Draft only: no upload, no `workshop.txt` change, no gameplay change. The rotary log correlation (former C560 option 1B) is not selected and remains available.
+**C561 / Workshop template prepared (2026-11-17).** Owner selected 1AA, then 1E: the page must be written in the owner's own words. [Fill-in template and capture list](WORKSHOP_PAGE_C561.md) follow the Horde Night page layout, with questions per section and examples for reference only. Do not write the final copy for the owner. Draft only: no upload, no `workshop.txt` change, no gameplay change. The rotary log correlation (former C560 option 1B) is not selected and remains available.
 
 **C560 / Recommended next step.** Return to the [Workshop presentation plan](WORKSHOP_READINESS_C491.md#proposed-tt-media-package). The 0.2.71.13 device retest is accepted. Its client console also contains 100 distinct rotary damage displays, with a 95 ms median, 214 ms p95 and 336 ms maximum from movement sample to display. This does not count missing hits or identify which involved Martyrdom. Option 1A prepares short Workshop copy and a capture list using the existing branding, with final footage after the artist assets are in place. Option 1B prioritizes matching these existing timings against the dedicated-server log. Neither option has been selected.
 
