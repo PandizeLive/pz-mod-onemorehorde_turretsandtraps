@@ -73,7 +73,7 @@ $ghPath = Find-SharedPath '.tools/gh.exe'
 if (-not $ghPath) { $ghPath = (Get-Command gh -ErrorAction Stop).Source }
 $ghConfig = Find-SharedPath '.gh-codex'
 if ($ghConfig) { $env:GH_CONFIG_DIR = $ghConfig }
-$gitAuth = @('-c', 'credential.helper=', '-c', ('credential.helper=!"' + $ghPath.Replace('\', '/') + '" auth git-credential'))
+$gitAuth = @('-c', 'credential.helper=', '-c', ('credential.helper=!\"' + $ghPath.Replace('\', '/') + '\" auth git-credential'))
 $repository = Invoke-GitHub @('repo', 'view', $config.repository, '--json', 'nameWithOwner,visibility,defaultBranchRef') | ConvertFrom-Json
 if ($repository.visibility -ne $config.visibility -or $repository.nameWithOwner -ne $config.repository -or $repository.defaultBranchRef.name -ne $config.developmentBranch) { throw "Expected the configured $($config.visibility) repository with $($config.developmentBranch) as its default branch." }
 Invoke-ProjectGit @('fetch', 'origin', '--prune') | Out-Host
